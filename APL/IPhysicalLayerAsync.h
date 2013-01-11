@@ -35,6 +35,7 @@ namespace apl
 {
 
 class IHandlerAsync;
+class IExecutor;
 
 class IPhysicalLayerState
 {
@@ -80,6 +81,11 @@ class IPhysicalLayerAsync : public IPhysicalLayerState
 public:
 
 	virtual ~IPhysicalLayerAsync() {}
+
+	/**
+	* @return the executor associated with this layer
+	*/
+	virtual IExecutor* GetExecutor() = 0;
 
 	/**
 	 * Starts an open operation.

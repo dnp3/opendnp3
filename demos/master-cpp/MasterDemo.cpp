@@ -37,7 +37,8 @@ namespace apl { namespace dnp {
 MasterDemoBase::MasterDemoBase(Logger* apLogger)
 	: IOService()
 	, IOServiceThread(apLogger, this->Get())
-	, mExecutor(this->Get())
+	, mStrand(*Get())
+	, mExecutor(&mStrand)
 	, mpInfiniteTimer(mExecutor.StartInfinite())
 	, mTestCounter(0)
 {

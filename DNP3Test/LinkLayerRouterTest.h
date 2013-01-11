@@ -47,7 +47,7 @@ class LinkLayerRouterTest : public LogTester
 public:
 	LinkLayerRouterTest(FilterLevel aLevel = LEV_WARNING, bool aImmediate = false);
 
-	MockExecutor mts;
+	MockExecutor exe;
 	MockPhysicalLayerAsync phys;
 	LinkLayerRouter router;
 };

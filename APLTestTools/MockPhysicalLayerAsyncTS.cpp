@@ -51,6 +51,11 @@ MockPhysicalLayerAsyncTS::MockPhysicalLayerAsyncTS(Logger* apLogger, MockExecuto
 	this->Reset();
 }
 
+IExecutor* MockPhysicalLayerAsyncTS::GetExecutor()
+{
+	return mpExecutor;
+}
+
 void MockPhysicalLayerAsyncTS::WriteToLayer(const uint8_t* apData, size_t aNumBytes)
 {
 	memcpy(mWriteBuffer.WriteBuff(), apData, aNumBytes);

@@ -29,7 +29,7 @@
 #ifndef __LOOP_BACK_PHYSICAL_LAYER_ASYNC_H_
 #define __LOOP_BACK_PHYSICAL_LAYER_ASYNC_H_
 
-#include <APL/PhysicalLayerAsyncBase.h>
+#include <APL/PhysicalLayerAsyncASIO.h>
 #include <APL/IHandlerAsync.h>
 
 #include <queue>
@@ -46,7 +46,7 @@ namespace apl
 {
 
 // Provides a backend for testing physical layers
-class LoopbackPhysicalLayerAsync : public PhysicalLayerAsyncBase
+class LoopbackPhysicalLayerAsync : public PhysicalLayerAsyncASIO
 {
 public:
 	LoopbackPhysicalLayerAsync(Logger*, boost::asio::io_service* apSrv);
@@ -62,8 +62,7 @@ private:
 
 
 	void CheckForReadDispatch();
-
-	boost::asio::io_service* mpService;
+	
 	std::deque<uint8_t> mWritten;
 
 	size_t mReadSize;

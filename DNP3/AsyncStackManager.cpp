@@ -57,8 +57,9 @@ namespace dnp
 AsyncStackManager::AsyncStackManager(Logger* apLogger) :
 	Loggable(apLogger),
 	mService(),
-	mExecutor(mService.Get()),
-	mMgr(apLogger->GetSubLogger("channels", LEV_WARNING), mService.Get()),
+	mStrand(mService),
+	mExecutor(&mStrand),
+	mMgr(apLogger->GetSubLogger("channels", LEV_WARNING), &mService),
 	mScheduler(&mExecutor),
 	mVtoManager(apLogger->GetSubLogger("vto"), &mExecutor, &mMgr),
 	mThread(this),
@@ -311,7 +312,7 @@ void AsyncStackManager::Run()
 
 	do {
 		try {
-			num = mService.Get()->run();
+			num = mService.run();
 		}
 		catch(const std::exception& ex) {
 			LOG_BLOCK(LEV_ERROR, "Unhandled exception: " << ex.what());
@@ -319,7 +320,7 @@ void AsyncStackManager::Run()
 	}
 	while(num > 0);
 
-	mService.Get()->reset();
+	mService.reset();
 }
 
 Stack* AsyncStackManager::SeverStackFromChannel(const std::string& arStackName)

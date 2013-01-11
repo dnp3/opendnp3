@@ -45,14 +45,14 @@ public:
 
 	LoopbackTest() :
 		log(),
-		mts(),
-		phys(log.GetLogger(LEV_INFO, "phys")),
-		loopback(log.GetLogger(LEV_INFO, "loopback"), &phys, &mts) {
+		exe(),
+		phys(log.GetLogger(LEV_INFO, "phys"), &exe),
+		loopback(log.GetLogger(LEV_INFO, "loopback"), &phys, &exe) {
 		loopback.Start();
 	}
 
 	EventLog log;
-	MockExecutor mts;
+	MockExecutor exe;
 	MockPhysicalLayerAsync phys;
 	PhysLoopback loopback;
 };

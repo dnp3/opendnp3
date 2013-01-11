@@ -77,7 +77,8 @@ private:
 	CommandQueue mCommandQueue;
 
 	PostingNotifierSource mPostSource;	// bridge between Notifiers and IO services that marshalls method calls between threads
-	ASIOExecutor mExecutor;		// boost timer source, interface into the io service system
+	boost::asio::strand mStrand;		
+	ASIOExecutor mExecutor;				// boost timer source, interface into the io service system
 	ITimer* mpInfiniteTimer;			// timer used to keep the boost io service alive
 	ICommandSource* mpCommandSource;	// The source for getting and executing commands.
 };

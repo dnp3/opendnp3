@@ -50,7 +50,8 @@ TransportScalabilityTestObject::TransportScalabilityTestObject(
 	LogTester(aImmediate),
 	AsyncTestObjectASIO(),
 	mpLogger(mLog.GetLogger(aLevel, "test")),
-	mExecutor(this->GetService())
+	mStrand(*GetService()),
+	mExecutor(&mStrand)
 {
 	const boost::uint16_t START = aPortStart;
 	const boost::uint16_t STOP = START + aNumPair;

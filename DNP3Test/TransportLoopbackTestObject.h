@@ -68,6 +68,8 @@ public:
 
 private:
 	Logger* mpLogger;
+
+	boost::asio::strand mStrand;
 	ASIOExecutor mExecutor;
 
 

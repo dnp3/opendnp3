@@ -102,9 +102,6 @@
     <ClInclude Include="INotifier.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="IOService.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="IOServiceThread.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -318,6 +315,9 @@
     <ClInclude Include="AsyncResult.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="IOService.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ASIOSerialHelpers.cpp">
@@ -372,9 +372,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="IHandlerAsync.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="IOService.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="IOServiceThread.cpp">
@@ -516,6 +513,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="AsyncResult.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="IOService.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

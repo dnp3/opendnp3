@@ -43,7 +43,12 @@ class IExecutor;
 class MockPhysicalLayerAsync : public PhysicalLayerAsyncBase, public BufferTestObject
 {
 public:
-	MockPhysicalLayerAsync(Logger*, IExecutor* apExecutor = NULL);
+	MockPhysicalLayerAsync(Logger*, IExecutor*);
+
+	IExecutor* GetExecutor()
+	{
+		return mpExecutor;
+	}
 
 	void SignalOpenSuccess();
 	void SignalOpenFailure();

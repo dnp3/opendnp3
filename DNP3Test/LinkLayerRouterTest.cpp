@@ -35,9 +35,9 @@ namespace dnp
 
 LinkLayerRouterTest::LinkLayerRouterTest(FilterLevel aLevel, bool aImmediate) :
 	LogTester(aImmediate),
-	mts(),
-	phys(mLog.GetLogger(aLevel, "Physical")),
-	router(mLog.GetLogger(aLevel, "Router"), &phys, &mts, 100)
+	exe(),
+	phys(mLog.GetLogger(aLevel, "Physical"), &exe),
+	router(mLog.GetLogger(aLevel, "Router"), &phys, &exe, 100)
 {
 
 }

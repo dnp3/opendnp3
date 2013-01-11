@@ -35,7 +35,8 @@ namespace apl
 
 AsyncPhysBaseTest::AsyncPhysBaseTest(FilterLevel aLevel, bool aImmediate) :
 	LogTester(aImmediate),
-	phys(mLog.GetLogger(aLevel, "phys")),
+	exe(),
+	phys(mLog.GetLogger(aLevel, "phys"), &exe),
 	adapter(mLog.GetLogger(aLevel, "adapter"), &phys, false),
 	upper(mLog.GetLogger(aLevel, "upper"))
 {

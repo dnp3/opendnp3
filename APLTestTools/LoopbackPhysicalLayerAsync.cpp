@@ -41,8 +41,7 @@ namespace apl
 {
 
 LoopbackPhysicalLayerAsync::LoopbackPhysicalLayerAsync(Logger* apLogger, boost::asio::io_service* apSrv) :
-	PhysicalLayerAsyncBase(apLogger),
-	mpService(apSrv),
+	PhysicalLayerAsyncASIO(apLogger, apSrv),	
 	mReadSize(0),
 	mpReadBuff(NULL)
 {
@@ -53,7 +52,7 @@ void LoopbackPhysicalLayerAsync::DoOpen()
 {
 	//always open successfully
 	error_code ec(errc::success, get_generic_category());
-	mpService->post(bind(&LoopbackPhysicalLayerAsync::OnOpenCallback, this, ec));
+	mExecutor.Post(bind(&LoopbackPhysicalLayerAsync::OnOpenCallback, this, ec));
 }
 
 void LoopbackPhysicalLayerAsync::DoOpenSuccess()
@@ -70,7 +69,7 @@ void LoopbackPhysicalLayerAsync::DoClose()
 	if(mReadSize > 0) {
 		mReadSize = 0;
 		error_code ec(errc::permission_denied, get_generic_category());
-		mpService->post(bind(&LoopbackPhysicalLayerAsync::OnReadCallback, this, ec, mpReadBuff, 0));
+		mExecutor.Post(bind(&LoopbackPhysicalLayerAsync::OnReadCallback, this, ec, mpReadBuff, 0));
 	}
 }
 
@@ -89,7 +88,7 @@ void LoopbackPhysicalLayerAsync::DoAsyncWrite(const uint8_t* apData, size_t aNum
 
 	//always write successfully
 	error_code ec(errc::success, get_generic_category());
-	mpService->post(bind(&LoopbackPhysicalLayerAsync::OnWriteCallback, this, ec, aNumBytes));
+	mExecutor.Post(bind(&LoopbackPhysicalLayerAsync::OnWriteCallback, this, ec, aNumBytes));
 
 	//now check to see if this write will dispatch a read
 	this->CheckForReadDispatch();
@@ -108,7 +107,7 @@ void LoopbackPhysicalLayerAsync::CheckForReadDispatch()
 		mReadSize = 0;
 
 		error_code ec(errc::success, get_generic_category());
-		mpService->post(bind(&LoopbackPhysicalLayerAsync::OnReadCallback, this, ec, mpReadBuff, num));
+		mExecutor.Post(bind(&LoopbackPhysicalLayerAsync::OnReadCallback, this, ec, mpReadBuff, num));
 	}
 
 }

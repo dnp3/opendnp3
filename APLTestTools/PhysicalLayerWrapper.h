@@ -44,7 +44,10 @@ class PhysicalLayerWrapper : public IPhysicalLayerAsync, public IHandlerAsync
 public:
 	PhysicalLayerWrapper(Logger* apLogger, IPhysicalLayerAsync* apProxy);
 
-	//implement IPhysicalLayerAsync
+	IExecutor* GetExecutor()
+	{
+		return mpProxy->GetExecutor();
+	}
 
 	bool CanOpen() const { return mpProxy->CanOpen(); }
 	bool CanClose() const { return mpProxy->CanClose(); }

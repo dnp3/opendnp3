@@ -41,11 +41,13 @@
 #include <APL/IPhysicalLayerObserver.h>
 #include <APL/PhysicalLayerManager.h>
 #include <APL/AsyncTaskScheduler.h>
-#include <APL/IOService.h>
+
 
 #include "VtoDataInterface.h"
 #include "LinkRoute.h"
 #include "VtoRouterManager.h"
+
+#include <boost/asio.hpp>
 
 namespace apl
 {
@@ -263,11 +265,11 @@ public:
 
 	/**
 	* The underlying io_service object that drives the stack. This is exposed
-	* so that applications can write single-threaded applications using
+	* so that applications can write applications using
 	* the same asynchronous machinery if desired.
 	*/
 	boost::asio::io_service* GetIOService() {
-		return mService.Get();
+		return &mService;
 	}
 
 private:
@@ -283,7 +285,9 @@ private:
 	// Add a stack from to a specified channel
 	void AddStackToChannel(const std::string& arStackName, Stack* apStack, LinkChannel* apChannel, const LinkRoute& arRoute);
 
-	IOService mService;
+	boost::asio::io_service mService;
+	boost::asio::strand mStrand;
+
 	ASIOExecutor mExecutor;
 	PhysicalLayerManager mMgr;
 	AsyncTaskScheduler mScheduler;

@@ -34,6 +34,7 @@
 #include <APLTestTools/LogTester.h>
 #include <APLTestTools/MockUpperLayer.h>
 #include <APLTestTools/MockPhysicalLayerAsync.h>
+#include <APLTestTools/MockExecutor.h>
 
 namespace apl
 {
@@ -43,6 +44,7 @@ class AsyncPhysBaseTest : public LogTester
 public:
 	AsyncPhysBaseTest(FilterLevel aLevel = LEV_INFO, bool aImmediate = false);
 
+	MockExecutor exe;
 	MockPhysicalLayerAsync phys;
 	LowerLayerToPhysAdapter adapter;
 	MockUpperLayer upper;

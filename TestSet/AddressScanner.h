@@ -91,6 +91,7 @@ private:
 
 	apl::IOService mService;
 	apl::xml::PhysicalLayerManagerXML manager;
+	boost::asio::strand mStrand;
 	ASIOExecutor mExecutor;
 	IOServiceThread mThread;
 	dnp::LinkLayerRouter mRouter;

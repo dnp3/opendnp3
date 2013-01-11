@@ -30,6 +30,7 @@
 #define __PHYSICAL_LAYER_ASYNC_ASIO_H_
 
 #include "PhysicalLayerAsyncBase.h"
+#include "ASIOExecutor.h"
 
 namespace boost
 {
@@ -50,15 +51,21 @@ class PhysicalLayerAsyncASIO : public PhysicalLayerAsyncBase
 public:
 	PhysicalLayerAsyncASIO(Logger* apLogger, boost::asio::io_service* apService) :
 		PhysicalLayerAsyncBase(apLogger),
-		mpService(apService)
+		mStrand(*apService),
+		mExecutor(&mStrand)
 	{}
 
 	virtual ~PhysicalLayerAsyncASIO() {}
 
+	IExecutor* GetExecutor()
+	{
+		return &mExecutor;
+	}
+
 protected:
-	// reference to the io_service object that is driving the class
-	// Use this for any required post operations
-	boost::asio::io_service* mpService;
+	boost::asio::strand mStrand;
+	ASIOExecutor mExecutor;
 };
+
 }
 #endif

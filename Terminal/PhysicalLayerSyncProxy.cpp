@@ -40,8 +40,7 @@ const boost::system::error_code PhysicalLayerSyncProxy::mSuccessCode(boost::syst
 const boost::system::error_code PhysicalLayerSyncProxy::mErrorCode(boost::system::errc::permission_denied, boost::system::get_generic_category());
 
 PhysicalLayerSyncProxy::PhysicalLayerSyncProxy(Logger* apLogger, boost::asio::io_service* apService) :
-	PhysicalLayerAsyncBase(apLogger),
-	mpService(apService),
+	PhysicalLayerAsyncASIO(apLogger, apService),	
 	mThread(this)
 {
 	this->Reset();
@@ -76,14 +75,14 @@ void PhysicalLayerSyncProxy::CheckForRead()
 			mLineQueue.push_front(r);
 		}
 		mReading = false;
-		mpService->post(std::bind(&PhysicalLayerSyncProxy::OnReadCallback, this, mSuccessCode, mpBuffer, min));
+		mStrand.post(std::bind(&PhysicalLayerSyncProxy::OnReadCallback, this, mSuccessCode, mpBuffer, min));
 	}
 }
 
 void PhysicalLayerSyncProxy::DoOpen()
 {
 	this->Reset();
-	mpService->post(std::bind(&PhysicalLayerSyncProxy::OnOpenCallback, this, mSuccessCode));
+	mStrand.post(std::bind(&PhysicalLayerSyncProxy::OnOpenCallback, this, mSuccessCode));
 }
 
 void PhysicalLayerSyncProxy::DoClose()
@@ -106,7 +105,7 @@ void PhysicalLayerSyncProxy::DoAsyncWrite(const uint8_t* apData, size_t aLength)
 	const char* pBuff = reinterpret_cast<const char*>(apData);
 	string s(pBuff, aLength);
 	this->Write(s);
-	mpService->post(std::bind(&PhysicalLayerSyncProxy::OnWriteCallback, this, mSuccessCode, aLength));
+	mStrand.post(std::bind(&PhysicalLayerSyncProxy::OnWriteCallback, this, mSuccessCode, aLength));
 }
 
 void PhysicalLayerSyncProxy::Run()

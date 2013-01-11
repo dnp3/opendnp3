@@ -79,6 +79,7 @@ public:
 	
 	FlexibleDataObserver fdo;
 
+	boost::asio::strand mStrand;
 	ASIOExecutor timerSource;
 	PhysicalLayerAsyncTCPClient vtoClient;
 	PhysicalLayerAsyncTCPServer vtoServer;

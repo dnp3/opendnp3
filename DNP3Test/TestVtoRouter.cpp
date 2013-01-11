@@ -50,16 +50,16 @@ class RouterTestClass : LogTester
 public:
 	RouterTestClass(const VtoRouterSettings& arSettings = VtoRouterSettings(0, true, true), const size_t aWriterSize = 100) :
 		LogTester(false),
-		phys(mLog.GetLogger(LEV_DEBUG, "phys")),
-		writer(mLog.GetLogger(LEV_DEBUG, "writer"), aWriterSize),
-		mts(),
-		router(arSettings, mLog.GetLogger(LEV_DEBUG, "router"), &writer, &phys, &mts) {
+		exe(),
+		phys(mLog.GetLogger(LEV_DEBUG, "phys"), &exe),
+		writer(mLog.GetLogger(LEV_DEBUG, "writer"), aWriterSize),		
+		router(arSettings, mLog.GetLogger(LEV_DEBUG, "router"), &writer, &phys, &exe) {
 		writer.AddVtoCallback(&router);
 	}
 
+	MockExecutor exe;
 	MockPhysicalLayerAsync phys;
-	ReadableVtoWriter writer;
-	MockExecutor mts;
+	ReadableVtoWriter writer;	
 	AlwaysOpeningVtoRouter router;
 };
 

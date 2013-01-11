@@ -52,6 +52,8 @@ public:
 	void WriteToLayer(const uint8_t* apData, size_t aNumBytes);
 	void Advance();
 
+	IExecutor* GetExecutor();
+
 private:
 
 	void DoOpen();

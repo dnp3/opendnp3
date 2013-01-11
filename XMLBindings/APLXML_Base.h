@@ -72,14 +72,14 @@ enum StopBitsEnum {
 	StopBitsEnum FromString_StopBitsEnum(TiXmlNode* apParent, const char* aValue);
 	string ToString_StopBitsEnum(StopBitsEnum aValue);
 
-class TCPClient_t : public APLXML_Base::PhysicalLayerDescriptor_t{
+class TCPClient_t : public PhysicalLayerDescriptor_t{
 public:
 	void toXml(TiXmlNode* pParent, bool aCreateNode, bool aIgnoreValid);
 	void fromXml(TiXmlNode* pNode);
 	string Address;
 	int Port;
 };
-class TCPServer_t : public APLXML_Base::PhysicalLayerDescriptor_t{
+class TCPServer_t : public PhysicalLayerDescriptor_t{
 public:
 	void toXml(TiXmlNode* pParent, bool aCreateNode, bool aIgnoreValid);
 	void fromXml(TiXmlNode* pNode);
@@ -92,7 +92,7 @@ public:
 	void fromXml(TiXmlNode* pNode);
 	LogLevelEnum Filter;
 };
-class Serial_t : public APLXML_Base::PhysicalLayerDescriptor_t{
+class Serial_t : public PhysicalLayerDescriptor_t{
 public:
 	void toXml(TiXmlNode* pParent, bool aCreateNode, bool aIgnoreValid);
 	void fromXml(TiXmlNode* pNode);

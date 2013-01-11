@@ -40,8 +40,8 @@ using namespace std;
 namespace apl
 {
 
-ASIOExecutor::ASIOExecutor(boost::asio::io_service* apService) :
-	mpService(apService)
+ASIOExecutor::ASIOExecutor(boost::asio::strand* apStrand) :
+	mpStrand(apStrand)
 {
 
 }
@@ -69,14 +69,14 @@ ITimer* ASIOExecutor::Start(const std::chrono::high_resolution_clock::time_point
 
 void ASIOExecutor::Post(const std::function<void ()>& arHandler)
 {
-	mpService->post(arHandler);
+	mpStrand->post(arHandler);	
 }
 
 TimerASIO* ASIOExecutor::GetTimer()
 {
 	TimerASIO* pTimer;
 	if(mIdleTimers.size() == 0) {
-		pTimer = new TimerASIO(*mpService);
+		pTimer = new TimerASIO(mpStrand);
 		mAllTimers.push_back(pTimer);
 	}
 	else {
@@ -90,7 +90,11 @@ TimerASIO* ASIOExecutor::GetTimer()
 
 void ASIOExecutor::StartTimer(TimerASIO* apTimer, const std::function<void ()>& arCallback)
 {
-	apTimer->mTimer.async_wait(std::bind(&ASIOExecutor::OnTimerCallback, this, std::placeholders::_1, apTimer, arCallback));
+	apTimer->mTimer.async_wait(
+		mpStrand->wrap(
+			std::bind(&ASIOExecutor::OnTimerCallback, this, std::placeholders::_1, apTimer, arCallback)
+		)
+	);
 }
 
 void ASIOExecutor::OnTimerCallback(const boost::system::error_code& ec, TimerASIO* apTimer, std::function<void ()> aCallback)

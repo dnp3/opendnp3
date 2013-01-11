@@ -31,7 +31,7 @@
 
 #include <APL/Thread.h>
 #include <APL/Threadable.h>
-#include <APL/PhysicalLayerAsyncBase.h>
+#include <APL/PhysicalLayerAsyncASIO.h>
 
 #include <iostream>
 #include <queue>
@@ -55,7 +55,7 @@ class Logger;
 
 /** Simple thread object that allows for non-blocking read of std input.
 */
-class PhysicalLayerSyncProxy : public PhysicalLayerAsyncBase, private Threadable
+class PhysicalLayerSyncProxy : public PhysicalLayerAsyncASIO, private Threadable
 {
 public:
 	PhysicalLayerSyncProxy(Logger*, boost::asio::io_service*);
@@ -84,9 +84,7 @@ private:
 
 	void Run();
 	void Reset();
-	void CheckForRead();
-
-	boost::asio::io_service* mpService;
+	void CheckForRead();	
 
 	bool mReading;
 	size_t mNumToRead;

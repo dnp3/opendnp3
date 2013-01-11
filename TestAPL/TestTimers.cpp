@@ -120,7 +120,8 @@ BOOST_AUTO_TEST_SUITE(TimersTestSuite)
 BOOST_AUTO_TEST_CASE(ThrownExceptionsAreSafelyCapturedByFuture)
 {
 	boost::asio::io_service srv;
-	ASIOExecutor exe(&srv);
+	boost::asio::strand strand(srv);
+	ASIOExecutor exe(&strand);
 	MonotonicReceiver rcv(&srv, &exe);	
 	
 	BOOST_REQUIRE_THROW(
@@ -134,7 +135,8 @@ BOOST_AUTO_TEST_CASE(TestOrderedDispatch)
 	const int NUM = 10000;
 
 	boost::asio::io_service srv;
-	ASIOExecutor exe(&srv);
+	boost::asio::strand strand(srv);
+	ASIOExecutor exe(&strand);
 	MonotonicReceiver rcv(&srv, &exe);
 
 	for(int i = 0; i < NUM; ++i) {
@@ -152,7 +154,8 @@ BOOST_AUTO_TEST_CASE(ExpirationAndReuse)
 {
 	MockTimerHandler mth;
 	boost::asio::io_service srv;
-	ASIOExecutor exe(&srv);
+	boost::asio::strand strand(srv);
+	ASIOExecutor exe(&strand);
 	ITimer* pT1 = exe.Start(milliseconds(1), std::bind(&MockTimerHandler::OnExpiration, &mth));
 	BOOST_REQUIRE_EQUAL(srv.run_one(), 1);
 	BOOST_REQUIRE_EQUAL(1, mth.GetCount());
@@ -164,7 +167,8 @@ BOOST_AUTO_TEST_CASE(Cancelation)
 {
 	MockTimerHandler mth;
 	boost::asio::io_service srv;
-	ASIOExecutor exe(&srv);
+	boost::asio::strand strand(srv);
+	ASIOExecutor exe(&strand);
 	ITimer* pT1 = exe.Start(milliseconds(1), std::bind(&MockTimerHandler::OnExpiration, &mth));
 	pT1->Cancel();
 	BOOST_REQUIRE_EQUAL(1, srv.run_one());
@@ -179,7 +183,8 @@ BOOST_AUTO_TEST_CASE(MultipleOutstanding)
 	MockTimerHandler mth1;
 	MockTimerHandler mth2;
 	boost::asio::io_service srv;
-	ASIOExecutor ts(&srv);
+	boost::asio::strand strand(srv);
+	ASIOExecutor ts(&strand);
 	ITimer* pT1 = ts.Start(milliseconds(0), std::bind(&MockTimerHandler::OnExpiration, &mth1));
 	ITimer* pT2 = ts.Start(milliseconds(100), std::bind(&MockTimerHandler::OnExpiration, &mth2));
 

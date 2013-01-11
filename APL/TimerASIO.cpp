@@ -31,9 +31,9 @@
 namespace apl
 {
 
-TimerASIO::TimerASIO(boost::asio::io_service& arService) :
+TimerASIO::TimerASIO(boost::asio::strand* apStrand) :
 	mCanceled(false),
-	mTimer(arService)
+	mTimer(apStrand->get_io_service())
 {
 
 }

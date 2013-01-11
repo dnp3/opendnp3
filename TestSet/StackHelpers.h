@@ -36,7 +36,6 @@
 #include <APL/FlexibleDataObserver.h>
 #include <APL/QueueingFDO.h>
 #include <APL/IPhysicalLayerAsync.h>
-#include <APL/IOService.h>
 #include <APL/ASIOExecutor.h>
 #include <APL/MultiplexingDataObserver.h>
 
@@ -71,7 +70,7 @@ protected:
 	LogToFile logToFile;
 	Logger* pTermLogger;
 
-	IOService mService;
+	boost::asio::io_service mService;
 	IOServiceThread mTermThread;
 	ASIOExecutor mExecutor;
 	auto_ptr<IPhysicalLayerAsync> pTermPhys;

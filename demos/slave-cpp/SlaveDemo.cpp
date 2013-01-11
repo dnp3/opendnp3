@@ -40,7 +40,8 @@ namespace dnp
 SlaveDemoBase::SlaveDemoBase(Logger* apLogger) :
 	IOService(),
 	IOServiceThread(apLogger, this->Get()),
-	mExecutor(this->Get()),
+	mStrand(*Get()),
+	mExecutor(&mStrand),
 	mpInfiniteTimer(mExecutor.StartInfinite())
 {
 	// Create a notifier that when called will post a call to OnCommandNotify

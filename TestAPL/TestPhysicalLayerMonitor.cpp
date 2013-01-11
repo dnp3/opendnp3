@@ -81,13 +81,13 @@ public:
 
 	TestObject() :
 		log(),
-		mts(),
-		phys(log.GetLogger(LEV_INFO, "mock-phys")),
-		monitor(log.GetLogger(LEV_INFO, "test"), &phys, &mts)
+		exe(),
+		phys(log.GetLogger(LEV_INFO, "mock-phys"), NULL),
+		monitor(log.GetLogger(LEV_INFO, "test"), &phys, &exe)
 	{}
 
 	EventLog log;
-	MockExecutor mts;
+	MockExecutor exe;
 	MockPhysicalLayerAsync phys;
 	ConcretePhysicalLayerMonitor monitor;
 };
@@ -108,7 +108,7 @@ BOOST_AUTO_TEST_CASE(ThrowsIfEverNotExpectingOpenTimer)
 {
 	TestObject test;
 	test.monitor.ReachInAndStartOpenTimer();
-	BOOST_REQUIRE_THROW(test.mts.DispatchOne(), InvalidStateException);
+	BOOST_REQUIRE_THROW(test.exe.DispatchOne(), InvalidStateException);
 	BOOST_REQUIRE_EQUAL(PLS_CLOSED, test.monitor.GetState());
 }
 
@@ -271,14 +271,14 @@ BOOST_AUTO_TEST_CASE(OpenFailureGoesToWaitingAndExponentialBackoff)
 	test.monitor.Start();
 	test.phys.SignalOpenFailure();
 	BOOST_REQUIRE_EQUAL(PLS_WAITING, test.monitor.GetState());
-	BOOST_REQUIRE_EQUAL(1, test.mts.NumActive());	
-	BOOST_REQUIRE(seconds(1) == test.mts.NextDurationTimer());
-	BOOST_REQUIRE(test.mts.DispatchOne());
+	BOOST_REQUIRE_EQUAL(1, test.exe.NumActive());	
+	BOOST_REQUIRE(seconds(1) == test.exe.NextDurationTimer());
+	BOOST_REQUIRE(test.exe.DispatchOne());
 	BOOST_REQUIRE_EQUAL(PLS_OPENING, test.monitor.GetState());
 	test.phys.SignalOpenFailure();
 	BOOST_REQUIRE_EQUAL(PLS_WAITING, test.monitor.GetState());
-	BOOST_REQUIRE_EQUAL(1, test.mts.NumActive());	
-	BOOST_REQUIRE(seconds(2) == test.mts.NextDurationTimer());
+	BOOST_REQUIRE_EQUAL(1, test.exe.NumActive());	
+	BOOST_REQUIRE(seconds(2) == test.exe.NextDurationTimer());
 }
 
 BOOST_AUTO_TEST_CASE(OpenFailureGoesToClosedIfSuspended)
@@ -288,19 +288,19 @@ BOOST_AUTO_TEST_CASE(OpenFailureGoesToClosedIfSuspended)
 	test.monitor.Suspend();
 	test.phys.SignalOpenFailure();
 	BOOST_REQUIRE_EQUAL(PLS_CLOSED, test.monitor.GetState());
-	BOOST_REQUIRE_EQUAL(0, test.mts.NumActive());
+	BOOST_REQUIRE_EQUAL(0, test.exe.NumActive());
 }
 
 BOOST_AUTO_TEST_CASE(ShutdownPostsToTimer)
 {
 	TestObject test;
-	BOOST_REQUIRE_EQUAL(0, test.mts.NumActive());
+	BOOST_REQUIRE_EQUAL(0, test.exe.NumActive());
 	BOOST_REQUIRE_FALSE(test.monitor.WaitForShutdown(0));
 	test.monitor.Shutdown();
 	BOOST_REQUIRE_EQUAL(PLS_SHUTDOWN, test.monitor.GetState());
-	BOOST_REQUIRE_EQUAL(1, test.mts.NumActive());
+	BOOST_REQUIRE_EQUAL(1, test.exe.NumActive());
 	BOOST_REQUIRE_FALSE(test.monitor.WaitForShutdown(0));
-	BOOST_REQUIRE(test.mts.DispatchOne());
+	BOOST_REQUIRE(test.exe.DispatchOne());
 	BOOST_REQUIRE(test.monitor.WaitForShutdown()); //wait indefinitely, but it's already shutdown
 }
 
@@ -310,9 +310,9 @@ BOOST_AUTO_TEST_CASE(ShutdownWhileWaitingCancelsTimer)
 	test.monitor.Start();
 	test.phys.SignalOpenFailure();
 	test.monitor.Shutdown();
-	BOOST_REQUIRE(test.mts.DispatchOne()); //disptach the shutdown post
+	BOOST_REQUIRE(test.exe.DispatchOne()); //disptach the shutdown post
 	BOOST_REQUIRE_EQUAL(PLS_SHUTDOWN, test.monitor.GetState());
-	BOOST_REQUIRE_EQUAL(0, test.mts.NumActive());
+	BOOST_REQUIRE_EQUAL(0, test.exe.NumActive());
 }
 
 BOOST_AUTO_TEST_CASE(LayerKeepsTryingToOpen)
@@ -322,7 +322,7 @@ BOOST_AUTO_TEST_CASE(LayerKeepsTryingToOpen)
 
 	for(size_t i = 0; i < 3; ++i) {
 		test.phys.SignalOpenFailure();
-		BOOST_REQUIRE(test.mts.DispatchOne());
+		BOOST_REQUIRE(test.exe.DispatchOne());
 		BOOST_REQUIRE_EQUAL(PLS_OPENING, test.monitor.GetState());
 	}
 }
@@ -334,7 +334,7 @@ BOOST_AUTO_TEST_CASE(CloseWhileWaitingDoesNothing)
 	test.phys.SignalOpenFailure();
 	test.monitor.Close();
 	BOOST_REQUIRE_EQUAL(PLS_WAITING, test.monitor.GetState());
-	BOOST_REQUIRE_EQUAL(1, test.mts.NumActive());
+	BOOST_REQUIRE_EQUAL(1, test.exe.NumActive());
 }
 
 BOOST_AUTO_TEST_CASE(LayerCloseWhileOpen)
@@ -380,7 +380,7 @@ BOOST_AUTO_TEST_CASE(SuspendWhileWaitingCancelsTimer)
 	test.phys.SignalOpenFailure();
 	test.monitor.Suspend();
 	BOOST_REQUIRE_EQUAL(PLS_CLOSED, test.monitor.GetState());
-	BOOST_REQUIRE_EQUAL(0, test.mts.NumActive());
+	BOOST_REQUIRE_EQUAL(0, test.exe.NumActive());
 }
 
 BOOST_AUTO_TEST_SUITE_END()

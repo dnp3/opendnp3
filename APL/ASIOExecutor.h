@@ -35,19 +35,8 @@
 #include <queue>
 #include <iostream>
 
-namespace boost
-{
+#include <boost/asio.hpp>
 
-namespace asio
-{
-class io_service;
-}
-namespace system
-{
-class error_code;
-}
-
-}
 
 namespace apl
 {
@@ -58,7 +47,7 @@ class ASIOExecutor : public IExecutor
 {
 
 public:
-	ASIOExecutor(boost::asio::io_service*);
+	ASIOExecutor(boost::asio::strand*);
 	~ASIOExecutor();
 
 	ITimer* Start(std::chrono::high_resolution_clock::duration, const std::function<void ()>&);
@@ -70,7 +59,7 @@ private:
 	TimerASIO* GetTimer();
 	void StartTimer(TimerASIO*, const std::function<void ()>&);
 
-	boost::asio::io_service* mpService;
+	boost::asio::strand* mpStrand;
 
 	typedef std::deque<TimerASIO*> TimerQueue;
 

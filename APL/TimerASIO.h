@@ -29,6 +29,7 @@
 #ifndef __TIMER_ASIO_H_
 #define __TIMER_ASIO_H_
 
+#include <boost/asio.hpp>
 #include <boost/asio/high_resolution_timer.hpp>
 #include "IExecutor.h"
 
@@ -54,7 +55,7 @@ class TimerASIO : public ITimer
 	friend class ASIOExecutor;
 
 public:
-	TimerASIO(boost::asio::io_service&);
+	TimerASIO(boost::asio::strand* apStrand);
 
 	// Implement ITimer
 	void Cancel();

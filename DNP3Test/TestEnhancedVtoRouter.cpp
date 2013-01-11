@@ -51,7 +51,8 @@ class VtoRouterTestClassBase : protected LogTester, public IVtoEventAcceptor
 public:
 	VtoRouterTestClassBase(size_t aWriterSize) :
 		LogTester(false),
-		phys(mLog.GetLogger(LEV_DEBUG, "phys")),
+		exe(),
+		phys(mLog.GetLogger(LEV_DEBUG, "phys"), NULL),
 		writer(mLog.GetLogger(LEV_DEBUG, "writer"), aWriterSize),
 		pRouter(NULL)
 	{}
@@ -101,9 +102,9 @@ public:
 		BOOST_REQUIRE_EQUAL(arData, hex);
 	}
 
+	MockExecutor exe;
 	MockPhysicalLayerAsync phys;
-	VtoWriter writer;
-	MockExecutor mts;
+	VtoWriter writer;	
 	std::queue<VtoEvent> mQueue;
 	EnhancedVtoRouter* pRouter;
 };
@@ -113,7 +114,7 @@ class ServerVtoRouterTestClass : public VtoRouterTestClassBase
 public:
 	ServerVtoRouterTestClass(const VtoRouterSettings& arSettings = VtoRouterSettings(88, true, true), size_t aWriterSize = 100) :
 		VtoRouterTestClassBase(aWriterSize),
-		router(arSettings, mLog.GetLogger(LEV_DEBUG, "router"), &writer, &phys, &mts) {
+		router(arSettings, mLog.GetLogger(LEV_DEBUG, "router"), &writer, &phys, &exe) {
 		pRouter = &router;
 		writer.AddVtoCallback(&router);
 	}
@@ -126,7 +127,7 @@ class ClientVtoRouterTestClass : public VtoRouterTestClassBase
 public:
 	ClientVtoRouterTestClass(const VtoRouterSettings& arSettings = VtoRouterSettings(88, true, true), size_t aWriterSize = 100) :
 		VtoRouterTestClassBase(aWriterSize),
-		router(arSettings, mLog.GetLogger(LEV_DEBUG, "router"), &writer, &phys, &mts) {
+		router(arSettings, mLog.GetLogger(LEV_DEBUG, "router"), &writer, &phys, &exe) {
 		pRouter = &router;
 		writer.AddVtoCallback(&router);
 	}
@@ -148,18 +149,18 @@ BOOST_AUTO_TEST_CASE(ServerSendsMagicChannelLocalConnected)
 {
 	ServerVtoRouterTestClass rtc;
 
-	rtc.mts.Dispatch();
+	rtc.exe.Dispatch();
 
 	BOOST_REQUIRE(rtc.phys.IsOpening());
 
 
 	rtc.phys.SignalOpenSuccess();
-	rtc.mts.Dispatch();
+	rtc.exe.Dispatch();
 
 	rtc.CheckLocalChannelConnectedMessage(true);
 
 	rtc.phys.TriggerClose();
-	rtc.mts.Dispatch();
+	rtc.exe.Dispatch();
 
 	BOOST_REQUIRE_EQUAL(rtc.phys.NumClose(), 1);
 
@@ -178,10 +179,10 @@ void TestDuplicateRemoteOpenCausesLocalReconnect(VtoRouterTestClassBase& arTest)
 {
 	arTest.SetRemoteState(true);
 
-	arTest.mts.Dispatch();
+	arTest.exe.Dispatch();
 	BOOST_REQUIRE(arTest.phys.IsOpening());
 	arTest.phys.SignalOpenSuccess();
-	arTest.mts.Dispatch();
+	arTest.exe.Dispatch();
 
 	arTest.CheckLocalChannelConnectedMessage(true);
 
@@ -208,18 +209,18 @@ BOOST_AUTO_TEST_CASE(ClientStartsOpeningAfterRemoteConnection)
 	ClientVtoRouterTestClass rtc;
 	BOOST_REQUIRE(!rtc.phys.IsOpening());
 
-	rtc.mts.Dispatch();
+	rtc.exe.Dispatch();
 
 	BOOST_REQUIRE(!rtc.phys.IsOpening());
 
 	rtc.SetRemoteState(true);
 
-	rtc.mts.Dispatch();
+	rtc.exe.Dispatch();
 	BOOST_REQUIRE(rtc.phys.IsOpening());
 
 	rtc.SetRemoteState(false);
 
-	rtc.mts.Dispatch();
+	rtc.exe.Dispatch();
 	BOOST_REQUIRE(rtc.phys.IsClosing());
 }
 
