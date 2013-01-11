@@ -73,9 +73,6 @@ void toLowerCase(std::string& aStr);
 
 std::string ToNormalizedString(const std::chrono::high_resolution_clock::time_point& arTime);
 
-void Tokenize(std::vector<std::string>& arOutput, const std::string& arString);
-
-
 }
 
 #endif

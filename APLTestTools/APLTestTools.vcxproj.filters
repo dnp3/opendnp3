@@ -42,9 +42,6 @@
     <ClCompile Include="MockPhysicalLayerAsync.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MockPhysicalLayerAsyncTS.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="MockPhysicalLayerMonitor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -117,9 +114,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="MockPhysicalLayerAsync.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="MockPhysicalLayerAsyncTS.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="MockPhysicalLayerMonitor.h">

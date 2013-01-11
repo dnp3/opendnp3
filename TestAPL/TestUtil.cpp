@@ -72,16 +72,4 @@ BOOST_AUTO_TEST_CASE(HexToBytes2Test64Hole)
 	TestHex<8>( "13A200 40561   D08", values, 7 );
 }
 
-BOOST_AUTO_TEST_CASE(SplittingStrings)
-{
-	string s("quick brown   fox");
-	vector<string> output;
-	Tokenize(output, s);
-	BOOST_REQUIRE_EQUAL(output.size(), 3);
-	BOOST_REQUIRE_EQUAL(output[0], "quick");
-	BOOST_REQUIRE_EQUAL(output[1], "brown");
-	BOOST_REQUIRE_EQUAL(output[2], "fox");
-	
-}
-
 BOOST_AUTO_TEST_SUITE_END()

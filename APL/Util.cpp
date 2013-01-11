@@ -127,13 +127,4 @@ void toLowerCase(std::string& apStr)
 	std::transform(apStr.begin(), apStr.end(), apStr.begin(), (int(*)(int)) tolower);
 }
 
-void Tokenize(std::vector<string>& arOutput, const std::string& arString)
-{
-    using namespace std;
-    istringstream iss(arString);
-    copy(istream_iterator<string>(iss),
-             istream_iterator<string>(),
-             back_inserter<vector<string> >(arOutput));
-}
-
 }

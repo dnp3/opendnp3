@@ -89,7 +89,6 @@
     <ClCompile Include="MockExecutor.cpp" />
     <ClCompile Include="MockLowerLayer.cpp" />
     <ClCompile Include="MockPhysicalLayerAsync.cpp" />
-    <ClCompile Include="MockPhysicalLayerAsyncTS.cpp" />
     <ClCompile Include="MockPhysicalLayerMonitor.cpp" />
     <ClCompile Include="MockPhysicalLayerSource.cpp" />
     <ClCompile Include="MockResponseAcceptor.cpp" />
@@ -116,7 +115,6 @@
     <ClInclude Include="MockNodeSaver.h" />
     <ClInclude Include="MockNotifier.h" />
     <ClInclude Include="MockPhysicalLayerAsync.h" />
-    <ClInclude Include="MockPhysicalLayerAsyncTS.h" />
     <ClInclude Include="MockPhysicalLayerMonitor.h" />
     <ClInclude Include="MockPhysicalLayerSource.h" />
     <ClInclude Include="MockResponseAcceptor.h" />
