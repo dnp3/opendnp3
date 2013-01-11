@@ -85,7 +85,7 @@ BOOST_AUTO_TEST_CASE(MasterToSlaveThroughput)
 	for (size_t j = 0; j < NUM_CHANGE_SETS; ++j) {
 		num_points_per_pair += t.IncrementData();
 		BOOST_REQUIRE(t.WaitForSameData(60000, true));
-		//cout << "iteration: " << j << endl;
+		cout << "iteration: " << j << endl;
 	}
 
 	if (OUTPUT_PERF_NUMBERS) {

@@ -56,7 +56,7 @@ namespace dnp
 
 AsyncStackManager::AsyncStackManager(Logger* apLogger) :
 	Loggable(apLogger),
-	mPool(apLogger->GetSubLogger("thread-pool"), 4),
+	mPool(apLogger->GetSubLogger("thread-pool"), 8),
 	mMgr(apLogger->GetSubLogger("channels", LEV_WARNING), mPool.GetIOService()),
 	mScheduler(),
 	mVtoManager(apLogger->GetSubLogger("vto"), &mMgr),

@@ -47,6 +47,15 @@ BOOST_AUTO_TEST_CASE(CleanConstructionDestruction)
 	pool.Shutdown();
 }
 
+BOOST_AUTO_TEST_CASE(ThreadPoolShutsdownCleanlyEvenIfALotOfWorkIsSubmitted)
+{
+        EventLog log;
+        IOServiceThreadPool pool(log.GetLogger(LEV_INFO, "pool"), 4);
+	for(size_t i=0; i<100000; ++i) pool.GetIOService()->post([](){});
+        pool.Shutdown();
+}
+
+
 BOOST_AUTO_TEST_CASE(StrandsSequenceCallbacksViaStrandPost)
 {
 	EventLog log;
@@ -55,25 +64,13 @@ BOOST_AUTO_TEST_CASE(StrandsSequenceCallbacksViaStrandPost)
 	size_t iterations = 100000;
 
 	strand s1(*pool.GetIOService());
-	strand s2(*pool.GetIOService());
-	strand s3(*pool.GetIOService());
-	strand s4(*pool.GetIOService());
-	
+
 	int count1 = 0;
-	int count2 = 0;
-	int count3 = 0;
-	int count4 = 0;
 
 	for(size_t i=0; i<iterations; ++i) s1.post([&count1](){ ++count1; });
-	for(size_t i=0; i<iterations; ++i) s2.post([&count2](){ ++count2; });
-	for(size_t i=0; i<iterations; ++i) s3.post([&count3](){ ++count3; });
-	for(size_t i=0; i<iterations; ++i) s4.post([&count4](){ ++count4; });
-		
+
 	pool.Shutdown();
 	BOOST_REQUIRE_EQUAL(iterations, count1);
-	BOOST_REQUIRE_EQUAL(iterations, count2);
-	BOOST_REQUIRE_EQUAL(iterations, count3);
-	BOOST_REQUIRE_EQUAL(iterations, count4);
 }
 
 BOOST_AUTO_TEST_CASE(StrandsSequenceCallbacksViaStrandWrap)
@@ -85,25 +82,13 @@ BOOST_AUTO_TEST_CASE(StrandsSequenceCallbacksViaStrandWrap)
 	io_service* pService = pool.GetIOService();
 
 	strand s1(*pService);
-	strand s2(*pService);
-	strand s3(*pService);
-	strand s4(*pService);
-	
+
 	int count1 = 0;
-	int count2 = 0;
-	int count3 = 0;
-	int count4 = 0;
 
 	for(size_t i=0; i<iterations; ++i) pService->post(s1.wrap([&count1](){ ++count1; }));
-	for(size_t i=0; i<iterations; ++i) pService->post(s2.wrap([&count2](){ ++count2; }));
-	for(size_t i=0; i<iterations; ++i) pService->post(s3.wrap([&count3](){ ++count3; }));
-	for(size_t i=0; i<iterations; ++i) pService->post(s4.wrap([&count4](){ ++count4; }));
-	
+
 	pool.Shutdown();
 	BOOST_REQUIRE_EQUAL(iterations, count1);
-	BOOST_REQUIRE_EQUAL(iterations, count2);
-	BOOST_REQUIRE_EQUAL(iterations, count3);
-	BOOST_REQUIRE_EQUAL(iterations, count4);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

@@ -87,14 +87,13 @@ void IOServiceThreadPool::Run()
 			num = mService.run();
 		}
 		catch(const std::exception& ex) {
+			num = 0;
 			LOG_BLOCK(LEV_ERROR, "Unhandled exception in thread pool: " << ex.what());
 		}
 	}
 	while(num > 0);
 
 	std::cout << "clean thread exit" << std::endl;
-
-	mService.reset();
 }
 
 }
