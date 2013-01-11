@@ -38,23 +38,13 @@
     <ClCompile Include="TestTimers.cpp" />
     <ClCompile Include="TestTypes.cpp" />
     <ClCompile Include="TestUtil.cpp" />
-    <ClCompile Include="TestXmlBinding.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\APLTestTools\APLTestTools.vcxproj">
       <Project>{e9aa4ccd-0220-4163-a2c1-41cc1e21e0ab}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\APLXML\APLXML.vcxproj">
-      <Project>{946ab8a3-f333-46ee-a276-749c3e1f2b26}</Project>
-    </ProjectReference>
     <ProjectReference Include="..\APL\APL.vcxproj">
       <Project>{8a1ba3ba-16af-4b5a-8c53-a1f456d0dd84}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\tinyxml\tinyxml.vcxproj">
-      <Project>{4f134d4d-0c94-445e-80b3-8329d7dc3e99}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\XMLBindings\XMLBindings.vcxproj">
-      <Project>{29257c67-4a23-42ca-9c93-434f32020caa}</Project>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
