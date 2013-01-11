@@ -89,9 +89,6 @@
     <ClCompile Include="TestUtil.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="TestXmlBinding.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="TestChangeBuffer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
