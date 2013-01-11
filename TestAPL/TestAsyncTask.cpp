@@ -88,10 +88,10 @@ BOOST_AUTO_TEST_SUITE(AsyncTaskSuite)
 BOOST_AUTO_TEST_CASE(DependencyAnalysis)
 {
 	MockTaskHandler mth;
-	MockExecutor mts;
-	AsyncTaskScheduler ats(&mts);
+	MockExecutor exe;
+	AsyncTaskScheduler ats;
 
-	AsyncTaskGroup* pGroup = ats.CreateNewGroup();
+	AsyncTaskGroup* pGroup = ats.CreateNewGroup(&exe);
 
 	AsyncTaskBase* pT1 = pGroup->Add(1000, 1000, 0, mth.GetHandler());
 	AsyncTaskBase* pT2 = pGroup->Add(1000, 1000, 0, mth.GetHandler());
@@ -119,10 +119,11 @@ BOOST_AUTO_TEST_CASE(DependencyAnalysis)
 BOOST_AUTO_TEST_CASE(ContinousTask)
 {
 	MockTaskHandler mth;
-	MockExecutor mts;
-	AsyncTaskScheduler ats(&mts);
+	MockExecutor exe;
+	AsyncTaskScheduler ats;
 
-	AsyncTaskGroup* pGroup = ats.CreateNewGroup();
+	
+	AsyncTaskGroup* pGroup = ats.CreateNewGroup(&exe);
 
 	AsyncTaskContinuous* pT1 = pGroup->AddContinuous(0, mth.GetHandler());
 	AsyncTaskBase* pT2 = pGroup->Add(1000, 1000, 1, mth.GetHandler());
@@ -146,17 +147,19 @@ BOOST_AUTO_TEST_CASE(ContinousTask)
 	BOOST_REQUIRE_EQUAL(mth.Size(), 1);
 	BOOST_REQUIRE_EQUAL(mth.Front(), pT1);
 	pT1->Disable();
+	
 }
 
 // Two groups that execute independently of one another
 BOOST_AUTO_TEST_CASE(DecoupledGroupsMode)
 {
 	MockTaskHandler mth;
-	MockExecutor mts;
-	AsyncTaskScheduler ats(&mts);
+	MockExecutor exe;
+	AsyncTaskScheduler ats;
 
-	AsyncTaskGroup* pGroup1 = ats.CreateNewGroup();
-	AsyncTaskGroup* pGroup2 = ats.CreateNewGroup();
+	
+	AsyncTaskGroup* pGroup1 = ats.CreateNewGroup(&exe);
+	AsyncTaskGroup* pGroup2 = ats.CreateNewGroup(&exe);
 
 	AsyncTaskBase* pT1 = pGroup1->Add(1000, 1000, 0, mth.GetHandler());
 	AsyncTaskBase* pT2 = pGroup2->Add(1000, 1000, 0, mth.GetHandler());
@@ -174,11 +177,14 @@ BOOST_AUTO_TEST_CASE(DecoupledGroupsMode)
 BOOST_AUTO_TEST_CASE(NonPeriodic)
 {
 	MockTaskHandler mth;
-	MockExecutor mts;
+	
 	MockTimeSource fakeTime;
 	fakeTime.SetToNow();
-	AsyncTaskScheduler ats(&mts, &fakeTime);
-	AsyncTaskGroup* pGroup = ats.CreateNewGroup();
+	MockExecutor exe;
+	AsyncTaskScheduler ats(&fakeTime);
+
+	
+	AsyncTaskGroup* pGroup = ats.CreateNewGroup(&exe);
 
 
 	AsyncTaskBase* pT1 = pGroup->Add(-1, 100, 0, mth.GetHandler()); //non-periodic task
@@ -195,10 +201,10 @@ BOOST_AUTO_TEST_CASE(NonPeriodic)
 	mth.Complete(true);
 
 	// a timer should be registered for the next periodic task execution
-	BOOST_REQUIRE_EQUAL(mts.NumActive(), 1);
+	BOOST_REQUIRE_EQUAL(exe.NumActive(), 1);
 	BOOST_REQUIRE_EQUAL(mth.Size(), 0);
 	fakeTime.Advance(milliseconds(2000));
-	BOOST_REQUIRE(mts.DispatchOne());
+	BOOST_REQUIRE(exe.DispatchOne());
 	BOOST_REQUIRE_EQUAL(mth.Size(), 1);
 	BOOST_REQUIRE_EQUAL(mth.Front(), pT2);
 }
@@ -207,10 +213,10 @@ BOOST_AUTO_TEST_CASE(NonPeriodic)
 BOOST_AUTO_TEST_CASE(PriorityBreaksTies)
 {
 	MockTaskHandler mth;
-	MockExecutor mts;
-	AsyncTaskScheduler ats(&mts);
-
-	AsyncTaskGroup* pGroup = ats.CreateNewGroup();
+	MockExecutor exe;
+	AsyncTaskScheduler ats;
+	
+	AsyncTaskGroup* pGroup = ats.CreateNewGroup(&exe);
 
 	pGroup->Add(100, 100, 0, mth.GetHandler());
 	AsyncTaskBase* pT2 = pGroup->Add(100, 100, 1, mth.GetHandler()); // higher priority
@@ -224,10 +230,10 @@ BOOST_AUTO_TEST_CASE(PriorityBreaksTies)
 BOOST_AUTO_TEST_CASE(DependenciesEnforced)
 {
 	MockTaskHandler mth;
-	MockExecutor mts;
-	AsyncTaskScheduler ats(&mts);
-
-	AsyncTaskGroup* pGroup = ats.CreateNewGroup();
+	MockExecutor exe;
+	AsyncTaskScheduler ats;
+	
+	AsyncTaskGroup* pGroup = ats.CreateNewGroup(&exe);
 	AsyncTaskBase* pT1 = pGroup->Add(100, 100, 0, mth.GetHandler());
 	AsyncTaskBase* pT2 = pGroup->Add(100, 100, 0, mth.GetHandler());
 
@@ -240,15 +246,15 @@ BOOST_AUTO_TEST_CASE(DependenciesEnforced)
 }
 
 BOOST_AUTO_TEST_CASE(TimerUsage)
-{
+{		
 	MockTaskHandler mth;
-	MockExecutor mts;
 	MockTimeSource fake_time;
-	AsyncTaskScheduler ats(&mts, &fake_time);
+	MockExecutor exe;
+	AsyncTaskScheduler ats(&fake_time);
 
 	fake_time.SetToNow();
-
-	AsyncTaskGroup* pGroup = ats.CreateNewGroup();
+	
+	AsyncTaskGroup* pGroup = ats.CreateNewGroup(&exe);
 	AsyncTaskBase* pT1 = pGroup->Add(1000, 100, 0, mth.GetHandler());
 	AsyncTaskBase* pT2 = pGroup->Add(1500, 100, 0, mth.GetHandler());
 
@@ -259,14 +265,14 @@ BOOST_AUTO_TEST_CASE(TimerUsage)
 	BOOST_REQUIRE_EQUAL(mth.Front(), pT2); mth.Complete(true);
 
 	//if you disptach the call back early, nothing should happen except a new timer
-	BOOST_REQUIRE(mts.DispatchOne());
+	BOOST_REQUIRE(exe.DispatchOne());
 
 	fake_time.Advance(milliseconds(1001));
-	BOOST_REQUIRE(mts.DispatchOne());
+	BOOST_REQUIRE(exe.DispatchOne());
 	BOOST_REQUIRE_EQUAL(mth.Front(), pT1); mth.Complete(true);
 
 	fake_time.Advance(milliseconds(500));
-	BOOST_REQUIRE(mts.DispatchOne());
+	BOOST_REQUIRE(exe.DispatchOne());
 	BOOST_REQUIRE_EQUAL(mth.Front(), pT2); mth.Complete(true);
 }
 

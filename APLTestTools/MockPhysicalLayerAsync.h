@@ -73,12 +73,11 @@ public:
 	}
 	size_t NumClose() {
 		return mNumClose;
-	}
+	}	
 
-	void SetAutoOpen(bool aSuccess);
+private:	
 
-private:
-
+	void DoOpeningClose();
 	void DoOpen();
 	void DoClose();
 	void DoOpenSuccess() {
@@ -108,6 +107,7 @@ private:
 	size_t mNumOpenSuccess;
 	size_t mNumOpenFailure;
 	size_t mNumClose;
+	size_t mNumOpeningClose;	
 
 	bool mIsAutoOpenSuccess;
 

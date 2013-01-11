@@ -42,7 +42,6 @@
 #include <APL/PhysicalLayerManager.h>
 #include <APL/AsyncTaskScheduler.h>
 
-
 #include "VtoDataInterface.h"
 #include "LinkRoute.h"
 #include "VtoRouterManager.h"
@@ -287,8 +286,8 @@ private:
 
 	boost::asio::io_service mService;
 	boost::asio::strand mStrand;
-
 	ASIOExecutor mExecutor;
+	
 	PhysicalLayerManager mMgr;
 	AsyncTaskScheduler mScheduler;
 	VtoRouterManager mVtoManager;

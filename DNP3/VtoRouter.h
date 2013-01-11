@@ -100,15 +100,14 @@ public:
 	 * and a VtoWriter using SetPhysicalLayer() and
 	 * SetVtoWriter(), respectively.
 	 *
-	 * @param arSettings			Settings for the router including the DNP3 Virtual Terminal port (channel id)
-	     * @param apLogger			the Logger that the instance should use for log messages
-	 * @param apWriter                      Interface that the router will use to write vto objects
-	     * @param apPhysLayer                   PhysicalLayer interface to which the router is bound
-	 * @param apExecutor                    Asynchronous IExecutor interface router uses retry connections, etc
-	     *
+	 * @param arSettings	Settings for the router including the DNP3 Virtual Terminal port (channel id)
+	 * @param apLogger		the Logger that the instance should use for log messages
+	 * @param apWriter      Interface that the router will use to write vto objects
+	 * @param apPhysLayer   PhysicalLayer interface to which the router is bound	 
+	 *
 	 * @return				a new VtoRouter instance
 	 */
-	VtoRouter(const VtoRouterSettings& arSettings, Logger* apLogger, IVtoWriter* apWriter, IPhysicalLayerAsync* apPhysLayer, IExecutor* apExecutor);
+	VtoRouter(const VtoRouterSettings& arSettings, Logger* apLogger, IVtoWriter* apWriter, IPhysicalLayerAsync* apPhysLayer);
 
 	/**
 	 * Receives data from the VTO channel and forwards it to the
@@ -126,6 +125,9 @@ public:
 	 * successuly transmission).
 	 */
 	void OnBufferAvailable();
+
+	IExecutor* GetExecutor(); //TODO this is kind of hack at the moment
+	
 
 protected:
 

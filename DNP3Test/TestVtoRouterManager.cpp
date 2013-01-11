@@ -50,7 +50,7 @@ public:
 		log(),
 		mts(),
 		mpls(log.GetLogger(aLevel, "source"), &mts),
-		mgr(log.GetLogger(aLevel, "vto"), &mts, &mpls),
+		mgr(log.GetLogger(aLevel, "vto"), &mpls),
 		writer(log.GetLogger(aLevel, "writer"), 100) {
 		if(aImmediate) log.AddLogSubscriber(LogToStdio::Inst());
 	}

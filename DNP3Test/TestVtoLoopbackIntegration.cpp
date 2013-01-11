@@ -51,8 +51,8 @@ public:
 	    boost::uint16_t port = MACRO_PORT_VALUE) :
 
 		VtoIntegrationTestBase(clientOnSlave, aImmediateOutput, aLogToFile, level, port),
-		loopback(mLog.GetLogger(level, "loopback"), &vtoServer, &timerSource),
-		local(mLog.GetLogger(level, "mock-client-connection"), &vtoClient, &timerSource, milliseconds(500), seconds(10)) {
+		loopback(mLog.GetLogger(level, "loopback"), &vtoServer),
+		local(mLog.GetLogger(level, "mock-client-connection"), &vtoClient, milliseconds(500), seconds(10)) {
 
 	}
 

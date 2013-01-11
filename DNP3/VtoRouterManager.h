@@ -80,7 +80,7 @@ public:
 
 
 
-	VtoRouterManager(Logger* apLogger, IExecutor* apExecutor, IPhysicalLayerSource* apPhysSrc);
+	VtoRouterManager(Logger* apLogger, IPhysicalLayerSource* apPhysSrc);
 
 	VtoRouter* StartRouter(
 	        const std::string& arPortName,
@@ -106,8 +106,7 @@ private:
 	void StopRouter(const RouterRecordVector::iterator& arIter);
 
 	RouterRecordVector mRecords;
-
-	IExecutor* mpExecutor;
+	
 	IPhysicalLayerSource* mpPhysSource;	
 };
 

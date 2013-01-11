@@ -60,7 +60,7 @@ class LinkLayerRouter : public PhysicalLayerMonitor, public IFrameSink, public I
 {
 public:
 
-	LinkLayerRouter(apl::Logger*, IPhysicalLayerAsync*, IExecutor*, millis_t aOpenRetry);
+	LinkLayerRouter(apl::Logger*, IPhysicalLayerAsync*, millis_t aOpenRetry);
 
 	// Ties the lower part of the link layer to the upper part
 	void AddContext(ILinkContext*, const LinkRoute& arRoute);

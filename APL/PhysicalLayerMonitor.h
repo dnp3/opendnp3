@@ -54,8 +54,7 @@ class PhysicalLayerMonitor : public IHandlerAsync
 
 public:
 	PhysicalLayerMonitor(	Logger*, 
-							IPhysicalLayerAsync*, 
-							IExecutor*, 
+							IPhysicalLayerAsync*, 							
 							std::chrono::high_resolution_clock::duration aMinOpenRetry, 
 							std::chrono::high_resolution_clock::duration aMaxOpenRetry);
 
@@ -104,8 +103,7 @@ protected:
 	IPhysicalLayerAsync* mpPhys;
 
 private:
-
-	IExecutor* mpExecutor;
+	
 	ITimer* mpOpenTimer;
 	IMonitorState* mpState;
 	bool mFinalShutdown;

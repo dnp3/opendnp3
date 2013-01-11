@@ -52,7 +52,7 @@ public:
 	VtoRouterTestClassBase(size_t aWriterSize) :
 		LogTester(false),
 		exe(),
-		phys(mLog.GetLogger(LEV_DEBUG, "phys"), NULL),
+		phys(mLog.GetLogger(LEV_DEBUG, "phys"), &exe),
 		writer(mLog.GetLogger(LEV_DEBUG, "writer"), aWriterSize),
 		pRouter(NULL)
 	{}
@@ -114,7 +114,7 @@ class ServerVtoRouterTestClass : public VtoRouterTestClassBase
 public:
 	ServerVtoRouterTestClass(const VtoRouterSettings& arSettings = VtoRouterSettings(88, true, true), size_t aWriterSize = 100) :
 		VtoRouterTestClassBase(aWriterSize),
-		router(arSettings, mLog.GetLogger(LEV_DEBUG, "router"), &writer, &phys, &exe) {
+		router(arSettings, mLog.GetLogger(LEV_DEBUG, "router"), &writer, &phys) {
 		pRouter = &router;
 		writer.AddVtoCallback(&router);
 	}
@@ -127,7 +127,7 @@ class ClientVtoRouterTestClass : public VtoRouterTestClassBase
 public:
 	ClientVtoRouterTestClass(const VtoRouterSettings& arSettings = VtoRouterSettings(88, true, true), size_t aWriterSize = 100) :
 		VtoRouterTestClassBase(aWriterSize),
-		router(arSettings, mLog.GetLogger(LEV_DEBUG, "router"), &writer, &phys, &exe) {
+		router(arSettings, mLog.GetLogger(LEV_DEBUG, "router"), &writer, &phys) {
 		pRouter = &router;
 		writer.AddVtoCallback(&router);
 	}
@@ -149,13 +149,11 @@ BOOST_AUTO_TEST_CASE(ServerSendsMagicChannelLocalConnected)
 {
 	ServerVtoRouterTestClass rtc;
 
-	rtc.exe.Dispatch();
-
 	BOOST_REQUIRE(rtc.phys.IsOpening());
 
-
 	rtc.phys.SignalOpenSuccess();
-	rtc.exe.Dispatch();
+
+	BOOST_REQUIRE(rtc.phys.IsReading());
 
 	rtc.CheckLocalChannelConnectedMessage(true);
 

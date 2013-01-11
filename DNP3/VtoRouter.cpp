@@ -44,9 +44,9 @@ namespace apl
 namespace dnp
 {
 
-VtoRouter::VtoRouter(const VtoRouterSettings& arSettings, Logger* apLogger, IVtoWriter* apWriter, IPhysicalLayerAsync* apPhysLayer, IExecutor* apExecutor) :
+VtoRouter::VtoRouter(const VtoRouterSettings& arSettings, Logger* apLogger, IVtoWriter* apWriter, IPhysicalLayerAsync* apPhysLayer) :
 	Loggable(apLogger),
-	PhysicalLayerMonitor(apLogger, apPhysLayer, apExecutor, milliseconds(arSettings.MIN_OPEN_RETRY_MS), milliseconds(arSettings.MAX_OPEN_RETRY_MS)),
+	PhysicalLayerMonitor(apLogger, apPhysLayer, milliseconds(arSettings.MIN_OPEN_RETRY_MS), milliseconds(arSettings.MAX_OPEN_RETRY_MS)),
 	IVtoCallbacks(arSettings.CHANNEL_ID),
 	mpVtoWriter(apWriter),
 	mReadBuffer(1024),
@@ -54,8 +54,12 @@ VtoRouter::VtoRouter(const VtoRouterSettings& arSettings, Logger* apLogger, IVto
 {
 	assert(apLogger != NULL);
 	assert(apWriter != NULL);
-	assert(apPhysLayer != NULL);
-	assert(apExecutor != NULL);
+	assert(apPhysLayer != NULL);	
+}
+
+IExecutor* VtoRouter::GetExecutor()
+{
+	return mpPhys->GetExecutor();
 }
 
 void VtoRouter::OnVtoDataReceived(const VtoData& arData)

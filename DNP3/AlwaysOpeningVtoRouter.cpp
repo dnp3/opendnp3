@@ -33,9 +33,9 @@ namespace apl
 namespace dnp
 {
 
-AlwaysOpeningVtoRouter::AlwaysOpeningVtoRouter(const VtoRouterSettings& arSettings, Logger* apLogger, IVtoWriter* apWriter, IPhysicalLayerAsync* apPhysLayer, IExecutor* apExecutor) :
+AlwaysOpeningVtoRouter::AlwaysOpeningVtoRouter(const VtoRouterSettings& arSettings, Logger* apLogger, IVtoWriter* apWriter, IPhysicalLayerAsync* apPhysLayer) :
 	Loggable(apLogger),
-	VtoRouter(arSettings, apLogger, apWriter, apPhysLayer, apExecutor)
+	VtoRouter(arSettings, apLogger, apWriter, apPhysLayer)
 {
 	this->Start();
 }

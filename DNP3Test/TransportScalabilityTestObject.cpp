@@ -49,9 +49,7 @@ TransportScalabilityTestObject::TransportScalabilityTestObject(
 
 	LogTester(aImmediate),
 	AsyncTestObjectASIO(),
-	mpLogger(mLog.GetLogger(aLevel, "test")),
-	mStrand(*GetService()),
-	mExecutor(&mStrand)
+	mpLogger(mLog.GetLogger(aLevel, "test"))	
 {
 	const boost::uint16_t START = aPortStart;
 	const boost::uint16_t STOP = START + aNumPair;
@@ -60,7 +58,7 @@ TransportScalabilityTestObject::TransportScalabilityTestObject(
 		ostringstream oss;
 		oss << "pair" << port;
 		Logger* pLogger = mpLogger->GetSubLogger(oss.str());
-		TransportStackPair* pPair = new TransportStackPair(aClientCfg, aServerCfg, pLogger, this->GetService(), &mExecutor, port);
+		TransportStackPair* pPair = new TransportStackPair(aClientCfg, aServerCfg, pLogger, this->GetService(), port);
 		mPairs.push_back(pPair);
 	}
 }

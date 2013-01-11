@@ -40,7 +40,7 @@ namespace apl
 {
 
 MockPhysicalLayerAsync::MockPhysicalLayerAsync(Logger* apLogger, IExecutor* apExecutor) :
-	PhysicalLayerAsyncBase(apLogger),
+	PhysicalLayerAsyncBase(apLogger),	
 	mpWriteBuff(NULL),
 	mNumToRead(0),
 	mNumToWrite(0),
@@ -49,6 +49,7 @@ MockPhysicalLayerAsync::MockPhysicalLayerAsync(Logger* apLogger, IExecutor* apEx
 	mNumOpenSuccess(0),
 	mNumOpenFailure(0),
 	mNumClose(0),
+	mNumOpeningClose(0),
 
 	mIsAutoOpenSuccess(true),
 	mpExecutor(apExecutor)
@@ -56,26 +57,19 @@ MockPhysicalLayerAsync::MockPhysicalLayerAsync(Logger* apLogger, IExecutor* apEx
 
 }
 
-void MockPhysicalLayerAsync::SetAutoOpen(bool aIsSuccess)
+void MockPhysicalLayerAsync::DoOpeningClose()
 {
-	mIsAutoOpenSuccess = aIsSuccess;
+	++mNumOpeningClose;
 }
 
 void MockPhysicalLayerAsync::DoOpen()
 {
-	++mNumOpen;
-	if(mpExecutor) {
-		if(this->mIsAutoOpenSuccess) mpExecutor->Post(std::bind(&MockPhysicalLayerAsync::SignalOpenSuccess, this));
-		else mpExecutor->Post(std::bind(&MockPhysicalLayerAsync::SignalOpenFailure, this));
-	}
+	++mNumOpen;	
 }
 
 void MockPhysicalLayerAsync::DoClose()
 {
-	++mNumClose;
-	if(mpExecutor) {
-		mpExecutor->Post(std::bind(&MockPhysicalLayerAsync::DoThisLayerDown, this));
-	}
+	++mNumClose;	
 }
 
 void MockPhysicalLayerAsync::SignalOpenSuccess()

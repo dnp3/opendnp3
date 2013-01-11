@@ -53,7 +53,7 @@ public:
 		exe(),
 		phys(mLog.GetLogger(LEV_DEBUG, "phys"), &exe),
 		writer(mLog.GetLogger(LEV_DEBUG, "writer"), aWriterSize),		
-		router(arSettings, mLog.GetLogger(LEV_DEBUG, "router"), &writer, &phys, &exe) {
+		router(arSettings, mLog.GetLogger(LEV_DEBUG, "router"), &writer, &phys) {
 		writer.AddVtoCallback(&router);
 	}
 

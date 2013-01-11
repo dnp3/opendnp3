@@ -47,9 +47,9 @@ namespace apl
 namespace dnp
 {
 
-LinkLayerRouter::LinkLayerRouter(apl::Logger* apLogger, IPhysicalLayerAsync* apPhys, IExecutor* apExecutor, millis_t aOpenRetry) :
+LinkLayerRouter::LinkLayerRouter(apl::Logger* apLogger, IPhysicalLayerAsync* apPhys, millis_t aOpenRetry) :
 	Loggable(apLogger),
-	PhysicalLayerMonitor(apLogger, apPhys, apExecutor, milliseconds(aOpenRetry), milliseconds(aOpenRetry)),
+	PhysicalLayerMonitor(apLogger, apPhys, milliseconds(aOpenRetry), milliseconds(aOpenRetry)),
 	mReceiver(apLogger, this),
 	mTransmitting(false)
 {}

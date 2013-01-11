@@ -52,7 +52,7 @@ namespace dnp
 class TransportIntegrationStack
 {
 public:
-	TransportIntegrationStack(Logger*, IExecutor*, IPhysicalLayerAsync*, LinkConfig);
+	TransportIntegrationStack(Logger*, IPhysicalLayerAsync*, LinkConfig);
 
 	LinkLayerRouter mRouter;
 	LinkLayer mLink;

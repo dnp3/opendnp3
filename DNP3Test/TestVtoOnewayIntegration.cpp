@@ -52,8 +52,8 @@ public:
 	    boost::uint16_t port = MACRO_PORT_VALUE) :
 
 		VtoIntegrationTestBase(clientOnSlave, aImmediateOutput, aLogToFile, level, port),
-		local(mLog.GetLogger(level, "local-mock-phys-monitor"), &vtoClient, &timerSource, milliseconds(500), seconds(10)),
-		remote(mLog.GetLogger(level, "remote-mock-phys-monitor"), &vtoServer, &timerSource, milliseconds(500), seconds(10)) {
+		local(mLog.GetLogger(level, "local-mock-phys-monitor"), &vtoClient, milliseconds(500), seconds(10)),
+		remote(mLog.GetLogger(level, "remote-mock-phys-monitor"), &vtoServer, milliseconds(500), seconds(10)) {
 
 	}
 

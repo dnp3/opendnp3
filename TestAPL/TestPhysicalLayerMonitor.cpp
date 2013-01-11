@@ -44,9 +44,9 @@ class ConcretePhysicalLayerMonitor : public PhysicalLayerMonitor
 {
 public:
 
-	ConcretePhysicalLayerMonitor(Logger* apLogger, IPhysicalLayerAsync* apPhys, IExecutor* apExecutor) :
+	ConcretePhysicalLayerMonitor(Logger* apLogger, IPhysicalLayerAsync* apPhys) :
 		Loggable(apLogger),
-		PhysicalLayerMonitor(mpLogger->GetSubLogger("monitor"), apPhys, apExecutor, seconds(1), seconds(10)),
+		PhysicalLayerMonitor(mpLogger->GetSubLogger("monitor"), apPhys, seconds(1), seconds(10)),
 		mOpenCallbackCount(0),
 		mCloseCallbackCount(0) {
 	}
@@ -82,8 +82,8 @@ public:
 	TestObject() :
 		log(),
 		exe(),
-		phys(log.GetLogger(LEV_INFO, "mock-phys"), NULL),
-		monitor(log.GetLogger(LEV_INFO, "test"), &phys, &exe)
+		phys(log.GetLogger(LEV_INFO, "mock-phys"), &exe),
+		monitor(log.GetLogger(LEV_INFO, "test"), &phys)
 	{}
 
 	EventLog log;
@@ -267,8 +267,9 @@ BOOST_AUTO_TEST_CASE(CloseWhileOpeningAndThenStop)
 
 BOOST_AUTO_TEST_CASE(OpenFailureGoesToWaitingAndExponentialBackoff)
 {
-	TestObject test;
+	TestObject test;	
 	test.monitor.Start();
+	BOOST_REQUIRE_EQUAL(PLS_OPENING, test.monitor.GetState());
 	test.phys.SignalOpenFailure();
 	BOOST_REQUIRE_EQUAL(PLS_WAITING, test.monitor.GetState());
 	BOOST_REQUIRE_EQUAL(1, test.exe.NumActive());	
@@ -283,7 +284,7 @@ BOOST_AUTO_TEST_CASE(OpenFailureGoesToWaitingAndExponentialBackoff)
 
 BOOST_AUTO_TEST_CASE(OpenFailureGoesToClosedIfSuspended)
 {
-	TestObject test;
+	TestObject test;	
 	test.monitor.Start();
 	test.monitor.Suspend();
 	test.phys.SignalOpenFailure();
@@ -306,9 +307,9 @@ BOOST_AUTO_TEST_CASE(ShutdownPostsToTimer)
 
 BOOST_AUTO_TEST_CASE(ShutdownWhileWaitingCancelsTimer)
 {
-	TestObject test;
+	TestObject test;	
 	test.monitor.Start();
-	test.phys.SignalOpenFailure();
+	test.phys.SignalOpenFailure();	
 	test.monitor.Shutdown();
 	BOOST_REQUIRE(test.exe.DispatchOne()); //disptach the shutdown post
 	BOOST_REQUIRE_EQUAL(PLS_SHUTDOWN, test.monitor.GetState());
@@ -317,19 +318,20 @@ BOOST_AUTO_TEST_CASE(ShutdownWhileWaitingCancelsTimer)
 
 BOOST_AUTO_TEST_CASE(LayerKeepsTryingToOpen)
 {
-	TestObject test;
+	TestObject test;	
 	test.monitor.Start();
 
-	for(size_t i = 0; i < 3; ++i) {
-		test.phys.SignalOpenFailure();
-		BOOST_REQUIRE(test.exe.DispatchOne());
+	for(size_t i = 0; i < 3; ++i) {		
 		BOOST_REQUIRE_EQUAL(PLS_OPENING, test.monitor.GetState());
+		test.phys.SignalOpenFailure();
+		BOOST_REQUIRE_EQUAL(PLS_WAITING, test.monitor.GetState());
+		BOOST_REQUIRE(test.exe.DispatchOne());
 	}
 }
 
 BOOST_AUTO_TEST_CASE(CloseWhileWaitingDoesNothing)
 {
-	TestObject test;
+	TestObject test;	
 	test.monitor.Start();
 	test.phys.SignalOpenFailure();
 	test.monitor.Close();

@@ -40,8 +40,7 @@ using namespace std;
 namespace apl
 {
 
-AsyncTaskScheduler::AsyncTaskScheduler(IExecutor* apExecutor, ITimeSource* apTimeSrc) :
-	mpExecutor(apExecutor),
+AsyncTaskScheduler::AsyncTaskScheduler(ITimeSource* apTimeSrc) :	
 	mpTimeSrc(apTimeSrc)
 {
 
@@ -52,10 +51,10 @@ AsyncTaskScheduler::~AsyncTaskScheduler()
 	for(auto pTaskGroup: mGroupSet) delete pTaskGroup;
 }
 
-AsyncTaskGroup* AsyncTaskScheduler::CreateNewGroup()
+AsyncTaskGroup* AsyncTaskScheduler::CreateNewGroup(IExecutor* apExecutor)
 {
 	std::unique_lock<std::mutex> lock(mMutex);
-	AsyncTaskGroup* pGroup = new AsyncTaskGroup(mpExecutor, mpTimeSrc);
+	AsyncTaskGroup* pGroup = new AsyncTaskGroup(apExecutor, mpTimeSrc);
 	mGroupSet.insert(pGroup);
 	return pGroup;
 }

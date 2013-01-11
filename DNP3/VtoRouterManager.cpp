@@ -57,12 +57,10 @@ RouterRecord::RouterRecord(const std::string& arPortName, std::shared_ptr<VtoRou
 
 }
 
-VtoRouterManager::VtoRouterManager(Logger* apLogger, IExecutor* apExecutor, IPhysicalLayerSource* apPhysSrc) :
-	Loggable(apLogger),
-	mpExecutor(apExecutor),
+VtoRouterManager::VtoRouterManager(Logger* apLogger, IPhysicalLayerSource* apPhysSrc) :
+	Loggable(apLogger),	
 	mpPhysSource(apPhysSrc)
-{
-	assert(apExecutor != NULL);
+{	
 	assert(apPhysSrc != NULL);
 }
 
@@ -76,14 +74,14 @@ VtoRouter* VtoRouterManager::StartRouter(
 
 	std::shared_ptr<VtoRouter> pRouter;
 	if(arSettings.DISABLE_EXTENSIONS) {
-		pRouter.reset(new AlwaysOpeningVtoRouter(arSettings, pLogger, apWriter, pPhys, mpExecutor));
+		pRouter.reset(new AlwaysOpeningVtoRouter(arSettings, pLogger, apWriter, pPhys));
 	}
 	else {
 		if(arSettings.START_LOCAL) {
-			pRouter.reset(new ServerSocketVtoRouter(arSettings, pLogger, apWriter, pPhys, mpExecutor));
+			pRouter.reset(new ServerSocketVtoRouter(arSettings, pLogger, apWriter, pPhys));
 		}
 		else {
-			pRouter.reset(new ClientSocketVtoRouter(arSettings, pLogger, apWriter, pPhys, mpExecutor));
+			pRouter.reset(new ClientSocketVtoRouter(arSettings, pLogger, apWriter, pPhys));
 		}
 	}
 
@@ -162,7 +160,7 @@ void VtoRouterManager::StopRouter(VtoRouter* apRouter, IVtoWriter* apWriter)
 	for(RouterRecordVector::iterator i = mRecords.begin(); i != mRecords.end(); ++i) {
 		if(i->mpRouter.get() == apRouter) {
 
-			mpExecutor->Synchronize([apWriter, apRouter, i](){
+			apRouter->GetExecutor()->Synchronize([apWriter, apRouter, i](){
 				apWriter->RemoveVtoCallback(apRouter);
 				i->mpRouter->Shutdown();
 			});

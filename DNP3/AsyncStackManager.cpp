@@ -56,12 +56,12 @@ namespace dnp
 
 AsyncStackManager::AsyncStackManager(Logger* apLogger) :
 	Loggable(apLogger),
-	mService(),
+	mService(),	
 	mStrand(mService),
 	mExecutor(&mStrand),
 	mMgr(apLogger->GetSubLogger("channels", LEV_WARNING), &mService),
-	mScheduler(&mExecutor),
-	mVtoManager(apLogger->GetSubLogger("vto"), &mExecutor, &mMgr),
+	mScheduler(),
+	mVtoManager(apLogger->GetSubLogger("vto"), &mMgr),
 	mThread(this),
 	mpInfiniteTimer(mExecutor.StartInfinite()),
 	mIsShutdown(false)
@@ -122,7 +122,7 @@ ICommandAcceptor* AsyncStackManager::AddMaster( const std::string& arPortName, c
 	Logger* pLogger = mpLogger->GetSubLogger(arStackName, aLevel);
 	pLogger->SetVarName(arStackName);
 
-	MasterStack* pMaster = new MasterStack(pLogger, &mExecutor, apPublisher, pChannel->GetGroup(), arCfg);
+	MasterStack* pMaster = new MasterStack(pLogger, pChannel->GetExecutor(), apPublisher, pChannel->GetGroup(), arCfg);
 	LinkRoute route(arCfg.link.RemoteAddr, arCfg.link.LocalAddr);
 
 	this->AddStackToChannel(arStackName, pMaster, pChannel, route);
@@ -143,7 +143,7 @@ IDataObserver* AsyncStackManager::AddSlave( const std::string& arPortName, const
 	Logger* pLogger = mpLogger->GetSubLogger(arStackName, aLevel);
 	pLogger->SetVarName(arStackName);
 
-	SlaveStack* pSlave = new SlaveStack(pLogger, &mExecutor, apCmdAcceptor, arCfg);
+	SlaveStack* pSlave = new SlaveStack(pLogger, pChannel->GetExecutor(), apCmdAcceptor, arCfg);
 
 	LinkRoute route(arCfg.link.RemoteAddr, arCfg.link.LocalAddr);
 	this->AddStackToChannel(arStackName, pSlave, pChannel, route);
@@ -213,7 +213,7 @@ void AsyncStackManager::RemovePort(const std::string& arPortName)
 		std::auto_ptr<LinkChannel> autoDeleteChannel(pChannel); //will delete at end of function
 		mChannelNameToChannel.erase(arPortName);
 
-		mExecutor.Synchronize([pChannel](){
+		pChannel->GetExecutor()->Synchronize([pChannel](){
 			// Tell the channel to shut down permanenently
 			pChannel->GetGroup()->Shutdown(); // no more task callbacks
 			pChannel->BeginShutdown();
@@ -292,9 +292,9 @@ LinkChannel* AsyncStackManager::CreateChannel(const std::string& arName)
 	IPhysicalLayerAsync* pPhys = mMgr.AcquireLayer(arName);
 	Logger* pChannelLogger = mpLogger->GetSubLogger(arName, s.LogLevel);
 	pChannelLogger->SetVarName(arName);
-	AsyncTaskGroup* pGroup = mScheduler.CreateNewGroup();
+	AsyncTaskGroup* pGroup = mScheduler.CreateNewGroup(pPhys->GetExecutor());
 
-	LinkChannel* pChannel = new LinkChannel(pChannelLogger, arName, &mExecutor, pPhys, pGroup, s.RetryTimeout);
+	LinkChannel* pChannel = new LinkChannel(pChannelLogger, arName, pPhys, pGroup, s.RetryTimeout);
 	if(s.mpObserver) pChannel->AddPhysicalLayerObserver(s.mpObserver);
 	mChannelNameToChannel[arName] = pChannel;
 	return pChannel;
@@ -332,7 +332,7 @@ Stack* AsyncStackManager::SeverStackFromChannel(const std::string& arStackName)
 	mStackMap.erase(i);
 
 	LOG_BLOCK(LEV_DEBUG, "Begin severing stack: " << arStackName);
-	mExecutor.Synchronize([&](){ //this action needs to be safely on correct executor		
+	rec.channel->GetExecutor()->Synchronize([&](){ //this action needs to be safely on correct executor		
 		rec.channel->RemoveStackFromChannel(arStackName);
 	});
 	LOG_BLOCK(LEV_DEBUG, "Done severing stack: " << arStackName);
@@ -342,7 +342,7 @@ Stack* AsyncStackManager::SeverStackFromChannel(const std::string& arStackName)
 
 void AsyncStackManager::AddStackToChannel(const std::string& arStackName, Stack* apStack, LinkChannel* apChannel, const LinkRoute& arRoute)
 {	
-	mExecutor.Synchronize([&](){		
+	apChannel->GetExecutor()->Synchronize([&](){		
 		apChannel->BindStackToChannel(arStackName, apStack, arRoute);
 	});
 

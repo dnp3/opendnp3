@@ -43,10 +43,10 @@ MasterTestObject::MasterTestObject(MasterConfig cfg, FilterLevel aLevel, bool aI
 	LogTester(aImmediate),
 	fake_time(),
 	mts(),
-	ats(&mts, &fake_time),
+	ats(&fake_time),
 	fdo(),
 	app(mLog.GetLogger(aLevel, "MockAppLayer")),
-	master(mLog.GetLogger(aLevel, "master"), cfg, &app, &fdo, ats.CreateNewGroup(), &mts, &fake_time)
+	master(mLog.GetLogger(aLevel, "master"), cfg, &app, &fdo, ats.CreateNewGroup(&mts), &mts, &fake_time)
 {
 	app.SetUser(&master);
 }

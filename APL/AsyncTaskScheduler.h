@@ -52,16 +52,15 @@ class AsyncTaskScheduler
 
 public:
 
-	AsyncTaskScheduler(IExecutor* apExecutor, ITimeSource* apTimeSrc = TimeSource::Inst());
+	AsyncTaskScheduler(ITimeSource* apTimeSrc = TimeSource::Inst());
 	~AsyncTaskScheduler();
 
-	AsyncTaskGroup* CreateNewGroup();
+	AsyncTaskGroup* CreateNewGroup(IExecutor*);
 	void ReleaseGroup(AsyncTaskGroup*);
 
 private:
 	std::mutex mMutex;
-
-	IExecutor* mpExecutor;
+	
 	ITimeSource* mpTimeSrc;
 	typedef std::set<AsyncTaskGroup*> GroupSet;
 	GroupSet mGroupSet;

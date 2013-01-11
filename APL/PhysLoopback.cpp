@@ -36,9 +36,9 @@ using namespace std::chrono;
 namespace apl
 {
 
-PhysLoopback::PhysLoopback(Logger* apLogger, IPhysicalLayerAsync* apPhys, IExecutor* apExecutor) :
+PhysLoopback::PhysLoopback(Logger* apLogger, IPhysicalLayerAsync* apPhys) :
 	Loggable(apLogger),
-	PhysicalLayerMonitor(apLogger, apPhys, apExecutor, seconds(5), seconds(5)),
+	PhysicalLayerMonitor(apLogger, apPhys, seconds(5), seconds(5)),
 	mBytesRead(0),
 	mBytesWritten(0),
 	mBuffer(1024)

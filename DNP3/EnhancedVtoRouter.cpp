@@ -37,9 +37,9 @@ namespace apl
 namespace dnp
 {
 
-EnhancedVtoRouter::EnhancedVtoRouter(const VtoRouterSettings& arSettings, Logger* apLogger, IVtoWriter* apWriter, IPhysicalLayerAsync* apPhysLayer, IExecutor* apExecutor) :
+EnhancedVtoRouter::EnhancedVtoRouter(const VtoRouterSettings& arSettings, Logger* apLogger, IVtoWriter* apWriter, IPhysicalLayerAsync* apPhysLayer) :
 	Loggable(apLogger),
-	VtoRouter(arSettings, apLogger, apWriter, apPhysLayer, apExecutor),
+	VtoRouter(arSettings, apLogger, apWriter, apPhysLayer),
 	mRemoteConnected(false),
 	mLocalConnected(false),
 	mInstRemoteConnected(false)
@@ -116,9 +116,9 @@ void EnhancedVtoRouter::CloseAndFlushBuffers()
  * Server socket specific implementation
  *************************************/
 
-ServerSocketVtoRouter::ServerSocketVtoRouter(const VtoRouterSettings& arSettings, Logger* apLogger, IVtoWriter* apWriter, IPhysicalLayerAsync* apPhysLayer, IExecutor* apExecutor) :
+ServerSocketVtoRouter::ServerSocketVtoRouter(const VtoRouterSettings& arSettings, Logger* apLogger, IVtoWriter* apWriter, IPhysicalLayerAsync* apPhysLayer) :
 	Loggable(apLogger),
-	EnhancedVtoRouter(arSettings, apLogger, apWriter, apPhysLayer, apExecutor)
+	EnhancedVtoRouter(arSettings, apLogger, apWriter, apPhysLayer)
 {
 	this->Start();
 }
@@ -170,9 +170,9 @@ void ServerSocketVtoRouter::HandleDuplicateClose()
 /*****************************************
  * Client socket specific implementation
  *************************************/
-ClientSocketVtoRouter::ClientSocketVtoRouter(const VtoRouterSettings& arSettings, Logger* apLogger, IVtoWriter* apWriter, IPhysicalLayerAsync* apPhysLayer, IExecutor* apExecutor) :
+ClientSocketVtoRouter::ClientSocketVtoRouter(const VtoRouterSettings& arSettings, Logger* apLogger, IVtoWriter* apWriter, IPhysicalLayerAsync* apPhysLayer) :
 	Loggable(apLogger),
-	EnhancedVtoRouter(arSettings, apLogger, apWriter, apPhysLayer, apExecutor)
+	EnhancedVtoRouter(arSettings, apLogger, apWriter, apPhysLayer)
 {
 
 }

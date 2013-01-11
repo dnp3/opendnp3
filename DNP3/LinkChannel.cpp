@@ -41,9 +41,9 @@ namespace apl
 namespace dnp
 {
 
-LinkChannel::LinkChannel(Logger* apLogger, const std::string& arName, IExecutor* apExecutor, IPhysicalLayerAsync* apPhys, AsyncTaskGroup* apTaskGroup, millis_t aOpenRetry) :
+LinkChannel::LinkChannel(Logger* apLogger, const std::string& arName, IPhysicalLayerAsync* apPhys, AsyncTaskGroup* apTaskGroup, millis_t aOpenRetry) :
 	Loggable(apLogger),
-	LinkLayerRouter(apLogger, apPhys, apExecutor, aOpenRetry),
+	LinkLayerRouter(apLogger, apPhys, aOpenRetry),
 	mName(arName),
 	mpTaskGroup(apTaskGroup)
 {

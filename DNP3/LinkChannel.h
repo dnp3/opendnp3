@@ -30,6 +30,7 @@
 #define __LINK_CHANNEL_H_
 
 #include "LinkLayerRouter.h"
+#include <APL/IPhysicalLayerAsync.h>
 
 #include <vector>
 
@@ -37,7 +38,6 @@ namespace apl
 {
 
 class Logger;
-class IPhysicalLayerAsync;
 class IExecutor;
 class AsyncTaskGroup;
 
@@ -63,11 +63,16 @@ class LinkChannel : private LinkLayerRouter
 
 public:
 
-	LinkChannel(Logger* apLogger, const std::string& arName, IExecutor* apExecutor, IPhysicalLayerAsync* apPhys, AsyncTaskGroup* apTaskGroup, millis_t aOpenRetry);
+	LinkChannel(Logger* apLogger, const std::string& arName, IPhysicalLayerAsync* apPhys, AsyncTaskGroup* apTaskGroup, millis_t aOpenRetry);
 
 	void BindStackToChannel(const std::string& arStackName, Stack* apStack, const LinkRoute& arRoute);
 	void RemoveStackFromChannel(const std::string& arStackName);
 	std::vector<std::string> StacksOnChannel();
+
+	IExecutor* GetExecutor()
+	{
+		return mpPhys->GetExecutor();
+	}
 
 	std::string Name() {
 		return mName;

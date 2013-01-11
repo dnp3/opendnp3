@@ -29,15 +29,16 @@
 #include "TransportIntegrationStack.h"
 
 #include <DNP3/LinkRoute.h>
+#include <APL/IPhysicalLayerAsync.h>
 
 namespace apl
 {
 namespace dnp
 {
 
-TransportIntegrationStack::TransportIntegrationStack(Logger* apLogger, IExecutor* apExecutor, IPhysicalLayerAsync* apPhys, LinkConfig aCfg) :
-	mRouter(apLogger, apPhys, apExecutor, 1000),
-	mLink(apLogger, apExecutor, aCfg),
+TransportIntegrationStack::TransportIntegrationStack(Logger* apLogger, IPhysicalLayerAsync* apPhys, LinkConfig aCfg) :
+	mRouter(apLogger, apPhys, 1000),
+	mLink(apLogger, apPhys->GetExecutor(), aCfg),
 	mTransport(apLogger),
 	mUpper(apLogger)
 {

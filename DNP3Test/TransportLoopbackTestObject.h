@@ -31,7 +31,6 @@
 
 #include <APLTestTools/AsyncTestObjectASIO.h>
 
-#include <APL/ASIOExecutor.h>
 #include <APLTestTools/LogTester.h>
 #include <APLTestTools/MockUpperLayer.h>
 
@@ -67,10 +66,7 @@ public:
 
 
 private:
-	Logger* mpLogger;
-
-	boost::asio::strand mStrand;
-	ASIOExecutor mExecutor;
+	Logger* mpLogger;	
 
 
 	LinkConfig mCfgA;

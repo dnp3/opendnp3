@@ -41,7 +41,7 @@ namespace apl
 class PhysLoopback : public PhysicalLayerMonitor
 {
 public:
-	PhysLoopback(Logger*, IPhysicalLayerAsync*, IExecutor*);
+	PhysLoopback(Logger*, IPhysicalLayerAsync*);
 
 private:
 

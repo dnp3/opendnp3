@@ -65,8 +65,6 @@ public:
 
 public:
 	Logger* mpLogger;
-	boost::asio::strand mStrand;
-	ASIOExecutor mExecutor;
 	std::vector<TransportStackPair*> mPairs;
 };
 

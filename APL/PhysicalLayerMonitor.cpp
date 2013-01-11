@@ -42,11 +42,10 @@ using namespace std::chrono;
 namespace apl
 {
 
-PhysicalLayerMonitor::PhysicalLayerMonitor(Logger* apLogger, IPhysicalLayerAsync* apPhys, IExecutor* apExecutor, high_resolution_clock::duration aMinOpenRetry, high_resolution_clock::duration aMaxOpenRetry) :
+PhysicalLayerMonitor::PhysicalLayerMonitor(Logger* apLogger, IPhysicalLayerAsync* apPhys, high_resolution_clock::duration aMinOpenRetry, high_resolution_clock::duration aMaxOpenRetry) :
 	Loggable(apLogger),
 	IHandlerAsync(apLogger),
-	mpPhys(apPhys),
-	mpExecutor(apExecutor),
+	mpPhys(apPhys),	
 	mpOpenTimer(NULL),
 	mpState(MonitorStateInit::Inst()),
 	mFinalShutdown(false),
@@ -54,8 +53,7 @@ PhysicalLayerMonitor::PhysicalLayerMonitor(Logger* apLogger, IPhysicalLayerAsync
 	mMaxOpenRetry(aMaxOpenRetry),
 	mCurrentRetry(aMinOpenRetry)
 {
-	assert(apPhys != NULL);
-	assert(apExecutor != NULL);
+	assert(apPhys != NULL);	
 	mpPhys->SetHandler(this);
 }
 
@@ -103,7 +101,7 @@ void PhysicalLayerMonitor::ChangeState(IMonitorState* apState)
 		
 		// signaling this way makes sure we're free and clear of the event that causes this
 		// before someone else and deletes
-		if(mpState->GetState() == PLS_SHUTDOWN) mpExecutor->Post(std::bind(&PhysicalLayerMonitor::DoFinalShutdown, this));
+		if(mpState->GetState() == PLS_SHUTDOWN) mpPhys->GetExecutor()->Post(std::bind(&PhysicalLayerMonitor::DoFinalShutdown, this));
 	}
 }
 
@@ -184,7 +182,7 @@ void PhysicalLayerMonitor::_OnLowerLayerDown()
 void PhysicalLayerMonitor::StartOpenTimer()
 {
 	assert(mpOpenTimer == NULL);
-	mpOpenTimer = mpExecutor->Start(mCurrentRetry, std::bind(&PhysicalLayerMonitor::OnOpenTimerExpiration, this));
+	mpOpenTimer = mpPhys->GetExecutor()->Start(mCurrentRetry, std::bind(&PhysicalLayerMonitor::OnOpenTimerExpiration, this));
 }
 
 void PhysicalLayerMonitor::CancelOpenTimer()

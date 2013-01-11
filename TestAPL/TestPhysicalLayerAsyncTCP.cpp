@@ -225,12 +225,10 @@ BOOST_AUTO_TEST_CASE(Loopback)
 
 	EventLog log;
 	Logger* pLogger = log.GetLogger(LEV_INFO, "test");
-	AsyncTestObjectASIO test;
-	boost::asio::strand strand(*test.GetService());
-	ASIOExecutor timerSource(&strand);
+	AsyncTestObjectASIO test;	
 	PhysicalLayerAsyncTCPServer server(pLogger->GetSubLogger("server"), test.GetService(), "127.0.0.1", 30000);
 
-	PhysLoopback loopback(pLogger->GetSubLogger("loopback"), &server, &timerSource);
+	PhysLoopback loopback(pLogger->GetSubLogger("loopback"), &server);
 	loopback.Start();
 
 	PhysicalLayerAsyncTCPClient client(pLogger->GetSubLogger("client"), test.GetService(), "127.0.0.1", 30000);

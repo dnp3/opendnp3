@@ -41,14 +41,13 @@ TransportStackPair::TransportStackPair(
     LinkConfig aClientCfg,
     LinkConfig aServerCfg,
     Logger* apLogger,
-    boost::asio::io_service* apService,
-    IExecutor* apExecutor,
+    boost::asio::io_service* apService,    
     boost::uint16_t aPort) :
 
 	mClient(apLogger->GetSubLogger("TCPClient"), apService, "127.0.0.1", aPort),
 	mServer(apLogger->GetSubLogger("TCPServer"), apService, "127.0.0.1", aPort),
-	mClientStack(apLogger->GetSubLogger("ClientStack"), apExecutor, &mClient, aClientCfg),
-	mServerStack(apLogger->GetSubLogger("ServerStack"), apExecutor, &mServer, aServerCfg)
+	mClientStack(apLogger->GetSubLogger("ClientStack"), &mClient, aClientCfg),
+	mServerStack(apLogger->GetSubLogger("ServerStack"), &mServer, aServerCfg)
 {
 
 }

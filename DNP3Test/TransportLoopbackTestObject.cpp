@@ -29,6 +29,7 @@
 #include "TransportLoopbackTestObject.h"
 
 #include <DNP3/LinkRoute.h>
+#include <APL/IPhysicalLayerAsync.h>
 
 #include <sstream>
 
@@ -50,16 +51,14 @@ TransportLoopbackTestObject::TransportLoopbackTestObject(
 
 	LogTester(aImmediate),
 	AsyncTestObjectASIO(apService),
-	mpLogger(mLog.GetLogger(aLevel, "test")),
-	mStrand(*this->GetService()),
-	mExecutor(&mStrand),
+	mpLogger(mLog.GetLogger(aLevel, "test")),		
 	mCfgA(aCfgA),
 	mCfgB(aCfgB),
-	mLinkA(mpLogger, &mExecutor, aCfgA),
-	mLinkB(mpLogger, &mExecutor, aCfgB),
+	mLinkA(mpLogger, apPhys->GetExecutor(), aCfgA),
+	mLinkB(mpLogger, apPhys->GetExecutor(), aCfgB),
 	mTransA(mpLogger),
 	mTransB(mpLogger),
-	mRouter(mpLogger, apPhys, &mExecutor, 1000),
+	mRouter(mpLogger, apPhys, 1000),
 	mUpperA(mpLogger),
 	mUpperB(mpLogger)
 {

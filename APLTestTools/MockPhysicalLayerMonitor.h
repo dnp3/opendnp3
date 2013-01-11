@@ -41,8 +41,7 @@ class MockPhysicalLayerMonitor : public PhysicalLayerMonitor, public IPhysicalLa
 public:
 	MockPhysicalLayerMonitor(	
 								Logger* apLogger, 
-								IPhysicalLayerAsync* apPhys, 
-								IExecutor* apTimer, 
+								IPhysicalLayerAsync* apPhys, 								
 								std::chrono::high_resolution_clock::duration aMinOpenRetry,
 								std::chrono::high_resolution_clock::duration aMaxOpenRetry
 							);

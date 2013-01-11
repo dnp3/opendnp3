@@ -47,7 +47,7 @@ public:
 		log(),
 		exe(),
 		phys(log.GetLogger(LEV_INFO, "phys"), &exe),
-		loopback(log.GetLogger(LEV_INFO, "loopback"), &phys, &exe) {
+		loopback(log.GetLogger(LEV_INFO, "loopback"), &phys) {
 		loopback.Start();
 	}
 

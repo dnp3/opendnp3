@@ -48,7 +48,7 @@ class EnhancedVtoRouter : public VtoRouter
 {
 public:
 
-	EnhancedVtoRouter(const VtoRouterSettings& arSettings, Logger* apLogger, IVtoWriter* apWriter, IPhysicalLayerAsync* apPhysLayer, IExecutor* apExecutor);
+	EnhancedVtoRouter(const VtoRouterSettings& arSettings, Logger* apLogger, IVtoWriter* apWriter, IPhysicalLayerAsync* apPhysLayer);
 
 	// these base functions handle updating the state variables
 	// and inform the remote side of local connection changes
@@ -98,7 +98,7 @@ class ServerSocketVtoRouter : public EnhancedVtoRouter
 {
 public:
 
-	ServerSocketVtoRouter(const VtoRouterSettings& arSettings, Logger* apLogger, IVtoWriter* apWriter, IPhysicalLayerAsync* apPhysLayer, IExecutor* apExecutor);
+	ServerSocketVtoRouter(const VtoRouterSettings& arSettings, Logger* apLogger, IVtoWriter* apWriter, IPhysicalLayerAsync* apPhysLayer);
 
 	void HandleVtoRemoteConnectedChanged();
 	void HandleSetLocalConnected();
@@ -119,7 +119,7 @@ class ClientSocketVtoRouter : public EnhancedVtoRouter
 {
 public:
 
-	ClientSocketVtoRouter(const VtoRouterSettings& arSettings, Logger* apLogger, IVtoWriter* apWriter, IPhysicalLayerAsync* apPhysLayer, IExecutor* apExecutor);
+	ClientSocketVtoRouter(const VtoRouterSettings& arSettings, Logger* apLogger, IVtoWriter* apWriter, IPhysicalLayerAsync* apPhysLayer);
 
 	void HandleVtoRemoteConnectedChanged();
 	void HandleSetLocalConnected();

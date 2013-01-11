@@ -56,8 +56,7 @@ public:
 	        LinkConfig aClientCfg,
 	        LinkConfig aServerCfg,
 	        Logger* apLogger,
-	        boost::asio::io_service* apService,
-	        IExecutor* apExecutor,
+	        boost::asio::io_service* apService,	        
 	        boost::uint16_t aPort);
 
 	void Start();
