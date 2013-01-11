@@ -20,6 +20,9 @@
     <ClCompile Include="XML_DNP3.cpp" />
     <ClCompile Include="XML_TestSet.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\file.licenseheader" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{EFDE32BF-2ECD-4538-AA83-7B9C95B19296}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>

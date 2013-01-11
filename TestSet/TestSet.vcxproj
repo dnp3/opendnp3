@@ -42,6 +42,9 @@
       <Project>{29257c67-4a23-42ca-9c93-434f32020caa}</Project>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\file.licenseheader" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{C24151E9-E6D6-44DB-9A24-566B19B1967F}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>

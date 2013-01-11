@@ -26,6 +26,9 @@
     <ClCompile Include="XMLConversion.cpp" />
     <ClCompile Include="XML_APL.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\file.licenseheader" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{946AB8A3-F333-46EE-A276-749C3E1F2B26}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>

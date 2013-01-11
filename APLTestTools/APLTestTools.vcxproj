@@ -129,6 +129,9 @@
     <ClInclude Include="Timeout.h" />
     <ClInclude Include="WrappedTcpPipe.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\file.licenseheader" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

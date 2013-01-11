@@ -181,6 +181,9 @@
     <ClCompile Include="TrackingTaskGroup.cpp" />
     <ClCompile Include="Util.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\file.licenseheader" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{8A1BA3BA-16AF-4B5A-8C53-A1F456D0DD84}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>

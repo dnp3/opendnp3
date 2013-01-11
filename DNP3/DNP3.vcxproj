@@ -179,6 +179,9 @@
     <ClCompile Include="VtoTransmitTask.cpp" />
     <ClCompile Include="VtoWriter.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\file.licenseheader" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{A736F106-3AE3-495F-B689-6C74EA91B217}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>

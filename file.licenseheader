@@ -1,4 +1,6 @@
 
+extensions: .cs .cpp .h
+
 //
 // Licensed to Green Energy Corp (www.greenenergycorp.com) under one or
 // more contributor license agreements. See the NOTICE file distributed
@@ -26,4 +28,3 @@
 //
 // Contact Automatak, LLC for a commercial license to these modifications
 //
-#ifndef __FILTER
