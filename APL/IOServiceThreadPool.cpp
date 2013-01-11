@@ -48,19 +48,19 @@ IOServiceThreadPool::IOServiceThreadPool(Logger* apLogger, size_t aConcurrency) 
 	assert(aConcurrency > 0);
 	mInfiniteTimer.expires_at(high_resolution_clock::time_point::max());
 	mInfiniteTimer.async_wait(bind(&IOServiceThreadPool::OnTimerExpiration, this, placeholders::_1));
-	for(size_t i=0; i<aConcurrency; ++i) {		
+	for(size_t i=0; i<aConcurrency; ++i) {
 		mThreads.push_back(new thread(bind(&IOServiceThreadPool::Run, this)));
 	}
 }
 
 void IOServiceThreadPool::OnTimerExpiration(const boost::system::error_code& ec)
 {
-	
+	std::cout << "Infinite timer callback" << std::endl;
 }
 
 IOServiceThreadPool::~IOServiceThreadPool()
 {
-	for(auto pThread: mThreads) {		
+	for(auto pThread: mThreads) {
 		delete pThread;
 	}
 }
@@ -68,7 +68,9 @@ IOServiceThreadPool::~IOServiceThreadPool()
 void IOServiceThreadPool::Shutdown()
 {
 	mInfiniteTimer.cancel();
+	std::cout << "Joining on threads" << std::endl;
 	for(auto pThread: mThreads) pThread->join();
+	std::cout << "Done joining on threads" << std::endl;
 }
 
 boost::asio::io_service* IOServiceThreadPool::GetIOService()
@@ -89,6 +91,8 @@ void IOServiceThreadPool::Run()
 		}
 	}
 	while(num > 0);
+
+	std::cout << "clean thread exit" << std::endl;
 
 	mService.reset();
 }

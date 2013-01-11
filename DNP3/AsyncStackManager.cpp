@@ -56,13 +56,13 @@ namespace dnp
 
 AsyncStackManager::AsyncStackManager(Logger* apLogger) :
 	Loggable(apLogger),
-	mPool(apLogger->GetSubLogger("thread-pool"), 1),
+	mPool(apLogger->GetSubLogger("thread-pool"), 4),
 	mMgr(apLogger->GetSubLogger("channels", LEV_WARNING), mPool.GetIOService()),
 	mScheduler(),
-	mVtoManager(apLogger->GetSubLogger("vto"), &mMgr),	
+	mVtoManager(apLogger->GetSubLogger("vto"), &mMgr),
 	mIsShutdown(false)
 {
-	
+
 }
 
 AsyncStackManager::~AsyncStackManager()
@@ -257,13 +257,6 @@ void AsyncStackManager::Shutdown()
 			LOG_BLOCK(LEV_DEBUG, "Done removing Port: " << s);
 		}
 
-		// if we've cleaned up correctly, canceling the infinite timer will cause the thread to stop executing
-		/*
-		mpInfiniteTimer->Cancel();
-		LOG_BLOCK(LEV_DEBUG, "Joining on io_service thread");
-		mThread.WaitForStop();
-		LOG_BLOCK(LEV_DEBUG, "Join complete on io_service thread");
-		*/
 		mPool.Shutdown();
 
 
