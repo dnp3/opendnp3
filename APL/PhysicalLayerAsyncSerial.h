@@ -55,8 +55,7 @@ public:
 
 protected:
 
-	SerialSettings mSettings;
-	boost::asio::io_service* mpService;
+	SerialSettings mSettings;	
 	boost::asio::serial_port mPort;
 };
 }

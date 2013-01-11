@@ -65,20 +65,24 @@ void PhysicalLayerAsyncBaseTCP::DoClose()
 void PhysicalLayerAsyncBaseTCP::DoAsyncRead(uint8_t* apBuffer, size_t aMaxBytes)
 {
 	mSocket.async_read_some(buffer(apBuffer, aMaxBytes),
-	                        std::bind(&PhysicalLayerAsyncBaseTCP::OnReadCallback,
+							mStrand.wrap(
+								std::bind(&PhysicalLayerAsyncBaseTCP::OnReadCallback,
 	                                    this,
 										std::placeholders::_1,
 	                                    apBuffer,
-										std::placeholders::_2));
+										std::placeholders::_2)
+										));
 }
 
 void PhysicalLayerAsyncBaseTCP::DoAsyncWrite(const uint8_t* apBuffer, size_t aNumBytes)
 {
 	async_write(mSocket, buffer(apBuffer, aNumBytes),
-	            std::bind(&PhysicalLayerAsyncBaseTCP::OnWriteCallback,
-	                        this,
-							std::placeholders::_1,
-	                        aNumBytes));
+							mStrand.wrap(
+					            std::bind(&PhysicalLayerAsyncBaseTCP::OnWriteCallback,
+									this,
+									std::placeholders::_1,
+									aNumBytes)
+								));
 }
 
 void PhysicalLayerAsyncBaseTCP::DoOpenFailure()

@@ -34,19 +34,15 @@
 #include <mutex>
 
 #include <APL/Loggable.h>
-#include <APL/ASIOExecutor.h>
-#include <APL/Threadable.h>
-#include <APL/Thread.h>
 #include <APL/DataInterfaces.h>
 #include <APL/IPhysicalLayerObserver.h>
 #include <APL/PhysicalLayerManager.h>
 #include <APL/AsyncTaskScheduler.h>
+#include <APL/IOServiceThreadPool.h>
 
 #include "VtoDataInterface.h"
 #include "LinkRoute.h"
 #include "VtoRouterManager.h"
-
-#include <boost/asio.hpp>
 
 namespace apl
 {
@@ -74,7 +70,7 @@ struct MasterStackConfig;
 	called while the system is running.  Methods should only be called
 	from a single thread at at a time.
 */
-class AsyncStackManager : private Threadable, private Loggable
+class AsyncStackManager : private Loggable
 {
 public:
 	/**
@@ -260,22 +256,10 @@ public:
 	* Synchronously stops all running stacks and ports. Permanently
 	* stops the running background thread.
 	*/
-	void Shutdown();
-
-	/**
-	* The underlying io_service object that drives the stack. This is exposed
-	* so that applications can write applications using
-	* the same asynchronous machinery if desired.
-	*/
-	boost::asio::io_service* GetIOService() {
-		return &mService;
-	}
+	void Shutdown();	
 
 private:
-
-	// Implement IThreadable
-	void Run();
-
+	
 	void OnPreStackDeletion(Stack* apStack);
 
 	// Remove and close a stack, but delegate responsibility for deletion
@@ -284,15 +268,11 @@ private:
 	// Add a stack from to a specified channel
 	void AddStackToChannel(const std::string& arStackName, Stack* apStack, LinkChannel* apChannel, const LinkRoute& arRoute);
 
-	boost::asio::io_service mService;
-	boost::asio::strand mStrand;
-	ASIOExecutor mExecutor;
+	IOServiceThreadPool mPool;
 	
 	PhysicalLayerManager mMgr;
 	AsyncTaskScheduler mScheduler;
-	VtoRouterManager mVtoManager;
-	Thread mThread;
-	ITimer* mpInfiniteTimer;
+	VtoRouterManager mVtoManager;	
 	bool mIsShutdown;
 
 	void ThrowIfAlreadyShutdown();

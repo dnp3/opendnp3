@@ -68,14 +68,14 @@ const boost::uint16_t START_PORT = MACRO_PORT_START;
 const size_t NUM_PAIRS = MACRO_NUM_PAIRS;
 const size_t NUM_POINTS = 500;
 const size_t NUM_CHANGE_SETS = 10;
-const FilterLevel FILTER_LEVEL = LEV_WARNING;
+const FilterLevel FILTER_LEVEL = LEV_INFO;
 
 BOOST_AUTO_TEST_CASE(MasterToSlaveThroughput)
 {
 
 	EventLog log;
 	//LogToStdio::Inst()->SetPrintLocation(true);
-	//log.AddLogSubscriber(LogToStdio::Inst());
+	log.AddLogSubscriber(LogToStdio::Inst());
 
 	IntegrationTest t(log.GetLogger(FILTER_LEVEL, "test"), FILTER_LEVEL, START_PORT,
 	                  NUM_PAIRS, NUM_POINTS);

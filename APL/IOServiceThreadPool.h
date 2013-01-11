@@ -26,53 +26,42 @@
 //
 // Contact Automatak, LLC for a commercial license to these modifications
 //
-#include "PhysicalLayerAsyncTCPClient.h"
+
+#ifndef __IO_SERVICE_THREAD_POOL_
+#define __IO_SERVICE_THREAD_POOL_
+
+#include "Loggable.h"
 
 #include <boost/asio.hpp>
-
-#include <functional>
-#include <string>
-
-#include "LoggableMacros.h"
-#include "Exception.h"
-#include "IHandlerAsync.h"
-#include "Logger.h"
-
-using namespace boost;
-using namespace boost::asio;
-using namespace std;
+#include <boost/asio/high_resolution_timer.hpp>
+#include <thread>
 
 namespace apl
 {
 
-PhysicalLayerAsyncTCPClient::PhysicalLayerAsyncTCPClient(Logger* apLogger, boost::asio::io_service* apIOService, const std::string& arAddress, uint16_t aPort) :
-	PhysicalLayerAsyncBaseTCP(apLogger, apIOService),
-	mRemoteEndpoint(ip::tcp::v4(), aPort)
+class IOServiceThreadPool : private Loggable
 {
-	mRemoteEndpoint.address( ResolveAddress(arAddress) );
-}
+	public:
+	
+	IOServiceThreadPool(Logger* apLogger, size_t aConcurrency);
+	~IOServiceThreadPool();
 
-/* Implement the actions */
-void PhysicalLayerAsyncTCPClient::DoOpen()
-{
-	mSocket.async_connect(mRemoteEndpoint,
-		mStrand.wrap(
-	                      std::bind(&PhysicalLayerAsyncTCPClient::OnOpenCallback,
-	                                  this,
-									  std::placeholders::_1)
-					));
-}
+	boost::asio::io_service* GetIOService();
 
-void PhysicalLayerAsyncTCPClient::DoOpeningClose()
-{
-	this->CloseSocket();
-}
+	void Shutdown();
 
-void PhysicalLayerAsyncTCPClient::DoOpenSuccess()
-{
-	LOG_BLOCK(LEV_INFO, "Connected to: " << mRemoteEndpoint);
-}
+	private:
+
+	void OnTimerExpiration(const boost::system::error_code& ec);
+
+	void Run();
+
+	boost::asio::io_service mService;
+	boost::asio::high_resolution_timer mInfiniteTimer;	
+	std::vector<std::thread*> mThreads;
+};
 
 }
 
-/* vim: set ts=4 sw=4: */
+
+#endif

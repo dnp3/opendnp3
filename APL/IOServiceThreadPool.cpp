@@ -26,53 +26,71 @@
 //
 // Contact Automatak, LLC for a commercial license to these modifications
 //
-#include "PhysicalLayerAsyncTCPClient.h"
 
-#include <boost/asio.hpp>
+#include "IOServiceThreadPool.h"
 
-#include <functional>
-#include <string>
-
-#include "LoggableMacros.h"
-#include "Exception.h"
-#include "IHandlerAsync.h"
 #include "Logger.h"
+#include "LoggableMacros.h"
 
-using namespace boost;
-using namespace boost::asio;
+#include <chrono>
+
 using namespace std;
+using namespace std::chrono;
 
 namespace apl
 {
 
-PhysicalLayerAsyncTCPClient::PhysicalLayerAsyncTCPClient(Logger* apLogger, boost::asio::io_service* apIOService, const std::string& arAddress, uint16_t aPort) :
-	PhysicalLayerAsyncBaseTCP(apLogger, apIOService),
-	mRemoteEndpoint(ip::tcp::v4(), aPort)
+IOServiceThreadPool::IOServiceThreadPool(Logger* apLogger, size_t aConcurrency) :
+	Loggable(apLogger),
+	mService(),
+	mInfiniteTimer(mService)
 {
-	mRemoteEndpoint.address( ResolveAddress(arAddress) );
+	assert(aConcurrency > 0);
+	mInfiniteTimer.expires_at(high_resolution_clock::time_point::max());
+	mInfiniteTimer.async_wait(bind(&IOServiceThreadPool::OnTimerExpiration, this, placeholders::_1));
+	for(size_t i=0; i<aConcurrency; ++i) {		
+		mThreads.push_back(new thread(bind(&IOServiceThreadPool::Run, this)));
+	}
 }
 
-/* Implement the actions */
-void PhysicalLayerAsyncTCPClient::DoOpen()
+void IOServiceThreadPool::OnTimerExpiration(const boost::system::error_code& ec)
 {
-	mSocket.async_connect(mRemoteEndpoint,
-		mStrand.wrap(
-	                      std::bind(&PhysicalLayerAsyncTCPClient::OnOpenCallback,
-	                                  this,
-									  std::placeholders::_1)
-					));
+	
 }
 
-void PhysicalLayerAsyncTCPClient::DoOpeningClose()
+IOServiceThreadPool::~IOServiceThreadPool()
 {
-	this->CloseSocket();
+	for(auto pThread: mThreads) {		
+		delete pThread;
+	}
 }
 
-void PhysicalLayerAsyncTCPClient::DoOpenSuccess()
+void IOServiceThreadPool::Shutdown()
 {
-	LOG_BLOCK(LEV_INFO, "Connected to: " << mRemoteEndpoint);
+	mInfiniteTimer.cancel();
+	for(auto pThread: mThreads) pThread->join();
+}
+
+boost::asio::io_service* IOServiceThreadPool::GetIOService()
+{
+	return &mService;
+}
+
+void IOServiceThreadPool::Run()
+{
+	size_t num = 0;
+
+	do {
+		try {
+			num = mService.run();
+		}
+		catch(const std::exception& ex) {
+			LOG_BLOCK(LEV_ERROR, "Unhandled exception in thread pool: " << ex.what());
+		}
+	}
+	while(num > 0);
+
+	mService.reset();
 }
 
 }
-
-/* vim: set ts=4 sw=4: */

@@ -318,6 +318,9 @@
     <ClInclude Include="IOService.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="IOServiceThreadPool.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ASIOSerialHelpers.cpp">
@@ -516,6 +519,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="IOService.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="IOServiceThreadPool.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

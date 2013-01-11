@@ -54,8 +54,7 @@ PhysicalLayerAsyncSerial::PhysicalLayerAsyncSerial(
     const SerialSettings& arSettings) :
 
 	PhysicalLayerAsyncASIO(apLogger, apIOService),
-	mSettings(arSettings),
-	mpService(apIOService),
+	mSettings(arSettings),	
 	mPort(*apIOService)
 {
 
@@ -71,7 +70,7 @@ void PhysicalLayerAsyncSerial::DoOpen()
 	//use post to simulate an async open operation
 	if(!ec) asio_serial::Configure(mSettings, mPort, ec);
 
-	mpService->post(std::bind(&PhysicalLayerAsyncSerial::OnOpenCallback, this, ec));
+	mExecutor.Post(std::bind(&PhysicalLayerAsyncSerial::OnOpenCallback, this, ec));
 }
 
 void PhysicalLayerAsyncSerial::DoClose()
@@ -89,20 +88,24 @@ void PhysicalLayerAsyncSerial::DoOpenSuccess()
 void PhysicalLayerAsyncSerial::DoAsyncRead(uint8_t* apBuffer, size_t aMaxBytes)
 {
 	mPort.async_read_some(buffer(apBuffer, aMaxBytes),
+						mStrand.wrap(
 	                      std::bind(&PhysicalLayerAsyncSerial::OnReadCallback,
 	                                  this,
 									  std::placeholders::_1,
 	                                  apBuffer,
-									  std::placeholders::_2));
+									  std::placeholders::_2)
+									  ));
 }
 
 void PhysicalLayerAsyncSerial::DoAsyncWrite(const uint8_t* apBuffer, size_t aNumBytes)
 {
 	async_write(mPort, buffer(apBuffer, aNumBytes),
+		mStrand.wrap(
 	            std::bind(&PhysicalLayerAsyncSerial::OnWriteCallback,
 	                        this,
 							std::placeholders::_1,
-	                        aNumBytes));
+	                        aNumBytes)
+					));
 }
 
 }

@@ -56,17 +56,13 @@ namespace dnp
 
 AsyncStackManager::AsyncStackManager(Logger* apLogger) :
 	Loggable(apLogger),
-	mService(),	
-	mStrand(mService),
-	mExecutor(&mStrand),
-	mMgr(apLogger->GetSubLogger("channels", LEV_WARNING), &mService),
+	mPool(apLogger->GetSubLogger("thread-pool"), 1),
+	mMgr(apLogger->GetSubLogger("channels", LEV_WARNING), mPool.GetIOService()),
 	mScheduler(),
-	mVtoManager(apLogger->GetSubLogger("vto"), &mMgr),
-	mThread(this),
-	mpInfiniteTimer(mExecutor.StartInfinite()),
+	mVtoManager(apLogger->GetSubLogger("vto"), &mMgr),	
 	mIsShutdown(false)
 {
-	mThread.Start();
+	
 }
 
 AsyncStackManager::~AsyncStackManager()
@@ -262,10 +258,14 @@ void AsyncStackManager::Shutdown()
 		}
 
 		// if we've cleaned up correctly, canceling the infinite timer will cause the thread to stop executing
+		/*
 		mpInfiniteTimer->Cancel();
 		LOG_BLOCK(LEV_DEBUG, "Joining on io_service thread");
 		mThread.WaitForStop();
 		LOG_BLOCK(LEV_DEBUG, "Join complete on io_service thread");
+		*/
+		mPool.Shutdown();
+
 
 		mIsShutdown = true;
 	}
@@ -304,23 +304,6 @@ LinkChannel* AsyncStackManager::GetChannelMaybeNull(const std::string& arName)
 {
 	ChannelToChannelMap::iterator i = mChannelNameToChannel.find(arName);
 	return (i == mChannelNameToChannel.end()) ? NULL : i->second;
-}
-
-void AsyncStackManager::Run()
-{
-	size_t num = 0;
-
-	do {
-		try {
-			num = mService.run();
-		}
-		catch(const std::exception& ex) {
-			LOG_BLOCK(LEV_ERROR, "Unhandled exception: " << ex.what());
-		}
-	}
-	while(num > 0);
-
-	mService.reset();
 }
 
 Stack* AsyncStackManager::SeverStackFromChannel(const std::string& arStackName)

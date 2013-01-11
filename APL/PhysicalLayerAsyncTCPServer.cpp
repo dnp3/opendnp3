@@ -72,9 +72,11 @@ void PhysicalLayerAsyncTCPServer::DoOpen()
 
 	mAcceptor.async_accept(mSocket,
 	                       mRemoteEndpoint,
-	                       std::bind(&PhysicalLayerAsyncTCPServer::OnOpenCallback,
+						   mStrand.wrap(
+							std::bind(&PhysicalLayerAsyncTCPServer::OnOpenCallback,
 	                                   this,
-									   std::placeholders::_1));	                                   
+									   std::placeholders::_1)
+									   ));	                                   
 }
 
 void PhysicalLayerAsyncTCPServer::CloseAcceptor()
