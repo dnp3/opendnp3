@@ -18,6 +18,7 @@
     <ClCompile Include="AsyncPhysBaseTest.cpp" />
     <ClCompile Include="AsyncSerialTestObject.cpp" />
     <ClCompile Include="TestASIO.cpp" />
+    <ClCompile Include="TestASIOThreadPool.cpp" />
     <ClCompile Include="TestAsyncTask.cpp" />
     <ClCompile Include="TestCastLongLongDouble.cpp" />
     <ClCompile Include="TestChangeBuffer.cpp" />
