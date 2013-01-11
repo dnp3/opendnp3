@@ -1,0 +1,10 @@
+1. Fill in all of the sections marked VENDOR_SPECIFIC for your device. 
+2. Fill in your device database table at the bottom of the file.
+
+Examples, the xsd, etc can be found here:
+
+http://www.dnp.org/Shared%20Documents/6.%20Software%20Tools/DNP3%20Device%20Profile%20XML%20Schema%20XSLT%20v2_07%202010-02-23.zip
+
+Use the freely xsltproc to generate the html output, i.e. from a linux shell:
+
+xsltproc DNP3DeviceProfileJan2010.xslt open_dnp3_slave.xml > open_dnp3_slave.html

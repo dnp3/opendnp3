@@ -1,0 +1,39 @@
+<bibliography id="bibliography">
+<?dbhtml filename="bibliography.html"?>
+<title>References and Resources</title>
+
+<!-- A full bibliography entry would use the following template. -->
+<!--
+<biblioentry>
+<title>
+</title>
+<bibliosource><ulink url="" /></bibliosource>
+<author><firstname></firstname><surname></surname></author>
+<copyright><year></year>
+<holder></holder></copyright>
+<editor><firstname></firstname><surname></surname></editor>
+<isbn></isbn>
+<publisher>
+<publishername></publishername>
+</publisher>
+</biblioentry>
+-->
+
+<bibliodiv id="ref-standards" xreflabel="Standards">
+	<title>Standards</title>
+	
+	<biblioentry xreflabel="DNP3">
+	<title>IEEE Std 1815&trade;-2010: IEEE Standard for Electric
+	Power Systems Communications - Distributed Network Protocol
+	(DNP3)</title>
+	<bibliosource><ulink url="http://www.dnp.org"/></bibliosource>
+	<copyright>
+		<year>2010</year>
+		<holder>The Institute of Electrical and Electronics
+		Engineers, Inc.</holder>
+	</copyright>
+	<isbn>978-0-7381-6313-0</isbn>
+	</biblioentry>
+</bibliodiv>
+
+</bibliography>

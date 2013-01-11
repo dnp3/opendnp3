@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<chapter>
+<title>About DNP3</title>
+
+<sect1>
+<title>What is a telemetry protocol?</title>
+
+<para>
+<link linkend="GlossDNP3">DNP3</link> is classified as a telemetry protocol. As such, it is used in <link linkend="GlossSCADA">SCADA</link> systems to acquire measurements from field devices and perform supervisory control operations on these devices. It is primarily concerned with the reliable delivery of measurement data from an outstation to a master.
+</para>
+
+</sect1>
+
+</chapter>

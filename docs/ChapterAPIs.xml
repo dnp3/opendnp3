@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<chapter>
+<title>Application Programmer Interfaces</title>
+
+<sect1>
+<title>Core API</title>
+
+<para>TBD</para>
+</sect1>
+
+<sect1> 
+<title>Using Virtual Terminal Objects</title>
+
+<para>TBD</para>
+</sect1>
+
+<sect1>
+<title>Routing Virtual Terminal Objects with IP Daemons</title>
+
+<para>TBD</para>
+</sect1>
+
+</chapter>

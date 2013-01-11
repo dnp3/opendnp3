@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<chapter id="ChapterTheoryOfOperation">
+<title>Theory of Operation</title>
+
+<sect1>
+<title>Conformance to DNP3 Standard</title>
+
+<para>
+Table of DNP3 features + OpenDNP3 extensions as rows, and levels 1-4 as
+columns.
+</para>
+</sect1>
+
+<sect1> 
+<title>Standard Application Architecture</title>
+
+<para>TBD</para>
+</sect1>
+
+<sect1>
+<title>Ports, Masters, and Outstations</title>
+
+<para>TBD</para>
+</sect1>
+
+<sect1>
+<title>Point Maps</title>
+
+<para>TBD</para>
+</sect1>
+
+<sect1>
+<title>Virtual Terminal Objects</title>
+
+<para>TBD</para>
+</sect1>
+
+</chapter>

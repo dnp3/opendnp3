@@ -1,0 +1,350 @@
+<?xml version="1.0" encoding="utf-8" ?> 
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+             targetNamespace="APLXML.DNP" 
+             xmlns="APLXML.DNP" 
+             xmlns:apl="APLXML.Base"
+             elementFormDefault="qualified">
+
+
+  <xs:import namespace="APLXML.Base" schemaLocation="APL.xsd"/>
+  <!--
+    Root Element
+  -->
+  <xs:element name="Stack">
+    <xs:complexType>
+      <xs:all>
+        <xs:element ref="LinkLayer" maxOccurs="1" minOccurs="1"/>
+        <xs:element ref="AppLayer" maxOccurs="1" minOccurs="1"/>
+      </xs:all>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="LinkLayer">
+    <xs:complexType>
+      <xs:attribute name="IsMaster" type="xs:boolean" use="required"/>
+      <xs:attribute name="LocalAddress" type="xs:int" use="required"/>
+      <xs:attribute name="RemoteAddress" type="xs:int"  use="required"/>
+      <xs:attribute name="UseConfirmations" type="xs:boolean"  use="required"/>
+      <xs:attribute name="AckTimeoutMS" type="xs:int"  use="required"/>
+      <xs:attribute name="NumRetries" type="xs:int"  use="required"/>      
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="AppLayer">
+    <xs:complexType>
+      <xs:attribute name="TimeoutMS" type="xs:int"  use="required"/>      
+      <xs:attribute name="MaxFragSize" type="xs:int"  use="required"/>
+      <xs:attribute name="NumRetries" type="xs:int"  use="required"/>
+    </xs:complexType>
+  </xs:element>
+
+  <!-- MASTER CONFIGURATION -->
+
+  <xs:element name="Master">
+    <xs:complexType>
+      <xs:all>        
+        <xs:element ref="Stack" maxOccurs="1" minOccurs="1"/>
+        <xs:element name="MasterSettings">
+          <xs:complexType>
+            <xs:attribute name="AllowTimeSync" type="xs:boolean" use="required"/>
+            <xs:attribute name="TaskRetryMS" type="xs:int" use="required"/>
+            <xs:attribute name="IntegrityPeriodMS" type="xs:int" use="required"/>
+            <xs:attribute name="UseNonStandardVtoTransferCode" type="xs:boolean" use="required"/>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="ScanList">
+          <xs:complexType>
+            <xs:sequence minOccurs="0" maxOccurs="unbounded">
+              <xs:element name="ExceptionScan">
+                <xs:complexType>
+                  <xs:attribute name="Class1" type="xs:boolean" use="required" />
+                  <xs:attribute name="Class2" type="xs:boolean" use="required" />
+                  <xs:attribute name="Class3" type="xs:boolean" use="required" />
+                  <xs:attribute name="PeriodMS" type="xs:int" use="required" />
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Unsol">
+          <xs:complexType>
+            <xs:attribute name="DoTask" type ="xs:boolean" use="required" />
+            <xs:attribute name="Enable" type="xs:boolean" use="required" />
+            <xs:attribute name="Class1" type="xs:boolean" use="required" />
+            <xs:attribute name="Class2" type="xs:boolean" use="required" />
+            <xs:attribute name="Class3" type="xs:boolean" use="required" />
+          </xs:complexType>
+        </xs:element>
+        <xs:element ref="VtoPorts" maxOccurs="1" minOccurs="1"/>
+      </xs:all>
+    </xs:complexType>
+  </xs:element>
+
+  <!-- Slave Configuration -->
+
+  <xs:element name="Slave">
+    <xs:complexType>
+      <xs:all>
+        <xs:element ref="Stack" maxOccurs="1" minOccurs="1"/>
+        
+        <xs:element name="SlaveConfig">
+          <xs:complexType>
+            <xs:all>
+              <xs:element ref="StaticRsp" maxOccurs="1" minOccurs="1"/>
+              <xs:element ref="EventRsp" maxOccurs="1" minOccurs="1"/>
+              <xs:element name="TimeIINTask">
+                <xs:complexType>
+                  <xs:attribute name="DoTask" type ="xs:boolean" use="required" />
+                  <xs:attribute name="PeriodMS" type="xs:int" use="required" />
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="UnsolDefaults">
+                <xs:complexType>
+                  <xs:attribute name="DoClass1" type="xs:boolean" use="required" />
+                  <xs:attribute name="DoClass2" type="xs:boolean" use="required" />
+                  <xs:attribute name="DoClass3" type="xs:boolean" use="required" />
+                  <xs:attribute name="PackDelayMS" type="xs:int" use="required" />
+                  <xs:attribute name="RetryMS" type="xs:int" use="required" />
+                </xs:complexType>
+              </xs:element>
+              
+            </xs:all>
+            <xs:attribute name="MaxBinaryEvents" type="xs:int" use="required" />
+            <xs:attribute name="MaxAnalogEvents" type="xs:int" use="required" />
+            <xs:attribute name="MaxCounterEvents" type="xs:int" use="required" />            
+          </xs:complexType>
+          
+        </xs:element>
+        <xs:element ref="VtoPorts" maxOccurs="1" minOccurs="1"/>
+      </xs:all>
+      
+    </xs:complexType>
+  </xs:element>
+
+  <!-- 
+    Grouped Elements 
+  -->
+
+  <xs:element name="StaticRsp">
+    <xs:complexType>
+      <xs:all>
+
+        <xs:element ref="BinaryGrpVar" minOccurs="1" maxOccurs="1" />
+        <xs:element ref="AnalogGrpVar" minOccurs="1" maxOccurs="1" />
+        <xs:element ref="CounterGrpVar" minOccurs="1" maxOccurs="1" />
+        <xs:element ref="SetpointStatusGrpVar" minOccurs="1" maxOccurs="1" />
+
+      </xs:all>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="EventRsp">
+    <xs:complexType>
+      <xs:all>
+        <xs:element ref="BinaryGrpVar" minOccurs="1" maxOccurs="1" />
+        <xs:element ref="AnalogGrpVar" minOccurs="1" maxOccurs="1" />
+        <xs:element ref="CounterGrpVar" minOccurs="1" maxOccurs="1" />
+      </xs:all>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:complexType name="GrpVar">
+    <xs:attribute name="Grp" type="xs:int" use="required"/>
+    <xs:attribute name="Var" type="xs:int" use="required"/>
+  </xs:complexType>
+
+  <xs:element name="BinaryGrpVar">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="GrpVar"> </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="AnalogGrpVar">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="GrpVar"> </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="CounterGrpVar">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="GrpVar"> </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="SetpointStatusGrpVar">
+    <xs:complexType>
+      <xs:complexContent>
+        <xs:extension base="GrpVar"> </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+
+
+
+  <!-- Device Template 
+    
+    Defines what measurements and controls a DNP device exposes.
+    Also gives details about it's configuration.
+    
+  -->
+
+  <xs:element name="DeviceTemplate">
+    <xs:complexType>
+      <xs:all>
+        <xs:element ref="BinaryData" maxOccurs="1" />
+        <xs:element ref="AnalogData" maxOccurs="1" />
+        <xs:element ref="CounterData" maxOccurs="1" />
+        <xs:element ref="SetpointStatusData" maxOccurs="1" />
+        <xs:element ref="ControlStatusData" maxOccurs="1" />
+        <xs:element ref="SetpointData" maxOccurs="1" />
+        <xs:element ref="ControlData" maxOccurs="1" />
+      </xs:all>
+      <xs:attribute name="TemplateName" type="xs:string" use="required"/>
+    </xs:complexType>
+  </xs:element>
+
+  <!-- 
+    Grouped Elements 
+  -->
+  <xs:element name="BinaryData">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="Binary" maxOccurs="unbounded" minOccurs="0"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="AnalogData">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="Analog" maxOccurs="unbounded" minOccurs="0"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="CounterData">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="Counter" maxOccurs="unbounded" minOccurs="0"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SetpointStatusData">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="SetpointStatus" maxOccurs="unbounded" minOccurs="0"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ControlStatusData">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="ControlStatus" maxOccurs="unbounded" minOccurs="0"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ControlData">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="Control" maxOccurs="unbounded" minOccurs="0"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SetpointData">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="Setpoint" maxOccurs="unbounded" minOccurs="0"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+
+
+  <!-- 
+    type definitions the types that contain a value, each type "subclasses" datapoint 
+    for the common values (class and pointname)
+  -->
+
+  <xs:element name="Binary">
+    <xs:complexType>
+      <xs:attribute name="Index" type="xs:int" use="required" />
+      <xs:attribute name="Name" type="xs:string" use="required"/>
+      <xs:attribute name="ClassGroup" type ="xs:int" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Analog">
+    <xs:complexType>
+      <xs:attribute name="Index" type="xs:int" use="required" />
+      <xs:attribute name="Name" type="xs:string" use="required"/>
+      <xs:attribute name="ClassGroup" type ="xs:int" use="required"/>
+      <xs:attribute name="Deadband" type="xs:int" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Counter">
+    <xs:complexType>
+      <xs:attribute name="Index" type="xs:int" use="required" />
+      <xs:attribute name="ClassGroup" type ="xs:int" use="required"/>
+      <xs:attribute name="Name" type="xs:string" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ControlStatus">
+    <xs:complexType>
+      <xs:attribute name="Index" type="xs:int" use="required" />
+      <xs:attribute name="Name" type="xs:string" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SetpointStatus">
+    <xs:complexType>
+      <xs:attribute name="Index" type="xs:int" use="required" />
+      <xs:attribute name="Name" type="xs:string" use="required"/>
+    </xs:complexType>
+  </xs:element>
+
+
+  <!-- 
+    type definitions for the control types
+  -->
+
+  <xs:element name="Setpoint">
+    <xs:complexType>
+      <xs:attribute name="Index" type="xs:int" use="required" />
+      <xs:attribute name="Name" type="xs:string" use="required"/>
+      <xs:attribute name="ControlMode" type="xs:string" use="required"/>
+      <xs:attribute name="SelectTimeoutMS" type="xs:int" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Control">
+    <xs:complexType>
+      <xs:attribute name="Index" type="xs:int" use="required" />
+      <xs:attribute name="Name" type="xs:string" use="required"/>
+      <xs:attribute name="ControlMode" type="xs:string" use="required"/>
+      <xs:attribute name="SelectTimeoutMS" type="xs:int" use="required"/>
+    </xs:complexType>
+  </xs:element>
+
+  <!-- 
+    type definitions for the vto port configurations
+  -->
+
+    <xs:element name="VtoPorts">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="VtoPort" maxOccurs="unbounded" minOccurs="0" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="VtoPort">
+    <xs:complexType>
+      <xs:attribute name="PhysicalLayer" type="xs:string" use="required" />
+      <xs:attribute name="Index" type="xs:int" use="required" />
+      <xs:attribute name="StartLocal" type ="xs:boolean" use="required" />
+      <xs:attribute name="OpenRetry" type ="xs:int" use="required" />
+    </xs:complexType>
+  </xs:element>
+
+</xs:schema>

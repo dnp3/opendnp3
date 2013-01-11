@@ -1,0 +1,135 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{E9AA4CCD-0220-4163-A2C1-41CC1E21E0AB}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v110</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v110</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\config\local_dir.props" />
+    <Import Project="..\config\boost_includes.props" />
+    <Import Project="..\config\common_boost_defines.props" />
+    <Import Project="..\config\output_dirs.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\config\local_dir.props" />
+    <Import Project="..\config\boost_includes.props" />
+    <Import Project="..\config\common_boost_defines.props" />
+    <Import Project="..\config\output_dirs.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <Optimization>Disabled</Optimization>
+    </ClCompile>
+    <Link>
+      <TargetMachine>MachineX86</TargetMachine>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <TargetMachine>MachineX86</TargetMachine>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="AsyncPhysTestObject.cpp" />
+    <ClCompile Include="AsyncTestObject.cpp" />
+    <ClCompile Include="AsyncTestObjectASIO.cpp" />
+    <ClCompile Include="BufferHelpers.cpp" />
+    <ClCompile Include="BufferTestObject.cpp" />
+    <ClCompile Include="LogTester.cpp" />
+    <ClCompile Include="LoopbackPhysicalLayerAsync.cpp" />
+    <ClCompile Include="MockExecutor.cpp" />
+    <ClCompile Include="MockLowerLayer.cpp" />
+    <ClCompile Include="MockPhysicalLayerAsync.cpp" />
+    <ClCompile Include="MockPhysicalLayerAsyncTS.cpp" />
+    <ClCompile Include="MockPhysicalLayerMonitor.cpp" />
+    <ClCompile Include="MockPhysicalLayerSource.cpp" />
+    <ClCompile Include="MockResponseAcceptor.cpp" />
+    <ClCompile Include="MockUpperLayer.cpp" />
+    <ClCompile Include="PhysicalLayerWrapper.cpp" />
+    <ClCompile Include="StopWatch.cpp" />
+    <ClCompile Include="Timeout.cpp" />
+    <ClCompile Include="WrappedTcpPipe.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="AsyncPhysTestObject.h" />
+    <ClInclude Include="AsyncTestObject.h" />
+    <ClInclude Include="AsyncTestObjectASIO.h" />
+    <ClInclude Include="BufferHelpers.h" />
+    <ClInclude Include="BufferTestObject.h" />
+    <ClInclude Include="FanoutDataObserver.h" />
+    <ClInclude Include="LogTester.h" />
+    <ClInclude Include="LoopbackPhysicalLayerAsync.h" />
+    <ClInclude Include="MockCommandAcceptor.h" />
+    <ClInclude Include="MockCommandHandler.h" />
+    <ClInclude Include="MockExecutor.h" />
+    <ClInclude Include="MockLogSubscriber.h" />
+    <ClInclude Include="MockLowerLayer.h" />
+    <ClInclude Include="MockNodeSaver.h" />
+    <ClInclude Include="MockNotifier.h" />
+    <ClInclude Include="MockPhysicalLayerAsync.h" />
+    <ClInclude Include="MockPhysicalLayerAsyncTS.h" />
+    <ClInclude Include="MockPhysicalLayerMonitor.h" />
+    <ClInclude Include="MockPhysicalLayerSource.h" />
+    <ClInclude Include="MockResponseAcceptor.h" />
+    <ClInclude Include="MockUpperLayer.h" />
+    <ClInclude Include="PhysicalLayerWrapper.h" />
+    <ClInclude Include="PhysicalLayerWrapperFactory.h" />
+    <ClInclude Include="StopWatch.h" />
+    <ClInclude Include="TestHelpers.h" />
+    <ClInclude Include="TestTypedefs.h" />
+    <ClInclude Include="Timeout.h" />
+    <ClInclude Include="WrappedTcpPipe.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

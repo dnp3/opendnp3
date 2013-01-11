@@ -1,0 +1,116 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{0C5ACFBA-897E-48FD-84AB-494338934B86}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DNP3CLRControlLibrary</RootNamespace>
+    <AssemblyName>DNP3CLRControlLibrary</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="FilterLevelComboBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="FlickerFreeListView.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="IMeasurementSource.cs" />
+    <Compile Include="LinkLayerSettingsControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="LinkLayerSettingsControl.Designer.cs" />
+    <Compile Include="LogControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="LogControl.Designer.cs" />
+    <Compile Include="MasterDataDisplay.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="MasterDataDisplay.Designer.cs" />
+    <Compile Include="MasterSettingsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MasterSettingsForm.Designer.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SerialSettingsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SerialSettingsForm.Designer.cs" />
+    <Compile Include="SetpointForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SetpointForm.Designer.cs" />
+    <Compile Include="StackBrowser.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="StackBrowser.Designer.cs" />
+    <Compile Include="StackDisplayControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="StackDisplayControl.Designer.cs" />
+    <Compile Include="TcpClientSettings.cs" />
+    <Compile Include="TcpSettingsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TcpSettingsForm.Designer.cs" />
+    <Service Include="{94E38DFF-614B-4cbd-B67C-F211BB35CE8B}" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="LinkLayerSettingsControl.resx" />
+    <EmbeddedResource Include="LogControl.resx" />
+    <EmbeddedResource Include="MasterDataDisplay.resx" />
+    <EmbeddedResource Include="MasterSettingsForm.resx" />
+    <EmbeddedResource Include="SerialSettingsForm.resx" />
+    <EmbeddedResource Include="SetpointForm.resx" />
+    <EmbeddedResource Include="StackBrowser.resx" />
+    <EmbeddedResource Include="StackDisplayControl.resx" />
+    <EmbeddedResource Include="TcpSettingsForm.resx" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DNP3CLRInterface\DNP3CLRInterface.csproj">
+      <Project>{5f06c7be-3107-4b3e-8559-e5e1bb4008b5}</Project>
+      <Name>DNP3CLRInterface</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

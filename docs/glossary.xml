@@ -1,0 +1,27 @@
+<glossary id="glossary"><?dbhtml filename="gloss.html"?>
+
+<title>Glossary</title>
+
+<abstract>
+<para>This is a glossary.</para>
+</abstract>
+
+<glossdiv><title>D</title>
+
+<glossentry id="GlossDNP3">
+	<glossterm>DNP3</glossterm>
+	<glossdef>
+		<para>The Distributed Network Protocol version 3, as defined in IEEE Std 1815&trade;-2010</para>
+	</glossdef>
+</glossentry>
+
+<glossentry id="GlossSCADA">
+	<glossterm>SCADA</glossterm>
+	<glossdef>
+		<para>Supervisory Control and Data Aquistion</para>
+	</glossdef>
+</glossentry>
+
+</glossdiv>
+ 
+</glossary>

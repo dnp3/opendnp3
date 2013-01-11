@@ -1,0 +1,255 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ASIOExecutor.h" />
+    <ClInclude Include="ASIOSerialHelpers.h" />
+    <ClInclude Include="AsyncLayerInterfaces.h" />
+    <ClInclude Include="AsyncResult.h" />
+    <ClInclude Include="AsyncTaskBase.h" />
+    <ClInclude Include="AsyncTaskContinuous.h" />
+    <ClInclude Include="AsyncTaskGroup.h" />
+    <ClInclude Include="AsyncTaskInterfaces.h" />
+    <ClInclude Include="AsyncTaskNonPeriodic.h" />
+    <ClInclude Include="AsyncTaskPeriodic.h" />
+    <ClInclude Include="AsyncTaskScheduler.h" />
+    <ClInclude Include="BaseDataTypes.h" />
+    <ClInclude Include="BoundNotifier.h" />
+    <ClInclude Include="CachedLogVariable.h" />
+    <ClInclude Include="ChangeBuffer.h" />
+    <ClInclude Include="CommandInterfaces.h" />
+    <ClInclude Include="CommandManager.h" />
+    <ClInclude Include="CommandQueue.h" />
+    <ClInclude Include="CommandResponseQueue.h" />
+    <ClInclude Include="CommandTypes.h" />
+    <ClInclude Include="CopyableBuffer.h" />
+    <ClInclude Include="CRC.h" />
+    <ClInclude Include="DataInterfaces.h" />
+    <ClInclude Include="DataTypes.h" />
+    <ClInclude Include="DeleteAny.h" />
+    <ClInclude Include="Exception.h" />
+    <ClInclude Include="FlexibleDataObserver.h" />
+    <ClInclude Include="GetKeys.h" />
+    <ClInclude Include="IEventLock.h" />
+    <ClInclude Include="IExecutor.h" />
+    <ClInclude Include="IHandlerAsync.h" />
+    <ClInclude Include="INotifier.h" />
+    <ClInclude Include="IOService.h" />
+    <ClInclude Include="IOServiceThread.h" />
+    <ClInclude Include="IPhysicalLayerAsync.h" />
+    <ClInclude Include="IPhysicalLayerObserver.h" />
+    <ClInclude Include="IPhysicalLayerSource.h" />
+    <ClInclude Include="ISubject.h" />
+    <ClInclude Include="ITimer.h" />
+    <ClInclude Include="ITimeSource.h" />
+    <ClInclude Include="ITransactable.h" />
+    <ClInclude Include="Location.h" />
+    <ClInclude Include="Log.h" />
+    <ClInclude Include="LogBase.h" />
+    <ClInclude Include="LogEntry.h" />
+    <ClInclude Include="LogEntryCircularBuffer.h" />
+    <ClInclude Include="Loggable.h" />
+    <ClInclude Include="LoggableMacros.h" />
+    <ClInclude Include="Logger.h" />
+    <ClInclude Include="LogToFile.h" />
+    <ClInclude Include="LogToStdio.h" />
+    <ClInclude Include="LogTypes.h" />
+    <ClInclude Include="LogVar.h" />
+    <ClInclude Include="LowerLayerToPhysAdapter.h" />
+    <ClInclude Include="MetricBuffer.h" />
+    <ClInclude Include="MultiplexingDataObserver.h" />
+    <ClInclude Include="Notifier.h" />
+    <ClInclude Include="PackingTemplates.h" />
+    <ClInclude Include="PackingUnpacking.h" />
+    <ClInclude Include="Parsing.h" />
+    <ClInclude Include="PhysicalLayerAsyncASIO.h" />
+    <ClInclude Include="PhysicalLayerAsyncBase.h" />
+    <ClInclude Include="PhysicalLayerAsyncBaseTCP.h" />
+    <ClInclude Include="PhysicalLayerAsyncSerial.h" />
+    <ClInclude Include="PhysicalLayerAsyncTCPClient.h" />
+    <ClInclude Include="PhysicalLayerAsyncTCPServer.h" />
+    <ClInclude Include="PhysicalLayerFactory.h" />
+    <ClInclude Include="PhysicalLayerFunctors.h" />
+    <ClInclude Include="PhysicalLayerInstance.h" />
+    <ClInclude Include="PhysicalLayerManager.h" />
+    <ClInclude Include="PhysicalLayerMap.h" />
+    <ClInclude Include="PhysicalLayerMonitor.h" />
+    <ClInclude Include="PhysicalLayerMonitorStates.h" />
+    <ClInclude Include="PhysicalLayerStates.h" />
+    <ClInclude Include="PhysLayerSettings.h" />
+    <ClInclude Include="PhysLoopback.h" />
+    <ClInclude Include="PostingNotifier.h" />
+    <ClInclude Include="PostingNotifierSource.h" />
+    <ClInclude Include="ProtocolUtil.h" />
+    <ClInclude Include="QualityConverter.h" />
+    <ClInclude Include="QualityMasks.h" />
+    <ClInclude Include="QueueingFDO.h" />
+    <ClInclude Include="Random.h" />
+    <ClInclude Include="RandomDouble.h" />
+    <ClInclude Include="RandomizedBuffer.h" />
+    <ClInclude Include="SerialTypes.h" />
+    <ClInclude Include="ShiftableBuffer.h" />
+    <ClInclude Include="Singleton.h" />
+    <ClInclude Include="SubjectBase.h" />
+    <ClInclude Include="Thread.h" />
+    <ClInclude Include="Threadable.h" />
+    <ClInclude Include="ThreadBase.h" />
+    <ClInclude Include="ThreadBoost.h" />
+    <ClInclude Include="TimeBase.h" />
+    <ClInclude Include="TimerASIO.h" />
+    <ClInclude Include="TimeSource.h" />
+    <ClInclude Include="ToHex.h" />
+    <ClInclude Include="TrackingTaskGroup.h" />
+    <ClInclude Include="Types.h" />
+    <ClInclude Include="Uncopyable.h" />
+    <ClInclude Include="Util.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="ASIOExecutor.cpp" />
+    <ClCompile Include="ASIOSerialHelpers.cpp" />
+    <ClCompile Include="AsyncLayerInterfaces.cpp" />
+    <ClCompile Include="AsyncResult.cpp" />
+    <ClCompile Include="AsyncTaskBase.cpp" />
+    <ClCompile Include="AsyncTaskContinuous.cpp" />
+    <ClCompile Include="AsyncTaskGroup.cpp" />
+    <ClCompile Include="AsyncTaskNonPeriodic.cpp" />
+    <ClCompile Include="AsyncTaskPeriodic.cpp" />
+    <ClCompile Include="AsyncTaskScheduler.cpp" />
+    <ClCompile Include="BaseDataTypes.cpp" />
+    <ClCompile Include="ChangeBuffer.cpp" />
+    <ClCompile Include="CommandManager.cpp" />
+    <ClCompile Include="CommandQueue.cpp" />
+    <ClCompile Include="CommandResponseQueue.cpp" />
+    <ClCompile Include="CommandTypes.cpp" />
+    <ClCompile Include="CopyableBuffer.cpp" />
+    <ClCompile Include="CRC.cpp" />
+    <ClCompile Include="Exception.cpp" />
+    <ClCompile Include="FlexibleDataObserver.cpp" />
+    <ClCompile Include="IExecutor.cpp" />
+    <ClCompile Include="IHandlerAsync.cpp" />
+    <ClCompile Include="IOService.cpp" />
+    <ClCompile Include="IOServiceThread.cpp" />
+    <ClCompile Include="ITimeSource.cpp" />
+    <ClCompile Include="Log.cpp" />
+    <ClCompile Include="LogEntry.cpp" />
+    <ClCompile Include="LogEntryCircularBuffer.cpp" />
+    <ClCompile Include="Loggable.cpp" />
+    <ClCompile Include="Logger.cpp" />
+    <ClCompile Include="LogToFile.cpp" />
+    <ClCompile Include="LogToStdio.cpp" />
+    <ClCompile Include="LogTypes.cpp" />
+    <ClCompile Include="LowerLayerToPhysAdapter.cpp" />
+    <ClCompile Include="MetricBuffer.cpp" />
+    <ClCompile Include="MultiplexingDataObserver.cpp" />
+    <ClCompile Include="PackingUnpacking.cpp" />
+    <ClCompile Include="Parsing.cpp" />
+    <ClCompile Include="PhysicalLayerAsyncBase.cpp" />
+    <ClCompile Include="PhysicalLayerAsyncBaseTCP.cpp" />
+    <ClCompile Include="PhysicalLayerAsyncSerial.cpp" />
+    <ClCompile Include="PhysicalLayerAsyncTCPClient.cpp" />
+    <ClCompile Include="PhysicalLayerAsyncTCPServer.cpp" />
+    <ClCompile Include="PhysicalLayerFactory.cpp" />
+    <ClCompile Include="PhysicalLayerInstance.cpp" />
+    <ClCompile Include="PhysicalLayerManager.cpp" />
+    <ClCompile Include="PhysicalLayerMap.cpp" />
+    <ClCompile Include="PhysicalLayerMonitor.cpp" />
+    <ClCompile Include="PhysicalLayerMonitorStates.cpp" />
+    <ClCompile Include="PhysicalLayerStates.cpp" />
+    <ClCompile Include="PhysLoopback.cpp" />
+    <ClCompile Include="PostingNotifier.cpp" />
+    <ClCompile Include="PostingNotifierSource.cpp" />
+    <ClCompile Include="ProtocolUtil.cpp" />
+    <ClCompile Include="QualityConverter.cpp" />
+    <ClCompile Include="RandomizedBuffer.cpp" />
+    <ClCompile Include="ShiftableBuffer.cpp" />
+    <ClCompile Include="Threadable.cpp" />
+    <ClCompile Include="ThreadBase.cpp" />
+    <ClCompile Include="ThreadBoost.cpp" />
+    <ClCompile Include="TimeBase.cpp" />
+    <ClCompile Include="TimerASIO.cpp" />
+    <ClCompile Include="TimeSource.cpp" />
+    <ClCompile Include="ToHex.cpp" />
+    <ClCompile Include="TrackingTaskGroup.cpp" />
+    <ClCompile Include="Util.cpp" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{8A1BA3BA-16AF-4B5A-8C53-A1F456D0DD84}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>APL</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v110</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v110</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\config\boost_includes.props" />
+    <Import Project="..\config\common_boost_defines.props" />
+    <Import Project="..\config\output_dirs.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\config\boost_includes.props" />
+    <Import Project="..\config\common_boost_defines.props" />
+    <Import Project="..\config\output_dirs.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup />
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MultiProcessorCompilation>false</MultiProcessorCompilation>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MultiProcessorCompilation>false</MultiProcessorCompilation>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

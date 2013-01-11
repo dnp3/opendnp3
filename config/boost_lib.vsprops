@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<VisualStudioPropertySheet
+	ProjectType="Visual C++"
+	Version="8.00"
+	Name="boost_lib"
+	>
+	<Tool
+		Name="VCLinkerTool"
+		AdditionalLibraryDirectories="$(TOOLS_HOME)\boostlib\boost_1_47_0\windows"
+	/>
+</VisualStudioPropertySheet>

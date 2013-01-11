@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN" "http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd" [
+
+<!ENTITY ChapterAboutDNP3 SYSTEM "ChapterAboutDNP3.xml">
+<!ENTITY ChapterTheoryOfOperation SYSTEM "ChapterTheoryOfOperation.xml">
+<!ENTITY ChapterAPIs SYSTEM "ChapterAPIs.xml">
+<!ENTITY ChapterUserApplications SYSTEM "ChapterUserApplications.xml">
+<!ENTITY ChapterExamples SYSTEM "ChapterExamples.xml">
+<!ENTITY app1 SYSTEM "app1.xml">
+<!ENTITY fdl SYSTEM "fdl.xml">
+<!ENTITY gloss SYSTEM "glossary.xml">
+<!ENTITY biblio SYSTEM "bibliography.xml">
+]>
+
+<book>
+
+<bookinfo>
+	<title>OpenDNP3 Library</title>
+	<subtitle>The Definitive Guide</subtitle>
+
+	<authorgroup>
+		<author>
+			<firstname>Adam</firstname>
+			<surname>Crain</surname>
+			<affiliation>
+				<orgname>Green Energy Corp.</orgname>
+				<address>
+					<email>jadamcrain@gmail.com</email>
+				</address>
+			</affiliation>
+		</author>
+		<author>
+			<firstname>Chris</firstname>
+			<surname>Verges</surname>
+			<affiliation>
+				<address>
+					<email>chris.verges@gmail.com</email>
+				</address>
+			</affiliation>
+		</author>
+	</authorgroup>
+
+	<edition>1st</edition>
+
+	<keywordset>
+		<keyword>DNP</keyword>
+		<keyword>DNP3</keyword>
+	</keywordset>
+</bookinfo>
+
+<preface>
+
+<title>Introduction</title>
+
+<section id="intro_01">
+<title>Why was this document written?</title>
+
+<para>
+The OpenDNP3 library and testset is a portable, scalable, and rigorously
+tested implementation of the DNP3 stack written in C++ and provided by
+Green Energy Corp. to the community under the
+<ulink url="http://apache.org/licenses/LICENSE-2.0">Apache 2.0
+license</ulink>.  The library is optimized for massively parallel front
+end processor implementations and slave device simulations, although it
+has been verified to perform very well on embedded linux ARM
+architectures. It includes a command line master/slave test set.
+</para>
+
+<para>
+This book was written for system implemeters who want to either use or
+modify the OpenDNP3 library.  It explains the theory of operation behind
+the stack as well as details the application interfaces that are
+available.
+</para>
+</section>
+
+<section id="intro_02">
+<title>Audience</title>
+
+<para>
+The intended audience of this book are software developers who are (1)
+using the OpenDNP3 library with their proprietary applications or (2)
+modifying the OpenDNP3 library itself to add additional features or fix
+bugs.  As such, a basic level of knowledge is presumed about the
+following topics: C++ and UML class and sequence diagrams.
+</para>
+</section>
+
+<section id="intro_03">
+<title>New versions of this doc</title>
+
+<para>
+The newest version of this document can be found alongside the latest
+source code of the OpenDNP3 library, available at the
+<ulink url="http://code.google.com/p/dnp3">OpenDNP3 project</ulink>
+webpage.
+</para>
+</section>
+
+<section id="intro_04">
+<title>Revision History</title>
+<para>
+<revhistory>
+	<revision>
+		<revnumber>0.1</revnumber>
+		<date>2011-07-21</date>
+		<authorinitials>CV</authorinitials>
+		<revremark>Initial release of skeleton</revremark>
+	</revision>
+</revhistory>
+</para>
+</section>
+
+<section id="intro_05">
+<title>Feedback</title>
+
+<para>
+Missing information, missing links, missing characters?  Mail it to the
+maintainer of this document:
+<address><email>jadamcrain@gmail.com</email></address>
+</para>
+</section>
+
+<section id="intro_06">
+<title>Copyright information</title>
+
+<para>Copyright 2011 Green Energy Corp.</para>
+
+<para>
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.1 or
+any later version published by the Free Software Foundation; with no
+Invariant Sections, with no Front-Cover Texts and no Back-Cover Texts.
+A copy of the license is included in <xref linkend="fdl" /> entitled
+<quote>GNU Free Documentation License</quote>.
+</para>
+
+<para>
+The author and publisher have made every effort in the preparation of
+this book to ensure the accuracy of the information.  However, the
+information contained in this book is offered without warranty, either
+express or implied.  Neither the author nor the publisher nor any dealer
+or distributor will be held liable for any damages caused or alleged to
+be caused either directly or indirectly by this book.
+</para>
+
+<para>
+The logos, trademarks and symbols used in this book are the properties
+of their respective owners.
+</para>
+</section>
+
+<section id="intro_07">
+<title>Conventions used in this document</title>
+<para>
+The following typographic and usage conventions occur in this text:
+</para>
+
+<table id="conventions" frame="all"><title>Typographic and usage conventions</title>
+<tgroup cols="2" align="left" colsep="1" rowsep="1">
+
+<thead>
+<row><entry>Text type</entry><entry>Meaning</entry></row>
+</thead>
+
+<tbody>
+<row>
+<entry><quote>Quoted text</quote></entry>
+<entry>Quotes from people, quoted computer output.</entry>
+</row>
+<row>
+<entry><screen>terminal view</screen></entry>
+<entry>Literal computer input and output captured from the terminal, 
+usually rendered with a light grey background.</entry>
+</row>
+<row>
+<entry><command>command</command></entry>
+<entry>Name of a command that can be entered on the command line.</entry>
+</row>
+<row>
+<entry><varname>VARIABLE</varname></entry>
+<entry>Name of a variable or pointer to content of a variable, as in 
+<varname>$VARNAME</varname>.</entry>
+</row>
+<row>
+<entry><option>option</option></entry>
+<entry>Option to a command, as in <quote>the <option>-a</option> option to the 
+<command>ls</command> command</quote>.</entry>
+</row>
+<row>
+<entry><parameter>argument</parameter></entry>
+<entry>Argument to a command, as in <quote>read 
+<command>man <parameter>ls</parameter></command></quote>.</entry>
+</row>
+<row>
+<entry><cmdsynopsis><command>command <option>options</option> 
+<parameter>arguments</parameter></command></cmdsynopsis></entry>
+<entry>Command synopsis or general usage, on a separated line.</entry>
+</row>
+<row>
+<entry><filename>filename</filename></entry>
+<entry>Name of a file or directory, for example <quote>Change to the 
+<filename>/usr/bin</filename> directory.</quote></entry>
+</row>
+<row>
+<entry><keycap>Key</keycap></entry>
+<entry>Keys to hit on the keyboard, such as <quote>type <keycap>Q</keycap> 
+to quit</quote>.</entry>
+</row>
+<row>
+<entry><guibutton>Button</guibutton></entry>
+<entry>Graphical button to click, like the <guibutton>OK</guibutton> 
+button.</entry>
+</row> 
+<row>
+<entry><menuchoice><guimenu>Menu</guimenu><guimenuitem>Choice</guimenuitem>
+</menuchoice></entry>
+<entry>Choice to select from a graphical menu, for instance: <quote>Select 
+<menuchoice><guimenu>Help</guimenu><guimenuitem>About Mozilla</guimenuitem>
+</menuchoice> in your browser.</quote></entry>
+</row>
+<row>
+<entry><emphasis>Terminology</emphasis></entry>
+<entry>Important term or concept: <quote>The Linux <emphasis>kernel</emphasis> 
+is the heart of the system.</quote></entry>
+</row>
+<row>
+<entry>See <xref linkend="ChapterTheoryOfOperation" /></entry><entry>link to related subject 
+within this guide.</entry>
+</row>
+<row>
+<entry><ulink url="http://tille.soti.org">The author</ulink></entry>
+<entry>Clickable link to an external web resource.</entry>
+</row>
+</tbody>
+
+</tgroup>
+</table>
+
+</section>
+
+<!--
+<section id="intro_08">
+<title>Organization of this document</title>
+
+<para>List chapters (and optionally, appendices) with a short content for each (only for longer docs).</para>
+<itemizedlist>
+<listitem><para><xref linkend="chap_01" />: short description.</para></listitem>
+<listitem><para><xref linkend="chap_02" />: short description.</para></listitem>
+<listitem><para><xref linkend="chap_03" />: short description.</para></listitem>
+<listitem><para><xref linkend="chap_04" />: short description.</para></listitem>
+<listitem><para><xref linkend="chap_05" />: short description.</para></listitem>
+</itemizedlist>
+
+</section>
+-->
+
+</preface>
+
+<toc></toc>
+
+&ChapterAboutDNP3;
+&ChapterTheoryOfOperation;
+&ChapterAPIs;
+&ChapterUserApplications;
+&ChapterExamples;
+&app1;
+&fdl;
+&gloss;
+&biblio;
+</book>

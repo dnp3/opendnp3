@@ -1,0 +1,23 @@
+=========================================================================
+==  NOTICE file corresponding to the section 4 d of                    ==
+==  the Apache License, Version 2.0,                                   ==
+==  in this case for the  Green Energy Corp DNP3 distribution.         ==
+=========================================================================
+
+This product includes software developed by Green Energy Corp
+(http://www.greenenergycorp.com/).
+
+Please read the LICENSE file present in the root directory of this
+distribution.
+
+Aside from contributions to the Green Energy Corporation DNP3 distribution, this software also 
+includes:
+	tinyxml (http://sourceforge.net/projects/tinyxml/) 
+		- Modified source distribution derived from release 2.5.3  
+		- http://www.opensource.org/licenses/zlib-license.php
+
+Project requires, not packaged: 	
+ * boost version 1.43 or later under the Boost Software License, and 
+ 	can be downloaded from http://www.boost.org
+
+

@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+             targetNamespace="APLXML.Base" xmlns="APLXML.Base" elementFormDefault="qualified">
+  
+  <xs:element name="PhysicalLayerList">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="TCPServer" minOccurs="0" maxOccurs="unbounded"/>
+        <xs:element ref="TCPClient" minOccurs="0" maxOccurs="unbounded"/>
+        <xs:element ref="Serial" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:complexType name="PhysicalLayerDescriptor">    
+    <xs:attribute name="Name" type="xs:string" use="required"/>    
+    <xs:attribute name="OpenRetryMS" type="xs:int" use="required"/>    
+  </xs:complexType>
+    
+  <xs:element name="Log">
+    <xs:complexType>
+      <xs:attribute name="Filter" type="LogLevel" use="required" />
+    </xs:complexType>
+  </xs:element>
+    
+  <xs:element name="TCPServer">
+    <xs:complexType>
+    <xs:complexContent>
+        <xs:extension base="PhysicalLayerDescriptor">
+        <xs:attribute name="Endpoint" type="xs:string" use="required"/>
+        <xs:attribute name="Port" type="xs:int" use="required"/>
+        </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="TCPClient">
+    <xs:complexType>
+    <xs:complexContent>
+        <xs:extension base="PhysicalLayerDescriptor">
+      <xs:attribute name="Address" type="xs:string" use="required"/>
+      <xs:attribute name="Port" type="xs:int" use="required"/>
+      </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:simpleType name="LogLevel">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="LOG_DEBUG" />
+      <xs:enumeration value="LOG_COMM" />
+      <xs:enumeration value="LOG_INTERPRET" />
+      <xs:enumeration value="LOG_INFO" />
+      <xs:enumeration value="LOG_WARNING" />
+      <xs:enumeration value="LOG_ERROR" />
+      <xs:enumeration value="LOG_EVENT" />
+    </xs:restriction>
+  </xs:simpleType>
+    
+  <xs:element name="Serial">
+    <xs:complexType>
+    <xs:complexContent>
+        <xs:extension base="PhysicalLayerDescriptor">
+	      <xs:attribute name="Device" type="xs:string" use="required"/>
+          
+	      <xs:attribute name="BaudRate" use="required">
+	        <xs:simpleType>
+	          <xs:restriction base="xs:string">
+	            <xs:enumeration value="1200" />
+	            <xs:enumeration value="1800" />
+	            <xs:enumeration value="2400" />
+	            <xs:enumeration value="4800" />
+	            <xs:enumeration value="9600" />
+	            <xs:enumeration value="19200" />
+	            <xs:enumeration value="38400" />
+	            <xs:enumeration value="57600" />
+	            <xs:enumeration value="115200" />
+	            <xs:enumeration value="230400" />
+	          </xs:restriction>
+	        </xs:simpleType>
+	      </xs:attribute>
+
+        <xs:attribute name="Parity" use="required">
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:enumeration value="PARITY_NONE" />
+              <xs:enumeration value="PARITY_EVEN" />
+              <xs:enumeration value="PARITY_ODD" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:attribute>
+
+        <xs:attribute name="DBits" use="required">
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:enumeration value="DATABITS_7" />
+              <xs:enumeration value="DATABITS_8" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:attribute>
+
+        <xs:attribute name="StopBits" use="required">
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:enumeration value="STOPBITS_0" />
+              <xs:enumeration value="STOPBITS_1" />
+              <xs:enumeration value="STOPBITS_2" />
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:attribute>
+
+        <xs:attribute name="FlowControl" use="required">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="FLOW_NONE" />
+            <xs:enumeration value="FLOW_HARDWARE" />
+            <xs:enumeration value="FLOW_XONXOFF" />             
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+          
+        
+          
+      </xs:extension>
+      </xs:complexContent>
+    </xs:complexType>
+  </xs:element>
+ 
+</xs:schema>

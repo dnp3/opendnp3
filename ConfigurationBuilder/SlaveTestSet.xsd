@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+             targetNamespace="APLXML.STS"
+             xmlns="APLXML.STS"
+             xmlns:apl="APLXML.Base"
+             xmlns:dnp="APLXML.DNP"
+             elementFormDefault="qualified">
+
+  <xs:import namespace="APLXML.Base" schemaLocation="APL.xsd"/>
+  <xs:import namespace="APLXML.DNP" schemaLocation="DNP.xsd"/>
+
+  <xs:element name="SlaveTestSet">
+    <xs:complexType>
+      <xs:all>
+        <xs:element ref="apl:Log" minOccurs="1" maxOccurs="1" />
+        <xs:element ref="dnp:Slave" minOccurs="1" maxOccurs="1" />
+        <xs:element ref="dnp:DeviceTemplate" minOccurs="1" maxOccurs="1" />
+        <xs:element ref="apl:PhysicalLayerList" minOccurs="1" maxOccurs="1" />
+      </xs:all>
+      <xs:attribute name="LogFile" type="xs:string" use="required" />      
+      <xs:attribute name="PhysicalLayer" type="xs:string" use="required" />
+      <xs:attribute name="Remote" type="xs:boolean" use="required" />
+      <xs:attribute name="RemotePort" type="xs:int" use="required" />
+      <xs:attribute name="LinkCommandStatus" type="xs:boolean" use="required" />
+      <xs:attribute name="StartOnline" type="xs:boolean" use="required" />
+    </xs:complexType>
+  </xs:element>
+
+</xs:schema>

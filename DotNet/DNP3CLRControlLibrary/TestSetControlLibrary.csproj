@@ -1,0 +1,165 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{A37903BE-7E9B-4442-8D9A-1C33F58F661F}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>TestSetControlLibrary</RootNamespace>
+    <AssemblyName>TestSetControlLibrary</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Windows.Forms.DataVisualization" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="TestSetControlLibrary, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="FilterLevelComboBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="FlickerFreeListView.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="IMeasurementSource.cs" />
+    <Compile Include="LinkLayerSettingsControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="LinkLayerSettingsControl.Designer.cs">
+      <DependentUpon>LinkLayerSettingsControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="LogControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="LogControl.Designer.cs">
+      <DependentUpon>LogControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MasterDataDisplay.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="MasterDataDisplay.Designer.cs">
+      <DependentUpon>MasterDataDisplay.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MasterSettingsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MasterSettingsForm.Designer.cs">
+      <DependentUpon>MasterSettingsForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SerialSettingsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SerialSettingsForm.Designer.cs">
+      <DependentUpon>SerialSettingsForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SetpointForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SetpointForm.Designer.cs">
+      <DependentUpon>SetpointForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="StackBrowser.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="StackBrowser.Designer.cs">
+      <DependentUpon>StackBrowser.cs</DependentUpon>
+    </Compile>
+    <Compile Include="StackDisplayControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="StackDisplayControl.Designer.cs">
+      <DependentUpon>StackDisplayControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TcpClientSettings.cs" />
+    <Compile Include="TcpSettingsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TcpSettingsForm.Designer.cs">
+      <DependentUpon>TcpSettingsForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TimeSeriesChartForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TimeSeriesChartForm.Designer.cs">
+      <DependentUpon>TimeSeriesChartForm.cs</DependentUpon>
+    </Compile>
+    <Service Include="{94E38DFF-614B-4cbd-B67C-F211BB35CE8B}" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="LinkLayerSettingsControl.resx">
+      <DependentUpon>LinkLayerSettingsControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LogControl.resx">
+      <DependentUpon>LogControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MasterDataDisplay.resx">
+      <DependentUpon>MasterDataDisplay.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MasterSettingsForm.resx">
+      <DependentUpon>MasterSettingsForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SerialSettingsForm.resx">
+      <DependentUpon>SerialSettingsForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SetpointForm.resx">
+      <DependentUpon>SetpointForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="StackBrowser.resx">
+      <DependentUpon>StackBrowser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="StackDisplayControl.resx">
+      <DependentUpon>StackDisplayControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TcpSettingsForm.resx">
+      <DependentUpon>TcpSettingsForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TimeSeriesChartForm.resx">
+      <DependentUpon>TimeSeriesChartForm.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DotNetInterface\DotNetInterface.csproj">
+      <Project>{C280F8AA-8461-4126-BF88-454891422FD8}</Project>
+      <Name>DotNetInterface</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

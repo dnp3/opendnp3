@@ -1,0 +1,3407 @@
+<html xmlns:dnp="http://www.dnp3.org/DNP3/DeviceProfile/Jan2010"><body>
+<p></p>
+<table border="0" width="90%" align="center"><tbody>
+<tr><td align="center"><img src="dnp_logo.jpg" width="40%"></td></tr>
+<tr><td align="center" colspan="2"><big><big><b>
+							DNP3  Device Profile<br><i>Based on DNP XML Schema version 2.07.00</i><br><br></b></big></big></td></tr>
+<tr><td align="center" colspan="2"><big><b>Document Name: open dnp3 profile document<br><br><br></b></big></td></tr>
+<tr><td align="center" colspan="2"><big><b>Document Description: Generic device profile for open dnp3 slave stack<br><br><br></b></big></td></tr>
+</tbody></table>
+<p></p>
+<p></p>
+<p></p>
+<table border="1" borderColor="lightgrey" align="center" width="90%" cellspacing="0" cellpadding="5">
+<caption align="left"><big><b>Revision History</b></big></caption>
+<thead><tr align="left">
+<th>Date</th>
+<th>Time</th>
+<th>Version</th>
+<th>Reason for change</th>
+<th>Edited by</th>
+</tr></thead>
+<tbody><tr>
+<td valign="top" width="12%">2011-03-16</td>
+<td valign="top" width="12%"> 
+						</td>
+<td valign="top" width="10%">1</td>
+<td valign="top" width="50%">First Pass</td>
+<td valign="top" width="16%">J Adam Crain</td>
+</tr></tbody>
+</table>
+<p></p>
+<br><br><br><p></p>
+<table border="0" width="90%" align="center"><tbody><tr><big><big><b><font face="Times New Roman" style="font-variant: small-caps;">
+						Reference Device:    </font></b></big></big></tr></tbody></table>
+<p></p>
+<p></p>
+<table border="0" align="center" width="90%" cellspacing="0" cellpadding="3"><caption align="left">
+<big><b>1. Device Properties</b></big><p></p>This document is intended to be used for several purposes, including: <br><br>
+				- Identifying the capabilities of a DNP3 device (Master Station or Outstation) <br><br>
+				- Recording the settings of a specific instance of a device (parameter settings for a specific instance of the device in the user's total DNP3 estate)
+				<br><br>
+        - Matching user requirements to product capabilities when procuring a DNP3 device <br><br>
+				The document is therefore structured to show, for each technical feature, the capabilities of the device (or capabilities required by the device 
+        when procuring). <br><br>
+				It is also structured to show the current value (or setting) of each of the parameters that describe a specific instance of the device.
+				This "current value" may also show a functional limitation of the device. For example when implementing secure authentication it is not
+        required that all DNP3 devices accept aggressive mode requests during critical exchanges (see Device Profile 1.12.4), in which case a vendor would
+        mark this current value as "No - does not accept aggressive mode requests". <br><br>
+				Additionally, the current value may sometimes be used to show a value that a device can achieve because of hardware or software dependencies.
+				An example of this is in section 1.6.8 of the Device Profile (Maximum error in the time that the Master issues freeze requests)
+				 where the value may well depend upon tolerances of hardware components and interactions between software tasks. 
+				 When the Device Profile current value is used in this way the corresponding entry in the capabilities column is grayed-out. Users
+				should note that if an entry in the capabilities column of the Device Profile is grayed-out then there may be information in the current value
+				column that is pertinent to the device's capabilities. <br><br>
+				Unless otherwise noted, multiple boxes in the second column below are selected for each parameter to indicate all capabilities supported or required.
+			    Parameters without checkboxes in the second column do not have capabilities and are included so that the current value may be shown in the third column.
+				<br><br>The items listed in the capabilities column below may be configurable to any of the options selected, or set to a fixed value when the device was designed.
+				Item 1.1.10 contains a list of abbreviations for the possible ways in which the configurable parameters may be set. 
+				Since some parameters may not be accessible by each of these methods supported, an abbreviation for the configuration method supported by
+				each parameter is shown in the fourth column of the tables below.
+				<br><br>If this document is used to show the current values, the third column should be filled in even if a fixed parameter is selected in the 
+				capabilities section ("NA" may be entered for parameters that are Not Applicable).
+				<br><br>If the document is used to show the current values of parameters, then column 3 applies to a single connection between a master and an outstation.
+			</caption></table>
+<p></p>
+<table border="1" align="center" width="90%" cellspacing="0" cellpadding="5">
+<tr bgcolor="yellow"><b><th align="left" width="35%"><font face="Times New Roman" style="font-variant: small-caps;">1.1. Device Identification</font></th>
+<th align="left" width="35%">Capabilities</th>
+<th align="left" width="20%">Current Value</th>
+<th align="left" width="10%">If configurable list methods</th></b></tr>
+<tbody>
+<tr>
+<td width="35%" valign="top">1.1.1. Device Function:<p></p>
+<i>Masters send DNP requests, while Outstations send DNP responses. 
+						If a single physical device can perform both functions a separate Device Profile Document must be provided for each function.</i>
+</td>
+<td width="35%" valign="top">- Outstation</td>
+<td width="20%" valign="baseline">- Outstation
+									 
+								</td>
+<td width="10%" valign="top"><font color="white"> </font></td>
+</tr>
+<tr>
+<td width="35%" valign="top">1.1.2. Vendor Name:<p></p>
+<i>The name of the organization producing the device.
+							<p></p>Note: The current value of this outstation parameter is available remotely using protocol object Group 0 Variation 252.</i>
+</td>
+<td width="35%" valign="top" bgcolor="lightgrey"><font color="lightgrey"> </font></td>
+<td width="20%" valign="top">VENDOR SPECIFIC 
+							</td>
+<td width="10%" valign="top" bgcolor="white"><font color="white"> </font></td>
+</tr>
+<tr>
+<td width="35%" valign="top">1.1.3. Device Name:<p></p>
+<i>The model and name of the device, sufficient to distinguish it from any other device from the same organization.
+							<p></p>Note: The current value of this outstation parameter is available remotely using protocol object Group 0 Variation 250.</i>
+</td>
+<td width="35%" valign="top" bgcolor="lightgrey"><font color="lightgrey"> </font></td>
+<td width="20%" valign="top">VENDOR SPECIFIC 
+							</td>
+<td width="10%" valign="top" bgcolor="white"><font color="white"> </font></td>
+</tr>
+<tr>
+<td width="35%" valign="top">1.1.4. Device manufacturer's hardware version string:<p></p>
+<i>Note: The current value of this outstation parameter is available remotely using protocol object Group 0 Variation 243.</i>
+</td>
+<td width="35%" valign="top" bgcolor="lightgrey"><font color="lightgrey"> </font></td>
+<td width="20%" valign="top">VENDOR SPECIFIC 
+							</td>
+<td width="10%" valign="top" bgcolor="white"><font color="white"> </font></td>
+</tr>
+<tr>
+<td width="35%" valign="top">1.1.5. Device manufacturer's software version string:<p></p>
+<i>Note: The current value of this outstation parameter is available remotely using protocol object Group 0 Variation 242.</i>
+</td>
+<td width="35%" valign="top" bgcolor="lightgrey"><font color="lightgrey"> </font></td>
+<td width="20%" valign="top">VENDOR SPECIFIC 
+							</td>
+<td width="10%" valign="top" bgcolor="white"><font color="white"> </font></td>
+</tr>
+<tr>
+<td width="35%" valign="top">1.1.6. Device Profile Document Version Number:<p></p>
+<i>Version of the Device Profile Document is indicated by a whole number incremented with each new release. 
+						This should match the latest version shown in the Revision History at the start of this document.</i>
+</td>
+<td width="35%" valign="top" bgcolor="lightgrey"><font color="lightgrey"> </font></td>
+<td width="20%" valign="top">1 
+							</td>
+<td width="10%" valign="top" bgcolor="white"><font color="white"> </font></td>
+</tr>
+<tr>
+<td width="35%" valign="top">1.1.7. DNP Levels Supported for:<p></p>
+<i>Indicate each DNP3 Level to which the device conforms fully. For Masters, requests and responses
+						can be indicated independently.</i>
+</td>
+<td width="35%" valign="top"><table border="0" align="center" width="100%" cellspacing="0" cellpadding="0">
+<tr><td width="20%" valign="top" colspan="2">Outstations Only</td></tr>
+<tr><td width="20%" valign="top" colspan="2">Requests and Responses</td></tr>
+<tr>
+<td width="20%" valign="top"><center>
+<input type="checkbox" name="box"><label for="box"></label><br>
+</center></td>
+<td width="80%" valign="middle">None</td>
+</tr>
+<tr>
+<td width="20%" valign="top"><center>
+<input type="checkbox" name="box"><label for="box"></label><br>
+</center></td>
+<td width="80%" valign="middle">Level 1</td>
+</tr>
+<tr>
+<td width="20%" valign="top"><center>
+<input type="checkbox" name="box" checked><label for="box"></label><br>
+</center></td>
+<td width="80%" valign="middle">Level 2</td>
+</tr>
+<tr>
+<td width="20%" valign="top"><center>
+<input type="checkbox" name="box"><label for="box"></label><br>
+</center></td>
+<td width="80%" valign="middle">Level 3</td>
+</tr>
+<tr>
+<td width="20%" valign="top"><center>
+<input type="checkbox" name="box"><label for="box"></label><br>
+</center></td>
+<td width="80%" valign="middle">Level 4</td>
+</tr>
+</table></td>
+<td width="20%" valign="top">Level 2<br>
+										 
+									</td>
+<td width="10%" valign="top"><font color="white"> </font></td>
+</tr>
+<tr>
+<td width="35%" valign="top">1.1.8. Supported Function Blocks:<p></p>
+<i></i>
+</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box"><label for="box"></label>Self Address Reservation<br><input type="checkbox" name="box"><label for="box"></label>Data Sets<br><input type="checkbox" name="box"><label for="box"></label>File Transfer<br><input type="checkbox" name="box"><label for="box"></label>Virtual Terminal<br><input type="checkbox" name="box"><label for="box"></label>Mapping to IEC 61850 Object Models defined in a DNP3 XML file<br><input type="checkbox" name="box"><label for="box"></label>Function code 31, activate configuration<br><input type="checkbox" name="box"><label for="box"></label>Secure Authentication (if checked then see 1.12)<br>
+</td>
+<td width="20%" valign="top" bgcolor="white"><font color="white"> </font></td>
+<td width="10%" valign="baseline"><font color="white"> </font></td>
+</tr>
+<tr>
+<td width="35%" valign="top" align="left">1.1.9. Notable Additions:<p></p>
+<i>A brief description intended to quickly identify (for the reader)  
+							the most obvious features the device supports in addition to the Highest DNP Level Supported. 
+							The complete list of features is described in the Implementation Table.</i>
+</td>
+<td width="35%" valign="top" align="left">More objects than the basic Level 2. See the Implementation Table for
+                            details.
+                        <br>
+									 
+								</td>
+<td width="20%" valign="baseline">
+									 
+								</td>
+<td width="10%" valign="top"><font color="white"> </font></td>
+</tr>
+<tr>
+<td width="35%" valign="top">1.1.10. Methods to set Configurable Parameters:<p></p>
+<i></i>
+</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box"><label for="box"></label>XML - Loaded via DNP3 File Transfer<br><input type="checkbox" name="box"><label for="box"></label>XML - Loaded via other transport mechanism<br><input type="checkbox" name="box"><label for="box"></label>Terminal - ASCII Terminal Command Line<br><input type="checkbox" name="box"><label for="box"></label>Software - Vendor software named <br><input type="checkbox" name="box"><label for="box"></label>Proprietary file loaded via DNP3 File Transfer<br><input type="checkbox" name="box"><label for="box"></label>Proprietary file loaded via other transport mechanism<br><input type="checkbox" name="box" checked><label for="box"></label>Direct - Keypad on device front panel<br><input type="checkbox" name="box"><label for="box"></label>Factory - Specified when device is ordered<br><input type="checkbox" name="box"><label for="box"></label>Protocol - Set via DNP3 (e.g. assign class)<br><input type="checkbox" name="box"><label for="box"></label>Other - explain:<br>
+</td>
+<td width="20%" valign="top" bgcolor="white"><font color="white"> </font></td>
+<td width="10%" valign="baseline"><font color="white"> </font></td>
+</tr>
+<tr>
+<td width="35%" valign="top">1.1.11. DNP3 XML files available On-line:<p></p>
+<i>XML configuration file names that can be read or written through DNP3 File Transfer to a device.<p></p>
+						A device's currently running configuration is returned by DNP3 on-line XML file read from the device.<p></p>
+						DNP3 on-line XML file write to a device will update the device's configuration when the Activate Configuration 
+						(function code 31) is received.</i>
+</td>
+<td width="35%" valign="top"><table border="0" align="center" width="100%" cellspacing="0" cellpadding="0">
+<tr>
+<td width="8%" valign="top"><u><small>Rd</small></u></td>
+<td width="8%" valign="top"><u><small>Wr</small></u></td>
+<td width="30%" valign="top"><u><small>Filename</small></u></td>
+<td width="54%" valign="top">
+<u><small>Description of Contents</small></u><br>
+</td>
+</tr>
+<tr>
+<td width="16%" valign="middle" colspan="2">
+<input type="checkbox" name="box"><label for="box"></label>
+</td>
+<td width="30%" valign="middle">dnpDP.xml</td>
+<td width="54%" valign="middle">Complete Device Profile</td>
+</tr>
+<tr>
+<td width="16%" valign="middle" colspan="2">
+<input type="checkbox" name="box"><label for="box"></label>
+</td>
+<td width="30%" valign="middle">dnpDPCap.xml</td>
+<td width="54%" valign="middle">Device Profile Capabilities</td>
+</tr>
+<tr>
+<td width="16%" valign="middle" colspan="2">
+<input type="checkbox" name="box"><label for="box"></label>
+</td>
+<td width="30%" valign="middle">dnpDPCfg.xml</td>
+<td width="54%" valign="middle">Device Profile config values</td>
+</tr>
+</table></td>
+<td width="20%" valign="top" bgcolor="white"><font color="white"> </font></td>
+<td width="10%" valign="top"><font color="white"> </font></td>
+</tr>
+<tr>
+<td width="35%" valign="top">1.1.12. External DNP3 XML files available Off-line:<p></p>
+<i>XML configuration file names that can be read or written from an external system, typically from a system
+						that maintains the outstation configuration.<p></p>
+						External off-line XML file read permits an XML definition of a new configuration to be supplied from off-line 
+						configuration tools.<p></p>
+						External off-line XML file write permits an XML definition of a new configuration to be supplied to off-line 
+						configuration tools.</i>
+</td>
+<td width="35%" valign="top"><table border="0" align="center" width="100%" cellspacing="0" cellpadding="0">
+<tr>
+<td width="8%" valign="top"><u><small>Rd</small></u></td>
+<td width="8%" valign="top"><u><small>Wr</small></u></td>
+<td width="30%" valign="top"><u><small>Filename</small></u></td>
+<td width="54%" valign="top">
+<u><small>Description of Contents</small></u><br>
+</td>
+</tr>
+<tr>
+<td width="8%" valign="middle">
+<input type="checkbox" name="box"><label for="box"></label>
+</td>
+<td width="8%" valign="middle">
+<input type="checkbox" name="box"><label for="box"></label>
+</td>
+<td width="30%" valign="middle">dnpDP.xml</td>
+<td width="54%" valign="middle">Complete Device Profile</td>
+</tr>
+<tr>
+<td width="8%" valign="middle">
+<input type="checkbox" name="box"><label for="box"></label>
+</td>
+<td width="8%" valign="middle">
+<input type="checkbox" name="box"><label for="box"></label>
+</td>
+<td width="30%" valign="middle">dnpDPCap.xml</td>
+<td width="54%" valign="middle">Device Profile Capabilities</td>
+</tr>
+<tr>
+<td width="8%" valign="middle">
+<input type="checkbox" name="box"><label for="box"></label>
+</td>
+<td width="8%" valign="middle">
+<input type="checkbox" name="box"><label for="box"></label>
+</td>
+<td width="30%" valign="middle">dnpDPCfg.xml</td>
+<td width="54%" valign="middle">Device Profile config values</td>
+</tr>
+<tr>
+<td width="8%" valign="middle">
+<input type="checkbox" name="box" checked><label for="box"></label>
+</td>
+<td width="8%" valign="middle">
+<input type="checkbox" name="box"><label for="box"></label>
+</td>
+<td width="30%" valign="middle">open_dnp3_slave.xml</td>
+<td width="54%" valign="middle">Complete Device Profile Document</td>
+</tr>
+<tr><td colspan="4"></td></tr>
+</table></td>
+<td width="20%" valign="top"><table border="0" align="center" width="100%" cellspacing="0" cellpadding="0">
+<tr>
+<td width="15%" valign="top"><u><small>Rd</small></u></td>
+<td width="15%" valign="top"><u><small>Wr</small></u></td>
+<td width="70%" valign="top"><u><small>Filename</small></u></td>
+</tr>
+<tr>
+<td width="15%" valign="top">
+<input type="checkbox" name="box"><label for="box"></label>
+</td>
+<td width="15%" valign="top">
+<input type="checkbox" name="box"><label for="box"></label>
+</td>
+<td width="70%" valign="middle">dnpDP.xml</td>
+</tr>
+<tr>
+<td width="15%" valign="top">
+<input type="checkbox" name="box"><label for="box"></label>
+</td>
+<td width="15%" valign="top">
+<input type="checkbox" name="box"><label for="box"></label>
+</td>
+<td width="70%" valign="middle">dnpDPCap.xml</td>
+</tr>
+<tr>
+<td width="15%" valign="top">
+<input type="checkbox" name="box"><label for="box"></label>
+</td>
+<td width="15%" valign="top">
+<input type="checkbox" name="box"><label for="box"></label>
+</td>
+<td width="70%" valign="middle">dnpDPCfg.xml</td>
+</tr>
+</table></td>
+<td width="10%" valign="top"><font color="white"> </font></td>
+</tr>
+<tr>
+<td width="35%" valign="top">1.1.13. Connections Supported:<p></p>
+</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box" checked><label for="box"></label>Serial (complete section 1.2)<br><input type="checkbox" name="box" checked><label for="box"></label>IP Networking (complete section 1.3)<br><input type="checkbox" name="box"><label for="box"></label>Other, explain:<br>
+</td>
+<td width="20%" valign="baseline">Serial<br>
+									 
+								</td>
+<td width="10%" valign="baseline"><font color="white"> </font></td>
+</tr>
+</tbody>
+</table>
+<p></p>
+<table border="1" align="center" width="90%" cellspacing="0" cellpadding="3">
+<tr bgcolor="yellow"><b><th align="left" width="35%"><font face="Times New Roman" style="font-variant: small-caps;">1.2. Serial Connections</font></th>
+<th align="left" width="35%">Capabilities</th>
+<th align="left" width="20%">Current Value</th>
+<th align="left" width="10%">If configurable list methods</th></b></tr>
+<tbody>
+<tr>
+<td width="35%" valign="top">1.2.1. Port Name:<p></p>
+<i>Name used to reference the communications port defined in this section.</i>
+</td>
+<td width="35%" valign="top" bgcolor="lightgrey"><font color="lightgrey"> </font></td>
+<td width="20%" valign="top">Port 'n'<br><table border="0" width="100%" bgcolor="PaleGreen"><tbody><tr><td>Note: The device supports up to 3 (configurable) serial ports</td></tr></tbody></table>
+							 
+						</td>
+<td width="10%" valign="top" bgcolor="white"><font color="white"> </font></td>
+</tr>
+<tr>
+<td width="35%" valign="top">1.2.2. Serial Connection Parameters:<p></p>
+<i></i>
+</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box" checked><label for="box"></label>Asynchronous - 8 Data Bits, 1 Start Bit, 1 Stop Bit, No Parity<br><input type="checkbox" name="box"><label for="box"></label>Other, explain:<br><br><table border="0" width="100%" bgcolor="PaleGreen"><tbody><tr><td>Note: 
+                        Configurable for Parity Bits (NONE, EVEN, ODD) and for Stop Bits (1, 1.5 and
+                                2). Actual support depends on deployed OS and HW
+                        </td></tr></tbody></table>
+</td>
+<td width="20%" valign="baseline">Asynchronous
+									 
+								</td>
+<td width="10%" valign="baseline"><font color="white"> </font></td>
+</tr>
+<tr>
+<td width="35%" valign="top">1.2.3. Baud Rate:<p></p>
+<i></i>
+</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box"><label for="box"></label> Fixed at <b></b><br><input type="checkbox" name="box"><label for="box"></label> Configurable, range 
+			<b></b> to 
+			<b></b><br><input type="checkbox" name="box" checked><label for="box"></label> Configurable, selectable from  
+			<b>300</b>, <b>600</b>, <b>1200</b>, <b>2400</b>, <b>4800</b>, <b>9600</b>, <b>19200</b>, <b>38400</b><br><input type="checkbox" name="box"><label for="box"></label>Other, explain:<br><br>
+</td>
+<td width="20%" valign="baseline">VENDOR SPECIFIC
+									 
+								</td>
+<td width="10%" valign="baseline"><font color="white"> </font></td>
+</tr>
+<tr>
+<td width="35%" valign="top">1.2.4. Hardware Flow Control (Handshaking):<p></p>
+<i>Describe hardware signaling requirements of the interface.<p></p>
+							Where a transmitter or receiver is inhibited until a given control signal is asserted, it is considered to require that signal prior to 
+							sending or receiving characters.<p></p>
+							Where a signal is asserted prior to transmitting, that signal will be maintained active until after the end of transmission.<p></p>
+							Where a signal is asserted to enable reception, any data sent to the device when the signal is not active could be discarded.</i>
+</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box" checked><label for="box"></label>None<br><b>RS-232 / V.24 / V.28 Options:</b><br><table border="0" align="center" width="100%" cellspacing="0" cellpadding="0">
+<tr>
+<td width="10%" valign="top"></td>
+<td width="90%" valign="top" colspan="4"><u>Asserts:</u></td>
+</tr>
+<tr>
+<td width="20%" valign="top" colspan="2"></td>
+<td width="80%" valign="top" colspan="3">
+<input type="checkbox" name="box"><label for="box"></label>RTS Before Tx<br>
+</td>
+</tr>
+<tr>
+<td width="20%" valign="top" colspan="2"></td>
+<td width="80%" valign="top" colspan="3">
+<input type="checkbox" name="box"><label for="box"></label>DTR Before Tx<br>
+</td>
+</tr>
+<tr>
+<td width="20%" valign="top" colspan="2"></td>
+<td width="80%" valign="top" colspan="3">
+<input type="checkbox" name="box"><label for="box"></label>RTS Before Rx<br>
+</td>
+</tr>
+<tr>
+<td width="20%" valign="top" colspan="2"></td>
+<td width="80%" valign="top" colspan="3">
+<input type="checkbox" name="box"><label for="box"></label>DTR Before Rx<br>
+</td>
+</tr>
+<tr>
+<td width="20%" valign="top" colspan="2"></td>
+<td width="80%" valign="top" colspan="3">
+<input type="checkbox" name="box"><label for="box"></label>Always RTS<br>
+</td>
+</tr>
+<tr>
+<td width="20%" valign="top" colspan="2"></td>
+<td width="80%" valign="top" colspan="3">
+<input type="checkbox" name="box"><label for="box"></label>Always DTR<br>
+</td>
+</tr>
+<tr>
+<td width="10%" valign="top"></td>
+<td width="90%" valign="top" colspan="4"><u>Requires Before Tx:</u></td>
+</tr>
+<tr>
+<td width="20%" valign="top" colspan="2"></td>
+<td width="10%" valign="baseline">CTS</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box"><label for="box"></label>Asserted<br>
+</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box"><label for="box"></label>Deasserted<br>
+</td>
+</tr>
+<tr>
+<td width="20%" valign="top" colspan="2"></td>
+<td width="10%" valign="baseline">DCD</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box"><label for="box"></label>Asserted<br>
+</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box"><label for="box"></label>Deasserted<br>
+</td>
+</tr>
+<tr>
+<td width="20%" valign="top" colspan="2"></td>
+<td width="10%" valign="baseline">DSR</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box"><label for="box"></label>Asserted<br>
+</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box"><label for="box"></label>Deasserted<br>
+</td>
+</tr>
+<tr>
+<td width="20%" valign="top" colspan="2"></td>
+<td width="10%" valign="baseline">RI</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box"><label for="box"></label>Asserted<br>
+</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box"><label for="box"></label>Deasserted<br>
+</td>
+</tr>
+<tr>
+<td width="20%" valign="top" colspan="2"></td>
+<td width="80%" valign="top" colspan="3">
+<input type="checkbox" name="box"><label for="box"></label>Requires Rx Inactive before Tx<br>
+</td>
+</tr>
+<tr>
+<td width="10%" valign="top"></td>
+<td width="90%" valign="top" colspan="4"><u>Requires Before Rx:</u></td>
+</tr>
+<tr>
+<td width="20%" valign="top" colspan="2"></td>
+<td width="10%" valign="baseline">CTS</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box"><label for="box"></label>Asserted<br>
+</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box"><label for="box"></label>Deasserted<br>
+</td>
+</tr>
+<tr>
+<td width="20%" valign="top" colspan="2"></td>
+<td width="10%" valign="baseline">DCD</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box"><label for="box"></label>Asserted<br>
+</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box"><label for="box"></label>Deasserted<br>
+</td>
+</tr>
+<tr>
+<td width="20%" valign="top" colspan="2"></td>
+<td width="10%" valign="baseline">DSR</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box"><label for="box"></label>Asserted<br>
+</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box"><label for="box"></label>Deasserted<br>
+</td>
+</tr>
+<tr>
+<td width="20%" valign="top" colspan="2"></td>
+<td width="10%" valign="baseline">RI</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box"><label for="box"></label>Asserted<br>
+</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box"><label for="box"></label>Deasserted<br>
+</td>
+</tr>
+<tr>
+<td width="10%" valign="top"></td>
+<td width="90%" valign="top" colspan="4"><u>Always Ignores:</u></td>
+</tr>
+<tr>
+<td width="20%" valign="top" colspan="2"></td>
+<td width="80%" valign="top" colspan="3">
+<input type="checkbox" name="box"><label for="box"></label>CTS<br>
+</td>
+</tr>
+<tr>
+<td width="20%" valign="top" colspan="2"></td>
+<td width="80%" valign="top" colspan="3">
+<input type="checkbox" name="box"><label for="box"></label>DCD<br>
+</td>
+</tr>
+<tr>
+<td width="20%" valign="top" colspan="2"></td>
+<td width="80%" valign="top" colspan="3">
+<input type="checkbox" name="box"><label for="box"></label>DSR<br>
+</td>
+</tr>
+<tr>
+<td width="20%" valign="top" colspan="2"></td>
+<td width="80%" valign="top" colspan="3">
+<input type="checkbox" name="box"><label for="box"></label>RI<br>
+</td>
+</tr>
+<tr>
+<td width="10%" valign="top"></td>
+<td width="90%" valign="top" colspan="4">
+<input type="checkbox" name="box"><label for="box"></label>Other, explain:<br>
+</td>
+</tr>
+</table>
+<p></p>
+<b>RS-422 / V.11 Options:</b><br><table border="0" align="center" width="100%" cellspacing="0" cellpadding="0"><tr>
+<td width="10%" valign="top"></td>
+<td width="75%" valign="top">
+<input type="checkbox" name="box"><label for="box"></label>Requires Indication before Rx<br><input type="checkbox" name="box"><label for="box"></label>Asserts Control before Tx<br><input type="checkbox" name="box"><label for="box"></label>Other, explain:<br> 
+										</td>
+</tr></table>
+<p></p>
+<b>RS-485 Options:</b><br><table border="0" align="center" width="100%" cellspacing="0" cellpadding="0"><tr>
+<td width="10%" valign="top"></td>
+<td width="75%" valign="top">
+<input type="checkbox" name="box"><label for="box"></label>Requires Rx inactive before Tx<br><input type="checkbox" name="box"><label for="box"></label>Other, explain:<br> 
+										</td>
+</tr></table>
+</td>
+<td width="20%" valign="baseline">None
+									
+								 
+								</td>
+<td width="10%" valign="baseline"><font color="white"> </font></td>
+</tr>
+<tr>
+<td width="35%" valign="top">1.2.5. Interval to Request Link Status:<p></p>
+<i>Indicates how often to send Data Link Layer status requests on a serial connection. This parameter is separate from the TCP Keep-alive timer.</i>
+</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box" checked><label for="box"></label>Not Supported<br><input type="checkbox" name="box"><label for="box"></label> Fixed at <b></b>seconds<br><input type="checkbox" name="box"><label for="box"></label> Configurable, range 
+			<b></b> to 
+			<b></b>seconds<br><input type="checkbox" name="box"><label for="box"></label> Configurable, selectable from  
+			seconds<br><input type="checkbox" name="box"><label for="box"></label>Other, explain:<br><br>
+</td>
+<td width="20%" valign="baseline">
+										Not Supported
+									
+									 
+								</td>
+<td width="10%" valign="baseline"><font color="white"> </font></td>
+</tr>
+<tr>
+<td width="35%" valign="top">1.2.6. Supports DNP3 Collision Avoidance:<p></p>
+<i>Indicates whether an Outstation uses a collision avoidance algorithm. <p></p>
+							Collision avoidance may be implemented by a back-off timer with two parameters that define 
+							the back-off time range or by some other vendor-specific mechanism. <p></p>
+							The recommended back-off time is specified as being a fixed minimum delay plus a random delay,
+							where the random delay has a maximum value specified. This defines a range of delay times 
+							that are randomly distributed between the minimum value and the minimum plus the maximum of 
+							the random value. <p></p>
+							If a back-off timer is implemented with only a fixed or only a random value, select the 
+							Back-off time method and set the parameter that is not supported to &#8220;Fixed at 0 ms&#8221;.
+							</i>
+</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box" checked><label for="box"></label>No<br><input type="checkbox" name="box"><label for="box"></label>Yes, using Back-off time = (Min + Random) method<br><input type="checkbox" name="box"><label for="box"></label>Other, explain:<br>
+</td>
+<td width="20%" valign="baseline">No
+									 
+								</td>
+<td width="10%" valign="baseline"><font color="white"> </font></td>
+</tr>
+<tr>
+<td width="35%" valign="top">1.2.7. Receiver Inter-character Timeout:<p></p>
+<i>When serial interfaces with asynchronous character framing are used, this parameter indicates if the receiver makes a check for gaps
+						between characters. (i.e. extensions of the stop bit time of one character prior to the start bit of the following character within a message).
+						If the receiver performs this check and the timeout is exceeded then the receiver discards the current data link frame.
+						A receiver that does not discard data link frames on the basis of inter-character gaps is considered not to perform this check.
+						<p></p>Where no asynchronous serial interface is fitted this parameter is not applicable. 
+						In this case none of the options shall be selected.</i>
+</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box"><label for="box"></label>Not Checked<br><input type="checkbox" name="box"><label for="box"></label>No gap permitted<br><input type="checkbox" name="box"><label for="box"></label> Fixed at <b></b>bit times<br><input type="checkbox" name="box"><label for="box"></label> Fixed at <b></b>ms<br><input type="checkbox" name="box"><label for="box"></label> Configurable, range 
+		<b></b> to 
+		<b></b>bit times<br><input type="checkbox" name="box"><label for="box"></label> Configurable, range 
+		<b></b> to 
+		<b></b>ms<br><input type="checkbox" name="box"><label for="box"></label> Configurable, selectable from  
+		bit times<br><input type="checkbox" name="box"><label for="box"></label> Configurable, selectable from  
+		ms<br><input type="checkbox" name="box"><label for="box"></label>Configurable, other, describe:<br><br><input type="checkbox" name="box"><label for="box"></label>Variable, explain:<br>
+</td>
+<td width="20%" valign="top" bgcolor="white"><font color="white"> </font></td>
+<td width="10%" valign="baseline"><font color="white"> </font></td>
+</tr>
+<tr>
+<td width="35%" valign="top">1.2.8. Inter-character gaps in transmission:<p></p>
+<i>When serial interfaces with asynchronous character framing are used, this parameter indicates whether extra delay is ever
+						introduced between characters in the message, and if so, the maximum width of the gap.
+						<p></p>Where no asynchronous serial interface is fitted this parameter is not applicable. 
+						In this case none of the options shall be selected. </i>
+</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box" checked><label for="box"></label>None (always transmits with no inter-character gap)<br><input type="checkbox" name="box"><label for="box"></label>Maximum<b></b>bit times<br><input type="checkbox" name="box"><label for="box"></label>Maximum<b></b>ms<br>
+</td>
+<td width="20%" valign="baseline">None
+									 
+								</td>
+<td width="10%" valign="baseline"><font color="white"> </font></td>
+</tr>
+</tbody>
+</table>
+<p></p>
+<table border="1" align="center" width="90%" cellspacing="0" cellpadding="3">
+<tr bgcolor="yellow"><b><th align="left" width="35%"><font face="Times New Roman" style="font-variant: small-caps;">1.3. IP Networking</font></th>
+<th align="left" width="35%">Capabilities</th>
+<th align="left" width="20%">Current Value</th>
+<th align="left" width="10%">If configurable list methods</th></b></tr>
+<tbody>
+<tr>
+<td width="35%" valign="top">1.3.1. Port Name:<p></p>
+<i>Name used to reference the communications port defined in this section.</i>
+</td>
+<td width="35%" valign="top" bgcolor="lightgrey"><font color="lightgrey"> </font></td>
+<td width="20%" valign="top">Ethernet</td>
+<td width="10%" valign="top" bgcolor="white"><font color="white"> </font></td>
+</tr>
+<tr>
+<td width="35%" valign="top">1.3.2. Type of End Point:<p></p>
+<i></i>
+</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box"><label for="box"></label>TCP Initiating (Master Only)<br><input type="checkbox" name="box" checked><label for="box"></label>TCP Listening (Outstation Only)<br><input type="checkbox" name="box"><label for="box"></label>TCP Dual (required for Masters)<br><input type="checkbox" name="box"><label for="box"></label>UDP Datagram (required)<br>
+</td>
+<td width="20%" valign="baseline">
+									 
+								</td>
+<td width="10%" valign="baseline"><font color="white"> </font></td>
+</tr>
+<tr>
+<td width="35%" valign="top">1.3.3. IP Address of this Device:<p></p>
+<i></i>
+</td>
+<td width="35%" valign="top" bgcolor="lightgrey"><font color="lightgrey"> </font></td>
+<td width="20%" valign="top" bgcolor="white"><font color="white"> </font></td>
+<td width="10%" valign="top"><font color="white"> </font></td>
+</tr>
+<tr>
+<td width="35%" valign="top">1.3.4. Subnet Mask:<p></p>
+<i></i>
+</td>
+<td width="35%" valign="top" bgcolor="lightgrey"><font color="lightgrey"> </font></td>
+<td width="20%" valign="top" bgcolor="white"><font color="white"> </font></td>
+<td width="10%" valign="top"><font color="white"> </font></td>
+</tr>
+<tr>
+<td width="35%" valign="top">1.3.5. Gateway IP Address:<p></p>
+<i></i>
+</td>
+<td width="35%" valign="top" bgcolor="lightgrey"><font color="lightgrey"> </font></td>
+<td width="20%" valign="top" bgcolor="white"><font color="white"> </font></td>
+<td width="10%" valign="top"><font color="white"> </font></td>
+</tr>
+<tr>
+<td width="35%" valign="top">1.3.6. Accepts TCP Connections or UDP Datagrams from:<p></p>
+<i></i>
+</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box" checked><label for="box"></label>Allows all (show as *.*.*.* in 1.3.7)<br><input type="checkbox" name="box"><label for="box"></label>Limits based on IP address<br><input type="checkbox" name="box"><label for="box"></label>Limits based on list of IP addresses<br><input type="checkbox" name="box"><label for="box"></label>Limits based on a wildcard IP address<br><input type="checkbox" name="box"><label for="box"></label>Limits based on list of wildcard IP addresses<br><input type="checkbox" name="box"><label for="box"></label>Other validation, explain:<br>
+</td>
+<td width="20%" valign="baseline">Allows all<br>
+									 
+								</td>
+<td width="10%" valign="baseline"><font color="white"> </font></td>
+</tr>
+<tr>
+<td width="35%" valign="top">1.3.7. IP Address(es) from which TCP Connections or UDP Datagrams are accepted:
+					</td>
+<td width="35%" valign="top" bgcolor="lightgrey"><font color="lightgrey"> </font></td>
+<td width="20%" valign="baseline">*.*.*.*<br>
+									 
+								</td>
+<td width="10%" valign="top"><font color="white"> </font></td>
+</tr>
+<tr>
+<td width="35%" valign="top">1.3.8. TCP Listen Port Number:<p></p>
+<i>If Outstation or dual end point Master, port number on which to listen for incoming TCP connect requests.
+						Required to be configureable for Masters and recommended to be configurable for Outstations.</i>
+</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box"><label for="box"></label>Not Applicable (Master w/o dual end point)<br><input type="checkbox" name="box"><label for="box"></label> Fixed at 20,000<br><input type="checkbox" name="box" checked><label for="box"></label> Configurable, range 
+			<b>0</b> to 
+			<b>65535</b><br><input type="checkbox" name="box"><label for="box"></label> Configurable, selectable from  
+			<br><input type="checkbox" name="box"><label for="box"></label>Other, explain:<br><br>
+</td>
+<td width="20%" valign="baseline">
+									 
+								</td>
+<td width="10%" valign="baseline"><font color="white"> </font></td>
+</tr>
+<tr>
+<td width="35%" valign="top">1.3.9. TCP Listen Port Number of remote device:<p></p>
+<i>If Master or dual end point Outstation, port number on remote device with which to initiate connection.
+						Required to be configurable for Masters and recommended to be configurable for Outstations.</i>
+</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box"><label for="box"></label>Not Applicable (Outstation w/o dual end point)<br><input type="checkbox" name="box"><label for="box"></label> Fixed at 20,000<br><input type="checkbox" name="box" checked><label for="box"></label> Configurable, range 
+			<b>0</b> to 
+			<b>65535</b><br><input type="checkbox" name="box"><label for="box"></label> Configurable, selectable from  
+			<br><input type="checkbox" name="box"><label for="box"></label>Other, explain:<br><br>
+</td>
+<td width="20%" valign="baseline">
+									 
+								</td>
+<td width="10%" valign="baseline"><font color="white"> </font></td>
+</tr>
+<tr>
+<td width="35%" valign="top">1.3.10. TCP Keep-alive timer:<p></p>
+<i>The time period for the keep-alive timer on active TCP connections.</i>
+</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box"><label for="box"></label> Fixed at <b></b>ms<br><input type="checkbox" name="box"><label for="box"></label> Configurable, range 
+			<b></b> to 
+			<b></b>ms<br><input type="checkbox" name="box"><label for="box"></label> Configurable, selectable from  
+			ms<br><input type="checkbox" name="box"><label for="box"></label>Other, explain:<br><br>
+</td>
+<td width="20%" valign="top" bgcolor="white"><font color="white"> </font></td>
+<td width="10%" valign="baseline"><font color="white"> </font></td>
+</tr>
+<tr>
+<td width="35%" valign="top">1.3.11. Local UDP port:<p></p>
+<i>Local UDP port for sending and/or receiving UDP datagrams. Masters may let system choose an available port.
+						Outstations must use one that is known by the Master.</i>
+</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box"><label for="box"></label> Fixed at 20,000<br><input type="checkbox" name="box"><label for="box"></label> Configurable, range 
+			<b></b> to 
+			<b></b><br><input type="checkbox" name="box"><label for="box"></label> Configurable, selectable from  
+			<br><input type="checkbox" name="box"><label for="box"></label>Other, explain:<br><br><input type="checkbox" name="box"><label for="box"></label>Let system choose (Master only)<br><br><table border="0" width="100%" bgcolor="PaleGreen"><tbody><tr><td>Note: Not Applicable</td></tr></tbody></table>
+</td>
+<td width="20%" valign="top" bgcolor="white"><font color="white"> </font></td>
+<td width="10%" valign="baseline"><font color="white"> </font></td>
+</tr>
+<tr>
+<td width="35%" valign="top">1.3.12. Destination UDP port for DNP3 Requests (Master Only):<p></p>
+<i></i>
+</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box"><label for="box"></label> Fixed at 20,000<br><input type="checkbox" name="box"><label for="box"></label> Configurable, range 
+			<b></b> to 
+			<b></b><br><input type="checkbox" name="box"><label for="box"></label> Configurable, selectable from  
+			<br><input type="checkbox" name="box"><label for="box"></label>Other, explain:<br><br><br><table border="0" width="100%" bgcolor="PaleGreen"><tbody><tr><td>Note: Not applicable.</td></tr></tbody></table>
+</td>
+<td width="20%" valign="top" bgcolor="white"><font color="white"> </font></td>
+<td width="10%" valign="top"><font color="white"> </font></td>
+</tr>
+<tr>
+<td width="35%" valign="top">1.3.13. Destination UDP port for initial unsolicited null responses (UDP only Outstations):<p></p>
+<i>For a UDP only Outstation, the destination UDP port for sending initial unsolicited Null response.</i>
+</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box"><label for="box"></label> None<br><input type="checkbox" name="box"><label for="box"></label> Fixed at 20,000<br><input type="checkbox" name="box"><label for="box"></label> Configurable, range 
+			<b></b> to 
+			<b></b><br><input type="checkbox" name="box"><label for="box"></label> Configurable, selectable from  
+			<br><input type="checkbox" name="box"><label for="box"></label>Other, explain:<br><br><br><table border="0" width="100%" bgcolor="PaleGreen"><tbody><tr><td>Note: Not applicable.</td></tr></tbody></table>
+</td>
+<td width="20%" valign="top" bgcolor="white"><font color="white"> </font></td>
+<td width="10%" valign="baseline"><font color="white"> </font></td>
+</tr>
+<tr>
+<td width="35%" valign="top">1.3.14. Destination UDP port for responses:<p></p>
+<i>For a UDP only Outstation, the destination UDP port for sending all responses other than the initial unsolicited Null response.</i>
+</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box"><label for="box"></label> None<br><input type="checkbox" name="box"><label for="box"></label> Fixed at 20,000<br><input type="checkbox" name="box"><label for="box"></label> Configurable, range 
+			<b></b> to 
+			<b></b><br><input type="checkbox" name="box"><label for="box"></label> Configurable, selectable from  
+			<br><input type="checkbox" name="box"><label for="box"></label>Other, explain:<br><br><input type="checkbox" name="box"><label for="box"></label>Use source port number<br><br><table border="0" width="100%" bgcolor="PaleGreen"><tbody><tr><td>Note: Not applicable.</td></tr></tbody></table>
+</td>
+<td width="20%" valign="top" bgcolor="white"><font color="white"> </font></td>
+<td width="10%" valign="baseline"><font color="white"> </font></td>
+</tr>
+<tr>
+<td width="35%" valign="top">1.3.15. Multiple outstation connections (Masters only):<p></p>
+<i>Master only. Indicates whether multiple outstation connections are supported.</i>
+</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box"><label for="box"></label> Supports multiple outstations (Masters only)
+						</td>
+<td width="20%" valign="top" bgcolor="white"><font color="white"> </font></td>
+<td width="10%" valign="baseline"><font color="white"> </font></td>
+</tr>
+<tr>
+<td width="35%" valign="top">1.3.16. Multiple master connections (Outstations only):<p></p>
+<i>Outstations only. Indicates whether multiple master connections are supported and the method that can be used to establish connections.</i>
+</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box" checked><label for="box"></label> Supports multiple masters (Outstations only)<p></p>
+						If supported, the following methods may be used:<br><input type="checkbox" name="box"><label for="box"></label>Method 1 (based on IP address) - required<br><input type="checkbox" name="box" checked><label for="box"></label>Method 2 (based on IP port number) - recommended<br><input type="checkbox" name="box"><label for="box"></label>Method 3 (browsing for static data) - optional<br>
+</td>
+<td width="20%" valign="baseline">
+									 
+								</td>
+<td width="10%" valign="baseline"><font color="white"> </font></td>
+</tr>
+<tr>
+<td width="35%" valign="top">1.3.17. Time synchronization support:<p></p>
+<i></i>
+</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box" checked><label for="box"></label>DNP3 LAN procedure (function code 24)<br><input type="checkbox" name="box" checked><label for="box"></label>DNP3 Write Time (not recommended over LAN)<br><input type="checkbox" name="box" checked><label for="box"></label>Other, explain:<b>VENDOR SPECIFIC, likely not applicable</b><br><br><input type="checkbox" name="box"><label for="box"></label>Not Supported<br>
+</td>
+<td width="20%" valign="top" bgcolor="white"><font color="white"> </font></td>
+<td width="10%" valign="baseline"><font color="white"> </font></td>
+</tr>
+</tbody>
+</table>
+<p></p>
+<table border="1" align="center" width="90%" cellspacing="0" cellpadding="3">
+<tr bgcolor="yellow"><b><th align="left" width="35%"><font face="Times New Roman" style="font-variant: small-caps;">1.4. Link Layer</font></th>
+<th align="left" width="35%">Capabilities</th>
+<th align="left" width="20%">Current Value</th>
+<th align="left" width="10%">If configurable list methods</th></b></tr>
+<tbody>
+<tr>
+<td width="35%" valign="top">1.4.1. Data Link Address:<p></p>
+<i>Indicates if the link address is configurable over the entire valid range of 0 to 65,519.
+						Data link addresses 0xFFF0 through 0xFFFF are reserved for broadcast or other special purposes.</i>
+</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box"><label for="box"></label> Fixed at <b></b><br><input type="checkbox" name="box" checked><label for="box"></label> Configurable, range 
+			<b>0</b> to 
+			<b>65519</b><br><input type="checkbox" name="box"><label for="box"></label> Configurable, selectable from  
+			<br><input type="checkbox" name="box"><label for="box"></label>Other, explain:<br><br>
+</td>
+<td width="20%" valign="baseline">1
+									 
+								</td>
+<td width="10%" valign="baseline"><font color="white"> </font></td>
+</tr>
+<tr>
+<td width="35%" valign="top">1.4.2. DNP3 Source Address Validation:<p></p>
+<i>Indicates whether the Outstation will filter out requests not from a specific source address.</i>
+</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box"><label for="box"></label>Never<br><input type="checkbox" name="box"><label for="box"></label>Always, one address allowed (shown in 1.4.3)<br><input type="checkbox" name="box"><label for="box"></label>Always, any one of multiple addresses allowed<br>(each selectable as shown in 1.4.3)<br><input type="checkbox" name="box"><label for="box"></label>Sometimes, explain:<br>
+</td>
+<td width="20%" valign="baseline">
+									 
+								</td>
+<td width="10%" valign="baseline"><font color="white"> </font></td>
+</tr>
+<tr>
+<td width="35%" valign="top">1.4.3. DNP3 Source Address(es) expected when Validation is Enabled:<p></p>
+<i>Selects the allowed source address(es)</i>
+</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box"><label for="box"></label>Configurable to any 16 bit DNP Data Link Address value<br><input type="checkbox" name="box" checked><label for="box"></label> Configurable, range 
+			<b>0</b> to 
+			<b>65519</b><br><input type="checkbox" name="box"><label for="box"></label> Configurable, selectable from  
+			<br><input type="checkbox" name="box"><label for="box"></label>Other, explain:<br><br>
+</td>
+<td width="20%" valign="baseline">0
+									 
+								</td>
+<td width="10%" valign="baseline"><font color="white"> </font></td>
+</tr>
+<tr>
+<td width="35%" valign="top">1.4.4. Self Address Support using address 0xFFFC:<p></p>
+<i>If an Outstation receives a message with a destination address of 0xFFFC it shall respond normally with its own source address.
+						It must be possible to diasble this feature if supported.</i>
+</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box"><label for="box"></label> Yes (only allowed if configurable)<br><input type="checkbox" name="box" checked><label for="box"></label> No
+						</td>
+<td width="20%" valign="baseline">No
+									 
+								</td>
+<td width="10%" valign="baseline"><font color="white"> </font></td>
+</tr>
+<tr>
+<td width="35%" valign="top">1.4.5. Sends Confirmed User Data Frames:<p></p>
+<i>A list of conditions under which the device transmits confirmed link layer services 
+						(TEST_LINK_STATES, RESET_LINK_STATES, CONFIRMED_USER_DATA).</i>
+</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box"><label for="box"></label>Never<br><input type="checkbox" name="box"><label for="box"></label>Always<br><input type="checkbox" name="box" checked><label for="box"></label>Sometimes, explain:<b>Configurable.</b><br>
+</td>
+<td width="20%" valign="baseline">Sometimes
+									 
+								</td>
+<td width="10%" valign="baseline"><font color="white"> </font></td>
+</tr>
+<tr>
+<td width="35%" valign="top">1.4.6. Data Link Layer Confirmation Timeout:<p></p>
+<i>This timeout applies to any secondary data link message that requires a confirm or response (link reset, link status, user data, etc).</i>
+</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box"><label for="box"></label> None<br><input type="checkbox" name="box"><label for="box"></label> Fixed at <b></b>ms<br><input type="checkbox" name="box"><label for="box"></label> Configurable, range 
+			<b></b> to 
+			<b></b>ms<br><input type="checkbox" name="box"><label for="box"></label> Configurable, selectable from  
+			ms<br><input type="checkbox" name="box" checked><label for="box"></label>Other, explain:<b>Configurable in increments of milliseconds</b><br><br><input type="checkbox" name="box"><label for="box"></label> Variable, explain:   
+			<b></b><br>
+</td>
+<td width="20%" valign="baseline">1000ms
+									 
+								</td>
+<td width="10%" valign="baseline"><font color="white"> </font></td>
+</tr>
+<tr>
+<td width="35%" valign="top">1.4.7. Maximum Data Link Retries:<p></p>
+<i>The number of times the device will retransmit a frame that requests Link Layer confirmation.</i>
+</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box" checked><label for="box"></label> None<br><input type="checkbox" name="box"><label for="box"></label> Fixed at <b></b><br><input type="checkbox" name="box" checked><label for="box"></label> Configurable, range 
+			<b>1</b> to 
+			<b>255</b><br><input type="checkbox" name="box"><label for="box"></label> Configurable, selectable from  
+			<br><input type="checkbox" name="box"><label for="box"></label>Other, explain:<br><br><br><table border="0" width="100%" bgcolor="PaleGreen"><tbody><tr><td>Note: None is selected by configuring a zero value for the retries.</td></tr></tbody></table>
+</td>
+<td width="20%" valign="baseline">None
+									 
+								</td>
+<td width="10%" valign="baseline"><font color="white"> </font></td>
+</tr>
+<tr>
+<td width="35%" valign="top">1.4.8. Maximum number of octets Transmitted in a Data Link Frame:<p></p>
+<i>This number includes the CRCs. With a length field of 255, the maximum size would be 292.</i>
+</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box" checked><label for="box"></label> Fixed at <b>292</b><br><input type="checkbox" name="box"><label for="box"></label> Configurable, range 
+			<b></b> to 
+			<b></b><br><input type="checkbox" name="box"><label for="box"></label> Configurable, selectable from  
+			<br><input type="checkbox" name="box"><label for="box"></label>Other, explain:<br><br>
+</td>
+<td width="20%" valign="baseline">292
+									 
+								</td>
+<td width="10%" valign="baseline"><font color="white"> </font></td>
+</tr>
+<tr>
+<td width="35%" valign="top">1.4.9. Maximum number of octets that can be Received in a Data Link Frame:<p></p>
+<i>This number includes the CRCs. With a field length of 255, the maximum size would be 292.
+						The device must be able to receive 292 octets to be compliant.</i>
+</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box" checked><label for="box"></label> Fixed at <b>292</b><br><input type="checkbox" name="box"><label for="box"></label> Configurable, range 
+			<b></b> to 
+			<b></b><br><input type="checkbox" name="box"><label for="box"></label> Configurable, selectable from  
+			<br><input type="checkbox" name="box"><label for="box"></label>Other, explain:<br><br>
+</td>
+<td width="20%" valign="baseline">292
+									 
+								</td>
+<td width="10%" valign="baseline"><font color="white"> </font></td>
+</tr>
+</tbody>
+</table>
+<p></p>
+<table border="1" align="center" width="90%" cellspacing="0" cellpadding="3">
+<tr bgcolor="yellow"><b><th align="left" width="35%"><font face="Times New Roman" style="font-variant: small-caps;">1.5. Application Layer</font></th>
+<th align="left" width="35%">Capabilities</th>
+<th align="left" width="20%">Current Value</th>
+<th align="left" width="10%">If configurable list methods</th></b></tr>
+<tbody>
+<tr>
+<td width="35%" valign="top">1.5.1. Maximum number of octets Transmitted in an Application Layer Fragment other than File Transfer:<p></p>
+<i>This size does not include any transport or frame octets.<br>
+						- Masters must provide a setting less than or equal to 249.<br>
+						- Outstations must provide a setting less than or equal to 2048.
+						<p></p>Note: The current value of this outstation parameter is available remotely using protocol object Group 0 Variation 240.</i>
+</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box"><label for="box"></label> Fixed at <b></b><br><input type="checkbox" name="box" checked><label for="box"></label> Configurable, range 
+			<b>27</b> to 
+			<b>4096</b><br><input type="checkbox" name="box"><label for="box"></label> Configurable, selectable from  
+			<br><input type="checkbox" name="box"><label for="box"></label>Other, explain:<br><br>
+</td>
+<td width="20%" valign="baseline">4096
+									 
+								</td>
+<td width="10%" valign="baseline"><font color="white"> </font></td>
+</tr>
+<tr>
+<td width="35%" valign="top">1.5.2. Maximum number of octets Transmitted in an Application Layer Fragment containing File Transfer:<p></p>
+<i></i>
+</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box"><label for="box"></label> Fixed at <b></b><br><input type="checkbox" name="box"><label for="box"></label> Configurable, range 
+			<b></b> to 
+			<b></b><br><input type="checkbox" name="box"><label for="box"></label> Configurable, selectable from  
+			<br><input type="checkbox" name="box"><label for="box"></label>Other, explain:<br><br><br><table border="0" width="100%" bgcolor="PaleGreen"><tbody><tr><td>Note: not applicable</td></tr></tbody></table>
+</td>
+<td width="20%" valign="baseline">
+<br><table border="0" width="100%" bgcolor="PaleGreen"><tbody><tr><td>Note: not applicable</td></tr></tbody></table>
+									 
+								</td>
+<td width="10%" valign="baseline"><font color="white"> </font></td>
+</tr>
+<tr>
+<td width="35%" valign="top">1.5.3. Maximum number of octets that can be received in an Application Layer Fragment:<p></p>
+<i>This size does not include any transport or frame octets.<br>
+						- Masters must provide a setting greater than or equal to 2048.<br>
+						- Outstations must provide a setting greater than or equal to 249.
+						<p></p>Note: The current value of this outstation parameter is available remotely using protocol object Group 0 Variation 241.</i>
+</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box"><label for="box"></label> Fixed at <b></b><br><input type="checkbox" name="box"><label for="box"></label> Configurable, range 
+			<b></b> to 
+			<b></b><br><input type="checkbox" name="box"><label for="box"></label> Configurable, selectable from  
+			<br><input type="checkbox" name="box"><label for="box"></label>Other, explain:<br><br>
+</td>
+<td width="20%" valign="baseline">4096
+									 
+								</td>
+<td width="10%" valign="baseline"><font color="white"> </font></td>
+</tr>
+<tr>
+<td width="35%" valign="top">1.5.4. Timeout waiting for Complete Application Layer Fragment:<p></p>
+<i>Timeout if all frames of a message fragment are not received in the specified time.
+						Measured from time first frame of a fragment is received until the last frame is received.</i>
+</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box"><label for="box"></label> None<br><input type="checkbox" name="box"><label for="box"></label> Fixed at <b></b>ms<br><input type="checkbox" name="box"><label for="box"></label> Configurable, range 
+			<b></b> to 
+			<b></b>ms<br><input type="checkbox" name="box"><label for="box"></label> Configurable, selectable from  
+			ms<br><input type="checkbox" name="box"><label for="box"></label>Other, explain:<br><br><input type="checkbox" name="box"><label for="box"></label> Variable, explain:   
+			<b></b><br>
+</td>
+<td width="20%" valign="baseline">
+									 
+								</td>
+<td width="10%" valign="baseline"><font color="white"> </font></td>
+</tr>
+<tr>
+<td width="35%" valign="top">1.5.5. Maximum number of objects allowed in a single control request for CROB (Group 12):<p></p>
+<i>Note: The current value of this outstation parameter is available remotely using protocol object Group 0 Variation 216.</i>
+</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box" checked><label for="box"></label> Fixed at <b>1</b>(enter 0 if controls are not supported)<br><input type="checkbox" name="box"><label for="box"></label> Configurable, range 
+			<b></b> to 
+			<b></b><br><input type="checkbox" name="box"><label for="box"></label> Configurable, selectable from  
+			<br><input type="checkbox" name="box"><label for="box"></label>Other, explain:<br><br><input type="checkbox" name="box"><label for="box"></label> Variable, explain:   
+			<b></b><br>
+</td>
+<td width="20%" valign="baseline">1
+									 
+								</td>
+<td width="10%" valign="baseline"><font color="white"> </font></td>
+</tr>
+<tr>
+<td width="35%" valign="top">1.5.6. Maximum number of objects allowed in a single control request for Analog Outputs (Group 41):<p></p>
+<i></i>
+</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box" checked><label for="box"></label> Fixed at <b>1</b>(enter 0 if controls are not supported)<br><input type="checkbox" name="box"><label for="box"></label> Configurable, range 
+			<b></b> to 
+			<b></b><br><input type="checkbox" name="box"><label for="box"></label> Configurable, selectable from  
+			<br><input type="checkbox" name="box"><label for="box"></label>Other, explain:<br><br><input type="checkbox" name="box"><label for="box"></label> Variable, explain:   
+			<b></b><br>
+</td>
+<td width="20%" valign="baseline">1
+									 
+								</td>
+<td width="10%" valign="baseline"><font color="white"> </font></td>
+</tr>
+<tr>
+<td width="35%" valign="top">1.5.7. Maximum number of objects allowed in a single control request for Data Sets (Groups 85, 86, 87):<p></p>
+<i></i>
+</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box"><label for="box"></label> Fixed at <b></b>(enter 0 if controls are not supported)<br><input type="checkbox" name="box"><label for="box"></label> Configurable, range 
+			<b></b> to 
+			<b></b><br><input type="checkbox" name="box"><label for="box"></label> Configurable, selectable from  
+			<br><input type="checkbox" name="box"><label for="box"></label>Other, explain:<br><br><input type="checkbox" name="box"><label for="box"></label> Variable, explain:   
+			<b></b><br><br><table border="0" width="100%" bgcolor="PaleGreen"><tbody><tr><td>Note: not applicable</td></tr></tbody></table>
+</td>
+<td width="20%" valign="baseline">
+									 
+								</td>
+<td width="10%" valign="baseline"><font color="white"> </font></td>
+</tr>
+<tr>
+<td width="35%" valign="top">1.5.8. Supports mixed object groups (AOBs, CROBs and Data Sets) in the same control request:<p></p>
+<i></i>
+</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box"><label for="box"></label>Not applicable - controls are not supported<br><input type="checkbox" name="box"><label for="box"></label>Yes<br><input type="checkbox" name="box" checked><label for="box"></label>No<br>
+</td>
+<td width="20%" valign="baseline">No
+									 
+								</td>
+<td width="10%" valign="baseline"><font color="white"> </font></td>
+</tr>
+</tbody>
+</table>
+<p></p>
+<table border="1" align="center" width="90%" cellspacing="0" cellpadding="3">
+<tr bgcolor="yellow"><b><th align="left" width="35%"><font face="Times New Roman" style="font-variant: small-caps;">1.6. Fill Out The Following Items For Masters Only</font></th>
+<th align="left" width="35%">Capabilities</th>
+<th align="left" width="20%">Current Value</th>
+<th align="left" width="10%">If configurable list methods</th></b></tr>
+<tbody></tbody>
+</table>
+<p></p>
+<table border="1" align="center" width="90%" cellspacing="0" cellpadding="3">
+<tr bgcolor="yellow"><b><th align="left" width="35%"><font face="Times New Roman" style="font-variant: small-caps;">1.7. Fill Out The Following Items For Outstations Only</font></th>
+<th align="left" width="35%">Capabilities</th>
+<th align="left" width="20%">Current Value</th>
+<th align="left" width="10%">If configurable list methods</th></b></tr>
+<tbody>
+<tr>
+<td width="35%" valign="top">1.7.1. Timeout waiting for Application Confirm of solicited response message:<p></p>
+<i></i>
+</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box"><label for="box"></label> None<br><input type="checkbox" name="box"><label for="box"></label> Fixed at <b></b>ms<br><input type="checkbox" name="box" checked><label for="box"></label> Configurable, range 
+			<b>0</b> to 
+			<b>65535</b>ms<br><input type="checkbox" name="box"><label for="box"></label> Configurable, selectable from  
+			ms<br><input type="checkbox" name="box"><label for="box"></label>Other, explain:<br><br><input type="checkbox" name="box"><label for="box"></label> Variable, explain:   
+			<b></b><br>
+</td>
+<td width="20%" valign="baseline">3000ms
+									 
+								</td>
+<td width="10%" valign="baseline"><font color="white"> </font></td>
+</tr>
+<tr>
+<td width="35%" valign="top">1.7.2. How often is time synchronization required from the master:<p></p>
+<i>Details of when the master needs to perform a time synchronization to ensure that the outstation clock does not drift outside 
+							of an acceptable tolerance. If the option to relate this to IIN1.4 is used then details of when IIN1.4 is asserted are in section 1.10.2.</i>
+</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box"><label for="box"></label>Never needs time<br><input type="checkbox" name="box"><label for="box"></label> Within <b></b>
+							 seconds after IIN1.4 is set<br><input type="checkbox" name="box"><label for="box"></label> Periodically, fixed at <b></b>
+							 seconds<br><input type="checkbox" name="box"><label for="box"></label> Periodically, between <b></b> and <b></b>
+							 seconds<br>
+</td>
+<td width="20%" valign="baseline">Never
+									 
+								</td>
+<td width="10%" valign="baseline"><font color="white"> </font></td>
+</tr>
+<tr>
+<td width="35%" valign="top">1.7.3. Device Trouble Bit IIN1.6:<p></p>
+<i>If IIN1.6 device trouble bit is set under certain conditions, explain the possible causes.</i>
+</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box"><label for="box"></label>Never used<br><input type="checkbox" name="box"><label for="box"></label>Reason for setting:<br>
+</td>
+<td width="20%" valign="baseline">
+									 
+								</td>
+<td width="10%" valign="baseline"><font color="white"> </font></td>
+</tr>
+<tr>
+<td width="35%" valign="top">1.7.4. File Handle Timeout:<p></p>
+<i>If there is no activity referencing a file handle for a configurable length of time, the outstation must do an automatic close on the file.
+						The timeout value must be configurable up to 1 hour.
+						When this condition occurs the outstation will send a File Transport Status Object 
+						(obj grp 70 var 6) using a status code value of handle expired (0x02).</i>
+</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box"><label for="box"></label>Not applicable, files not supported<br><input type="checkbox" name="box"><label for="box"></label> Fixed at <b></b>ms<br><input type="checkbox" name="box"><label for="box"></label> Configurable, range 
+			<b></b> to 
+			<b></b>ms<br><input type="checkbox" name="box"><label for="box"></label> Configurable, selectable from  
+			ms<br><input type="checkbox" name="box"><label for="box"></label>Other, explain:<br><br><input type="checkbox" name="box"><label for="box"></label> Variable, explain:   
+			<b></b><br><br><table border="0" width="100%" bgcolor="PaleGreen"><tbody><tr><td>Note: not applicable</td></tr></tbody></table>
+</td>
+<td width="20%" valign="baseline">
+<br><table border="0" width="100%" bgcolor="PaleGreen"><tbody><tr><td>Note: not applicable</td></tr></tbody></table>
+									 
+								</td>
+<td width="10%" valign="baseline"><font color="white"> </font></td>
+</tr>
+<tr>
+<td width="35%" valign="top">1.7.5. Event Buffer Overflow Behavior:<p></p>
+<i></i>
+</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box"><label for="box"></label>Discard the oldest event<br><input type="checkbox" name="box"><label for="box"></label>Discard the newest event<br><input type="checkbox" name="box"><label for="box"></label>Other, explain:<br><br><table border="0" width="100%" bgcolor="PaleGreen"><tbody><tr><td>Note: Discard oldest</td></tr></tbody></table>
+</td>
+<td width="20%" valign="baseline">
+<br><table border="0" width="100%" bgcolor="PaleGreen"><tbody><tr><td>Note: Discard oldest</td></tr></tbody></table>
+									 
+								</td>
+<td width="10%" valign="baseline"><font color="white"> </font></td>
+</tr>
+<tr>
+<td width="35%" valign="top">1.7.6. Event Buffer Organization:<p></p>
+<i>Explain how event buffers are arranged (per Object Group, per Class, single buffer etc) and provide their sizes.</i>
+</td>
+<td width="35%" valign="top">
+                        A vendor configurable number of events can be cached before discarding oldest events
+                    </td>
+<td width="20%" valign="top" bgcolor="white"><font color="white"> </font></td>
+<td width="10%" valign="top"><font color="white"> </font></td>
+</tr>
+<tr>
+<td width="35%" valign="top">1.7.7. Sends Multi-Fragment Responses:<p></p>
+<i>Indicates whether an Outstation sends multi-fragment responses (Masters do not send multi-fragment requests).</i>
+</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box" checked><label for="box"></label>Yes<br><input type="checkbox" name="box"><label for="box"></label>No<br>
+</td>
+<td width="20%" valign="baseline">Yes
+									 
+								</td>
+<td width="10%" valign="baseline"><font color="white"> </font></td>
+</tr>
+<tr>
+<td width="35%" valign="top">1.7.8. Last Fragment Confirmation:<p></p>
+<i>Indicates whether the Outstation requests confirmation of the last fragment of a multi-fragment response.</i>
+</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box"><label for="box"></label>Always<br><input type="checkbox" name="box" checked><label for="box"></label>Sometimes, explain:<b>
+                                Only requests confirmation if APDU contains event data
+                            </b><br><br><input type="checkbox" name="box"><label for="box"></label>Never<br>
+</td>
+<td width="20%" valign="baseline">Sometimes
+									 
+								</td>
+<td width="10%" valign="baseline"><font color="white"> </font></td>
+</tr>
+<tr>
+<td width="35%" valign="top">1.7.9. DNP Command Settings preserved through a device reset:<p></p>
+<i>If any of these settings are written through the DNP protocol and they are not preserved through a restart of the Outstation,
+						the Master will have to write them again anytime the Restart IIN bit is set.</i>
+</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box"><label for="box"></label>Assign Class<br><input type="checkbox" name="box"><label for="box"></label>Analog Deadbands<br><input type="checkbox" name="box"><label for="box"></label>Data Set Prototypes<br><input type="checkbox" name="box"><label for="box"></label>Data Set Descriptors<br><input type="checkbox" name="box"><label for="box"></label>Function Code 31 Activate Configuration<br>
+</td>
+<td width="20%" valign="top" bgcolor="white"><font color="white"> </font></td>
+<td width="10%" valign="baseline"><font color="white"> </font></td>
+</tr>
+</tbody>
+</table>
+<p></p>
+<table border="1" align="center" width="90%" cellspacing="0" cellpadding="3">
+<tr bgcolor="yellow"><b><th align="left" width="35%"><font face="Times New Roman" style="font-variant: small-caps;">1.8. Outstation Unsolicited Response Support</font></th>
+<th align="left" width="35%">Capabilities</th>
+<th align="left" width="20%">Current Value</th>
+<th align="left" width="10%">If configurable list methods</th></b></tr>
+<tbody>
+<tr>
+<td width="35%" valign="top">1.8.1. Supports Unsolicited Reporting:<p></p>
+<i>When the unsolicited response mode is configured "off", the device is to behave exactly like an equivalent device that has no
+						support for unsolicited responses. If set to "on", the Outstation will send a null Unsolicited Response after it restarts,
+						then wait for an Enable Unsolicited Response command from the master before sending additional Unsolicited Responses containing event data.</i>
+</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box"><label for="box"></label>Not Supported<br><input type="checkbox" name="box" checked><label for="box"></label> Configurable, selectable from On and Off<br>
+</td>
+<td width="20%" valign="baseline">Off
+									 
+								</td>
+<td width="10%" valign="baseline"><font color="white"> </font></td>
+</tr>
+<tr>
+<td width="35%" valign="top">1.8.2. Master Data Link Address:<p></p>
+<i>The destination address of the master device where the unsolicited responses will be sent.</i>
+</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box"><label for="box"></label> Fixed at <b></b><br><input type="checkbox" name="box" checked><label for="box"></label> Configurable, range 
+			<b>0</b> to 
+			<b>65519</b><br><input type="checkbox" name="box"><label for="box"></label> Configurable, selectable from  
+			<br><input type="checkbox" name="box"><label for="box"></label>Other, explain:<br><br>
+</td>
+<td width="20%" valign="baseline">0
+									 
+								</td>
+<td width="10%" valign="baseline"><font color="white"> </font></td>
+</tr>
+<tr>
+<td width="35%" valign="top">1.8.3. Unsolicited Response Confirmation Timeout:<p></p>
+<i>This is the amount of time that the outstation will wait for an Application Layer confirmation back from the master indicating that
+						the master received the unsolicited response message. As a minimum, the range of configurable values must include times from one second
+						to one minute. This parameter may be the same one that is used for normal, solicited, application confirmation timeouts, 
+						or it may be a separate parameter.</i>
+</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box"><label for="box"></label> Fixed at <b></b>ms<br><input type="checkbox" name="box" checked><label for="box"></label> Configurable, range 
+			<b>0</b> to 
+			<b>65535</b>ms<br><input type="checkbox" name="box"><label for="box"></label> Configurable, selectable from  
+			ms<br><input type="checkbox" name="box"><label for="box"></label>Other, explain:<br><br><input type="checkbox" name="box"><label for="box"></label> Variable, explain:   
+			<b></b><br>
+</td>
+<td width="20%" valign="baseline">3000 ms
+									
+									 
+							</td>
+<td width="10%" valign="baseline"><font color="white"> </font></td>
+</tr>
+<tr>
+<td width="35%" valign="top">1.8.4. Number of Unsolicited Retries:<p></p>
+<i>This is the number of retries that an outstation transmits in each unsolicited response series if it does not receive confirmation
+						back from the master. The configured value includes identical and regenerated retry messages. One of the choices must provide
+						for an indefinite (and potentially infinite) number of transmissions.</i>
+</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box" checked><label for="box"></label> None<br><input type="checkbox" name="box"><label for="box"></label> Fixed at <b></b><br><input type="checkbox" name="box" checked><label for="box"></label> Configurable, range 
+			<b>0</b> to 
+			<b>65535</b><br><input type="checkbox" name="box"><label for="box"></label> Configurable, selectable from  
+			<br><input type="checkbox" name="box"><label for="box"></label>Other, explain:<br><br><input type="checkbox" name="box"><label for="box"></label>Always infinite, never gives up<br><br><table border="0" width="100%" bgcolor="PaleGreen"><tbody><tr><td>Note: The number can also be configured as 0 to select none
+                        </td></tr></tbody></table>
+</td>
+<td width="20%" valign="baseline">None
+									 
+								</td>
+<td width="10%" valign="baseline"><font color="white"> </font></td>
+</tr>
+</tbody>
+</table>
+<p></p>
+<table border="1" align="center" width="90%" cellspacing="0" cellpadding="3">
+<tr bgcolor="yellow"><b><th align="left" width="35%"><font face="Times New Roman" style="font-variant: small-caps;">1.9. Outstation Unsolicited Response Trigger Conditions</font></th>
+<th align="left" width="35%">Capabilities</th>
+<th align="left" width="20%">Current Value</th>
+<th align="left" width="10%">If configurable list methods</th></b></tr>
+<tbody>
+<tr>
+<td width="35%" valign="top">1.9.1. Number of class 1 events:<p></p>
+<i></i>
+</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box"><label for="box"></label>Class 1 not used to trigger Unsolicited Responses<br><input type="checkbox" name="box"><label for="box"></label> Fixed at <b></b><br><input type="checkbox" name="box"><label for="box"></label> Configurable, range 
+			<b></b> to 
+			<b></b><br><input type="checkbox" name="box"><label for="box"></label> Configurable, selectable from  
+			<br><input type="checkbox" name="box"><label for="box"></label>Other, explain:<br><br>
+</td>
+<td width="20%" valign="baseline">
+									 
+								</td>
+<td width="10%" valign="baseline"><font color="white"> </font></td>
+</tr>
+<tr>
+<td width="35%" valign="top">1.9.2. Number of class 2 events:<p></p>
+<i></i>
+</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box"><label for="box"></label>Class 2 not used to trigger Unsolicited Responses<br><input type="checkbox" name="box"><label for="box"></label> Fixed at <b></b><br><input type="checkbox" name="box"><label for="box"></label> Configurable, range 
+			<b></b> to 
+			<b></b><br><input type="checkbox" name="box"><label for="box"></label> Configurable, selectable from  
+			<br><input type="checkbox" name="box"><label for="box"></label>Other, explain:<br><br>
+</td>
+<td width="20%" valign="baseline">
+									 
+								</td>
+<td width="10%" valign="baseline"><font color="white"> </font></td>
+</tr>
+<tr>
+<td width="35%" valign="top">1.9.3. Number of class 3 events:<p></p>
+<i></i>
+</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box"><label for="box"></label>Class 3 not used to trigger Unsolicited Responses<br><input type="checkbox" name="box"><label for="box"></label> Fixed at <b></b><br><input type="checkbox" name="box"><label for="box"></label> Configurable, range 
+			<b></b> to 
+			<b></b><br><input type="checkbox" name="box"><label for="box"></label> Configurable, selectable from  
+			<br><input type="checkbox" name="box"><label for="box"></label>Other, explain:<br><br>
+</td>
+<td width="20%" valign="baseline">
+									 
+								</td>
+<td width="10%" valign="baseline"><font color="white"> </font></td>
+</tr>
+<tr>
+<td width="35%" valign="top">1.9.4. Total number of events from any class:<p></p>
+<i></i>
+</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box"><label for="box"></label>Total Number of Events not used to trigger Unsolicited Responses<br><input type="checkbox" name="box"><label for="box"></label> Fixed at <b></b><br><input type="checkbox" name="box"><label for="box"></label> Configurable, range 
+			<b></b> to 
+			<b></b><br><input type="checkbox" name="box"><label for="box"></label> Configurable, selectable from  
+			<br><input type="checkbox" name="box"><label for="box"></label>Other, explain:<br><br>
+</td>
+<td width="20%" valign="top" bgcolor="white"><font color="white"> </font></td>
+<td width="10%" valign="baseline"><font color="white"> </font></td>
+</tr>
+<tr>
+<td width="35%" valign="top">1.9.5. Hold time after class 1 event:<p></p>
+<i>A configurable value of 0 indicates that responses are not delayed due to this parameter.</i>
+</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box"><label for="box"></label>Class 1 not used to trigger Unsolicited Responses<br><input type="checkbox" name="box"><label for="box"></label> Fixed at <b></b>ms<br><input type="checkbox" name="box"><label for="box"></label> Configurable, range 
+			<b></b> to 
+			<b></b>ms<br><input type="checkbox" name="box"><label for="box"></label> Configurable, selectable from  
+			ms<br><input type="checkbox" name="box"><label for="box"></label>Other, explain:<br><br>
+</td>
+<td width="20%" valign="top" bgcolor="white"><font color="white"> </font></td>
+<td width="10%" valign="baseline"><font color="white"> </font></td>
+</tr>
+<tr>
+<td width="35%" valign="top">1.9.6. Hold time after class 2 event:<p></p>
+<i>A configurable value of 0 indicates that responses are not delayed due to this parameter.</i>
+</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box"><label for="box"></label>Class 2 not used to trigger Unsolicited Responses<br><input type="checkbox" name="box"><label for="box"></label> Fixed at <b></b>ms<br><input type="checkbox" name="box"><label for="box"></label> Configurable, range 
+			<b></b> to 
+			<b></b>ms<br><input type="checkbox" name="box"><label for="box"></label> Configurable, selectable from  
+			ms<br><input type="checkbox" name="box"><label for="box"></label>Other, explain:<br><br>
+</td>
+<td width="20%" valign="top" bgcolor="white"><font color="white"> </font></td>
+<td width="10%" valign="baseline"><font color="white"> </font></td>
+</tr>
+<tr>
+<td width="35%" valign="top">1.9.7. Hold time after class 3 event:<p></p>
+<i>A configurable value of 0 indicates that responses are not delayed due to this parameter.</i>
+</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box"><label for="box"></label>Class 3 not used to trigger Unsolicited Responses<br><input type="checkbox" name="box"><label for="box"></label> Fixed at <b></b>ms<br><input type="checkbox" name="box"><label for="box"></label> Configurable, range 
+			<b></b> to 
+			<b></b>ms<br><input type="checkbox" name="box"><label for="box"></label> Configurable, selectable from  
+			ms<br><input type="checkbox" name="box"><label for="box"></label>Other, explain:<br><br>
+</td>
+<td width="20%" valign="top" bgcolor="white"><font color="white"> </font></td>
+<td width="10%" valign="baseline"><font color="white"> </font></td>
+</tr>
+<tr>
+<td width="35%" valign="top">1.9.8. Hold time after event assigned to any class:<p></p>
+<i>A configurable value of 0 indicates that responses are not delayed due to this parameter.</i>
+</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box"><label for="box"></label>Class events not used to trigger Unsolicited Responses<br><input type="checkbox" name="box"><label for="box"></label> Fixed at <b></b>ms<br><input type="checkbox" name="box"><label for="box"></label> Configurable, range 
+			<b></b> to 
+			<b></b>ms<br><input type="checkbox" name="box"><label for="box"></label> Configurable, selectable from  
+			ms<br><input type="checkbox" name="box"><label for="box"></label>Other, explain:<br><br>
+</td>
+<td width="20%" valign="top" bgcolor="white"><font color="white"> </font></td>
+<td width="10%" valign="baseline"><font color="white"> </font></td>
+</tr>
+<tr>
+<td width="35%" valign="top">1.9.9. Retrigger Hold Time:<p></p>
+<i>The hold-time timer may be retriggered for each new event detected (increased possibility of capturing all the changes in a single response)
+						or not retriggered (giving the master a guaranteed update time).</i>
+</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box" checked><label for="box"></label>Hold-time timer will be retriggered for each new event detected (may get more changes in next response)<br><input type="checkbox" name="box"><label for="box"></label>Hold-time timer will not be retriggered for each new event detected (guaranteed update time)<br>
+</td>
+<td width="20%" valign="top" bgcolor="white"><font color="white"> </font></td>
+<td width="10%" valign="baseline"><font color="white"> </font></td>
+</tr>
+<tr>
+<td width="35%" valign="top">1.9.10. Other Unsolicited Response Trigger Conditions:<p></p>
+<i></i>
+</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box"><label for="box"></label><br>
+</td>
+<td width="20%" valign="top" bgcolor="white"><font color="white"> </font></td>
+<td width="10%" valign="baseline"><font color="white"> </font></td>
+</tr>
+</tbody>
+</table>
+<p></p>
+<table border="1" align="center" width="90%" cellspacing="0" cellpadding="3">
+<tr bgcolor="yellow"><b><th align="left" width="35%"><font face="Times New Roman" style="font-variant: small-caps;">1.10. Outstation Performance</font></th>
+<th align="left" width="35%">Capabilities</th>
+<th align="left" width="20%">Current Value</th>
+<th align="left" width="10%">If configurable list methods</th></b></tr>
+<tbody>
+<tr>
+<td width="35%" valign="top">1.10.1. Maximum Time Base Drift (milliseconds per minute):<p></p>
+<i>If the device is synchronized by DNP, what is the clock drift rate over the full operating temperature range.</i>
+</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box"><label for="box"></label> Fixed at <b></b>ms<br><input type="checkbox" name="box"><label for="box"></label> Range 
+			<b></b> to 
+			<b></b>ms<br><input type="checkbox" name="box"><label for="box"></label> Selectable from  
+			ms<br><input type="checkbox" name="box"><label for="box"></label> Other, describe:  
+			<b></b><br><br><table border="0" width="100%" bgcolor="PaleGreen"><tbody><tr><td>Note: VENDOR_SPECIFIC - Depends on vendor hardware and RTC</td></tr></tbody></table>
+</td>
+<td width="20%" valign="top" bgcolor="white"><font color="white"> </font></td>
+<td width="10%" valign="baseline"><font color="white"> </font></td>
+</tr>
+<tr>
+<td width="35%" valign="top">1.10.2. When does outstation set IIN1.4?<p></p>
+<i>When does the outstation set the internal indication NEED_TIME</i>
+</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box" checked><label for="box"></label>Never<br><input type="checkbox" name="box" checked><label for="box"></label>Asserted at startup until first Time Synchronization request received<br><input type="checkbox" name="box"><label for="box"></label> Periodically, range 
+							<b></b> to 
+							<b></b>  seconds<br><input type="checkbox" name="box"><label for="box"></label> Periodically, selectable from 
+							 seconds<br><input type="checkbox" name="box"><label for="box"></label> Range  
+							<b></b> to 
+							<b></b>  
+							seconds after last time sync<br><input type="checkbox" name="box"><label for="box"></label> Selectable from  
+							 seconds after last time sync <br><input type="checkbox" name="box"><label for="box"></label> When time error may have drifted by range 
+							<b></b> to 
+							<b></b>  ms<br><input type="checkbox" name="box"><label for="box"></label> When time error may have drifted by selectable from 
+							 ms
+							</td>
+<td width="20%" valign="baseline">Never
+									 
+								</td>
+<td width="10%" valign="baseline"><font color="white"> </font></td>
+</tr>
+<tr>
+<td width="35%" valign="top">1.10.3. Maximum Internal Time Reference Error when set via DNP (ms):<p></p>
+<i>The difference between the time set in DNP Write Time message, and the time actually set in the outstation.</i>
+</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box"><label for="box"></label> Fixed at <b></b>ms<br><input type="checkbox" name="box"><label for="box"></label> Range 
+			<b></b> to 
+			<b></b>ms<br><input type="checkbox" name="box"><label for="box"></label> Selectable from  
+			ms<br><input type="checkbox" name="box"><label for="box"></label> Other, describe:  
+			<b></b><br><br><table border="0" width="100%" bgcolor="PaleGreen"><tbody><tr><td>Note: VENDOR_SPECIFIC - Depends on vendor hardware and RTC</td></tr></tbody></table>
+</td>
+<td width="20%" valign="baseline">
+									 
+								</td>
+<td width="10%" valign="baseline"><font color="white"> </font></td>
+</tr>
+<tr>
+<td width="35%" valign="top">1.10.4. Maximum Delay Measurement Error (ms):<p></p>
+<i>The difference between the time reported in the delay measurement response and the actual time between receipt of the 
+						delay measurement request and issuing the delay measurement reply.</i>
+</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box"><label for="box"></label> Fixed at <b></b>ms<br><input type="checkbox" name="box"><label for="box"></label> Range 
+			<b></b> to 
+			<b></b>ms<br><input type="checkbox" name="box"><label for="box"></label> Selectable from  
+			ms<br><input type="checkbox" name="box"><label for="box"></label> Other, describe:  
+			<b></b><br><br><table border="0" width="100%" bgcolor="PaleGreen"><tbody><tr><td>Note: VENDOR_SPECIFIC - Depends on vendor hardware and RTC</td></tr></tbody></table>
+</td>
+<td width="20%" valign="baseline">
+									 
+								</td>
+<td width="10%" valign="baseline"><font color="white"> </font></td>
+</tr>
+<tr>
+<td width="35%" valign="top">1.10.5. Maximum Response Time (ms):<p></p>
+<i>The amount of time an outstation will take to respond upon receipt of a valid request.
+						This does not include the message transmission time.</i>
+</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box"><label for="box"></label> Fixed at <b></b>ms<br><input type="checkbox" name="box"><label for="box"></label> Range 
+			<b></b> to 
+			<b></b>ms<br><input type="checkbox" name="box"><label for="box"></label> Selectable from  
+			ms<br><input type="checkbox" name="box"><label for="box"></label> Other, describe:  
+			<b></b><br><br><table border="0" width="100%" bgcolor="PaleGreen"><tbody><tr><td>Note: VENDOR_SPECIFIC - Depends on vendor hardware and RTC</td></tr></tbody></table>
+</td>
+<td width="20%" valign="baseline">
+									 
+								</td>
+<td width="10%" valign="baseline"><font color="white"> </font></td>
+</tr>
+<tr>
+<td width="35%" valign="top">1.10.6. Maximum time from start-up to IIN 1.4 assertion (ms):<p></p>
+<i></i>
+</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box"><label for="box"></label> Fixed at <b></b>ms<br><input type="checkbox" name="box"><label for="box"></label> Range 
+			<b></b> to 
+			<b></b>ms<br><input type="checkbox" name="box"><label for="box"></label> Selectable from  
+			ms<br><input type="checkbox" name="box"><label for="box"></label> Other, describe:  
+			<b></b><br>
+</td>
+<td width="20%" valign="top" bgcolor="white"><font color="white"> </font></td>
+<td width="10%" valign="baseline"><font color="white"> </font></td>
+</tr>
+<tr>
+<td width="35%" valign="top">1.10.7. Maximum Event Time-tag error for local Binary and Double Bit I/O (ms):<p></p>
+<i>The error between the time-tag reported and the absolute time of the physical event.
+							This error includes the Internal Time Reference Error.
+							<br>Note: The current value of this parameter is available remotely using protocol object Group 0 Variation 217.</i>
+</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box"><label for="box"></label> Fixed at <b></b>ms<br><input type="checkbox" name="box"><label for="box"></label> Range 
+			<b></b> to 
+			<b></b>ms<br><input type="checkbox" name="box"><label for="box"></label> Selectable from  
+			ms<br><input type="checkbox" name="box"><label for="box"></label> Other, describe:  
+			<b></b><br><br><table border="0" width="100%" bgcolor="PaleGreen"><tbody><tr><td>Note: VENDOR_SPECIFIC - Depends on vendor hardware and RTC</td></tr></tbody></table>
+</td>
+<td width="20%" valign="baseline">
+									 
+								</td>
+<td width="10%" valign="baseline"><font color="white"> </font></td>
+</tr>
+<tr>
+<td width="35%" valign="top">1.10.8. Maximum Event Time-tag error for local I/O other than Binary and Double Bit data types (ms):<p></p>
+<i></i>
+</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box"><label for="box"></label> Fixed at <b></b>ms<br><input type="checkbox" name="box"><label for="box"></label> Range 
+			<b></b> to 
+			<b></b>ms<br><input type="checkbox" name="box"><label for="box"></label> Selectable from  
+			ms<br><input type="checkbox" name="box"><label for="box"></label> Other, describe:  
+			<b></b><br><br><table border="0" width="100%" bgcolor="PaleGreen"><tbody><tr><td>Note: VENDOR_SPECIFIC - Depends on vendor hardware and RTC</td></tr></tbody></table>
+</td>
+<td width="20%" valign="baseline">
+									 
+								</td>
+<td width="10%" valign="baseline"><font color="white"> </font></td>
+</tr>
+</tbody>
+</table>
+<p></p>
+<table border="1" align="center" width="90%" cellspacing="0" cellpadding="3">
+<tr bgcolor="yellow"><b><th align="left" width="45%"><font face="Times New Roman" style="font-variant: small-caps;">1.11. Individual Field Outstation Parameters</font></th>
+<th align="left" width="45%">Value of Current Setting</th>
+<th align="left" width="10%">If configurable list methods</th></b></tr>
+<tbody>
+<tr>
+<td width="45%" valign="top">1.11.1. User-assigned location name or code string (same as g0v245):</td>
+<td width="45%" valign="top">Null 
+								</td>
+<td width="10%" valign="top">protocol<br>----------------<br><font color="white"> </font><br><table border="0" width="100%" bgcolor="PaleGreen"><tbody><tr><td>Note: Max string length is limited to 255 bytes.</td></tr></tbody></table>
+</td>
+</tr>
+<tr>
+<td width="45%" valign="top">1.11.2. User-assigned ID code/number string (same as g0v246):</td>
+<td width="45%" valign="top">Null 
+								</td>
+<td width="10%" valign="top">protocol<br>----------------<br><font color="white"> </font><br><table border="0" width="100%" bgcolor="PaleGreen"><tbody><tr><td>Note: Max string length is limited to 255 bytes.</td></tr></tbody></table>
+</td>
+</tr>
+<tr>
+<td width="45%" valign="top">1.11.3 User-assigned name string for the outstation (same as g0v247):</td>
+<td width="45%" valign="top">Null 
+								</td>
+<td width="10%" valign="top">protocol<br>----------------<br><font color="white"> </font><br><table border="0" width="100%" bgcolor="PaleGreen"><tbody><tr><td>Note: Max string length is limited to 255 bytes.</td></tr></tbody></table>
+</td>
+</tr>
+<tr>
+<td width="45%" valign="top">1.11.4 Device Serial Number string (same as g0v248):</td>
+<td width="45%" valign="top">Returns an ethernet MAC ID as a hexadecimal string. 
+								</td>
+<td width="10%" valign="top"><font color="white"> </font></td>
+</tr>
+</tbody>
+</table>
+<p></p>
+<table border="1" align="center" width="90%" cellspacing="0" cellpadding="3">
+<tr bgcolor="yellow"><b><th align="left" width="35%"><font face="Times New Roman" style="font-variant: small-caps;">1.12. Security Parameters</font></th>
+<th align="left" width="35%">Capabilities</th>
+<th align="left" width="20%">Current Value</th>
+<th align="left" width="10%">If configurable list methods</th></b></tr>
+<tbody><tr>
+<td width="35%" valign="top">1.12.1 DNP3 device support for secure authentication:<p></p>
+<i>The support for secure authentication is optional in DNP3 devices. Indicate here if the device supports
+						secure authentication.<p></p>
+						If the device does not support secure authentication then ignore the rest of this section.<p></p>
+						If the device does support secure authentication then specify the version(s) that are supported in the device. 
+						The version number is an integer value defined in the protocol document "DNP3Spec-V2-Sup1-SecureAuthentication". 
+						The volume 2 supplement shows version numbers of all associated documents that comprise that version of Secure Authentication.</i>
+</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box" checked><label for="box"></label>Secure Authentication not supported<br><p></p>If Secure Authentication is supported, what Version(s) are supported:<br><input type="checkbox" name="box"><label for="box"></label> Fixed at version 
+						<br><input type="checkbox" name="box"><label for="box"></label> Configurable, selectable from versions   
+						<br>
+</td>
+<td width="20%" valign="baseline">Not Supported
+								 
+							</td>
+<td width="10%" valign="baseline"><font color="white"> </font></td>
+</tr></tbody>
+</table>
+<p></p>
+<br><br><br><p></p>
+<table border="0" align="center" width="90%" cellspacing="0" cellpadding="3"><caption align="left">
+<big><b>2. Mapping to IEC 61850 Object Models</b></big><p></p>This optional section allows each configuration parameter or point in the DNP Data map to be tied to an attribute in the IEC
+			61850 object models. The IEC 61850 mappings are stored in the XML version of the Device Profile Document as a list of XPath
+			references to the tags representing real-time data from DNP under each point (for example value, timestamp, and quality for
+			Analog inputs) paired with an IEC 61850 Object Reference in the form of a flattened ACSI (Abstract Communications Service
+			Interface) name of the object and attributes as specified in IEC 61850 parts 7-4 and 7-3. The Xpath reference into the DNP XML
+			file may also contain a reference to a constant value, a formula or conditional expression involving one or more XML tags,
+			or a reference to a configuration parameter that is not associated with a particular data point.
+			<p></p> A tree or table representation may be generated from the XML and shown here in the Device Profile Document. The 
+			following is an example tree format.
+			</caption></table>
+<p></p>
+<table border="1" align="center" width="90%" cellspacing="0" cellpadding="3">
+<tr bgcolor="yellow"><b><th align="left" width="100%" colspan="7"><font face="Times New Roman" style="font-variant: small-caps;">
+							Mapping to IEC 61850 Object Models</font></th></b></tr>
+<tbody>
+<tr>
+<td width="25%" colspan="5" bgcolor="yellow" valign="top" align="left">IEC 61850 Object</td>
+<td width="75%" colspan="2" bgcolor="yellow" valign="top" align="left">DNP Xpath Reference</td>
+</tr>
+<tr><td width="100%" colspan="7"></td></tr>
+</tbody>
+</table>
+<p></p>
+<br><br><br><p></p>
+<table border="0" align="center" width="90%" cellspacing="0" cellpadding="3"><caption align="left">
+<big><b>3. Capabilities and Current Settings for Device Database (Outstation only)</b></big><p></p>The following tables identify the capabilities and current settings for each DNP3 data type. 
+				Details defining the data points available in the device are shown in part 5 of this Device Profile.
+			</caption></table>
+<p></p>
+<table border="1" align="center" width="90%" cellspacing="0" cellpadding="3">
+<tr bgcolor="yellow"><b><th align="left" colspan="4">
+<font face="Times New Roman" style="font-variant: small-caps;"><big>3.1. Binary Input Points</big></font><br>Static (Steady-State) Object Number: <b>1</b><br>Event Object Number: <b>2</b>
+</th></b></tr>
+<tr bgcolor="yellow"><b><th align="left" width="35%"><font color="yellow">.</font></th>
+<th align="left" width="35%">Capabilities</th>
+<th align="left" width="20%">Current Value</th>
+<th align="left" width="10%">If configurable list methods</th></b></tr>
+<tr bgcolor="white">
+<td width="35%" valign="top">3.1.1. Static Variation reported when variation 0 requested</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box" checked><label for="box"></label> Variation 1
+	 - Single-bit packed format<br><input type="checkbox" name="box"><label for="box"></label> Variation 2
+	 - Single-bit with flag<br><input type="checkbox" name="box"><label for="box"></label> Based on point index (see tables in part 5)
+	</td>
+<td width="20%" valign="baseline">One
+								 
+							</td>
+<td width="10%" valign="baseline"><font color="white"> </font></td>
+</tr>
+<tr bgcolor="white">
+<td width="35%" valign="top">3.1.2. Event Variation reported when variation 0 requested:
+						<p></p>
+<i>Note: The support for binary input events can be determined remotely using protocol object Group 0 Variation 237.</i>
+</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box"><label for="box"></label> Variation 1
+	 - without time<br><input type="checkbox" name="box"><label for="box"></label> Variation 2
+	 - with absolute time<br><input type="checkbox" name="box" checked><label for="box"></label> Variation 3
+	 - with relative time<br><input type="checkbox" name="box"><label for="box"></label> Based on point index (see tables in part 5)
+	</td>
+<td width="20%" valign="baseline">Three
+								 
+							</td>
+<td width="10%" valign="baseline"><font color="white"> </font></td>
+</tr>
+<tr bgcolor="white">
+<td width="35%" valign="top">3.1.3. Event reporting mode:
+				<p></p>
+<i>When responding with event data and more than one event has occurred for a data point,                                                         an Outstation may include all events or only the most recent event.<br>All events are typically reported for Binary Inputs </i>
+</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box"><label for="box"></label> Only most recent
+			<br><input type="checkbox" name="box" checked><label for="box"></label> All
+			 events</td>
+<td width="20%" valign="baseline">All events
+					 
+				</td>
+<td width="10%" valign="baseline"><font color="white"> </font></td>
+</tr>
+<tr bgcolor="white">
+<td width="35%" valign="top">
+						3.1.4. Binary Inputs included in Class 0 response:<p></p>
+<i>If Binary Inputs are not included in the Class 0 response, Binary Input Events (group 2) may not be reported.</i>
+</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box" checked><label for="box"></label> Always<br><input type="checkbox" name="box"><label for="box"></label> Never<br><input type="checkbox" name="box"><label for="box"></label> Only if point is assigned to Class 1, 2, or 3<br><input type="checkbox" name="box"><label for="box"></label> Based on point index (see tables in part 5)
+			</td>
+<td width="20%" valign="baseline">Always
+					 
+				</td>
+<td width="10%" valign="baseline"><font color="white"> </font></td>
+</tr>
+</table>
+<p></p>
+<table border="1" align="center" width="90%" cellspacing="0" cellpadding="3">
+<tr bgcolor="yellow"><b><th align="left" colspan="4">
+<font face="Times New Roman" style="font-variant: small-caps;"><big>3.2. Double-bit Input Points</big></font><br>Static (Steady-State) Object Number: <b>3</b><br>Event Object Number: <b>4</b>
+</th></b></tr>
+<tr bgcolor="yellow"><b><th align="left" width="35%"><font color="yellow">.</font></th>
+<th align="left" width="35%">Capabilities</th>
+<th align="left" width="20%">Current Value</th>
+<th align="left" width="10%">If configurable list methods</th></b></tr>
+<tr bgcolor="white">
+<td width="35%" valign="top">3.2.1. Static Variation reported when variation 0 requested
+						<p></p>
+<i>Note: The support for double-bit inputs can be determined remotely using protocol object Group 0 Variation 234.</i>
+</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box" checked><label for="box"></label> Variation 1
+	 - Double-bit packed format<br><input type="checkbox" name="box"><label for="box"></label> Variation 2
+	 - Double-bit with flag<br><input type="checkbox" name="box"><label for="box"></label> Based on point index (see tables in part 5)
+	</td>
+<td width="20%" valign="baseline">One
+								 
+							</td>
+<td width="10%" valign="baseline"><font color="white"> </font></td>
+</tr>
+<tr bgcolor="white">
+<td width="35%" valign="top">3.2.2. Event Variation reported when variation 0 requested</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box"><label for="box"></label> Variation 1
+	 - without time<br><input type="checkbox" name="box"><label for="box"></label> Variation 2
+	 - with absolute time<br><input type="checkbox" name="box" checked><label for="box"></label> Variation 3
+	 - with relative time<br><input type="checkbox" name="box"><label for="box"></label> Based on point index (see tables in part 5)
+	</td>
+<td width="20%" valign="baseline">Three
+								 
+							</td>
+<td width="10%" valign="baseline"><font color="white"> </font></td>
+</tr>
+<tr bgcolor="white">
+<td width="35%" valign="top">3.2.3. Event reporting mode:
+				<p></p>
+<i>When responding with event data and more than one event has occurred for a data point,                                                         an Outstation may include all events or only the most recent event.<br>All events are typically reported for Double Bit Inputs </i>
+</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box"><label for="box"></label> Only most recent
+			<br><input type="checkbox" name="box" checked><label for="box"></label> All
+			 events</td>
+<td width="20%" valign="baseline">All events
+					 
+				</td>
+<td width="10%" valign="baseline"><font color="white"> </font></td>
+</tr>
+<tr bgcolor="white">
+<td width="35%" valign="top">
+						3.2.4. Double Bit Inputs included in Class 0 response:<p></p>
+<i>If Double-bit Inputs are not included in the Class 0 response, Double-bit Input Events (group 4) may not be reported.</i>
+</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box" checked><label for="box"></label> Always<br><input type="checkbox" name="box"><label for="box"></label> Never<br><input type="checkbox" name="box"><label for="box"></label> Only if point is assigned to Class 1, 2, or 3<br><input type="checkbox" name="box"><label for="box"></label> Based on point index (see tables in part 5)
+			</td>
+<td width="20%" valign="baseline">Always
+					 
+				</td>
+<td width="10%" valign="baseline"><font color="white"> </font></td>
+</tr>
+</table>
+<p></p>
+<table border="1" align="center" width="90%" cellspacing="0" cellpadding="3">
+<tr bgcolor="yellow"><b><th align="left" colspan="4">
+<font face="Times New Roman" style="font-variant: small-caps;"><big>3.3. Binary Output Status and Control Relay Output Block</big></font><br>Binary Output Status Object Number: <b>10</b><br>Binary Output Event Object Number: <b>11</b><br>CROB Object Number: <b>12</b><br>Binary Output Command Event Object Number: <b>13</b>
+</th></b></tr>
+<tr bgcolor="yellow"><b><th align="left" width="35%"><font color="yellow">.</font></th>
+<th align="left" width="35%">Capabilities</th>
+<th align="left" width="20%">Current Value</th>
+<th align="left" width="10%">If configurable list methods</th></b></tr>
+<tr bgcolor="white">
+<td width="35%" valign="top">3.3.1. Minimum pulse time allowed with Trip, Close and Pulse On commands.</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box" checked><label for="box"></label> Fixed at <b>0</b> ms 
+						(hardware may limit this further)<br><input type="checkbox" name="box"><label for="box"></label> Based on point index (see tables in part 5)
+	</td>
+<td width="20%" valign="baseline">Fixed at 
+								0 ms
+								 
+							</td>
+<td width="10%" valign="baseline"><font color="white"> </font></td>
+</tr>
+<tr bgcolor="white">
+<td width="35%" valign="top">3.3.2. Maximum pulse time allowed with Trip, Close and Pulse On commands.</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box" checked><label for="box"></label> Fixed at <b>65535</b> ms 
+						(hardware may limit this further<br><input type="checkbox" name="box"><label for="box"></label> Based on point index (see tables in part 5)
+	</td>
+<td width="20%" valign="baseline">Fixed at 
+								65535 ms
+								 
+							</td>
+<td width="10%" valign="baseline"><font color="white"> </font></td>
+</tr>
+<tr bgcolor="white">
+<td width="35%" valign="top">
+						3.3.3. Binary Output Status included in Class 0 response:<p></p>
+<i>If Binary Output Status points are not included in the Class 0 response, Binary Output Status Events (group 11) may not be reported.</i>
+</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box" checked><label for="box"></label> Always<br><input type="checkbox" name="box"><label for="box"></label> Never<br><input type="checkbox" name="box"><label for="box"></label> Only if point is assigned to Class 1, 2, or 3<br><input type="checkbox" name="box"><label for="box"></label> Based on point index (see tables in part 5)
+			</td>
+<td width="20%" valign="baseline">Always
+					 
+				</td>
+<td width="10%" valign="baseline"><font color="white"> </font></td>
+</tr>
+<tr bgcolor="white">
+<td width="35%" valign="top">3.3.4. Reports Output Command Event Objects:</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box" checked><label for="box"></label>Never<br><input type="checkbox" name="box"><label for="box"></label>Only upon a successful Control<br><input type="checkbox" name="box"><label for="box"></label>Upon all control attempts<br>
+</td>
+<td width="20%" valign="baseline">Never
+								 
+							</td>
+<td width="10%" valign="baseline"><font color="white"> </font></td>
+</tr>
+<tr bgcolor="white">
+<td width="35%" valign="top">3.3.5. Static Variation reported when variation 0 requested</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box"><label for="box"></label> Variation 1
+	 - Continuous control<br><input type="checkbox" name="box" checked><label for="box"></label> Variation 2
+	 - Continuous control, binary output status<br><input type="checkbox" name="box"><label for="box"></label> Based on point index (see tables in part 5)
+	</td>
+<td width="20%" valign="baseline">Two
+								 
+							</td>
+<td width="10%" valign="baseline"><font color="white"> </font></td>
+</tr>
+<tr bgcolor="white">
+<td width="35%" valign="top">3.3.6. Event Variation reported when variation 0 requested
+						<p></p>
+<i>Note: The support for binary output events can be determined remotely using protocol object Group 0 Variation 222.</i>
+</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box"><label for="box"></label> Variation 1
+	 - without time<br><input type="checkbox" name="box"><label for="box"></label> Variation 2
+	 - with absolute time<br><input type="checkbox" name="box"><label for="box"></label> Based on point index (see tables in part 5)
+	<br><table border="0" width="100%" bgcolor="PaleGreen"><tbody><tr><td>Note: Not relevant - output events not supported.</td></tr></tbody></table>
+</td>
+<td width="20%" valign="top" bgcolor="white"><font color="white"> </font></td>
+<td width="10%" valign="baseline"><font color="white"> </font></td>
+</tr>
+<tr bgcolor="white">
+<td width="35%" valign="top">3.3.7. Command Event Variation reported when variation 0 requested</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box"><label for="box"></label> Variation 1
+	 - without time<br><input type="checkbox" name="box"><label for="box"></label> Variation 2
+	
+						 - with absolute time<br><input type="checkbox" name="box"><label for="box"></label> Based on point index (see tables in part 5)
+	<br><table border="0" width="100%" bgcolor="PaleGreen"><tbody><tr><td>Note: Not relevant - output events not supported.</td></tr></tbody></table>
+</td>
+<td width="20%" valign="top" bgcolor="white"><font color="white"> </font></td>
+<td width="10%" valign="baseline"><font color="white"> </font></td>
+</tr>
+<tr bgcolor="white">
+<td width="35%" valign="top">3.3.8. Change Event reporting mode:
+					<p></p>
+<i>When responding with event data and more than one event has occurred for a data point,                                                         an Outstation may include all events or only the most recent event.<br></i>
+</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box"><label for="box"></label> Only most recent<br><input type="checkbox" name="box"><label for="box"></label> All events
+			<br><table border="0" width="100%" bgcolor="PaleGreen"><tbody><tr><td>Note: Not relevant - output events not supported.</td></tr></tbody></table>
+</td>
+<td width="20%" valign="top" bgcolor="white"><font color="white"> </font></td>
+<td width="10%" valign="baseline"><font color="white"> </font></td>
+</tr>
+<tr bgcolor="white">
+<td width="35%" valign="top">3.3.9. Command Event reporting mode:
+					<p></p>
+<i>When responding with event data and more than one event has occurred for a data point,                                                         an Outstation may include all events or only the most recent event.<br></i>
+</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box"><label for="box"></label> Only most recent<br><input type="checkbox" name="box"><label for="box"></label> All events
+			<br><table border="0" width="100%" bgcolor="PaleGreen"><tbody><tr><td>Note: Not relevant - output events not supported.</td></tr></tbody></table>
+</td>
+<td width="20%" valign="top" bgcolor="white"><font color="white"> </font></td>
+<td width="10%" valign="baseline"><font color="white"> </font></td>
+</tr>
+<tr>
+<td width="35%" valign="top">3.3.10. Maximum Time between Select and Operate:</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box"><label for="box"></label>Not Applicable<br><input type="checkbox" name="box"><label for="box"></label> Fixed at <b></b>seconds<br><input type="checkbox" name="box" checked><label for="box"></label> Configurable, range 
+			<b>1</b> to 
+			<b>65535</b>seconds<br><input type="checkbox" name="box"><label for="box"></label> Configurable, selectable from  
+			seconds<br><input type="checkbox" name="box"><label for="box"></label>Other, explain:<br><br><input type="checkbox" name="box"><label for="box"></label> Variable, explain:   
+			<b></b><br><input type="checkbox" name="box"><label for="box"></label> Based on point index (see tables in part 5)
+	</td>
+<td width="20%" valign="baseline">10 seconds
+								 
+							</td>
+<td width="10%" valign="baseline"><font color="white"> </font></td>
+</tr>
+</table>
+<p></p>
+<table border="1" align="center" width="90%" cellspacing="0" cellpadding="3">
+<tr bgcolor="yellow"><b><th align="left" colspan="4">
+<font face="Times New Roman" style="font-variant: small-caps;"><big>3.4. Counters / Frozen Counters</big></font><br>Static Counter Object Number: <b>20</b><br>Static Frozen Counter Object Number: <b>21</b><br>Counter Event Object Number: <b>22</b><br>Frozen Counter Event Object Number: <b>23</b>
+</th></b></tr>
+<tr bgcolor="yellow"><b><th align="left" width="35%"><font color="yellow">.</font></th>
+<th align="left" width="35%">Capabilities</th>
+<th align="left" width="20%">Current Value</th>
+<th align="left" width="10%">If configurable list methods</th></b></tr>
+<tr bgcolor="white">
+<td width="35%" valign="top">3.4.1. Static Counter Variation reported when variation 0 requested</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box" checked><label for="box"></label> Variation 1
+	 - 32-bit with flag<br><input type="checkbox" name="box" checked><label for="box"></label> Variation 2
+	 - 16-bit with flag<br><input type="checkbox" name="box" checked><label for="box"></label> Variation 5
+	 - 32-bit without flag
+						<br><input type="checkbox" name="box" checked><label for="box"></label> Variation 6
+	 - 16-bit without flag
+						<br><input type="checkbox" name="box"><label for="box"></label> Based on point index (see tables in part 5)
+	<br><table border="0" width="100%" bgcolor="PaleGreen"><tbody><tr><td>Note: Also supports variations 7 and 8</td></tr></tbody></table>
+</td>
+<td width="20%" valign="baseline">One
+								 
+							</td>
+<td width="10%" valign="baseline"><font color="white"> </font></td>
+</tr>
+<tr bgcolor="white">
+<td width="35%" valign="top">3.4.2. Counter Event Variation reported when variation 0 requested
+						<p></p>
+<i>Note: The support for counter events can be determined remotely using protocol object Group 0 Variation 227.</i>
+</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box" checked><label for="box"></label> Variation 1
+	 - 32-bit with flag<br><input type="checkbox" name="box" checked><label for="box"></label> Variation 2
+	 - 16-bit with flag<br><input type="checkbox" name="box" checked><label for="box"></label> Variation 5
+	
+						 - 32-bit with flag and time<br><input type="checkbox" name="box" checked><label for="box"></label> Variation 6
+	
+						 - 16-bit with flag and time<br><input type="checkbox" name="box"><label for="box"></label> Based on point index (see tables in part 5)
+	<br><table border="0" width="100%" bgcolor="PaleGreen"><tbody><tr><td>Note: Also supports variations 7 and 8</td></tr></tbody></table>
+</td>
+<td width="20%" valign="baseline">One
+								 
+							</td>
+<td width="10%" valign="baseline"><font color="white"> </font></td>
+</tr>
+<tr bgcolor="white">
+<td width="35%" valign="top">
+						3.4.3. Counters included in Class 0 response:<p></p>
+<i>If counters are not included in the Class 0 response, Counter Events (group 22) may not be reported.</i>
+</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box" checked><label for="box"></label> Always<br><input type="checkbox" name="box"><label for="box"></label> Never<br><input type="checkbox" name="box"><label for="box"></label> Only if point is assigned to Class 1, 2, or 3<br><input type="checkbox" name="box"><label for="box"></label> Based on point index (see tables in part 5)
+			</td>
+<td width="20%" valign="baseline">Always
+					 
+				</td>
+<td width="10%" valign="baseline"><font color="white"> </font></td>
+</tr>
+<tr bgcolor="white">
+<td width="35%" valign="top">3.4.4. Counter Event reporting mode:
+						<p></p>
+<i><br>When responding with event data and more than one event has occurred for a data point, an Outstation may include all events
+							 or only the most recent event. Only the most recent event is typically reported for Counters. When reporting only the most 
+							 recent event the counter value returned in the response may be
+							 either the value at the time that the event is queued or it may be the value at the time of the response.</i>
+</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box"><label for="box"></label>A: Only most recent (value at time of event)<br><input type="checkbox" name="box"><label for="box"></label>B: Only most recent (value at time of response)<br><input type="checkbox" name="box" checked><label for="box"></label>C: All events<br><input type="checkbox" name="box"><label for="box"></label>Based on point index (see tables in part 5)<br>
+</td>
+<td width="20%" valign="baseline">
+									All events
+								 
+							</td>
+<td width="10%" valign="baseline"><font color="white"> </font></td>
+</tr>
+<tr bgcolor="white">
+<td width="35%" valign="top">3.4.5. Static Frozen Counter Variation reported when variation 0 requested:</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box"><label for="box"></label> Variation 1
+	
+						 - 32-bit with flag<br><input type="checkbox" name="box"><label for="box"></label> Variation 2
+	
+						 - 16-bit with flag<br><input type="checkbox" name="box"><label for="box"></label> Variation 5
+	
+						 - 32-bit with flag and time<br><input type="checkbox" name="box"><label for="box"></label> Variation 6
+	
+						 - 16-bit with flag and time<br><input type="checkbox" name="box"><label for="box"></label> Variation 9
+	
+						 - 32-bit without flag<br><input type="checkbox" name="box"><label for="box"></label> Variation 10
+	
+						 - 16-bit without flag<br><input type="checkbox" name="box"><label for="box"></label> Based on point index (see tables in part 5)
+	</td>
+<td width="20%" valign="baseline">
+								 
+							</td>
+<td width="10%" valign="baseline"><font color="white"> </font></td>
+</tr>
+<tr bgcolor="white">
+<td width="35%" valign="top">3.4.6. Frozen Counter Event Variation reported when variation 0 requested:
+						<p></p>
+<i>Note: The support for frozen counter events can be determined remotely using protocol object Group 0 Variation 225.</i>
+</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box"><label for="box"></label> Variation 1
+	
+						 - 32-bit with flag<br><input type="checkbox" name="box"><label for="box"></label> Variation 2
+	
+						 - 16-bit with flag<br><input type="checkbox" name="box"><label for="box"></label> Variation 5
+	
+						 - 32-bit without flag<br><input type="checkbox" name="box"><label for="box"></label> Variation 6
+	
+						 - 16-bit without flag<br><input type="checkbox" name="box"><label for="box"></label> Based on point index (see tables in part 5)
+	</td>
+<td width="20%" valign="baseline">
+								 
+							</td>
+<td width="10%" valign="baseline"><font color="white"> </font></td>
+</tr>
+<tr bgcolor="white">
+<td width="35%" valign="top">
+						3.4.7. Frozen Counters included in Class 0 response:<p></p>
+<i>If Frozen Counters are not included in the Class 0 response, Frozen Counter Events (group 23) may not be reported.</i>
+</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box"><label for="box"></label> Always<br><input type="checkbox" name="box"><label for="box"></label> Never<br><input type="checkbox" name="box"><label for="box"></label> Only if point is assigned to Class 1, 2, or 3<br><input type="checkbox" name="box"><label for="box"></label> Based on point index (see tables in part 5)
+			</td>
+<td width="20%" valign="top" bgcolor="white"><font color="white"> </font></td>
+<td width="10%" valign="baseline"><font color="white"> </font></td>
+</tr>
+<tr bgcolor="white">
+<td width="35%" valign="top">3.4.8. Frozen Counter Event reporting mode:
+					<p></p>
+<i>When responding with event data and more than one event has occurred for a data point,                                                         an Outstation may include all events or only the most recent event. All events are typically reported for Frozen Counters </i>
+</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box"><label for="box"></label> Only most recent
+			 frozen value<br><input type="checkbox" name="box"><label for="box"></label> All
+			 frozen values</td>
+<td width="20%" valign="top" bgcolor="white"><font color="white"> </font></td>
+<td width="10%" valign="baseline"><font color="white"> </font></td>
+</tr>
+<tr>
+<td width="35%" valign="top">3.4.9. Counters Roll Over at:</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box" checked><label for="box"></label>16 Bits (65,535)<br><input type="checkbox" name="box" checked><label for="box"></label>32 Bits (4,294,967,295)<br><input type="checkbox" name="box"><label for="box"></label> Fixed at <b></b><br><input type="checkbox" name="box"><label for="box"></label> Configurable, range 
+			<b></b> to 
+			<b></b><br><input type="checkbox" name="box"><label for="box"></label> Configurable, selectable from  
+			<br><input type="checkbox" name="box"><label for="box"></label>Other, explain:<br><br><input type="checkbox" name="box"><label for="box"></label> Based on point index (see tables in part 5)
+	</td>
+<td width="20%" valign="baseline">
+								 
+							</td>
+<td width="10%" valign="baseline"><font color="white"> </font></td>
+</tr>
+<tr>
+<td width="35%" valign="top">3.4.10. Counters frozen by means of:</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box"><label for="box"></label>Master Request<br><input type="checkbox" name="box"><label for="box"></label>Freezes itself without concern for time of day<br><input type="checkbox" name="box"><label for="box"></label>Freezes itself and requires time of day<br><input type="checkbox" name="box"><label for="box"></label>Other, explain:<br>
+</td>
+<td width="20%" valign="baseline">Master Request
+								 
+							</td>
+<td width="10%" valign="baseline"><font color="white"> </font></td>
+</tr>
+</table>
+<p></p>
+<table border="1" align="center" width="90%" cellspacing="0" cellpadding="3">
+<tr bgcolor="yellow"><b><th align="left" colspan="4">
+<font face="Times New Roman" style="font-variant: small-caps;"><big>3.5. Analog Input Points</big></font><br>Static (Steady-State) Object Number: <b>30</b><br>Event Object Number: <b>32</b><br>Deadband Object Number: <b>34</b>
+</th></b></tr>
+<tr bgcolor="yellow"><b><th align="left" width="35%"><font color="yellow">.</font></th>
+<th align="left" width="35%">Capabilities</th>
+<th align="left" width="20%">Current Value</th>
+<th align="left" width="10%">If configurable list methods</th></b></tr>
+<tr bgcolor="white">
+<td width="35%" valign="top">3.5.1. Static Variation reported when variation 0 requested</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box" checked><label for="box"></label> Variation 1
+	 - 32-bit with flag<br><input type="checkbox" name="box" checked><label for="box"></label> Variation 2
+	 - 16-bit with flag<br><input type="checkbox" name="box" checked><label for="box"></label> Variation 3
+	 - 32-bit without flag<br><input type="checkbox" name="box" checked><label for="box"></label> Variation 4
+	 - 16-bit without flag<br><input type="checkbox" name="box" checked><label for="box"></label> Variation 5
+	 - 
+						single-precision floating point with flag<br><input type="checkbox" name="box" checked><label for="box"></label> Variation 6
+	 - 
+						double-precision floating point with flag<br><input type="checkbox" name="box"><label for="box"></label> Based on point index (see tables in part 5)
+	</td>
+<td width="20%" valign="baseline">One
+								 
+							</td>
+<td width="10%" valign="baseline"><font color="white"> </font></td>
+</tr>
+<tr bgcolor="white">
+<td width="35%" valign="top">3.5.2. Event Variation reported when variation 0 requested:
+						<p></p>
+<i>Note: The support for analog input events can be determined remotely using protocol object Group 0 Variation 231.</i>
+</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box" checked><label for="box"></label> Variation 1
+	 - 
+						32-bit without time<br><input type="checkbox" name="box" checked><label for="box"></label> Variation 2
+	 - 
+						16-bit without time<br><input type="checkbox" name="box" checked><label for="box"></label> Variation 3
+	 - 
+						32-bit with time<br><input type="checkbox" name="box" checked><label for="box"></label> Variation 4
+	 - 
+						16-bit with time<br><input type="checkbox" name="box" checked><label for="box"></label> Variation 5
+	 - 
+						single-precision floating point w/o time<br><input type="checkbox" name="box" checked><label for="box"></label> Variation 6
+	 - 
+						double-precision floating point w/o time<br><input type="checkbox" name="box"><label for="box"></label> Variation 7
+	 - 
+						single-precision floating point with time<br><input type="checkbox" name="box"><label for="box"></label> Variation 8
+	 - 
+						double-precision floating point with time<br><input type="checkbox" name="box"><label for="box"></label> Based on point index (see tables in part 5)
+	<br><table border="0" width="100%" bgcolor="PaleGreen"><tbody><tr><td>Note: Also supports variations 7 and 8</td></tr></tbody></table>
+</td>
+<td width="20%" valign="baseline">One
+								 
+							</td>
+<td width="10%" valign="baseline"><font color="white"> </font></td>
+</tr>
+<tr bgcolor="white">
+<td width="35%" valign="top">3.5.3. Event reporting mode:
+						<p></p>
+<i><br>When responding with event data and more than one event has occurred for a data point, an Outstation may include all events
+							 or only the most recent event. Only the most recent event is typically reported for Analog Inputs.
+							 When reporting only the most recent event the analog value returned in the response may be
+							 either the value at the time that the event is queued or it may be the value at the time of the response.
+						</i>
+</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box"><label for="box"></label>A: Only most recent (value at time of event)<br><input type="checkbox" name="box"><label for="box"></label>B: Only most recent (value at time of response)<br><input type="checkbox" name="box" checked><label for="box"></label>C: All events<br><input type="checkbox" name="box"><label for="box"></label>Based on point index (see tables in part 5)<br>
+</td>
+<td width="20%" valign="baseline">
+									All events
+								 
+							</td>
+<td width="10%" valign="baseline"><font color="white"> </font></td>
+</tr>
+<tr bgcolor="white">
+<td width="35%" valign="top">
+						3.5.4. Analog Inputs included in Class 0 response:<p></p>
+<i>If Analog Inputs are not included in the Class 0 response, Analog Input Events (group 32) may not be reported.</i>
+</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box" checked><label for="box"></label> Always<br><input type="checkbox" name="box"><label for="box"></label> Never<br><input type="checkbox" name="box"><label for="box"></label> Only if point is assigned to Class 1, 2, or 3<br><input type="checkbox" name="box"><label for="box"></label> Based on point index (see tables in part 5)
+			</td>
+<td width="20%" valign="baseline">Always
+					 
+				</td>
+<td width="10%" valign="baseline"><font color="white"> </font></td>
+</tr>
+<tr>
+<td width="35%" valign="top">3.5.5. How Deadbands are set:</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box"><label for="box"></label>A. Global Fixed<br><input type="checkbox" name="box"><label for="box"></label>B. Configurable through DNP<br><input type="checkbox" name="box"><label for="box"></label>C. Configurable via other means<br><input type="checkbox" name="box"><label for="box"></label>D. Other, explain:<br><br><input type="checkbox" name="box"><label for="box"></label>Based on point index (see tables in part 5)<br>
+</td>
+<td width="20%" valign="baseline">
+								 
+							</td>
+<td width="10%" valign="baseline"><font color="white"> </font></td>
+</tr>
+<tr>
+<td width="35%" valign="top">3.5.6. Analog Deadband Algorithm:
+					<p></p>
+<table border="0" align="center" width="100%" cellspacing="0" cellpadding="3"><i><tr>
+<td width="20%" valign="top">simple-</td>
+<td width="80%" valign="top">just compares the difference from the previous reported value</td>
+</tr>
+<tr>
+<td width="20%" valign="top">integrating-</td>
+<td width="80%" valign="top">keeps track of the accumulated change</td>
+</tr>
+<tr>
+<td width="20%" valign="top">other-</td>
+<td width="80%" valign="top">indicating another algorithm</td>
+</tr></i></table>
+</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box" checked><label for="box"></label>Simple<br><input type="checkbox" name="box"><label for="box"></label>Integrating<br><input type="checkbox" name="box"><label for="box"></label>Other, explain:<br><input type="checkbox" name="box"><label for="box"></label>Based on point index (see tables in part 5)<br>
+</td>
+<td width="20%" valign="baseline">Simple
+								 
+							</td>
+<td width="10%" valign="baseline"><font color="white"> </font></td>
+</tr>
+<tr bgcolor="white">
+<td width="35%" valign="top">3.5.7. Static Frozen Analog Input Variation reported when variation 0 requested</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box"><label for="box"></label> Variation 1
+	 - 32-bit with flag<br><input type="checkbox" name="box"><label for="box"></label> Variation 2
+	 - 16-bit with flag<br><input type="checkbox" name="box"><label for="box"></label> Variation 3
+	 - 32-bit with time-of-freeze<br><input type="checkbox" name="box"><label for="box"></label> Variation 4
+	 - 16-bit with time-of-freeze<br><input type="checkbox" name="box"><label for="box"></label> Variation 5
+	 - 32-bit without flag<br><input type="checkbox" name="box"><label for="box"></label> Variation 6
+	 - 16-bit without flag<br><input type="checkbox" name="box"><label for="box"></label> Variation 7
+	 - 
+						single-precision floating point with flag<br><input type="checkbox" name="box"><label for="box"></label> Variation 8
+	 - 
+						double-precision floating point with flag<br><input type="checkbox" name="box"><label for="box"></label> Based on point index (see tables in part 5)
+	</td>
+<td width="20%" valign="top" bgcolor="white"><font color="white"> </font></td>
+<td width="10%" valign="baseline"><font color="white"> </font></td>
+</tr>
+<tr bgcolor="white">
+<td width="35%" valign="top">3.5.8. Frozen Analog Input Event Variation reported when variation 0 requested:
+						<p></p>
+<i>Note: The support for frozen analog input events can be determined remotely using protocol object Group 0 Variation 230.</i>
+</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box"><label for="box"></label> Variation 1
+	 - 
+						32-bit without time<br><input type="checkbox" name="box"><label for="box"></label> Variation 2
+	 - 
+						16-bit without time<br><input type="checkbox" name="box"><label for="box"></label> Variation 3
+	 - 
+						32-bit with time<br><input type="checkbox" name="box"><label for="box"></label> Variation 4
+	 - 
+						16-bit with time<br><input type="checkbox" name="box"><label for="box"></label> Variation 5
+	 - 
+						single-precision floating point w/o time<br><input type="checkbox" name="box"><label for="box"></label> Variation 6
+	 - 
+						double-precision floating point w/o time<br><input type="checkbox" name="box"><label for="box"></label> Variation 7
+	 - 
+						single-precision floating point with time<br><input type="checkbox" name="box"><label for="box"></label> Variation 8
+	 - 
+						double-precision floating point with time<br><input type="checkbox" name="box"><label for="box"></label> Based on point index (see tables in part 5)
+	</td>
+<td width="20%" valign="top" bgcolor="white"><font color="white"> </font></td>
+<td width="10%" valign="baseline"><font color="white"> </font></td>
+</tr>
+<tr bgcolor="white">
+<td width="35%" valign="top">
+						3.5.9. Frozen Analog Inputs included in Class 0 response:<p></p>
+<i>If Frozen Analog Inputs are not included in the Class 0 response, Frozen Analog Input Events (group 33) may not be reported.</i>
+</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box"><label for="box"></label> Always<br><input type="checkbox" name="box"><label for="box"></label> Never<br><input type="checkbox" name="box"><label for="box"></label> Only if point is assigned to Class 1, 2, or 3<br><input type="checkbox" name="box"><label for="box"></label> Based on point index (see tables in part 5)
+			</td>
+<td width="20%" valign="top" bgcolor="white"><font color="white"> </font></td>
+<td width="10%" valign="baseline"><font color="white"> </font></td>
+</tr>
+<tr bgcolor="white">
+<td width="35%" valign="top">3.5.10. Frozen Analog Input Event reporting mode:
+					<p></p>
+<i>When responding with event data and more than one event has occurred for a data point,                                                         an Outstation may include all events or only the most recent event. All events are typically reported for Frozen Analog Inputs. </i>
+</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box"><label for="box"></label> Only most recent
+			 frozen value<br><input type="checkbox" name="box"><label for="box"></label> All
+			 frozen values</td>
+<td width="20%" valign="top" bgcolor="white"><font color="white"> </font></td>
+<td width="10%" valign="baseline"><font color="white"> </font></td>
+</tr>
+</table>
+<p></p>
+<table border="1" align="center" width="90%" cellspacing="0" cellpadding="3">
+<tr bgcolor="yellow"><b><th align="left" colspan="4">
+<font face="Times New Roman" style="font-variant: small-caps;"><big>3.6. Analog Output Status and Analog Output Control Block</big></font><br>Analog Output Status Object Number: <b>40</b><br>Analog Output Control Block Object Number: <b>41</b><br>Analog Output Event Object Number: <b>42</b><br>Analog Output Command Event Object Number: <b>43</b>
+</th></b></tr>
+<tr bgcolor="yellow"><b><th align="left" width="35%"><font color="yellow">.</font></th>
+<th align="left" width="35%">Capabilities</th>
+<th align="left" width="20%">Current Value</th>
+<th align="left" width="10%">If configurable list methods</th></b></tr>
+<tr bgcolor="white">
+<td width="35%" valign="top">3.6.1. Static Analog Output Status Variation reported when variation 0 requested</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box" checked><label for="box"></label> Variation 1
+	 - 32-bit with flag<br><input type="checkbox" name="box" checked><label for="box"></label> Variation 2
+	 - 16-bit with flag<br><input type="checkbox" name="box" checked><label for="box"></label> Variation 3
+	 - 
+						single-precision floating point with flag<br><input type="checkbox" name="box" checked><label for="box"></label> Variation 4
+	 - 
+						double-precision floating point with flag<br><input type="checkbox" name="box"><label for="box"></label> Based on point index (see tables in part 5)
+	</td>
+<td width="20%" valign="baseline">One
+								 
+							</td>
+<td width="10%" valign="baseline"><font color="white"> </font></td>
+</tr>
+<tr bgcolor="white">
+<td width="35%" valign="top">
+						3.6.2. Analog Output Status included in Class 0 response:<p></p>
+<i>If Analog Output Status points are not included in the Class 0 response, Analog Output Events (group 42) may not be reported.</i>
+</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box" checked><label for="box"></label> Always<br><input type="checkbox" name="box"><label for="box"></label> Never<br><input type="checkbox" name="box"><label for="box"></label> Only if point is assigned to Class 1, 2, or 3<br><input type="checkbox" name="box"><label for="box"></label> Based on point index (see tables in part 5)
+			</td>
+<td width="20%" valign="baseline">Always
+					 
+				</td>
+<td width="10%" valign="baseline"><font color="white"> </font></td>
+</tr>
+<tr bgcolor="white">
+<td width="35%" valign="top">3.6.3. Reports Output Command Event Objects:</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box" checked><label for="box"></label>Never<br><input type="checkbox" name="box"><label for="box"></label>Only upon a successful Control<br><input type="checkbox" name="box"><label for="box"></label>Upon all control attempts<br>
+</td>
+<td width="20%" valign="baseline">Never
+								 
+							</td>
+<td width="10%" valign="baseline"><font color="white"> </font></td>
+</tr>
+<tr bgcolor="white">
+<td width="35%" valign="top">3.6.4. Event Variation reported when variation 0 requested
+						<p></p>
+<i>Note: The support for analog output events can be determined remotely using protocol object Group 0 Variation 219.</i>
+</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box"><label for="box"></label> Variation 1
+	 - 
+						32-bit without time<br><input type="checkbox" name="box"><label for="box"></label> Variation 2
+	 - 
+						16-bit without time<br><input type="checkbox" name="box"><label for="box"></label> Variation 3
+	 - 
+						32-bit with time<br><input type="checkbox" name="box"><label for="box"></label> Variation 4
+	 - 
+						16-bit with time<br><input type="checkbox" name="box"><label for="box"></label> Variation 5
+	 - 
+						single-precision floating point w/o time<br><input type="checkbox" name="box"><label for="box"></label> Variation 6
+	 - 
+						double-precision floating point w/o time<br><input type="checkbox" name="box"><label for="box"></label> Variation 7
+	 - 
+						single-precision floating point with time<br><input type="checkbox" name="box"><label for="box"></label> Variation 8
+	 - 
+						double-precision floating point with time<br><input type="checkbox" name="box"><label for="box"></label> Based on point index (see tables in part 5)
+	<br><table border="0" width="100%" bgcolor="PaleGreen"><tbody><tr><td>Note: Not relevant - output events not supported.</td></tr></tbody></table>
+</td>
+<td width="20%" valign="top" bgcolor="white"><font color="white"> </font></td>
+<td width="10%" valign="baseline"><font color="white"> </font></td>
+</tr>
+<tr bgcolor="white">
+<td width="35%" valign="top">3.6.5. Command Event Variation reported when variation 0 requested</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box"><label for="box"></label> Variation 1
+	 -
+						 32-bit without time<br><input type="checkbox" name="box"><label for="box"></label> Variation 2
+	 -
+						 16-bit without time<br><input type="checkbox" name="box"><label for="box"></label> Variation 3
+	 -
+						 32-bit with time<br><input type="checkbox" name="box"><label for="box"></label> Variation 4
+	 -
+						 16-bit with time<br><input type="checkbox" name="box"><label for="box"></label> Variation 5
+	 -
+						 single-precision floating point w/o time<br><input type="checkbox" name="box"><label for="box"></label> Variation 6
+	 -
+						 double-precision floating point w/o time<br><input type="checkbox" name="box"><label for="box"></label> Variation 7
+	 -
+						 single-precision floating point with time<br><input type="checkbox" name="box"><label for="box"></label> Variation 8
+	 -
+						 double-precision floating point with time<br><input type="checkbox" name="box"><label for="box"></label> Based on point index (see tables in part 5)
+	<br><table border="0" width="100%" bgcolor="PaleGreen"><tbody><tr><td>Note: Not relevant - output events not supported.</td></tr></tbody></table>
+</td>
+<td width="20%" valign="top" bgcolor="white"><font color="white"> </font></td>
+<td width="10%" valign="baseline"><font color="white"> </font></td>
+</tr>
+<tr bgcolor="white">
+<td width="35%" valign="top">3.6.6. Change Event reporting mode:
+						<p></p>
+<i>When responding with event data and more than one event has occurred for a data point,                                                         an Outstation may include all events or only the most recent event.<br></i>
+</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box"><label for="box"></label> Only most recent<br><input type="checkbox" name="box"><label for="box"></label> All events
+			<br><table border="0" width="100%" bgcolor="PaleGreen"><tbody><tr><td>Note: Not relevant - output events not supported.</td></tr></tbody></table>
+</td>
+<td width="20%" valign="top" bgcolor="white"><font color="white"> </font></td>
+<td width="10%" valign="baseline"><font color="white"> </font></td>
+</tr>
+<tr bgcolor="white">
+<td width="35%" valign="top">3.6.7. Command Event reporting mode:
+						<p></p>
+<i>When responding with event data and more than one event has occurred for a data point,                                                         an Outstation may include all events or only the most recent event.<br></i>
+</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box"><label for="box"></label> Only most recent<br><input type="checkbox" name="box"><label for="box"></label> All events
+			<br><table border="0" width="100%" bgcolor="PaleGreen"><tbody><tr><td>Note: Not relevant - output events not supported.</td></tr></tbody></table>
+</td>
+<td width="20%" valign="top" bgcolor="white"><font color="white"> </font></td>
+<td width="10%" valign="baseline"><font color="white"> </font></td>
+</tr>
+<tr>
+<td width="35%" valign="top">3.6.8. Maximum Time between Select and Operate:</td>
+<td width="35%" valign="top">
+<input type="checkbox" name="box"><label for="box"></label>Not Applicable<br><input type="checkbox" name="box"><label for="box"></label> Fixed at <b></b>seconds<br><input type="checkbox" name="box" checked><label for="box"></label> Configurable, range 
+			<b>1</b> to 
+			<b>65535</b>seconds<br><input type="checkbox" name="box"><label for="box"></label> Configurable, selectable from  
+			seconds<br><input type="checkbox" name="box"><label for="box"></label>Other, explain:<br><br><input type="checkbox" name="box"><label for="box"></label> Variable, explain:   
+			<b></b><br><input type="checkbox" name="box"><label for="box"></label> Based on point index (see tables in part 5)
+	</td>
+<td width="20%" valign="baseline">10 seconds
+								 
+							</td>
+<td width="10%" valign="baseline"><font color="white"> </font></td>
+</tr>
+</table>
+<p></p>
+<br><br><br><p></p>
+<table border="0" align="center" width="90%" cellspacing="0" cellpadding="3"><caption align="left">
+<big><b>4. Implementation Table</b></big><p></p>The following implementation table identifies which object groups and variations, function codes and qualifiers the device supports
+			in both requests and responses. The <i>Request</i> columns identify all requests that may be sent by a Master, or all requests that must be parsed by
+			an Outstation. The <i>Response</i> columns identify all responses that must be parsed by a Master, or all responses that may be sent by an Outstation.
+			</caption></table>
+<p></p>
+<table border="1" align="center" width="90%" cellspacing="0" cellpadding="3">
+<tr>
+<th colspan="3" align="center" width="48%">DNP OBJECT GROUP &amp; VARIATION</th>
+<th colspan="2" align="center" width="26%">REQUEST<br>Master may issue<br>Outstation must parse</th>
+<th colspan="2" align="center" width="26%">RESPONSE<br>Master must parse<br>Outstation may issue</th>
+</tr>
+<tr>
+<th width="6%" align="center">Object<br>Group<br>Number</th>
+<th width="6%" align="center">Variation<br>Number</th>
+<th width="36%" align="left">Description</th>
+<th width="13%" align="left">Function Codes (dec)</th>
+<th width="13%" align="left">Qualifier Codes (hex)</th>
+<th width="13%" align="left">Function Codes (dec)</th>
+<th width="13%" align="left">Qualifier Codes (hex)</th>
+</tr>
+<tbody>
+<tr>
+<td valign="top" width="6%" align="center">1</td>
+<td valign="top" width="6%" align="center">0</td>
+<td valign="top" width="36%" align="left">Binary Input - any variation</td>
+<td valign="top" width="13%" align="left">1<small><i>(read)</i></small>
+</td>
+<td valign="top" width="13%" align="left">06<i><small> (no range, or all)</small></i><br>
+</td>
+<td width="13%"><font color="white"> </font></td>
+<td width="13%"><font color="white"> </font></td>
+</tr>
+<tr>
+<td valign="top" width="6%" align="center">1</td>
+<td valign="top" width="6%" align="center">1</td>
+<td valign="top" width="36%" align="left">Binary Input - Single-bit packed</td>
+<td valign="top" width="13%" align="left">1<small><i>(read)</i></small>
+</td>
+<td valign="top" width="13%" align="left">06<i><small> (no range, or all)</small></i><br>
+</td>
+<td valign="top" width="13%" align="left">129<i><small> (Response)</small></i>
+</td>
+<td valign="top" width="17%" align="left">00, 01<i><small> (start-stop)</small></i>, <br>02<br>
+</td>
+</tr>
+<tr>
+<td valign="top" width="6%" align="center">1</td>
+<td valign="top" width="6%" align="center">2</td>
+<td valign="top" width="36%" align="left">Binary Input - Single-bit with flag</td>
+<td valign="top" width="13%" align="left">1<small><i>(read)</i></small>
+</td>
+<td valign="top" width="13%" align="left">06<i><small> (no range, or all)</small></i><br>
+</td>
+<td valign="top" width="13%" align="left">129<i><small> (Response)</small></i>
+</td>
+<td valign="top" width="17%" align="left">00, 01<i><small> (start-stop)</small></i>, <br>02<br>
+</td>
+</tr>
+<tr>
+<td valign="top" width="6%" align="center">2</td>
+<td valign="top" width="6%" align="center">0</td>
+<td valign="top" width="36%" align="left">Binary Input Change Event - any variation</td>
+<td valign="top" width="13%" align="left">1<small><i>(read)</i></small>
+</td>
+<td valign="top" width="13%" align="left">06<i><small> (no range, or all)</small></i>, <br>07, 08<i><small> (limited qty)</small></i>, <br>09<br>
+</td>
+<td width="13%"><font color="white"> </font></td>
+<td width="13%"><font color="white"> </font></td>
+</tr>
+<tr>
+<td valign="top" width="6%" align="center">2</td>
+<td valign="top" width="6%" align="center">1</td>
+<td valign="top" width="36%" align="left">Binary Input Change Event - without time</td>
+<td valign="top" width="13%" align="left">1<small><i>(read)</i></small>
+</td>
+<td valign="top" width="13%" align="left">06<i><small> (no range, or all)</small></i>, <br>07, 08<i><small> (limited qty)</small></i>, <br>09<br>
+</td>
+<td valign="top" width="13%" align="left">129<i><small> (Response)</small></i>
+</td>
+<td valign="top" width="17%" align="left">17, 28<i><small> (index)</small></i>, <br>39<br>
+</td>
+</tr>
+<tr>
+<td valign="top" width="6%" align="center">2</td>
+<td valign="top" width="6%" align="center">1</td>
+<td valign="top" width="36%" align="left">Binary Input Change Event - without time</td>
+<td width="13%"><font color="white"> </font></td>
+<td width="13%"><font color="white"> </font></td>
+<td valign="top" width="13%" align="left">130<i><small> (Unsol. Resp.)</small></i>
+</td>
+<td valign="top" width="17%" align="left">17, 28<i><small> (index)</small></i>, <br>39<br>
+</td>
+</tr>
+<tr>
+<td valign="top" width="6%" align="center">2</td>
+<td valign="top" width="6%" align="center">2</td>
+<td valign="top" width="36%" align="left">Binary Input Change Event - with absolute time</td>
+<td valign="top" width="13%" align="left">1<small><i>(read)</i></small>
+</td>
+<td valign="top" width="13%" align="left">06<i><small> (no range, or all)</small></i>, <br>07, 08<i><small> (limited qty)</small></i>, <br>09<br>
+</td>
+<td valign="top" width="13%" align="left">129<i><small> (Response)</small></i>
+</td>
+<td valign="top" width="17%" align="left">17, 28<i><small> (index)</small></i>, <br>39<br>
+</td>
+</tr>
+<tr>
+<td valign="top" width="6%" align="center">2</td>
+<td valign="top" width="6%" align="center">2</td>
+<td valign="top" width="36%" align="left">Binary Input Change Event - with absolute time</td>
+<td width="13%"><font color="white"> </font></td>
+<td width="13%"><font color="white"> </font></td>
+<td valign="top" width="13%" align="left">130<i><small> (Unsol. Resp.)</small></i>
+</td>
+<td valign="top" width="17%" align="left">17, 28<i><small> (index)</small></i>, <br>39<br>
+</td>
+</tr>
+<tr>
+<td valign="top" width="6%" align="center">2</td>
+<td valign="top" width="6%" align="center">3</td>
+<td valign="top" width="36%" align="left">Binary Input Change Event - with relative time</td>
+<td valign="top" width="13%" align="left">1<small><i>(read)</i></small>
+</td>
+<td valign="top" width="13%" align="left">06<i><small> (no range, or all)</small></i>, <br>07, 08<i><small> (limited qty)</small></i>, <br>09<br>
+</td>
+<td valign="top" width="13%" align="left">129<i><small> (Response)</small></i>
+</td>
+<td valign="top" width="17%" align="left">17, 28<i><small> (index)</small></i>, <br>39<br>
+</td>
+</tr>
+<tr>
+<td valign="top" width="6%" align="center">2</td>
+<td valign="top" width="6%" align="center">3</td>
+<td valign="top" width="36%" align="left">Binary Input Change Event - with relative time</td>
+<td width="13%"><font color="white"> </font></td>
+<td width="13%"><font color="white"> </font></td>
+<td valign="top" width="13%" align="left">130<i><small> (Unsol. Resp.)</small></i>
+</td>
+<td valign="top" width="17%" align="left">17, 28<i><small> (index)</small></i>, <br>39<br>
+</td>
+</tr>
+<tr>
+<td valign="top" width="6%" align="center">12</td>
+<td valign="top" width="6%" align="center">1</td>
+<td valign="top" width="36%" align="left">Pulsed Control - control relay output block</td>
+<td valign="top" width="13%" align="left">3<small><i>(select)</i></small>
+</td>
+<td valign="top" width="13%" align="left">17, 28<i><small> (index)</small></i>, <br>39<br>
+</td>
+<td valign="top" width="13%" align="left">129<i><small> (Response)</small></i>
+</td>
+<td valign="top" width="17%" align="left">echo of request</td>
+</tr>
+<tr>
+<td valign="top" width="6%" align="center">12</td>
+<td valign="top" width="6%" align="center">1</td>
+<td valign="top" width="36%" align="left">Pulsed Control - control relay output block</td>
+<td valign="top" width="13%" align="left">4<small><i>(operate)</i></small>
+</td>
+<td valign="top" width="13%" align="left">17, 28<i><small> (index)</small></i>, <br>39<br>
+</td>
+<td valign="top" width="13%" align="left">129<i><small> (Response)</small></i>
+</td>
+<td valign="top" width="17%" align="left">echo of request</td>
+</tr>
+<tr>
+<td valign="top" width="6%" align="center">12</td>
+<td valign="top" width="6%" align="center">1</td>
+<td valign="top" width="36%" align="left">Pulsed Control - control relay output block</td>
+<td valign="top" width="13%" align="left">5<small><i>(direct op.)</i></small>
+</td>
+<td valign="top" width="13%" align="left">17, 28<i><small> (index)</small></i>, <br>39<br>
+</td>
+<td valign="top" width="13%" align="left">129<i><small> (Response)</small></i>
+</td>
+<td valign="top" width="17%" align="left">echo of request</td>
+</tr>
+<tr>
+<td valign="top" width="6%" align="center">20</td>
+<td valign="top" width="6%" align="center">0</td>
+<td valign="top" width="36%" align="left">Counter - any variation</td>
+<td valign="top" width="13%" align="left">1<small><i>(read)</i></small>
+</td>
+<td valign="top" width="13%" align="left">06<i><small> (no range, or all)</small></i><br>
+</td>
+<td width="13%"><font color="white"> </font></td>
+<td width="13%"><font color="white"> </font></td>
+</tr>
+<tr>
+<td valign="top" width="6%" align="center">20</td>
+<td valign="top" width="6%" align="center">1</td>
+<td valign="top" width="36%" align="left">Counter - 32-bit with flag</td>
+<td valign="top" width="13%" align="left">1<small><i>(read)</i></small>
+</td>
+<td valign="top" width="13%" align="left">06<i><small> (no range, or all)</small></i><br>
+</td>
+<td valign="top" width="13%" align="left">129<i><small> (Response)</small></i>
+</td>
+<td valign="top" width="17%" align="left">00, 01<i><small> (start-stop)</small></i>, <br>02<br>
+</td>
+</tr>
+<tr>
+<td valign="top" width="6%" align="center">20</td>
+<td valign="top" width="6%" align="center">2</td>
+<td valign="top" width="36%" align="left">Counter - 16-bit with flag</td>
+<td valign="top" width="13%" align="left">1<small><i>(read)</i></small>
+</td>
+<td valign="top" width="13%" align="left">06<i><small> (no range, or all)</small></i><br>
+</td>
+<td valign="top" width="13%" align="left">129<i><small> (Response)</small></i>
+</td>
+<td valign="top" width="17%" align="left">00, 01<i><small> (start-stop)</small></i>, <br>02<br>
+</td>
+</tr>
+<tr>
+<td valign="top" width="6%" align="center">20</td>
+<td valign="top" width="6%" align="center">5</td>
+<td valign="top" width="36%" align="left">Counter - 32-bit without flag</td>
+<td valign="top" width="13%" align="left">1<small><i>(read)</i></small>
+</td>
+<td valign="top" width="13%" align="left">06<i><small> (no range, or all)</small></i><br>
+</td>
+<td valign="top" width="13%" align="left">129<i><small> (Response)</small></i>
+</td>
+<td valign="top" width="17%" align="left">00, 01<i><small> (start-stop)</small></i>, <br>02<br>
+</td>
+</tr>
+<tr>
+<td valign="top" width="6%" align="center">20</td>
+<td valign="top" width="6%" align="center">6</td>
+<td valign="top" width="36%" align="left">Counter - 16-bit without flag</td>
+<td valign="top" width="13%" align="left">1<small><i>(read)</i></small>
+</td>
+<td valign="top" width="13%" align="left">06<i><small> (no range, or all)</small></i><br>
+</td>
+<td valign="top" width="13%" align="left">129<i><small> (Response)</small></i>
+</td>
+<td valign="top" width="17%" align="left">00, 01<i><small> (start-stop)</small></i>, <br>02<br>
+</td>
+</tr>
+<tr>
+<td valign="top" width="6%" align="center">22</td>
+<td valign="top" width="6%" align="center">0</td>
+<td valign="top" width="36%" align="left">Counter Change Event - any variation</td>
+<td valign="top" width="13%" align="left">1<small><i>(read)</i></small>
+</td>
+<td valign="top" width="13%" align="left">06<i><small> (no range, or all)</small></i>, <br>07, 08<i><small> (limited qty)</small></i>, <br>09<br>
+</td>
+<td width="13%"><font color="white"> </font></td>
+<td width="13%"><font color="white"> </font></td>
+</tr>
+<tr>
+<td valign="top" width="6%" align="center">22</td>
+<td valign="top" width="6%" align="center">1</td>
+<td valign="top" width="36%" align="left">Counter Change Event - 32-bit with flag</td>
+<td valign="top" width="13%" align="left">1<small><i>(read)</i></small>
+</td>
+<td valign="top" width="13%" align="left">06<i><small> (no range, or all)</small></i>, <br>07, 08<i><small> (limited qty)</small></i>, <br>09<br>
+</td>
+<td valign="top" width="13%" align="left">129<i><small> (Response)</small></i>
+</td>
+<td valign="top" width="17%" align="left">17, 28<i><small> (index)</small></i>, <br>39<br>
+</td>
+</tr>
+<tr>
+<td valign="top" width="6%" align="center">22</td>
+<td valign="top" width="6%" align="center">1</td>
+<td valign="top" width="36%" align="left">Counter Change Event - 32-bit with flag</td>
+<td width="13%"><font color="white"> </font></td>
+<td width="13%"><font color="white"> </font></td>
+<td valign="top" width="13%" align="left">130<i><small> (Unsol. Resp.)</small></i>
+</td>
+<td valign="top" width="17%" align="left">17, 28<i><small> (index)</small></i>, <br>39<br>
+</td>
+</tr>
+<tr>
+<td valign="top" width="6%" align="center">22</td>
+<td valign="top" width="6%" align="center">2</td>
+<td valign="top" width="36%" align="left">Counter Change Event - 16-bit with flag</td>
+<td valign="top" width="13%" align="left">1<small><i>(read)</i></small>
+</td>
+<td valign="top" width="13%" align="left">06<i><small> (no range, or all)</small></i>, <br>07, 08<i><small> (limited qty)</small></i>, <br>09<br>
+</td>
+<td valign="top" width="13%" align="left">129<i><small> (Response)</small></i>
+</td>
+<td valign="top" width="17%" align="left">17, 28<i><small> (index)</small></i>, <br>39<br>
+</td>
+</tr>
+<tr>
+<td valign="top" width="6%" align="center">22</td>
+<td valign="top" width="6%" align="center">2</td>
+<td valign="top" width="36%" align="left">Counter Change Event - 16-bit with flag</td>
+<td width="13%"><font color="white"> </font></td>
+<td width="13%"><font color="white"> </font></td>
+<td valign="top" width="13%" align="left">130<i><small> (Unsol. Resp.)</small></i>
+</td>
+<td valign="top" width="17%" align="left">17, 28<i><small> (index)</small></i>, <br>39<br>
+</td>
+</tr>
+<tr>
+<td valign="top" width="6%" align="center">30</td>
+<td valign="top" width="6%" align="center">0</td>
+<td valign="top" width="36%" align="left">Analog Input - any variation</td>
+<td valign="top" width="13%" align="left">1<small><i>(read)</i></small>
+</td>
+<td valign="top" width="13%" align="left">06<i><small> (no range, or all)</small></i><br>
+</td>
+<td width="13%"><font color="white"> </font></td>
+<td width="13%"><font color="white"> </font></td>
+</tr>
+<tr>
+<td valign="top" width="6%" align="center">30</td>
+<td valign="top" width="6%" align="center">1</td>
+<td valign="top" width="36%" align="left">Analog Input - 32-bit with flag</td>
+<td valign="top" width="13%" align="left">1<small><i>(read)</i></small>
+</td>
+<td valign="top" width="13%" align="left">06<i><small> (no range, or all)</small></i><br>
+</td>
+<td valign="top" width="13%" align="left">129<i><small> (Response)</small></i>
+</td>
+<td valign="top" width="17%" align="left">00, 01<i><small> (start-stop)</small></i>, <br>02<br>
+</td>
+</tr>
+<tr>
+<td valign="top" width="6%" align="center">30</td>
+<td valign="top" width="6%" align="center">2</td>
+<td valign="top" width="36%" align="left">Analog Input - 16-bit with flag</td>
+<td valign="top" width="13%" align="left">1<small><i>(read)</i></small>
+</td>
+<td valign="top" width="13%" align="left">06<i><small> (no range, or all)</small></i><br>
+</td>
+<td valign="top" width="13%" align="left">129<i><small> (Response)</small></i>
+</td>
+<td valign="top" width="17%" align="left">00, 01<i><small> (start-stop)</small></i>, <br>02<br>
+</td>
+</tr>
+<tr>
+<td valign="top" width="6%" align="center">30</td>
+<td valign="top" width="6%" align="center">3</td>
+<td valign="top" width="36%" align="left">Analog Input - 32-bit without flag</td>
+<td valign="top" width="13%" align="left">1<small><i>(read)</i></small>
+</td>
+<td valign="top" width="13%" align="left">06<i><small> (no range, or all)</small></i><br>
+</td>
+<td valign="top" width="13%" align="left">129<i><small> (Response)</small></i>
+</td>
+<td valign="top" width="17%" align="left">00, 01<i><small> (start-stop)</small></i>, <br>02<br>
+</td>
+</tr>
+<tr>
+<td valign="top" width="6%" align="center">30</td>
+<td valign="top" width="6%" align="center">4</td>
+<td valign="top" width="36%" align="left">Analog Input - 16-bit without flag</td>
+<td valign="top" width="13%" align="left">1<small><i>(read)</i></small>
+</td>
+<td valign="top" width="13%" align="left">06<i><small> (no range, or all)</small></i><br>
+</td>
+<td valign="top" width="13%" align="left">129<i><small> (Response)</small></i>
+</td>
+<td valign="top" width="17%" align="left">00, 01<i><small> (start-stop)</small></i>, <br>02<br>
+</td>
+</tr>
+<tr>
+<td valign="top" width="6%" align="center">30</td>
+<td valign="top" width="6%" align="center">5</td>
+<td valign="top" width="36%" align="left">Analog Input - single-precision, floating-point with flag</td>
+<td valign="top" width="13%" align="left">1<small><i>(read)</i></small>
+</td>
+<td valign="top" width="13%" align="left">06<i><small> (no range, or all)</small></i><br>
+</td>
+<td valign="top" width="13%" align="left">129<i><small> (Response)</small></i>
+</td>
+<td valign="top" width="17%" align="left">00, 01<i><small> (start-stop)</small></i>, <br>02<br>
+</td>
+</tr>
+<tr>
+<td valign="top" width="6%" align="center">32</td>
+<td valign="top" width="6%" align="center">0</td>
+<td valign="top" width="36%" align="left">Analog Input Change Event - any variation</td>
+<td valign="top" width="13%" align="left">1<small><i>(read)</i></small>
+</td>
+<td valign="top" width="13%" align="left">06<i><small> (no range, or all)</small></i>, <br>07, 08<i><small> (limited qty)</small></i>, <br>09<br>
+</td>
+<td width="13%"><font color="white"> </font></td>
+<td width="13%"><font color="white"> </font></td>
+</tr>
+<tr>
+<td valign="top" width="6%" align="center">32</td>
+<td valign="top" width="6%" align="center">1</td>
+<td valign="top" width="36%" align="left">Analog Input Change Event - 32-bit without time</td>
+<td valign="top" width="13%" align="left">1<small><i>(read)</i></small>
+</td>
+<td valign="top" width="13%" align="left">06<i><small> (no range, or all)</small></i>, <br>07, 08<i><small> (limited qty)</small></i>, <br>09<br>
+</td>
+<td valign="top" width="13%" align="left">129<i><small> (Response)</small></i>
+</td>
+<td valign="top" width="17%" align="left">17, 28<i><small> (index)</small></i>, <br>39<br>
+</td>
+</tr>
+<tr>
+<td valign="top" width="6%" align="center">32</td>
+<td valign="top" width="6%" align="center">1</td>
+<td valign="top" width="36%" align="left">Analog Input Change Event - 32-bit without time</td>
+<td width="13%"><font color="white"> </font></td>
+<td width="13%"><font color="white"> </font></td>
+<td valign="top" width="13%" align="left">130<i><small> (Unsol. Resp.)</small></i>
+</td>
+<td valign="top" width="17%" align="left">17, 28<i><small> (index)</small></i>, <br>39<br>
+</td>
+</tr>
+<tr>
+<td valign="top" width="6%" align="center">32</td>
+<td valign="top" width="6%" align="center">2</td>
+<td valign="top" width="36%" align="left">Analog Input Change Event - 16-bit without time</td>
+<td valign="top" width="13%" align="left">1<small><i>(read)</i></small>
+</td>
+<td valign="top" width="13%" align="left">06<i><small> (no range, or all)</small></i>, <br>07, 08<i><small> (limited qty)</small></i>, <br>09<br>
+</td>
+<td valign="top" width="13%" align="left">129<i><small> (Response)</small></i>
+</td>
+<td valign="top" width="17%" align="left">17, 28<i><small> (index)</small></i>, <br>39<br>
+</td>
+</tr>
+<tr>
+<td valign="top" width="6%" align="center">32</td>
+<td valign="top" width="6%" align="center">2</td>
+<td valign="top" width="36%" align="left">Analog Input Change Event - 16-bit without time</td>
+<td width="13%"><font color="white"> </font></td>
+<td width="13%"><font color="white"> </font></td>
+<td valign="top" width="13%" align="left">130<i><small> (Unsol. Resp.)</small></i>
+</td>
+<td valign="top" width="17%" align="left">17, 28<i><small> (index)</small></i>, <br>43<br>
+</td>
+</tr>
+<tr>
+<td valign="top" width="6%" align="center">32</td>
+<td valign="top" width="6%" align="center">3</td>
+<td valign="top" width="36%" align="left">Analog Input Change Event - 32-bit with time</td>
+<td valign="top" width="13%" align="left">1<small><i>(read)</i></small>
+</td>
+<td valign="top" width="13%" align="left">06<i><small> (no range, or all)</small></i>, <br>07, 08<i><small> (limited qty)</small></i>, <br>09<br>
+</td>
+<td valign="top" width="13%" align="left">129<i><small> (Response)</small></i>
+</td>
+<td valign="top" width="17%" align="left">17, 28<i><small> (index)</small></i>, <br>43<br>
+</td>
+</tr>
+<tr>
+<td valign="top" width="6%" align="center">32</td>
+<td valign="top" width="6%" align="center">3</td>
+<td valign="top" width="36%" align="left">Analog Input Change Event - 32-bit with time</td>
+<td width="13%"><font color="white"> </font></td>
+<td width="13%"><font color="white"> </font></td>
+<td valign="top" width="13%" align="left">130<i><small> (Unsol. Resp.)</small></i>
+</td>
+<td valign="top" width="17%" align="left">17, 28<i><small> (index)</small></i>, <br>39<br>
+</td>
+</tr>
+<tr>
+<td valign="top" width="6%" align="center">32</td>
+<td valign="top" width="6%" align="center">4</td>
+<td valign="top" width="36%" align="left">Analog Input Change Event - 16-bit with time</td>
+<td valign="top" width="13%" align="left">1<small><i>(read)</i></small>
+</td>
+<td valign="top" width="13%" align="left">06<i><small> (no range, or all)</small></i>, <br>07, 08<i><small> (limited qty)</small></i>, <br>09<br>
+</td>
+<td valign="top" width="13%" align="left">129<i><small> (Response)</small></i>
+</td>
+<td valign="top" width="17%" align="left">17, 28<i><small> (index)</small></i>, <br>39<br>
+</td>
+</tr>
+<tr>
+<td valign="top" width="6%" align="center">32</td>
+<td valign="top" width="6%" align="center">4</td>
+<td valign="top" width="36%" align="left">Analog Input Change Event - 16-bit with time</td>
+<td width="13%"><font color="white"> </font></td>
+<td width="13%"><font color="white"> </font></td>
+<td valign="top" width="13%" align="left">130<i><small> (Unsol. Resp.)</small></i>
+</td>
+<td valign="top" width="17%" align="left">17, 28<i><small> (index)</small></i>, <br>39<br>
+</td>
+</tr>
+<tr>
+<td valign="top" width="6%" align="center">32</td>
+<td valign="top" width="6%" align="center">5</td>
+<td valign="top" width="36%" align="left">Analog Input Change Event - single-precision, floating-point without time</td>
+<td valign="top" width="13%" align="left">1<small><i>(read)</i></small>
+</td>
+<td valign="top" width="13%" align="left">06<i><small> (no range, or all)</small></i>, <br>07, 08<i><small> (limited qty)</small></i>, <br>09<br>
+</td>
+<td valign="top" width="13%" align="left">129<i><small> (Response)</small></i>
+</td>
+<td valign="top" width="17%" align="left">17, 28<i><small> (index)</small></i>, <br>39<br>
+</td>
+</tr>
+<tr>
+<td valign="top" width="6%" align="center">32</td>
+<td valign="top" width="6%" align="center">5</td>
+<td valign="top" width="36%" align="left">Analog Input Change Event - single-precision, floating-point without time</td>
+<td width="13%"><font color="white"> </font></td>
+<td width="13%"><font color="white"> </font></td>
+<td valign="top" width="13%" align="left">130<i><small> (Unsol. Resp.)</small></i>
+</td>
+<td valign="top" width="17%" align="left">17, 28<i><small> (index)</small></i>, <br>39<br>
+</td>
+</tr>
+<tr>
+<td valign="top" width="6%" align="center">32</td>
+<td valign="top" width="6%" align="center">7</td>
+<td valign="top" width="36%" align="left">Analog Input Change Event - single-precision, floating-point with time</td>
+<td valign="top" width="13%" align="left">1<small><i>(read)</i></small>
+</td>
+<td valign="top" width="13%" align="left">06<i><small> (no range, or all)</small></i>, <br>07, 08<i><small> (limited qty)</small></i>, <br>09<br>
+</td>
+<td valign="top" width="13%" align="left">129<i><small> (Response)</small></i>
+</td>
+<td valign="top" width="17%" align="left">17, 28<i><small> (index)</small></i>, <br>39<br>
+</td>
+</tr>
+<tr>
+<td valign="top" width="6%" align="center">32</td>
+<td valign="top" width="6%" align="center">7</td>
+<td valign="top" width="36%" align="left">Analog Input Change Event - single-precision, floating-point with time</td>
+<td width="13%"><font color="white"> </font></td>
+<td width="13%"><font color="white"> </font></td>
+<td valign="top" width="13%" align="left">130<i><small> (Unsol. Resp.)</small></i>
+</td>
+<td valign="top" width="17%" align="left">17, 28<i><small> (index)</small></i>, <br>39<br>
+</td>
+</tr>
+<tr>
+<td valign="top" width="6%" align="center">40</td>
+<td valign="top" width="6%" align="center">0</td>
+<td valign="top" width="36%" align="left">Analog Output Status - any variation</td>
+<td valign="top" width="13%" align="left">1<small><i>(read)</i></small>
+</td>
+<td valign="top" width="13%" align="left">06<i><small> (no range, or all)</small></i><br>
+</td>
+<td width="13%"><font color="white"> </font></td>
+<td width="13%"><font color="white"> </font></td>
+</tr>
+<tr>
+<td valign="top" width="6%" align="center">40</td>
+<td valign="top" width="6%" align="center">1</td>
+<td valign="top" width="36%" align="left">Analog Output Status - 32-bit with flag</td>
+<td valign="top" width="13%" align="left">1<small><i>(read)</i></small>
+</td>
+<td valign="top" width="13%" align="left">06<i><small> (no range, or all)</small></i><br>
+</td>
+<td valign="top" width="13%" align="left">129<i><small> (Response)</small></i>
+</td>
+<td valign="top" width="17%" align="left">00, 01<i><small> (start-stop)</small></i>, <br>02<br>
+</td>
+</tr>
+<tr>
+<td valign="top" width="6%" align="center">40</td>
+<td valign="top" width="6%" align="center">2</td>
+<td valign="top" width="36%" align="left">Analog Output Status - 16-bit with flag</td>
+<td valign="top" width="13%" align="left">1<small><i>(read)</i></small>
+</td>
+<td valign="top" width="13%" align="left">06<i><small> (no range, or all)</small></i><br>
+</td>
+<td valign="top" width="13%" align="left">129<i><small> (Response)</small></i>
+</td>
+<td valign="top" width="17%" align="left">00, 01<i><small> (start-stop)</small></i>, <br>02<br>
+</td>
+</tr>
+<tr>
+<td valign="top" width="6%" align="center">40</td>
+<td valign="top" width="6%" align="center">3</td>
+<td valign="top" width="36%" align="left">Analog Output Status - single-precision, floating-point with flag</td>
+<td valign="top" width="13%" align="left">1<small><i>(read)</i></small>
+</td>
+<td valign="top" width="13%" align="left">06<i><small> (no range, or all)</small></i><br>
+</td>
+<td valign="top" width="13%" align="left">129<i><small> (Response)</small></i>
+</td>
+<td valign="top" width="17%" align="left">00, 01<i><small> (start-stop)</small></i>, <br>02<br>
+</td>
+</tr>
+<tr>
+<td valign="top" width="6%" align="center">41</td>
+<td valign="top" width="6%" align="center">1</td>
+<td valign="top" width="36%" align="left">Analog Output Block - 32-bit</td>
+<td valign="top" width="13%" align="left">3<small><i>(select)</i></small>
+</td>
+<td valign="top" width="13%" align="left">17, 28<i><small> (index)</small></i>, <br>39<br>
+</td>
+<td valign="top" width="13%" align="left">129<i><small> (Response)</small></i>
+</td>
+<td valign="top" width="17%" align="left">echo of request</td>
+</tr>
+<tr>
+<td valign="top" width="6%" align="center">41</td>
+<td valign="top" width="6%" align="center">1</td>
+<td valign="top" width="36%" align="left">Analog Output Block - 32-bit</td>
+<td valign="top" width="13%" align="left">4<small><i>(operate)</i></small>
+</td>
+<td valign="top" width="13%" align="left">17, 28<i><small> (index)</small></i>, <br>39<br>
+</td>
+<td valign="top" width="13%" align="left">129<i><small> (Response)</small></i>
+</td>
+<td valign="top" width="17%" align="left">echo of request</td>
+</tr>
+<tr>
+<td valign="top" width="6%" align="center">41</td>
+<td valign="top" width="6%" align="center">1</td>
+<td valign="top" width="36%" align="left">Analog Output Block - 32-bit</td>
+<td valign="top" width="13%" align="left">5<small><i>(direct op.)</i></small>
+</td>
+<td valign="top" width="13%" align="left">17, 28<i><small> (index)</small></i>, <br>39<br>
+</td>
+<td valign="top" width="13%" align="left">129<i><small> (Response)</small></i>
+</td>
+<td valign="top" width="17%" align="left">echo of request</td>
+</tr>
+<tr>
+<td valign="top" width="6%" align="center">41</td>
+<td valign="top" width="6%" align="center">2</td>
+<td valign="top" width="36%" align="left">Analog Output Block - 16-bit</td>
+<td valign="top" width="13%" align="left">3<small><i>(select)</i></small>
+</td>
+<td valign="top" width="13%" align="left">17, 28<i><small> (index)</small></i>, <br>39<br>
+</td>
+<td valign="top" width="13%" align="left">129<i><small> (Response)</small></i>
+</td>
+<td valign="top" width="17%" align="left">echo of request</td>
+</tr>
+<tr>
+<td valign="top" width="6%" align="center">41</td>
+<td valign="top" width="6%" align="center">2</td>
+<td valign="top" width="36%" align="left">Analog Output Block - 16-bit</td>
+<td valign="top" width="13%" align="left">4<small><i>(operate)</i></small>
+</td>
+<td valign="top" width="13%" align="left">17, 28<i><small> (index)</small></i>, <br>39<br>
+</td>
+<td valign="top" width="13%" align="left">129<i><small> (Response)</small></i>
+</td>
+<td valign="top" width="17%" align="left">echo of request</td>
+</tr>
+<tr>
+<td valign="top" width="6%" align="center">41</td>
+<td valign="top" width="6%" align="center">2</td>
+<td valign="top" width="36%" align="left">Analog Output Block - 16-bit</td>
+<td valign="top" width="13%" align="left">5<small><i>(direct op.)</i></small>
+</td>
+<td valign="top" width="13%" align="left">17, 28<i><small> (index)</small></i>, <br>39<br>
+</td>
+<td valign="top" width="13%" align="left">129<i><small> (Response)</small></i>
+</td>
+<td valign="top" width="17%" align="left">echo of request</td>
+</tr>
+<tr>
+<td valign="top" width="6%" align="center">41</td>
+<td valign="top" width="6%" align="center">3</td>
+<td valign="top" width="36%" align="left">Analog Output Block - single-precision, floating-pointt</td>
+<td valign="top" width="13%" align="left">3<small><i>(select)</i></small>
+</td>
+<td valign="top" width="13%" align="left">17, 28<i><small> (index)</small></i>, <br>39<br>
+</td>
+<td valign="top" width="13%" align="left">129<i><small> (Response)</small></i>
+</td>
+<td valign="top" width="17%" align="left">echo of request</td>
+</tr>
+<tr>
+<td valign="top" width="6%" align="center">41</td>
+<td valign="top" width="6%" align="center">3</td>
+<td valign="top" width="36%" align="left">Analog Output Block - single-precision, floating-pointt</td>
+<td valign="top" width="13%" align="left">4<small><i>(operate)</i></small>
+</td>
+<td valign="top" width="13%" align="left">17, 28<i><small> (index)</small></i>, <br>39<br>
+</td>
+<td valign="top" width="13%" align="left">129<i><small> (Response)</small></i>
+</td>
+<td valign="top" width="17%" align="left">echo of request</td>
+</tr>
+<tr>
+<td valign="top" width="6%" align="center">41</td>
+<td valign="top" width="6%" align="center">3</td>
+<td valign="top" width="36%" align="left">Analog Output Block - single-precision, floating-pointt</td>
+<td valign="top" width="13%" align="left">5<small><i>(direct op.)</i></small>
+</td>
+<td valign="top" width="13%" align="left">17, 28<i><small> (index)</small></i>, <br>39<br>
+</td>
+<td valign="top" width="13%" align="left">129<i><small> (Response)</small></i>
+</td>
+<td valign="top" width="17%" align="left">echo of request</td>
+</tr>
+<tr>
+<td valign="top" width="6%" align="center">50</td>
+<td valign="top" width="6%" align="center">1</td>
+<td valign="top" width="36%" align="left">Time and Date - absolute time</td>
+<td valign="top" width="13%" align="left">2<small><i>(write)</i></small>
+</td>
+<td valign="top" width="13%" align="left">
+<br>07<i><small> (limited qty = 1)</small></i>
+</td>
+<td width="13%"><font color="white"> </font></td>
+<td width="13%"><font color="white"> </font></td>
+</tr>
+<tr>
+<td valign="top" width="6%" align="center">51</td>
+<td valign="top" width="6%" align="center">1</td>
+<td valign="top" width="36%" align="left">Time and Date CTO - absolute time, synchronised</td>
+<td width="13%"><font color="white"> </font></td>
+<td width="13%"><font color="white"> </font></td>
+<td valign="top" width="13%" align="left">129<i><small> (Response)</small></i>
+</td>
+<td valign="top" width="17%" align="left">07<i><small> (limited qty = 1)</small></i>
+</td>
+</tr>
+<tr>
+<td valign="top" width="6%" align="center">51</td>
+<td valign="top" width="6%" align="center">1</td>
+<td valign="top" width="36%" align="left">Time and Date CTO - absolute time, synchronised</td>
+<td width="13%"><font color="white"> </font></td>
+<td width="13%"><font color="white"> </font></td>
+<td valign="top" width="13%" align="left">130<i><small> (Unsol. Resp.)</small></i>
+</td>
+<td valign="top" width="17%" align="left">07<i><small> (limited qty = 1)</small></i>
+</td>
+</tr>
+<tr>
+<td valign="top" width="6%" align="center">51</td>
+<td valign="top" width="6%" align="center">2</td>
+<td valign="top" width="36%" align="left">Time and Date CTO - absolute time, un-synchronised</td>
+<td width="13%"><font color="white"> </font></td>
+<td width="13%"><font color="white"> </font></td>
+<td valign="top" width="13%" align="left">129<i><small> (Response)</small></i>
+</td>
+<td valign="top" width="17%" align="left">07<i><small> (limited qty = 1)</small></i>
+</td>
+</tr>
+<tr>
+<td valign="top" width="6%" align="center">51</td>
+<td valign="top" width="6%" align="center">2</td>
+<td valign="top" width="36%" align="left">Time and Date CTO - absolute time, un-synchronised</td>
+<td width="13%"><font color="white"> </font></td>
+<td width="13%"><font color="white"> </font></td>
+<td valign="top" width="13%" align="left">130<i><small> (Unsol. Resp.)</small></i>
+</td>
+<td valign="top" width="17%" align="left">07<i><small> (limited qty = 1)</small></i>
+</td>
+</tr>
+<tr>
+<td valign="top" width="6%" align="center">52</td>
+<td valign="top" width="6%" align="center">2</td>
+<td valign="top" width="36%" align="left">Time Delay - fine</td>
+<td width="13%"><font color="white"> </font></td>
+<td width="13%"><font color="white"> </font></td>
+<td valign="top" width="13%" align="left">129<i><small> (Response)</small></i>
+</td>
+<td valign="top" width="17%" align="left">07<i><small> (limited qty = 1)</small></i>
+</td>
+</tr>
+<tr>
+<td valign="top" width="6%" align="center">60</td>
+<td valign="top" width="6%" align="center">1</td>
+<td valign="top" width="36%" align="left">Class Objects - class 0 data</td>
+<td valign="top" width="13%" align="left">1<small><i>(read)</i></small>
+</td>
+<td valign="top" width="13%" align="left">06<i><small> (no range, or all)</small></i><br>
+</td>
+<td width="13%"><font color="white"> </font></td>
+<td width="13%"><font color="white"> </font></td>
+</tr>
+<tr>
+<td valign="top" width="6%" align="center">60</td>
+<td valign="top" width="6%" align="center">2</td>
+<td valign="top" width="36%" align="left">Class Objects - class 1 data</td>
+<td valign="top" width="13%" align="left">1<small><i>(read)</i></small>
+</td>
+<td valign="top" width="13%" align="left">06<i><small> (no range, or all)</small></i>, <br>07, 08<i><small> (limited qty)</small></i><br>
+</td>
+<td width="13%"><font color="white"> </font></td>
+<td width="13%"><font color="white"> </font></td>
+</tr>
+<tr>
+<td valign="top" width="6%" align="center">60</td>
+<td valign="top" width="6%" align="center">2</td>
+<td valign="top" width="36%" align="left">Class Objects - class 1 data</td>
+<td valign="top" width="13%" align="left">20<small><i>(enable unsol.)</i></small>
+</td>
+<td valign="top" width="13%" align="left">06<i><small> (no range, or all)</small></i><br>
+</td>
+<td width="13%"><font color="white"> </font></td>
+<td width="13%"><font color="white"> </font></td>
+</tr>
+<tr>
+<td valign="top" width="6%" align="center">60</td>
+<td valign="top" width="6%" align="center">2</td>
+<td valign="top" width="36%" align="left">Class Objects - class 1 data</td>
+<td valign="top" width="13%" align="left">21<small><i>(disable unsol.)</i></small>
+</td>
+<td valign="top" width="13%" align="left">06<i><small> (no range, or all)</small></i><br>
+</td>
+<td width="13%"><font color="white"> </font></td>
+<td width="13%"><font color="white"> </font></td>
+</tr>
+<tr>
+<td valign="top" width="6%" align="center">60</td>
+<td valign="top" width="6%" align="center">3</td>
+<td valign="top" width="36%" align="left">Class Objects - class 2 data</td>
+<td valign="top" width="13%" align="left">1<small><i>(read)</i></small>
+</td>
+<td valign="top" width="13%" align="left">06<i><small> (no range, or all)</small></i>, <br>07, 08<i><small> (limited qty)</small></i><br>
+</td>
+<td width="13%"><font color="white"> </font></td>
+<td width="13%"><font color="white"> </font></td>
+</tr>
+<tr>
+<td valign="top" width="6%" align="center">60</td>
+<td valign="top" width="6%" align="center">3</td>
+<td valign="top" width="36%" align="left">Class Objects - class 2 data</td>
+<td valign="top" width="13%" align="left">20<small><i>(enable unsol.)</i></small>
+</td>
+<td valign="top" width="13%" align="left">06<i><small> (no range, or all)</small></i><br>
+</td>
+<td width="13%"><font color="white"> </font></td>
+<td width="13%"><font color="white"> </font></td>
+</tr>
+<tr>
+<td valign="top" width="6%" align="center">60</td>
+<td valign="top" width="6%" align="center">3</td>
+<td valign="top" width="36%" align="left">Class Objects - class 2 data</td>
+<td valign="top" width="13%" align="left">21<small><i>(disable unsol.)</i></small>
+</td>
+<td valign="top" width="13%" align="left">06<i><small> (no range, or all)</small></i><br>
+</td>
+<td width="13%"><font color="white"> </font></td>
+<td width="13%"><font color="white"> </font></td>
+</tr>
+<tr>
+<td valign="top" width="6%" align="center">60</td>
+<td valign="top" width="6%" align="center">4</td>
+<td valign="top" width="36%" align="left">Class Objects - class 3 data</td>
+<td valign="top" width="13%" align="left">1<small><i>(read)</i></small>
+</td>
+<td valign="top" width="13%" align="left">06<i><small> (no range, or all)</small></i>, <br>07, 08<i><small> (limited qty)</small></i><br>
+</td>
+<td width="13%"><font color="white"> </font></td>
+<td width="13%"><font color="white"> </font></td>
+</tr>
+<tr>
+<td valign="top" width="6%" align="center">60</td>
+<td valign="top" width="6%" align="center">4</td>
+<td valign="top" width="36%" align="left">Class Objects - class 3 data</td>
+<td valign="top" width="13%" align="left">20<small><i>(enable unsol.)</i></small>
+</td>
+<td valign="top" width="13%" align="left">06<i><small> (no range, or all)</small></i><br>
+</td>
+<td width="13%"><font color="white"> </font></td>
+<td width="13%"><font color="white"> </font></td>
+</tr>
+<tr>
+<td valign="top" width="6%" align="center">60</td>
+<td valign="top" width="6%" align="center">4</td>
+<td valign="top" width="36%" align="left">Class Objects - class 3 data</td>
+<td valign="top" width="13%" align="left">21<small><i>(disable unsol.)</i></small>
+</td>
+<td valign="top" width="13%" align="left">06<i><small> (no range, or all)</small></i><br>
+</td>
+<td width="13%"><font color="white"> </font></td>
+<td width="13%"><font color="white"> </font></td>
+</tr>
+<tr>
+<td valign="top" colspan="3" width="48%" align="center">No object (function code only)</td>
+<td valign="top" width="13%" align="left">23<small><i>(delay meas.)</i></small>
+</td>
+<td valign="top" width="13%" align="left"> </td>
+<td valign="top" width="13%" align="left"> </td>
+<td valign="top" width="17%" align="left"> </td>
+</tr>
+<tr><td colspan="7"></td></tr>
+</tbody>
+</table>
+<p></p>
+<br><br><br><p></p>
+<table border="0" align="center" width="90%" cellspacing="0" cellpadding="3"><caption align="left">
+<big><b>5. Data Points List (outstation only)</b></big><p></p>This part of the Device Profile shows, for each data type, a table defining the data points available
+				 in the device or a description of how this information can be obtained if the database is configurable.
+			</caption></table>
+<br><br><center><b>---------- End of Device Profile for Reference Device ----------</b></center>
+<p></p>
+<br><br><br><br><center><b><big>------------------------------- End of Complete Device Profile -------------------------------</big></b></center>
+</body></html>
