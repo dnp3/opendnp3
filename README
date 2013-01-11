@@ -1,25 +1,24 @@
 open-dnp3
 Copyright (c) 2010, 2011 Green Energy Corp.
+Copyright (c) 2013 Automatak LLC
 
 This project is licensed under the terms of the Apache Public License
-v2.0.  For additional details on licensing terms and conditions, see
-COPYING.
+v2.0.  Modifications made by Automatak, LLC are licensed under the terms
+GNU Affero General Public License Version 3.0. Contact Automatak, LLC
+for a commercial license to these modifications.
 
 For more information about the OpenDNP3 library, visit the project
 website at http://code.google.com/p/dnp3.
-
 
 Overview
 ========
 
 The OpenDNP3 library and testset is a portable, scalable, and
 rigorously tested implementation of the DNP3 (www.dnp.org) protocol
-stack written in C++ and provided by Green Energy Corp to the community
-under the Apache 2.0 license.  The library is optimized for massively
+stack written in C++.  The library is optimized for massively
 parallel front end  processor implementations and slave device
-simulations, although it has been verified to perform very well on
-embedded linux ARM architectures. It includes a command line
-master/slave test set.
+simulations, although it performs very well on embedded linux ARM 
+architectures. It includes a command line master/slave test set.
 
 
 Organization
