@@ -19,7 +19,7 @@
 
 $options = {
 :target => 'testapl.exe',
-:project_libs => [:xmlbindings, :tinyxml, :aplxml, :apltesttools, :apl],
+:project_libs => [:apltesttools, :apl],
 :includes => [Boost::get_includes_dir, DEFAULT_INCLUDES],
 :warn_flags => ['-Wno-sign-compare'],
 :libs => Boost::get_static_libs + $PLATFORM_LIBS
