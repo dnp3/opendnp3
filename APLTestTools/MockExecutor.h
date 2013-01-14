@@ -88,6 +88,7 @@ private:
 	typedef std::deque<std::chrono::high_resolution_clock::duration> DurationTimerQueue;
 
 	bool mPostIsSynchronous;
+	bool mAutoPost;
 	PostQueue mPostQueue;
 	TimerMap mTimerMap;
 	TimerQueue mIdle;

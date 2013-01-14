@@ -37,7 +37,7 @@
 
 #include "IntegrationTest.h"
 
-#define OUTPUT_PERF_NUMBERS	(1)
+#define OUTPUT_PERF_NUMBERS	(0)
 
 using namespace apl;
 using namespace apl::dnp;

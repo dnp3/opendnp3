@@ -55,7 +55,9 @@ public:
 		phys(mLog.GetLogger(LEV_DEBUG, "phys"), &exe),
 		writer(mLog.GetLogger(LEV_DEBUG, "writer"), aWriterSize),
 		pRouter(NULL)
-	{}
+	{
+		exe.SetAutoPost(true);
+	}
 
 	void Update(const VtoData& arEvent, PointClass aClass, size_t aIndex) {
 		VtoEvent evt(arEvent, aClass, aIndex);
@@ -157,8 +159,7 @@ BOOST_AUTO_TEST_CASE(ServerSendsMagicChannelLocalConnected)
 
 	rtc.CheckLocalChannelConnectedMessage(true);
 
-	rtc.phys.TriggerClose();
-	rtc.exe.Dispatch();
+	rtc.phys.TriggerClose();	
 
 	BOOST_REQUIRE_EQUAL(rtc.phys.NumClose(), 1);
 
@@ -179,8 +180,7 @@ void TestDuplicateRemoteOpenCausesLocalReconnect(VtoRouterTestClassBase& arTest)
 
 	arTest.exe.Dispatch();
 	BOOST_REQUIRE(arTest.phys.IsOpening());
-	arTest.phys.SignalOpenSuccess();
-	arTest.exe.Dispatch();
+	arTest.phys.SignalOpenSuccess();	
 
 	arTest.CheckLocalChannelConnectedMessage(true);
 
@@ -205,20 +205,16 @@ BOOST_AUTO_TEST_CASE(ClientDuplicateRemoteOpenCausesLocalReconnect)
 BOOST_AUTO_TEST_CASE(ClientStartsOpeningAfterRemoteConnection)
 {
 	ClientVtoRouterTestClass rtc;
-	BOOST_REQUIRE(!rtc.phys.IsOpening());
-
-	rtc.exe.Dispatch();
+	BOOST_REQUIRE(!rtc.phys.IsOpening());	
 
 	BOOST_REQUIRE(!rtc.phys.IsOpening());
 
 	rtc.SetRemoteState(true);
-
-	rtc.exe.Dispatch();
+	
 	BOOST_REQUIRE(rtc.phys.IsOpening());
 
 	rtc.SetRemoteState(false);
-
-	rtc.exe.Dispatch();
+	
 	BOOST_REQUIRE(rtc.phys.IsClosing());
 }
 
