@@ -98,7 +98,7 @@ void ComparingDataObserver::DescribeAny(const typename PointMap<T>::Type& arMap,
 	for(auto pair: arMap) {
 		CompareMap::const_iterator j = arCompareMap.find(pair.first);
 		if(j == arCompareMap.end()) {
-			LOG_BLOCK(LEV_EVENT, "Missing: " << pair.first << " - " << pair.second.ToString());
+			std::cout << "Missing: " << pair.first << " - " << pair.second.ToString() << std::endl;			
 		}
 	}
 }
@@ -108,13 +108,15 @@ void ComparingDataObserver::UpdateAny(const T& arPoint, size_t aIndex, const typ
 {
 	typename PointMap<T>::Type::const_iterator i = arMap.find(aIndex);
 	if(i == arMap.end()) {
-		LOG_BLOCK(LEV_ERROR, "Unexpected index: " << aIndex << " - " << arPoint.ToString());
+		std::cout << "Unexpected index: " << aIndex << " - " << arPoint.ToString() << std::endl;
 	}
 	else {
-		if(i->second == arPoint) {
+		if(i->second == arPoint) {			
 			arCompareMap[aIndex] = true;
 		}
-		else arCompareMap.erase(aIndex);
+		else {			
+			arCompareMap.erase(aIndex);
+		}
 	}
 }
 

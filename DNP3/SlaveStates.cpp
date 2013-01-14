@@ -212,12 +212,13 @@ void AS_Closed::OnLowerLayerUp(Slave* c)
 	// this is implemented as a simple timer because it can run if the slave is connected/disconnected etc
 	if (c->mConfig.mAllowTimeSync) c->ResetTimeIIN();
 
-	ChangeState(c, AS_Idle::Inst());
+	ChangeState(c, AS_Idle::Inst());	
 }
 
 void AS_Closed::OnDataUpdate(Slave* c)
 {
 	c->FlushUpdates();
+	c->mDeferredUnsol = true;
 }
 
 /* AS_OpenBase */
@@ -242,7 +243,7 @@ void AS_Idle::OnDataUpdate(Slave* c)
 
 	// start the unsol timer or act immediately if there's no pack timer
 	if (!c->mConfig.mDisableUnsol && c->mStartupNullUnsol && c->mRspContext.HasEvents(c->mConfig.mUnsolMask)) {
-		if (c->mConfig.mUnsolPackDelay == 0) {
+		if (c->mConfig.mUnsolPackDelay == 0) {			
 			ChangeState(c, AS_WaitForUnsolSuccess::Inst());
 			c->mRspContext.LoadUnsol(c->mUnsol, c->mIIN, c->mConfig.mUnsolMask);
 			c->SendUnsolicited(c->mUnsol);

@@ -43,34 +43,31 @@ public:
 	}
 
 	void _Start() {
-		mBuffer.Start();
+		for(IDataObserver* pObs: mObservers) pObs->Start();
 	}
 	void _End() {
-		for(IDataObserver * p: mObservers) {
-			mBuffer.FlushUpdates(p, false);
-		}
-		mBuffer.Clear();
-		mBuffer.End();				
+		for(IDataObserver *pObs: mObservers) pObs->End();
+		
+		
 	}
 
 	void _Update(const Binary& arPoint, size_t aIndex) {
-		mBuffer.Update(arPoint, aIndex);
+		for(IDataObserver* pObs: mObservers) pObs->Update(arPoint, aIndex);
 	}
 	void _Update(const Analog& arPoint, size_t aIndex) {
-		mBuffer.Update(arPoint, aIndex);
+		for(IDataObserver* pObs: mObservers) pObs->Update(arPoint, aIndex);
 	}
 	void _Update(const Counter& arPoint, size_t aIndex) {
-		mBuffer.Update(arPoint, aIndex);
+		for(IDataObserver* pObs: mObservers) pObs->Update(arPoint, aIndex);
 	}
 	void _Update(const ControlStatus& arPoint, size_t aIndex) {
-		mBuffer.Update(arPoint, aIndex);
+		for(IDataObserver* pObs: mObservers) pObs->Update(arPoint, aIndex);
 	}
 	void _Update(const SetpointStatus& arPoint, size_t aIndex) {
-		mBuffer.Update(arPoint, aIndex);
+		for(IDataObserver* pObs: mObservers) pObs->Update(arPoint, aIndex);
 	}
 
-private:
-	ChangeBuffer mBuffer;
+private:	
 	std::vector<IDataObserver*> mObservers;
 };
 

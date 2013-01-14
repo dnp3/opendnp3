@@ -59,19 +59,20 @@ IntegrationTest::IntegrationTest(Logger* apLogger, FilterLevel aLevel, boost::ui
 {
 	this->InitLocalObserver();
 
+	mFanout.AddObserver(&mLocalFDO);
 	for (size_t i = 0; i < aNumPairs; ++i) {
 		AddStackPair(aLevel, aNumPoints);
 	}
-	mFanout.AddObserver(&mLocalFDO);
+
 }
 
 void IntegrationTest::InitLocalObserver()
 {
 	Transaction tr(&mLocalFDO);
 	for (size_t i = 0; i < NUM_POINTS; ++i) {
-		mLocalFDO.Update(this->RandomBinary(), i);
-		mLocalFDO.Update(this->RandomAnalog(), i);
-		mLocalFDO.Update(this->RandomCounter(), i);
+		mLocalFDO.Update(Binary(false), i);
+		mLocalFDO.Update(Analog(0.0), i);
+		mLocalFDO.Update(Counter(0), i);
 	}
 }
 
@@ -120,24 +121,6 @@ size_t IntegrationTest::IncrementData()
 	return num;
 }
 
-Binary IntegrationTest::RandomBinary()
-{
-	Binary v(mRandomBool.NextBool(), BQ_ONLINE);
-	return v;
-}
-
-Analog IntegrationTest::RandomAnalog()
-{
-	Analog v(mRandomInt32.Next(), AQ_ONLINE);
-	return v;
-}
-
-Counter IntegrationTest::RandomCounter()
-{
-	Counter v(mRandomUInt32.Next(), CQ_ONLINE);
-	return v;
-}
-
 Binary IntegrationTest::Next(const Binary& arPoint)
 {
 	Binary point(!arPoint.GetValue(), arPoint.GetQuality());
@@ -179,9 +162,7 @@ void IntegrationTest::AddStackPair(FilterLevel aLevel, size_t aNumPoints)
 	{
 		MasterStackConfig cfg;
 		cfg.app.RspTimeout = 20000;
-		cfg.master.IntegrityRate = 60000;	// set this to retry, if the task
-		// timer doesn't close properly,
-		// this will seal the deal
+		cfg.master.IntegrityRate = -1;
 		cfg.master.EnableUnsol = true;
 		cfg.master.DoUnsolOnStartup = true;
 		cfg.master.UnsolClassMask = PC_ALL_EVENTS;

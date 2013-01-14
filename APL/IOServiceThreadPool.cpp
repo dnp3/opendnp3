@@ -55,7 +55,7 @@ IOServiceThreadPool::IOServiceThreadPool(Logger* apLogger, size_t aConcurrency) 
 
 void IOServiceThreadPool::OnTimerExpiration(const boost::system::error_code& ec)
 {
-	std::cout << "Infinite timer callback" << std::endl;
+	
 }
 
 IOServiceThreadPool::~IOServiceThreadPool()
@@ -67,10 +67,8 @@ IOServiceThreadPool::~IOServiceThreadPool()
 
 void IOServiceThreadPool::Shutdown()
 {
-	mInfiniteTimer.cancel();
-	std::cout << "Joining on threads" << std::endl;
-	for(auto pThread: mThreads) pThread->join();
-	std::cout << "Done joining on threads" << std::endl;
+	mInfiniteTimer.cancel();	
+	for(auto pThread: mThreads) pThread->join();	
 }
 
 boost::asio::io_service* IOServiceThreadPool::GetIOService()
@@ -91,9 +89,7 @@ void IOServiceThreadPool::Run()
 			LOG_BLOCK(LEV_ERROR, "Unhandled exception in thread pool: " << ex.what());
 		}
 	}
-	while(num > 0);
-
-	std::cout << "clean thread exit" << std::endl;
+	while(num > 0);	
 }
 
 }

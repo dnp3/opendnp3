@@ -85,10 +85,6 @@ private:
 	std::vector< std::shared_ptr<ComparingDataObserver> > mMasterObservers;
 	FanoutDataObserver mFanout;
 
-	Random<int32_t> mRandomInt32;
-	Random<uint32_t> mRandomUInt32;
-	RandomBool mRandomBool;
-
 	const uint16_t M_START_PORT;
 
 	FlexibleDataObserver mLocalFDO;
