@@ -71,10 +71,7 @@ const size_t NUM_CHANGE_SETS = 10;
 const FilterLevel FILTER_LEVEL = LEV_INFO;
 
 BOOST_AUTO_TEST_CASE(MasterToSlaveThroughput)
-{
-	size_t con = std::thread::hardware_concurrency();
-	std::cout << "Running on: " << con << std::endl;
-
+{		
 	EventLog log;
 	//LogToStdio::Inst()->SetPrintLocation(true);
 	//log.AddLogSubscriber(LogToStdio::Inst());

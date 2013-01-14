@@ -31,6 +31,8 @@
 
 #include <DNP3/StackManager.h>
 
+#include <thread>
+
 using namespace apl;
 using namespace apl::dnp;
 using namespace std;
@@ -39,14 +41,14 @@ BOOST_AUTO_TEST_SUITE(StackManagerTestSuite)
 
 BOOST_AUTO_TEST_CASE(RemovePortWorksAfterAdd)
 {
-	StackManager sm;
+	StackManager sm(std::thread::hardware_concurrency());
 	sm.AddTCPClient("client",PhysLayerSettings(), "127.0.0.1", 20000);
 	sm.RemovePort("client");
 }
 
 BOOST_AUTO_TEST_CASE(AddRemoveMultipleTimes)
 {
-	StackManager sm;
+	StackManager sm(std::thread::hardware_concurrency());
 	sm.AddTCPClient("client", PhysLayerSettings(), "127.0.0.1", 20000);
 	sm.AddMaster("client", "master", apl::LEV_WARNING, NULL, MasterStackConfig());
 	sm.RemovePort("client");

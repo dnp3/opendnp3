@@ -30,6 +30,7 @@
 
 #include <APL/Log.h>
 #include <APL/IOServiceThreadPool.h>
+#include <APL/Exception.h>
 
 using namespace std;
 using namespace boost;
@@ -39,6 +40,12 @@ using namespace apl;
 
 
 BOOST_AUTO_TEST_SUITE(ASIOThreadPoolTestSuite)
+
+BOOST_AUTO_TEST_CASE(ThrowsExceptionWithZeroConcurrency)
+{
+	EventLog log;
+	BOOST_CHECK_THROW(IOServiceThreadPool pool(log.GetLogger(LEV_INFO, "pool"), 0), ArgumentException);	
+}
 
 BOOST_AUTO_TEST_CASE(CleanConstructionDestruction)
 {

@@ -47,7 +47,7 @@ class ChangeBuffer : public IDataObserver, public SubjectBase<std::mutex>
 
 public:
 
-	ChangeBuffer() : mMidFlush(false) {}
+	ChangeBuffer() : mNotify(false) {}
 
 	void _Start();
 	void _End();
@@ -70,11 +70,8 @@ private:
 
 
 	void _Clear();
-
-	bool HasChanges();
-
-	// TODO - Evaluate necesscity of this param
-	bool mMidFlush;
+		
+	bool mNotify;
 	
 	std::deque<std::function<void (IDataObserver*)>> mChangeQueue;
 	std::mutex mMutex;

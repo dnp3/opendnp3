@@ -51,31 +51,37 @@ void ChangeBuffer::_Start()
 }
 
 void ChangeBuffer::_End() 
-{	
-	bool notify = mChangeQueue.size() > 0;
+{		
+	bool notify = mNotify;
+	mNotify = false;
 	mMutex.unlock();	
-	if(notify) NotifyAll();
+	if(notify) NotifyAll();	
 }
 
 void ChangeBuffer::_Update(const Binary& arPoint, size_t aIndex) 
 {
 	mChangeQueue.push_back(std::bind(&ChangeBuffer::Dispatch<Binary>, std::placeholders::_1, arPoint, aIndex));
+	mNotify = true;
 }
 
 void ChangeBuffer::_Update(const Analog& arPoint, size_t aIndex) {
 	mChangeQueue.push_back(std::bind(&ChangeBuffer::Dispatch<Analog>, std::placeholders::_1, arPoint, aIndex));
+	mNotify = true;
 }
 
 void ChangeBuffer::_Update(const Counter& arPoint, size_t aIndex) {		
 	mChangeQueue.push_back(std::bind(&ChangeBuffer::Dispatch<Counter>, std::placeholders::_1, arPoint, aIndex));		
+	mNotify = true;
 }
 
 void ChangeBuffer::_Update(const ControlStatus& arPoint, size_t aIndex) {				
 	mChangeQueue.push_back(std::bind(&ChangeBuffer::Dispatch<ControlStatus>, std::placeholders::_1, arPoint, aIndex));
+	mNotify = true;
 }
 
 void ChangeBuffer::_Update(const SetpointStatus& arPoint, size_t aIndex) {
 	mChangeQueue.push_back(std::bind(&ChangeBuffer::Dispatch<SetpointStatus>, std::placeholders::_1, arPoint, aIndex));		
+	mNotify = true;
 }
 
 void ChangeBuffer::Clear() {
@@ -85,10 +91,6 @@ void ChangeBuffer::Clear() {
 
 void ChangeBuffer::_Clear() {
 	mChangeQueue.clear();
-}
-
-bool ChangeBuffer::HasChanges() {
-	return mChangeQueue.size() > 0;
 }
 
 }

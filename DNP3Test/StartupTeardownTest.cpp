@@ -40,7 +40,7 @@ using namespace apl::dnp;
 
 StartupTeardownTest::StartupTeardownTest(FilterLevel aLevel, bool aImmediate) :
 	log(),
-	manager(log.GetLogger(aLevel, "mgr"))
+	manager(log.GetLogger(aLevel, "mgr"), std::thread::hardware_concurrency())
 {
 	if(aImmediate) log.AddLogSubscriber(LogToStdio::Inst());
 }

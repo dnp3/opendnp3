@@ -54,7 +54,7 @@ using namespace apl::dnp;
 IntegrationTest::IntegrationTest(Logger* apLogger, FilterLevel aLevel, boost::uint16_t aStartPort, size_t aNumPairs, size_t aNumPoints) :
 	Loggable(apLogger),
 	M_START_PORT(aStartPort),
-	mManager(apLogger),
+	mManager(apLogger, std::thread::hardware_concurrency()),
 	NUM_POINTS(aNumPoints)
 {
 	this->InitLocalObserver();

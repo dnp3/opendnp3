@@ -43,7 +43,7 @@ namespace Adapter
 	public ref class StackManager
 	{
 		public:
-			StackManager();
+			StackManager(System::UInt32 aConcurrency);
 			
 			void AddTCPClient(System::String^ name, FilterLevel level, System::UInt64 retryMs, System::String^ address, System::UInt16 port);					
 			void AddTCPServer(System::String^ name, FilterLevel level, System::UInt64 retryMs, System::String^ endpoint, System::UInt16 port);

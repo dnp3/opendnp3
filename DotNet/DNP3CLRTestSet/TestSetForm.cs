@@ -50,7 +50,7 @@ namespace DotNetTestSet
         {           
             InitializeComponent();
 
-            this.sm = new StackManager();
+            this.sm = new StackManager((UInt32)System.Environment.ProcessorCount);
             this.lca = new LogControlAdapter(this.logControl);
             sm.AddLogHandler(lca);            
         }        

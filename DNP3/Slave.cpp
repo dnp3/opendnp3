@@ -199,8 +199,7 @@ void Slave::OnVtoUpdate()
 
 void Slave::OnDataUpdate()
 {
-	// let the current state decide how to handle the change buffer
-	//std::cout << "Got data update for: " << mpLogger->GetName() << " in state " << mpState->Name() << std::endl;
+	// let the current state decide how to handle the change buffer	
 	mpState->OnDataUpdate(this);
 	this->FlushDeferredEvents();
 }

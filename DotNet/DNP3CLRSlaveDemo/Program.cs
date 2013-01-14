@@ -59,7 +59,7 @@ namespace DotNetSlaveDemo
     {
         static void Main(string[] args)
         {
-            var sm = new StackManager();
+            var sm = new StackManager(1);
             sm.AddTCPServer("server", FilterLevel.LEV_INFO, 5000, "127.0.0.1", 20000);
             var config = new SlaveStackConfig();
             var publisher = sm.AddSlave("server", "slave", FilterLevel.LEV_INFO, new RejectingCommandAcceptor(), config);

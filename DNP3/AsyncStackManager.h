@@ -76,7 +76,7 @@ public:
 	/**
 		@param apLogger - Logger to use for all other loggers
 	*/
-	AsyncStackManager(Logger* apLogger);
+	AsyncStackManager(Logger* apLogger, size_t aConcurreny);
 	~AsyncStackManager();
 
 	// All the io_service marshalling now occurs here. It's now safe to add/remove while the manager is running.
@@ -256,7 +256,12 @@ public:
 	* Synchronously stops all running stacks and ports. Permanently
 	* stops the running background thread.
 	*/
-	void Shutdown();	
+	void Shutdown();
+
+	boost::asio::io_service* GetIOService()
+	{
+		return this->mPool.GetIOService();
+	}
 
 private:
 	

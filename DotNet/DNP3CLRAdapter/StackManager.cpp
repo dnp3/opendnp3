@@ -46,8 +46,8 @@ namespace DNP3
 namespace Adapter
 {
 
-	StackManager::StackManager() :
-		pMgr(new apl::dnp::StackManager())
+	StackManager::StackManager(System::UInt32 aConcurrency) :
+		pMgr(new apl::dnp::StackManager(aConcurrency))
 	{
 		
 	}

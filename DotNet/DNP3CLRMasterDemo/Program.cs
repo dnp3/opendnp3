@@ -93,7 +93,7 @@ namespace DotNetMasterDemo
     {
         static void Main(string[] args)
         {
-            var sm = new StackManager();
+            var sm = new StackManager(1);
             sm.AddLogHandler(new PrintingLogAdapter()); //this is optional
             sm.AddTCPClient("client", FilterLevel.LEV_INFO, 5000, "127.0.0.1", 20000);
             var config = new MasterStackConfig();

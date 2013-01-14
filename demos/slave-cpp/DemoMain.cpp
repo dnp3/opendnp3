@@ -118,7 +118,7 @@ int main(int argc, char* argv[])
 	// This is the main point of interaction with the stack. The
 	// AsyncStackManager object instantiates master/slave DNP
 	// stacks, as well as their physical layers
-	AsyncStackManager mgr(log.GetLogger(LOG_LEVEL, "dnp"));
+	AsyncStackManager mgr(log.GetLogger(LOG_LEVEL, "dnp"), 1);
 
 	// Add a TCPServer to the manager with the name "tcpserver".
 	// The server will wait 3000 ms in between failed bind calls.

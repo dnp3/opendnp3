@@ -56,8 +56,8 @@ VtoIntegrationTestBase::VtoIntegrationTestBase(
 	testObj(),	
 	vtoClient(mLog.GetLogger(level, "local-tcp-client"), testObj.GetService(), "127.0.0.1", port + 20),
 	vtoServer(mLog.GetLogger(level, "loopback-tcp-server"), testObj.GetService(), "127.0.0.1", port + 10),
-	manager(mLog.GetLogger(level, "manager")),
-	tcpPipe(mLog.GetLogger(level,  "pipe"), testObj.GetService(), port)
+	manager(mLog.GetLogger(level, "manager"), 1),
+	tcpPipe(mLog.GetLogger(level,  "pipe"), manager.GetIOService(), port)
 {
 
 	if(aImmediateOutput) mLog.AddLogSubscriber(LogToStdio::Inst());

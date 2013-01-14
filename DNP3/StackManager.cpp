@@ -36,9 +36,9 @@ namespace apl
 namespace dnp
 {
 
-StackManager::StackManager() :
+StackManager::StackManager(size_t aConcurrency) :
 	mpLog(new EventLog()),
-	mpImpl(new AsyncStackManager(mpLog->GetLogger(LEV_WARNING, "dnp")))
+	mpImpl(new AsyncStackManager(mpLog->GetLogger(LEV_WARNING, "dnp"), aConcurrency))
 {
 
 }

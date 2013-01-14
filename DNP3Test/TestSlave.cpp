@@ -96,7 +96,6 @@ BOOST_AUTO_TEST_CASE(DataPostToNonExistent)
 	SlaveConfig cfg;
 	SlaveTestObject t(cfg);
 	t.db.Configure(DT_BINARY, 1);
-
 	t.db.SetClass(DT_BINARY, PC_CLASS_1);
 
 	IDataObserver* pObs = t.slave.GetDataObserver();

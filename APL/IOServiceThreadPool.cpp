@@ -31,6 +31,7 @@
 
 #include "Logger.h"
 #include "LoggableMacros.h"
+#include "Exception.h"
 
 #include <chrono>
 
@@ -45,7 +46,7 @@ IOServiceThreadPool::IOServiceThreadPool(Logger* apLogger, size_t aConcurrency) 
 	mService(),
 	mInfiniteTimer(mService)
 {
-	assert(aConcurrency > 0);
+	if(aConcurrency == 0) throw ArgumentException(LOCATION, "Concurrency cannot be 0");
 	mInfiniteTimer.expires_at(high_resolution_clock::time_point::max());
 	mInfiniteTimer.async_wait(bind(&IOServiceThreadPool::OnTimerExpiration, this, placeholders::_1));
 	for(size_t i=0; i<aConcurrency; ++i) {
@@ -82,14 +83,15 @@ void IOServiceThreadPool::Run()
 
 	do {
 		try {
-			num = mService.run();
+			num = mService.run();			
 		}
 		catch(const std::exception& ex) {
 			num = 0;
 			LOG_BLOCK(LEV_ERROR, "Unhandled exception in thread pool: " << ex.what());
 		}
 	}
-	while(num > 0);	
+	while(num > 0);
+
 }
 
 }

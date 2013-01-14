@@ -60,7 +60,7 @@ class AsyncStackManager;
 class StackManager
 {
 public:
-	StackManager();
+	StackManager(size_t aConcurrency);
 	~StackManager();
 
 	void AddTCPClient(const std::string& arName, PhysLayerSettings aPhys, const std::string& arAddr, uint16_t aPort);
