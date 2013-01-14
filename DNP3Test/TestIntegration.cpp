@@ -37,7 +37,7 @@
 
 #include "IntegrationTest.h"
 
-#define OUTPUT_PERF_NUMBERS	(0)
+#define OUTPUT_PERF_NUMBERS	(1)
 
 using namespace apl;
 using namespace apl::dnp;
@@ -59,7 +59,7 @@ using namespace std::chrono;
 #else
 /* Generic Linux platform */
 #define MACRO_PORT_START	(30000)
-#define MACRO_NUM_PAIRS		(10)
+#define MACRO_NUM_PAIRS		(100)
 #endif
 
 BOOST_AUTO_TEST_SUITE(IntegrationSuite)
@@ -71,7 +71,7 @@ const size_t NUM_CHANGE_SETS = 10;
 const FilterLevel FILTER_LEVEL = LEV_INFO;
 
 BOOST_AUTO_TEST_CASE(MasterToSlaveThroughput)
-{		
+{
 	EventLog log;
 	//LogToStdio::Inst()->SetPrintLocation(true);
 	//log.AddLogSubscriber(LogToStdio::Inst());
@@ -81,9 +81,9 @@ BOOST_AUTO_TEST_CASE(MasterToSlaveThroughput)
 
 	size_t num_points_per_pair = 0;
 	StopWatch sw;
-	for (size_t j = 0; j < NUM_CHANGE_SETS; ++j) {		
-		num_points_per_pair += t.IncrementData();		
-		BOOST_REQUIRE(t.WaitForSameData(60000, true));		
+	for (size_t j = 0; j < NUM_CHANGE_SETS; ++j) {
+		num_points_per_pair += t.IncrementData();
+		BOOST_REQUIRE(t.WaitForSameData(60000, true));
 		//cout << "iteration: " << j << endl;
 	}
 
