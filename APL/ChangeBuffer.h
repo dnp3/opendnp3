@@ -56,7 +56,7 @@ public:
 	void _Update(const Counter& arPoint, size_t aIndex);
 	void _Update(const ControlStatus& arPoint, size_t aIndex);
 	void _Update(const SetpointStatus& arPoint, size_t aIndex);
-	size_t FlushUpdates(apl::IDataObserver* apObserver, bool aClear = true);
+	size_t FlushUpdates(apl::IDataObserver* apObserver);
 
 	void Clear();
 

@@ -67,7 +67,7 @@ BOOST_AUTO_TEST_SUITE(IntegrationSuite)
 const boost::uint16_t START_PORT = MACRO_PORT_START;
 const size_t NUM_PAIRS = MACRO_NUM_PAIRS;
 const size_t NUM_POINTS = 500;
-const size_t NUM_CHANGE_SETS = 1000;
+const size_t NUM_CHANGE_SETS = 10;
 const FilterLevel FILTER_LEVEL = LEV_INFO;
 
 BOOST_AUTO_TEST_CASE(MasterToSlaveThroughput)
@@ -87,7 +87,7 @@ BOOST_AUTO_TEST_CASE(MasterToSlaveThroughput)
 	for (size_t j = 0; j < NUM_CHANGE_SETS; ++j) {		
 		num_points_per_pair += t.IncrementData();		
 		BOOST_REQUIRE(t.WaitForSameData(60000, true));		
-		cout << "iteration: " << j << endl;
+		//cout << "iteration: " << j << endl;
 	}
 
 	if (OUTPUT_PERF_NUMBERS) {

@@ -33,26 +33,15 @@
 namespace apl 
 {
 
-size_t ChangeBuffer::FlushUpdates(apl::IDataObserver* apObserver, bool aClear)
+size_t ChangeBuffer::FlushUpdates(apl::IDataObserver* apObserver)
 {
 	assert(this->InProgress());
-	size_t count = 0;
-	if(!this->HasChanges()) return count;
-
-	{
-		Transaction t(apObserver);
-		mMidFlush = true;	// Will clear on transaction end if an observer call blows up
-		for(auto f: mChangeQueue) 
-		{
-			++count;
-			f(apObserver);			
-		}
-
-		mMidFlush = false;
-	}
-
-	if(aClear) this->Clear();
-
+	size_t count = this->mChangeQueue.size();	
+	if(count > 0) {
+		Transaction t(apObserver);		
+		for(auto f: mChangeQueue) f(apObserver);
+	}	
+	this->Clear();
 	return count;
 }
 
@@ -61,16 +50,11 @@ void ChangeBuffer::_Start()
 	mMutex.lock();
 }
 
-void ChangeBuffer::_End() {
-
-	if ( mMidFlush ) {
-		_Clear();
-		mMidFlush = false;
-	}
-
-	bool notify = this->HasChanges();
-	mMutex.unlock();
-	if(notify) this->NotifyAll();
+void ChangeBuffer::_End() 
+{	
+	bool notify = mChangeQueue.size() > 0;
+	mMutex.unlock();	
+	if(notify) NotifyAll();
 }
 
 void ChangeBuffer::_Update(const Binary& arPoint, size_t aIndex) 
