@@ -6,7 +6,7 @@
 // Green Energy Corp licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except in
 // compliance with the License.  You may obtain a copy of the License at
-// 
+//
 // http://www.apache.org/licenses/LICENSE-2.0
 //
 // Unless required by applicable law or agreed to in writing, software
@@ -17,9 +17,9 @@
 //
 // This file was forked on 01/01/2013 by Automatak, LLC and modifications
 // have been made to this file. Automatak, LLC licenses these modifications to
-// you under the GNU Affero General Public License Version 3.0 
-// (the "Additional License"). You may not use these modifications except in 
-// compliance with the additional license. You may obtain a copy of the Additional 
+// you under the GNU Affero General Public License Version 3.0
+// (the "Additional License"). You may not use these modifications except in
+// compliance with the additional license. You may obtain a copy of the Additional
 // License at
 //
 // http://www.gnu.org/licenses/agpl.html
