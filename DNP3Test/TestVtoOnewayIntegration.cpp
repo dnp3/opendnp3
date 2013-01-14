@@ -89,7 +89,7 @@ BOOST_AUTO_TEST_SUITE(VtoOnewayIntegrationSuite)
 
 BOOST_AUTO_TEST_CASE(Reconnection)
 {
-	VtoOnewayTestStack stack(true, true, false);
+	VtoOnewayTestStack stack(true, false, false);
 
 	// start up everything, the local side should be able to open
 	stack.remote.Start();

@@ -64,16 +64,20 @@ IExecutor* VtoRouter::GetExecutor()
 
 void VtoRouter::OnVtoDataReceived(const VtoData& arData)
 {
-	LOG_BLOCK(LEV_DEBUG, "GotRemoteData: " << arData.GetSize() << " Type: " << ToString(arData.GetType()));
+	mpPhys->GetExecutor()->Post([this, arData](){
 
-	if(this->CheckIncomingVtoData(arData)) {
-		/*
-		 * Each physical layer action is processed serially, so we can take
-		 * advantage of the FIFO structure to keep things simple.
-		 */
-		this->mPhysLayerTxBuffer.push(arData);
-		this->CheckForPhysWrite();
-	}
+		LOG_BLOCK(LEV_DEBUG, "GotRemoteData: " << arData.GetSize() << " Type: " << ToString(arData.GetType()));
+
+		if(this->CheckIncomingVtoData(arData)) {
+			/*
+			 * Each physical layer action is processed serially, so we can take
+			 * advantage of the FIFO structure to keep things simple.
+			 */
+			this->mPhysLayerTxBuffer.push(arData);
+			this->CheckForPhysWrite();
+		}
+
+	});
 }
 
 void VtoRouter::_OnReceive(const uint8_t* apData, size_t aLength)
@@ -173,7 +177,7 @@ void VtoRouter::FlushBuffers()
 
 void VtoRouter::OnBufferAvailable()
 {
-	this->CheckForVtoWrite();
+	mpPhys->GetExecutor()->Post([this](){ this->CheckForVtoWrite(); });	
 }
 
 void VtoRouter::OnPhysicalLayerOpenSuccessCallback()

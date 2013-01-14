@@ -56,7 +56,7 @@ VtoIntegrationTestBase::VtoIntegrationTestBase(
 	testObj(),	
 	vtoClient(mLog.GetLogger(level, "local-tcp-client"), testObj.GetService(), "127.0.0.1", port + 20),
 	vtoServer(mLog.GetLogger(level, "loopback-tcp-server"), testObj.GetService(), "127.0.0.1", port + 10),
-	manager(mLog.GetLogger(level, "manager"), 1),
+	manager(mLog.GetLogger(level, "manager"), std::thread::hardware_concurrency()),
 	tcpPipe(mLog.GetLogger(level,  "pipe"), manager.GetIOService(), port)
 {
 
