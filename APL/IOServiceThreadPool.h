@@ -51,6 +51,8 @@ class IOServiceThreadPool : private Loggable
 
 	private:
 
+	bool mIsShutdown;
+
 	void OnTimerExpiration(const boost::system::error_code& ec);
 
 	void Run();

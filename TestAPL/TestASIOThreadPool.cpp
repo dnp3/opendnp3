@@ -50,16 +50,14 @@ BOOST_AUTO_TEST_CASE(ThrowsExceptionWithZeroConcurrency)
 BOOST_AUTO_TEST_CASE(CleanConstructionDestruction)
 {
 	EventLog log;
-	IOServiceThreadPool pool(log.GetLogger(LEV_INFO, "pool"), 4);
-	pool.Shutdown();
+	IOServiceThreadPool pool(log.GetLogger(LEV_INFO, "pool"), 4);	
 }
 
 BOOST_AUTO_TEST_CASE(ThreadPoolShutsdownCleanlyEvenIfALotOfWorkIsSubmitted)
 {
         EventLog log;
         IOServiceThreadPool pool(log.GetLogger(LEV_INFO, "pool"), 4);
-	for(size_t i=0; i<100000; ++i) pool.GetIOService()->post([](){});
-        pool.Shutdown();
+		for(size_t i=0; i<100000; ++i) pool.GetIOService()->post([](){});        
 }
 
 

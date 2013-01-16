@@ -42,6 +42,7 @@ namespace apl
 
 IOServiceThreadPool::IOServiceThreadPool(Logger* apLogger, size_t aConcurrency) :
 	Loggable(apLogger),
+	mIsShutdown(false),
 	mService(),
 	mInfiniteTimer(mService)
 {
@@ -60,6 +61,7 @@ void IOServiceThreadPool::OnTimerExpiration(const boost::system::error_code& ec)
 
 IOServiceThreadPool::~IOServiceThreadPool()
 {
+	this->Shutdown();
 	for(auto pThread: mThreads) {
 		delete pThread;
 	}
@@ -67,8 +69,11 @@ IOServiceThreadPool::~IOServiceThreadPool()
 
 void IOServiceThreadPool::Shutdown()
 {
-	mInfiniteTimer.cancel();	
-	for(auto pThread: mThreads) pThread->join();	
+	if(!mIsShutdown) {
+		mIsShutdown = true;
+		mInfiniteTimer.cancel();	
+		for(auto pThread: mThreads) pThread->join();	
+	}
 }
 
 boost::asio::io_service* IOServiceThreadPool::GetIOService()

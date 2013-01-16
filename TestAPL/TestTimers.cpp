@@ -60,11 +60,6 @@ public:
 		
 	}	
 
-	~TimerTestObject()
-	{
-		mPool.Shutdown();
-	}
-
 	void Receive(int aVal) {
 		if(aVal <= mLast) mMonotonic = false;
 		++mNum;
