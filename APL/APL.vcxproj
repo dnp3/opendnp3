@@ -105,7 +105,6 @@
     <ClInclude Include="Threadable.h" />
     <ClInclude Include="ThreadBase.h" />
     <ClInclude Include="ThreadBoost.h" />
-    <ClInclude Include="TimeBase.h" />
     <ClInclude Include="TimerASIO.h" />
     <ClInclude Include="TimeSource.h" />
     <ClInclude Include="ToHex.h" />
@@ -176,7 +175,6 @@
     <ClCompile Include="Threadable.cpp" />
     <ClCompile Include="ThreadBase.cpp" />
     <ClCompile Include="ThreadBoost.cpp" />
-    <ClCompile Include="TimeBase.cpp" />
     <ClCompile Include="TimerASIO.cpp" />
     <ClCompile Include="TimeSource.cpp" />
     <ClCompile Include="ToHex.cpp" />

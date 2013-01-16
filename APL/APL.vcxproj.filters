@@ -276,9 +276,6 @@
     <ClInclude Include="ThreadBoost.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="TimeBase.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="TimerASIO.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -483,9 +480,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ThreadBoost.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="TimeBase.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="TimerASIO.cpp">
