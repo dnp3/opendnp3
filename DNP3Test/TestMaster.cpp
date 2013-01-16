@@ -349,10 +349,9 @@ BOOST_AUTO_TEST_CASE(ControlExecutionClosedState)
 	BinaryOutput bo(CC_PULSE);
 	CommandResponseQueue mRspQueue;
 	
-	for(int i=0; i<10; ++i){
-		std::cout << i << std::endl;
+	for(int i=0; i<10; ++i){		
 		pAcceptor->AcceptCommand(bo, 1, 7, &mRspQueue);
-		std::cout << "dispatch: " << t.mts.Dispatch() << std::endl;
+		t.mts.Dispatch();
 		CommandResponse cr;
 		BOOST_REQUIRE(mRspQueue.WaitForResponse(cr, 7, 0));		
 		BOOST_REQUIRE_EQUAL(cr.mResult, CS_HARDWARE_ERROR);

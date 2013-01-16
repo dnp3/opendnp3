@@ -172,7 +172,7 @@ void TestLargeDataOneWay(VtoOnewayTestStack& arTest, size_t aSizeInBytes)
 
 BOOST_AUTO_TEST_CASE(LargeDataTransferMasterToSlave)
 {
-	VtoOnewayTestStack stack(true, false, false);
+	VtoOnewayTestStack stack(true, true, false);
 //	stack.tcpPipe.client.SetCorruptionProbability(0.005);
 //	stack.tcpPipe.server.SetCorruptionProbability(0.005);
 	TestLargeDataOneWay(stack, MACRO_BUFFER_SIZE);
@@ -180,7 +180,7 @@ BOOST_AUTO_TEST_CASE(LargeDataTransferMasterToSlave)
 
 BOOST_AUTO_TEST_CASE(LargeDataTransferSlaveToMaster)
 {
-	VtoOnewayTestStack stack(false, false, false);
+	VtoOnewayTestStack stack(false, true, false);
 //	stack.tcpPipe.client.SetCorruptionProbability(0.005);
 //	stack.tcpPipe.server.SetCorruptionProbability(0.005);
 	TestLargeDataOneWay(stack, MACRO_BUFFER_SIZE);

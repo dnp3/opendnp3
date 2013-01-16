@@ -144,7 +144,8 @@ void Master::ProcessCommand(ITask* apTask)
 	CommandData info;
 
 	if(mpState == AMS_Closed::Inst()) { //we're closed
-		if(!mCommandQueue.RespondToCommand(CS_HARDWARE_ERROR)) apTask->Disable();
+		while(mCommandQueue.RespondToCommand(CS_HARDWARE_ERROR));
+		apTask->Disable();				
 	}
 	else {
 
