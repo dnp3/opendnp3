@@ -26,35 +26,44 @@
 //
 // Contact Automatak, LLC for a commercial license to these modifications
 //
-#ifndef __THREAD_BOOST_H_
-#define __THREAD_BOOST_H_
+#include "Thread.h"
 
-#include "ThreadBase.h"
-#include "Types.h"
-
-#include <thread>
-#include <functional>
+#include <assert.h>
 
 namespace apl
 {
 
-class ThreadBoost : public ThreadBase
+Thread::Thread(Threadable* apThreadable) :
+	mpThreadable(apThreadable),
+	mEntryPoint(std::bind(&Threadable::Start, apThreadable)),
+	mpThread(NULL)
 {
 
-public:
-	ThreadBoost(Threadable* apObj);
-	virtual ~ThreadBoost ();
+}
 
-	void Start();
-	void WaitForStop();	
+Thread::~Thread()
+{
+	RequestStop();
+	WaitForStop();
+}
 
-private:
+void Thread::Start()
+{
+	assert(mpThread == NULL);
+	mpThread = new std::thread(mEntryPoint);
+}
 
-	std::function<void ()> mEntryPoint;
-	std::thread* mpThread;
+void Thread::WaitForStop()
+{
+	if(mpThread != NULL) mpThread->join();
+	delete mpThread;
+	mpThread = NULL;
+}
 
-};
+void Thread::RequestStop()
+{
+	mpThreadable->RequestStop();
+}
 
 }//end namespace
 
-#endif

@@ -29,15 +29,39 @@
 #ifndef __THREAD_H_
 #define __THREAD_H_
 
-
 #include "Threadable.h"
-#include "ThreadBase.h"
 
-#include "ThreadBoost.h"
+#include <thread>
+#include <functional>
 
 namespace apl
 {
-typedef ThreadBoost Thread;
+
+class Thread
+{
+public:
+
+	Thread(Threadable* apThreadable);
+	~Thread();
+
+	void Start();
+	void RequestStop();
+	void WaitForStop();
+
+protected:
+
+	//pointer to object that conforms to the IThreadable interface
+	Threadable* mpThreadable;
+
+	bool mIsExitRequested;
+
+private:
+
+	std::function<void ()> mEntryPoint;
+	std::thread* mpThread;
+
 };
+
+}//end namespace
 
 #endif

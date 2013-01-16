@@ -103,8 +103,6 @@
     <ClInclude Include="SubjectBase.h" />
     <ClInclude Include="Thread.h" />
     <ClInclude Include="Threadable.h" />
-    <ClInclude Include="ThreadBase.h" />
-    <ClInclude Include="ThreadBoost.h" />
     <ClInclude Include="TimerASIO.h" />
     <ClInclude Include="TimeSource.h" />
     <ClInclude Include="ToHex.h" />
@@ -173,8 +171,7 @@
     <ClCompile Include="RandomizedBuffer.cpp" />
     <ClCompile Include="ShiftableBuffer.cpp" />
     <ClCompile Include="Threadable.cpp" />
-    <ClCompile Include="ThreadBase.cpp" />
-    <ClCompile Include="ThreadBoost.cpp" />
+    <ClCompile Include="Thread.cpp" />
     <ClCompile Include="TimerASIO.cpp" />
     <ClCompile Include="TimeSource.cpp" />
     <ClCompile Include="ToHex.cpp" />
