@@ -47,8 +47,8 @@ namespace apl
 MockPhysicalLayerMonitor::MockPhysicalLayerMonitor(
 													Logger* apLogger, 
 													IPhysicalLayerAsync* apPhys, 													
-													high_resolution_clock::duration aMinOpenRetry,
-													high_resolution_clock::duration aMaxOpenRetry
+													steady_clock::duration aMinOpenRetry,
+													steady_clock::duration aMaxOpenRetry
 													) :
 	Loggable(apLogger),
 	PhysicalLayerMonitor(apLogger, apPhys, aMinOpenRetry, aMaxOpenRetry),

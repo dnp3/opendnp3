@@ -51,7 +51,7 @@ ASIOExecutor::~ASIOExecutor()
 	for(auto pTimer: mAllTimers) delete pTimer;
 }
 
-ITimer* ASIOExecutor::Start(std::chrono::high_resolution_clock::duration aDelay, const function<void ()>& arCallback)
+ITimer* ASIOExecutor::Start(std::chrono::steady_clock::duration aDelay, const function<void ()>& arCallback)
 {
 	TimerASIO* pTimer = GetTimer();
 	pTimer->mTimer.expires_from_now(aDelay);
@@ -59,7 +59,7 @@ ITimer* ASIOExecutor::Start(std::chrono::high_resolution_clock::duration aDelay,
 	return pTimer;
 }
 
-ITimer* ASIOExecutor::Start(const std::chrono::high_resolution_clock::time_point& arTime, const function<void ()>& arCallback)
+ITimer* ASIOExecutor::Start(const std::chrono::steady_clock::time_point& arTime, const function<void ()>& arCallback)
 {
 	TimerASIO* pTimer = GetTimer();
 	pTimer->mTimer.expires_at(arTime);

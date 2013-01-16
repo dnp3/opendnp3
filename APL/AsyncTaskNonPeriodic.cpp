@@ -39,7 +39,7 @@ namespace apl
 
 
 AsyncTaskNonPeriodic::AsyncTaskNonPeriodic(millis_t aRetryDelay, int aPriority, const TaskHandler& arCallback, AsyncTaskGroup* apGroup, const std::string& arName) :
-	AsyncTaskBase(aPriority, arCallback, apGroup, high_resolution_clock::time_point::min(), arName),
+	AsyncTaskBase(aPriority, arCallback, apGroup, steady_clock::time_point::min(), arName),
 	mRetryDelay(aRetryDelay)
 {
 
@@ -47,10 +47,10 @@ AsyncTaskNonPeriodic::AsyncTaskNonPeriodic(millis_t aRetryDelay, int aPriority, 
 
 void AsyncTaskNonPeriodic::_OnComplete(bool aSuccess)
 {
-	high_resolution_clock::time_point now = mpGroup->GetUTC();
+	steady_clock::time_point now = mpGroup->GetUTC();
 	if(aSuccess) {
 		mIsComplete = true;
-		mNextRunTime = high_resolution_clock::time_point::max();
+		mNextRunTime = steady_clock::time_point::max();
 	}
 	else {
 		mNextRunTime = now + milliseconds(mRetryDelay);

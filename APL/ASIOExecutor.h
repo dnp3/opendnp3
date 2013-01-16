@@ -50,8 +50,8 @@ public:
 	ASIOExecutor(boost::asio::strand*);
 	~ASIOExecutor();
 
-	ITimer* Start(std::chrono::high_resolution_clock::duration, const std::function<void ()>&);
-	ITimer* Start(const std::chrono::high_resolution_clock::time_point&, const std::function<void ()>&);
+	ITimer* Start(std::chrono::steady_clock::duration, const std::function<void ()>&);
+	ITimer* Start(const std::chrono::steady_clock::time_point&, const std::function<void ()>&);
 	void Post(const std::function<void ()>&);
 
 private:

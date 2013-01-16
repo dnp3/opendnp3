@@ -42,7 +42,7 @@ using namespace std::chrono;
 namespace apl
 {
 
-PhysicalLayerMonitor::PhysicalLayerMonitor(Logger* apLogger, IPhysicalLayerAsync* apPhys, high_resolution_clock::duration aMinOpenRetry, high_resolution_clock::duration aMaxOpenRetry) :
+PhysicalLayerMonitor::PhysicalLayerMonitor(Logger* apLogger, IPhysicalLayerAsync* apPhys, steady_clock::duration aMinOpenRetry, steady_clock::duration aMaxOpenRetry) :
 	Loggable(apLogger),
 	IHandlerAsync(apLogger),
 	mpPhys(apPhys),	

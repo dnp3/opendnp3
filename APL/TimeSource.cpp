@@ -37,9 +37,9 @@ namespace apl
 
 TimeSource TimeSource::mInstance;
 
-high_resolution_clock::time_point TimeSource::GetUTC()
+steady_clock::time_point TimeSource::GetUTC()
 {
-	return high_resolution_clock::now();
+	return steady_clock::now();
 }
 
 //mock time source
@@ -48,14 +48,14 @@ MockTimeSource::MockTimeSource()
 
 }
 
-void MockTimeSource::Advance(const std::chrono::high_resolution_clock::duration& arDuration)
+void MockTimeSource::Advance(const std::chrono::steady_clock::duration& arDuration)
 {
 	mTime += arDuration;
 }
 
 void MockTimeSource::SetToNow()
 {
-	mTime = high_resolution_clock::now();
+	mTime = steady_clock::now();
 }
 
 
@@ -65,14 +65,14 @@ TimeSourceSystemOffset::TimeSourceSystemOffset()
 }
 
 
-std::chrono::high_resolution_clock::time_point TimeSourceSystemOffset::GetUTC()
+std::chrono::steady_clock::time_point TimeSourceSystemOffset::GetUTC()
 {
-	return high_resolution_clock::now() + mOffset;
+	return steady_clock::now() + mOffset;
 }
 
-void TimeSourceSystemOffset::SetTime(const std::chrono::high_resolution_clock::time_point& arTime)
+void TimeSourceSystemOffset::SetTime(const std::chrono::steady_clock::time_point& arTime)
 {
-	mOffset = arTime - high_resolution_clock::now();
+	mOffset = arTime - steady_clock::now();
 }
 
 }

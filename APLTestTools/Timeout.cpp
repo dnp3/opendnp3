@@ -34,20 +34,20 @@ using namespace std::chrono;
 namespace apl
 {
 
-Timeout :: Timeout(high_resolution_clock::duration aTimeout)
-	: mExpireTime(high_resolution_clock::now() + aTimeout)
+Timeout :: Timeout(steady_clock::duration aTimeout)
+	: mExpireTime(steady_clock::now() + aTimeout)
 {
 
 }
 
 bool Timeout :: IsExpired()
 {
-	return high_resolution_clock::now() >= mExpireTime;	
+	return steady_clock::now() >= mExpireTime;	
 }
 
-high_resolution_clock::duration Timeout :: Remaining()
+steady_clock::duration Timeout :: Remaining()
 {
-	return mExpireTime - high_resolution_clock::now();
+	return mExpireTime - steady_clock::now();
 }
 
 }

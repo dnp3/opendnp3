@@ -84,15 +84,15 @@ public:
 		return mIsRunning;
 	}
 
-	std::chrono::high_resolution_clock::time_point GetUTC() const;
+	std::chrono::steady_clock::time_point GetUTC() const;
 
 private:
 
 	void OnCompletion();
-	void RestartTimer(const std::chrono::high_resolution_clock::time_point& arTime);
+	void RestartTimer(const std::chrono::steady_clock::time_point& arTime);
 	void OnTimerExpiration();
-	void Update(const std::chrono::high_resolution_clock::time_point& arTime);
-	AsyncTaskBase* GetNext(const std::chrono::high_resolution_clock::time_point& arTime);
+	void Update(const std::chrono::steady_clock::time_point& arTime);
+	AsyncTaskBase* GetNext(const std::chrono::steady_clock::time_point& arTime);
 
 	bool mIsRunning;
 	bool mShutdown;

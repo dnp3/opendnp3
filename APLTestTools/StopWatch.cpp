@@ -33,19 +33,19 @@ using namespace std::chrono;
 namespace apl
 {
 
-StopWatch::StopWatch() : mStartTime(high_resolution_clock::now())
+StopWatch::StopWatch() : mStartTime(steady_clock::now())
 {
 	
 }
 
-high_resolution_clock::duration StopWatch :: Elapsed(bool aReset)
+steady_clock::duration StopWatch :: Elapsed(bool aReset)
 {
-	return high_resolution_clock::now() - mStartTime;
+	return steady_clock::now() - mStartTime;
 }
 
 void StopWatch :: Restart()
 {
-	mStartTime = high_resolution_clock::now(); 
+	mStartTime = steady_clock::now(); 
 }
 
 }

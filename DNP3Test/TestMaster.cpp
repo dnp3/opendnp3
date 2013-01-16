@@ -209,7 +209,7 @@ BOOST_AUTO_TEST_CASE(RestartAndTimeBits)
 	MasterTestObject t(master_cfg);
 	t.master.OnLowerLayerUp();
 
-	t.fake_time.SetTime(high_resolution_clock::time_point(milliseconds(100))); //100 ms since epoch
+	t.fake_time.SetTime(steady_clock::time_point(milliseconds(100))); //100 ms since epoch
 
 	BOOST_REQUIRE_EQUAL("C0 01 3C 01 06", t.Read()); ; //integrity
 	t.RespondToMaster("C0 81 90 00"); // need time and device restart
@@ -236,7 +236,7 @@ BOOST_AUTO_TEST_CASE(RestartFailure)
 	MasterTestObject t(master_cfg);
 	t.master.OnLowerLayerUp();
 
-	t.fake_time.SetTime(std::chrono::high_resolution_clock::time_point(std::chrono::milliseconds(100))); //100 ms since epoch
+	t.fake_time.SetTime(std::chrono::steady_clock::time_point(std::chrono::milliseconds(100))); //100 ms since epoch
 
 	BOOST_REQUIRE_EQUAL("C0 01 3C 01 06", t.Read()); //integrity
 	t.RespondToMaster("C0 81 90 00"); // need time and device restart
@@ -253,7 +253,7 @@ BOOST_AUTO_TEST_CASE(RestartLayerDown)
 	MasterTestObject t(master_cfg);
 	t.master.OnLowerLayerUp();
 
-	t.fake_time.SetTime(high_resolution_clock::time_point(milliseconds(100))); //100 ms since epoch
+	t.fake_time.SetTime(steady_clock::time_point(milliseconds(100))); //100 ms since epoch
 
 	BOOST_REQUIRE_EQUAL("C0 01 3C 01 06", t.Read()); //integrity
 	t.RespondToMaster("C0 81 90 00"); // need time and device restart
@@ -272,7 +272,7 @@ BOOST_AUTO_TEST_CASE(DelayMeasLayerDown)
 	MasterTestObject t(master_cfg);
 	t.master.OnLowerLayerUp();
 
-	t.fake_time.SetTime(high_resolution_clock::time_point(milliseconds(100))); //100 ms since epoch
+	t.fake_time.SetTime(steady_clock::time_point(milliseconds(100))); //100 ms since epoch
 
 	BOOST_REQUIRE_EQUAL("C0 01 3C 01 06", t.Read()); //integrity
 	t.RespondToMaster("C0 81 90 00"); // need time and device restart
@@ -293,7 +293,7 @@ BOOST_AUTO_TEST_CASE(DelayMeasFailure)
 	MasterTestObject t(master_cfg);
 	t.master.OnLowerLayerUp();
 
-	t.fake_time.SetTime(high_resolution_clock::time_point(milliseconds(100))); //100 ms since epoch
+	t.fake_time.SetTime(steady_clock::time_point(milliseconds(100))); //100 ms since epoch
 
 	BOOST_REQUIRE_EQUAL("C0 01 3C 01 06", t.Read()); //integrity
 	t.RespondToMaster("C0 81 90 00"); // need time and device restart
@@ -313,7 +313,7 @@ BOOST_AUTO_TEST_CASE(RestartBadResponses)
 	MasterTestObject t(master_cfg);
 	t.master.OnLowerLayerUp();
 
-	t.fake_time.SetTime(high_resolution_clock::time_point(milliseconds(100))); //100 ms since epoch
+	t.fake_time.SetTime(steady_clock::time_point(milliseconds(100))); //100 ms since epoch
 
 	BOOST_REQUIRE_EQUAL("C0 01 3C 01 06", t.Read()); //integrity
 	t.RespondToMaster("C0 81 10 00"); // need time
@@ -547,7 +547,7 @@ BOOST_AUTO_TEST_CASE(SolicitedResponseFailure)
 {
 	MasterConfig master_cfg;
 	MasterTestObject t(master_cfg);
-	t.fake_time.SetTime(high_resolution_clock::time_point(milliseconds(0)));
+	t.fake_time.SetTime(steady_clock::time_point(milliseconds(0)));
 	t.master.OnLowerLayerUp();
 
 	BOOST_REQUIRE_EQUAL(t.Read(), "C0 01 3C 01 06"); ;
@@ -561,7 +561,7 @@ BOOST_AUTO_TEST_CASE(SolicitedResponseLayerDown)
 {
 	MasterConfig master_cfg;
 	MasterTestObject t(master_cfg);
-	t.fake_time.SetTime(high_resolution_clock::time_point(milliseconds(0)));
+	t.fake_time.SetTime(steady_clock::time_point(milliseconds(0)));
 	t.master.OnLowerLayerUp();
 
 	BOOST_REQUIRE_EQUAL(t.Read(), "C0 01 3C 01 06"); ;

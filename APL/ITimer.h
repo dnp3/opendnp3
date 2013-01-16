@@ -54,7 +54,7 @@ class ITimer
 public:
 	virtual ~ITimer() {}
 	virtual void Cancel() = 0;
-	virtual std::chrono::high_resolution_clock::time_point ExpiresAt() = 0;
+	virtual std::chrono::steady_clock::time_point ExpiresAt() = 0;
 };
 
 }

@@ -141,7 +141,7 @@ void AsyncTaskGroup::Disable(int aMask)
 	this->CheckState();
 }
 
-AsyncTaskBase* AsyncTaskGroup::GetNext(const std::chrono::high_resolution_clock::time_point& arTime)
+AsyncTaskBase* AsyncTaskGroup::GetNext(const std::chrono::steady_clock::time_point& arTime)
 {
 	this->Update(arTime);
 	TaskVec::iterator max = max_element(mTaskVec.begin(), mTaskVec.end(), AsyncTaskBase::LessThanGroupLevel);
@@ -158,11 +158,11 @@ AsyncTaskBase* AsyncTaskGroup::GetNext(const std::chrono::high_resolution_clock:
 void AsyncTaskGroup::CheckState()
 {
 	if(!mShutdown) {
-		high_resolution_clock::time_point now = GetUTC();
+		steady_clock::time_point now = GetUTC();
 		AsyncTaskBase* pTask = GetNext(now);
 
 		if(pTask == NULL) return;
-		if(pTask->NextRunTime() == high_resolution_clock::time_point::max()) return;
+		if(pTask->NextRunTime() == steady_clock::time_point::max()) return;
 
 		if(pTask->NextRunTime() <= now) {
 			mIsRunning = true;
@@ -181,19 +181,19 @@ void AsyncTaskGroup::OnCompletion()
 	this->CheckState();
 }
 
-std::chrono::high_resolution_clock::time_point AsyncTaskGroup::GetUTC() const
+std::chrono::steady_clock::time_point AsyncTaskGroup::GetUTC() const
 {
 	return mpTimeSrc->GetUTC();
 }
 
-void AsyncTaskGroup::Update(const std::chrono::high_resolution_clock::time_point& arTime)
+void AsyncTaskGroup::Update(const std::chrono::steady_clock::time_point& arTime)
 {
 	for(AsyncTaskBase * p: mTaskVec) {
 		p->UpdateTime(arTime);
 	}
 }
 
-void AsyncTaskGroup::RestartTimer(const std::chrono::high_resolution_clock::time_point& arTime)
+void AsyncTaskGroup::RestartTimer(const std::chrono::steady_clock::time_point& arTime)
 {
 	if(mpTimer != NULL) {
 		if(mpTimer->ExpiresAt() != arTime) {

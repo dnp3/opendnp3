@@ -39,7 +39,7 @@ class ITimeSource
 {
 
 public:
-	virtual std::chrono::high_resolution_clock::time_point GetUTC() = 0;	
+	virtual std::chrono::steady_clock::time_point GetUTC() = 0;	
 	millis_t GetMillisecondsSinceEpoch();
 
 };
@@ -47,7 +47,7 @@ public:
 class ITimeManager : public ITimeSource
 {
 public:	
-	virtual void SetTime(const std::chrono::high_resolution_clock::time_point& arTime) = 0;
+	virtual void SetTime(const std::chrono::steady_clock::time_point& arTime) = 0;
 };
 
 

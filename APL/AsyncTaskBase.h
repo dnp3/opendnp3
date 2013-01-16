@@ -91,7 +91,7 @@ protected:
 	        int aPriority,
 	        const TaskHandler& arCallback,
 	        AsyncTaskGroup* apGroup,
-			const std::chrono::high_resolution_clock::time_point& arInitialTime,
+			const std::chrono::steady_clock::time_point& arInitialTime,
 	        const std::string& arName);
 
 	// optional NVII function for special bookkeeping
@@ -109,7 +109,7 @@ protected:
 
 	// Update the task's completion and expired status
 	// base upon the input time
-	void UpdateTime(const std::chrono::high_resolution_clock::time_point& arTime);
+	void UpdateTime(const std::chrono::steady_clock::time_point& arTime);
 
 	bool IsEnabled() const {
 		return mIsEnabled;
@@ -136,7 +136,7 @@ protected:
 	}
 
 	// @returns max_date_time if the task is currently running or will not run again
-	std::chrono::high_resolution_clock::time_point NextRunTime() const {
+	std::chrono::steady_clock::time_point NextRunTime() const {
 		return mNextRunTime;
 	}
 
@@ -153,8 +153,8 @@ protected:
 	TaskHandler mHandler;					// Every task has a handler for
 	// executing the task
 	AsyncTaskGroup* mpGroup;				// owning task group
-	std::chrono::high_resolution_clock::time_point mNextRunTime;	// next execution time for the task
-	const std::chrono::high_resolution_clock::time_point M_INITIAL_TIME;
+	std::chrono::steady_clock::time_point mNextRunTime;	// next execution time for the task
+	const std::chrono::steady_clock::time_point M_INITIAL_TIME;
 	int mFlags;
 };
 

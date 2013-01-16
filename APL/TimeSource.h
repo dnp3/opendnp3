@@ -40,7 +40,7 @@ class TimeSource : public ITimeSource
 	MACRO_SINGLETON_INSTANCE(TimeSource)
 
 	// Implement ITimeSource
-	std::chrono::high_resolution_clock::time_point GetUTC();	
+	std::chrono::steady_clock::time_point GetUTC();	
 };
 
 class MockTimeSource : public ITimeSource
@@ -50,21 +50,21 @@ public:
 	MockTimeSource();
 
 	// Implement ITimeSource
-	std::chrono::high_resolution_clock::time_point GetUTC() {
+	std::chrono::steady_clock::time_point GetUTC() {
 		return mTime;
 	}
-	std::chrono::high_resolution_clock::time_point GetTimeStampUTC();
+	std::chrono::steady_clock::time_point GetTimeStampUTC();
 
-	void SetTime(const std::chrono::high_resolution_clock::time_point& arTime) {
+	void SetTime(const std::chrono::steady_clock::time_point& arTime) {
 		mTime = arTime;
 	}
 	
-	void Advance(const std::chrono::high_resolution_clock::duration& arDuration);
+	void Advance(const std::chrono::steady_clock::duration& arDuration);
 	void SetToNow();
 
 private:
 
-	std::chrono::high_resolution_clock::time_point mTime;
+	std::chrono::steady_clock::time_point mTime;
 };
 
 /** Maintains an external time by keeping an offset from system time.
@@ -74,11 +74,11 @@ class TimeSourceSystemOffset : public  ITimeManager
 	public:
 		TimeSourceSystemOffset();
 
-		std::chrono::high_resolution_clock::time_point GetUTC();
-		void SetTime(const std::chrono::high_resolution_clock::time_point& arTime);
+		std::chrono::steady_clock::time_point GetUTC();
+		void SetTime(const std::chrono::steady_clock::time_point& arTime);
 
 	private:
-		std::chrono::high_resolution_clock::duration mOffset;
+		std::chrono::steady_clock::duration mOffset;
 };
 
 class MockTimeManager : public ITimeManager
@@ -86,16 +86,16 @@ class MockTimeManager : public ITimeManager
 public:
 	MockTimeManager() : mTime() {}
 
-	std::chrono::high_resolution_clock::time_point GetUTC() {
+	std::chrono::steady_clock::time_point GetUTC() {
 		return mTime;
 	}
 
-	void SetTime(const std::chrono::high_resolution_clock::time_point& arTime) {
+	void SetTime(const std::chrono::steady_clock::time_point& arTime) {
 		mTime = arTime;
 	}
 
 private:
-	std::chrono::high_resolution_clock::time_point mTime;
+	std::chrono::steady_clock::time_point mTime;
 };
 
 }

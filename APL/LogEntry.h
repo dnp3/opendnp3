@@ -66,7 +66,7 @@ public:
 		return ToNormalizedString(mTime);
 	}
 
-	std::chrono::high_resolution_clock::time_point GetTimeStamp() const {
+	std::chrono::steady_clock::time_point GetTimeStamp() const {
 		return mTime;
 	}
 

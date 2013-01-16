@@ -392,7 +392,7 @@ void Slave::HandleWriteTimeDate(HeaderReadIterator& arHWI)
 	}
 
 	millis_t ms = Group50Var1::Inst()->mTime.Get(*obj);
-	mpTime->SetTime(std::chrono::high_resolution_clock::time_point(std::chrono::milliseconds(ms)));
+	mpTime->SetTime(std::chrono::steady_clock::time_point(std::chrono::milliseconds(ms)));
 
 	mIIN.SetNeedTime(false);
 

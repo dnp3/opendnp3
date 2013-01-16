@@ -30,7 +30,7 @@
 #define __TIMER_ASIO_H_
 
 #include <boost/asio.hpp>
-#include <boost/asio/high_resolution_timer.hpp>
+#include <boost/asio/steady_timer.hpp>
 #include "IExecutor.h"
 
 namespace apl
@@ -63,13 +63,13 @@ public:
 	/**
 	 * Return the timer's expiry time as an absolute time.
 	 */
-	std::chrono::high_resolution_clock::time_point ExpiresAt();
+	std::chrono::steady_clock::time_point ExpiresAt();
 
 private:
 
 	bool mCanceled;
 
-	boost::asio::high_resolution_timer mTimer;
+	boost::asio::steady_timer mTimer;
 };
 
 }

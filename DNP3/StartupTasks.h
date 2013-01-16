@@ -96,7 +96,7 @@ private:
 	millis_t mDelay;
 
 	// what time we sent the delay meas
-	std::chrono::high_resolution_clock::time_point mStart;
+	std::chrono::steady_clock::time_point mStart;
 };
 
 }

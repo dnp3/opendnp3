@@ -61,10 +61,10 @@ public:
 	ITimer* Start(std::chrono::milliseconds, const std::function<void ()> &);
 
 	/** Returns a new timer based on a relative time duration */
-	virtual ITimer* Start(std::chrono::high_resolution_clock::duration, const std::function<void ()> &) = 0;
+	virtual ITimer* Start(std::chrono::steady_clock::duration, const std::function<void ()> &) = 0;
 
 	/** Returns a new timer based on an absolute time */
-	virtual ITimer* Start(const std::chrono::high_resolution_clock::time_point&, const std::function<void ()> &) = 0;
+	virtual ITimer* Start(const std::chrono::steady_clock::time_point&, const std::function<void ()> &) = 0;
 
 	/** Thread-safe way to post an event to be handled asynchronously */
 	virtual void Post(const std::function<void ()> &) = 0;

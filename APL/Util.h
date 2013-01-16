@@ -71,7 +71,7 @@ void toUpperCase(std::string& aStr);
 void toLowerCase(std::string& aStr);
 
 
-std::string ToNormalizedString(const std::chrono::high_resolution_clock::time_point& arTime);
+std::string ToNormalizedString(const std::chrono::steady_clock::time_point& arTime);
 
 }
 

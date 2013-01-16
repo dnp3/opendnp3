@@ -37,7 +37,7 @@ namespace apl
 {
 
 AsyncTaskContinuous::AsyncTaskContinuous(int aPriority, const TaskHandler& arCallback, AsyncTaskGroup* apGroup, const std::string& arName) :
-	AsyncTaskBase(aPriority, arCallback, apGroup, std::chrono::high_resolution_clock::time_point::min(), arName)
+	AsyncTaskBase(aPriority, arCallback, apGroup, std::chrono::steady_clock::time_point::min(), arName)
 {
 
 }

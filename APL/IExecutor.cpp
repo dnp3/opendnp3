@@ -50,7 +50,7 @@ IExecutor::~IExecutor()
 
 ITimer* IExecutor::Start(milliseconds aMs, const function<void ()>& arFunc)
 {
-	return this->Start(high_resolution_clock::duration(aMs), arFunc);
+	return this->Start(steady_clock::duration(aMs), arFunc);
 }
 
 void IExecutor::Synchronize(const std::function<void ()>& arFunc)
