@@ -303,9 +303,6 @@
     <ClInclude Include="AsyncResult.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="IOService.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="IOServiceThreadPool.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -492,9 +489,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="AsyncResult.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="IOService.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="IOServiceThreadPool.cpp">
