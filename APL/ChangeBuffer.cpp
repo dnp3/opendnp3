@@ -55,7 +55,7 @@ void ChangeBuffer::_End()
 	bool notify = mNotify;
 	mNotify = false;
 	mMutex.unlock();	
-	if(notify) NotifyAll();	
+	if(notify) this->NotifyObservers();
 }
 
 void ChangeBuffer::_Update(const Binary& arPoint, size_t aIndex) 

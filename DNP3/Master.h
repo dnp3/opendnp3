@@ -33,7 +33,6 @@
 #include <APL/CommandTypes.h>
 #include <APL/CommandQueue.h>
 #include <APL/TimeSource.h>
-#include <APL/PostingNotifierSource.h>
 #include <APL/CachedLogVariable.h>
 
 #include "APDU.h"
@@ -159,8 +158,7 @@ private:
 	void ProcessIIN(const IINField& arIIN);	// Analyze IIN bits and react accordingly
 	void ProcessDataResponse(const APDU&);	// Read data output of solicited or unsolicited response and publish
 	void StartTask(MasterTaskBase*, bool aInit);	// Starts a task running
-
-	PostingNotifierSource mNotifierSource;	// way to get special notifiers for the command queue / VTO
+	
 	CommandQueue mCommandQueue;				// Threadsafe queue for buffering command requests
 
 	/**

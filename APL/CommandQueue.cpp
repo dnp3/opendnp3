@@ -63,7 +63,7 @@ void CommandQueue::AcceptCommand(const T& arType, size_t aIndex, std::queue<T>& 
 		arQueue.push(arType);
 		mTypeQueue.push(CommandData(arType.GetType(), aIndex, aSequence, apRspAcceptor));
 	}
-	if(mpNotifier != NULL) mpNotifier->Notify();
+	this->NotifyObservers();
 }
 
 bool CommandQueue::RespondToCommand(CommandStatus aStatus)
@@ -108,13 +108,6 @@ void CommandQueue::AcceptCommand(const apl::BinaryOutput& arType, size_t aIndex,
 void CommandQueue::AcceptCommand(const apl::Setpoint& arType, size_t aIndex, int aSequence, IResponseAcceptor* apRspAcceptor)
 {
 	AcceptCommand<apl::Setpoint>(arType, aIndex, mSetpointQueue, aSequence, apRspAcceptor);
-}
-
-void CommandQueue::SetNotifier(INotifier* apNotifier)
-{
-	assert(mpNotifier == NULL);
-	assert(apNotifier != NULL);
-	mpNotifier = apNotifier;
 }
 
 size_t CommandQueue::Size()

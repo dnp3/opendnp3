@@ -73,7 +73,7 @@ size_t VtoWriter::Write(const uint8_t* apData,
 	}
 
 	/* Tell any listeners that the queue has new data to be read. */
-	if (num > 0) this->NotifyAll();
+	if (num > 0) this->NotifyObservers();
 
 	/* Return the number of bytes from apData that were queued. */
 	return num;
@@ -88,7 +88,7 @@ void VtoWriter::SetLocalVtoState(bool aLocalVtoConnectionOpened, uint8_t aChanne
 	/* Thread safe for rest of function */
 	std::unique_lock<std::mutex> lock(mMutex);
 	this->mQueue.push_back(evt);
-	this->NotifyAll();
+	this->NotifyObservers();
 }
 
 void VtoWriter::Commit(const uint8_t* apData,

@@ -29,6 +29,8 @@
 #ifndef __I_SUBJECT_H_
 #define __I_SUBJECT_H_
 
+#include <functional>
+
 namespace apl
 {
 class INotifier;
@@ -38,8 +40,7 @@ class ISubject
 public:
 	virtual ~ISubject() {}
 
-	virtual void AddObserver(INotifier* apNotifier) = 0;
-	virtual void RemoveObserver(INotifier* apNotifer) = 0;
+	virtual void AddObserver(std::function<void ()>) = 0;	
 };
 }
 

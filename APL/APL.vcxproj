@@ -42,7 +42,6 @@
     <ClInclude Include="IEventLock.h" />
     <ClInclude Include="IExecutor.h" />
     <ClInclude Include="IHandlerAsync.h" />
-    <ClInclude Include="INotifier.h" />
     <ClInclude Include="IOServiceThreadPool.h" />
     <ClInclude Include="IPhysicalLayerAsync.h" />
     <ClInclude Include="IPhysicalLayerObserver.h" />
@@ -86,8 +85,6 @@
     <ClInclude Include="PhysicalLayerStates.h" />
     <ClInclude Include="PhysLayerSettings.h" />
     <ClInclude Include="PhysLoopback.h" />
-    <ClInclude Include="PostingNotifier.h" />
-    <ClInclude Include="PostingNotifierSource.h" />
     <ClInclude Include="ProtocolUtil.h" />
     <ClInclude Include="QualityConverter.h" />
     <ClInclude Include="QualityMasks.h" />
@@ -160,12 +157,11 @@
     <ClCompile Include="PhysicalLayerMonitorStates.cpp" />
     <ClCompile Include="PhysicalLayerStates.cpp" />
     <ClCompile Include="PhysLoopback.cpp" />
-    <ClCompile Include="PostingNotifier.cpp" />
-    <ClCompile Include="PostingNotifierSource.cpp" />
     <ClCompile Include="ProtocolUtil.cpp" />
     <ClCompile Include="QualityConverter.cpp" />
     <ClCompile Include="RandomizedBuffer.cpp" />
     <ClCompile Include="ShiftableBuffer.cpp" />
+    <ClCompile Include="SubjectBase.cpp" />
     <ClCompile Include="Threadable.cpp" />
     <ClCompile Include="Thread.cpp" />
     <ClCompile Include="TimerASIO.cpp" />

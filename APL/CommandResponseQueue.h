@@ -30,7 +30,6 @@
 #define __COMMAND_RESPONSE_QUEUE_H_
 
 #include "CommandInterfaces.h"
-#include "INotifier.h"
 #include "SubjectBase.h"
 
 #include <queue>
@@ -39,7 +38,7 @@
 
 namespace apl
 {
-class CommandResponseQueue : public IResponseAcceptor, public SubjectBase<std::mutex>
+class CommandResponseQueue : public IResponseAcceptor, public SubjectBase
 {
 public:
 	CommandResponseQueue();

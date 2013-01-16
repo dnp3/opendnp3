@@ -30,7 +30,6 @@
 #define __COMMAND_INTERFACES_H_
 
 #include "CommandTypes.h"
-#include "INotifier.h"
 
 namespace apl
 {
@@ -118,17 +117,18 @@ public:
 	of the commands available have been handled.
 
  */
+
 class ICommandSource
 {
 public:
 	virtual ~ICommandSource() {}
-	virtual void SetNotifier(INotifier* apNotifier) = 0;
 
 	//	Grab one command off the queue and call the ICommandHandler for the command.
 	// This is a blocking call.
 	//
 	virtual bool ExecuteCommand(ICommandHandler* apHandler) = 0;
 };
+
 
 }
 

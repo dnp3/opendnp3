@@ -40,7 +40,7 @@
 namespace apl
 {
 
-class MetricBuffer : public ILogBase, public SubjectBase<std::mutex>, private Uncopyable
+class MetricBuffer : public ILogBase, public SubjectBase, private Uncopyable
 {
 public:
 

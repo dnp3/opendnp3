@@ -99,9 +99,6 @@
     <ClInclude Include="IHandlerAsync.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="INotifier.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="IPhysicalLayerAsync.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -220,12 +217,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="PhysLoopback.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="PostingNotifier.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="PostingNotifierSource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ProtocolUtil.h">
@@ -440,12 +431,6 @@
     <ClCompile Include="PhysLoopback.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="PostingNotifier.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="PostingNotifierSource.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ProtocolUtil.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -495,6 +480,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Thread.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SubjectBase.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

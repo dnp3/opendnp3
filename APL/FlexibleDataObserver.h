@@ -50,7 +50,7 @@ notifies observers of any updates.
 
 Check functionality allows it to be used for testing.
 */
-class FlexibleDataObserver : public apl::IDataObserver, public SubjectBase<std::mutex>
+class FlexibleDataObserver : public apl::IDataObserver, public SubjectBase
 {
 public:
 
@@ -182,7 +182,7 @@ private:
 		bool notify = mNewData;
 		mNewData = false;
 		mMutex.unlock();
-		if(notify) this->NotifyAll();
+		if(notify) this->NotifyObservers();
 	}
 
 	virtual void _Update(const Binary& arPoint, size_t aIndex) {

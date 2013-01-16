@@ -95,7 +95,7 @@ void LogEntryCircularBuffer :: Log( const apl::LogEntry& arEntry )
 		}
 
 		// only notify if the queue was empty
-		if(num == 0) this->NotifyAll();
+		if(num == 0) this->NotifyObservers();
 	}
 }
 

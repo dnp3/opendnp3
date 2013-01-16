@@ -31,42 +31,34 @@
 
 
 #include "ISubject.h"
-#include "INotifier.h"
-#include <set>
+#include <vector>
 #include <mutex>
+#include <functional>
 
 namespace apl
 {
 
-template <class LockType>
+class IExecutor;
+
 class SubjectBase : public ISubject
 {
-	typedef std::set<INotifier*> NotifierSet;
 
 public:
+	SubjectBase();
 	virtual ~SubjectBase() {}
 
 	// implement the ISubject interface
-	void AddObserver(INotifier* apNotifier) {
-		std::lock_guard<LockType> lock(mSubjectMutex);
-		mNotifiers.insert(apNotifier);
-	}
+	void AddObserver(std::function<void ()> aCallback);
 
-	void RemoveObserver(INotifier* apNotifier) {
-		std::lock_guard<LockType> lock(mSubjectMutex);
-		mNotifiers.erase(apNotifier);
-	}
+	void AddObserver(IExecutor* apExecutor, std::function<void ()> aCallback);
 
 protected:
 
-	void NotifyAll() {
-		std::lock_guard<LockType> lock(mSubjectMutex);		
-		for(auto pNotifier : mNotifiers) pNotifier->Notify();		
-	}
+	void NotifyObservers();
 
-private:
-	LockType mSubjectMutex;
-	NotifierSet mNotifiers;
+private:	
+	std::mutex mSubjectMutex;
+	std::vector< std::function<void ()> > mObservers;
 };
 
 }

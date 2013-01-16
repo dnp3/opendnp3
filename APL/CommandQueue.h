@@ -30,8 +30,8 @@
 #define __COMMAND_QUEUE_H_
 
 #include "CommandTypes.h"
-#include "INotifier.h"
 #include "CommandInterfaces.h"
+#include "SubjectBase.h"
 
 #include <queue>
 #include <mutex>
@@ -50,16 +50,14 @@ struct CommandData {
 	IResponseAcceptor* mpRspAcceptor;
 };
 
-class CommandQueue : public ICommandAcceptor, public ICommandSource
+class CommandQueue : public ICommandAcceptor, public ICommandSource, public SubjectBase
 {
 public:
-	CommandQueue() : mpNotifier(NULL) {}
+	CommandQueue() : SubjectBase() {}
 
 	//Implement the ICommandAcceptor interface
 	void AcceptCommand(const apl::BinaryOutput& arType, size_t aIndex, int aSequence, IResponseAcceptor* apRspAcceptor);
-	void AcceptCommand(const apl::Setpoint& arType, size_t aIndex, int aSequence, IResponseAcceptor* apRspAcceptor);
-
-	void SetNotifier(INotifier* apNotifier);
+	void AcceptCommand(const apl::Setpoint& arType, size_t aIndex, int aSequence, IResponseAcceptor* apRspAcceptor);	
 
 	size_t Size();
 
@@ -80,7 +78,6 @@ public:
 
 protected:
 	std::mutex mMutex;
-	apl::INotifier* mpNotifier;
 
 	std::queue< apl::BinaryOutput > mBinaryQueue;
 	std::queue< apl::Setpoint > mSetpointQueue;

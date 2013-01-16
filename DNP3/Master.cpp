@@ -80,30 +80,18 @@ Master::Master(Logger* apLogger, MasterConfig aCfg, IAppLayer* apAppLayer, IData
 	 * mSchedule.mpCommandTask.  When new data is written to mCommandQueue,
 	 * wake up mpCommandTask to process the data.
 	 */
-	mCommandQueue.SetNotifier(
-	    mNotifierSource.Get(
-	        std::bind(
-	            &AsyncTaskBase::Enable,
-	            mSchedule.mpCommandTask
-	        ),
-	        mpExecutor
-	    )
-	);
+	mCommandQueue.AddObserver(mpExecutor, [this](){ 
+		this->mSchedule.mpCommandTask->Enable();
+	});
 
 	/*
 	 * Establish a link between the mVtoWriter and the
 	 * mSchedule.mpVtoTransmitTask.  When new data is written to
 	 * mVtoWriter, wake up the mSchedule.mpVtoTransmitTask.
 	 */
-	mVtoWriter.AddObserver(
-	    mNotifierSource.Get(
-	        std::bind(
-	            &AsyncTaskBase::Enable,
-	            mSchedule.mpVtoTransmitTask
-	        ),
-	        mpExecutor
-	    )
-	);
+	mVtoWriter.AddObserver(mpExecutor, [this](){ 
+		this->mSchedule.mpVtoTransmitTask->Enable(); 
+	});
 
 	/*
 	 * Set the initial state of the communication link.

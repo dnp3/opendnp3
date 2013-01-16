@@ -29,16 +29,14 @@
 #ifndef __SLAVE_H_
 #define __SLAVE_H_
 
-#
-
 #include <APL/CachedLogVariable.h>
 #include <APL/ChangeBuffer.h>
 #include <APL/CommandResponseQueue.h>
 #include <APL/Loggable.h>
 #include <APL/Logger.h>
-#include <APL/PostingNotifierSource.h>
 #include <APL/TimeSource.h>
 #include <APL/LoggableMacros.h>
+#include <APL/ITimer.h>
 
 #include "APDU.h"
 #include "AppInterfaces.h"
@@ -165,9 +163,8 @@ public:
 private:
 
 	ChangeBuffer mChangeBuffer;				// how client code gives us updates
-	PostingNotifierSource mNotifierSource;	// way to get special notifiers for the change queue / vto
 	IAppLayer* mpAppLayer;					// lower application layer
-	IExecutor* mpExecutor;				// used for post and timers
+	IExecutor* mpExecutor;					// used for post and timers
 	Database* mpDatabase;					// holds static data
 	IDNPCommandMaster* mpCmdMaster;			// how commands are selected/operated
 	int mSequence;							// control sequence

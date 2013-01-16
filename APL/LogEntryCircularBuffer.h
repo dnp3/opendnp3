@@ -33,6 +33,7 @@
 #include <assert.h>
 #include <deque>
 #include <mutex>
+#include <set>
 #include <condition_variable>
 
 #include "LogEntry.h"
@@ -43,7 +44,7 @@
 namespace apl
 {
 
-class LogEntryCircularBuffer : public ILogBase, public SubjectBase<std::mutex>, private Uncopyable
+class LogEntryCircularBuffer : public ILogBase, public SubjectBase, private Uncopyable
 {
 public:
 	LogEntryCircularBuffer(size_t aMaxEntries = 100);

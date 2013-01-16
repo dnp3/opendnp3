@@ -52,7 +52,7 @@ namespace dnp
  * stack.  Responsible for UserCode -> Stack thread marshalling and
  * stream decomposition.
  */
-class VtoWriter : public IVtoWriter, public SubjectBase<std::mutex>, private Loggable
+class VtoWriter : public IVtoWriter, public SubjectBase, private Loggable
 {
 public:
 

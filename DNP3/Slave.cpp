@@ -38,6 +38,7 @@
 #include <APL/AsyncTaskGroup.h>
 #include <APL/AsyncTaskBase.h>
 #include <APL/LoggableMacros.h>
+#include <APL/IExecutor.h>
 
 #include <boost/bind.hpp>
 #include <functional>
@@ -87,23 +88,13 @@ Slave::Slave(Logger* apLogger, IAppLayer* apAppLayer, IExecutor* apExecutor, ITi
 	 * Incoming data will trigger a POST on the timer source to call
 	 * Slave::OnDataUpdate().
 	 */
-	mChangeBuffer.AddObserver(
-	    mNotifierSource.Get(
-	        std::bind(&Slave::OnDataUpdate, this),
-	        mpExecutor
-	    )
-	);
+	mChangeBuffer.AddObserver(mpExecutor, [this](){ this->OnDataUpdate(); });
 
 	/*
 	 * Incoming vto data will trigger a POST on the timer source to call
 	 * Slave::OnVtoUpdate().
 	 */
-	mVtoWriter.AddObserver(
-	    mNotifierSource.Get(
-	        std::bind(&Slave::OnVtoUpdate, this),
-	        mpExecutor
-	    )
-	);
+	mVtoWriter.AddObserver(mpExecutor, [this](){ this->OnVtoUpdate(); });
 
 	/* Cause the slave to go through the null-unsol startup sequence */
 	if (!mConfig.mDisableUnsol) {
@@ -117,8 +108,7 @@ Slave::~Slave()
 {
 	if(mpUnsolTimer) mpUnsolTimer->Cancel();
 	if(mpTimeTimer) mpTimeTimer->Cancel();
-
-	mVtoWriter.RemoveObserver(mpVtoNotifier);
+	
 }
 
 void Slave::UpdateState(StackStates aState)

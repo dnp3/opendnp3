@@ -43,7 +43,7 @@ void CommandResponseQueue::AcceptResponse(const CommandResponse& arRsp, int aSeq
 		mResponseQueue.push_front(RspInfo(arRsp, aSequence));
 		mCondition.notify_one();
 	}
-	this->NotifyAll();
+	this->NotifyObservers();
 }
 
 bool CommandResponseQueue::WaitForResponse(CommandResponse& arRsp, int aSeq, millis_t aTimeout)

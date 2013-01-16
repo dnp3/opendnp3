@@ -31,7 +31,6 @@
 
 #include "DataTypes.h"
 #include "DataInterfaces.h"
-#include "INotifier.h"
 #include "SubjectBase.h"
 
 #include <queue>
@@ -42,7 +41,7 @@ namespace apl
 
 /** Moves measurement data across thread boundaries.
 */
-class ChangeBuffer : public IDataObserver, public SubjectBase<std::mutex>
+class ChangeBuffer : public IDataObserver, public SubjectBase
 {
 
 public:

@@ -26,26 +26,39 @@
 //
 // Contact Automatak, LLC for a commercial license to these modifications
 //
-#include "PostingNotifierSource.h"
 
-#include "PostingNotifier.h"
+#include "SubjectBase.h"
 
-using namespace std;
+#include "IExecutor.h"
 
 namespace apl
 {
 
-PostingNotifierSource::~PostingNotifierSource()
+SubjectBase::SubjectBase()
 {
+	
+}
+	
+void SubjectBase::AddObserver(std::function<void ()> aCallback) 
+{
+	std::lock_guard<std::mutex> lock(mSubjectMutex);
+	mObservers.push_back(aCallback);
+}	
 
+void SubjectBase::AddObserver(IExecutor* apExecutor, std::function<void ()> aCallback)
+{
+	this->AddObserver([apExecutor, aCallback](){  apExecutor->Post(aCallback); });
 }
 
-INotifier* PostingNotifierSource::Get(const function<void ()>& arHandler, IExecutor* apExecutor)
+void SubjectBase::NotifyObservers()
 {
-	std::shared_ptr<PostingNotifier> pRet(new PostingNotifier(apExecutor, arHandler));
-	mNotifiers.push_back(pRet);
-	return pRet.get();
+	std::lock_guard<std::mutex> lock(mSubjectMutex);
+	for(auto obs: mObservers) obs();
 }
+
+
+
+
 
 }
 
