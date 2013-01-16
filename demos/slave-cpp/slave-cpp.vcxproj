@@ -84,11 +84,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="SlaveDemo.h" />
+    <ClInclude Include="SlaveCallbacks.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DemoMain.cpp" />
-    <ClCompile Include="SlaveDemo.cpp" />
+    <ClCompile Include="SlaveCallbacks.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\APL\APL.vcxproj">

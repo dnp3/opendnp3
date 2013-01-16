@@ -26,54 +26,39 @@
 //
 // Contact Automatak, LLC for a commercial license to these modifications
 //
-#ifndef __IO_SERVICE_THREAD_H_
-#define __IO_SERVICE_THREAD_H_
+#include "SlaveCallbacks.h"
 
-#include "Thread.h"
-#include "ASIOExecutor.h"
-#include "Loggable.h"
+#include <APL/Logger.h>
+#include <APL/LoggableMacros.h>
 
-namespace boost
-{
-namespace asio
-{
-class io_service;
-}
-}
+using namespace std;
 
 namespace apl
 {
-
-class Logger;
-class Timer;
-
-class IOServiceThread : public Threadable, protected Loggable
+namespace dnp
 {
-public:
-	IOServiceThread(Logger* apLogger, boost::asio::io_service* apService);
 
-	void Start() {
-		mThread.Start();
-	}
-	void Stop();
-
-	boost::asio::io_service* GetService() {
-		return mpService;
-	}
-
-	void Run();
-	void SignalStop();
-
-protected:
-
-	boost::asio::io_service* mpService;
-	void Throw(); //need something to bind the hold timer to
-
-private:
-
-	Thread mThread;
-};
-
+SlaveCallbacks::SlaveCallbacks(Logger* apLogger) :	Loggable(apLogger)
+{
+	
 }
 
-#endif
+
+void SlaveCallbacks::AcceptCommand(const BinaryOutput& arCommand, size_t aIndex, int aSequence, IResponseAcceptor* apRspAcceptor)
+{
+	LOG_BLOCK(LEV_INFO, "Received Control " << arCommand.ToString() << " on index: " << aIndex);	
+
+	// call back the slave with the status
+	apRspAcceptor->AcceptResponse(CommandResponse(CommandStatus::CS_SUCCESS), aSequence);
+}
+
+void SlaveCallbacks::AcceptCommand(const Setpoint& arCommand, size_t aIndex, int aSequence, IResponseAcceptor* apRspAcceptor)
+{
+	LOG_BLOCK(LEV_INFO, "Received Setpoint " << arCommand.ToString() << " on index: " << aIndex);
+
+	// call back the slave with the status
+	apRspAcceptor->AcceptResponse(CommandResponse(CommandStatus::CS_SUCCESS), aSequence);
+}
+
+}
+}

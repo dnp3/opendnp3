@@ -26,66 +26,44 @@
 //
 // Contact Automatak, LLC for a commercial license to these modifications
 //
-#include "IOServiceThread.h"
+#ifndef __MASTER_CALLBACKS_H_
+#define __MASTER_CALLBACKS_H_
 
-#include "Exception.h"
-#include "Logger.h"
-#include "LoggableMacros.h"
+#include <APL/Loggable.h>
+#include <APL/DataInterfaces.h>
+#include <APL/CommandInterfaces.h>
+#include <DNP3/IStackObserver.h>
 
-#include <boost/asio.hpp>
-#include <iostream>
+namespace apl { namespace dnp {
 
-using namespace boost::asio;
-
-namespace apl
-{
-
-class IOServiceExitException : public Exception
+/**
+ * This class implements the callbacks from the stack
+ */
+class MasterCallbacks : private Loggable, public IResponseAcceptor, public IDataObserver, public IStackObserver
 {
 public:
-	IOServiceExitException(const std::string& aSource) throw() :
-		Exception(aSource, "")
-	{}
+	
+	MasterCallbacks(Logger* apLogger);	
+
+	void AcceptResponse(const CommandResponse& aResponse, int aSequence);
+
+	void OnStateChange(StackStates aState);
+	
+protected:
+
+	void _Start();
+	void _End();
+	void _Update(const Binary& arPoint, size_t aIndex);
+	void _Update(const Analog& arPoint, size_t aIndex);
+	void _Update(const Counter& arPoint, size_t aIndex);
+	void _Update(const ControlStatus& arPoint, size_t aIndex);
+	void _Update(const SetpointStatus& arPoint, size_t aIndex);
+
+
 };
 
-IOServiceThread::IOServiceThread(Logger* apLogger, boost::asio::io_service* apService) :
-	Loggable(apLogger),
-	mpService(apService),
-	mThread(this)
-{
 
-}
+}}
 
-void IOServiceThread::Stop()
-{
-	mThread.RequestStop();
-	mThread.WaitForStop();
-}
+#endif
 
-void IOServiceThread::Throw()
-{
-	throw IOServiceExitException(LOCATION);
-}
-
-void IOServiceThread::Run()
-{
-	size_t num = 0;
-
-	try {
-		num = mpService->run();
-	}
-	catch(IOServiceExitException&) {
-		LOG_BLOCK(LEV_INFO, "IOService exited via IOServiceExitException");
-	}
-	catch(const std::exception& ex) {
-		LOG_BLOCK(LEV_ERROR, "Unexpected exception: " << ex.what());
-	}
-
-}
-
-void IOServiceThread::SignalStop()
-{
-	mpService->post(std::bind(&IOServiceThread::Throw, this));
-}
-
-}

@@ -86,11 +86,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="MasterDemo.h" />
+    <ClInclude Include="MasterCallbacks.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DemoMain.cpp" />
-    <ClCompile Include="MasterDemo.cpp" />
+    <ClCompile Include="MasterCallbacks.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\APL\APL.vcxproj">

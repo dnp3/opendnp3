@@ -53,11 +53,6 @@ ITimer* IExecutor::Start(milliseconds aMs, const function<void ()>& arFunc)
 	return this->Start(high_resolution_clock::duration(aMs), arFunc);
 }
 
-ITimer* IExecutor::StartInfinite()
-{
-	return this->Start(std::chrono::high_resolution_clock::time_point::max(), [](){});
-}
-
 void IExecutor::Synchronize(const std::function<void ()>& arFunc)
 {
 	AsyncResult ar;

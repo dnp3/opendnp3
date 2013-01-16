@@ -26,33 +26,21 @@
 //
 // Contact Automatak, LLC for a commercial license to these modifications
 //
-#include "SlaveDemo.h"
-
-#include <signal.h>
-#include <string>
-#include <mutex>
+#include "SlaveCallbacks.h"
 
 #include <APL/Log.h>
+#include <APL/LogToStdio.h>
+
+#include <DNP3/AsyncStackManager.h>
+#include <DNP3/SlaveStackConfig.h>
+
+#include <string>
+#include <iostream>
 
 using namespace std;
 using namespace apl;
 using namespace apl::dnp;
 
-std::mutex gMutex;
-SlaveDemoBase* gpDemo = NULL;
-
-void SetDemo(SlaveDemoBase* apDemo)
-{
-	std::lock_guard<std::mutex> lock(gMutex);
-	gpDemo = apDemo;
-}
-
-void Terminate(int sig)
-{
-	std::lock_guard<std::mutex> lock(gMutex);
-	std::cout << "Signal " << sig << ", shutdown... " << std::endl;
-	if(gpDemo) gpDemo->Shutdown();
-}
 
 /*
  * Command line syntax:
@@ -113,7 +101,7 @@ int main(int argc, char* argv[])
 	// create our demo application that handles commands and
 	// demonstrates how to publish data give it a loffer with a
 	// unique name and log level
-	SlaveDemoApp app(log.GetLogger(LOG_LEVEL, "demoapp"));
+	SlaveCallbacks callbacks(log.GetLogger(LOG_LEVEL, "demoapp"));
 
 	// This is the main point of interaction with the stack. The
 	// AsyncStackManager object instantiates master/slave DNP
@@ -147,20 +135,22 @@ int main(int argc, char* argv[])
 	// name, log level, command acceptor, and config info This
 	// returns a thread-safe interface used for updating the slave's
 	// database.
-	IDataObserver* pDataObserver = mgr.AddSlave("tcpserver", "slave", LOG_LEVEL, app.GetCmdAcceptor(), stackConfig);
+	IDataObserver* pDataObserver = mgr.AddSlave("tcpserver", "slave", LOG_LEVEL, &callbacks, stackConfig);
 
-	// Tell the app where to write opdates
-	app.SetDataObserver(pDataObserver);
-
-	// Configure signal handlers so we can exit gracefully
-	SetDemo(&app);
-	signal(SIGTERM, &Terminate);
-	signal(SIGABRT, &Terminate);
-	signal(SIGINT,  &Terminate);
-
-	app.Run();
-
-	SetDemo(NULL);
+	std::string input;
+	uint32_t count = 0;
+	do
+	{
+		std::cout << "Enter something to increment a counter or type exit" << std::endl;
+		std::cin >> input;
+		if(input == "exit") break;
+		else {
+			Transaction t(pDataObserver); //automatically calls Start()/End()
+			pDataObserver->Update(Counter(count), 0);
+			++count;
+		}
+	}
+	while(true);
 
 	return 0;
 }

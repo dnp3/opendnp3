@@ -45,7 +45,6 @@
     <ClInclude Include="INotifier.h" />
     <ClInclude Include="IOService.h" />
     <ClInclude Include="IOServiceThreadPool.h" />
-    <ClInclude Include="IOServiceThread.h" />
     <ClInclude Include="IPhysicalLayerAsync.h" />
     <ClInclude Include="IPhysicalLayerObserver.h" />
     <ClInclude Include="IPhysicalLayerSource.h" />
@@ -135,7 +134,6 @@
     <ClCompile Include="IExecutor.cpp" />
     <ClCompile Include="IHandlerAsync.cpp" />
     <ClCompile Include="IOService.cpp" />
-    <ClCompile Include="IOServiceThread.cpp" />
     <ClCompile Include="IOServiceThreadPool.cpp" />
     <ClCompile Include="ITimeSource.cpp" />
     <ClCompile Include="Log.cpp" />

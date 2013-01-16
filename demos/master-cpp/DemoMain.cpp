@@ -26,33 +26,18 @@
 //
 // Contact Automatak, LLC for a commercial license to these modifications
 //
-#include "MasterDemo.h"
-
-#include <signal.h>
-#include <mutex>
+#include "MasterCallbacks.h"
 
 #include <APL/Log.h>
+#include <APL/LogToStdio.h>
+#include <DNP3/AsyncStackManager.h>
+#include <DNP3/MasterStackConfig.h>
+
+#include <iostream>
 
 using namespace std;
 using namespace apl;
 using namespace apl::dnp;
-
-std::mutex gMutex;
-MasterDemoBase* gpDemo = NULL;
-
-void SetDemo(MasterDemoBase* apDemo)
-{
-	std::lock_guard<std::mutex> lock(gMutex);
-	gpDemo = apDemo;
-}
-
-void Terminate(int sig)
-{
-	std::lock_guard<std::mutex> lock(gMutex);
-	std::cout << "Signal " << sig << ", shutdown... " << std::endl;
-	if (gpDemo)
-		gpDemo->Shutdown();
-}
 
 /*
  * Command line syntax:
@@ -110,10 +95,10 @@ int main(int argc, char* argv[])
 	// Log statements with a lower priority will not be logged.
 	const FilterLevel LOG_LEVEL = LEV_INFO;
 
-	// Create our demo application that handles commands and
-	// demonstrates how to publish data give it a logger with a
-	// unique name and log level.
-	MasterDemoApp app(log.GetLogger(LOG_LEVEL, "demoapp"));
+	// This object will handle all of the callbacks from the stack,
+	// sending information it receives to the log. Give it a logger 
+	// with a unique name and log level.
+	MasterCallbacks callbacks(log.GetLogger(LOG_LEVEL, "demoapp"));
 
 	// This is the main point of interaction with the stack. The
 	// AsyncStackManager object instantiates master/slave DNP
@@ -121,7 +106,7 @@ int main(int argc, char* argv[])
 	AsyncStackManager mgr(log.GetLogger(LOG_LEVEL, "dnp"), 1);
 
 	// Connect via a TCPClient socket to a slave.  The server will
-	// wait 3000 ms in between failed bind calls.
+	// wait 3000 ms in between failed connect calls.
 	mgr.AddTCPClient(
 		"tcpclient",
 		PhysLayerSettings(LOG_LEVEL, 3000),
@@ -138,31 +123,30 @@ int main(int argc, char* argv[])
 	stackConfig.link.RemoteAddr = remote_dnp3;
 
 	// Set the app instance as a callback for state change notices
-	stackConfig.master.mpObserver = &app;
+	stackConfig.master.mpObserver = &callbacks;
 
 	// Create a new master on a previously declared port, with a
-	// name, log level, command acceptor, and config info This
-	// returns a thread-safe interface used for processing Master
-	// messages.
-	app.SetCommandAcceptor(
-		mgr.AddMaster(
-			"tcpclient",           // port name
-			"master",              // stack name
-			LOG_LEVEL,             // log filter level
-			app.GetDataObserver(), // callback for data processing
-			stackConfig            // stack configuration
-		)
+	// name, log level, command acceptor, and config info. This
+	// returns a thread-safe interface used for sending commands.
+	ICommandAcceptor* pCmdAcceptor = mgr.AddMaster(
+		"tcpclient",           // port name
+		"master",              // stack name
+		LOG_LEVEL,             // log filter level
+		&callbacks,			   // callback for data processing
+		stackConfig            // stack configuration
 	);
 
-	// Configure signal handlers so we can exit gracefully
-	SetDemo(&app);
-	signal(SIGTERM, &Terminate);
-	signal(SIGABRT, &Terminate);
-	signal(SIGINT,  &Terminate);
-
-	app.Run();
-
-	SetDemo(NULL);
+	
+	std::string cmd;
+	do {
+		std::cout << "Enter something to send a command, or type exit" << std::endl;
+		std::cin >> cmd;		
+		if(cmd == "exit") break;
+		else {
+			pCmdAcceptor->AcceptCommand(BinaryOutput(ControlCode::CC_LATCH_ON), 0, 0, &callbacks);
+		}		
+	}
+	while(true);
 
 	return 0;
 }

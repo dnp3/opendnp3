@@ -26,54 +26,32 @@
 //
 // Contact Automatak, LLC for a commercial license to these modifications
 //
-#ifndef __I_EXECUTOR_H_
-#define __I_EXECUTOR_H_
+#ifndef __SLAVE_DEMO_H_
+#define __SLAVE_DEMO_H_
 
-#include "ITimer.h"
-
-#include <chrono>
-#include <functional>
+#include <APL/CommandInterfaces.h>
+#include <APL/Loggable.h>
 
 namespace apl
 {
+namespace dnp
+{
 
 /**
- * Interface for posting events to a queue.  Events can be posted for
- * immediate consumption or some time in the future.  Events can be consumbed
- * by the posting thread or another thread.
- *
- * @section Usage
- *
- * \code
- * 	 asio::io_service srv;
- * 	 ASIOExecutor timers(&srv);
- * \endcode
- *
- * @see TimerASIO
- */
-class IExecutor
+	Handles callbacks from the stack	
+*/
+class SlaveCallbacks : private Loggable, public ICommandAcceptor
 {
 public:
-	IExecutor();
-	virtual ~IExecutor();	
+	SlaveCallbacks(Logger* apLogger);	
 
-	/** Returns a new timer based on a relative time in milliseconds */
-	ITimer* Start(std::chrono::milliseconds, const std::function<void ()> &);
+	void AcceptCommand(const BinaryOutput& arCommand, size_t aIndex, int aSequence, IResponseAcceptor* apRspAcceptor);
 
-	/** Returns a new timer based on a relative time duration */
-	virtual ITimer* Start(std::chrono::high_resolution_clock::duration, const std::function<void ()> &) = 0;
-
-	/** Returns a new timer based on an absolute time */
-	virtual ITimer* Start(const std::chrono::high_resolution_clock::time_point&, const std::function<void ()> &) = 0;
-
-	/** Thread-safe way to post an event to be handled asynchronously */
-	virtual void Post(const std::function<void ()> &) = 0;
-
-	/** Calls the defined function synchronously */
-	void Synchronize(const std::function<void ()>& arFunc);
+	void AcceptCommand(const Setpoint& arCommand, size_t aIndex, int aSequence, IResponseAcceptor* apRspAcceptor);
 
 };
 
+}
 }
 
 #endif

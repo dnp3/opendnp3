@@ -29,14 +29,12 @@
 #include <boost/test/unit_test.hpp>
 #include <APLTestTools/TestHelpers.h>
 
-
 #include <APL/ASIOExecutor.h>
-#include <APL/Threadable.h>
-#include <APL/Thread.h>
+#include <APL/IOServiceThreadPool.h>
+
 #include <APL/Exception.h>
 #include <APL/Location.h>
-
-#include <boost/asio.hpp>
+#include <APL/Log.h>
 
 #include <map>
 #include <functional>
@@ -46,6 +44,55 @@
 using namespace std;
 using namespace std::chrono;
 using namespace apl;
+
+class TimerTestObject
+{
+public:
+	TimerTestObject() :
+		mLog(),
+		mPool(mLog.GetLogger(LEV_ERROR, "thread-pool"), 1),
+		mStrand(*mPool.GetIOService()),
+		exe(&mStrand),
+		mLast(-1),
+		mNum(0),
+		mMonotonic(true)		
+	{
+		
+	}	
+
+	~TimerTestObject()
+	{
+		mPool.Shutdown();
+	}
+
+	void Receive(int aVal) {
+		if(aVal <= mLast) mMonotonic = false;
+		++mNum;
+		mLast = aVal;
+	}
+
+	bool IsMonotonic() {
+		return mMonotonic;
+	}
+
+	int Num() {
+		return mNum;
+	}
+
+private:
+	EventLog mLog;
+	IOServiceThreadPool mPool;
+	boost::asio::strand mStrand;
+
+public:
+	ASIOExecutor exe;
+
+private:
+
+	int mLast;
+	int mNum;
+	bool mMonotonic;		
+};
 
 class MockTimerHandler
 {
@@ -64,89 +111,33 @@ private:
 	size_t mCount;
 };
 
-class MonotonicReceiver : private Threadable
-{
-public:
-	MonotonicReceiver(boost::asio::io_service* apSrv, ASIOExecutor* apExecutor) :
-		mLast(-1),
-		mNum(0),
-		mMonotonic(true),
-		mpSrv(apSrv),
-		mpExecutor(apExecutor),
-		mpInfinite(apExecutor->StartInfinite()),
-		mThread(this)
-	{
-		mThread.Start();
-	}
-
-	~MonotonicReceiver()
-	{
-		mpInfinite->Cancel();
-	}
-
-	void Receive(int aVal) {
-		if(aVal <= mLast) mMonotonic = false;
-		++mNum;
-		mLast = aVal;
-	}
-
-	bool IsMonotonic() {
-		return mMonotonic;
-	}
-
-	int Num() {
-		return mNum;
-	}
-
-private:
-
-	int mLast;
-	int mNum;
-	bool mMonotonic;
-
-	boost::asio::io_service* mpSrv;
-	ASIOExecutor* mpExecutor;
-	ITimer* mpInfinite;
-
-	void Run() {
-		mpSrv->run();
-	}
-
-	Thread mThread;
-};
-
 BOOST_AUTO_TEST_SUITE(TimersTestSuite)
 
 BOOST_AUTO_TEST_CASE(ThrownExceptionsAreSafelyCapturedByFuture)
 {
-	boost::asio::io_service srv;
-	boost::asio::strand strand(srv);
-	ASIOExecutor exe(&strand);
-	MonotonicReceiver rcv(&srv, &exe);	
-	
+	TimerTestObject test;
+		
 	BOOST_REQUIRE_THROW(
-		exe.Synchronize([](){ throw InvalidStateException(LOCATION, "some bad state"); }), 
+		test.exe.Synchronize([](){ throw InvalidStateException(LOCATION, "some bad state"); }), 
 		std::exception
 	);
 }
+
 
 BOOST_AUTO_TEST_CASE(TestOrderedDispatch)
 {
 	const int NUM = 10000;
 
-	boost::asio::io_service srv;
-	boost::asio::strand strand(srv);
-	ASIOExecutor exe(&strand);
-	MonotonicReceiver rcv(&srv, &exe);
+	TimerTestObject test;
 
 	for(int i = 0; i < NUM; ++i) {
-		exe.Post([&rcv,i](){ rcv.Receive(i); });
+		test.exe.Post([&test,i](){ test.Receive(i); });
 	}
 
-	exe.Synchronize([](){});
+	test.exe.Synchronize([](){});
 
-	BOOST_REQUIRE_EQUAL(NUM, rcv.Num());
-	BOOST_REQUIRE(rcv.IsMonotonic());
+	BOOST_REQUIRE_EQUAL(NUM, test.Num());
+	BOOST_REQUIRE(test.IsMonotonic());
 }
 
 
@@ -156,6 +147,7 @@ BOOST_AUTO_TEST_CASE(ExpirationAndReuse)
 	boost::asio::io_service srv;
 	boost::asio::strand strand(srv);
 	ASIOExecutor exe(&strand);
+
 	ITimer* pT1 = exe.Start(milliseconds(1), std::bind(&MockTimerHandler::OnExpiration, &mth));
 	BOOST_REQUIRE_EQUAL(srv.run_one(), 1);
 	BOOST_REQUIRE_EQUAL(1, mth.GetCount());
@@ -198,6 +190,5 @@ BOOST_AUTO_TEST_CASE(MultipleOutstanding)
 	BOOST_REQUIRE_EQUAL(1, mth1.GetCount());
 	BOOST_REQUIRE_EQUAL(1, mth2.GetCount());
 }
-
 
 BOOST_AUTO_TEST_SUITE_END()

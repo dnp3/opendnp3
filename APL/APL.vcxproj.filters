@@ -102,9 +102,6 @@
     <ClInclude Include="INotifier.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="IOServiceThread.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="IPhysicalLayerAsync.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -366,9 +363,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="IHandlerAsync.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="IOServiceThread.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Log.cpp">

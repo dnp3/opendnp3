@@ -34,7 +34,6 @@
 #include <APL/LogToStdio.h>
 #include <APL/ASIOExecutor.h>
 #include <APL/Exception.h>
-#include <APL/IOServiceThread.h>
 #include <APL/PhysLoopback.h>
 #include <APL/RandomizedBuffer.h>
 
