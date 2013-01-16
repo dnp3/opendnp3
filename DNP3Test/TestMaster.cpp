@@ -107,7 +107,7 @@ void TestSetpointExecution(const std::string& setpointhex, T aValue)
 	BOOST_REQUIRE_EQUAL(cr.mResult, CS_SUCCESS);
 }
 
-BOOST_AUTO_TEST_SUITE(MasterSuite)
+BOOST_AUTO_TEST_SUITE(MasterTestSuite)
 
 BOOST_AUTO_TEST_CASE(InitialState)
 {
@@ -348,11 +348,16 @@ BOOST_AUTO_TEST_CASE(ControlExecutionClosedState)
 
 	BinaryOutput bo(CC_PULSE);
 	CommandResponseQueue mRspQueue;
-	pAcceptor->AcceptCommand(bo, 1, 7, &mRspQueue);
-	BOOST_REQUIRE(t.mts.DispatchOne());
-	CommandResponse cr;
-	BOOST_REQUIRE(mRspQueue.WaitForResponse(cr, 7, 0));
-	BOOST_REQUIRE_EQUAL(cr.mResult, CS_HARDWARE_ERROR);
+	
+	for(int i=0; i<10; ++i){
+		std::cout << i << std::endl;
+		pAcceptor->AcceptCommand(bo, 1, 7, &mRspQueue);
+		std::cout << "dispatch: " << t.mts.Dispatch() << std::endl;
+		CommandResponse cr;
+		BOOST_REQUIRE(mRspQueue.WaitForResponse(cr, 7, 0));		
+		BOOST_REQUIRE_EQUAL(cr.mResult, CS_HARDWARE_ERROR);
+	}
+	
 }
 
 BOOST_AUTO_TEST_CASE(ControlExecution)
