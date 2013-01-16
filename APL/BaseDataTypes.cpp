@@ -56,14 +56,9 @@ std::string GetDataTypeName(DataTypes aType)
 
 
 DataPoint::DataPoint(uint8_t aQuality, DataTypes aType) :
-	mQuality(aQuality), mTime(),
+	mQuality(aQuality), mTime(0),
 	mType(aType)
 {}
-
-void DataPoint :: SetToNow()
-{
-	mTime = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now().time_since_epoch()).count();
-}
 
 // BoolDataPoint
 

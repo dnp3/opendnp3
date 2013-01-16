@@ -114,8 +114,7 @@ public:
 	bool CheckQualityBit(uint8_t aQualMask) const;
 
 	virtual void SetQuality(uint8_t aQuality);
-	void SetTime(millis_t aTime);
-	void SetToNow();
+	void SetTime(millis_t aTime);	
 
 	virtual std::string ToString() const = 0;
 
@@ -125,7 +124,7 @@ protected:
 	DataPoint(uint8_t aQuality, DataTypes aType);
 
 	uint8_t mQuality;	//	bitfield that stores type specific quality information
-	millis_t mTime;		//	the time that the measurement was made
+	millis_t mTime;		//	timestamp associated with the measurement, -1 if it was never timestamped
 
 private:
 	DataPoint();
