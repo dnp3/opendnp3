@@ -45,6 +45,7 @@
     <ClInclude Include="EventBuffers.h" />
     <ClInclude Include="EventTypes.h" />
     <ClInclude Include="HeaderReadIterator.h" />
+    <ClInclude Include="ICommandProcessor.h" />
     <ClInclude Include="IFrameSink.h" />
     <ClInclude Include="ILinkContext.h" />
     <ClInclude Include="ILinkRouter.h" />
@@ -76,6 +77,7 @@
     <ClInclude Include="ObjectWriteIterator.h" />
     <ClInclude Include="PointClass.h" />
     <ClInclude Include="PriLinkLayerStates.h" />
+    <ClInclude Include="QueuedCommandProcessor.h" />
     <ClInclude Include="ResponseContext.h" />
     <ClInclude Include="ResponseLoader.h" />
     <ClInclude Include="SecLinkLayerStates.h" />
@@ -152,6 +154,7 @@
     <ClCompile Include="ObjectWriteIterator.cpp" />
     <ClCompile Include="PointClass.cpp" />
     <ClCompile Include="PriLinkLayerStates.cpp" />
+    <ClCompile Include="QueuedCommandProcessor.cpp" />
     <ClCompile Include="ResponseContext.cpp" />
     <ClCompile Include="ResponseLoader.cpp" />
     <ClCompile Include="SecLinkLayerStates.cpp" />
