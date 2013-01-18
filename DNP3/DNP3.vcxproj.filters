@@ -309,6 +309,9 @@
     <ClInclude Include="QueuedCommandProcessor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="CommandTask.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AlwaysOpeningVtoRouter.cpp">
@@ -519,6 +522,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="QueuedCommandProcessor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CommandTask.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

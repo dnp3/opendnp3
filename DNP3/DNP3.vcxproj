@@ -25,6 +25,7 @@
     <ClInclude Include="BufferTypes.h" />
     <ClInclude Include="ClassCounter.h" />
     <ClInclude Include="ClassMask.h" />
+    <ClInclude Include="CommandTask.h" />
     <ClInclude Include="ControlTasks.h" />
     <ClInclude Include="CTOHistory.h" />
     <ClInclude Include="Database.h" />
@@ -122,6 +123,7 @@
     <ClCompile Include="AsyncStackManager.cpp" />
     <ClCompile Include="BufferTypes.cpp" />
     <ClCompile Include="ClassCounter.cpp" />
+    <ClCompile Include="CommandTask.cpp" />
     <ClCompile Include="ControlTasks.cpp" />
     <ClCompile Include="Database.cpp" />
     <ClCompile Include="DataPoll.cpp" />
