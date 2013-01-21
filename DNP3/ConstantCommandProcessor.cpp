@@ -69,6 +69,18 @@ void ConstantCommandProcessor::Operate(const Setpoint& arCommand, size_t aIndex,
 	mpExecutor->Post([=](){ aCallback(cr); });
 }
 
+void ConstantCommandProcessor::DirectOperate(const BinaryOutput& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback)
+{
+	CommandResponse cr(mResponse);
+	mpExecutor->Post([=](){ aCallback(cr); });
+}
+
+void ConstantCommandProcessor::DirectOperate(const Setpoint& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback)
+{
+	CommandResponse cr(mResponse);
+	mpExecutor->Post([=](){ aCallback(cr); });
+}
+
 
 }
 }

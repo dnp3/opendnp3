@@ -52,6 +52,10 @@ class ICommandProcessor
 
 		virtual void Operate(const Setpoint& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback) = 0;
 
+		virtual void DirectOperate(const BinaryOutput& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback) = 0;
+
+		virtual void DirectOperate(const Setpoint& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback) = 0;
+
 };
 
 }

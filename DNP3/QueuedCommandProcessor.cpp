@@ -76,6 +76,24 @@ void QueuedCommandProcessor::Operate(const Setpoint& arCommand, size_t aIndex, s
 	this->NotifyObservers();
 }
 
+void QueuedCommandProcessor::DirectOperate(const BinaryOutput& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback)
+{
+	{
+		std::lock_guard<std::mutex> lock(mMutex);
+		mRequestQueue.push([arCommand, aIndex, aCallback](ICommandProcessor* pProcessor){ pProcessor->DirectOperate(arCommand, aIndex, aCallback); });
+	}
+	this->NotifyObservers();
+}
+
+void QueuedCommandProcessor::DirectOperate(const Setpoint& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback)
+{
+	{
+		std::lock_guard<std::mutex> lock(mMutex);
+		mRequestQueue.push([arCommand, aIndex, aCallback](ICommandProcessor* pProcessor){ pProcessor->DirectOperate(arCommand, aIndex, aCallback); });
+	}
+	this->NotifyObservers();
+}
+
 bool QueuedCommandProcessor::Dispatch(ICommandProcessor* apProcessor)
 {
 	std::lock_guard<std::mutex> lock(mMutex);

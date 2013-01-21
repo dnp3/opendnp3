@@ -98,6 +98,7 @@ namespace TestSetControlLibrary
             this.buttonDirectOperate.TabIndex = 8;
             this.buttonDirectOperate.Text = "Direct Operate";
             this.buttonDirectOperate.UseVisualStyleBackColor = true;
+            this.buttonDirectOperate.Click += new System.EventHandler(this.buttonDirectOperate_Click);
             // 
             // buttonOperate
             // 

@@ -54,6 +54,8 @@ class QueuedCommandProcessor : public ICommandProcessor, public SubjectBase
 	void Select(const Setpoint& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback);
 	void Operate(const BinaryOutput& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback);
 	void Operate(const Setpoint& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback);
+	void DirectOperate(const BinaryOutput& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback);
+	void DirectOperate(const Setpoint& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback);
 
 	// Function used to marshall calls another ICommandProcessor
 

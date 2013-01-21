@@ -58,6 +58,8 @@ namespace Adapter
         virtual IFuture<CommandStatus>^ Select(Setpoint^ command, System::UInt32 index);
 		virtual IFuture<CommandStatus>^ Operate(BinaryOutput^ command, System::UInt32 index);
         virtual IFuture<CommandStatus>^ Operate(Setpoint^ command, System::UInt32 index);
+		virtual IFuture<CommandStatus>^ DirectOperate(BinaryOutput^ command, System::UInt32 index);
+        virtual IFuture<CommandStatus>^ DirectOperate(Setpoint^ command, System::UInt32 index);
 
 		private:
 

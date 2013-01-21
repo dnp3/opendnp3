@@ -211,6 +211,34 @@ void Master::Operate(const Setpoint& arCommand, size_t aIndex, std::function<voi
 	mCommandTask.Configure(formatter, responder);
 }
 
+void Master::DirectOperate(const BinaryOutput& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback)
+{
+	auto formatter = [=](APDU& arAPDU){ 
+		return CommandHelpers::ConfigureRequest(arAPDU, FC_DIRECT_OPERATE, arCommand, aIndex, Group12Var1::Inst());
+	};
+	auto responder = [=](CommandStatus aStatus){
+		mpExecutor->Post([=](){ 
+			aCallback(CommandResponse(aStatus));
+		});
+	};
+	mCommandTask.Configure(formatter, responder);
+}
+
+
+void Master::DirectOperate(const Setpoint& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback)
+{
+	auto formatter = [=](APDU& arAPDU){ 
+		auto pObj = CommandHelpers::GetOptimalEncoder(arCommand.GetEncodingType());
+		return CommandHelpers::ConfigureRequest(arAPDU, FC_DIRECT_OPERATE, arCommand, aIndex, pObj);
+	};
+	auto responder = [=](CommandStatus aStatus){
+		mpExecutor->Post([=](){ 
+			aCallback(CommandResponse(aStatus));
+		});
+	};
+	mCommandTask.Configure(formatter, responder);
+}
+
 void Master::StartTask(MasterTaskBase* apMasterTask, bool aInit)
 {
 	if(aInit) apMasterTask->Init();

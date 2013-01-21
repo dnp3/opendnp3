@@ -91,5 +91,13 @@ namespace TestSetControlLibrary
             var future = cmdProcessor.Operate(GetSetpoint(), Decimal.ToUInt32(this.numericUpDownIndex.Value));
             future.Listen(OnResult);
         }
+
+        private void buttonDirectOperate_Click(object sender, EventArgs e)
+        {
+            this.groupBoxParameters.Enabled = false;
+            this.textBoxStatus.Text = "DirectOperate...";
+            var future = cmdProcessor.DirectOperate(GetSetpoint(), Decimal.ToUInt32(this.numericUpDownIndex.Value));
+            future.Listen(OnResult);
+        }
     }
 }

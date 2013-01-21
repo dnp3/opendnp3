@@ -103,6 +103,32 @@ IFuture<CommandStatus>^ CommandProcessorAdapter::Operate(Setpoint^ command, Syst
 	return future;
 }
 
+IFuture<CommandStatus>^ CommandProcessorAdapter::DirectOperate(BinaryOutput^ command, System::UInt32 index)
+{
+	auto future = gcnew Future<CommandStatus>();
+	
+	apl::BinaryOutput cmd = Conversions::convertBO(command);
+
+	auto pWrapper = new gcroot<Future<CommandStatus>^>(future);
+	
+	mpProxy->DirectOperate(cmd, index, std::bind(&ResponseRouter::Set, pWrapper, std::placeholders::_1)); 
+
+	return future;
+}
+
+IFuture<CommandStatus>^ CommandProcessorAdapter::DirectOperate(Setpoint^ command, System::UInt32 index)
+{
+	auto future = gcnew Future<CommandStatus>();
+	
+	apl::Setpoint cmd = Conversions::convertSP(command);
+
+	auto pWrapper = new gcroot<Future<CommandStatus>^>(future);
+	
+	mpProxy->DirectOperate(cmd, index, std::bind(&ResponseRouter::Set, pWrapper, std::placeholders::_1)); 
+
+	return future;
+}
+
 
 
 
