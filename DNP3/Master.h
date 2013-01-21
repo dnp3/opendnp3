@@ -75,7 +75,7 @@ class AMS_Base;
  *
  * Coordination of tasks is handled by a higher level task scheduler.
  */
-class Master : public Loggable, public IAppUser, public ICommandProcessor
+class Master : public Loggable, public IAppUser, private ICommandProcessor
 {
 	friend class AMS_Base;
 	friend class AMS_Idle;
@@ -140,6 +140,7 @@ public:
 		return true;
 	}
 
+	// These methods are inherited privately
 	void Select(const BinaryOutput& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback);
 	void Select(const Setpoint& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback);
 	void Operate(const BinaryOutput& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback);
@@ -149,6 +150,9 @@ public:
 
 
 private:
+
+	void ConfigureBinaryOutputTask(FunctionCodes aCode, const BinaryOutput& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback);
+	void ConfigureSetpointTask(FunctionCodes aCode, const Setpoint& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback);
 
 	void UpdateState(StackStates aState);
 

@@ -159,77 +159,53 @@ void Master::ProcessCommand(ITask* apTask)
 
 void Master::Select(const BinaryOutput& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback)
 {
-	auto formatter = [=](APDU& arAPDU){ 
-		return CommandHelpers::ConfigureRequest(arAPDU, FC_SELECT, arCommand, aIndex, Group12Var1::Inst());
-	};
-	auto responder = [=](CommandStatus aStatus){
-		mpExecutor->Post([=](){ 
-			aCallback(CommandResponse(aStatus));
-		});
-	};
-	mCommandTask.Configure(formatter, responder);
+	this->ConfigureBinaryOutputTask(FC_SELECT, arCommand, aIndex, aCallback);
 }
 
 void Master::Select(const Setpoint& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback)
 {
-	auto formatter = [=](APDU& arAPDU){ 
-		auto pObj = CommandHelpers::GetOptimalEncoder(arCommand.GetOptimalEncodingType());
-		return CommandHelpers::ConfigureRequest(arAPDU, FC_SELECT, arCommand, aIndex, pObj);
-	};
-	auto responder = [=](CommandStatus aStatus){
-		mpExecutor->Post([=](){ 
-			aCallback(CommandResponse(aStatus));
-		});
-	};
-	mCommandTask.Configure(formatter, responder);
+	this->ConfigureSetpointTask(FC_SELECT, arCommand, aIndex, aCallback);
 }
 
 void Master::Operate(const BinaryOutput& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback)
 {
-	auto formatter = [=](APDU& arAPDU){ 
-		return CommandHelpers::ConfigureRequest(arAPDU, FC_OPERATE, arCommand, aIndex, Group12Var1::Inst());
-	};
-	auto responder = [=](CommandStatus aStatus){
-		mpExecutor->Post([=](){ 
-			aCallback(CommandResponse(aStatus));
-		});
-	};
-	mCommandTask.Configure(formatter, responder);
+	this->ConfigureBinaryOutputTask(FC_OPERATE, arCommand, aIndex, aCallback);
 }
 
 void Master::Operate(const Setpoint& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback)
 {
-	auto formatter = [=](APDU& arAPDU){ 
-		auto pObj = CommandHelpers::GetOptimalEncoder(arCommand.GetEncodingType());
-		return CommandHelpers::ConfigureRequest(arAPDU, FC_OPERATE, arCommand, aIndex, pObj);
-	};
-	auto responder = [=](CommandStatus aStatus){
-		mpExecutor->Post([=](){ 
-			aCallback(CommandResponse(aStatus));
-		});
-	};
-	mCommandTask.Configure(formatter, responder);
+	this->ConfigureSetpointTask(FC_OPERATE, arCommand, aIndex, aCallback);
 }
 
 void Master::DirectOperate(const BinaryOutput& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback)
 {
-	auto formatter = [=](APDU& arAPDU){ 
-		return CommandHelpers::ConfigureRequest(arAPDU, FC_DIRECT_OPERATE, arCommand, aIndex, Group12Var1::Inst());
-	};
-	auto responder = [=](CommandStatus aStatus){
-		mpExecutor->Post([=](){ 
-			aCallback(CommandResponse(aStatus));
-		});
-	};
-	mCommandTask.Configure(formatter, responder);
+	this->ConfigureBinaryOutputTask(FC_DIRECT_OPERATE, arCommand, aIndex, aCallback);
 }
 
 
 void Master::DirectOperate(const Setpoint& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback)
 {
+	this->ConfigureSetpointTask(FC_DIRECT_OPERATE, arCommand, aIndex, aCallback);
+}
+
+void Master::ConfigureBinaryOutputTask(FunctionCodes aCode, const BinaryOutput& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback)
+{
+	auto formatter = [=](APDU& arAPDU){ 
+		return CommandHelpers::ConfigureRequest(arAPDU, aCode, arCommand, aIndex, Group12Var1::Inst());
+	};
+	auto responder = [=](CommandStatus aStatus){
+		mpExecutor->Post([=](){ 
+			aCallback(CommandResponse(aStatus));
+		});
+	};
+	mCommandTask.Configure(formatter, responder);
+}
+
+void Master::ConfigureSetpointTask(FunctionCodes aCode, const Setpoint& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback)
+{
 	auto formatter = [=](APDU& arAPDU){ 
 		auto pObj = CommandHelpers::GetOptimalEncoder(arCommand.GetEncodingType());
-		return CommandHelpers::ConfigureRequest(arAPDU, FC_DIRECT_OPERATE, arCommand, aIndex, pObj);
+		return CommandHelpers::ConfigureRequest(arAPDU, aCode, arCommand, aIndex, pObj);
 	};
 	auto responder = [=](CommandStatus aStatus){
 		mpExecutor->Post([=](){ 
