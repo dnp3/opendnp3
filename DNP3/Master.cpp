@@ -204,7 +204,7 @@ void Master::ConfigureBinaryOutputTask(FunctionCodes aCode, const BinaryOutput& 
 void Master::ConfigureSetpointTask(FunctionCodes aCode, const Setpoint& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback)
 {
 	auto formatter = [=](APDU& arAPDU){ 
-		auto pObj = CommandHelpers::GetOptimalEncoder(arCommand.GetEncodingType());
+		auto pObj = CommandHelpers::GetOptimalEncoder(arCommand.GetOptimalEncodingType());
 		return CommandHelpers::ConfigureRequest(arAPDU, aCode, arCommand, aIndex, pObj);
 	};
 	auto responder = [=](CommandStatus aStatus){
