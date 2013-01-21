@@ -615,24 +615,25 @@ BOOST_AUTO_TEST_CASE(ReadWriteDuringUnsol)
 	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 00 00");
 }
 
-BOOST_AUTO_TEST_CASE(SelectCROB)
+BOOST_AUTO_TEST_CASE(SelectCROBNotSupported)
 {
 	SlaveConfig cfg; cfg.mDisableUnsol = true;
 	SlaveTestObject t(cfg);
 	t.slave.OnLowerLayerUp();
 
+	t.cmdHandler.SetResponse(CS_NOT_SUPPORTED);
+
 	// Select group 12 Var 1, count = 1, index = 3
 	t.SendToSlave("C0 03 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00");
-	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 04 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 04"); // 0x04 status == CS_NOT_SUPPORTED
+	std::string response = t.Read();
+	BOOST_REQUIRE_EQUAL(response, "C0 81 80 04 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 04"); // 0x04 status == CS_NOT_SUPPORTED								  
 }
 BOOST_AUTO_TEST_CASE(SelectCROBTooMany)
 {
 	SlaveConfig cfg; cfg.mDisableUnsol = true;
 	cfg.mMaxControls = 1;
-	SlaveTestObject t(cfg);
-	t.cmd_master.BindCommand(CT_BINARY_OUTPUT, 3, 3, &t.cmd_acceptor);
-	t.cmd_master.BindCommand(CT_BINARY_OUTPUT, 4, 4, &t.cmd_acceptor);
-	t.slave.OnLowerLayerUp();
+	SlaveTestObject t(cfg);	
+	t.slave.OnLowerLayerUp();	
 
 	// Select group 12 Var 1, count = 1, index = 3
 	t.SendToSlave("C0 03 0C 01 17 02 03 01 01 01 00 00 00 01 00 00 00 00 04 01 01 01 00 00 00 01 00 00 00 00");
@@ -642,16 +643,13 @@ BOOST_AUTO_TEST_CASE(SelectCROBTooMany)
 BOOST_AUTO_TEST_CASE(SelectOperateCROB)
 {
 	SlaveConfig cfg; cfg.mDisableUnsol = true;
-	SlaveTestObject t(cfg);
-	t.cmd_master.BindCommand(CT_BINARY_OUTPUT, 3, 3, &t.cmd_acceptor);
+	SlaveTestObject t(cfg);	
 	t.slave.OnLowerLayerUp();
 
 	// Select group 12 Var 1, count = 1, index = 3
 	t.SendToSlave("C0 03 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00", SI_OTHER);
 	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 00 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00"); // 0x00 status == CS_SUCCESS
-
-
-	t.cmd_acceptor.Queue(CS_SUCCESS);
+	
 
 	// operate
 	t.SendToSlave("C1 04 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00", SI_CORRECT);
@@ -659,139 +657,16 @@ BOOST_AUTO_TEST_CASE(SelectOperateCROB)
 
 }
 
-BOOST_AUTO_TEST_CASE(SelectOperateCROBWrongSequence)
-{
-	SlaveConfig cfg; cfg.mDisableUnsol = true;
-	SlaveTestObject t(cfg);
-	t.cmd_master.BindCommand(CT_BINARY_OUTPUT, 3, 3, &t.cmd_acceptor);
-	t.slave.OnLowerLayerUp();
-
-	// Select group 12 Var 1, count = 1, index = 3
-	t.SendToSlave("C0 03 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00", SI_OTHER);
-	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 00 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00"); // 0x00 status == CS_SUCCESS
-
-
-	t.cmd_acceptor.Queue(CS_SUCCESS);
-
-	// operate
-	t.SendToSlave("C2 04 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00", SI_OTHER);
-	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 00 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 02"); // 0x02 status == CS_NO_SELECT
-
-}
-
-BOOST_AUTO_TEST_CASE(SelectOperateCROBDiffQual)
-{
-	SlaveConfig cfg; cfg.mDisableUnsol = true;
-	SlaveTestObject t(cfg);
-	t.cmd_master.BindCommand(CT_BINARY_OUTPUT, 3, 3, &t.cmd_acceptor);
-	t.slave.OnLowerLayerUp();
-
-	// Select group 12 Var 1, count = 1, index = 3
-	t.SendToSlave("C0 03 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00");
-	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 00 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00"); // 0x00 status == CS_SUCCESS
-
-
-	t.cmd_acceptor.Queue(CS_SUCCESS);
-
-	// operate (with 0x23 as qual)
-	t.SendToSlave("C1 04 0C 01 28 01 00 03 00 01 01 01 00 00 00 01 00 00 00 00");
-	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 00 0C 01 28 01 00 03 00 01 01 01 00 00 00 01 00 00 00 02"); // 0x02 status == CS_NO_SELECT
-
-}
-
-BOOST_AUTO_TEST_CASE(SelectOperateCROBDiffCode)
-{
-	SlaveConfig cfg; cfg.mDisableUnsol = true;
-	SlaveTestObject t(cfg);
-	t.cmd_master.BindCommand(CT_BINARY_OUTPUT, 3, 3, &t.cmd_acceptor);
-	t.slave.OnLowerLayerUp();
-
-	// Select group 12 Var 1, count = 1, index = 3
-	t.SendToSlave("C0 03 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00");
-	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 00 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00"); // 0x00 status == CS_SUCCESS
-
-
-	t.cmd_acceptor.Queue(CS_SUCCESS);
-
-	// operate (with control code 02)
-	t.SendToSlave("C1 04 0C 01 17 01 03 02 01 01 00 00 00 01 00 00 00 00");
-	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 00 0C 01 17 01 03 02 01 01 00 00 00 01 00 00 00 02"); // 0x02 status == CS_NO_SELECT
-
-}
-
-BOOST_AUTO_TEST_CASE(SelectOperateCROBDiffCount)
-{
-	SlaveConfig cfg; cfg.mDisableUnsol = true;
-	SlaveTestObject t(cfg);
-	t.cmd_master.BindCommand(CT_BINARY_OUTPUT, 3, 3, &t.cmd_acceptor);
-	t.slave.OnLowerLayerUp();
-
-	// Select group 12 Var 1, count = 1, index = 3
-	t.SendToSlave("C0 03 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00");
-	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 00 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00"); // 0x00 status == CS_SUCCESS
-
-
-	t.cmd_acceptor.Queue(CS_SUCCESS);
-
-	// operate (with control code 02)
-	t.SendToSlave("C1 04 0C 01 17 01 03 01 02 01 00 00 00 01 00 00 00 00");
-	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 00 0C 01 17 01 03 01 02 01 00 00 00 01 00 00 00 02"); // 0x02 status == CS_NO_SELECT
-
-}
-
-BOOST_AUTO_TEST_CASE(SelectOperateCROBDiffOnTime)
-{
-	SlaveConfig cfg; cfg.mDisableUnsol = true;
-	SlaveTestObject t(cfg);
-	t.cmd_master.BindCommand(CT_BINARY_OUTPUT, 3, 3, &t.cmd_acceptor);
-	t.slave.OnLowerLayerUp();
-
-	// Select group 12 Var 1, count = 1, index = 3
-	t.SendToSlave("C0 03 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00");
-	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 00 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00"); // 0x00 status == CS_SUCCESS
-
-
-	t.cmd_acceptor.Queue(CS_SUCCESS);
-
-	// operate (with on time as 2 instead of 1)
-	t.SendToSlave("C1 04 0C 01 17 01 03 01 01 02 00 00 00 01 00 00 00 00");
-	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 00 0C 01 17 01 03 01 01 02 00 00 00 01 00 00 00 02"); // 0x02 status == CS_NO_SELECT
-
-}
-
-BOOST_AUTO_TEST_CASE(SelectOperateCROBDiffOffTime)
-{
-	SlaveConfig cfg; cfg.mDisableUnsol = true;
-	SlaveTestObject t(cfg);
-	t.cmd_master.BindCommand(CT_BINARY_OUTPUT, 3, 3, &t.cmd_acceptor);
-	t.slave.OnLowerLayerUp();
-
-	// Select group 12 Var 1, count = 1, index = 3
-	t.SendToSlave("C0 03 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00");
-	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 00 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00"); // 0x00 status == CS_SUCCESS
-
-
-	t.cmd_acceptor.Queue(CS_SUCCESS);
-
-	// operate (with off time as 2 instead of 1)
-	t.SendToSlave("C1 04 0C 01 17 01 03 01 01 01 00 00 00 02 00 00 00 00");
-	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 00 0C 01 17 01 03 01 01 01 00 00 00 02 00 00 00 02"); // 0x02 status == CS_NO_SELECT
-
-}
-
 BOOST_AUTO_TEST_CASE(SelectOperateCROBRetry)
 {
 	SlaveConfig cfg; cfg.mDisableUnsol = true;
-	SlaveTestObject t(cfg);
-	t.cmd_master.BindCommand(CT_BINARY_OUTPUT, 3, 3, &t.cmd_acceptor);
+	SlaveTestObject t(cfg);	
 	t.slave.OnLowerLayerUp();
 
 	// Select group 12 Var 1, count = 1, index = 3
 	t.SendToSlave("C0 03 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00", SI_OTHER);
 	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 00 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00"); // 0x00 status == CS_SUCCESS
-
-
-	t.cmd_acceptor.Queue(CS_SUCCESS);
+	
 
 	// operate
 	t.SendToSlave("C1 04 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00", SI_CORRECT);
@@ -804,51 +679,6 @@ BOOST_AUTO_TEST_CASE(SelectOperateCROBRetry)
 
 }
 
-BOOST_AUTO_TEST_CASE(SelectOperateCROBRetryDifferent)
-{
-	SlaveConfig cfg; cfg.mDisableUnsol = true;
-	SlaveTestObject t(cfg);
-	t.cmd_master.BindCommand(CT_BINARY_OUTPUT, 3, 3, &t.cmd_acceptor);
-	t.slave.OnLowerLayerUp();
-
-	// Select group 12 Var 1, count = 1, index = 3
-	t.SendToSlave("C0 03 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00", SI_OTHER);
-	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 00 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00"); // 0x00 status == CS_SUCCESS
-
-
-	t.cmd_acceptor.Queue(CS_SUCCESS);
-
-	// operate
-	t.SendToSlave("C1 04 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00", SI_CORRECT);
-	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 00 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00");
-
-
-	// operate
-	t.SendToSlave("C1 04 0C 01 17 01 03 01 02 01 00 00 00 01 00 00 00 00", SI_PREV); // byte changed (count)
-	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 00 0C 01 17 01 03 01 02 01 00 00 00 01 00 00 00 02"); // 0x02 status == CS_NO_SELECT
-
-}
-
-BOOST_AUTO_TEST_CASE(SelectDirectOperateFails)
-{
-	SlaveConfig cfg; cfg.mDisableUnsol = true;
-	SlaveTestObject t(cfg);
-	t.cmd_master.BindCommand(CT_BINARY_OUTPUT, 3, 3, CM_SBO_ONLY, 5000, &t.cmd_acceptor);
-	t.slave.OnLowerLayerUp();
-
-	// Select group 12 Var 1, count = 1, index = 3
-	t.SendToSlave("C0 03 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00", SI_OTHER);
-	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 00 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00"); // 0x00 status == CS_SUCCESS
-
-
-	t.cmd_acceptor.Queue(CS_SUCCESS);
-
-	// operate
-	t.SendToSlave("C1 05 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00", SI_CORRECT);
-	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 04 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 04"); // 0x04 status == CS_NOT_SUPPORTED
-
-}
-
 BOOST_AUTO_TEST_CASE(SelectGroup41Var1)
 {
 	SlaveConfig cfg; cfg.mDisableUnsol = true;
@@ -857,21 +687,7 @@ BOOST_AUTO_TEST_CASE(SelectGroup41Var1)
 
 	// Select group 41 Var 1, count = 1, index = 3
 	t.SendToSlave("C0 03 29 01 17 01 03 00 00 00 00 00");
-	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 04 29 01 17 01 03 00 00 00 00 04"); // 0x04 status == CS_NOT_SUPPORTED
-}
-
-BOOST_AUTO_TEST_CASE(SelectGroup41Var1TooMany)
-{
-	SlaveConfig cfg;  cfg.mDisableUnsol = true;
-	cfg.mMaxControls = 1;
-	SlaveTestObject t(cfg);
-	t.cmd_master.BindCommand(CT_SETPOINT, 3, 3, &t.cmd_acceptor);
-	t.cmd_master.BindCommand(CT_SETPOINT, 4, 4, &t.cmd_acceptor);
-	t.slave.OnLowerLayerUp();
-
-	// Select group 41 Var 1, count = 1, index = 3
-	t.SendToSlave("C0 03 29 01 17 02 03 00 00 00 00 00 04 00 00 00 00 00");
-	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 00 29 01 17 02 03 00 00 00 00 00 04 00 00 00 00 08"); // 0x08 status == CS_TOO_MANY_OPS
+	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 00 29 01 17 01 03 00 00 00 00 00"); 
 }
 
 BOOST_AUTO_TEST_CASE(SelectGroup41Var2)
@@ -882,7 +698,7 @@ BOOST_AUTO_TEST_CASE(SelectGroup41Var2)
 
 	// Select group 41 Var 2, count = 1, index = 3
 	t.SendToSlave("C0 03 29 02 17 01 03 00 00 00");
-	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 04 29 02 17 01 03 00 00 04"); // 0x04 status == CS_NOT_SUPPORTED
+	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 00 29 02 17 01 03 00 00 00");
 }
 
 BOOST_AUTO_TEST_CASE(SelectGroup41Var3)
@@ -893,7 +709,7 @@ BOOST_AUTO_TEST_CASE(SelectGroup41Var3)
 
 	// Select group 41 Var 3, count = 1, index = 1, value = 100.0
 	t.SendToSlave("C0 03 29 03 17 01 01 00 00 C8 42 00");
-	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 04 29 03 17 01 01 00 00 C8 42 04"); // 0x04 status == CS_NOT_SUPPORTED
+	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 00 29 03 17 01 01 00 00 C8 42 00");
 }
 
 BOOST_AUTO_TEST_CASE(SelectGroup41Var4)
@@ -904,7 +720,7 @@ BOOST_AUTO_TEST_CASE(SelectGroup41Var4)
 
 	// Select group 41 Var 4, count = 1, index = 1, value = 100.0
 	t.SendToSlave("C0 03 29 04 17 01 01 00 00 00 00 00 00 59 40 00");
-	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 04 29 04 17 01 01 00 00 00 00 00 00 59 40 04"); // 0x04 status == CS_NOT_SUPPORTED
+	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 00 29 04 17 01 01 00 00 00 00 00 00 59 40 00");
 }
 
 
@@ -913,15 +729,11 @@ BOOST_AUTO_TEST_CASE(SelectOperateGroup41Var1)
 {
 	SlaveConfig cfg;  cfg.mDisableUnsol = true;
 	SlaveTestObject t(cfg);
-	t.cmd_master.BindCommand(CT_SETPOINT, 3, 3, &t.cmd_acceptor);
 	t.slave.OnLowerLayerUp();
 
 	// Select group 41 Var 1, count = 1, index = 3
 	t.SendToSlave("C0 03 29 01 17 01 03 00 00 00 00 00");
-	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 00 29 01 17 01 03 00 00 00 00 00"); // 0x00 status == CS_SUCCESS
-
-
-	t.cmd_acceptor.Queue(CS_SUCCESS);
+	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 00 29 01 17 01 03 00 00 00 00 00"); // 0x00 status == CS_SUCCESS	
 
 	// Select group 41 Var 1, count = 1, index = 3
 	t.SendToSlave("C1 04 29 01 17 01 03 00 00 00 00 00");
@@ -929,39 +741,16 @@ BOOST_AUTO_TEST_CASE(SelectOperateGroup41Var1)
 
 }
 
-BOOST_AUTO_TEST_CASE(SelectOperateGroup41Var1DiffVal)
-{
-	SlaveConfig cfg;  cfg.mDisableUnsol = true;
-	SlaveTestObject t(cfg);
-	t.cmd_master.BindCommand(CT_SETPOINT, 3, 3, &t.cmd_acceptor);
-	t.slave.OnLowerLayerUp();
-
-	// Select group 41 Var 1, count = 1, index = 3
-	t.SendToSlave("C0 03 29 01 17 01 03 00 00 00 00 00");
-	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 00 29 01 17 01 03 00 00 00 00 00"); // 0x00 status == CS_SUCCESS
-
-
-	t.cmd_acceptor.Queue(CS_SUCCESS);
-
-	// Select group 41 Var 1, count = 1, index = 3
-	t.SendToSlave("C1 04 29 01 17 01 03 01 00 00 00 00");
-	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 00 29 01 17 01 03 01 00 00 00 02"); // 0x02 status == CS_NO_SELECT
-
-}
-
 BOOST_AUTO_TEST_CASE(SelectOperateGroup41Var2)
 {
 	SlaveConfig cfg; cfg.mDisableUnsol = true;
-	SlaveTestObject t(cfg);
-	t.cmd_master.BindCommand(CT_SETPOINT, 3, 3, &t.cmd_acceptor);
+	SlaveTestObject t(cfg);	
 	t.slave.OnLowerLayerUp();
 
 	// Select group 41 Var 2, count = 1, index = 3
 	t.SendToSlave("C0 03 29 02 17 01 03 00 00 00");
 	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 00 29 02 17 01 03 00 00 00"); // 0x00 status == CS_SUCCESS
-
-
-	t.cmd_acceptor.Queue(CS_SUCCESS);
+	
 
 	// Select group 41 Var 1, count = 1, index = 3
 	t.SendToSlave("C1 04 29 02 17 01 03 00 00 00");
@@ -973,76 +762,48 @@ BOOST_AUTO_TEST_CASE(SelectOperateGroup41Var3)
 {
 	SlaveConfig cfg; cfg.mDisableUnsol = true;
 	SlaveTestObject t(cfg);
-	t.cmd_master.BindCommand(CT_SETPOINT, 1, 1, &t.cmd_acceptor);
 	t.slave.OnLowerLayerUp();
 
 	// Select group 41 Var 3, count = 1, index = 1
 	t.SendToSlave("C0 03 29 03 17 01 01 00 00 C8 42 00");
-	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 00 29 03 17 01 01 00 00 C8 42 00"); // 0x00 status == CS_SUCCESS
-
-
-	t.cmd_acceptor.Queue(CS_SUCCESS);
+	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 00 29 03 17 01 01 00 00 C8 42 00"); // 0x00 status == CS_SUCCESS	
 
 	// operate group 41 Var 3, count = 1, index = 1
 	t.SendToSlave("C1 04 29 03 17 01 01 00 00 C8 42 00");
-	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 00 29 03 17 01 01 00 00 C8 42 00"); // 0x00 status == CS_SUCCESS
-
-
-	Setpoint s = t.cmd_acceptor.NextSetpoint();
-
-	BOOST_REQUIRE_FLOAT_EQUAL(100.0, s.GetValue());
-	BOOST_REQUIRE_EQUAL(CS_SUCCESS, s.mStatus);
-	BOOST_REQUIRE_EQUAL(SPET_FLOAT, s.GetEncodingType());
+	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 00 29 03 17 01 01 00 00 C8 42 00"); // 0x00 status == CS_SUCCESS	
 }
 
 BOOST_AUTO_TEST_CASE(SelectOperateGroup41Var4)
 {
 	SlaveConfig cfg; cfg.mDisableUnsol = true;
-	SlaveTestObject t(cfg);
-	t.cmd_master.BindCommand(CT_SETPOINT, 1, 1, &t.cmd_acceptor);
+	SlaveTestObject t(cfg);	
 	t.slave.OnLowerLayerUp();
 
 	// Select group 41 Var 4, count = 1, index = 1
 	t.SendToSlave("C0 03 29 04 17 01 01 00 00 00 00 00 00 59 40 00");
 	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 00 29 04 17 01 01 00 00 00 00 00 00 59 40 00"); // 0x00 status == CS_SUCCESS
-
-
-	t.cmd_acceptor.Queue(CS_SUCCESS);
+	
 
 	// operate group 41 Var 4, count = 1, index = 1
 	t.SendToSlave("C1 04 29 04 17 01 01 00 00 00 00 00 00 59 40 00");
-	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 00 29 04 17 01 01 00 00 00 00 00 00 59 40 00"); // 0x00 status == CS_SUCCESS
-
-
-	Setpoint s = t.cmd_acceptor.NextSetpoint();
-
-	BOOST_REQUIRE_FLOAT_EQUAL(100.0, s.GetValue());
-	BOOST_REQUIRE_EQUAL(CS_SUCCESS, s.mStatus);
-	BOOST_REQUIRE_EQUAL(SPET_DOUBLE, s.GetEncodingType());
+	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 00 29 04 17 01 01 00 00 00 00 00 00 59 40 00"); // 0x00 status == CS_SUCCESS	
 }
 
 BOOST_AUTO_TEST_CASE(DirectOperateGroup41Var1)
 {
 	SlaveConfig cfg; cfg.mDisableUnsol = true;
-	SlaveTestObject t(cfg);
-	t.cmd_master.BindCommand(CT_SETPOINT, 3, 3, CM_DO_ONLY, 5000, &t.cmd_acceptor);
-	t.slave.OnLowerLayerUp();
-
-	t.cmd_acceptor.Queue(CS_SUCCESS);
+	SlaveTestObject t(cfg);	
+	t.slave.OnLowerLayerUp();	
 
 	// Select group 41 Var 1, count = 1, index = 3
 	t.SendToSlave("C1 05 29 01 17 01 03 00 00 00 00 00");
 	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 00 29 01 17 01 03 00 00 00 00 00"); // 0x00 status == CS_SUCCESS
-
 }
 BOOST_AUTO_TEST_CASE(DirectOperateGroup41Var2)
 {
 	SlaveConfig cfg; cfg.mDisableUnsol = true;
-	SlaveTestObject t(cfg);
-	t.cmd_master.BindCommand(CT_SETPOINT, 3, 3, CM_DO_ONLY, 5000, &t.cmd_acceptor);
-	t.slave.OnLowerLayerUp();
-
-	t.cmd_acceptor.Queue(CS_SUCCESS);
+	SlaveTestObject t(cfg);	
+	t.slave.OnLowerLayerUp();	
 
 	// Select group 41 Var 1, count = 1, index = 3
 	t.SendToSlave("C1 05 29 02 17 01 03 00 00 00");
@@ -1052,11 +813,8 @@ BOOST_AUTO_TEST_CASE(DirectOperateGroup41Var2)
 BOOST_AUTO_TEST_CASE(DirectOperateGroup41Var3)
 {
 	SlaveConfig cfg; cfg.mDisableUnsol = true;
-	SlaveTestObject t(cfg);
-	t.cmd_master.BindCommand(CT_SETPOINT, 1, 1, CM_DO_ONLY, 5000, &t.cmd_acceptor);
-	t.slave.OnLowerLayerUp();
-
-	t.cmd_acceptor.Queue(CS_SUCCESS);
+	SlaveTestObject t(cfg);	
+	t.slave.OnLowerLayerUp();	
 
 	// operate group 41 Var 3, count = 1, index = 1
 	t.SendToSlave("C1 05 29 03 17 01 01 00 00 C8 42 00");
@@ -1066,16 +824,12 @@ BOOST_AUTO_TEST_CASE(DirectOperateGroup41Var3)
 BOOST_AUTO_TEST_CASE(DirectOperateGroup41Var4)
 {
 	SlaveConfig cfg; cfg.mDisableUnsol = true;
-	SlaveTestObject t(cfg);
-	t.cmd_master.BindCommand(CT_SETPOINT, 1, 1, CM_DO_ONLY, 5000, &t.cmd_acceptor);
-	t.slave.OnLowerLayerUp();
-
-	t.cmd_acceptor.Queue(CS_SUCCESS);
+	SlaveTestObject t(cfg);	
+	t.slave.OnLowerLayerUp();	
 
 	// operate group 41 Var 4, count = 1, index = 1
 	t.SendToSlave("C1 05 29 04 17 01 01 00 00 00 00 00 00 59 40 00");
 	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 00 29 04 17 01 01 00 00 00 00 00 00 59 40 00"); // 0x00 status == CS_SUCCESS
-
 }
 
 BOOST_AUTO_TEST_CASE(SelectBadObject)

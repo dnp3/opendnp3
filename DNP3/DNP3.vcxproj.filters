@@ -312,6 +312,12 @@
     <ClInclude Include="CommandTask.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ICommandHandler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\DNP3Test\MockCommandHandler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AlwaysOpeningVtoRouter.cpp">

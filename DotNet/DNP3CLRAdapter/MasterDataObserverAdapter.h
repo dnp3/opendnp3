@@ -40,7 +40,7 @@ namespace DNP3
 {	
 namespace Adapter
 {		
-	public class MasterDataObserverAdapter : public apl::IDataObserver
+	private class MasterDataObserverAdapter : public apl::IDataObserver
 	{
 		public:
 
@@ -61,21 +61,25 @@ namespace Adapter
 		void _End();
 	};
 
-	public ref class MasterDataObserverAdapterWrapper
+	public ref class MasterDataObserverWrapper
 	{
 		public:
-			MasterDataObserverAdapterWrapper(DNP3::Interface::IDataObserver^ proxy) : 
-			  pAdapter(new MasterDataObserverAdapter(proxy))
-			{}
 
-			~MasterDataObserverAdapterWrapper() 
-			{ delete pAdapter; }
+		MasterDataObserverWrapper(DNP3::Interface::IDataObserver^ proxy) :
+			mpAdapter(new MasterDataObserverAdapter(proxy))
+		{}
 
-			apl::IDataObserver* GetDataObserver() { return pAdapter; }
+		~MasterDataObserverWrapper()
+		{ 
+			delete mpAdapter;
+		}
 
+		apl::IDataObserver* Get() { return mpAdapter; }
+		
 		private:
-			MasterDataObserverAdapter* pAdapter;
+		MasterDataObserverAdapter* mpAdapter;
 	};
+	
 }}
 
 #endif

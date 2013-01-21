@@ -52,6 +52,7 @@ namespace dnp
 {
 
 class ICommandProcessor;
+class ICommandHandler;
 class AsyncStackManager;
 
 /** Wraps the AyncStackManger using the impl pattern. This makes it suiteable
@@ -77,7 +78,7 @@ public:
 	IDataObserver* AddSlave(const std::string& arPortName,
 	                        const std::string& arStackName,
 	                        FilterLevel aLevel,
-	                        ICommandAcceptor* apCmdAcceptor,
+	                        ICommandHandler* apCmdAcceptor,
 	                        const SlaveStackConfig& arCfg);
 
 	void RemovePort(const std::string& arPortName);

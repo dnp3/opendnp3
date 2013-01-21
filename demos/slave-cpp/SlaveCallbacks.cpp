@@ -43,22 +43,38 @@ SlaveCallbacks::SlaveCallbacks(Logger* apLogger) :	Loggable(apLogger)
 	
 }
 
-
-void SlaveCallbacks::AcceptCommand(const BinaryOutput& arCommand, size_t aIndex, int aSequence, IResponseAcceptor* apRspAcceptor)
+CommandStatus SlaveCallbacks::Select(const BinaryOutput& arCommand, size_t aIndex, uint8_t aSequence)
 {
-	LOG_BLOCK(LEV_INFO, "Received Control " << arCommand.ToString() << " on index: " << aIndex);	
-
-	// call back the slave with the status
-	apRspAcceptor->AcceptResponse(CommandResponse(CommandStatus::CS_SUCCESS), aSequence);
+	return CS_SUCCESS;
 }
 
-void SlaveCallbacks::AcceptCommand(const Setpoint& arCommand, size_t aIndex, int aSequence, IResponseAcceptor* apRspAcceptor)
+CommandStatus SlaveCallbacks::Select(const Setpoint& arCommand, size_t aIndex, uint8_t aSequence)
 {
-	LOG_BLOCK(LEV_INFO, "Received Setpoint " << arCommand.ToString() << " on index: " << aIndex);
-
-	// call back the slave with the status
-	apRspAcceptor->AcceptResponse(CommandResponse(CommandStatus::CS_SUCCESS), aSequence);
+	return CS_SUCCESS;
 }
+
+CommandStatus SlaveCallbacks::Operate(const BinaryOutput& arCommand, size_t aIndex, uint8_t aSequence)
+{
+	return CS_SUCCESS;
+}
+
+CommandStatus SlaveCallbacks::Operate(const Setpoint& arCommand, size_t aIndex, uint8_t aSequence)
+{
+	return CS_SUCCESS;
+}
+
+CommandStatus SlaveCallbacks::DirectOperate(const BinaryOutput& arCommand, size_t aIndex)
+{
+	return CS_SUCCESS;
+}
+
+CommandStatus SlaveCallbacks::DirectOperate(const Setpoint& arCommand, size_t aIndex)
+{
+	return CS_SUCCESS;
+}
+
+
+
 
 }
 }

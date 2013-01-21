@@ -11,6 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\DNP3Test\MockCommandHandler.h" />
     <ClInclude Include="AlwaysOpeningVtoRouter.h" />
     <ClInclude Include="APDU.h" />
     <ClInclude Include="APDUConstants.h" />
@@ -46,6 +47,7 @@
     <ClInclude Include="EventBuffers.h" />
     <ClInclude Include="EventTypes.h" />
     <ClInclude Include="HeaderReadIterator.h" />
+    <ClInclude Include="ICommandHandler.h" />
     <ClInclude Include="ICommandProcessor.h" />
     <ClInclude Include="IFrameSink.h" />
     <ClInclude Include="ILinkContext.h" />

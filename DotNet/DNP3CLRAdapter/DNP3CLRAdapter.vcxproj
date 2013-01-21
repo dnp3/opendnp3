@@ -89,7 +89,7 @@
     <ClInclude Include="Lock.h" />
     <ClInclude Include="LogAdapter.h" />
     <ClInclude Include="MasterDataObserverAdapter.h" />
-    <ClInclude Include="SlaveCommandAcceptorAdapter.h" />
+    <ClInclude Include="SlaveCommandHandlerAdapter.h" />
     <ClInclude Include="SlaveDataObserverAdapter.h" />
     <ClInclude Include="StackManager.h" />
   </ItemGroup>
@@ -98,7 +98,7 @@
     <ClCompile Include="Conversions.cpp" />
     <ClCompile Include="LogAdapter.cpp" />
     <ClCompile Include="MasterDataObserverAdapter.cpp" />
-    <ClCompile Include="SlaveCommandAcceptorAdapter.cpp" />
+    <ClCompile Include="SlaveCommandHandlerAdapter.cpp" />
     <ClCompile Include="SlaveDataObserverAdapter.cpp" />
     <ClCompile Include="StackManager.cpp" />
   </ItemGroup>

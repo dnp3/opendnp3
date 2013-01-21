@@ -32,7 +32,6 @@
 #include "Stack.h"
 #include "Slave.h"
 #include "Database.h"
-#include "DNPCommandMaster.h"
 #include "SlaveStackConfig.h"
 #include <APL/TimeSource.h>
 
@@ -56,7 +55,7 @@ public:
 	SlaveStack(
 	        Logger* apLogger,			
 	        IExecutor* apExecutor,
-	        ICommandAcceptor* apCmdAcceptor,
+	        ICommandHandler* apCmdAcceptor,
 	        const SlaveStackConfig& arCfg);
 
 	IVtoWriter* GetVtoWriter();
@@ -64,8 +63,7 @@ public:
 	IVtoReader* GetVtoReader();
 
 	TimeSourceSystemOffset mTimeSource;
-	Database mDB;				// The database holds static event data and forwards to an event buffer
-	DNPCommandMaster mCmdMaster;	// Controls the execution of commands
+	Database mDB;				// The database holds static event data and forwards to an event buffer	
 	Slave mSlave;				// The dnp3 outstation class
 };
 

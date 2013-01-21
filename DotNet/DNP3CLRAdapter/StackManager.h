@@ -58,7 +58,7 @@ namespace Adapter
 			IDataObserver^	 AddSlave(	System::String^ portName,
 										System::String^ stackName,
 										FilterLevel level,
-										ICommandAcceptor^ cmdAcceptor, 
+										ICommandHandler^ cmdAcceptor, 
 										DNP3::Interface::SlaveStackConfig^ config);
 
 			void RemovePort(System::String^ portName);

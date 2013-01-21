@@ -67,7 +67,7 @@ VtoIntegrationTestBase::VtoIntegrationTestBase(
 	SlaveStackConfig config;
 	config.app.NumRetry = 3;
 	config.app.RspTimeout = 500;
-	manager.AddSlave("dnp-tcp-server", "slave", level, &cmdAcceptor, config);
+	manager.AddSlave("dnp-tcp-server", "slave", level, &cmdHandler, config);
 	}
 
 	{

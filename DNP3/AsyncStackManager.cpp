@@ -131,7 +131,7 @@ ICommandProcessor* AsyncStackManager::AddMaster( const std::string& arPortName, 
 	return pMaster->mMaster.GetCommandProcessor();
 }
 
-IDataObserver* AsyncStackManager::AddSlave( const std::string& arPortName, const std::string& arStackName, FilterLevel aLevel, ICommandAcceptor* apCmdAcceptor,
+IDataObserver* AsyncStackManager::AddSlave( const std::string& arPortName, const std::string& arStackName, FilterLevel aLevel, ICommandHandler* apCmdHandler,
         const SlaveStackConfig& arCfg)
 {
 	this->ThrowIfAlreadyShutdown();
@@ -139,7 +139,7 @@ IDataObserver* AsyncStackManager::AddSlave( const std::string& arPortName, const
 	Logger* pLogger = mpLogger->GetSubLogger(arStackName, aLevel);
 	pLogger->SetVarName(arStackName);
 
-	SlaveStack* pSlave = new SlaveStack(pLogger, pChannel->GetExecutor(), apCmdAcceptor, arCfg);
+	SlaveStack* pSlave = new SlaveStack(pLogger, pChannel->GetExecutor(), apCmdHandler, arCfg);
 
 	LinkRoute route(arCfg.link.RemoteAddr, arCfg.link.LocalAddr);
 	this->AddStackToChannel(arStackName, pSlave, pChannel, route);

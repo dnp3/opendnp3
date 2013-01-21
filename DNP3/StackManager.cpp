@@ -77,9 +77,9 @@ ICommandProcessor* StackManager::AddMaster(const std::string& arPortName, const 
 }
 
 IDataObserver* StackManager::AddSlave(const std::string& arPortName, const std::string& arStackName, FilterLevel aLevel,
-                                      ICommandAcceptor* apCmdAcceptor, const SlaveStackConfig& arCfg)
+                                      ICommandHandler* apCmdHandler, const SlaveStackConfig& arCfg)
 {
-	return mpImpl->AddSlave(arPortName, arStackName, aLevel, apCmdAcceptor, arCfg);
+	return mpImpl->AddSlave(arPortName, arStackName, aLevel, apCmdHandler, arCfg);
 }
 
 

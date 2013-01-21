@@ -32,12 +32,12 @@
 #include <APLTestTools/MockExecutor.h>
 #include <APL/AsyncTaskScheduler.h>
 #include <APLTestTools/LogTester.h>
-#include <APLTestTools/MockCommandAcceptor.h>
 #include <DNP3/Slave.h>
 #include <DNP3/Database.h>
 #include <DNP3/DNPCommandMaster.h>
 #include <DNP3/SlaveConfig.h>
 
+#include "MockCommandHandler.h"
 #include "MockAppLayer.h"
 
 namespace apl
@@ -61,9 +61,8 @@ public:
 	MockTimeManager fakeTime;
 	MockExecutor mts;
 	MockAppLayer app;
-	Database db;
-	DNPCommandMaster cmd_master;
-	MockCommandAcceptor cmd_acceptor;
+	Database db;	
+	MockCommandHandler cmdHandler;
 	Slave slave;
 	APDU mAPDU;
 	Logger* mpLogger;

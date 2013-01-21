@@ -47,7 +47,7 @@ FunctionCodes IntToFunction(int aFunction);
 */
 struct AppControlField {
 	AppControlField() {};
-	AppControlField(bool aFIR, bool aFIN, bool aCON, bool aUNS, int aSEQ = 0) :
+	AppControlField(bool aFIR, bool aFIN, bool aCON, bool aUNS, uint8_t aSEQ = 0) :
 		FIR(aFIR),
 		FIN(aFIN),
 		CON(aCON),
@@ -58,7 +58,7 @@ struct AppControlField {
 	bool FIN;
 	bool CON;
 	bool UNS;
-	int  SEQ;
+	uint8_t  SEQ;
 };
 
 /** DNP3 two-byte IIN field.

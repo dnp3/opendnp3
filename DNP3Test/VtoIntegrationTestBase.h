@@ -30,7 +30,6 @@
 #define __VTO_INTEGRATION_TEST_BASE_H_
 
 #include <APLTestTools/LogTester.h>
-#include <APLTestTools/MockCommandAcceptor.h>
 #include <APLTestTools/AsyncTestObjectASIO.h>
 #include <APLTestTools/PhysicalLayerWrapper.h>
 #include <APLTestTools/WrappedTcpPipe.h>
@@ -42,6 +41,9 @@
 #include <APL/PhysicalLayerAsyncTCPServer.h>
 
 #include <DNP3/AsyncStackManager.h>
+
+
+#include "MockCommandHandler.h"
 
 
 /** Platforms have different reserved port ranges */
@@ -73,7 +75,7 @@ public:
 
 	Logger* mpMainLogger;
 	std::auto_ptr<LogToFile> mpLtf;
-	MockCommandAcceptor cmdAcceptor;
+	MockCommandHandler cmdHandler;
 
 	AsyncTestObjectASIO testObj;
 	

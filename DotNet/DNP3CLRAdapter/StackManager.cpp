@@ -32,7 +32,7 @@
 #include "MasterDataObserverAdapter.h"
 #include "CommandProcessorAdapter.h"
 
-#include "SlaveCommandAcceptorAdapter.h"
+#include "SlaveCommandHandlerAdapter.h"
 #include "SlaveDataObserverAdapter.h"
 
 #include "LogAdapter.h"
@@ -104,11 +104,11 @@ namespace Adapter
 		std::string stdStackName = Conversions::convertString(stackName);
 		apl::FilterLevel stdLevel = Conversions::convertFilterLevel(level);
 
-		MasterDataObserverAdapterWrapper^ wrapper = gcnew MasterDataObserverAdapterWrapper(observer);		
+		MasterDataObserverWrapper^ wrapper = gcnew MasterDataObserverWrapper(observer);
 		apl::dnp::MasterStackConfig cfg = Conversions::convertConfig(config);
 
 		try {
-			auto pCmdProcessor = pMgr->AddMaster(stdPortName, stdStackName, stdLevel, wrapper->GetDataObserver(), cfg);
+			auto pCmdProcessor = pMgr->AddMaster(stdPortName, stdStackName, stdLevel, wrapper->Get(), cfg);
 			return gcnew CommandProcessorAdapter(pCmdProcessor);			
 		} 
 		catch(apl::Exception ex){
@@ -120,18 +120,18 @@ namespace Adapter
 	IDataObserver^	StackManager::AddSlave(	System::String^ portName,
 									System::String^ stackName,
 									FilterLevel level,
-									ICommandAcceptor^ cmdAcceptor,
+									ICommandHandler^ cmdHandler,
 									SlaveStackConfig^ config)
 	{
 		std::string stdPortName = Conversions::convertString(portName);
 		std::string stdStackName = Conversions::convertString(stackName);
 		apl::FilterLevel stdLevel = Conversions::convertFilterLevel(level);
 
-		SlaveCommandAcceptorAdapterWrapper^ wrapper = gcnew SlaveCommandAcceptorAdapterWrapper(cmdAcceptor);
+		SlaveCommandHandlerWrapper^ wrapper = gcnew SlaveCommandHandlerWrapper(cmdHandler);
 		apl::dnp::SlaveStackConfig cfg = Conversions::convertConfig(config);
 
 		try {
-			apl::IDataObserver* pDataObs = pMgr->AddSlave(stdPortName, stdStackName, stdLevel, wrapper->GetCommandAcceptor(), Conversions::convertConfig(config));
+			apl::IDataObserver* pDataObs = pMgr->AddSlave(stdPortName, stdStackName, stdLevel, wrapper->Get(), Conversions::convertConfig(config));
 			return gcnew SlaveDataObserverAdapter(pDataObs);
 		} 
 		catch(apl::Exception ex){

@@ -1,4 +1,4 @@
-
+﻿
 //
 // Licensed to Green Energy Corp (www.greenenergycorp.com) under one or
 // more contributor license agreements. See the NOTICE file distributed
@@ -26,41 +26,20 @@
 //
 // Contact Automatak, LLC for a commercial license to these modifications
 //
-#ifndef __SLAVE_DEMO_H_
-#define __SLAVE_DEMO_H_
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
-#include <APL/Loggable.h>
-#include <DNP3/ICommandHandler.h>
-
-
-namespace apl
+namespace DNP3.Interface
 {
-namespace dnp
-{
-
-/**
-	Handles callbacks from the stack	
-*/
-class SlaveCallbacks : private Loggable, public ICommandHandler
-{
-public:
-	SlaveCallbacks(Logger* apLogger);	
-
-	CommandStatus Select(const BinaryOutput& arCommand, size_t aIndex, uint8_t aSequence);
-
-	CommandStatus Select(const Setpoint& arCommand, size_t aIndex, uint8_t aSequence);
-
-	CommandStatus Operate(const BinaryOutput& arCommand, size_t aIndex, uint8_t aSequence);
-
-	CommandStatus Operate(const Setpoint& arCommand, size_t aIndex, uint8_t aSequence);
-
-	CommandStatus DirectOperate(const BinaryOutput& arCommand, size_t aIndex);
-
-	CommandStatus DirectOperate(const Setpoint& arCommand, size_t aIndex);
-
-};
-
+    public interface ICommandHandler
+    {
+        CommandStatus Select(BinaryOutput command, System.UInt32 index, System.Byte aSequence);
+        CommandStatus Select(Setpoint command, System.UInt32 index, System.Byte aSequence);
+        CommandStatus Operate(BinaryOutput command, System.UInt32 index, System.Byte aSequence);
+        CommandStatus Operate(Setpoint command, System.UInt32 index, System.Byte aSequence);
+        CommandStatus DirectOperate(BinaryOutput command, System.UInt32 index);
+        CommandStatus DirectOperate(Setpoint command, System.UInt32 index);
+    }
 }
-}
-
-#endif

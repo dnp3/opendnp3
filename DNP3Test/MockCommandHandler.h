@@ -1,4 +1,4 @@
-﻿
+
 //
 // Licensed to Green Energy Corp (www.greenenergycorp.com) under one or
 // more contributor license agreements. See the NOTICE file distributed
@@ -26,16 +26,46 @@
 //
 // Contact Automatak, LLC for a commercial license to these modifications
 //
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+#ifndef __MOCK_COMMAND_HANDLER_H_
+#define __MOCK_COMMAND_HANDLER_H_
 
-namespace DNP3.Interface
+#include <APL/CommandTypes.h>
+#include <DNP3/ICommandHandler.h>
+
+
+namespace apl
 {
-    public interface ICommandAcceptor
-    {
-        IFuture<CommandStatus> AcceptCommand(BinaryOutput command, System.UInt32 index);
-        IFuture<CommandStatus> AcceptCommand(Setpoint command, System.UInt32 index);
-    }
+namespace dnp
+{
+
+class MockCommandHandler : public ICommandHandler
+{
+	public:
+
+	MockCommandHandler(CommandStatus aStatus = CS_SUCCESS) : mStatus(aStatus)
+	{}
+
+	CommandStatus Select(const BinaryOutput& arCommand, size_t aIndex, uint8_t aSequence){ return mStatus; }
+
+	CommandStatus Select(const Setpoint& arCommand, size_t aIndex, uint8_t aSequence){ return mStatus; }
+
+	CommandStatus Operate(const BinaryOutput& arCommand, size_t aIndex, uint8_t aSequence){ return mStatus; }
+
+	CommandStatus Operate(const Setpoint& arCommand, size_t aIndex, uint8_t aSequence){ return mStatus; }
+
+	CommandStatus DirectOperate(const BinaryOutput& arCommand, size_t aIndex){ return mStatus; }
+
+	CommandStatus DirectOperate(const Setpoint& arCommand, size_t aIndex){ return mStatus; }
+
+	void SetResponse(CommandStatus aStatus) { mStatus = aStatus; }
+
+private:
+	CommandStatus mStatus;
+
+};
+
+
 }
+}
+
+#endif

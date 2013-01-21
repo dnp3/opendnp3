@@ -634,7 +634,7 @@ std::string APDU::ToString() const
 	oss << ", FIN: " << acf.FIN;
 	oss << ", CON: " << acf.CON;
 	oss << ", UNS: " << acf.UNS;
-	oss << ", SEQ: " << acf.SEQ;
+	oss << ", SEQ: " << static_cast<int>(acf.SEQ);
 	oss << ", Func: " << apl::dnp::ToString(func);
 	if ( IsResponse(func) ) oss << copy.GetIIN().ToString();
 

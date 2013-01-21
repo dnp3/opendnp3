@@ -36,22 +36,37 @@ using DNP3.Interface;
 
 namespace DotNetSlaveDemo
 {
-    class RejectingCommandAcceptor : ICommandAcceptor {
+    class RejectingCommandHandler : ICommandHandler {
 
-        public IFuture<CommandStatus> AcceptCommand(BinaryOutput command, uint index)
+
+        CommandStatus ICommandHandler.Select(BinaryOutput command, uint index, byte aSequence)
         {
-            System.Console.WriteLine("Received BinaryOutput on index: " + index);
-            var future = new Future<CommandStatus>();
-            future.Set(CommandStatus.CS_FORMAT_ERROR);
-            return future;
+            return CommandStatus.CS_NOT_SUPPORTED;
         }
 
-        public IFuture<CommandStatus> AcceptCommand(Setpoint command, uint index)
+        CommandStatus ICommandHandler.Select(Setpoint command, uint index, byte aSequence)
         {
-            System.Console.WriteLine("Received Setpoint on index: " + index);
-            var future = new Future<CommandStatus>();
-            future.Set(CommandStatus.CS_NOT_SUPPORTED);
-            return future;
+            return CommandStatus.CS_NOT_SUPPORTED;
+        }
+
+        CommandStatus ICommandHandler.Operate(BinaryOutput command, uint index, byte aSequence)
+        {
+            return CommandStatus.CS_NOT_SUPPORTED;
+        }
+
+        CommandStatus ICommandHandler.Operate(Setpoint command, uint index, byte aSequence)
+        {
+            return CommandStatus.CS_NOT_SUPPORTED;
+        }
+
+        CommandStatus ICommandHandler.DirectOperate(BinaryOutput command, uint index)
+        {
+            return CommandStatus.CS_NOT_SUPPORTED;
+        }
+
+        CommandStatus ICommandHandler.DirectOperate(Setpoint command, uint index)
+        {
+            return CommandStatus.CS_NOT_SUPPORTED;
         }
     }
 
@@ -62,7 +77,7 @@ namespace DotNetSlaveDemo
             var sm = new StackManager(1);
             sm.AddTCPServer("server", FilterLevel.LEV_INFO, 5000, "127.0.0.1", 20000);
             var config = new SlaveStackConfig();
-            var publisher = sm.AddSlave("server", "slave", FilterLevel.LEV_INFO, new RejectingCommandAcceptor(), config);
+            var publisher = sm.AddSlave("server", "slave", FilterLevel.LEV_INFO, new RejectingCommandHandler(), config);
 
             Console.WriteLine("Press <Enter> to randomly change a value");
 

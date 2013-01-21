@@ -33,15 +33,13 @@ namespace apl
 namespace dnp
 {
 
-SlaveStack::SlaveStack(Logger* apLogger, IExecutor* apExecutor, ICommandAcceptor* apCmdAcceptor, const SlaveStackConfig& arCfg) :
+SlaveStack::SlaveStack(Logger* apLogger, IExecutor* apExecutor, ICommandHandler* apCmdHandler, const SlaveStackConfig& arCfg) :
 	Stack(apLogger->GetSubLogger("slave"), apExecutor, arCfg.app, arCfg.link),
-	mDB(apLogger),
-	mCmdMaster(&mTimeSource, 10000),
-	mSlave(apLogger, &mApplication, apExecutor, &mTimeSource, &mDB, &mCmdMaster, arCfg.slave)
+	mDB(apLogger),	
+	mSlave(apLogger, &mApplication, apExecutor, &mTimeSource, &mDB, apCmdHandler, arCfg.slave)
 {
 	this->mApplication.SetUser(&mSlave);
-	mDB.Configure(arCfg.device);
-	mCmdMaster.Configure(arCfg.device, apCmdAcceptor);
+	mDB.Configure(arCfg.device);	
 }
 
 IVtoWriter* SlaveStack::GetVtoWriter()

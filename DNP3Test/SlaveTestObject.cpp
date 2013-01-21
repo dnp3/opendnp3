@@ -41,9 +41,8 @@ SlaveTestObject::SlaveTestObject(const SlaveConfig& arCfg, FilterLevel aLevel, b
 	LogTester(aImmediate),
 	mts(),
 	app(mLog.GetLogger(aLevel, "app")),
-	db(mLog.GetLogger(aLevel, "db")),
-	cmd_master(&fakeTime, 10000),
-	slave(mLog.GetLogger(aLevel, "slave"), &app, &mts, &fakeTime, &db, &cmd_master, arCfg),
+	db(mLog.GetLogger(aLevel, "db")),	
+	slave(mLog.GetLogger(aLevel, "slave"), &app, &mts, &fakeTime, &db, &cmdHandler, arCfg),
 	mpLogger(mLog.GetLogger(aLevel, "test"))
 {
 	app.SetUser(&slave);

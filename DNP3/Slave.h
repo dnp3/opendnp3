@@ -50,6 +50,7 @@
 #include "VtoReader.h"
 #include "VtoWriter.h"
 #include "IStackObserver.h"
+#include "ICommandHandler.h"
 
 namespace apl
 {
@@ -95,7 +96,7 @@ class Slave : public Loggable, public IAppUser
 
 public:
 
-	Slave(Logger*, IAppLayer*, IExecutor*, ITimeManager*, Database*, IDNPCommandMaster*, const SlaveConfig&);
+	Slave(Logger*, IAppLayer*, IExecutor*, ITimeManager*, Database*, ICommandHandler*, const SlaveConfig&);
 	~Slave();
 
 	////////////////////////
@@ -166,9 +167,8 @@ private:
 	IAppLayer* mpAppLayer;					// lower application layer
 	IExecutor* mpExecutor;					// used for post and timers
 	Database* mpDatabase;					// holds static data
-	IDNPCommandMaster* mpCmdMaster;			// how commands are selected/operated
-	int mSequence;							// control sequence
-	CommandResponseQueue mRspQueue;			// how command responses are received
+	ICommandHandler* mpCmdHandler;			// how commands are selected/operated on application code
+	int mSequence;							// control sequence	
 	AS_Base* mpState;						// current state for the state pattern
 	SlaveConfig mConfig;					// houses the configurable paramters of the outstation
 	SlaveResponseTypes mRspTypes;			// converts the group/var in the config to dnp singletons
@@ -275,47 +275,11 @@ private:
 	 * @param aFunc			Function for issuing/selecting
 	 */
 	template <class T>
-	void RespondToCommands(const StreamObject<T>* apObj, ObjectReadIterator& arIter, typename CommandFunc<T>::Type aFunc);
-
-	/**
-	 * Marks a number of command responses from Slave::mpCmdMaster as
-	 * selected.
-	 *
-	 * @param arCmd			an ObjectBase instance that is capable of
-	 * 						reading/writing its own type from/to a byte stream
-	 * @param aIndex		the maximum number of command responses to select
-	 * @param aHdr			the DNP3 object header in the APDU message
-	 * @param aSeqInfo		descriptive information about the sequence number
-	 * @param aSeqNum		the sequence number from the APDU message
-	 *
-	 * @return				the appropriate CommandStatus value based on the
-	 * 						results of the function
-	 */
-	template <class T>
-	CommandStatus Select(T aCmd, size_t aIndex, HeaderInfo aHdr, SequenceInfo aSeqInfo, int aSeqNum);
-
-	/**
-	 * TODO - I have no clue what this function does.
-	 *
-	 * @param arCmd			an ObjectBase instance that is capable of
-	 * 						reading/writing its own type from/to a byte stream
-	 * @param aIndex		the maximum number of command responses to select
-	 * @param aDirect		a flag to indicate whether the execution should use
-	 * 						mpCmdMaster's Operate() or DirectOperate()
-	 * @param aHdr			the DNP3 object header in the APDU message
-	 * @param aSeqInfo		descriptive information about the sequence number
-	 * @param aSeqNum		the sequence number from the APDU message
-	 *
-	 * @return				the appropriate CommandStatus value based on the
-	 * 						results of the function
-	 */
-	template <class T>
-	CommandStatus Operate(T& arCmd, size_t aIndex, bool aDirect, const HeaderInfo& aHdr, SequenceInfo aSeqInfo, int aSeqNum);
-
+	void RespondToCommands(const StreamObject<T>* apObj, ObjectReadIterator& arIter, std::function<CommandStatus (T, size_t)> CommandHandler);
 };
 
 template<class T>
-void Slave::RespondToCommands(const StreamObject<T>* apObj, ObjectReadIterator& arIter, typename CommandFunc<T>::Type arFunc)
+void Slave::RespondToCommands(const StreamObject<T>* apObj, ObjectReadIterator& arIter, std::function<CommandStatus (T, size_t)> CommandHandler)
 {
 	IndexedWriteIterator i = mResponse.WriteIndexed(apObj, arIter.Count(), arIter.Header().GetQualifier());
 	size_t count = 1;
@@ -326,7 +290,8 @@ void Slave::RespondToCommands(const StreamObject<T>* apObj, ObjectReadIterator& 
 			val.mStatus = CS_TOO_MANY_OPS;
 		}
 		else {
-			val.mStatus = arFunc(val, index);
+			val.mStatus = CommandHandler(val, index);
+			if(val.mStatus == CS_NOT_SUPPORTED) this->mIIN.SetParameterError(true);
 		}
 		i.SetIndex(index);
 		apObj->Write(*i, val);
@@ -336,17 +301,15 @@ void Slave::RespondToCommands(const StreamObject<T>* apObj, ObjectReadIterator& 
 	}
 }
 
+/*
 template <class T>
 CommandStatus Slave::Select(T aCmd, size_t aIndex, HeaderInfo aHdr, SequenceInfo aSeqInfo, int aSeqNum)
 {
-	CommandStatus res = mpCmdMaster->Select(CommandRequestInfo<T>(aCmd, aHdr.GetObjectType(), aHdr.GetVariation(), aHdr.GetQualifier(), aSeqInfo, aSeqNum), aIndex) ? CS_SUCCESS : CS_NOT_SUPPORTED;
+	CommandStatus res = mpCmdHandler->Select(CommandRequestInfo<T>(aCmd, aHdr.GetObjectType(), aHdr.GetVariation(), aHdr.GetQualifier(), aSeqInfo, aSeqNum), aIndex) ? CS_SUCCESS : CS_NOT_SUPPORTED;
 	LOG_BLOCK(LEV_INFO, "Selecting " << aCmd.ToString() << " Index: " << aIndex << " Result: " << ToString(res));
 	if (res == CS_NOT_SUPPORTED) {
 		mRspIIN.SetParameterError(true);
-	}
-	if (res == CS_TOO_MANY_OPS) {
-		mpCmdMaster->DeselectAll(); // 4.4.3 rule 3
-	}
+	}	
 	return res;
 }
 
@@ -375,6 +338,7 @@ CommandStatus Slave::Operate(T& arCmd, size_t aIndex, bool aDirect, const Header
 		return cr.mResult;
 	}
 }
+*/
 
 }
 }

@@ -48,7 +48,6 @@ namespace apl
 {
 class IPhysicalLayerAsync;
 class Logger;
-class ICommandAcceptor;
 class IDataObserver;
 }
 
@@ -60,6 +59,7 @@ namespace dnp
 class LinkChannel;
 class Stack;
 class ICommandProcessor;
+class ICommandHandler;
 struct VtoRouterSettings;
 
 struct SlaveStackConfig;
@@ -128,7 +128,7 @@ public:
 									associate the stack.
 		@param arStackName			Unique name of the stack.
 		@param aLevel				Log filter level to use.
-		@param apCmdAcceptor		Interface to callback with measurements.
+		@param apCmdHandler			Interface to callback with commands
 									The callback comes from an unknown
 									network thread and should not be
 									blocked.
@@ -144,7 +144,7 @@ public:
 	IDataObserver* AddSlave(const std::string& arPortName,
 	                        const std::string& arStackName,
 	                        FilterLevel aLevel,
-	                        ICommandAcceptor* apCmdAcceptor,
+	                        ICommandHandler* apCmdHandler,
 	                        const SlaveStackConfig&);
 
 	/**

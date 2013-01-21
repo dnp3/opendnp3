@@ -26,14 +26,14 @@
 //
 // Contact Automatak, LLC for a commercial license to these modifications
 //
-#ifndef __SLAVE_COMMAND_ACCEPTOR_ADAPTER_H_
-#define __SLAVE_COMMAND_ACCEPTOR_ADAPTER_H_
+#ifndef __SLAVE_COMMAND_HANDLER_ADAPTER_H_
+#define __SLAVE_COMMAND_HANDLER_ADAPTER_H_
 
 using namespace System::Collections::ObjectModel;
 
 #include <vcclr.h>
 
-#include <APL/CommandInterfaces.h>
+#include <DNP3/ICommandHandler.h>
 
 using namespace DNP3::Interface;
 
@@ -42,44 +42,45 @@ namespace DNP3
 namespace Adapter
 {				
 	//this object goes into the stack
-	class SlaveCommandAcceptorAdapter : public apl::ICommandAcceptor
+	private class SlaveCommandHandlerAdapter : public apl::dnp::ICommandHandler
 	{
 		public:
-			SlaveCommandAcceptorAdapter(DNP3::Interface::ICommandAcceptor^ proxy);
+			SlaveCommandHandlerAdapter(DNP3::Interface::ICommandHandler^ proxy);
 
-			void AcceptCommand(const apl::BinaryOutput&, size_t, int aSequence, apl::IResponseAcceptor* apRspAcceptor);
-			void AcceptCommand(const apl::Setpoint&, size_t, int aSequence, apl::IResponseAcceptor* apRspAcceptor);
+			apl::CommandStatus Select(const apl::BinaryOutput& arCommand, size_t aIndex, uint8_t aSequence);
 
-		private:
-			gcroot<DNP3::Interface::ICommandAcceptor^> proxy;
-	};
+			apl::CommandStatus Select(const apl::Setpoint& arCommand, size_t aIndex, uint8_t aSequence);
 
-	public ref class SlaveCommandAcceptorAdapterWrapper
-	{		
-		public:
+			apl::CommandStatus Operate(const apl::BinaryOutput& arCommand, size_t aIndex, uint8_t aSequence);
 
-		SlaveCommandAcceptorAdapterWrapper(ICommandAcceptor^ proxy);
-		~SlaveCommandAcceptorAdapterWrapper();
+			apl::CommandStatus Operate(const apl::Setpoint& arCommand, size_t aIndex, uint8_t aSequence);
 
-		apl::ICommandAcceptor* GetCommandAcceptor() { return pAdapter; }
+			apl::CommandStatus DirectOperate(const apl::BinaryOutput& arCommand, size_t aIndex);
 
-		private:		
-		SlaveCommandAcceptorAdapter* pAdapter;
-	};
-
-	public ref class ResponseDelegateAdapter
-	{
-		public: 
-			ResponseDelegateAdapter(apl::IResponseAcceptor* apRspAcceptor, int aSequence);
-
-			void OnResult(CommandStatus status);
+			apl::CommandStatus DirectOperate(const apl::Setpoint& arCommand, size_t aIndex);
 
 		private:
-			
-			apl::IResponseAcceptor* mpRspAcceptor;
-			int mSequence;			
-	};
+			gcroot<DNP3::Interface::ICommandHandler^> proxy;
+	};	
 	
+	public ref class SlaveCommandHandlerWrapper
+	{
+		public:
+
+		SlaveCommandHandlerWrapper(DNP3::Interface::ICommandHandler^ proxy) :
+			mpAdapter(new SlaveCommandHandlerAdapter(proxy))
+		{}
+
+		~SlaveCommandHandlerWrapper()
+		{ 
+			delete mpAdapter;
+		}
+
+		apl::dnp::ICommandHandler* Get() { return mpAdapter; }
+		
+		private:
+		SlaveCommandHandlerAdapter* mpAdapter;
+	};
 }}
 
 #endif

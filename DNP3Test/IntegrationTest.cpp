@@ -179,7 +179,7 @@ void IntegrationTest::AddStackPair(FilterLevel aLevel, size_t aNumPoints)
 		cfg.slave.mDisableUnsol = false;
 		cfg.slave.mUnsolPackDelay = 0;
 		cfg.device = DeviceTemplate(aNumPoints, aNumPoints, aNumPoints);
-		IDataObserver* pObs = this->mManager.AddSlave(server, server, aLevel, &mCmdAcceptor, cfg);
+		IDataObserver* pObs = this->mManager.AddSlave(server, server, aLevel, &mCmdHandler, cfg);
 		this->mFanout.AddObserver(pObs);
 	}
 

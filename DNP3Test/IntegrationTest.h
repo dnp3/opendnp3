@@ -40,6 +40,7 @@
 
 #include <DNP3/AsyncStackManager.h>
 
+#include "MockCommandHandler.h"
 #include "ComparingDataObserver.h"
 
 #include <vector>
@@ -88,7 +89,7 @@ private:
 	const uint16_t M_START_PORT;
 
 	FlexibleDataObserver mLocalFDO;
-	MockCommandAcceptor mCmdAcceptor;
+	MockCommandHandler mCmdHandler;
 
 	AsyncStackManager mManager;
 	size_t NUM_POINTS;

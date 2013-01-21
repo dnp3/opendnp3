@@ -48,12 +48,12 @@ namespace apl
 namespace dnp
 {
 
-Slave::Slave(Logger* apLogger, IAppLayer* apAppLayer, IExecutor* apExecutor, ITimeManager* apTime, Database* apDatabase, IDNPCommandMaster* apCmdMaster, const SlaveConfig& arCfg) :
+Slave::Slave(Logger* apLogger, IAppLayer* apAppLayer, IExecutor* apExecutor, ITimeManager* apTime, Database* apDatabase, ICommandHandler* apCmdHandler, const SlaveConfig& arCfg) :
 	Loggable(apLogger),
 	mpAppLayer(apAppLayer),
 	mpExecutor(apExecutor),
 	mpDatabase(apDatabase),
-	mpCmdMaster(apCmdMaster),
+	mpCmdHandler(apCmdHandler),
 	mpState(AS_Closed::Inst()),
 	mConfig(arCfg),
 	mRspTypes(arCfg),
@@ -80,10 +80,7 @@ Slave::Slave(Logger* apLogger, IAppLayer* apAppLayer, IExecutor* apExecutor, ITi
 	mpDatabase->SetEventBuffer(mRspContext.GetBuffer());
 
 	mIIN.SetDeviceRestart(true);	/* Always set on restart */
-
-	/* Use the cmd master to send and rsp queue to wait for reply */
-	mpCmdMaster->SetResponseObserver(&mRspQueue);
-
+	
 	/*
 	 * Incoming data will trigger a POST on the timer source to call
 	 * Slave::OnDataUpdate().
@@ -434,10 +431,9 @@ void Slave::HandleWrite(const APDU& arRequest)
 }
 
 void Slave::HandleSelect(const APDU& arRequest, SequenceInfo aSeqInfo)
-{
-	mpCmdMaster->DeselectAll();
-
+{	
 	mResponse.Set(FC_RESPONSE);
+	uint8_t seq = arRequest.GetControl().SEQ;
 
 	for (HeaderReadIterator hdr = arRequest.BeginRead(); !hdr.IsEnd(); ++hdr) {
 
@@ -445,24 +441,34 @@ void Slave::HandleSelect(const APDU& arRequest, SequenceInfo aSeqInfo)
 
 		switch (MACRO_DNP_RADIX(hdr->GetGroup(), hdr->GetVariation())) {
 
-		case (MACRO_DNP_RADIX(12, 1)):
-			this->RespondToCommands<BinaryOutput>(Group12Var1::Inst(), i, boost::bind(&Slave::Select<BinaryOutput>, this, _1, _2, hdr.info(), aSeqInfo, arRequest.GetControl().SEQ));
+		case (MACRO_DNP_RADIX(12, 1)):			
+			this->RespondToCommands<BinaryOutput>(Group12Var1::Inst(), i, [this, seq](BinaryOutput cmd, size_t idx) {
+				return this->mpCmdHandler->Select(cmd, idx, seq);
+			});
 			break;
 
-		case (MACRO_DNP_RADIX(41, 1)):
-			this->RespondToCommands<Setpoint>(Group41Var1::Inst(), i, boost::bind(&Slave::Select<Setpoint>, this, _1, _2, hdr.info(), aSeqInfo, arRequest.GetControl().SEQ));
+		case (MACRO_DNP_RADIX(41, 1)):			
+			this->RespondToCommands<Setpoint>(Group41Var1::Inst(), i, [this, seq](Setpoint cmd, size_t idx) {
+				return this->mpCmdHandler->Select(cmd, idx, seq);
+			});
 			break;
 
 		case (MACRO_DNP_RADIX(41, 2)):
-			this->RespondToCommands<Setpoint>(Group41Var2::Inst(), i, boost::bind(&Slave::Select<Setpoint>, this, _1, _2, hdr.info(), aSeqInfo, arRequest.GetControl().SEQ));
+			this->RespondToCommands<Setpoint>(Group41Var2::Inst(), i, [this, seq](Setpoint cmd, size_t idx) {
+				return this->mpCmdHandler->Select(cmd, idx, seq);
+			});
 			break;
 
 		case (MACRO_DNP_RADIX(41, 3)):
-			this->RespondToCommands<Setpoint>(Group41Var3::Inst(), i, boost::bind(&Slave::Select<Setpoint>, this, _1, _2, hdr.info(), aSeqInfo, arRequest.GetControl().SEQ));
+			this->RespondToCommands<Setpoint>(Group41Var3::Inst(), i, [this, seq](Setpoint cmd, size_t idx) {
+				return this->mpCmdHandler->Select(cmd, idx, seq);
+			});			
 			break;
 
 		case (MACRO_DNP_RADIX(41, 4)):
-			this->RespondToCommands<Setpoint>(Group41Var4::Inst(), i, boost::bind(&Slave::Select<Setpoint>, this, _1, _2, hdr.info(), aSeqInfo, arRequest.GetControl().SEQ));
+			this->RespondToCommands<Setpoint>(Group41Var4::Inst(), i, [this, seq](Setpoint cmd, size_t idx) {
+				return this->mpCmdHandler->Select(cmd, idx, seq);
+			});
 			break;
 
 		default:
@@ -474,12 +480,9 @@ void Slave::HandleSelect(const APDU& arRequest, SequenceInfo aSeqInfo)
 }
 
 void Slave::HandleOperate(const APDU& arRequest, SequenceInfo aSeqInfo)
-{
-	if (aSeqInfo == SI_PREV && mLastRequest == arRequest) {
-		return;
-	}
-
+{	
 	mResponse.Set(FC_RESPONSE);
+	uint8_t seq = arRequest.GetControl().SEQ;
 
 	for (HeaderReadIterator hdr = arRequest.BeginRead(); !hdr.IsEnd(); ++hdr) {
 
@@ -487,24 +490,34 @@ void Slave::HandleOperate(const APDU& arRequest, SequenceInfo aSeqInfo)
 
 		switch (MACRO_DNP_RADIX(hdr->GetGroup(), hdr->GetVariation())) {
 
-		case (MACRO_DNP_RADIX(12, 1)):
-			this->RespondToCommands<BinaryOutput>(Group12Var1::Inst(), i, boost::bind(&Slave::Operate<BinaryOutput>, this, _1, _2, false, hdr.info(), aSeqInfo, arRequest.GetControl().SEQ));
+		case (MACRO_DNP_RADIX(12, 1)):			
+			this->RespondToCommands<BinaryOutput>(Group12Var1::Inst(), i, [this, seq](BinaryOutput cmd, size_t idx) {
+				return this->mpCmdHandler->Operate(cmd, idx, seq);
+			});
 			break;
 
-		case (MACRO_DNP_RADIX(41, 1)):
-			this->RespondToCommands<Setpoint>(Group41Var1::Inst(), i, boost::bind(&Slave::Operate<Setpoint>, this, _1, _2, false, hdr.info(), aSeqInfo, arRequest.GetControl().SEQ));
+		case (MACRO_DNP_RADIX(41, 1)):			
+			this->RespondToCommands<Setpoint>(Group41Var1::Inst(), i, [this, seq](Setpoint cmd, size_t idx) {
+				return this->mpCmdHandler->Operate(cmd, idx, seq);
+			});
 			break;
 
 		case (MACRO_DNP_RADIX(41, 2)):
-			this->RespondToCommands<Setpoint>(Group41Var2::Inst(), i, boost::bind(&Slave::Operate<Setpoint>, this, _1, _2, false, hdr.info(), aSeqInfo, arRequest.GetControl().SEQ));
+			this->RespondToCommands<Setpoint>(Group41Var2::Inst(), i, [this, seq](Setpoint cmd, size_t idx) {
+				return this->mpCmdHandler->Operate(cmd, idx, seq);
+			});
 			break;
 
 		case (MACRO_DNP_RADIX(41, 3)):
-			this->RespondToCommands<Setpoint>(Group41Var3::Inst(), i, boost::bind(&Slave::Operate<Setpoint>, this, _1, _2, false, hdr.info(), aSeqInfo, arRequest.GetControl().SEQ));
+			this->RespondToCommands<Setpoint>(Group41Var3::Inst(), i, [this, seq](Setpoint cmd, size_t idx) {
+				return this->mpCmdHandler->Operate(cmd, idx, seq);
+			});			
 			break;
 
 		case (MACRO_DNP_RADIX(41, 4)):
-			this->RespondToCommands<Setpoint>(Group41Var4::Inst(), i, boost::bind(&Slave::Operate<Setpoint>, this, _1, _2, false, hdr.info(), aSeqInfo, arRequest.GetControl().SEQ));
+			this->RespondToCommands<Setpoint>(Group41Var4::Inst(), i, [this, seq](Setpoint cmd, size_t idx) {
+				return this->mpCmdHandler->Operate(cmd, idx, seq);
+			});
 			break;
 
 		default:
@@ -525,24 +538,34 @@ void Slave::HandleDirectOperate(const APDU& arRequest, SequenceInfo aSeqInfo)
 
 		switch (MACRO_DNP_RADIX(hdr->GetGroup(), hdr->GetVariation())) {
 
-		case (MACRO_DNP_RADIX(12, 1)):
-			this->RespondToCommands<BinaryOutput>(Group12Var1::Inst(), i, boost::bind(&Slave::Operate<BinaryOutput>, this, _1, _2, true, hdr.info(), aSeqInfo, arRequest.GetControl().SEQ));
+		case (MACRO_DNP_RADIX(12, 1)):			
+			this->RespondToCommands<BinaryOutput>(Group12Var1::Inst(), i, [this](BinaryOutput cmd, size_t idx) {
+				return this->mpCmdHandler->DirectOperate(cmd, idx);
+			});
 			break;
 
-		case (MACRO_DNP_RADIX(41, 1)):
-			this->RespondToCommands<Setpoint>(Group41Var1::Inst(), i, boost::bind(&Slave::Operate<Setpoint>, this, _1, _2, true, hdr.info(), aSeqInfo, arRequest.GetControl().SEQ));
+		case (MACRO_DNP_RADIX(41, 1)):			
+			this->RespondToCommands<Setpoint>(Group41Var1::Inst(), i, [this](Setpoint cmd, size_t idx) {
+				return this->mpCmdHandler->DirectOperate(cmd, idx);
+			});
 			break;
 
 		case (MACRO_DNP_RADIX(41, 2)):
-			this->RespondToCommands<Setpoint>(Group41Var2::Inst(), i, boost::bind(&Slave::Operate<Setpoint>, this, _1, _2, true, hdr.info(), aSeqInfo, arRequest.GetControl().SEQ));
+			this->RespondToCommands<Setpoint>(Group41Var2::Inst(), i, [this](Setpoint cmd, size_t idx) {
+				return this->mpCmdHandler->DirectOperate(cmd, idx);
+			});
 			break;
 
 		case (MACRO_DNP_RADIX(41, 3)):
-			this->RespondToCommands<Setpoint>(Group41Var3::Inst(), i, boost::bind(&Slave::Operate<Setpoint>, this, _1, _2, true, hdr.info(), aSeqInfo, arRequest.GetControl().SEQ));
+			this->RespondToCommands<Setpoint>(Group41Var3::Inst(), i, [this](Setpoint cmd, size_t idx) {
+				return this->mpCmdHandler->DirectOperate(cmd, idx);
+			});			
 			break;
 
 		case (MACRO_DNP_RADIX(41, 4)):
-			this->RespondToCommands<Setpoint>(Group41Var4::Inst(), i, boost::bind(&Slave::Operate<Setpoint>, this, _1, _2, true, hdr.info(), aSeqInfo, arRequest.GetControl().SEQ));
+			this->RespondToCommands<Setpoint>(Group41Var4::Inst(), i, [this](Setpoint cmd, size_t idx) {
+				return this->mpCmdHandler->DirectOperate(cmd, idx);
+			});
 			break;
 
 		default:

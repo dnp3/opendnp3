@@ -26,12 +26,11 @@
 //
 // Contact Automatak, LLC for a commercial license to these modifications
 //
-#ifndef __SLAVE_DEMO_H_
-#define __SLAVE_DEMO_H_
+#ifndef __I_COMMAND_HANDLER_H_
+#define __I_COMMAND_HANDLER_H_
 
-#include <APL/Loggable.h>
-#include <DNP3/ICommandHandler.h>
-
+#include <APL/CommandTypes.h>
+#include <functional>
 
 namespace apl
 {
@@ -39,24 +38,23 @@ namespace dnp
 {
 
 /**
-	Handles callbacks from the stack	
+* Interface used to dispatch SELECT / OPERATE / DIRECT OPERATE (Binary/Analog output) from the stack to outstation application code
 */
-class SlaveCallbacks : private Loggable, public ICommandHandler
+class ICommandHandler
 {
-public:
-	SlaveCallbacks(Logger* apLogger);	
+	public:
 
-	CommandStatus Select(const BinaryOutput& arCommand, size_t aIndex, uint8_t aSequence);
+		virtual CommandStatus Select(const BinaryOutput& arCommand, size_t aIndex, uint8_t aSequence) = 0;
 
-	CommandStatus Select(const Setpoint& arCommand, size_t aIndex, uint8_t aSequence);
+		virtual CommandStatus Select(const Setpoint& arCommand, size_t aIndex, uint8_t aSequence) = 0;
 
-	CommandStatus Operate(const BinaryOutput& arCommand, size_t aIndex, uint8_t aSequence);
+		virtual CommandStatus Operate(const BinaryOutput& arCommand, size_t aIndex, uint8_t aSequence) = 0;
 
-	CommandStatus Operate(const Setpoint& arCommand, size_t aIndex, uint8_t aSequence);
+		virtual CommandStatus Operate(const Setpoint& arCommand, size_t aIndex, uint8_t aSequence) = 0;
 
-	CommandStatus DirectOperate(const BinaryOutput& arCommand, size_t aIndex);
+		virtual CommandStatus DirectOperate(const BinaryOutput& arCommand, size_t aIndex) = 0;
 
-	CommandStatus DirectOperate(const Setpoint& arCommand, size_t aIndex);
+		virtual CommandStatus DirectOperate(const Setpoint& arCommand, size_t aIndex) = 0;
 
 };
 
