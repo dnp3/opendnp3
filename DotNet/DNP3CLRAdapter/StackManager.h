@@ -49,7 +49,7 @@ namespace Adapter
 			void AddTCPServer(System::String^ name, FilterLevel level, System::UInt64 retryMs, System::String^ endpoint, System::UInt16 port);
 			void AddSerial(System::String^ name, FilterLevel level, System::UInt64 retryMs, SerialSettings^ settings);
 						
-			ICommandAcceptor^ AddMaster(	System::String^ portName,
+			ICommandProcessor^ AddMaster(	System::String^ portName,
 											System::String^ stackName,	                            
 											FilterLevel level,
 											IDataObserver^ publisher,

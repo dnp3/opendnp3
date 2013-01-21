@@ -59,6 +59,7 @@ namespace dnp
 
 class LinkChannel;
 class Stack;
+class ICommandProcessor;
 struct VtoRouterSettings;
 
 struct SlaveStackConfig;
@@ -113,7 +114,7 @@ public:
 		@throw ArgumentException	if arPortName doesn't exist or if
 									arStackName already exists
 	*/
-	ICommandAcceptor* AddMaster(const std::string& arPortName,
+	ICommandProcessor* AddMaster(const std::string& arPortName,
 	                            const std::string& arStackName,
 	                            FilterLevel aLevel,
 	                            IDataObserver* apPublisher,

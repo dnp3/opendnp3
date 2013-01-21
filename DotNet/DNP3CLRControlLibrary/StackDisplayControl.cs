@@ -41,7 +41,7 @@ namespace TestSetControlLibrary
 {
     public interface IMasterControl
     {
-        ICommandAcceptor CommandAcceptor
+        ICommandProcessor CommandProcessor
         {
             set;
         }

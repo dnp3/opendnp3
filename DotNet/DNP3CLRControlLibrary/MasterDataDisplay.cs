@@ -41,7 +41,7 @@ namespace TestSetControlLibrary
 {
     public partial class MasterDataDisplay : UserControl, IMasterControl
     {
-        private ICommandAcceptor cmdAcceptor = null;
+        private ICommandProcessor cmdProcessor = null;
         private IMeasurementSource source;
 
         public MasterDataDisplay(IMeasurementSource source)
@@ -55,11 +55,11 @@ namespace TestSetControlLibrary
             source.AllSetpointStatusUpdate += new OnUpdateSetpointStatus(this.UpdateAOStatus);
         }
 
-        public ICommandAcceptor CommandAcceptor
+        public ICommandProcessor CommandProcessor
         {
             set
             {
-                this.cmdAcceptor = value;
+                this.cmdProcessor = value;
             }
 
         }
@@ -131,7 +131,7 @@ namespace TestSetControlLibrary
 
         private void analogOutputToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var form = new SetpointForm(this.cmdAcceptor);
+            var form = new SetpointForm(this.cmdProcessor);
             form.Show();
         }
     }

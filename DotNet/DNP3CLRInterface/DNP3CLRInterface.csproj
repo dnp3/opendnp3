@@ -44,6 +44,7 @@
     <Compile Include="Conversions.cs" />
     <Compile Include="DataTypes.cs" />
     <Compile Include="ICommandAcceptor.cs" />
+    <Compile Include="ICommandProcessor.cs" />
     <Compile Include="IDataObserver.cs" />
     <Compile Include="IFuture.cs" />
     <Compile Include="ILogHandler.cs" />

@@ -47,22 +47,26 @@ ConstantCommandProcessor::ConstantCommandProcessor(IExecutor* apExecutor, const 
 	
 void ConstantCommandProcessor::Select(const BinaryOutput& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback)
 {
-	mpExecutor->Post([=](){ aCallback(mResponse); });
+	CommandResponse cr(mResponse);
+	mpExecutor->Post([=](){ aCallback(cr); });
 }
 
 void ConstantCommandProcessor::Select(const Setpoint& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback)
 {
-	mpExecutor->Post([=](){ aCallback(mResponse); });
+	CommandResponse cr(mResponse);
+	mpExecutor->Post([=](){ aCallback(cr); });
 }
 
 void ConstantCommandProcessor::Operate(const BinaryOutput& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback)
 {
-	mpExecutor->Post([=](){ aCallback(mResponse); });
+	CommandResponse cr(mResponse);
+	mpExecutor->Post([=](){ aCallback(cr); });
 }
 
 void ConstantCommandProcessor::Operate(const Setpoint& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback)
 {
-	mpExecutor->Post([=](){ aCallback(mResponse); });
+	CommandResponse cr(mResponse);
+	mpExecutor->Post([=](){ aCallback(cr); });
 }
 
 

@@ -32,6 +32,8 @@
 #include "ObjectReadIterator.h"
 #include "ResponseLoader.h"
 #include "VtoEventBufferAdapter.h"
+#include "ConstantCommandProcessor.h"
+#include "CommandHelpers.h"
 
 #include <APL/DataInterfaces.h>
 #include <APL/AsyncTaskInterfaces.h>
@@ -71,8 +73,7 @@ Master::Master(Logger* apLogger, MasterConfig aCfg, IAppLayer* apAppLayer, IData
 	mClearRestart(apLogger),
 	mConfigureUnsol(apLogger),
 	mTimeSync(apLogger, apTimeSrc),
-	mExecuteBO(apLogger),
-	mExecuteSP(apLogger),
+	mCommandTask(apLogger),
 	mVtoTransmitTask(apLogger, aCfg.FragSize, aCfg.UseNonStandardVtoFunction)
 {
 	/*
@@ -144,31 +145,70 @@ void Master::ProcessCommand(ITask* apTask)
 	CommandData info;
 
 	if(mpState == AMS_Closed::Inst()) { //we're closed
-		while(mCommandQueue.RespondToCommand(CS_HARDWARE_ERROR));
+		ConstantCommandProcessor ccp(mpExecutor, CS_HARDWARE_ERROR);			
+		while(mCommandQueue.Dispatch(&ccp));
 		apTask->Disable();				
 	}
 	else {
-
-		switch(mCommandQueue.Next()) {
-		case(apl::CT_BINARY_OUTPUT): {
-				apl::BinaryOutput cmd;
-				mCommandQueue.Read(cmd, info);
-				mExecuteBO.Set(cmd, info, true);
-				mpState->StartTask(this, apTask, &mExecuteBO);
-			}
-			break;
-		case(apl::CT_SETPOINT): {
-				apl::Setpoint cmd;
-				mCommandQueue.Read(cmd, info);
-				mExecuteSP.Set(cmd, info, true);
-				mpState->StartTask(this, apTask, &mExecuteSP);
-			}
-			break;
-		default:
-			apTask->Disable(); //no commands to be read
-			break;
+		if(mCommandQueue.Dispatch(this)) {
+			mpState->StartTask(this, apTask, &mCommandTask);
 		}
+		else apTask->Disable();
 	}
+}
+
+void Master::Select(const BinaryOutput& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback)
+{
+	auto formatter = [=](APDU& arAPDU){ 
+		return CommandHelpers::ConfigureRequest(arAPDU, FC_SELECT, arCommand, aIndex, Group12Var1::Inst());
+	};
+	auto responder = [=](CommandStatus aStatus){
+		mpExecutor->Post([=](){ 
+			aCallback(CommandResponse(aStatus));
+		});
+	};
+	mCommandTask.Configure(formatter, responder);
+}
+
+void Master::Select(const Setpoint& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback)
+{
+	auto formatter = [=](APDU& arAPDU){ 
+		auto pObj = CommandHelpers::GetOptimalEncoder(arCommand.GetOptimalEncodingType());
+		return CommandHelpers::ConfigureRequest(arAPDU, FC_SELECT, arCommand, aIndex, pObj);
+	};
+	auto responder = [=](CommandStatus aStatus){
+		mpExecutor->Post([=](){ 
+			aCallback(CommandResponse(aStatus));
+		});
+	};
+	mCommandTask.Configure(formatter, responder);
+}
+
+void Master::Operate(const BinaryOutput& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback)
+{
+	auto formatter = [=](APDU& arAPDU){ 
+		return CommandHelpers::ConfigureRequest(arAPDU, FC_OPERATE, arCommand, aIndex, Group12Var1::Inst());
+	};
+	auto responder = [=](CommandStatus aStatus){
+		mpExecutor->Post([=](){ 
+			aCallback(CommandResponse(aStatus));
+		});
+	};
+	mCommandTask.Configure(formatter, responder);
+}
+
+void Master::Operate(const Setpoint& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback)
+{
+	auto formatter = [=](APDU& arAPDU){ 
+		auto pObj = CommandHelpers::GetOptimalEncoder(arCommand.GetEncodingType());
+		return CommandHelpers::ConfigureRequest(arAPDU, FC_OPERATE, arCommand, aIndex, pObj);
+	};
+	auto responder = [=](CommandStatus aStatus){
+		mpExecutor->Post([=](){ 
+			aCallback(CommandResponse(aStatus));
+		});
+	};
+	mCommandTask.Configure(formatter, responder);
 }
 
 void Master::StartTask(MasterTaskBase* apMasterTask, bool aInit)

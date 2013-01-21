@@ -41,12 +41,12 @@ namespace TestSetControlLibrary
 {
     public partial class SetpointForm : Form
     {
-        ICommandAcceptor cmdAcceptor;
+        ICommandProcessor cmdProcessor;
 
-        public SetpointForm(ICommandAcceptor cmdAcceptor)
+        public SetpointForm(ICommandProcessor cmdProcessor)
         {
             InitializeComponent();
-            this.cmdAcceptor = cmdAcceptor;
+            this.cmdProcessor = cmdProcessor;
         }
 
         private Setpoint GetSetpoint()
@@ -68,7 +68,7 @@ namespace TestSetControlLibrary
         {
             this.groupBoxParameters.Enabled = false;
             this.textBoxStatus.Text = "Executing...";
-            var future = cmdAcceptor.AcceptCommand(GetSetpoint(), Decimal.ToUInt32(this.numericUpDownIndex.Value));
+            var future = cmdProcessor.Select(GetSetpoint(), Decimal.ToUInt32(this.numericUpDownIndex.Value));
             future.Listen(OnResult);
         }
 

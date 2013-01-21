@@ -110,7 +110,7 @@ void AsyncStackManager::AddPhysicalLayer(const std::string& arName, PhysLayerSet
 	mMgr.AddPhysicalLayer(arName, aSettings, apPhys);
 }
 
-ICommandAcceptor* AsyncStackManager::AddMaster( const std::string& arPortName, const std::string& arStackName, FilterLevel aLevel, IDataObserver* apPublisher,
+ICommandProcessor* AsyncStackManager::AddMaster( const std::string& arPortName, const std::string& arStackName, FilterLevel aLevel, IDataObserver* apPublisher,
         const MasterStackConfig& arCfg)
 {
 	this->ThrowIfAlreadyShutdown();
@@ -128,7 +128,7 @@ ICommandAcceptor* AsyncStackManager::AddMaster( const std::string& arPortName, c
 		this->StartVtoRouter(s.mPhysicalLayerName, arStackName, s.mSettings);
 	}
 
-	return pMaster->mMaster.GetCmdAcceptor();
+	return pMaster->mMaster.GetCommandProcessor();
 }
 
 IDataObserver* AsyncStackManager::AddSlave( const std::string& arPortName, const std::string& arStackName, FilterLevel aLevel, ICommandAcceptor* apCmdAcceptor,

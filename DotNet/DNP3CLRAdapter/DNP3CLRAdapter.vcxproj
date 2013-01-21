@@ -83,7 +83,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="CommandAcceptorAdapter.h" />
+    <ClInclude Include="CommandProcessorAdapter.h" />
     <ClInclude Include="Conversions.h" />
     <ClInclude Include="FilterLevel.h" />
     <ClInclude Include="Lock.h" />
@@ -94,7 +94,7 @@
     <ClInclude Include="StackManager.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="CommandAcceptorAdapter.cpp" />
+    <ClCompile Include="CommandProcessorAdapter.cpp" />
     <ClCompile Include="Conversions.cpp" />
     <ClCompile Include="LogAdapter.cpp" />
     <ClCompile Include="MasterDataObserverAdapter.cpp" />

@@ -75,7 +75,7 @@ namespace DotNetTestSet
         {            
             var observer = new EventedDataObserver(this);
             var control = this.stackDisplayControl.AddMaster(name, observer.MeasurementSource);             
-            control.CommandAcceptor = sm.AddMaster(port, name, level, observer, config);                            
+            control.CommandProcessor = sm.AddMaster(port, name, level, observer, config);                            
         }
 
         private void stackBrowser1_OnRemovePort(string name)

@@ -45,7 +45,7 @@ namespace Adapter
 	public class ResponseRouter
 	{
 		public:			
-			static void Set(gcroot<Future<CommandStatus>^> future, apl::CommandResponse cr);		
+			static void Set(gcroot<Future<CommandStatus>^>* apFuture, apl::CommandResponse cr);		
 	};
 
 	public ref class CommandProcessorAdapter : public ICommandProcessor

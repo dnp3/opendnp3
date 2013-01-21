@@ -40,9 +40,10 @@ namespace DNP3
 namespace Adapter
 {
 
-void ResponseRouter::Set(gcroot<Future<CommandStatus>^> future, apl::CommandResponse cr)
+void ResponseRouter::Set(gcroot<Future<CommandStatus>^>* apFuture, apl::CommandResponse cr)
 {	
-	future->Set(Conversions::convertCommandStatus(cr.mResult));
+	std::auto_ptr<gcroot<Future<CommandStatus>^>> ptr(apFuture);
+	(*apFuture)->Set(Conversions::convertCommandStatus(cr.mResult));
 }
 
 CommandProcessorAdapter::CommandProcessorAdapter(apl::dnp::ICommandProcessor* apProxy) : mpProxy(apProxy)
@@ -56,9 +57,9 @@ IFuture<CommandStatus>^ CommandProcessorAdapter::Select(BinaryOutput^ command, S
 	
 	apl::BinaryOutput cmd = Conversions::convertBO(command);
 
-	auto wrapper = gcroot<Future<CommandStatus>^>(future);
+	auto pWrapper = new gcroot<Future<CommandStatus>^>(future);
 	
-	mpProxy->Select(cmd, index, std::bind(&ResponseRouter::Set, wrapper, std::placeholders::_1)); 
+	mpProxy->Select(cmd, index, std::bind(&ResponseRouter::Set, pWrapper, std::placeholders::_1)); 
 
 	return future;
 }
@@ -69,9 +70,9 @@ IFuture<CommandStatus>^ CommandProcessorAdapter::Select(Setpoint^ command, Syste
 	
 	apl::Setpoint cmd = Conversions::convertSP(command);
 
-	auto wrapper = gcroot<Future<CommandStatus>^>(future);
+	auto pWrapper = new gcroot<Future<CommandStatus>^>(future);
 	
-	mpProxy->Select(cmd, index, std::bind(&ResponseRouter::Set, wrapper, std::placeholders::_1)); 
+	mpProxy->Select(cmd, index, std::bind(&ResponseRouter::Set, pWrapper, std::placeholders::_1)); 
 
 	return future;
 }
@@ -82,9 +83,9 @@ IFuture<CommandStatus>^ CommandProcessorAdapter::Operate(BinaryOutput^ command, 
 	
 	apl::BinaryOutput cmd = Conversions::convertBO(command);
 
-	auto wrapper = gcroot<Future<CommandStatus>^>(future);
+	auto pWrapper = new gcroot<Future<CommandStatus>^>(future);
 	
-	mpProxy->Operate(cmd, index, std::bind(&ResponseRouter::Set, wrapper, std::placeholders::_1)); 
+	mpProxy->Operate(cmd, index, std::bind(&ResponseRouter::Set, pWrapper, std::placeholders::_1)); 
 
 	return future;
 }
@@ -95,9 +96,9 @@ IFuture<CommandStatus>^ CommandProcessorAdapter::Operate(Setpoint^ command, Syst
 	
 	apl::Setpoint cmd = Conversions::convertSP(command);
 
-	auto wrapper = gcroot<Future<CommandStatus>^>(future);
+	auto pWrapper = new gcroot<Future<CommandStatus>^>(future);
 	
-	mpProxy->Operate(cmd, index, std::bind(&ResponseRouter::Set, wrapper, std::placeholders::_1)); 
+	mpProxy->Operate(cmd, index, std::bind(&ResponseRouter::Set, pWrapper, std::placeholders::_1)); 
 
 	return future;
 }

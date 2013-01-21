@@ -124,6 +124,7 @@
     <ClCompile Include="BufferTypes.cpp" />
     <ClCompile Include="ClassCounter.cpp" />
     <ClCompile Include="CommandTask.cpp" />
+    <ClCompile Include="ConstantCommandProcessor.cpp" />
     <ClCompile Include="ControlTasks.cpp" />
     <ClCompile Include="Database.cpp" />
     <ClCompile Include="DataPoll.cpp" />

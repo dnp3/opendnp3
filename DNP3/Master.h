@@ -31,7 +31,6 @@
 
 #include <APL/Loggable.h>
 #include <APL/CommandTypes.h>
-#include <APL/CommandQueue.h>
 #include <APL/TimeSource.h>
 #include <APL/CachedLogVariable.h>
 
@@ -44,12 +43,14 @@
 #include "IStackObserver.h"
 #include "VtoReader.h"
 #include "VtoWriter.h"
+#include "QueuedCommandProcessor.h"
 
 // includes for tasks
 #include "StartupTasks.h"
 #include "DataPoll.h"
 #include "ControlTasks.h"
 #include "VtoTransmitTask.h"
+#include "CommandTask.h"
 
 namespace apl
 {
@@ -74,7 +75,7 @@ class AMS_Base;
  *
  * Coordination of tasks is handled by a higher level task scheduler.
  */
-class Master : public Loggable, public IAppUser
+class Master : public Loggable, public IAppUser, public ICommandProcessor
 {
 	friend class AMS_Base;
 	friend class AMS_Idle;
@@ -87,7 +88,7 @@ public:
 	Master(Logger*, MasterConfig aCfg, IAppLayer*, IDataObserver*, AsyncTaskGroup*, IExecutor*, ITimeSource* apTimeSrc = TimeSource::Inst());
 	virtual ~Master() {}
 
-	ICommandAcceptor* GetCmdAcceptor() {
+	ICommandProcessor* GetCommandProcessor() {
 		return &mCommandQueue;
 	}
 
@@ -139,6 +140,14 @@ public:
 		return true;
 	}
 
+	void Select(const BinaryOutput& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback);
+
+	void Select(const Setpoint& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback);
+
+	void Operate(const BinaryOutput& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback);
+
+	void Operate(const Setpoint& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback);
+
 private:
 
 	void UpdateState(StackStates aState);
@@ -159,7 +168,7 @@ private:
 	void ProcessDataResponse(const APDU&);	// Read data output of solicited or unsolicited response and publish
 	void StartTask(MasterTaskBase*, bool aInit);	// Starts a task running
 	
-	CommandQueue mCommandQueue;				// Threadsafe queue for buffering command requests
+	QueuedCommandProcessor mCommandQueue;				// Threadsafe queue for buffering command requests
 
 	/**
 	 * The VtoReader instance for this stack which will direct received
@@ -198,8 +207,7 @@ private:
 	ClearRestartIIN mClearRestart;			// used to clear the restart
 	ConfigureUnsol mConfigureUnsol;			// manipulates how the outstation does unsolictied reporting
 	TimeSync mTimeSync;						// performs time sync on the outstation
-	BinaryOutputTask mExecuteBO;			// task for executing binary output
-	SetpointTask mExecuteSP;				// task for executing setpoint
+	CommandTask mCommandTask;				// performs command execution
 	VtoTransmitTask mVtoTransmitTask;		// used to transmit VTO data in mVtoWriter
 
 };

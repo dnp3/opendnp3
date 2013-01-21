@@ -30,7 +30,7 @@
 
 #include "Conversions.h"
 #include "MasterDataObserverAdapter.h"
-#include "CommandAcceptorAdapter.h"
+#include "CommandProcessorAdapter.h"
 
 #include "SlaveCommandAcceptorAdapter.h"
 #include "SlaveDataObserverAdapter.h"
@@ -40,6 +40,7 @@
 #include <DNP3/MasterStackConfig.h>
 #include <DNP3/SlaveStackConfig.h>
 #include <DNP3/StackManager.h>
+#include <DNP3/ICommandProcessor.h>
 
 namespace DNP3
 {	
@@ -93,7 +94,7 @@ namespace Adapter
 		pMgr->AddSerial(stdName, pls, s);
 	}
 		
-	ICommandAcceptor^ StackManager::AddMaster(	System::String^ portName,
+	ICommandProcessor^ StackManager::AddMaster(	System::String^ portName,
 												System::String^ stackName,	                            
 												FilterLevel level,
 												DNP3::Interface::IDataObserver^ observer,
@@ -107,9 +108,8 @@ namespace Adapter
 		apl::dnp::MasterStackConfig cfg = Conversions::convertConfig(config);
 
 		try {
-			apl::ICommandAcceptor* pCmdAcceptor = pMgr->AddMaster(stdPortName, stdStackName, stdLevel, wrapper->GetDataObserver(), cfg);
-			ICommandAcceptor^ ca = gcnew CommandAcceptorAdapter(pCmdAcceptor);
-			return ca;
+			auto pCmdProcessor = pMgr->AddMaster(stdPortName, stdStackName, stdLevel, wrapper->GetDataObserver(), cfg);
+			return gcnew CommandProcessorAdapter(pCmdProcessor);			
 		} 
 		catch(apl::Exception ex){
 			throw Conversions::convertException(ex);

@@ -32,8 +32,10 @@
 #include <APL/LogToStdio.h>
 #include <DNP3/AsyncStackManager.h>
 #include <DNP3/MasterStackConfig.h>
+#include <DNP3/ICommandProcessor.h>
 
 #include <iostream>
+#include <future>
 
 using namespace std;
 using namespace apl;
@@ -128,7 +130,7 @@ int main(int argc, char* argv[])
 	// Create a new master on a previously declared port, with a
 	// name, log level, command acceptor, and config info. This
 	// returns a thread-safe interface used for sending commands.
-	ICommandAcceptor* pCmdAcceptor = mgr.AddMaster(
+	ICommandProcessor* pCmdProcessor = mgr.AddMaster(
 		"tcpclient",           // port name
 		"master",              // stack name
 		LOG_LEVEL,             // log filter level
@@ -139,11 +141,27 @@ int main(int argc, char* argv[])
 	
 	std::string cmd;
 	do {
-		std::cout << "Enter something to send a command, or type exit" << std::endl;
+		std::cout << "Enter something to perform a SELECT/OPERATE seuqnce, or type exit" << std::endl;
 		std::cin >> cmd;		
 		if(cmd == "exit") break;
 		else {
-			pCmdAcceptor->AcceptCommand(BinaryOutput(ControlCode::CC_LATCH_ON), 0, 0, &callbacks);
+			BinaryOutput bo(CC_LATCH_ON);
+
+			promise<CommandResponse> selectResult;
+			pCmdProcessor->Select(bo, 0, [&](CommandResponse cr){ selectResult.set_value(cr); });
+			CommandResponse crSelect = selectResult.get_future().get();
+
+			if(crSelect.mResult == CS_SUCCESS)
+			{
+				promise<CommandResponse> operateResult;
+				pCmdProcessor->Select(bo, 0, [&](CommandResponse cr){ operateResult.set_value(cr); });
+				CommandResponse crOperate = operateResult.get_future().get();
+				std::cout << "Operate result: " << crOperate.mResult << std::endl;					
+			}
+			else
+			{
+				std::cout << "Select failed: " << crSelect.mResult << std::endl;
+			}
 		}		
 	}
 	while(true);

@@ -51,6 +51,7 @@ namespace apl
 namespace dnp
 {
 
+class ICommandProcessor;
 class AsyncStackManager;
 
 /** Wraps the AyncStackManger using the impl pattern. This makes it suiteable
@@ -67,7 +68,7 @@ public:
 	void AddTCPServer(const std::string& arName, PhysLayerSettings  aPhys, const std::string& arEndpoint, uint16_t aPort);
 	void AddSerial(const std::string& arName, PhysLayerSettings aPhys, SerialSettings aSerial);
 
-	ICommandAcceptor* AddMaster(const std::string& arPortName,
+	ICommandProcessor* AddMaster(const std::string& arPortName,
 	                            const std::string& arStackName,
 	                            FilterLevel aLevel,
 	                            IDataObserver* apPublisher,

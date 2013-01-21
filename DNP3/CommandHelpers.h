@@ -44,15 +44,24 @@ namespace apl
 namespace dnp
 {
 
-
-
-
 // Static helper functions for formatting/validating command requests
 class CommandHelpers
 {
 	public:
 		template <class T>
 		static std::function<CommandStatus (const APDU&)> ConfigureRequest(APDU& arAPDU, FunctionCodes aCode, const T& arCommand, size_t aIndex, CommandObject<T>* apObj);
+
+		static CommandObject<Setpoint>* GetOptimalEncoder(SetpointEncodingType aType)		
+		{
+			switch(aType) {
+			case SPET_INT16: return Group41Var2::Inst();
+			case SPET_INT32: return Group41Var1::Inst();
+			case SPET_FLOAT: return Group41Var3::Inst();
+			case SPET_DOUBLE: return Group41Var4::Inst();
+			default:
+				throw ArgumentException(LOCATION, "Enum not handled");
+			}
+		}
 	
 	private:
 		template <class T>
