@@ -91,7 +91,6 @@
     <ClCompile Include="MockPhysicalLayerAsync.cpp" />
     <ClCompile Include="MockPhysicalLayerMonitor.cpp" />
     <ClCompile Include="MockPhysicalLayerSource.cpp" />
-    <ClCompile Include="MockResponseAcceptor.cpp" />
     <ClCompile Include="MockUpperLayer.cpp" />
     <ClCompile Include="PhysicalLayerWrapper.cpp" />
     <ClCompile Include="StopWatch.cpp" />
@@ -107,7 +106,6 @@
     <ClInclude Include="FanoutDataObserver.h" />
     <ClInclude Include="LogTester.h" />
     <ClInclude Include="LoopbackPhysicalLayerAsync.h" />
-    <ClInclude Include="MockCommandAcceptor.h" />
     <ClInclude Include="MockCommandHandler.h" />
     <ClInclude Include="MockExecutor.h" />
     <ClInclude Include="MockLogSubscriber.h" />
@@ -117,7 +115,6 @@
     <ClInclude Include="MockPhysicalLayerAsync.h" />
     <ClInclude Include="MockPhysicalLayerMonitor.h" />
     <ClInclude Include="MockPhysicalLayerSource.h" />
-    <ClInclude Include="MockResponseAcceptor.h" />
     <ClInclude Include="MockUpperLayer.h" />
     <ClInclude Include="PhysicalLayerWrapper.h" />
     <ClInclude Include="PhysicalLayerWrapperFactory.h" />

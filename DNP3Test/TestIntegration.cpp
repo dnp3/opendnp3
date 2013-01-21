@@ -32,6 +32,7 @@
 
 #include <APL/Log.h>
 #include <APL/LogToStdio.h>
+#include <APL/Exception.h>
 
 #include <boost/asio.hpp>
 

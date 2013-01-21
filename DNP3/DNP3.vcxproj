@@ -27,14 +27,12 @@
     <ClInclude Include="ClassCounter.h" />
     <ClInclude Include="ClassMask.h" />
     <ClInclude Include="CommandTask.h" />
-    <ClInclude Include="ControlTasks.h" />
     <ClInclude Include="CTOHistory.h" />
     <ClInclude Include="Database.h" />
     <ClInclude Include="DatabaseInterfaces.h" />
     <ClInclude Include="DataPoll.h" />
     <ClInclude Include="DeviceTemplate.h" />
     <ClInclude Include="DeviceTemplateTypes.h" />
-    <ClInclude Include="DNPCommandMaster.h" />
     <ClInclude Include="DNPConstants.h" />
     <ClInclude Include="DNPCrc.h" />
     <ClInclude Include="DNPDatabaseTypes.h" />
@@ -127,11 +125,9 @@
     <ClCompile Include="ClassCounter.cpp" />
     <ClCompile Include="CommandTask.cpp" />
     <ClCompile Include="ConstantCommandProcessor.cpp" />
-    <ClCompile Include="ControlTasks.cpp" />
     <ClCompile Include="Database.cpp" />
     <ClCompile Include="DataPoll.cpp" />
     <ClCompile Include="DeviceTemplate.cpp" />
-    <ClCompile Include="DNPCommandMaster.cpp" />
     <ClCompile Include="DNPCrc.cpp" />
     <ClCompile Include="EnhancedVto.cpp" />
     <ClCompile Include="EnhancedVtoRouter.cpp" />

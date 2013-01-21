@@ -26,10 +26,6 @@
     <ClInclude Include="BoundNotifier.h" />
     <ClInclude Include="CachedLogVariable.h" />
     <ClInclude Include="ChangeBuffer.h" />
-    <ClInclude Include="CommandInterfaces.h" />
-    <ClInclude Include="CommandManager.h" />
-    <ClInclude Include="CommandQueue.h" />
-    <ClInclude Include="CommandResponseQueue.h" />
     <ClInclude Include="CommandTypes.h" />
     <ClInclude Include="CopyableBuffer.h" />
     <ClInclude Include="CRC.h" />
@@ -119,9 +115,6 @@
     <ClCompile Include="AsyncTaskScheduler.cpp" />
     <ClCompile Include="BaseDataTypes.cpp" />
     <ClCompile Include="ChangeBuffer.cpp" />
-    <ClCompile Include="CommandManager.cpp" />
-    <ClCompile Include="CommandQueue.cpp" />
-    <ClCompile Include="CommandResponseQueue.cpp" />
     <ClCompile Include="CommandTypes.cpp" />
     <ClCompile Include="CopyableBuffer.cpp" />
     <ClCompile Include="CRC.cpp" />

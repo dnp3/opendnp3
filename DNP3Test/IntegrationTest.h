@@ -31,7 +31,6 @@
 
 #include <APLTestTools/AsyncTestObjectASIO.h>
 #include <APLTestTools/LogTester.h>
-#include <APLTestTools/MockCommandAcceptor.h>
 #include <APLTestTools/FanoutDataObserver.h>
 #include <APL/Loggable.h>
 

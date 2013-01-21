@@ -29,9 +29,7 @@
 #include <boost/test/unit_test.hpp>
 #include <APLTestTools/TestHelpers.h>
 
-
 #include <APL/Exception.h>
-#include <APL/CommandResponseQueue.h>
 
 #include "MasterTestObject.h"
 #include "QueueingStackObserver.h"

@@ -22,7 +22,6 @@
     <ClCompile Include="TestAsyncTask.cpp" />
     <ClCompile Include="TestCastLongLongDouble.cpp" />
     <ClCompile Include="TestChangeBuffer.cpp" />
-    <ClCompile Include="TestCommandQueue.cpp" />
     <ClCompile Include="TestCommandTypes.cpp" />
     <ClCompile Include="TestLog.cpp" />
     <ClCompile Include="TestMisc.cpp" />

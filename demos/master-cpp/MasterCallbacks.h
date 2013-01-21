@@ -31,7 +31,6 @@
 
 #include <APL/Loggable.h>
 #include <APL/DataInterfaces.h>
-#include <APL/CommandInterfaces.h>
 #include <DNP3/IStackObserver.h>
 
 namespace apl { namespace dnp {
@@ -39,13 +38,11 @@ namespace apl { namespace dnp {
 /**
  * This class implements the callbacks from the stack
  */
-class MasterCallbacks : private Loggable, public IResponseAcceptor, public IDataObserver, public IStackObserver
+class MasterCallbacks : private Loggable, public IDataObserver, public IStackObserver
 {
 public:
 	
-	MasterCallbacks(Logger* apLogger);	
-
-	void AcceptResponse(const CommandResponse& aResponse, int aSequence);
+	MasterCallbacks(Logger* apLogger);
 
 	void OnStateChange(StackStates aState);
 	

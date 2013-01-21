@@ -48,9 +48,6 @@
     <ClCompile Include="MockPhysicalLayerSource.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MockResponseAcceptor.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="MockUpperLayer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -95,9 +92,6 @@
     <ClInclude Include="LoopbackPhysicalLayerAsync.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MockCommandAcceptor.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="MockCommandHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -120,9 +114,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="MockPhysicalLayerSource.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="MockResponseAcceptor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="MockUpperLayer.h">

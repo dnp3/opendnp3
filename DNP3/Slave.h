@@ -31,7 +31,6 @@
 
 #include <APL/CachedLogVariable.h>
 #include <APL/ChangeBuffer.h>
-#include <APL/CommandResponseQueue.h>
 #include <APL/Loggable.h>
 #include <APL/Logger.h>
 #include <APL/TimeSource.h>
@@ -40,7 +39,6 @@
 
 #include "APDU.h"
 #include "AppInterfaces.h"
-#include "DNPCommandMaster.h"
 #include "EventBuffers.h"
 #include "ObjectReadIterator.h"
 #include "ResponseContext.h"

@@ -57,9 +57,6 @@
     <ClInclude Include="ClassMask.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ControlTasks.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="CTOHistory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -76,9 +73,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="DeviceTemplateTypes.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="DNPCommandMaster.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="DNPConstants.h">
@@ -353,9 +347,6 @@
     <ClCompile Include="ClassCounter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ControlTasks.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Database.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -363,9 +354,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="DeviceTemplate.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="DNPCommandMaster.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="DNPCrc.cpp">

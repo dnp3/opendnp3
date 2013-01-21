@@ -40,13 +40,6 @@ MasterCallbacks::MasterCallbacks(Logger* apLogger) : Loggable(apLogger)
 	
 }
 
-void MasterCallbacks::AcceptResponse(const CommandResponse& aResponse, int aSequence)
-{
-	LOG_BLOCK(LEV_EVENT, "Response received for update to index "
-			<< aSequence << ": "
-			<< ToString(aResponse.mResult));
-}
-
 void MasterCallbacks::OnStateChange(StackStates aState)
 {
 	LOG_BLOCK(LEV_EVENT, "Communications link state change: " << ConvertStackStateToString(aState));

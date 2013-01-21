@@ -54,18 +54,6 @@
     <ClInclude Include="ChangeBuffer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CommandInterfaces.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="CommandManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="CommandQueue.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="CommandResponseQueue.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="CommandTypes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -324,15 +312,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="BaseDataTypes.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="CommandManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="CommandQueue.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="CommandResponseQueue.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="CommandTypes.cpp">

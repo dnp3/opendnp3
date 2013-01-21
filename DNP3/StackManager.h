@@ -31,7 +31,6 @@
 
 #include <APL/PhysLayerSettings.h>
 #include <APL/DataInterfaces.h>
-#include <APL/CommandInterfaces.h>
 #include <APL/LogBase.h>
 #include <APL/SerialTypes.h>
 

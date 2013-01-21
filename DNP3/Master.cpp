@@ -142,8 +142,6 @@ void Master::ProcessIIN(const IINField& arIIN)
 
 void Master::ProcessCommand(ITask* apTask)
 {
-	CommandData info;
-
 	if(mpState == AMS_Closed::Inst()) { //we're closed
 		ConstantCommandProcessor ccp(mpExecutor, CS_HARDWARE_ERROR);			
 		while(mCommandQueue.Dispatch(&ccp));

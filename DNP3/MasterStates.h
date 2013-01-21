@@ -32,7 +32,6 @@
 
 #include <string>
 #include <APL/Singleton.h>
-#include <APL/CommandInterfaces.h>
 
 #include "ObjectInterfaces.h"
 

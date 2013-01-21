@@ -28,12 +28,11 @@
 //
 #include <boost/test/unit_test.hpp>
 #include <APLTestTools/TestHelpers.h>
+#include <APL/CommandTypes.h>
 
-#include <APL/CommandQueue.h>
 #include <limits>
 
 using namespace apl;
-
 
 template<class T>
 void OptimalTypeTest(T val, SetpointEncodingType correct)

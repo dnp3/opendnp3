@@ -31,7 +31,6 @@
 
 #include <string>
 #include <APL/Singleton.h>
-#include <APL/CommandInterfaces.h>
 #include <DNP3/AppInterfaces.h>
 
 namespace apl

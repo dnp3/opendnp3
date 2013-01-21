@@ -34,7 +34,6 @@
 #include <APLTestTools/LogTester.h>
 #include <DNP3/Slave.h>
 #include <DNP3/Database.h>
-#include <DNP3/DNPCommandMaster.h>
 #include <DNP3/SlaveConfig.h>
 
 #include "MockCommandHandler.h"
