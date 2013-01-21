@@ -82,9 +82,9 @@
       <Project>{def7e411-7282-4cc6-85f9-60e68a086d15}</Project>
       <Name>DNP3CLRAdapter</Name>
     </ProjectReference>
-    <ProjectReference Include="..\DNP3CLRControlLibrary\DNP3CLRControlLibrary.csproj">
-      <Project>{0c5acfba-897e-48fd-84ab-494338934b86}</Project>
-      <Name>DNP3CLRControlLibrary</Name>
+    <ProjectReference Include="..\DNP3CLRControlLibrary\DNP3CLRTestsetControlLibrary.csproj">
+      <Project>{f42e87e8-9e9d-4a96-8eb6-304205a3968d}</Project>
+      <Name>DNP3CLRTestsetControlLibrary</Name>
     </ProjectReference>
     <ProjectReference Include="..\DNP3CLRInterface\DNP3CLRInterface.csproj">
       <Project>{5f06c7be-3107-4b3e-8559-e5e1bb4008b5}</Project>

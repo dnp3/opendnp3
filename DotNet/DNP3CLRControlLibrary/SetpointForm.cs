@@ -64,10 +64,10 @@ namespace TestSetControlLibrary
             }
         }
 
-        private void buttonIssue_Click(object sender, EventArgs e)
+        private void buttonSelect_Click(object sender, EventArgs e)
         {
             this.groupBoxParameters.Enabled = false;
-            this.textBoxStatus.Text = "Executing...";
+            this.textBoxStatus.Text = "Select...";
             var future = cmdProcessor.Select(GetSetpoint(), Decimal.ToUInt32(this.numericUpDownIndex.Value));
             future.Listen(OnResult);
         }
@@ -82,6 +82,14 @@ namespace TestSetControlLibrary
         {
             this.groupBoxParameters.Enabled = true;
             this.textBoxStatus.Text = status.ToString();
+        }
+
+        private void buttonOperate_Click(object sender, EventArgs e)
+        {
+            this.groupBoxParameters.Enabled = false;
+            this.textBoxStatus.Text = "Operate...";
+            var future = cmdProcessor.Operate(GetSetpoint(), Decimal.ToUInt32(this.numericUpDownIndex.Value));
+            future.Listen(OnResult);
         }
     }
 }

@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{0C5ACFBA-897E-48FD-84AB-494338934B86}</ProjectGuid>
+    <ProjectGuid>{F42E87E8-9E9D-4A96-8EB6-304205A3968D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DNP3CLRControlLibrary</RootNamespace>
-    <AssemblyName>DNP3CLRControlLibrary</AssemblyName>
+    <RootNamespace>DNP3CLRTestsetControlLibrary</RootNamespace>
+    <AssemblyName>DNP3CLRTestsetControlLibrary</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -51,64 +51,95 @@
     <Compile Include="LinkLayerSettingsControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="LinkLayerSettingsControl.Designer.cs" />
+    <Compile Include="LinkLayerSettingsControl.Designer.cs">
+      <DependentUpon>LinkLayerSettingsControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="LogControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="LogControl.Designer.cs" />
+    <Compile Include="LogControl.Designer.cs">
+      <DependentUpon>LogControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="MasterDataDisplay.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="MasterDataDisplay.Designer.cs" />
+    <Compile Include="MasterDataDisplay.Designer.cs">
+      <DependentUpon>MasterDataDisplay.cs</DependentUpon>
+    </Compile>
     <Compile Include="MasterSettingsForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MasterSettingsForm.Designer.cs" />
+    <Compile Include="MasterSettingsForm.Designer.cs">
+      <DependentUpon>MasterSettingsForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SerialSettingsForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="SerialSettingsForm.Designer.cs" />
+    <Compile Include="SerialSettingsForm.Designer.cs">
+      <DependentUpon>SerialSettingsForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="SetpointForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="SetpointForm.Designer.cs" />
+    <Compile Include="SetpointForm.Designer.cs">
+      <DependentUpon>SetpointForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="StackBrowser.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="StackBrowser.Designer.cs" />
+    <Compile Include="StackBrowser.Designer.cs">
+      <DependentUpon>StackBrowser.cs</DependentUpon>
+    </Compile>
     <Compile Include="StackDisplayControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="StackDisplayControl.Designer.cs" />
+    <Compile Include="StackDisplayControl.Designer.cs">
+      <DependentUpon>StackDisplayControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="TcpClientSettings.cs" />
     <Compile Include="TcpSettingsForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="TcpSettingsForm.Designer.cs" />
+    <Compile Include="TcpSettingsForm.Designer.cs">
+      <DependentUpon>TcpSettingsForm.cs</DependentUpon>
+    </Compile>
     <Service Include="{94E38DFF-614B-4cbd-B67C-F211BB35CE8B}" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="LinkLayerSettingsControl.resx" />
-    <EmbeddedResource Include="LogControl.resx" />
-    <EmbeddedResource Include="MasterDataDisplay.resx" />
-    <EmbeddedResource Include="MasterSettingsForm.resx" />
-    <EmbeddedResource Include="SerialSettingsForm.resx" />
-    <EmbeddedResource Include="SetpointForm.resx" />
-    <EmbeddedResource Include="StackBrowser.resx" />
-    <EmbeddedResource Include="StackDisplayControl.resx" />
-    <EmbeddedResource Include="TcpSettingsForm.resx" />
+    <EmbeddedResource Include="LinkLayerSettingsControl.resx">
+      <DependentUpon>LinkLayerSettingsControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LogControl.resx">
+      <DependentUpon>LogControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MasterDataDisplay.resx">
+      <DependentUpon>MasterDataDisplay.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MasterSettingsForm.resx">
+      <DependentUpon>MasterSettingsForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SerialSettingsForm.resx">
+      <DependentUpon>SerialSettingsForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SetpointForm.resx">
+      <DependentUpon>SetpointForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="StackBrowser.resx">
+      <DependentUpon>StackBrowser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="StackDisplayControl.resx">
+      <DependentUpon>StackDisplayControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TcpSettingsForm.resx">
+      <DependentUpon>TcpSettingsForm.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DNP3CLRInterface\DNP3CLRInterface.csproj">
       <Project>{5f06c7be-3107-4b3e-8559-e5e1bb4008b5}</Project>
       <Name>DNP3CLRInterface</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\..\file.licenseheader">
-      <Link>file.licenseheader</Link>
-    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
