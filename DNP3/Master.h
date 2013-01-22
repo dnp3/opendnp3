@@ -150,8 +150,8 @@ public:
 
 private:
 
-	void ConfigureBinaryOutputTask(FunctionCodes aCode, const BinaryOutput& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback);
-	void ConfigureSetpointTask(FunctionCodes aCode, const Setpoint& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback);
+	void ConfigureCommandTask(const BinaryOutput& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback);
+	void ConfigureCommandTask(const Setpoint& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback);
 
 	void UpdateState(StackStates aState);
 

@@ -157,38 +157,44 @@ void Master::ProcessCommand(ITask* apTask)
 
 void Master::Select(const BinaryOutput& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback)
 {
-	this->ConfigureBinaryOutputTask(FC_SELECT, arCommand, aIndex, aCallback);
+	this->ConfigureCommandTask(arCommand, aIndex, aCallback);
+	this->mCommandTask.AddCommandCode(FC_SELECT);
 }
 
 void Master::Select(const Setpoint& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback)
 {
-	this->ConfigureSetpointTask(FC_SELECT, arCommand, aIndex, aCallback);
+	this->ConfigureCommandTask(arCommand, aIndex, aCallback);
+	this->mCommandTask.AddCommandCode(FC_SELECT);
 }
 
 void Master::Operate(const BinaryOutput& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback)
 {
-	this->ConfigureBinaryOutputTask(FC_OPERATE, arCommand, aIndex, aCallback);
+	this->ConfigureCommandTask(arCommand, aIndex, aCallback);
+	this->mCommandTask.AddCommandCode(FC_OPERATE);
 }
 
 void Master::Operate(const Setpoint& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback)
 {
-	this->ConfigureSetpointTask(FC_OPERATE, arCommand, aIndex, aCallback);
+	this->ConfigureCommandTask(arCommand, aIndex, aCallback);
+	this->mCommandTask.AddCommandCode(FC_OPERATE);
 }
 
 void Master::DirectOperate(const BinaryOutput& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback)
 {
-	this->ConfigureBinaryOutputTask(FC_DIRECT_OPERATE, arCommand, aIndex, aCallback);
+	this->ConfigureCommandTask(arCommand, aIndex, aCallback);
+	this->mCommandTask.AddCommandCode(FC_DIRECT_OPERATE);
 }
 
 
 void Master::DirectOperate(const Setpoint& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback)
 {
-	this->ConfigureSetpointTask(FC_DIRECT_OPERATE, arCommand, aIndex, aCallback);
+	this->ConfigureCommandTask(arCommand, aIndex, aCallback);
+	this->mCommandTask.AddCommandCode(FC_DIRECT_OPERATE);
 }
 
-void Master::ConfigureBinaryOutputTask(FunctionCodes aCode, const BinaryOutput& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback)
+void Master::ConfigureCommandTask(const BinaryOutput& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback)
 {
-	auto formatter = [=](APDU& arAPDU){ 
+	auto formatter = [=](APDU& arAPDU, FunctionCodes aCode){ 
 		return CommandHelpers::ConfigureRequest(arAPDU, aCode, arCommand, aIndex, Group12Var1::Inst());
 	};
 	auto responder = [=](CommandStatus aStatus){
@@ -199,9 +205,9 @@ void Master::ConfigureBinaryOutputTask(FunctionCodes aCode, const BinaryOutput& 
 	mCommandTask.Configure(formatter, responder);
 }
 
-void Master::ConfigureSetpointTask(FunctionCodes aCode, const Setpoint& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback)
+void Master::ConfigureCommandTask(const Setpoint& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback)
 {
-	auto formatter = [=](APDU& arAPDU){ 
+	auto formatter = [=](APDU& arAPDU, FunctionCodes aCode){ 
 		auto pObj = CommandHelpers::GetOptimalEncoder(arCommand.GetOptimalEncodingType());
 		return CommandHelpers::ConfigureRequest(arAPDU, aCode, arCommand, aIndex, pObj);
 	};

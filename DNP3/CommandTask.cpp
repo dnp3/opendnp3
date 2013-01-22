@@ -30,6 +30,7 @@
 #include "CommandTask.h"
 #include <APL/Logger.h>
 #include <APL/LoggableMacros.h>
+#include <APL/Exception.h>
 
 namespace apl
 {
@@ -45,11 +46,19 @@ void CommandTask::Configure(const Formatter& arFormatter, const Responder& arRes
 {
 	mFormatter = arFormatter;
 	mResponder = arResponder;
+	mCodes.clear();	
+}
+
+void CommandTask::AddCommandCode(FunctionCodes aCode)
+{
+	this->mCodes.push_back(aCode);
 }
 
 void CommandTask::ConfigureRequest(APDU& arAPDU)
 {
-	mValidator = mFormatter(arAPDU);
+	if(mCodes.empty()) throw InvalidStateException(LOCATION, "No more functions in sequence");	
+	mValidator = mFormatter(arAPDU, mCodes.front());
+	mCodes.pop_front();
 }
 
 std::string CommandTask::Name() const
@@ -71,8 +80,18 @@ TaskResult CommandTask::_OnPartialResponse(const APDU& arAPDU)
 TaskResult CommandTask::_OnFinalResponse(const APDU& arAPDU)
 {
 	CommandStatus cs = mValidator(arAPDU);
-	mResponder(cs);
-	return TR_SUCCESS;
+	if(cs == CS_SUCCESS)
+	{
+		if(mCodes.empty()) {
+			mResponder(cs);
+			return TR_SUCCESS;
+		}
+		else return TR_CONTINUE;
+	}
+	else {
+		mResponder(cs);
+		return TR_SUCCESS;
+	}
 }
 	
 

@@ -46,11 +46,12 @@ BOOST_AUTO_TEST_CASE(FullSequence)
 	EventLog log;
 	CommandTask ct(log.GetLogger(LEV_INFO, "task"));
 	CommandStatus rsp = CS_UNDEFINED;
-	auto formatter = [](APDU& arAPDU){ 
-		return CommandHelpers::ConfigureRequest(arAPDU, FC_DIRECT_OPERATE, BinaryOutput(CC_LATCH_ON), 0, Group12Var1::Inst()); 
+	auto formatter = [](APDU& arAPDU, FunctionCodes aCode){ 
+		return CommandHelpers::ConfigureRequest(arAPDU, aCode, BinaryOutput(CC_LATCH_ON), 0, Group12Var1::Inst()); 
 	};
 	auto responder = [&rsp](CommandStatus status) { rsp = status; };
 	ct.Configure(formatter, responder);
+	ct.AddCommandCode(FC_SELECT);
 	
 	APDU frag;
 	ct.ConfigureRequest(frag);

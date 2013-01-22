@@ -30,8 +30,11 @@
 #define __COMMAND_TASK_H_
 
 #include "MasterTaskBase.h"
+#include <DNP3/APDUConstants.h>
 #include <APL/CommandTypes.h>
+
 #include <functional>
+#include <queue>
 
 namespace apl
 {
@@ -42,13 +45,15 @@ namespace dnp
 class CommandTask : public MasterTaskBase
 {
 	typedef std::function<CommandStatus (const APDU&)> Validator;
-	typedef std::function<Validator (APDU&)> Formatter;
+	typedef std::function<Validator (APDU&, FunctionCodes)> Formatter;
 	typedef std::function<void (CommandStatus)> Responder;
 
 public:
 	CommandTask(Logger*);	
 
 	void Configure(const Formatter& arFormatter, const Responder& arResponder);
+	void AddCommandCode(FunctionCodes aCode); 
+
 	void ConfigureRequest(APDU& arAPDU);
 
 	std::string Name() const;
@@ -63,6 +68,8 @@ protected:
 	void OnFailure();
 
 private:
+
+	std::deque<FunctionCodes> mCodes;
 
 	void Respond(CommandStatus aStatus);
 
