@@ -165,7 +165,7 @@ void VtoRouterManager::StopRouter(VtoRouter* apRouter, IVtoWriter* apWriter)
 				i->mpRouter->Shutdown();
 			});
 
-			i->mpRouter->WaitForShutdown();			  // blocking, when it returns we're done for good
+			i->mpRouter->ShutdownAndWait();			  // blocking, when it returns we're done for good
 			mpPhysSource->ReleaseLayer(i->mPortName); // release the physical layer
 			mRecords.erase(i);						  // erasing from the vector will cause the shared_ptr to delete the VtoRouter*
 			return;

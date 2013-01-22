@@ -26,43 +26,42 @@
 //
 // Contact Automatak, LLC for a commercial license to these modifications
 //
-#ifndef __IO_SERVICE_THREAD_POOL_
-#define __IO_SERVICE_THREAD_POOL_
+#ifndef __DNP3_CHANNEL_H_
+#define __DNP3_CHANNEL_H_
 
-#include "Loggable.h"
+#include "IChannel.h"
+#include "LinkLayerRouter.h"
 
-#include <boost/asio.hpp>
-#include <boost/asio/high_resolution_timer.hpp>
-#include <thread>
+#include <APL/Loggable.h>
+
+#include <memory>
+#include <functional>
 
 namespace apl
 {
 
-class IOServiceThreadPool : private Loggable
+class IPhysicalLayerAsync;
+
+namespace dnp
+{
+
+class DNP3Channel: public IChannel, private Loggable
 {
 	public:
-	
-	IOServiceThreadPool(Logger* apLogger, uint32_t aConcurrency);
-	~IOServiceThreadPool();
+		DNP3Channel(Logger* apLogger, millis_t aOpenRetry, IPhysicalLayerAsync* apPhys, std::function<void (DNP3Channel*)> aOnShutdown);
 
-	boost::asio::io_service* GetIOService();
+		void Shutdown();
 
-	void Shutdown();
+		void ShutdownNoCallback();
 
-	private:
-
-	bool mIsShutdown;
-
-	void OnTimerExpiration(const boost::system::error_code& ec);
-
-	void Run();
-
-	boost::asio::io_service mService;
-	boost::asio::high_resolution_timer mInfiniteTimer;	
-	std::vector<std::thread*> mThreads;
+	private:		
+		std::auto_ptr<IPhysicalLayerAsync> mpPhys;
+		std::function<void (DNP3Channel*)> mOnShutdown;
+		LinkLayerRouter mRouter;
+		
 };
 
 }
-
+}
 
 #endif

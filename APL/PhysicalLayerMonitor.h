@@ -80,11 +80,9 @@ public:
 	/** Add an observer to the set of state callbacks */
 	void AddObserver(IPhysicalLayerObserver* apObserver);
 
-	/** Blocks until the monitor has permanently stopped or the timeout expires.
-		@param aTimeoutMS Timeout in milliseconds, < 0 waits forever
-		@return True of the shutdown condition was met, false otherwise
+	/** Posts a Shutdown() call and then waits indefinitely for shutdown to complete
 	*/
-	bool WaitForShutdown(millis_t aTimeoutMs = -1);
+	void ShutdownAndWait();
 
 	Logger* GetLogger() {
 		return mpLogger;

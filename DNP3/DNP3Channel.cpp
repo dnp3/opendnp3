@@ -26,43 +26,33 @@
 //
 // Contact Automatak, LLC for a commercial license to these modifications
 //
-#ifndef __IO_SERVICE_THREAD_POOL_
-#define __IO_SERVICE_THREAD_POOL_
 
-#include "Loggable.h"
-
-#include <boost/asio.hpp>
-#include <boost/asio/high_resolution_timer.hpp>
-#include <thread>
+#include "DNP3Channel.h"
 
 namespace apl
 {
-
-class IOServiceThreadPool : private Loggable
+namespace dnp
 {
-	public:
-	
-	IOServiceThreadPool(Logger* apLogger, uint32_t aConcurrency);
-	~IOServiceThreadPool();
 
-	boost::asio::io_service* GetIOService();
-
-	void Shutdown();
-
-	private:
-
-	bool mIsShutdown;
-
-	void OnTimerExpiration(const boost::system::error_code& ec);
-
-	void Run();
-
-	boost::asio::io_service mService;
-	boost::asio::high_resolution_timer mInfiniteTimer;	
-	std::vector<std::thread*> mThreads;
-};
+DNP3Channel::DNP3Channel(Logger* apLogger, millis_t aOpenRetry, IPhysicalLayerAsync* apPhys, std::function<void (DNP3Channel*)> aOnShutdown) :
+	Loggable(apLogger),
+	mpPhys(apPhys), 
+	mOnShutdown(aOnShutdown),
+	mRouter(apLogger->GetSubLogger("Router"), mpPhys.get(), aOpenRetry)
+{
 
 }
 
+void DNP3Channel::Shutdown()
+{
+	this->ShutdownNoCallback();
+	mOnShutdown(this);
+}
 
-#endif
+void DNP3Channel::ShutdownNoCallback()
+{
+	mRouter.ShutdownAndWait();
+}
+
+}
+}

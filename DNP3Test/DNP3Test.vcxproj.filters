@@ -245,6 +245,9 @@
     <ClCompile Include="TestCommandTask.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="TestDNP3Manager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\file.licenseheader" />

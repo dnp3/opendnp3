@@ -26,43 +26,50 @@
 //
 // Contact Automatak, LLC for a commercial license to these modifications
 //
-#ifndef __IO_SERVICE_THREAD_POOL_
-#define __IO_SERVICE_THREAD_POOL_
+#ifndef __DNP3_MANAGER_H_
+#define __DNP3_MANAGER_H_
 
-#include "Loggable.h"
+#include <string>
+#include <set>
+#include <mutex>
 
-#include <boost/asio.hpp>
-#include <boost/asio/high_resolution_timer.hpp>
-#include <thread>
+#include <APL/PhysLayerSettings.h>
+#include <APL/IOServiceThreadPool.h>
+#include <APL/Log.h>
 
 namespace apl
 {
+namespace dnp
+{
 
-class IOServiceThreadPool : private Loggable
+class IChannel;
+class DNP3Channel;
+
+
+class DNP3Manager
 {
 	public:
-	
-	IOServiceThreadPool(Logger* apLogger, uint32_t aConcurrency);
-	~IOServiceThreadPool();
+		DNP3Manager(uint32_t aConcurrency);
+		~DNP3Manager();
 
-	boost::asio::io_service* GetIOService();
+		void Shutdown();
 
-	void Shutdown();
+		IChannel* AddTCPClient(const std::string& arName, FilterLevel aLevel, millis_t aOpenRetry, const std::string& arAddr, uint16_t aPort);
+		IChannel* AddTCPServer(const std::string& arName, FilterLevel aLevel, millis_t aOpenRetry, const std::string& arEndpoint, uint16_t aPort);
 
 	private:
 
-	bool mIsShutdown;
+		void OnChannelShutdownCallback(DNP3Channel* apChannel);
 
-	void OnTimerExpiration(const boost::system::error_code& ec);
+		std::mutex mMutex;
+		EventLog mLog;
+		IOServiceThreadPool mThreadPool;
+		std::set<DNP3Channel*> mChannels;
 
-	void Run();
-
-	boost::asio::io_service mService;
-	boost::asio::high_resolution_timer mInfiniteTimer;	
-	std::vector<std::thread*> mThreads;
 };
 
-}
 
+}
+}
 
 #endif

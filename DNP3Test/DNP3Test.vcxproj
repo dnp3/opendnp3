@@ -57,6 +57,7 @@
     <ClCompile Include="TestCommandTask.cpp" />
     <ClCompile Include="TestCRC.cpp" />
     <ClCompile Include="TestDatabase.cpp" />
+    <ClCompile Include="TestDNP3Manager.cpp" />
     <ClCompile Include="TestEnhancedVtoRouter.cpp" />
     <ClCompile Include="TestEventBufferBase.cpp" />
     <ClCompile Include="TestEventBuffers.cpp" />

@@ -24,6 +24,7 @@
     <ClInclude Include="AsyncStackManager.h" />
     <ClInclude Include="BufferSetTypes.h" />
     <ClInclude Include="BufferTypes.h" />
+    <ClInclude Include="DNP3Channel.h" />
     <ClInclude Include="ClassCounter.h" />
     <ClInclude Include="ClassMask.h" />
     <ClInclude Include="CommandTask.h" />
@@ -33,6 +34,7 @@
     <ClInclude Include="DataPoll.h" />
     <ClInclude Include="DeviceTemplate.h" />
     <ClInclude Include="DeviceTemplateTypes.h" />
+    <ClInclude Include="DNP3Manager.h" />
     <ClInclude Include="DNPConstants.h" />
     <ClInclude Include="DNPCrc.h" />
     <ClInclude Include="DNPDatabaseTypes.h" />
@@ -45,6 +47,7 @@
     <ClInclude Include="EventBuffers.h" />
     <ClInclude Include="EventTypes.h" />
     <ClInclude Include="HeaderReadIterator.h" />
+    <ClInclude Include="IChannel.h" />
     <ClInclude Include="ICommandHandler.h" />
     <ClInclude Include="ICommandProcessor.h" />
     <ClInclude Include="IFrameSink.h" />
@@ -122,12 +125,14 @@
     <ClCompile Include="AppLayerChannel.cpp" />
     <ClCompile Include="AsyncStackManager.cpp" />
     <ClCompile Include="BufferTypes.cpp" />
+    <ClCompile Include="DNP3Channel.cpp" />
     <ClCompile Include="ClassCounter.cpp" />
     <ClCompile Include="CommandTask.cpp" />
     <ClCompile Include="ConstantCommandProcessor.cpp" />
     <ClCompile Include="Database.cpp" />
     <ClCompile Include="DataPoll.cpp" />
     <ClCompile Include="DeviceTemplate.cpp" />
+    <ClCompile Include="DNP3Manager.cpp" />
     <ClCompile Include="DNPCrc.cpp" />
     <ClCompile Include="EnhancedVto.cpp" />
     <ClCompile Include="EnhancedVtoRouter.cpp" />

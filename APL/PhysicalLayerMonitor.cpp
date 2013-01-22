@@ -74,19 +74,15 @@ void PhysicalLayerMonitor::AddObserver(IPhysicalLayerObserver* apObserver)
 	mObservers.insert(apObserver);
 }
 
-bool PhysicalLayerMonitor::WaitForShutdown(millis_t aTimeoutMs)
+void PhysicalLayerMonitor::ShutdownAndWait()
 {
+	mpPhys->GetExecutor()->Post([this](){ this->Shutdown(); });
+	
 	std::unique_lock<std::mutex> lock(mMutex);
-
-	while(!mFinalShutdown) {
-		if(aTimeoutMs < 0) mCondition.wait(lock);
-		else {
-			mCondition.wait_for(lock, std::chrono::milliseconds(aTimeoutMs));			
-			break;
-		}
-	}
-
-	return mFinalShutdown;
+	while(!mFinalShutdown) 
+	{ 
+		mCondition.wait(lock);		
+	}	
 }
 
 void PhysicalLayerMonitor::ChangeState(IMonitorState* apState)

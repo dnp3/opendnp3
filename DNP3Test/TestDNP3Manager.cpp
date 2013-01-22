@@ -26,43 +26,29 @@
 //
 // Contact Automatak, LLC for a commercial license to these modifications
 //
-#ifndef __IO_SERVICE_THREAD_POOL_
-#define __IO_SERVICE_THREAD_POOL_
+#include <boost/test/unit_test.hpp>
+#include <APLTestTools/TestHelpers.h>
 
-#include "Loggable.h"
+#include <DNP3/DNP3Manager.h>
+#include <DNP3/IChannel.h>
 
-#include <boost/asio.hpp>
-#include <boost/asio/high_resolution_timer.hpp>
-#include <thread>
+using namespace apl;
+using namespace apl::dnp;
 
-namespace apl
+BOOST_AUTO_TEST_SUITE(DNP3ManagerTestSuite)
+
+BOOST_AUTO_TEST_CASE(ConstructionDestruction)
 {
-
-class IOServiceThreadPool : private Loggable
-{
-	public:
-	
-	IOServiceThreadPool(Logger* apLogger, uint32_t aConcurrency);
-	~IOServiceThreadPool();
-
-	boost::asio::io_service* GetIOService();
-
-	void Shutdown();
-
-	private:
-
-	bool mIsShutdown;
-
-	void OnTimerExpiration(const boost::system::error_code& ec);
-
-	void Run();
-
-	boost::asio::io_service mService;
-	boost::asio::high_resolution_timer mInfiniteTimer;	
-	std::vector<std::thread*> mThreads;
-};
-
+	DNP3Manager mgr(std::thread::hardware_concurrency());
+	mgr.AddTCPClient("client", LEV_INFO, 5000, "127.0.0.1", 20000);
 }
 
+BOOST_AUTO_TEST_CASE(ConstructionDestructionWithManualShutdown)
+{
+	DNP3Manager mgr(std::thread::hardware_concurrency());
+	mgr.AddTCPClient("client", LEV_INFO, 5000, "127.0.0.1", 20000)->Shutdown();
+}
 
-#endif
+BOOST_AUTO_TEST_SUITE_END()
+
+

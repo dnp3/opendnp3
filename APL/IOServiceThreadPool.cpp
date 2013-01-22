@@ -40,16 +40,16 @@ using namespace std::chrono;
 namespace apl
 {
 
-IOServiceThreadPool::IOServiceThreadPool(Logger* apLogger, size_t aConcurrency) :
+IOServiceThreadPool::IOServiceThreadPool(Logger* apLogger, uint32_t aConcurrency) :
 	Loggable(apLogger),
 	mIsShutdown(false),
 	mService(),
 	mInfiniteTimer(mService)
-{
+{	
 	if(aConcurrency == 0) throw ArgumentException(LOCATION, "Concurrency cannot be 0");
 	mInfiniteTimer.expires_at(steady_clock::time_point::max());
 	mInfiniteTimer.async_wait(bind(&IOServiceThreadPool::OnTimerExpiration, this, placeholders::_1));
-	for(size_t i=0; i<aConcurrency; ++i) {
+	for(uint32_t i=0; i<aConcurrency; ++i) {
 		mThreads.push_back(new thread(bind(&IOServiceThreadPool::Run, this)));
 	}
 }

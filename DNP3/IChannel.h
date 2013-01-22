@@ -26,43 +26,26 @@
 //
 // Contact Automatak, LLC for a commercial license to these modifications
 //
-#ifndef __IO_SERVICE_THREAD_POOL_
-#define __IO_SERVICE_THREAD_POOL_
-
-#include "Loggable.h"
-
-#include <boost/asio.hpp>
-#include <boost/asio/high_resolution_timer.hpp>
-#include <thread>
+#ifndef __I_CHANNEL_H_
+#define __I_CHANNEL_H_
 
 namespace apl
 {
+namespace dnp
+{
 
-class IOServiceThreadPool : private Loggable
+class IChannel 
 {
 	public:
-	
-	IOServiceThreadPool(Logger* apLogger, uint32_t aConcurrency);
-	~IOServiceThreadPool();
+		/**
+		* Synchronously shutdown the channel. Once this method is complete, the object is safe to delete.
+		*/
+		virtual void Shutdown() = 0;
 
-	boost::asio::io_service* GetIOService();
-
-	void Shutdown();
-
-	private:
-
-	bool mIsShutdown;
-
-	void OnTimerExpiration(const boost::system::error_code& ec);
-
-	void Run();
-
-	boost::asio::io_service mService;
-	boost::asio::high_resolution_timer mInfiniteTimer;	
-	std::vector<std::thread*> mThreads;
+		
 };
 
 }
-
+}
 
 #endif
