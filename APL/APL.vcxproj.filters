@@ -69,9 +69,6 @@
     <ClInclude Include="DataTypes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="DeleteAny.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Exception.h">
       <Filter>Header Files</Filter>
     </ClInclude>

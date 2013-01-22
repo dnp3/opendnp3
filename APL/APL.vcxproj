@@ -31,7 +31,6 @@
     <ClInclude Include="CRC.h" />
     <ClInclude Include="DataInterfaces.h" />
     <ClInclude Include="DataTypes.h" />
-    <ClInclude Include="DeleteAny.h" />
     <ClInclude Include="Exception.h" />
     <ClInclude Include="FlexibleDataObserver.h" />
     <ClInclude Include="GetKeys.h" />
