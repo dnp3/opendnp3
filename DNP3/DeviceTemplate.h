@@ -40,9 +40,7 @@ namespace apl
 namespace dnp
 {
 
-/** Configuration structure that defines:
-	1) the default layout of the database
-	2) how controls are handled
+/** Configuration structure that defines the default layout of the database	
 
 	The indices of the points are implicit based on their
 	position within the vectors below.
@@ -52,9 +50,7 @@ struct DeviceTemplate {
 	               size_t aNumAnalog = 0,
 	               size_t aNumCounter = 0,
 	               size_t aNumControlStatus = 0,
-	               size_t aNumSetpointStatus = 0,
-	               size_t aNumControls = 0,
-	               size_t aNumSetpoints = 0);
+	               size_t aNumSetpointStatus = 0);
 
 	//Measurements
 	std::vector<EventPointRecord> mBinary;		// list of binary point properties
@@ -63,12 +59,7 @@ struct DeviceTemplate {
 	std::vector<PointRecord> mControlStatus;	// list of control status point properties
 	std::vector<PointRecord> mSetpointStatus;	// list of control status point properties
 
-	//Controls
-	std::vector<ControlRecord> mControls;		// list of binary output properties
-	std::vector<ControlRecord> mSetpoints;		// list of analog output properties
-
 	bool mStartOnline;
-
 
 	// Write the initial state of a database to an observer
 	void Publish(IDataObserver*);

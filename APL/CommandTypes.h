@@ -36,18 +36,6 @@
 namespace apl
 {
 
-enum CommandModes {
-	CM_SBO_ONLY,	   	   // Point must be selected before operation
-	CM_DO_ONLY,			   // select not allowed
-	CM_SBO_OR_DO		   // Point supports either
-};
-
-enum CommandTypes {
-	CT_BINARY_OUTPUT,
-	CT_SETPOINT,
-	CT_NONE
-};
-
 /**
  * When a command is recieved from a master the application sends a code to
  * indicate if it was successfull or if not what class of error was
@@ -91,25 +79,7 @@ enum ControlCode {
 
 ControlCode ByteToControlCode(uint8_t aField);
 std::string ToString(ControlCode aType);
-std::string ToString(CommandTypes aType);
 
-class CommandRequest
-{
-public:
-	CommandTypes GetType() const  {
-		return mType;
-	}
-	CommandStatus mStatus;
-
-protected:
-	//only invokable from super class
-	CommandRequest(CommandTypes);
-	CommandRequest(const CommandRequest&);
-
-private:
-	CommandRequest();
-	CommandTypes mType;
-};
 
 /**
  * Describes an incoming control request from the master. It is the
@@ -118,13 +88,11 @@ private:
  * require setting the mOnTimeMS, mOffTimeMS and mCount variables, otherwise
  * just use the defaults.
  */
-class BinaryOutput : public CommandRequest
+class BinaryOutput
 {
-public:
+	public:	
 
-	BinaryOutput();
-
-	BinaryOutput(ControlCode aCode, uint8_t aCount = 1, uint32_t aOnTime = 100, uint32_t aOffTime = 100);
+	BinaryOutput(ControlCode aCode = CC_LATCH_ON, uint8_t aCount = 1, uint32_t aOnTime = 100, uint32_t aOffTime = 100);
 
 	ControlCode GetCode() const;
 
@@ -132,14 +100,13 @@ public:
 	uint8_t mCount;
 	uint32_t mOnTimeMS;
 	uint32_t mOffTimeMS;
+	CommandStatus mStatus;
 
 	std::string ToString() const;
 
 	bool operator==(const BinaryOutput& arRHS) const {
 		return (mRawCode == arRHS.mRawCode) && (mCount == arRHS.mCount) && (mOnTimeMS == arRHS.mOnTimeMS) && (mOffTimeMS == arRHS.mOffTimeMS);
-	}
-
-	static const CommandTypes EnumType = CT_BINARY_OUTPUT;
+	}	
 };
 
 /**
@@ -167,7 +134,7 @@ enum SetpointEncodingType {
  * type that can handle the number). This can be overridden with the
  * SetEncodingType() function.
  */
-class Setpoint : public CommandRequest
+class Setpoint
 {
 public:
 
@@ -204,9 +171,7 @@ public:
 
 	bool operator==(const Setpoint& arRHS) const {
 		return fabs(mValue - arRHS.mValue) < 1E-6;
-	}
-
-	static const CommandTypes EnumType = CT_SETPOINT;
+	}	
 
 	int32_t GetIntValue() const {
 		return static_cast<int32_t>(GetValue());
@@ -225,8 +190,12 @@ public:
 		mEncodingType = aEncodingType;
 	}
 
+public:
+	CommandStatus mStatus;
+
 private:
 	double mValue;
+	
 
 	SetpointEncodingType mEncodingType;
 

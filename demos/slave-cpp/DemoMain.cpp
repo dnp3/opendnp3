@@ -128,7 +128,7 @@ int main(int argc, char* argv[])
 	// The DeviceTemplate struct specifies the structure of the
 	// slave's database, as well as the index range of controls and
 	// setpoints it accepts.
-	DeviceTemplate device(5, 5, 5, 5, 5, 5, 5);
+	DeviceTemplate device(5, 5, 5, 5, 5);
 	stackConfig.device = device;
 
 	// Create a new slave on a previously declared port, with a

@@ -107,45 +107,12 @@ std::string ToString(ControlCode aType)
 	}
 }
 
-std::string ToString(CommandTypes aType)
-{
-	switch(aType) {
-	case(CT_BINARY_OUTPUT):
-		return "BinaryOutput";
-	case(CT_SETPOINT):
-		return "Setpoint";
-	default:
-		return "Unknown";
-	}
-}
-
-CommandRequest::CommandRequest(CommandTypes aType) :
-	mStatus(CS_SUCCESS),
-	mType(aType)
-{}
-
-CommandRequest::CommandRequest(const CommandRequest& arCopy)
-{
-	mType = arCopy.mType;
-	mStatus = arCopy.mStatus;
-}
-
-BinaryOutput::BinaryOutput() :
-	CommandRequest(CT_BINARY_OUTPUT),
-	mRawCode(CC_NULL),
-	mCount(1),
-	mOnTimeMS(100),
-	mOffTimeMS(100)
-{
-
-}
-
-BinaryOutput::BinaryOutput(ControlCode aCode, uint8_t aCount, uint32_t aOnTime, uint32_t aOffTime) :
-	CommandRequest(CT_BINARY_OUTPUT),
+BinaryOutput::BinaryOutput(ControlCode aCode, uint8_t aCount, uint32_t aOnTime, uint32_t aOffTime) :	
 	mRawCode(aCode),
 	mCount(aCount),
 	mOnTimeMS(aOnTime),
-	mOffTimeMS(aOffTime)
+	mOffTimeMS(aOffTime),
+	mStatus(CS_SUCCESS)
 {
 
 }
@@ -163,24 +130,24 @@ std::string BinaryOutput::ToString() const
 	return oss.str();
 }
 
-Setpoint::Setpoint() : CommandRequest(CT_SETPOINT), mEncodingType(SPET_UNSET) {}
+Setpoint::Setpoint() : mEncodingType(SPET_UNSET) {}
 
-Setpoint::Setpoint(int16_t aValue) :
-	CommandRequest(CT_SETPOINT),
+Setpoint::Setpoint(int16_t aValue) :	
 	mValue(aValue),
-	mEncodingType(SPET_AUTO_INT)
+	mEncodingType(SPET_AUTO_INT),
+	mStatus(CS_SUCCESS)
 {}
 
 Setpoint::Setpoint(int32_t aValue) :
-	CommandRequest(CT_SETPOINT),
 	mValue(aValue),
-	mEncodingType(SPET_AUTO_INT)
+	mEncodingType(SPET_AUTO_INT),
+	mStatus(CS_SUCCESS)
 {}
 
 Setpoint::Setpoint(double aValue) :
-	CommandRequest(CT_SETPOINT),
 	mValue(aValue),
-	mEncodingType(SPET_AUTO_DOUBLE)
+	mEncodingType(SPET_AUTO_DOUBLE),
+	mStatus(CS_SUCCESS)
 {}
 
 std::string Setpoint::ToString() const

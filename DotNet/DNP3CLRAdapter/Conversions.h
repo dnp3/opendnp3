@@ -97,8 +97,7 @@ namespace Adapter
 		static apl::dnp::EventMaxConfig convertEventMaxConfig(EventMaxConfig^ cm);
 		static apl::dnp::GrpVar convertGrpVar(GrpVar^ gv);
 
-		static apl::dnp::PointRecord convertRecord(PointRecord^ epr);
-		static apl::dnp::ControlRecord convertRecord(ControlRecord^ epr);
+		static apl::dnp::PointRecord convertRecord(PointRecord^ epr);		
 		static apl::dnp::EventPointRecord convertRecord(EventPointRecord^ epr);
 		static apl::dnp::DeadbandPointRecord convertRecord(DeadbandEventPointRecord^ epr);
 

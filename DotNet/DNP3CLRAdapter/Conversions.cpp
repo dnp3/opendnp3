@@ -388,11 +388,6 @@ namespace Adapter
 	{
 		return apl::dnp::PointRecord("");
 	}
-
-	apl::dnp::ControlRecord Conversions::convertRecord(ControlRecord^ epr)
-	{
-		return apl::dnp::ControlRecord("", static_cast<apl::CommandModes>(epr->mode), epr->selectTimeoutMs); 
-	}
 				
 	apl::dnp::EventPointRecord Conversions::convertRecord(EventPointRecord^ epr)
 	{
@@ -410,18 +405,13 @@ namespace Adapter
 										config->analogs->Count,
 										config->counters->Count,
 										config->controlStatii->Count,
-										config->setpointStatii->Count,
-										config->controls->Count,
-										config->setpoints->Count);
+										config->setpointStatii->Count);
 
 		for(int i=0; i<config->binaries->Count; ++i) dev.mBinary[i] = convertRecord(config->binaries[i]);
 		for(int i=0; i<config->analogs->Count; ++i) dev.mAnalog[i] = convertRecord(config->analogs[i]);
 		for(int i=0; i<config->counters->Count; ++i) dev.mCounter[i] = convertRecord(config->counters[i]);
 		for(int i=0; i<config->controlStatii->Count; ++i) dev.mControlStatus[i] = convertRecord(config->controlStatii[i]);
-		for(int i=0; i<config->setpointStatii->Count; ++i) dev.mSetpointStatus[i] = convertRecord(config->setpointStatii[i]);
-
-		for(int i=0; i<config->controls->Count; ++i) dev.mControls[i] = convertRecord(config->controls[i]);
-		for(int i=0; i<config->setpoints->Count; ++i) dev.mSetpoints[i] = convertRecord(config->setpoints[i]);
+		for(int i=0; i<config->setpointStatii->Count; ++i) dev.mSetpointStatus[i] = convertRecord(config->setpointStatii[i]);		
 
 		return dev;
 	}

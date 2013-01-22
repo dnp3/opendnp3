@@ -74,18 +74,6 @@ struct DeadbandPointRecord : public EventPointRecord {
 	double Deadband;
 };
 
-// Todo - Add properties that determine how controls are handled - i.e. DO/SBO/etc
-struct ControlRecord : public PointRecord {
-	ControlRecord(const std::string& arName = "", CommandModes aMode = CM_SBO_ONLY, millis_t aSelectTimeoutMS = 5000) :
-		PointRecord(arName),
-		CommandMode(aMode),
-		SelectTimeoutMS(aSelectTimeoutMS)
-	{}
-
-	apl::CommandModes CommandMode;
-	millis_t SelectTimeoutMS;
-};
-
 
 }
 }
