@@ -148,20 +148,9 @@ int main(int argc, char* argv[])
 			BinaryOutput bo(CC_LATCH_ON);
 
 			promise<CommandResponse> selectResult;
-			pCmdProcessor->Select(bo, 0, [&](CommandResponse cr){ selectResult.set_value(cr); });
-			CommandResponse crSelect = selectResult.get_future().get();
-
-			if(crSelect.mResult == CS_SUCCESS)
-			{
-				promise<CommandResponse> operateResult;
-				pCmdProcessor->Select(bo, 0, [&](CommandResponse cr){ operateResult.set_value(cr); });
-				CommandResponse crOperate = operateResult.get_future().get();
-				std::cout << "Operate result: " << crOperate.mResult << std::endl;					
-			}
-			else
-			{
-				std::cout << "Select failed: " << crSelect.mResult << std::endl;
-			}
+			pCmdProcessor->SelectAndOperate(bo, 0, [&](CommandResponse cr){ selectResult.set_value(cr); });
+			CommandResponse rsp = selectResult.get_future().get();
+			std::cout << "Select/Operate result: " << rsp.mResult << std::endl;				
 		}		
 	}
 	while(true);

@@ -44,13 +44,9 @@ class ICommandProcessor
 {
 	public:
 
-		virtual void Select(const BinaryOutput& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback) = 0;
+		virtual void SelectAndOperate(const BinaryOutput& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback) = 0;
 
-		virtual void Select(const Setpoint& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback) = 0;
-
-		virtual void Operate(const BinaryOutput& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback) = 0;
-
-		virtual void Operate(const Setpoint& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback) = 0;
+		virtual void SelectAndOperate(const Setpoint& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback) = 0;		
 
 		virtual void DirectOperate(const BinaryOutput& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback) = 0;
 

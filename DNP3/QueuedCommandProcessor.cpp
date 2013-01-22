@@ -40,38 +40,20 @@ QueuedCommandProcessor::QueuedCommandProcessor() :
 
 }
 
-void QueuedCommandProcessor::Select(const BinaryOutput& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback)
+void QueuedCommandProcessor::SelectAndOperate(const BinaryOutput& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback)
 {
 	{
 		std::lock_guard<std::mutex> lock(mMutex);
-		mRequestQueue.push([arCommand, aIndex, aCallback](ICommandProcessor* pProcessor){ pProcessor->Select(arCommand, aIndex, aCallback); });
+		mRequestQueue.push([arCommand, aIndex, aCallback](ICommandProcessor* pProcessor){ pProcessor->SelectAndOperate(arCommand, aIndex, aCallback); });
 	}
 	this->NotifyObservers();
 }
 
-void QueuedCommandProcessor::Select(const Setpoint& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback)
+void QueuedCommandProcessor::SelectAndOperate(const Setpoint& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback)
 {
 	{
 		std::lock_guard<std::mutex> lock(mMutex);
-		mRequestQueue.push([arCommand, aIndex, aCallback](ICommandProcessor* pProcessor){ pProcessor->Select(arCommand, aIndex, aCallback); });
-	}
-	this->NotifyObservers();
-}
-
-void QueuedCommandProcessor::Operate(const BinaryOutput& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback)
-{
-	{
-		std::lock_guard<std::mutex> lock(mMutex);
-		mRequestQueue.push([arCommand, aIndex, aCallback](ICommandProcessor* pProcessor){ pProcessor->Operate(arCommand, aIndex, aCallback); });
-	}
-	this->NotifyObservers();
-}
-
-void QueuedCommandProcessor::Operate(const Setpoint& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback)
-{
-	{
-		std::lock_guard<std::mutex> lock(mMutex);
-		mRequestQueue.push([arCommand, aIndex, aCallback](ICommandProcessor* pProcessor){ pProcessor->Operate(arCommand, aIndex, aCallback); });
+		mRequestQueue.push([arCommand, aIndex, aCallback](ICommandProcessor* pProcessor){ pProcessor->SelectAndOperate(arCommand, aIndex, aCallback); });
 	}
 	this->NotifyObservers();
 }

@@ -106,7 +106,7 @@ namespace DotNetMasterDemo
             {
                 System.UInt32 index = System.UInt32.Parse(Console.ReadLine());
                 DateTime start = DateTime.Now;
-                var future = commandAcceptor.Select(new BinaryOutput(ControlCode.CC_PULSE, 1, 100, 100), index);
+                var future = commandAcceptor.SelectAndOperate(new BinaryOutput(ControlCode.CC_PULSE, 1, 100, 100), index);
                 CommandStatus result = future.Await();
                 DateTime end = DateTime.Now;
                 TimeSpan duration = end - start;                

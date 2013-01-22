@@ -155,27 +155,17 @@ void Master::ProcessCommand(ITask* apTask)
 	}
 }
 
-void Master::Select(const BinaryOutput& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback)
+void Master::SelectAndOperate(const BinaryOutput& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback)
 {
 	this->ConfigureCommandTask(arCommand, aIndex, aCallback);
 	this->mCommandTask.AddCommandCode(FC_SELECT);
-}
-
-void Master::Select(const Setpoint& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback)
-{
-	this->ConfigureCommandTask(arCommand, aIndex, aCallback);
-	this->mCommandTask.AddCommandCode(FC_SELECT);
-}
-
-void Master::Operate(const BinaryOutput& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback)
-{
-	this->ConfigureCommandTask(arCommand, aIndex, aCallback);
 	this->mCommandTask.AddCommandCode(FC_OPERATE);
 }
 
-void Master::Operate(const Setpoint& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback)
+void Master::SelectAndOperate(const Setpoint& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback)
 {
 	this->ConfigureCommandTask(arCommand, aIndex, aCallback);
+	this->mCommandTask.AddCommandCode(FC_SELECT);
 	this->mCommandTask.AddCommandCode(FC_OPERATE);
 }
 

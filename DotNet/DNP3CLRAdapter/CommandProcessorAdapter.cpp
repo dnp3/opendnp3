@@ -51,7 +51,7 @@ CommandProcessorAdapter::CommandProcessorAdapter(apl::dnp::ICommandProcessor* ap
 
 }
 
-IFuture<CommandStatus>^ CommandProcessorAdapter::Select(BinaryOutput^ command, System::UInt32 index)
+IFuture<CommandStatus>^ CommandProcessorAdapter::SelectAndOperate(BinaryOutput^ command, System::UInt32 index)
 {
 	auto future = gcnew Future<CommandStatus>();
 	
@@ -59,12 +59,12 @@ IFuture<CommandStatus>^ CommandProcessorAdapter::Select(BinaryOutput^ command, S
 
 	auto pWrapper = new gcroot<Future<CommandStatus>^>(future);
 	
-	mpProxy->Select(cmd, index, std::bind(&ResponseRouter::Set, pWrapper, std::placeholders::_1)); 
+	mpProxy->SelectAndOperate(cmd, index, std::bind(&ResponseRouter::Set, pWrapper, std::placeholders::_1)); 
 
 	return future;
 }
 
-IFuture<CommandStatus>^ CommandProcessorAdapter::Select(Setpoint^ command, System::UInt32 index)
+IFuture<CommandStatus>^ CommandProcessorAdapter::SelectAndOperate(Setpoint^ command, System::UInt32 index)
 {
 	auto future = gcnew Future<CommandStatus>();
 	
@@ -72,33 +72,7 @@ IFuture<CommandStatus>^ CommandProcessorAdapter::Select(Setpoint^ command, Syste
 
 	auto pWrapper = new gcroot<Future<CommandStatus>^>(future);
 	
-	mpProxy->Select(cmd, index, std::bind(&ResponseRouter::Set, pWrapper, std::placeholders::_1)); 
-
-	return future;
-}
-
-IFuture<CommandStatus>^ CommandProcessorAdapter::Operate(BinaryOutput^ command, System::UInt32 index)
-{
-	auto future = gcnew Future<CommandStatus>();
-	
-	apl::BinaryOutput cmd = Conversions::convertBO(command);
-
-	auto pWrapper = new gcroot<Future<CommandStatus>^>(future);
-	
-	mpProxy->Operate(cmd, index, std::bind(&ResponseRouter::Set, pWrapper, std::placeholders::_1)); 
-
-	return future;
-}
-
-IFuture<CommandStatus>^ CommandProcessorAdapter::Operate(Setpoint^ command, System::UInt32 index)
-{
-	auto future = gcnew Future<CommandStatus>();
-	
-	apl::Setpoint cmd = Conversions::convertSP(command);
-
-	auto pWrapper = new gcroot<Future<CommandStatus>^>(future);
-	
-	mpProxy->Operate(cmd, index, std::bind(&ResponseRouter::Set, pWrapper, std::placeholders::_1)); 
+	mpProxy->SelectAndOperate(cmd, index, std::bind(&ResponseRouter::Set, pWrapper, std::placeholders::_1)); 
 
 	return future;
 }

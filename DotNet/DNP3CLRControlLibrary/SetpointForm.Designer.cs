@@ -57,9 +57,8 @@ namespace TestSetControlLibrary
         private void InitializeComponent()
         {
             this.groupBoxParameters = new System.Windows.Forms.GroupBox();
+            this.buttonSelectOperate = new System.Windows.Forms.Button();
             this.buttonDirectOperate = new System.Windows.Forms.Button();
-            this.buttonOperate = new System.Windows.Forms.Button();
-            this.buttonSelect = new System.Windows.Forms.Button();
             this.numericUpDownIndex = new System.Windows.Forms.NumericUpDown();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
@@ -74,9 +73,8 @@ namespace TestSetControlLibrary
             // 
             // groupBoxParameters
             // 
+            this.groupBoxParameters.Controls.Add(this.buttonSelectOperate);
             this.groupBoxParameters.Controls.Add(this.buttonDirectOperate);
-            this.groupBoxParameters.Controls.Add(this.buttonOperate);
-            this.groupBoxParameters.Controls.Add(this.buttonSelect);
             this.groupBoxParameters.Controls.Add(this.numericUpDownIndex);
             this.groupBoxParameters.Controls.Add(this.label2);
             this.groupBoxParameters.Controls.Add(this.label1);
@@ -85,40 +83,30 @@ namespace TestSetControlLibrary
             this.groupBoxParameters.Controls.Add(this.numericUpDownValue);
             this.groupBoxParameters.Location = new System.Drawing.Point(34, 15);
             this.groupBoxParameters.Name = "groupBoxParameters";
-            this.groupBoxParameters.Size = new System.Drawing.Size(248, 259);
+            this.groupBoxParameters.Size = new System.Drawing.Size(248, 235);
             this.groupBoxParameters.TabIndex = 0;
             this.groupBoxParameters.TabStop = false;
             this.groupBoxParameters.Text = "Parameters";
             // 
+            // buttonSelectOperate
+            // 
+            this.buttonSelectOperate.Location = new System.Drawing.Point(38, 155);
+            this.buttonSelectOperate.Name = "buttonSelectOperate";
+            this.buttonSelectOperate.Size = new System.Drawing.Size(177, 27);
+            this.buttonSelectOperate.TabIndex = 9;
+            this.buttonSelectOperate.Text = "Select and Operate";
+            this.buttonSelectOperate.UseVisualStyleBackColor = true;
+            this.buttonSelectOperate.Click += new System.EventHandler(this.buttonSelectOperate_Click);
+            // 
             // buttonDirectOperate
             // 
-            this.buttonDirectOperate.Location = new System.Drawing.Point(38, 218);
+            this.buttonDirectOperate.Location = new System.Drawing.Point(38, 188);
             this.buttonDirectOperate.Name = "buttonDirectOperate";
             this.buttonDirectOperate.Size = new System.Drawing.Size(177, 27);
             this.buttonDirectOperate.TabIndex = 8;
             this.buttonDirectOperate.Text = "Direct Operate";
             this.buttonDirectOperate.UseVisualStyleBackColor = true;
             this.buttonDirectOperate.Click += new System.EventHandler(this.buttonDirectOperate_Click);
-            // 
-            // buttonOperate
-            // 
-            this.buttonOperate.Location = new System.Drawing.Point(38, 185);
-            this.buttonOperate.Name = "buttonOperate";
-            this.buttonOperate.Size = new System.Drawing.Size(177, 27);
-            this.buttonOperate.TabIndex = 7;
-            this.buttonOperate.Text = "Operate";
-            this.buttonOperate.UseVisualStyleBackColor = true;
-            this.buttonOperate.Click += new System.EventHandler(this.buttonOperate_Click);
-            // 
-            // buttonSelect
-            // 
-            this.buttonSelect.Location = new System.Drawing.Point(38, 152);
-            this.buttonSelect.Name = "buttonSelect";
-            this.buttonSelect.Size = new System.Drawing.Size(177, 27);
-            this.buttonSelect.TabIndex = 6;
-            this.buttonSelect.Text = "Select";
-            this.buttonSelect.UseVisualStyleBackColor = true;
-            this.buttonSelect.Click += new System.EventHandler(this.buttonSelect_Click);
             // 
             // numericUpDownIndex
             // 
@@ -193,7 +181,7 @@ namespace TestSetControlLibrary
             // 
             // textBoxStatus
             // 
-            this.textBoxStatus.Location = new System.Drawing.Point(34, 280);
+            this.textBoxStatus.Location = new System.Drawing.Point(34, 256);
             this.textBoxStatus.Name = "textBoxStatus";
             this.textBoxStatus.ReadOnly = true;
             this.textBoxStatus.Size = new System.Drawing.Size(248, 20);
@@ -203,7 +191,7 @@ namespace TestSetControlLibrary
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(299, 313);
+            this.ClientSize = new System.Drawing.Size(299, 289);
             this.Controls.Add(this.textBoxStatus);
             this.Controls.Add(this.groupBoxParameters);
             this.MaximizeBox = false;
@@ -227,12 +215,11 @@ namespace TestSetControlLibrary
         private System.Windows.Forms.ComboBox comboBoxType;
         private System.Windows.Forms.Label labelValue;
         private System.Windows.Forms.NumericUpDown numericUpDownValue;
-        private System.Windows.Forms.Button buttonSelect;
         private System.Windows.Forms.NumericUpDown numericUpDownIndex;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox textBoxStatus;
         private System.Windows.Forms.Button buttonDirectOperate;
-        private System.Windows.Forms.Button buttonOperate;
+        private System.Windows.Forms.Button buttonSelectOperate;
     }
 }

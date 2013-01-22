@@ -62,15 +62,7 @@ namespace TestSetControlLibrary
                 default:
                     return new Setpoint(Decimal.ToDouble(this.numericUpDownValue.Value));
             }
-        }
-
-        private void buttonSelect_Click(object sender, EventArgs e)
-        {
-            this.groupBoxParameters.Enabled = false;
-            this.textBoxStatus.Text = "Select...";
-            var future = cmdProcessor.Select(GetSetpoint(), Decimal.ToUInt32(this.numericUpDownIndex.Value));
-            future.Listen(OnResult);
-        }
+        }        
 
         private void OnResult(CommandStatus status)
         {
@@ -82,21 +74,21 @@ namespace TestSetControlLibrary
         {
             this.groupBoxParameters.Enabled = true;
             this.textBoxStatus.Text = status.ToString();
-        }
-
-        private void buttonOperate_Click(object sender, EventArgs e)
-        {
-            this.groupBoxParameters.Enabled = false;
-            this.textBoxStatus.Text = "Operate...";
-            var future = cmdProcessor.Operate(GetSetpoint(), Decimal.ToUInt32(this.numericUpDownIndex.Value));
-            future.Listen(OnResult);
-        }
+        }        
 
         private void buttonDirectOperate_Click(object sender, EventArgs e)
         {
             this.groupBoxParameters.Enabled = false;
             this.textBoxStatus.Text = "DirectOperate...";
             var future = cmdProcessor.DirectOperate(GetSetpoint(), Decimal.ToUInt32(this.numericUpDownIndex.Value));
+            future.Listen(OnResult);
+        }
+
+        private void buttonSelectOperate_Click(object sender, EventArgs e)
+        {
+            this.groupBoxParameters.Enabled = false;
+            this.textBoxStatus.Text = "SelectOperate...";
+            var future = cmdProcessor.SelectAndOperate(GetSetpoint(), Decimal.ToUInt32(this.numericUpDownIndex.Value));
             future.Listen(OnResult);
         }
     }

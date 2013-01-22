@@ -35,10 +35,8 @@ namespace DNP3.Interface
 {
     public interface ICommandProcessor
     {
-        IFuture<CommandStatus> Select(BinaryOutput command, System.UInt32 index);
-        IFuture<CommandStatus> Select(Setpoint command, System.UInt32 index);
-        IFuture<CommandStatus> Operate(BinaryOutput command, System.UInt32 index);
-        IFuture<CommandStatus> Operate(Setpoint command, System.UInt32 index);
+        IFuture<CommandStatus> SelectAndOperate(BinaryOutput command, System.UInt32 index);
+        IFuture<CommandStatus> SelectAndOperate(Setpoint command, System.UInt32 index);
         IFuture<CommandStatus> DirectOperate(BinaryOutput command, System.UInt32 index);
         IFuture<CommandStatus> DirectOperate(Setpoint command, System.UInt32 index);
     }

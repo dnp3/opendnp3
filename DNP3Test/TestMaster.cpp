@@ -46,13 +46,13 @@ void TestForIntegrityPoll(MasterTestObject& t, bool aSucceed = true)
 	else t.master.OnSolFailure();
 }
 
-void DoControlSelect(MasterTestObject& t, std::function<void (CommandResponse)> callback)
+void DoControlSelectAndOperate(MasterTestObject& t, std::function<void (CommandResponse)> callback)
 {
 	TestForIntegrityPoll(t);
 	BOOST_REQUIRE_EQUAL(t.app.NumAPDU(), 0); // check that the master sends no more packets
 
 	BinaryOutput bo(CC_PULSE); bo.mStatus = CS_SUCCESS;
-	t.master.GetCommandProcessor()->Select(bo, 1, callback);
+	t.master.GetCommandProcessor()->SelectAndOperate(bo, 1, callback);
 	BOOST_REQUIRE(t.mts.DispatchOne());
 
 	// Group 12 Var1, 1 byte count/index, index = 1, time on/off = 1000, CS_SUCCESS
@@ -72,7 +72,7 @@ void TestSetpointExecution(const std::string& setpointhex, T aValue)
 	BOOST_REQUIRE_EQUAL(t.app.NumAPDU(), 0); // check that the master sends no more packets
 
 	Setpoint st(aValue); st.mStatus = CS_SUCCESS;	
-	t.master.GetCommandProcessor()->Select(st, 1, [](CommandResponse cr){});
+	t.master.GetCommandProcessor()->SelectAndOperate(st, 1, [](CommandResponse cr){});
 	BOOST_REQUIRE(t.mts.DispatchOne());
 
 	BOOST_REQUIRE_EQUAL(t.Read(), "C0 03 " + setpointhex); // SELECT
@@ -322,7 +322,7 @@ BOOST_AUTO_TEST_CASE(ControlExecutionClosedState)
 		
 	for(int i=0; i<10; ++i){		
 		CommandResponse rsp(CS_UNDEFINED);
-		pCmdProcessor->Select(bo, 1, [&](CommandResponse r){ 
+		pCmdProcessor->SelectAndOperate(bo, 1, [&](CommandResponse r){ 
 			rsp = r; 
 		});
 		t.mts.Dispatch();				
@@ -331,7 +331,7 @@ BOOST_AUTO_TEST_CASE(ControlExecutionClosedState)
 	
 }
 
-BOOST_AUTO_TEST_CASE(ControlExecution)
+BOOST_AUTO_TEST_CASE(SelectAndOperate)
 {
 	MasterConfig master_cfg;
 	MasterTestObject t(master_cfg);
@@ -342,9 +342,9 @@ BOOST_AUTO_TEST_CASE(ControlExecution)
 
 	BinaryOutput bo(CC_PULSE); bo.mStatus = CS_SUCCESS;
 
-	CommandResponse cr;
-	t.master.GetCommandProcessor()->Select(bo, 1, [&](CommandResponse rsp){ 
-		cr = rsp; 
+	std::vector<CommandResponse> rsps;
+	t.master.GetCommandProcessor()->SelectAndOperate(bo, 1, [&](CommandResponse rsp){ 
+		rsps.push_back(rsp);
 	});
 	t.mts.Dispatch();
 
@@ -356,8 +356,14 @@ BOOST_AUTO_TEST_CASE(ControlExecution)
 	
 	t.mts.DispatchOne();
 
+	BOOST_REQUIRE_EQUAL(t.Read(), "C0 04 " + crob); // OPERATE
+	t.RespondToMaster("C0 81 00 00 " + crob);
+
+	t.mts.DispatchOne();
+
 	BOOST_REQUIRE_EQUAL(t.app.NumAPDU(), 0); //nore more packets	
-	BOOST_REQUIRE_EQUAL(cr.mResult, CS_SUCCESS);
+	BOOST_REQUIRE_EQUAL(1, rsps.size());
+	BOOST_REQUIRE_EQUAL(rsps[0].mResult, CS_SUCCESS);
 }
 
 BOOST_AUTO_TEST_CASE(ControlExecutionSelectFailure)
@@ -368,7 +374,7 @@ BOOST_AUTO_TEST_CASE(ControlExecutionSelectFailure)
 
 	std::vector<CommandResponse> rsps;
 
-	DoControlSelect(t, [&](CommandResponse cr) { rsps.push_back(cr); });
+	DoControlSelectAndOperate(t, [&](CommandResponse cr) { rsps.push_back(cr); });
 	t.master.OnSolFailure();
 
 	t.mts.DispatchOne();
@@ -384,7 +390,7 @@ BOOST_AUTO_TEST_CASE(ControlExecutionSelectLayerDown)
 	t.master.OnLowerLayerUp();
 	
 	std::vector<CommandResponse> rsps;
-	DoControlSelect(t, [&](CommandResponse cr) { rsps.push_back(cr); });
+	DoControlSelectAndOperate(t, [&](CommandResponse cr) { rsps.push_back(cr); });
 	t.master.OnLowerLayerDown();
 	t.master.OnLowerLayerUp();
 
@@ -401,7 +407,7 @@ BOOST_AUTO_TEST_CASE(ControlExecutionSelectErrorResponse)
 	t.master.OnLowerLayerUp();
 	
 	std::vector<CommandResponse> rsps;
-	DoControlSelect(t, [&](CommandResponse cr) { rsps.push_back(cr); });
+	DoControlSelectAndOperate(t, [&](CommandResponse cr) { rsps.push_back(cr); });
 	t.RespondToMaster("C0 81 00 00 0C 01 17 01 01 01 01 64 00 00 00 64 00 00 00 04"); // not supported
 
 	t.mts.DispatchOne();
@@ -417,7 +423,7 @@ BOOST_AUTO_TEST_CASE(ControlExecutionSelectPartialResponse)
 	t.master.OnLowerLayerUp();
 	
 	std::vector<CommandResponse> rsps;
-	DoControlSelect(t, [&](CommandResponse cr) { rsps.push_back(cr); });	
+	DoControlSelectAndOperate(t, [&](CommandResponse cr) { rsps.push_back(cr); });	
 	t.RespondToMaster("80 81 00 00 0C 01 17 01 01 01 01 64 00 00 00 64 00 00 00 00", false);
 	
 	BOOST_REQUIRE_EQUAL(0, rsps.size());
@@ -441,7 +447,7 @@ BOOST_AUTO_TEST_CASE(DeferredControlExecution)
 
 	//issue a command while the master is waiting for a response from the slave
 	BinaryOutput bo(CC_PULSE); bo.mStatus = CS_SUCCESS;	
-	t.master.GetCommandProcessor()->Select(bo, 1, [](CommandResponse){});
+	t.master.GetCommandProcessor()->SelectAndOperate(bo, 1, [](CommandResponse){});
 	BOOST_REQUIRE(t.mts.DispatchOne());
 	
 	t.RespondToMaster("C0 81 00 00"); //now master gets response to integrity

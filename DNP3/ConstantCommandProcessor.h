@@ -48,14 +48,10 @@ class ConstantCommandProcessor : public ICommandProcessor
 
 	// Implement the ICommandProcessor interface
 
-	void Select(const BinaryOutput& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback);
-	void Select(const Setpoint& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback);
-	void Operate(const BinaryOutput& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback);
-	void Operate(const Setpoint& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback);
+	void SelectAndOperate(const BinaryOutput& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback);
+	void SelectAndOperate(const Setpoint& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback);	
 	void DirectOperate(const BinaryOutput& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback);
 	void DirectOperate(const Setpoint& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback);
-
-
 
 	private:
 	IExecutor* mpExecutor;
