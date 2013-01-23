@@ -26,61 +26,52 @@
 //
 // Contact Automatak, LLC for a commercial license to these modifications
 //
-#ifndef __DNP3_CHANNEL_H_
-#define __DNP3_CHANNEL_H_
 
-#include "IChannel.h"
-#include "LinkLayerRouter.h"
+#include "SimpleDataObserver.h"
 
-#include <APL/Loggable.h>
-#include <APL/AsyncTaskGroup.h>
-
-#include <memory>
-#include <functional>
+#include <iostream>
 
 namespace apl
 {
 
-class IPhysicalLayerAsync;
-class ITimeSource;
+SimpleDataObserver::SimpleDataObserver(std::function<void (const std::string&)> aOutputFunc) :
+	mOutputFunc(aOutputFunc)
+{}
 
-namespace dnp
+void SimpleDataObserver::_Start()
+{}
+
+void SimpleDataObserver::_End()
+{}
+
+void SimpleDataObserver::_Update(const Binary& arPoint, size_t aIndex)
 {
-
-class IStack;
-
-class DNP3Channel: public IChannel, private Loggable
-{
-	public:
-		DNP3Channel(Logger* apLogger, millis_t aOpenRetry, IPhysicalLayerAsync* apPhys, ITimeSource* apTimerSource, std::function<void (DNP3Channel*)> aOnShutdown);
-		~DNP3Channel();
-
-		// Implement IChannel - these are exposed to clients
-
-		void Shutdown();
-
-		IMaster* AddMaster(		const std::string& arLoggerId,
-	                            FilterLevel aLevel,
-	                            IDataObserver* apPublisher,
-	                            const MasterStackConfig& arCfg);
-
-		// Helper functions only available inside DNP3Manager		
-
-	private:	
-
-		void Cleanup();
-
-		void OnStackShutdown(IStack* apStack, LinkRoute aRoute);
-
-		std::auto_ptr<IPhysicalLayerAsync> mpPhys;
-		std::function<void (DNP3Channel*)> mOnShutdown;
-		LinkLayerRouter mRouter;
-		AsyncTaskGroup mGroup;
-		std::set<IStack*> mStacks;
-		
-};
-
-}
+	std::cout << arPoint.ToString() << " : " << aIndex << std::endl;
 }
 
-#endif
+void SimpleDataObserver::_Update(const Analog& arPoint, size_t aIndex)
+{
+	std::cout << arPoint.ToString() << " : " << aIndex << std::endl;
+}
+
+void SimpleDataObserver::_Update(const Counter& arPoint, size_t aIndex)
+{
+	std::cout << arPoint.ToString() << " : " << aIndex << std::endl;
+}
+
+
+void SimpleDataObserver::_Update(const ControlStatus& arPoint, size_t aIndex)
+{
+	std::cout << arPoint.ToString() << " : " << aIndex << std::endl;
+}
+
+void SimpleDataObserver::_Update(const SetpointStatus& arPoint, size_t aIndex)
+{
+	std::cout << arPoint.ToString() << " : " << aIndex << std::endl;
+}
+
+NullDataObserver NullDataObserver::mInstance;
+
+PrintingDataObserver PrintingDataObserver::mInstance;
+
+}

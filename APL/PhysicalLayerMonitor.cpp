@@ -76,7 +76,7 @@ void PhysicalLayerMonitor::AddObserver(IPhysicalLayerObserver* apObserver)
 
 void PhysicalLayerMonitor::ShutdownAndWait()
 {
-	mpPhys->GetExecutor()->Post([this](){ this->Shutdown(); });
+	mpPhys->GetExecutor()->Synchronize([this](){ this->Shutdown(); });
 	
 	std::unique_lock<std::mutex> lock(mMutex);
 	while(!mFinalShutdown) 

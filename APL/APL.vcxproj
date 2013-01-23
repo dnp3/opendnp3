@@ -80,6 +80,7 @@
     <ClInclude Include="PhysicalLayerStates.h" />
     <ClInclude Include="PhysLayerSettings.h" />
     <ClInclude Include="PhysLoopback.h" />
+    <ClInclude Include="SimpleDataObserver.h" />
     <ClInclude Include="ProtocolUtil.h" />
     <ClInclude Include="QualityConverter.h" />
     <ClInclude Include="QualityMasks.h" />
@@ -149,6 +150,7 @@
     <ClCompile Include="PhysicalLayerMonitorStates.cpp" />
     <ClCompile Include="PhysicalLayerStates.cpp" />
     <ClCompile Include="PhysLoopback.cpp" />
+    <ClCompile Include="SimpleDataObserver.cpp" />
     <ClCompile Include="ProtocolUtil.cpp" />
     <ClCompile Include="QualityConverter.cpp" />
     <ClCompile Include="RandomizedBuffer.cpp" />

@@ -57,11 +57,11 @@ class ITimer;
 class AsyncTaskGroup : private Uncopyable
 {
 	friend class AsyncTaskBase;
-	friend class AsyncTaskContinuous;
-	friend class AsyncTaskScheduler;
+	friend class AsyncTaskContinuous;	
 
 public:
 
+	AsyncTaskGroup(IExecutor*, ITimeSource*);
 	~AsyncTaskGroup();
 
 	AsyncTaskBase* Add(millis_t aPeriod, millis_t aRetryDelay, int aPriority, const TaskHandler& arCallback, const std::string& arName = "");
@@ -100,7 +100,7 @@ private:
 	ITimeSource* mpTimeSrc;
 	ITimer* mpTimer;
 
-	AsyncTaskGroup(IExecutor*, ITimeSource*);
+	
 
 	typedef std::vector< AsyncTaskBase* > TaskVec;
 	TaskVec mTaskVec;

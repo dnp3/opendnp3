@@ -31,6 +31,7 @@
 
 #include <APL/PhysicalLayerAsyncTCPClient.h>
 #include <APL/PhysicalLayerAsyncTCPServer.h>
+#include <APL/TimeSource.h>
 
 #include "DNP3Channel.h"
 
@@ -51,13 +52,16 @@ DNP3Manager::~DNP3Manager()
 	this->Shutdown();
 }
 
+void DNP3Manager::AddLogSubscriber(ILogBase* apLog)
+{
+	mLog.AddLogSubscriber(apLog);
+}
+
 void DNP3Manager::Shutdown()
 {
-	for(auto pChannel: mChannels) {
-		pChannel->ShutdownNoCallback();
-		delete pChannel;
-	}
-	mChannels.clear();	
+	std::set<DNP3Channel*> copy(mChannels);
+	for(auto pChannel: copy) pChannel->Shutdown();
+	std::cout << "Done Manager Shutdown" << std::endl;
 }
 
 IChannel* DNP3Manager::AddTCPClient(const std::string& arName, FilterLevel aLevel, millis_t aOpenRetry, const std::string& arAddr, uint16_t aPort)
@@ -65,7 +69,7 @@ IChannel* DNP3Manager::AddTCPClient(const std::string& arName, FilterLevel aLeve
 	std::lock_guard<std::mutex> lock(mMutex);
 	auto pLogger = mLog.GetLogger(aLevel, arName);
 	auto pPhys = new PhysicalLayerAsyncTCPClient(pLogger, mThreadPool.GetIOService(), arAddr, aPort);
-	auto pChannel = new DNP3Channel(pLogger, aOpenRetry, pPhys, [this](DNP3Channel* apChannel){ this->OnChannelShutdownCallback(apChannel); });
+	auto pChannel = new DNP3Channel(pLogger, aOpenRetry, pPhys, TimeSource::Inst(), [this](DNP3Channel* apChannel){ this->OnChannelShutdownCallback(apChannel); });
 	mChannels.insert(pChannel);
 	return pChannel;
 }
@@ -75,7 +79,7 @@ IChannel* DNP3Manager::AddTCPServer(const std::string& arName, FilterLevel aLeve
 	std::lock_guard<std::mutex> lock(mMutex);
 	auto pLogger = mLog.GetLogger(aLevel, arName);
 	auto pPhys = new PhysicalLayerAsyncTCPServer(pLogger, mThreadPool.GetIOService(), arEndpoint, aPort);
-	auto pChannel = new DNP3Channel(pLogger, aOpenRetry, pPhys, [this](DNP3Channel* apChannel){ this->OnChannelShutdownCallback(apChannel); });
+	auto pChannel = new DNP3Channel(pLogger, aOpenRetry, pPhys, TimeSource::Inst(), [this](DNP3Channel* apChannel){ this->OnChannelShutdownCallback(apChannel); });
 	mChannels.insert(pChannel);
 	return pChannel;
 }

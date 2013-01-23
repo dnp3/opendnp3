@@ -29,29 +29,59 @@
 
 #include "DNP3Channel.h"
 
+#include <DNP3/MasterStackImpl.h>
+#include <APL/IPhysicalLayerAsync.h>
+
 namespace apl
 {
 namespace dnp
 {
 
-DNP3Channel::DNP3Channel(Logger* apLogger, millis_t aOpenRetry, IPhysicalLayerAsync* apPhys, std::function<void (DNP3Channel*)> aOnShutdown) :
+DNP3Channel::DNP3Channel(Logger* apLogger, millis_t aOpenRetry, IPhysicalLayerAsync* apPhys, ITimeSource* apTimeSource, std::function<void (DNP3Channel*)> aOnShutdown) :
 	Loggable(apLogger),
 	mpPhys(apPhys), 
 	mOnShutdown(aOnShutdown),
-	mRouter(apLogger->GetSubLogger("Router"), mpPhys.get(), aOpenRetry)
+	mRouter(apLogger->GetSubLogger("Router"), mpPhys.get(), aOpenRetry),
+	mGroup(apPhys->GetExecutor(), apTimeSource)
 {
 
+}
+
+DNP3Channel::~DNP3Channel()
+{
+	this->Cleanup();
 }
 
 void DNP3Channel::Shutdown()
 {
-	this->ShutdownNoCallback();
+	this->Cleanup();
 	mOnShutdown(this);
 }
 
-void DNP3Channel::ShutdownNoCallback()
+void DNP3Channel::Cleanup()
 {
+	std::set<IStack*> copy(mStacks);
+	for(auto pStack: copy) pStack->Shutdown();
 	mRouter.ShutdownAndWait();
+}
+
+IMaster* DNP3Channel::AddMaster(const std::string& arLoggerId, FilterLevel aLevel, IDataObserver* apPublisher, const MasterStackConfig& arCfg)
+{
+	auto pLogger = mpLogger->GetSubLogger(arLoggerId, aLevel);
+	LinkRoute route(arCfg.link.RemoteAddr, arCfg.link.LocalAddr);
+	auto pMaster = new MasterStackImpl(pLogger, mpPhys->GetExecutor(), apPublisher, &mGroup, arCfg, [this, route](IStack* apStack){ this->OnStackShutdown(apStack, route); });
+	pMaster->SetLinkRouter(&mRouter);
+	mStacks.insert(pMaster);
+	mpPhys->GetExecutor()->Synchronize([&](){ mRouter.AddContext(pMaster->GetLinkContext(), route); });
+	return pMaster;
+}
+
+void DNP3Channel::OnStackShutdown(IStack* apStack, LinkRoute route)
+{
+	mStacks.erase(apStack);
+	mpPhys->GetExecutor()->Synchronize([&](){
+		mRouter.RemoveContext(route);
+	});	
 }
 
 }

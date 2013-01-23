@@ -26,58 +26,48 @@
 //
 // Contact Automatak, LLC for a commercial license to these modifications
 //
-#ifndef __DNP3_CHANNEL_H_
-#define __DNP3_CHANNEL_H_
+#ifndef __MASTER_STACK_IMPL_H_
+#define __MASTER_STACK_IMPL_H_
 
-#include "IChannel.h"
-#include "LinkLayerRouter.h"
-
-#include <APL/Loggable.h>
-#include <APL/AsyncTaskGroup.h>
-
-#include <memory>
-#include <functional>
+#include "IMaster.h"
+#include "Master.h"
+#include "ApplicationStack.h"
+#include "MasterStackConfig.h"
 
 namespace apl
 {
-
-class IPhysicalLayerAsync;
-class ITimeSource;
-
 namespace dnp
 {
 
-class IStack;
+class ILinkContext;
 
-class DNP3Channel: public IChannel, private Loggable
+/** @section desc A stack object for a master */
+class MasterStackImpl : public IMaster
 {
-	public:
-		DNP3Channel(Logger* apLogger, millis_t aOpenRetry, IPhysicalLayerAsync* apPhys, ITimeSource* apTimerSource, std::function<void (DNP3Channel*)> aOnShutdown);
-		~DNP3Channel();
+public:
 
-		// Implement IChannel - these are exposed to clients
+	MasterStackImpl(
+	        Logger*,
+	        IExecutor* apExecutor,
+	        IDataObserver* apPublisher,
+	        AsyncTaskGroup* apTaskGroup,
+	        const MasterStackConfig& arCfg,
+			std::function<void (IMaster*)> aOnShutdown);	
 
-		void Shutdown();
+	ICommandProcessor* GetCommandProcessor();
 
-		IMaster* AddMaster(		const std::string& arLoggerId,
-	                            FilterLevel aLevel,
-	                            IDataObserver* apPublisher,
-	                            const MasterStackConfig& arCfg);
+	ILinkContext* GetLinkContext();
 
-		// Helper functions only available inside DNP3Manager		
+	void SetLinkRouter(ILinkRouter* apRouter);
 
-	private:	
+	void Shutdown();
 
-		void Cleanup();
+private:
+	IExecutor* mpExecutor;
+	ApplicationStack mAppStack;
+	Master mMaster;
+	std::function<void (IMaster*)> mOnShutdown;
 
-		void OnStackShutdown(IStack* apStack, LinkRoute aRoute);
-
-		std::auto_ptr<IPhysicalLayerAsync> mpPhys;
-		std::function<void (DNP3Channel*)> mOnShutdown;
-		LinkLayerRouter mRouter;
-		AsyncTaskGroup mGroup;
-		std::set<IStack*> mStacks;
-		
 };
 
 }

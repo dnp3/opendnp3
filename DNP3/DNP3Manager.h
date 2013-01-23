@@ -39,6 +39,9 @@
 
 namespace apl
 {
+
+class ILogBase;
+
 namespace dnp
 {
 
@@ -51,6 +54,8 @@ class DNP3Manager
 	public:
 		DNP3Manager(uint32_t aConcurrency);
 		~DNP3Manager();
+
+		void AddLogSubscriber(ILogBase* apLog);
 
 		void Shutdown();
 

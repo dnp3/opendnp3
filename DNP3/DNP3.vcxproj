@@ -21,6 +21,7 @@
     <ClInclude Include="AppInterfaces.h" />
     <ClInclude Include="AppLayer.h" />
     <ClInclude Include="AppLayerChannel.h" />
+    <ClInclude Include="ApplicationStack.h" />
     <ClInclude Include="AsyncStackManager.h" />
     <ClInclude Include="BufferSetTypes.h" />
     <ClInclude Include="BufferTypes.h" />
@@ -53,7 +54,9 @@
     <ClInclude Include="IFrameSink.h" />
     <ClInclude Include="ILinkContext.h" />
     <ClInclude Include="ILinkRouter.h" />
+    <ClInclude Include="IMaster.h" />
     <ClInclude Include="IndexedWriteIterator.h" />
+    <ClInclude Include="IStack.h" />
     <ClInclude Include="IStackObserver.h" />
     <ClInclude Include="IVtoEventAcceptor.h" />
     <ClInclude Include="LinkChannel.h" />
@@ -123,6 +126,7 @@
     <ClCompile Include="AppInterfaces.cpp" />
     <ClCompile Include="AppLayer.cpp" />
     <ClCompile Include="AppLayerChannel.cpp" />
+    <ClCompile Include="ApplicationStack.cpp" />
     <ClCompile Include="AsyncStackManager.cpp" />
     <ClCompile Include="BufferTypes.cpp" />
     <ClCompile Include="DNP3Channel.cpp" />
@@ -151,6 +155,7 @@
     <ClCompile Include="Master.cpp" />
     <ClCompile Include="MasterSchedule.cpp" />
     <ClCompile Include="MasterStack.cpp" />
+    <ClCompile Include="MasterStackImpl.cpp" />
     <ClCompile Include="MasterStates.cpp" />
     <ClCompile Include="MasterTaskBase.cpp" />
     <ClCompile Include="ObjectHeader.cpp" />

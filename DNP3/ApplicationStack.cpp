@@ -26,61 +26,24 @@
 //
 // Contact Automatak, LLC for a commercial license to these modifications
 //
-#ifndef __DNP3_CHANNEL_H_
-#define __DNP3_CHANNEL_H_
 
-#include "IChannel.h"
-#include "LinkLayerRouter.h"
+#include "ApplicationStack.h"
 
-#include <APL/Loggable.h>
-#include <APL/AsyncTaskGroup.h>
-
-#include <memory>
-#include <functional>
+#include <APL/Logger.h>
 
 namespace apl
 {
-
-class IPhysicalLayerAsync;
-class ITimeSource;
-
 namespace dnp
 {
 
-class IStack;
-
-class DNP3Channel: public IChannel, private Loggable
+ApplicationStack::ApplicationStack(Logger* apLogger, IExecutor* apExecutor, AppConfig aAppCfg, LinkConfig aCfg) :
+mLink(apLogger->GetSubLogger("link"), apExecutor, aCfg),
+mTransport(apLogger->GetSubLogger("transport")),
+mApplication(apLogger->GetSubLogger("app"), apExecutor, aAppCfg)
 {
-	public:
-		DNP3Channel(Logger* apLogger, millis_t aOpenRetry, IPhysicalLayerAsync* apPhys, ITimeSource* apTimerSource, std::function<void (DNP3Channel*)> aOnShutdown);
-		~DNP3Channel();
-
-		// Implement IChannel - these are exposed to clients
-
-		void Shutdown();
-
-		IMaster* AddMaster(		const std::string& arLoggerId,
-	                            FilterLevel aLevel,
-	                            IDataObserver* apPublisher,
-	                            const MasterStackConfig& arCfg);
-
-		// Helper functions only available inside DNP3Manager		
-
-	private:	
-
-		void Cleanup();
-
-		void OnStackShutdown(IStack* apStack, LinkRoute aRoute);
-
-		std::auto_ptr<IPhysicalLayerAsync> mpPhys;
-		std::function<void (DNP3Channel*)> mOnShutdown;
-		LinkLayerRouter mRouter;
-		AsyncTaskGroup mGroup;
-		std::set<IStack*> mStacks;
+	mLink.SetUpperLayer(&mTransport);
+	mTransport.SetUpperLayer(&mApplication);
+}
 		
-};
-
 }
 }
-
-#endif

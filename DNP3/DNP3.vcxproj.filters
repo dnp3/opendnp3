@@ -321,6 +321,15 @@
     <ClInclude Include="DNP3Channel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="IMaster.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="IStack.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ApplicationStack.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AlwaysOpeningVtoRouter.cpp">
@@ -537,6 +546,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="DNP3Channel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ApplicationStack.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MasterStackImpl.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

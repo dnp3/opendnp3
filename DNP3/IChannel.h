@@ -29,20 +29,32 @@
 #ifndef __I_CHANNEL_H_
 #define __I_CHANNEL_H_
 
+#include <DNP3/MasterStackConfig.h>
+#include <APL/LogTypes.h>
+
 namespace apl
 {
+
+class IDataObserver;
+
 namespace dnp
 {
+
+class IMaster;
 
 class IChannel 
 {
 	public:
+		
 		/**
 		* Synchronously shutdown the channel. Once this method is complete, the object is safe to delete.
 		*/
 		virtual void Shutdown() = 0;
 
-		
+		virtual IMaster* AddMaster(	const std::string& arLoggerId,
+									FilterLevel aLevel,
+									IDataObserver* apPublisher,
+									const MasterStackConfig& arCfg) = 0;
 };
 
 }

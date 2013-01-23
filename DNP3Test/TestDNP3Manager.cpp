@@ -32,22 +32,33 @@
 #include <DNP3/DNP3Manager.h>
 #include <DNP3/IChannel.h>
 
+#include <APL/LogToStdio.h>
+#include <APL/SimpleDataObserver.h>
+
+#include <thread>
+
 using namespace apl;
 using namespace apl::dnp;
 
 BOOST_AUTO_TEST_SUITE(DNP3ManagerTestSuite)
 
 BOOST_AUTO_TEST_CASE(ConstructionDestruction)
-{
-	DNP3Manager mgr(std::thread::hardware_concurrency());
-	mgr.AddTCPClient("client", LEV_INFO, 5000, "127.0.0.1", 20000);
+{		
+	//DNP3Manager mgr(std::thread::hardware_concurrency());
+	DNP3Manager mgr(1);
+	mgr.AddLogSubscriber(LogToStdio::Inst());
+
+	auto pChannel = mgr.AddTCPClient("client", LEV_INFO, 5000, "127.0.0.1", 20000);	
+	auto pMaster = pChannel->AddMaster("master", LEV_INFO, PrintingDataObserver::Inst(), MasterStackConfig());	
 }
 
-BOOST_AUTO_TEST_CASE(ConstructionDestructionWithManualShutdown)
+BOOST_AUTO_TEST_CASE(ManualChannelShutdown)
 {
 	DNP3Manager mgr(std::thread::hardware_concurrency());
 	mgr.AddTCPClient("client", LEV_INFO, 5000, "127.0.0.1", 20000)->Shutdown();
 }
+
+
 
 BOOST_AUTO_TEST_SUITE_END()
 
