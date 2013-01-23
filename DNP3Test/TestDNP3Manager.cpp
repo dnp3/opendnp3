@@ -46,7 +46,7 @@ using namespace apl::dnp;
 BOOST_AUTO_TEST_SUITE(DNP3ManagerTestSuite)
 
 BOOST_AUTO_TEST_CASE(ConstructionDestruction)
-{		
+{
 	DNP3Manager mgr(std::thread::hardware_concurrency());	
 
 	auto pClient = mgr.AddTCPClient("client", LEV_INFO, 5000, "127.0.0.1", 20000);
@@ -56,8 +56,8 @@ BOOST_AUTO_TEST_CASE(ConstructionDestruction)
 }
 
 BOOST_AUTO_TEST_CASE(ManualStackShutdown)
-{		
-	DNP3Manager mgr(std::thread::hardware_concurrency());	
+{
+	DNP3Manager mgr(std::thread::hardware_concurrency());
 
 	auto pClient = mgr.AddTCPClient("client", LEV_INFO, 5000, "127.0.0.1", 20000);
 	auto pServer = mgr.AddTCPServer("server", LEV_INFO, 5000, "127.0.0.1", 20000);
@@ -69,11 +69,11 @@ BOOST_AUTO_TEST_CASE(ManualStackShutdown)
 }
 
 BOOST_AUTO_TEST_CASE(ManualChannelShutdownWithStack)
-{		
-	DNP3Manager mgr(std::thread::hardware_concurrency());	
+{
+	DNP3Manager mgr(std::thread::hardware_concurrency());
 
 	auto pChannel = mgr.AddTCPClient("client", LEV_INFO, 5000, "127.0.0.1", 20000);
-	auto pMaster = pChannel->AddMaster("master", LEV_INFO, PrintingDataObserver::Inst(), MasterStackConfig());	
+	pChannel->AddMaster("master", LEV_INFO, PrintingDataObserver::Inst(), MasterStackConfig());	
 	pChannel->Shutdown();
 }
 
