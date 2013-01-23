@@ -59,8 +59,7 @@ void DNP3Manager::AddLogSubscriber(ILogBase* apLog)
 
 void DNP3Manager::Shutdown()
 {
-	std::set<DNP3Channel*> copy(mChannels);
-	std::cout << "Shutting down: " << copy.size() << std::endl;
+	std::set<DNP3Channel*> copy(mChannels);	
 	for(auto pChannel: copy) pChannel->Shutdown();	
 }
 
@@ -87,8 +86,7 @@ IChannel* DNP3Manager::AddTCPServer(const std::string& arName, FilterLevel aLeve
 void DNP3Manager::OnChannelShutdownCallback(DNP3Channel* apChannel)
 {
 	std::lock_guard<std::mutex> lock(mMutex);
-	mChannels.erase(apChannel);
-	std::cout << "Deleting channel" << std::endl;
+	mChannels.erase(apChannel);	
 	delete apChannel;
 }
 

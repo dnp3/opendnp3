@@ -48,31 +48,29 @@ BOOST_AUTO_TEST_SUITE(DNP3ManagerTestSuite)
 BOOST_AUTO_TEST_CASE(ConstructionDestruction)
 {
 	for(int i=0; i<100; ++i) {
-		std::cout << i << std::endl;
+
 		DNP3Manager mgr(std::thread::hardware_concurrency());	
 
 		auto pClient = mgr.AddTCPClient("client", LEV_INFO, 5000, "127.0.0.1", 20000);
 		auto pServer = mgr.AddTCPServer("server", LEV_INFO, 5000, "127.0.0.1", 20000);
 		pClient->AddMaster("master", LEV_INFO, PrintingDataObserver::Inst(), MasterStackConfig());
 		pServer->AddOutstation("outstation", LEV_INFO, SuccessCommandHandler::Inst(), SlaveStackConfig());
-
-		std::this_thread::sleep_for(std::chrono::milliseconds(100));
+		
 	}
 }
 
 BOOST_AUTO_TEST_CASE(ManualStackShutdown)
 {
 	for(int i=0; i<100; ++i) {
-		std::cout << i << std::endl;
 
+		std::cout << i << std::endl;
+		
 		DNP3Manager mgr(std::thread::hardware_concurrency());
 
 		auto pClient = mgr.AddTCPClient("client", LEV_INFO, 5000, "127.0.0.1", 20000);
 		auto pServer = mgr.AddTCPServer("server", LEV_INFO, 5000, "127.0.0.1", 20000);
 		auto pOutstation = pServer->AddOutstation("outstation", LEV_INFO, SuccessCommandHandler::Inst(), SlaveStackConfig());
-		auto pMaster = pClient->AddMaster("master", LEV_INFO, PrintingDataObserver::Inst(), MasterStackConfig());
-
-		std::this_thread::sleep_for(std::chrono::milliseconds(100));
+		auto pMaster = pClient->AddMaster("master", LEV_INFO, PrintingDataObserver::Inst(), MasterStackConfig());		
 		
 		pMaster->Shutdown();
 		pOutstation->Shutdown();
