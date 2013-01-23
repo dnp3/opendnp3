@@ -31,6 +31,9 @@
 
 #include <DNP3/DNP3Manager.h>
 #include <DNP3/IChannel.h>
+#include <DNP3/IMaster.h>
+#include <DNP3/IOutstation.h>
+#include <DNP3/SimpleCommandHandler.h>
 
 #include <APL/LogToStdio.h>
 #include <APL/SimpleDataObserver.h>
@@ -44,12 +47,34 @@ BOOST_AUTO_TEST_SUITE(DNP3ManagerTestSuite)
 
 BOOST_AUTO_TEST_CASE(ConstructionDestruction)
 {		
-	//DNP3Manager mgr(std::thread::hardware_concurrency());
-	DNP3Manager mgr(1);
-	mgr.AddLogSubscriber(LogToStdio::Inst());
+	DNP3Manager mgr(std::thread::hardware_concurrency());	
 
-	auto pChannel = mgr.AddTCPClient("client", LEV_INFO, 5000, "127.0.0.1", 20000);	
+	auto pClient = mgr.AddTCPClient("client", LEV_INFO, 5000, "127.0.0.1", 20000);
+	auto pServer = mgr.AddTCPServer("server", LEV_INFO, 5000, "127.0.0.1", 20000);
+	pClient->AddMaster("master", LEV_INFO, PrintingDataObserver::Inst(), MasterStackConfig());
+	pServer->AddOutstation("outstation", LEV_INFO, SuccessCommandHandler::Inst(), SlaveStackConfig());
+}
+
+BOOST_AUTO_TEST_CASE(ManualStackShutdown)
+{		
+	DNP3Manager mgr(std::thread::hardware_concurrency());	
+
+	auto pClient = mgr.AddTCPClient("client", LEV_INFO, 5000, "127.0.0.1", 20000);
+	auto pServer = mgr.AddTCPServer("server", LEV_INFO, 5000, "127.0.0.1", 20000);
+	auto pOutstation = pServer->AddOutstation("outstation", LEV_INFO, SuccessCommandHandler::Inst(), SlaveStackConfig());
+	auto pMaster = pClient->AddMaster("master", LEV_INFO, PrintingDataObserver::Inst(), MasterStackConfig());
+
+	pMaster->Shutdown();
+	pOutstation->Shutdown();
+}
+
+BOOST_AUTO_TEST_CASE(ManualChannelShutdownWithStack)
+{		
+	DNP3Manager mgr(std::thread::hardware_concurrency());	
+
+	auto pChannel = mgr.AddTCPClient("client", LEV_INFO, 5000, "127.0.0.1", 20000);
 	auto pMaster = pChannel->AddMaster("master", LEV_INFO, PrintingDataObserver::Inst(), MasterStackConfig());	
+	pChannel->Shutdown();
 }
 
 BOOST_AUTO_TEST_CASE(ManualChannelShutdown)

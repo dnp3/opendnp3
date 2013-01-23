@@ -26,48 +26,49 @@
 //
 // Contact Automatak, LLC for a commercial license to these modifications
 //
-#ifndef __I_CHANNEL_H_
-#define __I_CHANNEL_H_
 
-#include <DNP3/MasterStackConfig.h>
-#include <DNP3/SlaveStackConfig.h>
-#include <APL/LogTypes.h>
+#include "OutstationStackImpl.h"
 
 namespace apl
 {
-
-class IDataObserver;
-
 namespace dnp
 {
 
-class IMaster;
-class IOutstation;
-class ICommandHandler;
-
-class IChannel 
+OutstationStackImpl::OutstationStackImpl(
+	Logger* apLogger,
+	IExecutor* apExecutor,
+	ICommandHandler* apCmdHandler,	       
+	const SlaveStackConfig& arCfg,
+	std::function<void (IOutstation*)> aOnShutdown) :
+		mpExecutor(apExecutor),
+		mAppStack(apLogger, apExecutor, arCfg.app, arCfg.link),
+		mDB(apLogger),
+		mSlave(apLogger->GetSubLogger("outstation"), &mAppStack.mApplication, apExecutor, &mTimeSource, &mDB, apCmdHandler, arCfg.slave),
+		mOnShutdown(aOnShutdown)
 {
-	public:
+	mAppStack.mApplication.SetUser(&mSlave);
+	mDB.Configure(arCfg.device);
+}
 
-		virtual ~IChannel() {}
-		
-		/**
-		* Synchronously shutdown the channel. Once this method is complete, the object is safe to delete.
-		*/
-		virtual void Shutdown() = 0;
+IDataObserver* OutstationStackImpl::GetDataObserver()
+{
+	return mSlave.GetDataObserver();
+}
 
-		virtual IMaster* AddMaster(	const std::string& arLoggerId,
-									FilterLevel aLevel,
-									IDataObserver* apPublisher,
-									const MasterStackConfig& arCfg) = 0;
+ILinkContext* OutstationStackImpl::GetLinkContext()
+{
+	return &mAppStack.mLink;
+}
 
-		virtual IOutstation* AddOutstation(	const std::string& arLoggerId,
-											FilterLevel aLevel,
-											ICommandHandler* apCmdHandler,
-											const SlaveStackConfig&) = 0;
-};
+void OutstationStackImpl::SetLinkRouter(ILinkRouter* apRouter)
+{
+	mAppStack.mLink.SetRouter(apRouter);
+}
+
+void OutstationStackImpl::Shutdown()
+{
+	mOnShutdown(this);
+}
 
 }
 }
-
-#endif

@@ -75,6 +75,7 @@
     <ClInclude Include="MasterSchedule.h" />
     <ClInclude Include="MasterStack.h" />
     <ClInclude Include="MasterStackConfig.h" />
+    <ClInclude Include="MasterStackImpl.h" />
     <ClInclude Include="MasterStates.h" />
     <ClInclude Include="MasterTaskBase.h" />
     <ClInclude Include="ObjectHeader.h" />
@@ -82,12 +83,14 @@
     <ClInclude Include="ObjectReadIterator.h" />
     <ClInclude Include="Objects.h" />
     <ClInclude Include="ObjectWriteIterator.h" />
+    <ClInclude Include="OutstationStackImpl.h" />
     <ClInclude Include="PointClass.h" />
     <ClInclude Include="PriLinkLayerStates.h" />
     <ClInclude Include="QueuedCommandProcessor.h" />
     <ClInclude Include="ResponseContext.h" />
     <ClInclude Include="ResponseLoader.h" />
     <ClInclude Include="SecLinkLayerStates.h" />
+    <ClInclude Include="SimpleCommandHandler.h" />
     <ClInclude Include="Slave.h" />
     <ClInclude Include="SlaveConfig.h" />
     <ClInclude Include="SlaveEventBuffer.h" />
@@ -163,12 +166,14 @@
     <ClCompile Include="ObjectReadIterator.cpp" />
     <ClCompile Include="Objects.cpp" />
     <ClCompile Include="ObjectWriteIterator.cpp" />
+    <ClCompile Include="OutstationStackImpl.cpp" />
     <ClCompile Include="PointClass.cpp" />
     <ClCompile Include="PriLinkLayerStates.cpp" />
     <ClCompile Include="QueuedCommandProcessor.cpp" />
     <ClCompile Include="ResponseContext.cpp" />
     <ClCompile Include="ResponseLoader.cpp" />
     <ClCompile Include="SecLinkLayerStates.cpp" />
+    <ClCompile Include="SimpleCommandHandler.cpp" />
     <ClCompile Include="Slave.cpp" />
     <ClCompile Include="SlaveConfig.cpp" />
     <ClCompile Include="SlaveEventBuffer.cpp" />

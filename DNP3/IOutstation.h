@@ -1,4 +1,3 @@
-
 //
 // Licensed to Green Energy Corp (www.greenenergycorp.com) under one or
 // more contributor license agreements. See the NOTICE file distributed
@@ -26,46 +25,27 @@
 //
 // Contact Automatak, LLC for a commercial license to these modifications
 //
-#ifndef __I_CHANNEL_H_
-#define __I_CHANNEL_H_
+#ifndef __I_OUTSTATION_H_
+#define __I_OUTSTATION_H_
 
-#include <DNP3/MasterStackConfig.h>
-#include <DNP3/SlaveStackConfig.h>
-#include <APL/LogTypes.h>
+#include "IStack.h"
 
 namespace apl
 {
 
-class IDataObserver;
+class IDataObserver;	
 
 namespace dnp
 {
 
-class IMaster;
-class IOutstation;
-class ICommandHandler;
-
-class IChannel 
+class IOutstation : public IStack
 {
 	public:
-
-		virtual ~IChannel() {}
-		
-		/**
-		* Synchronously shutdown the channel. Once this method is complete, the object is safe to delete.
-		*/
-		virtual void Shutdown() = 0;
-
-		virtual IMaster* AddMaster(	const std::string& arLoggerId,
-									FilterLevel aLevel,
-									IDataObserver* apPublisher,
-									const MasterStackConfig& arCfg) = 0;
-
-		virtual IOutstation* AddOutstation(	const std::string& arLoggerId,
-											FilterLevel aLevel,
-											ICommandHandler* apCmdHandler,
-											const SlaveStackConfig&) = 0;
+		virtual ~IOutstation() {}
+		virtual IDataObserver* GetDataObserver() = 0;
 };
+
+
 
 }
 }

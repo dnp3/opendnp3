@@ -60,8 +60,7 @@ void DNP3Manager::AddLogSubscriber(ILogBase* apLog)
 void DNP3Manager::Shutdown()
 {
 	std::set<DNP3Channel*> copy(mChannels);
-	for(auto pChannel: copy) pChannel->Shutdown();
-	std::cout << "Done Manager Shutdown" << std::endl;
+	for(auto pChannel: copy) pChannel->Shutdown();	
 }
 
 IChannel* DNP3Manager::AddTCPClient(const std::string& arName, FilterLevel aLevel, millis_t aOpenRetry, const std::string& arAddr, uint16_t aPort)

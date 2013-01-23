@@ -35,6 +35,8 @@
 #include <APL/Loggable.h>
 #include <APL/AsyncTaskGroup.h>
 
+#include <DNP3/SlaveStackConfig.h>
+
 #include <memory>
 #include <functional>
 
@@ -48,6 +50,8 @@ namespace dnp
 {
 
 class IStack;
+class IOutstation;
+class ICommandHandler;
 
 class DNP3Channel: public IChannel, private Loggable
 {
@@ -63,6 +67,11 @@ class DNP3Channel: public IChannel, private Loggable
 	                            FilterLevel aLevel,
 	                            IDataObserver* apPublisher,
 	                            const MasterStackConfig& arCfg);
+
+		IOutstation* AddOutstation(	const std::string& arLoggerId,
+									FilterLevel aLevel,
+									ICommandHandler* apCmdHandler,
+									const SlaveStackConfig&);
 
 		// Helper functions only available inside DNP3Manager		
 

@@ -330,6 +330,15 @@
     <ClInclude Include="ApplicationStack.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="MasterStackImpl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="OutstationStackImpl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SimpleCommandHandler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AlwaysOpeningVtoRouter.cpp">
@@ -552,6 +561,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="MasterStackImpl.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="OutstationStackImpl.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SimpleCommandHandler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

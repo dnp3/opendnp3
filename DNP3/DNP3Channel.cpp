@@ -30,6 +30,8 @@
 #include "DNP3Channel.h"
 
 #include <DNP3/MasterStackImpl.h>
+#include <DNP3/OutstationStackImpl.h>
+
 #include <APL/IPhysicalLayerAsync.h>
 
 namespace apl
@@ -75,6 +77,17 @@ IMaster* DNP3Channel::AddMaster(const std::string& arLoggerId, FilterLevel aLeve
 	mStacks.insert(pMaster);
 	mpPhys->GetExecutor()->Synchronize([&](){ mRouter.AddContext(pMaster->GetLinkContext(), route); });
 	return pMaster;
+}
+
+IOutstation* DNP3Channel::AddOutstation(const std::string& arLoggerId, FilterLevel aLevel, ICommandHandler* apCmdHandler, const SlaveStackConfig& arCfg)
+{
+	auto pLogger = mpLogger->GetSubLogger(arLoggerId, aLevel);
+	LinkRoute route(arCfg.link.RemoteAddr, arCfg.link.LocalAddr);
+	auto pOutstation = new OutstationStackImpl(pLogger, mpPhys->GetExecutor(), apCmdHandler, arCfg, [this, route](IStack* apStack){ this->OnStackShutdown(apStack, route); });
+	pOutstation->SetLinkRouter(&mRouter);
+	mStacks.insert(pOutstation);
+	mpPhys->GetExecutor()->Synchronize([&](){ mRouter.AddContext(pOutstation->GetLinkContext(), route); });
+	return pOutstation;
 }
 
 void DNP3Channel::OnStackShutdown(IStack* apStack, LinkRoute route)

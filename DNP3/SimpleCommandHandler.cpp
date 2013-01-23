@@ -26,48 +26,47 @@
 //
 // Contact Automatak, LLC for a commercial license to these modifications
 //
-#ifndef __I_CHANNEL_H_
-#define __I_CHANNEL_H_
 
-#include <DNP3/MasterStackConfig.h>
-#include <DNP3/SlaveStackConfig.h>
-#include <APL/LogTypes.h>
+#include "SimpleCommandHandler.h"
 
 namespace apl
 {
-
-class IDataObserver;
-
 namespace dnp
 {
 
-class IMaster;
-class IOutstation;
-class ICommandHandler;
-
-class IChannel 
+SimpleCommandHandler::SimpleCommandHandler(std::function<CommandStatus ()> aStatusFunc) : 
+	mStatusFunc(aStatusFunc)
 {
-	public:
 
-		virtual ~IChannel() {}
-		
-		/**
-		* Synchronously shutdown the channel. Once this method is complete, the object is safe to delete.
-		*/
-		virtual void Shutdown() = 0;
+}
 
-		virtual IMaster* AddMaster(	const std::string& arLoggerId,
-									FilterLevel aLevel,
-									IDataObserver* apPublisher,
-									const MasterStackConfig& arCfg) = 0;
+CommandStatus SimpleCommandHandler::Select(const BinaryOutput& arCommand, size_t aIndex, uint8_t aSequence)
+{ return mStatusFunc(); }
 
-		virtual IOutstation* AddOutstation(	const std::string& arLoggerId,
-											FilterLevel aLevel,
-											ICommandHandler* apCmdHandler,
-											const SlaveStackConfig&) = 0;
-};
+CommandStatus SimpleCommandHandler::Select(const Setpoint& arCommand, size_t aIndex, uint8_t aSequence)
+{ return mStatusFunc(); }
+
+CommandStatus SimpleCommandHandler::Operate(const BinaryOutput& arCommand, size_t aIndex, uint8_t aSequence)
+{ return mStatusFunc(); }
+
+CommandStatus SimpleCommandHandler::Operate(const Setpoint& arCommand, size_t aIndex, uint8_t aSequence)
+{ return mStatusFunc(); }
+
+CommandStatus SimpleCommandHandler::DirectOperate(const BinaryOutput& arCommand, size_t aIndex)
+{ return mStatusFunc(); }
+
+CommandStatus SimpleCommandHandler::DirectOperate(const Setpoint& arCommand, size_t aIndex)
+{ return mStatusFunc(); }
+
+SuccessCommandHandler::SuccessCommandHandler() : SimpleCommandHandler([](){ return CS_SUCCESS; })
+{
+
+}
+
+SuccessCommandHandler SuccessCommandHandler::mHandler;
+
 
 }
 }
 
-#endif
+

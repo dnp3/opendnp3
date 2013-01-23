@@ -26,45 +26,48 @@
 //
 // Contact Automatak, LLC for a commercial license to these modifications
 //
-#ifndef __I_CHANNEL_H_
-#define __I_CHANNEL_H_
+#ifndef __OUTSTATION_STACK_IMPL_H_
+#define __OUTSTATION_STACK_IMPL_H_
 
-#include <DNP3/MasterStackConfig.h>
-#include <DNP3/SlaveStackConfig.h>
-#include <APL/LogTypes.h>
+#include "IOutstation.h"
+#include "Slave.h"
+#include "ApplicationStack.h"
+#include "SlaveStackConfig.h"
 
 namespace apl
 {
-
-class IDataObserver;
-
 namespace dnp
 {
 
-class IMaster;
-class IOutstation;
-class ICommandHandler;
+class ILinkContext;
 
-class IChannel 
+/** @section desc A stack object for a master */
+class OutstationStackImpl : public IOutstation
 {
-	public:
+public:
 
-		virtual ~IChannel() {}
-		
-		/**
-		* Synchronously shutdown the channel. Once this method is complete, the object is safe to delete.
-		*/
-		virtual void Shutdown() = 0;
+	OutstationStackImpl(
+	        Logger*,
+	        IExecutor* apExecutor,
+	        ICommandHandler* apCmdHandler,	       
+	        const SlaveStackConfig& arCfg,
+			std::function<void (IOutstation*)> aOnShutdown);	
 
-		virtual IMaster* AddMaster(	const std::string& arLoggerId,
-									FilterLevel aLevel,
-									IDataObserver* apPublisher,
-									const MasterStackConfig& arCfg) = 0;
+	IDataObserver* GetDataObserver();
 
-		virtual IOutstation* AddOutstation(	const std::string& arLoggerId,
-											FilterLevel aLevel,
-											ICommandHandler* apCmdHandler,
-											const SlaveStackConfig&) = 0;
+	ILinkContext* GetLinkContext();
+
+	void SetLinkRouter(ILinkRouter* apRouter);
+
+	void Shutdown();
+
+private:
+	IExecutor* mpExecutor;
+	ApplicationStack mAppStack;
+	TimeSourceSystemOffset mTimeSource;
+	Database mDB;
+	Slave mSlave;
+	std::function<void (IOutstation*)> mOnShutdown;
 };
 
 }

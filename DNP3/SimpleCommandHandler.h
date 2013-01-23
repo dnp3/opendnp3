@@ -26,45 +26,44 @@
 //
 // Contact Automatak, LLC for a commercial license to these modifications
 //
-#ifndef __I_CHANNEL_H_
-#define __I_CHANNEL_H_
+#ifndef __SIMPLE_COMMAND_HANDLER_H_
+#define __SIMPLE_COMMAND_HANDLER_H_
 
-#include <DNP3/MasterStackConfig.h>
-#include <DNP3/SlaveStackConfig.h>
-#include <APL/LogTypes.h>
+#include "ICommandHandler.h"
 
 namespace apl
 {
-
-class IDataObserver;
-
 namespace dnp
 {
 
-class IMaster;
-class IOutstation;
-class ICommandHandler;
 
-class IChannel 
+class SimpleCommandHandler : public ICommandHandler
 {
 	public:
 
-		virtual ~IChannel() {}
-		
-		/**
-		* Synchronously shutdown the channel. Once this method is complete, the object is safe to delete.
-		*/
-		virtual void Shutdown() = 0;
+		SimpleCommandHandler(std::function<CommandStatus ()> aStatusFunc);
 
-		virtual IMaster* AddMaster(	const std::string& arLoggerId,
-									FilterLevel aLevel,
-									IDataObserver* apPublisher,
-									const MasterStackConfig& arCfg) = 0;
+		CommandStatus Select(const BinaryOutput& arCommand, size_t aIndex, uint8_t aSequence) ;
+		CommandStatus Select(const Setpoint& arCommand, size_t aIndex, uint8_t aSequence);
+		CommandStatus Operate(const BinaryOutput& arCommand, size_t aIndex, uint8_t aSequence);
+		CommandStatus Operate(const Setpoint& arCommand, size_t aIndex, uint8_t aSequence);
+		CommandStatus DirectOperate(const BinaryOutput& arCommand, size_t aIndex);
+		CommandStatus DirectOperate(const Setpoint& arCommand, size_t aIndex);
 
-		virtual IOutstation* AddOutstation(	const std::string& arLoggerId,
-											FilterLevel aLevel,
-											ICommandHandler* apCmdHandler,
-											const SlaveStackConfig&) = 0;
+	private:
+		std::function<CommandStatus ()> mStatusFunc;
+};
+
+class SuccessCommandHandler : public SimpleCommandHandler
+{
+	public:
+		static SuccessCommandHandler* Inst() { return &mHandler; }
+
+	private:
+		static SuccessCommandHandler mHandler;
+
+	protected:
+		SuccessCommandHandler();
 };
 
 }
