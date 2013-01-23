@@ -62,10 +62,13 @@ void DNP3Channel::Shutdown()
 
 void DNP3Channel::Cleanup()
 {
-	std::set<IStack*> copy(mStacks);
+	std::set<IStack*> copy(mStacks);	
 	for(auto pStack: copy) pStack->Shutdown();
-	mpPhys->GetExecutor()->Synchronize([this](){ this->mRouter.Shutdown(); });
-	mRouter.WaitForShutdown();
+	mpPhys->GetExecutor()->Synchronize([this](){ 
+		this->mGroup.Shutdown();	// no more task callbacks
+		this->mRouter.Shutdown();	// start shutting down the router
+	});
+	mRouter.WaitForShutdown();	
 }
 
 IMaster* DNP3Channel::AddMaster(const std::string& arLoggerId, FilterLevel aLevel, IDataObserver* apPublisher, const MasterStackConfig& arCfg)
@@ -96,7 +99,7 @@ void DNP3Channel::OnStackShutdown(IStack* apStack, LinkRoute route)
 	mpPhys->GetExecutor()->Synchronize([&](){
 		mRouter.RemoveContext(route);
 	});
-	delete apStack;	
+	delete apStack;
 }
 
 }

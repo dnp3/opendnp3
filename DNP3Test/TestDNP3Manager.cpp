@@ -55,6 +55,8 @@ BOOST_AUTO_TEST_CASE(ConstructionDestruction)
 		auto pServer = mgr.AddTCPServer("server", LEV_INFO, 5000, "127.0.0.1", 20000);
 		pClient->AddMaster("master", LEV_INFO, PrintingDataObserver::Inst(), MasterStackConfig());
 		pServer->AddOutstation("outstation", LEV_INFO, SuccessCommandHandler::Inst(), SlaveStackConfig());
+
+		std::this_thread::sleep_for(std::chrono::milliseconds(100));
 	}
 }
 
@@ -70,6 +72,7 @@ BOOST_AUTO_TEST_CASE(ManualStackShutdown)
 		auto pOutstation = pServer->AddOutstation("outstation", LEV_INFO, SuccessCommandHandler::Inst(), SlaveStackConfig());
 		auto pMaster = pClient->AddMaster("master", LEV_INFO, PrintingDataObserver::Inst(), MasterStackConfig());
 
+		std::this_thread::sleep_for(std::chrono::milliseconds(100));
 		
 		pMaster->Shutdown();
 		pOutstation->Shutdown();
