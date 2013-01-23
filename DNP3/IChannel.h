@@ -45,6 +45,8 @@ class IMaster;
 class IChannel 
 {
 	public:
+
+		virtual ~IChannel() {}
 		
 		/**
 		* Synchronously shutdown the channel. Once this method is complete, the object is safe to delete.

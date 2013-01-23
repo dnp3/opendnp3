@@ -91,7 +91,7 @@ public:
 	}
 
 	void WaitUntilShutdown() {
-		this->ShutdownAndWait();
+		this->WaitForShutdown();
 	}
 
 private:

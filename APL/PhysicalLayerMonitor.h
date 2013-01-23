@@ -80,9 +80,9 @@ public:
 	/** Add an observer to the set of state callbacks */
 	void AddObserver(IPhysicalLayerObserver* apObserver);
 
-	/** Posts a Shutdown() call and then waits indefinitely for shutdown to complete
+	/** Posts a Shutdown() call and then waits for shutdown to complete.
 	*/
-	void ShutdownAndWait();
+	bool WaitForShutdown(millis_t aTimeout = -1);
 
 	Logger* GetLogger() {
 		return mpLogger;
