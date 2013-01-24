@@ -34,6 +34,7 @@
 #include <DNP3/IMaster.h>
 #include <DNP3/IOutstation.h>
 #include <DNP3/SimpleCommandHandler.h>
+#include <DNP3/IVtoEndpoint.h>
 
 #include <APL/LogToStdio.h>
 #include <APL/LogToFile.h>
@@ -98,6 +99,43 @@ BOOST_AUTO_TEST_CASE(ManualChannelShutdown)
 		DNP3Manager mgr(std::thread::hardware_concurrency());
 		mgr.AddTCPClient("client", LEV_INFO, 5000, "127.0.0.1", 20000)->Shutdown();
 
+	}
+}
+
+BOOST_AUTO_TEST_CASE(ConstructionDestructionWithVtoRouters)
+{
+	for(int i=0; i<ITERATIONS; ++i) {
+
+		DNP3Manager mgr(std::thread::hardware_concurrency());		
+
+		auto pClient = mgr.AddTCPClient("client", LEV_INFO, 5000, "127.0.0.1", 20000);
+		auto pServer = mgr.AddTCPServer("server", LEV_INFO, 5000, "127.0.0.1", 20000);
+		auto pMaster = pClient->AddMaster("master", LEV_INFO, PrintingDataObserver::Inst(), MasterStackConfig());
+		auto pOutstation = pServer->AddOutstation("outstation", LEV_INFO, SuccessCommandHandler::Inst(), SlaveStackConfig());
+
+		pMaster->StartVtoRouterTCPClient("vtoclient", LEV_INFO, "127.0.0.1", 20001, VtoRouterSettings(0, true, false));
+		pOutstation->StartVtoRouterTCPServer("vtoclient", LEV_INFO, "127.0.0.1", 20001, VtoRouterSettings(0, true, false));
+		
+	}
+}
+
+BOOST_AUTO_TEST_CASE(ConstructionDestructionWithVtoRoutersManualVtoShutdown)
+{
+	for(int i=0; i<ITERATIONS; ++i) {
+
+		DNP3Manager mgr(std::thread::hardware_concurrency());		
+
+		auto pClient = mgr.AddTCPClient("client", LEV_INFO, 5000, "127.0.0.1", 20000);
+		auto pServer = mgr.AddTCPServer("server", LEV_INFO, 5000, "127.0.0.1", 20000);
+		auto pMaster = pClient->AddMaster("master", LEV_INFO, PrintingDataObserver::Inst(), MasterStackConfig());
+		auto pOutstation = pServer->AddOutstation("outstation", LEV_INFO, SuccessCommandHandler::Inst(), SlaveStackConfig());
+
+		auto pClientVto = pMaster->StartVtoRouterTCPClient("vtoclient", LEV_INFO, "127.0.0.1", 20001, VtoRouterSettings(0, true, false));
+		auto pServerVto = pOutstation->StartVtoRouterTCPServer("vtoclient", LEV_INFO, "127.0.0.1", 20001, VtoRouterSettings(0, true, false));
+
+		pClientVto->Shutdown();
+		pServerVto->Shutdown();
+		
 	}
 }
 

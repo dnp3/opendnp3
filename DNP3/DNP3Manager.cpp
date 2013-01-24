@@ -68,7 +68,7 @@ IChannel* DNP3Manager::AddTCPClient(const std::string& arName, FilterLevel aLeve
 	std::lock_guard<std::mutex> lock(mMutex);
 	auto pLogger = mLog.GetLogger(aLevel, arName);
 	auto pPhys = new PhysicalLayerAsyncTCPClient(pLogger, mThreadPool.GetIOService(), arAddr, aPort);
-	auto pChannel = new DNP3Channel(pLogger, aOpenRetry, pPhys, TimeSource::Inst(), [this](DNP3Channel* apChannel){ this->OnChannelShutdownCallback(apChannel); });
+	auto pChannel = new DNP3Channel(pLogger, aOpenRetry, mThreadPool.GetIOService(), pPhys, TimeSource::Inst(), [this](DNP3Channel* apChannel){ this->OnChannelShutdownCallback(apChannel); });
 	mChannels.insert(pChannel);
 	return pChannel;
 }
@@ -78,7 +78,7 @@ IChannel* DNP3Manager::AddTCPServer(const std::string& arName, FilterLevel aLeve
 	std::lock_guard<std::mutex> lock(mMutex);
 	auto pLogger = mLog.GetLogger(aLevel, arName);
 	auto pPhys = new PhysicalLayerAsyncTCPServer(pLogger, mThreadPool.GetIOService(), arEndpoint, aPort);
-	auto pChannel = new DNP3Channel(pLogger, aOpenRetry, pPhys, TimeSource::Inst(), [this](DNP3Channel* apChannel){ this->OnChannelShutdownCallback(apChannel); });
+	auto pChannel = new DNP3Channel(pLogger, aOpenRetry, mThreadPool.GetIOService(), pPhys, TimeSource::Inst(), [this](DNP3Channel* apChannel){ this->OnChannelShutdownCallback(apChannel); });
 	mChannels.insert(pChannel);
 	return pChannel;
 }

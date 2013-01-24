@@ -1,4 +1,3 @@
-
 //
 // Licensed to Green Energy Corp (www.greenenergycorp.com) under one or
 // more contributor license agreements. See the NOTICE file distributed
@@ -26,76 +25,50 @@
 //
 // Contact Automatak, LLC for a commercial license to these modifications
 //
-#ifndef __DNP3_CHANNEL_H_
-#define __DNP3_CHANNEL_H_
+#ifndef __VTO_ENDPOINT_IMPL_H_
+#define __VTO_ENDPOINT_IMPL_H_
 
-#include "IChannel.h"
-#include "LinkLayerRouter.h"
-
-#include <APL/Loggable.h>
-#include <APL/AsyncTaskGroup.h>
-
-#include <DNP3/SlaveStackConfig.h>
+#include "IVtoEndpoint.h"
 
 #include <memory>
 #include <functional>
-
-namespace boost
-{
-namespace asio
-{
-	class io_service;
-}
-}
 
 namespace apl
 {
 
 class IPhysicalLayerAsync;
-class ITimeSource;
+class Logger;
 
 namespace dnp
 {
 
-class IStack;
-class IOutstation;
-class ICommandHandler;
+class VtoRouter;
+class IVtoCallbacks;
 
-class DNP3Channel: public IChannel, private Loggable
+class VtoEndpointImpl : public IVtoEndpoint
 {
 	public:
-		DNP3Channel(Logger* apLogger, millis_t aOpenRetry, boost::asio::io_service* apService, IPhysicalLayerAsync* apPhys, ITimeSource* apTimerSource, std::function<void (DNP3Channel*)> aOnShutdown);
-		~DNP3Channel();
-
-		// Implement IChannel - these are exposed to clients
-
-		void Shutdown();
-
-		IMaster* AddMaster(		const std::string& arLoggerId,
-	                            FilterLevel aLevel,
-	                            IDataObserver* apPublisher,
-	                            const MasterStackConfig& arCfg);
-
-		IOutstation* AddOutstation(	const std::string& arLoggerId,
-									FilterLevel aLevel,
-									ICommandHandler* apCmdHandler,
-									const SlaveStackConfig&);
-
-		// Helper functions only available inside DNP3Manager		
-
-	private:	
-
-		void Cleanup();
-
-		void OnStackShutdown(IStack* apStack, LinkRoute aRoute);
-
-		boost::asio::io_service* mpService;
-		std::auto_ptr<IPhysicalLayerAsync> mpPhys;
-		std::function<void (DNP3Channel*)> mOnShutdown;
-		LinkLayerRouter mRouter;
-		AsyncTaskGroup mGroup;
-		std::set<IStack*> mStacks;
+		VtoEndpointImpl(	Logger* apLogger, 
+							IVtoWriter* apWriter,
+							IPhysicalLayerAsync* apPhys,
+							const VtoRouterSettings& arSettings,
+							std::function<void (VtoEndpointImpl*)> aOnShutdown);
 		
+		~VtoEndpointImpl();
+
+	IVtoCallbacks* GetVtoCallbacks();
+	
+	void Shutdown();
+
+	private:
+
+	void Cleanup();
+
+	std::auto_ptr<IPhysicalLayerAsync> mpPhys;
+	std::auto_ptr<VtoRouter> mpRouter;
+	std::function<void (VtoEndpointImpl*)> mOnShutdown;
+	
+	static VtoRouter* FGetVtoRouter(const VtoRouterSettings& arSettings, Logger* apLogger, IVtoWriter* apWriter, IPhysicalLayerAsync* apPhys);
 };
 
 }

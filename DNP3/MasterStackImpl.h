@@ -48,6 +48,7 @@ public:
 
 	MasterStackImpl(
 	        Logger*,
+			boost::asio::io_service* apService,
 	        IExecutor* apExecutor,
 	        IDataObserver* apPublisher,
 	        AsyncTaskGroup* apTaskGroup,
@@ -62,7 +63,12 @@ public:
 
 	void Shutdown();
 
-private:
+protected:
+	
+	IVtoWriter* GetVtoWriter();
+	IVtoReader* GetVtoReader();
+
+private:	
 	IExecutor* mpExecutor;
 	ApplicationStack mAppStack;
 	Master mMaster;

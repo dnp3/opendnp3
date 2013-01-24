@@ -25,30 +25,71 @@
 //
 // Contact Automatak, LLC for a commercial license to these modifications
 //
-#ifndef __I_OUTSTATION_H_
-#define __I_OUTSTATION_H_
 
-#include "IStack.h"
+#include "VtoEndpointImpl.h"
+
+#include "AlwaysOpeningVtoRouter.h"
+#include "EnhancedVtoRouter.h"
+
+#include <APL/IPhysicalLayerAsync.h>
 
 namespace apl
 {
-
-class IDataObserver;	
-
 namespace dnp
 {
 
-class IOutstation : public IStack
+VtoEndpointImpl::VtoEndpointImpl(	Logger* apLogger, 
+									IVtoWriter* apWriter, 
+									IPhysicalLayerAsync* apPhys,
+									const VtoRouterSettings& arSettings,
+									std::function<void (VtoEndpointImpl*)> aOnShutdown) : 
+	mpPhys(apPhys),
+	mpRouter(FGetVtoRouter(arSettings, apLogger, apWriter, apPhys)),
+	mOnShutdown(aOnShutdown)
 {
-	public:
-		IOutstation(Logger* apLogger, boost::asio::io_service* apService): IStack(apLogger, apService) {}
-		virtual ~IOutstation() {}
-		virtual IDataObserver* GetDataObserver() = 0;
-};
+	
+}
 
+VtoEndpointImpl::~VtoEndpointImpl()
+{
+	Cleanup();
+}
+
+IVtoCallbacks* VtoEndpointImpl::GetVtoCallbacks()
+{
+	return mpRouter.get();
+}
+
+void VtoEndpointImpl::Shutdown()
+{
+	Cleanup();
+	mOnShutdown(this);
+}
+
+void VtoEndpointImpl::Cleanup()
+{
+	mpPhys->GetExecutor()->Synchronize([this](){ 		
+		this->mpRouter->Shutdown();
+	});
+	mpRouter->WaitForShutdown();
+}
+
+VtoRouter* VtoEndpointImpl::FGetVtoRouter(const VtoRouterSettings& arSettings, Logger* apLogger, IVtoWriter* apWriter, IPhysicalLayerAsync* apPhys)
+{
+	if(arSettings.DISABLE_EXTENSIONS) {
+		return new AlwaysOpeningVtoRouter(arSettings, apLogger, apWriter, apPhys);
+	}
+	else {
+		if(arSettings.START_LOCAL) {
+			return new  ServerSocketVtoRouter(arSettings, apLogger, apWriter, apPhys);
+		}
+		else {
+			return new ClientSocketVtoRouter(arSettings, apLogger, apWriter, apPhys);
+		}
+	}
+}
 
 
 }
 }
 
-#endif

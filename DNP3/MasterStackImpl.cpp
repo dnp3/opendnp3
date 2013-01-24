@@ -36,12 +36,15 @@ namespace apl
 namespace dnp
 {
 
-MasterStackImpl::MasterStackImpl(	Logger* apLogger, 
+MasterStackImpl::MasterStackImpl(	Logger* apLogger,
+									boost::asio::io_service* apService,
 									IExecutor* apExecutor, 
 									IDataObserver* apPublisher,
 									AsyncTaskGroup* apTaskGroup,
 									const MasterStackConfig& arCfg,
 									std::function<void (IMaster*)> aOnShutdown) :
+
+	IMaster(apLogger, apService),									
 	mpExecutor(apExecutor),
 	mAppStack(apLogger, apExecutor, arCfg.app, arCfg.link),
 	mMaster(apLogger->GetSubLogger("master"), arCfg.master, &mAppStack.mApplication, apPublisher, apTaskGroup, apExecutor),
@@ -67,7 +70,18 @@ void MasterStackImpl::SetLinkRouter(ILinkRouter* apRouter)
 
 void MasterStackImpl::Shutdown()
 {
+	this->CleanupVto();
 	mOnShutdown(this);
+}
+
+IVtoWriter* MasterStackImpl::GetVtoWriter()
+{
+	return mMaster.GetVtoWriter();
+}
+
+IVtoReader* MasterStackImpl::GetVtoReader()
+{
+	return mMaster.GetVtoReader();
 }
 
 }

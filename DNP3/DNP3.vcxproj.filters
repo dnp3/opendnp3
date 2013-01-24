@@ -339,6 +339,15 @@
     <ClInclude Include="SimpleCommandHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="IVtoEndpoint.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="VtoEndpointImpl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="IOutstation.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AlwaysOpeningVtoRouter.cpp">
@@ -567,6 +576,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SimpleCommandHandler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="IStack.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="VtoEndpointImpl.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

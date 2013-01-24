@@ -25,28 +25,23 @@
 //
 // Contact Automatak, LLC for a commercial license to these modifications
 //
-#ifndef __I_OUTSTATION_H_
-#define __I_OUTSTATION_H_
+#ifndef __I_VTO_ENDPOINT_H_
+#define __I_VTO_ENDPOINT_H_
 
 #include "IStack.h"
 
 namespace apl
 {
-
-class IDataObserver;	
-
 namespace dnp
 {
 
-class IOutstation : public IStack
+class IVtoEndpoint
 {
 	public:
-		IOutstation(Logger* apLogger, boost::asio::io_service* apService): IStack(apLogger, apService) {}
-		virtual ~IOutstation() {}
-		virtual IDataObserver* GetDataObserver() = 0;
+		virtual ~IVtoEndpoint() {}		
+
+		virtual void Shutdown() = 0;
 };
-
-
 
 }
 }

@@ -56,9 +56,11 @@
     <ClInclude Include="ILinkRouter.h" />
     <ClInclude Include="IMaster.h" />
     <ClInclude Include="IndexedWriteIterator.h" />
+    <ClInclude Include="IOutstation.h" />
     <ClInclude Include="IStack.h" />
     <ClInclude Include="IStackObserver.h" />
     <ClInclude Include="IVtoEventAcceptor.h" />
+    <ClInclude Include="IVtoEndpoint.h" />
     <ClInclude Include="LinkChannel.h" />
     <ClInclude Include="LinkConfig.h" />
     <ClInclude Include="LinkFrame.h" />
@@ -112,6 +114,7 @@
     <ClInclude Include="VtoConfig.h" />
     <ClInclude Include="VtoData.h" />
     <ClInclude Include="VtoDataInterface.h" />
+    <ClInclude Include="VtoEndpointImpl.h" />
     <ClInclude Include="VtoEventBufferAdapter.h" />
     <ClInclude Include="VtoReader.h" />
     <ClInclude Include="VtoRouter.h" />
@@ -145,6 +148,7 @@
     <ClCompile Include="EnhancedVtoRouter.cpp" />
     <ClCompile Include="HeaderReadIterator.cpp" />
     <ClCompile Include="IndexedWriteIterator.cpp" />
+    <ClCompile Include="IStack.cpp" />
     <ClCompile Include="IStackObserver.cpp" />
     <ClCompile Include="LinkChannel.cpp" />
     <ClCompile Include="LinkFrame.cpp" />
@@ -191,6 +195,7 @@
     <ClCompile Include="TransportTx.cpp" />
     <ClCompile Include="UnsolicitedChannel.cpp" />
     <ClCompile Include="VtoData.cpp" />
+    <ClCompile Include="VtoEndpointImpl.cpp" />
     <ClCompile Include="VtoReader.cpp" />
     <ClCompile Include="VtoRouter.cpp" />
     <ClCompile Include="VtoRouterManager.cpp" />

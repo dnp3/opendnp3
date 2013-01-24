@@ -28,17 +28,73 @@
 #ifndef __I_STACK_H_
 #define __I_STACK_H_
 
+#include <string>
+#include <set>
+
+#include "VtoRouterSettings.h"
+#include <APL/LogTypes.h>
+
+namespace boost
+{
+namespace asio
+{
+	class io_service;
+}
+}
+
 namespace apl
 {
+
+class Logger;
+class IPhysicalLayerAsync;
+
 namespace dnp
 {
+
+class IVtoEndpoint;
+class IVtoWriter;
+class IVtoReader;
+class VtoEndpointImpl;
 
 class IStack
 {
 	public:
-		virtual ~IStack() {}
+		IStack(Logger* apLogger, boost::asio::io_service* apService);
+		virtual ~IStack();
+
+		IVtoEndpoint* StartVtoRouterTCPClient(const std::string& arLoggerId, FilterLevel aLevel, const std::string& arAddr, uint16_t aPort, const VtoRouterSettings& arSettings);
+		IVtoEndpoint* StartVtoRouterTCPServer(const std::string& arLoggerId, FilterLevel aLevel, const std::string& arEndpoint, uint16_t aPort, const VtoRouterSettings& arSettings);
+
 		// Synchronously shutdown the stack. Safe to delete after this call.
-		virtual void Shutdown() = 0;
+		virtual void Shutdown() = 0;	
+
+	protected:	
+
+		void CleanupVto();
+
+		/**
+		 * Returns a pointer to the IVtoWriter instance for the layer.
+		 *
+		 * @return		a pointer to the IVtoWriter for the layer
+		 */
+		virtual IVtoWriter* GetVtoWriter() = 0;
+
+		/**
+		 * Returns a pointer to the IVtoReader instance for the layer.
+		 *
+		 * @return		a pointer to the IVtoReader for the layer
+		 */
+		virtual IVtoReader* GetVtoReader() = 0;
+
+	private:
+
+		void OnVtoEndpointShutdown(VtoEndpointImpl* apEndpoint);
+
+		IVtoEndpoint* CreateVtoEndpoint(IPhysicalLayerAsync* apPhys, const VtoRouterSettings& arSettings);
+
+		Logger* mpLogger;
+		boost::asio::io_service* mpService;
+		std::set<IVtoEndpoint*> mVtoEndpoints;
 };
 
 

@@ -39,8 +39,9 @@ namespace apl
 namespace dnp
 {
 
-DNP3Channel::DNP3Channel(Logger* apLogger, millis_t aOpenRetry, IPhysicalLayerAsync* apPhys, ITimeSource* apTimeSource, std::function<void (DNP3Channel*)> aOnShutdown) :
+DNP3Channel::DNP3Channel(Logger* apLogger, millis_t aOpenRetry, boost::asio::io_service* apService, IPhysicalLayerAsync* apPhys, ITimeSource* apTimeSource, std::function<void (DNP3Channel*)> aOnShutdown) :
 	Loggable(apLogger),
+	mpService(apService),
 	mpPhys(apPhys), 
 	mOnShutdown(aOnShutdown),
 	mRouter(apLogger->GetSubLogger("Router"), mpPhys.get(), aOpenRetry),
@@ -75,7 +76,9 @@ IMaster* DNP3Channel::AddMaster(const std::string& arLoggerId, FilterLevel aLeve
 {
 	auto pLogger = mpLogger->GetSubLogger(arLoggerId, aLevel);
 	LinkRoute route(arCfg.link.RemoteAddr, arCfg.link.LocalAddr);
-	auto pMaster = new MasterStackImpl(pLogger, mpPhys->GetExecutor(), apPublisher, &mGroup, arCfg, [this, route](IStack* apStack){ this->OnStackShutdown(apStack, route); });
+	auto pMaster = new MasterStackImpl(pLogger, mpService, mpPhys->GetExecutor(), apPublisher, &mGroup, arCfg, [this, route](IStack* apStack){ 
+		this->OnStackShutdown(apStack, route);
+	});
 	pMaster->SetLinkRouter(&mRouter);
 	mStacks.insert(pMaster);
 	mpPhys->GetExecutor()->Synchronize([&](){ mRouter.AddContext(pMaster->GetLinkContext(), route); });
@@ -86,7 +89,9 @@ IOutstation* DNP3Channel::AddOutstation(const std::string& arLoggerId, FilterLev
 {
 	auto pLogger = mpLogger->GetSubLogger(arLoggerId, aLevel);
 	LinkRoute route(arCfg.link.RemoteAddr, arCfg.link.LocalAddr);
-	auto pOutstation = new OutstationStackImpl(pLogger, mpPhys->GetExecutor(), apCmdHandler, arCfg, [this, route](IStack* apStack){ this->OnStackShutdown(apStack, route); });
+	auto pOutstation = new OutstationStackImpl(pLogger, mpService, mpPhys->GetExecutor(), apCmdHandler, arCfg, [this, route](IStack* apStack){ 
+		this->OnStackShutdown(apStack, route); 
+	});
 	pOutstation->SetLinkRouter(&mRouter);
 	mStacks.insert(pOutstation);
 	mpPhys->GetExecutor()->Synchronize([&](){ mRouter.AddContext(pOutstation->GetLinkContext(), route); });

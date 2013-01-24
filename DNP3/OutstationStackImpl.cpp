@@ -36,10 +36,12 @@ namespace dnp
 
 OutstationStackImpl::OutstationStackImpl(
 	Logger* apLogger,
+	boost::asio::io_service* apService,
 	IExecutor* apExecutor,
 	ICommandHandler* apCmdHandler,	       
 	const SlaveStackConfig& arCfg,
 	std::function<void (IOutstation*)> aOnShutdown) :
+		IOutstation(apLogger, apService),
 		mpExecutor(apExecutor),
 		mAppStack(apLogger, apExecutor, arCfg.app, arCfg.link),
 		mDB(apLogger),
@@ -67,7 +69,18 @@ void OutstationStackImpl::SetLinkRouter(ILinkRouter* apRouter)
 
 void OutstationStackImpl::Shutdown()
 {
+	this->CleanupVto();
 	mOnShutdown(this);
+}
+
+IVtoWriter* OutstationStackImpl::GetVtoWriter()
+{
+	return mSlave.GetVtoWriter();
+}
+
+IVtoReader* OutstationStackImpl::GetVtoReader()
+{
+	return mSlave.GetVtoReader();
 }
 
 }
