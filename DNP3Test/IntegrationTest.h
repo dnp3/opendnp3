@@ -32,12 +32,11 @@
 #include <APLTestTools/AsyncTestObjectASIO.h>
 #include <APLTestTools/LogTester.h>
 #include <APLTestTools/FanoutDataObserver.h>
-#include <APL/Loggable.h>
 
 #include <APL/FlexibleDataObserver.h>
 #include <APL/Random.h>
 
-#include <DNP3/AsyncStackManager.h>
+#include <DNP3/DNP3Manager.h>
 
 #include "MockCommandHandler.h"
 #include "ComparingDataObserver.h"
@@ -50,19 +49,15 @@ namespace apl
 namespace dnp
 {
 
-class IntegrationTest : private Loggable
+class IntegrationTest
 {
 public:
 
-	IntegrationTest(Logger* apLogger, FilterLevel aLevel, boost::uint16_t aStartPort, size_t aNumPairs, size_t aNumPoints);
+	IntegrationTest(FilterLevel aLevel, boost::uint16_t aStartPort, size_t aNumPairs, size_t aNumPoints);
 
 	size_t IncrementData();
 
-	bool WaitForSameData(millis_t aTimeout, bool aDescribeAnyMissingData);
-
-	AsyncStackManager* GetManager() {
-		return &mManager;
-	}
+	bool WaitForSameData(millis_t aTimeout, bool aDescribeAnyMissingData);	
 
 private:
 
@@ -90,7 +85,7 @@ private:
 	FlexibleDataObserver mLocalFDO;
 	MockCommandHandler mCmdHandler;
 
-	AsyncStackManager mManager;
+	DNP3Manager mMgr;
 	size_t NUM_POINTS;
 };
 

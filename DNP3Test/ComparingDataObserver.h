@@ -30,10 +30,7 @@
 #define __COMPARING_DATA_OBSERVER_H_
 
 #include <APL/DataInterfaces.h>
-#include <APL/Loggable.h>
-#include <APL/LoggableMacros.h>
 #include <APL/FlexibleDataObserver.h>
-#include <APL/Logger.h>
 
 #include <map>
 #include <mutex>
@@ -45,11 +42,11 @@ namespace apl
 namespace dnp
 {
 
-class ComparingDataObserver : public apl::IDataObserver, private Loggable
+class ComparingDataObserver : public apl::IDataObserver
 {
 public:
 
-	ComparingDataObserver(Logger* apLogger, FlexibleDataObserver* apObserver);
+	ComparingDataObserver(FlexibleDataObserver* apObserver);
 
 	void Reset();
 

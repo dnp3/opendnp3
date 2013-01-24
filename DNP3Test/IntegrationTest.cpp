@@ -40,6 +40,8 @@
 
 #include <DNP3/MasterStack.h>
 #include <DNP3/SlaveStack.h>
+#include <DNP3/IChannel.h>
+#include <DNP3/IOutstation.h>
 
 #include <boost/asio.hpp>
 
@@ -51,10 +53,9 @@ using namespace std;
 using namespace apl;
 using namespace apl::dnp;
 
-IntegrationTest::IntegrationTest(Logger* apLogger, FilterLevel aLevel, boost::uint16_t aStartPort, size_t aNumPairs, size_t aNumPoints) :
-	Loggable(apLogger),
+IntegrationTest::IntegrationTest(FilterLevel aLevel, boost::uint16_t aStartPort, size_t aNumPairs, size_t aNumPoints) :	
 	M_START_PORT(aStartPort),
-	mManager(apLogger, std::thread::hardware_concurrency()),
+	mMgr(std::thread::hardware_concurrency()),	
 	NUM_POINTS(aNumPoints)
 {
 	this->InitLocalObserver();
@@ -85,8 +86,6 @@ void IntegrationTest::ResetObservers()
 
 bool IntegrationTest::WaitForSameData(millis_t aTimeout, bool aDescribeAnyMissingData)
 {
-	LOG_BLOCK(LEV_EVENT, "Wait for same data");
-
 	for (size_t i = 0; i < this->mMasterObservers.size(); ++i) {
 		ComparingDataObserver* pObs = mMasterObservers[i].get();
 		if(!pObs->WaitForSameData(aTimeout)) {
@@ -100,8 +99,6 @@ bool IntegrationTest::WaitForSameData(millis_t aTimeout, bool aDescribeAnyMissin
 
 size_t IntegrationTest::IncrementData()
 {
-	LOG_BLOCK(LEV_EVENT, "Incrementing data");
-
 	size_t num = 0;
 
 	this->ResetObservers();
@@ -148,12 +145,11 @@ void IntegrationTest::AddStackPair(FilterLevel aLevel, size_t aNumPoints)
 	std::string client = oss.str() + " Client ";
 	std::string server = oss.str() + " Server ";
 
-	std::shared_ptr<ComparingDataObserver> pMasterFDO(new ComparingDataObserver(mpLogger->GetSubLogger(client), &mLocalFDO));
+	std::shared_ptr<ComparingDataObserver> pMasterFDO(new ComparingDataObserver(&mLocalFDO));
 	mMasterObservers.push_back(pMasterFDO);
-
-	PhysLayerSettings s(aLevel, 1000);
-	this->mManager.AddTCPClient(client, s, "127.0.0.1", port);
-	this->mManager.AddTCPServer(server, s, "127.0.0.1", port);
+	
+	auto pClient = this->mMgr.AddTCPClient(client, aLevel, 1000, "127.0.0.1", port);
+	auto pServer = this->mMgr.AddTCPServer(server, aLevel, 1000, "127.0.0.1", port);	
 
 	/*
 	 * Add a Master instance.  The code is wrapped in braces so that we can
@@ -166,7 +162,7 @@ void IntegrationTest::AddStackPair(FilterLevel aLevel, size_t aNumPoints)
 		cfg.master.EnableUnsol = true;
 		cfg.master.DoUnsolOnStartup = true;
 		cfg.master.UnsolClassMask = PC_ALL_EVENTS;
-		this->mManager.AddMaster(client, client, aLevel, pMasterFDO.get(), cfg);
+		pClient->AddMaster(client, aLevel, pMasterFDO.get(), cfg);		
 	}
 
 	/*
@@ -179,8 +175,8 @@ void IntegrationTest::AddStackPair(FilterLevel aLevel, size_t aNumPoints)
 		cfg.slave.mDisableUnsol = false;
 		cfg.slave.mUnsolPackDelay = 0;
 		cfg.device = DeviceTemplate(aNumPoints, aNumPoints, aNumPoints);
-		IDataObserver* pObs = this->mManager.AddSlave(server, server, aLevel, &mCmdHandler, cfg);
-		this->mFanout.AddObserver(pObs);
+		auto pOutstation = pServer->AddOutstation(server, aLevel, &mCmdHandler, cfg);
+		this->mFanout.AddObserver(pOutstation->GetDataObserver());
 	}
 
 }

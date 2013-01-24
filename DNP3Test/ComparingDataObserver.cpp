@@ -35,8 +35,7 @@ namespace apl
 namespace dnp
 {
 
-ComparingDataObserver::ComparingDataObserver(Logger* apLogger, FlexibleDataObserver* apObserver) :
-	Loggable(apLogger),
+ComparingDataObserver::ComparingDataObserver(FlexibleDataObserver* apObserver) :
 	mSameData(false),
 	mpObserver(apObserver)
 {
@@ -62,9 +61,7 @@ bool ComparingDataObserver::IsSameData()
 
 	size_t actual = mBinaryMap.size() +
 	                mAnalogMap.size() +
-	                mCounterMap.size();
-
-	LOG_BLOCK(LEV_EVENT, actual << " of " << required);
+	                mCounterMap.size();	
 
 	return (required == actual);
 
