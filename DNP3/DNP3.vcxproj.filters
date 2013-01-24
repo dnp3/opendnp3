@@ -42,9 +42,6 @@
     <ClInclude Include="AppLayerChannel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="AsyncStackManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="BufferSetTypes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -129,9 +126,6 @@
     <ClInclude Include="IVtoEventAcceptor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="LinkChannel.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="LinkConfig.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -169,9 +163,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="MasterSchedule.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="MasterStack.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="MasterStackConfig.h">
@@ -225,9 +216,6 @@
     <ClInclude Include="SlaveResponseTypes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SlaveStack.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="SlaveStackConfig.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -235,12 +223,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SolicitedChannel.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Stack.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="StackManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="StartupTasks.h">
@@ -374,9 +356,6 @@
     <ClCompile Include="AppLayerChannel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="AsyncStackManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="BufferTypes.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -410,9 +389,6 @@
     <ClCompile Include="IStackObserver.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="LinkChannel.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="LinkFrame.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -441,9 +417,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="MasterSchedule.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="MasterStack.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="MasterStates.cpp">
@@ -494,19 +467,10 @@
     <ClCompile Include="SlaveResponseTypes.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SlaveStack.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="SlaveStates.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SolicitedChannel.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Stack.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="StackManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="StartupTasks.cpp">

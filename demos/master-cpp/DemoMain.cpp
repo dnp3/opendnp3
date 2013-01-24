@@ -28,9 +28,12 @@
 //
 #include "MasterCallbacks.h"
 
-#include <APL/Log.h>
 #include <APL/LogToStdio.h>
-#include <DNP3/AsyncStackManager.h>
+#include <APL/SimpleDataObserver.h>
+
+#include <DNP3/DNP3Manager.h>
+#include <DNP3/IChannel.h>
+#include <DNP3/IMaster.h>
 #include <DNP3/MasterStackConfig.h>
 #include <DNP3/ICommandProcessor.h>
 
@@ -86,35 +89,23 @@ int main(int argc, char* argv[])
 			istringstream iss(argv[1]);
 			iss >> local_dnp3;
 		}
-	}
-
-	// Create a log object for the stack to use and configure it
-	// with a subscriber that print alls messages to the stdout.
-	EventLog log;
-	log.AddLogSubscriber(LogToStdio::Inst());
+	}	
 
 	// Specify a FilterLevel for the stack/physical layer to use.
 	// Log statements with a lower priority will not be logged.
 	const FilterLevel LOG_LEVEL = LEV_INFO;
 
-	// This object will handle all of the callbacks from the stack,
-	// sending information it receives to the log. Give it a logger 
-	// with a unique name and log level.
-	MasterCallbacks callbacks(log.GetLogger(LOG_LEVEL, "demoapp"));
-
 	// This is the main point of interaction with the stack. The
 	// AsyncStackManager object instantiates master/slave DNP
 	// stacks, as well as their physical layers.
-	AsyncStackManager mgr(log.GetLogger(LOG_LEVEL, "dnp"), 1);
+	DNP3Manager mgr(1); // 1 stack only needs 1 thread
+
+	//Send all log messages from the mgr to stdout	
+	mgr.AddLogSubscriber(LogToStdio::Inst());
 
 	// Connect via a TCPClient socket to a slave.  The server will
 	// wait 3000 ms in between failed connect calls.
-	mgr.AddTCPClient(
-		"tcpclient",
-		PhysLayerSettings(LOG_LEVEL, 3000),
-		remote_ip.c_str(),
-		remote_port
-	);
+	auto pClient = mgr.AddTCPClient("tcpclient", LOG_LEVEL, 3000, remote_ip.c_str(), remote_port);
 
 	// The master config object for a master. The default are
 	// useable, but understanding the options are important.
@@ -122,21 +113,18 @@ int main(int argc, char* argv[])
 
 	// Override the default link addressing
 	stackConfig.link.LocalAddr  = local_dnp3;
-	stackConfig.link.RemoteAddr = remote_dnp3;
-
-	// Set the app instance as a callback for state change notices
-	stackConfig.master.mpObserver = &callbacks;
+	stackConfig.link.RemoteAddr = remote_dnp3;	
 
 	// Create a new master on a previously declared port, with a
 	// name, log level, command acceptor, and config info. This
 	// returns a thread-safe interface used for sending commands.
-	ICommandProcessor* pCmdProcessor = mgr.AddMaster(
-		"tcpclient",           // port name
-		"master",              // stack name
-		LOG_LEVEL,             // log filter level
-		&callbacks,			   // callback for data processing
-		stackConfig            // stack configuration
+	auto pMaster = pClient->AddMaster(
+		"master",						// stack name
+		LOG_LEVEL,						// log filter level
+		PrintingDataObserver::Inst(),	// callback for data processing
+		stackConfig						// stack configuration
 	);
+	auto pCmdProcessor = pMaster->GetCommandProcessor();
 
 	
 	std::string cmd;

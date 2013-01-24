@@ -63,9 +63,6 @@
     <ClInclude Include="SlaveTestObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="StartupTeardownTest.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="TestVtoRouterManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -125,9 +122,6 @@
     <ClCompile Include="SlaveTestObject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="StartupTeardownTest.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="TestAPDU.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -185,13 +179,7 @@
     <ClCompile Include="TestSlaveEventBuffer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="TestStackManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="TestStartBoostUTF.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="TestStartupTeardown.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="TestTransportLayer.cpp">

@@ -38,8 +38,7 @@
 #include <DNP3/MasterStackConfig.h>
 #include <DNP3/SlaveStackConfig.h>
 
-#include <DNP3/MasterStack.h>
-#include <DNP3/SlaveStack.h>
+
 #include <DNP3/IChannel.h>
 #include <DNP3/IOutstation.h>
 

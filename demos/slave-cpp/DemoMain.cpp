@@ -26,13 +26,14 @@
 //
 // Contact Automatak, LLC for a commercial license to these modifications
 //
-#include "SlaveCallbacks.h"
 
-#include <APL/Log.h>
 #include <APL/LogToStdio.h>
 
-#include <DNP3/AsyncStackManager.h>
+#include <DNP3/DNP3Manager.h>
 #include <DNP3/SlaveStackConfig.h>
+#include <DNP3/IChannel.h>
+#include <DNP3/IOutstation.h>
+#include <DNP3/SimpleCommandHandler.h>
 
 #include <string>
 #include <iostream>
@@ -87,35 +88,20 @@ int main(int argc, char* argv[])
 			istringstream iss(argv[1]);
 			iss >> remote_dnp3;
 		}
-	}
-
-	// Create a log object for the stack to use and configure it
-	// with a subscriber that print alls messages to the stdout
-	EventLog log;
-	log.AddLogSubscriber(LogToStdio::Inst());
+	}	
 
 	// Specify a FilterLevel for the stack/physical layer to use.
 	// Log statements with a lower priority will not be logged.
-	const FilterLevel LOG_LEVEL = LEV_INFO;
+	const FilterLevel LOG_LEVEL = LEV_INFO;	
 
-	// create our demo application that handles commands and
-	// demonstrates how to publish data give it a loffer with a
-	// unique name and log level
-	SlaveCallbacks callbacks(log.GetLogger(LOG_LEVEL, "demoapp"));
+	// This is the main point of interaction with the stack
+	DNP3Manager mgr(1); // only 1 thread is needed for a single stack
 
-	// This is the main point of interaction with the stack. The
-	// AsyncStackManager object instantiates master/slave DNP
-	// stacks, as well as their physical layers
-	AsyncStackManager mgr(log.GetLogger(LOG_LEVEL, "dnp"), 1);
+	mgr.AddLogSubscriber(LogToStdio::Inst());
 
 	// Add a TCPServer to the manager with the name "tcpserver".
 	// The server will wait 3000 ms in between failed bind calls.
-	mgr.AddTCPServer(
-		"tcpserver",
-		PhysLayerSettings(LOG_LEVEL, 3000),
-		local_ip,
-		local_port
-	);
+	auto pServer = mgr.AddTCPServer("tcpserver", LOG_LEVEL, 3000, local_ip, local_port);
 
 	// The master config object for a slave. The default are
 	// useable, but understanding the options are important.
@@ -131,11 +117,11 @@ int main(int argc, char* argv[])
 	DeviceTemplate device(5, 5, 5, 5, 5);
 	stackConfig.device = device;
 
-	// Create a new slave on a previously declared port, with a
-	// name, log level, command acceptor, and config info This
-	// returns a thread-safe interface used for updating the slave's
-	// database.
-	IDataObserver* pDataObserver = mgr.AddSlave("tcpserver", "slave", LOG_LEVEL, &callbacks, stackConfig);
+	// Create a new slave with a log level, command handler, and 
+	// config info this	returns a thread-safe interface used for 
+	// updating the slave's database.
+	auto pOutstation = pServer->AddOutstation("outstation", LOG_LEVEL, SuccessCommandHandler::Inst(), stackConfig);
+	auto pDataObserver = pOutstation->GetDataObserver();
 
 	std::string input;
 	uint32_t count = 0;

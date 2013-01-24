@@ -18,16 +18,8 @@
     <ClCompile Include="DemoMain.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SlaveCallbacks.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\file.licenseheader" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="SlaveCallbacks.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
 </Project>

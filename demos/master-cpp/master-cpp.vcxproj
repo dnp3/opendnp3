@@ -86,11 +86,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="MasterCallbacks.h" />
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="DemoMain.cpp" />
-    <ClCompile Include="MasterCallbacks.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\APL\APL.vcxproj">

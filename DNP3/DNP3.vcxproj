@@ -22,7 +22,6 @@
     <ClInclude Include="AppLayer.h" />
     <ClInclude Include="AppLayerChannel.h" />
     <ClInclude Include="ApplicationStack.h" />
-    <ClInclude Include="AsyncStackManager.h" />
     <ClInclude Include="BufferSetTypes.h" />
     <ClInclude Include="BufferTypes.h" />
     <ClInclude Include="DNP3Channel.h" />
@@ -61,7 +60,6 @@
     <ClInclude Include="IStackObserver.h" />
     <ClInclude Include="IVtoEventAcceptor.h" />
     <ClInclude Include="IVtoEndpoint.h" />
-    <ClInclude Include="LinkChannel.h" />
     <ClInclude Include="LinkConfig.h" />
     <ClInclude Include="LinkFrame.h" />
     <ClInclude Include="LinkHeader.h" />
@@ -75,7 +73,6 @@
     <ClInclude Include="MasterConfig.h" />
     <ClInclude Include="MasterConfigTypes.h" />
     <ClInclude Include="MasterSchedule.h" />
-    <ClInclude Include="MasterStack.h" />
     <ClInclude Include="MasterStackConfig.h" />
     <ClInclude Include="MasterStackImpl.h" />
     <ClInclude Include="MasterStates.h" />
@@ -97,12 +94,9 @@
     <ClInclude Include="SlaveConfig.h" />
     <ClInclude Include="SlaveEventBuffer.h" />
     <ClInclude Include="SlaveResponseTypes.h" />
-    <ClInclude Include="SlaveStack.h" />
     <ClInclude Include="SlaveStackConfig.h" />
     <ClInclude Include="SlaveStates.h" />
     <ClInclude Include="SolicitedChannel.h" />
-    <ClInclude Include="Stack.h" />
-    <ClInclude Include="StackManager.h" />
     <ClInclude Include="StartupTasks.h" />
     <ClInclude Include="TLS_Base.h" />
     <ClInclude Include="TransportConstants.h" />
@@ -133,7 +127,6 @@
     <ClCompile Include="AppLayer.cpp" />
     <ClCompile Include="AppLayerChannel.cpp" />
     <ClCompile Include="ApplicationStack.cpp" />
-    <ClCompile Include="AsyncStackManager.cpp" />
     <ClCompile Include="BufferTypes.cpp" />
     <ClCompile Include="DNP3Channel.cpp" />
     <ClCompile Include="ClassCounter.cpp" />
@@ -150,7 +143,6 @@
     <ClCompile Include="IndexedWriteIterator.cpp" />
     <ClCompile Include="IStack.cpp" />
     <ClCompile Include="IStackObserver.cpp" />
-    <ClCompile Include="LinkChannel.cpp" />
     <ClCompile Include="LinkFrame.cpp" />
     <ClCompile Include="LinkHeader.cpp" />
     <ClCompile Include="LinkLayer.cpp" />
@@ -161,7 +153,6 @@
     <ClCompile Include="LinkRoute.cpp" />
     <ClCompile Include="Master.cpp" />
     <ClCompile Include="MasterSchedule.cpp" />
-    <ClCompile Include="MasterStack.cpp" />
     <ClCompile Include="MasterStackImpl.cpp" />
     <ClCompile Include="MasterStates.cpp" />
     <ClCompile Include="MasterTaskBase.cpp" />
@@ -182,11 +173,8 @@
     <ClCompile Include="SlaveConfig.cpp" />
     <ClCompile Include="SlaveEventBuffer.cpp" />
     <ClCompile Include="SlaveResponseTypes.cpp" />
-    <ClCompile Include="SlaveStack.cpp" />
     <ClCompile Include="SlaveStates.cpp" />
     <ClCompile Include="SolicitedChannel.cpp" />
-    <ClCompile Include="Stack.cpp" />
-    <ClCompile Include="StackManager.cpp" />
     <ClCompile Include="StartupTasks.cpp" />
     <ClCompile Include="TLS_Base.cpp" />
     <ClCompile Include="TransportLayer.cpp" />

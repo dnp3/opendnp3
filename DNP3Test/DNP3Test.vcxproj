@@ -27,7 +27,6 @@
     <ClInclude Include="ReadableVtoWriter.h" />
     <ClInclude Include="ResponseLoaderTestObject.h" />
     <ClInclude Include="SlaveTestObject.h" />
-    <ClInclude Include="StartupTeardownTest.h" />
     <ClInclude Include="TestVtoRouterManager.h" />
     <ClInclude Include="TransportIntegrationStack.h" />
     <ClInclude Include="TransportLoopbackTestObject.h" />
@@ -49,7 +48,6 @@
     <ClCompile Include="MockFrameSink.cpp" />
     <ClCompile Include="ResponseLoaderTestObject.cpp" />
     <ClCompile Include="SlaveTestObject.cpp" />
-    <ClCompile Include="StartupTeardownTest.cpp" />
     <ClCompile Include="TestAPDU.cpp" />
     <ClCompile Include="TestAPDUWriting.cpp" />
     <ClCompile Include="TestAppLayer.cpp" />
@@ -72,9 +70,7 @@
     <ClCompile Include="TestResponseLoader.cpp" />
     <ClCompile Include="TestSlave.cpp" />
     <ClCompile Include="TestSlaveEventBuffer.cpp" />
-    <ClCompile Include="TestStackManager.cpp" />
     <ClCompile Include="TestStartBoostUTF.cpp" />
-    <ClCompile Include="TestStartupTeardown.cpp" />
     <ClCompile Include="TestTransportLayer.cpp" />
     <ClCompile Include="TestTransportLoopback.cpp" />
     <ClCompile Include="TestTransportScalability.cpp" />
