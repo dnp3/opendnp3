@@ -40,7 +40,7 @@
 #include <APL/PhysicalLayerAsyncTCPClient.h>
 #include <APL/PhysicalLayerAsyncTCPServer.h>
 
-#include <DNP3/AsyncStackManager.h>
+#include <DNP3/DNP3Manager.h>
 
 
 #include "MockCommandHandler.h"
@@ -82,8 +82,7 @@ public:
 	PhysicalLayerAsyncTCPClient vtoClient;
 	PhysicalLayerAsyncTCPServer vtoServer;
 	
-	AsyncStackManager manager;
-	WrappedTcpPipe tcpPipe;
+	DNP3Manager mgr;
 };
 
 }
