@@ -29,6 +29,8 @@
 #include "ASIOExecutor.h"
 
 #include "TimerASIO.h"
+#include "Exception.h"
+#include "Location.h"
 
 #include <boost/asio.hpp>
 
@@ -41,18 +43,23 @@ namespace apl
 {
 
 ASIOExecutor::ASIOExecutor(boost::asio::strand* apStrand) :
-	mpStrand(apStrand)
+	mpStrand(apStrand),
+	mNumActiveTimers(0),
+	mIsShuttingDown(false)	
 {
 
 }
 
 ASIOExecutor::~ASIOExecutor()
 {
+	this->Shutdown();
 	for(auto pTimer: mAllTimers) delete pTimer;
 }
 
 ITimer* ASIOExecutor::Start(std::chrono::steady_clock::duration aDelay, const function<void ()>& arCallback)
 {
+	std::lock_guard<std::mutex> lock(mMutex);
+	if(mIsShuttingDown) throw InvalidStateException(LOCATION, "Can't start a timer while executor is shutting down");
 	TimerASIO* pTimer = GetTimer();
 	pTimer->mTimer.expires_from_now(aDelay);
 	this->StartTimer(pTimer, arCallback);
@@ -61,6 +68,8 @@ ITimer* ASIOExecutor::Start(std::chrono::steady_clock::duration aDelay, const fu
 
 ITimer* ASIOExecutor::Start(const std::chrono::steady_clock::time_point& arTime, const function<void ()>& arCallback)
 {
+	std::lock_guard<std::mutex> lock(mMutex);
+	if(mIsShuttingDown) throw InvalidStateException(LOCATION, "Can't start a timer while executor is shutting down");
 	TimerASIO* pTimer = GetTimer();
 	pTimer->mTimer.expires_at(arTime);
 	this->StartTimer(pTimer, arCallback);
@@ -88,8 +97,18 @@ TimerASIO* ASIOExecutor::GetTimer()
 	return pTimer;
 }
 
-void ASIOExecutor::StartTimer(TimerASIO* apTimer, const std::function<void ()>& arCallback)
+void ASIOExecutor::Shutdown()
 {
+	std::unique_lock<std::mutex> lock(mMutex);
+	mIsShuttingDown = true;
+	while(mNumActiveTimers) {		
+		mCondition.wait(lock);
+	}
+}
+
+void ASIOExecutor::StartTimer(TimerASIO* apTimer, const std::function<void ()>& arCallback)
+{	
+	++mNumActiveTimers;
 	apTimer->mTimer.async_wait(
 		mpStrand->wrap(
 			std::bind(&ASIOExecutor::OnTimerCallback, this, std::placeholders::_1, apTimer, arCallback)
@@ -99,8 +118,15 @@ void ASIOExecutor::StartTimer(TimerASIO* apTimer, const std::function<void ()>& 
 
 void ASIOExecutor::OnTimerCallback(const boost::system::error_code& ec, TimerASIO* apTimer, std::function<void ()> aCallback)
 {
-	mIdleTimers.push_back(apTimer);
-	if(! (ec || apTimer->mCanceled) ) aCallback();
+	bool callback = false;
+	{
+		std::lock_guard<std::mutex> lock(mMutex);
+		--mNumActiveTimers;
+		mIdleTimers.push_back(apTimer);
+		if(! (ec || apTimer->mCanceled) ) callback = true;
+		if(mNumActiveTimers == 0) mCondition.notify_all();
+	}
+	if(callback) aCallback();
 }
 
 } //end namespace

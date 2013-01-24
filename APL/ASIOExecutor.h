@@ -36,6 +36,8 @@
 #include <iostream>
 
 #include <boost/asio.hpp>
+#include <mutex>
+#include <condition_variable>
 
 
 namespace apl
@@ -52,9 +54,11 @@ public:
 
 	ITimer* Start(std::chrono::steady_clock::duration, const std::function<void ()>&);
 	ITimer* Start(const std::chrono::steady_clock::time_point&, const std::function<void ()>&);
-	void Post(const std::function<void ()>&);
+	void Post(const std::function<void ()>&);	
 
 private:
+
+	void Shutdown();
 
 	TimerASIO* GetTimer();
 	void StartTimer(TimerASIO*, const std::function<void ()>&);
@@ -66,6 +70,11 @@ private:
 	TimerQueue mAllTimers;
 	TimerQueue mIdleTimers;
 
+	size_t mNumActiveTimers;
+	std::mutex mMutex;
+	std::condition_variable mCondition;
+	bool mIsShuttingDown;	
+	
 	void OnTimerCallback(const boost::system::error_code&, TimerASIO*, std::function<void ()>);
 };
 }
