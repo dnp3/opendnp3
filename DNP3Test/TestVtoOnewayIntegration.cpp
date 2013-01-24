@@ -46,12 +46,11 @@ class VtoOnewayTestStack : public VtoIntegrationTestBase
 public:
 	VtoOnewayTestStack(
 	    bool clientOnSlave = true,
-	    bool aImmediateOutput = false,
-	    bool aLogToFile = false,
+	    bool aImmediateOutput = false,	    
 	    FilterLevel level = LEV_INFO,
 	    boost::uint16_t port = MACRO_PORT_VALUE) :
 
-		VtoIntegrationTestBase(clientOnSlave, aImmediateOutput, aLogToFile, level, port),
+		VtoIntegrationTestBase(clientOnSlave, aImmediateOutput, level, port),
 		local(mLog.GetLogger(level, "local-mock-phys-monitor"), &vtoClient, milliseconds(500), seconds(10)),
 		remote(mLog.GetLogger(level, "remote-mock-phys-monitor"), &vtoServer, milliseconds(500), seconds(10)) {
 
@@ -89,7 +88,7 @@ BOOST_AUTO_TEST_SUITE(VtoOnewayIntegrationSuite)
 
 BOOST_AUTO_TEST_CASE(Reconnection)
 {
-	VtoOnewayTestStack stack(true, false, false);
+	VtoOnewayTestStack stack(true, false);
 
 	// start up everything, the local side should be able to open
 	stack.remote.Start();
@@ -136,7 +135,7 @@ BOOST_AUTO_TEST_CASE(RemoteSideOpenFailureBouncesLocalConnection)
 
 BOOST_AUTO_TEST_CASE(SocketIsClosedIfRemoteDrops)
 {
-	VtoOnewayTestStack stack(true, false, false);
+	VtoOnewayTestStack stack(true, false);
 
 	// start all components, should connect
 	stack.remote.Start();
@@ -172,7 +171,7 @@ void TestLargeDataOneWay(VtoOnewayTestStack& arTest, size_t aSizeInBytes)
 
 BOOST_AUTO_TEST_CASE(LargeDataTransferMasterToSlave)
 {
-	VtoOnewayTestStack stack(true, false, false);
+	VtoOnewayTestStack stack(true, false);
 //	stack.tcpPipe.client.SetCorruptionProbability(0.005);
 //	stack.tcpPipe.server.SetCorruptionProbability(0.005);
 	TestLargeDataOneWay(stack, MACRO_BUFFER_SIZE);
@@ -180,7 +179,7 @@ BOOST_AUTO_TEST_CASE(LargeDataTransferMasterToSlave)
 
 BOOST_AUTO_TEST_CASE(LargeDataTransferSlaveToMaster)
 {
-	VtoOnewayTestStack stack(false, false, false);
+	VtoOnewayTestStack stack(false, false);
 //	stack.tcpPipe.client.SetCorruptionProbability(0.005);
 //	stack.tcpPipe.server.SetCorruptionProbability(0.005);
 	TestLargeDataOneWay(stack, MACRO_BUFFER_SIZE);

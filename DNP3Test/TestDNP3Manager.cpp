@@ -36,6 +36,7 @@
 #include <DNP3/SimpleCommandHandler.h>
 
 #include <APL/LogToStdio.h>
+#include <APL/LogToFile.h>
 #include <APL/SimpleDataObserver.h>
 
 #include <thread>
@@ -61,19 +62,25 @@ BOOST_AUTO_TEST_CASE(ConstructionDestruction)
 
 BOOST_AUTO_TEST_CASE(ManualStackShutdown)
 {
-	for(int i=0; i<100; ++i) {
+	//LogToFile ltf("output.txt", true);
+
+	for(int i=0; i<1000; ++i) {
 
 		std::cout << i << std::endl;
-		
+				
 		DNP3Manager mgr(std::thread::hardware_concurrency());
+		
+		//mgr.AddLogSubscriber(&ltf);
 
 		auto pClient = mgr.AddTCPClient("client", LEV_INFO, 5000, "127.0.0.1", 20000);
 		auto pServer = mgr.AddTCPServer("server", LEV_INFO, 5000, "127.0.0.1", 20000);
 		auto pOutstation = pServer->AddOutstation("outstation", LEV_INFO, SuccessCommandHandler::Inst(), SlaveStackConfig());
 		auto pMaster = pClient->AddMaster("master", LEV_INFO, PrintingDataObserver::Inst(), MasterStackConfig());		
 		
-		pMaster->Shutdown();
+		//std::this_thread::sleep_for(std::chrono::seconds(10));
+
 		pOutstation->Shutdown();
+		pMaster->Shutdown();
 	}
 	
 }

@@ -64,7 +64,9 @@ void AsyncResult::Wait()
 {
 	std::unique_lock<std::mutex> lock(mMutex);
 	while(!mIsComplete) mCondition.wait(lock);
-	if(mRethrow) mRethrow();
+	if(mRethrow) {
+		mRethrow();
+	}
 }
 
 }

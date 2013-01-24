@@ -51,7 +51,7 @@ DNP3Channel::DNP3Channel(Logger* apLogger, millis_t aOpenRetry, IPhysicalLayerAs
 
 DNP3Channel::~DNP3Channel()
 {
-	this->Cleanup();
+	this->Cleanup();	
 }
 
 void DNP3Channel::Shutdown()

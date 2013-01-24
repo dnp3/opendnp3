@@ -162,8 +162,9 @@ BOOST_AUTO_TEST_CASE(AddRemove)
 {
 
 	{
+		LogToFile file("unittest.log");
 		EventLog log;
-		LogToFile file(&log, "unittest.log");
+		log.AddLogSubscriber(&file);
 		Logger* pLogger = log.GetLogger(LEV_DEBUG, "test1");
 		pLogger->Log( apl::LEV_DEBUG, "Test test test test", "Test message" );
 	}

@@ -35,8 +35,8 @@ namespace apl
 
 
 
-LogToFile :: LogToFile(EventLog* apLog, const std::string aFileName, const bool aOverwriteFile)
-	: LogEntryCircularBuffer(1000), mpThread(NULL), mpLog(apLog), mFileName(aFileName), mOverwriteFile(aOverwriteFile)
+LogToFile :: LogToFile(const std::string aFileName, const bool aOverwriteFile)
+	: LogEntryCircularBuffer(1000), mpThread(NULL), mFileName(aFileName), mOverwriteFile(aOverwriteFile)
 {
 	if(aFileName == "-" || aFileName == "") {
 		mpLog = NULL;
@@ -52,9 +52,7 @@ void LogToFile :: StartLogging()
 	Log(le);
 
 	mpThread = new Thread(this);
-	mpThread->Start();
-
-	mpLog->AddLogSubscriber(this);
+	mpThread->Start();	
 }
 
 LogToFile :: ~LogToFile()
@@ -64,8 +62,7 @@ LogToFile :: ~LogToFile()
 		mpThread->WaitForStop();
 	}
 
-	delete mpThread;
-	if(mpLog != NULL) mpLog->RemoveLogSubscriber(this);
+	delete mpThread;	
 }
 
 void LogToFile :: SignalStop()

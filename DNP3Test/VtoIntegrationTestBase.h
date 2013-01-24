@@ -66,15 +66,13 @@ class VtoIntegrationTestBase : public LogTester, protected Loggable
 public:
 	VtoIntegrationTestBase(
 	        bool clientOnSlave = true,
-	        bool aImmediateOutput = false,
-	        bool aLogToFile = false,
+	        bool aImmediateOutput = false,	        
 	        FilterLevel level = LEV_INFO,
 	        boost::uint16_t port = MACRO_PORT_VALUE);
 
 	virtual ~VtoIntegrationTestBase();
 
-	Logger* mpMainLogger;
-	std::auto_ptr<LogToFile> mpLtf;
+	Logger* mpMainLogger;	
 	MockCommandHandler cmdHandler;
 
 	AsyncTestObjectASIO testObj;

@@ -32,6 +32,7 @@
 #include "PhysicalLayerMonitorStates.h"
 
 #include <functional>
+#include <iostream>
 
 #include <assert.h>
 #include "Logger.h"
@@ -75,9 +76,7 @@ void PhysicalLayerMonitor::AddObserver(IPhysicalLayerObserver* apObserver)
 }
 
 bool PhysicalLayerMonitor::WaitForShutdown(millis_t aTimeout)
-{
-	mpPhys->GetExecutor()->Synchronize([this](){ this->Shutdown(); });
-	
+{	
 	std::unique_lock<std::mutex> lock(mMutex);
 	while(!mFinalShutdown) 
 	{ 
@@ -92,7 +91,7 @@ bool PhysicalLayerMonitor::WaitForShutdown(millis_t aTimeout)
 
 void PhysicalLayerMonitor::ChangeState(IMonitorState* apState)
 {
-	LOG_BLOCK(LEV_DEBUG, mpState->ConvertToString() << " -> " << apState->ConvertToString() << " : " << mpPhys->ConvertStateToString());
+	LOG_BLOCK(LEV_DEBUG, mpState->ConvertToString() << " -> " << apState->ConvertToString() << " : " << mpPhys->ConvertStateToString());	
 	IMonitorState* pLast = mpState;
 
 	std::unique_lock<std::mutex> lock(mMutex);
@@ -136,12 +135,16 @@ void PhysicalLayerMonitor::Close()
 void PhysicalLayerMonitor::Suspend()
 {
 	LOG_BLOCK(LEV_DEBUG, "Suspend()");
+	if(!mpPhys->CanClose()) {
+		LOG_BLOCK(LEV_EVENT, "suspend from : " << mpState->Name() << " : " << mpPhys->ConvertStateToString());
+	}
 	mpState->OnSuspendRequest(this);
 }
 
 void PhysicalLayerMonitor::Shutdown()
 {
 	LOG_BLOCK(LEV_DEBUG, "Shutdown()");
+	LOG_BLOCK(LEV_EVENT, ": shutdown from : " << mpState->Name())
 	mpState->OnShutdownRequest(this);
 }
 

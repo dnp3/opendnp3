@@ -162,14 +162,16 @@ void PhysicalLayerAsyncBase::AsyncClose()
 }
 
 void PhysicalLayerAsyncBase::StartClose()
-{
-	if(mState.CanClose()) {
-		mState.mClosing = true;
+{	
+	if(!mState.IsClosing()) { //TODO - kind of hack as it deviates from the current model.
+		if(mState.CanClose()) {
+			mState.mClosing = true;		
 
-		if(mState.mOpening) this->DoOpeningClose();
-		else this->DoClose();
+			if(mState.mOpening) this->DoOpeningClose();
+			else this->DoClose();
+		}
+		else throw InvalidStateException(LOCATION, "StartClose: " + this->ConvertStateToString());	
 	}
-	else throw InvalidStateException(LOCATION, "StartClose: " + this->ConvertStateToString());
 }
 
 void PhysicalLayerAsyncBase::AsyncWrite(const uint8_t* apBuff, size_t aNumBytes)
