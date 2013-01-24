@@ -46,9 +46,11 @@ using namespace apl::dnp;
 
 BOOST_AUTO_TEST_SUITE(DNP3ManagerTestSuite)
 
+const size_t ITERATIONS = 100;
+
 BOOST_AUTO_TEST_CASE(ConstructionDestruction)
 {
-	for(int i=0; i<100; ++i) {
+	for(int i=0; i<ITERATIONS; ++i) {
 
 		DNP3Manager mgr(std::thread::hardware_concurrency());	
 
@@ -61,23 +63,15 @@ BOOST_AUTO_TEST_CASE(ConstructionDestruction)
 }
 
 BOOST_AUTO_TEST_CASE(ManualStackShutdown)
-{
-	//LogToFile ltf("output.txt", true);
-
-	for(int i=0; i<1000; ++i) {
-
-		std::cout << i << std::endl;
+{	
+	for(int i=0; i<ITERATIONS; ++i) {		
 				
-		DNP3Manager mgr(std::thread::hardware_concurrency());
-		
-		//mgr.AddLogSubscriber(&ltf);
+		DNP3Manager mgr(std::thread::hardware_concurrency());		
 
 		auto pClient = mgr.AddTCPClient("client", LEV_INFO, 5000, "127.0.0.1", 20000);
 		auto pServer = mgr.AddTCPServer("server", LEV_INFO, 5000, "127.0.0.1", 20000);
 		auto pOutstation = pServer->AddOutstation("outstation", LEV_INFO, SuccessCommandHandler::Inst(), SlaveStackConfig());
-		auto pMaster = pClient->AddMaster("master", LEV_INFO, PrintingDataObserver::Inst(), MasterStackConfig());		
-		
-		//std::this_thread::sleep_for(std::chrono::seconds(10));
+		auto pMaster = pClient->AddMaster("master", LEV_INFO, PrintingDataObserver::Inst(), MasterStackConfig());				
 
 		pOutstation->Shutdown();
 		pMaster->Shutdown();
@@ -87,17 +81,24 @@ BOOST_AUTO_TEST_CASE(ManualStackShutdown)
 
 BOOST_AUTO_TEST_CASE(ManualChannelShutdownWithStack)
 {
-	DNP3Manager mgr(std::thread::hardware_concurrency());
+	for(int i=0; i<ITERATIONS; ++i) {	
 
-	auto pChannel = mgr.AddTCPClient("client", LEV_INFO, 5000, "127.0.0.1", 20000);
-	pChannel->AddMaster("master", LEV_INFO, PrintingDataObserver::Inst(), MasterStackConfig());	
-	pChannel->Shutdown();
+		DNP3Manager mgr(std::thread::hardware_concurrency());
+
+		auto pChannel = mgr.AddTCPClient("client", LEV_INFO, 5000, "127.0.0.1", 20000);
+		pChannel->AddMaster("master", LEV_INFO, PrintingDataObserver::Inst(), MasterStackConfig());	
+		pChannel->Shutdown();
+	}
 }
 
 BOOST_AUTO_TEST_CASE(ManualChannelShutdown)
 {
-	DNP3Manager mgr(std::thread::hardware_concurrency());
-	mgr.AddTCPClient("client", LEV_INFO, 5000, "127.0.0.1", 20000)->Shutdown();
+	for(int i=0; i<ITERATIONS; ++i) {	
+
+		DNP3Manager mgr(std::thread::hardware_concurrency());
+		mgr.AddTCPClient("client", LEV_INFO, 5000, "127.0.0.1", 20000)->Shutdown();
+
+	}
 }
 
 
