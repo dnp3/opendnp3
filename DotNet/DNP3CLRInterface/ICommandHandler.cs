@@ -35,10 +35,10 @@ namespace DNP3.Interface
 {
     public interface ICommandHandler
     {
-        CommandStatus Select(BinaryOutput command, System.UInt32 index, System.Byte aSequence);
-        CommandStatus Select(Setpoint command, System.UInt32 index, System.Byte aSequence);
-        CommandStatus Operate(BinaryOutput command, System.UInt32 index, System.Byte aSequence);
-        CommandStatus Operate(Setpoint command, System.UInt32 index, System.Byte aSequence);
+        CommandStatus Select(BinaryOutput command, System.UInt32 index, System.Byte sequence);
+        CommandStatus Select(Setpoint command, System.UInt32 index, System.Byte sequence);
+        CommandStatus Operate(BinaryOutput command, System.UInt32 index, System.Byte sequence);
+        CommandStatus Operate(Setpoint command, System.UInt32 index, System.Byte sequence);
         CommandStatus DirectOperate(BinaryOutput command, System.UInt32 index);
         CommandStatus DirectOperate(Setpoint command, System.UInt32 index);
     }
