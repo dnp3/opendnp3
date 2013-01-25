@@ -44,14 +44,14 @@ namespace DotNetTestSet
 {
     public partial class TestSetForm : Form
     {
-        private StackManager sm;
+        private DNP3Manager sm;
         private LogControlAdapter lca;
 
         public TestSetForm()
         {           
             InitializeComponent();
 
-            this.sm = new StackManager((UInt32)System.Environment.ProcessorCount);
+            this.sm = new DNP3Manager((UInt32)System.Environment.ProcessorCount);
             this.lca = new LogControlAdapter(this.logControl);
             sm.AddLogHandler(lca);            
         }        
@@ -72,20 +72,22 @@ namespace DotNetTestSet
         }
 
         private void stackBrowser1_OnAddMaster(string name, string port, FilterLevel level, MasterStackConfig config)
-        {            
+        {   
+            /*
             var observer = new EventedDataObserver(this);
             var control = this.stackDisplayControl.AddMaster(name, observer.MeasurementSource);             
             control.CommandProcessor = sm.AddMaster(port, name, level, observer, config);                            
+             */
         }
 
         private void stackBrowser1_OnRemovePort(string name)
         {
-            sm.RemovePort(name);
+            //sm.RemovePort(name);
         }
 
         private void stackBrowser1_OnRemoveStack(string name)
         {
-            sm.RemoveStack(name);
+            //sm.RemoveStack(name);
         }     
         
 
