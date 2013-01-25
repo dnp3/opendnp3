@@ -133,21 +133,21 @@ std::string BinaryOutput::ToString() const
 Setpoint::Setpoint() : mEncodingType(SPET_UNSET) {}
 
 Setpoint::Setpoint(int16_t aValue) :	
+	mStatus(CS_SUCCESS),
 	mValue(aValue),
-	mEncodingType(SPET_AUTO_INT),
-	mStatus(CS_SUCCESS)
+	mEncodingType(SPET_AUTO_INT)
 {}
 
 Setpoint::Setpoint(int32_t aValue) :
+	mStatus(CS_SUCCESS),
 	mValue(aValue),
-	mEncodingType(SPET_AUTO_INT),
-	mStatus(CS_SUCCESS)
+	mEncodingType(SPET_AUTO_INT)
 {}
 
 Setpoint::Setpoint(double aValue) :
+	mStatus(CS_SUCCESS),
 	mValue(aValue),
-	mEncodingType(SPET_AUTO_DOUBLE),
-	mStatus(CS_SUCCESS)
+	mEncodingType(SPET_AUTO_DOUBLE)
 {}
 
 std::string Setpoint::ToString() const

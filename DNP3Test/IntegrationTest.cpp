@@ -29,6 +29,7 @@
 #include "IntegrationTest.h"
 
 #include <sstream>
+#include <thread>
 
 #include <APL/IPhysicalLayerAsync.h>
 

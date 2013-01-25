@@ -32,6 +32,7 @@
 #include <string>
 #include <set>
 #include <stdint.h>
+#include <memory>
 
 #include <APL/Types.h>
 #include <APL/SerialTypes.h>
