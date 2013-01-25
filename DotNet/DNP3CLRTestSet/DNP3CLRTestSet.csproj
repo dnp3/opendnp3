@@ -32,6 +32,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DNP3CLRTestsetControlLibrary">
+      <HintPath>..\DNP3CLRControlLibrary\obj\Debug\DNP3CLRTestsetControlLibrary.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -51,7 +54,9 @@
     <Compile Include="TestSetForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="TestSetForm.Designer.cs" />
+    <Compile Include="TestSetForm.Designer.cs">
+      <DependentUpon>TestSetForm.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -61,6 +66,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="TestsetForm.resx">
+      <DependentUpon>TestSetForm.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="..\..\file.licenseheader">
       <Link>file.licenseheader</Link>
     </None>
@@ -81,10 +89,6 @@
     <ProjectReference Include="..\DNP3CLRAdapter\DNP3CLRAdapter.vcxproj">
       <Project>{def7e411-7282-4cc6-85f9-60e68a086d15}</Project>
       <Name>DNP3CLRAdapter</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DNP3CLRControlLibrary\DNP3CLRTestsetControlLibrary.csproj">
-      <Project>{f42e87e8-9e9d-4a96-8eb6-304205a3968d}</Project>
-      <Name>DNP3CLRTestsetControlLibrary</Name>
     </ProjectReference>
     <ProjectReference Include="..\DNP3CLRInterface\DNP3CLRInterface.csproj">
       <Project>{5f06c7be-3107-4b3e-8559-e5e1bb4008b5}</Project>

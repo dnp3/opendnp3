@@ -66,15 +66,6 @@ PhysicalLayerState PhysicalLayerMonitor::GetState()
 	return mpState->GetState();
 }
 
-/* ------ Public functions ----- */
-
-void PhysicalLayerMonitor::AddObserver(IPhysicalLayerObserver* apObserver)
-{
-	assert(apObserver != NULL);
-	std::unique_lock<std::mutex> lock(mMutex);
-	mObservers.insert(apObserver);
-}
-
 bool PhysicalLayerMonitor::WaitForShutdown(millis_t aTimeout)
 {	
 	std::unique_lock<std::mutex> lock(mMutex);
@@ -97,8 +88,9 @@ void PhysicalLayerMonitor::ChangeState(IMonitorState* apState)
 	std::unique_lock<std::mutex> lock(mMutex);
 	mpState = apState;
 	if(pLast->GetState() != apState->GetState()) {
-		for(auto pObserver: mObservers) pObserver->OnStateChange(apState->GetState());
 		
+		this->OnStateChange(mpState->GetState());
+
 		// signaling this way makes sure we're free and clear of the event that causes this
 		// before someone else and deletes
 		if(mpState->GetState() == PLS_SHUTDOWN) mpPhys->GetExecutor()->Post(std::bind(&PhysicalLayerMonitor::DoFinalShutdown, this));

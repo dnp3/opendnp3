@@ -62,13 +62,8 @@ MockPhysicalLayerMonitor::MockPhysicalLayerMonitor(
 	mWriteBuffer(0),
 	mExpectReadBuffer(0)
 {
-	mState.push(this->GetState());
-	this->AddObserver(this);
-}
 
-void MockPhysicalLayerMonitor::OnStateChange(PhysicalLayerState aState)
-{
-	mState.push(aState);
+
 }
 
 void MockPhysicalLayerMonitor::OnPhysicalLayerOpenSuccessCallback()
@@ -126,6 +121,11 @@ void MockPhysicalLayerMonitor::_OnSendSuccess(void)
 void MockPhysicalLayerMonitor::_OnSendFailure(void)
 {
 	BOOST_REQUIRE(false);
+}
+
+void MockPhysicalLayerMonitor::OnStateChange(PhysicalLayerState aState)
+{
+	this->mState.push(aState);
 }
 
 bool MockPhysicalLayerMonitor::NextStateIs(PhysicalLayerState aState)

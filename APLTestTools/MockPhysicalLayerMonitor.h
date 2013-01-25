@@ -36,7 +36,7 @@
 namespace apl
 {
 
-class MockPhysicalLayerMonitor : public PhysicalLayerMonitor, public IPhysicalLayerObserver
+class MockPhysicalLayerMonitor : public PhysicalLayerMonitor
 {
 public:
 	MockPhysicalLayerMonitor(	
@@ -56,10 +56,7 @@ public:
 
 	CopyableBuffer mReadBuffer;
 	CopyableBuffer mWriteBuffer;
-	CopyableBuffer mExpectReadBuffer;
-
-	void OnStateChange(PhysicalLayerState);
-	std::queue< PhysicalLayerState > mState;
+	CopyableBuffer mExpectReadBuffer;	
 
 	void OnPhysicalLayerOpenSuccessCallback();
 	void OnPhysicalLayerOpenFailureCallback() {}
@@ -74,6 +71,10 @@ public:
 
 	bool NextStateIs(PhysicalLayerState aState);
 	bool AllExpectedDataHasBeenReceived();
+
+protected:
+	void OnStateChange(PhysicalLayerState);	
+	std::queue< PhysicalLayerState > mState;
 
 private:
 

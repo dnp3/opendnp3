@@ -33,12 +33,10 @@
     <ClInclude Include="ExecutorPause.h" />
     <ClInclude Include="FlexibleDataObserver.h" />
     <ClInclude Include="GetKeys.h" />
-    <ClInclude Include="IEventLock.h" />
     <ClInclude Include="IExecutor.h" />
     <ClInclude Include="IHandlerAsync.h" />
     <ClInclude Include="IOServiceThreadPool.h" />
     <ClInclude Include="IPhysicalLayerAsync.h" />
-    <ClInclude Include="IPhysicalLayerObserver.h" />
     <ClInclude Include="ISubject.h" />
     <ClInclude Include="ITimer.h" />
     <ClInclude Include="ITimeSource.h" />
@@ -58,7 +56,6 @@
     <ClInclude Include="LowerLayerToPhysAdapter.h" />
     <ClInclude Include="MetricBuffer.h" />
     <ClInclude Include="MultiplexingDataObserver.h" />
-    <ClInclude Include="Notifier.h" />
     <ClInclude Include="PackingTemplates.h" />
     <ClInclude Include="PackingUnpacking.h" />
     <ClInclude Include="Parsing.h" />
@@ -71,7 +68,6 @@
     <ClInclude Include="PhysicalLayerMonitor.h" />
     <ClInclude Include="PhysicalLayerMonitorStates.h" />
     <ClInclude Include="PhysicalLayerStates.h" />
-    <ClInclude Include="PhysLayerSettings.h" />
     <ClInclude Include="PhysLoopback.h" />
     <ClInclude Include="SimpleDataObserver.h" />
     <ClInclude Include="ProtocolUtil.h" />
@@ -200,11 +196,15 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MultiProcessorCompilation>false</MultiProcessorCompilation>
+      <BrowseInformation>true</BrowseInformation>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <Bscmake>
+      <PreserveSbr>true</PreserveSbr>
+    </Bscmake>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>

@@ -32,7 +32,7 @@
 
 #include "IHandlerAsync.h"
 #include "IExecutor.h"
-#include "IPhysicalLayerObserver.h"
+#include "PhysicalLayerStates.h"
 
 #include <set>
 #include <mutex>
@@ -44,7 +44,6 @@ namespace apl
 
 class IPhysicalLayerAsync;
 class IMonitorState;
-class IPhysicalLayerObserver;
 
 /** Manages the lifecycle of a physical layer
   */
@@ -77,9 +76,6 @@ public:
 
 	PhysicalLayerState GetState();
 
-	/** Add an observer to the set of state callbacks */
-	void AddObserver(IPhysicalLayerObserver* apObserver);
-
 	/** Posts a Shutdown() call and then waits for shutdown to complete.
 	*/
 	bool WaitForShutdown(millis_t aTimeout = -1);
@@ -94,6 +90,7 @@ protected:
 	virtual void OnPhysicalLayerOpenSuccessCallback() = 0;
 	virtual void OnPhysicalLayerOpenFailureCallback() = 0;
 	virtual void OnPhysicalLayerCloseCallback() = 0;
+	virtual void OnStateChange(PhysicalLayerState aState) {}
 
 	/// Begins the open timer
 	void StartOpenTimer();
@@ -133,9 +130,6 @@ private:
 	void _OnOpenFailure();
 	void _OnLowerLayerUp();
 	void _OnLowerLayerDown();
-
-	typedef std::set<IPhysicalLayerObserver*> ObserverSet;
-	ObserverSet mObservers;
 
 };
 }

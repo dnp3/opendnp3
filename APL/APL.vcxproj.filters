@@ -75,16 +75,10 @@
     <ClInclude Include="GetKeys.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="IEventLock.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="IHandlerAsync.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="IPhysicalLayerAsync.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="IPhysicalLayerObserver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ISubject.h">
@@ -138,9 +132,6 @@
     <ClInclude Include="MultiplexingDataObserver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Notifier.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="PackingTemplates.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -175,9 +166,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="PhysicalLayerStates.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="PhysLayerSettings.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="PhysLoopback.h">
