@@ -45,9 +45,6 @@
     <ClInclude Include="BaseDataTypes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="BoundNotifier.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="CachedLogVariable.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -258,13 +255,13 @@
     <ClInclude Include="ASIOExecutor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="AsyncResult.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="IOServiceThreadPool.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SimpleDataObserver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ExecutorPause.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -422,9 +419,6 @@
     <ClCompile Include="ASIOExecutor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="AsyncResult.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="IOServiceThreadPool.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -435,6 +429,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SimpleDataObserver.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ExecutorPause.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -35,6 +35,7 @@
 #include <APL/Exception.h>
 #include <APL/Location.h>
 #include <APL/Log.h>
+#include <APL/ExecutorPause.h>
 
 #include <map>
 #include <functional>
@@ -108,16 +109,6 @@ private:
 
 BOOST_AUTO_TEST_SUITE(TimersTestSuite)
 
-BOOST_AUTO_TEST_CASE(ThrownExceptionsAreSafelyCapturedByFuture)
-{
-	TimerTestObject test;
-		
-	BOOST_REQUIRE_THROW(
-		test.exe.Synchronize([](){ throw InvalidStateException(LOCATION, "some bad state"); }), 
-		std::exception
-	);
-}
-
 
 BOOST_AUTO_TEST_CASE(TestOrderedDispatch)
 {
@@ -129,7 +120,9 @@ BOOST_AUTO_TEST_CASE(TestOrderedDispatch)
 		test.exe.Post([&test,i](){ test.Receive(i); });
 	}
 
-	test.exe.Synchronize([](){});
+	{
+		ExecutorPause p(&test.exe);
+	}
 
 	BOOST_REQUIRE_EQUAL(NUM, test.Num());
 	BOOST_REQUIRE(test.IsMonotonic());
@@ -144,9 +137,11 @@ BOOST_AUTO_TEST_CASE(ExpirationAndReuse)
 	ASIOExecutor exe(&strand);
 
 	ITimer* pT1 = exe.Start(milliseconds(1), std::bind(&MockTimerHandler::OnExpiration, &mth));
-	BOOST_REQUIRE_EQUAL(srv.run_one(), 1);
+	BOOST_REQUIRE_EQUAL(1, srv.run_one());
 	BOOST_REQUIRE_EQUAL(1, mth.GetCount());
 	ITimer* pT2 = exe.Start(milliseconds(1), std::bind(&MockTimerHandler::OnExpiration, &mth));
+	srv.reset();
+	BOOST_REQUIRE_EQUAL(1, srv.run_one());
 	BOOST_REQUIRE_EQUAL(pT1, pT2); //The ASIO implementation should reuse timers
 }
 
@@ -161,6 +156,8 @@ BOOST_AUTO_TEST_CASE(Cancelation)
 	BOOST_REQUIRE_EQUAL(1, srv.run_one());
 	BOOST_REQUIRE_EQUAL(0, mth.GetCount());
 	ITimer* pT2 = exe.Start(milliseconds(1), std::bind(&MockTimerHandler::OnExpiration, &mth));
+	srv.reset();
+	BOOST_REQUIRE_EQUAL(1, srv.run_one());
 	BOOST_REQUIRE_EQUAL(pT1, pT2);
 }
 

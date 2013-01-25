@@ -65,7 +65,12 @@ TransportScalabilityTestObject::TransportScalabilityTestObject(
 
 TransportScalabilityTestObject::~TransportScalabilityTestObject()
 {
-	for(TransportStackPair * pPair: mPairs) delete pPair;
+	for(auto pPair: mPairs) {
+		pPair->mClientStack.mRouter.Shutdown();
+		pPair->mServerStack.mRouter.Shutdown();
+	}
+	this->GetService()->run();
+	for(auto pPair: mPairs) delete pPair;
 }
 
 bool TransportScalabilityTestObject::AllLayersUp()

@@ -32,6 +32,7 @@
 #include "EnhancedVtoRouter.h"
 
 #include <APL/IPhysicalLayerAsync.h>
+#include <APL/ExecutorPause.h>
 
 namespace apl
 {
@@ -68,9 +69,10 @@ void VtoEndpointImpl::Shutdown()
 
 void VtoEndpointImpl::Cleanup()
 {
-	mpPhys->GetExecutor()->Synchronize([this](){ 		
+	{
+		ExecutorPause p(mpPhys->GetExecutor());	
 		this->mpRouter->Shutdown();
-	});
+	}	
 	mpRouter->WaitForShutdown();
 }
 

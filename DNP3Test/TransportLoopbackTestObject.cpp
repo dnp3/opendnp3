@@ -31,6 +31,7 @@
 #include <DNP3/LinkRoute.h>
 #include <APL/IPhysicalLayerAsync.h>
 
+#include <boost/asio.hpp>
 #include <sstream>
 
 
@@ -77,7 +78,8 @@ TransportLoopbackTestObject::TransportLoopbackTestObject(
 
 TransportLoopbackTestObject::~TransportLoopbackTestObject()
 {
-	mRouter.Shutdown();
+	mRouter.Shutdown();	
+	this->GetService()->run();
 }
 
 bool TransportLoopbackTestObject::LayersUp()

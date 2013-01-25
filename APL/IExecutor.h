@@ -53,9 +53,9 @@ namespace apl
  */
 class IExecutor
 {
-public:
-	IExecutor();
-	virtual ~IExecutor();	
+public:	
+
+	virtual ~IExecutor() {}
 
 	/** Returns a new timer based on a relative time in milliseconds */
 	ITimer* Start(std::chrono::milliseconds, const std::function<void ()> &);
@@ -67,10 +67,7 @@ public:
 	virtual ITimer* Start(const std::chrono::steady_clock::time_point&, const std::function<void ()> &) = 0;
 
 	/** Thread-safe way to post an event to be handled asynchronously */
-	virtual void Post(const std::function<void ()> &) = 0;
-
-	/** Calls the defined function synchronously */
-	void Synchronize(const std::function<void ()>& arFunc);
+	virtual void Post(const std::function<void ()> &) = 0;	
 
 };
 

@@ -26,30 +26,45 @@
 //
 // Contact Automatak, LLC for a commercial license to these modifications
 //
-#ifndef __BOUND_NOTIFIER_H_
-#define __BOUND_NOTIFIER_H_
 
-#include "INotifier.h"
+#include "ExecutorPause.h"
 
-#include <functional>
+#include "IExecutor.h"
 
 namespace apl
 {
 
-class BoundNotifier : public INotifier
+ExecutorPause::ExecutorPause(IExecutor* apExecutor) : 
+	mpExecutor(apExecutor),
+	mPaused(false),
+	mComplete(false),
+	mExit(false)
 {
-public:
-	BoundNotifier(std::function<void ()> aFunc) : mFunc(aFunc) {}
-	virtual ~BoundNotifier() {}
-
-	void Notify() {
-		mFunc();
-	}
-
-private:
-	std::function<void ()> mFunc;
-};
+	mpExecutor->Post([this](){ this->Pause(); });
+	std::unique_lock<std::mutex> lock(mMutex);
+	while(!mPaused) mCondition.wait(lock);
 }
 
-#endif
+ExecutorPause::~ExecutorPause()
+{
+	std::unique_lock<std::mutex> lock(mMutex);
+	mComplete = true;
+	mCondition.notify_one();
+	while(!mExit) mCondition.wait(lock);
+}
+
+void ExecutorPause::Pause()
+{
+	{
+		std::unique_lock<std::mutex> lock(mMutex);
+		mPaused = true;
+		mCondition.notify_one();
+		while(!mComplete) mCondition.wait(lock);
+	}
+	mExit = true; // make sure we're not going to touch from other thread after destruction
+	mCondition.notify_one();
+}
+
+}
+
 

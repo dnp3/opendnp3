@@ -86,7 +86,7 @@ bool PhysicalLayerMonitor::WaitForShutdown(millis_t aTimeout)
 		}
 		else mCondition.wait(lock);		
 	}	
-	return true;
+	return mFinalShutdown;
 }
 
 void PhysicalLayerMonitor::ChangeState(IMonitorState* apState)

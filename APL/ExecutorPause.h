@@ -26,17 +26,35 @@
 //
 // Contact Automatak, LLC for a commercial license to these modifications
 //
-#include "IExecutor.h"
+#ifndef __EXECUTOR_PAUSE_H_
+#define __EXECUTOR_PAUSE_H_
 
-using namespace std;
-using namespace std::chrono;
+#include <mutex>
+#include <condition_variable>
 
 namespace apl
 {
 
-ITimer* IExecutor::Start(milliseconds aMs, const function<void ()>& arFunc)
+class IExecutor;
+
+class ExecutorPause
 {
-	return this->Start(steady_clock::duration(aMs), arFunc);
-}
+	public:
+	ExecutorPause(IExecutor* apExecutor);
+	~ExecutorPause();
+
+	private:
+
+	void Pause();
+
+	std::mutex mMutex;
+	std::condition_variable mCondition;
+	IExecutor* mpExecutor;
+	bool mPaused;
+	bool mComplete;
+	bool mExit;
+};
 
 }
+
+#endif

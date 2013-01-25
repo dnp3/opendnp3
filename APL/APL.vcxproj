@@ -14,7 +14,6 @@
     <ClInclude Include="ASIOExecutor.h" />
     <ClInclude Include="ASIOSerialHelpers.h" />
     <ClInclude Include="AsyncLayerInterfaces.h" />
-    <ClInclude Include="AsyncResult.h" />
     <ClInclude Include="AsyncTaskBase.h" />
     <ClInclude Include="AsyncTaskContinuous.h" />
     <ClInclude Include="AsyncTaskGroup.h" />
@@ -23,7 +22,6 @@
     <ClInclude Include="AsyncTaskPeriodic.h" />
     <ClInclude Include="AsyncTaskScheduler.h" />
     <ClInclude Include="BaseDataTypes.h" />
-    <ClInclude Include="BoundNotifier.h" />
     <ClInclude Include="CachedLogVariable.h" />
     <ClInclude Include="ChangeBuffer.h" />
     <ClInclude Include="CommandTypes.h" />
@@ -32,6 +30,7 @@
     <ClInclude Include="DataInterfaces.h" />
     <ClInclude Include="DataTypes.h" />
     <ClInclude Include="Exception.h" />
+    <ClInclude Include="ExecutorPause.h" />
     <ClInclude Include="FlexibleDataObserver.h" />
     <ClInclude Include="GetKeys.h" />
     <ClInclude Include="IEventLock.h" />
@@ -100,7 +99,6 @@
     <ClCompile Include="ASIOExecutor.cpp" />
     <ClCompile Include="ASIOSerialHelpers.cpp" />
     <ClCompile Include="AsyncLayerInterfaces.cpp" />
-    <ClCompile Include="AsyncResult.cpp" />
     <ClCompile Include="AsyncTaskBase.cpp" />
     <ClCompile Include="AsyncTaskContinuous.cpp" />
     <ClCompile Include="AsyncTaskGroup.cpp" />
@@ -113,6 +111,7 @@
     <ClCompile Include="CopyableBuffer.cpp" />
     <ClCompile Include="CRC.cpp" />
     <ClCompile Include="Exception.cpp" />
+    <ClCompile Include="ExecutorPause.cpp" />
     <ClCompile Include="FlexibleDataObserver.cpp" />
     <ClCompile Include="IExecutor.cpp" />
     <ClCompile Include="IHandlerAsync.cpp" />

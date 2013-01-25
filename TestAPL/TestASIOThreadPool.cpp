@@ -31,6 +31,10 @@
 #include <APL/Log.h>
 #include <APL/IOServiceThreadPool.h>
 #include <APL/Exception.h>
+#include <APL/ExecutorPause.h>
+#include <APL/ASIOExecutor.h>
+
+#include <thread>
 
 using namespace std;
 using namespace boost;
@@ -94,6 +98,33 @@ BOOST_AUTO_TEST_CASE(StrandsSequenceCallbacksViaStrandWrap)
 
 	pool.Shutdown();
 	BOOST_REQUIRE_EQUAL(iterations, count1);
+}
+
+BOOST_AUTO_TEST_CASE(ExecutorPauseGuardsRaceConditions)
+{
+	EventLog log;
+	IOServiceThreadPool pool(log.GetLogger(LEV_INFO, "pool"), 8);
+	size_t iterations = 100000;
+	
+	boost::asio::strand strand(*pool.GetIOService());
+	ASIOExecutor exe(&strand);
+
+	int count=0;
+	auto increment = [&](){
+		int i = count;
+		std::this_thread::sleep_for(std::chrono::milliseconds(1));
+		count = i + 1;
+	};
+	
+	for(size_t i=0; i<100; ++i) { //try to cause a race condition between the Post and the Pause
+		exe.Post(increment);
+		ExecutorPause p1(&exe);
+		increment();
+	}
+	
+	pool.Shutdown();
+
+	BOOST_REQUIRE_EQUAL(200, count);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

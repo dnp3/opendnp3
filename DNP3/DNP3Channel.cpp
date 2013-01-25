@@ -33,6 +33,7 @@
 #include <DNP3/OutstationStackImpl.h>
 
 #include <APL/IPhysicalLayerAsync.h>
+#include <APL/ExecutorPause.h>
 
 namespace apl
 {
@@ -65,10 +66,11 @@ void DNP3Channel::Cleanup()
 {
 	std::set<IStack*> copy(mStacks);	
 	for(auto pStack: copy) pStack->Shutdown();
-	mpPhys->GetExecutor()->Synchronize([this](){ 
+	{
+		ExecutorPause p(mpPhys->GetExecutor());		
 		this->mGroup.Shutdown();	// no more task callbacks
 		this->mRouter.Shutdown();	// start shutting down the router
-	});
+	}
 	mRouter.WaitForShutdown();	
 }
 
@@ -81,7 +83,10 @@ IMaster* DNP3Channel::AddMaster(const std::string& arLoggerId, FilterLevel aLeve
 	});
 	pMaster->SetLinkRouter(&mRouter);
 	mStacks.insert(pMaster);
-	mpPhys->GetExecutor()->Synchronize([&](){ mRouter.AddContext(pMaster->GetLinkContext(), route); });
+	{
+		ExecutorPause p(mpPhys->GetExecutor());
+		mRouter.AddContext(pMaster->GetLinkContext(), route);	
+	}
 	return pMaster;
 }
 
@@ -94,16 +99,20 @@ IOutstation* DNP3Channel::AddOutstation(const std::string& arLoggerId, FilterLev
 	});
 	pOutstation->SetLinkRouter(&mRouter);
 	mStacks.insert(pOutstation);
-	mpPhys->GetExecutor()->Synchronize([&](){ mRouter.AddContext(pOutstation->GetLinkContext(), route); });
+	{
+		ExecutorPause p(mpPhys->GetExecutor());
+		mRouter.AddContext(pOutstation->GetLinkContext(), route);	
+	}
 	return pOutstation;
 }
 
 void DNP3Channel::OnStackShutdown(IStack* apStack, LinkRoute route)
 {
 	mStacks.erase(apStack);
-	mpPhys->GetExecutor()->Synchronize([&](){
+	{
+		ExecutorPause p(mpPhys->GetExecutor());
 		mRouter.RemoveContext(route);
-	});
+	}
 	delete apStack;
 }
 
