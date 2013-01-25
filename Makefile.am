@@ -8,7 +8,7 @@ ACLOCAL_AMFLAGS = -I config/autotools/m4
 CORE_BOOST_LIBS  = $(BOOST_DATE_TIME_LIB) $(BOOST_THREAD_LIB) $(BOOST_PROGRAM_OPTIONS_LIB) $(BOOST_SYSTEM_LIB)
 TEST_BOOST_LIBS  = $(CORE_BOOST_LIBS) $(BOOST_UNIT_TEST_FRAMEWORK_LIB)
 
-AM_CXXFLAGS = $(BOOST_CPPFLAGS) -DBOOST_TEST_DYN_LINK -DBOOST_ASIO_ENABLE_CANCELIO -DBOOST_REGEX_NO_LIB -D_GLIBCXX_USE_NANOSLEEP
+AM_CXXFLAGS = $(BOOST_CPPFLAGS) -DBOOST_TEST_DYN_LINK -DBOOST_ASIO_ENABLE_CANCELIO -DBOOST_REGEX_NO_LIB -D_GLIBCXX_USE_NANOSLEEP -std=c++0x
 AM_LDFLAGS  = $(BOOST_LDFLAGS)
 
 # Dummy placeholder to allow for expansion later
@@ -22,7 +22,6 @@ libopendnp3_la_SOURCES = \
 	APL/ASIOExecutor.cpp \
 	APL/ASIOSerialHelpers.cpp \
 	APL/AsyncLayerInterfaces.cpp \
-	APL/AsyncResult.cpp \
 	APL/AsyncTaskBase.cpp \
 	APL/AsyncTaskContinuous.cpp \
 	APL/AsyncTaskGroup.cpp \
@@ -35,6 +34,7 @@ libopendnp3_la_SOURCES = \
 	APL/CopyableBuffer.cpp \
 	APL/CRC.cpp \
 	APL/Exception.cpp \
+	APL/ExecutorPause.cpp \
 	APL/FlexibleDataObserver.cpp \
 	APL/IExecutor.cpp \
 	APL/IHandlerAsync.cpp \
@@ -288,7 +288,6 @@ nobase_pkginclude_HEADERS= \
 	APL/AsyncTaskPeriodic.h \
 	APL/AsyncTaskScheduler.h \
 	APL/BaseDataTypes.h \
-	APL/BoundNotifier.h \
 	APL/CachedLogVariable.h \
 	APL/ChangeBuffer.h \
 	APL/CommandTypes.h \
