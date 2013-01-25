@@ -26,74 +26,78 @@
 //
 // Contact Automatak, LLC for a commercial license to these modifications
 //
-#include "StackManager.h"
+#include "DNP3Manager.h"
 
 #include "Conversions.h"
-#include "MasterDataObserverAdapter.h"
-#include "CommandProcessorAdapter.h"
-
-#include "SlaveCommandHandlerAdapter.h"
-#include "SlaveDataObserverAdapter.h"
-
 #include "LogAdapter.h"
-
-#include <DNP3/MasterStackConfig.h>
-#include <DNP3/SlaveStackConfig.h>
-#include <DNP3/StackManager.h>
-#include <DNP3/ICommandProcessor.h>
+#include "ChannelAdapter.h"
+#include <DNP3/DNP3Manager.h>
 
 namespace DNP3
 {	
 namespace Adapter
 {
 
-	StackManager::StackManager(System::UInt32 aConcurrency) :
-		pMgr(new apl::dnp::StackManager(aConcurrency))
+	DNP3Manager::DNP3Manager(System::UInt32 aConcurrency) :
+		pMgr(new apl::dnp::DNP3Manager(aConcurrency))
 	{
 		
 	}
 
-	void StackManager::AddTCPClient(System::String^ name, FilterLevel level, System::UInt64 retryMs, System::String^ address, System::UInt16 port)
+	DNP3Manager::~DNP3Manager()
+	{
+		delete pMgr;
+	}
+
+	IChannel^ DNP3Manager::AddTCPClient(System::String^ name, FilterLevel level, System::UInt64 retryMs, System::String^ address, System::UInt16 port)
 	{
 		
 		std::string stdName = Conversions::convertString(name);
 		std::string stdAddress = Conversions::convertString(address);
 		uint16_t stdPort = port;
-		apl::PhysLayerSettings pls(Conversions::convertFilterLevel(level), retryMs);
-
+		auto lev = Conversions::convertFilterLevel(level);
+		
 		try {
-			pMgr->AddTCPClient(stdName, pls, stdAddress, stdPort);
+			auto pChannel = pMgr->AddTCPClient(stdName, lev, retryMs, stdAddress, stdPort);
+			return gcnew ChannelAdapter(pChannel);
 		} 
 		catch(apl::Exception ex){
 			throw Conversions::convertException(ex);
 		}
 	}
 
-	void StackManager::AddTCPServer(System::String^ name, FilterLevel level, System::UInt64 retryMs, System::String^ endpoint, System::UInt16 port)
+	IChannel^ DNP3Manager::AddTCPServer(System::String^ name, FilterLevel level, System::UInt64 retryMs, System::String^ endpoint, System::UInt16 port)
 	{
 		std::string stdName = Conversions::convertString(name);
 		std::string stdEndpoint = Conversions::convertString(endpoint);		
 		uint16_t stdPort = port;
-
-		apl::PhysLayerSettings pls(Conversions::convertFilterLevel(level), retryMs);
+		auto lev = Conversions::convertFilterLevel(level);		
 		
 		try {
-			pMgr->AddTCPServer(stdName, pls, stdEndpoint, stdPort);
+			auto pChannel = pMgr->AddTCPServer(stdName, lev, retryMs, stdEndpoint, stdPort);
+			return gcnew ChannelAdapter(pChannel);
 		} 
 		catch(apl::Exception ex){
 			throw Conversions::convertException(ex);
 		}
 	}
 
-	void StackManager::AddSerial(System::String^ name, FilterLevel level, System::UInt64 retryMs, SerialSettings^ settings)
+	IChannel^ DNP3Manager::AddSerial(System::String^ name, FilterLevel level, System::UInt64 retryMs, SerialSettings^ settings)
 	{
 		std::string stdName = Conversions::convertString(name);
-		apl::PhysLayerSettings pls(Conversions::convertFilterLevel(level), retryMs);
-		apl::SerialSettings s = Conversions::convertSerialSettings(settings);
-
-		pMgr->AddSerial(stdName, pls, s);
-	}
+		auto lev = Conversions::convertFilterLevel(level);		
+		auto s = Conversions::convertSerialSettings(settings);
 		
+		try {
+			auto pChannel = pMgr->AddSerial(stdName, lev, retryMs, s);
+			return gcnew ChannelAdapter(pChannel);
+		} 
+		catch(apl::Exception ex){
+			throw Conversions::convertException(ex);
+		}
+	}
+
+/*
 	ICommandProcessor^ StackManager::AddMaster(	System::String^ portName,
 												System::String^ stackName,	                            
 												FilterLevel level,
@@ -162,12 +166,13 @@ namespace Adapter
 			throw Conversions::convertException(ex);
 		}
 	}
+*/
 
-	void StackManager::AddLogHandler(ILogHandler^ logHandler)
+	void DNP3Manager::AddLogHandler(ILogHandler^ logHandler)
 	{
 		try {
 			LogAdapterWrapper^ wrapper = gcnew LogAdapterWrapper(logHandler);
-			pMgr->AddLogHook(wrapper->GetLogAdapter());
+			pMgr->AddLogSubscriber(wrapper->GetLogAdapter());
 		} 
 		catch(apl::Exception ex){
 			throw Conversions::convertException(ex);

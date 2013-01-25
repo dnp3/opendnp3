@@ -33,6 +33,8 @@
 #include <APL/PhysicalLayerAsyncTCPServer.h>
 #include <APL/PhysicalLayerAsyncSerial.h>
 #include <APL/TimeSource.h>
+#include <APL/IOServiceThreadPool.h>
+#include <APL/Log.h>
 
 #include "DNP3Channel.h"
 
@@ -42,8 +44,8 @@ namespace dnp
 {
 
 DNP3Manager::DNP3Manager(size_t aConcurrency) :
-mLog(),
-mThreadPool(mLog.GetLogger(LEV_INFO, "ThreadPool"), aConcurrency)
+mpLog(new EventLog()),
+mpThreadPool(new IOServiceThreadPool(mpLog->GetLogger(LEV_INFO, "ThreadPool"), aConcurrency))
 {
 
 }
@@ -55,7 +57,7 @@ DNP3Manager::~DNP3Manager()
 
 void DNP3Manager::AddLogSubscriber(ILogBase* apLog)
 {
-	mLog.AddLogSubscriber(apLog);
+	mpLog->AddLogSubscriber(apLog);
 }
 
 void DNP3Manager::Shutdown()
@@ -66,29 +68,29 @@ void DNP3Manager::Shutdown()
 
 IChannel* DNP3Manager::AddTCPClient(const std::string& arName, FilterLevel aLevel, millis_t aOpenRetry, const std::string& arAddr, uint16_t aPort)
 {	
-	auto pLogger = mLog.GetLogger(aLevel, arName);
-	auto pPhys = new PhysicalLayerAsyncTCPClient(pLogger, mThreadPool.GetIOService(), arAddr, aPort);
+	auto pLogger = mpLog->GetLogger(aLevel, arName);
+	auto pPhys = new PhysicalLayerAsyncTCPClient(pLogger, mpThreadPool->GetIOService(), arAddr, aPort);
 	return CreateChannel(pLogger, aOpenRetry, pPhys);
 }
 
 IChannel* DNP3Manager::AddTCPServer(const std::string& arName, FilterLevel aLevel, millis_t aOpenRetry, const std::string& arEndpoint, uint16_t aPort)
 {	
-	auto pLogger = mLog.GetLogger(aLevel, arName);
-	auto pPhys = new PhysicalLayerAsyncTCPServer(pLogger, mThreadPool.GetIOService(), arEndpoint, aPort);
+	auto pLogger = mpLog->GetLogger(aLevel, arName);
+	auto pPhys = new PhysicalLayerAsyncTCPServer(pLogger, mpThreadPool->GetIOService(), arEndpoint, aPort);
 	return CreateChannel(pLogger, aOpenRetry, pPhys);
 }
 
 IChannel* DNP3Manager::AddSerial(const std::string& arName, FilterLevel aLevel, millis_t aOpenRetry, SerialSettings aSettings)
 {
-	auto pLogger = mLog.GetLogger(aLevel, arName);
-	auto pPhys = new PhysicalLayerAsyncSerial(pLogger, mThreadPool.GetIOService(), aSettings);
+	auto pLogger = mpLog->GetLogger(aLevel, arName);
+	auto pPhys = new PhysicalLayerAsyncSerial(pLogger, mpThreadPool->GetIOService(), aSettings);
 	return CreateChannel(pLogger, aOpenRetry, pPhys);
 }
 
 
 IChannel* DNP3Manager::CreateChannel(Logger* apLogger, millis_t aOpenRetry, IPhysicalLayerAsync* apPhys)
 {
-	auto pChannel = new DNP3Channel(apLogger, aOpenRetry, mThreadPool.GetIOService(), apPhys, TimeSource::Inst(), [this](DNP3Channel* apChannel){ 
+	auto pChannel = new DNP3Channel(apLogger, aOpenRetry, mpThreadPool->GetIOService(), apPhys, TimeSource::Inst(), [this](DNP3Channel* apChannel){ 
 		this->OnChannelShutdownCallback(apChannel);
 	});
 	mChannels.insert(pChannel);

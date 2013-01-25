@@ -26,29 +26,33 @@
 //
 // Contact Automatak, LLC for a commercial license to these modifications
 //
-#ifndef __DOT_NET_STACK_MANAGER_H_
-#define __DOT_NET_STACK_MANAGER_H_
+#ifndef __CLR_DNP3_MANAGER_H_
+#define __CLR_DNP3_MANAGER_H_
 
 using namespace System;
 using namespace DNP3::Interface;
 
 namespace apl { namespace dnp {
-	class StackManager;
+	class DNP3Manager;
 }}
 
 namespace DNP3
 {	
 namespace Adapter
 {
-	public ref class StackManager
+	public ref class DNP3Manager
 	{
 		public:
-			StackManager(System::UInt32 aConcurrency);
+			DNP3Manager(System::UInt32 aConcurrency);
+			~DNP3Manager();
 			
-			void AddTCPClient(System::String^ name, FilterLevel level, System::UInt64 retryMs, System::String^ address, System::UInt16 port);					
-			void AddTCPServer(System::String^ name, FilterLevel level, System::UInt64 retryMs, System::String^ endpoint, System::UInt16 port);
-			void AddSerial(System::String^ name, FilterLevel level, System::UInt64 retryMs, SerialSettings^ settings);
-						
+			IChannel^ AddTCPClient(System::String^ name, FilterLevel level, System::UInt64 retryMs, System::String^ address, System::UInt16 port);					
+			IChannel^ AddTCPServer(System::String^ name, FilterLevel level, System::UInt64 retryMs, System::String^ endpoint, System::UInt16 port);
+			IChannel^ AddSerial(System::String^ name, FilterLevel level, System::UInt64 retryMs, SerialSettings^ settings);
+
+			void AddLogHandler(ILogHandler^ logHandler);
+			
+			/*
 			ICommandProcessor^ AddMaster(	System::String^ portName,
 											System::String^ stackName,	                            
 											FilterLevel level,
@@ -64,11 +68,12 @@ namespace Adapter
 			void RemovePort(System::String^ portName);
 
 			void RemoveStack(System::String^ stackName);
+			*/
 
-			void AddLogHandler(ILogHandler^ logHandler);
+			
 
 		private:
-			apl::dnp::StackManager* pMgr;
+			apl::dnp::DNP3Manager* pMgr;
 	};
 
 }}

@@ -83,24 +83,28 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ChannelAdapter.h" />
     <ClInclude Include="CommandProcessorAdapter.h" />
     <ClInclude Include="Conversions.h" />
     <ClInclude Include="FilterLevel.h" />
     <ClInclude Include="Lock.h" />
     <ClInclude Include="LogAdapter.h" />
+    <ClInclude Include="MasterAdapter.h" />
     <ClInclude Include="MasterDataObserverAdapter.h" />
     <ClInclude Include="SlaveCommandHandlerAdapter.h" />
     <ClInclude Include="SlaveDataObserverAdapter.h" />
-    <ClInclude Include="StackManager.h" />
+    <ClInclude Include="DNP3Manager.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ChannelAdapter.cpp" />
     <ClCompile Include="CommandProcessorAdapter.cpp" />
     <ClCompile Include="Conversions.cpp" />
     <ClCompile Include="LogAdapter.cpp" />
+    <ClCompile Include="MasterAdapter.cpp" />
     <ClCompile Include="MasterDataObserverAdapter.cpp" />
     <ClCompile Include="SlaveCommandHandlerAdapter.cpp" />
     <ClCompile Include="SlaveDataObserverAdapter.cpp" />
-    <ClCompile Include="StackManager.cpp" />
+    <ClCompile Include="DNP3Manager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\APL\APL.vcxproj">

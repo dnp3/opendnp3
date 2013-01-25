@@ -31,18 +31,21 @@
 
 #include <string>
 #include <set>
-#include <mutex>
+#include <stdint.h>
 
-#include <APL/PhysLayerSettings.h>
-#include <APL/IOServiceThreadPool.h>
-#include <APL/Log.h>
+#include <APL/Types.h>
 #include <APL/SerialTypes.h>
+#include <APL/LogTypes.h>
 
+// pre-declare EVERYTHING possible to minimize includes for CLR/Java wrappers
 namespace apl
 {
 
 class ILogBase;
 class IPhysicalLayerAsync;
+class IOServiceThreadPool;
+class EventLog;
+class Logger;
 
 namespace dnp
 {
@@ -71,10 +74,9 @@ class DNP3Manager
 
 		IChannel* CreateChannel(Logger* apLogger, millis_t aOpenRetry, IPhysicalLayerAsync* apPhys);
 		
-		EventLog mLog;
-		IOServiceThreadPool mThreadPool;
+		std::auto_ptr<EventLog> mpLog;		
+		std::auto_ptr<IOServiceThreadPool> mpThreadPool; 
 		std::set<DNP3Channel*> mChannels;
-
 };
 
 

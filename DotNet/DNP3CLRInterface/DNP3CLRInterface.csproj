@@ -43,11 +43,19 @@
     <Compile Include="ConfigObjects.cs" />
     <Compile Include="Conversions.cs" />
     <Compile Include="DataTypes.cs" />
+    <Compile Include="IChannel.cs" />
     <Compile Include="ICommandHandler.cs" />
     <Compile Include="ICommandProcessor.cs" />
     <Compile Include="IDataObserver.cs" />
     <Compile Include="IFuture.cs" />
     <Compile Include="ILogHandler.cs" />
+    <Compile Include="IMaster.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="IOutstation.cs" />
+    <Compile Include="IStack.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="LogTypes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SerialSettings.cs" />
