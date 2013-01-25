@@ -73,32 +73,18 @@ namespace DotNetMasterDemo
         {
             Console.WriteLine(update.value);
         }
-    }
-
-    public class PrintingLogAdapter : ILogHandler
-    {
-
-        public void Log(LogEntry entry)
-        {
-            Console.WriteLine(entry.message);
-        }
-
-        public void SetVar(string source, string varName, int value)
-        {
-            
-        }
-    }
+    }    
 
     class Program
     {
         static void Main(string[] args)
         {
-            var sm = new StackManager(1);
-            sm.AddLogHandler(new PrintingLogAdapter()); //this is optional
-            sm.AddTCPClient("client", FilterLevel.LEV_INFO, 5000, "127.0.0.1", 20000);
+            var mgr = new DNP3Manager(1);
+            mgr.AddLogHandler(new PrintingLogAdapter()); //this is optional
+            var channel = mgr.AddTCPClient("client", FilterLevel.LEV_INFO, 5000, "127.0.0.1", 20000);
             var config = new MasterStackConfig();
             config.link.useConfirms = true; //setup your stack configuration here.
-            var commandAcceptor = sm.AddMaster("client", "master", FilterLevel.LEV_INFO, new PrintingDataObserver(), config);
+            var master = channel.AddMaster("master", FilterLevel.LEV_INFO, new PrintingDataObserver(), config);
 
             Console.WriteLine("Enter an index to send a command");
 
@@ -106,7 +92,7 @@ namespace DotNetMasterDemo
             {
                 System.UInt32 index = System.UInt32.Parse(Console.ReadLine());
                 DateTime start = DateTime.Now;
-                var future = commandAcceptor.SelectAndOperate(new BinaryOutput(ControlCode.CC_PULSE, 1, 100, 100), index);
+                var future = master.GetCommandProcessor().SelectAndOperate(new BinaryOutput(ControlCode.CC_PULSE, 1, 100, 100), index);
                 CommandStatus result = future.Await();
                 DateTime end = DateTime.Now;
                 TimeSpan duration = end - start;                

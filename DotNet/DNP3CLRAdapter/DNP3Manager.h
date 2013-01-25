@@ -52,26 +52,6 @@ namespace Adapter
 
 			void AddLogHandler(ILogHandler^ logHandler);
 			
-			/*
-			ICommandProcessor^ AddMaster(	System::String^ portName,
-											System::String^ stackName,	                            
-											FilterLevel level,
-											IDataObserver^ publisher,
-											MasterStackConfig^ config);
-
-			IDataObserver^	 AddSlave(	System::String^ portName,
-										System::String^ stackName,
-										FilterLevel level,
-										ICommandHandler^ cmdAcceptor, 
-										DNP3::Interface::SlaveStackConfig^ config);
-
-			void RemovePort(System::String^ portName);
-
-			void RemoveStack(System::String^ stackName);
-			*/
-
-			
-
 		private:
 			apl::dnp::DNP3Manager* pMgr;
 	};

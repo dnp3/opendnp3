@@ -26,34 +26,29 @@
 //
 // Contact Automatak, LLC for a commercial license to these modifications
 //
-#ifndef __MASTER_ADAPTER_H_
-#define __MASTER_ADAPTER_H_
 
-using namespace System::Collections::ObjectModel;
-
-#include <DNP3/IMaster.h>
-
-using namespace DNP3::Interface;
+#include "OutstationAdapter.h"
+#include "SlaveDataObserverAdapter.h"
 
 namespace DNP3
 {	
 namespace Adapter
 {	
-	public ref class MasterAdapter : IMaster
-	{
-		public:
-
-		MasterAdapter(apl::dnp::IMaster* apMaster);
-
-		virtual ICommandProcessor^ GetCommandProcessor();
-
-		virtual void Shutdown();
-		
-		private:
-		apl::dnp::IMaster* mpMaster;
-		ICommandProcessor^ mCommandAdapter;
-	};
 	
-}}
 
-#endif
+OutstationAdapter::OutstationAdapter(apl::dnp::IOutstation* apOutstation) :
+	mpOutstation(apOutstation),
+	mDataObserverAdapter(gcnew SlaveDataObserverAdapter(apOutstation->GetDataObserver()))
+{}
+
+IDataObserver^ OutstationAdapter::GetDataObserver()
+{
+	return mDataObserverAdapter;
+}
+
+void OutstationAdapter::Shutdown()
+{
+	mpOutstation->Shutdown();
+}
+		
+}}

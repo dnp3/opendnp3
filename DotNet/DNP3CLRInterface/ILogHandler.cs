@@ -72,4 +72,18 @@ namespace DNP3.Interface
 	    void SetVar(String source, String varName, int value);
 
     }
+
+    public class PrintingLogAdapter : ILogHandler
+    {
+
+        public void Log(LogEntry entry)
+        {
+            Console.WriteLine(entry.message);
+        }
+
+        public void SetVar(string source, string varName, int value)
+        {
+
+        }
+    }
 }
