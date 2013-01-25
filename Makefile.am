@@ -8,7 +8,7 @@ ACLOCAL_AMFLAGS = -I config/autotools/m4
 CORE_BOOST_LIBS  = $(BOOST_DATE_TIME_LIB) $(BOOST_THREAD_LIB) $(BOOST_PROGRAM_OPTIONS_LIB) $(BOOST_SYSTEM_LIB)
 TEST_BOOST_LIBS  = $(CORE_BOOST_LIBS) $(BOOST_UNIT_TEST_FRAMEWORK_LIB)
 
-AM_CXXFLAGS = $(BOOST_CPPFLAGS) -DBOOST_TEST_DYN_LINK -DBOOST_ASIO_ENABLE_CANCELIO -DBOOST_REGEX_NO_LIB
+AM_CXXFLAGS = $(BOOST_CPPFLAGS) -DBOOST_TEST_DYN_LINK -DBOOST_ASIO_ENABLE_CANCELIO -DBOOST_REGEX_NO_LIB -D_GLIBCXX_USE_NANOSLEEP
 AM_LDFLAGS  = $(BOOST_LDFLAGS)
 
 # Dummy placeholder to allow for expansion later
@@ -19,6 +19,7 @@ lib_LTLIBRARIES = libopendnp3.la
 libopendnp3_la_LDFLAGS = -version-info 0:0:0
 libopendnp3_la_LIBADD = $(BOOST_LDFLAGS) $(CORE_BOOST_LIBS)
 libopendnp3_la_SOURCES = \
+	APL/ASIOExecutor.cpp \
 	APL/ASIOSerialHelpers.cpp \
 	APL/AsyncLayerInterfaces.cpp \
 	APL/AsyncResult.cpp \
@@ -29,21 +30,16 @@ libopendnp3_la_SOURCES = \
 	APL/AsyncTaskPeriodic.cpp \
 	APL/AsyncTaskScheduler.cpp \
 	APL/BaseDataTypes.cpp \
-	APL/CommandManager.cpp \
-	APL/CommandQueue.cpp \
-	APL/CommandResponseQueue.cpp \
+	APL/ChangeBuffer.cpp \
 	APL/CommandTypes.cpp \
 	APL/CopyableBuffer.cpp \
 	APL/CRC.cpp \
-	APL/EventLock.cpp \
 	APL/Exception.cpp \
 	APL/FlexibleDataObserver.cpp \
+	APL/IExecutor.cpp \
 	APL/IHandlerAsync.cpp \
-	APL/ITimerSource.cpp \
-	APL/IOService.cpp \
-	APL/IOServiceThread.cpp \
-	APL/LockBase.cpp \
-	APL/LockBoost.cpp \
+	APL/IOServiceThreadPool.cpp \
+	APL/ITimeSource.cpp \
 	APL/Log.cpp \
 	APL/LogEntryCircularBuffer.cpp \
 	APL/LogEntry.cpp \
@@ -62,31 +58,20 @@ libopendnp3_la_SOURCES = \
 	APL/PhysicalLayerAsyncSerial.cpp \
 	APL/PhysicalLayerAsyncTCPClient.cpp \
 	APL/PhysicalLayerAsyncTCPServer.cpp \
-	APL/PhysicalLayerFactory.cpp \
-	APL/PhysicalLayerInstance.cpp \
-	APL/PhysicalLayerManager.cpp \
-	APL/PhysicalLayerMap.cpp \
 	APL/PhysicalLayerMonitor.cpp \
 	APL/PhysicalLayerMonitorStates.cpp \
 	APL/PhysicalLayerStates.cpp \
 	APL/PhysLoopback.cpp \
-	APL/PostingNotifier.cpp \
-	APL/PostingNotifierSource.cpp \
 	APL/ProtocolUtil.cpp \
 	APL/QualityConverter.cpp \
 	APL/RandomizedBuffer.cpp \
 	APL/ShiftableBuffer.cpp \
-	APL/SuspendTimerSource.cpp \
+	APL/SimpleDataObserver.cpp \
+	APL/SubjectBase.cpp \
 	APL/Threadable.cpp \
-	APL/ThreadBase.cpp \
-	APL/ThreadBoost.cpp \
-	APL/TimeBase.cpp \
-	APL/TimeBoost.cpp \
-	APL/Timeout.cpp \
+	APL/Thread.cpp \
 	APL/TimerASIO.cpp \
-	APL/TimerSourceASIO.cpp \
 	APL/TimeSource.cpp \
-	APL/TimingTools.cpp \
 	APL/ToHex.cpp \
 	APL/TrackingTaskGroup.cpp \
 	APL/Util.cpp \
@@ -98,21 +83,23 @@ libopendnp3_la_SOURCES = \
 	DNP3/AppInterfaces.cpp \
 	DNP3/AppLayerChannel.cpp \
 	DNP3/AppLayer.cpp \
-	DNP3/AsyncStackManager.cpp \
+	DNP3/ApplicationStack.cpp \
 	DNP3/BufferTypes.cpp \
 	DNP3/ClassCounter.cpp \
-	DNP3/ControlTasks.cpp \
+	DNP3/CommandTask.cpp \
+	DNP3/ConstantCommandProcessor.cpp \
 	DNP3/Database.cpp \
 	DNP3/DataPoll.cpp \
 	DNP3/DeviceTemplate.cpp \
-	DNP3/DNPCommandMaster.cpp \
+	DNP3/DNP3Channel.cpp \
+	DNP3/DNP3Manager.cpp \
 	DNP3/DNPCrc.cpp \
 	DNP3/EnhancedVto.cpp \
 	DNP3/EnhancedVtoRouter.cpp \
 	DNP3/HeaderReadIterator.cpp \
 	DNP3/IndexedWriteIterator.cpp \
+	DNP3/IStack.cpp \
 	DNP3/IStackObserver.cpp \
-	DNP3/LinkChannel.cpp \
 	DNP3/LinkFrame.cpp \
 	DNP3/LinkHeader.cpp \
 	DNP3/LinkLayerConstants.cpp \
@@ -123,7 +110,7 @@ libopendnp3_la_SOURCES = \
 	DNP3/LinkRoute.cpp \
 	DNP3/Master.cpp \
 	DNP3/MasterSchedule.cpp \
-	DNP3/MasterStack.cpp \
+	DNP3/MasterStackImpl.cpp \
 	DNP3/MasterStates.cpp \
 	DNP3/MasterTaskBase.cpp \
 	DNP3/ObjectHeader.cpp \
@@ -131,20 +118,20 @@ libopendnp3_la_SOURCES = \
 	DNP3/ObjectReadIterator.cpp \
 	DNP3/Objects.cpp \
 	DNP3/ObjectWriteIterator.cpp \
+	DNP3/OutstationStackImpl.cpp \
 	DNP3/PointClass.cpp \
 	DNP3/PriLinkLayerStates.cpp \
+	DNP3/QueuedCommandProcessor.cpp \
 	DNP3/ResponseContext.cpp \
 	DNP3/ResponseLoader.cpp \
 	DNP3/SecLinkLayerStates.cpp \
+	DNP3/SimpleCommandHandler.cpp \
 	DNP3/SlaveConfig.cpp \
 	DNP3/Slave.cpp \
 	DNP3/SlaveEventBuffer.cpp \
 	DNP3/SlaveResponseTypes.cpp \
-	DNP3/SlaveStack.cpp \
 	DNP3/SlaveStates.cpp \
 	DNP3/SolicitedChannel.cpp \
-	DNP3/Stack.cpp \
-	DNP3/StackManager.cpp \
 	DNP3/StartupTasks.cpp \
 	DNP3/TLS_Base.cpp \
 	DNP3/TransportLayer.cpp \
@@ -153,9 +140,9 @@ libopendnp3_la_SOURCES = \
 	DNP3/TransportTx.cpp \
 	DNP3/UnsolicitedChannel.cpp \
 	DNP3/VtoData.cpp \
+	DNP3/VtoEndpointImpl.cpp \
 	DNP3/VtoReader.cpp \
 	DNP3/VtoRouter.cpp \
-	DNP3/VtoRouterManager.cpp \
 	DNP3/VtoRouterSettings.cpp \
 	DNP3/VtoTransmitTask.cpp \
 	DNP3/VtoWriter.cpp
@@ -290,6 +277,7 @@ endif
 
 nobase_pkginclude_HEADERS= \
 	version.hpp \
+	APL/ASIOExecutor.h \
 	APL/ASIOSerialHelpers.h \
 	APL/AsyncLayerInterfaces.h \
 	APL/AsyncTaskBase.h \
@@ -303,40 +291,24 @@ nobase_pkginclude_HEADERS= \
 	APL/BoundNotifier.h \
 	APL/CachedLogVariable.h \
 	APL/ChangeBuffer.h \
-	APL/CommandInterfaces.h \
-	APL/CommandManager.h \
-	APL/CommandQueue.h \
-	APL/CommandResponseQueue.h \
 	APL/CommandTypes.h \
-	APL/Configure.h \
 	APL/CopyableBuffer.h \
 	APL/CRC.h \
 	APL/DataInterfaces.h \
 	APL/DataTypes.h \
-	APL/DeleteAny.h \
-	APL/EventLockBase.h \
-	APL/EventLock.h \
-	APL/EventSet.h \
 	APL/Exception.h \
 	APL/FlexibleDataObserver.h \
-	APL/Function.h \
 	APL/GetKeys.h \
 	APL/IEventLock.h \
+	APL/IExecutor.h \
 	APL/IHandlerAsync.h \
-	APL/INotifier.h \
-	APL/IOService.h \
-	APL/IOServiceThread.h \
+	APL/IOServiceThreadPool.h \
 	APL/IPhysicalLayerAsync.h \
 	APL/IPhysicalLayerObserver.h \
-	APL/IPhysicalLayerSource.h \
 	APL/ISubject.h \
 	APL/ITimer.h \
-	APL/ITimerSource.h \
 	APL/ITimeSource.h \
 	APL/ITransactable.h \
-	APL/LockBase.h \
-	APL/LockBoost.h \
-	APL/Lock.h \
 	APL/LogBase.h \
 	APL/LogEntryCircularBuffer.h \
 	APL/LogEntry.h \
@@ -360,18 +332,11 @@ nobase_pkginclude_HEADERS= \
 	APL/PhysicalLayerAsyncSerial.h \
 	APL/PhysicalLayerAsyncTCPClient.h \
 	APL/PhysicalLayerAsyncTCPServer.h \
-	APL/PhysicalLayerFactory.h \
-	APL/PhysicalLayerFunctors.h \
-	APL/PhysicalLayerInstance.h \
-	APL/PhysicalLayerManager.h \
-	APL/PhysicalLayerMap.h \
 	APL/PhysicalLayerMonitor.h \
 	APL/PhysicalLayerMonitorStates.h \
 	APL/PhysicalLayerStates.h \
 	APL/PhysLayerSettings.h \
 	APL/PhysLoopback.h \
-	APL/PostingNotifier.h \
-	APL/PostingNotifierSource.h \
 	APL/ProtocolUtil.h \
 	APL/QualityConverter.h \
 	APL/QualityMasks.h \
@@ -380,22 +345,13 @@ nobase_pkginclude_HEADERS= \
 	APL/RandomizedBuffer.h \
 	APL/SerialTypes.h \
 	APL/ShiftableBuffer.h \
+	APL/SimpleDataObserver.h \
 	APL/Singleton.h \
 	APL/SubjectBase.h \
-	APL/SuspendTimerSource.h \
-	APL/SyncVar.h \
 	APL/Threadable.h \
-	APL/ThreadBase.h \
-	APL/ThreadBoost.h \
 	APL/Thread.h \
-	APL/TimeBase.h \
-	APL/TimeBoost.h \
-	APL/Timeout.h \
 	APL/TimerASIO.h \
-	APL/TimerSourceASIO.h \
 	APL/TimeSource.h \
-	APL/TimeTypes.h \
-	APL/TimingTools.h \
 	APL/ToHex.h \
 	APL/TrackingTaskGroup.h \
 	APL/Types.h \
@@ -410,19 +366,21 @@ nobase_pkginclude_HEADERS= \
 	DNP3/AppInterfaces.h \
 	DNP3/AppLayerChannel.h \
 	DNP3/AppLayer.h \
-	DNP3/AsyncStackManager.h \
+	DNP3/ApplicationStack.h \
 	DNP3/BufferSetTypes.h \
 	DNP3/BufferTypes.h \
 	DNP3/ClassCounter.h \
 	DNP3/ClassMask.h \
-	DNP3/ControlTasks.h \
+	DNP3/CommandTask.h \
+	DNP3/ConstantCommandProcessor.h \
 	DNP3/CTOHistory.h \
 	DNP3/Database.h \
 	DNP3/DatabaseInterfaces.h \
 	DNP3/DataPoll.h \
 	DNP3/DeviceTemplate.h \
 	DNP3/DeviceTemplateTypes.h \
-	DNP3/DNPCommandMaster.h \
+	DNP3/DNP3Channel.h \
+	DNP3/DNP3Manager.h \
 	DNP3/DNPConstants.h \
 	DNP3/DNPCrc.h \
 	DNP3/DNPDatabaseTypes.h \
@@ -439,9 +397,9 @@ nobase_pkginclude_HEADERS= \
 	DNP3/ILinkContext.h \
 	DNP3/ILinkRouter.h \
 	DNP3/IndexedWriteIterator.h \
+	DNP3/IStack.h \
 	DNP3/IStackObserver.h \
 	DNP3/IVtoEventAcceptor.h \
-	DNP3/LinkChannel.h \
 	DNP3/LinkConfig.h \
 	DNP3/LinkFrame.h \
 	DNP3/LinkHeader.h \
@@ -456,7 +414,7 @@ nobase_pkginclude_HEADERS= \
 	DNP3/Master.h \
 	DNP3/MasterSchedule.h \
 	DNP3/MasterStackConfig.h \
-	DNP3/MasterStack.h \
+	DNP3/MasterStackImpl.h \
 	DNP3/MasterStates.h \
 	DNP3/MasterTaskBase.h \
 	DNP3/ObjectHeader.h \
@@ -464,21 +422,21 @@ nobase_pkginclude_HEADERS= \
 	DNP3/ObjectReadIterator.h \
 	DNP3/Objects.h \
 	DNP3/ObjectWriteIterator.h \
+	DNP3/OutstationStackImpl.h \
 	DNP3/PointClass.h \
 	DNP3/PriLinkLayerStates.h \
+	DNP3/QueuedCommandProcessor.h \
 	DNP3/ResponseContext.h \
 	DNP3/ResponseLoader.h \
 	DNP3/SecLinkLayerStates.h \
+	DNP3/SimpleCommandHandler.h \
 	DNP3/SlaveConfig.h \
 	DNP3/SlaveEventBuffer.h \
 	DNP3/Slave.h \
 	DNP3/SlaveResponseTypes.h \
 	DNP3/SlaveStackConfig.h \
-	DNP3/SlaveStack.h \
 	DNP3/SlaveStates.h \
 	DNP3/SolicitedChannel.h \
-	DNP3/Stack.h \
-	DNP3/StackManager.h \
 	DNP3/StartupTasks.h \
 	DNP3/TLS_Base.h \
 	DNP3/TransportConstants.h \
@@ -490,47 +448,13 @@ nobase_pkginclude_HEADERS= \
 	DNP3/VtoConfig.h \
 	DNP3/VtoData.h \
 	DNP3/VtoDataInterface.h \
+	DNP3/VtoEndpointImpl.h \
 	DNP3/VtoEventBufferAdapter.h \
 	DNP3/VtoReader.h \
 	DNP3/VtoRouter.h \
-	DNP3/VtoRouterManager.h \
 	DNP3/VtoRouterSettings.h \
 	DNP3/VtoTransmitTask.h \
 	DNP3/VtoWriter.h
-
-bin_PROGRAMS = testset
-
-testset_LDADD = libopendnp3.la $(CORE_BOOST_LIBS)
-testset_CFLAGS = -Itinyxml
-testset_SOURCES = \
-	APLXML/PhysicalLayerManagerXML.cpp \
-	APLXML/PhysicalLayerXMLFactory.cpp \
-	APLXML/tinybinding.cpp \
-	APLXML/XML_APL.cpp \
-	APLXML/XMLConversion.cpp \
-	DNP3XML/XML_DNP3.cpp \
-	DNP3XML/XML_TestSet.cpp \
-	DNP3XML/XmlToConfig.cpp \
-	Terminal/ControlResponseTE.cpp \
-	Terminal/ControlTerminalExtension.cpp \
-	Terminal/DOTerminalExtension.cpp \
-	Terminal/FlexibleObserverTerminalExtension.cpp \
-	Terminal/LineReader.cpp \
-	Terminal/LogTerminalExtension.cpp \
-	Terminal/PhysicalLayerIOStreamAsync.cpp \
-	Terminal/PhysicalLayerSyncProxy.cpp \
-	Terminal/Terminal.cpp \
-	Terminal/TerminalInterfaces.cpp \
-	TestSet/AddressScanner.cpp \
-	TestSet/main.cpp \
-	TestSet/StackHelpers.cpp \
-	XMLBindings/APLXML_Base.cpp \
-	XMLBindings/APLXML_DNP.cpp \
-	XMLBindings/APLXML_MTS.cpp \
-	XMLBindings/APLXML_STS.cpp \
-	tinyxml/tinyxml.cpp \
-	tinyxml/tinyxmlerror.cpp \
-	tinyxml/tinyxmlparser.cpp
 
 noinst_PROGRAMS = dnp3test demo-master-cpp demo-slave-cpp
 
@@ -543,15 +467,14 @@ dnp3test_SOURCES = \
 	APLTestTools/BufferTestObject.cpp \
 	APLTestTools/LogTester.cpp \
 	APLTestTools/LoopbackPhysicalLayerAsync.cpp \
+	APLTestTools/MockExecutor.cpp \
 	APLTestTools/MockLowerLayer.cpp \
 	APLTestTools/MockPhysicalLayerAsync.cpp \
-	APLTestTools/MockPhysicalLayerAsyncTS.cpp \
 	APLTestTools/MockPhysicalLayerMonitor.cpp \
-	APLTestTools/MockPhysicalLayerSource.cpp \
-	APLTestTools/MockResponseAcceptor.cpp \
-	APLTestTools/MockTimerSource.cpp \
 	APLTestTools/MockUpperLayer.cpp \
 	APLTestTools/PhysicalLayerWrapper.cpp \
+	APLTestTools/StopWatch.cpp \
+	APLTestTools/Timeout.cpp \
 	APLTestTools/WrappedTcpPipe.cpp \
 	DNP3Test/AppLayerTest.cpp \
 	DNP3Test/ComparingDataObserver.cpp \
@@ -565,7 +488,6 @@ dnp3test_SOURCES = \
 	DNP3Test/MockFrameSink.cpp \
 	DNP3Test/ResponseLoaderTestObject.cpp \
 	DNP3Test/SlaveTestObject.cpp \
-	DNP3Test/StartupTeardownTest.cpp \
 	DNP3Test/TestAPDU.cpp \
 	DNP3Test/TestAPDUWriting.cpp \
 	DNP3Test/TestAppLayer.cpp \
@@ -586,7 +508,6 @@ dnp3test_SOURCES = \
 	DNP3Test/TestSlave.cpp \
 	DNP3Test/TestSlaveEventBuffer.cpp \
 	DNP3Test/TestStartBoostUTF.cpp \
-	DNP3Test/TestStartupTeardown.cpp \
 	DNP3Test/TestTransportLayer.cpp \
 	DNP3Test/TestTransportLoopback.cpp \
 	DNP3Test/TestTransportScalability.cpp \
@@ -594,7 +515,6 @@ dnp3test_SOURCES = \
 	DNP3Test/TestVtoLoopbackIntegration.cpp \
 	DNP3Test/TestVtoOnewayIntegration.cpp \
 	DNP3Test/TestVtoRouter.cpp \
-	DNP3Test/TestVtoRouterManager.cpp \
 	DNP3Test/TestVtoWriter.cpp \
 	DNP3Test/TransportIntegrationStack.cpp \
 	DNP3Test/TransportLoopbackTestObject.cpp \
@@ -606,12 +526,11 @@ dnp3test_SOURCES = \
 demo_master_cpp_LDADD = libopendnp3.la
 demo_master_cpp_SOURCES = \
 	demos/master-cpp/DemoMain.cpp \
-	demos/master-cpp/MasterDemo.cpp
+	demos/master-cpp/MasterCallbacks.cpp
 
 demo_slave_cpp_LDADD = libopendnp3.la
 demo_slave_cpp_SOURCES = \
-	demos/slave-cpp/DemoMain.cpp \
-	demos/slave-cpp/SlaveDemo.cpp
+	demos/slave-cpp/DemoMain.cpp
 
 ASTYLE=astyle --options=config/astyle.cfg
 
