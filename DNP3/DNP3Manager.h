@@ -36,11 +36,13 @@
 #include <APL/PhysLayerSettings.h>
 #include <APL/IOServiceThreadPool.h>
 #include <APL/Log.h>
+#include <APL/SerialTypes.h>
 
 namespace apl
 {
 
 class ILogBase;
+class IPhysicalLayerAsync;
 
 namespace dnp
 {
@@ -61,12 +63,14 @@ class DNP3Manager
 
 		IChannel* AddTCPClient(const std::string& arName, FilterLevel aLevel, millis_t aOpenRetry, const std::string& arAddr, uint16_t aPort);
 		IChannel* AddTCPServer(const std::string& arName, FilterLevel aLevel, millis_t aOpenRetry, const std::string& arEndpoint, uint16_t aPort);
+		IChannel* AddSerial(const std::string& arName, FilterLevel aLevel, millis_t aOpenRetry, SerialSettings aSettings);
 
 	private:
 
 		void OnChannelShutdownCallback(DNP3Channel* apChannel);
 
-		std::mutex mMutex;
+		IChannel* CreateChannel(Logger* apLogger, millis_t aOpenRetry, IPhysicalLayerAsync* apPhys);
+		
 		EventLog mLog;
 		IOServiceThreadPool mThreadPool;
 		std::set<DNP3Channel*> mChannels;
