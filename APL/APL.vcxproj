@@ -40,7 +40,6 @@
     <ClInclude Include="IOServiceThreadPool.h" />
     <ClInclude Include="IPhysicalLayerAsync.h" />
     <ClInclude Include="IPhysicalLayerObserver.h" />
-    <ClInclude Include="IPhysicalLayerSource.h" />
     <ClInclude Include="ISubject.h" />
     <ClInclude Include="ITimer.h" />
     <ClInclude Include="ITimeSource.h" />

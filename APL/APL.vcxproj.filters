@@ -90,9 +90,6 @@
     <ClInclude Include="IPhysicalLayerObserver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="IPhysicalLayerSource.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ISubject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
