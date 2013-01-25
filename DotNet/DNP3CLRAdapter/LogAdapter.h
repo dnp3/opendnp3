@@ -47,10 +47,7 @@ namespace Adapter
 		LogAdapter(ILogHandler^ proxy);
 
 		// logging error messages, etc
-		void Log( const apl::LogEntry& arEntry );
-
-		// updating a variable/metric in the system
-		void SetVar(const std::string& aSource, const std::string& aVarName, int aValue);
+		void Log( const apl::LogEntry& arEntry );		
 
 		private:		
 		gcroot<ILogHandler^> proxy;

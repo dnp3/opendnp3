@@ -72,7 +72,6 @@ public:
 
 	//implement the log function from ILogBase
 	void Log( const LogEntry& arEntry );
-	void SetVar(const std::string& aSource, const std::string& aVarName, int aValue);
 
 private:
 

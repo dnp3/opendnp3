@@ -57,14 +57,6 @@ bool EventLog::SetContains(const std::set<int>& arSet, int aValue)
 	return arSet.find(aValue) != arSet.end();
 }
 
-void EventLog::SetVar(const std::string& aSource, const std::string& aVarName, int aValue)
-{
-	for(auto pair: mSubscribers) {	
-		pair.first->SetVar(aSource, aVarName, aValue);
-	}
-}
-
-
 Logger* EventLog::GetLogger(FilterLevel aFilter, const std::string& arName)
 {
 	Logger* pLogger = GetExistingLogger(arName);

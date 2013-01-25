@@ -47,8 +47,7 @@ LinkLayerReceiver::LinkLayerReceiver(Logger* apLogger, IFrameSink* apSink) :
 	mFrameSize(0),
 	mpSink(apSink),
 	mpState(LRS_Sync::Inst()),
-	mBuffer(BUFFER_SIZE),
-	mCrcFailures(apLogger, "crc_failure")
+	mBuffer(BUFFER_SIZE)	
 {
 
 }
@@ -124,8 +123,7 @@ bool LinkLayerReceiver::ValidateBody()
 {
 	size_t len = mHeader.GetLength() - LS_MIN_LENGTH;
 	if(LinkFrame::ValidateBodyCRC(mBuffer.ReadBuff() + LS_HEADER_SIZE, len)) return true;
-	else {
-		mCrcFailures.Increment();
+	else {		
 		ERROR_BLOCK(LEV_ERROR, "CRC failure in body", DLERR_CRC);
 		return false;
 	}
@@ -135,7 +133,6 @@ bool LinkLayerReceiver::ValidateHeader()
 {
 	//first thing to do is check the CRC
 	if(!DNPCrc::IsCorrectCRC(mBuffer.ReadBuff(), LI_CRC)) {
-		mCrcFailures.Increment();
 		ERROR_BLOCK(LEV_ERROR, "CRC failure in header", DLERR_CRC);
 		return false;
 	}

@@ -32,7 +32,6 @@
 #include <APL/Loggable.h>
 #include <APL/CommandTypes.h>
 #include <APL/TimeSource.h>
-#include <APL/CachedLogVariable.h>
 
 #include "APDU.h"
 #include "AppInterfaces.h"

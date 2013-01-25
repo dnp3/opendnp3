@@ -41,21 +41,17 @@ namespace apl
 {
 
 class EventLog;
-typedef LogVar<int> IntLogVar;
+
 
 class Logger
 {
-	friend class LogCounter;
-	friend class LogVariable;
-
+	
 public:
 	Logger( EventLog* apLog, FilterLevel aFilter, const std::string& aName);
-
-	void SetVarName(const std::string& arVarName) {
-		mVarName = arVarName;
-	}
+	
 	void Log( FilterLevel aFilterLevel, const std::string& arLocation, const std::string& aMessage, int aErrorCode = -1);
 	void Log( const LogEntry& arEntry);
+
 	const std::string& GetName() const {
 		return mName;
 	}
@@ -78,14 +74,12 @@ public:
 
 private:
 
-	void Set(const std::string& aVar, int aValue);
-
 	int					mLevel;			// bit field describing what is being logged
 	EventLog*			mpLog;
-	std::string			mName;
-	std::string			mVarName;
+	std::string			mName;	
 };
 
+/*
 class LogCounter
 {
 public:
@@ -123,6 +117,7 @@ private:
 	Logger* mpLogger;
 	std::string mName;
 };
+*/
 
 }
 

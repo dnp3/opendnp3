@@ -115,8 +115,7 @@ private:
 
 	// Buffer to which user data is extracted, this is necessary since CRC checks are interlaced
 	uint8_t mpUserData[LS_MAX_USER_DATA_SIZE];
-	ShiftableBuffer mBuffer; //Buffer used to cache frames data as it arrives
-	LogCounter mCrcFailures;
+	ShiftableBuffer mBuffer; //Buffer used to cache frames data as it arrives	
 };
 
 }

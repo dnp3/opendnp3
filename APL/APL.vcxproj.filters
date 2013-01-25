@@ -45,9 +45,6 @@
     <ClInclude Include="BaseDataTypes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CachedLogVariable.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ChangeBuffer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -124,9 +121,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="LowerLayerToPhysAdapter.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="MetricBuffer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="MultiplexingDataObserver.h">
@@ -324,9 +318,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="LowerLayerToPhysAdapter.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="MetricBuffer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="MultiplexingDataObserver.cpp">

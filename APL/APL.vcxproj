@@ -22,7 +22,6 @@
     <ClInclude Include="AsyncTaskPeriodic.h" />
     <ClInclude Include="AsyncTaskScheduler.h" />
     <ClInclude Include="BaseDataTypes.h" />
-    <ClInclude Include="CachedLogVariable.h" />
     <ClInclude Include="ChangeBuffer.h" />
     <ClInclude Include="CommandTypes.h" />
     <ClInclude Include="CopyableBuffer.h" />
@@ -54,7 +53,6 @@
     <ClInclude Include="LogTypes.h" />
     <ClInclude Include="LogVar.h" />
     <ClInclude Include="LowerLayerToPhysAdapter.h" />
-    <ClInclude Include="MetricBuffer.h" />
     <ClInclude Include="MultiplexingDataObserver.h" />
     <ClInclude Include="PackingTemplates.h" />
     <ClInclude Include="PackingUnpacking.h" />
@@ -122,7 +120,6 @@
     <ClCompile Include="LogToStdio.cpp" />
     <ClCompile Include="LogTypes.cpp" />
     <ClCompile Include="LowerLayerToPhysAdapter.cpp" />
-    <ClCompile Include="MetricBuffer.cpp" />
     <ClCompile Include="MultiplexingDataObserver.cpp" />
     <ClCompile Include="PackingUnpacking.cpp" />
     <ClCompile Include="Parsing.cpp" />

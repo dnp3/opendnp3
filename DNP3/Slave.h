@@ -29,7 +29,6 @@
 #ifndef __SLAVE_H_
 #define __SLAVE_H_
 
-#include <APL/CachedLogVariable.h>
 #include <APL/ChangeBuffer.h>
 #include <APL/Loggable.h>
 #include <APL/Logger.h>
@@ -186,8 +185,7 @@ private:
 	bool mHaveLastRequest;
 	APDU mLastRequest;						// APDU used to form responses
 
-	ITimeManager* mpTime;
-	CachedLogVariable mCommsStatus;
+	ITimeManager* mpTime;	
 
 	// Flags that tell us that some action has been Deferred
 	// until the slave is in a state capable of handling it.
@@ -298,45 +296,6 @@ void Slave::RespondToCommands(const StreamObject<T>* apObj, ObjectReadIterator& 
 		++count;
 	}
 }
-
-/*
-template <class T>
-CommandStatus Slave::Select(T aCmd, size_t aIndex, HeaderInfo aHdr, SequenceInfo aSeqInfo, int aSeqNum)
-{
-	CommandStatus res = mpCmdHandler->Select(CommandRequestInfo<T>(aCmd, aHdr.GetObjectType(), aHdr.GetVariation(), aHdr.GetQualifier(), aSeqInfo, aSeqNum), aIndex) ? CS_SUCCESS : CS_NOT_SUPPORTED;
-	LOG_BLOCK(LEV_INFO, "Selecting " << aCmd.ToString() << " Index: " << aIndex << " Result: " << ToString(res));
-	if (res == CS_NOT_SUPPORTED) {
-		mRspIIN.SetParameterError(true);
-	}	
-	return res;
-}
-
-template <class T>
-CommandStatus Slave::Operate(T& arCmd, size_t aIndex, bool aDirect, const HeaderInfo& aHdr, SequenceInfo aSeqInfo, int aSeqNum)
-{
-	++mSequence;
-	CommandStatus res;
-	if (aDirect) {
-		res = mpCmdMaster->DirectOperate(CommandRequestInfo<T>(arCmd, aHdr.GetObjectType(), aHdr.GetVariation(), aHdr.GetQualifier(), aSeqInfo, aSeqNum), aIndex, mSequence);
-	}
-	else {
-		res = mpCmdMaster->Operate(CommandRequestInfo<T>(arCmd, aHdr.GetObjectType(), aHdr.GetVariation(), aHdr.GetQualifier(), aSeqInfo, aSeqNum), aIndex, mSequence);
-	}
-
-	if (res != CS_SUCCESS) {
-		if (res == CS_NOT_SUPPORTED) {
-			mRspIIN.SetParameterError(true);
-		}
-		return res;
-	}
-	else {
-		CommandResponse cr(CS_HARDWARE_ERROR);
-		mRspQueue.WaitForResponse(cr, mSequence); // wait forever on a response from user space
-		LOG_BLOCK(LEV_INFO, arCmd.ToString() << " Index: " << aIndex << " Result: " << ToString(cr.mResult));
-		return cr.mResult;
-	}
-}
-*/
 
 }
 }

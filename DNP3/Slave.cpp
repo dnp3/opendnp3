@@ -63,8 +63,7 @@ Slave::Slave(Logger* apLogger, IAppLayer* apAppLayer, IExecutor* apExecutor, ITi
 	mRspContext(apLogger, apDatabase, &mRspTypes, arCfg.mEventMaxConfig),
 	mHaveLastRequest(false),
 	mLastRequest(arCfg.mMaxFragSize),
-	mpTime(apTime),
-	mCommsStatus(apLogger, "comms_status"),
+	mpTime(apTime),	
 	mDeferredUpdate(false),
 	mDeferredRequest(false),
 	mDeferredUnsol(false),
@@ -111,7 +110,6 @@ Slave::~Slave()
 void Slave::UpdateState(StackStates aState)
 {
 	if(mState != aState) {
-		mCommsStatus.Set(aState);
 		LOG_BLOCK(LEV_INFO, "StackState: " << ConvertStackStateToString(aState));
 		mState = aState;
 		if(mpObserver != NULL) mpObserver->OnStateChange(aState);

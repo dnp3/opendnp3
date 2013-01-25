@@ -51,11 +51,6 @@ void LogAdapter::Log( const apl::LogEntry& arEntry )
 	
 	proxy->Log(le);
 }
-
-// updating a variable/metric in the system
-void LogAdapter::SetVar(const std::string& aSource, const std::string& aVarName, int aValue)
-{}
-
 		
 }}
 

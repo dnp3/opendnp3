@@ -61,16 +61,7 @@ namespace DNP3.Interface
 	    /// logging error messages, etc
 	    /// </summary>
 	    /// <param name="entry">log entry instance</param>
-        void Log(LogEntry entry);
-
-	    /// <summary>
-        /// Updates a variable/metric in the system
-	    /// </summary>
-	    /// <param name="source"></param>
-	    /// <param name="varName"></param>
-	    /// <param name="value"></param>
-	    void SetVar(String source, String varName, int value);
-
+        void Log(LogEntry entry);	  
     }
 
     public class PrintingLogAdapter : ILogHandler
@@ -79,11 +70,6 @@ namespace DNP3.Interface
         public void Log(LogEntry entry)
         {
             Console.WriteLine(entry.message);
-        }
-
-        public void SetVar(string source, string varName, int value)
-        {
-
-        }
+        }       
     }
 }
