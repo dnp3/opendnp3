@@ -78,7 +78,6 @@
     <ClCompile Include="TestVtoLoopbackIntegration.cpp" />
     <ClCompile Include="TestVtoOnewayIntegration.cpp" />
     <ClCompile Include="TestVtoRouter.cpp" />
-    <ClCompile Include="TestVtoRouterManager.cpp" />
     <ClCompile Include="TestVtoWriter.cpp" />
     <ClCompile Include="TransportIntegrationStack.cpp" />
     <ClCompile Include="TransportLoopbackTestObject.cpp" />

@@ -70,11 +70,6 @@
     <ClInclude Include="PhysicalLayerAsyncSerial.h" />
     <ClInclude Include="PhysicalLayerAsyncTCPClient.h" />
     <ClInclude Include="PhysicalLayerAsyncTCPServer.h" />
-    <ClInclude Include="PhysicalLayerFactory.h" />
-    <ClInclude Include="PhysicalLayerFunctors.h" />
-    <ClInclude Include="PhysicalLayerInstance.h" />
-    <ClInclude Include="PhysicalLayerManager.h" />
-    <ClInclude Include="PhysicalLayerMap.h" />
     <ClInclude Include="PhysicalLayerMonitor.h" />
     <ClInclude Include="PhysicalLayerMonitorStates.h" />
     <ClInclude Include="PhysicalLayerStates.h" />
@@ -142,10 +137,6 @@
     <ClCompile Include="PhysicalLayerAsyncSerial.cpp" />
     <ClCompile Include="PhysicalLayerAsyncTCPClient.cpp" />
     <ClCompile Include="PhysicalLayerAsyncTCPServer.cpp" />
-    <ClCompile Include="PhysicalLayerFactory.cpp" />
-    <ClCompile Include="PhysicalLayerInstance.cpp" />
-    <ClCompile Include="PhysicalLayerManager.cpp" />
-    <ClCompile Include="PhysicalLayerMap.cpp" />
     <ClCompile Include="PhysicalLayerMonitor.cpp" />
     <ClCompile Include="PhysicalLayerMonitorStates.cpp" />
     <ClCompile Include="PhysicalLayerStates.cpp" />

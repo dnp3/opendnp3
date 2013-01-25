@@ -267,9 +267,6 @@
     <ClInclude Include="VtoRouter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="VtoRouterManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="VtoRouterSettings.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -501,9 +498,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="VtoRouter.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="VtoRouterManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="VtoRouterSettings.cpp">

@@ -203,9 +203,6 @@
     <ClCompile Include="TestVtoRouter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="TestVtoRouterManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="TestVtoWriter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

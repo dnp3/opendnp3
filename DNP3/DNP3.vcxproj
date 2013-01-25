@@ -112,7 +112,6 @@
     <ClInclude Include="VtoEventBufferAdapter.h" />
     <ClInclude Include="VtoReader.h" />
     <ClInclude Include="VtoRouter.h" />
-    <ClInclude Include="VtoRouterManager.h" />
     <ClInclude Include="VtoRouterSettings.h" />
     <ClInclude Include="VtoTransmitTask.h" />
     <ClInclude Include="VtoWriter.h" />
@@ -186,7 +185,6 @@
     <ClCompile Include="VtoEndpointImpl.cpp" />
     <ClCompile Include="VtoReader.cpp" />
     <ClCompile Include="VtoRouter.cpp" />
-    <ClCompile Include="VtoRouterManager.cpp" />
     <ClCompile Include="VtoRouterSettings.cpp" />
     <ClCompile Include="VtoTransmitTask.cpp" />
     <ClCompile Include="VtoWriter.cpp" />

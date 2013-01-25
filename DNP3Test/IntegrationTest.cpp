@@ -30,7 +30,6 @@
 
 #include <sstream>
 
-#include <APL/PhysicalLayerFactory.h>
 #include <APL/IPhysicalLayerAsync.h>
 
 #include <APLTestTools/AsyncTestObjectASIO.h>
