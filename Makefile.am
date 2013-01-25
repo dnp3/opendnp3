@@ -49,7 +49,6 @@ libopendnp3_la_SOURCES = \
 	APL/LogToStdio.cpp \
 	APL/LogTypes.cpp \
 	APL/LowerLayerToPhysAdapter.cpp \
-	APL/MetricBuffer.cpp \
 	APL/MultiplexingDataObserver.cpp \
 	APL/PackingUnpacking.cpp \
 	APL/Parsing.cpp \
@@ -288,7 +287,6 @@ nobase_pkginclude_HEADERS= \
 	APL/AsyncTaskPeriodic.h \
 	APL/AsyncTaskScheduler.h \
 	APL/BaseDataTypes.h \
-	APL/CachedLogVariable.h \
 	APL/ChangeBuffer.h \
 	APL/CommandTypes.h \
 	APL/CopyableBuffer.h \
@@ -298,12 +296,10 @@ nobase_pkginclude_HEADERS= \
 	APL/Exception.h \
 	APL/FlexibleDataObserver.h \
 	APL/GetKeys.h \
-	APL/IEventLock.h \
 	APL/IExecutor.h \
 	APL/IHandlerAsync.h \
 	APL/IOServiceThreadPool.h \
 	APL/IPhysicalLayerAsync.h \
-	APL/IPhysicalLayerObserver.h \
 	APL/ISubject.h \
 	APL/ITimer.h \
 	APL/ITimeSource.h \
@@ -319,9 +315,7 @@ nobase_pkginclude_HEADERS= \
 	APL/LogTypes.h \
 	APL/LogVar.h \
 	APL/LowerLayerToPhysAdapter.h \
-	APL/MetricBuffer.h \
 	APL/MultiplexingDataObserver.h \
-	APL/Notifier.h \
 	APL/PackingTemplates.h \
 	APL/PackingUnpacking.h \
 	APL/Parsing.h \
@@ -334,7 +328,6 @@ nobase_pkginclude_HEADERS= \
 	APL/PhysicalLayerMonitor.h \
 	APL/PhysicalLayerMonitorStates.h \
 	APL/PhysicalLayerStates.h \
-	APL/PhysLayerSettings.h \
 	APL/PhysLoopback.h \
 	APL/ProtocolUtil.h \
 	APL/QualityConverter.h \
