@@ -1,10 +1,5 @@
 *.iml
-opendnp3.jar
-JavaDNP3.h
-JavaDNP3.cpp
 .idea
-/DNP3Java/target
-/DNP3Java/src
 /DNP.ncb
 *.suo
 Debug
@@ -15,14 +10,6 @@ pc_cygwin
 /*/pc_linux_arm
 /tools/install_scripts/boost/*/temp
 /tools/boostlib
-/CSToCppXMLBinder/bin
-/CSToCppXMLBinder/obj
-/ConfigurationBuilder/*.cs
-/ConfigurationBuilder/*.xsx
-/TestSet/*.xml
-/DNP3Java/jar
-/DNP3Java/JavaDNP3_wrap.*
-/java
 /src
 *.log
 Linux_i686
