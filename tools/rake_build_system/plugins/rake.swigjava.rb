@@ -69,9 +69,7 @@ else
   $pre_build_lambdas << lambda do |name, options|
     if options[:plugins] and (options[:plugins].include? 'swigjava')
       options[:includes] ||= []
-      options[:includes] += jdk_includes  # add the jdk includes so that they are seen by both swig and C++    
-      options[:dynamic_src] ||= []
-      options[:dynamic_src] += get_generated_swig_java_cpp options[:dir]    
+      options[:includes] += jdk_includes  # add the jdk includes so that they are seen by both swig and C++          
     end
   end
   

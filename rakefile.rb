@@ -25,6 +25,7 @@ $projects = {
 :dnp3test => {:dir => 'DNP3Test'},
 :slavedemo => {:dir => 'demos/slave-cpp'},
 :masterdemo => {:dir => 'demos/master-cpp'},
+:javalib => {:dir => 'Java/cpp'}
 }
 
 $projects[:dnp3java] = {:dir => 'DNP3Java'} if $DNP3_JAVA

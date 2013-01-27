@@ -31,5 +31,8 @@
 
 std::string JNIHelpers::GetString(jstring s, JNIEnv* pEnv)
 {
-
+	auto cstr = pEnv->GetStringUTFChars(s, NULL);
+	std::string copy(cstr);
+	pEnv->ReleaseStringUTFChars(s, cstr);
+	return copy;
 }
