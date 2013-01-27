@@ -3,6 +3,7 @@ package com.automatak.dnp3.impl;
 import com.automatak.dnp3.Channel;
 import com.automatak.dnp3.DNP3Manager;
 import com.automatak.dnp3.LogLevel;
+import com.automatak.dnp3.LogSubscriber;
 
 public class ManagerImpl implements DNP3Manager {
 
@@ -11,6 +12,11 @@ public class ManagerImpl implements DNP3Manager {
     public ManagerImpl(int concurrency)
     {
         this.nativePointer = create_native_manager(concurrency);
+    }
+
+    public void addLogSubscriber(LogSubscriber sub)
+    {
+         native_add_log_subscriber(nativePointer, sub);
     }
 
     public Channel addTCPClient(String name, LogLevel level, long retryMs, String address, int port)
@@ -28,6 +34,6 @@ public class ManagerImpl implements DNP3Manager {
     private native void destroy_native_manager(long ptr);
 
     private native long get_native_channel_tcp_client(long ptrManager, String name, LogLevel level, long retryMs, String address, int port);
-
+    private native void native_add_log_subscriber(long ptrManager, LogSubscriber sub);
 
 }

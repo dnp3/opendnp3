@@ -4,15 +4,18 @@
 #include <APL/LogToStdio.h>
 
 #include "JNIHelpers.h"
+#include "LogSubscriberAdapter.h"
 
 using namespace apl;
 using namespace apl::dnp;
+
+#include <iostream>
 
 JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_create_1native_1manager
   (JNIEnv *, jobject, jint concurrency)
 {
 	auto pManager = new DNP3Manager(concurrency);
-	pManager->AddLogSubscriber(LogToStdio::Inst());
+	//pManager->AddLogSubscriber(LogToStdio::Inst());
 	return (jlong) pManager;
 }
 
@@ -32,3 +35,14 @@ JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1ch
 }
 
 
+JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_native_1add_1log_1subscriber
+  (JNIEnv* pEnv, jobject, jlong ptrManager, jobject jobserver)
+{
+	auto pMgr = (DNP3Manager*) ptrManager;
+	JavaVM* pJVM;
+	pEnv->GetJavaVM(&pJVM);
+	assert(pJVM != NULL);
+	jobject global = pEnv->NewGlobalRef(jobserver); // TODO manage memory leak
+	auto pSub = new LogSubscriberAdapter(pJVM, global); // TODO manage memory leak 
+	pMgr->AddLogSubscriber(pSub);
+}

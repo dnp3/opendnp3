@@ -31,6 +31,14 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_destroy_1native_
 JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1channel_1tcp_1client
   (JNIEnv *, jobject, jlong, jstring, jobject, jlong, jstring, jint);
 
+/*
+ * Class:     com_automatak_dnp3_impl_ManagerImpl
+ * Method:    native_add_log_subscriber
+ * Signature: (JLcom/automatak/dnp3/LogSubscriber;)V
+ */
+JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_native_1add_1log_1subscriber
+  (JNIEnv *, jobject, jlong, jobject);
+
 #ifdef __cplusplus
 }
 #endif
