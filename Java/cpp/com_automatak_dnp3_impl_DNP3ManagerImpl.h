@@ -9,19 +9,19 @@ extern "C" {
 #endif
 /*
  * Class:     com_automatak_dnp3_impl_DNP3ManagerImpl
- * Method:    addTCPClient
- * Signature: (Ljava/lang/String;Lcom/automatak/dnp3/LogLevel;JLjava/lang/String;I)Lcom/automatak/dnp3/Channel;
+ * Method:    create_native_manager
+ * Signature: ()J
  */
-JNIEXPORT jobject JNICALL Java_com_automatak_dnp3_impl_DNP3ManagerImpl_addTCPClient
-  (JNIEnv *, jobject, jstring, jobject, jlong, jstring, jint);
+JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_DNP3ManagerImpl_create_1native_1manager
+  (JNIEnv *, jobject);
 
 /*
  * Class:     com_automatak_dnp3_impl_DNP3ManagerImpl
- * Method:    shutdown
- * Signature: ()V
+ * Method:    destroy_native_manager
+ * Signature: (J)V
  */
-JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_DNP3ManagerImpl_shutdown
-  (JNIEnv *, jobject);
+JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_DNP3ManagerImpl_destroy_1native_1manager
+  (JNIEnv *, jobject, jlong);
 
 #ifdef __cplusplus
 }

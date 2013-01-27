@@ -1,0 +1,1 @@
+"$JAVA_HOME/bin/javah" -jni -d cpp -classpath ./maven/target/classes com.automatak.dnp3.impl.DNP3ManagerImpl
