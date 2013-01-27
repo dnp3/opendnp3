@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="com_automatak_dnp3_impl_DNP3ManagerImpl.h" />
+    <ClInclude Include="JNIHelpers.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="com_automatak_dnp3_impl_DNP3ManagerImpl.cpp" />

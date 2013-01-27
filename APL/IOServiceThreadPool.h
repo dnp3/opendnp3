@@ -34,6 +34,7 @@
 #include <boost/asio.hpp>
 #include <boost/asio/high_resolution_timer.hpp>
 #include <thread>
+#include <functional>
 
 namespace apl
 {
@@ -42,7 +43,13 @@ class IOServiceThreadPool : private Loggable
 {
 	public:
 	
-	IOServiceThreadPool(Logger* apLogger, uint32_t aConcurrency);
+	IOServiceThreadPool(
+		Logger* apLogger,
+		uint32_t aConcurrency,
+		std::function<void()> onThreadStart = [](){},
+		std::function<void()> onThreadExit = [](){}
+	);
+
 	~IOServiceThreadPool();
 
 	boost::asio::io_service* GetIOService();
@@ -50,6 +57,9 @@ class IOServiceThreadPool : private Loggable
 	void Shutdown();
 
 	private:
+
+	std::function<void ()> mOnThreadStart;
+	std::function<void ()> mOnThreadExit;
 
 	bool mIsShutdown;
 

@@ -40,8 +40,14 @@ using namespace std::chrono;
 namespace apl
 {
 
-IOServiceThreadPool::IOServiceThreadPool(Logger* apLogger, uint32_t aConcurrency) :
+IOServiceThreadPool::IOServiceThreadPool(
+		Logger* apLogger, 
+		uint32_t aConcurrency,
+		std::function<void()> onThreadStart,
+		std::function<void()> onThreadExit) :
 	Loggable(apLogger),
+	mOnThreadStart(onThreadStart),
+	mOnThreadExit(onThreadExit),
 	mIsShutdown(false),
 	mService(),
 	mInfiniteTimer(mService)
@@ -85,6 +91,8 @@ void IOServiceThreadPool::Run()
 {
 	size_t num = 0;
 
+	mOnThreadStart();
+
 	do {
 		try {
 			num = mService.run();			
@@ -96,6 +104,7 @@ void IOServiceThreadPool::Run()
 	}
 	while(num > 0);
 
+	mOnThreadExit();
 }
 
 }

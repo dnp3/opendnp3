@@ -43,9 +43,9 @@ namespace apl
 namespace dnp
 {
 
-DNP3Manager::DNP3Manager(size_t aConcurrency) :
-mpLog(new EventLog()),
-mpThreadPool(new IOServiceThreadPool(mpLog->GetLogger(LEV_INFO, "ThreadPool"), aConcurrency))
+DNP3Manager::DNP3Manager(uint32_t aConcurrency, std::function<void()> aOnThreadStart, std::function<void()> aOnThreadExit) :
+	mpLog(new EventLog()),
+	mpThreadPool(new IOServiceThreadPool(mpLog->GetLogger(LEV_INFO, "ThreadPool"),  aConcurrency, aOnThreadExit, aOnThreadExit))
 {
 
 }

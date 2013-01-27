@@ -33,6 +33,7 @@
 #include <set>
 #include <stdint.h>
 #include <memory>
+#include <functional>
 
 #include <APL/Types.h>
 #include <APL/SerialTypes.h>
@@ -58,7 +59,12 @@ class DNP3Channel;
 class DNP3Manager
 {
 	public:
-		DNP3Manager(uint32_t aConcurrency);
+		DNP3Manager(
+			uint32_t aConcurrency, 
+			std::function<void()> aOnThreadStart = [](){},
+			std::function<void()> aOnThreadExit = [](){}
+		);
+
 		~DNP3Manager();
 
 		void AddLogSubscriber(ILogBase* apLog);

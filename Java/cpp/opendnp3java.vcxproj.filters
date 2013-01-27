@@ -18,6 +18,9 @@
     <ClInclude Include="com_automatak_dnp3_impl_DNP3ManagerImpl.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="JNIHelpers.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="com_automatak_dnp3_impl_DNP3ManagerImpl.cpp">
