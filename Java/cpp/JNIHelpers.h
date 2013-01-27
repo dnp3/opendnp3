@@ -35,6 +35,9 @@ class JNIHelpers
 {
 	public:
 		static std::string GetString(jstring, JNIEnv*);
+
+		static void JNIAttachThread(JavaVM* apJVM);
+		static void JNIDetachThread(JavaVM* apJVM);
 };
 
 #endif

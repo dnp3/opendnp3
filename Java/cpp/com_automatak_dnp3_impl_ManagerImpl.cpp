@@ -12,10 +12,16 @@ using namespace apl::dnp;
 #include <iostream>
 
 JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_create_1native_1manager
-  (JNIEnv *, jobject, jint concurrency)
+  (JNIEnv* apEnv, jobject, jint concurrency)
 {
-	auto pManager = new DNP3Manager(concurrency);
-	//pManager->AddLogSubscriber(LogToStdio::Inst());
+	JavaVM* pJVM;
+	apEnv->GetJavaVM(&pJVM);
+	assert(pJVM != NULL);
+	auto pManager = new DNP3Manager(
+		concurrency, 
+		[pJVM](){ JNIHelpers::JNIAttachThread(pJVM); },
+		[pJVM](){ JNIHelpers::JNIDetachThread(pJVM); }
+	);
 	return (jlong) pManager;
 }
 

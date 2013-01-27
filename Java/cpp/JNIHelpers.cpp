@@ -28,6 +28,8 @@
 
 #include "JNIHelpers.h"
 
+#include <assert.h>
+
 
 std::string JNIHelpers::GetString(jstring s, JNIEnv* pEnv)
 {
@@ -36,3 +38,17 @@ std::string JNIHelpers::GetString(jstring s, JNIEnv* pEnv)
 	pEnv->ReleaseStringUTFChars(s, cstr);
 	return copy;
 }
+
+void JNIHelpers::JNIAttachThread(JavaVM* apJVM)
+{
+	JNIEnv* pEnv;
+	jint res = apJVM->AttachCurrentThread((void **)&pEnv, NULL);
+	assert(res == 0);
+}
+
+void JNIHelpers::JNIDetachThread(JavaVM* apJVM)
+{
+	jint res = apJVM->DetachCurrentThread();
+	assert(res == 0);
+}
+

@@ -16,11 +16,6 @@ void LogSubscriberAdapter::Log(const apl::LogEntry& arEntry)
 {	
 	JNIEnv* pEnv = NULL;
 	mpJVM->GetEnv((void **) &pEnv, JNI_VERSION_1_6);
-	if(pEnv == NULL)
-	{
-		jint res = mpJVM->AttachCurrentThreadAsDaemon((void **)&pEnv, NULL);
-		assert(res == 0);
-	}
 	assert(pEnv != NULL);	
 
 	jclass leClz = pEnv->FindClass("com/automatak/dnp3/impl/LogEntryImpl");
