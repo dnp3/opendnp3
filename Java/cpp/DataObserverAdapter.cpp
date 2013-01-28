@@ -17,6 +17,17 @@ mProxy(aProxy)
 	assert(mStartId != NULL);
 	mEndId = pEnv->GetMethodID(clazz, "end", "()V");
 	assert(mEndId != NULL);
+
+	{
+		mBinaryInputClass = pEnv->FindClass("com/automatak/dnp3/BinaryInput");
+		assert(mBinaryInputClass != NULL);				   
+		mInitBinaryInput = pEnv->GetMethodID(mBinaryInputClass, "<init>","(ZBJ)V");
+		assert(mInitBinaryInput != NULL);
+	}
+	{		
+		mUpdateBinaryInput = pEnv->GetMethodID(clazz, "update", "(Lcom/automatak/dnp3/BinaryInput;J)V");
+		assert(mUpdateBinaryInput != NULL);
+	}
 }
 
 JNIEnv* DataObserverAdapter::GetEnv()
@@ -34,25 +45,14 @@ void DataObserverAdapter::_Start()
 
 void DataObserverAdapter::_Update(const Binary& arMeas, size_t aIndex)
 {
-	JNIEnv* pEnv = GetEnv();
-
-	jclass mclazz = pEnv->FindClass("com/automatak/dnp3/BinaryInput");
-	assert(mclazz != NULL);				   
-	jmethodID mid = pEnv->GetMethodID(mclazz, "<init>","(ZBJ)V");
-	assert(mid != NULL);
+	JNIEnv* pEnv = GetEnv();	
 
 	jboolean value = arMeas.GetValue();
 	jbyte quality = arMeas.GetQuality();
 	jlong timestamp = arMeas.GetTime();
 
-	jobject meas = pEnv->NewObject(mclazz, mid, value, quality, timestamp);
-
-	jclass clazz = pEnv->GetObjectClass(mProxy);
-	assert(clazz != NULL);				
-	jmethodID mid2 = pEnv->GetMethodID(clazz, "update", "(Lcom/automatak/dnp3/BinaryInput;J)V");
-	assert(mid2 != NULL);	
-
-	pEnv->CallVoidMethod(mProxy, mid2, meas, aIndex);
+	jobject meas = pEnv->NewObject(mBinaryInputClass, mInitBinaryInput, value, quality, timestamp);
+	pEnv->CallVoidMethod(mProxy, mUpdateBinaryInput, meas, aIndex);
 }
 
 void DataObserverAdapter::_Update(const Analog& arMeas, size_t aIndex)

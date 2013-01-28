@@ -28,6 +28,10 @@ class DataObserverAdapter : public apl::IDataObserver
 
 	jmethodID mStartId;
 	jmethodID mEndId;
+
+	jmethodID mInitBinaryInput;
+	jclass  mBinaryInputClass;
+	jmethodID mUpdateBinaryInput;
 };
 
 #endif
