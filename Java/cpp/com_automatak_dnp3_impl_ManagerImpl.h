@@ -33,6 +33,14 @@ JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1ch
 
 /*
  * Class:     com_automatak_dnp3_impl_ManagerImpl
+ * Method:    get_native_channel_tcp_server
+ * Signature: (JLjava/lang/String;Lcom/automatak/dnp3/LogLevel;JLjava/lang/String;I)J
+ */
+JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1channel_1tcp_1server
+  (JNIEnv *, jobject, jlong, jstring, jobject, jlong, jstring, jint);
+
+/*
+ * Class:     com_automatak_dnp3_impl_ManagerImpl
  * Method:    native_add_log_subscriber
  * Signature: (JLcom/automatak/dnp3/LogSubscriber;)V
  */

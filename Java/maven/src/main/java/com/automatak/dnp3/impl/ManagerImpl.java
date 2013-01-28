@@ -25,15 +25,25 @@ public class ManagerImpl implements DNP3Manager {
         return new ChannelImpl(ptr);
     }
 
+    public Channel addTCPServer(String name, LogLevel level, long retryMs, String endpoint, int port)
+    {
+        long ptr = get_native_channel_tcp_server(nativePointer, name, level, retryMs, endpoint, port);
+        return new ChannelImpl(ptr);
+    }
+
     public void shutdown()
     {
-        destroy_native_manager(nativePointer);
+        if(nativePointer != 0) {
+            destroy_native_manager(nativePointer);
+            nativePointer = 0;
+        }
     }
 
     private native long create_native_manager(int concurrency);
     private native void destroy_native_manager(long ptr);
 
     private native long get_native_channel_tcp_client(long ptrManager, String name, LogLevel level, long retryMs, String address, int port);
+    private native long get_native_channel_tcp_server(long ptrManager, String name, LogLevel level, long retryMs, String endpoint, int port);
     private native void native_add_log_subscriber(long ptrManager, LogSubscriber sub);
 
 }

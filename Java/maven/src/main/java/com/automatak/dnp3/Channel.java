@@ -6,5 +6,5 @@ public interface Channel {
 
     Master addMaster(String loggerId, LogLevel level);//, IDataObserver publisher, MasterStackConfig config);
 
-    Outstation addOutstation(String loggerId, LogLevel level);//, ICommandHandler cmdHandler, SlaveStackConfig config);
+    Outstation addOutstation(String loggerId, LogLevel level, CommandHandler cmdHandler);//, SlaveStackConfig config);
 }
