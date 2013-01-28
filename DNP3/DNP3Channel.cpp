@@ -71,7 +71,7 @@ void DNP3Channel::Cleanup()
 		this->mGroup.Shutdown();	// no more task callbacks
 		this->mRouter.Shutdown();	// start shutting down the router
 	}
-	mRouter.WaitForShutdown();	
+	mRouter.WaitForShutdown();
 }
 
 IMaster* DNP3Channel::AddMaster(const std::string& arLoggerId, FilterLevel aLevel, IDataObserver* apPublisher, const MasterStackConfig& arCfg)

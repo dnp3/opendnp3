@@ -2,6 +2,8 @@
 
 #include <DNP3/IOutstation.h>
 
+#include <iostream>
+
 using namespace apl;
 using namespace apl::dnp;
 
