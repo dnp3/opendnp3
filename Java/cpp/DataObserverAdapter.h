@@ -20,8 +20,14 @@ class DataObserverAdapter : public apl::IDataObserver
 	void _End();
 
 	private:
+
+	JNIEnv* GetEnv();
+
 	JavaVM* mpJVM;
 	jobject mProxy;
+
+	jmethodID mStartId;
+	jmethodID mEndId;
 };
 
 #endif
