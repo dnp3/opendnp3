@@ -12,9 +12,9 @@ public class ChannelImpl implements Channel {
         this.nativeChannel = nativeChannel;
     }
 
-    public Master addMaster(String loggerId, LogLevel level) //, IDataObserver publisher, MasterStackConfig config);
+    public Master addMaster(String loggerId, LogLevel level, DataObserver publisher)//, MasterStackConfig config);
     {
-        long ptr = get_native_master(nativeChannel, loggerId, level);
+        long ptr = get_native_master(nativeChannel, loggerId, level, publisher);
         return new MasterImpl(ptr);
     }
 
@@ -32,7 +32,7 @@ public class ChannelImpl implements Channel {
     public native void shutdown_native(long ptrChannel);
 
 
-    private native long get_native_master(long ptrChannel, String loggerId, LogLevel level);
+    private native long get_native_master(long ptrChannel, String loggerId, LogLevel level, DataObserver publisher);
     private native long get_native_slave(long ptrChannel, String loggerId, LogLevel level);
 
 

@@ -44,7 +44,7 @@ JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1ch
 	auto pMgr = (DNP3Manager*) ptrManager;
 	std::string loggerId = JNIHelpers::GetString(jloggerId, pEnv);
 	std::string endpoint = JNIHelpers::GetString(jendpoint, pEnv);
-	return (jlong) pMgr->AddTCPClient(loggerId, LEV_INFO, timeoutMs, endpoint, port);
+	return (jlong) pMgr->AddTCPServer(loggerId, LEV_INFO, timeoutMs, endpoint, port);
 }
 
 

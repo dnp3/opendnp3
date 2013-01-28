@@ -16,10 +16,13 @@ public class ExampleMaster {
 
         mgr.addLogSubscriber(new PrintingLogSubscriber());
 
-        Channel client = mgr.addTCPClient("client", LogLevel.INFO, 500, "127.0.0.1", 20000);
-        Master master = client.addMaster("master", LogLevel.INFO);
+        Channel server = mgr.addTCPServer("server", LogLevel.INFO, 500, "127.0.0.1", 20000);
+        Outstation outstation = server.addOutstation("outstation", LogLevel.INFO, null);
+        //Channel client = mgr.addTCPClient("client", LogLevel.INFO, 500, "127.0.0.1", 20000);
+        //Master master = client.addMaster("master", LogLevel.INFO, new PrintingDataObserver());
 
-        Thread.sleep(5000);
+
+        Thread.sleep(2000);
 
         mgr.shutdown();
     }

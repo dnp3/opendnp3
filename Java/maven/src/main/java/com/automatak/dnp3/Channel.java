@@ -4,7 +4,7 @@ public interface Channel {
 
     void shutdown();
 
-    Master addMaster(String loggerId, LogLevel level);//, IDataObserver publisher, MasterStackConfig config);
+    Master addMaster(String loggerId, LogLevel level, DataObserver publisher);//, MasterStackConfig config);
 
     Outstation addOutstation(String loggerId, LogLevel level, CommandHandler cmdHandler);//, SlaveStackConfig config);
 }

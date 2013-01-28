@@ -31,8 +31,10 @@
 #include <string>
 #include <set>
 
-#include "VtoRouterSettings.h"
 #include <APL/LogTypes.h>
+
+#include "VtoRouterSettings.h"
+#include "DestructorHook.h"
 
 namespace boost
 {
@@ -56,7 +58,7 @@ class IVtoWriter;
 class IVtoReader;
 class VtoEndpointImpl;
 
-class IStack
+class IStack : public DestructorHook
 {
 	public:
 		IStack(Logger* apLogger, boost::asio::io_service* apService);
