@@ -36,8 +36,10 @@ class JNIHelpers
 	public:
 		static std::string GetString(jstring, JNIEnv*);
 
-		static void JNIAttachThread(JavaVM* apJVM);
-		static void JNIDetachThread(JavaVM* apJVM);
+		static void AttachThread(JavaVM* apJVM);
+		static void DetachThread(JavaVM* apJVM);
+
+		static void DeleteGlobalReference(JavaVM* apJVM, jobject ref);
 };
 
 #endif

@@ -39,16 +39,24 @@ std::string JNIHelpers::GetString(jstring s, JNIEnv* pEnv)
 	return copy;
 }
 
-void JNIHelpers::JNIAttachThread(JavaVM* apJVM)
+void JNIHelpers::AttachThread(JavaVM* apJVM)
 {
 	JNIEnv* pEnv;
 	jint res = apJVM->AttachCurrentThread((void **)&pEnv, NULL);
 	assert(res == 0);
 }
 
-void JNIHelpers::JNIDetachThread(JavaVM* apJVM)
+void JNIHelpers::DetachThread(JavaVM* apJVM)
 {
 	jint res = apJVM->DetachCurrentThread();
 	assert(res == 0);
+}
+
+void JNIHelpers::DeleteGlobalReference(JavaVM* apJVM, jobject ref)
+{
+	JNIEnv* pEnv;
+	assert(apJVM->GetEnv((void **)&pEnv, JNI_VERSION_1_6) == 0);
+	assert(pEnv != NULL);
+	pEnv->DeleteGlobalRef(ref);
 }
 
