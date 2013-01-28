@@ -23,7 +23,6 @@
     <ClInclude Include="com_automatak_dnp3_impl_ManagerImpl.h" />
     <ClInclude Include="com_automatak_dnp3_impl_MasterImpl.h" />
     <ClInclude Include="com_automatak_dnp3_impl_OutstationImpl.h" />
-    <ClInclude Include="DNP3ManagerWrapper.h" />
     <ClInclude Include="JNIHelpers.h" />
     <ClInclude Include="LogSubscriberAdapter.h" />
   </ItemGroup>
@@ -40,7 +39,6 @@
     <ClCompile Include="com_automatak_dnp3_impl_ManagerImpl.cpp" />
     <ClCompile Include="com_automatak_dnp3_impl_MasterImpl.cpp" />
     <ClCompile Include="com_automatak_dnp3_impl_OutstationImpl.cpp" />
-    <ClCompile Include="DNP3ManagerWrapper.cpp" />
     <ClCompile Include="JNIHelpers.cpp" />
     <ClCompile Include="LogSubscriberAdapter.cpp" />
   </ItemGroup>

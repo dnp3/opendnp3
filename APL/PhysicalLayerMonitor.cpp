@@ -127,16 +127,12 @@ void PhysicalLayerMonitor::Close()
 void PhysicalLayerMonitor::Suspend()
 {
 	LOG_BLOCK(LEV_DEBUG, "Suspend()");
-	if(!mpPhys->CanClose()) {
-		LOG_BLOCK(LEV_EVENT, "suspend from : " << mpState->Name() << " : " << mpPhys->ConvertStateToString());
-	}
 	mpState->OnSuspendRequest(this);
 }
 
 void PhysicalLayerMonitor::Shutdown()
 {
 	LOG_BLOCK(LEV_DEBUG, "Shutdown()");
-	LOG_BLOCK(LEV_EVENT, ": shutdown from : " << mpState->Name())
 	mpState->OnShutdownRequest(this);
 }
 
