@@ -327,6 +327,9 @@
     <ClInclude Include="IOutstation.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="DestructorHook.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AlwaysOpeningVtoRouter.cpp">
@@ -540,6 +543,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="VtoEndpointImpl.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DestructorHook.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

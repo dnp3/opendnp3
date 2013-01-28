@@ -19,11 +19,13 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="com_automatak_dnp3_impl_DNP3ManagerImpl.h" />
+    <ClInclude Include="com_automatak_dnp3_impl_ChannelImpl.h" />
+    <ClInclude Include="com_automatak_dnp3_impl_ManagerImpl.h" />
+    <ClInclude Include="com_automatak_dnp3_impl_MasterImpl.h" />
+    <ClInclude Include="com_automatak_dnp3_impl_OutstationImpl.h" />
+    <ClInclude Include="DNP3ManagerWrapper.h" />
     <ClInclude Include="JNIHelpers.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="com_automatak_dnp3_impl_DNP3ManagerImpl.cpp" />
+    <ClInclude Include="LogSubscriberAdapter.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\APL\APL.vcxproj">
@@ -32,6 +34,15 @@
     <ProjectReference Include="..\..\DNP3\DNP3.vcxproj">
       <Project>{a736f106-3ae3-495f-b689-6c74ea91b217}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="com_automatak_dnp3_impl_ChannelImpl.cpp" />
+    <ClCompile Include="com_automatak_dnp3_impl_ManagerImpl.cpp" />
+    <ClCompile Include="com_automatak_dnp3_impl_MasterImpl.cpp" />
+    <ClCompile Include="com_automatak_dnp3_impl_OutstationImpl.cpp" />
+    <ClCompile Include="DNP3ManagerWrapper.cpp" />
+    <ClCompile Include="JNIHelpers.cpp" />
+    <ClCompile Include="LogSubscriberAdapter.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{EEAFDEE6-06FE-4CB5-875A-53D5A8667920}</ProjectGuid>

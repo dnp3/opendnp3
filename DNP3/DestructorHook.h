@@ -26,68 +26,28 @@
 //
 // Contact Automatak, LLC for a commercial license to these modifications
 //
-#ifndef __DNP3_MANAGER_H_
-#define __DNP3_MANAGER_H_
+#ifndef __DESTRUCTOR_HOOK_H_
+#define __DESTRUCTOR_HOOK_H_
 
-#include <string>
-#include <set>
-#include <stdint.h>
-#include <memory>
+#include <vector>
 #include <functional>
 
-#include <APL/Types.h>
-#include <APL/SerialTypes.h>
-#include <APL/LogTypes.h>
-
-#include "DestructorHook.h"
-
-// pre-declare EVERYTHING possible to minimize includes for CLR/Java wrappers
 namespace apl
 {
-
-class ILogBase;
-class IPhysicalLayerAsync;
-class IOServiceThreadPool;
-class EventLog;
-class Logger;
-
 namespace dnp
 {
 
-class IChannel;
-class DNP3Channel;
-
-
-class DNP3Manager : public DestructorHook
+class DestructorHook
 {
 	public:
-		DNP3Manager(
-			uint32_t aConcurrency, 
-			std::function<void()> aOnThreadStart = [](){},
-			std::function<void()> aOnThreadExit = [](){}
-		);
 
-		~DNP3Manager();
+		virtual ~DestructorHook();
 
-		void AddLogSubscriber(ILogBase* apLog);
-
-		void Shutdown();
-
-		IChannel* AddTCPClient(const std::string& arName, FilterLevel aLevel, millis_t aOpenRetry, const std::string& arAddr, uint16_t aPort);
-		IChannel* AddTCPServer(const std::string& arName, FilterLevel aLevel, millis_t aOpenRetry, const std::string& arEndpoint, uint16_t aPort);
-		IChannel* AddSerial(const std::string& arName, FilterLevel aLevel, millis_t aOpenRetry, SerialSettings aSettings);
-
-	private:
-
-		void OnChannelShutdownCallback(DNP3Channel* apChannel);
-
-		IChannel* CreateChannel(Logger* apLogger, millis_t aOpenRetry, IPhysicalLayerAsync* apPhys);
+		void AddDestructorHook(std::function<void ()> aHook);
 		
-		std::auto_ptr<EventLog> mpLog;		
-		std::auto_ptr<IOServiceThreadPool> mpThreadPool; 
-		std::set<DNP3Channel*> mChannels;
+	private:
+		std::vector<std::function<void ()>> mHooks;
 };
-
 
 }
 }

@@ -89,6 +89,7 @@
     <ClInclude Include="ResponseContext.h" />
     <ClInclude Include="ResponseLoader.h" />
     <ClInclude Include="SecLinkLayerStates.h" />
+    <ClInclude Include="DestructorHook.h" />
     <ClInclude Include="SimpleCommandHandler.h" />
     <ClInclude Include="Slave.h" />
     <ClInclude Include="SlaveConfig.h" />
@@ -167,6 +168,7 @@
     <ClCompile Include="ResponseContext.cpp" />
     <ClCompile Include="ResponseLoader.cpp" />
     <ClCompile Include="SecLinkLayerStates.cpp" />
+    <ClCompile Include="DestructorHook.cpp" />
     <ClCompile Include="SimpleCommandHandler.cpp" />
     <ClCompile Include="Slave.cpp" />
     <ClCompile Include="SlaveConfig.cpp" />
