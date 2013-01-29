@@ -89,6 +89,7 @@ libopendnp3_la_SOURCES = \
 	DNP3/ConstantCommandProcessor.cpp \
 	DNP3/Database.cpp \
 	DNP3/DataPoll.cpp \
+	DNP3/DestructorHook.cpp \
 	DNP3/DeviceTemplate.cpp \
 	DNP3/DNP3Channel.cpp \
 	DNP3/DNP3Manager.cpp \
@@ -369,6 +370,7 @@ nobase_pkginclude_HEADERS= \
 	DNP3/Database.h \
 	DNP3/DatabaseInterfaces.h \
 	DNP3/DataPoll.h \
+	DNP3/DestructorHook.h \
 	DNP3/DeviceTemplate.h \
 	DNP3/DeviceTemplateTypes.h \
 	DNP3/DNP3Channel.h \
