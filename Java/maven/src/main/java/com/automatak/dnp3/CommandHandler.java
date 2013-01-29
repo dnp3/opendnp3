@@ -2,13 +2,13 @@ package com.automatak.dnp3;
 
 public interface CommandHandler {
 
-    public CommandStatus Select(ControlRelayOutputBlock command);
-    public CommandStatus Select(AnalogOutput command);
+    CommandStatus Select(ControlRelayOutputBlock command, long index);
+    CommandStatus Select(AnalogOutput command, long index);
 
-    public CommandStatus Operate(ControlRelayOutputBlock command);
-    public CommandStatus Operate(AnalogOutput command);
+    CommandStatus Operate(ControlRelayOutputBlock command, long index);
+    CommandStatus Operate(AnalogOutput command, long index);
 
-    public CommandStatus DirectOperate(ControlRelayOutputBlock command);
-    public CommandStatus DirectOperate(AnalogOutput command);
+    CommandStatus DirectOperate(ControlRelayOutputBlock command, long index);
+    CommandStatus DirectOperate(AnalogOutput command, long index);
 
 }

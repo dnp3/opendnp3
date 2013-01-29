@@ -14,7 +14,8 @@ public class ChannelImpl implements Channel {
 
     public Master addMaster(String loggerId, LogLevel level, DataObserver publisher)//, MasterStackConfig config);
     {
-        long ptr = get_native_master(nativeChannel, loggerId, level, publisher);
+        DataObserverAdapter adapter = new DataObserverAdapter(publisher);
+        long ptr = get_native_master(nativeChannel, loggerId, level, adapter);
         return new MasterImpl(ptr);
     }
 
@@ -32,7 +33,7 @@ public class ChannelImpl implements Channel {
     public native void shutdown_native(long ptrChannel);
 
 
-    private native long get_native_master(long ptrChannel, String loggerId, LogLevel level, DataObserver publisher);
+    private native long get_native_master(long ptrChannel, String loggerId, LogLevel level, DataObserverAdapter publisher);
     private native long get_native_slave(long ptrChannel, String loggerId, LogLevel level);
 
 

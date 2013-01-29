@@ -18,7 +18,7 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_ChannelImpl_shutdown_1native
 /*
  * Class:     com_automatak_dnp3_impl_ChannelImpl
  * Method:    get_native_master
- * Signature: (JLjava/lang/String;Lcom/automatak/dnp3/LogLevel;Lcom/automatak/dnp3/DataObserver;)J
+ * Signature: (JLjava/lang/String;Lcom/automatak/dnp3/LogLevel;Lcom/automatak/dnp3/impl/DataObserverAdapter;)J
  */
 JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ChannelImpl_get_1native_1master
   (JNIEnv *, jobject, jlong, jstring, jobject, jobject);
