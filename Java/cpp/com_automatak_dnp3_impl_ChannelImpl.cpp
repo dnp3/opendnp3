@@ -40,7 +40,7 @@ JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ChannelImpl_get_1native_1sl
 	auto pChannel = (IChannel*) ptr;
 	std::string loggerId = JNIHelpers::GetString(jloggerId, pEnv);
 	SlaveStackConfig config;
-	DeviceTemplate templ(5,5,5);
+	DeviceTemplate templ(3,3,3,3,3);
 	config.device = templ;
 	auto pOutstation = pChannel->AddOutstation(loggerId, LEV_INFO, SuccessCommandHandler::Inst(), config);
 	return (jlong) pOutstation;

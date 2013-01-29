@@ -29,9 +29,30 @@ class DataObserverAdapter : public apl::IDataObserver
 	jmethodID mStartId;
 	jmethodID mEndId;
 
+	// BinaryInput
 	jmethodID mInitBinaryInput;
 	jclass  mBinaryInputClass;
 	jmethodID mUpdateBinaryInput;
+
+	// AnalogInput
+	jmethodID mInitAnalogInput;
+	jclass  mAnalogInputClass;
+	jmethodID mUpdateAnalogInput;
+
+	// Counter
+	jmethodID mInitCounter;
+	jclass  mCounterClass;
+	jmethodID mUpdateCounter;
+
+	// BinaryOutputStatus
+	jmethodID mInitBinaryOutputStatus;
+	jclass  mBinaryOutputStatusClass;
+	jmethodID mUpdateBinaryOutputStatus;
+
+	// AnalogOutputStatus
+	jmethodID mInitAnalogOutputStatus;
+	jclass  mAnalogOutputStatusClass;
+	jmethodID mUpdateAnalogOutputStatus;
 };
 
 #endif

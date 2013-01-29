@@ -1,10 +1,18 @@
 package com.automatak.dnp3;
 
 
-public class Counter extends BaseMeasurement<Long>
+public class Counter extends BaseMeasurement
 {
-    public Counter(Long value, byte quality, long timestamp)
+    private final long value;
+
+    public Counter(long value, byte quality, long timestamp)
     {
-        super(value, quality, timestamp);
+        super(quality, timestamp);
+        this.value = value;
+    }
+
+    public long getValue()
+    {
+        return value;
     }
 }

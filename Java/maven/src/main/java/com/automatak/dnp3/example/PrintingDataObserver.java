@@ -11,27 +11,27 @@ public class PrintingDataObserver implements DataObserver {
 
     public void update(BinaryInput meas, long index)
     {
-        System.out.println("Got Binary: " + meas.getValue());
+        System.out.println("Binary: " + meas.getValue());
     }
 
     public void update(AnalogInput meas, long index)
     {
-        System.out.println("Got Analog: " + meas.getValue());
+        System.out.println("Analog: " + meas.getValue());
     }
 
     public void update(Counter meas, long index)
     {
-        System.out.println("Got Counter: " + meas.getValue());
+        System.out.println("Counter: " + meas.getValue());
     }
 
     public void update(BinaryOutputStatus meas, long index)
     {
-        System.out.println("Got BinaryOutputStatus: " + meas.getValue());
+        System.out.println("BinaryOutputStatus: " + meas.getValue());
     }
 
     public void update(AnalogOutputStatus meas, long index)
     {
-        System.out.println("Got AnalogOutputStatus: " + meas.getValue());
+        System.out.println("AnalogOutputStatus: " + meas.getValue());
     }
 
     public void end()
