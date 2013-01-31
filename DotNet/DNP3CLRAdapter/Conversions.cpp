@@ -97,29 +97,29 @@ namespace Adapter
 		}
 	}
 
-	CommandStatus Conversions::convertCommandStatus(apl::CommandStatus status)
+	CommandStatus Conversions::convertCommandStatus(apl::dnp::CommandStatus status)
 	{
 		switch(status)
 		{
-			case(apl::CS_SUCCESS):
+			case(apl::dnp::CS_SUCCESS):
 				return CommandStatus::CS_SUCCESS;
-			case(apl::CS_TIMEOUT):
+			case(apl::dnp::CS_TIMEOUT):
 				return CommandStatus::CS_TIMEOUT;
-			case(apl::CS_NO_SELECT):
+			case(apl::dnp::CS_NO_SELECT):
 				return CommandStatus::CS_NO_SELECT;
-			case(apl::CS_FORMAT_ERROR):
+			case(apl::dnp::CS_FORMAT_ERROR):
 				return CommandStatus::CS_FORMAT_ERROR;
-			case(apl::CS_NOT_SUPPORTED):
+			case(apl::dnp::CS_NOT_SUPPORTED):
 				return CommandStatus::CS_NOT_SUPPORTED;
-			case(apl::CS_ALREADY_ACTIVE):
+			case(apl::dnp::CS_ALREADY_ACTIVE):
 				return CommandStatus::CS_ALREADY_ACTIVE;
-			case(apl::CS_HARDWARE_ERROR):
+			case(apl::dnp::CS_HARDWARE_ERROR):
 				return CommandStatus::CS_HARDWARE_ERROR;
-			case(apl::CS_LOCAL):
+			case(apl::dnp::CS_LOCAL):
 				return CommandStatus::CS_LOCAL;
-			case(apl::CS_TOO_MANY_OPS):
+			case(apl::dnp::CS_TOO_MANY_OPS):
 				return CommandStatus::CS_TOO_MANY_OPS;
-			case(apl::CS_NOT_AUTHORIZED):
+			case(apl::dnp::CS_NOT_AUTHORIZED):
 				return CommandStatus::CS_NOT_AUTHORIZED;
 
 			default:
@@ -127,141 +127,126 @@ namespace Adapter
 		}
 	}
 
-	apl::CommandStatus Conversions::convertCommandStatus(CommandStatus status)
+	apl::dnp::CommandStatus Conversions::convertCommandStatus(CommandStatus status)
 	{
 		switch(status)
 		{
 			case(CommandStatus::CS_SUCCESS):
-				return apl::CS_SUCCESS;
+				return apl::dnp::CS_SUCCESS;
 			case(CommandStatus::CS_TIMEOUT):
-				return apl::CS_TIMEOUT;
+				return apl::dnp::CS_TIMEOUT;
 			case(CommandStatus::CS_NO_SELECT):
-				return apl::CS_NO_SELECT;
+				return apl::dnp::CS_NO_SELECT;
 			case(CommandStatus::CS_FORMAT_ERROR):
-				return apl::CS_FORMAT_ERROR;
+				return apl::dnp::CS_FORMAT_ERROR;
 			case(CommandStatus::CS_NOT_SUPPORTED):
-				return apl::CS_NOT_SUPPORTED;
+				return apl::dnp::CS_NOT_SUPPORTED;
 			case(CommandStatus::CS_ALREADY_ACTIVE):
-				return apl::CS_ALREADY_ACTIVE;
+				return apl::dnp::CS_ALREADY_ACTIVE;
 			case(CommandStatus::CS_HARDWARE_ERROR):
-				return apl::CS_HARDWARE_ERROR;
+				return apl::dnp::CS_HARDWARE_ERROR;
 			case(CommandStatus::CS_LOCAL):
-				return apl::CS_LOCAL;
+				return apl::dnp::CS_LOCAL;
 			case(CommandStatus::CS_TOO_MANY_OPS):
-				return apl::CS_TOO_MANY_OPS;
+				return apl::dnp::CS_TOO_MANY_OPS;
 			case(CommandStatus::CS_NOT_AUTHORIZED):
-				return apl::CS_NOT_AUTHORIZED;
+				return apl::dnp::CS_NOT_AUTHORIZED;
 
 			default:
-				return apl::CS_UNDEFINED;
+				return apl::dnp::CS_UNDEFINED;
 		}
 	}
 
-	ControlCode Conversions::convertControlCode(apl::ControlCode code)
+	ControlCode Conversions::convertControlCode(apl::dnp::ControlCode code)
 	{
 		switch(code)
 		{
-			case (apl::CC_NULL):
+			case (apl::dnp::CC_NULL):
 				return ControlCode::CC_NULL;
-			case (apl::CC_PULSE):
+			case (apl::dnp::CC_PULSE):
 				return ControlCode::CC_PULSE;
-			case (apl::CC_LATCH_ON):
+			case (apl::dnp::CC_LATCH_ON):
 				return ControlCode::CC_LATCH_ON;
-			case (apl::CC_LATCH_OFF):
+			case (apl::dnp::CC_LATCH_OFF):
 				return ControlCode::CC_LATCH_OFF;
-			case (apl::CC_PULSE_CLOSE):
+			case (apl::dnp::CC_PULSE_CLOSE):
 				return ControlCode::CC_PULSE_CLOSE;
-			case (apl::CC_PULSE_TRIP):
+			case (apl::dnp::CC_PULSE_TRIP):
 				return ControlCode::CC_PULSE_TRIP;			
 			default:
 				return ControlCode::CC_UNDEFINED;
 		}
 	}
 
-	apl::ControlCode Conversions::convertControlCode(ControlCode code)
+	apl::dnp::ControlCode Conversions::convertControlCode(ControlCode code)
 	{
 		switch(code)
 		{
 			case (ControlCode::CC_NULL):
-				return apl::CC_NULL;
+				return apl::dnp::CC_NULL;
 			case (ControlCode::CC_PULSE):
-				return apl::CC_PULSE;
+				return apl::dnp::CC_PULSE;
 			case (ControlCode::CC_LATCH_ON):
-				return apl::CC_LATCH_ON;
+				return apl::dnp::CC_LATCH_ON;
 			case (ControlCode::CC_LATCH_OFF):
-				return apl::CC_LATCH_OFF;
+				return apl::dnp::CC_LATCH_OFF;
 			case (ControlCode::CC_PULSE_CLOSE):
-				return apl::CC_PULSE_CLOSE;
+				return apl::dnp::CC_PULSE_CLOSE;
 			case (ControlCode::CC_PULSE_TRIP):
-				return apl::CC_PULSE_TRIP;			
+				return apl::dnp::CC_PULSE_TRIP;			
 			default:
-				return apl::CC_UNDEFINED;
+				return apl::dnp::CC_UNDEFINED;
 		}
 	}
 
-	BinaryOutput^ Conversions::convertBO(const apl::BinaryOutput& bo)
+	ControlRelayOutputBlock^ Conversions::convertCommand(const apl::dnp::ControlRelayOutputBlock& bo)
 	{
-		return gcnew BinaryOutput(convertControlCode(bo.GetCode()), bo.mCount, bo.mOnTimeMS, bo.mOffTimeMS);
+		return gcnew ControlRelayOutputBlock(convertControlCode(bo.GetCode()), bo.mCount, bo.mOnTimeMS, bo.mOffTimeMS);
 	}
 
-	apl::BinaryOutput Conversions::convertBO(BinaryOutput^ bo)
+	apl::dnp::ControlRelayOutputBlock Conversions::convertCommand(ControlRelayOutputBlock^ bo)
+	{			
+		return apl::dnp::ControlRelayOutputBlock(convertControlCode(bo->code), bo->count, bo->onTime, bo->offTime);
+	}
+				
+	apl::dnp::AnalogOutputInt32 Conversions::convertCommand(AnalogOutputInt32^ sp)
 	{
-		return apl::BinaryOutput(convertControlCode(bo->code), bo->count, bo->onTime, bo->offTime);
+		return apl::dnp::AnalogOutputInt32(sp->value);
 	}
 
-
-	SetpointEncodingType Conversions::convertSetpointEncoding(apl::SetpointEncodingType encoding)
+	AnalogOutputInt32^ Conversions::convertCommand(const apl::dnp::AnalogOutputInt32& sp)
 	{
-		switch(encoding) {
-			case (apl::SPET_INT16):
-				return SetpointEncodingType::SPET_INT16;
-			case (apl::SPET_INT32):
-				return SetpointEncodingType::SPET_INT32;
-			case (apl::SPET_FLOAT):
-				return SetpointEncodingType::SPET_FLOAT;
-			case (apl::SPET_DOUBLE):
-				return SetpointEncodingType::SPET_DOUBLE;
-			case (apl::SPET_AUTO_INT):
-				return SetpointEncodingType::SPET_AUTO_INT;
-			case (apl::SPET_AUTO_DOUBLE):
-				return SetpointEncodingType::SPET_AUTO_DOUBLE;
-			default:
-				return SetpointEncodingType::SPET_UNSET;
-		}
+		return gcnew AnalogOutputInt32(sp.GetValue());
 	}
 
-	apl::SetpointEncodingType Conversions::convertSetpointEncoding(SetpointEncodingType encoding)
+	apl::dnp::AnalogOutputInt16 Conversions::convertCommand(AnalogOutputInt16^ sp)
 	{
-		switch(encoding) {
-			case (SetpointEncodingType::SPET_INT16):
-				return apl::SPET_INT16;
-			case (SetpointEncodingType::SPET_INT32):
-				return apl::SPET_INT32;
-			case (SetpointEncodingType::SPET_FLOAT):
-				return apl::SPET_FLOAT;
-			case (SetpointEncodingType::SPET_DOUBLE):
-				return apl::SPET_DOUBLE;
-			case (SetpointEncodingType::SPET_AUTO_INT):
-				return apl::SPET_AUTO_INT;
-			case (SetpointEncodingType::SPET_AUTO_DOUBLE):
-				return apl::SPET_AUTO_DOUBLE;
-			default:
-				return apl::SPET_UNSET;
-		}
+		return apl::dnp::AnalogOutputInt16(sp->value);
+	}
+	
+	AnalogOutputInt16^ Conversions::convertCommand(const apl::dnp::AnalogOutputInt16& sp)
+	{
+		return gcnew AnalogOutputInt16(sp.GetValue());
 	}
 
-	apl::Setpoint Conversions::convertSP(Setpoint^ sp)
+	apl::dnp::AnalogOutputFloat32 Conversions::convertCommand(AnalogOutputFloat32^ sp)
 	{
-		apl::Setpoint ret(sp->value);
-		ret.SetEncodingType(convertSetpointEncoding(sp->encodingType));
-		return ret;
+		return apl::dnp::AnalogOutputFloat32(sp->value);
 	}
 
-	Setpoint^ Conversions::convertSP(const apl::Setpoint& sp)
+	AnalogOutputFloat32^ Conversions::convertCommand(const apl::dnp::AnalogOutputFloat32& sp)
 	{
-		Setpoint^ ret = gcnew Setpoint(sp.GetValue());
-		ret->encodingType = convertSetpointEncoding(sp.GetEncodingType());
-		return ret;
+		return gcnew AnalogOutputFloat32(sp.GetValue());
+	}
+
+	apl::dnp::AnalogOutputDouble64 Conversions::convertCommand(AnalogOutputDouble64^ sp)
+	{
+		return apl::dnp::AnalogOutputDouble64(sp->value);
+	}
+
+	AnalogOutputDouble64^ Conversions::convertCommand(const apl::dnp::AnalogOutputDouble64& sp)
+	{
+		return gcnew AnalogOutputDouble64(sp.GetValue());
 	}
 
 	Binary^ Conversions::convertMeas(apl::Binary meas)

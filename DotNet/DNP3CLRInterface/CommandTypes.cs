@@ -32,20 +32,7 @@ using System.Linq;
 using System.Text;
 
 namespace DNP3.Interface
-{
-    public enum CommandModes {
-	    CM_SBO_ONLY,
-	    CM_DO_ONLY,	
-	    CM_SBO_OR_DO
-    }
-
-    public enum CommandTypes {
-	    CT_BINARY_OUTPUT,
-	    CT_SETPOINT,
-	    CT_NONE
-    }
-
-
+{   
     public enum CommandStatus {
 	    CS_SUCCESS,			
 	    CS_TIMEOUT,			
@@ -70,9 +57,9 @@ namespace DNP3.Interface
 	    CC_UNDEFINED
     }
 
-    public class BinaryOutput
-    {	    
-	    public BinaryOutput(ControlCode code, byte count, System.UInt16 onTime, System.UInt16 offTime)
+    public class ControlRelayOutputBlock
+    {
+        public ControlRelayOutputBlock(ControlCode code, byte count, System.UInt16 onTime, System.UInt16 offTime)
         {
             this.code = code;
             this.count = count;
@@ -87,45 +74,42 @@ namespace DNP3.Interface
     }
 
 
-    public enum SetpointEncodingType {
-	    SPET_INT16,			//!< 16bit floating point (dnp Object41var1)
-	    SPET_INT32,			//!< 32bit signed integer (dnp Object41var2)
-	    SPET_FLOAT,			//!< 32bit floating point (dnp Object41var3)
-	    SPET_DOUBLE,		//!< 64bit floating point (dnp Object41var4)
-	    SPET_AUTO_INT,		//!< automatically choose smallest valid int type
-	    SPET_AUTO_DOUBLE,	//!< automatically choose smallest valid double type
-	    SPET_UNSET,			//!< means no type has been guessed or set yet
+   
+    public class AnalogOutput<T>
+    {	    	
+	    public AnalogOutput(T value)
+        {
+            this.value = value;            
+        }	   	    
+
+	    public readonly T value;        
     }
 
+    public class AnalogOutputInt32 : AnalogOutput<System.Int32>
+    {
+        public AnalogOutputInt32(System.Int32 value) : base(value)
+        {}
+    }
 
-    public class Setpoint
-    {	    	
-	    public Setpoint(System.Int16 value)
-        {
-            this.value = value;
-            this.encodingType = SetpointEncodingType.SPET_INT16;
-        }
-	    
-	    public Setpoint(System.Int32 value)
-        {
-            this.value = value;
-            this.encodingType = SetpointEncodingType.SPET_INT32;
-        }
-	
-	    public Setpoint(System.Double value)
-        {
-            this.value = value;
-            this.encodingType = SetpointEncodingType.SPET_DOUBLE;
-        }
+    public class AnalogOutputInt16 : AnalogOutput<System.Int16>
+    {
+        public AnalogOutputInt16(System.Int16 value)
+            : base(value)
+        { }
+    }
 
-        public Setpoint(System.Single value)
-        {
-            this.value = value;
-            this.encodingType = SetpointEncodingType.SPET_FLOAT;
-        }
+    public class AnalogOutputFloat32 : AnalogOutput<float>
+    {
+        public AnalogOutputFloat32(float value)
+            : base(value)
+        { }
+    }
 
-	    public readonly double value;
-        public SetpointEncodingType encodingType;
+    public class AnalogOutputDouble64 : AnalogOutput<double>
+    {
+        public AnalogOutputDouble64(System.Double value)
+            : base(value)
+        { }
     }
 
 }

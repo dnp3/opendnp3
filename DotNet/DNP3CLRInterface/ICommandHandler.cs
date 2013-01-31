@@ -35,11 +35,23 @@ namespace DNP3.Interface
 {
     public interface ICommandHandler
     {
-        CommandStatus Select(BinaryOutput command, System.UInt32 index, System.Byte sequence);
-        CommandStatus Select(Setpoint command, System.UInt32 index, System.Byte sequence);
-        CommandStatus Operate(BinaryOutput command, System.UInt32 index, System.Byte sequence);
-        CommandStatus Operate(Setpoint command, System.UInt32 index, System.Byte sequence);
-        CommandStatus DirectOperate(BinaryOutput command, System.UInt32 index);
-        CommandStatus DirectOperate(Setpoint command, System.UInt32 index);
+        CommandStatus Select(ControlRelayOutputBlock command, System.UInt32 index, System.Byte sequence);
+        CommandStatus Select(AnalogOutputInt32 command, System.UInt32 index, System.Byte sequence);
+        CommandStatus Select(AnalogOutputInt16 command, System.UInt32 index, System.Byte sequence);
+        CommandStatus Select(AnalogOutputFloat32 command, System.UInt32 index, System.Byte sequence);
+        CommandStatus Select(AnalogOutputDouble64 command, System.UInt32 index, System.Byte sequence);
+
+        CommandStatus Operate(ControlRelayOutputBlock command, System.UInt32 index, System.Byte sequence);
+        CommandStatus Operate(AnalogOutputInt32 command, System.UInt32 index, System.Byte sequence);
+        CommandStatus Operate(AnalogOutputInt16 command, System.UInt32 index, System.Byte sequence);
+        CommandStatus Operate(AnalogOutputFloat32 command, System.UInt32 index, System.Byte sequence);
+        CommandStatus Operate(AnalogOutputDouble64 command, System.UInt32 index, System.Byte sequence);
+        
+        CommandStatus DirectOperate(ControlRelayOutputBlock command, System.UInt32 index);
+        CommandStatus DirectOperate(AnalogOutputInt32 command, System.UInt32 index);
+        CommandStatus DirectOperate(AnalogOutputInt16 command, System.UInt32 index);
+        CommandStatus DirectOperate(AnalogOutputFloat32 command, System.UInt32 index);
+        CommandStatus DirectOperate(AnalogOutputDouble64 command, System.UInt32 index);
+
     }
 }

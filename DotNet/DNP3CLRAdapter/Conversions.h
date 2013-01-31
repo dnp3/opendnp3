@@ -31,13 +31,15 @@
 
 #include <string>
 
-#include <APL/CommandTypes.h>
 #include <APL/LogTypes.h>
 #include <APL/DataTypes.h>
 #include <APL/SerialTypes.h>
 
+#include <DNP3/CommandStatus.h>
 #include <DNP3/SlaveStackConfig.h>
 #include <DNP3/MasterStackConfig.h>
+#include <DNP3/ControlRelayOutputBlock.h>
+#include <DNP3/AnalogOutput.h>
 
 using namespace DNP3::Interface;
 
@@ -61,22 +63,31 @@ namespace Adapter
 		static FilterLevel convertFilterLevel(apl::FilterLevel level);
 
 		// Convert the command status enumeration
-		static CommandStatus convertCommandStatus(apl::CommandStatus status);
-		static apl::CommandStatus convertCommandStatus(CommandStatus status);
+		static CommandStatus convertCommandStatus(apl::dnp::CommandStatus status);
+		static apl::dnp::CommandStatus convertCommandStatus(CommandStatus status);
 
 		//functions for converting binary outputs		
 
-		static ControlCode convertControlCode(apl::ControlCode code);
-		static apl::ControlCode Conversions::convertControlCode(ControlCode code);
-		static BinaryOutput^ convertBO(const apl::BinaryOutput& bo);
-		static apl::BinaryOutput convertBO(BinaryOutput^ bo);
+		static ControlCode convertControlCode(apl::dnp::ControlCode code);
+		static apl::dnp::ControlCode Conversions::convertControlCode(ControlCode code);
+
+
+		static ControlRelayOutputBlock^ convertCommand(const apl::dnp::ControlRelayOutputBlock& bo);
+		static apl::dnp::ControlRelayOutputBlock convertCommand(ControlRelayOutputBlock^ bo);
 
 		//functions for converting setpoints
+		
+		static apl::dnp::AnalogOutputInt32 convertCommand(AnalogOutputInt32^ sp);
+		static AnalogOutputInt32^ convertCommand(const apl::dnp::AnalogOutputInt32& sp);
 
-		static SetpointEncodingType convertSetpointEncoding(apl::SetpointEncodingType encoding);
-		static apl::SetpointEncodingType convertSetpointEncoding(SetpointEncodingType encoding);
-		static apl::Setpoint convertSP(Setpoint^ sp);
-		static Setpoint^ convertSP(const apl::Setpoint& sp);
+		static apl::dnp::AnalogOutputInt16 convertCommand(AnalogOutputInt16^ sp);
+		static AnalogOutputInt16^ convertCommand(const apl::dnp::AnalogOutputInt16& sp);
+
+		static apl::dnp::AnalogOutputFloat32 convertCommand(AnalogOutputFloat32^ sp);
+		static AnalogOutputFloat32^ convertCommand(const apl::dnp::AnalogOutputFloat32& sp);
+
+		static apl::dnp::AnalogOutputDouble64 convertCommand(AnalogOutputDouble64^ sp);
+		static AnalogOutputDouble64^ convertCommand(const apl::dnp::AnalogOutputDouble64& sp);
 
 		//functions for converting Measurement types
 		static Binary^ convertMeas(apl::Binary meas);

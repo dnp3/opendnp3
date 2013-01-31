@@ -79,12 +79,6 @@
     <Compile Include="SerialSettingsForm.Designer.cs">
       <DependentUpon>SerialSettingsForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="SetpointForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="SetpointForm.Designer.cs">
-      <DependentUpon>SetpointForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="StackBrowser.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -121,9 +115,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="SerialSettingsForm.resx">
       <DependentUpon>SerialSettingsForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="SetpointForm.resx">
-      <DependentUpon>SetpointForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="StackBrowser.resx">
       <DependentUpon>StackBrowser.cs</DependentUpon>

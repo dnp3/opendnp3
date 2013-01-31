@@ -428,23 +428,7 @@ namespace DNP3.Interface
         { }
 
         public double deadband;
-    };
-
-    public class ControlRecord : PointRecord
-    {
-        public ControlRecord(CommandModes mode, System.Int64 selectTimeoutMs) : base()
-        {
-            this.mode = mode;
-            this.selectTimeoutMs = selectTimeoutMs;
-        }
-
-        public ControlRecord()
-            : this(CommandModes.CM_SBO_ONLY, 5000)
-        { }
-
-        public CommandModes mode;
-        public System.Int64 selectTimeoutMs;
-    };
+    };    
 
     public class DeviceTemplate
     {
@@ -452,21 +436,17 @@ namespace DNP3.Interface
                                 System.UInt32 numAnalog,
                                 System.UInt32 numCounter,
                                 System.UInt32 numControlStatus,
-                                System.UInt32 numSetpointStatus,
-                                System.UInt32 numControls,
-                                System.UInt32 numSetpoints)
+                                System.UInt32 numSetpointStatus)
         {
             binaries = Enumerable.Range(0, (int) numBinary).Select(i => new EventPointRecord(PointClass.PC_CLASS_0)).ToList();
             counters = Enumerable.Range(0, (int) numCounter).Select(i => new EventPointRecord(PointClass.PC_CLASS_0)).ToList();
             analogs = Enumerable.Range(0, (int) numAnalog).Select(i => new DeadbandEventPointRecord(PointClass.PC_CLASS_0, 0.0)).ToList();
             controlStatii = Enumerable.Range(0, (int) numControlStatus).Select(i => new PointRecord()).ToList();
-            setpointStatii = Enumerable.Range(0, (int) numSetpointStatus).Select(i => new PointRecord()).ToList();
-            controls = Enumerable.Range(0, (int) numControls).Select(i => new ControlRecord(CommandModes.CM_SBO_ONLY, 5000)).ToList();
-            setpoints = Enumerable.Range(0, (int )numSetpoints).Select(i => new ControlRecord(CommandModes.CM_SBO_ONLY, 5000)).ToList();
+            setpointStatii = Enumerable.Range(0, (int) numSetpointStatus).Select(i => new PointRecord()).ToList();            
         }
 
         public DeviceTemplate()
-            : this(10, 10, 10, 10, 10, 10, 10)
+            : this(10, 10, 10, 10, 10)
         { }
 
         public List<EventPointRecord> binaries;
@@ -474,9 +454,6 @@ namespace DNP3.Interface
         public List<DeadbandEventPointRecord> analogs;
         public List<PointRecord> controlStatii;
         public List<PointRecord> setpointStatii;
-
-        public List<ControlRecord> controls;
-        public List<ControlRecord> setpoints;
     };
 
 	public class MasterStackConfig
@@ -498,7 +475,7 @@ namespace DNP3.Interface
         public SlaveStackConfig()
         {
             this.slave = new SlaveConfig();
-            this.device = new DeviceTemplate(10, 10, 10, 10, 10, 10, 10);
+            this.device = new DeviceTemplate(10, 10, 10, 10, 10);
             this.link = new LinkConfig(false, false);
             this.app = new AppConfig();
             

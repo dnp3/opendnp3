@@ -133,10 +133,10 @@ int main(int argc, char* argv[])
 		std::cin >> cmd;		
 		if(cmd == "exit") break;
 		else {
-			BinaryOutput bo(CC_LATCH_ON);
+			ControlRelayOutputBlock crob(CC_LATCH_ON);
 
 			promise<CommandResponse> selectResult;
-			pCmdProcessor->SelectAndOperate(bo, 0, [&](CommandResponse cr){ selectResult.set_value(cr); });
+			pCmdProcessor->SelectAndOperate(crob, 0, [&](CommandResponse cr){ selectResult.set_value(cr); });
 			CommandResponse rsp = selectResult.get_future().get();
 			std::cout << "Select/Operate result: " << rsp.mResult << std::endl;				
 		}		
