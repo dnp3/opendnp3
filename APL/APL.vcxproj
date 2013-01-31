@@ -23,7 +23,7 @@
     <ClInclude Include="AsyncTaskScheduler.h" />
     <ClInclude Include="BaseDataTypes.h" />
     <ClInclude Include="ChangeBuffer.h" />
-    <ClInclude Include="CommandTypes.h" />
+    <ClInclude Include="ControlRelayOutputBlock.h" />
     <ClInclude Include="CopyableBuffer.h" />
     <ClInclude Include="CRC.h" />
     <ClInclude Include="DataInterfaces.h" />
@@ -67,6 +67,7 @@
     <ClInclude Include="PhysicalLayerMonitorStates.h" />
     <ClInclude Include="PhysicalLayerStates.h" />
     <ClInclude Include="PhysLoopback.h" />
+    <ClInclude Include="AnalogOutput.h" />
     <ClInclude Include="SimpleDataObserver.h" />
     <ClInclude Include="ProtocolUtil.h" />
     <ClInclude Include="QualityConverter.h" />
@@ -90,6 +91,7 @@
     <ClInclude Include="Util.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AnalogOutput.cpp" />
     <ClCompile Include="ASIOExecutor.cpp" />
     <ClCompile Include="ASIOSerialHelpers.cpp" />
     <ClCompile Include="AsyncLayerInterfaces.cpp" />
@@ -101,7 +103,8 @@
     <ClCompile Include="AsyncTaskScheduler.cpp" />
     <ClCompile Include="BaseDataTypes.cpp" />
     <ClCompile Include="ChangeBuffer.cpp" />
-    <ClCompile Include="CommandTypes.cpp" />
+    <ClCompile Include="CommandStatus.cpp" />
+    <ClCompile Include="ControlRelayOutputBlock.cpp" />
     <ClCompile Include="CopyableBuffer.cpp" />
     <ClCompile Include="CRC.cpp" />
     <ClCompile Include="Exception.cpp" />
