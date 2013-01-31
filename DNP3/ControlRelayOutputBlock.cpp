@@ -27,13 +27,16 @@
 // Contact Automatak, LLC for a commercial license to these modifications
 //
 #include "ControlRelayOutputBlock.h"
-#include "PackingUnpacking.h"
-#include "Exception.h"
+
+#include <APL/PackingUnpacking.h>
+#include <APL/Exception.h>
 
 #include <assert.h>
 #include <sstream>
 
 namespace apl
+{
+namespace dnp
 {
 
 #define MACRO_CASE_DECLARE(type) case(type): return type;
@@ -70,7 +73,7 @@ std::string ToString(ControlCode aType)
 	}
 }
 
-BinaryOutput::BinaryOutput(ControlCode aCode, uint8_t aCount, uint32_t aOnTime, uint32_t aOffTime) :	
+ControlRelayOutputBlock::ControlRelayOutputBlock(ControlCode aCode, uint8_t aCount, uint32_t aOnTime, uint32_t aOffTime) :	
 	mRawCode(aCode),
 	mCount(aCount),
 	mOnTimeMS(aOnTime),
@@ -80,18 +83,18 @@ BinaryOutput::BinaryOutput(ControlCode aCode, uint8_t aCount, uint32_t aOnTime, 
 
 }
 
-ControlCode BinaryOutput::GetCode() const
+ControlCode ControlRelayOutputBlock::GetCode() const
 {
 	return ByteToControlCode(mRawCode);
 }
 
-std::string BinaryOutput::ToString() const
+std::string ControlRelayOutputBlock::ToString() const
 {
 	std::ostringstream oss;
-	oss << "BinaryOutput - function: " << apl::ToString(static_cast<ControlCode>(mRawCode));
+	oss << "ControlRelayOutputBlock - function: " << apl::dnp::ToString(static_cast<ControlCode>(mRawCode));
 	oss << " count: " << static_cast<size_t>(mCount) << " on: " << mOnTimeMS << " off: " << mOffTimeMS;
 	return oss.str();
 }
 
 
-}
+}}

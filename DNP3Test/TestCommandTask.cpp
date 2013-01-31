@@ -47,7 +47,7 @@ BOOST_AUTO_TEST_CASE(FullSequence)
 	CommandTask ct(log.GetLogger(LEV_INFO, "task"));
 	CommandStatus rsp = CS_UNDEFINED;
 	auto formatter = [](APDU& arAPDU, FunctionCodes aCode){ 
-		return CommandHelpers::ConfigureRequest(arAPDU, aCode, BinaryOutput(CC_LATCH_ON), 0, Group12Var1::Inst()); 
+		return CommandHelpers::ConfigureRequest(arAPDU, aCode, ControlRelayOutputBlock(CC_LATCH_ON), 0, Group12Var1::Inst()); 
 	};
 	auto responder = [&rsp](CommandStatus status) { rsp = status; };
 	ct.Configure(formatter, responder);

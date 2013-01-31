@@ -27,7 +27,7 @@
 // Contact Automatak, LLC for a commercial license to these modifications
 //
 #ifndef __COMMAND_STATUS_H_
-#define __CONTROL_STATUS_H_
+#define __COMMAND_STATUS_H_
 
 #include <cstdint>
 #include <string>

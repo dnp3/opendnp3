@@ -30,7 +30,6 @@
 #define __DNP_TO_STREAM_H_
 
 #include <APL/DataTypes.h>
-#include <APL/CommandTypes.h>
 
 #ifdef WIN32
 //disable the type converstion warnings

@@ -29,7 +29,6 @@
 #include "Objects.h"
 
 #include <APL/DataTypes.h>
-#include <APL/CommandTypes.h>
 #include <APL/CopyableBuffer.h>
 
 #include "DNPToStream.h"
@@ -226,7 +225,7 @@ void Group10Var2::Write(uint8_t* apPos, const ControlStatus& arObj) const
 //	Binary Output Types
 ///////////////////////////////
 
-void Group12Var1::Write(uint8_t* apPos, const BinaryOutput& arControl) const
+void Group12Var1::Write(uint8_t* apPos, const ControlRelayOutputBlock& arControl) const
 {
 	mCode.Set(apPos, arControl.mRawCode);
 	mCount.Set(apPos, arControl.mCount);
@@ -235,9 +234,9 @@ void Group12Var1::Write(uint8_t* apPos, const BinaryOutput& arControl) const
 	mStatus.Set(apPos, arControl.mStatus);
 }
 
-BinaryOutput Group12Var1::Read(const uint8_t* apPos) const
+ControlRelayOutputBlock Group12Var1::Read(const uint8_t* apPos) const
 {
-	BinaryOutput b;
+	ControlRelayOutputBlock b;
 	b.mRawCode = mCode.Get(apPos);
 	b.mCount = mCount.Get(apPos);
 	b.mOffTimeMS = mOffTime.Get(apPos);
@@ -549,18 +548,17 @@ void Group40Var4::Write(uint8_t* apPos, const apl::SetpointStatus& arObj) const
 //	Setpoint Types
 ///////////////////////////////
 
-void Group41Var1::Write(uint8_t* apBuff, const Setpoint& arVal) const
+void Group41Var1::Write(uint8_t* apBuff, const AnalogOutputInt32& arVal) const
 {
-	this->mValue.Set(apBuff, arVal.GetIntValue());
+	this->mValue.Set(apBuff, arVal.GetValue());
 	this->mStatus.Set(apBuff, arVal.mStatus);
 }
 
-Setpoint Group41Var1::Read(const uint8_t* apBuff) const
+AnalogOutputInt32 Group41Var1::Read(const uint8_t* apBuff) const
 {
-	Setpoint s(static_cast<int32_t>(this->mValue.Get(apBuff)));
-	s.mStatus = ByteToCommandStatus(this->mStatus.Get(apBuff));
-	s.SetEncodingType(SPET_INT32);
-	return s;
+	AnalogOutputInt32 ao(this->mValue.Get(apBuff));
+	ao.mStatus = ByteToCommandStatus(this->mStatus.Get(apBuff));	
+	return ao;
 }
 
 apl::CopyableBuffer Group41Var1::GetValueBytes(const uint8_t* apBuff) const
@@ -568,18 +566,17 @@ apl::CopyableBuffer Group41Var1::GetValueBytes(const uint8_t* apBuff) const
 	return CopyableBuffer(apBuff, 4);
 }
 
-void Group41Var2::Write(uint8_t* apBuff, const Setpoint& arVal) const
+void Group41Var2::Write(uint8_t* apBuff, const AnalogOutputInt16& arVal) const
 {
-	this->mValue.Set(apBuff, static_cast<uint16_t>(arVal.GetIntValue()));
+	this->mValue.Set(apBuff, arVal.GetValue());
 	this->mStatus.Set(apBuff, arVal.mStatus);
 }
 
-Setpoint Group41Var2::Read(const uint8_t* apBuff) const
+AnalogOutputInt16 Group41Var2::Read(const uint8_t* apBuff) const
 {
-	Setpoint s(static_cast<int16_t>(this->mValue.Get(apBuff)));
-	s.mStatus = ByteToCommandStatus(this->mStatus.Get(apBuff));
-	s.SetEncodingType(SPET_INT16);
-	return s;
+	AnalogOutputInt16 ao(this->mValue.Get(apBuff));
+	ao.mStatus = ByteToCommandStatus(this->mStatus.Get(apBuff));	
+	return ao;
 }
 
 apl::CopyableBuffer Group41Var2::GetValueBytes(const uint8_t* apBuff) const
@@ -587,18 +584,17 @@ apl::CopyableBuffer Group41Var2::GetValueBytes(const uint8_t* apBuff) const
 	return CopyableBuffer(apBuff, 2);
 }
 
-void Group41Var3::Write(uint8_t* apBuff, const Setpoint& arVal) const
+void Group41Var3::Write(uint8_t* apBuff, const AnalogOutputFloat32& arVal) const
 {
-	this->mValue.Set(apBuff, static_cast<float>(arVal.GetValue()));
+	this->mValue.Set(apBuff, arVal.GetValue());
 	this->mStatus.Set(apBuff, arVal.mStatus);
 }
 
-Setpoint Group41Var3::Read(const uint8_t* apBuff) const
+AnalogOutputFloat32 Group41Var3::Read(const uint8_t* apBuff) const
 {
-	Setpoint s(this->mValue.Get(apBuff));
-	s.mStatus = ByteToCommandStatus(this->mStatus.Get(apBuff));
-	s.SetEncodingType(SPET_FLOAT);
-	return s;
+	AnalogOutputFloat32 ao(this->mValue.Get(apBuff));
+	ao.mStatus = ByteToCommandStatus(this->mStatus.Get(apBuff));	
+	return ao;
 }
 
 apl::CopyableBuffer Group41Var3::GetValueBytes(const uint8_t* apBuff) const
@@ -606,18 +602,17 @@ apl::CopyableBuffer Group41Var3::GetValueBytes(const uint8_t* apBuff) const
 	return CopyableBuffer(apBuff, 4);
 }
 
-void Group41Var4::Write(uint8_t* apBuff, const Setpoint& arVal) const
+void Group41Var4::Write(uint8_t* apBuff, const AnalogOutputDouble64& arVal) const
 {
 	this->mValue.Set(apBuff, arVal.GetValue());
 	this->mStatus.Set(apBuff, arVal.mStatus);
 }
 
-Setpoint Group41Var4::Read(const uint8_t* apBuff) const
+AnalogOutputDouble64 Group41Var4::Read(const uint8_t* apBuff) const
 {
-	Setpoint s(this->mValue.Get(apBuff));
-	s.mStatus = ByteToCommandStatus(this->mStatus.Get(apBuff));
-	s.SetEncodingType(SPET_DOUBLE);
-	return s;
+	AnalogOutputDouble64 ao(this->mValue.Get(apBuff));
+	ao.mStatus = ByteToCommandStatus(this->mStatus.Get(apBuff));	
+	return ao;
 }
 
 apl::CopyableBuffer Group41Var4::GetValueBytes(const uint8_t* apBuff) const

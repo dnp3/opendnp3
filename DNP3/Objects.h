@@ -37,6 +37,9 @@
 #include <APL/PackingTemplates.h>
 #include <APL/QualityMasks.h>
 
+#include "ControlRelayOutputBlock.h"
+#include "AnalogOutput.h"
+
 
 #define MACRO_GROUP_VAR_SIZE_FUNC_WITHOUT_EVENTS(group, var, size)\
 		MACRO_GROUP_VAR_FUNC(group, var)\
@@ -75,12 +78,9 @@ int GetVariation() const { return var; }
 
 namespace apl
 {
-class BinaryOutput;
-class Setpoint;
 class Analog;
 class Binary;
 class Counter;
-class Setpoint;
 class SetpointStatus;
 class ControlStatus;
 }
@@ -170,10 +170,10 @@ struct Group10Var2 : public StreamObject<ControlStatus> {
 //	Control Block Types
 ///////////////////////////////
 
-struct Group12Var1 : public CommandObject<BinaryOutput> {
+struct Group12Var1 : public CommandObject<ControlRelayOutputBlock> {
 	MACRO_NAME_SINGLETON_INSTANCE(Group12Var1)
 	MACRO_GROUP_VAR_SIZE_FUNC(12, 1, 11)
-	MACRO_DECLARE_STREAM_TYPE(BinaryOutput);
+	MACRO_DECLARE_STREAM_TYPE(ControlRelayOutputBlock);
 
 	Pack<UInt8, 0>		mCode;
 	Pack<UInt8, 1>		mCount;
@@ -820,42 +820,42 @@ struct Group40Var4 : public StreamObject<SetpointStatus> {
 	MACRO_DECLARE_STREAM_TYPE(SetpointStatus)
 };
 
-struct Group41Var1 : public CommandObject<Setpoint> {
+struct Group41Var1 : public CommandObject<AnalogOutputInt32> {
 	MACRO_NAME_SINGLETON_INSTANCE(Group41Var1)
 	MACRO_GROUP_VAR_SIZE_FUNC(41, 1, 5)
 	MACRO_DECLARE_VALUE(Int32LE, 0)
 	Pack<UInt8, 4> mStatus;
-	MACRO_DECLARE_STREAM_TYPE(Setpoint)
+	MACRO_DECLARE_STREAM_TYPE(AnalogOutputInt32)
 
 	apl::CopyableBuffer GetValueBytes(const uint8_t*) const;
 };
 
-struct Group41Var2 : public CommandObject<Setpoint> {
+struct Group41Var2 : public CommandObject<AnalogOutputInt16> {
 	MACRO_NAME_SINGLETON_INSTANCE(Group41Var2)
 	MACRO_GROUP_VAR_SIZE_FUNC(41, 2, 3)
 	MACRO_DECLARE_VALUE(Int16LE, 0)
 	Pack<UInt8, 2>		mStatus;
-	MACRO_DECLARE_STREAM_TYPE(Setpoint)
+	MACRO_DECLARE_STREAM_TYPE(AnalogOutputInt16)
 
 	apl::CopyableBuffer GetValueBytes(const uint8_t*) const;
 };
 
-struct Group41Var3 : public CommandObject<Setpoint> {
+struct Group41Var3 : public CommandObject<AnalogOutputFloat32> {
 	MACRO_NAME_SINGLETON_INSTANCE(Group41Var3)
 	MACRO_GROUP_VAR_SIZE_FUNC(41, 3, 5)
 	MACRO_DECLARE_VALUE(SingleFloat, 0)
 	Pack<UInt8, 4>		mStatus;
-	MACRO_DECLARE_STREAM_TYPE(Setpoint)
+	MACRO_DECLARE_STREAM_TYPE(AnalogOutputFloat32)
 
 	apl::CopyableBuffer GetValueBytes(const uint8_t*) const;
 };
 
-struct Group41Var4 : public CommandObject<Setpoint> {
+struct Group41Var4 : public CommandObject<AnalogOutputDouble64> {
 	MACRO_NAME_SINGLETON_INSTANCE(Group41Var4)
 	MACRO_GROUP_VAR_SIZE_FUNC(41, 4, 9)
 	MACRO_DECLARE_VALUE(DoubleFloat, 0)
 	Pack<UInt8, 8>		mStatus;
-	MACRO_DECLARE_STREAM_TYPE(Setpoint)
+	MACRO_DECLARE_STREAM_TYPE(AnalogOutputDouble64)
 
 	apl::CopyableBuffer GetValueBytes(const uint8_t*) const;
 };

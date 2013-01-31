@@ -28,53 +28,13 @@
 //
 #include <boost/test/unit_test.hpp>
 #include <APLTestTools/TestHelpers.h>
-#include <APL/CommandTypes.h>
 
-#include <limits>
+#include <DNP3/CommandStatus.h>
+#include <DNP3/ControlRelayOutputBlock.h>
 
-using namespace apl;
+using namespace apl::dnp;
 
-template<class T>
-void OptimalTypeTest(T val, SetpointEncodingType correct)
-{
-	Setpoint sp(val);
-	BOOST_REQUIRE_EQUAL(correct, sp.GetOptimalEncodingType());
-}
-
-template<class T>
-void AutoTypeTest(T val, SetpointEncodingType correct)
-{
-	Setpoint sp; sp.SetValue(val);
-	BOOST_REQUIRE_EQUAL(sp.GetValue(), val);
-	BOOST_REQUIRE_EQUAL(correct, sp.GetEncodingType());
-}
 BOOST_AUTO_TEST_SUITE(CommandTypesSuite)
-
-BOOST_AUTO_TEST_CASE(SetpointSet)
-{
-	AutoTypeTest(0.01, SPET_AUTO_DOUBLE);
-}
-BOOST_AUTO_TEST_CASE(SetpointSetInt)
-{
-	AutoTypeTest(5, SPET_AUTO_INT);
-}
-BOOST_AUTO_TEST_CASE(OptimalFloat)
-{
-	OptimalTypeTest(100.0, SPET_FLOAT);
-}
-BOOST_AUTO_TEST_CASE(OptimalDouble)
-{
-	OptimalTypeTest(std::numeric_limits<float>::max() * 100.0, SPET_DOUBLE);
-}
-BOOST_AUTO_TEST_CASE(OptimalInt16)
-{
-	OptimalTypeTest(55, SPET_INT16);
-}
-BOOST_AUTO_TEST_CASE(OptimalInt32)
-{
-	OptimalTypeTest(80000, SPET_INT32);
-}
-
 
 BOOST_AUTO_TEST_CASE(ByteToCommand)
 {
@@ -128,5 +88,4 @@ BOOST_AUTO_TEST_CASE(ControlToString)
 }
 
 BOOST_AUTO_TEST_SUITE_END()
-
 

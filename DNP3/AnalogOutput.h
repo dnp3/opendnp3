@@ -57,7 +57,7 @@ public:
 	virtual std::string ToString() const = 0;
 
 	T GetValue() const {
-		mValue;
+		return mValue;
 	}		
 
 public:
@@ -69,6 +69,9 @@ protected:
 
 class AnalogOutputInt16 : public AnalogOutput<int16_t>
 {
+	public:	
+
+	AnalogOutputInt16(int16_t);
 
 	bool operator==(const AnalogOutputInt16& arRHS) const;
 
@@ -77,6 +80,10 @@ class AnalogOutputInt16 : public AnalogOutput<int16_t>
 
 class AnalogOutputInt32 : public AnalogOutput<int32_t>
 {	
+	public:	
+
+	AnalogOutputInt32(int32_t);
+
 	bool operator==(const AnalogOutputInt32& arRHS) const;
 
 	std::string ToString() const;
@@ -84,6 +91,10 @@ class AnalogOutputInt32 : public AnalogOutput<int32_t>
 
 class AnalogOutputFloat32 : public AnalogOutput<float>
 {	
+	public:	
+
+	AnalogOutputFloat32(float);
+
 	bool operator==(const AnalogOutputFloat32& arRHS) const;
 
 	std::string ToString() const;
@@ -91,6 +102,10 @@ class AnalogOutputFloat32 : public AnalogOutput<float>
 
 class AnalogOutputDouble64 : public AnalogOutput<double>
 {	
+	public:
+
+	AnalogOutputDouble64(double);
+
 	bool operator==(const AnalogOutputDouble64& arRHS) const;
 
 	std::string ToString() const;

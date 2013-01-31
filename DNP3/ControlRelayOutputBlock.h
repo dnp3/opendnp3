@@ -65,11 +65,11 @@ std::string ToString(ControlCode aType);
  * require setting the mOnTimeMS, mOffTimeMS and mCount variables, otherwise
  * just use the defaults.
  */
-class BinaryOutput
+class ControlRelayOutputBlock
 {
 	public:	
 
-	BinaryOutput(ControlCode aCode = CC_LATCH_ON, uint8_t aCount = 1, uint32_t aOnTime = 100, uint32_t aOffTime = 100);
+	ControlRelayOutputBlock(ControlCode aCode = CC_LATCH_ON, uint8_t aCount = 1, uint32_t aOnTime = 100, uint32_t aOffTime = 100);
 
 	ControlCode GetCode() const;
 
@@ -81,7 +81,7 @@ class BinaryOutput
 
 	std::string ToString() const;
 
-	bool operator==(const BinaryOutput& arRHS) const {
+	bool operator==(const ControlRelayOutputBlock& arRHS) const {
 		return (mRawCode == arRHS.mRawCode) && (mCount == arRHS.mCount) && (mOnTimeMS == arRHS.mOnTimeMS) && (mOffTimeMS == arRHS.mOffTimeMS);
 	}	
 };

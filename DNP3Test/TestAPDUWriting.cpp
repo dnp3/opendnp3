@@ -36,7 +36,6 @@
 
 #include <APL/DataTypes.h>
 #include <APL/QualityMasks.h>
-#include <APL/CommandTypes.h>
 #include <APL/ToHex.h>
 #include <APLTestTools/BufferHelpers.h>
 
@@ -248,7 +247,7 @@ BOOST_AUTO_TEST_CASE(SingleSetpoint)
 	frag.SetControl(true, true, false, false, 0);
 
 	IndexedWriteIterator itr = frag.WriteIndexed(Group41Var3::Inst(), 1, QC_1B_CNT_1B_INDEX);
-	Setpoint s(100.0);
+	AnalogOutputFloat32 s(100.0);
 
 	itr.SetIndex(1);
 	Group41Var3::Inst()->Write(*itr, s);
@@ -267,8 +266,8 @@ BOOST_AUTO_TEST_CASE(DoubleSetpoint)
 	frag.SetControl(true, true, false, false, 0);
 
 	IndexedWriteIterator itr = frag.WriteIndexed(Group41Var4::Inst(), 1, QC_1B_CNT_1B_INDEX);
-	Setpoint s(100.0);
-
+	AnalogOutputDouble64 s(100.0);
+	
 	itr.SetIndex(1);
 
 	Group41Var4::Inst()->Write(*itr, s);
