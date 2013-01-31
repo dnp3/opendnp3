@@ -38,9 +38,6 @@
     <ClCompile Include="TestCastLongLongDouble.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="TestCommandTypes.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="TestLog.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

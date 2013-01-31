@@ -33,6 +33,8 @@
 
 namespace apl
 {
+namespace dnp
+{
 
 /**
  * There are a number of types of controls. The best way to understand this
@@ -85,7 +87,7 @@ class BinaryOutput
 };
 
 
-}
+}}
 
 /* vim: set ts=4 sw=4: */
 

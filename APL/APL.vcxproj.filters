@@ -243,12 +243,6 @@
     <ClInclude Include="ExecutorPause.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ControlRelayOutputBlock.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="AnalogOutput.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ASIOSerialHelpers.cpp">
@@ -411,15 +405,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ExecutorPause.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="CommandStatus.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ControlRelayOutputBlock.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="AnalogOutput.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

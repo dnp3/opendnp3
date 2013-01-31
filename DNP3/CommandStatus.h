@@ -26,75 +26,41 @@
 //
 // Contact Automatak, LLC for a commercial license to these modifications
 //
-#ifndef __ANALOG_OUTPUT_H_
-#define __ANALOG_OUTPUT_H_
-#include "CommandStatus.h"
+#ifndef __COMMAND_STATUS_H_
+#define __CONTROL_STATUS_H_
+
+#include <cstdint>
+#include <string>
 
 namespace apl
 {
+namespace dnp
+{
 
 /**
- * The object to represent a setpoint request from the master. Think of
- * this like turning a dial on the front of a machine to desired setting.
- * 
+ * When a command is recieved from a master the application sends a code to
+ * indicate if it was successfull or if not what class of error was
+ * encountered.  Each code has a description that indicates its customary
+ * meaning.
  */
-template <class T>
-class AnalogOutput
-{
-public:
-
-	/**
-	 * Creates a new instance with underlying type T
-     */
-	AnalogOutput(T aValue) : 
-		mValue(aValue),
-		mStatus(CommandStatus::CS_SUCCESS)
-	{}
-
-	virtual std::string ToString() const = 0;
-
-	T GetValue() const {
-		mValue;
-	}		
-
-public:
-	CommandStatus mStatus;
-	
-protected:
-	T mValue;
+enum CommandStatus {
+	CS_SUCCESS = 0,			//!< command was successfully recieved and handled
+	CS_TIMEOUT = 1,			//!< command timedout before completing
+	CS_NO_SELECT = 2,		//!< command requires being selected before operate, configuration issue
+	CS_FORMAT_ERROR = 3,	//!< bad control code or timing values
+	CS_NOT_SUPPORTED = 4,	//!< command is not implemented
+	CS_ALREADY_ACTIVE = 5,	//!< command is allready in progress or its allready in that mode
+	CS_HARDWARE_ERROR = 6,	//!< something is stopping the command, often a local/remote interlock
+	CS_LOCAL = 7,			//!< the function goverened by the control is in local only control
+	CS_TOO_MANY_OPS = 8,	//!< the command has been done too often and has been throttled
+	CS_NOT_AUTHORIZED = 9,	//!< the command was rejected because the device denied it or an RTU intercepted it
+	CS_UNDEFINED = 127		//!< 10 to 126 are currently reserved
 };
 
-class AnalogOutputInt16 : public AnalogOutput<int16_t>
-{
+CommandStatus ByteToCommandStatus(uint8_t aField);
+std::string ToString(CommandStatus aType);
 
-	bool operator==(const AnalogOutputInt16& arRHS) const;
-
-	std::string ToString() const;
-};
-
-class AnalogOutputInt32 : public AnalogOutput<int32_t>
-{	
-	bool operator==(const AnalogOutputInt32& arRHS) const;
-
-	std::string ToString() const;
-};
-
-class AnalogOutputFloat32 : public AnalogOutput<float>
-{	
-	bool operator==(const AnalogOutputFloat32& arRHS) const;
-
-	std::string ToString() const;
-};
-
-class AnalogOutputDouble64 : public AnalogOutput<double>
-{	
-	bool operator==(const AnalogOutputDouble64& arRHS) const;
-
-	std::string ToString() const;
-};
-
-
-}
+}}
 
 /* vim: set ts=4 sw=4: */
 

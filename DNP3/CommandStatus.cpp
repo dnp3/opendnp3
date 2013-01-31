@@ -30,6 +30,8 @@
 
 namespace apl
 {
+namespace dnp
+{
 
 #define MACRO_CASE_DECLARE(type) case(type): return type;
 
@@ -73,4 +75,4 @@ std::string ToString(CommandStatus aType)
 	}
 }
 
-}
+}}

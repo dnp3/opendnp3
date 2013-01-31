@@ -13,6 +13,7 @@
   <ItemGroup>
     <ClInclude Include="..\DNP3Test\MockCommandHandler.h" />
     <ClInclude Include="AlwaysOpeningVtoRouter.h" />
+    <ClInclude Include="AnalogOutput.h" />
     <ClInclude Include="APDU.h" />
     <ClInclude Include="APDUConstants.h" />
     <ClInclude Include="AppChannelStates.h" />
@@ -24,6 +25,9 @@
     <ClInclude Include="ApplicationStack.h" />
     <ClInclude Include="BufferSetTypes.h" />
     <ClInclude Include="BufferTypes.h" />
+    <ClInclude Include="CommandResponse.h" />
+    <ClInclude Include="CommandStatus.h" />
+    <ClInclude Include="ControlRelayOutputBlock.h" />
     <ClInclude Include="DNP3Channel.h" />
     <ClInclude Include="ClassCounter.h" />
     <ClInclude Include="ClassMask.h" />
@@ -119,6 +123,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AlwaysOpeningVtoRouter.cpp" />
+    <ClCompile Include="AnalogOutput.cpp" />
     <ClCompile Include="APDU.cpp" />
     <ClCompile Include="APDUConstants.cpp" />
     <ClCompile Include="AppChannelStates.cpp" />
@@ -128,6 +133,8 @@
     <ClCompile Include="AppLayerChannel.cpp" />
     <ClCompile Include="ApplicationStack.cpp" />
     <ClCompile Include="BufferTypes.cpp" />
+    <ClCompile Include="CommandStatus.cpp" />
+    <ClCompile Include="ControlRelayOutputBlock.cpp" />
     <ClCompile Include="DNP3Channel.cpp" />
     <ClCompile Include="ClassCounter.cpp" />
     <ClCompile Include="CommandTask.cpp" />

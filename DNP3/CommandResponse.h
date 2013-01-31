@@ -26,39 +26,26 @@
 //
 // Contact Automatak, LLC for a commercial license to these modifications
 //
-#ifndef __COMMAND_STATUS_H_
-#define __CONTROL_STATUS_H_
+#ifndef __COMMAND_RESPONSE_H_
+#define __COMMAND_RESPONSE_H_
 
-#include <cstdint>
-#include <string>
+#include "CommandStatus.h"
 
 namespace apl
 {
+namespace dnp
+{
 
-/**
- * When a command is recieved from a master the application sends a code to
- * indicate if it was successfull or if not what class of error was
- * encountered.  Each code has a description that indicates its customary
- * meaning.
- */
-enum CommandStatus {
-	CS_SUCCESS = 0,			//!< command was successfully recieved and handled
-	CS_TIMEOUT = 1,			//!< command timedout before completing
-	CS_NO_SELECT = 2,		//!< command requires being selected before operate, configuration issue
-	CS_FORMAT_ERROR = 3,	//!< bad control code or timing values
-	CS_NOT_SUPPORTED = 4,	//!< command is not implemented
-	CS_ALREADY_ACTIVE = 5,	//!< command is allready in progress or its allready in that mode
-	CS_HARDWARE_ERROR = 6,	//!< something is stopping the command, often a local/remote interlock
-	CS_LOCAL = 7,			//!< the function goverened by the control is in local only control
-	CS_TOO_MANY_OPS = 8,	//!< the command has been done too often and has been throttled
-	CS_NOT_AUTHORIZED = 9,	//!< the command was rejected because the device denied it or an RTU intercepted it
-	CS_UNDEFINED = 127		//!< 10 to 126 are currently reserved
+class CommandResponse
+{
+public:
+	CommandResponse() {}
+	CommandResponse(CommandStatus aStatus) : mResult(aStatus) {}
+
+	CommandStatus mResult;
 };
 
-CommandStatus ByteToCommandStatus(uint8_t aField);
-std::string ToString(CommandStatus aType);
-
-}
+}}
 
 /* vim: set ts=4 sw=4: */
 

@@ -26,24 +26,78 @@
 //
 // Contact Automatak, LLC for a commercial license to these modifications
 //
-#ifndef __COMMAND_RESPONSE_H_
-#define __COMMAND_RESPONSE_H_
+#ifndef __ANALOG_OUTPUT_H_
+#define __ANALOG_OUTPUT_H_
 
-#include "CommandTypes.h"
+#include "CommandStatus.h"
 
 namespace apl
 {
+namespace dnp
+{
 
-class CommandResponse
+/**
+ * The object to represent a setpoint request from the master. Think of
+ * this like turning a dial on the front of a machine to desired setting.
+ * 
+ */
+template <class T>
+class AnalogOutput
 {
 public:
-	CommandResponse() {}
-	CommandResponse(CommandStatus aStatus) : mResult(aStatus) {}
 
-	CommandStatus mResult;
+	/**
+	 * Creates a new instance with underlying type T
+     */
+	AnalogOutput(T aValue) : 
+		mValue(aValue),
+		mStatus(CommandStatus::CS_SUCCESS)
+	{}
+
+	virtual std::string ToString() const = 0;
+
+	T GetValue() const {
+		mValue;
+	}		
+
+public:
+	CommandStatus mStatus;
+	
+protected:
+	T mValue;
 };
 
-}
+class AnalogOutputInt16 : public AnalogOutput<int16_t>
+{
+
+	bool operator==(const AnalogOutputInt16& arRHS) const;
+
+	std::string ToString() const;
+};
+
+class AnalogOutputInt32 : public AnalogOutput<int32_t>
+{	
+	bool operator==(const AnalogOutputInt32& arRHS) const;
+
+	std::string ToString() const;
+};
+
+class AnalogOutputFloat32 : public AnalogOutput<float>
+{	
+	bool operator==(const AnalogOutputFloat32& arRHS) const;
+
+	std::string ToString() const;
+};
+
+class AnalogOutputDouble64 : public AnalogOutput<double>
+{	
+	bool operator==(const AnalogOutputDouble64& arRHS) const;
+
+	std::string ToString() const;
+};
+
+
+}}
 
 /* vim: set ts=4 sw=4: */
 

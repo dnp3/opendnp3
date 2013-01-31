@@ -35,6 +35,8 @@ using namespace std;
 
 namespace apl
 {
+namespace dnp
+{
 
 bool AnalogOutputInt16::operator==(const AnalogOutputInt16& arRHS) const
 {
@@ -84,6 +86,6 @@ std::string AnalogOutputDouble64::ToString() const
 	return oss.str();
 }
 
-}
+}}
 
 /* vim: set ts=4 sw=4: */
