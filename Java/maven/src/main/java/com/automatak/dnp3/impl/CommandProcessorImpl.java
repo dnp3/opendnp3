@@ -7,11 +7,6 @@ public class CommandProcessorImpl implements CommandProcessor {
 
     private final long nativeptr;
 
-    private interface StatusCallback
-    {
-        void onStatusCallback(int status);
-    }
-
     private static StatusCallback fromPromise(final Promise<CommandStatus> p)
     {
         return new StatusCallback() {
