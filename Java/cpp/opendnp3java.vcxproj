@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CommandHandlerAdapter.h" />
     <ClInclude Include="com_automatak_dnp3_impl_ChannelImpl.h" />
     <ClInclude Include="com_automatak_dnp3_impl_ManagerImpl.h" />
     <ClInclude Include="com_automatak_dnp3_impl_MasterImpl.h" />
@@ -36,6 +37,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CommandHandlerAdapter.cpp" />
     <ClCompile Include="com_automatak_dnp3_impl_ChannelImpl.cpp" />
     <ClCompile Include="com_automatak_dnp3_impl_ManagerImpl.cpp" />
     <ClCompile Include="com_automatak_dnp3_impl_MasterImpl.cpp" />
