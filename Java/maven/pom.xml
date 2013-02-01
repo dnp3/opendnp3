@@ -43,12 +43,14 @@
                 <artifactId>maven-license-plugin</artifactId>
                 <version>${maven-license-plugin.version}</version>
                 <configuration>
+                    <basedir>../</basedir>
                     <strictCheck>true</strictCheck>
                     <failIfMissing>true</failIfMissing>
                     <aggregate>true</aggregate>
                     <header>AGPL_FILE_HEADER</header>
                     <includes>
-                        <include>**/*.java</include>
+                        <include>maven/**/*.java</include>
+                        <include>cpp/*.cpp</include>
                     </includes>
                 </configuration>
                 <executions>
