@@ -51,7 +51,7 @@ void DoControlSelectAndOperate(MasterTestObject& t, std::function<void (CommandR
 	TestForIntegrityPoll(t);
 	BOOST_REQUIRE_EQUAL(t.app.NumAPDU(), 0); // check that the master sends no more packets
 
-	BinaryOutput bo(CC_PULSE); bo.mStatus = CS_SUCCESS;
+	ControlRelayOutputBlock bo(CC_PULSE); bo.mStatus = CS_SUCCESS;
 	t.master.GetCommandProcessor()->SelectAndOperate(bo, 1, callback);
 	BOOST_REQUIRE(t.mts.DispatchOne());
 
@@ -62,7 +62,7 @@ void DoControlSelectAndOperate(MasterTestObject& t, std::function<void (CommandR
 }
 
 template <class T>
-void TestSetpointExecution(const std::string& setpointhex, T aValue)
+void TestAnalogOutputExecution(const std::string& setpointhex, T ao)
 {
 	MasterConfig master_cfg;
 	MasterTestObject t(master_cfg);
@@ -70,9 +70,8 @@ void TestSetpointExecution(const std::string& setpointhex, T aValue)
 
 	TestForIntegrityPoll(t);
 	BOOST_REQUIRE_EQUAL(t.app.NumAPDU(), 0); // check that the master sends no more packets
-
-	Setpoint st(aValue); st.mStatus = CS_SUCCESS;	
-	t.master.GetCommandProcessor()->SelectAndOperate(st, 1, [](CommandResponse cr){});
+		
+	t.master.GetCommandProcessor()->SelectAndOperate(ao, 1, [](CommandResponse cr){});
 	BOOST_REQUIRE(t.mts.DispatchOne());
 
 	BOOST_REQUIRE_EQUAL(t.Read(), "C0 03 " + setpointhex); // SELECT
@@ -318,7 +317,7 @@ BOOST_AUTO_TEST_CASE(ControlExecutionClosedState)
 
 	auto pCmdProcessor = t.master.GetCommandProcessor();
 
-	BinaryOutput bo(CC_PULSE);
+	ControlRelayOutputBlock bo(CC_PULSE);
 		
 	for(int i=0; i<10; ++i){		
 		CommandResponse rsp(CS_UNDEFINED);
@@ -340,7 +339,7 @@ BOOST_AUTO_TEST_CASE(SelectAndOperate)
 	TestForIntegrityPoll(t);
 	BOOST_REQUIRE_EQUAL(t.app.NumAPDU(), 0); // check that the master sends no more packets
 
-	BinaryOutput bo(CC_PULSE); bo.mStatus = CS_SUCCESS;
+	ControlRelayOutputBlock bo(CC_PULSE); bo.mStatus = CS_SUCCESS;
 
 	std::vector<CommandResponse> rsps;
 	t.master.GetCommandProcessor()->SelectAndOperate(bo, 1, [&](CommandResponse rsp){ 
@@ -446,7 +445,7 @@ BOOST_AUTO_TEST_CASE(DeferredControlExecution)
 	BOOST_REQUIRE_EQUAL(t.Read(), "C0 01 3C 01 06"); ;
 
 	//issue a command while the master is waiting for a response from the slave
-	BinaryOutput bo(CC_PULSE); bo.mStatus = CS_SUCCESS;	
+	ControlRelayOutputBlock bo(CC_PULSE); bo.mStatus = CS_SUCCESS;	
 	t.master.GetCommandProcessor()->SelectAndOperate(bo, 1, [](CommandResponse){});
 	BOOST_REQUIRE(t.mts.DispatchOne());
 	
@@ -458,27 +457,27 @@ BOOST_AUTO_TEST_CASE(DeferredControlExecution)
 BOOST_AUTO_TEST_CASE(SingleSetpointExecution)// Group 41 Var4
 {
 	// 100.0
-	TestSetpointExecution("29 03 17 01 01 00 00 C8 42 00", 100.0);
+	TestAnalogOutputExecution("29 03 17 01 01 00 00 C8 42 00", AnalogOutputFloat32(100.0f));
 
 	// 95.6
-	TestSetpointExecution("29 03 17 01 01 33 33 BF 42 00", 95.6);
+	TestAnalogOutputExecution("29 03 17 01 01 33 33 BF 42 00", AnalogOutputFloat32(95.6f));
 }
 
 BOOST_AUTO_TEST_CASE(DoubleSetpointExecution)
 {
-	TestSetpointExecution("29 04 17 01 01 00 00 00 E7 FF FF 58 48 00", SingleFloat::Max * 100.0);
+	TestAnalogOutputExecution("29 04 17 01 01 00 00 00 E7 FF FF 58 48 00", AnalogOutputDouble64(SingleFloat::Max * 100.0));
 }
 
 BOOST_AUTO_TEST_CASE(Int32SetpointExecution)
 {
 	// Group 41 Var1, Int32, 65536
-	TestSetpointExecution("29 01 17 01 01 00 00 01 00 00", 65536);
+	TestAnalogOutputExecution("29 01 17 01 01 00 00 01 00 00", AnalogOutputInt32(65536));
 }
 
 BOOST_AUTO_TEST_CASE(Int16SetpointExecution)
 {
 	// Group 41 Var2, Int16, 100
-	TestSetpointExecution("29 02 17 01 01 64 00 00", 100);
+	TestAnalogOutputExecution("29 02 17 01 01 64 00 00", AnalogOutputInt16(100));
 }
 
 BOOST_AUTO_TEST_CASE(SolicitedResponseWithData)

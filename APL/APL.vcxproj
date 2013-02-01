@@ -23,7 +23,6 @@
     <ClInclude Include="AsyncTaskScheduler.h" />
     <ClInclude Include="BaseDataTypes.h" />
     <ClInclude Include="ChangeBuffer.h" />
-    <ClInclude Include="CommandTypes.h" />
     <ClInclude Include="CopyableBuffer.h" />
     <ClInclude Include="CRC.h" />
     <ClInclude Include="DataInterfaces.h" />
@@ -101,7 +100,6 @@
     <ClCompile Include="AsyncTaskScheduler.cpp" />
     <ClCompile Include="BaseDataTypes.cpp" />
     <ClCompile Include="ChangeBuffer.cpp" />
-    <ClCompile Include="CommandTypes.cpp" />
     <ClCompile Include="CopyableBuffer.cpp" />
     <ClCompile Include="CRC.cpp" />
     <ClCompile Include="Exception.cpp" />

@@ -29,7 +29,10 @@
 #ifndef __I_COMMAND_PROCESSOR_H_
 #define __I_COMMAND_PROCESSOR_H_
 
-#include <APL/CommandTypes.h>
+#include "AnalogOutput.h"
+#include "ControlRelayOutputBlock.h"
+#include "CommandResponse.h"
+
 #include <functional>
 
 namespace apl
@@ -38,20 +41,26 @@ namespace dnp
 {
 
 /**
-* Interface used to dispatch SELECT / OPERATE / DIRECT OPERATE (Binary/Analog output)
+* Interface used to dispatch SELECT / OPERATE / DIRECT OPERATE
 */
 class ICommandProcessor
 {
 	public:
 
-		virtual void SelectAndOperate(const BinaryOutput& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback) = 0;
+		virtual void SelectAndOperate(const ControlRelayOutputBlock& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback) = 0;		
+		virtual void DirectOperate(const ControlRelayOutputBlock& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback) = 0;
 
-		virtual void SelectAndOperate(const Setpoint& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback) = 0;		
+		virtual void SelectAndOperate(const AnalogOutputInt16& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback) = 0;		
+		virtual void DirectOperate(const AnalogOutputInt16& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback) = 0;
 
-		virtual void DirectOperate(const BinaryOutput& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback) = 0;
+		virtual void SelectAndOperate(const AnalogOutputInt32& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback) = 0;		
+		virtual void DirectOperate(const AnalogOutputInt32& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback) = 0;
 
-		virtual void DirectOperate(const Setpoint& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback) = 0;
+		virtual void SelectAndOperate(const AnalogOutputFloat32& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback) = 0;		
+		virtual void DirectOperate(const AnalogOutputFloat32& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback) = 0;
 
+		virtual void SelectAndOperate(const AnalogOutputDouble64& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback) = 0;		
+		virtual void DirectOperate(const AnalogOutputDouble64& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback) = 0;
 };
 
 }

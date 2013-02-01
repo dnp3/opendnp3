@@ -26,59 +26,94 @@
 //
 // Contact Automatak, LLC for a commercial license to these modifications
 //
-#ifndef __COMMAND_TASK_H_
-#define __COMMAND_TASK_H_
+#ifndef __ANALOG_OUTPUT_H_
+#define __ANALOG_OUTPUT_H_
 
-#include "MasterTaskBase.h"
-#include "APDUConstants.h"
 #include "CommandStatus.h"
-
-#include <functional>
-#include <queue>
 
 namespace apl
 {
 namespace dnp
 {
 
-// Base class with machinery for performing command operations
-class CommandTask : public MasterTaskBase
+/**
+ * The object to represent a setpoint request from the master. Think of
+ * this like turning a dial on the front of a machine to desired setting.
+ * 
+ */
+template <class T>
+class AnalogOutput
 {
-	typedef std::function<CommandStatus (const APDU&)> Validator;
-	typedef std::function<Validator (APDU&, FunctionCodes)> Formatter;
-	typedef std::function<void (CommandStatus)> Responder;
+public:
+
+	/**
+	 * Creates a new instance with underlying type T
+     */
+	AnalogOutput(T aValue) : 
+		mValue(aValue),
+		mStatus(CommandStatus::CS_SUCCESS)
+	{}
+
+	virtual std::string ToString() const = 0;
+
+	T GetValue() const {
+		return mValue;
+	}		
 
 public:
-	CommandTask(Logger*);	
-
-	void Configure(const Formatter& arFormatter, const Responder& arResponder);
-	void AddCommandCode(FunctionCodes aCode); 
-
-	void ConfigureRequest(APDU& arAPDU);
-
-	std::string Name() const;
-
-protected:	
-
-	Formatter mFormatter;
-	Validator mValidator;	
-	Responder mResponder;
+	CommandStatus mStatus;
 	
-	// override from base class
-	void OnFailure();
+protected:
+	T mValue;
+};
 
-private:
+class AnalogOutputInt16 : public AnalogOutput<int16_t>
+{
+	public:	
 
-	std::deque<FunctionCodes> mCodes;
+	AnalogOutputInt16(int16_t);
 
-	void Respond(CommandStatus aStatus);
+	bool operator==(const AnalogOutputInt16& arRHS) const;
 
-	TaskResult _OnPartialResponse(const APDU&);
-	TaskResult _OnFinalResponse(const APDU&);
+	std::string ToString() const;
+};
+
+class AnalogOutputInt32 : public AnalogOutput<int32_t>
+{	
+	public:	
+
+	AnalogOutputInt32(int32_t);
+
+	bool operator==(const AnalogOutputInt32& arRHS) const;
+
+	std::string ToString() const;
+};
+
+class AnalogOutputFloat32 : public AnalogOutput<float>
+{	
+	public:	
+
+	AnalogOutputFloat32(float);
+
+	bool operator==(const AnalogOutputFloat32& arRHS) const;
+
+	std::string ToString() const;
+};
+
+class AnalogOutputDouble64 : public AnalogOutput<double>
+{	
+	public:
+
+	AnalogOutputDouble64(double);
+
+	bool operator==(const AnalogOutputDouble64& arRHS) const;
+
+	std::string ToString() const;
 };
 
 
-}
-} //ens ns
+}}
+
+/* vim: set ts=4 sw=4: */
 
 #endif

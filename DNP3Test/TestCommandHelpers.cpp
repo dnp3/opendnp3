@@ -29,7 +29,6 @@
 
 #include <boost/test/unit_test.hpp>
 #include <APLTestTools/TestHelpers.h>
-#include <APL/CommandTypes.h>
 #include <DNP3/CommandHelpers.h>
 #include <DNP3/Objects.h>
 #include <APL/ToHex.h>
@@ -44,8 +43,8 @@ BOOST_AUTO_TEST_SUITE(CommandHelpersTestSuite)
 BOOST_AUTO_TEST_CASE(ConfigurationAndValidation)
 {
 	APDU frag;
-	BinaryOutput bo(ControlCode::CC_LATCH_ON);
-	auto validator = CommandHelpers::ConfigureRequest<BinaryOutput>(frag, FC_OPERATE, bo, 0, Group12Var1::Inst());
+	ControlRelayOutputBlock crob(ControlCode::CC_LATCH_ON);
+	auto validator = CommandHelpers::ConfigureRequest<ControlRelayOutputBlock>(frag, FC_OPERATE, crob, 0, Group12Var1::Inst());
 	
 	std::string hex = toHex(frag.GetBuffer(), frag.Size(), true);
 	

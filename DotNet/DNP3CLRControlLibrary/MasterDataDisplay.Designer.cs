@@ -184,8 +184,7 @@ namespace TestSetControlLibrary
             // 
             this.analogOutputToolStripMenuItem.Name = "analogOutputToolStripMenuItem";
             this.analogOutputToolStripMenuItem.Size = new System.Drawing.Size(155, 22);
-            this.analogOutputToolStripMenuItem.Text = "Analog Output";
-            this.analogOutputToolStripMenuItem.Click += new System.EventHandler(this.analogOutputToolStripMenuItem_Click);
+            this.analogOutputToolStripMenuItem.Text = "Analog Output";            
             // 
             // binaryOutputToolStripMenuItem
             // 

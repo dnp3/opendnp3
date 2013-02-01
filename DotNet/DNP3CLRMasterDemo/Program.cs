@@ -92,7 +92,7 @@ namespace DotNetMasterDemo
             {
                 System.UInt32 index = System.UInt32.Parse(Console.ReadLine());
                 DateTime start = DateTime.Now;
-                var future = master.GetCommandProcessor().SelectAndOperate(new BinaryOutput(ControlCode.CC_PULSE, 1, 100, 100), index);
+                var future = master.GetCommandProcessor().SelectAndOperate(new ControlRelayOutputBlock(ControlCode.CC_PULSE, 1, 100, 100), index);
                 CommandStatus result = future.Await();
                 DateTime end = DateTime.Now;
                 TimeSpan duration = end - start;                

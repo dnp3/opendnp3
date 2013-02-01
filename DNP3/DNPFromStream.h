@@ -37,8 +37,6 @@
 #pragma warning ( disable : 4244 )
 #endif
 
-#include <APL/CommandTypes.h>
-
 namespace apl
 {
 namespace dnp
@@ -51,10 +49,7 @@ namespace dnp
 class DNPFromStream
 {
 public:
-
-	template <typename T, typename PayloadType, SetpointEncodingType EncodingType>
-	static Setpoint ReadSetpoint(const uint8_t*, const T*);
-
+	
 	//templated conversion functions
 	template <typename T>
 	static typename T::DataType ReadQ(const uint8_t* apPos, const T* apObj);
@@ -77,15 +72,6 @@ public:
 	template <typename T>
 	static typename T::DataType ReadQVT(const uint8_t* apPos, const T* apObj);
 };
-
-template <typename T, typename PayloadType, apl::SetpointEncodingType EncodingType>
-inline Setpoint DNPFromStream::ReadSetpoint(const uint8_t* apPos, const T* apObj)
-{
-	Setpoint sp(static_cast<PayloadType>(apObj->mValue.Get(apPos)));
-	sp.mStatus = ByteToCommandStatus(apObj->mStatus.Get(apPos));
-	sp.SetEncodingType(EncodingType);
-	return sp;
-}
 
 template <typename T>
 inline typename T::DataType DNPFromStream::ReadQ(const uint8_t* apPos, const T* apObj)

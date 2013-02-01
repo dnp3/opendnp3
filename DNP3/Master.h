@@ -30,7 +30,6 @@
 #define __MASTER_H_
 
 #include <APL/Loggable.h>
-#include <APL/CommandTypes.h>
 #include <APL/TimeSource.h>
 
 #include "APDU.h"
@@ -139,16 +138,37 @@ public:
 	}
 
 	// These methods are inherited privately
-	void SelectAndOperate(const BinaryOutput& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback);
-	void SelectAndOperate(const Setpoint& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback);	
-	void DirectOperate(const BinaryOutput& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback);
-	void DirectOperate(const Setpoint& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback);
+	void SelectAndOperate(const ControlRelayOutputBlock& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback);		
+	void DirectOperate(const ControlRelayOutputBlock& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback);
+
+	void SelectAndOperate(const AnalogOutputInt16& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback);		
+	void DirectOperate(const AnalogOutputInt16& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback);
+
+	void SelectAndOperate(const AnalogOutputInt32& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback);		
+	void DirectOperate(const AnalogOutputInt32& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback);
+
+	void SelectAndOperate(const AnalogOutputFloat32& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback);		
+	void DirectOperate(const AnalogOutputFloat32& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback);
+
+	void SelectAndOperate(const AnalogOutputDouble64& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback);		
+	void DirectOperate(const AnalogOutputDouble64& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback);
 
 
 private:
 
-	void ConfigureCommandTask(const BinaryOutput& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback);
-	void ConfigureCommandTask(const Setpoint& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback);
+	template <class T>
+	void ConfigureCommandTask(const T& arCommand, size_t aIndex, CommandObject<T>* apObj, std::function<void (CommandResponse)> aCallback)
+	{
+		auto formatter = [=](APDU& arAPDU, FunctionCodes aCode){ 		
+			return CommandHelpers::ConfigureRequest(arAPDU, aCode, arCommand, aIndex, apObj);
+		};
+		auto responder = [=](CommandStatus aStatus){
+			mpExecutor->Post([=](){ 
+				aCallback(CommandResponse(aStatus));
+			});
+		};
+		mCommandTask.Configure(formatter, responder);
+	}
 
 	void UpdateState(StackStates aState);
 

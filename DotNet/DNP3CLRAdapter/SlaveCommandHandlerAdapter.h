@@ -47,17 +47,25 @@ namespace Adapter
 		public:
 			SlaveCommandHandlerAdapter(DNP3::Interface::ICommandHandler^ proxy);
 
-			apl::CommandStatus Select(const apl::BinaryOutput& arCommand, size_t aIndex, uint8_t aSequence);
+			apl::dnp::CommandStatus Select(const apl::dnp::ControlRelayOutputBlock& arCommand, size_t aIndex, uint8_t aSequence);
+			apl::dnp::CommandStatus Select(const apl::dnp::AnalogOutputInt32& arCommand, size_t aIndex, uint8_t aSequence);
+			apl::dnp::CommandStatus Select(const apl::dnp::AnalogOutputInt16& arCommand, size_t aIndex, uint8_t aSequence);
+			apl::dnp::CommandStatus Select(const apl::dnp::AnalogOutputFloat32& arCommand, size_t aIndex, uint8_t aSequence);
+			apl::dnp::CommandStatus Select(const apl::dnp::AnalogOutputDouble64& arCommand, size_t aIndex, uint8_t aSequence);
 
-			apl::CommandStatus Select(const apl::Setpoint& arCommand, size_t aIndex, uint8_t aSequence);
+			apl::dnp::CommandStatus Operate(const apl::dnp::ControlRelayOutputBlock& arCommand, size_t aIndex, uint8_t aSequence);
+			apl::dnp::CommandStatus Operate(const apl::dnp::AnalogOutputInt32& arCommand, size_t aIndex, uint8_t aSequence);
+			apl::dnp::CommandStatus Operate(const apl::dnp::AnalogOutputInt16& arCommand, size_t aIndex, uint8_t aSequence);
+			apl::dnp::CommandStatus Operate(const apl::dnp::AnalogOutputFloat32& arCommand, size_t aIndex, uint8_t aSequence);
+			apl::dnp::CommandStatus Operate(const apl::dnp::AnalogOutputDouble64& arCommand, size_t aIndex, uint8_t aSequence);
+			
 
-			apl::CommandStatus Operate(const apl::BinaryOutput& arCommand, size_t aIndex, uint8_t aSequence);
-
-			apl::CommandStatus Operate(const apl::Setpoint& arCommand, size_t aIndex, uint8_t aSequence);
-
-			apl::CommandStatus DirectOperate(const apl::BinaryOutput& arCommand, size_t aIndex);
-
-			apl::CommandStatus DirectOperate(const apl::Setpoint& arCommand, size_t aIndex);
+			apl::dnp::CommandStatus DirectOperate(const apl::dnp::ControlRelayOutputBlock& arCommand, size_t aIndex);
+			apl::dnp::CommandStatus DirectOperate(const apl::dnp::AnalogOutputInt32& arCommand, size_t aIndex);
+			apl::dnp::CommandStatus DirectOperate(const apl::dnp::AnalogOutputInt16& arCommand, size_t aIndex);
+			apl::dnp::CommandStatus DirectOperate(const apl::dnp::AnalogOutputFloat32& arCommand, size_t aIndex);
+			apl::dnp::CommandStatus DirectOperate(const apl::dnp::AnalogOutputDouble64& arCommand, size_t aIndex);
+			
 
 		private:
 			gcroot<DNP3::Interface::ICommandHandler^> proxy;

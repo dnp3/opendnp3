@@ -26,59 +26,42 @@
 //
 // Contact Automatak, LLC for a commercial license to these modifications
 //
-#ifndef __COMMAND_TASK_H_
-#define __COMMAND_TASK_H_
+#ifndef __COMMAND_STATUS_H_
+#define __COMMAND_STATUS_H_
 
-#include "MasterTaskBase.h"
-#include "APDUConstants.h"
-#include "CommandStatus.h"
-
-#include <functional>
-#include <queue>
+#include <cstdint>
+#include <string>
 
 namespace apl
 {
 namespace dnp
 {
 
-// Base class with machinery for performing command operations
-class CommandTask : public MasterTaskBase
-{
-	typedef std::function<CommandStatus (const APDU&)> Validator;
-	typedef std::function<Validator (APDU&, FunctionCodes)> Formatter;
-	typedef std::function<void (CommandStatus)> Responder;
-
-public:
-	CommandTask(Logger*);	
-
-	void Configure(const Formatter& arFormatter, const Responder& arResponder);
-	void AddCommandCode(FunctionCodes aCode); 
-
-	void ConfigureRequest(APDU& arAPDU);
-
-	std::string Name() const;
-
-protected:	
-
-	Formatter mFormatter;
-	Validator mValidator;	
-	Responder mResponder;
-	
-	// override from base class
-	void OnFailure();
-
-private:
-
-	std::deque<FunctionCodes> mCodes;
-
-	void Respond(CommandStatus aStatus);
-
-	TaskResult _OnPartialResponse(const APDU&);
-	TaskResult _OnFinalResponse(const APDU&);
+/**
+ * When a command is recieved from a master the application sends a code to
+ * indicate if it was successfull or if not what class of error was
+ * encountered.  Each code has a description that indicates its customary
+ * meaning.
+ */
+enum CommandStatus {
+	CS_SUCCESS = 0,			//!< command was successfully recieved and handled
+	CS_TIMEOUT = 1,			//!< command timedout before completing
+	CS_NO_SELECT = 2,		//!< command requires being selected before operate, configuration issue
+	CS_FORMAT_ERROR = 3,	//!< bad control code or timing values
+	CS_NOT_SUPPORTED = 4,	//!< command is not implemented
+	CS_ALREADY_ACTIVE = 5,	//!< command is allready in progress or its allready in that mode
+	CS_HARDWARE_ERROR = 6,	//!< something is stopping the command, often a local/remote interlock
+	CS_LOCAL = 7,			//!< the function goverened by the control is in local only control
+	CS_TOO_MANY_OPS = 8,	//!< the command has been done too often and has been throttled
+	CS_NOT_AUTHORIZED = 9,	//!< the command was rejected because the device denied it or an RTU intercepted it
+	CS_UNDEFINED = 127		//!< 10 to 126 are currently reserved
 };
 
+CommandStatus ByteToCommandStatus(uint8_t aField);
+std::string ToString(CommandStatus aType);
 
-}
-} //ens ns
+}}
+
+/* vim: set ts=4 sw=4: */
 
 #endif

@@ -39,32 +39,77 @@ namespace DotNetSlaveDemo
     class RejectingCommandHandler : ICommandHandler {
 
 
-        CommandStatus ICommandHandler.Select(BinaryOutput command, uint index, byte aSequence)
+        CommandStatus ICommandHandler.Select(ControlRelayOutputBlock command, uint index, byte aSequence)
         {
             return CommandStatus.CS_NOT_SUPPORTED;
         }
 
-        CommandStatus ICommandHandler.Select(Setpoint command, uint index, byte aSequence)
+        CommandStatus ICommandHandler.Select(AnalogOutputInt32 command, uint index, byte aSequence)
         {
             return CommandStatus.CS_NOT_SUPPORTED;
         }
 
-        CommandStatus ICommandHandler.Operate(BinaryOutput command, uint index, byte aSequence)
+        CommandStatus ICommandHandler.Select(AnalogOutputInt16 command, uint index, byte aSequence)
         {
             return CommandStatus.CS_NOT_SUPPORTED;
         }
 
-        CommandStatus ICommandHandler.Operate(Setpoint command, uint index, byte aSequence)
+        CommandStatus ICommandHandler.Select(AnalogOutputFloat32 command, uint index, byte aSequence)
         {
             return CommandStatus.CS_NOT_SUPPORTED;
         }
 
-        CommandStatus ICommandHandler.DirectOperate(BinaryOutput command, uint index)
+        CommandStatus ICommandHandler.Select(AnalogOutputDouble64 command, uint index, byte aSequence)
         {
             return CommandStatus.CS_NOT_SUPPORTED;
         }
 
-        CommandStatus ICommandHandler.DirectOperate(Setpoint command, uint index)
+        CommandStatus ICommandHandler.Operate(ControlRelayOutputBlock command, uint index, byte aSequence)
+        {
+            return CommandStatus.CS_NOT_SUPPORTED;
+        }
+
+        CommandStatus ICommandHandler.Operate(AnalogOutputInt32 command, uint index, byte aSequence)
+        {
+            return CommandStatus.CS_NOT_SUPPORTED;
+        }
+
+        CommandStatus ICommandHandler.Operate(AnalogOutputInt16 command, uint index, byte aSequence)
+        {
+            return CommandStatus.CS_NOT_SUPPORTED;
+        }
+
+        CommandStatus ICommandHandler.Operate(AnalogOutputFloat32 command, uint index, byte aSequence)
+        {
+            return CommandStatus.CS_NOT_SUPPORTED;
+        }
+
+        CommandStatus ICommandHandler.Operate(AnalogOutputDouble64 command, uint index, byte aSequence)
+        {
+            return CommandStatus.CS_NOT_SUPPORTED;
+        }
+
+        CommandStatus ICommandHandler.DirectOperate(ControlRelayOutputBlock command, uint index)
+        {
+            return CommandStatus.CS_NOT_SUPPORTED;
+        }
+
+        CommandStatus ICommandHandler.DirectOperate(AnalogOutputInt32 command, uint index)
+        {
+            return CommandStatus.CS_NOT_SUPPORTED;
+        }
+
+        CommandStatus ICommandHandler.DirectOperate(AnalogOutputInt16 command, uint index)
+        {
+            return CommandStatus.CS_NOT_SUPPORTED;
+        }
+
+        CommandStatus ICommandHandler.DirectOperate(AnalogOutputFloat32 command, uint index)
+        {
+            return CommandStatus.CS_NOT_SUPPORTED;
+        }
+
+        CommandStatus ICommandHandler.DirectOperate(AnalogOutputDouble64 command, uint index)
         {
             return CommandStatus.CS_NOT_SUPPORTED;
         }

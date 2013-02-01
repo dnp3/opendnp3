@@ -33,6 +33,9 @@
     <ClInclude Include="LogSubscriberAdapter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="DataObserverAdapter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="JNIHelpers.cpp">
@@ -51,6 +54,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="LogSubscriberAdapter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DataObserverAdapter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

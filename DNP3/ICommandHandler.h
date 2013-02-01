@@ -29,8 +29,8 @@
 #ifndef __I_COMMAND_HANDLER_H_
 #define __I_COMMAND_HANDLER_H_
 
-#include <APL/CommandTypes.h>
-#include <functional>
+#include "ControlRelayOutputBlock.h"
+#include "AnalogOutput.h"
 
 namespace apl
 {
@@ -44,17 +44,25 @@ class ICommandHandler
 {
 	public:
 
-		virtual CommandStatus Select(const BinaryOutput& arCommand, size_t aIndex, uint8_t aSequence) = 0;
+		virtual CommandStatus Select(const ControlRelayOutputBlock& arCommand, size_t aIndex, uint8_t aSequence) = 0;
+		virtual CommandStatus Operate(const ControlRelayOutputBlock& arCommand, size_t aIndex, uint8_t aSequence) = 0;
+		virtual CommandStatus DirectOperate(const ControlRelayOutputBlock& arCommand, size_t aIndex) = 0;
 
-		virtual CommandStatus Select(const Setpoint& arCommand, size_t aIndex, uint8_t aSequence) = 0;
+		virtual CommandStatus Select(const AnalogOutputInt16& arCommand, size_t aIndex, uint8_t aSequence) = 0;
+		virtual CommandStatus Operate(const AnalogOutputInt16& arCommand, size_t aIndex, uint8_t aSequence) = 0;
+		virtual CommandStatus DirectOperate(const AnalogOutputInt16& arCommand, size_t aIndex) = 0;
 
-		virtual CommandStatus Operate(const BinaryOutput& arCommand, size_t aIndex, uint8_t aSequence) = 0;
+		virtual CommandStatus Select(const AnalogOutputInt32& arCommand, size_t aIndex, uint8_t aSequence) = 0;
+		virtual CommandStatus Operate(const AnalogOutputInt32& arCommand, size_t aIndex, uint8_t aSequence) = 0;
+		virtual CommandStatus DirectOperate(const AnalogOutputInt32& arCommand, size_t aIndex) = 0;
 
-		virtual CommandStatus Operate(const Setpoint& arCommand, size_t aIndex, uint8_t aSequence) = 0;
+		virtual CommandStatus Select(const AnalogOutputFloat32& arCommand, size_t aIndex, uint8_t aSequence) = 0;
+		virtual CommandStatus Operate(const AnalogOutputFloat32& arCommand, size_t aIndex, uint8_t aSequence) = 0;
+		virtual CommandStatus DirectOperate(const AnalogOutputFloat32& arCommand, size_t aIndex) = 0;
 
-		virtual CommandStatus DirectOperate(const BinaryOutput& arCommand, size_t aIndex) = 0;
-
-		virtual CommandStatus DirectOperate(const Setpoint& arCommand, size_t aIndex) = 0;
+		virtual CommandStatus Select(const AnalogOutputDouble64& arCommand, size_t aIndex, uint8_t aSequence) = 0;
+		virtual CommandStatus Operate(const AnalogOutputDouble64& arCommand, size_t aIndex, uint8_t aSequence) = 0;
+		virtual CommandStatus DirectOperate(const AnalogOutputDouble64& arCommand, size_t aIndex) = 0;
 
 };
 

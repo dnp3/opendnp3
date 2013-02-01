@@ -112,8 +112,7 @@ int main(int argc, char* argv[])
 	stackConfig.link.RemoteAddr = remote_dnp3;
 
 	// The DeviceTemplate struct specifies the structure of the
-	// slave's database, as well as the index range of controls and
-	// setpoints it accepts.
+	// slave's database
 	DeviceTemplate device(5, 5, 5, 5, 5);
 	stackConfig.device = device;
 

@@ -35,9 +35,16 @@ namespace DNP3.Interface
 {
     public interface ICommandProcessor
     {
-        IFuture<CommandStatus> SelectAndOperate(BinaryOutput command, System.UInt32 index);
-        IFuture<CommandStatus> SelectAndOperate(Setpoint command, System.UInt32 index);
-        IFuture<CommandStatus> DirectOperate(BinaryOutput command, System.UInt32 index);
-        IFuture<CommandStatus> DirectOperate(Setpoint command, System.UInt32 index);
+        IFuture<CommandStatus> SelectAndOperate(ControlRelayOutputBlock command, System.UInt32 index);
+        IFuture<CommandStatus> SelectAndOperate(AnalogOutputInt32 command, System.UInt32 index);
+        IFuture<CommandStatus> SelectAndOperate(AnalogOutputInt16 command, System.UInt32 index);
+        IFuture<CommandStatus> SelectAndOperate(AnalogOutputFloat32 command, System.UInt32 index);
+        IFuture<CommandStatus> SelectAndOperate(AnalogOutputDouble64 command, System.UInt32 index);
+
+        IFuture<CommandStatus> DirectOperate(ControlRelayOutputBlock command, System.UInt32 index);
+        IFuture<CommandStatus> DirectOperate(AnalogOutputInt32 command, System.UInt32 index);
+        IFuture<CommandStatus> DirectOperate(AnalogOutputInt16 command, System.UInt32 index);
+        IFuture<CommandStatus> DirectOperate(AnalogOutputFloat32 command, System.UInt32 index);
+        IFuture<CommandStatus> DirectOperate(AnalogOutputDouble64 command, System.UInt32 index);
     }
 }

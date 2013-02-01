@@ -128,11 +128,6 @@ namespace TestSetControlLibrary
             
             view.Items[idx] = render(meas, index, id);  
         }
-
-        private void analogOutputToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            var form = new SetpointForm(this.cmdProcessor);
-            form.Show();
-        }
+       
     }
 }

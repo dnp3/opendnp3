@@ -26,59 +26,53 @@
 //
 // Contact Automatak, LLC for a commercial license to these modifications
 //
-#ifndef __COMMAND_TASK_H_
-#define __COMMAND_TASK_H_
-
-#include "MasterTaskBase.h"
-#include "APDUConstants.h"
 #include "CommandStatus.h"
-
-#include <functional>
-#include <queue>
 
 namespace apl
 {
 namespace dnp
 {
 
-// Base class with machinery for performing command operations
-class CommandTask : public MasterTaskBase
+#define MACRO_CASE_DECLARE(type) case(type): return type;
+
+CommandStatus ByteToCommandStatus(uint8_t aField)
 {
-	typedef std::function<CommandStatus (const APDU&)> Validator;
-	typedef std::function<Validator (APDU&, FunctionCodes)> Formatter;
-	typedef std::function<void (CommandStatus)> Responder;
+	switch(aField) {
+		MACRO_CASE_DECLARE(CS_SUCCESS)
+		MACRO_CASE_DECLARE(CS_TIMEOUT)
+		MACRO_CASE_DECLARE(CS_NO_SELECT)
+		MACRO_CASE_DECLARE(CS_FORMAT_ERROR)
+		MACRO_CASE_DECLARE(CS_NOT_SUPPORTED)
+		MACRO_CASE_DECLARE(CS_ALREADY_ACTIVE)
+		MACRO_CASE_DECLARE(CS_HARDWARE_ERROR)
+		MACRO_CASE_DECLARE(CS_LOCAL)
+		MACRO_CASE_DECLARE(CS_TOO_MANY_OPS)
+		MACRO_CASE_DECLARE(CS_NOT_AUTHORIZED)
 
-public:
-	CommandTask(Logger*);	
-
-	void Configure(const Formatter& arFormatter, const Responder& arResponder);
-	void AddCommandCode(FunctionCodes aCode); 
-
-	void ConfigureRequest(APDU& arAPDU);
-
-	std::string Name() const;
-
-protected:	
-
-	Formatter mFormatter;
-	Validator mValidator;	
-	Responder mResponder;
-	
-	// override from base class
-	void OnFailure();
-
-private:
-
-	std::deque<FunctionCodes> mCodes;
-
-	void Respond(CommandStatus aStatus);
-
-	TaskResult _OnPartialResponse(const APDU&);
-	TaskResult _OnFinalResponse(const APDU&);
-};
-
+	default:
+		return CS_UNDEFINED;
+	}
 
 }
-} //ens ns
 
-#endif
+#define TO_STRING_CASE(c) case (c): return #c;
+
+std::string ToString(CommandStatus aType)
+{
+	switch(aType) {
+		TO_STRING_CASE(CS_SUCCESS)
+		TO_STRING_CASE(CS_TIMEOUT)
+		TO_STRING_CASE(CS_NO_SELECT)
+		TO_STRING_CASE(CS_FORMAT_ERROR)
+		TO_STRING_CASE(CS_NOT_SUPPORTED)
+		TO_STRING_CASE(CS_ALREADY_ACTIVE)
+		TO_STRING_CASE(CS_HARDWARE_ERROR)
+		TO_STRING_CASE(CS_LOCAL)
+		TO_STRING_CASE(CS_TOO_MANY_OPS)
+		TO_STRING_CASE(CS_NOT_AUTHORIZED)
+	default:
+		return "Unknown";
+	}
+}
+
+}}

@@ -53,6 +53,7 @@
     <ClCompile Include="TestAppLayer.cpp" />
     <ClCompile Include="TestCommandHelpers.cpp" />
     <ClCompile Include="TestCommandTask.cpp" />
+    <ClCompile Include="TestCommandTypes.cpp" />
     <ClCompile Include="TestCRC.cpp" />
     <ClCompile Include="TestDatabase.cpp" />
     <ClCompile Include="TestDNP3Manager.cpp" />

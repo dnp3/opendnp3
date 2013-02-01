@@ -330,6 +330,18 @@
     <ClInclude Include="DestructorHook.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="AnalogOutput.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ControlRelayOutputBlock.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CommandStatus.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CommandResponse.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AlwaysOpeningVtoRouter.cpp">
@@ -546,6 +558,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="DestructorHook.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AnalogOutput.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ControlRelayOutputBlock.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CommandStatus.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

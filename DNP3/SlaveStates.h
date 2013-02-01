@@ -37,8 +37,6 @@ namespace apl
 {
 class ITaskCompletion;
 class Logger;
-class BinaryOutput;
-class Setpoint;
 }
 
 namespace apl

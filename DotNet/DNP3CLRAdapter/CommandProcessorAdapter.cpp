@@ -40,7 +40,7 @@ namespace DNP3
 namespace Adapter
 {
 
-void ResponseRouter::Set(gcroot<Future<CommandStatus>^>* apFuture, apl::CommandResponse cr)
+void ResponseRouter::Set(gcroot<Future<CommandStatus>^>* apFuture, apl::dnp::CommandResponse cr)
 {	
 	std::auto_ptr<gcroot<Future<CommandStatus>^>> ptr(apFuture);
 	(*apFuture)->Set(Conversions::convertCommandStatus(cr.mResult));
@@ -51,56 +51,54 @@ CommandProcessorAdapter::CommandProcessorAdapter(apl::dnp::ICommandProcessor* ap
 
 }
 
-IFuture<CommandStatus>^ CommandProcessorAdapter::SelectAndOperate(BinaryOutput^ command, System::UInt32 index)
+IFuture<CommandStatus>^ CommandProcessorAdapter::SelectAndOperate(ControlRelayOutputBlock^ command, System::UInt32 index)
 {
-	auto future = gcnew Future<CommandStatus>();
-	
-	apl::BinaryOutput cmd = Conversions::convertBO(command);
-
-	auto pWrapper = new gcroot<Future<CommandStatus>^>(future);
-	
-	mpProxy->SelectAndOperate(cmd, index, std::bind(&ResponseRouter::Set, pWrapper, std::placeholders::_1)); 
-
-	return future;
+	return this->SelectAndOperateT(command, index);
 }
 
-IFuture<CommandStatus>^ CommandProcessorAdapter::SelectAndOperate(Setpoint^ command, System::UInt32 index)
+IFuture<CommandStatus>^ CommandProcessorAdapter::SelectAndOperate(AnalogOutputInt32^ command, System::UInt32 index)
 {
-	auto future = gcnew Future<CommandStatus>();
-	
-	apl::Setpoint cmd = Conversions::convertSP(command);
-
-	auto pWrapper = new gcroot<Future<CommandStatus>^>(future);
-	
-	mpProxy->SelectAndOperate(cmd, index, std::bind(&ResponseRouter::Set, pWrapper, std::placeholders::_1)); 
-
-	return future;
+	return this->SelectAndOperateT(command, index);
 }
 
-IFuture<CommandStatus>^ CommandProcessorAdapter::DirectOperate(BinaryOutput^ command, System::UInt32 index)
+IFuture<CommandStatus>^ CommandProcessorAdapter::SelectAndOperate(AnalogOutputInt16^ command, System::UInt32 index)
 {
-	auto future = gcnew Future<CommandStatus>();
-	
-	apl::BinaryOutput cmd = Conversions::convertBO(command);
-
-	auto pWrapper = new gcroot<Future<CommandStatus>^>(future);
-	
-	mpProxy->DirectOperate(cmd, index, std::bind(&ResponseRouter::Set, pWrapper, std::placeholders::_1)); 
-
-	return future;
+	return this->SelectAndOperateT(command, index);
 }
 
-IFuture<CommandStatus>^ CommandProcessorAdapter::DirectOperate(Setpoint^ command, System::UInt32 index)
+IFuture<CommandStatus>^ CommandProcessorAdapter::SelectAndOperate(AnalogOutputFloat32^ command, System::UInt32 index)
 {
-	auto future = gcnew Future<CommandStatus>();
-	
-	apl::Setpoint cmd = Conversions::convertSP(command);
+	return this->SelectAndOperateT(command, index);
+}
 
-	auto pWrapper = new gcroot<Future<CommandStatus>^>(future);
-	
-	mpProxy->DirectOperate(cmd, index, std::bind(&ResponseRouter::Set, pWrapper, std::placeholders::_1)); 
+IFuture<CommandStatus>^ CommandProcessorAdapter::SelectAndOperate(AnalogOutputDouble64^ command, System::UInt32 index)
+{
+	return this->SelectAndOperateT(command, index);
+}
 
-	return future;
+IFuture<CommandStatus>^ CommandProcessorAdapter::DirectOperate(ControlRelayOutputBlock^ command, System::UInt32 index)
+{
+	return this->DirectOperateT(command, index);
+}
+
+IFuture<CommandStatus>^ CommandProcessorAdapter::DirectOperate(AnalogOutputInt32^ command, System::UInt32 index)
+{
+	return this->DirectOperateT(command, index);
+}
+
+IFuture<CommandStatus>^ CommandProcessorAdapter::DirectOperate(AnalogOutputInt16^ command, System::UInt32 index)
+{
+	return this->DirectOperateT(command, index);
+}
+
+IFuture<CommandStatus>^ CommandProcessorAdapter::DirectOperate(AnalogOutputFloat32^ command, System::UInt32 index)
+{
+	return this->DirectOperateT(command, index);
+}
+
+IFuture<CommandStatus>^ CommandProcessorAdapter::DirectOperate(AnalogOutputDouble64^ command, System::UInt32 index)
+{
+	return this->DirectOperateT(command, index);
 }
 
 

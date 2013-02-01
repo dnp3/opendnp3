@@ -31,6 +31,8 @@
 
 #include "ICommandHandler.h"
 
+#include <functional>
+
 namespace apl
 {
 namespace dnp
@@ -43,12 +45,25 @@ class SimpleCommandHandler : public ICommandHandler
 
 		SimpleCommandHandler(std::function<CommandStatus ()> aStatusFunc);
 
-		CommandStatus Select(const BinaryOutput& arCommand, size_t aIndex, uint8_t aSequence) ;
-		CommandStatus Select(const Setpoint& arCommand, size_t aIndex, uint8_t aSequence);
-		CommandStatus Operate(const BinaryOutput& arCommand, size_t aIndex, uint8_t aSequence);
-		CommandStatus Operate(const Setpoint& arCommand, size_t aIndex, uint8_t aSequence);
-		CommandStatus DirectOperate(const BinaryOutput& arCommand, size_t aIndex);
-		CommandStatus DirectOperate(const Setpoint& arCommand, size_t aIndex);
+		CommandStatus Select(const ControlRelayOutputBlock& arCommand, size_t aIndex, uint8_t aSequence);
+		CommandStatus Operate(const ControlRelayOutputBlock& arCommand, size_t aIndex, uint8_t aSequence);
+		CommandStatus DirectOperate(const ControlRelayOutputBlock& arCommand, size_t aIndex);
+
+		CommandStatus Select(const AnalogOutputInt16& arCommand, size_t aIndex, uint8_t aSequence);
+		CommandStatus Operate(const AnalogOutputInt16& arCommand, size_t aIndex, uint8_t aSequence);
+		CommandStatus DirectOperate(const AnalogOutputInt16& arCommand, size_t aIndex);
+
+		CommandStatus Select(const AnalogOutputInt32& arCommand, size_t aIndex, uint8_t aSequence);
+		CommandStatus Operate(const AnalogOutputInt32& arCommand, size_t aIndex, uint8_t aSequence);
+		CommandStatus DirectOperate(const AnalogOutputInt32& arCommand, size_t aIndex);
+	
+		CommandStatus Select(const AnalogOutputFloat32& arCommand, size_t aIndex, uint8_t aSequence);
+		CommandStatus Operate(const AnalogOutputFloat32& arCommand, size_t aIndex, uint8_t aSequence);
+		CommandStatus DirectOperate(const AnalogOutputFloat32& arCommand, size_t aIndex);
+
+		CommandStatus Select(const AnalogOutputDouble64& arCommand, size_t aIndex, uint8_t aSequence);
+		CommandStatus Operate(const AnalogOutputDouble64& arCommand, size_t aIndex, uint8_t aSequence);
+		CommandStatus DirectOperate(const AnalogOutputDouble64& arCommand, size_t aIndex);
 
 	private:
 		std::function<CommandStatus ()> mStatusFunc;

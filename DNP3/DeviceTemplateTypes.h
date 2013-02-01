@@ -32,7 +32,6 @@
 #include <vector>
 
 #include <APL/Types.h>
-#include <APL/CommandTypes.h>
 #include "PointClass.h"
 
 namespace apl

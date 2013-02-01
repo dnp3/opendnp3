@@ -26,59 +26,27 @@
 //
 // Contact Automatak, LLC for a commercial license to these modifications
 //
-#ifndef __COMMAND_TASK_H_
-#define __COMMAND_TASK_H_
+#ifndef __COMMAND_RESPONSE_H_
+#define __COMMAND_RESPONSE_H_
 
-#include "MasterTaskBase.h"
-#include "APDUConstants.h"
 #include "CommandStatus.h"
-
-#include <functional>
-#include <queue>
 
 namespace apl
 {
 namespace dnp
 {
 
-// Base class with machinery for performing command operations
-class CommandTask : public MasterTaskBase
+class CommandResponse
 {
-	typedef std::function<CommandStatus (const APDU&)> Validator;
-	typedef std::function<Validator (APDU&, FunctionCodes)> Formatter;
-	typedef std::function<void (CommandStatus)> Responder;
-
 public:
-	CommandTask(Logger*);	
+	CommandResponse() {}
+	CommandResponse(CommandStatus aStatus) : mResult(aStatus) {}
 
-	void Configure(const Formatter& arFormatter, const Responder& arResponder);
-	void AddCommandCode(FunctionCodes aCode); 
-
-	void ConfigureRequest(APDU& arAPDU);
-
-	std::string Name() const;
-
-protected:	
-
-	Formatter mFormatter;
-	Validator mValidator;	
-	Responder mResponder;
-	
-	// override from base class
-	void OnFailure();
-
-private:
-
-	std::deque<FunctionCodes> mCodes;
-
-	void Respond(CommandStatus aStatus);
-
-	TaskResult _OnPartialResponse(const APDU&);
-	TaskResult _OnFinalResponse(const APDU&);
+	CommandStatus mResult;
 };
 
+}}
 
-}
-} //ens ns
+/* vim: set ts=4 sw=4: */
 
 #endif
