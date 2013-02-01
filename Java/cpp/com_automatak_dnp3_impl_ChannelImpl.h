@@ -26,10 +26,10 @@ JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ChannelImpl_get_1native_1ma
 /*
  * Class:     com_automatak_dnp3_impl_ChannelImpl
  * Method:    get_native_slave
- * Signature: (JLjava/lang/String;Lcom/automatak/dnp3/LogLevel;)J
+ * Signature: (JLjava/lang/String;Lcom/automatak/dnp3/LogLevel;Lcom/automatak/dnp3/impl/CommandHandlerAdapter;)J
  */
 JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ChannelImpl_get_1native_1slave
-  (JNIEnv *, jobject, jlong, jstring, jobject);
+  (JNIEnv *, jobject, jlong, jstring, jobject, jobject);
 
 #ifdef __cplusplus
 }

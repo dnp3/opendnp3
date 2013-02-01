@@ -60,3 +60,21 @@ void JNIHelpers::DeleteGlobalReference(JavaVM* apJVM, jobject ref)
 	pEnv->DeleteGlobalRef(ref);
 }
 
+
+JavaVM* JNIHelpers::GetJVMFromEnv(JNIEnv* apEnv)
+{
+	JavaVM* pJVM;
+	apEnv->GetJavaVM(&pJVM);
+	assert(pJVM != NULL);
+	return pJVM;
+}
+
+JNIEnv* JNIHelpers::GetEnvFromJVM(JavaVM* apJVM)
+{
+	JNIEnv* pEnv = NULL;
+	apJVM->GetEnv((void **) &pEnv, JNI_VERSION_1_6);
+	assert(pEnv != NULL);
+	return pEnv;	
+}
+
+

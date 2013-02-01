@@ -21,7 +21,8 @@ public class ChannelImpl implements Channel {
 
     public Outstation addOutstation(String loggerId, LogLevel level, CommandHandler cmdHandler)//, SlaveStackConfig config);
     {
-        long ptr = get_native_slave(nativeChannel, loggerId, level);
+        CommandHandlerAdapter adapter = new CommandHandlerAdapter(cmdHandler);
+        long ptr = get_native_slave(nativeChannel, loggerId, level, adapter);
         return new OutstationImpl(ptr);
     }
 
@@ -34,7 +35,7 @@ public class ChannelImpl implements Channel {
 
 
     private native long get_native_master(long ptrChannel, String loggerId, LogLevel level, DataObserverAdapter publisher);
-    private native long get_native_slave(long ptrChannel, String loggerId, LogLevel level);
+    private native long get_native_slave(long ptrChannel, String loggerId, LogLevel level, CommandHandlerAdapter handler);
 
 
 }

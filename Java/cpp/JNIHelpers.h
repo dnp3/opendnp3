@@ -40,6 +40,9 @@ class JNIHelpers
 		static void DetachThread(JavaVM* apJVM);
 
 		static void DeleteGlobalReference(JavaVM* apJVM, jobject ref);
+
+		static JavaVM* GetJVMFromEnv(JNIEnv* apEnv);
+		static JNIEnv* GetEnvFromJVM(JavaVM* apJVM);
 };
 
 #endif

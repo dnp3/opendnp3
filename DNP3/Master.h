@@ -31,6 +31,7 @@
 
 #include <APL/Loggable.h>
 #include <APL/TimeSource.h>
+#include <APL/IExecutor.h>
 
 #include "APDU.h"
 #include "AppInterfaces.h"
@@ -42,6 +43,7 @@
 #include "VtoReader.h"
 #include "VtoWriter.h"
 #include "QueuedCommandProcessor.h"
+#include "CommandHelpers.h"
 
 // includes for tasks
 #include "StartupTasks.h"

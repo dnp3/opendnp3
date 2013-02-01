@@ -33,7 +33,6 @@
 #include "ResponseLoader.h"
 #include "VtoEventBufferAdapter.h"
 #include "ConstantCommandProcessor.h"
-#include "CommandHelpers.h"
 
 #include <APL/DataInterfaces.h>
 #include <APL/AsyncTaskInterfaces.h>
