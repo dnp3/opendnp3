@@ -3,7 +3,7 @@ package com.automatak.dnp3.impl;
 
 import com.automatak.dnp3.*;
 
-public class ChannelImpl implements Channel {
+class ChannelImpl implements Channel {
 
     private long nativeChannel;
 

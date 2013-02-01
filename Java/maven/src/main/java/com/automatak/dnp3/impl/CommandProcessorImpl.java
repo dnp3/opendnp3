@@ -3,7 +3,7 @@ package com.automatak.dnp3.impl;
 import com.automatak.dnp3.*;
 
 
-public class CommandProcessorImpl implements CommandProcessor {
+class CommandProcessorImpl implements CommandProcessor {
 
     private final long nativeptr;
 

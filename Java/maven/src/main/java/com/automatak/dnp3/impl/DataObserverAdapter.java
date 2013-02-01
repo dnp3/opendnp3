@@ -2,7 +2,7 @@ package com.automatak.dnp3.impl;
 
 import com.automatak.dnp3.*;
 
-public class DataObserverAdapter {
+class DataObserverAdapter {
     private final DataObserver proxy;
 
     public DataObserverAdapter(DataObserver proxy)
