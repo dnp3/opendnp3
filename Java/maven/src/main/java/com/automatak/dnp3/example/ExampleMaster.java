@@ -16,9 +16,17 @@ public class ExampleMaster {
         mgr.addLogSubscriber(new PrintingLogSubscriber());
 
         Channel server = mgr.addTCPServer("server", LogLevel.INFO, 5000, "127.0.0.1", 20000);
-        Outstation outstation = server.addOutstation("outstation", LogLevel.INFO, null);
+        Outstation outstation = server.addOutstation("outstation", LogLevel.INFO, new ConstantCommandHandler(CommandStatus.HARDWARE_ERROR));
         Channel client = mgr.addTCPClient("client", LogLevel.INFO, 5000, "127.0.0.1", 20000);
         Master master = client.addMaster("master", LogLevel.INFO, new PrintingDataObserver());
+
+        Thread.sleep(5000);
+
+        CommandProcessor cp = master.getCommandProcessor();
+        ControlRelayOutputBlock crob = new ControlRelayOutputBlock(ControlCode.LATCH_ON, (short) 1, 100, 100, CommandStatus.SUCCESS);
+        ListenableFuture<CommandStatus> status = cp.selectAndOperate(crob, 0);
+        System.out.println("Status: " + status.get());
+
 
         Thread.sleep(10000);
 

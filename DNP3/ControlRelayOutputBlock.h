@@ -54,7 +54,7 @@ enum ControlCode {
 	CC_UNDEFINED = 0xFF		//!< undefined command (used by DNP standard)
 };
 
-ControlCode ByteToControlCode(uint8_t aField);
+ControlCode IntToControlCode(int aField);
 std::string ToString(ControlCode aType);
 
 

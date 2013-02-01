@@ -41,7 +41,7 @@ namespace dnp
 
 #define MACRO_CASE_DECLARE(type) case(type): return type;
 
-ControlCode ByteToControlCode(uint8_t aField)
+ControlCode IntToControlCode(int aField)
 {
 	switch(aField) {
 		MACRO_CASE_DECLARE(CC_NULL)
@@ -85,7 +85,7 @@ ControlRelayOutputBlock::ControlRelayOutputBlock(ControlCode aCode, uint8_t aCou
 
 ControlCode ControlRelayOutputBlock::GetCode() const
 {
-	return ByteToControlCode(mRawCode);
+	return IntToControlCode(mRawCode);
 }
 
 std::string ControlRelayOutputBlock::ToString() const
