@@ -57,7 +57,7 @@ enum CommandStatus {
 	CS_UNDEFINED = 127		//!< 10 to 126 are currently reserved
 };
 
-CommandStatus ByteToCommandStatus(uint8_t aField);
+CommandStatus IntToCommandStatus(int aField);
 std::string ToString(CommandStatus aType);
 
 }}

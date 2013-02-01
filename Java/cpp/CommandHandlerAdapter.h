@@ -31,6 +31,26 @@ class CommandHandlerAdapter : public apl::dnp::ICommandHandler
 	
 	private:
 
+	jmethodID mSelectCROB;
+	jmethodID mOperateCROB;
+	jmethodID mDirectOperateCROB;
+
+	jmethodID mSelectAnalogInt16;
+	jmethodID mOperateAnalogInt16;
+	jmethodID mDirectOperateAnalogInt16;
+
+	jmethodID mSelectAnalogInt32;
+	jmethodID mOperateAnalogInt32;
+	jmethodID mDirectOperateAnalogInt32;
+
+	jmethodID mSelectAnalogFloat32;
+	jmethodID mOperateAnalogFloat32;
+	jmethodID mDirectOperateAnalogFloat32;
+
+	jmethodID mSelectAnalogDouble64;
+	jmethodID mOperateAnalogDouble64;
+	jmethodID mDirectOperateAnalogDouble64;
+
 	JNIEnv* GetEnv();
 
 	JavaVM* mpJVM;

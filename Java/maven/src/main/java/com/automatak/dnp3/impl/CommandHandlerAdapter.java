@@ -14,13 +14,13 @@ class CommandHandlerAdapter {
 
     // ControlRelayOutputBlock
 
-    public int Select(int function, short count, long onTimeMs, long offTimeMs, int status, long index)
+    public int Select(int function, short count, long onTimeMs, long offTimeMs, int status, long index, byte aSeq)
     {
         ControlRelayOutputBlock crob = new ControlRelayOutputBlock(ControlCode.fromInt(function), count, onTimeMs, offTimeMs, CommandStatus.fromInt(status));
         return proxy.Select(crob, index).toInt();
     }
 
-    public int Operate(int function, short count, long onTimeMs, long offTimeMs, int status, long index)
+    public int Operate(int function, short count, long onTimeMs, long offTimeMs, int status, long index, byte aSeq)
     {
         ControlRelayOutputBlock crob = new ControlRelayOutputBlock(ControlCode.fromInt(function), count, onTimeMs, offTimeMs, CommandStatus.fromInt(status));
         return proxy.Operate(crob, index).toInt();
@@ -34,13 +34,13 @@ class CommandHandlerAdapter {
 
     // AnalogOutputInt32
 
-    public int Select(int value, long index)
+    public int Select(int value, long index, byte aSeq)
     {
         AnalogOutputInt32 ao = new AnalogOutputInt32(value, CommandStatus.SUCCESS);
         return proxy.Select(ao, index).toInt();
     }
 
-    public int Operate(int value, long index)
+    public int Operate(int value, long index, byte aSeq)
     {
         AnalogOutputInt32 ao = new AnalogOutputInt32(value, CommandStatus.SUCCESS);
         return proxy.Operate(ao, index).toInt();
@@ -54,13 +54,13 @@ class CommandHandlerAdapter {
 
     // AnalogOutputInt16
 
-    public int Select(short value, long index)
+    public int Select(short value, long index, byte aSeq)
     {
         AnalogOutputInt16 ao = new AnalogOutputInt16(value, CommandStatus.SUCCESS);
         return proxy.Select(ao, index).toInt();
     }
 
-    public int Operate(short value, long index)
+    public int Operate(short value, long index, byte aSeq)
     {
         AnalogOutputInt16 ao = new AnalogOutputInt16(value, CommandStatus.SUCCESS);
         return proxy.Operate(ao, index).toInt();
@@ -74,13 +74,13 @@ class CommandHandlerAdapter {
 
     // AnalogOutputFloat32
 
-    public int Select(float value, long index)
+    public int Select(float value, long index, byte aSeq)
     {
         AnalogOutputFloat32 ao = new AnalogOutputFloat32(value, CommandStatus.SUCCESS);
         return proxy.Select(ao, index).toInt();
     }
 
-    public int Operate(float value, long index)
+    public int Operate(float value, long index, byte aSeq)
     {
         AnalogOutputFloat32 ao = new AnalogOutputFloat32(value, CommandStatus.SUCCESS);
         return proxy.Operate(ao, index).toInt();
@@ -94,13 +94,13 @@ class CommandHandlerAdapter {
 
     // AnalogOutputDouble64
 
-    public int Select(double value, long index)
+    public int Select(double value, long index, byte aSeq)
     {
         AnalogOutputDouble64 ao = new AnalogOutputDouble64(value, CommandStatus.SUCCESS);
         return proxy.Select(ao, index).toInt();
     }
 
-    public int Operate(double value, long index)
+    public int Operate(double value, long index, byte aSeq)
     {
         AnalogOutputDouble64 ao = new AnalogOutputDouble64(value, CommandStatus.SUCCESS);
         return proxy.Operate(ao, index).toInt();

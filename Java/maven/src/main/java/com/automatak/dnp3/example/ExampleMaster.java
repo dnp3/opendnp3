@@ -4,13 +4,12 @@ package com.automatak.dnp3.example;
 import com.automatak.dnp3.*;
 import com.automatak.dnp3.impl.ManagerImpl;
 
-
-
 public class ExampleMaster {
 
     public static void main(String[] args) throws InterruptedException
     {
-        System.load("/home/adam/dev/dnp3/Java/cpp/Linux_i686/release/libopendnp3java.so");
+        //System.load("/home/adam/dev/dnp3/Java/cpp/Linux_i686/release/libopendnp3java.so");
+        System.load("E:\\git\\dnp3\\Debug\\opendnp3java.dll");
 
         DNP3Manager mgr = new ManagerImpl(4);
 

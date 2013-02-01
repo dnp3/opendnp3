@@ -43,6 +43,10 @@ class JNIHelpers
 
 		static JavaVM* GetJVMFromEnv(JNIEnv* apEnv);
 		static JNIEnv* GetEnvFromJVM(JavaVM* apJVM);
+
+		static jmethodID GetMethodID(JNIEnv* apEnv, jclass clazz, const char* name, const char* sig);
+
+	
 };
 
 #endif

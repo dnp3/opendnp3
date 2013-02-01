@@ -35,7 +35,7 @@ namespace dnp
 
 #define MACRO_CASE_DECLARE(type) case(type): return type;
 
-CommandStatus ByteToCommandStatus(uint8_t aField)
+CommandStatus IntToCommandStatus(int aField)
 {
 	switch(aField) {
 		MACRO_CASE_DECLARE(CS_SUCCESS)

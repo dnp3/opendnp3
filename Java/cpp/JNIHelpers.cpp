@@ -42,7 +42,7 @@ std::string JNIHelpers::GetString(jstring s, JNIEnv* pEnv)
 void JNIHelpers::AttachThread(JavaVM* apJVM)
 {
 	JNIEnv* pEnv;
-	jint res = apJVM->AttachCurrentThread((void **)&pEnv, NULL);
+	jint res = apJVM->AttachCurrentThread((void **)&pEnv, nullptr);
 	assert(res == 0);
 }
 
@@ -54,27 +54,35 @@ void JNIHelpers::DetachThread(JavaVM* apJVM)
 
 void JNIHelpers::DeleteGlobalReference(JavaVM* apJVM, jobject ref)
 {
-	JNIEnv* pEnv;
+	JNIEnv* pEnv= nullptr;
 	assert(apJVM->GetEnv((void **)&pEnv, JNI_VERSION_1_6) == 0);
-	assert(pEnv != NULL);
+	assert(pEnv != nullptr);
 	pEnv->DeleteGlobalRef(ref);
 }
 
 
 JavaVM* JNIHelpers::GetJVMFromEnv(JNIEnv* apEnv)
 {
-	JavaVM* pJVM;
+	JavaVM* pJVM = nullptr;
 	apEnv->GetJavaVM(&pJVM);
-	assert(pJVM != NULL);
+	assert(pJVM != nullptr);
 	return pJVM;
 }
 
 JNIEnv* JNIHelpers::GetEnvFromJVM(JavaVM* apJVM)
 {
-	JNIEnv* pEnv = NULL;
+	JNIEnv* pEnv = nullptr;
 	apJVM->GetEnv((void **) &pEnv, JNI_VERSION_1_6);
-	assert(pEnv != NULL);
+	assert(pEnv != nullptr);
 	return pEnv;	
 }
+
+jmethodID JNIHelpers::GetMethodID(JNIEnv* apEnv, jclass clazz, const char* name, const char* sig)
+{	
+	jmethodID mid = apEnv->GetMethodID(clazz, name, sig);
+	assert(mid != nullptr);
+	return mid;
+}
+
 
 
