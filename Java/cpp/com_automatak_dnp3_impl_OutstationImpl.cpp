@@ -14,3 +14,9 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_OutstationImpl_shutdown_1nat
 	pOutstation->Shutdown();
 }
 
+JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_OutstationImpl_get_1native_1data_1observer
+  (JNIEnv *, jobject, jlong ptr)
+{
+	auto pOutstation = (IOutstation*) ptr;
+	return (jlong) pOutstation->GetDataObserver();
+}

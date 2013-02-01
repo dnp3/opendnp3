@@ -22,6 +22,7 @@
     <ClInclude Include="CommandHandlerAdapter.h" />
     <ClInclude Include="com_automatak_dnp3_impl_ChannelImpl.h" />
     <ClInclude Include="com_automatak_dnp3_impl_CommandProcessorImpl.h" />
+    <ClInclude Include="com_automatak_dnp3_impl_DataObserverImpl.h" />
     <ClInclude Include="com_automatak_dnp3_impl_ManagerImpl.h" />
     <ClInclude Include="com_automatak_dnp3_impl_MasterImpl.h" />
     <ClInclude Include="com_automatak_dnp3_impl_OutstationImpl.h" />
@@ -41,6 +42,7 @@
     <ClCompile Include="CommandHandlerAdapter.cpp" />
     <ClCompile Include="com_automatak_dnp3_impl_ChannelImpl.cpp" />
     <ClCompile Include="com_automatak_dnp3_impl_CommandProcessorImpl.cpp" />
+    <ClCompile Include="com_automatak_dnp3_impl_DataObserverImpl.cpp" />
     <ClCompile Include="com_automatak_dnp3_impl_ManagerImpl.cpp" />
     <ClCompile Include="com_automatak_dnp3_impl_MasterImpl.cpp" />
     <ClCompile Include="com_automatak_dnp3_impl_OutstationImpl.cpp" />

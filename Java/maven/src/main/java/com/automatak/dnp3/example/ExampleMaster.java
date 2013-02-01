@@ -20,6 +20,15 @@ public class ExampleMaster {
         Channel client = mgr.addTCPClient("client", LogLevel.INFO, 5000, "127.0.0.1", 20000);
         Master master = client.addMaster("master", LogLevel.INFO, new PrintingDataObserver());
 
+        Thread.sleep(1000);
+
+        DataObserver obs = outstation.getDataObserver();
+
+        obs.start();
+        obs.update(new BinaryInput(true, (byte) 1, 0), 0);
+        obs.update(new AnalogInput(23.6, (byte) 1, 0), 0);
+        obs.end();
+
         Thread.sleep(10000);
 
         mgr.shutdown();
