@@ -19,6 +19,8 @@
 package com.automatak.dnp3;
 
 
+import java.util.Set;
+
 public class BinaryInput extends BaseMeasurement
 {
     private final boolean value;
@@ -29,9 +31,20 @@ public class BinaryInput extends BaseMeasurement
         this.value = value;
     }
 
+    /**
+     * @return value of the measurement
+     */
     public boolean getValue()
     {
         return value;
+    }
+
+    /**
+     * @return Quality flags as a set of enumerations
+     */
+    public Set<BinaryInputQuality> getQualitySet()
+    {
+        return BinaryInputQuality.getValuesInBitField(this.getQuality());
     }
 
 }

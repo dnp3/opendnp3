@@ -19,6 +19,8 @@
 package com.automatak.dnp3;
 
 
+import java.util.Set;
+
 public class Counter extends BaseMeasurement
 {
     private final long value;
@@ -29,8 +31,19 @@ public class Counter extends BaseMeasurement
         this.value = value;
     }
 
+    /**
+     * @return Value type of the measurement
+     */
     public long getValue()
     {
         return value;
+    }
+
+    /**
+     * @return Quality flags as a set of enumerations
+     */
+    public Set<CounterInputQuality> getQualitySet()
+    {
+        return CounterInputQuality.getValuesInBitField(this.getQuality());
     }
 }

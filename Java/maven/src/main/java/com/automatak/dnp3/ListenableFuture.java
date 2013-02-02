@@ -18,23 +18,35 @@
  */
 package com.automatak.dnp3;
 
+/**
+ * Represents the future result of asynchronous operation.
+ * @param <T> The return type of the operation.
+ */
 public interface ListenableFuture<T> {
 
+    /**
+     * A 'callback' that is registered via addListener and invoked when the operation completes.
+     * @param <T>
+     */
     public interface CompletionListener<T>
     {
+        /**
+         * Called when the operation completes
+         * @param value The return type of the computation
+         */
         void onComplete(T value);
     }
 
     /**
      * Blocks until the asynchronous operation completes
-     * @return
+     * @return The result of the operation
      */
     T get() throws InterruptedException;
 
     /**
      * Adds a callback that is invoked when the asynchronous operation completes.
      * If the operation is already complete, the callback is invoked from the calling thread.
-     * @param listener
+     * @param listener Callback object invoked when the operation completes
      */
     void addListener(CompletionListener<T> listener);
 

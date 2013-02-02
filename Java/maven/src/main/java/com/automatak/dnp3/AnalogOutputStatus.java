@@ -19,6 +19,8 @@
 package com.automatak.dnp3;
 
 
+import java.util.Set;
+
 public class AnalogOutputStatus extends BaseMeasurement
 {
     private final double value;
@@ -29,8 +31,19 @@ public class AnalogOutputStatus extends BaseMeasurement
         this.value = value;
     }
 
+    /**
+     * @return Value of measurement
+     */
     public double getValue()
     {
         return value;
+    }
+
+    /**
+     * @return Quality flags as a set of enumerations
+     */
+    public Set<AnalogOutputStatusQuality> getQualitySet()
+    {
+        return AnalogOutputStatusQuality.getValuesInBitField(this.getQuality());
     }
 }

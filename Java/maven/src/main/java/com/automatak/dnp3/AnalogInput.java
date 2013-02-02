@@ -18,17 +18,38 @@
  */
 package com.automatak.dnp3;
 
+import java.util.Set;
 
+/**
+ * A discrete or continuous analog value
+ */
 public class AnalogInput extends BaseMeasurement
 {
     private final double value;
 
+    /**
+     * Primary constructor
+     * @param value         double precision value type
+     * @param quality       bit-field representing quality values
+     * @param timestamp     milliseconds since unix epoch UTC
+     */
     public AnalogInput(double value, byte quality, long timestamp)
     {
         super(quality, timestamp);
         this.value = value;
     }
 
+    /**
+     * @return Quality flags as a set of enumerations
+     */
+    public Set<AnalogInputQuality> getQualitySet()
+    {
+        return AnalogInputQuality.getValuesInBitField(this.getQuality());
+    }
+
+    /**
+     * @return value type of measurement
+     */
     public double getValue()
     {
         return value;

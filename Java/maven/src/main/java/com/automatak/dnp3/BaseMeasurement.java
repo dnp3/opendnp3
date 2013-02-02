@@ -29,11 +29,17 @@ public abstract class BaseMeasurement implements Measurement {
         this.timestamp = timestamp;
     }
 
+    /**
+     * @return milliseconds since Unix epoch UTC
+     */
     public long getMsSinceEpoch()
     {
         return timestamp;
     }
 
+    /**
+     * @return bit-field representing measurement quality
+     */
     public byte getQuality()
     {
         return quality;
