@@ -1,6 +1,8 @@
 # Copyright (C) 2013 Automatak, LLC
 
-lib_LTLIBRARIES = libapl.la
+AM_CXXFLAGS = -std=c++11
 
-libapl_la_SOURCES = \
+lib_LTLIBRARIES = libasyncprotocol.la
+
+libasyncprotocol_la_SOURCES = \
 	CRC.cpp
