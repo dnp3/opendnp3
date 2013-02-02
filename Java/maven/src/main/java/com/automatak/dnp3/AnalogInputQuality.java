@@ -23,6 +23,9 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * Quality enumeration for analog values
+ */
 public enum AnalogInputQuality {
     /**
      * Set when the data is "good", meaning that rest of the system can trust the value

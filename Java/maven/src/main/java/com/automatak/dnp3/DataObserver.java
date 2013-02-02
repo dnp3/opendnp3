@@ -18,20 +18,56 @@
  */
 package com.automatak.dnp3;
 
+/**
+ * Interface called to load data into an outstation or receive data from a master
+ *
+ * start() / end() must be called before / after any calls to update.
+ */
 public interface DataObserver {
 
+    /*
+     * Start a transaction, end() must be called to release the resource
+     */
     void start();
 
+    /**
+     * Update a BinaryInput measurement
+     * @param meas measurement object
+     * @param index index of measurement
+     */
     void update(BinaryInput meas, long index);
 
+    /**
+     * Update an AnalogInput measurement
+     * @param meas measurement object
+     * @param index index of measurement
+     */
     void update(AnalogInput meas, long index);
 
+    /**
+     * Update a Counter measurement
+     * @param meas measurement object
+     * @param index index of measurement
+     */
     void update(Counter meas, long index);
 
+    /**
+     * Update a BinaryOutputStatus measurement
+     * @param meas measurement object
+     * @param index index of measurement
+     */
     void update(BinaryOutputStatus meas, long index);
 
+    /**
+     * Update a AnalogOutputStatus measurement
+     * @param meas measurement object
+     * @param index index of measurement
+     */
     void update(AnalogOutputStatus meas, long index);
 
+    /*
+     * End a transaction
+     */
     void end();
 
 }

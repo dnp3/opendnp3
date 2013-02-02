@@ -18,14 +18,45 @@
  */
 package com.automatak.dnp3;
 
+/**
+ * Enumeration that defines how a ControlRelayOutputBlock behaves
+ */
 public enum ControlCode {
-    NULL(0),			    //  illegal command code (used internally)
-    PULSE(0x01),		    //  'push-button' interface, can only be pressed one way (reset button on pedometer)
-    LATCH_ON(0x03),		//  'light-switch' moved to the ON position
-    LATCH_OFF(0x04),	    //  'light-switch' moved to the OFF position
-    PULSE_CLOSE(0x41),	//  'doorbell' that rings while the button is depressed
-    PULSE_TRIP(0x81),	//  'doorbell' that stops ringing (is normally on) while depreseed
-    UNDEFINED(0xFF);		//   undefined command (used by DNP standard)
+
+    /**
+     * illegal command code (used internally)
+     */
+    NULL(0),
+
+    /**
+     * 'push-button' interface, can only be pressed one way (reset button on pedometer)
+     */
+    PULSE(0x01),
+
+    /**
+     * 'light-switch' moved to the ON position
+     */
+    LATCH_ON(0x03),
+
+    /**
+     * 'light-switch' moved to the OFF position
+     */
+    LATCH_OFF(0x04),
+
+    /**
+     * 'doorbell' that rings while the button is depressed
+     */
+    PULSE_CLOSE(0x41),
+
+    /**
+     * 'doorbell' that stops ringing (is normally on) while depressed
+     */
+    PULSE_TRIP(0x81),
+
+    /**
+     * undefined command (used by DNP standard)
+     */
+    UNDEFINED(0xFF);
 
     private final int id;
 

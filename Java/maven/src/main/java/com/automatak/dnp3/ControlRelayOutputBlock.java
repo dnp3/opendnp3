@@ -18,6 +18,9 @@
  */
 package com.automatak.dnp3;
 
+/**
+ * Command request for control a relay output
+ */
 public class ControlRelayOutputBlock {
 
     public final ControlCode function;
@@ -26,6 +29,14 @@ public class ControlRelayOutputBlock {
     public final long offTimeMs;
     public final CommandStatus status;
 
+    /**
+     * Primary constructor
+     * @param function Enumeration that controls that behavior of the command
+     * @param count How many times to repeat the operation
+     * @param onTimeMs How long to get the output active
+     * @param offTimeMs How long to get the output inactive
+     * @param status Status code received from an outstation
+     */
     public ControlRelayOutputBlock(ControlCode function, short count, long onTimeMs, long offTimeMs, CommandStatus status)
     {
         this.function = function;

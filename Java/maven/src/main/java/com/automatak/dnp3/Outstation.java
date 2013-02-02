@@ -18,7 +18,20 @@
  */
 package com.automatak.dnp3;
 
+/**
+ * Interface representing an outstation
+ */
 public interface Outstation {
+
+    /**
+     *
+     * @return Interface used to load data into the outstation
+     */
     DataObserver getDataObserver();
+
+    /**
+     * Permanently shutdown the master. Calling shutdown() more than once or continuing to use any child objects
+     * of the master can cause a failure.
+     */
     void shutdown();
 }

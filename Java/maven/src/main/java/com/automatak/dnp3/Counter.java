@@ -21,6 +21,9 @@ package com.automatak.dnp3;
 
 import java.util.Set;
 
+/**
+ * An increasing count of some event
+ */
 public class Counter extends BaseMeasurement
 {
     private final long value;

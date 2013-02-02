@@ -18,8 +18,15 @@
  */
 package com.automatak.dnp3;
 
+/**
+ * Interface used to bind to a stream of log messages
+ */
 public interface LogSubscriber {
 
+    /**
+     * Called when a new message is available
+     * @param entry LogEntry corresponding to the event
+     */
     void onLogEntry(LogEntry entry);
 
 }

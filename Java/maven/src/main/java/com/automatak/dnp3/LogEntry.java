@@ -20,12 +20,39 @@ package com.automatak.dnp3;
 
 import java.util.Date;
 
+/**
+ * A logged event
+ */
 public interface LogEntry {
 
+    /**
+     *
+     * @return Enumeration defining the severity of the message
+     */
     LogLevel getLogLevel();
+
+    /**
+     *
+     * @return Name of the logger by which the event was recored
+     */
     String getLoggerName();
+
+    /**
+     *
+     * @return Event message
+     */
     String getMessage();
+
+    /**
+     *
+     * @return Timestamp of the event
+     */
     Date getTimestamp();
+
+    /**
+     *
+     * @return Error code associated with the event
+     */
     int getErrorCode();
 
 }

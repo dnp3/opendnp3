@@ -18,11 +18,13 @@
  */
 package com.automatak.dnp3;
 
-
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * Quality enumeration for BinaryInput values
+ */
 public enum BinaryInputQuality {
     /**
      * Set when the data is "good", meaning that rest of the system can trust the value
