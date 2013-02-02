@@ -30,7 +30,6 @@ libopendnp3_la_SOURCES = \
 	APL/AsyncTaskScheduler.cpp \
 	APL/BaseDataTypes.cpp \
 	APL/ChangeBuffer.cpp \
-	APL/CommandTypes.cpp \
 	APL/CopyableBuffer.cpp \
 	APL/CRC.cpp \
 	APL/Exception.cpp \
@@ -75,6 +74,7 @@ libopendnp3_la_SOURCES = \
 	APL/TrackingTaskGroup.cpp \
 	APL/Util.cpp \
 	DNP3/AlwaysOpeningVtoRouter.cpp \
+	DNP3/AnalogOutput.cpp \
 	DNP3/APDUConstants.cpp \
 	DNP3/APDU.cpp \
 	DNP3/AppChannelStates.cpp \
@@ -85,8 +85,10 @@ libopendnp3_la_SOURCES = \
 	DNP3/ApplicationStack.cpp \
 	DNP3/BufferTypes.cpp \
 	DNP3/ClassCounter.cpp \
+	DNP3/CommandStatus.cpp \
 	DNP3/CommandTask.cpp \
 	DNP3/ConstantCommandProcessor.cpp \
+	DNP3/ControlRelayOutputBlock.cpp \
 	DNP3/Database.cpp \
 	DNP3/DataPoll.cpp \
 	DNP3/DestructorHook.cpp \
@@ -289,7 +291,6 @@ nobase_pkginclude_HEADERS= \
 	APL/AsyncTaskScheduler.h \
 	APL/BaseDataTypes.h \
 	APL/ChangeBuffer.h \
-	APL/CommandTypes.h \
 	APL/CopyableBuffer.h \
 	APL/CRC.h \
 	APL/DataInterfaces.h \
@@ -351,6 +352,7 @@ nobase_pkginclude_HEADERS= \
 	APL/Uncopyable.h \
 	APL/Util.h \
 	DNP3/AlwaysOpeningVtoRouter.h \
+	DNP3/AnalogOutput.h \
 	DNP3/APDUConstants.h \
 	DNP3/APDU.h \
 	DNP3/AppChannelStates.h \
@@ -364,8 +366,10 @@ nobase_pkginclude_HEADERS= \
 	DNP3/BufferTypes.h \
 	DNP3/ClassCounter.h \
 	DNP3/ClassMask.h \
+	DNP3/CommandStatus.h \
 	DNP3/CommandTask.h \
 	DNP3/ConstantCommandProcessor.h \
+	DNP3/ControlRelayOutputBlock.h \
 	DNP3/CTOHistory.h \
 	DNP3/Database.h \
 	DNP3/DatabaseInterfaces.h \
