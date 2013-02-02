@@ -6,3 +6,8 @@ aclocal.m4
 config.log
 install-sh
 missing
+Makefile.in
+config.guess
+config.sub
+depcomp
+ltmain.sh
