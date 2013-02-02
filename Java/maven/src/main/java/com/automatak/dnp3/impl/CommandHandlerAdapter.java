@@ -32,16 +32,16 @@ class CommandHandlerAdapter {
 
     // ControlRelayOutputBlock
 
-    public int Select(int function, short count, long onTimeMs, long offTimeMs, int status, long index, byte aSeq)
+    public int Select(int function, short count, long onTimeMs, long offTimeMs, int status, long index, byte seq)
     {
         ControlRelayOutputBlock crob = new ControlRelayOutputBlock(ControlCode.fromInt(function), count, onTimeMs, offTimeMs, CommandStatus.fromInt(status));
-        return proxy.Select(crob, index).toInt();
+        return proxy.Select(crob, index, seq).toInt();
     }
 
-    public int Operate(int function, short count, long onTimeMs, long offTimeMs, int status, long index, byte aSeq)
+    public int Operate(int function, short count, long onTimeMs, long offTimeMs, int status, long index, byte seq)
     {
         ControlRelayOutputBlock crob = new ControlRelayOutputBlock(ControlCode.fromInt(function), count, onTimeMs, offTimeMs, CommandStatus.fromInt(status));
-        return proxy.Operate(crob, index).toInt();
+        return proxy.Operate(crob, index, seq).toInt();
     }
 
     public int DirectOperate(int function, short count, long onTimeMs, long offTimeMs, int status, long index)
@@ -52,16 +52,16 @@ class CommandHandlerAdapter {
 
     // AnalogOutputInt32
 
-    public int Select(int value, long index, byte aSeq)
+    public int Select(int value, long index, byte seq)
     {
         AnalogOutputInt32 ao = new AnalogOutputInt32(value, CommandStatus.SUCCESS);
-        return proxy.Select(ao, index).toInt();
+        return proxy.Select(ao, index, seq).toInt();
     }
 
-    public int Operate(int value, long index, byte aSeq)
+    public int Operate(int value, long index, byte seq)
     {
         AnalogOutputInt32 ao = new AnalogOutputInt32(value, CommandStatus.SUCCESS);
-        return proxy.Operate(ao, index).toInt();
+        return proxy.Operate(ao, index, seq).toInt();
     }
 
     public int DirectOperate(int value, long index)
@@ -72,16 +72,16 @@ class CommandHandlerAdapter {
 
     // AnalogOutputInt16
 
-    public int Select(short value, long index, byte aSeq)
+    public int Select(short value, long index, byte seq)
     {
         AnalogOutputInt16 ao = new AnalogOutputInt16(value, CommandStatus.SUCCESS);
-        return proxy.Select(ao, index).toInt();
+        return proxy.Select(ao, index, seq).toInt();
     }
 
-    public int Operate(short value, long index, byte aSeq)
+    public int Operate(short value, long index, byte seq)
     {
         AnalogOutputInt16 ao = new AnalogOutputInt16(value, CommandStatus.SUCCESS);
-        return proxy.Operate(ao, index).toInt();
+        return proxy.Operate(ao, index, seq).toInt();
     }
 
     public int DirectOperate(short value, long index)
@@ -92,16 +92,16 @@ class CommandHandlerAdapter {
 
     // AnalogOutputFloat32
 
-    public int Select(float value, long index, byte aSeq)
+    public int Select(float value, long index, byte seq)
     {
         AnalogOutputFloat32 ao = new AnalogOutputFloat32(value, CommandStatus.SUCCESS);
-        return proxy.Select(ao, index).toInt();
+        return proxy.Select(ao, index, seq).toInt();
     }
 
-    public int Operate(float value, long index, byte aSeq)
+    public int Operate(float value, long index, byte seq)
     {
         AnalogOutputFloat32 ao = new AnalogOutputFloat32(value, CommandStatus.SUCCESS);
-        return proxy.Operate(ao, index).toInt();
+        return proxy.Operate(ao, index, seq).toInt();
     }
 
     public int DirectOperate(float value, long index)
@@ -112,16 +112,16 @@ class CommandHandlerAdapter {
 
     // AnalogOutputDouble64
 
-    public int Select(double value, long index, byte aSeq)
+    public int Select(double value, long index, byte seq)
     {
         AnalogOutputDouble64 ao = new AnalogOutputDouble64(value, CommandStatus.SUCCESS);
-        return proxy.Select(ao, index).toInt();
+        return proxy.Select(ao, index, seq).toInt();
     }
 
-    public int Operate(double value, long index, byte aSeq)
+    public int Operate(double value, long index, byte seq)
     {
         AnalogOutputDouble64 ao = new AnalogOutputDouble64(value, CommandStatus.SUCCESS);
-        return proxy.Operate(ao, index).toInt();
+        return proxy.Operate(ao, index, seq).toInt();
     }
 
     public int DirectOperate(double value, long index)

@@ -18,11 +18,32 @@
  */
 package com.automatak.dnp3;
 
+/**
+ * A communication channel to which DNP3 stacks can be added
+ */
 public interface Channel {
 
+    /**
+     * Shutdown the channel and all stacks that have been added. Calling shutdown more than once or
+     * continuing to use child objects (masters/outstations) after calling shutdown can cause a failure.
+     */
     void shutdown();
 
+    /**
+     * Adds a master station to the channel
+     * @param loggerId name of the logger that will be assigned to this stack
+     * @param level LogLevel assigned to the logger
+     * @param publisher Where measurements will be sent as they are received from the outstation
+     * @return reference to the created master
+     */
     Master addMaster(String loggerId, LogLevel level, DataObserver publisher);//, MasterStackConfig config);
 
+    /**
+     * Adds a master station to the channel
+     * @param loggerId name of the logger that will be assigned to this stack
+     * @param level LogLevel assigned to the logger
+     * @param cmdHandler where command requests are sent to be handled in application code
+     * @return reference to the created master
+     */
     Outstation addOutstation(String loggerId, LogLevel level, CommandHandler cmdHandler);//, SlaveStackConfig config);
 }

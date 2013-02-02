@@ -18,6 +18,9 @@
  */
 package com.automatak.dnp3;
 
+/**
+ * Base class for all measurements that provides time and quality bit-fields
+ */
 public abstract class BaseMeasurement implements Measurement {
 
     private final byte quality;

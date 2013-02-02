@@ -21,6 +21,9 @@ package com.automatak.dnp3;
 
 import java.util.Set;
 
+/**
+ * Represents the state of a digital output
+ */
 public class BinaryOutputStatus extends BaseMeasurement
 {
     private final boolean value;

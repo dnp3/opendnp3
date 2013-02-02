@@ -18,9 +18,19 @@
  */
 package com.automatak.dnp3;
 
+/**
+ *  Represents all measurements have a quality bit-field and a timestamp
+ */
 public interface Measurement {
 
+    /**
+     * @return quality flags as a bit-field
+     */
     byte getQuality();
+
+    /**
+     * @return milliseconds since Unix epoch UTC
+     */
     long getMsSinceEpoch();
 
 }

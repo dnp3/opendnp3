@@ -18,7 +18,10 @@
  */
 package com.automatak.dnp3;
 
-
+/**
+ *  A set-point command request with double precision floating point representation.
+ *  The underlying DNP3 serialization is Group41, Variation 4
+ */
 public class AnalogOutputDouble64 {
 
     public final double value;

@@ -18,7 +18,10 @@
  */
 package com.automatak.dnp3;
 
-
+/**
+ *  A set-point command request with short integer representation.
+ *  The underlying DNP3 serialization is Group41, Variation 1
+ */
 public class AnalogOutputInt32 {
 
     public final int value;

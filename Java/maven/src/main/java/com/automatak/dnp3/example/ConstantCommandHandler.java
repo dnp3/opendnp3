@@ -29,44 +29,44 @@ public class ConstantCommandHandler implements CommandHandler {
     {
         this.status = status;
     }
-    public CommandStatus Select(ControlRelayOutputBlock command, long index)
+    public CommandStatus Select(ControlRelayOutputBlock command, long index, byte sequence)
     {
         return status;
     }
-    public CommandStatus Select(AnalogOutputInt32 command, long index)
+    public CommandStatus Select(AnalogOutputInt32 command, long index, byte sequence)
     {
         return status;
     }
-    public CommandStatus Select(AnalogOutputInt16 command, long index)
+    public CommandStatus Select(AnalogOutputInt16 command, long index, byte sequence)
     {
         return status;
     }
-    public CommandStatus Select(AnalogOutputFloat32 command, long index)
+    public CommandStatus Select(AnalogOutputFloat32 command, long index, byte sequence)
     {
         return status;
     }
-    public CommandStatus Select(AnalogOutputDouble64 command, long index)
+    public CommandStatus Select(AnalogOutputDouble64 command, long index, byte sequence)
     {
         return status;
     }
 
-    public CommandStatus Operate(ControlRelayOutputBlock command, long index)
+    public CommandStatus Operate(ControlRelayOutputBlock command, long index, byte sequence)
     {
         return status;
     }
-    public CommandStatus Operate(AnalogOutputInt32 command, long index)
+    public CommandStatus Operate(AnalogOutputInt32 command, long index, byte sequence)
     {
         return status;
     }
-    public CommandStatus Operate(AnalogOutputInt16 command, long index)
+    public CommandStatus Operate(AnalogOutputInt16 command, long index, byte sequence)
     {
         return status;
     }
-    public CommandStatus Operate(AnalogOutputFloat32 command, long index)
+    public CommandStatus Operate(AnalogOutputFloat32 command, long index, byte sequence)
     {
         return status;
     }
-    public CommandStatus Operate(AnalogOutputDouble64 command, long index)
+    public CommandStatus Operate(AnalogOutputDouble64 command, long index, byte sequence)
     {
         return status;
     }

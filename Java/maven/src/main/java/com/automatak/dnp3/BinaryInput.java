@@ -21,6 +21,9 @@ package com.automatak.dnp3;
 
 import java.util.Set;
 
+/**
+ * A boolean measurement type (i.e. whether a switch is open/closed)
+ */
 public class BinaryInput extends BaseMeasurement
 {
     private final boolean value;
