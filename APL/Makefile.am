@@ -2,5 +2,5 @@
 
 lib_LTLIBRARIES = libapl.la
 
-libopendnp3_la_SOURCES = \
+libapl_la_SOURCES = \
 	CRC.cpp

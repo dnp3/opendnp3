@@ -11,3 +11,4 @@ config.guess
 config.sub
 depcomp
 ltmain.sh
+/m4
