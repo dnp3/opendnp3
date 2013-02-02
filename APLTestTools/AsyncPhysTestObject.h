@@ -29,9 +29,9 @@
 #ifndef __ASYNC_PHYS_TEST_OBJECT_H_
 #define __ASYNC_PHYS_TEST_OBJECT_H_
 
-#include <APLTestTools/AsyncTestObjectASIO.h>
+#include "AsyncTestObjectASIO.h"
+#include "LogTester.h"
 
-#include <APLTestTools/LogTester.h>
 #include <APL/PhysicalLayerAsyncTCPClient.h>
 #include <APL/PhysicalLayerAsyncTCPServer.h>
 #include <APL/LowerLayerToPhysAdapter.h>

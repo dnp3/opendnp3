@@ -4,7 +4,8 @@ AC_COPYRIGHT([(C) 2010, 2011 Green EneryCorp. (C) 2013 Automatak, LLC. All right
 AM_INIT_AUTOMAKE #initial automake
 
 AC_CONFIG_FILES([Makefile
-		APL/Makefile])
+		APL/Makefile
+		APLTestTools/Makefile])
 
 AC_PROG_CXX # tell autoconf that we're using C++
 
