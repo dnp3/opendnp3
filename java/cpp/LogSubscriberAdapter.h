@@ -2,14 +2,14 @@
 #define __LOG_SUBSCRIBER_ADAPTER_H_
 
 #include <jni.h>
-#include <APL/LogBase.h>
+#include <opendnp3/LogBase.h>
 
-class LogSubscriberAdapter : public apl::ILogBase
+class LogSubscriberAdapter : public opendnp3::ILogBase
 {
 	public:
 	LogSubscriberAdapter(JavaVM* apJVM, jobject aProxy);
 
-	void Log(const apl::LogEntry& arEntry);
+	void Log(const opendnp3::LogEntry& arEntry);
 
 	private:
 	JavaVM* mpJVM;

@@ -19,10 +19,11 @@
 
 #include "CommandHandlerAdapter.h"
 #include "JNIHelpers.h"
+
 #include <assert.h>
 #include <iostream>
 
-using namespace apl::dnp;
+using namespace opendnp3;
 
 CommandHandlerAdapter::CommandHandlerAdapter(JavaVM* apJVM, jobject aProxy) : mpJVM(apJVM), mProxy(aProxy)
 {

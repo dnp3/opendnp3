@@ -30,7 +30,7 @@ mProxy(aProxy)
 
 }
 
-void LogSubscriberAdapter::Log(const apl::LogEntry& arEntry)
+void LogSubscriberAdapter::Log(const opendnp3::LogEntry& arEntry)
 {	
 	JNIEnv* pEnv = NULL;
 	mpJVM->GetEnv((void **) &pEnv, JNI_VERSION_1_6);

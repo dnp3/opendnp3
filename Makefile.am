@@ -235,6 +235,21 @@ dnp3test_SOURCES = \
 	cpp/tests/VtoIntegrationTestBase.cpp \
 	cpp/tests/WrappedTcpPipe.cpp
 
+if WANT_JAVA
+	
+lib_LTLIBRARIES += libopendnp3java.la 	
+libopendnp3java_la_CPPFLAGS = -I./cpp/src
+libopendnp3java_la_SOURCES = \
+	java/cpp/com_automatak_dnp3_impl_ChannelImpl.cpp \
+	java/cpp/com_automatak_dnp3_impl_CommandProcessorImpl.cpp \
+	java/cpp/com_automatak_dnp3_impl_DataObserverImpl.cpp \
+	java/cpp/com_automatak_dnp3_impl_ManagerImpl.cpp \
+	java/cpp/com_automatak_dnp3_impl_MasterImpl.cpp \
+	java/cpp/com_automatak_dnp3_impl_OutstationImpl.cpp \
+	java/cpp/CommandHandlerAdapter.cpp \
+	java/cpp/DataObserverAdapter.cpp \
+	java/cpp/JNIHelpers.cpp \
+	java/cpp/LogSubscriberAdapter.cpp
 
-
+endif
 

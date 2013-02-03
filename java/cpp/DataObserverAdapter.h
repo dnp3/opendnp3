@@ -2,9 +2,9 @@
 #define __DATA_OBSERVER_ADAPTER_H_
 
 #include <jni.h>
-#include <APL/DataInterfaces.h>
+#include <opendnp3/DataInterfaces.h>
 
-class DataObserverAdapter : public apl::IDataObserver
+class DataObserverAdapter : public opendnp3::IDataObserver
 {
 	public:
 	DataObserverAdapter(JavaVM* apJVM, jobject aProxy);
@@ -12,11 +12,11 @@ class DataObserverAdapter : public apl::IDataObserver
 	protected:
 
 	void _Start();
-	void _Update(const apl::Binary& arMeas, size_t aIndex);
-	void _Update(const apl::Analog& arMeas, size_t aIndex);
-	void _Update(const apl::Counter& arMeas, size_t aIndex);
-	void _Update(const apl::SetpointStatus& arMeas, size_t aIndex);
-	void _Update(const apl::ControlStatus& arMeas, size_t aIndex);
+	void _Update(const opendnp3::Binary& arMeas, size_t aIndex);
+	void _Update(const opendnp3::Analog& arMeas, size_t aIndex);
+	void _Update(const opendnp3::Counter& arMeas, size_t aIndex);
+	void _Update(const opendnp3::SetpointStatus& arMeas, size_t aIndex);
+	void _Update(const opendnp3::ControlStatus& arMeas, size_t aIndex);
 	void _End();
 
 	private:

@@ -21,10 +21,9 @@
 
 #include "JNIHelpers.h"
 #include "LogSubscriberAdapter.h"
-#include <DNP3/DNP3Manager.h>
+#include <opendnp3/DNP3Manager.h>
 
-using namespace apl;
-using namespace apl::dnp;
+using namespace opendnp3;
 
 #include <iostream>
 

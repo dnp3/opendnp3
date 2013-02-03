@@ -18,9 +18,9 @@
  */
 #include "com_automatak_dnp3_impl_DataObserverImpl.h"
 
-#include <APL/DataInterfaces.h>
+#include <opendnp3/DataInterfaces.h>
 
-using namespace apl;
+using namespace opendnp3;
 
 JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_DataObserverImpl_native_1start
   (JNIEnv* apEnv, jobject, jlong observer)

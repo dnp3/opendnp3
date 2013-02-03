@@ -19,7 +19,7 @@
 #include "DataObserverAdapter.h"
 
 
-using namespace apl;
+using namespace opendnp3;
 
 #include <iostream>
 

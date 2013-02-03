@@ -18,10 +18,10 @@
  */
 #include "com_automatak_dnp3_impl_CommandProcessorImpl.h"
 
-#include <DNP3/ICommandProcessor.h>
+#include <opendnp3/ICommandProcessor.h>
 #include "JNIHelpers.h"
 
-using namespace apl::dnp;
+using namespace opendnp3;
 
 void DoCommandCallback(JavaVM* apJVM, jobject gref, CommandResponse rsp)
 {

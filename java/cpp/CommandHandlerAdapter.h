@@ -2,32 +2,32 @@
 #define __COMMAND_HANDLER_ADAPTER_H_
 
 #include <jni.h>
-#include <DNP3/ICommandHandler.h>
+#include <opendnp3/ICommandHandler.h>
 
-class CommandHandlerAdapter : public apl::dnp::ICommandHandler
+class CommandHandlerAdapter : public opendnp3::ICommandHandler
 {
 	public:
 	CommandHandlerAdapter(JavaVM* apJVM, jobject aProxy);
 
-	apl::dnp::CommandStatus Select(const apl::dnp::ControlRelayOutputBlock& arCommand, size_t aIndex, uint8_t aSequence);
-	apl::dnp::CommandStatus Operate(const apl::dnp::ControlRelayOutputBlock& arCommand, size_t aIndex, uint8_t aSequence);
-	apl::dnp::CommandStatus DirectOperate(const apl::dnp::ControlRelayOutputBlock& arCommand, size_t aIndex);
+	opendnp3::CommandStatus Select(const opendnp3::ControlRelayOutputBlock& arCommand, size_t aIndex, uint8_t aSequence);
+	opendnp3::CommandStatus Operate(const opendnp3::ControlRelayOutputBlock& arCommand, size_t aIndex, uint8_t aSequence);
+	opendnp3::CommandStatus DirectOperate(const opendnp3::ControlRelayOutputBlock& arCommand, size_t aIndex);
 
-	apl::dnp::CommandStatus Select(const apl::dnp::AnalogOutputInt16& arCommand, size_t aIndex, uint8_t aSequence);
-	apl::dnp::CommandStatus Operate(const apl::dnp::AnalogOutputInt16& arCommand, size_t aIndex, uint8_t aSequence);
-	apl::dnp::CommandStatus DirectOperate(const apl::dnp::AnalogOutputInt16& arCommand, size_t aIndex);
+	opendnp3::CommandStatus Select(const opendnp3::AnalogOutputInt16& arCommand, size_t aIndex, uint8_t aSequence);
+	opendnp3::CommandStatus Operate(const opendnp3::AnalogOutputInt16& arCommand, size_t aIndex, uint8_t aSequence);
+	opendnp3::CommandStatus DirectOperate(const opendnp3::AnalogOutputInt16& arCommand, size_t aIndex);
 
-	apl::dnp::CommandStatus Select(const apl::dnp::AnalogOutputInt32& arCommand, size_t aIndex, uint8_t aSequence);
-	apl::dnp::CommandStatus Operate(const apl::dnp::AnalogOutputInt32& arCommand, size_t aIndex, uint8_t aSequence);
-	apl::dnp::CommandStatus DirectOperate(const apl::dnp::AnalogOutputInt32& arCommand, size_t aIndex);
+	opendnp3::CommandStatus Select(const opendnp3::AnalogOutputInt32& arCommand, size_t aIndex, uint8_t aSequence);
+	opendnp3::CommandStatus Operate(const opendnp3::AnalogOutputInt32& arCommand, size_t aIndex, uint8_t aSequence);
+	opendnp3::CommandStatus DirectOperate(const opendnp3::AnalogOutputInt32& arCommand, size_t aIndex);
 
-	apl::dnp::CommandStatus Select(const apl::dnp::AnalogOutputFloat32& arCommand, size_t aIndex, uint8_t aSequence);
-	apl::dnp::CommandStatus Operate(const apl::dnp::AnalogOutputFloat32& arCommand, size_t aIndex, uint8_t aSequence);
-	apl::dnp::CommandStatus DirectOperate(const apl::dnp::AnalogOutputFloat32& arCommand, size_t aIndex);
+	opendnp3::CommandStatus Select(const opendnp3::AnalogOutputFloat32& arCommand, size_t aIndex, uint8_t aSequence);
+	opendnp3::CommandStatus Operate(const opendnp3::AnalogOutputFloat32& arCommand, size_t aIndex, uint8_t aSequence);
+	opendnp3::CommandStatus DirectOperate(const opendnp3::AnalogOutputFloat32& arCommand, size_t aIndex);
 
-	apl::dnp::CommandStatus Select(const apl::dnp::AnalogOutputDouble64& arCommand, size_t aIndex, uint8_t aSequence);
-	apl::dnp::CommandStatus Operate(const apl::dnp::AnalogOutputDouble64& arCommand, size_t aIndex, uint8_t aSequence);
-	apl::dnp::CommandStatus DirectOperate(const apl::dnp::AnalogOutputDouble64& arCommand, size_t aIndex);
+	opendnp3::CommandStatus Select(const opendnp3::AnalogOutputDouble64& arCommand, size_t aIndex, uint8_t aSequence);
+	opendnp3::CommandStatus Operate(const opendnp3::AnalogOutputDouble64& arCommand, size_t aIndex, uint8_t aSequence);
+	opendnp3::CommandStatus DirectOperate(const opendnp3::AnalogOutputDouble64& arCommand, size_t aIndex);
 	
 	private:
 

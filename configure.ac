@@ -24,14 +24,16 @@ AC_ARG_WITH([java],
      or disable it (ARG=no)
      @<:@ARG=yes@:>@ ])],
     [
+       JAVAC=$withval	
        AX_JNI_INCLUDE_DIR
+       want_java="yes"
        for JNI_INCLUDE_DIR in $JNI_INCLUDE_DIRS
        do
                CPPFLAGS="$CPPFLAGS -I$JNI_INCLUDE_DIR"
        done
     ],
     [want_java="no"])
-
+AM_CONDITIONAL(WANT_JAVA, [test "$want_java" = yes])
 
 AC_OUTPUT #actually output the configuration
 
