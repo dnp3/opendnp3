@@ -6,8 +6,8 @@ AM_INIT_AUTOMAKE([subdir-objects])
 
 AC_CONFIG_FILES([Makefile])
 
-AC_PROG_CXX # tell autoconf that we're using C++
-
+AC_LANG([C++]) # tell autoconf that we're using C++
+AX_CXX_COMPILE_STDCXX_11([ext]) #require support for C++11
 
 AX_BOOST_BASE([1.52.0], , AC_MSG_ERROR(Couldn't find boost >= 1.52.0))
 AX_BOOST_SYSTEM
