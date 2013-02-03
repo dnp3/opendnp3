@@ -29,30 +29,47 @@
 #ifndef __MOCK_COMMAND_HANDLER_H_
 #define __MOCK_COMMAND_HANDLER_H_
 
-#include <opendnp3/CommandInterfaces.h>
+#include <DNP3/ICommandHandler.h>
 
-namespace opendnp3
+namespace apl
+{
+namespace dnp
 {
 
 class MockCommandHandler : public ICommandHandler
 {
-public:
+	public:
 
-	MockCommandHandler() : num_bo(0), num_sp(0) {}
+	MockCommandHandler(CommandStatus aStatus = CS_SUCCESS) : mStatus(aStatus)
+	{}
 
-	CommandStatus HandleControl(BinaryOutput& aControl, size_t aIndex) {
-		++num_bo;
-		return CS_SUCCESS;
-	}
-	CommandStatus HandleControl(Setpoint& aControl, size_t aIndex) {
-		++num_sp;
-		return CS_SUCCESS;
-	}
+	CommandStatus Select(const ControlRelayOutputBlock& arCommand, size_t aIndex, uint8_t aSequence){ return mStatus; }
+	CommandStatus Select(const AnalogOutputInt32& arCommand, size_t aIndex, uint8_t aSequence){ return mStatus; }
+	CommandStatus Select(const AnalogOutputInt16& arCommand, size_t aIndex, uint8_t aSequence){ return mStatus; }
+	CommandStatus Select(const AnalogOutputFloat32& arCommand, size_t aIndex, uint8_t aSequence){ return mStatus; }
+	CommandStatus Select(const AnalogOutputDouble64& arCommand, size_t aIndex, uint8_t aSequence){ return mStatus; }
 
-	size_t num_bo;
-	size_t num_sp;
+	CommandStatus Operate(const ControlRelayOutputBlock& arCommand, size_t aIndex, uint8_t aSequence){ return mStatus; }
+	CommandStatus Operate(const AnalogOutputInt32& arCommand, size_t aIndex, uint8_t aSequence){ return mStatus; }
+	CommandStatus Operate(const AnalogOutputInt16& arCommand, size_t aIndex, uint8_t aSequence){ return mStatus; }
+	CommandStatus Operate(const AnalogOutputFloat32& arCommand, size_t aIndex, uint8_t aSequence){ return mStatus; }
+	CommandStatus Operate(const AnalogOutputDouble64& arCommand, size_t aIndex, uint8_t aSequence){ return mStatus; }
+
+	CommandStatus DirectOperate(const ControlRelayOutputBlock& arCommand, size_t aIndex){ return mStatus; }
+	CommandStatus DirectOperate(const AnalogOutputInt32& arCommand, size_t aIndex){ return mStatus; }
+	CommandStatus DirectOperate(const AnalogOutputInt16& arCommand, size_t aIndex){ return mStatus; }
+	CommandStatus DirectOperate(const AnalogOutputFloat32& arCommand, size_t aIndex){ return mStatus; }
+	CommandStatus DirectOperate(const AnalogOutputDouble64& arCommand, size_t aIndex){ return mStatus; }	
+
+	void SetResponse(CommandStatus aStatus) { mStatus = aStatus; }
+
+private:
+	CommandStatus mStatus;
+
 };
 
+
+}
 }
 
 #endif
