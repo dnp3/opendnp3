@@ -25,6 +25,10 @@ import com.automatak.dnp3.LogSubscriber;
 
 public class ManagerImpl implements DNP3Manager {
 
+    static {
+       System.loadLibrary("opendnp3java");
+    }
+
     private long nativePointer;
 
     public ManagerImpl(int concurrency)

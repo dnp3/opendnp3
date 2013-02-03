@@ -22,3 +22,8 @@ libtool
 dnp3test
 *~
 *.dirstamp
+
+# intellij/maven generated files
+java/maven/*.iml
+java/maven/target
+java/maven/.idea
