@@ -16,4 +16,22 @@ AX_BOOST_UNIT_TEST_FRAMEWORK
 
 LT_INIT #initialize libtools
 
+# optional support for builidn the java bindings
+AC_ARG_WITH([java],
+  [AS_HELP_STRING([--with-java@<:@=ARG@:>@],
+    [use the Java JDK based on the value of JAVA_HOME (ARG=yes),
+     from the specified location (ARG=<path>),
+     or disable it (ARG=no)
+     @<:@ARG=yes@:>@ ])],
+    [
+       AX_JNI_INCLUDE_DIR
+       for JNI_INCLUDE_DIR in $JNI_INCLUDE_DIRS
+       do
+               CPPFLAGS="$CPPFLAGS -I$JNI_INCLUDE_DIR"
+       done
+    ],
+    [want_java="no"])
+
+
 AC_OUTPUT #actually output the configuration
+
