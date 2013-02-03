@@ -1,6 +1,6 @@
 # Copyright (C) 2013 Automatak, LLC
 
-AM_CXXFLAGS = -std=c++11
+AM_CXXFLAGS = -std=c++11 -I ../
 
 lib_LTLIBRARIES = libapltesttools.la
 
