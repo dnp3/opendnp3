@@ -28,13 +28,14 @@
 //
 #include <boost/test/unit_test.hpp>
 
-#include <APL/Log.h>
-#include <APL/PhysLoopback.h>
-#include <APLTestTools/MockExecutor.h>
-#include <APLTestTools/MockPhysicalLayerAsync.h>
-#include <APLTestTools/TestHelpers.h>
+#include <opendnp3/Log.h>
+#include <opendnp3/PhysLoopback.h>
 
-using namespace apl;
+#include "MockExecutor.h"
+#include "MockPhysicalLayerAsync.h"
+#include "TestHelpers.h"
+
+using namespace opendnp3;
 using namespace boost;
 
 BOOST_AUTO_TEST_SUITE(PhysicalLayerLoopbackSuite)

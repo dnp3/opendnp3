@@ -27,15 +27,13 @@
 // Contact Automatak, LLC for a commercial license to these modifications
 //
 #include <boost/test/unit_test.hpp>
-#include <APLTestTools/TestHelpers.h>
 
+#include "TestHelpers.h"
 #include "AsyncPhysBaseTest.h"
 
-#include <APL/Exception.h>
+#include <opendnp3/Exception.h>
 
-using namespace apl;
-
-
+using namespace opendnp3;
 
 BOOST_AUTO_TEST_SUITE(PhysicalLayerAsyncBaseSuite)
 BOOST_AUTO_TEST_CASE(ClosedState)

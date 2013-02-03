@@ -28,11 +28,11 @@
 //
 #include <boost/test/unit_test.hpp>
 
-#include <APL/Log.h>
-#include <APL/IOServiceThreadPool.h>
-#include <APL/Exception.h>
-#include <APL/ExecutorPause.h>
-#include <APL/ASIOExecutor.h>
+#include <opendnp3/Log.h>
+#include <opendnp3/IOServiceThreadPool.h>
+#include <opendnp3/Exception.h>
+#include <opendnp3/ExecutorPause.h>
+#include <opendnp3/ASIOExecutor.h>
 
 #include <thread>
 
@@ -40,7 +40,7 @@ using namespace std;
 using namespace boost;
 using namespace boost::asio;
 using namespace boost::system;
-using namespace apl;
+using namespace opendnp3;
 
 
 BOOST_AUTO_TEST_SUITE(ASIOThreadPoolTestSuite)

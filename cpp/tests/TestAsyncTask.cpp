@@ -29,20 +29,20 @@
 #include <boost/test/unit_test.hpp>
 
 
-#include <APL/AsyncTaskScheduler.h>
-#include <APL/AsyncTaskPeriodic.h>
-#include <APL/AsyncTaskNonPeriodic.h>
-#include <APL/AsyncTaskContinuous.h>
-#include <APL/AsyncTaskGroup.h>
-#include <APL/Exception.h>
+#include <opendnp3/AsyncTaskScheduler.h>
+#include <opendnp3/AsyncTaskPeriodic.h>
+#include <opendnp3/AsyncTaskNonPeriodic.h>
+#include <opendnp3/AsyncTaskContinuous.h>
+#include <opendnp3/AsyncTaskGroup.h>
+#include <opendnp3/Exception.h>
 
-#include <APLTestTools/MockExecutor.h>
+#include "MockExecutor.h"
 
 #include <boost/bind.hpp>
 #include <queue>
 #include <chrono>
 
-using namespace apl;
+using namespace opendnp3;
 using namespace boost;
 using namespace std::chrono;
 

@@ -27,18 +27,20 @@
 // Contact Automatak, LLC for a commercial license to these modifications
 //
 #include <boost/test/unit_test.hpp>
-#include <APLTestTools/TestHelpers.h>
-#include <APL/Log.h>
-#include <APL/LogToFile.h>
-#include <APLTestTools/LogTester.h>
-#include <APL/Exception.h>
+#include "TestHelpers.h"
+#include "LogTester.h"
+
+#include <opendnp3/Log.h>
+#include <opendnp3/LogToFile.h>
+#include <opendnp3/Exception.h>
+
 #include <boost/shared_ptr.hpp>
 #include <iostream>
 #include <vector>
 
 using namespace boost;
 using namespace std;
-using namespace apl;
+using namespace opendnp3;
 
 
 #ifdef GetMessage
@@ -59,7 +61,7 @@ BOOST_AUTO_TEST_CASE( LogLifetimeTest )
 	Logger* pLogger = log.GetLogger(LEV_DEBUG, "LogTest");
 
 	for ( size_t i = 0; i < aCount; i++ ) {
-		pLogger->Log( apl::LEV_DEBUG, "Test test test test", "Test message" );
+		pLogger->Log( LEV_DEBUG, "Test test test test", "Test message" );
 	}
 
 	BOOST_REQUIRE_EQUAL( buff.Count(), aCount );
@@ -146,7 +148,7 @@ BOOST_AUTO_TEST_CASE( LogSubLevelTest )
 
 BOOST_AUTO_TEST_CASE( LogErrorCounting)
 {
-	apl::LogTester log(false);
+	LogTester log(false);
 	Logger* pLogger = log.mLog.GetLogger(LEV_DEBUG, "test1");
 	pLogger->Log( LEV_DEBUG, "LogEntryParamsTest", "MessageMessage", 5 );
 
@@ -166,7 +168,7 @@ BOOST_AUTO_TEST_CASE(AddRemove)
 		EventLog log;
 		log.AddLogSubscriber(&file);
 		Logger* pLogger = log.GetLogger(LEV_DEBUG, "test1");
-		pLogger->Log( apl::LEV_DEBUG, "Test test test test", "Test message" );
+		pLogger->Log( LEV_DEBUG, "Test test test test", "Test message" );
 	}
 
 	ifstream inFile("unittest.log");

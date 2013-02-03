@@ -29,15 +29,14 @@
 #ifndef __ASYNC_SERIAL_TEST_OBJECT_H_
 #define __ASYNC_SERIAL_TEST_OBJECT_H_
 
+#include <opendnp3/PhysicalLayerAsyncSerial.h>
+#include <opendnp3/LowerLayerToPhysAdapter.h>
 
-#include <APLTestTools/AsyncTestObjectASIO.h>
+#include "AsyncTestObjectASIO.h"
+#include "LogTester.h"
+#include "MockUpperLayer.h"
 
-#include <APLTestTools/LogTester.h>
-#include <APL/PhysicalLayerAsyncSerial.h>
-#include <APL/LowerLayerToPhysAdapter.h>
-#include <APLTestTools/MockUpperLayer.h>
-
-namespace apl
+namespace opendnp3
 {
 
 class AsyncSerialTestObject : public AsyncTestObjectASIO, public LogTester

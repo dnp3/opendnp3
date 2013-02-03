@@ -27,15 +27,15 @@
 // Contact Automatak, LLC for a commercial license to these modifications
 //
 #include <boost/test/unit_test.hpp>
-#include <APLTestTools/TestHelpers.h>
 
-#include <APL/ASIOExecutor.h>
-#include <APL/IOServiceThreadPool.h>
+#include "TestHelpers.h"
 
-#include <APL/Exception.h>
-#include <APL/Location.h>
-#include <APL/Log.h>
-#include <APL/ExecutorPause.h>
+#include <opendnp3/ASIOExecutor.h>
+#include <opendnp3/IOServiceThreadPool.h>
+#include <opendnp3/Exception.h>
+#include <opendnp3/Location.h>
+#include <opendnp3/Log.h>
+#include <opendnp3/ExecutorPause.h>
 
 #include <map>
 #include <functional>
@@ -44,7 +44,7 @@
 
 using namespace std;
 using namespace std::chrono;
-using namespace apl;
+using namespace opendnp3;
 
 class TimerTestObject
 {

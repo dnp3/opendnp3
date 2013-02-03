@@ -28,10 +28,10 @@
 //
 #include <boost/test/unit_test.hpp>
 
-#include <APL/ChangeBuffer.h>
-#include <APL/FlexibleDataObserver.h>
+#include <opendnp3/ChangeBuffer.h>
+#include <opendnp3/FlexibleDataObserver.h>
 
-using namespace apl;
+using namespace opendnp3;
 
 BOOST_AUTO_TEST_SUITE(ChangeBufferTestSuite)
 

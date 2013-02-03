@@ -31,7 +31,7 @@
 
 #include <opendnp3/ChangeBuffer.h>
 
-namespace apl
+namespace opendnp3
 {
 
 class FanoutDataObserver : public IDataObserver

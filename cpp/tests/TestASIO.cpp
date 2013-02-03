@@ -32,14 +32,14 @@
 #include <boost/asio.hpp>
 #include <boost/asio/high_resolution_timer.hpp>
 
-#include <APL/Types.h>
+#include <opendnp3/Types.h>
 #include <functional>
 
 using namespace std;
 using namespace boost;
 using namespace boost::asio;
 using namespace boost::system;
-using namespace apl;
+using namespace opendnp3;
 
 
 void AssertCanceled(bool* apFlag, const boost::system::error_code& ec)

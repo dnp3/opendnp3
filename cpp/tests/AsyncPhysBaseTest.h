@@ -29,14 +29,14 @@
 #ifndef __ASYNC_PHYS_BASE_TEST_H_
 #define __ASYNC_PHYS_BASE_TEST_H_
 
-#include <APL/LowerLayerToPhysAdapter.h>
+#include <opendnp3/LowerLayerToPhysAdapter.h>
 
-#include <APLTestTools/LogTester.h>
-#include <APLTestTools/MockUpperLayer.h>
-#include <APLTestTools/MockPhysicalLayerAsync.h>
-#include <APLTestTools/MockExecutor.h>
+#include "LogTester.h"
+#include "MockUpperLayer.h"
+#include "MockPhysicalLayerAsync.h"
+#include "MockExecutor.h"
 
-namespace apl
+namespace opendnp3
 {
 
 class AsyncPhysBaseTest : public LogTester

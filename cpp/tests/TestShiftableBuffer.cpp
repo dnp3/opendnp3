@@ -27,12 +27,12 @@
 // Contact Automatak, LLC for a commercial license to these modifications
 //
 #include <boost/test/unit_test.hpp>
-#include <APLTestTools/TestHelpers.h>
+#include "TestHelpers.h"
 
-#include <APL/ShiftableBuffer.h>
-#include <APL/Exception.h>
+#include <opendnp3/ShiftableBuffer.h>
+#include <opendnp3/Exception.h>
 
-using namespace apl;
+using namespace opendnp3;
 
 
 

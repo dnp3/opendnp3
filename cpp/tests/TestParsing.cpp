@@ -27,39 +27,40 @@
 // Contact Automatak, LLC for a commercial license to these modifications
 //
 #include <boost/test/unit_test.hpp>
-#include <APLTestTools/TestHelpers.h>
+#include "TestHelpers.h"
 
-#include <APL/Parsing.h>
+#include <opendnp3/Parsing.h>
 
+using namespace opendnp3;
 
-BOOST_AUTO_TEST_SUITE(Parsing)
+BOOST_AUTO_TEST_SUITE(ParsingTestSuite)
 
 BOOST_AUTO_TEST_CASE(Bool)
 {
 	bool val;
-	BOOST_REQUIRE(apl::Parsing::Get("true", val));
+	BOOST_REQUIRE(Parsing::Get("true", val));
 	BOOST_REQUIRE(val);
-	BOOST_REQUIRE(apl::Parsing::Get("false", val));
+	BOOST_REQUIRE(Parsing::Get("false", val));
 	BOOST_REQUIRE_FALSE(val);
-	BOOST_REQUIRE_FALSE(apl::Parsing::Get("foo", val));
+	BOOST_REQUIRE_FALSE(Parsing::Get("foo", val));
 }
 
 BOOST_AUTO_TEST_CASE(Int)
 {
 	int val;
-	BOOST_REQUIRE(apl::Parsing::Get("123", val));
+	BOOST_REQUIRE(Parsing::Get("123", val));
 	BOOST_REQUIRE_EQUAL(val, 123);
-	BOOST_REQUIRE(apl::Parsing::Get("-123", val));
+	BOOST_REQUIRE(Parsing::Get("-123", val));
 	BOOST_REQUIRE_EQUAL(val, -123);
-	BOOST_REQUIRE_FALSE(apl::Parsing::Get("foo", val));
+	BOOST_REQUIRE_FALSE(Parsing::Get("foo", val));
 }
 
 BOOST_AUTO_TEST_CASE(Positive)
 {
 	int val;
-	BOOST_REQUIRE(apl::Parsing::GetPositive("123", val));
+	BOOST_REQUIRE(Parsing::GetPositive("123", val));
 	BOOST_REQUIRE_EQUAL(val, 123);
-	BOOST_REQUIRE_FALSE(apl::Parsing::GetPositive("-123", val));
+	BOOST_REQUIRE_FALSE(Parsing::GetPositive("-123", val));
 }
 
 BOOST_AUTO_TEST_SUITE_END()

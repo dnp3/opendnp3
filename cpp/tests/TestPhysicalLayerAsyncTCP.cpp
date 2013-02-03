@@ -31,20 +31,20 @@
 
 #include <functional>
 
-#include <APL/LogToStdio.h>
-#include <APL/ASIOExecutor.h>
-#include <APL/Exception.h>
-#include <APL/PhysLoopback.h>
-#include <APL/RandomizedBuffer.h>
+#include <opendnp3/LogToStdio.h>
+#include <opendnp3/ASIOExecutor.h>
+#include <opendnp3/Exception.h>
+#include <opendnp3/PhysLoopback.h>
+#include <opendnp3/RandomizedBuffer.h>
 
-#include <APLTestTools/TestHelpers.h>
-#include <APLTestTools/BufferHelpers.h>
-#include <APLTestTools/AsyncTestObjectASIO.h>
-#include <APLTestTools/AsyncPhysTestObject.h>
+#include "TestHelpers.h"
+#include "BufferHelpers.h"
+#include "AsyncTestObjectASIO.h"
+#include "AsyncPhysTestObject.h"
 
 #include <iostream>
 
-using namespace apl;
+using namespace opendnp3;
 using namespace boost;
 
 

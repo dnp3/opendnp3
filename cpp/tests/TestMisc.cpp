@@ -27,7 +27,7 @@
 // Contact Automatak, LLC for a commercial license to these modifications
 //
 #include <boost/test/unit_test.hpp>
-#include <APLTestTools/TestHelpers.h>
+#include "TestHelpers.h"
 
 #include <iostream>
 #include <map>
@@ -37,16 +37,13 @@
 #include <sstream>
 #include <bitset>
 #include <signal.h>
-
-using namespace std;
-
-
-#include <APL/Util.h>
-#include <APL/Thread.h>
-
 #include <vector>
 
-using namespace apl;
+#include <opendnp3/Util.h>
+#include <opendnp3/Thread.h>
+
+using namespace std;
+using namespace opendnp3;
 
 
 BOOST_AUTO_TEST_SUITE(MiscTest)
@@ -54,15 +51,15 @@ BOOST_AUTO_TEST_SUITE(MiscTest)
 BOOST_AUTO_TEST_CASE(ToUpperCase)
 {
 	string test("lower case");
-	apl::toUpperCase(test);
+	toUpperCase(test);
 	BOOST_REQUIRE_EQUAL(test, "LOWER CASE");
 
 	string test2("UPPPER case");
-	apl::toUpperCase(test2);
+	toUpperCase(test2);
 	BOOST_REQUIRE_EQUAL(test2, "UPPPER CASE");
 
 	string test3("123456789abcDEF");
-	apl::toUpperCase(test3);
+	toUpperCase(test3);
 	BOOST_REQUIRE_EQUAL(test3, "123456789ABCDEF");
 }
 

@@ -28,9 +28,7 @@
 //
 #include "AsyncPhysBaseTest.h"
 
-
-
-namespace apl
+namespace opendnp3
 {
 
 AsyncPhysBaseTest::AsyncPhysBaseTest(FilterLevel aLevel, bool aImmediate) :

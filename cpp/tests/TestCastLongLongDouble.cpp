@@ -27,15 +27,16 @@
 // Contact Automatak, LLC for a commercial license to these modifications
 //
 #include <boost/test/unit_test.hpp>
-#include <APLTestTools/TestHelpers.h>
-#include <APL/Types.h>
-#include "math.h"
-#include <APL/Util.h>
-#include <boost/numeric/conversion/converter.hpp>
+#include "TestHelpers.h"
 
+#include <opendnp3/Types.h>
+#include <opendnp3/Util.h>
+
+#include <math.h>
+#include <boost/numeric/conversion/converter.hpp>
 #include <iostream>
 
-using namespace apl;
+using namespace opendnp3;
 
 
 

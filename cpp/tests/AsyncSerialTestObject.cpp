@@ -29,7 +29,7 @@
 #include "AsyncSerialTestObject.h"
 #include <boost/asio.hpp>
 
-namespace apl
+namespace opendnp3
 {
 
 AsyncSerialTestObject::AsyncSerialTestObject(SerialSettings cfg, FilterLevel aLevel, bool aImmediate) :

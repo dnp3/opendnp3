@@ -27,23 +27,23 @@
 // Contact Automatak, LLC for a commercial license to these modifications
 //
 #include <boost/test/unit_test.hpp>
-#include <APLTestTools/TestHelpers.h>
+
+#include <opendnp3/Types.h>
+#include <opendnp3/Thread.h>
+#include <opendnp3/TimeSource.h>
+#include <opendnp3/Util.h>
+
+#include "TestHelpers.h"
+#include "Timeout.h"
+#include "StopWatch.h"
+
 #include <iostream>
-
-#include <APL/Types.h>
-#include <APL/Thread.h>
-#include <APL/TimeSource.h>
-#include <APL/Util.h>
-
-#include <APLTestTools/Timeout.h>
-#include <APLTestTools/StopWatch.h>
-
 #include <chrono>
 #include <thread>
 
 using namespace std;
 using namespace std::chrono;
-using namespace apl;
+using namespace opendnp3;
 
 BOOST_AUTO_TEST_SUITE(TimeoutTests)
 

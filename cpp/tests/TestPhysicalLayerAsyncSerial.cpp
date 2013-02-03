@@ -28,19 +28,19 @@
 //
 #include "AsyncSerialTestObject.h"
 
+#include "TestHelpers.h"
+#include "BufferHelpers.h"
+
 #include <boost/asio.hpp>
 #include <boost/test/unit_test.hpp>
-#include <APLTestTools/TestHelpers.h>
 #include <boost/bind.hpp>
 
-#include <APL/Thread.h>
-#include <APL/Log.h>
-#include <APLTestTools/BufferHelpers.h>
-#include <APL/Exception.h>
+#include <opendnp3/Thread.h>
+#include <opendnp3/Log.h>
+#include <opendnp3/Exception.h>
 
-using namespace apl;
+using namespace opendnp3;
 using namespace boost;
-
 
 
 //run the tests on arm to give us some protection

@@ -28,15 +28,16 @@
 //
 #include <boost/test/unit_test.hpp>
 
-#include <APL/Log.h>
-#include <APL/Exception.h>
-#include <APL/PhysicalLayerMonitor.h>
-#include <APL/PhysicalLayerMonitorStates.h>
-#include <APLTestTools/MockExecutor.h>
-#include <APLTestTools/MockPhysicalLayerAsync.h>
-#include <APLTestTools/TestHelpers.h>
+#include <opendnp3/Log.h>
+#include <opendnp3/Exception.h>
+#include <opendnp3/PhysicalLayerMonitor.h>
+#include <opendnp3/PhysicalLayerMonitorStates.h>
 
-using namespace apl;
+#include "MockExecutor.h"
+#include "MockPhysicalLayerAsync.h"
+#include "TestHelpers.h"
+
+using namespace opendnp3;
 using namespace boost;
 using namespace std::chrono;
 
