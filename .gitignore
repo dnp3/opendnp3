@@ -35,6 +35,11 @@ clr/DNP3CLRInterface/bin
 clr/DNP3CLRInterface/obj
 clr/DNP3CLRAdapter/Debug
 clr/DNP3CLRAdapter/Release
+clr/DNP3CLRMasterDemo/bin
+clr/DNP3CLRMasterDemo/obj
+clr/DNP3CLROutstationDemo/bin
+clr/DNP3CLROutstationDemo/obj
+
 
 
 # intellij/maven generated files
