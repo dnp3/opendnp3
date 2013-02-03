@@ -10,9 +10,8 @@ for a commercial license to these modifications.
 Proprietary Licensing
 ====================
 
-AGPLv3 is a copyleft license that triggers even if you the library against a 3rd
-part over a network but don't redistribute the source or binaries. For a proprietary 
-Apache2 license, contact Automatak, LLC
+AGPLv3 is a copyleft license that triggers even if you are only using the library against a 3rd
+part over a network. For a proprietary friendly Apache2 license, contact Automatak, LLC
 
 Overview
 ========
