@@ -143,7 +143,23 @@ libopendnp3_la_SOURCES = \
 check_PROGRAMS = dnp3test
 TESTS = dnp3test
 dnp3test_CPPFLAGS = -I../cpp/src
-dnp3test_SOURCES =
+dnp3test_SOURCES = \
+	cpp/test/AsyncPhysTestObject.cpp \
+	cpp/test/AsyncTestObjectASIO.cpp \
+	cpp/test/AsyncTestObject.cpp \
+	cpp/test/BufferHelpers.cpp \
+	cpp/test/BufferTestObject.cpp \
+	cpp/test/LogTester.cpp \
+	cpp/test/LoopbackPhysicalLayerAsync.cpp \
+	cpp/test/MockExecutor.cpp \
+	cpp/test/MockLowerLayer.cpp \
+	cpp/test/MockPhysicalLayerAsync.cpp \
+	cpp/test/MockPhysicalLayerMonitor.cpp \
+	cpp/test/MockUpperLayer.cpp \
+	cpp/test/PhysicalLayerWrapper.cpp \
+	cpp/test/StopWatch.cpp \
+	cpp/test/Timeout.cpp \
+	cpp/test/WrappedTcpPipe.cpp
 
 
 
