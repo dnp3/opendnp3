@@ -29,12 +29,12 @@
 #include "AsyncTestObjectASIO.h"
 #include <boost/asio.hpp>
 
-#include <APL/Location.h>
-#include <APL/Exception.h>
+#include <opendnp3/Location.h>
+#include <opendnp3/Exception.h>
 #include <thread>
 #include <chrono>
 
-namespace apl
+namespace opendnp3
 {
 
 AsyncTestObjectASIO::AsyncTestObjectASIO() :

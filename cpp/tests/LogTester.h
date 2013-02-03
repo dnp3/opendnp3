@@ -29,9 +29,9 @@
 #ifndef __LOG_TESTER_H_
 #define __LOG_TESTER_H_
 
-#include <APL/Log.h>
+#include <opendnp3/Log.h>
 
-namespace apl
+namespace opendnp3
 {
 
 class LogTester

@@ -29,7 +29,7 @@
 #ifndef __FANOUT_DATA_OBSERVER_H_
 #define __FANOUT_DATA_OBSERVER_H_
 
-#include <APL/ChangeBuffer.h>
+#include <opendnp3/ChangeBuffer.h>
 
 namespace apl
 {

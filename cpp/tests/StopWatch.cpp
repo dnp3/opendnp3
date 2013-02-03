@@ -30,7 +30,7 @@
 
 using namespace std::chrono;
 
-namespace apl
+namespace opendnp3
 {
 
 StopWatch::StopWatch() : mStartTime(steady_clock::now())

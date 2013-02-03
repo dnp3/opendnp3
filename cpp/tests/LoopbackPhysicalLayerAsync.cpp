@@ -31,13 +31,13 @@
 #include <boost/asio.hpp>
 #include <boost/bind.hpp>
 
-#include <APL/Logger.h>
-#include <APL/LoggableMacros.h>
+#include <opendnp3/Logger.h>
+#include <opendnp3/LoggableMacros.h>
 
 using namespace boost;
 using namespace boost::system;
 
-namespace apl
+namespace opendnp3
 {
 
 LoopbackPhysicalLayerAsync::LoopbackPhysicalLayerAsync(Logger* apLogger, boost::asio::io_service* apSrv) :

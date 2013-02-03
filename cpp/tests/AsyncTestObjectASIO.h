@@ -39,7 +39,7 @@ class io_service;
 }
 }
 
-namespace apl
+namespace opendnp3
 {
 
 class AsyncTestObjectASIO : public AsyncTestObject

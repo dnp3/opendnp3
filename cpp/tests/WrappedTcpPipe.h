@@ -29,8 +29,8 @@
 #ifndef __WRAPPED_TCP_PIPE_H_
 #define __WRAPPED_TCP_PIPE_H_
 
-#include <APL/PhysicalLayerAsyncTCPClient.h>
-#include <APL/PhysicalLayerAsyncTCPServer.h>
+#include <opendnp3/PhysicalLayerAsyncTCPClient.h>
+#include <opendnp3/PhysicalLayerAsyncTCPServer.h>
 
 #include "PhysicalLayerWrapper.h"
 
@@ -40,7 +40,7 @@ namespace boost {
 	} 
 }
 
-namespace apl
+namespace opendnp3
 {
 
 class WrappedTcpPipe

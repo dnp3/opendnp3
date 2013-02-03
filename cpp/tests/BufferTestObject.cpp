@@ -33,10 +33,10 @@
 #include <memory>
 #include <iostream>
 
-#include <APL/Exception.h>
-#include <APL/Location.h>
+#include <opendnp3/Exception.h>
+#include <opendnp3/Location.h>
 
-namespace apl
+namespace opendnp3
 {
 
 BufferTestObject::BufferTestObject() :

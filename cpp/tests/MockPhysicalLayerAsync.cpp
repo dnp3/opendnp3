@@ -29,14 +29,14 @@
 #include "MockPhysicalLayerAsync.h"
 
 #include "BufferHelpers.h"
-#include <APL/IExecutor.h>
+#include <opendnp3/IExecutor.h>
 
 #include <memory.h>
 #include <functional>
 
 using namespace boost::system;
 
-namespace apl
+namespace opendnp3
 {
 
 MockPhysicalLayerAsync::MockPhysicalLayerAsync(Logger* apLogger, IExecutor* apExecutor) :

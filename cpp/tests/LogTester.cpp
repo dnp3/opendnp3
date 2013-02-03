@@ -28,9 +28,9 @@
 //
 #include "LogTester.h"
 
-#include <APL/LogToStdio.h>
+#include <opendnp3/LogToStdio.h>
 
-namespace apl
+namespace opendnp3
 {
 
 LogTester::LogTester(bool aImmediate) :

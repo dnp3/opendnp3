@@ -30,18 +30,18 @@
 
 #include <boost/test/unit_test.hpp>
 
-#include <APL/IPhysicalLayerAsync.h>
-#include <APL/Logger.h>
-#include <APL/LoggableMacros.h>
-#include <APL/Util.h>
-#include <APL/ToHex.h>
+#include <opendnp3/IPhysicalLayerAsync.h>
+#include <opendnp3/Logger.h>
+#include <opendnp3/LoggableMacros.h>
+#include <opendnp3/Util.h>
+#include <opendnp3/ToHex.h>
 
 #include <iostream>
 #include <sstream>
 
 using namespace std::chrono;
 
-namespace apl
+namespace opendnp3
 {
 
 MockPhysicalLayerMonitor::MockPhysicalLayerMonitor(
@@ -148,7 +148,7 @@ void MockPhysicalLayerMonitor::TransmitNext()
 {
 	if(mWriteBuffer.Size() > this->mBytesWritten) {
 		size_t remaining = mWriteBuffer.Size() - mBytesWritten;
-		size_t toWrite = apl::Min<size_t>(4096, remaining);
+		size_t toWrite = Min<size_t>(4096, remaining);
 		mpPhys->AsyncWrite(mWriteBuffer.Buffer() + mBytesWritten, toWrite);
 		this->mLastWriteSize = toWrite;
 	}

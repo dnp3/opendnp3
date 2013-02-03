@@ -31,7 +31,7 @@
 
 #include "TestTypedefs.h"
 
-namespace apl
+namespace opendnp3
 {
 
 class AsyncTestObject

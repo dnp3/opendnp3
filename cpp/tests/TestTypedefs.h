@@ -29,20 +29,19 @@
 #ifndef __TEST_TYPEDEFS_H_
 #define __TEST_TYPEDEFS_H_
 
-#include <APL/Types.h>
+#include <opendnp3/Types.h>
 #include <functional>
 
-namespace apl
+namespace opendnp3
 {
-class FlexibleDataObserver;
-}
 
-namespace apl
-{
+class FlexibleDataObserver;
 const millis_t G_TEST_TIMEOUT = 40000;
 
 typedef std::function<bool ()> EvalFunc;
-typedef std::function<bool (apl::FlexibleDataObserver*)> OutputEvalFunc;
+typedef std::function<bool (FlexibleDataObserver*)> OutputEvalFunc;
+
 }
 
 #endif
+

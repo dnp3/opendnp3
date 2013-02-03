@@ -28,12 +28,12 @@
 //
 #include <boost/test/unit_test.hpp>
 
-#include <APL/PhysicalLayerMonitor.h>
-#include <APL/CopyableBuffer.h>
+#include <opendnp3/PhysicalLayerMonitor.h>
+#include <opendnp3/CopyableBuffer.h>
 
 #include <queue>
 
-namespace apl
+namespace opendnp3
 {
 
 class MockPhysicalLayerMonitor : public PhysicalLayerMonitor

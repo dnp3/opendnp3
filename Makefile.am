@@ -142,24 +142,25 @@ libopendnp3_la_SOURCES = \
 
 check_PROGRAMS = dnp3test
 TESTS = dnp3test
-dnp3test_CPPFLAGS = -I../cpp/src
+dnp3test_CPPFLAGS = -I./cpp/src
+dnp3test_LDADD = libopendnp3.la $(BOOST_TEST_LIBS)
 dnp3test_SOURCES = \
-	cpp/test/AsyncPhysTestObject.cpp \
-	cpp/test/AsyncTestObjectASIO.cpp \
-	cpp/test/AsyncTestObject.cpp \
-	cpp/test/BufferHelpers.cpp \
-	cpp/test/BufferTestObject.cpp \
-	cpp/test/LogTester.cpp \
-	cpp/test/LoopbackPhysicalLayerAsync.cpp \
-	cpp/test/MockExecutor.cpp \
-	cpp/test/MockLowerLayer.cpp \
-	cpp/test/MockPhysicalLayerAsync.cpp \
-	cpp/test/MockPhysicalLayerMonitor.cpp \
-	cpp/test/MockUpperLayer.cpp \
-	cpp/test/PhysicalLayerWrapper.cpp \
-	cpp/test/StopWatch.cpp \
-	cpp/test/Timeout.cpp \
-	cpp/test/WrappedTcpPipe.cpp
+	cpp/tests/AsyncPhysTestObject.cpp \
+	cpp/tests/AsyncTestObjectASIO.cpp \
+	cpp/tests/AsyncTestObject.cpp \
+	cpp/tests/BufferHelpers.cpp \
+	cpp/tests/BufferTestObject.cpp \
+	cpp/tests/LogTester.cpp \
+	cpp/tests/LoopbackPhysicalLayerAsync.cpp \
+	cpp/tests/MockExecutor.cpp \
+	cpp/tests/MockLowerLayer.cpp \
+	cpp/tests/MockPhysicalLayerAsync.cpp \
+	cpp/tests/MockPhysicalLayerMonitor.cpp \
+	cpp/tests/MockUpperLayer.cpp \
+	cpp/tests/PhysicalLayerWrapper.cpp \
+	cpp/tests/StopWatch.cpp \
+	cpp/tests/Timeout.cpp \
+	cpp/tests/WrappedTcpPipe.cpp \
 
 
 

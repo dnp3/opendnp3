@@ -35,9 +35,7 @@
 #include "PhysicalLayerFunctors.h"
 #include <map>
 
-#include <boost/cstdint.hpp>
-
-namespace apl
+namespace opendnp3
 {
 
 class PhysicalLayerWrapperFactory

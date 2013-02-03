@@ -28,9 +28,9 @@
 //
 #include "WrappedTcpPipe.h"
 
-#include <APL/Logger.h>
+#include <opendnp3/Logger.h>
 
-namespace apl
+namespace opendnp3
 {
 
 WrappedTcpPipe::WrappedTcpPipe(Logger* apLogger, boost::asio::io_service* apService, uint16_t aPort) :

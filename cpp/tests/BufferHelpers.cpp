@@ -28,15 +28,15 @@
 //
 #include "BufferHelpers.h"
 
-#include <APL/Location.h>
-#include <APL/Exception.h>
+#include <opendnp3/Location.h>
+#include <opendnp3/Exception.h>
 
 #include <memory.h>
 #include <sstream>
 
 using namespace std;
 
-namespace apl
+namespace opendnp3
 {
 
 

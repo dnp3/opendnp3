@@ -30,13 +30,13 @@
 
 #include "BufferHelpers.h"
 
-#include <APL/ToHex.h>
-#include <APL/Logger.h>
-#include <APL/LoggableMacros.h>
+#include <opendnp3/ToHex.h>
+#include <opendnp3/Logger.h>
+#include <opendnp3/LoggableMacros.h>
 
 #include <memory>
 
-namespace apl
+namespace opendnp3
 {
 
 MockUpperLayer::MockUpperLayer(Logger* apLogger) :

@@ -28,10 +28,10 @@
 //
 #include "PhysicalLayerWrapper.h"
 
-#include <APL/Logger.h>
-#include <APL/LoggableMacros.h>
+#include <opendnp3/Logger.h>
+#include <opendnp3/LoggableMacros.h>
 
-namespace apl
+namespace opendnp3
 {
 
 

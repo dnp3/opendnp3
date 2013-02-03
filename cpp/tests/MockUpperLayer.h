@@ -29,13 +29,13 @@
 #ifndef __MOCK_UPPER_LAYER_H_
 #define __MOCK_UPPER_LAYER_H_
 
-#include <APL/AsyncLayerInterfaces.h>
+#include <opendnp3/AsyncLayerInterfaces.h>
 
 #include <functional>
 
 #include "BufferTestObject.h"
 
-namespace apl
+namespace opendnp3
 {
 
 class MockUpperLayer : public IUpperLayer, public BufferTestObject

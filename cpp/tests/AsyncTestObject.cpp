@@ -35,7 +35,7 @@
 
 using namespace std;
 
-namespace apl
+namespace opendnp3
 {
 
 bool AsyncTestObject::ProceedUntil(const EvalFunc& arFunc, millis_t aTimeout)

@@ -29,8 +29,8 @@
 #ifndef __LOOP_BACK_PHYSICAL_LAYER_ASYNC_H_
 #define __LOOP_BACK_PHYSICAL_LAYER_ASYNC_H_
 
-#include <APL/PhysicalLayerAsyncASIO.h>
-#include <APL/IHandlerAsync.h>
+#include <opendnp3/PhysicalLayerAsyncASIO.h>
+#include <opendnp3/IHandlerAsync.h>
 
 #include <queue>
 
@@ -42,7 +42,7 @@ class io_service;
 }
 }
 
-namespace apl
+namespace opendnp3
 {
 
 // Provides a backend for testing physical layers

@@ -29,13 +29,12 @@
 #ifndef __PHYSICAL_LAYER_WRAPPER_H_
 #define __PHYSICAL_LAYER_WRAPPER_H_
 
-#include <APL/IPhysicalLayerAsync.h>
-#include <APL/Loggable.h>
-#include <APL/IHandlerAsync.h>
+#include <opendnp3/IPhysicalLayerAsync.h>
+#include <opendnp3/Loggable.h>
+#include <opendnp3/IHandlerAsync.h>
+#include <opendnp3/RandomDouble.h>
 
-#include <APL/RandomDouble.h>
-
-namespace apl
+namespace opendnp3
 {
 
 

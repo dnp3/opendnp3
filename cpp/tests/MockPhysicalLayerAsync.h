@@ -29,12 +29,12 @@
 #ifndef __MOCK_PHYSICAL_LAYER_ASYNC_H_
 #define __MOCK_PHYSICAL_LAYER_ASYNC_H_
 
-#include <APL/PhysicalLayerAsyncBase.h>
-#include <APL/IHandlerAsync.h>
+#include <opendnp3/PhysicalLayerAsyncBase.h>
+#include <opendnp3/IHandlerAsync.h>
 
 #include "BufferTestObject.h"
 
-namespace apl
+namespace opendnp3
 {
 
 class IExecutor;

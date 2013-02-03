@@ -29,11 +29,11 @@
 #ifndef __BUFFER_TEST_OBJECT_H_
 #define __BUFFER_TEST_OBJECT_H_
 
-#include <APL/Types.h>
+#include <opendnp3/Types.h>
 #include <string>
 #include <vector>
 
-namespace apl
+namespace opendnp3
 {
 class ByteStr;
 

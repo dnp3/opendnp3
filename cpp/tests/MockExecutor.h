@@ -30,11 +30,11 @@
 #define __MOCK_EXECUTOR_H_
 
 
-#include <APL/IExecutor.h>
+#include <opendnp3/IExecutor.h>
 #include <map>
 #include <queue>
 
-namespace apl
+namespace opendnp3
 {
 
 class MockTimer;

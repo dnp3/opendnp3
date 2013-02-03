@@ -32,7 +32,7 @@
 
 #include <chrono>
 
-namespace apl
+namespace opendnp3
 {
 
 // Use this class to simplify writing do loops with a timeout

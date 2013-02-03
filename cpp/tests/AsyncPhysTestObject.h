@@ -30,14 +30,14 @@
 #define __ASYNC_PHYS_TEST_OBJECT_H_
 
 #include "AsyncTestObjectASIO.h"
+#include "MockUpperLayer.h"
 #include "LogTester.h"
 
-#include <APL/PhysicalLayerAsyncTCPClient.h>
-#include <APL/PhysicalLayerAsyncTCPServer.h>
-#include <APL/LowerLayerToPhysAdapter.h>
-#include <APLTestTools/MockUpperLayer.h>
+#include <opendnp3/PhysicalLayerAsyncTCPClient.h>
+#include <opendnp3/PhysicalLayerAsyncTCPServer.h>
+#include <opendnp3/LowerLayerToPhysAdapter.h>
 
-namespace apl
+namespace opendnp3
 {
 
 class AsyncPhysTestObject : public AsyncTestObjectASIO, public LogTester

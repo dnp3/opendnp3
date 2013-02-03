@@ -31,7 +31,7 @@
 #include "BufferHelpers.h"
 #include <assert.h>
 
-namespace apl
+namespace opendnp3
 {
 
 MockLowerLayer::MockLowerLayer(Logger* apLogger) :

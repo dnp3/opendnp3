@@ -28,7 +28,7 @@
 //
 #include "AsyncPhysTestObject.h"
 
-namespace apl
+namespace opendnp3
 {
 
 AsyncPhysTestObject::AsyncPhysTestObject(FilterLevel aLevel, bool aImmediate, bool aAutoRead) :

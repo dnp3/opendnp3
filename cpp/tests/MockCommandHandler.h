@@ -29,9 +29,9 @@
 #ifndef __MOCK_COMMAND_HANDLER_H_
 #define __MOCK_COMMAND_HANDLER_H_
 
-#include <APL/CommandInterfaces.h>
+#include <opendnp3/CommandInterfaces.h>
 
-namespace apl
+namespace opendnp3
 {
 
 class MockCommandHandler : public ICommandHandler

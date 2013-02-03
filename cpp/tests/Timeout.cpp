@@ -31,7 +31,7 @@
 
 using namespace std::chrono;
 
-namespace apl
+namespace opendnp3
 {
 
 Timeout :: Timeout(steady_clock::duration aTimeout)
