@@ -2,7 +2,7 @@ AC_INIT([opendnp3], [1.1.0], [jadamcrain@automatak.com])
 AC_CONFIG_AUX_DIR([build-aux])
 AC_CONFIG_MACRO_DIR([m4])
 AC_COPYRIGHT([(C) 2010, 2011 Green EneryCorp. (C) 2013 Automatak, LLC. All right reserved.])
-AM_INIT_AUTOMAKE #init automake
+AM_INIT_AUTOMAKE([subdir-objects])
 
 AC_CONFIG_FILES([Makefile])
 
