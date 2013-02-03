@@ -10,6 +10,7 @@ AM_LDFLAGS  = $(BOOST_LDFLAGS)
 
 lib_LTLIBRARIES = libopendnp3.la
 
+libopendnp3_la_LDFLAGS = -version-info 1:1:0
 libopendnp3_la_SOURCES = \
 	cpp/src/opendnp3/AlwaysOpeningVtoRouter.cpp \
 	cpp/src/opendnp3/AnalogOutput.cpp \
@@ -237,8 +238,9 @@ dnp3test_SOURCES = \
 
 if WANT_JAVA
 	
-lib_LTLIBRARIES += libopendnp3java.la 	
+lib_LTLIBRARIES += libopendnp3java.la
 libopendnp3java_la_CPPFLAGS = -I./cpp/src
+libopendnp3java_la_LDFLAGS = -version-info 1:1:0
 libopendnp3java_la_SOURCES = \
 	java/cpp/com_automatak_dnp3_impl_ChannelImpl.cpp \
 	java/cpp/com_automatak_dnp3_impl_CommandProcessorImpl.cpp \
