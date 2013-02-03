@@ -36,7 +36,7 @@ namespace DNP3
 namespace Adapter
 {
 
-	System::Exception^ Conversions::convertException(const apl::Exception& ex)
+	System::Exception^ Conversions::convertException(const opendnp3::Exception& ex)
 	{		
 		return gcnew System::Exception(convertString(ex.GetErrorString()));
 	}	
@@ -51,75 +51,75 @@ namespace Adapter
 		return gcnew System::String(s.c_str());
 	}
 
-	apl::FilterLevel Conversions::convertFilterLevel(FilterLevel level)
+	opendnp3::FilterLevel Conversions::convertFilterLevel(FilterLevel level)
 	{
 		switch(level)
 		{
 			case (FilterLevel::LEV_EVENT):
-				return apl::LEV_EVENT;
+				return opendnp3::LEV_EVENT;
 			case (FilterLevel::LEV_ERROR):
-				return apl::LEV_ERROR;
+				return opendnp3::LEV_ERROR;
 			case (FilterLevel::LEV_WARNING):
-				return apl::LEV_WARNING;
+				return opendnp3::LEV_WARNING;
 			case (FilterLevel::LEV_INFO):
-				return apl::LEV_INFO;
+				return opendnp3::LEV_INFO;
 			case (FilterLevel::LEV_INTERPRET):
-				return apl::LEV_INTERPRET;
+				return opendnp3::LEV_INTERPRET;
 			case (FilterLevel::LEV_COMM):
-				return apl::LEV_COMM;
+				return opendnp3::LEV_COMM;
 			case (FilterLevel::LEV_DEBUG):
-				return apl::LEV_DEBUG;
+				return opendnp3::LEV_DEBUG;
 			default:
-				return apl::LEV_DEBUG;
+				return opendnp3::LEV_DEBUG;
 		}
 	}
 
-	FilterLevel Conversions::convertFilterLevel(apl::FilterLevel level)
+	FilterLevel Conversions::convertFilterLevel(opendnp3::FilterLevel level)
 	{
 		switch(level)
 		{
-			case (apl::LEV_EVENT):
+			case (opendnp3::LEV_EVENT):
 				return FilterLevel::LEV_EVENT;
-			case (apl::LEV_ERROR):
+			case (opendnp3::LEV_ERROR):
 				return FilterLevel::LEV_ERROR;
-			case (apl::LEV_WARNING):
+			case (opendnp3::LEV_WARNING):
 				return FilterLevel::LEV_WARNING;
-			case (apl::LEV_INFO):
+			case (opendnp3::LEV_INFO):
 				return FilterLevel::LEV_INFO;
-			case (apl::LEV_INTERPRET):
+			case (opendnp3::LEV_INTERPRET):
 				return FilterLevel::LEV_INTERPRET;
-			case (apl::LEV_COMM):
+			case (opendnp3::LEV_COMM):
 				return FilterLevel::LEV_COMM;
-			case (apl::LEV_DEBUG):
+			case (opendnp3::LEV_DEBUG):
 				return FilterLevel::LEV_DEBUG;
 			default:
 				return FilterLevel::LEV_DEBUG;
 		}
 	}
 
-	CommandStatus Conversions::convertCommandStatus(apl::dnp::CommandStatus status)
+	CommandStatus Conversions::convertCommandStatus(opendnp3::CommandStatus status)
 	{
 		switch(status)
 		{
-			case(apl::dnp::CS_SUCCESS):
+			case(opendnp3::CS_SUCCESS):
 				return CommandStatus::CS_SUCCESS;
-			case(apl::dnp::CS_TIMEOUT):
+			case(opendnp3::CS_TIMEOUT):
 				return CommandStatus::CS_TIMEOUT;
-			case(apl::dnp::CS_NO_SELECT):
+			case(opendnp3::CS_NO_SELECT):
 				return CommandStatus::CS_NO_SELECT;
-			case(apl::dnp::CS_FORMAT_ERROR):
+			case(opendnp3::CS_FORMAT_ERROR):
 				return CommandStatus::CS_FORMAT_ERROR;
-			case(apl::dnp::CS_NOT_SUPPORTED):
+			case(opendnp3::CS_NOT_SUPPORTED):
 				return CommandStatus::CS_NOT_SUPPORTED;
-			case(apl::dnp::CS_ALREADY_ACTIVE):
+			case(opendnp3::CS_ALREADY_ACTIVE):
 				return CommandStatus::CS_ALREADY_ACTIVE;
-			case(apl::dnp::CS_HARDWARE_ERROR):
+			case(opendnp3::CS_HARDWARE_ERROR):
 				return CommandStatus::CS_HARDWARE_ERROR;
-			case(apl::dnp::CS_LOCAL):
+			case(opendnp3::CS_LOCAL):
 				return CommandStatus::CS_LOCAL;
-			case(apl::dnp::CS_TOO_MANY_OPS):
+			case(opendnp3::CS_TOO_MANY_OPS):
 				return CommandStatus::CS_TOO_MANY_OPS;
-			case(apl::dnp::CS_NOT_AUTHORIZED):
+			case(opendnp3::CS_NOT_AUTHORIZED):
 				return CommandStatus::CS_NOT_AUTHORIZED;
 
 			default:
@@ -127,228 +127,228 @@ namespace Adapter
 		}
 	}
 
-	apl::dnp::CommandStatus Conversions::convertCommandStatus(CommandStatus status)
+	opendnp3::CommandStatus Conversions::convertCommandStatus(CommandStatus status)
 	{
 		switch(status)
 		{
 			case(CommandStatus::CS_SUCCESS):
-				return apl::dnp::CS_SUCCESS;
+				return opendnp3::CS_SUCCESS;
 			case(CommandStatus::CS_TIMEOUT):
-				return apl::dnp::CS_TIMEOUT;
+				return opendnp3::CS_TIMEOUT;
 			case(CommandStatus::CS_NO_SELECT):
-				return apl::dnp::CS_NO_SELECT;
+				return opendnp3::CS_NO_SELECT;
 			case(CommandStatus::CS_FORMAT_ERROR):
-				return apl::dnp::CS_FORMAT_ERROR;
+				return opendnp3::CS_FORMAT_ERROR;
 			case(CommandStatus::CS_NOT_SUPPORTED):
-				return apl::dnp::CS_NOT_SUPPORTED;
+				return opendnp3::CS_NOT_SUPPORTED;
 			case(CommandStatus::CS_ALREADY_ACTIVE):
-				return apl::dnp::CS_ALREADY_ACTIVE;
+				return opendnp3::CS_ALREADY_ACTIVE;
 			case(CommandStatus::CS_HARDWARE_ERROR):
-				return apl::dnp::CS_HARDWARE_ERROR;
+				return opendnp3::CS_HARDWARE_ERROR;
 			case(CommandStatus::CS_LOCAL):
-				return apl::dnp::CS_LOCAL;
+				return opendnp3::CS_LOCAL;
 			case(CommandStatus::CS_TOO_MANY_OPS):
-				return apl::dnp::CS_TOO_MANY_OPS;
+				return opendnp3::CS_TOO_MANY_OPS;
 			case(CommandStatus::CS_NOT_AUTHORIZED):
-				return apl::dnp::CS_NOT_AUTHORIZED;
+				return opendnp3::CS_NOT_AUTHORIZED;
 
 			default:
-				return apl::dnp::CS_UNDEFINED;
+				return opendnp3::CS_UNDEFINED;
 		}
 	}
 
-	ControlCode Conversions::convertControlCode(apl::dnp::ControlCode code)
+	ControlCode Conversions::convertControlCode(opendnp3::ControlCode code)
 	{
 		switch(code)
 		{
-			case (apl::dnp::CC_NULL):
+			case (opendnp3::CC_NULL):
 				return ControlCode::CC_NULL;
-			case (apl::dnp::CC_PULSE):
+			case (opendnp3::CC_PULSE):
 				return ControlCode::CC_PULSE;
-			case (apl::dnp::CC_LATCH_ON):
+			case (opendnp3::CC_LATCH_ON):
 				return ControlCode::CC_LATCH_ON;
-			case (apl::dnp::CC_LATCH_OFF):
+			case (opendnp3::CC_LATCH_OFF):
 				return ControlCode::CC_LATCH_OFF;
-			case (apl::dnp::CC_PULSE_CLOSE):
+			case (opendnp3::CC_PULSE_CLOSE):
 				return ControlCode::CC_PULSE_CLOSE;
-			case (apl::dnp::CC_PULSE_TRIP):
+			case (opendnp3::CC_PULSE_TRIP):
 				return ControlCode::CC_PULSE_TRIP;			
 			default:
 				return ControlCode::CC_UNDEFINED;
 		}
 	}
 
-	apl::dnp::ControlCode Conversions::convertControlCode(ControlCode code)
+	opendnp3::ControlCode Conversions::convertControlCode(ControlCode code)
 	{
 		switch(code)
 		{
 			case (ControlCode::CC_NULL):
-				return apl::dnp::CC_NULL;
+				return opendnp3::CC_NULL;
 			case (ControlCode::CC_PULSE):
-				return apl::dnp::CC_PULSE;
+				return opendnp3::CC_PULSE;
 			case (ControlCode::CC_LATCH_ON):
-				return apl::dnp::CC_LATCH_ON;
+				return opendnp3::CC_LATCH_ON;
 			case (ControlCode::CC_LATCH_OFF):
-				return apl::dnp::CC_LATCH_OFF;
+				return opendnp3::CC_LATCH_OFF;
 			case (ControlCode::CC_PULSE_CLOSE):
-				return apl::dnp::CC_PULSE_CLOSE;
+				return opendnp3::CC_PULSE_CLOSE;
 			case (ControlCode::CC_PULSE_TRIP):
-				return apl::dnp::CC_PULSE_TRIP;			
+				return opendnp3::CC_PULSE_TRIP;			
 			default:
-				return apl::dnp::CC_UNDEFINED;
+				return opendnp3::CC_UNDEFINED;
 		}
 	}
 
-	ControlRelayOutputBlock^ Conversions::convertCommand(const apl::dnp::ControlRelayOutputBlock& bo)
+	ControlRelayOutputBlock^ Conversions::convertCommand(const opendnp3::ControlRelayOutputBlock& bo)
 	{
 		return gcnew ControlRelayOutputBlock(convertControlCode(bo.GetCode()), bo.mCount, bo.mOnTimeMS, bo.mOffTimeMS);
 	}
 
-	apl::dnp::ControlRelayOutputBlock Conversions::convertCommand(ControlRelayOutputBlock^ bo)
+	opendnp3::ControlRelayOutputBlock Conversions::convertCommand(ControlRelayOutputBlock^ bo)
 	{			
-		return apl::dnp::ControlRelayOutputBlock(convertControlCode(bo->code), bo->count, bo->onTime, bo->offTime);
+		return opendnp3::ControlRelayOutputBlock(convertControlCode(bo->code), bo->count, bo->onTime, bo->offTime);
 	}
 				
-	apl::dnp::AnalogOutputInt32 Conversions::convertCommand(AnalogOutputInt32^ sp)
+	opendnp3::AnalogOutputInt32 Conversions::convertCommand(AnalogOutputInt32^ sp)
 	{
-		return apl::dnp::AnalogOutputInt32(sp->value);
+		return opendnp3::AnalogOutputInt32(sp->value);
 	}
 
-	AnalogOutputInt32^ Conversions::convertCommand(const apl::dnp::AnalogOutputInt32& sp)
+	AnalogOutputInt32^ Conversions::convertCommand(const opendnp3::AnalogOutputInt32& sp)
 	{
 		return gcnew AnalogOutputInt32(sp.GetValue());
 	}
 
-	apl::dnp::AnalogOutputInt16 Conversions::convertCommand(AnalogOutputInt16^ sp)
+	opendnp3::AnalogOutputInt16 Conversions::convertCommand(AnalogOutputInt16^ sp)
 	{
-		return apl::dnp::AnalogOutputInt16(sp->value);
+		return opendnp3::AnalogOutputInt16(sp->value);
 	}
 	
-	AnalogOutputInt16^ Conversions::convertCommand(const apl::dnp::AnalogOutputInt16& sp)
+	AnalogOutputInt16^ Conversions::convertCommand(const opendnp3::AnalogOutputInt16& sp)
 	{
 		return gcnew AnalogOutputInt16(sp.GetValue());
 	}
 
-	apl::dnp::AnalogOutputFloat32 Conversions::convertCommand(AnalogOutputFloat32^ sp)
+	opendnp3::AnalogOutputFloat32 Conversions::convertCommand(AnalogOutputFloat32^ sp)
 	{
-		return apl::dnp::AnalogOutputFloat32(sp->value);
+		return opendnp3::AnalogOutputFloat32(sp->value);
 	}
 
-	AnalogOutputFloat32^ Conversions::convertCommand(const apl::dnp::AnalogOutputFloat32& sp)
+	AnalogOutputFloat32^ Conversions::convertCommand(const opendnp3::AnalogOutputFloat32& sp)
 	{
 		return gcnew AnalogOutputFloat32(sp.GetValue());
 	}
 
-	apl::dnp::AnalogOutputDouble64 Conversions::convertCommand(AnalogOutputDouble64^ sp)
+	opendnp3::AnalogOutputDouble64 Conversions::convertCommand(AnalogOutputDouble64^ sp)
 	{
-		return apl::dnp::AnalogOutputDouble64(sp->value);
+		return opendnp3::AnalogOutputDouble64(sp->value);
 	}
 
-	AnalogOutputDouble64^ Conversions::convertCommand(const apl::dnp::AnalogOutputDouble64& sp)
+	AnalogOutputDouble64^ Conversions::convertCommand(const opendnp3::AnalogOutputDouble64& sp)
 	{
 		return gcnew AnalogOutputDouble64(sp.GetValue());
 	}
 
-	Binary^ Conversions::convertMeas(apl::Binary meas)
+	Binary^ Conversions::convertMeas(opendnp3::Binary meas)
 	{
 		return gcnew Binary(meas.GetValue(), meas.GetQuality(), TimeStamp::Convert(meas.GetTime()));
 	}
 
-	Analog^ Conversions::convertMeas(apl::Analog meas)
+	Analog^ Conversions::convertMeas(opendnp3::Analog meas)
 	{
 		return gcnew Analog(meas.GetValue(), meas.GetQuality(), TimeStamp::Convert(meas.GetTime()));
 	}
 
-	Counter^ Conversions::convertMeas(apl::Counter meas)
+	Counter^ Conversions::convertMeas(opendnp3::Counter meas)
 	{
 		return gcnew Counter(meas.GetValue(), meas.GetQuality(), TimeStamp::Convert(meas.GetTime()));
 	}
 
-	SetpointStatus^ Conversions::convertMeas(apl::SetpointStatus meas)
+	SetpointStatus^ Conversions::convertMeas(opendnp3::SetpointStatus meas)
 	{
 		return gcnew SetpointStatus(meas.GetValue(), meas.GetQuality(), TimeStamp::Convert(meas.GetTime()));
 	}
 
-	ControlStatus^ Conversions::convertMeas(apl::ControlStatus meas)
+	ControlStatus^ Conversions::convertMeas(opendnp3::ControlStatus meas)
 	{
 		return gcnew ControlStatus(meas.GetValue(), meas.GetQuality(), TimeStamp::Convert(meas.GetTime()));
 	}
 
-	apl::Binary Conversions::convertMeas(Binary^ meas)
+	opendnp3::Binary Conversions::convertMeas(Binary^ meas)
 	{
-		apl::Binary m(meas->value, meas->quality);
+		opendnp3::Binary m(meas->value, meas->quality);
 		m.SetTime(TimeStamp::Convert(meas->time));
 		return m;
 	}
 	
-	apl::Analog Conversions::convertMeas(Analog^ meas)
+	opendnp3::Analog Conversions::convertMeas(Analog^ meas)
 	{
-		apl::Analog m(meas->value, meas->quality);
+		opendnp3::Analog m(meas->value, meas->quality);
 		m.SetTime(TimeStamp::Convert(meas->time));
 		return m;
 	}
 	
-	apl::Counter Conversions::convertMeas(Counter^ meas)
+	opendnp3::Counter Conversions::convertMeas(Counter^ meas)
 	{
-		apl::Counter m(meas->value, meas->quality);
+		opendnp3::Counter m(meas->value, meas->quality);
 		m.SetTime(TimeStamp::Convert(meas->time));
 		return m;
 	}
 	
-	apl::SetpointStatus Conversions::convertMeas(SetpointStatus^ meas)
+	opendnp3::SetpointStatus Conversions::convertMeas(SetpointStatus^ meas)
 	{
-		apl::SetpointStatus m(meas->value, meas->quality);
+		opendnp3::SetpointStatus m(meas->value, meas->quality);
 		m.SetTime(TimeStamp::Convert(meas->time));
 		return m;
 	}
 	
-	apl::ControlStatus Conversions::convertMeas(ControlStatus^ meas)
+	opendnp3::ControlStatus Conversions::convertMeas(ControlStatus^ meas)
 	{
-		apl::ControlStatus m(meas->value, meas->quality);
+		opendnp3::ControlStatus m(meas->value, meas->quality);
 		m.SetTime(TimeStamp::Convert(meas->time));
 		return m;
 	}
 
-	apl::SerialSettings Conversions::convertSerialSettings(SerialSettings^ settings)
+	opendnp3::SerialSettings Conversions::convertSerialSettings(SerialSettings^ settings)
 	{
-		apl::SerialSettings s;
+		opendnp3::SerialSettings s;
 		s.mDevice = convertString(settings->port);
 		s.mBaud = settings->baud;
 		s.mDataBits = settings->dataBits;
 		s.mStopBits = settings->stopBits;
-		s.mParity = (apl::ParityType) settings->parity;
-		s.mFlowType = (apl::FlowType) settings->flowControl;
+		s.mParity = (opendnp3::ParityType) settings->parity;
+		s.mFlowType = (opendnp3::FlowType) settings->flowControl;
 		return s;
 	}
 
-	apl::dnp::LinkConfig Conversions::convertConfig(LinkConfig^ config)
+	opendnp3::LinkConfig Conversions::convertConfig(LinkConfig^ config)
 	{
-		return apl::dnp::LinkConfig(config->isMaster, config->useConfirms, config->numRetry, config->localAddr, config->remoteAddr, config->timeout);
+		return opendnp3::LinkConfig(config->isMaster, config->useConfirms, config->numRetry, config->localAddr, config->remoteAddr, config->timeout);
 	}
 
-	apl::dnp::AppConfig Conversions::convertConfig(AppConfig^ config)
+	opendnp3::AppConfig Conversions::convertConfig(AppConfig^ config)
 	{
-		return apl::dnp::AppConfig(config->rspTimeout, config->numRetry, config->fragSize);
+		return opendnp3::AppConfig(config->rspTimeout, config->numRetry, config->fragSize);
 	}
 
-	apl::dnp::ClassMask Conversions::convertClassMask(ClassMask^ cm)
+	opendnp3::ClassMask Conversions::convertClassMask(ClassMask^ cm)
 	{
-		return apl::dnp::ClassMask(cm->class1, cm->class2, cm->class3);
+		return opendnp3::ClassMask(cm->class1, cm->class2, cm->class3);
 	}
 
-	apl::dnp::EventMaxConfig Conversions::convertEventMaxConfig(EventMaxConfig^ cm)
+	opendnp3::EventMaxConfig Conversions::convertEventMaxConfig(EventMaxConfig^ cm)
 	{
-		return apl::dnp::EventMaxConfig(cm->maxBinaryEvents, cm->maxAnalogEvents, cm->maxCounterEvents, 0);
+		return opendnp3::EventMaxConfig(cm->maxBinaryEvents, cm->maxAnalogEvents, cm->maxCounterEvents, 0);
 	}
 
-	apl::dnp::GrpVar Conversions::convertGrpVar(GrpVar^ gv)
+	opendnp3::GrpVar Conversions::convertGrpVar(GrpVar^ gv)
 	{
-		return apl::dnp::GrpVar(gv->grp, gv->var);
+		return opendnp3::GrpVar(gv->grp, gv->var);
 	}
 
-	apl::dnp::SlaveConfig Conversions::convertConfig(SlaveConfig^ config)
+	opendnp3::SlaveConfig Conversions::convertConfig(SlaveConfig^ config)
 	{
-		apl::dnp::SlaveConfig sc;
+		opendnp3::SlaveConfig sc;
 
 		sc.mMaxControls = config->maxControls;
 		sc.mUnsolMask = convertClassMask(config->unsolMask);		
@@ -369,24 +369,24 @@ namespace Adapter
 		return sc;
 	}
 
-	apl::dnp::PointRecord Conversions::convertRecord(PointRecord^ epr)
+	opendnp3::PointRecord Conversions::convertRecord(PointRecord^ epr)
 	{
-		return apl::dnp::PointRecord("");
+		return opendnp3::PointRecord("");
 	}
 				
-	apl::dnp::EventPointRecord Conversions::convertRecord(EventPointRecord^ epr)
+	opendnp3::EventPointRecord Conversions::convertRecord(EventPointRecord^ epr)
 	{
-		return apl::dnp::EventPointRecord("", static_cast<apl::dnp::PointClass>(epr->pointClass));
+		return opendnp3::EventPointRecord("", static_cast<opendnp3::PointClass>(epr->pointClass));
 	}
 
-	apl::dnp::DeadbandPointRecord Conversions::convertRecord(DeadbandEventPointRecord^ epr)
+	opendnp3::DeadbandPointRecord Conversions::convertRecord(DeadbandEventPointRecord^ epr)
 	{
-		return apl::dnp::DeadbandPointRecord("", static_cast<apl::dnp::PointClass>(epr->pointClass), epr->deadband);
+		return opendnp3::DeadbandPointRecord("", static_cast<opendnp3::PointClass>(epr->pointClass), epr->deadband);
 	}
 
-	apl::dnp::DeviceTemplate Conversions::convertConfig(DeviceTemplate^ config)
+	opendnp3::DeviceTemplate Conversions::convertConfig(DeviceTemplate^ config)
 	{
-		apl::dnp::DeviceTemplate dev(	config->binaries->Count, 
+		opendnp3::DeviceTemplate dev(	config->binaries->Count, 
 										config->analogs->Count,
 										config->counters->Count,
 										config->controlStatii->Count,
@@ -401,9 +401,9 @@ namespace Adapter
 		return dev;
 	}
 
-	apl::dnp::MasterConfig Conversions::convertConfig(MasterConfig^ config)
+	opendnp3::MasterConfig Conversions::convertConfig(MasterConfig^ config)
 	{
-		apl::dnp::MasterConfig mc;
+		opendnp3::MasterConfig mc;
 		mc.FragSize = config->fragSize;
 		mc.AllowTimeSync = config->allowTimeSync;
 		mc.DoUnsolOnStartup = config->doUnsolOnStartup;
@@ -420,18 +420,18 @@ namespace Adapter
 		return mc;
 	}
 
-	apl::dnp::MasterStackConfig Conversions::convertConfig(MasterStackConfig^ config)
+	opendnp3::MasterStackConfig Conversions::convertConfig(MasterStackConfig^ config)
 	{
-		apl::dnp::MasterStackConfig cfg;
+		opendnp3::MasterStackConfig cfg;
 		cfg.master = convertConfig(config->master);
 		cfg.app = convertConfig(config->app);
 		cfg.link = convertConfig(config->link);
 		return cfg;
 	}
 
-	apl::dnp::SlaveStackConfig Conversions::convertConfig(SlaveStackConfig^ config)
+	opendnp3::SlaveStackConfig Conversions::convertConfig(SlaveStackConfig^ config)
 	{
-		apl::dnp::SlaveStackConfig cfg;
+		opendnp3::SlaveStackConfig cfg;
 		cfg.slave = convertConfig(config->slave);
 		cfg.device = convertConfig(config->device);
 		cfg.app = convertConfig(config->app);

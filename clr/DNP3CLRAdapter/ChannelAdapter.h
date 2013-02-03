@@ -31,7 +31,7 @@
 
 using namespace System::Collections::ObjectModel;
 
-#include <DNP3/IChannel.h>
+#include <opendnp3/IChannel.h>
 #include <vcclr.h>
 
 using namespace DNP3::Interface;
@@ -44,7 +44,7 @@ namespace Adapter
 	{
 		public:
 
-		ChannelAdapter(apl::dnp::IChannel* apChannel);
+		ChannelAdapter(opendnp3::IChannel* apChannel);
 
 		virtual IMaster^ AddMaster(System::String^ loggerId, FilterLevel level, IDataObserver^ publisher, MasterStackConfig^ config);
 
@@ -53,7 +53,7 @@ namespace Adapter
 		virtual void Shutdown();
 		
 		private:
-		apl::dnp::IChannel* mpChannel;
+		opendnp3::IChannel* mpChannel;
 	};
 	
 }}

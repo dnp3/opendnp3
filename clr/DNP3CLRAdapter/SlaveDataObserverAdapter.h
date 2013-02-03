@@ -29,7 +29,7 @@
 #ifndef __SLAVE_DATA_OBSERVER_ADAPTER_H_
 #define __SLAVE_DATA_OBSERVER_ADAPTER_H_
 
-#include <APL/DataInterfaces.h>
+#include <opendnp3/DataInterfaces.h>
 using namespace DNP3::Interface;
 
 namespace DNP3
@@ -40,7 +40,7 @@ namespace Adapter
 	{
 		public:
 
-		SlaveDataObserverAdapter(apl::IDataObserver* proxy);
+		SlaveDataObserverAdapter(opendnp3::IDataObserver* proxy);
 
 		virtual void Start();
 		virtual void Update(Binary^ meas, System::UInt32 index);
@@ -52,7 +52,7 @@ namespace Adapter
 
 		private:
 
-		apl::IDataObserver* proxy;		
+		opendnp3::IDataObserver* proxy;		
 	};
 	
 }}

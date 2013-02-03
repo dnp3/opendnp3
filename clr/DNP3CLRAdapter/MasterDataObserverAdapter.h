@@ -31,7 +31,7 @@
 
 using namespace System::Collections::ObjectModel;
 
-#include <APL/DataInterfaces.h>
+#include <opendnp3/DataInterfaces.h>
 #include <vcclr.h>
 
 using namespace DNP3::Interface;
@@ -40,7 +40,7 @@ namespace DNP3
 {	
 namespace Adapter
 {		
-	private class MasterDataObserverAdapter : public apl::IDataObserver
+	private class MasterDataObserverAdapter : public opendnp3::IDataObserver
 	{
 		public:
 
@@ -53,11 +53,11 @@ namespace Adapter
 		protected:
 
 		void _Start();
-		void _Update(const apl::Binary& arPoint, size_t aIndex);
-		void _Update(const apl::Analog& arPoint, size_t aIndex);
-		void _Update(const apl::Counter& arPoint, size_t aIndex);
-		void _Update(const apl::ControlStatus& arPoint, size_t aIndex);
-		void _Update(const apl::SetpointStatus& arPoint, size_t aIndex);
+		void _Update(const opendnp3::Binary& arPoint, size_t aIndex);
+		void _Update(const opendnp3::Analog& arPoint, size_t aIndex);
+		void _Update(const opendnp3::Counter& arPoint, size_t aIndex);
+		void _Update(const opendnp3::ControlStatus& arPoint, size_t aIndex);
+		void _Update(const opendnp3::SetpointStatus& arPoint, size_t aIndex);
 		void _End();
 	};
 
@@ -74,7 +74,7 @@ namespace Adapter
 			delete mpAdapter;
 		}
 
-		apl::IDataObserver* Get() { return mpAdapter; }
+		opendnp3::IDataObserver* Get() { return mpAdapter; }
 		
 		private:
 		MasterDataObserverAdapter* mpAdapter;

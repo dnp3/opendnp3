@@ -40,7 +40,7 @@ LogAdapter::LogAdapter(ILogHandler^ proxy) : proxy(proxy)
 {}
 
 // logging error messages, etc
-void LogAdapter::Log( const apl::LogEntry& arEntry )
+void LogAdapter::Log( const opendnp3::LogEntry& arEntry )
 {
 	FilterLevel level = Conversions::convertFilterLevel(arEntry.GetFilterLevel());
 	System::String^ loggerName = Conversions::convertString(arEntry.GetDeviceName());

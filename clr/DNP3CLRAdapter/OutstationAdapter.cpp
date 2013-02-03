@@ -36,7 +36,7 @@ namespace Adapter
 {	
 	
 
-OutstationAdapter::OutstationAdapter(apl::dnp::IOutstation* apOutstation) :
+OutstationAdapter::OutstationAdapter(opendnp3::IOutstation* apOutstation) :
 	mpOutstation(apOutstation),
 	mDataObserverAdapter(gcnew SlaveDataObserverAdapter(apOutstation->GetDataObserver()))
 {}

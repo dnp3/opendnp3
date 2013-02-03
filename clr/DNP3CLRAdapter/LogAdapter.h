@@ -32,7 +32,7 @@
 using namespace System::Collections::ObjectModel;
 
 #include <vcclr.h>
-#include <APL/LogBase.h>
+#include <opendnp3/LogBase.h>
 
 using namespace DNP3::Interface;
 
@@ -40,14 +40,14 @@ namespace DNP3
 {	
 namespace Adapter
 {
-	class LogAdapter : public apl::ILogBase
+	class LogAdapter : public opendnp3::ILogBase
 	{
 		public:
 
 		LogAdapter(ILogHandler^ proxy);
 
 		// logging error messages, etc
-		void Log( const apl::LogEntry& arEntry );		
+		void Log( const opendnp3::LogEntry& arEntry );		
 
 		private:		
 		gcroot<ILogHandler^> proxy;
@@ -59,7 +59,7 @@ namespace Adapter
 		LogAdapterWrapper(ILogHandler^ proxy) : mpAdapter(new LogAdapter(proxy))
 		{}
 
-		apl::ILogBase* GetLogAdapter() { return mpAdapter; }
+		opendnp3::ILogBase* GetLogAdapter() { return mpAdapter; }
 
 		~LogAdapterWrapper()
 		{ delete mpAdapter; }

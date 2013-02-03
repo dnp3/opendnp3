@@ -31,7 +31,7 @@
 
 using namespace System::Collections::ObjectModel;
 
-#include <DNP3/IOutstation.h>
+#include <opendnp3/IOutstation.h>
 
 using namespace DNP3::Interface;
 
@@ -43,14 +43,14 @@ namespace Adapter
 	{
 		public:
 
-		OutstationAdapter(apl::dnp::IOutstation* apOutstation);
+		OutstationAdapter(opendnp3::IOutstation* apOutstation);
 
 		virtual IDataObserver^ GetDataObserver();
 
 		virtual void Shutdown();
 		
 		private:
-		apl::dnp::IOutstation* mpOutstation;
+		opendnp3::IOutstation* mpOutstation;
 		IDataObserver^ mDataObserverAdapter;
 	};
 	

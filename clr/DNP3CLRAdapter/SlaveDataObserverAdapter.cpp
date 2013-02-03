@@ -35,7 +35,7 @@ namespace Adapter
 {		
 
 
-SlaveDataObserverAdapter::SlaveDataObserverAdapter(apl::IDataObserver* proxy) : 
+SlaveDataObserverAdapter::SlaveDataObserverAdapter(opendnp3::IDataObserver* proxy) : 
 	proxy(proxy)
 {}
 

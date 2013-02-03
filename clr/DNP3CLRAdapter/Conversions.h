@@ -31,15 +31,14 @@
 
 #include <string>
 
-#include <APL/LogTypes.h>
-#include <APL/DataTypes.h>
-#include <APL/SerialTypes.h>
-
-#include <DNP3/CommandStatus.h>
-#include <DNP3/SlaveStackConfig.h>
-#include <DNP3/MasterStackConfig.h>
-#include <DNP3/ControlRelayOutputBlock.h>
-#include <DNP3/AnalogOutput.h>
+#include <opendnp3/LogTypes.h>
+#include <opendnp3/DataTypes.h>
+#include <opendnp3/SerialTypes.h>
+#include <opendnp3/CommandStatus.h>
+#include <opendnp3/SlaveStackConfig.h>
+#include <opendnp3/MasterStackConfig.h>
+#include <opendnp3/ControlRelayOutputBlock.h>
+#include <opendnp3/AnalogOutput.h>
 
 using namespace DNP3::Interface;
 
@@ -52,73 +51,73 @@ namespace Adapter
 	{
 		public:
 
-		static System::Exception^ convertException(const apl::Exception& ex);		
+		static System::Exception^ convertException(const opendnp3::Exception& ex);		
 		
 		// Convert a .NET string to a C++ string
 		static std::string convertString(System::String^ s);
 		static System::String^ convertString(const std::string& s);
 
 		// Convert the log filter enumeration
-		static apl::FilterLevel convertFilterLevel(FilterLevel level);
-		static FilterLevel convertFilterLevel(apl::FilterLevel level);
+		static opendnp3::FilterLevel convertFilterLevel(FilterLevel level);
+		static FilterLevel convertFilterLevel(opendnp3::FilterLevel level);
 
 		// Convert the command status enumeration
-		static CommandStatus convertCommandStatus(apl::dnp::CommandStatus status);
-		static apl::dnp::CommandStatus convertCommandStatus(CommandStatus status);
+		static CommandStatus convertCommandStatus(opendnp3::CommandStatus status);
+		static opendnp3::CommandStatus convertCommandStatus(CommandStatus status);
 
 		//functions for converting binary outputs		
 
-		static ControlCode convertControlCode(apl::dnp::ControlCode code);
-		static apl::dnp::ControlCode Conversions::convertControlCode(ControlCode code);
+		static ControlCode convertControlCode(opendnp3::ControlCode code);
+		static opendnp3::ControlCode Conversions::convertControlCode(ControlCode code);
 
 
-		static ControlRelayOutputBlock^ convertCommand(const apl::dnp::ControlRelayOutputBlock& bo);
-		static apl::dnp::ControlRelayOutputBlock convertCommand(ControlRelayOutputBlock^ bo);
+		static ControlRelayOutputBlock^ convertCommand(const opendnp3::ControlRelayOutputBlock& bo);
+		static opendnp3::ControlRelayOutputBlock convertCommand(ControlRelayOutputBlock^ bo);
 
 		//functions for converting setpoints
 		
-		static apl::dnp::AnalogOutputInt32 convertCommand(AnalogOutputInt32^ sp);
-		static AnalogOutputInt32^ convertCommand(const apl::dnp::AnalogOutputInt32& sp);
+		static opendnp3::AnalogOutputInt32 convertCommand(AnalogOutputInt32^ sp);
+		static AnalogOutputInt32^ convertCommand(const opendnp3::AnalogOutputInt32& sp);
 
-		static apl::dnp::AnalogOutputInt16 convertCommand(AnalogOutputInt16^ sp);
-		static AnalogOutputInt16^ convertCommand(const apl::dnp::AnalogOutputInt16& sp);
+		static opendnp3::AnalogOutputInt16 convertCommand(AnalogOutputInt16^ sp);
+		static AnalogOutputInt16^ convertCommand(const opendnp3::AnalogOutputInt16& sp);
 
-		static apl::dnp::AnalogOutputFloat32 convertCommand(AnalogOutputFloat32^ sp);
-		static AnalogOutputFloat32^ convertCommand(const apl::dnp::AnalogOutputFloat32& sp);
+		static opendnp3::AnalogOutputFloat32 convertCommand(AnalogOutputFloat32^ sp);
+		static AnalogOutputFloat32^ convertCommand(const opendnp3::AnalogOutputFloat32& sp);
 
-		static apl::dnp::AnalogOutputDouble64 convertCommand(AnalogOutputDouble64^ sp);
-		static AnalogOutputDouble64^ convertCommand(const apl::dnp::AnalogOutputDouble64& sp);
+		static opendnp3::AnalogOutputDouble64 convertCommand(AnalogOutputDouble64^ sp);
+		static AnalogOutputDouble64^ convertCommand(const opendnp3::AnalogOutputDouble64& sp);
 
 		//functions for converting Measurement types
-		static Binary^ convertMeas(apl::Binary meas);
-		static Analog^ convertMeas(apl::Analog meas);
-		static Counter^ convertMeas(apl::Counter meas);
-		static SetpointStatus^ convertMeas(apl::SetpointStatus meas);
-		static ControlStatus^ convertMeas(apl::ControlStatus meas);
+		static Binary^ convertMeas(opendnp3::Binary meas);
+		static Analog^ convertMeas(opendnp3::Analog meas);
+		static Counter^ convertMeas(opendnp3::Counter meas);
+		static SetpointStatus^ convertMeas(opendnp3::SetpointStatus meas);
+		static ControlStatus^ convertMeas(opendnp3::ControlStatus meas);
 
-		static apl::Binary convertMeas(Binary^ meas);
-		static apl::Analog convertMeas(Analog^ meas);
-		static apl::Counter convertMeas(Counter^ meas);
-		static apl::SetpointStatus convertMeas(SetpointStatus^ meas);
-		static apl::ControlStatus convertMeas(ControlStatus^ meas);
+		static opendnp3::Binary convertMeas(Binary^ meas);
+		static opendnp3::Analog convertMeas(Analog^ meas);
+		static opendnp3::Counter convertMeas(Counter^ meas);
+		static opendnp3::SetpointStatus convertMeas(SetpointStatus^ meas);
+		static opendnp3::ControlStatus convertMeas(ControlStatus^ meas);
 
 		//Convert the configuration types
-		static apl::SerialSettings convertSerialSettings(SerialSettings^ settings);
-		static apl::dnp::ClassMask convertClassMask(ClassMask^ cm);
-		static apl::dnp::EventMaxConfig convertEventMaxConfig(EventMaxConfig^ cm);
-		static apl::dnp::GrpVar convertGrpVar(GrpVar^ gv);
+		static opendnp3::SerialSettings convertSerialSettings(SerialSettings^ settings);
+		static opendnp3::ClassMask convertClassMask(ClassMask^ cm);
+		static opendnp3::EventMaxConfig convertEventMaxConfig(EventMaxConfig^ cm);
+		static opendnp3::GrpVar convertGrpVar(GrpVar^ gv);
 
-		static apl::dnp::PointRecord convertRecord(PointRecord^ epr);		
-		static apl::dnp::EventPointRecord convertRecord(EventPointRecord^ epr);
-		static apl::dnp::DeadbandPointRecord convertRecord(DeadbandEventPointRecord^ epr);
+		static opendnp3::PointRecord convertRecord(PointRecord^ epr);		
+		static opendnp3::EventPointRecord convertRecord(EventPointRecord^ epr);
+		static opendnp3::DeadbandPointRecord convertRecord(DeadbandEventPointRecord^ epr);
 
-		static apl::dnp::LinkConfig convertConfig(LinkConfig^ config);
-		static apl::dnp::AppConfig convertConfig(AppConfig^ config);
-		static apl::dnp::MasterConfig convertConfig(MasterConfig^ config);
-		static apl::dnp::SlaveConfig convertConfig(SlaveConfig^ config);
-		static apl::dnp::DeviceTemplate convertConfig(DeviceTemplate^ config);
-		static apl::dnp::MasterStackConfig convertConfig(MasterStackConfig^ config);
-		static apl::dnp::SlaveStackConfig convertConfig(SlaveStackConfig^ config);
+		static opendnp3::LinkConfig convertConfig(LinkConfig^ config);
+		static opendnp3::AppConfig convertConfig(AppConfig^ config);
+		static opendnp3::MasterConfig convertConfig(MasterConfig^ config);
+		static opendnp3::SlaveConfig convertConfig(SlaveConfig^ config);
+		static opendnp3::DeviceTemplate convertConfig(DeviceTemplate^ config);
+		static opendnp3::MasterStackConfig convertConfig(MasterStackConfig^ config);
+		static opendnp3::SlaveStackConfig convertConfig(SlaveStackConfig^ config);
 	};
 
 }}

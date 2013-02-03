@@ -31,7 +31,7 @@
 #include "Conversions.h"
 #include "LogAdapter.h"
 #include "ChannelAdapter.h"
-#include <DNP3/DNP3Manager.h>
+#include <opendnp3/DNP3Manager.h>
 
 namespace DNP3
 {	
@@ -39,7 +39,7 @@ namespace Adapter
 {
 
 	DNP3Manager::DNP3Manager(System::UInt32 aConcurrency) :
-		pMgr(new apl::dnp::DNP3Manager(aConcurrency))
+		pMgr(new opendnp3::DNP3Manager(aConcurrency))
 	{
 		
 	}
@@ -61,7 +61,7 @@ namespace Adapter
 			auto pChannel = pMgr->AddTCPClient(stdName, lev, retryMs, stdAddress, stdPort);
 			return gcnew ChannelAdapter(pChannel);
 		} 
-		catch(apl::Exception ex){
+		catch(opendnp3::Exception ex){
 			throw Conversions::convertException(ex);
 		}
 	}
@@ -77,7 +77,7 @@ namespace Adapter
 			auto pChannel = pMgr->AddTCPServer(stdName, lev, retryMs, stdEndpoint, stdPort);
 			return gcnew ChannelAdapter(pChannel);
 		} 
-		catch(apl::Exception ex){
+		catch(opendnp3::Exception ex){
 			throw Conversions::convertException(ex);
 		}
 	}
@@ -92,7 +92,7 @@ namespace Adapter
 			auto pChannel = pMgr->AddSerial(stdName, lev, retryMs, s);
 			return gcnew ChannelAdapter(pChannel);
 		} 
-		catch(apl::Exception ex){
+		catch(opendnp3::Exception ex){
 			throw Conversions::convertException(ex);
 		}
 	}
@@ -103,7 +103,7 @@ namespace Adapter
 			LogAdapterWrapper^ wrapper = gcnew LogAdapterWrapper(logHandler);
 			pMgr->AddLogSubscriber(wrapper->GetLogAdapter());
 		} 
-		catch(apl::Exception ex){
+		catch(opendnp3::Exception ex){
 			throw Conversions::convertException(ex);
 		}
 	}

@@ -40,23 +40,23 @@ namespace Adapter
 {	
 
 
-ChannelAdapter::ChannelAdapter(apl::dnp::IChannel* apChannel) : 
+ChannelAdapter::ChannelAdapter(opendnp3::IChannel* apChannel) : 
 	mpChannel(apChannel)
 {}
 
 IMaster^ ChannelAdapter::AddMaster(System::String^ loggerId, FilterLevel level, IDataObserver^ publisher, MasterStackConfig^ config)
 {
 	std::string stdLoggerId = Conversions::convertString(loggerId);	
-	apl::FilterLevel stdLevel = Conversions::convertFilterLevel(level);
+	opendnp3::FilterLevel stdLevel = Conversions::convertFilterLevel(level);
 
 	MasterDataObserverWrapper^ wrapper = gcnew MasterDataObserverWrapper(publisher);
-	apl::dnp::MasterStackConfig cfg = Conversions::convertConfig(config);
+	opendnp3::MasterStackConfig cfg = Conversions::convertConfig(config);
 
 	try {
 		auto pMaster = mpChannel->AddMaster(stdLoggerId, stdLevel, wrapper->Get(), cfg);
 		return gcnew MasterAdapter(pMaster);
 	} 
-	catch(apl::Exception ex){
+	catch(opendnp3::Exception ex){
 		throw Conversions::convertException(ex);
 	}
 }
@@ -64,16 +64,16 @@ IMaster^ ChannelAdapter::AddMaster(System::String^ loggerId, FilterLevel level, 
 IOutstation^ ChannelAdapter::AddOutstation(System::String^ loggerId, FilterLevel level, ICommandHandler^ cmdHandler, SlaveStackConfig^ config)
 {	
 	std::string stdLoggerId = Conversions::convertString(loggerId);
-	apl::FilterLevel stdLevel = Conversions::convertFilterLevel(level);
+	opendnp3::FilterLevel stdLevel = Conversions::convertFilterLevel(level);
 
 	SlaveCommandHandlerWrapper^ wrapper = gcnew SlaveCommandHandlerWrapper(cmdHandler);
-	apl::dnp::SlaveStackConfig cfg = Conversions::convertConfig(config);
+	opendnp3::SlaveStackConfig cfg = Conversions::convertConfig(config);
 
 	try {
 		auto pOutstation = mpChannel->AddOutstation(stdLoggerId, stdLevel, wrapper->Get(), Conversions::convertConfig(config));
 		return gcnew OutstationAdapter(pOutstation);
 	} 
-	catch(apl::Exception ex){
+	catch(opendnp3::Exception ex){
 		throw Conversions::convertException(ex);
 	}
 }

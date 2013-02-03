@@ -33,6 +33,9 @@ java/Release
 *.opensdf
 clr/DNP3CLRInterface/bin
 clr/DNP3CLRInterface/obj
+clr/DNP3CLRAdapter/Debug
+clr/DNP3CLRAdapter/Release
+
 
 # intellij/maven generated files
 java/maven/*.iml

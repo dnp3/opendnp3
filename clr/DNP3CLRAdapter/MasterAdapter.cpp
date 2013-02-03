@@ -35,7 +35,7 @@ namespace DNP3
 namespace Adapter
 {	
 
-MasterAdapter::MasterAdapter(apl::dnp::IMaster* apMaster) : 
+MasterAdapter::MasterAdapter(opendnp3::IMaster* apMaster) : 
 	mpMaster(apMaster),
 	mCommandAdapter(gcnew CommandProcessorAdapter(apMaster->GetCommandProcessor()))
 {}

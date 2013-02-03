@@ -41,27 +41,27 @@ namespace Adapter
 			proxy->Start();
 		}
 
-		void MasterDataObserverAdapter::_Update(const apl::Binary& arPoint, size_t aIndex)
+		void MasterDataObserverAdapter::_Update(const opendnp3::Binary& arPoint, size_t aIndex)
 		{
 			proxy->Update(Conversions::convertMeas(arPoint), aIndex);
 		}
 
-		void MasterDataObserverAdapter::_Update(const apl::Analog& arPoint, size_t aIndex)
+		void MasterDataObserverAdapter::_Update(const opendnp3::Analog& arPoint, size_t aIndex)
 		{
 			proxy->Update(Conversions::convertMeas(arPoint), aIndex);
 		}
 
-		void MasterDataObserverAdapter::_Update(const apl::Counter& arPoint, size_t aIndex)
+		void MasterDataObserverAdapter::_Update(const opendnp3::Counter& arPoint, size_t aIndex)
 		{
 			proxy->Update(Conversions::convertMeas(arPoint), aIndex);
 		}
 
-		void MasterDataObserverAdapter::_Update(const apl::ControlStatus& arPoint, size_t aIndex)
+		void MasterDataObserverAdapter::_Update(const opendnp3::ControlStatus& arPoint, size_t aIndex)
 		{
 			proxy->Update(Conversions::convertMeas(arPoint), aIndex);
 		}
 
-		void MasterDataObserverAdapter::_Update(const apl::SetpointStatus& arPoint, size_t aIndex)
+		void MasterDataObserverAdapter::_Update(const opendnp3::SetpointStatus& arPoint, size_t aIndex)
 		{
 			proxy->Update(Conversions::convertMeas(arPoint), aIndex);
 		}

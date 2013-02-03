@@ -32,9 +32,9 @@
 using namespace System;
 using namespace DNP3::Interface;
 
-namespace apl { namespace dnp {
+namespace opendnp3 {
 	class DNP3Manager;
-}}
+}
 
 namespace DNP3
 {	
@@ -53,7 +53,7 @@ namespace Adapter
 			void AddLogHandler(ILogHandler^ logHandler);
 			
 		private:
-			apl::dnp::DNP3Manager* pMgr;
+			opendnp3::DNP3Manager* pMgr;
 	};
 
 }}

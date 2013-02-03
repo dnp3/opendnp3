@@ -31,7 +31,7 @@
 
 using namespace System::Collections::ObjectModel;
 
-#include <DNP3/IMaster.h>
+#include <opendnp3/IMaster.h>
 
 using namespace DNP3::Interface;
 
@@ -43,14 +43,14 @@ namespace Adapter
 	{
 		public:
 
-		MasterAdapter(apl::dnp::IMaster* apMaster);
+		MasterAdapter(opendnp3::IMaster* apMaster);
 
 		virtual ICommandProcessor^ GetCommandProcessor();
 
 		virtual void Shutdown();
 		
 		private:
-		apl::dnp::IMaster* mpMaster;
+		opendnp3::IMaster* mpMaster;
 		ICommandProcessor^ mCommandAdapter;
 	};
 	

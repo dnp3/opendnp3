@@ -34,7 +34,7 @@ using namespace System::Collections::ObjectModel;
 #include <vcclr.h>
 #include <map>
 
-#include <DNP3/ICommandProcessor.h>
+#include <opendnp3/ICommandProcessor.h>
 
 using namespace DNP3::Interface;
 
@@ -45,14 +45,14 @@ namespace Adapter
 	public class ResponseRouter
 	{
 		public:			
-			static void Set(gcroot<Future<CommandStatus>^>* apFuture, apl::dnp::CommandResponse cr);		
+			static void Set(gcroot<Future<CommandStatus>^>* apFuture, opendnp3::CommandResponse cr);		
 	};
 
 	public ref class CommandProcessorAdapter : public ICommandProcessor
 	{		
 		public:
 
-		CommandProcessorAdapter(apl::dnp::ICommandProcessor* apProxy);		
+		CommandProcessorAdapter(opendnp3::ICommandProcessor* apProxy);		
 
 		virtual IFuture<CommandStatus>^ SelectAndOperate(ControlRelayOutputBlock^ command, System::UInt32 index);
 		virtual IFuture<CommandStatus>^ SelectAndOperate(AnalogOutputInt32^ command, System::UInt32 index);
@@ -88,7 +88,7 @@ namespace Adapter
 			return future;
 		}
 
-		apl::dnp::ICommandProcessor* mpProxy;		
+		opendnp3::ICommandProcessor* mpProxy;		
 	};
 	
 }}
