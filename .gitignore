@@ -26,6 +26,8 @@ dnp3test
 # visual studio generated files
 cpp/Debug
 cpp/Release
+java/Debug
+java/Release
 *.suo
 *.sdf
 *.opensdf

@@ -10,20 +10,36 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "opendnp3tests", "cpp\opendn
 		{E6404405-BA2D-4F95-A268-D467783D0433} = {E6404405-BA2D-4F95-A268-D467783D0433}
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "java", "java", "{8CEA48C2-C785-47A6-9BF2-A25C6778ACB3}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "opendnp3java", "java\opendnp3java.vcxproj", "{1067322B-30C3-4D7B-9EB6-165F45ECC81E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
+		Debug|x64 = Debug|x64
 		Release|Win32 = Release|Win32
+		Release|x64 = Release|x64
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{E6404405-BA2D-4F95-A268-D467783D0433}.Debug|Win32.ActiveCfg = Debug|Win32
 		{E6404405-BA2D-4F95-A268-D467783D0433}.Debug|Win32.Build.0 = Debug|Win32
+		{E6404405-BA2D-4F95-A268-D467783D0433}.Debug|x64.ActiveCfg = Debug|Win32
 		{E6404405-BA2D-4F95-A268-D467783D0433}.Release|Win32.ActiveCfg = Release|Win32
 		{E6404405-BA2D-4F95-A268-D467783D0433}.Release|Win32.Build.0 = Release|Win32
+		{E6404405-BA2D-4F95-A268-D467783D0433}.Release|x64.ActiveCfg = Release|Win32
 		{48FCDDA5-D113-4A14-8C00-C3E33C89ACD7}.Debug|Win32.ActiveCfg = Debug|Win32
 		{48FCDDA5-D113-4A14-8C00-C3E33C89ACD7}.Debug|Win32.Build.0 = Debug|Win32
+		{48FCDDA5-D113-4A14-8C00-C3E33C89ACD7}.Debug|x64.ActiveCfg = Debug|Win32
 		{48FCDDA5-D113-4A14-8C00-C3E33C89ACD7}.Release|Win32.ActiveCfg = Release|Win32
 		{48FCDDA5-D113-4A14-8C00-C3E33C89ACD7}.Release|Win32.Build.0 = Release|Win32
+		{48FCDDA5-D113-4A14-8C00-C3E33C89ACD7}.Release|x64.ActiveCfg = Release|Win32
+		{1067322B-30C3-4D7B-9EB6-165F45ECC81E}.Debug|Win32.ActiveCfg = Debug|Win32
+		{1067322B-30C3-4D7B-9EB6-165F45ECC81E}.Debug|Win32.Build.0 = Debug|Win32
+		{1067322B-30C3-4D7B-9EB6-165F45ECC81E}.Debug|x64.ActiveCfg = Debug|Win32
+		{1067322B-30C3-4D7B-9EB6-165F45ECC81E}.Release|Win32.ActiveCfg = Release|Win32
+		{1067322B-30C3-4D7B-9EB6-165F45ECC81E}.Release|Win32.Build.0 = Release|Win32
+		{1067322B-30C3-4D7B-9EB6-165F45ECC81E}.Release|x64.ActiveCfg = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -31,5 +47,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{E6404405-BA2D-4F95-A268-D467783D0433} = {E52D8660-095E-45AD-AF11-9B43E53DDBF5}
 		{48FCDDA5-D113-4A14-8C00-C3E33C89ACD7} = {E52D8660-095E-45AD-AF11-9B43E53DDBF5}
+		{1067322B-30C3-4D7B-9EB6-165F45ECC81E} = {8CEA48C2-C785-47A6-9BF2-A25C6778ACB3}
 	EndGlobalSection
 EndGlobal
