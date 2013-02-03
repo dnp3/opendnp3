@@ -143,6 +143,58 @@ libopendnp3_la_SOURCES = \
 	cpp/src/opendnp3/VtoTransmitTask.cpp \
 	cpp/src/opendnp3/VtoWriter.cpp
 
+pkginclude_HEADERS = \
+	cpp/src/opendnp3/AnalogOutput.h \
+	cpp/src/opendnp3/APDUConstants.h \
+	cpp/src/opendnp3/AppConfig.h \
+	cpp/src/opendnp3/BaseDataTypes.h \
+	cpp/src/opendnp3/ClassMask.h \
+	cpp/src/opendnp3/CommandResponse.h \
+	cpp/src/opendnp3/CommandStatus.h \
+	cpp/src/opendnp3/ControlRelayOutputBlock.h \
+	cpp/src/opendnp3/DataInterfaces.h \
+	cpp/src/opendnp3/DataTypes.h \
+	cpp/src/opendnp3/DeviceTemplate.h \
+	cpp/src/opendnp3/DeviceTemplateTypes.h \
+	cpp/src/opendnp3/DNP3Channel.h \
+	cpp/src/opendnp3/DNP3Manager.h \
+	cpp/src/opendnp3/DNPConstants.h \
+	cpp/src/opendnp3/DNPDatabaseTypes.h \
+	cpp/src/opendnp3/DNPExceptions.h \
+	cpp/src/opendnp3/Exception.h \
+	cpp/src/opendnp3/IChannel.h \
+	cpp/src/opendnp3/ICommandHandler.h \
+	cpp/src/opendnp3/ICommandProcessor.h \
+	cpp/src/opendnp3/IMaster.h \
+	cpp/src/opendnp3/IOutstation.h \
+	cpp/src/opendnp3/IStack.h \
+	cpp/src/opendnp3/IStackObserver.h \
+	cpp/src/opendnp3/ITransactable.h \
+	cpp/src/opendnp3/IVtoEndpoint.h \
+	cpp/src/opendnp3/LinkLayerConstants.h \	
+	cpp/src/opendnp3/LogBase.h \
+	cpp/src/opendnp3/LogEntry.h \
+	cpp/src/opendnp3/Logger.h \
+	cpp/src/opendnp3/LogToFile.h \
+	cpp/src/opendnp3/LogToStdio.h \
+	cpp/src/opendnp3/LogTypes.h \
+	cpp/src/opendnp3/MasterConfig.h \
+	cpp/src/opendnp3/MasterConfigTypes.h \
+	cpp/src/opendnp3/MasterStackConfig.h \
+	cpp/src/opendnp3/PointClass.h \
+	cpp/src/opendnp3/QualityMasks.h \
+	cpp/src/opendnp3/SerialTypes.h \
+	cpp/src/opendnp3/SimpleCommandHandler.h \
+	cpp/src/opendnp3/SimpleDataObserver.h \
+	cpp/src/opendnp3/Singleton.h \
+	cpp/src/opendnp3/SlaveConfig.h \
+	cpp/src/opendnp3/SlaveStackConfig.h \
+	cpp/src/opendnp3/TransportConstants.h \
+	cpp/src/opendnp3/Types.h \
+	cpp/src/opendnp3/Uncopyable.h \
+	cpp/src/opendnp3/VtoConfig.h \
+	cpp/src/opendnp3/VtoRouterSettings.h
+
 check_PROGRAMS = dnp3test
 TESTS = dnp3test
 dnp3test_CPPFLAGS = -I./cpp/src
