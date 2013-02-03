@@ -11,7 +11,6 @@ config.guess
 config.sub
 depcomp
 ltmain.sh
-/m4
 .deps
 .libs
 *.o
