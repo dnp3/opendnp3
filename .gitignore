@@ -23,6 +23,13 @@ dnp3test
 *~
 *.dirstamp
 
+# visual studio generated files
+cpp/Debug
+cpp/Release
+*.suo
+*.sdf
+*.opensdf
+
 # intellij/maven generated files
 java/maven/*.iml
 java/maven/target

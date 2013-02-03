@@ -1,0 +1,35 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "opendnp3", "cpp\opendnp3.vcxproj", "{E6404405-BA2D-4F95-A268-D467783D0433}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "cpp", "cpp", "{E52D8660-095E-45AD-AF11-9B43E53DDBF5}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "opendnp3tests", "cpp\opendnp3tests.vcxproj", "{48FCDDA5-D113-4A14-8C00-C3E33C89ACD7}"
+	ProjectSection(ProjectDependencies) = postProject
+		{E6404405-BA2D-4F95-A268-D467783D0433} = {E6404405-BA2D-4F95-A268-D467783D0433}
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E6404405-BA2D-4F95-A268-D467783D0433}.Debug|Win32.ActiveCfg = Debug|Win32
+		{E6404405-BA2D-4F95-A268-D467783D0433}.Debug|Win32.Build.0 = Debug|Win32
+		{E6404405-BA2D-4F95-A268-D467783D0433}.Release|Win32.ActiveCfg = Release|Win32
+		{E6404405-BA2D-4F95-A268-D467783D0433}.Release|Win32.Build.0 = Release|Win32
+		{48FCDDA5-D113-4A14-8C00-C3E33C89ACD7}.Debug|Win32.ActiveCfg = Debug|Win32
+		{48FCDDA5-D113-4A14-8C00-C3E33C89ACD7}.Debug|Win32.Build.0 = Debug|Win32
+		{48FCDDA5-D113-4A14-8C00-C3E33C89ACD7}.Release|Win32.ActiveCfg = Release|Win32
+		{48FCDDA5-D113-4A14-8C00-C3E33C89ACD7}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{E6404405-BA2D-4F95-A268-D467783D0433} = {E52D8660-095E-45AD-AF11-9B43E53DDBF5}
+		{48FCDDA5-D113-4A14-8C00-C3E33C89ACD7} = {E52D8660-095E-45AD-AF11-9B43E53DDBF5}
+	EndGlobalSection
+EndGlobal
