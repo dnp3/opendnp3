@@ -154,6 +154,7 @@ pkginclude_HEADERS = \
 	cpp/src/opendnp3/ControlRelayOutputBlock.h \
 	cpp/src/opendnp3/DataInterfaces.h \
 	cpp/src/opendnp3/DataTypes.h \
+	cpp/src/opendnp3/DestructorHook.h \
 	cpp/src/opendnp3/DeviceTemplate.h \
 	cpp/src/opendnp3/DeviceTemplateTypes.h \
 	cpp/src/opendnp3/DNP3Channel.h \
@@ -171,7 +172,8 @@ pkginclude_HEADERS = \
 	cpp/src/opendnp3/IStackObserver.h \
 	cpp/src/opendnp3/ITransactable.h \
 	cpp/src/opendnp3/IVtoEndpoint.h \
-	cpp/src/opendnp3/LinkLayerConstants.h \	
+	cpp/src/opendnp3/LinkLayerConstants.h \
+	cpp/src/opendnp3/LinkConfig.h \		
 	cpp/src/opendnp3/LogBase.h \
 	cpp/src/opendnp3/LogEntry.h \
 	cpp/src/opendnp3/Logger.h \
@@ -181,8 +183,11 @@ pkginclude_HEADERS = \
 	cpp/src/opendnp3/MasterConfig.h \
 	cpp/src/opendnp3/MasterConfigTypes.h \
 	cpp/src/opendnp3/MasterStackConfig.h \
+	cpp/src/opendnp3/ObjectInterfaces.h \
+	cpp/src/opendnp3/Parsing.h \
 	cpp/src/opendnp3/PointClass.h \
 	cpp/src/opendnp3/QualityMasks.h \
+	cpp/src/opendnp3/QualityConverter.h \
 	cpp/src/opendnp3/SerialTypes.h \
 	cpp/src/opendnp3/SimpleCommandHandler.h \
 	cpp/src/opendnp3/SimpleDataObserver.h \
@@ -192,6 +197,7 @@ pkginclude_HEADERS = \
 	cpp/src/opendnp3/TransportConstants.h \
 	cpp/src/opendnp3/Types.h \
 	cpp/src/opendnp3/Uncopyable.h \
+	cpp/src/opendnp3/Util.h \
 	cpp/src/opendnp3/VtoConfig.h \
 	cpp/src/opendnp3/VtoRouterSettings.h
 

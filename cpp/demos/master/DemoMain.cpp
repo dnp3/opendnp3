@@ -26,23 +26,21 @@
 //
 // Contact Automatak, LLC for a commercial license to these modifications
 //
-#include "MasterCallbacks.h"
 
-#include <APL/LogToStdio.h>
-#include <APL/SimpleDataObserver.h>
 
-#include <DNP3/DNP3Manager.h>
-#include <DNP3/IChannel.h>
-#include <DNP3/IMaster.h>
-#include <DNP3/MasterStackConfig.h>
-#include <DNP3/ICommandProcessor.h>
+#include <opendnp3/LogToStdio.h>
+#include <opendnp3/SimpleDataObserver.h>
+#include <opendnp3/DNP3Manager.h>
+#include <opendnp3/IChannel.h>
+#include <opendnp3/IMaster.h>
+#include <opendnp3/MasterStackConfig.h>
+#include <opendnp3/ICommandProcessor.h>
 
 #include <iostream>
 #include <future>
 
 using namespace std;
-using namespace apl;
-using namespace apl::dnp;
+using namespace opendnp3;
 
 /*
  * Command line syntax:

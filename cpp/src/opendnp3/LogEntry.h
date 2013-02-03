@@ -31,8 +31,8 @@
 
 #include "LogTypes.h"
 #include "Parsing.h"
-#include "Types.h"
 #include "Util.h"
+#include "Types.h"
 
 #include <chrono>
 #include <map>
