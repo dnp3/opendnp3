@@ -20,9 +20,7 @@ LT_INIT #initialize libtools
 # optional support for builidn the java bindings
 AC_ARG_WITH([java],
   [AS_HELP_STRING([--with-java@<:@=ARG@:>@],
-    [use the Java JDK based on the value of JAVA_HOME (ARG=yes),
-     from the specified location (ARG=<path>),
-     or disable it (ARG=no)
+    [use the Java JDK based on the given javac (ARG=javac)     
      @<:@ARG=yes@:>@ ])],
     [
        JAVAC=$withval	
