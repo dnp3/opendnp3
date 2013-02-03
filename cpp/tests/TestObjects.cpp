@@ -27,14 +27,13 @@
 // Contact Automatak, LLC for a commercial license to these modifications
 //
 #include <boost/test/unit_test.hpp>
-#include <APLTestTools/TestHelpers.h>
 
-#include <DNP3/Objects.h>
+#include "TestHelpers.h"
 
-using namespace apl;
+#include <opendnp3/Objects.h>
+
+using namespace opendnp3;
 using namespace std;
-using namespace apl::dnp;
-
 
 
 BOOST_AUTO_TEST_SUITE(ObjectTests)

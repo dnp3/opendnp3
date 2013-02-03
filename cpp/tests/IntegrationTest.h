@@ -29,24 +29,20 @@
 #ifndef __INTEGRATION_TEST_H_
 #define __INTEGRATION_TEST_H_
 
-#include <APLTestTools/AsyncTestObjectASIO.h>
-#include <APLTestTools/LogTester.h>
-#include <APLTestTools/FanoutDataObserver.h>
+#include <opendnp3/FlexibleDataObserver.h>
+#include <opendnp3/Random.h>
+#include <opendnp3/DNP3Manager.h>
 
-#include <APL/FlexibleDataObserver.h>
-#include <APL/Random.h>
-
-#include <DNP3/DNP3Manager.h>
-
+#include "AsyncTestObjectASIO.h"
+#include "LogTester.h"
+#include "FanoutDataObserver.h"
 #include "MockCommandHandler.h"
 #include "ComparingDataObserver.h"
 
 #include <vector>
 #include <memory>
 
-namespace apl
-{
-namespace dnp
+namespace opendnp3
 {
 
 class IntegrationTest
@@ -89,7 +85,6 @@ private:
 	size_t NUM_POINTS;
 };
 
-}
 }
 
 /* vim: set ts=4 sw=4: */

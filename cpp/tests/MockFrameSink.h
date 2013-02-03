@@ -29,17 +29,17 @@
 #ifndef __MOCK_FRAME_SINK_H_
 #define __MOCK_FRAME_SINK_H_
 
-#include <DNP3/ILinkContext.h>
-#include <DNP3/LinkLayerConstants.h>
-#include <APLTestTools/BufferTestObject.h>
+#include <opendnp3/ILinkContext.h>
+#include <opendnp3/LinkLayerConstants.h>
+
+#include "BufferTestObject.h"
 
 #include <functional>
 #include <queue>
 
-namespace apl
+namespace opendnp3
 {
-namespace dnp
-{
+
 
 class MockFrameSink : public ILinkContext, public BufferTestObject
 {
@@ -98,6 +98,6 @@ private:
 };
 
 }
-}
 
 #endif
+

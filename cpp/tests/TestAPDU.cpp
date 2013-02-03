@@ -27,23 +27,24 @@
 // Contact Automatak, LLC for a commercial license to these modifications
 //
 #include <boost/test/unit_test.hpp>
-#include <APLTestTools/TestHelpers.h>
 
-#include <DNP3/APDU.h>
-#include <DNP3/ObjectHeader.h>
-#include <DNP3/ObjectReadIterator.h>
+#include "TestHelpers.h"
+#include "BufferHelpers.h"
 
-#include <DNP3/DNPConstants.h>
-#include <APL/DataTypes.h>
-#include <APLTestTools/BufferHelpers.h>
+#include <opendnp3/APDU.h>
+#include <opendnp3/ObjectHeader.h>
+#include <opendnp3/ObjectReadIterator.h>
+
+#include <opendnp3/DNPConstants.h>
+#include <opendnp3/DataTypes.h>
+
 
 #include <queue>
 #include <set>
 #include <sstream>
 
 using namespace std;
-using namespace apl;
-using namespace apl::dnp;
+using namespace opendnp3;
 
 BOOST_AUTO_TEST_SUITE(APDUReading)
 BOOST_AUTO_TEST_CASE(WriteTooMuch)
@@ -97,7 +98,7 @@ BOOST_AUTO_TEST_CASE(FunctionCodeToStringNamesAreUnique)
 	set<string> strings;
 	for(int i = 0; i < NUM_CODES; ++i) {
 		FunctionCodes code = static_cast<FunctionCodes>(codes[i]);
-		string text = ToString(code);
+		string text = FunctionCodeToString(code);
 		if(strings.find(text) != strings.end()) {
 			ostringstream oss;
 			oss << "The string " << text << " was encountered 2x with int " << i << " and function code " << code;

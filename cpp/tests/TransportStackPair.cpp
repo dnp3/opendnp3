@@ -30,11 +30,9 @@
 
 #include <boost/asio.hpp>
 
-#include <APL/Logger.h>
+#include <opendnp3/Logger.h>
 
-namespace apl
-{
-namespace dnp
+namespace opendnp3
 {
 
 TransportStackPair::TransportStackPair(
@@ -64,7 +62,5 @@ void TransportStackPair::Start()
 	mClientStack.mRouter.Start();
 }
 
-
-}
 }
 

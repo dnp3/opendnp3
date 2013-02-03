@@ -29,10 +29,7 @@
 #include "ComparingDataObserver.h"
 
 
-namespace apl
-{
-
-namespace dnp
+namespace opendnp3
 {
 
 ComparingDataObserver::ComparingDataObserver(FlexibleDataObserver* apObserver) :
@@ -123,5 +120,4 @@ void ComparingDataObserver::_Update(const SetpointStatus& arPoint, size_t aIndex
 
 }
 
-}
 

@@ -27,16 +27,15 @@
 // Contact Automatak, LLC for a commercial license to these modifications
 //
 #include <boost/test/unit_test.hpp>
-#include <APLTestTools/TestHelpers.h>
+
+#include "TestHelpers.h"
 
 #include "DatabaseTestObject.h"
 
 #include <limits>
 
 using namespace std;
-using namespace apl;
-using namespace apl::dnp;
-
+using namespace opendnp3;
 
 template <class T>
 void TestDataEvent(bool aIsEvent, const T& val1, const T& val2, double aDeadband)

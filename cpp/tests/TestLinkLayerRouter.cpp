@@ -30,18 +30,15 @@
 
 #include <functional>
 
-#include <APLTestTools/TestHelpers.h>
+#include <opendnp3/Exception.h>
+#include <opendnp3/ToHex.h>
+#include <opendnp3/LinkRoute.h>
 
-#include <APL/Exception.h>
-#include <APL/ToHex.h>
-
-#include <DNP3/LinkRoute.h>
-
+#include "TestHelpers.h"
 #include "LinkLayerRouterTest.h"
 #include "MockFrameSink.h"
 
-using namespace apl;
-using namespace apl::dnp;
+using namespace opendnp3;
 
 BOOST_AUTO_TEST_SUITE(LinkLayerRouterSuite)
 

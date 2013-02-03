@@ -29,16 +29,16 @@
 #ifndef __APP_LAYER_TEST_H_
 #define __APP_LAYER_TEST_H_
 
-#include <APLTestTools/LogTester.h>
-#include <DNP3/AppLayer.h>
-#include <APLTestTools/MockLowerLayer.h>
-#include <APLTestTools/MockExecutor.h>
+#include <opendnp3/AppLayer.h>
+
+#include "LogTester.h"
+#include "MockLowerLayer.h"
+#include "MockExecutor.h"
 
 #include "MockAppUser.h"
 
-namespace apl
-{
-namespace dnp
+
+namespace opendnp3
 {
 
 
@@ -69,7 +69,6 @@ private:
 	APDU mFragment;
 };
 
-}
 }
 
 #endif

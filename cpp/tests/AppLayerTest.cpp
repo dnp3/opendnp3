@@ -28,11 +28,9 @@
 //
 #include "AppLayerTest.h"
 
-#include <APLTestTools/BufferHelpers.h>
+#include "BufferHelpers.h"
 
-namespace apl
-{
-namespace dnp
+namespace opendnp3
 {
 
 AppLayerTest::AppLayerTest(bool aIsMaster, size_t aNumRetry, FilterLevel aLevel, bool aImmediate) :
@@ -108,4 +106,4 @@ bool AppLayerTest::CheckSentAPDU(FunctionCodes aCode, bool aFIR, bool aFIN, bool
 }
 
 }
-}
+

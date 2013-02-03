@@ -29,11 +29,9 @@
 #ifndef __MOCK_COMMAND_HANDLER_H_
 #define __MOCK_COMMAND_HANDLER_H_
 
-#include <DNP3/ICommandHandler.h>
+#include <opendnp3/ICommandHandler.h>
 
-namespace apl
-{
-namespace dnp
+namespace opendnp3
 {
 
 class MockCommandHandler : public ICommandHandler
@@ -68,8 +66,7 @@ private:
 
 };
 
-
-}
 }
 
 #endif
+

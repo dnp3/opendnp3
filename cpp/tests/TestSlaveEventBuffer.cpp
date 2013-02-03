@@ -27,17 +27,18 @@
 // Contact Automatak, LLC for a commercial license to these modifications
 //
 #include <boost/test/unit_test.hpp>
-#include <APLTestTools/TestHelpers.h>
 
-#include <APL/Exception.h>
-#include <APL/RandomizedBuffer.h>
-#include <DNP3/SlaveEventBuffer.h>
-#include <DNP3/VtoWriter.h>
+#include "TestHelpers.h"
+
+#include <opendnp3/Exception.h>
+#include <opendnp3/RandomizedBuffer.h>
+#include <opendnp3/SlaveEventBuffer.h>
+#include <opendnp3/VtoWriter.h>
+
 #include <limits>
 
 using namespace std;
-using namespace apl;
-using namespace apl::dnp;
+using namespace opendnp3;
 
 BOOST_AUTO_TEST_SUITE(SlaveEventBufferSuite)
 void PushEvents(SlaveEventBuffer& b, size_t aNumEvent, size_t aNumIndices)

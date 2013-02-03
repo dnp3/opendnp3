@@ -29,25 +29,18 @@
 #ifndef __TRANSPORT_INTEGRATION_STACK_H_
 #define __TRANSPORT_INTEGRATION_STACK_H_
 
-#include <DNP3/LinkLayerRouter.h>
-#include <DNP3/LinkLayer.h>
-#include <DNP3/TransportLayer.h>
+#include <opendnp3/LinkLayerRouter.h>
+#include <opendnp3/LinkLayer.h>
+#include <opendnp3/TransportLayer.h>
 
-#include <APLTestTools/MockUpperLayer.h>
+#include "MockUpperLayer.h"
 
-namespace apl
+namespace opendnp3
 {
 
 class Logger;
 class IExecutor;
 class IPhysicalLayerAsync;
-
-}
-
-namespace apl
-{
-namespace dnp
-{
 
 class TransportIntegrationStack
 {
@@ -61,6 +54,6 @@ public:
 };
 
 }
-}
 
 #endif
+

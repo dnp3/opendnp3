@@ -28,24 +28,22 @@
 //
 #include <boost/test/unit_test.hpp>
 
-#include <APL/DataInterfaces.h>
-#include <APL/DataTypes.h>
-#include <APL/Exception.h>
-#include <APL/Log.h>
-#include <APL/LogToStdio.h>
+#include "BufferHelpers.h"
+#include "TestHelpers.h"
 
-#include <APLTestTools/BufferHelpers.h>
-#include <APLTestTools/TestHelpers.h>
-
-#include <DNP3/DNPConstants.h>
-#include <DNP3/VtoData.h>
-#include <DNP3/VtoDataInterface.h>
-#include <DNP3/VtoReader.h>
-#include <DNP3/VtoWriter.h>
+#include <opendnp3/DataInterfaces.h>
+#include <opendnp3/DataTypes.h>
+#include <opendnp3/Exception.h>
+#include <opendnp3/Log.h>
+#include <opendnp3/LogToStdio.h>
+#include <opendnp3/DNPConstants.h>
+#include <opendnp3/VtoData.h>
+#include <opendnp3/VtoDataInterface.h>
+#include <opendnp3/VtoReader.h>
+#include <opendnp3/VtoWriter.h>
 
 using namespace std;
-using namespace apl;
-using namespace apl::dnp;
+using namespace opendnp3;
 
 #define MAX_SIZE					(255)
 

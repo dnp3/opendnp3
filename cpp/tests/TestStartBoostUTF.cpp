@@ -26,7 +26,7 @@
 //
 // Contact Automatak, LLC for a commercial license to these modifications
 //
-#define BOOST_TEST_MODULE dnp3
+#define BOOST_TEST_MODULE opendnp3
 
 /*
  * If we aren't using dynamic linking, make sure a main() function

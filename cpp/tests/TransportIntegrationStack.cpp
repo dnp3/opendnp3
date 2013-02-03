@@ -28,12 +28,10 @@
 //
 #include "TransportIntegrationStack.h"
 
-#include <DNP3/LinkRoute.h>
-#include <APL/IPhysicalLayerAsync.h>
+#include <opendnp3/LinkRoute.h>
+#include <opendnp3/IPhysicalLayerAsync.h>
 
-namespace apl
-{
-namespace dnp
+namespace opendnp3
 {
 
 TransportIntegrationStack::TransportIntegrationStack(Logger* apLogger, IPhysicalLayerAsync* apPhys, LinkConfig aCfg) :
@@ -50,5 +48,4 @@ TransportIntegrationStack::TransportIntegrationStack(Logger* apLogger, IPhysical
 }
 
 
-}
 }

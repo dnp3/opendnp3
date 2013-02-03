@@ -28,15 +28,15 @@
 //
 
 #include <boost/test/unit_test.hpp>
-#include <APLTestTools/TestHelpers.h>
-#include <DNP3/CommandHelpers.h>
-#include <DNP3/Objects.h>
-#include <APL/ToHex.h>
-#include <APLTestTools/BufferHelpers.h>
 
-using namespace apl;
-using namespace apl::dnp;
+#include <opendnp3/CommandHelpers.h>
+#include <opendnp3/Objects.h>
+#include <opendnp3/ToHex.h>
 
+#include "TestHelpers.h"
+#include "BufferHelpers.h"
+
+using namespace opendnp3;
 
 BOOST_AUTO_TEST_SUITE(CommandHelpersTestSuite)
 

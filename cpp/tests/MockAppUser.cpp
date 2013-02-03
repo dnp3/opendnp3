@@ -32,9 +32,7 @@
 
 using namespace std;
 
-namespace apl
-{
-namespace dnp
+namespace opendnp3
 {
 
 ostream& operator<<(ostream& output, const MockAppUser::State& s)
@@ -154,5 +152,5 @@ bool MockAppUser::Equals(const MockAppUser::State& arState) const
 	return mState == arState;
 }
 
-}
-} //#end ns
+} //end ns
+

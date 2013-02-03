@@ -29,20 +29,17 @@
 #ifndef __COMPARING_DATA_OBSERVER_H_
 #define __COMPARING_DATA_OBSERVER_H_
 
-#include <APL/DataInterfaces.h>
-#include <APL/FlexibleDataObserver.h>
+#include <opendnp3/DataInterfaces.h>
+#include <opendnp3/FlexibleDataObserver.h>
 
 #include <map>
 #include <mutex>
 #include <condition_variable>
 
-namespace apl
+namespace opendnp3
 {
 
-namespace dnp
-{
-
-class ComparingDataObserver : public apl::IDataObserver
+class ComparingDataObserver : public IDataObserver
 {
 public:
 
@@ -115,8 +112,6 @@ void ComparingDataObserver::UpdateAny(const T& arPoint, size_t aIndex, const typ
 			arCompareMap.erase(aIndex);
 		}
 	}
-}
-
 }
 
 }

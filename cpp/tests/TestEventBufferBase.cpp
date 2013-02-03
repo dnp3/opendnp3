@@ -27,16 +27,17 @@
 // Contact Automatak, LLC for a commercial license to these modifications
 //
 #include <boost/test/unit_test.hpp>
-#include <APLTestTools/TestHelpers.h>
 
-#include <DNP3/EventBufferBase.h>
+#include "TestHelpers.h"
+
+#include <opendnp3/EventBufferBase.h>
 
 #include <limits>
 #include <set>
 
 using namespace std;
-using namespace apl;
-using namespace apl::dnp;
+using namespace opendnp3;
+
 
 template <class T>
 struct SetWrapper {

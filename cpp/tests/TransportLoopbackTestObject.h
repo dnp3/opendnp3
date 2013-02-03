@@ -29,19 +29,17 @@
 #ifndef __TRANSPORT_LOOPBACK_TEST_OBJECT_H_
 #define __TRANSPORT_LOOPBACK_TEST_OBJECT_H_
 
-#include <APLTestTools/AsyncTestObjectASIO.h>
+#include "AsyncTestObjectASIO.h"
+#include "LogTester.h"
+#include "MockUpperLayer.h"
 
-#include <APLTestTools/LogTester.h>
-#include <APLTestTools/MockUpperLayer.h>
+#include <opendnp3/LinkLayerRouter.h>
+#include <opendnp3/LinkLayer.h>
+#include <opendnp3/TransportLayer.h>
 
-#include <DNP3/LinkLayerRouter.h>
-#include <DNP3/LinkLayer.h>
-#include <DNP3/TransportLayer.h>
-
-namespace apl
+namespace opendnp3
 {
-namespace dnp
-{
+
 
 class TransportLoopbackTestObject : public LogTester, public AsyncTestObjectASIO
 {
@@ -84,7 +82,6 @@ public:
 
 };
 
-}
 }
 
 #endif

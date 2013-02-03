@@ -27,18 +27,17 @@
 // Contact Automatak, LLC for a commercial license to these modifications
 //
 #include <boost/test/unit_test.hpp>
-#include <APLTestTools/TestHelpers.h>
 
-#include <DNP3/LinkFrame.h>
-#include <DNP3/DNPCrc.h>
-#include <APLTestTools/BufferHelpers.h>
+#include <opendnp3/LinkFrame.h>
+#include <opendnp3/DNPCrc.h>
 
+#include "TestHelpers.h"
+#include "BufferHelpers.h"
 #include "DNPHelpers.h"
 
-using namespace apl;
-using namespace apl::dnp;
+using namespace opendnp3;
 
-void FormatUserData(apl::dnp::LinkFrame& f, bool aIsMaster, bool aIsConfirmed, int aDest, int aSrc, const std::string& arData,  bool aFcb = false)
+void FormatUserData(LinkFrame& f, bool aIsMaster, bool aIsConfirmed, int aDest, int aSrc, const std::string& arData,  bool aFcb = false)
 {
 	HexSequence hs(arData);
 	BOOST_REQUIRE(hs.Size() < 250);

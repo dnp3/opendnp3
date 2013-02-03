@@ -30,17 +30,17 @@
 
 #include <boost/asio.hpp>
 #include <boost/test/unit_test.hpp>
-#include <APLTestTools/TestHelpers.h>
 
-#include <APLTestTools/BufferHelpers.h>
-#include <APL/ProtocolUtil.h>
-#include <APL/Exception.h>
+#include "TestHelpers.h"
+#include "BufferHelpers.h"
+
+#include <opendnp3/ProtocolUtil.h>
+#include <opendnp3/Exception.h>
 
 #include <functional>
 
 using namespace std;
-using namespace apl;
-using namespace apl::dnp;
+using namespace opendnp3;
 
 BOOST_AUTO_TEST_SUITE(AsyncTransportScalability)
 

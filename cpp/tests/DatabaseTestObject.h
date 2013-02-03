@@ -30,12 +30,10 @@
 #define __DATABASE_TEST_OBJECT_H_
 
 #include <queue>
-#include <DNP3/Database.h>
-#include <APL/Log.h>
+#include <opendnp3/Database.h>
+#include <opendnp3/Log.h>
 
-namespace apl
-{
-namespace dnp
+namespace opendnp3
 {
 
 class MockEventBuffer : public IEventBuffer
@@ -87,7 +85,6 @@ public:
 	Database db;
 };
 
-}
 }
 
 #endif

@@ -29,19 +29,17 @@
 #ifndef __TRANSPORT_TEST_OBJECT_H_
 #define __TRANSPORT_TEST_OBJECT_H_
 
-#include <APL/Log.h>
+#include <opendnp3/Log.h>
+#include <opendnp3/TransportLayer.h>
 
 #include <vector>
 #include <string>
 
-#include <APLTestTools/MockLowerLayer.h>
-#include <APLTestTools/MockUpperLayer.h>
-#include <DNP3/TransportLayer.h>
-#include <APLTestTools/LogTester.h>
+#include "MockLowerLayer.h"
+#include "MockUpperLayer.h"
+#include "LogTester.h"
 
-namespace apl
-{
-namespace dnp
+namespace opendnp3
 {
 
 class TransportTestObject : public LogTester
@@ -69,6 +67,6 @@ public:
 };
 
 }
-}
 
 #endif
+

@@ -28,9 +28,7 @@
 //
 #include "LinkLayerRouterTest.h"
 
-namespace apl
-{
-namespace dnp
+namespace opendnp3
 {
 
 LinkLayerRouterTest::LinkLayerRouterTest(FilterLevel aLevel, bool aImmediate) :
@@ -42,7 +40,5 @@ LinkLayerRouterTest::LinkLayerRouterTest(FilterLevel aLevel, bool aImmediate) :
 
 }
 
-
-
 }
-}
+

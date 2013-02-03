@@ -28,13 +28,11 @@
 //
 #include "SlaveTestObject.h"
 
-#include <APLTestTools/BufferHelpers.h>
-#include <APL/ToHex.h>
+#include "BufferHelpers.h"
 
+#include <opendnp3/ToHex.h>
 
-namespace apl
-{
-namespace dnp
+namespace opendnp3
 {
 
 SlaveTestObject::SlaveTestObject(const SlaveConfig& arCfg, FilterLevel aLevel, bool aImmediate) :
@@ -65,6 +63,5 @@ std::string SlaveTestObject::Read()
 	return hex;
 }
 
-}
 }
 

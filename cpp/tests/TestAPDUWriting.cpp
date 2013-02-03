@@ -27,22 +27,23 @@
 // Contact Automatak, LLC for a commercial license to these modifications
 //
 #include <boost/test/unit_test.hpp>
-#include <APLTestTools/TestHelpers.h>
 
-#include <DNP3/APDU.h>
-#include <DNP3/ObjectHeader.h>
-#include <DNP3/ObjectWriteIterator.h>
-#include <DNP3/DNPConstants.h>
+#include "TestHelpers.h"
+#include "BufferHelpers.h"
 
-#include <APL/DataTypes.h>
-#include <APL/QualityMasks.h>
-#include <APL/ToHex.h>
-#include <APLTestTools/BufferHelpers.h>
+#include <opendnp3/APDU.h>
+#include <opendnp3/ObjectHeader.h>
+#include <opendnp3/ObjectWriteIterator.h>
+#include <opendnp3/DNPConstants.h>
+
+#include <opendnp3/DataTypes.h>
+#include <opendnp3/QualityMasks.h>
+#include <opendnp3/ToHex.h>
+
 
 #include <queue>
 
-using namespace apl;
-using namespace apl::dnp;
+using namespace opendnp3;
 using namespace std;
 
 

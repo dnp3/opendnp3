@@ -31,26 +31,20 @@
 #include <sstream>
 #include <thread>
 
-#include <APL/IPhysicalLayerAsync.h>
+#include "AsyncTestObjectASIO.h"
 
-#include <APLTestTools/AsyncTestObjectASIO.h>
-
-#include <DNP3/MasterStackConfig.h>
-#include <DNP3/SlaveStackConfig.h>
-
-
-#include <DNP3/IChannel.h>
-#include <DNP3/IOutstation.h>
+#include <opendnp3/IPhysicalLayerAsync.h>
+#include <opendnp3/MasterStackConfig.h>
+#include <opendnp3/SlaveStackConfig.h>
+#include <opendnp3/IChannel.h>
+#include <opendnp3/IOutstation.h>
 
 #include <boost/asio.hpp>
-
 #include <boost/random/variate_generator.hpp>
 #include <boost/random/uniform_int.hpp>
 
-
 using namespace std;
-using namespace apl;
-using namespace apl::dnp;
+using namespace opendnp3;
 
 IntegrationTest::IntegrationTest(FilterLevel aLevel, boost::uint16_t aStartPort, size_t aNumPairs, size_t aNumPoints) :	
 	M_START_PORT(aStartPort),

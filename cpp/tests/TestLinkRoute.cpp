@@ -28,14 +28,14 @@
 //
 #include <boost/test/unit_test.hpp>
 
-#include <DNP3/LinkRoute.h>
-#include <APLTestTools/TestHelpers.h>
+#include <opendnp3/LinkRoute.h>
+
+#include "TestHelpers.h"
 
 #include <map>
 
 using namespace std;
-using namespace apl;
-using namespace apl::dnp;
+using namespace opendnp3;
 
 BOOST_AUTO_TEST_SUITE(LinkRouteSuite)
 

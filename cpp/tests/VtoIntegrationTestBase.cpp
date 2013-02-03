@@ -28,22 +28,16 @@
 //
 #include "VtoIntegrationTestBase.h"
 
-#include <APL/LogToStdio.h>
+#include <opendnp3/LogToStdio.h>
+#include <opendnp3/SlaveStackConfig.h>
+#include <opendnp3/MasterStackConfig.h>
+#include <opendnp3/VtoRouterSettings.h>
+#include <opendnp3/IChannel.h>
+#include <opendnp3/IMaster.h>
+#include <opendnp3/IOutstation.h>
 
-#include <DNP3/SlaveStackConfig.h>
-#include <DNP3/MasterStackConfig.h>
-#include <DNP3/VtoRouterSettings.h>
-#include <DNP3/IChannel.h>
-#include <DNP3/IMaster.h>
-#include <DNP3/IOutstation.h>
-
-/** Platforms have different reserved port ranges */
-
-namespace apl
+namespace opendnp3
 {
-namespace dnp
-{
-
 
 VtoIntegrationTestBase::VtoIntegrationTestBase(
     bool clientOnSlave,
@@ -94,8 +88,6 @@ VtoIntegrationTestBase::VtoIntegrationTestBase(
 VtoIntegrationTestBase::~VtoIntegrationTestBase()
 {
 	
-}
-
 }
 
 }

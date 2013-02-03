@@ -38,15 +38,13 @@ class io_service;
 }
 
 
-#include <APL/PhysicalLayerAsyncTCPClient.h>
-#include <APL/PhysicalLayerAsyncTCPServer.h>
-#include <APL/IExecutor.h>
+#include <opendnp3/PhysicalLayerAsyncTCPClient.h>
+#include <opendnp3/PhysicalLayerAsyncTCPServer.h>
+#include <opendnp3/IExecutor.h>
 
 #include "TransportIntegrationStack.h"
 
-namespace apl
-{
-namespace dnp
+namespace opendnp3
 {
 
 class TransportStackPair
@@ -74,6 +72,6 @@ public:
 };
 
 }
-}
 
 #endif
+

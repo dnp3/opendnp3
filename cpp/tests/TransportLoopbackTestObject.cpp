@@ -28,8 +28,8 @@
 //
 #include "TransportLoopbackTestObject.h"
 
-#include <DNP3/LinkRoute.h>
-#include <APL/IPhysicalLayerAsync.h>
+#include <opendnp3/LinkRoute.h>
+#include <opendnp3/IPhysicalLayerAsync.h>
 
 #include <boost/asio.hpp>
 #include <sstream>
@@ -37,9 +37,7 @@
 
 using namespace std;
 
-namespace apl
-{
-namespace dnp
+namespace opendnp3
 {
 
 TransportLoopbackTestObject::TransportLoopbackTestObject(
@@ -92,7 +90,6 @@ void TransportLoopbackTestObject::Start()
 	mRouter.Start();
 }
 
-}
 }
 
 

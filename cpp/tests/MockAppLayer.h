@@ -29,22 +29,17 @@
 #ifndef __MOCK_APP_LAYER_H_
 #define __MOCK_APP_LAYER_H_
 
+#include <opendnp3/AppInterfaces.h>
+#include <opendnp3/APDUConstants.h>
+#include <opendnp3/APDU.h>
+#include <opendnp3/Loggable.h>
 
-#include <DNP3/AppInterfaces.h>
-#include <DNP3/APDUConstants.h>
-#include <DNP3/APDU.h>
-#include <APL/Loggable.h>
 #include <queue>
 
-namespace apl
+namespace opendnp3
 {
-class Logger;
-}
 
-namespace apl
-{
-namespace dnp
-{
+class Logger;
 
 /**	@section desc Test class to mock async app layer for master/slave */
 class MockAppLayer : public IAppLayer, public Loggable
@@ -86,7 +81,6 @@ private:
 	std::deque<APDU> mFragments;
 };
 
-}
 }
 
 #endif

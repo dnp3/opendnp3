@@ -27,16 +27,15 @@
 // Contact Automatak, LLC for a commercial license to these modifications
 //
 #include <boost/test/unit_test.hpp>
-#include <APLTestTools/TestHelpers.h>
 
-#include <APL/Exception.h>
-#include <DNP3/DNPConstants.h>
-#include <APLTestTools/BufferHelpers.h>
+#include <opendnp3/Exception.h>
+#include <opendnp3/DNPConstants.h>
 
+#include "TestHelpers.h"
+#include "BufferHelpers.h"
 #include "LinkLayerTest.h"
 
-using namespace apl;
-using namespace apl::dnp;
+using namespace opendnp3;
 
 BOOST_AUTO_TEST_SUITE(LinkLayerSuite)
 

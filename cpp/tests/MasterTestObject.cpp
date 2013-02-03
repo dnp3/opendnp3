@@ -29,14 +29,13 @@
 #include "MasterTestObject.h"
 
 #include <memory>
-#include <APLTestTools/BufferHelpers.h>
-#include <APL/ToHex.h>
+#include "BufferHelpers.h"
+
+#include <opendnp3/ToHex.h>
 
 using namespace std;
 
-namespace apl
-{
-namespace dnp
+namespace opendnp3
 {
 
 MasterTestObject::MasterTestObject(MasterConfig cfg, FilterLevel aLevel, bool aImmediate) :
@@ -77,5 +76,5 @@ std::string MasterTestObject::Read()
 	return hex;
 }
 
-}
 } //end ns
+

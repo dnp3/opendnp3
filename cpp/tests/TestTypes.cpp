@@ -26,7 +26,6 @@
 //
 // Contact Automatak, LLC for a commercial license to these modifications
 //
-#define BOOST_TEST_MODULE apl
 #include <boost/test/unit_test.hpp>
 
 #include <opendnp3/Types.h>

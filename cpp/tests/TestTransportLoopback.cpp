@@ -30,21 +30,20 @@
 
 #include <boost/asio.hpp>
 #include <boost/test/unit_test.hpp>
-#include <APLTestTools/TestHelpers.h>
 #include <functional>
 
-#include <APL/Log.h>
-#include <APLTestTools/BufferHelpers.h>
-#include <APL/ProtocolUtil.h>
-#include <APL/Exception.h>
+#include <opendnp3/Log.h>
+#include <opendnp3/ProtocolUtil.h>
+#include <opendnp3/Exception.h>
+#include <opendnp3/PhysicalLayerAsyncSerial.h>
 
-#include <APLTestTools/LoopbackPhysicalLayerAsync.h>
-#include <APL/PhysicalLayerAsyncSerial.h>
+#include "TestHelpers.h"
+#include "BufferHelpers.h"
+#include "LoopbackPhysicalLayerAsync.h"
 
 using namespace std;
-using namespace apl;
+using namespace opendnp3;
 using namespace boost;
-using namespace apl::dnp;
 
 BOOST_AUTO_TEST_SUITE(AsyncTransportLoopback)
 

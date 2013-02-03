@@ -28,15 +28,13 @@
 //
 #include <boost/test/unit_test.hpp>
 
-#include <APL/Exception.h>
-#include <APLTestTools/TestHelpers.h>
-#include <APLTestTools/BufferHelpers.h>
+#include <opendnp3/Exception.h>
 
+#include "TestHelpers.h"
+#include "BufferHelpers.h"
 #include "AppLayerTest.h"
 
-using namespace apl;
-using namespace apl::dnp;
-
+using namespace opendnp3;
 using namespace boost;
 
 BOOST_AUTO_TEST_SUITE(AppLayerSuite)
@@ -119,15 +117,15 @@ BOOST_AUTO_TEST_CASE(SendBadFuncCodeSlave)
 	// to set the sequence number
 	BOOST_REQUIRE_THROW(
 	    t.SendResponse(FC_RESPONSE, true, true, false, false),
-	    apl::InvalidStateException);
+	    InvalidStateException);
 
 	BOOST_REQUIRE_THROW(
 	    t.SendUnsolicited(FC_RESPONSE, true, true, false, false),
-	    apl::ArgumentException);
+	    ArgumentException);
 
 	BOOST_REQUIRE_THROW(
 	    t.SendRequest(FC_WRITE, true, true, false, false), // master only
-	    apl::Exception);
+	    Exception);
 }
 
 // Same test for the master
@@ -138,27 +136,27 @@ BOOST_AUTO_TEST_CASE(SendBadFuncCodeMaster)
 
 	BOOST_REQUIRE_THROW(
 	    t.SendResponse(FC_RESPONSE, true, true, false, false), // slave only
-	    apl::Exception);
+	    Exception);
 
 	BOOST_REQUIRE_THROW(
 	    t.SendUnsolicited(FC_UNSOLICITED_RESPONSE, true, true, false, false), // slave only
-	    apl::Exception);
+	    Exception);
 
 	BOOST_REQUIRE_THROW(
 	    t.SendRequest(FC_RESPONSE, true, true, false, false), //bad code
-	    apl::ArgumentException);
+	    ArgumentException);
 
 	BOOST_REQUIRE_THROW(
 	    t.SendRequest(FC_WRITE, true, true, true, false), // bad CON bit
-	    apl::ArgumentException);
+	    ArgumentException);
 
 	BOOST_REQUIRE_THROW(
 	    t.SendRequest(FC_WRITE, true, true, false, true), // bad UNS bit
-	    apl::ArgumentException);
+	    ArgumentException);
 
 	BOOST_REQUIRE_THROW(
 	    t.SendRequest(FC_WRITE, false, true, false, false), // bad FIR
-	    apl::ArgumentException);
+	    ArgumentException);
 }
 
 BOOST_AUTO_TEST_CASE(SendObjectUnknownResponse)
@@ -307,12 +305,12 @@ BOOST_AUTO_TEST_CASE(SendUnsolBadFormatting)
 
 	BOOST_REQUIRE_THROW(
 	    t.SendUnsolicited(FC_UNSOLICITED_RESPONSE, true, false, true, true), //bad FIN
-	    apl::ArgumentException
+	    ArgumentException
 	);
 
 	BOOST_REQUIRE_THROW(
 	    t.SendUnsolicited(FC_UNSOLICITED_RESPONSE, true, true, true, false), //bad UNS
-	    apl::ArgumentException
+	    ArgumentException
 	);
 }
 

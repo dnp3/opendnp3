@@ -30,15 +30,14 @@
 #define __TRANSPORT_SCALABILITY_TEST_OBJECT_H_
 
 #include "TransportStackPair.h"
-#include <APLTestTools/AsyncTestObjectASIO.h>
+#include "AsyncTestObjectASIO.h"
+#include "LogTester.h"
 
-#include <APL/ASIOExecutor.h>
-#include <APLTestTools/LogTester.h>
+#include <opendnp3/ASIOExecutor.h>
 
-namespace apl
+namespace opendnp3
 {
-namespace dnp
-{
+
 
 class TransportScalabilityTestObject : public LogTester, public AsyncTestObjectASIO
 {
@@ -68,7 +67,6 @@ public:
 	std::vector<TransportStackPair*> mPairs;
 };
 
-}
 }
 
 #endif

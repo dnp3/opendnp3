@@ -28,13 +28,12 @@
 //
 #include <boost/test/unit_test.hpp>
 
-#include <APL/RandomizedBuffer.h>
-#include <APL/Log.h>
-#include <DNP3/VtoWriter.h>
+#include <opendnp3/RandomizedBuffer.h>
+#include <opendnp3/Log.h>
+#include <opendnp3/VtoWriter.h>
 
 using namespace std;
-using namespace apl;
-using namespace apl::dnp;
+using namespace opendnp3;
 
 BOOST_AUTO_TEST_SUITE(VtoWriterSuite)
 

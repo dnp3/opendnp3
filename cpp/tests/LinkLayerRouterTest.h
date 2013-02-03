@@ -29,17 +29,14 @@
 #ifndef __LINK_LAYER_ROUTER_TEST_H_
 #define __LINK_LAYER_ROUTER_TEST_H_
 
+#include "LogTester.h"
+#include "MockExecutor.h"
+#include "MockPhysicalLayerAsync.h"
 
-#include <APLTestTools/LogTester.h>
-#include <APLTestTools/MockExecutor.h>
-#include <APLTestTools/MockPhysicalLayerAsync.h>
-
-#include <DNP3/LinkLayerRouter.h>
+#include <opendnp3/LinkLayerRouter.h>
 
 
-namespace apl
-{
-namespace dnp
+namespace opendnp3
 {
 
 class LinkLayerRouterTest : public LogTester
@@ -53,6 +50,6 @@ public:
 };
 
 }
-}
 
 #endif
+

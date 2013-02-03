@@ -27,19 +27,18 @@
 // Contact Automatak, LLC for a commercial license to these modifications
 //
 #include <boost/test/unit_test.hpp>
-#include <APLTestTools/TestHelpers.h>
 
-#include <DNP3/EventBuffers.h>
-#include <DNP3/EventTypes.h>
-#include <DNP3/VtoData.h>
+#include "TestHelpers.h"
+
+#include <opendnp3/EventBuffers.h>
+#include <opendnp3/EventTypes.h>
+#include <opendnp3/VtoData.h>
 
 #include <iostream>
 #include <limits>
 
 using namespace std;
-using namespace apl;
-using namespace apl::dnp;
-
+using namespace opendnp3;
 
 BOOST_AUTO_TEST_SUITE(SingleEventBufferSuite)
 BOOST_AUTO_TEST_CASE(SingleIndexSorting)

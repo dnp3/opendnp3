@@ -28,16 +28,15 @@
 //
 
 #include <boost/test/unit_test.hpp>
-#include <APLTestTools/TestHelpers.h>
 
-#include <DNP3/CommandTask.h>
-#include <DNP3/CommandHelpers.h>
-#include <APL/Log.h>
-#include <APLTestTools/BufferHelpers.h>
+#include "TestHelpers.h"
+#include "BufferHelpers.h"
 
-using namespace apl;
-using namespace apl::dnp;
+#include <opendnp3/CommandTask.h>
+#include <opendnp3/CommandHelpers.h>
+#include <opendnp3/Log.h>
 
+using namespace opendnp3;
 
 BOOST_AUTO_TEST_SUITE(CommandTaskTestSuite)
 

@@ -28,17 +28,16 @@
 //
 #include "TransportTestObject.h"
 
-#include <APLTestTools/BufferHelpers.h>
-#include <APL/ToHex.h>
+#include "BufferHelpers.h"
+
+#include <opendnp3/ToHex.h>
 #include <memory>
 #include <sstream>
 
 
 using namespace std;
 
-namespace apl
-{
-namespace dnp
+namespace opendnp3
 {
 
 TransportTestObject::TransportTestObject(bool aOpenOnStart, FilterLevel aLevel, bool aImmediate) :
@@ -87,4 +86,4 @@ std::string TransportTestObject::GeneratePacketSequence(vector< std::string >& a
 }
 
 }
-}
+

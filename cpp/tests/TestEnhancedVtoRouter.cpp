@@ -28,23 +28,21 @@
 //
 #include <boost/test/unit_test.hpp>
 
-#include <APL/Log.h>
-#include <APL/ToHex.h>
+#include <opendnp3/Log.h>
+#include <opendnp3/ToHex.h>
+#include <opendnp3/EnhancedVtoRouter.h>
+#include <opendnp3/VtoRouterSettings.h>
+#include <opendnp3/VtoWriter.h>
+#include <opendnp3/IVtoEventAcceptor.h>
 
-#include <APLTestTools/BufferHelpers.h>
-#include <APLTestTools/LogTester.h>
-#include <APLTestTools/MockPhysicalLayerAsync.h>
-#include <APLTestTools/MockExecutor.h>
-#include <APLTestTools/TestHelpers.h>
-
-#include <DNP3/EnhancedVtoRouter.h>
-#include <DNP3/VtoRouterSettings.h>
-#include <DNP3/VtoWriter.h>
-#include <DNP3/IVtoEventAcceptor.h>
+#include "BufferHelpers.h"
+#include "LogTester.h"
+#include "MockPhysicalLayerAsync.h"
+#include "MockExecutor.h"
+#include "TestHelpers.h"
 
 using namespace std;
-using namespace apl;
-using namespace apl::dnp;
+using namespace opendnp3;
 
 class VtoRouterTestClassBase : protected LogTester, public IVtoEventAcceptor
 {

@@ -27,23 +27,22 @@
 // Contact Automatak, LLC for a commercial license to these modifications
 //
 #include <boost/test/unit_test.hpp>
-#include <APLTestTools/TestHelpers.h>
 
-#include <DNP3/DNP3Manager.h>
-#include <DNP3/IChannel.h>
-#include <DNP3/IMaster.h>
-#include <DNP3/IOutstation.h>
-#include <DNP3/SimpleCommandHandler.h>
-#include <DNP3/IVtoEndpoint.h>
+#include "TestHelpers.h"
 
-#include <APL/LogToStdio.h>
-#include <APL/LogToFile.h>
-#include <APL/SimpleDataObserver.h>
+#include <opendnp3/DNP3Manager.h>
+#include <opendnp3/IChannel.h>
+#include <opendnp3/IMaster.h>
+#include <opendnp3/IOutstation.h>
+#include <opendnp3/SimpleCommandHandler.h>
+#include <opendnp3/IVtoEndpoint.h>
+#include <opendnp3/LogToStdio.h>
+#include <opendnp3/LogToFile.h>
+#include <opendnp3/SimpleDataObserver.h>
 
 #include <thread>
 
-using namespace apl;
-using namespace apl::dnp;
+using namespace opendnp3;
 
 BOOST_AUTO_TEST_SUITE(DNP3ManagerTestSuite)
 

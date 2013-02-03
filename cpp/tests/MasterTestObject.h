@@ -29,18 +29,18 @@
 #ifndef __MASTER_TEST_OBJECT_H_
 #define __MASTER_TEST_OBJECT_H_
 
-#include <APLTestTools/MockExecutor.h>
-#include <APL/AsyncTaskScheduler.h>
-#include <APL/FlexibleDataObserver.h>
-#include <APLTestTools/LogTester.h>
-#include <DNP3/Master.h>
+#include "MockExecutor.h"
+#include "LogTester.h"
+
+#include <opendnp3/AsyncTaskScheduler.h>
+#include <opendnp3/FlexibleDataObserver.h>
+#include <opendnp3/Master.h>
 
 #include "MockAppLayer.h"
 
-namespace apl
+namespace opendnp3
 {
-namespace dnp
-{
+
 
 struct MasterConfig;
 
@@ -63,6 +63,6 @@ public:
 };
 
 }
-}
 
 #endif
+

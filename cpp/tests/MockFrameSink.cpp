@@ -28,9 +28,7 @@
 //
 #include "MockFrameSink.h"
 
-namespace apl
-{
-namespace dnp
+namespace opendnp3
 {
 
 MockFrameSink::MockFrameSink() : mNumFrames(0), mLowerOnline(false)
@@ -148,6 +146,5 @@ void MockFrameSink::Update(FuncCodes aCode, bool aIsMaster, uint16_t aDest, uint
 	this->ExecuteAction();
 }
 
-}
 }
 

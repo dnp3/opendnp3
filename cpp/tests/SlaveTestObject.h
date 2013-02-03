@@ -29,19 +29,17 @@
 #ifndef __SLAVE_TEST_OBJECT_H_
 #define __SLAVE_TEST_OBJECT_H_
 
-#include <APLTestTools/MockExecutor.h>
-#include <APL/AsyncTaskScheduler.h>
-#include <APLTestTools/LogTester.h>
-#include <DNP3/Slave.h>
-#include <DNP3/Database.h>
-#include <DNP3/SlaveConfig.h>
+#include <opendnp3/AsyncTaskScheduler.h>
+#include <opendnp3/Slave.h>
+#include <opendnp3/Database.h>
+#include <opendnp3/SlaveConfig.h>
 
+#include "MockExecutor.h"
+#include "LogTester.h"
 #include "MockCommandHandler.h"
 #include "MockAppLayer.h"
 
-namespace apl
-{
-namespace dnp
+namespace opendnp3
 {
 
 class SlaveTestObject : public LogTester
@@ -69,6 +67,6 @@ public:
 };
 
 }
-}
 
 #endif
+

@@ -28,9 +28,7 @@
 //
 #include "LinkLayerTest.h"
 
-namespace apl
-{
-namespace dnp
+namespace opendnp3
 {
 
 LinkLayerTest::LinkLayerTest(LinkConfig arCfg, FilterLevel aLevel, bool aImmediate) :
@@ -56,6 +54,5 @@ LinkConfig LinkLayerTest::DefaultConfig()
 	return cfg;
 }
 
-}
 }
 

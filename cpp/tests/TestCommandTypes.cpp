@@ -27,12 +27,13 @@
 // Contact Automatak, LLC for a commercial license to these modifications
 //
 #include <boost/test/unit_test.hpp>
-#include <APLTestTools/TestHelpers.h>
 
-#include <DNP3/CommandStatus.h>
-#include <DNP3/ControlRelayOutputBlock.h>
+#include "TestHelpers.h"
 
-using namespace apl::dnp;
+#include <opendnp3/CommandStatus.h>
+#include <opendnp3/ControlRelayOutputBlock.h>
+
+using namespace opendnp3;
 
 BOOST_AUTO_TEST_SUITE(CommandTypesSuite)
 
@@ -78,13 +79,13 @@ BOOST_AUTO_TEST_CASE(ByteToControl)
 
 BOOST_AUTO_TEST_CASE(ControlToString)
 {
-	BOOST_REQUIRE_EQUAL("CC_NULL", ToString(CC_NULL));
-	BOOST_REQUIRE_EQUAL("CC_PULSE", ToString(CC_PULSE));
-	BOOST_REQUIRE_EQUAL("CC_LATCH_ON", ToString(CC_LATCH_ON));
-	BOOST_REQUIRE_EQUAL("CC_LATCH_OFF", ToString(CC_LATCH_OFF));
-	BOOST_REQUIRE_EQUAL("CC_PULSE_CLOSE", ToString(CC_PULSE_CLOSE));
-	BOOST_REQUIRE_EQUAL("CC_PULSE_TRIP", ToString(CC_PULSE_TRIP));
-	BOOST_REQUIRE_EQUAL("Unknown", ToString(CC_UNDEFINED));
+	BOOST_REQUIRE_EQUAL("CC_NULL", ControlCodeToString(CC_NULL));
+	BOOST_REQUIRE_EQUAL("CC_PULSE", ControlCodeToString(CC_PULSE));
+	BOOST_REQUIRE_EQUAL("CC_LATCH_ON", ControlCodeToString(CC_LATCH_ON));
+	BOOST_REQUIRE_EQUAL("CC_LATCH_OFF", ControlCodeToString(CC_LATCH_OFF));
+	BOOST_REQUIRE_EQUAL("CC_PULSE_CLOSE", ControlCodeToString(CC_PULSE_CLOSE));
+	BOOST_REQUIRE_EQUAL("CC_PULSE_TRIP", ControlCodeToString(CC_PULSE_TRIP));
+	BOOST_REQUIRE_EQUAL("Unknown", ControlCodeToString(CC_UNDEFINED));
 }
 
 BOOST_AUTO_TEST_SUITE_END()

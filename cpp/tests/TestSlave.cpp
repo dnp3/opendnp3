@@ -28,18 +28,16 @@
 //
 #include <boost/test/unit_test.hpp>
 
-#include <APLTestTools/TestHelpers.h>
-#include <APLTestTools/MockLogSubscriber.h>
-
+#include "TestHelpers.h"
+#include "MockLogSubscriber.h"
 #include "SlaveTestObject.h"
 
-#include <DNP3/APDU.h>
-#include <DNP3/ObjectReadIterator.h>
-#include <APL/Util.h>
+#include <opendnp3/APDU.h>
+#include <opendnp3/ObjectReadIterator.h>
+#include <opendnp3/Util.h>
 
 using namespace std;
-using namespace apl;
-using namespace apl::dnp;
+using namespace opendnp3;
 using namespace boost;
 
 
@@ -1143,7 +1141,7 @@ BOOST_AUTO_TEST_CASE(ReadByRangeHeader)
 }
 
 template <class PointType, class T>
-void TestStaticType(apl::dnp::SlaveConfig& aCfg, apl::dnp::GrpVar& aGrpVar, int aGroup, int aVar, T aVal, const std::string& aRsp)
+void TestStaticType(SlaveConfig& aCfg, GrpVar& aGrpVar, int aGroup, int aVar, T aVal, const std::string& aRsp)
 {
 	aGrpVar = GrpVar(aGroup, aVar);
 	SlaveTestObject t(aCfg);

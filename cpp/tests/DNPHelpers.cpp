@@ -30,19 +30,15 @@
 
 #include <boost/test/unit_test.hpp>
 
-#include <DNP3/DNPCrc.h>
-#include <DNP3/LinkFrame.h>
-#include <APLTestTools/BufferHelpers.h>
-#include <APL/ToHex.h>
+#include <opendnp3/DNPCrc.h>
+#include <opendnp3/LinkFrame.h>
+#include <opendnp3/ToHex.h>
 
-using namespace apl;
-using namespace apl::dnp;
+#include "BufferHelpers.h"
 
-namespace apl
+
+namespace opendnp3
 {
-namespace dnp
-{
-
 
 bool IsFrameEqual(LinkFrame& frame, const std::string& arData)
 {
@@ -89,8 +85,8 @@ std::string RepairCRC(const std::string& arData)
 	//repair the partial block
 	if(partial_size > 0) DNPCrc::AddCrc(ptr, partial_size - 2);
 
-	return apl::toHex(hs, hs.Size(), true);
+	return toHex(hs, hs.Size(), true);
 }
 
 }
-}
+

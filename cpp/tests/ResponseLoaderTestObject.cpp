@@ -28,16 +28,16 @@
 //
 #include "ResponseLoaderTestObject.h"
 
-#include <APLTestTools/BufferHelpers.h>
-#include <DNP3/APDU.h>
-#include <DNP3/ResponseLoader.h>
+#include "BufferHelpers.h"
+
+#include <opendnp3/APDU.h>
+#include <opendnp3/ResponseLoader.h>
+
 #include <boost/test/unit_test.hpp>
 
 #include <memory.h>
 
-namespace apl
-{
-namespace dnp
+namespace opendnp3
 {
 
 ResponseLoaderTestObject::ResponseLoaderTestObject() :
@@ -107,4 +107,4 @@ void ResponseLoaderTestObject::CheckSetpointStatii(const std::string& arAPDU)
 }
 
 }
-}
+

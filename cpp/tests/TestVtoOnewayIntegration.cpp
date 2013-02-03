@@ -28,17 +28,15 @@
 //
 #include <boost/test/unit_test.hpp>
 
+#include <opendnp3/RandomizedBuffer.h>
+#include <opendnp3/LoggableMacros.h>
 
-#include <APL/RandomizedBuffer.h>
-#include <APL/LoggableMacros.h>
-#include <APLTestTools/MockPhysicalLayerMonitor.h>
-
+#include "MockPhysicalLayerMonitor.h"
 #include "VtoIntegrationTestBase.h"
 
 #include <functional>
 
-using namespace apl;
-using namespace apl::dnp;
+using namespace opendnp3;
 using namespace std::chrono;
 
 class VtoOnewayTestStack : public VtoIntegrationTestBase

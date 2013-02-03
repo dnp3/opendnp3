@@ -39,7 +39,7 @@ class MockLogSubscriber : public ILogBase
 {
 public:
 
-	void Log( const apl::LogEntry& arEntry ) {
+	void Log( const LogEntry& arEntry ) {
 		mEntries.push(arEntry);
 	}
 

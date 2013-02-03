@@ -32,17 +32,15 @@
 #include <string>
 
 
-namespace apl
-{
-namespace dnp
+namespace opendnp3
 {
 
 class LinkFrame;
 
 std::string RepairCRC(const std::string& arData);
-bool IsFrameEqual(apl::dnp::LinkFrame& frame, const std::string& arData);
+bool IsFrameEqual(LinkFrame& frame, const std::string& arData);
 
-}
 }
 
 #endif
+

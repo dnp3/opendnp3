@@ -31,12 +31,9 @@
 
 #include <boost/asio.hpp>
 
-
 using namespace std;
 
-namespace apl
-{
-namespace dnp
+namespace opendnp3
 {
 
 TransportScalabilityTestObject::TransportScalabilityTestObject(
@@ -117,7 +114,6 @@ void TransportScalabilityTestObject::Start()
 	}
 }
 
-}
 }
 
 

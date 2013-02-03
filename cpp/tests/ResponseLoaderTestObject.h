@@ -29,20 +29,14 @@
 #ifndef __RESPONSE_LOADER_TEST_OBJECT_H_
 #define __RESPONSE_LOADER_TEST_OBJECT_H_
 
-#include <APL/Log.h>
-#include <APL/FlexibleDataObserver.h>
+#include <opendnp3/Log.h>
+#include <opendnp3/FlexibleDataObserver.h>
+#include <opendnp3/VtoReader.h>
 
-#include <DNP3/VtoReader.h>
-
-namespace apl
+namespace opendnp3
 {
+
 class Logger;
-}
-
-namespace apl
-{
-namespace dnp
-{
 
 class ResponseLoaderTestObject
 {
@@ -64,7 +58,6 @@ public: VtoReader vto;
 
 };
 
-}
 }
 
 #endif

@@ -28,14 +28,11 @@
 //
 #include "MockAppLayer.h"
 
+#include <opendnp3/Logger.h>
+#include <opendnp3/LoggableMacros.h>
+#include <opendnp3/ToHex.h>
 
-#include <APL/Logger.h>
-#include <APL/LoggableMacros.h>
-#include <APL/ToHex.h>
-
-namespace apl
-{
-namespace dnp
+namespace opendnp3
 {
 
 MockAppLayer::MockAppLayer(Logger* apLogger) :
@@ -131,4 +128,4 @@ void MockAppLayer::CancelResponse()
 }
 
 }
-}
+

@@ -29,20 +29,17 @@
 #ifndef __VTO_INTEGRATION_TEST_BASE_H_
 #define __VTO_INTEGRATION_TEST_BASE_H_
 
-#include <APLTestTools/LogTester.h>
-#include <APLTestTools/AsyncTestObjectASIO.h>
-#include <APLTestTools/PhysicalLayerWrapper.h>
-#include <APLTestTools/WrappedTcpPipe.h>
+#include <opendnp3/FlexibleDataObserver.h>
+#include <opendnp3/LogToFile.h>
+#include <opendnp3/Loggable.h>
+#include <opendnp3/PhysicalLayerAsyncTCPClient.h>
+#include <opendnp3/PhysicalLayerAsyncTCPServer.h>
+#include <opendnp3/DNP3Manager.h>
 
-#include <APL/FlexibleDataObserver.h>
-#include <APL/LogToFile.h>
-#include <APL/Loggable.h>
-#include <APL/PhysicalLayerAsyncTCPClient.h>
-#include <APL/PhysicalLayerAsyncTCPServer.h>
-
-#include <DNP3/DNP3Manager.h>
-
-
+#include "LogTester.h"
+#include "AsyncTestObjectASIO.h"
+#include "PhysicalLayerWrapper.h"
+#include "WrappedTcpPipe.h"
 #include "MockCommandHandler.h"
 
 
@@ -56,9 +53,7 @@
 #define MACRO_PORT_VALUE	(30000)
 #endif
 
-namespace apl
-{
-namespace dnp
+namespace opendnp3
 {
 
 class VtoIntegrationTestBase : public LogTester, protected Loggable
@@ -87,8 +82,7 @@ public:
 
 }
 
-}
-
 /* vim: set ts=4 sw=4: */
 
 #endif
+

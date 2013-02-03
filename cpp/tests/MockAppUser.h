@@ -29,13 +29,11 @@
 #ifndef __MOCK_APP_USER_H_
 #define __MOCK_APP_USER_H_
 
-#include <DNP3/AppInterfaces.h>
+#include <opendnp3/AppInterfaces.h>
 
 #include <sstream>
 
-namespace apl
-{
-namespace dnp
+namespace opendnp3
 {
 
 // @section desc Test class for app layer
@@ -93,6 +91,6 @@ public:
 };
 
 }
-}
 
 #endif
+

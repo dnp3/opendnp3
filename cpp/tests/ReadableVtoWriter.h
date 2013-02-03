@@ -29,13 +29,12 @@
 #ifndef __READABLE_VTO_WRITER_H_
 #define __READABLE_VTO_WRITER_H_
 
-#include <DNP3/VtoWriter.h>
-#include <DNP3/IVtoEventAcceptor.h>
+#include <opendnp3/VtoWriter.h>
+#include <opendnp3/IVtoEventAcceptor.h>
 
-namespace apl
+namespace opendnp3
 {
-namespace dnp
-{
+
 
 /**
  *  Provides a simple read function that makes testing easier
@@ -65,7 +64,6 @@ private:
 
 };
 
-}
 }
 
 /* vim: set ts=4 sw=4: */

@@ -29,12 +29,10 @@
 #ifndef __QUEUEING_STACK_OBSERVER_H_
 #define __QUEUEING_STACK_OBSERVER_H_
 
-#include <DNP3/IStackObserver.h>
+#include <opendnp3/IStackObserver.h>
 #include <deque>
 
-namespace apl
-{
-namespace dnp
+namespace opendnp3
 {
 
 class QueueingStackObserver : public IStackObserver
@@ -48,6 +46,6 @@ public:
 };
 
 }
-}
 
 #endif
+
