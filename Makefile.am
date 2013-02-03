@@ -5,7 +5,8 @@ ACLOCAL_AMFLAGS = -I m4
 CORE_BOOST_LIBS = $(BOOST_SYSTEM_LIB)
 TEST_BOOST_LIBS = $(CORE_BOOST_LIBS) $(BOOST_UNIT_TEST_FRAMEWORK_LIB)
 
-AM_CXXFLAGS = -std=c++11
+AM_CXXFLAGS = -std=c++11 $(BOOST_CPPFLAGS) -DBOOST_TEST_DYN_LINK -DBOOST_ASIO_ENABLE_CANCELIO -DBOOST_REGEX_NO_LIB
+AM_LDFLAGS  = $(BOOST_LDFLAGS)
 
 lib_LTLIBRARIES = libopendnp3.la
 
@@ -143,7 +144,7 @@ libopendnp3_la_SOURCES = \
 check_PROGRAMS = dnp3test
 TESTS = dnp3test
 dnp3test_CPPFLAGS = -I./cpp/src
-dnp3test_LDADD = libopendnp3.la $(BOOST_TEST_LIBS)
+dnp3test_LDADD = libopendnp3.la $(TEST_BOOST_LIBS)
 dnp3test_SOURCES = \
 	cpp/tests/AsyncPhysBaseTest.cpp \
 	cpp/tests/AsyncPhysTestObject.cpp \

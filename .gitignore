@@ -19,3 +19,4 @@ ltmain.sh
 Makefile
 config.status
 libtool
+dnp3test
