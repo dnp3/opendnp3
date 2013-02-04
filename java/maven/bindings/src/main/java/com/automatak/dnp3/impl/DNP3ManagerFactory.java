@@ -16,9 +16,9 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.automatak.dnp3;
+package com.automatak.dnp3.impl;
 
-import com.automatak.dnp3.impl.ManagerImpl;
+import com.automatak.dnp3.DNP3Manager;
 
 /**
  * Factory class used to retrieve the root DNP3 object.

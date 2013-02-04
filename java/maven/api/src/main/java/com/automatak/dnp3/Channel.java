@@ -19,7 +19,7 @@
 package com.automatak.dnp3;
 
 /**
- * A communication channel to which DNP3 stacks can be added
+ * A communication channel to which DNP3 masters / outstation can be attached
  */
 public interface Channel {
 

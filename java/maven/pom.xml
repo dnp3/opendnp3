@@ -3,13 +3,18 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.automatak.dnp3</groupId>
-    <artifactId>opendnp3</artifactId>
+    <artifactId>opendnp3-parent</artifactId>
     <version>1.1-SNAPSHOT</version>
-    <packaging>jar</packaging>
+    <packaging>pom</packaging>
 
     <name>opendnp3</name>
     <url>http://www.github.com/automatakllc/dnp3</url>
     <description>JNI bindings for opendnp3. A companion shared library (so/dll) is required.</description>
+
+    <modules>
+        <module>api</module>
+        <module>bindings</module>
+    </modules>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -61,8 +66,8 @@
                     <aggregate>true</aggregate>
                     <header>AGPL_FILE_HEADER</header>
                     <includes>
-                        <include>maven/**/*.java</include>
-                        <include>cpp/*.cpp</include>
+                        <include>**/*.java</include>
+                        <include>../cpp/*.cpp</include>
                     </includes>
                 </configuration>
                 <executions>
