@@ -45,14 +45,14 @@ class DNP3ManagerTestSuite extends FunSuite with ShouldMatchers {
     }
   }
 
-  test("Can add outstation/slave and shutdown automatically") {
+  test("Can add outstation/master and shutdown automatically") {
     fixture { mgr =>
       createOutstation(createServer(mgr))
       createMaster(createClient(mgr))
     }
   }
 
-  test("Can add outstation/slave and shutdown manually by removing channels") {
+  test("Can add outstation/master and shutdown manually by removing channels") {
     fixture { mgr =>
       val server = createServer(mgr)
       val client = createClient(mgr)
@@ -63,7 +63,7 @@ class DNP3ManagerTestSuite extends FunSuite with ShouldMatchers {
     }
   }
 
-  test("Can add outstation/slave and shutdown manually by removing stacks") {
+  test("Can add outstation/master and shutdown manually by removing stacks") {
     fixture { mgr =>
       val outstation = createOutstation(createServer(mgr))
       val master = createMaster(createClient(mgr))
