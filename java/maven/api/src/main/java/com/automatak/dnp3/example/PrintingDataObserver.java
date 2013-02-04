@@ -22,38 +22,45 @@ import com.automatak.dnp3.*;
 
 public class PrintingDataObserver implements DataObserver {
 
+    private final OutputHandler handler;
+
+    public PrintingDataObserver(OutputHandler handler)
+    {
+        this.handler = handler;
+    }
+
     public void start()
     {
-        System.out.println("start");
+        handler.handleOutput("start");
     }
 
     public void update(BinaryInput meas, long index)
     {
-        System.out.println("Binary: " + meas.getValue());
+        handler.handleOutput("Binary: " + meas.getValue());
     }
 
     public void update(AnalogInput meas, long index)
     {
-        System.out.println("Analog: " + meas.getValue());
+        handler.handleOutput("Analog: " + meas.getValue());
     }
 
     public void update(Counter meas, long index)
     {
-        System.out.println("Counter: " + meas.getValue());
+        handler.handleOutput("Counter: " + meas.getValue());
     }
 
     public void update(BinaryOutputStatus meas, long index)
     {
-        System.out.println("BinaryOutputStatus: " + meas.getValue());
+        handler.handleOutput("BinaryOutputStatus: " + meas.getValue());
     }
 
     public void update(AnalogOutputStatus meas, long index)
     {
-        System.out.println("AnalogOutputStatus: " + meas.getValue());
+        handler.handleOutput("AnalogOutputStatus: " + meas.getValue());
     }
 
     public void end()
     {
-        System.out.println("end");
+        handler.handleOutput("end");
     }
 }
