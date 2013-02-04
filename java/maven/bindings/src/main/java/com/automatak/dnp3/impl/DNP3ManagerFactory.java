@@ -48,6 +48,7 @@ public class DNP3ManagerFactory {
     }
 
     /**
+     *
      * @param concurrency The number of threads that will be allocated to the underlying thread pool.
      * @return Root management interface from which the entire class hierarchy is retrieved
      */
@@ -62,7 +63,7 @@ public class DNP3ManagerFactory {
      */
     public static DNP3Manager createDNP3ManagerWithDefaultConcurrency()
     {
-        return new ManagerImpl(Runtime.getRuntime().availableProcessors());
+        return createManager(Runtime.getRuntime().availableProcessors());
     }
 
 }

@@ -33,6 +33,13 @@
             <groupId>com.automatak.dnp3</groupId>
             <artifactId>opendnp3-api</artifactId>
             <version>${opendnp3.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.scala-lang</groupId>
+            <artifactId>scala-library</artifactId>
+            <version>${scala.version}</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 

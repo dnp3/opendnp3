@@ -17,12 +17,15 @@
     </modules>
 
     <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven-license-plugin.version>1.9.0</maven-license-plugin.version>
         <maven-javadoc-plugin.version>2.8.1</maven-javadoc-plugin.version>
         <maven-source-plugin.version>2.1.2</maven-source-plugin.version>
         <maven-bundle.version>2.1.0</maven-bundle.version>
         <opendnp3.version>1.1-SNAPSHOT</opendnp3.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven-scala.plugin.version>3.1.0</maven-scala.plugin.version>
+        <scala.version.short>2.10</scala.version.short>
+        <scala.version>2.10.0</scala.version>
     </properties>
 
     <licenses>
@@ -96,7 +99,38 @@
                     </execution>
                 </executions>
             </plugin>
-
+            <plugin>
+                <groupId>net.alchim31.maven</groupId>
+                <artifactId>scala-maven-plugin</artifactId>
+                <version>${maven-scala.plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>compile</id>
+                        <goals>
+                            <goal>add-source</goal>
+                            <goal>compile</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>testCompile</id>
+                        <goals>
+                            <goal>testCompile</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <args>
+                        <arg>-feature</arg>
+                        <arg>-language:implicitConversions</arg>
+                        <arg>-deprecation</arg>
+                        <arg>-target:jvm-1.7</arg>
+                        <arg>-Ywarn-adapted-args</arg>
+                    </args>
+                    <jvmArgs>
+                        <jvmArg>-Xmx1024m</jvmArg>
+                    </jvmArgs>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
