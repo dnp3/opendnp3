@@ -5,12 +5,12 @@ AC_COPYRIGHT([(C) 2010, 2011 Green EneryCorp. (C) 2013 Automatak, LLC. All right
 AM_INIT_AUTOMAKE([subdir-objects])
 
 AC_PREFIX_DEFAULT([/usr]) #works best for Ubuntu
-AC_CONFIG_FILES([Makefile])
 
 AC_LANG([C++]) # tell autoconf that we're using C++
 AX_CXX_COMPILE_STDCXX_11([ext]) #require support for C++11
 
-AC_CHECK_LIB (opendnp3, , , AC_MSG_ERROR(Unable to to find opendnp3))
+AC_CHECK_LIB(opendnp3, main)
+AC_CHECK_LIB(pthread, pthread_create)
 
 AX_BOOST_BASE([1.52.0], , AC_MSG_ERROR(Couldn't find boost >= 1.52.0))
 AX_BOOST_SYSTEM
@@ -19,5 +19,6 @@ AX_BOOST_UNIT_TEST_FRAMEWORK
 
 LT_INIT #initialize libtools
 
+AC_CONFIG_FILES([Makefile])
 AC_OUTPUT #actually output the configuration
 

@@ -23,6 +23,11 @@ dnp3test
 *~
 *.dirstamp
 
+# 
+cpp/demos/masterdemo
+cpp/demos/outstationdemo
+
+
 # visual studio generated files
 cpp/Debug
 cpp/Release

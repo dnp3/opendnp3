@@ -8,10 +8,14 @@ TEST_BOOST_LIBS = $(CORE_BOOST_LIBS) $(BOOST_UNIT_TEST_FRAMEWORK_LIB)
 AM_CXXFLAGS = -std=c++11
 AM_LDFLAGS  = $(BOOST_LDFLAGS)
 
-bin_PROGRAMS = masterdemo
+bin_PROGRAMS = masterdemo outstationdemo
 
 masterdemo_LDFLAGS = $(BOOST_LDFLAGS)
-masterdemo_LDADD = opendnp3 $(CORE_BOOST_LIBS)
+masterdemo_LDADD = $(CORE_BOOST_LIBS)
 masterdemo_SOURCES = \
 	master/DemoMain.cpp
 
+outstationdemo_LDFLAGS = $(BOOST_LDFLAGS)
+outstationdemo_LDADD = $(CORE_BOOST_LIBS)
+outstationdemo_SOURCES = \
+	outstation/DemoMain.cpp
