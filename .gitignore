@@ -41,6 +41,8 @@ clr/DNP3CLROutstationDemo/bin
 clr/DNP3CLROutstationDemo/obj
 cpp/demos/master/Debug
 cpp/demos/master/Release
+cpp/demos/outstation/Debug
+cpp/demos/outstation/Release
 *vcxproj.user
 cpp/unittest.log
 

@@ -32,6 +32,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "demos", "demos", "{62A485DB
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "masterdemo", "cpp\demos\master\masterdemo.vcxproj", "{082C5022-AFD9-47D2-B53D-DAE3C6BD87F4}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "outstationdemo", "cpp\demos\outstation\outstationdemo.vcxproj", "{E395DDB8-33CD-4AC4-8EA3-6363AFF2A831}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -140,6 +142,18 @@ Global
 		{082C5022-AFD9-47D2-B53D-DAE3C6BD87F4}.Release|Win32.ActiveCfg = Release|Win32
 		{082C5022-AFD9-47D2-B53D-DAE3C6BD87F4}.Release|Win32.Build.0 = Release|Win32
 		{082C5022-AFD9-47D2-B53D-DAE3C6BD87F4}.Release|x64.ActiveCfg = Release|Win32
+		{E395DDB8-33CD-4AC4-8EA3-6363AFF2A831}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{E395DDB8-33CD-4AC4-8EA3-6363AFF2A831}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
+		{E395DDB8-33CD-4AC4-8EA3-6363AFF2A831}.Debug|Mixed Platforms.Build.0 = Debug|Win32
+		{E395DDB8-33CD-4AC4-8EA3-6363AFF2A831}.Debug|Win32.ActiveCfg = Debug|Win32
+		{E395DDB8-33CD-4AC4-8EA3-6363AFF2A831}.Debug|Win32.Build.0 = Debug|Win32
+		{E395DDB8-33CD-4AC4-8EA3-6363AFF2A831}.Debug|x64.ActiveCfg = Debug|Win32
+		{E395DDB8-33CD-4AC4-8EA3-6363AFF2A831}.Release|Any CPU.ActiveCfg = Release|Win32
+		{E395DDB8-33CD-4AC4-8EA3-6363AFF2A831}.Release|Mixed Platforms.ActiveCfg = Release|Win32
+		{E395DDB8-33CD-4AC4-8EA3-6363AFF2A831}.Release|Mixed Platforms.Build.0 = Release|Win32
+		{E395DDB8-33CD-4AC4-8EA3-6363AFF2A831}.Release|Win32.ActiveCfg = Release|Win32
+		{E395DDB8-33CD-4AC4-8EA3-6363AFF2A831}.Release|Win32.Build.0 = Release|Win32
+		{E395DDB8-33CD-4AC4-8EA3-6363AFF2A831}.Release|x64.ActiveCfg = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -154,5 +168,6 @@ Global
 		{791073B4-2132-4588-AFA7-3A9728D444B4} = {285B0B06-97CD-4598-AD14-621BEDF42BB7}
 		{3E8C9DE9-9626-4FC6-90A2-802DEFC1A39D} = {285B0B06-97CD-4598-AD14-621BEDF42BB7}
 		{082C5022-AFD9-47D2-B53D-DAE3C6BD87F4} = {62A485DB-0229-4AED-8F31-08183ADCD841}
+		{E395DDB8-33CD-4AC4-8EA3-6363AFF2A831} = {62A485DB-0229-4AED-8F31-08183ADCD841}
 	EndGlobalSection
 EndGlobal

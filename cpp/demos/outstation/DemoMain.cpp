@@ -27,21 +27,19 @@
 // Contact Automatak, LLC for a commercial license to these modifications
 //
 
-#include <APL/LogToStdio.h>
 
-#include <DNP3/DNP3Manager.h>
-#include <DNP3/SlaveStackConfig.h>
-#include <DNP3/IChannel.h>
-#include <DNP3/IOutstation.h>
-#include <DNP3/SimpleCommandHandler.h>
+#include <opendnp3/LogToStdio.h>
+#include <opendnp3/DNP3Manager.h>
+#include <opendnp3/SlaveStackConfig.h>
+#include <opendnp3/IChannel.h>
+#include <opendnp3/IOutstation.h>
+#include <opendnp3/SimpleCommandHandler.h>
 
 #include <string>
 #include <iostream>
 
 using namespace std;
-using namespace apl;
-using namespace apl::dnp;
-
+using namespace opendnp3;
 
 /*
  * Command line syntax:
