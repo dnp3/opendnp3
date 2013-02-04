@@ -10,14 +10,20 @@ import com.automatak.dnp3.example.{ConstantCommandHandler, PrintingDataObserver,
 @RunWith(classOf[JUnitRunner])
 class DNP3ManagerTestSuite extends FunSuite with ShouldMatchers {
 
-  def fixture[A](test: DNP3Manager => A): A = {
-    val mgr = DNP3ManagerFactory.createDNP3ManagerWithDefaultConcurrency()
-    try {
-      test(mgr)
-    }
-    finally {
-      mgr.shutdown()
-    }
+  val iterations = 100
+
+  def fixture(test: DNP3Manager => Unit): Unit = {
+
+      for(i <- (0 to iterations)) {
+        val mgr = DNP3ManagerFactory.createDNP3ManagerWithDefaultConcurrency()
+        try {
+          test(mgr)
+        }
+        finally {
+          mgr.shutdown()
+        }
+      }
+
   }
 
   object SuccessCommandHandler extends ConstantCommandHandler(CommandStatus.SUCCESS)
@@ -25,6 +31,13 @@ class DNP3ManagerTestSuite extends FunSuite with ShouldMatchers {
   object NullDataObserver extends PrintingDataObserver(new OutputHandler {
     def handleOutput(msg: String) = {}
   })
+
+  def createClient(mgr: DNP3Manager): Channel = mgr.addTCPClient("client", LogLevel.INFO, 3000, "127.0.0.1", 20000)
+  def createServer(mgr: DNP3Manager): Channel = mgr.addTCPServer("server", LogLevel.INFO, 3000, "127.0.0.1", 20000)
+  def createMaster(channel: Channel) : Master = channel.addMaster("master", LogLevel.INFO, NullDataObserver)
+  def createOutstation(channel: Channel): Outstation = channel.addOutstation("outstation", LogLevel.INFO, SuccessCommandHandler)
+
+
 
   test("starts/stops cleanly") {
     fixture { mgr =>
@@ -34,10 +47,28 @@ class DNP3ManagerTestSuite extends FunSuite with ShouldMatchers {
 
   test("Can add outstation/slave and shutdown automatically") {
     fixture { mgr =>
-      val client = mgr.addTCPClient("client", LogLevel.INFO, 3000, "127.0.0.1", 20000)
-      val server = mgr.addTCPServer("server", LogLevel.INFO, 3000, "127.0.0.1", 20000)
-      val outstation = server.addOutstation("outstation", LogLevel.INFO, SuccessCommandHandler)
-      val master = client.addMaster("master", LogLevel.INFO, NullDataObserver)
+      createOutstation(createServer(mgr))
+      createMaster(createClient(mgr))
+    }
+  }
+
+  test("Can add outstation/slave and shutdown manually by removing channels") {
+    fixture { mgr =>
+      val server = createServer(mgr)
+      val client = createClient(mgr)
+      createOutstation(server)
+      createMaster(client)
+      client.shutdown()
+      server.shutdown()
+    }
+  }
+
+  test("Can add outstation/slave and shutdown manually by removing stacks") {
+    fixture { mgr =>
+      val outstation = createOutstation(createServer(mgr))
+      val master = createMaster(createClient(mgr))
+      outstation.shutdown()
+      master.shutdown()
     }
   }
 
