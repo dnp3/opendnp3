@@ -7,5 +7,8 @@
     <Link>
       <AdditionalLibraryDirectories>$(TOOLS_HOME)\boostlib\boost_1_52_0\windows;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(BOOST_LIB);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
   </ItemDefinitionGroup>
 </Project>
