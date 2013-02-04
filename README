@@ -8,20 +8,34 @@ GNU Affero General Public License Version 3.0. Contact Automatak, LLC
 for a commercial license to these modifications.
 
 About AGPLv3
-====================
+============
 
 AGPLv3 is a copyleft license that triggers even if you are only using the library against a 3rd
 party over a network. You must either abide by the terms of the license or purchase a proprietary
 friendly license.
 
+History
+=======
+
+This is a commercial fork of the project originally located here:
+
+www.github.com/gec/dnp3
+
+The original license and copyright must be respected. Automatak, LLC has only licensed
+modifications to code under the AGPLv3.
+
 Overview
 ========
 
 OpenDNP3 is a portable, scalable, and rigorously tested implementation 
-of the DNP3 (www.dnp.org) protocol stack written in C++.  The library 
-is optimized for massively parallel front end  processor implementations
+of the DNP3 (www.dnp.org) protocol stack written in C++. The library 
+is optimized for massively parallel front end processor implementations
 and slave device simulations, although it performs very well on 
-embedded linux ARM  architectures.
+embedded linux ARM.
+
+Custom written, idiomatic bindings are available are available for the 
+Microsoft CLR family of languages (C#, VB.NET, F#, etc) and JVM-based
+languages (Java, Scala, Clojure, etc).
 
 
 Organization
@@ -44,7 +58,8 @@ Three build systems are included:
   1. GNU autotools
   2. Visual Studio 2012 SLN and PROJ files
 
-## GNU autotools ##
+GNU autotools
+=============
 
 The GNU autotools are comprised of two packages, GNU autoconf and GNU
 automake.  Libtool support is required.  Lcov support may be
