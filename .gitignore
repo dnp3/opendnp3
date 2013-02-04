@@ -39,7 +39,10 @@ clr/DNP3CLRMasterDemo/bin
 clr/DNP3CLRMasterDemo/obj
 clr/DNP3CLROutstationDemo/bin
 clr/DNP3CLROutstationDemo/obj
-
+cpp/demos/master/Debug
+cpp/demos/master/Release
+*vcxproj.user
+cpp/unittest.log
 
 
 # intellij/maven generated files
