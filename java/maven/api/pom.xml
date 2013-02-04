@@ -5,7 +5,7 @@
     <parent>
         <groupId>com.automatak.dnp3</groupId>
         <artifactId>opendnp3-parent</artifactId>
-        <version>1.1-SNAPSHOT</version>
+        <version>1.1.0-SNAPSHOT</version>
     </parent>
 
     <artifactId>opendnp3-api</artifactId>
@@ -21,7 +21,7 @@
                 <configuration>
                     <instructions>
                         <Bundle-Name>Automatak OpenDNP3 Java API</Bundle-Name>
-                        <Export-Package>com.automatak.dnp3.api.*;version="${opendnp3.version}"</Export-Package>
+                        <Export-Package>com.automatak.dnp3.*;version="${opendnp3.version}"</Export-Package>
                     </instructions>
                 </configuration>
             </plugin>
