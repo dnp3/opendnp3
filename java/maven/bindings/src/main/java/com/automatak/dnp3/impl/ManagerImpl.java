@@ -23,11 +23,7 @@ import com.automatak.dnp3.DNP3Manager;
 import com.automatak.dnp3.LogLevel;
 import com.automatak.dnp3.LogSubscriber;
 
-public class ManagerImpl implements DNP3Manager {
-
-    static {
-       System.loadLibrary("opendnp3java");
-    }
+class ManagerImpl implements DNP3Manager {
 
     private long nativePointer;
 
