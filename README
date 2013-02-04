@@ -2,17 +2,12 @@ open-dnp3
 Copyright (c) 2010, 2011 Green Energy Corp.
 Copyright (c) 2013 Automatak LLC
 
-Licensed under the terms of the Apache Public License
-v2.0.  Modifications made by Automatak, LLC are licensed under the terms
-GNU Affero General Public License Version 3.0. Contact Automatak, LLC
-for a commercial license to these modifications.
+Licensed under the terms of the Apache Public License v2.0.  Modifications made by Automatak, LLC are licensed under the terms GNU Affero General Public License Version 3.0. Contact Automatak, LLC for a commercial license to these modifications.
 
 About AGPLv3
 ============
 
-AGPLv3 is a copyleft license that triggers even if you are only using the library against a 3rd
-party over a network. You must either abide by the terms of the license or purchase a proprietary
-friendly license.
+AGPLv3 is a copyleft license that triggers even if you are only using the library against a 3rd party over a network. You must either abide by the terms of the license or purchase a proprietary friendly license.
 
 History
 =======
@@ -21,8 +16,7 @@ This is a commercial fork of the project originally located here:
 
 www.github.com/gec/dnp3
 
-The original license and copyright must be respected. Automatak, LLC has only licensed
-modifications to code under the AGPLv3.
+The original license and copyright must be respected. Automatak, LLC has only licensed modifications to code under the AGPLv3.
 
 Overview
 ========
@@ -33,24 +27,24 @@ is optimized for massively parallel front end processor implementations
 and slave device simulations, although it performs very well on 
 embedded linux ARM.
 
-Custom written, idiomatic bindings are available are available for the 
+Custom written, idiomatic bindings are available for the 
 Microsoft CLR family of languages (C#, VB.NET, F#, etc) and JVM-based
 languages (Java, Scala, Clojure, etc).
 
 
 Organization
-============
+==========
 
 The repository is organized by language:
 
-  cpp		core C++ opendnp3 library
+  /cpp		core C++ opendnp3 library, tests, and examples
 	
-  java		jni bindings for Java
+  /java		jni bindings for Java
 
-  clr		Microsoft CLR wrappers
+  /clr		        Microsoft CLR wrappers
 
 Building and Installing
-=======================
+=================
 
 The OpenDNP3 library has been verified under linux, cygwin, and windows.
 Three build systems are included:
@@ -59,18 +53,16 @@ Three build systems are included:
   2. Visual Studio 2012 SLN and PROJ files
 
 GNU autotools
-=============
+============
 
 The GNU autotools are comprised of two packages, GNU autoconf and GNU
-automake.  Libtool support is required.  Lcov support may be
-required if you choose to build those options.
+automake.  Libtool support is required.  Lcov support may be required if you choose to build those options.
 
 Requirements:
 
   - boost v1.52 or later            (required) 
     * boost::system                 (required) 
     * Boost Unit Test Framework     (required)
-  - docbook v0.6.14 or later        (required if 'make docs')
   - lcov                            (required if 'make lcov')
   - libtool                         (required)
   - Java JDK with JNI support       (required if 'configure --with-java=javac')
