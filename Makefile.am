@@ -173,7 +173,7 @@ pkginclude_HEADERS = \
 	cpp/src/opendnp3/ITransactable.h \
 	cpp/src/opendnp3/IVtoEndpoint.h \
 	cpp/src/opendnp3/LinkLayerConstants.h \
-	cpp/src/opendnp3/LinkConfig.h \		
+	cpp/src/opendnp3/LinkConfig.h \
 	cpp/src/opendnp3/LogBase.h \
 	cpp/src/opendnp3/LogEntry.h \
 	cpp/src/opendnp3/Logger.h \
