@@ -66,4 +66,7 @@ public class DNP3ManagerFactory {
         return createManager(Runtime.getRuntime().availableProcessors());
     }
 
+    private DNP3ManagerFactory()
+    {}
+
 }
