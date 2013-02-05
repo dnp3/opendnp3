@@ -79,7 +79,7 @@ namespace DotNetMasterDemo
     {
         static void Main(string[] args)
         {
-            var mgr = new DNP3Manager(1);
+            var mgr = new DNP3Manager(Environment.ProcessorCount);            
             mgr.AddLogHandler(new PrintingLogAdapter()); //this is optional
             var channel = mgr.AddTCPClient("client", FilterLevel.LEV_INFO, 5000, "127.0.0.1", 20000);
             var config = new MasterStackConfig();
