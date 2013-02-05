@@ -38,7 +38,7 @@ namespace DNP3
 namespace Adapter
 {
 
-	DNP3Manager::DNP3Manager(System::UInt32 aConcurrency) :
+	DNP3Manager::DNP3Manager(System::Int32 aConcurrency) :
 		pMgr(new opendnp3::DNP3Manager(aConcurrency))
 	{
 		

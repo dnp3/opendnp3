@@ -43,7 +43,7 @@ namespace Adapter
 	public ref class DNP3Manager
 	{
 		public:
-			DNP3Manager(System::UInt32 aConcurrency);
+			DNP3Manager(System::Int32 aConcurrency);
 			~DNP3Manager();
 			
 			IChannel^ AddTCPClient(System::String^ name, FilterLevel level, System::UInt64 retryMs, System::String^ address, System::UInt16 port);					
