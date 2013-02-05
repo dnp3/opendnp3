@@ -46,11 +46,11 @@ namespace Adapter
 			DNP3Manager(System::Int32 aConcurrency);
 			~DNP3Manager();
 			
-			IChannel^ AddTCPClient(System::String^ name, FilterLevel level, System::UInt64 retryMs, System::String^ address, System::UInt16 port);					
-			IChannel^ AddTCPServer(System::String^ name, FilterLevel level, System::UInt64 retryMs, System::String^ endpoint, System::UInt16 port);
-			IChannel^ AddSerial(System::String^ name, FilterLevel level, System::UInt64 retryMs, SerialSettings^ settings);
+			IChannel^ AddTCPClient(System::String^ name, LogLevel level, System::UInt64 retryMs, System::String^ address, System::UInt16 port);					
+			IChannel^ AddTCPServer(System::String^ name, LogLevel level, System::UInt64 retryMs, System::String^ endpoint, System::UInt16 port);
+			IChannel^ AddSerial(System::String^ name, LogLevel level, System::UInt64 retryMs, SerialSettings^ settings);
 
-			void AddLogHandler(ILogHandler^ logHandler);
+			void AddLogHandler(ILogHandler^ logHandler);			
 			
 		private:
 			opendnp3::DNP3Manager* pMgr;

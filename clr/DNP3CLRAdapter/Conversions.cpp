@@ -31,6 +31,10 @@
 
 using namespace DNP3::Interface;
 
+#ifdef ERROR
+#undef ERROR
+#endif
+
 namespace DNP3
 {	
 namespace Adapter
@@ -51,49 +55,49 @@ namespace Adapter
 		return gcnew System::String(s.c_str());
 	}
 
-	opendnp3::FilterLevel Conversions::convertFilterLevel(FilterLevel level)
+	opendnp3::FilterLevel Conversions::convertFilterLevel(LogLevel level)
 	{
 		switch(level)
 		{
-			case (FilterLevel::LEV_EVENT):
+			case (LogLevel::EVENT):
 				return opendnp3::LEV_EVENT;
-			case (FilterLevel::LEV_ERROR):
+			case (LogLevel::ERROR):
 				return opendnp3::LEV_ERROR;
-			case (FilterLevel::LEV_WARNING):
+			case (LogLevel::WARNING):
 				return opendnp3::LEV_WARNING;
-			case (FilterLevel::LEV_INFO):
+			case (LogLevel::INFO):
 				return opendnp3::LEV_INFO;
-			case (FilterLevel::LEV_INTERPRET):
+			case (LogLevel::INTERPRET):
 				return opendnp3::LEV_INTERPRET;
-			case (FilterLevel::LEV_COMM):
+			case (LogLevel::COMM):
 				return opendnp3::LEV_COMM;
-			case (FilterLevel::LEV_DEBUG):
+			case (LogLevel::DEBUG):
 				return opendnp3::LEV_DEBUG;
 			default:
 				return opendnp3::LEV_DEBUG;
 		}
 	}
 
-	FilterLevel Conversions::convertFilterLevel(opendnp3::FilterLevel level)
+	LogLevel Conversions::convertFilterLevel(opendnp3::FilterLevel level)
 	{
 		switch(level)
 		{
 			case (opendnp3::LEV_EVENT):
-				return FilterLevel::LEV_EVENT;
+				return LogLevel::EVENT;
 			case (opendnp3::LEV_ERROR):
-				return FilterLevel::LEV_ERROR;
+				return LogLevel::ERROR;
 			case (opendnp3::LEV_WARNING):
-				return FilterLevel::LEV_WARNING;
+				return LogLevel::WARNING;
 			case (opendnp3::LEV_INFO):
-				return FilterLevel::LEV_INFO;
+				return LogLevel::INFO;
 			case (opendnp3::LEV_INTERPRET):
-				return FilterLevel::LEV_INTERPRET;
+				return LogLevel::INTERPRET;
 			case (opendnp3::LEV_COMM):
-				return FilterLevel::LEV_COMM;
+				return LogLevel::COMM;
 			case (opendnp3::LEV_DEBUG):
-				return FilterLevel::LEV_DEBUG;
+				return LogLevel::DEBUG;
 			default:
-				return FilterLevel::LEV_DEBUG;
+				return LogLevel::DEBUG;
 		}
 	}
 

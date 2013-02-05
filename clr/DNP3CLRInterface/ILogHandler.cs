@@ -35,7 +35,7 @@ namespace DNP3.Interface
 {
     public class LogEntry
     {
-        public LogEntry(FilterLevel filterLevel, String loggerName, String location, string message, DateTime time, int errorCode)
+        public LogEntry(LogLevel filterLevel, String loggerName, String location, string message, DateTime time, int errorCode)
         {
             this.filterLevel = filterLevel;
             this.loggerName = loggerName;
@@ -46,7 +46,7 @@ namespace DNP3.Interface
             this.keyValues = new Dictionary<string,string>();
         }
 
-        public readonly FilterLevel filterLevel;
+        public readonly LogLevel filterLevel;
 	    public readonly String loggerName;
 	    public readonly String location;
 	    public readonly String message;

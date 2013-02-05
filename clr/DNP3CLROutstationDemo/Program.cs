@@ -121,9 +121,9 @@ namespace DotNetSlaveDemo
         {
             var mgr = new DNP3Manager(1);
             mgr.AddLogHandler(new PrintingLogAdapter()); //this is optional
-            var channel = mgr.AddTCPServer("server", FilterLevel.LEV_INFO, 5000, "127.0.0.1", 20000);
+            var channel = mgr.AddTCPServer("server", LogLevel.INFO, 5000, "127.0.0.1", 20000);
             var config = new SlaveStackConfig();
-            var outstation = channel.AddOutstation("outstation", FilterLevel.LEV_INFO, new RejectingCommandHandler(), config);
+            var outstation = channel.AddOutstation("outstation", LogLevel.INFO, new RejectingCommandHandler(), config);
             var publisher = outstation.GetDataObserver();
 
             Console.WriteLine("Press <Enter> to randomly change a value");

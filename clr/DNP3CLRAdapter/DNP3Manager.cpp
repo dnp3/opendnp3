@@ -47,9 +47,9 @@ namespace Adapter
 	DNP3Manager::~DNP3Manager()
 	{
 		delete pMgr;
-	}
+	}	
 
-	IChannel^ DNP3Manager::AddTCPClient(System::String^ name, FilterLevel level, System::UInt64 retryMs, System::String^ address, System::UInt16 port)
+	IChannel^ DNP3Manager::AddTCPClient(System::String^ name, LogLevel level, System::UInt64 retryMs, System::String^ address, System::UInt16 port)
 	{
 		
 		std::string stdName = Conversions::convertString(name);
@@ -66,7 +66,7 @@ namespace Adapter
 		}
 	}
 
-	IChannel^ DNP3Manager::AddTCPServer(System::String^ name, FilterLevel level, System::UInt64 retryMs, System::String^ endpoint, System::UInt16 port)
+	IChannel^ DNP3Manager::AddTCPServer(System::String^ name, LogLevel level, System::UInt64 retryMs, System::String^ endpoint, System::UInt16 port)
 	{
 		std::string stdName = Conversions::convertString(name);
 		std::string stdEndpoint = Conversions::convertString(endpoint);		
@@ -82,7 +82,7 @@ namespace Adapter
 		}
 	}
 
-	IChannel^ DNP3Manager::AddSerial(System::String^ name, FilterLevel level, System::UInt64 retryMs, SerialSettings^ settings)
+	IChannel^ DNP3Manager::AddSerial(System::String^ name, LogLevel level, System::UInt64 retryMs, SerialSettings^ settings)
 	{
 		std::string stdName = Conversions::convertString(name);
 		auto lev = Conversions::convertFilterLevel(level);		

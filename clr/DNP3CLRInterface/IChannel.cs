@@ -8,9 +8,9 @@ namespace DNP3.Interface
 {
     public interface IChannel
     {      		
-		IMaster AddMaster(String loggerId, FilterLevel level, IDataObserver publisher, MasterStackConfig config);
+		IMaster AddMaster(String loggerId, LogLevel level, IDataObserver publisher, MasterStackConfig config);
 
-		IOutstation AddOutstation(String loggerId, FilterLevel level, ICommandHandler cmdHandler, SlaveStackConfig config);
+		IOutstation AddOutstation(String loggerId, LogLevel level, ICommandHandler cmdHandler, SlaveStackConfig config);
 
         void Shutdown();
     }

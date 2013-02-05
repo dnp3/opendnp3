@@ -81,10 +81,10 @@ namespace DotNetMasterDemo
         {
             var mgr = new DNP3Manager(Environment.ProcessorCount);            
             mgr.AddLogHandler(new PrintingLogAdapter()); //this is optional
-            var channel = mgr.AddTCPClient("client", FilterLevel.LEV_INFO, 5000, "127.0.0.1", 20000);
+            var channel = mgr.AddTCPClient("client", LogLevel.INFO, 5000, "127.0.0.1", 20000);
             var config = new MasterStackConfig();
             config.link.useConfirms = true; //setup your stack configuration here.
-            var master = channel.AddMaster("master", FilterLevel.LEV_INFO, new PrintingDataObserver(), config);
+            var master = channel.AddMaster("master", LogLevel.INFO, new PrintingDataObserver(), config);
 
             Console.WriteLine("Enter an index to send a command");
 

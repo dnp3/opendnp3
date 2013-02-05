@@ -58,8 +58,8 @@ namespace Adapter
 		static System::String^ convertString(const std::string& s);
 
 		// Convert the log filter enumeration
-		static opendnp3::FilterLevel convertFilterLevel(FilterLevel level);
-		static FilterLevel convertFilterLevel(opendnp3::FilterLevel level);
+		static opendnp3::FilterLevel convertFilterLevel(LogLevel level);
+		static LogLevel convertFilterLevel(opendnp3::FilterLevel level);
 
 		// Convert the command status enumeration
 		static CommandStatus convertCommandStatus(opendnp3::CommandStatus status);

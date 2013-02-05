@@ -44,7 +44,7 @@ ChannelAdapter::ChannelAdapter(opendnp3::IChannel* apChannel) :
 	mpChannel(apChannel)
 {}
 
-IMaster^ ChannelAdapter::AddMaster(System::String^ loggerId, FilterLevel level, IDataObserver^ publisher, MasterStackConfig^ config)
+IMaster^ ChannelAdapter::AddMaster(System::String^ loggerId, LogLevel level, IDataObserver^ publisher, MasterStackConfig^ config)
 {
 	std::string stdLoggerId = Conversions::convertString(loggerId);	
 	opendnp3::FilterLevel stdLevel = Conversions::convertFilterLevel(level);
@@ -61,7 +61,7 @@ IMaster^ ChannelAdapter::AddMaster(System::String^ loggerId, FilterLevel level, 
 	}
 }
 
-IOutstation^ ChannelAdapter::AddOutstation(System::String^ loggerId, FilterLevel level, ICommandHandler^ cmdHandler, SlaveStackConfig^ config)
+IOutstation^ ChannelAdapter::AddOutstation(System::String^ loggerId, LogLevel level, ICommandHandler^ cmdHandler, SlaveStackConfig^ config)
 {	
 	std::string stdLoggerId = Conversions::convertString(loggerId);
 	opendnp3::FilterLevel stdLevel = Conversions::convertFilterLevel(level);

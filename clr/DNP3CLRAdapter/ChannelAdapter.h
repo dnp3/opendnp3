@@ -46,9 +46,9 @@ namespace Adapter
 
 		ChannelAdapter(opendnp3::IChannel* apChannel);
 
-		virtual IMaster^ AddMaster(System::String^ loggerId, FilterLevel level, IDataObserver^ publisher, MasterStackConfig^ config);
+		virtual IMaster^ AddMaster(System::String^ loggerId, LogLevel level, IDataObserver^ publisher, MasterStackConfig^ config);
 
-		virtual IOutstation^ AddOutstation(System::String^ loggerId, FilterLevel level, ICommandHandler^ cmdHandler, SlaveStackConfig^ config);
+		virtual IOutstation^ AddOutstation(System::String^ loggerId, LogLevel level, ICommandHandler^ cmdHandler, SlaveStackConfig^ config);
 
 		virtual void Shutdown();
 		
