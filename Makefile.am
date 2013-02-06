@@ -282,8 +282,6 @@ dnp3test_SOURCES = \
 	cpp/tests/TestTypes.cpp \
 	cpp/tests/TestUtil.cpp \
 	cpp/tests/TestVtoInterface.cpp \
-	cpp/tests/TestVtoLoopbackIntegration.cpp \
-	cpp/tests/TestVtoOnewayIntegration.cpp \
 	cpp/tests/TestVtoRouter.cpp \
 	cpp/tests/TestVtoWriter.cpp \
 	cpp/tests/Timeout.cpp \
