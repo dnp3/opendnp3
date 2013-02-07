@@ -58,6 +58,11 @@ public class LinkLayerConfig {
      */
     public long timeoutMs = 1000;
 
+    private LinkLayerConfig()
+    {
+
+    }
+
     /**
      * Constructor that sets reasonable defaults. Override after construction
      * @param isMaster True if the link layer is for a master, false for an outstation

@@ -39,10 +39,10 @@ class ChannelImpl implements Channel {
     }
 
     @Override
-    public Outstation addOutstation(String loggerId, LogLevel level, CommandHandler cmdHandler)//, OutstationStackConfig config);
+    public Outstation addOutstation(String loggerId, LogLevel level, CommandHandler cmdHandler, OutstationStackConfig config)
     {
         CommandHandlerAdapter adapter = new CommandHandlerAdapter(cmdHandler);
-        long ptr = get_native_slave(nativeChannel, loggerId, level, adapter);
+        long ptr = get_native_slave(nativeChannel, loggerId, level, adapter, config);
         return new OutstationImpl(ptr);
     }
 
@@ -55,7 +55,7 @@ class ChannelImpl implements Channel {
     public native void shutdown_native(long ptrChannel);
 
     private native long get_native_master(long ptrChannel, String loggerId, LogLevel level, DataObserverAdapter publisher, MasterStackConfig config);
-    private native long get_native_slave(long ptrChannel, String loggerId, LogLevel level, CommandHandlerAdapter handler);
+    private native long get_native_slave(long ptrChannel, String loggerId, LogLevel level, CommandHandlerAdapter handler, OutstationStackConfig config);
 
 
 }

@@ -34,6 +34,7 @@ public interface Channel {
      * @param loggerId name of the logger that will be assigned to this stack
      * @param level LogLevel assigned to the logger
      * @param publisher Where measurements will be sent as they are received from the outstation
+     * @param config configuration information for the master stack
      * @return reference to the created master
      */
     Master addMaster(String loggerId, LogLevel level, DataObserver publisher, MasterStackConfig config);
@@ -43,7 +44,8 @@ public interface Channel {
      * @param loggerId name of the logger that will be assigned to this stack
      * @param level LogLevel assigned to the logger
      * @param cmdHandler where command requests are sent to be handled in application code
+     * @param config configuration information for the outstation stack
      * @return reference to the created master
      */
-    Outstation addOutstation(String loggerId, LogLevel level, CommandHandler cmdHandler);//, OutstationStackConfig config);
+    Outstation addOutstation(String loggerId, LogLevel level, CommandHandler cmdHandler, OutstationStackConfig config);
 }
