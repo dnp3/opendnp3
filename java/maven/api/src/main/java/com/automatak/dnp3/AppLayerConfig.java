@@ -27,17 +27,17 @@ public class AppLayerConfig {
     /**
      * Response/confirm timeout in milliseconds
      */
-    public long rspTimeoutMs;
+    public long rspTimeoutMs  = 5000;
 
     /**
      *  Number of retries performed for allowed frames. Frame like Select/Operate/etc are not retried
      */
-    public int numRetry;
+    public int numRetry = 0;
 
     /**
      * Maximum parsable fragment size of received APDU. Typically the default of 2048 is OK.
      */
-    public int maxFragSize;
+    public int maxFragSize = 2048;
 
 
     /**
@@ -45,9 +45,7 @@ public class AppLayerConfig {
      */
     public AppLayerConfig()
     {
-      this.rspTimeoutMs = 5000;
-      this.numRetry = 0;
-      this.maxFragSize = 2048;
+
     }
 
 }

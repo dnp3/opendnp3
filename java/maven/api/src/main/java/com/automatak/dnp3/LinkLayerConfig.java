@@ -26,7 +26,7 @@ public class LinkLayerConfig {
     /**
      * Controls the master/slave bit set on all messages
      */
-    boolean isMaster;
+    public boolean isMaster;
 
     /**
      * If true, the link layer will send data requesting confirmation. This is generally NEVER
@@ -34,29 +34,29 @@ public class LinkLayerConfig {
      *
      * defaults to false
      */
-    boolean useConfirms;
+    public boolean useConfirms = false;
 
     /**
      * The number of retry attempts the link will attempt after the initial try if using confirms
      *
      * defaults to 0
      */
-    int numRetry;
+    public int numRetry = 0;
 
     /**
      * dnp3 address of the local device as a 16-bit unsigned integer
      */
-    int localAddr;
+    public int localAddr;
 
     /**
      * dnp3 address of the remote device as a 16-bit unsigned integer
      */
-    int remoteAddr;
+    public int remoteAddr;
 
     /**
      * the response timeout in milliseconds for confirmed requests
      */
-    long timeoutMs;
+    public long timeoutMs = 1000;
 
     /**
      * Constructor that sets reasonable defaults. Override after construction
@@ -65,11 +65,8 @@ public class LinkLayerConfig {
     public LinkLayerConfig(boolean isMaster)
     {
         this.isMaster = isMaster;
-        this.useConfirms = false;
-        this .numRetry = 0;
         this.localAddr = isMaster ? 1 : 1024;
         this.remoteAddr = isMaster ? 1024: 1;
-        this.timeoutMs = 1000;
     }
 
 }

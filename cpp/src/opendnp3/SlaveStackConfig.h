@@ -47,7 +47,7 @@ struct SlaveStackConfig {
 	{}
 
 	SlaveConfig slave;		// Slave config
-	DeviceTemplate device;	// Device template that specifies database layout, control behavior
+	DeviceTemplate device;		// Device template that specifies database layout
 	AppConfig app;			// Application layer config
 	LinkConfig link;		// Link layer config
 	VtoConfig vto;

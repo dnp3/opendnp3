@@ -45,5 +45,5 @@ public interface Channel {
      * @param cmdHandler where command requests are sent to be handled in application code
      * @return reference to the created master
      */
-    Outstation addOutstation(String loggerId, LogLevel level, CommandHandler cmdHandler);//, SlaveStackConfig config);
+    Outstation addOutstation(String loggerId, LogLevel level, CommandHandler cmdHandler);//, OutstationStackConfig config);
 }

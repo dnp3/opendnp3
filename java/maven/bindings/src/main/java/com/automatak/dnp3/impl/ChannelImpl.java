@@ -39,7 +39,7 @@ class ChannelImpl implements Channel {
     }
 
     @Override
-    public Outstation addOutstation(String loggerId, LogLevel level, CommandHandler cmdHandler)//, SlaveStackConfig config);
+    public Outstation addOutstation(String loggerId, LogLevel level, CommandHandler cmdHandler)//, OutstationStackConfig config);
     {
         CommandHandlerAdapter adapter = new CommandHandlerAdapter(cmdHandler);
         long ptr = get_native_slave(nativeChannel, loggerId, level, adapter);
