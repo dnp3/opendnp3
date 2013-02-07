@@ -30,13 +30,15 @@ class ChannelImpl implements Channel {
         this.nativeChannel = nativeChannel;
     }
 
+    @Override
     public Master addMaster(String loggerId, LogLevel level, DataObserver publisher, MasterStackConfig config)
     {
         DataObserverAdapter adapter = new DataObserverAdapter(publisher);
-        long ptr = get_native_master(nativeChannel, loggerId, level, adapter);
+        long ptr = get_native_master(nativeChannel, loggerId, level, adapter, config);
         return new MasterImpl(ptr);
     }
 
+    @Override
     public Outstation addOutstation(String loggerId, LogLevel level, CommandHandler cmdHandler)//, SlaveStackConfig config);
     {
         CommandHandlerAdapter adapter = new CommandHandlerAdapter(cmdHandler);
@@ -44,6 +46,7 @@ class ChannelImpl implements Channel {
         return new OutstationImpl(ptr);
     }
 
+    @Override
     public void shutdown()
     {
         shutdown_native(nativeChannel);
@@ -51,8 +54,7 @@ class ChannelImpl implements Channel {
 
     public native void shutdown_native(long ptrChannel);
 
-
-    private native long get_native_master(long ptrChannel, String loggerId, LogLevel level, DataObserverAdapter publisher);
+    private native long get_native_master(long ptrChannel, String loggerId, LogLevel level, DataObserverAdapter publisher, MasterStackConfig config);
     private native long get_native_slave(long ptrChannel, String loggerId, LogLevel level, CommandHandlerAdapter handler);
 
 

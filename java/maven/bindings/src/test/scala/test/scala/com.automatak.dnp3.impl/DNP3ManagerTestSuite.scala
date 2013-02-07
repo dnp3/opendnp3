@@ -34,7 +34,7 @@ class DNP3ManagerTestSuite extends FunSuite with ShouldMatchers {
 
   def createClient(mgr: DNP3Manager): Channel = mgr.addTCPClient("client", LogLevel.INFO, 3000, "127.0.0.1", 20000)
   def createServer(mgr: DNP3Manager): Channel = mgr.addTCPServer("server", LogLevel.INFO, 3000, "127.0.0.1", 20000)
-  def createMaster(channel: Channel) : Master = channel.addMaster("master", LogLevel.INFO, NullDataObserver)
+  def createMaster(channel: Channel) : Master = channel.addMaster("master", LogLevel.INFO, NullDataObserver, new MasterStackConfig())
   def createOutstation(channel: Channel): Outstation = channel.addOutstation("outstation", LogLevel.INFO, SuccessCommandHandler)
 
 
