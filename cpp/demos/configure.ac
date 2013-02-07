@@ -11,7 +11,7 @@ AX_CXX_COMPILE_STDCXX_11([ext]) #require support for C++11
 
 AC_CHECK_LIB(pthread, pthread_create)
 
-AX_BOOST_BASE([1.52.0]  ,, [AX_BOOST_BASE([1.50.0])])
+AX_BOOST_BASE([1.50.0]  ,, [AC_MSG_ERROR(You must install boost >= 1.50.0)])
 AX_BOOST_SYSTEM
 AX_BOOST_ASIO
 AX_BOOST_UNIT_TEST_FRAMEWORK
