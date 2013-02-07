@@ -111,6 +111,7 @@ libopendnp3_la_SOURCES = \
 	cpp/src/opendnp3/ResponseContext.cpp \
 	cpp/src/opendnp3/ResponseLoader.cpp \
 	cpp/src/opendnp3/SecLinkLayerStates.cpp \
+	cpp/src/opendnp3/SerialTypes.cpp \
 	cpp/src/opendnp3/ShiftableBuffer.cpp \
 	cpp/src/opendnp3/SimpleCommandHandler.cpp \
 	cpp/src/opendnp3/SimpleDataObserver.cpp \

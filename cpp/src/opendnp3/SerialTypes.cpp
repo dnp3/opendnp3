@@ -26,39 +26,34 @@
 //
 // Contact Automatak, LLC for a commercial license to these modifications
 //
-#ifndef __SERIAL_TYPES_H_
-#define __SERIAL_TYPES_H_
 
-#include <string>
+#include "SerialTypes.h"
 
 namespace opendnp3
 {
 
-enum ParityType {
-	PAR_NONE = 0,
-	PAR_EVEN = 1,
-	PAR_ODD = 2
-};
 
-enum FlowType {
-	FLOW_NONE = 0,
-	FLOW_HARDWARE = 1,
-	FLOW_XONXOFF = 2
-};
+ParityType GetParityFromInt(int parity)
+{
+	switch(parity)
+	{
+		case (1): return PAR_EVEN;
+		case (2): return PAR_ODD;
+		default: return PAR_NONE;
+	}
+}
 
-ParityType GetParityFromInt(int parity);
-FlowType GetFlowTypeFromInt(int parity);
-
-struct SerialSettings {
-	std::string mDevice;
-	int mBaud;
-	int mDataBits;
-	int mStopBits;
-	ParityType mParity;
-	FlowType mFlowType;
-};
+FlowType GetFlowTypeFromInt(int flowControl)
+{
+	switch(flowControl)
+	{
+		case (1): return FLOW_HARDWARE;
+		case (2): return FLOW_XONXOFF;
+		default: return FLOW_NONE;
+	}	
+}
 
 }
 
-#endif
+
 

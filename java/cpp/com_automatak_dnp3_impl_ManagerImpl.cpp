@@ -64,6 +64,22 @@ JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1ch
 	return (jlong) pMgr->AddTCPServer(loggerId, LEV_INFO, timeoutMs, endpoint, port);
 }
 
+JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1channel_1serial
+  (JNIEnv * pEnv, jobject, jlong ptrManager, jstring jloggerId, jobject logLevel, jlong timeoutMs, jstring jport, jint baudRate, jint dataBits, jint parity, jint stopBits, jint flowControl)
+{
+	auto pMgr = (DNP3Manager*) ptrManager;
+	std::string loggerId = JNIHelpers::GetString(jloggerId, pEnv);
+	std::string port = JNIHelpers::GetString(jport, pEnv);
+	SerialSettings ss;
+	ss.mDevice = port;
+	ss.mBaud = baudRate;
+	ss.mDataBits = dataBits;
+	ss.mStopBits = stopBits;
+	ss.mParity = GetParityFromInt(parity);
+	ss.mFlowType = GetFlowTypeFromInt(flowControl);
+	return (jlong) pMgr->AddSerial(loggerId, LEV_INFO, timeoutMs, ss);
+}
+
 
 JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_native_1add_1log_1subscriber
   (JNIEnv* pEnv, jobject, jlong ptrManager, jobject jsubscriber)
