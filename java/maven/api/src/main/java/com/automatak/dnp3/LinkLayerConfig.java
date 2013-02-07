@@ -51,7 +51,7 @@ public class LinkLayerConfig {
     /**
      * dnp3 address of the remote device as a 16-bit unsigned integer
      */
-    long remoteAddr;
+    int remoteAddr;
 
     /**
      * the response timeout in milliseconds for confirmed requests
