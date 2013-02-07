@@ -25,6 +25,7 @@
 #include "JNIHelpers.h"
 #include "DataObserverAdapter.h"
 #include "CommandHandlerAdapter.h"
+#include "ConfigReader.h"
 
 using namespace opendnp3;
 
@@ -36,14 +37,15 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_ChannelImpl_shutdown_1native
 }
 
 JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ChannelImpl_get_1native_1master
-  (JNIEnv* pEnv, jobject, jlong ptr, jstring jloggerId, jobject jlogLevel, jobject publisher)
+  (JNIEnv* pEnv, jobject, jlong ptr, jstring jloggerId, jobject jlogLevel, jobject publisher, jobject jconfig)
 {
 	auto pChannel = (IChannel*) ptr;
 	JavaVM* pJVM = JNIHelpers::GetJVMFromEnv(pEnv);
 	jobject global = pEnv->NewGlobalRef(publisher);
 	auto pPublisher = new DataObserverAdapter(pJVM, global);
 	std::string loggerId = JNIHelpers::GetString(jloggerId, pEnv);
-	auto pMaster = pChannel->AddMaster(loggerId, LEV_INFO, pPublisher, MasterStackConfig());
+	auto config = ConfigReader::ConvertMasterStackConfig(jconfig);
+	auto pMaster = pChannel->AddMaster(loggerId, LEV_INFO, pPublisher, config);
 	pMaster->AddDestructorHook([pJVM, global]() { JNIHelpers::DeleteGlobalReference(pJVM, global); });
 	pMaster->AddDestructorHook([pPublisher](){ delete pPublisher; });
 	return (jlong) pMaster;
