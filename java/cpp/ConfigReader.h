@@ -35,7 +35,10 @@
 class ConfigReader
 {
 	public:
-		static opendnp3::MasterStackConfig ConvertMasterStackConfig(jobject jCfg);
+	static opendnp3::MasterStackConfig ConvertMasterStackConfig(JNIEnv* apEnv, jobject jCfg);
+
+	private:
+	static opendnp3::LinkConfig ConvertLinkConfig(JNIEnv* apEnv, jobject jCfg);
 };
 
 #endif

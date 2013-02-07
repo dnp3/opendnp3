@@ -44,7 +44,7 @@ JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ChannelImpl_get_1native_1ma
 	jobject global = pEnv->NewGlobalRef(publisher);
 	auto pPublisher = new DataObserverAdapter(pJVM, global);
 	std::string loggerId = JNIHelpers::GetString(jloggerId, pEnv);
-	auto config = ConfigReader::ConvertMasterStackConfig(jconfig);
+	MasterStackConfig config = ConfigReader::ConvertMasterStackConfig(pEnv, jconfig);
 	auto pMaster = pChannel->AddMaster(loggerId, LEV_INFO, pPublisher, config);
 	pMaster->AddDestructorHook([pJVM, global]() { JNIHelpers::DeleteGlobalReference(pJVM, global); });
 	pMaster->AddDestructorHook([pPublisher](){ delete pPublisher; });

@@ -30,12 +30,19 @@
 
 using namespace opendnp3;
 
-MasterStackConfig ConfigReader::ConvertMasterStackConfig(jobject jCfg)
+MasterStackConfig ConfigReader::ConvertMasterStackConfig(JNIEnv* apEnv, jobject jCfg)
 {
-	// TODO
-	return MasterStackConfig();
+	MasterStackConfig cfg;
+	
+	return cfg;
 }
 
+
+LinkConfig ConfigReader::ConvertLinkConfig(JNIEnv* apEnv, jobject jCfg)
+{
+	LinkConfig cfg(true, false);
+	return cfg;
+}
 
 
 
