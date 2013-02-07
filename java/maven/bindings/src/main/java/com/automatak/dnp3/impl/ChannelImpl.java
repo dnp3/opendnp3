@@ -30,7 +30,7 @@ class ChannelImpl implements Channel {
         this.nativeChannel = nativeChannel;
     }
 
-    public Master addMaster(String loggerId, LogLevel level, DataObserver publisher)//, MasterStackConfig config);
+    public Master addMaster(String loggerId, LogLevel level, DataObserver publisher, MasterStackConfig config)
     {
         DataObserverAdapter adapter = new DataObserverAdapter(publisher);
         long ptr = get_native_master(nativeChannel, loggerId, level, adapter);

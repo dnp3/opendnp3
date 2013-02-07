@@ -36,7 +36,7 @@ public interface Channel {
      * @param publisher Where measurements will be sent as they are received from the outstation
      * @return reference to the created master
      */
-    Master addMaster(String loggerId, LogLevel level, DataObserver publisher);//, MasterStackConfig config);
+    Master addMaster(String loggerId, LogLevel level, DataObserver publisher, MasterStackConfig config);
 
     /**
      * Adds a master station to the channel
