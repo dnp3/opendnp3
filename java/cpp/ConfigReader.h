@@ -39,6 +39,7 @@ class ConfigReader
 
 	private:
 	static opendnp3::LinkConfig ConvertLinkConfig(JNIEnv* apEnv, jobject jCfg);
+	static opendnp3::AppConfig ConvertAppConfig(JNIEnv* apEnv, jobject jCfg);
 };
 
 #endif

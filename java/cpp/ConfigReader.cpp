@@ -18,9 +18,36 @@ MasterStackConfig ConfigReader::ConvertMasterStackConfig(JNIEnv* apEnv, jobject 
 		assert(obj != nullptr);
 		cfg.link = ConvertLinkConfig(apEnv, obj);
 	}
+	{
+		jfieldID field = apEnv->GetFieldID(clazz, "appConfig", "Lcom/automatak/dnp3/AppLayerConfig;");
+		assert(field != nullptr);
+		jobject obj = apEnv->GetObjectField(jCfg, field);
+		assert(obj != nullptr);
+		cfg.app = ConvertAppConfig(apEnv, obj);
+	}
 	return cfg;
 }
 
+AppConfig ConfigReader::ConvertAppConfig(JNIEnv* apEnv, jobject jCfg)
+{
+	AppConfig cfg;
+	jclass clazz = apEnv->GetObjectClass(jCfg);
+
+	{
+		jfieldID field = apEnv->GetFieldID(clazz, "rspTimeoutMs", "J");
+		cfg.RspTimeout = apEnv->GetLongField(jCfg, field);
+	}
+	{
+		jfieldID field = apEnv->GetFieldID(clazz, "numRetry", "I");
+		cfg.NumRetry = apEnv->GetIntField(jCfg, field);
+	}
+	{
+		jfieldID field = apEnv->GetFieldID(clazz, "maxFragSize", "I");
+		cfg.FragSize = apEnv->GetIntField(jCfg, field);
+	}
+	
+	return cfg;	
+}
 
 LinkConfig ConfigReader::ConvertLinkConfig(JNIEnv* apEnv, jobject jCfg)
 {
