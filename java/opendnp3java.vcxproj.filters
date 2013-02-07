@@ -45,6 +45,9 @@
     <ClInclude Include="cpp\LogSubscriberAdapter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="cpp\ConfigReader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="cpp\com_automatak_dnp3_impl_ChannelImpl.cpp">
@@ -75,6 +78,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="cpp\LogSubscriberAdapter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\ConfigReader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

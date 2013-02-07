@@ -366,6 +366,7 @@
     <ClCompile Include="src\opendnp3\ResponseContext.cpp" />
     <ClCompile Include="src\opendnp3\ResponseLoader.cpp" />
     <ClCompile Include="src\opendnp3\SecLinkLayerStates.cpp" />
+    <ClCompile Include="src\opendnp3\SerialTypes.cpp" />
     <ClCompile Include="src\opendnp3\ShiftableBuffer.cpp" />
     <ClCompile Include="src\opendnp3\SimpleCommandHandler.cpp" />
     <ClCompile Include="src\opendnp3\SimpleDataObserver.cpp" />
