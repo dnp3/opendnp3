@@ -25,6 +25,20 @@ MasterStackConfig ConfigReader::ConvertMasterStackConfig(JNIEnv* apEnv, jobject 
 		assert(obj != nullptr);
 		cfg.app = ConvertAppConfig(apEnv, obj);
 	}
+	{
+		jfieldID field = apEnv->GetFieldID(clazz, "masterConfig", "Lcom/automatak/dnp3/MasterConfig;");
+		assert(field != nullptr);
+		jobject obj = apEnv->GetObjectField(jCfg, field);
+		assert(obj != nullptr);
+		cfg.master = ConvertMasterConfig(apEnv, obj);
+	}
+	return cfg;
+}
+
+MasterConfig ConfigReader::ConvertMasterConfig(JNIEnv* apEnv, jobject jCfg)
+{
+	MasterConfig cfg;
+
 	return cfg;
 }
 
