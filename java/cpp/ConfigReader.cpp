@@ -95,6 +95,36 @@ MasterConfig ConfigReader::ConvertMasterConfig(JNIEnv* apEnv, jobject jCfg)
 		cfg.TaskRetryRate = apEnv->GetLongField(jCfg, field);
 	}
 
+	{
+		jfieldID field = apEnv->GetFieldID(clazz, "scans", "Ljava/util/List;");
+		assert(field != nullptr);
+		jobject list = apEnv->GetObjectField(jCfg, field);
+		assert(list != nullptr);
+		jclass clazz = apEnv->GetObjectClass(list);
+		assert(clazz != nullptr);
+		jmethodID sizeMID = apEnv->GetMethodID(clazz, "size", "()I");
+		jint size = apEnv->CallIntMethod(list, sizeMID);
+
+		jmethodID getMID = apEnv->GetMethodID(clazz, "get", "(I)Ljava/lang/Object;");
+		assert(getMID != nullptr);
+
+		for(jint i=0; i< size; ++i)
+		{			\
+			jobject scan = apEnv->CallObjectMethod(list, getMID); 
+			assert(scan != nullptr);
+			jclass exScanClass = apEnv->GetObjectClass(scan);
+			assert(exScanClass != nullptr);
+			jfieldID fieldMask = apEnv->GetFieldID(exScanClass, "classMask", "I");
+			assert(fieldMask != nullptr);
+			jfieldID fieldScanRateMs = apEnv->GetFieldID(exScanClass, "scanRateMs", "J");
+			assert(fieldScanRateMs != nullptr);
+
+			jint classMask = apEnv->GetIntField(scan, fieldMask);
+			jlong scanRateMs = apEnv->GetIntField(scan, fieldMask);
+
+			cfg.AddExceptionScan(classMask, scanRateMs);
+		}
+	}
 
 
 	return cfg;

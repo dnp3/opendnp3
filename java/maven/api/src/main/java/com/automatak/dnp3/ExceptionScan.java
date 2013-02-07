@@ -33,4 +33,13 @@ class ExceptionScan
             this.classMask = PointClass.ALL_EVENTS.toInt();
             this.scanRateMs = 5000;
         }
+
+        /**
+         * Constructor that sets all values
+         */
+        public ExceptionScan(int classMask, long scanRateMs)
+        {
+            this.classMask = classMask;
+            this.scanRateMs = scanRateMs;
+        }
 }
