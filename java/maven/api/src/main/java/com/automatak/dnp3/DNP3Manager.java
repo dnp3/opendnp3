@@ -50,6 +50,17 @@ public interface DNP3Manager {
     Channel addTCPServer(String id, LogLevel level, long retryMs, String endpoint, int port);
 
     /**
+     * Add a serial communication channel. The channel does not try to open the port until a add a stack
+     * @param id An id used for logging purposes
+     * @param level The starting level for logging output
+     * @param retryMs  The number of milliseconds in between open attempts (in the case of an open failure)
+     * @param settings Settings class that specifies and configures the port
+     * @return A channel interface
+     */
+    Channel addSerial(String id, LogLevel level, long retryMs, SerialSettings settings);
+
+
+    /**
      * Subscribe to all log messages
      * @param sub An interface with which to listen
      */

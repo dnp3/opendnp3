@@ -18,10 +18,7 @@
  */
 package com.automatak.dnp3.impl;
 
-import com.automatak.dnp3.Channel;
-import com.automatak.dnp3.DNP3Manager;
-import com.automatak.dnp3.LogLevel;
-import com.automatak.dnp3.LogSubscriber;
+import com.automatak.dnp3.*;
 
 class ManagerImpl implements DNP3Manager {
 
@@ -49,6 +46,23 @@ class ManagerImpl implements DNP3Manager {
         return new ChannelImpl(ptr);
     }
 
+    public Channel addSerial(String id, LogLevel level, long retryMs, SerialSettings settings)
+    {
+         long ptr = get_native_channel_serial(
+                 nativePointer,
+                 id,
+                 level,
+                 retryMs,
+                 settings.port,
+                 settings.baudRate,
+                 settings.dataBits,
+                 settings.parity.toInt(),
+                 settings.stopBits,
+                 settings.flowControl.toInt()
+         );
+        return new ChannelImpl(ptr);
+    }
+
     public void shutdown()
     {
         if(nativePointer != 0) {
@@ -62,6 +76,8 @@ class ManagerImpl implements DNP3Manager {
 
     private native long get_native_channel_tcp_client(long ptrManager, String name, LogLevel level, long retryMs, String address, int port);
     private native long get_native_channel_tcp_server(long ptrManager, String name, LogLevel level, long retryMs, String endpoint, int port);
+    private native long get_native_channel_serial(long ptrManager, String name, LogLevel level, long retryMs, String port, int baudRate, int dataBits, int parity, int stopBits, int flowControl);
+
     private native void native_add_log_subscriber(long ptrManager, LogSubscriber sub);
 
 }
