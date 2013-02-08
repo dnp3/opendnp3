@@ -26,26 +26,26 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_destroy_1native_
 /*
  * Class:     com_automatak_dnp3_impl_ManagerImpl
  * Method:    get_native_channel_tcp_client
- * Signature: (JLjava/lang/String;Lcom/automatak/dnp3/LogLevel;JLjava/lang/String;I)J
+ * Signature: (JLjava/lang/String;IJLjava/lang/String;I)J
  */
 JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1channel_1tcp_1client
-  (JNIEnv *, jobject, jlong, jstring, jobject, jlong, jstring, jint);
+  (JNIEnv *, jobject, jlong, jstring, jint, jlong, jstring, jint);
 
 /*
  * Class:     com_automatak_dnp3_impl_ManagerImpl
  * Method:    get_native_channel_tcp_server
- * Signature: (JLjava/lang/String;Lcom/automatak/dnp3/LogLevel;JLjava/lang/String;I)J
+ * Signature: (JLjava/lang/String;IJLjava/lang/String;I)J
  */
 JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1channel_1tcp_1server
-  (JNIEnv *, jobject, jlong, jstring, jobject, jlong, jstring, jint);
+  (JNIEnv *, jobject, jlong, jstring, jint, jlong, jstring, jint);
 
 /*
  * Class:     com_automatak_dnp3_impl_ManagerImpl
  * Method:    get_native_channel_serial
- * Signature: (JLjava/lang/String;Lcom/automatak/dnp3/LogLevel;JLjava/lang/String;IIIII)J
+ * Signature: (JLjava/lang/String;IJLjava/lang/String;IIIII)J
  */
 JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1channel_1serial
-  (JNIEnv *, jobject, jlong, jstring, jobject, jlong, jstring, jint, jint, jint, jint, jint);
+  (JNIEnv *, jobject, jlong, jstring, jint, jlong, jstring, jint, jint, jint, jint, jint);
 
 /*
  * Class:     com_automatak_dnp3_impl_ManagerImpl

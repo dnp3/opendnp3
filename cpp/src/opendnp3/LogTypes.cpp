@@ -52,6 +52,20 @@ int LogTypes::FilterLevelToMask(FilterLevel aFilter)
 	return aFilter | (aFilter - 1);
 }
 
+FilterLevel LogTypes::ConvertIntToFilterLevel(int aLevel)
+{
+	switch(aLevel) {
+		case(LEV_DEBUG): return LEV_DEBUG;
+		case(LEV_COMM): return LEV_COMM;
+		case(LEV_INTERPRET): return LEV_INTERPRET;
+		case(LEV_INFO): return LEV_INFO;
+		case(LEV_WARNING):return LEV_WARNING;
+		case(LEV_ERROR): return LEV_ERROR;
+		case(LEV_EVENT): return LEV_EVENT;
+		default: return LEV_DEBUG;
+	}
+}
+
 int LogTypes::GetFilterMask(char c)
 {
 	switch(c) {

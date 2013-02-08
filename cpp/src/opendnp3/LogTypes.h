@@ -58,16 +58,18 @@ public:
 	static const size_t NUM_FILTER = 7;
 	static const FilterAssoc filters[NUM_FILTER];
 
-// Mask for all of the values
+	// Mask for all of the values
 	static const int MASK_ALL_LEVELS = LEV_DEBUG | LEV_INFO | LEV_COMM | LEV_INTERPRET | LEV_WARNING | LEV_ERROR | LEV_EVENT;
 
-// Converts a filter level enumeration to a mask with all higher levels set
+	// Converts a filter level enumeration to a mask with all higher levels set
 	static int FilterLevelToMask(FilterLevel);
 
-// converts a single character to a filter level, returns -1 if an invalid character
-	static int GetFilterMask(char c);
+	static FilterLevel ConvertIntToFilterLevel(int aLevel);
 
-// converts a string of filter characters, ORing the values, returns -1 if an invalid character is present
+	// converts a single character to a filter level, returns -1 if an invalid character
+	static int GetFilterMask(char c);
+	
+	// converts a string of filter characters, ORing the values, returns -1 if an invalid character is present
 	static int GetFilterMask(const std::string& arg);
 
 	static std::string GetLevelString(FilterLevel aLevel);

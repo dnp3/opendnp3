@@ -34,7 +34,7 @@ class ChannelImpl implements Channel {
     public Master addMaster(String loggerId, LogLevel level, DataObserver publisher, MasterStackConfig config)
     {
         DataObserverAdapter adapter = new DataObserverAdapter(publisher);
-        long ptr = get_native_master(nativeChannel, loggerId, level, adapter, config);
+        long ptr = get_native_master(nativeChannel, loggerId, level.toInt(), adapter, config);
         return new MasterImpl(ptr);
     }
 
@@ -42,7 +42,7 @@ class ChannelImpl implements Channel {
     public Outstation addOutstation(String loggerId, LogLevel level, CommandHandler cmdHandler, OutstationStackConfig config)
     {
         CommandHandlerAdapter adapter = new CommandHandlerAdapter(cmdHandler);
-        long ptr = get_native_slave(nativeChannel, loggerId, level, adapter, config);
+        long ptr = get_native_slave(nativeChannel, loggerId, level.toInt(), adapter, config);
         return new OutstationImpl(ptr);
     }
 
@@ -54,8 +54,8 @@ class ChannelImpl implements Channel {
 
     public native void shutdown_native(long ptrChannel);
 
-    private native long get_native_master(long ptrChannel, String loggerId, LogLevel level, DataObserverAdapter publisher, MasterStackConfig config);
-    private native long get_native_slave(long ptrChannel, String loggerId, LogLevel level, CommandHandlerAdapter handler, OutstationStackConfig config);
+    private native long get_native_master(long ptrChannel, String loggerId, int level, DataObserverAdapter publisher, MasterStackConfig config);
+    private native long get_native_slave(long ptrChannel, String loggerId, int level, CommandHandlerAdapter handler, OutstationStackConfig config);
 
 
 }

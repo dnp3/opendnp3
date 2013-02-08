@@ -38,14 +38,14 @@ class ManagerImpl implements DNP3Manager {
     @Override
     public Channel addTCPClient(String name, LogLevel level, long retryMs, String address, int port)
     {
-        long ptr = get_native_channel_tcp_client(nativePointer, name, level, retryMs, address, port);
+        long ptr = get_native_channel_tcp_client(nativePointer, name, level.toInt(), retryMs, address, port);
         return new ChannelImpl(ptr);
     }
 
     @Override
     public Channel addTCPServer(String name, LogLevel level, long retryMs, String endpoint, int port)
     {
-        long ptr = get_native_channel_tcp_server(nativePointer, name, level, retryMs, endpoint, port);
+        long ptr = get_native_channel_tcp_server(nativePointer, name, level.toInt(), retryMs, endpoint, port);
         return new ChannelImpl(ptr);
     }
 
@@ -55,7 +55,7 @@ class ManagerImpl implements DNP3Manager {
          long ptr = get_native_channel_serial(
                  nativePointer,
                  id,
-                 level,
+                 level.toInt(),
                  retryMs,
                  settings.port,
                  settings.baudRate,
@@ -79,9 +79,9 @@ class ManagerImpl implements DNP3Manager {
     private native long create_native_manager(int concurrency);
     private native void destroy_native_manager(long ptr);
 
-    private native long get_native_channel_tcp_client(long ptrManager, String name, LogLevel level, long retryMs, String address, int port);
-    private native long get_native_channel_tcp_server(long ptrManager, String name, LogLevel level, long retryMs, String endpoint, int port);
-    private native long get_native_channel_serial(long ptrManager, String name, LogLevel level, long retryMs, String port, int baudRate, int dataBits, int parity, int stopBits, int flowControl);
+    private native long get_native_channel_tcp_client(long ptrManager, String name, int level, long retryMs, String address, int port);
+    private native long get_native_channel_tcp_server(long ptrManager, String name, int level, long retryMs, String endpoint, int port);
+    private native long get_native_channel_serial(long ptrManager, String name, int level, long retryMs, String port, int baudRate, int dataBits, int parity, int stopBits, int flowControl);
 
     private native void native_add_log_subscriber(long ptrManager, LogSubscriber sub);
 

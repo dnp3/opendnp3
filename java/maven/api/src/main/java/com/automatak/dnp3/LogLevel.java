@@ -18,12 +18,27 @@
  */
 package com.automatak.dnp3;
 
+/**
+ * Enumeration for log severity
+ */
 public enum LogLevel {
-    DEBUG,
-    COMM,
-    INTERPRET,
-    INFO,
-    WARNING,
-    ERROR,
-    EVENT
+    DEBUG(0x40),
+    COMM(0x20),
+    INTERPRET(0x10),
+    INFO(0x08),
+    WARNING(0x04),
+    ERROR(0x02),
+    EVENT(0x01);
+
+    private final int id;
+
+    LogLevel(int id)
+    {
+        this.id =  id;
+    }
+
+    public int toInt()
+    {
+        return id;
+    }
 }

@@ -48,13 +48,14 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_destroy_1native_
 }
 
 JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1channel_1tcp_1client
-  (JNIEnv * pEnv, jobject, jlong ptrManager, jstring jloggerId, jobject logLevel, jlong timeoutMs, jstring jhost, jint port)
+  (JNIEnv * pEnv, jobject, jlong ptrManager, jstring jloggerId, jint logLevel, jlong timeoutMs, jstring jhost, jint port)
 {
 	try {
 		auto pMgr = (DNP3Manager*) ptrManager;
 		std::string loggerId = JNIHelpers::GetString(jloggerId, pEnv);
 		std::string host = JNIHelpers::GetString(jhost, pEnv);
-		return (jlong) pMgr->AddTCPClient(loggerId, LEV_INFO, timeoutMs, host, port);
+		FilterLevel lev = LogTypes::ConvertIntToFilterLevel(logLevel);
+		return (jlong) pMgr->AddTCPClient(loggerId, lev, timeoutMs, host, port);
 	}
 	catch(Exception ex)
 	{
@@ -63,13 +64,14 @@ JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1ch
 }
 
 JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1channel_1tcp_1server
-  (JNIEnv* pEnv, jobject, jlong ptrManager, jstring jloggerId, jobject logLevel, jlong timeoutMs, jstring jendpoint, jint port)
+  (JNIEnv* pEnv, jobject, jlong ptrManager, jstring jloggerId, jint logLevel, jlong timeoutMs, jstring jendpoint, jint port)
 {
 	try {
 		auto pMgr = (DNP3Manager*) ptrManager;
 		std::string loggerId = JNIHelpers::GetString(jloggerId, pEnv);
 		std::string endpoint = JNIHelpers::GetString(jendpoint, pEnv);
-		return (jlong) pMgr->AddTCPServer(loggerId, LEV_INFO, timeoutMs, endpoint, port);
+		FilterLevel lev = LogTypes::ConvertIntToFilterLevel(logLevel);
+		return (jlong) pMgr->AddTCPServer(loggerId, lev, timeoutMs, endpoint, port);
 	}
 	catch(Exception ex)
 	{
@@ -78,7 +80,7 @@ JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1ch
 }
 
 JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1channel_1serial
-  (JNIEnv * pEnv, jobject, jlong ptrManager, jstring jloggerId, jobject logLevel, jlong timeoutMs, jstring jport, jint baudRate, jint dataBits, jint parity, jint stopBits, jint flowControl)
+  (JNIEnv * pEnv, jobject, jlong ptrManager, jstring jloggerId, jint logLevel, jlong timeoutMs, jstring jport, jint baudRate, jint dataBits, jint parity, jint stopBits, jint flowControl)
 {
 	try {
 		auto pMgr = (DNP3Manager*) ptrManager;
@@ -91,7 +93,8 @@ JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1ch
 		ss.mStopBits = stopBits;
 		ss.mParity = GetParityFromInt(parity);
 		ss.mFlowType = GetFlowTypeFromInt(flowControl);
-		return (jlong) pMgr->AddSerial(loggerId, LEV_INFO, timeoutMs, ss);
+		FilterLevel lev = LogTypes::ConvertIntToFilterLevel(logLevel);
+		return (jlong) pMgr->AddSerial(loggerId, lev, timeoutMs, ss);
 	}
 	catch(Exception ex)
 	{

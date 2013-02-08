@@ -9,7 +9,7 @@
     </parent>
 
     <artifactId>opendnp3-example</artifactId>
-    <packaging>bundle</packaging>
+    <packaging>jar</packaging>
 
     <dependencies>
         <dependency>
