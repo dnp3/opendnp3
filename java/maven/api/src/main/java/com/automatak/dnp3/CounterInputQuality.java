@@ -30,44 +30,44 @@ public enum CounterInputQuality {
     /**
      * Set when the data is "good", meaning that rest of the system can trust the value
      */
-    ONLINE(0x01),
+    ONLINE((byte) 0x01),
 
     /**
      * the quality all points get before we have established communication (or populated) the point in a remote database
      */
-    RESTART(0x02),
+    RESTART((byte) 0x02),
 
     /**
      *  Communication has been lost with the source of the data (after establishing contact)
      */
-    COMM_LOST(0x04),
+    COMM_LOST((byte) 0x04),
 
     /**
      *   the value is being forced to a "fake" value somewhere in the system
      */
-    REMOTE_FORCED_DATA(0x08),
+    REMOTE_FORCED_DATA((byte) 0x08),
 
     /**
      * the value is being forced to a "fake" value on the original device
      */
-    LOCAL_FORCED_DATA(0x10),
+    LOCAL_FORCED_DATA((byte) 0x10),
 
     /**
      * used to indicate that the counter filled up and rolled over, cleared automatically after reading
      */
-    ROLLOVER(0x20),
+    ROLLOVER((byte) 0x20),
 
     /**
      * indicates an unusual change in value
      */
-    DISCONTINUITY(0x40),
+    DISCONTINUITY((byte) 0x40),
 
 
-    RESERVED (0x80);
+    RESERVED ((byte) 0x80);
 
-    private final int id;
+    private final byte id;
 
-    private CounterInputQuality(int id)
+    private CounterInputQuality(byte id)
     {
         this.id = id;
     }
@@ -75,21 +75,21 @@ public enum CounterInputQuality {
     public static Set<CounterInputQuality> getValuesInBitField(byte bitfield)
     {
         Set<CounterInputQuality> set = new HashSet<CounterInputQuality>();
-        if((bitfield & ONLINE.toInt()) != 0)  set.add(ONLINE);
-        if((bitfield & RESTART.toInt()) != 0)  set.add(RESTART);
-        if((bitfield & COMM_LOST.toInt()) != 0)  set.add(COMM_LOST);
-        if((bitfield & REMOTE_FORCED_DATA.toInt()) != 0) set.add(REMOTE_FORCED_DATA);
-        if((bitfield & LOCAL_FORCED_DATA.toInt()) != 0) set.add(LOCAL_FORCED_DATA);
-        if((bitfield & ROLLOVER.toInt()) != 0) set.add(ROLLOVER);
-        if((bitfield & DISCONTINUITY.toInt()) != 0) set.add(DISCONTINUITY);
-        if((bitfield & RESERVED.toInt()) != 0) set.add(RESERVED);
+        if((bitfield & ONLINE.toByte()) != 0)  set.add(ONLINE);
+        if((bitfield & RESTART.toByte()) != 0)  set.add(RESTART);
+        if((bitfield & COMM_LOST.toByte()) != 0)  set.add(COMM_LOST);
+        if((bitfield & REMOTE_FORCED_DATA.toByte()) != 0) set.add(REMOTE_FORCED_DATA);
+        if((bitfield & LOCAL_FORCED_DATA.toByte()) != 0) set.add(LOCAL_FORCED_DATA);
+        if((bitfield & ROLLOVER.toByte()) != 0) set.add(ROLLOVER);
+        if((bitfield & DISCONTINUITY.toByte()) != 0) set.add(DISCONTINUITY);
+        if((bitfield & RESERVED.toByte()) != 0) set.add(RESERVED);
         return Collections.unmodifiableSet(set);
     }
 
     /**
      * @return The underlying integer representation of the enum
      */
-    public int toInt()
+    public byte toByte()
     {
         return id;
     }

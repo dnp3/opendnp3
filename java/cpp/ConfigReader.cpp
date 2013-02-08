@@ -159,8 +159,8 @@ LinkConfig ConfigReader::ConvertLinkConfig(JNIEnv* apEnv, jobject jCfg)
 	LinkConfig cfg(true, false);
 	
 	cfg.IsMaster = JNIHelpers::GetBoolField(apEnv, jCfg, "isMaster");
-	cfg.IsMaster = JNIHelpers::GetBoolField(apEnv, jCfg, "useConfirms");
-	cfg.UseConfirms = JNIHelpers::GetIntField(apEnv, jCfg, "numRetry");
+	cfg.UseConfirms = JNIHelpers::GetBoolField(apEnv, jCfg, "useConfirms");
+	cfg.NumRetry = JNIHelpers::GetIntField(apEnv, jCfg, "numRetry");
 	cfg.LocalAddr = JNIHelpers::GetIntField(apEnv, jCfg, "localAddr");	
 	cfg.RemoteAddr = JNIHelpers::GetIntField(apEnv, jCfg, "remoteAddr");		
 
