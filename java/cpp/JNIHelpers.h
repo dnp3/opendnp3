@@ -48,6 +48,7 @@ class JNIHelpers
 
 		static jmethodID GetMethodID(JNIEnv* apEnv, jclass clazz, const char* name, const char* sig);
 		static jmethodID GetMethodID(JNIEnv* apEnv, jobject obj, const char* name, const char* sig);
+		static jclass GetClassForObject(JNIEnv* apEnv, jobject obj);
 
 		static jint GetIntField(JNIEnv* apEnv, jobject obj, const char* fieldId);
 		static jlong GetLongField(JNIEnv* apEnv, jobject obj, const char* fieldId);
