@@ -1,4 +1,4 @@
-javah -jni -d cpp -classpath ./maven/api/target/classes:./maven/bindings/target/classes \
+javah -jni -d cpp -classpath ./api/target/classes:./bindings/target/classes \
 com.automatak.dnp3.impl.ManagerImpl \
 com.automatak.dnp3.impl.ChannelImpl \
 com.automatak.dnp3.impl.MasterImpl \
