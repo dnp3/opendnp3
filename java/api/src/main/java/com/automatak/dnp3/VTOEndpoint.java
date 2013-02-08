@@ -21,7 +21,7 @@ package com.automatak.dnp3;
 /**
  * Represents a bound Virtual Terminal Object (VTO) endpoint
  */
-public interface VtoEndpoint {
+public interface VTOEndpoint {
 
     /**
      * Close the vto endpoint, disassociate it with the stack from which it was created, and cleanup underlying resources

@@ -19,16 +19,16 @@
 package com.automatak.dnp3.impl;
 
 
-import com.automatak.dnp3.CommandProcessor;
-import com.automatak.dnp3.Master;
+import com.automatak.dnp3.*;
 
-class MasterImpl implements Master {
+class MasterImpl extends StackBase implements Master {
 
     private long nativePointer;
     private CommandProcessor processor;
 
     public MasterImpl(long nativePointer)
     {
+        super(nativePointer);
         this.nativePointer = nativePointer;
         this.processor = new CommandProcessorImpl(get_native_command_processor(nativePointer));
     }
@@ -47,6 +47,4 @@ class MasterImpl implements Master {
 
     private native long get_native_command_processor(long nativePointer);
     private native void shutdown_native(long nativePointer);
-
-
 }

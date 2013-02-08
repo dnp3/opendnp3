@@ -18,33 +18,24 @@
  */
 package com.automatak.dnp3.impl;
 
-import com.automatak.dnp3.DataObserver;
-import com.automatak.dnp3.Outstation;
+import com.automatak.dnp3.VTOEndpoint;
 
-class OutstationImpl extends StackBase implements Outstation {
 
-    private long nativePointer;
-    private final DataObserver obs;
+public class VTOEndpointImpl implements VTOEndpoint {
 
-    public OutstationImpl(long nativePointer)
+    private final long nativePtr;
+
+    public VTOEndpointImpl(long nativePtr)
     {
-        super(nativePointer);
-        this.nativePointer = nativePointer;
-        this.obs = new DataObserverImpl(get_native_data_observer(nativePointer));
-    }
-
-    @Override
-    public DataObserver getDataObserver()
-    {
-        return obs;
+        this.nativePtr = nativePtr;
     }
 
     @Override
     public void shutdown()
     {
-        shutdown_native(nativePointer);
+        shutdown_native_endpoint(nativePtr);
     }
 
-    private native void shutdown_native(long nativePointer);
-    private native long get_native_data_observer(long nativePointer);
+    private native void shutdown_native_endpoint(long nativePtr);
+
 }

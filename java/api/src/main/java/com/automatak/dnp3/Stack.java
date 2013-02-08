@@ -29,4 +29,26 @@ public interface Stack {
      */
     void shutdown();
 
+    /**
+     * Associate a TCP Client VTO endpoint with stack
+     * @param loggerId Id used for logging
+     * @param level Log level for the endpoint
+     * @param host host, i.e. 127.0.0.1 or www.google.com
+     * @param port port number to connect to
+     * @param config Settings that define how the endpoint will behave
+     * @return Interface that can be used to shutdown the endpoint
+     */
+    VTOEndpoint addTCPClientVTOEndpoint(String loggerId, LogLevel level, String host, int port, VTOEndpointConfig config);
+
+    /**
+     * Associate a TCP Server VTO endpoint with stack
+     * @param loggerId Id used for logging
+     * @param level Log level for the endpoint
+     * @param adapter adapter, i.e. 127.0.0.1 or 0.0.0.0
+     * @param port port number to listen on
+     * @param config Settings that define how the endpoint will behave
+     * @return Interface that can be used to shutdown the endpoint
+     */
+    VTOEndpoint addTCPServerVTOEndpoint(String loggerId, LogLevel level, String adapter, int port, VTOEndpointConfig config);
+
 }
