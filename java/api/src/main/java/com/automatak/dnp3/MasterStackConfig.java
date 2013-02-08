@@ -23,8 +23,19 @@ package com.automatak.dnp3;
  */
 public class MasterStackConfig {
 
+    /**
+     * Controls how the master behaves
+     */
     public final MasterConfig masterConfig;
+
+    /**
+     * Settings for the application layer
+     */
     public final AppLayerConfig appConfig;
+
+    /**
+     * Settings for the link layer
+     */
     public final LinkLayerConfig linkConfig;
 
     /**

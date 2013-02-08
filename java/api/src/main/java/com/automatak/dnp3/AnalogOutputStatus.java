@@ -21,6 +21,9 @@ package com.automatak.dnp3;
 
 import java.util.Set;
 
+/**
+ * Represents the status of analog output on an outstation.
+ */
 public class AnalogOutputStatus extends BaseMeasurement
 {
     private final double value;

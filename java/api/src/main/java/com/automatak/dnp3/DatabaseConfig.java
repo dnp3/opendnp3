@@ -32,7 +32,14 @@ public class DatabaseConfig {
     public final List<PointRecord> binaryOutputStatii;
     public final List<PointRecord> analogOutputStatii;
 
-
+    /**
+     * Construct a default database with given size. Then override settings for individual points.
+     * @param numBinary number of binary input point
+     * @param numAnalog number of analog input points
+     * @param numCounter number of counter points
+     * @param numBinaryOutputStatus number of binary output status points
+     * @param numAnalogOutputStatus number of analog output status points
+     */
     public DatabaseConfig(int numBinary, int numAnalog, int numCounter, int numBinaryOutputStatus, int numAnalogOutputStatus)
     {
         this.binaryInputs = new ArrayList<EventPointRecord>(numBinary);

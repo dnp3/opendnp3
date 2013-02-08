@@ -16,7 +16,10 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.automatak.dnp3;
+package com.automatak.dnp3.example;
+
+import com.automatak.dnp3.LogEntry;
+import com.automatak.dnp3.LogSubscriber;
 
 /**
  * Singleton that prints log information as it is received

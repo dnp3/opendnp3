@@ -18,26 +18,33 @@
  */
 package com.automatak.dnp3;
 
+/**
+ * Defines a periodic class based scan (Class 0,1,2,3)
+ */
 public class ExceptionScan
 {
-        public int classMask;
-        public long scanRateMs;
+    public int classMask;
+    public long scanRateMs;
 
-        /**
-         * Constructor that provides reasonable defaults
-         */
-        public ExceptionScan()
-        {
-            this.classMask = PointClass.ALL_EVENTS.toInt();
-            this.scanRateMs = 5000;
-        }
+    /**
+     * Constructor that provides reasonable defaults
+     */
+    public ExceptionScan()
+    {
+        this.classMask = PointClass.ALL_EVENTS.toInt();
+        this.scanRateMs = 5000;
+    }
 
-        /**
-         * Constructor that sets all values
-         */
-        public ExceptionScan(int classMask, long scanRateMs)
-        {
-            this.classMask = classMask;
-            this.scanRateMs = scanRateMs;
-        }
+    /**
+     *
+     * Constructor that sets all values
+     *
+     * @param classMask Bit-field that determines which classes are scanned. Use PointClass.getMask to create a mask.
+     * @param scanRateMs Periodic scan rate in milliseconds
+     */
+    public ExceptionScan(int classMask, long scanRateMs)
+    {
+        this.classMask = classMask;
+        this.scanRateMs = scanRateMs;
+    }
 }

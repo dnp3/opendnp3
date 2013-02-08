@@ -18,7 +18,9 @@
  */
 package com.automatak.dnp3;
 
-
+/**
+ * Serial port parity enumeration
+ */
 public enum Parity {
 
     PAR_NONE(0),
