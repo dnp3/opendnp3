@@ -81,7 +81,7 @@
                     <strictCheck>true</strictCheck>
                     <failIfMissing>true</failIfMissing>
                     <aggregate>true</aggregate>
-                    <header>AGPL_FILE_HEADER</header>
+                    <header>AUTOMATAK_AGPL_FILE_HEADER</header>
                     <includes>
                         <include>**/*.java</include>
                         <include>../cpp/*.cpp</include>
