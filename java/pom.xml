@@ -82,9 +82,14 @@
                     <failIfMissing>true</failIfMissing>
                     <aggregate>true</aggregate>
                     <header>AUTOMATAK_AGPL_FILE_HEADER</header>
+                    <mapping>
+                        <hpp>JAVADOC_STYLE</hpp>
+                        <application>JAVADOC_STYLE</application>
+                    </mapping>
                     <includes>
                         <include>**/*.java</include>
-                        <include>./cpp/*.cpp</include>
+                        <include>cpp/*.cpp</include>
+                        <include>cpp/*.hpp</include>
                     </includes>
                 </configuration>
                 <executions>
