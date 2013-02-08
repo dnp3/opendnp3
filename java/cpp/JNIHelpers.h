@@ -33,6 +33,11 @@
 
 #include <functional>
 
+#define MACRO_RETHROW_EXCEPTION(env, ex) \
+		jclass exClass = env->FindClass("com/automatak/dnp3/DNP3ConfigException"); \
+		env->ThrowNew(exClass, ex.GetErrorString().c_str());
+	
+
 class JNIHelpers
 {
 	public:

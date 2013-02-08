@@ -18,10 +18,11 @@
  */
 #include "com_automatak_dnp3_impl_ManagerImpl.h"
 
-
 #include "JNIHelpers.h"
 #include "LogSubscriberAdapter.h"
+
 #include <opendnp3/DNP3Manager.h>
+#include <opendnp3/Exception.h>
 
 using namespace opendnp3;
 
@@ -49,35 +50,53 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_destroy_1native_
 JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1channel_1tcp_1client
   (JNIEnv * pEnv, jobject, jlong ptrManager, jstring jloggerId, jobject logLevel, jlong timeoutMs, jstring jhost, jint port)
 {
-	auto pMgr = (DNP3Manager*) ptrManager;
-	std::string loggerId = JNIHelpers::GetString(jloggerId, pEnv);
-	std::string host = JNIHelpers::GetString(jhost, pEnv);
-	return (jlong) pMgr->AddTCPClient(loggerId, LEV_INFO, timeoutMs, host, port);
+	try {
+		auto pMgr = (DNP3Manager*) ptrManager;
+		std::string loggerId = JNIHelpers::GetString(jloggerId, pEnv);
+		std::string host = JNIHelpers::GetString(jhost, pEnv);
+		return (jlong) pMgr->AddTCPClient(loggerId, LEV_INFO, timeoutMs, host, port);
+	}
+	catch(Exception ex)
+	{
+		MACRO_RETHROW_EXCEPTION(pEnv, ex);
+	}
 }
 
 JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1channel_1tcp_1server
   (JNIEnv* pEnv, jobject, jlong ptrManager, jstring jloggerId, jobject logLevel, jlong timeoutMs, jstring jendpoint, jint port)
 {
-	auto pMgr = (DNP3Manager*) ptrManager;
-	std::string loggerId = JNIHelpers::GetString(jloggerId, pEnv);
-	std::string endpoint = JNIHelpers::GetString(jendpoint, pEnv);
-	return (jlong) pMgr->AddTCPServer(loggerId, LEV_INFO, timeoutMs, endpoint, port);
+	try {
+		auto pMgr = (DNP3Manager*) ptrManager;
+		std::string loggerId = JNIHelpers::GetString(jloggerId, pEnv);
+		std::string endpoint = JNIHelpers::GetString(jendpoint, pEnv);
+		return (jlong) pMgr->AddTCPServer(loggerId, LEV_INFO, timeoutMs, endpoint, port);
+	}
+	catch(Exception ex)
+	{
+		MACRO_RETHROW_EXCEPTION(pEnv, ex)
+	}
 }
 
 JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1channel_1serial
   (JNIEnv * pEnv, jobject, jlong ptrManager, jstring jloggerId, jobject logLevel, jlong timeoutMs, jstring jport, jint baudRate, jint dataBits, jint parity, jint stopBits, jint flowControl)
 {
-	auto pMgr = (DNP3Manager*) ptrManager;
-	std::string loggerId = JNIHelpers::GetString(jloggerId, pEnv);
-	std::string port = JNIHelpers::GetString(jport, pEnv);
-	SerialSettings ss;
-	ss.mDevice = port;
-	ss.mBaud = baudRate;
-	ss.mDataBits = dataBits;
-	ss.mStopBits = stopBits;
-	ss.mParity = GetParityFromInt(parity);
-	ss.mFlowType = GetFlowTypeFromInt(flowControl);
-	return (jlong) pMgr->AddSerial(loggerId, LEV_INFO, timeoutMs, ss);
+	try {
+		auto pMgr = (DNP3Manager*) ptrManager;
+		std::string loggerId = JNIHelpers::GetString(jloggerId, pEnv);
+		std::string port = JNIHelpers::GetString(jport, pEnv);
+		SerialSettings ss;
+		ss.mDevice = port;
+		ss.mBaud = baudRate;
+		ss.mDataBits = dataBits;
+		ss.mStopBits = stopBits;
+		ss.mParity = GetParityFromInt(parity);
+		ss.mFlowType = GetFlowTypeFromInt(flowControl);
+		return (jlong) pMgr->AddSerial(loggerId, LEV_INFO, timeoutMs, ss);
+	}
+	catch(Exception ex)
+	{
+		MACRO_RETHROW_EXCEPTION(pEnv, ex)
+	}
 }
 
 

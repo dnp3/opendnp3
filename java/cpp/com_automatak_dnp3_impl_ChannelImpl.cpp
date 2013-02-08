@@ -21,11 +21,14 @@
 #include <opendnp3/IChannel.h>
 #include <opendnp3/IMaster.h>
 #include <opendnp3/IOutstation.h>
+#include <opendnp3/Exception.h>
 
 #include "JNIHelpers.h"
 #include "DataObserverAdapter.h"
 #include "CommandHandlerAdapter.h"
 #include "ConfigReader.h"
+
+#include <iostream>
 
 using namespace opendnp3;
 
@@ -39,30 +42,42 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_ChannelImpl_shutdown_1native
 JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ChannelImpl_get_1native_1master
   (JNIEnv* pEnv, jobject, jlong ptr, jstring jloggerId, jobject jlogLevel, jobject publisher, jobject jconfig)
 {
-	auto pChannel = (IChannel*) ptr;
-	JavaVM* pJVM = JNIHelpers::GetJVMFromEnv(pEnv);
-	jobject global = pEnv->NewGlobalRef(publisher);
-	auto pPublisher = new DataObserverAdapter(pJVM, global);
-	std::string loggerId = JNIHelpers::GetString(jloggerId, pEnv);
-	MasterStackConfig config = ConfigReader::ConvertMasterStackConfig(pEnv, jconfig);
-	auto pMaster = pChannel->AddMaster(loggerId, LEV_INFO, pPublisher, config);
-	pMaster->AddDestructorHook([pJVM, global]() { JNIHelpers::DeleteGlobalReference(pJVM, global); });
-	pMaster->AddDestructorHook([pPublisher](){ delete pPublisher; });
-	return (jlong) pMaster;
+	try {
+		auto pChannel = (IChannel*) ptr;
+		JavaVM* pJVM = JNIHelpers::GetJVMFromEnv(pEnv);
+		jobject global = pEnv->NewGlobalRef(publisher);
+		auto pPublisher = new DataObserverAdapter(pJVM, global);
+		std::string loggerId = JNIHelpers::GetString(jloggerId, pEnv);
+		MasterStackConfig config = ConfigReader::ConvertMasterStackConfig(pEnv, jconfig);
+		auto pMaster = pChannel->AddMaster(loggerId, LEV_INFO, pPublisher, config);
+		pMaster->AddDestructorHook([pJVM, global]() { JNIHelpers::DeleteGlobalReference(pJVM, global); });
+		pMaster->AddDestructorHook([pPublisher](){ delete pPublisher; });
+		return (jlong) pMaster;
+	}
+	catch(const opendnp3::Exception& ex)
+	{
+		MACRO_RETHROW_EXCEPTION(pEnv, ex);
+	}
 }
 
 JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ChannelImpl_get_1native_1slave
   (JNIEnv* pEnv, jobject, jlong ptr, jstring jloggerId, jobject jloglevel, jobject commandAdapter, jobject jconfig)
 {
-	auto pChannel = (IChannel*) ptr;
-	std::string loggerId = JNIHelpers::GetString(jloggerId, pEnv);
-	SlaveStackConfig config = ConfigReader::ConvertSlaveStackConfig(pEnv, jconfig);	
-	JavaVM* pJVM = JNIHelpers::GetJVMFromEnv(pEnv);	
-	jobject global = pEnv->NewGlobalRef(commandAdapter);
-	auto pCmdHandler = new CommandHandlerAdapter(pJVM, global);	
-	auto pOutstation = pChannel->AddOutstation(loggerId, LEV_INFO, pCmdHandler, config);
-	pOutstation->AddDestructorHook([pJVM, global]() { JNIHelpers::DeleteGlobalReference(pJVM, global); });
-	pOutstation->AddDestructorHook([pCmdHandler](){ delete pCmdHandler; });
-	return (jlong) pOutstation;
+	try {
+		auto pChannel = (IChannel*) ptr;
+		std::string loggerId = JNIHelpers::GetString(jloggerId, pEnv);
+		SlaveStackConfig config = ConfigReader::ConvertSlaveStackConfig(pEnv, jconfig);	
+		JavaVM* pJVM = JNIHelpers::GetJVMFromEnv(pEnv);	
+		jobject global = pEnv->NewGlobalRef(commandAdapter);
+		auto pCmdHandler = new CommandHandlerAdapter(pJVM, global);	
+		auto pOutstation = pChannel->AddOutstation(loggerId, LEV_INFO, pCmdHandler, config);
+		pOutstation->AddDestructorHook([pJVM, global]() { JNIHelpers::DeleteGlobalReference(pJVM, global); });
+		pOutstation->AddDestructorHook([pCmdHandler](){ delete pCmdHandler; });
+		return (jlong) pOutstation;
+	}
+	catch(const opendnp3::Exception& ex)
+	{
+		MACRO_RETHROW_EXCEPTION(pEnv, ex);
+	}
 }
 

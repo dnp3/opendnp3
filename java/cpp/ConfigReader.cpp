@@ -36,6 +36,7 @@ SlaveConfig ConfigReader::ConvertOutstationConfig(JNIEnv* apEnv, jobject jCfg)
 {
 	SlaveConfig cfg;
 	
+	cfg.mMaxControls  = JNIHelpers::GetIntField(apEnv, jCfg, "maxControl");
 
 /*
   public int maxControls;
