@@ -30,12 +30,15 @@
 
 #include <jni.h>
 #include <string>
+
 #include <opendnp3/MasterStackConfig.h>
+#include <opendnp3/SlaveStackConfig.h>
 
 class ConfigReader
 {
 	public:
 	static opendnp3::MasterStackConfig ConvertMasterStackConfig(JNIEnv* apEnv, jobject jCfg);
+	static opendnp3::SlaveStackConfig ConvertSlaveStackConfig(JNIEnv* apEnv, jobject jCfg);	
 
 	private:
 	static opendnp3::LinkConfig ConvertLinkConfig(JNIEnv* apEnv, jobject jCfg);

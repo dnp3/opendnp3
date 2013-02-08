@@ -35,14 +35,34 @@ MasterStackConfig ConfigReader::ConvertMasterStackConfig(JNIEnv* apEnv, jobject 
 	return cfg;
 }
 
+SlaveStackConfig ConfigReader::ConvertSlaveStackConfig(JNIEnv* apEnv, jobject jCfg)
+{
+	SlaveStackConfig cfg;
+	jclass clazz = apEnv->GetObjectClass(jCfg);
+
+	{
+		jfieldID field = apEnv->GetFieldID(clazz, "linkConfig", "Lcom/automatak/dnp3/LinkLayerConfig;");
+		assert(field != nullptr);
+		jobject obj = apEnv->GetObjectField(jCfg, field);
+		assert(obj != nullptr);
+		cfg.link = ConvertLinkConfig(apEnv, obj);
+	}
+	{
+		jfieldID field = apEnv->GetFieldID(clazz, "appConfig", "Lcom/automatak/dnp3/AppLayerConfig;");
+		assert(field != nullptr);
+		jobject obj = apEnv->GetObjectField(jCfg, field);
+		assert(obj != nullptr);
+		cfg.app = ConvertAppConfig(apEnv, obj);
+	}
+
+	return cfg;
+}
+
+
 MasterConfig ConfigReader::ConvertMasterConfig(JNIEnv* apEnv, jobject jCfg)
 {
 	MasterConfig cfg;
 	jclass clazz = apEnv->GetObjectClass(jCfg);
-/*	  
-  final java.util.List<com.automatak.dnp3.ExceptionScan> scans;
-    Signature: Ljava/util/List;
-*/
 
 	{
 		jfieldID field = apEnv->GetFieldID(clazz, "maxRequestFragmentSize", "I");
@@ -109,7 +129,7 @@ MasterConfig ConfigReader::ConvertMasterConfig(JNIEnv* apEnv, jobject jCfg)
 		assert(getMID != nullptr);
 
 		for(jint i=0; i< size; ++i)
-		{			\
+		{
 			jobject scan = apEnv->CallObjectMethod(list, getMID); 
 			assert(scan != nullptr);
 			jclass exScanClass = apEnv->GetObjectClass(scan);

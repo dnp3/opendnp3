@@ -52,13 +52,11 @@ JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ChannelImpl_get_1native_1ma
 }
 
 JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ChannelImpl_get_1native_1slave
-  (JNIEnv* pEnv, jobject, jlong ptr, jstring jloggerId, jobject jloglevel, jobject commandAdapter)
+  (JNIEnv* pEnv, jobject, jlong ptr, jstring jloggerId, jobject jloglevel, jobject commandAdapter, jobject jconfig)
 {
 	auto pChannel = (IChannel*) ptr;
 	std::string loggerId = JNIHelpers::GetString(jloggerId, pEnv);
-	SlaveStackConfig config;
-	DeviceTemplate templ(3,3,3,3,3);
-	config.device = templ;
+	SlaveStackConfig config = ConfigReader::ConvertSlaveStackConfig(pEnv, jconfig);	
 	JavaVM* pJVM = JNIHelpers::GetJVMFromEnv(pEnv);	
 	jobject global = pEnv->NewGlobalRef(commandAdapter);
 	auto pCmdHandler = new CommandHandlerAdapter(pJVM, global);	
