@@ -5,7 +5,7 @@ import org.scalatest.junit.JUnitRunner
 import org.junit.runner.RunWith
 import org.scalatest.matchers.ShouldMatchers
 import com.automatak.dnp3._
-import com.automatak.dnp3.example.{ConstantCommandHandler, FormattingDataObserver, OutputHandler}
+import mock.{FormattingDataObserver, OutputHandler, ConstantCommandHandler}
 
 @RunWith(classOf[JUnitRunner])
 class DNP3ManagerTestSuite extends FunSuite with ShouldMatchers {

@@ -16,28 +16,21 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.automatak.dnp3.example;
+package com.automatak.dnp3.mock;
 
-import com.automatak.dnp3.LogEntry;
-import com.automatak.dnp3.LogSubscriber;
+import com.automatak.dnp3.CommandStatus;
 
 /**
- * Singleton that prints log information as it is received
+ * Singleton that return SUCCESS for all command requests it receives
  */
-public class PrintingLogSubscriber implements LogSubscriber {
-    private static PrintingLogSubscriber ourInstance = new PrintingLogSubscriber();
+public class SuccessCommandHandler extends ConstantCommandHandler {
+    private static SuccessCommandHandler ourInstance = new SuccessCommandHandler();
 
-    @Override
-    public void onLogEntry(LogEntry le)
-    {
-        System.out.println(le.getTimestamp() + " - " + le.getLogLevel().name() + " - " + le.getLoggerName() + " - " + le.getMessage());
-
-    }
-
-    public static PrintingLogSubscriber getInstance() {
+    public static SuccessCommandHandler getInstance() {
         return ourInstance;
     }
 
-    private PrintingLogSubscriber() {
+    private SuccessCommandHandler() {
+        super(CommandStatus.SUCCESS);
     }
 }

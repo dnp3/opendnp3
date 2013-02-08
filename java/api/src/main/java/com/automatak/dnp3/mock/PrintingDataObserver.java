@@ -16,21 +16,24 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.automatak.dnp3.example;
-
-import com.automatak.dnp3.CommandStatus;
+package com.automatak.dnp3.mock;
 
 /**
- * Singleton that return SUCCESS for all command requests it receives
+ * Simple singleton that prints measurements to the console as they are received
  */
-public class SuccessCommandHandler extends ConstantCommandHandler {
-    private static SuccessCommandHandler ourInstance = new SuccessCommandHandler();
+public class PrintingDataObserver extends FormattingDataObserver {
+    private static PrintingDataObserver ourInstance = new PrintingDataObserver();
 
-    public static SuccessCommandHandler getInstance() {
+    public static PrintingDataObserver getInstance() {
         return ourInstance;
     }
 
-    private SuccessCommandHandler() {
-        super(CommandStatus.SUCCESS);
+    private PrintingDataObserver() {
+        super(new OutputHandler() {
+            @Override
+            public void handleOutput(String output) {
+                System.out.println(output);
+            }
+        });
     }
 }

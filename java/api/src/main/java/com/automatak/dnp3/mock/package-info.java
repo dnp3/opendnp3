@@ -18,8 +18,8 @@
  */
 
 /**
- * A package of example callback implementations.
+ * A package of mock callback implementations.
  *
  * Not useful for real world applications, but good for demos.
  */
-package com.automatak.dnp3.example;
+package com.automatak.dnp3.mock;

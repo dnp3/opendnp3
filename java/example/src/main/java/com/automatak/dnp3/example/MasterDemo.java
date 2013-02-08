@@ -20,6 +20,8 @@ package com.automatak.dnp3.example;
 
 import com.automatak.dnp3.*;
 import com.automatak.dnp3.impl.DNP3ManagerFactory;
+import com.automatak.dnp3.mock.PrintingDataObserver;
+import com.automatak.dnp3.mock.PrintingLogSubscriber;
 
 import java.io.BufferedReader;
 import java.io.IOException;

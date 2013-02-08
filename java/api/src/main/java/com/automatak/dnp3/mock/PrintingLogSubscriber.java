@@ -16,8 +16,28 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.automatak.dnp3.example;
+package com.automatak.dnp3.mock;
 
-public interface OutputHandler {
-    void handleOutput(String output);
+import com.automatak.dnp3.LogEntry;
+import com.automatak.dnp3.LogSubscriber;
+
+/**
+ * Singleton that prints log information as it is received
+ */
+public class PrintingLogSubscriber implements LogSubscriber {
+    private static PrintingLogSubscriber ourInstance = new PrintingLogSubscriber();
+
+    @Override
+    public void onLogEntry(LogEntry le)
+    {
+        System.out.println(le.getTimestamp() + " - " + le.getLogLevel().name() + " - " + le.getLoggerName() + " - " + le.getMessage());
+
+    }
+
+    public static PrintingLogSubscriber getInstance() {
+        return ourInstance;
+    }
+
+    private PrintingLogSubscriber() {
+    }
 }
