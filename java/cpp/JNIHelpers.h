@@ -31,6 +31,8 @@
 #include <jni.h>
 #include <string>
 
+#include <functional>
+
 class JNIHelpers
 {
 	public:
@@ -51,6 +53,8 @@ class JNIHelpers
 		static jlong GetLongField(JNIEnv* apEnv, jobject obj, const char* fieldId);
 		static bool GetBoolField(JNIEnv* apEnv, jobject obj, const char* fieldId);
 		static jobject GetObjectField(JNIEnv* apEnv, jobject obj, const char* fieldId, const char* fqcn);
+
+		static void IterateOverListOfObjects(JNIEnv* apEnv, jobject list, std::function<void (jobject)> fun);
 };
 
 #endif

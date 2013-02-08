@@ -120,6 +120,20 @@ jobject JNIHelpers::GetObjectField(JNIEnv* apEnv, jobject obj, const char* field
 	return ret;
 }
 
+void JNIHelpers::IterateOverListOfObjects(JNIEnv* apEnv, jobject list, std::function<void (jobject)> fun)
+{
+	jmethodID sizeMID = JNIHelpers::GetMethodID(apEnv, list, "size", "()I");	
+	jint size = apEnv->CallIntMethod(list, sizeMID);
+
+	jmethodID getMID = JNIHelpers::GetMethodID(apEnv, list, "get", "(I)Ljava/lang/Object;");
+
+	for(jint i=0; i< size; ++i)
+	{
+		jobject obj = apEnv->CallObjectMethod(list, getMID, i); 
+		assert(obj != nullptr);
+		fun(obj);
+	}
+}
 
 
 

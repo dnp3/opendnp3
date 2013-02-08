@@ -23,7 +23,6 @@ MasterStackConfig ConfigReader::ConvertMasterStackConfig(JNIEnv* apEnv, jobject 
 SlaveStackConfig ConfigReader::ConvertSlaveStackConfig(JNIEnv* apEnv, jobject jCfg)
 {
 	SlaveStackConfig cfg;
-	jclass clazz = apEnv->GetObjectClass(jCfg);
 
 	cfg.link = ConvertLinkConfig(apEnv, JNIHelpers::GetObjectField(apEnv, jCfg, "linkConfig", "Lcom/automatak/dnp3/LinkLayerConfig;"));
 	cfg.app = ConvertAppConfig(apEnv, JNIHelpers::GetObjectField(apEnv, jCfg, "appConfig", "Lcom/automatak/dnp3/AppLayerConfig;")); 
@@ -111,21 +110,11 @@ MasterConfig ConfigReader::ConvertMasterConfig(JNIEnv* apEnv, jobject jCfg)
 	
 	jobject list = JNIHelpers::GetObjectField(apEnv, jCfg, "scans", "Ljava/util/List;");
 
-	jmethodID sizeMID = JNIHelpers::GetMethodID(apEnv, list, "size", "()I");	
-	jint size = apEnv->CallIntMethod(list, sizeMID);
-
-	jmethodID getMID = JNIHelpers::GetMethodID(apEnv, list, "get", "(I)Ljava/lang/Object;");
-
-	for(jint i=0; i< size; ++i)
-	{
-		jobject scan = apEnv->CallObjectMethod(list, getMID, i); 
-		assert(scan != nullptr);
-		
+	JNIHelpers::IterateOverListOfObjects(apEnv, list, [&](jobject scan) {
 		int mask = JNIHelpers::GetIntField(apEnv, scan, "classMask");
-		long rate = JNIHelpers::GetLongField(apEnv, scan, "scanRateMs"); 		
-
-		cfg.AddExceptionScan(mask, rate);
-	}
+		long rate = JNIHelpers::GetLongField(apEnv, scan, "scanRateMs");
+		cfg.AddExceptionScan(mask, rate); 
+	});	
 
 	return cfg;
 }
