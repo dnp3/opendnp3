@@ -18,8 +18,16 @@
  */
 package com.automatak.dnp3;
 
-
+/**
+ * Enumeration for controlling class based scanning / eventing
+ *
+ * CLASS 0 corresponds to Group 60 Variation 1
+ * CLASS 1 corresponds to Group 60 Variation 2
+ * CLASS 2 corresponds to Group 60 Variation 3
+ * CLASS 3 corresponds to Group 60 Variation 4
+ */
 public enum PointClass {
+
     CLASS_0(0x01),
     CLASS_1(0x02),
     CLASS_2(0x04),
@@ -38,6 +46,11 @@ public enum PointClass {
         return id;
     }
 
+    /**
+     * Construct a bit-field using a collection of PointClass enumerations
+     * @param args collection of PointClass
+     * @return bit-field representing the input PointClass set
+     */
     public static int getMask(PointClass... args)
     {
         int i = 0;

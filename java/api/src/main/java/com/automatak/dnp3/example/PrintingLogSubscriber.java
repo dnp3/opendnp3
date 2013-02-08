@@ -21,10 +21,23 @@ package com.automatak.dnp3.example;
 import com.automatak.dnp3.LogEntry;
 import com.automatak.dnp3.LogSubscriber;
 
+/**
+ * Singleton that prints log information as it is received
+ */
 public class PrintingLogSubscriber implements LogSubscriber {
+    private static PrintingLogSubscriber ourInstance = new PrintingLogSubscriber();
 
-    public void onLogEntry(LogEntry entry)
+    @Override
+    public void onLogEntry(LogEntry le)
     {
-        System.out.println(Thread.currentThread().getId() + " : " + entry.getTimestamp() + " : " + entry.getLoggerName() + " - " + entry.getMessage());
+        System.out.println(le.getTimestamp() + " - " + le.getLogLevel().name() + " - " + le.getLoggerName() + " - " + le.getMessage());
+
+    }
+
+    public static PrintingLogSubscriber getInstance() {
+        return ourInstance;
+    }
+
+    private PrintingLogSubscriber() {
     }
 }
