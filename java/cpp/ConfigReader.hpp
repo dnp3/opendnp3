@@ -16,12 +16,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-//
-// Licensed to Green Energy Corp (www.greenenergycorp.com) under one or
-// more contributor license agreements. See the NOTICE file distributed
-// with this work for additional information regarding copyright ownership.
-// Green Energy Corp licenses this file to you under the Apache License,
-// Version 2.0 (the "License"); you may not use this file except in
+
 #ifndef __CONFIG_READER_H_
 #define __CONFIG_READER_H_
 
