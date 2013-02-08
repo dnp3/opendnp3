@@ -36,17 +36,17 @@ abstract class StackBase implements Stack {
     @Override
     public VTOEndpoint addTCPClientVTOEndpoint(String loggerId, LogLevel level, String host, int port, VTOEndpointConfig config)
     {
-        long ptr = get_tcpclient_vto_endpoint(nativeStackPtr, loggerId, level, host, port, config.channelId, config.minOpenRetryMs, config.maxOpenRetryMs, config.startLocal, config.disableExtenstion);
+        long ptr = get_tcpclient_vto_endpoint(nativeStackPtr, loggerId, level.toInt(), host, port, config.channelId, config.minOpenRetryMs, config.maxOpenRetryMs, config.startLocal, config.disableExtenstion);
         return new VTOEndpointImpl(ptr);
     }
 
     @Override
     public VTOEndpoint addTCPServerVTOEndpoint(String loggerId, LogLevel level, String adapter, int port, VTOEndpointConfig config)
     {
-        long ptr = get_tcpserver_vto_endpoint(nativeStackPtr, loggerId, level, adapter, port, config.channelId, config.minOpenRetryMs, config.maxOpenRetryMs, config.startLocal, config.disableExtenstion);
+        long ptr = get_tcpserver_vto_endpoint(nativeStackPtr, loggerId, level.toInt(), adapter, port, config.channelId, config.minOpenRetryMs, config.maxOpenRetryMs, config.startLocal, config.disableExtenstion);
         return new VTOEndpointImpl(ptr);
     }
 
-    private native long get_tcpclient_vto_endpoint(long nativePtr, String loggerId, LogLevel level, String host, int port, byte channelId, long minOpenRetryMs, long maxOpenRetryMs, boolean startLocal, boolean disableExtenstion);
-    private native long get_tcpserver_vto_endpoint(long nativePtr, String loggerId, LogLevel level, String adapter, int port, byte channelId, long minOpenRetryMs, long maxOpenRetryMs, boolean startLocal, boolean disableExtenstion);
+    private native long get_tcpclient_vto_endpoint(long nativePtr, String loggerId, int level, String host, int port, byte channelId, long minOpenRetryMs, long maxOpenRetryMs, boolean startLocal, boolean disableExtenstion);
+    private native long get_tcpserver_vto_endpoint(long nativePtr, String loggerId, int level, String adapter, int port, byte channelId, long minOpenRetryMs, long maxOpenRetryMs, boolean startLocal, boolean disableExtenstion);
 }

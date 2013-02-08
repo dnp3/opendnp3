@@ -307,11 +307,14 @@ libopendnp3java_la_SOURCES = \
 	java/cpp/com_automatak_dnp3_impl_ManagerImpl.cpp \
 	java/cpp/com_automatak_dnp3_impl_MasterImpl.cpp \
 	java/cpp/com_automatak_dnp3_impl_OutstationImpl.cpp \
+	java/cpp/com_automatak_dnp3_impl_VTOEndpointImpl.cpp \
+	java/cpp/com_automatak_dnp3_impl_StackBase.cpp \
 	java/cpp/CommandHandlerAdapter.cpp \
 	java/cpp/ConfigReader.cpp \
 	java/cpp/DataObserverAdapter.cpp \
 	java/cpp/JNIHelpers.cpp \
 	java/cpp/LogSubscriberAdapter.cpp
+	
 
 endif
 

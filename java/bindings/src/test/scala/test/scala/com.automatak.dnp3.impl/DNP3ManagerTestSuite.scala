@@ -10,7 +10,7 @@ import mock.{FormattingDataObserver, OutputHandler, ConstantCommandHandler}
 @RunWith(classOf[JUnitRunner])
 class DNP3ManagerTestSuite extends FunSuite with ShouldMatchers {
 
-  val iterations = 100
+  val iterations = 10
 
   def fixture(test: DNP3Manager => Unit): Unit = {
 
@@ -47,6 +47,16 @@ class DNP3ManagerTestSuite extends FunSuite with ShouldMatchers {
     channel.addOutstation("outstation", LogLevel.INFO, SuccessCommandHandler, config)
   }
 
+  def createClientEndpoint(stack: Stack): VTOEndpoint = {
+    val cfg = new VTOEndpointConfig(1, true, false)
+    stack.addTCPClientVTOEndpoint("vtoclient", LogLevel.INFO, "127.0.0.1", 50000, cfg)
+  }
+
+  def createServerEndpoint(stack: Stack): VTOEndpoint = {
+    val cfg = new VTOEndpointConfig(1, true, false)
+    stack.addTCPClientVTOEndpoint("vtoclient", LogLevel.INFO, "127.0.0.1", 50001, cfg)
+  }
+
   test("starts/stops cleanly") {
     fixture { mgr =>
 
@@ -77,6 +87,23 @@ class DNP3ManagerTestSuite extends FunSuite with ShouldMatchers {
       val master = createMaster(createClient(mgr))
       outstation.shutdown()
       master.shutdown()
+    }
+  }
+
+  test("Can add vto routers and automatically shutdown") {
+    fixture { mgr =>
+      createClientEndpoint(createOutstation(createServer(mgr)))
+      createServerEndpoint(createMaster(createClient(mgr)))
+    }
+  }
+
+  test("Can add vto routers and manually shutdown") {
+    fixture { mgr =>
+      val clientEndpoint = createClientEndpoint(createOutstation(createServer(mgr)))
+      val serverEndpoint = createServerEndpoint(createMaster(createClient(mgr)))
+
+      clientEndpoint.shutdown()
+      serverEndpoint.shutdown()
     }
   }
 

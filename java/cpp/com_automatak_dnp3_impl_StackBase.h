@@ -10,18 +10,18 @@ extern "C" {
 /*
  * Class:     com_automatak_dnp3_impl_StackBase
  * Method:    get_tcpclient_vto_endpoint
- * Signature: (JLjava/lang/String;Lcom/automatak/dnp3/LogLevel;Ljava/lang/String;IBJJZZ)J
+ * Signature: (JLjava/lang/String;ILjava/lang/String;IBJJZZ)J
  */
 JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_StackBase_get_1tcpclient_1vto_1endpoint
-  (JNIEnv *, jobject, jlong, jstring, jobject, jstring, jint, jbyte, jlong, jlong, jboolean, jboolean);
+  (JNIEnv *, jobject, jlong, jstring, jint, jstring, jint, jbyte, jlong, jlong, jboolean, jboolean);
 
 /*
  * Class:     com_automatak_dnp3_impl_StackBase
  * Method:    get_tcpserver_vto_endpoint
- * Signature: (JLjava/lang/String;Lcom/automatak/dnp3/LogLevel;Ljava/lang/String;IBJJZZ)J
+ * Signature: (JLjava/lang/String;ILjava/lang/String;IBJJZZ)J
  */
 JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_StackBase_get_1tcpserver_1vto_1endpoint
-  (JNIEnv *, jobject, jlong, jstring, jobject, jstring, jint, jbyte, jlong, jlong, jboolean, jboolean);
+  (JNIEnv *, jobject, jlong, jstring, jint, jstring, jint, jbyte, jlong, jlong, jboolean, jboolean);
 
 #ifdef __cplusplus
 }
