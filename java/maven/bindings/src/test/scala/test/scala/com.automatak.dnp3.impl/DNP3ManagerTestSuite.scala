@@ -5,7 +5,7 @@ import org.scalatest.junit.JUnitRunner
 import org.junit.runner.RunWith
 import org.scalatest.matchers.ShouldMatchers
 import com.automatak.dnp3._
-import com.automatak.dnp3.example.{ConstantCommandHandler, PrintingDataObserver, OutputHandler}
+import com.automatak.dnp3.example.{ConstantCommandHandler, FormattingDataObserver, OutputHandler}
 
 @RunWith(classOf[JUnitRunner])
 class DNP3ManagerTestSuite extends FunSuite with ShouldMatchers {
@@ -28,7 +28,7 @@ class DNP3ManagerTestSuite extends FunSuite with ShouldMatchers {
 
   object SuccessCommandHandler extends ConstantCommandHandler(CommandStatus.SUCCESS)
 
-  object NullDataObserver extends PrintingDataObserver(new OutputHandler {
+  object NullDataObserver extends FormattingDataObserver(new OutputHandler {
     def handleOutput(msg: String) = {}
   })
 

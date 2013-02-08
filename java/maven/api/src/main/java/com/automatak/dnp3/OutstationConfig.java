@@ -18,6 +18,9 @@
  */
 package com.automatak.dnp3;
 
+/**
+ * Configuration class that controls how an outstation behaves
+ */
 public class OutstationConfig {
 
     /**
@@ -75,7 +78,6 @@ public class OutstationConfig {
      * The number of objects to store in the VtoWriter queue. Defaults to 1024.
      */
     public int vtoWriterQueueSize = 1024;
-
 
     /**
      * The number of binary events the slave will buffer before overflowing (defaults to 1000)
