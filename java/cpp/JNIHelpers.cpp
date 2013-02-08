@@ -75,5 +75,52 @@ jmethodID JNIHelpers::GetMethodID(JNIEnv* apEnv, jclass clazz, const char* name,
 	return mid;
 }
 
+jmethodID JNIHelpers::GetMethodID(JNIEnv* apEnv, jobject obj, const char* name, const char* sig)
+{
+	jclass clazz = apEnv->GetObjectClass(obj);
+	assert(clazz != nullptr);
+	return GetMethodID(apEnv, clazz, name, sig);
+}
+
+jint JNIHelpers::GetIntField(JNIEnv* apEnv, jobject obj, const char* fieldId)
+{
+	jclass clazz = apEnv->GetObjectClass(obj);
+	assert(clazz != nullptr);
+	jfieldID field = apEnv->GetFieldID(clazz, fieldId, "I");
+	assert(field != nullptr);
+	return apEnv->GetIntField(obj, field);
+}
+
+jlong JNIHelpers::GetLongField(JNIEnv* apEnv, jobject obj, const char* fieldId)
+{
+	jclass clazz = apEnv->GetObjectClass(obj);
+	assert(clazz != nullptr);
+	jfieldID field = apEnv->GetFieldID(clazz, fieldId, "J");
+	assert(field != nullptr);
+	return apEnv->GetLongField(obj, field);
+}
+
+bool JNIHelpers::GetBoolField(JNIEnv* apEnv, jobject obj, const char* fieldId)
+{
+	jclass clazz = apEnv->GetObjectClass(obj);
+	assert(clazz != nullptr);
+	jfieldID field = apEnv->GetFieldID(clazz, fieldId, "Z");
+	assert(field != nullptr);
+	return apEnv->GetBooleanField(obj, field);
+}
+
+jobject JNIHelpers::GetObjectField(JNIEnv* apEnv, jobject obj, const char* fieldId, const char* fqcn)
+{
+	jclass clazz = apEnv->GetObjectClass(obj);
+	assert(clazz != nullptr);
+	jfieldID field = apEnv->GetFieldID(clazz, fieldId, fqcn);
+	assert(field != nullptr);
+	jobject ret = apEnv->GetObjectField(obj, field);	
+	assert(ret != nullptr);
+	return ret;
+}
+
+
+
 
 

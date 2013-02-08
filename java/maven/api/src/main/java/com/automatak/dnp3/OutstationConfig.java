@@ -80,22 +80,22 @@ public class OutstationConfig {
     /**
      * The number of binary events the slave will buffer before overflowing (defaults to 1000)
      */
-    int maxBinaryEvents = 1000;
+    public int maxBinaryEvents = 1000;
 
     /**
      * The number of analog events the slave will buffer before overflowing (defaults to 1000)
      */
-    int maxAnalogEvents = 1000;
+    public int maxAnalogEvents = 1000;
 
     /**
      * The number of counter events the slave will buffer before overflowing (defaults to 1000)
      */
-    int maxCounterEvents = 1000;
+    public int maxCounterEvents = 1000;
 
     /**
      * The number of vto events the slave will buffer before overflowing (defaults to 100)
      */
-    int maxVtoEvents = 100;
+    public int maxVtoEvents = 100;
 
     /**
      * The default group/variation to use for static binary responses (default 1:2)

@@ -24,7 +24,7 @@ import java.util.List;
 /**
  * Configuration class for the outstation database
  */
-public class OutstationDatabaseConfig {
+public class DatabaseConfig {
 
     public final List<EventPointRecord> binaryInputs;
     public final List<DeadbandPointRecord> analogInputs;
@@ -33,7 +33,7 @@ public class OutstationDatabaseConfig {
     public final List<PointRecord> analogOutputStatii;
 
 
-    public OutstationDatabaseConfig(int numBinary, int numAnalog, int numCounter, int numBinaryOutputStatus, int numAnalogOutputStatus)
+    public DatabaseConfig(int numBinary, int numAnalog, int numCounter, int numBinaryOutputStatus, int numAnalogOutputStatus)
     {
         this.binaryInputs = new ArrayList<EventPointRecord>(numBinary);
         for(int i=0; i<numBinary; ++i) this.binaryInputs.add(new EventPointRecord());

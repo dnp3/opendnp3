@@ -42,7 +42,7 @@ class DNP3ManagerTestSuite extends FunSuite with ShouldMatchers {
   }
 
   def createOutstation(channel: Channel): Outstation = {
-    val db = new OutstationDatabaseConfig(5,5,5,5,5)
+    val db = new DatabaseConfig(5,5,5,5,5)
     val config = new OutstationStackConfig(db)
     channel.addOutstation("outstation", LogLevel.INFO, SuccessCommandHandler, config)
   }

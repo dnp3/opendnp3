@@ -38,14 +38,14 @@ public class OutstationStackConfig {
     /**
      * Outstation database configuration
      */
-    public final OutstationDatabaseConfig database;
+    public final DatabaseConfig databaseConfig;
 
     /**
      * Constructor for an outstation stack with sensible defaults
-     * @param database Database layout for the outstation
+     * @param databaseConfig Database layout for the outstation
      */
-    public OutstationStackConfig(OutstationDatabaseConfig database)
+    public OutstationStackConfig(DatabaseConfig databaseConfig)
     {
-        this.database = database;
+        this.databaseConfig = databaseConfig;
     }
 }

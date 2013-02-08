@@ -2,6 +2,8 @@
 #include "ConfigReader.h"
 
 
+#include "JNIHelpers.h"
+
 #include <iostream>
 #include <assert.h>
 
@@ -54,6 +56,84 @@ SlaveStackConfig ConfigReader::ConvertSlaveStackConfig(JNIEnv* apEnv, jobject jC
 		assert(obj != nullptr);
 		cfg.app = ConvertAppConfig(apEnv, obj);
 	}
+	{
+		jfieldID field = apEnv->GetFieldID(clazz, "outstationConfig", "Lcom/automatak/dnp3/OutstationConfig;");
+		assert(field != nullptr);
+		jobject obj = apEnv->GetObjectField(jCfg, field);
+		assert(obj != nullptr);
+		cfg.slave = ConvertOutstationConfig(apEnv, obj);
+	}
+	{
+		jfieldID field = apEnv->GetFieldID(clazz, "databaseConfig", "Lcom/automatak/dnp3/DatabaseConfig;");
+		assert(field != nullptr);
+		jobject obj = apEnv->GetObjectField(jCfg, field);
+		assert(obj != nullptr);
+		cfg.device = ConvertDatabaseConfig(apEnv, obj);
+	}
+
+	return cfg;
+}
+
+SlaveConfig ConfigReader::ConvertOutstationConfig(JNIEnv* apEnv, jobject jCfg)
+{
+	SlaveConfig cfg;
+	jclass clazz = apEnv->GetObjectClass(jCfg);
+	{
+
+	}
+
+/*
+  public int maxControls;
+    Signature: I
+  public boolean disableUnsol;
+    Signature: Z
+  public int unsolMask;
+    Signature: I
+  public boolean allowTimeSync;
+    Signature: Z
+  public long timeSyncPeriodMs;
+    Signature: J
+  public long unsolPackDelayMs;
+    Signature: J
+  public long unsolRetryDelayMs;
+    Signature: J
+  public int maxFragSize;
+    Signature: I
+  public int vtoWriterQueueSize;
+    Signature: I
+  int maxBinaryEvents;
+    Signature: I
+  int maxAnalogEvents;
+    Signature: I
+  int maxCounterEvents;
+    Signature: I
+  int maxVtoEvents;
+    Signature: I
+  public final com.automatak.dnp3.GroupVariation staticBinaryInput;
+    Signature: Lcom/automatak/dnp3/GroupVariation;
+  public final com.automatak.dnp3.GroupVariation staticAnalogInput;
+    Signature: Lcom/automatak/dnp3/GroupVariation;
+  public final com.automatak.dnp3.GroupVariation staticCounter;
+    Signature: Lcom/automatak/dnp3/GroupVariation;
+  public final com.automatak.dnp3.GroupVariation staticAnalogOutputStatus;
+    Signature: Lcom/automatak/dnp3/GroupVariation;
+  public final com.automatak.dnp3.GroupVariation eventBinaryInput;
+    Signature: Lcom/automatak/dnp3/GroupVariation;
+  public final com.automatak.dnp3.GroupVariation eventAnalogInput;
+    Signature: Lcom/automatak/dnp3/GroupVariation;
+  public final com.automatak.dnp3.GroupVariation eventCounter;
+    Signature: Lcom/automatak/dnp3/GroupVariation;
+  public final com.automatak.dnp3.GroupVariation eventVto;
+    Signature: Lcom/automatak/dnp3/GroupVariation;
+*/		
+	
+	
+	return cfg;
+}
+
+DeviceTemplate ConfigReader::ConvertDatabaseConfig(JNIEnv* apEnv, jobject jCfg)
+{
+	DeviceTemplate cfg;
 
 	return cfg;
 }
@@ -62,90 +142,34 @@ SlaveStackConfig ConfigReader::ConvertSlaveStackConfig(JNIEnv* apEnv, jobject jC
 MasterConfig ConfigReader::ConvertMasterConfig(JNIEnv* apEnv, jobject jCfg)
 {
 	MasterConfig cfg;
-	jclass clazz = apEnv->GetObjectClass(jCfg);
 
-	{
-		jfieldID field = apEnv->GetFieldID(clazz, "maxRequestFragmentSize", "I");
-		assert(field != nullptr);
-		cfg.FragSize = apEnv->GetIntField(jCfg, field);
-	}
-	{
-		jfieldID field = apEnv->GetFieldID(clazz, "vtoWriterQueueSize", "I");
-		assert(field != nullptr);
-		cfg.VtoWriterQueueSize = apEnv->GetIntField(jCfg, field);
-	}
-	{
-		jfieldID field = apEnv->GetFieldID(clazz, "useNonStandardVtoFunction", "Z");
-		assert(field != nullptr);
-		cfg.UseNonStandardVtoFunction = apEnv->GetBooleanField(jCfg, field);
-	}
-	{
-		jfieldID field = apEnv->GetFieldID(clazz, "allowTimeSync", "Z");
-		assert(field != nullptr);
-		cfg.AllowTimeSync = apEnv->GetBooleanField(jCfg, field);
-	}
-	{
-		jfieldID field = apEnv->GetFieldID(clazz, "doUnsolOnStartup", "Z");
-		assert(field != nullptr);
-		cfg.DoUnsolOnStartup = apEnv->GetBooleanField(jCfg, field);
-	}
-	{
-		jfieldID field = apEnv->GetFieldID(clazz, "doUnsolOnStartup", "Z");
-		assert(field != nullptr);
-		cfg.DoUnsolOnStartup = apEnv->GetBooleanField(jCfg, field);
-	}
-	{
-		jfieldID field = apEnv->GetFieldID(clazz, "enableUnsol", "Z");
-		assert(field != nullptr);
-		cfg.EnableUnsol = apEnv->GetBooleanField(jCfg, field);
-	}	
-	{
-		jfieldID field = apEnv->GetFieldID(clazz, "unsolClassMask", "I");
-		assert(field != nullptr);
-		cfg.UnsolClassMask = apEnv->GetIntField(jCfg, field);
-	}
-	{
-		jfieldID field = apEnv->GetFieldID(clazz, "integrityRateMs", "J");
-		assert(field != nullptr);
-		cfg.IntegrityRate = apEnv->GetLongField(jCfg, field);
-	}
-	{
-		jfieldID field = apEnv->GetFieldID(clazz, "taskRetryRateMs", "J");
-		assert(field != nullptr);
-		cfg.TaskRetryRate = apEnv->GetLongField(jCfg, field);
-	}
+	cfg.FragSize = JNIHelpers::GetIntField(apEnv, jCfg, "maxRequestFragmentSize");
+	cfg.VtoWriterQueueSize = JNIHelpers::GetIntField(apEnv, jCfg, "vtoWriterQueueSize");
+	cfg.UseNonStandardVtoFunction = JNIHelpers::GetBoolField(apEnv, jCfg, "useNonStandardVtoFunction");	
+	cfg.AllowTimeSync = JNIHelpers::GetBoolField(apEnv, jCfg, "allowTimeSync");
+	cfg.DoUnsolOnStartup = JNIHelpers::GetBoolField(apEnv, jCfg, "doUnsolOnStartup");
+	cfg.EnableUnsol = JNIHelpers::GetBoolField(apEnv, jCfg, "enableUnsol");
+	cfg.UnsolClassMask = JNIHelpers::GetIntField(apEnv, jCfg, "unsolClassMask");
+	cfg.IntegrityRate = JNIHelpers::GetLongField(apEnv, jCfg, "integrityRateMs");
+	cfg.TaskRetryRate = JNIHelpers::GetLongField(apEnv, jCfg, "taskRetryRateMs");
+	
+	jobject list = JNIHelpers::GetObjectField(apEnv, jCfg, "scans", "Ljava/util/List;");
 
+	jmethodID sizeMID = JNIHelpers::GetMethodID(apEnv, list, "size", "()I");	
+	jint size = apEnv->CallIntMethod(list, sizeMID);
+
+	jmethodID getMID = JNIHelpers::GetMethodID(apEnv, list, "get", "(I)Ljava/lang/Object;");
+
+	for(jint i=0; i< size; ++i)
 	{
-		jfieldID field = apEnv->GetFieldID(clazz, "scans", "Ljava/util/List;");
-		assert(field != nullptr);
-		jobject list = apEnv->GetObjectField(jCfg, field);
-		assert(list != nullptr);
-		jclass clazz = apEnv->GetObjectClass(list);
-		assert(clazz != nullptr);
-		jmethodID sizeMID = apEnv->GetMethodID(clazz, "size", "()I");
-		jint size = apEnv->CallIntMethod(list, sizeMID);
+		jobject scan = apEnv->CallObjectMethod(list, getMID, i); 
+		assert(scan != nullptr);
+		
+		int mask = JNIHelpers::GetIntField(apEnv, scan, "classMask");
+		long rate = JNIHelpers::GetLongField(apEnv, scan, "scanRateMs"); 		
 
-		jmethodID getMID = apEnv->GetMethodID(clazz, "get", "(I)Ljava/lang/Object;");
-		assert(getMID != nullptr);
-
-		for(jint i=0; i< size; ++i)
-		{
-			jobject scan = apEnv->CallObjectMethod(list, getMID, i); 
-			assert(scan != nullptr);
-			jclass exScanClass = apEnv->GetObjectClass(scan);
-			assert(exScanClass != nullptr);
-			jfieldID fieldMask = apEnv->GetFieldID(exScanClass, "classMask", "I");
-			assert(fieldMask != nullptr);
-			jfieldID fieldScanRateMs = apEnv->GetFieldID(exScanClass, "scanRateMs", "J");
-			assert(fieldScanRateMs != nullptr);
-
-			jint classMask = apEnv->GetIntField(scan, fieldMask);
-			jlong scanRateMs = apEnv->GetIntField(scan, fieldMask);
-
-			cfg.AddExceptionScan(classMask, scanRateMs);
-		}
+		cfg.AddExceptionScan(mask, rate);
 	}
-
 
 	return cfg;
 }
