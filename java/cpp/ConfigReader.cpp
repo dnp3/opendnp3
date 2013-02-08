@@ -12,28 +12,11 @@ using namespace opendnp3;
 MasterStackConfig ConfigReader::ConvertMasterStackConfig(JNIEnv* apEnv, jobject jCfg)
 {
 	MasterStackConfig cfg;
-	jclass clazz = apEnv->GetObjectClass(jCfg);
-	{
-		jfieldID field = apEnv->GetFieldID(clazz, "linkConfig", "Lcom/automatak/dnp3/LinkLayerConfig;");
-		assert(field != nullptr);
-		jobject obj = apEnv->GetObjectField(jCfg, field);
-		assert(obj != nullptr);
-		cfg.link = ConvertLinkConfig(apEnv, obj);
-	}
-	{
-		jfieldID field = apEnv->GetFieldID(clazz, "appConfig", "Lcom/automatak/dnp3/AppLayerConfig;");
-		assert(field != nullptr);
-		jobject obj = apEnv->GetObjectField(jCfg, field);
-		assert(obj != nullptr);
-		cfg.app = ConvertAppConfig(apEnv, obj);
-	}
-	{
-		jfieldID field = apEnv->GetFieldID(clazz, "masterConfig", "Lcom/automatak/dnp3/MasterConfig;");
-		assert(field != nullptr);
-		jobject obj = apEnv->GetObjectField(jCfg, field);
-		assert(obj != nullptr);
-		cfg.master = ConvertMasterConfig(apEnv, obj);
-	}
+	
+	cfg.link = ConvertLinkConfig(apEnv, JNIHelpers::GetObjectField(apEnv, jCfg, "linkConfig", "Lcom/automatak/dnp3/LinkLayerConfig;"));
+	cfg.app = ConvertAppConfig(apEnv, JNIHelpers::GetObjectField(apEnv, jCfg, "appConfig", "Lcom/automatak/dnp3/AppLayerConfig;"));
+	cfg.master = ConvertMasterConfig(apEnv, JNIHelpers::GetObjectField(apEnv, jCfg, "masterConfig", "Lcom/automatak/dnp3/MasterConfig;"));
+
 	return cfg;
 }
 
@@ -42,34 +25,10 @@ SlaveStackConfig ConfigReader::ConvertSlaveStackConfig(JNIEnv* apEnv, jobject jC
 	SlaveStackConfig cfg;
 	jclass clazz = apEnv->GetObjectClass(jCfg);
 
-	{
-		jfieldID field = apEnv->GetFieldID(clazz, "linkConfig", "Lcom/automatak/dnp3/LinkLayerConfig;");
-		assert(field != nullptr);
-		jobject obj = apEnv->GetObjectField(jCfg, field);
-		assert(obj != nullptr);
-		cfg.link = ConvertLinkConfig(apEnv, obj);
-	}
-	{
-		jfieldID field = apEnv->GetFieldID(clazz, "appConfig", "Lcom/automatak/dnp3/AppLayerConfig;");
-		assert(field != nullptr);
-		jobject obj = apEnv->GetObjectField(jCfg, field);
-		assert(obj != nullptr);
-		cfg.app = ConvertAppConfig(apEnv, obj);
-	}
-	{
-		jfieldID field = apEnv->GetFieldID(clazz, "outstationConfig", "Lcom/automatak/dnp3/OutstationConfig;");
-		assert(field != nullptr);
-		jobject obj = apEnv->GetObjectField(jCfg, field);
-		assert(obj != nullptr);
-		cfg.slave = ConvertOutstationConfig(apEnv, obj);
-	}
-	{
-		jfieldID field = apEnv->GetFieldID(clazz, "databaseConfig", "Lcom/automatak/dnp3/DatabaseConfig;");
-		assert(field != nullptr);
-		jobject obj = apEnv->GetObjectField(jCfg, field);
-		assert(obj != nullptr);
-		cfg.device = ConvertDatabaseConfig(apEnv, obj);
-	}
+	cfg.link = ConvertLinkConfig(apEnv, JNIHelpers::GetObjectField(apEnv, jCfg, "linkConfig", "Lcom/automatak/dnp3/LinkLayerConfig;"));
+	cfg.app = ConvertAppConfig(apEnv, JNIHelpers::GetObjectField(apEnv, jCfg, "appConfig", "Lcom/automatak/dnp3/AppLayerConfig;")); 
+	cfg.slave = ConvertOutstationConfig(apEnv, JNIHelpers::GetObjectField(apEnv, jCfg, "outstationConfig", "Lcom/automatak/dnp3/OutstationConfig;"));
+	cfg.device = ConvertDatabaseConfig(apEnv, JNIHelpers::GetObjectField(apEnv, jCfg, "databaseConfig", "Lcom/automatak/dnp3/DatabaseConfig;"));	
 
 	return cfg;
 }
@@ -77,10 +36,7 @@ SlaveStackConfig ConfigReader::ConvertSlaveStackConfig(JNIEnv* apEnv, jobject jC
 SlaveConfig ConfigReader::ConvertOutstationConfig(JNIEnv* apEnv, jobject jCfg)
 {
 	SlaveConfig cfg;
-	jclass clazz = apEnv->GetObjectClass(jCfg);
-	{
-
-	}
+	
 
 /*
   public int maxControls;
@@ -179,21 +135,9 @@ AppConfig ConfigReader::ConvertAppConfig(JNIEnv* apEnv, jobject jCfg)
 	AppConfig cfg;
 	jclass clazz = apEnv->GetObjectClass(jCfg);
 
-	{
-		jfieldID field = apEnv->GetFieldID(clazz, "rspTimeoutMs", "J");
-		assert(field != nullptr);
-		cfg.RspTimeout = apEnv->GetLongField(jCfg, field);
-	}
-	{
-		jfieldID field = apEnv->GetFieldID(clazz, "numRetry", "I");
-		assert(field != nullptr);
-		cfg.NumRetry = apEnv->GetIntField(jCfg, field);
-	}
-	{
-		jfieldID field = apEnv->GetFieldID(clazz, "maxFragSize", "I");
-		assert(field != nullptr);
-		cfg.FragSize = apEnv->GetIntField(jCfg, field);
-	}
+	cfg.RspTimeout = JNIHelpers::GetLongField(apEnv, jCfg, "rspTimeoutMs");
+	cfg.NumRetry = JNIHelpers::GetIntField(apEnv, jCfg, "numRetry"); 
+	cfg.FragSize = JNIHelpers::GetIntField(apEnv, jCfg, "maxFragSize");
 	
 	return cfg;	
 }
@@ -201,34 +145,13 @@ AppConfig ConfigReader::ConvertAppConfig(JNIEnv* apEnv, jobject jCfg)
 LinkConfig ConfigReader::ConvertLinkConfig(JNIEnv* apEnv, jobject jCfg)
 {
 	LinkConfig cfg(true, false);
-	jclass clazz = apEnv->GetObjectClass(jCfg);
-
 	
-	{
-		jfieldID field = apEnv->GetFieldID(clazz, "isMaster", "Z");
-		assert(field != nullptr);
-		cfg.IsMaster = apEnv->GetBooleanField(jCfg, field);
-	}
-	{
-		jfieldID field = apEnv->GetFieldID(clazz, "useConfirms", "Z");
-		assert(field != nullptr);
-		cfg.UseConfirms = apEnv->GetBooleanField(jCfg, field);
-	}
-	{
-		jfieldID field = apEnv->GetFieldID(clazz, "numRetry", "I");
-		assert(field != nullptr);
-		cfg.UseConfirms = apEnv->GetIntField(jCfg, field);
-	}
-	{
-		jfieldID field = apEnv->GetFieldID(clazz, "localAddr", "I");
-		assert(field != nullptr);
-		cfg.LocalAddr = apEnv->GetIntField(jCfg, field);
-	}
-	{
-		jfieldID field = apEnv->GetFieldID(clazz, "remoteAddr", "I");
-		assert(field != nullptr);
-		cfg.RemoteAddr = apEnv->GetIntField(jCfg, field);
-	}	
+	cfg.IsMaster = JNIHelpers::GetBoolField(apEnv, jCfg, "isMaster");
+	cfg.IsMaster = JNIHelpers::GetBoolField(apEnv, jCfg, "useConfirms");
+	cfg.UseConfirms = JNIHelpers::GetIntField(apEnv, jCfg, "numRetry");
+	cfg.LocalAddr = JNIHelpers::GetIntField(apEnv, jCfg, "localAddr");	
+	cfg.RemoteAddr = JNIHelpers::GetIntField(apEnv, jCfg, "remoteAddr");		
+
 	return cfg;
 }
 
