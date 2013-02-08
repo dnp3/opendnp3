@@ -20,7 +20,7 @@
     <properties>
         <junit.version>4.10</junit.version>
         <maven-license-plugin.version>1.9.0</maven-license-plugin.version>
-        <maven-javadoc-plugin.version>2.8.1</maven-javadoc-plugin.version>
+        <maven-javadoc-plugin.version>2.9</maven-javadoc-plugin.version>
         <maven-scala.plugin.version>3.1.3</maven-scala.plugin.version>
         <maven-source-plugin.version>2.1.2</maven-source-plugin.version>
         <maven-bundle.version>2.1.0</maven-bundle.version>
@@ -60,6 +60,7 @@
             <url>https://oss.sonatype.org/content/repositories/snapshots</url>
         </snapshotRepository>
     </distributionManagement>
+
 
     <build>
         <plugins>
@@ -119,12 +120,25 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <version>${maven-javadoc-plugin.version}</version>
+                <configuration>
+                    <!-- Default configuration for all reports -->
+                </configuration>
                 <executions>
                     <execution>
                         <id>attach-javadocs</id>
                         <goals>
                             <goal>jar</goal>
                         </goals>
+                    </execution>
+                    <execution>
+                        <id>aggregate</id>
+                        <goals>
+                            <goal>aggregate</goal>
+                        </goals>
+                        <phase>site</phase>
+                        <configuration>
+                            <!-- Specific configuration for the aggregate report -->
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
