@@ -43,47 +43,47 @@ public class MasterConfig {
     /**
      * The number of objects to store in the VtoWriter queue.
      */
-    int vtoWriterQueueSize = 1024;
+    public int vtoWriterQueueSize = 1024;
 
     /**
      * Using FC_WRITE is a problem with vto because the spec won't allow it to retry
      */
-    boolean useNonStandardVtoFunction = false;
+    public boolean useNonStandardVtoFunction = false;
 
     /**
      * If true, the master will do time syncs when it sees the time IIN bit from the slave
      */
-    boolean allowTimeSync = true;
+    public boolean allowTimeSync = true;
 
     /**
      * If true, the master will enable/disable unsol on startup
      */
-    boolean doUnsolOnStartup = true;
+    public boolean doUnsolOnStartup = true;
 
     /**
      * If DoUnsolOnStartup == true, the master will use this bit to decide wether to enable (true) or disable (false)
      */
-    boolean enableUnsol = false;
+    public boolean enableUnsol = false;
 
     /**
      * Bitwise mask used determine which classes are enabled/disabled for unsol
      */
-    int unsolClassMask = PointClass.ALL_EVENTS.toInt();
+    public int unsolClassMask = PointClass.ALL_EVENTS.toInt();
 
     /**
      * Period for integrity scans (class 0), -1 for non periodic
      */
-    long integrityRateMs = 5000;
+    public long integrityRateMs = 5000;
 
     /**
      * Time delay between task retries
      */
-    long taskRetryRateMs = 5000;
+    public long taskRetryRateMs = 5000;
 
     /**
      * vector that holds exception scans, defaults to empty list
      */
-    final List<ExceptionScan> scans = new LinkedList<ExceptionScan>();
+    public final List<ExceptionScan> scans = new LinkedList<ExceptionScan>();
 
 
 

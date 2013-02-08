@@ -33,7 +33,7 @@ public enum PointClass {
         this.id = id;
     }
 
-    int toInt()
+    public int toInt()
     {
         return id;
     }

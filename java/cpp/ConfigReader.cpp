@@ -130,7 +130,7 @@ MasterConfig ConfigReader::ConvertMasterConfig(JNIEnv* apEnv, jobject jCfg)
 
 		for(jint i=0; i< size; ++i)
 		{
-			jobject scan = apEnv->CallObjectMethod(list, getMID); 
+			jobject scan = apEnv->CallObjectMethod(list, getMID, i); 
 			assert(scan != nullptr);
 			jclass exScanClass = apEnv->GetObjectClass(scan);
 			assert(exScanClass != nullptr);

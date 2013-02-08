@@ -18,9 +18,7 @@
  */
 package com.automatak.dnp3;
 
-
-
-class ExceptionScan
+public class ExceptionScan
 {
         public int classMask;
         public long scanRateMs;

@@ -37,7 +37,7 @@ class DNP3ManagerTestSuite extends FunSuite with ShouldMatchers {
 
   def createMaster(channel: Channel) : Master = {
     val config = new MasterStackConfig
-    config.masterConfig.scans.add(new ExceptionScan(PointClass.ALL_EVENTS, 5000))
+    config.masterConfig.scans.add(new ExceptionScan(PointClass.ALL_EVENTS.toInt(), 5000))
     channel.addMaster("master", LogLevel.INFO, NullDataObserver, config)
   }
 
