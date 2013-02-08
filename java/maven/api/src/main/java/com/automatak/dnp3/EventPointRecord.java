@@ -18,16 +18,22 @@
  */
 package com.automatak.dnp3;
 
+/**
+ * Database point record for an type that can have an event class assigned
+ */
 public class EventPointRecord extends PointRecord {
 
     /**
      * when the point changes, it will generate an event unless pointClass == CLASS_0
      */
-    public PointClass pointClass;
+    public int pointClass;
 
+    /**
+     * Defaults to CLASS 1
+     */
     public EventPointRecord()
     {
-        pointClass = PointClass.CLASS_1;
+        pointClass = PointClass.CLASS_1.toInt();
     }
 
 }

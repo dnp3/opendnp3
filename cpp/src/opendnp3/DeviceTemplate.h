@@ -72,16 +72,6 @@ private:
 		}
 	}
 
-	// Helper function for setting up default names
-	template <class T>
-	void InitNames(const std::string& arName, std::vector<T>& arVec) {
-		for(size_t i = 0; i < arVec.size(); ++i) {
-			std::ostringstream oss;
-			oss << arName << i;
-			arVec[i].Name = oss.str();
-		}
-	}
-
 };
 
 }

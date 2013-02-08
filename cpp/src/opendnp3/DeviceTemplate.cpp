@@ -38,11 +38,11 @@ DeviceTemplate::DeviceTemplate(size_t aNumBinary,
                                size_t aNumSetpointStatus) :
 	mStartOnline(false)
 {
-	this->mBinary.resize(aNumBinary);	this->InitNames("Binary", mBinary);
-	this->mAnalog.resize(aNumAnalog);	this->InitNames("Analog", mAnalog);
-	this->mCounter.resize(aNumCounter); this->InitNames("Counter", mCounter);
-	this->mControlStatus.resize(aNumControlStatus); this->InitNames("ControlStatus", mControlStatus);
-	this->mSetpointStatus.resize(aNumSetpointStatus); this->InitNames("SetpointStatus", mSetpointStatus);
+	this->mBinary.resize(aNumBinary);
+	this->mAnalog.resize(aNumAnalog);
+	this->mCounter.resize(aNumCounter);
+	this->mControlStatus.resize(aNumControlStatus);
+	this->mSetpointStatus.resize(aNumSetpointStatus);
 }
 
 void DeviceTemplate::Publish(IDataObserver* apObs)

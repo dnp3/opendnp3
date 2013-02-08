@@ -58,6 +58,7 @@ class JNIHelpers
 		static jint GetIntField(JNIEnv* apEnv, jobject obj, const char* fieldId);
 		static jlong GetLongField(JNIEnv* apEnv, jobject obj, const char* fieldId);
 		static bool GetBoolField(JNIEnv* apEnv, jobject obj, const char* fieldId);
+		static jdouble GetDoubleField(JNIEnv* apEnv, jobject obj, const char* fieldId);
 		static jobject GetObjectField(JNIEnv* apEnv, jobject obj, const char* fieldId, const char* fqcn);
 
 		static void IterateOverListOfObjects(JNIEnv* apEnv, jobject list, std::function<void (jobject)> fun);

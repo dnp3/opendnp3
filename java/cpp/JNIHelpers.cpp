@@ -122,6 +122,13 @@ bool JNIHelpers::GetBoolField(JNIEnv* apEnv, jobject obj, const char* fieldId)
 	return apEnv->GetBooleanField(obj, field);
 }
 
+jdouble JNIHelpers::GetDoubleField(JNIEnv* apEnv, jobject obj, const char* fieldId)
+{
+	jfieldID field = apEnv->GetFieldID(GetClassForObject(apEnv, obj), fieldId, "D");
+	if(field == nullptr) MACRO_THROW_EXCEPTION("Unable to get double field: " << fieldId)
+	return apEnv->GetDoubleField(obj, field);
+}
+
 jobject JNIHelpers::GetObjectField(JNIEnv* apEnv, jobject obj, const char* fieldId, const char* fqcn)
 {
 	

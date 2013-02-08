@@ -19,12 +19,18 @@
 package com.automatak.dnp3;
 
 /**
- *
+ * Database point record for an type that can have an event class assigned and a deadband assigned
  */
 public class DeadbandPointRecord extends EventPointRecord {
 
+    /**
+     * Value will not event until it has exceeded the deadband value
+     */
     public double deadband;
 
+    /**
+     * Defaults to Class 1, deadband = 0.0
+     */
     public DeadbandPointRecord()
     {
         super();

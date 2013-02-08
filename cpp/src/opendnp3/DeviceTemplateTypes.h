@@ -39,16 +39,14 @@ namespace opendnp3
 
 // base class - all point types have a name
 struct PointRecord {
-	PointRecord(const std::string& arName) : Name(arName) {}
 	PointRecord() {}
 
-	std::string Name;
 };
 
 // Event point records also have a class
 struct EventPointRecord : public PointRecord {
-	EventPointRecord(const std::string& arName, PointClass aPointClass) :
-		PointRecord(arName),
+	EventPointRecord(PointClass aPointClass) :
+		PointRecord(),
 		EventClass(aPointClass)
 	{}
 
@@ -60,8 +58,8 @@ struct EventPointRecord : public PointRecord {
 
 // Adds a deadband parameter
 struct DeadbandPointRecord : public EventPointRecord {
-	DeadbandPointRecord(const std::string& arName, PointClass aPointClass, double aDeadband) :
-		EventPointRecord(arName, aPointClass),
+	DeadbandPointRecord(PointClass aPointClass, double aDeadband) :
+		EventPointRecord(aPointClass),
 		Deadband(aDeadband)
 	{}
 

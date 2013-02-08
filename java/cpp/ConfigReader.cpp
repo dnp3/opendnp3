@@ -78,6 +78,41 @@ DeviceTemplate ConfigReader::ConvertDatabaseConfig(JNIEnv* apEnv, jobject jCfg)
 {
 	DeviceTemplate cfg;
 
+	{
+		jobject list = JNIHelpers::GetObjectField(apEnv, jCfg, "binaryInputs", "Ljava/util/List;");
+		JNIHelpers::IterateOverListOfObjects(apEnv, list, [&](jobject record) {
+			int mask = JNIHelpers::GetIntField(apEnv, record, "pointClass");
+			cfg.mBinary.push_back(EventPointRecord(IntToPointClass(mask)));
+		});
+	}
+	{
+		jobject list = JNIHelpers::GetObjectField(apEnv, jCfg, "analogInputs", "Ljava/util/List;");
+		JNIHelpers::IterateOverListOfObjects(apEnv, list, [&](jobject record) {
+			int mask = JNIHelpers::GetIntField(apEnv, record, "pointClass");
+			double db = JNIHelpers::GetDoubleField(apEnv, record, "deadband");
+			cfg.mBinary.push_back(DeadbandPointRecord(IntToPointClass(mask), db));
+		});
+	}
+	{
+		jobject list = JNIHelpers::GetObjectField(apEnv, jCfg, "counterInputs", "Ljava/util/List;");
+		JNIHelpers::IterateOverListOfObjects(apEnv, list, [&](jobject record) {
+			int mask = JNIHelpers::GetIntField(apEnv, record, "pointClass");
+			cfg.mCounter.push_back(EventPointRecord(IntToPointClass(mask)));
+		});
+	}	
+	{
+		jobject list = JNIHelpers::GetObjectField(apEnv, jCfg, "binaryOutputStatii", "Ljava/util/List;");
+		JNIHelpers::IterateOverListOfObjects(apEnv, list, [&](jobject record) {			
+			cfg.mControlStatus.push_back(PointRecord());
+		});
+	}
+	{
+		jobject list = JNIHelpers::GetObjectField(apEnv, jCfg, "analogOutputStatii", "Ljava/util/List;");
+		JNIHelpers::IterateOverListOfObjects(apEnv, list, [&](jobject record) {			
+			cfg.mSetpointStatus.push_back(PointRecord());
+		});
+	}
+	
 	return cfg;
 }
 

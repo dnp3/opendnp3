@@ -47,8 +47,6 @@ class DNP3ManagerTestSuite extends FunSuite with ShouldMatchers {
     channel.addOutstation("outstation", LogLevel.INFO, SuccessCommandHandler, config)
   }
 
-
-
   test("starts/stops cleanly") {
     fixture { mgr =>
 
