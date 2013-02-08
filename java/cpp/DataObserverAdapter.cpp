@@ -16,12 +16,10 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-#include "DataObserverAdapter.h"
+#include "DataObserverAdapter.hpp"
 
 
 using namespace opendnp3;
-
-#include <iostream>
 
 DataObserverAdapter::DataObserverAdapter(JavaVM* apJVM, jobject aProxy) :
 mpJVM(apJVM),

@@ -17,10 +17,10 @@
  * the License.
  */
 
-#include "ConfigReader.h"
+#include "ConfigReader.hpp"
 
 
-#include "JNIHelpers.h"
+#include "JNIHelpers.hpp"
 
 #include <iostream>
 #include <assert.h>

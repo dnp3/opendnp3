@@ -17,7 +17,7 @@
  * the License.
  */
 
-#include "JNIHelpers.h"
+#include "JNIHelpers.hpp"
 
 #include <opendnp3/Exception.h>
 #include <opendnp3/Location.h>

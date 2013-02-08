@@ -17,8 +17,8 @@
  * the License.
  */
 
-#include "CommandHandlerAdapter.h"
-#include "JNIHelpers.h"
+#include "CommandHandlerAdapter.hpp"
+#include "JNIHelpers.hpp"
 
 #include <assert.h>
 #include <iostream>

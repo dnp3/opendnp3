@@ -18,8 +18,8 @@
  */
 #include "com_automatak_dnp3_impl_ManagerImpl.h"
 
-#include "JNIHelpers.h"
-#include "LogSubscriberAdapter.h"
+#include "JNIHelpers.hpp"
+#include "LogSubscriberAdapter.hpp"
 
 #include <opendnp3/DNP3Manager.h>
 #include <opendnp3/Exception.h>

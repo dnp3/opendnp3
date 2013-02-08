@@ -19,7 +19,7 @@
 #include "com_automatak_dnp3_impl_CommandProcessorImpl.h"
 
 #include <opendnp3/ICommandProcessor.h>
-#include "JNIHelpers.h"
+#include "JNIHelpers.hpp"
 
 using namespace opendnp3;
 

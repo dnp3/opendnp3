@@ -16,12 +16,12 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-#include "LogSubscriberAdapter.h"
+#include "LogSubscriberAdapter.hpp"
 
 #include <iostream>
 #include <chrono>
 
-#include "JNIHelpers.h"
+#include "JNIHelpers.hpp"
 
 LogSubscriberAdapter::LogSubscriberAdapter(JavaVM* apJVM, jobject aProxy) :
 mpJVM(apJVM),

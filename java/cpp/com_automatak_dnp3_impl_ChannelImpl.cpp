@@ -23,10 +23,10 @@
 #include <opendnp3/IOutstation.h>
 #include <opendnp3/Exception.h>
 
-#include "JNIHelpers.h"
-#include "DataObserverAdapter.h"
-#include "CommandHandlerAdapter.h"
-#include "ConfigReader.h"
+#include "JNIHelpers.hpp"
+#include "DataObserverAdapter.hpp"
+#include "CommandHandlerAdapter.hpp"
+#include "ConfigReader.hpp"
 
 #include <iostream>
 
