@@ -19,15 +19,14 @@
 package com.automatak.dnp3;
 
 /**
- * Interface representing an outstation
+ * Represents a Outstation or Master. Can be shutdown and can have Virtual Terminal Object (VTO) endpoints bound to it.
  */
-public interface Outstation extends Stack {
+public interface Stack {
 
     /**
-     *
-     * @return Interface used to load data into the outstation
+     * Permanently shutdown the stack. Calling shutdown() more than once or continuing to use any child objects
+     * of the stack can cause a failure.
      */
-    DataObserver getDataObserver();
-
+    void shutdown();
 
 }

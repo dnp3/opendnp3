@@ -19,15 +19,15 @@
 package com.automatak.dnp3;
 
 /**
- * Interface representing an outstation
+ * Represents a bound Virtual Terminal Object (VTO) endpoint
  */
-public interface Outstation extends Stack {
+public interface VtoEndpoint {
 
     /**
+     * Close the vto endpoint, disassociate it with the stack from which it was created, and cleanup underlying resources
      *
-     * @return Interface used to load data into the outstation
+     * This happens automatically if the stack, channel, or manager are shutdown.
      */
-    DataObserver getDataObserver();
-
+    void shutdown();
 
 }

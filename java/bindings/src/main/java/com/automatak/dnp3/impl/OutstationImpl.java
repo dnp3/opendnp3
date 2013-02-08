@@ -32,11 +32,13 @@ class OutstationImpl implements Outstation {
         this.obs = new DataObserverImpl(get_native_data_observer(nativePointer));
     }
 
+    @Override
     public DataObserver getDataObserver()
     {
         return obs;
     }
 
+    @Override
     public void shutdown()
     {
         shutdown_native(nativePointer);

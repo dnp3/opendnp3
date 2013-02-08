@@ -33,11 +33,13 @@ class MasterImpl implements Master {
         this.processor = new CommandProcessorImpl(get_native_command_processor(nativePointer));
     }
 
+    @Override
     public CommandProcessor getCommandProcessor()
     {
         return this.processor;
     }
 
+    @Override
     public void shutdown()
     {
         shutdown_native(nativePointer);
