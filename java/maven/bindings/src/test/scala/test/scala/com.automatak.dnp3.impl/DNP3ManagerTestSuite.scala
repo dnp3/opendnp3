@@ -15,7 +15,7 @@ class DNP3ManagerTestSuite extends FunSuite with ShouldMatchers {
   def fixture(test: DNP3Manager => Unit): Unit = {
 
       for(i <- (0 to iterations)) {
-        val mgr = DNP3ManagerFactory.createDNP3ManagerWithDefaultConcurrency()
+        val mgr = DNP3ManagerFactory.createDNP3ManagerWithDefaultConcurrency
         try {
           test(mgr)
         }

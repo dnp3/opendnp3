@@ -46,6 +46,7 @@ class ConfigReader
 	static opendnp3::MasterConfig ConvertMasterConfig(JNIEnv* apEnv, jobject jCfg);
 	static opendnp3::SlaveConfig ConvertOutstationConfig(JNIEnv* apEnv, jobject jCfg);
 	static opendnp3::DeviceTemplate ConvertDatabaseConfig(JNIEnv* apEnv, jobject jCfg);
+	static opendnp3::GrpVar ConvertGrpVar(JNIEnv* apEnv, jobject jCfg, const char* fieldId);
 	
 };
 

@@ -47,6 +47,12 @@ struct ClassMask {
 		class3(false)
 	{}
 
+	ClassMask(int aMask) :
+		class1(aMask | PC_CLASS_1),
+		class2(aMask | PC_CLASS_2),
+		class3(aMask | PC_CLASS_3)
+	{}
+
 	bool class1;
 	bool class2;
 	bool class3;

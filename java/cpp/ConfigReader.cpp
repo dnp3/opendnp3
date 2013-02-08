@@ -36,55 +36,42 @@ SlaveConfig ConfigReader::ConvertOutstationConfig(JNIEnv* apEnv, jobject jCfg)
 {
 	SlaveConfig cfg;
 	
-	cfg.mMaxControls  = JNIHelpers::GetIntField(apEnv, jCfg, "maxControl");
+	cfg.mMaxControls  = JNIHelpers::GetIntField(apEnv, jCfg, "maxControls");
+	cfg.mDisableUnsol = JNIHelpers::GetBoolField(apEnv, jCfg, "disableUnsol");
+	cfg.mUnsolMask  = ClassMask(JNIHelpers::GetIntField(apEnv, jCfg, "unsolMask"));
+	cfg.mAllowTimeSync = JNIHelpers::GetBoolField(apEnv, jCfg, "allowTimeSync");
+	cfg.mTimeSyncPeriod  = JNIHelpers::GetLongField(apEnv, jCfg, "timeSyncPeriodMs");
+	cfg.mUnsolPackDelay  = JNIHelpers::GetLongField(apEnv, jCfg, "unsolPackDelayMs");
+	cfg.mUnsolRetryDelay  = JNIHelpers::GetLongField(apEnv, jCfg, "unsolRetryDelayMs");
+	cfg.mMaxFragSize  = JNIHelpers::GetIntField(apEnv, jCfg, "maxFragSize");
+	cfg.mVtoWriterQueueSize = JNIHelpers::GetIntField(apEnv, jCfg, "vtoWriterQueueSize");
 
-/*
-  public int maxControls;
-    Signature: I
-  public boolean disableUnsol;
-    Signature: Z
-  public int unsolMask;
-    Signature: I
-  public boolean allowTimeSync;
-    Signature: Z
-  public long timeSyncPeriodMs;
-    Signature: J
-  public long unsolPackDelayMs;
-    Signature: J
-  public long unsolRetryDelayMs;
-    Signature: J
-  public int maxFragSize;
-    Signature: I
-  public int vtoWriterQueueSize;
-    Signature: I
-  int maxBinaryEvents;
-    Signature: I
-  int maxAnalogEvents;
-    Signature: I
-  int maxCounterEvents;
-    Signature: I
-  int maxVtoEvents;
-    Signature: I
-  public final com.automatak.dnp3.GroupVariation staticBinaryInput;
-    Signature: Lcom/automatak/dnp3/GroupVariation;
-  public final com.automatak.dnp3.GroupVariation staticAnalogInput;
-    Signature: Lcom/automatak/dnp3/GroupVariation;
-  public final com.automatak.dnp3.GroupVariation staticCounter;
-    Signature: Lcom/automatak/dnp3/GroupVariation;
-  public final com.automatak.dnp3.GroupVariation staticAnalogOutputStatus;
-    Signature: Lcom/automatak/dnp3/GroupVariation;
-  public final com.automatak.dnp3.GroupVariation eventBinaryInput;
-    Signature: Lcom/automatak/dnp3/GroupVariation;
-  public final com.automatak.dnp3.GroupVariation eventAnalogInput;
-    Signature: Lcom/automatak/dnp3/GroupVariation;
-  public final com.automatak.dnp3.GroupVariation eventCounter;
-    Signature: Lcom/automatak/dnp3/GroupVariation;
-  public final com.automatak.dnp3.GroupVariation eventVto;
-    Signature: Lcom/automatak/dnp3/GroupVariation;
-*/		
+	jint maxBinaryEvents = JNIHelpers::GetIntField(apEnv, jCfg, "maxBinaryEvents");
+	jint maxAnalogEvents = JNIHelpers::GetIntField(apEnv, jCfg, "maxAnalogEvents");
+	jint maxCounterEvents = JNIHelpers::GetIntField(apEnv, jCfg, "maxCounterEvents");
+	jint maxVtoEvents = JNIHelpers::GetIntField(apEnv, jCfg, "maxVtoEvents");
+
+	cfg.mEventMaxConfig = EventMaxConfig(maxBinaryEvents, maxAnalogEvents, maxCounterEvents, maxVtoEvents);
 	
+	cfg.mStaticBinary = ConvertGrpVar(apEnv, jCfg, "staticBinaryInput");
+	cfg.mStaticAnalog = ConvertGrpVar(apEnv, jCfg, "staticAnalogInput");
+	cfg.mStaticCounter = ConvertGrpVar(apEnv, jCfg, "staticCounter");
+	cfg.mStaticSetpointStatus = ConvertGrpVar(apEnv, jCfg, "staticAnalogOutputStatus");
+	
+	cfg.mEventBinary = ConvertGrpVar(apEnv, jCfg, "eventBinaryInput");
+	cfg.mEventAnalog = ConvertGrpVar(apEnv, jCfg, "eventAnalogInput");
+	cfg.mEventCounter = ConvertGrpVar(apEnv, jCfg, "eventCounter");
+	cfg.mEventVto = ConvertGrpVar(apEnv, jCfg, "eventVto");		
 	
 	return cfg;
+}
+
+GrpVar ConfigReader::ConvertGrpVar(JNIEnv* apEnv, jobject jCfg, const char* fieldId)
+{
+	jobject obj = JNIHelpers::GetObjectField(apEnv, jCfg, fieldId, "Lcom/automatak/dnp3/GroupVariation;");
+	int grp = JNIHelpers::GetIntField(apEnv, obj, "group");
+	int var = JNIHelpers::GetIntField(apEnv, obj, "variation");
+	return GrpVar(grp, var);
 }
 
 DeviceTemplate ConfigReader::ConvertDatabaseConfig(JNIEnv* apEnv, jobject jCfg)
