@@ -84,7 +84,7 @@
                     <header>AUTOMATAK_AGPL_FILE_HEADER</header>
                     <includes>
                         <include>**/*.java</include>
-                        <include>../cpp/*.cpp</include>
+                        <include>**/*.cpp</include>
                     </includes>
                 </configuration>
                 <executions>
