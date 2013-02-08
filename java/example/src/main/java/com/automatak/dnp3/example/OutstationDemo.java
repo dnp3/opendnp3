@@ -56,7 +56,6 @@ public class OutstationDemo {
 
         // all this stuff just to read a line of text in Java. Oh the humanity.
         String line = "";
-        System.out.println("Enter a line of text (type 'quit' to exit): ");
         InputStreamReader converter = new InputStreamReader(System.in);
         BufferedReader in = new BufferedReader(converter);
 
