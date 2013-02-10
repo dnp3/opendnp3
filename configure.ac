@@ -38,7 +38,7 @@ AM_CONDITIONAL(WANT_JAVA, [test "$want_java" = yes])
 AC_ARG_WITH([lcov],
 	[AS_HELP_STRING([--with-lcov@<:@=ARG@:>@],
 	[lcov support])],
-	[CXXFLAGS="--coverage -g -O2"
+	[CXXFLAGS="--coverage -g -O2 -std=gnu++11"
 	AC_MSG_NOTICE([--with-lcov=yes])],
 	[AC_MSG_NOTICE([--with-lcov=no])])
 
