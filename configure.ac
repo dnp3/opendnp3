@@ -17,7 +17,7 @@ AX_BOOST_UNIT_TEST_FRAMEWORK
 
 LT_INIT #initialize libtools
 
-# optional support for builidn the java bindings
+# optional support for building the java bindings
 AC_ARG_WITH([java],
   [AS_HELP_STRING([--with-java@<:@=ARG@:>@],
     [use the Java JDK based on the given javac (ARG=javac)     
@@ -33,6 +33,14 @@ AC_ARG_WITH([java],
     ],
     [want_java="no"])
 AM_CONDITIONAL(WANT_JAVA, [test "$want_java" = yes])
+
+# optional support for lcov/gcov
+AC_ARG_WITH([lcov],
+	[AS_HELP_STRING([--with-lcov@<:@=ARG@:>@],
+	[lcov support])],
+	[CXXFLAGS="--coverage -g -O2"
+	AC_MSG_NOTICE([--with-lcov=yes])],
+	[AC_MSG_NOTICE([--with-lcov=no])])
 
 AC_OUTPUT #actually output the configuration
 
