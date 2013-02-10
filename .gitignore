@@ -59,3 +59,7 @@ java/.idea
 java/**/**.iml
 java/**/target/
 
+# lcov/gcov generated files
+*.gcno
+*.gcda
+
