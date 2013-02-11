@@ -18,6 +18,14 @@ AX_BOOST_UNIT_TEST_FRAMEWORK
 
 LT_INIT #initialize libtools
 
+# optional support for lcov/gcov
+AC_ARG_WITH([lcov],
+	[AS_HELP_STRING([--with-lcov],
+	[lcov support])],
+	[CXXFLAGS="--coverage -g -O0 -std=gnu++11"
+	AC_MSG_NOTICE([--with-lcov=yes])],
+	[AC_MSG_NOTICE([--with-lcov=no])])
+
 AC_CONFIG_FILES([Makefile])
 AC_OUTPUT #actually output the configuration
 
