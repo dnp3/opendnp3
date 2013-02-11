@@ -19,14 +19,22 @@ ltmain.sh
 Makefile
 config.status
 libtool
+m4/libtool.m4
+build-aux/
+config.h
+config.h.in
+config/autotools/
+stamp-h1
+
 dnp3test
 *~
 *.dirstamp
 
-# 
+
+# demo files
 cpp/demos/masterdemo
 cpp/demos/outstationdemo
-
+unittest.log
 
 # visual studio generated files
 cpp/Debug
@@ -51,7 +59,6 @@ cpp/demos/outstation/Release
 *vcxproj.user
 cpp/unittest.log
 
-
 # intellij/maven generated files
 java/*.iml
 java/target
@@ -62,4 +69,8 @@ java/**/target/
 # lcov/gcov generated files
 *.gcno
 *.gcda
+test_html/
+coverage.info
+cpp/demos/cover.info
+cpp/demos/cover_html/
 
