@@ -375,17 +375,17 @@ namespace Adapter
 
 	opendnp3::PointRecord Conversions::convertRecord(PointRecord^ epr)
 	{
-		return opendnp3::PointRecord("");
+		return opendnp3::PointRecord();
 	}
 				
 	opendnp3::EventPointRecord Conversions::convertRecord(EventPointRecord^ epr)
 	{
-		return opendnp3::EventPointRecord("", static_cast<opendnp3::PointClass>(epr->pointClass));
+		return opendnp3::EventPointRecord(static_cast<opendnp3::PointClass>(epr->pointClass));
 	}
 
 	opendnp3::DeadbandPointRecord Conversions::convertRecord(DeadbandEventPointRecord^ epr)
 	{
-		return opendnp3::DeadbandPointRecord("", static_cast<opendnp3::PointClass>(epr->pointClass), epr->deadband);
+		return opendnp3::DeadbandPointRecord(static_cast<opendnp3::PointClass>(epr->pointClass), epr->deadband);
 	}
 
 	opendnp3::DeviceTemplate Conversions::convertConfig(DeviceTemplate^ config)
