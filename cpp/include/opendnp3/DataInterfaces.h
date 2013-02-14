@@ -37,22 +37,23 @@ namespace opendnp3
 {
 
 /**
-*   A DataObserver is the key interface between master/outstation and
-*   the "application" code. The outstation application is responsible for measuring or
-*   calculating data and then pushing it into this interface when it is ready
-*   to publish it. The master application is responsible for handling the data
-*   as it is received from an outstation. That data needs to be strongly typed
-*   and passed by index. As with all ITransactables it should be used with the
-*   exception safe Transaction object.
-*
-*   \code{.cpp}
-*	{
-*		Transaction t(pObserver);
-*		pObserver->Update(Analog(12), 3);
-*		pObserver->Update(Binary(true), 1);
-*   }
-*   \endcode
-*
+
+IDataObserver is the key interface between master/outstation and
+the "application" code. The outstation application is responsible for measuring or
+calculating data and then pushing it into this interface when it is ready
+to publish it. The master application is responsible for handling the data
+as it is received from an outstation. That data needs to be strongly typed
+and passed by index. As with all ITransactables it should be used with the
+exception safe Transaction object.
+
+\code
+{
+	Transaction t(pObserver);
+	pObserver->Update(Analog(12), 3);
+	pObserver->Update(Binary(true), 1);
+}
+\endcode
+
 */
 class IDataObserver : public ITransactable
 {
