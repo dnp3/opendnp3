@@ -25,6 +25,8 @@ config.h
 config.h.in
 config/autotools/
 stamp-h1
+INSTALL
+cpp/demos/INSTALL
 
 dnp3test
 *~
