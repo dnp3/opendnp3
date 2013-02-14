@@ -29,12 +29,10 @@
 #ifndef __CLASS_COUNTER_H_
 #define __CLASS_COUNTER_H_
 
-
-
 #include <stddef.h>
 #include <assert.h>
 
-#include <opendnp3/DNPDatabaseTypes.h>
+#include <opendnp3/PointClass.h>
 #include <opendnp3/Types.h>
 
 namespace opendnp3

@@ -29,10 +29,10 @@
 #ifndef __DNP_DATABASE_TYPES_H_
 #define __DNP_DATABASE_TYPES_H_
 
+#include <opendnp3/Types.h>
+#include <opendnp3/DataTypes.h>
+#include <opendnp3/PointClass.h>
 
-#include "Types.h"
-#include "DataTypes.h"
-#include "PointClass.h"
 #include "VtoData.h"
 
 #include <vector>

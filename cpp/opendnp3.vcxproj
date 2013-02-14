@@ -98,7 +98,6 @@
     <ClInclude Include="include\opendnp3\DNP3Channel.h" />
     <ClInclude Include="include\opendnp3\DNP3Manager.h" />
     <ClInclude Include="include\opendnp3\DNPConstants.h" />
-    <ClInclude Include="include\opendnp3\DNPDatabaseTypes.h" />
     <ClInclude Include="include\opendnp3\DNPExceptions.h" />
     <ClInclude Include="include\opendnp3\Exception.h" />
     <ClInclude Include="include\opendnp3\IChannel.h" />
@@ -174,6 +173,7 @@
     <ClInclude Include="src\opendnp3\DatabaseInterfaces.h" />
     <ClInclude Include="src\opendnp3\DataPoll.h" />
     <ClInclude Include="src\opendnp3\DNPCrc.h" />
+    <ClInclude Include="src\opendnp3\DNPDatabaseTypes.h" />
     <ClInclude Include="src\opendnp3\DNPFromStream.h" />
     <ClInclude Include="src\opendnp3\DNPToStream.h" />
     <ClInclude Include="src\opendnp3\EnhancedVto.h" />

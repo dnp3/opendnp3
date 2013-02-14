@@ -69,9 +69,6 @@
     <ClInclude Include="include\opendnp3\DNPConstants.h">
       <Filter>Include Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\opendnp3\DNPDatabaseTypes.h">
-      <Filter>Include Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\opendnp3\DNPExceptions.h">
       <Filter>Include Files</Filter>
     </ClInclude>
@@ -575,6 +572,9 @@
     </ClInclude>
     <ClInclude Include="include\opendnp3\SubjectBase.h">
       <Filter>Include Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\DNPDatabaseTypes.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
