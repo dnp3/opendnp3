@@ -60,9 +60,6 @@
     <ClInclude Include="include\opendnp3\DeviceTemplateTypes.h">
       <Filter>Include Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\opendnp3\DNP3Channel.h">
-      <Filter>Include Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\opendnp3\DNP3Manager.h">
       <Filter>Include Files</Filter>
     </ClInclude>
@@ -574,6 +571,9 @@
       <Filter>Include Files</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\DNPDatabaseTypes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\DNP3Channel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

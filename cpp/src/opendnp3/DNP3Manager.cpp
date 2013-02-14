@@ -35,8 +35,7 @@
 #include "TimeSource.h"
 #include "IOServiceThreadPool.h"
 #include "Log.h"
-
-#include <opendnp3/DNP3Channel.h>
+#include "DNP3Channel.h"
 
 namespace opendnp3
 {

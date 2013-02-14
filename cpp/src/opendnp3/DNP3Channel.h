@@ -29,11 +29,13 @@
 #ifndef __DNP3_CHANNEL_H_
 #define __DNP3_CHANNEL_H_
 
-#include "IChannel.h"
+#include <opendnp3/IChannel.h>
+#include <opendnp3/SlaveStackConfig.h>
+
 #include "LinkLayerRouter.h"
 #include "Loggable.h"
 #include "AsyncTaskGroup.h"
-#include "SlaveStackConfig.h"
+
 
 #include <memory>
 #include <functional>
