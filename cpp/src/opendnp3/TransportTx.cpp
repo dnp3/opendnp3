@@ -28,9 +28,10 @@
 //
 #include "TransportTx.h"
 
+#include <opendnp3/Exception.h>
+#include <opendnp3/Logger.h>
+
 #include "TransportLayer.h"
-#include "Exception.h"
-#include "Logger.h"
 #include "LoggableMacros.h"
 
 #include <assert.h>

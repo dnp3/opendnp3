@@ -28,7 +28,7 @@
 //
 #include "ITimeSource.h"
 
-#include "Types.h"
+#include <opendnp3/Types.h>
 #include <chrono>
 
 namespace opendnp3

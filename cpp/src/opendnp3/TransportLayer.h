@@ -31,8 +31,9 @@
 
 #include "TransportRx.h"
 #include "TransportTx.h"
-#include "DNPConstants.h"
 #include "AsyncLayerInterfaces.h"
+
+#include <opendnp3/DNPConstants.h>
 
 namespace opendnp3
 {

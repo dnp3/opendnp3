@@ -29,10 +29,10 @@
 #ifndef __TRACKING_TASK_GROUP_H_
 #define __TRACKING_TASK_GROUP_H_
 
+#include <opendnp3/Types.h>
+#include <opendnp3/Uncopyable.h>
 
-#include "Types.h"
 #include "AsyncTaskInterfaces.h"
-#include "Uncopyable.h"
 
 #include <set>
 #include <queue>

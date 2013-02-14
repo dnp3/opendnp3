@@ -29,7 +29,7 @@
 
 #include "ApplicationStack.h"
 
-#include "Logger.h"
+#include <opendnp3/Logger.h>
 
 namespace opendnp3
 {

@@ -28,13 +28,15 @@
 //
 #include "VtoRouter.h"
 
-#include "Exception.h"
+#include <opendnp3/Exception.h>
+#include <opendnp3/VtoRouterSettings.h>
+#include <opendnp3/Logger.h>
+#include <opendnp3/Util.h>
+
 #include "IPhysicalLayerAsync.h"
-#include "Logger.h"
 #include "LoggableMacros.h"
-#include "Util.h"
 #include "VtoReader.h"
-#include "VtoRouterSettings.h"
+
 
 using namespace std::chrono;
 

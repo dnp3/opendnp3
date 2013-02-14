@@ -26,13 +26,15 @@
 // Contact Automatak, LLC for a commercial license to these modifications
 //
 
-#include "IStack.h"
-#include "IVtoEndpoint.h"
+#include <opendnp3/IStack.h>
+#include <opendnp3/IVtoEndpoint.h>
+#include <opendnp3/Logger.h>
+
 #include "VtoEndpointImpl.h"
 #include "VtoDataInterface.h"
 #include "PhysicalLayerAsyncTCPClient.h"
 #include "PhysicalLayerAsyncTCPServer.h"
-#include "Logger.h"
+
 
 namespace opendnp3
 {

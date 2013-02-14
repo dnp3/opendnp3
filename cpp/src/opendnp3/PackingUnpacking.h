@@ -30,7 +30,8 @@
 #define __PACKING_UNPACKING_H_
 
 
-#include "Types.h"
+#include <opendnp3/Types.h>
+
 #include <stddef.h>
 #include <limits>
 #include <iostream>

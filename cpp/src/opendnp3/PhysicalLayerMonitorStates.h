@@ -29,7 +29,8 @@
 #ifndef __PHYS_LAYER_MONITOR_STATES_H_
 #define __PHYS_LAYER_MONITOR_STATES_H_
 
-#include "Singleton.h"
+#include <opendnp3/Singleton.h>
+
 #include "PhysicalLayerMonitor.h"
 #include "PhysicalLayerStates.h"
 

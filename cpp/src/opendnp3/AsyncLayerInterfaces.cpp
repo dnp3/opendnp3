@@ -28,8 +28,9 @@
 //
 #include "AsyncLayerInterfaces.h"
 
-#include "Exception.h"
-#include "Logger.h"
+#include <opendnp3/Exception.h>
+#include <opendnp3/Logger.h>
+
 #include "ToHex.h"
 #include "LoggableMacros.h"
 

@@ -29,7 +29,7 @@
 #ifndef __MULTIPLEXING_DATA_OBSERVER_H_
 #define __MULTIPLEXING_DATA_OBSERVER_H_
 
-#include "DataInterfaces.h"
+#include <opendnp3/DataInterfaces.h>
 #include <vector>
 #include <mutex>
 

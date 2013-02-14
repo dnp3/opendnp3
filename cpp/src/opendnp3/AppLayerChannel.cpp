@@ -28,7 +28,8 @@
 //
 #include "AppLayerChannel.h"
 
-#include "Logger.h"
+#include <opendnp3/Logger.h>
+
 #include "LoggableMacros.h"
 #include "IExecutor.h"
 #include "AppLayer.h"

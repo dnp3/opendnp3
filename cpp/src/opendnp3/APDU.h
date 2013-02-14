@@ -29,15 +29,16 @@
 #ifndef __APDU_H_
 #define __APDU_H_
 
-#include "Types.h"
-#include "Exception.h"
-#include "CopyableBuffer.h"
-#include "Location.h"
+#include <opendnp3/Types.h>
+#include <opendnp3/Exception.h>
+#include <opendnp3/APDUConstants.h>
+#include <opendnp3/Location.h>
 
+#include "CopyableBuffer.h"
 #include "AppHeader.h"
 #include "ObjectHeader.h"
 #include "Objects.h"
-#include "APDUConstants.h"
+
 #include "HeaderReadIterator.h"
 #include "ObjectWriteIterator.h"
 #include "IndexedWriteIterator.h"

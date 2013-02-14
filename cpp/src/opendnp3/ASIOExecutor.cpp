@@ -29,8 +29,9 @@
 #include "ASIOExecutor.h"
 
 #include "TimerASIO.h"
-#include "Exception.h"
-#include "Location.h"
+
+#include <opendnp3/Exception.h>
+#include <opendnp3/Location.h>
 
 #include <boost/asio.hpp>
 #include <functional>

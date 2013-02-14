@@ -28,7 +28,8 @@
 //
 #include "Objects.h"
 
-#include "DataTypes.h"
+#include <opendnp3/DataTypes.h>
+
 #include "CopyableBuffer.h"
 #include "DNPToStream.h"
 #include "DNPFromStream.h"

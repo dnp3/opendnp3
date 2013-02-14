@@ -35,7 +35,8 @@
 #include "IExecutor.h"
 #include "ILinkContext.h"
 #include "LinkFrame.h"
-#include "LinkConfig.h"
+
+#include <opendnp3/LinkConfig.h>
 
 namespace opendnp3
 {

@@ -29,10 +29,10 @@
 #ifndef __DATABASE_INTERFACES_H_
 #define __DATABASE_INTERFACES_H_
 
-#include "DNPDatabaseTypes.h"
+#include <opendnp3/DNPDatabaseTypes.h>
+
 #include "VtoData.h"
 #include "IVtoEventAcceptor.h"
-
 
 namespace opendnp3
 {

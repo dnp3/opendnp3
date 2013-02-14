@@ -30,7 +30,7 @@
 #define __TRANSPORT_STATES_H_
 
 #include "TLS_Base.h"
-#include "Singleton.h"
+#include <opendnp3/Singleton.h>
 
 namespace opendnp3
 {

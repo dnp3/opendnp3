@@ -29,7 +29,6 @@
 #include "AsyncTaskContinuous.h"
 
 #include "AsyncTaskGroup.h"
-#include "Exception.h"
 
 #include <chrono>
 

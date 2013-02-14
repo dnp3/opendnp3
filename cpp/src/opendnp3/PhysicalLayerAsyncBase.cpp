@@ -29,9 +29,10 @@
 #include "PhysicalLayerAsyncBase.h"
 
 #include "IHandlerAsync.h"
-#include "Logger.h"
-#include "Exception.h"
 #include "LoggableMacros.h"
+
+#include <opendnp3/Logger.h>
+#include <opendnp3/Exception.h>
 
 #include <sstream>
 

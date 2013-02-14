@@ -29,7 +29,7 @@
 #ifndef __LINK_HEADER_H_
 #define __LINK_HEADER_H_
 
-#include "LinkLayerConstants.h"
+#include <opendnp3/LinkLayerConstants.h>
 
 namespace opendnp3
 {

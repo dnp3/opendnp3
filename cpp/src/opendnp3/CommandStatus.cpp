@@ -26,7 +26,7 @@
 //
 // Contact Automatak, LLC for a commercial license to these modifications
 //
-#include "CommandStatus.h"
+#include <opendnp3/CommandStatus.h>
 
 namespace opendnp3
 {

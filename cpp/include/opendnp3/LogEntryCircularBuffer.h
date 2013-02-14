@@ -26,24 +26,47 @@
 //
 // Contact Automatak, LLC for a commercial license to these modifications
 //
-#ifndef __I_SUBJECT_H_
-#define __I_SUBJECT_H_
+#ifndef __LOG_ENTRY_CIRCULAR_BUFFER_H_
+#define __LOG_ENTRY_CIRCULAR_BUFFER_H_
 
-#include <functional>
+
+#include <assert.h>
+#include <deque>
+#include <mutex>
+#include <set>
+#include <condition_variable>
+
+#include "LogEntry.h"
+#include "Uncopyable.h"
+#include "LogBase.h"
+#include "SubjectBase.h"
 
 namespace opendnp3
 {
-class INotifier;
 
-class ISubject
+class LogEntryCircularBuffer : public ILogBase, public SubjectBase, private Uncopyable
 {
 public:
-	virtual ~ISubject() {}
+	LogEntryCircularBuffer(size_t aMaxEntries = 100);
 
-	virtual void AddObserver(std::function<void ()>) = 0;	
+	bool ReadLog(LogEntry&, int aTimeout = 0);
+	void SetMaxEntries(size_t aMax);
+	void Log( const LogEntry& arEntry );
+	void SetVar(const std::string& aSource, const std::string& aVarName, int aValue) {}
+	size_t Count();
+	void AddIgnoreCode(int aCode);
+
+protected:
+	void BlockUntilEntry();
+	std::mutex mMutex;
+	std::condition_variable mCondition;
+
+private:
+	bool CheckRead(LogEntry& aEntry);
+	size_t mMaxEntries;
+	std::deque<LogEntry> mItemQueue;
+	std::set<int> mIgnoreCodes;
 };
 
 }
-
 #endif
-

@@ -31,8 +31,8 @@
 
 #include <string>
 
-#include "Singleton.h"
-#include "APDUConstants.h"
+#include <opendnp3/Singleton.h>
+#include <opendnp3/APDUConstants.h>
 #include "AppLayerChannel.h"
 
 namespace opendnp3

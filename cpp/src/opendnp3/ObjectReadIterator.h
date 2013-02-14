@@ -31,10 +31,12 @@
 
 #include <assert.h>
 
-#include "Types.h"
+#include <opendnp3/Types.h>
+#include <opendnp3/ObjectInterfaces.h>
+
 #include "HeaderReadIterator.h"
 #include "ObjectHeader.h"
-#include "ObjectInterfaces.h"
+
 
 
 namespace opendnp3

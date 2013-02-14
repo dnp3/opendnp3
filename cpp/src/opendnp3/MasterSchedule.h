@@ -29,7 +29,8 @@
 #ifndef __MASTER_SCHEDULE_H_
 #define __MASTER_SCHEDULE_H_
 
-#include "MasterConfig.h"
+#include <opendnp3/MasterConfig.h>
+
 #include "TrackingTaskGroup.h"
 
 namespace opendnp3

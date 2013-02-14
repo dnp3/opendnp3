@@ -28,8 +28,8 @@
 //
 #include "AppInterfaces.h"
 
-#include "Location.h"
-#include "Exception.h"
+#include <opendnp3/Location.h>
+#include <opendnp3/Exception.h>
 
 namespace opendnp3
 {

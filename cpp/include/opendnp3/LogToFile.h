@@ -26,42 +26,47 @@
 //
 // Contact Automatak, LLC for a commercial license to these modifications
 //
-#ifndef __SUBJECT_BASE_H_
-#define __SUBJECT_BASE_H_
+#ifndef _LOG_TO_FILE_H_
+#define _LOG_TO_FILE_H_
 
+#include <assert.h>
+#include <deque>
+#include <iostream>
+#include <fstream>
+#include <string>
 
-#include "ISubject.h"
-#include <vector>
-#include <mutex>
-#include <functional>
+#include "LogBase.h"
+#include "LogEntryCircularBuffer.h"
+#include "Threadable.h"
 
 namespace opendnp3
 {
 
-class IExecutor;
+class Thread;
+class EventLog;
 
-class SubjectBase : public ISubject
+/** Logging backend that uses a buffer and thread to do a non-blocking writeof all the log entries to a text file.
+*/
+class LogToFile: public LogEntryCircularBuffer, public Threadable
 {
-
 public:
-	SubjectBase();
-	virtual ~SubjectBase() {}
+	LogToFile(const std::string aFileName, const bool aOverwriteFile = false);
+	~LogToFile();
 
-	// implement the ISubject interface
-	void AddObserver(std::function<void ()> aCallback);
+	void Run();
 
-	void AddObserver(IExecutor* apExecutor, std::function<void ()> aCallback);
+private:
 
-protected:
+	void SignalStop();
+	void PushItemsToFile();
+	void StartLogging();
 
-	void NotifyObservers();
-
-private:	
-	std::mutex mSubjectMutex;
-	std::vector< std::function<void ()> > mObservers;
+	Thread* mpThread;
+	EventLog* mpLog;
+	std::string mFileName;
+	bool mOverwriteFile;
 };
 
 }
 
 #endif
-

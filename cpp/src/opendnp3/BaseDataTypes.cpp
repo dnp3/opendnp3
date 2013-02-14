@@ -26,7 +26,7 @@
 //
 // Contact Automatak, LLC for a commercial license to these modifications
 //
-#include "BaseDataTypes.h"
+#include <opendnp3/BaseDataTypes.h>
 
 using namespace std;
 

@@ -26,7 +26,7 @@
 //
 // Contact Automatak, LLC for a commercial license to these modifications
 //
-#include "APDUConstants.h"
+#include <opendnp3/APDUConstants.h>
 
 namespace opendnp3
 {

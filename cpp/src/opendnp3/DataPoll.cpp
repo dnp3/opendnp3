@@ -27,12 +27,16 @@
 // Contact Automatak, LLC for a commercial license to these modifications
 //
 
-#include "ITimeSource.h"
-#include "Exception.h"
 #include "DataPoll.h"
+
+
+#include <opendnp3/Exception.h>
+#include <opendnp3/PointClass.h>
+
+#include "ITimeSource.h"
 #include "APDU.h"
 #include "ResponseLoader.h"
-#include "PointClass.h"
+
 #include "VtoReader.h"
 
 namespace opendnp3

@@ -29,7 +29,7 @@
 #ifndef __ENHANCED_VTO_H_
 #define __ENHANCED_VTO_H_
 
-#include "Types.h"
+#include <opendnp3/Types.h>
 #include <stddef.h>
 
 namespace opendnp3

@@ -29,9 +29,8 @@
 #ifndef __TLS_BASE_H_
 #define __TLS_BASE_H_
 
-
-#include "Types.h"
-#include "Uncopyable.h"
+#include <opendnp3/Types.h>
+#include <opendnp3/Uncopyable.h>
 
 #include <string>
 

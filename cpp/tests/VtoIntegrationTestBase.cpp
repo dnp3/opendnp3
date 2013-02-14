@@ -36,6 +36,8 @@
 #include <opendnp3/IMaster.h>
 #include <opendnp3/IOutstation.h>
 
+#include <thread>
+
 namespace opendnp3
 {
 

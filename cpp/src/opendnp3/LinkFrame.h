@@ -29,7 +29,8 @@
 #ifndef __LINK_FRAME_H_
 #define __LINK_FRAME_H_
 
-#include "LinkLayerConstants.h"
+#include <opendnp3/LinkLayerConstants.h>
+
 #include "PackingUnpacking.h"
 #include "LinkHeader.h"
 

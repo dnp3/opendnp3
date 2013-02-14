@@ -29,7 +29,7 @@
 #ifndef __BUFFER_TYPES_H_
 #define __BUFFER_TYPES_H_
 
-#include "DataTypes.h"
+#include <opendnp3/DataTypes.h>
 
 namespace opendnp3
 {

@@ -31,7 +31,7 @@
 
 #include <boost/asio.hpp>
 
-#include "SerialTypes.h"
+#include <opendnp3/SerialTypes.h>
 
 namespace boost
 {

@@ -28,7 +28,8 @@
 //
 #include "UnsolicitedChannel.h"
 
-#include "Logger.h"
+#include <opendnp3/Logger.h>
+
 #include "LoggableMacros.h"
 #include "AppLayer.h"
 

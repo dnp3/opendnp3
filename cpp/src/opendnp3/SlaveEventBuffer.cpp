@@ -28,8 +28,8 @@
 //
 #include "SlaveEventBuffer.h"
 
-#include "Exception.h"
-#include "Location.h"
+#include <opendnp3/Exception.h>
+#include <opendnp3/Location.h>
 
 namespace opendnp3
 {

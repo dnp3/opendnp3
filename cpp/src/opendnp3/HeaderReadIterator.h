@@ -32,14 +32,14 @@
 #include <vector>
 #include <assert.h>
 
-#include "Types.h"
-#include "Exception.h"
-#include "Location.h"
-#include "APDUConstants.h"
-#include "ObjectHeader.h"
-#include "ObjectInterfaces.h"
-#include "DNPConstants.h"
+#include <opendnp3/Types.h>
+#include <opendnp3/Exception.h>
+#include <opendnp3/Location.h>
+#include <opendnp3/APDUConstants.h>
+#include <opendnp3/ObjectInterfaces.h>
+#include <opendnp3/DNPConstants.h>
 
+#include "ObjectHeader.h"
 
 namespace opendnp3
 {

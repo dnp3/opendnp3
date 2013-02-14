@@ -34,9 +34,10 @@
 #include <boost/asio.hpp>
 #include <boost/asio/ip/tcp.hpp>
 
-#include "Exception.h"
+#include <opendnp3/Exception.h>
+#include <opendnp3/Logger.h>
+
 #include "IHandlerAsync.h"
-#include "Logger.h"
 #include "LoggableMacros.h"
 
 using namespace boost;

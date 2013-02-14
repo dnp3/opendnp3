@@ -26,7 +26,7 @@
 //
 // Contact Automatak, LLC for a commercial license to these modifications
 //
-#include "Logger.h"
+#include <opendnp3/Logger.h>
 
 #include "Log.h"
 

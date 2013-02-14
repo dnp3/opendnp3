@@ -35,7 +35,6 @@
 
 #include "LogEntry.h"
 #include "LogBase.h"
-#include "LogVar.h"
 
 
 namespace opendnp3

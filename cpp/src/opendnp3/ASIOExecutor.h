@@ -30,7 +30,8 @@
 #define __ASIO_EXECUTOR_H_
 
 #include "IExecutor.h"
-#include "Exception.h"
+
+#include <opendnp3/Exception.h>
 
 #include <queue>
 #include <iostream>

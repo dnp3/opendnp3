@@ -29,7 +29,7 @@
 #ifndef __LINK_ROUTE_H_
 #define __LINK_ROUTE_H_
 
-#include "Types.h"
+#include <opendnp3/Types.h>
 
 #include <iostream>
 

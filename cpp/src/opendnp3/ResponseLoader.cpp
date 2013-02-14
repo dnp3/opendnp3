@@ -28,7 +28,8 @@
 //
 #include "ResponseLoader.h"
 
-#include "Util.h"
+#include <opendnp3/Util.h>
+
 #include "LoggableMacros.h"
 #include "HeaderReadIterator.h"
 #include "Objects.h"

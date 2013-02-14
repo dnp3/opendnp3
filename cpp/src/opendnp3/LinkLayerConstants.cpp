@@ -26,7 +26,7 @@
 //
 // Contact Automatak, LLC for a commercial license to these modifications
 //
-#include "LinkLayerConstants.h"
+#include <opendnp3/LinkLayerConstants.h>
 
 namespace opendnp3
 {

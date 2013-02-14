@@ -27,7 +27,7 @@
 // Contact Automatak, LLC for a commercial license to these modifications
 //
 
-#include "AnalogOutput.h"
+#include <opendnp3/AnalogOutput.h>
 
 #include <math.h>
 #include <sstream>

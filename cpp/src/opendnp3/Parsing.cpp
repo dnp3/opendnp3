@@ -26,7 +26,7 @@
 //
 // Contact Automatak, LLC for a commercial license to these modifications
 //
-#include "Parsing.h"
+#include <opendnp3/Parsing.h>
 
 #include <sstream>
 #include <boost/numeric/conversion/converter.hpp>

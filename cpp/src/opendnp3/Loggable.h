@@ -29,7 +29,7 @@
 #ifndef __LOGGABLE_H_
 #define __LOGGABLE_H_
 
-#include "LogBase.h"
+#include <opendnp3/LogBase.h>
 
 namespace opendnp3
 {

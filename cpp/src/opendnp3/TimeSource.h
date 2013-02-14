@@ -30,8 +30,9 @@
 #define __TIME_SOURCE_H_
 
 #include "ITimeSource.h"
-#include "Singleton.h"
-#include "Types.h"
+
+#include <opendnp3/Singleton.h>
+#include <opendnp3/Types.h>
 
 namespace opendnp3
 {

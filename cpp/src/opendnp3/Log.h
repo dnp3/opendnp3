@@ -35,10 +35,10 @@
 #include <vector>
 #include <mutex>
 
-#include "LogBase.h"
-#include "Logger.h"
-#include "Uncopyable.h"
-#include "LogEntryCircularBuffer.h"
+#include <opendnp3/LogBase.h>
+#include <opendnp3/Logger.h>
+#include <opendnp3/Uncopyable.h>
+#include <opendnp3/LogEntryCircularBuffer.h>
 
 namespace opendnp3
 {

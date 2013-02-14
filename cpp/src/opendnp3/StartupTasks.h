@@ -29,7 +29,7 @@
 #ifndef __STARTUP_TASKS_H_
 #define __STARTUP_TASKS_H_
 
-#include "Types.h"
+#include <opendnp3/Types.h>
 #include "MasterTaskBase.h"
 
 #include <chrono>

@@ -34,13 +34,12 @@
 #include <assert.h>
 #include <vector>
 
-#include "Util.h"
+#include <opendnp3/Util.h>
+#include <opendnp3/Exception.h>
 
 #ifdef WIN32
 #define sscanf sscanf_s
 #endif
-
-#include "Exception.h"
 
 using namespace std;
 using namespace std::chrono;

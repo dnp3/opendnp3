@@ -30,7 +30,8 @@
 
 #include "PackingUnpacking.h"
 #include "ObjectHeader.h"
-#include "Exception.h"
+
+#include <opendnp3/Exception.h>
 
 namespace opendnp3
 {

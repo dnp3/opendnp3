@@ -29,9 +29,13 @@
 #ifndef __SLAVE_H_
 #define __SLAVE_H_
 
+#include <opendnp3/IStackObserver.h>
+#include <opendnp3/ICommandHandler.h>
+#include <opendnp3/Logger.h>
+#include <opendnp3/SlaveConfig.h>
+
 #include "ChangeBuffer.h"
 #include "Loggable.h"
-#include "Logger.h"
 #include "TimeSource.h"
 #include "LoggableMacros.h"
 #include "ITimer.h"
@@ -40,13 +44,11 @@
 #include "EventBuffers.h"
 #include "ObjectReadIterator.h"
 #include "ResponseContext.h"
-#include "SlaveConfig.h"
 #include "SlaveEventBuffer.h"
 #include "SlaveResponseTypes.h"
 #include "VtoReader.h"
 #include "VtoWriter.h"
-#include "IStackObserver.h"
-#include "ICommandHandler.h"
+
 
 namespace opendnp3
 {

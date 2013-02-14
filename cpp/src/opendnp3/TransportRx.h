@@ -29,10 +29,11 @@
 #ifndef __TRANSPORT_RX_H_
 #define __TRANSPORT_RX_H_
 
-#include "Types.h"
+#include <opendnp3/Types.h>
+#include <opendnp3/TransportConstants.h>
+
 #include "Loggable.h"
 #include "CopyableBuffer.h"
-#include "TransportConstants.h"
 
 namespace opendnp3
 {

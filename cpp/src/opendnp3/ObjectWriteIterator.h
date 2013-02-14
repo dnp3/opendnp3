@@ -29,10 +29,11 @@
 #ifndef __OBJECT_WRITE_ITERATOR_H_
 #define __OBJECT_WRITE_ITERATOR_H_
 
-#include "Types.h"
-#include "Exception.h"
-#include "Location.h"
-#include "APDUConstants.h"
+#include <opendnp3/Types.h>
+#include <opendnp3/Exception.h>
+#include <opendnp3/Location.h>
+#include <opendnp3/APDUConstants.h>
+
 #include "ObjectHeader.h"
 
 #include <assert.h>

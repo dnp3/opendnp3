@@ -29,7 +29,8 @@
 #ifndef __APP_LAYER_CHANNEL_H_
 #define __APP_LAYER_CHANNEL_H_
 
-#include "Types.h"
+#include <opendnp3/Types.h>
+
 #include "Loggable.h"
 
 namespace opendnp3

@@ -34,9 +34,10 @@
 #include "AsyncLayerInterfaces.h"
 #include "APDU.h"
 #include "AppInterfaces.h"
-#include "AppConfig.h"
 #include "SolicitedChannel.h"
 #include "UnsolicitedChannel.h"
+
+#include <opendnp3/AppConfig.h>
 
 namespace opendnp3
 {

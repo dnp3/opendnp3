@@ -28,11 +28,13 @@
 //
 #include "APDU.h"
 
-#include "Exception.h"
-#include "Util.h"
-#include "DNPConstants.h"
+#include <opendnp3/Exception.h>
+#include <opendnp3/Util.h>
+#include <opendnp3/DNPConstants.h>
+#include <opendnp3/APDUConstants.h>
+
 #include "ObjectWriteIterator.h"
-#include "APDUConstants.h"
+
 
 #include <assert.h>
 #include <sstream>

@@ -28,10 +28,11 @@
 //
 #include "PhysicalLayerMonitorStates.h"
 
-#include "Logger.h"
-#include "Exception.h"
+#include <opendnp3/Logger.h>
+#include <opendnp3/Exception.h>
+#include <opendnp3/Location.h>
+
 #include "IPhysicalLayerAsync.h"
-#include "Location.h"
 #include "LoggableMacros.h"
 
 #include <sstream>

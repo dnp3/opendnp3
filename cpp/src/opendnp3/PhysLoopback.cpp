@@ -29,7 +29,8 @@
 #include "PhysLoopback.h"
 
 #include "IPhysicalLayerAsync.h"
-#include "Logger.h"
+
+#include <opendnp3/Logger.h>
 
 using namespace std::chrono;
 

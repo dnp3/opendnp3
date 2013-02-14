@@ -26,10 +26,11 @@
 //
 // Contact Automatak, LLC for a commercial license to these modifications
 //
-#include "ObjectInterfaces.h"
+#include <opendnp3/ObjectInterfaces.h>
 
 #include "Objects.h"
-#include "DataTypes.h"
+
+#include <opendnp3/DataTypes.h>
 
 #include <memory>
 

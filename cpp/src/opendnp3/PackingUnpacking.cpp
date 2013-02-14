@@ -37,7 +37,8 @@
 #undef min
 #endif
 
-#include "Util.h"
+#include <opendnp3/Util.h>
+
 #include <memory>
 
 namespace opendnp3

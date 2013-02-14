@@ -26,7 +26,8 @@
 //
 // Contact Automatak, LLC for a commercial license to these modifications
 //
-#include "LogEntryCircularBuffer.h"
+#include <opendnp3/LogEntryCircularBuffer.h>
+
 #include <iostream>
 
 namespace opendnp3

@@ -31,10 +31,12 @@
 #include <assert.h>
 #include <iostream>
 
-#include "Logger.h"
+#include <opendnp3/Logger.h>
+#include <opendnp3/DNPConstants.h>
+#include <opendnp3/DeviceTemplate.h>
+
 #include "LoggableMacros.h"
-#include "DNPConstants.h"
-#include "DeviceTemplate.h"
+
 
 namespace opendnp3
 {

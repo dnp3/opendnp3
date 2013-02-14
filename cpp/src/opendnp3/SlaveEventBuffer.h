@@ -29,12 +29,14 @@
 #ifndef __SLAVE_EVENT_BUFFER_H_
 #define __SLAVE_EVENT_BUFFER_H_
 
-#include "DataTypes.h"
+#include <opendnp3/DataTypes.h>
+#include <opendnp3/SlaveConfig.h>
+#include <opendnp3/DNPDatabaseTypes.h>
+
 #include "BufferTypes.h"
 #include "DatabaseInterfaces.h"
-#include "DNPDatabaseTypes.h"
 #include "EventBuffers.h"
-#include "SlaveConfig.h"
+
 
 namespace opendnp3
 {

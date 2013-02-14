@@ -33,9 +33,10 @@
 #include <functional>
 #include <string>
 
-#include "Exception.h"
+#include <opendnp3/Exception.h>
+#include <opendnp3/Logger.h>
+
 #include "IHandlerAsync.h"
-#include "Logger.h"
 #include "LoggableMacros.h"
 
 using namespace boost;

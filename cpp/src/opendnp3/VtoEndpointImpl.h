@@ -28,7 +28,7 @@
 #ifndef __VTO_ENDPOINT_IMPL_H_
 #define __VTO_ENDPOINT_IMPL_H_
 
-#include "IVtoEndpoint.h"
+#include <opendnp3/IVtoEndpoint.h>
 
 #include <memory>
 #include <functional>

@@ -29,7 +29,7 @@
 #ifndef __THREAD_H_
 #define __THREAD_H_
 
-#include "Threadable.h"
+#include <opendnp3/Threadable.h>
 
 #include <thread>
 #include <functional>

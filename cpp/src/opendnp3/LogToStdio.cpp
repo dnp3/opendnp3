@@ -26,9 +26,9 @@
 //
 // Contact Automatak, LLC for a commercial license to these modifications
 //
-#include "LogToStdio.h"
+#include <opendnp3/LogToStdio.h>
 
-#include "LogEntry.h"
+#include <opendnp3/LogEntry.h>
 #include <iostream>
 
 namespace opendnp3

@@ -29,7 +29,7 @@
 #ifndef __CRC_H_
 #define __CRC_H_
 
-#include "Types.h"
+#include <stdint.h>
 #include <stddef.h>
 
 namespace opendnp3

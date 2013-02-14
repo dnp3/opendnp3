@@ -30,13 +30,15 @@
 
 #include "IPhysicalLayerAsync.h"
 #include "PhysicalLayerMonitorStates.h"
+#include "LoggableMacros.h"
 
 #include <functional>
 #include <iostream>
 
 #include <assert.h>
-#include "Logger.h"
-#include "LoggableMacros.h"
+#include <opendnp3/Logger.h>
+
+
 
 using namespace std::chrono;
 

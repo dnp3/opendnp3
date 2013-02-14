@@ -27,7 +27,7 @@
 // Contact Automatak, LLC for a commercial license to these modifications
 //
 
-#include "SerialTypes.h"
+#include <opendnp3/SerialTypes.h>
 
 namespace opendnp3
 {

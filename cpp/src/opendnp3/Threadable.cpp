@@ -26,7 +26,7 @@
 //
 // Contact Automatak, LLC for a commercial license to these modifications
 //
-#include "Threadable.h"
+#include <opendnp3/Threadable.h>
 
 #include <assert.h>
 

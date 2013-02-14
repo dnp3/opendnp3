@@ -27,7 +27,7 @@
 // Contact Automatak, LLC for a commercial license to these modifications
 //
 
-#include "DNP3Channel.h"
+#include <opendnp3/DNP3Channel.h>
 
 #include "MasterStackImpl.h"
 #include "OutstationStackImpl.h"

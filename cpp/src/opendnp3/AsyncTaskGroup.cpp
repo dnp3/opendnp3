@@ -33,9 +33,11 @@
 #include "AsyncTaskNonPeriodic.h"
 #include "AsyncTaskContinuous.h"
 #include "AsyncTaskScheduler.h"
-#include "Exception.h"
-#include "Location.h"
 #include "IExecutor.h"
+
+#include <opendnp3/Exception.h>
+#include <opendnp3/Location.h>
+
 
 #include <algorithm>
 

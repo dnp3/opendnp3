@@ -30,8 +30,9 @@
 
 #include "AppLayer.h"
 #include "AppChannelStates.h"
-#include "Logger.h"
 #include "LoggableMacros.h"
+
+#include <opendnp3/Logger.h>
 
 namespace opendnp3
 {

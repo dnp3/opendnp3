@@ -28,7 +28,8 @@
 //
 #include "AppLayer.h"
 
-#include "Logger.h"
+#include <opendnp3/Logger.h>
+
 #include "LoggableMacros.h"
 #include "IExecutor.h"
 

@@ -29,7 +29,8 @@
 #ifndef __COPYABLE_BUFFER_H_
 #define __COPYABLE_BUFFER_H_
 
-#include "Types.h"
+#include <opendnp3/Types.h>
+
 #include <stddef.h>
 #include <memory>
 #include <sstream>

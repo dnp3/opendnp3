@@ -30,10 +30,12 @@
 
 #include "APDU.h"
 #include "ObjectReadIterator.h"
-#include "PointClass.h"
 #include "ITimeSource.h"
-#include "Logger.h"
 #include "LoggableMacros.h"
+
+#include <opendnp3/PointClass.h>
+#include <opendnp3/Logger.h>
+
 
 namespace opendnp3
 {

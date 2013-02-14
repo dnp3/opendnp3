@@ -30,15 +30,14 @@
 #define __OBJECTS_H_
 
 
-#include "ObjectInterfaces.h"
+#include <opendnp3/ObjectInterfaces.h>
+#include <opendnp3/Singleton.h>
+#include <opendnp3/QualityMasks.h>
+#include <opendnp3/ControlRelayOutputBlock.h>
+#include <opendnp3/AnalogOutput.h>
 
-#include "Singleton.h"
 #include "PackingUnpacking.h"
 #include "PackingTemplates.h"
-#include "QualityMasks.h"
-#include "ControlRelayOutputBlock.h"
-#include "AnalogOutput.h"
-
 
 #define MACRO_GROUP_VAR_SIZE_FUNC_WITHOUT_EVENTS(group, var, size)\
 		MACRO_GROUP_VAR_FUNC(group, var)\

@@ -32,12 +32,12 @@
 #include <map>
 #include <mutex>
 
+#include <opendnp3/DataInterfaces.h>
+#include <opendnp3/IStackObserver.h>
+
 #include "Loggable.h"
-#include "DataInterfaces.h"
 #include "VtoDataInterface.h"
 #include "VtoData.h"
-#include "IStackObserver.h"
-
 
 namespace opendnp3
 {

@@ -32,8 +32,9 @@
 
 #include "AsyncTaskInterfaces.h"
 #include "AsyncTaskBase.h"
-#include "Types.h"
-#include "Uncopyable.h"
+
+#include <opendnp3/Types.h>
+#include <opendnp3/Uncopyable.h>
 
 #include <vector>
 

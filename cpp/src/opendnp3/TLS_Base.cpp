@@ -29,8 +29,9 @@
 #include "TLS_Base.h"
 
 #include "TransportLayer.h"
-#include "Exception.h"
-#include "Location.h"
+
+#include <opendnp3/Exception.h>
+#include <opendnp3/Location.h>
 
 namespace opendnp3
 {

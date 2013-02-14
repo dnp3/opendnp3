@@ -27,7 +27,7 @@
 // Contact Automatak, LLC for a commercial license to these modifications
 //
 
-#include "DNP3Manager.h"
+#include <opendnp3/DNP3Manager.h>
 
 #include "PhysicalLayerAsyncTCPClient.h"
 #include "PhysicalLayerAsyncTCPServer.h"
@@ -36,7 +36,7 @@
 #include "IOServiceThreadPool.h"
 #include "Log.h"
 
-#include "DNP3Channel.h"
+#include <opendnp3/DNP3Channel.h>
 
 namespace opendnp3
 {

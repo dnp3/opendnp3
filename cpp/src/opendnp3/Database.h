@@ -30,11 +30,12 @@
 #define __DATABASE_H_
 
 #include "DatabaseInterfaces.h"
-#include "DNPConstants.h"
-#include "DataInterfaces.h"
-#include "Exception.h"
 #include "Loggable.h"
-#include "Location.h"
+
+#include <opendnp3/DNPConstants.h>
+#include <opendnp3/DataInterfaces.h>
+#include <opendnp3/Exception.h>
+#include <opendnp3/Location.h>
 
 #include <set>
 #include <vector>

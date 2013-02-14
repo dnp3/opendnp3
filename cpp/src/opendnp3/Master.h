@@ -29,16 +29,17 @@
 #ifndef __MASTER_H_
 #define __MASTER_H_
 
+#include <opendnp3/IStackObserver.h>
+#include <opendnp3/MasterConfig.h>
+#include <opendnp3/ObjectInterfaces.h>
+
 #include "Loggable.h"
 #include "TimeSource.h"
 #include "IExecutor.h"
 #include "APDU.h"
 #include "AppInterfaces.h"
 #include "ObjectReadIterator.h"
-#include "MasterConfig.h"
-#include "ObjectInterfaces.h"
 #include "MasterSchedule.h"
-#include "IStackObserver.h"
 #include "VtoReader.h"
 #include "VtoWriter.h"
 #include "QueuedCommandProcessor.h"

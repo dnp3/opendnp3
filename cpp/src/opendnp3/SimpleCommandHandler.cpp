@@ -27,7 +27,7 @@
 // Contact Automatak, LLC for a commercial license to these modifications
 //
 
-#include "SimpleCommandHandler.h"
+#include <opendnp3/SimpleCommandHandler.h>
 
 namespace opendnp3
 {

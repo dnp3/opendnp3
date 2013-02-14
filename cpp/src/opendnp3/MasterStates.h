@@ -31,8 +31,8 @@
 
 #include <string>
 
-#include "Singleton.h"
-#include "ObjectInterfaces.h"
+#include <opendnp3/Singleton.h>
+#include <opendnp3/ObjectInterfaces.h>
 
 namespace opendnp3
 {

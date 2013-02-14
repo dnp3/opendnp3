@@ -30,8 +30,9 @@
 #define __COMMAND_TASK_H_
 
 #include "MasterTaskBase.h"
-#include "APDUConstants.h"
-#include "CommandStatus.h"
+
+#include <opendnp3/APDUConstants.h>
+#include <opendnp3/CommandStatus.h>
 
 #include <functional>
 #include <queue>

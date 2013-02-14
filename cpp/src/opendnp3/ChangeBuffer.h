@@ -29,9 +29,9 @@
 #ifndef __CHANGE_BUFFER_H_
 #define __CHANGE_BUFFER_H_
 
-#include "DataTypes.h"
-#include "DataInterfaces.h"
-#include "SubjectBase.h"
+#include <opendnp3/DataTypes.h>
+#include <opendnp3/DataInterfaces.h>
+#include <opendnp3/SubjectBase.h>
 
 #include <queue>
 #include <mutex>

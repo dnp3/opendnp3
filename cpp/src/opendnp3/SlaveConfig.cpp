@@ -26,8 +26,10 @@
 //
 // Contact Automatak, LLC for a commercial license to these modifications
 //
-#include "DNPConstants.h"
-#include "SlaveConfig.h"
+
+#include <opendnp3/SlaveConfig.h>
+
+#include <opendnp3/DNPConstants.h>
 
 namespace opendnp3
 {

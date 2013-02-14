@@ -26,10 +26,11 @@
 //
 // Contact Automatak, LLC for a commercial license to these modifications
 //
-#include "ControlRelayOutputBlock.h"
+#include <opendnp3/ControlRelayOutputBlock.h>
 
 #include "PackingUnpacking.h"
-#include "Exception.h"
+
+#include <opendnp3/Exception.h>
 
 #include <assert.h>
 #include <sstream>

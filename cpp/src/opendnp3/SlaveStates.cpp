@@ -28,11 +28,12 @@
 //
 #include "SlaveStates.h"
 
+#include <opendnp3/DNPExceptions.h>
+#include <opendnp3/Exception.h>
+#include <opendnp3/Logger.h>
+
 #include "Slave.h"
-#include "DNPExceptions.h"
 #include "AsyncTaskContinuous.h"
-#include "Exception.h"
-#include "Logger.h"
 #include "LoggableMacros.h"
 
 #include <sstream>

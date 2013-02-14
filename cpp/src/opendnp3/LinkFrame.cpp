@@ -29,7 +29,8 @@
 #include "LinkFrame.h"
 
 #include "DNPCrc.h"
-#include "Util.h"
+
+#include <opendnp3/Util.h>
 
 #include <assert.h>
 #include <sstream>

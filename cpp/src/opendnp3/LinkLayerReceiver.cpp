@@ -29,8 +29,9 @@
 
 #include <assert.h>
 
+#include <opendnp3/Logger.h>
+
 #include "PackingUnpacking.h"
-#include "Logger.h"
 #include "LoggableMacros.h"
 #include "DNPCrc.h"
 #include "LinkReceiverStates.h"

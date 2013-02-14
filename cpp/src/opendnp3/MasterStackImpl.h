@@ -29,10 +29,12 @@
 #ifndef __MASTER_STACK_IMPL_H_
 #define __MASTER_STACK_IMPL_H_
 
-#include "IMaster.h"
+#include <opendnp3/IMaster.h>
+#include <opendnp3/MasterStackConfig.h>
+
 #include "Master.h"
 #include "ApplicationStack.h"
-#include "MasterStackConfig.h"
+
 
 namespace opendnp3
 {

@@ -28,8 +28,9 @@
 //
 #include "EnhancedVtoRouter.h"
 
-#include "Exception.h"
-#include "Logger.h"
+#include <opendnp3/Exception.h>
+#include <opendnp3/Logger.h>
+
 #include "LoggableMacros.h"
 
 namespace opendnp3

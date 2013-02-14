@@ -29,8 +29,8 @@
 #ifndef __SLAVE_RESPONSE_TYPES_H_
 #define __SLAVE_RESPONSE_TYPES_H_
 
-#include "ObjectInterfaces.h"
-#include "DataTypes.h"
+#include <opendnp3/ObjectInterfaces.h>
+#include <opendnp3/DataTypes.h>
 
 namespace opendnp3
 {

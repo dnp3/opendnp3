@@ -31,7 +31,7 @@
 
 #include <string>
 
-#include "Singleton.h"
+#include <opendnp3/Singleton.h>
 #include "AppInterfaces.h"
 
 namespace opendnp3

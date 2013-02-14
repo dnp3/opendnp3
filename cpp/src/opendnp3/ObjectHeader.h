@@ -29,12 +29,13 @@
 #ifndef __OBJECT_HEADER_H_
 #define __OBJECT_HEADER_H_
 
-#include "Types.h"
+#include <opendnp3/Types.h>
+#include <opendnp3/Singleton.h>
+#include <opendnp3/Exception.h>
+#include <opendnp3/Location.h>
+#include <opendnp3/APDUConstants.h>
+
 #include "PackingUnpacking.h"
-#include "Singleton.h"
-#include "Exception.h"
-#include "Location.h"
-#include "APDUConstants.h"
 
 #include <limits>
 #include <sstream>

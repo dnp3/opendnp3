@@ -28,7 +28,8 @@
 //
 #include "MasterStackImpl.h"
 
-#include "Logger.h"
+#include <opendnp3/Logger.h>
+
 #include "IExecutor.h"
 
 namespace opendnp3

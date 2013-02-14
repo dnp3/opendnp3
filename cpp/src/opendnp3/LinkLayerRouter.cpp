@@ -30,9 +30,10 @@
 
 #include <sstream>
 
-#include "Exception.h"
+#include <opendnp3/Exception.h>
+#include <opendnp3/Logger.h>
+
 #include "IPhysicalLayerAsync.h"
-#include "Logger.h"
 #include "LoggableMacros.h"
 #include "ILinkContext.h"
 #include "LinkFrame.h"

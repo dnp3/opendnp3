@@ -27,11 +27,13 @@
 // Contact Automatak, LLC for a commercial license to these modifications
 //
 #include "VtoWriter.h"
-#include "EnhancedVto.h"
 
-#include "Logger.h"
+
+#include <opendnp3/Logger.h>
+#include <opendnp3/Util.h>
+
+#include "EnhancedVto.h"
 #include "LoggableMacros.h"
-#include "Util.h"
 
 namespace opendnp3
 {

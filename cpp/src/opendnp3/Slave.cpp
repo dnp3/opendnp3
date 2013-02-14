@@ -28,14 +28,14 @@
 //
 #include "Slave.h"
 
+#include <opendnp3/DNPExceptions.h>
+#include <opendnp3/AnalogOutput.h>
+#include <opendnp3/ControlRelayOutputBlock.h>
+#include <opendnp3/Logger.h>
 
 #include "SlaveStates.h"
 #include "Database.h"
-#include "DNPExceptions.h"
 #include "ObjectReadIterator.h"
-#include "AnalogOutput.h"
-#include "ControlRelayOutputBlock.h"
-#include "Logger.h"
 #include "AsyncTaskGroup.h"
 #include "AsyncTaskBase.h"
 #include "LoggableMacros.h"

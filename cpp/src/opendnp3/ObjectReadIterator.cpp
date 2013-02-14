@@ -28,8 +28,9 @@
 //
 #include "ObjectReadIterator.h"
 #include "ObjectHeader.h"
-#include "Exception.h"
 #include "Objects.h"
+
+#include <opendnp3/Exception.h>
 
 namespace opendnp3
 {

@@ -29,10 +29,10 @@
 #ifndef __ASYNC_TASK_BASE_H_
 #define __ASYNC_TASK_BASE_H_
 
-
 #include "AsyncTaskInterfaces.h"
-#include "Types.h"
-#include "Uncopyable.h"
+
+#include <opendnp3/Types.h>
+#include <opendnp3/Uncopyable.h>
 
 #include <vector>
 #include <chrono>

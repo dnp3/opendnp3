@@ -28,11 +28,11 @@
 //
 #include "VtoReader.h"
 
-#include "DNPConstants.h"
-#include "EnhancedVto.h"
+#include <opendnp3/DNPConstants.h>
+#include <opendnp3/Exception.h>
+#include <opendnp3/Logger.h>
 
-#include "Exception.h"
-#include "Logger.h"
+#include "EnhancedVto.h"
 #include "LoggableMacros.h"
 
 namespace opendnp3

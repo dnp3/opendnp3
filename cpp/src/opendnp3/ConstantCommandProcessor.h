@@ -30,7 +30,7 @@
 #define __CONSTANT_COMMAND_PROCESSOR_H_
 
 
-#include "ICommandProcessor.h"
+#include <opendnp3/ICommandProcessor.h>
 
 
 namespace opendnp3

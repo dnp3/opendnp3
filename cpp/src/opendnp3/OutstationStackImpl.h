@@ -29,10 +29,12 @@
 #ifndef __OUTSTATION_STACK_IMPL_H_
 #define __OUTSTATION_STACK_IMPL_H_
 
-#include "IOutstation.h"
+#include <opendnp3/IOutstation.h>
+#include <opendnp3/SlaveStackConfig.h>
+
 #include "Slave.h"
 #include "ApplicationStack.h"
-#include "SlaveStackConfig.h"
+
 
 namespace opendnp3
 {

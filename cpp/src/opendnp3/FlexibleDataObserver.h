@@ -29,9 +29,9 @@
 #ifndef __FLEXIBLE_DATA_OBSERVER_H_
 #define __FLEXIBLE_DATA_OBSERVER_H_
 
-#include "DataInterfaces.h"
-#include "SubjectBase.h"
-#include "Util.h"
+#include <opendnp3/DataInterfaces.h>
+#include <opendnp3/Util.h>
+#include <opendnp3/SubjectBase.h>
 
 #include <iostream>
 #include <map>

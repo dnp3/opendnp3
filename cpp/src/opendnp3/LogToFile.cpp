@@ -26,9 +26,11 @@
 //
 // Contact Automatak, LLC for a commercial license to these modifications
 //
-#include "LogToFile.h"
-#include "Util.h"
-#include "Location.h"
+#include <opendnp3/LogToFile.h>
+#include <opendnp3/Util.h>
+#include <opendnp3/Location.h>
+
+#include "Thread.h"
 
 namespace opendnp3
 {

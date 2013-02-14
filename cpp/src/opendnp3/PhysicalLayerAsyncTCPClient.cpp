@@ -32,10 +32,12 @@
 #include <functional>
 #include <string>
 
-#include "LoggableMacros.h"
-#include "Exception.h"
+
+#include <opendnp3/Exception.h>
+#include <opendnp3/Logger.h>
+
 #include "IHandlerAsync.h"
-#include "Logger.h"
+#include "LoggableMacros.h"
 
 using namespace boost;
 using namespace boost::asio;

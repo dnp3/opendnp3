@@ -29,7 +29,8 @@
 #ifndef __DNP_CRC_H_
 #define __DNP_CRC_H_
 
-#include "Types.h"
+#include <opendnp3/Types.h>
+
 #include <stddef.h>
 
 namespace opendnp3

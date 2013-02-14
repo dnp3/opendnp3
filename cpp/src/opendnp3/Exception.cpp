@@ -26,7 +26,7 @@
 //
 // Contact Automatak, LLC for a commercial license to these modifications
 //
-#include "Exception.h"
+#include <opendnp3/Exception.h>
 
 #include <sstream>
 

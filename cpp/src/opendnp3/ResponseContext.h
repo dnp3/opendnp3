@@ -34,14 +34,13 @@
 
 #include <boost/bind.hpp>
 
-
 #include "Loggable.h"
 #include "APDU.h"
-#include "ClassMask.h"
 #include "Database.h"
-#include "DNPDatabaseTypes.h"
 #include "SlaveEventBuffer.h"
 
+#include <opendnp3/DNPDatabaseTypes.h>
+#include <opendnp3/ClassMask.h>
 
 namespace opendnp3
 {

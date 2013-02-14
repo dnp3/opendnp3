@@ -33,8 +33,9 @@
 #include <set>
 #include <mutex>
 
-#include "DataInterfaces.h"
-#include "SubjectBase.h"
+#include <opendnp3/DataInterfaces.h>
+#include <opendnp3/SubjectBase.h>
+
 #include "Loggable.h"
 #include "EventTypes.h"
 #include "VtoDataInterface.h"

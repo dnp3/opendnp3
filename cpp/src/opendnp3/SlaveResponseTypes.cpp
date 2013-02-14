@@ -28,10 +28,12 @@
 //
 #include "SlaveResponseTypes.h"
 
-#include "SlaveConfig.h"
+#include <opendnp3/SlaveConfig.h>
+#include <opendnp3/Exception.h>
+#include <opendnp3/Location.h>
+
 #include "Objects.h"
-#include "Exception.h"
-#include "Location.h"
+
 
 namespace opendnp3
 {

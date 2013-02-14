@@ -26,7 +26,8 @@
 //
 // Contact Automatak, LLC for a commercial license to these modifications
 //
-#include "PointClass.h"
+
+#include <opendnp3/PointClass.h>
 
 namespace opendnp3
 {

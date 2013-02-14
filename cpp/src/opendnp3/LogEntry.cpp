@@ -26,11 +26,11 @@
 //
 // Contact Automatak, LLC for a commercial license to these modifications
 //
-#include "LogEntry.h"
+#include <opendnp3/LogEntry.h>
 
 #include <sstream>
-#include "Util.h"
-#include "Parsing.h"
+#include <opendnp3/Util.h>
+#include <opendnp3/Parsing.h>
 
 using namespace std;
 

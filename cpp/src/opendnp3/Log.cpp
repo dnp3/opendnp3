@@ -32,7 +32,8 @@
 
 #include "Log.h"
 #include "Thread.h"
-#include "Exception.h"
+
+#include <opendnp3/Exception.h>
 
 using namespace std;
 

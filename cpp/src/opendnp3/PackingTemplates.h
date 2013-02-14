@@ -30,7 +30,7 @@
 #define __PACKING_TEMPLATES_H_
 
 
-#include "Types.h"
+#include <opendnp3/Types.h>
 #include <assert.h>
 
 namespace opendnp3

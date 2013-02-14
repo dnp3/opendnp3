@@ -30,9 +30,10 @@
 #define __ASYNC_TASK_GROUP_H_
 
 
-#include "Types.h"
+#include <opendnp3/Types.h>
+#include <opendnp3/Uncopyable.h>
+
 #include "AsyncTaskInterfaces.h"
-#include "Uncopyable.h"
 
 #include <set>
 #include <queue>

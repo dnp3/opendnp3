@@ -29,9 +29,11 @@
 #include "AsyncTaskBase.h"
 
 
-#include "Exception.h"
+#include <opendnp3/Exception.h>
+#include <opendnp3/Location.h>
+
 #include "AsyncTaskGroup.h"
-#include "Location.h"
+
 
 namespace opendnp3
 {

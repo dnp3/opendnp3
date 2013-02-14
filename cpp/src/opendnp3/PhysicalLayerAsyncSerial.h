@@ -30,7 +30,7 @@
 #define __PHYSICAL_LAYER_ASYNC_SERIAL_H_
 
 #include "PhysicalLayerAsyncASIO.h"
-#include "SerialTypes.h"
+#include <opendnp3/SerialTypes.h>
 #include <boost/asio/serial_port.hpp>
 
 #include <memory>

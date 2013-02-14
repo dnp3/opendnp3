@@ -28,11 +28,12 @@
 //
 #include "PriLinkLayerStates.h"
 
-#include "Exception.h"
+#include <opendnp3/Exception.h>
+#include <opendnp3/Logger.h>
+#include <opendnp3/DNPConstants.h>
+
 #include "Loggable.h"
-#include "Logger.h"
 #include "LoggableMacros.h"
-#include "DNPConstants.h"
 #include "LinkLayer.h"
 
 namespace opendnp3

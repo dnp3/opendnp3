@@ -29,11 +29,13 @@
 #ifndef __LINK_LAYER_RECEIVER_H_
 #define __LINK_LAYER_RECEIVER_H_
 
+
+#include <opendnp3/DNPConstants.h>
+#include <opendnp3/Logger.h>
+
 #include "Loggable.h"
-#include "Logger.h"
 #include "ShiftableBuffer.h"
 #include "LinkFrame.h"
-#include "DNPConstants.h"
 #include "LinkHeader.h"
 
 

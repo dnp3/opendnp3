@@ -26,7 +26,8 @@
 //
 // Contact Automatak, LLC for a commercial license to these modifications
 //
-#include "QualityConverter.h"
+
+#include <opendnp3/QualityConverter.h>
 
 namespace opendnp3
 {

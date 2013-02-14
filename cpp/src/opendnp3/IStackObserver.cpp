@@ -26,7 +26,7 @@
 //
 // Contact Automatak, LLC for a commercial license to these modifications
 //
-#include "IStackObserver.h"
+#include <opendnp3/IStackObserver.h>
 
 namespace opendnp3
 {

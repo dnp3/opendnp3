@@ -26,47 +26,50 @@
 //
 // Contact Automatak, LLC for a commercial license to these modifications
 //
-#ifndef __LOG_ENTRY_CIRCULAR_BUFFER_H_
-#define __LOG_ENTRY_CIRCULAR_BUFFER_H_
+#ifndef __CLASS_MASK_H_
+#define __CLASS_MASK_H_
 
-
-#include <assert.h>
-#include <deque>
-#include <mutex>
-#include <set>
-#include <condition_variable>
-
-#include "LogEntry.h"
-#include "Uncopyable.h"
-#include "SubjectBase.h"
-#include "LogBase.h"
+#include "PointClass.h"
 
 namespace opendnp3
 {
 
-class LogEntryCircularBuffer : public ILogBase, public SubjectBase, private Uncopyable
-{
-public:
-	LogEntryCircularBuffer(size_t aMaxEntries = 100);
+struct ClassMask {
+	ClassMask(bool c1, bool c2, bool c3) :
+		class1(c1),
+		class2(c2),
+		class3(c3)
+	{}
 
-	bool ReadLog(LogEntry&, int aTimeout = 0);
-	void SetMaxEntries(size_t aMax);
-	void Log( const LogEntry& arEntry );
-	void SetVar(const std::string& aSource, const std::string& aVarName, int aValue) {}
-	size_t Count();
-	void AddIgnoreCode(int aCode);
+	ClassMask() :
+		class1(false),
+		class2(false),
+		class3(false)
+	{}
 
-protected:
-	void BlockUntilEntry();
-	std::mutex mMutex;
-	std::condition_variable mCondition;
+	ClassMask(int aMask) :
+		class1((aMask | PC_CLASS_1) == 0),
+		class2((aMask | PC_CLASS_2) == 0),
+		class3((aMask | PC_CLASS_3) == 0)
+	{}
 
-private:
-	bool CheckRead(LogEntry& aEntry);
-	size_t mMaxEntries;
-	std::deque<LogEntry> mItemQueue;
-	std::set<int> mIgnoreCodes;
+	bool class1;
+	bool class2;
+	bool class3;
+
+	static int GetMask(bool c1, bool c2, bool c3) {
+		int m = 0;
+		if(c1) m |= PC_CLASS_1;
+		if(c2) m |= PC_CLASS_2;
+		if(c3) m |= PC_CLASS_3;
+		return m;
+	}
+
+	bool IsEnabled() {
+		return class1 || class2 || class3;
+	}
 };
 
 }
+
 #endif

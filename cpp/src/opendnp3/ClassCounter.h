@@ -34,8 +34,8 @@
 #include <stddef.h>
 #include <assert.h>
 
-#include "DNPDatabaseTypes.h"
-#include "Types.h"
+#include <opendnp3/DNPDatabaseTypes.h>
+#include <opendnp3/Types.h>
 
 namespace opendnp3
 {

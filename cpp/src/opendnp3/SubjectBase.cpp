@@ -27,7 +27,7 @@
 // Contact Automatak, LLC for a commercial license to these modifications
 //
 
-#include "SubjectBase.h"
+#include <opendnp3/SubjectBase.h>
 
 #include "IExecutor.h"
 

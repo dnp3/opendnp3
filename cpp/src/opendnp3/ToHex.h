@@ -29,7 +29,7 @@
 #ifndef __TO_HEX_H_
 #define __TO_HEX_H_
 
-#include "Types.h"
+#include <opendnp3/Types.h>
 
 #include <string>
 #include <sstream>

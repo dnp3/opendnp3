@@ -31,7 +31,7 @@
 #include <assert.h>
 
 #include "Log.h"
-#include "Logger.h"
+#include <opendnp3/Logger.h>
 
 namespace opendnp3
 {

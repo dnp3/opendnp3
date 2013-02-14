@@ -29,7 +29,8 @@
 #ifndef __ASYNC_LAYER_INTERFACES_H_
 #define __ASYNC_LAYER_INTERFACES_H_
 
-#include "Types.h"
+#include <opendnp3/Types.h>
+
 #include "Loggable.h"
 
 namespace opendnp3

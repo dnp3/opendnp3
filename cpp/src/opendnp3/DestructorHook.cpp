@@ -27,7 +27,7 @@
 // Contact Automatak, LLC for a commercial license to these modifications
 //
 
-#include "DestructorHook.h"
+#include <opendnp3/DestructorHook.h>
 
 namespace opendnp3
 {

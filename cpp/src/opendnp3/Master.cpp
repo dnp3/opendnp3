@@ -28,18 +28,19 @@
 //
 #include "Master.h"
 
+#include <opendnp3/Logger.h>
+#include <opendnp3/DataInterfaces.h>
+
 #include "MasterStates.h"
 #include "ObjectReadIterator.h"
 #include "ResponseLoader.h"
 #include "VtoEventBufferAdapter.h"
 #include "ConstantCommandProcessor.h"
-#include "DataInterfaces.h"
 #include "AsyncTaskInterfaces.h"
 #include "AsyncTaskGroup.h"
 #include "AsyncTaskBase.h"
 #include "AsyncTaskPeriodic.h"
 #include "AsyncTaskNonPeriodic.h"
-#include "Logger.h"
 #include "IExecutor.h"
 #include "AsyncTaskContinuous.h"
 #include "CopyableBuffer.h"

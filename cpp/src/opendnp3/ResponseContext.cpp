@@ -28,10 +28,11 @@
 //
 #include "ResponseContext.h"
 
-#include "Logger.h"
+#include <opendnp3/Logger.h>
+#include <opendnp3/Util.h>
+#include <opendnp3/DNPConstants.h>
+
 #include "LoggableMacros.h"
-#include "Util.h"
-#include "DNPConstants.h"
 #include "Objects.h"
 #include "SlaveResponseTypes.h"
 

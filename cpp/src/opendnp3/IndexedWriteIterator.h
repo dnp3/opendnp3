@@ -29,8 +29,9 @@
 #ifndef __INDEXED_WRITE_ITERATOR_H_
 #define __INDEXED_WRITE_ITERATOR_H_
 
-#include "Types.h"
-#include "APDUConstants.h"
+#include <opendnp3/Types.h>
+#include <opendnp3/APDUConstants.h>
+
 #include "ObjectHeader.h"
 
 #include <assert.h>

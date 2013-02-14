@@ -29,7 +29,7 @@
 #ifndef __DNP_TO_STREAM_H_
 #define __DNP_TO_STREAM_H_
 
-#include "DataTypes.h"
+#include <opendnp3/DataTypes.h>
 
 #ifdef WIN32
 //disable the type converstion warnings

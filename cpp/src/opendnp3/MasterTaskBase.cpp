@@ -29,9 +29,10 @@
 #include "MasterTaskBase.h"
 
 #include "APDU.h"
-#include "Logger.h"
 #include "LoggableMacros.h"
 #include "AsyncTaskInterfaces.h"
+
+#include <opendnp3/Logger.h>
 
 namespace opendnp3
 {

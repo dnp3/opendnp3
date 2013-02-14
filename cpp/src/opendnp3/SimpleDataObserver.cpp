@@ -27,7 +27,7 @@
 // Contact Automatak, LLC for a commercial license to these modifications
 //
 
-#include "SimpleDataObserver.h"
+#include <opendnp3/SimpleDataObserver.h>
 
 #include <iostream>
 

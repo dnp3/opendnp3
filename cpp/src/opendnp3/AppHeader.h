@@ -29,9 +29,9 @@
 #ifndef __APP_HEADER_H_
 #define __APP_HEADER_H_
 
-#include "Types.h"
-#include "Singleton.h"
-#include "APDUConstants.h"
+#include <opendnp3/Types.h>
+#include <opendnp3/Singleton.h>
+#include <opendnp3/APDUConstants.h>
 
 #include <stddef.h>
 

@@ -31,9 +31,10 @@
 
 #include <assert.h>
 
-#include "DataTypes.h"
+#include <opendnp3/DataTypes.h>
+#include <opendnp3/ObjectInterfaces.h>
+
 #include "EventTypes.h"
-#include "ObjectInterfaces.h"
 
 namespace opendnp3
 {

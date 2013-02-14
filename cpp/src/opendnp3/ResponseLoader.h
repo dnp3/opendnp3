@@ -29,14 +29,14 @@
 #ifndef __RESPONSE_LOADER_H_
 #define __RESPONSE_LOADER_H_
 
+#include <opendnp3/Types.h>
+#include <opendnp3/DataInterfaces.h>
+#include <opendnp3/ObjectInterfaces.h>
+#include <opendnp3/Logger.h>
 
-#include "Types.h"
-#include "DataInterfaces.h"
 #include "Loggable.h"
-#include "Logger.h"
 #include "LoggableMacros.h"
 #include "CTOHistory.h"
-#include "ObjectInterfaces.h"
 #include "ObjectReadIterator.h"
 #include "VtoReader.h"
 

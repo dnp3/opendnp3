@@ -29,7 +29,7 @@
 #ifndef __VTO_DATA_H_
 #define __VTO_DATA_H_
 
-#include "Types.h"
+#include <opendnp3/Types.h>
 
 #include <string>
 

@@ -26,8 +26,8 @@
 //
 // Contact Automatak, LLC for a commercial license to these modifications
 //
-#include "LogTypes.h"
-#include "Util.h"
+#include <opendnp3/LogTypes.h>
+#include <opendnp3/Util.h>
 
 #include <sstream>
 

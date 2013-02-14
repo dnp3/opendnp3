@@ -31,8 +31,9 @@
 
 #include <string>
 
-#include "Types.h"
-#include "Singleton.h"
+#include <opendnp3/Types.h>
+#include <opendnp3/Singleton.h>
+
 #include "LinkLayer.h"
 
 namespace opendnp3
