@@ -35,13 +35,24 @@
 
 namespace opendnp3
 {
+
 /**
-   A DataObserver is the key interface between a communication stack and
-   the "application" code. The application is responsible for measuring or
-   calculating data and then pushing it into this interface when it is ready
-   to publish it to the communication stack. That data needs to be strongly typed
-   and passed by index. As with all ITransactables it should be used with the
-   exception safe Transaction object.
+*   A DataObserver is the key interface between master/outstation and
+*   the "application" code. The outstation application is responsible for measuring or
+*   calculating data and then pushing it into this interface when it is ready
+*   to publish it. The master application is responsible for handling the data
+*   as it is received from an outstation. That data needs to be strongly typed
+*   and passed by index. As with all ITransactables it should be used with the
+*   exception safe Transaction object.
+*
+*   \code{.cpp}
+*	{
+*		Transaction t(pObserver);
+*		pObserver->Update(Analog(12), 3);
+*		pObserver->Update(Binary(true), 1);
+*   }
+*   \endcode
+*
 */
 class IDataObserver : public ITransactable
 {
@@ -51,11 +62,41 @@ public:
 
 	// NVII enforces a policy of using these functions only after
 	// a transaction has been initiated
-	void Update(const Binary&, size_t aIndex);			//!< push a change to the owner of the database, must have transaction started
-	void Update(const Analog&, size_t aIndex);			//!< push a change to the owner of the database, must have transaction started
-	void Update(const Counter&, size_t aIndex);			//!< push a change to the owner of the database, must have transaction started
-	void Update(const ControlStatus&, size_t aIndex);	//!< push a change to the owner of the database, must have transaction started
-	void Update(const SetpointStatus&, size_t aIndex);	//!< push a change to the owner of the database, must have transaction started
+
+	/**
+	* Update or receive a Binary measurement, must have transaction started
+	* @param arMeas measurement to be processed
+	* @param aIndex index of the measurement
+	*/
+	void Update(const Binary& arMeas, size_t aIndex);
+
+	/**
+	* Update or receive an Analog measurement, must have transaction started
+	* @param arMeas measurement to be processed
+	* @param aIndex index of the measurement
+	*/
+	void Update(const Analog& arMeas, size_t aIndex);
+
+	/**
+	* Update or receive a Counter measurement, must have transaction started
+	* @param arMeas measurement to be processed
+	* @param aIndex index of the measurement
+	*/
+	void Update(const Counter& arMeas, size_t aIndex);	
+
+	/**
+	* Update or receive a ControlStatus measurement, must have transaction started
+	* @param arMeas measurement to be processed
+	* @param aIndex index of the measurement
+	*/
+	void Update(const ControlStatus& arMeas, size_t aIndex);
+
+	/**
+	* Update or receive a SetpointStatus measurement, must have transaction started
+	* @param arMeas measurement to be processed
+	* @param aIndex index of the measurement
+	*/
+	void Update(const SetpointStatus& arMeas, size_t aIndex);
 
 protected:
 

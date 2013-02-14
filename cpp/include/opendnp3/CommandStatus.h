@@ -55,8 +55,21 @@ enum CommandStatus {
 	CS_UNDEFINED = 127		//!< 10 to 126 are currently reserved
 };
 
+/**
+* Converts an integer to a CommandStatus enumeration
+*
+* @param aField The integer to convert
+* @return CommandStatus enumeration for the integer value
+*/
 CommandStatus IntToCommandStatus(int aField);
-std::string ToString(CommandStatus aType);
+
+/**
+* Converts a CommandStatus enumeration to string representation
+*
+* @param aCode The status to convert
+* @return string representation of the command status
+*/
+std::string ToString(CommandStatus aCode);
 
 }
 

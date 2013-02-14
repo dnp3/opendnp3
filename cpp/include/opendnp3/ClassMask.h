@@ -34,6 +34,9 @@
 namespace opendnp3
 {
 
+/**
+* Structure that holds settings information for the Class1, Class2, Class3 events
+*/
 struct ClassMask {
 	ClassMask(bool c1, bool c2, bool c3) :
 		class1(c1),

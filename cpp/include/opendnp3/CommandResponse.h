@@ -34,12 +34,16 @@
 namespace opendnp3
 {
 
+/**
+* Represents the result of a command request
+*/
 class CommandResponse
 {
 public:
 	CommandResponse() {}
 	CommandResponse(CommandStatus aStatus) : mResult(aStatus) {}
 
+	/// The command status enumeration received from the outstation
 	CommandStatus mResult;
 };
 

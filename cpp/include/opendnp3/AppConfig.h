@@ -37,7 +37,8 @@ namespace opendnp3
 /** Configuration structure for the dnp3 application layer
 */
 struct AppConfig {
-	// Default constructor
+
+	/// Default constructor
 	AppConfig() : RspTimeout(5000), NumRetry(0), FragSize(DEFAULT_FRAG_SIZE) {}
 
 	AppConfig(millis_t aRspTimeout, size_t aNumRetry = 0, size_t aFragSize = DEFAULT_FRAG_SIZE) :
@@ -46,13 +47,13 @@ struct AppConfig {
 		FragSize(aFragSize)
 	{}
 
-	// The response/confirm timeout in millisec
+	/// The response/confirm timeout in millisec
 	millis_t RspTimeout;
 
-	// Number of retries performed for applicable frames
+	/// Number of retries performed for applicable frames
 	size_t NumRetry;
 
-	// The maximum size of received application layer fragments
+	/// The maximum size of received application layer fragments
 	size_t FragSize;
 
 };

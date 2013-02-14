@@ -36,8 +36,7 @@ namespace opendnp3
 
 /**
  * The object to represent a setpoint request from the master. Think of
- * this like turning a dial on the front of a machine to desired setting.
- * 
+ * this like turning a dial on the front of a machine to desired setting. 
  */
 template <class T>
 class AnalogOutput
@@ -54,17 +53,27 @@ public:
 
 	virtual std::string ToString() const = 0;
 
+	/**
+	* @return the underlying value type
+	*/
 	T GetValue() const {
 		return mValue;
 	}		
 
 public:
+
+	/**
+	* The status value defaults to CS_SUCCESS for requests
+	*/
 	CommandStatus mStatus;
 	
 protected:
 	T mValue;
 };
 
+/**
+*	16-bit signed integer analog output. The underlying serialization is Group41, Variation 2
+*/
 class AnalogOutputInt16 : public AnalogOutput<int16_t>
 {
 	public:	
@@ -76,6 +85,9 @@ class AnalogOutputInt16 : public AnalogOutput<int16_t>
 	std::string ToString() const;
 };
 
+/**
+*	32-bit signed integer analog output. The underlying serialization is Group41, Variation 1
+*/
 class AnalogOutputInt32 : public AnalogOutput<int32_t>
 {	
 	public:	
@@ -87,6 +99,9 @@ class AnalogOutputInt32 : public AnalogOutput<int32_t>
 	std::string ToString() const;
 };
 
+/**
+*	Single precision analog output. The underlying serialization is Group41, Variation 3
+*/
 class AnalogOutputFloat32 : public AnalogOutput<float>
 {	
 	public:	
@@ -98,6 +113,9 @@ class AnalogOutputFloat32 : public AnalogOutput<float>
 	std::string ToString() const;
 };
 
+/**
+*	Double precision analog output. The underlying serialization is Group41, Variation 3
+*/
 class AnalogOutputDouble64 : public AnalogOutput<double>
 {	
 	public:

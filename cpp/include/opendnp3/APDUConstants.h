@@ -34,6 +34,7 @@
 namespace opendnp3
 {
 
+/// Masks for the various parts of the control field
 enum AppControlMasks {
 	ACM_FIR = 0x80,
 	ACM_FIN = 0x40,
@@ -42,6 +43,7 @@ enum AppControlMasks {
 	ACM_SEQ = 0x0F
 };
 
+/// Indices for the various IIN bits
 enum IINIndices {
 	IINI_ALL_STATIONS = 0,
 	IINI_CLASS1_EVENTS,
@@ -61,6 +63,7 @@ enum IINIndices {
 	IINI_RESERVED2 = 15
 };
 
+/// Masks for the IIN least significant bit
 enum IINMasksLSB {
 	IIN_LSB_ALL_STATIONS = 0x01,
 	IIN_LSB_CLASS1_EVENTS = 0x02,
@@ -72,6 +75,7 @@ enum IINMasksLSB {
 	IIN_LSB_DEVICE_RESTART = 0x80
 };
 
+/// Masks for the IIN most significant bit
 enum IINMasksMSB {
 	IIN_MSB_FUNC_NOT_SUPPORTED = 0x01,
 	IIN_MSB_OBJECT_UNKNOWN = 0x02,
@@ -82,6 +86,8 @@ enum IINMasksMSB {
 	IIN_MSB_RESERVED1 = 0x40,
 	IIN_MSB_RESERVED2 = 0x80
 };
+
+/// All valid application layer function codes
 enum FunctionCodes {
 	FC_CONFIRM = 0,
 	FC_READ = 1,
@@ -126,14 +132,8 @@ enum FunctionCodes {
 	FC_UNKNOWN = 255
 };
 
-/*
-	Spec page 538.
-
-	DNP permits combinations of Qualifier Code and Index Size Code that are not shown in
-	Table 3-1. These combinations are explained in Figures 3-16 and 3-17. Note that
-	combinations that do not appear in Table 3-1 are rarely used in DNP implementations,
-	and only where special conditions warrant their inclusion. It is recommended that only
-	combinations appearing in Table 3-1 should be used.
+/**
+* Valid qualifier codes
 */
 enum QualifierCode {
 	QC_1B_START_STOP = 0x00,
@@ -158,9 +158,18 @@ enum QualifierCode {
 
 };
 
+/// @return true if the function is a response, false otherwise
 bool IsResponse(FunctionCodes aCode);
+
+/// @return true if the function is a request, false otherwise
 bool IsRequest(FunctionCodes aCode);
 
+/**
+* Converts a function code to string representation
+*
+* @param aCode The function code to convert
+* @return string representation of the code
+*/
 std::string FunctionCodeToString(FunctionCodes aCode);
 
 }

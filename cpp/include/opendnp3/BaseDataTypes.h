@@ -131,7 +131,6 @@ private:
 	DataTypes mType;
 };
 
-// Inlined definitions from DataPoint
 inline DataTypes DataPoint::GetType() const
 {
 	return mType;
@@ -240,7 +239,7 @@ bool ExceedsDeadband(const T& val1, const T& val2, double aDeadband)
 template <>
 bool ExceedsDeadband<double>(const double& val1, const double& val2, double aDeadband);
 
-//Common subclass to analogs and counters
+/// Common subclass to analogs and counters
 template <class T>
 class TypedDataPoint : public DataPoint
 {

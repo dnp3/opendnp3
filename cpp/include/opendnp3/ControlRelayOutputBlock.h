@@ -52,7 +52,20 @@ enum ControlCode {
 	CC_UNDEFINED = 0xFF		//!< undefined command (used by DNP standard)
 };
 
+/**
+* Converts an integer to a control code
+*
+* @param aField The integer to convert
+* @return ControlCode enumeration corresponding to the integer
+*/
 ControlCode IntToControlCode(int aField);
+
+/**
+* Converts a control code to string representation
+*
+* @param aCode The control code to convert
+* @return string representation of the code
+*/
 std::string ControlCodeToString(ControlCode aType);
 
 
@@ -69,16 +82,27 @@ class ControlRelayOutputBlock
 
 	ControlRelayOutputBlock(ControlCode aCode = CC_LATCH_ON, uint8_t aCount = 1, uint32_t aOnTime = 100, uint32_t aOffTime = 100);
 
+	/// @return the ControlCode enumeration corresponding to the raw code
 	ControlCode GetCode() const;
 
-	uint8_t mRawCode; // allows matching of exact code
+	/// allows matching of exact code
+	uint8_t mRawCode; 
+	/// the number of times to repeat the operation
 	uint8_t mCount;
+	/// the 'on' time for the pulse train
 	uint32_t mOnTimeMS;
+	/// the 'off' time for the pulse train
 	uint32_t mOffTimeMS;
+	/// status of the resulting operation
 	CommandStatus mStatus;
 
+	/// @return string representation of the CROB
 	std::string ToString() const;
 
+	/**
+	* @param arRHS the CROB to compare to this object
+	* @return true if all fields of arRHS match
+	*/
 	bool operator==(const ControlRelayOutputBlock& arRHS) const {
 		return (mRawCode == arRHS.mRawCode) && (mCount == arRHS.mCount) && (mOnTimeMS == arRHS.mOnTimeMS) && (mOffTimeMS == arRHS.mOffTimeMS);
 	}	
