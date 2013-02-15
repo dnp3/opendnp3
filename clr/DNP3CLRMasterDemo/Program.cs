@@ -36,55 +36,16 @@ using DNP3.Interface;
 
 namespace DotNetMasterDemo
 {
-
-    class PrintingDataObserver : IDataObserver
-    {
-        public void End()
-        {
-            Console.WriteLine("End");
-        }
-
-        public void Start()
-        {
-            Console.WriteLine("Start");
-        }
-
-        public void Update(Binary update, System.UInt32 index)
-        {
-            Console.WriteLine(update.value);
-        }
-
-        public void Update(Analog update, System.UInt32 index)
-        {
-            Console.WriteLine(update.value);
-        }
-
-        public void Update(Counter update, System.UInt32 index)
-        {
-            Console.WriteLine(update.value);
-        }
-
-        public void Update(ControlStatus update, System.UInt32 index)
-        {
-            Console.WriteLine(update.value);
-        }
-
-        public void Update(SetpointStatus update, System.UInt32 index)
-        {
-            Console.WriteLine(update.value);
-        }
-    }    
-
     class Program
     {
         static void Main(string[] args)
         {
             var mgr = new DNP3Manager(Environment.ProcessorCount);            
-            mgr.AddLogHandler(new PrintingLogAdapter()); //this is optional
+            mgr.AddLogHandler(PrintingLogAdapter.Instance); //this is optional
             var channel = mgr.AddTCPClient("client", LogLevel.INFO, 5000, "127.0.0.1", 20000);
             var config = new MasterStackConfig();
             config.link.useConfirms = true; //setup your stack configuration here.
-            var master = channel.AddMaster("master", LogLevel.INFO, new PrintingDataObserver(), config);
+            var master = channel.AddMaster("master", LogLevel.INFO, PrintingDataObserver.Instance, config);
 
             Console.WriteLine("Enter an index to send a command");
 

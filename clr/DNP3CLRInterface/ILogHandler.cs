@@ -33,8 +33,20 @@ using System.Text;
 
 namespace DNP3.Interface
 {
+    /// <summary>
+    /// A message from the logging framework
+    /// </summary>
     public class LogEntry
     {
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="filterLevel">Level enumeration of the message</param>
+        /// <param name="loggerName">Logger id that recorded the message</param>
+        /// <param name="location">Location in the code</param>
+        /// <param name="message">Body of the message</param>
+        /// <param name="time">Timestamp on the message</param>
+        /// <param name="errorCode">dnp3 error code</param>
         public LogEntry(LogLevel filterLevel, String loggerName, String location, string message, DateTime time, int errorCode)
         {
             this.filterLevel = filterLevel;
@@ -46,30 +58,75 @@ namespace DNP3.Interface
             this.keyValues = new Dictionary<string,string>();
         }
 
+        /// <summary>
+        /// Level enumeration of the message
+        /// </summary>
         public readonly LogLevel filterLevel;
+
+        /// <summary>
+        /// Logger id that recorded the message
+        /// </summary>
 	    public readonly String loggerName;
+
+        /// <summary>
+        /// Location in the code
+        /// </summary>
 	    public readonly String location;
+
+        /// <summary>
+        /// Body of the message
+        /// </summary>
 	    public readonly String message;
+
+        /// <summary>
+        /// Timestamp on the message
+        /// </summary>
 	    public readonly DateTime time;
+
+        /// <summary>
+        /// dnp3 error code
+        /// </summary>
 	    public readonly int	errorCode;
+
+        /// <summary>
+        /// Free-form key-value pairs associated with the message
+        /// </summary>
 	    public readonly IDictionary<String, String> keyValues;
     }
 
+    /// <summary>
+    /// Callback interface to handle log messages
+    /// </summary>
     public interface ILogHandler
     {        
 	    /// <summary>
-	    /// logging error messages, etc
+	    /// log an error message
 	    /// </summary>
 	    /// <param name="entry">log entry instance</param>
         void Log(LogEntry entry);	  
     }
 
+    /// <summary>
+    /// Singleton log adapter that prints messages to the console
+    /// </summary>
     public class PrintingLogAdapter : ILogHandler
     {
+        private static readonly PrintingLogAdapter instance = new PrintingLogAdapter();
+
+        public static ILogHandler Instance
+        {
+            get
+            {
+                return instance;
+            }
+        }
 
         public void Log(LogEntry entry)
         {
             Console.WriteLine(entry.message);
-        }       
+        }
+
+        private PrintingLogAdapter()
+        { }
     }
 }

@@ -34,19 +34,38 @@ using System.Text;
 
 namespace DNP3.Interface
 {
+    /// <summary>
+    /// Serial port parity enumeration
+    /// </summary>
     public enum Parity {
 	    NONE,
 	    EVEN,
 	    ODD
     }
 
+    /// <summary>
+    /// Serial port flow control enumeration
+    /// </summary>
     public enum FlowControl {
 	    NONE,
 	    HARDWARE,
 	    XONXOFF
     }    
 
+    /// <summary>
+    /// Settings class for  serial port
+    /// </summary>
     public class SerialSettings {
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="port">port name, i.e. COM1</param>
+        /// <param name="baud">Baud rate for the port. Allowed values depend on the specific port</param>
+        /// <param name="dataBits">Number of data bits. Typically 8.</param>
+        /// <param name="stopBits"> Stop bits, typically 1</param>
+        /// <param name="parity"> Parity, typically none</param>
+        /// <param name="flowControl">Flow control, typically none</param>
         public SerialSettings(String port, int baud, int dataBits, int stopBits, Parity parity, FlowControl flowControl)
         {
             this.port = port;
@@ -56,7 +75,7 @@ namespace DNP3.Interface
             this.parity = parity;
             this.flowControl = flowControl;
         }
-
+        
         public readonly String port;
         public readonly int baud;
         public readonly int dataBits;
@@ -64,6 +83,10 @@ namespace DNP3.Interface
         public readonly Parity parity;
         public readonly FlowControl flowControl;
 
+        /// <summary>
+        /// Convert the serial settings to a string
+        /// </summary>
+        /// <returns></returns>
         public override string ToString()
         {
             var lines = new String[] 

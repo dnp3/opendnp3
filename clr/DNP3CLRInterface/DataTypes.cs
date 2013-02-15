@@ -33,19 +33,55 @@ using System.Text;
 
 namespace DNP3.Interface
 {
+    /// <summary>
+    /// Quality enumeration for Binary measurements
+    /// </summary>
     public enum BinaryQuality {
-	    BQ_ONLINE  = 0x01,				//!< set when the data is "good", meaning that rest of the system can trust the value
-	    BQ_RESTART = 0x02,				//!< the quality all points get before we have established communication (or populated) the point
-	    BQ_COMM_LOST = 0x04,			//!< this means the communication has been lost with the source of the data (after establishing contact)
-	    BQ_REMOTE_FORCED_DATA = 0x08,	//!< the value is being forced to a "fake" value somewhere in the system
-	    BQ_LOCAL_FORCED_DATA = 0x10,	//!< the value is being forced to a "fake" value on the original device
-	    BQ_CHATTER_FILTER = 0x20,		//!< set when the value is osciallating very quickly and some events are being suppressed
-	    BQ_RESERVED = 0x40,				//!< reserved
-	    BQ_STATE = 0x80,				//!< the actual value of the binary
+        /// <summary>
+        /// set when the data is "good", meaning that rest of the system can trust the value
+        /// </summary>
+	    BQ_ONLINE  = 0x01,
+        /// <summary>
+        /// the quality all points get before we have established communication (or populated) the point
+        /// </summary>
+	    BQ_RESTART = 0x02,
+        /// <summary>
+        /// this means the communication has been lost with the source of the data (after establishing contact)
+        /// </summary>
+	    BQ_COMM_LOST = 0x04,
+        /// <summary>
+        /// the value is being forced to a "fake" value somewhere in the system
+        /// </summary>
+	    BQ_REMOTE_FORCED_DATA = 0x08,
+        /// <summary>
+        /// the value is being forced to a "fake" value on the original device
+        /// </summary>
+	    BQ_LOCAL_FORCED_DATA = 0x10,
+        /// <summary>
+        /// set when the value is osciallating very quickly and some events are being suppressed
+        /// </summary>
+	    BQ_CHATTER_FILTER = 0x20,
+        /// <summary>
+        /// reserved
+        /// </summary>
+	    BQ_RESERVED = 0x40,
+        /// <summary>
+        /// the actual value of the binary
+        /// </summary>
+	    BQ_STATE = 0x80
     }
 
+    /// <summary>
+    /// A boolean measurement type (i.e. whether a switch is open/closed)
+    /// </summary>
     public class Binary {
 		
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="value">value of the measurement</param>
+        /// <param name="quality">quality enumeration as a bitfield</param>
+        /// <param name="time">timestamp</param>
 	    public Binary(bool value, byte quality, DateTime time)
 	    {
             this.value = value;
@@ -58,24 +94,37 @@ namespace DNP3.Interface
         public readonly DateTime time;
     }
 
-
-/**
-	Bitmasks that make make up the quality field for analogs. See BinaryQuality for common (unlabeled) bitmasks.
- */
+/// <summary>
+/// Bitmasks that make make up the quality field for analogs. See BinaryQuality for common (unlabeled) bitmasks.
+/// </summary>
 public enum AnalogQuality {
 	AQ_ONLINE = 0x01,
 	AQ_RESTART = 0x02,
 	AQ_COMM_LOST = 0x04,
 	AQ_REMOTE_FORCED_DATA = 0x08,
 	AQ_LOCAL_FORCED_DATA = 0x10,
-	AQ_OVERRANGE = 0x20,			//!< if a hardware input etc. is out of range and we are using a place holder value
-	AQ_REFERENCE_CHECK = 0x40,		//!< meaning we may have lost calibration or refrence voltage so readings are questionable
+    /// <summary>
+    /// if a hardware input etc. is out of range and we are using a place holder value
+    /// </summary>
+	AQ_OVERRANGE = 0x20,
+    /// <summary>
+    /// meaning we may have lost calibration or refrence voltage so readings are questionable
+    /// </summary>
+	AQ_REFERENCE_CHECK = 0x40,
 	AQ_RESERVED = 0x80
 };
 
+/// <summary>
+/// A discrete or continuous analog value
+/// </summary>
 public class Analog {
 
-
+    /// <summary>
+    /// Constructor
+    /// </summary>
+    /// <param name="value">value of the measurement</param>
+    /// <param name="quality">quality enumeration as a bitfield</param>
+    /// <param name="time">timestamp</param>
     public Analog(double value, byte quality, DateTime time)
 	{
         this.value = value;
@@ -88,22 +137,37 @@ public class Analog {
     public readonly DateTime time;
 }
 
-/**
-	Bitmasks that make make up the quality field for counters. See BinaryQuality for common (unlabeled) bitmasks.
- */
+/// <summary>
+/// Quality enumeration for Counters
+/// </summary>
 public enum CounterQuality {
 	CQ_ONLINE = 0x01,
 	CQ_RESTART = 0x02,
 	CQ_COMM_LOST = 0x04,
 	CQ_REMOTE_FORCED_DATA = 0x08,
 	CQ_LOCAL_FORCED_DATA = 0x10,
-	CQ_ROLLOVER = 0x20,				//!< used to indicate that the counter filled up and rolledover, cleared automatically after reading
-	CQ_DISCONTINUITY = 0x40,		//!< indicates an unusual change in value
+    /// <summary>
+    /// used to indicate that the counter filled up and rolledover, cleared automatically after reading
+    /// </summary>
+	CQ_ROLLOVER = 0x20,
+    /// <summary>
+    /// indicates an unusual change in value
+    /// </summary>
+	CQ_DISCONTINUITY = 0x40,
 	CQ_RESERVED = 0x80
 }
 
+/// <summary>
+/// An increasing count of some event
+/// </summary>
 public class Counter {
 
+    /// <summary>
+    /// Constructor
+    /// </summary>
+    /// <param name="value">value of the measurement</param>
+    /// <param name="quality">quality enumeration as a bitfield</param>
+    /// <param name="time">timestamp</param>
     public Counter(System.UInt32 value, byte quality, DateTime time)
 	{
         this.value = value;
@@ -116,9 +180,9 @@ public class Counter {
     public readonly DateTime time;
 }
 
-/**
-	Bitmasks that make make up the quality field for control statuses. See BinaryQuality for common (unlabeled) bitmasks.
- */
+/// <summary>
+/// Quality enumeration for Control Status measurements
+/// </summary>
 public enum ControlQuality {
 	TQ_ONLINE = 0x01,
 	TQ_RESTART = 0x02,
@@ -130,8 +194,17 @@ public enum ControlQuality {
 	TQ_STATE = 0x80
 }
 
+/// <summary>
+/// Represents the state of a digital output
+/// </summary>
 public class ControlStatus {
 
+    /// <summary>
+    /// Constructor
+    /// </summary>
+    /// <param name="value">value of the measurement</param>
+    /// <param name="quality">quality enumeration as a bitfield</param>
+    /// <param name="time">timestamp</param>
     public ControlStatus(bool value, byte quality, DateTime time)
 	{
         this.value = value;
@@ -144,9 +217,9 @@ public class ControlStatus {
     public readonly DateTime time;
 };
 
-/**
-	Bitmasks that make make up the quality field for setpoint statuses. See BinaryQuality for common (unlabeled) bitmasks.
- */
+/// <summary>
+/// Quality enumeration for AnalogOutputStatus measurements
+/// </summary>
 public enum SetpointQuality {
 	PQ_ONLINE = 0x01,
 	PQ_RESTART = 0x02,
@@ -158,8 +231,17 @@ public enum SetpointQuality {
 	PQ_RESERVED_4 = 0x80,
 }
 
+/// <summary>
+/// Represents the status of analog output on an outstation.
+/// </summary>    
 public class SetpointStatus {
 
+    /// <summary>
+    /// Constructor
+    /// </summary>
+    /// <param name="value">value of the measurement</param>
+    /// <param name="quality">quality enumeration as a bitfield</param>
+    /// <param name="time">timestamp</param>
     public SetpointStatus(double value, byte quality, DateTime time)
 	{
         this.value = value;

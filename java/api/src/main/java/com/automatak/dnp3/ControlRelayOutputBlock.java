@@ -33,8 +33,8 @@ public class ControlRelayOutputBlock {
      * Primary constructor
      * @param function Enumeration that controls that behavior of the command
      * @param count How many times to repeat the operation
-     * @param onTimeMs How long to get the output active
-     * @param offTimeMs How long to get the output inactive
+     * @param onTimeMs How long to set the output active
+     * @param offTimeMs How long to set the output inactive
      * @param status Status code received from an outstation
      */
     public ControlRelayOutputBlock(ControlCode function, short count, long onTimeMs, long offTimeMs, CommandStatus status)

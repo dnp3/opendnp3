@@ -40,7 +40,7 @@ namespace DNP3
 {	
 namespace Adapter
 {	
-	public ref class ChannelAdapter : IChannel
+	ref class ChannelAdapter : IChannel
 	{
 		public:
 

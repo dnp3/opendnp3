@@ -40,6 +40,7 @@ namespace DNP3
 {	
 namespace Adapter
 {
+	///
 	public ref class DNP3Manager
 	{
 		public:
