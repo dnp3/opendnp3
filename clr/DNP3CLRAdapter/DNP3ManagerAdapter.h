@@ -1,4 +1,4 @@
-﻿
+
 //
 // Licensed to Green Energy Corp (www.greenenergycorp.com) under one or
 // more contributor license agreements. See the NOTICE file distributed
@@ -26,39 +26,39 @@
 //
 // Contact Automatak, LLC for a commercial license to these modifications
 //
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+#ifndef __CLR_DNP3_MANAGER_ADAPTER_H_
+#define __CLR_DNP3_MANAGER_ADAPTER_H_
 
-using DNP3.Adapter;
-using DNP3.Interface;
+using namespace System;
+using namespace DNP3::Interface;
 
-namespace DotNetSlaveDemo
-{   
-    class Program
-    {
-        static void Main(string[] args)
-        {
-            DNP3Manager mgr = new DNP3ManagerAdapter(1);
-            mgr.AddLogHandler(PrintingLogAdapter.Instance); //this is optional
-            var channel = mgr.AddTCPServer("server", LogLevel.INFO, 5000, "127.0.0.1", 20000);
-            var config = new SlaveStackConfig();
-            var outstation = channel.AddOutstation("outstation", LogLevel.INFO, RejectingCommandHandler.Instance, config);
-            var publisher = outstation.GetDataObserver();
-
-            Console.WriteLine("Press <Enter> to randomly change a value");
-
-            Random r = new Random();
-            while (true)
-            {
-                Console.ReadLine();
-                int value = r.Next(UInt16.MaxValue);
-                System.Console.WriteLine("Change Analog 0 to: " + value);
-                publisher.Start();
-                publisher.Update(new Analog(value, 1, DateTime.Now), 0);
-                publisher.End();
-            }
-        }
-    }
+namespace opendnp3 {
+	class DNP3Manager;
 }
+
+namespace DNP3
+{	
+namespace Adapter
+{
+	/// <summary>
+    /// Root class for all dnp3 applications
+    /// </summary>
+	public ref class DNP3ManagerAdapter : public DNP3::Interface::DNP3Manager
+	{
+		public:
+			DNP3ManagerAdapter(System::Int32 aConcurrency);
+			~DNP3ManagerAdapter();
+			
+			virtual IChannel^ AddTCPClient(System::String^ name, LogLevel level, System::UInt64 retryMs, System::String^ address, System::UInt16 port);					
+			virtual IChannel^ AddTCPServer(System::String^ name, LogLevel level, System::UInt64 retryMs, System::String^ endpoint, System::UInt16 port);
+			virtual IChannel^ AddSerial(System::String^ name, LogLevel level, System::UInt64 retryMs, SerialSettings^ settings);
+
+			virtual void AddLogHandler(ILogHandler^ logHandler);			
+			
+		private:
+			opendnp3::DNP3Manager* pMgr;
+	};
+
+}}
+
+#endif

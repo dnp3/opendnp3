@@ -87,7 +87,7 @@
     <ClInclude Include="ChannelAdapter.h" />
     <ClInclude Include="CommandProcessorAdapter.h" />
     <ClInclude Include="Conversions.h" />
-    <ClInclude Include="DNP3Manager.h" />
+    <ClInclude Include="DNP3ManagerAdapter.h" />
     <ClInclude Include="Lock.h" />
     <ClInclude Include="LogAdapter.h" />
     <ClInclude Include="MasterAdapter.h" />
@@ -100,7 +100,7 @@
     <ClCompile Include="ChannelAdapter.cpp" />
     <ClCompile Include="CommandProcessorAdapter.cpp" />
     <ClCompile Include="Conversions.cpp" />
-    <ClCompile Include="DNP3Manager.cpp" />
+    <ClCompile Include="DNP3ManagerAdapter.cpp" />
     <ClCompile Include="LogAdapter.cpp" />
     <ClCompile Include="MasterAdapter.cpp" />
     <ClCompile Include="MasterDataObserverAdapter.cpp" />
