@@ -40,6 +40,17 @@
 #include "LogTypes.h"
 #include "DestructorHook.h"
 
+/*! \mainpage opendnp3 documentation
+ *
+ * \section Introduction
+ *
+ * The main class for all applications is DNP3Manager
+ *
+ * Companion documentation that describes theory of operation is located on the project wiki:
+ * www.github.com/automatakllc/dnp3/wiki
+ * 
+ */
+
 // pre-declare EVERYTHING possible to minimize includes for CLR/Java wrappers
 namespace opendnp3
 {
