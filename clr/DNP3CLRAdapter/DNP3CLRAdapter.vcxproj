@@ -88,7 +88,6 @@
     <ClInclude Include="CommandProcessorAdapter.h" />
     <ClInclude Include="Conversions.h" />
     <ClInclude Include="DNP3Manager.h" />
-    <ClInclude Include="FilterLevel.h" />
     <ClInclude Include="Lock.h" />
     <ClInclude Include="LogAdapter.h" />
     <ClInclude Include="MasterAdapter.h" />

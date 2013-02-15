@@ -36,7 +36,7 @@ namespace DNP3
 {	
 namespace Adapter
 {			
-	public ref class SlaveDataObserverAdapter : DNP3::Interface::IDataObserver
+	private ref class SlaveDataObserverAdapter : DNP3::Interface::IDataObserver
 	{
 		public:
 

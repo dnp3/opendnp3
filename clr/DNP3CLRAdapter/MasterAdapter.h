@@ -39,7 +39,7 @@ namespace DNP3
 {	
 namespace Adapter
 {	
-	public ref class MasterAdapter : IMaster
+	private ref class MasterAdapter : IMaster
 	{
 		public:
 

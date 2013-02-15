@@ -32,7 +32,7 @@
 
 using namespace System::Threading;
 
-ref class Lock {
+private ref class Lock {
    Object^ m_pObject;
 public:
    Lock( Object ^ pObject ) : m_pObject( pObject ) {

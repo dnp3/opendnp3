@@ -27,9 +27,6 @@
     <ClInclude Include="DNP3Manager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="FilterLevel.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Lock.h">
       <Filter>Header Files</Filter>
     </ClInclude>

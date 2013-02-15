@@ -47,7 +47,7 @@ namespace DNP3
 namespace Adapter
 {
 
-	class Conversions
+	private class Conversions
 	{
 		public:
 
