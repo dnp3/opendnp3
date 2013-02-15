@@ -33,7 +33,6 @@
 #include "DeviceTemplate.h"
 #include "AppConfig.h"
 #include "LinkConfig.h"
-#include "VtoConfig.h"
 
 namespace opendnp3
 {
@@ -46,11 +45,15 @@ struct SlaveStackConfig {
 		link(false, false)
 	{}
 
-	SlaveConfig slave;		// Slave config
-	DeviceTemplate device;		// Device template that specifies database layout
-	AppConfig app;			// Application layer config
-	LinkConfig link;		// Link layer config
-	VtoConfig vto;
+	/// Slave config
+	SlaveConfig slave;		
+	/// Device template that specifies database layout
+	DeviceTemplate device;
+	/// Application layer config
+	AppConfig app;		
+	/// Link layer config
+	LinkConfig link;	
+
 };
 
 }

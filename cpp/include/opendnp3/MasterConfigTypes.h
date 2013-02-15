@@ -34,9 +34,15 @@
 namespace  opendnp3
 {
 
+/**
+* Represents an exception scan
+*/
 struct ExceptionScan 
 {
+	/// Bitmask for which classes will be scanned
 	int ClassMask;
+
+	/// Scan period in milliseconds
 	millis_t ScanRate;
 };
 

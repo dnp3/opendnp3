@@ -38,6 +38,10 @@ namespace opendnp3
 
 class IExecutor;
 
+/**
+* Helper class designed to be used with private inheritance. Allows observers to be notified when some
+* state changes.
+*/
 class SubjectBase
 {
 

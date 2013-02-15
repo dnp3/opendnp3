@@ -44,9 +44,10 @@ struct VtoRouterSettings {
 	 * @param aChannelId Each dnp index for Vto data events is a channel id
 	 * @param aStartLocal If true we allways try to keep the local connection online, otherwise we only connect when the remote side connects
 	 * @param aDisableExtensions If true, the router defaults to the VTO specification and does not publish/utilize the connection state information
-	 * @param aOpenRetryMs how long to wait before retrying opening the physical layer after a failure
+	 * @param aMinOpenRetryMs minimum time to wait before retrying opening the physical layer after a failure
+	 * @param aMaxOpenRetryMs maximum time to wait before retrying openin th physical layer after a failure
 	 */
-	VtoRouterSettings(uint8_t aChannelId, bool aStartLocal, bool aDisableExtensions, millis_t aOpenRetryMs = 5000, millis_t aMaxOpenRetry = 10000);
+	VtoRouterSettings(uint8_t aChannelId, bool aStartLocal, bool aDisableExtensions, millis_t aMinOpenRetryMs = 5000, millis_t aMaxOpenRetryMs = 10000);
 
 	uint8_t CHANNEL_ID;
 	millis_t MIN_OPEN_RETRY_MS;

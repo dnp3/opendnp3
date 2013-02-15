@@ -38,9 +38,16 @@
 namespace opendnp3
 {
 
+/**
+* Mock data observer that sends string representation of measurements to a functor
+*/
 class SimpleDataObserver : public IDataObserver
 {
 public: 
+	/**
+	* Primary constructor
+	* @param aOutputFunc functor that will receive messages
+	*/
 	SimpleDataObserver(std::function<void (const std::string&)> aOutputFunc);
 			
 protected:
@@ -59,6 +66,7 @@ private:
 
 };
 
+/// Singleton IDataObserver that ignores all messages
 class NullDataObserver : public SimpleDataObserver
 {
 	private:
@@ -70,6 +78,7 @@ class NullDataObserver : public SimpleDataObserver
 		static NullDataObserver* Inst(){ return &mInstance; }	
 };
 
+/// Singleton IDataObserver that prints all measurements to the console
 class PrintingDataObserver : public SimpleDataObserver
 {
 	private:

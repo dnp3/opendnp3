@@ -32,6 +32,7 @@
 namespace opendnp3
 {
 
+/// Bitmasks for Class1/2/3 events
 enum PointClass {
 	PC_CLASS_0 = 0x01,
 	PC_CLASS_1 = 0x02,
@@ -41,6 +42,7 @@ enum PointClass {
 	PC_INVALID = 0x10
 };
 
+///converts an integer to a PointClass enumeration
 PointClass IntToPointClass(int aClass);
 
 }

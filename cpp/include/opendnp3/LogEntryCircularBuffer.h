@@ -44,6 +44,9 @@
 namespace opendnp3
 {
 
+/**
+ Circular buffer used to store log messages temporarily, i.e. until they are displayed or written to disk. 
+*/
 class LogEntryCircularBuffer : public ILogBase, public SubjectBase, private Uncopyable
 {
 public:

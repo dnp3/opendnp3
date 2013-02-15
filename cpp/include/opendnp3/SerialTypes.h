@@ -34,12 +34,14 @@
 namespace opendnp3
 {
 
+/// Enumeration for setting serial port parity 
 enum ParityType {
 	PAR_NONE = 0,
 	PAR_EVEN = 1,
 	PAR_ODD = 2
 };
 
+/// Enumeration for setting serial port flow control
 enum FlowType {
 	FLOW_NONE = 0,
 	FLOW_HARDWARE = 1,
@@ -49,12 +51,19 @@ enum FlowType {
 ParityType GetParityFromInt(int parity);
 FlowType GetFlowTypeFromInt(int parity);
 
+/// Settings structure for the serial port
 struct SerialSettings {
+	/// name of the port, i.e. "COM1" or "/dev/tty0"
 	std::string mDevice;
+	/// Baud rate of the port, i.e. 9600 or 57600
 	int mBaud;
+	/// Data bits, usually 8
 	int mDataBits;
+	/// Stop bits, usually set to 1
 	int mStopBits;
+	/// Parity setting for the port, usually PAR_NONE
 	ParityType mParity;
+	/// Flow control setting, usually FLOW_NONE
 	FlowType mFlowType;
 };
 

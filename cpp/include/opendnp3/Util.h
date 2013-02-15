@@ -42,7 +42,6 @@
 
 namespace opendnp3
 {
-void ClearScreen();
 
 template <class T>
 inline T Min(T a, T b)

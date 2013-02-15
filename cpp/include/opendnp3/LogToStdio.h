@@ -35,6 +35,11 @@
 namespace opendnp3
 {
 
+/**
+* Singleton class that prints all log messages to the console
+*
+*
+*/
 class LogToStdio : public ILogBase
 {
 

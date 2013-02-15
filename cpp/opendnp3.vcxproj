@@ -137,7 +137,6 @@
     <ClInclude Include="include\opendnp3\Types.h" />
     <ClInclude Include="include\opendnp3\Uncopyable.h" />
     <ClInclude Include="include\opendnp3\Util.h" />
-    <ClInclude Include="include\opendnp3\VtoConfig.h" />
     <ClInclude Include="include\opendnp3\VtoRouterSettings.h" />
     <ClInclude Include="src\opendnp3\AlwaysOpeningVtoRouter.h" />
     <ClInclude Include="src\opendnp3\APDU.h" />

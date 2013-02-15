@@ -33,11 +33,13 @@
 namespace opendnp3
 {
 
+/// Interface representing a running vto endpoint
 class IVtoEndpoint
 {
 	public:
 		virtual ~IVtoEndpoint() {}		
 
+		/// Permanently shutdown the endpoint
 		virtual void Shutdown() = 0;
 };
 

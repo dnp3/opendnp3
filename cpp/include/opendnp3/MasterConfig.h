@@ -44,7 +44,8 @@ namespace opendnp3
 Configuration information for the dnp3 master
 */
 struct MasterConfig {
-	// Default constructor
+	
+	/// Default constructor
 	MasterConfig() :
 		FragSize(DEFAULT_FRAG_SIZE),
 		VtoWriterQueueSize(DEFAULT_VTO_WRITER_QUEUE_SIZE),
@@ -68,37 +69,37 @@ struct MasterConfig {
 		mScans.push_back(ex);
 	}
 
-	// Maximum fragment size to use for requests
+	/// Maximum fragment size to use for requests
 	size_t FragSize;
 
-	// The number of objects to store in the VtoWriter queue.
+	/// The number of objects to store in the VtoWriter queue.
 	size_t VtoWriterQueueSize;
 
-	// Using FC_WRITE is a problem with vto because the spec won't allow it to retry
+	/// Using FC_WRITE is a problem with vto because the spec won't allow it to retry
 	bool UseNonStandardVtoFunction;
 
-	// If true, the master will do time syncs when it sees the time IIN bit from the slave
+	/// If true, the master will do time syncs when it sees the time IIN bit from the slave
 	bool AllowTimeSync;
 
-	// If true, the master will enable/disable unsol on startup
+	/// If true, the master will enable/disable unsol on startup
 	bool DoUnsolOnStartup;
 
-	// If DoUnsolOnStartup == true, the master will use this bit to decide wether to enable (true) or disable (false)
+	/// If DoUnsolOnStartup == true, the master will use this bit to decide wether to enable (true) or disable (false)
 	bool EnableUnsol;
 
-	//	Bitwise mask used determine which classes are enabled/disabled for unsol
+	///	Bitwise mask used determine which classes are enabled/disabled for unsol
 	int UnsolClassMask;
 
-	// Period for integrity scans (class 0), -1 for non periodic
+	/// Period for integrity scans (class 0), -1 for non periodic
 	millis_t IntegrityRate;
 
-	// Time delay between task retries
+	/// Time delay between task retries
 	millis_t TaskRetryRate;
 
-	// vector that holds exception scans
+	/// vector that holds exception scans
 	std::vector<ExceptionScan> mScans;
 
-	// Observer class for notifying outside world what the master is doing
+	/// Observer class for notifying outside world what the master is doing
 	IStackObserver* mpObserver;
 };
 

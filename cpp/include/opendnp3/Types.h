@@ -38,6 +38,7 @@ namespace opendnp3
 #define SIZE_MAX ~0
 #endif
 
+/// millisecond time type
 typedef int64_t millis_t;
 
 } //end namespace

@@ -53,16 +53,40 @@ class IVtoWriter;
 class IVtoReader;
 class VtoEndpointImpl;
 
+/**
+* Base class for masters or outstations. Can be used to bind a vto endpoint or shutdown.
+*/
 class IStack : public DestructorHook
 {
 	public:
 		IStack(Logger* apLogger, boost::asio::io_service* apService);
 		virtual ~IStack();
 
-		IVtoEndpoint* StartVtoRouterTCPClient(const std::string& arLoggerId, FilterLevel aLevel, const std::string& arAddr, uint16_t aPort, const VtoRouterSettings& arSettings);
+		/** 
+		* Bind a vto endpoint as a tcp client
+		*
+		* @param arLoggerId Name used in all log messages
+		* @param aLevel Lowest log level recorded
+		* @param arHost IP address for connection
+		* @param aPort port for connection
+		* @param arSettings settings for the vto connection
+		* @return interface representing the running endpoint
+		*/
+		IVtoEndpoint* StartVtoRouterTCPClient(const std::string& arLoggerId, FilterLevel aLevel, const std::string& arHost, uint16_t aPort, const VtoRouterSettings& arSettings);
+		
+		/** 
+		* Bind a vto endpoint as a tcp server
+		*
+		* @param arLoggerId Name used in all log messages
+		* @param aLevel Lowest log level recorded
+		* @param arEndpoint Network adapter to bind to (i.e. 127.0.0.1 or 0.0.0.0)
+		* @param aPort port to listen on
+		* @param arSettings settings for the vto connection
+		* @return interface representing the running endpoint
+		*/
 		IVtoEndpoint* StartVtoRouterTCPServer(const std::string& arLoggerId, FilterLevel aLevel, const std::string& arEndpoint, uint16_t aPort, const VtoRouterSettings& arSettings);
 
-		// Synchronously shutdown the stack. Safe to delete after this call.
+		/// Synchronously shutdown the endpoint
 		virtual void Shutdown() = 0;	
 
 	protected:	
