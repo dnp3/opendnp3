@@ -160,7 +160,6 @@ cpp/include/opendnp3/DeviceTemplate.h \
 cpp/include/opendnp3/DeviceTemplateTypes.h \
 cpp/include/opendnp3/DNP3Manager.h \
 cpp/include/opendnp3/DNPConstants.h \
-cpp/include/opendnp3/DNPExceptions.h \
 cpp/include/opendnp3/Exception.h \
 cpp/include/opendnp3/IChannel.h \
 cpp/include/opendnp3/ICommandHandler.h \
