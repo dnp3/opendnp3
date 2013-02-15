@@ -200,7 +200,6 @@ cpp/include/opendnp3/TransportConstants.h \
 cpp/include/opendnp3/Types.h \
 cpp/include/opendnp3/Uncopyable.h \
 cpp/include/opendnp3/Util.h \
-cpp/include/opendnp3/VtoConfig.h \
 cpp/include/opendnp3/VtoRouterSettings.h
 
 check_PROGRAMS = dnp3test
