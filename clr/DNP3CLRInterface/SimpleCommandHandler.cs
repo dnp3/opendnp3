@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace DNP3.Interface
 {
+    /// <summary>
+    /// Singeton that rejects all commands
+    /// </summary>
     public class RejectingCommandHandler : SimpleCommandHandler
     {
         private static readonly ICommandHandler instance = new RejectingCommandHandler();
@@ -22,6 +25,9 @@ namespace DNP3.Interface
         }
     }
 
+    /// <summary>
+    /// Handles all commands by calling a function
+    /// </summary>
     public class SimpleCommandHandler : ICommandHandler
     {
         private readonly Func<CommandStatus> status;

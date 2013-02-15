@@ -6,6 +6,10 @@ using System.Threading.Tasks;
 
 namespace DNP3.Interface
 {
+
+    /// <summary>
+    /// Singleton that prints all received values to the console.
+    /// </summary>
     public class PrintingDataObserver : IDataObserver
     {
         private static readonly IDataObserver instance = new PrintingDataObserver();
