@@ -26,7 +26,7 @@
 //
 // Contact Automatak, LLC for a commercial license to these modifications
 //
-#include "DNP3Manager.h"
+#include "DNP3ManagerAdapter.h"
 
 #include "Conversions.h"
 #include "LogAdapter.h"
@@ -38,18 +38,18 @@ namespace DNP3
 namespace Adapter
 {
 
-	DNP3Manager::DNP3Manager(System::Int32 aConcurrency) :
+	DNP3ManagerAdapter::DNP3ManagerAdapter(System::Int32 aConcurrency) :
 		pMgr(new opendnp3::DNP3Manager(aConcurrency))
 	{
 		
 	}
 
-	DNP3Manager::~DNP3Manager()
+	DNP3ManagerAdapter::~DNP3ManagerAdapter()
 	{
 		delete pMgr;
 	}	
 
-	IChannel^ DNP3Manager::AddTCPClient(System::String^ name, LogLevel level, System::UInt64 retryMs, System::String^ address, System::UInt16 port)
+	IChannel^ DNP3ManagerAdapter::AddTCPClient(System::String^ name, LogLevel level, System::UInt64 retryMs, System::String^ address, System::UInt16 port)
 	{
 		
 		std::string stdName = Conversions::convertString(name);
@@ -66,7 +66,7 @@ namespace Adapter
 		}
 	}
 
-	IChannel^ DNP3Manager::AddTCPServer(System::String^ name, LogLevel level, System::UInt64 retryMs, System::String^ endpoint, System::UInt16 port)
+	IChannel^ DNP3ManagerAdapter::AddTCPServer(System::String^ name, LogLevel level, System::UInt64 retryMs, System::String^ endpoint, System::UInt16 port)
 	{
 		std::string stdName = Conversions::convertString(name);
 		std::string stdEndpoint = Conversions::convertString(endpoint);		
@@ -82,7 +82,7 @@ namespace Adapter
 		}
 	}
 
-	IChannel^ DNP3Manager::AddSerial(System::String^ name, LogLevel level, System::UInt64 retryMs, SerialSettings^ settings)
+	IChannel^ DNP3ManagerAdapter::AddSerial(System::String^ name, LogLevel level, System::UInt64 retryMs, SerialSettings^ settings)
 	{
 		std::string stdName = Conversions::convertString(name);
 		auto lev = Conversions::convertFilterLevel(level);		
@@ -97,7 +97,7 @@ namespace Adapter
 		}
 	}
 
-	void DNP3Manager::AddLogHandler(ILogHandler^ logHandler)
+	void DNP3ManagerAdapter::AddLogHandler(ILogHandler^ logHandler)
 	{
 		try {
 			LogAdapterWrapper^ wrapper = gcnew LogAdapterWrapper(logHandler);

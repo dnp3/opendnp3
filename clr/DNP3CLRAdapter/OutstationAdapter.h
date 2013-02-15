@@ -39,7 +39,7 @@ namespace DNP3
 {	
 namespace Adapter
 {	
-	public ref class OutstationAdapter : IOutstation
+	private ref class OutstationAdapter : IOutstation
 	{
 		public:
 

@@ -33,20 +33,35 @@ using System.Text;
 
 namespace DNP3.Interface
 {    
-    public delegate void FutureCallback<T>(T value);
-
+    /// <summary>
+    /// Represents the future value of an operation
+    /// </summary>
+    /// <typeparam name="T">Type of the operation</typeparam>
     public interface IFuture<T>
     {
+        /// <summary>
+        /// Synchronously block until the value is available
+        /// </summary>
+        /// <returns>The result of the operation</returns>
         T Await();
-        void Listen(FutureCallback<T> callback);
+
+        /// <summary>
+        /// Asynchronously 'listen' for the result of an operation
+        /// </summary>
+        /// <param name="callback">Action that is called when the operation completes</param>
+        void Listen(Action<T> callback);
     }
 
+    /// <summary>
+    /// Implementation of IFuture with the ability to set the value once
+    /// </summary>
+    /// <typeparam name="T">type of the operation</typeparam>
     public class Future<T> : IFuture<T>
     {
         private bool set = false;
         private T value = default(T);
         private Object mutex = new Object();
-        private List<FutureCallback<T>> listeners = new List<FutureCallback<T>>();
+        private List<Action<T>> listeners = new List<Action<T>>();
 
         public T Await()
         {
@@ -61,7 +76,7 @@ namespace DNP3.Interface
             }
         }
 
-        public void Listen(FutureCallback<T> callback)
+        public void Listen(Action<T> callback)
         {
             lock (mutex)
             {
@@ -81,7 +96,7 @@ namespace DNP3.Interface
                     set = true;
                     this.value = value;
                     System.Threading.Monitor.PulseAll(mutex);
-                    foreach (FutureCallback<T> fc in listeners) { fc(this.value); }
+                    foreach (var fc in listeners) { fc(this.value); }
                 }
             }
         }

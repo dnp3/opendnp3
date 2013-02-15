@@ -61,7 +61,7 @@ namespace Adapter
 		void _End();
 	};
 
-	public ref class MasterDataObserverWrapper
+	private ref class MasterDataObserverWrapper
 	{
 		public:
 

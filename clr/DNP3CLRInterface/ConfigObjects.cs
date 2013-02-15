@@ -33,9 +33,20 @@ using System.Text;
 
 namespace DNP3.Interface
 {
+    /// <summary>
+    /// Configuration class for the link layer
+    /// </summary>
     public class LinkConfig
 	{
-		
+		/// <summary>
+		/// Full constructor
+		/// </summary>
+        /// <param name="isMaster">true if this layer will be used with a master, false otherwise</param>
+        /// <param name="useConfirms">true to use link layer confirmations for all data, false otherwise</param>
+        /// <param name="numRetry">The number of retry attempts the link will attempt after the initial try</param>
+        /// <param name="localAddr">dnp3 address of the local device</param>
+        /// <param name="remoteAddr">dnp3 address of the remote device</param>
+        /// <param name="timeout">the response timeout in milliseconds for confirmed requests</param>
 		public LinkConfig(	bool isMaster, 
 						    bool useConfirms, 
 						    System.UInt32 numRetry, 
@@ -51,6 +62,11 @@ namespace DNP3.Interface
             this.timeout = timeout;
         }
 
+        /// <summary>
+        /// Defaults constructor
+        /// </summary>
+        /// <param name="isMaster">true if this layer will be used with a master, false otherwise</param>
+        /// <param name="useConfirms">true to use link layer confirmations for all data, false otherwise</param>
 		public LinkConfig(bool isMaster, bool useConfirms)
         {
 			this.isMaster = isMaster;
@@ -59,13 +75,7 @@ namespace DNP3.Interface
 			this.localAddr = (ushort) (isMaster ? 1 : 1024);
 			this.remoteAddr = (ushort) (isMaster ? 1024 : 1);
 			this.timeout = 1000;
-		}
-
-
-        public LinkConfig(): this(true, false)
-        {
-            
-        }
+		}        
 
 		/// <summary>
 		/// The master/slave bit set on all messages
@@ -98,8 +108,14 @@ namespace DNP3.Interface
 		public System.UInt64 timeout;
 	}
 
+    /// <summary>
+    /// Configuration object for the application layer
+    /// </summary>
 	public class AppConfig
-	{		
+	{	
+	    /// <summary>
+	    /// Constructor with reasonable defaults
+	    /// </summary>
 		public AppConfig()
         {
             this.rspTimeout = 5000;
@@ -107,6 +123,12 @@ namespace DNP3.Interface
             this.fragSize = 2048;
         }
 
+        /// <summary>
+        /// Constructor with all values parameterized
+        /// </summary>
+        /// <param name="rspTimeout"> The response/confirm timeout in millisec</param>
+        /// <param name="numRetry">Number of retries performed for applicable frames</param>
+        /// <param name="fragSize">The maximum size of received application layer fragments</param>
 		public AppConfig(System.Int64 rspTimeout, System.Int32 numRetry, System.Int32 fragSize)
         {
 			this.rspTimeout = rspTimeout;
@@ -130,26 +152,51 @@ namespace DNP3.Interface
 		/// </summary>
         public System.Int32 fragSize;
 	}
-	
+
+	/// <summary>
+    /// Defines a periodic class based scan (Class 0,1,2,3)
+	/// </summary>
 	public class ExceptionScan {
 		
+        /// <summary>
+        /// Constructor that sets all values
+        /// </summary>
+        /// <param name="classMask">Bit-field that determines which classes are scanned </param>
+        /// <param name="scanRateMs">Periodic scan rate in milliseconds</param>
         public ExceptionScan(System.Int32 classMask, System.Int64 scanRateMs)
         {
 		    this.classMask = classMask;
             this.scanRateMs = scanRateMs;
 	    }
 
+        /// <summary>
+        /// Scan all events every 5 seconds
+        /// </summary>
         public ExceptionScan() 
         {
             this.classMask = (Int32) PointClass.PC_CLASS_0;
             this.scanRateMs = 5000;
         }
 
+        /// <summary>
+        /// Bit-field that determines which classes are scanned
+        /// </summary>
         public System.Int32 classMask;
+
+        /// <summary>
+        /// Periodic scan rate in milliseconds
+        /// </summary>
         public System.Int64 scanRateMs;
 
 	};
 	
+    /// <summary>
+    /// Enumeration for controlling class based scanning / eventing
+    /// CLASS 0 corresponds to Group 60 Variation 1
+    /// CLASS 1 corresponds to Group 60 Variation 2
+    /// CLASS 2 corresponds to Group 60 Variation 3
+    /// CLASS 3 corresponds to Group 60 Variation 4
+    /// </summary>
 	public enum PointClass {
 		PC_CLASS_0 = 0x01,
 		PC_CLASS_1 = 0x02,
@@ -161,7 +208,10 @@ namespace DNP3.Interface
 
 	/// Configuration information for the dnp3 master
 	public class MasterConfig {
-				
+		
+		/// <summary>
+		/// Constructor with reasonable defaults
+		/// </summary>
 		public MasterConfig()
         {
 			fragSize = 2048;
@@ -175,10 +225,10 @@ namespace DNP3.Interface
 		}
 
 		/// <summary>
-		/// 
+		/// Add an exception scan
 		/// </summary>
-		/// <param name="classMask"></param>
-		/// <param name="period"></param>
+		/// <param name="classMask">bitmask that determines which classes are scanned</param>
+		/// <param name="period">scan period in milliseconds</param>
 		public void AddExceptionScan(System.Int32 classMask, System.Int64 period)
         {
 			scans.Add(new ExceptionScan(classMask, period));			
@@ -225,13 +275,22 @@ namespace DNP3.Interface
 		public List<ExceptionScan> scans;
 	}
 
+    /// <summary>
+    /// Structure that records which events are scanned / evented
+    /// </summary>
     public struct ClassMask 
     {
-	    public ClassMask(bool c1, bool c2, bool c3)
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="c1">true for Class1</param>
+        /// <param name="c2">true for Class2</param>
+        /// <param name="c3">true for Class3</param>
+	    public ClassMask(bool class1, bool class2, bool class3)
         {
-            this.class1 = c1;
-            this.class2 = c2;
-            this.class3 = c3;
+            this.class1 = class1;
+            this.class2 = class2;
+            this.class3 = class3;
 	    }        
 
 	    public bool class1;
@@ -239,9 +298,16 @@ namespace DNP3.Interface
 	    public bool class3;	   
     }
 
-    // Group/Variation pair
+    /// <summary>
+    /// Group/Variation pair used to define default responses of outstation
+    /// </summary>
     public struct GrpVar {	    
 	    
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="grp">Group</param>
+        /// <param name="var">Variation</param>
         public GrpVar(int grp, int var)
         {
             this.grp = grp;
@@ -252,8 +318,17 @@ namespace DNP3.Interface
         public int var;
     }
 
+    /// <summary>
+    /// Class that defines how many events an outstation database will record before buffer overflow occurs
+    /// </summary>
     public class EventMaxConfig {
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="maxBinaryEvents">maximum numner of binary events</param>
+        /// <param name="maxAnalogEvents">maximum numner of analog events</param>        
+        /// <param name="maxCounterEvents">maximum numner of counter events</param>
         public EventMaxConfig(System.UInt32 maxBinaryEvents, System.UInt32 maxAnalogEvents, System.UInt32 maxCounterEvents)
         {
             this.maxBinaryEvents = maxBinaryEvents;
@@ -261,6 +336,9 @@ namespace DNP3.Interface
             this.maxCounterEvents = maxCounterEvents;
         }
 
+        /// <summary>
+        /// All events set to 1000
+        /// </summary>
         public EventMaxConfig()
         {
             this.maxBinaryEvents = 1000;
@@ -293,6 +371,9 @@ namespace DNP3.Interface
     /// </summary>
     public class SlaveConfig 
     {
+        /// <summary>
+        /// Constructor with reasonable defaults
+        /// </summary>
         public SlaveConfig()
         {
             this.maxControls = 1;
@@ -395,11 +476,17 @@ namespace DNP3.Interface
 	    public GrpVar eventCounter;	   	    
     }
 
+    /// <summary>
+    /// Base class from which all PointRecords are inherited
+    /// </summary>
     public class PointRecord
     {
     
     };
 
+    /// <summary>
+    /// Point record type that is assigned an event class 
+    /// </summary>
     public class EventPointRecord : PointRecord
     {
         public EventPointRecord(PointClass pointClass) : base()
@@ -416,22 +503,47 @@ namespace DNP3.Interface
         public PointClass pointClass;
     };
 
+    /// <summary>
+    /// Point record type that is assigned an event class and deadband tolerance
+    /// </summary>
     public class DeadbandEventPointRecord : EventPointRecord
     {
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="pointClass">Class that will be evented when the value changes</param>
+        /// <param name="deadband">Value can change within this tolerance without producing an event</param>
         public DeadbandEventPointRecord(PointClass pointClass, double deadband) : base(pointClass)
         {
             this.deadband = deadband;
         }
 
+        /// <summary>
+        /// Default constructor with Class 0 and 0.1 tolerance
+        /// </summary>
         public DeadbandEventPointRecord()
             : this(PointClass.PC_CLASS_0, 0.1)
         { }
 
+        /// <summary>
+        /// Value can change within this tolerance without producing an event
+        /// </summary>
         public double deadband;
     };    
 
+    /// <summary>
+    /// Defines the database layout for an outstation
+    /// </summary>
     public class DeviceTemplate
     {
+        /// <summary>
+        /// Constructor that sets up the size of the types
+        /// </summary>
+        /// <param name="numBinary">numer of binary values starting at index 0</param>
+        /// <param name="numAnalog">numer of analog values starting at index 0</param>
+        /// <param name="numCounter">numer of counter values starting at index 0</param>
+        /// <param name="numControlStatus">numer of control status values starting at index 0</param>
+        /// <param name="numSetpointStatus">numer of setpoint status values starting at index 0</param>
         public DeviceTemplate(  System.UInt32 numBinary,
                                 System.UInt32 numAnalog,
                                 System.UInt32 numCounter,
@@ -445,19 +557,43 @@ namespace DNP3.Interface
             setpointStatii = Enumerable.Range(0, (int) numSetpointStatus).Select(i => new PointRecord()).ToList();            
         }
 
+        /// <summary>
+        /// Default constructor that sets up 10 of every type
+        /// </summary>
         public DeviceTemplate()
             : this(10, 10, 10, 10, 10)
         { }
 
+        /// <summary>
+        /// Modify individual binary configuration here
+        /// </summary>
         public List<EventPointRecord> binaries;
+        /// <summary>
+        /// Modify individual analog configuration here
+        /// </summary>
         public List<EventPointRecord> counters;
+        /// <summary>
+        /// Modify individual counter configuration here
+        /// </summary>
         public List<DeadbandEventPointRecord> analogs;
+        /// <summary>
+        /// Modify individual control status configuration here
+        /// </summary>
         public List<PointRecord> controlStatii;
+        /// <summary>
+        /// Modify individual setpoint status configuration here
+        /// </summary>
         public List<PointRecord> setpointStatii;
     };
 
+    /// <summary>
+    /// Aggreate configuration for a master stack
+    /// </summary>
 	public class MasterStackConfig
     {	
+        /// <summary>
+        /// Reasonable defaults
+        /// </summary>
 		public MasterStackConfig()
         {
             this.link = new LinkConfig(true, false);
@@ -465,25 +601,51 @@ namespace DNP3.Interface
             this.app = new AppConfig();
 		}        
 
+        /// <summary>
+        /// Configuration for a master
+        /// </summary>
         public MasterConfig master;
+        /// <summary>
+        /// Configuration for the application layer
+        /// </summary>
         public AppConfig app;
+        /// <summary>
+        /// Configuration for the link layer
+        /// </summary>
         public LinkConfig link;
 	}
 
+    /// <summary>
+    /// Aggreate configuration for an outstation stack
+    /// </summary>
     public class SlaveStackConfig
 	{
+        /// <summary>
+        /// Constructor with reasonable defaults
+        /// </summary>
         public SlaveStackConfig()
         {
             this.slave = new SlaveConfig();
             this.device = new DeviceTemplate(10, 10, 10, 10, 10);
             this.link = new LinkConfig(false, false);
-            this.app = new AppConfig();
-            
+            this.app = new AppConfig();            
         }
 
-	    public SlaveConfig slave;		// Slave config
-	    public DeviceTemplate device;	// Device template that specifies database layout, control behavior
-        public AppConfig app;			// Application layer config
-        public LinkConfig link;		    // Link layer config
+        /// <summary>
+        /// Slave config
+        /// </summary>
+	    public SlaveConfig slave;
+        /// <summary>
+        /// Device template that specifies database layout, control behavior
+        /// </summary>
+        public DeviceTemplate device;
+        /// <summary>
+        /// Application layer config
+        /// </summary>
+        public AppConfig app;
+        /// <summary>
+        /// Link layer config
+        /// </summary>
+        public LinkConfig link;
 	}
 }

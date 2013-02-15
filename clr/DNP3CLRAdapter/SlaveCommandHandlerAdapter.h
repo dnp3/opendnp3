@@ -71,7 +71,7 @@ namespace Adapter
 			gcroot<DNP3::Interface::ICommandHandler^> proxy;
 	};	
 	
-	public ref class SlaveCommandHandlerWrapper
+	private ref class SlaveCommandHandlerWrapper
 	{
 		public:
 

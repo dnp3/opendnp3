@@ -33,16 +33,31 @@ using System.Text;
 
 namespace DNP3.Interface
 {
+    /// <summary>
+    /// Collection of static methods for translating dnp3 <=> .NET timestamps
+    /// </summary>
     public class TimeStamp
     {
-        // DNP3 uses different epoch than .NET
+        /// <summary>
+        /// dnp3 uses a different epoch than .NET
+        /// </summary>
         private static readonly DateTime epoch = new DateTime(1970, 1, 1, 0, 0, 0, System.DateTimeKind.Utc);
        
+        /// <summary>
+        /// Converts a dnp3 timestamp to a .NET DateTime
+        /// </summary>
+        /// <param name="time">milliseconds since unix epoch</param>
+        /// <returns>.NET DateTime</returns>
         public static DateTime Convert(Int64 time)        
 	    {
             return epoch.Add(TimeSpan.FromMilliseconds(time));           
 	    }
 
+        /// <summary>
+        /// Converts a .NET DateTime object to a dnp3 timestamp
+        /// </summary>
+        /// <param name="time">DateTime object</param>
+        /// <returns>dnp3 milliseconds since unix epoch</returns>
         public static Int64 Convert(DateTime time)
 	    {
             return (long) time.Subtract(epoch).TotalMilliseconds;

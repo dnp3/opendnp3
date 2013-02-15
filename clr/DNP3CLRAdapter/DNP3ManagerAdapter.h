@@ -26,5 +26,39 @@
 //
 // Contact Automatak, LLC for a commercial license to these modifications
 //
+#ifndef __CLR_DNP3_MANAGER_ADAPTER_H_
+#define __CLR_DNP3_MANAGER_ADAPTER_H_
 
-#ifndef __FILTER
+using namespace System;
+using namespace DNP3::Interface;
+
+namespace opendnp3 {
+	class DNP3Manager;
+}
+
+namespace DNP3
+{	
+namespace Adapter
+{
+	/// <summary>
+    /// Root class for all dnp3 applications
+    /// </summary>
+	public ref class DNP3ManagerAdapter : public DNP3::Interface::DNP3Manager
+	{
+		public:
+			DNP3ManagerAdapter(System::Int32 aConcurrency);
+			~DNP3ManagerAdapter();
+			
+			virtual IChannel^ AddTCPClient(System::String^ name, LogLevel level, System::UInt64 retryMs, System::String^ address, System::UInt16 port);					
+			virtual IChannel^ AddTCPServer(System::String^ name, LogLevel level, System::UInt64 retryMs, System::String^ endpoint, System::UInt16 port);
+			virtual IChannel^ AddSerial(System::String^ name, LogLevel level, System::UInt64 retryMs, SerialSettings^ settings);
+
+			virtual void AddLogHandler(ILogHandler^ logHandler);			
+			
+		private:
+			opendnp3::DNP3Manager* pMgr;
+	};
+
+}}
+
+#endif

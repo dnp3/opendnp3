@@ -40,7 +40,7 @@ namespace DNP3
 {	
 namespace Adapter
 {
-	class LogAdapter : public opendnp3::ILogBase
+	private class LogAdapter : public opendnp3::ILogBase
 	{
 		public:
 
@@ -53,7 +53,7 @@ namespace Adapter
 		gcroot<ILogHandler^> proxy;
 	};
 	
-	public ref class LogAdapterWrapper
+	private ref class LogAdapterWrapper
 	{
 		public:
 		LogAdapterWrapper(ILogHandler^ proxy) : mpAdapter(new LogAdapter(proxy))

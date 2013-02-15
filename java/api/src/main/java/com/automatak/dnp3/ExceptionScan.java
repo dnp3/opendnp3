@@ -27,7 +27,7 @@ public class ExceptionScan
     public long scanRateMs;
 
     /**
-     * Constructor that provides reasonable defaults
+     * Scan all events every 5 seconds
      */
     public ExceptionScan()
     {

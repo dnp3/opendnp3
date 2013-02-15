@@ -6,8 +6,15 @@ using System.Threading.Tasks;
 
 namespace DNP3.Interface
 {
+    /// <summary>
+    /// Interface representing a master station
+    /// </summary>
     public interface IMaster: IStack
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns>Interface used to dispatch command requests</returns>
         ICommandProcessor GetCommandProcessor();
     }
 }

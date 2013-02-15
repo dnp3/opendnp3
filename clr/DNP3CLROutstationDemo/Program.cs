@@ -35,95 +35,16 @@ using DNP3.Adapter;
 using DNP3.Interface;
 
 namespace DotNetSlaveDemo
-{
-    class RejectingCommandHandler : ICommandHandler {
-
-
-        CommandStatus ICommandHandler.Select(ControlRelayOutputBlock command, uint index, byte aSequence)
-        {
-            return CommandStatus.CS_NOT_SUPPORTED;
-        }
-
-        CommandStatus ICommandHandler.Select(AnalogOutputInt32 command, uint index, byte aSequence)
-        {
-            return CommandStatus.CS_NOT_SUPPORTED;
-        }
-
-        CommandStatus ICommandHandler.Select(AnalogOutputInt16 command, uint index, byte aSequence)
-        {
-            return CommandStatus.CS_NOT_SUPPORTED;
-        }
-
-        CommandStatus ICommandHandler.Select(AnalogOutputFloat32 command, uint index, byte aSequence)
-        {
-            return CommandStatus.CS_NOT_SUPPORTED;
-        }
-
-        CommandStatus ICommandHandler.Select(AnalogOutputDouble64 command, uint index, byte aSequence)
-        {
-            return CommandStatus.CS_NOT_SUPPORTED;
-        }
-
-        CommandStatus ICommandHandler.Operate(ControlRelayOutputBlock command, uint index, byte aSequence)
-        {
-            return CommandStatus.CS_NOT_SUPPORTED;
-        }
-
-        CommandStatus ICommandHandler.Operate(AnalogOutputInt32 command, uint index, byte aSequence)
-        {
-            return CommandStatus.CS_NOT_SUPPORTED;
-        }
-
-        CommandStatus ICommandHandler.Operate(AnalogOutputInt16 command, uint index, byte aSequence)
-        {
-            return CommandStatus.CS_NOT_SUPPORTED;
-        }
-
-        CommandStatus ICommandHandler.Operate(AnalogOutputFloat32 command, uint index, byte aSequence)
-        {
-            return CommandStatus.CS_NOT_SUPPORTED;
-        }
-
-        CommandStatus ICommandHandler.Operate(AnalogOutputDouble64 command, uint index, byte aSequence)
-        {
-            return CommandStatus.CS_NOT_SUPPORTED;
-        }
-
-        CommandStatus ICommandHandler.DirectOperate(ControlRelayOutputBlock command, uint index)
-        {
-            return CommandStatus.CS_NOT_SUPPORTED;
-        }
-
-        CommandStatus ICommandHandler.DirectOperate(AnalogOutputInt32 command, uint index)
-        {
-            return CommandStatus.CS_NOT_SUPPORTED;
-        }
-
-        CommandStatus ICommandHandler.DirectOperate(AnalogOutputInt16 command, uint index)
-        {
-            return CommandStatus.CS_NOT_SUPPORTED;
-        }
-
-        CommandStatus ICommandHandler.DirectOperate(AnalogOutputFloat32 command, uint index)
-        {
-            return CommandStatus.CS_NOT_SUPPORTED;
-        }
-
-        CommandStatus ICommandHandler.DirectOperate(AnalogOutputDouble64 command, uint index)
-        {
-            return CommandStatus.CS_NOT_SUPPORTED;
-        }
-    }
-
+{   
     class Program
     {
         static void Main(string[] args)
         {
-            var mgr = new DNP3Manager(1);
-            mgr.AddLogHandler(new PrintingLogAdapter()); //this is optional
+            DNP3Manager mgr = new DNP3ManagerAdapter(1);
+            mgr.AddLogHandler(PrintingLogAdapter.Instance); //this is optional
             var channel = mgr.AddTCPServer("server", LogLevel.INFO, 5000, "127.0.0.1", 20000);
             var config = new SlaveStackConfig();
-            var outstation = channel.AddOutstation("outstation", LogLevel.INFO, new RejectingCommandHandler(), config);
+            var outstation = channel.AddOutstation("outstation", LogLevel.INFO, RejectingCommandHandler.Instance, config);
             var publisher = outstation.GetDataObserver();
 
             Console.WriteLine("Press <Enter> to randomly change a value");

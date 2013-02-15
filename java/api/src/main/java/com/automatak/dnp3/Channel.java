@@ -30,7 +30,7 @@ public interface Channel {
     void shutdown();
 
     /**
-     * Adds a master station to the channel
+     * Adds a master to the channel
      * @param loggerId name of the logger that will be assigned to this stack
      * @param level LogLevel assigned to the logger
      * @param publisher Where measurements will be sent as they are received from the outstation
@@ -40,7 +40,7 @@ public interface Channel {
     Master addMaster(String loggerId, LogLevel level, DataObserver publisher, MasterStackConfig config);
 
     /**
-     * Adds a master station to the channel
+     * Adds an outstation to the channel
      * @param loggerId name of the logger that will be assigned to this stack
      * @param level LogLevel assigned to the logger
      * @param cmdHandler where command requests are sent to be handled in application code

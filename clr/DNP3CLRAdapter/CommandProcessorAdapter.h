@@ -42,13 +42,13 @@ namespace DNP3
 {		
 namespace Adapter
 {	
-	public class ResponseRouter
+	private class ResponseRouter
 	{
 		public:			
 			static void Set(gcroot<Future<CommandStatus>^>* apFuture, opendnp3::CommandResponse cr);		
 	};
 
-	public ref class CommandProcessorAdapter : public ICommandProcessor
+	private ref class CommandProcessorAdapter : public ICommandProcessor
 	{		
 		public:
 

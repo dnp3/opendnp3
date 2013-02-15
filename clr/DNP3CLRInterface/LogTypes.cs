@@ -33,6 +33,9 @@ using System.Text;
 
 namespace DNP3.Interface
 {
+    /// <summary>
+    /// Log level enumeration
+    /// </summary>
     public enum LogLevel {
 		EVENT,
 		ERROR,

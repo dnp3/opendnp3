@@ -32,15 +32,56 @@ using System.Linq;
 using System.Text;
 
 namespace DNP3.Interface
-{
+{        
+    /// <summary>
+    /// Interface called to load data into an outstation or receive data from a master
+    /// start() / end() must be called before / after any calls to update.
+    /// </summary>
     public interface IDataObserver
 	{
+        /// <summary>
+        /// Start a transaction
+        /// </summary>
 		void Start();
+
+        /// <summary>
+        /// Update a Binary input
+        /// </summary>
+        /// <param name="update">measurement to update</param>
+        /// <param name="index">index of measurement</param>        
 		void Update(Binary update, System.UInt32 index);
+
+        /// <summary>
+        /// Update an Analog input
+        /// </summary>
+        /// <param name="update">measurement to update</param>
+        /// <param name="index">index of measurement</param>
 		void Update(Analog update, System.UInt32 index);
+
+        /// <summary>
+        /// Update a Counter
+        /// </summary>
+        /// <param name="update">measurement to update</param>
+        /// <param name="index">index of measurement</param>
 		void Update(Counter update, System.UInt32 index);
+
+        /// <summary>
+        /// Update a BinaryOutputStatus
+        /// </summary>
+        /// <param name="update">measurement to update</param>
+        /// <param name="index">index of measurement</param>
 		void Update(ControlStatus update, System.UInt32 index);
+
+        /// <summary>
+        /// Update an AnalogOutputStatus
+        /// </summary>
+        /// <param name="update">measurement to update</param>
+        /// <param name="index">index of measurement</param>
 		void Update(SetpointStatus update, System.UInt32 index);
+
+        /// <summary>
+        /// End a transaction
+        /// </summary>
 		void End();
 	}
 }
