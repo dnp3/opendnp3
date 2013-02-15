@@ -31,7 +31,7 @@
 
 using namespace System::Collections::ObjectModel;
 
-#include <opendnp3/DataInterfaces.h>
+#include <opendnp3/IDataObserver.h>
 #include <vcclr.h>
 
 using namespace DNP3::Interface;

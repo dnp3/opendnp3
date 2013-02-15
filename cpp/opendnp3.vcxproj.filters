@@ -45,9 +45,6 @@
     <ClInclude Include="include\opendnp3\ControlRelayOutputBlock.h">
       <Filter>Include Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\opendnp3\DataInterfaces.h">
-      <Filter>Include Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\opendnp3\DataTypes.h">
       <Filter>Include Files</Filter>
     </ClInclude>
@@ -575,6 +572,9 @@
     </ClInclude>
     <ClInclude Include="src\opendnp3\DNP3Channel.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\opendnp3\IDataObserver.h">
+      <Filter>Include Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

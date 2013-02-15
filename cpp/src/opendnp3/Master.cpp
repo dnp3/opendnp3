@@ -29,7 +29,7 @@
 #include "Master.h"
 
 #include <opendnp3/Logger.h>
-#include <opendnp3/DataInterfaces.h>
+#include <opendnp3/IDataObserver.h>
 
 #include "MasterStates.h"
 #include "ObjectReadIterator.h"

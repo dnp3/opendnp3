@@ -29,7 +29,7 @@
 #ifndef __QUEUEING_FDO_H_
 #define __QUEUEING_FDO_H_
 
-#include "DataInterfaces.h"
+#include "IDataObserver.h"
 #include "SubjectBase.h"
 #include "Util.h"
 #include "FlexibleDataObserver.h"

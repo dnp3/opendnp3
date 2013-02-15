@@ -30,7 +30,7 @@
 #define __RESPONSE_LOADER_H_
 
 #include <opendnp3/Types.h>
-#include <opendnp3/DataInterfaces.h>
+#include <opendnp3/IDataObserver.h>
 #include <opendnp3/ObjectInterfaces.h>
 #include <opendnp3/Logger.h>
 

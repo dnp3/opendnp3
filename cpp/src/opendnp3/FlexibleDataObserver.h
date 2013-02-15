@@ -29,7 +29,7 @@
 #ifndef __FLEXIBLE_DATA_OBSERVER_H_
 #define __FLEXIBLE_DATA_OBSERVER_H_
 
-#include <opendnp3/DataInterfaces.h>
+#include <opendnp3/IDataObserver.h>
 #include <opendnp3/Util.h>
 #include <opendnp3/SubjectBase.h>
 

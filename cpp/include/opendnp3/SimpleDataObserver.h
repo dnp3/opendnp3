@@ -29,7 +29,7 @@
 #ifndef __SIMPLE_DATA_OBSERVER_H_
 #define	__SIMPLE_DATA_OBSERVER_H_
 
-#include "DataInterfaces.h"
+#include "IDataObserver.h"
 #include "Singleton.h"
 
 #include <functional>

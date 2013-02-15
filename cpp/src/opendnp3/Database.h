@@ -33,7 +33,7 @@
 #include "Loggable.h"
 
 #include <opendnp3/DNPConstants.h>
-#include <opendnp3/DataInterfaces.h>
+#include <opendnp3/IDataObserver.h>
 #include <opendnp3/Exception.h>
 #include <opendnp3/Location.h>
 

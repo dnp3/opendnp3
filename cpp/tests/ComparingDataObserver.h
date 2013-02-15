@@ -29,7 +29,7 @@
 #ifndef __COMPARING_DATA_OBSERVER_H_
 #define __COMPARING_DATA_OBSERVER_H_
 
-#include <opendnp3/DataInterfaces.h>
+#include <opendnp3/IDataObserver.h>
 #include <opendnp3/FlexibleDataObserver.h>
 
 #include <map>

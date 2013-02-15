@@ -32,7 +32,7 @@
 #include <vector>
 #include <sstream>
 
-#include "DataInterfaces.h"
+#include "IDataObserver.h"
 #include "DeviceTemplateTypes.h"
 
 namespace opendnp3

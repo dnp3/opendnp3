@@ -18,7 +18,7 @@
  */
 #include "com_automatak_dnp3_impl_DataObserverImpl.h"
 
-#include <opendnp3/DataInterfaces.h>
+#include <opendnp3/IDataObserver.h>
 
 using namespace opendnp3;
 

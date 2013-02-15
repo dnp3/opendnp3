@@ -33,7 +33,7 @@
 #include <set>
 #include <mutex>
 
-#include <opendnp3/DataInterfaces.h>
+#include <opendnp3/IDataObserver.h>
 #include <opendnp3/SubjectBase.h>
 
 #include "Loggable.h"

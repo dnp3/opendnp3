@@ -31,7 +31,7 @@
 #include "BufferHelpers.h"
 #include "TestHelpers.h"
 
-#include <opendnp3/DataInterfaces.h>
+#include <opendnp3/IDataObserver.h>
 #include <opendnp3/DataTypes.h>
 #include <opendnp3/Exception.h>
 #include <opendnp3/Log.h>

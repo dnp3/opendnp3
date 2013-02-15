@@ -20,7 +20,7 @@
 #define __DATA_OBSERVER_ADAPTER_H_
 
 #include <jni.h>
-#include <opendnp3/DataInterfaces.h>
+#include <opendnp3/IDataObserver.h>
 
 class DataObserverAdapter : public opendnp3::IDataObserver
 {

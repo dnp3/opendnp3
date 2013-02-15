@@ -90,7 +90,6 @@
     <ClInclude Include="include\opendnp3\CommandResponse.h" />
     <ClInclude Include="include\opendnp3\CommandStatus.h" />
     <ClInclude Include="include\opendnp3\ControlRelayOutputBlock.h" />
-    <ClInclude Include="include\opendnp3\DataInterfaces.h" />
     <ClInclude Include="include\opendnp3\DataTypes.h" />
     <ClInclude Include="include\opendnp3\DestructorHook.h" />
     <ClInclude Include="include\opendnp3\DeviceTemplate.h" />
@@ -102,6 +101,7 @@
     <ClInclude Include="include\opendnp3\IChannel.h" />
     <ClInclude Include="include\opendnp3\ICommandHandler.h" />
     <ClInclude Include="include\opendnp3\ICommandProcessor.h" />
+    <ClInclude Include="include\opendnp3\IDataObserver.h" />
     <ClInclude Include="include\opendnp3\IMaster.h" />
     <ClInclude Include="include\opendnp3\IOutstation.h" />
     <ClInclude Include="include\opendnp3\IStack.h" />

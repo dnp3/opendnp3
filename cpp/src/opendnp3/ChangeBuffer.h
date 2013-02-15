@@ -30,7 +30,7 @@
 #define __CHANGE_BUFFER_H_
 
 #include <opendnp3/DataTypes.h>
-#include <opendnp3/DataInterfaces.h>
+#include <opendnp3/IDataObserver.h>
 #include <opendnp3/SubjectBase.h>
 
 #include <queue>

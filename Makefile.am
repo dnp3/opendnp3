@@ -153,7 +153,7 @@ cpp/include/opendnp3/ClassMask.h \
 cpp/include/opendnp3/CommandResponse.h \
 cpp/include/opendnp3/CommandStatus.h \
 cpp/include/opendnp3/ControlRelayOutputBlock.h \
-cpp/include/opendnp3/DataInterfaces.h \
+cpp/include/opendnp3/IDataObserver.h \
 cpp/include/opendnp3/DataTypes.h \
 cpp/include/opendnp3/DestructorHook.h \
 cpp/include/opendnp3/DeviceTemplate.h \
