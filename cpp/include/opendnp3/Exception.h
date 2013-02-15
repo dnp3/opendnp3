@@ -122,6 +122,20 @@ public:
 	{}
 };
 
+class ParameterException : public Exception
+{
+public:
+	ParameterException(const std::string& aSource, const std::string& aMessage, int aErrorCode = -1) throw() :
+		Exception(aSource, aMessage, aErrorCode) {}
+};
+
+class NotSupportedException : public Exception
+{
+public:
+	NotSupportedException(const std::string& aSource, const std::string& aMessage, int aErrorCode = -1) throw() :
+		Exception(aSource, aMessage, aErrorCode) {}
+};
+
 }
 
 #endif

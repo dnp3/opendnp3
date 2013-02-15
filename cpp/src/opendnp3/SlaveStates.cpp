@@ -28,7 +28,6 @@
 //
 #include "SlaveStates.h"
 
-#include <opendnp3/DNPExceptions.h>
 #include <opendnp3/Exception.h>
 #include <opendnp3/Logger.h>
 

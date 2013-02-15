@@ -63,9 +63,6 @@
     <ClInclude Include="include\opendnp3\DNPConstants.h">
       <Filter>Include Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\opendnp3\DNPExceptions.h">
-      <Filter>Include Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\opendnp3\Exception.h">
       <Filter>Include Files</Filter>
     </ClInclude>

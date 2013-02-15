@@ -50,16 +50,22 @@ struct DeviceTemplate {
 	               size_t aNumControlStatus = 0,
 	               size_t aNumSetpointStatus = 0);
 
-	//Measurements
-	std::vector<EventPointRecord> mBinary;		// list of binary point properties
-	std::vector<EventPointRecord> mCounter;		// list of counter point properties
-	std::vector<DeadbandPointRecord> mAnalog;	// list of analog point properties
-	std::vector<PointRecord> mControlStatus;	// list of control status point properties
-	std::vector<PointRecord> mSetpointStatus;	// list of control status point properties
+	
+	/// list of binary point properties
+	std::vector<EventPointRecord> mBinary;		
+	/// list of counter point properties
+	std::vector<EventPointRecord> mCounter;		
+	/// list of analog point properties
+	std::vector<DeadbandPointRecord> mAnalog;	
+	/// list of control status point properties
+	std::vector<PointRecord> mControlStatus;
+	/// list of control status point properties
+	std::vector<PointRecord> mSetpointStatus;	
 
+	/// Controls how the quality is initialized. If false, the restart quality flag is set. If true online is set.
 	bool mStartOnline;
 
-	// Write the initial state of a database to an observer
+	/// Write the initial state of a database to an observer
 	void Publish(IDataObserver*);
 
 private:

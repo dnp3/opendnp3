@@ -37,13 +37,11 @@
 namespace opendnp3
 {
 
-// base class - all point types have a name
 struct PointRecord {
 	PointRecord() {}
-
 };
 
-// Event point records also have a class
+/// Configuration type that has a PointClass member
 struct EventPointRecord : public PointRecord {
 	EventPointRecord(PointClass aPointClass) :
 		PointRecord(),
@@ -52,12 +50,13 @@ struct EventPointRecord : public PointRecord {
 
 	EventPointRecord() : EventClass(PC_CLASS_1) {}
 
-	// when the point changes, it will generate an event unless EventClass == PC_CLASS_0
+	/// when the point changes, it will generate an event unless EventClass == PC_CLASS_0
 	PointClass EventClass;
 };
 
-// Adds a deadband parameter
+/// DeadbandPointRecords have a parameter for controlling eventing tolerances
 struct DeadbandPointRecord : public EventPointRecord {
+		
 	DeadbandPointRecord(PointClass aPointClass, double aDeadband) :
 		EventPointRecord(aPointClass),
 		Deadband(aDeadband)
@@ -65,7 +64,7 @@ struct DeadbandPointRecord : public EventPointRecord {
 
 	DeadbandPointRecord() : Deadband(0) {}
 
-	// Points can change value within the deadband and not trigger events
+	/// Points can change value within the deadband and not trigger events
 	double Deadband;
 };
 

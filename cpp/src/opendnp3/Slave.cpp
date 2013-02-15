@@ -28,7 +28,6 @@
 //
 #include "Slave.h"
 
-#include <opendnp3/DNPExceptions.h>
 #include <opendnp3/AnalogOutput.h>
 #include <opendnp3/ControlRelayOutputBlock.h>
 #include <opendnp3/Logger.h>

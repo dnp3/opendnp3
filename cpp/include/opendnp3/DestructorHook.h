@@ -35,12 +35,20 @@
 namespace opendnp3
 {
 
+/**
+* Provides callback capabilities upon destruction. Useful for tying the lifecycle of some resource
+* to the lifecycle of this object.
+*/
 class DestructorHook
 {
 	public:
 
 		virtual ~DestructorHook();
 
+		/**
+		* Adds a destructor callback
+		* @param aHook Callback that will be invoked when this class's destructor is called.
+		*/
 		void AddDestructorHook(std::function<void ()> aHook);
 		
 	private:

@@ -45,9 +45,10 @@ const size_t DEFAULT_FRAG_SIZE = 2048;
  */
 const size_t DEFAULT_VTO_WRITER_QUEUE_SIZE = 1024;
 
+/// Error codes returned in log messages
 enum DNPErrorCodes {
 
-	/// Master slave independent vto error codes
+	// Master slave independent vto error codes
 	VTOERR_VTO_FOR_UNEXPECTED_CHANNEL,
 	VTOERR_ENHANCED_VTO_FOR_UNREGISTERED_CHANNEL,
 	VTOERR_BAD_VTO_FOR_UNREGISTERED_CHANNEL,

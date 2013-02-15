@@ -96,7 +96,6 @@
     <ClInclude Include="include\opendnp3\DeviceTemplateTypes.h" />
     <ClInclude Include="include\opendnp3\DNP3Manager.h" />
     <ClInclude Include="include\opendnp3\DNPConstants.h" />
-    <ClInclude Include="include\opendnp3\DNPExceptions.h" />
     <ClInclude Include="include\opendnp3\Exception.h" />
     <ClInclude Include="include\opendnp3\IChannel.h" />
     <ClInclude Include="include\opendnp3\ICommandHandler.h" />
