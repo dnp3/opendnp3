@@ -36,7 +36,7 @@
 namespace opendnp3
 {
 
-// Sizes of various part of link frames
+/// Sizes of various part of link frames
 enum LinkSizes {
 	LS_MIN_LENGTH = 5,
 	LS_MAX_LENGTH = 255,
@@ -49,7 +49,7 @@ enum LinkSizes {
 
 };
 
-// Indices for use with buffers containing link headers
+/// Indices for use with buffers containing link headers
 enum LinkHeaderIndex {
 	LI_START_05 = 0,
 	LI_START_64 = 1,
@@ -95,7 +95,7 @@ FuncCodes ByteToFuncCode(uint8_t aByte);
 	@return Returns string representation */
 std::string FuncCodeToString(FuncCodes aCode);
 
-// Masks for use with the CONTROL byte
+/// Masks for use with the CONTROL byte
 enum ControlMask {
 	MASK_DIR = 0x80,
 	MASK_PRM = 0x40,

@@ -48,13 +48,6 @@ using namespace std::chrono;
 #include <iomanip>
 #include <iterator>
 
-#ifdef WIN32
-#define CLEAR_CMD		"cls"
-#else
-#define CLEAR_CMD		"clear"
-#endif
-
-
 #include <time.h>
 
 namespace opendnp3
@@ -89,16 +82,6 @@ std::string ToNormalizedString(const std::chrono::steady_clock::time_point& arTi
 	auto fractional = us % (1000*1000);
 	oss << ts << "." << fractional;
 	return oss.str();
-}
-
-void ClearScreen()
-{
-	/*
-	 * Capture the return value, but ignore it.  This prevents a minor
-	 * compiler warning on gcc.
-	 */
-	int err;
-	err = system(CLEAR_CMD);
 }
 
 double SafeCastInt64ToDouble(int64_t aInput)

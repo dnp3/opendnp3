@@ -34,12 +34,18 @@
 namespace opendnp3
 {
 
+/**
+* Callback interface for log messages
+*/
 class ILogBase
 {
 public:
 	virtual ~ILogBase() {}
 
-	// logging error messages, etc
+	/**
+	* Callback function for log messages
+	* @param arEntry the log message
+	*/
 	virtual void Log( const LogEntry& arEntry ) = 0;
 };
 

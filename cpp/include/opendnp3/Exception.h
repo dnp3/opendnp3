@@ -36,7 +36,7 @@
 namespace opendnp3
 {
 
-// @section desc Extends the std::exception interface
+/// @section desc Extends the std::exception interface
 class Exception : public std::exception
 {
 public:

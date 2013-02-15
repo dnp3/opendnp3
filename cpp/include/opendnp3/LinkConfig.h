@@ -66,22 +66,22 @@ struct LinkConfig {
 		Timeout(1000)
 	{}
 
-	// The master/slave bit set on all messages
+	/// The master/slave bit set on all messages
 	bool IsMaster;
 
-	// If true, the link layer will send data requesting confirmation
+	/// If true, the link layer will send data requesting confirmation
 	bool UseConfirms;
 
-	// The number of retry attempts the link will attempt after the initial try
+	/// The number of retry attempts the link will attempt after the initial try
 	size_t NumRetry;
 
-	// dnp3 address of the local device
+	/// dnp3 address of the local device
 	uint16_t LocalAddr;
 
-	// dnp3 address of the remote device
+	/// dnp3 address of the remote device
 	uint16_t RemoteAddr;
 
-	// the response timeout in milliseconds for confirmed requests
+	/// the response timeout in milliseconds for confirmed requests
 	millis_t Timeout;
 
 private:

@@ -40,6 +40,9 @@
 namespace opendnp3
 {
 
+/**
+* An event recorded by the logging framework
+*/
 class LogEntry
 {
 	typedef std::map<std::string, std::string> KeyValueMap;
@@ -50,37 +53,88 @@ public:
 
 	LogEntry( FilterLevel aLevel, const std::string& aDeviceName, const std::string& aLocation, const std::string& aMessage, int aErrorCode);
 
+	/// @return The name of the logger that recorded the message
 	const std::string&	GetDeviceName() const {
 		return mDeviceName;
 	}
+
+	/// @return The place in the source code where the message was recorded
 	const std::string&	GetLocation() const {
 		return mLocation;
 	}
+
+	/// @return body of the log message
 	const std::string&	GetMessage() const {
 		return mMessage;
 	}
+
+	/// @return the log level of the message
 	FilterLevel			GetFilterLevel() const {
 		return mFilterLevel;
 	}
+
+	/// @return the timestamp of the message as a string
 	std::string			GetTimeString() const {
 		return ToNormalizedString(mTime);
 	}
 
-	std::chrono::steady_clock::time_point GetTimeStamp() const {
+	/// @return the timestamp of the message 
+	std::chrono::high_resolution_clock::time_point GetTimeStamp() const {
 		return mTime;
 	}
 
+	/// @return the error code associated with the message
 	int					GetErrorCode() const {
 		return mErrorCode;
 	}
+
+	/// @param aUseLocation if true, the location information is incorporated
+	/// @return String representation of the entire entry
 	std::string			LogString(bool aUseLocation = false) const;
 
+	/**
+	* Retrieve a value of the attribute map
+	* @param arKey key of the value to retrieve
+	* @param arValue reference to be written if the value is present
+	* @return true if present, false otherwise
+	*/
 	bool GetValue(const std::string& arKey, std::string& arValue) const;
+	
+	/**
+	* Retrieve a value of the attribute map
+	* @param arKey key of the value to retrieve
+	* @param arValue reference to be written if the value is present
+	* @return true if present, false otherwise
+	*/
 	bool GetValue(const std::string& arKey, int& arValue) const;
+	
+	/**
+	* Retrieve a value of the attribute map
+	* @param arKey key of the value to retrieve
+	* @param arValue reference to be written if the value is present
+	* @return true if present, false otherwise
+	*/
 	bool GetValue(const std::string& arKey, int64_t& arValue) const;
 
+	/**
+	* Add a key value pair to the attribute map
+	* @param arKey key of the value to write
+	* @param arValue value to be written
+	*/
 	void AddValue(const std::string& arKey, const std::string& arValue);
+	
+	/**
+	* Add a key value pair to the attribute map
+	* @param arKey key of the value to write
+	* @param arValue value to be written
+	*/
 	void AddValue(const std::string& arKey, int aValue);
+	
+	/**
+	* Add a key value pair to the attribute map
+	* @param arKey key of the value to write
+	* @param arValue value to be written
+	*/
 	void AddValue(const std::string& arKey, int64_t aValue);
 
 private:

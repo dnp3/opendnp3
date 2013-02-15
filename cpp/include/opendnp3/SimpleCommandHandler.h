@@ -36,11 +36,16 @@
 namespace opendnp3
 {
 
-
+/**
+* Mock ICommandHandler used for examples and demos
+*/
 class SimpleCommandHandler : public ICommandHandler
 {
 	public:
 
+		/**
+		* @param aStatusFunc functor used to retrieve that next CommandStatus enumeration
+		*/
 		SimpleCommandHandler(std::function<CommandStatus ()> aStatusFunc);
 
 		CommandStatus Select(const ControlRelayOutputBlock& arCommand, size_t aIndex, uint8_t aSequence);

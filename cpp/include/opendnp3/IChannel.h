@@ -41,6 +41,9 @@ class IMaster;
 class IOutstation;
 class ICommandHandler;
 
+/**
+* Represents a communication channel upon which masters and outstations can be bound.
+*/
 class IChannel 
 {
 	public:
@@ -48,19 +51,37 @@ class IChannel
 		virtual ~IChannel() {}
 		
 		/**
-		* Synchronously shutdown the channel. Once this method is complete, the object is safe to delete.
+		* Synchronously shutdown the channel.
 		*/
 		virtual void Shutdown() = 0;
 
+		/**
+		* Add a master to the channel
+		*
+		* @param arLoggerId Name that will be used in all log messages
+		* @param aLevel Lowest log level that will be recorded
+		* @param apPublisher Callback object for all received measurements
+		* @param arCfg Configuration object that controls how the master behaves
+		* @return interface representing the running master
+		*/
 		virtual IMaster* AddMaster(	const std::string& arLoggerId,
 									FilterLevel aLevel,
 									IDataObserver* apPublisher,
 									const MasterStackConfig& arCfg) = 0;
 
+		/**
+		* Add an outstation to the channel
+		*
+		* @param arLoggerId Name that will be used in all log messages
+		* @param aLevel Lowest log level that will be recorded
+		* @param apCmdHandler Callback object for handling command requests
+		* @param arCfg Configuration object that controls how the outstation behaves
+		* @return interface representing the running outstations
+		*/
 		virtual IOutstation* AddOutstation(	const std::string& arLoggerId,
 											FilterLevel aLevel,
 											ICommandHandler* apCmdHandler,
-											const SlaveStackConfig&) = 0;
+											const SlaveStackConfig& arCfg) = 0;
 };
 
 }

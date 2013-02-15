@@ -32,7 +32,6 @@
 #include "MasterConfig.h"
 #include "AppConfig.h"
 #include "LinkConfig.h"
-#include "VtoConfig.h"
 
 namespace opendnp3
 {
@@ -45,10 +44,15 @@ struct MasterStackConfig {
 		link(true, false)
 	{}
 
-	MasterConfig master;  // Master config
-	AppConfig app;		  // Application layer config
-	LinkConfig link;	  // Link layer config
-	VtoConfig vto;
+	/// Master config
+	MasterConfig master;  
+
+	/// Application layer config
+	AppConfig app;		  
+
+	/// Link layer config
+	LinkConfig link;	  
+	
 
 };
 

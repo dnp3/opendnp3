@@ -171,9 +171,6 @@
     <ClInclude Include="include\opendnp3\Util.h">
       <Filter>Include Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\opendnp3\VtoConfig.h">
-      <Filter>Include Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\opendnp3\VtoRouterSettings.h">
       <Filter>Include Files</Filter>
     </ClInclude>

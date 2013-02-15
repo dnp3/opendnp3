@@ -42,7 +42,9 @@ namespace opendnp3
 
 class EventLog;
 
-
+/**
+* Interface that represents a distinct logger with a name and running level
+*/
 class Logger
 {
 	

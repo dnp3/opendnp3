@@ -40,7 +40,7 @@ namespace opendnp3
 
 class IStackObserver;
 
-// Group/Variation pair
+/// Group/Variation pair
 struct GrpVar {
 	GrpVar() : Grp(-1), Var(-1) {}
 	GrpVar(int aGrp, int aVar) : Grp(aGrp), Var(aVar) {}
@@ -49,21 +49,22 @@ struct GrpVar {
 	int Var;
 };
 
+/// Configuration of max event counts
 struct EventMaxConfig {
 	EventMaxConfig();
 
 	EventMaxConfig(size_t, size_t, size_t, size_t);
 
-	/** The number of binary events the slave will buffer before overflowing */
+	/// The number of binary events the slave will buffer before overflowing
 	size_t mMaxBinaryEvents;
 
-	/** The number of analog events the slave will buffer before overflowing */
+	/// The number of analog events the slave will buffer before overflowing
 	size_t mMaxAnalogEvents;
 
-	/** The number of counter events the slave will buffer before overflowing */
+	/// The number of counter events the slave will buffer before overflowing
 	size_t mMaxCounterEvents;
 
-	/** The number of vto events the slave will buffer before overflowing */
+	/// The number of vto events the slave will buffer before overflowing
 	size_t mMaxVtoEvents;
 };
 
@@ -79,65 +80,65 @@ struct SlaveConfig {
 	SlaveConfig();
 
 
-	// The maximum number of controls the slave will attempt to process from a single APDU
+	/// The maximum number of controls the slave will attempt to process from a single APDU
 	size_t mMaxControls;
 
-	// if true, fully disables unsolicited mode as if the slave didn't support it
+	/// if true, fully disables unsolicited mode as if the slave didn't support it
 	bool mDisableUnsol;
 
-	// controls what unsol classes are enabled
+	/// controls what unsol classes are enabled
 	ClassMask mUnsolMask;
 
-	// if true, the slave will request time synchronization on an interval
+	/// if true, the slave will request time synchronization on an interval
 	bool mAllowTimeSync;
 
 
-	// The period of time sync interval in milliseconds
+	/// The period of time sync interval in milliseconds
 	millis_t mTimeSyncPeriod;
 
-	// The amount of time the slave will wait before sending new unsolicited data ( <= 0 == immediate)
+	/// The amount of time the slave will wait before sending new unsolicited data ( <= 0 == immediate)
 	millis_t mUnsolPackDelay;
 
-	// How long the slave will wait before retrying an unsuccessful unsol response
+	/// How long the slave will wait before retrying an unsuccessful unsol response
 	millis_t mUnsolRetryDelay;
 
 
-	// The maximum fragment size the slave will use for data it sends
+	/// The maximum fragment size the slave will use for data it sends
 	size_t mMaxFragSize;
 
-	// The number of objects to store in the VtoWriter queue.
+	/// The number of objects to store in the VtoWriter queue.
 	size_t mVtoWriterQueueSize;
 
-	// Structure that defines the maximum number of events to buffer
+	/// Structure that defines the maximum number of events to buffer
 	EventMaxConfig mEventMaxConfig;
 
 	// default static response types
 
-	// The default group/variation to use for static binary responses
+	/// The default group/variation to use for static binary responses
 	GrpVar mStaticBinary;
 
-	// The default group/variation to use for static analog responses
+	/// The default group/variation to use for static analog responses
 	GrpVar mStaticAnalog;
 
-	// The default group/variation to use for static counter responses
+	/// The default group/variation to use for static counter responses
 	GrpVar mStaticCounter;
 
-	// The default group/variation to use for static setpoint status responses
+	/// The default group/variation to use for static setpoint status responses
 	GrpVar mStaticSetpointStatus;
 
 
-	// default event response types
+	/// default event response types
 
-	// The default group/variation to use for binary event responses
+	/// The default group/variation to use for binary event responses
 	GrpVar mEventBinary;
 
-	// The default group/variation to use for analog event responses
+	/// The default group/variation to use for analog event responses
 	GrpVar mEventAnalog;
 
-	// The default group/variation to use for counter event responses
+	/// The default group/variation to use for counter event responses
 	GrpVar mEventCounter;
 
-	// The default group/variation to use for VTO event responses
+	/// The default group/variation to use for VTO event responses
 	GrpVar mEventVto;
 
 	IStackObserver* mpObserver;

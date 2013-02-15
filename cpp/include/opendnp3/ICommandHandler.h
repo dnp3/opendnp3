@@ -36,13 +36,13 @@ namespace opendnp3
 {
 
 /**
-* Interface used to dispatch SELECT / OPERATE / DIRECT OPERATE (Binary/Analog output) from the stack to outstation application code
+* Interface used to dispatch SELECT / OPERATE / DIRECT OPERATE (Binary/Analog output) from the outstation to application code
 */
 class ICommandHandler
 {
 	public:
 	virtual ~ICommandHandler(){}
-
+	
 	virtual CommandStatus Select(const ControlRelayOutputBlock& arCommand, size_t aIndex, uint8_t aSequence) = 0;
 	virtual CommandStatus Operate(const ControlRelayOutputBlock& arCommand, size_t aIndex, uint8_t aSequence) = 0;
 	virtual CommandStatus DirectOperate(const ControlRelayOutputBlock& arCommand, size_t aIndex) = 0;
