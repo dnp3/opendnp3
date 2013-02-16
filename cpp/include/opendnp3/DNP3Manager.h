@@ -40,7 +40,7 @@
 #include "LogTypes.h"
 #include "DestructorHook.h"
 
-/*! \mainpage opendnp3 documentation
+/*! \mainpage opendnp3
 
 \section Introduction
 

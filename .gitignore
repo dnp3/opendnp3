@@ -32,6 +32,8 @@ dnp3test
 *~
 *.dirstamp
 
+#doxygen
+doc
 
 # demo files
 cpp/demos/masterdemo
