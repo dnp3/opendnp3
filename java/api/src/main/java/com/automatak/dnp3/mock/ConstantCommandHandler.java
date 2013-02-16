@@ -29,64 +29,64 @@ public class ConstantCommandHandler implements CommandHandler {
     {
         this.status = status;
     }
-    public CommandStatus Select(ControlRelayOutputBlock command, long index, byte sequence)
+    public CommandStatus select(ControlRelayOutputBlock command, long index, byte sequence)
     {
         return status;
     }
-    public CommandStatus Select(AnalogOutputInt32 command, long index, byte sequence)
+    public CommandStatus select(AnalogOutputInt32 command, long index, byte sequence)
     {
         return status;
     }
-    public CommandStatus Select(AnalogOutputInt16 command, long index, byte sequence)
+    public CommandStatus select(AnalogOutputInt16 command, long index, byte sequence)
     {
         return status;
     }
-    public CommandStatus Select(AnalogOutputFloat32 command, long index, byte sequence)
+    public CommandStatus select(AnalogOutputFloat32 command, long index, byte sequence)
     {
         return status;
     }
-    public CommandStatus Select(AnalogOutputDouble64 command, long index, byte sequence)
+    public CommandStatus select(AnalogOutputDouble64 command, long index, byte sequence)
     {
         return status;
     }
 
-    public CommandStatus Operate(ControlRelayOutputBlock command, long index, byte sequence)
+    public CommandStatus operate(ControlRelayOutputBlock command, long index, byte sequence)
     {
         return status;
     }
-    public CommandStatus Operate(AnalogOutputInt32 command, long index, byte sequence)
+    public CommandStatus operate(AnalogOutputInt32 command, long index, byte sequence)
     {
         return status;
     }
-    public CommandStatus Operate(AnalogOutputInt16 command, long index, byte sequence)
+    public CommandStatus operate(AnalogOutputInt16 command, long index, byte sequence)
     {
         return status;
     }
-    public CommandStatus Operate(AnalogOutputFloat32 command, long index, byte sequence)
+    public CommandStatus operate(AnalogOutputFloat32 command, long index, byte sequence)
     {
         return status;
     }
-    public CommandStatus Operate(AnalogOutputDouble64 command, long index, byte sequence)
+    public CommandStatus operate(AnalogOutputDouble64 command, long index, byte sequence)
     {
         return status;
     }
-    public CommandStatus DirectOperate(ControlRelayOutputBlock command, long index)
+    public CommandStatus directOperate(ControlRelayOutputBlock command, long index)
     {
         return status;
     }
-    public CommandStatus DirectOperate(AnalogOutputInt32 command, long index)
+    public CommandStatus directOperate(AnalogOutputInt32 command, long index)
     {
         return status;
     }
-    public CommandStatus DirectOperate(AnalogOutputInt16 command, long index)
+    public CommandStatus directOperate(AnalogOutputInt16 command, long index)
     {
         return status;
     }
-    public CommandStatus DirectOperate(AnalogOutputFloat32 command, long index)
+    public CommandStatus directOperate(AnalogOutputFloat32 command, long index)
     {
         return status;
     }
-    public CommandStatus DirectOperate(AnalogOutputDouble64 command, long index)
+    public CommandStatus directOperate(AnalogOutputDouble64 command, long index)
     {
         return status;
     }
