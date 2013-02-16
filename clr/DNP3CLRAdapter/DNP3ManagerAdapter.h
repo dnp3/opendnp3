@@ -41,9 +41,30 @@ namespace DNP3
 namespace Adapter
 {
 	/// <summary>
-    /// Root class for all dnp3 applications
+    /// Factory class used to get the root DNP3 object
     /// </summary>
-	public ref class DNP3ManagerAdapter : public DNP3::Interface::DNP3Manager
+	public ref class DNP3ManagerFactory 
+	{
+		public:
+			/// <summary>
+			/// Create a new IDNP3Manager using the specified concurrency
+			/// </summary>
+			/// <param name="concurrency">how many threads are allocated to the thread pool</param>        
+			/// <returns>IDNP3Manager interface</returns>
+			static IDNP3Manager^ CreateManager(System::Int32 concurrency);
+
+			/// <summary>
+			/// Create a new IDNP3Manager using the default concurrency
+			/// </summary>			
+			/// <returns>IDNP3Manager interface</returns>			
+			static IDNP3Manager^ CreateManager();
+
+		private:
+			DNP3ManagerFactory(){}
+	};
+
+	
+	ref class DNP3ManagerAdapter : public DNP3::Interface::IDNP3Manager
 	{
 		public:
 			DNP3ManagerAdapter(System::Int32 aConcurrency);

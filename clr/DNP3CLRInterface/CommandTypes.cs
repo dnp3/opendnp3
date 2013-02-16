@@ -131,8 +131,8 @@ namespace DNP3.Interface
         /// </summary>
         /// <param name="code">Enumeration that controls that behavior of the command</param>
         /// <param name="count">How many times to repeat the operation</param>
-        /// <param name="onTime"How long to set the output active></param>
-        /// <param name="offTime"How long to set the output inactive></param>
+        /// <param name="onTime">How long to set the output active></param>
+        /// <param name="offTime">How long to set the output inactive></param>
         public ControlRelayOutputBlock(ControlCode code, byte count, System.UInt16 onTime, System.UInt16 offTime)
         {
             this.code = code;
@@ -140,7 +140,7 @@ namespace DNP3.Interface
             this.onTime = onTime;
             this.offTime = offTime;
         }
-
+    
         public readonly ControlCode code;
         public readonly byte count;
         public readonly System.UInt16 onTime;
@@ -152,7 +152,8 @@ namespace DNP3.Interface
     /// </summary>
     /// <typeparam name="T">Type of value sent to the outstation</typeparam>
     public class AnalogOutput<T>
-    {	    	
+    {	
+    	
 	    public AnalogOutput(T value)
         {
             this.value = value;            

@@ -9,7 +9,7 @@ namespace DNP3.Interface
     /// <summary>
     /// Root interface used for all dnp3 applications
     /// </summary>
-    public interface DNP3Manager
+    public interface IDNP3Manager
     {
      
 
@@ -24,7 +24,7 @@ namespace DNP3.Interface
         /// <returns>A channel interface</returns>
 		IChannel AddTCPClient(String name, LogLevel level, UInt64 retryMs, String address, UInt16 port);
 
-        // <summary>
+        /// <summary>
         /// Add a TCP server channel. The channel does not try to listen until you add a stack.
         /// </summary>
         /// <param name="name">An id used for logging purposes</param>
@@ -35,7 +35,7 @@ namespace DNP3.Interface
         /// <returns>A channel interface</returns>
 		IChannel AddTCPServer(String name, LogLevel level, UInt64 retryMs, String endpoint, UInt16 port);
 
-        // <summary>
+        /// <summary>
         /// Add a serial channel. The port does not try to open until you add a stack.
         /// </summary>
         /// <param name="name">An id used for logging purposes</param>

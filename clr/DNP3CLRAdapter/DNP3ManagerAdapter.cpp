@@ -36,7 +36,17 @@
 namespace DNP3
 {	
 namespace Adapter
-{
+{	
+	IDNP3Manager^ DNP3ManagerFactory::CreateManager(System::Int32 aConcurrency)
+	{
+		return gcnew DNP3ManagerAdapter(aConcurrency);
+	}
+			
+	IDNP3Manager^ DNP3ManagerFactory::CreateManager()
+	{
+		return gcnew DNP3ManagerAdapter(Environment::ProcessorCount);
+	}
+
 
 	DNP3ManagerAdapter::DNP3ManagerAdapter(System::Int32 aConcurrency) :
 		pMgr(new opendnp3::DNP3Manager(aConcurrency))

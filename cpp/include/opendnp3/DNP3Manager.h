@@ -40,16 +40,28 @@
 #include "LogTypes.h"
 #include "DestructorHook.h"
 
-/*! \mainpage opendnp3 documentation
- *
- * \section Introduction
- *
- * The main class for all applications is DNP3Manager
- *
- * Companion documentation that describes theory of operation is located on the project wiki:
- * www.github.com/automatakllc/dnp3/wiki
- * 
- */
+/*! \mainpage opendnp3
+
+\section Introduction
+
+Companion documentation that describes theory of operation is located on the <a href="http://www.github.com/automatakllc/dnp3/wiki">project wiki</a>.
+
+A simple application can be written as follows:
+
+\code
+#include <opendnp3/DNP3Manger.h>
+
+using namespace opendnp3;
+
+int main(int argc, char* argv[])
+{
+	DNP3Manager manager(1); // instantiate the root object specifying how many threads to use in the pool
+
+	// start adding communication channels.... Check out the wiki.
+}
+\endcode
+
+*/
 
 // pre-declare EVERYTHING possible to minimize includes for CLR/Java wrappers
 namespace opendnp3

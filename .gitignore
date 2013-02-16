@@ -32,6 +32,8 @@ dnp3test
 *~
 *.dirstamp
 
+#doxygen
+doc
 
 # demo files
 cpp/demos/masterdemo
@@ -60,6 +62,11 @@ cpp/demos/outstation/Debug
 cpp/demos/outstation/Release
 *vcxproj.user
 cpp/unittest.log
+
+#sandcastle generated files
+clr/Help
+clr/opendnp3.shfbproj_*
+
 
 # intellij/maven generated files
 java/*.iml

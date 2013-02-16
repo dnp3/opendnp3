@@ -32,6 +32,10 @@ namespace DNP3.Interface
     {
         private readonly Func<CommandStatus> status;
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="status">Function to call for return value</param>
         public SimpleCommandHandler(Func<CommandStatus> status)
         {
             this.status = status;

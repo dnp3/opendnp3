@@ -39,6 +39,7 @@
 
 #ifdef WIN32
 #define sscanf sscanf_s
+//#define ctime ctime_s
 #endif
 
 using namespace std;

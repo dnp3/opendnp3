@@ -40,7 +40,7 @@ namespace DotNetSlaveDemo
     {
         static void Main(string[] args)
         {
-            DNP3Manager mgr = new DNP3ManagerAdapter(1);
+            IDNP3Manager mgr = DNP3ManagerFactory.CreateManager();
             mgr.AddLogHandler(PrintingLogAdapter.Instance); //this is optional
             var channel = mgr.AddTCPServer("server", LogLevel.INFO, 5000, "127.0.0.1", 20000);
             var config = new SlaveStackConfig();

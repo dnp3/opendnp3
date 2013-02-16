@@ -30,7 +30,7 @@ public interface CommandHandler {
      * @param sequence application sequence number
      * @return Enumeration representing the result of the request
      */
-    CommandStatus Select(ControlRelayOutputBlock command, long index, byte sequence);
+    CommandStatus select(ControlRelayOutputBlock command, long index, byte sequence);
 
     /**
      * Select a 32-bit integer AnalogOutput (Group41Var1)
@@ -38,7 +38,7 @@ public interface CommandHandler {
      * @param index request index
      * @return Enumeration representing the result of the request
      */
-    CommandStatus Select(AnalogOutputInt32 command, long index, byte sequence);
+    CommandStatus select(AnalogOutputInt32 command, long index, byte sequence);
 
     /**
      * Select a 16-bit integer AnalogOutput (Group41Var2)
@@ -46,7 +46,7 @@ public interface CommandHandler {
      * @param index request index
      * @return Enumeration representing the result of the request
      */
-    CommandStatus Select(AnalogOutputInt16 command, long index, byte sequence);
+    CommandStatus select(AnalogOutputInt16 command, long index, byte sequence);
 
     /**
      * Select a single precision AnalogOutput (Group41Var3)
@@ -54,7 +54,7 @@ public interface CommandHandler {
      * @param index request index
      * @return Enumeration representing the result of the request
      */
-    CommandStatus Select(AnalogOutputFloat32 command, long index, byte sequence);
+    CommandStatus select(AnalogOutputFloat32 command, long index, byte sequence);
 
     /**
      * Select a double precision AnalogOutput (Group41Var4)
@@ -62,7 +62,7 @@ public interface CommandHandler {
      * @param index request index
      * @return Enumeration representing the result of the request
      */
-    CommandStatus Select(AnalogOutputDouble64 command, long index, byte sequence);
+    CommandStatus select(AnalogOutputDouble64 command, long index, byte sequence);
 
     /**
      * Operate a ControlRelayOutputBlock (Group12Var1)
@@ -71,7 +71,7 @@ public interface CommandHandler {
      * @param sequence application sequence number
      * @return Enumeration representing the result of the request
      */
-    CommandStatus Operate(ControlRelayOutputBlock command, long index, byte sequence);
+    CommandStatus operate(ControlRelayOutputBlock command, long index, byte sequence);
 
     /**
      * Operate a 32-bit integer AnalogOutput (Group41Var1)
@@ -80,7 +80,7 @@ public interface CommandHandler {
      * @param sequence application sequence number
      * @return Enumeration representing the result of the request
      */
-    CommandStatus Operate(AnalogOutputInt32 command, long index, byte sequence);
+    CommandStatus operate(AnalogOutputInt32 command, long index, byte sequence);
 
     /**
      * Operate a 16-bit integer AnalogOutput (Group41Var2)
@@ -89,7 +89,7 @@ public interface CommandHandler {
      * @param sequence application sequence number
      * @return Enumeration representing the result of the request
      */
-    CommandStatus Operate(AnalogOutputInt16 command, long index, byte sequence);
+    CommandStatus operate(AnalogOutputInt16 command, long index, byte sequence);
 
     /**
      * Operate a single precision AnalogOutput (Group41Var3)
@@ -98,7 +98,7 @@ public interface CommandHandler {
      * @param sequence application sequence number
      * @return Enumeration representing the result of the request
      */
-    CommandStatus Operate(AnalogOutputFloat32 command, long index, byte sequence);
+    CommandStatus operate(AnalogOutputFloat32 command, long index, byte sequence);
 
     /**
      * Operate a double precision AnalogOutput (Group41Var4)
@@ -107,7 +107,7 @@ public interface CommandHandler {
      * @param sequence application sequence number
      * @return Enumeration representing the result of the request
      */
-    CommandStatus Operate(AnalogOutputDouble64 command, long index, byte sequence);
+    CommandStatus operate(AnalogOutputDouble64 command, long index, byte sequence);
 
     /**
      * DirectOperate a ControlRelayOutputBlock (Group12Var1)
@@ -115,7 +115,7 @@ public interface CommandHandler {
      * @param index request index
      * @return Enumeration representing the result of the request
      */
-    CommandStatus DirectOperate(ControlRelayOutputBlock command, long index);
+    CommandStatus directOperate(ControlRelayOutputBlock command, long index);
 
     /**
      * DirectOperate a 32-bit integer AnalogOutput (Group41Var1)
@@ -123,7 +123,7 @@ public interface CommandHandler {
      * @param index request index
      * @return Enumeration representing the result of the request
      */
-    CommandStatus DirectOperate(AnalogOutputInt32 command, long index);
+    CommandStatus directOperate(AnalogOutputInt32 command, long index);
 
     /**
      * DirectOperate a 16-bit integer AnalogOutput (Group41Var2)
@@ -131,7 +131,7 @@ public interface CommandHandler {
      * @param index request index
      * @return Enumeration representing the result of the request
      */
-    CommandStatus DirectOperate(AnalogOutputInt16 command, long index);
+    CommandStatus directOperate(AnalogOutputInt16 command, long index);
 
     /**
      * DirectOperate a single precision AnalogOutput (Group41Var3)
@@ -139,7 +139,7 @@ public interface CommandHandler {
      * @param index request index
      * @return Enumeration representing the result of the request
      */
-    CommandStatus DirectOperate(AnalogOutputFloat32 command, long index);
+    CommandStatus directOperate(AnalogOutputFloat32 command, long index);
 
     /**
      * DirectOperate a double precision AnalogOutput (Group41Var4)
@@ -147,6 +147,6 @@ public interface CommandHandler {
      * @param index request index
      * @return Enumeration representing the result of the request
      */
-    CommandStatus DirectOperate(AnalogOutputDouble64 command, long index);
+    CommandStatus directOperate(AnalogOutputDouble64 command, long index);
 
 }

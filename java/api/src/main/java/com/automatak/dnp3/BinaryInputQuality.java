@@ -25,50 +25,50 @@ import java.util.Set;
 /**
  * Quality enumeration for BinaryInput values
  */
-public enum BinaryInputQuality {
+public enum BinaryInputQuality implements QualityField {
     /**
      * Set when the data is "good", meaning that rest of the system can trust the value
      */
-    ONLINE(0x01),
+    ONLINE((byte) 0x01),
 
     /**
      * the quality all points get before we have established communication (or populated) the point in a remote database
      */
-    RESTART(0x02),
+    RESTART((byte) 0x02),
 
     /**
      *  Communication has been lost with the source of the data (after establishing contact)
      */
-    COMM_LOST(0x04),
+    COMM_LOST((byte) 0x04),
 
     /**
      *   the value is being forced to a "fake" value somewhere in the system
      */
-    REMOTE_FORCED_DATA(0x08),
+    REMOTE_FORCED_DATA((byte) 0x08),
 
     /**
      * the value is being forced to a "fake" value on the original device
      */
-    LOCAL_FORCED_DATA(0x10),
+    LOCAL_FORCED_DATA((byte) 0x10),
 
     /**
      * set when the value is oscillating very quickly and some events are being suppressed
      */
-    CHATTER_FILTER(0x20),
+    CHATTER_FILTER((byte) 0x20),
 
     /**
      * reserverd value
      */
-    RESERVED(0x40),
+    RESERVED((byte) 0x40),
 
     /**
      * the actual value of the binary
      */
-    STATE(0x80);
+    STATE((byte) 0x80);
 
-    private final int id;
+    private final byte id;
 
-    private BinaryInputQuality(int id)
+    private BinaryInputQuality(byte id)
     {
         this.id = id;
     }
@@ -76,21 +76,22 @@ public enum BinaryInputQuality {
     public static Set<BinaryInputQuality> getValuesInBitField(byte bitfield)
     {
         Set<BinaryInputQuality> set = new HashSet<BinaryInputQuality>();
-        if((bitfield & ONLINE.toInt()) != 0)  set.add(ONLINE);
-        if((bitfield & RESTART.toInt()) != 0)  set.add(RESTART);
-        if((bitfield & COMM_LOST.toInt()) != 0)  set.add(COMM_LOST);
-        if((bitfield & REMOTE_FORCED_DATA.toInt()) != 0) set.add(REMOTE_FORCED_DATA);
-        if((bitfield & LOCAL_FORCED_DATA.toInt()) != 0) set.add(LOCAL_FORCED_DATA);
-        if((bitfield & CHATTER_FILTER.toInt()) != 0) set.add(CHATTER_FILTER);
-        if((bitfield & RESERVED.toInt()) != 0) set.add(RESERVED);
-        if((bitfield & STATE.toInt()) != 0) set.add(STATE);
+        if((bitfield & ONLINE.toByte()) != 0)  set.add(ONLINE);
+        if((bitfield & RESTART.toByte()) != 0)  set.add(RESTART);
+        if((bitfield & COMM_LOST.toByte()) != 0)  set.add(COMM_LOST);
+        if((bitfield & REMOTE_FORCED_DATA.toByte()) != 0) set.add(REMOTE_FORCED_DATA);
+        if((bitfield & LOCAL_FORCED_DATA.toByte()) != 0) set.add(LOCAL_FORCED_DATA);
+        if((bitfield & CHATTER_FILTER.toByte()) != 0) set.add(CHATTER_FILTER);
+        if((bitfield & RESERVED.toByte()) != 0) set.add(RESERVED);
+        if((bitfield & STATE.toByte()) != 0) set.add(STATE);
         return Collections.unmodifiableSet(set);
     }
 
     /**
-     * @return The underlying integer representation of the enum
+     * @return The underlying representation of the enum
      */
-    public int toInt()
+    @Override
+    public byte toByte()
     {
         return id;
     }
