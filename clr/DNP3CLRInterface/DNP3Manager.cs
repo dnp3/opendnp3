@@ -9,7 +9,7 @@ namespace DNP3.Interface
     /// <summary>
     /// Root interface used for all dnp3 applications
     /// </summary>
-    public interface DNP3Manager
+    public interface IDNP3Manager
     {
      
 

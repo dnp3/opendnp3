@@ -40,7 +40,7 @@ namespace DotNetMasterDemo
     {
         static void Main(string[] args)
         {
-            DNP3Manager mgr = new DNP3ManagerAdapter(Environment.ProcessorCount);            
+            IDNP3Manager mgr = DNP3ManagerFactory.CreateManager();            
             mgr.AddLogHandler(PrintingLogAdapter.Instance); //this is optional
             var channel = mgr.AddTCPClient("client", LogLevel.INFO, 5000, "127.0.0.1", 20000);
             var config = new MasterStackConfig();
@@ -52,12 +52,9 @@ namespace DotNetMasterDemo
             while (true)
             {
                 System.UInt32 index = System.UInt32.Parse(Console.ReadLine());
-                DateTime start = DateTime.Now;
                 var future = master.GetCommandProcessor().SelectAndOperate(new ControlRelayOutputBlock(ControlCode.CC_PULSE, 1, 100, 100), index);
-                CommandStatus result = future.Await();
-                DateTime end = DateTime.Now;
-                TimeSpan duration = end - start;                
-                Console.WriteLine("Result: " + result + " and took " + duration.Ticks + " Ticks");
+                CommandStatus result = future.Await();                
+                Console.WriteLine("Result: " + result);
             }            
         }
     }
