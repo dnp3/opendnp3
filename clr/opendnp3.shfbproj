@@ -27,8 +27,8 @@
     <CppCommentsFixup>False</CppCommentsFixup>
     <CleanIntermediates>True</CleanIntermediates>
     <DocumentationSources>
-      <DocumentationSource sourceFile="DNP3CLRAdapter\Debug\DNP3CLRInterface.dll" xmlns="" />
-<DocumentationSource sourceFile="DNP3CLRAdapter\Debug\DNP3CLRInterface.xml" xmlns="" /></DocumentationSources>
+      <DocumentationSource sourceFile="DNP3CLRAdapter\Debug\DNP3CLRInterface.dll" />
+<DocumentationSource sourceFile="DNP3CLRAdapter\Debug\DNP3CLRInterface.xml" /></DocumentationSources>
   </PropertyGroup>
   <!-- There are no properties for these groups.  AnyCPU needs to appear in
        order for Visual Studio to perform the build.  The others are optional
