@@ -285,9 +285,9 @@ namespace DNP3.Interface
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="c1">true for Class1</param>
-        /// <param name="c2">true for Class2</param>
-        /// <param name="c3">true for Class3</param>
+        /// <param name="class1">true for Class1</param>
+        /// <param name="class2">true for Class2</param>
+        /// <param name="class3">true for Class3</param>
 	    public ClassMask(bool class1, bool class2, bool class3)
         {
             this.class1 = class1;

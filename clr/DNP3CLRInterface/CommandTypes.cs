@@ -131,8 +131,8 @@ namespace DNP3.Interface
         /// </summary>
         /// <param name="code">Enumeration that controls that behavior of the command</param>
         /// <param name="count">How many times to repeat the operation</param>
-        /// <param name="onTime"How long to set the output active></param>
-        /// <param name="offTime"How long to set the output inactive></param>
+        /// <param name="onTime">How long to set the output active></param>
+        /// <param name="offTime">How long to set the output inactive></param>
         public ControlRelayOutputBlock(ControlCode code, byte count, System.UInt16 onTime, System.UInt16 offTime)
         {
             this.code = code;
