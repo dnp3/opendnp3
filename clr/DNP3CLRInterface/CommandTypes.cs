@@ -140,7 +140,7 @@ namespace DNP3.Interface
             this.onTime = onTime;
             this.offTime = offTime;
         }
-
+    
         public readonly ControlCode code;
         public readonly byte count;
         public readonly System.UInt16 onTime;
@@ -152,7 +152,8 @@ namespace DNP3.Interface
     /// </summary>
     /// <typeparam name="T">Type of value sent to the outstation</typeparam>
     public class AnalogOutput<T>
-    {	    	
+    {	
+    	
 	    public AnalogOutput(T value)
         {
             this.value = value;            

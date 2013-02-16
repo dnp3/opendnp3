@@ -206,7 +206,9 @@ namespace DNP3.Interface
         PC_INVALID = 0x10
 	}
 
-	/// Configuration information for the dnp3 master
+	/// <summary>
+    /// Configuration information for the dnp3 master
+	/// </summary>
 	public class MasterConfig {
 		
 		/// <summary>
@@ -420,7 +422,7 @@ namespace DNP3.Interface
         public System.Int64 timeSyncPeriod;
 
 	    /// <summary>
-        /// The amount of time the slave will wait before sending new unsolicited data ( <= 0 == immediate)
+        /// The amount of time the slave will wait before sending new unsolicited data (less than 0 == immediate)
 	    /// </summary>
         public System.Int64 unsolPackDelay;
 

@@ -61,6 +61,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="LogTypes.cs" />
+    <Compile Include="NamespaceDoc.cs" />
     <Compile Include="PrintingDataObserver.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SerialSettings.cs" />

@@ -26,7 +26,7 @@ import java.util.Set;
 /**
  * Quality enumeration for counters
  */
-public enum CounterInputQuality {
+public enum CounterInputQuality implements QualityField {
     /**
      * Set when the data is "good", meaning that rest of the system can trust the value
      */
@@ -87,8 +87,9 @@ public enum CounterInputQuality {
     }
 
     /**
-     * @return The underlying integer representation of the enum
+     * @return The underlying representation of the enum
      */
+    @Override
     public byte toByte()
     {
         return id;

@@ -34,7 +34,7 @@ using System.Text;
 namespace DNP3.Interface
 {
     /// <summary>
-    /// Collection of static methods for translating dnp3 <=> .NET timestamps
+    /// Collection of static methods for translating dnp3 to .NET timestamps and back
     /// </summary>
     public class TimeStamp
     {
