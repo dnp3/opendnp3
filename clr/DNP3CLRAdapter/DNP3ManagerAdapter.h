@@ -47,13 +47,16 @@ namespace Adapter
 	{
 		public:
 			/// <summary>
-			/// Create an IDNP3Manager using the specified concurrency
+			/// Create a new IDNP3Manager using the specified concurrency
 			/// </summary>
-			static IDNP3Manager^ CreateManager(System::Int32 aConcurrency);
+			/// <param name="concurrency">how many threads are allocated to the thread pool</param>        
+			/// <returns>IDNP3Manager interface</returns>
+			static IDNP3Manager^ CreateManager(System::Int32 concurrency);
 
 			/// <summary>
-			/// Create an IDNP3Manager using the default concurrency
-			/// </summary>
+			/// Create a new IDNP3Manager using the default concurrency
+			/// </summary>			
+			/// <returns>IDNP3Manager interface</returns>			
 			static IDNP3Manager^ CreateManager();
 
 		private:

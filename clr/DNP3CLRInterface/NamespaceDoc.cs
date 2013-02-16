@@ -8,7 +8,9 @@ namespace DNP3.Interface
 {
     /// <summary>
     ///   <para>
-    ///     Public API of the opendnp3 CLR bindings. See IDNP3Manager to start. A short example application follows.
+    ///     Public API of the opendnp3 CLR bindings.
+    ///     
+    ///     The DNP3.Adapter namespace contains 1 exposed factory class for obtaining a concrete implementation of IDNP3Manager.
     ///     
     ///     <code>
     /// using DNP3.Adapter;
@@ -26,7 +28,7 @@ namespace DNP3.Interface
     /// }
     ///     </code>
     ///   </para>
-    /// </summary>    
+    /// </summary>        
     internal class NamespaceDoc
     {
     }

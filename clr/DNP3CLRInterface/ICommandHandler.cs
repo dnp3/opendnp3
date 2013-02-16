@@ -131,8 +131,7 @@ namespace DNP3.Interface
         /// DirectOperate a ControlRelayOutputBlock (Group12Var1)
         /// </summary>
         /// <param name="command">Command to operate</param>
-        /// <param name="index">index of the command</param>
-        /// <param name="sequence">application sequence number</param>
+        /// <param name="index">index of the command</param>        
         /// <returns>result of the operation as a CommandStatus enumeration</returns>
         CommandStatus DirectOperate(ControlRelayOutputBlock command, System.UInt32 index);
         
@@ -140,8 +139,7 @@ namespace DNP3.Interface
         /// DirectOperate a 32-bit analog output (Group 41 Var1)
         /// </summary>
         /// <param name="command">Command to operate</param>
-        /// <param name="index">index of the command</param>
-        /// <param name="sequence">application sequence number</param>
+        /// <param name="index">index of the command</param>        
         /// <returns>result of the operation as a CommandStatus enumeration</returns>
         CommandStatus DirectOperate(AnalogOutputInt32 command, System.UInt32 index);
         
@@ -149,8 +147,7 @@ namespace DNP3.Interface
         /// DirectOperate a 16-bit analog output (Group 41 Var2)
         /// </summary>
         /// <param name="command">Command to operate</param>
-        /// <param name="index">index of the command</param>
-        /// <param name="sequence">application sequence number</param>
+        /// <param name="index">index of the command</param>        
         /// <returns>result of the operation as a CommandStatus enumeration</returns>
         CommandStatus DirectOperate(AnalogOutputInt16 command, System.UInt32 index);
 
@@ -158,8 +155,7 @@ namespace DNP3.Interface
         /// DirectOperate a single precision analog output (Group 41 Var3)
         /// </summary>
         /// <param name="command">Command to operate</param>
-        /// <param name="index">index of the command</param>
-        /// <param name="sequence">application sequence number</param>
+        /// <param name="index">index of the command</param>        
         /// <returns>result of the operation as a CommandStatus enumeration</returns>
         CommandStatus DirectOperate(AnalogOutputFloat32 command, System.UInt32 index);
 
@@ -167,8 +163,7 @@ namespace DNP3.Interface
         /// DirectOperate a double precision analog output (Group 41 Var4)
         /// </summary>
         /// <param name="command">Command to operate</param>
-        /// <param name="index">index of the command</param>
-        /// <param name="sequence">application sequence number</param>
+        /// <param name="index">index of the command</param>        
         /// <returns>result of the operation as a CommandStatus enumeration</returns>
         CommandStatus DirectOperate(AnalogOutputDouble64 command, System.UInt32 index);
 
