@@ -41,13 +41,13 @@
 #include "DestructorHook.h"
 
 /*! \mainpage opendnp3 documentation
- 
-\section Introduction 
- 
+
+\section Introduction
+
 Companion documentation that describes theory of operation is located on the <a href="http://www.github.com/automatakllc/dnp3/wiki">project wiki</a>.
- 
-A simple application is can be written as follows:
- 
+
+A simple application can be written as follows:
+
 \code
 #include <opendnp3/DNP3Manger.h>
 
@@ -57,10 +57,10 @@ int main(int argc, char* argv[])
 {
 	DNP3Manager manager(1); // instantiate the root object specifying how many threads to use in the pool
 
-	//... start adding communication channels. Check out the wiki.
+	// start adding communication channels.... Check out the wiki.
 }
 \endcode
- 
+
 */
 
 // pre-declare EVERYTHING possible to minimize includes for CLR/Java wrappers
