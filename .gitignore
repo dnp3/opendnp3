@@ -41,6 +41,7 @@ cpp/demos/outstationdemo
 unittest.log
 
 # visual studio generated files
+ipch
 cpp/Debug
 cpp/Release
 java/Debug
