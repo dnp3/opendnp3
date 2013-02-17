@@ -63,7 +63,7 @@ PhysicalLayerMonitor::PhysicalLayerMonitor(Logger* apLogger, IPhysicalLayerAsync
 PhysicalLayerMonitor::~PhysicalLayerMonitor()
 {}
 
-PhysicalLayerState PhysicalLayerMonitor::GetState()
+ChannelState PhysicalLayerMonitor::GetState()
 {
 	return mpState->GetState();
 }
@@ -95,7 +95,7 @@ void PhysicalLayerMonitor::ChangeState(IMonitorState* apState)
 
 		// signaling this way makes sure we're free and clear of the event that causes this
 		// before someone else and deletes
-		if(mpState->GetState() == PLS_SHUTDOWN) mpPhys->GetExecutor()->Post(std::bind(&PhysicalLayerMonitor::DoFinalShutdown, this));
+		if(mpState->GetState() == CS_SHUTDOWN) mpPhys->GetExecutor()->Post(std::bind(&PhysicalLayerMonitor::DoFinalShutdown, this));
 	}
 }
 

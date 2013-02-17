@@ -59,17 +59,17 @@ public:
 		remote.Shutdown();
 	}
 
-	bool WaitForBothSides(PhysicalLayerState aState, millis_t aTimeout = 30000) {
+	bool WaitForBothSides(ChannelState aState, millis_t aTimeout = 30000) {
 		return this->WaitForLocalState(aState) && this->WaitForRemoteState(aState);
 	}
 
-	bool WaitForLocalState(PhysicalLayerState aState, millis_t aTimeout = 30000) {
-		LOG_BLOCK(LEV_EVENT, "Waiting for local state: " << ConvertPhysicalLayerStateToString(aState));
+	bool WaitForLocalState(ChannelState aState, millis_t aTimeout = 30000) {
+		LOG_BLOCK(LEV_EVENT, "Waiting for local state: " << ConvertChannelStateToString(aState));
 		return testObj.ProceedUntil(std::bind(&MockPhysicalLayerMonitor::NextStateIs, &local, aState), aTimeout);
 	}
 
-	bool WaitForRemoteState(PhysicalLayerState aState, millis_t aTimeout = 30000) {
-		LOG_BLOCK(LEV_EVENT, "Waiting for remote state: " << ConvertPhysicalLayerStateToString(aState));
+	bool WaitForRemoteState(ChannelState aState, millis_t aTimeout = 30000) {
+		LOG_BLOCK(LEV_EVENT, "Waiting for remote state: " << ConvertChannelStateToString(aState));
 		return testObj.ProceedUntil(std::bind(&MockPhysicalLayerMonitor::NextStateIs, &remote, aState), aTimeout);
 	}
 
@@ -98,7 +98,7 @@ BOOST_AUTO_TEST_CASE(Reconnection)
 
 		stack.Log(LOCATION, "Begin iteration - Waiting for both sides to open");
 
-		BOOST_REQUIRE(stack.WaitForBothSides(PLS_OPEN));
+		BOOST_REQUIRE(stack.WaitForBothSides(CS_OPEN));
 
 		// test that data is correctly sent both ways
 
@@ -111,7 +111,7 @@ BOOST_AUTO_TEST_CASE(Reconnection)
 		// close the remote loopback server, which will cause both sides to close and reopen
 		stack.remote.Close();
 		stack.Log(LOCATION, "Waiting for both sides to close");
-		BOOST_REQUIRE(stack.WaitForBothSides(PLS_CLOSED));
+		BOOST_REQUIRE(stack.WaitForBothSides(CS_CLOSED));
 	}
 }
 
@@ -119,15 +119,15 @@ BOOST_AUTO_TEST_CASE(RemoteSideOpenFailureBouncesLocalConnection)
 {
 	VtoOnewayTestStack test(true, false);
 
-	BOOST_REQUIRE(test.WaitForLocalState(PLS_CLOSED));
+	BOOST_REQUIRE(test.WaitForLocalState(CS_CLOSED));
 
 	test.local.Start();
 
 	for(size_t i = 0; i < 3; ++i) {
 		// start local connection, we should immediately be able to connect to this side
-		BOOST_REQUIRE(test.WaitForLocalState(PLS_OPEN));
+		BOOST_REQUIRE(test.WaitForLocalState(CS_OPEN));
 		// since the remote side can't connect to the port we should have our local connection bounced
-		BOOST_REQUIRE(test.WaitForLocalState(PLS_CLOSED));
+		BOOST_REQUIRE(test.WaitForLocalState(CS_CLOSED));
 	}
 }
 
@@ -140,10 +140,10 @@ BOOST_AUTO_TEST_CASE(SocketIsClosedIfRemoteDrops)
 	stack.local.Start();
 
 	for(size_t i = 0; i < 3; ++i) {
-		BOOST_REQUIRE(stack.WaitForBothSides(PLS_OPEN));
+		BOOST_REQUIRE(stack.WaitForBothSides(CS_OPEN));
 		// kill remote connection, should kill our local connection
 		stack.remote.Close();
-		BOOST_REQUIRE(stack.WaitForBothSides(PLS_CLOSED));
+		BOOST_REQUIRE(stack.WaitForBothSides(CS_CLOSED));
 	}
 }
 
@@ -153,7 +153,7 @@ void TestLargeDataOneWay(VtoOnewayTestStack& arTest, size_t aSizeInBytes)
 	arTest.local.Start();
 	arTest.remote.Start();
 
-	BOOST_REQUIRE(arTest.WaitForBothSides(PLS_OPEN));
+	BOOST_REQUIRE(arTest.WaitForBothSides(CS_OPEN));
 
 	// test that a large set of data flowing one way works
 	RandomizedBuffer data(aSizeInBytes);

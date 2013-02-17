@@ -435,9 +435,6 @@
     <ClInclude Include="src\opendnp3\PhysicalLayerMonitorStates.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\PhysicalLayerStates.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\PhysLoopback.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -834,9 +831,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\PhysicalLayerMonitorStates.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\PhysicalLayerStates.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\PhysLoopback.cpp">

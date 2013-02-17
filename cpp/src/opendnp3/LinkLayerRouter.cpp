@@ -70,7 +70,7 @@ void LinkLayerRouter::AddContext(ILinkContext* apContext, const LinkRoute& arRou
 	}
 
 	mAddressMap[arRoute] = apContext;
-	if(this->GetState() == PLS_OPEN) apContext->OnLowerLayerUp();
+	if(this->GetState() == CS_OPEN) apContext->OnLowerLayerUp();
 
 	this->Start();
 }
@@ -84,7 +84,7 @@ void LinkLayerRouter::RemoveContext(const LinkRoute& arRoute)
 		ILinkContext* pContext = i->second;
 		mAddressMap.erase(i);
 
-		if(this->GetState() == PLS_OPEN) pContext->OnLowerLayerDown();
+		if(this->GetState() == CS_OPEN) pContext->OnLowerLayerDown();
 
 		// if no stacks are bound, suspend the router
 		if(mAddressMap.size() == 0) {

@@ -29,10 +29,10 @@
 #ifndef __PHYSICAL_LAYER_MONITOR_H_
 #define __PHYSICAL_LAYER_MONITOR_H_
 
-
 #include "IHandlerAsync.h"
 #include "IExecutor.h"
-#include "PhysicalLayerStates.h"
+
+#include <opendnp3/ChannelStates.h>
 
 #include <set>
 #include <mutex>
@@ -74,7 +74,8 @@ public:
 	/** Permanently shutdown the monitor, further calls to Start() will do nothing - Idempotent */
 	void Shutdown();
 
-	PhysicalLayerState GetState();
+	/// @return ChannelState enumeration
+	ChannelState GetState();
 
 	/** Posts a Shutdown() call and then waits for shutdown to complete.
 	*/
@@ -90,7 +91,7 @@ protected:
 	virtual void OnPhysicalLayerOpenSuccessCallback() = 0;
 	virtual void OnPhysicalLayerOpenFailureCallback() = 0;
 	virtual void OnPhysicalLayerCloseCallback() = 0;
-	virtual void OnStateChange(PhysicalLayerState aState) {}
+	virtual void OnStateChange(ChannelState aState) {}
 
 	/// Begins the open timer
 	void StartOpenTimer();

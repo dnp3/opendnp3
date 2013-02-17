@@ -100,7 +100,7 @@ cpp/src/opendnp3/PhysicalLayerAsyncTCPClient.cpp \
 cpp/src/opendnp3/PhysicalLayerAsyncTCPServer.cpp \
 cpp/src/opendnp3/PhysicalLayerMonitor.cpp \
 cpp/src/opendnp3/PhysicalLayerMonitorStates.cpp \
-cpp/src/opendnp3/PhysicalLayerStates.cpp \
+cpp/src/opendnp3/ChannelStates.cpp \
 cpp/src/opendnp3/PhysLoopback.cpp \
 cpp/src/opendnp3/PointClass.cpp \
 cpp/src/opendnp3/PriLinkLayerStates.cpp \

@@ -69,12 +69,12 @@ public:
 	void WriteData(const CopyableBuffer& arData);
 	void ExpectData(const CopyableBuffer& arData);
 
-	bool NextStateIs(PhysicalLayerState aState);
+	bool NextStateIs(ChannelState aState);
 	bool AllExpectedDataHasBeenReceived();
 
 protected:
-	void OnStateChange(PhysicalLayerState);	
-	std::queue< PhysicalLayerState > mState;
+	void OnStateChange(ChannelState);	
+	std::queue< ChannelState > mState;
 
 private:
 

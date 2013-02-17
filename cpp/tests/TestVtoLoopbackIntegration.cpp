@@ -59,7 +59,7 @@ public:
 		loopback.Shutdown();
 	}
 
-	bool WaitForLocalState(PhysicalLayerState aState, millis_t aTimeout = 30000) {
+	bool WaitForLocalState(ChannelState aState, millis_t aTimeout = 30000) {
 		return testObj.ProceedUntil(std::bind(&MockPhysicalLayerMonitor::NextStateIs, &local, aState), aTimeout);
 	}
 
@@ -79,7 +79,7 @@ void TestLargeDataLoopback(VtoLoopbackTestStack& arTest, size_t aSizeInBytes)
 	// start everything
 	arTest.loopback.Start();
 	arTest.local.Start();
-	BOOST_REQUIRE(arTest.WaitForLocalState(PLS_OPEN));
+	BOOST_REQUIRE(arTest.WaitForLocalState(CS_OPEN));
 
 	// test that a large set of data flowing one way works
 	CopyableBuffer data(aSizeInBytes);

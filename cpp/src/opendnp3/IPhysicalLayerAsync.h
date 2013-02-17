@@ -37,7 +37,7 @@ namespace opendnp3
 class IHandlerAsync;
 class IExecutor;
 
-class IPhysicalLayerState
+class IChannelState
 {
 
 public:
@@ -76,7 +76,7 @@ public:
 /**
  * Defines an asynchronous interface for serial/tcp/?
  */
-class IPhysicalLayerAsync : public IPhysicalLayerState
+class IPhysicalLayerAsync : public IChannelState
 {
 public:
 

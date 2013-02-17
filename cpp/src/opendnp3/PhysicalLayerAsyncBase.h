@@ -43,7 +43,7 @@ class PLAS_Base;
 // are called from a single thread.
 class PhysicalLayerAsyncBase : public IPhysicalLayerAsync, public Loggable
 {
-	class State : public IPhysicalLayerState
+	class State : public IChannelState
 	{
 	public:
 		State();
@@ -79,7 +79,7 @@ public:
 	// to avoid segfaulting. There are a # of asserts that make sure the object has been shutdown properly.
 	virtual ~PhysicalLayerAsyncBase() {}
 
-	/* Implement IPhysicalLayerState */
+	/* Implement IChannelState */
 	bool IsOpen() const {
 		return mState.IsOpen();
 	}

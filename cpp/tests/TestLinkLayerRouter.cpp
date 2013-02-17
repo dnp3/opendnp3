@@ -88,11 +88,11 @@ BOOST_AUTO_TEST_CASE(AutomaticallyClosesWhenAllContextsAreRemoved)
 	LinkLayerRouterTest t;
 	MockFrameSink mfs;
 	t.router.AddContext(&mfs, LinkRoute(1, 1024));
-	BOOST_REQUIRE_EQUAL(PLS_OPENING, t.router.GetState());
+	BOOST_REQUIRE_EQUAL(CS_OPENING, t.router.GetState());
 	t.router.RemoveContext(LinkRoute(1, 1024));
-	BOOST_REQUIRE_EQUAL(PLS_OPENING, t.router.GetState());
+	BOOST_REQUIRE_EQUAL(CS_OPENING, t.router.GetState());
 	t.phys.SignalOpenFailure();
-	BOOST_REQUIRE_EQUAL(PLS_CLOSED, t.router.GetState());
+	BOOST_REQUIRE_EQUAL(CS_CLOSED, t.router.GetState());
 }
 
 /// Test that router is correctly clears the send buffer on close

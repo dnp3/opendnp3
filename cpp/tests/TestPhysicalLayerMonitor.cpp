@@ -98,11 +98,11 @@ BOOST_AUTO_TEST_SUITE(PhysicalLayerMonitorTestSuite)
 BOOST_AUTO_TEST_CASE(StateClosedExceptions)
 {
 	TestObject test;
-	BOOST_REQUIRE_EQUAL(PLS_CLOSED, test.monitor.GetState());
+	BOOST_REQUIRE_EQUAL(CS_CLOSED, test.monitor.GetState());
 	BOOST_REQUIRE_THROW(test.monitor.OnLowerLayerUp(), InvalidStateException);
 	BOOST_REQUIRE_THROW(test.monitor.OnLowerLayerDown(), InvalidStateException);
 	BOOST_REQUIRE_THROW(test.monitor.OnOpenFailure(), InvalidStateException);
-	BOOST_REQUIRE_EQUAL(PLS_CLOSED, test.monitor.GetState());
+	BOOST_REQUIRE_EQUAL(CS_CLOSED, test.monitor.GetState());
 }
 
 BOOST_AUTO_TEST_CASE(ThrowsIfEverNotExpectingOpenTimer)
@@ -110,28 +110,28 @@ BOOST_AUTO_TEST_CASE(ThrowsIfEverNotExpectingOpenTimer)
 	TestObject test;
 	test.monitor.ReachInAndStartOpenTimer();
 	BOOST_REQUIRE_THROW(test.exe.DispatchOne(), InvalidStateException);
-	BOOST_REQUIRE_EQUAL(PLS_CLOSED, test.monitor.GetState());
+	BOOST_REQUIRE_EQUAL(CS_CLOSED, test.monitor.GetState());
 }
 
 BOOST_AUTO_TEST_CASE(StateClosedCanBeStopped)
 {
 	TestObject test;
 	test.monitor.Shutdown();
-	BOOST_REQUIRE_EQUAL(PLS_SHUTDOWN, test.monitor.GetState());
+	BOOST_REQUIRE_EQUAL(CS_SHUTDOWN, test.monitor.GetState());
 }
 
 BOOST_AUTO_TEST_CASE(StateClosedIgnoresSuspend)
 {
 	TestObject test;
 	test.monitor.Suspend();
-	BOOST_REQUIRE_EQUAL(PLS_CLOSED, test.monitor.GetState());
+	BOOST_REQUIRE_EQUAL(CS_CLOSED, test.monitor.GetState());
 }
 
 BOOST_AUTO_TEST_CASE(StartOneBeginsOpening)
 {
 	TestObject test;
 	test.monitor.StartOne();
-	BOOST_REQUIRE_EQUAL(PLS_OPENING, test.monitor.GetState());
+	BOOST_REQUIRE_EQUAL(CS_OPENING, test.monitor.GetState());
 }
 
 BOOST_AUTO_TEST_CASE(StartOneFailureDoesNotRetry)
@@ -139,7 +139,7 @@ BOOST_AUTO_TEST_CASE(StartOneFailureDoesNotRetry)
 	TestObject test;
 	test.monitor.StartOne();
 	test.phys.SignalOpenFailure();
-	BOOST_REQUIRE_EQUAL(PLS_CLOSED, test.monitor.GetState());
+	BOOST_REQUIRE_EQUAL(CS_CLOSED, test.monitor.GetState());
 }
 
 BOOST_AUTO_TEST_CASE(StartingWhileOpeningOneWillRetry)
@@ -148,7 +148,7 @@ BOOST_AUTO_TEST_CASE(StartingWhileOpeningOneWillRetry)
 	test.monitor.StartOne();
 	test.monitor.Start();
 	test.phys.SignalOpenFailure();
-	BOOST_REQUIRE_EQUAL(PLS_WAITING, test.monitor.GetState());
+	BOOST_REQUIRE_EQUAL(CS_WAITING, test.monitor.GetState());
 }
 
 BOOST_AUTO_TEST_CASE(ClosingWhileOpeningOneWillNotRetry)
@@ -157,7 +157,7 @@ BOOST_AUTO_TEST_CASE(ClosingWhileOpeningOneWillNotRetry)
 	test.monitor.StartOne();
 	test.monitor.Close();
 	test.phys.SignalOpenFailure();
-	BOOST_REQUIRE_EQUAL(PLS_CLOSED, test.monitor.GetState());
+	BOOST_REQUIRE_EQUAL(CS_CLOSED, test.monitor.GetState());
 }
 
 BOOST_AUTO_TEST_CASE(SuspendWhileOpeningClosingWillNotRetry)
@@ -167,7 +167,7 @@ BOOST_AUTO_TEST_CASE(SuspendWhileOpeningClosingWillNotRetry)
 	test.monitor.Close();
 	test.monitor.Suspend();
 	test.phys.SignalOpenFailure();
-	BOOST_REQUIRE_EQUAL(PLS_CLOSED, test.monitor.GetState());
+	BOOST_REQUIRE_EQUAL(CS_CLOSED, test.monitor.GetState());
 }
 
 BOOST_AUTO_TEST_CASE(LayerCloseAfterStartOneDoesNotRetry)
@@ -175,21 +175,21 @@ BOOST_AUTO_TEST_CASE(LayerCloseAfterStartOneDoesNotRetry)
 	TestObject test;
 	test.monitor.StartOne();
 	test.phys.SignalOpenSuccess();
-	BOOST_REQUIRE_EQUAL(PLS_OPEN, test.monitor.GetState());
+	BOOST_REQUIRE_EQUAL(CS_OPEN, test.monitor.GetState());
 	test.phys.AsyncClose();
-	BOOST_REQUIRE_EQUAL(PLS_CLOSED, test.monitor.GetState());
+	BOOST_REQUIRE_EQUAL(CS_CLOSED, test.monitor.GetState());
 }
 
 BOOST_AUTO_TEST_CASE(StopAndCloseDoNothingWhileStopped)
 {
 	TestObject test;
 	test.monitor.Shutdown();
-	BOOST_REQUIRE_EQUAL(PLS_SHUTDOWN, test.monitor.GetState());
+	BOOST_REQUIRE_EQUAL(CS_SHUTDOWN, test.monitor.GetState());
 
 	test.monitor.Shutdown();
-	BOOST_REQUIRE_EQUAL(PLS_SHUTDOWN, test.monitor.GetState());
+	BOOST_REQUIRE_EQUAL(CS_SHUTDOWN, test.monitor.GetState());
 	test.monitor.Close();
-	BOOST_REQUIRE_EQUAL(PLS_SHUTDOWN, test.monitor.GetState());
+	BOOST_REQUIRE_EQUAL(CS_SHUTDOWN, test.monitor.GetState());
 }
 
 BOOST_AUTO_TEST_CASE(StoppedLayerCannotBeStarted)
@@ -198,7 +198,7 @@ BOOST_AUTO_TEST_CASE(StoppedLayerCannotBeStarted)
 	test.monitor.Shutdown();
 	test.monitor.Start();
 	test.monitor.StartOne();
-	BOOST_REQUIRE_EQUAL(PLS_SHUTDOWN, test.monitor.GetState());
+	BOOST_REQUIRE_EQUAL(CS_SHUTDOWN, test.monitor.GetState());
 	BOOST_REQUIRE(test.phys.IsClosed());
 }
 
@@ -206,7 +206,7 @@ BOOST_AUTO_TEST_CASE(ClosedLayerCanBeStarted)
 {
 	TestObject test;
 	test.monitor.Start();
-	BOOST_REQUIRE_EQUAL(PLS_OPENING, test.monitor.GetState());
+	BOOST_REQUIRE_EQUAL(CS_OPENING, test.monitor.GetState());
 	BOOST_REQUIRE(test.phys.IsOpening());
 }
 
@@ -223,7 +223,7 @@ BOOST_AUTO_TEST_CASE(OpeningStartOneGoesToOpeningOne)
 	test.monitor.Start();
 	test.monitor.StartOne();
 	test.phys.SignalOpenFailure();
-	BOOST_REQUIRE_EQUAL(PLS_CLOSED, test.monitor.GetState());
+	BOOST_REQUIRE_EQUAL(CS_CLOSED, test.monitor.GetState());
 }
 
 BOOST_AUTO_TEST_CASE(OpeningStateOpenSuccessGoesToOpenState)
@@ -231,7 +231,7 @@ BOOST_AUTO_TEST_CASE(OpeningStateOpenSuccessGoesToOpenState)
 	TestObject test;
 	test.monitor.Start();
 	test.phys.SignalOpenSuccess();
-	BOOST_REQUIRE_EQUAL(PLS_OPEN, test.monitor.GetState());
+	BOOST_REQUIRE_EQUAL(CS_OPEN, test.monitor.GetState());
 	BOOST_REQUIRE_EQUAL(1, test.monitor.mOpenCallbackCount); //check that the callback fired
 }
 
@@ -240,9 +240,9 @@ BOOST_AUTO_TEST_CASE(StopWhileOpeningWaitsForOpenFailure)
 	TestObject test;
 	test.monitor.Start();
 	test.monitor.Shutdown();
-	BOOST_REQUIRE_EQUAL(PLS_OPENING, test.monitor.GetState());
+	BOOST_REQUIRE_EQUAL(CS_OPENING, test.monitor.GetState());
 	test.phys.SignalOpenFailure();
-	BOOST_REQUIRE_EQUAL(PLS_SHUTDOWN, test.monitor.GetState());
+	BOOST_REQUIRE_EQUAL(CS_SHUTDOWN, test.monitor.GetState());
 }
 
 BOOST_AUTO_TEST_CASE(CloseWhileOpeningWaitsForOpenFailureThenWaits)
@@ -250,9 +250,9 @@ BOOST_AUTO_TEST_CASE(CloseWhileOpeningWaitsForOpenFailureThenWaits)
 	TestObject test;
 	test.monitor.Start();
 	test.monitor.Close();
-	BOOST_REQUIRE_EQUAL(PLS_OPENING, test.monitor.GetState());
+	BOOST_REQUIRE_EQUAL(CS_OPENING, test.monitor.GetState());
 	test.phys.SignalOpenFailure();
-	BOOST_REQUIRE_EQUAL(PLS_WAITING, test.monitor.GetState());
+	BOOST_REQUIRE_EQUAL(CS_WAITING, test.monitor.GetState());
 }
 
 BOOST_AUTO_TEST_CASE(CloseWhileOpeningAndThenStop)
@@ -261,24 +261,24 @@ BOOST_AUTO_TEST_CASE(CloseWhileOpeningAndThenStop)
 	test.monitor.Start();
 	test.monitor.Close();
 	test.monitor.Shutdown();
-	BOOST_REQUIRE_EQUAL(PLS_OPENING, test.monitor.GetState());
+	BOOST_REQUIRE_EQUAL(CS_OPENING, test.monitor.GetState());
 	test.phys.SignalOpenFailure();
-	BOOST_REQUIRE_EQUAL(PLS_SHUTDOWN, test.monitor.GetState());
+	BOOST_REQUIRE_EQUAL(CS_SHUTDOWN, test.monitor.GetState());
 }
 
 BOOST_AUTO_TEST_CASE(OpenFailureGoesToWaitingAndExponentialBackoff)
 {
 	TestObject test;	
 	test.monitor.Start();
-	BOOST_REQUIRE_EQUAL(PLS_OPENING, test.monitor.GetState());
+	BOOST_REQUIRE_EQUAL(CS_OPENING, test.monitor.GetState());
 	test.phys.SignalOpenFailure();
-	BOOST_REQUIRE_EQUAL(PLS_WAITING, test.monitor.GetState());
+	BOOST_REQUIRE_EQUAL(CS_WAITING, test.monitor.GetState());
 	BOOST_REQUIRE_EQUAL(1, test.exe.NumActive());	
 	BOOST_REQUIRE(seconds(1) == test.exe.NextDurationTimer());
 	BOOST_REQUIRE(test.exe.DispatchOne());
-	BOOST_REQUIRE_EQUAL(PLS_OPENING, test.monitor.GetState());
+	BOOST_REQUIRE_EQUAL(CS_OPENING, test.monitor.GetState());
 	test.phys.SignalOpenFailure();
-	BOOST_REQUIRE_EQUAL(PLS_WAITING, test.monitor.GetState());
+	BOOST_REQUIRE_EQUAL(CS_WAITING, test.monitor.GetState());
 	BOOST_REQUIRE_EQUAL(1, test.exe.NumActive());	
 	BOOST_REQUIRE(seconds(2) == test.exe.NextDurationTimer());
 }
@@ -289,7 +289,7 @@ BOOST_AUTO_TEST_CASE(OpenFailureGoesToClosedIfSuspended)
 	test.monitor.Start();
 	test.monitor.Suspend();
 	test.phys.SignalOpenFailure();
-	BOOST_REQUIRE_EQUAL(PLS_CLOSED, test.monitor.GetState());
+	BOOST_REQUIRE_EQUAL(CS_CLOSED, test.monitor.GetState());
 	BOOST_REQUIRE_EQUAL(0, test.exe.NumActive());
 }
 
@@ -299,7 +299,7 @@ BOOST_AUTO_TEST_CASE(ShutdownPostsToTimer)
 	BOOST_REQUIRE_EQUAL(0, test.exe.NumActive());
 	BOOST_REQUIRE_FALSE(test.monitor.WaitForShutdown(0));
 	test.monitor.Shutdown();
-	BOOST_REQUIRE_EQUAL(PLS_SHUTDOWN, test.monitor.GetState());
+	BOOST_REQUIRE_EQUAL(CS_SHUTDOWN, test.monitor.GetState());
 	BOOST_REQUIRE_EQUAL(1, test.exe.NumActive());
 	BOOST_REQUIRE_FALSE(test.monitor.WaitForShutdown(0));
 	BOOST_REQUIRE(test.exe.DispatchOne());
@@ -313,7 +313,7 @@ BOOST_AUTO_TEST_CASE(ShutdownWhileWaitingCancelsTimer)
 	test.phys.SignalOpenFailure();	
 	test.monitor.Shutdown();
 	BOOST_REQUIRE(test.exe.DispatchOne()); //disptach the shutdown post
-	BOOST_REQUIRE_EQUAL(PLS_SHUTDOWN, test.monitor.GetState());
+	BOOST_REQUIRE_EQUAL(CS_SHUTDOWN, test.monitor.GetState());
 	BOOST_REQUIRE_EQUAL(0, test.exe.NumActive());
 }
 
@@ -323,9 +323,9 @@ BOOST_AUTO_TEST_CASE(LayerKeepsTryingToOpen)
 	test.monitor.Start();
 
 	for(size_t i = 0; i < 3; ++i) {		
-		BOOST_REQUIRE_EQUAL(PLS_OPENING, test.monitor.GetState());
+		BOOST_REQUIRE_EQUAL(CS_OPENING, test.monitor.GetState());
 		test.phys.SignalOpenFailure();
-		BOOST_REQUIRE_EQUAL(PLS_WAITING, test.monitor.GetState());
+		BOOST_REQUIRE_EQUAL(CS_WAITING, test.monitor.GetState());
 		BOOST_REQUIRE(test.exe.DispatchOne());
 	}
 }
@@ -336,7 +336,7 @@ BOOST_AUTO_TEST_CASE(CloseWhileWaitingDoesNothing)
 	test.monitor.Start();
 	test.phys.SignalOpenFailure();
 	test.monitor.Close();
-	BOOST_REQUIRE_EQUAL(PLS_WAITING, test.monitor.GetState());
+	BOOST_REQUIRE_EQUAL(CS_WAITING, test.monitor.GetState());
 	BOOST_REQUIRE_EQUAL(1, test.exe.NumActive());
 }
 
@@ -346,7 +346,7 @@ BOOST_AUTO_TEST_CASE(LayerCloseWhileOpen)
 	test.monitor.Start();
 	test.phys.SignalOpenSuccess();
 	test.phys.AsyncClose();
-	BOOST_REQUIRE_EQUAL(PLS_OPENING, test.monitor.GetState());
+	BOOST_REQUIRE_EQUAL(CS_OPENING, test.monitor.GetState());
 }
 
 BOOST_AUTO_TEST_CASE(RequestCloseWhileOpen)
@@ -355,7 +355,7 @@ BOOST_AUTO_TEST_CASE(RequestCloseWhileOpen)
 	test.monitor.Start();
 	test.phys.SignalOpenSuccess();
 	test.monitor.Close();
-	BOOST_REQUIRE_EQUAL(PLS_OPENING, test.monitor.GetState());
+	BOOST_REQUIRE_EQUAL(CS_OPENING, test.monitor.GetState());
 }
 
 BOOST_AUTO_TEST_CASE(RequestStopWhileOpen)
@@ -364,7 +364,7 @@ BOOST_AUTO_TEST_CASE(RequestStopWhileOpen)
 	test.monitor.Start();
 	test.phys.SignalOpenSuccess();
 	test.monitor.Shutdown();
-	BOOST_REQUIRE_EQUAL(PLS_SHUTDOWN, test.monitor.GetState());
+	BOOST_REQUIRE_EQUAL(CS_SHUTDOWN, test.monitor.GetState());
 }
 
 BOOST_AUTO_TEST_CASE(LayerSuspendWhileOpenDontRetry)
@@ -373,7 +373,7 @@ BOOST_AUTO_TEST_CASE(LayerSuspendWhileOpenDontRetry)
 	test.monitor.Start();
 	test.phys.SignalOpenSuccess();
 	test.monitor.Suspend();
-	BOOST_REQUIRE_EQUAL(PLS_CLOSED, test.monitor.GetState());
+	BOOST_REQUIRE_EQUAL(CS_CLOSED, test.monitor.GetState());
 }
 
 BOOST_AUTO_TEST_CASE(SuspendWhileWaitingCancelsTimer)
@@ -382,7 +382,7 @@ BOOST_AUTO_TEST_CASE(SuspendWhileWaitingCancelsTimer)
 	test.monitor.Start();
 	test.phys.SignalOpenFailure();
 	test.monitor.Suspend();
-	BOOST_REQUIRE_EQUAL(PLS_CLOSED, test.monitor.GetState());
+	BOOST_REQUIRE_EQUAL(CS_CLOSED, test.monitor.GetState());
 	BOOST_REQUIRE_EQUAL(0, test.exe.NumActive());
 }
 
