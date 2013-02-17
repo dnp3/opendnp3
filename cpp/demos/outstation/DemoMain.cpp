@@ -44,7 +44,7 @@ using namespace opendnp3;
 /*
  * Command line syntax:
  *
- *    ./demo-slave-cpp [remote-dnp3] [local-dnp3] [local-ip] [local-port]
+ *    ./outstationdemo [remote-dnp3] [local-dnp3] [local-ip] [local-port]
  *
  * Defaults:
  *
