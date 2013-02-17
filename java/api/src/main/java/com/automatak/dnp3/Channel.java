@@ -30,6 +30,15 @@ public interface Channel {
     void shutdown();
 
     /**
+     * Add a listener to receive state change messages. All callbacks come from the underlying thread pool.
+     * Listeners can be bound at any time and you will always receive an immediate callback with the current
+     * state.
+     *
+     * @param listener Callback interface to receive the messages
+     */
+    void addStateListener(ChannelStateListener listener);
+
+    /**
      * Adds a master to the channel
      * @param loggerId name of the logger that will be assigned to this stack
      * @param level LogLevel assigned to the logger

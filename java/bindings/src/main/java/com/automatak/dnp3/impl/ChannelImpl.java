@@ -31,6 +31,12 @@ class ChannelImpl implements Channel {
     }
 
     @Override
+    public void addStateListener(ChannelStateListener listener)
+    {
+       add_native_state_change_listener(nativeChannel, listener);
+    }
+
+    @Override
     public Master addMaster(String loggerId, LogLevel level, DataObserver publisher, MasterStackConfig config)
     {
         DataObserverAdapter adapter = new DataObserverAdapter(publisher);
@@ -52,8 +58,8 @@ class ChannelImpl implements Channel {
         shutdown_native(nativeChannel);
     }
 
-    public native void shutdown_native(long ptrChannel);
-
+    private native void shutdown_native(long ptrChannel);
+    private native void add_native_state_change_listener(long ptrChannel, ChannelStateListener listener);
     private native long get_native_master(long ptrChannel, String loggerId, int level, DataObserverAdapter publisher, MasterStackConfig config);
     private native long get_native_slave(long ptrChannel, String loggerId, int level, CommandHandlerAdapter handler, OutstationStackConfig config);
 
