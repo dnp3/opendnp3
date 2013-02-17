@@ -101,6 +101,12 @@ int main(int argc, char* argv[])
 	// The server will wait 3000 ms in between failed bind calls.
 	auto pServer = mgr.AddTCPServer("tcpserver", LOG_LEVEL, 3000, local_ip, local_port);
 
+	// You can optionally add a listener to the channel. You can do this anytime and
+	// you will receive a stream of all state changes
+	pServer->AddStateListener([](ChannelState state){
+		std::cout << "Server state: " << ConvertChannelStateToString(state) << std::endl;
+	});
+
 	// The master config object for a slave. The default are
 	// useable, but understanding the options are important.
 	SlaveStackConfig stackConfig;

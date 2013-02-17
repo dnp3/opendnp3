@@ -105,6 +105,12 @@ int main(int argc, char* argv[])
 	// wait 3000 ms in between failed connect calls.
 	auto pClient = mgr.AddTCPClient("tcpclient", LOG_LEVEL, 3000, remote_ip.c_str(), remote_port);
 
+	// You can optionally add a listener to the channel. You can do this anytime and
+	// you will receive a stream of all state changes
+	pClient->AddStateListener([](ChannelState state){
+		std::cout << "Client state: " << ConvertChannelStateToString(state) << std::endl;
+	});
+
 	// The master config object for a master. The default are
 	// useable, but understanding the options are important.
 	MasterStackConfig stackConfig;

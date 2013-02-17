@@ -61,7 +61,7 @@ void DNP3Channel::Shutdown()
 
 void DNP3Channel::AddStateListener(std::function<void (ChannelState)> aListener)
 {
-	
+	mRouter.AddStateListener(aListener);
 }
 
 void DNP3Channel::Cleanup()

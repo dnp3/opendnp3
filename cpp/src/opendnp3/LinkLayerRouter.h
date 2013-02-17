@@ -32,6 +32,7 @@
 
 #include <map>
 #include <queue>
+#include <vector>
 
 #include "PhysicalLayerMonitor.h"
 #include "LinkLayerReceiver.h"
@@ -75,7 +76,19 @@ public:
 	// ILinkRouter interface
 	void Transmit(const LinkFrame&);
 
+	// Notify the listener when the state changes
+	void AddStateListener(std::function<void (ChannelState)> aListener);
+
+protected:
+	
+	// override this function so that we can notify listeners
+	void OnStateChange(ChannelState aState);
+
 private:
+
+	void NotifyListener(std::function<void (ChannelState)> aListener, ChannelState state);
+
+	std::vector<std::function<void (ChannelState)>> mListeners;
 
 	ILinkContext* GetDestination(uint16_t aDest, uint16_t aSrc);
 	ILinkContext* GetContext(const LinkRoute&);
