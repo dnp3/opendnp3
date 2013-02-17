@@ -32,8 +32,20 @@ class DNP3ManagerTestSuite extends FunSuite with ShouldMatchers {
     def handleOutput(msg: String) = {}
   })
 
-  def createClient(mgr: DNP3Manager): Channel = mgr.addTCPClient("client", LogLevel.INFO, 3000, "127.0.0.1", 20000)
-  def createServer(mgr: DNP3Manager): Channel = mgr.addTCPServer("server", LogLevel.INFO, 3000, "127.0.0.1", 20000)
+  def createClient(mgr: DNP3Manager): Channel = {
+    val channel = mgr.addTCPClient("client", LogLevel.INFO, 3000, "127.0.0.1", 20000)
+    channel.addStateListener(new ChannelStateListener {
+      def onStateChange(state: ChannelState) {}
+    })
+    channel
+  }
+  def createServer(mgr: DNP3Manager): Channel = {
+    val channel = mgr.addTCPServer("server", LogLevel.INFO, 3000, "127.0.0.1", 20000)
+    channel.addStateListener(new ChannelStateListener {
+      def onStateChange(state: ChannelState) {}
+    })
+    channel
+  }
 
   def createMaster(channel: Channel) : Master = {
     val config = new MasterStackConfig

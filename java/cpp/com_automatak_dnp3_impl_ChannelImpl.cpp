@@ -32,11 +32,28 @@
 
 using namespace opendnp3;
 
+
+
 JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_ChannelImpl_shutdown_1native
   (JNIEnv *, jobject, jlong ptr)
 {
 	auto pChannel = (IChannel*) ptr;
 	pChannel->Shutdown();
+}
+
+JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_ChannelImpl_add_1native_1state_1change_1listener
+  (JNIEnv* apEnv, jobject, jlong ptr, jobject stateChangeProxy)
+{
+	auto pChannel = (IChannel*) ptr;
+	JavaVM* pJVM = JNIHelpers::GetJVMFromEnv(apEnv);
+	jobject global = apEnv->NewGlobalRef(stateChangeProxy);
+	pChannel->AddDestructorHook([pJVM, global]() { JNIHelpers::DeleteGlobalReference(pJVM, global); });	
+	pChannel->AddStateListener([pJVM, global](ChannelState state){
+		JNIEnv* pEnv = JNIHelpers::GetEnvFromJVM(pJVM);
+		jmethodID changeID = JNIHelpers::GetMethodID(pEnv, global, "onStateChange", "(I)V");
+		int intstate = state;
+		pEnv->CallIntMethod(global, changeID, intstate);
+	});
 }
 
 JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ChannelImpl_get_1native_1master

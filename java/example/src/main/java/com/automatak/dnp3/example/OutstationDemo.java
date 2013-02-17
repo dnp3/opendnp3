@@ -44,6 +44,14 @@ public class OutstationDemo {
         // Create a tcp channel class that will connect to the loopback
         Channel channel = manager.addTCPServer("client", LogLevel.INFO, 5000, "127.0.0.1", 20000);
 
+        // You can optionally add a listener to receive state changes on the channel
+        channel.addStateListener(new ChannelStateListener() {
+            @Override
+            public void onStateChange(ChannelState state) {
+                System.out.println("server state: " + state);
+            }
+        });
+
         // Outstation will have 5 of every measurement type
         DatabaseConfig db = new DatabaseConfig(5,5,5,5,5);
 

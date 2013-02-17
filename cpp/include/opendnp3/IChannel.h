@@ -33,6 +33,7 @@
 #include "SlaveStackConfig.h"
 #include "LogTypes.h"
 #include "ChannelStates.h"
+#include "DestructorHook.h"
 
 #include <functional>
 
@@ -47,7 +48,7 @@ class ICommandHandler;
 /**
 * Represents a communication channel upon which masters and outstations can be bound.
 */
-class IChannel 
+class IChannel : public DestructorHook
 {
 	public:
 
