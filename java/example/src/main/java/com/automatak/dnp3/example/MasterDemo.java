@@ -38,7 +38,7 @@ public class MasterDemo {
         DNP3Manager manager = DNP3ManagerFactory.createManager(1);
 
         // You can send the log messages anywhere you want
-        // but PrinintLogSubscriber just prints them to the console
+        // but PrintingLogSubscriber just prints them to the console
         manager.addLogSubscriber(PrintingLogSubscriber.getInstance());
 
         // Create a tcp channel class that will connect to the loopback
