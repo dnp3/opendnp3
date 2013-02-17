@@ -45,7 +45,7 @@ using namespace opendnp3;
 /*
  * Command line syntax:
  *
- *    ./demo-master-cpp [local-dnp3] [remote-dnp3] [remote-ip] [remote-port]
+ *    ./masterdemo [local-dnp3] [remote-dnp3] [remote-ip] [remote-port]
  *
  * Defaults:
  *
@@ -127,7 +127,7 @@ int main(int argc, char* argv[])
 	
 	std::string cmd;
 	do {
-		std::cout << "Enter something to perform a SELECT/OPERATE seuqnce, or type exit" << std::endl;
+		std::cout << "Enter something to perform a SELECT/OPERATE sequence, or type exit" << std::endl;
 		std::cin >> cmd;		
 		if(cmd == "exit") break;
 		else {
