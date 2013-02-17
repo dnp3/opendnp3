@@ -33,7 +33,8 @@ class ChannelImpl implements Channel {
     @Override
     public void addStateListener(ChannelStateListener listener)
     {
-       add_native_state_change_listener(nativeChannel, listener);
+       ChannelStateProxy proxy = new ChannelStateProxy(listener);
+       add_native_state_change_listener(nativeChannel, proxy);
     }
 
     @Override
@@ -59,7 +60,7 @@ class ChannelImpl implements Channel {
     }
 
     private native void shutdown_native(long ptrChannel);
-    private native void add_native_state_change_listener(long ptrChannel, ChannelStateListener listener);
+    private native void add_native_state_change_listener(long ptrChannel, ChannelStateProxy proxy);
     private native long get_native_master(long ptrChannel, String loggerId, int level, DataObserverAdapter publisher, MasterStackConfig config);
     private native long get_native_slave(long ptrChannel, String loggerId, int level, CommandHandlerAdapter handler, OutstationStackConfig config);
 

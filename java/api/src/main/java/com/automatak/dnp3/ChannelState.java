@@ -41,5 +41,19 @@ public enum ChannelState {
     /**
      * stopped and will never do anything again
      */
-    SHUTDOWN
+    SHUTDOWN;
+
+    public static ChannelState fromInt(int state)
+    {
+        switch(state)
+        {
+            case(0): return CLOSED;
+            case(1): return OPENING;
+            case(2): return WAITING;
+            case(3): return OPEN;
+            case(4): return SHUTDOWN;
+            default:
+                return SHUTDOWN;
+        }
+    }
 }
