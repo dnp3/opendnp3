@@ -45,9 +45,7 @@ namespace DotNetMasterDemo
             var channel = mgr.AddTCPClient("client", LogLevel.INFO, 5000, "127.0.0.1", 20000);
 
             //optionally, add a listener for the channel state
-            channel.AddStateListener(delegate(ChannelState state) {
-                Console.WriteLine("Client state: " + state);  
-            });
+            channel.AddStateListener(state => Console.WriteLine("Client state: " + state));
 
             var config = new MasterStackConfig();
             config.link.useConfirms = true; //setup your stack configuration here.

@@ -45,10 +45,7 @@ namespace DotNetSlaveDemo
             var channel = mgr.AddTCPServer("server", LogLevel.INFO, 5000, "127.0.0.1", 20000);
 
             //optionally, add a listener for the channel state
-            channel.AddStateListener(delegate(ChannelState state)
-            {
-                Console.WriteLine("Server state: " + state);
-            });
+            channel.AddStateListener(state => Console.WriteLine("Server state: " + state));
 
             var config = new SlaveStackConfig();
             var outstation = channel.AddOutstation("outstation", LogLevel.INFO, RejectingCommandHandler.Instance, config);
