@@ -59,6 +59,11 @@ void DNP3Channel::Shutdown()
 	mOnShutdown(this);
 }
 
+void DNP3Channel::AddStateListener(std::function<void (ChannelState)> aListener)
+{
+	
+}
+
 void DNP3Channel::Cleanup()
 {
 	std::set<IStack*> copy(mStacks);	

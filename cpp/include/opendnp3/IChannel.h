@@ -32,6 +32,9 @@
 #include "MasterStackConfig.h"
 #include "SlaveStackConfig.h"
 #include "LogTypes.h"
+#include "ChannelStates.h"
+
+#include <functional>
 
 namespace opendnp3
 {
@@ -54,6 +57,14 @@ class IChannel
 		* Synchronously shutdown the channel.
 		*/
 		virtual void Shutdown() = 0;
+
+		/**
+		* Add a listener for changes to the channel state. All callbacks come from the thread pool.
+		* A immediate callback will be made with the current state.
+		*
+		* @param aListener Functor to callback with the state enumeration 
+		*/
+		virtual void AddStateListener(std::function<void (ChannelState)> aListener) = 0;
 
 		/**
 		* Add a master to the channel

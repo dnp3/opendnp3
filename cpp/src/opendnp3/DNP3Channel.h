@@ -36,7 +36,6 @@
 #include "Loggable.h"
 #include "AsyncTaskGroup.h"
 
-
 #include <memory>
 #include <functional>
 
@@ -66,6 +65,8 @@ class DNP3Channel: public IChannel, private Loggable
 		// Implement IChannel - these are exposed to clients
 
 		void Shutdown();
+
+		void AddStateListener(std::function<void (ChannelState)> aListener);
 
 		IMaster* AddMaster(		const std::string& arLoggerId,
 	                            FilterLevel aLevel,

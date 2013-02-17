@@ -87,6 +87,7 @@
     <ClInclude Include="include\opendnp3\APDUConstants.h" />
     <ClInclude Include="include\opendnp3\AppConfig.h" />
     <ClInclude Include="include\opendnp3\BaseDataTypes.h" />
+    <ClInclude Include="include\opendnp3\ChannelStates.h" />
     <ClInclude Include="include\opendnp3\ClassMask.h" />
     <ClInclude Include="include\opendnp3\CommandResponse.h" />
     <ClInclude Include="include\opendnp3\CommandStatus.h" />
@@ -290,6 +291,7 @@
     <ClCompile Include="src\opendnp3\BaseDataTypes.cpp" />
     <ClCompile Include="src\opendnp3\BufferTypes.cpp" />
     <ClCompile Include="src\opendnp3\ChangeBuffer.cpp" />
+    <ClCompile Include="src\opendnp3\ChannelStates.cpp" />
     <ClCompile Include="src\opendnp3\ClassCounter.cpp" />
     <ClCompile Include="src\opendnp3\CommandStatus.cpp" />
     <ClCompile Include="src\opendnp3\CommandTask.cpp" />
