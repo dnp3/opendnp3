@@ -4,17 +4,12 @@ Copyright (c) 2013 Automatak LLC
 
 Partially licensed under the terms of the Apache Public License v2.0.  Modifications made by Automatak, LLC are licensed under the terms GNU Affero General Public License Version 3.0. Contact Automatak, LLC for a commercial license to these modifications.
 
-About AGPLv3
-============
+Documentation
+=============
 
-AGPLv3 is a copyleft license that triggers even if you are only using the library against a 3rd party over a network. You must either abide by the terms of the license or purchase a proprietary friendly license.
+All docs are hosted on the Wiki. Use the link above or:
 
-History
-=======
-
-This is a fork of the project originally located here:
-
-www.github.com/gec/dnp3
+https://github.com/automatakllc/dnp3/wiki
 
 Overview
 ========
@@ -29,10 +24,15 @@ Custom written, idiomatic bindings are available for the
 Microsoft CLR family of languages (C#, VB.NET, F#, etc) and JVM-based
 languages (Java, Scala, Clojure, etc).
 
+About AGPLv3
+============
 
-Documentation
-=============
+AGPLv3 is a copyleft license that triggers even if you are only using the library against a 3rd party over a network. You must either abide by the terms of the license or purchase a proprietary friendly license.
 
-All docs are hosted on the Wiki. Use the link above or:
+History
+=======
 
-https://github.com/automatakllc/dnp3/wiki
+This is a fork of the project originally located here:
+
+www.github.com/gec/dnp3
+
