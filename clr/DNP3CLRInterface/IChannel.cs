@@ -32,6 +32,13 @@ namespace DNP3.Interface
 		IOutstation AddOutstation(String loggerId, LogLevel level, ICommandHandler cmdHandler, SlaveStackConfig config);
 
         /// <summary>
+        /// Add a listener for changes to the channel state. All callbacks come from the thread pool.
+		/// An immediate callback will be made with the current state.		
+        /// </summary>
+        /// <param name="listener">Action to callback with the state enumeration </param>
+        void AddStateListener(Action<ChannelState> listener);
+
+        /// <summary>
         /// Shutdown the channel and all stacks that have been added. Calling shutdown more than once or
         /// continuing to use child objects (masters/outstations) after calling shutdown can cause a failure.     
         /// </summary>

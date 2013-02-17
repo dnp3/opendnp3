@@ -101,6 +101,23 @@ namespace Adapter
 		}
 	}
 
+	ChannelState Conversions::convertChannelState(opendnp3::ChannelState aState)
+	{
+		switch(aState)
+		{
+			case(opendnp3::ChannelState::CS_CLOSED):
+				return ChannelState::CLOSED;
+			case(opendnp3::ChannelState::CS_OPEN):
+				return ChannelState::OPEN;
+			case(opendnp3::ChannelState::CS_OPENING):
+				return ChannelState::OPENING;
+			case(opendnp3::ChannelState::CS_SHUTDOWN):
+				return ChannelState::SHUTDOWN;
+			case(opendnp3::ChannelState::CS_WAITING):
+				return ChannelState::WAITING;
+		}
+	}
+
 	CommandStatus Conversions::convertCommandStatus(opendnp3::CommandStatus status)
 	{
 		switch(status)

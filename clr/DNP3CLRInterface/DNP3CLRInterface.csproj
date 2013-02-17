@@ -42,6 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ChannelState.cs" />
     <Compile Include="CommandTypes.cs" />
     <Compile Include="ConfigObjects.cs" />
     <Compile Include="Conversions.cs" />

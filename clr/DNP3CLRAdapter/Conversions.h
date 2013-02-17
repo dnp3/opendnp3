@@ -39,6 +39,7 @@
 #include <opendnp3/MasterStackConfig.h>
 #include <opendnp3/ControlRelayOutputBlock.h>
 #include <opendnp3/AnalogOutput.h>
+#include <opendnp3/ChannelStates.h>
 
 using namespace DNP3::Interface;
 
@@ -60,6 +61,9 @@ namespace Adapter
 		// Convert the log filter enumeration
 		static opendnp3::FilterLevel convertFilterLevel(LogLevel level);
 		static LogLevel convertFilterLevel(opendnp3::FilterLevel level);
+
+		// Converting channel state enumeration
+		static ChannelState convertChannelState(opendnp3::ChannelState aState);
 
 		// Convert the command status enumeration
 		static CommandStatus convertCommandStatus(opendnp3::CommandStatus status);

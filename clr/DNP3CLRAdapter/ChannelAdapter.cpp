@@ -34,6 +34,8 @@
 #include "MasterAdapter.h"
 #include "OutstationAdapter.h"
 
+using namespace System::Collections::Generic;
+
 namespace DNP3
 {	
 namespace Adapter
@@ -41,8 +43,34 @@ namespace Adapter
 
 
 ChannelAdapter::ChannelAdapter(opendnp3::IChannel* apChannel) : 
-	mpChannel(apChannel)
-{}
+	mpChannel(apChannel),
+	cleanup(gcnew LinkedList<System::Action^>())
+{
+	
+}
+
+ChannelAdapter::~ChannelAdapter()
+{
+	for each(System::Action^ action in cleanup)
+	{
+		action->Invoke();
+	}
+}
+
+void ChannelAdapter::AddStateListener(System::Action<ChannelState>^ listener)
+{
+	auto pWrapper = new gcroot<System::Action<ChannelState>^>(listener);
+	auto deleteWrapper = gcnew DeleteWrapper(pWrapper);
+	System::Action^ deleteWrapperAction = gcnew System::Action(deleteWrapper, &DeleteWrapper::Delete);
+	cleanup->AddLast(deleteWrapperAction);
+	mpChannel->AddStateListener(std::bind(&CallbackListener, pWrapper, std::placeholders::_1));
+}
+
+void CallbackListener(gcroot<System::Action<ChannelState>^>* listener, opendnp3::ChannelState aState)
+{
+	ChannelState state = Conversions::convertChannelState(aState);
+	(*listener)->Invoke(state);
+}
 
 IMaster^ ChannelAdapter::AddMaster(System::String^ loggerId, LogLevel level, IDataObserver^ publisher, MasterStackConfig^ config)
 {

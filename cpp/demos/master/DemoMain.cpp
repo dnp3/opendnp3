@@ -42,52 +42,8 @@
 using namespace std;
 using namespace opendnp3;
 
-/*
- * Command line syntax:
- *
- *    ./masterdemo [local-dnp3] [remote-dnp3] [remote-ip] [remote-port]
- *
- * Defaults:
- *
- *    local-dnp3     100
- *    remote-dnp3    1
- *    remote-ip      127.0.0.1
- *    remote-port    4999
- */
 int main(int argc, char* argv[])
 {
-	// Default values
-	unsigned local_dnp3  = 100;
-	unsigned remote_dnp3 = 1;
-	string   remote_ip   = "127.0.0.1";
-	unsigned remote_port = 4999;
-
-	// Parse the command line arguments using a "fall-through"
-	// switch statement.
-	if (argc > 1 && strcmp("help", argv[1]) == 0) {
-		cout << argv[0] << " [local-dnp3] [remote-dnp3] [remote-ip] [remote-port]" << endl;
-		return -1;
-	}
-
-	switch (argc) {
-	case 5:
-		{
-			istringstream iss(argv[4]);
-			iss >> remote_port;
-		}
-	case 4:
-		remote_ip = argv[3];
-	case 3:
-		{
-			istringstream iss(argv[2]);
-			iss >> remote_dnp3;
-		}
-	case 2:
-		{
-			istringstream iss(argv[1]);
-			iss >> local_dnp3;
-		}
-	}	
 
 	// Specify a FilterLevel for the stack/physical layer to use.
 	// Log statements with a lower priority will not be logged.
@@ -98,12 +54,12 @@ int main(int argc, char* argv[])
 	// stacks, as well as their physical layers.
 	DNP3Manager mgr(1); // 1 stack only needs 1 thread
 
-	//Send all log messages from the mgr to stdout	
+	//Send all log messages from the mgr to stdout
 	mgr.AddLogSubscriber(LogToStdio::Inst());
 
 	// Connect via a TCPClient socket to a slave.  The server will
 	// wait 3000 ms in between failed connect calls.
-	auto pClient = mgr.AddTCPClient("tcpclient", LOG_LEVEL, 3000, remote_ip.c_str(), remote_port);
+	auto pClient = mgr.AddTCPClient("tcpclient", LOG_LEVEL, 3000, "127.0.0.1", 20000);
 
 	// You can optionally add a listener to the channel. You can do this anytime and
 	// you will receive a stream of all state changes
@@ -115,10 +71,6 @@ int main(int argc, char* argv[])
 	// useable, but understanding the options are important.
 	MasterStackConfig stackConfig;
 
-	// Override the default link addressing
-	stackConfig.link.LocalAddr  = local_dnp3;
-	stackConfig.link.RemoteAddr = remote_dnp3;	
-
 	// Create a new master on a previously declared port, with a
 	// name, log level, command acceptor, and config info. This
 	// returns a thread-safe interface used for sending commands.
@@ -128,13 +80,13 @@ int main(int argc, char* argv[])
 		PrintingDataObserver::Inst(),	// callback for data processing
 		stackConfig						// stack configuration
 	);
+
 	auto pCmdProcessor = pMaster->GetCommandProcessor();
 
-	
 	std::string cmd;
 	do {
 		std::cout << "Enter something to perform a SELECT/OPERATE sequence, or type exit" << std::endl;
-		std::cin >> cmd;		
+		std::cin >> cmd;
 		if(cmd == "exit") break;
 		else {
 			ControlRelayOutputBlock crob(CC_LATCH_ON);
@@ -143,7 +95,7 @@ int main(int argc, char* argv[])
 			pCmdProcessor->SelectAndOperate(crob, 0, [&](CommandResponse cr){ selectResult.set_value(cr); });
 			CommandResponse rsp = selectResult.get_future().get();
 			std::cout << "Select/Operate result: " << rsp.mResult << std::endl;				
-		}		
+		}
 	}
 	while(true);
 

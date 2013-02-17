@@ -43,6 +43,12 @@ namespace DotNetMasterDemo
             IDNP3Manager mgr = DNP3ManagerFactory.CreateManager();            
             mgr.AddLogHandler(PrintingLogAdapter.Instance); //this is optional
             var channel = mgr.AddTCPClient("client", LogLevel.INFO, 5000, "127.0.0.1", 20000);
+
+            //optionally, add a listener for the channel state
+            channel.AddStateListener(delegate(ChannelState state) {
+                Console.WriteLine("Client state: " + state);  
+            });
+
             var config = new MasterStackConfig();
             config.link.useConfirms = true; //setup your stack configuration here.
             var master = channel.AddMaster("master", LogLevel.INFO, PrintingDataObserver.Instance, config);

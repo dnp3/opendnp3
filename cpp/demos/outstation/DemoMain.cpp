@@ -27,7 +27,6 @@
 // Contact Automatak, LLC for a commercial license to these modifications
 //
 
-
 #include <opendnp3/LogToStdio.h>
 #include <opendnp3/DNP3Manager.h>
 #include <opendnp3/SlaveStackConfig.h>
@@ -41,56 +40,11 @@
 using namespace std;
 using namespace opendnp3;
 
-/*
- * Command line syntax:
- *
- *    ./outstationdemo [remote-dnp3] [local-dnp3] [local-ip] [local-port]
- *
- * Defaults:
- *
- *    remote-dnp3    100
- *    local-dnp3     1
- *    local-ip       127.0.0.1
- *    local-port     4999
- */
 int main(int argc, char* argv[])
 {
-	// Default values
-	unsigned remote_dnp3 = 100;
-	unsigned local_dnp3  = 1;
-	string   local_ip    = "127.0.0.1";
-	unsigned local_port  = 4999;
-
-	// Parse the command line arguments using a "fall-through"
-	// switch statement.
-	if (argc > 1 && std::strcmp("help", argv[1]) == 0) {
-		cout << argv[0] << " [remote-dnp3] [local-dnp3] [local-ip] [local-port]" << endl;
-		return -1;
-	}
-
-	switch (argc) {
-	case 5:
-		{
-			istringstream iss(argv[4]);
-			iss >> local_port;
-		}
-	case 4:
-		local_ip = argv[3];
-	case 3:
-		{
-			istringstream iss(argv[2]);
-			iss >> local_dnp3;
-		}
-	case 2:
-		{
-			istringstream iss(argv[1]);
-			iss >> remote_dnp3;
-		}
-	}	
-
 	// Specify a FilterLevel for the stack/physical layer to use.
 	// Log statements with a lower priority will not be logged.
-	const FilterLevel LOG_LEVEL = LEV_INFO;	
+	const FilterLevel LOG_LEVEL = LEV_INFO;
 
 	// This is the main point of interaction with the stack
 	DNP3Manager mgr(1); // only 1 thread is needed for a single stack
@@ -99,7 +53,7 @@ int main(int argc, char* argv[])
 
 	// Add a TCPServer to the manager with the name "tcpserver".
 	// The server will wait 3000 ms in between failed bind calls.
-	auto pServer = mgr.AddTCPServer("tcpserver", LOG_LEVEL, 3000, local_ip, local_port);
+	auto pServer = mgr.AddTCPServer("tcpserver", LOG_LEVEL, 5000, "127.0.0.1", 20000);
 
 	// You can optionally add a listener to the channel. You can do this anytime and
 	// you will receive a stream of all state changes
@@ -111,17 +65,13 @@ int main(int argc, char* argv[])
 	// useable, but understanding the options are important.
 	SlaveStackConfig stackConfig;
 
-	// Override the default link addressing
-	stackConfig.link.LocalAddr  = local_dnp3;
-	stackConfig.link.RemoteAddr = remote_dnp3;
-
 	// The DeviceTemplate struct specifies the structure of the
 	// slave's database
 	DeviceTemplate device(5, 5, 5, 5, 5);
 	stackConfig.device = device;
 
-	// Create a new slave with a log level, command handler, and 
-	// config info this	returns a thread-safe interface used for 
+	// Create a new slave with a log level, command handler, and
+	// config info this	returns a thread-safe interface used for
 	// updating the slave's database.
 	auto pOutstation = pServer->AddOutstation("outstation", LOG_LEVEL, SuccessCommandHandler::Inst(), stackConfig);
 	auto pDataObserver = pOutstation->GetDataObserver();
