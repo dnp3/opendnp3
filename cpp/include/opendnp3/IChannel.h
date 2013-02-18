@@ -61,7 +61,7 @@ class IChannel : public DestructorHook
 
 		/**
 		* Add a listener for changes to the channel state. All callbacks come from the thread pool.
-		* A immediate callback will be made with the current state.
+		* An immediate callback will be made with the current state.
 		*
 		* @param aListener Functor to callback with the state enumeration 
 		*/

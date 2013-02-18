@@ -61,6 +61,8 @@ public:
 
 	void SetLinkRouter(ILinkRouter* apRouter);
 
+	void AddStateListener(std::function<void (StackState)> aListener);
+
 	void Shutdown();
 
 protected:

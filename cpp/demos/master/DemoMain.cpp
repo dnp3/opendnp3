@@ -81,6 +81,12 @@ int main(int argc, char* argv[])
 		stackConfig						// stack configuration
 	);
 
+	// You can optionally add a listener to the stack to observer communicate health. You 
+	// can do this anytime and you will receive a stream of all state changes.
+	pMaster->AddStateListener([](StackState state){
+		std::cout << "master state: " << ConvertStackStateToString(state) << std::endl;
+	});
+
 	auto pCmdProcessor = pMaster->GetCommandProcessor();
 
 	std::string cmd;

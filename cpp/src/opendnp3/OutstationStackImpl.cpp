@@ -65,6 +65,11 @@ void OutstationStackImpl::SetLinkRouter(ILinkRouter* apRouter)
 	mAppStack.mLink.SetRouter(apRouter);
 }
 
+void OutstationStackImpl::AddStateListener(std::function<void (StackState)> aListener)
+{
+	mSlave.AddStateListener(aListener);
+}
+
 void OutstationStackImpl::Shutdown()
 {
 	this->CleanupVto();

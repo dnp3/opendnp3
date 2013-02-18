@@ -74,6 +74,13 @@ int main(int argc, char* argv[])
 	// config info this	returns a thread-safe interface used for
 	// updating the slave's database.
 	auto pOutstation = pServer->AddOutstation("outstation", LOG_LEVEL, SuccessCommandHandler::Inst(), stackConfig);
+
+	// You can optionally add a listener to the stack to observer communicate health. You 
+	// can do this anytime and you will receive a stream of all state changes.
+	pOutstation->AddStateListener([](StackState state){
+		std::cout << "outstation state: " << ConvertStackStateToString(state) << std::endl;
+	});
+
 	auto pDataObserver = pOutstation->GetDataObserver();
 
 	std::string input;

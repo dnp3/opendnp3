@@ -73,6 +73,11 @@ void MasterStackImpl::Shutdown()
 	mOnShutdown(this);
 }
 
+void MasterStackImpl::AddStateListener(std::function<void (StackState)> aListener)
+{
+	mMaster.AddStateListener(aListener);
+}
+
 IVtoWriter* MasterStackImpl::GetVtoWriter()
 {
 	return mMaster.GetVtoWriter();

@@ -34,6 +34,7 @@
 #include "LogTypes.h"
 #include "VtoRouterSettings.h"
 #include "DestructorHook.h"
+#include "StackState.h"
 
 namespace boost
 {
@@ -85,6 +86,14 @@ class IStack : public DestructorHook
 		* @return interface representing the running endpoint
 		*/
 		IVtoEndpoint* StartVtoRouterTCPServer(const std::string& arLoggerId, FilterLevel aLevel, const std::string& arEndpoint, uint16_t aPort, const VtoRouterSettings& arSettings);
+
+		/**
+		* Add a listener for changes to the stack state. All callbacks come from the thread pool.
+		* An immediate callback will be made with the current state.
+		*
+		* @param aListener Functor to callback with the state enumeration 
+		*/
+		virtual void AddStateListener(std::function<void (StackState)> aListener) = 0;
 
 		/// Synchronously shutdown the endpoint
 		virtual void Shutdown() = 0;	
