@@ -27,38 +27,25 @@
 // Contact Automatak, LLC for a commercial license to these modifications
 //
 
-#include "MasterAdapter.h"
-#include "CommandProcessorAdapter.h"
 #include "StackStateCallback.h"
-#include "DeleteAnything.h"
+#include "Conversions.h"
 
 namespace DNP3
 {	
 namespace Adapter
 {	
+	void CleanupCallback(gcroot<System::Action<StackState>^>* apCallback)
+	{
+		delete apCallback;	
+	}
+	
+	void CallbackStackStateListener(opendnp3::StackState aState, gcroot<System::Action<StackState>^>* apCallback)
+	{
+		(*apCallback)->Invoke(Conversions::convertStackState(aState));
+	}
 
-MasterAdapter::MasterAdapter(opendnp3::IMaster* apMaster) : 
-	mpMaster(apMaster),
-	mCommandAdapter(gcnew CommandProcessorAdapter(apMaster->GetCommandProcessor()))
-{}
 
-void MasterAdapter::AddStateListener(System::Action<StackState>^ aListener)
-{
-	auto pListener = new gcroot<System::Action<StackState>^>(aListener);
-	mpMaster->AddDestructorHook(std::bind(&DeleteAnything<gcroot<System::Action<StackState>^>>, pListener));
-	mpMaster->AddStateListener(std::bind(&CallbackStackStateListener, std::placeholders::_1, pListener));
-}
 
-ICommandProcessor^ MasterAdapter::GetCommandProcessor()
-{
-	return mCommandAdapter;
-}
-
-void MasterAdapter::Shutdown()
-{
-	mpMaster->Shutdown();
-}
-		
 }}
 
 

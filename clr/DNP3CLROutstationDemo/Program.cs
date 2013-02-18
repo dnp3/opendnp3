@@ -49,10 +49,12 @@ namespace DotNetSlaveDemo
 
             var config = new SlaveStackConfig();
             var outstation = channel.AddOutstation("outstation", LogLevel.INFO, RejectingCommandHandler.Instance, config);
-            var publisher = outstation.GetDataObserver();
+            
+            //optionally, add a listener for the stack state
+            outstation.AddStateListener(state => Console.WriteLine("Outstation state: " + state));
 
             Console.WriteLine("Press <Enter> to randomly change a value");
-
+            var publisher = outstation.GetDataObserver();
             Random r = new Random();
             while (true)
             {

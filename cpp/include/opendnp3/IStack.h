@@ -91,7 +91,7 @@ class IStack : public DestructorHook
 		* Add a listener for changes to the stack state. All callbacks come from the thread pool.
 		* An immediate callback will be made with the current state.
 		*
-		* @param aListener Functor to callback with the state enumeration 
+		* @param aListener Functor to call back with the state enumeration 
 		*/
 		virtual void AddStateListener(std::function<void (StackState)> aListener) = 0;
 

@@ -96,6 +96,7 @@
     <ClInclude Include="OutstationAdapter.h" />
     <ClInclude Include="SlaveCommandHandlerAdapter.h" />
     <ClInclude Include="SlaveDataObserverAdapter.h" />
+    <ClInclude Include="StackStateCallback.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ChannelAdapter.cpp" />
@@ -108,6 +109,7 @@
     <ClCompile Include="OutstationAdapter.cpp" />
     <ClCompile Include="SlaveCommandHandlerAdapter.cpp" />
     <ClCompile Include="SlaveDataObserverAdapter.cpp" />
+    <ClCompile Include="StackStateCallback.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\cpp\opendnp3.vcxproj">

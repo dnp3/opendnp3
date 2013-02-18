@@ -48,6 +48,8 @@ namespace Adapter
 		virtual ICommandProcessor^ GetCommandProcessor();
 
 		virtual void Shutdown();
+
+		virtual void AddStateListener(System::Action<StackState>^ aListener);
 		
 		private:
 		opendnp3::IMaster* mpMaster;

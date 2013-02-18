@@ -43,9 +43,11 @@ namespace Adapter
 	{
 		public:
 
-		OutstationAdapter(opendnp3::IOutstation* apOutstation);
+		OutstationAdapter(opendnp3::IOutstation* apOutstation);		
 
 		virtual IDataObserver^ GetDataObserver();
+
+		virtual void AddStateListener(System::Action<StackState>^ aListener);
 
 		virtual void Shutdown();
 		

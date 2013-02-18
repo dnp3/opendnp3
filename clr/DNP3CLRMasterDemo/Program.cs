@@ -51,6 +51,9 @@ namespace DotNetMasterDemo
             config.link.useConfirms = true; //setup your stack configuration here.
             var master = channel.AddMaster("master", LogLevel.INFO, PrintingDataObserver.Instance, config);
 
+            //optionally, add a listener for the stack state
+            master.AddStateListener(state => Console.WriteLine("Master state: " + state));
+
             Console.WriteLine("Enter an index to send a command");
 
             while (true)
