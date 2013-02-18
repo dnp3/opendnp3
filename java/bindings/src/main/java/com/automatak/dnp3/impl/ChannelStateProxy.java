@@ -33,7 +33,7 @@ class ChannelStateProxy {
         this.listener = listener;
     }
 
-    void onStateChange(int state)
+    public void onStateChange(int state)
     {
         listener.onStateChange(ChannelState.fromInt(state));
     }

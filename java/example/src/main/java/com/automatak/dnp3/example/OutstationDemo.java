@@ -61,6 +61,14 @@ public class OutstationDemo {
         // Create an Outstation instance, pass in a simple a command handler that responds successfully to everyhing
         Outstation outstation = channel.addOutstation("outstation", LogLevel.INTERPRET, SuccessCommandHandler.getInstance(), config);
 
+        // You can optionally add a listener to receive state changes on the stack
+        outstation.addStateListener(new StackStateListener() {
+            @Override
+            public void onStateChange(StackState state) {
+                System.out.println("Outstation state: " + state);
+            }
+        });
+
         // This sub-interface allows us to load data into the outstation
         DataObserver data = outstation.getDataObserver();
 

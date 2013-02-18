@@ -60,7 +60,6 @@ cpp/src/opendnp3/IHandlerAsync.cpp \
 cpp/src/opendnp3/IndexedWriteIterator.cpp \
 cpp/src/opendnp3/IOServiceThreadPool.cpp \
 cpp/src/opendnp3/IStack.cpp \
-cpp/src/opendnp3/IStackObserver.cpp \
 cpp/src/opendnp3/ITimeSource.cpp \
 cpp/src/opendnp3/LinkFrame.cpp \
 cpp/src/opendnp3/LinkHeader.cpp \
@@ -121,6 +120,8 @@ cpp/src/opendnp3/SlaveEventBuffer.cpp \
 cpp/src/opendnp3/SlaveResponseTypes.cpp \
 cpp/src/opendnp3/SlaveStates.cpp \
 cpp/src/opendnp3/SolicitedChannel.cpp \
+cpp/src/opendnp3/StackBase.cpp \
+cpp/src/opendnp3/StackState.cpp \
 cpp/src/opendnp3/StartupTasks.cpp \
 cpp/src/opendnp3/SubjectBase.cpp \
 cpp/src/opendnp3/Threadable.cpp \
@@ -149,6 +150,7 @@ cpp/include/opendnp3/AnalogOutput.h \
 cpp/include/opendnp3/APDUConstants.h \
 cpp/include/opendnp3/AppConfig.h \
 cpp/include/opendnp3/BaseDataTypes.h \
+cpp/include/opendnp3/ChannelStates.h \
 cpp/include/opendnp3/ClassMask.h \
 cpp/include/opendnp3/CommandResponse.h \
 cpp/include/opendnp3/CommandStatus.h \
@@ -167,7 +169,6 @@ cpp/include/opendnp3/ICommandProcessor.h \
 cpp/include/opendnp3/IMaster.h \
 cpp/include/opendnp3/IOutstation.h \
 cpp/include/opendnp3/IStack.h \
-cpp/include/opendnp3/IStackObserver.h \
 cpp/include/opendnp3/ITransactable.h \
 cpp/include/opendnp3/IVtoEndpoint.h \
 cpp/include/opendnp3/LinkConfig.h \
@@ -195,6 +196,7 @@ cpp/include/opendnp3/Singleton.h \
 cpp/include/opendnp3/SlaveConfig.h \
 cpp/include/opendnp3/SlaveStackConfig.h \
 cpp/include/opendnp3/SubjectBase.h \
+cpp/include/opendnp3/StackState.h \
 cpp/include/opendnp3/Threadable.h \
 cpp/include/opendnp3/TransportConstants.h \
 cpp/include/opendnp3/Types.h \

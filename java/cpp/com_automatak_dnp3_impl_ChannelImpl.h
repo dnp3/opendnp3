@@ -18,7 +18,7 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_ChannelImpl_shutdown_1native
 /*
  * Class:     com_automatak_dnp3_impl_ChannelImpl
  * Method:    add_native_state_change_listener
- * Signature: (JLcom/automatak/dnp3/ChannelStateListener;)V
+ * Signature: (JLcom/automatak/dnp3/impl/ChannelStateProxy;)V
  */
 JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_ChannelImpl_add_1native_1state_1change_1listener
   (JNIEnv *, jobject, jlong, jobject);

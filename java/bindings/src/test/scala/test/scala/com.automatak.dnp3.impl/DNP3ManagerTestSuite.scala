@@ -50,13 +50,21 @@ class DNP3ManagerTestSuite extends FunSuite with ShouldMatchers {
   def createMaster(channel: Channel) : Master = {
     val config = new MasterStackConfig
     config.masterConfig.scans.add(new ExceptionScan(PointClass.ALL_EVENTS.toInt(), 5000))
-    channel.addMaster("master", LogLevel.INFO, NullDataObserver, config)
+    val master = channel.addMaster("master", LogLevel.INFO, NullDataObserver, config)
+    master.addStateListener(new StackStateListener {
+      def onStateChange(state: StackState) {}
+    })
+    master
   }
 
   def createOutstation(channel: Channel): Outstation = {
     val db = new DatabaseConfig(5,5,5,5,5)
     val config = new OutstationStackConfig(db)
-    channel.addOutstation("outstation", LogLevel.INFO, SuccessCommandHandler, config)
+    val outstation = channel.addOutstation("outstation", LogLevel.INFO, SuccessCommandHandler, config)
+    outstation.addStateListener(new StackStateListener {
+      def onStateChange(state: StackState) {}
+    })
+    outstation
   }
 
   def createClientEndpoint(stack: Stack): VTOEndpoint = {

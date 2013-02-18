@@ -25,6 +25,21 @@
 
 using namespace opendnp3;
 
+JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_StackBase_add_1native_1stack_1state_1listener
+  (JNIEnv* apEnv, jobject, jlong ptr, jobject jproxy)
+{
+	auto pStack = (IStack*) ptr;
+	JavaVM* pJVM = JNIHelpers::GetJVMFromEnv(apEnv);
+	jobject global = apEnv->NewGlobalRef(jproxy);
+	pStack->AddDestructorHook([pJVM, global]() { JNIHelpers::DeleteGlobalReference(pJVM, global); });	
+	pStack->AddStateListener([pJVM, global](StackState state){
+		JNIEnv* pEnv = JNIHelpers::GetEnvFromJVM(pJVM);
+		jmethodID changeID = JNIHelpers::GetMethodID(pEnv, global, "onStateChange", "(I)V");
+		int intstate = state;
+		pEnv->CallIntMethod(global, changeID, intstate);
+	});
+}
+
 JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_StackBase_get_1tcpclient_1vto_1endpoint
   (JNIEnv* apEnv, jobject, jlong nativeStack, jstring loggerId, jint logLevel, jstring host, jint port, jbyte channel, jlong minRetry, jlong maxRetry, jboolean startLocal, jboolean disableExt)
 {

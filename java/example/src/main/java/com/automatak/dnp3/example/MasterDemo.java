@@ -58,6 +58,14 @@ public class MasterDemo {
         // Create a master instance, pass in a simple singleton to print received values to the console
         Master master = channel.addMaster("master", LogLevel.INTERPRET, PrintingDataObserver.getInstance(), config);
 
+        // You can optionally add a listener to receive state changes on the stack
+        master.addStateListener(new StackStateListener() {
+            @Override
+            public void onStateChange(StackState state) {
+                System.out.println("Master state: " + state);
+            }
+        });
+
         // This sub-interface can issue command requests
         CommandProcessor processor = master.getCommandProcessor();
 
