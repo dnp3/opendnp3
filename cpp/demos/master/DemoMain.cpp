@@ -54,7 +54,8 @@ int main(int argc, char* argv[])
 	// stacks, as well as their physical layers.
 	DNP3Manager mgr(1); // 1 stack only needs 1 thread
 
-	//Send all log messages from the mgr to stdout
+	// You can optionally subcribe to log messages
+	// This singleton logger just prints messages to the console
 	mgr.AddLogSubscriber(LogToStdio::Inst());
 
 	// Connect via a TCPClient socket to a slave.  The server will

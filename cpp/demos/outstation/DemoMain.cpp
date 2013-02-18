@@ -49,6 +49,8 @@ int main(int argc, char* argv[])
 	// This is the main point of interaction with the stack
 	DNP3Manager mgr(1); // only 1 thread is needed for a single stack
 
+	// You can optionally subcribe to log messages
+	// This singleton logger just prints messages to the console
 	mgr.AddLogSubscriber(LogToStdio::Inst());
 
 	// Add a TCPServer to the manager with the name "tcpserver".
