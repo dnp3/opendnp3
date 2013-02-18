@@ -19,13 +19,13 @@
 package com.automatak.dnp3;
 
 /**
- * Callback interface invoked when the state of a communication channel changes
+ * Callback interface invoked when the state of a master / outstation changes
  */
-public interface ChannelStateListener {
+public interface StackStateListener {
 
     /**
      * Invoked when the state changes
      * @param state State enumeration
      */
-    void onStateChange(ChannelState state);
+    void onStateChange(StackState state);
 }

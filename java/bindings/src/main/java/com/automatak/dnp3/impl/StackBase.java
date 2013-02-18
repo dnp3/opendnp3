@@ -19,10 +19,7 @@
 package com.automatak.dnp3.impl;
 
 
-import com.automatak.dnp3.LogLevel;
-import com.automatak.dnp3.Stack;
-import com.automatak.dnp3.VTOEndpoint;
-import com.automatak.dnp3.VTOEndpointConfig;
+import com.automatak.dnp3.*;
 
 abstract class StackBase implements Stack {
 
@@ -31,6 +28,13 @@ abstract class StackBase implements Stack {
     public StackBase(long nativeStackPtr)
     {
         this.nativeStackPtr = nativeStackPtr;
+    }
+
+    @Override
+    public void addStateListener(StackStateListener listener)
+    {
+       StackStateProxy proxy = new StackStateProxy(listener);
+       add_native_stack_state_listener(nativeStackPtr, proxy);
     }
 
     @Override
@@ -47,6 +51,7 @@ abstract class StackBase implements Stack {
         return new VTOEndpointImpl(ptr);
     }
 
+    private native void add_native_stack_state_listener(long nativePtr, StackStateProxy proxy);
     private native long get_tcpclient_vto_endpoint(long nativePtr, String loggerId, int level, String host, int port, byte channelId, long minOpenRetryMs, long maxOpenRetryMs, boolean startLocal, boolean disableExtenstion);
     private native long get_tcpserver_vto_endpoint(long nativePtr, String loggerId, int level, String adapter, int port, byte channelId, long minOpenRetryMs, long maxOpenRetryMs, boolean startLocal, boolean disableExtenstion);
 }

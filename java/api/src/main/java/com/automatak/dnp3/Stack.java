@@ -30,6 +30,13 @@ public interface Stack {
     void shutdown();
 
     /**
+     * Add a listener for changes to the stack state. All callbacks come from the thread pool.
+     * An immediate callback will be made with the current state.
+     * @param listener interface to call back with the state enumeration
+     */
+    void addStateListener(StackStateListener listener);
+
+    /**
      * Associate a TCP Client VTO endpoint with stack
      * @param loggerId Id used for logging
      * @param level Log level for the endpoint
