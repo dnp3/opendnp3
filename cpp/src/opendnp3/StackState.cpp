@@ -26,48 +26,24 @@
 //
 // Contact Automatak, LLC for a commercial license to these modifications
 //
-#ifndef __MASTER_TEST_OBJECT_H_
-#define __MASTER_TEST_OBJECT_H_
-
-#include "MockExecutor.h"
-#include "LogTester.h"
-
-#include <opendnp3/AsyncTaskScheduler.h>
-#include <opendnp3/FlexibleDataObserver.h>
-#include <opendnp3/Master.h>
-
-#include <deque>
-
-#include "MockAppLayer.h"
+#include <opendnp3/StackState.h>
 
 namespace opendnp3
 {
 
-
-struct MasterConfig;
-
-class MasterTestObject : public LogTester
+std::string ConvertStackStateToString(StackState aState)
 {
-public:
-	MasterTestObject(MasterConfig, FilterLevel aLevel = LEV_INFO, bool aImmediate = false);
-
-	void RespondToMaster(const std::string& arData, bool aFinal = true);
-	void SendUnsolToMaster(const std::string& arData);
-	std::string Read();
-
-	void BindStateListener();
-
-	MockTimeSource fake_time;
-	MockExecutor mts;
-	AsyncTaskScheduler ats;
-	FlexibleDataObserver fdo;
-	MockAppLayer app;
-	Master master;
-	APDU mAPDU;
-	std::deque<StackState> states;
-};
-
+	switch(aState) {
+		case(SS_COMMS_UP):
+			return "COMMS_UP";
+		case(SS_COMMS_DOWN):
+			return "COMMS_DOWN";
+		case(SS_UNKNOWN):
+			return "COMMS_UNKNOWN";
+		default:
+			return "Undefined state";
+	}
 }
 
-#endif
+}
 

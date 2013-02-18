@@ -117,7 +117,6 @@
     <ClInclude Include="tests\MockUpperLayer.h" />
     <ClInclude Include="tests\PhysicalLayerWrapper.h" />
     <ClInclude Include="tests\PhysicalLayerWrapperFactory.h" />
-    <ClInclude Include="tests\QueueingStackObserver.h" />
     <ClInclude Include="tests\ReadableVtoWriter.h" />
     <ClInclude Include="tests\ResponseLoaderTestObject.h" />
     <ClInclude Include="tests\SlaveTestObject.h" />

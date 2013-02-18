@@ -106,7 +106,6 @@
     <ClInclude Include="include\opendnp3\IMaster.h" />
     <ClInclude Include="include\opendnp3\IOutstation.h" />
     <ClInclude Include="include\opendnp3\IStack.h" />
-    <ClInclude Include="include\opendnp3\IStackObserver.h" />
     <ClInclude Include="include\opendnp3\ITransactable.h" />
     <ClInclude Include="include\opendnp3\IVtoEndpoint.h" />
     <ClInclude Include="include\opendnp3\LinkConfig.h" />
@@ -133,6 +132,7 @@
     <ClInclude Include="include\opendnp3\Singleton.h" />
     <ClInclude Include="include\opendnp3\SlaveConfig.h" />
     <ClInclude Include="include\opendnp3\SlaveStackConfig.h" />
+    <ClInclude Include="include\opendnp3\StackState.h" />
     <ClInclude Include="include\opendnp3\SubjectBase.h" />
     <ClInclude Include="include\opendnp3\Threadable.h" />
     <ClInclude Include="include\opendnp3\TransportConstants.h" />
@@ -246,6 +246,7 @@
     <ClInclude Include="src\opendnp3\SlaveResponseTypes.h" />
     <ClInclude Include="src\opendnp3\SlaveStates.h" />
     <ClInclude Include="src\opendnp3\SolicitedChannel.h" />
+    <ClInclude Include="src\opendnp3\StackBase.h" />
     <ClInclude Include="src\opendnp3\StartupTasks.h" />
     <ClInclude Include="src\opendnp3\Thread.h" />
     <ClInclude Include="src\opendnp3\TimerASIO.h" />
@@ -266,6 +267,7 @@
     <ClInclude Include="src\opendnp3\VtoRouter.h" />
     <ClInclude Include="src\opendnp3\VtoTransmitTask.h" />
     <ClInclude Include="src\opendnp3\VtoWriter.h" />
+    <ClInclude Include="StackBase.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\opendnp3\AlwaysOpeningVtoRouter.cpp" />
@@ -316,7 +318,6 @@
     <ClCompile Include="src\opendnp3\IndexedWriteIterator.cpp" />
     <ClCompile Include="src\opendnp3\IOServiceThreadPool.cpp" />
     <ClCompile Include="src\opendnp3\IStack.cpp" />
-    <ClCompile Include="src\opendnp3\IStackObserver.cpp" />
     <ClCompile Include="src\opendnp3\ITimeSource.cpp" />
     <ClCompile Include="src\opendnp3\LinkFrame.cpp" />
     <ClCompile Include="src\opendnp3\LinkHeader.cpp" />
@@ -376,6 +377,8 @@
     <ClCompile Include="src\opendnp3\SlaveResponseTypes.cpp" />
     <ClCompile Include="src\opendnp3\SlaveStates.cpp" />
     <ClCompile Include="src\opendnp3\SolicitedChannel.cpp" />
+    <ClCompile Include="src\opendnp3\StackBase.cpp" />
+    <ClCompile Include="src\opendnp3\StackState.cpp" />
     <ClCompile Include="src\opendnp3\StartupTasks.cpp" />
     <ClCompile Include="src\opendnp3\SubjectBase.cpp" />
     <ClCompile Include="src\opendnp3\Thread.cpp" />

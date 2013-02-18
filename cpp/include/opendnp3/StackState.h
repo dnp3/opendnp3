@@ -26,29 +26,22 @@
 //
 // Contact Automatak, LLC for a commercial license to these modifications
 //
-#ifndef __I_STACK_OBSERVER_H_
-#define __I_STACK_OBSERVER_H_
+#ifndef __STACK_STATE_H_
+#define __STACK_STATE_H_
 
 #include <string>
 
 namespace opendnp3
 {
 
-enum StackStates {
-	SS_COMMS_UP,
-	SS_COMMS_DOWN,
-	SS_UNKNOWN
+enum StackState {
+	SS_COMMS_UP = 0,
+	SS_COMMS_DOWN = 1,
+	SS_UNKNOWN = 2
 };
 
-std::string ConvertStackStateToString(StackStates aState);
 
-class IStackObserver
-{
-public:
-	virtual ~IStackObserver() {};
-
-	virtual void OnStateChange(StackStates aState) = 0;
-};
+std::string ConvertStackStateToString(StackState aState);
 
 }
 

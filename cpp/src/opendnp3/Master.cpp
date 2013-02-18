@@ -52,18 +52,17 @@ namespace opendnp3
 
 Master::Master(Logger* apLogger, MasterConfig aCfg, IAppLayer* apAppLayer, IDataObserver* apPublisher, AsyncTaskGroup* apTaskGroup, IExecutor* apExecutor, ITimeSource* apTimeSrc) :
 	Loggable(apLogger),
+	StackBase(apExecutor),
 	mVtoReader(apLogger),
 	mVtoWriter(apLogger->GetSubLogger("VtoWriter"), aCfg.VtoWriterQueueSize),
 	mRequest(aCfg.FragSize),
 	mpAppLayer(apAppLayer),
 	mpPublisher(apPublisher),
-	mpTaskGroup(apTaskGroup),
-	mpExecutor(apExecutor),
+	mpTaskGroup(apTaskGroup),	
 	mpTimeSrc(apTimeSrc),
 	mpState(AMS_Closed::Inst()),
 	mpTask(NULL),
-	mpScheduledTask(NULL),
-	mpObserver(aCfg.mpObserver),
+	mpScheduledTask(NULL),	
 	mState(SS_UNKNOWN),
 	mSchedule(apTaskGroup, this, aCfg),
 	mClassPoll(apLogger, apPublisher, &mVtoReader),
@@ -97,12 +96,12 @@ Master::Master(Logger* apLogger, MasterConfig aCfg, IAppLayer* apAppLayer, IData
 	this->UpdateState(SS_COMMS_DOWN);
 }
 
-void Master::UpdateState(StackStates aState)
+void Master::UpdateState(StackState aState)
 {
 	if(mState != aState) {
 		LOG_BLOCK(LEV_INFO, "StackState: " << ConvertStackStateToString(aState));
 		mState = aState;
-		if(mpObserver != NULL) mpObserver->OnStateChange(aState);
+		this->NotifyListeners(aState);
 		if(mState == SS_COMMS_UP) {
 			mSchedule.mpVtoTransmitTask->Enable();
 		}

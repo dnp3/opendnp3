@@ -108,9 +108,6 @@
     <ClInclude Include="tests\PhysicalLayerWrapperFactory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="tests\QueueingStackObserver.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="tests\ReadableVtoWriter.h">
       <Filter>Header Files</Filter>
     </ClInclude>

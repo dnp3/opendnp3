@@ -29,7 +29,6 @@
 #ifndef __MASTER_H_
 #define __MASTER_H_
 
-#include <opendnp3/IStackObserver.h>
 #include <opendnp3/MasterConfig.h>
 #include <opendnp3/ObjectInterfaces.h>
 
@@ -50,6 +49,7 @@
 #include "DataPoll.h"
 #include "VtoTransmitTask.h"
 #include "CommandTask.h"
+#include "StackBase.h"
 
 namespace opendnp3
 {
@@ -70,7 +70,7 @@ class AMS_Base;
  *
  * Coordination of tasks is handled by a higher level task scheduler.
  */
-class Master : public Loggable, public IAppUser, private ICommandProcessor
+class Master : public Loggable, public IAppUser, public StackBase, private ICommandProcessor
 {
 	friend class AMS_Base;
 	friend class AMS_Idle;
@@ -151,7 +151,6 @@ public:
 	void SelectAndOperate(const AnalogOutputDouble64& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback);		
 	void DirectOperate(const AnalogOutputDouble64& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback);
 
-
 private:
 
 	template <class T>
@@ -168,7 +167,7 @@ private:
 		mCommandTask.Configure(formatter, responder);
 	}
 
-	void UpdateState(StackStates aState);
+	void UpdateState(StackState aState);
 
 	/* Task functions used for scheduling */
 
@@ -207,15 +206,16 @@ private:
 
 	IAppLayer* mpAppLayer;					// lower application layer
 	IDataObserver* mpPublisher;				// where the data measurements are pushed
-	AsyncTaskGroup* mpTaskGroup;			// How task execution is controlled
-	IExecutor* mpExecutor;				// Controls the posting of events to marshall across threads
+	AsyncTaskGroup* mpTaskGroup;			// How task execution is controlled	
 	ITimeSource* mpTimeSrc;					// Access to UTC, normally system time but can be a mock for testing
 
 	AMS_Base* mpState;						// Pointer to active state, start in TLS_Closed
 	MasterTaskBase* mpTask;					// The current master task
 	ITask* mpScheduledTask;					// The current scheduled task
-	IStackObserver* mpObserver;		    // Callback for master state enumeration
-	StackStates mState;					// Current state of the master
+	StackState mState;						// Current state of the master
+
+	StackState GetState()
+	{ return mState; }
 
 	/* --- Task plumbing --- */
 

@@ -48,8 +48,8 @@ namespace opendnp3
 
 Slave::Slave(Logger* apLogger, IAppLayer* apAppLayer, IExecutor* apExecutor, ITimeManager* apTime, Database* apDatabase, ICommandHandler* apCmdHandler, const SlaveConfig& arCfg) :
 	Loggable(apLogger),
-	mpAppLayer(apAppLayer),
-	mpExecutor(apExecutor),
+	StackBase(apExecutor),
+	mpAppLayer(apAppLayer),	
 	mpDatabase(apDatabase),
 	mpCmdHandler(apCmdHandler),
 	mpState(AS_Closed::Inst()),
@@ -67,7 +67,6 @@ Slave::Slave(Logger* apLogger, IAppLayer* apAppLayer, IExecutor* apExecutor, ITi
 	mDeferredUnsol(false),
 	mDeferredUnknown(false),
 	mStartupNullUnsol(false),
-	mpObserver(arCfg.mpObserver),
 	mState(SS_UNKNOWN),
 	mpTimeTimer(NULL),
 	mVtoReader(apLogger),
@@ -105,12 +104,12 @@ Slave::~Slave()
 	
 }
 
-void Slave::UpdateState(StackStates aState)
+void Slave::UpdateState(StackState aState)
 {
 	if(mState != aState) {
 		LOG_BLOCK(LEV_INFO, "StackState: " << ConvertStackStateToString(aState));
 		mState = aState;
-		if(mpObserver != NULL) mpObserver->OnStateChange(aState);
+		this->NotifyListeners(aState);
 	}
 }
 

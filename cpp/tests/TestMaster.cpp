@@ -30,9 +30,10 @@
 
 #include <opendnp3/Exception.h>
 
+#include <queue>
+
 #include "TestHelpers.h"
 #include "MasterTestObject.h"
-#include "QueueingStackObserver.h"
 
 using namespace opendnp3;
 using namespace std::chrono;
@@ -109,43 +110,47 @@ BOOST_AUTO_TEST_CASE(IntegrityOnStartup)
 }
 
 BOOST_AUTO_TEST_CASE(StateTransitionSuccessFailure)
-{
-	QueueingStackObserver obs;
-	MasterConfig cfg; cfg.IntegrityRate = 1000;
-	cfg.mpObserver = &obs;
+{	
+	MasterConfig cfg; cfg.IntegrityRate = 1000;	
 	MasterTestObject t(cfg);
-	BOOST_REQUIRE_EQUAL(obs.mQueue.size(), 1);
-	BOOST_REQUIRE_EQUAL(obs.mQueue.front(), SS_COMMS_DOWN);
-	obs.mQueue.pop_front();
+	t.BindStateListener();
+	BOOST_REQUIRE(t.mts.DispatchOne());
+	BOOST_REQUIRE_EQUAL(t.states.size(), 1);
+	BOOST_REQUIRE_EQUAL(t.states.front(), SS_COMMS_DOWN);
+	t.states.pop_front();
 	t.master.OnLowerLayerUp();
-	BOOST_REQUIRE_EQUAL(obs.mQueue.size(), 0);
+	BOOST_REQUIRE_EQUAL(t.states.size(), 0);
 
 	TestForIntegrityPoll(t);
-	BOOST_REQUIRE_EQUAL(obs.mQueue.size(), 1);
-	BOOST_REQUIRE_EQUAL(obs.mQueue.front(), SS_COMMS_UP);
-	obs.mQueue.pop_front();
+	BOOST_REQUIRE(t.mts.DispatchOne());
+	BOOST_REQUIRE_EQUAL(t.states.size(), 1);
+	BOOST_REQUIRE_EQUAL(t.states.front(), SS_COMMS_UP);
+	t.states.pop_front();
 
 	t.fake_time.Advance(std::chrono::milliseconds(2000));
 	BOOST_REQUIRE(t.mts.DispatchOne());
 	TestForIntegrityPoll(t, false);
 
-	BOOST_REQUIRE_EQUAL(obs.mQueue.size(), 1);
-	BOOST_REQUIRE_EQUAL(obs.mQueue.front(), SS_COMMS_DOWN);
-	obs.mQueue.pop_front();
+	BOOST_REQUIRE(t.mts.DispatchOne());
+	BOOST_REQUIRE_EQUAL(t.states.size(), 1);
+	BOOST_REQUIRE_EQUAL(t.states.front(), SS_COMMS_DOWN);
+	t.states.pop_front();
 
 	t.fake_time.Advance(std::chrono::milliseconds(10000));
 	BOOST_REQUIRE(t.mts.DispatchOne());
 	TestForIntegrityPoll(t);
 
-	BOOST_REQUIRE_EQUAL(obs.mQueue.size(), 1);
-	BOOST_REQUIRE_EQUAL(obs.mQueue.front(), SS_COMMS_UP);
-	obs.mQueue.pop_front();
+	BOOST_REQUIRE(t.mts.DispatchOne());
+	BOOST_REQUIRE_EQUAL(t.states.size(), 1);
+	BOOST_REQUIRE_EQUAL(t.states.front(), SS_COMMS_UP);
+	t.states.pop_front();
 
 	t.master.OnLowerLayerDown();
 
-	BOOST_REQUIRE_EQUAL(obs.mQueue.size(), 1);
-	BOOST_REQUIRE_EQUAL(obs.mQueue.front(), SS_COMMS_DOWN);
-	obs.mQueue.pop_front();
+	BOOST_REQUIRE(t.mts.DispatchOne());
+	BOOST_REQUIRE_EQUAL(t.states.size(), 1);
+	BOOST_REQUIRE_EQUAL(t.states.front(), SS_COMMS_DOWN);
+	t.states.pop_front();
 }
 
 BOOST_AUTO_TEST_CASE(UnsolDisableEnableOnStartup)

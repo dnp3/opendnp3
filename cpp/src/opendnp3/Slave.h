@@ -29,11 +29,11 @@
 #ifndef __SLAVE_H_
 #define __SLAVE_H_
 
-#include <opendnp3/IStackObserver.h>
 #include <opendnp3/ICommandHandler.h>
 #include <opendnp3/Logger.h>
 #include <opendnp3/SlaveConfig.h>
 
+#include "StackBase.h"
 #include "ChangeBuffer.h"
 #include "Loggable.h"
 #include "TimeSource.h"
@@ -75,7 +75,7 @@ class AS_Base;
  * The Slave is responsible for building all aspects of APDU packet responses
  * except for the application sequence number.
  */
-class Slave : public Loggable, public IAppUser
+class Slave : public Loggable, public IAppUser, public StackBase
 {
 
 	friend class AS_Base; //make the state base class a friend
@@ -156,8 +156,7 @@ public:
 private:
 
 	ChangeBuffer mChangeBuffer;				// how client code gives us updates
-	IAppLayer* mpAppLayer;					// lower application layer
-	IExecutor* mpExecutor;					// used for post and timers
+	IAppLayer* mpAppLayer;					// lower application layer	
 	Database* mpDatabase;					// holds static data
 	ICommandHandler* mpCmdHandler;			// how commands are selected/operated on application code
 	int mSequence;							// control sequence	
@@ -192,10 +191,12 @@ private:
 
 	bool mStartupNullUnsol;					// Tracks whether the device has completed the NULL unsol startup message
 
-	IStackObserver* mpObserver;             // update consumers who want to know when dnp3 connection state changes
-	StackStates mState;
+	StackState mState;
 
-	void UpdateState(StackStates aState);
+	StackState GetState()
+	{ return mState; }
+
+	void UpdateState(StackState aState);
 
 	void OnVtoUpdate();						// internal event dispatched when user code commits an update to mVtoWriter
 	void OnDataUpdate();					// internal event dispatched when user code commits an update to mChangeBuffer

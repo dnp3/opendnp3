@@ -32,7 +32,6 @@
 #include "DNPConstants.h"
 #include "PointClass.h"
 #include "MasterConfigTypes.h"
-#include "IStackObserver.h"
 
 #include <vector>
 
@@ -55,8 +54,7 @@ struct MasterConfig {
 		EnableUnsol(true),
 		UnsolClassMask(PC_ALL_EVENTS),
 		IntegrityRate(5000),
-		TaskRetryRate(5000),
-		mpObserver(NULL)
+		TaskRetryRate(5000)		
 	{}
 
 	/** Adds a periodic exception scan to the configuration
@@ -98,9 +96,6 @@ struct MasterConfig {
 
 	/// vector that holds exception scans
 	std::vector<ExceptionScan> mScans;
-
-	/// Observer class for notifying outside world what the master is doing
-	IStackObserver* mpObserver;
 };
 
 }

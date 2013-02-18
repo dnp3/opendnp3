@@ -26,24 +26,37 @@
 //
 // Contact Automatak, LLC for a commercial license to these modifications
 //
-#include <opendnp3/IStackObserver.h>
+#ifndef __STACK_BASE_H_
+#define __STACK_BASE_H_
+
+#include <opendnp3/StackState.h>
+
+#include <functional>
+#include <vector>
 
 namespace opendnp3
 {
 
-std::string ConvertStackStateToString(StackStates aState)
-{
-	switch(aState) {
-	case(SS_COMMS_UP):
-		return "COMMS_UP";
-	case(SS_COMMS_DOWN):
-		return "COMMS_DOWN";
-	case(SS_UNKNOWN):
-		return "COMMS_UNKNOWN";
-	default:
-		return "Undefined state";
-	}
+class IExecutor;
+
+	class StackBase 
+	{
+		public:
+			StackBase(IExecutor* apExecutor);
+
+			void AddStateListener(std::function<void (StackState)> aCallback);
+
+		protected:
+			void NotifyListeners(StackState aState);
+
+			// implement in inherited class
+			virtual StackState GetState() = 0;
+
+			IExecutor* mpExecutor;
+
+		private:			
+			std::vector<std::function<void (StackState)>> mListeners;
+	};
 }
 
-}
-
+#endif

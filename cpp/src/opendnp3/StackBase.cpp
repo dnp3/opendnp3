@@ -26,26 +26,31 @@
 //
 // Contact Automatak, LLC for a commercial license to these modifications
 //
-#ifndef __QUEUEING_STACK_OBSERVER_H_
-#define __QUEUEING_STACK_OBSERVER_H_
 
-#include <opendnp3/IStackObserver.h>
-#include <deque>
+#include "StackBase.h"
+
+#include "IExecutor.h"
 
 namespace opendnp3
 {
 
-class QueueingStackObserver : public IStackObserver
+StackBase::StackBase(IExecutor* apExecutor) : mpExecutor(apExecutor)
+{}
+
+void StackBase::AddStateListener(std::function<void (StackState)> aCallback)
 {
-public:
-	void OnStateChange(StackStates aState) {
-		mQueue.push_back(aState);
-	}
-
-	std::deque<StackStates> mQueue;
-};
-
+	mpExecutor->Post([=](){
+		aCallback(this->GetState());
+		mListeners.push_back(aCallback);
+	});	
 }
 
-#endif
+void StackBase::NotifyListeners(StackState aState)
+{
+	for(auto callback : mListeners) {
+		mpExecutor->Post([=](){callback(aState); });
+	}
+}
+		
+}
 

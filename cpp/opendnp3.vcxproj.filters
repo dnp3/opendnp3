@@ -78,13 +78,7 @@
     <ClInclude Include="include\opendnp3\IMaster.h">
       <Filter>Include Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\opendnp3\IOutstation.h">
-      <Filter>Include Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\opendnp3\IStack.h">
-      <Filter>Include Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\opendnp3\IStackObserver.h">
       <Filter>Include Files</Filter>
     </ClInclude>
     <ClInclude Include="include\opendnp3\ITransactable.h">
@@ -570,6 +564,18 @@
     <ClInclude Include="include\opendnp3\ChannelStates.h">
       <Filter>Include Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\opendnp3\StackState.h">
+      <Filter>Include Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\opendnp3\IOutstation.h">
+      <Filter>Include Files</Filter>
+    </ClInclude>
+    <ClInclude Include="StackBase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\StackBase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\opendnp3\AlwaysOpeningVtoRouter.cpp">
@@ -711,9 +717,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\IStack.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\IStackObserver.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\ITimeSource.cpp">
@@ -960,6 +963,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\ChannelStates.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\StackState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\StackBase.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
