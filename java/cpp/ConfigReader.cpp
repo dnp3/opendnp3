@@ -108,7 +108,7 @@ DeviceTemplate ConfigReader::ConvertDatabaseConfig(JNIEnv* apEnv, jobject jCfg)
 		JNIHelpers::IterateOverListOfObjects(apEnv, list, [&](jobject record) {
 			int mask = JNIHelpers::GetIntField(apEnv, record, "pointClass");
 			double db = JNIHelpers::GetDoubleField(apEnv, record, "deadband");
-			cfg.mBinary.push_back(DeadbandPointRecord(IntToPointClass(mask), db));
+			cfg.mAnalog.push_back(DeadbandPointRecord(IntToPointClass(mask), db));
 		});
 	}
 	{
