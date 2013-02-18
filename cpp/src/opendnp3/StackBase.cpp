@@ -48,7 +48,7 @@ void StackBase::AddStateListener(std::function<void (StackState)> aCallback)
 void StackBase::NotifyListeners(StackState aState)
 {
 	for(auto callback : mListeners) {
-		mpExecutor->Post([=](){callback(aState); });
+		callback(aState);
 	}
 }
 		
