@@ -40,32 +40,13 @@ namespace DNP3
 {	
 namespace Adapter
 {	
-	void CallbackListener(gcroot<System::Action<ChannelState>^>* listener, opendnp3::ChannelState);
-	
-	private ref class DeleteWrapper
-	{
-		private:
-			gcroot<System::Action<ChannelState>^>* mpPointer;
-
-		public:
-			
-			DeleteWrapper(gcroot<System::Action<ChannelState>^>* apPointer)
-			{
-				mpPointer = apPointer;
-			}
-
-			void Delete()
-			{
-				delete mpPointer;
-			}
-	};
+	void CallbackListener(gcroot<System::Action<ChannelState>^>* listener, opendnp3::ChannelState);	
 
 	private ref class ChannelAdapter : IChannel
 	{
 		public:
 
-		ChannelAdapter(opendnp3::IChannel* apChannel);
-		~ChannelAdapter();
+		ChannelAdapter(opendnp3::IChannel* apChannel);		
 
 		virtual void AddStateListener(System::Action<ChannelState>^ listener);
 
@@ -77,8 +58,7 @@ namespace Adapter
 		
 		private:
 
-		opendnp3::IChannel* mpChannel;
-		System::Collections::Generic::LinkedList<System::Action^>^ cleanup;		
+		opendnp3::IChannel* mpChannel;		
 	};
 	
 }}
