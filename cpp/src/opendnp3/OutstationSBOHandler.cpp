@@ -32,61 +32,62 @@
 namespace opendnp3 
 {
 
-OutstationSBOHandler::OutstationSBOHandler(millis_t aSelectTimeout, ICommandHandler* apCmdHandler) :
+OutstationSBOHandler::OutstationSBOHandler(millis_t aSelectTimeout, ICommandHandler* apCmdHandler, ITimeSource* apTimeSource) :
 	mSelectTimeout(aSelectTimeout),
-	mpCmdHandler(apCmdHandler)
+	mpCmdHandler(apCmdHandler),
+	mpTimeSource(apTimeSource)
 {
 
 }
 
-CommandStatus OutstationSBOHandler::Select(const ControlRelayOutputBlock& arCommand, size_t aIndex, uint8_t aSequence)
+CommandStatus OutstationSBOHandler::Select(const ControlRelayOutputBlock& arCommand, size_t aIndex, uint8_t aSequence, QualifierCode aCode)
 {
-	return mpCmdHandler->Select(arCommand, aIndex);
+	return Select(arCommand, aIndex, aSequence, aCode, mCROBSelectMap);
 }
 
-CommandStatus OutstationSBOHandler::Operate(const ControlRelayOutputBlock& arCommand, size_t aIndex, uint8_t aSequence)
+CommandStatus OutstationSBOHandler::Operate(const ControlRelayOutputBlock& arCommand, size_t aIndex, uint8_t aSequence, QualifierCode aCode)
 {
-	return mpCmdHandler->Operate(arCommand, aIndex);
+	return Operate(arCommand, aIndex, aSequence, aCode, mCROBSelectMap);
 }
 
-CommandStatus OutstationSBOHandler::Select(const AnalogOutputInt16& arCommand, size_t aIndex, uint8_t aSequence)
+CommandStatus OutstationSBOHandler::Select(const AnalogOutputInt16& arCommand, size_t aIndex, uint8_t aSequence, QualifierCode aCode)
 {
-	return mpCmdHandler->Select(arCommand, aIndex);
+	return Select(arCommand, aIndex, aSequence, aCode, mAnalog16SelectMap);
 }
 
-CommandStatus OutstationSBOHandler::Operate(const AnalogOutputInt16& arCommand, size_t aIndex, uint8_t aSequence)
+CommandStatus OutstationSBOHandler::Operate(const AnalogOutputInt16& arCommand, size_t aIndex, uint8_t aSequence, QualifierCode aCode)
 {
-	return mpCmdHandler->Operate(arCommand, aIndex);
+	return Operate(arCommand, aIndex, aSequence, aCode, mAnalog16SelectMap);
 }
 
-CommandStatus OutstationSBOHandler::Select(const AnalogOutputInt32& arCommand, size_t aIndex, uint8_t aSequence)
+CommandStatus OutstationSBOHandler::Select(const AnalogOutputInt32& arCommand, size_t aIndex, uint8_t aSequence, QualifierCode aCode)
 {
-	return mpCmdHandler->Select(arCommand, aIndex);
+	return Select(arCommand, aIndex, aSequence, aCode, mAnalog32SelectMap);
 }
 
-CommandStatus OutstationSBOHandler::Operate(const AnalogOutputInt32& arCommand, size_t aIndex, uint8_t aSequence)
+CommandStatus OutstationSBOHandler::Operate(const AnalogOutputInt32& arCommand, size_t aIndex, uint8_t aSequence, QualifierCode aCode)
 {
-	return mpCmdHandler->Operate(arCommand, aIndex);
+	return Operate(arCommand, aIndex, aSequence, aCode, mAnalog32SelectMap);
 }
 
-CommandStatus OutstationSBOHandler::Select(const AnalogOutputFloat32& arCommand, size_t aIndex, uint8_t aSequence)
+CommandStatus OutstationSBOHandler::Select(const AnalogOutputFloat32& arCommand, size_t aIndex, uint8_t aSequence, QualifierCode aCode)
 {
-	return mpCmdHandler->Select(arCommand, aIndex);
+	return Select(arCommand, aIndex, aSequence, aCode, mAnalogFloatSelectMap);
 }
 
-CommandStatus OutstationSBOHandler::Operate(const AnalogOutputFloat32& arCommand, size_t aIndex, uint8_t aSequence)
+CommandStatus OutstationSBOHandler::Operate(const AnalogOutputFloat32& arCommand, size_t aIndex, uint8_t aSequence, QualifierCode aCode)
 {
-	return mpCmdHandler->Operate(arCommand, aIndex);
+	return Operate(arCommand, aIndex, aSequence, aCode, mAnalogFloatSelectMap);
 }
 	
-CommandStatus OutstationSBOHandler::Select(const AnalogOutputDouble64& arCommand, size_t aIndex, uint8_t aSequence)
+CommandStatus OutstationSBOHandler::Select(const AnalogOutputDouble64& arCommand, size_t aIndex, uint8_t aSequence, QualifierCode aCode)
 {
-	return mpCmdHandler->Select(arCommand, aIndex);
+	return Select(arCommand, aIndex, aSequence, aCode, mAnalogDoubleSelectMap);
 }
 
-CommandStatus OutstationSBOHandler::Operate(const AnalogOutputDouble64& arCommand, size_t aIndex, uint8_t aSequence)
+CommandStatus OutstationSBOHandler::Operate(const AnalogOutputDouble64& arCommand, size_t aIndex, uint8_t aSequence, QualifierCode aCode)
 {
-	return mpCmdHandler->Operate(arCommand, aIndex);
+	return Operate(arCommand, aIndex, aSequence, aCode, mAnalogDoubleSelectMap);
 }
 		
 }

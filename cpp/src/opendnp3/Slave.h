@@ -89,7 +89,7 @@ class Slave : public Loggable, public IAppUser, public StackBase
 
 public:
 
-	Slave(Logger*, IAppLayer*, IExecutor*, ITimeManager*, Database*, ICommandHandler*, const SlaveConfig&);
+	Slave(Logger*, IAppLayer*, IExecutor*, ITimeManager*, Database*, ICommandHandler*, const SlaveConfig&, ITimeSource* apTimeSource = TimeSource::Inst());
 	~Slave();
 
 	////////////////////////

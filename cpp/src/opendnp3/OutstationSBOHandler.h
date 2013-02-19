@@ -32,35 +32,115 @@
 
 #include <opendnp3/Types.h>
 #include <opendnp3/ICommandHandler.h>
+#include <opendnp3/APDUConstants.h>
+
+#include "ITimeSource.h"
+
+#include <map>
 
 namespace opendnp3 {
 
 class OutstationSBOHandler
 {
+	template <class T>
+	class SelectInfo
+	{
+		public:
+		SelectInfo(const T& arCommand, uint8_t aSequence, QualifierCode aCode, millis_t aTimestamp) : 
+			mCommand(arCommand),
+			mSequence(aSequence),
+			mCode(aCode),
+			mTimestamp(aTimestamp)
+		{}
+
+		SelectInfo()
+		{}
+
+		T mCommand;
+		uint8_t mSequence;
+		QualifierCode mCode;
+		millis_t mTimestamp;
+	};
+
+	typedef std::map<size_t, SelectInfo<ControlRelayOutputBlock>> CROBSelectMap;
+	typedef std::map<size_t, SelectInfo<AnalogOutputInt16>> Analog16SelectMap;
+	typedef std::map<size_t, SelectInfo<AnalogOutputInt32>> Analog32SelectMap;
+	typedef std::map<size_t, SelectInfo<AnalogOutputFloat32>> AnalogFloatSelectMap;
+	typedef std::map<size_t, SelectInfo<AnalogOutputDouble64>> AnalogDoubleSelectMap;
 	
 public:
-	OutstationSBOHandler(millis_t aSelectTimeout, ICommandHandler* apCmdHandler);
+	OutstationSBOHandler(millis_t aSelectTimeout, ICommandHandler* apCmdHandler, ITimeSource* apTimeSource);
 
-	CommandStatus Select(const ControlRelayOutputBlock& arCommand, size_t aIndex, uint8_t aSequence);
-	CommandStatus Operate(const ControlRelayOutputBlock& arCommand, size_t aIndex, uint8_t aSequence);
+	CommandStatus Select(const ControlRelayOutputBlock& arCommand, size_t aIndex, uint8_t aSequence, QualifierCode aCode);
+	CommandStatus Operate(const ControlRelayOutputBlock& arCommand, size_t aIndex, uint8_t aSequence, QualifierCode aCode);
 	
-	CommandStatus Select(const AnalogOutputInt16& arCommand, size_t aIndex, uint8_t aSequence);
-	CommandStatus Operate(const AnalogOutputInt16& arCommand, size_t aIndex, uint8_t aSequence);
+	CommandStatus Select(const AnalogOutputInt16& arCommand, size_t aIndex, uint8_t aSequence, QualifierCode aCode);
+	CommandStatus Operate(const AnalogOutputInt16& arCommand, size_t aIndex, uint8_t aSequence, QualifierCode aCode);
 	
-	CommandStatus Select(const AnalogOutputInt32& arCommand, size_t aIndex, uint8_t aSequence);
-	CommandStatus Operate(const AnalogOutputInt32& arCommand, size_t aIndex, uint8_t aSequence);
+	CommandStatus Select(const AnalogOutputInt32& arCommand, size_t aIndex, uint8_t aSequence, QualifierCode aCode);
+	CommandStatus Operate(const AnalogOutputInt32& arCommand, size_t aIndex, uint8_t aSequence, QualifierCode aCode);
 	
-	CommandStatus Select(const AnalogOutputFloat32& arCommand, size_t aIndex, uint8_t aSequence);
-	CommandStatus Operate(const AnalogOutputFloat32& arCommand, size_t aIndex, uint8_t aSequence);
+	CommandStatus Select(const AnalogOutputFloat32& arCommand, size_t aIndex, uint8_t aSequence, QualifierCode aCode);
+	CommandStatus Operate(const AnalogOutputFloat32& arCommand, size_t aIndex, uint8_t aSequence, QualifierCode aCode);
 	
-	CommandStatus Select(const AnalogOutputDouble64& arCommand, size_t aIndex, uint8_t aSequence);
-	CommandStatus Operate(const AnalogOutputDouble64& arCommand, size_t aIndex, uint8_t aSequence);
+	CommandStatus Select(const AnalogOutputDouble64& arCommand, size_t aIndex, uint8_t aSequence, QualifierCode aCode);
+	CommandStatus Operate(const AnalogOutputDouble64& arCommand, size_t aIndex, uint8_t aSequence, QualifierCode aCode);
 			
 private:
 
+	template <class T>
+	CommandStatus Select(const T& arCommand, size_t aIndex, uint8_t aSequence, QualifierCode aCode, std::map<size_t, SelectInfo<T>>& arMap);
+
+	template <class T>
+	CommandStatus Operate(const T& arCommand, size_t aIndex, uint8_t aSequence, QualifierCode aCode, std::map<size_t, SelectInfo<T>>& arMap);
+
 	millis_t mSelectTimeout;
-	ICommandHandler* mpCmdHandler;	
+	ICommandHandler* mpCmdHandler;
+	ITimeSource* mpTimeSource;
+
+	CROBSelectMap mCROBSelectMap;
+	Analog16SelectMap mAnalog16SelectMap;
+	Analog32SelectMap mAnalog32SelectMap;
+	AnalogFloatSelectMap mAnalogFloatSelectMap;
+	AnalogDoubleSelectMap mAnalogDoubleSelectMap;
 };
+
+template <class T>
+CommandStatus OutstationSBOHandler::Select(const T& arCommand, size_t aIndex, uint8_t aSequence, QualifierCode aCode, std::map<size_t, SelectInfo<T>>& arMap)
+{
+	CommandStatus status =  mpCmdHandler->Select(arCommand, aIndex);
+	if(status == CS_SUCCESS) { //outstation supports this point
+		auto time = mpTimeSource->GetMillisecondsSinceEpoch();
+		SelectInfo<T> info(arCommand, aSequence, aCode, time);
+		arMap[aIndex] = info; // record the select by index
+	}
+	return status;
+}
+
+template <class T>
+CommandStatus OutstationSBOHandler::Operate(const T& arCommand, size_t aIndex, uint8_t aSequence, QualifierCode aCode, std::map<size_t, SelectInfo<T>>& arMap)
+{
+	auto iter = arMap.find(aIndex);
+	if(iter == arMap.end()) return CS_NO_SELECT; //no prior select
+	else {
+		//make a copy and erase the select from the map
+		auto select = iter->second; 
+		arMap.erase(iter);
+
+		// what should the sequence number be?
+		uint8_t expectedSeq = (select.mSequence + 1)%16;
+		// are all values what we expect them to be?
+		if(expectedSeq == aSequence && aCode == select.mCode && arCommand == select.mCommand)
+		{
+			// now check the timestamp
+			auto now = mpTimeSource->GetMillisecondsSinceEpoch();
+			if((now - select.mTimestamp) < mSelectTimeout) return CS_SUCCESS;
+			else return CS_TIMEOUT;
+		}
+		else return CS_NO_SELECT;		
+	}
+	return mpCmdHandler->Select(arCommand, aIndex);
+}
 
 }
 

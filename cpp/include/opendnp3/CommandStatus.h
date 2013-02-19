@@ -43,7 +43,7 @@ namespace opendnp3
  */
 enum CommandStatus {
 	CS_SUCCESS = 0,			//!< command was successfully recieved and handled
-	CS_TIMEOUT = 1,			//!< command timedout before completing
+	CS_TIMEOUT = 1,			//!< command timed out before completing
 	CS_NO_SELECT = 2,		//!< command requires being selected before operate, configuration issue
 	CS_FORMAT_ERROR = 3,	//!< bad control code or timing values
 	CS_NOT_SUPPORTED = 4,	//!< command is not implemented

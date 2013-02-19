@@ -40,6 +40,9 @@ namespace opendnp3
 AnalogOutputInt16::AnalogOutputInt16(int16_t aValue) : AnalogOutput(aValue)
 {}
 
+AnalogOutputInt16::AnalogOutputInt16() : AnalogOutput(0)
+{}
+
 bool AnalogOutputInt16::operator==(const AnalogOutputInt16& arRHS) const
 {
 	return mValue == arRHS.mValue;
@@ -53,6 +56,9 @@ std::string AnalogOutputInt16::ToString() const
 }
 
 AnalogOutputInt32::AnalogOutputInt32(int32_t aValue) : AnalogOutput(aValue)
+{}
+
+AnalogOutputInt32::AnalogOutputInt32() : AnalogOutput(0)
 {}
 
 bool AnalogOutputInt32::operator==(const AnalogOutputInt32& arRHS) const
@@ -70,9 +76,12 @@ std::string AnalogOutputInt32::ToString() const
 AnalogOutputFloat32::AnalogOutputFloat32(float aValue) : AnalogOutput(aValue)
 {}
 
+AnalogOutputFloat32::AnalogOutputFloat32() : AnalogOutput(0)
+{}
+
 bool AnalogOutputFloat32::operator==(const AnalogOutputFloat32& arRHS) const
 {
-	return fabs(mValue - arRHS.mValue) < 1E-6;
+	return mValue == arRHS.mValue;
 }
 
 std::string AnalogOutputFloat32::ToString() const
@@ -85,9 +94,12 @@ std::string AnalogOutputFloat32::ToString() const
 AnalogOutputDouble64::AnalogOutputDouble64(double aValue) : AnalogOutput(aValue)
 {}
 
+AnalogOutputDouble64::AnalogOutputDouble64() : AnalogOutput(0)
+{}
+
 bool AnalogOutputDouble64::operator==(const AnalogOutputDouble64& arRHS) const
 {
-	return fabs(mValue - arRHS.mValue) < 1E-6;
+	return mValue == arRHS.mValue;
 }
 
 std::string AnalogOutputDouble64::ToString() const

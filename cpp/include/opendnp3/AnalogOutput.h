@@ -51,6 +51,11 @@ public:
 		mStatus(CommandStatus::CS_SUCCESS)
 	{}
 
+	AnalogOutput() : 
+		mValue(0)
+		mStatus(CommandStatus::CS_SUCCESS)
+	{}
+
 	virtual std::string ToString() const = 0;
 
 	/**
@@ -78,6 +83,7 @@ class AnalogOutputInt16 : public AnalogOutput<int16_t>
 {
 	public:	
 
+	AnalogOutputInt16();
 	AnalogOutputInt16(int16_t);
 
 	bool operator==(const AnalogOutputInt16& arRHS) const;
@@ -92,6 +98,7 @@ class AnalogOutputInt32 : public AnalogOutput<int32_t>
 {	
 	public:	
 
+	AnalogOutputInt32();
 	AnalogOutputInt32(int32_t);
 
 	bool operator==(const AnalogOutputInt32& arRHS) const;
@@ -106,6 +113,7 @@ class AnalogOutputFloat32 : public AnalogOutput<float>
 {	
 	public:	
 
+	AnalogOutputFloat32();
 	AnalogOutputFloat32(float);
 
 	bool operator==(const AnalogOutputFloat32& arRHS) const;
@@ -120,6 +128,7 @@ class AnalogOutputDouble64 : public AnalogOutput<double>
 {	
 	public:
 
+	AnalogOutputDouble64();
 	AnalogOutputDouble64(double);
 
 	bool operator==(const AnalogOutputDouble64& arRHS) const;
