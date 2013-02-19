@@ -36,27 +36,27 @@ public class FormattingDataObserver implements DataObserver {
 
     public void update(BinaryInput meas, long index)
     {
-        handler.handleOutput("Binary: " + meas.getValue());
+        handler.handleOutput("Binary: " + meas.getValue() + " Index: " + index);
     }
 
     public void update(AnalogInput meas, long index)
     {
-        handler.handleOutput("Analog: " + meas.getValue());
+        handler.handleOutput("Analog: " + meas.getValue() + " Index: " + index);
     }
 
     public void update(Counter meas, long index)
     {
-        handler.handleOutput("Counter: " + meas.getValue());
+        handler.handleOutput("Counter: " + meas.getValue() + " Index: " + index);
     }
 
     public void update(BinaryOutputStatus meas, long index)
     {
-        handler.handleOutput("BinaryOutputStatus: " + meas.getValue());
+        handler.handleOutput("BinaryOutputStatus: " + meas.getValue() + " Index: " + index);
     }
 
     public void update(AnalogOutputStatus meas, long index)
     {
-        handler.handleOutput("AnalogOutputStatus: " + meas.getValue());
+        handler.handleOutput("AnalogOutputStatus: " + meas.getValue() + " Index: " + index);
     }
 
     public void end()
