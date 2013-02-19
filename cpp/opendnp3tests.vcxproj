@@ -209,8 +209,6 @@
     <ClCompile Include="tests\TestTypes.cpp" />
     <ClCompile Include="tests\TestUtil.cpp" />
     <ClCompile Include="tests\TestVtoInterface.cpp" />
-    <ClCompile Include="tests\TestVtoLoopbackIntegration.cpp" />
-    <ClCompile Include="tests\TestVtoOnewayIntegration.cpp" />
     <ClCompile Include="tests\TestVtoRouter.cpp" />
     <ClCompile Include="tests\TestVtoWriter.cpp" />
     <ClCompile Include="tests\Timeout.cpp" />

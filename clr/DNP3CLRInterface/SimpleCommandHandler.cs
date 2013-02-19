@@ -41,52 +41,52 @@ namespace DNP3.Interface
             this.status = status;
         }
 
-        CommandStatus ICommandHandler.Select(ControlRelayOutputBlock command, uint index, byte aSequence)
+        CommandStatus ICommandHandler.Select(ControlRelayOutputBlock command, uint index)
         {
             return status();
         }
 
-        CommandStatus ICommandHandler.Select(AnalogOutputInt32 command, uint index, byte aSequence)
+        CommandStatus ICommandHandler.Select(AnalogOutputInt32 command, uint index)
         {
             return status();
         }
 
-        CommandStatus ICommandHandler.Select(AnalogOutputInt16 command, uint index, byte aSequence)
+        CommandStatus ICommandHandler.Select(AnalogOutputInt16 command, uint index)
         {
             return status();
         }
 
-        CommandStatus ICommandHandler.Select(AnalogOutputFloat32 command, uint index, byte aSequence)
+        CommandStatus ICommandHandler.Select(AnalogOutputFloat32 command, uint index)
         {
             return status();
         }
 
-        CommandStatus ICommandHandler.Select(AnalogOutputDouble64 command, uint index, byte aSequence)
+        CommandStatus ICommandHandler.Select(AnalogOutputDouble64 command, uint index)
         {
             return status();
         }
 
-        CommandStatus ICommandHandler.Operate(ControlRelayOutputBlock command, uint index, byte aSequence)
+        CommandStatus ICommandHandler.Operate(ControlRelayOutputBlock command, uint index)
         {
             return status();
         }
 
-        CommandStatus ICommandHandler.Operate(AnalogOutputInt32 command, uint index, byte aSequence)
+        CommandStatus ICommandHandler.Operate(AnalogOutputInt32 command, uint index)
         {
             return status();
         }
 
-        CommandStatus ICommandHandler.Operate(AnalogOutputInt16 command, uint index, byte aSequence)
+        CommandStatus ICommandHandler.Operate(AnalogOutputInt16 command, uint index)
         {
             return status();
         }
 
-        CommandStatus ICommandHandler.Operate(AnalogOutputFloat32 command, uint index, byte aSequence)
+        CommandStatus ICommandHandler.Operate(AnalogOutputFloat32 command, uint index)
         {
             return status();
         }
 
-        CommandStatus ICommandHandler.Operate(AnalogOutputDouble64 command, uint index, byte aSequence)
+        CommandStatus ICommandHandler.Operate(AnalogOutputDouble64 command, uint index)
         {
             return status();
         }

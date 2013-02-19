@@ -48,6 +48,7 @@
 #include "SlaveResponseTypes.h"
 #include "VtoReader.h"
 #include "VtoWriter.h"
+#include "OutstationSBOHandler.h"
 
 
 namespace opendnp3
@@ -175,6 +176,7 @@ private:
 	SequenceInfo mSeqInfo;
 	APDU mUnsol;							// APDY used to form unsol respones
 	ResponseContext mRspContext;			// Used to track and construct response fragments
+	OutstationSBOHandler mSBOHandler;       // Tracks SBO requests, forwarding valid sequences to the application
 
 	bool mHaveLastRequest;
 	APDU mLastRequest;						// APDU used to form responses

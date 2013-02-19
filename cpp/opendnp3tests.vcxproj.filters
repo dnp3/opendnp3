@@ -380,12 +380,6 @@
     <ClCompile Include="tests\TestVtoInterface.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="tests\TestVtoLoopbackIntegration.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="tests\TestVtoOnewayIntegration.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="tests\TestVtoRouter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

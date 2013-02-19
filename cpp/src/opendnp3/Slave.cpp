@@ -59,6 +59,7 @@ Slave::Slave(Logger* apLogger, IAppLayer* apAppLayer, IExecutor* apExecutor, ITi
 	mResponse(arCfg.mMaxFragSize),
 	mUnsol(arCfg.mMaxFragSize),
 	mRspContext(apLogger, apDatabase, &mRspTypes, arCfg.mEventMaxConfig),
+	mSBOHandler(5000, apCmdHandler),
 	mHaveLastRequest(false),
 	mLastRequest(arCfg.mMaxFragSize),
 	mpTime(apTime),	
@@ -438,31 +439,31 @@ void Slave::HandleSelect(const APDU& arRequest, SequenceInfo aSeqInfo)
 
 		case (MACRO_DNP_RADIX(12, 1)):			
 			this->RespondToCommands<ControlRelayOutputBlock>(Group12Var1::Inst(), i, [this, seq](ControlRelayOutputBlock cmd, size_t idx) {
-				return this->mpCmdHandler->Select(cmd, idx, seq);
+				return this->mSBOHandler.Select(cmd, idx, seq);
 			});
 			break;
 
 		case (MACRO_DNP_RADIX(41, 1)):			
 			this->RespondToCommands<AnalogOutputInt32>(Group41Var1::Inst(), i, [this, seq](AnalogOutputInt32 cmd, size_t idx) {
-				return this->mpCmdHandler->Select(cmd, idx, seq);
+				return this->mSBOHandler.Select(cmd, idx, seq);
 			});
 			break;
 
 		case (MACRO_DNP_RADIX(41, 2)):
 			this->RespondToCommands<AnalogOutputInt16>(Group41Var2::Inst(), i, [this, seq](AnalogOutputInt16 cmd, size_t idx) {
-				return this->mpCmdHandler->Select(cmd, idx, seq);
+				return this->mSBOHandler.Select(cmd, idx, seq);
 			});
 			break;
 
 		case (MACRO_DNP_RADIX(41, 3)):
 			this->RespondToCommands<AnalogOutputFloat32>(Group41Var3::Inst(), i, [this, seq](AnalogOutputFloat32 cmd, size_t idx) {
-				return this->mpCmdHandler->Select(cmd, idx, seq);
+				return this->mSBOHandler.Select(cmd, idx, seq);
 			});			
 			break;
 
 		case (MACRO_DNP_RADIX(41, 4)):
 			this->RespondToCommands<AnalogOutputDouble64>(Group41Var4::Inst(), i, [this, seq](AnalogOutputDouble64 cmd, size_t idx) {
-				return this->mpCmdHandler->Select(cmd, idx, seq);
+				return this->mSBOHandler.Select(cmd, idx, seq);
 			});
 			break;
 
@@ -487,31 +488,31 @@ void Slave::HandleOperate(const APDU& arRequest, SequenceInfo aSeqInfo)
 
 		case (MACRO_DNP_RADIX(12, 1)):			
 			this->RespondToCommands<ControlRelayOutputBlock>(Group12Var1::Inst(), i, [this, seq](ControlRelayOutputBlock cmd, size_t idx) {
-				return this->mpCmdHandler->Operate(cmd, idx, seq);
+				return this->mSBOHandler.Operate(cmd, idx, seq);
 			});
 			break;
 
 		case (MACRO_DNP_RADIX(41, 1)):			
 			this->RespondToCommands<AnalogOutputInt32>(Group41Var1::Inst(), i, [this, seq](AnalogOutputInt32 cmd, size_t idx) {
-				return this->mpCmdHandler->Operate(cmd, idx, seq);
+				return this->mSBOHandler.Operate(cmd, idx, seq);
 			});
 			break;
 
 		case (MACRO_DNP_RADIX(41, 2)):
 			this->RespondToCommands<AnalogOutputInt16>(Group41Var2::Inst(), i, [this, seq](AnalogOutputInt16 cmd, size_t idx) {
-				return this->mpCmdHandler->Operate(cmd, idx, seq);
+				return this->mSBOHandler.Operate(cmd, idx, seq);
 			});
 			break;
 
 		case (MACRO_DNP_RADIX(41, 3)):
 			this->RespondToCommands<AnalogOutputFloat32>(Group41Var3::Inst(), i, [this, seq](AnalogOutputFloat32 cmd, size_t idx) {
-				return this->mpCmdHandler->Operate(cmd, idx, seq);
+				return this->mSBOHandler.Operate(cmd, idx, seq);
 			});			
 			break;
 
 		case (MACRO_DNP_RADIX(41, 4)):
 			this->RespondToCommands<AnalogOutputDouble64>(Group41Var4::Inst(), i, [this, seq](AnalogOutputDouble64 cmd, size_t idx) {
-				return this->mpCmdHandler->Operate(cmd, idx, seq);
+				return this->mSBOHandler.Operate(cmd, idx, seq);
 			});
 			break;
 

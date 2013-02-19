@@ -218,6 +218,7 @@
     <ClInclude Include="src\opendnp3\ObjectReadIterator.h" />
     <ClInclude Include="src\opendnp3\Objects.h" />
     <ClInclude Include="src\opendnp3\ObjectWriteIterator.h" />
+    <ClInclude Include="src\opendnp3\OutstationSBOHandler.h" />
     <ClInclude Include="src\opendnp3\OutstationStackImpl.h" />
     <ClInclude Include="src\opendnp3\PackingTemplates.h" />
     <ClInclude Include="src\opendnp3\PackingUnpacking.h" />
@@ -347,6 +348,7 @@
     <ClCompile Include="src\opendnp3\ObjectReadIterator.cpp" />
     <ClCompile Include="src\opendnp3\Objects.cpp" />
     <ClCompile Include="src\opendnp3\ObjectWriteIterator.cpp" />
+    <ClCompile Include="src\opendnp3\OutstationSBOHandler.cpp" />
     <ClCompile Include="src\opendnp3\OutstationStackImpl.cpp" />
     <ClCompile Include="src\opendnp3\PackingUnpacking.cpp" />
     <ClCompile Include="src\opendnp3\Parsing.cpp" />
