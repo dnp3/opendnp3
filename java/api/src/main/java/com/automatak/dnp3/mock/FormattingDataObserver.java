@@ -36,27 +36,27 @@ public class FormattingDataObserver implements DataObserver {
 
     public void update(BinaryInput meas, long index)
     {
-        handler.handleOutput("Binary: " + meas.getValue() + " Index: " + index);
+        handler.handleOutput("Binary: " + meas.getValue() + " Index: " + index + " Timestamp: " + meas.getMsSinceEpoch());
     }
 
     public void update(AnalogInput meas, long index)
     {
-        handler.handleOutput("Analog: " + meas.getValue() + " Index: " + index);
+        handler.handleOutput("Analog: " + meas.getValue() + " Index: " + index + " Timestamp: " + meas.getMsSinceEpoch());
     }
 
     public void update(Counter meas, long index)
     {
-        handler.handleOutput("Counter: " + meas.getValue() + " Index: " + index);
+        handler.handleOutput("Counter: " + meas.getValue() + " Index: " + index + " Timestamp: " + meas.getMsSinceEpoch());
     }
 
     public void update(BinaryOutputStatus meas, long index)
     {
-        handler.handleOutput("BinaryOutputStatus: " + meas.getValue() + " Index: " + index);
+        handler.handleOutput("BinaryOutputStatus: " + meas.getValue() + " Index: " + index + " Timestamp: " + meas.getMsSinceEpoch());
     }
 
     public void update(AnalogOutputStatus meas, long index)
     {
-        handler.handleOutput("AnalogOutputStatus: " + meas.getValue() + " Index: " + index);
+        handler.handleOutput("AnalogOutputStatus: " + meas.getValue() + " Index: " + index + " Timestamp: " + meas.getMsSinceEpoch());
     }
 
     public void end()

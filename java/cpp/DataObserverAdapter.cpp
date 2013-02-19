@@ -18,6 +18,8 @@
  */
 #include "DataObserverAdapter.hpp"
 
+#include <iostream>
+
 
 using namespace opendnp3;
 
@@ -70,8 +72,9 @@ void DataObserverAdapter::_Update(const Binary& arMeas, size_t aIndex)
 	jboolean value = arMeas.GetValue();
 	jbyte quality = arMeas.GetQuality();
 	jlong timestamp = arMeas.GetTime();
+	jlong index = aIndex;
 
-	pEnv->CallVoidMethod(mProxy, mUpdateBinaryInput, value, quality, timestamp, aIndex);
+	pEnv->CallVoidMethod(mProxy, mUpdateBinaryInput, value, quality, timestamp, index);
 }
 
 void DataObserverAdapter::_Update(const Analog& arMeas, size_t aIndex)
@@ -81,8 +84,9 @@ void DataObserverAdapter::_Update(const Analog& arMeas, size_t aIndex)
 	jdouble value = arMeas.GetValue();
 	jbyte quality = arMeas.GetQuality();
 	jlong timestamp = arMeas.GetTime();
+	jlong index = aIndex;	
 
-	pEnv->CallVoidMethod(mProxy, mUpdateAnalogInput, value, quality, timestamp, aIndex);
+	pEnv->CallVoidMethod(mProxy, mUpdateAnalogInput, value, quality, timestamp, index);
 }
 
 void DataObserverAdapter::_Update(const Counter& arMeas, size_t aIndex)
@@ -92,8 +96,9 @@ void DataObserverAdapter::_Update(const Counter& arMeas, size_t aIndex)
 	jlong value = arMeas.GetValue();
 	jbyte quality = arMeas.GetQuality();
 	jlong timestamp = arMeas.GetTime();
+	jlong index = aIndex;
 
-	pEnv->CallVoidMethod(mProxy, mUpdateCounter, value, quality, timestamp, aIndex);
+	pEnv->CallVoidMethod(mProxy, mUpdateCounter, value, quality, timestamp, index);
 }
 
 void DataObserverAdapter::_Update(const SetpointStatus& arMeas, size_t aIndex)
@@ -103,8 +108,9 @@ void DataObserverAdapter::_Update(const SetpointStatus& arMeas, size_t aIndex)
 	jdouble value = arMeas.GetValue();
 	jbyte quality = arMeas.GetQuality();
 	jlong timestamp = arMeas.GetTime();
+	jlong index = aIndex;
 
-	pEnv->CallVoidMethod(mProxy, mUpdateAnalogOutputStatus, value, quality, timestamp, aIndex);	
+	pEnv->CallVoidMethod(mProxy, mUpdateAnalogOutputStatus, value, quality, timestamp, index);	
 }
 
 void DataObserverAdapter::_Update(const ControlStatus& arMeas, size_t aIndex)
@@ -114,8 +120,9 @@ void DataObserverAdapter::_Update(const ControlStatus& arMeas, size_t aIndex)
 	jboolean value = arMeas.GetValue();
 	jbyte quality = arMeas.GetQuality();
 	jlong timestamp = arMeas.GetTime();
+	jlong index = aIndex;
 
-	pEnv->CallVoidMethod(mProxy, mUpdateBinaryOutputStatus, value, quality, timestamp, aIndex);	
+	pEnv->CallVoidMethod(mProxy, mUpdateBinaryOutputStatus, value, quality, timestamp, index);	
 }
 
 void DataObserverAdapter::_End()

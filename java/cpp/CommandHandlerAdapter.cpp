@@ -55,84 +55,141 @@ CommandHandlerAdapter::CommandHandlerAdapter(JavaVM* apJVM, jobject aProxy) : mp
 
 CommandStatus CommandHandlerAdapter::Select(const ControlRelayOutputBlock& arCommand, size_t aIndex)
 {	
-	jint status = this->GetEnv()->CallIntMethod(mProxy, mSelectCROB, arCommand.GetCode(), arCommand.mCount, arCommand.mOnTimeMS, arCommand.mOffTimeMS, arCommand.mStatus, aIndex);
-	return IntToCommandStatus(status);
+	jint func = arCommand.GetCode();
+	jshort count = arCommand.mCount;
+        jlong ontime = arCommand.mOnTimeMS;
+	jlong offtime = arCommand.mOffTimeMS;
+	jint status = arCommand.mStatus;
+	jlong index = aIndex;
+
+	jint ret = this->GetEnv()->CallIntMethod(mProxy, mSelectCROB, func, count, ontime, offtime, status, index);
+	return IntToCommandStatus(ret);
 }
 
 CommandStatus CommandHandlerAdapter::Operate(const ControlRelayOutputBlock& arCommand, size_t aIndex)
 {	
-	jint status = this->GetEnv()->CallIntMethod(mProxy, mOperateCROB, arCommand.GetCode(), arCommand.mCount, arCommand.mOnTimeMS, arCommand.mOffTimeMS, arCommand.mStatus, aIndex);
-	return IntToCommandStatus(status);
+	jint func = arCommand.GetCode();
+	jshort count = arCommand.mCount;
+        jlong ontime = arCommand.mOnTimeMS;
+	jlong offtime = arCommand.mOffTimeMS;
+	jint status = arCommand.mStatus;
+	jlong index = aIndex;
+
+	jint ret = this->GetEnv()->CallIntMethod(mProxy, mOperateCROB, func, count, ontime, offtime, status, index);
+	return IntToCommandStatus(ret);
 }
 
 CommandStatus CommandHandlerAdapter::DirectOperate(const ControlRelayOutputBlock& arCommand, size_t aIndex)
 {	
-	jint status = this->GetEnv()->CallIntMethod(mProxy, mDirectOperateCROB, arCommand.GetCode(), arCommand.mCount, arCommand.mOnTimeMS, arCommand.mOffTimeMS, arCommand.mStatus, aIndex);
-	return IntToCommandStatus(status);
+	jint func = arCommand.GetCode();
+	jshort count = arCommand.mCount;
+        jlong ontime = arCommand.mOnTimeMS;
+	jlong offtime = arCommand.mOffTimeMS;
+	jint status = arCommand.mStatus;
+	jlong index = aIndex;
+
+	jint ret = this->GetEnv()->CallIntMethod(mProxy, mDirectOperateCROB, func, count, ontime, offtime, status, index);
+	return IntToCommandStatus(ret);
 }
 
 CommandStatus CommandHandlerAdapter::Select(const AnalogOutputInt16& arCommand, size_t aIndex)
 {
-	jint status = this->GetEnv()->CallIntMethod(mProxy, mSelectAnalogInt16, arCommand.GetValue(), aIndex); 
+	jshort value = arCommand.GetValue();
+	jlong index = aIndex;
+
+	jint status = this->GetEnv()->CallIntMethod(mProxy, mSelectAnalogInt16, value, index); 
 	return IntToCommandStatus(status);
 }
 
 CommandStatus CommandHandlerAdapter::Operate(const AnalogOutputInt16& arCommand, size_t aIndex)
 {
-	jint status = this->GetEnv()->CallIntMethod(mProxy, mOperateAnalogInt16, arCommand.GetValue(), aIndex); 
+	jshort value = arCommand.GetValue();
+	jlong index = aIndex;
+
+	jint status = this->GetEnv()->CallIntMethod(mProxy, mOperateAnalogInt16, value, index); 
 	return IntToCommandStatus(status);
 }
 CommandStatus CommandHandlerAdapter::DirectOperate(const AnalogOutputInt16& arCommand, size_t aIndex)
 {
-	jint status = this->GetEnv()->CallIntMethod(mProxy, mDirectOperateAnalogInt16, arCommand.GetValue(), aIndex); 
+	jshort value = arCommand.GetValue();
+	jlong index = aIndex;
+
+	jint status = this->GetEnv()->CallIntMethod(mProxy, mDirectOperateAnalogInt16, value, index); 
 	return IntToCommandStatus(status);
 }
 
 CommandStatus CommandHandlerAdapter::Select(const AnalogOutputInt32& arCommand, size_t aIndex)
 {
-	jint status = this->GetEnv()->CallIntMethod(mProxy, mSelectAnalogInt32, arCommand.GetValue(), aIndex); 
+	jshort value = arCommand.GetValue();
+	jlong index = aIndex;
+
+	jint status = this->GetEnv()->CallIntMethod(mProxy, mSelectAnalogInt32, value, index); 
 	return IntToCommandStatus(status);
 }
 CommandStatus CommandHandlerAdapter::Operate(const AnalogOutputInt32& arCommand, size_t aIndex)
 {
-	jint status = this->GetEnv()->CallIntMethod(mProxy, mOperateAnalogInt32, arCommand.GetValue(), aIndex); 
+	jint value = arCommand.GetValue();
+	jlong index = aIndex;
+
+	jint status = this->GetEnv()->CallIntMethod(mProxy, mOperateAnalogInt32, value, index); 
 	return IntToCommandStatus(status);
 }
 CommandStatus CommandHandlerAdapter::DirectOperate(const AnalogOutputInt32& arCommand, size_t aIndex)
 {
-	jint status = this->GetEnv()->CallIntMethod(mProxy, mDirectOperateAnalogInt32, arCommand.GetValue(), aIndex); 
+	jint value = arCommand.GetValue();
+	jlong index = aIndex;
+
+	jint status = this->GetEnv()->CallIntMethod(mProxy, mDirectOperateAnalogInt32, value, index); 
 	return IntToCommandStatus(status);
 }
 
 CommandStatus CommandHandlerAdapter::Select(const AnalogOutputFloat32& arCommand, size_t aIndex)
 {
-	jint status = this->GetEnv()->CallIntMethod(mProxy, mSelectAnalogFloat32, arCommand.GetValue(), aIndex); 
+	jfloat value = arCommand.GetValue();
+	jlong index = aIndex;	
+
+	jint status = this->GetEnv()->CallIntMethod(mProxy, mSelectAnalogFloat32, value, index); 
 	return IntToCommandStatus(status);
 }
 CommandStatus CommandHandlerAdapter::Operate(const AnalogOutputFloat32& arCommand, size_t aIndex)
 {
-	jint status = this->GetEnv()->CallIntMethod(mProxy, mOperateAnalogFloat32, arCommand.GetValue(), aIndex); 
+	jfloat value = arCommand.GetValue();
+	jlong index = aIndex;	
+
+	jint status = this->GetEnv()->CallIntMethod(mProxy, mOperateAnalogFloat32, value, index); 
 	return IntToCommandStatus(status);
 }
 CommandStatus CommandHandlerAdapter::DirectOperate(const AnalogOutputFloat32& arCommand, size_t aIndex)
 {
-	jint status = this->GetEnv()->CallIntMethod(mProxy, mDirectOperateAnalogFloat32, arCommand.GetValue(), aIndex); 
+	jfloat value = arCommand.GetValue();
+	jlong index = aIndex;	
+	
+	jint status = this->GetEnv()->CallIntMethod(mProxy, mDirectOperateAnalogFloat32, value, index); 
 	return IntToCommandStatus(status);
 }
 
 CommandStatus CommandHandlerAdapter::Select(const AnalogOutputDouble64& arCommand, size_t aIndex)
 {
-	jint status = this->GetEnv()->CallIntMethod(mProxy, mSelectAnalogDouble64, arCommand.GetValue(), aIndex); 
+	jdouble value = arCommand.GetValue();
+	jlong index = aIndex;	
+
+	jint status = this->GetEnv()->CallIntMethod(mProxy, mSelectAnalogDouble64, value, index); 
 	return IntToCommandStatus(status);
 }
 CommandStatus CommandHandlerAdapter::Operate(const AnalogOutputDouble64& arCommand, size_t aIndex)
 {
-	jint status = this->GetEnv()->CallIntMethod(mProxy, mOperateAnalogDouble64, arCommand.GetValue(), aIndex); 
+	jdouble value = arCommand.GetValue();
+	jlong index = aIndex;		
+
+	jint status = this->GetEnv()->CallIntMethod(mProxy, mOperateAnalogDouble64, value, index); 
 	return IntToCommandStatus(status);
 }
 CommandStatus CommandHandlerAdapter::DirectOperate(const AnalogOutputDouble64& arCommand, size_t aIndex)
 {
-	jint status = this->GetEnv()->CallIntMethod(mProxy, mDirectOperateAnalogDouble64, arCommand.GetValue(), aIndex); 
+	jdouble value = arCommand.GetValue();
+	jlong index = aIndex;	
+
+	jint status = this->GetEnv()->CallIntMethod(mProxy, mDirectOperateAnalogDouble64, value, index); 
 	return IntToCommandStatus(status);
 }
 	
