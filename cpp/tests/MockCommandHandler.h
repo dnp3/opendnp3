@@ -39,14 +39,17 @@ class MockCommandHandler : public SimpleCommandHandler
 	public:
 
 	MockCommandHandler(CommandStatus aStatus = CS_SUCCESS) : 
-		SimpleCommandHandler([&]() { return mStatus; }),
+		SimpleCommandHandler([&]() { ++mNumInvocations; return mStatus; }),
+		mNumInvocations(0),
 		mStatus(aStatus)
 	{}
 	
-
 	void SetResponse(CommandStatus aStatus) { mStatus = aStatus; }
 
+	int mNumInvocations;
+
 private:
+	
 	CommandStatus mStatus;
 
 };

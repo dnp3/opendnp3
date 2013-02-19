@@ -655,26 +655,30 @@ BOOST_AUTO_TEST_CASE(SelectOperateCROB)
 
 }
 
-BOOST_AUTO_TEST_CASE(SelectOperateCROBRetry)
+BOOST_AUTO_TEST_CASE(SelectOperateCROBSameSequenceNumber)
 {
 	SlaveConfig cfg; cfg.mDisableUnsol = true;
 	SlaveTestObject t(cfg);	
 	t.slave.OnLowerLayerUp();
 
+	BOOST_REQUIRE_EQUAL(0, t.cmdHandler.mNumInvocations);
+
 	// Select group 12 Var 1, count = 1, index = 3
 	t.SendToSlave("C0 03 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00", SI_OTHER);
 	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 00 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00"); // 0x00 status == CS_SUCCESS
+	BOOST_REQUIRE_EQUAL(1, t.cmdHandler.mNumInvocations);
 	
 
 	// operate the first time with correct sequence #
 	t.SendToSlave("C1 04 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00", SI_CORRECT);
 	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 00 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00");
+	BOOST_REQUIRE_EQUAL(2, t.cmdHandler.mNumInvocations);
 
 
-	// operate again with same sequence number
+	// operate again with same sequence number, should respond success but not really do an operation
 	t.SendToSlave("C1 04 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00", SI_PREV);
 	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 00 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00");
-
+	BOOST_REQUIRE_EQUAL(2, t.cmdHandler.mNumInvocations);
 }
 
 BOOST_AUTO_TEST_CASE(SelectGroup41Var1)
