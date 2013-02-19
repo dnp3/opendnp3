@@ -47,6 +47,26 @@ class ICommandHandler;
 
 /**
 * Represents a communication channel upon which masters and outstations can be bound.
+* To add a master to a communication channel, where pClient is a channel pointer IChannel*\n
+* Returns a pointer to the running master
+\code
+	IMaster* pMaster = pClient->AddMaster(
+		"master",						// stack name
+		LOG_LEVEL,						// log filter level
+		PrintingDataObserver::Inst(),	// callback for data processing
+		stackConfig						// stack configuration
+	);
+\endcode
+* To add an outstation to a communication channel, where pServer is a channel pointer IChannel*\n
+* Returns a pointer to the running outstation
+\code
+	IOutstation* pOutstation = pServer->AddOutstation(
+		"outstation",								// stack name
+		LOG_LEVEL,									// log filter level
+		SuccessCommandHandler::Inst(),				// callback for command requests
+		stackConfig									// stack configuration
+	);
+\endcode
 */
 class IChannel : public DestructorHook
 {
