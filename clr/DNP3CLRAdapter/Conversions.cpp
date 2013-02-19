@@ -139,28 +139,28 @@ namespace Adapter
 		switch(status)
 		{
 			case(opendnp3::CS_SUCCESS):
-				return CommandStatus::CS_SUCCESS;
+				return CommandStatus::SUCCESS;
 			case(opendnp3::CS_TIMEOUT):
-				return CommandStatus::CS_TIMEOUT;
+				return CommandStatus::TIMEOUT;
 			case(opendnp3::CS_NO_SELECT):
-				return CommandStatus::CS_NO_SELECT;
+				return CommandStatus::NO_SELECT;
 			case(opendnp3::CS_FORMAT_ERROR):
-				return CommandStatus::CS_FORMAT_ERROR;
+				return CommandStatus::FORMAT_ERROR;
 			case(opendnp3::CS_NOT_SUPPORTED):
-				return CommandStatus::CS_NOT_SUPPORTED;
+				return CommandStatus::NOT_SUPPORTED;
 			case(opendnp3::CS_ALREADY_ACTIVE):
-				return CommandStatus::CS_ALREADY_ACTIVE;
+				return CommandStatus::ALREADY_ACTIVE;
 			case(opendnp3::CS_HARDWARE_ERROR):
-				return CommandStatus::CS_HARDWARE_ERROR;
+				return CommandStatus::HARDWARE_ERROR;
 			case(opendnp3::CS_LOCAL):
-				return CommandStatus::CS_LOCAL;
+				return CommandStatus::LOCAL;
 			case(opendnp3::CS_TOO_MANY_OPS):
-				return CommandStatus::CS_TOO_MANY_OPS;
+				return CommandStatus::TOO_MANY_OPS;
 			case(opendnp3::CS_NOT_AUTHORIZED):
-				return CommandStatus::CS_NOT_AUTHORIZED;
+				return CommandStatus::NOT_AUTHORIZED;
 
 			default:
-				return CommandStatus::CS_UNDEFINED;
+				return CommandStatus::UNDEFINED;
 		}
 	}
 
@@ -168,25 +168,25 @@ namespace Adapter
 	{
 		switch(status)
 		{
-			case(CommandStatus::CS_SUCCESS):
+			case(CommandStatus::SUCCESS):
 				return opendnp3::CS_SUCCESS;
-			case(CommandStatus::CS_TIMEOUT):
+			case(CommandStatus::TIMEOUT):
 				return opendnp3::CS_TIMEOUT;
-			case(CommandStatus::CS_NO_SELECT):
+			case(CommandStatus::NO_SELECT):
 				return opendnp3::CS_NO_SELECT;
-			case(CommandStatus::CS_FORMAT_ERROR):
+			case(CommandStatus::FORMAT_ERROR):
 				return opendnp3::CS_FORMAT_ERROR;
-			case(CommandStatus::CS_NOT_SUPPORTED):
+			case(CommandStatus::NOT_SUPPORTED):
 				return opendnp3::CS_NOT_SUPPORTED;
-			case(CommandStatus::CS_ALREADY_ACTIVE):
+			case(CommandStatus::ALREADY_ACTIVE):
 				return opendnp3::CS_ALREADY_ACTIVE;
-			case(CommandStatus::CS_HARDWARE_ERROR):
+			case(CommandStatus::HARDWARE_ERROR):
 				return opendnp3::CS_HARDWARE_ERROR;
-			case(CommandStatus::CS_LOCAL):
+			case(CommandStatus::LOCAL):
 				return opendnp3::CS_LOCAL;
-			case(CommandStatus::CS_TOO_MANY_OPS):
+			case(CommandStatus::TOO_MANY_OPS):
 				return opendnp3::CS_TOO_MANY_OPS;
-			case(CommandStatus::CS_NOT_AUTHORIZED):
+			case(CommandStatus::NOT_AUTHORIZED):
 				return opendnp3::CS_NOT_AUTHORIZED;
 
 			default:

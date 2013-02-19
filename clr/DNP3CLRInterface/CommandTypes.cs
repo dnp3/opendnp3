@@ -42,47 +42,47 @@ namespace DNP3.Interface
         /// <summary>
         /// command was successfully received and handled
         /// </summary>
-	    CS_SUCCESS,			
+	    SUCCESS,			
         /// <summary>
         /// command timeout before completing
         /// </summary>
-	    CS_TIMEOUT,	
+	    TIMEOUT,	
 		/// <summary>
         /// command requires being selected before operate, configuration issue
 		/// </summary>
-	    CS_NO_SELECT,
+	    NO_SELECT,
 		/// <summary>
         /// bad control code or timing values
 		/// </summary>
-	    CS_FORMAT_ERROR,
+	    FORMAT_ERROR,
 	    /// <summary>
         /// command is not supported or implemented
 	    /// </summary>
-	    CS_NOT_SUPPORTED,
+	    NOT_SUPPORTED,
 	    /// <summary>
         /// command is already in progress or its already in that mode
 	    /// </summary>
-	    CS_ALREADY_ACTIVE,
+	    ALREADY_ACTIVE,
 	    /// <summary>
         /// something is stopping the command, often a local/remote interlock
 	    /// </summary>
-	    CS_HARDWARE_ERROR,
+	    HARDWARE_ERROR,
 	    /// <summary>
         /// the function governed by the control is in local only control
 	    /// </summary>
-	    CS_LOCAL,
+	    LOCAL,
 		/// <summary>
         /// the command has been done too often and has been throttled
 		/// </summary>	
-	    CS_TOO_MANY_OPS,
+	    TOO_MANY_OPS,
 	    /// <summary>
         /// the command was rejected because the device denied it or an RTU intercepted it
 	    /// </summary>
-	    CS_NOT_AUTHORIZED,
+	    NOT_AUTHORIZED,
         /// <summary>
         /// 10 to 126 are currently reserved
         /// </summary>
-	    CS_UNDEFINED
+	    UNDEFINED
     }
 
     /// <summary>

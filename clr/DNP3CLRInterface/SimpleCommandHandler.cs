@@ -13,7 +13,7 @@ namespace DNP3.Interface
     {
         private static readonly ICommandHandler instance = new RejectingCommandHandler();
 
-        private RejectingCommandHandler() : base(() => CommandStatus.CS_NOT_SUPPORTED)
+        private RejectingCommandHandler() : base(() => CommandStatus.NOT_SUPPORTED)
         {}
 
         public static ICommandHandler Instance
