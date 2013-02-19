@@ -32,16 +32,16 @@ class CommandHandlerAdapter {
 
     // ControlRelayOutputBlock
 
-    public int Select(int function, short count, long onTimeMs, long offTimeMs, int status, long index, byte seq)
+    public int Select(int function, short count, long onTimeMs, long offTimeMs, int status, long index)
     {
         ControlRelayOutputBlock crob = new ControlRelayOutputBlock(ControlCode.fromInt(function), count, onTimeMs, offTimeMs, CommandStatus.fromInt(status));
-        return proxy.select(crob, index, seq).toInt();
+        return proxy.select(crob, index).toInt();
     }
 
-    public int Operate(int function, short count, long onTimeMs, long offTimeMs, int status, long index, byte seq)
+    public int Operate(int function, short count, long onTimeMs, long offTimeMs, int status, long index)
     {
         ControlRelayOutputBlock crob = new ControlRelayOutputBlock(ControlCode.fromInt(function), count, onTimeMs, offTimeMs, CommandStatus.fromInt(status));
-        return proxy.operate(crob, index, seq).toInt();
+        return proxy.operate(crob, index).toInt();
     }
 
     public int DirectOperate(int function, short count, long onTimeMs, long offTimeMs, int status, long index)
@@ -52,16 +52,16 @@ class CommandHandlerAdapter {
 
     // AnalogOutputInt32
 
-    public int Select(int value, long index, byte seq)
+    public int Select(int value, long index)
     {
         AnalogOutputInt32 ao = new AnalogOutputInt32(value, CommandStatus.SUCCESS);
-        return proxy.select(ao, index, seq).toInt();
+        return proxy.select(ao, index).toInt();
     }
 
-    public int Operate(int value, long index, byte seq)
+    public int Operate(int value, long index)
     {
         AnalogOutputInt32 ao = new AnalogOutputInt32(value, CommandStatus.SUCCESS);
-        return proxy.operate(ao, index, seq).toInt();
+        return proxy.operate(ao, index).toInt();
     }
 
     public int DirectOperate(int value, long index)
@@ -72,16 +72,16 @@ class CommandHandlerAdapter {
 
     // AnalogOutputInt16
 
-    public int Select(short value, long index, byte seq)
+    public int Select(short value, long index)
     {
         AnalogOutputInt16 ao = new AnalogOutputInt16(value, CommandStatus.SUCCESS);
-        return proxy.select(ao, index, seq).toInt();
+        return proxy.select(ao, index).toInt();
     }
 
-    public int Operate(short value, long index, byte seq)
+    public int Operate(short value, long index)
     {
         AnalogOutputInt16 ao = new AnalogOutputInt16(value, CommandStatus.SUCCESS);
-        return proxy.operate(ao, index, seq).toInt();
+        return proxy.operate(ao, index).toInt();
     }
 
     public int DirectOperate(short value, long index)
@@ -92,16 +92,16 @@ class CommandHandlerAdapter {
 
     // AnalogOutputFloat32
 
-    public int Select(float value, long index, byte seq)
+    public int Select(float value, long index)
     {
         AnalogOutputFloat32 ao = new AnalogOutputFloat32(value, CommandStatus.SUCCESS);
-        return proxy.select(ao, index, seq).toInt();
+        return proxy.select(ao, index).toInt();
     }
 
-    public int Operate(float value, long index, byte seq)
+    public int Operate(float value, long index)
     {
         AnalogOutputFloat32 ao = new AnalogOutputFloat32(value, CommandStatus.SUCCESS);
-        return proxy.operate(ao, index, seq).toInt();
+        return proxy.operate(ao, index).toInt();
     }
 
     public int DirectOperate(float value, long index)
@@ -112,16 +112,16 @@ class CommandHandlerAdapter {
 
     // AnalogOutputDouble64
 
-    public int Select(double value, long index, byte seq)
+    public int Select(double value, long index)
     {
         AnalogOutputDouble64 ao = new AnalogOutputDouble64(value, CommandStatus.SUCCESS);
-        return proxy.select(ao, index, seq).toInt();
+        return proxy.select(ao, index).toInt();
     }
 
-    public int Operate(double value, long index, byte seq)
+    public int Operate(double value, long index)
     {
         AnalogOutputDouble64 ao = new AnalogOutputDouble64(value, CommandStatus.SUCCESS);
-        return proxy.operate(ao, index, seq).toInt();
+        return proxy.operate(ao, index).toInt();
     }
 
     public int DirectOperate(double value, long index)

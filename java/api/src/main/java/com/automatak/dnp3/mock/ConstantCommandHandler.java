@@ -29,44 +29,44 @@ public class ConstantCommandHandler implements CommandHandler {
     {
         this.status = status;
     }
-    public CommandStatus select(ControlRelayOutputBlock command, long index, byte sequence)
+    public CommandStatus select(ControlRelayOutputBlock command, long index)
     {
         return status;
     }
-    public CommandStatus select(AnalogOutputInt32 command, long index, byte sequence)
+    public CommandStatus select(AnalogOutputInt32 command, long index)
     {
         return status;
     }
-    public CommandStatus select(AnalogOutputInt16 command, long index, byte sequence)
+    public CommandStatus select(AnalogOutputInt16 command, long index)
     {
         return status;
     }
-    public CommandStatus select(AnalogOutputFloat32 command, long index, byte sequence)
+    public CommandStatus select(AnalogOutputFloat32 command, long index)
     {
         return status;
     }
-    public CommandStatus select(AnalogOutputDouble64 command, long index, byte sequence)
+    public CommandStatus select(AnalogOutputDouble64 command, long index)
     {
         return status;
     }
 
-    public CommandStatus operate(ControlRelayOutputBlock command, long index, byte sequence)
+    public CommandStatus operate(ControlRelayOutputBlock command, long index)
     {
         return status;
     }
-    public CommandStatus operate(AnalogOutputInt32 command, long index, byte sequence)
+    public CommandStatus operate(AnalogOutputInt32 command, long index)
     {
         return status;
     }
-    public CommandStatus operate(AnalogOutputInt16 command, long index, byte sequence)
+    public CommandStatus operate(AnalogOutputInt16 command, long index)
     {
         return status;
     }
-    public CommandStatus operate(AnalogOutputFloat32 command, long index, byte sequence)
+    public CommandStatus operate(AnalogOutputFloat32 command, long index)
     {
         return status;
     }
-    public CommandStatus operate(AnalogOutputDouble64 command, long index, byte sequence)
+    public CommandStatus operate(AnalogOutputDouble64 command, long index)
     {
         return status;
     }

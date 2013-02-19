@@ -89,6 +89,7 @@ cpp/src/opendnp3/ObjectInterfaces.cpp \
 cpp/src/opendnp3/ObjectReadIterator.cpp \
 cpp/src/opendnp3/Objects.cpp \
 cpp/src/opendnp3/ObjectWriteIterator.cpp \
+cpp/src/opendnp3/OutstationSBOHandler.cpp \
 cpp/src/opendnp3/OutstationStackImpl.cpp \
 cpp/src/opendnp3/PackingUnpacking.cpp \
 cpp/src/opendnp3/Parsing.cpp \
