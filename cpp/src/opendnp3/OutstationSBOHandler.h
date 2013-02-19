@@ -50,7 +50,8 @@ class OutstationSBOHandler
 			mCommand(arCommand),
 			mSequence(aSequence),
 			mCode(aCode),
-			mTimestamp(aTimestamp)
+			mTimestamp(aTimestamp),
+			mOperated(false)
 		{}
 
 		SelectInfo()
@@ -60,6 +61,7 @@ class OutstationSBOHandler
 		uint8_t mSequence;
 		QualifierCode mCode;
 		millis_t mTimestamp;
+		bool mOperated;
 	};
 
 	typedef std::map<size_t, SelectInfo<ControlRelayOutputBlock>> CROBSelectMap;
@@ -122,24 +124,28 @@ CommandStatus OutstationSBOHandler::Operate(const T& arCommand, size_t aIndex, u
 {
 	auto iter = arMap.find(aIndex);
 	if(iter == arMap.end()) return CS_NO_SELECT; //no prior select
-	else {
-		//make a copy and erase the select from the map
-		auto select = iter->second; 
-		arMap.erase(iter);
-
+	else {			
 		// what should the sequence number be?
-		uint8_t expectedSeq = (select.mSequence + 1)%16;
+		uint8_t expectedSeq = (iter->second.mSequence + 1)%16;
 		// are all values what we expect them to be?
-		if(expectedSeq == aSequence && aCode == select.mCode && arCommand == select.mCommand)
+		if(expectedSeq == aSequence && aCode == iter->second.mCode && arCommand == iter->second.mCommand)
 		{
 			// now check the timestamp
 			auto now = mpTimeSource->GetMillisecondsSinceEpoch();
-			if((now - select.mTimestamp) < mSelectTimeout) return CS_SUCCESS;
+			if((now - iter->second.mTimestamp) < mSelectTimeout) 
+			{
+				if(iter->second.mOperated) {
+					return CS_SUCCESS;
+				}
+				else {
+					iter->second.mOperated = true;
+					return mpCmdHandler->Operate(arCommand, aIndex);
+				}
+			}
 			else return CS_TIMEOUT;
 		}
 		else return CS_NO_SELECT;		
-	}
-	return mpCmdHandler->Select(arCommand, aIndex);
+	}	
 }
 
 }
