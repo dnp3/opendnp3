@@ -59,7 +59,7 @@ Slave::Slave(Logger* apLogger, IAppLayer* apAppLayer, IExecutor* apExecutor, ITi
 	mResponse(arCfg.mMaxFragSize),
 	mUnsol(arCfg.mMaxFragSize),
 	mRspContext(apLogger, apDatabase, &mRspTypes, arCfg.mEventMaxConfig),
-	mSBOHandler(5000, apCmdHandler, apTimeSource),
+	mSBOHandler(arCfg.mSelectTimeout, apCmdHandler, apTimeSource),
 	mHaveLastRequest(false),
 	mLastRequest(arCfg.mMaxFragSize),
 	mpTime(apTime),	

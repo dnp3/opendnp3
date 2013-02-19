@@ -38,8 +38,6 @@
 namespace opendnp3
 {
 
-class IStackObserver;
-
 /// Group/Variation pair
 struct GrpVar {
 	GrpVar() : Grp(-1), Var(-1) {}
@@ -102,6 +100,8 @@ struct SlaveConfig {
 	/// How long the slave will wait before retrying an unsuccessful unsol response
 	millis_t mUnsolRetryDelay;
 
+	/// How long the slave will allow and operate to proceed after a prior select
+	millis_t mSelectTimeout;
 
 	/// The maximum fragment size the slave will use for data it sends
 	size_t mMaxFragSize;
@@ -140,8 +140,7 @@ struct SlaveConfig {
 
 	/// The default group/variation to use for VTO event responses
 	GrpVar mEventVto;
-
-	IStackObserver* mpObserver;
+	
 };
 
 }

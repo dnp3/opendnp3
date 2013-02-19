@@ -56,6 +56,7 @@ SlaveConfig::SlaveConfig() :
 	mTimeSyncPeriod(10 * 60 * 1000), //every 10 min
 	mUnsolPackDelay(200),
 	mUnsolRetryDelay(2000),
+	mSelectTimeout(5000),
 	mMaxFragSize(DEFAULT_FRAG_SIZE),
 	mVtoWriterQueueSize(DEFAULT_VTO_WRITER_QUEUE_SIZE),
 	mEventMaxConfig(),
@@ -66,8 +67,7 @@ SlaveConfig::SlaveConfig() :
 	mEventBinary(GrpVar(2, 1)),
 	mEventAnalog(GrpVar(32, 1)),
 	mEventCounter(GrpVar(22, 1)),
-	mEventVto(GrpVar(113, 0)),
-	mpObserver(NULL)
+	mEventVto(GrpVar(113, 0))	
 {}
 
 }
