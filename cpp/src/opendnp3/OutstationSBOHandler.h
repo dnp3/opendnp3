@@ -90,6 +90,8 @@ public:
 			
 private:
 
+	void ClearAll();
+
 	template <class T>
 	CommandStatus Select(const T& arCommand, size_t aIndex, uint8_t aSequence, QualifierCode aCode, std::map<size_t, SelectInfo<T>>& arMap);
 
@@ -99,6 +101,7 @@ private:
 	millis_t mSelectTimeout;
 	ICommandHandler* mpCmdHandler;
 	ITimeSource* mpTimeSource;
+	uint8_t mCurrentSequenceNum;
 
 	CROBSelectMap mCROBSelectMap;
 	Analog16SelectMap mAnalog16SelectMap;
@@ -110,6 +113,13 @@ private:
 template <class T>
 CommandStatus OutstationSBOHandler::Select(const T& arCommand, size_t aIndex, uint8_t aSequence, QualifierCode aCode, std::map<size_t, SelectInfo<T>>& arMap)
 {
+	if(aSequence != mCurrentSequenceNum)
+	{
+		this->ClearAll();
+	}
+
+	mCurrentSequenceNum = aSequence;
+
 	CommandStatus status =  mpCmdHandler->Select(arCommand, aIndex);
 	if(status == CS_SUCCESS) { //outstation supports this point
 		auto time = mpTimeSource->GetMillisecondsSinceEpoch();

@@ -35,9 +35,19 @@ namespace opendnp3
 OutstationSBOHandler::OutstationSBOHandler(millis_t aSelectTimeout, ICommandHandler* apCmdHandler, ITimeSource* apTimeSource) :
 	mSelectTimeout(aSelectTimeout),
 	mpCmdHandler(apCmdHandler),
-	mpTimeSource(apTimeSource)
+	mpTimeSource(apTimeSource),
+	mCurrentSequenceNum(0)
 {
 
+}
+
+void OutstationSBOHandler::ClearAll()
+{
+	mCROBSelectMap.clear();
+	mAnalog16SelectMap.clear();
+	mAnalog32SelectMap.clear();
+	mAnalogFloatSelectMap.clear();
+	mAnalogDoubleSelectMap.clear();
 }
 
 CommandStatus OutstationSBOHandler::Select(const ControlRelayOutputBlock& arCommand, size_t aIndex, uint8_t aSequence, QualifierCode aCode)
