@@ -52,7 +52,7 @@ public:
 	{}
 
 	AnalogOutput() : 
-		mValue(0)
+		mValue(0),
 		mStatus(CommandStatus::CS_SUCCESS)
 	{}
 

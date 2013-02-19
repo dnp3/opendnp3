@@ -70,6 +70,11 @@ public class OutstationConfig {
     public long unsolRetryDelayMs = 2000;
 
     /**
+     * Maximum delay between a Select and an Operate
+     */
+    public long selectTimeoutMs = 5000;
+
+    /**
      * The maximum fragment size the slave will use for data it sends. Defaults to 2048.
      */
     public int maxFragSize = 2048;

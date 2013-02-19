@@ -61,6 +61,7 @@ SlaveConfig ConfigReader::ConvertOutstationConfig(JNIEnv* apEnv, jobject jCfg)
 	cfg.mTimeSyncPeriod  = JNIHelpers::GetLongField(apEnv, jCfg, "timeSyncPeriodMs");
 	cfg.mUnsolPackDelay  = JNIHelpers::GetLongField(apEnv, jCfg, "unsolPackDelayMs");
 	cfg.mUnsolRetryDelay  = JNIHelpers::GetLongField(apEnv, jCfg, "unsolRetryDelayMs");
+	cfg.mSelectTimeout = JNIHelpers::GetLongField(apEnv, jCfg, "selectTimeoutMs");
 	cfg.mMaxFragSize  = JNIHelpers::GetIntField(apEnv, jCfg, "maxFragSize");
 	cfg.mVtoWriterQueueSize = JNIHelpers::GetIntField(apEnv, jCfg, "vtoWriterQueueSize");
 
