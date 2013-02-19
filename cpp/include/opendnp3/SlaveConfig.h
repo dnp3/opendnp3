@@ -100,7 +100,7 @@ struct SlaveConfig {
 	/// How long the slave will wait before retrying an unsuccessful unsol response
 	millis_t mUnsolRetryDelay;
 
-	/// How long the slave will allow and operate to proceed after a prior select
+	/// How long the slave will allow an operate to proceed after a prior select
 	millis_t mSelectTimeout;
 
 	/// The maximum fragment size the slave will use for data it sends

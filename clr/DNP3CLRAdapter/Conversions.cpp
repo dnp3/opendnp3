@@ -115,6 +115,8 @@ namespace Adapter
 				return ChannelState::SHUTDOWN;
 			case(opendnp3::ChannelState::CS_WAITING):
 				return ChannelState::WAITING;
+			default:
+				return ChannelState::CLOSED;
 		}
 	}
 
@@ -391,6 +393,7 @@ namespace Adapter
 		sc.mTimeSyncPeriod = config->timeSyncPeriod;
 		sc.mUnsolPackDelay = config->unsolPackDelay;
 		sc.mUnsolRetryDelay = config->unsolRetryDelay;
+		sc.mSelectTimeout = config->selectTimeout;
 		sc.mMaxFragSize = config->maxFragSize;
 		sc.mEventMaxConfig = convertEventMaxConfig(config->eventMaxConfig);
 		sc.mStaticBinary = convertGrpVar(config->staticBinary);

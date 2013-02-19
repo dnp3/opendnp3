@@ -385,6 +385,7 @@ namespace DNP3.Interface
             this.timeSyncPeriod = 10 * 60 * 1000; // every 10 min
             this.unsolPackDelay = 200;
             this.unsolRetryDelay = 2000;
+            this.selectTimeout = 5000;
             this.maxFragSize = 2048;
             this.eventMaxConfig = new EventMaxConfig();
             this.staticBinary = new GrpVar(1, 2);
@@ -431,6 +432,10 @@ namespace DNP3.Interface
 	    /// </summary>
         public System.Int64 unsolRetryDelay;
 
+        /// <summary>
+        /// How long the outstation will allow an operate to proceed after a prior select
+        /// </summary>
+        public System.Int64 selectTimeout;
 
 	    /// <summary>
         /// The maximum fragment size the slave will use for data it sends
