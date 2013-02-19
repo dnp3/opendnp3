@@ -53,11 +53,10 @@ public class OutstationDemo {
         });
 
         // Outstation will have 5 of every measurement type
-        DatabaseConfig db = new DatabaseConfig(0,5,0,0,0);
+        DatabaseConfig db = new DatabaseConfig(5,5,5,5,5);
 
         // Create the default outstation configuration
         OutstationStackConfig config = new OutstationStackConfig(db);
-
         config.outstationConfig.staticAnalogInput.group = 30;
         config.outstationConfig.staticAnalogInput.variation = 2;
 
@@ -88,7 +87,7 @@ public class OutstationDemo {
             if(line.equals("quit")) break;
             else {
                 data.start();
-                data.update(new AnalogInput(i, AnalogInputQuality.ONLINE.toByte(), 0), 0);
+                data.update(new Counter(i, CounterInputQuality.ONLINE.toByte(), 0), 0);
                 data.end();
                 ++i;
             }
