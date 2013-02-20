@@ -36,7 +36,12 @@ namespace opendnp3
 class IDataObserver;
 
 /**
-* Interface representing a running outstation
+* Interface representing a running outstation.
+* To add a data observer interface to an outstation, where pOutstation is an IOutstation* pointer to the running outstation\n
+* Returns a pointer to the interface used to transfer data into the outstation
+\code
+	IDataObserver* pDataObserver = pOutstation->GetDataObserver()
+\endcode
 */
 class IOutstation : public IStack
 {
@@ -44,7 +49,10 @@ class IOutstation : public IStack
 		IOutstation(Logger* apLogger, boost::asio::io_service* apService): IStack(apLogger, apService) {}
 		virtual ~IOutstation() {}
 
-		/// @return Inteface used to load measurements into the outstation
+		/**
+		* Add a data observer interface to the outstation
+		* @return Inteface used to load measurements into the outstation
+		*/
 		virtual IDataObserver* GetDataObserver() = 0;
 };
 
