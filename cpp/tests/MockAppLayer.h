@@ -56,6 +56,8 @@ public:
 	void SendRequest(APDU&);
 	void CancelResponse();
 
+	bool NothingToRead();
+
 	size_t mNumCancel;
 
 	void EnableAutoSendCallback(bool aIsSuccess);

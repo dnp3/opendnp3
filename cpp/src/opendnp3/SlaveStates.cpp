@@ -215,7 +215,7 @@ void AS_Closed::OnLowerLayerUp(Slave* c)
 void AS_Closed::OnDataUpdate(Slave* c)
 {
 	c->FlushUpdates();
-	c->mDeferredUnsol = true;
+	if(!c->mConfig.mDisableUnsol) c->mDeferredUnsol = true;
 }
 
 /* AS_OpenBase */

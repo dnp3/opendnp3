@@ -31,6 +31,9 @@
 #include "BufferHelpers.h"
 
 #include <opendnp3/ToHex.h>
+#include <sstream>
+
+using namespace std;
 
 namespace opendnp3
 {
@@ -54,6 +57,16 @@ void SlaveTestObject::SendToSlave(const std::string& arData, SequenceInfo aSeq)
 	mAPDU.Interpret();
 	LOG_BLOCK(LEV_INTERPRET, "<= " << mAPDU.ToString());
 	slave.OnRequest(mAPDU, aSeq);
+}
+
+bool SlaveTestObject::NothingToRead()
+{
+	if(app.NothingToRead()) return true;
+	else {		
+		ostringstream oss;
+		oss << "Expected nothing but outstation wrote: " << Read();
+		throw InvalidStateException(LOCATION, oss.str());
+	}
 }
 
 std::string SlaveTestObject::Read()

@@ -48,7 +48,11 @@ public:
 	SlaveTestObject(const SlaveConfig& arCfg, FilterLevel aLevel = LEV_INFO, bool aImmediate = false);
 
 	void SendToSlave(const std::string& arData, SequenceInfo aSeq = SI_OTHER);
+	
 	std::string Read();
+
+	bool NothingToRead();
+
 	size_t Count() {
 		return app.Count();
 	}

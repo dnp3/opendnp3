@@ -88,7 +88,7 @@ BOOST_AUTO_TEST_CASE(DataPost)
 	BOOST_REQUIRE(t.mts.DispatchOne());
 	BOOST_REQUIRE_EQUAL(t.mts.NumActive(), 0);
 }
-
+	
 BOOST_AUTO_TEST_CASE(DataPostToNonExistent)
 {
 	SlaveConfig cfg;
@@ -117,11 +117,53 @@ BOOST_AUTO_TEST_CASE(DataPostToNonExistent)
 	BOOST_REQUIRE_EQUAL(t.mts.NumActive(), 0);
 }
 
+BOOST_AUTO_TEST_CASE(UnsolicitedStaysDisabledEvenIfDataAreLoadedPriorToOpen)
+{
+	SlaveConfig cfg; cfg.mDisableUnsol = true;
+	SlaveTestObject t(cfg);
+
+	auto pObs = t.slave.GetDataObserver();
+
+	{
+		Transaction t(pObs);
+		pObs->Update(Analog(0), 0);
+	}
+
+	BOOST_REQUIRE(t.mts.Dispatch() > 0);
+
+	t.slave.OnLowerLayerUp();
+
+	// Outstation shouldn't send an unsolicited handshake b/c unsol it disabled
+	BOOST_REQUIRE(t.NothingToRead());	
+}
+
+BOOST_AUTO_TEST_CASE(UnsolicitedStaysDisabledEvenIfDataAreLoadedAfterOpen)
+{
+	SlaveConfig cfg; cfg.mDisableUnsol = true;
+	SlaveTestObject t(cfg);
+
+	auto pObs = t.slave.GetDataObserver();	
+
+	t.slave.OnLowerLayerUp();
+
+	{
+		Transaction t(pObs);
+		pObs->Update(Analog(0), 0);
+	}
+
+	BOOST_REQUIRE(t.mts.Dispatch() > 0);
+
+	// Outstation shouldn't send an unsolicited handshake b/c unsol it disabled
+	BOOST_REQUIRE(t.NothingToRead());	
+}
+
+
 BOOST_AUTO_TEST_CASE(UnsupportedFunction)
 {
 	SlaveConfig cfg; cfg.mDisableUnsol = true;
 	SlaveTestObject t(cfg);
 	t.slave.OnLowerLayerUp();
+
 
 	t.SendToSlave("C0 10"); // func = initialize application (16)
 	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 01"); // IIN = device restart + func not supported
