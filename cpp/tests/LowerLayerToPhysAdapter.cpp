@@ -28,8 +28,7 @@
 //
 #include "LowerLayerToPhysAdapter.h"
 
-
-#include "IPhysicalLayerAsync.h"
+#include <opendnp3/IPhysicalLayerAsync.h>
 
 namespace opendnp3
 {

@@ -30,8 +30,8 @@
 #define __LOWER_LAYER_TO_PHYS_ADAPTER_H_
 
 
-#include "IHandlerAsync.h"
-#include "AsyncLayerInterfaces.h"
+#include <opendnp3/IHandlerAsync.h>
+#include <opendnp3/AsyncLayerInterfaces.h>
 
 namespace opendnp3
 {

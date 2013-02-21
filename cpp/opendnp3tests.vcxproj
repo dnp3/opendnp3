@@ -105,6 +105,7 @@
     <ClInclude Include="tests\LinkReceiverTest.h" />
     <ClInclude Include="tests\LogTester.h" />
     <ClInclude Include="tests\LoopbackPhysicalLayerAsync.h" />
+    <ClInclude Include="tests\LowerLayerToPhysAdapter.h" />
     <ClInclude Include="tests\MasterTestObject.h" />
     <ClInclude Include="tests\MockAppLayer.h" />
     <ClInclude Include="tests\MockAppUser.h" />
@@ -150,6 +151,7 @@
     <ClCompile Include="tests\LinkLayerTest.cpp" />
     <ClCompile Include="tests\LogTester.cpp" />
     <ClCompile Include="tests\LoopbackPhysicalLayerAsync.cpp" />
+    <ClCompile Include="tests\LowerLayerToPhysAdapter.cpp" />
     <ClCompile Include="tests\MasterTestObject.cpp" />
     <ClCompile Include="tests\MockAppLayer.cpp" />
     <ClCompile Include="tests\MockAppUser.cpp" />

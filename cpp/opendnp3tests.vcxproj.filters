@@ -153,6 +153,9 @@
     <ClInclude Include="tests\FlexibleDataObserver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="tests\LowerLayerToPhysAdapter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="tests\AppLayerTest.cpp">
@@ -414,6 +417,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="tests\FlexibleDataObserver.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tests\LowerLayerToPhysAdapter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

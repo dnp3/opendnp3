@@ -35,7 +35,8 @@
 
 #include <opendnp3/PhysicalLayerAsyncTCPClient.h>
 #include <opendnp3/PhysicalLayerAsyncTCPServer.h>
-#include <opendnp3/LowerLayerToPhysAdapter.h>
+
+#include "LowerLayerToPhysAdapter.h"
 
 namespace opendnp3
 {

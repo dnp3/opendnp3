@@ -360,9 +360,6 @@
     <ClInclude Include="src\opendnp3\LogVar.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\LowerLayerToPhysAdapter.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\Master.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -765,9 +762,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\LogTypes.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\LowerLayerToPhysAdapter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\Master.cpp">

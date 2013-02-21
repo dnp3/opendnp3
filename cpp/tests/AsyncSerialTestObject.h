@@ -30,8 +30,8 @@
 #define __ASYNC_SERIAL_TEST_OBJECT_H_
 
 #include <opendnp3/PhysicalLayerAsyncSerial.h>
-#include <opendnp3/LowerLayerToPhysAdapter.h>
 
+#include "LowerLayerToPhysAdapter.h"
 #include "AsyncTestObjectASIO.h"
 #include "LogTester.h"
 #include "MockUpperLayer.h"
