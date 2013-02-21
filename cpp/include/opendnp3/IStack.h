@@ -40,7 +40,7 @@ namespace boost
 {
 namespace asio
 {
-	class io_service;
+class io_service;
 }
 }
 
@@ -59,72 +59,72 @@ class VtoEndpointImpl;
 */
 class IStack : public DestructorHook
 {
-	public:
-		IStack(Logger* apLogger, boost::asio::io_service* apService);
-		virtual ~IStack();
+public:
+	IStack(Logger* apLogger, boost::asio::io_service* apService);
+	virtual ~IStack();
 
-		/** 
-		* Bind a vto endpoint as a tcp client
-		*
-		* @param arLoggerId Name used in all log messages
-		* @param aLevel Lowest log level recorded
-		* @param arHost IP address for connection
-		* @param aPort port for connection
-		* @param arSettings settings for the vto connection
-		* @return interface representing the running endpoint
-		*/
-		IVtoEndpoint* StartVtoRouterTCPClient(const std::string& arLoggerId, FilterLevel aLevel, const std::string& arHost, uint16_t aPort, const VtoRouterSettings& arSettings);
-		
-		/** 
-		* Bind a vto endpoint as a tcp server
-		*
-		* @param arLoggerId Name used in all log messages
-		* @param aLevel Lowest log level recorded
-		* @param arEndpoint Network adapter to bind to (i.e. 127.0.0.1 or 0.0.0.0)
-		* @param aPort port to listen on
-		* @param arSettings settings for the vto connection
-		* @return interface representing the running endpoint
-		*/
-		IVtoEndpoint* StartVtoRouterTCPServer(const std::string& arLoggerId, FilterLevel aLevel, const std::string& arEndpoint, uint16_t aPort, const VtoRouterSettings& arSettings);
+	/**
+	* Bind a vto endpoint as a tcp client
+	*
+	* @param arLoggerId Name used in all log messages
+	* @param aLevel Lowest log level recorded
+	* @param arHost IP address for connection
+	* @param aPort port for connection
+	* @param arSettings settings for the vto connection
+	* @return interface representing the running endpoint
+	*/
+	IVtoEndpoint* StartVtoRouterTCPClient(const std::string& arLoggerId, FilterLevel aLevel, const std::string& arHost, uint16_t aPort, const VtoRouterSettings& arSettings);
 
-		/**
-		* Add a listener for changes to the stack state. All callbacks come from the thread pool.
-		* An immediate callback will be made with the current state.
-		*
-		* @param aListener Functor to call back with the state enumeration 
-		*/
-		virtual void AddStateListener(std::function<void (StackState)> aListener) = 0;
+	/**
+	* Bind a vto endpoint as a tcp server
+	*
+	* @param arLoggerId Name used in all log messages
+	* @param aLevel Lowest log level recorded
+	* @param arEndpoint Network adapter to bind to (i.e. 127.0.0.1 or 0.0.0.0)
+	* @param aPort port to listen on
+	* @param arSettings settings for the vto connection
+	* @return interface representing the running endpoint
+	*/
+	IVtoEndpoint* StartVtoRouterTCPServer(const std::string& arLoggerId, FilterLevel aLevel, const std::string& arEndpoint, uint16_t aPort, const VtoRouterSettings& arSettings);
 
-		/// Synchronously shutdown the endpoint
-		virtual void Shutdown() = 0;	
+	/**
+	* Add a listener for changes to the stack state. All callbacks come from the thread pool.
+	* An immediate callback will be made with the current state.
+	*
+	* @param aListener Functor to call back with the state enumeration
+	*/
+	virtual void AddStateListener(std::function<void (StackState)> aListener) = 0;
 
-	protected:	
+	/// Synchronously shutdown the endpoint
+	virtual void Shutdown() = 0;
 
-		void CleanupVto();
+protected:
 
-		/**
-		 * Returns a pointer to the IVtoWriter instance for the layer.
-		 *
-		 * @return		a pointer to the IVtoWriter for the layer
-		 */
-		virtual IVtoWriter* GetVtoWriter() = 0;
+	void CleanupVto();
 
-		/**
-		 * Returns a pointer to the IVtoReader instance for the layer.
-		 *
-		 * @return		a pointer to the IVtoReader for the layer
-		 */
-		virtual IVtoReader* GetVtoReader() = 0;
+	/**
+	 * Returns a pointer to the IVtoWriter instance for the layer.
+	 *
+	 * @return		a pointer to the IVtoWriter for the layer
+	 */
+	virtual IVtoWriter* GetVtoWriter() = 0;
 
-	private:
+	/**
+	 * Returns a pointer to the IVtoReader instance for the layer.
+	 *
+	 * @return		a pointer to the IVtoReader for the layer
+	 */
+	virtual IVtoReader* GetVtoReader() = 0;
 
-		void OnVtoEndpointShutdown(VtoEndpointImpl* apEndpoint);
+private:
 
-		IVtoEndpoint* CreateVtoEndpoint(IPhysicalLayerAsync* apPhys, const VtoRouterSettings& arSettings);
+	void OnVtoEndpointShutdown(VtoEndpointImpl* apEndpoint);
 
-		Logger* mpLogger;
-		boost::asio::io_service* mpService;
-		std::set<IVtoEndpoint*> mVtoEndpoints;
+	IVtoEndpoint* CreateVtoEndpoint(IPhysicalLayerAsync* apPhys, const VtoRouterSettings& arSettings);
+
+	Logger* mpLogger;
+	boost::asio::io_service* mpService;
+	std::set<IVtoEndpoint*> mVtoEndpoints;
 };
 
 }

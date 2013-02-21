@@ -45,8 +45,7 @@ class MockPhysicalLayerAsync : public PhysicalLayerAsyncBase, public BufferTestO
 public:
 	MockPhysicalLayerAsync(Logger*, IExecutor*);
 
-	IExecutor* GetExecutor()
-	{
+	IExecutor* GetExecutor() {
 		return mpExecutor;
 	}
 
@@ -73,9 +72,9 @@ public:
 	}
 	size_t NumClose() {
 		return mNumClose;
-	}	
+	}
 
-private:	
+private:
 
 	void DoOpeningClose();
 	void DoOpen();
@@ -107,7 +106,7 @@ private:
 	size_t mNumOpenSuccess;
 	size_t mNumOpenFailure;
 	size_t mNumClose;
-	size_t mNumOpeningClose;	
+	size_t mNumOpeningClose;
 
 	bool mIsAutoOpenSuccess;
 

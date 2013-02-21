@@ -36,14 +36,14 @@ namespace opendnp3
 {
 
 MasterStackImpl::MasterStackImpl(	Logger* apLogger,
-									boost::asio::io_service* apService,
-									IExecutor* apExecutor, 
-									IDataObserver* apPublisher,
-									AsyncTaskGroup* apTaskGroup,
-									const MasterStackConfig& arCfg,
-									std::function<void (IMaster*)> aOnShutdown) :
+                                        boost::asio::io_service* apService,
+                                        IExecutor* apExecutor,
+                                        IDataObserver* apPublisher,
+                                        AsyncTaskGroup* apTaskGroup,
+                                        const MasterStackConfig& arCfg,
+                                        std::function<void (IMaster*)> aOnShutdown) :
 
-	IMaster(apLogger, apService),									
+	IMaster(apLogger, apService),
 	mpExecutor(apExecutor),
 	mAppStack(apLogger, apExecutor, arCfg.app, arCfg.link),
 	mMaster(apLogger->GetSubLogger("master"), arCfg.master, &mAppStack.mApplication, apPublisher, apTaskGroup, apExecutor),

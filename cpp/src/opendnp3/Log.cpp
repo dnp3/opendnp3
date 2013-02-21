@@ -42,12 +42,12 @@ namespace opendnp3
 
 EventLog::~EventLog()
 {
-	for(auto pair: mLogMap) delete pair.second;
+for(auto pair: mLogMap) delete pair.second;
 }
 
 void EventLog::Log( const LogEntry& arEntry )
-{	
-	for(auto pair: mSubscribers) {
+{
+for(auto pair: mSubscribers) {
 		if(this->SetContains(pair.second, -1) || this->SetContains(pair.second, arEntry.GetErrorCode())) {
 			pair.first->Log(arEntry);
 		}
@@ -89,7 +89,7 @@ void EventLog::GetAllLoggers( std::vector<Logger*>& apLoggers)
 {
 	apLoggers.clear();
 	std::unique_lock<std::mutex> lock(mMutex);
-	for(auto pair: mLogMap) {	
+for(auto pair: mLogMap) {
 		apLoggers.push_back(pair.second);
 	}
 }

@@ -50,7 +50,7 @@ BOOST_AUTO_TEST_CASE(ChangeBufferMarshallsUpdates)
 	}
 
 	FlexibleDataObserver fdo;
-	
+
 	{
 		Transaction t(&cb);
 		size_t num = cb.FlushUpdates(&fdo);

@@ -70,50 +70,50 @@ class ICommandHandler;
 */
 class IChannel : public DestructorHook
 {
-	public:
+public:
 
-		virtual ~IChannel() {}
-		
-		/**
-		* Synchronously shutdown the channel.
-		*/
-		virtual void Shutdown() = 0;
+	virtual ~IChannel() {}
 
-		/**
-		* Add a listener for changes to the channel state. All callbacks come from the thread pool.
-		* An immediate callback will be made with the current state.
-		*
-		* @param aListener Functor to callback with the state enumeration 
-		*/
-		virtual void AddStateListener(std::function<void (ChannelState)> aListener) = 0;
+	/**
+	* Synchronously shutdown the channel.
+	*/
+	virtual void Shutdown() = 0;
 
-		/**
-		* Add a master to the channel
-		*
-		* @param arLoggerId Name that will be used in all log messages
-		* @param aLevel Lowest log level that will be recorded
-		* @param apPublisher Callback object for all received measurements
-		* @param arCfg Configuration object that controls how the master behaves
-		* @return interface representing the running master
-		*/
-		virtual IMaster* AddMaster(	const std::string& arLoggerId,
-									FilterLevel aLevel,
-									IDataObserver* apPublisher,
-									const MasterStackConfig& arCfg) = 0;
+	/**
+	* Add a listener for changes to the channel state. All callbacks come from the thread pool.
+	* An immediate callback will be made with the current state.
+	*
+	* @param aListener Functor to callback with the state enumeration
+	*/
+	virtual void AddStateListener(std::function<void (ChannelState)> aListener) = 0;
 
-		/**
-		* Add an outstation to the channel
-		*
-		* @param arLoggerId Name that will be used in all log messages
-		* @param aLevel Lowest log level that will be recorded
-		* @param apCmdHandler Callback object for handling command requests
-		* @param arCfg Configuration object that controls how the outstation behaves
-		* @return interface representing the running outstations
-		*/
-		virtual IOutstation* AddOutstation(	const std::string& arLoggerId,
-											FilterLevel aLevel,
-											ICommandHandler* apCmdHandler,
-											const SlaveStackConfig& arCfg) = 0;
+	/**
+	* Add a master to the channel
+	*
+	* @param arLoggerId Name that will be used in all log messages
+	* @param aLevel Lowest log level that will be recorded
+	* @param apPublisher Callback object for all received measurements
+	* @param arCfg Configuration object that controls how the master behaves
+	* @return interface representing the running master
+	*/
+	virtual IMaster* AddMaster(	const std::string& arLoggerId,
+	                                FilterLevel aLevel,
+	                                IDataObserver* apPublisher,
+	                                const MasterStackConfig& arCfg) = 0;
+
+	/**
+	* Add an outstation to the channel
+	*
+	* @param arLoggerId Name that will be used in all log messages
+	* @param aLevel Lowest log level that will be recorded
+	* @param apCmdHandler Callback object for handling command requests
+	* @param arCfg Configuration object that controls how the outstation behaves
+	* @return interface representing the running outstations
+	*/
+	virtual IOutstation* AddOutstation(	const std::string& arLoggerId,
+	                                        FilterLevel aLevel,
+	                                        ICommandHandler* apCmdHandler,
+	                                        const SlaveStackConfig& arCfg) = 0;
 };
 
 }

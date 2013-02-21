@@ -39,13 +39,13 @@ class ICommandProcessor;
 */
 class IMaster : public IStack
 {
-	public:
-		IMaster(Logger* apLogger, boost::asio::io_service* apService): IStack(apLogger, apService) {}
-		
-		virtual ~IMaster() {}
-		
-		/// @return Interface used to invoke commands
-		virtual ICommandProcessor* GetCommandProcessor() = 0;
+public:
+	IMaster(Logger* apLogger, boost::asio::io_service* apService): IStack(apLogger, apService) {}
+
+	virtual ~IMaster() {}
+
+	/// @return Interface used to invoke commands
+	virtual ICommandProcessor* GetCommandProcessor() = 0;
 };
 
 }

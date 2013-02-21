@@ -34,14 +34,14 @@ namespace opendnp3
 std::string ConvertStackStateToString(StackState aState)
 {
 	switch(aState) {
-		case(SS_COMMS_UP):
-			return "COMMS_UP";
-		case(SS_COMMS_DOWN):
-			return "COMMS_DOWN";
-		case(SS_UNKNOWN):
-			return "COMMS_UNKNOWN";
-		default:
-			return "Undefined state";
+	case(SS_COMMS_UP):
+		return "COMMS_UP";
+	case(SS_COMMS_DOWN):
+		return "COMMS_DOWN";
+	case(SS_UNKNOWN):
+		return "COMMS_UNKNOWN";
+	default:
+		return "Undefined state";
 	}
 }
 

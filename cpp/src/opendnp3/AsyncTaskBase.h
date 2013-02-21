@@ -91,7 +91,7 @@ protected:
 	        int aPriority,
 	        const TaskHandler& arCallback,
 	        AsyncTaskGroup* apGroup,
-			const std::chrono::steady_clock::time_point& arInitialTime,
+	        const std::chrono::steady_clock::time_point& arInitialTime,
 	        const std::string& arName);
 
 	// optional NVII function for special bookkeeping

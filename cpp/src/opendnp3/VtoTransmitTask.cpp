@@ -63,9 +63,9 @@ void VtoTransmitTask::ConfigureRequest(APDU& arAPDU)
 	for (size_t i = 0; i < numObjects; ++i) {
 		/* Insert a new object into the APDU message. */
 		IndexedWriteIterator itr = arAPDU.WriteIndexed(
-		                               Group112Var0::Inst(),
-		                               vto->mValue.GetSize(),
-		                               vto->mIndex
+		                                   Group112Var0::Inst(),
+		                                   vto->mValue.GetSize(),
+		                                   vto->mIndex
 		                           );
 
 		/*
@@ -82,9 +82,9 @@ void VtoTransmitTask::ConfigureRequest(APDU& arAPDU)
 
 		/* Write the data to the APDU message */
 		Group112Var0::Inst()->Write(
-		    *itr,
-		    vto->mValue.GetSize(),
-		    vto->mValue.mpData
+		        *itr,
+		        vto->mValue.GetSize(),
+		        vto->mValue.mpData
 		);
 
 		/* Mark the data segment as being written */

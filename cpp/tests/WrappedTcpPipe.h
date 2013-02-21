@@ -34,10 +34,12 @@
 
 #include "PhysicalLayerWrapper.h"
 
-namespace boost { 
-	namespace asio { 
-		class io_service; 
-	} 
+namespace boost
+{
+namespace asio
+{
+class io_service;
+}
 }
 
 namespace opendnp3
@@ -45,16 +47,16 @@ namespace opendnp3
 
 class WrappedTcpPipe
 {
-	public:
-		WrappedTcpPipe(Logger*, boost::asio::io_service*, uint16_t aPort);
+public:
+	WrappedTcpPipe(Logger*, boost::asio::io_service*, uint16_t aPort);
 
-	private:	
-		PhysicalLayerAsyncTCPClient clientTcp;
-		PhysicalLayerAsyncTCPServer serverTcp;
-	
-	public:
-		PhysicalLayerWrapper client;
-		PhysicalLayerWrapper server;
+private:
+	PhysicalLayerAsyncTCPClient clientTcp;
+	PhysicalLayerAsyncTCPServer serverTcp;
+
+public:
+	PhysicalLayerWrapper client;
+	PhysicalLayerWrapper server;
 };
 
 }

@@ -45,11 +45,11 @@ namespace opendnp3
 {
 
 MockPhysicalLayerMonitor::MockPhysicalLayerMonitor(
-													Logger* apLogger, 
-													IPhysicalLayerAsync* apPhys, 													
-													steady_clock::duration aMinOpenRetry,
-													steady_clock::duration aMaxOpenRetry
-													) :
+        Logger* apLogger,
+        IPhysicalLayerAsync* apPhys,
+        steady_clock::duration aMinOpenRetry,
+        steady_clock::duration aMaxOpenRetry
+) :
 	Loggable(apLogger),
 	PhysicalLayerMonitor(apLogger, apPhys, aMinOpenRetry, aMaxOpenRetry),
 	mOpens(0),

@@ -140,7 +140,7 @@ struct SlaveConfig {
 
 	/// The default group/variation to use for VTO event responses
 	GrpVar mEventVto;
-	
+
 };
 
 }

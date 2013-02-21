@@ -128,7 +128,7 @@ BOOST_AUTO_TEST_CASE(TestReceiveLargestPossibleAPDU)
 
 	vector<string> packets;
 	string apdu = test.GeneratePacketSequence(packets, num_packets, last_packet_length);
-	for(string s: packets) {
+for(string s: packets) {
 		test.lower.SendUp(s);
 	}
 
@@ -146,7 +146,7 @@ BOOST_AUTO_TEST_CASE(TestReceiveBufferOverflow)
 	//send 1 more packet than possible
 	vector<string> packets;
 	string apdu = test.GeneratePacketSequence(packets, num_packets + 1, last_packet_length);
-	for(string s: packets) {
+for(string s: packets) {
 		test.lower.SendUp(s);
 	}
 
@@ -258,7 +258,7 @@ BOOST_AUTO_TEST_CASE(TestSendFullAPDU)
 	test.lower.DisableAutoSendCallback();
 	test.upper.SendDown(apdu);
 
-	for(string tpdu: packets) { //verify that each packet is received correctly
+for(string tpdu: packets) { //verify that each packet is received correctly
 		BOOST_REQUIRE(test.lower.BufferEqualsHex(tpdu));
 		test.lower.ClearBuffer(); //clear the buffer, otherwise the packets accumulate
 		test.lower.SendSuccess();

@@ -50,7 +50,7 @@ AsyncTestObjectASIO::AsyncTestObjectASIO(boost::asio::io_service* apService) :
 }
 
 AsyncTestObjectASIO::~AsyncTestObjectASIO()
-{	
+{
 	if(mOwner) delete mpTestObjectService;
 }
 

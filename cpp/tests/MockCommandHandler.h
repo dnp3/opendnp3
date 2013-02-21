@@ -36,20 +36,25 @@ namespace opendnp3
 
 class MockCommandHandler : public SimpleCommandHandler
 {
-	public:
+public:
 
-	MockCommandHandler(CommandStatus aStatus = CS_SUCCESS) : 
-		SimpleCommandHandler([&]() { ++mNumInvocations; return mStatus; }),
-		mNumInvocations(0),
-		mStatus(aStatus)
+	MockCommandHandler(CommandStatus aStatus = CS_SUCCESS) :
+		SimpleCommandHandler([&]() {
+		++mNumInvocations;
+		return mStatus;
+	}),
+	mNumInvocations(0),
+	mStatus(aStatus)
 	{}
-	
-	void SetResponse(CommandStatus aStatus) { mStatus = aStatus; }
+
+	void SetResponse(CommandStatus aStatus) {
+		mStatus = aStatus;
+	}
 
 	int mNumInvocations;
 
 private:
-	
+
 	CommandStatus mStatus;
 
 };

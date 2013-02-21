@@ -41,7 +41,7 @@ namespace opendnp3
 AsyncTaskBase::AsyncTaskBase(int aPriority,
                              const TaskHandler& arCallback,
                              AsyncTaskGroup* apGroup,
-							 const std::chrono::steady_clock::time_point& arInitialTime,
+                             const std::chrono::steady_clock::time_point& arInitialTime,
                              const std::string& arName) :
 	mName(arName),
 	mIsEnabled(false),
@@ -105,7 +105,7 @@ void AsyncTaskBase::AddDependency(const AsyncTaskBase* apTask)
 
 bool AsyncTaskBase::IsDependency(const AsyncTaskBase* apTask) const
 {
-	for(const AsyncTaskBase * p: mDependencies) {
+for(const AsyncTaskBase * p: mDependencies) {
 		if(p == apTask) return true;
 		if(p->IsDependency(apTask)) return true;
 	}

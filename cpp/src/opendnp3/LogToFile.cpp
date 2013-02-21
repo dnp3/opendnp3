@@ -54,7 +54,7 @@ void LogToFile :: StartLogging()
 	Log(le);
 
 	mpThread = new Thread(this);
-	mpThread->Start();	
+	mpThread->Start();
 }
 
 LogToFile :: ~LogToFile()
@@ -64,7 +64,7 @@ LogToFile :: ~LogToFile()
 		mpThread->WaitForStop();
 	}
 
-	delete mpThread;	
+	delete mpThread;
 }
 
 void LogToFile :: SignalStop()

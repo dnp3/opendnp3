@@ -60,7 +60,7 @@ AsyncTaskGroup::~AsyncTaskGroup()
 {
 	this->Shutdown();
 
-	for(AsyncTaskBase * p: mTaskVec) delete p;
+for(AsyncTaskBase * p: mTaskVec) delete p;
 }
 
 AsyncTaskBase* AsyncTaskGroup::Add(millis_t aPeriod, millis_t aRetryDelay, int aPriority, const TaskHandler& arCallback, const std::string& arName)
@@ -77,7 +77,7 @@ AsyncTaskBase* AsyncTaskGroup::Add(millis_t aPeriod, millis_t aRetryDelay, int a
 
 void AsyncTaskGroup::ResetTasks(int aMask)
 {
-	for(AsyncTaskBase* p: mTaskVec) {
+for(AsyncTaskBase * p: mTaskVec) {
 		if(!p->IsRunning() && (p->GetFlags() & aMask)) p->Reset();
 	}
 }
@@ -91,7 +91,7 @@ AsyncTaskContinuous* AsyncTaskGroup::AddContinuous(int aPriority, const TaskHand
 
 void AsyncTaskGroup::Remove(AsyncTaskBase* apTask)
 {
-	for(TaskVec::iterator i = mTaskVec.begin(); i != mTaskVec.end(); ++i) {	
+	for(TaskVec::iterator i = mTaskVec.begin(); i != mTaskVec.end(); ++i) {
 		if(*i == apTask) {
 			delete *i;
 			mTaskVec.erase(i);
@@ -113,7 +113,7 @@ void AsyncTaskGroup::Shutdown()
 
 void AsyncTaskGroup::Enable()
 {
-	for(AsyncTaskBase *p: mTaskVec) {
+for(AsyncTaskBase * p: mTaskVec) {
 		p->SilentEnable();
 	}
 	this->CheckState();
@@ -121,7 +121,7 @@ void AsyncTaskGroup::Enable()
 
 void AsyncTaskGroup::Disable()
 {
-	for(AsyncTaskBase * p: mTaskVec) {
+for(AsyncTaskBase * p: mTaskVec) {
 		p->SilentDisable();
 	}
 	this->CheckState();
@@ -129,7 +129,7 @@ void AsyncTaskGroup::Disable()
 
 void AsyncTaskGroup::Enable(int aMask)
 {
-	for(AsyncTaskBase * p: mTaskVec) {
+for(AsyncTaskBase * p: mTaskVec) {
 		if((p->GetFlags() & aMask) != 0) p->SilentEnable();
 	}
 	this->CheckState();
@@ -137,7 +137,7 @@ void AsyncTaskGroup::Enable(int aMask)
 
 void AsyncTaskGroup::Disable(int aMask)
 {
-	for(AsyncTaskBase * p: mTaskVec) {
+for(AsyncTaskBase * p: mTaskVec) {
 		if((p->GetFlags() & aMask) != 0) p->SilentDisable();
 	}
 	this->CheckState();
@@ -190,7 +190,7 @@ std::chrono::steady_clock::time_point AsyncTaskGroup::GetUTC() const
 
 void AsyncTaskGroup::Update(const std::chrono::steady_clock::time_point& arTime)
 {
-	for(AsyncTaskBase * p: mTaskVec) {
+for(AsyncTaskBase * p: mTaskVec) {
 		p->UpdateTime(arTime);
 	}
 }

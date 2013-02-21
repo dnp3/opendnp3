@@ -61,7 +61,7 @@ void LinkLayerRouter::AddContext(ILinkContext* apContext, const LinkRoute& arRou
 		throw ArgumentException(LOCATION, oss.str());
 	}
 
-	for(AddressMap::value_type v: mAddressMap) {
+for(AddressMap::value_type v: mAddressMap) {
 		if(apContext == v.second) {
 			ostringstream oss;
 			oss << "Context already is bound to route:  " << v.first;
@@ -202,7 +202,7 @@ void LinkLayerRouter::Transmit(const LinkFrame& arFrame)
 void LinkLayerRouter::AddStateListener(std::function<void (ChannelState)> aListener)
 {
 	//this call comes from an unknown thread so marshall it the router's executor
-	this->mpPhys->GetExecutor()->Post([this, aListener](){
+	this->mpPhys->GetExecutor()->Post([this, aListener]() {
 		mListeners.push_back(aListener);
 		this->NotifyListener(aListener, this->GetState()); // event the current state now
 	});
@@ -210,12 +210,14 @@ void LinkLayerRouter::AddStateListener(std::function<void (ChannelState)> aListe
 
 void LinkLayerRouter::OnStateChange(ChannelState aState)
 {
-	for(auto listener: mListeners) NotifyListener(listener, aState);
+for(auto listener: mListeners) NotifyListener(listener, aState);
 }
 
 void LinkLayerRouter::NotifyListener(std::function<void (ChannelState)> aListener, ChannelState state)
 {
-	this->mpPhys->GetExecutor()->Post([=](){ aListener(state); });
+	this->mpPhys->GetExecutor()->Post([ = ]() {
+		aListener(state);
+	});
 }
 
 void LinkLayerRouter::_OnSendSuccess()
@@ -253,7 +255,7 @@ void LinkLayerRouter::OnPhysicalLayerOpenSuccessCallback()
 	if(mpPhys->CanRead())
 		mpPhys->AsyncRead(mReceiver.WriteBuff(), mReceiver.NumWriteBytes());
 
-	for(AddressMap::value_type p: mAddressMap) {
+for(AddressMap::value_type p: mAddressMap) {
 		p.second->OnLowerLayerUp();
 	}
 }
@@ -262,7 +264,7 @@ void LinkLayerRouter::OnPhysicalLayerCloseCallback()
 {
 	mTransmitting = false;
 	mTransmitQueue.erase(mTransmitQueue.begin(), mTransmitQueue.end());
-	for(auto pair: mAddressMap) pair.second->OnLowerLayerDown();
+for(auto pair: mAddressMap) pair.second->OnLowerLayerDown();
 }
 
 }

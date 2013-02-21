@@ -46,13 +46,13 @@ struct SlaveStackConfig {
 	{}
 
 	/// Slave config
-	SlaveConfig slave;		
+	SlaveConfig slave;
 	/// Device template that specifies database layout
 	DeviceTemplate device;
 	/// Application layer config
-	AppConfig app;		
+	AppConfig app;
 	/// Link layer config
-	LinkConfig link;	
+	LinkConfig link;
 
 };
 

@@ -45,14 +45,14 @@ struct MasterStackConfig {
 	{}
 
 	/// Master config
-	MasterConfig master;  
+	MasterConfig master;
 
 	/// Application layer config
-	AppConfig app;		  
+	AppConfig app;
 
 	/// Link layer config
-	LinkConfig link;	  
-	
+	LinkConfig link;
+
 
 };
 

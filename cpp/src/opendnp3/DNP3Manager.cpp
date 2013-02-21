@@ -59,19 +59,19 @@ void DNP3Manager::AddLogSubscriber(ILogBase* apLog)
 
 void DNP3Manager::Shutdown()
 {
-	std::set<DNP3Channel*> copy(mChannels);	
-	for(auto pChannel: copy) pChannel->Shutdown();	
+	std::set<DNP3Channel*> copy(mChannels);
+for(auto pChannel: copy) pChannel->Shutdown();
 }
 
 IChannel* DNP3Manager::AddTCPClient(const std::string& arName, FilterLevel aLevel, millis_t aOpenRetry, const std::string& arAddr, uint16_t aPort)
-{	
+{
 	auto pLogger = mpLog->GetLogger(aLevel, arName);
 	auto pPhys = new PhysicalLayerAsyncTCPClient(pLogger, mpThreadPool->GetIOService(), arAddr, aPort);
 	return CreateChannel(pLogger, aOpenRetry, pPhys);
 }
 
 IChannel* DNP3Manager::AddTCPServer(const std::string& arName, FilterLevel aLevel, millis_t aOpenRetry, const std::string& arEndpoint, uint16_t aPort)
-{	
+{
 	auto pLogger = mpLog->GetLogger(aLevel, arName);
 	auto pPhys = new PhysicalLayerAsyncTCPServer(pLogger, mpThreadPool->GetIOService(), arEndpoint, aPort);
 	return CreateChannel(pLogger, aOpenRetry, pPhys);
@@ -87,7 +87,7 @@ IChannel* DNP3Manager::AddSerial(const std::string& arName, FilterLevel aLevel, 
 
 IChannel* DNP3Manager::CreateChannel(Logger* apLogger, millis_t aOpenRetry, IPhysicalLayerAsync* apPhys)
 {
-	auto pChannel = new DNP3Channel(apLogger, aOpenRetry, mpThreadPool->GetIOService(), apPhys, TimeSource::Inst(), [this](DNP3Channel* apChannel){ 
+	auto pChannel = new DNP3Channel(apLogger, aOpenRetry, mpThreadPool->GetIOService(), apPhys, TimeSource::Inst(), [this](DNP3Channel * apChannel) {
 		this->OnChannelShutdownCallback(apChannel);
 	});
 	mChannels.insert(pChannel);
@@ -95,8 +95,8 @@ IChannel* DNP3Manager::CreateChannel(Logger* apLogger, millis_t aOpenRetry, IPhy
 }
 
 void DNP3Manager::OnChannelShutdownCallback(DNP3Channel* apChannel)
-{	
-	mChannels.erase(apChannel);	
+{
+	mChannels.erase(apChannel);
 	delete apChannel;
 }
 

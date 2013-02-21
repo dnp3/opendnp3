@@ -39,12 +39,12 @@ namespace opendnp3
 class MockPhysicalLayerMonitor : public PhysicalLayerMonitor
 {
 public:
-	MockPhysicalLayerMonitor(	
-								Logger* apLogger, 
-								IPhysicalLayerAsync* apPhys, 								
-								std::chrono::steady_clock::duration aMinOpenRetry,
-								std::chrono::steady_clock::duration aMaxOpenRetry
-							);
+	MockPhysicalLayerMonitor(
+	        Logger* apLogger,
+	        IPhysicalLayerAsync* apPhys,
+	        std::chrono::steady_clock::duration aMinOpenRetry,
+	        std::chrono::steady_clock::duration aMaxOpenRetry
+	);
 
 	size_t mOpens;
 	size_t mCloses;
@@ -56,7 +56,7 @@ public:
 
 	CopyableBuffer mReadBuffer;
 	CopyableBuffer mWriteBuffer;
-	CopyableBuffer mExpectReadBuffer;	
+	CopyableBuffer mExpectReadBuffer;
 
 	void OnPhysicalLayerOpenSuccessCallback();
 	void OnPhysicalLayerOpenFailureCallback() {}
@@ -73,7 +73,7 @@ public:
 	bool AllExpectedDataHasBeenReceived();
 
 protected:
-	void OnStateChange(ChannelState);	
+	void OnStateChange(ChannelState);
 	std::queue< ChannelState > mState;
 
 private:

@@ -43,10 +43,10 @@ class VtoLoopbackTestStack : public VtoIntegrationTestBase
 {
 public:
 	VtoLoopbackTestStack(
-	    bool clientOnSlave = true,
-	    bool aImmediateOutput = false,	    
-	    FilterLevel level = LEV_INFO,
-	    boost::uint16_t port = MACRO_PORT_VALUE) :
+	        bool clientOnSlave = true,
+	        bool aImmediateOutput = false,
+	        FilterLevel level = LEV_INFO,
+	        boost::uint16_t port = MACRO_PORT_VALUE) :
 
 		VtoIntegrationTestBase(clientOnSlave, aImmediateOutput, level, port),
 		loopback(mLog.GetLogger(level, "loopback"), &vtoServer),
@@ -97,13 +97,13 @@ void TestLargeDataLoopback(VtoLoopbackTestStack& arTest, size_t aSizeInBytes)
 
 BOOST_AUTO_TEST_CASE(LargeDataLoopbackMasterWritesSlaveEchoes)
 {
-	VtoLoopbackTestStack stack(true, false);	
+	VtoLoopbackTestStack stack(true, false);
 	TestLargeDataLoopback(stack, MACRO_BUFFER_SIZE);
 }
 
 BOOST_AUTO_TEST_CASE(LargeDataLoopbackSlaveWritesMasterEchoes)
 {
-	VtoLoopbackTestStack stack(false, false);	
+	VtoLoopbackTestStack stack(false, false);
 	TestLargeDataLoopback(stack, MACRO_BUFFER_SIZE);
 }
 

@@ -74,7 +74,7 @@ public:
 	size_t NumActive() {
 		return mTimerMap.size() + mPostQueue.size();
 	}
-	
+
 	std::chrono::steady_clock::duration NextDurationTimer();
 
 
@@ -107,7 +107,7 @@ public:
 
 	//implement ITimer
 	void Cancel();
-	std::chrono::steady_clock::time_point ExpiresAt();	
+	std::chrono::steady_clock::time_point ExpiresAt();
 
 private:
 	std::chrono::steady_clock::time_point mTime;

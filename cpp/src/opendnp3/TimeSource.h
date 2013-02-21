@@ -41,7 +41,7 @@ class TimeSource : public ITimeSource
 	MACRO_SINGLETON_INSTANCE(TimeSource)
 
 	// Implement ITimeSource
-	std::chrono::steady_clock::time_point GetUTC();	
+	std::chrono::steady_clock::time_point GetUTC();
 };
 
 class MockTimeSource : public ITimeSource
@@ -59,7 +59,7 @@ public:
 	void SetTime(const std::chrono::steady_clock::time_point& arTime) {
 		mTime = arTime;
 	}
-	
+
 	void Advance(const std::chrono::steady_clock::duration& arDuration);
 	void SetToNow();
 
@@ -72,14 +72,14 @@ private:
 */
 class TimeSourceSystemOffset : public  ITimeManager
 {
-	public:
-		TimeSourceSystemOffset();
+public:
+	TimeSourceSystemOffset();
 
-		std::chrono::steady_clock::time_point GetUTC();
-		void SetTime(const std::chrono::steady_clock::time_point& arTime);
+	std::chrono::steady_clock::time_point GetUTC();
+	void SetTime(const std::chrono::steady_clock::time_point& arTime);
 
-	private:
-		std::chrono::steady_clock::duration mOffset;
+private:
+	std::chrono::steady_clock::duration mOffset;
 };
 
 class MockTimeManager : public ITimeManager

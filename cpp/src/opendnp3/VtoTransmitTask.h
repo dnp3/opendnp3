@@ -105,7 +105,7 @@ public:
 
 protected:
 
-	/** FC_WRITE can't be retried so, another code is needed to 
+	/** FC_WRITE can't be retried so, another code is needed to
 	* make a reliable stream in the MASTER -> SLAVE direction
 	*/
 	bool mUseNonStandardCode;

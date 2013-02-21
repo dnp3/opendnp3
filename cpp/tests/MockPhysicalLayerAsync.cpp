@@ -40,7 +40,7 @@ namespace opendnp3
 {
 
 MockPhysicalLayerAsync::MockPhysicalLayerAsync(Logger* apLogger, IExecutor* apExecutor) :
-	PhysicalLayerAsyncBase(apLogger),	
+	PhysicalLayerAsyncBase(apLogger),
 	mpWriteBuff(NULL),
 	mNumToRead(0),
 	mNumToWrite(0),
@@ -64,12 +64,12 @@ void MockPhysicalLayerAsync::DoOpeningClose()
 
 void MockPhysicalLayerAsync::DoOpen()
 {
-	++mNumOpen;	
+	++mNumOpen;
 }
 
 void MockPhysicalLayerAsync::DoClose()
 {
-	++mNumClose;	
+	++mNumClose;
 }
 
 void MockPhysicalLayerAsync::SignalOpenSuccess()

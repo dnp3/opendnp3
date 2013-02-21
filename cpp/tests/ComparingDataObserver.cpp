@@ -58,7 +58,7 @@ bool ComparingDataObserver::IsSameData()
 
 	size_t actual = mBinaryMap.size() +
 	                mAnalogMap.size() +
-	                mCounterMap.size();	
+	                mCounterMap.size();
 
 	return (required == actual);
 

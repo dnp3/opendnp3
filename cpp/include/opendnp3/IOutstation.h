@@ -40,12 +40,12 @@ class IDataObserver;
 */
 class IOutstation : public IStack
 {
-	public:
-		IOutstation(Logger* apLogger, boost::asio::io_service* apService): IStack(apLogger, apService) {}
-		virtual ~IOutstation() {}
+public:
+	IOutstation(Logger* apLogger, boost::asio::io_service* apService): IStack(apLogger, apService) {}
+	virtual ~IOutstation() {}
 
-		/// @return Inteface used to load measurements into the outstation
-		virtual IDataObserver* GetDataObserver() = 0;
+	/// @return Inteface used to load measurements into the outstation
+	virtual IDataObserver* GetDataObserver() = 0;
 };
 
 }

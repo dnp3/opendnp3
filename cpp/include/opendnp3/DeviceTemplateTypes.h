@@ -56,7 +56,7 @@ struct EventPointRecord : public PointRecord {
 
 /// DeadbandPointRecords have a parameter for controlling eventing tolerances
 struct DeadbandPointRecord : public EventPointRecord {
-		
+
 	DeadbandPointRecord(PointClass aPointClass, double aDeadband) :
 		EventPointRecord(aPointClass),
 		Deadband(aDeadband)

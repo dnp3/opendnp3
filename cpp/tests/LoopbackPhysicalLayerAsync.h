@@ -62,7 +62,7 @@ private:
 
 
 	void CheckForReadDispatch();
-	
+
 	std::deque<uint8_t> mWritten;
 
 	size_t mReadSize;

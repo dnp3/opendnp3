@@ -62,16 +62,15 @@ public:
 private:
 
 	template <class T>
-	static void Dispatch(IDataObserver* apObs, T& arMeas, size_t aIndex)
-	{
+	static void Dispatch(IDataObserver* apObs, T& arMeas, size_t aIndex) {
 		apObs->Update(arMeas, aIndex);
 	}
 
 
 	void _Clear();
-		
+
 	bool mNotify;
-	
+
 	std::deque<std::function<void (IDataObserver*)>> mChangeQueue;
 	std::mutex mMutex;
 };

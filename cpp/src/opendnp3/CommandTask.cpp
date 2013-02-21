@@ -40,14 +40,14 @@ namespace opendnp3
 
 CommandTask::CommandTask(Logger* apLogger) : MasterTaskBase(apLogger)
 {
-	
+
 }
 
 void CommandTask::Configure(const Formatter& arFormatter, const Responder& arResponder)
 {
 	mFormatter = arFormatter;
 	mResponder = arResponder;
-	mCodes.clear();	
+	mCodes.clear();
 }
 
 void CommandTask::AddCommandCode(FunctionCodes aCode)
@@ -57,7 +57,7 @@ void CommandTask::AddCommandCode(FunctionCodes aCode)
 
 void CommandTask::ConfigureRequest(APDU& arAPDU)
 {
-	if(mCodes.empty()) throw InvalidStateException(LOCATION, "No more functions in sequence");	
+	if(mCodes.empty()) throw InvalidStateException(LOCATION, "No more functions in sequence");
 	mValidator = mFormatter(arAPDU, mCodes.front());
 	mCodes.pop_front();
 }
@@ -81,8 +81,7 @@ TaskResult CommandTask::_OnPartialResponse(const APDU& arAPDU)
 TaskResult CommandTask::_OnFinalResponse(const APDU& arAPDU)
 {
 	CommandStatus cs = mValidator(arAPDU);
-	if(cs == CS_SUCCESS)
-	{
+	if(cs == CS_SUCCESS) {
 		if(mCodes.empty()) {
 			mResponder(cs);
 			return TR_SUCCESS;
@@ -94,7 +93,7 @@ TaskResult CommandTask::_OnFinalResponse(const APDU& arAPDU)
 		return TR_SUCCESS;
 	}
 }
-	
+
 } //ens ns
 
 

@@ -143,8 +143,8 @@ template <typename T>
 size_t Database::CalcNumType(const std::vector<T*>& arIdxVec)
 {
 	std::set<size_t> indexSet;
-	
-	for(auto i: arIdxVec) indexSet.insert(i->Index);
+
+for(auto i: arIdxVec) indexSet.insert(i->Index);
 
 	if(indexSet.size() > 0) return *indexSet.rbegin() + 1;
 	else return 0;
@@ -153,12 +153,12 @@ size_t Database::CalcNumType(const std::vector<T*>& arIdxVec)
 template<typename T>
 inline void Database::SetAllOnline( std::vector< PointInfo<T> >& arVector )
 {
-	for(auto info: arVector) info.mValue.SetQuality(T::ONLINE);
+for(auto info: arVector) info.mValue.SetQuality(T::ONLINE);
 }
 
 template<typename T>
 inline void Database::AssignIndices( std::vector< PointInfo<T> >& arVector )
-{	
+{
 	for(size_t i = 0; i < arVector.size(); i++) {
 		arVector[i].mIndex = i;
 	}

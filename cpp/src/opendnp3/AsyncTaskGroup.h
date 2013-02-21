@@ -58,7 +58,7 @@ class ITimer;
 class AsyncTaskGroup : private Uncopyable
 {
 	friend class AsyncTaskBase;
-	friend class AsyncTaskContinuous;	
+	friend class AsyncTaskContinuous;
 
 public:
 
@@ -101,7 +101,7 @@ private:
 	ITimeSource* mpTimeSrc;
 	ITimer* mpTimer;
 
-	
+
 
 	typedef std::vector< AsyncTaskBase* > TaskVec;
 	TaskVec mTaskVec;

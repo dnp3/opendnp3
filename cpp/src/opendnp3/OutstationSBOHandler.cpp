@@ -29,7 +29,7 @@
 
 #include "OutstationSBOHandler.h"
 
-namespace opendnp3 
+namespace opendnp3
 {
 
 OutstationSBOHandler::OutstationSBOHandler(millis_t aSelectTimeout, ICommandHandler* apCmdHandler, ITimeSource* apTimeSource) :
@@ -89,7 +89,7 @@ CommandStatus OutstationSBOHandler::Operate(const AnalogOutputFloat32& arCommand
 {
 	return Operate(arCommand, aIndex, aSequence, aCode, mAnalogFloatSelectMap);
 }
-	
+
 CommandStatus OutstationSBOHandler::Select(const AnalogOutputDouble64& arCommand, size_t aIndex, uint8_t aSequence, QualifierCode aCode)
 {
 	return Select(arCommand, aIndex, aSequence, aCode, mAnalogDoubleSelectMap);
@@ -99,5 +99,5 @@ CommandStatus OutstationSBOHandler::Operate(const AnalogOutputDouble64& arComman
 {
 	return Operate(arCommand, aIndex, aSequence, aCode, mAnalogDoubleSelectMap);
 }
-		
+
 }

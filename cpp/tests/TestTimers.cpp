@@ -56,10 +56,9 @@ public:
 		exe(&mStrand),
 		mLast(-1),
 		mNum(0),
-		mMonotonic(true)		
-	{
-		
-	}	
+		mMonotonic(true) {
+
+	}
 
 	void Receive(int aVal) {
 		if(aVal <= mLast) mMonotonic = false;
@@ -87,7 +86,7 @@ private:
 
 	int mLast;
 	int mNum;
-	bool mMonotonic;		
+	bool mMonotonic;
 };
 
 class MockTimerHandler
@@ -117,7 +116,9 @@ BOOST_AUTO_TEST_CASE(TestOrderedDispatch)
 	TimerTestObject test;
 
 	for(int i = 0; i < NUM; ++i) {
-		test.exe.Post([&test,i](){ test.Receive(i); });
+		test.exe.Post([&test, i]() {
+			test.Receive(i);
+		});
 	}
 
 	{

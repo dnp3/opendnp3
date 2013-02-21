@@ -40,7 +40,7 @@ namespace opendnp3
 DNP3Channel::DNP3Channel(Logger* apLogger, millis_t aOpenRetry, boost::asio::io_service* apService, IPhysicalLayerAsync* apPhys, ITimeSource* apTimeSource, std::function<void (DNP3Channel*)> aOnShutdown) :
 	Loggable(apLogger),
 	mpService(apService),
-	mpPhys(apPhys), 
+	mpPhys(apPhys),
 	mOnShutdown(aOnShutdown),
 	mRouter(apLogger->GetSubLogger("Router"), mpPhys.get(), aOpenRetry),
 	mGroup(apPhys->GetExecutor(), apTimeSource)
@@ -50,7 +50,7 @@ DNP3Channel::DNP3Channel(Logger* apLogger, millis_t aOpenRetry, boost::asio::io_
 
 DNP3Channel::~DNP3Channel()
 {
-	this->Cleanup();	
+	this->Cleanup();
 }
 
 void DNP3Channel::Shutdown()
@@ -66,10 +66,10 @@ void DNP3Channel::AddStateListener(std::function<void (ChannelState)> aListener)
 
 void DNP3Channel::Cleanup()
 {
-	std::set<IStack*> copy(mStacks);	
-	for(auto pStack: copy) pStack->Shutdown();
+	std::set<IStack*> copy(mStacks);
+for(auto pStack: copy) pStack->Shutdown();
 	{
-		ExecutorPause p(mpPhys->GetExecutor());		
+		ExecutorPause p(mpPhys->GetExecutor());
 		this->mGroup.Shutdown();	// no more task callbacks
 		this->mRouter.Shutdown();	// start shutting down the router
 	}
@@ -80,14 +80,14 @@ IMaster* DNP3Channel::AddMaster(const std::string& arLoggerId, FilterLevel aLeve
 {
 	auto pLogger = mpLogger->GetSubLogger(arLoggerId, aLevel);
 	LinkRoute route(arCfg.link.RemoteAddr, arCfg.link.LocalAddr);
-	auto pMaster = new MasterStackImpl(pLogger, mpService, mpPhys->GetExecutor(), apPublisher, &mGroup, arCfg, [this, route](IStack* apStack){ 
+	auto pMaster = new MasterStackImpl(pLogger, mpService, mpPhys->GetExecutor(), apPublisher, &mGroup, arCfg, [this, route](IStack * apStack) {
 		this->OnStackShutdown(apStack, route);
 	});
 	pMaster->SetLinkRouter(&mRouter);
 	mStacks.insert(pMaster);
 	{
 		ExecutorPause p(mpPhys->GetExecutor());
-		mRouter.AddContext(pMaster->GetLinkContext(), route);	
+		mRouter.AddContext(pMaster->GetLinkContext(), route);
 	}
 	return pMaster;
 }
@@ -96,14 +96,14 @@ IOutstation* DNP3Channel::AddOutstation(const std::string& arLoggerId, FilterLev
 {
 	auto pLogger = mpLogger->GetSubLogger(arLoggerId, aLevel);
 	LinkRoute route(arCfg.link.RemoteAddr, arCfg.link.LocalAddr);
-	auto pOutstation = new OutstationStackImpl(pLogger, mpService, mpPhys->GetExecutor(), apCmdHandler, arCfg, [this, route](IStack* apStack){ 
-		this->OnStackShutdown(apStack, route); 
+	auto pOutstation = new OutstationStackImpl(pLogger, mpService, mpPhys->GetExecutor(), apCmdHandler, arCfg, [this, route](IStack * apStack) {
+		this->OnStackShutdown(apStack, route);
 	});
 	pOutstation->SetLinkRouter(&mRouter);
 	mStacks.insert(pOutstation);
 	{
 		ExecutorPause p(mpPhys->GetExecutor());
-		mRouter.AddContext(pOutstation->GetLinkContext(), route);	
+		mRouter.AddContext(pOutstation->GetLinkContext(), route);
 	}
 	return pOutstation;
 }

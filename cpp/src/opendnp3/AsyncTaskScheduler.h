@@ -60,7 +60,7 @@ public:
 
 private:
 	std::mutex mMutex;
-	
+
 	ITimeSource* mpTimeSrc;
 	typedef std::set<AsyncTaskGroup*> GroupSet;
 	GroupSet mGroupSet;

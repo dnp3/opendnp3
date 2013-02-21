@@ -48,12 +48,12 @@ public:
 
 	MasterStackImpl(
 	        Logger*,
-			boost::asio::io_service* apService,
+	        boost::asio::io_service* apService,
 	        IExecutor* apExecutor,
 	        IDataObserver* apPublisher,
 	        AsyncTaskGroup* apTaskGroup,
 	        const MasterStackConfig& arCfg,
-			std::function<void (IMaster*)> aOnShutdown);	
+	        std::function<void (IMaster*)> aOnShutdown);
 
 	ICommandProcessor* GetCommandProcessor();
 
@@ -66,11 +66,11 @@ public:
 	void Shutdown();
 
 protected:
-	
+
 	IVtoWriter* GetVtoWriter();
 	IVtoReader* GetVtoReader();
 
-private:	
+private:
 	IExecutor* mpExecutor;
 	ApplicationStack mAppStack;
 	Master mMaster;

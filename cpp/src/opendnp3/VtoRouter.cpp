@@ -53,7 +53,7 @@ VtoRouter::VtoRouter(const VtoRouterSettings& arSettings, Logger* apLogger, IVto
 {
 	assert(apLogger != NULL);
 	assert(apWriter != NULL);
-	assert(apPhysLayer != NULL);	
+	assert(apPhysLayer != NULL);
 }
 
 IExecutor* VtoRouter::GetExecutor()
@@ -64,7 +64,7 @@ IExecutor* VtoRouter::GetExecutor()
 void VtoRouter::OnVtoDataReceived(const VtoData& arData)
 {
 	// this callback may be coming from another strand (i.e. a stack) and therefore must be synchronized
-	mpPhys->GetExecutor()->Post([this, arData](){
+	mpPhys->GetExecutor()->Post([this, arData]() {
 
 		LOG_BLOCK(LEV_DEBUG, "GotRemoteData: " << arData.GetSize() << " Type: " << ToString(arData.GetType()));
 
@@ -178,7 +178,9 @@ void VtoRouter::FlushBuffers()
 void VtoRouter::OnBufferAvailable()
 {
 	// this callback may be coming from another strand (i.e. a stack) and therefore must be synchronized
-	mpPhys->GetExecutor()->Post([this](){ this->CheckForVtoWrite(); });	
+	mpPhys->GetExecutor()->Post([this]() {
+		this->CheckForVtoWrite();
+	});
 }
 
 void VtoRouter::OnPhysicalLayerOpenSuccessCallback()

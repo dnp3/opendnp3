@@ -136,31 +136,30 @@ public:
 	}
 
 	// These methods are inherited privately
-	void SelectAndOperate(const ControlRelayOutputBlock& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback);		
+	void SelectAndOperate(const ControlRelayOutputBlock& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback);
 	void DirectOperate(const ControlRelayOutputBlock& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback);
 
-	void SelectAndOperate(const AnalogOutputInt16& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback);		
+	void SelectAndOperate(const AnalogOutputInt16& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback);
 	void DirectOperate(const AnalogOutputInt16& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback);
 
-	void SelectAndOperate(const AnalogOutputInt32& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback);		
+	void SelectAndOperate(const AnalogOutputInt32& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback);
 	void DirectOperate(const AnalogOutputInt32& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback);
 
-	void SelectAndOperate(const AnalogOutputFloat32& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback);		
+	void SelectAndOperate(const AnalogOutputFloat32& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback);
 	void DirectOperate(const AnalogOutputFloat32& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback);
 
-	void SelectAndOperate(const AnalogOutputDouble64& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback);		
+	void SelectAndOperate(const AnalogOutputDouble64& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback);
 	void DirectOperate(const AnalogOutputDouble64& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback);
 
 private:
 
 	template <class T>
-	void ConfigureCommandTask(const T& arCommand, size_t aIndex, CommandObject<T>* apObj, std::function<void (CommandResponse)> aCallback)
-	{
-		auto formatter = [=](APDU& arAPDU, FunctionCodes aCode){ 		
+	void ConfigureCommandTask(const T& arCommand, size_t aIndex, CommandObject<T>* apObj, std::function<void (CommandResponse)> aCallback) {
+		auto formatter = [ = ](APDU & arAPDU, FunctionCodes aCode) {
 			return CommandHelpers::ConfigureRequest(arAPDU, aCode, arCommand, aIndex, apObj);
 		};
-		auto responder = [=](CommandStatus aStatus){
-			mpExecutor->Post([=](){ 
+		auto responder = [ = ](CommandStatus aStatus) {
+			mpExecutor->Post([ = ]() {
 				aCallback(CommandResponse(aStatus));
 			});
 		};
@@ -184,7 +183,7 @@ private:
 	void ProcessIIN(const IINField& arIIN);	// Analyze IIN bits and react accordingly
 	void ProcessDataResponse(const APDU&);	// Read data output of solicited or unsolicited response and publish
 	void StartTask(MasterTaskBase*, bool aInit);	// Starts a task running
-	
+
 	QueuedCommandProcessor mCommandQueue;				// Threadsafe queue for buffering command requests
 
 	/**
@@ -206,7 +205,7 @@ private:
 
 	IAppLayer* mpAppLayer;					// lower application layer
 	IDataObserver* mpPublisher;				// where the data measurements are pushed
-	AsyncTaskGroup* mpTaskGroup;			// How task execution is controlled	
+	AsyncTaskGroup* mpTaskGroup;			// How task execution is controlled
 	ITimeSource* mpTimeSrc;					// Access to UTC, normally system time but can be a mock for testing
 
 	AMS_Base* mpState;						// Pointer to active state, start in TLS_Closed
@@ -214,8 +213,9 @@ private:
 	ITask* mpScheduledTask;					// The current scheduled task
 	StackState mState;						// Current state of the master
 
-	StackState GetState()
-	{ return mState; }
+	StackState GetState() {
+		return mState;
+	}
 
 	/* --- Task plumbing --- */
 

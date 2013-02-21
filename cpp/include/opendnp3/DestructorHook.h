@@ -41,18 +41,18 @@ namespace opendnp3
 */
 class DestructorHook
 {
-	public:
+public:
 
-		virtual ~DestructorHook();
+	virtual ~DestructorHook();
 
-		/**
-		* Adds a destructor callback
-		* @param aHook Callback that will be invoked when this class's destructor is called.
-		*/
-		void AddDestructorHook(std::function<void ()> aHook);
-		
-	private:
-		std::vector<std::function<void ()>> mHooks;
+	/**
+	* Adds a destructor callback
+	* @param aHook Callback that will be invoked when this class's destructor is called.
+	*/
+	void AddDestructorHook(std::function<void ()> aHook);
+
+private:
+	std::vector<std::function<void ()>> mHooks;
 };
 
 }

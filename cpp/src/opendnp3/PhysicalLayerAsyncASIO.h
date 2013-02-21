@@ -57,8 +57,7 @@ public:
 
 	virtual ~PhysicalLayerAsyncASIO() {}
 
-	IExecutor* GetExecutor()
-	{
+	IExecutor* GetExecutor() {
 		return &mExecutor;
 	}
 

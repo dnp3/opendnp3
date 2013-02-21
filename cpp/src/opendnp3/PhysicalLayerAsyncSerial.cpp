@@ -50,12 +50,12 @@ namespace opendnp3
 {
 
 PhysicalLayerAsyncSerial::PhysicalLayerAsyncSerial(
-    Logger* apLogger,
-    boost::asio::io_service* apIOService,
-    const SerialSettings& arSettings) :
+        Logger* apLogger,
+        boost::asio::io_service* apIOService,
+        const SerialSettings& arSettings) :
 
 	PhysicalLayerAsyncASIO(apLogger, apIOService),
-	mSettings(arSettings),	
+	mSettings(arSettings),
 	mPort(*apIOService)
 {
 
@@ -89,24 +89,24 @@ void PhysicalLayerAsyncSerial::DoOpenSuccess()
 void PhysicalLayerAsyncSerial::DoAsyncRead(uint8_t* apBuffer, size_t aMaxBytes)
 {
 	mPort.async_read_some(buffer(apBuffer, aMaxBytes),
-						mStrand.wrap(
-	                      std::bind(&PhysicalLayerAsyncSerial::OnReadCallback,
-	                                  this,
-									  std::placeholders::_1,
-	                                  apBuffer,
-									  std::placeholders::_2)
-									  ));
+	                      mStrand.wrap(
+	                              std::bind(&PhysicalLayerAsyncSerial::OnReadCallback,
+	                                        this,
+	                                        std::placeholders::_1,
+	                                        apBuffer,
+	                                        std::placeholders::_2)
+	                      ));
 }
 
 void PhysicalLayerAsyncSerial::DoAsyncWrite(const uint8_t* apBuffer, size_t aNumBytes)
 {
 	async_write(mPort, buffer(apBuffer, aNumBytes),
-		mStrand.wrap(
-	            std::bind(&PhysicalLayerAsyncSerial::OnWriteCallback,
-	                        this,
-							std::placeholders::_1,
-	                        aNumBytes)
-					));
+	            mStrand.wrap(
+	                    std::bind(&PhysicalLayerAsyncSerial::OnWriteCallback,
+	                              this,
+	                              std::placeholders::_1,
+	                              aNumBytes)
+	            ));
 }
 
 }

@@ -53,9 +53,9 @@ void VtoReader::AddVtoChannel(IVtoDataHandler* apCallbacks)
 		out << (int)id;
 
 		throw ArgumentException(
-		    LOCATION,
-		    "Channel already registered: " +
-		    out.str() );
+		        LOCATION,
+		        "Channel already registered: " +
+		        out.str() );
 	}
 
 	/* Register the callbacks for the channel id */

@@ -40,9 +40,9 @@ namespace opendnp3
 */
 class ICommandHandler
 {
-	public:
-	virtual ~ICommandHandler(){}
-	
+public:
+	virtual ~ICommandHandler() {}
+
 	virtual CommandStatus Select(const ControlRelayOutputBlock& arCommand, size_t aIndex) = 0;
 	virtual CommandStatus Operate(const ControlRelayOutputBlock& arCommand, size_t aIndex) = 0;
 	virtual CommandStatus DirectOperate(const ControlRelayOutputBlock& arCommand, size_t aIndex) = 0;

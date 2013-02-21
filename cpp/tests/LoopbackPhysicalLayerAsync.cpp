@@ -41,7 +41,7 @@ namespace opendnp3
 {
 
 LoopbackPhysicalLayerAsync::LoopbackPhysicalLayerAsync(Logger* apLogger, boost::asio::io_service* apSrv) :
-	PhysicalLayerAsyncASIO(apLogger, apSrv),	
+	PhysicalLayerAsyncASIO(apLogger, apSrv),
 	mReadSize(0),
 	mpReadBuff(NULL)
 {

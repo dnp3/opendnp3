@@ -36,24 +36,26 @@ namespace opendnp3
 
 SubjectBase::SubjectBase()
 {
-	
+
 }
-	
-void SubjectBase::AddObserver(std::function<void ()> aCallback) 
+
+void SubjectBase::AddObserver(std::function<void ()> aCallback)
 {
 	std::lock_guard<std::mutex> lock(mSubjectMutex);
 	mObservers.push_back(aCallback);
-}	
+}
 
 void SubjectBase::AddObserver(IExecutor* apExecutor, std::function<void ()> aCallback)
 {
-	this->AddObserver([apExecutor, aCallback](){  apExecutor->Post(aCallback); });
+	this->AddObserver([apExecutor, aCallback]() {
+		apExecutor->Post(aCallback);
+	});
 }
 
 void SubjectBase::NotifyObservers()
 {
 	std::lock_guard<std::mutex> lock(mSubjectMutex);
-	for(auto obs: mObservers) obs();
+for(auto obs: mObservers) obs();
 }
 
 

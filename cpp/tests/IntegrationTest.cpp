@@ -46,9 +46,9 @@
 using namespace std;
 using namespace opendnp3;
 
-IntegrationTest::IntegrationTest(FilterLevel aLevel, boost::uint16_t aStartPort, size_t aNumPairs, size_t aNumPoints) :	
+IntegrationTest::IntegrationTest(FilterLevel aLevel, boost::uint16_t aStartPort, size_t aNumPairs, size_t aNumPoints) :
 	M_START_PORT(aStartPort),
-	mMgr(std::thread::hardware_concurrency()),	
+	mMgr(std::thread::hardware_concurrency()),
 	NUM_POINTS(aNumPoints)
 {
 	this->InitLocalObserver();
@@ -140,9 +140,9 @@ void IntegrationTest::AddStackPair(FilterLevel aLevel, size_t aNumPoints)
 
 	std::shared_ptr<ComparingDataObserver> pMasterFDO(new ComparingDataObserver(&mLocalFDO));
 	mMasterObservers.push_back(pMasterFDO);
-	
+
 	auto pClient = this->mMgr.AddTCPClient(client, aLevel, 1000, "127.0.0.1", port);
-	auto pServer = this->mMgr.AddTCPServer(server, aLevel, 1000, "127.0.0.1", port);	
+	auto pServer = this->mMgr.AddTCPServer(server, aLevel, 1000, "127.0.0.1", port);
 
 	/*
 	 * Add a Master instance.  The code is wrapped in braces so that we can
@@ -155,7 +155,7 @@ void IntegrationTest::AddStackPair(FilterLevel aLevel, size_t aNumPoints)
 		cfg.master.EnableUnsol = true;
 		cfg.master.DoUnsolOnStartup = true;
 		cfg.master.UnsolClassMask = PC_ALL_EVENTS;
-		pClient->AddMaster(client, aLevel, pMasterFDO.get(), cfg);		
+		pClient->AddMaster(client, aLevel, pMasterFDO.get(), cfg);
 	}
 
 	/*

@@ -88,11 +88,11 @@ private:
 
 template <class T>
 void ComparingDataObserver::DescribeAny(const typename PointMap<T>::Type& arMap, const CompareMap& arCompareMap)
-{	
-	for(auto pair: arMap) {
+{
+for(auto pair: arMap) {
 		CompareMap::const_iterator j = arCompareMap.find(pair.first);
 		if(j == arCompareMap.end()) {
-			std::cout << "Missing: " << pair.first << " - " << pair.second.ToString() << std::endl;			
+			std::cout << "Missing: " << pair.first << " - " << pair.second.ToString() << std::endl;
 		}
 	}
 }
@@ -105,10 +105,10 @@ void ComparingDataObserver::UpdateAny(const T& arPoint, size_t aIndex, const typ
 		std::cout << "Unexpected index: " << aIndex << " - " << arPoint.ToString() << std::endl;
 	}
 	else {
-		if(i->second == arPoint) {			
+		if(i->second == arPoint) {
 			arCompareMap[aIndex] = true;
 		}
-		else {			
+		else {
 			arCompareMap.erase(aIndex);
 		}
 	}

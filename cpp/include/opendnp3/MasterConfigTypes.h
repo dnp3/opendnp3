@@ -37,8 +37,7 @@ namespace  opendnp3
 /**
 * Represents an exception scan
 */
-struct ExceptionScan 
-{
+struct ExceptionScan {
 	/// Bitmask for which classes will be scanned
 	int ClassMask;
 

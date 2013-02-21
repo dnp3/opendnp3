@@ -170,8 +170,8 @@ void VtoWriter::NotifyAllCallbacks()
 		std::unique_lock<std::mutex> lock(mMutex);
 		set = mCallbacks;
 	}
-	
-	for(auto pCallback: set) pCallback->OnBufferAvailable();	
+
+for(auto pCallback: set) pCallback->OnBufferAvailable();
 }
 
 size_t VtoWriter::Size()

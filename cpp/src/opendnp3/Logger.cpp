@@ -41,7 +41,7 @@ Logger::Logger(EventLog* apLog, FilterLevel aFilter, const std::string& aName)
 	:
 	mLevel(0),
 	mpLog(apLog),
-	mName(aName)	
+	mName(aName)
 {
 	this->SetFilterLevel(aFilter);
 }
@@ -55,7 +55,7 @@ Logger* Logger::GetSubLogger(std::string aSubName, int aFilterBits)
 {
 	std::ostringstream oss;
 	oss << mName << "." << aSubName;
-	Logger* pLogger = mpLog->GetLogger(LEV_WARNING, oss.str());	
+	Logger* pLogger = mpLog->GetLogger(LEV_WARNING, oss.str());
 	pLogger->mLevel = aFilterBits;
 	return pLogger;
 }

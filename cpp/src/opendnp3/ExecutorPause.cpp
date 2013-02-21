@@ -34,13 +34,15 @@
 namespace opendnp3
 {
 
-ExecutorPause::ExecutorPause(IExecutor* apExecutor) : 
+ExecutorPause::ExecutorPause(IExecutor* apExecutor) :
 	mpExecutor(apExecutor),
 	mPaused(false),
 	mComplete(false),
 	mExit(false)
 {
-	mpExecutor->Post([this](){ this->Pause(); });
+	mpExecutor->Post([this]() {
+		this->Pause();
+	});
 	std::unique_lock<std::mutex> lock(mMutex);
 	while(!mPaused) mCondition.wait(lock);
 }

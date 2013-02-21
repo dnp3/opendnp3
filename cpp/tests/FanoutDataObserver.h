@@ -43,31 +43,31 @@ public:
 	}
 
 	void _Start() {
-		for(IDataObserver* pObs: mObservers) pObs->Start();
+for(IDataObserver * pObs: mObservers) pObs->Start();
 	}
 	void _End() {
-		for(IDataObserver *pObs: mObservers) pObs->End();
-		
-		
+for(IDataObserver * pObs: mObservers) pObs->End();
+
+
 	}
 
 	void _Update(const Binary& arPoint, size_t aIndex) {
-		for(IDataObserver* pObs: mObservers) pObs->Update(arPoint, aIndex);
+for(IDataObserver * pObs: mObservers) pObs->Update(arPoint, aIndex);
 	}
 	void _Update(const Analog& arPoint, size_t aIndex) {
-		for(IDataObserver* pObs: mObservers) pObs->Update(arPoint, aIndex);
+for(IDataObserver * pObs: mObservers) pObs->Update(arPoint, aIndex);
 	}
 	void _Update(const Counter& arPoint, size_t aIndex) {
-		for(IDataObserver* pObs: mObservers) pObs->Update(arPoint, aIndex);
+for(IDataObserver * pObs: mObservers) pObs->Update(arPoint, aIndex);
 	}
 	void _Update(const ControlStatus& arPoint, size_t aIndex) {
-		for(IDataObserver* pObs: mObservers) pObs->Update(arPoint, aIndex);
+for(IDataObserver * pObs: mObservers) pObs->Update(arPoint, aIndex);
 	}
 	void _Update(const SetpointStatus& arPoint, size_t aIndex) {
-		for(IDataObserver* pObs: mObservers) pObs->Update(arPoint, aIndex);
+for(IDataObserver * pObs: mObservers) pObs->Update(arPoint, aIndex);
 	}
 
-private:	
+private:
 	std::vector<IDataObserver*> mObservers;
 };
 

@@ -122,7 +122,7 @@ BOOST_AUTO_TEST_CASE(ContinousTask)
 	MockExecutor exe;
 	AsyncTaskScheduler ats;
 
-	
+
 	AsyncTaskGroup* pGroup = ats.CreateNewGroup(&exe);
 
 	AsyncTaskContinuous* pT1 = pGroup->AddContinuous(0, mth.GetHandler());
@@ -147,7 +147,7 @@ BOOST_AUTO_TEST_CASE(ContinousTask)
 	BOOST_REQUIRE_EQUAL(mth.Size(), 1);
 	BOOST_REQUIRE_EQUAL(mth.Front(), pT1);
 	pT1->Disable();
-	
+
 }
 
 // Two groups that execute independently of one another
@@ -157,7 +157,7 @@ BOOST_AUTO_TEST_CASE(DecoupledGroupsMode)
 	MockExecutor exe;
 	AsyncTaskScheduler ats;
 
-	
+
 	AsyncTaskGroup* pGroup1 = ats.CreateNewGroup(&exe);
 	AsyncTaskGroup* pGroup2 = ats.CreateNewGroup(&exe);
 
@@ -177,13 +177,13 @@ BOOST_AUTO_TEST_CASE(DecoupledGroupsMode)
 BOOST_AUTO_TEST_CASE(NonPeriodic)
 {
 	MockTaskHandler mth;
-	
+
 	MockTimeSource fakeTime;
 	fakeTime.SetToNow();
 	MockExecutor exe;
 	AsyncTaskScheduler ats(&fakeTime);
 
-	
+
 	AsyncTaskGroup* pGroup = ats.CreateNewGroup(&exe);
 
 
@@ -215,7 +215,7 @@ BOOST_AUTO_TEST_CASE(PriorityBreaksTies)
 	MockTaskHandler mth;
 	MockExecutor exe;
 	AsyncTaskScheduler ats;
-	
+
 	AsyncTaskGroup* pGroup = ats.CreateNewGroup(&exe);
 
 	pGroup->Add(100, 100, 0, mth.GetHandler());
@@ -232,7 +232,7 @@ BOOST_AUTO_TEST_CASE(DependenciesEnforced)
 	MockTaskHandler mth;
 	MockExecutor exe;
 	AsyncTaskScheduler ats;
-	
+
 	AsyncTaskGroup* pGroup = ats.CreateNewGroup(&exe);
 	AsyncTaskBase* pT1 = pGroup->Add(100, 100, 0, mth.GetHandler());
 	AsyncTaskBase* pT2 = pGroup->Add(100, 100, 0, mth.GetHandler());
@@ -246,14 +246,14 @@ BOOST_AUTO_TEST_CASE(DependenciesEnforced)
 }
 
 BOOST_AUTO_TEST_CASE(TimerUsage)
-{		
+{
 	MockTaskHandler mth;
 	MockTimeSource fake_time;
 	MockExecutor exe;
 	AsyncTaskScheduler ats(&fake_time);
 
 	fake_time.SetToNow();
-	
+
 	AsyncTaskGroup* pGroup = ats.CreateNewGroup(&exe);
 	AsyncTaskBase* pT1 = pGroup->Add(1000, 100, 0, mth.GetHandler());
 	AsyncTaskBase* pT2 = pGroup->Add(1500, 100, 0, mth.GetHandler());

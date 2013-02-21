@@ -48,21 +48,21 @@ class CommandTask : public MasterTaskBase
 	typedef std::function<void (CommandStatus)> Responder;
 
 public:
-	CommandTask(Logger*);	
+	CommandTask(Logger*);
 
 	void Configure(const Formatter& arFormatter, const Responder& arResponder);
-	void AddCommandCode(FunctionCodes aCode); 
+	void AddCommandCode(FunctionCodes aCode);
 
 	void ConfigureRequest(APDU& arAPDU);
 
 	std::string Name() const;
 
-protected:	
+protected:
 
 	Formatter mFormatter;
-	Validator mValidator;	
+	Validator mValidator;
 	Responder mResponder;
-	
+
 	// override from base class
 	void OnFailure();
 

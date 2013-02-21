@@ -102,8 +102,8 @@ bool FlexibleDataObserver::StrictEquality(const T& arMap1, const T& arMap2)
 
 template<class T>
 bool FlexibleDataObserver::IsSubsetOf(const T& arMap1, const T& arMap2)
-{	
-	for(auto pair1: arMap1) {
+{
+for(auto pair1: arMap1) {
 		typename T::const_iterator j = arMap2.find(pair1.first);
 		if(j == arMap2.end()) return false;
 		if(j->second != pair1.second) return false;

@@ -43,7 +43,7 @@ namespace opendnp3
 Configuration information for the dnp3 master
 */
 struct MasterConfig {
-	
+
 	/// Default constructor
 	MasterConfig() :
 		FragSize(DEFAULT_FRAG_SIZE),
@@ -54,7 +54,7 @@ struct MasterConfig {
 		EnableUnsol(true),
 		UnsolClassMask(PC_ALL_EVENTS),
 		IntegrityRate(5000),
-		TaskRetryRate(5000)		
+		TaskRetryRate(5000)
 	{}
 
 	/** Adds a periodic exception scan to the configuration

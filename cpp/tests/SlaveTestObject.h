@@ -48,7 +48,7 @@ public:
 	SlaveTestObject(const SlaveConfig& arCfg, FilterLevel aLevel = LEV_INFO, bool aImmediate = false);
 
 	void SendToSlave(const std::string& arData, SequenceInfo aSeq = SI_OTHER);
-	
+
 	std::string Read();
 
 	bool NothingToRead();
@@ -62,7 +62,7 @@ public:
 	MockTimeManager fakeTime;
 	MockExecutor mts;
 	MockAppLayer app;
-	Database db;	
+	Database db;
 	MockCommandHandler cmdHandler;
 	Slave slave;
 	APDU mAPDU;

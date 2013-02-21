@@ -58,11 +58,11 @@ Master::Master(Logger* apLogger, MasterConfig aCfg, IAppLayer* apAppLayer, IData
 	mRequest(aCfg.FragSize),
 	mpAppLayer(apAppLayer),
 	mpPublisher(apPublisher),
-	mpTaskGroup(apTaskGroup),	
+	mpTaskGroup(apTaskGroup),
 	mpTimeSrc(apTimeSrc),
 	mpState(AMS_Closed::Inst()),
 	mpTask(NULL),
-	mpScheduledTask(NULL),	
+	mpScheduledTask(NULL),
 	mState(SS_UNKNOWN),
 	mSchedule(apTaskGroup, this, aCfg),
 	mClassPoll(apLogger, apPublisher, &mVtoReader),
@@ -77,7 +77,7 @@ Master::Master(Logger* apLogger, MasterConfig aCfg, IAppLayer* apAppLayer, IData
 	 * mSchedule.mpCommandTask.  When new data is written to mCommandQueue,
 	 * wake up mpCommandTask to process the data.
 	 */
-	mCommandQueue.AddObserver(mpExecutor, [this](){ 
+	mCommandQueue.AddObserver(mpExecutor, [this]() {
 		this->mSchedule.mpCommandTask->Enable();
 	});
 
@@ -86,8 +86,8 @@ Master::Master(Logger* apLogger, MasterConfig aCfg, IAppLayer* apAppLayer, IData
 	 * mSchedule.mpVtoTransmitTask.  When new data is written to
 	 * mVtoWriter, wake up the mSchedule.mpVtoTransmitTask.
 	 */
-	mVtoWriter.AddObserver(mpExecutor, [this](){ 
-		this->mSchedule.mpVtoTransmitTask->Enable(); 
+	mVtoWriter.AddObserver(mpExecutor, [this]() {
+		this->mSchedule.mpVtoTransmitTask->Enable();
 	});
 
 	/*
@@ -139,9 +139,9 @@ void Master::ProcessIIN(const IINField& arIIN)
 void Master::ProcessCommand(ITask* apTask)
 {
 	if(mpState == AMS_Closed::Inst()) { //we're closed
-		ConstantCommandProcessor ccp(mpExecutor, CS_HARDWARE_ERROR);			
+		ConstantCommandProcessor ccp(mpExecutor, CS_HARDWARE_ERROR);
 		while(mCommandQueue.Dispatch(&ccp));
-		apTask->Disable();				
+		apTask->Disable();
 	}
 	else {
 		if(mCommandQueue.Dispatch(this)) {

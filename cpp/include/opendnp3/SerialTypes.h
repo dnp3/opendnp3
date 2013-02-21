@@ -34,7 +34,7 @@
 namespace opendnp3
 {
 
-/// Enumeration for setting serial port parity 
+/// Enumeration for setting serial port parity
 enum ParityType {
 	PAR_NONE = 0,
 	PAR_EVEN = 1,

@@ -252,7 +252,7 @@ bool FlexibleDataObserver::CheckQual(typename PointMap<T>::Type& arMap, uint8_t 
 template <class T>
 void FlexibleDataObserver::SetQuality(uint8_t aQuality, typename PointMap<T>::Type& arMap)
 {
-	for(auto pair: arMap) pair->second.SetQuality(aQuality);	
+for(auto pair: arMap) pair->second.SetQuality(aQuality);
 }
 
 template <class T>
@@ -264,8 +264,8 @@ void FlexibleDataObserver::Load(const T& arPoint, typename PointMap<T>::Type& ar
 template <class T>
 void FlexibleDataObserver::Print(typename PointMap<T>::Type& arMap)
 {
-	int j = 0;	
-	for(auto pair : arMap) {	
+	int j = 0;
+for(auto pair : arMap) {
 		std::cout << j << ", " << pair.second.GetValue() << ", " << static_cast<int>(pair.second.GetQuality()) << std::endl;
 		++j;
 	}

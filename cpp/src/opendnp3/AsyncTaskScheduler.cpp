@@ -41,7 +41,7 @@ using namespace std;
 namespace opendnp3
 {
 
-AsyncTaskScheduler::AsyncTaskScheduler(ITimeSource* apTimeSrc) :	
+AsyncTaskScheduler::AsyncTaskScheduler(ITimeSource* apTimeSrc) :
 	mpTimeSrc(apTimeSrc)
 {
 
@@ -49,7 +49,7 @@ AsyncTaskScheduler::AsyncTaskScheduler(ITimeSource* apTimeSrc) :
 
 AsyncTaskScheduler::~AsyncTaskScheduler()
 {
-	for(auto pTaskGroup: mGroupSet) delete pTaskGroup;
+for(auto pTaskGroup: mGroupSet) delete pTaskGroup;
 }
 
 AsyncTaskGroup* AsyncTaskScheduler::CreateNewGroup(IExecutor* apExecutor)

@@ -41,13 +41,13 @@ namespace opendnp3
 
 class IOServiceThreadPool : private Loggable
 {
-	public:
-	
+public:
+
 	IOServiceThreadPool(
-		Logger* apLogger,
-		uint32_t aConcurrency,
-		std::function<void()> onThreadStart = [](){},
-		std::function<void()> onThreadExit = [](){}
+	        Logger* apLogger,
+	        uint32_t aConcurrency,
+	std::function<void()> onThreadStart = []() {},
+	std::function<void()> onThreadExit = []() {}
 	);
 
 	~IOServiceThreadPool();
@@ -56,7 +56,7 @@ class IOServiceThreadPool : private Loggable
 
 	void Shutdown();
 
-	private:
+private:
 
 	std::function<void ()> mOnThreadStart;
 	std::function<void ()> mOnThreadExit;
@@ -68,7 +68,7 @@ class IOServiceThreadPool : private Loggable
 	void Run();
 
 	boost::asio::io_service mService;
-	boost::asio::high_resolution_timer mInfiniteTimer;	
+	boost::asio::high_resolution_timer mInfiniteTimer;
 	std::vector<std::thread*> mThreads;
 };
 

@@ -98,7 +98,7 @@ public:
 	 * @param arSettings	Settings for the router including the DNP3 Virtual Terminal port (channel id)
 	 * @param apLogger		the Logger that the instance should use for log messages
 	 * @param apWriter      Interface that the router will use to write vto objects
-	 * @param apPhysLayer   PhysicalLayer interface to which the router is bound	 
+	 * @param apPhysLayer   PhysicalLayer interface to which the router is bound
 	 *
 	 * @return				a new VtoRouter instance
 	 */
@@ -122,7 +122,7 @@ public:
 	void OnBufferAvailable();
 
 	IExecutor* GetExecutor(); //TODO this is kind of hack at the moment
-	
+
 
 protected:
 

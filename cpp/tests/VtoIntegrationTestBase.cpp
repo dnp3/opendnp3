@@ -42,15 +42,15 @@ namespace opendnp3
 {
 
 VtoIntegrationTestBase::VtoIntegrationTestBase(
-    bool clientOnSlave,
-    bool aImmediateOutput,    
-    FilterLevel level,
-    boost::uint16_t port) :
+        bool clientOnSlave,
+        bool aImmediateOutput,
+        FilterLevel level,
+        boost::uint16_t port) :
 
 	LogTester(),
 	Loggable(mpTestLogger),
-	mpMainLogger(mLog.GetLogger(level, "main")),	
-	testObj(),	
+	mpMainLogger(mLog.GetLogger(level, "main")),
+	testObj(),
 	vtoClient(mLog.GetLogger(level, "local-tcp-client"), testObj.GetService(), "127.0.0.1", port + 20),
 	vtoServer(mLog.GetLogger(level, "loopback-tcp-server"), testObj.GetService(), "127.0.0.1", port + 10),
 	mgr(std::thread::hardware_concurrency())
@@ -61,22 +61,22 @@ VtoIntegrationTestBase::VtoIntegrationTestBase(
 		mLog.AddLogSubscriber(LogToStdio::Inst());
 	}
 
-		
+
 	auto pServerChannel = mgr.AddTCPServer("dnp-tcp-server", level, 5000, "127.0.0.1", port);
 	SlaveStackConfig sconfig;
 	sconfig.app.NumRetry = 3;
 	sconfig.app.RspTimeout = 500;
 	auto pOutstation = pServerChannel->AddOutstation("outstation", level, &cmdHandler, sconfig);
-	
 
-	
+
+
 	auto pClientChannel = mgr.AddTCPClient("dnp-tcp-client", level, 5000, "127.0.0.1", port);
 	MasterStackConfig mconfig;
 	mconfig.app.NumRetry = 3;
 	mconfig.app.RspTimeout = 500;
 	mconfig.master.UseNonStandardVtoFunction = true;
 	auto pMaster = pClientChannel->AddMaster("master", level, &fdo, mconfig);
-	
+
 
 	// switch if master or slave gets the loopback half of the server
 
@@ -84,12 +84,12 @@ VtoIntegrationTestBase::VtoIntegrationTestBase(
 	auto pStack2 = clientOnSlave ? ((IStack*) pMaster) : ((IStack*) pOutstation);
 
 	pStack1->StartVtoRouterTCPClient("vto-tcp-client", level, "127.0.0.1", port + 10, VtoRouterSettings(88, false, false, 1000));
-	pStack2->StartVtoRouterTCPServer("vto-tcp-server", level, "127.0.0.1", port + 20, VtoRouterSettings(88, true, false, 1000));	
+	pStack2->StartVtoRouterTCPServer("vto-tcp-server", level, "127.0.0.1", port + 20, VtoRouterSettings(88, true, false, 1000));
 }
 
 VtoIntegrationTestBase::~VtoIntegrationTestBase()
 {
-	
+
 }
 
 }

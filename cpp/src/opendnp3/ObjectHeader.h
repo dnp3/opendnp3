@@ -122,8 +122,7 @@ class AllObjectsHeader : public IObjectHeader
 		return OHT_ALL_OBJECTS;
 	}
 
-	virtual std::string ToString(const uint8_t* apStart) const
-	{
+	virtual std::string ToString(const uint8_t* apStart) const {
 		return "All Objects";
 	}
 };
@@ -153,8 +152,7 @@ class RangedHeader : public IRangeHeader
 		T::Write(apStart + 3 + T::Size, static_cast<typename T::Type>(arInfo.Stop));
 	}
 
-	virtual std::string ToString(const uint8_t* apStart) const
-	{
+	virtual std::string ToString(const uint8_t* apStart) const {
 		std::ostringstream oss;
 		RangeInfo ri;
 		this->GetRange(apStart, ri);
@@ -197,9 +195,8 @@ class CountHeader : public ICountHeader
 		return T::Max;
 	}
 
-	virtual std::string ToString(const uint8_t* apStart) const
-	{
-		std::ostringstream oss;		
+	virtual std::string ToString(const uint8_t* apStart) const {
+		std::ostringstream oss;
 		oss << "Count: " << this->GetCount(apStart);
 		return oss.str();
 	}

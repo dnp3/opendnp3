@@ -53,7 +53,7 @@ public:
 
 	size_t IncrementData();
 
-	bool WaitForSameData(millis_t aTimeout, bool aDescribeAnyMissingData);	
+	bool WaitForSameData(millis_t aTimeout, bool aDescribeAnyMissingData);
 
 private:
 
