@@ -78,12 +78,10 @@ class DNP3Channel;
 /**
 The root class for all dnp3 applications. Used to retrieve communication channels on
 which masters / outstations can be bound. The stack is event-based and driven by a thread pool. 
-All callbacks come from a thread in the pool. 
-
+All callbacks come from a thread in the pool.
 \code
-	DNP3Manager manager(std::thread::hardware_concurrency());
+	DNP3Manager manager(std::thread::hardware_concurrency()); //parameter function returns a hint at the number of hardware thread contexts
 \endcode
- 
 */
 class DNP3Manager : public DestructorHook
 {
