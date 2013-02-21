@@ -53,7 +53,6 @@ cpp/src/opendnp3/EnhancedVto.cpp \
 cpp/src/opendnp3/EnhancedVtoRouter.cpp \
 cpp/src/opendnp3/Exception.cpp \
 cpp/src/opendnp3/ExecutorPause.cpp \
-cpp/src/opendnp3/FlexibleDataObserver.cpp \
 cpp/src/opendnp3/HeaderReadIterator.cpp \
 cpp/src/opendnp3/IExecutor.cpp \
 cpp/src/opendnp3/IHandlerAsync.cpp \
@@ -219,6 +218,7 @@ dnp3test_SOURCES = \
 	cpp/tests/BufferHelpers.cpp \
 	cpp/tests/BufferTestObject.cpp \
 	cpp/tests/ComparingDataObserver.cpp \
+	cpp/tests/FlexibleDataObserver.cpp \
 	cpp/tests/DNPHelpers.cpp \
 	cpp/tests/IntegrationTest.cpp \
 	cpp/tests/LinkLayerRouterTest.cpp \
