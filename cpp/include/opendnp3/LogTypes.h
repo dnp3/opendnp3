@@ -45,7 +45,7 @@ enum FilterLevel {
 	LEV_DEBUG =		0x40
 };
 
-struct FilterAssoc {	
+struct FilterAssoc {
 
 	FilterLevel lev;
 	char id;

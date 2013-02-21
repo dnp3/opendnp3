@@ -51,7 +51,7 @@ struct AppControlField {
 		UNS(false),
 		SEQ(0)
 	{}
-	
+
 	AppControlField(bool aFIR, bool aFIN, bool aCON, bool aUNS, uint8_t aSEQ = 0) :
 		FIR(aFIR),
 		FIN(aFIN),

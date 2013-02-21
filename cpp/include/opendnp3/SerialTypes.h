@@ -55,7 +55,7 @@ FlowType GetFlowTypeFromInt(int parity);
 struct SerialSettings {
 
 	/// Defaults to the familiar 9600 8/N/1, no flow control
-	SerialSettings() : 
+	SerialSettings() :
 		mBaud(9600),
 		mDataBits(8),
 		mStopBits(1),

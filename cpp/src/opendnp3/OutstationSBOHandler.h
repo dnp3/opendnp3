@@ -55,11 +55,11 @@ class OutstationSBOHandler
 			mOperated(false)
 		{}
 
-		SelectInfo() : 
+		SelectInfo() :
 			mSequence(0),
 			mCode(QC_UNDEFINED),
 			mTimestamp(0),
-			mOperated(false)			
+			mOperated(false)
 		{}
 
 		T mCommand;

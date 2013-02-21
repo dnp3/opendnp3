@@ -51,7 +51,7 @@ public:
 protected:
 
 	//pointer to object that conforms to the IThreadable interface
-	Threadable* mpThreadable;	
+	Threadable* mpThreadable;
 
 private:
 

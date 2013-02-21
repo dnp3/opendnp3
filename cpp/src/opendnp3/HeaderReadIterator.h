@@ -70,7 +70,7 @@ public:
 		mpObjectBase(NULL)
 	{}
 
-	
+
 	// accessor helpers to simplify reading code
 	ObjectHeaderTypes GetHeaderType() const {
 		return mpHeader->GetType();

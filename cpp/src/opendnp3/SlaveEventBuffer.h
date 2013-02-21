@@ -274,7 +274,7 @@ private:
 	 * order is important.
 	 */
 	InsertionOrderedEventBuffer<VtoEvent> mVtoEvents;
-	
+
 };
 
 }

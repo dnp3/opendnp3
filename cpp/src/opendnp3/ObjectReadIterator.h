@@ -64,7 +64,7 @@ public:
 private:
 
 	size_t mIndex;		// the objects device-based index
-	size_t mStart;		// used in conjunction with bitfield objects only,	
+	size_t mStart;		// used in conjunction with bitfield objects only,
 };
 
 /**
