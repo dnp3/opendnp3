@@ -45,10 +45,12 @@ enum FilterLevel {
 	LEV_DEBUG =		0x40
 };
 
-struct FilterAssoc {
+struct FilterAssoc {	
+
 	FilterLevel lev;
 	char id;
 };
+
 
 /// Contains helper functions for manipulating, levels, filters, and strings
 class LogTypes

@@ -63,7 +63,7 @@ struct MasterConfig {
 		@param aPeriod		Period of the scan in milliseconds
 	*/
 	void AddExceptionScan(int aClassMask, millis_t aPeriod) {
-		ExceptionScan ex = { aClassMask, aPeriod };
+		ExceptionScan ex(aClassMask, aPeriod);
 		mScans.push_back(ex);
 	}
 

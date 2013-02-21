@@ -49,7 +49,10 @@ class LogEntry
 
 public:
 
-	LogEntry(): mTime(std::chrono::high_resolution_clock::now()) {};
+	LogEntry():
+		mErrorCode(-1),
+		mTime(std::chrono::high_resolution_clock::time_point::min()) 
+	{}
 
 	LogEntry( FilterLevel aLevel, const std::string& aDeviceName, const std::string& aLocation, const std::string& aMessage, int aErrorCode);
 
