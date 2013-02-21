@@ -81,6 +81,7 @@ which masters / outstations can be bound. The stack is event-based and driven by
 All callbacks come from a thread in the pool.
 
 \code
+	// instantiate the root object specifying how many threads to use in the pool
 	DNP3Manager manager(std::thread::hardware_concurrency());
 \endcode
 
