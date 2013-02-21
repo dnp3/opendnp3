@@ -98,6 +98,7 @@
     <ClInclude Include="tests\DatabaseTestObject.h" />
     <ClInclude Include="tests\DNPHelpers.h" />
     <ClInclude Include="tests\FanoutDataObserver.h" />
+    <ClInclude Include="tests\FlexibleDataObserver.h" />
     <ClInclude Include="tests\IntegrationTest.h" />
     <ClInclude Include="tests\LinkLayerRouterTest.h" />
     <ClInclude Include="tests\LinkLayerTest.h" />
@@ -143,6 +144,7 @@
     <ClCompile Include="tests\BufferTestObject.cpp" />
     <ClCompile Include="tests\ComparingDataObserver.cpp" />
     <ClCompile Include="tests\DNPHelpers.cpp" />
+    <ClCompile Include="tests\FlexibleDataObserver.cpp" />
     <ClCompile Include="tests\IntegrationTest.cpp" />
     <ClCompile Include="tests\LinkLayerRouterTest.cpp" />
     <ClCompile Include="tests\LinkLayerTest.cpp" />

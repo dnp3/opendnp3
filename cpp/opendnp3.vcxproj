@@ -182,7 +182,6 @@
     <ClInclude Include="src\opendnp3\EventBuffers.h" />
     <ClInclude Include="src\opendnp3\EventTypes.h" />
     <ClInclude Include="src\opendnp3\ExecutorPause.h" />
-    <ClInclude Include="src\opendnp3\FlexibleDataObserver.h" />
     <ClInclude Include="src\opendnp3\GetKeys.h" />
     <ClInclude Include="src\opendnp3\HeaderReadIterator.h" />
     <ClInclude Include="src\opendnp3\IExecutor.h" />
@@ -312,7 +311,6 @@
     <ClCompile Include="src\opendnp3\EnhancedVtoRouter.cpp" />
     <ClCompile Include="src\opendnp3\Exception.cpp" />
     <ClCompile Include="src\opendnp3\ExecutorPause.cpp" />
-    <ClCompile Include="src\opendnp3\FlexibleDataObserver.cpp" />
     <ClCompile Include="src\opendnp3\HeaderReadIterator.cpp" />
     <ClCompile Include="src\opendnp3\IExecutor.cpp" />
     <ClCompile Include="src\opendnp3\IHandlerAsync.cpp" />

@@ -33,11 +33,11 @@
 #include "LogTester.h"
 
 #include <opendnp3/AsyncTaskScheduler.h>
-#include <opendnp3/FlexibleDataObserver.h>
 #include <opendnp3/Master.h>
 
 #include <deque>
 
+#include "FlexibleDataObserver.h"
 #include "MockAppLayer.h"
 
 namespace opendnp3

@@ -150,6 +150,9 @@
     <ClInclude Include="tests\WrappedTcpPipe.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="tests\FlexibleDataObserver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="tests\AppLayerTest.cpp">
@@ -408,6 +411,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="tests\WrappedTcpPipe.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tests\FlexibleDataObserver.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

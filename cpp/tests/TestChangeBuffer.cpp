@@ -29,7 +29,8 @@
 #include <boost/test/unit_test.hpp>
 
 #include <opendnp3/ChangeBuffer.h>
-#include <opendnp3/FlexibleDataObserver.h>
+
+#include "FlexibleDataObserver.h"
 
 using namespace opendnp3;
 
