@@ -45,7 +45,7 @@ std::string JNIHelpers::GetString(jstring s, JNIEnv* pEnv)
 void JNIHelpers::AttachThread(JavaVM* apJVM)
 {
 	JNIEnv* pEnv;
-	jint res = apJVM->AttachCurrentThread((void **)&pEnv, nullptr);
+	jint res = apJVM->AttachCurrentThread((void**)&pEnv, nullptr);
 	assert(res == 0);
 }
 
@@ -57,8 +57,8 @@ void JNIHelpers::DetachThread(JavaVM* apJVM)
 
 void JNIHelpers::DeleteGlobalReference(JavaVM* apJVM, jobject ref)
 {
-	JNIEnv* pEnv= nullptr;
-	assert(apJVM->GetEnv((void **)&pEnv, JNI_VERSION_1_6) == 0);
+	JNIEnv* pEnv = nullptr;
+	assert(apJVM->GetEnv((void**)&pEnv, JNI_VERSION_1_6) == 0);
 	assert(pEnv != nullptr);
 	pEnv->DeleteGlobalRef(ref);
 }
@@ -75,16 +75,16 @@ JavaVM* JNIHelpers::GetJVMFromEnv(JNIEnv* apEnv)
 JNIEnv* JNIHelpers::GetEnvFromJVM(JavaVM* apJVM)
 {
 	JNIEnv* pEnv = nullptr;
-	apJVM->GetEnv((void **) &pEnv, JNI_VERSION_1_6);
+	apJVM->GetEnv((void**) &pEnv, JNI_VERSION_1_6);
 	assert(pEnv != nullptr);
-	return pEnv;	
+	return pEnv;
 }
 
 jmethodID JNIHelpers::GetMethodID(JNIEnv* apEnv, jclass clazz, const char* name, const char* sig)
-{	
+{
 	jmethodID mid = apEnv->GetMethodID(clazz, name, sig);
 	if(mid == nullptr) {
-		MACRO_THROW_EXCEPTION("Unable to get methodID with name/size: " << name <<" / " << sig);
+		MACRO_THROW_EXCEPTION("Unable to get methodID with name/size: " << name << " / " << sig);
 	}
 	return mid;
 }
@@ -105,52 +105,51 @@ jint JNIHelpers::GetIntField(JNIEnv* apEnv, jobject obj, const char* fieldId)
 {
 	jfieldID field = apEnv->GetFieldID(GetClassForObject(apEnv, obj), fieldId, "I");
 	if(field == nullptr) MACRO_THROW_EXCEPTION("Unable to get int field: " << fieldId)
-	return apEnv->GetIntField(obj, field);
+		return apEnv->GetIntField(obj, field);
 }
 
 jlong JNIHelpers::GetLongField(JNIEnv* apEnv, jobject obj, const char* fieldId)
 {
 	jfieldID field = apEnv->GetFieldID(GetClassForObject(apEnv, obj), fieldId, "J");
 	if(field == nullptr) MACRO_THROW_EXCEPTION("Unable to get long field: " << fieldId)
-	return apEnv->GetLongField(obj, field);
+		return apEnv->GetLongField(obj, field);
 }
 
 bool JNIHelpers::GetBoolField(JNIEnv* apEnv, jobject obj, const char* fieldId)
 {
 	jfieldID field = apEnv->GetFieldID(GetClassForObject(apEnv, obj), fieldId, "Z");
 	if(field == nullptr) MACRO_THROW_EXCEPTION("Unable to get bool field: " << fieldId)
-	return apEnv->GetBooleanField(obj, field);
+		return apEnv->GetBooleanField(obj, field);
 }
 
 jdouble JNIHelpers::GetDoubleField(JNIEnv* apEnv, jobject obj, const char* fieldId)
 {
 	jfieldID field = apEnv->GetFieldID(GetClassForObject(apEnv, obj), fieldId, "D");
 	if(field == nullptr) MACRO_THROW_EXCEPTION("Unable to get double field: " << fieldId)
-	return apEnv->GetDoubleField(obj, field);
+		return apEnv->GetDoubleField(obj, field);
 }
 
 jobject JNIHelpers::GetObjectField(JNIEnv* apEnv, jobject obj, const char* fieldId, const char* fqcn)
 {
-	
+
 	jfieldID field = apEnv->GetFieldID(GetClassForObject(apEnv, obj), fieldId, fqcn);
 	if(field == nullptr) MACRO_THROW_EXCEPTION("Unable to get object field id: " << fieldId << " / " << fqcn)
-	jobject ret = apEnv->GetObjectField(obj, field);	
+		jobject ret = apEnv->GetObjectField(obj, field);
 	if(ret == nullptr) MACRO_THROW_EXCEPTION("Unable to get object field")
-	return ret;
+		return ret;
 }
 
 void JNIHelpers::IterateOverListOfObjects(JNIEnv* apEnv, jobject list, std::function<void (jobject)> fun)
 {
-	jmethodID sizeMID = JNIHelpers::GetMethodID(apEnv, list, "size", "()I");	
+	jmethodID sizeMID = JNIHelpers::GetMethodID(apEnv, list, "size", "()I");
 	jint size = apEnv->CallIntMethod(list, sizeMID);
 
 	jmethodID getMID = JNIHelpers::GetMethodID(apEnv, list, "get", "(I)Ljava/lang/Object;");
 
-	for(jint i=0; i< size; ++i)
-	{
-		jobject obj = apEnv->CallObjectMethod(list, getMID, i); 
+	for(jint i = 0; i < size; ++i) {
+		jobject obj = apEnv->CallObjectMethod(list, getMID, i);
 		if(obj == nullptr) MACRO_THROW_EXCEPTION("Unable to call object method")
-		fun(obj);
+			fun(obj);
 	}
 }
 

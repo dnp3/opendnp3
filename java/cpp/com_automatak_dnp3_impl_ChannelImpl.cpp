@@ -35,20 +35,22 @@ using namespace opendnp3;
 
 
 JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_ChannelImpl_shutdown_1native
-  (JNIEnv *, jobject, jlong ptr)
+(JNIEnv*, jobject, jlong ptr)
 {
 	auto pChannel = (IChannel*) ptr;
 	pChannel->Shutdown();
 }
 
 JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_ChannelImpl_add_1native_1state_1change_1listener
-  (JNIEnv* apEnv, jobject, jlong ptr, jobject stateChangeProxy)
+(JNIEnv* apEnv, jobject, jlong ptr, jobject stateChangeProxy)
 {
 	auto pChannel = (IChannel*) ptr;
 	JavaVM* pJVM = JNIHelpers::GetJVMFromEnv(apEnv);
 	jobject global = apEnv->NewGlobalRef(stateChangeProxy);
-	pChannel->AddDestructorHook([pJVM, global]() { JNIHelpers::DeleteGlobalReference(pJVM, global); });	
-	pChannel->AddStateListener([pJVM, global](ChannelState state){
+	pChannel->AddDestructorHook([pJVM, global]() {
+		JNIHelpers::DeleteGlobalReference(pJVM, global);
+	});
+	pChannel->AddStateListener([pJVM, global](ChannelState state) {
 		JNIEnv* pEnv = JNIHelpers::GetEnvFromJVM(pJVM);
 		jmethodID changeID = JNIHelpers::GetMethodID(pEnv, global, "onStateChange", "(I)V");
 		int intstate = state;
@@ -57,7 +59,7 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_ChannelImpl_add_1native_1sta
 }
 
 JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ChannelImpl_get_1native_1master
-  (JNIEnv* pEnv, jobject, jlong ptr, jstring jloggerId, jint logLevel, jobject publisher, jobject jconfig)
+(JNIEnv* pEnv, jobject, jlong ptr, jstring jloggerId, jint logLevel, jobject publisher, jobject jconfig)
 {
 	try {
 		auto pChannel = (IChannel*) ptr;
@@ -68,34 +70,40 @@ JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ChannelImpl_get_1native_1ma
 		MasterStackConfig config = ConfigReader::ConvertMasterStackConfig(pEnv, jconfig);
 		FilterLevel lev = LogTypes::ConvertIntToFilterLevel(logLevel);
 		auto pMaster = pChannel->AddMaster(loggerId, lev, pPublisher, config);
-		pMaster->AddDestructorHook([pJVM, global]() { JNIHelpers::DeleteGlobalReference(pJVM, global); });
-		pMaster->AddDestructorHook([pPublisher](){ delete pPublisher; });
+		pMaster->AddDestructorHook([pJVM, global]() {
+			JNIHelpers::DeleteGlobalReference(pJVM, global);
+		});
+		pMaster->AddDestructorHook([pPublisher]() {
+			delete pPublisher;
+		});
 		return (jlong) pMaster;
 	}
-	catch(const opendnp3::Exception& ex)
-	{
+	catch(const opendnp3::Exception& ex) {
 		MACRO_RETHROW_EXCEPTION(pEnv, ex);
 	}
 }
 
 JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ChannelImpl_get_1native_1slave
-  (JNIEnv* pEnv, jobject, jlong ptr, jstring jloggerId, jint logLevel, jobject commandAdapter, jobject jconfig)
+(JNIEnv* pEnv, jobject, jlong ptr, jstring jloggerId, jint logLevel, jobject commandAdapter, jobject jconfig)
 {
 	try {
 		auto pChannel = (IChannel*) ptr;
 		std::string loggerId = JNIHelpers::GetString(jloggerId, pEnv);
-		SlaveStackConfig config = ConfigReader::ConvertSlaveStackConfig(pEnv, jconfig);	
-		JavaVM* pJVM = JNIHelpers::GetJVMFromEnv(pEnv);	
+		SlaveStackConfig config = ConfigReader::ConvertSlaveStackConfig(pEnv, jconfig);
+		JavaVM* pJVM = JNIHelpers::GetJVMFromEnv(pEnv);
 		jobject global = pEnv->NewGlobalRef(commandAdapter);
 		auto pCmdHandler = new CommandHandlerAdapter(pJVM, global);
-		FilterLevel lev = LogTypes::ConvertIntToFilterLevel(logLevel);	
+		FilterLevel lev = LogTypes::ConvertIntToFilterLevel(logLevel);
 		auto pOutstation = pChannel->AddOutstation(loggerId, lev, pCmdHandler, config);
-		pOutstation->AddDestructorHook([pJVM, global]() { JNIHelpers::DeleteGlobalReference(pJVM, global); });
-		pOutstation->AddDestructorHook([pCmdHandler](){ delete pCmdHandler; });
+		pOutstation->AddDestructorHook([pJVM, global]() {
+			JNIHelpers::DeleteGlobalReference(pJVM, global);
+		});
+		pOutstation->AddDestructorHook([pCmdHandler]() {
+			delete pCmdHandler;
+		});
 		return (jlong) pOutstation;
 	}
-	catch(const opendnp3::Exception& ex)
-	{
+	catch(const opendnp3::Exception& ex) {
 		MACRO_RETHROW_EXCEPTION(pEnv, ex);
 	}
 }

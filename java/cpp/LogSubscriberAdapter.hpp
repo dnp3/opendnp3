@@ -24,12 +24,12 @@
 
 class LogSubscriberAdapter : public opendnp3::ILogBase
 {
-	public:
+public:
 	LogSubscriberAdapter(JavaVM* apJVM, jobject aProxy);
 
 	void Log(const opendnp3::LogEntry& arEntry);
 
-	private:
+private:
 	JavaVM* mpJVM;
 	jobject mProxy;
 };

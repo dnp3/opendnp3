@@ -23,14 +23,14 @@
 using namespace opendnp3;
 
 JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_MasterImpl_shutdown_1native
-  (JNIEnv *, jobject, jlong ptr)
+(JNIEnv*, jobject, jlong ptr)
 {
 	auto pMaster = (IMaster*) ptr;
 	pMaster->Shutdown();
 }
 
 JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_MasterImpl_get_1native_1command_1processor
-  (JNIEnv *, jobject, jlong ptr)
+(JNIEnv*, jobject, jlong ptr)
 {
 	auto pMaster = (IMaster*) ptr;
 	return (jlong) pMaster->GetCommandProcessor();

@@ -29,26 +29,30 @@ using namespace opendnp3;
 #include <iostream>
 
 JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_create_1native_1manager
-  (JNIEnv* apEnv, jobject, jint concurrency)
+(JNIEnv* apEnv, jobject, jint concurrency)
 {
 	JavaVM* pJVM;
 	apEnv->GetJavaVM(&pJVM);
 	assert(pJVM != NULL);
-	auto pManager = new DNP3Manager(concurrency,		
-		[pJVM](){ JNIHelpers::AttachThread(pJVM); }, 
-		[pJVM](){ JNIHelpers::DetachThread(pJVM); }
-	);	
+	auto pManager = new DNP3Manager(concurrency,
+	[pJVM]() {
+		JNIHelpers::AttachThread(pJVM);
+	},
+	[pJVM]() {
+		JNIHelpers::DetachThread(pJVM);
+	}
+	                               );
 	return (jlong) pManager;
 }
 
 JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_destroy_1native_1manager
-  (JNIEnv *, jobject, jlong ptrManager)
+(JNIEnv*, jobject, jlong ptrManager)
 {
 	delete (DNP3Manager*) ptrManager;
 }
 
 JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1channel_1tcp_1client
-  (JNIEnv * pEnv, jobject, jlong ptrManager, jstring jloggerId, jint logLevel, jlong timeoutMs, jstring jhost, jint port)
+(JNIEnv* pEnv, jobject, jlong ptrManager, jstring jloggerId, jint logLevel, jlong timeoutMs, jstring jhost, jint port)
 {
 	try {
 		auto pMgr = (DNP3Manager*) ptrManager;
@@ -57,14 +61,13 @@ JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1ch
 		FilterLevel lev = LogTypes::ConvertIntToFilterLevel(logLevel);
 		return (jlong) pMgr->AddTCPClient(loggerId, lev, timeoutMs, host, port);
 	}
-	catch(Exception ex)
-	{
+	catch(Exception ex) {
 		MACRO_RETHROW_EXCEPTION(pEnv, ex);
 	}
 }
 
 JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1channel_1tcp_1server
-  (JNIEnv* pEnv, jobject, jlong ptrManager, jstring jloggerId, jint logLevel, jlong timeoutMs, jstring jendpoint, jint port)
+(JNIEnv* pEnv, jobject, jlong ptrManager, jstring jloggerId, jint logLevel, jlong timeoutMs, jstring jendpoint, jint port)
 {
 	try {
 		auto pMgr = (DNP3Manager*) ptrManager;
@@ -73,14 +76,13 @@ JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1ch
 		FilterLevel lev = LogTypes::ConvertIntToFilterLevel(logLevel);
 		return (jlong) pMgr->AddTCPServer(loggerId, lev, timeoutMs, endpoint, port);
 	}
-	catch(Exception ex)
-	{
+	catch(Exception ex) {
 		MACRO_RETHROW_EXCEPTION(pEnv, ex)
 	}
 }
 
 JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1channel_1serial
-  (JNIEnv * pEnv, jobject, jlong ptrManager, jstring jloggerId, jint logLevel, jlong timeoutMs, jstring jport, jint baudRate, jint dataBits, jint parity, jint stopBits, jint flowControl)
+(JNIEnv* pEnv, jobject, jlong ptrManager, jstring jloggerId, jint logLevel, jlong timeoutMs, jstring jport, jint baudRate, jint dataBits, jint parity, jint stopBits, jint flowControl)
 {
 	try {
 		auto pMgr = (DNP3Manager*) ptrManager;
@@ -96,23 +98,26 @@ JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1ch
 		FilterLevel lev = LogTypes::ConvertIntToFilterLevel(logLevel);
 		return (jlong) pMgr->AddSerial(loggerId, lev, timeoutMs, ss);
 	}
-	catch(Exception ex)
-	{
+	catch(Exception ex) {
 		MACRO_RETHROW_EXCEPTION(pEnv, ex)
 	}
 }
 
 
 JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_native_1add_1log_1subscriber
-  (JNIEnv* pEnv, jobject, jlong ptrManager, jobject jsubscriber)
+(JNIEnv* pEnv, jobject, jlong ptrManager, jobject jsubscriber)
 {
 	auto pMgr = (DNP3Manager*) ptrManager;
 	JavaVM* pJVM;
 	pEnv->GetJavaVM(&pJVM);
 	assert(pJVM != NULL);
 	jobject global = pEnv->NewGlobalRef(jsubscriber);
-	pMgr->AddDestructorHook([pJVM, global]() { JNIHelpers::DeleteGlobalReference(pJVM, global); });
+	pMgr->AddDestructorHook([pJVM, global]() {
+		JNIHelpers::DeleteGlobalReference(pJVM, global);
+	});
 	auto pSub = new LogSubscriberAdapter(pJVM, global);
-	pMgr->AddDestructorHook([pSub](){ delete pSub; });
+	pMgr->AddDestructorHook([pSub]() {
+		delete pSub;
+	});
 	pMgr->AddLogSubscriber(pSub);
 }

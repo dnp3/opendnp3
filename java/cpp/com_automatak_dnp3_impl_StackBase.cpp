@@ -26,13 +26,15 @@
 using namespace opendnp3;
 
 JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_StackBase_add_1native_1stack_1state_1listener
-  (JNIEnv* apEnv, jobject, jlong ptr, jobject jproxy)
+(JNIEnv* apEnv, jobject, jlong ptr, jobject jproxy)
 {
 	auto pStack = (IStack*) ptr;
 	JavaVM* pJVM = JNIHelpers::GetJVMFromEnv(apEnv);
 	jobject global = apEnv->NewGlobalRef(jproxy);
-	pStack->AddDestructorHook([pJVM, global]() { JNIHelpers::DeleteGlobalReference(pJVM, global); });	
-	pStack->AddStateListener([pJVM, global](StackState state){
+	pStack->AddDestructorHook([pJVM, global]() {
+		JNIHelpers::DeleteGlobalReference(pJVM, global);
+	});
+	pStack->AddStateListener([pJVM, global](StackState state) {
 		JNIEnv* pEnv = JNIHelpers::GetEnvFromJVM(pJVM);
 		jmethodID changeID = JNIHelpers::GetMethodID(pEnv, global, "onStateChange", "(I)V");
 		int intstate = state;
@@ -41,18 +43,18 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_StackBase_add_1native_1stack
 }
 
 JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_StackBase_get_1tcpclient_1vto_1endpoint
-  (JNIEnv* apEnv, jobject, jlong nativeStack, jstring loggerId, jint logLevel, jstring host, jint port, jbyte channel, jlong minRetry, jlong maxRetry, jboolean startLocal, jboolean disableExt)
+(JNIEnv* apEnv, jobject, jlong nativeStack, jstring loggerId, jint logLevel, jstring host, jint port, jbyte channel, jlong minRetry, jlong maxRetry, jboolean startLocal, jboolean disableExt)
 {
 	auto pStack = (IStack*) nativeStack;
 	VtoRouterSettings settings(channel, minRetry, maxRetry, startLocal, disableExt);
 	std::string logger = JNIHelpers::GetString(loggerId, apEnv);
 	FilterLevel level = LogTypes::ConvertIntToFilterLevel(logLevel);
 	std::string address = JNIHelpers::GetString(host, apEnv);
-	return (jlong) pStack->StartVtoRouterTCPClient(logger, level, address, port, settings); 
+	return (jlong) pStack->StartVtoRouterTCPClient(logger, level, address, port, settings);
 }
 
 JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_StackBase_get_1tcpserver_1vto_1endpoint
-  (JNIEnv* apEnv, jobject, jlong nativeStack, jstring loggerId, jint logLevel, jstring adapter, jint port, jbyte channel, jlong minRetry, jlong maxRetry, jboolean startLocal, jboolean disableExt)
+(JNIEnv* apEnv, jobject, jlong nativeStack, jstring loggerId, jint logLevel, jstring adapter, jint port, jbyte channel, jlong minRetry, jlong maxRetry, jboolean startLocal, jboolean disableExt)
 {
 	auto pStack = (IStack*) nativeStack;
 	VtoRouterSettings settings(channel, minRetry, maxRetry, startLocal, disableExt);
