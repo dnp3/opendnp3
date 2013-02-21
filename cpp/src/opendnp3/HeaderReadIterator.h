@@ -62,8 +62,15 @@ public:
 		mpObjectBase(apObject)
 	{}
 
-	HeaderInfo() {}
+	HeaderInfo()  :
+		mPos(0),
+		mCount(0),
+		mPrefixSize(0),
+		mpHeader(NULL),
+		mpObjectBase(NULL)
+	{}
 
+	
 	// accessor helpers to simplify reading code
 	ObjectHeaderTypes GetHeaderType() const {
 		return mpHeader->GetType();

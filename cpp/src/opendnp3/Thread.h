@@ -51,9 +51,7 @@ public:
 protected:
 
 	//pointer to object that conforms to the IThreadable interface
-	Threadable* mpThreadable;
-
-	bool mIsExitRequested;
+	Threadable* mpThreadable;	
 
 private:
 

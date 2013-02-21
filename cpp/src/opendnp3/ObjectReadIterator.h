@@ -46,6 +46,12 @@ class ObjectInfo
 {
 	friend class ObjectReadIterator;
 
+	ObjectInfo(size_t aIndex, size_t aStart) : mIndex(aIndex), mStart(aStart)
+	{}
+
+	ObjectInfo() : mIndex(0), mStart(0)
+	{}
+
 public:
 
 	size_t Index() const {
@@ -58,9 +64,7 @@ public:
 private:
 
 	size_t mIndex;		// the objects device-based index
-	size_t mStart;		// used in conjunction with bitfield objects only,
-	// returns the device-based index of the first
-	// object in the collection
+	size_t mStart;		// used in conjunction with bitfield objects only,	
 };
 
 /**

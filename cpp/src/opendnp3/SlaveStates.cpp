@@ -161,13 +161,13 @@ void AS_Base::DoRequest(Slave* c, AS_Base* apNext, const APDU& arAPDU, SequenceI
 	try {
 		this->SwitchOnFunction(c, apNext, arAPDU, aSeqInfo);
 	}
-	catch (ParameterException ex) {
+	catch (const ParameterException& ex) {
 		ChangeState(c, apNext);
 		ERROR_LOGGER_BLOCK(c->mpLogger, LEV_ERROR, ex.Message(), ex.ErrorCode());
 		c->mRspIIN.SetParameterError(true);
 		c->ConfigureAndSendSimpleResponse();
 	}
-	catch (NotSupportedException ex) {
+	catch (const NotSupportedException& ex) {
 		ChangeState(c, apNext);
 		ERROR_LOGGER_BLOCK(c->mpLogger, LEV_ERROR, ex.Message(), ex.ErrorCode());
 		c->mRspIIN.SetFuncNotSupported(true);

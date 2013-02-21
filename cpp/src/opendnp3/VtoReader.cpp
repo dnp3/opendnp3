@@ -98,7 +98,7 @@ void VtoReader::UpdateEnhancedVto(const VtoData& arData, uint8_t aChannelId)
 			i->second->OnVtoDataReceived(data);
 		}
 	}
-	catch(Exception ex) {
+	catch(const Exception& ex) {
 		ERROR_BLOCK(LEV_WARNING, ex.GetErrorString(), VTOERR_BADLY_FORMATTED_ENHANCED_VTO);
 	}
 }

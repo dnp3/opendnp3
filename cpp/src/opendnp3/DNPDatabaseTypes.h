@@ -54,7 +54,8 @@ struct PointInfoBase {
 	{}
 
 	PointInfoBase() :
-		mClass(PC_CLASS_0)
+		mClass(PC_CLASS_0),
+		mIndex(0)
 	{}
 
 	T mValue;			// current measurment (i.e. Binary, Analog, etc)

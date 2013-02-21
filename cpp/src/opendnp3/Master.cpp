@@ -348,7 +348,7 @@ void Master::ProcessDataResponse(const APDU& arResponse)
 		for(HeaderReadIterator hdr = arResponse.BeginRead(); !hdr.IsEnd(); ++hdr)
 			loader.Process(hdr);
 	}
-	catch(Exception ex) {
+	catch(const Exception& ex) {
 		EXCEPTION_BLOCK(LEV_WARNING, ex)
 	}
 }

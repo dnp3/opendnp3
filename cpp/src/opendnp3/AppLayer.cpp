@@ -131,11 +131,11 @@ void AppLayer::_OnReceive(const uint8_t* apBuffer, size_t aSize)
 			break;
 		}
 	}
-	catch(ObjectException oex) {
+	catch(const ObjectException& oex) {
 		EXCEPTION_BLOCK(LEV_WARNING, oex);
 		this->OnUnknownObject(mIncoming.GetFunction(), mIncoming.GetControl());
 	}
-	catch(Exception ex) {
+	catch(const Exception& ex) {
 		EXCEPTION_BLOCK(LEV_WARNING, ex);
 	}
 }

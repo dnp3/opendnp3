@@ -34,7 +34,7 @@ namespace opendnp3
 {
 
 Thread::Thread(Threadable* apThreadable) :
-	mpThreadable(apThreadable),
+	mpThreadable(apThreadable),	
 	mEntryPoint(std::bind(&Threadable::Start, apThreadable)),
 	mpThread(NULL)
 {
