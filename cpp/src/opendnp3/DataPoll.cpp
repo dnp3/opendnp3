@@ -86,7 +86,7 @@ void ClassPoll::Set(int aClassMask)
 void ClassPoll::ConfigureRequest(APDU& arAPDU)
 {
 	if (mClassMask == PC_INVALID) {
-		throw InvalidStateException(LOCATION, "Class mask has not been set");
+		MACRO_THROW_EXCEPTION(InvalidStateException, "Class mask has not been set");
 	}
 
 	arAPDU.Set(FC_READ);

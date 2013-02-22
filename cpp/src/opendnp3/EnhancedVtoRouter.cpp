@@ -77,7 +77,7 @@ bool EnhancedVtoRouter::CheckIncomingVtoData(const VtoData& arData)
 			return false;
 		}
 	default:
-		throw ArgumentException(LOCATION, "Unknown VtoData type");
+		MACRO_THROW_EXCEPTION(ArgumentException, "Unknown VtoData type");
 	}
 }
 

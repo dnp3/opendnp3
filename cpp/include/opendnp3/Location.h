@@ -60,8 +60,7 @@
 #define MACRO_THROW_EXCEPTION_COMPLEX(type, message) {\
 	std::ostringstream oss;\
 	oss << message;\
-	throw type(LOCATION, oss.str());\
-}
+	throw type(LOCATION, oss.str()); }
 #else
 #define MACRO_THROW_EXCEPTION_COMPLEX(type, message) throw type(LOCATION, "");
 #endif

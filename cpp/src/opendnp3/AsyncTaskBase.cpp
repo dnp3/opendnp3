@@ -116,7 +116,7 @@ for(const AsyncTaskBase * p: mDependencies) {
 void AsyncTaskBase::OnComplete(bool aSuccess)
 {
 	if(!mIsRunning) {
-		throw InvalidStateException(LOCATION, "Not Running");
+		MACRO_THROW_EXCEPTION(InvalidStateException, "Not Running");
 	}
 	mIsRunning = false;
 
