@@ -34,9 +34,9 @@
 #include <opendnp3/LogToStdio.h>
 #include <opendnp3/ASIOExecutor.h>
 #include <opendnp3/Exception.h>
-#include <opendnp3/PhysLoopback.h>
 #include <opendnp3/RandomizedBuffer.h>
 
+#include "PhysLoopback.h"
 #include "TestHelpers.h"
 #include "BufferHelpers.h"
 #include "AsyncTestObjectASIO.h"

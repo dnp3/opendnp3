@@ -119,6 +119,7 @@
     <ClInclude Include="tests\MockUpperLayer.h" />
     <ClInclude Include="tests\PhysicalLayerWrapper.h" />
     <ClInclude Include="tests\PhysicalLayerWrapperFactory.h" />
+    <ClInclude Include="tests\PhysLoopback.h" />
     <ClInclude Include="tests\ReadableVtoWriter.h" />
     <ClInclude Include="tests\ResponseLoaderTestObject.h" />
     <ClInclude Include="tests\SlaveTestObject.h" />
@@ -162,6 +163,7 @@
     <ClCompile Include="tests\MockPhysicalLayerMonitor.cpp" />
     <ClCompile Include="tests\MockUpperLayer.cpp" />
     <ClCompile Include="tests\PhysicalLayerWrapper.cpp" />
+    <ClCompile Include="tests\PhysLoopback.cpp" />
     <ClCompile Include="tests\ResponseLoaderTestObject.cpp" />
     <ClCompile Include="tests\SlaveTestObject.cpp" />
     <ClCompile Include="tests\StopWatch.cpp" />

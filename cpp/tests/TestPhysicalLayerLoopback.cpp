@@ -29,8 +29,8 @@
 #include <boost/test/unit_test.hpp>
 
 #include <opendnp3/Log.h>
-#include <opendnp3/PhysLoopback.h>
 
+#include "PhysLoopback.h"
 #include "MockExecutor.h"
 #include "MockPhysicalLayerAsync.h"
 #include "TestHelpers.h"
