@@ -91,7 +91,7 @@ public:
 	void Cancel(AppLayerChannel* c);
 };
 
-class ACS_Send : public ACS_SendBase
+class DLL_LOCAL ACS_Send : public ACS_SendBase
 {
 	MACRO_NAME_SINGLETON_INSTANCE(ACS_Send)
 
@@ -122,7 +122,7 @@ class DLL_LOCAL ACS_SendCanceled : public ACS_Base
 	void OnSendFailure(AppLayerChannel*);
 };
 
-class ACS_WaitForConfirm : public ACS_Base
+class DLL_LOCAL ACS_WaitForConfirm : public ACS_Base
 {
 	MACRO_NAME_SINGLETON_INSTANCE(ACS_WaitForConfirm)
 

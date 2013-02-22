@@ -65,7 +65,7 @@ public:
 	std::string ToString() const;
 };
 
-std::ostream& DLL_LOCAL operator<<(std::ostream& oss, const LinkRoute&);
+std::ostream& operator<<(std::ostream& oss, const LinkRoute&);
 
 }
 

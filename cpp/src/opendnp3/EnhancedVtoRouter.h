@@ -94,7 +94,7 @@ private:
  * with a remote ClientSocket or AlwaysOnline vto router, but not another
  * ServerSocket router.
  */
-class ServerSocketVtoRouter : public EnhancedVtoRouter
+class DLL_LOCAL ServerSocketVtoRouter : public EnhancedVtoRouter
 {
 public:
 
@@ -115,7 +115,7 @@ public:
  * with a "local connected" message and only if it can't connect locally will it
  * send a "local disconnected" message.
  */
-class ClientSocketVtoRouter : public EnhancedVtoRouter
+class DLL_LOCAL ClientSocketVtoRouter : public EnhancedVtoRouter
 {
 public:
 

@@ -227,7 +227,7 @@ struct DLL_LOCAL Group20Var3 : public StreamObject<Counter> {
 	MACRO_DECLARE_STREAM_TYPE(Counter);
 };
 
-struct Group20Var4 : public StreamObject<Counter> {
+struct DLL_LOCAL Group20Var4 : public StreamObject<Counter> {
 	MACRO_NAME_SINGLETON_INSTANCE(Group20Var4)
 	MACRO_GROUP_VAR_SIZE_FUNC(20, 4, 3)
 	MACRO_DECLARE_QUALITY(UInt8, 0);
@@ -309,7 +309,7 @@ struct DLL_LOCAL Group21Var5 : public FixedObject {
 	MACRO_DECLARE_TIME(UInt48LE, 5)
 };
 
-struct Group21Var6 : public FixedObject {
+struct DLL_LOCAL Group21Var6 : public FixedObject {
 	MACRO_NAME_SINGLETON_INSTANCE(Group21Var6)
 	MACRO_GROUP_VAR_SIZE_FUNC(21, 6, 9)
 	MACRO_DECLARE_QUALITY(UInt8, 0)
@@ -325,7 +325,7 @@ struct DLL_LOCAL Group21Var7 : public FixedObject {
 	MACRO_DECLARE_TIME(UInt48LE, 5)
 };
 
-struct Group21Var8 : public FixedObject {
+struct DLL_LOCAL Group21Var8 : public FixedObject {
 	MACRO_NAME_SINGLETON_INSTANCE(Group21Var8)
 	MACRO_GROUP_VAR_SIZE_FUNC(21, 8, 9)
 	MACRO_DECLARE_QUALITY(UInt8, 0)
@@ -339,7 +339,7 @@ struct DLL_LOCAL Group21Var9 : public FixedObject {
 	MACRO_DECLARE_VALUE(UInt32LE, 0)
 };
 
-struct Group21Var10 : public FixedObject {
+struct DLL_LOCAL Group21Var10 : public FixedObject {
 	MACRO_NAME_SINGLETON_INSTANCE(Group21Var10)
 	MACRO_GROUP_VAR_SIZE_FUNC(21, 10, 2)
 	MACRO_DECLARE_VALUE(UInt16LE, 0)

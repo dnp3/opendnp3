@@ -70,7 +70,7 @@ public:
 	std::string ConvertToString();
 };
 
-class MonitorStateActions
+class DLL_LOCAL MonitorStateActions
 {
 public:
 
@@ -117,7 +117,7 @@ public:
 	void OnSuspendRequest(PhysicalLayerMonitor* apContext);
 };
 
-class StartsOnClose : public virtual IMonitorState
+class DLL_LOCAL StartsOnClose : public virtual IMonitorState
 {
 public:
 	void OnLayerClose(PhysicalLayerMonitor* apContext);

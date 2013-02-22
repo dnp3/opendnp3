@@ -61,7 +61,7 @@ public:
 ////////////////////////////////////////////////////////
 //	Class SLLS_UnReset
 ////////////////////////////////////////////////////////
-class SLLS_NotReset : public SecStateBase
+class DLL_LOCAL SLLS_NotReset : public SecStateBase
 {
 	MACRO_STATE_SINGLETON_INSTANCE(SLLS_NotReset);
 
@@ -72,7 +72,7 @@ class SLLS_NotReset : public SecStateBase
 ////////////////////////////////////////////////////////
 //	Class SLLS_Reset
 ////////////////////////////////////////////////////////
-class SLLS_Reset : public SecStateBase
+class DLL_LOCAL SLLS_Reset : public SecStateBase
 {
 	MACRO_STATE_SINGLETON_INSTANCE(SLLS_Reset);
 
