@@ -28,18 +28,18 @@
 
 class ConfigReader
 {
-	public:
+public:
 	static opendnp3::MasterStackConfig ConvertMasterStackConfig(JNIEnv* apEnv, jobject jCfg);
-	static opendnp3::SlaveStackConfig ConvertSlaveStackConfig(JNIEnv* apEnv, jobject jCfg);	
+	static opendnp3::SlaveStackConfig ConvertSlaveStackConfig(JNIEnv* apEnv, jobject jCfg);
 
-	private:
+private:
 	static opendnp3::LinkConfig ConvertLinkConfig(JNIEnv* apEnv, jobject jCfg);
 	static opendnp3::AppConfig ConvertAppConfig(JNIEnv* apEnv, jobject jCfg);
 	static opendnp3::MasterConfig ConvertMasterConfig(JNIEnv* apEnv, jobject jCfg);
 	static opendnp3::SlaveConfig ConvertOutstationConfig(JNIEnv* apEnv, jobject jCfg);
 	static opendnp3::DeviceTemplate ConvertDatabaseConfig(JNIEnv* apEnv, jobject jCfg);
 	static opendnp3::GrpVar ConvertGrpVar(JNIEnv* apEnv, jobject jCfg, const char* fieldId);
-	
+
 };
 
 #endif

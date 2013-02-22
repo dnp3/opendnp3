@@ -275,11 +275,6 @@ private:
 	 */
 	InsertionOrderedEventBuffer<VtoEvent> mVtoEvents;
 
-	/**
-	 * TODO - I searched the code and found no uses of the mChange
-	 * variable.  Perhaps it is deprecated?
-	 */
-	bool mChange;
 };
 
 }

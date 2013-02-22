@@ -53,8 +53,8 @@ void PhysicalLayerWrapper::SetHandler(IHandlerAsync* apHandler)
 }
 
 void PhysicalLayerWrapper::AsyncOpen()
-{ 
-	return mpProxy->AsyncOpen(); 
+{
+	return mpProxy->AsyncOpen();
 }
 
 void PhysicalLayerWrapper::AsyncClose()
@@ -63,18 +63,18 @@ void PhysicalLayerWrapper::AsyncClose()
 }
 
 void PhysicalLayerWrapper::AsyncWrite(const uint8_t* apData, size_t apSize)
-{ 
+{
 	return mpProxy->AsyncWrite(apData, apSize);
 }
 
 void PhysicalLayerWrapper::AsyncRead(uint8_t* apData, size_t apSize)
-{ 
+{
 	return mpProxy->AsyncRead(apData, apSize);
 }
 
-void PhysicalLayerWrapper::_OnLowerLayerUp() 
-{ 
-	if(mpHandler) mpHandler->OnLowerLayerUp(); 
+void PhysicalLayerWrapper::_OnLowerLayerUp()
+{
+	if(mpHandler) mpHandler->OnLowerLayerUp();
 }
 
 void PhysicalLayerWrapper::_OnLowerLayerDown()
@@ -84,11 +84,10 @@ void PhysicalLayerWrapper::_OnLowerLayerDown()
 
 void PhysicalLayerWrapper::_OnReceive(const uint8_t* apData, size_t aSize)
 {
-	if(mCorruptionProbability > mRandom.Next())
-	{
+	if(mCorruptionProbability > mRandom.Next()) {
 		LOG_BLOCK(LEV_INFO, "Corrupting data");
 		uint8_t* pData = const_cast<uint8_t*>(apData);
-		for(size_t i=0; i<aSize; ++i) pData[i] = 0;
+		for(size_t i = 0; i < aSize; ++i) pData[i] = 0;
 	}
 
 	if(mpHandler) mpHandler->OnReceive(apData, aSize);

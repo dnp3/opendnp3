@@ -41,7 +41,7 @@ namespace opendnp3
 AsyncTaskBase::AsyncTaskBase(int aPriority,
                              const TaskHandler& arCallback,
                              AsyncTaskGroup* apGroup,
-							 const std::chrono::steady_clock::time_point& arInitialTime,
+                             const std::chrono::steady_clock::time_point& arInitialTime,
                              const std::string& arName) :
 	mName(arName),
 	mIsEnabled(false),
@@ -83,8 +83,8 @@ void AsyncTaskBase::SilentDisable()
 
 void AsyncTaskBase::Dispatch()
 {
-	if(mIsRunning) throw InvalidStateException(LOCATION, "Running");
-	if(!mIsEnabled) throw InvalidStateException(LOCATION, "Disabled");
+	if(mIsRunning) MACRO_THROW_EXCEPTION(InvalidStateException, "Running");
+	if(!mIsEnabled) MACRO_THROW_EXCEPTION(InvalidStateException, "Disabled");
 
 	mIsRunning = true;
 	mIsComplete = false;
@@ -95,17 +95,17 @@ void AsyncTaskBase::Dispatch()
 void AsyncTaskBase::AddDependency(const AsyncTaskBase* apTask)
 {
 	if(apTask == this)
-		throw ArgumentException(LOCATION, "Self-dependency not allowed");
+		MACRO_THROW_EXCEPTION(ArgumentException, "Self-dependency not allowed");
 
 	if(apTask->IsDependency(this))
-		throw ArgumentException(LOCATION, "Circular dependencies not allowed");
+		MACRO_THROW_EXCEPTION(ArgumentException, "Circular dependencies not allowed");
 
 	mDependencies.push_back(apTask);
 }
 
 bool AsyncTaskBase::IsDependency(const AsyncTaskBase* apTask) const
 {
-	for(const AsyncTaskBase * p: mDependencies) {
+for(const AsyncTaskBase * p: mDependencies) {
 		if(p == apTask) return true;
 		if(p->IsDependency(apTask)) return true;
 	}
@@ -116,7 +116,7 @@ bool AsyncTaskBase::IsDependency(const AsyncTaskBase* apTask) const
 void AsyncTaskBase::OnComplete(bool aSuccess)
 {
 	if(!mIsRunning) {
-		throw InvalidStateException(LOCATION, "Not Running");
+		MACRO_THROW_EXCEPTION(InvalidStateException, "Not Running");
 	}
 	mIsRunning = false;
 

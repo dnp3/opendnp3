@@ -38,7 +38,6 @@ namespace opendnp3
  * Settings classes used to configure the router.
  */
 struct VtoRouterSettings {
-	VtoRouterSettings() {}
 
 	/**
 	 * @param aChannelId Each dnp index for Vto data events is a channel id

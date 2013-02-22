@@ -43,7 +43,7 @@ namespace opendnp3
 Configuration information for the dnp3 master
 */
 struct MasterConfig {
-	
+
 	/// Default constructor
 	MasterConfig() :
 		FragSize(DEFAULT_FRAG_SIZE),
@@ -54,7 +54,7 @@ struct MasterConfig {
 		EnableUnsol(true),
 		UnsolClassMask(PC_ALL_EVENTS),
 		IntegrityRate(5000),
-		TaskRetryRate(5000)		
+		TaskRetryRate(5000)
 	{}
 
 	/** Adds a periodic exception scan to the configuration
@@ -63,7 +63,7 @@ struct MasterConfig {
 		@param aPeriod		Period of the scan in milliseconds
 	*/
 	void AddExceptionScan(int aClassMask, millis_t aPeriod) {
-		ExceptionScan ex = { aClassMask, aPeriod };
+		ExceptionScan ex(aClassMask, aPeriod);
 		mScans.push_back(ex);
 	}
 

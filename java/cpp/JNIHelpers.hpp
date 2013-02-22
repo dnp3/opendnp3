@@ -28,32 +28,32 @@
 #define MACRO_RETHROW_EXCEPTION(env, ex) \
 		jclass exClass = env->FindClass("com/automatak/dnp3/DNP3ConfigException"); \
 		env->ThrowNew(exClass, ex.GetErrorString().c_str());
-	
+
 
 class JNIHelpers
 {
-	public:
-		static std::string GetString(jstring, JNIEnv*);
+public:
+	static std::string GetString(jstring, JNIEnv*);
 
-		static void AttachThread(JavaVM* apJVM);
-		static void DetachThread(JavaVM* apJVM);
+	static void AttachThread(JavaVM* apJVM);
+	static void DetachThread(JavaVM* apJVM);
 
-		static void DeleteGlobalReference(JavaVM* apJVM, jobject ref);
+	static void DeleteGlobalReference(JavaVM* apJVM, jobject ref);
 
-		static JavaVM* GetJVMFromEnv(JNIEnv* apEnv);
-		static JNIEnv* GetEnvFromJVM(JavaVM* apJVM);
+	static JavaVM* GetJVMFromEnv(JNIEnv* apEnv);
+	static JNIEnv* GetEnvFromJVM(JavaVM* apJVM);
 
-		static jmethodID GetMethodID(JNIEnv* apEnv, jclass clazz, const char* name, const char* sig);
-		static jmethodID GetMethodID(JNIEnv* apEnv, jobject obj, const char* name, const char* sig);
-		static jclass GetClassForObject(JNIEnv* apEnv, jobject obj);
+	static jmethodID GetMethodID(JNIEnv* apEnv, jclass clazz, const char* name, const char* sig);
+	static jmethodID GetMethodID(JNIEnv* apEnv, jobject obj, const char* name, const char* sig);
+	static jclass GetClassForObject(JNIEnv* apEnv, jobject obj);
 
-		static jint GetIntField(JNIEnv* apEnv, jobject obj, const char* fieldId);
-		static jlong GetLongField(JNIEnv* apEnv, jobject obj, const char* fieldId);
-		static bool GetBoolField(JNIEnv* apEnv, jobject obj, const char* fieldId);
-		static jdouble GetDoubleField(JNIEnv* apEnv, jobject obj, const char* fieldId);
-		static jobject GetObjectField(JNIEnv* apEnv, jobject obj, const char* fieldId, const char* fqcn);
+	static jint GetIntField(JNIEnv* apEnv, jobject obj, const char* fieldId);
+	static jlong GetLongField(JNIEnv* apEnv, jobject obj, const char* fieldId);
+	static bool GetBoolField(JNIEnv* apEnv, jobject obj, const char* fieldId);
+	static jdouble GetDoubleField(JNIEnv* apEnv, jobject obj, const char* fieldId);
+	static jobject GetObjectField(JNIEnv* apEnv, jobject obj, const char* fieldId, const char* fqcn);
 
-		static void IterateOverListOfObjects(JNIEnv* apEnv, jobject list, std::function<void (jobject)> fun);
+	static void IterateOverListOfObjects(JNIEnv* apEnv, jobject list, std::function<void (jobject)> fun);
 };
 
 #endif

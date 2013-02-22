@@ -40,7 +40,7 @@ MockExecutor::MockExecutor() : mPostIsSynchronous(false)
 
 MockExecutor::~MockExecutor()
 {
-	for(auto pTimer: mAllTimers) delete pTimer;
+for(auto pTimer: mAllTimers) delete pTimer;
 }
 
 steady_clock::duration MockExecutor::NextDurationTimer()

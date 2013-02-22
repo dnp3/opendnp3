@@ -42,7 +42,7 @@ Timeout :: Timeout(steady_clock::duration aTimeout)
 
 bool Timeout :: IsExpired()
 {
-	return steady_clock::now() >= mExpireTime;	
+	return steady_clock::now() >= mExpireTime;
 }
 
 steady_clock::duration Timeout :: Remaining()

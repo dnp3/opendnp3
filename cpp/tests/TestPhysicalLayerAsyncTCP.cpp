@@ -34,9 +34,9 @@
 #include <opendnp3/LogToStdio.h>
 #include <opendnp3/ASIOExecutor.h>
 #include <opendnp3/Exception.h>
-#include <opendnp3/PhysLoopback.h>
-#include <opendnp3/RandomizedBuffer.h>
 
+#include "RandomizedBuffer.h"
+#include "PhysLoopback.h"
 #include "TestHelpers.h"
 #include "BufferHelpers.h"
 #include "AsyncTestObjectASIO.h"
@@ -224,7 +224,7 @@ BOOST_AUTO_TEST_CASE(Loopback)
 
 	EventLog log;
 	Logger* pLogger = log.GetLogger(LEV_INFO, "test");
-	AsyncTestObjectASIO test;	
+	AsyncTestObjectASIO test;
 	PhysicalLayerAsyncTCPServer server(pLogger->GetSubLogger("server"), test.GetService(), "127.0.0.1", 30000);
 
 	PhysLoopback loopback(pLogger->GetSubLogger("loopback"), &server);

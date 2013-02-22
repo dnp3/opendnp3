@@ -126,13 +126,13 @@ void AppLayerChannel::DoFinalResponse(APDU& arAPDU)
 
 void AppLayerChannel::StartTimer()
 {
-	if(mpTimer != NULL) throw InvalidStateException(LOCATION, "");
+	assert(mpTimer == NULL);
 	mpTimer = mpExecutor->Start(std::chrono::milliseconds(M_TIMEOUT), std::bind(&AppLayerChannel::Timeout, this));
 }
 
 void AppLayerChannel::CancelTimer()
 {
-	if(mpTimer == NULL) throw InvalidStateException(LOCATION, "");
+	assert(mpTimer != NULL);
 	mpTimer->Cancel();
 	mpTimer = NULL;
 }

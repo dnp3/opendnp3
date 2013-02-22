@@ -64,9 +64,9 @@ public:
 
 	// returns how much time is left
 	std::chrono::steady_clock::duration Remaining();
-	
 
-private:		
+
+private:
 
 	std::chrono::steady_clock::time_point mExpireTime;
 

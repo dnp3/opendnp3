@@ -46,7 +46,7 @@ void SetOption(boost::asio::serial_port& arPort, const T& arOption)
 {
 	error_code ec;
 	arPort.set_option(arOption, ec);
-	if(ec) throw Exception(LOCATION, ec.message());
+	if(ec) MACRO_THROW_EXCEPTION(Exception, ec.message());
 }
 
 //////////////////////////////////////////////
@@ -60,7 +60,7 @@ serial_port_base::stop_bits ConvertStopBits(int aStopBits)
 	case(1): t = serial_port_base::stop_bits::one; break;
 	case(2): t = serial_port_base::stop_bits::two; break;
 	default:
-		throw Exception(LOCATION, "Unsupported Stop Bits");
+		MACRO_THROW_EXCEPTION(Exception, "Unsupported Stop Bits");
 	}
 
 	return serial_port_base::stop_bits(t);
@@ -75,7 +75,7 @@ serial_port_base::flow_control ConvertFlow(FlowType aFlowType)
 	case(FLOW_XONXOFF): t = serial_port_base::flow_control::software; break;
 	case(FLOW_HARDWARE): t = serial_port_base::flow_control::hardware; break;
 	default:
-		throw Exception(LOCATION, "Unsupported Flow Control");
+		MACRO_THROW_EXCEPTION(Exception, "Unsupported Flow Control");
 	}
 
 	return serial_port_base::flow_control(t);
@@ -101,7 +101,7 @@ serial_port_base::parity ConvertParity(ParityType aParity)
 	case(PAR_ODD): t = serial_port_base::parity::odd; break;
 
 	default:
-		throw Exception(LOCATION, "Unsupported Parity");
+		MACRO_THROW_EXCEPTION(Exception, "Unsupported Parity");
 	}
 
 	return serial_port_base::parity(t);

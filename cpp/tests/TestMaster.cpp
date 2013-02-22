@@ -69,12 +69,12 @@ void TestAnalogOutputExecution(const std::string& setpointhex, T ao)
 
 	TestForIntegrityPoll(t);
 	BOOST_REQUIRE_EQUAL(t.app.NumAPDU(), 0); // check that the master sends no more packets
-		
-	t.master.GetCommandProcessor()->SelectAndOperate(ao, 1, [](CommandResponse cr){});
+
+	t.master.GetCommandProcessor()->SelectAndOperate(ao, 1, [](CommandResponse cr) {});
 	BOOST_REQUIRE(t.mts.DispatchOne());
 
 	BOOST_REQUIRE_EQUAL(t.Read(), "C0 03 " + setpointhex); // SELECT
-	BOOST_REQUIRE_EQUAL(t.app.NumAPDU(), 0); //nore more packets	
+	BOOST_REQUIRE_EQUAL(t.app.NumAPDU(), 0); //nore more packets
 }
 
 BOOST_AUTO_TEST_SUITE(MasterTestSuite)
@@ -110,8 +110,8 @@ BOOST_AUTO_TEST_CASE(IntegrityOnStartup)
 }
 
 BOOST_AUTO_TEST_CASE(StateTransitionSuccessFailure)
-{	
-	MasterConfig cfg; cfg.IntegrityRate = 1000;	
+{
+	MasterConfig cfg; cfg.IntegrityRate = 1000;
 	MasterTestObject t(cfg);
 	t.BindStateListener();
 	BOOST_REQUIRE(t.mts.DispatchOne());
@@ -321,16 +321,16 @@ BOOST_AUTO_TEST_CASE(ControlExecutionClosedState)
 	auto pCmdProcessor = t.master.GetCommandProcessor();
 
 	ControlRelayOutputBlock bo(CC_PULSE);
-		
-	for(int i=0; i<10; ++i){		
+
+	for(int i = 0; i < 10; ++i) {
 		CommandResponse rsp(CS_UNDEFINED);
-		pCmdProcessor->SelectAndOperate(bo, 1, [&](CommandResponse r){ 
-			rsp = r; 
+		pCmdProcessor->SelectAndOperate(bo, 1, [&](CommandResponse r) {
+			rsp = r;
 		});
-		t.mts.Dispatch();				
+		t.mts.Dispatch();
 		BOOST_REQUIRE_EQUAL(rsp.mResult, CS_HARDWARE_ERROR);
 	}
-	
+
 }
 
 BOOST_AUTO_TEST_CASE(SelectAndOperate)
@@ -345,7 +345,7 @@ BOOST_AUTO_TEST_CASE(SelectAndOperate)
 	ControlRelayOutputBlock bo(CC_PULSE); bo.mStatus = CS_SUCCESS;
 
 	std::vector<CommandResponse> rsps;
-	t.master.GetCommandProcessor()->SelectAndOperate(bo, 1, [&](CommandResponse rsp){ 
+	t.master.GetCommandProcessor()->SelectAndOperate(bo, 1, [&](CommandResponse rsp) {
 		rsps.push_back(rsp);
 	});
 	t.mts.Dispatch();
@@ -355,7 +355,7 @@ BOOST_AUTO_TEST_CASE(SelectAndOperate)
 
 	BOOST_REQUIRE_EQUAL(t.Read(), "C0 03 " + crob); // SELECT
 	t.RespondToMaster("C0 81 00 00 " + crob);
-	
+
 	t.mts.DispatchOne();
 
 	BOOST_REQUIRE_EQUAL(t.Read(), "C0 04 " + crob); // OPERATE
@@ -363,7 +363,7 @@ BOOST_AUTO_TEST_CASE(SelectAndOperate)
 
 	t.mts.DispatchOne();
 
-	BOOST_REQUIRE_EQUAL(t.app.NumAPDU(), 0); //nore more packets	
+	BOOST_REQUIRE_EQUAL(t.app.NumAPDU(), 0); //nore more packets
 	BOOST_REQUIRE_EQUAL(1, rsps.size());
 	BOOST_REQUIRE_EQUAL(rsps[0].mResult, CS_SUCCESS);
 }
@@ -376,11 +376,13 @@ BOOST_AUTO_TEST_CASE(ControlExecutionSelectFailure)
 
 	std::vector<CommandResponse> rsps;
 
-	DoControlSelectAndOperate(t, [&](CommandResponse cr) { rsps.push_back(cr); });
+	DoControlSelectAndOperate(t, [&](CommandResponse cr) {
+		rsps.push_back(cr);
+	});
 	t.master.OnSolFailure();
 
 	t.mts.DispatchOne();
-	
+
 	BOOST_REQUIRE_EQUAL(1, rsps.size());
 	BOOST_REQUIRE_EQUAL(rsps[0].mResult, CS_HARDWARE_ERROR);
 }
@@ -390,9 +392,11 @@ BOOST_AUTO_TEST_CASE(ControlExecutionSelectLayerDown)
 	MasterConfig master_cfg;
 	MasterTestObject t(master_cfg);
 	t.master.OnLowerLayerUp();
-	
+
 	std::vector<CommandResponse> rsps;
-	DoControlSelectAndOperate(t, [&](CommandResponse cr) { rsps.push_back(cr); });
+	DoControlSelectAndOperate(t, [&](CommandResponse cr) {
+		rsps.push_back(cr);
+	});
 	t.master.OnLowerLayerDown();
 	t.master.OnLowerLayerUp();
 
@@ -407,15 +411,17 @@ BOOST_AUTO_TEST_CASE(ControlExecutionSelectErrorResponse)
 	MasterConfig master_cfg;
 	MasterTestObject t(master_cfg);
 	t.master.OnLowerLayerUp();
-	
+
 	std::vector<CommandResponse> rsps;
-	DoControlSelectAndOperate(t, [&](CommandResponse cr) { rsps.push_back(cr); });
+	DoControlSelectAndOperate(t, [&](CommandResponse cr) {
+		rsps.push_back(cr);
+	});
 	t.RespondToMaster("C0 81 00 00 0C 01 17 01 01 01 01 64 00 00 00 64 00 00 00 04"); // not supported
 
 	t.mts.DispatchOne();
 
 	BOOST_REQUIRE_EQUAL(1, rsps.size());
-	BOOST_REQUIRE_EQUAL(CS_NOT_SUPPORTED, rsps[0].mResult);	
+	BOOST_REQUIRE_EQUAL(CS_NOT_SUPPORTED, rsps[0].mResult);
 }
 
 BOOST_AUTO_TEST_CASE(ControlExecutionSelectPartialResponse)
@@ -423,11 +429,13 @@ BOOST_AUTO_TEST_CASE(ControlExecutionSelectPartialResponse)
 	MasterConfig master_cfg;
 	MasterTestObject t(master_cfg);
 	t.master.OnLowerLayerUp();
-	
+
 	std::vector<CommandResponse> rsps;
-	DoControlSelectAndOperate(t, [&](CommandResponse cr) { rsps.push_back(cr); });	
+	DoControlSelectAndOperate(t, [&](CommandResponse cr) {
+		rsps.push_back(cr);
+	});
 	t.RespondToMaster("80 81 00 00 0C 01 17 01 01 01 01 64 00 00 00 64 00 00 00 00", false);
-	
+
 	BOOST_REQUIRE_EQUAL(0, rsps.size());
 
 	t.RespondToMaster("C0 81 00 00 0C 01 17 01 01 01 01 64 00 00 00 64 00 00 00 04"); // not supported
@@ -448,10 +456,10 @@ BOOST_AUTO_TEST_CASE(DeferredControlExecution)
 	BOOST_REQUIRE_EQUAL(t.Read(), "C0 01 3C 01 06"); ;
 
 	//issue a command while the master is waiting for a response from the slave
-	ControlRelayOutputBlock bo(CC_PULSE); bo.mStatus = CS_SUCCESS;	
-	t.master.GetCommandProcessor()->SelectAndOperate(bo, 1, [](CommandResponse){});
+	ControlRelayOutputBlock bo(CC_PULSE); bo.mStatus = CS_SUCCESS;
+	t.master.GetCommandProcessor()->SelectAndOperate(bo, 1, [](CommandResponse) {});
 	BOOST_REQUIRE(t.mts.DispatchOne());
-	
+
 	t.RespondToMaster("C0 81 00 00"); //now master gets response to integrity
 	std::string crob = "0C 01 17 01 01 01 01 64 00 00 00 64 00 00 00 00";
 	BOOST_REQUIRE_EQUAL(t.Read(), "C0 03 " + crob); //select

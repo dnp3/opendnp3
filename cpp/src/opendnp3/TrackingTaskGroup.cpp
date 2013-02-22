@@ -40,7 +40,7 @@ TrackingTaskGroup::TrackingTaskGroup(AsyncTaskGroup* apGroup) : mpGroup(apGroup)
 TrackingTaskGroup::~TrackingTaskGroup()
 {
 	//remove all the tasks that were created
-	for(auto pTask: mTaskVec) mpGroup->Remove(pTask);
+for(auto pTask: mTaskVec) mpGroup->Remove(pTask);
 }
 
 AsyncTaskBase* TrackingTaskGroup::Add(millis_t aPeriod, millis_t aRetryDelay, int aPriority, const TaskHandler& arCallback, const std::string& arName)

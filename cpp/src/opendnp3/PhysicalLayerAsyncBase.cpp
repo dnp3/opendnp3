@@ -149,7 +149,9 @@ void PhysicalLayerAsyncBase::AsyncOpen()
 		mState.mOpening = true;
 		this->DoOpen();
 	}
-	else throw InvalidStateException(LOCATION, "AsyncOpen: " + this->ConvertStateToString());
+	else {
+		MACRO_THROW_EXCEPTION_COMPLEX(InvalidStateException, "AsyncOpen: " << this->ConvertStateToString());
+	}
 }
 
 /** Marshalls the DoThisLayerDown call
@@ -163,38 +165,48 @@ void PhysicalLayerAsyncBase::AsyncClose()
 }
 
 void PhysicalLayerAsyncBase::StartClose()
-{	
+{
 	if(!mState.IsClosing()) { //TODO - kind of hack as it deviates from the current model.
 		if(mState.CanClose()) {
-			mState.mClosing = true;		
+			mState.mClosing = true;
 
 			if(mState.mOpening) this->DoOpeningClose();
 			else this->DoClose();
 		}
-		else throw InvalidStateException(LOCATION, "StartClose: " + this->ConvertStateToString());	
+		else {
+			MACRO_THROW_EXCEPTION_COMPLEX(InvalidStateException, "StartClose: " << this->ConvertStateToString());
+		}
 	}
 }
 
 void PhysicalLayerAsyncBase::AsyncWrite(const uint8_t* apBuff, size_t aNumBytes)
 {
-	if(aNumBytes < 1) throw ArgumentException(LOCATION, "aNumBytes must be > 0");
+	if(aNumBytes < 1) {
+		MACRO_THROW_EXCEPTION(ArgumentException, "aNumBytes must be > 0");
+	}
 
 	if(mState.CanWrite()) {
 		mState.mWriting = true;
 		this->DoAsyncWrite(apBuff, aNumBytes);
 	}
-	else throw InvalidStateException(LOCATION, "AsyncWrite: " + this->ConvertStateToString());
+	else {
+		MACRO_THROW_EXCEPTION_COMPLEX(InvalidStateException, "AsyncWrite: " << this->ConvertStateToString());
+	}
 }
 
 void PhysicalLayerAsyncBase::AsyncRead(uint8_t* apBuff, size_t aMaxBytes)
 {
-	if(aMaxBytes < 1) throw ArgumentException(LOCATION, "aMaxBytes must be > 0");
+	if(aMaxBytes < 1) {
+		MACRO_THROW_EXCEPTION(ArgumentException, "aMaxBytes must be > 0");
+	}
 
 	if(mState.CanRead()) {
 		mState.mReading = true;
 		this->DoAsyncRead(apBuff, aMaxBytes);
 	}
-	else throw InvalidStateException(LOCATION, "AsyncRead: " + this->ConvertStateToString());
+	else {
+		MACRO_THROW_EXCEPTION_COMPLEX(InvalidStateException, "AsyncRead: " << this->ConvertStateToString());
+	}
 }
 
 ///////////////////////////////////////
@@ -227,7 +239,9 @@ void PhysicalLayerAsyncBase::OnOpenCallback(const boost::system::error_code& arE
 			}
 		}
 	}
-	else throw InvalidStateException(LOCATION, "OnOpenCallback: " + this->ConvertStateToString());
+	else {
+		MACRO_THROW_EXCEPTION_COMPLEX(InvalidStateException, "OnOpenCallback: " << this->ConvertStateToString());
+	}
 }
 
 void PhysicalLayerAsyncBase::OnReadCallback(const boost::system::error_code& arErr, uint8_t* apBuff, size_t aSize)
@@ -250,7 +264,9 @@ void PhysicalLayerAsyncBase::OnReadCallback(const boost::system::error_code& arE
 
 		if(mState.CheckForClose()) this->DoThisLayerDown();
 	}
-	else throw InvalidStateException(LOCATION, "OnReadCallback: " + this->ConvertStateToString());
+	else {
+		MACRO_THROW_EXCEPTION_COMPLEX(InvalidStateException, "OnReadCallback: " << this->ConvertStateToString());
+	}
 }
 
 void PhysicalLayerAsyncBase::OnWriteCallback(const boost::system::error_code& arErr, size_t aNumBytes)
@@ -273,7 +289,9 @@ void PhysicalLayerAsyncBase::OnWriteCallback(const boost::system::error_code& ar
 
 		if(mState.CheckForClose()) this->DoThisLayerDown();
 	}
-	else throw InvalidStateException(LOCATION, "OnWriteCallback: " + this->ConvertStateToString());
+	else {
+		MACRO_THROW_EXCEPTION_COMPLEX(InvalidStateException, "OnWriteCallback: " << this->ConvertStateToString());
+	}
 }
 
 ////////////////////////////////////

@@ -34,7 +34,7 @@ namespace opendnp3
 
 DestructorHook::~DestructorHook()
 {
-	for(auto func: mHooks) func();
+for(auto func: mHooks) func();
 }
 
 void DestructorHook::AddDestructorHook(std::function<void ()> aHook)

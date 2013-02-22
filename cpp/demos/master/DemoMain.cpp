@@ -64,7 +64,7 @@ int main(int argc, char* argv[])
 
 	// You can optionally add a listener to the channel. You can do this anytime and
 	// you will receive a stream of all state changes
-	pClient->AddStateListener([](ChannelState state){
+	pClient->AddStateListener([](ChannelState state) {
 		std::cout << "Client state: " << ConvertChannelStateToString(state) << std::endl;
 	});
 
@@ -76,15 +76,15 @@ int main(int argc, char* argv[])
 	// name, log level, command acceptor, and config info. This
 	// returns a thread-safe interface used for sending commands.
 	auto pMaster = pClient->AddMaster(
-		"master",						// stack name
-		LOG_LEVEL,						// log filter level
-		PrintingDataObserver::Inst(),	// callback for data processing
-		stackConfig						// stack configuration
-	);
+	                       "master",						// stack name
+	                       LOG_LEVEL,						// log filter level
+	                       PrintingDataObserver::Inst(),	// callback for data processing
+	                       stackConfig						// stack configuration
+	               );
 
-	// You can optionally add a listener to the stack to observer communicate health. You 
+	// You can optionally add a listener to the stack to observer communicate health. You
 	// can do this anytime and you will receive a stream of all state changes.
-	pMaster->AddStateListener([](StackState state){
+	pMaster->AddStateListener([](StackState state) {
 		std::cout << "master state: " << ConvertStackStateToString(state) << std::endl;
 	});
 
@@ -99,9 +99,11 @@ int main(int argc, char* argv[])
 			ControlRelayOutputBlock crob(CC_LATCH_ON);
 
 			promise<CommandResponse> selectResult;
-			pCmdProcessor->SelectAndOperate(crob, 0, [&](CommandResponse cr){ selectResult.set_value(cr); });
+			pCmdProcessor->SelectAndOperate(crob, 0, [&](CommandResponse cr) {
+				selectResult.set_value(cr);
+			});
 			CommandResponse rsp = selectResult.get_future().get();
-			std::cout << "Select/Operate result: " << rsp.mResult << std::endl;				
+			std::cout << "Select/Operate result: " << rsp.mResult << std::endl;
 		}
 	}
 	while(true);

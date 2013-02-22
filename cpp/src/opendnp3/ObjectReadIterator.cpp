@@ -83,7 +83,7 @@ size_t ObjectReadIterator::CalcObjSize(const uint8_t* apPrefixPos)
 		default:
 			break;
 		}
-		throw Exception(LOCATION, "Invalid object type for non-sized prefix");
+		MACRO_THROW_EXCEPTION(Exception, "Invalid object type for non-sized prefix");
 	}
 }
 
@@ -139,7 +139,7 @@ size_t ObjectReadIterator::CalcCountIndex(QualifierCode aCode, const uint8_t* ap
 	case(QC_4B_CNT_4B_INDEX):
 		return UInt32LE::Read(apPrefixPos);
 	default:
-		throw Exception(LOCATION, "Invalid qualifier code");
+		MACRO_THROW_EXCEPTION(Exception, "Invalid qualifier code");
 	}
 }
 

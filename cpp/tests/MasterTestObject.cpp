@@ -42,17 +42,19 @@ MasterTestObject::MasterTestObject(MasterConfig cfg, FilterLevel aLevel, bool aI
 	LogTester(aImmediate),
 	fake_time(),
 	mts(),
-	ats(&fake_time),
+	group(&mts, &fake_time),
 	fdo(),
 	app(mLog.GetLogger(aLevel, "MockAppLayer")),
-	master(mLog.GetLogger(aLevel, "master"), cfg, &app, &fdo, ats.CreateNewGroup(&mts), &mts, &fake_time)
+	master(mLog.GetLogger(aLevel, "master"), cfg, &app, &fdo, &group, &mts, &fake_time)
 {
-	app.SetUser(&master);	
+	app.SetUser(&master);
 }
 
 void MasterTestObject::BindStateListener()
 {
-	master.AddStateListener([&](StackState state) { states.push_back(state); });
+	master.AddStateListener([&](StackState state) {
+		states.push_back(state);
+	});
 }
 
 void MasterTestObject::RespondToMaster(const std::string& arData, bool aFinal)

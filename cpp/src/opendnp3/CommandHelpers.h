@@ -44,26 +44,26 @@ namespace opendnp3
 // Static helper functions for formatting/validating command requests
 class CommandHelpers
 {
-	public:
-		template <class T>
-		static std::function<CommandStatus (const APDU&)> ConfigureRequest(APDU& arAPDU, FunctionCodes aCode, const T& arCommand, size_t aIndex, CommandObject<T>* apObj);		
-	
-	private:
-		template <class T>
-		static CommandStatus ValidateCommandResponse(const APDU& arAPDU, CommandObject<T>* apObj, const CopyableBuffer& arData, size_t aIndex);	
+public:
+	template <class T>
+	static std::function<CommandStatus (const APDU&)> ConfigureRequest(APDU& arAPDU, FunctionCodes aCode, const T& arCommand, size_t aIndex, CommandObject<T>* apObj);
+
+private:
+	template <class T>
+	static CommandStatus ValidateCommandResponse(const APDU& arAPDU, CommandObject<T>* apObj, const CopyableBuffer& arData, size_t aIndex);
 };
 
 template <class T>
 std::function<CommandStatus (const APDU&)> CommandHelpers::ConfigureRequest(APDU& arAPDU, FunctionCodes aCode, const T& arCommand, size_t aIndex, CommandObject<T>* apObj)
-{	
+{
 	arAPDU.Set(aCode, true, true, false, false);
 	IndexedWriteIterator i = arAPDU.WriteIndexed(apObj, 1, aIndex);
 	i.SetIndex(aIndex);
 	apObj->Write(*i, arCommand);
 	CopyableBuffer buffer = apObj->GetValueBytes(*i);
-	return [=](const APDU& arResponse){
+	return [ = ](const APDU & arResponse) {
 		return CommandHelpers::ValidateCommandResponse(arResponse, apObj, buffer, aIndex);
-	};	
+	};
 }
 
 template <class T>

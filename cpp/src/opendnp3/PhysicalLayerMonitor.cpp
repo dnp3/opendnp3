@@ -48,7 +48,7 @@ namespace opendnp3
 PhysicalLayerMonitor::PhysicalLayerMonitor(Logger* apLogger, IPhysicalLayerAsync* apPhys, steady_clock::duration aMinOpenRetry, steady_clock::duration aMaxOpenRetry) :
 	Loggable(apLogger),
 	IHandlerAsync(apLogger),
-	mpPhys(apPhys),	
+	mpPhys(apPhys),
 	mpOpenTimer(NULL),
 	mpState(MonitorStateInit::Inst()),
 	mFinalShutdown(false),
@@ -56,7 +56,7 @@ PhysicalLayerMonitor::PhysicalLayerMonitor(Logger* apLogger, IPhysicalLayerAsync
 	mMaxOpenRetry(aMaxOpenRetry),
 	mCurrentRetry(aMinOpenRetry)
 {
-	assert(apPhys != NULL);	
+	assert(apPhys != NULL);
 	mpPhys->SetHandler(this);
 }
 
@@ -69,28 +69,27 @@ ChannelState PhysicalLayerMonitor::GetState()
 }
 
 bool PhysicalLayerMonitor::WaitForShutdown(millis_t aTimeout)
-{	
+{
 	std::unique_lock<std::mutex> lock(mMutex);
-	while(!mFinalShutdown) 
-	{ 
+	while(!mFinalShutdown) {
 		if(aTimeout >= 0) {
 			mCondition.wait_for(lock, milliseconds(aTimeout));
 			break;
 		}
-		else mCondition.wait(lock);		
-	}	
+		else mCondition.wait(lock);
+	}
 	return mFinalShutdown;
 }
 
 void PhysicalLayerMonitor::ChangeState(IMonitorState* apState)
 {
-	LOG_BLOCK(LEV_DEBUG, mpState->ConvertToString() << " -> " << apState->ConvertToString() << " : " << mpPhys->ConvertStateToString());	
+	LOG_BLOCK(LEV_DEBUG, mpState->ConvertToString() << " -> " << apState->ConvertToString() << " : " << mpPhys->ConvertStateToString());
 	IMonitorState* pLast = mpState;
 
 	std::unique_lock<std::mutex> lock(mMutex);
 	mpState = apState;
 	if(pLast->GetState() != apState->GetState()) {
-		
+
 		this->OnStateChange(mpState->GetState());
 
 		// signaling this way makes sure we're free and clear of the event that causes this
@@ -150,10 +149,10 @@ void PhysicalLayerMonitor::OnOpenTimerExpiration()
 
 void PhysicalLayerMonitor::_OnOpenFailure()
 {
-	LOG_BLOCK(LEV_DEBUG, "_OnOpenFailure()");	
+	LOG_BLOCK(LEV_DEBUG, "_OnOpenFailure()");
 	mpState->OnOpenFailure(this);
 	this->OnPhysicalLayerOpenFailureCallback();
-	this->mCurrentRetry = std::min(2*mCurrentRetry, mMaxOpenRetry);
+	this->mCurrentRetry = std::min(2 * mCurrentRetry, mMaxOpenRetry);
 }
 
 void PhysicalLayerMonitor::_OnLowerLayerUp()

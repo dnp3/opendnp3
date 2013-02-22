@@ -47,7 +47,7 @@ namespace opendnp3
 class DNPFromStream
 {
 public:
-	
+
 	//templated conversion functions
 	template <typename T>
 	static typename T::DataType ReadQ(const uint8_t* apPos, const T* apObj);

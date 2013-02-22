@@ -24,10 +24,10 @@
 
 class DataObserverAdapter : public opendnp3::IDataObserver
 {
-	public:
+public:
 	DataObserverAdapter(JavaVM* apJVM, jobject aProxy);
 
-	protected:
+protected:
 
 	void _Start();
 	void _Update(const opendnp3::Binary& arMeas, size_t aIndex);
@@ -37,7 +37,7 @@ class DataObserverAdapter : public opendnp3::IDataObserver
 	void _Update(const opendnp3::ControlStatus& arMeas, size_t aIndex);
 	void _End();
 
-	private:
+private:
 
 	JNIEnv* GetEnv();
 
@@ -49,18 +49,18 @@ class DataObserverAdapter : public opendnp3::IDataObserver
 
 	// BinaryInput
 	jmethodID mUpdateBinaryInput;
-	
+
 	// AnalogInput
 	jmethodID mUpdateAnalogInput;
-	
+
 	// Counter
 	jmethodID mUpdateCounter;
-	
+
 	// BinaryOutputStatus
 	jmethodID mUpdateBinaryOutputStatus;
-	
+
 	// AnalogOutputStatus
-	jmethodID mUpdateAnalogOutputStatus;	
+	jmethodID mUpdateAnalogOutputStatus;
 };
 
 #endif

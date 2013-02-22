@@ -30,8 +30,9 @@
 #define __RESPONSE_LOADER_TEST_OBJECT_H_
 
 #include <opendnp3/Log.h>
-#include <opendnp3/FlexibleDataObserver.h>
 #include <opendnp3/VtoReader.h>
+
+#include "FlexibleDataObserver.h"
 
 namespace opendnp3
 {

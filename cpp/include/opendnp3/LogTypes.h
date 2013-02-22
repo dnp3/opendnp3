@@ -46,9 +46,11 @@ enum FilterLevel {
 };
 
 struct FilterAssoc {
+
 	FilterLevel lev;
 	char id;
 };
+
 
 /// Contains helper functions for manipulating, levels, filters, and strings
 class LogTypes
@@ -70,7 +72,7 @@ public:
 
 	/// converts a single character to a filter level, returns -1 if an invalid character
 	static int GetFilterMask(char c);
-	
+
 	/// converts a string of filter characters, ORing the values, returns -1 if an invalid character is present
 	static int GetFilterMask(const std::string& arg);
 

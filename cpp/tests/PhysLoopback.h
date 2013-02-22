@@ -26,68 +26,39 @@
 //
 // Contact Automatak, LLC for a commercial license to these modifications
 //
-#ifndef __LOWER_LAYER_TO_PHYS_ADAPTER_H_
-#define __LOWER_LAYER_TO_PHYS_ADAPTER_H_
+#ifndef __PHYS_LOOPBACK_H_
+#define __PHYS_LOOPBACK_H_
 
-
-#include "IHandlerAsync.h"
-#include "AsyncLayerInterfaces.h"
+#include <opendnp3/PhysicalLayerMonitor.h>
+#include <opendnp3/CopyableBuffer.h>
 
 namespace opendnp3
 {
 
-class IPhysicalLayerAsync;
-
-/** Class for turning an async physical layer into an ILowerLayer
+/**
+*	Buffers and sends all bytes received to back on the same layer.
 */
-class LowerLayerToPhysAdapter : public IHandlerAsync, public ILowerLayer
+class PhysLoopback : public PhysicalLayerMonitor
 {
 public:
-	LowerLayerToPhysAdapter(Logger*, IPhysicalLayerAsync*, bool aAutoRead = true);
-	~LowerLayerToPhysAdapter();
-
-	size_t GetNumOpenFailure() {
-		return mNumOpenFailure;
-	}
-	bool OpenFailureEquals(size_t aNum) {
-		return GetNumOpenFailure() == aNum;
-	}
-
-	void StartRead();
-
-
+	PhysLoopback(Logger*, IPhysicalLayerAsync*);
 
 private:
 
-	virtual std::string RecvString() const {
-		return "Adapter <-";
-	}
-	virtual std::string SendString() const {
-		return "Adapter ->";
-	}
+	size_t mBytesRead;
+	size_t mBytesWritten;
 
-	bool mAutoRead;
-	size_t mNumOpenFailure;
+	CopyableBuffer mBuffer;
 
-	static const size_t BUFFER_SIZE = 1 << 16; // 65,536
-
-	uint8_t mpBuff[BUFFER_SIZE]; // Temporary buffer since IPhysicalLayerAsync now directly supports a read operation
-
-	/* Implement IAsyncHandler */
-	void _OnOpenFailure();
-
-	/* Implement IUpperLayer */
 	void _OnReceive(const uint8_t*, size_t);
-	void _OnSendSuccess();
-	void _OnSendFailure();
-	void _OnLowerLayerUp();
-	void _OnLowerLayerDown();
-	void _OnLowerLayerShutdown();
+	void _OnSendSuccess(void);
+	void _OnSendFailure(void);
 
-	IPhysicalLayerAsync* mpPhys;
+	void OnPhysicalLayerOpenSuccessCallback(void);
+	void OnPhysicalLayerOpenFailureCallback(void) {}
+	void OnPhysicalLayerCloseCallback(void) {}
 
-	/* Implement ILowerLayer */
-	void _Send(const uint8_t*, size_t);
+	void StartRead();
 };
 
 }

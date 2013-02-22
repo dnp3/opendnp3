@@ -45,7 +45,7 @@ namespace opendnp3
 ASIOExecutor::ASIOExecutor(boost::asio::strand* apStrand) :
 	mpStrand(apStrand),
 	mNumActiveTimers(0),
-	mIsShuttingDown(false)	
+	mIsShuttingDown(false)
 {
 
 }
@@ -53,13 +53,13 @@ ASIOExecutor::ASIOExecutor(boost::asio::strand* apStrand) :
 ASIOExecutor::~ASIOExecutor()
 {
 	this->Shutdown();
-	for(auto pTimer: mAllTimers) delete pTimer;
+for(auto pTimer: mAllTimers) delete pTimer;
 }
 
 ITimer* ASIOExecutor::Start(std::chrono::steady_clock::duration aDelay, const function<void ()>& arCallback)
 {
 	std::lock_guard<std::mutex> lock(mMutex);
-	if(mIsShuttingDown) throw InvalidStateException(LOCATION, "Can't start a timer while executor is shutting down");
+	if(mIsShuttingDown) MACRO_THROW_EXCEPTION(InvalidStateException, "Can't start a timer while executor is shutting down");
 	TimerASIO* pTimer = GetTimer();
 	pTimer->mTimer.expires_from_now(aDelay);
 	this->StartTimer(pTimer, arCallback);
@@ -69,7 +69,7 @@ ITimer* ASIOExecutor::Start(std::chrono::steady_clock::duration aDelay, const fu
 ITimer* ASIOExecutor::Start(const std::chrono::steady_clock::time_point& arTime, const function<void ()>& arCallback)
 {
 	std::lock_guard<std::mutex> lock(mMutex);
-	if(mIsShuttingDown) throw InvalidStateException(LOCATION, "Can't start a timer while executor is shutting down");
+	if(mIsShuttingDown) MACRO_THROW_EXCEPTION(InvalidStateException, "Can't start a timer while executor is shutting down");
 	TimerASIO* pTimer = GetTimer();
 	pTimer->mTimer.expires_at(arTime);
 	this->StartTimer(pTimer, arCallback);
@@ -78,7 +78,7 @@ ITimer* ASIOExecutor::Start(const std::chrono::steady_clock::time_point& arTime,
 
 void ASIOExecutor::Post(const std::function<void ()>& arHandler)
 {
-	mpStrand->post(arHandler);	
+	mpStrand->post(arHandler);
 }
 
 TimerASIO* ASIOExecutor::GetTimer()
@@ -101,18 +101,18 @@ void ASIOExecutor::Shutdown()
 {
 	std::unique_lock<std::mutex> lock(mMutex);
 	mIsShuttingDown = true;
-	while(mNumActiveTimers) {		
+	while(mNumActiveTimers) {
 		mCondition.wait(lock);
 	}
 }
 
 void ASIOExecutor::StartTimer(TimerASIO* apTimer, const std::function<void ()>& arCallback)
-{	
+{
 	++mNumActiveTimers;
 	apTimer->mTimer.async_wait(
-		mpStrand->wrap(
-			std::bind(&ASIOExecutor::OnTimerCallback, this, std::placeholders::_1, apTimer, arCallback)
-		)
+	        mpStrand->wrap(
+	                std::bind(&ASIOExecutor::OnTimerCallback, this, std::placeholders::_1, apTimer, arCallback)
+	        )
 	);
 }
 

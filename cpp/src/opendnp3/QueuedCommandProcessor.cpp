@@ -38,7 +38,7 @@ QueuedCommandProcessor::QueuedCommandProcessor() :
 
 }
 
-void QueuedCommandProcessor::SelectAndOperate(const ControlRelayOutputBlock& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback)	
+void QueuedCommandProcessor::SelectAndOperate(const ControlRelayOutputBlock& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback)
 {
 	this->SelectAndOperateT(arCommand, aIndex, aCallback);
 }

@@ -26,30 +26,52 @@
 //
 // Contact Automatak, LLC for a commercial license to these modifications
 //
-#ifndef __RANDOMIZED_BUFFER_H_
-#define __RANDOMIZED_BUFFER_H_
+#include "PhysLoopback.h"
 
-#include "CopyableBuffer.h"
-#include "Random.h"
+#include <opendnp3/IPhysicalLayerAsync.h>
+#include <opendnp3/Logger.h>
+
+using namespace std::chrono;
 
 namespace opendnp3
 {
 
-class RandomizedBuffer : public CopyableBuffer
+PhysLoopback::PhysLoopback(Logger* apLogger, IPhysicalLayerAsync* apPhys) :
+	Loggable(apLogger),
+	PhysicalLayerMonitor(apLogger, apPhys, seconds(5), seconds(5)),
+	mBytesRead(0),
+	mBytesWritten(0),
+	mBuffer(1024)
 {
-
-public:
-
-	RandomizedBuffer(size_t aSize);
-
-	void Randomize();
-
-private:
-	Random<uint8_t> rand;
-};
 
 }
 
-#endif
+void PhysLoopback::StartRead()
+{
+	mpPhys->AsyncRead(mBuffer, mBuffer.Size());
+}
 
+void PhysLoopback::_OnReceive(const uint8_t* apData, size_t aNumBytes)
+{
+	mBytesRead += aNumBytes;
+	mBytesWritten += aNumBytes;
+	mpPhys->AsyncWrite(mBuffer, aNumBytes);
+}
+
+void PhysLoopback::_OnSendSuccess(void)
+{
+	this->StartRead();
+}
+
+void PhysLoopback::_OnSendFailure(void)
+{
+
+}
+
+void PhysLoopback::OnPhysicalLayerOpenSuccessCallback(void)
+{
+	this->StartRead();
+}
+
+}
 

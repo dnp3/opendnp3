@@ -103,6 +103,11 @@ void MockAppLayer::SendRequest(APDU& arAPDU)
 	mFragments.push_back(arAPDU);
 }
 
+bool MockAppLayer::NothingToRead()
+{
+	return mFragments.size() == 0;
+}
+
 APDU MockAppLayer::Read()
 {
 	if(mFragments.size() == 0) throw InvalidStateException(LOCATION, "no more fragments");

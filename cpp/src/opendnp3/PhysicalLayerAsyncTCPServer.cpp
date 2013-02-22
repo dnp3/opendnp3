@@ -61,23 +61,29 @@ void PhysicalLayerAsyncTCPServer::DoOpen()
 	if(!mAcceptor.is_open()) {
 		boost::system::error_code ec;
 		mAcceptor.open(mLocalEndpoint.protocol(), ec);
-		if(ec) throw Exception(LOCATION, ec.message());
+		if(ec) {
+			MACRO_THROW_EXCEPTION(Exception, ec.message());
+		}
 
 		mAcceptor.set_option(ip::tcp::acceptor::reuse_address(true));
 		mAcceptor.bind(mLocalEndpoint, ec);
-		if(ec) throw Exception(LOCATION, ec.message());
+		if(ec) {
+			MACRO_THROW_EXCEPTION(Exception, ec.message());
+		}
 
 		mAcceptor.listen(socket_base::max_connections, ec);
-		if(ec) throw Exception(LOCATION, ec.message());
+		if(ec) {
+			MACRO_THROW_EXCEPTION(Exception, ec.message());
+		}
 	}
 
 	mAcceptor.async_accept(mSocket,
 	                       mRemoteEndpoint,
-						   mStrand.wrap(
-							std::bind(&PhysicalLayerAsyncTCPServer::OnOpenCallback,
-	                                   this,
-									   std::placeholders::_1)
-									   ));	                                   
+	                       mStrand.wrap(
+	                               std::bind(&PhysicalLayerAsyncTCPServer::OnOpenCallback,
+	                                               this,
+	                                               std::placeholders::_1)
+	                       ));
 }
 
 void PhysicalLayerAsyncTCPServer::CloseAcceptor()

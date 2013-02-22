@@ -74,8 +74,9 @@ ShiftableBuffer::~ShiftableBuffer()
 
 void ShiftableBuffer::AdvanceRead(size_t aNumBytes)
 {
-	if(aNumBytes > this->NumReadBytes())
-		throw ArgumentException(LOCATION, "Cannot be greater than the number of currently available reader bytes");
+	if(aNumBytes > this->NumReadBytes()) {
+		MACRO_THROW_EXCEPTION(ArgumentException, "Cannot be greater than the number of currently available reader bytes");
+	}
 
 	mReadPos += aNumBytes;
 }
@@ -84,14 +85,16 @@ void ShiftableBuffer::AdvanceWrite(size_t aNumBytes)
 {
 
 	if(aNumBytes > this->NumWriteBytes()) // This could indicate a buffer overflow
-		throw ArgumentException(LOCATION, "Cannot be greater than the number of currently available writer bytes");
+		MACRO_THROW_EXCEPTION(ArgumentException, "Cannot be greater than the number of currently available writer bytes");
 
 	mWritePos += aNumBytes;
 }
 
 bool ShiftableBuffer::Sync(const uint8_t* apPattern, size_t aNumBytes)
 {
-	if(aNumBytes < 1) throw ArgumentException(LOCATION, "Pattern must be at least 1 byte");
+	if(aNumBytes < 1) {
+		MACRO_THROW_EXCEPTION(ArgumentException, "Pattern must be at least 1 byte");
+	}
 
 	size_t offset = SyncSubsequence(apPattern, aNumBytes, 0);
 	bool res = (this->NumReadBytes() - offset) >= aNumBytes;

@@ -58,7 +58,7 @@ protected:
 
 	void NotifyObservers();
 
-private:	
+private:
 	std::mutex mSubjectMutex;
 	std::vector< std::function<void ()> > mObservers;
 };

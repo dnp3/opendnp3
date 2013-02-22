@@ -26,24 +26,20 @@ cpp/src/opendnp3/ApplicationStack.cpp \
 cpp/src/opendnp3/ASIOExecutor.cpp \
 cpp/src/opendnp3/ASIOSerialHelpers.cpp \
 cpp/src/opendnp3/AsyncLayerInterfaces.cpp \
+cpp/src/opendnp3/AsyncTaskGroup.cpp \
 cpp/src/opendnp3/AsyncTaskBase.cpp \
 cpp/src/opendnp3/AsyncTaskContinuous.cpp \
-cpp/src/opendnp3/AsyncTaskGroup.cpp \
 cpp/src/opendnp3/AsyncTaskNonPeriodic.cpp \
 cpp/src/opendnp3/AsyncTaskPeriodic.cpp \
-cpp/src/opendnp3/AsyncTaskScheduler.cpp \
 cpp/src/opendnp3/BaseDataTypes.cpp \
 cpp/src/opendnp3/BufferTypes.cpp \
 cpp/src/opendnp3/ChangeBuffer.cpp \
 cpp/src/opendnp3/ClassCounter.cpp \
 cpp/src/opendnp3/CommandStatus.cpp \
-cpp/src/opendnp3/CommandTask.cpp \
-cpp/src/opendnp3/ConstantCommandProcessor.cpp \
 cpp/src/opendnp3/ControlRelayOutputBlock.cpp \
 cpp/src/opendnp3/CopyableBuffer.cpp \
 cpp/src/opendnp3/CRC.cpp \
 cpp/src/opendnp3/Database.cpp \
-cpp/src/opendnp3/DataPoll.cpp \
 cpp/src/opendnp3/DestructorHook.cpp \
 cpp/src/opendnp3/DeviceTemplate.cpp \
 cpp/src/opendnp3/DNP3Channel.cpp \
@@ -53,7 +49,6 @@ cpp/src/opendnp3/EnhancedVto.cpp \
 cpp/src/opendnp3/EnhancedVtoRouter.cpp \
 cpp/src/opendnp3/Exception.cpp \
 cpp/src/opendnp3/ExecutorPause.cpp \
-cpp/src/opendnp3/FlexibleDataObserver.cpp \
 cpp/src/opendnp3/HeaderReadIterator.cpp \
 cpp/src/opendnp3/IExecutor.cpp \
 cpp/src/opendnp3/IHandlerAsync.cpp \
@@ -77,12 +72,6 @@ cpp/src/opendnp3/Logger.cpp \
 cpp/src/opendnp3/LogToFile.cpp \
 cpp/src/opendnp3/LogToStdio.cpp \
 cpp/src/opendnp3/LogTypes.cpp \
-cpp/src/opendnp3/LowerLayerToPhysAdapter.cpp \
-cpp/src/opendnp3/Master.cpp \
-cpp/src/opendnp3/MasterSchedule.cpp \
-cpp/src/opendnp3/MasterStackImpl.cpp \
-cpp/src/opendnp3/MasterStates.cpp \
-cpp/src/opendnp3/MasterTaskBase.cpp \
 cpp/src/opendnp3/MultiplexingDataObserver.cpp \
 cpp/src/opendnp3/ObjectHeader.cpp \
 cpp/src/opendnp3/ObjectInterfaces.cpp \
@@ -101,15 +90,11 @@ cpp/src/opendnp3/PhysicalLayerAsyncTCPServer.cpp \
 cpp/src/opendnp3/PhysicalLayerMonitor.cpp \
 cpp/src/opendnp3/PhysicalLayerMonitorStates.cpp \
 cpp/src/opendnp3/ChannelStates.cpp \
-cpp/src/opendnp3/PhysLoopback.cpp \
 cpp/src/opendnp3/PointClass.cpp \
 cpp/src/opendnp3/PriLinkLayerStates.cpp \
 cpp/src/opendnp3/ProtocolUtil.cpp \
 cpp/src/opendnp3/QualityConverter.cpp \
-cpp/src/opendnp3/QueuedCommandProcessor.cpp \
-cpp/src/opendnp3/RandomizedBuffer.cpp \
 cpp/src/opendnp3/ResponseContext.cpp \
-cpp/src/opendnp3/ResponseLoader.cpp \
 cpp/src/opendnp3/SecLinkLayerStates.cpp \
 cpp/src/opendnp3/SerialTypes.cpp \
 cpp/src/opendnp3/ShiftableBuffer.cpp \
@@ -123,7 +108,6 @@ cpp/src/opendnp3/SlaveStates.cpp \
 cpp/src/opendnp3/SolicitedChannel.cpp \
 cpp/src/opendnp3/StackBase.cpp \
 cpp/src/opendnp3/StackState.cpp \
-cpp/src/opendnp3/StartupTasks.cpp \
 cpp/src/opendnp3/SubjectBase.cpp \
 cpp/src/opendnp3/Threadable.cpp \
 cpp/src/opendnp3/Thread.cpp \
@@ -131,7 +115,6 @@ cpp/src/opendnp3/TimerASIO.cpp \
 cpp/src/opendnp3/TimeSource.cpp \
 cpp/src/opendnp3/TLS_Base.cpp \
 cpp/src/opendnp3/ToHex.cpp \
-cpp/src/opendnp3/TrackingTaskGroup.cpp \
 cpp/src/opendnp3/TransportLayer.cpp \
 cpp/src/opendnp3/TransportRx.cpp \
 cpp/src/opendnp3/TransportStates.cpp \
@@ -145,6 +128,24 @@ cpp/src/opendnp3/VtoRouter.cpp \
 cpp/src/opendnp3/VtoRouterSettings.cpp \
 cpp/src/opendnp3/VtoTransmitTask.cpp \
 cpp/src/opendnp3/VtoWriter.cpp
+
+if OPENDNP3_NO_MASTER
+  AM_CXXFLAGS += -DOPENDNP3_NO_MASTER
+else
+  libopendnp3_la_SOURCES += \
+	cpp/src/opendnp3/MasterStackImpl.cpp \
+	cpp/src/opendnp3/ConstantCommandProcessor.cpp \
+	cpp/src/opendnp3/CommandTask.cpp \
+	cpp/src/opendnp3/DataPoll.cpp \
+	cpp/src/opendnp3/Master.cpp \
+	cpp/src/opendnp3/MasterSchedule.cpp \
+	cpp/src/opendnp3/MasterStates.cpp \
+	cpp/src/opendnp3/MasterTaskBase.cpp \
+	cpp/src/opendnp3/QueuedCommandProcessor.cpp \
+	cpp/src/opendnp3/ResponseLoader.cpp \
+	cpp/src/opendnp3/StartupTasks.cpp \
+	cpp/src/opendnp3/TrackingTaskGroup.cpp
+endif
 
 pkginclude_HEADERS = \
 cpp/include/opendnp3/AnalogOutput.h \
@@ -210,92 +211,102 @@ TESTS = dnp3test
 dnp3test_CPPFLAGS = -I./cpp/src
 dnp3test_LDADD = libopendnp3.la $(TEST_BOOST_LIBS)
 dnp3test_SOURCES = \
-	cpp/tests/AppLayerTest.cpp \
-	cpp/tests/AsyncPhysBaseTest.cpp \
-	cpp/tests/AsyncPhysTestObject.cpp \
-	cpp/tests/AsyncSerialTestObject.cpp \
-	cpp/tests/AsyncTestObjectASIO.cpp \
-	cpp/tests/AsyncTestObject.cpp \
-	cpp/tests/BufferHelpers.cpp \
-	cpp/tests/BufferTestObject.cpp \
-	cpp/tests/ComparingDataObserver.cpp \
-	cpp/tests/DNPHelpers.cpp \
-	cpp/tests/IntegrationTest.cpp \
-	cpp/tests/LinkLayerRouterTest.cpp \
-	cpp/tests/LinkLayerTest.cpp \
-	cpp/tests/LogTester.cpp \
-	cpp/tests/LoopbackPhysicalLayerAsync.cpp \
-	cpp/tests/MasterTestObject.cpp \
-	cpp/tests/MockAppLayer.cpp \
-	cpp/tests/MockAppUser.cpp \
-	cpp/tests/MockExecutor.cpp \
-	cpp/tests/MockFrameSink.cpp \
-	cpp/tests/MockLowerLayer.cpp \
-	cpp/tests/MockPhysicalLayerAsync.cpp \
-	cpp/tests/MockPhysicalLayerMonitor.cpp \
-	cpp/tests/MockUpperLayer.cpp \
-	cpp/tests/PhysicalLayerWrapper.cpp \
-	cpp/tests/ResponseLoaderTestObject.cpp \
-	cpp/tests/SlaveTestObject.cpp \
-	cpp/tests/StopWatch.cpp \
-	cpp/tests/TestAPDU.cpp \
-	cpp/tests/TestAPDUWriting.cpp \
-	cpp/tests/TestAppLayer.cpp \
-	cpp/tests/TestASIO.cpp \
-	cpp/tests/TestASIOThreadPool.cpp \
-	cpp/tests/TestAsyncTask.cpp \
-	cpp/tests/TestCastLongLongDouble.cpp \
-	cpp/tests/TestChangeBuffer.cpp \
-	cpp/tests/TestCommandHelpers.cpp \
-	cpp/tests/TestCommandTask.cpp \
-	cpp/tests/TestCommandTypes.cpp \
-	cpp/tests/TestCRC.cpp \
-	cpp/tests/TestDatabase.cpp \
-	cpp/tests/TestDNP3Manager.cpp \
-	cpp/tests/TestEnhancedVtoRouter.cpp \
-	cpp/tests/TestEventBufferBase.cpp \
-	cpp/tests/TestEventBuffers.cpp \
-	cpp/tests/TestIntegration.cpp \
-	cpp/tests/TestLinkFrameDNP.cpp \
-	cpp/tests/TestLinkLayer.cpp \
-	cpp/tests/TestLinkLayerRouter.cpp \
-	cpp/tests/TestLinkReceiver.cpp \
-	cpp/tests/TestLinkRoute.cpp \
-	cpp/tests/TestLog.cpp \
-	cpp/tests/TestMaster.cpp \
-	cpp/tests/TestMisc.cpp \
-	cpp/tests/TestObjects.cpp \
-	cpp/tests/TestPackingUnpacking.cpp \
-	cpp/tests/TestParsing.cpp \
-	cpp/tests/TestPhysicalLayerAsyncBase.cpp \
-	cpp/tests/TestPhysicalLayerAsyncSerial.cpp \
-	cpp/tests/TestPhysicalLayerAsyncTCP.cpp \
-	cpp/tests/TestPhysicalLayerLoopback.cpp \
-	cpp/tests/TestPhysicalLayerMonitor.cpp \
-	cpp/tests/TestQualityMasks.cpp \
-	cpp/tests/TestResponseLoader.cpp \
-	cpp/tests/TestShiftableBuffer.cpp \
-	cpp/tests/TestSlave.cpp \
-	cpp/tests/TestSlaveEventBuffer.cpp \
-	cpp/tests/TestStartBoostUTF.cpp \
-	cpp/tests/TestTime.cpp \
-	cpp/tests/TestTimers.cpp \
-	cpp/tests/TestTransportLayer.cpp \
-	cpp/tests/TestTransportLoopback.cpp \
-	cpp/tests/TestTransportScalability.cpp \
-	cpp/tests/TestTypes.cpp \
-	cpp/tests/TestUtil.cpp \
-	cpp/tests/TestVtoInterface.cpp \
-	cpp/tests/TestVtoRouter.cpp \
-	cpp/tests/TestVtoWriter.cpp \
-	cpp/tests/Timeout.cpp \
-	cpp/tests/TransportIntegrationStack.cpp \
-	cpp/tests/TransportLoopbackTestObject.cpp \
-	cpp/tests/TransportScalabilityTestObject.cpp \
-	cpp/tests/TransportStackPair.cpp \
-	cpp/tests/TransportTestObject.cpp \
-	cpp/tests/VtoIntegrationTestBase.cpp \
-	cpp/tests/WrappedTcpPipe.cpp
+cpp/tests/AppLayerTest.cpp \
+cpp/tests/AsyncPhysBaseTest.cpp \
+cpp/tests/AsyncPhysTestObject.cpp \
+cpp/tests/AsyncSerialTestObject.cpp \
+cpp/tests/AsyncTestObjectASIO.cpp \
+cpp/tests/AsyncTestObject.cpp \
+cpp/tests/BufferHelpers.cpp \
+cpp/tests/BufferTestObject.cpp \
+cpp/tests/ComparingDataObserver.cpp \
+cpp/tests/FlexibleDataObserver.cpp \
+cpp/tests/DNPHelpers.cpp \
+cpp/tests/LinkLayerRouterTest.cpp \
+cpp/tests/LinkLayerTest.cpp \
+cpp/tests/LogTester.cpp \
+cpp/tests/LoopbackPhysicalLayerAsync.cpp \
+cpp/tests/LowerLayerToPhysAdapter.cpp \
+cpp/tests/MockAppLayer.cpp \
+cpp/tests/MockAppUser.cpp \
+cpp/tests/MockExecutor.cpp \
+cpp/tests/MockFrameSink.cpp \
+cpp/tests/MockLowerLayer.cpp \
+cpp/tests/MockPhysicalLayerAsync.cpp \
+cpp/tests/MockPhysicalLayerMonitor.cpp \
+cpp/tests/MockUpperLayer.cpp \
+cpp/tests/PhysicalLayerWrapper.cpp \
+cpp/tests/PhysLoopback.cpp \
+cpp/tests/RandomizedBuffer.cpp \
+cpp/tests/SlaveTestObject.cpp \
+cpp/tests/StopWatch.cpp \
+cpp/tests/TestAPDU.cpp \
+cpp/tests/TestAPDUWriting.cpp \
+cpp/tests/TestAppLayer.cpp \
+cpp/tests/TestASIO.cpp \
+cpp/tests/TestASIOThreadPool.cpp \
+cpp/tests/TestCastLongLongDouble.cpp \
+cpp/tests/TestChangeBuffer.cpp \
+cpp/tests/TestCommandTypes.cpp \
+cpp/tests/TestCRC.cpp \
+cpp/tests/TestDatabase.cpp \
+cpp/tests/TestEnhancedVtoRouter.cpp \
+cpp/tests/TestEventBufferBase.cpp \
+cpp/tests/TestEventBuffers.cpp \
+cpp/tests/TestLinkFrameDNP.cpp \
+cpp/tests/TestLinkLayer.cpp \
+cpp/tests/TestLinkLayerRouter.cpp \
+cpp/tests/TestLinkReceiver.cpp \
+cpp/tests/TestLinkRoute.cpp \
+cpp/tests/TestLog.cpp \
+cpp/tests/TestMisc.cpp \
+cpp/tests/TestObjects.cpp \
+cpp/tests/TestPackingUnpacking.cpp \
+cpp/tests/TestParsing.cpp \
+cpp/tests/TestPhysicalLayerAsyncBase.cpp \
+cpp/tests/TestPhysicalLayerAsyncSerial.cpp \
+cpp/tests/TestPhysicalLayerAsyncTCP.cpp \
+cpp/tests/TestPhysicalLayerLoopback.cpp \
+cpp/tests/TestPhysicalLayerMonitor.cpp \
+cpp/tests/TestQualityMasks.cpp \
+cpp/tests/TestShiftableBuffer.cpp \
+cpp/tests/TestSlave.cpp \
+cpp/tests/TestSlaveEventBuffer.cpp \
+cpp/tests/TestStartBoostUTF.cpp \
+cpp/tests/TestTime.cpp \
+cpp/tests/TestTimers.cpp \
+cpp/tests/TestTransportLayer.cpp \
+cpp/tests/TestTransportLoopback.cpp \
+cpp/tests/TestTransportScalability.cpp \
+cpp/tests/TestTypes.cpp \
+cpp/tests/TestUtil.cpp \
+cpp/tests/TestVtoInterface.cpp \
+cpp/tests/TestVtoRouter.cpp \
+cpp/tests/TestVtoWriter.cpp \
+cpp/tests/Timeout.cpp \
+cpp/tests/TransportIntegrationStack.cpp \
+cpp/tests/TransportLoopbackTestObject.cpp \
+cpp/tests/TransportScalabilityTestObject.cpp \
+cpp/tests/TransportStackPair.cpp \
+cpp/tests/TransportTestObject.cpp \
+cpp/tests/WrappedTcpPipe.cpp
+
+if OPENDNP3_NO_MASTER
+        dnp3test_CPPFLAGS += -DOPENDNP3_NO_MASTER
+else
+	dnp3test_SOURCES += \
+		cpp/tests/TestAsyncTask.cpp \
+		cpp/tests/IntegrationTest.cpp \
+		cpp/tests/TestDNP3Manager.cpp \
+		cpp/tests/VtoIntegrationTestBase.cpp \
+		cpp/tests/TestIntegration.cpp \
+		cpp/tests/MasterTestObject.cpp \
+		cpp/tests/ResponseLoaderTestObject.cpp \
+		cpp/tests/TestCommandHelpers.cpp \
+		cpp/tests/TestCommandTask.cpp \
+		cpp/tests/TestMaster.cpp \
+		cpp/tests/TestResponseLoader.cpp
+endif
 
 if WANT_JAVA
 	

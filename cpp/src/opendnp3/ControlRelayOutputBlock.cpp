@@ -72,7 +72,7 @@ std::string ControlCodeToString(ControlCode aType)
 	}
 }
 
-ControlRelayOutputBlock::ControlRelayOutputBlock(ControlCode aCode, uint8_t aCount, uint32_t aOnTime, uint32_t aOffTime) :	
+ControlRelayOutputBlock::ControlRelayOutputBlock(ControlCode aCode, uint8_t aCount, uint32_t aOnTime, uint32_t aOffTime) :
 	mRawCode(aCode),
 	mCount(aCount),
 	mOnTimeMS(aOnTime),

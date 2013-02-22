@@ -51,7 +51,6 @@ class AsyncTaskGroup;
 class AsyncTaskBase : public ITask, private Uncopyable
 {
 	friend class AsyncTaskGroup;
-	friend class AsyncTaskScheduler;
 
 public:
 
@@ -91,7 +90,7 @@ protected:
 	        int aPriority,
 	        const TaskHandler& arCallback,
 	        AsyncTaskGroup* apGroup,
-			const std::chrono::steady_clock::time_point& arInitialTime,
+	        const std::chrono::steady_clock::time_point& arInitialTime,
 	        const std::string& arName);
 
 	// optional NVII function for special bookkeeping

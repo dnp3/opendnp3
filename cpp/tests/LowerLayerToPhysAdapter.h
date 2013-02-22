@@ -26,39 +26,68 @@
 //
 // Contact Automatak, LLC for a commercial license to these modifications
 //
-#ifndef __PHYS_LOOPBACK_H_
-#define __PHYS_LOOPBACK_H_
+#ifndef __LOWER_LAYER_TO_PHYS_ADAPTER_H_
+#define __LOWER_LAYER_TO_PHYS_ADAPTER_H_
 
-#include "PhysicalLayerMonitor.h"
-#include "CopyableBuffer.h"
+
+#include <opendnp3/IHandlerAsync.h>
+#include <opendnp3/AsyncLayerInterfaces.h>
 
 namespace opendnp3
 {
 
-/**
-*	Buffers and sends all bytes received to back on the same layer.
+class IPhysicalLayerAsync;
+
+/** Class for turning an async physical layer into an ILowerLayer
 */
-class PhysLoopback : public PhysicalLayerMonitor
+class LowerLayerToPhysAdapter : public IHandlerAsync, public ILowerLayer
 {
 public:
-	PhysLoopback(Logger*, IPhysicalLayerAsync*);
+	LowerLayerToPhysAdapter(Logger*, IPhysicalLayerAsync*, bool aAutoRead = true);
+	~LowerLayerToPhysAdapter();
+
+	size_t GetNumOpenFailure() {
+		return mNumOpenFailure;
+	}
+	bool OpenFailureEquals(size_t aNum) {
+		return GetNumOpenFailure() == aNum;
+	}
+
+	void StartRead();
+
+
 
 private:
 
-	size_t mBytesRead;
-	size_t mBytesWritten;
+	virtual std::string RecvString() const {
+		return "Adapter <-";
+	}
+	virtual std::string SendString() const {
+		return "Adapter ->";
+	}
 
-	CopyableBuffer mBuffer;
+	bool mAutoRead;
+	size_t mNumOpenFailure;
 
+	static const size_t BUFFER_SIZE = 1 << 16; // 65,536
+
+	uint8_t mpBuff[BUFFER_SIZE]; // Temporary buffer since IPhysicalLayerAsync now directly supports a read operation
+
+	/* Implement IAsyncHandler */
+	void _OnOpenFailure();
+
+	/* Implement IUpperLayer */
 	void _OnReceive(const uint8_t*, size_t);
-	void _OnSendSuccess(void);
-	void _OnSendFailure(void);
+	void _OnSendSuccess();
+	void _OnSendFailure();
+	void _OnLowerLayerUp();
+	void _OnLowerLayerDown();
+	void _OnLowerLayerShutdown();
 
-	void OnPhysicalLayerOpenSuccessCallback(void);
-	void OnPhysicalLayerOpenFailureCallback(void) {}
-	void OnPhysicalLayerCloseCallback(void) {}
+	IPhysicalLayerAsync* mpPhys;
 
-	void StartRead();
+	/* Implement ILowerLayer */
+	void _Send(const uint8_t*, size_t);
 };
 
 }

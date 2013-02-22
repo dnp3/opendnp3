@@ -26,46 +26,30 @@
 //
 // Contact Automatak, LLC for a commercial license to these modifications
 //
-#ifndef __ASYNC_TASK_SCHEDULER_H_
-#define __ASYNC_TASK_SCHEDULER_H_
+#ifndef __RANDOMIZED_BUFFER_H_
+#define __RANDOMIZED_BUFFER_H_
 
-
-#include <set>
-#include <mutex>
-
-#include "TimeSource.h"
-
+#include <opendnp3/CopyableBuffer.h>
+#include "Random.h"
 
 namespace opendnp3
 {
 
-class AsyncTaskBase;
-class AsyncTaskGroup;
-class IExecutor;
-
-
-/** Thread-safe object that coordinates multiple task groups and manages their lifecycle
-*/
-class AsyncTaskScheduler
+class RandomizedBuffer : public CopyableBuffer
 {
-	friend class AsyncTaskGroup;
 
 public:
 
-	AsyncTaskScheduler(ITimeSource* apTimeSrc = TimeSource::Inst());
-	~AsyncTaskScheduler();
+	RandomizedBuffer(size_t aSize);
 
-	AsyncTaskGroup* CreateNewGroup(IExecutor*);
-	void ReleaseGroup(AsyncTaskGroup*);
+	void Randomize();
 
 private:
-	std::mutex mMutex;
-	
-	ITimeSource* mpTimeSrc;
-	typedef std::set<AsyncTaskGroup*> GroupSet;
-	GroupSet mGroupSet;
+	Random<uint8_t> rand;
 };
 
 }
 
 #endif
+
+

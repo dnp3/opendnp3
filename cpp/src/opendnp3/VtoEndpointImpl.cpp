@@ -36,16 +36,16 @@
 namespace opendnp3
 {
 
-VtoEndpointImpl::VtoEndpointImpl(	Logger* apLogger, 
-									IVtoWriter* apWriter, 
-									IPhysicalLayerAsync* apPhys,
-									const VtoRouterSettings& arSettings,
-									std::function<void (VtoEndpointImpl*)> aOnShutdown) : 
+VtoEndpointImpl::VtoEndpointImpl(	Logger* apLogger,
+                                        IVtoWriter* apWriter,
+                                        IPhysicalLayerAsync* apPhys,
+                                        const VtoRouterSettings& arSettings,
+                                        std::function<void (VtoEndpointImpl*)> aOnShutdown) :
 	mpPhys(apPhys),
 	mpRouter(FGetVtoRouter(arSettings, apLogger, apWriter, apPhys)),
 	mOnShutdown(aOnShutdown)
 {
-	
+
 }
 
 VtoEndpointImpl::~VtoEndpointImpl()
@@ -67,9 +67,9 @@ void VtoEndpointImpl::Shutdown()
 void VtoEndpointImpl::Cleanup()
 {
 	{
-		ExecutorPause p(mpPhys->GetExecutor());	
+		ExecutorPause p(mpPhys->GetExecutor());
 		this->mpRouter->Shutdown();
-	}	
+	}
 	mpRouter->WaitForShutdown();
 }
 

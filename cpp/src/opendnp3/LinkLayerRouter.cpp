@@ -55,17 +55,13 @@ void LinkLayerRouter::AddContext(ILinkContext* apContext, const LinkRoute& arRou
 {
 	assert(apContext != NULL);
 
-	if(mAddressMap.find(arRoute) != mAddressMap.end()) {
-		ostringstream oss;
-		oss << "Route already in use: " << arRoute;
-		throw ArgumentException(LOCATION, oss.str());
+	if(mAddressMap.find(arRoute) != mAddressMap.end()) {		
+		MACRO_THROW_EXCEPTION_COMPLEX(ArgumentException, "Route already in use: " << arRoute);
 	}
 
-	for(AddressMap::value_type v: mAddressMap) {
+for(AddressMap::value_type v: mAddressMap) {
 		if(apContext == v.second) {
-			ostringstream oss;
-			oss << "Context already is bound to route:  " << v.first;
-			throw ArgumentException(LOCATION, oss.str());
+			MACRO_THROW_EXCEPTION_COMPLEX(ArgumentException, "Context already is bound to route:  " << v.first);
 		}
 	}
 
@@ -78,7 +74,9 @@ void LinkLayerRouter::AddContext(ILinkContext* apContext, const LinkRoute& arRou
 void LinkLayerRouter::RemoveContext(const LinkRoute& arRoute)
 {
 	AddressMap::iterator i = mAddressMap.find(arRoute);
-	if(i == mAddressMap.end()) throw ArgumentException(LOCATION, "LinkRoute not bound: " + arRoute.ToString());
+	if(i == mAddressMap.end()) {
+		MACRO_THROW_EXCEPTION_COMPLEX(ArgumentException, "LinkRoute not bound: " << arRoute.ToString());
+	}
 	else {
 
 		ILinkContext* pContext = i->second;
@@ -186,15 +184,13 @@ void LinkLayerRouter::Transmit(const LinkFrame& arFrame)
 
 	if (this->GetContext(lr)) {
 		if (!this->IsLowerLayerUp()) {
-			throw InvalidStateException(LOCATION, "LowerLayerDown");
+			MACRO_THROW_EXCEPTION(InvalidStateException, "LowerLayerDown");
 		}
 		this->mTransmitQueue.push_back(arFrame);
 		this->CheckForSend();
 	}
 	else {
-		ostringstream oss;
-		oss << "Unassociated context w/ route: " << lr;
-		throw ArgumentException(LOCATION, oss.str());
+		MACRO_THROW_EXCEPTION_COMPLEX(ArgumentException, "Unassociated context w/ route: " << lr);
 	}
 }
 
@@ -202,7 +198,7 @@ void LinkLayerRouter::Transmit(const LinkFrame& arFrame)
 void LinkLayerRouter::AddStateListener(std::function<void (ChannelState)> aListener)
 {
 	//this call comes from an unknown thread so marshall it the router's executor
-	this->mpPhys->GetExecutor()->Post([this, aListener](){
+	this->mpPhys->GetExecutor()->Post([this, aListener]() {
 		mListeners.push_back(aListener);
 		this->NotifyListener(aListener, this->GetState()); // event the current state now
 	});
@@ -210,12 +206,14 @@ void LinkLayerRouter::AddStateListener(std::function<void (ChannelState)> aListe
 
 void LinkLayerRouter::OnStateChange(ChannelState aState)
 {
-	for(auto listener: mListeners) NotifyListener(listener, aState);
+for(auto listener: mListeners) NotifyListener(listener, aState);
 }
 
 void LinkLayerRouter::NotifyListener(std::function<void (ChannelState)> aListener, ChannelState state)
 {
-	this->mpPhys->GetExecutor()->Post([=](){ aListener(state); });
+	this->mpPhys->GetExecutor()->Post([ = ]() {
+		aListener(state);
+	});
 }
 
 void LinkLayerRouter::_OnSendSuccess()
@@ -253,7 +251,7 @@ void LinkLayerRouter::OnPhysicalLayerOpenSuccessCallback()
 	if(mpPhys->CanRead())
 		mpPhys->AsyncRead(mReceiver.WriteBuff(), mReceiver.NumWriteBytes());
 
-	for(AddressMap::value_type p: mAddressMap) {
+for(AddressMap::value_type p: mAddressMap) {
 		p.second->OnLowerLayerUp();
 	}
 }
@@ -262,7 +260,7 @@ void LinkLayerRouter::OnPhysicalLayerCloseCallback()
 {
 	mTransmitting = false;
 	mTransmitQueue.erase(mTransmitQueue.begin(), mTransmitQueue.end());
-	for(auto pair: mAddressMap) pair.second->OnLowerLayerDown();
+for(auto pair: mAddressMap) pair.second->OnLowerLayerDown();
 }
 
 }

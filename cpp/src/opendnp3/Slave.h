@@ -157,10 +157,10 @@ public:
 private:
 
 	ChangeBuffer mChangeBuffer;				// how client code gives us updates
-	IAppLayer* mpAppLayer;					// lower application layer	
+	IAppLayer* mpAppLayer;					// lower application layer
 	Database* mpDatabase;					// holds static data
 	ICommandHandler* mpCmdHandler;			// how commands are selected/operated on application code
-	int mSequence;							// control sequence	
+	int mSequence;							// control sequence
 	AS_Base* mpState;						// current state for the state pattern
 	SlaveConfig mConfig;					// houses the configurable paramters of the outstation
 	SlaveResponseTypes mRspTypes;			// converts the group/var in the config to dnp singletons
@@ -181,7 +181,7 @@ private:
 	bool mHaveLastRequest;
 	APDU mLastRequest;						// APDU used to form responses
 
-	ITimeManager* mpTime;	
+	ITimeManager* mpTime;
 
 	// Flags that tell us that some action has been Deferred
 	// until the slave is in a state capable of handling it.
@@ -195,8 +195,9 @@ private:
 
 	StackState mState;
 
-	StackState GetState()
-	{ return mState; }
+	StackState GetState() {
+		return mState;
+	}
 
 	void UpdateState(StackState aState);
 

@@ -52,10 +52,7 @@ void VtoReader::AddVtoChannel(IVtoDataHandler* apCallbacks)
 		std::stringstream out;
 		out << (int)id;
 
-		throw ArgumentException(
-		    LOCATION,
-		    "Channel already registered: " +
-		    out.str() );
+		MACRO_THROW_EXCEPTION_COMPLEX(ArgumentException, "Channel already registered: " << out.str() );
 	}
 
 	/* Register the callbacks for the channel id */
@@ -71,12 +68,8 @@ void VtoReader::RemoveVtoChannel(IVtoDataHandler* apCallbacks)
 
 	uint8_t id = apCallbacks->GetChannelId();
 
-	if (mChannelMap.erase(id) == 0) {
-		std::stringstream out;
-		out << (int)id;
-
-		throw ArgumentException( LOCATION,
-		                         "Channel not registered: " + out.str() );
+	if (mChannelMap.erase(id) == 0) {		
+		MACRO_THROW_EXCEPTION_COMPLEX(ArgumentException, "Channel not registered: " << ((int) id));
 	}
 }
 
@@ -98,7 +91,7 @@ void VtoReader::UpdateEnhancedVto(const VtoData& arData, uint8_t aChannelId)
 			i->second->OnVtoDataReceived(data);
 		}
 	}
-	catch(Exception ex) {
+	catch(const Exception& ex) {
 		ERROR_BLOCK(LEV_WARNING, ex.GetErrorString(), VTOERR_BADLY_FORMATTED_ENHANCED_VTO);
 	}
 }

@@ -38,7 +38,7 @@ template <class T, class U>
 static std::vector<U> GetKeys(const T& arMap)
 {
 	std::vector<U> ret;
-	for(auto pair: arMap) {
+for(auto pair: arMap) {
 		ret.push_back(pair.first);
 	}
 	return ret;

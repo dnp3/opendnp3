@@ -50,50 +50,50 @@ const size_t ITERATIONS = 100;
 
 BOOST_AUTO_TEST_CASE(ConstructionDestruction)
 {
-	for(int i=0; i<ITERATIONS; ++i) {
+	for(int i = 0; i < ITERATIONS; ++i) {
 
-		DNP3Manager mgr(std::thread::hardware_concurrency());	
+		DNP3Manager mgr(std::thread::hardware_concurrency());
 
 		auto pClient = mgr.AddTCPClient("client", LEV_INFO, 5000, "127.0.0.1", 20000);
 		auto pServer = mgr.AddTCPServer("server", LEV_INFO, 5000, "127.0.0.1", 20000);
 		pClient->AddMaster("master", LEV_INFO, PrintingDataObserver::Inst(), MasterStackConfig());
 		pServer->AddOutstation("outstation", LEV_INFO, SuccessCommandHandler::Inst(), SlaveStackConfig());
-		
+
 	}
 }
 
 BOOST_AUTO_TEST_CASE(ManualStackShutdown)
-{	
-	for(int i=0; i<ITERATIONS; ++i) {		
-				
-		DNP3Manager mgr(std::thread::hardware_concurrency());		
+{
+	for(int i = 0; i < ITERATIONS; ++i) {
+
+		DNP3Manager mgr(std::thread::hardware_concurrency());
 
 		auto pClient = mgr.AddTCPClient("client", LEV_INFO, 5000, "127.0.0.1", 20000);
 		auto pServer = mgr.AddTCPServer("server", LEV_INFO, 5000, "127.0.0.1", 20000);
 		auto pOutstation = pServer->AddOutstation("outstation", LEV_INFO, SuccessCommandHandler::Inst(), SlaveStackConfig());
-		auto pMaster = pClient->AddMaster("master", LEV_INFO, PrintingDataObserver::Inst(), MasterStackConfig());				
+		auto pMaster = pClient->AddMaster("master", LEV_INFO, PrintingDataObserver::Inst(), MasterStackConfig());
 
 		pOutstation->Shutdown();
 		pMaster->Shutdown();
 	}
-	
+
 }
 
 BOOST_AUTO_TEST_CASE(ManualChannelShutdownWithStack)
 {
-	for(int i=0; i<ITERATIONS; ++i) {	
+	for(int i = 0; i < ITERATIONS; ++i) {
 
 		DNP3Manager mgr(std::thread::hardware_concurrency());
 
 		auto pChannel = mgr.AddTCPClient("client", LEV_INFO, 5000, "127.0.0.1", 20000);
-		pChannel->AddMaster("master", LEV_INFO, PrintingDataObserver::Inst(), MasterStackConfig());	
+		pChannel->AddMaster("master", LEV_INFO, PrintingDataObserver::Inst(), MasterStackConfig());
 		pChannel->Shutdown();
 	}
 }
 
 BOOST_AUTO_TEST_CASE(ManualChannelShutdown)
 {
-	for(int i=0; i<ITERATIONS; ++i) {	
+	for(int i = 0; i < ITERATIONS; ++i) {
 
 		DNP3Manager mgr(std::thread::hardware_concurrency());
 		mgr.AddTCPClient("client", LEV_INFO, 5000, "127.0.0.1", 20000)->Shutdown();
@@ -103,9 +103,9 @@ BOOST_AUTO_TEST_CASE(ManualChannelShutdown)
 
 BOOST_AUTO_TEST_CASE(ConstructionDestructionWithVtoRouters)
 {
-	for(int i=0; i<ITERATIONS; ++i) {
+	for(int i = 0; i < ITERATIONS; ++i) {
 
-		DNP3Manager mgr(std::thread::hardware_concurrency());		
+		DNP3Manager mgr(std::thread::hardware_concurrency());
 
 		auto pClient = mgr.AddTCPClient("client", LEV_INFO, 5000, "127.0.0.1", 20000);
 		auto pServer = mgr.AddTCPServer("server", LEV_INFO, 5000, "127.0.0.1", 20000);
@@ -114,15 +114,15 @@ BOOST_AUTO_TEST_CASE(ConstructionDestructionWithVtoRouters)
 
 		pMaster->StartVtoRouterTCPClient("vtoclient", LEV_INFO, "127.0.0.1", 20001, VtoRouterSettings(0, true, false));
 		pOutstation->StartVtoRouterTCPServer("vtoclient", LEV_INFO, "127.0.0.1", 20001, VtoRouterSettings(0, true, false));
-		
+
 	}
 }
 
 BOOST_AUTO_TEST_CASE(ConstructionDestructionWithVtoRoutersManualVtoShutdown)
 {
-	for(int i=0; i<ITERATIONS; ++i) {
+	for(int i = 0; i < ITERATIONS; ++i) {
 
-		DNP3Manager mgr(std::thread::hardware_concurrency());		
+		DNP3Manager mgr(std::thread::hardware_concurrency());
 
 		auto pClient = mgr.AddTCPClient("client", LEV_INFO, 5000, "127.0.0.1", 20000);
 		auto pServer = mgr.AddTCPServer("server", LEV_INFO, 5000, "127.0.0.1", 20000);
@@ -134,7 +134,7 @@ BOOST_AUTO_TEST_CASE(ConstructionDestructionWithVtoRoutersManualVtoShutdown)
 
 		pClientVto->Shutdown();
 		pServerVto->Shutdown();
-		
+
 	}
 }
 

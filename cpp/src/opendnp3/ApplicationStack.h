@@ -41,9 +41,9 @@ class IExecutor;
 
 class ApplicationStack
 {
-	public:
+public:
 	ApplicationStack(Logger* apLogger, IExecutor* apExecutor, AppConfig aAppCfg, LinkConfig aCfg);
-		
+
 	LinkLayer mLink;
 	TransportLayer mTransport;
 	AppLayer mApplication;

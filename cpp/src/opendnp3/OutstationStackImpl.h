@@ -48,11 +48,11 @@ public:
 
 	OutstationStackImpl(
 	        Logger*,
-			boost::asio::io_service* apService,
+	        boost::asio::io_service* apService,
 	        IExecutor* apExecutor,
-	        ICommandHandler* apCmdHandler,	       
+	        ICommandHandler* apCmdHandler,
 	        const SlaveStackConfig& arCfg,
-			std::function<void (IOutstation*)> aOnShutdown);	
+	        std::function<void (IOutstation*)> aOnShutdown);
 
 	IDataObserver* GetDataObserver();
 
@@ -65,11 +65,11 @@ public:
 	void Shutdown();
 
 protected:
-	
+
 	IVtoWriter* GetVtoWriter();
 	IVtoReader* GetVtoReader();
 
-private:	
+private:
 	IExecutor* mpExecutor;
 	ApplicationStack mAppStack;
 	TimeSourceSystemOffset mTimeSource;

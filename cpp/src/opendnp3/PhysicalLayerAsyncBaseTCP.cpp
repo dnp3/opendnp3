@@ -66,24 +66,24 @@ void PhysicalLayerAsyncBaseTCP::DoClose()
 void PhysicalLayerAsyncBaseTCP::DoAsyncRead(uint8_t* apBuffer, size_t aMaxBytes)
 {
 	mSocket.async_read_some(buffer(apBuffer, aMaxBytes),
-							mStrand.wrap(
-								std::bind(&PhysicalLayerAsyncBaseTCP::OnReadCallback,
-	                                    this,
-										std::placeholders::_1,
-	                                    apBuffer,
-										std::placeholders::_2)
-										));
+	                        mStrand.wrap(
+	                                std::bind(&PhysicalLayerAsyncBaseTCP::OnReadCallback,
+	                                                this,
+	                                                std::placeholders::_1,
+	                                                apBuffer,
+	                                                std::placeholders::_2)
+	                        ));
 }
 
 void PhysicalLayerAsyncBaseTCP::DoAsyncWrite(const uint8_t* apBuffer, size_t aNumBytes)
 {
 	async_write(mSocket, buffer(apBuffer, aNumBytes),
-							mStrand.wrap(
-					            std::bind(&PhysicalLayerAsyncBaseTCP::OnWriteCallback,
-									this,
-									std::placeholders::_1,
-									aNumBytes)
-								));
+	            mStrand.wrap(
+	                    std::bind(&PhysicalLayerAsyncBaseTCP::OnWriteCallback,
+	                              this,
+	                              std::placeholders::_1,
+	                              aNumBytes)
+	            ));
 }
 
 void PhysicalLayerAsyncBaseTCP::DoOpenFailure()
@@ -113,21 +113,22 @@ boost::asio::ip::address PhysicalLayerAsyncBaseTCP::ResolveAddress(const std::st
 	try {
 		boost::system::error_code ec;
 		boost::asio::ip::address addr = boost::asio::ip::address::from_string(arEndpoint, ec);
-		if (ec)
-			throw ArgumentException(LOCATION, "endpoint: " + arEndpoint + " is invalid");
+		if (ec) {
+			MACRO_THROW_EXCEPTION_COMPLEX(ArgumentException, "endpoint: " << arEndpoint << " is invalid");
+		}
 		return addr;
-	} catch (...) {
+	}
+	catch (...) {
 		boost::asio::io_service                  io_service;
 		boost::asio::ip::tcp::resolver           resolver(io_service);
 		boost::asio::ip::tcp::resolver::query    query(arEndpoint, "");
 		boost::asio::ip::tcp::resolver::iterator iter = resolver.resolve(query);
 		boost::asio::ip::tcp::resolver::iterator end;
-		while (iter != end)
-		{
+		while (iter != end) {
 			boost::asio::ip::tcp::endpoint ep = *iter++;
 			return ep.address();
 		}
-		throw ArgumentException(LOCATION, "endpoint: " + arEndpoint + " is invalid");
+		MACRO_THROW_EXCEPTION_COMPLEX(ArgumentException, "endpoint: " << arEndpoint << " is invalid");
 	}
 }
 

@@ -39,18 +39,18 @@ StackBase::StackBase(IExecutor* apExecutor) : mpExecutor(apExecutor)
 
 void StackBase::AddStateListener(std::function<void (StackState)> aCallback)
 {
-	mpExecutor->Post([=](){
+	mpExecutor->Post([ = ]() {
 		aCallback(this->GetState());
 		mListeners.push_back(aCallback);
-	});	
+	});
 }
 
 void StackBase::NotifyListeners(StackState aState)
 {
-	for(auto callback : mListeners) {
+for(auto callback : mListeners) {
 		callback(aState);
 	}
 }
-		
+
 }
 

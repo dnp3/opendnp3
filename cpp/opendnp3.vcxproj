@@ -157,7 +157,6 @@
     <ClInclude Include="src\opendnp3\AsyncTaskInterfaces.h" />
     <ClInclude Include="src\opendnp3\AsyncTaskNonPeriodic.h" />
     <ClInclude Include="src\opendnp3\AsyncTaskPeriodic.h" />
-    <ClInclude Include="src\opendnp3\AsyncTaskScheduler.h" />
     <ClInclude Include="src\opendnp3\BufferSetTypes.h" />
     <ClInclude Include="src\opendnp3\BufferTypes.h" />
     <ClInclude Include="src\opendnp3\ChangeBuffer.h" />
@@ -182,7 +181,6 @@
     <ClInclude Include="src\opendnp3\EventBuffers.h" />
     <ClInclude Include="src\opendnp3\EventTypes.h" />
     <ClInclude Include="src\opendnp3\ExecutorPause.h" />
-    <ClInclude Include="src\opendnp3\FlexibleDataObserver.h" />
     <ClInclude Include="src\opendnp3\GetKeys.h" />
     <ClInclude Include="src\opendnp3\HeaderReadIterator.h" />
     <ClInclude Include="src\opendnp3\IExecutor.h" />
@@ -207,7 +205,6 @@
     <ClInclude Include="src\opendnp3\Loggable.h" />
     <ClInclude Include="src\opendnp3\LoggableMacros.h" />
     <ClInclude Include="src\opendnp3\LogVar.h" />
-    <ClInclude Include="src\opendnp3\LowerLayerToPhysAdapter.h" />
     <ClInclude Include="src\opendnp3\Master.h" />
     <ClInclude Include="src\opendnp3\MasterSchedule.h" />
     <ClInclude Include="src\opendnp3\MasterStackImpl.h" />
@@ -230,14 +227,9 @@
     <ClInclude Include="src\opendnp3\PhysicalLayerAsyncTCPServer.h" />
     <ClInclude Include="src\opendnp3\PhysicalLayerMonitor.h" />
     <ClInclude Include="src\opendnp3\PhysicalLayerMonitorStates.h" />
-    <ClInclude Include="src\opendnp3\PhysLoopback.h" />
     <ClInclude Include="src\opendnp3\PriLinkLayerStates.h" />
     <ClInclude Include="src\opendnp3\ProtocolUtil.h" />
     <ClInclude Include="src\opendnp3\QueuedCommandProcessor.h" />
-    <ClInclude Include="src\opendnp3\QueueingFDO.h" />
-    <ClInclude Include="src\opendnp3\Random.h" />
-    <ClInclude Include="src\opendnp3\RandomDouble.h" />
-    <ClInclude Include="src\opendnp3\RandomizedBuffer.h" />
     <ClInclude Include="src\opendnp3\ResponseContext.h" />
     <ClInclude Include="src\opendnp3\ResponseLoader.h" />
     <ClInclude Include="src\opendnp3\SecLinkLayerStates.h" />
@@ -289,7 +281,6 @@
     <ClCompile Include="src\opendnp3\AsyncTaskGroup.cpp" />
     <ClCompile Include="src\opendnp3\AsyncTaskNonPeriodic.cpp" />
     <ClCompile Include="src\opendnp3\AsyncTaskPeriodic.cpp" />
-    <ClCompile Include="src\opendnp3\AsyncTaskScheduler.cpp" />
     <ClCompile Include="src\opendnp3\BaseDataTypes.cpp" />
     <ClCompile Include="src\opendnp3\BufferTypes.cpp" />
     <ClCompile Include="src\opendnp3\ChangeBuffer.cpp" />
@@ -312,7 +303,6 @@
     <ClCompile Include="src\opendnp3\EnhancedVtoRouter.cpp" />
     <ClCompile Include="src\opendnp3\Exception.cpp" />
     <ClCompile Include="src\opendnp3\ExecutorPause.cpp" />
-    <ClCompile Include="src\opendnp3\FlexibleDataObserver.cpp" />
     <ClCompile Include="src\opendnp3\HeaderReadIterator.cpp" />
     <ClCompile Include="src\opendnp3\IExecutor.cpp" />
     <ClCompile Include="src\opendnp3\IHandlerAsync.cpp" />
@@ -336,7 +326,6 @@
     <ClCompile Include="src\opendnp3\LogToFile.cpp" />
     <ClCompile Include="src\opendnp3\LogToStdio.cpp" />
     <ClCompile Include="src\opendnp3\LogTypes.cpp" />
-    <ClCompile Include="src\opendnp3\LowerLayerToPhysAdapter.cpp" />
     <ClCompile Include="src\opendnp3\Master.cpp" />
     <ClCompile Include="src\opendnp3\MasterSchedule.cpp" />
     <ClCompile Include="src\opendnp3\MasterStackImpl.cpp" />
@@ -359,13 +348,11 @@
     <ClCompile Include="src\opendnp3\PhysicalLayerAsyncTCPServer.cpp" />
     <ClCompile Include="src\opendnp3\PhysicalLayerMonitor.cpp" />
     <ClCompile Include="src\opendnp3\PhysicalLayerMonitorStates.cpp" />
-    <ClCompile Include="src\opendnp3\PhysLoopback.cpp" />
     <ClCompile Include="src\opendnp3\PointClass.cpp" />
     <ClCompile Include="src\opendnp3\PriLinkLayerStates.cpp" />
     <ClCompile Include="src\opendnp3\ProtocolUtil.cpp" />
     <ClCompile Include="src\opendnp3\QualityConverter.cpp" />
     <ClCompile Include="src\opendnp3\QueuedCommandProcessor.cpp" />
-    <ClCompile Include="src\opendnp3\RandomizedBuffer.cpp" />
     <ClCompile Include="src\opendnp3\ResponseContext.cpp" />
     <ClCompile Include="src\opendnp3\ResponseLoader.cpp" />
     <ClCompile Include="src\opendnp3\SecLinkLayerStates.cpp" />

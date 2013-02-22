@@ -49,7 +49,7 @@ public:
 		LogTester(false),
 		exe(),
 		phys(mLog.GetLogger(LEV_DEBUG, "phys"), &exe),
-		writer(mLog.GetLogger(LEV_DEBUG, "writer"), aWriterSize),		
+		writer(mLog.GetLogger(LEV_DEBUG, "writer"), aWriterSize),
 		router(arSettings, mLog.GetLogger(LEV_DEBUG, "router"), &writer, &phys) {
 		writer.AddVtoCallback(&router);
 		exe.SetAutoPost(true);
@@ -57,7 +57,7 @@ public:
 
 	MockExecutor exe;
 	MockPhysicalLayerAsync phys;
-	ReadableVtoWriter writer;	
+	ReadableVtoWriter writer;
 	AlwaysOpeningVtoRouter router;
 };
 
@@ -93,7 +93,7 @@ BOOST_AUTO_TEST_CASE(WriteVtoBeforeConnect)
 {
 	RouterTestClass rtc;
 	BOOST_REQUIRE(rtc.phys.IsOpening());
-	rtc.router.OnVtoDataReceived(vtoData);	
+	rtc.router.OnVtoDataReceived(vtoData);
 
 	/* When physical layer comes up, it should read and write */
 	rtc.phys.SignalOpenSuccess();
@@ -115,7 +115,7 @@ BOOST_AUTO_TEST_CASE(WriteVtoAfterConnect)
 	rtc.phys.SignalOpenSuccess();
 	BOOST_REQUIRE(rtc.phys.IsReading());
 	BOOST_REQUIRE(rtc.phys.IsOpen());
-	rtc.router.OnVtoDataReceived(vtoData);	
+	rtc.router.OnVtoDataReceived(vtoData);
 
 	BOOST_REQUIRE(rtc.phys.IsWriting());
 

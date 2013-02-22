@@ -51,11 +51,11 @@ IStack::~IStack()
 {
 
 }
-	
+
 void IStack::CleanupVto()
 {
 	std::set<IVtoEndpoint*> copy(mVtoEndpoints);
-	for(auto pEndpoint: copy) pEndpoint->Shutdown();
+for(auto pEndpoint: copy) pEndpoint->Shutdown();
 }
 
 IVtoEndpoint* IStack::StartVtoRouterTCPClient(const std::string& arName, FilterLevel aLevel, const std::string& arAddr, uint16_t aPort, const VtoRouterSettings& arSettings)
@@ -72,7 +72,7 @@ IVtoEndpoint* IStack::StartVtoRouterTCPServer(const std::string& arName, FilterL
 
 IVtoEndpoint* IStack::CreateVtoEndpoint(IPhysicalLayerAsync* apPhys, const VtoRouterSettings& arSettings)
 {
-	auto pEndpoint = new VtoEndpointImpl(mpLogger->GetSubLogger("vto"), this->GetVtoWriter(), apPhys, arSettings, [this](VtoEndpointImpl* apEndpoint){
+	auto pEndpoint = new VtoEndpointImpl(mpLogger->GetSubLogger("vto"), this->GetVtoWriter(), apPhys, arSettings, [this](VtoEndpointImpl * apEndpoint) {
 		OnVtoEndpointShutdown(apEndpoint);
 	});
 	this->GetVtoReader()->AddVtoChannel(pEndpoint->GetVtoCallbacks());

@@ -31,9 +31,10 @@
 #include "TestHelpers.h"
 
 #include <opendnp3/Exception.h>
-#include <opendnp3/RandomizedBuffer.h>
 #include <opendnp3/SlaveEventBuffer.h>
 #include <opendnp3/VtoWriter.h>
+
+#include "RandomizedBuffer.h"
 
 #include <limits>
 

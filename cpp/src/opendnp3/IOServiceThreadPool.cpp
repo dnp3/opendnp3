@@ -43,34 +43,34 @@ namespace opendnp3
 {
 
 IOServiceThreadPool::IOServiceThreadPool(
-		Logger* apLogger, 
-		uint32_t aConcurrency,
-		std::function<void()> onThreadStart,
-		std::function<void()> onThreadExit) :
+        Logger* apLogger,
+        uint32_t aConcurrency,
+        std::function<void()> onThreadStart,
+        std::function<void()> onThreadExit) :
 	Loggable(apLogger),
 	mOnThreadStart(onThreadStart),
 	mOnThreadExit(onThreadExit),
 	mIsShutdown(false),
 	mService(),
 	mInfiniteTimer(mService)
-{	
-	if(aConcurrency == 0) throw ArgumentException(LOCATION, "Concurrency cannot be 0");
+{
+	if(aConcurrency == 0) MACRO_THROW_EXCEPTION(ArgumentException, "Concurrency cannot be 0");
 	mInfiniteTimer.expires_at(steady_clock::time_point::max());
 	mInfiniteTimer.async_wait(bind(&IOServiceThreadPool::OnTimerExpiration, this, placeholders::_1));
-	for(uint32_t i=0; i<aConcurrency; ++i) {
+	for(uint32_t i = 0; i < aConcurrency; ++i) {
 		mThreads.push_back(new thread(bind(&IOServiceThreadPool::Run, this)));
 	}
 }
 
 void IOServiceThreadPool::OnTimerExpiration(const boost::system::error_code& ec)
 {
-	
+
 }
 
 IOServiceThreadPool::~IOServiceThreadPool()
 {
 	this->Shutdown();
-	for(auto pThread: mThreads) {
+for(auto pThread: mThreads) {
 		delete pThread;
 	}
 }
@@ -79,8 +79,8 @@ void IOServiceThreadPool::Shutdown()
 {
 	if(!mIsShutdown) {
 		mIsShutdown = true;
-		mInfiniteTimer.cancel();	
-		for(auto pThread: mThreads) pThread->join();	
+		mInfiniteTimer.cancel();
+for(auto pThread: mThreads) pThread->join();
 	}
 }
 
@@ -97,7 +97,7 @@ void IOServiceThreadPool::Run()
 
 	do {
 		try {
-			num = mService.run();			
+			num = mService.run();
 		}
 		catch(const std::exception& ex) {
 			num = 0;

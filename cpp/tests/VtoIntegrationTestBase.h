@@ -29,13 +29,13 @@
 #ifndef __VTO_INTEGRATION_TEST_BASE_H_
 #define __VTO_INTEGRATION_TEST_BASE_H_
 
-#include <opendnp3/FlexibleDataObserver.h>
 #include <opendnp3/LogToFile.h>
 #include <opendnp3/Loggable.h>
 #include <opendnp3/PhysicalLayerAsyncTCPClient.h>
 #include <opendnp3/PhysicalLayerAsyncTCPServer.h>
 #include <opendnp3/DNP3Manager.h>
 
+#include "FlexibleDataObserver.h"
 #include "LogTester.h"
 #include "AsyncTestObjectASIO.h"
 #include "PhysicalLayerWrapper.h"
@@ -61,22 +61,22 @@ class VtoIntegrationTestBase : public LogTester, protected Loggable
 public:
 	VtoIntegrationTestBase(
 	        bool clientOnSlave = true,
-	        bool aImmediateOutput = false,	        
+	        bool aImmediateOutput = false,
 	        FilterLevel level = LEV_INFO,
 	        boost::uint16_t port = MACRO_PORT_VALUE);
 
 	virtual ~VtoIntegrationTestBase();
 
-	Logger* mpMainLogger;	
+	Logger* mpMainLogger;
 	MockCommandHandler cmdHandler;
 
 	AsyncTestObjectASIO testObj;
-	
+
 	FlexibleDataObserver fdo;
 
 	PhysicalLayerAsyncTCPClient vtoClient;
 	PhysicalLayerAsyncTCPServer vtoServer;
-	
+
 	DNP3Manager mgr;
 };
 

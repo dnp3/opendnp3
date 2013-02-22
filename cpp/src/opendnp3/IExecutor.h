@@ -53,7 +53,7 @@ namespace opendnp3
  */
 class IExecutor
 {
-public:	
+public:
 
 	virtual ~IExecutor() {}
 
@@ -67,7 +67,7 @@ public:
 	virtual ITimer* Start(const std::chrono::steady_clock::time_point&, const std::function<void ()> &) = 0;
 
 	/** Thread-safe way to post an event to be handled asynchronously */
-	virtual void Post(const std::function<void ()> &) = 0;	
+	virtual void Post(const std::function<void ()> &) = 0;
 
 };
 

@@ -114,7 +114,7 @@ public:
 	bool CheckQualityBit(uint8_t aQualMask) const;
 
 	virtual void SetQuality(uint8_t aQuality);
-	void SetTime(millis_t aTime);	
+	void SetTime(millis_t aTime);
 
 	virtual std::string ToString() const = 0;
 

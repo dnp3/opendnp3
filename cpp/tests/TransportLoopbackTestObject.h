@@ -64,7 +64,7 @@ public:
 
 
 private:
-	Logger* mpLogger;	
+	Logger* mpLogger;
 
 
 	LinkConfig mCfgA;

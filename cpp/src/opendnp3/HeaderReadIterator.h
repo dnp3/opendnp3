@@ -62,7 +62,14 @@ public:
 		mpObjectBase(apObject)
 	{}
 
-	HeaderInfo() {}
+	HeaderInfo()  :
+		mPos(0),
+		mCount(0),
+		mPrefixSize(0),
+		mpHeader(NULL),
+		mpObjectBase(NULL)
+	{}
+
 
 	// accessor helpers to simplify reading code
 	ObjectHeaderTypes GetHeaderType() const {
@@ -147,7 +154,7 @@ private:
 inline const HeaderInfo& HeaderReadIterator::info() const
 {
 	if(mIndex >= mpHeaders->size()) {
-		throw Exception(LOCATION, "Iter out of bounds", ALERR_ITERATOR_OUT_OF_BOUNDS);
+		MACRO_THROW_EXCEPTION_WITH_CODE(Exception, "Iter out of bounds", ALERR_ITERATOR_OUT_OF_BOUNDS);
 	}
 	return (*mpHeaders)[mIndex];
 }
@@ -155,7 +162,7 @@ inline const HeaderInfo& HeaderReadIterator::info() const
 inline const uint8_t* HeaderReadIterator::operator*() const
 {
 	if(mIndex >= mpHeaders->size()) {
-		throw Exception(LOCATION, "Iter out of bounds", ALERR_ITERATOR_OUT_OF_BOUNDS);
+		MACRO_THROW_EXCEPTION_WITH_CODE(Exception, "Iter out of bounds", ALERR_ITERATOR_OUT_OF_BOUNDS);
 	}
 	return mpBuffer + (*mpHeaders)[mIndex].GetPosition();
 }
@@ -163,7 +170,7 @@ inline const uint8_t* HeaderReadIterator::operator*() const
 inline const HeaderInfo* HeaderReadIterator::operator->() const
 {
 	if(mIndex >= mpHeaders->size()) {
-		throw Exception(LOCATION, "", ALERR_ITERATOR_OUT_OF_BOUNDS);
+		MACRO_THROW_EXCEPTION_WITH_CODE(Exception, "", ALERR_ITERATOR_OUT_OF_BOUNDS);
 	}
 	return &(*mpHeaders)[mIndex];
 }
@@ -171,7 +178,7 @@ inline const HeaderInfo* HeaderReadIterator::operator->() const
 inline const HeaderReadIterator& HeaderReadIterator::operator++()
 {
 	if(mIndex >= mpHeaders->size()) {
-		throw Exception(LOCATION, "", ALERR_ITERATOR_OUT_OF_BOUNDS);
+		MACRO_THROW_EXCEPTION_WITH_CODE(Exception, "", ALERR_ITERATOR_OUT_OF_BOUNDS);
 	}
 	++mIndex;
 	return (*this);
@@ -180,7 +187,7 @@ inline const HeaderReadIterator& HeaderReadIterator::operator++()
 inline const HeaderReadIterator HeaderReadIterator::operator++(int)
 {
 	if(mIndex >= mpHeaders->size()) {
-		throw Exception(LOCATION, "", ALERR_ITERATOR_OUT_OF_BOUNDS);
+		MACRO_THROW_EXCEPTION_WITH_CODE(Exception, "", ALERR_ITERATOR_OUT_OF_BOUNDS);
 	}
 	HeaderReadIterator tmp(*this);
 	++mIndex;

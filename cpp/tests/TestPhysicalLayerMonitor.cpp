@@ -268,24 +268,24 @@ BOOST_AUTO_TEST_CASE(CloseWhileOpeningAndThenStop)
 
 BOOST_AUTO_TEST_CASE(OpenFailureGoesToWaitingAndExponentialBackoff)
 {
-	TestObject test;	
+	TestObject test;
 	test.monitor.Start();
 	BOOST_REQUIRE_EQUAL(CS_OPENING, test.monitor.GetState());
 	test.phys.SignalOpenFailure();
 	BOOST_REQUIRE_EQUAL(CS_WAITING, test.monitor.GetState());
-	BOOST_REQUIRE_EQUAL(1, test.exe.NumActive());	
+	BOOST_REQUIRE_EQUAL(1, test.exe.NumActive());
 	BOOST_REQUIRE(seconds(1) == test.exe.NextDurationTimer());
 	BOOST_REQUIRE(test.exe.DispatchOne());
 	BOOST_REQUIRE_EQUAL(CS_OPENING, test.monitor.GetState());
 	test.phys.SignalOpenFailure();
 	BOOST_REQUIRE_EQUAL(CS_WAITING, test.monitor.GetState());
-	BOOST_REQUIRE_EQUAL(1, test.exe.NumActive());	
+	BOOST_REQUIRE_EQUAL(1, test.exe.NumActive());
 	BOOST_REQUIRE(seconds(2) == test.exe.NextDurationTimer());
 }
 
 BOOST_AUTO_TEST_CASE(OpenFailureGoesToClosedIfSuspended)
 {
-	TestObject test;	
+	TestObject test;
 	test.monitor.Start();
 	test.monitor.Suspend();
 	test.phys.SignalOpenFailure();
@@ -308,9 +308,9 @@ BOOST_AUTO_TEST_CASE(ShutdownPostsToTimer)
 
 BOOST_AUTO_TEST_CASE(ShutdownWhileWaitingCancelsTimer)
 {
-	TestObject test;	
+	TestObject test;
 	test.monitor.Start();
-	test.phys.SignalOpenFailure();	
+	test.phys.SignalOpenFailure();
 	test.monitor.Shutdown();
 	BOOST_REQUIRE(test.exe.DispatchOne()); //disptach the shutdown post
 	BOOST_REQUIRE_EQUAL(CS_SHUTDOWN, test.monitor.GetState());
@@ -319,10 +319,10 @@ BOOST_AUTO_TEST_CASE(ShutdownWhileWaitingCancelsTimer)
 
 BOOST_AUTO_TEST_CASE(LayerKeepsTryingToOpen)
 {
-	TestObject test;	
+	TestObject test;
 	test.monitor.Start();
 
-	for(size_t i = 0; i < 3; ++i) {		
+	for(size_t i = 0; i < 3; ++i) {
 		BOOST_REQUIRE_EQUAL(CS_OPENING, test.monitor.GetState());
 		test.phys.SignalOpenFailure();
 		BOOST_REQUIRE_EQUAL(CS_WAITING, test.monitor.GetState());
@@ -332,7 +332,7 @@ BOOST_AUTO_TEST_CASE(LayerKeepsTryingToOpen)
 
 BOOST_AUTO_TEST_CASE(CloseWhileWaitingDoesNothing)
 {
-	TestObject test;	
+	TestObject test;
 	test.monitor.Start();
 	test.phys.SignalOpenFailure();
 	test.monitor.Close();

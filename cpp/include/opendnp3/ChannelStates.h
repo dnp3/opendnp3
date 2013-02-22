@@ -39,15 +39,15 @@ namespace opendnp3
 */
 enum ChannelState {
 	/// offline and idle
-	CS_CLOSED = 0,	
+	CS_CLOSED = 0,
 	///trying to open
-	CS_OPENING = 1,	
+	CS_OPENING = 1,
 	/// waiting to open
-	CS_WAITING = 2,	
+	CS_WAITING = 2,
 	/// open
-	CS_OPEN = 3,	
+	CS_OPEN = 3,
 	/// stopped and will never do anything again
-	CS_SHUTDOWN = 4	
+	CS_SHUTDOWN = 4
 };
 
 /**

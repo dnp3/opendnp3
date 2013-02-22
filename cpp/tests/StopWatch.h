@@ -35,7 +35,7 @@ namespace opendnp3
 {
 
 /**
-	This class is designed to make it easier to do simple timing tests	
+	This class is designed to make it easier to do simple timing tests
 */
 class StopWatch
 {

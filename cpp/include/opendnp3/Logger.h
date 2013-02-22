@@ -47,10 +47,10 @@ class EventLog;
 */
 class Logger
 {
-	
+
 public:
 	Logger( EventLog* apLog, FilterLevel aFilter, const std::string& aName);
-	
+
 	void Log( FilterLevel aFilterLevel, const std::string& arLocation, const std::string& aMessage, int aErrorCode = -1);
 	void Log( const LogEntry& arEntry);
 
@@ -78,7 +78,7 @@ private:
 
 	int					mLevel;			// bit field describing what is being logged
 	EventLog*			mpLog;
-	std::string			mName;	
+	std::string			mName;
 };
 
 /*

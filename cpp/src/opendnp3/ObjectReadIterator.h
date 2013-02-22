@@ -46,6 +46,12 @@ class ObjectInfo
 {
 	friend class ObjectReadIterator;
 
+	ObjectInfo(size_t aIndex, size_t aStart) : mIndex(aIndex), mStart(aStart)
+	{}
+
+	ObjectInfo() : mIndex(0), mStart(0)
+	{}
+
 public:
 
 	size_t Index() const {
@@ -59,8 +65,6 @@ private:
 
 	size_t mIndex;		// the objects device-based index
 	size_t mStart;		// used in conjunction with bitfield objects only,
-	// returns the device-based index of the first
-	// object in the collection
 };
 
 /**
@@ -114,20 +118,28 @@ private:
 
 inline const ObjectInfo* ObjectReadIterator::operator->() const
 {
-	if(this->IsEnd()) throw Exception(LOCATION, "", ALERR_ITERATOR_OUT_OF_BOUNDS);
+	if(this->IsEnd()) {
+		MACRO_THROW_EXCEPTION_WITH_CODE(Exception, "", ALERR_ITERATOR_OUT_OF_BOUNDS);
+	}
 	return &mInfo;
 }
 
 inline const uint8_t* ObjectReadIterator::operator*() const
 {
-	if(this->IsEnd()) throw Exception(LOCATION, "", ALERR_ITERATOR_OUT_OF_BOUNDS);
-	if(!mHasData) throw Exception(LOCATION, "", ALERR_ITERATOR_NO_DATA);
+	if(this->IsEnd()) {
+		MACRO_THROW_EXCEPTION_WITH_CODE(Exception, "", ALERR_ITERATOR_OUT_OF_BOUNDS);
+	}
+	if(!mHasData) {
+		MACRO_THROW_EXCEPTION_WITH_CODE(Exception, "", ALERR_ITERATOR_NO_DATA);
+	}
 	return mpPosition;
 }
 
 inline const ObjectReadIterator& ObjectReadIterator::operator++()
 {
-	if(this->IsEnd()) throw Exception(LOCATION, "", ALERR_ITERATOR_OUT_OF_BOUNDS);
+	if(this->IsEnd()) {
+		MACRO_THROW_EXCEPTION_WITH_CODE(Exception, "", ALERR_ITERATOR_OUT_OF_BOUNDS);
+	}
 
 	++mCurrentObjectNum;
 

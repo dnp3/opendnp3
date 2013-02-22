@@ -42,42 +42,42 @@ namespace opendnp3
 
 void AMS_Base::StartTask(Master*, ITask*, MasterTaskBase*)
 {
-	throw InvalidStateException(LOCATION, this->Name());
+	MACRO_THROW_EXCEPTION(InvalidStateException, this->Name());
 }
 
 void AMS_Base::OnLowerLayerUp(Master*)
 {
-	throw InvalidStateException(LOCATION, this->Name());
+	MACRO_THROW_EXCEPTION(InvalidStateException, this->Name());
 }
 
 void AMS_Base::OnLowerLayerDown(Master*)
 {
-	throw InvalidStateException(LOCATION, this->Name());
+	MACRO_THROW_EXCEPTION(InvalidStateException, this->Name());
 }
 
 void AMS_Base::OnSendSuccess(Master*)
 {
-	throw InvalidStateException(LOCATION, this->Name());
+	MACRO_THROW_EXCEPTION(InvalidStateException, this->Name());
 }
 
 void AMS_Base::OnFailure(Master*)
 {
-	throw InvalidStateException(LOCATION, this->Name());
+	MACRO_THROW_EXCEPTION(InvalidStateException, this->Name());
 }
 
 void AMS_Base::OnPartialResponse(Master*, const APDU&)
 {
-	throw InvalidStateException(LOCATION, this->Name());
+	MACRO_THROW_EXCEPTION(InvalidStateException, this->Name());
 }
 
 void AMS_Base::OnFinalResponse(Master*, const APDU&)
 {
-	throw InvalidStateException(LOCATION, this->Name());
+	MACRO_THROW_EXCEPTION(InvalidStateException, this->Name());
 }
 
 void AMS_Base::OnUnsolResponse(Master*, const APDU&)
 {
-	throw InvalidStateException(LOCATION, this->Name());
+	MACRO_THROW_EXCEPTION(InvalidStateException, this->Name());
 }
 
 
@@ -152,7 +152,7 @@ void AMS_Waiting::OnPartialResponse(Master* c, const APDU& arAPDU)
 	case(TR_CONTINUE):
 		break;
 	default:
-		throw InvalidStateException(LOCATION, "Tasks must return FAIL or CONTINUE in on partial responses");
+		MACRO_THROW_EXCEPTION(InvalidStateException, "Tasks must return FAIL or CONTINUE in on partial responses");
 	}
 }
 

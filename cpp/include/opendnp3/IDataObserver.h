@@ -83,7 +83,7 @@ public:
 	* @param arMeas measurement to be processed
 	* @param aIndex index of the measurement
 	*/
-	void Update(const Counter& arMeas, size_t aIndex);	
+	void Update(const Counter& arMeas, size_t aIndex);
 
 	/**
 	* Update or receive a ControlStatus measurement, must have transaction started

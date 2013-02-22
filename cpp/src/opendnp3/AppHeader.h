@@ -43,7 +43,15 @@ FunctionCodes IntToFunction(int aFunction);
 /** Represents the first byte in every APDU
 */
 struct AppControlField {
-	AppControlField() {};
+
+	AppControlField() :
+		FIR(true),
+		FIN(true),
+		CON(false),
+		UNS(false),
+		SEQ(0)
+	{}
+
 	AppControlField(bool aFIR, bool aFIN, bool aCON, bool aUNS, uint8_t aSEQ = 0) :
 		FIR(aFIR),
 		FIN(aFIN),

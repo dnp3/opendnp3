@@ -40,6 +40,7 @@ namespace opendnp3
 
 IndexedWriteIterator::IndexedWriteIterator() :
 	mpPos(NULL),
+	mIndexMode(IM_NONE),
 	mIndex(0),
 	mCount(0),
 	mObjectSize(0),
@@ -61,7 +62,7 @@ IndexedWriteIterator::IndexedWriteIterator(uint8_t* apPos, size_t aCount, Qualif
 
 uint8_t* IndexedWriteIterator::operator*() const
 {
-	if(!mIndexSet) throw InvalidStateException(LOCATION, "Index has not been written");
+	if(!mIndexSet) MACRO_THROW_EXCEPTION(InvalidStateException, "Index has not been written");
 	return mpPos + mIndexMode;
 }
 
@@ -78,26 +79,26 @@ IndexedWriteIterator::IndexMode IndexedWriteIterator::GetIndexMode(QualifierCode
 		return IM_NONE;
 
 	default:
-		throw Exception(LOCATION, "Illegal qualifer for packed indexed");
+		MACRO_THROW_EXCEPTION(Exception, "Illegal qualifer for packed indexed");
 	}
 }
 
 void IndexedWriteIterator::SetIndex(size_t aIndex)
 {
-	if(mIndexSet) throw InvalidStateException(LOCATION, "Index already set");
-	if(IsEnd()) throw InvalidStateException(LOCATION, "End of iteration");
+	if(mIndexSet) MACRO_THROW_EXCEPTION(InvalidStateException, "Index already set");
+	if(IsEnd()) MACRO_THROW_EXCEPTION(InvalidStateException, "End of iteration");
 
 	switch(mIndexMode) {
 	case(IM_1B):
-		if(aIndex > UInt8::Max) throw ArgumentException(LOCATION);
+		if(aIndex > UInt8::Max) MACRO_THROW_EXCEPTION(ArgumentException ,"");
 		UInt8::Write(mpPos, static_cast<uint8_t>(aIndex));
 		break;
 	case(IM_2B):
-		if(aIndex > UInt16LE::Max) throw ArgumentException(LOCATION);
+		if(aIndex > UInt16LE::Max) MACRO_THROW_EXCEPTION(ArgumentException, "");
 		UInt16LE::Write(mpPos, static_cast<uint16_t>(aIndex));
 		break;
 	case(IM_4B):
-		if(aIndex > UInt32LE::Max) throw ArgumentException(LOCATION);
+		if(aIndex > UInt32LE::Max) MACRO_THROW_EXCEPTION(ArgumentException, "");
 		UInt32LE::Write(mpPos, static_cast<uint32_t>(aIndex));
 		break;
 	default:
@@ -109,8 +110,8 @@ void IndexedWriteIterator::SetIndex(size_t aIndex)
 
 const IndexedWriteIterator& IndexedWriteIterator::operator++()
 {
-	if(this->IsEnd()) throw InvalidStateException(LOCATION, "End of iterattion");
-	if(!mIndexSet) throw InvalidStateException(LOCATION, "Index has not been set");
+	if(this->IsEnd()) MACRO_THROW_EXCEPTION(InvalidStateException, "End of iterattion");
+	if(!mIndexSet) MACRO_THROW_EXCEPTION(InvalidStateException, "Index has not been set");
 
 	++mIndex;
 	mIndexSet = false;

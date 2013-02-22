@@ -116,16 +116,16 @@ BOOST_AUTO_TEST_CASE(SendBadFuncCodeSlave)
 	// can't send a response until at least 1 request has been received
 	// to set the sequence number
 	BOOST_REQUIRE_THROW(
-	    t.SendResponse(FC_RESPONSE, true, true, false, false),
-	    InvalidStateException);
+	        t.SendResponse(FC_RESPONSE, true, true, false, false),
+	        InvalidStateException);
 
 	BOOST_REQUIRE_THROW(
-	    t.SendUnsolicited(FC_RESPONSE, true, true, false, false),
-	    ArgumentException);
+	        t.SendUnsolicited(FC_RESPONSE, true, true, false, false),
+	        ArgumentException);
 
 	BOOST_REQUIRE_THROW(
-	    t.SendRequest(FC_WRITE, true, true, false, false), // master only
-	    Exception);
+	        t.SendRequest(FC_WRITE, true, true, false, false), // master only
+	        Exception);
 }
 
 // Same test for the master
@@ -135,28 +135,28 @@ BOOST_AUTO_TEST_CASE(SendBadFuncCodeMaster)
 	t.lower.ThisLayerUp();
 
 	BOOST_REQUIRE_THROW(
-	    t.SendResponse(FC_RESPONSE, true, true, false, false), // slave only
-	    Exception);
+	        t.SendResponse(FC_RESPONSE, true, true, false, false), // slave only
+	        Exception);
 
 	BOOST_REQUIRE_THROW(
-	    t.SendUnsolicited(FC_UNSOLICITED_RESPONSE, true, true, false, false), // slave only
-	    Exception);
+	        t.SendUnsolicited(FC_UNSOLICITED_RESPONSE, true, true, false, false), // slave only
+	        Exception);
 
 	BOOST_REQUIRE_THROW(
-	    t.SendRequest(FC_RESPONSE, true, true, false, false), //bad code
-	    ArgumentException);
+	        t.SendRequest(FC_RESPONSE, true, true, false, false), //bad code
+	        ArgumentException);
 
 	BOOST_REQUIRE_THROW(
-	    t.SendRequest(FC_WRITE, true, true, true, false), // bad CON bit
-	    ArgumentException);
+	        t.SendRequest(FC_WRITE, true, true, true, false), // bad CON bit
+	        ArgumentException);
 
 	BOOST_REQUIRE_THROW(
-	    t.SendRequest(FC_WRITE, true, true, false, true), // bad UNS bit
-	    ArgumentException);
+	        t.SendRequest(FC_WRITE, true, true, false, true), // bad UNS bit
+	        ArgumentException);
 
 	BOOST_REQUIRE_THROW(
-	    t.SendRequest(FC_WRITE, false, true, false, false), // bad FIR
-	    ArgumentException);
+	        t.SendRequest(FC_WRITE, false, true, false, false), // bad FIR
+	        ArgumentException);
 }
 
 BOOST_AUTO_TEST_CASE(SendObjectUnknownResponse)
@@ -304,13 +304,13 @@ BOOST_AUTO_TEST_CASE(SendUnsolBadFormatting)
 	t.lower.ThisLayerUp();
 
 	BOOST_REQUIRE_THROW(
-	    t.SendUnsolicited(FC_UNSOLICITED_RESPONSE, true, false, true, true), //bad FIN
-	    ArgumentException
+	        t.SendUnsolicited(FC_UNSOLICITED_RESPONSE, true, false, true, true), //bad FIN
+	        ArgumentException
 	);
 
 	BOOST_REQUIRE_THROW(
-	    t.SendUnsolicited(FC_UNSOLICITED_RESPONSE, true, true, true, false), //bad UNS
-	    ArgumentException
+	        t.SendUnsolicited(FC_UNSOLICITED_RESPONSE, true, true, true, false), //bad UNS
+	        ArgumentException
 	);
 }
 

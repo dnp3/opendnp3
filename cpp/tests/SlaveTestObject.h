@@ -29,7 +29,6 @@
 #ifndef __SLAVE_TEST_OBJECT_H_
 #define __SLAVE_TEST_OBJECT_H_
 
-#include <opendnp3/AsyncTaskScheduler.h>
 #include <opendnp3/Slave.h>
 #include <opendnp3/Database.h>
 #include <opendnp3/SlaveConfig.h>
@@ -48,7 +47,11 @@ public:
 	SlaveTestObject(const SlaveConfig& arCfg, FilterLevel aLevel = LEV_INFO, bool aImmediate = false);
 
 	void SendToSlave(const std::string& arData, SequenceInfo aSeq = SI_OTHER);
+
 	std::string Read();
+
+	bool NothingToRead();
+
 	size_t Count() {
 		return app.Count();
 	}
@@ -58,7 +61,7 @@ public:
 	MockTimeManager fakeTime;
 	MockExecutor mts;
 	MockAppLayer app;
-	Database db;	
+	Database db;
 	MockCommandHandler cmdHandler;
 	Slave slave;
 	APDU mAPDU;

@@ -79,5 +79,12 @@ const char* Exception :: what() const throw()
 	return mWhat.c_str();
 }
 
+std::string IndexOutOfBoundsException::GetMessage(int aIndex)
+{
+	ostringstream oss;
+	oss << "Index out of bounds: " << aIndex;
+	return oss.str();
+}
+
 }
 

@@ -29,8 +29,7 @@
 #ifndef __ASYNC_PHYS_BASE_TEST_H_
 #define __ASYNC_PHYS_BASE_TEST_H_
 
-#include <opendnp3/LowerLayerToPhysAdapter.h>
-
+#include "LowerLayerToPhysAdapter.h"
 #include "LogTester.h"
 #include "MockUpperLayer.h"
 #include "MockPhysicalLayerAsync.h"

@@ -54,7 +54,7 @@ void LogToFile :: StartLogging()
 	Log(le);
 
 	mpThread = new Thread(this);
-	mpThread->Start();	
+	mpThread->Start();
 }
 
 LogToFile :: ~LogToFile()
@@ -64,7 +64,7 @@ LogToFile :: ~LogToFile()
 		mpThread->WaitForStop();
 	}
 
-	delete mpThread;	
+	delete mpThread;
 }
 
 void LogToFile :: SignalStop()
@@ -93,7 +93,7 @@ void LogToFile :: PushItemsToFile()
 		if(file.bad()) std::cerr << "Failure during writing log file: " << file.rdstate() << std::endl;
 		file.close();
 	}
-	catch(std::exception e) {
+	catch(const std::exception& e) {
 		std::cerr << "Error during LogToFile: " << e.what() << std::endl;
 	}
 }

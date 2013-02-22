@@ -60,7 +60,7 @@ public:
 	virtual void OnOpenTimeout(PhysicalLayerMonitor* apContext) = 0;
 	virtual void OnOpenFailure(PhysicalLayerMonitor* apContext) = 0;
 	virtual void OnLayerOpen(PhysicalLayerMonitor* apContext) = 0;
-	virtual void OnLayerClose(PhysicalLayerMonitor* apContext) = 0;	
+	virtual void OnLayerClose(PhysicalLayerMonitor* apContext) = 0;
 
 	virtual ChannelState GetState() const = 0;
 	virtual std::string Name() const = 0;

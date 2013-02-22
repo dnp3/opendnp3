@@ -43,27 +43,27 @@ class IVtoCallbacks;
 
 class VtoEndpointImpl : public IVtoEndpoint
 {
-	public:
-		VtoEndpointImpl(	Logger* apLogger, 
-							IVtoWriter* apWriter,
-							IPhysicalLayerAsync* apPhys,
-							const VtoRouterSettings& arSettings,
-							std::function<void (VtoEndpointImpl*)> aOnShutdown);
-		
-		~VtoEndpointImpl();
+public:
+	VtoEndpointImpl(	Logger* apLogger,
+	                        IVtoWriter* apWriter,
+	                        IPhysicalLayerAsync* apPhys,
+	                        const VtoRouterSettings& arSettings,
+	                        std::function<void (VtoEndpointImpl*)> aOnShutdown);
+
+	~VtoEndpointImpl();
 
 	IVtoCallbacks* GetVtoCallbacks();
-	
+
 	void Shutdown();
 
-	private:
+private:
 
 	void Cleanup();
 
 	std::auto_ptr<IPhysicalLayerAsync> mpPhys;
 	std::auto_ptr<VtoRouter> mpRouter;
 	std::function<void (VtoEndpointImpl*)> mOnShutdown;
-	
+
 	static VtoRouter* FGetVtoRouter(const VtoRouterSettings& arSettings, Logger* apLogger, IVtoWriter* apWriter, IPhysicalLayerAsync* apPhys);
 };
 

@@ -80,7 +80,7 @@ public:
 	void AddStateListener(std::function<void (ChannelState)> aListener);
 
 protected:
-	
+
 	// override this function so that we can notify listeners
 	void OnStateChange(ChannelState aState);
 

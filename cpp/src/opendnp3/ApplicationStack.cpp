@@ -35,12 +35,12 @@ namespace opendnp3
 {
 
 ApplicationStack::ApplicationStack(Logger* apLogger, IExecutor* apExecutor, AppConfig aAppCfg, LinkConfig aCfg) :
-mLink(apLogger->GetSubLogger("link"), apExecutor, aCfg),
-mTransport(apLogger->GetSubLogger("transport")),
-mApplication(apLogger->GetSubLogger("app"), apExecutor, aAppCfg)
+	mLink(apLogger->GetSubLogger("link"), apExecutor, aCfg),
+	mTransport(apLogger->GetSubLogger("transport")),
+	mApplication(apLogger->GetSubLogger("app"), apExecutor, aAppCfg)
 {
 	mLink.SetUpperLayer(&mTransport);
 	mTransport.SetUpperLayer(&mApplication);
 }
-		
+
 }

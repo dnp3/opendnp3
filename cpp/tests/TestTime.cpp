@@ -82,7 +82,7 @@ BOOST_AUTO_TEST_CASE(BasicTest)
 	std::this_thread::sleep_for(milliseconds(100));
 
 	//make sure the stopwatch recorded atleast 5 millis elapsed (override default bool)
-	BOOST_REQUIRE(sw.Elapsed(false) >= milliseconds(100));	
+	BOOST_REQUIRE(sw.Elapsed(false) >= milliseconds(100));
 }
 
 BOOST_AUTO_TEST_SUITE_END()

@@ -55,14 +55,14 @@ int LogTypes::FilterLevelToMask(FilterLevel aFilter)
 FilterLevel LogTypes::ConvertIntToFilterLevel(int aLevel)
 {
 	switch(aLevel) {
-		case(LEV_DEBUG): return LEV_DEBUG;
-		case(LEV_COMM): return LEV_COMM;
-		case(LEV_INTERPRET): return LEV_INTERPRET;
-		case(LEV_INFO): return LEV_INFO;
-		case(LEV_WARNING):return LEV_WARNING;
-		case(LEV_ERROR): return LEV_ERROR;
-		case(LEV_EVENT): return LEV_EVENT;
-		default: return LEV_DEBUG;
+	case(LEV_DEBUG): return LEV_DEBUG;
+	case(LEV_COMM): return LEV_COMM;
+	case(LEV_INTERPRET): return LEV_INTERPRET;
+	case(LEV_INFO): return LEV_INFO;
+	case(LEV_WARNING):return LEV_WARNING;
+	case(LEV_ERROR): return LEV_ERROR;
+	case(LEV_EVENT): return LEV_EVENT;
+	default: return LEV_DEBUG;
 	}
 }
 
@@ -88,7 +88,7 @@ int LogTypes::GetFilterMask(const std::string& arg)
 	std::string copy(arg);
 	toLowerCase(copy);
 	int ret = 0;
-	for(auto c: copy) ret |= GetFilterMask(c);	
+for(auto c: copy) ret |= GetFilterMask(c);
 	return ret;
 }
 

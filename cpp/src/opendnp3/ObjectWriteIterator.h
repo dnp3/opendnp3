@@ -76,7 +76,9 @@ private:
 
 inline uint8_t* ObjectWriteIterator::operator*() const
 {
-	if(this->IsEnd()) throw InvalidStateException(LOCATION, "End of iteration");
+	if(this->IsEnd()) {
+		MACRO_THROW_EXCEPTION(InvalidStateException, "End of iteration");
+	}
 	return mpPos;
 }
 

@@ -35,7 +35,7 @@ namespace opendnp3
 
 StopWatch::StopWatch() : mStartTime(steady_clock::now())
 {
-	
+
 }
 
 steady_clock::duration StopWatch :: Elapsed(bool aReset)
@@ -45,7 +45,7 @@ steady_clock::duration StopWatch :: Elapsed(bool aReset)
 
 void StopWatch :: Restart()
 {
-	mStartTime = steady_clock::now(); 
+	mStartTime = steady_clock::now();
 }
 
 }

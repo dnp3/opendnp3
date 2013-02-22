@@ -24,30 +24,30 @@
 using namespace opendnp3;
 
 DataObserverAdapter::DataObserverAdapter(JavaVM* apJVM, jobject aProxy) :
-mpJVM(apJVM),
-mProxy(aProxy)
+	mpJVM(apJVM),
+	mProxy(aProxy)
 {
 	JNIEnv* pEnv = this->GetEnv();
 	jclass clazz = pEnv->GetObjectClass(mProxy);
-	assert(clazz != NULL);	
+	assert(clazz != NULL);
 
 	mStartId = pEnv->GetMethodID(clazz, "start", "()V");
 	assert(mStartId != NULL);
 	mEndId = pEnv->GetMethodID(clazz, "end", "()V");
 	assert(mEndId != NULL);
-	
+
 	mUpdateBinaryInput = pEnv->GetMethodID(clazz, "updateBI", "(ZBJJ)V");
 	assert(mUpdateBinaryInput != NULL);
-	
+
 	mUpdateAnalogInput = pEnv->GetMethodID(clazz, "updateAI", "(DBJJ)V");
 	assert(mUpdateAnalogInput != NULL);
-	
+
 	mUpdateCounter = pEnv->GetMethodID(clazz, "updateC", "(JBJJ)V");
 	assert(mUpdateCounter != NULL);
-	
+
 	mUpdateBinaryOutputStatus = pEnv->GetMethodID(clazz, "updateBOS", "(ZBJJ)V");
 	assert(mUpdateBinaryOutputStatus != NULL);
-	
+
 	mUpdateAnalogOutputStatus = pEnv->GetMethodID(clazz, "updateAOS", "(DBJJ)V");
 	assert(mUpdateAnalogOutputStatus != NULL);
 }
@@ -55,19 +55,19 @@ mProxy(aProxy)
 JNIEnv* DataObserverAdapter::GetEnv()
 {
 	JNIEnv* pEnv = NULL;
-	mpJVM->GetEnv((void **) &pEnv, JNI_VERSION_1_6);
+	mpJVM->GetEnv((void**) &pEnv, JNI_VERSION_1_6);
 	assert(pEnv != NULL);
 	return pEnv;
 }
 
 void DataObserverAdapter::_Start()
 {
-	GetEnv()->CallVoidMethod(mProxy, mStartId);	
+	GetEnv()->CallVoidMethod(mProxy, mStartId);
 }
 
 void DataObserverAdapter::_Update(const Binary& arMeas, size_t aIndex)
 {
-	JNIEnv* pEnv = GetEnv();	
+	JNIEnv* pEnv = GetEnv();
 
 	jboolean value = arMeas.GetValue();
 	jbyte quality = arMeas.GetQuality();
@@ -79,19 +79,19 @@ void DataObserverAdapter::_Update(const Binary& arMeas, size_t aIndex)
 
 void DataObserverAdapter::_Update(const Analog& arMeas, size_t aIndex)
 {
-	JNIEnv* pEnv = GetEnv();	
+	JNIEnv* pEnv = GetEnv();
 
 	jdouble value = arMeas.GetValue();
 	jbyte quality = arMeas.GetQuality();
 	jlong timestamp = arMeas.GetTime();
-	jlong index = aIndex;	
+	jlong index = aIndex;
 
 	pEnv->CallVoidMethod(mProxy, mUpdateAnalogInput, value, quality, timestamp, index);
 }
 
 void DataObserverAdapter::_Update(const Counter& arMeas, size_t aIndex)
 {
-	JNIEnv* pEnv = GetEnv();	
+	JNIEnv* pEnv = GetEnv();
 
 	jlong value = arMeas.GetValue();
 	jbyte quality = arMeas.GetQuality();
@@ -103,26 +103,26 @@ void DataObserverAdapter::_Update(const Counter& arMeas, size_t aIndex)
 
 void DataObserverAdapter::_Update(const SetpointStatus& arMeas, size_t aIndex)
 {
-	JNIEnv* pEnv = GetEnv();	
+	JNIEnv* pEnv = GetEnv();
 
 	jdouble value = arMeas.GetValue();
 	jbyte quality = arMeas.GetQuality();
 	jlong timestamp = arMeas.GetTime();
 	jlong index = aIndex;
 
-	pEnv->CallVoidMethod(mProxy, mUpdateAnalogOutputStatus, value, quality, timestamp, index);	
+	pEnv->CallVoidMethod(mProxy, mUpdateAnalogOutputStatus, value, quality, timestamp, index);
 }
 
 void DataObserverAdapter::_Update(const ControlStatus& arMeas, size_t aIndex)
 {
-	JNIEnv* pEnv = GetEnv();	
+	JNIEnv* pEnv = GetEnv();
 
 	jboolean value = arMeas.GetValue();
 	jbyte quality = arMeas.GetQuality();
 	jlong timestamp = arMeas.GetTime();
 	jlong index = aIndex;
 
-	pEnv->CallVoidMethod(mProxy, mUpdateBinaryOutputStatus, value, quality, timestamp, index);	
+	pEnv->CallVoidMethod(mProxy, mUpdateBinaryOutputStatus, value, quality, timestamp, index);
 }
 
 void DataObserverAdapter::_End()

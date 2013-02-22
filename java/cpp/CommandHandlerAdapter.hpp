@@ -24,7 +24,7 @@
 
 class CommandHandlerAdapter : public opendnp3::ICommandHandler
 {
-	public:
+public:
 	CommandHandlerAdapter(JavaVM* apJVM, jobject aProxy);
 
 	opendnp3::CommandStatus Select(const opendnp3::ControlRelayOutputBlock& arCommand, size_t aIndex);
@@ -46,8 +46,8 @@ class CommandHandlerAdapter : public opendnp3::ICommandHandler
 	opendnp3::CommandStatus Select(const opendnp3::AnalogOutputDouble64& arCommand, size_t aIndex);
 	opendnp3::CommandStatus Operate(const opendnp3::AnalogOutputDouble64& arCommand, size_t aIndex);
 	opendnp3::CommandStatus DirectOperate(const opendnp3::AnalogOutputDouble64& arCommand, size_t aIndex);
-	
-	private:
+
+private:
 
 	jmethodID mSelectCROB;
 	jmethodID mOperateCROB;
@@ -72,7 +72,7 @@ class CommandHandlerAdapter : public opendnp3::ICommandHandler
 	JNIEnv* GetEnv();
 
 	JavaVM* mpJVM;
-	jobject mProxy;	
+	jobject mProxy;
 };
 
 #endif

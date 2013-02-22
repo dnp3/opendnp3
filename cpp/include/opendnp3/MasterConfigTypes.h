@@ -37,8 +37,19 @@ namespace  opendnp3
 /**
 * Represents an exception scan
 */
-struct ExceptionScan 
-{
+struct ExceptionScan {
+
+	/// Defaults to all events every 5 seconds
+	ExceptionScan() :
+		ClassMask(PC_ALL_EVENTS),
+		ScanRate(5000)
+	{}
+
+	ExceptionScan(int aClassMask, millis_t aScanRate) :
+		ClassMask(aClassMask),
+		ScanRate(aScanRate)
+	{}
+
 	/// Bitmask for which classes will be scanned
 	int ClassMask;
 

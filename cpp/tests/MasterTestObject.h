@@ -32,12 +32,12 @@
 #include "MockExecutor.h"
 #include "LogTester.h"
 
-#include <opendnp3/AsyncTaskScheduler.h>
-#include <opendnp3/FlexibleDataObserver.h>
 #include <opendnp3/Master.h>
+#include <opendnp3/AsyncTaskGroup.h>
 
 #include <deque>
 
+#include "FlexibleDataObserver.h"
 #include "MockAppLayer.h"
 
 namespace opendnp3
@@ -58,8 +58,8 @@ public:
 	void BindStateListener();
 
 	MockTimeSource fake_time;
-	MockExecutor mts;
-	AsyncTaskScheduler ats;
+	MockExecutor mts;	
+	AsyncTaskGroup group;
 	FlexibleDataObserver fdo;
 	MockAppLayer app;
 	Master master;

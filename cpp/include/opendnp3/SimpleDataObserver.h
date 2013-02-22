@@ -43,13 +43,13 @@ namespace opendnp3
 */
 class SimpleDataObserver : public IDataObserver
 {
-public: 
+public:
 	/**
 	* Primary constructor
 	* @param aOutputFunc functor that will receive messages
 	*/
 	SimpleDataObserver(std::function<void (const std::string&)> aOutputFunc);
-			
+
 protected:
 
 	//concrete class will implement these
@@ -69,25 +69,31 @@ private:
 /// Singleton IDataObserver that ignores all messages
 class NullDataObserver : public SimpleDataObserver
 {
-	private:
-		static NullDataObserver mInstance;
-	protected:
-		NullDataObserver() : SimpleDataObserver([](const std::string&){})
-		{}
-	public:
-		static NullDataObserver* Inst(){ return &mInstance; }	
+private:
+	static NullDataObserver mInstance;
+protected:
+	NullDataObserver() : SimpleDataObserver([](const std::string&) {})
+	{}
+public:
+	static NullDataObserver* Inst() {
+		return &mInstance;
+	}
 };
 
 /// Singleton IDataObserver that prints all measurements to the console
 class PrintingDataObserver : public SimpleDataObserver
 {
-	private:
-		static PrintingDataObserver mInstance;
-	protected:
-		PrintingDataObserver() : SimpleDataObserver([](const std::string& arStr){ std::cout << arStr << std::endl;})
-		{}
-	public:
-		static PrintingDataObserver* Inst(){ return &mInstance; }
+private:
+	static PrintingDataObserver mInstance;
+protected:
+	PrintingDataObserver() : SimpleDataObserver([](const std::string& arStr) {
+		std::cout << arStr << std::endl;
+	})
+	{}
+public:
+	static PrintingDataObserver* Inst() {
+		return &mInstance;
+	}
 };
 
 }

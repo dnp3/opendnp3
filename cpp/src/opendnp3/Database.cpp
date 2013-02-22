@@ -144,7 +144,7 @@ void Database::SetClass(DataTypes aType, PointClass aClass)
 		for(size_t i = 0; i < mSetpointStatusVec.size(); ++i) mSetpointStatusVec[i].mClass = aClass;
 		break;
 	default:
-		throw ArgumentException(LOCATION, "Class cannot be assigned for this type");
+		MACRO_THROW_EXCEPTION(ArgumentException, "Class cannot be assigned for this type");
 		break;
 	}
 }
@@ -153,27 +153,27 @@ void Database::SetClass(DataTypes aType, size_t aIndex, PointClass aClass)
 {
 	switch(aType) {
 	case(DT_BINARY):
-		if(aIndex >= mBinaryVec.size()) throw Exception(LOCATION, "", ERR_INDEX_OUT_OF_BOUNDS);
+		if(aIndex >= mBinaryVec.size()) MACRO_THROW_EXCEPTION_WITH_CODE(Exception, "", ERR_INDEX_OUT_OF_BOUNDS);
 		mBinaryVec[aIndex].mClass = aClass;
 		break;
 	case(DT_ANALOG):
-		if(aIndex >= mAnalogVec.size()) throw Exception(LOCATION, "", ERR_INDEX_OUT_OF_BOUNDS);
+		if(aIndex >= mAnalogVec.size()) MACRO_THROW_EXCEPTION_WITH_CODE(Exception, "", ERR_INDEX_OUT_OF_BOUNDS);
 		mAnalogVec[aIndex].mClass = aClass;
 		break;
 	case(DT_COUNTER):
-		if(aIndex >= mCounterVec.size()) throw Exception(LOCATION, "", ERR_INDEX_OUT_OF_BOUNDS);
+		if(aIndex >= mCounterVec.size()) MACRO_THROW_EXCEPTION_WITH_CODE(Exception, "", ERR_INDEX_OUT_OF_BOUNDS);
 		mCounterVec[aIndex].mClass = aClass;
 		break;
 	case(DT_CONTROL_STATUS):
-		if(aIndex >= mControlStatusVec.size()) throw Exception(LOCATION, "", ERR_INDEX_OUT_OF_BOUNDS);
+		if(aIndex >= mControlStatusVec.size()) MACRO_THROW_EXCEPTION_WITH_CODE(Exception, "", ERR_INDEX_OUT_OF_BOUNDS);
 		mControlStatusVec[aIndex].mClass = aClass;
 		break;
 	case(DT_SETPOINT_STATUS):
-		if(aIndex >= mSetpointStatusVec.size()) throw Exception(LOCATION, "", ERR_INDEX_OUT_OF_BOUNDS);
+		if(aIndex >= mSetpointStatusVec.size()) MACRO_THROW_EXCEPTION_WITH_CODE(Exception, "", ERR_INDEX_OUT_OF_BOUNDS);
 		mSetpointStatusVec[aIndex].mClass = aClass;
 		break;
 	default:
-		throw ArgumentException(LOCATION, "Class cannot be assigned for this type");
+		MACRO_THROW_EXCEPTION(ArgumentException, "Class cannot be assigned for this type");
 	}
 }
 
@@ -181,15 +181,15 @@ void Database::SetDeadband(DataTypes aType, size_t aIndex, double aDeadband)
 {
 	switch(aType) {
 	case(DT_ANALOG):
-		if(aIndex >= mAnalogVec.size()) throw Exception(LOCATION, "", ERR_INDEX_OUT_OF_BOUNDS);
+		if(aIndex >= mAnalogVec.size()) MACRO_THROW_EXCEPTION_WITH_CODE(Exception, "", ERR_INDEX_OUT_OF_BOUNDS);
 		mAnalogVec[aIndex].mDeadband = aDeadband;
 		break;
 	case(DT_COUNTER):
-		if(aIndex >= mCounterVec.size()) throw Exception(LOCATION, "", ERR_INDEX_OUT_OF_BOUNDS);
+		if(aIndex >= mCounterVec.size()) MACRO_THROW_EXCEPTION_WITH_CODE(Exception, "", ERR_INDEX_OUT_OF_BOUNDS);
 		mCounterVec[aIndex].mDeadband = aDeadband;
 		break;
 	default:
-		throw ArgumentException(LOCATION, "Deadband cannot be assigned for this type");
+		MACRO_THROW_EXCEPTION(ArgumentException, "Deadband cannot be assigned for this type");
 	}
 }
 
@@ -250,7 +250,9 @@ void Database::_Update(const SetpointStatus& arPoint, size_t aIndex)
 size_t Database::MaxIndex(DataTypes aType)
 {
 	size_t num = NumType(aType);
-	if(num == 0) throw ArgumentException(LOCATION, "No points for datatype");
+	if(num == 0) {
+		MACRO_THROW_EXCEPTION(ArgumentException, "No points for datatype");
+	}
 	else return (num - 1);
 }
 

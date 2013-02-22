@@ -56,7 +56,7 @@ private:
 
 	void _Start();
 
-	void _End();	
+	void _End();
 
 	void _Update(const Binary& arPoint, size_t aIndex);
 	void _Update(const Analog& arPoint, size_t aIndex);

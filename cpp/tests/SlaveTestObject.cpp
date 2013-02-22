@@ -31,6 +31,9 @@
 #include "BufferHelpers.h"
 
 #include <opendnp3/ToHex.h>
+#include <sstream>
+
+using namespace std;
 
 namespace opendnp3
 {
@@ -39,7 +42,7 @@ SlaveTestObject::SlaveTestObject(const SlaveConfig& arCfg, FilterLevel aLevel, b
 	LogTester(aImmediate),
 	mts(),
 	app(mLog.GetLogger(aLevel, "app")),
-	db(mLog.GetLogger(aLevel, "db")),	
+	db(mLog.GetLogger(aLevel, "db")),
 	slave(mLog.GetLogger(aLevel, "slave"), &app, &mts, &fakeTime, &db, &cmdHandler, arCfg),
 	mpLogger(mLog.GetLogger(aLevel, "test"))
 {
@@ -54,6 +57,16 @@ void SlaveTestObject::SendToSlave(const std::string& arData, SequenceInfo aSeq)
 	mAPDU.Interpret();
 	LOG_BLOCK(LEV_INTERPRET, "<= " << mAPDU.ToString());
 	slave.OnRequest(mAPDU, aSeq);
+}
+
+bool SlaveTestObject::NothingToRead()
+{
+	if(app.NothingToRead()) return true;
+	else {
+		ostringstream oss;
+		oss << "Expected nothing but outstation wrote: " << Read();
+		throw InvalidStateException(LOCATION, oss.str());
+	}
 }
 
 std::string SlaveTestObject::Read()

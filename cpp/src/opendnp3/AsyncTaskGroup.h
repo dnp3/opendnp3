@@ -34,6 +34,7 @@
 #include <opendnp3/Uncopyable.h>
 
 #include "AsyncTaskInterfaces.h"
+#include "TimeSource.h"
 
 #include <set>
 #include <queue>
@@ -47,7 +48,6 @@ class AsyncTaskBase;
 class AsyncTaskPeriodic;
 class AsyncTaskNonPeriodic;
 class AsyncTaskContinuous;
-class AsyncTaskScheduler;
 class IExecutor;
 class ITimeSource;
 class ITimer;
@@ -58,11 +58,11 @@ class ITimer;
 class AsyncTaskGroup : private Uncopyable
 {
 	friend class AsyncTaskBase;
-	friend class AsyncTaskContinuous;	
+	friend class AsyncTaskContinuous;
 
 public:
 
-	AsyncTaskGroup(IExecutor*, ITimeSource*);
+	AsyncTaskGroup(IExecutor*, ITimeSource* = TimeSource::Inst());
 	~AsyncTaskGroup();
 
 	AsyncTaskBase* Add(millis_t aPeriod, millis_t aRetryDelay, int aPriority, const TaskHandler& arCallback, const std::string& arName = "");
@@ -101,7 +101,7 @@ private:
 	ITimeSource* mpTimeSrc;
 	ITimer* mpTimer;
 
-	
+
 
 	typedef std::vector< AsyncTaskBase* > TaskVec;
 	TaskVec mTaskVec;

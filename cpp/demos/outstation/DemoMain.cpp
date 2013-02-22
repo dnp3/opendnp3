@@ -59,7 +59,7 @@ int main(int argc, char* argv[])
 
 	// You can optionally add a listener to the channel. You can do this anytime and
 	// you will receive a stream of all state changes
-	pServer->AddStateListener([](ChannelState state){
+	pServer->AddStateListener([](ChannelState state) {
 		std::cout << "Server state: " << ConvertChannelStateToString(state) << std::endl;
 	});
 
@@ -77,9 +77,9 @@ int main(int argc, char* argv[])
 	// updating the slave's database.
 	auto pOutstation = pServer->AddOutstation("outstation", LOG_LEVEL, SuccessCommandHandler::Inst(), stackConfig);
 
-	// You can optionally add a listener to the stack to observer communicate health. You 
+	// You can optionally add a listener to the stack to observer communicate health. You
 	// can do this anytime and you will receive a stream of all state changes.
-	pOutstation->AddStateListener([](StackState state){
+	pOutstation->AddStateListener([](StackState state) {
 		std::cout << "outstation state: " << ConvertStackStateToString(state) << std::endl;
 	});
 
@@ -87,8 +87,7 @@ int main(int argc, char* argv[])
 
 	std::string input;
 	uint32_t count = 0;
-	do
-	{
+	do {
 		std::cout << "Enter something to increment a counter or type exit" << std::endl;
 		std::cin >> input;
 		if(input == "exit") break;

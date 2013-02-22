@@ -34,7 +34,10 @@
 
 #include "LinkLayerRouter.h"
 #include "Loggable.h"
+
+#ifndef OPENDNP3_NO_MASTER
 #include "AsyncTaskGroup.h"
+#endif
 
 #include <memory>
 #include <functional>
@@ -43,7 +46,7 @@ namespace boost
 {
 namespace asio
 {
-	class io_service;
+class io_service;
 }
 }
 
@@ -58,41 +61,49 @@ class ICommandHandler;
 
 class DNP3Channel: public IChannel, private Loggable
 {
-	public:
-		DNP3Channel(Logger* apLogger, millis_t aOpenRetry, boost::asio::io_service* apService, IPhysicalLayerAsync* apPhys, ITimeSource* apTimerSource, std::function<void (DNP3Channel*)> aOnShutdown);
-		~DNP3Channel();
+public:
+	DNP3Channel(Logger* apLogger, millis_t aOpenRetry, boost::asio::io_service* apService, IPhysicalLayerAsync* apPhys, ITimeSource* apTimerSource, std::function<void (DNP3Channel*)> aOnShutdown);
+	~DNP3Channel();
 
-		// Implement IChannel - these are exposed to clients
+	// Implement IChannel - these are exposed to clients
 
-		void Shutdown();
+	void Shutdown();
 
-		void AddStateListener(std::function<void (ChannelState)> aListener);
+	void AddStateListener(std::function<void (ChannelState)> aListener);
 
-		IMaster* AddMaster(		const std::string& arLoggerId,
-	                            FilterLevel aLevel,
-	                            IDataObserver* apPublisher,
-	                            const MasterStackConfig& arCfg);
+#ifndef OPENDNP3_NO_MASTER
 
-		IOutstation* AddOutstation(	const std::string& arLoggerId,
-									FilterLevel aLevel,
-									ICommandHandler* apCmdHandler,
-									const SlaveStackConfig&);
+	IMaster* AddMaster(		const std::string& arLoggerId,
+	                                FilterLevel aLevel,
+	                                IDataObserver* apPublisher,
+	                                const MasterStackConfig& arCfg);
 
-		// Helper functions only available inside DNP3Manager		
+#endif
 
-	private:	
+	IOutstation* AddOutstation(	const std::string& arLoggerId,
+	                                FilterLevel aLevel,
+	                                ICommandHandler* apCmdHandler,
+	                                const SlaveStackConfig&);
 
-		void Cleanup();
+	// Helper functions only available inside DNP3Manager
 
-		void OnStackShutdown(IStack* apStack, LinkRoute aRoute);
+private:
 
-		boost::asio::io_service* mpService;
-		std::auto_ptr<IPhysicalLayerAsync> mpPhys;
-		std::function<void (DNP3Channel*)> mOnShutdown;
-		LinkLayerRouter mRouter;
-		AsyncTaskGroup mGroup;
-		std::set<IStack*> mStacks;
-		
+	void Cleanup();
+
+	void OnStackShutdown(IStack* apStack, LinkRoute aRoute);
+
+	boost::asio::io_service* mpService;
+	std::auto_ptr<IPhysicalLayerAsync> mpPhys;
+	std::function<void (DNP3Channel*)> mOnShutdown;
+	LinkLayerRouter mRouter;
+
+#ifndef OPENDNP3_NO_MASTER
+	AsyncTaskGroup mGroup;
+#endif
+
+	std::set<IStack*> mStacks;
+
 };
 
 }

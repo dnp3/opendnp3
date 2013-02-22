@@ -41,16 +41,16 @@ namespace opendnp3
 {
 
 TransportLoopbackTestObject::TransportLoopbackTestObject(
-    boost::asio::io_service* apService,
-    IPhysicalLayerAsync* apPhys,
-    LinkConfig aCfgA,
-    LinkConfig aCfgB,
-    FilterLevel aLevel,
-    bool aImmediate) :
+        boost::asio::io_service* apService,
+        IPhysicalLayerAsync* apPhys,
+        LinkConfig aCfgA,
+        LinkConfig aCfgB,
+        FilterLevel aLevel,
+        bool aImmediate) :
 
 	LogTester(aImmediate),
 	AsyncTestObjectASIO(apService),
-	mpLogger(mLog.GetLogger(aLevel, "test")),		
+	mpLogger(mLog.GetLogger(aLevel, "test")),
 	mCfgA(aCfgA),
 	mCfgB(aCfgB),
 	mLinkA(mpLogger, apPhys->GetExecutor(), aCfgA),
@@ -76,7 +76,7 @@ TransportLoopbackTestObject::TransportLoopbackTestObject(
 
 TransportLoopbackTestObject::~TransportLoopbackTestObject()
 {
-	mRouter.Shutdown();	
+	mRouter.Shutdown();
 	this->GetService()->run();
 }
 

@@ -42,37 +42,37 @@ namespace opendnp3
 
 void AS_Base::OnLowerLayerUp(Slave*)
 {
-	throw InvalidStateException(LOCATION, this->Name());
+	MACRO_THROW_EXCEPTION(InvalidStateException, this->Name());
 }
 
 void AS_Base::OnLowerLayerDown(Slave*)
 {
-	throw InvalidStateException(LOCATION, this->Name());
+	MACRO_THROW_EXCEPTION(InvalidStateException, this->Name());
 }
 
 void AS_Base::OnSolSendSuccess(Slave*)
 {
-	throw InvalidStateException(LOCATION, this->Name());
+	MACRO_THROW_EXCEPTION(InvalidStateException, this->Name());
 }
 
 void AS_Base::OnSolFailure(Slave*)
 {
-	throw InvalidStateException(LOCATION, this->Name());
+	MACRO_THROW_EXCEPTION(InvalidStateException, this->Name());
 }
 
 void AS_Base::OnUnsolSendSuccess(Slave*)
 {
-	throw InvalidStateException(LOCATION, this->Name());
+	MACRO_THROW_EXCEPTION(InvalidStateException, this->Name());
 }
 
 void AS_Base::OnUnsolFailure(Slave*)
 {
-	throw InvalidStateException(LOCATION, this->Name());
+	MACRO_THROW_EXCEPTION(InvalidStateException, this->Name());
 }
 
 void AS_Base::OnRequest(Slave*, const APDU&, SequenceInfo)
 {
-	throw InvalidStateException(LOCATION, this->Name());
+	MACRO_THROW_EXCEPTION(InvalidStateException, this->Name());
 }
 
 void AS_Base::OnUnknown(Slave* c)
@@ -146,11 +146,8 @@ void AS_Base::SwitchOnFunction(Slave* c, AS_Base* apNext, const APDU& arRequest,
 		c->ConfigureDelayMeasurement(arRequest);
 		c->Send(c->mResponse);
 		break;
-	default: {
-			std::ostringstream oss;
-			oss << "Function not supported: " << arRequest.GetFunction();
-			throw NotSupportedException(LOCATION, oss.str(), SERR_FUNC_NOT_SUPPORTED);
-		}
+	default: 
+		MACRO_THROW_EXCEPTION_COMPLEX_WITH_CODE(NotSupportedException, "Function not supported: " << arRequest.GetFunction() , SERR_FUNC_NOT_SUPPORTED);
 	}
 }
 
@@ -161,13 +158,13 @@ void AS_Base::DoRequest(Slave* c, AS_Base* apNext, const APDU& arAPDU, SequenceI
 	try {
 		this->SwitchOnFunction(c, apNext, arAPDU, aSeqInfo);
 	}
-	catch (ParameterException ex) {
+	catch (const ParameterException& ex) {
 		ChangeState(c, apNext);
 		ERROR_LOGGER_BLOCK(c->mpLogger, LEV_ERROR, ex.Message(), ex.ErrorCode());
 		c->mRspIIN.SetParameterError(true);
 		c->ConfigureAndSendSimpleResponse();
 	}
-	catch (NotSupportedException ex) {
+	catch (const NotSupportedException& ex) {
 		ChangeState(c, apNext);
 		ERROR_LOGGER_BLOCK(c->mpLogger, LEV_ERROR, ex.Message(), ex.ErrorCode());
 		c->mRspIIN.SetFuncNotSupported(true);
@@ -209,13 +206,13 @@ void AS_Closed::OnLowerLayerUp(Slave* c)
 	// this is implemented as a simple timer because it can run if the slave is connected/disconnected etc
 	if (c->mConfig.mAllowTimeSync) c->ResetTimeIIN();
 
-	ChangeState(c, AS_Idle::Inst());	
+	ChangeState(c, AS_Idle::Inst());
 }
 
 void AS_Closed::OnDataUpdate(Slave* c)
 {
 	c->FlushUpdates();
-	c->mDeferredUnsol = true;
+	if(!c->mConfig.mDisableUnsol) c->mDeferredUnsol = true;
 }
 
 /* AS_OpenBase */
@@ -240,7 +237,7 @@ void AS_Idle::OnDataUpdate(Slave* c)
 
 	// start the unsol timer or act immediately if there's no pack timer
 	if (!c->mConfig.mDisableUnsol && c->mStartupNullUnsol && c->mRspContext.HasEvents(c->mConfig.mUnsolMask)) {
-		if (c->mConfig.mUnsolPackDelay == 0) {			
+		if (c->mConfig.mUnsolPackDelay == 0) {
 			ChangeState(c, AS_WaitForUnsolSuccess::Inst());
 			c->mRspContext.LoadUnsol(c->mUnsol, c->mIIN, c->mConfig.mUnsolMask);
 			c->SendUnsolicited(c->mUnsol);

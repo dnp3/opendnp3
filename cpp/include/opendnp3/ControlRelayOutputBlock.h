@@ -78,7 +78,7 @@ std::string ControlCodeToString(ControlCode aType);
  */
 class ControlRelayOutputBlock
 {
-	public:	
+public:
 
 	ControlRelayOutputBlock(ControlCode aCode = CC_LATCH_ON, uint8_t aCount = 1, uint32_t aOnTime = 100, uint32_t aOffTime = 100);
 
@@ -86,7 +86,7 @@ class ControlRelayOutputBlock
 	ControlCode GetCode() const;
 
 	/// allows matching of exact code
-	uint8_t mRawCode; 
+	uint8_t mRawCode;
 	/// the number of times to repeat the operation
 	uint8_t mCount;
 	/// the 'on' time for the pulse train
@@ -105,7 +105,7 @@ class ControlRelayOutputBlock
 	*/
 	bool operator==(const ControlRelayOutputBlock& arRHS) const {
 		return (mRawCode == arRHS.mRawCode) && (mCount == arRHS.mCount) && (mOnTimeMS == arRHS.mOnTimeMS) && (mOffTimeMS == arRHS.mOffTimeMS);
-	}	
+	}
 };
 
 

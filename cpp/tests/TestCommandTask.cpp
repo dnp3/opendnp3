@@ -45,13 +45,15 @@ BOOST_AUTO_TEST_CASE(FullSequence)
 	EventLog log;
 	CommandTask ct(log.GetLogger(LEV_INFO, "task"));
 	CommandStatus rsp = CS_UNDEFINED;
-	auto formatter = [](APDU& arAPDU, FunctionCodes aCode){ 
-		return CommandHelpers::ConfigureRequest(arAPDU, aCode, ControlRelayOutputBlock(CC_LATCH_ON), 0, Group12Var1::Inst()); 
+	auto formatter = [](APDU & arAPDU, FunctionCodes aCode) {
+		return CommandHelpers::ConfigureRequest(arAPDU, aCode, ControlRelayOutputBlock(CC_LATCH_ON), 0, Group12Var1::Inst());
 	};
-	auto responder = [&rsp](CommandStatus status) { rsp = status; };
+	auto responder = [&rsp](CommandStatus status) {
+		rsp = status;
+	};
 	ct.Configure(formatter, responder);
 	ct.AddCommandCode(FC_SELECT);
-	
+
 	APDU frag;
 	ct.ConfigureRequest(frag);
 	HexSequence hs("C0 81 00 00 0C 01 17 01 00 03 01 64 00 00 00 64 00 00 00 00");
@@ -60,7 +62,7 @@ BOOST_AUTO_TEST_CASE(FullSequence)
 	frag.Interpret();
 	auto result = ct.OnFinalResponse(frag);
 	BOOST_REQUIRE_EQUAL(TR_SUCCESS, result);
-	BOOST_REQUIRE_EQUAL(CS_SUCCESS, rsp);	
+	BOOST_REQUIRE_EQUAL(CS_SUCCESS, rsp);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

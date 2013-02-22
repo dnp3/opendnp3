@@ -39,11 +39,11 @@ class IExecutor;
 
 class ExecutorPause
 {
-	public:
+public:
 	ExecutorPause(IExecutor* apExecutor);
 	~ExecutorPause();
 
-	private:
+private:
 
 	void Pause();
 

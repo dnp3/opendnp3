@@ -28,9 +28,10 @@
 //
 #include <boost/test/unit_test.hpp>
 
-#include <opendnp3/RandomizedBuffer.h>
 #include <opendnp3/Log.h>
 #include <opendnp3/VtoWriter.h>
+
+#include "RandomizedBuffer.h"
 
 using namespace std;
 using namespace opendnp3;

@@ -77,7 +77,7 @@ void LinkLayer::ChangeState(SecStateBase* apState)
 bool LinkLayer::Validate(bool aIsMaster, uint16_t aSrc, uint16_t aDest)
 {
 	if(!mIsOnline)
-		throw InvalidStateException(LOCATION, "LowerLayerDown");
+		MACRO_THROW_EXCEPTION(InvalidStateException, "LowerLayerDown");
 
 	if(aIsMaster == mCONFIG.IsMaster) {
 		ERROR_BLOCK(LEV_WARNING,
@@ -106,7 +106,7 @@ bool LinkLayer::Validate(bool aIsMaster, uint16_t aSrc, uint16_t aDest)
 void LinkLayer::OnLowerLayerUp()
 {
 	if(mIsOnline)
-		throw InvalidStateException(LOCATION, "LowerLayerUp");
+		MACRO_THROW_EXCEPTION(InvalidStateException, "LowerLayerUp");
 	mIsOnline = true;
 	if(mpUpperLayer) mpUpperLayer->OnLowerLayerUp();
 }
@@ -114,7 +114,7 @@ void LinkLayer::OnLowerLayerUp()
 void LinkLayer::OnLowerLayerDown()
 {
 	if(!mIsOnline)
-		throw InvalidStateException(LOCATION, "LowerLayerDown");
+		MACRO_THROW_EXCEPTION(InvalidStateException, "LowerLayerDown");
 
 	if(mpTimer != NULL) this->CancelTimer();
 	mIsOnline = false;
@@ -252,7 +252,7 @@ void LinkLayer::UnconfirmedUserData(bool aIsMaster, uint16_t aDest, uint16_t aSr
 void LinkLayer::_Send(const uint8_t* apData, size_t aDataLength)
 {
 	if(!mIsOnline)
-		throw InvalidStateException(LOCATION, "LowerLayerDown");
+		MACRO_THROW_EXCEPTION(InvalidStateException, "LowerLayerDown");
 	if(mCONFIG.UseConfirms) mpPriState->SendConfirmed(this, apData, aDataLength);
 	else mpPriState->SendUnconfirmed(this, apData, aDataLength);
 }

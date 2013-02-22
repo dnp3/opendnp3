@@ -32,7 +32,8 @@
 #include <opendnp3/IPhysicalLayerAsync.h>
 #include <opendnp3/Loggable.h>
 #include <opendnp3/IHandlerAsync.h>
-#include <opendnp3/RandomDouble.h>
+
+#include "RandomDouble.h"
 
 namespace opendnp3
 {
@@ -43,24 +44,45 @@ class PhysicalLayerWrapper : public IPhysicalLayerAsync, public IHandlerAsync
 public:
 	PhysicalLayerWrapper(Logger* apLogger, IPhysicalLayerAsync* apProxy);
 
-	IExecutor* GetExecutor()
-	{
+	IExecutor* GetExecutor() {
 		return mpProxy->GetExecutor();
 	}
 
-	bool CanOpen() const { return mpProxy->CanOpen(); }
-	bool CanClose() const { return mpProxy->CanClose(); }
-	bool CanRead() const { return mpProxy->CanRead(); }
-	bool CanWrite() const { return mpProxy->CanWrite(); }
+	bool CanOpen() const {
+		return mpProxy->CanOpen();
+	}
+	bool CanClose() const {
+		return mpProxy->CanClose();
+	}
+	bool CanRead() const {
+		return mpProxy->CanRead();
+	}
+	bool CanWrite() const {
+		return mpProxy->CanWrite();
+	}
 
-	bool IsReading() const { return mpProxy->IsReading(); }
-	bool IsWriting() const { return mpProxy->IsWriting(); }
-	bool IsClosing() const { return mpProxy->IsClosing(); }
-	bool IsClosed() const { return mpProxy->IsClosed(); }
-	bool IsOpening() const { return mpProxy->IsOpening(); }
-	bool IsOpen() const { return mpProxy->IsOpen(); }
+	bool IsReading() const {
+		return mpProxy->IsReading();
+	}
+	bool IsWriting() const {
+		return mpProxy->IsWriting();
+	}
+	bool IsClosing() const {
+		return mpProxy->IsClosing();
+	}
+	bool IsClosed() const {
+		return mpProxy->IsClosed();
+	}
+	bool IsOpening() const {
+		return mpProxy->IsOpening();
+	}
+	bool IsOpen() const {
+		return mpProxy->IsOpen();
+	}
 
-	std::string ConvertStateToString() const { return mpProxy->ConvertStateToString(); }
+	std::string ConvertStateToString() const {
+		return mpProxy->ConvertStateToString();
+	}
 
 	void AsyncOpen();
 	void AsyncClose();

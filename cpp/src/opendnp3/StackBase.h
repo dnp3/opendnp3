@@ -39,24 +39,24 @@ namespace opendnp3
 
 class IExecutor;
 
-	class StackBase 
-	{
-		public:
-			StackBase(IExecutor* apExecutor);
+class StackBase
+{
+public:
+	StackBase(IExecutor* apExecutor);
 
-			void AddStateListener(std::function<void (StackState)> aCallback);
+	void AddStateListener(std::function<void (StackState)> aCallback);
 
-		protected:
-			void NotifyListeners(StackState aState);
+protected:
+	void NotifyListeners(StackState aState);
 
-			// implement in inherited class
-			virtual StackState GetState() = 0;
+	// implement in inherited class
+	virtual StackState GetState() = 0;
 
-			IExecutor* mpExecutor;
+	IExecutor* mpExecutor;
 
-		private:			
-			std::vector<std::function<void (StackState)>> mListeners;
-	};
+private:
+	std::vector<std::function<void (StackState)>> mListeners;
+};
 }
 
 #endif

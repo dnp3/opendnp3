@@ -49,7 +49,10 @@ class LogEntry
 
 public:
 
-	LogEntry(): mTime(std::chrono::high_resolution_clock::now()) {};
+	LogEntry():
+		mErrorCode(-1),
+		mTime(std::chrono::high_resolution_clock::time_point::min())
+	{}
 
 	LogEntry( FilterLevel aLevel, const std::string& aDeviceName, const std::string& aLocation, const std::string& aMessage, int aErrorCode);
 
@@ -78,7 +81,7 @@ public:
 		return ToNormalizedString(mTime);
 	}
 
-	/// @return the timestamp of the message 
+	/// @return the timestamp of the message
 	std::chrono::high_resolution_clock::time_point GetTimeStamp() const {
 		return mTime;
 	}
@@ -99,7 +102,7 @@ public:
 	* @return true if present, false otherwise
 	*/
 	bool GetValue(const std::string& arKey, std::string& arValue) const;
-	
+
 	/**
 	* Retrieve a value of the attribute map
 	* @param arKey key of the value to retrieve
@@ -107,7 +110,7 @@ public:
 	* @return true if present, false otherwise
 	*/
 	bool GetValue(const std::string& arKey, int& arValue) const;
-	
+
 	/**
 	* Retrieve a value of the attribute map
 	* @param arKey key of the value to retrieve
@@ -122,14 +125,14 @@ public:
 	* @param arValue value to be written
 	*/
 	void AddValue(const std::string& arKey, const std::string& arValue);
-	
+
 	/**
 	* Add a key value pair to the attribute map
 	* @param arKey key of the value to write
 	* @param arValue value to be written
 	*/
 	void AddValue(const std::string& arKey, int aValue);
-	
+
 	/**
 	* Add a key value pair to the attribute map
 	* @param arKey key of the value to write
