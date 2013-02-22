@@ -145,8 +145,12 @@ class RangedHeader : public IRangeHeader
 	}
 
 	void SetRange(uint8_t* apStart, const RangeInfo& arInfo) const {
-		if(arInfo.Start > arInfo.Stop) throw ArgumentException(LOCATION, "stop > start");
-		if(arInfo.Stop > T::Max) throw ArgumentException(LOCATION, "stop > max");
+		if(arInfo.Start > arInfo.Stop) {
+			MACRO_THROW_EXCEPTION(ArgumentException, "stop > start");
+		}
+		if(arInfo.Stop > T::Max) {
+			MACRO_THROW_EXCEPTION(ArgumentException, "stop > max");
+		}
 
 		T::Write(apStart + 3, static_cast<typename T::Type>(arInfo.Start));
 		T::Write(apStart + 3 + T::Size, static_cast<typename T::Type>(arInfo.Stop));
@@ -187,7 +191,9 @@ class CountHeader : public ICountHeader
 	}
 
 	void SetCount(uint8_t* apStart, size_t aCount) const {
-		if(aCount > T::Max) throw ArgumentException(LOCATION);
+		if(aCount > T::Max) {
+			MACRO_THROW_EXCEPTION(ArgumentException, "");
+		}
 		T::Write(apStart + 3, static_cast<typename T::Type>(aCount));
 	}
 

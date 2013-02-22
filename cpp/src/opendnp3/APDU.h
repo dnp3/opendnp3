@@ -180,8 +180,9 @@ public:
 		@throw ArgumentException	if the sequence number is invalid
 	 */
 	void SetControl(bool aFIR, bool aFIN, bool aCON = false, bool aUNS = false, int aSEQ = 0) {
-		if (aSEQ < 0 || aSEQ > 15)
-			throw ArgumentException(LOCATION, "Invalid sequence number");
+		if (aSEQ < 0 || aSEQ > 15) {
+			MACRO_THROW_EXCEPTION(ArgumentException, "Invalid sequence number");
+		}
 
 		AppControlField f(aFIR, aFIN, aCON, aUNS, aSEQ);
 		this->SetControl(f);
