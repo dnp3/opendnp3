@@ -67,12 +67,10 @@ void TransportRx::HandleReceive(const uint8_t* apData, size_t aNumBytes)
 		ERROR_BLOCK(LEV_WARNING, "Received tpdu with no payload", TLERR_NO_PAYLOAD);
 		return;
 	case(0):
-		throw ArgumentException(LOCATION, "Zero length invalid");
+		MACRO_THROW_EXCEPTION(ArgumentException, "Zero length invalid");
 	default:
 		if(aNumBytes > TL_MAX_TPDU_LENGTH) {
-			ostringstream oss;
-			oss << "Illegal arg: " << aNumBytes << " exceeds max tpdu size of " << TL_MAX_TPDU_LENGTH;
-			throw ArgumentException(LOCATION, oss.str());
+			MACRO_THROW_EXCEPTION_COMPLEX(ArgumentException, "Illegal arg: " << aNumBytes << " exceeds max tpdu size of " << TL_MAX_TPDU_LENGTH);
 		}
 	}
 

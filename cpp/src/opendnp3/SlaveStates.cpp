@@ -42,37 +42,37 @@ namespace opendnp3
 
 void AS_Base::OnLowerLayerUp(Slave*)
 {
-	throw InvalidStateException(LOCATION, this->Name());
+	MACRO_THROW_EXCEPTION(InvalidStateException, this->Name());
 }
 
 void AS_Base::OnLowerLayerDown(Slave*)
 {
-	throw InvalidStateException(LOCATION, this->Name());
+	MACRO_THROW_EXCEPTION(InvalidStateException, this->Name());
 }
 
 void AS_Base::OnSolSendSuccess(Slave*)
 {
-	throw InvalidStateException(LOCATION, this->Name());
+	MACRO_THROW_EXCEPTION(InvalidStateException, this->Name());
 }
 
 void AS_Base::OnSolFailure(Slave*)
 {
-	throw InvalidStateException(LOCATION, this->Name());
+	MACRO_THROW_EXCEPTION(InvalidStateException, this->Name());
 }
 
 void AS_Base::OnUnsolSendSuccess(Slave*)
 {
-	throw InvalidStateException(LOCATION, this->Name());
+	MACRO_THROW_EXCEPTION(InvalidStateException, this->Name());
 }
 
 void AS_Base::OnUnsolFailure(Slave*)
 {
-	throw InvalidStateException(LOCATION, this->Name());
+	MACRO_THROW_EXCEPTION(InvalidStateException, this->Name());
 }
 
 void AS_Base::OnRequest(Slave*, const APDU&, SequenceInfo)
 {
-	throw InvalidStateException(LOCATION, this->Name());
+	MACRO_THROW_EXCEPTION(InvalidStateException, this->Name());
 }
 
 void AS_Base::OnUnknown(Slave* c)
@@ -146,11 +146,8 @@ void AS_Base::SwitchOnFunction(Slave* c, AS_Base* apNext, const APDU& arRequest,
 		c->ConfigureDelayMeasurement(arRequest);
 		c->Send(c->mResponse);
 		break;
-	default: {
-			std::ostringstream oss;
-			oss << "Function not supported: " << arRequest.GetFunction();
-			throw NotSupportedException(LOCATION, oss.str(), SERR_FUNC_NOT_SUPPORTED);
-		}
+	default: 
+		MACRO_THROW_EXCEPTION_COMPLEX_WITH_CODE(NotSupportedException, "Function not supported: " << arRequest.GetFunction() , SERR_FUNC_NOT_SUPPORTED);
 	}
 }
 

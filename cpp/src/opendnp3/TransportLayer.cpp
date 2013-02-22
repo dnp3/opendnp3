@@ -120,9 +120,7 @@ void TransportLayer::SignalSendFailure()
 void TransportLayer::_Send(const uint8_t* apData, size_t aNumBytes)
 {
 	if(aNumBytes == 0 || aNumBytes > M_FRAG_SIZE) {
-		ostringstream oss;
-		oss << "Illegal arg: " << aNumBytes << ", Array length must be in the range [1," << M_FRAG_SIZE << "]";
-		throw ArgumentException(LOCATION, oss.str());
+		MACRO_THROW_EXCEPTION_COMPLEX(ArgumentException, "Illegal arg: " << aNumBytes << ", Array length must be in the range [1," << M_FRAG_SIZE << "]");
 	}
 
 	mpState->Send(apData, aNumBytes, this);

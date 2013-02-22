@@ -38,32 +38,32 @@ namespace opendnp3
 
 void TLS_Base::Send(const uint8_t*, size_t, TransportLayer*)
 {
-	throw InvalidStateException(LOCATION, this->Name() );
+	MACRO_THROW_EXCEPTION(InvalidStateException, this->Name() );
 }
 
 void TLS_Base::HandleReceive(const uint8_t*, size_t, TransportLayer*)
 {
-	throw InvalidStateException(LOCATION, this->Name() );
+	MACRO_THROW_EXCEPTION(InvalidStateException, this->Name() );
 }
 
 void TLS_Base::HandleSendSuccess(TransportLayer*)
 {
-	throw InvalidStateException(LOCATION, this->Name() );
+	MACRO_THROW_EXCEPTION(InvalidStateException, this->Name() );
 }
 
 void TLS_Base::HandleSendFailure(TransportLayer*)
 {
-	throw InvalidStateException(LOCATION, this->Name() );
+	MACRO_THROW_EXCEPTION(InvalidStateException, this->Name() );
 }
 
 void TLS_Base::LowerLayerUp(TransportLayer*)
 {
-	throw InvalidStateException(LOCATION, this->Name() );
+	MACRO_THROW_EXCEPTION(InvalidStateException, this->Name() );
 }
 
 void TLS_Base::LowerLayerDown(TransportLayer*)
 {
-	throw InvalidStateException(LOCATION, this->Name() );
+	MACRO_THROW_EXCEPTION(InvalidStateException, this->Name() );
 }
 
 }
