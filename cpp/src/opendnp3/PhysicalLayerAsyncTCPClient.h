@@ -33,10 +33,12 @@
 
 #include <boost/asio/ip/tcp.hpp>
 
+#include <opendnp3/Location.h>
+
 namespace opendnp3
 {
 
-class PhysicalLayerAsyncTCPClient : public PhysicalLayerAsyncBaseTCP
+class DLL_LOCAL PhysicalLayerAsyncTCPClient : public PhysicalLayerAsyncBaseTCP
 {
 public:
 	PhysicalLayerAsyncTCPClient(Logger* apLogger, boost::asio::io_service* apIOService, const std::string& arAddress, uint16_t aPort);

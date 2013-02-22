@@ -33,6 +33,7 @@
 
 #include <opendnp3/Types.h>
 #include <opendnp3/Singleton.h>
+#include <opendnp3/Location.h>
 
 #include "LinkLayer.h"
 
@@ -41,7 +42,7 @@ namespace opendnp3
 
 class LinkLayer;
 
-class PriStateBase
+class DLL_LOCAL PriStateBase
 {
 public:
 
@@ -62,7 +63,7 @@ public:
 };
 
 //	@section desc Entry state for primary station
-class PLLS_SecNotReset : public PriStateBase
+class DLL_LOCAL PLLS_SecNotReset : public PriStateBase
 {
 	MACRO_STATE_SINGLETON_INSTANCE(PLLS_SecNotReset);
 	void SendUnconfirmed(LinkLayer*, const uint8_t*, size_t);
@@ -70,7 +71,7 @@ class PLLS_SecNotReset : public PriStateBase
 };
 
 //	@section desc for reset state
-class PLLS_SecReset : public PriStateBase
+class DLL_LOCAL PLLS_SecReset : public PriStateBase
 {
 	MACRO_STATE_SINGLETON_INSTANCE(PLLS_SecReset);
 	void SendUnconfirmed(LinkLayer*, const uint8_t*, size_t);
@@ -78,7 +79,7 @@ class PLLS_SecReset : public PriStateBase
 };
 
 //	@section desc As soon as we get an ACK, send the delayed pri frame
-class PLLS_ResetLinkWait : public PriStateBase
+class DLL_LOCAL PLLS_ResetLinkWait : public PriStateBase
 {
 	MACRO_STATE_SINGLETON_INSTANCE(PLLS_ResetLinkWait);
 
@@ -100,7 +101,7 @@ private:
 };
 
 //	@section desc As soon as we get an ACK, send the delayed pri frame
-class PLLS_ConfDataWait : public PriStateBase
+class DLL_LOCAL PLLS_ConfDataWait : public PriStateBase
 {
 	MACRO_STATE_SINGLETON_INSTANCE(PLLS_ConfDataWait);
 

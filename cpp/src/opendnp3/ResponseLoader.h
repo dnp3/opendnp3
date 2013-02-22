@@ -33,6 +33,7 @@
 #include <opendnp3/IDataObserver.h>
 #include <opendnp3/ObjectInterfaces.h>
 #include <opendnp3/Logger.h>
+#include <opendnp3/Visibility.h>
 
 #include "Loggable.h"
 #include "LoggableMacros.h"
@@ -48,7 +49,7 @@ class HeaderReadIterator;
 /**
  * Dedicated class for processing response data in the master.
  */
-class ResponseLoader : Loggable
+class DLL_LOCAL ResponseLoader : Loggable
 {
 public:
 	/**

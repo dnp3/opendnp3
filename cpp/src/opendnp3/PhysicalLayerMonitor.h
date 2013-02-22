@@ -33,6 +33,7 @@
 #include "IExecutor.h"
 
 #include <opendnp3/ChannelStates.h>
+#include <opendnp3/Location.h>
 
 #include <set>
 #include <mutex>
@@ -47,7 +48,7 @@ class IMonitorState;
 
 /** Manages the lifecycle of a physical layer
   */
-class PhysicalLayerMonitor : public IHandlerAsync
+class DLL_LOCAL PhysicalLayerMonitor : public IHandlerAsync
 {
 	friend class MonitorStateActions;
 

@@ -29,15 +29,16 @@
 #ifndef __PACKING_TEMPLATES_H_
 #define __PACKING_TEMPLATES_H_
 
-
 #include <opendnp3/Types.h>
+#include <opendnp3/Location.h>
+
 #include <assert.h>
 
 namespace opendnp3
 {
 
 template <class T, int U>
-class Pack
+class DLL_LOCAL Pack
 {
 public:
 	typename T::Type Get(const uint8_t* apBuffer) const {
@@ -58,7 +59,7 @@ public:
 };
 
 template <class T, int U, uint8_t V>
-class PackOverRange : public Pack<T, U>
+class DLL_LOCAL PackOverRange : public Pack<T, U>
 {
 public:
 	uint8_t OverRangeMask() const {
@@ -66,7 +67,7 @@ public:
 	}
 };
 
-class BitfieldPacker
+class DLL_LOCAL BitfieldPacker
 {
 public:
 	size_t GetSize(size_t aNumValues) const {

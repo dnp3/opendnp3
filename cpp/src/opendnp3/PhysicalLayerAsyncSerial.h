@@ -30,7 +30,10 @@
 #define __PHYSICAL_LAYER_ASYNC_SERIAL_H_
 
 #include "PhysicalLayerAsyncASIO.h"
+
+#include <opendnp3/Location.h>
 #include <opendnp3/SerialTypes.h>
+
 #include <boost/asio/serial_port.hpp>
 
 #include <memory>
@@ -40,7 +43,7 @@ namespace opendnp3
 
 /** Serial implementation of PhysicalLayerAsyncASIO
 */
-class PhysicalLayerAsyncSerial : public PhysicalLayerAsyncASIO
+class DLL_LOCAL PhysicalLayerAsyncSerial : public PhysicalLayerAsyncASIO
 {
 public:
 	PhysicalLayerAsyncSerial(Logger*, boost::asio::io_service* apIOService, const SerialSettings& arSettings);

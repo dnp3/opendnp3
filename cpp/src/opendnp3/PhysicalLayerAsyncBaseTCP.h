@@ -30,6 +30,9 @@
 #define __PHYSICAL_LAYER_ASYNC_BASE_TCP_H_
 
 #include "PhysicalLayerAsyncASIO.h"
+
+#include <opendnp3/Location.h>
+
 #include <boost/asio.hpp>
 #include <boost/asio/ip/tcp.hpp>
 #include <memory>
@@ -40,7 +43,7 @@ namespace opendnp3
 /**
 Common socket object and some shared implementations for server/client.
 */
-class PhysicalLayerAsyncBaseTCP : public PhysicalLayerAsyncASIO
+class DLL_LOCAL PhysicalLayerAsyncBaseTCP : public PhysicalLayerAsyncASIO
 {
 public:
 	PhysicalLayerAsyncBaseTCP(Logger*, boost::asio::io_service* apIOService);

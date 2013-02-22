@@ -33,6 +33,7 @@
 #include <opendnp3/Types.h>
 #include <opendnp3/ICommandHandler.h>
 #include <opendnp3/APDUConstants.h>
+#include <opendnp3/Location.h>
 
 #include "ITimeSource.h"
 
@@ -41,7 +42,7 @@
 namespace opendnp3
 {
 
-class OutstationSBOHandler
+class DLL_LOCAL OutstationSBOHandler
 {
 	template <class T>
 	class SelectInfo

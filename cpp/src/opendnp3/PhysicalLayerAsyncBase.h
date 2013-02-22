@@ -34,6 +34,8 @@
 #include "IPhysicalLayerAsync.h"
 #include "Loggable.h"
 
+#include <opendnp3/Location.h>
+
 namespace opendnp3
 {
 
@@ -41,7 +43,7 @@ class PLAS_Base;
 
 // This is the base class for the new async physical layers. It assumes that all of the functions
 // are called from a single thread.
-class PhysicalLayerAsyncBase : public IPhysicalLayerAsync, public Loggable
+class DLL_LOCAL PhysicalLayerAsyncBase : public IPhysicalLayerAsync, public Loggable
 {
 	class State : public IChannelState
 	{

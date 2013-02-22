@@ -30,12 +30,15 @@
 #define __PHYSICAL_LAYER_ASYNC_TCP_SERVER_H_
 
 #include "PhysicalLayerAsyncBaseTCP.h"
+
+#include <opendnp3/Location.h>
+
 #include <boost/asio/ip/tcp.hpp>
 
 namespace opendnp3
 {
 
-class PhysicalLayerAsyncTCPServer : public PhysicalLayerAsyncBaseTCP
+class DLL_LOCAL PhysicalLayerAsyncTCPServer : public PhysicalLayerAsyncBaseTCP
 {
 public:
 	PhysicalLayerAsyncTCPServer(Logger*, boost::asio::io_service* apIOService, const std::string& arEndpoint, uint16_t aPort);

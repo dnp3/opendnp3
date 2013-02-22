@@ -31,6 +31,7 @@
 
 #include <opendnp3/ICommandProcessor.h>
 #include <opendnp3/SubjectBase.h>
+#include <opendnp3/Visibility.h>
 
 #include <queue>
 #include <mutex>
@@ -38,7 +39,7 @@
 namespace opendnp3
 {
 
-class QueuedCommandProcessor : public ICommandProcessor, public SubjectBase
+class DLL_LOCAL QueuedCommandProcessor : public ICommandProcessor, public SubjectBase
 {
 public:
 

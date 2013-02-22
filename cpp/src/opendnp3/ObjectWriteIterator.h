@@ -33,6 +33,7 @@
 #include <opendnp3/Exception.h>
 #include <opendnp3/Location.h>
 #include <opendnp3/APDUConstants.h>
+#include <opendnp3/Location.h>
 
 #include "ObjectHeader.h"
 
@@ -45,7 +46,7 @@ namespace opendnp3
 /**
 Buffer iterator to write objects with continuous indices.
 */
-class ObjectWriteIterator
+class DLL_LOCAL ObjectWriteIterator
 {
 
 	friend class APDU;

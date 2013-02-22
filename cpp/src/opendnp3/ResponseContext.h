@@ -41,6 +41,7 @@
 #include "DNPDatabaseTypes.h"
 
 #include <opendnp3/ClassMask.h>
+#include <opendnp3/Location.h>
 
 namespace opendnp3
 {
@@ -57,7 +58,7 @@ class SlaveResponseTypes;
  *
  * Coordinates the Database and SlaveEventBuffer.
  */
-class ResponseContext : public Loggable
+class DLL_LOCAL ResponseContext : public Loggable
 {
 	enum Mode {
 		UNDEFINED,

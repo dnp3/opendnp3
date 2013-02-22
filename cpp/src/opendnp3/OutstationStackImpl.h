@@ -31,6 +31,7 @@
 
 #include <opendnp3/IOutstation.h>
 #include <opendnp3/SlaveStackConfig.h>
+#include <opendnp3/Location.h>
 
 #include "Slave.h"
 #include "ApplicationStack.h"
@@ -42,7 +43,7 @@ namespace opendnp3
 class ILinkContext;
 
 /** @section desc A stack object for a master */
-class OutstationStackImpl : public IOutstation
+class DLL_LOCAL OutstationStackImpl : public IOutstation
 {
 public:
 

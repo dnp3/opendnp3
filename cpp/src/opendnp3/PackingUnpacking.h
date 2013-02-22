@@ -29,8 +29,8 @@
 #ifndef __PACKING_UNPACKING_H_
 #define __PACKING_UNPACKING_H_
 
-
 #include <opendnp3/Types.h>
+#include <opendnp3/Visibility.h>
 
 #include <stddef.h>
 #include <limits>
@@ -46,7 +46,7 @@
 
 namespace opendnp3
 {
-class UInt8
+class DLL_LOCAL UInt8
 {
 public:
 	static uint8_t Read(const uint8_t* apStart) {
@@ -64,7 +64,7 @@ public:
 };
 
 template <class T>
-class BytesBE
+class DLL_LOCAL BytesBE
 {
 public:
 	static T Read( const uint8_t* apStart ) {
@@ -93,7 +93,7 @@ template <class T>
 const T BytesBE<T>::Min = std::numeric_limits<T>::min();
 
 template <class T>
-class Bit16LE
+class DLL_LOCAL Bit16LE
 {
 public:
 	static T Read(const uint8_t* apStart) {
@@ -121,7 +121,7 @@ template <class T>
 const T Bit16LE<T>::Min = std::numeric_limits<T>::min();
 
 template <class T>
-class Bit32LE
+class DLL_LOCAL Bit32LE
 {
 public:
 	static T Read(const uint8_t* apStart) {
@@ -166,7 +166,7 @@ typedef BytesBE<int32_t> Int32BE;
 typedef BytesBE<uint64_t> UInt64BE;
 typedef BytesBE<int64_t> Int64BE;
 
-class UInt48LE
+class DLL_LOCAL UInt48LE
 {
 public:
 	static int64_t Read(const uint8_t* apStart) {
@@ -200,7 +200,7 @@ public:
 };
 
 template <class T>
-class Float
+class DLL_LOCAL Float
 {
 public:
 	typedef T Type;
@@ -227,7 +227,7 @@ const T Float<T>::Max = std::numeric_limits<T>::max();
 template <class T>
 const T Float<T>::Min = -std::numeric_limits<T>::max();
 
-class SingleFloat : public Float<float>
+class DLL_LOCAL SingleFloat : public Float<float>
 {
 public:
 	static float Read(const uint8_t* apStart);
@@ -235,7 +235,7 @@ public:
 	static void Write(uint8_t* apStart, float aValue);
 };
 
-class DoubleFloat : public Float<double>
+class DLL_LOCAL DoubleFloat : public Float<double>
 {
 public:
 	static double Read(const uint8_t* apStart);

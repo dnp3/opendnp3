@@ -32,6 +32,8 @@
 #include "PhysicalLayerAsyncBase.h"
 #include "ASIOExecutor.h"
 
+#include <opendnp3/Location.h>
+
 namespace boost
 {
 namespace asio
@@ -46,7 +48,7 @@ namespace opendnp3
 // This is the base class for the new async physical layers. It assumes that all of the functions
 // are called from a single thread.
 
-class PhysicalLayerAsyncASIO : public PhysicalLayerAsyncBase
+class DLL_LOCAL PhysicalLayerAsyncASIO : public PhysicalLayerAsyncBase
 {
 public:
 	PhysicalLayerAsyncASIO(Logger* apLogger, boost::asio::io_service* apService) :
