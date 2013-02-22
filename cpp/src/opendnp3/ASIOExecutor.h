@@ -32,6 +32,7 @@
 #include "IExecutor.h"
 
 #include <opendnp3/Exception.h>
+#include <opendnp3/Visibility.h>
 
 #include <queue>
 #include <iostream>
@@ -46,7 +47,7 @@ namespace opendnp3
 
 class TimerASIO;
 
-class ASIOExecutor : public IExecutor
+class DLL_LOCAL ASIOExecutor : public IExecutor
 {
 
 public:

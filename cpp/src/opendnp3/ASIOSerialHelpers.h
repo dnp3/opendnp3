@@ -31,6 +31,7 @@
 
 #include <boost/asio.hpp>
 
+#include <opendnp3/Visibility.h>
 #include <opendnp3/SerialTypes.h>
 
 namespace boost
@@ -45,8 +46,8 @@ namespace opendnp3
 {
 
 // Serial port configuration functions "free" to keep the classes simple.
-void Configure(SerialSettings& arSettings, boost::asio::serial_port& arPort, boost::system::error_code& ec);
-void Configure(SerialSettings& arSettings, boost::asio::serial_port& arPort);
+void DLL_LOCAL Configure(SerialSettings& arSettings, boost::asio::serial_port& arPort, boost::system::error_code& ec);
+void DLL_LOCAL Configure(SerialSettings& arSettings, boost::asio::serial_port& arPort);
 
 }
 

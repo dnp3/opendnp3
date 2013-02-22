@@ -33,6 +33,7 @@
 
 #include <opendnp3/Types.h>
 #include <opendnp3/Uncopyable.h>
+#include <opendnp3/Visibility.h>
 
 #include <vector>
 #include <chrono>
@@ -48,7 +49,7 @@ class AsyncTaskGroup;
  * priority (for resolving ties) and task dependencies.
  *
  */
-class AsyncTaskBase : public ITask, private Uncopyable
+class DLL_LOCAL AsyncTaskBase : public ITask, private Uncopyable
 {
 	friend class AsyncTaskGroup;
 

@@ -32,6 +32,7 @@
 
 #include <opendnp3/Types.h>
 #include <opendnp3/Uncopyable.h>
+#include <opendnp3/Visibility.h>
 
 #include "AsyncTaskInterfaces.h"
 #include "TimeSource.h"
@@ -55,7 +56,7 @@ class ITimer;
 /**
  A collection of related tasks with optional dependencies
 */
-class AsyncTaskGroup : private Uncopyable
+class DLL_LOCAL AsyncTaskGroup : private Uncopyable
 {
 	friend class AsyncTaskBase;
 	friend class AsyncTaskContinuous;

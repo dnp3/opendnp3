@@ -31,10 +31,12 @@
 
 #include <functional>
 
+#include <opendnp3/Visibility.h>
+
 namespace opendnp3
 {
 
-class ITask
+class DLL_LOCAL ITask
 {
 public:
 

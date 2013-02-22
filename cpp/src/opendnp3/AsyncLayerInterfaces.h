@@ -30,13 +30,14 @@
 #define __ASYNC_LAYER_INTERFACES_H_
 
 #include <opendnp3/Types.h>
+#include <opendnp3/Visibility.h>
 
 #include "Loggable.h"
 
 namespace opendnp3
 {
 
-class IUpDown
+class DLL_LOCAL IUpDown
 {
 public:
 	IUpDown() : mIsLowerLayerUp(false) {}
@@ -66,7 +67,7 @@ private:
 class Logger;
 class ILowerLayer;
 
-class IUpperLayer : public IUpDown, protected virtual Loggable
+class DLL_LOCAL IUpperLayer : public IUpDown, protected virtual Loggable
 {
 public:
 	IUpperLayer(Logger*);
@@ -105,7 +106,7 @@ protected:
 	}
 };
 
-class ILowerLayer : protected virtual Loggable
+class DLL_LOCAL ILowerLayer : protected virtual Loggable
 {
 public:
 	ILowerLayer(Logger*);
