@@ -51,5 +51,14 @@ AC_ARG_ENABLE([opendnp3nomaster],
      esac],[debug=false])
 AM_CONDITIONAL([OPENDNP3_NO_MASTER], [test x$opendnp3nomaster = xtrue])
 
+AC_ARG_ENABLE([opendnp3noserial],
+     [  --enable-opendnp3noserial    Build library w/o serial support],
+     [case "${enableval}" in
+       yes) opendnp3noserial=true ;;
+       no)  opendnp3noserial=false ;;
+       *) AC_MSG_ERROR([bad value ${enableval} for --enable-opendnp3noserial]) ;;
+     esac],[debug=false])
+AM_CONDITIONAL([OPENDNP3_NO_SERIAL], [test x$opendnp3noserial = xtrue])
+
 AC_OUTPUT #actually output the configuration
 

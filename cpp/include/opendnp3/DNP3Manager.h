@@ -36,9 +36,12 @@
 #include <functional>
 
 #include "Types.h"
-#include "SerialTypes.h"
 #include "LogTypes.h"
 #include "DestructorHook.h"
+
+#ifndef OPENDNP3_NO_SERIAL
+#include "SerialTypes.h"
+#endif
 
 /*! \mainpage opendnp3
 
@@ -136,6 +139,7 @@ public:
 	*/
 	IChannel* AddTCPServer(const std::string& arLoggerId, FilterLevel aLevel, millis_t aOpenRetry, const std::string& arEndpoint, uint16_t aPort);
 
+#ifndef OPENDNP3_NO_SERIAL
 	/**
 	* Add a serial channel
 	* @param arLoggerId name that will be used in all log messages
@@ -144,6 +148,7 @@ public:
 	* @param aSettings settings object that fully parameterizes the serial port
 	*/
 	IChannel* AddSerial(const std::string& arLoggerId, FilterLevel aLevel, millis_t aOpenRetry, SerialSettings aSettings);
+#endif
 
 private:
 

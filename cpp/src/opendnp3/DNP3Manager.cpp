@@ -31,7 +31,9 @@
 
 #include "PhysicalLayerAsyncTCPClient.h"
 #include "PhysicalLayerAsyncTCPServer.h"
+#ifndef OPENDNP3_NO_SERIAL
 #include "PhysicalLayerAsyncSerial.h"
+#endif
 #include "TimeSource.h"
 #include "IOServiceThreadPool.h"
 #include "Log.h"
@@ -77,13 +79,14 @@ IChannel* DNP3Manager::AddTCPServer(const std::string& arName, FilterLevel aLeve
 	return CreateChannel(pLogger, aOpenRetry, pPhys);
 }
 
+#ifndef OPENDNP3_NO_SERIAL
 IChannel* DNP3Manager::AddSerial(const std::string& arName, FilterLevel aLevel, millis_t aOpenRetry, SerialSettings aSettings)
 {
 	auto pLogger = mpLog->GetLogger(aLevel, arName);
 	auto pPhys = new PhysicalLayerAsyncSerial(pLogger, mpThreadPool->GetIOService(), aSettings);
 	return CreateChannel(pLogger, aOpenRetry, pPhys);
 }
-
+#endif
 
 IChannel* DNP3Manager::CreateChannel(Logger* apLogger, millis_t aOpenRetry, IPhysicalLayerAsync* apPhys)
 {

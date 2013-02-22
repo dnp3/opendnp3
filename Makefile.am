@@ -24,7 +24,6 @@ cpp/src/opendnp3/AppLayerChannel.cpp \
 cpp/src/opendnp3/AppLayer.cpp \
 cpp/src/opendnp3/ApplicationStack.cpp \
 cpp/src/opendnp3/ASIOExecutor.cpp \
-cpp/src/opendnp3/ASIOSerialHelpers.cpp \
 cpp/src/opendnp3/AsyncLayerInterfaces.cpp \
 cpp/src/opendnp3/AsyncTaskGroup.cpp \
 cpp/src/opendnp3/AsyncTaskBase.cpp \
@@ -84,7 +83,6 @@ cpp/src/opendnp3/PackingUnpacking.cpp \
 cpp/src/opendnp3/Parsing.cpp \
 cpp/src/opendnp3/PhysicalLayerAsyncBase.cpp \
 cpp/src/opendnp3/PhysicalLayerAsyncBaseTCP.cpp \
-cpp/src/opendnp3/PhysicalLayerAsyncSerial.cpp \
 cpp/src/opendnp3/PhysicalLayerAsyncTCPClient.cpp \
 cpp/src/opendnp3/PhysicalLayerAsyncTCPServer.cpp \
 cpp/src/opendnp3/PhysicalLayerMonitor.cpp \
@@ -96,7 +94,6 @@ cpp/src/opendnp3/ProtocolUtil.cpp \
 cpp/src/opendnp3/QualityConverter.cpp \
 cpp/src/opendnp3/ResponseContext.cpp \
 cpp/src/opendnp3/SecLinkLayerStates.cpp \
-cpp/src/opendnp3/SerialTypes.cpp \
 cpp/src/opendnp3/ShiftableBuffer.cpp \
 cpp/src/opendnp3/SimpleCommandHandler.cpp \
 cpp/src/opendnp3/SimpleDataObserver.cpp \
@@ -145,6 +142,15 @@ else
 	cpp/src/opendnp3/ResponseLoader.cpp \
 	cpp/src/opendnp3/StartupTasks.cpp \
 	cpp/src/opendnp3/TrackingTaskGroup.cpp
+endif
+
+if OPENDNP3_NO_SERIAL
+  AM_CXXFLAGS += -DOPENDNP3_NO_SERIAL
+else
+  libopendnp3_la_SOURCES += \
+	cpp/src/opendnp3/ASIOSerialHelpers.cpp \
+	cpp/src/opendnp3/PhysicalLayerAsyncSerial.cpp \
+	cpp/src/opendnp3/SerialTypes.cpp
 endif
 
 pkginclude_HEADERS = \
