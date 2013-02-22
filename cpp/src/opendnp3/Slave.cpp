@@ -35,8 +35,6 @@
 #include "SlaveStates.h"
 #include "Database.h"
 #include "ObjectReadIterator.h"
-#include "AsyncTaskGroup.h"
-#include "AsyncTaskBase.h"
 #include "LoggableMacros.h"
 #include "IExecutor.h"
 

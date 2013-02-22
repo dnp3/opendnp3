@@ -29,7 +29,6 @@
 #ifndef __SLAVE_TEST_OBJECT_H_
 #define __SLAVE_TEST_OBJECT_H_
 
-#include <opendnp3/AsyncTaskScheduler.h>
 #include <opendnp3/Slave.h>
 #include <opendnp3/Database.h>
 #include <opendnp3/SlaveConfig.h>
