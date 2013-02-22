@@ -34,13 +34,14 @@
 
 #include <opendnp3/PointClass.h>
 #include <opendnp3/Types.h>
+#include <opendnp3/Visibility.h>
 
 namespace opendnp3
 {
 
 /** Utility class that keeps class event counters accessible by enumeration.
 */
-class ClassCounter
+class DLL_LOCAL ClassCounter
 {
 public:
 

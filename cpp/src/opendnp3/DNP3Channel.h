@@ -31,6 +31,7 @@
 
 #include <opendnp3/IChannel.h>
 #include <opendnp3/SlaveStackConfig.h>
+#include <opendnp3/Visibility.h>
 
 #include "LinkLayerRouter.h"
 #include "Loggable.h"
@@ -59,7 +60,7 @@ class IStack;
 class IOutstation;
 class ICommandHandler;
 
-class DNP3Channel: public IChannel, private Loggable
+class DLL_LOCAL DNP3Channel: public IChannel, private Loggable
 {
 public:
 	DNP3Channel(Logger* apLogger, millis_t aOpenRetry, boost::asio::io_service* apService, IPhysicalLayerAsync* apPhys, ITimeSource* apTimerSource, std::function<void (DNP3Channel*)> aOnShutdown);

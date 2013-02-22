@@ -31,6 +31,7 @@
 
 
 #include <opendnp3/ICommandProcessor.h>
+#include <opendnp3/Visibility.h>
 
 
 namespace opendnp3
@@ -38,7 +39,7 @@ namespace opendnp3
 
 class IExecutor;
 
-class ConstantCommandProcessor : public ICommandProcessor
+class DLL_LOCAL ConstantCommandProcessor : public ICommandProcessor
 {
 public:
 

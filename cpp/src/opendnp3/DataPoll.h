@@ -32,6 +32,8 @@
 #include "MasterTaskBase.h"
 #include "VtoReader.h"
 
+#include <opendnp3/Visibility.h>
+
 namespace opendnp3
 {
 
@@ -40,7 +42,7 @@ class IDataObserver;
 /**
  * Base class for all data acquistion polls
  */
-class DataPoll : public MasterTaskBase
+class DLL_LOCAL DataPoll : public MasterTaskBase
 {
 public:
 
@@ -62,7 +64,7 @@ private:
 
 /** Task that acquires class data from the outstation
 */
-class ClassPoll : public DataPoll
+class DLL_LOCAL ClassPoll : public DataPoll
 {
 public:
 

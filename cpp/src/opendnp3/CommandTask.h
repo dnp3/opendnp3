@@ -33,6 +33,7 @@
 
 #include <opendnp3/APDUConstants.h>
 #include <opendnp3/CommandStatus.h>
+#include <opendnp3/Visibility.h>
 
 #include <functional>
 #include <queue>
@@ -41,7 +42,7 @@ namespace opendnp3
 {
 
 // Base class with machinery for performing command operations
-class CommandTask : public MasterTaskBase
+class DLL_LOCAL CommandTask : public MasterTaskBase
 {
 	typedef std::function<CommandStatus (const APDU&)> Validator;
 	typedef std::function<Validator (APDU&, FunctionCodes)> Formatter;

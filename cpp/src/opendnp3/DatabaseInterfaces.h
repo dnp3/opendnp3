@@ -33,11 +33,13 @@
 #include "VtoData.h"
 #include "IVtoEventAcceptor.h"
 
+#include <opendnp3/Visibility.h>
+
 namespace opendnp3
 {
 
 // @section desc Used by the database
-class IEventBuffer : public IVtoEventAcceptor
+class DLL_LOCAL IEventBuffer : public IVtoEventAcceptor
 {
 public:
 

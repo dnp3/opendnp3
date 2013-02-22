@@ -29,13 +29,15 @@
 #ifndef __CRC_H_
 #define __CRC_H_
 
+#include <opendnp3/Visibility.h>
+
 #include <stdint.h>
 #include <stddef.h>
 
 namespace opendnp3
 {
 
-class CRC
+class DLL_LOCAL CRC
 {
 public:
 	static unsigned int CalcCRC(const uint8_t* aInput, size_t aLength, const unsigned int* apTable, unsigned int aStart, bool aInvert);

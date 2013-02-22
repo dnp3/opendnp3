@@ -32,6 +32,7 @@
 
 #include <opendnp3/APDUConstants.h>
 #include <opendnp3/ObjectInterfaces.h>
+#include <opendnp3/Visibility.h>
 
 #include "APDU.h"
 #include "ObjectReadIterator.h"
@@ -42,7 +43,7 @@ namespace opendnp3
 {
 
 // Static helper functions for formatting/validating command requests
-class CommandHelpers
+class DLL_LOCAL CommandHelpers
 {
 public:
 	template <class T>

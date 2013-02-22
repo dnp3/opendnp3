@@ -30,6 +30,7 @@
 #define __COPYABLE_BUFFER_H_
 
 #include <opendnp3/Types.h>
+#include <opendnp3/Visibility.h>
 
 #include <stddef.h>
 #include <memory>
@@ -42,7 +43,7 @@ namespace opendnp3
 	copy constructor. This makes it easier to compose with
 	classes without requiring an explicit copy constructor
 */
-class CopyableBuffer
+class DLL_LOCAL CopyableBuffer
 {
 
 	friend std::ostream& operator<<(std::ostream& output, const CopyableBuffer& arBuff);

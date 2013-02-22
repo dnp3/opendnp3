@@ -29,10 +29,12 @@
 #ifndef __CTO_HISTORY_H_
 #define __CTO_HISTORY_H_
 
+#include <opendnp3/Visibility.h>
+
 namespace opendnp3
 {
 
-class CTOHistory
+class DLL_LOCAL CTOHistory
 {
 public:
 	CTOHistory() :
