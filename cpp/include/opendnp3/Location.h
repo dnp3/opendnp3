@@ -45,6 +45,12 @@
 #endif
 
 #ifndef OPENDNP3_SUPPRESS_EXCEPTION_DESCRIPTION
+#define MACRO_THROW_INDEX_OUT_OF_BOUNDS(index) { throw IndexOutOfBoundsException(LOCATION, index); }
+#else
+#define MACRO_THROW_INDEX_OUT_OF_BOUNDS(index) { throw  IndexOutOfBoundsException(LOCATION, index); }
+#endif
+
+#ifndef OPENDNP3_SUPPRESS_EXCEPTION_DESCRIPTION
 #define MACRO_THROW_EXCEPTION_WITH_CODE(type, message, code) { throw type(LOCATION, message, code); }
 #else
 #define MACRO_THROW_EXCEPTION_WITH_CODE(type, message, code) throw type(LOCATION, "", code);

@@ -30,6 +30,7 @@
 #include "BufferTypes.h"
 
 #include <opendnp3/Exception.h>
+#include <opendnp3/Location.h>
 
 namespace opendnp3
 {
@@ -41,7 +42,7 @@ BufferTypes Convert(DataTypes aType)
 	case(DT_ANALOG):	return BT_ANALOG;
 	case(DT_COUNTER):	return BT_COUNTER;
 	default:
-		throw ArgumentException("Invalid conversion to BufferType: " + aType);
+		MACRO_THROW_EXCEPTION_COMPLEX(ArgumentException, "Invalid conversion to BufferType: " << aType);
 	}
 }
 

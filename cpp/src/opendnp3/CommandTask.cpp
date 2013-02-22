@@ -57,7 +57,7 @@ void CommandTask::AddCommandCode(FunctionCodes aCode)
 
 void CommandTask::ConfigureRequest(APDU& arAPDU)
 {
-	if(mCodes.empty()) throw InvalidStateException(LOCATION, "No more functions in sequence");
+	if(mCodes.empty()) MACRO_THROW_EXCEPTION(InvalidStateException, "No more functions in sequence");
 	mValidator = mFormatter(arAPDU, mCodes.front());
 	mCodes.pop_front();
 }

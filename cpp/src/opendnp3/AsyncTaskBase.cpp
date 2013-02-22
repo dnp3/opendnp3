@@ -83,8 +83,8 @@ void AsyncTaskBase::SilentDisable()
 
 void AsyncTaskBase::Dispatch()
 {
-	if(mIsRunning) throw InvalidStateException(LOCATION, "Running");
-	if(!mIsEnabled) throw InvalidStateException(LOCATION, "Disabled");
+	if(mIsRunning) MACRO_THROW_EXCEPTION(InvalidStateException, "Running");
+	if(!mIsEnabled) MACRO_THROW_EXCEPTION(InvalidStateException, "Disabled");
 
 	mIsRunning = true;
 	mIsComplete = false;
@@ -95,10 +95,10 @@ void AsyncTaskBase::Dispatch()
 void AsyncTaskBase::AddDependency(const AsyncTaskBase* apTask)
 {
 	if(apTask == this)
-		throw ArgumentException(LOCATION, "Self-dependency not allowed");
+		MACRO_THROW_EXCEPTION(ArgumentException, "Self-dependency not allowed");
 
 	if(apTask->IsDependency(this))
-		throw ArgumentException(LOCATION, "Circular dependencies not allowed");
+		MACRO_THROW_EXCEPTION(ArgumentException, "Circular dependencies not allowed");
 
 	mDependencies.push_back(apTask);
 }

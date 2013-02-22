@@ -98,7 +98,7 @@ void AsyncTaskGroup::Remove(AsyncTaskBase* apTask)
 			return;
 		}
 	}
-	throw ArgumentException(LOCATION, "Task not found");
+	MACRO_THROW_EXCEPTION(ArgumentException, "Task not found");
 }
 
 void AsyncTaskGroup::Shutdown()
@@ -178,7 +178,7 @@ void AsyncTaskGroup::CheckState()
 
 void AsyncTaskGroup::OnCompletion()
 {
-	if(!mIsRunning) throw InvalidStateException(LOCATION, "Not running");
+	if(!mIsRunning) MACRO_THROW_EXCEPTION(InvalidStateException, "Not running");
 	mIsRunning = false;
 	this->CheckState();
 }

@@ -68,7 +68,7 @@ void AsyncTaskScheduler::ReleaseGroup(AsyncTaskGroup* apGroup)
 		delete *i;
 		mGroupSet.erase(i);
 	}
-	else throw ArgumentException(LOCATION, "Group not associated with this scheduler");
+	else MACRO_THROW_EXCEPTION(ArgumentException, "Group not associated with this scheduler");
 }
 
 } //end ns

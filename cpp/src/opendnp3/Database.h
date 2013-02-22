@@ -167,7 +167,9 @@ inline void Database::AssignIndices( std::vector< PointInfo<T> >& arVector )
 template<typename T>
 bool Database::UpdateValue(std::vector< PointInfo<T> >& arVec, const T& arValue, size_t aIndex)
 {
-	if(aIndex >= arVec.size()) throw IndexOutOfBoundsException(LOCATION);
+	if(aIndex >= arVec.size()) {
+		MACRO_THROW_INDEX_OUT_OF_BOUNDS(aIndex);
+	}
 
 	T& value = arVec[aIndex].mValue;
 

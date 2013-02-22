@@ -43,14 +43,14 @@ namespace opendnp3
 
 void IUpDown::OnLowerLayerUp()
 {
-	if(mIsLowerLayerUp) throw InvalidStateException(LOCATION, "LowerLayerUp");
+	if(mIsLowerLayerUp) MACRO_THROW_EXCEPTION(InvalidStateException, "LowerLayerUp");
 	mIsLowerLayerUp = true;
 	this->_OnLowerLayerUp();
 }
 
 void IUpDown::OnLowerLayerDown()
 {
-	if(!mIsLowerLayerUp) throw InvalidStateException(LOCATION, "LowerLayerDown");
+	if(!mIsLowerLayerUp) MACRO_THROW_EXCEPTION(InvalidStateException, "LowerLayerDown");
 	mIsLowerLayerUp = false;
 	this->_OnLowerLayerDown();
 }

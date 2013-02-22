@@ -116,9 +116,12 @@ public:
 
 class IndexOutOfBoundsException : public Exception
 {
+
+static std::string GetMessage(int aIndex);
+
 public:
-	IndexOutOfBoundsException(const std::string& aSource) throw() :
-		Exception(aSource, "Index out of bounds.")
+	IndexOutOfBoundsException(const std::string& aSource, int aIndex) throw() :
+		Exception(aSource, GetMessage(aIndex))
 	{}
 };
 
