@@ -33,6 +33,7 @@
 #include <opendnp3/Exception.h>
 #include <opendnp3/APDUConstants.h>
 #include <opendnp3/Location.h>
+#include <opendnp3/Visibility.h>
 
 #include "CopyableBuffer.h"
 #include "AppHeader.h"
@@ -56,7 +57,7 @@ namespace opendnp3
 	Interpret method and read iterators form the read interface, while Set
 	method and object write iterators form the write interface.
 */
-class APDU
+class DLL_LOCAL APDU
 {
 
 public:

@@ -33,6 +33,8 @@
 
 #include <opendnp3/Singleton.h>
 #include <opendnp3/APDUConstants.h>
+#include <opendnp3/Visibility.h>
+
 #include "AppLayerChannel.h"
 
 namespace opendnp3
@@ -44,7 +46,7 @@ class APDU;
 /** Defines interface that
 	concrete states must implement/override - AppChannelState(ACS)_Base
 */
-class ACS_Base
+class DLL_LOCAL ACS_Base
 {
 public:
 
@@ -71,7 +73,7 @@ protected:
 
 };
 
-class ACS_Idle : public ACS_Base
+class DLL_LOCAL ACS_Idle : public ACS_Base
 {
 	MACRO_NAME_SINGLETON_INSTANCE(ACS_Idle)
 	void Send(AppLayerChannel*, APDU&, size_t aNumRetry);
@@ -81,7 +83,7 @@ private:
 };
 
 //default implementations for failure and cancel events
-class ACS_SendBase : public ACS_Base
+class DLL_LOCAL ACS_SendBase : public ACS_Base
 {
 public:
 
@@ -96,14 +98,14 @@ class ACS_Send : public ACS_SendBase
 	void OnSendSuccess(AppLayerChannel* c);
 };
 
-class ACS_SendConfirmed : public ACS_SendBase
+class DLL_LOCAL ACS_SendConfirmed : public ACS_SendBase
 {
 	MACRO_NAME_SINGLETON_INSTANCE(ACS_SendConfirmed)
 
 	void OnSendSuccess(AppLayerChannel*);
 };
 
-class ACS_SendExpectResponse : public ACS_SendBase
+class DLL_LOCAL ACS_SendExpectResponse : public ACS_SendBase
 {
 	MACRO_STATE_SINGLETON_INSTANCE(ACS_SendExpectResponse);
 
@@ -111,7 +113,7 @@ class ACS_SendExpectResponse : public ACS_SendBase
 
 };
 
-class ACS_SendCanceled : public ACS_Base
+class DLL_LOCAL ACS_SendCanceled : public ACS_Base
 {
 	MACRO_STATE_SINGLETON_INSTANCE(ACS_SendCanceled);
 
@@ -129,7 +131,7 @@ class ACS_WaitForConfirm : public ACS_Base
 	void OnTimeout(AppLayerChannel*);
 };
 
-class ACS_WaitForResponseBase : public ACS_Base
+class DLL_LOCAL ACS_WaitForResponseBase : public ACS_Base
 {
 public:
 	void OnTimeout(AppLayerChannel*);
@@ -140,14 +142,14 @@ public:
 
 
 
-class ACS_WaitForFirstResponse : public ACS_WaitForResponseBase
+class DLL_LOCAL ACS_WaitForFirstResponse : public ACS_WaitForResponseBase
 {
 	MACRO_STATE_SINGLETON_INSTANCE(ACS_WaitForFirstResponse);
 
 	void OnResponse(AppLayerChannel*, APDU&);
 };
 
-class ACS_WaitForFinalResponse : public ACS_WaitForResponseBase
+class DLL_LOCAL ACS_WaitForFinalResponse : public ACS_WaitForResponseBase
 {
 	MACRO_STATE_SINGLETON_INSTANCE(ACS_WaitForFinalResponse);
 

@@ -29,6 +29,7 @@
 #ifndef __APP_INTERFACES_H_
 #define __APP_INTERFACES_H_
 
+#include <opendnp3/Visibility.h>
 
 #include <stddef.h>
 
@@ -43,7 +44,7 @@ class APDU;
 	for setting the header field of the  APDU, WITH THE EXCEPTION OF THE
 	SEQUENCE #.
 */
-class IAppLayer
+class DLL_LOCAL IAppLayer
 {
 public:
 
@@ -122,7 +123,7 @@ enum SequenceInfo {
 };
 
 // Interface for callbacks from an application layer
-class IAppUser
+class DLL_LOCAL IAppUser
 {
 public:
 	virtual void OnLowerLayerUp() = 0;					// The app layer is online

@@ -30,6 +30,7 @@
 #define __APP_LAYER_CHANNEL_H_
 
 #include <opendnp3/Types.h>
+#include <opendnp3/Visibility.h>
 
 #include "Loggable.h"
 
@@ -49,7 +50,7 @@ struct AppControlField;
 	 number and some state associated with wether it is sending, waiting
 	 for a response, etc
 */
-class AppLayerChannel : public Loggable
+class DLL_LOCAL AppLayerChannel : public Loggable
 {
 	friend class ACS_Base;
 	friend class ACS_Idle;

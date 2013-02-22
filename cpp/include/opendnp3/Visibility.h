@@ -26,41 +26,21 @@
 //
 // Contact Automatak, LLC for a commercial license to these modifications
 //
-#ifndef __ALWAYS_OPENING_VTO_ROUTER_H_
-#define __ALWAYS_OPENING_VTO_ROUTER_H_
+#ifndef __VISIBILITY_H_
+#define __VISIBILITY_H_
 
-#include "VtoRouter.h"
-
-#include <opendnp3/Visibility.h>
-
-namespace opendnp3
-{
-
-/**
- * the simplest type of vto router, useful for vto ports that should always be
- * online regardless of dnp connection state. The vtorouter on the other side
- * of the dnp connection can be either an AlwaysOpening or a ServerSocket router.
- */
-class DLL_LOCAL AlwaysOpeningVtoRouter : public VtoRouter
-{
-public:
-
-	AlwaysOpeningVtoRouter(const VtoRouterSettings& arSettings, Logger* apLogger, IVtoWriter* apWriter, IPhysicalLayerAsync* apPhysLayer);
-
-	/// we don't care about any of the callbacks so we have empty implementations
-	void DoVtoRemoteConnectedChanged(bool aOpened) {}
-	void SetLocalConnected(bool aConnected) {}
-
-	// doesn't care what type of data under any condition
-	bool CheckIncomingVtoData(const VtoData& arData) {
-		return true;
-	}
-
-};
-
-}
-
-/* vim: set ts=4 sw=4: */
-
+#ifdef OPENDNP3_LIMIT_VISIBILITY
+	#if __GNUC__ >= 4
+		#define DLL_PUBLIC __attribute__ ((visibility ("default")))
+		#define DLL_LOCAL  __attribute__ ((visibility ("hidden")))
+	#else
+    		#define DLL_PUBLIC
+    		#define DLL_LOCAL
+	#endif
+#else
+	#define DLL_PUBLIC
+	#define DLL_LOCAL
 #endif
+
+#endif // end of guards
 
