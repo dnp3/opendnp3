@@ -51,7 +51,6 @@ class AsyncTaskGroup;
 class AsyncTaskBase : public ITask, private Uncopyable
 {
 	friend class AsyncTaskGroup;
-	friend class AsyncTaskScheduler;
 
 public:
 

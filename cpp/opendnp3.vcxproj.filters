@@ -219,9 +219,6 @@
     <ClInclude Include="src\opendnp3\AsyncTaskPeriodic.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\AsyncTaskScheduler.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\BufferSetTypes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -612,9 +609,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\AsyncTaskPeriodic.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\AsyncTaskScheduler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\BaseDataTypes.cpp">
