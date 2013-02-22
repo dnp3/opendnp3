@@ -40,6 +40,8 @@
 #include "ILinkRouter.h"
 #include "LinkRoute.h"
 
+#include <opendnp3/Visibility.h>
+
 namespace opendnp3
 {
 
@@ -50,7 +52,7 @@ class LinkFrame;
 //	Implements the parsing and de-multiplexing portion of
 //	of DNP 3 Data Link Layer. PhysicalLayerMonitor inherits
 // from IHandlerAsync, which inherits from IUpperLayer
-class LinkLayerRouter : public PhysicalLayerMonitor, public IFrameSink, public ILinkRouter
+class DLL_LOCAL LinkLayerRouter : public PhysicalLayerMonitor, public IFrameSink, public ILinkRouter
 {
 public:
 

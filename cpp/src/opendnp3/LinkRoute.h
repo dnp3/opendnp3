@@ -30,6 +30,7 @@
 #define __LINK_ROUTE_H_
 
 #include <opendnp3/Types.h>
+#include <opendnp3/Visibility.h>
 
 #include <iostream>
 
@@ -45,7 +46,7 @@ namespace opendnp3
  *
  * Primary used as a key for stl map/set.
  */
-class LinkRoute
+class DLL_LOCAL LinkRoute
 {
 public:
 	LinkRoute(const uint16_t aRemoteAddr, const uint16_t aLocalAddr);
@@ -64,7 +65,7 @@ public:
 	std::string ToString() const;
 };
 
-std::ostream& operator<<(std::ostream& oss, const LinkRoute&);
+std::ostream& DLL_LOCAL operator<<(std::ostream& oss, const LinkRoute&);
 
 }
 

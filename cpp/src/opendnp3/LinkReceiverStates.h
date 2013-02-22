@@ -34,6 +34,7 @@
 
 #include <opendnp3/Uncopyable.h>
 #include <opendnp3/Singleton.h>
+#include <opendnp3/Visibility.h>
 
 #include "LinkLayerReceiver.h"
 
@@ -41,7 +42,7 @@ namespace opendnp3
 {
 
 /** Base class for the receiver state */
-class LRS_Base : private Uncopyable
+class DLL_LOCAL LRS_Base : private Uncopyable
 {
 public:
 
@@ -62,7 +63,7 @@ public:
 };
 
 #define MACRO_LRS_STATE(name, body) \
-class name : public LRS_Base \
+class DLL_LOCAL name : public LRS_Base \
 { \
 	MACRO_STATE_SINGLETON_INSTANCE(name) \
 	body \

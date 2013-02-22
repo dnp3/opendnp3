@@ -37,6 +37,7 @@
 #include "LinkFrame.h"
 
 #include <opendnp3/LinkConfig.h>
+#include <opendnp3/Visibility.h>
 
 namespace opendnp3
 {
@@ -46,7 +47,7 @@ class PriStateBase;
 class SecStateBase;
 
 //	@section desc Implements the contextual state of DNP3 Data Link Layer
-class LinkLayer : public ILowerLayer, public ILinkContext
+class DLL_LOCAL LinkLayer : public ILowerLayer, public ILinkContext
 {
 public:
 

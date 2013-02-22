@@ -30,12 +30,13 @@
 #define __LINK_HEADER_H_
 
 #include <opendnp3/LinkLayerConstants.h>
+#include <opendnp3/Visibility.h>
 
 namespace opendnp3
 {
 
 // Class for dealing with all aspects of FT3 Frame headers
-struct LinkHeader {
+struct DLL_LOCAL LinkHeader {
 	LinkHeader();
 
 	// Setter

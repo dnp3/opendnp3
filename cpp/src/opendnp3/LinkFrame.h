@@ -30,6 +30,7 @@
 #define __LINK_FRAME_H_
 
 #include <opendnp3/LinkLayerConstants.h>
+#include <opendnp3/Visibility.h>
 
 #include "PackingUnpacking.h"
 #include "LinkHeader.h"
@@ -39,7 +40,7 @@
 namespace opendnp3
 {
 
-class LinkFrame
+class DLL_LOCAL LinkFrame
 {
 	friend std::ostream& operator<<(std::ostream&, const LinkFrame&);
 	friend class FrameReaderDNP;

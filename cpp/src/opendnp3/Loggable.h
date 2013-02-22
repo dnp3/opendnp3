@@ -30,12 +30,13 @@
 #define __LOGGABLE_H_
 
 #include <opendnp3/LogBase.h>
+#include <opendnp3/Visibility.h>
 
 namespace opendnp3
 {
 class Logger;
 
-class Loggable
+class DLL_LOCAL Loggable
 {
 public:
 	Loggable( Logger* apLogger );

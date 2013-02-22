@@ -39,11 +39,12 @@
 #include <opendnp3/Logger.h>
 #include <opendnp3/Uncopyable.h>
 #include <opendnp3/LogEntryCircularBuffer.h>
+#include <opendnp3/Visibility.h>
 
 namespace opendnp3
 {
 
-class EventLog : public ILogBase, private Uncopyable
+class DLL_LOCAL EventLog : public ILogBase, private Uncopyable
 {
 public:
 

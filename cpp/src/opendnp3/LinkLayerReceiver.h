@@ -32,6 +32,7 @@
 
 #include <opendnp3/DNPConstants.h>
 #include <opendnp3/Logger.h>
+#include <opendnp3/Visibility.h>
 
 #include "Loggable.h"
 #include "ShiftableBuffer.h"
@@ -47,7 +48,7 @@ class LRS_Base;
 
 /** Parses incoming ft3 frames for the link layer router.
 */
-class LinkLayerReceiver : public Loggable
+class DLL_LOCAL LinkLayerReceiver : public Loggable
 {
 	static const size_t BUFFER_SIZE = (4096 / 249 + 1) * 292;
 
