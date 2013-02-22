@@ -32,6 +32,8 @@
 #include <string>
 
 #include <opendnp3/Singleton.h>
+#include <opendnp3/Visibility.h>
+
 #include "AppInterfaces.h"
 
 namespace opendnp3
@@ -45,7 +47,7 @@ class APDU;
 /**
  * Base class for all transaction states of a Slave
  */
-class AS_Base
+class DLL_LOCAL AS_Base
 {
 public:
 
@@ -104,7 +106,7 @@ protected:
  * A state that indicates when the application layer has not informed the
  * slave yet that it is up.
  */
-class AS_Closed : public AS_Base
+class DLL_LOCAL AS_Closed : public AS_Base
 {
 public:
 
@@ -119,7 +121,7 @@ public:
 
 };
 
-class AS_OpenBase : public AS_Base
+class DLL_LOCAL AS_OpenBase : public AS_Base
 {
 public:
 
@@ -131,7 +133,7 @@ public:
  * A state that indicates when the AppLayer is online but the Slave is not
  * doing or waiting on anything.
  */
-class AS_Idle : public AS_OpenBase
+class DLL_LOCAL AS_Idle : public AS_OpenBase
 {
 public:
 
@@ -159,7 +161,7 @@ public:
  * A state that indicates when the Slave is waiting for a response to
  * complete.
  */
-class AS_WaitForRspSuccess : public AS_OpenBase
+class DLL_LOCAL AS_WaitForRspSuccess : public AS_OpenBase
 {
 public:
 
@@ -175,7 +177,7 @@ public:
  * A state that indicates when the Slave is waiting for an unsolicited
  * response to complete.
  */
-class AS_WaitForUnsolSuccess : public AS_OpenBase
+class DLL_LOCAL AS_WaitForUnsolSuccess : public AS_OpenBase
 {
 public:
 
@@ -191,7 +193,7 @@ public:
  * A state that indicates when the Slave is waiting for an unsolicited
  * response and a solicited response to complete.
  */
-class AS_WaitForSolUnsolSuccess : public AS_OpenBase
+class DLL_LOCAL AS_WaitForSolUnsolSuccess : public AS_OpenBase
 {
 public:
 

@@ -31,6 +31,7 @@
 
 #include <opendnp3/ObjectInterfaces.h>
 #include <opendnp3/DataTypes.h>
+#include <opendnp3/Visibility.h>
 
 namespace opendnp3
 {
@@ -42,7 +43,7 @@ struct GrpVar;
  * Reads a slave config object and and translates the configuration to
  * singletons.
  */
-class SlaveResponseTypes
+class DLL_LOCAL SlaveResponseTypes
 {
 public:
 

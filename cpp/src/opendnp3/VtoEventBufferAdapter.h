@@ -32,10 +32,12 @@
 #include "EventBufferBase.h"
 #include "IVtoEventAcceptor.h"
 
+#include <opendnp3/Visibility.h>
+
 namespace opendnp3
 {
 
-class VtoEventBufferAdapter : public IVtoEventAcceptor
+class DLL_LOCAL VtoEventBufferAdapter : public IVtoEventAcceptor
 {
 public:
 

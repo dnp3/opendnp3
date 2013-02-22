@@ -31,6 +31,7 @@
 
 #include <opendnp3/Types.h>
 #include <opendnp3/Uncopyable.h>
+#include <opendnp3/Visibility.h>
 
 #include <string>
 
@@ -43,7 +44,7 @@ class TransportLayer;
 /**
 Base class for all TransportLayerStates (TLS)
 */
-class TLS_Base
+class DLL_LOCAL TLS_Base
 {
 public:
 	virtual void Send(const uint8_t*, size_t, TransportLayer*);

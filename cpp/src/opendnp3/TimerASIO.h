@@ -32,6 +32,8 @@
 #include <boost/asio.hpp>
 #include <boost/asio/steady_timer.hpp>
 
+#include <opendnp3/Visibility.h>
+
 #include "IExecutor.h"
 
 namespace opendnp3
@@ -51,7 +53,7 @@ namespace opendnp3
  * posted. We wanted a cancel that does not generate any events.
  *
  */
-class TimerASIO : public ITimer
+class DLL_LOCAL TimerASIO : public ITimer
 {
 	friend class ASIOExecutor;
 

@@ -30,6 +30,7 @@
 #define __VTO_DATA_H_
 
 #include <opendnp3/Types.h>
+#include <opendnp3/Visibility.h>
 
 #include <string>
 
@@ -43,9 +44,9 @@ enum VtoDataType {
 	VTODT_DATA
 };
 
-std::string ToString(VtoDataType aType);
+std::string DLL_LOCAL ToString(VtoDataType aType);
 
-class VtoData
+class DLL_LOCAL VtoData
 {
 public:
 

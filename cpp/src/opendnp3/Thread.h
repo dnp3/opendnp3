@@ -30,6 +30,7 @@
 #define __THREAD_H_
 
 #include <opendnp3/Threadable.h>
+#include <opendnp3/Visibility.h>
 
 #include <thread>
 #include <functional>
@@ -37,7 +38,7 @@
 namespace opendnp3
 {
 
-class Thread
+class DLL_LOCAL Thread
 {
 public:
 

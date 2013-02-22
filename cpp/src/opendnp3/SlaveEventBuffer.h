@@ -31,6 +31,7 @@
 
 #include <opendnp3/DataTypes.h>
 #include <opendnp3/SlaveConfig.h>
+#include <opendnp3/Visibility.h>
 
 #include "DNPDatabaseTypes.h"
 #include "BufferTypes.h"
@@ -49,7 +50,7 @@ namespace opendnp3
  *
  * All selections can be limited by a desired event count.
  */
-class SlaveEventBuffer : public IEventBuffer
+class DLL_LOCAL SlaveEventBuffer : public IEventBuffer
 {
 	friend class Slave;
 

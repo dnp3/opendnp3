@@ -33,10 +33,12 @@
 
 #include <opendnp3/Singleton.h>
 #include <opendnp3/Types.h>
+#include <opendnp3/Visibility.h>
 
 namespace opendnp3
 {
-class TimeSource : public ITimeSource
+
+class DLL_LOCAL TimeSource : public ITimeSource
 {
 	MACRO_SINGLETON_INSTANCE(TimeSource)
 
@@ -44,7 +46,7 @@ class TimeSource : public ITimeSource
 	std::chrono::steady_clock::time_point GetUTC();
 };
 
-class MockTimeSource : public ITimeSource
+class DLL_LOCAL MockTimeSource : public ITimeSource
 {
 public:
 
@@ -70,7 +72,7 @@ private:
 
 /** Maintains an external time by keeping an offset from system time.
 */
-class TimeSourceSystemOffset : public  ITimeManager
+class DLL_LOCAL TimeSourceSystemOffset : public  ITimeManager
 {
 public:
 	TimeSourceSystemOffset();
@@ -82,7 +84,7 @@ private:
 	std::chrono::steady_clock::duration mOffset;
 };
 
-class MockTimeManager : public ITimeManager
+class DLL_LOCAL MockTimeManager : public ITimeManager
 {
 public:
 	MockTimeManager() : mTime() {}

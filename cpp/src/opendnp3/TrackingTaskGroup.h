@@ -31,6 +31,7 @@
 
 #include <opendnp3/Types.h>
 #include <opendnp3/Uncopyable.h>
+#include <opendnp3/Visibility.h>
 
 #include "AsyncTaskInterfaces.h"
 
@@ -48,7 +49,7 @@ class AsyncTaskBase;
 /**
  Tracks all tasks that are created and releases them on destruction
 */
-class TrackingTaskGroup
+class DLL_LOCAL TrackingTaskGroup
 {
 
 public:

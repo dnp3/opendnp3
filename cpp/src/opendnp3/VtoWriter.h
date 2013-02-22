@@ -35,6 +35,7 @@
 
 #include <opendnp3/IDataObserver.h>
 #include <opendnp3/SubjectBase.h>
+#include <opendnp3/Visibility.h>
 
 #include "Loggable.h"
 #include "EventTypes.h"
@@ -50,7 +51,7 @@ namespace opendnp3
  * stack.  Responsible for UserCode -> Stack thread marshalling and
  * stream decomposition.
  */
-class VtoWriter : public IVtoWriter, public SubjectBase, private Loggable
+class DLL_LOCAL VtoWriter : public IVtoWriter, public SubjectBase, private Loggable
 {
 public:
 

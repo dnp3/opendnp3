@@ -31,6 +31,7 @@
 
 #include <opendnp3/Types.h>
 #include <opendnp3/TransportConstants.h>
+#include <opendnp3/Visibility.h>
 
 #include "Loggable.h"
 #include "CopyableBuffer.h"
@@ -43,7 +44,7 @@ class TransportLayer;
 /**
 State/validation for the DNP3 transport layer's receive channel.
 */
-class TransportRx : public Loggable
+class DLL_LOCAL TransportRx : public Loggable
 {
 public:
 	TransportRx(Logger*, TransportLayer*, size_t aFragSize);

@@ -29,6 +29,7 @@
 #define __VTO_ENDPOINT_IMPL_H_
 
 #include <opendnp3/IVtoEndpoint.h>
+#include <opendnp3/Visibility.h>
 
 #include <memory>
 #include <functional>
@@ -41,7 +42,7 @@ class Logger;
 class VtoRouter;
 class IVtoCallbacks;
 
-class VtoEndpointImpl : public IVtoEndpoint
+class DLL_LOCAL VtoEndpointImpl : public IVtoEndpoint
 {
 public:
 	VtoEndpointImpl(	Logger* apLogger,

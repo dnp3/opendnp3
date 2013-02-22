@@ -33,6 +33,7 @@
 
 #include <opendnp3/DataTypes.h>
 #include <opendnp3/ObjectInterfaces.h>
+#include <opendnp3/Visibility.h>
 
 #include "EventTypes.h"
 
@@ -42,7 +43,7 @@ namespace opendnp3
 /**
  * The abstract base class for all VTO interface handlers.
  */
-class IVtoChannel
+class DLL_LOCAL IVtoChannel
 {
 public:
 
@@ -84,7 +85,7 @@ private:
 /**
 *  Callback that notifies when space is available to write vto objects.
 */
-class IVtoBufferHandler
+class DLL_LOCAL IVtoBufferHandler
 {
 public:
 
@@ -100,7 +101,7 @@ public:
  * OnBufferAvailable() callback on the IVTOCallbacks interface provided
  * to the stack.
  */
-class IVtoWriter
+class DLL_LOCAL IVtoWriter
 {
 public:
 
@@ -158,7 +159,7 @@ public:
  * subclass of this class and register an instance of that subclass
  * during the function call.
  */
-class IVtoDataHandler : public IVtoChannel
+class DLL_LOCAL IVtoDataHandler : public IVtoChannel
 {
 public:
 
@@ -185,7 +186,7 @@ public:
 
 };
 
-class IVtoReader
+class DLL_LOCAL IVtoReader
 {
 public:
 
@@ -214,7 +215,7 @@ public:
 	virtual void RemoveVtoChannel(IVtoDataHandler* apCallbacks) = 0;
 };
 
-class IVtoCallbacks : public IVtoDataHandler, public IVtoBufferHandler
+class DLL_LOCAL IVtoCallbacks : public IVtoDataHandler, public IVtoBufferHandler
 {
 public:
 	/**

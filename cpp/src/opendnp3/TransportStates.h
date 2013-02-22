@@ -30,14 +30,16 @@
 #define __TRANSPORT_STATES_H_
 
 #include "TLS_Base.h"
+
 #include <opendnp3/Singleton.h>
+#include <opendnp3/Visibility.h>
 
 namespace opendnp3
 {
 
 /** Represents the closed state, only come online
 */
-class TLS_Closed : public TLS_Base
+class DLL_LOCAL TLS_Closed : public TLS_Base
 {
 	MACRO_STATE_SINGLETON_INSTANCE(TLS_Closed);
 
@@ -46,7 +48,7 @@ class TLS_Closed : public TLS_Base
 
 /** Represents the ready state
 */
-class TLS_Ready : public TLS_Base
+class DLL_LOCAL TLS_Ready : public TLS_Base
 {
 	MACRO_STATE_SINGLETON_INSTANCE(TLS_Ready);
 
@@ -57,7 +59,7 @@ class TLS_Ready : public TLS_Base
 
 /** Represents the sending state
 */
-class TLS_Sending : public TLS_Base
+class DLL_LOCAL TLS_Sending : public TLS_Base
 {
 	MACRO_STATE_SINGLETON_INSTANCE(TLS_Sending);
 

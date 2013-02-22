@@ -30,6 +30,7 @@
 #define __STACK_BASE_H_
 
 #include <opendnp3/StackState.h>
+#include <opendnp3/Visibility.h>
 
 #include <functional>
 #include <vector>
@@ -39,7 +40,7 @@ namespace opendnp3
 
 class IExecutor;
 
-class StackBase
+class DLL_LOCAL StackBase
 {
 public:
 	StackBase(IExecutor* apExecutor);

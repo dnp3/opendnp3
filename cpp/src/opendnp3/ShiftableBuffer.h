@@ -29,8 +29,9 @@
 #ifndef __SHIFTABLE_BUFFER_H_
 #define __SHIFTABLE_BUFFER_H_
 
-
 #include <opendnp3/Types.h>
+#include <opendnp3/Visibility.h>
+
 #include <stddef.h>
 
 namespace opendnp3
@@ -39,7 +40,7 @@ namespace opendnp3
 
 /** @section DESCRIPTION
 		Implements a buffer that can shift its contents as it is read */
-class ShiftableBuffer
+class DLL_LOCAL ShiftableBuffer
 {
 public:
 	/** @param aSize Size of the buffer in bytes */

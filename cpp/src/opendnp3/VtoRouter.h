@@ -37,6 +37,8 @@
 #include "CopyableBuffer.h"
 #include "VtoDataInterface.h"
 
+#include <opendnp3/Visibility.h>
+
 namespace opendnp3
 {
 
@@ -50,7 +52,7 @@ struct VtoRouterSettings;
  * helper object that allows us to serialize data and up/down communication events into
  * the same data stream
  */
-class VtoMessage
+class DLL_LOCAL VtoMessage
 {
 public:
 
@@ -85,7 +87,7 @@ public:
  * implementations set policy on when to start and stop the reconnecting
  * behavior.
  */
-class VtoRouter : public PhysicalLayerMonitor, public IVtoCallbacks
+class DLL_LOCAL VtoRouter : public PhysicalLayerMonitor, public IVtoCallbacks
 {
 public:
 

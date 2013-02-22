@@ -30,6 +30,8 @@
 #define __STARTUP_TASKS_H_
 
 #include <opendnp3/Types.h>
+#include <opendnp3/Visibility.h>
+
 #include "MasterTaskBase.h"
 
 #include <chrono>
@@ -41,7 +43,7 @@ namespace opendnp3
 class ITimeSource;
 
 // Clears the outstation IIN restart bit
-class ClearRestartIIN : public SimpleRspBase
+class DLL_LOCAL ClearRestartIIN : public SimpleRspBase
 {
 public:
 	ClearRestartIIN(Logger*);
@@ -53,7 +55,7 @@ public:
 };
 
 // Enables or disables unsolicited reporting
-class ConfigureUnsol : public SimpleRspBase
+class DLL_LOCAL ConfigureUnsol : public SimpleRspBase
 {
 public:
 	ConfigureUnsol(Logger*);
@@ -71,7 +73,7 @@ private:
 };
 
 // Synchronizes the time on the outstation
-class TimeSync : public SingleRspBase
+class DLL_LOCAL TimeSync : public SingleRspBase
 {
 public:
 	TimeSync(Logger*, ITimeSource*);

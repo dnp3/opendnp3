@@ -30,6 +30,7 @@
 #define __TO_HEX_H_
 
 #include <opendnp3/Types.h>
+#include <opendnp3/Visibility.h>
 
 #include <string>
 #include <sstream>
@@ -37,11 +38,11 @@
 namespace opendnp3
 {
 
-char toHex(char c);
-std::string ByteToHex(uint8_t b);
+char DLL_LOCAL toHex(char c);
+std::string DLL_LOCAL ByteToHex(uint8_t b);
 
 template<typename T>
-std::string toHex(T aBuff, size_t aLength, bool spaced = false)
+std::string DLL_LOCAL toHex(T aBuff, size_t aLength, bool spaced = false)
 {
 	std::ostringstream oss;
 	size_t last = aLength - 1;
@@ -54,7 +55,7 @@ std::string toHex(T aBuff, size_t aLength, bool spaced = false)
 };
 
 template<class T>
-std::string TypeToHex(T x)
+std::string DLL_LOCAL TypeToHex(T x)
 {
 	return toHex(reinterpret_cast<uint8_t*>(&x), sizeof(T), true);
 }

@@ -32,6 +32,8 @@
 #include "EventBuffers.h"
 #include "MasterTaskBase.h"
 
+#include <opendnp3/Visibility.h>
+
 namespace opendnp3
 {
 
@@ -39,7 +41,7 @@ namespace opendnp3
  * A task to pull data off the VtoWriter queue and transmit it as an
  * APDU.  The actual work is done by Master::TransmitVtoData().
  */
-class VtoTransmitTask : public MasterTaskBase
+class DLL_LOCAL VtoTransmitTask : public MasterTaskBase
 {
 public:
 

@@ -33,6 +33,7 @@
 #include <mutex>
 
 #include <opendnp3/IDataObserver.h>
+#include <opendnp3/Visibility.h>
 
 #include "Loggable.h"
 #include "VtoDataInterface.h"
@@ -46,7 +47,7 @@ namespace opendnp3
  * objects back into contigous streams, and deliver to the correct
  * channel
  */
-class VtoReader : private Loggable, public ITransactable, public IVtoReader
+class DLL_LOCAL VtoReader : private Loggable, public ITransactable, public IVtoReader
 {
 public:
 

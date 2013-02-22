@@ -34,6 +34,7 @@
 #include "AsyncLayerInterfaces.h"
 
 #include <opendnp3/DNPConstants.h>
+#include <opendnp3/Visibility.h>
 
 namespace opendnp3
 {
@@ -43,7 +44,7 @@ class TLS_Base;
 /** Implements the DNP3 transport layer as a generic
 asynchronous protocol stack layer
 */
-class TransportLayer : public IUpperLayer, public ILowerLayer
+class DLL_LOCAL TransportLayer : public IUpperLayer, public ILowerLayer
 {
 public:
 

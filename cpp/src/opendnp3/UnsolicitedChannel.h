@@ -31,6 +31,8 @@
 
 #include "AppLayerChannel.h"
 
+#include <opendnp3/Visibility.h>
+
 namespace opendnp3
 {
 
@@ -39,7 +41,7 @@ namespace opendnp3
 	 number and some state associated with wether it is sending, waiting
 	 for a response, etc
 */
-class UnsolicitedChannel : public AppLayerChannel
+class DLL_LOCAL UnsolicitedChannel : public AppLayerChannel
 {
 public:
 	UnsolicitedChannel(Logger* apLogger, AppLayer* apApp, IExecutor* apExecutor, millis_t aTimeout);

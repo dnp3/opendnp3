@@ -32,6 +32,7 @@
 #include <opendnp3/ICommandHandler.h>
 #include <opendnp3/Logger.h>
 #include <opendnp3/SlaveConfig.h>
+#include <opendnp3/Visibility.h>
 
 #include "StackBase.h"
 #include "ChangeBuffer.h"
@@ -76,7 +77,7 @@ class AS_Base;
  * The Slave is responsible for building all aspects of APDU packet responses
  * except for the application sequence number.
  */
-class Slave : public Loggable, public IAppUser, public StackBase
+class DLL_LOCAL Slave : public Loggable, public IAppUser, public StackBase
 {
 
 	friend class AS_Base; //make the state base class a friend
