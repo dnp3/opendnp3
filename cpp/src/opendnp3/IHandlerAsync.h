@@ -31,10 +31,12 @@
 
 #include "AsyncLayerInterfaces.h"
 
+#include <opendnp3/Visibility.h>
+
 namespace opendnp3
 {
 
-class IHandlerAsync : public IUpperLayer
+class DLL_LOCAL IHandlerAsync : public IUpperLayer
 {
 public:
 	IHandlerAsync(Logger*);

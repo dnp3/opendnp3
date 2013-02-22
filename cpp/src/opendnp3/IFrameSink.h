@@ -30,13 +30,15 @@
 #define __I_FRAME_SINK_H_
 
 #include <opendnp3/Types.h>
+#include <opendnp3/Visibility.h>
+
 #include <stddef.h>
 
 namespace opendnp3
 {
 
 // @section DESCRIPTION Interface that receives parsed FT3 frame information
-class IFrameSink
+class DLL_LOCAL IFrameSink
 {
 public:
 

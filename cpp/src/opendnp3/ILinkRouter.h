@@ -29,13 +29,15 @@
 #ifndef __I_LINK_ROUTER_H_
 #define __I_LINK_ROUTER_H_
 
+#include <opendnp3/Visibility.h>
+
 namespace opendnp3
 {
 
 class LinkFrame;
 
 // @section DESCRIPTION Interface from the link layer to the link router
-class ILinkRouter
+class DLL_LOCAL ILinkRouter
 {
 public:
 

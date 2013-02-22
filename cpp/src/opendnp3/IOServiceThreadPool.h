@@ -31,6 +31,8 @@
 
 #include "Loggable.h"
 
+#include <opendnp3/Visibility.h>
+
 #include <boost/asio.hpp>
 #include <boost/asio/high_resolution_timer.hpp>
 #include <thread>
@@ -39,7 +41,7 @@
 namespace opendnp3
 {
 
-class IOServiceThreadPool : private Loggable
+class DLL_LOCAL IOServiceThreadPool : private Loggable
 {
 public:
 

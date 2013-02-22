@@ -32,6 +32,7 @@
 #include <opendnp3/Types.h>
 #include <opendnp3/DataTypes.h>
 #include <opendnp3/PointClass.h>
+#include <opendnp3/Visibility.h>
 
 #include "VtoData.h"
 
@@ -46,7 +47,7 @@ namespace opendnp3
  * performed on static and event types.
  */
 template<typename T>
-struct PointInfoBase {
+struct DLL_LOCAL PointInfoBase {
 	PointInfoBase(const T& arValue, PointClass aClass, size_t aIndex) :
 		mValue(arValue),
 		mClass(aClass),
@@ -70,7 +71,7 @@ struct PointInfoBase {
  * event value to the base class.
  */
 template<typename T>
-struct PointInfo : public PointInfoBase<T> {
+struct DLL_LOCAL PointInfo : public PointInfoBase<T> {
 	PointInfo(const T& arVal, PointClass aClass, size_t aIndex) :
 		PointInfoBase<T>(arVal, aClass, aIndex),
 		mDeadband(0),
@@ -90,7 +91,7 @@ struct PointInfo : public PointInfoBase<T> {
 };
 
 template <class DataInfoType>
-struct StaticIter {
+struct DLL_LOCAL StaticIter {
 	typedef typename std::vector< DataInfoType >::const_iterator Type;
 };
 

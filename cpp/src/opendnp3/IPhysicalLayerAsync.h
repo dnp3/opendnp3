@@ -31,13 +31,15 @@
 
 #include "AsyncLayerInterfaces.h"
 
+#include <opendnp3/Visibility.h>
+
 namespace opendnp3
 {
 
 class IHandlerAsync;
 class IExecutor;
 
-class IChannelState
+class DLL_LOCAL IChannelState
 {
 
 public:
@@ -76,7 +78,7 @@ public:
 /**
  * Defines an asynchronous interface for serial/tcp/?
  */
-class IPhysicalLayerAsync : public IChannelState
+class DLL_LOCAL IPhysicalLayerAsync : public IChannelState
 {
 public:
 

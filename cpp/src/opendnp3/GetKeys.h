@@ -30,12 +30,13 @@
 #define __GET_KEYS_H_
 
 #include <vector>
+#include <opendnp3/Visibility.h>
 
 namespace opendnp3
 {
 
 template <class T, class U>
-static std::vector<U> GetKeys(const T& arMap)
+static std::vector<U> DLL_LOCAL GetKeys(const T& arMap)
 {
 	std::vector<U> ret;
 for(auto pair: arMap) {

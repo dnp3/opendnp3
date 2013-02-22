@@ -29,6 +29,8 @@
 #ifndef __DNP_FROM_STREAM_H_
 #define __DNP_FROM_STREAM_H_
 
+#include <opendnp3/Visibility.h>
+
 #include <iostream>
 
 #ifdef WIN32
@@ -44,7 +46,7 @@ namespace opendnp3
 	Used in the dnp3 object definitions to define how
 	they deserialize themeselves.
 */
-class DNPFromStream
+class DLL_LOCAL DNPFromStream
 {
 public:
 

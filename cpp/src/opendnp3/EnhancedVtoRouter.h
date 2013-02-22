@@ -31,6 +31,8 @@
 
 #include "VtoRouter.h"
 
+#include <opendnp3/Visibility.h>
+
 namespace opendnp3
 {
 
@@ -42,7 +44,7 @@ namespace opendnp3
  * terminated. The concrete base classes provide policy for when to start
  * or stop the local side of the connection.
  */
-class EnhancedVtoRouter : public VtoRouter
+class DLL_LOCAL EnhancedVtoRouter : public VtoRouter
 {
 public:
 

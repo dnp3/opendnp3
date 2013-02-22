@@ -30,6 +30,8 @@
 #define __ENHANCED_VTO_H_
 
 #include <opendnp3/Types.h>
+#include <opendnp3/Visibility.h>
+
 #include <stddef.h>
 
 namespace opendnp3
@@ -37,7 +39,7 @@ namespace opendnp3
 
 class VtoData;
 
-class EnhancedVto
+class DLL_LOCAL EnhancedVto
 {
 public:
 

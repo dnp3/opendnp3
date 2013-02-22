@@ -31,6 +31,7 @@
 
 #include <opendnp3/Types.h>
 #include <opendnp3/APDUConstants.h>
+#include <opendnp3/Visibility.h>
 
 #include "ObjectHeader.h"
 
@@ -43,7 +44,7 @@ namespace opendnp3
 /**
 Buffer iterator to write objects prefixed with specific indices.
 */
-class IndexedWriteIterator
+class DLL_LOCAL IndexedWriteIterator
 {
 	friend class APDU;
 

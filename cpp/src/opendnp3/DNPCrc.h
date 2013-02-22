@@ -30,13 +30,14 @@
 #define __DNP_CRC_H_
 
 #include <opendnp3/Types.h>
+#include <opendnp3/Visibility.h>
 
 #include <stddef.h>
 
 namespace opendnp3
 {
 
-class DNPCrc
+class DLL_LOCAL DNPCrc
 {
 public:
 

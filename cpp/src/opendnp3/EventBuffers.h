@@ -29,9 +29,10 @@
 #ifndef __EVENT_BUFFERS_H_
 #define __EVENT_BUFFERS_H_
 
-
 #include "BufferSetTypes.h"
 #include "EventBufferBase.h"
+
+#include <opendnp3/Visibility.h>
 
 #include <map>
 #include <set>
@@ -47,7 +48,7 @@ namespace opendnp3
 	Note: EventType must have the public property mIndex.
 	*/
 template <class EventType>
-class SingleEventBuffer : public EventBufferBase<EventType, IndexSet< EventType > >
+class DLL_LOCAL SingleEventBuffer : public EventBufferBase<EventType, IndexSet< EventType > >
 {
 public:
 
@@ -58,7 +59,7 @@ public:
 
 /** Event buffer that stores all changes to all points in the order. */
 template <class EventType>
-class TimeOrderedEventBuffer : public EventBufferBase<EventType, TimeMultiSet< EventType > >
+class DLL_LOCAL TimeOrderedEventBuffer : public EventBufferBase<EventType, TimeMultiSet< EventType > >
 {
 public:
 
@@ -67,7 +68,7 @@ public:
 
 /** Event buffer that stores all changes to all points in the order. */
 template <class EventType>
-class InsertionOrderedEventBuffer : public EventBufferBase<EventType, InsertionOrderSet< EventType > >
+class DLL_LOCAL InsertionOrderedEventBuffer : public EventBufferBase<EventType, InsertionOrderSet< EventType > >
 {
 public:
 

@@ -34,6 +34,8 @@
 #include <chrono>
 #include <functional>
 
+#include <opendnp3/Visibility.h>
+
 namespace opendnp3
 {
 
@@ -51,7 +53,7 @@ namespace opendnp3
  *
  * @see TimerASIO
  */
-class IExecutor
+class DLL_LOCAL IExecutor
 {
 public:
 

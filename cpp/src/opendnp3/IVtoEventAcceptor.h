@@ -31,10 +31,12 @@
 
 #include "VtoData.h"
 
+#include <opendnp3/Visibility.h>
+
 namespace opendnp3
 {
 
-class IVtoEventAcceptor
+class DLL_LOCAL IVtoEventAcceptor
 {
 public:
 	virtual void Update(const VtoData& arEvent, PointClass aClass, size_t aIndex) = 0;

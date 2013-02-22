@@ -31,11 +31,13 @@
 
 #include "IFrameSink.h"
 
+#include <opendnp3/Visibility.h>
+
 namespace opendnp3
 {
 
 // @section DESCRIPTION Interface from the link router to the link layer
-class ILinkContext : public IFrameSink
+class DLL_LOCAL ILinkContext : public IFrameSink
 {
 public:
 

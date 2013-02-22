@@ -29,6 +29,8 @@
 #ifndef __I_TIMER_H_
 #define __I_TIMER_H_
 
+#include <opendnp3/Visibility.h>
+
 #include <chrono>
 
 namespace opendnp3
@@ -49,7 +51,7 @@ namespace opendnp3
  *
  * @see TimerASIO
  */
-class ITimer
+class DLL_LOCAL ITimer
 {
 public:
 	virtual ~ITimer() {}

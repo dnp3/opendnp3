@@ -30,12 +30,14 @@
 #define __I_TIME_SOURCE_H_
 
 #include <opendnp3/Types.h>
+#include <opendnp3/Visibility.h>
+
 #include <chrono>
 
 namespace opendnp3
 {
 
-class ITimeSource
+class DLL_LOCAL ITimeSource
 {
 
 public:
@@ -44,7 +46,7 @@ public:
 
 };
 
-class ITimeManager : public ITimeSource
+class DLL_LOCAL ITimeManager : public ITimeSource
 {
 public:
 	virtual void SetTime(const std::chrono::steady_clock::time_point& arTime) = 0;

@@ -32,11 +32,13 @@
 #include "ClassCounter.h"
 #include "EventTypes.h"
 
+#include <opendnp3/Visibility.h>
+
 namespace opendnp3
 {
 
 template <class EventType>
-class EventAcceptor
+class DLL_LOCAL EventAcceptor
 {
 public:
 	virtual void Update(const typename EventType::MeasType& arVal, PointClass aClass, size_t aIndex) = 0;
@@ -49,7 +51,7 @@ public:
  * Single-threaded for asynchronous/event-based model.
 */
 template <class EventType, class SetType>
-class EventBufferBase : public EventAcceptor<EventType>
+class DLL_LOCAL EventBufferBase : public EventAcceptor<EventType>
 {
 public:
 	EventBufferBase(size_t aMaxEvents);
