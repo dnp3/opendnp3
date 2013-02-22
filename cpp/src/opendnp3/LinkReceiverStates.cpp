@@ -45,7 +45,7 @@ namespace opendnp3
 
 bool LRS_Base::Parse(LinkLayerReceiver*)
 {
-	throw InvalidStateException(LOCATION, this->Name());
+	MACRO_THROW_EXCEPTION(InvalidStateException, this->Name());
 }
 
 ////////////////////////////////////

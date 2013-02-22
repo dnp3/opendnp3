@@ -309,12 +309,12 @@ void Master::OnSolFailure()
 
 void Master::OnUnsolSendSuccess()
 {
-	throw InvalidStateException(LOCATION, "Master can't send unsol");
+	MACRO_THROW_EXCEPTION(InvalidStateException, "Master can't send unsol");
 }
 
 void Master::OnUnsolFailure()
 {
-	throw InvalidStateException(LOCATION, "Master can't send unsol");
+	MACRO_THROW_EXCEPTION(InvalidStateException, "Master can't send unsol");
 }
 
 void Master::OnPartialResponse(const APDU& arAPDU)
