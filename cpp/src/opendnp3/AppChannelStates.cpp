@@ -83,9 +83,7 @@ void ACS_Base::OnTimeout(AppLayerChannel*)
 
 void ACS_Base::ThrowInvalidState(const std::string& arLocation)
 {
-	std::ostringstream oss;
-	oss << "State: " << this->Name();
-	throw InvalidStateException(arLocation, oss.str());
+	MACRO_THROW_EXCEPTION_COMPLEX(InvalidStateException, "State: " << this->Name());
 }
 
 void ACS_Base::ProcessResponse(AppLayerChannel* c, APDU& arAPDU, bool aExpectFIR)
@@ -135,21 +133,26 @@ ACS_Base* ACS_Idle::NextState(AppLayerChannel* c, FunctionCodes aFunc, bool aCon
 {
 	switch(aFunc) {
 	case(FC_CONFIRM):
-		throw ArgumentException(LOCATION, "Confirms are automatic only");
+		MACRO_THROW_EXCEPTION(ArgumentException, "Confirms are automatic only");
 	case(FC_RESPONSE):
-		if(c->Sequence() < 0)
-			throw InvalidStateException(LOCATION, "Can't respond until we've received a request");
+		if(c->Sequence() < 0) {
+			MACRO_THROW_EXCEPTION(InvalidStateException, "Can't respond until we've received a request");
+		}
 
 	case(FC_UNSOLICITED_RESPONSE):
 		if(aConfirm) return ACS_SendConfirmed::Inst();
 		else return ACS_Send::Inst();
 
 	case(FC_DIRECT_OPERATE_NO_ACK):
-		if(aConfirm) throw ArgumentException(LOCATION, "DO no ACK can't be confirmed");
+		if(aConfirm) {
+			MACRO_THROW_EXCEPTION(ArgumentException, "DO no ACK can't be confirmed");
+		}
 		return ACS_Send::Inst();
 
 	default:	// it's a request with an expected response
-		if(aConfirm) throw ArgumentException(LOCATION, "Confirmation not allowed for requests");
+		if(aConfirm) {
+			MACRO_THROW_EXCEPTION(ArgumentException, "Confirmation not allowed for requests");
+		}
 		return ACS_SendExpectResponse::Inst();
 	}
 }

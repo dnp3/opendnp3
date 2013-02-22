@@ -36,28 +36,28 @@ namespace opendnp3
 
 void IAppUser::OnPartialResponse(const APDU&)
 {
-	throw Exception(LOCATION, "Unhandled frame");
+	MACRO_THROW_EXCEPTION(Exception, "Unhandled frame");
 }
 
 void IAppUser::OnFinalResponse(const APDU&)
 {
-	throw Exception(LOCATION, "Unhandled frame");
+	MACRO_THROW_EXCEPTION(Exception, "Unhandled frame");
 }
 
 void IAppUser::OnUnsolResponse(const APDU&)
 {
-	throw Exception(LOCATION, "Unhandled frame");
+	MACRO_THROW_EXCEPTION(Exception, "Unhandled frame");
 }
 
 void IAppUser::OnRequest(const APDU&, SequenceInfo)
 {
-	throw Exception(LOCATION, "Unhandled frame");
+	MACRO_THROW_EXCEPTION(Exception, "Unhandled frame");
 }
 
 
 void IAppUser::OnUnknownObject()
 {
-	throw Exception(LOCATION, "Unhandled frame");
+	MACRO_THROW_EXCEPTION(Exception, "Unhandled frame");
 }
 
 } //end ns

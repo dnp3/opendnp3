@@ -71,21 +71,17 @@ bool APDU::operator==(const APDU& rhs)
 
 AppControlField APDU::GetControl() const
 {
-	assert(mpAppHeader != NULL);
-	/*if(mpAppHeader == NULL)
-	{ throw Exception(LOCATION, "App header type not set"); }*/
+	assert(mpAppHeader != NULL);	
 
 	return mpAppHeader->GetControl(mBuffer);
 }
 
 IINField APDU::GetIIN() const
 {
-	assert(mpAppHeader != NULL);
-	/*if(mpAppHeader == NULL)
-	{ throw Exception(LOCATION, "App header type not set"); }*/
+	assert(mpAppHeader != NULL);	
 
 	if(mpAppHeader->GetType() != AHT_RESPONSE) {
-		throw Exception(LOCATION, "Only response packets have IIN fields");
+		MACRO_THROW_EXCEPTION(Exception, "Only response packets have IIN fields");
 	}
 
 	return static_cast<ResponseHeader*>(mpAppHeader)->GetIIN(mBuffer);
@@ -93,18 +89,14 @@ IINField APDU::GetIIN() const
 
 FunctionCodes APDU::GetFunction() const
 {
-	assert(mpAppHeader != NULL);
-	/*if(mpAppHeader == NULL)
-	{ throw Exception(LOCATION, "App header type not set"); }*/
+	assert(mpAppHeader != NULL);	
 
 	return mpAppHeader->GetFunction(mBuffer);
 }
 
 void APDU::SetFunction(FunctionCodes aCode)
 {
-	assert(mpAppHeader == NULL);
-	/*if(mpAppHeader != NULL)
-	{ throw Exception(LOCATION, "App header already configured"); }*/
+	assert(mpAppHeader == NULL);	
 
 	if(aCode == FC_RESPONSE || aCode == FC_UNSOLICITED_RESPONSE) {
 		mpAppHeader = ResponseHeader::Inst();
@@ -120,9 +112,7 @@ void APDU::SetFunction(FunctionCodes aCode)
 
 void APDU::SetControl(const AppControlField& arControl)
 {
-	assert(mpAppHeader != NULL);
-	/*if(mpAppHeader == NULL)
-	{ throw Exception(LOCATION, "App header not configured"); }*/
+	assert(mpAppHeader != NULL);	
 
 	mpAppHeader->SetControl(mBuffer, arControl);
 }
@@ -130,9 +120,7 @@ void APDU::SetControl(const AppControlField& arControl)
 void APDU::SetIIN(const IINField& arIIN)
 {
 	assert(mpAppHeader != NULL);
-	assert(mpAppHeader->GetType() == AHT_RESPONSE);
-	/*if(mpAppHeader == NULL || mpAppHeader->GetType() != AHT_RESPONSE)
-	{ throw Exception(LOCATION, "IIN only valid with resposne header"); }*/
+	assert(mpAppHeader->GetType() == AHT_RESPONSE);	
 
 	static_cast<ResponseHeader*>(mpAppHeader)->SetIIN(mBuffer, arIIN);
 }
@@ -186,7 +174,7 @@ void APDU::InterpretHeader()
 IAppHeader* APDU::ParseHeader() const
 {
 	if(mFragmentSize < 2) {
-		throw Exception(LOCATION, GetSizeString(mFragmentSize), ALERR_INSUFFICIENT_DATA_FOR_FRAG);
+		MACRO_THROW_EXCEPTION_WITH_CODE(Exception, GetSizeString(mFragmentSize), ALERR_INSUFFICIENT_DATA_FOR_FRAG);
 	}
 
 	// start by assuming that it's a request header since they have same starting structure
@@ -196,7 +184,7 @@ IAppHeader* APDU::ParseHeader() const
 
 	if( IsResponse(function) ) {
 		if(mFragmentSize < 4) {
-			throw Exception(LOCATION, GetSizeString(mFragmentSize), ALERR_INSUFFICIENT_DATA_FOR_RESPONSE);
+			MACRO_THROW_EXCEPTION_WITH_CODE(Exception, GetSizeString(mFragmentSize), ALERR_INSUFFICIENT_DATA_FOR_RESPONSE);
 		}
 
 		pHeader = ResponseHeader::Inst();
@@ -213,14 +201,14 @@ size_t APDU::ReadObjectHeader(size_t aOffset, size_t aRemainder)
 	ObjectHeaderField hdrData;
 
 	if(aRemainder < pHdr->GetSize()) {
-		throw Exception(LOCATION, GetSizeString(aRemainder), ALERR_INSUFFICIENT_DATA_FOR_HEADER);
+		MACRO_THROW_EXCEPTION_WITH_CODE(Exception, GetSizeString(aRemainder), ALERR_INSUFFICIENT_DATA_FOR_HEADER);
 	}
 
 	//Read the header data and select the correct object header based on this information
 	pHdr->Get(pStart, hdrData);
 
 	if(hdrData.Qualifier == QC_UNDEFINED) {
-		throw Exception(LOCATION, "Unknown qualifier", ALERR_UNKNOWN_QUALIFIER);
+		MACRO_THROW_EXCEPTION_WITH_CODE(Exception, "Unknown qualifier", ALERR_UNKNOWN_QUALIFIER);
 	}
 
 	pHdr = this->GetObjectHeader(hdrData.Qualifier);
@@ -229,13 +217,11 @@ size_t APDU::ReadObjectHeader(size_t aOffset, size_t aRemainder)
 	ObjectBase* pObj = ObjectBase::Get(hdrData.Group, hdrData.Variation);
 
 	if(pObj == NULL) {
-		ostringstream oss;
-		oss << "Undefined object, " << "Group: " << static_cast<int>(hdrData.Group) << " Var: " << static_cast<int>(hdrData.Variation);
-		throw ObjectException(LOCATION, oss.str());
+		MACRO_THROW_EXCEPTION_COMPLEX(ObjectException, "Undefined object, " << "Group: " << static_cast<int>(hdrData.Group) << " Var: " << static_cast<int>(hdrData.Variation));
 	}
 
 	if(aRemainder < pHdr->GetSize()) {
-		throw Exception(LOCATION, GetSizeString(aRemainder), ALERR_INSUFFICIENT_DATA_FOR_HEADER);
+		MACRO_THROW_EXCEPTION_WITH_CODE(Exception, GetSizeString(aRemainder), ALERR_INSUFFICIENT_DATA_FOR_HEADER);
 	}
 
 	aRemainder -= pHdr->GetSize();
@@ -267,11 +253,11 @@ size_t APDU::ReadObjectHeader(size_t aOffset, size_t aRemainder)
 		data_size += has_data ? hdrData.Variation : 0;
 		break;
 	default:
-		throw Exception(LOCATION, "Unknown object type");
+		MACRO_THROW_EXCEPTION(Exception, "Unknown object type");
 	}
 
 	if(data_size > aRemainder) {
-		throw Exception(LOCATION, "", ALERR_INSUFFICIENT_DATA_FOR_OBJECTS);
+		MACRO_THROW_EXCEPTION_WITH_CODE(Exception, "", ALERR_INSUFFICIENT_DATA_FOR_OBJECTS);
 	}
 
 	mObjectHeaders.push_back(HeaderInfo(hdrData, objCount, prefixSize, pHdr, pObj, aOffset));
@@ -303,7 +289,7 @@ IObjectHeader* APDU::GetObjectHeader(QualifierCode aCode)
 	case(QC_4B_CNT_4B_INDEX):
 		return Count4OctetHeader::Inst();
 	default:
-		throw Exception(LOCATION, "Unknown range specifier");
+		MACRO_THROW_EXCEPTION(Exception, "Unknown range specifier");
 	}
 }
 
@@ -318,7 +304,7 @@ size_t APDU::GetNumObjects(const IObjectHeader* apHeader, const uint8_t* apStart
 		RangeInfo info;
 		static_cast<const IRangeHeader*>(apHeader)->GetRange(apStart, info);
 		if(info.Start > info.Stop) {
-			throw Exception(LOCATION, "", ALERR_START_STOP_MISMATCH);
+			MACRO_THROW_EXCEPTION_WITH_CODE(Exception, "", ALERR_START_STOP_MISMATCH);
 		}
 		return (info.Stop - info.Start + 1); //indices are inclusive
 	case(OHT_COUNT_1_OCTET):
@@ -375,7 +361,7 @@ size_t APDU::GetPrefixSizeAndValidate(QualifierCode aCode, ObjectTypes aType)
 	case(MACRO_QUAL_OBJ_RADIX(QC_1B_VCNT_4B_SIZE, OT_VARIABLE)): return 4;
 
 	default:
-		throw Exception(LOCATION, "Unknown Prefix Size", ALERR_ILLEGAL_QUALIFIER_AND_OBJECT);
+		MACRO_THROW_EXCEPTION_WITH_CODE(Exception, "Unknown Prefix Size", ALERR_ILLEGAL_QUALIFIER_AND_OBJECT);
 	}
 }
 
@@ -478,7 +464,7 @@ void APDU::WriteContiguousHeader(IObjectHeader* apHdr, uint8_t* apPos, size_t aS
 		static_cast<IRangeHeader*>(apHdr)->SetRange(apPos, r);
 		break;
 	default:
-		throw Exception(LOCATION, "Invalid header type");
+		MACRO_THROW_EXCEPTION(Exception, "Invalid header type");
 	}
 }
 
@@ -564,9 +550,9 @@ bool APDU::DoPlaceholderWrite(ObjectBase* apObj)
 
 void APDU::CheckWriteState(const ObjectBase* apObj)
 {
-	if(mpAppHeader == NULL) throw InvalidStateException(LOCATION, "Header has not be configured");
-	if(mIsInterpreted) throw InvalidStateException(LOCATION, "APDU is interpreted");
-	if(apObj == NULL) throw ArgumentException(LOCATION, "Object cannot be NULL");
+	if(mpAppHeader == NULL) MACRO_THROW_EXCEPTION(InvalidStateException, "Header has not be configured");
+	if(mIsInterpreted) MACRO_THROW_EXCEPTION(InvalidStateException, "APDU is interpreted");
+	if(apObj == NULL) MACRO_THROW_EXCEPTION(ArgumentException, "Object cannot be NULL");
 }
 
 ICountHeader* APDU::GetCountHeader(QualifierCode aCode)
@@ -585,7 +571,7 @@ ICountHeader* APDU::GetCountHeader(QualifierCode aCode)
 	case(QC_4B_CNT_4B_INDEX):
 		return Count4OctetHeader::Inst();
 	default:
-		throw ArgumentException(LOCATION, "Invalid qualifier for count header");
+		MACRO_THROW_EXCEPTION(ArgumentException, "Invalid qualifier for count header");
 	}
 }
 
