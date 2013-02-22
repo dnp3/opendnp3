@@ -34,8 +34,8 @@
 #include <opendnp3/LogToStdio.h>
 #include <opendnp3/ASIOExecutor.h>
 #include <opendnp3/Exception.h>
-#include <opendnp3/RandomizedBuffer.h>
 
+#include "RandomizedBuffer.h"
 #include "PhysLoopback.h"
 #include "TestHelpers.h"
 #include "BufferHelpers.h"

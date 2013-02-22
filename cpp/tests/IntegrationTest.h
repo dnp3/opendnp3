@@ -29,9 +29,9 @@
 #ifndef __INTEGRATION_TEST_H_
 #define __INTEGRATION_TEST_H_
 
-#include <opendnp3/Random.h>
 #include <opendnp3/DNP3Manager.h>
 
+#include "Random.h"
 #include "FlexibleDataObserver.h"
 #include "AsyncTestObjectASIO.h"
 #include "LogTester.h"

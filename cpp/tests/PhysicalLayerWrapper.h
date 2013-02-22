@@ -32,7 +32,8 @@
 #include <opendnp3/IPhysicalLayerAsync.h>
 #include <opendnp3/Loggable.h>
 #include <opendnp3/IHandlerAsync.h>
-#include <opendnp3/RandomDouble.h>
+
+#include "RandomDouble.h"
 
 namespace opendnp3
 {

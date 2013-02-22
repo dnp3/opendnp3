@@ -29,7 +29,7 @@
 #ifndef __RANDOMIZED_BUFFER_H_
 #define __RANDOMIZED_BUFFER_H_
 
-#include "CopyableBuffer.h"
+#include <opendnp3/CopyableBuffer.h>
 #include "Random.h"
 
 namespace opendnp3
