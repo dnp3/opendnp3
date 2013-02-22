@@ -99,7 +99,6 @@ cpp/src/opendnp3/PhysicalLayerAsyncTCPServer.cpp \
 cpp/src/opendnp3/PhysicalLayerMonitor.cpp \
 cpp/src/opendnp3/PhysicalLayerMonitorStates.cpp \
 cpp/src/opendnp3/ChannelStates.cpp \
-cpp/src/opendnp3/PhysLoopback.cpp \
 cpp/src/opendnp3/PointClass.cpp \
 cpp/src/opendnp3/PriLinkLayerStates.cpp \
 cpp/src/opendnp3/ProtocolUtil.cpp \
@@ -235,6 +234,7 @@ dnp3test_SOURCES = \
 	cpp/tests/MockPhysicalLayerMonitor.cpp \
 	cpp/tests/MockUpperLayer.cpp \
 	cpp/tests/PhysicalLayerWrapper.cpp \
+	cpp/tests/PhysLoopback.cpp \
 	cpp/tests/ResponseLoaderTestObject.cpp \
 	cpp/tests/SlaveTestObject.cpp \
 	cpp/tests/StopWatch.cpp \
