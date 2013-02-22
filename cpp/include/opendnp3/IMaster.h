@@ -35,17 +35,24 @@ namespace opendnp3
 
 class ICommandProcessor;
 
-/** Interface that represents a running master
+/** Interface that represents a running master.
+* To add a command processor interface to a master:-
+\code
+	ICommandProcessor* pCmdProcessor = pMaster->GetCommandProcessor();
+\endcode
 */
 class IMaster : public IStack
 {
 public:
-	IMaster(Logger* apLogger, boost::asio::io_service* apService): IStack(apLogger, apService) {}
+    IMaster(Logger* apLogger, boost::asio::io_service* apService): IStack(apLogger, apService) {}
 
-	virtual ~IMaster() {}
+    virtual ~IMaster() {}
 
-	/// @return Interface used to invoke commands
-	virtual ICommandProcessor* GetCommandProcessor() = 0;
+    /**
+    * Add a command processor interface to the master
+    * @return Interface used to invoke commands
+    */
+    virtual ICommandProcessor* GetCommandProcessor() = 0;
 };
 
 }
