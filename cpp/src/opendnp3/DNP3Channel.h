@@ -34,7 +34,10 @@
 
 #include "LinkLayerRouter.h"
 #include "Loggable.h"
+
+#ifndef OPENDNP3_NO_MASTER
 #include "AsyncTaskGroup.h"
+#endif
 
 #include <memory>
 #include <functional>
@@ -94,7 +97,11 @@ private:
 	std::auto_ptr<IPhysicalLayerAsync> mpPhys;
 	std::function<void (DNP3Channel*)> mOnShutdown;
 	LinkLayerRouter mRouter;
+
+#ifndef OPENDNP3_NO_MASTER
 	AsyncTaskGroup mGroup;
+#endif
+
 	std::set<IStack*> mStacks;
 
 };

@@ -36,8 +36,8 @@ dnp3test
 doc
 
 # demo files
-cpp/demos/masterdemo
-cpp/demos/outstationdemo
+cpp/demos/master/masterdemo
+cpp/demos/outstation/outstationdemo
 unittest.log
 
 # visual studio generated files
