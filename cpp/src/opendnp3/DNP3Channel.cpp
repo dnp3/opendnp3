@@ -29,7 +29,10 @@
 
 #include "DNP3Channel.h"
 
+#ifndef OPENDNP3_NO_MASTER
 #include "MasterStackImpl.h"
+#endif
+
 #include "OutstationStackImpl.h"
 #include "IPhysicalLayerAsync.h"
 #include "ExecutorPause.h"
@@ -76,6 +79,7 @@ for(auto pStack: copy) pStack->Shutdown();
 	mRouter.WaitForShutdown();
 }
 
+#ifndef OPENDNP3_NO_MASTER
 IMaster* DNP3Channel::AddMaster(const std::string& arLoggerId, FilterLevel aLevel, IDataObserver* apPublisher, const MasterStackConfig& arCfg)
 {
 	auto pLogger = mpLogger->GetSubLogger(arLoggerId, aLevel);
@@ -91,6 +95,7 @@ IMaster* DNP3Channel::AddMaster(const std::string& arLoggerId, FilterLevel aLeve
 	}
 	return pMaster;
 }
+#endif
 
 IOutstation* DNP3Channel::AddOutstation(const std::string& arLoggerId, FilterLevel aLevel, ICommandHandler* apCmdHandler, const SlaveStackConfig& arCfg)
 {

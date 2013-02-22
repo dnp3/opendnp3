@@ -87,6 +87,8 @@ public:
 	*/
 	virtual void AddStateListener(std::function<void (ChannelState)> aListener) = 0;
 
+#ifndef OPENDNP3_NO_MASTER
+
 	/**
 	* Add a master to the channel
 	*
@@ -100,6 +102,8 @@ public:
 	                                FilterLevel aLevel,
 	                                IDataObserver* apPublisher,
 	                                const MasterStackConfig& arCfg) = 0;
+
+#endif
 
 	/**
 	* Add an outstation to the channel

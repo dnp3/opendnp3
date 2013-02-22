@@ -42,5 +42,14 @@ AC_ARG_WITH([lcov],
 	AC_MSG_NOTICE([--with-lcov=yes])],
 	[AC_MSG_NOTICE([--with-lcov=no])])
 
+AC_ARG_ENABLE([opendnp3nomaster],
+     [  --enable-opendnp3dnpmaster    Build library w/o master support],
+     [case "${enableval}" in
+       yes) opendnp3nomaster=true ;;
+       no)  opendnp3nomaster=false ;;
+       *) AC_MSG_ERROR([bad value ${enableval} for --enable-opendnp3nomaster]) ;;
+     esac],[debug=false])
+AM_CONDITIONAL([OPENDNP3_NO_MASTER], [test x$opendnp3nomaster = xtrue])
+
 AC_OUTPUT #actually output the configuration
 

@@ -68,10 +68,14 @@ public:
 
 	void AddStateListener(std::function<void (ChannelState)> aListener);
 
+#ifndef OPENDNP3_NO_MASTER
+
 	IMaster* AddMaster(		const std::string& arLoggerId,
 	                                FilterLevel aLevel,
 	                                IDataObserver* apPublisher,
 	                                const MasterStackConfig& arCfg);
+
+#endif
 
 	IOutstation* AddOutstation(	const std::string& arLoggerId,
 	                                FilterLevel aLevel,
