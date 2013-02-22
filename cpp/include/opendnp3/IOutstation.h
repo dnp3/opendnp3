@@ -37,7 +37,7 @@ class IDataObserver;
 
 /**
 * Interface representing a running outstation.
-* To add a data observer interface to an outstation:-
+* To get a data observer interface to load measurements on the outstation:-
 \code
 	IDataObserver* pDataObserver = pOutstation->GetDataObserver()
 \endcode
@@ -49,7 +49,7 @@ public:
     virtual ~IOutstation() {}
 
     /**
-    * Add a data observer interface to the outstation
+    * Get a data observer interface to load measurements on the outstation
     * @return Inteface used to load measurements into the outstation
     */
     virtual IDataObserver* GetDataObserver() = 0;
