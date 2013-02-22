@@ -47,9 +47,9 @@ namespace opendnp3
 
 	\section Usage
 	\code
-	  apl::IDataObserver* pDataObserver; // usually kept as a member on a class
-	  apl::Transaction tr(pDataObserver);
-	  apl::Analog a;
+	  IDataObserver* pDataObserver; // usually kept as a member on a class
+	  Transaction tr(pDataObserver);
+	  Analog a;
 	  a.SetValue(33);
 	  a.SetToNow();
 	  a.SetQuality(AQ_ONLINE);

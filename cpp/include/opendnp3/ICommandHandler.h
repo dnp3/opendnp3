@@ -36,7 +36,7 @@ namespace opendnp3
 {
 
 /**
-* Interface used to dispatch SELECT / OPERATE / DIRECT OPERATE (Binary/Analog output) from the outstation to application code
+* Interface used to dispatch SELECT / OPERATE / DIRECT OPERATE (Binary/Analog output) from the outstation to application code.
 */
 class ICommandHandler
 {
