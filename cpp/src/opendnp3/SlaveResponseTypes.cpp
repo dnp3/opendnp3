@@ -65,7 +65,7 @@ StreamObject<Binary>* SlaveResponseTypes::GetStaticBinary(GrpVar gv)
 		break;
 	}
 
-	throw ArgumentException(LOCATION, "Invalid static binary");
+	MACRO_THROW_EXCEPTION(ArgumentException, "Invalid static binary");
 }
 
 StreamObject<Analog>* SlaveResponseTypes::GetStaticAnalog(GrpVar gv)
@@ -83,7 +83,7 @@ StreamObject<Analog>* SlaveResponseTypes::GetStaticAnalog(GrpVar gv)
 		break;
 	}
 
-	throw ArgumentException(LOCATION, "Invalid static analog");
+	MACRO_THROW_EXCEPTION(ArgumentException, "Invalid static analog");
 }
 
 StreamObject<Counter>* SlaveResponseTypes::GetStaticCounter(GrpVar gv)
@@ -100,7 +100,7 @@ StreamObject<Counter>* SlaveResponseTypes::GetStaticCounter(GrpVar gv)
 		break;
 	}
 
-	throw ArgumentException(LOCATION, "Invalid static counter");
+	MACRO_THROW_EXCEPTION(ArgumentException, "Invalid static counter");
 }
 
 StreamObject<SetpointStatus>* SlaveResponseTypes::GetStaticSetpointStatus(GrpVar gv)
@@ -116,7 +116,7 @@ StreamObject<SetpointStatus>* SlaveResponseTypes::GetStaticSetpointStatus(GrpVar
 		break;
 	}
 
-	throw ArgumentException(LOCATION, "Invalid setpoint status");
+	MACRO_THROW_EXCEPTION(ArgumentException, "Invalid setpoint status");
 }
 
 StreamObject<Binary>* SlaveResponseTypes::GetEventBinary(GrpVar gv)
@@ -130,7 +130,7 @@ StreamObject<Binary>* SlaveResponseTypes::GetEventBinary(GrpVar gv)
 		break;
 	}
 
-	throw ArgumentException(LOCATION, "Invalid event binary");
+	MACRO_THROW_EXCEPTION(ArgumentException, "Invalid event binary");
 }
 
 StreamObject<Analog>* SlaveResponseTypes::GetEventAnalog(GrpVar gv)
@@ -150,7 +150,7 @@ StreamObject<Analog>* SlaveResponseTypes::GetEventAnalog(GrpVar gv)
 		break;
 	}
 
-	throw ArgumentException(LOCATION, "Invalid event analog");
+	MACRO_THROW_EXCEPTION(ArgumentException, "Invalid event analog");
 }
 
 StreamObject<Counter>* SlaveResponseTypes::GetEventCounter(GrpVar gv)
@@ -167,7 +167,7 @@ StreamObject<Counter>* SlaveResponseTypes::GetEventCounter(GrpVar gv)
 		break;
 	}
 
-	throw ArgumentException(LOCATION, "Invalid event counter");
+	MACRO_THROW_EXCEPTION(ArgumentException, "Invalid event counter");
 }
 
 }

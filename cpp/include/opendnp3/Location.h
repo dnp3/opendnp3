@@ -65,4 +65,13 @@
 #define MACRO_THROW_EXCEPTION_COMPLEX(type, message) throw type(LOCATION, "");
 #endif
 
+#ifndef OPENDNP3_SUPPRESS_EXCEPTION_DESCRIPTION
+#define MACRO_THROW_EXCEPTION_COMPLEX_WITH_CODE(type, message, code) {\
+	std::ostringstream oss; \
+	oss << message; \
+	throw type(LOCATION, oss.str(), code); }
+#else
+#define MACRO_THROW_EXCEPTION_COMPLEX_WITH_CODE(type, message, code) throw type(LOCATION, "", code);
+#endif
+
 #endif

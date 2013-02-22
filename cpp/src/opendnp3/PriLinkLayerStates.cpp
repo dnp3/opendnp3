@@ -62,17 +62,17 @@ void PriStateBase::NotSupported (LinkLayer* apLL, bool aIsRcvBuffFull)
 
 void PriStateBase::OnTimeout(LinkLayer* apLL)
 {
-	throw InvalidStateException(LOCATION, this->Name());
+	MACRO_THROW_EXCEPTION(InvalidStateException, this->Name());
 }
 
 void PriStateBase::SendConfirmed(LinkLayer*, const uint8_t*, size_t)
 {
-	throw InvalidStateException(LOCATION, this->Name());
+	MACRO_THROW_EXCEPTION(InvalidStateException, this->Name());
 }
 
 void PriStateBase::SendUnconfirmed(LinkLayer*, const uint8_t*, size_t)
 {
-	throw InvalidStateException(LOCATION, this->Name());
+	MACRO_THROW_EXCEPTION(InvalidStateException, this->Name());
 }
 
 ////////////////////////////////////////////////////////

@@ -78,7 +78,7 @@ size_t SlaveEventBuffer::NumSelected(BufferTypes aType)
 	case BT_VTO:
 		return mVtoEvents.NumSelected();
 	default:
-		throw ArgumentException(LOCATION, "Invalid BufferType");
+		MACRO_THROW_EXCEPTION(ArgumentException, "Invalid BufferType");
 	}
 }
 
@@ -94,7 +94,7 @@ size_t SlaveEventBuffer::NumType(BufferTypes aType)
 	case BT_VTO:
 		return mVtoEvents.Size();
 	default:
-		throw ArgumentException(LOCATION, "Invalid BufferType");
+		MACRO_THROW_EXCEPTION(ArgumentException, "Invalid BufferType");
 	}
 }
 
@@ -146,7 +146,7 @@ size_t SlaveEventBuffer::Select(BufferTypes aType, PointClass aClass, size_t aMa
 	case BT_VTO:
 		return mVtoEvents.Select(aClass, aMaxEvent);
 	default:
-		throw ArgumentException(LOCATION, "Invalid BufferType");
+		MACRO_THROW_EXCEPTION(ArgumentException, "Invalid BufferType");
 	}
 }
 
@@ -204,7 +204,7 @@ bool SlaveEventBuffer::IsFull(BufferTypes aType)
 	case BT_VTO:
 		return mVtoEvents.IsFull();
 	default:
-		throw ArgumentException(LOCATION, "Invalid BufferType");
+		MACRO_THROW_EXCEPTION(ArgumentException, "Invalid BufferType");
 	}
 }
 

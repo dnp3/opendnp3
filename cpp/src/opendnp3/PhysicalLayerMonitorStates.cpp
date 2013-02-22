@@ -80,28 +80,28 @@ std::string IMonitorState::ConvertToString()
 
 void ExceptsOnLayerOpen::OnLayerOpen(PhysicalLayerMonitor* apContext)
 {
-	throw InvalidStateException(LOCATION, "Not opening: " + this->Name());
+	MACRO_THROW_EXCEPTION_COMPLEX(InvalidStateException, "Not opening: " << this->Name());
 }
 
 /* --- NotOpening --- */
 
 void NotOpening::OnOpenFailure(PhysicalLayerMonitor* apContext)
 {
-	throw InvalidStateException(LOCATION, "Not opening: " + this->Name());
+	MACRO_THROW_EXCEPTION_COMPLEX(InvalidStateException, "Not opening: " << this->Name());
 }
 
 /* --- NotOpen --- */
 
 void NotOpen::OnLayerClose(PhysicalLayerMonitor* apContext)
 {
-	throw InvalidStateException(LOCATION, "Not open: " + this->Name());
+	MACRO_THROW_EXCEPTION_COMPLEX(InvalidStateException, "Not open: " << this->Name());
 }
 
 /* --- NotWaitingForTimer --- */
 
 void NotWaitingForTimer::OnOpenTimeout(PhysicalLayerMonitor* apContext)
 {
-	throw InvalidStateException(LOCATION, "Not waiting for timer: " + this->Name());
+	MACRO_THROW_EXCEPTION_COMPLEX(InvalidStateException, "Not waiting for timer: " << this->Name());
 }
 
 /* --- IgnoresClose --- */

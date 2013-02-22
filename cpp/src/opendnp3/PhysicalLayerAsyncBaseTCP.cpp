@@ -113,8 +113,9 @@ boost::asio::ip::address PhysicalLayerAsyncBaseTCP::ResolveAddress(const std::st
 	try {
 		boost::system::error_code ec;
 		boost::asio::ip::address addr = boost::asio::ip::address::from_string(arEndpoint, ec);
-		if (ec)
-			throw ArgumentException(LOCATION, "endpoint: " + arEndpoint + " is invalid");
+		if (ec) {
+			MACRO_THROW_EXCEPTION_COMPLEX(ArgumentException, "endpoint: " << arEndpoint << " is invalid");
+		}
 		return addr;
 	}
 	catch (...) {
@@ -127,7 +128,7 @@ boost::asio::ip::address PhysicalLayerAsyncBaseTCP::ResolveAddress(const std::st
 			boost::asio::ip::tcp::endpoint ep = *iter++;
 			return ep.address();
 		}
-		throw ArgumentException(LOCATION, "endpoint: " + arEndpoint + " is invalid");
+		MACRO_THROW_EXCEPTION_COMPLEX(ArgumentException, "endpoint: " << arEndpoint << " is invalid");
 	}
 }
 
