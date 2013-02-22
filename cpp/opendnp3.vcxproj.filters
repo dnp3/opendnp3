@@ -432,9 +432,6 @@
     <ClInclude Include="src\opendnp3\QueuedCommandProcessor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\QueueingFDO.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\ResponseContext.h">
       <Filter>Header Files</Filter>
     </ClInclude>

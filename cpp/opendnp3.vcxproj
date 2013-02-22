@@ -231,7 +231,6 @@
     <ClInclude Include="src\opendnp3\PriLinkLayerStates.h" />
     <ClInclude Include="src\opendnp3\ProtocolUtil.h" />
     <ClInclude Include="src\opendnp3\QueuedCommandProcessor.h" />
-    <ClInclude Include="src\opendnp3\QueueingFDO.h" />
     <ClInclude Include="src\opendnp3\ResponseContext.h" />
     <ClInclude Include="src\opendnp3\ResponseLoader.h" />
     <ClInclude Include="src\opendnp3\SecLinkLayerStates.h" />
