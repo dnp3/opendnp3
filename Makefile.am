@@ -76,7 +76,6 @@ cpp/src/opendnp3/Logger.cpp \
 cpp/src/opendnp3/LogToFile.cpp \
 cpp/src/opendnp3/LogToStdio.cpp \
 cpp/src/opendnp3/LogTypes.cpp \
-cpp/src/opendnp3/LowerLayerToPhysAdapter.cpp \
 cpp/src/opendnp3/Master.cpp \
 cpp/src/opendnp3/MasterSchedule.cpp \
 cpp/src/opendnp3/MasterStackImpl.cpp \
@@ -225,6 +224,7 @@ dnp3test_SOURCES = \
 	cpp/tests/LinkLayerTest.cpp \
 	cpp/tests/LogTester.cpp \
 	cpp/tests/LoopbackPhysicalLayerAsync.cpp \
+	cpp/tests/LowerLayerToPhysAdapter.cpp \
 	cpp/tests/MasterTestObject.cpp \
 	cpp/tests/MockAppLayer.cpp \
 	cpp/tests/MockAppUser.cpp \
