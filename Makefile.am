@@ -104,7 +104,6 @@ cpp/src/opendnp3/PriLinkLayerStates.cpp \
 cpp/src/opendnp3/ProtocolUtil.cpp \
 cpp/src/opendnp3/QualityConverter.cpp \
 cpp/src/opendnp3/QueuedCommandProcessor.cpp \
-cpp/src/opendnp3/RandomizedBuffer.cpp \
 cpp/src/opendnp3/ResponseContext.cpp \
 cpp/src/opendnp3/ResponseLoader.cpp \
 cpp/src/opendnp3/SecLinkLayerStates.cpp \
@@ -235,6 +234,7 @@ dnp3test_SOURCES = \
 	cpp/tests/MockUpperLayer.cpp \
 	cpp/tests/PhysicalLayerWrapper.cpp \
 	cpp/tests/PhysLoopback.cpp \
+	cpp/tests/RandomizedBuffer.cpp \
 	cpp/tests/ResponseLoaderTestObject.cpp \
 	cpp/tests/SlaveTestObject.cpp \
 	cpp/tests/StopWatch.cpp \
