@@ -136,9 +136,7 @@ void APDU::Reset()
 void APDU::Write(const uint8_t* apData, size_t aLength)
 {
 	if(aLength > mBuffer.Size()) {
-		ostringstream oss;
-		oss << "Size " << aLength << " exceeds max fragment size of " << mBuffer.Size();
-		throw ArgumentException(LOCATION, oss.str());
+		MACRO_THROW_EXCEPTION_COMPLEX(ArgumentException, "Size " << aLength << " exceeds max fragment size of " << mBuffer.Size());
 	}
 
 	this->Reset();
