@@ -34,6 +34,7 @@
 #include <opendnp3/Exception.h>
 #include <opendnp3/Location.h>
 #include <opendnp3/APDUConstants.h>
+#include <opendnp3/Visibility.h>
 
 #include "PackingUnpacking.h"
 
@@ -54,7 +55,7 @@ enum ObjectHeaderMasks {
 	OHM_RANGE_SPECIFIER = 0x0F
 };
 
-struct ObjectHeaderField {
+struct DLL_LOCAL ObjectHeaderField {
 	ObjectHeaderField() {};
 	ObjectHeaderField(uint8_t aGroup, uint8_t aVariation, QualifierCode aQualifier) :
 		Group(aGroup),
@@ -77,7 +78,7 @@ enum ObjectHeaderTypes {
 	OHT_COUNT_4_OCTET
 };
 
-class IObjectHeader
+class DLL_LOCAL IObjectHeader
 {
 public:
 	virtual ~IObjectHeader() {}
@@ -97,21 +98,21 @@ struct RangeInfo {
 	size_t Stop;
 };
 
-class IRangeHeader : public IObjectHeader
+class DLL_LOCAL IRangeHeader : public IObjectHeader
 {
 public:
 	virtual void GetRange(const uint8_t* apStart, RangeInfo& arInfo) const = 0;
 	virtual void SetRange(uint8_t* apStart, const RangeInfo& arInfo) const = 0;
 };
 
-class ICountHeader : public IObjectHeader
+class DLL_LOCAL ICountHeader : public IObjectHeader
 {
 public:
 	virtual size_t GetCount(const uint8_t* apStart) const = 0;
 	virtual void SetCount(uint8_t* apStart, size_t aCount) const = 0;
 };
 
-class AllObjectsHeader : public IObjectHeader
+class DLL_LOCAL AllObjectsHeader : public IObjectHeader
 {
 	MACRO_SINGLETON_INSTANCE(AllObjectsHeader)
 
@@ -128,7 +129,7 @@ class AllObjectsHeader : public IObjectHeader
 };
 
 template <class T, ObjectHeaderTypes U>
-class RangedHeader : public IRangeHeader
+class DLL_LOCAL RangedHeader : public IRangeHeader
 {
 	MACRO_SINGLETON_INSTANCE(RangedHeader)
 
@@ -175,7 +176,7 @@ template <class T, ObjectHeaderTypes U>
 RangedHeader<T, U> RangedHeader<T, U>::mInstance;
 
 template <class T, ObjectHeaderTypes U>
-class CountHeader : public ICountHeader
+class DLL_LOCAL CountHeader : public ICountHeader
 {
 	MACRO_SINGLETON_INSTANCE(CountHeader)
 

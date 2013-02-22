@@ -31,6 +31,8 @@
 
 #include <string>
 
+#include <opendnp3/Visibility.h>
+
 #include "Loggable.h"
 
 
@@ -53,7 +55,7 @@ enum TaskResult {
 /**
  * A generic interface for defining master request/response style tasks.
  */
-class MasterTaskBase : public Loggable
+class DLL_LOCAL MasterTaskBase : public Loggable
 {
 public:
 
@@ -141,14 +143,14 @@ private:
 /**
 All non-read tasks that only return a single fragment can inherit from this task
 */
-class SingleRspBase : public MasterTaskBase
+class DLL_LOCAL SingleRspBase : public MasterTaskBase
 {
 public:
 	SingleRspBase(Logger*);
 	TaskResult _OnPartialResponse(const APDU&);
 };
 
-class SimpleRspBase : public SingleRspBase
+class DLL_LOCAL SimpleRspBase : public SingleRspBase
 {
 public:
 	SimpleRspBase(Logger*);

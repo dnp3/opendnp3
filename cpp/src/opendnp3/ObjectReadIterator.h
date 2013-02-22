@@ -33,16 +33,15 @@
 
 #include <opendnp3/Types.h>
 #include <opendnp3/ObjectInterfaces.h>
+#include <opendnp3/Visibility.h>
 
 #include "HeaderReadIterator.h"
 #include "ObjectHeader.h"
 
-
-
 namespace opendnp3
 {
 
-class ObjectInfo
+class DLL_LOCAL ObjectInfo
 {
 	friend class ObjectReadIterator;
 
@@ -72,7 +71,7 @@ private:
  * APDU object.  This class is usually used in conjunction with the
  * HeaderReadIterator class.
 */
-class ObjectReadIterator
+class DLL_LOCAL ObjectReadIterator
 {
 	friend class HeaderReadIterator;
 

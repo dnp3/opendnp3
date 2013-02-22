@@ -30,6 +30,8 @@
 #define __MULTIPLEXING_DATA_OBSERVER_H_
 
 #include <opendnp3/IDataObserver.h>
+#include <opendnp3/Visibility.h>
+
 #include <vector>
 #include <mutex>
 
@@ -38,7 +40,7 @@ namespace opendnp3
 
 /** DataObserver for sending updates to multiple data observers.
 */
-class MultiplexingDataObserver : public IDataObserver
+class DLL_LOCAL MultiplexingDataObserver : public IDataObserver
 {
 public:
 

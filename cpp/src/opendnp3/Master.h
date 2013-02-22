@@ -31,6 +31,7 @@
 
 #include <opendnp3/MasterConfig.h>
 #include <opendnp3/ObjectInterfaces.h>
+#include <opendnp3/Visibility.h>
 
 #include "Loggable.h"
 #include "TimeSource.h"
@@ -70,7 +71,7 @@ class AMS_Base;
  *
  * Coordination of tasks is handled by a higher level task scheduler.
  */
-class Master : public Loggable, public IAppUser, public StackBase, private ICommandProcessor
+class DLL_LOCAL Master : public Loggable, public IAppUser, public StackBase, private ICommandProcessor
 {
 	friend class AMS_Base;
 	friend class AMS_Idle;
