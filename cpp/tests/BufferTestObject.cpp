@@ -31,7 +31,6 @@
 #include "BufferHelpers.h"
 
 #include <memory>
-#include <iostream>
 
 #include <opendnp3/Exception.h>
 #include <opendnp3/Location.h>

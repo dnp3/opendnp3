@@ -31,8 +31,6 @@
 
 #include <opendnp3/Visibility.h>
 
-#include <iostream>
-
 #ifdef WIN32
 //disable the type converstion warnings
 #pragma warning ( push )

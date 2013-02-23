@@ -41,7 +41,6 @@
 #include <set>
 #include <vector>
 #include <limits>
-#include <iostream>
 
 #ifdef max
 #undef max

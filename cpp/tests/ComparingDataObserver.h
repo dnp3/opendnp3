@@ -35,6 +35,7 @@
 
 #include <map>
 #include <mutex>
+#include <iostream>
 #include <condition_variable>
 
 namespace opendnp3

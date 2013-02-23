@@ -115,7 +115,6 @@
     <ClInclude Include="include\opendnp3\LogEntry.h" />
     <ClInclude Include="include\opendnp3\LogEntryCircularBuffer.h" />
     <ClInclude Include="include\opendnp3\Logger.h" />
-    <ClInclude Include="include\opendnp3\LogToFile.h" />
     <ClInclude Include="include\opendnp3\LogToStdio.h" />
     <ClInclude Include="include\opendnp3\LogTypes.h" />
     <ClInclude Include="include\opendnp3\MasterConfig.h" />
@@ -324,7 +323,6 @@
     <ClCompile Include="src\opendnp3\LogEntryCircularBuffer.cpp" />
     <ClCompile Include="src\opendnp3\Loggable.cpp" />
     <ClCompile Include="src\opendnp3\Logger.cpp" />
-    <ClCompile Include="src\opendnp3\LogToFile.cpp" />
     <ClCompile Include="src\opendnp3\LogToStdio.cpp" />
     <ClCompile Include="src\opendnp3\LogTypes.cpp" />
     <ClCompile Include="src\opendnp3\Master.cpp" />

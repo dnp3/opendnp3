@@ -34,7 +34,6 @@
 #include <map>
 #include <set>
 #include <vector>
-#include <iostream>
 #include <limits>
 
 namespace opendnp3

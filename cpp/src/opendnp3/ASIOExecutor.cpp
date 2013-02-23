@@ -35,7 +35,6 @@
 
 #include <boost/asio.hpp>
 #include <functional>
-#include <iostream>
 
 using namespace std;
 

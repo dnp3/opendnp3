@@ -29,8 +29,6 @@
 
 #include <opendnp3/SimpleDataObserver.h>
 
-#include <iostream>
-
 namespace opendnp3
 {
 

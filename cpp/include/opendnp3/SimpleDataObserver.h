@@ -32,8 +32,8 @@
 #include "IDataObserver.h"
 #include "Singleton.h"
 
-#include <functional>
 #include <iostream>
+#include <functional>
 
 namespace opendnp3
 {

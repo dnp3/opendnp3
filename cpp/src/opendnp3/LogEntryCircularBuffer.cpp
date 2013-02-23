@@ -28,8 +28,6 @@
 //
 #include <opendnp3/LogEntryCircularBuffer.h>
 
-#include <iostream>
-
 namespace opendnp3
 {
 
