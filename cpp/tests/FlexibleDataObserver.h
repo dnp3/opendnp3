@@ -33,7 +33,6 @@
 #include <opendnp3/Util.h>
 #include <opendnp3/SubjectBase.h>
 
-#include <iostream>
 #include <map>
 #include <mutex>
 

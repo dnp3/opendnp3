@@ -29,6 +29,8 @@
 #include "FlexibleDataObserver.h"
 
 
+#include <iostream>
+
 namespace opendnp3
 {
 

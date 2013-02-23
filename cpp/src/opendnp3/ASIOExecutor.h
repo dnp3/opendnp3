@@ -35,7 +35,6 @@
 #include <opendnp3/Visibility.h>
 
 #include <queue>
-#include <iostream>
 
 #include <boost/asio.hpp>
 #include <mutex>

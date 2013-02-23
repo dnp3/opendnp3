@@ -29,7 +29,6 @@
 #include "Database.h"
 
 #include <assert.h>
-#include <iostream>
 
 #include <opendnp3/Logger.h>
 #include <opendnp3/DNPConstants.h>

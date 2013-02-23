@@ -31,7 +31,6 @@
 #include "LogTester.h"
 
 #include <opendnp3/Log.h>
-#include <opendnp3/LogToFile.h>
 #include <opendnp3/Exception.h>
 
 #include <boost/shared_ptr.hpp>
@@ -154,28 +153,6 @@ BOOST_AUTO_TEST_CASE( LogErrorCounting)
 
 	BOOST_REQUIRE_EQUAL(log.NextErrorCode(), 5);
 	BOOST_REQUIRE_EQUAL(log.NextErrorCode(), -1);
-}
-
-BOOST_AUTO_TEST_SUITE_END()
-
-BOOST_AUTO_TEST_SUITE(LogToFileSuite)
-
-BOOST_AUTO_TEST_CASE(AddRemove)
-{
-
-	{
-		LogToFile file("unittest.log");
-		EventLog log;
-		log.AddLogSubscriber(&file);
-		Logger* pLogger = log.GetLogger(LEV_DEBUG, "test1");
-		pLogger->Log( LEV_DEBUG, "Test test test test", "Test message" );
-	}
-
-	ifstream inFile("unittest.log");
-	std::string s;
-	inFile >> s;
-	BOOST_REQUIRE(s.find("Test test") != 0);
-
 }
 
 BOOST_AUTO_TEST_SUITE_END()

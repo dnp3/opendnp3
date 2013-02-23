@@ -37,7 +37,6 @@
 #include <opendnp3/SimpleCommandHandler.h>
 #include <opendnp3/IVtoEndpoint.h>
 #include <opendnp3/LogToStdio.h>
-#include <opendnp3/LogToFile.h>
 #include <opendnp3/SimpleDataObserver.h>
 
 #include <thread>

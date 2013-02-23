@@ -29,7 +29,6 @@
 #ifndef __VTO_INTEGRATION_TEST_BASE_H_
 #define __VTO_INTEGRATION_TEST_BASE_H_
 
-#include <opendnp3/LogToFile.h>
 #include <opendnp3/Loggable.h>
 #include <opendnp3/PhysicalLayerAsyncTCPClient.h>
 #include <opendnp3/PhysicalLayerAsyncTCPServer.h>

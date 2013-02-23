@@ -36,7 +36,6 @@
 #include <opendnp3/Util.h>
 #include <opendnp3/ToHex.h>
 
-#include <iostream>
 #include <sstream>
 
 using namespace std::chrono;

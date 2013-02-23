@@ -34,7 +34,6 @@
 
 #include <stddef.h>
 #include <limits>
-#include <iostream>
 
 #ifdef max
 #undef max

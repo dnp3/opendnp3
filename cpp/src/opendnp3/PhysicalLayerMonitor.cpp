@@ -33,7 +33,6 @@
 #include "LoggableMacros.h"
 
 #include <functional>
-#include <iostream>
 
 #include <assert.h>
 #include <opendnp3/Logger.h>

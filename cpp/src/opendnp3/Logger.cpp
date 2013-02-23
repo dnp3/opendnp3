@@ -31,7 +31,6 @@
 #include "Log.h"
 
 #include <assert.h>
-#include <iostream>
 
 using namespace std;
 
