@@ -64,7 +64,6 @@ cpp/src/opendnp3/LinkLayerRouter.cpp \
 cpp/src/opendnp3/LinkReceiverStates.cpp \
 cpp/src/opendnp3/LinkRoute.cpp \
 cpp/src/opendnp3/Log.cpp \
-cpp/src/opendnp3/LogEntryCircularBuffer.cpp \
 cpp/src/opendnp3/LogEntry.cpp \
 cpp/src/opendnp3/Loggable.cpp \
 cpp/src/opendnp3/Logger.cpp \
@@ -181,7 +180,6 @@ cpp/include/opendnp3/LinkConfig.h \
 cpp/include/opendnp3/LinkLayerConstants.h \
 cpp/include/opendnp3/Location.h \
 cpp/include/opendnp3/LogBase.h \
-cpp/include/opendnp3/LogEntryCircularBuffer.h \
 cpp/include/opendnp3/LogEntry.h \
 cpp/include/opendnp3/Logger.h \
 cpp/include/opendnp3/LogToStdio.h \
