@@ -66,10 +66,10 @@ bool FloatEqual(T a, T b, T eapllon = 1e-6)
 
 double SafeCastInt64ToDouble(int64_t aInput);
 
+#ifndef OPENDNP3_STRIP_LOG_MESSAGES
 void toUpperCase(std::string& aStr);
 void toLowerCase(std::string& aStr);
 
-#ifndef OPENDNP3_STRIP_LOG_MESSAGES
 std::string ToNormalizedString(const std::chrono::steady_clock::time_point& arTime);
 #endif
 

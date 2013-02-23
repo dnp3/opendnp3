@@ -31,6 +31,7 @@
 namespace opendnp3
 {
 
+#ifndef OPENDNP3_STRIP_LOG_MESSAGES
 std::string ConvertStackStateToString(StackState aState)
 {
 	switch(aState) {
@@ -44,6 +45,7 @@ std::string ConvertStackStateToString(StackState aState)
 		return "Undefined state";
 	}
 }
+#endif
 
 }
 

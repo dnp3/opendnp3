@@ -53,6 +53,7 @@ using namespace std::chrono;
 namespace opendnp3
 {
 
+#ifndef OPENDNP3_STRIP_LOG_MESSAGES
 std::string Month(int aMonth)
 {
 	switch(aMonth) {
@@ -83,6 +84,7 @@ std::string ToNormalizedString(const std::chrono::steady_clock::time_point& arTi
 	oss << ts << "." << fractional;
 	return oss.str();
 }
+#endif
 
 double SafeCastInt64ToDouble(int64_t aInput)
 {
@@ -102,6 +104,7 @@ double SafeCastInt64ToDouble(int64_t aInput)
 #endif
 }
 
+#ifndef OPENDNP3_STRIP_LOG_MESSAGES
 void toUpperCase(std::string& apStr)
 {
 	//from http://gethelp.devx.com/techtips/cpp_pro/10min/2002/Oct/10min1002-2.asp
@@ -112,5 +115,6 @@ void toLowerCase(std::string& apStr)
 	//from http://gethelp.devx.com/techtips/cpp_pro/10min/2002/Oct/10min1002-2.asp
 	std::transform(apStr.begin(), apStr.end(), apStr.begin(), (int(*)(int)) tolower);
 }
+#endif
 
 }

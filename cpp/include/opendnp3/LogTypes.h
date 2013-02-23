@@ -70,18 +70,16 @@ public:
 	/// Converts an integer to a FilterLevel
 	static FilterLevel ConvertIntToFilterLevel(int aLevel);
 
+#ifndef OPENDNP3_STRIP_LOG_MESSAGES
 	/// converts a single character to a filter level, returns -1 if an invalid character
 	static int GetFilterMask(char c);
 
 	/// converts a string of filter characters, ORing the values, returns -1 if an invalid character is present
 	static int GetFilterMask(const std::string& arg);
 
-#ifndef OPENDNP3_STRIP_LOG_MESSAGES
 	/// converts a filter level to its string representation
 	static std::string GetLevelString(FilterLevel aLevel);
-#endif 
 
-#ifndef OPENDNP3_STRIP_LOG_MESSAGES
 	/// converts an integer filter level to its string representation
 	static std::string GetFilterString(int aLevel);
 #endif

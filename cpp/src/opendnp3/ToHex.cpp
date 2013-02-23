@@ -31,6 +31,7 @@
 namespace opendnp3
 {
 
+#ifndef OPENDNP3_STRIP_LOG_MESSAGES
 char toHex(char c)
 {
 	if(c > 9) return 'A' + (c - 10);
@@ -43,6 +44,7 @@ std::string ByteToHex(uint8_t b)
 	oss << toHex((b & 0xf0) >> 4) << toHex(b & 0xf);
 	return oss.str();
 }
+#endif
 
 }
 

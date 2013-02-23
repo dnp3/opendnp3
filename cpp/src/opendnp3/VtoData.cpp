@@ -34,6 +34,7 @@
 namespace opendnp3
 {
 
+#ifndef OPENDNP3_STRIP_LOG_MESSAGES
 std::string ToString(VtoDataType aType)
 {
 	switch(aType) {
@@ -43,6 +44,7 @@ std::string ToString(VtoDataType aType)
 	default: return "Unknown VtoDataType";
 	}
 }
+#endif
 
 VtoData::VtoData() :
 	mSize(0), mType(VTODT_DATA)

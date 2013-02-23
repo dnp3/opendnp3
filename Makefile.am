@@ -90,7 +90,6 @@ cpp/src/opendnp3/ChannelStates.cpp \
 cpp/src/opendnp3/PointClass.cpp \
 cpp/src/opendnp3/PriLinkLayerStates.cpp \
 cpp/src/opendnp3/ProtocolUtil.cpp \
-cpp/src/opendnp3/QualityConverter.cpp \
 cpp/src/opendnp3/ResponseContext.cpp \
 cpp/src/opendnp3/SecLinkLayerStates.cpp \
 cpp/src/opendnp3/ShiftableBuffer.cpp \

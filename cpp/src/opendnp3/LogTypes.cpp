@@ -68,6 +68,7 @@ FilterLevel LogTypes::ConvertIntToFilterLevel(int aLevel)
 	}
 }
 
+#ifndef OPENDNP3_STRIP_LOG_MESSAGES
 int LogTypes::GetFilterMask(char c)
 {
 	switch(c) {
@@ -90,11 +91,11 @@ int LogTypes::GetFilterMask(const std::string& arg)
 	std::string copy(arg);
 	toLowerCase(copy);
 	int ret = 0;
-for(auto c: copy) ret |= GetFilterMask(c);
+	for(auto c: copy) ret |= GetFilterMask(c);
 	return ret;
 }
 
-#ifndef OPENDNP3_STRIP_LOG_MESSAGES
+
 std::string LogTypes::GetLevelString( FilterLevel aLevel )
 {
 	switch(aLevel) {
