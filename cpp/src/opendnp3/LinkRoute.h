@@ -62,10 +62,15 @@ public:
 		bool operator()(const LinkRoute& a, const LinkRoute& b) const;
 	};
 
+#ifndef OPENDNP3_STRIP_LOG_MESSAGES
 	std::string ToString() const;
+#endif
+
 };
 
+#ifndef OPENDNP3_STRIP_LOG_MESSAGES
 std::ostream& operator<<(std::ostream& oss, const LinkRoute&);
+#endif
 
 }
 

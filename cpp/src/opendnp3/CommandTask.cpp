@@ -62,10 +62,12 @@ void CommandTask::ConfigureRequest(APDU& arAPDU)
 	mCodes.pop_front();
 }
 
+#ifndef OPENDNP3_STRIP_LOG_MESSAGES
 std::string CommandTask::Name() const
 {
 	return "CommandTask";
 }
+#endif
 
 void CommandTask::OnFailure()
 {

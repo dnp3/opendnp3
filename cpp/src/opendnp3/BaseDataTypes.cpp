@@ -32,6 +32,8 @@ using namespace std;
 
 namespace opendnp3
 {
+
+#ifndef OPENDNP3_STRIP_LOG_MESSAGES
 std::string GetDataTypeName(DataTypes aType)
 {
 	switch(aType) {
@@ -49,7 +51,7 @@ std::string GetDataTypeName(DataTypes aType)
 		return "Unknown";
 	}
 }
-
+#endif
 
 
 // DataPoint
@@ -68,12 +70,14 @@ BoolDataPoint::BoolDataPoint(uint8_t aQuality, DataTypes aType, uint8_t aValueMa
 	mValueMask(aValueMask)
 {}
 
+#ifndef OPENDNP3_STRIP_LOG_MESSAGES
 std::string BoolDataPoint::ToString() const
 {
 	std::ostringstream oss;
 	oss << "Value: " << (GetValue() ? "true" : "false") << " Quality: " << static_cast<int>(GetQuality());
 	return oss.str();
 }
+#endif
 
 template<>
 bool ExceedsDeadband<double>(const double& val1, const double& val2, double aDeadband)

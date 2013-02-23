@@ -144,7 +144,9 @@ public:
 		mMSB |= arIIN.mMSB;
 	}
 
+#ifndef OPENDNP3_STRIP_LOG_MESSAGES
 	std::string ToString() const;
+#endif
 
 private:
 	uint8_t mLSB;

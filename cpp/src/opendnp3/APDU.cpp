@@ -172,7 +172,7 @@ void APDU::InterpretHeader()
 IAppHeader* APDU::ParseHeader() const
 {
 	if(mFragmentSize < 2) {
-		MACRO_THROW_EXCEPTION_WITH_CODE(Exception, GetSizeString(mFragmentSize), ALERR_INSUFFICIENT_DATA_FOR_FRAG);
+		MACRO_THROW_EXCEPTION_WITH_CODE(Exception, "Insufficent size", ALERR_INSUFFICIENT_DATA_FOR_FRAG);
 	}
 
 	// start by assuming that it's a request header since they have same starting structure
@@ -182,7 +182,7 @@ IAppHeader* APDU::ParseHeader() const
 
 	if( IsResponse(function) ) {
 		if(mFragmentSize < 4) {
-			MACRO_THROW_EXCEPTION_WITH_CODE(Exception, GetSizeString(mFragmentSize), ALERR_INSUFFICIENT_DATA_FOR_RESPONSE);
+			MACRO_THROW_EXCEPTION_WITH_CODE(Exception, "Insufficent size", ALERR_INSUFFICIENT_DATA_FOR_RESPONSE);
 		}
 
 		pHeader = ResponseHeader::Inst();
@@ -199,7 +199,7 @@ size_t APDU::ReadObjectHeader(size_t aOffset, size_t aRemainder)
 	ObjectHeaderField hdrData;
 
 	if(aRemainder < pHdr->GetSize()) {
-		MACRO_THROW_EXCEPTION_WITH_CODE(Exception, GetSizeString(aRemainder), ALERR_INSUFFICIENT_DATA_FOR_HEADER);
+		MACRO_THROW_EXCEPTION_WITH_CODE(Exception, "Insufficent size", ALERR_INSUFFICIENT_DATA_FOR_HEADER);
 	}
 
 	//Read the header data and select the correct object header based on this information
@@ -219,7 +219,7 @@ size_t APDU::ReadObjectHeader(size_t aOffset, size_t aRemainder)
 	}
 
 	if(aRemainder < pHdr->GetSize()) {
-		MACRO_THROW_EXCEPTION_WITH_CODE(Exception, GetSizeString(aRemainder), ALERR_INSUFFICIENT_DATA_FOR_HEADER);
+		MACRO_THROW_EXCEPTION_WITH_CODE(Exception, "Insufficent size", ALERR_INSUFFICIENT_DATA_FOR_HEADER);
 	}
 
 	aRemainder -= pHdr->GetSize();
@@ -603,6 +603,7 @@ QualifierCode APDU::GetContiguousQualifier(size_t aStart, size_t aStop)
 	}
 }
 
+#ifndef OPENDNP3_STRIP_LOG_MESSAGES
 std::string APDU::ToString() const
 {
 	ostringstream oss;
@@ -642,6 +643,7 @@ std::string APDU::ToString() const
 
 	return oss.str();
 }
+#endif
 
 }
 

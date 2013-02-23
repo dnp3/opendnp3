@@ -44,7 +44,9 @@ enum VtoDataType {
 	VTODT_DATA
 };
 
+#ifndef OPENDNP3_STRIP_LOG_MESSAGES
 std::string DLL_LOCAL ToString(VtoDataType aType);
+#endif
 
 class DLL_LOCAL VtoData
 {

@@ -50,12 +50,14 @@ enum ChannelState {
 	CS_SHUTDOWN = 4
 };
 
+#ifndef OPENDNP3_STRIP_LOG_MESSAGES
 /**
 * Converts a state enumeration to string representation
 * @param aState state enumeration
 * @return string representation
 */
 std::string ConvertChannelStateToString(ChannelState aState);
+#endif
 
 }
 

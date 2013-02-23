@@ -58,8 +58,11 @@ public:
 	virtual void SendConfirmed(LinkLayer*, const uint8_t*, size_t);
 	virtual void SendUnconfirmed(LinkLayer*, const uint8_t*, size_t);
 
+#ifndef OPENDNP3_STRIP_LOG_MESSAGES
 	//every concrete state implements this for logging purposes
 	virtual std::string Name() const = 0;
+#endif
+
 };
 
 //	@section desc Entry state for primary station

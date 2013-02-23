@@ -60,7 +60,10 @@ public:
 	virtual void OnResponse(AppLayerChannel*, APDU&);
 	virtual void OnTimeout(AppLayerChannel*);
 
+#ifndef OPENDNP3_STRIP_LOG_MESSAGES
 	virtual std::string Name() const = 0;
+#endif
+
 	virtual bool AcceptsResponse() {
 		return false;
 	}

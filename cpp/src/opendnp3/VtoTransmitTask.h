@@ -78,6 +78,7 @@ public:
 	 */
 	void ConfigureRequest(APDU& arAPDU);
 
+#ifndef OPENDNP3_STRIP_LOG_MESSAGES
 	/**
 	 * Returns the name of the task, as a string.
 	 *
@@ -86,6 +87,7 @@ public:
 	std::string Name() const {
 		return "VtoTransmitTask";
 	}
+#endif
 
 	/**
 	 * The transmission buffer for Virtual Terminal objects.  Each

@@ -107,9 +107,14 @@ ILinkContext* LinkLayerRouter::GetDestination(uint16_t aDest, uint16_t aSrc)
 	ILinkContext* pDest = GetContext(route);
 
 	if(pDest == NULL && mpLogger->IsEnabled(LEV_WARNING)) {
+
+#ifndef OPENDNP3_STRIP_LOG_MESSAGES
 		std::ostringstream oss;
 		oss << "Frame w/ unknown route: " << route;
 		LogEntry le(LEV_WARNING, mpLogger->GetName(), LOCATION, oss.str(), DLERR_UNKNOWN_ROUTE);
+#else
+		LogEntry le(LEV_WARNING, mpLogger->GetName(), LOCATION, "", DLERR_UNKNOWN_ROUTE);
+#endif
 		le.AddValue("SOURCE", aSrc);
 		le.AddValue("DESTINATION", aDest);
 		mpLogger->Log(le);

@@ -58,6 +58,7 @@ ControlCode IntToControlCode(int aField)
 
 #define TO_STRING_CASE(c) case (c): return #c;
 
+#ifndef OPENDNP3_STRIP_LOG_MESSAGES
 std::string ControlCodeToString(ControlCode aType)
 {
 	switch(aType) {
@@ -71,6 +72,7 @@ std::string ControlCodeToString(ControlCode aType)
 		return "Unknown";
 	}
 }
+#endif
 
 ControlRelayOutputBlock::ControlRelayOutputBlock(ControlCode aCode, uint8_t aCount, uint32_t aOnTime, uint32_t aOffTime) :
 	mRawCode(aCode),
@@ -87,6 +89,7 @@ ControlCode ControlRelayOutputBlock::GetCode() const
 	return IntToControlCode(mRawCode);
 }
 
+#ifndef OPENDNP3_STRIP_LOG_MESSAGES
 std::string ControlRelayOutputBlock::ToString() const
 {
 	std::ostringstream oss;
@@ -94,7 +97,7 @@ std::string ControlRelayOutputBlock::ToString() const
 	oss << " count: " << static_cast<size_t>(mCount) << " on: " << mOnTimeMS << " off: " << mOffTimeMS;
 	return oss.str();
 }
-
+#endif
 
 }
 

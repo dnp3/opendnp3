@@ -99,11 +99,13 @@ protected:
 		return true;
 	}
 
-
+#ifndef OPENDNP3_STRIP_LOG_MESSAGES
 	// override this descriptor, it's use in the Hex log messages
 	virtual std::string RecvString() const {
 		return "<-";
 	}
+#endif
+
 };
 
 class DLL_LOCAL ILowerLayer : protected virtual Loggable
@@ -124,10 +126,13 @@ private:
 
 	virtual void _Send(const uint8_t*, size_t) = 0;
 
+#ifndef OPENDNP3_STRIP_LOG_MESSAGES
 	// override this descriptor, it's use in the Hex log messages
 	virtual std::string SendString() const {
 		return "->";
 	}
+#endif
+
 };
 
 }

@@ -74,8 +74,10 @@ public:
 	// Called when a data update is received from the user layer
 	virtual void OnUnsolExpiration(Slave*);
 
+#ifndef OPENDNP3_STRIP_LOG_MESSAGES
 	// @return The name associated with the state
 	virtual std::string Name() const = 0;
+#endif
 
 	virtual bool AcceptsDeferredRequests() {
 		return false;

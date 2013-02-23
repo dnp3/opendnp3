@@ -90,7 +90,9 @@ struct DLL_LOCAL LinkHeader {
 	@param apBuff Buffer of at least 10 bytes */
 	void Write(uint8_t* apBuff) const;
 
+#ifndef OPENDNP3_STRIP_LOG_MESSAGES
 	std::string ToString() const;
+#endif
 
 	static uint8_t ControlByte(bool aIsMaster, bool aFcb, bool aFcvDfc, FuncCodes aFunc);
 

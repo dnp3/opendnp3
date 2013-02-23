@@ -349,6 +349,7 @@ public:
 	 */
 	static bool HasData(FunctionCodes aCode);
 
+#ifndef OPENDNP3_STRIP_LOG_MESSAGES
 	/**
 		Converts the APDU object into a human-readable string
 		representation.  The output should match the following syntax:
@@ -360,6 +361,7 @@ public:
 		@return				a string representation of the APDU object
 	 */
 	std::string ToString() const;
+#endif
 
 	bool operator==(const APDU& rhs);
 	bool operator!=(const APDU& rhs) {
@@ -402,11 +404,6 @@ private:
 	size_t GetPrefixSizeAndValidate(QualifierCode aCode, ObjectTypes aType);
 	size_t GetNumObjects(const IObjectHeader* apHeader, const uint8_t* pStart);
 
-	std::string GetSizeString(size_t aSize) const {
-		std::ostringstream oss;
-		oss << "Insufficient data for object header: " << aSize;
-		return oss.str();
-	}
 };
 
 }

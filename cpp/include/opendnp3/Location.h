@@ -38,25 +38,25 @@
 #define LOCATION ""
 #endif
 
-#ifndef OPENDNP3_SUPPRESS_EXCEPTION_DESCRIPTION
+#ifndef OPENDNP3_STRIP_LOG_MESSAGES
 #define MACRO_THROW_EXCEPTION(type, message) { throw type(LOCATION, message); }
 #else
 #define MACRO_THROW_EXCEPTION(type, message) throw type(LOCATION, "");
 #endif
 
-#ifndef OPENDNP3_SUPPRESS_EXCEPTION_DESCRIPTION
+#ifndef OPENDNP3_STRIP_LOG_MESSAGES
 #define MACRO_THROW_INDEX_OUT_OF_BOUNDS(index) { throw IndexOutOfBoundsException(LOCATION, index); }
 #else
 #define MACRO_THROW_INDEX_OUT_OF_BOUNDS(index) { throw  IndexOutOfBoundsException(LOCATION, index); }
 #endif
 
-#ifndef OPENDNP3_SUPPRESS_EXCEPTION_DESCRIPTION
+#ifndef OPENDNP3_STRIP_LOG_MESSAGES
 #define MACRO_THROW_EXCEPTION_WITH_CODE(type, message, code) { throw type(LOCATION, message, code); }
 #else
 #define MACRO_THROW_EXCEPTION_WITH_CODE(type, message, code) throw type(LOCATION, "", code);
 #endif
 
-#ifndef OPENDNP3_SUPPRESS_EXCEPTION_DESCRIPTION
+#ifndef OPENDNP3_STRIP_LOG_MESSAGES
 #define MACRO_THROW_EXCEPTION_COMPLEX(type, message) {\
 	std::ostringstream oss;\
 	oss << message;\
@@ -65,7 +65,7 @@
 #define MACRO_THROW_EXCEPTION_COMPLEX(type, message) throw type(LOCATION, "");
 #endif
 
-#ifndef OPENDNP3_SUPPRESS_EXCEPTION_DESCRIPTION
+#ifndef OPENDNP3_STRIP_LOG_MESSAGES
 #define MACRO_THROW_EXCEPTION_COMPLEX_WITH_CODE(type, message, code) {\
 	std::ostringstream oss; \
 	oss << message; \

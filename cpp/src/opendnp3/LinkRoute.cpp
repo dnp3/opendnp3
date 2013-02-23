@@ -50,6 +50,7 @@ bool LinkRoute::LessThan::operator ()(const LinkRoute& a, const LinkRoute& b) co
 	else return a.local < b.local;
 }
 
+#ifndef OPENDNP3_STRIP_LOG_MESSAGES
 std::string LinkRoute::ToString() const
 {
 	std::ostringstream oss;
@@ -61,6 +62,7 @@ std::ostream& operator<<(std::ostream& oss, const LinkRoute& arRoute)
 {
 	return oss << " Local: " << arRoute.local << " Remote: " << arRoute.remote;
 }
+#endif
 
 }
 

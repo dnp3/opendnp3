@@ -86,6 +86,7 @@ void LinkHeader::Write(uint8_t* apBuff) const
 	DNPCrc::AddCrc(apBuff, LI_CRC);
 }
 
+#ifndef OPENDNP3_STRIP_LOG_MESSAGES
 std::string LinkHeader::ToString() const
 {
 	ostringstream oss;
@@ -105,6 +106,7 @@ std::string LinkHeader::ToString() const
 
 	return oss.str();
 }
+#endif
 
 }
 

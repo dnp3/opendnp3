@@ -118,6 +118,7 @@ bool PhysicalLayerAsyncBase::State::CheckForClose()
 	else return false;
 }
 
+#ifndef OPENDNP3_STRIP_LOG_MESSAGES
 std::string PhysicalLayerAsyncBase::State::ConvertStateToString() const
 {
 	std::ostringstream oss;
@@ -127,6 +128,7 @@ std::string PhysicalLayerAsyncBase::State::ConvertStateToString() const
 
 	return oss.str();
 }
+#endif
 
 ///////////////////////////////////
 // PhysicalLayerAsyncBase

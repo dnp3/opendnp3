@@ -89,6 +89,7 @@ bool LogEntry :: GetValue(const std::string& arKey, int64_t& arValue) const
 	return GetAnyValue<int64_t>(arKey, arValue);
 }
 
+#ifndef OPENDNP3_STRIP_LOG_MESSAGES
 string LogEntry :: LogString(bool aUseLocation) const
 {
 	ostringstream oss;
@@ -102,6 +103,7 @@ string LogEntry :: LogString(bool aUseLocation) const
 
 	return oss.str();
 }
+#endif
 
 }
 

@@ -83,7 +83,11 @@ void ACS_Base::OnTimeout(AppLayerChannel*)
 
 void ACS_Base::ThrowInvalidState(const std::string& arLocation)
 {
+#ifndef OPENDNP3_STRIP_LOG_MESSAGES
 	MACRO_THROW_EXCEPTION_COMPLEX(InvalidStateException, "State: " << this->Name());
+#else
+	MACRO_THROW_EXCEPTION_COMPLEX(InvalidStateException, "");
+#endif
 }
 
 void ACS_Base::ProcessResponse(AppLayerChannel* c, APDU& arAPDU, bool aExpectFIR)

@@ -41,6 +41,7 @@
 
 #define LOGGER_BLOCK(logger, severity, string) ERROR_LOGGER_BLOCK(logger, severity, string, -1)
 
+#ifndef OPENDNP3_STRIP_LOG_MESSAGES
 #define ERROR_LOGGER_BLOCK(logger, severity, string, code)\
 	if(logger->IsEnabled(severity)){\
 		std::ostringstream somecrazyname_oss;\
@@ -48,5 +49,10 @@
 		logger->Log(severity, LOCATION, somecrazyname_oss.str(), code);\
 	}
 #else
+#define ERROR_LOGGER_BLOCK(logger, severity, string, code)\
+	if(logger->IsEnabled(severity)){\
+		logger->Log(severity, LOCATION, "", code); \
+	}
+#endif
 
 #endif

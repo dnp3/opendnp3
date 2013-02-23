@@ -65,7 +65,9 @@ public:
 
 	virtual void OnUnsolResponse(Master*, const APDU&);
 
+#ifndef OPENDNP3_STRIP_LOG_MESSAGES
 	virtual std::string Name() const = 0;
+#endif
 
 protected:
 

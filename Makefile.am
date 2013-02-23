@@ -68,7 +68,6 @@ cpp/src/opendnp3/LogEntryCircularBuffer.cpp \
 cpp/src/opendnp3/LogEntry.cpp \
 cpp/src/opendnp3/Loggable.cpp \
 cpp/src/opendnp3/Logger.cpp \
-cpp/src/opendnp3/LogToFile.cpp \
 cpp/src/opendnp3/LogToStdio.cpp \
 cpp/src/opendnp3/LogTypes.cpp \
 cpp/src/opendnp3/MultiplexingDataObserver.cpp \
@@ -186,7 +185,6 @@ cpp/include/opendnp3/LogBase.h \
 cpp/include/opendnp3/LogEntryCircularBuffer.h \
 cpp/include/opendnp3/LogEntry.h \
 cpp/include/opendnp3/Logger.h \
-cpp/include/opendnp3/LogToFile.h \
 cpp/include/opendnp3/LogToStdio.h \
 cpp/include/opendnp3/LogTypes.h \
 cpp/include/opendnp3/MasterConfig.h \
@@ -195,7 +193,6 @@ cpp/include/opendnp3/MasterStackConfig.h \
 cpp/include/opendnp3/ObjectInterfaces.h \
 cpp/include/opendnp3/Parsing.h \
 cpp/include/opendnp3/PointClass.h \
-cpp/include/opendnp3/QualityConverter.h \
 cpp/include/opendnp3/QualityMasks.h \
 cpp/include/opendnp3/SerialTypes.h \
 cpp/include/opendnp3/SimpleCommandHandler.h \

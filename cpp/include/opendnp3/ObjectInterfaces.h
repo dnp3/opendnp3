@@ -142,12 +142,15 @@ public:
 		        pObj->GetVariation() == this->GetVariation());
 	}
 
+#ifndef OPENDNP3_STRIP_LOG_MESSAGES
 	/**
 	 * Returns the name of the ObjectBase subclass as a string.
 	 *
 	 * @return			the name of the ObjectBase subclass
 	 */
 	virtual std::string Name() const = 0;
+#endif
+
 };
 
 /**

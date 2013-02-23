@@ -46,7 +46,9 @@ namespace opendnp3
 class DLL_LOCAL CopyableBuffer
 {
 
+#ifndef OPENDNP3_STRIP_LOG_MESSAGES
 	friend std::ostream& operator<<(std::ostream& output, const CopyableBuffer& arBuff);
+#endif
 
 public:
 	// Construct null buffer

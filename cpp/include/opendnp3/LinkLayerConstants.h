@@ -91,9 +91,11 @@ enum FuncCodes {
 	@return Returns FC_INVALID if byte is not a valid function code */
 FuncCodes ByteToFuncCode(uint8_t aByte);
 
+#ifndef OPENDNP3_STRIP_LOG_MESSAGES
 /** @param aCode Any function code
 	@return Returns string representation */
 std::string FuncCodeToString(FuncCodes aCode);
+#endif
 
 /// Masks for use with the CONTROL byte
 enum ControlMask {

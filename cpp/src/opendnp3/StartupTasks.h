@@ -49,9 +49,11 @@ public:
 	ClearRestartIIN(Logger*);
 
 	void ConfigureRequest(APDU& arAPDU);
+#ifndef OPENDNP3_STRIP_LOG_MESSAGES
 	std::string Name() const {
 		return "ClearRestartIIN";
 	}
+#endif
 };
 
 // Enables or disables unsolicited reporting
@@ -63,9 +65,11 @@ public:
 	void Set(bool aIsEnable, int aClassMask);
 
 	void ConfigureRequest(APDU& arAPDU);
+#ifndef OPENDNP3_STRIP_LOG_MESSAGES
 	std::string Name() const {
 		return "ConfigureUnsol";
 	}
+#endif
 
 private:
 	bool mIsEnable;
@@ -83,9 +87,11 @@ public:
 	void ConfigureRequest(APDU& arAPDU);
 	TaskResult _OnFinalResponse(const APDU&);
 
+#ifndef OPENDNP3_STRIP_LOG_MESSAGES
 	std::string Name() const {
 		return "TimeSync";
 	}
+#endif
 
 private:
 	ITimeSource* mpTimeSrc;

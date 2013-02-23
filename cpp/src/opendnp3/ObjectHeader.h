@@ -88,7 +88,9 @@ public:
 	void Get(const uint8_t* apStart, ObjectHeaderField& arData) const;
 	void Set(uint8_t* apStart, uint8_t aGrp, uint8_t aVar, QualifierCode aQual) const;
 
+#ifndef OPENDNP3_STRIP_LOG_MESSAGES
 	virtual std::string ToString(const uint8_t* apStart) const = 0;
+#endif
 
 	static QualifierCode ByteToQualifierCode(uint8_t aCode);
 };
@@ -123,9 +125,12 @@ class DLL_LOCAL AllObjectsHeader : public IObjectHeader
 		return OHT_ALL_OBJECTS;
 	}
 
+#ifndef OPENDNP3_STRIP_LOG_MESSAGES
 	virtual std::string ToString(const uint8_t* apStart) const {
 		return "All Objects";
 	}
+#endif
+
 };
 
 template <class T, ObjectHeaderTypes U>
@@ -157,6 +162,7 @@ class DLL_LOCAL RangedHeader : public IRangeHeader
 		T::Write(apStart + 3 + T::Size, static_cast<typename T::Type>(arInfo.Stop));
 	}
 
+#ifndef OPENDNP3_STRIP_LOG_MESSAGES
 	virtual std::string ToString(const uint8_t* apStart) const {
 		std::ostringstream oss;
 		RangeInfo ri;
@@ -164,6 +170,7 @@ class DLL_LOCAL RangedHeader : public IRangeHeader
 		oss << "Start: " << ri.Start << " Stop: " << ri.Stop;
 		return oss.str();
 	}
+#endif
 
 	static size_t MaxRange() {
 		return T::Max;
@@ -202,11 +209,13 @@ class DLL_LOCAL CountHeader : public ICountHeader
 		return T::Max;
 	}
 
+#ifndef OPENDNP3_STRIP_LOG_MESSAGES
 	virtual std::string ToString(const uint8_t* apStart) const {
 		std::ostringstream oss;
 		oss << "Count: " << this->GetCount(apStart);
 		return oss.str();
 	}
+#endif
 
 	const static size_t Size = 3 + T::Size;
 };

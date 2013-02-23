@@ -38,6 +38,7 @@
 namespace opendnp3
 {
 
+#ifndef OPENDNP3_STRIP_LOG_MESSAGES
 char DLL_LOCAL toHex(char c);
 std::string DLL_LOCAL ByteToHex(uint8_t b);
 
@@ -59,6 +60,8 @@ std::string DLL_LOCAL TypeToHex(T x)
 {
 	return toHex(reinterpret_cast<uint8_t*>(&x), sizeof(T), true);
 }
+#endif
+
 }
 
 #endif

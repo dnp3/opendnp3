@@ -130,8 +130,10 @@ public:
 	// @return Total frame size based on user data length
 	static size_t CalcFrameSize(size_t aDataLength);
 
+#ifndef OPENDNP3_STRIP_LOG_MESSAGES
 	/** @return String representation of the frame */
 	std::string ToString() const;
+#endif
 
 	/** Validates FT3 user data integriry
 		@param apBody Beginning of the FT3 user data

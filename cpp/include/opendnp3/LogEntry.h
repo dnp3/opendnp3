@@ -76,10 +76,12 @@ public:
 		return mFilterLevel;
 	}
 
+#ifndef OPENDNP3_STRIP_LOG_MESSAGES
 	/// @return the timestamp of the message as a string
 	std::string			GetTimeString() const {
 		return ToNormalizedString(mTime);
 	}
+#endif
 
 	/// @return the timestamp of the message
 	std::chrono::high_resolution_clock::time_point GetTimeStamp() const {
@@ -91,9 +93,11 @@ public:
 		return mErrorCode;
 	}
 
+#ifndef OPENDNP3_STRIP_LOG_MESSAGES
 	/// @param aUseLocation if true, the location information is incorporated
 	/// @return String representation of the entire entry
 	std::string			LogString(bool aUseLocation = false) const;
+#endif
 
 	/**
 	* Retrieve a value of the attribute map

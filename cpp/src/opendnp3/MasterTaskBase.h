@@ -104,12 +104,14 @@ public:
 	 */
 	virtual void OnFailure() {}
 
+#ifndef OPENDNP3_STRIP_LOG_MESSAGES
 	/**
 	 * Returns the name of the task.
 	 *
 	 * @return			the name of the task
 	 */
 	virtual std::string Name() const = 0;
+#endif
 
 protected:
 

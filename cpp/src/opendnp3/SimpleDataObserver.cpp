@@ -44,28 +44,38 @@ void SimpleDataObserver::_End()
 
 void SimpleDataObserver::_Update(const Binary& arPoint, size_t aIndex)
 {
+#ifndef OPENDNP3_STRIP_LOG_MESSAGES
 	std::cout << arPoint.ToString() << " : " << aIndex << std::endl;
+#endif
 }
 
 void SimpleDataObserver::_Update(const Analog& arPoint, size_t aIndex)
 {
+#ifndef OPENDNP3_STRIP_LOG_MESSAGES
 	std::cout << arPoint.ToString() << " : " << aIndex << std::endl;
+#endif
 }
 
 void SimpleDataObserver::_Update(const Counter& arPoint, size_t aIndex)
 {
+#ifndef OPENDNP3_STRIP_LOG_MESSAGES
 	std::cout << arPoint.ToString() << " : " << aIndex << std::endl;
+#endif
 }
 
 
 void SimpleDataObserver::_Update(const ControlStatus& arPoint, size_t aIndex)
 {
+#ifndef OPENDNP3_STRIP_LOG_MESSAGES
 	std::cout << arPoint.ToString() << " : " << aIndex << std::endl;
+#endif
 }
 
 void SimpleDataObserver::_Update(const SetpointStatus& arPoint, size_t aIndex)
 {
+#ifndef OPENDNP3_STRIP_LOG_MESSAGES
 	std::cout << arPoint.ToString() << " : " << aIndex << std::endl;
+#endif
 }
 
 NullDataObserver NullDataObserver::mInstance;

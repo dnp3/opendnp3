@@ -29,10 +29,8 @@
 #ifndef __BASE_DATA_TYPES_H_
 #define __BASE_DATA_TYPES_H_
 
-
 #include "Types.h"
 #include "QualityMasks.h"
-#include "QualityConverter.h"
 
 #include <sstream>
 #include <ostream>
@@ -116,7 +114,9 @@ public:
 	virtual void SetQuality(uint8_t aQuality);
 	void SetTime(millis_t aTime);
 
+#ifndef OPENDNP3_STRIP_LOG_MESSAGES
 	virtual std::string ToString() const = 0;
+#endif
 
 protected:
 
@@ -173,7 +173,9 @@ public:
 
 	bool ShouldGenerateEvent(const BoolDataPoint& arRHS, double aDeadband, uint32_t aLastReportedVal) const;
 
+#ifndef OPENDNP3_STRIP_LOG_MESSAGES
 	std::string ToString() const;
+#endif
 
 	bool operator==(const BoolDataPoint& rhs) {
 		return GetValue() == rhs.GetValue() && GetQuality() == rhs.GetQuality();
@@ -257,9 +259,11 @@ public:
 	typedef T Type;
 
 	static const T MAX_VALUE;
-	static const T MIN_VALUE;
 
+	static const T MIN_VALUE;
+#ifndef OPENDNP3_STRIP_LOG_MESSAGES
 	std::string ToString() const;
+#endif
 
 	bool operator==(const TypedDataPoint<T>& rhs) {
 		return GetValue() == rhs.GetValue() && GetQuality() == rhs.GetQuality();
@@ -296,6 +300,7 @@ bool TypedDataPoint<T>::ShouldGenerateEvent(const TypedDataPoint<T>& arRHS, doub
 	return ExceedsDeadband<T>(arRHS.GetValue(), aLastReportedVal, aDeadband);
 }
 
+#ifndef OPENDNP3_STRIP_LOG_MESSAGES
 template <class T>
 std::string TypedDataPoint<T>::ToString() const
 {
@@ -303,6 +308,7 @@ std::string TypedDataPoint<T>::ToString() const
 	oss << "Value: " << GetValue() << " Quality: " << static_cast<int>(GetQuality());
 	return oss.str();
 }
+#endif
 
 }
 

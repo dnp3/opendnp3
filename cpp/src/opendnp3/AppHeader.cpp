@@ -98,6 +98,7 @@ bool IINField::operator==(const IINField& arRHS) const
 
 #define MACRO_IIN_TO_STRING(field) if(Get##field()) oss << " "#field;
 
+#ifndef OPENDNP3_STRIP_LOG_MESSAGES
 std::string IINField::ToString() const
 {
 	ostringstream oss;
@@ -126,6 +127,7 @@ std::string IINField::ToString() const
 
 	return oss.str();
 }
+#endif
 
 void IAppHeader::SetControl(uint8_t* apStart, const AppControlField& arControl) const
 {

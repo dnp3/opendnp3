@@ -64,10 +64,15 @@ public:
 	virtual void OnLayerClose(PhysicalLayerMonitor* apContext) = 0;
 
 	virtual ChannelState GetState() const = 0;
+#ifndef OPENDNP3_STRIP_LOG_MESSAGES
 	virtual std::string Name() const = 0;
+#endif
 	virtual bool IsShuttingDown() const = 0;
 
+#ifndef OPENDNP3_STRIP_LOG_MESSAGES
 	std::string ConvertToString();
+#endif
+
 };
 
 class DLL_LOCAL MonitorStateActions

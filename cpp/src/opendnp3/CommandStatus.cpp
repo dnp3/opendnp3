@@ -55,6 +55,7 @@ CommandStatus IntToCommandStatus(int aField)
 
 #define TO_STRING_CASE(c) case (c): return #c;
 
+#ifndef OPENDNP3_STRIP_LOG_MESSAGES
 std::string ToString(CommandStatus aType)
 {
 	switch(aType) {
@@ -72,6 +73,7 @@ std::string ToString(CommandStatus aType)
 		return "Unknown";
 	}
 }
+#endif
 
 }
 

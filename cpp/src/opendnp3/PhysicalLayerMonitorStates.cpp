@@ -69,12 +69,14 @@ void MonitorStateActions::AsyncOpen(PhysicalLayerMonitor* apContext)
 
 /* --- IMonitorState --- */
 
+#ifndef OPENDNP3_STRIP_LOG_MESSAGES
 std::string IMonitorState::ConvertToString()
 {
 	std::ostringstream oss;
 	oss << this->Name() << "(" << ConvertChannelStateToString(this->GetState()) << ")";
 	return oss.str();
 }
+#endif
 
 /* --- ExceptsOnLayerOpen --- */
 

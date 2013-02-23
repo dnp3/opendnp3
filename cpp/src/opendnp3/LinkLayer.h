@@ -154,9 +154,11 @@ private:
 	/* Events - NVII delegates from ILayerDown and Events produced internally */
 	void _Send(const uint8_t*, size_t);
 
+#ifndef OPENDNP3_STRIP_LOG_MESSAGES
 	std::string SendString() {
 		return "~>";
 	}
+#endif
 
 	ILinkRouter* mpRouter;
 	PriStateBase* mpPriState;

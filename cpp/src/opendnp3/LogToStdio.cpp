@@ -46,8 +46,10 @@ void LogToStdio::SetPrintLocation(bool aPrintLocation)
 
 void LogToStdio::Log(const LogEntry& arEntry)
 {
+#ifndef OPENDNP3_STRIP_LOG_MESSAGES
 	std::unique_lock<std::mutex> lock(mMutex);
 	std::cout << arEntry.LogString(mPrintLocation) << std::endl;
+#endif
 }
 
 } //end ns

@@ -65,9 +65,10 @@ public:
 	bool ContinueSend(); // return true if
 	void SignalSendSuccess();
 	void SignalSendFailure();
-
+#ifndef OPENDNP3_STRIP_LOG_MESSAGES
 	/* Events - NVII delegates from ILayerUp/ILayerDown and Events produced internally */
 	static std::string ToString(uint8_t aHeader);
+#endif
 
 private:
 

@@ -34,6 +34,7 @@
 namespace opendnp3
 {
 
+#ifndef OPENDNP3_STRIP_LOG_MESSAGES
 const FilterAssoc LogTypes::filters[LogTypes::NUM_FILTER] = {
 	{LEV_DEBUG, 'd'},
 	{LEV_COMM, 'c'},
@@ -43,6 +44,7 @@ const FilterAssoc LogTypes::filters[LogTypes::NUM_FILTER] = {
 	{LEV_ERROR, 'e'},
 	{LEV_EVENT, 'v'}
 };
+#endif
 
 int LogTypes::FilterLevelToMask(FilterLevel aFilter)
 {
@@ -92,6 +94,7 @@ for(auto c: copy) ret |= GetFilterMask(c);
 	return ret;
 }
 
+#ifndef OPENDNP3_STRIP_LOG_MESSAGES
 std::string LogTypes::GetLevelString( FilterLevel aLevel )
 {
 	switch(aLevel) {
@@ -120,6 +123,7 @@ std::string LogTypes::GetFilterString(int aLevel)
 
 	return oss.str();
 }
+#endif
 
 }
 

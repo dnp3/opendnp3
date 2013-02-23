@@ -50,7 +50,6 @@ public:
 
 	typedef bool ValueType;
 	typedef BinaryQuality QualityType;
-	typedef QualityConverter<BinaryQualInfo> QualConverter;
 
 	// Describes the static data type of the measurement as an enum
 	static const DataTypes MeasEnum = DT_BINARY;
@@ -84,7 +83,6 @@ public:
 
 	typedef bool ValueType;
 	typedef ControlQuality QualityType;
-	typedef QualityConverter<ControlQualInfo> QualConverter;
 
 	static const DataTypes MeasEnum = DT_CONTROL_STATUS;
 
@@ -117,7 +115,6 @@ public:
 
 	typedef double ValueType;
 	typedef AnalogQuality QualityType;
-	typedef QualityConverter<AnalogQualInfo> QualConverter;
 
 	static const DataTypes MeasEnum = DT_ANALOG;
 
@@ -149,7 +146,6 @@ public:
 
 	typedef uint8_t ValueType;
 	typedef CounterQuality QualityType;
-	typedef QualityConverter<CounterQualInfo> QualConverter;
 
 	static const int ONLINE = CQ_ONLINE;
 
@@ -179,7 +175,6 @@ public:
 
 	typedef double ValueType;
 	typedef SetpointQuality QualityType;
-	typedef QualityConverter<SetpointQualInfo> QualConverter;
 
 	static const int ONLINE = PQ_ONLINE;
 

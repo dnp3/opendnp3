@@ -164,6 +164,7 @@ bool IsResponse(FunctionCodes aCode);
 /// @return true if the function is a request, false otherwise
 bool IsRequest(FunctionCodes aCode);
 
+#ifndef OPENDNP3_STRIP_LOG_MESSAGES
 /**
 * Converts a function code to string representation
 *
@@ -171,6 +172,7 @@ bool IsRequest(FunctionCodes aCode);
 * @return string representation of the code
 */
 std::string FunctionCodeToString(FunctionCodes aCode);
+#endif
 
 }
 

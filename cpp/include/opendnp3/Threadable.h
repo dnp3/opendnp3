@@ -62,10 +62,6 @@ public:
 
 	void ResetStopRequest();
 
-	virtual std::string Description() const {
-		return "Undescribed threadable";
-	}
-
 protected:
 
 

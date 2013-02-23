@@ -48,6 +48,7 @@ bool IsRequest(FunctionCodes aCode)
 	}
 }
 
+#ifndef OPENDNP3_STRIP_LOG_MESSAGES
 std::string FunctionCodeToString(FunctionCodes aCode)
 {
 	switch(aCode) {
@@ -92,5 +93,6 @@ std::string FunctionCodeToString(FunctionCodes aCode)
 	default: return "Undefined";
 	}
 }
+#endif
 
 }

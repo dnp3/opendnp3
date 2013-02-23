@@ -63,6 +63,7 @@ enum CommandStatus {
 */
 CommandStatus IntToCommandStatus(int aField);
 
+#ifndef OPENDNP3_STRIP_LOG_MESSAGES
 /**
 * Converts a CommandStatus enumeration to string representation
 *
@@ -70,6 +71,7 @@ CommandStatus IntToCommandStatus(int aField);
 * @return string representation of the command status
 */
 std::string ToString(CommandStatus aCode);
+#endif
 
 }
 

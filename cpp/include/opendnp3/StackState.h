@@ -40,8 +40,9 @@ enum StackState {
 	SS_UNKNOWN = 2
 };
 
-
+#ifndef OPENDNP3_STRIP_LOG_MESSAGES
 std::string ConvertStackStateToString(StackState aState);
+#endif
 
 }
 

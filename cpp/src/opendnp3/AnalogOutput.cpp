@@ -48,12 +48,14 @@ bool AnalogOutputInt16::operator==(const AnalogOutputInt16& arRHS) const
 	return mValue == arRHS.mValue;
 }
 
+#ifndef OPENDNP3_STRIP_LOG_MESSAGES
 std::string AnalogOutputInt16::ToString() const
 {
 	ostringstream oss;
 	oss << "AnalogOutputInt16: " << mValue;
 	return oss.str();
 }
+#endif
 
 AnalogOutputInt32::AnalogOutputInt32(int32_t aValue) : AnalogOutput(aValue)
 {}
@@ -66,12 +68,14 @@ bool AnalogOutputInt32::operator==(const AnalogOutputInt32& arRHS) const
 	return mValue == arRHS.mValue;
 }
 
+#ifndef OPENDNP3_STRIP_LOG_MESSAGES
 std::string AnalogOutputInt32::ToString() const
 {
 	ostringstream oss;
 	oss << "AnalogOutputInt32: " << mValue;
 	return oss.str();
 }
+#endif
 
 AnalogOutputFloat32::AnalogOutputFloat32(float aValue) : AnalogOutput(aValue)
 {}
@@ -84,12 +88,14 @@ bool AnalogOutputFloat32::operator==(const AnalogOutputFloat32& arRHS) const
 	return mValue == arRHS.mValue;
 }
 
+#ifndef OPENDNP3_STRIP_LOG_MESSAGES
 std::string AnalogOutputFloat32::ToString() const
 {
 	ostringstream oss;
 	oss << "AnalogOutputFloat32: " << mValue;
 	return oss.str();
 }
+#endif
 
 AnalogOutputDouble64::AnalogOutputDouble64(double aValue) : AnalogOutput(aValue)
 {}
@@ -102,12 +108,14 @@ bool AnalogOutputDouble64::operator==(const AnalogOutputDouble64& arRHS) const
 	return mValue == arRHS.mValue;
 }
 
+#ifndef OPENDNP3_STRIP_LOG_MESSAGES
 std::string AnalogOutputDouble64::ToString() const
 {
 	ostringstream oss;
 	oss << "AnalogOutputDouble64: " << mValue;
 	return oss.str();
 }
+#endif
 
 }
 

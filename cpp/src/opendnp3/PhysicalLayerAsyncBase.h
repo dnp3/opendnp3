@@ -69,7 +69,9 @@ class DLL_LOCAL PhysicalLayerAsyncBase : public IPhysicalLayerAsync, public Logg
 		bool CanWrite() const;
 
 		bool CallbacksPending() const;
+#ifndef OPENDNP3_STRIP_LOG_MESSAGES
 		std::string ConvertStateToString() const;
+#endif
 
 		bool CheckForClose();
 	};
@@ -114,9 +116,11 @@ public:
 		return mState.CanWrite();
 	}
 
+#ifndef OPENDNP3_STRIP_LOG_MESSAGES
 	std::string ConvertStateToString() const {
 		return mState.ConvertStateToString();
 	}
+#endif
 
 	/* Implement IPhysicalLayerAsync - Events from the outside */
 	void AsyncOpen();

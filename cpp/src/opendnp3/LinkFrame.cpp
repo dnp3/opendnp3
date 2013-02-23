@@ -52,11 +52,13 @@ LinkFrame::~LinkFrame()
 
 }
 
+#ifndef OPENDNP3_STRIP_LOG_MESSAGES
 ostream& operator<<(ostream& output, const LinkFrame& f)
 {
 	output << f.ToString();
 	return output;  // for multiple << operators.
 }
+#endif
 
 bool LinkFrame::operator==(const LinkFrame& arRHS) const
 {
@@ -206,10 +208,12 @@ void LinkFrame::WriteUserData(const uint8_t* apSrc, uint8_t* apDest, size_t aLen
 	WriteUserData(apSrc + num, apDest + num + 2, aLength - num); //tail recursive
 }
 
+#ifndef OPENDNP3_STRIP_LOG_MESSAGES
 std::string LinkFrame::ToString() const
 {
 	return mHeader.ToString();
 }
+#endif
 
 } //end namespace
 

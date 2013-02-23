@@ -158,6 +158,7 @@ void TransportLayer::_OnLowerLayerDown()
 // Helpers
 ///////////////////////////////////////
 
+#ifndef OPENDNP3_STRIP_LOG_MESSAGES
 std::string TransportLayer::ToString(uint8_t aHeader)
 {
 	std::ostringstream oss;
@@ -167,6 +168,7 @@ std::string TransportLayer::ToString(uint8_t aHeader)
 	oss << "#" << static_cast<int>(aHeader & TL_HDR_SEQ);
 	return oss.str();
 }
+#endif
 
 } //end namespace
 

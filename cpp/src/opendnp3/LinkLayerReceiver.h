@@ -65,23 +65,12 @@ public:
 	*/
 	void OnRead(size_t aNumBytes);
 
-	/*
-	// @return Returns true if a call to PushFrame() will succeed
-	bool HasFrame();
-
-	// Calls the router with the next frames header and/or payload
-	void PushFrame();
-	*/
-
 	size_t NumWriteBytes() const {
 		return mBuffer.NumWriteBytes();
 	}
 	uint8_t* WriteBuff() const {
 		return mBuffer.WriteBuff();
 	}
-
-	//size_t NumReadBytes() const { return mBuffer.NumReadBytes(); }
-
 
 private:
 
