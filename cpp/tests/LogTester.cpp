@@ -67,8 +67,9 @@ int LogTester::NextErrorCode()
 {
 	LogEntry le;
 	while(!mBuffer.empty()) {
-		if(mBuffer.front().GetErrorCode() >= 0) {
-			mBuffer.pop();
+		le = mBuffer.front();
+		mBuffer.pop();
+		if(le.GetErrorCode() >= 0) {						
 			return le.GetErrorCode();
 		}
 	}
