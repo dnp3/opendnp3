@@ -67,7 +67,6 @@ cpp/src/opendnp3/Log.cpp \
 cpp/src/opendnp3/LogEntry.cpp \
 cpp/src/opendnp3/Loggable.cpp \
 cpp/src/opendnp3/Logger.cpp \
-cpp/src/opendnp3/LogToStdio.cpp \
 cpp/src/opendnp3/LogTypes.cpp \
 cpp/src/opendnp3/MultiplexingDataObserver.cpp \
 cpp/src/opendnp3/ObjectHeader.cpp \
@@ -92,8 +91,6 @@ cpp/src/opendnp3/ProtocolUtil.cpp \
 cpp/src/opendnp3/ResponseContext.cpp \
 cpp/src/opendnp3/SecLinkLayerStates.cpp \
 cpp/src/opendnp3/ShiftableBuffer.cpp \
-cpp/src/opendnp3/SimpleCommandHandler.cpp \
-cpp/src/opendnp3/SimpleDataObserver.cpp \
 cpp/src/opendnp3/SlaveConfig.cpp \
 cpp/src/opendnp3/Slave.cpp \
 cpp/src/opendnp3/SlaveEventBuffer.cpp \
@@ -122,6 +119,15 @@ cpp/src/opendnp3/VtoRouter.cpp \
 cpp/src/opendnp3/VtoRouterSettings.cpp \
 cpp/src/opendnp3/VtoTransmitTask.cpp \
 cpp/src/opendnp3/VtoWriter.cpp
+
+if OPENDNP3_NO_MOCKS
+	
+else
+  libopendnp3_la_SOURCES += \	
+	cpp/src/opendnp3/LogToStdio.cpp \
+	cpp/src/opendnp3/SimpleCommandHandler.cpp \
+	cpp/src/opendnp3/SimpleDataObserver.cpp
+endif
 
 if OPENDNP3_NO_MASTER
   AM_CXXFLAGS += -DOPENDNP3_NO_MASTER
@@ -290,6 +296,7 @@ cpp/tests/TransportScalabilityTestObject.cpp \
 cpp/tests/TransportStackPair.cpp \
 cpp/tests/TransportTestObject.cpp \
 cpp/tests/WrappedTcpPipe.cpp
+
 
 if OPENDNP3_NO_MASTER
         dnp3test_CPPFLAGS += -DOPENDNP3_NO_MASTER

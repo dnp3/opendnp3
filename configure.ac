@@ -42,6 +42,15 @@ AC_ARG_WITH([lcov],
 	AC_MSG_NOTICE([--with-lcov=yes])],
 	[AC_MSG_NOTICE([--with-lcov=no])])
 
+AC_ARG_ENABLE([opendnp3nomocks],
+     [  --enable-opendnp3nomocks    Build library w/o mock interface implementations],
+     [case "${enableval}" in
+       yes) opendnp3nomocks=true ;;
+       no)  opendnp3nomocks=false ;;
+       *) AC_MSG_ERROR([bad value ${enableval} for --enable-opendnp3nomocks]) ;;
+     esac],[debug=false])
+AM_CONDITIONAL([OPENDNP3_NO_MOCKS], [test x$opendnp3nomocks = xtrue])
+
 AC_ARG_ENABLE([opendnp3nomaster],
      [  --enable-opendnp3dnpmaster    Build library w/o master support],
      [case "${enableval}" in
