@@ -117,7 +117,6 @@ cpp/src/opendnp3/VtoEndpointImpl.cpp \
 cpp/src/opendnp3/VtoReader.cpp \
 cpp/src/opendnp3/VtoRouter.cpp \
 cpp/src/opendnp3/VtoRouterSettings.cpp \
-cpp/src/opendnp3/VtoTransmitTask.cpp \
 cpp/src/opendnp3/VtoWriter.cpp
 
 if OPENDNP3_NO_MOCKS
@@ -144,7 +143,8 @@ else
 	cpp/src/opendnp3/QueuedCommandProcessor.cpp \
 	cpp/src/opendnp3/ResponseLoader.cpp \
 	cpp/src/opendnp3/StartupTasks.cpp \
-	cpp/src/opendnp3/TrackingTaskGroup.cpp
+	cpp/src/opendnp3/TrackingTaskGroup.cpp \
+	cpp/src/opendnp3/VtoTransmitTask.cpp
 endif
 
 if OPENDNP3_NO_SERIAL
