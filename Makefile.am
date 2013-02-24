@@ -269,7 +269,6 @@ cpp/tests/TestPhysicalLayerAsyncSerial.cpp \
 cpp/tests/TestPhysicalLayerAsyncTCP.cpp \
 cpp/tests/TestPhysicalLayerLoopback.cpp \
 cpp/tests/TestPhysicalLayerMonitor.cpp \
-cpp/tests/TestQualityMasks.cpp \
 cpp/tests/TestShiftableBuffer.cpp \
 cpp/tests/TestSlave.cpp \
 cpp/tests/TestSlaveEventBuffer.cpp \
