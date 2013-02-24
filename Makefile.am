@@ -25,11 +25,6 @@ cpp/src/opendnp3/AppLayer.cpp \
 cpp/src/opendnp3/ApplicationStack.cpp \
 cpp/src/opendnp3/ASIOExecutor.cpp \
 cpp/src/opendnp3/AsyncLayerInterfaces.cpp \
-cpp/src/opendnp3/AsyncTaskGroup.cpp \
-cpp/src/opendnp3/AsyncTaskBase.cpp \
-cpp/src/opendnp3/AsyncTaskContinuous.cpp \
-cpp/src/opendnp3/AsyncTaskNonPeriodic.cpp \
-cpp/src/opendnp3/AsyncTaskPeriodic.cpp \
 cpp/src/opendnp3/BaseDataTypes.cpp \
 cpp/src/opendnp3/BufferTypes.cpp \
 cpp/src/opendnp3/ChangeBuffer.cpp \
@@ -132,6 +127,11 @@ if OPENDNP3_NO_MASTER
   AM_CXXFLAGS += -DOPENDNP3_NO_MASTER
 else
   libopendnp3_la_SOURCES += \
+	cpp/src/opendnp3/AsyncTaskGroup.cpp \
+	cpp/src/opendnp3/AsyncTaskBase.cpp \
+	cpp/src/opendnp3/AsyncTaskContinuous.cpp \
+	cpp/src/opendnp3/AsyncTaskNonPeriodic.cpp \
+	cpp/src/opendnp3/AsyncTaskPeriodic.cpp \
 	cpp/src/opendnp3/MasterStackImpl.cpp \
 	cpp/src/opendnp3/ConstantCommandProcessor.cpp \
 	cpp/src/opendnp3/CommandTask.cpp \
