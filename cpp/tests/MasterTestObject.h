@@ -31,6 +31,7 @@
 
 #include "MockExecutor.h"
 #include "LogTester.h"
+#include "MockTimeSource.h"
 
 #include <opendnp3/Master.h>
 #include <opendnp3/AsyncTaskGroup.h>

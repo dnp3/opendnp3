@@ -37,6 +37,7 @@
 #include "LogTester.h"
 #include "MockCommandHandler.h"
 #include "MockAppLayer.h"
+#include "MockTimeManager.h"
 
 namespace opendnp3
 {

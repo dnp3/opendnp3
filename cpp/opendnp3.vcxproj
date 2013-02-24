@@ -320,7 +320,6 @@
     <ClCompile Include="src\opendnp3\LinkRoute.cpp" />
     <ClCompile Include="src\opendnp3\Log.cpp" />
     <ClCompile Include="src\opendnp3\LogEntry.cpp" />
-    <ClCompile Include="src\opendnp3\LogEntryCircularBuffer.cpp" />
     <ClCompile Include="src\opendnp3\Loggable.cpp" />
     <ClCompile Include="src\opendnp3\Logger.cpp" />
     <ClCompile Include="src\opendnp3\LogToStdio.cpp" />
@@ -350,7 +349,6 @@
     <ClCompile Include="src\opendnp3\PointClass.cpp" />
     <ClCompile Include="src\opendnp3\PriLinkLayerStates.cpp" />
     <ClCompile Include="src\opendnp3\ProtocolUtil.cpp" />
-    <ClCompile Include="src\opendnp3\QualityConverter.cpp" />
     <ClCompile Include="src\opendnp3\QueuedCommandProcessor.cpp" />
     <ClCompile Include="src\opendnp3\ResponseContext.cpp" />
     <ClCompile Include="src\opendnp3\ResponseLoader.cpp" />

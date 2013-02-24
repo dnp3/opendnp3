@@ -116,6 +116,8 @@
     <ClInclude Include="tests\MockLowerLayer.h" />
     <ClInclude Include="tests\MockPhysicalLayerAsync.h" />
     <ClInclude Include="tests\MockPhysicalLayerMonitor.h" />
+    <ClInclude Include="tests\MockTimeManager.h" />
+    <ClInclude Include="tests\MockTimeSource.h" />
     <ClInclude Include="tests\MockUpperLayer.h" />
     <ClInclude Include="tests\PhysicalLayerWrapper.h" />
     <ClInclude Include="tests\PhysicalLayerWrapperFactory.h" />
@@ -164,6 +166,7 @@
     <ClCompile Include="tests\MockLowerLayer.cpp" />
     <ClCompile Include="tests\MockPhysicalLayerAsync.cpp" />
     <ClCompile Include="tests\MockPhysicalLayerMonitor.cpp" />
+    <ClCompile Include="tests\MockTimeSource.cpp" />
     <ClCompile Include="tests\MockUpperLayer.cpp" />
     <ClCompile Include="tests\PhysicalLayerWrapper.cpp" />
     <ClCompile Include="tests\PhysLoopback.cpp" />
@@ -205,7 +208,6 @@
     <ClCompile Include="tests\TestPhysicalLayerAsyncTCP.cpp" />
     <ClCompile Include="tests\TestPhysicalLayerLoopback.cpp" />
     <ClCompile Include="tests\TestPhysicalLayerMonitor.cpp" />
-    <ClCompile Include="tests\TestQualityMasks.cpp" />
     <ClCompile Include="tests\TestResponseLoader.cpp" />
     <ClCompile Include="tests\TestShiftableBuffer.cpp" />
     <ClCompile Include="tests\TestSlave.cpp" />

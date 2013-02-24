@@ -42,28 +42,10 @@ steady_clock::time_point TimeSource::GetUTC()
 	return steady_clock::now();
 }
 
-//mock time source
-MockTimeSource::MockTimeSource()
-{
-
-}
-
-void MockTimeSource::Advance(const std::chrono::steady_clock::duration& arDuration)
-{
-	mTime += arDuration;
-}
-
-void MockTimeSource::SetToNow()
-{
-	mTime = steady_clock::now();
-}
-
-
 TimeSourceSystemOffset::TimeSourceSystemOffset()
 	: mOffset(0)
 {
 }
-
 
 std::chrono::steady_clock::time_point TimeSourceSystemOffset::GetUTC()
 {

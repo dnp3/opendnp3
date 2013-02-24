@@ -35,19 +35,24 @@ namespace opendnp3
 
 LogTester::LogTester(bool aImmediate) :
 	mLog(),
-	mpTestLogger(mLog.GetLogger(LEV_DEBUG, "LogTester")),
-	mBuffer(100)
+	mpTestLogger(mLog.GetLogger(LEV_DEBUG, "LogTester"))	
 {
-	mLog.AddLogSubscriber(&mBuffer);
+	mLog.AddLogSubscriber(this);
 	if(aImmediate) mLog.AddLogSubscriber(LogToStdio::Inst());
+}
+
+void LogTester::Log( const LogEntry& arEntry )
+{
+	mBuffer.push(arEntry);
 }
 
 int LogTester::ClearLog()
 {
 	int max = -1;
 	LogEntry le;
-	while(mBuffer.ReadLog(le)) {
-		if(le.GetErrorCode() > max) max = le.GetErrorCode();
+	while(!mBuffer.empty()) {		
+		if(mBuffer.front().GetErrorCode() > max) max = le.GetErrorCode();
+		mBuffer.pop();
 	}
 
 	return max;
@@ -61,15 +66,23 @@ void LogTester::Log(const std::string& arLocation, const std::string& arMessage)
 int LogTester::NextErrorCode()
 {
 	LogEntry le;
-	while(mBuffer.ReadLog(le)) {
-		if(le.GetErrorCode() >= 0) return le.GetErrorCode();
+	while(!mBuffer.empty()) {
+		if(mBuffer.front().GetErrorCode() >= 0) {
+			mBuffer.pop();
+			return le.GetErrorCode();
+		}
 	}
 	return -1;
 }
 
 bool LogTester::GetNextEntry(LogEntry& arEntry)
 {
-	return mBuffer.ReadLog(arEntry);
+	if(mBuffer.empty()) return false;
+	else {
+		arEntry = mBuffer.front();
+		mBuffer.pop();
+		return true;
+	}
 }
 
 bool LogTester::IsLogErrorFree()

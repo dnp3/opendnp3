@@ -26,38 +26,29 @@
 //
 // Contact Automatak, LLC for a commercial license to these modifications
 //
-#ifndef __TIME_SOURCE_H_
-#define __TIME_SOURCE_H_
+#ifndef __MOCK_TIME_MANAGER_H_
+#define __MOCK_TIME_MANAGER_H_
 
-#include "ITimeSource.h"
-
-#include <opendnp3/Singleton.h>
-#include <opendnp3/Types.h>
-#include <opendnp3/Visibility.h>
+#include <opendnp3/ITimeSource.h>
 
 namespace opendnp3
 {
 
-class DLL_LOCAL TimeSource : public ITimeSource
-{
-	MACRO_SINGLETON_INSTANCE(TimeSource)
-
-	// Implement ITimeSource
-	std::chrono::steady_clock::time_point GetUTC();
-};
-
-/** Maintains an external time by keeping an offset from system time.
-*/
-class DLL_LOCAL TimeSourceSystemOffset : public  ITimeManager
+class MockTimeManager : public ITimeManager
 {
 public:
-	TimeSourceSystemOffset();
+	MockTimeManager() : mTime() {}
 
-	std::chrono::steady_clock::time_point GetUTC();
-	void SetTime(const std::chrono::steady_clock::time_point& arTime);
+	std::chrono::steady_clock::time_point GetUTC() {
+		return mTime;
+	}
+
+	void SetTime(const std::chrono::steady_clock::time_point& arTime) {
+		mTime = arTime;
+	}
 
 private:
-	std::chrono::steady_clock::duration mOffset;
+	std::chrono::steady_clock::time_point mTime;
 };
 
 }

@@ -30,17 +30,19 @@
 #define __LOG_TESTER_H_
 
 #include <opendnp3/Log.h>
+#include <queue>
 
 namespace opendnp3
 {
 
-class LogTester
+class LogTester : ILogBase
 {
 public:
 	LogTester(bool aImmediate = false);
 
 	void Log(const std::string& aLocation, const std::string& aMessage);
 
+	void Log( const LogEntry& arEntry );
 	int ClearLog();
 	int NextErrorCode();
 	bool GetNextEntry(LogEntry& arEntry);
@@ -50,7 +52,9 @@ public:
 
 protected:
 	Logger* mpTestLogger;
-	LogEntryCircularBuffer mBuffer;
+	std::mutex mMutex;
+	std::queue<LogEntry> mBuffer;
+	
 
 
 };

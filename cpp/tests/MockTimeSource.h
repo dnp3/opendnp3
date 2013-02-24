@@ -26,25 +26,39 @@
 //
 // Contact Automatak, LLC for a commercial license to these modifications
 //
-#include <boost/test/unit_test.hpp>
-#include "TestHelpers.h"
+#ifndef __MOCK_TIME_SOURCE_H_
+#define __MOCK_TIME_SOURCE_H_
 
-#include <opendnp3/DataTypes.h>
-#include <opendnp3/QualityMasks.h>
+#include <opendnp3/ITimeSource.h>
 
-using namespace opendnp3;
-
-BOOST_AUTO_TEST_SUITE(QualityMasks)
-
-BOOST_AUTO_TEST_CASE(ToString)
+namespace opendnp3
 {
-	BOOST_REQUIRE_EQUAL(Binary::QualConverter::GetNameString(0), "");
 
-	BOOST_REQUIRE_NOT_EQUAL(Binary::QualConverter::GetNameString(~0).find("LocalForced"), std::string::npos);
-	BOOST_REQUIRE_NOT_EQUAL(Counter::QualConverter::GetNameString(~0).find("CommsLost"), std::string::npos);
-	BOOST_REQUIRE_NOT_EQUAL(Analog::QualConverter::GetNameString(~0).find("Overrange"), std::string::npos);
-	BOOST_REQUIRE_NOT_EQUAL(ControlStatus::QualConverter::GetNameString(~0).find("Online"), std::string::npos);
-	BOOST_REQUIRE_NOT_EQUAL(SetpointStatus::QualConverter::GetNameString(~0).find("Restart"), std::string::npos);
+class MockTimeSource : public ITimeSource
+{
+public:
+
+	MockTimeSource();
+
+	// Implement ITimeSource
+	std::chrono::steady_clock::time_point GetUTC() {
+		return mTime;
+	}
+	std::chrono::steady_clock::time_point GetTimeStampUTC();
+
+	void SetTime(const std::chrono::steady_clock::time_point& arTime) {
+		mTime = arTime;
+	}
+
+	void Advance(const std::chrono::steady_clock::duration& arDuration);
+	void SetToNow();
+
+private:
+
+	std::chrono::steady_clock::time_point mTime;
+};
+
 }
 
-BOOST_AUTO_TEST_SUITE_END()
+#endif
+

@@ -34,11 +34,11 @@
 #include <map>
 #include <vector>
 #include <mutex>
+#include <set>
 
 #include <opendnp3/LogBase.h>
 #include <opendnp3/Logger.h>
 #include <opendnp3/Uncopyable.h>
-#include <opendnp3/LogEntryCircularBuffer.h>
 #include <opendnp3/Visibility.h>
 
 namespace opendnp3

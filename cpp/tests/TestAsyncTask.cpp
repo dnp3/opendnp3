@@ -36,6 +36,7 @@
 #include <opendnp3/Exception.h>
 
 #include "MockExecutor.h"
+#include "MockTimeSource.h"
 
 #include <boost/bind.hpp>
 #include <queue>
