@@ -210,6 +210,7 @@
     <ClInclude Include="src\opendnp3\MasterStackImpl.h" />
     <ClInclude Include="src\opendnp3\MasterStates.h" />
     <ClInclude Include="src\opendnp3\MasterTaskBase.h" />
+    <ClInclude Include="src\opendnp3\MonotonicDeadlineTimer.h" />
     <ClInclude Include="src\opendnp3\MultiplexingDataObserver.h" />
     <ClInclude Include="src\opendnp3\ObjectHeader.h" />
     <ClInclude Include="src\opendnp3\ObjectReadIterator.h" />

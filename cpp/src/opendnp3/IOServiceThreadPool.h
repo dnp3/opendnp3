@@ -34,9 +34,11 @@
 #include <opendnp3/Visibility.h>
 
 #include <boost/asio.hpp>
-#include <boost/asio/high_resolution_timer.hpp>
+
 #include <thread>
 #include <functional>
+
+#include "MonotonicDeadlineTimer.h"
 
 namespace opendnp3
 {
@@ -70,7 +72,7 @@ private:
 	void Run();
 
 	boost::asio::io_service mService;
-	boost::asio::high_resolution_timer mInfiniteTimer;
+	boost::asio::monotonic_timer mInfiniteTimer;
 	std::vector<std::thread*> mThreads;
 };
 

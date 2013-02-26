@@ -30,24 +30,21 @@
 
 #include <iostream>
 #include <boost/asio.hpp>
-#include <boost/asio/high_resolution_timer.hpp>
-
-#include <opendnp3/Types.h>
 #include <functional>
+
+#include <opendnp3/MonotonicDeadlineTimer.h>
 
 using namespace std;
 using namespace boost;
 using namespace boost::asio;
 using namespace boost::system;
-using namespace opendnp3;
-
 
 void AssertCanceled(bool* apFlag, const boost::system::error_code& ec)
 {
 	if(ec) *apFlag = true;
 }
 
-void Cancel(high_resolution_timer* aptimer)
+void Cancel(monotonic_timer* aptimer)
 {
 	aptimer->cancel();
 }
@@ -59,8 +56,8 @@ BOOST_AUTO_TEST_CASE(TimerCancel)
 	bool flag = false;
 
 	io_service io;
-	high_resolution_timer t1(io, std::chrono::seconds(0));
-	high_resolution_timer t2(io, std::chrono::seconds(1));
+	monotonic_timer t1(io, std::chrono::seconds(0));
+	monotonic_timer t2(io, std::chrono::seconds(1));
 
 	t1.async_wait(std::bind(Cancel, &t2));
 	t2.async_wait(std::bind(AssertCanceled, &flag, std::placeholders::_1));
