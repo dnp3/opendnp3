@@ -30,10 +30,10 @@
 #define __TIMER_ASIO_H_
 
 #include <boost/asio.hpp>
-#include <boost/asio/steady_timer.hpp>
 
 #include <opendnp3/Visibility.h>
 
+#include "MonotonicDeadlineTimer.h"
 #include "IExecutor.h"
 
 namespace opendnp3
@@ -72,7 +72,7 @@ private:
 
 	bool mCanceled;
 
-	boost::asio::steady_timer mTimer;
+	boost::asio::monotonic_timer mTimer;
 };
 
 }
