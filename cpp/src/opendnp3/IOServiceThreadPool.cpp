@@ -55,7 +55,7 @@ IOServiceThreadPool::IOServiceThreadPool(
 	mInfiniteTimer(mService)
 {
 	if(aConcurrency == 0) MACRO_THROW_EXCEPTION(ArgumentException, "Concurrency cannot be 0");
-	mInfiniteTimer.expires_at(steady_clock::time_point::max());
+	mInfiniteTimer.expires_at(monotonic_clock::time_point::max());
 	mInfiniteTimer.async_wait(bind(&IOServiceThreadPool::OnTimerExpiration, this, placeholders::_1));
 	for(uint32_t i = 0; i < aConcurrency; ++i) {
 		mThreads.push_back(new thread(bind(&IOServiceThreadPool::Run, this)));

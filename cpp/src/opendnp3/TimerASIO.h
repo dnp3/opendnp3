@@ -66,7 +66,7 @@ public:
 	/**
 	 * Return the timer's expiry time as an absolute time.
 	 */
-	std::chrono::steady_clock::time_point ExpiresAt();
+	std::chrono::monotonic_clock::time_point ExpiresAt();
 
 private:
 

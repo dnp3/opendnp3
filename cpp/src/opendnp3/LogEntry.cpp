@@ -44,7 +44,7 @@ LogEntry::LogEntry( FilterLevel aLevel, const std::string& aDeviceName, const st
 	mDeviceName(aDeviceName),
 	mLocation(aLocation),
 	mMessage(aMessage),
-	mTime(std::chrono::steady_clock::now()),
+	mTime(std::chrono::monotonic_clock::now()),
 	mErrorCode(aErrorCode)
 {
 }

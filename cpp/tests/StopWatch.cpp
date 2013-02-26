@@ -33,19 +33,19 @@ using namespace std::chrono;
 namespace opendnp3
 {
 
-StopWatch::StopWatch() : mStartTime(steady_clock::now())
+StopWatch::StopWatch() : mStartTime(monotonic_clock::now())
 {
 
 }
 
-steady_clock::duration StopWatch :: Elapsed(bool aReset)
+monotonic_clock::duration StopWatch :: Elapsed(bool aReset)
 {
-	return steady_clock::now() - mStartTime;
+	return monotonic_clock::now() - mStartTime;
 }
 
 void StopWatch :: Restart()
 {
-	mStartTime = steady_clock::now();
+	mStartTime = monotonic_clock::now();
 }
 
 }

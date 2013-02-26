@@ -55,7 +55,7 @@ ASIOExecutor::~ASIOExecutor()
 for(auto pTimer: mAllTimers) delete pTimer;
 }
 
-ITimer* ASIOExecutor::Start(std::chrono::steady_clock::duration aDelay, const function<void ()>& arCallback)
+ITimer* ASIOExecutor::Start(std::chrono::monotonic_clock::duration aDelay, const function<void ()>& arCallback)
 {
 	std::lock_guard<std::mutex> lock(mMutex);
 	if(mIsShuttingDown) MACRO_THROW_EXCEPTION(InvalidStateException, "Can't start a timer while executor is shutting down");
@@ -65,7 +65,7 @@ ITimer* ASIOExecutor::Start(std::chrono::steady_clock::duration aDelay, const fu
 	return pTimer;
 }
 
-ITimer* ASIOExecutor::Start(const std::chrono::steady_clock::time_point& arTime, const function<void ()>& arCallback)
+ITimer* ASIOExecutor::Start(const std::chrono::monotonic_clock::time_point& arTime, const function<void ()>& arCallback)
 {
 	std::lock_guard<std::mutex> lock(mMutex);
 	if(mIsShuttingDown) MACRO_THROW_EXCEPTION(InvalidStateException, "Can't start a timer while executor is shutting down");

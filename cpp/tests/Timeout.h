@@ -57,18 +57,18 @@ class Timeout
 {
 public:
 	// constuctor, timeout will expire this many mills in the future
-	Timeout(std::chrono::steady_clock::duration aTimeout);
+	Timeout(std::chrono::monotonic_clock::duration aTimeout);
 
 	// returns whether its expired
 	bool IsExpired();
 
 	// returns how much time is left
-	std::chrono::steady_clock::duration Remaining();
+	std::chrono::monotonic_clock::duration Remaining();
 
 
 private:
 
-	std::chrono::steady_clock::time_point mExpireTime;
+	std::chrono::monotonic_clock::time_point mExpireTime;
 
 };
 

@@ -36,7 +36,7 @@ namespace opendnp3
 {
 
 AsyncTaskContinuous::AsyncTaskContinuous(int aPriority, const TaskHandler& arCallback, AsyncTaskGroup* apGroup, const std::string& arName) :
-	AsyncTaskBase(aPriority, arCallback, apGroup, std::chrono::steady_clock::time_point::min(), arName)
+	AsyncTaskBase(aPriority, arCallback, apGroup, std::chrono::monotonic_clock::time_point::min(), arName)
 {
 
 }

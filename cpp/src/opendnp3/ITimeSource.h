@@ -41,7 +41,7 @@ class DLL_LOCAL ITimeSource
 {
 
 public:
-	virtual std::chrono::steady_clock::time_point GetUTC() = 0;
+	virtual std::chrono::monotonic_clock::time_point GetUTC() = 0;
 	millis_t GetMillisecondsSinceEpoch();
 
 };
@@ -49,7 +49,7 @@ public:
 class DLL_LOCAL ITimeManager : public ITimeSource
 {
 public:
-	virtual void SetTime(const std::chrono::steady_clock::time_point& arTime) = 0;
+	virtual void SetTime(const std::chrono::monotonic_clock::time_point& arTime) = 0;
 };
 
 

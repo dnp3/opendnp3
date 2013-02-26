@@ -41,7 +41,7 @@ namespace opendnp3
 AsyncTaskBase::AsyncTaskBase(int aPriority,
                              const TaskHandler& arCallback,
                              AsyncTaskGroup* apGroup,
-                             const std::chrono::steady_clock::time_point& arInitialTime,
+                             const std::chrono::monotonic_clock::time_point& arInitialTime,
                              const std::string& arName) :
 	mName(arName),
 	mIsEnabled(false),
@@ -132,7 +132,7 @@ void AsyncTaskBase::Reset()
 	this->_Reset();
 }
 
-void AsyncTaskBase::UpdateTime(const std::chrono::steady_clock::time_point& arTime)
+void AsyncTaskBase::UpdateTime(const std::chrono::monotonic_clock::time_point& arTime)
 {
 	if(arTime >= mNextRunTime) {
 		mIsComplete = false;
