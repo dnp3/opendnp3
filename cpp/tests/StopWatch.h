@@ -45,13 +45,13 @@ public:
 
 	//get the elapsed time since creation or the last restart
 	//by default each call to Elapsed restarts the timer.
-	std::chrono::steady_clock::duration Elapsed(bool aReset = true);
+	std::chrono::monotonic_clock::duration Elapsed(bool aReset = true);
 
 	//restart or re-zero the StopWatch.
 	void Restart();
 
 private:
-	std::chrono::steady_clock::time_point mStartTime;
+	std::chrono::monotonic_clock::time_point mStartTime;
 };
 
 

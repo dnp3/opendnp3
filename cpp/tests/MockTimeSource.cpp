@@ -39,14 +39,14 @@ MockTimeSource::MockTimeSource()
 
 }
 
-void MockTimeSource::Advance(const std::chrono::steady_clock::duration& arDuration)
+void MockTimeSource::Advance(const std::chrono::monotonic_clock::duration& arDuration)
 {
 	mTime += arDuration;
 }
 
 void MockTimeSource::SetToNow()
 {
-	mTime = steady_clock::now();
+	mTime = monotonic_clock::now();
 }
 
 

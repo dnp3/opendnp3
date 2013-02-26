@@ -42,8 +42,8 @@ public:
 	MockPhysicalLayerMonitor(
 	        Logger* apLogger,
 	        IPhysicalLayerAsync* apPhys,
-	        std::chrono::steady_clock::duration aMinOpenRetry,
-	        std::chrono::steady_clock::duration aMaxOpenRetry
+	        std::chrono::monotonic_clock::duration aMinOpenRetry,
+	        std::chrono::monotonic_clock::duration aMaxOpenRetry
 	);
 
 	size_t mOpens;

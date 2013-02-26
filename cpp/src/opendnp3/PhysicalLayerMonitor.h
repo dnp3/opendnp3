@@ -55,8 +55,8 @@ class DLL_LOCAL PhysicalLayerMonitor : public IHandlerAsync
 public:
 	PhysicalLayerMonitor(	Logger*,
 	                        IPhysicalLayerAsync*,
-	                        std::chrono::steady_clock::duration aMinOpenRetry,
-	                        std::chrono::steady_clock::duration aMaxOpenRetry);
+	                        std::chrono::monotonic_clock::duration aMinOpenRetry,
+	                        std::chrono::monotonic_clock::duration aMaxOpenRetry);
 
 	~PhysicalLayerMonitor();
 
@@ -123,10 +123,10 @@ private:
 	std::mutex mMutex;
 	std::condition_variable mCondition;
 
-	const std::chrono::steady_clock::duration mMinOpenRetry;
-	const std::chrono::steady_clock::duration mMaxOpenRetry;
+	const std::chrono::monotonic_clock::duration mMinOpenRetry;
+	const std::chrono::monotonic_clock::duration mMaxOpenRetry;
 
-	std::chrono::steady_clock::duration mCurrentRetry;
+	std::chrono::monotonic_clock::duration mCurrentRetry;
 
 	// Implement from IHandlerAsync - Try to reconnect using a timer
 	void _OnOpenFailure();

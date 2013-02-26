@@ -56,7 +56,7 @@ class DLL_LOCAL ITimer
 public:
 	virtual ~ITimer() {}
 	virtual void Cancel() = 0;
-	virtual std::chrono::steady_clock::time_point ExpiresAt() = 0;
+	virtual std::chrono::monotonic_clock::time_point ExpiresAt() = 0;
 };
 
 }

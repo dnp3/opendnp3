@@ -43,14 +43,14 @@ MockExecutor::~MockExecutor()
 for(auto pTimer: mAllTimers) delete pTimer;
 }
 
-steady_clock::duration MockExecutor::NextDurationTimer()
+monotonic_clock::duration MockExecutor::NextDurationTimer()
 {
 	if(!mDurationTimerQueue.empty()) {
 		auto ret = mDurationTimerQueue.front();
 		mDurationTimerQueue.pop_front();
 		return ret;
 	}
-	else return std::chrono::steady_clock::duration::min();
+	else return std::chrono::monotonic_clock::duration::min();
 }
 
 bool MockExecutor::DispatchOne()
@@ -100,14 +100,14 @@ void MockExecutor::PostSync(const std::function<void ()>& arHandler)
 	arHandler();
 }
 
-ITimer* MockExecutor::Start(steady_clock::duration aDelay, const std::function<void ()>& arCallback)
+ITimer* MockExecutor::Start(monotonic_clock::duration aDelay, const std::function<void ()>& arCallback)
 {
-	steady_clock::time_point time =  steady_clock::now() + aDelay;
+	monotonic_clock::time_point time =  monotonic_clock::now() + aDelay;
 	mDurationTimerQueue.push_back(aDelay);
 	return Start(time, arCallback);
 }
 
-ITimer* MockExecutor::Start(const steady_clock::time_point& arTime, const std::function<void ()>& arCallback)
+ITimer* MockExecutor::Start(const monotonic_clock::time_point& arTime, const std::function<void ()>& arCallback)
 {
 	MockTimer* pTimer;
 	if(mIdle.size() > 0) {
@@ -120,7 +120,7 @@ ITimer* MockExecutor::Start(const steady_clock::time_point& arTime, const std::f
 		mAllTimers.push_back(pTimer);
 	}
 
-	mTimerMap.insert(std::pair<steady_clock::time_point, MockTimer*>(arTime, pTimer));
+	mTimerMap.insert(std::pair<monotonic_clock::time_point, MockTimer*>(arTime, pTimer));
 	return pTimer;
 }
 
@@ -135,7 +135,7 @@ void MockExecutor::Cancel(ITimer* apTimer)
 	}
 }
 
-MockTimer::MockTimer(MockExecutor* apSource, const std::chrono::steady_clock::time_point& arTime, const std::function<void ()>& arCallback) :
+MockTimer::MockTimer(MockExecutor* apSource, const std::chrono::monotonic_clock::time_point& arTime, const std::function<void ()>& arCallback) :
 	mTime(arTime),
 	mpSource(apSource),
 	mCallback(arCallback)
@@ -148,7 +148,7 @@ void MockTimer::Cancel()
 	mpSource->Cancel(this);
 }
 
-steady_clock::time_point MockTimer::ExpiresAt()
+monotonic_clock::time_point MockTimer::ExpiresAt()
 {
 	return mTime;
 }
