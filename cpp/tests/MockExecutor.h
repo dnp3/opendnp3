@@ -49,8 +49,8 @@ public:
 	~MockExecutor();
 
 	// Implement IExecutor
-	ITimer* Start(const std::chrono::monotonic_clock::time_point&, const std::function<void ()>&);
-	ITimer* Start(std::chrono::monotonic_clock::duration, const std::function<void ()>&);
+	ITimer* Start(const timer_clock::time_point&, const std::function<void ()>&);
+	ITimer* Start(timer_clock::duration, const std::function<void ()>&);
 	void Post(const std::function<void ()>&);
 	void PostSync(const std::function<void ()>&);
 
@@ -75,7 +75,7 @@ public:
 		return mTimerMap.size() + mPostQueue.size();
 	}
 
-	std::chrono::monotonic_clock::duration NextDurationTimer();
+	timer_clock::duration NextDurationTimer();
 
 
 private:
@@ -83,9 +83,9 @@ private:
 	void Cancel(ITimer* apTimer);
 
 	typedef std::deque<std::function<void ()>> PostQueue;
-	typedef std::multimap<std::chrono::monotonic_clock::time_point, MockTimer*> TimerMap;
+	typedef std::multimap<timer_clock::time_point, MockTimer*> TimerMap;
 	typedef std::deque<MockTimer*> TimerQueue;
-	typedef std::deque<std::chrono::monotonic_clock::duration> DurationTimerQueue;
+	typedef std::deque<timer_clock::duration> DurationTimerQueue;
 
 	bool mPostIsSynchronous;
 	bool mAutoPost;
@@ -103,14 +103,14 @@ class MockTimer : public ITimer
 	friend class MockExecutor;
 
 public:
-	MockTimer(MockExecutor*, const std::chrono::monotonic_clock::time_point&, const std::function<void ()>&);
+	MockTimer(MockExecutor*, const timer_clock::time_point&, const std::function<void ()>&);
 
 	//implement ITimer
 	void Cancel();
-	std::chrono::monotonic_clock::time_point ExpiresAt();
+	timer_clock::time_point ExpiresAt();
 
 private:
-	std::chrono::monotonic_clock::time_point mTime;
+	timer_clock::time_point mTime;
 	MockExecutor* mpSource;
 	std::function<void ()> mCallback;
 };

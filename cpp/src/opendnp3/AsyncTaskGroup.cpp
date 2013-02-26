@@ -142,7 +142,7 @@ for(AsyncTaskBase * p: mTaskVec) {
 	this->CheckState();
 }
 
-AsyncTaskBase* AsyncTaskGroup::GetNext(const std::chrono::monotonic_clock::time_point& arTime)
+AsyncTaskBase* AsyncTaskGroup::GetNext(const timer_clock::time_point& arTime)
 {
 	this->Update(arTime);
 	TaskVec::iterator max = max_element(mTaskVec.begin(), mTaskVec.end(), AsyncTaskBase::LessThanGroupLevel);
@@ -182,19 +182,19 @@ void AsyncTaskGroup::OnCompletion()
 	this->CheckState();
 }
 
-std::chrono::monotonic_clock::time_point AsyncTaskGroup::GetUTC() const
+timer_clock::time_point AsyncTaskGroup::GetUTC() const
 {
 	return mpTimeSrc->GetUTC();
 }
 
-void AsyncTaskGroup::Update(const std::chrono::monotonic_clock::time_point& arTime)
+void AsyncTaskGroup::Update(const timer_clock::time_point& arTime)
 {
 for(AsyncTaskBase * p: mTaskVec) {
 		p->UpdateTime(arTime);
 	}
 }
 
-void AsyncTaskGroup::RestartTimer(const std::chrono::monotonic_clock::time_point& arTime)
+void AsyncTaskGroup::RestartTimer(const timer_clock::time_point& arTime)
 {
 	if(mpTimer != NULL) {
 		if(mpTimer->ExpiresAt() != arTime) {

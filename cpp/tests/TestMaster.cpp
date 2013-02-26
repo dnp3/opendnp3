@@ -210,7 +210,7 @@ BOOST_AUTO_TEST_CASE(RestartFailure)
 	MasterTestObject t(master_cfg);
 	t.master.OnLowerLayerUp();
 
-	t.fake_time.SetTime(std::chrono::monotonic_clock::time_point(std::chrono::milliseconds(100))); //100 ms since epoch
+	t.fake_time.SetTime(timer_clock::time_point(std::chrono::milliseconds(100))); //100 ms since epoch
 
 	BOOST_REQUIRE_EQUAL("C0 01 3C 01 06", t.Read()); //integrity
 	t.RespondToMaster("C0 81 90 00"); // need time and device restart

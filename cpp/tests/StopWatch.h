@@ -30,6 +30,7 @@
 #define _STOP_WATCH_H__
 
 #include <chrono>
+#include <opendnp3/Clock.h>
 
 namespace opendnp3
 {
@@ -45,13 +46,13 @@ public:
 
 	//get the elapsed time since creation or the last restart
 	//by default each call to Elapsed restarts the timer.
-	std::chrono::monotonic_clock::duration Elapsed(bool aReset = true);
+	timer_clock::duration Elapsed(bool aReset = true);
 
 	//restart or re-zero the StopWatch.
 	void Restart();
 
 private:
-	std::chrono::monotonic_clock::time_point mStartTime;
+	timer_clock::time_point mStartTime;
 };
 
 

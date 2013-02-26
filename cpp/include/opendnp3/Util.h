@@ -38,6 +38,7 @@
 #include <vector>
 
 #include "Types.h"
+#include "Clock.h"
 
 
 namespace opendnp3
@@ -70,7 +71,7 @@ double SafeCastInt64ToDouble(int64_t aInput);
 void toUpperCase(std::string& aStr);
 void toLowerCase(std::string& aStr);
 
-std::string ToNormalizedString(const std::chrono::monotonic_clock::time_point& arTime);
+std::string ToNormalizedString(const timer_clock::time_point& arTime);
 #endif
 
 }

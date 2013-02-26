@@ -31,8 +31,7 @@
 
 #include <opendnp3/Types.h>
 #include <opendnp3/Visibility.h>
-
-#include <chrono>
+#include <opendnp3/Clock.h>
 
 namespace opendnp3
 {
@@ -41,7 +40,7 @@ class DLL_LOCAL ITimeSource
 {
 
 public:
-	virtual std::chrono::monotonic_clock::time_point GetUTC() = 0;
+	virtual timer_clock::time_point GetUTC() = 0;
 	millis_t GetMillisecondsSinceEpoch();
 
 };
@@ -49,7 +48,7 @@ public:
 class DLL_LOCAL ITimeManager : public ITimeSource
 {
 public:
-	virtual void SetTime(const std::chrono::monotonic_clock::time_point& arTime) = 0;
+	virtual void SetTime(const timer_clock::time_point& arTime) = 0;
 };
 
 

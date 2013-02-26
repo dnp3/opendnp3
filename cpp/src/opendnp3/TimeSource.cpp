@@ -47,12 +47,12 @@ TimeSourceSystemOffset::TimeSourceSystemOffset()
 {
 }
 
-std::chrono::monotonic_clock::time_point TimeSourceSystemOffset::GetUTC()
+timer_clock::time_point TimeSourceSystemOffset::GetUTC()
 {
 	return monotonic_clock::now() + mOffset;
 }
 
-void TimeSourceSystemOffset::SetTime(const std::chrono::monotonic_clock::time_point& arTime)
+void TimeSourceSystemOffset::SetTime(const timer_clock::time_point& arTime)
 {
 	mOffset = arTime - monotonic_clock::now();
 }

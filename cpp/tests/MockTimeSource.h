@@ -41,21 +41,21 @@ public:
 	MockTimeSource();
 
 	// Implement ITimeSource
-	std::chrono::monotonic_clock::time_point GetUTC() {
+	timer_clock::time_point GetUTC() {
 		return mTime;
 	}
-	std::chrono::monotonic_clock::time_point GetTimeStampUTC();
+	timer_clock::time_point GetTimeStampUTC();
 
-	void SetTime(const std::chrono::monotonic_clock::time_point& arTime) {
+	void SetTime(const timer_clock::time_point& arTime) {
 		mTime = arTime;
 	}
 
-	void Advance(const std::chrono::monotonic_clock::duration& arDuration);
+	void Advance(const timer_clock::duration& arDuration);
 	void SetToNow();
 
 private:
 
-	std::chrono::monotonic_clock::time_point mTime;
+	timer_clock::time_point mTime;
 };
 
 }

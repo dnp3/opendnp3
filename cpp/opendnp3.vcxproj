@@ -89,6 +89,7 @@
     <ClInclude Include="include\opendnp3\BaseDataTypes.h" />
     <ClInclude Include="include\opendnp3\ChannelStates.h" />
     <ClInclude Include="include\opendnp3\ClassMask.h" />
+    <ClInclude Include="include\opendnp3\Clock.h" />
     <ClInclude Include="include\opendnp3\CommandResponse.h" />
     <ClInclude Include="include\opendnp3\CommandStatus.h" />
     <ClInclude Include="include\opendnp3\ControlRelayOutputBlock.h" />

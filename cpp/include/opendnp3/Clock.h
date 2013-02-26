@@ -1,4 +1,3 @@
-
 //
 // Licensed to Green Energy Corp (www.greenenergycorp.com) under one or
 // more contributor license agreements. See the NOTICE file distributed
@@ -27,53 +26,21 @@
 // Contact Automatak, LLC for a commercial license to these modifications
 //
 
-#ifndef _TIMEOUT_H__
-#define _TIMEOUT_H__
+#ifndef __CLOCK_H_
+#define __CLOCK_H_
 
 #include <chrono>
-#include <opendnp3/Clock.h>
 
-namespace opendnp3
-{
+namespace opendnp3 {
 
-// Use this class to simplify writing do loops with a timeout
-// it minimizes the number of calls to get datetime and allows
-// us to easily replace the implementation later if we find an
-// even more effecient way to implement the timeout checking.
-//
-// Intended Usage:
-//
-// Timeout to(5000);
-// do{
-//	  //call some subordinate slow function
-//	  bool success = WaitForInput(to.Remaining());
-//
-//		//do something on success
-//		if(success) return or break;
-//
-//		//or go back around the loop, the next call to
-//		//remaining will be guarnteed to be > 0
-// }while(!to.IsExpired());
-class Timeout
-{
-public:
-	// constuctor, timeout will expire this many mills in the future
-	Timeout(timer_clock::duration aTimeout);
+#define GCC_VERSION (__GNUC__ * 10000 + __GNUC_MINOR__ * 100 + __GNUC_PATCHLEVEL__)
 
-	// returns whether its expired
-	bool IsExpired();
-
-	// returns how much time is left
-	timer_clock::duration Remaining();
-
-
-private:
-
-	timer_clock::time_point mExpireTime;
-
-};
-
+#if defined(__GNUC__) && (GCC_VERSION < 40700)
+typedef std::chrono::monotonic_clock timer_clock;
+#else
+typedef std::chrono::steady_clock timer_clock;
+#endif
 
 }
 
-#endif
+#endif 

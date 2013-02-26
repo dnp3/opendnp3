@@ -41,7 +41,7 @@ TimerASIO::TimerASIO(boost::asio::strand* apStrand) :
 /**
  * Return the timer's expiry time as an absolute time.
  */
-std::chrono::monotonic_clock::time_point TimerASIO::ExpiresAt()
+timer_clock::time_point TimerASIO::ExpiresAt()
 {
 	return mTimer.expires_at();
 }

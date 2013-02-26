@@ -39,7 +39,7 @@ MockTimeSource::MockTimeSource()
 
 }
 
-void MockTimeSource::Advance(const std::chrono::monotonic_clock::duration& arDuration)
+void MockTimeSource::Advance(const timer_clock::duration& arDuration)
 {
 	mTime += arDuration;
 }

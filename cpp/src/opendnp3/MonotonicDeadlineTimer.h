@@ -37,6 +37,7 @@ typedef boost::asio::steady_timer monotonic_timer;
 }}
 #else
 
+#include <opendnp3/Clock.h>
 #include <boost/asio.hpp>
 #include <chrono>
 
@@ -50,24 +51,24 @@ The underlying clock and time_type are chrono::steady_clock, but the durations a
 in order to achieve a uniform and familiar interface.  
 */
 template <> 
-struct time_traits<std::chrono::monotonic_clock>
+struct time_traits<timer_clock>
 {
 	/**
 	The underlying time type is based on chrono::steady_clock's time_point.
 	*/
-	typedef std::chrono::monotonic_clock::time_point time_type;
+	typedef timer_clock::time_point time_type;
 
 	/**
 	But the duration is based upon posix_time's time_duration, just like the ASIO built-in deadline_timer.
 	*/
-	typedef std::chrono::monotonic_clock::duration duration_type;
+	typedef timer_clock::duration duration_type;
 
 	/**
 	Accessing the clock yields the current time from the steady_clock.
 	*/
 	static time_type now()
 	{
-		return std::chrono::monotonic_clock::now();
+		return timer_clock::now();
 	}
 
 	/**
@@ -112,7 +113,7 @@ Convenience typedef for pairing the steady_clock time_traits (above) with a basi
 a ready-to-use deadline timer that is based on a monotonic time that is immune to system clock changes.
 A Boosty name has been chosen, as it is expected that in the near future boost::asio will have this built in.
 */
-typedef boost::asio::basic_deadline_timer<std::chrono::monotonic_clock> monotonic_timer; 
+typedef boost::asio::basic_deadline_timer<timer_clock> monotonic_timer; 
 
 }}
 

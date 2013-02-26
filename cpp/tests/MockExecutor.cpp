@@ -50,7 +50,7 @@ monotonic_clock::duration MockExecutor::NextDurationTimer()
 		mDurationTimerQueue.pop_front();
 		return ret;
 	}
-	else return std::chrono::monotonic_clock::duration::min();
+	else return timer_clock::duration::min();
 }
 
 bool MockExecutor::DispatchOne()
@@ -135,7 +135,7 @@ void MockExecutor::Cancel(ITimer* apTimer)
 	}
 }
 
-MockTimer::MockTimer(MockExecutor* apSource, const std::chrono::monotonic_clock::time_point& arTime, const std::function<void ()>& arCallback) :
+MockTimer::MockTimer(MockExecutor* apSource, const timer_clock::time_point& arTime, const std::function<void ()>& arCallback) :
 	mTime(arTime),
 	mpSource(apSource),
 	mCallback(arCallback)

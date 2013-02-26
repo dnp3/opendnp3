@@ -86,15 +86,15 @@ public:
 		return mIsRunning;
 	}
 
-	std::chrono::monotonic_clock::time_point GetUTC() const;
+	timer_clock::time_point GetUTC() const;
 
 private:
 
 	void OnCompletion();
-	void RestartTimer(const std::chrono::monotonic_clock::time_point& arTime);
+	void RestartTimer(const timer_clock::time_point& arTime);
 	void OnTimerExpiration();
-	void Update(const std::chrono::monotonic_clock::time_point& arTime);
-	AsyncTaskBase* GetNext(const std::chrono::monotonic_clock::time_point& arTime);
+	void Update(const timer_clock::time_point& arTime);
+	AsyncTaskBase* GetNext(const timer_clock::time_point& arTime);
 
 	bool mIsRunning;
 	bool mShutdown;

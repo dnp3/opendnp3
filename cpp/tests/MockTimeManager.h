@@ -39,16 +39,16 @@ class MockTimeManager : public ITimeManager
 public:
 	MockTimeManager() : mTime() {}
 
-	std::chrono::monotonic_clock::time_point GetUTC() {
+	timer_clock::time_point GetUTC() {
 		return mTime;
 	}
 
-	void SetTime(const std::chrono::monotonic_clock::time_point& arTime) {
+	void SetTime(const timer_clock::time_point& arTime) {
 		mTime = arTime;
 	}
 
 private:
-	std::chrono::monotonic_clock::time_point mTime;
+	timer_clock::time_point mTime;
 };
 
 }
