@@ -36,15 +36,14 @@
 
 #include <assert.h>
 #include <opendnp3/Logger.h>
-
-
+#include <opendnp3/Clock.h>
 
 using namespace std::chrono;
 
 namespace opendnp3
 {
 
-PhysicalLayerMonitor::PhysicalLayerMonitor(Logger* apLogger, IPhysicalLayerAsync* apPhys, monotonic_clock::duration aMinOpenRetry, monotonic_clock::duration aMaxOpenRetry) :
+PhysicalLayerMonitor::PhysicalLayerMonitor(Logger* apLogger, IPhysicalLayerAsync* apPhys, timer_clock::duration aMinOpenRetry, timer_clock::duration aMaxOpenRetry) :
 	Loggable(apLogger),
 	IHandlerAsync(apLogger),
 	mpPhys(apPhys),

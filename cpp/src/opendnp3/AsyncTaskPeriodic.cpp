@@ -36,7 +36,7 @@ namespace opendnp3
 {
 
 AsyncTaskPeriodic::AsyncTaskPeriodic(millis_t aPeriod, millis_t aRetryDelay, int aPriority, const TaskHandler& arCallback, AsyncTaskGroup* apGroup, const std::string& arName) :
-	AsyncTaskBase(aPriority, arCallback, apGroup, monotonic_clock::time_point::min(), arName),
+	AsyncTaskBase(aPriority, arCallback, apGroup, timer_clock::time_point::min(), arName),
 	mPeriod(aPeriod),
 	mRetryDelay(aRetryDelay)
 {

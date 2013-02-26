@@ -108,30 +108,6 @@ void PhysicalLayerAsyncBaseTCP::ShutdownSocket()
 	if(ec) LOG_BLOCK(LEV_WARNING, "Error while shutting down socket: " << ec.message());
 }
 
-boost::asio::ip::address PhysicalLayerAsyncBaseTCP::ResolveAddress(const std::string& arEndpoint)
-{
-	try {
-		boost::system::error_code ec;
-		boost::asio::ip::address addr = boost::asio::ip::address::from_string(arEndpoint, ec);
-		if (ec) {
-			MACRO_THROW_EXCEPTION_COMPLEX(ArgumentException, "endpoint: " << arEndpoint << " is invalid");
-		}
-		return addr;
-	}
-	catch (...) {
-		boost::asio::io_service                  io_service;
-		boost::asio::ip::tcp::resolver           resolver(io_service);
-		boost::asio::ip::tcp::resolver::query    query(arEndpoint, "");
-		boost::asio::ip::tcp::resolver::iterator iter = resolver.resolve(query);
-		boost::asio::ip::tcp::resolver::iterator end;
-		while (iter != end) {
-			boost::asio::ip::tcp::endpoint ep = *iter++;
-			return ep.address();
-		}
-		MACRO_THROW_EXCEPTION_COMPLEX(ArgumentException, "endpoint: " << arEndpoint << " is invalid");
-	}
-}
-
 }
 
 /* vim: set ts=4 sw=4: */

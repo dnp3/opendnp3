@@ -43,7 +43,7 @@ MockExecutor::~MockExecutor()
 for(auto pTimer: mAllTimers) delete pTimer;
 }
 
-monotonic_clock::duration MockExecutor::NextDurationTimer()
+timer_clock::duration MockExecutor::NextDurationTimer()
 {
 	if(!mDurationTimerQueue.empty()) {
 		auto ret = mDurationTimerQueue.front();
@@ -100,14 +100,14 @@ void MockExecutor::PostSync(const std::function<void ()>& arHandler)
 	arHandler();
 }
 
-ITimer* MockExecutor::Start(monotonic_clock::duration aDelay, const std::function<void ()>& arCallback)
+ITimer* MockExecutor::Start(timer_clock::duration aDelay, const std::function<void ()>& arCallback)
 {
-	monotonic_clock::time_point time =  monotonic_clock::now() + aDelay;
+	timer_clock::time_point time =  timer_clock::now() + aDelay;
 	mDurationTimerQueue.push_back(aDelay);
 	return Start(time, arCallback);
 }
 
-ITimer* MockExecutor::Start(const monotonic_clock::time_point& arTime, const std::function<void ()>& arCallback)
+ITimer* MockExecutor::Start(const timer_clock::time_point& arTime, const std::function<void ()>& arCallback)
 {
 	MockTimer* pTimer;
 	if(mIdle.size() > 0) {
@@ -120,7 +120,7 @@ ITimer* MockExecutor::Start(const monotonic_clock::time_point& arTime, const std
 		mAllTimers.push_back(pTimer);
 	}
 
-	mTimerMap.insert(std::pair<monotonic_clock::time_point, MockTimer*>(arTime, pTimer));
+	mTimerMap.insert(std::pair<timer_clock::time_point, MockTimer*>(arTime, pTimer));
 	return pTimer;
 }
 
@@ -148,7 +148,7 @@ void MockTimer::Cancel()
 	mpSource->Cancel(this);
 }
 
-monotonic_clock::time_point MockTimer::ExpiresAt()
+timer_clock::time_point MockTimer::ExpiresAt()
 {
 	return mTime;
 }

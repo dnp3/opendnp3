@@ -52,7 +52,7 @@ PhysicalLayerAsyncTCPServer::PhysicalLayerAsyncTCPServer(Logger* apLogger, boost
 	mLocalEndpoint(ip::tcp::v4(), aPort),
 	mAcceptor(*apIOService)
 {
-	mLocalEndpoint.address( ResolveAddress(arEndpoint) );
+	mLocalEndpoint.address( boost::asio::ip::address::from_string(arEndpoint) );
 }
 
 /* Implement the actions */

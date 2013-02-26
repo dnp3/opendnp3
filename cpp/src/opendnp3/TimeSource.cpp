@@ -37,9 +37,9 @@ namespace opendnp3
 
 TimeSource TimeSource::mInstance;
 
-monotonic_clock::time_point TimeSource::GetUTC()
+timer_clock::time_point TimeSource::GetUTC()
 {
-	return monotonic_clock::now();
+	return timer_clock::now();
 }
 
 TimeSourceSystemOffset::TimeSourceSystemOffset()
@@ -49,12 +49,12 @@ TimeSourceSystemOffset::TimeSourceSystemOffset()
 
 timer_clock::time_point TimeSourceSystemOffset::GetUTC()
 {
-	return monotonic_clock::now() + mOffset;
+	return timer_clock::now() + mOffset;
 }
 
 void TimeSourceSystemOffset::SetTime(const timer_clock::time_point& arTime)
 {
-	mOffset = arTime - monotonic_clock::now();
+	mOffset = arTime - timer_clock::now();
 }
 
 }

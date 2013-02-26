@@ -39,7 +39,7 @@ namespace opendnp3
 
 
 AsyncTaskNonPeriodic::AsyncTaskNonPeriodic(millis_t aRetryDelay, int aPriority, const TaskHandler& arCallback, AsyncTaskGroup* apGroup, const std::string& arName) :
-	AsyncTaskBase(aPriority, arCallback, apGroup, monotonic_clock::time_point::min(), arName),
+	AsyncTaskBase(aPriority, arCallback, apGroup, timer_clock::time_point::min(), arName),
 	mRetryDelay(aRetryDelay)
 {
 
@@ -47,10 +47,10 @@ AsyncTaskNonPeriodic::AsyncTaskNonPeriodic(millis_t aRetryDelay, int aPriority, 
 
 void AsyncTaskNonPeriodic::_OnComplete(bool aSuccess)
 {
-	monotonic_clock::time_point now = mpGroup->GetUTC();
+	timer_clock::time_point now = mpGroup->GetUTC();
 	if(aSuccess) {
 		mIsComplete = true;
-		mNextRunTime = monotonic_clock::time_point::max();
+		mNextRunTime = timer_clock::time_point::max();
 	}
 	else {
 		mNextRunTime = now + milliseconds(mRetryDelay);

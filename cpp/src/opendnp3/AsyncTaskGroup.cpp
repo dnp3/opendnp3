@@ -159,11 +159,11 @@ AsyncTaskBase* AsyncTaskGroup::GetNext(const timer_clock::time_point& arTime)
 void AsyncTaskGroup::CheckState()
 {
 	if(!mShutdown) {
-		monotonic_clock::time_point now = GetUTC();
+		timer_clock::time_point now = GetUTC();
 		AsyncTaskBase* pTask = GetNext(now);
 
 		if(pTask == NULL) return;
-		if(pTask->NextRunTime() == monotonic_clock::time_point::max()) return;
+		if(pTask->NextRunTime() == timer_clock::time_point::max()) return;
 
 		if(pTask->NextRunTime() <= now) {
 			mIsRunning = true;

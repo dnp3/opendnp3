@@ -60,8 +60,6 @@ protected:
 	boost::asio::ip::tcp::socket mSocket;
 	void CloseSocket();
 
-	boost::asio::ip::address ResolveAddress(const std::string& arEndpoint);
-
 private:
 	void ShutdownSocket();
 

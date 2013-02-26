@@ -50,7 +50,7 @@ PhysicalLayerAsyncTCPClient::PhysicalLayerAsyncTCPClient(Logger* apLogger, boost
 	PhysicalLayerAsyncBaseTCP(apLogger, apIOService),
 	mRemoteEndpoint(ip::tcp::v4(), aPort)
 {
-	mRemoteEndpoint.address( ResolveAddress(arAddress) );
+	mRemoteEndpoint.address( boost::asio::ip::address::from_string(arAddress) );
 }
 
 /* Implement the actions */

@@ -36,7 +36,7 @@ namespace opendnp3
 
 ITimer* IExecutor::Start(milliseconds aMs, const function<void ()>& arFunc)
 {
-	return this->Start(monotonic_clock::duration(aMs), arFunc);
+	return this->Start(timer_clock::duration(aMs), arFunc);
 }
 
 }

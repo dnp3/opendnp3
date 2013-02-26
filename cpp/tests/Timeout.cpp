@@ -34,20 +34,20 @@ using namespace std::chrono;
 namespace opendnp3
 {
 
-Timeout :: Timeout(monotonic_clock::duration aTimeout)
-	: mExpireTime(monotonic_clock::now() + aTimeout)
+Timeout :: Timeout(timer_clock::duration aTimeout)
+	: mExpireTime(timer_clock::now() + aTimeout)
 {
 
 }
 
 bool Timeout :: IsExpired()
 {
-	return monotonic_clock::now() >= mExpireTime;
+	return timer_clock::now() >= mExpireTime;
 }
 
-monotonic_clock::duration Timeout :: Remaining()
+timer_clock::duration Timeout :: Remaining()
 {
-	return mExpireTime - monotonic_clock::now();
+	return mExpireTime - timer_clock::now();
 }
 
 }
