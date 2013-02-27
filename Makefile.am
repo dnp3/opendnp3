@@ -117,7 +117,7 @@ cpp/src/opendnp3/VtoWriter.cpp
 if OPENDNP3_NO_MOCKS
 	
 else
-  libopendnp3_la_SOURCES += \	
+  libopendnp3_la_SOURCES += \
 	cpp/src/opendnp3/LogToStdio.cpp \
 	cpp/src/opendnp3/SimpleCommandHandler.cpp \
 	cpp/src/opendnp3/SimpleDataObserver.cpp
