@@ -163,6 +163,7 @@ cpp/include/opendnp3/AppConfig.h \
 cpp/include/opendnp3/BaseDataTypes.h \
 cpp/include/opendnp3/ChannelStates.h \
 cpp/include/opendnp3/ClassMask.h \
+cpp/include/opendnp3/Clock.h \
 cpp/include/opendnp3/CommandResponse.h \
 cpp/include/opendnp3/CommandStatus.h \
 cpp/include/opendnp3/ControlRelayOutputBlock.h \
