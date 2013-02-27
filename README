@@ -21,9 +21,9 @@ Overview
 
 OpenDNP3 is a portable, scalable, and rigorously tested implementation 
 of the DNP3 (www.dnp.org) protocol stack written in C++. The library 
-is optimized for massively parallel front end processor implementations
+is optimized for the largest front end processor implementations
 and slave device simulations, although it performs very well on 
-embedded linux ARM.
+embedded linux ARM in a single outstation configuration.
 
 Custom written, idiomatic bindings are available for the 
 Microsoft CLR family of languages (C#, VB.NET, F#, etc) and JVM-based
