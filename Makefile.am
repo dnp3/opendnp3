@@ -296,25 +296,19 @@ cpp/tests/TransportLoopbackTestObject.cpp \
 cpp/tests/TransportScalabilityTestObject.cpp \
 cpp/tests/TransportStackPair.cpp \
 cpp/tests/TransportTestObject.cpp \
-cpp/tests/WrappedTcpPipe.cpp
-
-
-if OPENDNP3_NO_MASTER
-        dnp3test_CPPFLAGS += -DOPENDNP3_NO_MASTER
-else
-	dnp3test_SOURCES += \
-		cpp/tests/TestAsyncTask.cpp \
-		cpp/tests/IntegrationTest.cpp \
-		cpp/tests/TestDNP3Manager.cpp \
-		cpp/tests/VtoIntegrationTestBase.cpp \
-		cpp/tests/TestIntegration.cpp \
-		cpp/tests/MasterTestObject.cpp \
-		cpp/tests/ResponseLoaderTestObject.cpp \
-		cpp/tests/TestCommandHelpers.cpp \
-		cpp/tests/TestCommandTask.cpp \
-		cpp/tests/TestMaster.cpp \
-		cpp/tests/TestResponseLoader.cpp
-endif
+cpp/tests/WrappedTcpPipe.cpp \
+cpp/tests/TestAsyncTask.cpp \
+cpp/tests/IntegrationTest.cpp \
+cpp/tests/TestDNP3Manager.cpp \
+cpp/tests/VtoIntegrationTestBase.cpp \
+cpp/tests/TestIntegration.cpp \
+cpp/tests/MasterTestObject.cpp \
+cpp/tests/ResponseLoaderTestObject.cpp \
+cpp/tests/TestCommandHelpers.cpp \
+cpp/tests/TestCommandTask.cpp \
+cpp/tests/TestMaster.cpp \
+cpp/tests/TestResponseLoader.cpp \
+cpp/tests/MockTimeSource.cpp
 
 if WANT_JAVA
 	

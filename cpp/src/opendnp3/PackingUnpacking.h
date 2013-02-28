@@ -34,6 +34,7 @@
 
 #include <stddef.h>
 #include <limits>
+#include <string.h>
 
 #ifdef max
 #undef max
@@ -210,13 +211,15 @@ public:
 
 protected:
 
-	static T NaiveRead(const uint8_t* apStart) {
-		return *reinterpret_cast<const T*>(apStart);
+	static T SafeRead(const uint8_t* apStart) {		
+		T d;
+		memcpy(&d, apStart, sizeof(T));
+		return d;
 	}
 
 
-	static void NaiveWrite(uint8_t* apStart, T aValue) {
-		*reinterpret_cast<T*>(apStart) = aValue;
+	static void SafeWrite(uint8_t* apStart, T aValue) {
+		memcpy(apStart, &aValue, sizeof(T));
 	}
 };
 

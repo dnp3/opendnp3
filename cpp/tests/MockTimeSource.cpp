@@ -46,7 +46,7 @@ void MockTimeSource::Advance(const timer_clock::duration& arDuration)
 
 void MockTimeSource::SetToNow()
 {
-	mTime = monotonic_clock::now();
+	mTime = timer_clock::now();
 }
 
 

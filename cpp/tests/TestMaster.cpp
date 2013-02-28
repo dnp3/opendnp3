@@ -29,11 +29,13 @@
 #include <boost/test/unit_test.hpp>
 
 #include <opendnp3/Exception.h>
+#include <opendnp3/Clock.h>
 
 #include <queue>
 
 #include "TestHelpers.h"
 #include "MasterTestObject.h"
+
 
 using namespace opendnp3;
 using namespace std::chrono;
@@ -183,7 +185,7 @@ BOOST_AUTO_TEST_CASE(RestartAndTimeBits)
 	MasterTestObject t(master_cfg);
 	t.master.OnLowerLayerUp();
 
-	t.fake_time.SetTime(monotonic_clock::time_point(milliseconds(100))); //100 ms since epoch
+	t.fake_time.SetTime(timer_clock::time_point(milliseconds(100))); //100 ms since epoch
 
 	BOOST_REQUIRE_EQUAL("C0 01 3C 01 06", t.Read()); ; //integrity
 	t.RespondToMaster("C0 81 90 00"); // need time and device restart
@@ -227,7 +229,7 @@ BOOST_AUTO_TEST_CASE(RestartLayerDown)
 	MasterTestObject t(master_cfg);
 	t.master.OnLowerLayerUp();
 
-	t.fake_time.SetTime(monotonic_clock::time_point(milliseconds(100))); //100 ms since epoch
+	t.fake_time.SetTime(timer_clock::time_point(milliseconds(100))); //100 ms since epoch
 
 	BOOST_REQUIRE_EQUAL("C0 01 3C 01 06", t.Read()); //integrity
 	t.RespondToMaster("C0 81 90 00"); // need time and device restart
@@ -246,7 +248,7 @@ BOOST_AUTO_TEST_CASE(DelayMeasLayerDown)
 	MasterTestObject t(master_cfg);
 	t.master.OnLowerLayerUp();
 
-	t.fake_time.SetTime(monotonic_clock::time_point(milliseconds(100))); //100 ms since epoch
+	t.fake_time.SetTime(timer_clock::time_point(milliseconds(100))); //100 ms since epoch
 
 	BOOST_REQUIRE_EQUAL("C0 01 3C 01 06", t.Read()); //integrity
 	t.RespondToMaster("C0 81 90 00"); // need time and device restart
@@ -267,7 +269,7 @@ BOOST_AUTO_TEST_CASE(DelayMeasFailure)
 	MasterTestObject t(master_cfg);
 	t.master.OnLowerLayerUp();
 
-	t.fake_time.SetTime(monotonic_clock::time_point(milliseconds(100))); //100 ms since epoch
+	t.fake_time.SetTime(timer_clock::time_point(milliseconds(100))); //100 ms since epoch
 
 	BOOST_REQUIRE_EQUAL("C0 01 3C 01 06", t.Read()); //integrity
 	t.RespondToMaster("C0 81 90 00"); // need time and device restart
@@ -287,7 +289,7 @@ BOOST_AUTO_TEST_CASE(RestartBadResponses)
 	MasterTestObject t(master_cfg);
 	t.master.OnLowerLayerUp();
 
-	t.fake_time.SetTime(monotonic_clock::time_point(milliseconds(100))); //100 ms since epoch
+	t.fake_time.SetTime(timer_clock::time_point(milliseconds(100))); //100 ms since epoch
 
 	BOOST_REQUIRE_EQUAL("C0 01 3C 01 06", t.Read()); //integrity
 	t.RespondToMaster("C0 81 10 00"); // need time
@@ -507,7 +509,7 @@ BOOST_AUTO_TEST_CASE(SolicitedResponseFailure)
 {
 	MasterConfig master_cfg;
 	MasterTestObject t(master_cfg);
-	t.fake_time.SetTime(monotonic_clock::time_point(milliseconds(0)));
+	t.fake_time.SetTime(timer_clock::time_point(milliseconds(0)));
 	t.master.OnLowerLayerUp();
 
 	BOOST_REQUIRE_EQUAL(t.Read(), "C0 01 3C 01 06"); ;
@@ -521,7 +523,7 @@ BOOST_AUTO_TEST_CASE(SolicitedResponseLayerDown)
 {
 	MasterConfig master_cfg;
 	MasterTestObject t(master_cfg);
-	t.fake_time.SetTime(monotonic_clock::time_point(milliseconds(0)));
+	t.fake_time.SetTime(timer_clock::time_point(milliseconds(0)));
 	t.master.OnLowerLayerUp();
 
 	BOOST_REQUIRE_EQUAL(t.Read(), "C0 01 3C 01 06"); ;
