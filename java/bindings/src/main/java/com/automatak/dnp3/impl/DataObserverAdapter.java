@@ -40,7 +40,6 @@ class DataObserverAdapter {
 
     public void updateAI(double value, byte quality, long time, long index)
     {
-        System.out.println("value: " + value + " quality: " + quality + " time: " + time + " Index: " + index);
         proxy.update(new AnalogInput(value, quality, time), index);
     }
 
