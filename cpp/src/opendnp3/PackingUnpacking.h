@@ -242,7 +242,7 @@ public:
 
 private:
 
-#if defined(ARM) || defined(__arm__) || defined(__thumb__) || defined(__TARGET_ARCH_ARM) || defined(__TARGET_ARCH_THUMB)
+#ifdef OPENDNP3_ARM_FLOAT_WORKAROUND
 	static double FlipWord32(double aValue);
 #endif
 };

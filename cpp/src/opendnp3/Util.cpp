@@ -88,7 +88,7 @@ std::string ToNormalizedString(const timer_clock::time_point& arTime)
 
 double SafeCastInt64ToDouble(int64_t aInput)
 {
-#if defined(ARM) || defined(__arm__) || defined(__thumb__) || defined(__TARGET_ARCH_ARM) || defined(__TARGET_ARCH_THUMB)
+#if OPENDNP3_ARM_FLOAT_WORKAROUND
 	// fix for arm compiler bug
 	long upper =  (aInput & 0xFFFFFFFF00000000LL) >> 32;
 	unsigned long lower = (aInput & 0x00000000FFFFFFFFLL);
