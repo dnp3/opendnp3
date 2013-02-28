@@ -51,7 +51,7 @@ const uint8_t UInt8::Min = std::numeric_limits<uint8_t>::min();
 now uses an intermediate buffer that the compiler word aligns. */
 float SingleFloat::Read(const uint8_t* apStart)
 {
-#if defined(ARM) || defined(__arm__) || defined(__thumb__) || defined(__TARGET_ARCH_ARM) || defined(__TARGET_ARCH_THUMB)
+#if OPENDNP3_ARM_FLOAT_WORKAROUND
 	uint8_t buff[sizeof(float)];
 	memcpy(buff, apStart, sizeof(float));
 	return Float<float>::NaiveRead(buff);
@@ -62,7 +62,7 @@ float SingleFloat::Read(const uint8_t* apStart)
 
 void SingleFloat::Write(uint8_t* apStart, float aValue)
 {
-#if defined(ARM) || defined(__arm__) || defined(__thumb__) || defined(__TARGET_ARCH_ARM) || defined(__TARGET_ARCH_THUMB)
+#if OPENDNP3_ARM_FLOAT_WORKAROUND
 	uint8_t buff[sizeof(float)];
 	Float<float>::NaiveWrite(buff, aValue);
 	memcpy(apStart, buff, sizeof(float));
@@ -73,7 +73,7 @@ void SingleFloat::Write(uint8_t* apStart, float aValue)
 
 double DoubleFloat::Read(const uint8_t* apStart)
 {
-#if defined(ARM) || defined(__arm__) || defined(__thumb__) || defined(__TARGET_ARCH_ARM) || defined(__TARGET_ARCH_THUMB)
+#if OPENDNP3_ARM_FLOAT_WORKAROUND
 	uint8_t buff[sizeof(double)];
 	memcpy(buff, apStart, sizeof(double));
 	return FlipWord32(Float<double>::NaiveRead(buff));
@@ -84,7 +84,7 @@ double DoubleFloat::Read(const uint8_t* apStart)
 
 void DoubleFloat::Write(uint8_t* apStart, double aValue)
 {
-#if defined(ARM) || defined(__arm__) || defined(__thumb__) || defined(__TARGET_ARCH_ARM) || defined(__TARGET_ARCH_THUMB)
+#if OPENDNP3_ARM_FLOAT_WORKAROUND
 	uint8_t buff[sizeof(double)];
 	Float<double>::NaiveWrite(buff, FlipWord32(aValue));
 	memcpy(apStart, buff, sizeof(double));
@@ -93,7 +93,7 @@ void DoubleFloat::Write(uint8_t* apStart, double aValue)
 #endif
 }
 
-#if defined(ARM) || defined(__arm__) || defined(__thumb__) || defined(__TARGET_ARCH_ARM) || defined(__TARGET_ARCH_THUMB)
+#if OPENDNP3_ARM_FLOAT_WORKAROUND
 double DoubleFloat::FlipWord32(double aValue)
 {
 	volatile double x = aValue;
