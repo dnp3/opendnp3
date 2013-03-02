@@ -41,7 +41,7 @@ public interface ListenableFuture<T> {
      * Blocks until the asynchronous operation completes
      * @return The result of the operation
      */
-    T get() throws InterruptedException;
+    T get();
 
     /**
      * Adds a callback that is invoked when the asynchronous operation completes.

@@ -31,12 +31,18 @@ class BasicListenableFuture<T> implements ListenableFuture<T>, Promise<T> {
     private final List<CompletionListener<T>> listeners = new LinkedList<CompletionListener<T>>();
     private T value = null;
 
-
-    public T get() throws InterruptedException
+    public T get()
     {
         synchronized (mutex)
         {
-            while(value == null) mutex.wait();
+            while(value == null) {
+                try {
+                    mutex.wait();
+                }
+                catch(InterruptedException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
             return value;
         }
     }
