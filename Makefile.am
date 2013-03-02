@@ -29,6 +29,7 @@ cpp/src/opendnp3/BaseDataTypes.cpp \
 cpp/src/opendnp3/BufferTypes.cpp \
 cpp/src/opendnp3/ChangeBuffer.cpp \
 cpp/src/opendnp3/ClassCounter.cpp \
+cpp/src/opendnp3/Cloch.cpp \
 cpp/src/opendnp3/CommandStatus.cpp \
 cpp/src/opendnp3/ControlRelayOutputBlock.cpp \
 cpp/src/opendnp3/CopyableBuffer.cpp \
@@ -99,6 +100,7 @@ cpp/src/opendnp3/Threadable.cpp \
 cpp/src/opendnp3/Thread.cpp \
 cpp/src/opendnp3/TimerASIO.cpp \
 cpp/src/opendnp3/TimeSource.cpp \
+cpp/src/opendnp3/TimeTransaction.cpp \
 cpp/src/opendnp3/TLS_Base.cpp \
 cpp/src/opendnp3/ToHex.cpp \
 cpp/src/opendnp3/TransportLayer.cpp \
@@ -207,6 +209,7 @@ cpp/include/opendnp3/SlaveStackConfig.h \
 cpp/include/opendnp3/SubjectBase.h \
 cpp/include/opendnp3/StackState.h \
 cpp/include/opendnp3/Threadable.h \
+cpp/include/opendnp3/TimeTransaction.h \
 cpp/include/opendnp3/TransportConstants.h \
 cpp/include/opendnp3/Types.h \
 cpp/include/opendnp3/Uncopyable.h \
