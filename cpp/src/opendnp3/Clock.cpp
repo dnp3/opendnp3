@@ -26,28 +26,17 @@
 // Contact Automatak, LLC for a commercial license to these modifications
 //
 
-#ifndef __CLOCK_H_
-#define __CLOCK_H_
+#include <opendnp3/Clock.h>
 
-#include <chrono>
-
-#include "Types.h"
+using namespace std::chrono;
 
 namespace opendnp3 {
-
-#define GCC_VERSION (__GNUC__ * 10000 + __GNUC_MINOR__ * 100 + __GNUC_PATCHLEVEL__)
-
-#if defined(__GNUC__) && (GCC_VERSION < 40700)
-typedef std::chrono::monotonic_clock timer_clock;
-#else
-typedef std::chrono::steady_clock timer_clock;
-#endif
-
-class Clock {
-	public:
-	static millis_t Now();
-};
+	
+	millis_t Clock::Now()
+	{
+		return duration_cast<milliseconds>(high_resolution_clock::now().time_since_epoch()).count();
+	}
 
 }
 
-#endif 
+

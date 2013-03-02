@@ -93,6 +93,7 @@
     <ClInclude Include="include\opendnp3\CommandResponse.h" />
     <ClInclude Include="include\opendnp3\CommandStatus.h" />
     <ClInclude Include="include\opendnp3\ControlRelayOutputBlock.h" />
+    <ClInclude Include="include\opendnp3\TimeTransaction.h" />
     <ClInclude Include="include\opendnp3\DataTypes.h" />
     <ClInclude Include="include\opendnp3\DestructorHook.h" />
     <ClInclude Include="include\opendnp3\DeviceTemplate.h" />
@@ -288,6 +289,7 @@
     <ClCompile Include="src\opendnp3\ChangeBuffer.cpp" />
     <ClCompile Include="src\opendnp3\ChannelStates.cpp" />
     <ClCompile Include="src\opendnp3\ClassCounter.cpp" />
+    <ClCompile Include="src\opendnp3\Clock.cpp" />
     <ClCompile Include="src\opendnp3\CommandStatus.cpp" />
     <ClCompile Include="src\opendnp3\CommandTask.cpp" />
     <ClCompile Include="src\opendnp3\ConstantCommandProcessor.cpp" />
@@ -296,6 +298,7 @@
     <ClCompile Include="src\opendnp3\CRC.cpp" />
     <ClCompile Include="src\opendnp3\Database.cpp" />
     <ClCompile Include="src\opendnp3\DataPoll.cpp" />
+    <ClCompile Include="src\opendnp3\TimeTransaction.cpp" />
     <ClCompile Include="src\opendnp3\DestructorHook.cpp" />
     <ClCompile Include="src\opendnp3\DeviceTemplate.cpp" />
     <ClCompile Include="src\opendnp3\DNP3Channel.cpp" />

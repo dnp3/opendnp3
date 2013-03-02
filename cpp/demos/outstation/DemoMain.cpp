@@ -33,6 +33,7 @@
 #include <opendnp3/IChannel.h>
 #include <opendnp3/IOutstation.h>
 #include <opendnp3/SimpleCommandHandler.h>
+#include <opendnp3/TimeTransaction.h>
 
 #include <string>
 #include <iostream>
@@ -92,8 +93,8 @@ int main(int argc, char* argv[])
 		std::cin >> input;
 		if(input == "exit") break;
 		else {
-			Transaction t(pDataObserver); //automatically calls Start()/End()
-			pDataObserver->Update(Counter(count), 0);
+			TimeTransaction tx(pDataObserver); //automatically calls Start()/End() and sets time for each measurement
+			tx.Update(Counter(count, CQ_ONLINE), 0);			
 			++count;
 		}
 	}
