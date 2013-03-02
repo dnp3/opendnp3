@@ -29,7 +29,7 @@ cpp/src/opendnp3/BaseDataTypes.cpp \
 cpp/src/opendnp3/BufferTypes.cpp \
 cpp/src/opendnp3/ChangeBuffer.cpp \
 cpp/src/opendnp3/ClassCounter.cpp \
-cpp/src/opendnp3/Cloch.cpp \
+cpp/src/opendnp3/Clock.cpp \
 cpp/src/opendnp3/CommandStatus.cpp \
 cpp/src/opendnp3/ControlRelayOutputBlock.cpp \
 cpp/src/opendnp3/CopyableBuffer.cpp \
