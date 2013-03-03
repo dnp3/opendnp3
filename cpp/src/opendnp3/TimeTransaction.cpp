@@ -36,37 +36,37 @@ namespace opendnp3
 		mpObserver(apObserver),
 		mTimestamp(Clock::Now())
 	{
-	
+
 	}
 
-	void TimeTransaction::Update(Binary& arMeas, size_t aIndex)
+	void TimeTransaction::Update(Binary aMeas, size_t aIndex)
 	{
-		arMeas.SetTime(mTimestamp);
-		mpObserver->Update(arMeas, aIndex);
+		aMeas.SetTime(mTimestamp);
+		mpObserver->Update(aMeas, aIndex);
 	}
 
-	void TimeTransaction::Update(Analog& arMeas, size_t aIndex)
+	void TimeTransaction::Update(Analog aMeas, size_t aIndex)
 	{
-		arMeas.SetTime(mTimestamp);
-		mpObserver->Update(arMeas, aIndex);
+		aMeas.SetTime(mTimestamp);
+		mpObserver->Update(aMeas, aIndex);
 	}
 
-	void TimeTransaction::Update(Counter& arMeas, size_t aIndex)
+	void TimeTransaction::Update(Counter aMeas, size_t aIndex)
 	{
-		arMeas.SetTime(mTimestamp);
-		mpObserver->Update(arMeas, aIndex);
+		aMeas.SetTime(mTimestamp);
+		mpObserver->Update(aMeas, aIndex);
 	}
 
-	void TimeTransaction::Update(ControlStatus& arMeas, size_t aIndex)
+	void TimeTransaction::Update(ControlStatus aMeas, size_t aIndex)
 	{
-		arMeas.SetTime(mTimestamp);
-		mpObserver->Update(arMeas, aIndex);
+		aMeas.SetTime(mTimestamp);
+		mpObserver->Update(aMeas, aIndex);
 	}
 
-	void TimeTransaction::Update(SetpointStatus& arMeas, size_t aIndex)
+	void TimeTransaction::Update(SetpointStatus aMeas, size_t aIndex)
 	{
-		arMeas.SetTime(mTimestamp);
-		mpObserver->Update(arMeas, aIndex);
+		aMeas.SetTime(mTimestamp);
+		mpObserver->Update(aMeas, aIndex);
 	}
-	
+
 }

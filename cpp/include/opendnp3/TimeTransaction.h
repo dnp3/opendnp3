@@ -39,11 +39,11 @@ namespace opendnp3
 		public:
 			TimeTransaction(IDataObserver* apObserver);
 
-			void Update(Binary& arMeas, size_t aIndex);
-			void Update(Analog& arMeas, size_t aIndex);
-			void Update(Counter& arMeas, size_t aIndex);
-			void Update(ControlStatus& arMeas, size_t aIndex);
-			void Update(SetpointStatus& arMeas, size_t aIndex);
+			void Update(Binary aMeas, size_t aIndex);
+			void Update(Analog aMeas, size_t aIndex);
+			void Update(Counter aMeas, size_t aIndex);
+			void Update(ControlStatus aMeas, size_t aIndex);
+			void Update(SetpointStatus aMeas, size_t aIndex);
 
 		private:
 			IDataObserver* mpObserver;
