@@ -198,7 +198,7 @@ Binary Group2Var1::Read(const uint8_t* p) const
 }
 Binary Group2Var2::Read(const uint8_t* p) const
 {
-	return DNPFromStream::ReadBinaryQV(p, Group2Var2::Inst());
+	return DNPFromStream::ReadBinaryQVT(p, Group2Var2::Inst());
 }
 Binary Group2Var3::Read(const uint8_t* p) const
 {
