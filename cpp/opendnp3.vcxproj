@@ -93,6 +93,7 @@
     <ClInclude Include="include\opendnp3\CommandResponse.h" />
     <ClInclude Include="include\opendnp3\CommandStatus.h" />
     <ClInclude Include="include\opendnp3\ControlRelayOutputBlock.h" />
+    <ClInclude Include="include\opendnp3\OutstationResponses.h" />
     <ClInclude Include="include\opendnp3\TimeTransaction.h" />
     <ClInclude Include="include\opendnp3\DataTypes.h" />
     <ClInclude Include="include\opendnp3\DestructorHook.h" />

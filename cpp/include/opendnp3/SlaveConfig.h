@@ -34,18 +34,10 @@
 #include "Exception.h"
 #include "ClassMask.h"
 #include "ObjectInterfaces.h"
+#include "OutstationResponses.h"
 
 namespace opendnp3
 {
-
-/// Group/Variation pair
-struct GrpVar {
-	GrpVar() : Grp(-1), Var(-1) {}
-	GrpVar(int aGrp, int aVar) : Grp(aGrp), Var(aVar) {}
-
-	int Grp;
-	int Var;
-};
 
 /// Configuration of max event counts
 struct EventMaxConfig {
@@ -115,31 +107,29 @@ struct SlaveConfig {
 	// default static response types
 
 	/// The default group/variation to use for static binary responses
-	GrpVar mStaticBinary;
+	StaticBinaryResponse mStaticBinary;
 
 	/// The default group/variation to use for static analog responses
-	GrpVar mStaticAnalog;
+	StaticAnalogResponse mStaticAnalog;
 
 	/// The default group/variation to use for static counter responses
-	GrpVar mStaticCounter;
+	StaticCounterResponse mStaticCounter;
 
 	/// The default group/variation to use for static setpoint status responses
-	GrpVar mStaticSetpointStatus;
+	StaticSetpointStatusResponse mStaticSetpointStatus;
 
 
 	/// default event response types
 
 	/// The default group/variation to use for binary event responses
-	GrpVar mEventBinary;
+	EventBinaryResponse mEventBinary;
 
 	/// The default group/variation to use for analog event responses
-	GrpVar mEventAnalog;
+	EventAnalogResponse mEventAnalog;
 
 	/// The default group/variation to use for counter event responses
-	GrpVar mEventCounter;
+	EventCounterResponse mEventCounter;
 
-	/// The default group/variation to use for VTO event responses
-	GrpVar mEventVto;
 
 };
 

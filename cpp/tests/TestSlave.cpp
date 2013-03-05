@@ -1187,9 +1187,9 @@ BOOST_AUTO_TEST_CASE(ReadByRangeHeader)
 }
 
 template <class PointType, class T>
-void TestStaticType(SlaveConfig& aCfg, GrpVar& aGrpVar, int aGroup, int aVar, T aVal, const std::string& aRsp)
-{
-	aGrpVar = GrpVar(aGroup, aVar);
+//void TestStaticType(SlaveConfig& aCfg, GrpVar& aGrpVar, int aGroup, int aVar, T aVal, const std::string& aRsp)
+void TestStaticType(SlaveConfig& aCfg, T aVal, const std::string& aRsp)
+{	
 	SlaveTestObject t(aCfg);
 	t.db.Configure(PointType::MeasEnum, 1);
 	t.db.SetClass(PointType::MeasEnum, PC_CLASS_1);
@@ -1205,66 +1205,66 @@ void TestStaticType(SlaveConfig& aCfg, GrpVar& aGrpVar, int aGroup, int aVar, T 
 }
 
 template <class T>
-void TestStaticCounter(int aVar, T aVal, const std::string& aRsp)
+void TestStaticCounter(StaticCounterResponse aRsp, T aValue, const std::string& arRsp)
 {
-	SlaveConfig cfg; cfg.mDisableUnsol = true;
-	TestStaticType<Counter>(cfg, cfg.mStaticCounter, 20, aVar, aVal, aRsp);
+	SlaveConfig cfg; cfg.mDisableUnsol = true; cfg.mStaticCounter = aRsp;
+	TestStaticType<Counter>(cfg, aValue, arRsp);
 }
 
 BOOST_AUTO_TEST_CASE(ReadGrp20Var1)
 {
-	TestStaticCounter(1, 5, "C0 81 80 00 14 01 00 00 00 01 05 00 00 00");
+	TestStaticCounter(SCR_GROUP20_VAR1, 5, "C0 81 80 00 14 01 00 00 00 01 05 00 00 00");
 }
 
 BOOST_AUTO_TEST_CASE(ReadGrp20Var2)
 {
-	TestStaticCounter(2, 5, "C0 81 80 00 14 02 00 00 00 01 05 00");
+	TestStaticCounter(SCR_GROUP20_VAR2, 5, "C0 81 80 00 14 02 00 00 00 01 05 00");
 }
 
 BOOST_AUTO_TEST_CASE(ReadGrp20Var5)
 {
-	TestStaticCounter(5, 5, "C0 81 80 00 14 05 00 00 00 05 00 00 00");
+	TestStaticCounter(SCR_GROUP20_VAR5, 5, "C0 81 80 00 14 05 00 00 00 05 00 00 00");
 }
 
 BOOST_AUTO_TEST_CASE(ReadGrp20Var6)
 {
-	TestStaticCounter(6, 5, "C0 81 80 00 14 06 00 00 00 05 00");
+	TestStaticCounter(SCR_GROUP20_VAR6, 5, "C0 81 80 00 14 06 00 00 00 05 00");
 }
 
 template <class T>
-void TestStaticAnalog(int aVar, T aVal, const std::string& aRsp)
+void TestStaticAnalog(StaticAnalogResponse aRsp, T aVal, const std::string& arRsp)
 {
-	SlaveConfig cfg; cfg.mDisableUnsol = true;
-	TestStaticType<Analog>(cfg, cfg.mStaticAnalog, 30, aVar, aVal, aRsp);
+	SlaveConfig cfg; cfg.mDisableUnsol = true; cfg.mStaticAnalog = aRsp;
+	TestStaticType<Analog>(cfg, aVal, arRsp);
 }
 
 BOOST_AUTO_TEST_CASE(ReadGrp30Var2)
 {
-	TestStaticAnalog(2, 100, "C0 81 80 00 1E 02 00 00 00 01 64 00");
+	TestStaticAnalog(SAR_GROUP30_VAR2, 100, "C0 81 80 00 1E 02 00 00 00 01 64 00");
 }
 
 BOOST_AUTO_TEST_CASE(ReadGrp30Var3)
 {
-	TestStaticAnalog(3, 65536, "C0 81 80 00 1E 03 00 00 00 00 00 01 00");
+	TestStaticAnalog(SAR_GROUP30_VAR3, 65536, "C0 81 80 00 1E 03 00 00 00 00 00 01 00");
 }
 
 BOOST_AUTO_TEST_CASE(ReadGrp30Var4)
 {
-	TestStaticAnalog(4, 100, "C0 81 80 00 1E 04 00 00 00 64 00");
+	TestStaticAnalog(SAR_GROUP30_VAR4, 100, "C0 81 80 00 1E 04 00 00 00 64 00");
 }
 
 BOOST_AUTO_TEST_CASE(ReadGrp30Var5)
 {
-	TestStaticAnalog(5, 95.6, "C0 81 80 00 1E 05 00 00 00 01 33 33 BF 42");
+	TestStaticAnalog(SAR_GROUP30_VAR5, 95.6, "C0 81 80 00 1E 05 00 00 00 01 33 33 BF 42");
 }
 
 BOOST_AUTO_TEST_CASE(ReadGrp30Var6)
 {
-	TestStaticAnalog(6, -20, "C0 81 80 00 1E 06 00 00 00 01 00 00 00 00 00 00 34 C0");
+	TestStaticAnalog(SAR_GROUP30_VAR6, -20, "C0 81 80 00 1E 06 00 00 00 01 00 00 00 00 00 00 34 C0");
 }
 
 template <class T>
-void TestStaticControlStatus(int aVar, T aVal, const std::string& aRsp)
+void TestStaticControlStatus(T aVal, const std::string& aRsp)
 {
 	SlaveConfig cfg; cfg.mDisableUnsol = true;
 	SlaveTestObject t(cfg);
@@ -1283,35 +1283,35 @@ void TestStaticControlStatus(int aVar, T aVal, const std::string& aRsp)
 
 BOOST_AUTO_TEST_CASE(ReadGrp10Var2)
 {
-	TestStaticControlStatus(2, true, "C0 81 80 00 0A 02 00 00 00 81");
+	TestStaticControlStatus<bool>(true, "C0 81 80 00 0A 02 00 00 00 81");
 }
 
 
 template <class T>
-void TestStaticSetpointStatus(int aVar, T aVal, const string& aRsp)
+void TestStaticSetpointStatus(StaticSetpointStatusResponse aRsp, T aVal, const string& arRsp)
 {
-	SlaveConfig cfg; cfg.mDisableUnsol = true;
-	TestStaticType<SetpointStatus>(cfg, cfg.mStaticSetpointStatus, 40, aVar, aVal, aRsp);
+	SlaveConfig cfg; cfg.mDisableUnsol = true; cfg.mStaticSetpointStatus = aRsp;
+	TestStaticType<SetpointStatus>(cfg, aVal, arRsp);
 }
 
 BOOST_AUTO_TEST_CASE(ReadGrp40Var1)
 {
-	TestStaticSetpointStatus(1, 100, "C0 81 80 00 28 01 00 00 00 01 64 00 00 00");
+	TestStaticSetpointStatus(SSSR_GROUP40_VAR1, 100, "C0 81 80 00 28 01 00 00 00 01 64 00 00 00");
 }
 
 BOOST_AUTO_TEST_CASE(ReadGrp40Var2)
 {
-	TestStaticSetpointStatus(2, 100, "C0 81 80 00 28 02 00 00 00 01 64 00");
+	TestStaticSetpointStatus(SSSR_GROUP40_VAR2, 100, "C0 81 80 00 28 02 00 00 00 01 64 00");
 }
 
 BOOST_AUTO_TEST_CASE(ReadGrp40Var3)
 {
-	TestStaticSetpointStatus(3, 95.6, "C0 81 80 00 28 03 00 00 00 01 33 33 BF 42");
+	TestStaticSetpointStatus(SSSR_GROUP40_VAR3, 95.6, "C0 81 80 00 28 03 00 00 00 01 33 33 BF 42");
 }
 
 BOOST_AUTO_TEST_CASE(ReadGrp40Var4)
 {
-	TestStaticSetpointStatus(4, -20.0, "C0 81 80 00 28 04 00 00 00 01 00 00 00 00 00 00 34 C0");
+	TestStaticSetpointStatus(SSSR_GROUP40_VAR4, -20.0, "C0 81 80 00 28 04 00 00 00 01 00 00 00 00 00 00 34 C0");
 }
 
 

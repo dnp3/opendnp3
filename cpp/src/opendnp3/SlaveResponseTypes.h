@@ -32,12 +32,12 @@
 #include <opendnp3/ObjectInterfaces.h>
 #include <opendnp3/DataTypes.h>
 #include <opendnp3/Visibility.h>
+#include <opendnp3/OutstationResponses.h>
 
 namespace opendnp3
 {
 
 struct SlaveConfig;
-struct GrpVar;
 
 /**
  * Reads a slave config object and and translates the configuration to
@@ -63,14 +63,14 @@ public:
 
 private:
 
-	static StreamObject<Binary>* GetStaticBinary(GrpVar);
-	static StreamObject<Analog>* GetStaticAnalog(GrpVar);
-	static StreamObject<Counter>* GetStaticCounter(GrpVar);
-	static StreamObject<SetpointStatus>* GetStaticSetpointStatus(GrpVar);
+	static StreamObject<Binary>* GetStaticBinary(StaticBinaryResponse);
+	static StreamObject<Analog>* GetStaticAnalog(StaticAnalogResponse);
+	static StreamObject<Counter>* GetStaticCounter(StaticCounterResponse);
+	static StreamObject<SetpointStatus>* GetStaticSetpointStatus(StaticSetpointStatusResponse);
 
-	static StreamObject<Binary>* GetEventBinary(GrpVar);
-	static StreamObject<Analog>* GetEventAnalog(GrpVar);
-	static StreamObject<Counter>* GetEventCounter(GrpVar);
+	static StreamObject<Binary>* GetEventBinary(EventBinaryResponse);
+	static StreamObject<Analog>* GetEventAnalog(EventAnalogResponse);
+	static StreamObject<Counter>* GetEventCounter(EventCounterResponse);
 
 };
 
