@@ -105,7 +105,7 @@ SlaveConfig ConfigReader::ConvertOutstationConfig(JNIEnv* apEnv, jobject jCfg)
 	}
 
 	{		
-	jobject jenum = JNIHelpers::GetObjectField(apEnv, jCfg, "eventCounterInput", "Lcom/automatak/dnp3/EventCounterResponse;");
+	jobject jenum = JNIHelpers::GetObjectField(apEnv, jCfg, "eventCounter", "Lcom/automatak/dnp3/EventCounterResponse;");
 	cfg.mEventCounter = ConvertEventCounter(GetEnumId(apEnv, jenum));
 	}
 

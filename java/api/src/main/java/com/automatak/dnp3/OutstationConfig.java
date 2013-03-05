@@ -132,7 +132,7 @@ public class OutstationConfig {
     /**
      * The default group/variation to use for analog event responses (default 32:1)
      */
-    public EventAnalogResponse eventAnalogResponse = EventAnalogResponse.GROUP32_VAR1;
+    public EventAnalogResponse eventAnalogInput = EventAnalogResponse.GROUP32_VAR1;
 
     /**
      * The default group/variation to use for counter event responses (default 22:1)
