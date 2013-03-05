@@ -1187,7 +1187,6 @@ BOOST_AUTO_TEST_CASE(ReadByRangeHeader)
 }
 
 template <class PointType, class T>
-//void TestStaticType(SlaveConfig& aCfg, GrpVar& aGrpVar, int aGroup, int aVar, T aVal, const std::string& aRsp)
 void TestStaticType(SlaveConfig& aCfg, T aVal, const std::string& aRsp)
 {	
 	SlaveTestObject t(aCfg);

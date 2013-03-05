@@ -59,7 +59,7 @@ public class OutstationDemo {
         OutstationStackConfig config = new OutstationStackConfig(db);
         config.outstationConfig.staticAnalogInput = StaticAnalogResponse.GROUP30_VAR1;
 
-        // Create an Outstation instance, pass in a simple a command handler that responds successfully to everyhing
+        // Create an Outstation instance, pass in a simple a command handler that responds successfully to everything
         Outstation outstation = channel.addOutstation("outstation", LogLevel.INTERPRET, SuccessCommandHandler.getInstance(), config);
 
         // You can optionally add a listener to receive state changes on the stack
