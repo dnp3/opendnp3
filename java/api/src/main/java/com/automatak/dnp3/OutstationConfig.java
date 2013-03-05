@@ -107,41 +107,36 @@ public class OutstationConfig {
     /**
      * The default group/variation to use for static binary responses (default 1:2)
      */
-    public final GroupVariation staticBinaryInput  = new GroupVariation(1, 2);
+    public StaticBinaryResponse staticBinaryInput  = StaticBinaryResponse.GROUP1_VAR2;
 
     /**
      * The default group/variation to use for static analog responses (default 30:1)
      */
-    public final GroupVariation staticAnalogInput = new GroupVariation(30, 1);
+    public StaticAnalogResponse staticAnalogInput = StaticAnalogResponse.GROUP30_VAR1;
 
     /**
      * The default group/variation to use for static counter responses (default 20:1)
      */
-    public final GroupVariation staticCounter = new GroupVariation(20, 1);
+    public StaticCounterResponse staticCounter = StaticCounterResponse.GROUP20_VAR1;
 
     /**
      * The default group/variation to use for static AnalogOutput status responses (default 40:1)
      */
-    public final GroupVariation staticAnalogOutputStatus =  new GroupVariation(40, 1);
+    public StaticAnalogOutputStatusResponse staticAnalogOutputStatus =  StaticAnalogOutputStatusResponse.GROUP40_VAR1;
 
     /**
      * The default group/variation to use for binary event responses (default 2:1)
      */
-    public final GroupVariation eventBinaryInput = new GroupVariation(2, 1);
+    public EventBinaryResponse eventBinaryInput = EventBinaryResponse.GROUP2_VAR1;
 
     /**
      * The default group/variation to use for analog event responses (default 32:1)
      */
-    public final GroupVariation eventAnalogInput = new GroupVariation(32, 1);
+    public EventAnalogResponse eventAnalogResponse = EventAnalogResponse.GROUP32_VAR1;
 
     /**
      * The default group/variation to use for counter event responses (default 22:1)
      */
-    public final GroupVariation eventCounter = new GroupVariation(22, 1);
-
-    /**
-     * The default group/variation to use for VTO event responses (default 113, 0)
-     */
-    public final GroupVariation eventVto = new GroupVariation(113, 0);
+    public EventCounterResponse eventCounter = EventCounterResponse.GROUP22_VAR1;
 
 }

@@ -57,8 +57,7 @@ public class OutstationDemo {
 
         // Create the default outstation configuration
         OutstationStackConfig config = new OutstationStackConfig(db);
-        config.outstationConfig.staticAnalogInput.group = 30;
-        config.outstationConfig.staticAnalogInput.variation = 2;
+        config.outstationConfig.staticAnalogInput = StaticAnalogResponse.GROUP30_VAR1;
 
         // Create an Outstation instance, pass in a simple a command handler that responds successfully to everyhing
         Outstation outstation = channel.addOutstation("outstation", LogLevel.INTERPRET, SuccessCommandHandler.getInstance(), config);
