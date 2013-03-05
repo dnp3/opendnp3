@@ -10,7 +10,7 @@ import mock.{FormattingDataObserver, OutputHandler, ConstantCommandHandler}
 @RunWith(classOf[JUnitRunner])
 class DNP3ManagerTestSuite extends FunSuite with ShouldMatchers {
 
-  val iterations = 10
+  val iterations = 1
 
   def fixture(test: DNP3Manager => Unit): Unit = {
 

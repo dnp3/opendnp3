@@ -38,7 +38,18 @@ private:
 	static opendnp3::MasterConfig ConvertMasterConfig(JNIEnv* apEnv, jobject jCfg);
 	static opendnp3::SlaveConfig ConvertOutstationConfig(JNIEnv* apEnv, jobject jCfg);
 	static opendnp3::DeviceTemplate ConvertDatabaseConfig(JNIEnv* apEnv, jobject jCfg);
-	static opendnp3::GrpVar ConvertGrpVar(JNIEnv* apEnv, jobject jCfg, const char* fieldId);
+
+	static opendnp3::StaticBinaryResponse ConvertStaticBinary(jint value);
+	static opendnp3::StaticAnalogResponse ConvertStaticAnalog(jint value);
+	static opendnp3::StaticCounterResponse ConvertStaticCounter(jint value);
+	static opendnp3::StaticSetpointStatusResponse ConvertStaticAnalogOutputStatus(jint value);
+
+	static opendnp3::EventBinaryResponse ConvertEventBinary(jint value);
+	static opendnp3::EventAnalogResponse ConvertEventAnalog(jint value);
+	static opendnp3::EventCounterResponse ConvertEventCounter(jint value);
+
+	static jint GetEnumId(JNIEnv* apEnv, jobject jenum);
+
 
 };
 

@@ -197,6 +197,7 @@ cpp/include/opendnp3/MasterConfig.h \
 cpp/include/opendnp3/MasterConfigTypes.h \
 cpp/include/opendnp3/MasterStackConfig.h \
 cpp/include/opendnp3/ObjectInterfaces.h \
+cpp/include/opendnp3/OutstationResponses.h \
 cpp/include/opendnp3/Parsing.h \
 cpp/include/opendnp3/PointClass.h \
 cpp/include/opendnp3/QualityMasks.h \
