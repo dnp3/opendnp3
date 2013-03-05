@@ -112,8 +112,16 @@ namespace Adapter
 		//Convert the configuration types
 		static opendnp3::SerialSettings convertSerialSettings(SerialSettings^ settings);
 		static opendnp3::ClassMask convertClassMask(ClassMask^ cm);
-		static opendnp3::EventMaxConfig convertEventMaxConfig(EventMaxConfig^ cm);
-		static opendnp3::GrpVar convertGrpVar(GrpVar^ gv);
+		static opendnp3::EventMaxConfig convertEventMaxConfig(EventMaxConfig^ cm);	
+
+		static opendnp3::StaticBinaryResponse convert(StaticBinaryResponse rsp);
+		static opendnp3::StaticAnalogResponse convert(StaticAnalogResponse rsp);
+		static opendnp3::StaticCounterResponse convert(StaticCounterResponse rsp);
+		static opendnp3::StaticSetpointStatusResponse convert(StaticSetpointStatusResponse rsp);
+
+		static opendnp3::EventBinaryResponse convert(EventBinaryResponse rsp);
+		static opendnp3::EventAnalogResponse convert(EventAnalogResponse rsp);
+		static opendnp3::EventCounterResponse convert(EventCounterResponse rsp);
 
 		static opendnp3::PointRecord convertRecord(PointRecord^ epr);		
 		static opendnp3::EventPointRecord convertRecord(EventPointRecord^ epr);

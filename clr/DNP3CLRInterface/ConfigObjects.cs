@@ -298,27 +298,7 @@ namespace DNP3.Interface
 	    public bool class1;
 	    public bool class2;
 	    public bool class3;	   
-    }
-
-    /// <summary>
-    /// Group/Variation pair used to define default responses of outstation
-    /// </summary>
-    public struct GrpVar {	    
-	    
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="grp">Group</param>
-        /// <param name="var">Variation</param>
-        public GrpVar(int grp, int var)
-        {
-            this.grp = grp;
-            this.var = var;
-        }        
-
-	    public int grp;
-        public int var;
-    }
+    }   
 
     /// <summary>
     /// Class that defines how many events an outstation database will record before buffer overflow occurs
@@ -388,13 +368,13 @@ namespace DNP3.Interface
             this.selectTimeout = 5000;
             this.maxFragSize = 2048;
             this.eventMaxConfig = new EventMaxConfig();
-            this.staticBinary = new GrpVar(1, 2);
-            this.staticAnalog = new GrpVar(30, 1);
-            this.staticCounter = new GrpVar(20, 1);
-	        this.staticSetpointStatus = new GrpVar(40, 1);
-	        this.eventBinary = new GrpVar(2, 1);
-	        this.eventAnalog = new GrpVar(32, 1);
-	        this.eventCounter = new GrpVar(22, 1);
+            this.staticBinary = StaticBinaryResponse.GROUP1_VAR2;
+            this.staticAnalog = StaticAnalogResponse.GROUP30_VAR1;
+            this.staticCounter = StaticCounterResponse.GROUP20_VAR1;
+            this.staticSetpointStatus = StaticSetpointStatusResponse.GROUP40_VAR1;
+            this.eventBinary = EventBinaryResponse.GROUP2_VAR1;
+            this.eventAnalog = EventAnalogResponse.GROUP32_VAR1;
+            this.eventCounter = EventCounterResponse.GROUP22_VAR1;
         }
 
 	    /// <summary>
@@ -450,37 +430,37 @@ namespace DNP3.Interface
 	    /// <summary>
         /// The default group/variation to use for static binary responses
 	    /// </summary>	    
-	    public GrpVar staticBinary;
+	    public StaticBinaryResponse staticBinary;
 
 	    /// <summary>
         /// The default group/variation to use for static analog responses
 	    /// </summary>
-	    public GrpVar staticAnalog;
+	    public StaticAnalogResponse staticAnalog;
 
 	    /// <summary>
         /// The default group/variation to use for static analog responses
 	    /// </summary>
-        public GrpVar staticCounter;
+        public StaticCounterResponse staticCounter;
 
 	    /// <summary>
         /// The default group/variation to use for static setpoint status responses
 	    /// </summary>
-        public GrpVar staticSetpointStatus;
+        public StaticSetpointStatusResponse staticSetpointStatus;
 
 	    /// <summary>
         /// The default group/variation to use for binary event responses
 	    /// </summary>
-        public GrpVar eventBinary;
+        public EventBinaryResponse eventBinary;
 
 	    /// <summary>
         /// The default group/variation to use for analog event responses
 	    /// </summary>
-        public GrpVar eventAnalog;
+        public EventAnalogResponse eventAnalog;
 
 	    /// <summary>
         /// The default group/variation to use for counter event responses
 	    /// </summary>
-	    public GrpVar eventCounter;	   	    
+	    public EventCounterResponse eventCounter;	   	    
     }
 
     /// <summary>
