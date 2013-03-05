@@ -85,7 +85,7 @@ SlaveConfig ConfigReader::ConvertOutstationConfig(JNIEnv* apEnv, jobject jCfg)
 	}
 	
 	{
-	jobject jenum = JNIHelpers::GetObjectField(apEnv, jCfg, "staticCounterInput", "Lcom/automatak/dnp3/StaticCounterResponse;");
+	jobject jenum = JNIHelpers::GetObjectField(apEnv, jCfg, "staticCounter", "Lcom/automatak/dnp3/StaticCounterResponse;");
 	cfg.mStaticCounter = ConvertStaticCounter(GetEnumId(apEnv, jenum));
 	}
 
