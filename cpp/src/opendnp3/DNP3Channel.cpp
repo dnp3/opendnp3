@@ -85,36 +85,42 @@ for(auto pStack: copy) pStack->Shutdown();
 
 #ifndef OPENDNP3_NO_MASTER
 IMaster* DNP3Channel::AddMaster(const std::string& arLoggerId, FilterLevel aLevel, IDataObserver* apPublisher, const MasterStackConfig& arCfg)
-{
-	auto pLogger = mpLogger->GetSubLogger(arLoggerId, aLevel);
+{	
 	LinkRoute route(arCfg.link.RemoteAddr, arCfg.link.LocalAddr);
-	auto pMaster = new MasterStackImpl(pLogger, mpService, mpPhys->GetExecutor(), apPublisher, &mGroup, arCfg, [this, route](IStack * apStack) {
-		this->OnStackShutdown(apStack, route);
-	});
-	pMaster->SetLinkRouter(&mRouter);
-	mStacks.insert(pMaster);
-	{
-		ExecutorPause p(mpPhys->GetExecutor());
-		mRouter.AddContext(pMaster->GetLinkContext(), route);
+	ExecutorPause p(mpPhys->GetExecutor());
+	if(mRouter.IsRouteInUse(route)) {
+		MACRO_THROW_EXCEPTION_COMPLEX(ArgumentException, "Route already in use: " << route);
 	}
-	return pMaster;
+	else {
+		auto pLogger = mpLogger->GetSubLogger(arLoggerId, aLevel);
+		auto pMaster = new MasterStackImpl(pLogger, mpService, mpPhys->GetExecutor(), apPublisher, &mGroup, arCfg, [this, route](IStack * apStack) {
+			this->OnStackShutdown(apStack, route);
+		});
+		pMaster->SetLinkRouter(&mRouter);
+		mStacks.insert(pMaster);
+		mRouter.AddContext(pMaster->GetLinkContext(), route);
+		return pMaster;
+	}		
 }
 #endif
 
 IOutstation* DNP3Channel::AddOutstation(const std::string& arLoggerId, FilterLevel aLevel, ICommandHandler* apCmdHandler, const SlaveStackConfig& arCfg)
 {
-	auto pLogger = mpLogger->GetSubLogger(arLoggerId, aLevel);
 	LinkRoute route(arCfg.link.RemoteAddr, arCfg.link.LocalAddr);
-	auto pOutstation = new OutstationStackImpl(pLogger, mpService, mpPhys->GetExecutor(), apCmdHandler, arCfg, [this, route](IStack * apStack) {
-		this->OnStackShutdown(apStack, route);
-	});
-	pOutstation->SetLinkRouter(&mRouter);
-	mStacks.insert(pOutstation);
-	{
-		ExecutorPause p(mpPhys->GetExecutor());
-		mRouter.AddContext(pOutstation->GetLinkContext(), route);
+	ExecutorPause p(mpPhys->GetExecutor());
+	if(mRouter.IsRouteInUse(route)) {
+		MACRO_THROW_EXCEPTION_COMPLEX(ArgumentException, "Route already in use: " << route);
 	}
-	return pOutstation;
+	else {
+		auto pLogger = mpLogger->GetSubLogger(arLoggerId, aLevel);
+		auto pOutstation = new OutstationStackImpl(pLogger, mpService, mpPhys->GetExecutor(), apCmdHandler, arCfg, [this, route](IStack * apStack) {
+			this->OnStackShutdown(apStack, route);
+		});
+		pOutstation->SetLinkRouter(&mRouter);
+		mStacks.insert(pOutstation);
+		mRouter.AddContext(pOutstation->GetLinkContext(), route);
+		return pOutstation;
+	}		
 }
 
 void DNP3Channel::OnStackShutdown(IStack* apStack, LinkRoute route)

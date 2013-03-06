@@ -51,23 +51,27 @@ LinkLayerRouter::LinkLayerRouter(Logger* apLogger, IPhysicalLayerAsync* apPhys, 
 	mTransmitting(false)
 {}
 
+bool LinkLayerRouter::IsRouteInUse(const LinkRoute& arRoute)
+{
+	return mAddressMap.find(arRoute) != mAddressMap.end();
+}
+
 void LinkLayerRouter::AddContext(ILinkContext* apContext, const LinkRoute& arRoute)
 {
 	assert(apContext != NULL);
 
-	if(mAddressMap.find(arRoute) != mAddressMap.end()) {		
+	if(IsRouteInUse(arRoute)) {		
 		MACRO_THROW_EXCEPTION_COMPLEX(ArgumentException, "Route already in use: " << arRoute);
 	}
 
-for(AddressMap::value_type v: mAddressMap) {
+	for(AddressMap::value_type v: mAddressMap) {
 		if(apContext == v.second) {
 			MACRO_THROW_EXCEPTION_COMPLEX(ArgumentException, "Context already is bound to route:  " << v.first);
 		}
 	}
 
-	mAddressMap[arRoute] = apContext;
+	mAddressMap[arRoute] = apContext;	
 	if(this->GetState() == CS_OPEN) apContext->OnLowerLayerUp();
-
 	this->Start();
 }
 

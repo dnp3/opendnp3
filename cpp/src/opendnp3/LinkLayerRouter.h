@@ -58,6 +58,8 @@ public:
 
 	LinkLayerRouter(Logger*, IPhysicalLayerAsync*, millis_t aOpenRetry);
 
+	bool IsRouteInUse(const LinkRoute& arRoute);
+
 	// Ties the lower part of the link layer to the upper part
 	void AddContext(ILinkContext*, const LinkRoute& arRoute);
 
