@@ -83,6 +83,13 @@ class DNP3ManagerTestSuite extends FunSuite with ShouldMatchers {
     }
   }
 
+  test("starts/stop cleanly with channels only") {
+    fixture { mgr =>
+      val c = createClient(mgr)
+      c.shutdown()
+    }
+  }
+
   test("Can add outstation/master and shutdown automatically") {
     fixture { mgr =>
       createOutstation(createServer(mgr))
