@@ -59,7 +59,7 @@ void MasterSchedule::DisableOnlineTasks()
 
 void MasterSchedule::ResetStartupTasks()
 {
-	mpGroup->ResetTasks(START_UP_TASKS);
+	mTracking.ResetTasks(START_UP_TASKS);
 }
 
 void MasterSchedule::Init(const MasterConfig& arCfg, Master* apMaster)

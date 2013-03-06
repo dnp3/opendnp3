@@ -90,9 +90,9 @@ private:
 	enum MasterPriority {
 		AMP_VTO_TRANSMIT,
 		AMP_POLL,
-		AMP_TIME_SYNC,
-		AMP_CLEAR_RESTART,
+		AMP_TIME_SYNC,		
 		AMP_UNSOL_CHANGE,
+		AMP_CLEAR_RESTART,
 		AMP_COMMAND
 	};
 

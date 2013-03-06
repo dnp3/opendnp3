@@ -37,10 +37,17 @@ namespace opendnp3
 TrackingTaskGroup::TrackingTaskGroup(AsyncTaskGroup* apGroup) : mpGroup(apGroup)
 {}
 
+void TrackingTaskGroup::ResetTasks(int aMask)
+{
+	for(AsyncTaskBase * p: mTaskVec) {
+		if(!p->IsRunning() && (p->GetFlags() & aMask)) p->Reset();
+	}
+}
+
 TrackingTaskGroup::~TrackingTaskGroup()
 {
 	//remove all the tasks that were created
-for(auto pTask: mTaskVec) mpGroup->Remove(pTask);
+	for(auto pTask: mTaskVec) mpGroup->Remove(pTask);
 }
 
 AsyncTaskBase* TrackingTaskGroup::Add(millis_t aPeriod, millis_t aRetryDelay, int aPriority, const TaskHandler& arCallback, const std::string& arName)

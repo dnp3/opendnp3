@@ -53,6 +53,7 @@ class AsyncTaskGroup;
 class DLL_LOCAL AsyncTaskBase : public ITask, private Uncopyable
 {
 	friend class AsyncTaskGroup;
+	friend class TrackingTaskGroup;
 
 public:
 

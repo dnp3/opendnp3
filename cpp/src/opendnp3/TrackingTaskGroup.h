@@ -57,6 +57,8 @@ public:
 	TrackingTaskGroup(AsyncTaskGroup* apGroup);
 	~TrackingTaskGroup();
 
+	void ResetTasks(int aMask);
+
 	AsyncTaskBase* Add(millis_t aPeriod, millis_t aRetryDelay, int aPriority, const TaskHandler& arCallback, const std::string& arName = "");
 	AsyncTaskContinuous* AddContinuous(int aPriority, const TaskHandler& arCallback, const std::string& arName = "");
 
