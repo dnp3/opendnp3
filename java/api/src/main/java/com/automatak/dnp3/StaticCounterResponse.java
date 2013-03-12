@@ -18,6 +18,9 @@
  */
 package com.automatak.dnp3;
 
+/**
+ * Enumeration for Group/Variation pairs used for static counter responses
+ */
 public enum StaticCounterResponse {
 
     GROUP20_VAR1(0),

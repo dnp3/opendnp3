@@ -18,6 +18,9 @@
  */
 package com.automatak.dnp3;
 
+/**
+ * Enumeration for Group/Variation pairs used for binary events
+ */
 public enum EventBinaryResponse {
 
     GROUP2_VAR1(0),

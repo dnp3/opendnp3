@@ -18,7 +18,9 @@
  */
 package com.automatak.dnp3;
 
-
+/**
+ * Enumeration for Group/Variation pairs used for static analog output status responses
+ */
 public enum StaticAnalogOutputStatusResponse {
 
     GROUP40_VAR1(0),

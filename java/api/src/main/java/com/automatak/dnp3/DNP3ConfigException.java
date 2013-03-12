@@ -19,7 +19,7 @@
 package com.automatak.dnp3;
 
 /**
- * Exception class thrown from DNP3Manager, Channel, etc in response to bad config
+ * Exception class thrown from DNP3Manager, Channel, etc in response to bad configuration
  */
 public class DNP3ConfigException extends RuntimeException {
 

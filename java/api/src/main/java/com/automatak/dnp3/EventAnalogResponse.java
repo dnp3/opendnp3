@@ -18,6 +18,9 @@
  */
 package com.automatak.dnp3;
 
+/**
+ * Enumeration for Group/Variation pairs used for analog events
+ */
 public enum EventAnalogResponse {
 
     GROUP32_VAR1(0),

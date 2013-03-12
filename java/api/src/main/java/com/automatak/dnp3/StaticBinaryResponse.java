@@ -18,6 +18,9 @@
  */
 package com.automatak.dnp3;
 
+/**
+ * Enumeration for Group/Variation pairs used for static binary responses
+ */
 public enum StaticBinaryResponse {
 
     GROUP1_VAR2(0);

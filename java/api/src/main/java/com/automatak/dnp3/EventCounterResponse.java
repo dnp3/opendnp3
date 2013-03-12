@@ -18,6 +18,9 @@
  */
 package com.automatak.dnp3;
 
+/**
+ * Enumeration for Group/Variation pairs used for counter events
+ */
 public enum EventCounterResponse {
 
     GROUP22_VAR1(0),
