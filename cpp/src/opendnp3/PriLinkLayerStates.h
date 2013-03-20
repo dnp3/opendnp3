@@ -109,9 +109,7 @@ class DLL_LOCAL PLLS_ConfDataWait : public PriStateBase
 	MACRO_STATE_SINGLETON_INSTANCE(PLLS_ConfDataWait);
 
 	void Ack(LinkLayer*, bool aIsRcvBuffFull);
-	void Nack(LinkLayer* apLL, bool) {
-		Failure(apLL);
-	}
+	void Nack(LinkLayer* apLL, bool);
 	void LinkStatus(LinkLayer* apLL, bool) {
 		Failure(apLL);
 	}

@@ -35,6 +35,8 @@
 #include "BufferHelpers.h"
 #include "LinkLayerTest.h"
 
+#include <iostream>
+
 using namespace opendnp3;
 
 BOOST_AUTO_TEST_SUITE(LinkLayerSuite)
@@ -380,6 +382,49 @@ BOOST_AUTO_TEST_CASE(ConfirmedDataRetry)
 	t.link.Ack(false, false, 1, 1024);
 	BOOST_REQUIRE_EQUAL(t.mNumSend, 3);
 	BOOST_REQUIRE(t.upper.CountersEqual(1, 0));
+}
+
+BOOST_AUTO_TEST_CASE(ResetLinkRetries)
+{
+	LinkConfig cfg = LinkLayerTest::DefaultConfig();
+	cfg.NumRetry = 3;
+	cfg.UseConfirms = true;
+
+	LinkLayerTest t(cfg); t.link.OnLowerLayerUp();
+
+	ByteStr bytes(250, 0);
+	t.link.Send(bytes, bytes.Size());
+	for(int i=1; i<5; ++i) {
+		BOOST_REQUIRE_EQUAL(t.mNumSend, i); // sends link retry
+		LinkFrame f;
+		f.FormatResetLinkStates(true, 1024, 1);
+		BOOST_REQUIRE_EQUAL(f, t.mLastSend);
+		BOOST_REQUIRE(t.mts.DispatchOne()); //timeout		
+	}
+	BOOST_REQUIRE_EQUAL(t.mNumSend, 4);
+}
+
+BOOST_AUTO_TEST_CASE(ConfirmedDataNackDFCClear)
+{
+	LinkConfig cfg = LinkLayerTest::DefaultConfig();
+	cfg.NumRetry = 1;
+	cfg.UseConfirms = true;
+
+	LinkLayerTest t(cfg); t.link.OnLowerLayerUp();
+
+	ByteStr bytes(250, 0);
+	t.link.Send(bytes, bytes.Size());
+	BOOST_REQUIRE_EQUAL(t.mNumSend, 1); // Should now be waiting for an ACK with active timer
+
+	t.link.Ack(false, false, 1, 1024);
+	BOOST_REQUIRE_EQUAL(t.mNumSend, 2);  // num transmitting confirmed data
+
+	t.link.Nack(false, false, 1, 1024);  // test that we try to reset the link again
+	BOOST_REQUIRE_EQUAL(t.mNumSend, 3);
+	BOOST_REQUIRE_EQUAL(t.mLastSend.GetFunc(), FuncCodes::FC_PRI_RESET_LINK_STATES);
+	t.link.Ack(false, false, 1, 1024); // ACK the link reset
+	BOOST_REQUIRE_EQUAL(t.mNumSend, 4);
+	BOOST_REQUIRE_EQUAL(t.mLastSend.GetFunc(), FuncCodes::FC_PRI_CONFIRMED_USER_DATA);	
 }
 
 BOOST_AUTO_TEST_CASE(SendDataTimerExpiration)
