@@ -55,7 +55,7 @@ BOOST_AUTO_TEST_CASE(ConstructionDestruction)
 
 		auto pClient = mgr.AddTCPClient("client", LEV_INFO, 5000, "127.0.0.1", 20000);
 		auto pServer = mgr.AddTCPServer("server", LEV_INFO, 5000, "127.0.0.1", 20000);
-		pClient->AddMaster("master", LEV_INFO, PrintingDataObserver::Inst(), MasterStackConfig());
+		pClient->AddMaster("master", LEV_INFO, NullDataObserver::Inst(), MasterStackConfig());
 		pServer->AddOutstation("outstation", LEV_INFO, SuccessCommandHandler::Inst(), SlaveStackConfig());
 
 	}
@@ -70,7 +70,7 @@ BOOST_AUTO_TEST_CASE(ManualStackShutdown)
 		auto pClient = mgr.AddTCPClient("client", LEV_INFO, 5000, "127.0.0.1", 20000);
 		auto pServer = mgr.AddTCPServer("server", LEV_INFO, 5000, "127.0.0.1", 20000);
 		auto pOutstation = pServer->AddOutstation("outstation", LEV_INFO, SuccessCommandHandler::Inst(), SlaveStackConfig());
-		auto pMaster = pClient->AddMaster("master", LEV_INFO, PrintingDataObserver::Inst(), MasterStackConfig());
+		auto pMaster = pClient->AddMaster("master", LEV_INFO, NullDataObserver::Inst(), MasterStackConfig());
 
 		pOutstation->Shutdown();
 		pMaster->Shutdown();
@@ -85,7 +85,7 @@ BOOST_AUTO_TEST_CASE(ManualChannelShutdownWithStack)
 		DNP3Manager mgr(std::thread::hardware_concurrency());
 
 		auto pChannel = mgr.AddTCPClient("client", LEV_INFO, 5000, "127.0.0.1", 20000);
-		pChannel->AddMaster("master", LEV_INFO, PrintingDataObserver::Inst(), MasterStackConfig());
+		pChannel->AddMaster("master", LEV_INFO, NullDataObserver::Inst(), MasterStackConfig());
 		pChannel->Shutdown();
 	}
 }
@@ -108,7 +108,7 @@ BOOST_AUTO_TEST_CASE(ConstructionDestructionWithVtoRouters)
 
 		auto pClient = mgr.AddTCPClient("client", LEV_INFO, 5000, "127.0.0.1", 20000);
 		auto pServer = mgr.AddTCPServer("server", LEV_INFO, 5000, "127.0.0.1", 20000);
-		auto pMaster = pClient->AddMaster("master", LEV_INFO, PrintingDataObserver::Inst(), MasterStackConfig());
+		auto pMaster = pClient->AddMaster("master", LEV_INFO, NullDataObserver::Inst(), MasterStackConfig());
 		auto pOutstation = pServer->AddOutstation("outstation", LEV_INFO, SuccessCommandHandler::Inst(), SlaveStackConfig());
 
 		pMaster->StartVtoRouterTCPClient("vtoclient", LEV_INFO, "127.0.0.1", 20001, VtoRouterSettings(0, true, false));
@@ -125,7 +125,7 @@ BOOST_AUTO_TEST_CASE(ConstructionDestructionWithVtoRoutersManualVtoShutdown)
 
 		auto pClient = mgr.AddTCPClient("client", LEV_INFO, 5000, "127.0.0.1", 20000);
 		auto pServer = mgr.AddTCPServer("server", LEV_INFO, 5000, "127.0.0.1", 20000);
-		auto pMaster = pClient->AddMaster("master", LEV_INFO, PrintingDataObserver::Inst(), MasterStackConfig());
+		auto pMaster = pClient->AddMaster("master", LEV_INFO, NullDataObserver::Inst(), MasterStackConfig());
 		auto pOutstation = pServer->AddOutstation("outstation", LEV_INFO, SuccessCommandHandler::Inst(), SlaveStackConfig());
 
 		auto pClientVto = pMaster->StartVtoRouterTCPClient("vtoclient", LEV_INFO, "127.0.0.1", 20001, VtoRouterSettings(0, true, false));
