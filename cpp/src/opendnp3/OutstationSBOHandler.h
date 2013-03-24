@@ -138,8 +138,11 @@ template <class T>
 CommandStatus OutstationSBOHandler::Operate(const T& arCommand, size_t aIndex, uint8_t aSequence, QualifierCode aCode, std::map<size_t, SelectInfo<T>>& arMap)
 {
 	auto iter = arMap.find(aIndex);
-	if(iter == arMap.end()) return CS_NO_SELECT; //no prior select
-	else {
+	if(iter == arMap.end()) {
+		this->ClearAll();
+		return CS_NO_SELECT; //no prior select
+	}
+	else {		
 		// what should the sequence number be?
 		uint8_t expectedSeq = (iter->second.mSequence + 1) % 16;
 		// are all values what we expect them to be?
@@ -157,7 +160,10 @@ CommandStatus OutstationSBOHandler::Operate(const T& arCommand, size_t aIndex, u
 			}
 			else return CS_TIMEOUT;
 		}
-		else return CS_NO_SELECT;
+		else {
+			this->ClearAll();
+			return CS_NO_SELECT;
+		}
 	}
 }
 
