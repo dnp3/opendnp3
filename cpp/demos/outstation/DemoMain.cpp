@@ -72,6 +72,8 @@ int main(int argc, char* argv[])
 	// slave's database
 	DeviceTemplate device(5, 5, 5, 5, 5);
 	stackConfig.device = device;
+	stackConfig.device.mStartOnline = true;
+	stackConfig.slave.mDisableUnsol = true;
 
 	// Create a new slave with a log level, command handler, and
 	// config info this	returns a thread-safe interface used for
