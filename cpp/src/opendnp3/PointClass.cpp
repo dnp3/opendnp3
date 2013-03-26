@@ -35,11 +35,11 @@ namespace opendnp3
 PointClass IntToPointClass(int aClass)
 {
 	switch(aClass) {
-	case(1):
+	case(PC_CLASS_1):
 		return PC_CLASS_1;
-	case(2):
+	case(PC_CLASS_2):
 		return PC_CLASS_2;
-	case(3):
+	case(PC_CLASS_3):
 		return PC_CLASS_3;
 	default:
 		return PC_CLASS_0;
