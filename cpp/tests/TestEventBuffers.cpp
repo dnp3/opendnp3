@@ -182,9 +182,19 @@ BOOST_AUTO_TEST_CASE(TimeBasedSorting)
 		BOOST_REQUIRE_EQUAL(itr->mValue.GetTime(), times[NUM - i - 1]); //reverse order of array above
 		++itr;
 	}
-
-
 }
+
+BOOST_AUTO_TEST_CASE(EventOverflow)
+{
+	TimeOrderedEventBuffer<BinaryEvent> buffer(1);
+	buffer.Update(Binary(true), PC_CLASS_1, 0); 
+	BOOST_REQUIRE(buffer.IsFull());
+	BOOST_REQUIRE_FALSE(buffer.IsOverflown());
+	buffer.Update(Binary(false), PC_CLASS_1, 1);
+	BOOST_REQUIRE(buffer.IsOverflown());
+	BOOST_REQUIRE_EQUAL(1, buffer.Size());	
+}
+
 BOOST_AUTO_TEST_SUITE_END()
 
 /* vim: set ts=4 sw=4: */
