@@ -288,7 +288,7 @@ void Slave::RespondToCommands(const StreamObject<T>* apObj, ObjectReadIterator& 
 		else {
 			val.mStatus = CommandHandler(val, index);
 			if(val.mStatus == CS_NOT_SUPPORTED) {
-				this->mRspIIN.SetObjectUnknown(true);//SetParameterError(true);
+				this->mRspIIN.SetParameterError(true);
 			}
 		}
 		i.SetIndex(index);

@@ -666,7 +666,7 @@ BOOST_AUTO_TEST_CASE(SelectCROBNotSupported)
 	// Select group 12 Var 1, count = 1, index = 3
 	t.SendToSlave("C0 03 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00");
 	std::string response = t.Read();
-	BOOST_REQUIRE_EQUAL(response, "C0 81 80 02 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 04"); // 0x04 status == CS_NOT_SUPPORTED
+	BOOST_REQUIRE_EQUAL(response, "C0 81 80 04 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 04"); // 0x04 status == CS_NOT_SUPPORTED
 }
 BOOST_AUTO_TEST_CASE(SelectCROBTooMany)
 {
