@@ -54,7 +54,10 @@ IOServiceThreadPool::IOServiceThreadPool(
 	mService(),
 	mInfiniteTimer(mService)
 {
-	if(aConcurrency == 0) MACRO_THROW_EXCEPTION(ArgumentException, "Concurrency cannot be 0");
+	if(aConcurrency == 0) {
+		aConcurrency = 1;
+		LOG_BLOCK(LEV_WARNING, "Concurrency was set to 0, defaulting to 1 thread");
+	}
 	mInfiniteTimer.expires_at(timer_clock::time_point::max());
 	mInfiniteTimer.async_wait(bind(&IOServiceThreadPool::OnTimerExpiration, this, placeholders::_1));
 	for(uint32_t i = 0; i < aConcurrency; ++i) {
