@@ -36,6 +36,7 @@
 #include <memory.h>
 #include <chrono>
 #include <vector>
+#include <chrono>
 
 #include "Types.h"
 #include "Clock.h"
@@ -71,7 +72,7 @@ double SafeCastInt64ToDouble(int64_t aInput);
 void toUpperCase(std::string& aStr);
 void toLowerCase(std::string& aStr);
 
-std::string ToNormalizedString(const timer_clock::time_point& arTime);
+std::string ToNormalizedString(const std::chrono::high_resolution_clock::time_point& arTime);
 #endif
 
 }

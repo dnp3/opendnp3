@@ -35,7 +35,7 @@
 namespace boost {
 namespace asio {
 
-/**
+/*
 Extension to boost::asio to allow use of a monotonic clock via boost::chrono::steady_clock with the 
 asio::basic_deadline_timer.  Monotonic clocks are immune to adjustments of the system clock.
 The underlying clock and time_type are chrono::steady_clock, but the durations are in posix_time::time_duration

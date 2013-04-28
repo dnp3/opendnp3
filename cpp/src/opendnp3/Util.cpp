@@ -47,7 +47,7 @@ using namespace std::chrono;
 
 #include <iomanip>
 #include <iterator>
-
+#include <chrono>
 #include <time.h>
 
 namespace opendnp3
@@ -73,9 +73,9 @@ std::string Month(int aMonth)
 	}
 }
 
-std::string ToNormalizedString(const timer_clock::time_point& arTime)
+std::string ToNormalizedString(const std::chrono::high_resolution_clock::time_point& arTime)
 {
-	std::time_t t = timer_clock::to_time_t(arTime);
+	std::time_t t = std::chrono::high_resolution_clock::to_time_t(arTime);
 	std::string ts = ctime(&t);    // convert to calendar time
 	ts.resize(ts.size() - 6);      // skip trailing newline anbd year. TODO - find a better, safer impl!
 	ostringstream oss;
