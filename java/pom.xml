@@ -34,14 +34,14 @@
 
     <licenses>
         <license>
-            <name>GNU AFFERO GENERAL PUBLIC LICENSE, Version 3.0</name>
-            <url>http://www.gnu.org/licenses/agpl-3.0.html</url>
+            <name>Apache License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.html</url>
             <distribution>repo</distribution>
         </license>
     </licenses>
 
     <scm>
-        <url>https://github.com/automatakllc/dnp3.git</url>
+        <url>https://github.com/automatak/dnp3.git</url>
         <connection></connection>
     </scm>
 
@@ -49,7 +49,7 @@
         <developer>
             <id>jadamcrain</id>
             <name>J Adam Crain</name>
-            <email>jadamcrain@gmail.com</email>
+            <email>jadamcrain@automatak.com</email>
         </developer>
     </developers>
 
@@ -82,7 +82,7 @@
                     <strictCheck>true</strictCheck>
                     <failIfMissing>true</failIfMissing>
                     <aggregate>true</aggregate>
-                    <header>AUTOMATAK_AGPL_FILE_HEADER</header>
+                    <header>AUTOMATAK_FILE_HEADER</header>
                     <mapping>
                         <hpp>JAVADOC_STYLE</hpp>
                         <application>JAVADOC_STYLE</application>
