@@ -1,4 +1,6 @@
 
+extensions: .cs .cpp .h
+
 //
 // Licensed to Green Energy Corp (www.greenenergycorp.com) under one or
 // more contributor license agreements. See the NOTICE file distributed
@@ -19,41 +21,3 @@
 // have been made to this file. Automatak, LLC licenses these modifications to
 // you under the terms of the License.
 //
-
-#include "AsyncTestObject.h"
-
-#include "Timeout.h"
-
-#include <functional>
-#include <chrono>
-
-using namespace std;
-
-namespace opendnp3
-{
-
-bool AsyncTestObject::ProceedUntil(const EvalFunc& arFunc, millis_t aTimeout)
-{
-	std::chrono::milliseconds ms = std::chrono::milliseconds(aTimeout);
-	Timeout to(ms);
-
-	do {
-		if(arFunc()) return true;
-		else this->Next();
-	}
-	while(!to.IsExpired());
-
-	return false;
-}
-
-void AsyncTestObject::ProceedForTime(millis_t aTimeout)
-{
-	ProceedUntil(std::bind(&AsyncTestObject::AlwaysBoolean, false), aTimeout);
-}
-
-bool AsyncTestObject::ProceedUntilFalse(const EvalFunc& arFunc, millis_t aTimeout)
-{
-	return ProceedUntil(std::bind(&AsyncTestObject::Negate, std::cref(arFunc)), aTimeout);
-}
-
-}
