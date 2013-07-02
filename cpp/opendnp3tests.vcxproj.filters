@@ -447,4 +447,7 @@
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\gecapache.licenseheader" />
+  </ItemGroup>
 </Project>

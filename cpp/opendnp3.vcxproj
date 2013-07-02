@@ -460,6 +460,9 @@
     <ClCompile Include="src\opendnp3\VtoTransmitTask.cpp" />
     <ClCompile Include="src\opendnp3\VtoWriter.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\gecapache.licenseheader" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
