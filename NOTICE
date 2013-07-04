@@ -1,7 +1,7 @@
 =========================================================================
 ==  NOTICE file corresponding to the section 4 d of                    ==
 ==  the Apache License, Version 2.0,                                   ==
-==  in this case for the  Green Energy Corp DNP3 distribution.         ==
+==  in this case for the opendnp3 distribution.                        ==
 =========================================================================
 
 This product includes software developed by Green Energy Corp (GEC)
@@ -10,12 +10,8 @@ This product includes software developed by Green Energy Corp (GEC)
 This product includes software developed by Automatak, LLC
 (http://www.automatak.net)
 
-Please read the LICENSE headers for each source file present as they are 
-licensed under two different terms. Sources are licensed in one
-of two ways. Sources originally licensed by GEC, but modified by Automatak, LLC
-are licensed under the original Apachev2 license AND the Affero GPLv3. Files
-that are the sole copyright of Automatak, LLC are licensed under the terms
-of the Affero GPLv3.
+Please read the LICENSE file present in the root directory of this
+distribution.
 
 The project requires, but not redistributed:
  * boost version 1.50.0 or later under the Boost Software License, and 
