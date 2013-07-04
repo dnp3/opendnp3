@@ -8,10 +8,11 @@ This product includes software developed by Green Energy Corp (GEC)
 (http://www.greenenergycorp.com/).
 
 This product includes software developed by Automatak, LLC
-(http://www.automatak.net)
+(http://www.automatak.com)
 
-Please read the LICENSE file present in the root directory of this
-distribution.
+This software is licsened under the terms of the Apache 2.0 license:
+
+http://www.apache.org/licenses/LICENSE-2.0.html
 
 The project requires, but not redistributed:
  * boost version 1.50.0 or later under the Boost Software License, and 
