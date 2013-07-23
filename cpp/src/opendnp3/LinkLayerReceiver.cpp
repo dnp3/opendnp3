@@ -45,6 +45,13 @@ LinkLayerReceiver::LinkLayerReceiver(Logger* apLogger, IFrameSink* apSink) :
 
 }
 
+void LinkLayerReceiver::Reset()
+{
+	mFrameSize = 0;
+	mpState = LRS_Sync::Inst();
+	mBuffer.Reset();
+}
+
 void LinkLayerReceiver::OnRead(size_t aNumBytes)
 {
 	// This is a serious condition if it occurs

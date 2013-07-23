@@ -261,9 +261,13 @@ for(AddressMap::value_type p: mAddressMap) {
 
 void LinkLayerRouter::OnPhysicalLayerCloseCallback()
 {
+	// reset the state of receiver
+	mReceiver.Reset();
+
+	// Drop frames queued for transmit and tell the contexts that the router has closed
 	mTransmitting = false;
 	mTransmitQueue.erase(mTransmitQueue.begin(), mTransmitQueue.end());
-for(auto pair: mAddressMap) pair.second->OnLowerLayerDown();
+	for(auto pair: mAddressMap) pair.second->OnLowerLayerDown();
 }
 
 }

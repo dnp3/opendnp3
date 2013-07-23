@@ -79,6 +79,9 @@ public:
 		being to free space for further writing. */
 	void Shift();
 
+	/** Reset the buffer to its initial state, empty */
+	void Reset();
+
 	/** @return Bytes of available for writing */
 	size_t NumWriteBytes() const;
 	/** @return Pointer to the position in the buffer available for writing */

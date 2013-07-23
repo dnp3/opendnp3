@@ -60,6 +60,12 @@ void ShiftableBuffer::Shift()
 	mReadPos = 0;
 }
 
+void ShiftableBuffer::Reset()
+{
+	mWritePos = 0;
+	mReadPos = 0;
+}
+
 ShiftableBuffer::~ShiftableBuffer()
 {
 	delete[] mpBuffer;

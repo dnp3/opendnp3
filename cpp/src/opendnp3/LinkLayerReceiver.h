@@ -62,9 +62,15 @@ public:
 	size_t NumWriteBytes() const {
 		return mBuffer.NumWriteBytes();
 	}
+
 	uint8_t* WriteBuff() const {
 		return mBuffer.WriteBuff();
 	}
+
+	/**
+		Resets the state of parser
+	*/
+	void Reset();
 
 private:
 

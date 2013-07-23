@@ -173,4 +173,26 @@ BOOST_AUTO_TEST_CASE(MultiContextSend)
 	t.phys.SignalSendSuccess();
 	BOOST_REQUIRE_EQUAL(t.phys.NumWrites(), 2);
 }
+
+/// Test that the router correctly clear the receive buffer when the layer closes
+BOOST_AUTO_TEST_CASE(LinkLayerRouterClearsBufferOnLowerLayerDown)
+{
+	LinkLayerRouterTest t;
+	MockFrameSink mfs;
+	t.router.AddContext(&mfs, LinkRoute(1, 1024));
+	t.phys.SignalOpenSuccess();
+	t.phys.TriggerRead("05 64 D5 C4 00 04 01 00 F0 BC C0 C0 01 3C 01 06 FF 50");
+	BOOST_REQUIRE_EQUAL(0, mfs.mNumFrames);
+	t.phys.SignalReadFailure(); // closes the layer
+	
+	t.phys.ClearBuffer();
+	t.phys.SignalOpenSuccess();
+	
+	LinkFrame f;
+	f.FormatAck(true, false, 1024, 1);
+	t.phys.TriggerRead(toHex(f.GetBuffer(), f.GetSize()));
+	
+	BOOST_REQUIRE_EQUAL(1, mfs.mNumFrames);
+}
+
 BOOST_AUTO_TEST_SUITE_END()
