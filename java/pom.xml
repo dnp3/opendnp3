@@ -8,7 +8,7 @@
     <packaging>pom</packaging>
 
     <name>opendnp3</name>
-    <url>http://www.github.com/automatakllc/dnp3</url>
+    <url>http://www.github.com/automatak/dnp3</url>
     <description>JNI bindings for opendnp3. A companion shared library (so/dll) is required.</description>
 
     <modules>
