@@ -497,6 +497,7 @@ namespace Adapter
 	{
 		opendnp3::SlaveConfig sc;
 
+		sc.mDisableUnsol = config->disableUnsol;
 		sc.mMaxControls = config->maxControls;
 		sc.mUnsolMask = convertClassMask(config->unsolMask);		
 		sc.mAllowTimeSync = config->allowTimeSync;
