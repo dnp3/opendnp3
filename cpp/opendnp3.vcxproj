@@ -55,35 +55,35 @@
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\config\boost_includes.props" />
-    <Import Project="..\config\common_boost_defines.props" />
-    <Import Project="..\config\output_dirs.props" />
-    <Import Project="..\config\openpal_include.props" />
-    <Import Project="..\config\opendnp3_include.props" />
+    <Import Project="$(SolutionDir)\config\boost_includes.props" />
+    <Import Project="$(SolutionDir)\config\common_boost_defines.props" />
+    <Import Project="$(SolutionDir)\config\output_dirs.props" />
+    <Import Project="$(SolutionDir)\config\openpal_include.props" />
+    <Import Project="$(SolutionDir)\config\opendnp3_include.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\config\boost_includes.props" />
-    <Import Project="..\config\common_boost_defines.props" />
-    <Import Project="..\config\output_dirs.props" />
-    <Import Project="..\config\openpal_include.props" />
-    <Import Project="..\config\opendnp3_include.props" />
+    <Import Project="$(SolutionDir)\config\boost_includes.props" />
+    <Import Project="$(SolutionDir)\config\common_boost_defines.props" />
+    <Import Project="$(SolutionDir)\config\output_dirs.props" />
+    <Import Project="$(SolutionDir)\config\openpal_include.props" />
+    <Import Project="$(SolutionDir)\config\opendnp3_include.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\config\boost_includes.props" />
-    <Import Project="..\config\common_boost_defines.props" />
-    <Import Project="..\config\output_dirs.props" />
-    <Import Project="..\config\openpal_include.props" />
-    <Import Project="..\config\opendnp3_include.props" />
+    <Import Project="$(SolutionDir)\config\boost_includes.props" />
+    <Import Project="$(SolutionDir)\config\common_boost_defines.props" />
+    <Import Project="$(SolutionDir)\config\output_dirs.props" />
+    <Import Project="$(SolutionDir)\config\openpal_include.props" />
+    <Import Project="$(SolutionDir)\config\opendnp3_include.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\config\boost_includes.props" />
-    <Import Project="..\config\common_boost_defines.props" />
-    <Import Project="..\config\output_dirs.props" />
-    <Import Project="..\config\openpal_include.props" />
-    <Import Project="..\config\opendnp3_include.props" />
+    <Import Project="$(SolutionDir)\config\boost_includes.props" />
+    <Import Project="$(SolutionDir)\config\common_boost_defines.props" />
+    <Import Project="$(SolutionDir)\config\output_dirs.props" />
+    <Import Project="$(SolutionDir)\config\openpal_include.props" />
+    <Import Project="$(SolutionDir)\config\opendnp3_include.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup />
