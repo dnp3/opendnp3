@@ -1,4 +1,3 @@
-
 //
 // Licensed to Green Energy Corp (www.greenenergycorp.com) under one or
 // more contributor license agreements. See the NOTICE file distributed
@@ -17,20 +16,32 @@
 //
 // This file was forked on 01/01/2013 by Automatak, LLC and modifications
 // have been made to this file. Automatak, LLC licenses these modifications to
-// you under the terms of the License.
+// you under the GNU Affero General Public License Version 3.0
+// (the "Additional License"). You may not use these modifications except in
+// compliance with the additional license. You may obtain a copy of the Additional
+// License at
+//
+// http://www.gnu.org/licenses/agpl.html
+//
+// Contact Automatak, LLC for a commercial license to these modifications
 //
 
-#include <opendnp3/Clock.h>
+#ifndef __CLOCK_H_
+#define __CLOCK_H_
 
-using namespace std::chrono;
+#include "Types.h"
 
 namespace opendnp3 {
-	
-	millis_t Clock::Now()
-	{
-		return duration_cast<milliseconds>(high_resolution_clock::now().time_since_epoch()).count();
-	}
+
+
+
+/*
+class Clock {
+	public:
+	staticopenpal::millis_t Now();
+};
+*/
 
 }
 
-
+#endif 

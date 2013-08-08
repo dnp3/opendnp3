@@ -21,14 +21,13 @@
 //
 
 #include <opendnp3/TimeTransaction.h>
-#include <opendnp3/Clock.h>
 
 namespace opendnp3
 {
-	TimeTransaction::TimeTransaction(IDataObserver* apObserver) : 
+	TimeTransaction::TimeTransaction(IDataObserver* apObserver,openpal::millis_t aTimestamp) : 
 		Transaction(apObserver),
 		mpObserver(apObserver),
-		mTimestamp(Clock::Now())
+		mTimestamp(aTimestamp)
 	{
 
 	}

@@ -47,8 +47,8 @@ public:
 	ASIOExecutor(boost::asio::strand*);
 	~ASIOExecutor();
 
-	ITimer* Start(timer_clock::duration, const std::function<void ()>&);
-	ITimer* Start(const timer_clock::time_point&, const std::function<void ()>&);
+	ITimer* Start(openpal::timer_clock::duration, const std::function<void ()>&);
+	ITimer* Start(const openpal::timer_clock::time_point&, const std::function<void ()>&);
 	void Post(const std::function<void ()>&);
 
 private:

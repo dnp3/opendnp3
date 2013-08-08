@@ -43,7 +43,7 @@ public:
 
 	void Reset();
 
-	bool WaitForSameData(millis_t aWaitMs);
+	bool WaitForSameData(openpal::millis_t aWaitMs);
 
 	void DescribeMissingData();
 

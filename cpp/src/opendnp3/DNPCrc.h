@@ -23,7 +23,7 @@
 #ifndef __DNP_CRC_H_
 #define __DNP_CRC_H_
 
-#include <opendnp3/Types.h>
+#include <openpal/Types.h>
 #include <opendnp3/Visibility.h>
 
 #include <stddef.h>

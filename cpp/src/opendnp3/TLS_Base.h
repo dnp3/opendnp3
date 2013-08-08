@@ -29,7 +29,7 @@
 #ifndef __TLS_BASE_H_
 #define __TLS_BASE_H_
 
-#include <opendnp3/Types.h>
+#include <openpal/Types.h>
 #include <opendnp3/Uncopyable.h>
 #include <opendnp3/Visibility.h>
 

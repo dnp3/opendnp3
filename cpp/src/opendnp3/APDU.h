@@ -23,7 +23,7 @@
 #ifndef __APDU_H_
 #define __APDU_H_
 
-#include <opendnp3/Types.h>
+#include <openpal/Types.h>
 #include <opendnp3/Exception.h>
 #include <opendnp3/APDUConstants.h>
 #include <opendnp3/Location.h>

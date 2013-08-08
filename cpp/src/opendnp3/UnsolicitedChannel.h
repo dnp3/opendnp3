@@ -44,7 +44,7 @@ namespace opendnp3
 class DLL_LOCAL UnsolicitedChannel : public AppLayerChannel
 {
 public:
-	UnsolicitedChannel(Logger* apLogger, AppLayer* apApp, IExecutor* apExecutor, millis_t aTimeout);
+	UnsolicitedChannel(Logger* apLogger, AppLayer* apApp, IExecutor* apExecutor,openpal::millis_t aTimeout);
 	virtual ~UnsolicitedChannel() {}
 
 	void OnUnsol(APDU& arAPDU);

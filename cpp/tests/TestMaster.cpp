@@ -23,16 +23,16 @@
 #include <boost/test/unit_test.hpp>
 
 #include <opendnp3/Exception.h>
-#include <opendnp3/Clock.h>
+
 
 #include <queue>
 
 #include "TestHelpers.h"
 #include "MasterTestObject.h"
 
-
 using namespace opendnp3;
 using namespace std::chrono;
+using namespace openpal;
 
 void TestForIntegrityPoll(MasterTestObject& t, bool aSucceed = true)
 {

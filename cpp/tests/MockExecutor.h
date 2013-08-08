@@ -43,8 +43,8 @@ public:
 	~MockExecutor();
 
 	// Implement IExecutor
-	ITimer* Start(const timer_clock::time_point&, const std::function<void ()>&);
-	ITimer* Start(timer_clock::duration, const std::function<void ()>&);
+	ITimer* Start(const openpal::timer_clock::time_point&, const std::function<void ()>&);
+	ITimer* Start(openpal::timer_clock::duration, const std::function<void ()>&);
 	void Post(const std::function<void ()>&);
 	void PostSync(const std::function<void ()>&);
 
@@ -69,7 +69,7 @@ public:
 		return mTimerMap.size() + mPostQueue.size();
 	}
 
-	timer_clock::duration NextDurationTimer();
+	openpal::timer_clock::duration NextDurationTimer();
 
 
 private:
@@ -77,9 +77,9 @@ private:
 	void Cancel(ITimer* apTimer);
 
 	typedef std::deque<std::function<void ()>> PostQueue;
-	typedef std::multimap<timer_clock::time_point, MockTimer*> TimerMap;
+	typedef std::multimap<openpal::timer_clock::time_point, MockTimer*> TimerMap;
 	typedef std::deque<MockTimer*> TimerQueue;
-	typedef std::deque<timer_clock::duration> DurationTimerQueue;
+	typedef std::deque<openpal::timer_clock::duration> DurationTimerQueue;
 
 	bool mPostIsSynchronous;
 	bool mAutoPost;
@@ -97,14 +97,14 @@ class MockTimer : public ITimer
 	friend class MockExecutor;
 
 public:
-	MockTimer(MockExecutor*, const timer_clock::time_point&, const std::function<void ()>&);
+	MockTimer(MockExecutor*, const openpal::timer_clock::time_point&, const std::function<void ()>&);
 
 	//implement ITimer
 	void Cancel();
-	timer_clock::time_point ExpiresAt();
+	openpal::timer_clock::time_point ExpiresAt();
 
 private:
-	timer_clock::time_point mTime;
+	openpal::timer_clock::time_point mTime;
 	MockExecutor* mpSource;
 	std::function<void ()> mCallback;
 };

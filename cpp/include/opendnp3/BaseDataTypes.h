@@ -29,7 +29,8 @@
 #ifndef __BASE_DATA_TYPES_H_
 #define __BASE_DATA_TYPES_H_
 
-#include "Types.h"
+#include <openpal/Types.h>
+
 #include "QualityMasks.h"
 
 #include <sstream>
@@ -106,13 +107,13 @@ public:
 	virtual ~DataPoint() {}
 
 	DataTypes GetType() const;
-	millis_t GetTime() const;
+	openpal::millis_t GetTime() const;
 
 	virtual uint8_t GetQuality() const;
 	bool CheckQualityBit(uint8_t aQualMask) const;
 
 	virtual void SetQuality(uint8_t aQuality);
-	void SetTime(millis_t aTime);
+	void SetTime(openpal::millis_t aTime);
 
 #ifndef OPENDNP3_STRIP_LOG_MESSAGES
 	virtual std::string ToString() const = 0;
@@ -124,7 +125,7 @@ protected:
 	DataPoint(uint8_t aQuality, DataTypes aType);
 
 	uint8_t mQuality;	//	bitfield that stores type specific quality information
-	millis_t mTime;		//	timestamp associated with the measurement, -1 if it was never timestamped
+	openpal::millis_t mTime;		//	timestamp associated with the measurement, -1 if it was never timestamped
 
 private:
 	DataPoint();
@@ -135,7 +136,7 @@ inline DataTypes DataPoint::GetType() const
 {
 	return mType;
 }
-inline millis_t DataPoint::GetTime() const
+inline openpal::millis_t DataPoint::GetTime() const
 {
 	return mTime;
 }
@@ -147,7 +148,7 @@ inline bool DataPoint::CheckQualityBit(uint8_t aQualMask) const
 {
 	return (aQualMask & mQuality) != 0;
 }
-inline void DataPoint::SetTime(millis_t arTime)
+inline void DataPoint::SetTime(openpal::millis_t arTime)
 {
 	mTime = arTime;
 }

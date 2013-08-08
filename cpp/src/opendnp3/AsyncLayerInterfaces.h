@@ -23,7 +23,7 @@
 #ifndef __ASYNC_LAYER_INTERFACES_H_
 #define __ASYNC_LAYER_INTERFACES_H_
 
-#include <opendnp3/Types.h>
+#include <openpal/Types.h>
 #include <opendnp3/Visibility.h>
 
 #include "Loggable.h"

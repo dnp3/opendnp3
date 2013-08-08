@@ -28,6 +28,8 @@
 
 #include "AsyncTaskGroup.h"
 
+using namespace openpal;
+
 
 namespace opendnp3
 {

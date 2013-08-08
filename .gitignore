@@ -44,6 +44,8 @@ unittest.log
 ipch
 cpp/Debug
 cpp/Release
+openpal/Debug
+openpal/Release
 java/Debug
 java/Release
 *.suo

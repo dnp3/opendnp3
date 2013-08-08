@@ -31,7 +31,7 @@
 
 #include <string>
 
-#include <opendnp3/Types.h>
+#include <openpal/Types.h>
 #include <opendnp3/Singleton.h>
 #include <opendnp3/Location.h>
 

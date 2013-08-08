@@ -29,7 +29,7 @@
 #ifndef __STARTUP_TASKS_H_
 #define __STARTUP_TASKS_H_
 
-#include <opendnp3/Types.h>
+#include <openpal/Types.h>
 #include <opendnp3/Visibility.h>
 
 #include "MasterTaskBase.h"
@@ -97,10 +97,10 @@ private:
 	ITimeSource* mpTimeSrc;
 
 	// < 0 implies the delay measure hasn't happened yet
-	millis_t mDelay;
+	openpal::millis_t mDelay;
 
 	// what time we sent the delay meas
-	timer_clock::time_point mStart;
+	openpal::timer_clock::time_point mStart;
 };
 
 } //ens ns

@@ -23,9 +23,9 @@
 #ifndef __I_TIME_SOURCE_H_
 #define __I_TIME_SOURCE_H_
 
-#include <opendnp3/Types.h>
+#include <openpal/Types.h>
 #include <opendnp3/Visibility.h>
-#include <opendnp3/Clock.h>
+
 
 namespace opendnp3
 {
@@ -34,15 +34,15 @@ class DLL_LOCAL ITimeSource
 {
 
 public:
-	virtual timer_clock::time_point GetUTC() = 0;
-	millis_t GetMillisecondsSinceEpoch();
+	virtual openpal::timer_clock::time_point GetUTC() = 0;
+	openpal::millis_t GetMillisecondsSinceEpoch();
 
 };
 
 class DLL_LOCAL ITimeManager : public ITimeSource
 {
 public:
-	virtual void SetTime(const timer_clock::time_point& arTime) = 0;
+	virtual void SetTime(const openpal::timer_clock::time_point& arTime) = 0;
 };
 
 

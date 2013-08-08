@@ -29,7 +29,7 @@
 #ifndef __LINK_LAYER_CONSTANTS_
 #define __LINK_LAYER_CONSTANTS_
 
-#include "Types.h"
+#include <cstdint>
 
 #include <string>
 

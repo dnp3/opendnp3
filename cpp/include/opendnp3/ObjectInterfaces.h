@@ -29,7 +29,7 @@
 #ifndef __OBJECT_INTERFACES_H_
 #define __OBJECT_INTERFACES_H_
 
-#include "Types.h"
+#include <openpal/Types.h>
 
 #include <assert.h>
 #include <stddef.h>

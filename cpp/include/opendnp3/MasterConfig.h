@@ -62,7 +62,7 @@ struct MasterConfig {
 		@param aClassMask	Bitwise mask representing the classes to scan
 		@param aPeriod		Period of the scan in milliseconds
 	*/
-	void AddExceptionScan(int aClassMask, millis_t aPeriod) {
+	void AddExceptionScan(int aClassMask,openpal::millis_t aPeriod) {
 		ExceptionScan ex(aClassMask, aPeriod);
 		mScans.push_back(ex);
 	}
@@ -89,10 +89,10 @@ struct MasterConfig {
 	int UnsolClassMask;
 
 	/// Period for integrity scans (class 0), -1 for non periodic
-	millis_t IntegrityRate;
+	openpal::millis_t IntegrityRate;
 
 	/// Time delay between task retries
-	millis_t TaskRetryRate;
+	openpal::millis_t TaskRetryRate;
 
 	/// vector that holds exception scans
 	std::vector<ExceptionScan> mScans;

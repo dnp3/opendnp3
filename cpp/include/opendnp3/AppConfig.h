@@ -31,6 +31,8 @@
 
 #include "DNPConstants.h"
 
+using namespace openpal;
+
 namespace opendnp3
 {
 

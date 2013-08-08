@@ -32,7 +32,7 @@
 #include "LogTypes.h"
 #include "Parsing.h"
 #include "Util.h"
-#include "Types.h"
+#include <openpal/Types.h>
 
 #include <chrono>
 #include <map>

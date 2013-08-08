@@ -23,8 +23,9 @@
 #ifndef __I_TIMER_H_
 #define __I_TIMER_H_
 
+#include <openpal/Types.h>
 #include <opendnp3/Visibility.h>
-#include <opendnp3/Clock.h>
+
 
 namespace opendnp3
 {
@@ -50,7 +51,7 @@ class DLL_LOCAL ITimer
 public:
 	virtual ~ITimer() {}
 	virtual void Cancel() = 0;
-	virtual timer_clock::time_point ExpiresAt() = 0;
+	virtual openpal::timer_clock::time_point ExpiresAt() = 0;
 };
 
 }

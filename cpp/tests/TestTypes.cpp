@@ -22,11 +22,11 @@
 
 #include <boost/test/unit_test.hpp>
 
-#include <opendnp3/Types.h>
+#include <openpal/Types.h>
 #include <limits>
 
 using namespace std;
-using namespace opendnp3;
+using namespace openpal;
 
 #undef max
 #undef min

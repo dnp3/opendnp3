@@ -32,7 +32,7 @@ namespace opendnp3
 {
 
 
-SolicitedChannel::SolicitedChannel(Logger* apLogger, AppLayer* apApp, IExecutor* apExecutor, millis_t aTimeout) :
+SolicitedChannel::SolicitedChannel(Logger* apLogger, AppLayer* apApp, IExecutor* apExecutor,openpal::millis_t aTimeout) :
 	AppLayerChannel("Solicited", apLogger, apApp, apExecutor, aTimeout)
 {}
 

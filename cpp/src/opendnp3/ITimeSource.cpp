@@ -22,8 +22,10 @@
 
 #include "ITimeSource.h"
 
-#include <opendnp3/Types.h>
+#include <openpal/Types.h>
 #include <chrono>
+
+using namespace openpal;
 
 namespace opendnp3
 {

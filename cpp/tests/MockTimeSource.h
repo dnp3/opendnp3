@@ -35,21 +35,21 @@ public:
 	MockTimeSource();
 
 	// Implement ITimeSource
-	timer_clock::time_point GetUTC() {
+	openpal::timer_clock::time_point GetUTC() {
 		return mTime;
 	}
-	timer_clock::time_point GetTimeStampUTC();
+	openpal::timer_clock::time_point GetTimeStampUTC();
 
-	void SetTime(const timer_clock::time_point& arTime) {
+	void SetTime(const openpal::timer_clock::time_point& arTime) {
 		mTime = arTime;
 	}
 
-	void Advance(const timer_clock::duration& arDuration);
+	void Advance(const openpal::timer_clock::duration& arDuration);
 	void SetToNow();
 
 private:
 
-	timer_clock::time_point mTime;
+	openpal::timer_clock::time_point mTime;
 };
 
 }

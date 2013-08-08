@@ -29,7 +29,7 @@
 #ifndef __PACKING_UNPACKING_H_
 #define __PACKING_UNPACKING_H_
 
-#include <opendnp3/Types.h>
+#include <openpal/Types.h>
 #include <opendnp3/Visibility.h>
 
 #include <stddef.h>

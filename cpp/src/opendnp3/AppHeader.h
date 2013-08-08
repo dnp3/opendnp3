@@ -23,7 +23,7 @@
 #ifndef __APP_HEADER_H_
 #define __APP_HEADER_H_
 
-#include <opendnp3/Types.h>
+#include <openpal/Types.h>
 #include <opendnp3/Singleton.h>
 #include <opendnp3/APDUConstants.h>
 #include <opendnp3/Visibility.h>

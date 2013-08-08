@@ -153,9 +153,6 @@
     <ClInclude Include="include\opendnp3\TransportConstants.h">
       <Filter>Include Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\opendnp3\Types.h">
-      <Filter>Include Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\opendnp3\Uncopyable.h">
       <Filter>Include Files</Filter>
     </ClInclude>
@@ -558,9 +555,6 @@
     <ClInclude Include="src\opendnp3\MonotonicDeadlineTimer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\opendnp3\Clock.h">
-      <Filter>Include Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\opendnp3\TimeTransaction.h">
       <Filter>Include Files</Filter>
     </ClInclude>
@@ -939,9 +933,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\OutstationSBOHandler.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\Clock.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\TimeTransaction.cpp">

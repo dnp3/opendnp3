@@ -29,7 +29,7 @@
 #ifndef __LINK_CONFIG_H_
 #define __LINK_CONFIG_H_
 
-#include "Types.h"
+#include <openpal/Types.h>
 
 namespace opendnp3
 {
@@ -44,7 +44,7 @@ struct LinkConfig {
 	        size_t aNumRetry,
 	        uint16_t aLocalAddr,
 	        uint16_t aRemoteAddr,
-	        millis_t aTimeout) :
+	       openpal::millis_t aTimeout) :
 
 		IsMaster(aIsMaster),
 		UseConfirms(aUseConfirms),
@@ -82,7 +82,7 @@ struct LinkConfig {
 	uint16_t RemoteAddr;
 
 	/// the response timeout in milliseconds for confirmed requests
-	millis_t Timeout;
+	openpal::millis_t Timeout;
 
 private:
 

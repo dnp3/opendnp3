@@ -66,7 +66,7 @@ public:
 	/**
 	 * Return the timer's expiry time as an absolute time.
 	 */
-	timer_clock::time_point ExpiresAt();
+	openpal::timer_clock::time_point ExpiresAt();
 
 private:
 

@@ -37,7 +37,7 @@ namespace opendnp3
 	class TimeTransaction : private Transaction
 	{
 		public:
-			TimeTransaction(IDataObserver* apObserver);
+			TimeTransaction(IDataObserver* apObserver,openpal::millis_t aTimestamp);
 
 			void Update(Binary aMeas, size_t aIndex);
 			void Update(Analog aMeas, size_t aIndex);
@@ -47,7 +47,7 @@ namespace opendnp3
 
 		private:
 			IDataObserver* mpObserver;
-			millis_t mTimestamp;
+			openpal::millis_t mTimestamp;
 	};
 }
 

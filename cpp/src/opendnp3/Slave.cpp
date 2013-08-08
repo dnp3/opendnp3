@@ -35,6 +35,8 @@
 #include <boost/bind.hpp>
 #include <functional>
 
+using namespace openpal;
+
 namespace opendnp3
 {
 

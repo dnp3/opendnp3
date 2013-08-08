@@ -23,7 +23,7 @@
 #ifndef __BUFFER_TEST_OBJECT_H_
 #define __BUFFER_TEST_OBJECT_H_
 
-#include <opendnp3/Types.h>
+#include <openpal/Types.h>
 #include <string>
 #include <vector>
 

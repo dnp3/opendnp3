@@ -230,7 +230,7 @@ private:
 	size_t FlushVtoUpdates();
 	size_t FlushUpdates();
 	void FlushDeferredEvents();
-	void StartUnsolTimer(millis_t aTimeout);
+	void StartUnsolTimer(openpal::millis_t aTimeout);
 
 	// Task handlers
 

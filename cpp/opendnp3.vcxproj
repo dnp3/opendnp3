@@ -86,8 +86,10 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(SolutionDir)/cpp/include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(SolutionDir)/cpp/include;$(SolutionDir)/openpal/include</AdditionalIncludeDirectories>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <MinimalRebuild>false</MinimalRebuild>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -118,7 +120,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(SolutionDir)/cpp/include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(SolutionDir)/cpp/include;$(SolutionDir)/openpal/include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -155,7 +157,6 @@
     <ClInclude Include="include\opendnp3\BaseDataTypes.h" />
     <ClInclude Include="include\opendnp3\ChannelStates.h" />
     <ClInclude Include="include\opendnp3\ClassMask.h" />
-    <ClInclude Include="include\opendnp3\Clock.h" />
     <ClInclude Include="include\opendnp3\CommandResponse.h" />
     <ClInclude Include="include\opendnp3\CommandStatus.h" />
     <ClInclude Include="include\opendnp3\ControlRelayOutputBlock.h" />
@@ -204,7 +205,6 @@
     <ClInclude Include="include\opendnp3\SubjectBase.h" />
     <ClInclude Include="include\opendnp3\Threadable.h" />
     <ClInclude Include="include\opendnp3\TransportConstants.h" />
-    <ClInclude Include="include\opendnp3\Types.h" />
     <ClInclude Include="include\opendnp3\Uncopyable.h" />
     <ClInclude Include="include\opendnp3\Util.h" />
     <ClInclude Include="include\opendnp3\Visibility.h" />
@@ -356,7 +356,6 @@
     <ClCompile Include="src\opendnp3\ChangeBuffer.cpp" />
     <ClCompile Include="src\opendnp3\ChannelStates.cpp" />
     <ClCompile Include="src\opendnp3\ClassCounter.cpp" />
-    <ClCompile Include="src\opendnp3\Clock.cpp" />
     <ClCompile Include="src\opendnp3\CommandStatus.cpp" />
     <ClCompile Include="src\opendnp3\CommandTask.cpp" />
     <ClCompile Include="src\opendnp3\ConstantCommandProcessor.cpp" />

@@ -25,10 +25,11 @@
 
 #include "AsyncTaskInterfaces.h"
 
-#include <opendnp3/Types.h>
+#include <openpal/Types.h>
 #include <opendnp3/Uncopyable.h>
 #include <opendnp3/Visibility.h>
-#include <opendnp3/Clock.h>
+
+
 
 #include <vector>
 #include <chrono>
@@ -87,7 +88,7 @@ protected:
 	        int aPriority,
 	        const TaskHandler& arCallback,
 	        AsyncTaskGroup* apGroup,
-	        const timer_clock::time_point& arInitialTime,
+	        const openpal::timer_clock::time_point& arInitialTime,
 	        const std::string& arName);
 
 	// optional NVII function for special bookkeeping
@@ -105,7 +106,7 @@ protected:
 
 	// Update the task's completion and expired status
 	// base upon the input time
-	void UpdateTime(const timer_clock::time_point& arTime);
+	void UpdateTime(const openpal::timer_clock::time_point& arTime);
 
 	bool IsEnabled() const {
 		return mIsEnabled;
@@ -132,7 +133,7 @@ protected:
 	}
 
 	// @returns max_date_time if the task is currently running or will not run again
-	timer_clock::time_point NextRunTime() const {
+	openpal::timer_clock::time_point NextRunTime() const {
 		return mNextRunTime;
 	}
 
@@ -149,8 +150,8 @@ protected:
 	TaskHandler mHandler;					// Every task has a handler for
 	// executing the task
 	AsyncTaskGroup* mpGroup;				// owning task group
-	timer_clock::time_point mNextRunTime;	// next execution time for the task
-	const timer_clock::time_point M_INITIAL_TIME;
+	openpal::timer_clock::time_point mNextRunTime;	// next execution time for the task
+	const openpal::timer_clock::time_point M_INITIAL_TIME;
 	int mFlags;
 };
 

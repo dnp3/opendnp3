@@ -22,7 +22,7 @@
 
 #include <boost/test/unit_test.hpp>
 
-#include <opendnp3/Types.h>
+#include <openpal/Types.h>
 #include <opendnp3/Thread.h>
 #include <opendnp3/TimeSource.h>
 #include <opendnp3/Util.h>
@@ -37,6 +37,7 @@
 
 using namespace std;
 using namespace std::chrono;
+using namespace openpal;
 using namespace opendnp3;
 
 BOOST_AUTO_TEST_SUITE(TimeoutTests)

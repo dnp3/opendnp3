@@ -27,12 +27,13 @@
 #include <functional>
 #include <chrono>
 
+using namespace openpal;
 using namespace std;
 
 namespace opendnp3
 {
 
-bool AsyncTestObject::ProceedUntil(const EvalFunc& arFunc, millis_t aTimeout)
+bool AsyncTestObject::ProceedUntil(const EvalFunc& arFunc,openpal::millis_t aTimeout)
 {
 	std::chrono::milliseconds ms = std::chrono::milliseconds(aTimeout);
 	Timeout to(ms);
@@ -51,7 +52,7 @@ void AsyncTestObject::ProceedForTime(millis_t aTimeout)
 	ProceedUntil(std::bind(&AsyncTestObject::AlwaysBoolean, false), aTimeout);
 }
 
-bool AsyncTestObject::ProceedUntilFalse(const EvalFunc& arFunc, millis_t aTimeout)
+bool AsyncTestObject::ProceedUntilFalse(const EvalFunc& arFunc,openpal::millis_t aTimeout)
 {
 	return ProceedUntil(std::bind(&AsyncTestObject::Negate, std::cref(arFunc)), aTimeout);
 }

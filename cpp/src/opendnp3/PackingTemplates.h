@@ -29,7 +29,7 @@
 #ifndef __PACKING_TEMPLATES_H_
 #define __PACKING_TEMPLATES_H_
 
-#include <opendnp3/Types.h>
+#include <openpal/Types.h>
 #include <opendnp3/Location.h>
 
 #include <assert.h>

@@ -59,12 +59,14 @@
     <Import Project="..\config\output_dirs.props" />
     <Import Project="..\config\boost_lib.props" />
     <Import Project="..\config\common_boost_defines.props" />
+    <Import Project="..\config\openpal_include.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="..\config\boost_includes.props" />
     <Import Project="..\config\common_boost_defines.props" />
     <Import Project="..\config\boostlib64.props" />
+    <Import Project="..\config\openpal_include.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
@@ -72,6 +74,7 @@
     <Import Project="..\config\output_dirs.props" />
     <Import Project="..\config\boost_lib.props" />
     <Import Project="..\config\common_boost_defines.props" />
+    <Import Project="..\config\openpal_include.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
@@ -79,6 +82,7 @@
     <Import Project="..\config\output_dirs.props" />
     <Import Project="..\config\common_boost_defines.props" />
     <Import Project="..\config\boostlib64.props" />
+    <Import Project="..\config\openpal_include.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -101,6 +105,8 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(SolutionDir)\cpp\src;$(SolutionDir)\cpp\include;$(TOOLS_HOME)\boostlib\boost_1_52_0\include</AdditionalIncludeDirectories>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <MinimalRebuild>false</MinimalRebuild>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

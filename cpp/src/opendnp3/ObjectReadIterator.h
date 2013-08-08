@@ -31,7 +31,7 @@
 
 #include <assert.h>
 
-#include <opendnp3/Types.h>
+#include <openpal/Types.h>
 #include <opendnp3/ObjectInterfaces.h>
 #include <opendnp3/Visibility.h>
 

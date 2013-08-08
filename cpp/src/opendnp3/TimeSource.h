@@ -31,8 +31,9 @@
 
 #include "ITimeSource.h"
 
+#include <openpal/Types.h>
+
 #include <opendnp3/Singleton.h>
-#include <opendnp3/Types.h>
 #include <opendnp3/Visibility.h>
 
 namespace opendnp3
@@ -43,7 +44,7 @@ class DLL_LOCAL TimeSource : public ITimeSource
 	MACRO_SINGLETON_INSTANCE(TimeSource)
 
 	// Implement ITimeSource
-	timer_clock::time_point GetUTC();
+	openpal::timer_clock::time_point GetUTC();
 };
 
 /** Maintains an external time by keeping an offset from system time.
@@ -53,11 +54,11 @@ class DLL_LOCAL TimeSourceSystemOffset : public  ITimeManager
 public:
 	TimeSourceSystemOffset();
 
-	timer_clock::time_point GetUTC();
-	void SetTime(const timer_clock::time_point& arTime);
+	openpal::timer_clock::time_point GetUTC();
+	void SetTime(const openpal::timer_clock::time_point& arTime);
 
 private:
-	timer_clock::duration mOffset;
+	openpal::timer_clock::duration mOffset;
 };
 
 }

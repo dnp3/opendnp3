@@ -29,7 +29,7 @@
 #ifndef __VTO_ROUTER_SETTINGS_H_
 #define __VTO_ROUTER_SETTINGS_H_
 
-#include "Types.h"
+#include <openpal/Types.h>
 
 namespace opendnp3
 {
@@ -46,11 +46,11 @@ struct VtoRouterSettings {
 	 * @param aMinOpenRetryMs minimum time to wait before retrying opening the physical layer after a failure
 	 * @param aMaxOpenRetryMs maximum time to wait before retrying openin th physical layer after a failure
 	 */
-	VtoRouterSettings(uint8_t aChannelId, bool aStartLocal, bool aDisableExtensions, millis_t aMinOpenRetryMs = 5000, millis_t aMaxOpenRetryMs = 10000);
+	VtoRouterSettings(uint8_t aChannelId, bool aStartLocal, bool aDisableExtensions,openpal::millis_t aMinOpenRetryMs = 5000,openpal::millis_t aMaxOpenRetryMs = 10000);
 
 	uint8_t CHANNEL_ID;
-	millis_t MIN_OPEN_RETRY_MS;
-	millis_t MAX_OPEN_RETRY_MS;
+	openpal::millis_t MIN_OPEN_RETRY_MS;
+	openpal::millis_t MAX_OPEN_RETRY_MS;
 	bool START_LOCAL;
 	bool DISABLE_EXTENSIONS;
 };

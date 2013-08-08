@@ -26,7 +26,7 @@
 #include "AsyncTaskInterfaces.h"
 #include "AsyncTaskBase.h"
 
-#include <opendnp3/Types.h>
+#include <openpal/Types.h>
 #include <opendnp3/Uncopyable.h>
 #include <opendnp3/Visibility.h>
 
@@ -64,9 +64,9 @@ private:
 		@param apGroup Associated task group
 		@param arName Name associated with the task
 	*/
-	AsyncTaskNonPeriodic(millis_t aRetryDelay, int aPriority, const TaskHandler& arCallback, AsyncTaskGroup* apGroup, const std::string& arName);
+	AsyncTaskNonPeriodic(openpal::millis_t aRetryDelay, int aPriority, const TaskHandler& arCallback, AsyncTaskGroup* apGroup, const std::string& arName);
 
-	millis_t mRetryDelay;
+	openpal::millis_t mRetryDelay;
 };
 
 }

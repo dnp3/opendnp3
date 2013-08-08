@@ -31,7 +31,8 @@
 
 #include <vector>
 
-#include "Types.h"
+#include <openpal/Types.h>
+
 #include "PointClass.h"
 
 namespace opendnp3

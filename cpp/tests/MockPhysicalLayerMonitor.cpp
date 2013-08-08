@@ -32,6 +32,7 @@
 
 #include <sstream>
 
+using namespace openpal;
 using namespace std::chrono;
 
 namespace opendnp3

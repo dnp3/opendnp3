@@ -30,7 +30,7 @@
 #ifndef __OUTSTATION_SBO_HANDLER_H_
 #define __OUTSTATION_SBO_HANDLER_H_
 
-#include <opendnp3/Types.h>
+#include <openpal/Types.h>
 #include <opendnp3/ICommandHandler.h>
 #include <opendnp3/APDUConstants.h>
 #include <opendnp3/Location.h>
@@ -48,7 +48,7 @@ class DLL_LOCAL OutstationSBOHandler
 	class SelectInfo
 	{
 	public:
-		SelectInfo(const T& arCommand, uint8_t aSequence, QualifierCode aCode, millis_t aTimestamp) :
+		SelectInfo(const T& arCommand, uint8_t aSequence, QualifierCode aCode,openpal::millis_t aTimestamp) :
 			mCommand(arCommand),
 			mSequence(aSequence),
 			mCode(aCode),
@@ -66,7 +66,7 @@ class DLL_LOCAL OutstationSBOHandler
 		T mCommand;
 		uint8_t mSequence;
 		QualifierCode mCode;
-		millis_t mTimestamp;
+		openpal::millis_t mTimestamp;
 		bool mOperated;
 	};
 
@@ -77,7 +77,7 @@ class DLL_LOCAL OutstationSBOHandler
 	typedef std::map<size_t, SelectInfo<AnalogOutputDouble64>> AnalogDoubleSelectMap;
 
 public:
-	OutstationSBOHandler(millis_t aSelectTimeout, ICommandHandler* apCmdHandler, ITimeSource* apTimeSource);
+	OutstationSBOHandler(openpal::millis_t aSelectTimeout, ICommandHandler* apCmdHandler, ITimeSource* apTimeSource);
 
 	CommandStatus Select(const ControlRelayOutputBlock& arCommand, size_t aIndex, uint8_t aSequence, QualifierCode aCode);
 	CommandStatus Operate(const ControlRelayOutputBlock& arCommand, size_t aIndex, uint8_t aSequence, QualifierCode aCode);
@@ -104,7 +104,7 @@ private:
 	template <class T>
 	CommandStatus Operate(const T& arCommand, size_t aIndex, uint8_t aSequence, QualifierCode aCode, std::map<size_t, SelectInfo<T>>& arMap);
 
-	millis_t mSelectTimeout;
+	openpal::millis_t mSelectTimeout;
 	ICommandHandler* mpCmdHandler;
 	ITimeSource* mpTimeSource;
 	uint8_t mCurrentSequenceNum;

@@ -34,6 +34,7 @@
 
 #include <algorithm>
 
+using namespace openpal;
 using namespace std::chrono;
 
 namespace opendnp3
@@ -56,7 +57,7 @@ AsyncTaskGroup::~AsyncTaskGroup()
 for(AsyncTaskBase * p: mTaskVec) delete p;
 }
 
-AsyncTaskBase* AsyncTaskGroup::Add(millis_t aPeriod, millis_t aRetryDelay, int aPriority, const TaskHandler& arCallback, const std::string& arName)
+AsyncTaskBase* AsyncTaskGroup::Add(openpal::millis_t aPeriod,openpal::millis_t aRetryDelay, int aPriority, const TaskHandler& arCallback, const std::string& arName)
 {
 	AsyncTaskBase* pTask;
 	if(aPeriod >= 0)

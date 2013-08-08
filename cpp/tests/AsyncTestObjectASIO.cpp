@@ -53,7 +53,7 @@ void AsyncTestObjectASIO::Next()
 	Next(this->GetService(), 10);
 }
 
-void AsyncTestObjectASIO::Next(boost::asio::io_service* apSrv, millis_t aSleep)
+void AsyncTestObjectASIO::Next(boost::asio::io_service* apSrv,openpal::millis_t aSleep)
 {
 	boost::system::error_code ec;
 	size_t num = apSrv->poll_one(ec);

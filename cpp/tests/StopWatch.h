@@ -24,7 +24,7 @@
 #define _STOP_WATCH_H__
 
 #include <chrono>
-#include <opendnp3/Clock.h>
+#include <openpal/Types.h>
 
 namespace opendnp3
 {
@@ -40,13 +40,13 @@ public:
 
 	//get the elapsed time since creation or the last restart
 	//by default each call to Elapsed restarts the timer.
-	timer_clock::duration Elapsed(bool aReset = true);
+	openpal::timer_clock::duration Elapsed(bool aReset = true);
 
 	//restart or re-zero the StopWatch.
 	void Restart();
 
 private:
-	timer_clock::time_point mStartTime;
+	openpal::timer_clock::time_point mStartTime;
 };
 
 

@@ -29,7 +29,7 @@
 #ifndef __RESPONSE_LOADER_H_
 #define __RESPONSE_LOADER_H_
 
-#include <opendnp3/Types.h>
+#include <openpal/Types.h>
 #include <opendnp3/IDataObserver.h>
 #include <opendnp3/ObjectInterfaces.h>
 #include <opendnp3/Logger.h>
@@ -144,14 +144,14 @@ void ResponseLoader::ReadCTO(HeaderReadIterator& arIter)
 		return;
 	}
 
-	millis_t t = T::Inst()->mTime.Get(*i);
+	openpal::millis_t t = T::Inst()->mTime.Get(*i);
 	mCTO.SetCTO(t);
 }
 
 template <class T>
 void ResponseLoader::Read(HeaderReadIterator& arIter, StreamObject<T>* apObj)
 {
-	millis_t t = 0; //base time
+	openpal::millis_t t = 0; //base time
 
 	if (apObj->UseCTO() && !mCTO.GetCTO(t)) {
 		LOG_BLOCK(LEV_ERROR,

@@ -29,7 +29,7 @@
 #ifndef __DEADLINE_TIMER_STEADY_CLOCK_H_
 #define __DEADLINE_TIMER_STEADY_CLOCK_H_
 
-#include <opendnp3/Clock.h>
+#include <openpal/Clock.h>
 #include <boost/asio.hpp>
 
 namespace boost {
@@ -42,24 +42,24 @@ The underlying clock and time_type are chrono::steady_clock, but the durations a
 in order to achieve a uniform and familiar interface.  
 */
 template <> 
-struct time_traits<opendnp3::timer_clock>
+struct time_traits<openpal::timer_clock>
 {
 	/**
 	The underlying time type is based on chrono::steady_clock's time_point.
 	*/
-	typedef opendnp3::timer_clock::time_point time_type;
+	typedef openpal::timer_clock::time_point time_type;
 
 	/**
 	But the duration is based upon posix_time's time_duration, just like the ASIO built-in deadline_timer.
 	*/
-	typedef opendnp3::timer_clock::duration duration_type;
+	typedef openpal::timer_clock::duration duration_type;
 
 	/**
 	Accessing the clock yields the current time from the steady_clock.
 	*/
 	static time_type now()
 	{
-		return opendnp3::timer_clock::now();
+		return openpal::timer_clock::now();
 	}
 
 	/**
@@ -104,7 +104,7 @@ Convenience typedef for pairing the steady_clock time_traits (above) with a basi
 a ready-to-use deadline timer that is based on a monotonic time that is immune to system clock changes.
 A Boosty name has been chosen, as it is expected that in the near future boost::asio will have this built in.
 */
-typedef boost::asio::basic_deadline_timer<opendnp3::timer_clock> monotonic_timer; 
+typedef boost::asio::basic_deadline_timer<openpal::timer_clock> monotonic_timer; 
 
 }}
 

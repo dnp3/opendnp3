@@ -47,7 +47,7 @@ public:
 		return mpTestObjectService;
 	}
 
-	static void Next(boost::asio::io_service* apSrv, millis_t aSleep);
+	static void Next(boost::asio::io_service* apSrv,openpal::millis_t aSleep);
 
 private:
 	boost::asio::io_service* mpTestObjectService;

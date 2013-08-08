@@ -33,7 +33,7 @@
 namespace opendnp3
 {
 
-DNP3Channel::DNP3Channel(Logger* apLogger, millis_t aOpenRetry, boost::asio::io_service* apService, IPhysicalLayerAsync* apPhys, ITimeSource* apTimeSource, std::function<void (DNP3Channel*)> aOnShutdown) :
+DNP3Channel::DNP3Channel(Logger* apLogger,openpal::millis_t aOpenRetry, boost::asio::io_service* apService, IPhysicalLayerAsync* apPhys, ITimeSource* apTimeSource, std::function<void (DNP3Channel*)> aOnShutdown) :
 	Loggable(apLogger),
 	mpService(apService),
 	mpPhys(apPhys),

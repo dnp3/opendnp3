@@ -71,7 +71,7 @@ public:
 		return FloatEqual(aValue, i->second.GetValue());
 	}
 
-	bool Check(int32_t aValue, AnalogQuality aQuality, size_t aIndex, millis_t aTime) {
+	bool Check(int32_t aValue, AnalogQuality aQuality, size_t aIndex,openpal::millis_t aTime) {
 		return Check<Analog, int32_t>(mAnalogMap, aValue, aQuality,  aTime, aIndex);
 	}
 
@@ -88,11 +88,11 @@ public:
 		return Check<ControlStatus, bool>(mControlStatusMap, aValue, qual, aIndex);
 	}
 
-	bool Check(uint32_t aValue, CounterQuality aQuality, size_t aIndex, millis_t aTime) {
+	bool Check(uint32_t aValue, CounterQuality aQuality, size_t aIndex,openpal::millis_t aTime) {
 		return Check<Counter, uint8_t>(mCounterMap, aValue, aQuality,  aTime, aIndex);
 	}
 
-	bool Check(bool aValue, ControlQuality aQuality, size_t aIndex, millis_t aTime) {
+	bool Check(bool aValue, ControlQuality aQuality, size_t aIndex,openpal::millis_t aTime) {
 		uint8_t qual = aQuality;
 		if(aValue) qual |= TQ_STATE;
 		return Check<ControlStatus, bool>(mControlStatusMap, aValue, qual,  aTime, aIndex);
@@ -105,7 +105,7 @@ public:
 		return Check<SetpointStatus, int32_t>(mSetpointStatusMap, aValue, aQuality, aIndex);
 	}
 
-	bool Check(int32_t aValue, SetpointQuality aQuality, size_t aIndex, millis_t aTime) {
+	bool Check(int32_t aValue, SetpointQuality aQuality, size_t aIndex,openpal::millis_t aTime) {
 		return Check<SetpointStatus, int32_t>(mSetpointStatusMap, aValue, aQuality, aTime, aIndex);
 	}
 
@@ -118,7 +118,7 @@ public:
 		return Check<Binary, bool>(mBinaryMap, aValue, qual, aIndex);
 	}
 
-	bool Check(bool aValue, BinaryQuality aQuality, size_t aIndex, millis_t aTime) {
+	bool Check(bool aValue, BinaryQuality aQuality, size_t aIndex,openpal::millis_t aTime) {
 		uint8_t qual = aQuality;
 		if(aValue) qual |= BQ_STATE;
 		return Check<Binary, bool>(mBinaryMap, aValue, qual, aTime, aIndex);
@@ -199,7 +199,7 @@ private:
 	bool Check(typename PointMap<T>::Type& arMap, U aValue, uint8_t aQual, size_t aIndex);
 
 	template <class T, class U>
-	bool Check(typename PointMap<T>::Type& arMap, U aValue, uint8_t aQual, millis_t aTime, size_t aIndex);
+	bool Check(typename PointMap<T>::Type& arMap, U aValue, uint8_t aQual,openpal::millis_t aTime, size_t aIndex);
 
 	template <class T>
 	bool CheckQual(typename PointMap<T>::Type& arMap, uint8_t aQual, size_t aIndex);
@@ -228,7 +228,7 @@ bool FlexibleDataObserver::Check(typename PointMap<T>::Type& arMap, U aValue, ui
 }
 
 template <class T, class U>
-bool FlexibleDataObserver::Check(typename PointMap<T>::Type& arMap, U aValue, uint8_t aQual, millis_t aTime, size_t aIndex)
+bool FlexibleDataObserver::Check(typename PointMap<T>::Type& arMap, U aValue, uint8_t aQual,openpal::millis_t aTime, size_t aIndex)
 {
 	typename PointMap<T>::Type::iterator i = arMap.find(aIndex);
 	if(i == arMap.end()) return false;

@@ -22,6 +22,7 @@
 
 #include "ComparingDataObserver.h"
 
+using namespace openpal;
 
 namespace opendnp3
 {

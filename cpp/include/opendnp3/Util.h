@@ -38,8 +38,8 @@
 #include <vector>
 #include <chrono>
 
-#include "Types.h"
-#include "Clock.h"
+#include <openpal/Types.h>
+
 
 
 namespace opendnp3

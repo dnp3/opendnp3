@@ -27,7 +27,7 @@
 #include <assert.h>
 
 #include <opendnp3/PointClass.h>
-#include <opendnp3/Types.h>
+#include <openpal/Types.h>
 #include <opendnp3/Visibility.h>
 
 namespace opendnp3

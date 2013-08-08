@@ -50,7 +50,7 @@ class DLL_LOCAL LinkLayerRouter : public PhysicalLayerMonitor, public IFrameSink
 {
 public:
 
-	LinkLayerRouter(Logger*, IPhysicalLayerAsync*, millis_t aOpenRetry);
+	LinkLayerRouter(Logger*, IPhysicalLayerAsync*,openpal::millis_t aOpenRetry);
 
 	bool IsRouteInUse(const LinkRoute& arRoute);
 

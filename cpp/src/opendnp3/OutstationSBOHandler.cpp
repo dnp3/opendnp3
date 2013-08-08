@@ -22,6 +22,8 @@
 
 #include "OutstationSBOHandler.h"
 
+using namespace openpal;
+
 namespace opendnp3
 {
 

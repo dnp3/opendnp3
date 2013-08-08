@@ -31,6 +31,8 @@
 #include <opendnp3/Logger.h>
 
 
+using namespace openpal;
+
 namespace opendnp3
 {
 

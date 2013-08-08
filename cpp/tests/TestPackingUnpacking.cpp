@@ -25,7 +25,7 @@
 #include "TestHelpers.h"
 #include "BufferHelpers.h"
 
-#include <opendnp3/Types.h>
+#include <openpal/Types.h>
 #include <opendnp3/Util.h>
 #include <opendnp3/PackingUnpacking.h>
 

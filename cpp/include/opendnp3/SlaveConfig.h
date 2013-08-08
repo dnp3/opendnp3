@@ -84,16 +84,16 @@ struct SlaveConfig {
 
 
 	/// The period of time sync interval in milliseconds
-	millis_t mTimeSyncPeriod;
+	openpal::millis_t mTimeSyncPeriod;
 
 	/// The amount of time the slave will wait before sending new unsolicited data ( <= 0 == immediate)
-	millis_t mUnsolPackDelay;
+	openpal::millis_t mUnsolPackDelay;
 
 	/// How long the slave will wait before retrying an unsuccessful unsol response
-	millis_t mUnsolRetryDelay;
+	openpal::millis_t mUnsolRetryDelay;
 
 	/// How long the slave will allow an operate to proceed after a prior select
-	millis_t mSelectTimeout;
+	openpal::millis_t mSelectTimeout;
 
 	/// The maximum fragment size the slave will use for data it sends
 	size_t mMaxFragSize;

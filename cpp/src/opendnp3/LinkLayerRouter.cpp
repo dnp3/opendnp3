@@ -38,7 +38,7 @@ using namespace std::chrono;
 namespace opendnp3
 {
 
-LinkLayerRouter::LinkLayerRouter(Logger* apLogger, IPhysicalLayerAsync* apPhys, millis_t aOpenRetry) :
+LinkLayerRouter::LinkLayerRouter(Logger* apLogger, IPhysicalLayerAsync* apPhys,openpal::millis_t aOpenRetry) :
 	Loggable(apLogger),
 	PhysicalLayerMonitor(apLogger, apPhys, milliseconds(aOpenRetry), milliseconds(aOpenRetry)),
 	mReceiver(apLogger, this),

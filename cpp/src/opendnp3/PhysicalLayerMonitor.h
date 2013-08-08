@@ -55,8 +55,8 @@ class DLL_LOCAL PhysicalLayerMonitor : public IHandlerAsync
 public:
 	PhysicalLayerMonitor(	Logger*,
 	                        IPhysicalLayerAsync*,
-	                        timer_clock::duration aMinOpenRetry,
-	                        timer_clock::duration aMaxOpenRetry);
+	                        openpal::timer_clock::duration aMinOpenRetry,
+	                        openpal::timer_clock::duration aMaxOpenRetry);
 
 	~PhysicalLayerMonitor();
 
@@ -80,7 +80,7 @@ public:
 
 	/** Posts a Shutdown() call and then waits for shutdown to complete.
 	*/
-	bool WaitForShutdown(millis_t aTimeout = -1);
+	bool WaitForShutdown(openpal::millis_t aTimeout = -1);
 
 	Logger* GetLogger() {
 		return mpLogger;
@@ -123,10 +123,10 @@ private:
 	std::mutex mMutex;
 	std::condition_variable mCondition;
 
-	const timer_clock::duration mMinOpenRetry;
-	const timer_clock::duration mMaxOpenRetry;
+	const openpal::timer_clock::duration mMinOpenRetry;
+	const openpal::timer_clock::duration mMaxOpenRetry;
 
-	timer_clock::duration mCurrentRetry;
+	openpal::timer_clock::duration mCurrentRetry;
 
 	// Implement from IHandlerAsync - Try to reconnect using a timer
 	void _OnOpenFailure();

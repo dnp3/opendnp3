@@ -25,7 +25,7 @@
 namespace opendnp3
 {
 
-VtoRouterSettings::VtoRouterSettings(uint8_t aChannelId, bool aStartLocal, bool aDisableExtensions, millis_t aMinOpenRetryMs, millis_t aMaxOpenRetryMS) :
+VtoRouterSettings::VtoRouterSettings(uint8_t aChannelId, bool aStartLocal, bool aDisableExtensions,openpal::millis_t aMinOpenRetryMs,openpal::millis_t aMaxOpenRetryMS) :
 	CHANNEL_ID(aChannelId),
 	MIN_OPEN_RETRY_MS(aMinOpenRetryMs),
 	MAX_OPEN_RETRY_MS(aMaxOpenRetryMS),

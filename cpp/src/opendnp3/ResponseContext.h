@@ -400,7 +400,7 @@ size_t ResponseContext::IterateIndexed(EventRequest<T>& arRequest, typename EvtI
 template <class T>
 size_t ResponseContext::CalcPossibleCTO(typename EvtItr< EventInfo<T> >::Type aIter, size_t aMax)
 {
-	millis_t start = aIter->mValue.GetTime();
+	openpal::millis_t start = aIter->mValue.GetTime();
 
 	size_t num = 0;
 	while(num < aMax) {
@@ -418,7 +418,7 @@ size_t ResponseContext::IterateCTO(const StreamObject<T>* apObj, size_t aCount, 
 {
 	size_t max_index = mpDB->MaxIndex(T::MeasEnum);
 
-	millis_t start = arIter->mValue.GetTime();
+	openpal::millis_t start = arIter->mValue.GetTime();
 
 	// first try to write a CTO object for the first value that we're pushing
 	ObjectWriteIterator itr = arAPDU.WriteContiguous(Group51Var1::Inst(), 0, 0, QC_1B_CNT);

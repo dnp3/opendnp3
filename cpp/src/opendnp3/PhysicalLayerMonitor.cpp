@@ -30,8 +30,8 @@
 
 #include <assert.h>
 #include <opendnp3/Logger.h>
-#include <opendnp3/Clock.h>
 
+using namespace openpal;
 using namespace std::chrono;
 
 namespace opendnp3

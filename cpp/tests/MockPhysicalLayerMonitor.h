@@ -36,8 +36,8 @@ public:
 	MockPhysicalLayerMonitor(
 	        Logger* apLogger,
 	        IPhysicalLayerAsync* apPhys,
-	        timer_clock::duration aMinOpenRetry,
-	        timer_clock::duration aMaxOpenRetry
+	        openpal::timer_clock::duration aMinOpenRetry,
+	        openpal::timer_clock::duration aMaxOpenRetry
 	);
 
 	size_t mOpens;

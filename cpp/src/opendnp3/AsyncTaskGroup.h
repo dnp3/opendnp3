@@ -24,7 +24,7 @@
 #define __ASYNC_TASK_GROUP_H_
 
 
-#include <opendnp3/Types.h>
+#include <openpal/Types.h>
 #include <opendnp3/Uncopyable.h>
 #include <opendnp3/Visibility.h>
 
@@ -60,7 +60,7 @@ public:
 	AsyncTaskGroup(IExecutor*, ITimeSource* = TimeSource::Inst());
 	~AsyncTaskGroup();
 
-	AsyncTaskBase* Add(millis_t aPeriod, millis_t aRetryDelay, int aPriority, const TaskHandler& arCallback, const std::string& arName = "");
+	AsyncTaskBase* Add(openpal::millis_t aPeriod, openpal::millis_t aRetryDelay, int aPriority, const TaskHandler& arCallback, const std::string& arName = "");
 	AsyncTaskContinuous* AddContinuous(int aPriority, const TaskHandler& arCallback, const std::string& arName = "");
 	void Remove(AsyncTaskBase* apTask);
 
@@ -80,15 +80,15 @@ public:
 		return mIsRunning;
 	}
 
-	timer_clock::time_point GetUTC() const;
+	openpal::timer_clock::time_point GetUTC() const;
 
 private:
 
 	void OnCompletion();
-	void RestartTimer(const timer_clock::time_point& arTime);
+	void RestartTimer(const openpal::timer_clock::time_point& arTime);
 	void OnTimerExpiration();
-	void Update(const timer_clock::time_point& arTime);
-	AsyncTaskBase* GetNext(const timer_clock::time_point& arTime);
+	void Update(const openpal::timer_clock::time_point& arTime);
+	AsyncTaskBase* GetNext(const openpal::timer_clock::time_point& arTime);
 
 	bool mIsRunning;
 	bool mShutdown;

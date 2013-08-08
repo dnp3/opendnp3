@@ -29,7 +29,7 @@
 #ifndef __EXCEPTION_SCAN_H_
 #define __EXCEPTION_SCAN_H_
 
-#include "Types.h"
+#include <openpal/Types.h>
 
 namespace  opendnp3
 {
@@ -45,7 +45,7 @@ struct ExceptionScan {
 		ScanRate(5000)
 	{}
 
-	ExceptionScan(int aClassMask, millis_t aScanRate) :
+	ExceptionScan(int aClassMask,openpal::millis_t aScanRate) :
 		ClassMask(aClassMask),
 		ScanRate(aScanRate)
 	{}
@@ -54,7 +54,7 @@ struct ExceptionScan {
 	int ClassMask;
 
 	/// Scan period in milliseconds
-	millis_t ScanRate;
+	openpal::millis_t ScanRate;
 };
 
 }
