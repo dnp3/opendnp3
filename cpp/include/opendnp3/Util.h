@@ -40,8 +40,6 @@
 
 #include <openpal/Types.h>
 
-
-
 namespace opendnp3
 {
 

@@ -35,6 +35,8 @@
 #include <opendnp3/SimpleCommandHandler.h>
 #include <opendnp3/TimeTransaction.h>
 
+#include <openpal/Clock.h>
+
 #include <string>
 #include <iostream>
 
@@ -95,7 +97,7 @@ int main(int argc, char* argv[])
 		std::cin >> input;
 		if(input == "exit") break;
 		else {
-			TimeTransaction tx(pDataObserver); //automatically calls Start()/End() and sets time for each measurement
+			TimeTransaction tx(pDataObserver, Clock::Now()); //automatically calls Start()/End() and sets time for each measurement
 			tx.Update(Counter(count, CQ_ONLINE), 0);			
 			++count;
 		}

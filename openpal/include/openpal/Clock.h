@@ -31,16 +31,12 @@
 
 #include "Types.h"
 
-namespace opendnp3 {
+namespace openpal {
 
-
-
-/*
 class Clock {
 	public:
-	staticopenpal::millis_t Now();
+	static openpal::millis_t Now();
 };
-*/
 
 }
 

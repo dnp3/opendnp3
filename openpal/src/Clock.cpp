@@ -20,11 +20,10 @@
 // you under the terms of the License.
 //
 
+#include <openpal/Clock.h>
 
+using namespace std::chrono;
 
-//using namespace std::chrono;
-
-/*
 namespace openpal {
 	
 	millis_t Clock::Now()
@@ -33,6 +32,5 @@ namespace openpal {
 	}
 
 }
-*/
 
 

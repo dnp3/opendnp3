@@ -27,7 +27,6 @@
 // Contact Automatak, LLC for a commercial license to these modifications
 //
 
-
 #include <opendnp3/LogToStdio.h>
 #include <opendnp3/SimpleDataObserver.h>
 #include <opendnp3/DNP3Manager.h>
