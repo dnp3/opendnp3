@@ -58,24 +58,32 @@
     <Import Project="..\config\boost_includes.props" />
     <Import Project="..\config\common_boost_defines.props" />
     <Import Project="..\config\output_dirs.props" />
+    <Import Project="..\config\openpal_include.props" />
+    <Import Project="..\config\opendnp3_include.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="..\config\boost_includes.props" />
     <Import Project="..\config\common_boost_defines.props" />
     <Import Project="..\config\output_dirs.props" />
+    <Import Project="..\config\openpal_include.props" />
+    <Import Project="..\config\opendnp3_include.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="..\config\boost_includes.props" />
     <Import Project="..\config\common_boost_defines.props" />
     <Import Project="..\config\output_dirs.props" />
+    <Import Project="..\config\openpal_include.props" />
+    <Import Project="..\config\opendnp3_include.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="..\config\boost_includes.props" />
     <Import Project="..\config\common_boost_defines.props" />
     <Import Project="..\config\output_dirs.props" />
+    <Import Project="..\config\openpal_include.props" />
+    <Import Project="..\config\opendnp3_include.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup />
@@ -86,7 +94,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(SolutionDir)/cpp/include;$(SolutionDir)/openpal/include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);</AdditionalIncludeDirectories>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <MinimalRebuild>false</MinimalRebuild>
