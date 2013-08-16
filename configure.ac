@@ -36,38 +36,37 @@ AM_CONDITIONAL(WANT_JAVA, [test "$want_java" = yes])
 
 # optional support for lcov/gcov
 AC_ARG_WITH([lcov],
-	[AS_HELP_STRING([--with-lcov@<:@=ARG@:>@],
-	[lcov support])],
-	[CXXFLAGS="--coverage -g -O0 -std=gnu++11"
-	AC_MSG_NOTICE([--with-lcov=yes])],
-	[AC_MSG_NOTICE([--with-lcov=no])])
+    [AS_HELP_STRING([--with-lcov@<:@=ARG@:>@],
+    [lcov support])],
+    [CXXFLAGS="--coverage -g -O0 -std=gnu++11"
+    AC_MSG_NOTICE([--with-lcov=yes])],
+    [AC_MSG_NOTICE([--with-lcov=no])])
 
-AC_ARG_ENABLE([opendnp3nomocks],
-     [  --enable-opendnp3nomocks    Build library w/o mock interface implementations],
-     [case "${enableval}" in
-       yes) opendnp3nomocks=true ;;
-       no)  opendnp3nomocks=false ;;
-       *) AC_MSG_ERROR([bad value ${enableval} for --enable-opendnp3nomocks]) ;;
-     esac],[debug=false])
-AM_CONDITIONAL([OPENDNP3_NO_MOCKS], [test x$opendnp3nomocks = xtrue])
+AC_ARG_ENABLE([mocks],
+    AS_HELP_STRING([--disable-mocks], [Build without mock interface implementations]),
+    [opendnp3_use_mocks=$enableval],
+    [opendnp3_use_mocks=yes])
+if test "$opendnp3_use_mocks" = no; then
+    CXXFLAGS="${CXXFLAGS} -DOPENDNP3_NO_MOCKS"
+fi
+AM_CONDITIONAL([OPENDNP3_USE_MOCKS], [test "$opendnp3_use_mocks" = yes])
 
-AC_ARG_ENABLE([opendnp3nomaster],
-     [  --enable-opendnp3dnpmaster    Build library w/o master support],
-     [case "${enableval}" in
-       yes) opendnp3nomaster=true ;;
-       no)  opendnp3nomaster=false ;;
-       *) AC_MSG_ERROR([bad value ${enableval} for --enable-opendnp3nomaster]) ;;
-     esac],[debug=false])
-AM_CONDITIONAL([OPENDNP3_NO_MASTER], [test x$opendnp3nomaster = xtrue])
+AC_ARG_ENABLE([master],
+    AS_HELP_STRING([--disable-master], [Build without DNP3 master support]),
+    [opendnp3_use_master=$enableval],
+    [opendnp3_use_master=yes])
+if test "$opendnp3_use_master" = no; then
+    CXXFLAGS="${CXXFLAGS} -DOPENDNP3_NO_MASTER"
+fi
+AM_CONDITIONAL([OPENDNP3_USE_MASTER], [test "$opendnp3_use_master" = yes])
 
-AC_ARG_ENABLE([opendnp3noserial],
-     [  --enable-opendnp3noserial    Build library w/o serial support],
-     [case "${enableval}" in
-       yes) opendnp3noserial=true ;;
-       no)  opendnp3noserial=false ;;
-       *) AC_MSG_ERROR([bad value ${enableval} for --enable-opendnp3noserial]) ;;
-     esac],[debug=false])
-AM_CONDITIONAL([OPENDNP3_NO_SERIAL], [test x$opendnp3noserial = xtrue])
+AC_ARG_ENABLE([serial],
+    AS_HELP_STRING([--disable-serial], [Build without serial support]),
+    [opendnp3_use_serial=$enableval],
+    [opendnp3_use_serial=yes])
+if test "$opendnp3_use_serial" = no; then
+    CXXFLAGS="${CXXFLAGS} -DOPENDNP3_NO_SERIAL"
+fi
+AM_CONDITIONAL([OPENDNP3_USE_SERIAL], [test "$opendnp3_use_serial" = yes])
 
 AC_OUTPUT #actually output the configuration
-
