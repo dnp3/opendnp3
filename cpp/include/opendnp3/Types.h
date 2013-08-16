@@ -1,4 +1,3 @@
-
 //
 // Licensed to Green Energy Corp (www.greenenergycorp.com) under one or
 // more contributor license agreements. See the NOTICE file distributed
@@ -26,8 +25,9 @@
 //
 // Contact Automatak, LLC for a commercial license to these modifications
 //
-#ifndef __TYPES_H_
-#define __TYPES_H_
+
+#ifndef __OPENDNP3_TYPES_H_
+#define __OPENDNP3_TYPES_H_
 
 #include <cstdint>
 
