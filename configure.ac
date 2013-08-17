@@ -150,4 +150,22 @@ if test "$opendnp3_use_serial" = no; then
 fi
 AM_CONDITIONAL([OPENDNP3_USE_SERIAL], [test "$opendnp3_use_serial" = yes])
 
+AC_MSG_CHECKING([for boost::asio::steady_timer support])
+AC_LANG_PUSH(C++)
+AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
+@%:@include <boost/version.hpp>
+]], [[
+#if BOOST_VERSION >= 105000
+// Everything is okay
+#else
+#  error Boost version is too old
+#endif
+]])],[
+    AC_MSG_RESULT(yes)
+    CPPFLAGS="${CPPFLAGS} -DOPENDNP3_BOOST_TIMER_PATCH"
+],[
+    AC_MSG_RESULT(no)
+])
+AC_LANG_POP([C++])
+
 AC_OUTPUT #actually output the configuration
