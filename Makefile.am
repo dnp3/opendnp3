@@ -218,6 +218,22 @@ pkginclude_HEADERS = \
 	cpp/include/opendnp3/Visibility.h \
 	cpp/include/opendnp3/VtoRouterSettings.h
 
+bin_PROGRAMS = \
+	dnp3-demo-master \
+	dnp3-demo-outstation
+
+dnp3_demo_master_SOURCES = cpp/demos/master/DemoMain.cpp
+dnp3_demo_master_LDADD = libopendnp3.la
+
+dnp3_demo_outstation_SOURCES = cpp/demos/outstation/DemoMain.cpp
+dnp3_demo_outstation_LDADD = libopendnp3.la
+
+democppmasterdir = $(datadir)/@PACKAGE@/demos-src/cpp/master
+dist_democppmaster_DATA = cpp/demos/master/DemoMain.cpp
+
+democppoutstationdir = $(datadir)/@PACKAGE@/demos-src/cpp/outstation
+dist_democppoutstation_DATA = cpp/demos/outstation/DemoMain.cpp
+
 check_PROGRAMS = dnp3test
 TESTS = dnp3test
 dnp3test_CPPFLAGS = -I$(top_srcdir)/cpp/src
