@@ -51,8 +51,10 @@ AC_DEFUN([AX_JNI_INCLUDE_DIR],[
 JNI_INCLUDE_DIRS=""
 
 test "x$JAVAC" = x && AC_MSG_ERROR(['\$JAVAC' undefined])
-AC_PATH_PROG([_ACJNI_JAVAC], [$JAVAC], [no])
-test "x$_ACJNI_JAVAC" = xno && AC_MSG_ERROR([$JAVAC could not be found in path])
+AC_CHECK_FILE([$JAVAC], [_ACJNI_JAVAC="$JAVAC"], [
+    AC_PATH_PROG([_ACJNI_JAVAC], [$JAVAC], [no])
+    test "x$_ACJNI_JAVAC" = xno && AC_MSG_ERROR([$JAVAC could not be found in path])
+])
 
 _ACJNI_FOLLOW_SYMLINKS("$_ACJNI_JAVAC")
 _JTOPDIR=`echo "$_ACJNI_FOLLOWED" | sed -e 's://*:/:g' -e 's:/[[^/]]*$::'`
