@@ -15,6 +15,9 @@ AX_BOOST_SYSTEM
 AX_BOOST_ASIO
 AX_BOOST_UNIT_TEST_FRAMEWORK
 
+AC_CHECK_HEADERS([pthread.h],, AC_MSG_ERROR([missing header]))
+AC_CHECK_LIB([pthread], [pthread_join],, AC_MSG_ERROR([missing library]))
+
 LT_INIT #initialize libtools
 
 AC_ARG_ENABLE([java],
@@ -123,30 +126,42 @@ if test "$opendnp3_use_lcov" = yes; then
     CXXFLAGS="--coverage -g -O0 -std=gnu++11"
 fi
 
+AC_MSG_CHECKING([for mock interface support])
 AC_ARG_ENABLE([mocks],
     AS_HELP_STRING([--disable-mocks], [Build without mock interface implementations]),
     [opendnp3_use_mocks=$enableval],
     [opendnp3_use_mocks=yes])
 if test "$opendnp3_use_mocks" = no; then
-    CXXFLAGS="${CXXFLAGS} -DOPENDNP3_NO_MOCKS"
+    AC_MSG_RESULT([disabled])
+    CPPFLAGS="${CPPFLAGS} -DOPENDNP3_NO_MOCKS"
+else
+    AC_MSG_RESULT([enabled])
 fi
 AM_CONDITIONAL([OPENDNP3_USE_MOCKS], [test "$opendnp3_use_mocks" = yes])
 
+AC_MSG_CHECKING([for DNP3 master support])
 AC_ARG_ENABLE([master],
     AS_HELP_STRING([--disable-master], [Build without DNP3 master support]),
     [opendnp3_use_master=$enableval],
     [opendnp3_use_master=yes])
 if test "$opendnp3_use_master" = no; then
-    CXXFLAGS="${CXXFLAGS} -DOPENDNP3_NO_MASTER"
+    AC_MSG_RESULT([disabled])
+    CPPFLAGS="${CPPFLAGS} -DOPENDNP3_NO_MASTER"
+else
+    AC_MSG_RESULT([enabled])
 fi
 AM_CONDITIONAL([OPENDNP3_USE_MASTER], [test "$opendnp3_use_master" = yes])
 
+AC_MSG_CHECKING([for DNP3 serial support])
 AC_ARG_ENABLE([serial],
     AS_HELP_STRING([--disable-serial], [Build without serial support]),
     [opendnp3_use_serial=$enableval],
     [opendnp3_use_serial=yes])
 if test "$opendnp3_use_serial" = no; then
-    CXXFLAGS="${CXXFLAGS} -DOPENDNP3_NO_SERIAL"
+    AC_MSG_RESULT([disabled])
+    CPPFLAGS="${CPPFLAGS} -DOPENDNP3_NO_SERIAL"
+else
+    AC_MSG_RESULT([enabled])
 fi
 AM_CONDITIONAL([OPENDNP3_USE_SERIAL], [test "$opendnp3_use_serial" = yes])
 
@@ -163,9 +178,17 @@ AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
 ]])],[
     AC_MSG_RESULT(yes)
 ],[
-    AC_MSG_RESULT(no)
+    AC_MSG_RESULT([patch required])
     CPPFLAGS="${CPPFLAGS} -DOPENDNP3_BOOST_TIMER_PATCH"
 ])
 AC_LANG_POP([C++])
+
+AC_ARG_ENABLE([strict-warnings],
+    AS_HELP_STRING([--enable-strict-warnings], [Build with -Werror support]),
+    [opendnp3_use_strict_warnings=$enableval],
+    [opendnp3_use_strict_warnings=no])
+if test "$opendnp3_use_strict_warnings" = yes; then
+    CXXFLAGS="${CXXFLAGS} -Werror"
+fi
 
 AC_OUTPUT #actually output the configuration
