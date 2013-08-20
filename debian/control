@@ -1,21 +1,26 @@
-Source: automatak-dnp3
+Source: opendnp3
 Section: libs
 Priority: extra
 Maintainer: Chris Verges <chris.verges@gmail.com>
-Build-Depends: debhelper (>= 8.0.0), autoconf, automake, libtool
+Build-Depends: debhelper (>= 8.0.0), dh-autoreconf, autoconf, automake, libtool, maven
 Standards-Version: 3.9.2
 Homepage: http://dnp3.github.io
 
-Package: libopendnp3-automatak
+Package: libopendnp3
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
-Description: A C++ library for the Automatak DNP3 stack
- This package provides C++ bindings for the Automatak DNP3 stack.  This
- stack implements both a DNP3 master and DNP3 outstation.
+Description: A C++ library for the OpenDNP3 stack
+ This package provides C++ bindings for the OpenDNP3 stack.  This stack
+ implements both a DNP3 master and DNP3 outstation.
 
-Package: libopendnp3-automatak-dev
+Package: libopendnp3-dev
 Architecture: any
-Description: C++ development headers for the Automatak DNP3 stack
+Description: C++ development headers for the OpenDNP3 stack
  This package provides complimentary C++ development headers for the
  Automatak DNP3 stack.
 
+Package: libopendnp3-cpp-demos
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: C++ master/outstation demos for the OpenDNP3 stack
+ This package provides C++ master/outstation demos.

@@ -1,0 +1,15 @@
+autoreconf.after
+autoreconf.before
+files
+libopendnp3-cpp-demos.debhelper.log
+libopendnp3-cpp-demos.substvars
+libopendnp3-cpp-demos/
+libopendnp3-dev.debhelper.log
+libopendnp3-dev.substvars
+libopendnp3-dev/
+libopendnp3.debhelper.log
+libopendnp3.postinst.debhelper
+libopendnp3.postrm.debhelper
+libopendnp3.substvars
+libopendnp3/
+tmp/

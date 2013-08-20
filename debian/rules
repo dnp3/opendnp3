@@ -16,7 +16,7 @@
 # This has to be exported to make some magic below work.
 export DH_OPTIONS
 
-export MAKEFLAGS="-j4"
+export MAKEFLAGS="-j8"
 
 %:
-	dh $@ --parallel --max-parallel=4 --with=autoreconf
+	dh $@ --parallel --max-parallel=8 --with=autoreconf
