@@ -29,7 +29,7 @@
 #define __VTO_ENDPOINT_IMPL_H_
 
 #include <opendnp3/IVtoEndpoint.h>
-#include <opendnp3/Visibility.h>
+#include <openpal/Visibility.h>
 
 #include <memory>
 #include <functional>

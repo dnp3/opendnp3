@@ -20,13 +20,13 @@
 // you under the terms of the License.
 //
 
-#include "IExecutor.h"
+#include <openpal/IExecutor.h>
 
 using namespace std;
 using namespace std::chrono;
 using namespace openpal;
 
-namespace opendnp3
+namespace openpal
 {
 
 ITimer* IExecutor::Start(milliseconds aMs, const function<void ()>& arFunc)

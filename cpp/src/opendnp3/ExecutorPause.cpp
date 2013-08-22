@@ -22,7 +22,9 @@
 
 #include "ExecutorPause.h"
 
-#include "IExecutor.h"
+#include <openpal/IExecutor.h>
+
+using namespace openpal;
 
 namespace opendnp3
 {

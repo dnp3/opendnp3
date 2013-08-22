@@ -33,7 +33,7 @@
 #include <opendnp3/LogBase.h>
 #include <opendnp3/Logger.h>
 #include <opendnp3/Uncopyable.h>
-#include <opendnp3/Visibility.h>
+#include <openpal/Visibility.h>
 
 namespace opendnp3
 {

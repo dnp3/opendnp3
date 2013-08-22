@@ -30,7 +30,7 @@
 #define __THREAD_H_
 
 #include <opendnp3/Threadable.h>
-#include <opendnp3/Visibility.h>
+#include <openpal/Visibility.h>
 
 #include <thread>
 #include <functional>

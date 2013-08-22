@@ -31,7 +31,7 @@
 
 #include <opendnp3/IMaster.h>
 #include <opendnp3/MasterStackConfig.h>
-#include <opendnp3/Visibility.h>
+#include <openpal/Visibility.h>
 
 #include "Master.h"
 #include "ApplicationStack.h"

@@ -25,7 +25,7 @@
 
 #include <opendnp3/IChannel.h>
 #include <opendnp3/SlaveStackConfig.h>
-#include <opendnp3/Visibility.h>
+#include <openpal/Visibility.h>
 
 #include "LinkLayerRouter.h"
 #include "Loggable.h"

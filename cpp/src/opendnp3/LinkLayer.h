@@ -26,12 +26,12 @@
 #include <queue>
 
 #include "AsyncLayerInterfaces.h"
-#include "IExecutor.h"
+#include <openpal/IExecutor.h>
 #include "ILinkContext.h"
 #include "LinkFrame.h"
 
 #include <opendnp3/LinkConfig.h>
-#include <opendnp3/Visibility.h>
+#include <openpal/Visibility.h>
 
 namespace opendnp3
 {
@@ -45,7 +45,7 @@ class DLL_LOCAL LinkLayer : public ILowerLayer, public ILinkContext
 {
 public:
 
-	LinkLayer(Logger*, IExecutor*, const LinkConfig& arConfig);
+	LinkLayer(Logger*, openpal::IExecutor*, const LinkConfig& arConfig);
 
 	void SetRouter(ILinkRouter*);
 
@@ -133,8 +133,8 @@ private:
 
 	size_t mRetryRemaining;
 
-	IExecutor* mpExecutor;
-	ITimer* mpTimer;
+	openpal::IExecutor* mpExecutor;
+	openpal::ITimer* mpTimer;
 
 	// callback from the active timer
 	void OnTimeout();

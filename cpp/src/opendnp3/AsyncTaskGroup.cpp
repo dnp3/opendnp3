@@ -26,7 +26,7 @@
 #include "AsyncTaskPeriodic.h"
 #include "AsyncTaskNonPeriodic.h"
 #include "AsyncTaskContinuous.h"
-#include "IExecutor.h"
+#include <openpal/IExecutor.h>
 #include "ITimeSource.h"
 
 #include <opendnp3/Exception.h>

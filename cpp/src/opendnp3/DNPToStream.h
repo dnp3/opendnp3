@@ -24,7 +24,7 @@
 #define __DNP_TO_STREAM_H_
 
 #include <opendnp3/DataTypes.h>
-#include <opendnp3/Visibility.h>
+#include <openpal/Visibility.h>
 
 #ifdef WIN32
 //disable the type converstion warnings

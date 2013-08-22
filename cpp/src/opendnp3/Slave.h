@@ -32,14 +32,15 @@
 #include <opendnp3/ICommandHandler.h>
 #include <opendnp3/Logger.h>
 #include <opendnp3/SlaveConfig.h>
-#include <opendnp3/Visibility.h>
+
+#include <openpal/Visibility.h>
+#include <openpal/ITimer.h>
 
 #include "StackBase.h"
 #include "ChangeBuffer.h"
 #include "Loggable.h"
 #include "TimeSource.h"
 #include "LoggableMacros.h"
-#include "ITimer.h"
 #include "APDU.h"
 #include "AppInterfaces.h"
 #include "EventBuffers.h"
@@ -52,10 +53,13 @@
 #include "OutstationSBOHandler.h"
 
 
+namespace openpal {
+	class IExecutor;
+}
+
 namespace opendnp3
 {
 
-class IExecutor;
 class AS_Base;
 
 /**
@@ -90,7 +94,7 @@ class DLL_LOCAL Slave : public Loggable, public IAppUser, public StackBase
 
 public:
 
-	Slave(Logger*, IAppLayer*, IExecutor*, ITimeManager*, Database*, ICommandHandler*, const SlaveConfig&, ITimeSource* apTimeSource = TimeSource::Inst());
+	Slave(Logger*, IAppLayer*, openpal::IExecutor*, ITimeManager*, Database*, ICommandHandler*, const SlaveConfig&, ITimeSource* apTimeSource = TimeSource::Inst());
 	~Slave();
 
 	////////////////////////
@@ -166,7 +170,7 @@ private:
 	SlaveConfig mConfig;					// houses the configurable paramters of the outstation
 	SlaveResponseTypes mRspTypes;			// converts the group/var in the config to dnp singletons
 
-	ITimer* mpUnsolTimer;					// timer for sending unsol responsess
+	openpal::ITimer* mpUnsolTimer;			// timer for sending unsol responsess
 
 	INotifier* mpVtoNotifier;
 
@@ -235,7 +239,7 @@ private:
 	// Task handlers
 
 	void ResetTimeIIN();
-	ITimer* mpTimeTimer;
+	openpal::ITimer* mpTimeTimer;
 
 	/**
 	 * The VtoReader instance for this stack which will direct received

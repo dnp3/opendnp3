@@ -31,11 +31,11 @@
 
 #include <opendnp3/MasterConfig.h>
 #include <opendnp3/ObjectInterfaces.h>
-#include <opendnp3/Visibility.h>
+#include <openpal/Visibility.h>
 
 #include "Loggable.h"
 #include "TimeSource.h"
-#include "IExecutor.h"
+#include <openpal/IExecutor.h>
 #include "APDU.h"
 #include "AppInterfaces.h"
 #include "ObjectReadIterator.h"
@@ -52,13 +52,18 @@
 #include "CommandTask.h"
 #include "StackBase.h"
 
+namespace openpal {
+
+class IExecutor;
+
+}
+
 namespace opendnp3
 {
 
 class IDataObserver;
 class ITask;
 class AsyncTaskGroup;
-class IExecutor;
 class ITimeSource;
 class AsyncTaskContinuous;
 class AsyncTaskBase;
@@ -81,7 +86,7 @@ class DLL_LOCAL Master : public Loggable, public IAppUser, public StackBase, pri
 
 public:
 
-	Master(Logger*, MasterConfig aCfg, IAppLayer*, IDataObserver*, AsyncTaskGroup*, IExecutor*, ITimeSource* apTimeSrc = TimeSource::Inst());
+	Master(Logger*, MasterConfig aCfg, IAppLayer*, IDataObserver*, AsyncTaskGroup*, openpal::IExecutor*, ITimeSource* apTimeSrc = TimeSource::Inst());
 	virtual ~Master() {}
 
 	ICommandProcessor* GetCommandProcessor() {

@@ -23,7 +23,7 @@
 #ifndef __I_LINK_ROUTER_H_
 #define __I_LINK_ROUTER_H_
 
-#include <opendnp3/Visibility.h>
+#include <openpal/Visibility.h>
 
 namespace opendnp3
 {

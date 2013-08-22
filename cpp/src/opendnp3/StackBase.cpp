@@ -22,12 +22,12 @@
 
 #include "StackBase.h"
 
-#include "IExecutor.h"
+#include <openpal/IExecutor.h>
 
 namespace opendnp3
 {
 
-StackBase::StackBase(IExecutor* apExecutor) : mpExecutor(apExecutor)
+StackBase::StackBase(openpal::IExecutor* apExecutor) : mpExecutor(apExecutor)
 {}
 
 void StackBase::AddStateListener(std::function<void (StackState)> aCallback)

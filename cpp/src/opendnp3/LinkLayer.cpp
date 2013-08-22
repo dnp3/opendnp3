@@ -33,11 +33,13 @@
 #include "PriLinkLayerStates.h"
 #include "SecLinkLayerStates.h"
 
+using namespace openpal;
+
 
 namespace opendnp3
 {
 
-LinkLayer::LinkLayer(Logger* apLogger, IExecutor* apExecutor, const LinkConfig& arConfig) :
+LinkLayer::LinkLayer(Logger* apLogger, openpal::IExecutor* apExecutor, const LinkConfig& arConfig) :
 	Loggable(apLogger),
 	ILowerLayer(apLogger),
 	mCONFIG(arConfig),

@@ -24,7 +24,7 @@
 #define __DNP_CRC_H_
 
 #include <openpal/Types.h>
-#include <opendnp3/Visibility.h>
+#include <openpal/Visibility.h>
 
 #include <stddef.h>
 

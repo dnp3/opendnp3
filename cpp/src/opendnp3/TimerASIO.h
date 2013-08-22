@@ -31,10 +31,10 @@
 
 #include <boost/asio.hpp>
 
-#include <opendnp3/Visibility.h>
+#include <openpal/Visibility.h>
 
 #include "MonotonicDeadlineTimer.h"
-#include "IExecutor.h"
+#include <openpal/IExecutor.h>
 
 namespace opendnp3
 {
@@ -53,7 +53,7 @@ namespace opendnp3
  * posted. We wanted a cancel that does not generate any events.
  *
  */
-class DLL_LOCAL TimerASIO : public ITimer
+class DLL_LOCAL TimerASIO : public openpal::ITimer
 {
 	friend class ASIOExecutor;
 

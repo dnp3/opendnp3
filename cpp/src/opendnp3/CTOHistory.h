@@ -23,7 +23,7 @@
 #ifndef __CTO_HISTORY_H_
 #define __CTO_HISTORY_H_
 
-#include <opendnp3/Visibility.h>
+#include <openpal/Visibility.h>
 
 namespace opendnp3
 {

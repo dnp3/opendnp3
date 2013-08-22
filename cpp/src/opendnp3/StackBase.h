@@ -30,20 +30,22 @@
 #define __STACK_BASE_H_
 
 #include <opendnp3/StackState.h>
-#include <opendnp3/Visibility.h>
+#include <openpal/Visibility.h>
 
 #include <functional>
 #include <vector>
 
+namespace openpal {
+class IExecutor;
+}
+
 namespace opendnp3
 {
-
-class IExecutor;
 
 class DLL_LOCAL StackBase
 {
 public:
-	StackBase(IExecutor* apExecutor);
+	StackBase(openpal::IExecutor* apExecutor);
 
 	void AddStateListener(std::function<void (StackState)> aCallback);
 
@@ -53,7 +55,7 @@ protected:
 	// implement in inherited class
 	virtual StackState GetState() = 0;
 
-	IExecutor* mpExecutor;
+	openpal::IExecutor* mpExecutor;
 
 private:
 	std::vector<std::function<void (StackState)>> mListeners;

@@ -26,7 +26,7 @@
 
 #include <openpal/Types.h>
 #include <opendnp3/Uncopyable.h>
-#include <opendnp3/Visibility.h>
+#include <openpal/Visibility.h>
 
 #include "AsyncTaskInterfaces.h"
 #include "TimeSource.h"
@@ -36,6 +36,11 @@
 #include <chrono>
 #include <string>
 
+namespace openpal {
+class IExecutor;
+class ITimer;
+}
+
 namespace opendnp3
 {
 
@@ -43,9 +48,7 @@ class AsyncTaskBase;
 class AsyncTaskPeriodic;
 class AsyncTaskNonPeriodic;
 class AsyncTaskContinuous;
-class IExecutor;
 class ITimeSource;
-class ITimer;
 
 /**
  A collection of related tasks with optional dependencies
@@ -57,7 +60,7 @@ class DLL_LOCAL AsyncTaskGroup : private Uncopyable
 
 public:
 
-	AsyncTaskGroup(IExecutor*, ITimeSource* = TimeSource::Inst());
+	AsyncTaskGroup(openpal::IExecutor*, ITimeSource* = TimeSource::Inst());
 	~AsyncTaskGroup();
 
 	AsyncTaskBase* Add(openpal::millis_t aPeriod, openpal::millis_t aRetryDelay, int aPriority, const TaskHandler& arCallback, const std::string& arName = "");
@@ -92,9 +95,9 @@ private:
 
 	bool mIsRunning;
 	bool mShutdown;
-	IExecutor* mpExecutor;
+	openpal::IExecutor* mpExecutor;
 	ITimeSource* mpTimeSrc;
-	ITimer* mpTimer;
+	openpal::ITimer* mpTimer;
 
 
 

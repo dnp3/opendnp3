@@ -35,7 +35,7 @@
 
 #include <opendnp3/IDataObserver.h>
 #include <opendnp3/SubjectBase.h>
-#include <opendnp3/Visibility.h>
+#include <openpal/Visibility.h>
 
 #include "Loggable.h"
 #include "EventTypes.h"

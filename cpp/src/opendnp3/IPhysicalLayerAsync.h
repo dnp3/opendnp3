@@ -25,13 +25,16 @@
 
 #include "AsyncLayerInterfaces.h"
 
-#include <opendnp3/Visibility.h>
+#include <openpal/Visibility.h>
+
+namespace openpal {
+	class IExecutor;
+}
 
 namespace opendnp3
 {
 
 class IHandlerAsync;
-class IExecutor;
 
 class DLL_LOCAL IChannelState
 {
@@ -84,7 +87,7 @@ public:
 	/**
 	* @return the executor associated with this layer
 	*/
-	virtual IExecutor* GetExecutor() = 0;
+	virtual openpal::IExecutor* GetExecutor() = 0;
 
 	/**
 	 * Starts an open operation.

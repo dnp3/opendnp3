@@ -28,18 +28,21 @@
 
 #include "BufferTestObject.h"
 
+namespace openpal {
+	class IExecutor;
+}
+
 namespace opendnp3
 {
 
-class IExecutor;
 
 // Provides a backend for testing physical layers
 class MockPhysicalLayerAsync : public PhysicalLayerAsyncBase, public BufferTestObject
 {
 public:
-	MockPhysicalLayerAsync(Logger*, IExecutor*);
+	MockPhysicalLayerAsync(Logger*, openpal::IExecutor*);
 
-	IExecutor* GetExecutor() {
+	openpal::IExecutor* GetExecutor() {
 		return mpExecutor;
 	}
 
@@ -104,7 +107,7 @@ private:
 
 	bool mIsAutoOpenSuccess;
 
-	IExecutor* mpExecutor;
+	openpal::IExecutor* mpExecutor;
 };
 
 }

@@ -33,6 +33,7 @@
 #include "LinkFrame.h"
 
 using namespace std;
+using namespace openpal;
 using namespace std::chrono;
 
 namespace opendnp3

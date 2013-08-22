@@ -23,7 +23,7 @@
 #include "MockPhysicalLayerAsync.h"
 
 #include "BufferHelpers.h"
-#include <opendnp3/IExecutor.h>
+#include <openpal/IExecutor.h>
 
 #include <memory.h>
 #include <functional>
@@ -33,7 +33,7 @@ using namespace boost::system;
 namespace opendnp3
 {
 
-MockPhysicalLayerAsync::MockPhysicalLayerAsync(Logger* apLogger, IExecutor* apExecutor) :
+MockPhysicalLayerAsync::MockPhysicalLayerAsync(Logger* apLogger, openpal::IExecutor* apExecutor) :
 	PhysicalLayerAsyncBase(apLogger),
 	mpWriteBuff(NULL),
 	mNumToRead(0),

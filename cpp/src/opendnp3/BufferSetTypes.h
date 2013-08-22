@@ -23,7 +23,7 @@
 #ifndef __BUFFER_SET_TYPES_H_
 #define __BUFFER_SET_TYPES_H_
 
-#include <opendnp3/Visibility.h>
+#include <openpal/Visibility.h>
 
 #include <map>
 #include <set>

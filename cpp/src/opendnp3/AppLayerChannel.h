@@ -24,16 +24,19 @@
 #define __APP_LAYER_CHANNEL_H_
 
 #include <openpal/Types.h>
-#include <opendnp3/Visibility.h>
+#include <openpal/Visibility.h>
 
 #include "Loggable.h"
+
+namespace openpal {
+class IExecutor;
+class ITimer;
+}
 
 namespace opendnp3
 {
 
 class Logger;
-class IExecutor;
-class ITimer;
 class AppLayer;
 class ACS_Base;
 class APDU;
@@ -59,7 +62,7 @@ class DLL_LOCAL AppLayerChannel : public Loggable
 	friend class ACS_WaitForFinalResponse;
 
 public:
-	AppLayerChannel(const std::string& arName, Logger*, AppLayer*, IExecutor*, openpal::millis_t aTimeout);
+	AppLayerChannel(const std::string& arName, Logger*, AppLayer*, openpal::IExecutor*, openpal::millis_t aTimeout);
 	virtual ~AppLayerChannel() {}
 
 	// Resets the channel to the initial state
@@ -116,8 +119,8 @@ private:
 
 	APDU* mpSendAPDU;
 	size_t mNumRetry;
-	IExecutor* mpExecutor;
-	ITimer* mpTimer;
+	openpal::IExecutor* mpExecutor;
+	openpal::ITimer* mpTimer;
 	bool mConfirming;
 	const openpal::millis_t M_TIMEOUT;
 	const std::string M_NAME;

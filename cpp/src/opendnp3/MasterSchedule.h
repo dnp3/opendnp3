@@ -30,7 +30,7 @@
 #define __MASTER_SCHEDULE_H_
 
 #include <opendnp3/MasterConfig.h>
-#include <opendnp3/Visibility.h>
+#include <openpal/Visibility.h>
 
 #include "TrackingTaskGroup.h"
 

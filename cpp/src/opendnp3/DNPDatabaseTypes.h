@@ -26,7 +26,7 @@
 #include <openpal/Types.h>
 #include <opendnp3/DataTypes.h>
 #include <opendnp3/PointClass.h>
-#include <opendnp3/Visibility.h>
+#include <openpal/Visibility.h>
 
 #include "VtoData.h"
 

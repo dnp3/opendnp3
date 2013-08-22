@@ -31,7 +31,7 @@
 
 #include <opendnp3/ObjectInterfaces.h>
 #include <opendnp3/DataTypes.h>
-#include <opendnp3/Visibility.h>
+#include <openpal/Visibility.h>
 #include <opendnp3/OutstationResponses.h>
 
 namespace opendnp3

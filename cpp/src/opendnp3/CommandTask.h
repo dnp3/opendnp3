@@ -27,7 +27,7 @@
 
 #include <opendnp3/APDUConstants.h>
 #include <opendnp3/CommandStatus.h>
-#include <opendnp3/Visibility.h>
+#include <openpal/Visibility.h>
 
 #include <functional>
 #include <queue>

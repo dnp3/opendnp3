@@ -31,7 +31,7 @@
 
 #include <stddef.h>
 
-#include <opendnp3/Visibility.h>
+#include <openpal/Visibility.h>
 
 
 namespace opendnp3

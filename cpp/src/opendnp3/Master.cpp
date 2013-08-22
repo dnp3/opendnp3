@@ -35,7 +35,7 @@
 #include "AsyncTaskBase.h"
 #include "AsyncTaskPeriodic.h"
 #include "AsyncTaskNonPeriodic.h"
-#include "IExecutor.h"
+#include <openpal/IExecutor.h>
 #include "AsyncTaskContinuous.h"
 #include "CopyableBuffer.h"
 
@@ -44,7 +44,7 @@
 namespace opendnp3
 {
 
-Master::Master(Logger* apLogger, MasterConfig aCfg, IAppLayer* apAppLayer, IDataObserver* apPublisher, AsyncTaskGroup* apTaskGroup, IExecutor* apExecutor, ITimeSource* apTimeSrc) :
+Master::Master(Logger* apLogger, MasterConfig aCfg, IAppLayer* apAppLayer, IDataObserver* apPublisher, AsyncTaskGroup* apTaskGroup, openpal::IExecutor* apExecutor, ITimeSource* apTimeSrc) :
 	Loggable(apLogger),
 	StackBase(apExecutor),
 	mVtoReader(apLogger),

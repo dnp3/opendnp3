@@ -34,7 +34,7 @@
 #include "ILinkRouter.h"
 #include "LinkRoute.h"
 
-#include <opendnp3/Visibility.h>
+#include <openpal/Visibility.h>
 
 namespace opendnp3
 {
@@ -50,7 +50,7 @@ class DLL_LOCAL LinkLayerRouter : public PhysicalLayerMonitor, public IFrameSink
 {
 public:
 
-	LinkLayerRouter(Logger*, IPhysicalLayerAsync*,openpal::millis_t aOpenRetry);
+	LinkLayerRouter(Logger*, IPhysicalLayerAsync*, openpal::millis_t aOpenRetry);
 
 	bool IsRouteInUse(const LinkRoute& arRoute);
 

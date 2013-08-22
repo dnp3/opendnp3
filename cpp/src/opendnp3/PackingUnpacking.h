@@ -30,7 +30,7 @@
 #define __PACKING_UNPACKING_H_
 
 #include <openpal/Types.h>
-#include <opendnp3/Visibility.h>
+#include <openpal/Visibility.h>
 
 #include <stddef.h>
 #include <limits>

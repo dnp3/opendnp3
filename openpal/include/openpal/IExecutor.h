@@ -23,15 +23,13 @@
 #ifndef __I_EXECUTOR_H_
 #define __I_EXECUTOR_H_
 
-#include "ITimer.h"
-
 #include <chrono>
 #include <functional>
 
+#include "ITimer.h"
+#include "Visibility.h"
 
-#include <opendnp3/Visibility.h>
-
-namespace opendnp3
+namespace openpal
 {
 
 /**

@@ -25,11 +25,13 @@
 #include <opendnp3/Logger.h>
 
 #include "LoggableMacros.h"
-#include "IExecutor.h"
+#include <openpal/IExecutor.h>
 #include "AppLayer.h"
 #include "AppChannelStates.h"
 
 #include <functional>
+
+using namespace openpal;
 
 namespace opendnp3
 {

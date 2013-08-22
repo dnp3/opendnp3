@@ -33,11 +33,15 @@
 
 #include <opendnp3/AppConfig.h>
 
+namespace openpal {
+class IExecutor;
+class ITimer;
+}
+
+
 namespace opendnp3
 {
 
-class IExecutor;
-class ITimer;
 class AppTransactionStateBase;
 
 /**
@@ -53,7 +57,7 @@ class DLL_LOCAL AppLayer : public IUpperLayer, public IAppLayer
 
 public:
 
-	AppLayer(Logger* apLogger, IExecutor*, AppConfig aAppCfg);
+	AppLayer(Logger* apLogger, openpal::IExecutor*, AppConfig aAppCfg);
 
 	void SetUser(IAppUser*);
 

@@ -28,7 +28,7 @@
 
 #include <opendnp3/Uncopyable.h>
 #include <opendnp3/Singleton.h>
-#include <opendnp3/Visibility.h>
+#include <openpal/Visibility.h>
 
 #include "LinkLayerReceiver.h"
 

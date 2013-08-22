@@ -25,19 +25,20 @@
 
 
 #include <opendnp3/ICommandProcessor.h>
-#include <opendnp3/Visibility.h>
+#include <openpal/Visibility.h>
 
+namespace openpal {
+class IExecutor;
+}
 
 namespace opendnp3
 {
-
-class IExecutor;
 
 class DLL_LOCAL ConstantCommandProcessor : public ICommandProcessor
 {
 public:
 
-	ConstantCommandProcessor(IExecutor* apExecutor, const CommandResponse& arResponse);
+	ConstantCommandProcessor(openpal::IExecutor* apExecutor, const CommandResponse& arResponse);
 
 	// Implement the ICommandProcessor interface
 
@@ -57,7 +58,7 @@ public:
 	void DirectOperate(const AnalogOutputDouble64& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback);
 
 private:
-	IExecutor* mpExecutor;
+	openpal::IExecutor* mpExecutor;
 	CommandResponse mResponse;
 };
 

@@ -17,43 +17,30 @@
 //
 // This file was forked on 01/01/2013 by Automatak, LLC and modifications
 // have been made to this file. Automatak, LLC licenses these modifications to
-// you under the terms of the License.
+// you under the GNU Affero General Public License Version 3.0
+// (the "Additional License"). You may not use these modifications except in
+// compliance with the additional license. You may obtain a copy of the Additional
+// License at
 //
+// http://www.gnu.org/licenses/agpl.html
+//
+// Contact Automatak, LLC for a commercial license to these modifications
+//
+#ifndef __VISIBILITY_H_
+#define __VISIBILITY_H_
 
-#ifndef __I_TIMER_H_
-#define __I_TIMER_H_
-
-#include <openpal/Types.h>
-#include <opendnp3/Visibility.h>
-
-
-namespace opendnp3
-{
-
-/**
- * This is a wrapper for ASIO timers that are used to post events
- * on a queue. Events can be posted for immediate consumption or
- * some time in the future. Events can be consumbed by the posting
- * thread or another thread.
- *
- * @section Class Goals
- *
- * Decouple APL code form ASIO so ASIO could be replace if need be.
- *
- * There is a problem with ASIO. When cancel is called, an event is
- * posted. We wanted a cancel that does not generate any events.
- *
- * @see TimerASIO
- */
-
-class DLL_LOCAL ITimer
-{
-public:
-	virtual ~ITimer() {}
-	virtual void Cancel() = 0;
-	virtual openpal::timer_clock::time_point ExpiresAt() = 0;
-};
-
-}
-
+#ifdef OPENPAL_LIMIT_VISIBILITY
+	#if __GNUC__ >= 4
+		#define DLL_PUBLIC __attribute__ ((visibility ("default")))
+		#define DLL_LOCAL  __attribute__ ((visibility ("hidden")))
+	#else
+    		#define DLL_PUBLIC
+    		#define DLL_LOCAL
+	#endif
+#else
+	#define DLL_PUBLIC
+	#define DLL_LOCAL
 #endif
+
+#endif // end of guards
+

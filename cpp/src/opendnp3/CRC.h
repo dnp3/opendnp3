@@ -23,7 +23,7 @@
 #ifndef __CRC_H_
 #define __CRC_H_
 
-#include <opendnp3/Visibility.h>
+#include <openpal/Visibility.h>
 
 #include <stdint.h>
 #include <stddef.h>

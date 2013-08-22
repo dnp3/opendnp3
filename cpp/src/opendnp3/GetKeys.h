@@ -24,7 +24,7 @@
 #define __GET_KEYS_H_
 
 #include <vector>
-#include <opendnp3/Visibility.h>
+#include <openpal/Visibility.h>
 
 namespace opendnp3
 {

@@ -24,7 +24,7 @@
 #define __LINK_HEADER_H_
 
 #include <opendnp3/LinkLayerConstants.h>
-#include <opendnp3/Visibility.h>
+#include <openpal/Visibility.h>
 
 namespace opendnp3
 {

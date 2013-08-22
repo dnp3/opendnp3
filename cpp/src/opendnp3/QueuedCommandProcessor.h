@@ -31,7 +31,7 @@
 
 #include <opendnp3/ICommandProcessor.h>
 #include <opendnp3/SubjectBase.h>
-#include <opendnp3/Visibility.h>
+#include <openpal/Visibility.h>
 
 #include <queue>
 #include <mutex>

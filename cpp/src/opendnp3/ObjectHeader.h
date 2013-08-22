@@ -34,7 +34,7 @@
 #include <opendnp3/Exception.h>
 #include <opendnp3/Location.h>
 #include <opendnp3/APDUConstants.h>
-#include <opendnp3/Visibility.h>
+#include <openpal/Visibility.h>
 
 #include "PackingUnpacking.h"
 

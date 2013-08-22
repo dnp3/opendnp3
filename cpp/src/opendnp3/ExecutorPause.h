@@ -23,20 +23,22 @@
 #ifndef __EXECUTOR_PAUSE_H_
 #define __EXECUTOR_PAUSE_H_
 
-#include <opendnp3/Visibility.h>
+#include <openpal/Visibility.h>
 
 #include <mutex>
 #include <condition_variable>
 
+namespace openpal {
+	class IExecutor;
+}
+
 namespace opendnp3
 {
-
-class IExecutor;
 
 class DLL_LOCAL ExecutorPause
 {
 public:
-	ExecutorPause(IExecutor* apExecutor);
+	ExecutorPause(openpal::IExecutor* apExecutor);
 	~ExecutorPause();
 
 private:
@@ -45,7 +47,7 @@ private:
 
 	std::mutex mMutex;
 	std::condition_variable mCondition;
-	IExecutor* mpExecutor;
+	openpal::IExecutor* mpExecutor;
 	bool mPaused;
 	bool mComplete;
 	bool mExit;

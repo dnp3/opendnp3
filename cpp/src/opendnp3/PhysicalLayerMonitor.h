@@ -30,7 +30,7 @@
 #define __PHYSICAL_LAYER_MONITOR_H_
 
 #include "IHandlerAsync.h"
-#include "IExecutor.h"
+#include <openpal/IExecutor.h>
 
 #include <opendnp3/ChannelStates.h>
 #include <opendnp3/Location.h>
@@ -101,7 +101,7 @@ protected:
 
 private:
 
-	ITimer* mpOpenTimer;
+	openpal::ITimer* mpOpenTimer;
 	IMonitorState* mpState;
 	bool mFinalShutdown;
 

@@ -22,7 +22,7 @@
 
 #include <opendnp3/SubjectBase.h>
 
-#include "IExecutor.h"
+#include <openpal/IExecutor.h>
 
 namespace opendnp3
 {
@@ -38,7 +38,7 @@ void SubjectBase::AddObserver(std::function<void ()> aCallback)
 	mObservers.push_back(aCallback);
 }
 
-void SubjectBase::AddObserver(IExecutor* apExecutor, std::function<void ()> aCallback)
+void SubjectBase::AddObserver(openpal::IExecutor* apExecutor, std::function<void ()> aCallback)
 {
 	this->AddObserver([apExecutor, aCallback]() {
 		apExecutor->Post(aCallback);

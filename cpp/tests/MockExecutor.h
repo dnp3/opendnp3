@@ -24,7 +24,7 @@
 #define __MOCK_EXECUTOR_H_
 
 
-#include <opendnp3/IExecutor.h>
+#include <openpal/IExecutor.h>
 #include <map>
 #include <queue>
 
@@ -34,7 +34,7 @@ namespace opendnp3
 class MockTimer;
 
 /** @section desc Test class that doles out MockTimer* */
-class MockExecutor : public IExecutor
+class MockExecutor : public openpal::IExecutor
 {
 	friend class MockTimer;
 
@@ -43,8 +43,8 @@ public:
 	~MockExecutor();
 
 	// Implement IExecutor
-	ITimer* Start(const openpal::timer_clock::time_point&, const std::function<void ()>&);
-	ITimer* Start(openpal::timer_clock::duration, const std::function<void ()>&);
+	openpal::ITimer* Start(const openpal::timer_clock::time_point&, const std::function<void ()>&);
+	openpal::ITimer* Start(openpal::timer_clock::duration, const std::function<void ()>&);
 	void Post(const std::function<void ()>&);
 	void PostSync(const std::function<void ()>&);
 
@@ -74,7 +74,7 @@ public:
 
 private:
 
-	void Cancel(ITimer* apTimer);
+	void Cancel(openpal::ITimer* apTimer);
 
 	typedef std::deque<std::function<void ()>> PostQueue;
 	typedef std::multimap<openpal::timer_clock::time_point, MockTimer*> TimerMap;
@@ -92,7 +92,7 @@ private:
 };
 
 /** @section desc Test timer class used in conjunction with MockExecutor */
-class MockTimer : public ITimer
+class MockTimer : public openpal::ITimer
 {
 	friend class MockExecutor;
 

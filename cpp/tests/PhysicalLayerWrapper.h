@@ -32,13 +32,12 @@
 namespace opendnp3
 {
 
-
 class PhysicalLayerWrapper : public IPhysicalLayerAsync, public IHandlerAsync
 {
 public:
 	PhysicalLayerWrapper(Logger* apLogger, IPhysicalLayerAsync* apProxy);
 
-	IExecutor* GetExecutor() {
+	openpal::IExecutor* GetExecutor() {
 		return mpProxy->GetExecutor();
 	}
 

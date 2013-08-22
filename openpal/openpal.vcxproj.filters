@@ -14,13 +14,19 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="ReadMe.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="include\openpal\Types.h">
       <Filter>Include Files</Filter>
     </ClInclude>
     <ClInclude Include="include\openpal\Clock.h">
+      <Filter>Include Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\openpal\Visibility.h">
+      <Filter>Include Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\openpal\ITimer.h">
+      <Filter>Include Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\openpal\IExecutor.h">
       <Filter>Include Files</Filter>
     </ClInclude>
   </ItemGroup>

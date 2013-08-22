@@ -25,14 +25,14 @@
 #include <opendnp3/Logger.h>
 
 #include "LoggableMacros.h"
-#include "IExecutor.h"
+#include <openpal/IExecutor.h>
 
 using namespace std;
 
 namespace opendnp3
 {
 
-AppLayer::AppLayer(Logger* apLogger, IExecutor* apExecutor, AppConfig aAppCfg) :
+AppLayer::AppLayer(Logger* apLogger, openpal::IExecutor* apExecutor, AppConfig aAppCfg) :
 	Loggable(apLogger),
 	IUpperLayer(apLogger),
 	mIncoming(aAppCfg.FragSize),

@@ -37,7 +37,11 @@
 #include "CopyableBuffer.h"
 #include "VtoDataInterface.h"
 
-#include <opendnp3/Visibility.h>
+#include <openpal/Visibility.h>
+
+namespace openpal {
+	class IExecutor;
+}
 
 namespace opendnp3
 {
@@ -123,7 +127,7 @@ public:
 	 */
 	void OnBufferAvailable();
 
-	IExecutor* GetExecutor(); //TODO this is kind of hack at the moment
+	openpal::IExecutor* GetExecutor(); //TODO this is kind of hack at the moment
 
 
 protected:

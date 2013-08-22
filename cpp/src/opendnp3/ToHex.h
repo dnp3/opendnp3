@@ -30,7 +30,7 @@
 #define __TO_HEX_H_
 
 #include <openpal/Types.h>
-#include <opendnp3/Visibility.h>
+#include <openpal/Visibility.h>
 
 #include <string>
 #include <sstream>

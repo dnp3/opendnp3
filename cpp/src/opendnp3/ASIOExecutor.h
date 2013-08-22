@@ -23,10 +23,9 @@
 #ifndef __ASIO_EXECUTOR_H_
 #define __ASIO_EXECUTOR_H_
 
-#include "IExecutor.h"
-
 #include <opendnp3/Exception.h>
-#include <opendnp3/Visibility.h>
+#include <openpal/IExecutor.h>
+#include <openpal/Visibility.h>
 
 #include <queue>
 
@@ -40,15 +39,15 @@ namespace opendnp3
 
 class TimerASIO;
 
-class DLL_LOCAL ASIOExecutor : public IExecutor
+class DLL_LOCAL ASIOExecutor : public openpal::IExecutor
 {
 
 public:
 	ASIOExecutor(boost::asio::strand*);
 	~ASIOExecutor();
 
-	ITimer* Start(openpal::timer_clock::duration, const std::function<void ()>&);
-	ITimer* Start(const openpal::timer_clock::time_point&, const std::function<void ()>&);
+	openpal::ITimer* Start(openpal::timer_clock::duration, const std::function<void ()>&);
+	openpal::ITimer* Start(const openpal::timer_clock::time_point&, const std::function<void ()>&);
 	void Post(const std::function<void ()>&);
 
 private:

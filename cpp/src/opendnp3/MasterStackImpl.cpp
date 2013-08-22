@@ -24,7 +24,7 @@
 
 #include <opendnp3/Logger.h>
 
-#include "IExecutor.h"
+#include <openpal/IExecutor.h>
 
 namespace opendnp3
 {

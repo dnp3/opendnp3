@@ -30,7 +30,7 @@
 #define __VTO_DATA_H_
 
 #include <openpal/Types.h>
-#include <opendnp3/Visibility.h>
+#include <openpal/Visibility.h>
 
 #include <string>
 

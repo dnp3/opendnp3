@@ -59,7 +59,7 @@ public:
 
 	virtual ~PhysicalLayerAsyncASIO() {}
 
-	IExecutor* GetExecutor() {
+	openpal::IExecutor* GetExecutor() {
 		return &mExecutor;
 	}
 

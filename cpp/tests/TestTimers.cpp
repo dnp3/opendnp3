@@ -38,6 +38,7 @@
 
 using namespace std;
 using namespace std::chrono;
+using namespace openpal;
 using namespace opendnp3;
 
 class TimerTestObject

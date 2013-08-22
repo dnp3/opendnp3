@@ -50,7 +50,7 @@ VtoRouter::VtoRouter(const VtoRouterSettings& arSettings, Logger* apLogger, IVto
 	assert(apPhysLayer != NULL);
 }
 
-IExecutor* VtoRouter::GetExecutor()
+openpal::IExecutor* VtoRouter::GetExecutor()
 {
 	return mpPhys->GetExecutor();
 }

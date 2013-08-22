@@ -142,11 +142,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <Text Include="ReadMe.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="include\openpal\Clock.h" />
+    <ClInclude Include="include\openpal\IExecutor.h" />
+    <ClInclude Include="include\openpal\ITimer.h" />
     <ClInclude Include="include\openpal\Types.h" />
+    <ClInclude Include="include\openpal\Visibility.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Clock.cpp" />

@@ -33,10 +33,12 @@
 #include <mutex>
 #include <functional>
 
+namespace openpal {
+	class IExecutor;
+}
+
 namespace opendnp3
 {
-
-class IExecutor;
 
 /**
 * Helper class designed to be used with private inheritance. Allows observers to be notified when some
@@ -52,7 +54,7 @@ public:
 	// implement the ISubject interface
 	void AddObserver(std::function<void ()> aCallback);
 
-	void AddObserver(IExecutor* apExecutor, std::function<void ()> aCallback);
+	void AddObserver(openpal::IExecutor* apExecutor, std::function<void ()> aCallback);
 
 protected:
 

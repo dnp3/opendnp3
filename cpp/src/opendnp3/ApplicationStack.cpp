@@ -27,7 +27,7 @@
 namespace opendnp3
 {
 
-ApplicationStack::ApplicationStack(Logger* apLogger, IExecutor* apExecutor, AppConfig aAppCfg, LinkConfig aCfg) :
+ApplicationStack::ApplicationStack(Logger* apLogger, openpal::IExecutor* apExecutor, AppConfig aAppCfg, LinkConfig aCfg) :
 	mLink(apLogger->GetSubLogger("link"), apExecutor, aCfg),
 	mTransport(apLogger->GetSubLogger("transport")),
 	mApplication(apLogger->GetSubLogger("app"), apExecutor, aAppCfg)

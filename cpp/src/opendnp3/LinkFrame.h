@@ -24,7 +24,7 @@
 #define __LINK_FRAME_H_
 
 #include <opendnp3/LinkLayerConstants.h>
-#include <opendnp3/Visibility.h>
+#include <openpal/Visibility.h>
 
 #include "PackingUnpacking.h"
 #include "LinkHeader.h"

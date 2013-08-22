@@ -33,7 +33,7 @@
 
 #include <openpal/Types.h>
 #include <opendnp3/ObjectInterfaces.h>
-#include <opendnp3/Visibility.h>
+#include <openpal/Visibility.h>
 
 #include "HeaderReadIterator.h"
 #include "ObjectHeader.h"

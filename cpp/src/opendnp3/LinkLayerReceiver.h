@@ -26,7 +26,7 @@
 
 #include <opendnp3/DNPConstants.h>
 #include <opendnp3/Logger.h>
-#include <opendnp3/Visibility.h>
+#include <openpal/Visibility.h>
 
 #include "Loggable.h"
 #include "ShiftableBuffer.h"

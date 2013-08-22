@@ -30,7 +30,7 @@
 #include "Database.h"
 #include "ObjectReadIterator.h"
 #include "LoggableMacros.h"
-#include "IExecutor.h"
+#include <openpal/IExecutor.h>
 
 #include <boost/bind.hpp>
 #include <functional>
