@@ -26,6 +26,7 @@
 
 using namespace opendnp3;
 
+#include <assert.h>
 #include <iostream>
 
 JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_create_1native_1manager

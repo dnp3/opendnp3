@@ -20,6 +20,7 @@
 
 #include <iostream>
 #include <chrono>
+#include <assert.h>
 
 #include "JNIHelpers.hpp"
 

@@ -83,21 +83,9 @@ bool LogEntry :: GetValue(const std::string& arKey, int64_t& arValue) const
 	return GetAnyValue<int64_t>(arKey, arValue);
 }
 
-#ifndef OPENDNP3_STRIP_LOG_MESSAGES
-string LogEntry :: LogString(bool aUseLocation) const
-{
-	ostringstream oss;
-	oss << GetTimeString() << " - "
-	    << LogTypes::GetLevelString( mFilterLevel ) << " - "
-	    << mDeviceName;
-	if(aUseLocation && !mLocation.empty()) oss << " - " << mLocation;
-	oss << " - " << mMessage;
 
-	if(this->GetErrorCode() != -1) oss << " - " << this->GetErrorCode();
 
-	return oss.str();
-}
-#endif
+
 
 }
 
