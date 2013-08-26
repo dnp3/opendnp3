@@ -2,7 +2,7 @@ Source: opendnp3
 Section: libs
 Priority: extra
 Maintainer: Chris Verges <chris.verges@gmail.com>
-Build-Depends: debhelper (>= 8.0.0), dh-autoreconf, autoconf, automake, libtool, maven
+Build-Depends: debhelper (>= 8.0.0), dh-autoreconf, autoconf, automake, libtool, oracle-java7-installer, oracle-java7-set-default
 Standards-Version: 3.9.2
 Homepage: http://dnp3.github.io
 
@@ -12,6 +12,12 @@ Depends: ${shlibs:Depends}, ${misc:Depends}
 Description: A C++ library for the OpenDNP3 stack
  This package provides C++ bindings for the OpenDNP3 stack.  This stack
  implements both a DNP3 master and DNP3 outstation.
+
+Package: libopendnp3-java
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, libopendnp3
+Description: Java Native Interface (JNI) library for the OpenDNP3 stack
+ This package provides a JNI library for the C++-based OpenDNP3 stack.
 
 Package: libopendnp3-dev
 Architecture: any

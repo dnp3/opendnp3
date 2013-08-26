@@ -1,3 +1,9 @@
+opendnp3 (1.1.0rc1-2) unstable; urgency=low
+
+  * Added support for Java bindings
+
+ -- Chris Verges <chris.verges@gmail.com>  Mon, 26 Aug 2013 10:01:39 -0700
+
 opendnp3 (1.1.0rc1-1) unstable; urgency=low
 
   * Initial release

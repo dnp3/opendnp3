@@ -18,5 +18,12 @@ export DH_OPTIONS
 
 export MAKEFLAGS="-j8"
 
+DEB_CONFIGURE_FLAGS = \
+	--enable-java \
+	--with-javac=/usr/lib/jvm/java-7-oracle/bin/javac
+
 %:
 	dh $@ --parallel --max-parallel=8 --with=autoreconf
+
+override_dh_auto_configure:
+	dh_auto_configure -- $(DEB_CONFIGURE_FLAGS)

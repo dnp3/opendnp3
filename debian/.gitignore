@@ -7,6 +7,11 @@ libopendnp3-cpp-demos/
 libopendnp3-dev.debhelper.log
 libopendnp3-dev.substvars
 libopendnp3-dev/
+libopendnp3-java.debhelper.log
+libopendnp3-java.postinst.debhelper
+libopendnp3-java.postrm.debhelper
+libopendnp3-java.substvars
+libopendnp3-java/
 libopendnp3.debhelper.log
 libopendnp3.postinst.debhelper
 libopendnp3.postrm.debhelper
