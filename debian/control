@@ -21,12 +21,20 @@ Description: Java Native Interface (JNI) library for the OpenDNP3 stack
 
 Package: libopendnp3-dev
 Architecture: any
-Description: C++ development headers for the OpenDNP3 stack
- This package provides complimentary C++ development headers for the
- Automatak DNP3 stack.
+Depends: libopendnp3, libopendnp3-java
+Recommends: libopendnp3-cpp-demos, libopendnp3-java-demos
+Description: C++/Java development files for the OpenDNP3 stack
+ This package provides complimentary C++ and Java files for development
+ with the Automatak DNP3 stack.
 
 Package: libopendnp3-cpp-demos
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
 Description: C++ master/outstation demos for the OpenDNP3 stack
  This package provides C++ master/outstation demos.
+
+Package: libopendnp3-java-demos
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, libopendnp3-java
+Description: Java master/outstation demos for the OpenDNP3 stack
+ This package provides Java master/outstation demos.
