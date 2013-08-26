@@ -14,7 +14,8 @@
     <modules>
         <module>api</module>
         <module>bindings</module>
-        <module>example</module>
+        <module>example/master</module>
+        <module>example/outstation</module>
     </modules>
 
     <properties>

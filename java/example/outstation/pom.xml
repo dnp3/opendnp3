@@ -6,9 +6,10 @@
         <groupId>com.automatak.dnp3</groupId>
         <artifactId>opendnp3-parent</artifactId>
         <version>1.1.0</version>
+        <relativePath>../..</relativePath>
     </parent>
 
-    <artifactId>opendnp3-example</artifactId>
+    <artifactId>opendnp3-outstation-example</artifactId>
     <packaging>jar</packaging>
 
     <dependencies>
@@ -20,4 +21,19 @@
         </dependency>
     </dependencies>
 
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <mainClass>com.automatak.dnp3.example.OutstationDemo</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>
