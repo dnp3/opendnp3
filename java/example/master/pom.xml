@@ -30,6 +30,7 @@
                     <archive>
                         <manifest>
                             <mainClass>com.automatak.dnp3.example.MasterDemo</mainClass>
+                            <addClasspath>true</addClasspath>
                         </manifest>
                     </archive>
                 </configuration>
@@ -37,3 +38,4 @@
         </plugins>
     </build>
 </project>
+<!-- vim: set ts=4 expandtab: -->
