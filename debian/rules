@@ -27,3 +27,15 @@ DEB_CONFIGURE_FLAGS = \
 
 override_dh_auto_configure:
 	dh_auto_configure -- $(DEB_CONFIGURE_FLAGS)
+
+override_dh_auto_build:
+	dh_auto_build
+	cd java && LD_LIBRARY_PATH="$(CURDIR)/.libs:${LD_LIBRARY_PATH}" mvn clean package
+
+override_dh_auto_install:
+	# Install the Java files first, since dh_auto_install will
+	# attempt to package them
+	install -d $(CURDIR)/debian/tmp/usr/share/java
+	find $(CURDIR)/java -name "*.jar" -exec install -m 0644 {} $(CURDIR)/debian/tmp/usr/share/java \;
+	# Now run the regular deb packaging sequence
+	dh_auto_install
