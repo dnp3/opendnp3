@@ -25,8 +25,6 @@ import java.util.List;
  * Configuration class for a master station
  */
 public class MasterConfig {
-
-
     /**
      * Constructor with reasonable defaults
      */
@@ -38,7 +36,7 @@ public class MasterConfig {
     /**
      * Maximum fragment size to use for requests
      */
-    int maxRequestFragmentSize = 2048;
+    public int maxRequestFragmentSize = 2048;
 
     /**
      * The number of objects to store in the VtoWriter queue.
@@ -84,7 +82,4 @@ public class MasterConfig {
      * vector that holds exception scans, defaults to empty list
      */
     public final List<ExceptionScan> scans = new LinkedList<ExceptionScan>();
-
-
-
 }
