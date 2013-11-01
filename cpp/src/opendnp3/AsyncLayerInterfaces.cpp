@@ -28,6 +28,8 @@
 #include "ToHex.h"
 #include "LoggableMacros.h"
 
+#include <assert.h>
+
 namespace opendnp3
 {
 

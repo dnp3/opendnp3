@@ -23,6 +23,7 @@
 #include "LinkLayerRouter.h"
 
 #include <sstream>
+#include <assert.h>
 
 #include <opendnp3/Exception.h>
 #include <opendnp3/Logger.h>
