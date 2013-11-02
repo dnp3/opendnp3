@@ -314,6 +314,16 @@ cpp/tests/TestMaster.cpp \
 cpp/tests/TestResponseLoader.cpp \
 cpp/tests/MockTimeSource.cpp
 
+bin_PROGRAMS = outstationdemo masterdemo
+
+outstationdemo_LDFLAGS = $(BOOST_LDFLAGS) -pthread
+outstationdemo_LDADD = libopendnp3.la $(CORE_BOOST_LIBS)
+outstationdemo_SOURCES = cpp/demos/outstation/DemoMain.cpp
+
+masterdemo_LDFLAGS = $(BOOST_LDFLAGS) -pthread
+masterdemo_LDADD = libopendnp3.la $(CORE_BOOST_LIBS)
+masterdemo_SOURCES = cpp/demos/master/DemoMain.cpp
+
 if WANT_JAVA
 	
 lib_LTLIBRARIES += libopendnp3java.la
