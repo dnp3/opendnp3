@@ -40,6 +40,7 @@
 
 using namespace opendnp3;
 using namespace boost;
+using namespace openpal;
 
 
 BOOST_AUTO_TEST_SUITE(PhysicalLayerAsyncTCPSuite)
@@ -217,16 +218,16 @@ BOOST_AUTO_TEST_CASE(Loopback)
 	const size_t ITERATIONS = MACRO_LOOPBACK_ITERATIONS;
 
 	EventLog log;
-	Logger* pLogger = log.GetLogger(LEV_INFO, "test");
+	Logger logger(&log, LEV_INFO, "test");
 	AsyncTestObjectASIO test;
-	PhysicalLayerAsyncTCPServer server(pLogger->GetSubLogger("server"), test.GetService(), "127.0.0.1", 30000);
+	PhysicalLayerAsyncTCPServer server(logger.GetSubLogger("server"), test.GetService(), "127.0.0.1", 30000);
 
-	PhysLoopback loopback(pLogger->GetSubLogger("loopback"), &server);
+	PhysLoopback loopback(logger.GetSubLogger("loopback"), &server);
 	loopback.Start();
 
-	PhysicalLayerAsyncTCPClient client(pLogger->GetSubLogger("client"), test.GetService(), "127.0.0.1", 30000);
-	LowerLayerToPhysAdapter adapter(pLogger->GetSubLogger("adapter"), &client);
-	MockUpperLayer upper(pLogger->GetSubLogger("mock"));
+	PhysicalLayerAsyncTCPClient client(logger.GetSubLogger("client"), test.GetService(), "127.0.0.1", 30000);
+	LowerLayerToPhysAdapter adapter(logger.GetSubLogger("adapter"), &client);
+	MockUpperLayer upper(logger.GetSubLogger("mock"));
 	adapter.SetUpperLayer(&upper);
 
 	client.AsyncOpen();

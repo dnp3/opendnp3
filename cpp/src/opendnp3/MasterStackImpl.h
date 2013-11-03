@@ -48,7 +48,7 @@ class DLL_LOCAL MasterStackImpl : public IMaster
 public:
 
 	MasterStackImpl(
-	        Logger*,
+	        openpal::Logger&,
 	        boost::asio::io_service* apService,
 	        IExecutor* apExecutor,
 	        IDataObserver* apPublisher,

@@ -46,7 +46,7 @@ class ITimeSource;
 class DLL_LOCAL ClearRestartIIN : public SimpleRspBase
 {
 public:
-	ClearRestartIIN(Logger*);
+	ClearRestartIIN(openpal::Logger& arLogger);
 
 	void ConfigureRequest(APDU& arAPDU);
 #ifndef OPENDNP3_STRIP_LOG_MESSAGES
@@ -60,7 +60,7 @@ public:
 class DLL_LOCAL ConfigureUnsol : public SimpleRspBase
 {
 public:
-	ConfigureUnsol(Logger*);
+	ConfigureUnsol(openpal::Logger&);
 
 	void Set(bool aIsEnable, int aClassMask);
 
@@ -80,7 +80,7 @@ private:
 class DLL_LOCAL TimeSync : public SingleRspBase
 {
 public:
-	TimeSync(Logger*, ITimeSource*);
+	TimeSync(openpal::Logger&, ITimeSource*);
 
 	// override Init
 	void Init();

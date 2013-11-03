@@ -23,16 +23,17 @@
 #include "MasterTaskBase.h"
 
 #include "APDU.h"
-#include "LoggableMacros.h"
 #include "AsyncTaskInterfaces.h"
 
-#include <opendnp3/Logger.h>
+#include <openpal/LoggableMacros.h>
+
+using namespace openpal;
 
 namespace opendnp3
 {
 
-MasterTaskBase::MasterTaskBase(Logger* apLogger) :
-	Loggable(apLogger)
+MasterTaskBase::MasterTaskBase(openpal::Logger& arLogger) :
+	Loggable(arLogger)
 {}
 
 TaskResult MasterTaskBase::OnPartialResponse(const APDU& arAPDU)
@@ -52,7 +53,7 @@ bool MasterTaskBase::ValidateIIN(const IINField& GetIIN) const
 	return true;
 }
 
-SingleRspBase::SingleRspBase(Logger* apLogger) : MasterTaskBase(apLogger)
+SingleRspBase::SingleRspBase(openpal::Logger& arLogger) : MasterTaskBase(arLogger)
 {}
 
 TaskResult SingleRspBase::_OnPartialResponse(const APDU&)
@@ -61,7 +62,7 @@ TaskResult SingleRspBase::_OnPartialResponse(const APDU&)
 	return TR_FAIL;
 }
 
-SimpleRspBase::SimpleRspBase(Logger* apLogger) : SingleRspBase(apLogger)
+SimpleRspBase::SimpleRspBase(openpal::Logger& arLogger) : SingleRspBase(arLogger)
 {}
 
 TaskResult SimpleRspBase::_OnFinalResponse(const APDU& arAPDU)

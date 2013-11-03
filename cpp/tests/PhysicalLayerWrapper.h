@@ -24,7 +24,6 @@
 #define __PHYSICAL_LAYER_WRAPPER_H_
 
 #include <opendnp3/IPhysicalLayerAsync.h>
-#include <opendnp3/Loggable.h>
 #include <opendnp3/IHandlerAsync.h>
 
 #include "RandomDouble.h"
@@ -35,7 +34,7 @@ namespace opendnp3
 class PhysicalLayerWrapper : public IPhysicalLayerAsync, public IHandlerAsync
 {
 public:
-	PhysicalLayerWrapper(Logger* apLogger, IPhysicalLayerAsync* apProxy);
+	PhysicalLayerWrapper(openpal::Logger& arLogger, IPhysicalLayerAsync* apProxy);
 
 	openpal::IExecutor* GetExecutor() {
 		return mpProxy->GetExecutor();

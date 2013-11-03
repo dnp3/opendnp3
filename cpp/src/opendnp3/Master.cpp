@@ -22,7 +22,6 @@
 
 #include "Master.h"
 
-#include <opendnp3/Logger.h>
 #include <opendnp3/IDataObserver.h>
 
 #include "MasterStates.h"
@@ -41,14 +40,16 @@
 
 #include <functional>
 
+using namespace openpal;
+
 namespace opendnp3
 {
 
-Master::Master(Logger* apLogger, MasterConfig aCfg, IAppLayer* apAppLayer, IDataObserver* apPublisher, AsyncTaskGroup* apTaskGroup, openpal::IExecutor* apExecutor, ITimeSource* apTimeSrc) :
-	Loggable(apLogger),
+Master::Master(Logger& arLogger, MasterConfig aCfg, IAppLayer* apAppLayer, IDataObserver* apPublisher, AsyncTaskGroup* apTaskGroup, openpal::IExecutor* apExecutor, ITimeSource* apTimeSrc) :
+	Loggable(arLogger),
 	StackBase(apExecutor),
-	mVtoReader(apLogger),
-	mVtoWriter(apLogger->GetSubLogger("VtoWriter"), aCfg.VtoWriterQueueSize),
+	mVtoReader(arLogger),
+	mVtoWriter(arLogger.GetSubLogger("VtoWriter"), aCfg.VtoWriterQueueSize),
 	mRequest(aCfg.FragSize),
 	mpAppLayer(apAppLayer),
 	mpPublisher(apPublisher),
@@ -59,12 +60,12 @@ Master::Master(Logger* apLogger, MasterConfig aCfg, IAppLayer* apAppLayer, IData
 	mpScheduledTask(NULL),
 	mState(SS_UNKNOWN),
 	mSchedule(apTaskGroup, this, aCfg),
-	mClassPoll(apLogger, apPublisher, &mVtoReader),
-	mClearRestart(apLogger),
-	mConfigureUnsol(apLogger),
-	mTimeSync(apLogger, apTimeSrc),
-	mCommandTask(apLogger),
-	mVtoTransmitTask(apLogger, aCfg.FragSize, aCfg.UseNonStandardVtoFunction)
+	mClassPoll(arLogger, apPublisher, &mVtoReader),
+	mClearRestart(arLogger),
+	mConfigureUnsol(arLogger),
+	mTimeSync(arLogger, apTimeSrc),
+	mCommandTask(arLogger),
+	mVtoTransmitTask(arLogger, aCfg.FragSize, aCfg.UseNonStandardVtoFunction)
 {
 	/*
 	 * Establish a link between the mCommandQueue and the
@@ -337,7 +338,7 @@ void Master::OnUnsolResponse(const APDU& arAPDU)
 void Master::ProcessDataResponse(const APDU& arResponse)
 {
 	try {
-		ResponseLoader loader(this->mpLogger, this->mpPublisher, this->GetVtoReader());
+		ResponseLoader loader(this->mLogger, this->mpPublisher, this->GetVtoReader());
 
 		for(HeaderReadIterator hdr = arResponse.BeginRead(); !hdr.IsEnd(); ++hdr)
 			loader.Process(hdr);

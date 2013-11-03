@@ -17,39 +17,23 @@
 //
 // This file was forked on 01/01/2013 by Automatak, LLC and modifications
 // have been made to this file. Automatak, LLC licenses these modifications to
-// you under the GNU Affero General Public License Version 3.0
-// (the "Additional License"). You may not use these modifications except in
-// compliance with the additional license. You may obtain a copy of the Additional
-// License at
+// you under the terms of the License.
 //
-// http://www.gnu.org/licenses/agpl.html
-//
-// Contact Automatak, LLC for a commercial license to these modifications
-//
-#ifndef __LOG_BASE_H_
-#define __LOG_BASE_H_
 
-#include "LogEntry.h"
+#include <openpal/Loggable.h>
 
-namespace opendnp3
+#include <assert.h>
+
+#include <openpal/Logger.h>
+
+namespace openpal
 {
 
-/**
-* Callback interface for log messages
-*/
-class ILogBase
+Loggable::Loggable(Logger& arLogger)
+	: mLogger(arLogger)
 {
-public:
-	virtual ~ILogBase() {}
-
-	/**
-	* Callback function for log messages
-	* @param arEntry the log message
-	*/
-	virtual void Log( const LogEntry& arEntry ) = 0;
-};
-
+	
 }
 
-#endif
+}
 

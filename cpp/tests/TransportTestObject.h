@@ -36,10 +36,10 @@
 namespace opendnp3
 {
 
-class TransportTestObject : public LogTester
+class TransportTestObject
 {
 public:
-	TransportTestObject(bool aOpenOnStart = false, FilterLevel aLevel = LEV_INFO, bool aImmediate = false);
+	TransportTestObject(bool aOpenOnStart = false, openpal::FilterLevel aLevel = openpal::LEV_INFO, bool aImmediate = false);
 
 	// Generate a complete packet sequence inside the vector and
 	// return the corresponding reassembled APDU
@@ -48,8 +48,10 @@ public:
 	// Get a Sequence of data w/ optional header
 	std::string GetData(const std::string& arHdr, uint8_t aSeed = 0, size_t aLength = TL_MAX_TPDU_PAYLOAD);
 
-private:
-	Logger* mpLogger;
+	LogTester log;
+
+private:	
+	openpal::Logger logger;
 	TransportLayer transport;
 
 public:

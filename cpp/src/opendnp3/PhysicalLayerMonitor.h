@@ -53,7 +53,7 @@ class DLL_LOCAL PhysicalLayerMonitor : public IHandlerAsync
 	friend class MonitorStateActions;
 
 public:
-	PhysicalLayerMonitor(	Logger*,
+	PhysicalLayerMonitor(	openpal::Logger&,
 	                        IPhysicalLayerAsync*,
 	                        openpal::timer_clock::duration aMinOpenRetry,
 	                        openpal::timer_clock::duration aMaxOpenRetry);
@@ -82,8 +82,8 @@ public:
 	*/
 	bool WaitForShutdown(openpal::millis_t aTimeout = -1);
 
-	Logger* GetLogger() {
-		return mpLogger;
+	openpal::Logger& GetLogger() {
+		return mLogger;
 	}
 
 protected:

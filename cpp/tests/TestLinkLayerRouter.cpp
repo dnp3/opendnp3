@@ -33,6 +33,7 @@
 #include "MockFrameSink.h"
 
 using namespace opendnp3;
+using namespace openpal;
 
 BOOST_AUTO_TEST_SUITE(LinkLayerRouterSuite)
 
@@ -56,7 +57,7 @@ BOOST_AUTO_TEST_CASE(UnknownDestination)
 
 	t.phys.TriggerRead("05 64 05 C0 01 00 00 04 E9 21");
 	LogEntry le;
-	BOOST_REQUIRE(t.GetNextEntry(le));
+	BOOST_REQUIRE(t.log.GetNextEntry(le));
 	BOOST_REQUIRE_EQUAL(le.GetErrorCode(), DLERR_UNKNOWN_ROUTE);
 	int address;
 	BOOST_REQUIRE(le.GetValue("DESTINATION", address));
@@ -133,7 +134,7 @@ BOOST_AUTO_TEST_CASE(ReentrantCloseWorks)
 	mfs.AddAction(std::bind(&LinkLayerRouter::Shutdown, &t.router));
 	LinkFrame f; f.FormatAck(true, false, 1024, 1);
 	t.phys.TriggerRead(toHex(f.GetBuffer(), f.GetSize()));
-	BOOST_REQUIRE(t.IsLogErrorFree());
+	BOOST_REQUIRE(t.log.IsLogErrorFree());
 }
 
 /// Test that the second bind fails when a non-unique address is added

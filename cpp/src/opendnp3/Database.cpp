@@ -24,18 +24,18 @@
 
 #include <assert.h>
 
-#include <opendnp3/Logger.h>
 #include <opendnp3/DNPConstants.h>
 #include <opendnp3/DeviceTemplate.h>
 
-#include "LoggableMacros.h"
+#include <openpal/LoggableMacros.h>
 
+using namespace openpal;
 
 namespace opendnp3
 {
 
-Database::Database(Logger* apLogger) :
-	Loggable(apLogger),
+Database::Database(Logger& arLogger) :
+	Loggable(arLogger),
 	mpEventBuffer(NULL)
 {
 

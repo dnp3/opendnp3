@@ -23,9 +23,8 @@
 #ifndef __IO_SERVICE_THREAD_POOL_
 #define __IO_SERVICE_THREAD_POOL_
 
-#include "Loggable.h"
-
 #include <openpal/Visibility.h>
+#include <openpal/Loggable.h>
 
 #include <boost/asio.hpp>
 
@@ -37,12 +36,12 @@
 namespace opendnp3
 {
 
-class DLL_LOCAL IOServiceThreadPool : private Loggable
+class DLL_LOCAL IOServiceThreadPool : private openpal::Loggable
 {
 public:
 
 	IOServiceThreadPool(
-	        Logger* apLogger,
+	        openpal::Logger& arLogger,
 	        uint32_t aConcurrency,
 	std::function<void()> onThreadStart = []() {},
 	std::function<void()> onThreadExit = []() {}

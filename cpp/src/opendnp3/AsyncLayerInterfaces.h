@@ -25,8 +25,7 @@
 
 #include <openpal/Types.h>
 #include <openpal/Visibility.h>
-
-#include "Loggable.h"
+#include <openpal/Loggable.h>
 
 namespace opendnp3
 {
@@ -58,13 +57,12 @@ private:
 };
 
 
-class Logger;
 class ILowerLayer;
 
-class DLL_LOCAL IUpperLayer : public IUpDown, protected virtual Loggable
+class DLL_LOCAL IUpperLayer : public IUpDown, protected virtual openpal::Loggable
 {
 public:
-	IUpperLayer(Logger*);
+	IUpperLayer(openpal::Logger&);
 	virtual ~IUpperLayer() {}
 
 	// Called by 'layer down' when data arrives
@@ -102,10 +100,10 @@ protected:
 
 };
 
-class DLL_LOCAL ILowerLayer : protected virtual Loggable
+class DLL_LOCAL ILowerLayer : protected virtual openpal::Loggable
 {
 public:
-	ILowerLayer(Logger*);
+	ILowerLayer(openpal::Logger&);
 	virtual ~ILowerLayer() {}
 
 	void Send(const uint8_t*, size_t);

@@ -29,9 +29,45 @@
     <ClInclude Include="include\openpal\IExecutor.h">
       <Filter>Include Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\openpal\LogBase.h">
+      <Filter>Include Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\openpal\LogEntry.h">
+      <Filter>Include Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\openpal\LogTypes.h">
+      <Filter>Include Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\openpal\Parsing.h">
+      <Filter>Include Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\openpal\Loggable.h">
+      <Filter>Include Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\openpal\Logger.h">
+      <Filter>Include Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\openpal\LoggableMacros.h">
+      <Filter>Include Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Clock.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\LogEntry.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\LogTypes.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Parsing.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Loggable.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Logger.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

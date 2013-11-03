@@ -23,12 +23,13 @@
 #include "AsyncLayerInterfaces.h"
 
 #include <opendnp3/Exception.h>
-#include <opendnp3/Logger.h>
+#include <openpal/LoggableMacros.h>
 
 #include "ToHex.h"
-#include "LoggableMacros.h"
 
 #include <assert.h>
+
+using namespace openpal;
 
 namespace opendnp3
 {
@@ -55,8 +56,8 @@ void IUpDown::OnLowerLayerDown()
 //////////////////////////////////
 // IUpperLayer
 //////////////////////////////////
-IUpperLayer::IUpperLayer(Logger* apLogger) :
-	Loggable(apLogger),
+IUpperLayer::IUpperLayer(openpal::Logger& arLogger) :
+	Loggable(arLogger),
 	mpLowerLayer(NULL)
 {
 
@@ -90,8 +91,8 @@ void IUpperLayer::OnSendFailure()
 // ILowerLayer
 //////////////////////////////////
 
-ILowerLayer::ILowerLayer(Logger* apLogger) :
-	Loggable(apLogger),
+ILowerLayer::ILowerLayer(openpal::Logger& arLogger) :
+	Loggable(arLogger),
 	mpUpperLayer(NULL)
 {
 

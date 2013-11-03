@@ -23,13 +23,14 @@
 #include "SlaveStates.h"
 
 #include <opendnp3/Exception.h>
-#include <opendnp3/Logger.h>
+#include <openpal/LoggableMacros.h>
 
 #include "Slave.h"
 #include "AsyncTaskContinuous.h"
-#include "LoggableMacros.h"
 
 #include <sstream>
+
+using namespace openpal;
 
 namespace opendnp3
 {
@@ -154,13 +155,13 @@ void AS_Base::DoRequest(Slave* c, AS_Base* apNext, const APDU& arAPDU, SequenceI
 	}
 	catch (const ParameterException& ex) {
 		ChangeState(c, apNext);
-		ERROR_LOGGER_BLOCK(c->mpLogger, LEV_ERROR, ex.Message(), ex.ErrorCode());
+		ERROR_LOGGER_BLOCK(c->mLogger, LEV_ERROR, ex.Message(), ex.ErrorCode());
 		c->mRspIIN.SetParameterError(true);
 		c->ConfigureAndSendSimpleResponse();
 	}
 	catch (const NotSupportedException& ex) {
 		ChangeState(c, apNext);
-		ERROR_LOGGER_BLOCK(c->mpLogger, LEV_ERROR, ex.Message(), ex.ErrorCode());
+		ERROR_LOGGER_BLOCK(c->mLogger, LEV_ERROR, ex.Message(), ex.ErrorCode());
 		c->mRspIIN.SetFuncNotSupported(true);
 		c->ConfigureAndSendSimpleResponse();
 	}
@@ -177,7 +178,7 @@ void AS_Base::ChangeState(Slave* c, AS_Base* apState)
 		c->mpTimeTimer->Cancel();
 		c->mpTimeTimer = NULL;
 	}
-	LOGGER_BLOCK(c->mpLogger, LEV_DEBUG, "State changed from " << c->mpState->Name() << " to " << apState->Name());
+	LOGGER_BLOCK(c->mLogger, LEV_DEBUG, "State changed from " << c->mpState->Name() << " to " << apState->Name());
 	c->mpState = apState;
 }
 

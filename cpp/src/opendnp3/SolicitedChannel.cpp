@@ -24,16 +24,16 @@
 
 #include "AppLayer.h"
 #include "AppChannelStates.h"
-#include "LoggableMacros.h"
 
-#include <opendnp3/Logger.h>
+#include <openpal/LoggableMacros.h>
+
 
 namespace opendnp3
 {
 
 
-SolicitedChannel::SolicitedChannel(Logger* apLogger, AppLayer* apApp, IExecutor* apExecutor,openpal::millis_t aTimeout) :
-	AppLayerChannel("Solicited", apLogger, apApp, apExecutor, aTimeout)
+SolicitedChannel::SolicitedChannel(openpal::Logger& arLogger, AppLayer* apApp, IExecutor* apExecutor,openpal::millis_t aTimeout) :
+	AppLayerChannel("Solicited", arLogger, apApp, apExecutor, aTimeout)
 {}
 
 bool SolicitedChannel::AcceptsResponse()

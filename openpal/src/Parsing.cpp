@@ -20,26 +20,41 @@
 // you under the terms of the License.
 //
 
-#ifndef __LOGGABLE_H_
-#define __LOGGABLE_H_
+#include <openpal/Parsing.h>
 
-#include <opendnp3/LogBase.h>
-#include <openpal/Visibility.h>
+#include <sstream>
 
-namespace opendnp3
+namespace openpal
 {
-class Logger;
 
-class DLL_LOCAL Loggable
+bool Parsing::Get(const std::string& aArg, bool& arValue)
 {
-public:
-	Loggable( Logger* apLogger );
-
-protected:
-	Logger* mpLogger;
-};
-
+	if(aArg == "true") {
+		arValue = true;
+		return true;
+	}
+	else if(aArg == "false") {
+		arValue = false;
+		return true;
+	}
+	else {
+		return Get<bool>(aArg, arValue);
+	}
 }
 
-#endif
+bool Parsing::Get(const std::string& aArg, uint8_t& arValue)
+{
+	uint16_t value;
+	if(Parsing::Get(aArg, value)) {
+
+		if(value > std::numeric_limits<uint8_t>::max()) return false;
+		else {
+			arValue = static_cast<uint8_t>(value);
+			return true;
+		}
+	}
+	else return false;
+}
+
+}
 

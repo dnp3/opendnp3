@@ -23,9 +23,9 @@
 #include <boost/test/unit_test.hpp>
 #include "TestHelpers.h"
 
-#include <opendnp3/Parsing.h>
+#include <openpal/Parsing.h>
 
-using namespace opendnp3;
+using namespace openpal;
 
 BOOST_AUTO_TEST_SUITE(ParsingTestSuite)
 

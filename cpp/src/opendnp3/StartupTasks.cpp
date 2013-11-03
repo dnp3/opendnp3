@@ -25,11 +25,9 @@
 #include "APDU.h"
 #include "ObjectReadIterator.h"
 #include "ITimeSource.h"
-#include "LoggableMacros.h"
 
 #include <opendnp3/PointClass.h>
-#include <opendnp3/Logger.h>
-
+#include <openpal/LoggableMacros.h>
 
 using namespace openpal;
 
@@ -38,8 +36,8 @@ namespace opendnp3
 
 /* ------ Clear Restart ------- */
 
-ClearRestartIIN::ClearRestartIIN(Logger* apLogger) :
-	SimpleRspBase(apLogger)
+ClearRestartIIN::ClearRestartIIN(openpal::Logger& arLogger) :
+	SimpleRspBase(arLogger)
 {}
 
 void ClearRestartIIN::ConfigureRequest(APDU& arAPDU)
@@ -52,8 +50,8 @@ void ClearRestartIIN::ConfigureRequest(APDU& arAPDU)
 
 /* ------ Configure Unsol ------- */
 
-ConfigureUnsol::ConfigureUnsol(Logger* apLogger) :
-	SimpleRspBase(apLogger),
+ConfigureUnsol::ConfigureUnsol(openpal::Logger& arLogger) :
+	SimpleRspBase(arLogger),
 	mIsEnable(false),
 	mClassMask(0)
 {}
@@ -75,8 +73,8 @@ void ConfigureUnsol::ConfigureRequest(APDU& arAPDU)
 
 /* ------ Time Sync ------- */
 
-TimeSync::TimeSync(Logger* apLogger, ITimeSource* apTimeSrc) :
-	SingleRspBase(apLogger),
+TimeSync::TimeSync(openpal::Logger& arLogger, ITimeSource* apTimeSrc) :
+	SingleRspBase(arLogger),
 	mpTimeSrc(apTimeSrc),
 	mDelay(-1)
 {}

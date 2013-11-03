@@ -22,9 +22,7 @@
 
 #include "AppLayer.h"
 
-#include <opendnp3/Logger.h>
-
-#include "LoggableMacros.h"
+#include <openpal/LoggableMacros.h>
 #include <openpal/IExecutor.h>
 
 using namespace std;
@@ -32,16 +30,16 @@ using namespace std;
 namespace opendnp3
 {
 
-AppLayer::AppLayer(Logger* apLogger, openpal::IExecutor* apExecutor, AppConfig aAppCfg) :
-	Loggable(apLogger),
-	IUpperLayer(apLogger),
+AppLayer::AppLayer(Logger& arLogger, openpal::IExecutor* apExecutor, AppConfig aAppCfg) :
+	Loggable(arLogger),
+	IUpperLayer(arLogger),
 	mIncoming(aAppCfg.FragSize),
 	mConfirm(2), // only need 2 bytes for a confirm message
 	mSending(false),
 	mConfirmSending(false),
 	mpUser(NULL),
-	mSolicited(apLogger->GetSubLogger("sol"), this, apExecutor, aAppCfg.RspTimeout),
-	mUnsolicited(apLogger->GetSubLogger("unsol"), this, apExecutor, aAppCfg.RspTimeout),
+	mSolicited(arLogger.GetSubLogger("sol"), this, apExecutor, aAppCfg.RspTimeout),
+	mUnsolicited(arLogger.GetSubLogger("unsol"), this, apExecutor, aAppCfg.RspTimeout),
 	mNumRetry(aAppCfg.NumRetry)
 {
 	mConfirm.SetFunction(FC_CONFIRM);

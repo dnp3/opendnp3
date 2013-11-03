@@ -40,7 +40,7 @@ class DLL_LOCAL DataPoll : public MasterTaskBase
 {
 public:
 
-	DataPoll(Logger*, IDataObserver*, VtoReader*);
+	DataPoll(openpal::Logger&, IDataObserver*, VtoReader*);
 
 private:
 
@@ -62,7 +62,7 @@ class DLL_LOCAL ClassPoll : public DataPoll
 {
 public:
 
-	ClassPoll(Logger*, IDataObserver*, VtoReader*);
+	ClassPoll(openpal::Logger&, IDataObserver*, VtoReader*);
 
 	void Set(int aClassMask);
 

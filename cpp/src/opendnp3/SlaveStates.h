@@ -40,7 +40,6 @@ namespace opendnp3
 {
 
 class ITaskCompletion;
-class Logger;
 class Slave;
 class APDU;
 

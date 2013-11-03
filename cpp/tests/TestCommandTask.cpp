@@ -30,13 +30,14 @@
 #include <opendnp3/Log.h>
 
 using namespace opendnp3;
+using namespace openpal;
 
 BOOST_AUTO_TEST_SUITE(CommandTaskTestSuite)
 
 BOOST_AUTO_TEST_CASE(FullSequence)
 {
 	EventLog log;
-	CommandTask ct(log.GetLogger(LEV_INFO, "task"));
+	CommandTask ct(Logger(&log, LEV_INFO, "task"));
 	CommandStatus rsp = CS_UNDEFINED;
 	auto formatter = [](APDU & arAPDU, FunctionCodes aCode) {
 		return CommandHelpers::ConfigureRequest(arAPDU, aCode, ControlRelayOutputBlock(CC_LATCH_ON), 0, Group12Var1::Inst());

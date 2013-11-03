@@ -32,14 +32,12 @@
 namespace opendnp3
 {
 
-class Logger;
-class IExecutor;
 class IPhysicalLayerAsync;
 
 class TransportIntegrationStack
 {
 public:
-	TransportIntegrationStack(Logger*, IPhysicalLayerAsync*, LinkConfig);
+	TransportIntegrationStack(openpal::Logger&, IPhysicalLayerAsync*, LinkConfig);
 
 	LinkLayerRouter mRouter;
 	LinkLayer mLink;

@@ -35,6 +35,7 @@ using namespace boost;
 using namespace boost::asio;
 using namespace boost::system;
 using namespace opendnp3;
+using namespace openpal;
 
 
 BOOST_AUTO_TEST_SUITE(ASIOThreadPoolTestSuite)
@@ -42,13 +43,13 @@ BOOST_AUTO_TEST_SUITE(ASIOThreadPoolTestSuite)
 BOOST_AUTO_TEST_CASE(CleanConstructionDestruction)
 {
 	EventLog log;
-	IOServiceThreadPool pool(log.GetLogger(LEV_INFO, "pool"), 4);
+	IOServiceThreadPool pool(Logger(&log, LEV_INFO, "pool"), 4);
 }
 
 BOOST_AUTO_TEST_CASE(ThreadPoolShutsdownCleanlyEvenIfALotOfWorkIsSubmitted)
 {
 	EventLog log;
-	IOServiceThreadPool pool(log.GetLogger(LEV_INFO, "pool"), 4);
+	IOServiceThreadPool pool(Logger(&log, LEV_INFO, "pool"), 4);
 	for(size_t i = 0; i < 100000; ++i) pool.GetIOService()->post([]() {});
 }
 
@@ -56,7 +57,7 @@ BOOST_AUTO_TEST_CASE(ThreadPoolShutsdownCleanlyEvenIfALotOfWorkIsSubmitted)
 BOOST_AUTO_TEST_CASE(StrandsSequenceCallbacksViaStrandPost)
 {
 	EventLog log;
-	IOServiceThreadPool pool(log.GetLogger(LEV_INFO, "pool"), 8);
+	IOServiceThreadPool pool(Logger(&log, LEV_INFO, "pool"), 8);
 
 	size_t iterations = 100000;
 
@@ -75,7 +76,7 @@ BOOST_AUTO_TEST_CASE(StrandsSequenceCallbacksViaStrandPost)
 BOOST_AUTO_TEST_CASE(StrandsSequenceCallbacksViaStrandWrap)
 {
 	EventLog log;
-	IOServiceThreadPool pool(log.GetLogger(LEV_INFO, "pool"), 8);
+	IOServiceThreadPool pool(Logger(&log, LEV_INFO, "pool"), 8);
 	size_t iterations = 100000;
 
 	io_service* pService = pool.GetIOService();
@@ -95,7 +96,7 @@ BOOST_AUTO_TEST_CASE(StrandsSequenceCallbacksViaStrandWrap)
 BOOST_AUTO_TEST_CASE(ExecutorPauseGuardsRaceConditions)
 {
 	EventLog log;
-	IOServiceThreadPool pool(log.GetLogger(LEV_INFO, "pool"), 8);
+	IOServiceThreadPool pool(Logger(&log, LEV_INFO, "pool"), 8);
 	size_t iterations = 100000;
 
 	boost::asio::strand strand(*pool.GetIOService());

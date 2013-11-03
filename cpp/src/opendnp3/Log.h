@@ -30,25 +30,16 @@
 #include <mutex>
 #include <set>
 
-#include <opendnp3/LogBase.h>
-#include <opendnp3/Logger.h>
+#include <openpal/LogBase.h>
 #include <opendnp3/Uncopyable.h>
 #include <openpal/Visibility.h>
 
 namespace opendnp3
 {
 
-class DLL_LOCAL EventLog : public ILogBase, private Uncopyable
+class DLL_LOCAL EventLog : public openpal::ILogBase, private Uncopyable
 {
-public:
-
-	/** Immediate printing to minimize effect of debugging output on execution timing. */
-	//EventLog();
-	virtual ~EventLog();
-
-	Logger* GetLogger( FilterLevel aFilter, const std::string& aLoggerID );
-	Logger* GetExistingLogger( const std::string& aLoggerID );
-	void GetAllLoggers( std::vector<Logger*>& apLoggers);
+public:	
 
 	/**
 	* Binds a listener to ALL log messages
@@ -66,17 +57,13 @@ public:
 	void RemoveLogSubscriber(ILogBase* apBase);
 
 	//implement the log function from ILogBase
-	void Log( const LogEntry& arEntry );
+	void Log( const openpal::LogEntry& arEntry );
 
 private:
 
 	bool SetContains(const std::set<int>& arSet, int aValue);
 
-	std::mutex mMutex;
-
-	//holds pointers to the loggers that have been distributed
-	typedef std::map<std::string, Logger*> LoggerMap;
-	LoggerMap mLogMap;
+	std::mutex mMutex;	
 	typedef std::map<ILogBase*, std::set<int> > SubscriberMap;
 	SubscriberMap mSubscribers;
 

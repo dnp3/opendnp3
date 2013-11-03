@@ -32,10 +32,9 @@
 #include <opendnp3/MasterConfig.h>
 #include <opendnp3/ObjectInterfaces.h>
 #include <openpal/Visibility.h>
-
-#include "Loggable.h"
-#include "TimeSource.h"
 #include <openpal/IExecutor.h>
+
+#include "TimeSource.h"
 #include "APDU.h"
 #include "AppInterfaces.h"
 #include "ObjectReadIterator.h"
@@ -76,7 +75,7 @@ class AMS_Base;
  *
  * Coordination of tasks is handled by a higher level task scheduler.
  */
-class DLL_LOCAL Master : public Loggable, public IAppUser, public StackBase, private ICommandProcessor
+class DLL_LOCAL Master : public openpal::Loggable, public IAppUser, public StackBase, private ICommandProcessor
 {
 	friend class AMS_Base;
 	friend class AMS_Idle;
@@ -86,7 +85,7 @@ class DLL_LOCAL Master : public Loggable, public IAppUser, public StackBase, pri
 
 public:
 
-	Master(Logger*, MasterConfig aCfg, IAppLayer*, IDataObserver*, AsyncTaskGroup*, openpal::IExecutor*, ITimeSource* apTimeSrc = TimeSource::Inst());
+	Master(openpal::Logger&, MasterConfig aCfg, IAppLayer*, IDataObserver*, AsyncTaskGroup*, openpal::IExecutor*, ITimeSource* apTimeSrc = TimeSource::Inst());
 	virtual ~Master() {}
 
 	ICommandProcessor* GetCommandProcessor() {

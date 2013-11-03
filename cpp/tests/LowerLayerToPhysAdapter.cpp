@@ -24,13 +24,15 @@
 
 #include <opendnp3/IPhysicalLayerAsync.h>
 
+using namespace openpal;
+
 namespace opendnp3
 {
 
-LowerLayerToPhysAdapter::LowerLayerToPhysAdapter(Logger* apLogger, IPhysicalLayerAsync* apPhys, bool aAutoRead) :
-	Loggable(apLogger),
-	IHandlerAsync(apLogger),
-	ILowerLayer(apLogger),
+LowerLayerToPhysAdapter::LowerLayerToPhysAdapter(Logger& arLogger, IPhysicalLayerAsync* apPhys, bool aAutoRead) :
+	Loggable(arLogger),
+	IHandlerAsync(arLogger),
+	ILowerLayer(arLogger),
 	mAutoRead(aAutoRead),
 	mNumOpenFailure(0),
 	mpPhys(apPhys)

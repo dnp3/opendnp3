@@ -23,7 +23,6 @@
 #include "LinkReceiverStates.h"
 
 #include <opendnp3/Exception.h>
-#include <opendnp3/Logger.h>
 #include <opendnp3/Location.h>
 
 #include "PackingUnpacking.h"

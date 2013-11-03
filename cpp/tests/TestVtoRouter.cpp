@@ -35,20 +35,22 @@
 
 using namespace std;
 using namespace opendnp3;
+using namespace openpal;
 
-class RouterTestClass : LogTester
+class RouterTestClass
 {
 public:
 	RouterTestClass(const VtoRouterSettings& arSettings = VtoRouterSettings(0, true, true), const size_t aWriterSize = 100) :
-		LogTester(false),
+		log(),
 		exe(),
-		phys(mLog.GetLogger(LEV_DEBUG, "phys"), &exe),
-		writer(mLog.GetLogger(LEV_DEBUG, "writer"), aWriterSize),
-		router(arSettings, mLog.GetLogger(LEV_DEBUG, "router"), &writer, &phys) {
+		phys(Logger(&log, LEV_DEBUG, "phys"), &exe),
+		writer(Logger(&log, LEV_DEBUG, "writer"), aWriterSize),
+		router(arSettings, Logger(&log, LEV_DEBUG, "router"), &writer, &phys) {
 		writer.AddVtoCallback(&router);
 		exe.SetAutoPost(true);
 	}
 
+	LogTester log;
 	MockExecutor exe;
 	MockPhysicalLayerAsync phys;
 	ReadableVtoWriter writer;

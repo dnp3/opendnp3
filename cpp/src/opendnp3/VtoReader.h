@@ -34,8 +34,8 @@
 
 #include <opendnp3/IDataObserver.h>
 #include <openpal/Visibility.h>
+#include <openpal/Loggable.h>
 
-#include "Loggable.h"
 #include "VtoDataInterface.h"
 #include "VtoData.h"
 
@@ -47,19 +47,19 @@ namespace opendnp3
  * objects back into contigous streams, and deliver to the correct
  * channel
  */
-class DLL_LOCAL VtoReader : private Loggable, public ITransactable, public IVtoReader
+class DLL_LOCAL VtoReader : private openpal::Loggable, public ITransactable, public IVtoReader
 {
 public:
 
 	/**
 	 * Create a new VtoReader instance.
 	 *
-	 * @param apLogger			the Logger that the instance
+	 * @param arLogger			the Logger that the instance
 	 * 							should use for log messages
 	 *
 	 * @return					a new VtoReader instance
 	 */
-	VtoReader(Logger* apLogger) : Loggable(apLogger) {}
+	VtoReader(openpal::Logger& arLogger) : Loggable(arLogger) {}
 
 	/**
 	 * Register an IVtoCallbacks instance with the VtoReader

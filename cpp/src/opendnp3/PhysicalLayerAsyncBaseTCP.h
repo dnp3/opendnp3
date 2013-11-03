@@ -46,7 +46,7 @@ Common socket object and some shared implementations for server/client.
 class DLL_LOCAL PhysicalLayerAsyncBaseTCP : public PhysicalLayerAsyncASIO
 {
 public:
-	PhysicalLayerAsyncBaseTCP(Logger*, boost::asio::io_service* apIOService);
+	PhysicalLayerAsyncBaseTCP(openpal::Logger&, boost::asio::io_service* apIOService);
 
 	virtual ~PhysicalLayerAsyncBaseTCP() {}
 

@@ -25,12 +25,14 @@
 #include "BufferHelpers.h"
 #include <assert.h>
 
+using namespace openpal;
+
 namespace opendnp3
 {
 
-MockLowerLayer::MockLowerLayer(Logger* apLogger) :
-	Loggable(apLogger),
-	ILowerLayer(apLogger),
+MockLowerLayer::MockLowerLayer(Logger& arLogger) :
+	Loggable(arLogger),
+	ILowerLayer(arLogger),
 	mAutoSendCallback(true),
 	mIsSuccess(true)
 {

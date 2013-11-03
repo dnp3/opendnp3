@@ -33,7 +33,7 @@ namespace opendnp3
 class MockLowerLayer : public ILowerLayer, public BufferTestObject
 {
 public:
-	MockLowerLayer(Logger*);
+	MockLowerLayer(openpal::Logger&);
 	virtual ~MockLowerLayer() {}
 
 	void SendUp(const uint8_t*, size_t);

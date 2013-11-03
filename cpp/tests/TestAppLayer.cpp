@@ -64,7 +64,7 @@ BOOST_AUTO_TEST_CASE(ParsingErrorsCaptured)
 {
 	AppLayerTest t; t.lower.ThisLayerUp();
 	t.lower.SendUp("");
-	BOOST_REQUIRE_EQUAL(t.NextErrorCode(), ALERR_INSUFFICIENT_DATA_FOR_FRAG);
+	BOOST_REQUIRE_EQUAL(t.log.NextErrorCode(), ALERR_INSUFFICIENT_DATA_FOR_FRAG);
 }
 
 // Test that the correct header validation occurs before passing up Unsol datas
@@ -73,9 +73,9 @@ BOOST_AUTO_TEST_CASE(UnsolErrors)
 	AppLayerTest t(false); // slaves can't accept unsol responsess
 	t.lower.ThisLayerUp();
 	t.SendUp(FC_UNSOLICITED_RESPONSE, true, true, true, false, 0); // UNS = false
-	BOOST_REQUIRE_EQUAL(t.NextErrorCode(), ALERR_BAD_UNSOL_BIT);
+	BOOST_REQUIRE_EQUAL(t.log.NextErrorCode(), ALERR_BAD_UNSOL_BIT);
 	t.SendUp(FC_UNSOLICITED_RESPONSE, true, true, true, true, 0); // UNS = true
-	BOOST_REQUIRE_EQUAL(t.NextErrorCode(), SERR_FUNC_NOT_SUPPORTED);
+	BOOST_REQUIRE_EQUAL(t.log.NextErrorCode(), SERR_FUNC_NOT_SUPPORTED);
 }
 
 // Test that unsol data is correctly confirmed, passed up,
@@ -86,7 +86,7 @@ BOOST_AUTO_TEST_CASE(UnsolSuccess)
 	t.lower.ThisLayerUp(); ++t.state.NumLayerUp;
 	t.lower.DisableAutoSendCallback();
 	t.SendUp(FC_UNSOLICITED_RESPONSE, true, true, true, true, 0); ++t.state.NumUnsol;
-	BOOST_REQUIRE(t.IsLogErrorFree());
+	BOOST_REQUIRE(t.log.IsLogErrorFree());
 	BOOST_REQUIRE_EQUAL(t.state, t.user.mState);
 	BOOST_REQUIRE(t.CheckSentAPDU(FC_CONFIRM, true, true, false, true, 0));
 
@@ -94,7 +94,7 @@ BOOST_AUTO_TEST_CASE(UnsolSuccess)
 	// it gets ignored and logged
 	t.SendUp(FC_UNSOLICITED_RESPONSE, true, true, true, true, 0);
 	BOOST_REQUIRE_EQUAL(t.state, t.user.mState);
-	BOOST_REQUIRE_EQUAL(t.NextErrorCode(), ALERR_UNSOL_FLOOD);
+	BOOST_REQUIRE_EQUAL(t.log.NextErrorCode(), ALERR_UNSOL_FLOOD);
 
 	t.app.OnSendSuccess(); //doesn't throw exception
 }
@@ -286,7 +286,7 @@ BOOST_AUTO_TEST_CASE(SendResponseNonFIR)
 
 	t.SendUp(FC_CONFIRM, true, true, false, false, 2); //wrong seq number
 	BOOST_REQUIRE_EQUAL(t.state, t.user.mState);
-	BOOST_REQUIRE_EQUAL(t.NextErrorCode(), ALERR_UNEXPECTED_CONFIRM);
+	BOOST_REQUIRE_EQUAL(t.log.NextErrorCode(), ALERR_UNEXPECTED_CONFIRM);
 	t.SendUp(FC_CONFIRM, true, true, false, false, 5); ++t.state.NumSolSendSuccess; // correct seq
 	BOOST_REQUIRE_EQUAL(t.state, t.user.mState);
 }
@@ -317,7 +317,7 @@ BOOST_AUTO_TEST_CASE(SendUnsolicitedWithConfirm)
 	t.SendUnsolicited(FC_UNSOLICITED_RESPONSE, true, true, true, true);
 	BOOST_REQUIRE_EQUAL(t.mts.NumActive(), 1);
 	t.SendUp(FC_CONFIRM, true, true, false, false, 0); // solicited confirm, should do nothing
-	BOOST_REQUIRE_EQUAL(t.NextErrorCode(), ALERR_UNEXPECTED_CONFIRM);
+	BOOST_REQUIRE_EQUAL(t.log.NextErrorCode(), ALERR_UNEXPECTED_CONFIRM);
 	BOOST_REQUIRE_EQUAL(t.state, t.user.mState);
 	t.SendUp(FC_CONFIRM, true, true, false, true, 0); ++t.state.NumUnsolSendSuccess; // unsol confirm
 	BOOST_REQUIRE_EQUAL(t.state, t.user.mState);
@@ -365,7 +365,7 @@ BOOST_AUTO_TEST_CASE(SendRequestMultiResponse)
 	BOOST_REQUIRE_EQUAL(t.mts.NumActive(), 1); //check that we're waiting for a response
 
 	t.SendUp(FC_RESPONSE, false, true, false, false, 0); // check that bad FIR is rejected
-	BOOST_REQUIRE_EQUAL(t.NextErrorCode(), ALERR_BAD_FIR_FIN);
+	BOOST_REQUIRE_EQUAL(t.log.NextErrorCode(), ALERR_BAD_FIR_FIN);
 	BOOST_REQUIRE_EQUAL(t.mts.NumActive(), 1);
 	BOOST_REQUIRE_EQUAL(t.state, t.user.mState);
 
@@ -375,14 +375,14 @@ BOOST_AUTO_TEST_CASE(SendRequestMultiResponse)
 
 	t.SendUp(FC_RESPONSE, false, false, false, false, 0); // check that a bad sequence number is rejected
 	BOOST_REQUIRE_EQUAL(t.state, t.user.mState);
-	BOOST_REQUIRE_EQUAL(t.NextErrorCode(), ALERR_BAD_SEQUENCE);
+	BOOST_REQUIRE_EQUAL(t.log.NextErrorCode(), ALERR_BAD_SEQUENCE);
 
 	t.SendUp(FC_RESPONSE, false, false, false, false, 1); ++t.state.NumPartialRsp;
 	BOOST_REQUIRE_EQUAL(t.mts.NumActive(), 1);
 	BOOST_REQUIRE_EQUAL(t.state, t.user.mState);
 
 	t.SendUp(FC_RESPONSE, true, true, false, false, 2); // check that a bad FIR bit is rejected
-	BOOST_REQUIRE_EQUAL(t.NextErrorCode(), ALERR_BAD_FIR_FIN);
+	BOOST_REQUIRE_EQUAL(t.log.NextErrorCode(), ALERR_BAD_FIR_FIN);
 	BOOST_REQUIRE_EQUAL(t.mts.NumActive(), 1);
 	BOOST_REQUIRE_EQUAL(t.state, t.user.mState);
 

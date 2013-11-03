@@ -24,11 +24,11 @@
 
 #include <assert.h>
 
-#include <opendnp3/Logger.h>
 #include <opendnp3/Exception.h>
 #include <opendnp3/DNPConstants.h>
 
-#include "LoggableMacros.h"
+#include <openpal/LoggableMacros.h>
+
 #include "ILinkRouter.h"
 #include "PriLinkLayerStates.h"
 #include "SecLinkLayerStates.h"
@@ -39,9 +39,9 @@ using namespace openpal;
 namespace opendnp3
 {
 
-LinkLayer::LinkLayer(Logger* apLogger, openpal::IExecutor* apExecutor, const LinkConfig& arConfig) :
-	Loggable(apLogger),
-	ILowerLayer(apLogger),
+LinkLayer::LinkLayer(Logger& arLogger, openpal::IExecutor* apExecutor, const LinkConfig& arConfig) :
+	Loggable(arLogger),
+	ILowerLayer(arLogger),
 	mCONFIG(arConfig),
 	mRetryRemaining(0),
 	mpExecutor(apExecutor),

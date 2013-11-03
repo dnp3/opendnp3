@@ -36,8 +36,8 @@
 #include <opendnp3/IDataObserver.h>
 #include <opendnp3/SubjectBase.h>
 #include <openpal/Visibility.h>
+#include <openpal/Loggable.h>
 
-#include "Loggable.h"
 #include "EventTypes.h"
 #include "VtoDataInterface.h"
 #include "VtoData.h"
@@ -51,7 +51,7 @@ namespace opendnp3
  * stack.  Responsible for UserCode -> Stack thread marshalling and
  * stream decomposition.
  */
-class DLL_LOCAL VtoWriter : public IVtoWriter, public SubjectBase, private Loggable
+class DLL_LOCAL VtoWriter : public IVtoWriter, public SubjectBase, private openpal::Loggable
 {
 public:
 
@@ -65,7 +65,7 @@ public:
 	 *
 	 * @return				the new VtoQueue instance
 	 */
-	VtoWriter(Logger* apLogger, size_t aMaxVtoChunks);
+	VtoWriter(openpal::Logger& arLogger, size_t aMaxVtoChunks);
 
 	~VtoWriter();
 

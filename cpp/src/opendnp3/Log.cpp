@@ -29,14 +29,12 @@
 #include <opendnp3/Exception.h>
 
 using namespace std;
+using namespace openpal;
 
 namespace opendnp3
 {
 
-EventLog::~EventLog()
-{
-for(auto pair: mLogMap) delete pair.second;
-}
+
 
 void EventLog::Log( const LogEntry& arEntry )
 {
@@ -52,40 +50,6 @@ bool EventLog::SetContains(const std::set<int>& arSet, int aValue)
 	return arSet.find(aValue) != arSet.end();
 }
 
-Logger* EventLog::GetLogger(FilterLevel aFilter, const std::string& arName)
-{
-	Logger* pLogger = GetExistingLogger(arName);
-
-	if(pLogger != NULL) return pLogger;
-
-	{
-		std::unique_lock<std::mutex> lock(mMutex);
-		assert(mLogMap.find(arName) == mLogMap.end());
-
-		pLogger = new Logger(this, aFilter, arName);
-		mLogMap[arName] = pLogger;
-	}
-
-	return pLogger;
-}
-
-Logger* EventLog::GetExistingLogger( const std::string& arLoggerName )
-{
-	std::unique_lock<std::mutex> lock(mMutex);
-	Logger* pLogger = NULL;
-	LoggerMap::iterator i = mLogMap.find(arLoggerName);
-	if(i != mLogMap.end()) pLogger = i->second;
-	return pLogger;
-}
-
-void EventLog::GetAllLoggers( std::vector<Logger*>& apLoggers)
-{
-	apLoggers.clear();
-	std::unique_lock<std::mutex> lock(mMutex);
-for(auto pair: mLogMap) {
-		apLoggers.push_back(pair.second);
-	}
-}
 
 void EventLog :: AddLogSubscriber(ILogBase* apSubscriber)
 {

@@ -26,7 +26,7 @@
 #include <openpal/Types.h>
 #include <openpal/Visibility.h>
 
-#include "Loggable.h"
+#include <openpal/Loggable.h>
 
 namespace openpal {
 class IExecutor;
@@ -36,7 +36,6 @@ class ITimer;
 namespace opendnp3
 {
 
-class Logger;
 class AppLayer;
 class ACS_Base;
 class APDU;
@@ -47,7 +46,7 @@ struct AppControlField;
 	 number and some state associated with wether it is sending, waiting
 	 for a response, etc
 */
-class DLL_LOCAL AppLayerChannel : public Loggable
+class DLL_LOCAL AppLayerChannel : public openpal::Loggable
 {
 	friend class ACS_Base;
 	friend class ACS_Idle;
@@ -62,7 +61,7 @@ class DLL_LOCAL AppLayerChannel : public Loggable
 	friend class ACS_WaitForFinalResponse;
 
 public:
-	AppLayerChannel(const std::string& arName, Logger*, AppLayer*, openpal::IExecutor*, openpal::millis_t aTimeout);
+	AppLayerChannel(const std::string& arName, openpal::Logger&, AppLayer*, openpal::IExecutor*, openpal::millis_t aTimeout);
 	virtual ~AppLayerChannel() {}
 
 	// Resets the channel to the initial state
@@ -101,9 +100,11 @@ protected:
 
 	void StartTimer();
 	void CancelTimer();
-	Logger* GetLogger() {
-		return mpLogger;
+
+	openpal::Logger& GetLogger() {
+		return mLogger;
 	}
+
 
 	AppLayer* mpAppLayer;
 	int mSequence;	// Rotating sequence number for the channel

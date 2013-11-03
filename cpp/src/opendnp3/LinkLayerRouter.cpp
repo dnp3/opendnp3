@@ -26,10 +26,10 @@
 #include <assert.h>
 
 #include <opendnp3/Exception.h>
-#include <opendnp3/Logger.h>
+
+#include <openpal/LoggableMacros.h>
 
 #include "IPhysicalLayerAsync.h"
-#include "LoggableMacros.h"
 #include "ILinkContext.h"
 #include "LinkFrame.h"
 
@@ -40,10 +40,10 @@ using namespace std::chrono;
 namespace opendnp3
 {
 
-LinkLayerRouter::LinkLayerRouter(Logger* apLogger, IPhysicalLayerAsync* apPhys,openpal::millis_t aOpenRetry) :
-	Loggable(apLogger),
-	PhysicalLayerMonitor(apLogger, apPhys, milliseconds(aOpenRetry), milliseconds(aOpenRetry)),
-	mReceiver(apLogger, this),
+LinkLayerRouter::LinkLayerRouter(Logger& arLogger, IPhysicalLayerAsync* apPhys,openpal::millis_t aOpenRetry) :
+	Loggable(arLogger),
+	PhysicalLayerMonitor(arLogger, apPhys, milliseconds(aOpenRetry), milliseconds(aOpenRetry)),
+	mReceiver(arLogger, this),
 	mTransmitting(false)
 {}
 
@@ -106,18 +106,18 @@ ILinkContext* LinkLayerRouter::GetDestination(uint16_t aDest, uint16_t aSrc)
 
 	ILinkContext* pDest = GetContext(route);
 
-	if(pDest == NULL && mpLogger->IsEnabled(LEV_WARNING)) {
+	if(pDest == NULL && mLogger.IsEnabled(LEV_WARNING)) {
 
 #ifndef OPENDNP3_STRIP_LOG_MESSAGES
 		std::ostringstream oss;
 		oss << "Frame w/ unknown route: " << route;
-		LogEntry le(LEV_WARNING, mpLogger->GetName(), LOCATION, oss.str(), DLERR_UNKNOWN_ROUTE);
+		LogEntry le(LEV_WARNING, mLogger.GetName(), LOCATION, oss.str(), DLERR_UNKNOWN_ROUTE);
 #else
 		LogEntry le(LEV_WARNING, mpLogger->GetName(), LOCATION, "", DLERR_UNKNOWN_ROUTE);
 #endif
 		le.AddValue("SOURCE", aSrc);
 		le.AddValue("DESTINATION", aDest);
-		mpLogger->Log(le);
+		mLogger.Log(le);
 	}
 
 	return pDest;

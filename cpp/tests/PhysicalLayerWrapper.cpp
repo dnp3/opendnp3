@@ -22,16 +22,16 @@
 
 #include "PhysicalLayerWrapper.h"
 
-#include <opendnp3/Logger.h>
-#include <opendnp3/LoggableMacros.h>
+#include <openpal/LoggableMacros.h>
+
+using namespace openpal;
 
 namespace opendnp3
 {
 
-
-PhysicalLayerWrapper::PhysicalLayerWrapper(Logger* apLogger, IPhysicalLayerAsync* apProxy) :
-	Loggable(apLogger),
-	IHandlerAsync(apLogger),
+PhysicalLayerWrapper::PhysicalLayerWrapper(openpal::Logger& arLogger, IPhysicalLayerAsync* apProxy) :
+	Loggable(arLogger),
+	IHandlerAsync(arLogger),
 	mCorruptionProbability(-1.0),
 	mpProxy(apProxy),
 	mpHandler(NULL)

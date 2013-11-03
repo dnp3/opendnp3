@@ -22,15 +22,17 @@
 
 #include "AsyncPhysBaseTest.h"
 
+using namespace openpal;
+
 namespace opendnp3
 {
 
 AsyncPhysBaseTest::AsyncPhysBaseTest(FilterLevel aLevel, bool aImmediate) :
-	LogTester(aImmediate),
+	log(),
 	exe(),
-	phys(mLog.GetLogger(aLevel, "phys"), &exe),
-	adapter(mLog.GetLogger(aLevel, "adapter"), &phys, false),
-	upper(mLog.GetLogger(aLevel, "upper"))
+	phys(Logger(&log, aLevel, "phys"), &exe),
+	adapter(Logger(&log, aLevel, "adapter"), &phys, false),
+	upper(Logger(&log, aLevel, "upper"))
 {
 	adapter.SetUpperLayer(&upper);
 }

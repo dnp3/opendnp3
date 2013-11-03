@@ -45,7 +45,7 @@ class DLL_LOCAL LinkLayer : public ILowerLayer, public ILinkContext
 {
 public:
 
-	LinkLayer(Logger*, openpal::IExecutor*, const LinkConfig& arConfig);
+	LinkLayer(openpal::Logger&, openpal::IExecutor*, const LinkConfig& arConfig);
 
 	void SetRouter(ILinkRouter*);
 
@@ -68,8 +68,8 @@ public:
 	void ChangeState(PriStateBase*);
 	void ChangeState(SecStateBase*);
 
-	Logger* GetLogger() {
-		return mpLogger;
+	openpal::Logger& GetLogger() {
+		return mLogger;
 	}
 
 	void DoDataUp(const uint8_t* apData, size_t aLength) {

@@ -30,6 +30,7 @@
 #include "TestHelpers.h"
 
 using namespace opendnp3;
+using namespace openpal;
 using namespace boost;
 
 BOOST_AUTO_TEST_SUITE(PhysicalLayerLoopbackSuite)
@@ -41,8 +42,8 @@ public:
 	LoopbackTest() :
 		log(),
 		exe(),
-		phys(log.GetLogger(LEV_INFO, "phys"), &exe),
-		loopback(log.GetLogger(LEV_INFO, "loopback"), &phys) {
+		phys(Logger(&log, LEV_INFO, "phys"), &exe),
+		loopback(Logger(&log, LEV_INFO, "loopback"), &phys) {
 		loopback.Start();
 	}
 

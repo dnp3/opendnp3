@@ -33,7 +33,7 @@ namespace opendnp3
 class DLL_LOCAL IHandlerAsync : public IUpperLayer
 {
 public:
-	IHandlerAsync(Logger*);
+	IHandlerAsync(openpal::Logger&);
 	virtual ~IHandlerAsync() {}
 
 	// In addition to all of the IUpperLayer functions, provide a mechanism to receive open failures

@@ -25,9 +25,9 @@
 namespace opendnp3
 {
 
-IHandlerAsync::IHandlerAsync(Logger* apLogger) :
-	Loggable(apLogger),
-	IUpperLayer(apLogger)
+IHandlerAsync::IHandlerAsync(openpal::Logger& arLogger) :
+	Loggable(arLogger),
+	IUpperLayer(arLogger)
 {
 
 }

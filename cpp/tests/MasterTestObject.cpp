@@ -28,18 +28,19 @@
 #include <opendnp3/ToHex.h>
 
 using namespace std;
+using namespace openpal;
 
 namespace opendnp3
 {
 
-MasterTestObject::MasterTestObject(MasterConfig cfg, FilterLevel aLevel, bool aImmediate) :
-	LogTester(aImmediate),
+MasterTestObject::MasterTestObject(MasterConfig cfg, openpal::FilterLevel aLevel, bool aImmediate) :
+	log(),
 	fake_time(),
 	mts(),
 	group(&mts, &fake_time),
 	fdo(),
-	app(mLog.GetLogger(aLevel, "MockAppLayer")),
-	master(mLog.GetLogger(aLevel, "master"), cfg, &app, &fdo, &group, &mts, &fake_time)
+	app(Logger(&log, aLevel, "MockAppLayer")),
+	master(Logger(&log, aLevel, "master"), cfg, &app, &fdo, &group, &mts, &fake_time)
 {
 	app.SetUser(&master);
 }

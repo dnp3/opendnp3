@@ -640,7 +640,7 @@ BOOST_AUTO_TEST_CASE(BadlyFormattedEnhancedVTO)
 	// 3 bytes for channel 0xFF, but with wrong size
 	t.SendUnsolToMaster("C0 82 00 00 71 03 17 01 FF AB BC CD");
 
-	BOOST_CHECK_EQUAL(VTOERR_BADLY_FORMATTED_ENHANCED_VTO, t.NextErrorCode());
+	BOOST_CHECK_EQUAL(VTOERR_BADLY_FORMATTED_ENHANCED_VTO, t.log.NextErrorCode());
 }
 
 BOOST_AUTO_TEST_CASE(EnhancedVtoForUnregisteredChannel)
@@ -662,7 +662,7 @@ BOOST_AUTO_TEST_CASE(EnhancedVtoForUnregisteredChannel)
 	// 3 bytes for channel 0xFF -> (Channel 2, offline)
 	t.SendUnsolToMaster("C0 82 00 00 71 05 17 01 FF 02 01 AB BC CD");
 
-	BOOST_CHECK_EQUAL(VTOERR_ENHANCED_VTO_FOR_UNREGISTERED_CHANNEL, t.NextErrorCode());
+	BOOST_CHECK_EQUAL(VTOERR_ENHANCED_VTO_FOR_UNREGISTERED_CHANNEL, t.log.NextErrorCode());
 }
 
 BOOST_AUTO_TEST_SUITE_END() //end suite

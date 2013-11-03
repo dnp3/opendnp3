@@ -28,21 +28,21 @@
 #include <string>
 
 #include <opendnp3/Exception.h>
-#include <opendnp3/Logger.h>
+#include <openpal/LoggableMacros.h>
 
 #include "IHandlerAsync.h"
-#include "LoggableMacros.h"
 
 using namespace boost;
 using namespace boost::system;
 using namespace boost::asio;
+using namespace openpal;
 using namespace std;
 
 namespace opendnp3
 {
 
-PhysicalLayerAsyncTCPServer::PhysicalLayerAsyncTCPServer(Logger* apLogger, boost::asio::io_service* apIOService, const std::string& arEndpoint, uint16_t aPort) :
-	PhysicalLayerAsyncBaseTCP(apLogger, apIOService),
+PhysicalLayerAsyncTCPServer::PhysicalLayerAsyncTCPServer(Logger& arLogger, boost::asio::io_service* apIOService, const std::string& arEndpoint, uint16_t aPort) :
+	PhysicalLayerAsyncBaseTCP(arLogger, apIOService),
 	mLocalEndpoint(ip::tcp::v4(), aPort),
 	mAcceptor(*apIOService)
 {

@@ -36,6 +36,7 @@
 #define OUTPUT_PERF_NUMBERS	(0)
 
 using namespace opendnp3;
+using namespace openpal;
 using namespace std;
 using namespace std::chrono;
 

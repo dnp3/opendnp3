@@ -48,7 +48,7 @@ class DLL_LOCAL OutstationStackImpl : public IOutstation
 public:
 
 	OutstationStackImpl(
-	        Logger*,
+	        openpal::Logger&,
 	        boost::asio::io_service* apService,
 	        openpal::IExecutor* apExecutor,
 	        ICommandHandler* apCmdHandler,

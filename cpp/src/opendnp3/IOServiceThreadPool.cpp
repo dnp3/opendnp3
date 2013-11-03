@@ -22,26 +22,26 @@
 
 #include "IOServiceThreadPool.h"
 
-#include <opendnp3/Logger.h>
 #include <opendnp3/Exception.h>
 
-#include "LoggableMacros.h"
+#include <openpal/LoggableMacros.h>
 
 
 #include <chrono>
 
 using namespace std;
 using namespace std::chrono;
+using namespace openpal;
 
 namespace opendnp3
 {
 
 IOServiceThreadPool::IOServiceThreadPool(
-        Logger* apLogger,
+        openpal::Logger& arLogger,
         uint32_t aConcurrency,
         std::function<void()> onThreadStart,
         std::function<void()> onThreadExit) :
-	Loggable(apLogger),
+	Loggable(arLogger),
 	mOnThreadStart(onThreadStart),
 	mOnThreadExit(onThreadExit),
 	mIsShutdown(false),

@@ -32,12 +32,14 @@
 #include "Log.h"
 #include "DNP3Channel.h"
 
+using namespace openpal;
+
 namespace opendnp3
 {
 
 DNP3Manager::DNP3Manager(uint32_t aConcurrency, std::function<void()> aOnThreadStart, std::function<void()> aOnThreadExit) :
 	mpLog(new EventLog()),
-	mpThreadPool(new IOServiceThreadPool(mpLog->GetLogger(LEV_INFO, "ThreadPool"),  aConcurrency, aOnThreadStart, aOnThreadExit))
+	mpThreadPool(new IOServiceThreadPool(Logger(mpLog.get(), LEV_INFO, "ThreadPool"),  aConcurrency, aOnThreadStart, aOnThreadExit))
 {
 
 }
@@ -60,30 +62,30 @@ for(auto pChannel: copy) pChannel->Shutdown();
 
 IChannel* DNP3Manager::AddTCPClient(const std::string& arName, FilterLevel aLevel,openpal::millis_t aOpenRetry, const std::string& arAddr, uint16_t aPort)
 {
-	auto pLogger = mpLog->GetLogger(aLevel, arName);
-	auto pPhys = new PhysicalLayerAsyncTCPClient(pLogger, mpThreadPool->GetIOService(), arAddr, aPort);
-	return CreateChannel(pLogger, aOpenRetry, pPhys);
+	auto logger = Logger(mpLog.get(), aLevel, arName);
+	auto pPhys = new PhysicalLayerAsyncTCPClient(logger, mpThreadPool->GetIOService(), arAddr, aPort);
+	return CreateChannel(logger, aOpenRetry, pPhys);
 }
 
 IChannel* DNP3Manager::AddTCPServer(const std::string& arName, FilterLevel aLevel,openpal::millis_t aOpenRetry, const std::string& arEndpoint, uint16_t aPort)
 {
-	auto pLogger = mpLog->GetLogger(aLevel, arName);
-	auto pPhys = new PhysicalLayerAsyncTCPServer(pLogger, mpThreadPool->GetIOService(), arEndpoint, aPort);
-	return CreateChannel(pLogger, aOpenRetry, pPhys);
+	auto logger = Logger(mpLog.get(), aLevel, arName);
+	auto pPhys = new PhysicalLayerAsyncTCPServer(logger, mpThreadPool->GetIOService(), arEndpoint, aPort);
+	return CreateChannel(logger, aOpenRetry, pPhys);
 }
 
 #ifndef OPENDNP3_NO_SERIAL
 IChannel* DNP3Manager::AddSerial(const std::string& arName, FilterLevel aLevel,openpal::millis_t aOpenRetry, SerialSettings aSettings)
 {
-	auto pLogger = mpLog->GetLogger(aLevel, arName);
-	auto pPhys = new PhysicalLayerAsyncSerial(pLogger, mpThreadPool->GetIOService(), aSettings);
-	return CreateChannel(pLogger, aOpenRetry, pPhys);
+	auto logger = Logger(mpLog.get(), aLevel, arName);
+	auto pPhys = new PhysicalLayerAsyncSerial(logger, mpThreadPool->GetIOService(), aSettings);
+	return CreateChannel(logger, aOpenRetry, pPhys);
 }
 #endif
 
-IChannel* DNP3Manager::CreateChannel(Logger* apLogger,openpal::millis_t aOpenRetry, IPhysicalLayerAsync* apPhys)
+IChannel* DNP3Manager::CreateChannel(openpal::Logger& arLogger,openpal::millis_t aOpenRetry, IPhysicalLayerAsync* apPhys)
 {
-	auto pChannel = new DNP3Channel(apLogger, aOpenRetry, mpThreadPool->GetIOService(), apPhys, TimeSource::Inst(), [this](DNP3Channel * apChannel) {
+	auto pChannel = new DNP3Channel(arLogger, aOpenRetry, mpThreadPool->GetIOService(), apPhys, TimeSource::Inst(), [this](DNP3Channel * apChannel) {
 		this->OnChannelShutdownCallback(apChannel);
 	});
 	mChannels.insert(pChannel);

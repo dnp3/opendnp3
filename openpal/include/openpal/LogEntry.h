@@ -31,12 +31,13 @@
 
 #include "LogTypes.h"
 #include "Parsing.h"
+
 #include <openpal/Types.h>
 
 #include <chrono>
 #include <map>
 
-namespace opendnp3
+namespace openpal
 {
 
 /**

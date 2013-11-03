@@ -28,11 +28,11 @@ namespace opendnp3
 {
 
 AppLayerTest::AppLayerTest(bool aIsMaster, size_t aNumRetry, FilterLevel aLevel, bool aImmediate) :
-	LogTester(aImmediate),
+	log(),
 	user(aIsMaster),
-	lower(mLog.GetLogger(aLevel, "lower")),
+	lower(Logger(&log, aLevel, "lower")),
 	mts(),
-	app(mLog.GetLogger(aLevel, "app"), &mts, AppConfig(1000, aNumRetry))
+	app(Logger(&log, aLevel, "app"), &mts, AppConfig(1000, aNumRetry))
 {
 	lower.SetUpperLayer(&app);
 	app.SetUser(&user);

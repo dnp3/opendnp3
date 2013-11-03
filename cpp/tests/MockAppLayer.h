@@ -26,20 +26,19 @@
 #include <opendnp3/AppInterfaces.h>
 #include <opendnp3/APDUConstants.h>
 #include <opendnp3/APDU.h>
-#include <opendnp3/Loggable.h>
+
+#include <openpal/Loggable.h>
 
 #include <queue>
 
 namespace opendnp3
 {
 
-class Logger;
-
 /**	@section desc Test class to mock async app layer for master/slave */
-class MockAppLayer : public IAppLayer, public Loggable
+class MockAppLayer : public IAppLayer, public openpal::Loggable
 {
 public:
-	MockAppLayer(Logger*);
+	MockAppLayer(openpal::Logger&);
 	virtual ~MockAppLayer() {}
 
 

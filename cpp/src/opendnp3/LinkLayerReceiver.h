@@ -25,10 +25,9 @@
 
 
 #include <opendnp3/DNPConstants.h>
-#include <opendnp3/Logger.h>
 #include <openpal/Visibility.h>
+#include <openpal/Loggable.h>
 
-#include "Loggable.h"
 #include "ShiftableBuffer.h"
 #include "LinkFrame.h"
 #include "LinkHeader.h"
@@ -42,16 +41,16 @@ class LRS_Base;
 
 /** Parses incoming ft3 frames for the link layer router.
 */
-class DLL_LOCAL LinkLayerReceiver : public Loggable
+class DLL_LOCAL LinkLayerReceiver : public openpal::Loggable
 {
 	static const size_t BUFFER_SIZE = (4096 / 249 + 1) * 292;
 
 public:
 	/**
-		@param apLogger Logger that the receiver is to use.
+		@param arLogger Logger that the receiver is to use.
 		@param apSink Complete frames are sent to this interface.
 	*/
-	LinkLayerReceiver(Logger* apLogger, IFrameSink* apSink);
+	LinkLayerReceiver(openpal::Logger& arLogger, IFrameSink* apSink);
 
 	/**
 		Called when valid data has been written to the current buffer write position

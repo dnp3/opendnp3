@@ -25,10 +25,11 @@
 
 #include <opendnp3/IChannel.h>
 #include <opendnp3/SlaveStackConfig.h>
+
 #include <openpal/Visibility.h>
+#include <openpal/Loggable.h>
 
 #include "LinkLayerRouter.h"
-#include "Loggable.h"
 
 #ifndef OPENDNP3_NO_MASTER
 #include "AsyncTaskGroup.h"
@@ -54,10 +55,10 @@ class IStack;
 class IOutstation;
 class ICommandHandler;
 
-class DLL_LOCAL DNP3Channel: public IChannel, private Loggable
+class DLL_LOCAL DNP3Channel: public IChannel, private openpal::Loggable
 {
 public:
-	DNP3Channel(Logger* apLogger,openpal::millis_t aOpenRetry, boost::asio::io_service* apService, IPhysicalLayerAsync* apPhys, ITimeSource* apTimerSource, std::function<void (DNP3Channel*)> aOnShutdown);
+	DNP3Channel(openpal::Logger& arLogger, openpal::millis_t aOpenRetry, boost::asio::io_service* apService, IPhysicalLayerAsync* apPhys, ITimeSource* apTimerSource, std::function<void (DNP3Channel*)> aOnShutdown);
 	~DNP3Channel();
 
 	// Implement IChannel - these are exposed to clients

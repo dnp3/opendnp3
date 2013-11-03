@@ -32,8 +32,8 @@
 #include <openpal/Types.h>
 #include <opendnp3/TransportConstants.h>
 #include <openpal/Visibility.h>
+#include <openpal/Loggable.h>
 
-#include "Loggable.h"
 #include "CopyableBuffer.h"
 
 namespace opendnp3
@@ -44,10 +44,10 @@ class TransportLayer;
 /**
 State/validation for the DNP3 transport layer's receive channel.
 */
-class DLL_LOCAL TransportRx : public Loggable
+class DLL_LOCAL TransportRx : public openpal::Loggable
 {
 public:
-	TransportRx(Logger*, TransportLayer*, size_t aFragSize);
+	TransportRx(openpal::Logger&, TransportLayer*, size_t aFragSize);
 
 	void HandleReceive(const uint8_t*, size_t);
 

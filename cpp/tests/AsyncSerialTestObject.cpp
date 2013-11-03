@@ -23,15 +23,17 @@
 #include "AsyncSerialTestObject.h"
 #include <boost/asio.hpp>
 
+using namespace openpal;
+
 namespace opendnp3
 {
 
 AsyncSerialTestObject::AsyncSerialTestObject(SerialSettings cfg, FilterLevel aLevel, bool aImmediate) :
 	AsyncTestObjectASIO(),
-	LogTester(aImmediate),
-	mPort(mLog.GetLogger(aLevel, "Serial"), this->GetService(), cfg),
-	mAdapter(mLog.GetLogger(aLevel, "Adapter"), &mPort, true),
-	mUpper(mLog.GetLogger(aLevel, "MockUpper"))
+	log(),
+	mPort(Logger(&log, aLevel, "Serial"), this->GetService(), cfg),
+	mAdapter(Logger(&log, aLevel, "Adapter"), &mPort, true),
+	mUpper(Logger(&log, aLevel, "MockUpper"))
 {
 	mAdapter.SetUpperLayer(&mUpper);
 }

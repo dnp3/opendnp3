@@ -24,11 +24,12 @@
 
 #include <opendnp3/Exception.h>
 #include <opendnp3/DNPConstants.h>
-#include <opendnp3/Logger.h>
 
-#include "Loggable.h"
-#include "LoggableMacros.h"
+#include <openpal/LoggableMacros.h>
+
 #include "LinkLayer.h"
+
+using namespace openpal;
 
 namespace opendnp3
 {

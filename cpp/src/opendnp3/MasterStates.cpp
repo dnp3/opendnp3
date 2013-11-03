@@ -23,7 +23,6 @@
 #include "MasterStates.h"
 
 #include <opendnp3/Exception.h>
-#include <opendnp3/Logger.h>
 
 #include "AsyncTaskInterfaces.h"
 #include "AsyncTaskGroup.h"

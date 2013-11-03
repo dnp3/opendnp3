@@ -38,6 +38,7 @@
 
 using namespace std;
 using namespace opendnp3;
+using namespace openpal;
 
 #define MAX_SIZE					(255)
 
@@ -115,7 +116,7 @@ BOOST_AUTO_TEST_CASE(VtoWriteOverflow)
 	EventLog log;
 	const size_t numChunks = 3;
 	const size_t emptySize = numChunks * MAX_SIZE;
-	VtoWriter writer(log.GetLogger(LEV_DEBUG, "writer"), numChunks);
+	VtoWriter writer(Logger(&log, LEV_DEBUG, "writer"), numChunks);
 
 	const size_t dataSize = MAX_SIZE * 10;
 	uint8_t data[dataSize];
@@ -138,7 +139,7 @@ BOOST_AUTO_TEST_CASE(VtoWriteOverflow)
 BOOST_AUTO_TEST_CASE(VtoReaderRegisterChannels)
 {
 	EventLog log;
-	VtoReader reader(log.GetLogger(LEV_WARNING, "test"));
+	VtoReader reader(Logger(&log, LEV_WARNING, "test"));
 
 	VtoCallbackTest channel(1);
 
@@ -160,7 +161,7 @@ BOOST_AUTO_TEST_CASE(VtoReaderUpdate)
 {
 	EventLog log;
 
-	VtoReader reader(log.GetLogger(LEV_WARNING, "test"));
+	VtoReader reader(Logger(&log, LEV_WARNING, "test"));
 
 	const size_t size = 6;
 	uint8_t buffer[size];

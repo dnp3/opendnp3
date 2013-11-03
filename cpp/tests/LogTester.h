@@ -24,32 +24,31 @@
 #define __LOG_TESTER_H_
 
 #include <opendnp3/Log.h>
+#include <openpal/Logger.h>
 #include <queue>
 
 namespace opendnp3
 {
 
-class LogTester : ILogBase
+class LogTester : public openpal::ILogBase
 {
+
 public:
-	LogTester(bool aImmediate = false);
+	LogTester();
 
 	void Log(const std::string& aLocation, const std::string& aMessage);
 
-	void Log( const LogEntry& arEntry );
+	void Log( const openpal::LogEntry& arEntry );
+
 	int ClearLog();
 	int NextErrorCode();
-	bool GetNextEntry(LogEntry& arEntry);
-	bool IsLogErrorFree();
+	bool GetNextEntry(openpal::LogEntry& arEntry);
+	bool IsLogErrorFree();	
 
-	EventLog mLog;
+	openpal::Logger mTestLogger;	
 
-protected:
-	Logger* mpTestLogger;
-	std::mutex mMutex;
-	std::queue<LogEntry> mBuffer;
-	
-
+protected:	
+	std::queue<openpal::LogEntry> mBuffer;
 
 };
 

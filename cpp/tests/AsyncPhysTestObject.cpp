@@ -22,18 +22,21 @@
 
 #include "AsyncPhysTestObject.h"
 
+using namespace openpal;
+
 namespace opendnp3
 {
 
 AsyncPhysTestObject::AsyncPhysTestObject(FilterLevel aLevel, bool aImmediate, bool aAutoRead) :
 	AsyncTestObjectASIO(),
-	LogTester(aImmediate),
-	mTCPClient(mLog.GetLogger(aLevel, "TCPClient"), this->GetService(), "127.0.0.1", 50000),
-	mTCPServer(mLog.GetLogger(aLevel, "TCPSever"), this->GetService(), "127.0.0.1", 50000),
-	mClientAdapter(mLog.GetLogger(aLevel, "ClientAdapter"), &mTCPClient, aAutoRead),
-	mServerAdapter(mLog.GetLogger(aLevel, "ServerAdapter"), &mTCPServer, aAutoRead),
-	mClientUpper(mLog.GetLogger(aLevel, "MockUpperClient")),
-	mServerUpper(mLog.GetLogger(aLevel, "MockUpperServer"))
+	log(),
+	logger(&log, aLevel, "test"),
+	mTCPClient(Logger(&log, aLevel, "TCPClient"), this->GetService(), "127.0.0.1", 50000),
+	mTCPServer(Logger(&log, aLevel, "TCPSever"), this->GetService(), "127.0.0.1", 50000),
+	mClientAdapter(Logger(&log, aLevel, "ClientAdapter"), &mTCPClient, aAutoRead),
+	mServerAdapter(Logger(&log, aLevel, "ServerAdapter"), &mTCPServer, aAutoRead),
+	mClientUpper(Logger(&log, aLevel, "MockUpperClient")),
+	mServerUpper(Logger(&log, aLevel, "MockUpperServer"))
 {
 	mClientAdapter.SetUpperLayer(&mClientUpper);
 	mServerAdapter.SetUpperLayer(&mServerUpper);

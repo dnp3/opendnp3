@@ -24,28 +24,27 @@
 
 #include <opendnp3/Exception.h>
 #include <opendnp3/VtoRouterSettings.h>
-#include <opendnp3/Logger.h>
 #include <opendnp3/Util.h>
 
+#include <openpal/LoggableMacros.h>
+
 #include "IPhysicalLayerAsync.h"
-#include "LoggableMacros.h"
 #include "VtoReader.h"
 
-
+using namespace openpal;
 using namespace std::chrono;
 
 namespace opendnp3
 {
 
-VtoRouter::VtoRouter(const VtoRouterSettings& arSettings, Logger* apLogger, IVtoWriter* apWriter, IPhysicalLayerAsync* apPhysLayer) :
-	Loggable(apLogger),
-	PhysicalLayerMonitor(apLogger, apPhysLayer, milliseconds(arSettings.MIN_OPEN_RETRY_MS), milliseconds(arSettings.MAX_OPEN_RETRY_MS)),
+VtoRouter::VtoRouter(const VtoRouterSettings& arSettings, Logger& arLogger, IVtoWriter* apWriter, IPhysicalLayerAsync* apPhysLayer) :
+	Loggable(arLogger),
+	PhysicalLayerMonitor(arLogger, apPhysLayer, milliseconds(arSettings.MIN_OPEN_RETRY_MS), milliseconds(arSettings.MAX_OPEN_RETRY_MS)),
 	IVtoCallbacks(arSettings.CHANNEL_ID),
 	mpVtoWriter(apWriter),
 	mReadBuffer(1024),
 	mWriteData(0)
-{
-	assert(apLogger != NULL);
+{	
 	assert(apWriter != NULL);
 	assert(apPhysLayer != NULL);
 }

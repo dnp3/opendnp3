@@ -24,12 +24,12 @@
 
 #include "IPhysicalLayerAsync.h"
 #include "PhysicalLayerMonitorStates.h"
-#include "LoggableMacros.h"
+
+#include <openpal/LoggableMacros.h>
 
 #include <functional>
 
 #include <assert.h>
-#include <opendnp3/Logger.h>
 
 using namespace openpal;
 using namespace std::chrono;
@@ -37,9 +37,9 @@ using namespace std::chrono;
 namespace opendnp3
 {
 
-PhysicalLayerMonitor::PhysicalLayerMonitor(Logger* apLogger, IPhysicalLayerAsync* apPhys, timer_clock::duration aMinOpenRetry, timer_clock::duration aMaxOpenRetry) :
-	Loggable(apLogger),
-	IHandlerAsync(apLogger),
+PhysicalLayerMonitor::PhysicalLayerMonitor(Logger& arLogger, IPhysicalLayerAsync* apPhys, timer_clock::duration aMinOpenRetry, timer_clock::duration aMaxOpenRetry) :
+	Loggable(arLogger),
+	IHandlerAsync(arLogger),
 	mpPhys(apPhys),
 	mpOpenTimer(NULL),
 	mpState(MonitorStateInit::Inst()),

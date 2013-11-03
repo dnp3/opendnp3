@@ -22,21 +22,22 @@
 
 #include <assert.h>
 
-#include <opendnp3/Logger.h>
-
 #include "PackingUnpacking.h"
-#include "LoggableMacros.h"
 #include "DNPCrc.h"
 #include "LinkReceiverStates.h"
 #include "IFrameSink.h"
+
+#include <openpal/LoggableMacros.h>
+
+using namespace openpal;
 
 namespace opendnp3
 {
 
 const uint8_t LinkLayerReceiver::M_SYNC_PATTERN[2] = {0x05, 0x64};
 
-LinkLayerReceiver::LinkLayerReceiver(Logger* apLogger, IFrameSink* apSink) :
-	Loggable(apLogger),
+LinkLayerReceiver::LinkLayerReceiver(Logger& arLogger, IFrameSink* apSink) :
+	Loggable(arLogger),
 	mFrameSize(0),
 	mpSink(apSink),
 	mpState(LRS_Sync::Inst()),

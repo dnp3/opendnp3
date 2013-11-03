@@ -33,16 +33,18 @@
 namespace opendnp3
 {
 
-class LinkLayerTest : public LogTester, public ILinkRouter
+class LinkLayerTest : public ILinkRouter
 {
 public:
 
-	LinkLayerTest(LinkConfig arCfg = DefaultConfig(), FilterLevel aLevel = LEV_WARNING, bool aImmediate = false);
+	LinkLayerTest(LinkConfig arCfg = DefaultConfig(), openpal::FilterLevel aLevel = openpal::LEV_WARNING, bool aImmediate = false);
 
 	//ILinkRouter interface
 	void Transmit(const LinkFrame&);
 
 	static LinkConfig DefaultConfig();
+
+	LogTester log;
 
 	MockExecutor mts;
 	MockUpperLayer upper;

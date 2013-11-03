@@ -90,13 +90,7 @@
     <ClInclude Include="include\opendnp3\LinkLayerConstants.h">
       <Filter>Include Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\opendnp3\LogBase.h">
-      <Filter>Include Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\opendnp3\LogEntry.h">
-      <Filter>Include Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\opendnp3\Logger.h">
       <Filter>Include Files</Filter>
     </ClInclude>
     <ClInclude Include="include\opendnp3\LogToStdio.h">
@@ -115,9 +109,6 @@
       <Filter>Include Files</Filter>
     </ClInclude>
     <ClInclude Include="include\opendnp3\ObjectInterfaces.h">
-      <Filter>Include Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\opendnp3\Parsing.h">
       <Filter>Include Files</Filter>
     </ClInclude>
     <ClInclude Include="include\opendnp3\PointClass.h">
@@ -331,12 +322,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\Log.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\Loggable.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\LoggableMacros.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\LogVar.h">
@@ -716,19 +701,7 @@
     <ClCompile Include="src\opendnp3\Log.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\LogEntry.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\Loggable.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\Logger.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\opendnp3\LogToStdio.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\LogTypes.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\Master.cpp">
@@ -768,9 +741,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\PackingUnpacking.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\Parsing.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\PhysicalLayerAsyncBase.cpp">

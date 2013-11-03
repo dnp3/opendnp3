@@ -40,19 +40,16 @@ VtoIntegrationTestBase::VtoIntegrationTestBase(
         bool aImmediateOutput,
         FilterLevel level,
         boost::uint16_t port) :
-
-	LogTester(),
-	Loggable(mpTestLogger),
-	mpMainLogger(mLog.GetLogger(level, "main")),
+		
+	log(),
 	testObj(),
-	vtoClient(mLog.GetLogger(level, "local-tcp-client"), testObj.GetService(), "127.0.0.1", port + 20),
-	vtoServer(mLog.GetLogger(level, "loopback-tcp-server"), testObj.GetService(), "127.0.0.1", port + 10),
+	vtoClient(Logger(&log, level, "local-tcp-client"), testObj.GetService(), "127.0.0.1", port + 20),
+	vtoServer(Logger(&log, level, "loopback-tcp-server"), testObj.GetService(), "127.0.0.1", port + 10),
 	mgr(std::thread::hardware_concurrency())
 {
 
 	if(aImmediateOutput) {
-		mgr.AddLogSubscriber(LogToStdio::Inst());
-		mLog.AddLogSubscriber(LogToStdio::Inst());
+		mgr.AddLogSubscriber(LogToStdio::Inst());		
 	}
 
 

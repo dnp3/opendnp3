@@ -32,11 +32,11 @@
 #include <openpal/Types.h>
 #include <opendnp3/IDataObserver.h>
 #include <opendnp3/ObjectInterfaces.h>
-#include <opendnp3/Logger.h>
-#include <openpal/Visibility.h>
 
-#include "Loggable.h"
-#include "LoggableMacros.h"
+#include <openpal/Visibility.h>
+#include <openpal/Loggable.h>
+#include <openpal/LoggableMacros.h>
+
 #include "CTOHistory.h"
 #include "ObjectReadIterator.h"
 #include "VtoReader.h"
@@ -49,20 +49,20 @@ class HeaderReadIterator;
 /**
  * Dedicated class for processing response data in the master.
  */
-class DLL_LOCAL ResponseLoader : Loggable
+class DLL_LOCAL ResponseLoader : openpal::Loggable
 {
 public:
 	/**
 	 * Creates a new ResponseLoader instance.
 	 *
-	 * @param log			the Logger that the loader should use for
+	 * @param arLogger			the Logger that the loader should use for
 	 * 						message reporting
 	 * @param apPublisher	the IDataObserver for any responses that match
 	 * @param apVtoReader	the VtoReader for any responses that match
 	 *
 	 * @return				a new ResponseLoader instance
 	 */
-	ResponseLoader(Logger* log,
+	ResponseLoader(openpal::Logger& arLogger,
 	               IDataObserver* apPublisher,
 	               VtoReader* apVtoReader);
 

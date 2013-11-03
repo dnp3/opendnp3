@@ -33,12 +33,12 @@
 namespace opendnp3
 {
 
-DNP3Channel::DNP3Channel(Logger* apLogger,openpal::millis_t aOpenRetry, boost::asio::io_service* apService, IPhysicalLayerAsync* apPhys, ITimeSource* apTimeSource, std::function<void (DNP3Channel*)> aOnShutdown) :
-	Loggable(apLogger),
+DNP3Channel::DNP3Channel(openpal::Logger& arLogger,openpal::millis_t aOpenRetry, boost::asio::io_service* apService, IPhysicalLayerAsync* apPhys, ITimeSource* apTimeSource, std::function<void (DNP3Channel*)> aOnShutdown) :
+	Loggable(arLogger),
 	mpService(apService),
 	mpPhys(apPhys),
 	mOnShutdown(aOnShutdown),
-	mRouter(apLogger->GetSubLogger("Router"), mpPhys.get(), aOpenRetry)
+	mRouter(arLogger.GetSubLogger("Router"), mpPhys.get(), aOpenRetry)
 #ifndef OPENDNP3_NO_MASTER
 	, mGroup(apPhys->GetExecutor(), apTimeSource)
 #endif
@@ -85,8 +85,8 @@ IMaster* DNP3Channel::AddMaster(const std::string& arLoggerId, FilterLevel aLeve
 		MACRO_THROW_EXCEPTION_COMPLEX(ArgumentException, "Route already in use: " << route);
 	}
 	else {
-		auto pLogger = mpLogger->GetSubLogger(arLoggerId, aLevel);
-		auto pMaster = new MasterStackImpl(pLogger, mpService, mpPhys->GetExecutor(), apPublisher, &mGroup, arCfg, [this, route](IStack * apStack) {
+		auto logger = mLogger.GetSubLogger(arLoggerId, aLevel);
+		auto pMaster = new MasterStackImpl(logger, mpService, mpPhys->GetExecutor(), apPublisher, &mGroup, arCfg, [this, route](IStack * apStack) {
 			this->OnStackShutdown(apStack, route);
 		});
 		pMaster->SetLinkRouter(&mRouter);
@@ -105,8 +105,8 @@ IOutstation* DNP3Channel::AddOutstation(const std::string& arLoggerId, FilterLev
 		MACRO_THROW_EXCEPTION_COMPLEX(ArgumentException, "Route already in use: " << route);
 	}
 	else {
-		auto pLogger = mpLogger->GetSubLogger(arLoggerId, aLevel);
-		auto pOutstation = new OutstationStackImpl(pLogger, mpService, mpPhys->GetExecutor(), apCmdHandler, arCfg, [this, route](IStack * apStack) {
+		auto logger = mLogger.GetSubLogger(arLoggerId, aLevel);
+		auto pOutstation = new OutstationStackImpl(logger, mpService, mpPhys->GetExecutor(), apCmdHandler, arCfg, [this, route](IStack * apStack) {
 			this->OnStackShutdown(apStack, route);
 		});
 		pOutstation->SetLinkRouter(&mRouter);

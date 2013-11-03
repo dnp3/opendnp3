@@ -26,17 +26,17 @@ namespace opendnp3
 {
 
 OutstationStackImpl::OutstationStackImpl(
-        Logger* apLogger,
+        openpal::Logger& arLogger,
         boost::asio::io_service* apService,
         openpal::IExecutor* apExecutor,
         ICommandHandler* apCmdHandler,
         const SlaveStackConfig& arCfg,
         std::function<void (IOutstation*)> aOnShutdown) :
-	IOutstation(apLogger, apService),
+	IOutstation(arLogger, apService),
 	mpExecutor(apExecutor),
-	mAppStack(apLogger, apExecutor, arCfg.app, arCfg.link),
-	mDB(apLogger),
-	mSlave(apLogger->GetSubLogger("outstation"), &mAppStack.mApplication, apExecutor, &mTimeSource, &mDB, apCmdHandler, arCfg.slave),
+	mAppStack(arLogger, apExecutor, arCfg.app, arCfg.link),
+	mDB(arLogger),
+	mSlave(arLogger.GetSubLogger("outstation"), &mAppStack.mApplication, apExecutor, &mTimeSource, &mDB, apCmdHandler, arCfg.slave),
 	mOnShutdown(aOnShutdown)
 {
 	mAppStack.mApplication.SetUser(&mSlave);

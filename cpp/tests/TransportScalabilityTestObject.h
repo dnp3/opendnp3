@@ -32,8 +32,7 @@
 namespace opendnp3
 {
 
-
-class TransportScalabilityTestObject : public LogTester, public AsyncTestObjectASIO
+class TransportScalabilityTestObject : public AsyncTestObjectASIO
 {
 public:
 	TransportScalabilityTestObject(
@@ -41,7 +40,7 @@ public:
 	        LinkConfig aServerCfg,
 	        boost::uint16_t aPortStart,
 	        boost::uint16_t aNumPair,
-	        FilterLevel aLevel = LEV_INFO,
+	        openpal::FilterLevel aLevel = openpal::LEV_INFO,
 	        bool aImmediate = false);
 
 	~TransportScalabilityTestObject();
@@ -56,8 +55,7 @@ public:
 
 	void SendToAll(const uint8_t*, size_t);
 
-public:
-	Logger* mpLogger;
+	LogTester log;
 	std::vector<TransportStackPair*> mPairs;
 };
 

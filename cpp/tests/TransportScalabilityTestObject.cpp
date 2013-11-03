@@ -26,6 +26,7 @@
 #include <boost/asio.hpp>
 
 using namespace std;
+using namespace openpal;
 
 namespace opendnp3
 {
@@ -37,19 +38,17 @@ TransportScalabilityTestObject::TransportScalabilityTestObject(
         boost::uint16_t aNumPair,
         FilterLevel aLevel,
         bool aImmediate) :
-
-	LogTester(aImmediate),
+	
 	AsyncTestObjectASIO(),
-	mpLogger(mLog.GetLogger(aLevel, "test"))
+	log()
 {
 	const boost::uint16_t START = aPortStart;
 	const boost::uint16_t STOP = START + aNumPair;
 
 	for(boost::uint16_t port = START; port < STOP; ++port) {
 		ostringstream oss;
-		oss << "pair" << port;
-		Logger* pLogger = mpLogger->GetSubLogger(oss.str());
-		TransportStackPair* pPair = new TransportStackPair(aClientCfg, aServerCfg, pLogger, this->GetService(), port);
+		oss << "pair" << port;		
+		TransportStackPair* pPair = new TransportStackPair(aClientCfg, aServerCfg, log.mTestLogger, this->GetService(), port);
 		mPairs.push_back(pPair);
 	}
 }

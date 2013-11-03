@@ -219,19 +219,11 @@ BOOST_AUTO_TEST_CASE(WriteTimeDate)
 	cfg.mAllowTimeSync = true;
 	SlaveTestObject t(cfg);
 	t.slave.OnLowerLayerUp();
-
-	MockLogSubscriber mls;
-	t.mLog.AddLogSubscriber(&mls, TIME_SYNC_UPDATED);
-
+	
+	
 	t.SendToSlave("C0 02 32 01 07 01 D2 04 00 00 00 00"); //write Grp50Var1, value = 1234 ms after epoch
 	BOOST_REQUIRE_EQUAL(t.fakeTime.GetMillisecondsSinceEpoch(), 1234);
 	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 00");
-
-	BOOST_REQUIRE_EQUAL(1, mls.mEntries.size());
-	int32_t utc;
-	BOOST_REQUIRE(mls.mEntries.front().GetValue("MILLISEC_SINCE_EPOCH", utc));
-	BOOST_REQUIRE_EQUAL(1234, utc);
-
 }
 BOOST_AUTO_TEST_CASE(WriteTimeDateNotAsking)
 {

@@ -32,16 +32,16 @@
 #include "TestHelpers.h"
 
 using namespace opendnp3;
-using namespace boost;
 using namespace std::chrono;
+using namespace openpal;
 
 class ConcretePhysicalLayerMonitor : public PhysicalLayerMonitor
 {
 public:
 
-	ConcretePhysicalLayerMonitor(Logger* apLogger, IPhysicalLayerAsync* apPhys) :
-		Loggable(apLogger),
-		PhysicalLayerMonitor(mpLogger->GetSubLogger("monitor"), apPhys, seconds(1), seconds(10)),
+	ConcretePhysicalLayerMonitor(openpal::Logger& arLogger, IPhysicalLayerAsync* apPhys) :
+		Loggable(arLogger),
+		PhysicalLayerMonitor(arLogger.GetSubLogger("monitor"), apPhys, seconds(1), seconds(10)),
 		mOpenCallbackCount(0),
 		mCloseCallbackCount(0) {
 	}
@@ -77,8 +77,8 @@ public:
 	TestObject() :
 		log(),
 		exe(),
-		phys(log.GetLogger(LEV_INFO, "mock-phys"), &exe),
-		monitor(log.GetLogger(LEV_INFO, "test"), &phys)
+		phys(Logger(&log, LEV_INFO, "mock-phys"), &exe),
+		monitor(Logger(&log, LEV_INFO, "test"), &phys)
 	{}
 
 	EventLog log;

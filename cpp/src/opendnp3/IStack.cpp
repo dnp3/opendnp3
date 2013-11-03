@@ -22,19 +22,19 @@
 
 #include <opendnp3/IStack.h>
 #include <opendnp3/IVtoEndpoint.h>
-#include <opendnp3/Logger.h>
 
 #include "VtoEndpointImpl.h"
 #include "VtoDataInterface.h"
 #include "PhysicalLayerAsyncTCPClient.h"
 #include "PhysicalLayerAsyncTCPServer.h"
 
+using namespace openpal;
 
 namespace opendnp3
 {
 
-IStack::IStack(Logger* apLogger, boost::asio::io_service* apService) :
-	mpLogger(apLogger),
+IStack::IStack(Logger& arLogger, boost::asio::io_service* apService) :
+	mLogger(arLogger),
 	mpService(apService)
 {
 
@@ -54,19 +54,19 @@ for(auto pEndpoint: copy) pEndpoint->Shutdown();
 
 IVtoEndpoint* IStack::StartVtoRouterTCPClient(const std::string& arName, FilterLevel aLevel, const std::string& arAddr, uint16_t aPort, const VtoRouterSettings& arSettings)
 {
-	auto pPhys = new PhysicalLayerAsyncTCPClient(mpLogger->GetSubLogger("arName", aLevel), mpService, arAddr, aPort);
+	auto pPhys = new PhysicalLayerAsyncTCPClient(mLogger.GetSubLogger("arName", aLevel), mpService, arAddr, aPort);
 	return CreateVtoEndpoint(pPhys, arSettings);
 }
 
 IVtoEndpoint* IStack::StartVtoRouterTCPServer(const std::string& arName, FilterLevel aLevel, const std::string& arEndpoint, uint16_t aPort, const VtoRouterSettings& arSettings)
 {
-	auto pPhys = new PhysicalLayerAsyncTCPServer(mpLogger->GetSubLogger("arName", aLevel), mpService, arEndpoint, aPort);
+	auto pPhys = new PhysicalLayerAsyncTCPServer(mLogger.GetSubLogger("arName", aLevel), mpService, arEndpoint, aPort);
 	return CreateVtoEndpoint(pPhys, arSettings);
 }
 
 IVtoEndpoint* IStack::CreateVtoEndpoint(IPhysicalLayerAsync* apPhys, const VtoRouterSettings& arSettings)
 {
-	auto pEndpoint = new VtoEndpointImpl(mpLogger->GetSubLogger("vto"), this->GetVtoWriter(), apPhys, arSettings, [this](VtoEndpointImpl * apEndpoint) {
+	auto pEndpoint = new VtoEndpointImpl(mLogger.GetSubLogger("vto"), this->GetVtoWriter(), apPhys, arSettings, [this](VtoEndpointImpl * apEndpoint) {
 		OnVtoEndpointShutdown(apEndpoint);
 	});
 	this->GetVtoReader()->AddVtoChannel(pEndpoint->GetVtoCallbacks());

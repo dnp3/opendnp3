@@ -31,14 +31,16 @@
 
 #include <memory.h>
 
+using namespace openpal;
+
 namespace opendnp3
 {
 
 ResponseLoaderTestObject::ResponseLoaderTestObject() :
 	log(),
 	fdo(),
-	mpLogger(log.GetLogger(LEV_INFO, "rsp")),
-	vto(mpLogger)
+	mLogger(Logger(&log, LEV_INFO, "rsp")),
+	vto(mLogger)
 {}
 
 void ResponseLoaderTestObject::Load(const std::string& arAPDU)
@@ -49,7 +51,7 @@ void ResponseLoaderTestObject::Load(const std::string& arAPDU)
 	f.Write(hs, hs.Size());
 	f.Interpret();
 
-	ResponseLoader rl(mpLogger, &fdo, &vto);
+	ResponseLoader rl(mLogger, &fdo, &vto);
 	for(HeaderReadIterator hdr = f.BeginRead(); !hdr.IsEnd(); ++hdr) {
 		rl.Process(hdr);
 	}

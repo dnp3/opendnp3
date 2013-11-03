@@ -23,16 +23,17 @@
 #include "EnhancedVtoRouter.h"
 
 #include <opendnp3/Exception.h>
-#include <opendnp3/Logger.h>
 
-#include "LoggableMacros.h"
+#include <openpal/LoggableMacros.h>
+
+using namespace openpal;
 
 namespace opendnp3
 {
 
-EnhancedVtoRouter::EnhancedVtoRouter(const VtoRouterSettings& arSettings, Logger* apLogger, IVtoWriter* apWriter, IPhysicalLayerAsync* apPhysLayer) :
-	Loggable(apLogger),
-	VtoRouter(arSettings, apLogger, apWriter, apPhysLayer),
+EnhancedVtoRouter::EnhancedVtoRouter(const VtoRouterSettings& arSettings, Logger& arLogger, IVtoWriter* apWriter, IPhysicalLayerAsync* apPhysLayer) :
+	Loggable(arLogger),
+	VtoRouter(arSettings, arLogger, apWriter, apPhysLayer),
 	mRemoteConnected(false),
 	mLocalConnected(false),
 	mInstRemoteConnected(false)
@@ -109,9 +110,9 @@ void EnhancedVtoRouter::CloseAndFlushBuffers()
  * Server socket specific implementation
  *************************************/
 
-ServerSocketVtoRouter::ServerSocketVtoRouter(const VtoRouterSettings& arSettings, Logger* apLogger, IVtoWriter* apWriter, IPhysicalLayerAsync* apPhysLayer) :
-	Loggable(apLogger),
-	EnhancedVtoRouter(arSettings, apLogger, apWriter, apPhysLayer)
+ServerSocketVtoRouter::ServerSocketVtoRouter(const VtoRouterSettings& arSettings, Logger& arLogger, IVtoWriter* apWriter, IPhysicalLayerAsync* apPhysLayer) :
+	Loggable(arLogger),
+	EnhancedVtoRouter(arSettings, arLogger, apWriter, apPhysLayer)
 {
 	this->Start();
 }
@@ -163,9 +164,9 @@ void ServerSocketVtoRouter::HandleDuplicateClose()
 /*****************************************
  * Client socket specific implementation
  *************************************/
-ClientSocketVtoRouter::ClientSocketVtoRouter(const VtoRouterSettings& arSettings, Logger* apLogger, IVtoWriter* apWriter, IPhysicalLayerAsync* apPhysLayer) :
-	Loggable(apLogger),
-	EnhancedVtoRouter(arSettings, apLogger, apWriter, apPhysLayer)
+ClientSocketVtoRouter::ClientSocketVtoRouter(const VtoRouterSettings& arSettings, Logger& arLogger, IVtoWriter* apWriter, IPhysicalLayerAsync* apPhysLayer) :
+	Loggable(arLogger),
+	EnhancedVtoRouter(arSettings, arLogger, apWriter, apPhysLayer)
 {
 
 }

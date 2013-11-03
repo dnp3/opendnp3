@@ -44,7 +44,7 @@ class ICommandProcessor;
 class IMaster : public IStack
 {
 public:
-    IMaster(Logger* apLogger, boost::asio::io_service* apService): IStack(apLogger, apService) {}
+    IMaster(openpal::Logger& arLogger, boost::asio::io_service* apService): IStack(arLogger, apService) {}
 
     virtual ~IMaster() {}
 

@@ -188,17 +188,14 @@
     <ClInclude Include="include\opendnp3\LinkConfig.h" />
     <ClInclude Include="include\opendnp3\LinkLayerConstants.h" />
     <ClInclude Include="include\opendnp3\Location.h" />
-    <ClInclude Include="include\opendnp3\LogBase.h" />
     <ClInclude Include="include\opendnp3\LogEntry.h" />
     <ClInclude Include="include\opendnp3\LogEntryCircularBuffer.h" />
-    <ClInclude Include="include\opendnp3\Logger.h" />
     <ClInclude Include="include\opendnp3\LogToStdio.h" />
     <ClInclude Include="include\opendnp3\LogTypes.h" />
     <ClInclude Include="include\opendnp3\MasterConfig.h" />
     <ClInclude Include="include\opendnp3\MasterConfigTypes.h" />
     <ClInclude Include="include\opendnp3\MasterStackConfig.h" />
     <ClInclude Include="include\opendnp3\ObjectInterfaces.h" />
-    <ClInclude Include="include\opendnp3\Parsing.h" />
     <ClInclude Include="include\opendnp3\PointClass.h" />
     <ClInclude Include="include\opendnp3\QualityConverter.h" />
     <ClInclude Include="include\opendnp3\QualityMasks.h" />
@@ -275,8 +272,6 @@
     <ClInclude Include="src\opendnp3\LinkReceiverStates.h" />
     <ClInclude Include="src\opendnp3\LinkRoute.h" />
     <ClInclude Include="src\opendnp3\Log.h" />
-    <ClInclude Include="src\opendnp3\Loggable.h" />
-    <ClInclude Include="src\opendnp3\LoggableMacros.h" />
     <ClInclude Include="src\opendnp3\LogVar.h" />
     <ClInclude Include="src\opendnp3\Master.h" />
     <ClInclude Include="src\opendnp3\MasterSchedule.h" />
@@ -394,11 +389,7 @@
     <ClCompile Include="src\opendnp3\LinkReceiverStates.cpp" />
     <ClCompile Include="src\opendnp3\LinkRoute.cpp" />
     <ClCompile Include="src\opendnp3\Log.cpp" />
-    <ClCompile Include="src\opendnp3\LogEntry.cpp" />
-    <ClCompile Include="src\opendnp3\Loggable.cpp" />
-    <ClCompile Include="src\opendnp3\Logger.cpp" />
     <ClCompile Include="src\opendnp3\LogToStdio.cpp" />
-    <ClCompile Include="src\opendnp3\LogTypes.cpp" />
     <ClCompile Include="src\opendnp3\Master.cpp" />
     <ClCompile Include="src\opendnp3\MasterSchedule.cpp" />
     <ClCompile Include="src\opendnp3\MasterStackImpl.cpp" />
@@ -413,7 +404,6 @@
     <ClCompile Include="src\opendnp3\OutstationSBOHandler.cpp" />
     <ClCompile Include="src\opendnp3\OutstationStackImpl.cpp" />
     <ClCompile Include="src\opendnp3\PackingUnpacking.cpp" />
-    <ClCompile Include="src\opendnp3\Parsing.cpp" />
     <ClCompile Include="src\opendnp3\PhysicalLayerAsyncBase.cpp" />
     <ClCompile Include="src\opendnp3\PhysicalLayerAsyncBaseTCP.cpp" />
     <ClCompile Include="src\opendnp3\PhysicalLayerAsyncSerial.cpp" />

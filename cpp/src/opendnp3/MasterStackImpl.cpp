@@ -22,14 +22,12 @@
 
 #include "MasterStackImpl.h"
 
-#include <opendnp3/Logger.h>
-
 #include <openpal/IExecutor.h>
 
 namespace opendnp3
 {
 
-MasterStackImpl::MasterStackImpl(	Logger* apLogger,
+MasterStackImpl::MasterStackImpl(	openpal::Logger& arLogger,
                                         boost::asio::io_service* apService,
                                         IExecutor* apExecutor,
                                         IDataObserver* apPublisher,
@@ -37,10 +35,10 @@ MasterStackImpl::MasterStackImpl(	Logger* apLogger,
                                         const MasterStackConfig& arCfg,
                                         std::function<void (IMaster*)> aOnShutdown) :
 
-	IMaster(apLogger, apService),
+	IMaster(arLogger, apService),
 	mpExecutor(apExecutor),
-	mAppStack(apLogger, apExecutor, arCfg.app, arCfg.link),
-	mMaster(apLogger->GetSubLogger("master"), arCfg.master, &mAppStack.mApplication, apPublisher, apTaskGroup, apExecutor),
+	mAppStack(arLogger, apExecutor, arCfg.app, arCfg.link),
+	mMaster(arLogger.GetSubLogger("master"), arCfg.master, &mAppStack.mApplication, apPublisher, apTaskGroup, apExecutor),
 	mOnShutdown(aOnShutdown)
 {
 	mAppStack.mApplication.SetUser(&mMaster);

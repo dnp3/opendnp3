@@ -35,13 +35,14 @@
 namespace opendnp3
 {
 
-class AsyncPhysTestObject : public AsyncTestObjectASIO, public LogTester
+class AsyncPhysTestObject : public AsyncTestObjectASIO
 {
 public:
-	AsyncPhysTestObject(FilterLevel aLevel = LEV_INFO, bool aImmediate = false, bool aAutoRead = true);
+	AsyncPhysTestObject(openpal::FilterLevel aLevel = openpal::LEV_INFO, bool aImmediate = false, bool aAutoRead = true);
 
 private:
-	Logger* mpLogger;
+	LogTester log;
+	openpal::Logger logger;
 
 public:
 	PhysicalLayerAsyncTCPClient mTCPClient;

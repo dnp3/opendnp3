@@ -25,17 +25,19 @@
 #include "BufferHelpers.h"
 
 #include <opendnp3/ToHex.h>
-#include <opendnp3/Logger.h>
-#include <opendnp3/LoggableMacros.h>
+
+#include <openpal/LoggableMacros.h>
 
 #include <memory>
+
+using namespace openpal;
 
 namespace opendnp3
 {
 
-MockUpperLayer::MockUpperLayer(Logger* apLogger) :
-	Loggable(apLogger),
-	IUpperLayer(apLogger)
+MockUpperLayer::MockUpperLayer(openpal::Logger& arLogger) :
+	Loggable(arLogger),
+	IUpperLayer(arLogger)
 {}
 
 void MockUpperLayer::_OnReceive(const uint8_t* apData, size_t aLength)

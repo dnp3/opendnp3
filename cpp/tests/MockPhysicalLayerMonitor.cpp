@@ -25,10 +25,10 @@
 #include <boost/test/unit_test.hpp>
 
 #include <opendnp3/IPhysicalLayerAsync.h>
-#include <opendnp3/Logger.h>
-#include <opendnp3/LoggableMacros.h>
 #include <opendnp3/Util.h>
 #include <opendnp3/ToHex.h>
+
+#include <openpal/LoggableMacros.h>
 
 #include <sstream>
 
@@ -39,13 +39,13 @@ namespace opendnp3
 {
 
 MockPhysicalLayerMonitor::MockPhysicalLayerMonitor(
-        Logger* apLogger,
+        openpal::Logger& arLogger,
         IPhysicalLayerAsync* apPhys,
         timer_clock::duration aMinOpenRetry,
 	timer_clock::duration aMaxOpenRetry
 ) :
-	Loggable(apLogger),
-	PhysicalLayerMonitor(apLogger, apPhys, aMinOpenRetry, aMaxOpenRetry),
+	Loggable(arLogger),
+	PhysicalLayerMonitor(arLogger, apPhys, aMinOpenRetry, aMaxOpenRetry),
 	mOpens(0),
 	mCloses(0),
 	mNumReads(0),

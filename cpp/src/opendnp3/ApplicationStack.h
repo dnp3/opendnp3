@@ -36,12 +36,10 @@ namespace openpal {
 namespace opendnp3
 {
 
-class Logger;
-
 class DLL_LOCAL ApplicationStack
 {
 public:
-	ApplicationStack(Logger* apLogger, openpal::IExecutor* apExecutor, AppConfig aAppCfg, LinkConfig aCfg);
+	ApplicationStack(openpal::Logger& arLogger, openpal::IExecutor* apExecutor, AppConfig aAppCfg, LinkConfig aCfg);
 
 	LinkLayer mLink;
 	TransportLayer mTransport;

@@ -29,13 +29,14 @@
 
 using namespace std;
 using namespace opendnp3;
+using namespace openpal;
 
 BOOST_AUTO_TEST_SUITE(VtoWriterSuite)
 
 BOOST_AUTO_TEST_CASE(OnlyAcceptsMaximumSize)
 {
 	EventLog log;
-	VtoWriter writer(log.GetLogger(LEV_DEBUG, "writer"), 3);
+	VtoWriter writer(Logger(&log, LEV_DEBUG, "writer"), 3);
 
 	/* Initialize the data stream to a pseudo-random sequence */
 	RandomizedBuffer data(1024);

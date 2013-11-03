@@ -38,14 +38,13 @@ namespace opendnp3
 {
 
 class IPhysicalLayerAsync;
-class Logger;
 class VtoRouter;
 class IVtoCallbacks;
 
 class DLL_LOCAL VtoEndpointImpl : public IVtoEndpoint
 {
 public:
-	VtoEndpointImpl(	Logger* apLogger,
+	VtoEndpointImpl(	openpal::Logger& arLogger,
 	                        IVtoWriter* apWriter,
 	                        IPhysicalLayerAsync* apPhys,
 	                        const VtoRouterSettings& arSettings,
@@ -65,7 +64,7 @@ private:
 	std::auto_ptr<VtoRouter> mpRouter;
 	std::function<void (VtoEndpointImpl*)> mOnShutdown;
 
-	static VtoRouter* FGetVtoRouter(const VtoRouterSettings& arSettings, Logger* apLogger, IVtoWriter* apWriter, IPhysicalLayerAsync* apPhys);
+	static VtoRouter* FGetVtoRouter(const VtoRouterSettings& arSettings, openpal::Logger& arLogger, IVtoWriter* apWriter, IPhysicalLayerAsync* apPhys);
 };
 
 }

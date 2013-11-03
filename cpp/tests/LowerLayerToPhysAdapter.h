@@ -37,7 +37,7 @@ class IPhysicalLayerAsync;
 class LowerLayerToPhysAdapter : public IHandlerAsync, public ILowerLayer
 {
 public:
-	LowerLayerToPhysAdapter(Logger*, IPhysicalLayerAsync*, bool aAutoRead = true);
+	LowerLayerToPhysAdapter(openpal::Logger&, IPhysicalLayerAsync*, bool aAutoRead = true);
 	~LowerLayerToPhysAdapter();
 
 	size_t GetNumOpenFailure() {

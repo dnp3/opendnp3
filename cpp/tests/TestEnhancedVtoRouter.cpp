@@ -37,15 +37,16 @@
 
 using namespace std;
 using namespace opendnp3;
+using namespace openpal;
 
-class VtoRouterTestClassBase : protected LogTester, public IVtoEventAcceptor
+class VtoRouterTestClassBase : public IVtoEventAcceptor
 {
 public:
 	VtoRouterTestClassBase(size_t aWriterSize) :
-		LogTester(false),
+		log(),
 		exe(),
-		phys(mLog.GetLogger(LEV_DEBUG, "phys"), &exe),
-		writer(mLog.GetLogger(LEV_DEBUG, "writer"), aWriterSize),
+		phys(Logger(&log, LEV_DEBUG, "phys"), &exe),
+		writer(Logger(&log, LEV_DEBUG, "writer"), aWriterSize),
 		pRouter(NULL) {
 		exe.SetAutoPost(true);
 	}
@@ -95,6 +96,7 @@ public:
 		BOOST_REQUIRE_EQUAL(arData, hex);
 	}
 
+	LogTester log;
 	MockExecutor exe;
 	MockPhysicalLayerAsync phys;
 	VtoWriter writer;
@@ -107,7 +109,7 @@ class ServerVtoRouterTestClass : public VtoRouterTestClassBase
 public:
 	ServerVtoRouterTestClass(const VtoRouterSettings& arSettings = VtoRouterSettings(88, true, true), size_t aWriterSize = 100) :
 		VtoRouterTestClassBase(aWriterSize),
-		router(arSettings, mLog.GetLogger(LEV_DEBUG, "router"), &writer, &phys) {
+		router(arSettings, Logger(&log, LEV_DEBUG, "router"), &writer, &phys) {
 		pRouter = &router;
 		writer.AddVtoCallback(&router);
 	}
@@ -120,7 +122,7 @@ class ClientVtoRouterTestClass : public VtoRouterTestClassBase
 public:
 	ClientVtoRouterTestClass(const VtoRouterSettings& arSettings = VtoRouterSettings(88, true, true), size_t aWriterSize = 100) :
 		VtoRouterTestClassBase(aWriterSize),
-		router(arSettings, mLog.GetLogger(LEV_DEBUG, "router"), &writer, &phys) {
+		router(arSettings, Logger(&log, LEV_DEBUG, "router"), &writer, &phys) {
 		pRouter = &router;
 		writer.AddVtoCallback(&router);
 	}

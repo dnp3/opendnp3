@@ -36,10 +36,10 @@
 namespace opendnp3
 {
 
-class SlaveTestObject : public LogTester
+class SlaveTestObject
 {
 public:
-	SlaveTestObject(const SlaveConfig& arCfg, FilterLevel aLevel = LEV_INFO, bool aImmediate = false);
+	SlaveTestObject(const SlaveConfig& arCfg, openpal::FilterLevel aLevel = openpal::LEV_INFO, bool aImmediate = false);
 
 	void SendToSlave(const std::string& arData, SequenceInfo aSeq = SI_OTHER);
 
@@ -52,7 +52,7 @@ public:
 	}
 
 
-	//MockTimeSource fake_time;
+	LogTester log;
 	MockTimeManager fakeTime;
 	MockExecutor mts;
 	MockAppLayer app;
@@ -60,7 +60,7 @@ public:
 	MockCommandHandler cmdHandler;
 	Slave slave;
 	APDU mAPDU;
-	Logger* mpLogger;
+	openpal::Logger mLogger;
 
 };
 

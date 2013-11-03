@@ -32,7 +32,8 @@
 #include <boost/system/error_code.hpp>
 
 #include "IPhysicalLayerAsync.h"
-#include "Loggable.h"
+
+#include <openpal/Loggable.h>
 
 #include <opendnp3/Location.h>
 
@@ -43,7 +44,7 @@ class PLAS_Base;
 
 // This is the base class for the new async physical layers. It assumes that all of the functions
 // are called from a single thread.
-class DLL_LOCAL PhysicalLayerAsyncBase : public IPhysicalLayerAsync, public Loggable
+class DLL_LOCAL PhysicalLayerAsyncBase : public IPhysicalLayerAsync, public openpal::Loggable
 {
 	class State : public IChannelState
 	{
@@ -77,7 +78,7 @@ class DLL_LOCAL PhysicalLayerAsyncBase : public IPhysicalLayerAsync, public Logg
 	};
 
 public:
-	PhysicalLayerAsyncBase(Logger*);
+	PhysicalLayerAsyncBase(openpal::Logger&);
 
 	// destructor should only be called once the object is totally finished with all of its async operations
 	// to avoid segfaulting. There are a # of asserts that make sure the object has been shutdown properly.
@@ -151,8 +152,8 @@ public:
 	void DoReadCallback(uint8_t*, size_t);
 
 	//Error reporting function(s)
-	Logger* GetLogger() {
-		return mpLogger;
+	openpal::Logger& GetLogger() {
+		return mLogger;
 	}
 
 protected:

@@ -37,6 +37,7 @@
 
 using namespace std;
 using namespace opendnp3;
+using namespace openpal;
 using namespace boost;
 
 BOOST_AUTO_TEST_SUITE(AsyncTransportLoopback)
@@ -67,7 +68,7 @@ BOOST_AUTO_TEST_CASE(TestTransportWithMockLoopback)
 
 	EventLog log;
 	boost::asio::io_service service;
-	LoopbackPhysicalLayerAsync phys(log.GetLogger(LEV_WARNING, "loopback"), &service);
+	LoopbackPhysicalLayerAsync phys(Logger(&log, LEV_WARNING, "loopback"), &service);
 	TransportLoopbackTestObject t(&service, &phys, cfgA, cfgB);
 
 	TestLoopback(&t, DEFAULT_FRAG_SIZE);

@@ -33,16 +33,13 @@
 namespace opendnp3
 {
 
-class AsyncSerialTestObject : public AsyncTestObjectASIO, public LogTester
+class AsyncSerialTestObject : public AsyncTestObjectASIO
 {
 public:
-	AsyncSerialTestObject(SerialSettings cfg, FilterLevel aLevel = LEV_INFO, bool aImmediate = false);
+	AsyncSerialTestObject(SerialSettings cfg, openpal::FilterLevel aLevel = openpal::LEV_INFO, bool aImmediate = false);
 	virtual ~AsyncSerialTestObject() {}
 
-private:
-	Logger* mpLogger;
-
-public:
+	LogTester log;
 	PhysicalLayerAsyncSerial mPort;
 	LowerLayerToPhysAdapter mAdapter;
 	MockUpperLayer mUpper;

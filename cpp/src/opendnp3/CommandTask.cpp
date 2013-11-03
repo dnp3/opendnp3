@@ -21,17 +21,17 @@
 //
 
 #include "CommandTask.h"
-#include "LoggableMacros.h"
 
-#include <opendnp3/Logger.h>
 #include <opendnp3/Exception.h>
 
+#include <openpal/LoggableMacros.h>
 
+using namespace openpal;
 
 namespace opendnp3
 {
 
-CommandTask::CommandTask(Logger* apLogger) : MasterTaskBase(apLogger)
+CommandTask::CommandTask(Logger& arLogger) : MasterTaskBase(arLogger)
 {
 
 }

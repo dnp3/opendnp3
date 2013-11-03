@@ -22,9 +22,11 @@
 
 #include "VtoTransmitTask.h"
 
-#include <opendnp3/Logger.h>
-#include "LoggableMacros.h"
+#include <openpal/LoggableMacros.h>
+
 #include "APDU.h"
+
+using namespace openpal;
 
 namespace opendnp3
 {

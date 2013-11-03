@@ -22,14 +22,16 @@
 
 #include "LinkLayerRouterTest.h"
 
+using namespace openpal;
+
 namespace opendnp3
 {
 
 LinkLayerRouterTest::LinkLayerRouterTest(FilterLevel aLevel, bool aImmediate) :
-	LogTester(aImmediate),
+	log(),
 	exe(),
-	phys(mLog.GetLogger(aLevel, "Physical"), &exe),
-	router(mLog.GetLogger(aLevel, "Router"), &phys, 100)
+	phys(Logger(&log, aLevel, "Physical"), &exe),
+	router(Logger(&log, aLevel, "Router"), &phys, 100)
 {
 
 }

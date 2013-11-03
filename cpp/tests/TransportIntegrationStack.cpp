@@ -28,11 +28,11 @@
 namespace opendnp3
 {
 
-TransportIntegrationStack::TransportIntegrationStack(Logger* apLogger, IPhysicalLayerAsync* apPhys, LinkConfig aCfg) :
-	mRouter(apLogger, apPhys, 1000),
-	mLink(apLogger, apPhys->GetExecutor(), aCfg),
-	mTransport(apLogger),
-	mUpper(apLogger)
+TransportIntegrationStack::TransportIntegrationStack(openpal::Logger& arLogger, IPhysicalLayerAsync* apPhys, LinkConfig aCfg) :
+	mRouter(arLogger, apPhys, 1000),
+	mLink(arLogger, apPhys->GetExecutor(), aCfg),
+	mTransport(arLogger),
+	mUpper(arLogger)
 {
 	LinkRoute route(aCfg.RemoteAddr, aCfg.LocalAddr);
 	mRouter.AddContext(&mLink, route);

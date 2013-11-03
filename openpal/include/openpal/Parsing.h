@@ -31,10 +31,9 @@
 
 #include <string>
 #include <sstream>
-
 #include <cstdint>
 
-namespace opendnp3
+namespace openpal
 {
 
 class Parsing

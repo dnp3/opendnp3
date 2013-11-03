@@ -30,13 +30,13 @@
 namespace opendnp3
 {
 
-VtoEndpointImpl::VtoEndpointImpl(	Logger* apLogger,
+VtoEndpointImpl::VtoEndpointImpl(	openpal::Logger& arLogger,
                                         IVtoWriter* apWriter,
                                         IPhysicalLayerAsync* apPhys,
                                         const VtoRouterSettings& arSettings,
                                         std::function<void (VtoEndpointImpl*)> aOnShutdown) :
 	mpPhys(apPhys),
-	mpRouter(FGetVtoRouter(arSettings, apLogger, apWriter, apPhys)),
+	mpRouter(FGetVtoRouter(arSettings, arLogger, apWriter, apPhys)),
 	mOnShutdown(aOnShutdown)
 {
 
@@ -67,17 +67,17 @@ void VtoEndpointImpl::Cleanup()
 	mpRouter->WaitForShutdown();
 }
 
-VtoRouter* VtoEndpointImpl::FGetVtoRouter(const VtoRouterSettings& arSettings, Logger* apLogger, IVtoWriter* apWriter, IPhysicalLayerAsync* apPhys)
+VtoRouter* VtoEndpointImpl::FGetVtoRouter(const VtoRouterSettings& arSettings, openpal::Logger& arLogger, IVtoWriter* apWriter, IPhysicalLayerAsync* apPhys)
 {
 	if(arSettings.DISABLE_EXTENSIONS) {
-		return new AlwaysOpeningVtoRouter(arSettings, apLogger, apWriter, apPhys);
+		return new AlwaysOpeningVtoRouter(arSettings, arLogger, apWriter, apPhys);
 	}
 	else {
 		if(arSettings.START_LOCAL) {
-			return new  ServerSocketVtoRouter(arSettings, apLogger, apWriter, apPhys);
+			return new  ServerSocketVtoRouter(arSettings, arLogger, apWriter, apPhys);
 		}
 		else {
-			return new ClientSocketVtoRouter(arSettings, apLogger, apWriter, apPhys);
+			return new ClientSocketVtoRouter(arSettings, arLogger, apWriter, apPhys);
 		}
 	}
 }

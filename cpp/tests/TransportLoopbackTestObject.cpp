@@ -28,8 +28,8 @@
 #include <boost/asio.hpp>
 #include <sstream>
 
-
 using namespace std;
+using namespace openpal;
 
 namespace opendnp3
 {
@@ -41,19 +41,19 @@ TransportLoopbackTestObject::TransportLoopbackTestObject(
         LinkConfig aCfgB,
         FilterLevel aLevel,
         bool aImmediate) :
-
-	LogTester(aImmediate),
+	
 	AsyncTestObjectASIO(apService),
-	mpLogger(mLog.GetLogger(aLevel, "test")),
+	log(),
+	mLogger(Logger(&log, aLevel, "test")),
 	mCfgA(aCfgA),
 	mCfgB(aCfgB),
-	mLinkA(mpLogger, apPhys->GetExecutor(), aCfgA),
-	mLinkB(mpLogger, apPhys->GetExecutor(), aCfgB),
-	mTransA(mpLogger),
-	mTransB(mpLogger),
-	mRouter(mpLogger, apPhys, 1000),
-	mUpperA(mpLogger),
-	mUpperB(mpLogger)
+	mLinkA(mLogger, apPhys->GetExecutor(), aCfgA),
+	mLinkB(mLogger, apPhys->GetExecutor(), aCfgB),
+	mTransA(mLogger),
+	mTransB(mLogger),
+	mRouter(mLogger, apPhys, 1000),
+	mUpperA(mLogger),
+	mUpperB(mLogger)
 {
 	mRouter.AddContext(&mLinkA, LinkRoute(mCfgA.RemoteAddr, mCfgA.LocalAddr));
 	mRouter.AddContext(&mLinkB, LinkRoute(mCfgB.RemoteAddr, mCfgB.LocalAddr));

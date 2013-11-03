@@ -77,7 +77,7 @@ BOOST_AUTO_TEST_CASE(TestReceiveNoPayload)
 	TransportTestObject test(true);
 	//try sending a FIR/FIN packet with no payload (1 byte)
 	test.lower.SendUp("C0"); // FIR/FIN
-	BOOST_REQUIRE_EQUAL(test.NextErrorCode(), TLERR_NO_PAYLOAD);
+	BOOST_REQUIRE_EQUAL(test.log.NextErrorCode(), TLERR_NO_PAYLOAD);
 }
 
 BOOST_AUTO_TEST_CASE(TestReceiveNoFIR)
@@ -85,7 +85,7 @@ BOOST_AUTO_TEST_CASE(TestReceiveNoFIR)
 	TransportTestObject test(true);
 	//try sending a non-FIR w/ no prior packet
 	test.lower.SendUp("80 77"); // _/FIN
-	BOOST_REQUIRE_EQUAL(test.NextErrorCode(), TLERR_MESSAGE_WITHOUT_FIR);
+	BOOST_REQUIRE_EQUAL(test.log.NextErrorCode(), TLERR_MESSAGE_WITHOUT_FIR);
 }
 
 BOOST_AUTO_TEST_CASE(TestReceiveWrongSequence)
@@ -94,7 +94,7 @@ BOOST_AUTO_TEST_CASE(TestReceiveWrongSequence)
 	//send a FIR, followed by a FIN w/ the wrong sequence
 	test.lower.SendUp(test.GetData("40")); // FIR/_/0
 	test.lower.SendUp(test.GetData("82")); // _/FIN/2
-	BOOST_REQUIRE_EQUAL(test.NextErrorCode(), TLERR_BAD_SEQUENCE);
+	BOOST_REQUIRE_EQUAL(test.log.NextErrorCode(), TLERR_BAD_SEQUENCE);
 }
 
 BOOST_AUTO_TEST_CASE(TestReceiveNonFinLessThanMaxTpduSize)
@@ -102,7 +102,7 @@ BOOST_AUTO_TEST_CASE(TestReceiveNonFinLessThanMaxTpduSize)
 	TransportTestObject test(true);
 	//send a FIR, followed by a FIN w/ the wrong sequence
 	test.lower.SendUp("40 0A 0B 0C"); // FIR/_/0
-	BOOST_REQUIRE_EQUAL(test.NextErrorCode(), TLERR_BAD_LENGTH);
+	BOOST_REQUIRE_EQUAL(test.log.NextErrorCode(), TLERR_BAD_LENGTH);
 }
 
 BOOST_AUTO_TEST_CASE(TestReceiveSinglePacket)
@@ -126,7 +126,7 @@ for(string s: packets) {
 		test.lower.SendUp(s);
 	}
 
-	BOOST_REQUIRE(test.IsLogErrorFree());
+	BOOST_REQUIRE(test.log.IsLogErrorFree());
 	BOOST_REQUIRE(test.upper.BufferEqualsHex(apdu)); //check that the correct data was written
 }
 
@@ -145,7 +145,7 @@ for(string s: packets) {
 	}
 
 	BOOST_REQUIRE(test.upper.IsBufferEmpty());
-	BOOST_REQUIRE_EQUAL(test.NextErrorCode(), TLERR_BUFFER_FULL);
+	BOOST_REQUIRE_EQUAL(test.log.NextErrorCode(), TLERR_BUFFER_FULL);
 }
 
 BOOST_AUTO_TEST_CASE(TestReceiveNewFir)
@@ -157,7 +157,7 @@ BOOST_AUTO_TEST_CASE(TestReceiveNewFir)
 
 	test.lower.SendUp(test.GetData("C0"));	// FIR/FIN/0
 	test.upper.BufferEqualsHex(test.GetData(""));
-	BOOST_REQUIRE_EQUAL(test.NextErrorCode(), TLERR_NEW_FIR);
+	BOOST_REQUIRE_EQUAL(test.log.NextErrorCode(), TLERR_NEW_FIR);
 }
 
 BOOST_AUTO_TEST_CASE(TestSendArguments)

@@ -31,8 +31,6 @@
 namespace opendnp3
 {
 
-class Logger;
-
 class ResponseLoaderTestObject
 {
 public:
@@ -48,7 +46,7 @@ public:
 
 private: EventLog log;
 public: FlexibleDataObserver fdo;
-private: Logger* mpLogger;
+private: openpal::Logger mLogger;
 public: VtoReader vto;
 
 };

@@ -29,21 +29,23 @@
 #include <boost/asio/ip/tcp.hpp>
 
 #include <opendnp3/Exception.h>
-#include <opendnp3/Logger.h>
+
+#include <openpal/LoggableMacros.h>
 
 #include "IHandlerAsync.h"
-#include "LoggableMacros.h"
+
 
 using namespace boost;
 using namespace boost::asio;
 using namespace boost::system;
 using namespace std;
+using namespace openpal;
 
 namespace opendnp3
 {
 
-PhysicalLayerAsyncBaseTCP::PhysicalLayerAsyncBaseTCP(Logger* apLogger, boost::asio::io_service* apIOService) :
-	PhysicalLayerAsyncASIO(apLogger, apIOService),
+PhysicalLayerAsyncBaseTCP::PhysicalLayerAsyncBaseTCP(Logger& arLogger, boost::asio::io_service* apIOService) :
+	PhysicalLayerAsyncASIO(arLogger, apIOService),
 	mSocket(*apIOService)
 {
 	//mSocket.set_option(ip::tcp::no_delay(true));

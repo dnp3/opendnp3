@@ -32,13 +32,13 @@
 namespace opendnp3
 {
 
-class LinkReceiverTest : public LogTester
+class LinkReceiverTest
 {
 public:
-	LinkReceiverTest(FilterLevel aLevel = LEV_WARNING, bool aImmediate = false) :
-		LogTester(aImmediate),
+	LinkReceiverTest(openpal::FilterLevel aLevel = openpal::LEV_WARNING, bool aImmediate = false) :
+		log(),
 		mSink(),
-		mRx(mLog.GetLogger(aLevel, "ReceiverTest"), &mSink)
+		mRx(openpal::Logger(&log, aLevel, "ReceiverTest"), &mSink)
 	{}
 
 	void WriteData(const LinkFrame& arFrame) {
@@ -54,6 +54,7 @@ public:
 		mRx.OnRead(hs.Size());
 	}
 
+	LogTester log;
 	MockFrameSink mSink;
 	LinkLayerReceiver mRx;
 };

@@ -24,15 +24,18 @@
 
 #include <opendnp3/Util.h>
 
-#include "LoggableMacros.h"
+#include <openpal/LoggableMacros.h>
+
 #include "HeaderReadIterator.h"
 #include "Objects.h"
+
+using namespace openpal;
 
 namespace opendnp3
 {
 
-ResponseLoader::ResponseLoader(Logger* apLogger, IDataObserver* apPublisher, VtoReader* apVtoReader) :
-	Loggable(apLogger),
+ResponseLoader::ResponseLoader(openpal::Logger& arLogger, IDataObserver* apPublisher, VtoReader* apVtoReader) :
+	Loggable(arLogger),
 	mpPublisher(apPublisher),
 	mpVtoReader(apVtoReader),
 	mTransaction(apPublisher)

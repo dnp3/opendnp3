@@ -46,7 +46,7 @@ namespace opendnp3
 class DLL_LOCAL PhysicalLayerAsyncSerial : public PhysicalLayerAsyncASIO
 {
 public:
-	PhysicalLayerAsyncSerial(Logger*, boost::asio::io_service* apIOService, const SerialSettings& arSettings);
+	PhysicalLayerAsyncSerial(openpal::Logger&, boost::asio::io_service* apIOService, const SerialSettings& arSettings);
 
 	/* Implement the shared client/server actions */
 	void DoClose();

@@ -20,47 +20,35 @@
 // you under the terms of the License.
 //
 
-#include <opendnp3/Logger.h>
+#include <openpal/Logger.h>
 
-#include "Log.h"
-
+#include <openpal/LogBase.h>
 #include <assert.h>
 
 using namespace std;
 
-namespace opendnp3
+namespace openpal
 {
-Logger::Logger(EventLog* apLog, FilterLevel aFilter, const std::string& aName)
+
+Logger::Logger(ILogBase* apLog, int aLevel, const std::string& aName)
 	:
-	mLevel(0),
+	mLevel(aLevel),
 	mpLog(apLog),
 	mName(aName)
 {
-	this->SetFilterLevel(aFilter);
+	
 }
 
-void Logger::SetFilterLevel(FilterLevel aFilter)
-{
-	mLevel = LogTypes::FilterLevelToMask(aFilter);
-}
-
-Logger* Logger::GetSubLogger(std::string aSubName, int aFilterBits)
+Logger Logger::GetSubLogger(std::string aSubName, int aLevel) const
 {
 	std::ostringstream oss;
-	oss << mName << "." << aSubName;
-	Logger* pLogger = mpLog->GetLogger(LEV_WARNING, oss.str());
-	pLogger->mLevel = aFilterBits;
-	return pLogger;
+	oss << mName << "." << aSubName;	
+	return Logger(mpLog, aLevel, oss.str());
 }
 
-Logger* Logger::GetSubLogger(std::string aSubName, FilterLevel aFilter)
+Logger Logger::GetSubLogger(std::string aSubName) const
 {
-	return this->GetSubLogger(aSubName, LogTypes::FilterLevelToMask(aFilter));
-}
-
-Logger* Logger::GetSubLogger(std::string aSubName)
-{
-	return this->GetSubLogger(aSubName, this->mLevel);
+	return this->GetSubLogger(aSubName, mLevel);
 }
 
 void Logger::Log( const LogEntry& arEntry)

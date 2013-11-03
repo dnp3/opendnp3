@@ -39,7 +39,6 @@ namespace opendnp3
 {
 
 class ITaskCompletion;
-class Logger;
 class ITask;
 class Master;
 class MasterTaskBase;

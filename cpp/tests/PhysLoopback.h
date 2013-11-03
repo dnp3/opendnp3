@@ -35,7 +35,7 @@ namespace opendnp3
 class PhysLoopback : public PhysicalLayerMonitor
 {
 public:
-	PhysLoopback(Logger*, IPhysicalLayerAsync*);
+	PhysLoopback(openpal::Logger&, IPhysicalLayerAsync*);
 
 private:
 

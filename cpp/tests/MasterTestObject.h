@@ -41,10 +41,10 @@ namespace opendnp3
 
 struct MasterConfig;
 
-class MasterTestObject : public LogTester
+class MasterTestObject
 {
 public:
-	MasterTestObject(MasterConfig, FilterLevel aLevel = LEV_INFO, bool aImmediate = false);
+	MasterTestObject(MasterConfig, openpal::FilterLevel aLevel = openpal::LEV_INFO, bool aImmediate = false);
 
 	void RespondToMaster(const std::string& arData, bool aFinal = true);
 	void SendUnsolToMaster(const std::string& arData);
@@ -52,6 +52,7 @@ public:
 
 	void BindStateListener();
 
+	LogTester log;
 	MockTimeSource fake_time;
 	MockExecutor mts;	
 	AsyncTaskGroup group;

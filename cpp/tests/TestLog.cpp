@@ -41,15 +41,15 @@ using namespace opendnp3;
 #undef GetMessage
 #endif
 
-
+using namespace openpal;
 
 BOOST_AUTO_TEST_SUITE(LogTest)
 
 BOOST_AUTO_TEST_CASE( LogErrorCounting)
 {
-	LogTester log(false);
-	Logger* pLogger = log.mLog.GetLogger(LEV_DEBUG, "test1");
-	pLogger->Log( LEV_DEBUG, "LogEntryParamsTest", "MessageMessage", 5 );
+	LogTester log;
+	Logger logger(&log, LEV_DEBUG, "test1");
+	logger.Log( LEV_DEBUG, "LogEntryParamsTest", "MessageMessage", 5 );
 
 	BOOST_REQUIRE_EQUAL(log.NextErrorCode(), 5);
 	BOOST_REQUIRE_EQUAL(log.NextErrorCode(), -1);

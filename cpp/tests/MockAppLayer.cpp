@@ -22,15 +22,16 @@
 
 #include "MockAppLayer.h"
 
-#include <opendnp3/Logger.h>
-#include <opendnp3/LoggableMacros.h>
+#include <openpal/LoggableMacros.h>
 #include <opendnp3/ToHex.h>
+
+using namespace openpal;
 
 namespace opendnp3
 {
 
-MockAppLayer::MockAppLayer(Logger* apLogger) :
-	Loggable(apLogger),
+MockAppLayer::MockAppLayer(openpal::Logger& arLogger) :
+	Loggable(arLogger),
 	mNumCancel(0),
 	mpUser(NULL),
 	mAutoSendCallback(true),

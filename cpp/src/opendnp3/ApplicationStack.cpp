@@ -22,15 +22,15 @@
 
 #include "ApplicationStack.h"
 
-#include <opendnp3/Logger.h>
+using namespace openpal;
 
 namespace opendnp3
 {
 
-ApplicationStack::ApplicationStack(Logger* apLogger, openpal::IExecutor* apExecutor, AppConfig aAppCfg, LinkConfig aCfg) :
-	mLink(apLogger->GetSubLogger("link"), apExecutor, aCfg),
-	mTransport(apLogger->GetSubLogger("transport")),
-	mApplication(apLogger->GetSubLogger("app"), apExecutor, aAppCfg)
+ApplicationStack::ApplicationStack(openpal::Logger& arLogger, openpal::IExecutor* apExecutor, AppConfig aAppCfg, LinkConfig aCfg) :
+	mLink(arLogger.GetSubLogger("link"), apExecutor, aCfg),
+	mTransport(arLogger.GetSubLogger("transport")),
+	mApplication(arLogger.GetSubLogger("app"), apExecutor, aAppCfg)
 {
 	mLink.SetUpperLayer(&mTransport);
 	mTransport.SetUpperLayer(&mApplication);

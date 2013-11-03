@@ -20,15 +20,13 @@
 // you under the terms of the License.
 //
 
-#include <opendnp3/LogEntry.h>
+#include <openpal/LogEntry.h>
 
 #include <sstream>
-#include <opendnp3/Util.h>
-#include <opendnp3/Parsing.h>
 
 using namespace std;
 
-namespace opendnp3
+namespace openpal
 {
 
 

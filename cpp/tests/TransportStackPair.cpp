@@ -24,22 +24,20 @@
 
 #include <boost/asio.hpp>
 
-#include <opendnp3/Logger.h>
-
 namespace opendnp3
 {
 
 TransportStackPair::TransportStackPair(
         LinkConfig aClientCfg,
         LinkConfig aServerCfg,
-        Logger* apLogger,
+        openpal::Logger& arLogger,
         boost::asio::io_service* apService,
         boost::uint16_t aPort) :
 
-	mClient(apLogger->GetSubLogger("TCPClient"), apService, "127.0.0.1", aPort),
-	mServer(apLogger->GetSubLogger("TCPServer"), apService, "127.0.0.1", aPort),
-	mClientStack(apLogger->GetSubLogger("ClientStack"), &mClient, aClientCfg),
-	mServerStack(apLogger->GetSubLogger("ServerStack"), &mServer, aServerCfg)
+	mClient(arLogger.GetSubLogger("TCPClient"), apService, "127.0.0.1", aPort),
+	mServer(arLogger.GetSubLogger("TCPServer"), apService, "127.0.0.1", aPort),
+	mClientStack(arLogger.GetSubLogger("ClientStack"), &mClient, aClientCfg),
+	mServerStack(arLogger.GetSubLogger("ServerStack"), &mServer, aServerCfg)
 {
 
 }

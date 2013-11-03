@@ -31,9 +31,10 @@
 
 #include "MasterStackConfig.h"
 #include "SlaveStackConfig.h"
-#include "LogTypes.h"
 #include "ChannelStates.h"
 #include "DestructorHook.h"
+
+#include <openpal/LogTypes.h>
 
 #include <functional>
 
@@ -99,7 +100,7 @@ public:
 	* @return interface representing the running master
 	*/
 	virtual IMaster* AddMaster(	const std::string& arLoggerId,
-	                                FilterLevel aLevel,
+	                                openpal::FilterLevel aLevel,
 	                                IDataObserver* apPublisher,
 	                                const MasterStackConfig& arCfg) = 0;
 
@@ -115,7 +116,7 @@ public:
 	* @return interface representing the running outstations
 	*/
 	virtual IOutstation* AddOutstation(	const std::string& arLoggerId,
-	                                        FilterLevel aLevel,
+	                                        openpal::FilterLevel aLevel,
 	                                        ICommandHandler* apCmdHandler,
 	                                        const SlaveStackConfig& arCfg) = 0;
 };

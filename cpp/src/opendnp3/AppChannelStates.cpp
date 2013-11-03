@@ -24,14 +24,16 @@
 
 #include <opendnp3/Singleton.h>
 #include <opendnp3/Exception.h>
-#include <opendnp3/Logger.h>
 
-#include "LoggableMacros.h"
+#include <openpal/LoggableMacros.h>
+
 #include "AppLayerChannel.h"
 #include "APDU.h"
 
 #include <string>
 #include <sstream>
+
+using namespace openpal;
 
 namespace opendnp3
 {

@@ -31,7 +31,8 @@
 #include <string>
 #include <set>
 
-#include "LogTypes.h"
+#include <openpal/Logger.h>
+
 #include "VtoRouterSettings.h"
 #include "DestructorHook.h"
 #include "StackState.h"
@@ -47,7 +48,6 @@ class io_service;
 namespace opendnp3
 {
 
-class Logger;
 class IPhysicalLayerAsync;
 class IVtoEndpoint;
 class IVtoWriter;
@@ -60,7 +60,7 @@ class VtoEndpointImpl;
 class IStack : public DestructorHook
 {
 public:
-	IStack(Logger* apLogger, boost::asio::io_service* apService);
+	IStack(openpal::Logger& arLogger, boost::asio::io_service* apService);
 	virtual ~IStack();
 
 	/**
@@ -73,7 +73,7 @@ public:
 	* @param arSettings settings for the vto connection
 	* @return interface representing the running endpoint
 	*/
-	IVtoEndpoint* StartVtoRouterTCPClient(const std::string& arLoggerId, FilterLevel aLevel, const std::string& arHost, uint16_t aPort, const VtoRouterSettings& arSettings);
+	IVtoEndpoint* StartVtoRouterTCPClient(const std::string& arLoggerId, openpal::FilterLevel aLevel, const std::string& arHost, uint16_t aPort, const VtoRouterSettings& arSettings);
 
 	/**
 	* Bind a vto endpoint as a tcp server
@@ -85,7 +85,7 @@ public:
 	* @param arSettings settings for the vto connection
 	* @return interface representing the running endpoint
 	*/
-	IVtoEndpoint* StartVtoRouterTCPServer(const std::string& arLoggerId, FilterLevel aLevel, const std::string& arEndpoint, uint16_t aPort, const VtoRouterSettings& arSettings);
+	IVtoEndpoint* StartVtoRouterTCPServer(const std::string& arLoggerId, openpal::FilterLevel aLevel, const std::string& arEndpoint, uint16_t aPort, const VtoRouterSettings& arSettings);
 
 	/**
 	* Add a listener for changes to the stack state. All callbacks come from the thread pool.
@@ -122,7 +122,7 @@ private:
 
 	IVtoEndpoint* CreateVtoEndpoint(IPhysicalLayerAsync* apPhys, const VtoRouterSettings& arSettings);
 
-	Logger* mpLogger;
+	openpal::Logger mLogger;
 	boost::asio::io_service* mpService;
 	std::set<IVtoEndpoint*> mVtoEndpoints;
 };

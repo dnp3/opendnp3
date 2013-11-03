@@ -22,10 +22,9 @@
 
 #include "AppLayerChannel.h"
 
-#include <opendnp3/Logger.h>
-
-#include "LoggableMacros.h"
+#include <openpal/LoggableMacros.h>
 #include <openpal/IExecutor.h>
+
 #include "AppLayer.h"
 #include "AppChannelStates.h"
 
@@ -36,8 +35,8 @@ using namespace openpal;
 namespace opendnp3
 {
 
-AppLayerChannel::AppLayerChannel(const std::string& arName, Logger* apLogger, AppLayer* apAppLayer, IExecutor* apExecutor,openpal::millis_t aTimeout) :
-	Loggable(apLogger),
+AppLayerChannel::AppLayerChannel(const std::string& arName, openpal::Logger& arLogger, AppLayer* apAppLayer, IExecutor* apExecutor,openpal::millis_t aTimeout) :
+	Loggable(arLogger),
 	mpAppLayer(apAppLayer),
 	mpSendAPDU(NULL),
 	mNumRetry(0),

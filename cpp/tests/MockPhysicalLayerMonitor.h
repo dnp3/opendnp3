@@ -34,7 +34,7 @@ class MockPhysicalLayerMonitor : public PhysicalLayerMonitor
 {
 public:
 	MockPhysicalLayerMonitor(
-	        Logger* apLogger,
+	        openpal::Logger& arLogger,
 	        IPhysicalLayerAsync* apPhys,
 	        openpal::timer_clock::duration aMinOpenRetry,
 	        openpal::timer_clock::duration aMaxOpenRetry

@@ -34,7 +34,6 @@
 
 #include <boost/bind.hpp>
 
-#include "Loggable.h"
 #include "APDU.h"
 #include "Database.h"
 #include "SlaveEventBuffer.h"
@@ -58,7 +57,7 @@ class SlaveResponseTypes;
  *
  * Coordinates the Database and SlaveEventBuffer.
  */
-class DLL_LOCAL ResponseContext : public Loggable
+class DLL_LOCAL ResponseContext : public openpal::Loggable
 {
 	enum Mode {
 		UNDEFINED,
@@ -94,7 +93,7 @@ class DLL_LOCAL ResponseContext : public Loggable
 	typedef std::function<bool (APDU&)> WriteFunction;
 
 public:
-	ResponseContext(Logger*, Database*, SlaveResponseTypes* apRspTypes, const EventMaxConfig& arEventMaxConfig);
+	ResponseContext(openpal::Logger& arLogger, Database*, SlaveResponseTypes* apRspTypes, const EventMaxConfig& arEventMaxConfig);
 
 	Mode GetMode() {
 		return mMode;

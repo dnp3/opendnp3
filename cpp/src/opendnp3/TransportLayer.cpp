@@ -22,29 +22,30 @@
 
 #include "TransportLayer.h"
 
-#include <opendnp3/Logger.h>
 #include <opendnp3/Exception.h>
 #include <opendnp3/TransportConstants.h>
 
-#include "LoggableMacros.h"
+#include <openpal/LoggableMacros.h>
+
 #include "TransportStates.h"
 
 #include <assert.h>
 #include <sstream>
 
 using namespace std;
+using namespace openpal;
 
 namespace opendnp3
 {
 
-TransportLayer::TransportLayer(Logger* apLogger, size_t aFragSize) :
-	Loggable(apLogger),
-	IUpperLayer(apLogger),
-	ILowerLayer(apLogger),
+TransportLayer::TransportLayer(Logger& arLogger, size_t aFragSize) :
+	Loggable(arLogger),
+	IUpperLayer(arLogger),
+	ILowerLayer(arLogger),
 	mpState(TLS_Closed::Inst()),
 	M_FRAG_SIZE(aFragSize),
-	mReceiver(apLogger, this, aFragSize),
-	mTransmitter(apLogger, this, aFragSize),
+	mReceiver(arLogger, this, aFragSize),
+	mTransmitter(arLogger, this, aFragSize),
 	mThisLayerUp(false)
 {
 

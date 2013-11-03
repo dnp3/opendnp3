@@ -28,18 +28,18 @@
 #include <memory>
 #include <sstream>
 
-
 using namespace std;
+using namespace openpal;
 
 namespace opendnp3
 {
 
 TransportTestObject::TransportTestObject(bool aOpenOnStart, FilterLevel aLevel, bool aImmediate) :
-	LogTester(aImmediate),
-	mpLogger(mLog.GetLogger(aLevel, "TransportTestObject")),
-	transport(mpLogger),
-	lower(mpLogger),
-	upper(mpLogger)
+	log(),
+	logger(Logger(&log, aLevel, "TransportTestObject")),
+	transport(logger),
+	lower(logger),
+	upper(logger)
 {
 	lower.SetUpperLayer(&transport);
 	transport.SetUpperLayer(&upper);

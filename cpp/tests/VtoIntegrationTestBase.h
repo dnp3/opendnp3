@@ -23,7 +23,6 @@
 #ifndef __VTO_INTEGRATION_TEST_BASE_H_
 #define __VTO_INTEGRATION_TEST_BASE_H_
 
-#include <opendnp3/Loggable.h>
 #include <opendnp3/PhysicalLayerAsyncTCPClient.h>
 #include <opendnp3/PhysicalLayerAsyncTCPServer.h>
 #include <opendnp3/DNP3Manager.h>
@@ -49,18 +48,19 @@
 namespace opendnp3
 {
 
-class VtoIntegrationTestBase : public LogTester, protected Loggable
+class VtoIntegrationTestBase
 {
 public:
 	VtoIntegrationTestBase(
 	        bool clientOnSlave = true,
 	        bool aImmediateOutput = false,
-	        FilterLevel level = LEV_INFO,
+	        openpal::FilterLevel level = openpal::LEV_INFO,
 	        boost::uint16_t port = MACRO_PORT_VALUE);
 
 	virtual ~VtoIntegrationTestBase();
+	
+	LogTester log;
 
-	Logger* mpMainLogger;
 	MockCommandHandler cmdHandler;
 
 	AsyncTestObjectASIO testObj;

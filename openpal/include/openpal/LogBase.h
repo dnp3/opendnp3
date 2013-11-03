@@ -17,46 +17,39 @@
 //
 // This file was forked on 01/01/2013 by Automatak, LLC and modifications
 // have been made to this file. Automatak, LLC licenses these modifications to
-// you under the terms of the License.
+// you under the GNU Affero General Public License Version 3.0
+// (the "Additional License"). You may not use these modifications except in
+// compliance with the additional license. You may obtain a copy of the Additional
+// License at
 //
+// http://www.gnu.org/licenses/agpl.html
+//
+// Contact Automatak, LLC for a commercial license to these modifications
+//
+#ifndef __LOG_BASE_H_
+#define __LOG_BASE_H_
 
-#include <opendnp3/Parsing.h>
+#include "LogEntry.h"
 
-#include <sstream>
-#include <boost/numeric/conversion/converter.hpp>
-
-namespace opendnp3
+namespace openpal
 {
 
-bool Parsing::Get(const std::string& aArg, bool& arValue)
+/**
+* Callback interface for log messages
+*/
+class ILogBase
 {
-	if(aArg == "true") {
-		arValue = true;
-		return true;
-	}
-	else if(aArg == "false") {
-		arValue = false;
-		return true;
-	}
-	else {
-		return Get<bool>(aArg, arValue);
-	}
-}
+public:
+	virtual ~ILogBase() {}
 
-bool Parsing::Get(const std::string& aArg, uint8_t& arValue)
-{
-	int value;
-	if(Parsing::Get(aArg, value)) {
-		try {
-			arValue = boost::numeric::converter<uint8_t, int>::convert(value);
-		}
-		catch(...) {
-			return false;
-		}
-		return true;
-	}
-	else return false;
-}
+	/**
+	* Callback function for log messages
+	* @param arEntry the log message
+	*/
+	virtual void Log( const LogEntry& arEntry ) = 0;
+};
 
 }
+
+#endif
 

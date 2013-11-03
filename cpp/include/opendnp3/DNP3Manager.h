@@ -36,7 +36,8 @@
 #include <functional>
 
 #include <openpal/Types.h>
-#include "LogTypes.h"
+#include <openpal/Logger.h>
+
 #include "DestructorHook.h"
 
 #ifndef OPENDNP3_NO_SERIAL
@@ -70,11 +71,9 @@ int main(int argc, char* argv[])
 namespace opendnp3
 {
 
-class ILogBase;
 class IPhysicalLayerAsync;
 class IOServiceThreadPool;
 class EventLog;
-class Logger;
 class IChannel;
 class DNP3Channel;
 
@@ -109,7 +108,7 @@ public:
 	* Add a callback to receive log messages
 	* @param apLog Pointer to a callback object
 	*/
-	void AddLogSubscriber(ILogBase* apLog);
+	void AddLogSubscriber(openpal::ILogBase* apLog);
 
 	/**
 	* Permanently shutdown the manager and all sub-objects that have been created. Stop
@@ -126,7 +125,7 @@ public:
 	* @param arHost IP address of remote outstation (i.e. 127.0.0.1 or www.google.com)
 	* @param aPort Port of remote outstation is listening on
 	*/
-	IChannel* AddTCPClient(const std::string& arLoggerId, FilterLevel aLevel,openpal::millis_t aOpenRetry, const std::string& arHost, uint16_t aPort);
+	IChannel* AddTCPClient(const std::string& arLoggerId, openpal::FilterLevel aLevel, openpal::millis_t aOpenRetry, const std::string& arHost, uint16_t aPort);
 
 	/**
 	* Add a tcp server channel
@@ -137,7 +136,7 @@ public:
 	* @param arEndpoint Network adapter to listen on, i.e. 127.0.0.1 or 0.0.0.0
 	* @param aPort Port to listen on
 	*/
-	IChannel* AddTCPServer(const std::string& arLoggerId, FilterLevel aLevel,openpal::millis_t aOpenRetry, const std::string& arEndpoint, uint16_t aPort);
+	IChannel* AddTCPServer(const std::string& arLoggerId, openpal::FilterLevel aLevel,openpal::millis_t aOpenRetry, const std::string& arEndpoint, uint16_t aPort);
 
 #ifndef OPENDNP3_NO_SERIAL
 	/**
@@ -147,14 +146,14 @@ public:
 	* @param aOpenRetry connection retry interval on open failure in milliseconds
 	* @param aSettings settings object that fully parameterizes the serial port
 	*/
-	IChannel* AddSerial(const std::string& arLoggerId, FilterLevel aLevel,openpal::millis_t aOpenRetry, SerialSettings aSettings);
+	IChannel* AddSerial(const std::string& arLoggerId, openpal::FilterLevel aLevel, openpal::millis_t aOpenRetry, SerialSettings aSettings);
 #endif
 
 private:
 
 	void OnChannelShutdownCallback(DNP3Channel* apChannel);
 
-	IChannel* CreateChannel(Logger* apLogger,openpal::millis_t aOpenRetry, IPhysicalLayerAsync* apPhys);
+	IChannel* CreateChannel(openpal::Logger& arLogger, openpal::millis_t aOpenRetry, IPhysicalLayerAsync* apPhys);
 
 	std::auto_ptr<EventLog> mpLog;
 	std::auto_ptr<IOServiceThreadPool> mpThreadPool;

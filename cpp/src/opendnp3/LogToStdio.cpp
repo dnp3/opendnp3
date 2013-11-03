@@ -21,7 +21,6 @@
 //
 
 #include <opendnp3/LogToStdio.h>
-#include <opendnp3/LogEntry.h>
 
 #include <ctime>
 
@@ -45,11 +44,11 @@ void LogToStdio::SetPrintLocation(bool aPrintLocation)
 	mPrintLocation = aPrintLocation;
 }
 
-void LogToStdio::Log(const LogEntry& arEntry)
+void LogToStdio::Log(const openpal::LogEntry& arEntry)
 {
 #ifndef OPENDNP3_STRIP_LOG_MESSAGES	
 	ostringstream oss;
-	oss << ToNormalizedString(arEntry.GetTimeStamp()) << LogTypes::GetLevelString( arEntry.GetFilterLevel()) << " - "
+	oss << ToNormalizedString(arEntry.GetTimeStamp()) << openpal::LogTypes::GetLevelString( arEntry.GetFilterLevel()) << " - "
 		<< arEntry.GetDeviceName();
 	if(mPrintLocation && !arEntry.GetLocation().empty()) oss << " - " << arEntry.GetMessage();
 	oss << " - " << arEntry.GetMessage();

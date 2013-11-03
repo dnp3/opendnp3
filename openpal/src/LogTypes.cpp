@@ -20,12 +20,12 @@
 // you under the terms of the License.
 //
 
-#include <opendnp3/LogTypes.h>
-#include <opendnp3/Util.h>
+#include <openpal/LogTypes.h>
+#include <cstdint>
 
 #include <sstream>
 
-namespace opendnp3
+namespace openpal
 {
 
 #ifndef OPENDNP3_STRIP_LOG_MESSAGES
@@ -63,6 +63,8 @@ FilterLevel LogTypes::ConvertIntToFilterLevel(int aLevel)
 }
 
 #ifndef OPENDNP3_STRIP_LOG_MESSAGES
+
+/*
 int LogTypes::GetFilterMask(char c)
 {
 	switch(c) {
@@ -88,7 +90,7 @@ int LogTypes::GetFilterMask(const std::string& arg)
 	for(auto c: copy) ret |= GetFilterMask(c);
 	return ret;
 }
-
+*/
 
 std::string LogTypes::GetLevelString( FilterLevel aLevel )
 {

@@ -30,7 +30,7 @@
 #define __LOG_TO_STDIO_H_
 
 #include <mutex>
-#include "LogBase.h"
+#include <openpal/LogBase.h>
 
 namespace opendnp3
 {
@@ -40,7 +40,7 @@ namespace opendnp3
 *
 *
 */
-class LogToStdio : public ILogBase
+class LogToStdio : public openpal::ILogBase
 {
 
 public:
@@ -48,7 +48,7 @@ public:
 		return &mInstance;
 	}
 
-	void Log( const LogEntry& arEntry );
+	void Log( const openpal::LogEntry& arEntry );
 	void SetVar(const std::string& aSource, const std::string& aVarName, int aValue) {}
 
 	void SetPrintLocation(bool aPrintLocation);

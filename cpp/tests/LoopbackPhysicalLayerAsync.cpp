@@ -25,17 +25,17 @@
 #include <boost/asio.hpp>
 #include <boost/bind.hpp>
 
-#include <opendnp3/Logger.h>
-#include <opendnp3/LoggableMacros.h>
+#include <openpal/LoggableMacros.h>
 
 using namespace boost;
 using namespace boost::system;
+using namespace openpal;
 
 namespace opendnp3
 {
 
-LoopbackPhysicalLayerAsync::LoopbackPhysicalLayerAsync(Logger* apLogger, boost::asio::io_service* apSrv) :
-	PhysicalLayerAsyncASIO(apLogger, apSrv),
+LoopbackPhysicalLayerAsync::LoopbackPhysicalLayerAsync(openpal::Logger& arLogger, boost::asio::io_service* apSrv) :
+	PhysicalLayerAsyncASIO(arLogger, apSrv),
 	mReadSize(0),
 	mpReadBuff(NULL)
 {

@@ -22,14 +22,16 @@
 
 #include "LinkLayerTest.h"
 
+using namespace openpal;
+
 namespace opendnp3
 {
 
 LinkLayerTest::LinkLayerTest(LinkConfig arCfg, FilterLevel aLevel, bool aImmediate) :
-	LogTester(aImmediate),
+	log(),
 	mts(),
-	upper(mLog.GetLogger(aLevel, "MockUpperLayer")),
-	link(mLog.GetLogger(aLevel, "LinkLayer"), &mts, arCfg),
+	upper(Logger(&log, aLevel, "MockUpperLayer")),
+	link(Logger(&log, aLevel, "LinkLayer"), &mts, arCfg),
 	mNumSend(0)
 {
 	link.SetUpperLayer(&upper);

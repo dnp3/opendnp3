@@ -22,15 +22,17 @@
 
 #include "ResponseContext.h"
 
-#include <opendnp3/Logger.h>
 #include <opendnp3/Util.h>
 #include <opendnp3/DNPConstants.h>
 
-#include "LoggableMacros.h"
+#include <openpal/LoggableMacros.h>
+
+
 #include "Objects.h"
 #include "SlaveResponseTypes.h"
 
 using namespace boost;
+using namespace openpal;
 
 namespace opendnp3
 {
@@ -52,8 +54,8 @@ bool ResponseContext::ResponseKey::operator()(const ResponseContext::ResponseKey
 }
 
 
-ResponseContext::ResponseContext(Logger* apLogger, Database* apDB, SlaveResponseTypes* apRspTypes, const EventMaxConfig& arEventMaxConfig) :
-	Loggable(apLogger),
+ResponseContext::ResponseContext(openpal::Logger& arLogger, Database* apDB, SlaveResponseTypes* apRspTypes, const EventMaxConfig& arEventMaxConfig) :
+	Loggable(arLogger),
 	mBuffer(arEventMaxConfig),
 	mMode(UNDEFINED),
 	mpDB(apDB),

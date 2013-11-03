@@ -30,7 +30,6 @@
 #define __SLAVE_H_
 
 #include <opendnp3/ICommandHandler.h>
-#include <opendnp3/Logger.h>
 #include <opendnp3/SlaveConfig.h>
 
 #include <openpal/Visibility.h>
@@ -38,9 +37,7 @@
 
 #include "StackBase.h"
 #include "ChangeBuffer.h"
-#include "Loggable.h"
 #include "TimeSource.h"
-#include "LoggableMacros.h"
 #include "APDU.h"
 #include "AppInterfaces.h"
 #include "EventBuffers.h"
@@ -81,7 +78,7 @@ class AS_Base;
  * The Slave is responsible for building all aspects of APDU packet responses
  * except for the application sequence number.
  */
-class DLL_LOCAL Slave : public Loggable, public IAppUser, public StackBase
+class DLL_LOCAL Slave : public openpal::Loggable, public IAppUser, public StackBase
 {
 
 	friend class AS_Base; //make the state base class a friend
@@ -94,7 +91,7 @@ class DLL_LOCAL Slave : public Loggable, public IAppUser, public StackBase
 
 public:
 
-	Slave(Logger*, IAppLayer*, openpal::IExecutor*, ITimeManager*, Database*, ICommandHandler*, const SlaveConfig&, ITimeSource* apTimeSource = TimeSource::Inst());
+	Slave(openpal::Logger&, IAppLayer*, openpal::IExecutor*, ITimeManager*, Database*, ICommandHandler*, const SlaveConfig&, ITimeSource* apTimeSource = TimeSource::Inst());
 	~Slave();
 
 	////////////////////////

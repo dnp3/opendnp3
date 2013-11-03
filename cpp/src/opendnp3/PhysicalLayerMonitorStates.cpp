@@ -22,14 +22,16 @@
 
 #include "PhysicalLayerMonitorStates.h"
 
-#include <opendnp3/Logger.h>
 #include <opendnp3/Exception.h>
 #include <opendnp3/Location.h>
 
 #include "IPhysicalLayerAsync.h"
-#include "LoggableMacros.h"
+
+#include <openpal/LoggableMacros.h>
 
 #include <sstream>
+
+using namespace openpal;
 
 namespace opendnp3
 {

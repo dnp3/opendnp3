@@ -29,26 +29,27 @@
 #include <string>
 
 #include <opendnp3/Exception.h>
-#include <opendnp3/Logger.h>
+
+#include <openpal/LoggableMacros.h>
 
 #include "IHandlerAsync.h"
-#include "LoggableMacros.h"
 #include "ASIOSerialHelpers.h"
 
 using namespace boost;
 using namespace boost::asio;
 using namespace boost::system;
 using namespace std;
+using namespace openpal;
 
 namespace opendnp3
 {
 
 PhysicalLayerAsyncSerial::PhysicalLayerAsyncSerial(
-        Logger* apLogger,
+        Logger& arLogger,
         boost::asio::io_service* apIOService,
         const SerialSettings& arSettings) :
 
-	PhysicalLayerAsyncASIO(apLogger, apIOService),
+	PhysicalLayerAsyncASIO(arLogger, apIOService),
 	mSettings(arSettings),
 	mPort(*apIOService)
 {

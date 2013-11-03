@@ -20,21 +20,25 @@
 // you under the terms of the License.
 //
 
-#include "Loggable.h"
+#ifndef __LOGGABLE_H_
+#define __LOGGABLE_H_
 
-#include <assert.h>
+#include "Logger.h"
+#include "Visibility.h"
 
-#include "Log.h"
-#include <opendnp3/Logger.h>
-
-namespace opendnp3
+namespace openpal
 {
 
-Loggable::Loggable( Logger* apLogger )
-	: mpLogger(apLogger)
+class DLL_LOCAL Loggable
 {
-	assert(apLogger != NULL);
-}
+public:
+	Loggable(Logger& arLogger);
+
+protected:
+	Logger mLogger;
+};
 
 }
+
+#endif
 

@@ -24,22 +24,23 @@
 
 
 #include <opendnp3/TransportConstants.h>
-#include <opendnp3/Logger.h>
 #include <opendnp3/Exception.h>
 
-#include "LoggableMacros.h"
+#include <openpal/LoggableMacros.h>
+
 #include "TransportLayer.h"
 
 #include <sstream>
 #include <memory.h>
 
 using namespace std;
+using namespace openpal;
 
 namespace opendnp3
 {
 
-TransportRx::TransportRx(Logger* apLogger, TransportLayer* apContext, size_t aFragSize) :
-	Loggable(apLogger),
+TransportRx::TransportRx(Logger& arLogger, TransportLayer* apContext, size_t aFragSize) :
+	Loggable(arLogger),
 	mpContext(apContext),
 	mBuffer(aFragSize),
 	mNumBytesRead(0),

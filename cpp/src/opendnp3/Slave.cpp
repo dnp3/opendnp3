@@ -24,13 +24,13 @@
 
 #include <opendnp3/AnalogOutput.h>
 #include <opendnp3/ControlRelayOutputBlock.h>
-#include <opendnp3/Logger.h>
+
+#include <openpal/LoggableMacros.h>
+#include <openpal/IExecutor.h>
 
 #include "SlaveStates.h"
 #include "Database.h"
 #include "ObjectReadIterator.h"
-#include "LoggableMacros.h"
-#include <openpal/IExecutor.h>
 
 #include <boost/bind.hpp>
 #include <functional>
@@ -40,8 +40,8 @@ using namespace openpal;
 namespace opendnp3
 {
 
-Slave::Slave(Logger* apLogger, IAppLayer* apAppLayer, IExecutor* apExecutor, ITimeManager* apTime, Database* apDatabase, ICommandHandler* apCmdHandler, const SlaveConfig& arCfg, ITimeSource* apTimeSource) :
-	Loggable(apLogger),
+Slave::Slave(openpal::Logger& arLogger, IAppLayer* apAppLayer, IExecutor* apExecutor, ITimeManager* apTime, Database* apDatabase, ICommandHandler* apCmdHandler, const SlaveConfig& arCfg, ITimeSource* apTimeSource) :
+	Loggable(arLogger),
 	StackBase(apExecutor),
 	mpAppLayer(apAppLayer),
 	mpDatabase(apDatabase),
@@ -52,7 +52,7 @@ Slave::Slave(Logger* apLogger, IAppLayer* apAppLayer, IExecutor* apExecutor, ITi
 	mpUnsolTimer(NULL),
 	mResponse(arCfg.mMaxFragSize),
 	mUnsol(arCfg.mMaxFragSize),
-	mRspContext(apLogger, apDatabase, &mRspTypes, arCfg.mEventMaxConfig),
+	mRspContext(arLogger, apDatabase, &mRspTypes, arCfg.mEventMaxConfig),
 	mSBOHandler(arCfg.mSelectTimeout, apCmdHandler, apTimeSource),
 	mHaveLastRequest(false),
 	mLastRequest(arCfg.mMaxFragSize),
@@ -64,8 +64,8 @@ Slave::Slave(Logger* apLogger, IAppLayer* apAppLayer, IExecutor* apExecutor, ITi
 	mStartupNullUnsol(false),
 	mState(SS_UNKNOWN),
 	mpTimeTimer(NULL),
-	mVtoReader(apLogger),
-	mVtoWriter(apLogger->GetSubLogger("VtoWriter"), arCfg.mVtoWriterQueueSize)
+	mVtoReader(arLogger),
+	mVtoWriter(arLogger.GetSubLogger("VtoWriter"), arCfg.mVtoWriterQueueSize)
 {
 	/* Link the event buffer to the database */
 	mpDatabase->SetEventBuffer(mRspContext.GetBuffer());
@@ -377,11 +377,11 @@ void Slave::HandleWriteTimeDate(HeaderReadIterator& arHWI)
 
 	mIIN.SetNeedTime(false);
 
-	if(mpLogger->IsEnabled(LEV_EVENT)) {
-		LogEntry le(LEV_EVENT, mpLogger->GetName(), LOCATION,
+	if(mLogger.IsEnabled(LEV_EVENT)) {
+		LogEntry le(LEV_EVENT, mLogger.GetName(), LOCATION,
 		            "Time synchronized with master", TIME_SYNC_UPDATED);
 		le.AddValue("MILLISEC_SINCE_EPOCH", ms);
-		mpLogger->Log(le);
+		mLogger.Log(le);
 	}
 }
 

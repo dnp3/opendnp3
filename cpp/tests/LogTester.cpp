@@ -24,15 +24,14 @@
 
 #include <opendnp3/LogToStdio.h>
 
+using namespace openpal;
+
 namespace opendnp3
 {
 
-LogTester::LogTester(bool aImmediate) :
-	mLog(),
-	mpTestLogger(mLog.GetLogger(LEV_DEBUG, "LogTester"))	
-{
-	mLog.AddLogSubscriber(this);
-	if(aImmediate) mLog.AddLogSubscriber(LogToStdio::Inst());
+LogTester::LogTester() : mTestLogger(this, LEV_DEBUG, "LogTester")
+{	
+	
 }
 
 void LogTester::Log( const LogEntry& arEntry )
@@ -54,7 +53,7 @@ int LogTester::ClearLog()
 
 void LogTester::Log(const std::string& arLocation, const std::string& arMessage)
 {
-	mpTestLogger->Log(LEV_EVENT, arLocation, arMessage);
+	mTestLogger.Log(LEV_EVENT, arLocation, arMessage);
 }
 
 int LogTester::NextErrorCode()

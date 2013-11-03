@@ -57,7 +57,7 @@ class DLL_LOCAL AppLayer : public IUpperLayer, public IAppLayer
 
 public:
 
-	AppLayer(Logger* apLogger, openpal::IExecutor*, AppConfig aAppCfg);
+	AppLayer(openpal::Logger& arLogger, openpal::IExecutor*, AppConfig aAppCfg);
 
 	void SetUser(IAppUser*);
 

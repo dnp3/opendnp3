@@ -37,10 +37,8 @@
 #include "LogBase.h"
 
 
-namespace opendnp3
+namespace openpal
 {
-
-class EventLog;
 
 /**
 * Interface that represents a distinct logger with a name and running level
@@ -49,77 +47,38 @@ class Logger
 {
 
 public:
-	Logger( EventLog* apLog, FilterLevel aFilter, const std::string& aName);
+	Logger(ILogBase* apLog, int aLevel, const std::string& aName);
 
 	void Log( FilterLevel aFilterLevel, const std::string& arLocation, const std::string& aMessage, int aErrorCode = -1);
+
 	void Log( const LogEntry& arEntry);
 
 	const std::string& GetName() const {
 		return mName;
 	}
 
-	//functions for manipulating filter levels
+	// functions for manipulating filter levels
 	inline bool IsEnabled(FilterLevel aFilter) {
 		return (mLevel & aFilter) != 0;
 	}
+
 	inline void SetFilters(int aLevel) {
 		mLevel = aLevel;
-	}
-	void SetFilterLevel(FilterLevel aFilter);
-	int GetFilters() {
+	}	
+
+	int GetFilters() const {
 		return mLevel;
 	}
 
-	Logger* GetSubLogger(std::string aName);
-	Logger* GetSubLogger(std::string aSubName, int aFilterBits);
-	Logger* GetSubLogger(std::string aSubName, FilterLevel aFilter);
+	Logger GetSubLogger(std::string aSubName, int aLevel) const;
+	Logger GetSubLogger(std::string aName) const;		
 
 private:
 
-	int					mLevel;			// bit field describing what is being logged
-	EventLog*			mpLog;
+	int					mLevel;   // bit field describing what is being logged
+	ILogBase*			mpLog;			
 	std::string			mName;
 };
-
-/*
-class LogCounter
-{
-public:
-	LogCounter(Logger* apLogger, const std::string& arName) :
-		mpLogger(apLogger),
-		mName(arName),
-		mValue(-1) {
-		this->Increment();
-	}
-
-	void Increment() {
-		mpLogger->Set(mName, ++mValue);
-	}
-
-private:
-	Logger* mpLogger;
-	std::string mName;
-	int mValue;
-};
-
-class LogVariable
-{
-public:
-	LogVariable(Logger* apLogger, const std::string& arName) :
-		mpLogger(apLogger),
-		mName(arName) {
-
-	}
-
-	void Set(int aVal) {
-		mpLogger->Set(mName, aVal);
-	}
-
-private:
-	Logger* mpLogger;
-	std::string mName;
-};
-*/
 
 }
 

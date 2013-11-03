@@ -32,8 +32,7 @@
 #include <string>
 
 #include <openpal/Visibility.h>
-
-#include "Loggable.h"
+#include <openpal/Loggable.h>
 
 
 namespace opendnp3
@@ -55,11 +54,11 @@ enum TaskResult {
 /**
  * A generic interface for defining master request/response style tasks.
  */
-class DLL_LOCAL MasterTaskBase : public Loggable
+class DLL_LOCAL MasterTaskBase : public openpal::Loggable
 {
 public:
 
-	MasterTaskBase(Logger* apLogger);
+	MasterTaskBase(openpal::Logger& arLogger);
 
 	/**
 	 * Sets the task completion handler and calls the overiddable _Init()
@@ -148,14 +147,14 @@ All non-read tasks that only return a single fragment can inherit from this task
 class DLL_LOCAL SingleRspBase : public MasterTaskBase
 {
 public:
-	SingleRspBase(Logger*);
+	SingleRspBase(openpal::Logger&);
 	TaskResult _OnPartialResponse(const APDU&);
 };
 
 class DLL_LOCAL SimpleRspBase : public SingleRspBase
 {
 public:
-	SimpleRspBase(Logger*);
+	SimpleRspBase(openpal::Logger&);
 	TaskResult _OnFinalResponse(const APDU&);
 };
 

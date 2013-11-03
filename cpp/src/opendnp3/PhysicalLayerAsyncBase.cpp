@@ -23,14 +23,14 @@
 #include "PhysicalLayerAsyncBase.h"
 
 #include "IHandlerAsync.h"
-#include "LoggableMacros.h"
 
-#include <opendnp3/Logger.h>
+#include <openpal/LoggableMacros.h>
+
 #include <opendnp3/Exception.h>
 
 #include <sstream>
 
-
+using namespace openpal;
 using namespace std;
 
 namespace opendnp3
@@ -128,8 +128,8 @@ std::string PhysicalLayerAsyncBase::State::ConvertStateToString() const
 // PhysicalLayerAsyncBase
 ///////////////////////////////////
 
-PhysicalLayerAsyncBase::PhysicalLayerAsyncBase(Logger* apLogger) :
-	Loggable(apLogger),
+PhysicalLayerAsyncBase::PhysicalLayerAsyncBase(openpal::Logger& arLogger) :
+	Loggable(arLogger),
 	mpHandler(NULL)
 {
 

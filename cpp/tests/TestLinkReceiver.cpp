@@ -46,7 +46,7 @@ BOOST_AUTO_TEST_CASE(HeaderCRCError)
 	LinkReceiverTest t;
 	t.WriteData("05 64 05 C0 01 00 00 04 E9 20");
 	BOOST_REQUIRE_EQUAL(t.mSink.mNumFrames, 0);
-	BOOST_REQUIRE_EQUAL(t.NextErrorCode(), DLERR_CRC);
+	BOOST_REQUIRE_EQUAL(t.log.NextErrorCode(), DLERR_CRC);
 }
 
 BOOST_AUTO_TEST_CASE(BodyCRCError)
@@ -54,7 +54,7 @@ BOOST_AUTO_TEST_CASE(BodyCRCError)
 	LinkReceiverTest t;
 	t.WriteData("05 64 14 F3 01 00 00 04 0A 3B C0 C3 01 3C 02 06 3C 03 06 3C 04 06 3C 01 06 9A 11");
 	BOOST_REQUIRE_EQUAL(t.mSink.mNumFrames, 0);
-	BOOST_REQUIRE_EQUAL(t.NextErrorCode(), DLERR_CRC);
+	BOOST_REQUIRE_EQUAL(t.log.NextErrorCode(), DLERR_CRC);
 }
 
 //////////////////////////////////////////
@@ -68,7 +68,7 @@ BOOST_AUTO_TEST_CASE(BadLengthError)
 	LinkReceiverTest t;
 	t.WriteData(RepairCRC("05 64 01 C0 01 00 00 04 E9 21"));
 	BOOST_REQUIRE_EQUAL(t.mSink.mNumFrames, 0);
-	BOOST_REQUIRE_EQUAL(t.NextErrorCode(), DLERR_INVALID_LENGTH);
+	BOOST_REQUIRE_EQUAL(t.log.NextErrorCode(), DLERR_INVALID_LENGTH);
 }
 
 //Test that the presence of user data disagrees with the function code
@@ -77,7 +77,7 @@ BOOST_AUTO_TEST_CASE(UnexpectedData)
 	LinkReceiverTest t;
 	t.WriteData(RepairCRC("05 64 08 C0 01 00 00 04 E9 21"));
 	BOOST_REQUIRE_EQUAL(t.mSink.mNumFrames, 0);
-	BOOST_REQUIRE_EQUAL(t.NextErrorCode(), DLERR_UNEXPECTED_DATA);
+	BOOST_REQUIRE_EQUAL(t.log.NextErrorCode(), DLERR_UNEXPECTED_DATA);
 }
 
 // Test that the absence of user data disagrees with the function code
@@ -87,7 +87,7 @@ BOOST_AUTO_TEST_CASE(AbsenceOfData)
 	LinkReceiverTest t;
 	t.WriteData(RepairCRC("05 64 05 73 00 04 01 00 03 FC"));
 	BOOST_REQUIRE_EQUAL(t.mSink.mNumFrames, 0);
-	BOOST_REQUIRE_EQUAL(t.NextErrorCode(), DLERR_NO_DATA);
+	BOOST_REQUIRE_EQUAL(t.log.NextErrorCode(), DLERR_NO_DATA);
 }
 
 // Test that the parser can handle an unknown PriToSec function code
@@ -97,7 +97,7 @@ BOOST_AUTO_TEST_CASE(UnknownFunction)
 	LinkReceiverTest t;
 	t.WriteData(RepairCRC("05 64 05 C6 01 00 00 04 E9 21"));
 	BOOST_REQUIRE_EQUAL(t.mSink.mNumFrames, 0);
-	BOOST_REQUIRE_EQUAL(t.NextErrorCode(),  DLERR_UNKNOWN_FUNC);
+	BOOST_REQUIRE_EQUAL(t.log.NextErrorCode(),  DLERR_UNKNOWN_FUNC);
 }
 
 // Test that the parser can handle an unexpected FCV bit
@@ -107,7 +107,7 @@ BOOST_AUTO_TEST_CASE(UnexpectedFCV)
 	LinkReceiverTest t;
 	t.WriteData(RepairCRC("05 64 05 D0 01 00 00 04 E9 21"));
 	BOOST_REQUIRE_EQUAL(t.mSink.mNumFrames, 0);
-	BOOST_REQUIRE_EQUAL(t.NextErrorCode(), DLERR_UNEXPECTED_FCV);
+	BOOST_REQUIRE_EQUAL(t.log.NextErrorCode(), DLERR_UNEXPECTED_FCV);
 }
 
 // Test that the parser can handle an unexpected FCB bit for SecToPri
@@ -117,7 +117,7 @@ BOOST_AUTO_TEST_CASE(UnexpectedFCB)
 	LinkReceiverTest t;
 	t.WriteData(RepairCRC("05 64 05 20 00 04 01 00 19 A6"));
 	BOOST_REQUIRE_EQUAL(t.mSink.mNumFrames, 0);
-	BOOST_REQUIRE_EQUAL(t.NextErrorCode(), DLERR_UNEXPECTED_FCB);
+	BOOST_REQUIRE_EQUAL(t.log.NextErrorCode(), DLERR_UNEXPECTED_FCB);
 }
 
 // Write two bad packets back-to-back tests that this produces
@@ -128,8 +128,8 @@ BOOST_AUTO_TEST_CASE(CombinedFailures)
 	t.WriteData(RepairCRC("05 64 05 20 00 04 01 00 19 A6")
 	            + " " + RepairCRC("05 64 05 D0 01 00 00 04 E9 21"));
 	BOOST_REQUIRE_EQUAL(t.mSink.mNumFrames, 0);
-	BOOST_REQUIRE_EQUAL(t.NextErrorCode(), DLERR_UNEXPECTED_FCB);
-	BOOST_REQUIRE_EQUAL(t.NextErrorCode(), DLERR_UNEXPECTED_FCV);
+	BOOST_REQUIRE_EQUAL(t.log.NextErrorCode(), DLERR_UNEXPECTED_FCB);
+	BOOST_REQUIRE_EQUAL(t.log.NextErrorCode(), DLERR_UNEXPECTED_FCV);
 }
 
 //////////////////////////////////////////
@@ -142,7 +142,7 @@ BOOST_AUTO_TEST_CASE(ReadACK)
 	LinkFrame f;
 	f.FormatAck(true, false, 1, 2);
 	t.WriteData(f);
-	BOOST_REQUIRE(t.IsLogErrorFree());
+	BOOST_REQUIRE(t.log.IsLogErrorFree());
 	BOOST_REQUIRE_EQUAL(t.mSink.mNumFrames, 1);
 	BOOST_REQUIRE(t.mSink.CheckLastWithDFC(FC_SEC_ACK, true, false, 1, 2));
 }
@@ -153,7 +153,7 @@ BOOST_AUTO_TEST_CASE(ReadNACK)
 	LinkFrame f;
 	f.FormatNack(false, true, 1, 2);
 	t.WriteData(f);
-	BOOST_REQUIRE(t.IsLogErrorFree());
+	BOOST_REQUIRE(t.log.IsLogErrorFree());
 	BOOST_REQUIRE_EQUAL(t.mSink.mNumFrames, 1);
 	BOOST_REQUIRE(t.mSink.CheckLastWithDFC(FC_SEC_NACK, false, true, 1, 2));
 }
@@ -164,7 +164,7 @@ BOOST_AUTO_TEST_CASE(LinkStatus)
 	LinkFrame f;
 	f.FormatLinkStatus(true, true, 1, 2);
 	t.WriteData(f);
-	BOOST_REQUIRE(t.IsLogErrorFree());
+	BOOST_REQUIRE(t.log.IsLogErrorFree());
 	BOOST_REQUIRE_EQUAL(t.mSink.mNumFrames, 1);
 	BOOST_REQUIRE(t.mSink.CheckLastWithDFC(FC_SEC_LINK_STATUS, true, true, 1, 2));
 }
@@ -175,7 +175,7 @@ BOOST_AUTO_TEST_CASE(NotSupported)
 	LinkFrame f;
 	f.FormatNotSupported(true, false, 1, 2);
 	t.WriteData(f);
-	BOOST_REQUIRE(t.IsLogErrorFree());
+	BOOST_REQUIRE(t.log.IsLogErrorFree());
 	BOOST_REQUIRE_EQUAL(t.mSink.mNumFrames, 1);
 	BOOST_REQUIRE(t.mSink.CheckLastWithDFC(FC_SEC_NOT_SUPPORTED, true, false, 1, 2));
 }
@@ -190,7 +190,7 @@ BOOST_AUTO_TEST_CASE(TestLinkStates)
 	LinkFrame f;
 	f.FormatTestLinkStatus(false, true, 1, 2);
 	t.WriteData(f);
-	BOOST_REQUIRE(t.IsLogErrorFree());
+	BOOST_REQUIRE(t.log.IsLogErrorFree());
 	BOOST_REQUIRE_EQUAL(t.mSink.mNumFrames, 1);
 	BOOST_REQUIRE(t.mSink.CheckLastWithFCB(FC_PRI_TEST_LINK_STATES, false, true, 1, 2));
 }
@@ -201,7 +201,7 @@ BOOST_AUTO_TEST_CASE(ResetLinkStates)
 	LinkFrame f;
 	f.FormatResetLinkStates(false, 1, 2);
 	t.WriteData(f);
-	BOOST_REQUIRE(t.IsLogErrorFree());
+	BOOST_REQUIRE(t.log.IsLogErrorFree());
 	BOOST_REQUIRE_EQUAL(t.mSink.mNumFrames, 1);
 	BOOST_REQUIRE(t.mSink.CheckLast(FC_PRI_RESET_LINK_STATES, false, 1, 2));
 }
@@ -212,7 +212,7 @@ BOOST_AUTO_TEST_CASE(RequestLinkStatus)
 	LinkFrame f;
 	f.FormatRequestLinkStatus(true, 1, 2);
 	t.WriteData(f);
-	BOOST_REQUIRE(t.IsLogErrorFree());
+	BOOST_REQUIRE(t.log.IsLogErrorFree());
 	BOOST_REQUIRE_EQUAL(t.mSink.mNumFrames, 1);
 	BOOST_REQUIRE(t.mSink.CheckLast(FC_PRI_REQUEST_LINK_STATUS, true, 1, 2));
 }
@@ -224,7 +224,7 @@ BOOST_AUTO_TEST_CASE(UnconfirmedUserData)
 	ByteStr data(250, 0); //initializes a buffer with increasing value
 	f.FormatUnconfirmedUserData(true, 1, 2, data, data.Size());
 	t.WriteData(f);
-	BOOST_REQUIRE(t.IsLogErrorFree());
+	BOOST_REQUIRE(t.log.IsLogErrorFree());
 	BOOST_REQUIRE_EQUAL(t.mSink.mNumFrames, 1);
 	BOOST_REQUIRE(t.mSink.CheckLast(FC_PRI_UNCONFIRMED_USER_DATA, true, 1, 2));
 	BOOST_REQUIRE(t.mSink.BufferEquals(data, data.Size()));
@@ -237,7 +237,7 @@ BOOST_AUTO_TEST_CASE(ConfirmedUserData)
 	ByteStr data(250, 0); //initializes a buffer with increasing value
 	f.FormatConfirmedUserData(true, true, 1, 2, data, data.Size());
 	t.WriteData(f);
-	BOOST_REQUIRE(t.IsLogErrorFree());
+	BOOST_REQUIRE(t.log.IsLogErrorFree());
 	BOOST_REQUIRE_EQUAL(t.mSink.mNumFrames, 1);
 	BOOST_REQUIRE(t.mSink.CheckLastWithFCB(FC_PRI_CONFIRMED_USER_DATA, true, true, 1, 2));
 	BOOST_REQUIRE(t.mSink.BufferEquals(data, data.Size()));
@@ -252,7 +252,7 @@ BOOST_AUTO_TEST_CASE(TestTwoPackets)
 	LinkReceiverTest t;
 	// back to back reset link
 	t.WriteData("05 64 05 C0 01 00 00 04 E9 21 05 64 05 C0 01 00 00 04 E9 21");
-	BOOST_REQUIRE(t.IsLogErrorFree());
+	BOOST_REQUIRE(t.log.IsLogErrorFree());
 	BOOST_REQUIRE_EQUAL(t.mSink.mNumFrames, 2);
 	BOOST_REQUIRE(t.mSink.CheckLast(FC_PRI_RESET_LINK_STATES, true, 1, 1024));
 }
@@ -266,7 +266,7 @@ BOOST_AUTO_TEST_CASE(Resync0564)
 {
 	LinkReceiverTest t;
 	t.WriteData("05 64 05 64 05 C0 01 00 00 04 E9 21");
-	BOOST_REQUIRE_EQUAL(t.NextErrorCode(), DLERR_CRC);
+	BOOST_REQUIRE_EQUAL(t.log.NextErrorCode(), DLERR_CRC);
 	BOOST_REQUIRE_EQUAL(t.mSink.mNumFrames, 1);
 	BOOST_REQUIRE(t.mSink.CheckLast(FC_PRI_RESET_LINK_STATES, true, 1, 1024));
 }
@@ -285,7 +285,7 @@ BOOST_AUTO_TEST_CASE(ManyReceives)
 
 	for(size_t i = 1; i < 100; ++i) {
 		t.WriteData(f);
-		BOOST_REQUIRE(t.IsLogErrorFree());
+		BOOST_REQUIRE(t.log.IsLogErrorFree());
 		BOOST_REQUIRE_EQUAL(t.mSink.mNumFrames, i);
 		BOOST_REQUIRE(t.mSink.CheckLastWithDFC(FC_SEC_ACK, true, false, 1, 2));
 	}

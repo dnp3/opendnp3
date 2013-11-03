@@ -56,8 +56,8 @@ public:
 	 *
 	 * @return			a new VtoTransmitTask instance
 	 */
-	VtoTransmitTask(Logger* log, size_t fragSize, bool aUseNonStandardCode) :
-		MasterTaskBase(log),
+	VtoTransmitTask(openpal::Logger& arLogger, size_t fragSize, bool aUseNonStandardCode) :
+		MasterTaskBase(arLogger),
 		mBuffer(fragSize * 10),
 		mUseNonStandardCode(aUseNonStandardCode)
 	{}

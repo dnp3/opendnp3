@@ -27,7 +27,9 @@
 
 #include <opendnp3/APDUConstants.h>
 #include <opendnp3/CommandStatus.h>
+
 #include <openpal/Visibility.h>
+#include <openpal/Logger.h>
 
 #include <functional>
 #include <queue>
@@ -43,7 +45,7 @@ class DLL_LOCAL CommandTask : public MasterTaskBase
 	typedef std::function<void (CommandStatus)> Responder;
 
 public:
-	CommandTask(Logger*);
+	CommandTask(openpal::Logger&);
 
 	void Configure(const Formatter& arFormatter, const Responder& arResponder);
 	void AddCommandCode(FunctionCodes aCode);

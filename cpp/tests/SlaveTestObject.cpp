@@ -25,20 +25,24 @@
 #include "BufferHelpers.h"
 
 #include <opendnp3/ToHex.h>
+
+#include <openpal/LoggableMacros.h>
+
 #include <sstream>
 
 using namespace std;
+using namespace openpal;
 
 namespace opendnp3
 {
 
 SlaveTestObject::SlaveTestObject(const SlaveConfig& arCfg, FilterLevel aLevel, bool aImmediate) :
-	LogTester(aImmediate),
+	log(),
 	mts(),
-	app(mLog.GetLogger(aLevel, "app")),
-	db(mLog.GetLogger(aLevel, "db")),
-	slave(mLog.GetLogger(aLevel, "slave"), &app, &mts, &fakeTime, &db, &cmdHandler, arCfg),
-	mpLogger(mLog.GetLogger(aLevel, "test"))
+	app(Logger(&log, aLevel, "app")),
+	db(Logger(&log, aLevel, "db")),
+	slave(Logger(&log, aLevel, "slave"), &app, &mts, &fakeTime, &db, &cmdHandler, arCfg),
+	mLogger(Logger(&log, aLevel, "test"))
 {
 	app.SetUser(&slave);
 }

@@ -22,17 +22,16 @@
 
 #include "UnsolicitedChannel.h"
 
-#include <opendnp3/Logger.h>
+#include <openpal/LoggableMacros.h>
 
-#include "LoggableMacros.h"
 #include "AppLayer.h"
 
 namespace opendnp3
 {
 
 
-UnsolicitedChannel::UnsolicitedChannel(Logger* apLogger, AppLayer* apApp, IExecutor* apExecutor,openpal::millis_t aTimeout) :
-	AppLayerChannel("Unsolicited", apLogger, apApp, apExecutor, aTimeout)
+UnsolicitedChannel::UnsolicitedChannel(openpal::Logger& arLogger, AppLayer* apApp, IExecutor* apExecutor,openpal::millis_t aTimeout) :
+	AppLayerChannel("Unsolicited", arLogger, apApp, apExecutor, aTimeout)
 {}
 
 void UnsolicitedChannel::OnUnsol(APDU& arAPDU)

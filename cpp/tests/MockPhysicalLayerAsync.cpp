@@ -29,12 +29,13 @@
 #include <functional>
 
 using namespace boost::system;
+using namespace openpal;
 
 namespace opendnp3
 {
 
-MockPhysicalLayerAsync::MockPhysicalLayerAsync(Logger* apLogger, openpal::IExecutor* apExecutor) :
-	PhysicalLayerAsyncBase(apLogger),
+MockPhysicalLayerAsync::MockPhysicalLayerAsync(openpal::Logger& arLogger, openpal::IExecutor* apExecutor) :
+	PhysicalLayerAsyncBase(arLogger),
 	mpWriteBuff(NULL),
 	mNumToRead(0),
 	mNumToWrite(0),

@@ -22,12 +22,14 @@
 
 #include "AlwaysOpeningVtoRouter.h"
 
+using namespace openpal;
+
 namespace opendnp3
 {
 
-AlwaysOpeningVtoRouter::AlwaysOpeningVtoRouter(const VtoRouterSettings& arSettings, Logger* apLogger, IVtoWriter* apWriter, IPhysicalLayerAsync* apPhysLayer) :
-	Loggable(apLogger),
-	VtoRouter(arSettings, apLogger, apWriter, apPhysLayer)
+AlwaysOpeningVtoRouter::AlwaysOpeningVtoRouter(const VtoRouterSettings& arSettings, Logger& arLogger, IVtoWriter* apWriter, IPhysicalLayerAsync* apPhysLayer) :
+	Loggable(arLogger),
+	VtoRouter(arSettings, arLogger, apWriter, apPhysLayer)
 {
 	this->Start();
 }

@@ -22,18 +22,18 @@
 
 #include "VtoWriter.h"
 
-
-#include <opendnp3/Logger.h>
 #include <opendnp3/Util.h>
+#include <openpal/LoggableMacros.h>
 
 #include "EnhancedVto.h"
-#include "LoggableMacros.h"
+
+using namespace openpal;
 
 namespace opendnp3
 {
 
-VtoWriter::VtoWriter(Logger* apLogger, size_t aMaxVtoChunks) :
-	Loggable(apLogger),
+VtoWriter::VtoWriter(openpal::Logger& arLogger, size_t aMaxVtoChunks) :
+	Loggable(arLogger),
 	mMaxVtoChunks(aMaxVtoChunks)
 {}
 

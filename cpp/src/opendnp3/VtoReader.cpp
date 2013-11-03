@@ -24,10 +24,13 @@
 
 #include <opendnp3/DNPConstants.h>
 #include <opendnp3/Exception.h>
-#include <opendnp3/Logger.h>
+
+#include <openpal/LoggableMacros.h>
 
 #include "EnhancedVto.h"
-#include "LoggableMacros.h"
+
+
+using namespace openpal;
 
 namespace opendnp3
 {
