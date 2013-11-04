@@ -58,7 +58,7 @@ void CallbackListener(gcroot<System::Action<ChannelState>^>* listener, opendnp3:
 IMaster^ ChannelAdapter::AddMaster(System::String^ loggerId, LogLevel level, IDataObserver^ publisher, MasterStackConfig^ config)
 {
 	std::string stdLoggerId = Conversions::convertString(loggerId);	
-	opendnp3::FilterLevel stdLevel = Conversions::convertFilterLevel(level);
+	openpal::FilterLevel stdLevel = Conversions::convertFilterLevel(level);
 
 	MasterDataObserverWrapper^ wrapper = gcnew MasterDataObserverWrapper(publisher);
 	opendnp3::MasterStackConfig cfg = Conversions::convertConfig(config);
@@ -75,7 +75,7 @@ IMaster^ ChannelAdapter::AddMaster(System::String^ loggerId, LogLevel level, IDa
 IOutstation^ ChannelAdapter::AddOutstation(System::String^ loggerId, LogLevel level, ICommandHandler^ cmdHandler, SlaveStackConfig^ config)
 {	
 	std::string stdLoggerId = Conversions::convertString(loggerId);
-	opendnp3::FilterLevel stdLevel = Conversions::convertFilterLevel(level);
+	openpal::FilterLevel stdLevel = Conversions::convertFilterLevel(level);
 
 	SlaveCommandHandlerWrapper^ wrapper = gcnew SlaveCommandHandlerWrapper(cmdHandler);
 	opendnp3::SlaveStackConfig cfg = Conversions::convertConfig(config);

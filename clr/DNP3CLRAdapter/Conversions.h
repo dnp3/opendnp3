@@ -25,7 +25,8 @@
 
 #include <string>
 
-#include <opendnp3/LogTypes.h>
+#include <openpal/LogTypes.h>
+
 #include <opendnp3/DataTypes.h>
 #include <opendnp3/SerialTypes.h>
 #include <opendnp3/CommandStatus.h>
@@ -54,8 +55,8 @@ namespace Adapter
 		static System::String^ convertString(const std::string& s);
 
 		// Convert the log filter enumeration
-		static opendnp3::FilterLevel convertFilterLevel(LogLevel level);
-		static LogLevel convertFilterLevel(opendnp3::FilterLevel level);
+		static openpal::FilterLevel convertFilterLevel(LogLevel level);
+		static LogLevel convertFilterLevel(openpal::FilterLevel level);
 
 		// Converting channel state enumeration
 		static ChannelState convertChannelState(opendnp3::ChannelState aState);

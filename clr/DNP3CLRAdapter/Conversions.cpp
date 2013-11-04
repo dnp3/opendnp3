@@ -49,46 +49,46 @@ namespace Adapter
 		return gcnew System::String(s.c_str());
 	}
 
-	opendnp3::FilterLevel Conversions::convertFilterLevel(LogLevel level)
+	openpal::FilterLevel Conversions::convertFilterLevel(LogLevel level)
 	{
 		switch(level)
 		{
 			case (LogLevel::EVENT):
-				return opendnp3::LEV_EVENT;
+				return openpal::LEV_EVENT;
 			case (LogLevel::ERROR):
-				return opendnp3::LEV_ERROR;
+				return openpal::LEV_ERROR;
 			case (LogLevel::WARNING):
-				return opendnp3::LEV_WARNING;
+				return openpal::LEV_WARNING;
 			case (LogLevel::INFO):
-				return opendnp3::LEV_INFO;
+				return openpal::LEV_INFO;
 			case (LogLevel::INTERPRET):
-				return opendnp3::LEV_INTERPRET;
+				return openpal::LEV_INTERPRET;
 			case (LogLevel::COMM):
-				return opendnp3::LEV_COMM;
+				return openpal::LEV_COMM;
 			case (LogLevel::DEBUG):
-				return opendnp3::LEV_DEBUG;
+				return openpal::LEV_DEBUG;
 			default:
-				return opendnp3::LEV_DEBUG;
+				return openpal::LEV_DEBUG;
 		}
 	}
 
-	LogLevel Conversions::convertFilterLevel(opendnp3::FilterLevel level)
+	LogLevel Conversions::convertFilterLevel(openpal::FilterLevel level)
 	{
 		switch(level)
 		{
-			case (opendnp3::LEV_EVENT):
+			case (openpal::LEV_EVENT):
 				return LogLevel::EVENT;
-			case (opendnp3::LEV_ERROR):
+			case (openpal::LEV_ERROR):
 				return LogLevel::ERROR;
-			case (opendnp3::LEV_WARNING):
+			case (openpal::LEV_WARNING):
 				return LogLevel::WARNING;
-			case (opendnp3::LEV_INFO):
+			case (openpal::LEV_INFO):
 				return LogLevel::INFO;
-			case (opendnp3::LEV_INTERPRET):
+			case (openpal::LEV_INTERPRET):
 				return LogLevel::INTERPRET;
-			case (opendnp3::LEV_COMM):
+			case (openpal::LEV_COMM):
 				return LogLevel::COMM;
-			case (opendnp3::LEV_DEBUG):
+			case (openpal::LEV_DEBUG):
 				return LogLevel::DEBUG;
 			default:
 				return LogLevel::DEBUG;
