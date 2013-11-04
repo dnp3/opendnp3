@@ -80,7 +80,7 @@ BOOST_AUTO_TEST_CASE(TimeSourceSystemOffsetTest)
 {
 
 	TimeSourceSystemOffset time;
-	timer_clock::time_point base = time.GetUTC();
+	auto base = time.GetUTC();
 	time.SetTime(base + milliseconds(5000));
 	BOOST_REQUIRE(time.GetUTC() >= base + milliseconds(5000));
 }
@@ -88,7 +88,7 @@ BOOST_AUTO_TEST_CASE(TimeSourceSystemOffsetTestNeg)
 {
 
 	TimeSourceSystemOffset time;
-	timer_clock::time_point base = time.GetUTC();
+	auto base = time.GetUTC();
 	time.SetTime(base - milliseconds(5000));
 	BOOST_REQUIRE(time.GetUTC() >= base - milliseconds(5000));
 }
