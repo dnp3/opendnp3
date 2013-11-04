@@ -31,7 +31,8 @@
 
 #include <assert.h>
 
-#include "Exception.h"
+#include <openpal/Exception.h>
+
 #include "ClassMask.h"
 #include "ObjectInterfaces.h"
 #include "OutstationResponses.h"

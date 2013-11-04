@@ -28,7 +28,7 @@
 #include <boost/asio.hpp>
 #include <boost/asio/ip/tcp.hpp>
 
-#include <opendnp3/Exception.h>
+#include <openpal/Exception.h>
 
 #include <openpal/LoggableMacros.h>
 

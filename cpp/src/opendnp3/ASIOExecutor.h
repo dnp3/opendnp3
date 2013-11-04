@@ -23,7 +23,7 @@
 #ifndef __ASIO_EXECUTOR_H_
 #define __ASIO_EXECUTOR_H_
 
-#include <opendnp3/Exception.h>
+#include <openpal/Exception.h>
 #include <openpal/IExecutor.h>
 #include <openpal/Visibility.h>
 

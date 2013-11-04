@@ -23,7 +23,7 @@
 #ifndef __LOGGABLE_MACROS_H_
 #define __LOGGABLE_MACROS_H_
 
-#include <opendnp3/Location.h>
+#include "Location.h"
 
 //macro to remove boiler-plate code for logging messages
 #define LOG_BLOCK(severity, string) ERROR_BLOCK(severity, string, -1)

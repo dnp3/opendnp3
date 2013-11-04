@@ -24,7 +24,7 @@
 
 #include "PackingUnpacking.h"
 
-#include <opendnp3/Exception.h>
+#include <openpal/Exception.h>
 
 #include <assert.h>
 #include <sstream>

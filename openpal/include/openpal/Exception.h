@@ -33,7 +33,7 @@
 #include <string>
 #include <sstream>
 
-namespace opendnp3
+namespace openpal
 {
 
 /// @section desc Extends the std::exception interface

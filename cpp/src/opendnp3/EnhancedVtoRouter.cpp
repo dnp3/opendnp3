@@ -22,7 +22,7 @@
 
 #include "EnhancedVtoRouter.h"
 
-#include <opendnp3/Exception.h>
+#include <openpal/Exception.h>
 
 #include <openpal/LoggableMacros.h>
 

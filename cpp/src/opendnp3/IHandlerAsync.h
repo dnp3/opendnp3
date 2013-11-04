@@ -23,14 +23,13 @@
 #ifndef __I_HANDLER_ASYNC_H_
 #define __I_HANDLER_ASYNC_H_
 
-#include "AsyncLayerInterfaces.h"
-
+#include <openpal/AsyncLayerInterfaces.h>
 #include <openpal/Visibility.h>
 
 namespace opendnp3
 {
 
-class DLL_LOCAL IHandlerAsync : public IUpperLayer
+class DLL_LOCAL IHandlerAsync : public openpal::IUpperLayer
 {
 public:
 	IHandlerAsync(openpal::Logger&);

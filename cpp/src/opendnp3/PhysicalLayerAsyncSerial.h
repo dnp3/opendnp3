@@ -31,7 +31,7 @@
 
 #include "PhysicalLayerAsyncASIO.h"
 
-#include <opendnp3/Location.h>
+#include <openpal/Location.h>
 #include <opendnp3/SerialTypes.h>
 
 #include <boost/asio/serial_port.hpp>

@@ -118,7 +118,7 @@ private:
 inline const ObjectInfo* ObjectReadIterator::operator->() const
 {
 	if(this->IsEnd()) {
-		MACRO_THROW_EXCEPTION_WITH_CODE(Exception, "", ALERR_ITERATOR_OUT_OF_BOUNDS);
+		MACRO_THROW_EXCEPTION_WITH_CODE(openpal::Exception, "", ALERR_ITERATOR_OUT_OF_BOUNDS);
 	}
 	return &mInfo;
 }
@@ -126,10 +126,10 @@ inline const ObjectInfo* ObjectReadIterator::operator->() const
 inline const uint8_t* ObjectReadIterator::operator*() const
 {
 	if(this->IsEnd()) {
-		MACRO_THROW_EXCEPTION_WITH_CODE(Exception, "", ALERR_ITERATOR_OUT_OF_BOUNDS);
+		MACRO_THROW_EXCEPTION_WITH_CODE(openpal::Exception, "", ALERR_ITERATOR_OUT_OF_BOUNDS);
 	}
 	if(!mHasData) {
-		MACRO_THROW_EXCEPTION_WITH_CODE(Exception, "", ALERR_ITERATOR_NO_DATA);
+		MACRO_THROW_EXCEPTION_WITH_CODE(openpal::Exception, "", ALERR_ITERATOR_NO_DATA);
 	}
 	return mpPosition;
 }
@@ -137,7 +137,7 @@ inline const uint8_t* ObjectReadIterator::operator*() const
 inline const ObjectReadIterator& ObjectReadIterator::operator++()
 {
 	if(this->IsEnd()) {
-		MACRO_THROW_EXCEPTION_WITH_CODE(Exception, "", ALERR_ITERATOR_OUT_OF_BOUNDS);
+		MACRO_THROW_EXCEPTION_WITH_CODE(openpal::Exception, "", ALERR_ITERATOR_OUT_OF_BOUNDS);
 	}
 
 	++mCurrentObjectNum;

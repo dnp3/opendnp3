@@ -31,7 +31,8 @@
 
 #include "TransportRx.h"
 #include "TransportTx.h"
-#include "AsyncLayerInterfaces.h"
+
+#include <openpal/AsyncLayerInterfaces.h>
 
 #include <opendnp3/DNPConstants.h>
 #include <openpal/Visibility.h>
@@ -44,7 +45,7 @@ class TLS_Base;
 /** Implements the DNP3 transport layer as a generic
 asynchronous protocol stack layer
 */
-class DLL_LOCAL TransportLayer : public IUpperLayer, public ILowerLayer
+class DLL_LOCAL TransportLayer : public openpal::IUpperLayer, public openpal::ILowerLayer
 {
 public:
 

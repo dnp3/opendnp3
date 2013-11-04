@@ -30,10 +30,10 @@
 #define __OBJECT_WRITE_ITERATOR_H_
 
 #include <openpal/Types.h>
-#include <opendnp3/Exception.h>
-#include <opendnp3/Location.h>
+#include <openpal/Exception.h>
+#include <openpal/Location.h>
 #include <opendnp3/APDUConstants.h>
-#include <opendnp3/Location.h>
+#include <openpal/Location.h>
 
 #include "ObjectHeader.h"
 
@@ -78,7 +78,7 @@ private:
 inline uint8_t* ObjectWriteIterator::operator*() const
 {
 	if(this->IsEnd()) {
-		MACRO_THROW_EXCEPTION(InvalidStateException, "End of iteration");
+		MACRO_THROW_EXCEPTION(openpal::InvalidStateException, "End of iteration");
 	}
 	return mpPos;
 }

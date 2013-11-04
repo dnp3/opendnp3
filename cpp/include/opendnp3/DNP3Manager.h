@@ -71,7 +71,6 @@ int main(int argc, char* argv[])
 namespace opendnp3
 {
 
-class IPhysicalLayerAsync;
 class IOServiceThreadPool;
 class EventLog;
 class IChannel;
@@ -153,7 +152,7 @@ private:
 
 	void OnChannelShutdownCallback(DNP3Channel* apChannel);
 
-	IChannel* CreateChannel(openpal::Logger& arLogger, openpal::millis_t aOpenRetry, IPhysicalLayerAsync* apPhys);
+	IChannel* CreateChannel(openpal::Logger& arLogger, openpal::millis_t aOpenRetry, openpal::IPhysicalLayerAsync* apPhys);
 
 	std::auto_ptr<EventLog> mpLog;
 	std::auto_ptr<IOServiceThreadPool> mpThreadPool;

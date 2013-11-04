@@ -35,7 +35,7 @@
 #include <string>
 #include <sstream>
 
-namespace opendnp3
+namespace openpal
 {
 
 #ifndef OPENDNP3_STRIP_LOG_MESSAGES

@@ -46,10 +46,14 @@ class io_service;
 }
 }
 
+namespace openpal {
+	class IPhysicalLayerAsync;
+}
+
+
 namespace opendnp3
 {
 
-class IPhysicalLayerAsync;
 class ITimeSource;
 class IStack;
 class IOutstation;

@@ -31,11 +31,9 @@
 
 #include <boost/system/error_code.hpp>
 
-#include "IPhysicalLayerAsync.h"
-
+#include <openpal/IPhysicalLayerAsync.h>
 #include <openpal/Loggable.h>
-
-#include <opendnp3/Location.h>
+#include <openpal/Location.h>
 
 namespace opendnp3
 {
@@ -44,9 +42,9 @@ class PLAS_Base;
 
 // This is the base class for the new async physical layers. It assumes that all of the functions
 // are called from a single thread.
-class DLL_LOCAL PhysicalLayerAsyncBase : public IPhysicalLayerAsync, public openpal::Loggable
+class DLL_LOCAL PhysicalLayerAsyncBase : public openpal::IPhysicalLayerAsync, public openpal::Loggable
 {
-	class State : public IChannelState
+	class State : public openpal::IChannelState
 	{
 	public:
 		State();
@@ -130,7 +128,7 @@ public:
 	void AsyncRead(uint8_t*, size_t);
 
 	// Not an event delegated to the states
-	void SetHandler(IHandlerAsync* apHandler);
+	void SetHandler(openpal::IHandlerAsync* apHandler);
 
 	/* Actions taken by the states - These must be implemented by the concrete
 	classes inherited from this class */
@@ -164,7 +162,7 @@ protected:
 	void OnWriteCallback(const boost::system::error_code& arError, size_t aSize);
 
 	// "user" object that recieves the callbacks
-	IHandlerAsync* mpHandler;
+	openpal::IHandlerAsync* mpHandler;
 
 	// State object that tracks the activities of the class, state pattern too heavy
 	PhysicalLayerAsyncBase::State mState;
@@ -174,7 +172,7 @@ private:
 	void StartClose();
 };
 
-inline void PhysicalLayerAsyncBase::SetHandler(IHandlerAsync* apHandler)
+inline void PhysicalLayerAsyncBase::SetHandler(openpal::IHandlerAsync* apHandler)
 {
 	assert(mpHandler == NULL);
 	assert(apHandler != NULL);

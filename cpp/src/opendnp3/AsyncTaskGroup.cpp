@@ -29,8 +29,8 @@
 #include <openpal/IExecutor.h>
 #include "ITimeSource.h"
 
-#include <opendnp3/Exception.h>
-#include <opendnp3/Location.h>
+#include <openpal/Exception.h>
+#include <openpal/Location.h>
 
 #include <algorithm>
 

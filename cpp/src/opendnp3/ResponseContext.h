@@ -40,7 +40,7 @@
 #include "DNPDatabaseTypes.h"
 
 #include <opendnp3/ClassMask.h>
-#include <opendnp3/Location.h>
+#include <openpal/Location.h>
 
 namespace opendnp3
 {

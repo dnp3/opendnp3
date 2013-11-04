@@ -31,7 +31,7 @@
 
 #include <opendnp3/IOutstation.h>
 #include <opendnp3/SlaveStackConfig.h>
-#include <opendnp3/Location.h>
+#include <openpal/Location.h>
 
 #include "Slave.h"
 #include "ApplicationStack.h"

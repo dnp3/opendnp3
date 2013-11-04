@@ -31,8 +31,8 @@
 
 #include <openpal/Types.h>
 #include <opendnp3/Singleton.h>
-#include <opendnp3/Exception.h>
-#include <opendnp3/Location.h>
+#include <openpal/Exception.h>
+#include <openpal/Location.h>
 #include <opendnp3/APDUConstants.h>
 #include <openpal/Visibility.h>
 

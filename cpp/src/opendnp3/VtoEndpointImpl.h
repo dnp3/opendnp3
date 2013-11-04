@@ -34,10 +34,13 @@
 #include <memory>
 #include <functional>
 
+namespace openpal {
+	class IPhysicalLayerAsync;
+}
+
 namespace opendnp3
 {
 
-class IPhysicalLayerAsync;
 class VtoRouter;
 class IVtoCallbacks;
 
@@ -45,10 +48,10 @@ class DLL_LOCAL VtoEndpointImpl : public IVtoEndpoint
 {
 public:
 	VtoEndpointImpl(	openpal::Logger& arLogger,
-	                        IVtoWriter* apWriter,
-	                        IPhysicalLayerAsync* apPhys,
-	                        const VtoRouterSettings& arSettings,
-	                        std::function<void (VtoEndpointImpl*)> aOnShutdown);
+	                    IVtoWriter* apWriter,
+	                    openpal::IPhysicalLayerAsync* apPhys,
+	                    const VtoRouterSettings& arSettings,
+	                    std::function<void (VtoEndpointImpl*)> aOnShutdown);
 
 	~VtoEndpointImpl();
 
@@ -60,11 +63,11 @@ private:
 
 	void Cleanup();
 
-	std::auto_ptr<IPhysicalLayerAsync> mpPhys;
+	std::auto_ptr<openpal::IPhysicalLayerAsync> mpPhys;
 	std::auto_ptr<VtoRouter> mpRouter;
 	std::function<void (VtoEndpointImpl*)> mOnShutdown;
 
-	static VtoRouter* FGetVtoRouter(const VtoRouterSettings& arSettings, openpal::Logger& arLogger, IVtoWriter* apWriter, IPhysicalLayerAsync* apPhys);
+	static VtoRouter* FGetVtoRouter(const VtoRouterSettings& arSettings, openpal::Logger& arLogger, IVtoWriter* apWriter, openpal::IPhysicalLayerAsync* apPhys);
 };
 
 }

@@ -20,13 +20,13 @@
 // you under the terms of the License.
 //
 
-#include <opendnp3/Exception.h>
+#include <openpal/Exception.h>
 
 #include <sstream>
 
 using namespace std;
 
-namespace opendnp3
+namespace openpal
 {
 
 Exception::Exception(const string& aSource, const string& aMessage, int aErrorCode, int aSubCode) throw() :

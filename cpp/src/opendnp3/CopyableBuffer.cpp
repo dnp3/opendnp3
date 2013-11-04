@@ -24,7 +24,7 @@
 
 #include <memory.h>
 
-#include "ToHex.h"
+#include <openpal/ToHex.h>
 
 namespace opendnp3
 {
@@ -32,7 +32,7 @@ namespace opendnp3
 #ifndef OPENDNP3_STRIP_LOG_MESSAGES
 std::ostream& operator<<(std::ostream& output, const CopyableBuffer& arBuff)
 {
-	output << "[" << toHex(arBuff.Buffer(), arBuff.Size(), true) << "]";
+	output << "[" << openpal::toHex(arBuff.Buffer(), arBuff.Size(), true) << "]";
 	return output;
 }
 #endif

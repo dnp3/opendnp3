@@ -20,18 +20,15 @@
 // you under the terms of the License.
 //
 
-#include "AsyncLayerInterfaces.h"
+#include <openpal/AsyncLayerInterfaces.h>
 
-#include <opendnp3/Exception.h>
+#include <openpal/Exception.h>
 #include <openpal/LoggableMacros.h>
-
-#include "ToHex.h"
+#include <openpal/ToHex.h>
 
 #include <assert.h>
 
-using namespace openpal;
-
-namespace opendnp3
+namespace openpal
 {
 
 //////////////////////////////////

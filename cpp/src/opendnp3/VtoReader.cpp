@@ -23,7 +23,7 @@
 #include "VtoReader.h"
 
 #include <opendnp3/DNPConstants.h>
-#include <opendnp3/Exception.h>
+#include <openpal/Exception.h>
 
 #include <openpal/LoggableMacros.h>
 

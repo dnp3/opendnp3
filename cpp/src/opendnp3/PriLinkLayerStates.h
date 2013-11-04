@@ -33,7 +33,7 @@
 
 #include <openpal/Types.h>
 #include <opendnp3/Singleton.h>
-#include <opendnp3/Location.h>
+#include <openpal/Location.h>
 
 #include "LinkLayer.h"
 

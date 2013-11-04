@@ -50,6 +50,21 @@
     <ClInclude Include="include\openpal\LoggableMacros.h">
       <Filter>Include Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\openpal\IPhysicalLayerAsync.h">
+      <Filter>Include Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\openpal\AsyncLayerInterfaces.h">
+      <Filter>Include Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\openpal\Exception.h">
+      <Filter>Include Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\openpal\ToHex.h">
+      <Filter>Include Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\openpal\Location.h">
+      <Filter>Include Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Clock.cpp">
@@ -68,6 +83,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Logger.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\AsyncLayerInterfaces.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Exception.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ToHex.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

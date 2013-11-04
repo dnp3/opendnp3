@@ -36,10 +36,13 @@
 
 #include <openpal/Visibility.h>
 
+namespace openpal {
+	class IPhysicalLayerAsync;
+}
+
 namespace opendnp3
 {
 
-class IPhysicalLayerAsync;
 class ILinkContext;
 class LinkFrame;
 

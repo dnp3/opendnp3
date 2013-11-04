@@ -25,11 +25,10 @@
 #include <sstream>
 #include <assert.h>
 
-#include <opendnp3/Exception.h>
-
+#include <openpal/Exception.h>
 #include <openpal/LoggableMacros.h>
+#include <openpal/IPhysicalLayerAsync.h>
 
-#include "IPhysicalLayerAsync.h"
 #include "ILinkContext.h"
 #include "LinkFrame.h"
 

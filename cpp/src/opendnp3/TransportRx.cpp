@@ -24,7 +24,7 @@
 
 
 #include <opendnp3/TransportConstants.h>
-#include <opendnp3/Exception.h>
+#include <openpal/Exception.h>
 
 #include <openpal/LoggableMacros.h>
 

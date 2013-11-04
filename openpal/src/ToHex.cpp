@@ -20,9 +20,9 @@
 // you under the terms of the License.
 //
 
-#include "ToHex.h"
+#include <openpal/ToHex.h>
 
-namespace opendnp3
+namespace openpal
 {
 
 #ifndef OPENDNP3_STRIP_LOG_MESSAGES

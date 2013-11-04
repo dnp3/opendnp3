@@ -33,17 +33,21 @@
 #include <openpal/IExecutor.h>
 
 #include <opendnp3/ChannelStates.h>
-#include <opendnp3/Location.h>
+#include <openpal/Location.h>
 
 #include <set>
 #include <mutex>
 #include <condition_variable>
 #include <chrono>
 
+namespace openpal {
+	class IPhysicalLayerAsync;
+}
+
+
 namespace opendnp3
 {
 
-class IPhysicalLayerAsync;
 class IMonitorState;
 
 /** Manages the lifecycle of a physical layer
@@ -54,7 +58,7 @@ class DLL_LOCAL PhysicalLayerMonitor : public IHandlerAsync
 
 public:
 	PhysicalLayerMonitor(	openpal::Logger&,
-	                        IPhysicalLayerAsync*,
+	                        openpal::IPhysicalLayerAsync*,
 	                        openpal::timer_clock::duration aMinOpenRetry,
 	                        openpal::timer_clock::duration aMaxOpenRetry);
 
@@ -97,7 +101,7 @@ protected:
 	/// Begins the open timer
 	void StartOpenTimer();
 
-	IPhysicalLayerAsync* mpPhys;
+	openpal::IPhysicalLayerAsync* mpPhys;
 
 private:
 

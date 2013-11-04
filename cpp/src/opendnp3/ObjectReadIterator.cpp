@@ -24,7 +24,7 @@
 #include "ObjectHeader.h"
 #include "Objects.h"
 
-#include <opendnp3/Exception.h>
+#include <openpal/Exception.h>
 
 namespace opendnp3
 {

@@ -22,7 +22,7 @@
 
 #include "APDU.h"
 
-#include <opendnp3/Exception.h>
+#include <openpal/Exception.h>
 #include <opendnp3/Util.h>
 #include <opendnp3/DNPConstants.h>
 #include <opendnp3/APDUConstants.h>
@@ -75,7 +75,7 @@ IINField APDU::GetIIN() const
 	assert(mpAppHeader != NULL);	
 
 	if(mpAppHeader->GetType() != AHT_RESPONSE) {
-		MACRO_THROW_EXCEPTION(Exception, "Only response packets have IIN fields");
+		MACRO_THROW_EXCEPTION(openpal::Exception, "Only response packets have IIN fields");
 	}
 
 	return static_cast<ResponseHeader*>(mpAppHeader)->GetIIN(mBuffer);
@@ -130,7 +130,7 @@ void APDU::Reset()
 void APDU::Write(const uint8_t* apData, size_t aLength)
 {
 	if(aLength > mBuffer.Size()) {
-		MACRO_THROW_EXCEPTION_COMPLEX(ArgumentException, "Size " << aLength << " exceeds max fragment size of " << mBuffer.Size());
+		MACRO_THROW_EXCEPTION_COMPLEX(openpal::ArgumentException, "Size " << aLength << " exceeds max fragment size of " << mBuffer.Size());
 	}
 
 	this->Reset();
@@ -166,7 +166,7 @@ void APDU::InterpretHeader()
 IAppHeader* APDU::ParseHeader() const
 {
 	if(mFragmentSize < 2) {
-		MACRO_THROW_EXCEPTION_WITH_CODE(Exception, "Insufficent size", ALERR_INSUFFICIENT_DATA_FOR_FRAG);
+		MACRO_THROW_EXCEPTION_WITH_CODE(openpal::Exception, "Insufficent size", ALERR_INSUFFICIENT_DATA_FOR_FRAG);
 	}
 
 	// start by assuming that it's a request header since they have same starting structure
@@ -176,7 +176,7 @@ IAppHeader* APDU::ParseHeader() const
 
 	if( IsResponse(function) ) {
 		if(mFragmentSize < 4) {
-			MACRO_THROW_EXCEPTION_WITH_CODE(Exception, "Insufficent size", ALERR_INSUFFICIENT_DATA_FOR_RESPONSE);
+			MACRO_THROW_EXCEPTION_WITH_CODE(openpal::Exception, "Insufficent size", ALERR_INSUFFICIENT_DATA_FOR_RESPONSE);
 		}
 
 		pHeader = ResponseHeader::Inst();
@@ -193,14 +193,14 @@ size_t APDU::ReadObjectHeader(size_t aOffset, size_t aRemainder)
 	ObjectHeaderField hdrData;
 
 	if(aRemainder < pHdr->GetSize()) {
-		MACRO_THROW_EXCEPTION_WITH_CODE(Exception, "Insufficent size", ALERR_INSUFFICIENT_DATA_FOR_HEADER);
+		MACRO_THROW_EXCEPTION_WITH_CODE(openpal::Exception, "Insufficent size", ALERR_INSUFFICIENT_DATA_FOR_HEADER);
 	}
 
 	//Read the header data and select the correct object header based on this information
 	pHdr->Get(pStart, hdrData);
 
 	if(hdrData.Qualifier == QC_UNDEFINED) {
-		MACRO_THROW_EXCEPTION_WITH_CODE(Exception, "Unknown qualifier", ALERR_UNKNOWN_QUALIFIER);
+		MACRO_THROW_EXCEPTION_WITH_CODE(openpal::Exception, "Unknown qualifier", ALERR_UNKNOWN_QUALIFIER);
 	}
 
 	pHdr = this->GetObjectHeader(hdrData.Qualifier);
@@ -209,11 +209,11 @@ size_t APDU::ReadObjectHeader(size_t aOffset, size_t aRemainder)
 	ObjectBase* pObj = ObjectBase::Get(hdrData.Group, hdrData.Variation);
 
 	if(pObj == NULL) {
-		MACRO_THROW_EXCEPTION_COMPLEX(ObjectException, "Undefined object, " << "Group: " << static_cast<int>(hdrData.Group) << " Var: " << static_cast<int>(hdrData.Variation));
+		MACRO_THROW_EXCEPTION_COMPLEX(openpal::ObjectException, "Undefined object, " << "Group: " << static_cast<int>(hdrData.Group) << " Var: " << static_cast<int>(hdrData.Variation));
 	}
 
 	if(aRemainder < pHdr->GetSize()) {
-		MACRO_THROW_EXCEPTION_WITH_CODE(Exception, "Insufficent size", ALERR_INSUFFICIENT_DATA_FOR_HEADER);
+		MACRO_THROW_EXCEPTION_WITH_CODE(openpal::Exception, "Insufficent size", ALERR_INSUFFICIENT_DATA_FOR_HEADER);
 	}
 
 	aRemainder -= pHdr->GetSize();

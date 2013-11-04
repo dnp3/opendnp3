@@ -25,9 +25,10 @@
 #include <assert.h>
 #include <sstream>
 
-#include "ToHex.h"
+#include <openpal/ToHex.h>
 
 using namespace std;
+using namespace openpal;
 
 #define MACRO_FUNC_CASE(func) case(func): return func;
 

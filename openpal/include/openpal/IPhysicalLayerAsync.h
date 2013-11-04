@@ -27,13 +27,10 @@
 
 #include <openpal/Visibility.h>
 
-namespace openpal {
-	class IExecutor;
-}
-
-namespace opendnp3
+namespace openpal
 {
 
+class IExecutor;
 class IHandlerAsync;
 
 class DLL_LOCAL IChannelState

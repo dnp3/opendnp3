@@ -23,10 +23,11 @@
 #ifndef __APDU_H_
 #define __APDU_H_
 
-#include <openpal/Types.h>
-#include <opendnp3/Exception.h>
 #include <opendnp3/APDUConstants.h>
-#include <opendnp3/Location.h>
+
+#include <openpal/Exception.h>
+#include <openpal/Types.h>
+#include <openpal/Location.h>
 #include <openpal/Visibility.h>
 
 #include "CopyableBuffer.h"
@@ -176,7 +177,7 @@ public:
 	 */
 	void SetControl(bool aFIR, bool aFIN, bool aCON = false, bool aUNS = false, int aSEQ = 0) {
 		if (aSEQ < 0 || aSEQ > 15) {
-			MACRO_THROW_EXCEPTION(ArgumentException, "Invalid sequence number");
+			MACRO_THROW_EXCEPTION(openpal::ArgumentException, "Invalid sequence number");
 		}
 
 		AppControlField f(aFIR, aFIN, aCON, aUNS, aSEQ);

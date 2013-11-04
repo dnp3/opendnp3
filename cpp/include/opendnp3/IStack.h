@@ -45,10 +45,14 @@ class io_service;
 }
 }
 
+namespace openpal {
+class IPhysicalLayerAsync;
+}
+
+
 namespace opendnp3
 {
 
-class IPhysicalLayerAsync;
 class IVtoEndpoint;
 class IVtoWriter;
 class IVtoReader;
@@ -120,7 +124,7 @@ private:
 
 	void OnVtoEndpointShutdown(VtoEndpointImpl* apEndpoint);
 
-	IVtoEndpoint* CreateVtoEndpoint(IPhysicalLayerAsync* apPhys, const VtoRouterSettings& arSettings);
+	IVtoEndpoint* CreateVtoEndpoint(openpal::IPhysicalLayerAsync* apPhys, const VtoRouterSettings& arSettings);
 
 	openpal::Logger mLogger;
 	boost::asio::io_service* mpService;

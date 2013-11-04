@@ -41,13 +41,12 @@
 
 namespace openpal {
 	class IExecutor;
+	class IPhysicalLayerAsync;
 }
 
 namespace opendnp3
 {
 
-class IPhysicalLayerAsync;
-class IExecutor;
 class VtoReader;
 class VtoWriter;
 struct VtoRouterSettings;
@@ -108,7 +107,7 @@ public:
 	 *
 	 * @return				a new VtoRouter instance
 	 */
-	VtoRouter(const VtoRouterSettings& arSettings, openpal::Logger& arLogger, IVtoWriter* apWriter, IPhysicalLayerAsync* apPhysLayer);
+	VtoRouter(const VtoRouterSettings& arSettings, openpal::Logger& arLogger, IVtoWriter* apWriter, openpal::IPhysicalLayerAsync* apPhysLayer);
 
 	/**
 	 * Receives data from the VTO channel and forwards it to the

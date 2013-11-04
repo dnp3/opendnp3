@@ -29,7 +29,7 @@
 #include <vector>
 
 #include <opendnp3/Util.h>
-#include <opendnp3/Exception.h>
+#include <openpal/Exception.h>
 
 #ifdef WIN32
 #define sscanf sscanf_s

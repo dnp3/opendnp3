@@ -32,7 +32,7 @@
 #include "PhysicalLayerAsyncBase.h"
 #include "ASIOExecutor.h"
 
-#include <opendnp3/Location.h>
+#include <openpal/Location.h>
 
 namespace boost
 {

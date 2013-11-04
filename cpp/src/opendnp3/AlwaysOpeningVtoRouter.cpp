@@ -27,7 +27,7 @@ using namespace openpal;
 namespace opendnp3
 {
 
-AlwaysOpeningVtoRouter::AlwaysOpeningVtoRouter(const VtoRouterSettings& arSettings, Logger& arLogger, IVtoWriter* apWriter, IPhysicalLayerAsync* apPhysLayer) :
+AlwaysOpeningVtoRouter::AlwaysOpeningVtoRouter(const VtoRouterSettings& arSettings, Logger& arLogger, IVtoWriter* apWriter, openpal::IPhysicalLayerAsync* apPhysLayer) :
 	Loggable(arLogger),
 	VtoRouter(arSettings, arLogger, apWriter, apPhysLayer)
 {

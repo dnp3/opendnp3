@@ -27,8 +27,8 @@
 #include <assert.h>
 
 #include <openpal/Types.h>
-#include <opendnp3/Exception.h>
-#include <opendnp3/Location.h>
+#include <openpal/Exception.h>
+#include <openpal/Location.h>
 #include <opendnp3/APDUConstants.h>
 #include <opendnp3/ObjectInterfaces.h>
 #include <opendnp3/DNPConstants.h>
@@ -149,7 +149,7 @@ private:
 inline const HeaderInfo& HeaderReadIterator::info() const
 {
 	if(mIndex >= mpHeaders->size()) {
-		MACRO_THROW_EXCEPTION_WITH_CODE(Exception, "Iter out of bounds", ALERR_ITERATOR_OUT_OF_BOUNDS);
+		MACRO_THROW_EXCEPTION_WITH_CODE(openpal::Exception, "Iter out of bounds", ALERR_ITERATOR_OUT_OF_BOUNDS);
 	}
 	return (*mpHeaders)[mIndex];
 }
@@ -157,7 +157,7 @@ inline const HeaderInfo& HeaderReadIterator::info() const
 inline const uint8_t* HeaderReadIterator::operator*() const
 {
 	if(mIndex >= mpHeaders->size()) {
-		MACRO_THROW_EXCEPTION_WITH_CODE(Exception, "Iter out of bounds", ALERR_ITERATOR_OUT_OF_BOUNDS);
+		MACRO_THROW_EXCEPTION_WITH_CODE(openpal::Exception, "Iter out of bounds", ALERR_ITERATOR_OUT_OF_BOUNDS);
 	}
 	return mpBuffer + (*mpHeaders)[mIndex].GetPosition();
 }
@@ -165,7 +165,7 @@ inline const uint8_t* HeaderReadIterator::operator*() const
 inline const HeaderInfo* HeaderReadIterator::operator->() const
 {
 	if(mIndex >= mpHeaders->size()) {
-		MACRO_THROW_EXCEPTION_WITH_CODE(Exception, "", ALERR_ITERATOR_OUT_OF_BOUNDS);
+		MACRO_THROW_EXCEPTION_WITH_CODE(openpal::Exception, "", ALERR_ITERATOR_OUT_OF_BOUNDS);
 	}
 	return &(*mpHeaders)[mIndex];
 }
@@ -173,7 +173,7 @@ inline const HeaderInfo* HeaderReadIterator::operator->() const
 inline const HeaderReadIterator& HeaderReadIterator::operator++()
 {
 	if(mIndex >= mpHeaders->size()) {
-		MACRO_THROW_EXCEPTION_WITH_CODE(Exception, "", ALERR_ITERATOR_OUT_OF_BOUNDS);
+		MACRO_THROW_EXCEPTION_WITH_CODE(openpal::Exception, "", ALERR_ITERATOR_OUT_OF_BOUNDS);
 	}
 	++mIndex;
 	return (*this);
@@ -182,7 +182,7 @@ inline const HeaderReadIterator& HeaderReadIterator::operator++()
 inline const HeaderReadIterator HeaderReadIterator::operator++(int)
 {
 	if(mIndex >= mpHeaders->size()) {
-		MACRO_THROW_EXCEPTION_WITH_CODE(Exception, "", ALERR_ITERATOR_OUT_OF_BOUNDS);
+		MACRO_THROW_EXCEPTION_WITH_CODE(openpal::Exception, "", ALERR_ITERATOR_OUT_OF_BOUNDS);
 	}
 	HeaderReadIterator tmp(*this);
 	++mIndex;

@@ -22,7 +22,7 @@
 
 #include "MasterStates.h"
 
-#include <opendnp3/Exception.h>
+#include <openpal/Exception.h>
 
 #include "AsyncTaskInterfaces.h"
 #include "AsyncTaskGroup.h"

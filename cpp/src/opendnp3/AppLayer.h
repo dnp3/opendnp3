@@ -25,7 +25,8 @@
 
 #include <queue>
 
-#include "AsyncLayerInterfaces.h"
+#include <openpal/AsyncLayerInterfaces.h>
+
 #include "APDU.h"
 #include "AppInterfaces.h"
 #include "SolicitedChannel.h"

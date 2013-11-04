@@ -22,8 +22,10 @@
 
 #include "AppInterfaces.h"
 
-#include <opendnp3/Location.h>
-#include <opendnp3/Exception.h>
+#include <openpal/Location.h>
+#include <openpal/Exception.h>
+
+using namespace openpal;
 
 namespace opendnp3
 {

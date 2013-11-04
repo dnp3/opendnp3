@@ -33,7 +33,7 @@
 #include <openpal/Types.h>
 #include <opendnp3/ICommandHandler.h>
 #include <opendnp3/APDUConstants.h>
-#include <opendnp3/Location.h>
+#include <openpal/Location.h>
 
 #include "ITimeSource.h"
 

@@ -26,7 +26,7 @@
 #include "Log.h"
 #include "Thread.h"
 
-#include <opendnp3/Exception.h>
+#include <openpal/Exception.h>
 
 using namespace std;
 using namespace openpal;

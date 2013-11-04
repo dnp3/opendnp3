@@ -33,7 +33,7 @@
 
 #include <boost/asio/ip/tcp.hpp>
 
-#include <opendnp3/Location.h>
+#include <openpal/Location.h>
 
 namespace opendnp3
 {

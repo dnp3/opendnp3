@@ -25,7 +25,7 @@
 #include "PackingUnpacking.h"
 #include "ObjectHeader.h"
 
-#include <opendnp3/Exception.h>
+#include <openpal/Exception.h>
 
 namespace opendnp3
 {

@@ -23,7 +23,7 @@
 #include "AppChannelStates.h"
 
 #include <opendnp3/Singleton.h>
-#include <opendnp3/Exception.h>
+#include <openpal/Exception.h>
 
 #include <openpal/LoggableMacros.h>
 

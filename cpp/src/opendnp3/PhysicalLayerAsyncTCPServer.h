@@ -31,7 +31,7 @@
 
 #include "PhysicalLayerAsyncBaseTCP.h"
 
-#include <opendnp3/Location.h>
+#include <openpal/Location.h>
 
 #include <boost/asio/ip/tcp.hpp>
 

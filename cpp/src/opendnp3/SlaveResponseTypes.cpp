@@ -23,8 +23,8 @@
 #include "SlaveResponseTypes.h"
 
 #include <opendnp3/SlaveConfig.h>
-#include <opendnp3/Exception.h>
-#include <opendnp3/Location.h>
+#include <openpal/Exception.h>
+#include <openpal/Location.h>
 
 #include "Objects.h"
 

@@ -22,8 +22,8 @@
 
 #include "LinkReceiverStates.h"
 
-#include <opendnp3/Exception.h>
-#include <opendnp3/Location.h>
+#include <openpal/Exception.h>
+#include <openpal/Location.h>
 
 #include "PackingUnpacking.h"
 #include "LinkLayerReceiver.h"
@@ -38,7 +38,7 @@ namespace opendnp3
 
 bool LRS_Base::Parse(LinkLayerReceiver*)
 {
-	MACRO_THROW_EXCEPTION(InvalidStateException, this->Name());
+	MACRO_THROW_EXCEPTION(openpal::InvalidStateException, this->Name());
 }
 
 ////////////////////////////////////

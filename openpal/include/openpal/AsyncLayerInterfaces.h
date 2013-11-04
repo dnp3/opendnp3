@@ -27,7 +27,7 @@
 #include <openpal/Visibility.h>
 #include <openpal/Loggable.h>
 
-namespace opendnp3
+namespace openpal
 {
 
 class DLL_LOCAL IUpDown

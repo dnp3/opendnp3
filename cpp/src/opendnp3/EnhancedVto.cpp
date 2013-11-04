@@ -24,8 +24,8 @@
 
 #include "VtoData.h"
 
-#include <opendnp3/Exception.h>
-#include <opendnp3/Location.h>
+#include <openpal/Exception.h>
+#include <openpal/Location.h>
 
 #include <memory.h>
 #include <stddef.h>
@@ -47,10 +47,10 @@ VtoData EnhancedVto::CreateVtoData(bool aLocalVtoConnectionOpened, uint8_t aChan
 void EnhancedVto::ReadVtoData(const VtoData& arData, bool& arLocalVtoConnectionOpened, uint8_t& arChannelId)
 {
 	if(arData.GetSize() != (2 + MAGIC_BYTES_SIZE))
-		MACRO_THROW_EXCEPTION(Exception, "Unexpected size in enhanced vto frame");
+		MACRO_THROW_EXCEPTION(openpal::Exception, "Unexpected size in enhanced vto frame");
 
 	if(memcmp(arData.mpData + 2, MAGIC_BYTES, MAGIC_BYTES_SIZE) != 0)
-		MACRO_THROW_EXCEPTION(Exception, "Enhanced vto frame did not include the control sequence");
+		MACRO_THROW_EXCEPTION(openpal::Exception, "Enhanced vto frame did not include the control sequence");
 
 	arChannelId = arData.mpData[0];
 	arLocalVtoConnectionOpened = (arData.mpData[1] == 0);
