@@ -25,11 +25,20 @@
 
 #include <opendnp3/Types.h>
 #include <opendnp3/Visibility.h>
+#include <opendnp3/Clock.h>
 
 #include <chrono>
 
 namespace opendnp3
 {
+
+class DLL_LOCAL IMonotonicTimeSource
+{
+
+public:
+	virtual timer_clock::time_point Now() = 0;
+
+};
 
 class DLL_LOCAL ITimeSource
 {

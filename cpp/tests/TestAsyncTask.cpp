@@ -167,7 +167,7 @@ BOOST_AUTO_TEST_CASE(NonPeriodic)
 {
 	MockTaskHandler mth;
 
-	MockTimeSource fakeTime;
+	MockMonotonicTimeSource fakeTime;
 	fakeTime.SetToNow();
 	MockExecutor exe;
 
@@ -233,7 +233,7 @@ BOOST_AUTO_TEST_CASE(DependenciesEnforced)
 BOOST_AUTO_TEST_CASE(TimerUsage)
 {
 	MockTaskHandler mth;
-	MockTimeSource fake_time;
+	MockMonotonicTimeSource fake_time;
 	MockExecutor exe;	
 
 	fake_time.SetToNow();

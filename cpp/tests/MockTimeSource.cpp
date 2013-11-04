@@ -27,11 +27,17 @@ using namespace std::chrono;
 namespace opendnp3
 {
 
-	//mock time source
-MockTimeSource::MockTimeSource()
+void MockMonotonicTimeSource::Advance(const std::chrono::system_clock::duration& arDuration)
 {
-
+	mTime += arDuration;
 }
+
+void MockMonotonicTimeSource::SetToNow()
+{
+	mTime = timer_clock::now();
+}
+
+
 
 void MockTimeSource::Advance(const std::chrono::system_clock::duration& arDuration)
 {

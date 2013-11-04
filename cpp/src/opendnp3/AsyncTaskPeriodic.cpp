@@ -39,7 +39,7 @@ AsyncTaskPeriodic::AsyncTaskPeriodic(millis_t aPeriod, millis_t aRetryDelay, int
 
 void AsyncTaskPeriodic::_OnComplete(bool aSuccess)
 {
-	const timer_clock::time_point now = mpGroup->GetUTC();
+	const timer_clock::time_point now = mpGroup->Now();
 	if(aSuccess) {
 		mIsComplete = true;
 		mNextRunTime = now + std::chrono::milliseconds(mPeriod);
