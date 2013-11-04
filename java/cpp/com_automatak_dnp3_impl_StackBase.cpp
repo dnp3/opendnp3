@@ -24,6 +24,7 @@
 #include "JNIHelpers.hpp"
 
 using namespace opendnp3;
+using namespace openpal;
 
 JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_StackBase_add_1native_1stack_1state_1listener
 (JNIEnv* apEnv, jobject, jlong ptr, jobject jproxy)

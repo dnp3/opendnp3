@@ -25,6 +25,7 @@
 #include <opendnp3/Exception.h>
 
 using namespace opendnp3;
+using namespace openpal;
 
 #include <assert.h>
 #include <iostream>

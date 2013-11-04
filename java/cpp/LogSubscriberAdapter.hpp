@@ -20,14 +20,14 @@
 #define __LOG_SUBSCRIBER_ADAPTER_H_
 
 #include <jni.h>
-#include <opendnp3/LogBase.h>
+#include <openpal/LogBase.h>
 
-class LogSubscriberAdapter : public opendnp3::ILogBase
+class LogSubscriberAdapter : public openpal::ILogBase
 {
 public:
 	LogSubscriberAdapter(JavaVM* apJVM, jobject aProxy);
 
-	void Log(const opendnp3::LogEntry& arEntry);
+	void Log(const openpal::LogEntry& arEntry);
 
 private:
 	JavaVM* mpJVM;

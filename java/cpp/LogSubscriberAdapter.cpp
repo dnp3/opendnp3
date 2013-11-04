@@ -31,7 +31,7 @@ LogSubscriberAdapter::LogSubscriberAdapter(JavaVM* apJVM, jobject aProxy) :
 
 }
 
-void LogSubscriberAdapter::Log(const opendnp3::LogEntry& arEntry)
+void LogSubscriberAdapter::Log(const openpal::LogEntry& arEntry)
 {
 	JNIEnv* pEnv = NULL;
 	mpJVM->GetEnv((void**) &pEnv, JNI_VERSION_1_6);
