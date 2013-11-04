@@ -43,7 +43,7 @@ class DLL_LOCAL TimeSource : public ITimeSource
 	MACRO_SINGLETON_INSTANCE(TimeSource)
 
 	// Implement ITimeSource
-	timer_clock::time_point GetUTC();
+	std::chrono::system_clock::time_point GetUTC();
 };
 
 /** Maintains an external time by keeping an offset from system time.
@@ -53,11 +53,11 @@ class DLL_LOCAL TimeSourceSystemOffset : public  ITimeManager
 public:
 	TimeSourceSystemOffset();
 
-	timer_clock::time_point GetUTC();
-	void SetTime(const timer_clock::time_point& arTime);
+	std::chrono::system_clock::time_point GetUTC();
+	void SetTime(const std::chrono::system_clock::time_point& arTime);
 
 private:
-	timer_clock::duration mOffset;
+	std::chrono::system_clock::time_point::duration mOffset;
 };
 
 }

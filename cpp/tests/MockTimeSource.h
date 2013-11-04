@@ -35,21 +35,22 @@ public:
 	MockTimeSource();
 
 	// Implement ITimeSource
-	timer_clock::time_point GetUTC() {
+	std::chrono::system_clock::time_point GetUTC() {
 		return mTime;
 	}
-	timer_clock::time_point GetTimeStampUTC();
 
-	void SetTime(const timer_clock::time_point& arTime) {
+	std::chrono::system_clock GetTimeStampUTC();
+
+	void SetTime(const std::chrono::system_clock::time_point& arTime) {
 		mTime = arTime;
 	}
 
-	void Advance(const timer_clock::duration& arDuration);
+	void Advance(const std::chrono::system_clock::duration& arDuration);
 	void SetToNow();
 
 private:
 
-	timer_clock::time_point mTime;
+	std::chrono::system_clock::time_point mTime;
 };
 
 }
