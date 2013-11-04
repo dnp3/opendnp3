@@ -285,7 +285,7 @@ BOOST_AUTO_TEST_CASE(RestartBadResponses)
 	MasterTestObject t(master_cfg);
 	t.master.OnLowerLayerUp();
 
-	t.fake_real_time.SetTime(timer_clock::time_point(milliseconds(100))); //100 ms since epoch
+	t.fake_real_time.SetTime(std::chrono::system_clock::time_point(milliseconds(100))); //100 ms since epoch
 
 	BOOST_REQUIRE_EQUAL("C0 01 3C 01 06", t.Read()); //integrity
 	t.RespondToMaster("C0 81 10 00"); // need time

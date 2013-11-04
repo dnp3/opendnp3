@@ -100,7 +100,7 @@ void TimeSync::ConfigureRequest(APDU& arAPDU)
 TaskResult TimeSync::_OnFinalResponse(const APDU& arAPDU)
 {
 	if(mDelay < 0) {
-		timer_clock::time_point now = mpTimeSrc->GetUTC();
+		std::chrono::system_clock::time_point now = mpTimeSrc->GetUTC();
 
 		HeaderReadIterator hri = arAPDU.BeginRead();
 		if(hri.Count() != 1) {
