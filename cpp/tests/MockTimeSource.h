@@ -28,11 +28,31 @@
 namespace opendnp3
 {
 
+class MockMonotonicTimeSource : public IMonotonicTimeSource
+{
+public:	
+
+	// Implement ITimeSource
+	timer_clock::time_point Now() {
+		return mTime;
+	}	
+
+	void SetTime(const timer_clock::time_point& arTime) {
+		mTime = arTime;
+	}
+
+	void Advance(const std::chrono::system_clock::duration& arDuration);
+
+	void SetToNow();
+
+private:
+
+	timer_clock::time_point mTime;
+};
+
 class MockTimeSource : public ITimeSource
 {
-public:
-
-	MockTimeSource();
+public:	
 
 	// Implement ITimeSource
 	std::chrono::system_clock::time_point GetUTC() {

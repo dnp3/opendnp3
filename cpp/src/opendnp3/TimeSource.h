@@ -38,6 +38,14 @@
 namespace opendnp3
 {
 
+class DLL_LOCAL MonotonicTimeSource: public IMonotonicTimeSource
+{
+	MACRO_SINGLETON_INSTANCE(MonotonicTimeSource)
+
+	timer_clock::time_point Now();
+
+};
+
 class DLL_LOCAL TimeSource : public ITimeSource
 {
 	MACRO_SINGLETON_INSTANCE(TimeSource)

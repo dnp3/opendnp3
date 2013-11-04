@@ -27,6 +27,13 @@ using namespace std::chrono;
 namespace opendnp3
 {
 
+MonotonicTimeSource MonotonicTimeSource::mInstance;
+
+timer_clock::time_point MonotonicTimeSource::Now()
+{
+	return timer_clock::now();
+}
+
 //real time source
 
 TimeSource TimeSource::mInstance;

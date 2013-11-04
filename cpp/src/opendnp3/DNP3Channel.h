@@ -57,7 +57,7 @@ class ICommandHandler;
 class DLL_LOCAL DNP3Channel: public IChannel, private Loggable
 {
 public:
-	DNP3Channel(Logger* apLogger, millis_t aOpenRetry, boost::asio::io_service* apService, IPhysicalLayerAsync* apPhys, ITimeSource* apTimerSource, std::function<void (DNP3Channel*)> aOnShutdown);
+	DNP3Channel(Logger* apLogger, millis_t aOpenRetry, boost::asio::io_service* apService, IPhysicalLayerAsync* apPhys, IMonotonicTimeSource* apTimerSource, std::function<void (DNP3Channel*)> aOnShutdown);
 	~DNP3Channel();
 
 	// Implement IChannel - these are exposed to clients
