@@ -39,6 +39,16 @@ Logger::Logger(ILogBase* apLog, int aLevel, const std::string& aName)
 	
 }
 
+
+Logger::Logger(ILogBase* apLog, FilterLevel aLevel, const std::string& aName)
+	:
+	mLevel(LogTypes::FilterLevelToMask(aLevel)),
+	mpLog(apLog),
+	mName(aName)
+{
+
+}
+
 Logger Logger::GetSubLogger(std::string aSubName, int aLevel) const
 {
 	std::ostringstream oss;

@@ -47,6 +47,9 @@ class Logger
 {
 
 public:
+
+	Logger(ILogBase* apLog, FilterLevel aLevel, const std::string& aName);
+
 	Logger(ILogBase* apLog, int aLevel, const std::string& aName);
 
 	void Log( FilterLevel aFilterLevel, const std::string& arLocation, const std::string& aMessage, int aErrorCode = -1);
