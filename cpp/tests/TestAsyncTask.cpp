@@ -27,7 +27,8 @@
 #include <opendnp3/AsyncTaskNonPeriodic.h>
 #include <opendnp3/AsyncTaskContinuous.h>
 #include <opendnp3/AsyncTaskGroup.h>
-#include <opendnp3/Exception.h>
+
+#include <openpal/Exception.h>
 
 #include "MockExecutor.h"
 #include "MockTimeSource.h"
@@ -36,11 +37,11 @@
 #include <queue>
 #include <chrono>
 
+
+using namespace openpal;
 using namespace opendnp3;
 using namespace boost;
 using namespace std::chrono;
-
-
 
 class MockTaskHandler
 {

@@ -26,8 +26,10 @@
 
 #include <memory>
 
-#include <opendnp3/Exception.h>
-#include <opendnp3/Location.h>
+#include <openpal/Exception.h>
+#include <openpal/Location.h>
+
+using namespace openpal;
 
 namespace opendnp3
 {

@@ -22,14 +22,14 @@
 
 #include "PhysLoopback.h"
 
-#include <opendnp3/IPhysicalLayerAsync.h>
+#include <openpal/IPhysicalLayerAsync.h>
 
 using namespace std::chrono;
 
 namespace opendnp3
 {
 
-PhysLoopback::PhysLoopback(openpal::Logger& arLogger, IPhysicalLayerAsync* apPhys) :
+PhysLoopback::PhysLoopback(openpal::Logger& arLogger, openpal::IPhysicalLayerAsync* apPhys) :
 	Loggable(arLogger),
 	PhysicalLayerMonitor(arLogger, apPhys, seconds(5), seconds(5)),
 	mBytesRead(0),

@@ -24,7 +24,8 @@
 
 #include "TestHelpers.h"
 
-#include <opendnp3/Exception.h>
+#include <openpal/Exception.h>
+
 #include <opendnp3/SlaveEventBuffer.h>
 #include <opendnp3/VtoWriter.h>
 
@@ -33,6 +34,7 @@
 #include <limits>
 
 using namespace std;
+using namespace openpal;
 using namespace opendnp3;
 
 BOOST_AUTO_TEST_SUITE(SlaveEventBufferSuite)

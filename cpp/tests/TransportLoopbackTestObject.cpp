@@ -23,7 +23,8 @@
 #include "TransportLoopbackTestObject.h"
 
 #include <opendnp3/LinkRoute.h>
-#include <opendnp3/IPhysicalLayerAsync.h>
+
+#include <openpal/IPhysicalLayerAsync.h>
 
 #include <boost/asio.hpp>
 #include <sstream>

@@ -23,18 +23,18 @@
 #ifndef __PHYSICAL_LAYER_WRAPPER_H_
 #define __PHYSICAL_LAYER_WRAPPER_H_
 
-#include <opendnp3/IPhysicalLayerAsync.h>
-#include <opendnp3/IHandlerAsync.h>
+#include <openpal/IPhysicalLayerAsync.h>
+#include <openpal/IHandlerAsync.h>
 
 #include "RandomDouble.h"
 
 namespace opendnp3
 {
 
-class PhysicalLayerWrapper : public IPhysicalLayerAsync, public IHandlerAsync
+class PhysicalLayerWrapper : public openpal::IPhysicalLayerAsync, public openpal::IHandlerAsync
 {
 public:
-	PhysicalLayerWrapper(openpal::Logger& arLogger, IPhysicalLayerAsync* apProxy);
+	PhysicalLayerWrapper(openpal::Logger& arLogger, openpal::IPhysicalLayerAsync* apProxy);
 
 	openpal::IExecutor* GetExecutor() {
 		return mpProxy->GetExecutor();
@@ -81,7 +81,7 @@ public:
 	void AsyncWrite(const uint8_t* apData, size_t apSize);
 	void AsyncRead(uint8_t* apData, size_t apSize);
 
-	void SetHandler(IHandlerAsync* apHandler);
+	void SetHandler(openpal::IHandlerAsync* apHandler);
 
 	// testing helpers
 	void SetCorruptionProbability(double aProbability);
@@ -99,8 +99,8 @@ private:
 
 private:
 
-	IPhysicalLayerAsync* mpProxy;
-	IHandlerAsync* mpHandler;
+	openpal::IPhysicalLayerAsync* mpProxy;
+	openpal::IHandlerAsync* mpHandler;
 };
 
 }

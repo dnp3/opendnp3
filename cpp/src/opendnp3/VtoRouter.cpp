@@ -27,8 +27,8 @@
 #include <opendnp3/Util.h>
 
 #include <openpal/LoggableMacros.h>
+#include <openpal/IPhysicalLayerAsync.h>
 
-#include "IPhysicalLayerAsync.h"
 #include "VtoReader.h"
 
 using namespace openpal;

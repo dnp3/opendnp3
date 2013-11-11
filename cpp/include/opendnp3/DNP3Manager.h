@@ -37,6 +37,7 @@
 
 #include <openpal/Types.h>
 #include <openpal/Logger.h>
+#include <openpal/IPhysicalLayerAsync.h>
 
 #include "DestructorHook.h"
 

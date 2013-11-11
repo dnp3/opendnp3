@@ -24,7 +24,8 @@
 
 #include "BufferHelpers.h"
 
-#include <opendnp3/ToHex.h>
+#include <openpal/ToHex.h>
+
 #include <memory>
 #include <sstream>
 

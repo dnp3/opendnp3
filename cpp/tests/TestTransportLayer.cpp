@@ -28,9 +28,11 @@
 #include <opendnp3/TransportConstants.h>
 #include <opendnp3/Util.h>
 #include <opendnp3/ProtocolUtil.h>
-#include <opendnp3/Exception.h>
+
+#include <openpal/Exception.h>
 
 using namespace std;
+using namespace openpal;
 using namespace opendnp3;
 
 BOOST_AUTO_TEST_SUITE(AsyncTransportSuite)

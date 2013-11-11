@@ -24,8 +24,9 @@
 
 #include <functional>
 
-#include <opendnp3/Exception.h>
-#include <opendnp3/ToHex.h>
+#include <openpal/Exception.h>
+#include <openpal/ToHex.h>
+
 #include <opendnp3/LinkRoute.h>
 
 #include "TestHelpers.h"

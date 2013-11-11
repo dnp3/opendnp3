@@ -24,8 +24,11 @@
 
 #include "AlwaysOpeningVtoRouter.h"
 #include "EnhancedVtoRouter.h"
-#include "IPhysicalLayerAsync.h"
 #include "ExecutorPause.h"
+
+#include <openpal/IPhysicalLayerAsync.h>
+
+using namespace openpal;
 
 namespace opendnp3
 {

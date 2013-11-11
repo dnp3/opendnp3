@@ -24,11 +24,11 @@
 
 #include <boost/test/unit_test.hpp>
 
-#include <opendnp3/IPhysicalLayerAsync.h>
-#include <opendnp3/Util.h>
-#include <opendnp3/ToHex.h>
-
 #include <openpal/LoggableMacros.h>
+#include <openpal/IPhysicalLayerAsync.h>
+#include <openpal/ToHex.h>
+
+#include <opendnp3/Util.h>
 
 #include <sstream>
 

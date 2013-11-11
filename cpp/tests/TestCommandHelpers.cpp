@@ -24,11 +24,13 @@
 
 #include <opendnp3/CommandHelpers.h>
 #include <opendnp3/Objects.h>
-#include <opendnp3/ToHex.h>
+
+#include <openpal/ToHex.h>
 
 #include "TestHelpers.h"
 #include "BufferHelpers.h"
 
+using namespace openpal;
 using namespace opendnp3;
 
 BOOST_AUTO_TEST_SUITE(CommandHelpersTestSuite)

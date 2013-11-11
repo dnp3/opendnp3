@@ -22,7 +22,8 @@
 
 #include <boost/test/unit_test.hpp>
 
-#include <opendnp3/Exception.h>
+#include <openpal/Exception.h>
+
 #include <opendnp3/DNPConstants.h>
 
 #include "TestHelpers.h"

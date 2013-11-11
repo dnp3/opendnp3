@@ -22,8 +22,9 @@
 
 #include <boost/test/unit_test.hpp>
 
+#include <openpal/ToHex.h>
+
 #include <opendnp3/Log.h>
-#include <opendnp3/ToHex.h>
 #include <opendnp3/AlwaysOpeningVtoRouter.h>
 #include <opendnp3/VtoRouterSettings.h>
 

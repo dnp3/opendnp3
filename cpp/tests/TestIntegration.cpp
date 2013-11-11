@@ -27,7 +27,8 @@
 
 #include <opendnp3/Log.h>
 #include <opendnp3/LogToStdio.h>
-#include <opendnp3/Exception.h>
+
+#include <openpal/Exception.h>
 
 #include <boost/asio.hpp>
 

@@ -52,7 +52,7 @@ ObjectWriteIterator::ObjectWriteIterator(uint8_t* apPos, size_t aStart, size_t a
 const ObjectWriteIterator& ObjectWriteIterator::operator++()
 {
 	if(this->IsEnd()) {
-		MACRO_THROW_EXCEPTION(InvalidStateException, "End of iterattion");
+		MACRO_THROW_EXCEPTION(openpal::InvalidStateException, "End of iterattion");
 	}
 
 	++mIndex;

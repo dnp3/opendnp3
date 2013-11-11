@@ -22,13 +22,14 @@
 
 #include "BufferHelpers.h"
 
-#include <opendnp3/Location.h>
-#include <opendnp3/Exception.h>
+#include <openpal/Location.h>
+#include <openpal/Exception.h>
 
 #include <memory.h>
 #include <sstream>
 
 using namespace std;
+using namespace openpal;
 
 namespace opendnp3
 {

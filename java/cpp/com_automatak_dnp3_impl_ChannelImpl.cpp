@@ -21,7 +21,8 @@
 #include <opendnp3/IChannel.h>
 #include <opendnp3/IMaster.h>
 #include <opendnp3/IOutstation.h>
-#include <opendnp3/Exception.h>
+
+#include <openpal/Exception.h>
 
 #include "JNIHelpers.hpp"
 #include "DataObserverAdapter.hpp"
@@ -31,7 +32,7 @@
 #include <iostream>
 
 using namespace opendnp3;
-
+using namespace openpal;
 
 
 JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_ChannelImpl_shutdown_1native
@@ -78,7 +79,7 @@ JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ChannelImpl_get_1native_1ma
 		});
 		return (jlong) pMaster;
 	}
-	catch(const opendnp3::Exception& ex) {
+	catch(const openpal::Exception& ex) {
 		MACRO_RETHROW_EXCEPTION(pEnv, ex);
 	}
 }
@@ -103,7 +104,7 @@ JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ChannelImpl_get_1native_1sl
 		});
 		return (jlong) pOutstation;
 	}
-	catch(const opendnp3::Exception& ex) {
+	catch(const openpal::Exception& ex) {
 		MACRO_RETHROW_EXCEPTION(pEnv, ex);
 	}
 }

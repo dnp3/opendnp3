@@ -64,7 +64,7 @@ namespace Adapter
 			auto pChannel = pMgr->AddTCPClient(stdName, lev, retryMs, stdAddress, stdPort);
 			return gcnew ChannelAdapter(pChannel);
 		} 
-		catch(opendnp3::Exception ex){
+		catch(openpal::Exception ex){
 			throw Conversions::convertException(ex);
 		}
 	}
@@ -80,7 +80,7 @@ namespace Adapter
 			auto pChannel = pMgr->AddTCPServer(stdName, lev, retryMs, stdEndpoint, stdPort);
 			return gcnew ChannelAdapter(pChannel);
 		} 
-		catch(opendnp3::Exception ex){
+		catch(openpal::Exception ex){
 			throw Conversions::convertException(ex);
 		}
 	}
@@ -95,7 +95,7 @@ namespace Adapter
 			auto pChannel = pMgr->AddSerial(stdName, lev, retryMs, s);
 			return gcnew ChannelAdapter(pChannel);
 		} 
-		catch(opendnp3::Exception ex){
+		catch(openpal::Exception ex){
 			throw Conversions::convertException(ex);
 		}
 	}
@@ -106,7 +106,7 @@ namespace Adapter
 			LogAdapterWrapper^ wrapper = gcnew LogAdapterWrapper(logHandler);
 			pMgr->AddLogSubscriber(wrapper->GetLogAdapter());
 		} 
-		catch(opendnp3::Exception ex){
+		catch(openpal::Exception ex){
 			throw Conversions::convertException(ex);
 		}
 	}

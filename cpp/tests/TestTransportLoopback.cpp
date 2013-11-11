@@ -26,9 +26,10 @@
 #include <boost/test/unit_test.hpp>
 #include <functional>
 
-#include <opendnp3/Log.h>
+#include <openpal/Exception.h>
+
 #include <opendnp3/ProtocolUtil.h>
-#include <opendnp3/Exception.h>
+#include <opendnp3/Log.h>
 #include <opendnp3/PhysicalLayerAsyncSerial.h>
 
 #include "TestHelpers.h"

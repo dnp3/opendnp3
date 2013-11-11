@@ -26,9 +26,12 @@
 #include "MasterStackImpl.h"
 #endif
 
+#include <openpal/IPhysicalLayerAsync.h>
+
 #include "OutstationStackImpl.h"
-#include "IPhysicalLayerAsync.h"
 #include "ExecutorPause.h"
+
+using namespace openpal;
 
 namespace opendnp3
 {

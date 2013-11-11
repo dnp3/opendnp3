@@ -25,7 +25,8 @@
 #include "LogTester.h"
 
 #include <opendnp3/Log.h>
-#include <opendnp3/Exception.h>
+
+#include <openpal/Exception.h>
 
 #include <boost/shared_ptr.hpp>
 #include <iostream>

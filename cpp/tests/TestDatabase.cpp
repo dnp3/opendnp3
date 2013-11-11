@@ -29,6 +29,7 @@
 #include <limits>
 
 using namespace std;
+using namespace openpal;
 using namespace opendnp3;
 
 template <class T>

@@ -29,15 +29,17 @@
 
 #include "MockUpperLayer.h"
 
+namespace openpal {
+	class IPhysicalLayerAsync;
+}
+
 namespace opendnp3
 {
-
-class IPhysicalLayerAsync;
 
 class TransportIntegrationStack
 {
 public:
-	TransportIntegrationStack(openpal::Logger&, IPhysicalLayerAsync*, LinkConfig);
+	TransportIntegrationStack(openpal::Logger&, openpal::IPhysicalLayerAsync*, LinkConfig);
 
 	LinkLayerRouter mRouter;
 	LinkLayer mLink;

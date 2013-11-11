@@ -22,12 +22,13 @@
 
 #include <boost/test/unit_test.hpp>
 
-#include <opendnp3/Exception.h>
+#include <openpal/Exception.h>
 
 #include "TestHelpers.h"
 #include "BufferHelpers.h"
 #include "AppLayerTest.h"
 
+using namespace openpal;
 using namespace opendnp3;
 using namespace boost;
 

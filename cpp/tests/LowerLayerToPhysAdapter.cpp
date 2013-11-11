@@ -22,7 +22,7 @@
 
 #include "LowerLayerToPhysAdapter.h"
 
-#include <opendnp3/IPhysicalLayerAsync.h>
+#include <openpal/IPhysicalLayerAsync.h>
 
 using namespace openpal;
 

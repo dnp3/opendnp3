@@ -22,8 +22,9 @@
 
 #include <boost/test/unit_test.hpp>
 
+#include <openpal/Exception.h>
+
 #include <opendnp3/Log.h>
-#include <opendnp3/Exception.h>
 #include <opendnp3/PhysicalLayerMonitor.h>
 #include <opendnp3/PhysicalLayerMonitorStates.h>
 

@@ -28,6 +28,7 @@
 
 #include "Objects.h"
 
+using namespace openpal;
 
 namespace opendnp3
 {

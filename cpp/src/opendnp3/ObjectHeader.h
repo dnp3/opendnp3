@@ -152,10 +152,10 @@ class DLL_LOCAL RangedHeader : public IRangeHeader
 
 	void SetRange(uint8_t* apStart, const RangeInfo& arInfo) const {
 		if(arInfo.Start > arInfo.Stop) {
-			MACRO_THROW_EXCEPTION(ArgumentException, "stop > start");
+			MACRO_THROW_EXCEPTION(openpal::ArgumentException, "stop > start");
 		}
 		if(arInfo.Stop > T::Max) {
-			MACRO_THROW_EXCEPTION(ArgumentException, "stop > max");
+			MACRO_THROW_EXCEPTION(openpal::ArgumentException, "stop > max");
 		}
 
 		T::Write(apStart + 3, static_cast<typename T::Type>(arInfo.Start));
@@ -200,7 +200,7 @@ class DLL_LOCAL CountHeader : public ICountHeader
 
 	void SetCount(uint8_t* apStart, size_t aCount) const {
 		if(aCount > T::Max) {
-			MACRO_THROW_EXCEPTION(ArgumentException, "");
+			MACRO_THROW_EXCEPTION(openpal::ArgumentException, "");
 		}
 		T::Write(apStart + 3, static_cast<typename T::Type>(aCount));
 	}

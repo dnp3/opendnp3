@@ -32,8 +32,8 @@
 
 using namespace std;
 using namespace opendnp3;
+using namespace openpal;
 using namespace boost;
-
 
 BOOST_AUTO_TEST_SUITE(SlaveSuite)
 

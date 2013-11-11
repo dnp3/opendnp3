@@ -27,7 +27,8 @@
 
 #include "AsyncTestObjectASIO.h"
 
-#include <opendnp3/IPhysicalLayerAsync.h>
+#include <openpal/IPhysicalLayerAsync.h>
+
 #include <opendnp3/MasterStackConfig.h>
 #include <opendnp3/SlaveStackConfig.h>
 #include <opendnp3/IChannel.h>

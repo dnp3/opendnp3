@@ -23,14 +23,14 @@
 #ifndef __MOCK_LOWER_LAYER_H_
 #define __MOCK_LOWER_LAYER_H_
 
-#include <opendnp3/AsyncLayerInterfaces.h>
+#include <openpal/AsyncLayerInterfaces.h>
 
 #include "BufferTestObject.h"
 
 namespace opendnp3
 {
 
-class MockLowerLayer : public ILowerLayer, public BufferTestObject
+class MockLowerLayer : public openpal::ILowerLayer, public BufferTestObject
 {
 public:
 	MockLowerLayer(openpal::Logger&);

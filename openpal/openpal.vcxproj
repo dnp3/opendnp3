@@ -146,6 +146,7 @@
     <ClInclude Include="include\openpal\Clock.h" />
     <ClInclude Include="include\openpal\Exception.h" />
     <ClInclude Include="include\openpal\IExecutor.h" />
+    <ClInclude Include="include\openpal\IHandlerAsync.h" />
     <ClInclude Include="include\openpal\IPhysicalLayerAsync.h" />
     <ClInclude Include="include\openpal\ITimer.h" />
     <ClInclude Include="include\openpal\Location.h" />
@@ -164,6 +165,7 @@
     <ClCompile Include="src\AsyncLayerInterfaces.cpp" />
     <ClCompile Include="src\Clock.cpp" />
     <ClCompile Include="src\Exception.cpp" />
+    <ClCompile Include="src\IHandlerAsync.cpp" />
     <ClCompile Include="src\LogEntry.cpp" />
     <ClCompile Include="src\Loggable.cpp" />
     <ClCompile Include="src\Logger.cpp" />

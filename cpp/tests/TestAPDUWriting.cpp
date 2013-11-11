@@ -32,12 +32,13 @@
 
 #include <opendnp3/DataTypes.h>
 #include <opendnp3/QualityMasks.h>
-#include <opendnp3/ToHex.h>
 
+#include <openpal/ToHex.h>
 
 #include <queue>
 
 using namespace opendnp3;
+using namespace openpal;
 using namespace std;
 
 

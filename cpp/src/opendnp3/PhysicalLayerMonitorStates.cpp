@@ -24,9 +24,7 @@
 
 #include <openpal/Exception.h>
 #include <openpal/Location.h>
-
-#include "IPhysicalLayerAsync.h"
-
+#include <openpal/IPhysicalLayerAsync.h>
 #include <openpal/LoggableMacros.h>
 
 #include <sstream>

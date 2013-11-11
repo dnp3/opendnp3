@@ -48,7 +48,7 @@ namespace Adapter
 	{
 		public:
 
-		static System::Exception^ convertException(const opendnp3::Exception& ex);		
+		static System::Exception^ convertException(const openpal::Exception& ex);		
 		
 		// Convert a .NET string to a C++ string
 		static std::string convertString(System::String^ s);

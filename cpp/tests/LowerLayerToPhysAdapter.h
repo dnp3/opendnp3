@@ -24,20 +24,22 @@
 #define __LOWER_LAYER_TO_PHYS_ADAPTER_H_
 
 
-#include <opendnp3/IHandlerAsync.h>
-#include <opendnp3/AsyncLayerInterfaces.h>
+#include <openpal/IHandlerAsync.h>
+#include <openpal/AsyncLayerInterfaces.h>
+
+namespace openpal {
+	class IPhysicalLayerAsync;
+}
 
 namespace opendnp3
 {
 
-class IPhysicalLayerAsync;
-
 /** Class for turning an async physical layer into an ILowerLayer
 */
-class LowerLayerToPhysAdapter : public IHandlerAsync, public ILowerLayer
+class LowerLayerToPhysAdapter : public openpal::IHandlerAsync, public openpal::ILowerLayer
 {
 public:
-	LowerLayerToPhysAdapter(openpal::Logger&, IPhysicalLayerAsync*, bool aAutoRead = true);
+	LowerLayerToPhysAdapter(openpal::Logger&, openpal::IPhysicalLayerAsync*, bool aAutoRead = true);
 	~LowerLayerToPhysAdapter();
 
 	size_t GetNumOpenFailure() {
@@ -78,7 +80,7 @@ private:
 	void _OnLowerLayerDown();
 	void _OnLowerLayerShutdown();
 
-	IPhysicalLayerAsync* mpPhys;
+	openpal::IPhysicalLayerAsync* mpPhys;
 
 	/* Implement ILowerLayer */
 	void _Send(const uint8_t*, size_t);

@@ -24,8 +24,7 @@
 
 #include "BufferHelpers.h"
 
-#include <opendnp3/ToHex.h>
-
+#include <openpal/ToHex.h>
 #include <openpal/LoggableMacros.h>
 
 #include <memory>

@@ -28,6 +28,8 @@
 #include "AsyncTaskGroup.h"
 #include "Master.h"
 
+using namespace openpal;
+
 namespace opendnp3
 {
 
@@ -35,42 +37,42 @@ namespace opendnp3
 
 void AMS_Base::StartTask(Master*, ITask*, MasterTaskBase*)
 {
-	MACRO_THROW_EXCEPTION(InvalidStateException, this->Name());
+	MACRO_THROW_EXCEPTION(openpal::InvalidStateException, this->Name());
 }
 
 void AMS_Base::OnLowerLayerUp(Master*)
 {
-	MACRO_THROW_EXCEPTION(InvalidStateException, this->Name());
+	MACRO_THROW_EXCEPTION(openpal::InvalidStateException, this->Name());
 }
 
 void AMS_Base::OnLowerLayerDown(Master*)
 {
-	MACRO_THROW_EXCEPTION(InvalidStateException, this->Name());
+	MACRO_THROW_EXCEPTION(openpal::InvalidStateException, this->Name());
 }
 
 void AMS_Base::OnSendSuccess(Master*)
 {
-	MACRO_THROW_EXCEPTION(InvalidStateException, this->Name());
+	MACRO_THROW_EXCEPTION(openpal::InvalidStateException, this->Name());
 }
 
 void AMS_Base::OnFailure(Master*)
 {
-	MACRO_THROW_EXCEPTION(InvalidStateException, this->Name());
+	MACRO_THROW_EXCEPTION(openpal::InvalidStateException, this->Name());
 }
 
 void AMS_Base::OnPartialResponse(Master*, const APDU&)
 {
-	MACRO_THROW_EXCEPTION(InvalidStateException, this->Name());
+	MACRO_THROW_EXCEPTION(openpal::InvalidStateException, this->Name());
 }
 
 void AMS_Base::OnFinalResponse(Master*, const APDU&)
 {
-	MACRO_THROW_EXCEPTION(InvalidStateException, this->Name());
+	MACRO_THROW_EXCEPTION(openpal::InvalidStateException, this->Name());
 }
 
 void AMS_Base::OnUnsolResponse(Master*, const APDU&)
 {
-	MACRO_THROW_EXCEPTION(InvalidStateException, this->Name());
+	MACRO_THROW_EXCEPTION(openpal::InvalidStateException, this->Name());
 }
 
 

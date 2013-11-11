@@ -29,8 +29,7 @@
 
 #include <openpal/Exception.h>
 #include <openpal/LoggableMacros.h>
-
-#include "IHandlerAsync.h"
+#include <openpal/IHandlerAsync.h>
 
 using namespace boost;
 using namespace boost::asio;

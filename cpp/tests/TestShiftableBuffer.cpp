@@ -24,10 +24,11 @@
 #include "TestHelpers.h"
 
 #include <opendnp3/ShiftableBuffer.h>
-#include <opendnp3/Exception.h>
 
+#include <openpal/Exception.h>
+
+using namespace openpal;
 using namespace opendnp3;
-
 
 
 BOOST_AUTO_TEST_SUITE(ShiftableBufferSuite)

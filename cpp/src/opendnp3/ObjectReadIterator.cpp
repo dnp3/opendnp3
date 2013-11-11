@@ -26,6 +26,8 @@
 
 #include <openpal/Exception.h>
 
+using namespace openpal;
+
 namespace opendnp3
 {
 

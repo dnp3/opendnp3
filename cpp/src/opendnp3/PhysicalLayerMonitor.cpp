@@ -22,9 +22,9 @@
 
 #include "PhysicalLayerMonitor.h"
 
-#include "IPhysicalLayerAsync.h"
 #include "PhysicalLayerMonitorStates.h"
 
+#include <openpal/IPhysicalLayerAsync.h>
 #include <openpal/LoggableMacros.h>
 
 #include <functional>

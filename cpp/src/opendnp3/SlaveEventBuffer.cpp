@@ -25,6 +25,8 @@
 #include <openpal/Exception.h>
 #include <openpal/Location.h>
 
+using namespace openpal;
+
 namespace opendnp3
 {
 

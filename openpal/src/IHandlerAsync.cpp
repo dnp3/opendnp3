@@ -20,9 +20,9 @@
 // you under the terms of the License.
 //
 
-#include "IHandlerAsync.h"
+#include <openpal/IHandlerAsync.h>
 
-namespace opendnp3
+namespace openpal
 {
 
 IHandlerAsync::IHandlerAsync(openpal::Logger& arLogger) :

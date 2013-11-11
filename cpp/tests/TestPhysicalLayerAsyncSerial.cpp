@@ -31,10 +31,12 @@
 
 #include <opendnp3/Thread.h>
 #include <opendnp3/Log.h>
-#include <opendnp3/Exception.h>
+
+#include <openpal/Exception.h>
 
 using namespace opendnp3;
 using namespace boost;
+using namespace openpal;
 
 
 //run the tests on arm to give us some protection

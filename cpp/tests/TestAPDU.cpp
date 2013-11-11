@@ -32,12 +32,12 @@
 #include <opendnp3/DNPConstants.h>
 #include <opendnp3/DataTypes.h>
 
-
 #include <queue>
 #include <set>
 #include <sstream>
 
 using namespace std;
+using namespace openpal;
 using namespace opendnp3;
 
 BOOST_AUTO_TEST_SUITE(APDUReading)

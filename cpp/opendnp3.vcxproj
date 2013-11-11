@@ -254,7 +254,6 @@
     <ClInclude Include="src\opendnp3\GetKeys.h" />
     <ClInclude Include="src\opendnp3\HeaderReadIterator.h" />
     <ClInclude Include="src\opendnp3\IFrameSink.h" />
-    <ClInclude Include="src\opendnp3\IHandlerAsync.h" />
     <ClInclude Include="src\opendnp3\ILinkContext.h" />
     <ClInclude Include="src\opendnp3\ILinkRouter.h" />
     <ClInclude Include="src\opendnp3\IndexedWriteIterator.h" />
@@ -369,7 +368,6 @@
     <ClCompile Include="src\opendnp3\ExecutorPause.cpp" />
     <ClCompile Include="src\opendnp3\HeaderReadIterator.cpp" />
     <ClCompile Include="src\opendnp3\IExecutor.cpp" />
-    <ClCompile Include="src\opendnp3\IHandlerAsync.cpp" />
     <ClCompile Include="src\opendnp3\IndexedWriteIterator.cpp" />
     <ClCompile Include="src\opendnp3\IOServiceThreadPool.cpp" />
     <ClCompile Include="src\opendnp3\IStack.cpp" />

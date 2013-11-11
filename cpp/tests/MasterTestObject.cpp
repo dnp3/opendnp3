@@ -25,7 +25,7 @@
 #include <memory>
 #include "BufferHelpers.h"
 
-#include <opendnp3/ToHex.h>
+#include <openpal/ToHex.h>
 
 using namespace std;
 using namespace openpal;

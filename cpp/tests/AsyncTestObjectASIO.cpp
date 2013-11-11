@@ -23,10 +23,13 @@
 #include "AsyncTestObjectASIO.h"
 #include <boost/asio.hpp>
 
-#include <opendnp3/Location.h>
-#include <opendnp3/Exception.h>
+#include <openpal/Location.h>
+#include <openpal/Exception.h>
+
 #include <thread>
 #include <chrono>
+
+using namespace openpal;
 
 namespace opendnp3
 {

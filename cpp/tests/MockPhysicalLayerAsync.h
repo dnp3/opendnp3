@@ -24,7 +24,8 @@
 #define __MOCK_PHYSICAL_LAYER_ASYNC_H_
 
 #include <opendnp3/PhysicalLayerAsyncBase.h>
-#include <opendnp3/IHandlerAsync.h>
+
+#include <openpal/IHandlerAsync.h>
 
 #include "BufferTestObject.h"
 

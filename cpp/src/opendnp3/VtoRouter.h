@@ -32,12 +32,12 @@
 #include <queue>
 #include <deque>
 
-#include "IHandlerAsync.h"
+#include <openpal/IHandlerAsync.h>
+#include <openpal/Visibility.h>
+
 #include "PhysicalLayerMonitor.h"
 #include "CopyableBuffer.h"
 #include "VtoDataInterface.h"
-
-#include <openpal/Visibility.h>
 
 namespace openpal {
 	class IExecutor;

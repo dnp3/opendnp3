@@ -24,7 +24,9 @@
 
 #include <opendnp3/Log.h>
 #include <opendnp3/IOServiceThreadPool.h>
-#include <opendnp3/Exception.h>
+
+#include <openpal/Exception.h>
+
 #include <opendnp3/ExecutorPause.h>
 #include <opendnp3/ASIOExecutor.h>
 

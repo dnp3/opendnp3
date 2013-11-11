@@ -24,7 +24,8 @@
 #define __LOOP_BACK_PHYSICAL_LAYER_ASYNC_H_
 
 #include <opendnp3/PhysicalLayerAsyncASIO.h>
-#include <opendnp3/IHandlerAsync.h>
+
+#include <openpal/IHandlerAsync.h>
 
 #include <queue>
 

@@ -29,10 +29,9 @@
 #include <string>
 
 #include <openpal/Exception.h>
-
 #include <openpal/LoggableMacros.h>
+#include <openpal/IHandlerAsync.h>
 
-#include "IHandlerAsync.h"
 #include "ASIOSerialHelpers.h"
 
 using namespace boost;

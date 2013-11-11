@@ -25,9 +25,10 @@
 #include "TestHelpers.h"
 #include "AsyncPhysBaseTest.h"
 
-#include <opendnp3/Exception.h>
+#include <openpal/Exception.h>
 
 using namespace opendnp3;
+using namespace openpal;
 
 BOOST_AUTO_TEST_SUITE(PhysicalLayerAsyncBaseSuite)
 BOOST_AUTO_TEST_CASE(ClosedState)

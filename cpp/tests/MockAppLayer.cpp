@@ -23,7 +23,7 @@
 #include "MockAppLayer.h"
 
 #include <openpal/LoggableMacros.h>
-#include <opendnp3/ToHex.h>
+#include <openpal/ToHex.h>
 
 using namespace openpal;
 

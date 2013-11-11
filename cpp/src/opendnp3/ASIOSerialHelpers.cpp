@@ -31,6 +31,7 @@
 
 using namespace boost::asio;
 using namespace boost::system;
+using namespace openpal;
 
 namespace opendnp3
 {
@@ -54,7 +55,7 @@ serial_port_base::stop_bits ConvertStopBits(int aStopBits)
 	case(1): t = serial_port_base::stop_bits::one; break;
 	case(2): t = serial_port_base::stop_bits::two; break;
 	default:
-		MACRO_THROW_EXCEPTION(Exception, "Unsupported Stop Bits");
+		MACRO_THROW_EXCEPTION(openpal::Exception, "Unsupported Stop Bits");
 	}
 
 	return serial_port_base::stop_bits(t);
@@ -69,7 +70,7 @@ serial_port_base::flow_control ConvertFlow(FlowType aFlowType)
 	case(FLOW_XONXOFF): t = serial_port_base::flow_control::software; break;
 	case(FLOW_HARDWARE): t = serial_port_base::flow_control::hardware; break;
 	default:
-		MACRO_THROW_EXCEPTION(Exception, "Unsupported Flow Control");
+		MACRO_THROW_EXCEPTION(openpal::Exception, "Unsupported Flow Control");
 	}
 
 	return serial_port_base::flow_control(t);
@@ -95,7 +96,7 @@ serial_port_base::parity ConvertParity(ParityType aParity)
 	case(PAR_ODD): t = serial_port_base::parity::odd; break;
 
 	default:
-		MACRO_THROW_EXCEPTION(Exception, "Unsupported Parity");
+		MACRO_THROW_EXCEPTION(openpal::Exception, "Unsupported Parity");
 	}
 
 	return serial_port_base::parity(t);

@@ -67,7 +67,7 @@ IMaster^ ChannelAdapter::AddMaster(System::String^ loggerId, LogLevel level, IDa
 		auto pMaster = mpChannel->AddMaster(stdLoggerId, stdLevel, wrapper->Get(), cfg);
 		return gcnew MasterAdapter(pMaster);
 	} 
-	catch(opendnp3::Exception ex){
+	catch(openpal::Exception ex){
 		throw Conversions::convertException(ex);
 	}
 }
@@ -84,7 +84,7 @@ IOutstation^ ChannelAdapter::AddOutstation(System::String^ loggerId, LogLevel le
 		auto pOutstation = mpChannel->AddOutstation(stdLoggerId, stdLevel, wrapper->Get(), Conversions::convertConfig(config));
 		return gcnew OutstationAdapter(pOutstation);
 	} 
-	catch(opendnp3::Exception ex){
+	catch(openpal::Exception ex){
 		throw Conversions::convertException(ex);
 	}
 }

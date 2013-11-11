@@ -18,8 +18,8 @@
  */
 #include "JNIHelpers.hpp"
 
-#include <opendnp3/Exception.h>
-#include <opendnp3/Location.h>
+#include <openpal/Exception.h>
+#include <openpal/Location.h>
 
 #include <assert.h>
 #include <sstream>
@@ -30,7 +30,7 @@
 	oss << msg; \
 	throw Exception(LOCATION, oss.str()); }
 
-using namespace opendnp3;
+using namespace openpal;
 using namespace std;
 
 

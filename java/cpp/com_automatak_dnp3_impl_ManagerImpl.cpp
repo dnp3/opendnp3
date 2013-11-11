@@ -22,7 +22,7 @@
 #include "LogSubscriberAdapter.hpp"
 
 #include <opendnp3/DNP3Manager.h>
-#include <opendnp3/Exception.h>
+#include <openpal/Exception.h>
 
 using namespace opendnp3;
 using namespace openpal;

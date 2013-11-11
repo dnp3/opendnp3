@@ -29,7 +29,8 @@
 #include "BufferHelpers.h"
 
 #include <opendnp3/ProtocolUtil.h>
-#include <opendnp3/Exception.h>
+
+#include <openpal/Exception.h>
 
 #include <functional>
 

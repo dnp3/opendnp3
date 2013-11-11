@@ -26,10 +26,10 @@
 #include <openpal/AsyncLayerInterfaces.h>
 #include <openpal/Visibility.h>
 
-namespace opendnp3
+namespace openpal
 {
 
-class DLL_LOCAL IHandlerAsync : public openpal::IUpperLayer
+class DLL_LOCAL IHandlerAsync : public IUpperLayer
 {
 public:
 	IHandlerAsync(openpal::Logger&);

@@ -52,7 +52,7 @@ for(auto pTimer: mAllTimers) delete pTimer;
 openpal::ITimer* ASIOExecutor::Start(openpal::timer_clock::duration aDelay, const function<void ()>& arCallback)
 {
 	std::lock_guard<std::mutex> lock(mMutex);
-	if(mIsShuttingDown) MACRO_THROW_EXCEPTION(InvalidStateException, "Can't start a timer while executor is shutting down");
+	if(mIsShuttingDown) MACRO_THROW_EXCEPTION(openpal::InvalidStateException, "Can't start a timer while executor is shutting down");
 	TimerASIO* pTimer = GetTimer();
 	pTimer->mTimer.expires_from_now(aDelay);
 	this->StartTimer(pTimer, arCallback);
@@ -62,7 +62,7 @@ openpal::ITimer* ASIOExecutor::Start(openpal::timer_clock::duration aDelay, cons
 openpal::ITimer* ASIOExecutor::Start(const openpal::timer_clock::time_point& arTime, const function<void ()>& arCallback)
 {
 	std::lock_guard<std::mutex> lock(mMutex);
-	if(mIsShuttingDown) MACRO_THROW_EXCEPTION(InvalidStateException, "Can't start a timer while executor is shutting down");
+	if(mIsShuttingDown) MACRO_THROW_EXCEPTION(openpal::InvalidStateException, "Can't start a timer while executor is shutting down");
 	TimerASIO* pTimer = GetTimer();
 	pTimer->mTimer.expires_at(arTime);
 	this->StartTimer(pTimer, arCallback);

@@ -245,11 +245,11 @@ size_t APDU::ReadObjectHeader(size_t aOffset, size_t aRemainder)
 		data_size += has_data ? hdrData.Variation : 0;
 		break;
 	default:
-		MACRO_THROW_EXCEPTION(Exception, "Unknown object type");
+		MACRO_THROW_EXCEPTION(openpal::Exception, "Unknown object type");
 	}
 
 	if(data_size > aRemainder) {
-		MACRO_THROW_EXCEPTION_WITH_CODE(Exception, "", ALERR_INSUFFICIENT_DATA_FOR_OBJECTS);
+		MACRO_THROW_EXCEPTION_WITH_CODE(openpal::Exception, "", ALERR_INSUFFICIENT_DATA_FOR_OBJECTS);
 	}
 
 	mObjectHeaders.push_back(HeaderInfo(hdrData, objCount, prefixSize, pHdr, pObj, aOffset));
@@ -281,7 +281,7 @@ IObjectHeader* APDU::GetObjectHeader(QualifierCode aCode)
 	case(QC_4B_CNT_4B_INDEX):
 		return Count4OctetHeader::Inst();
 	default:
-		MACRO_THROW_EXCEPTION(Exception, "Unknown range specifier");
+		MACRO_THROW_EXCEPTION(openpal::Exception, "Unknown range specifier");
 	}
 }
 
@@ -296,7 +296,7 @@ size_t APDU::GetNumObjects(const IObjectHeader* apHeader, const uint8_t* apStart
 		RangeInfo info;
 		static_cast<const IRangeHeader*>(apHeader)->GetRange(apStart, info);
 		if(info.Start > info.Stop) {
-			MACRO_THROW_EXCEPTION_WITH_CODE(Exception, "", ALERR_START_STOP_MISMATCH);
+			MACRO_THROW_EXCEPTION_WITH_CODE(openpal::Exception, "", ALERR_START_STOP_MISMATCH);
 		}
 		return (info.Stop - info.Start + 1); //indices are inclusive
 	case(OHT_COUNT_1_OCTET):
@@ -353,7 +353,7 @@ size_t APDU::GetPrefixSizeAndValidate(QualifierCode aCode, ObjectTypes aType)
 	case(MACRO_QUAL_OBJ_RADIX(QC_1B_VCNT_4B_SIZE, OT_VARIABLE)): return 4;
 
 	default:
-		MACRO_THROW_EXCEPTION_WITH_CODE(Exception, "Unknown Prefix Size", ALERR_ILLEGAL_QUALIFIER_AND_OBJECT);
+		MACRO_THROW_EXCEPTION_WITH_CODE(openpal::Exception, "Unknown Prefix Size", ALERR_ILLEGAL_QUALIFIER_AND_OBJECT);
 	}
 }
 
@@ -456,7 +456,7 @@ void APDU::WriteContiguousHeader(IObjectHeader* apHdr, uint8_t* apPos, size_t aS
 		static_cast<IRangeHeader*>(apHdr)->SetRange(apPos, r);
 		break;
 	default:
-		MACRO_THROW_EXCEPTION(Exception, "Invalid header type");
+		MACRO_THROW_EXCEPTION(openpal::Exception, "Invalid header type");
 	}
 }
 
@@ -542,9 +542,9 @@ bool APDU::DoPlaceholderWrite(ObjectBase* apObj)
 
 void APDU::CheckWriteState(const ObjectBase* apObj)
 {
-	if(mpAppHeader == NULL) MACRO_THROW_EXCEPTION(InvalidStateException, "Header has not be configured");
-	if(mIsInterpreted) MACRO_THROW_EXCEPTION(InvalidStateException, "APDU is interpreted");
-	if(apObj == NULL) MACRO_THROW_EXCEPTION(ArgumentException, "Object cannot be NULL");
+	if(mpAppHeader == NULL) MACRO_THROW_EXCEPTION(openpal::InvalidStateException, "Header has not be configured");
+	if(mIsInterpreted) MACRO_THROW_EXCEPTION(openpal::InvalidStateException, "APDU is interpreted");
+	if(apObj == NULL) MACRO_THROW_EXCEPTION(openpal::ArgumentException, "Object cannot be NULL");
 }
 
 ICountHeader* APDU::GetCountHeader(QualifierCode aCode)
@@ -563,7 +563,7 @@ ICountHeader* APDU::GetCountHeader(QualifierCode aCode)
 	case(QC_4B_CNT_4B_INDEX):
 		return Count4OctetHeader::Inst();
 	default:
-		MACRO_THROW_EXCEPTION(ArgumentException, "Invalid qualifier for count header");
+		MACRO_THROW_EXCEPTION(openpal::ArgumentException, "Invalid qualifier for count header");
 	}
 }
 
@@ -629,7 +629,7 @@ std::string APDU::ToString() const
 			oss << ")";
 		}
 	}
-	catch(Exception) {
+	catch(openpal::Exception) {
 		oss << " Malformed header data preceeds";
 	}
 

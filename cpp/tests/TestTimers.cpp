@@ -24,10 +24,11 @@
 
 #include "TestHelpers.h"
 
+#include <openpal/Exception.h>
+#include <openpal/Location.h>
+
 #include <opendnp3/ASIOExecutor.h>
 #include <opendnp3/IOServiceThreadPool.h>
-#include <opendnp3/Exception.h>
-#include <opendnp3/Location.h>
 #include <opendnp3/Log.h>
 #include <opendnp3/ExecutorPause.h>
 
