@@ -23,6 +23,7 @@
 #include <openpal/Parsing.h>
 
 #include <sstream>
+#include <limits>
 
 namespace openpal
 {

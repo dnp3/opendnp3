@@ -5,13 +5,25 @@ ACLOCAL_AMFLAGS = -I m4
 CORE_BOOST_LIBS = $(BOOST_SYSTEM_LIB)
 TEST_BOOST_LIBS = $(CORE_BOOST_LIBS) $(BOOST_UNIT_TEST_FRAMEWORK_LIB)
 
-AM_CXXFLAGS = $(BOOST_CPPFLAGS) -DBOOST_TEST_DYN_LINK -DBOOST_ASIO_ENABLE_CANCELIO -DBOOST_REGEX_NO_LIB -D_GLIBCXX_USE_NANOSLEEP -I$(top_srcdir)/cpp/include
-AM_LDFLAGS  = $(BOOST_LDFLAGS)
+#AM_CXXFLAGS = $(BOOST_CPPFLAGS) -DBOOST_TEST_DYN_LINK -DBOOST_ASIO_ENABLE_CANCELIO -DBOOST_REGEX_NO_LIB -D_GLIBCXX_USE_NANOSLEEP
+#AM_LDFLAGS  = $(BOOST_LDFLAGS)
 
 lib_LTLIBRARIES = libopenpal.la
 
+#ls openpal/src/* -1 | awk '{print $0" \\"}'
+libopenpal_la_LDFLAGS = -version-info 1:1:0
+libopenpal_la_CXXFLAGS = -I$(top_srcdir)/openpal/include
 libopenpal_la_SOURCES = \
-cpp/src/opendnp3/AlwaysOpeningVtoRouter.cpp
+openpal/src/AsyncLayerInterfaces.cpp \
+openpal/src/Clock.cpp \
+openpal/src/Exception.cpp \
+openpal/src/IHandlerAsync.cpp \
+openpal/src/LogEntry.cpp \
+openpal/src/Loggable.cpp \
+openpal/src/Logger.cpp \
+openpal/src/LogTypes.cpp \
+openpal/src/Parsing.cpp \
+openpal/src/ToHex.cpp
 
 #libopendnp3_la_LDFLAGS = $(BOOST_LDFLAGS) -version-info 1:1:0
 #libopendnp3_la_LIBADD = $(CORE_BOOST_LIBS)
