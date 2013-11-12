@@ -85,7 +85,7 @@ class DLL_LOCAL Master : public openpal::Loggable, public IAppUser, public Stack
 
 public:
 
-	Master(openpal::Logger&, MasterConfig aCfg, IAppLayer*, IDataObserver*, AsyncTaskGroup*, openpal::IExecutor*, ITimeSource* apTimeSrc = TimeSource::Inst());
+	Master(openpal::Logger, MasterConfig aCfg, IAppLayer*, IDataObserver*, AsyncTaskGroup*, openpal::IExecutor*, ITimeSource* apTimeSrc = TimeSource::Inst());
 	virtual ~Master() {}
 
 	ICommandProcessor* GetCommandProcessor() {

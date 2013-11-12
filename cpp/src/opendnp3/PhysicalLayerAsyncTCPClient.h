@@ -41,7 +41,7 @@ namespace opendnp3
 class DLL_LOCAL PhysicalLayerAsyncTCPClient : public PhysicalLayerAsyncBaseTCP
 {
 public:
-	PhysicalLayerAsyncTCPClient(openpal::Logger& arLogger, boost::asio::io_service* apIOService, const std::string& arAddress, uint16_t aPort);
+	PhysicalLayerAsyncTCPClient(openpal::Logger aLogger, boost::asio::io_service* apIOService, const std::string& arAddress, uint16_t aPort);
 
 	/* Implement the remaining actions */
 	void DoOpen();

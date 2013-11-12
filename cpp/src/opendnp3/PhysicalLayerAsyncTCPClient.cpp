@@ -39,8 +39,8 @@ using namespace openpal;
 namespace opendnp3
 {
 
-PhysicalLayerAsyncTCPClient::PhysicalLayerAsyncTCPClient(Logger& arLogger, boost::asio::io_service* apIOService, const std::string& arAddress, uint16_t aPort) :
-	PhysicalLayerAsyncBaseTCP(arLogger, apIOService),
+PhysicalLayerAsyncTCPClient::PhysicalLayerAsyncTCPClient(Logger aLogger, boost::asio::io_service* apIOService, const std::string& arAddress, uint16_t aPort) :
+	PhysicalLayerAsyncBaseTCP(aLogger, apIOService),
 	mRemoteEndpoint(ip::tcp::v4(), aPort)
 {
 	mRemoteEndpoint.address( boost::asio::ip::address::from_string(arAddress) );

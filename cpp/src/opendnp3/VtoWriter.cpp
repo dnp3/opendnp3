@@ -32,8 +32,8 @@ using namespace openpal;
 namespace opendnp3
 {
 
-VtoWriter::VtoWriter(openpal::Logger& arLogger, size_t aMaxVtoChunks) :
-	Loggable(arLogger),
+VtoWriter::VtoWriter(openpal::Logger aLogger, size_t aMaxVtoChunks) :
+	Loggable(aLogger),
 	mMaxVtoChunks(aMaxVtoChunks)
 {}
 

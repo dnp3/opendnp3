@@ -37,11 +37,11 @@ namespace opendnp3
 {
 
 IOServiceThreadPool::IOServiceThreadPool(
-        openpal::Logger& arLogger,
+        openpal::Logger aLogger,
         uint32_t aConcurrency,
         std::function<void()> onThreadStart,
         std::function<void()> onThreadExit) :
-	Loggable(arLogger),
+	Loggable(aLogger),
 	mOnThreadStart(onThreadStart),
 	mOnThreadExit(onThreadExit),
 	mIsShutdown(false),

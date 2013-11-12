@@ -30,16 +30,16 @@ using namespace std;
 namespace opendnp3
 {
 
-AppLayer::AppLayer(Logger& arLogger, openpal::IExecutor* apExecutor, AppConfig aAppCfg) :
-	Loggable(arLogger),
-	IUpperLayer(arLogger),
+AppLayer::AppLayer(Logger aLogger, openpal::IExecutor* apExecutor, AppConfig aAppCfg) :
+	Loggable(aLogger),
+	IUpperLayer(aLogger),
 	mIncoming(aAppCfg.FragSize),
 	mConfirm(2), // only need 2 bytes for a confirm message
 	mSending(false),
 	mConfirmSending(false),
 	mpUser(NULL),
-	mSolicited(arLogger.GetSubLogger("sol"), this, apExecutor, aAppCfg.RspTimeout),
-	mUnsolicited(arLogger.GetSubLogger("unsol"), this, apExecutor, aAppCfg.RspTimeout),
+	mSolicited(aLogger.GetSubLogger("sol"), this, apExecutor, aAppCfg.RspTimeout),
+	mUnsolicited(aLogger.GetSubLogger("unsol"), this, apExecutor, aAppCfg.RspTimeout),
 	mNumRetry(aAppCfg.NumRetry)
 {
 	mConfirm.SetFunction(FC_CONFIRM);

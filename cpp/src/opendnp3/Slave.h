@@ -91,7 +91,7 @@ class DLL_LOCAL Slave : public openpal::Loggable, public IAppUser, public StackB
 
 public:
 
-	Slave(openpal::Logger&, IAppLayer*, openpal::IExecutor*, ITimeManager*, Database*, ICommandHandler*, const SlaveConfig&, ITimeSource* apTimeSource = TimeSource::Inst());
+	Slave(openpal::Logger, IAppLayer*, openpal::IExecutor*, ITimeManager*, Database*, ICommandHandler*, const SlaveConfig&, ITimeSource* apTimeSource = TimeSource::Inst());
 	~Slave();
 
 	////////////////////////

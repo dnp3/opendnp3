@@ -45,9 +45,9 @@
 #endif
 
 #ifndef OPENDNP3_STRIP_LOG_MESSAGES
-#define MACRO_THROW_INDEX_OUT_OF_BOUNDS(index) { throw IndexOutOfBoundsException(LOCATION, index); }
+#define MACRO_THROW_INDEX_OUT_OF_BOUNDS(index) { throw openpal::IndexOutOfBoundsException(LOCATION, index); }
 #else
-#define MACRO_THROW_INDEX_OUT_OF_BOUNDS(index) { throw  IndexOutOfBoundsException(LOCATION, index); }
+#define MACRO_THROW_INDEX_OUT_OF_BOUNDS(index) { throw  openpal::IndexOutOfBoundsException(LOCATION, index); }
 #endif
 
 #ifndef OPENDNP3_STRIP_LOG_MESSAGES

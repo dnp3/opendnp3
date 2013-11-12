@@ -46,7 +46,7 @@ class DLL_LOCAL LinkLayer : public openpal::ILowerLayer, public ILinkContext
 {
 public:
 
-	LinkLayer(openpal::Logger&, openpal::IExecutor*, const LinkConfig& arConfig);
+	LinkLayer(openpal::Logger, openpal::IExecutor*, const LinkConfig& arConfig);
 
 	void SetRouter(ILinkRouter*);
 

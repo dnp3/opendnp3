@@ -40,8 +40,8 @@ using namespace std;
 namespace opendnp3
 {
 
-PhysicalLayerAsyncTCPServer::PhysicalLayerAsyncTCPServer(Logger& arLogger, boost::asio::io_service* apIOService, const std::string& arEndpoint, uint16_t aPort) :
-	PhysicalLayerAsyncBaseTCP(arLogger, apIOService),
+PhysicalLayerAsyncTCPServer::PhysicalLayerAsyncTCPServer(Logger aLogger, boost::asio::io_service* apIOService, const std::string& arEndpoint, uint16_t aPort) :
+	PhysicalLayerAsyncBaseTCP(aLogger, apIOService),
 	mLocalEndpoint(ip::tcp::v4(), aPort),
 	mAcceptor(*apIOService)
 {

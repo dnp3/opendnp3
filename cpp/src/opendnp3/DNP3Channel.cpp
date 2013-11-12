@@ -36,12 +36,12 @@ using namespace openpal;
 namespace opendnp3
 {
 
-DNP3Channel::DNP3Channel(openpal::Logger& arLogger,openpal::millis_t aOpenRetry, boost::asio::io_service* apService, IPhysicalLayerAsync* apPhys, ITimeSource* apTimeSource, std::function<void (DNP3Channel*)> aOnShutdown) :
-	Loggable(arLogger),
+DNP3Channel::DNP3Channel(openpal::Logger aLogger,openpal::millis_t aOpenRetry, boost::asio::io_service* apService, IPhysicalLayerAsync* apPhys, ITimeSource* apTimeSource, std::function<void (DNP3Channel*)> aOnShutdown) :
+	Loggable(aLogger),
 	mpService(apService),
 	mpPhys(apPhys),
 	mOnShutdown(aOnShutdown),
-	mRouter(arLogger.GetSubLogger("Router"), mpPhys.get(), aOpenRetry)
+	mRouter(aLogger.GetSubLogger("Router"), mpPhys.get(), aOpenRetry)
 #ifndef OPENDNP3_NO_MASTER
 	, mGroup(apPhys->GetExecutor(), apTimeSource)
 #endif

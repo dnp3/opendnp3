@@ -45,11 +45,11 @@ using namespace openpal;
 namespace opendnp3
 {
 
-Master::Master(Logger& arLogger, MasterConfig aCfg, IAppLayer* apAppLayer, IDataObserver* apPublisher, AsyncTaskGroup* apTaskGroup, openpal::IExecutor* apExecutor, ITimeSource* apTimeSrc) :
-	Loggable(arLogger),
+Master::Master(Logger aLogger, MasterConfig aCfg, IAppLayer* apAppLayer, IDataObserver* apPublisher, AsyncTaskGroup* apTaskGroup, openpal::IExecutor* apExecutor, ITimeSource* apTimeSrc) :
+	Loggable(aLogger),
 	StackBase(apExecutor),
-	mVtoReader(arLogger),
-	mVtoWriter(arLogger.GetSubLogger("VtoWriter"), aCfg.VtoWriterQueueSize),
+	mVtoReader(aLogger),
+	mVtoWriter(aLogger.GetSubLogger("VtoWriter"), aCfg.VtoWriterQueueSize),
 	mRequest(aCfg.FragSize),
 	mpAppLayer(apAppLayer),
 	mpPublisher(apPublisher),
@@ -60,12 +60,12 @@ Master::Master(Logger& arLogger, MasterConfig aCfg, IAppLayer* apAppLayer, IData
 	mpScheduledTask(NULL),
 	mState(SS_UNKNOWN),
 	mSchedule(apTaskGroup, this, aCfg),
-	mClassPoll(arLogger, apPublisher, &mVtoReader),
-	mClearRestart(arLogger),
-	mConfigureUnsol(arLogger),
-	mTimeSync(arLogger, apTimeSrc),
-	mCommandTask(arLogger),
-	mVtoTransmitTask(arLogger, aCfg.FragSize, aCfg.UseNonStandardVtoFunction)
+	mClassPoll(aLogger, apPublisher, &mVtoReader),
+	mClearRestart(aLogger),
+	mConfigureUnsol(aLogger),
+	mTimeSync(aLogger, apTimeSrc),
+	mCommandTask(aLogger),
+	mVtoTransmitTask(aLogger, aCfg.FragSize, aCfg.UseNonStandardVtoFunction)
 {
 	/*
 	 * Establish a link between the mCommandQueue and the

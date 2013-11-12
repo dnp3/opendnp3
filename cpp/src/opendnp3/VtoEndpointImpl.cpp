@@ -33,13 +33,13 @@ using namespace openpal;
 namespace opendnp3
 {
 
-VtoEndpointImpl::VtoEndpointImpl(	openpal::Logger& arLogger,
+VtoEndpointImpl::VtoEndpointImpl(	openpal::Logger aLogger,
                                         IVtoWriter* apWriter,
                                         IPhysicalLayerAsync* apPhys,
                                         const VtoRouterSettings& arSettings,
                                         std::function<void (VtoEndpointImpl*)> aOnShutdown) :
 	mpPhys(apPhys),
-	mpRouter(FGetVtoRouter(arSettings, arLogger, apWriter, apPhys)),
+	mpRouter(FGetVtoRouter(arSettings, aLogger, apWriter, apPhys)),
 	mOnShutdown(aOnShutdown)
 {
 

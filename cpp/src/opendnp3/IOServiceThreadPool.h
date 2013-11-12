@@ -41,7 +41,7 @@ class DLL_LOCAL IOServiceThreadPool : private openpal::Loggable
 public:
 
 	IOServiceThreadPool(
-	        openpal::Logger& arLogger,
+	        openpal::Logger aLogger,
 	        uint32_t aConcurrency,
 	std::function<void()> onThreadStart = []() {},
 	std::function<void()> onThreadExit = []() {}

@@ -140,7 +140,7 @@ void ResponseLoader::ReadCTO(HeaderReadIterator& arIter)
 	ObjectReadIterator i = arIter.BeginRead();
 
 	if (i.Count() != 1) {
-		LOG_BLOCK(LEV_WARNING, "Invalid number of CTO objects");
+		LOG_BLOCK(openpal::LEV_WARNING, "Invalid number of CTO objects");
 		return;
 	}
 
@@ -154,13 +154,13 @@ void ResponseLoader::Read(HeaderReadIterator& arIter, StreamObject<T>* apObj)
 	openpal::millis_t t = 0; //base time
 
 	if (apObj->UseCTO() && !mCTO.GetCTO(t)) {
-		LOG_BLOCK(LEV_ERROR,
+		LOG_BLOCK(openpal::LEV_ERROR,
 		          "No CTO for relative time type " << apObj->Name());
 		return;
 	}
 
 	ObjectReadIterator obj = arIter.BeginRead();
-	LOG_BLOCK(LEV_INTERPRET,
+	LOG_BLOCK(openpal::LEV_INTERPRET,
 	          "Converting " << obj.Count() << " " << apObj->Name() << " "
 	          "To " << typeid(T).name());
 
@@ -188,7 +188,7 @@ void ResponseLoader::ReadBitfield(HeaderReadIterator& arIter)
 	Binary b; b.SetQuality(Binary::ONLINE);
 
 	ObjectReadIterator obj = arIter.BeginRead();
-	LOG_BLOCK(LEV_INTERPRET,
+	LOG_BLOCK(openpal::LEV_INTERPRET,
 	          "Converting " << obj.Count() << " " << T::Inst()->Name() << " "
 	          "To " << typeid(b).name());
 

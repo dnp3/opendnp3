@@ -65,7 +65,7 @@ public:
 	 *
 	 * @return				the new VtoQueue instance
 	 */
-	VtoWriter(openpal::Logger& arLogger, size_t aMaxVtoChunks);
+	VtoWriter(openpal::Logger aLogger, size_t aMaxVtoChunks);
 
 	~VtoWriter();
 

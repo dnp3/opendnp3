@@ -32,8 +32,8 @@ namespace opendnp3
 {
 
 
-SolicitedChannel::SolicitedChannel(openpal::Logger& arLogger, AppLayer* apApp, IExecutor* apExecutor,openpal::millis_t aTimeout) :
-	AppLayerChannel("Solicited", arLogger, apApp, apExecutor, aTimeout)
+SolicitedChannel::SolicitedChannel(openpal::Logger aLogger, AppLayer* apApp, IExecutor* apExecutor,openpal::millis_t aTimeout) :
+	AppLayerChannel("Solicited", aLogger, apApp, apExecutor, aTimeout)
 {}
 
 bool SolicitedChannel::AcceptsResponse()

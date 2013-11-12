@@ -38,14 +38,14 @@ using namespace openpal;
 namespace opendnp3
 {
 
-TransportLayer::TransportLayer(Logger& arLogger, size_t aFragSize) :
-	Loggable(arLogger),
-	IUpperLayer(arLogger),
-	ILowerLayer(arLogger),
+TransportLayer::TransportLayer(Logger aLogger, size_t aFragSize) :
+	Loggable(aLogger),
+	IUpperLayer(aLogger),
+	ILowerLayer(aLogger),
 	mpState(TLS_Closed::Inst()),
 	M_FRAG_SIZE(aFragSize),
-	mReceiver(arLogger, this, aFragSize),
-	mTransmitter(arLogger, this, aFragSize),
+	mReceiver(aLogger, this, aFragSize),
+	mTransmitter(aLogger, this, aFragSize),
 	mThisLayerUp(false)
 {
 

@@ -49,7 +49,7 @@ class DLL_LOCAL TransportLayer : public openpal::IUpperLayer, public openpal::IL
 {
 public:
 
-	TransportLayer(openpal::Logger& arLogger, size_t aFragSize = DEFAULT_FRAG_SIZE);
+	TransportLayer(openpal::Logger aLogger, size_t aFragSize = DEFAULT_FRAG_SIZE);
 	virtual ~TransportLayer() {}
 
 	/* Actions - Taken by the states/transmitter/receiver in response to events */

@@ -47,7 +47,7 @@ class IVtoCallbacks;
 class DLL_LOCAL VtoEndpointImpl : public IVtoEndpoint
 {
 public:
-	VtoEndpointImpl(	openpal::Logger& arLogger,
+	VtoEndpointImpl(openpal::Logger aLogger,
 	                    IVtoWriter* apWriter,
 	                    openpal::IPhysicalLayerAsync* apPhys,
 	                    const VtoRouterSettings& arSettings,

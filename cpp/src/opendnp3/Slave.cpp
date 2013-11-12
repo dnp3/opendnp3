@@ -40,8 +40,8 @@ using namespace openpal;
 namespace opendnp3
 {
 
-Slave::Slave(openpal::Logger& arLogger, IAppLayer* apAppLayer, IExecutor* apExecutor, ITimeManager* apTime, Database* apDatabase, ICommandHandler* apCmdHandler, const SlaveConfig& arCfg, ITimeSource* apTimeSource) :
-	Loggable(arLogger),
+Slave::Slave(openpal::Logger aLogger, IAppLayer* apAppLayer, IExecutor* apExecutor, ITimeManager* apTime, Database* apDatabase, ICommandHandler* apCmdHandler, const SlaveConfig& arCfg, ITimeSource* apTimeSource) :
+	Loggable(aLogger),
 	StackBase(apExecutor),
 	mpAppLayer(apAppLayer),
 	mpDatabase(apDatabase),
@@ -52,7 +52,7 @@ Slave::Slave(openpal::Logger& arLogger, IAppLayer* apAppLayer, IExecutor* apExec
 	mpUnsolTimer(NULL),
 	mResponse(arCfg.mMaxFragSize),
 	mUnsol(arCfg.mMaxFragSize),
-	mRspContext(arLogger, apDatabase, &mRspTypes, arCfg.mEventMaxConfig),
+	mRspContext(aLogger, apDatabase, &mRspTypes, arCfg.mEventMaxConfig),
 	mSBOHandler(arCfg.mSelectTimeout, apCmdHandler, apTimeSource),
 	mHaveLastRequest(false),
 	mLastRequest(arCfg.mMaxFragSize),
@@ -64,8 +64,8 @@ Slave::Slave(openpal::Logger& arLogger, IAppLayer* apAppLayer, IExecutor* apExec
 	mStartupNullUnsol(false),
 	mState(SS_UNKNOWN),
 	mpTimeTimer(NULL),
-	mVtoReader(arLogger),
-	mVtoWriter(arLogger.GetSubLogger("VtoWriter"), arCfg.mVtoWriterQueueSize)
+	mVtoReader(aLogger),
+	mVtoWriter(aLogger.GetSubLogger("VtoWriter"), arCfg.mVtoWriterQueueSize)
 {
 	/* Link the event buffer to the database */
 	mpDatabase->SetEventBuffer(mRspContext.GetBuffer());
