@@ -183,8 +183,8 @@ cpp/tests/MockFrameSink.cpp \
 cpp/tests/MockLowerLayer.cpp \
 cpp/tests/MockPhysicalLayerAsync.cpp \
 cpp/tests/MockPhysicalLayerMonitor.cpp \
-cpp/tests/MockTimeSource.cpp \
 cpp/tests/MockUpperLayer.cpp \
+cpp/tests/NullTimeWriteHandler.cpp \
 cpp/tests/PhysicalLayerWrapper.cpp \
 cpp/tests/PhysLoopback.cpp \
 cpp/tests/RandomizedBuffer.cpp \
