@@ -36,7 +36,7 @@ namespace opendnp3
 class ReadableVtoWriter : public VtoWriter, private IVtoEventAcceptor
 {
 public:
-	ReadableVtoWriter(openpal::Logger& arLogger, size_t aMaxVtoChunks) : VtoWriter(arLogger, aMaxVtoChunks), mpEvent(NULL)
+	ReadableVtoWriter(openpal::Logger aLogger, size_t aMaxVtoChunks) : VtoWriter(aLogger, aMaxVtoChunks), mpEvent(NULL)
 	{}
 
 	bool Read(VtoEvent& arEvent) {

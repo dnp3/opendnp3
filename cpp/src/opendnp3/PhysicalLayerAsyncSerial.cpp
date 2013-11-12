@@ -44,11 +44,11 @@ namespace opendnp3
 {
 
 PhysicalLayerAsyncSerial::PhysicalLayerAsyncSerial(
-        Logger& arLogger,
+        Logger aLogger,
         boost::asio::io_service* apIOService,
         const SerialSettings& arSettings) :
 
-	PhysicalLayerAsyncASIO(arLogger, apIOService),
+	PhysicalLayerAsyncASIO(aLogger, apIOService),
 	mSettings(arSettings),
 	mPort(*apIOService)
 {

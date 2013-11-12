@@ -151,13 +151,101 @@ cpp/src/opendnp3/VtoWriter.cpp
 #pkginclude_HEADERS = \
 #cpp/include/opendnp3/AnalogOutput.h
 
-
-#check_PROGRAMS = dnp3test
-#TESTS = dnp3test
-#dnp3test_CPPFLAGS = -I$(top_srcdir)/cpp/src
-#dnp3test_LDADD = libopendnp3.la $(TEST_BOOST_LIBS)
-#dnp3test_SOURCES = \
-#cpp/tests/AppLayerTest.cpp
+#ls cpp/src/opendnp3/*.cpp -1 | awk '{print $0" \\"}'
+check_PROGRAMS = dnp3test
+TESTS = dnp3test
+dnp3test_CXXFLAGS = -I$(top_srcdir)/cpp/src -I$(top_srcdir)/cpp/include -I$(top_srcdir)/openpal/include $(BOOST_DEFINES)
+dnp3test_LDADD = libopenpal.la libopendnp3.la $(TEST_BOOST_LIBS)
+dnp3test_LDFLAGS = $(BOOST_LDFLAGS)
+dnp3test_SOURCES = \
+cpp/tests/AppLayerTest.cpp \
+cpp/tests/AsyncPhysBaseTest.cpp \
+cpp/tests/AsyncPhysTestObject.cpp \
+cpp/tests/AsyncSerialTestObject.cpp \
+cpp/tests/AsyncTestObjectASIO.cpp \
+cpp/tests/AsyncTestObject.cpp \
+cpp/tests/BufferHelpers.cpp \
+cpp/tests/BufferTestObject.cpp \
+cpp/tests/ComparingDataObserver.cpp \
+cpp/tests/DNPHelpers.cpp \
+cpp/tests/FlexibleDataObserver.cpp \
+cpp/tests/IntegrationTest.cpp \
+cpp/tests/LinkLayerRouterTest.cpp \
+cpp/tests/LinkLayerTest.cpp \
+cpp/tests/LogTester.cpp \
+cpp/tests/LoopbackPhysicalLayerAsync.cpp \
+cpp/tests/LowerLayerToPhysAdapter.cpp \
+cpp/tests/MasterTestObject.cpp \
+cpp/tests/MockAppLayer.cpp \
+cpp/tests/MockAppUser.cpp \
+cpp/tests/MockExecutor.cpp \
+cpp/tests/MockFrameSink.cpp \
+cpp/tests/MockLowerLayer.cpp \
+cpp/tests/MockPhysicalLayerAsync.cpp \
+cpp/tests/MockPhysicalLayerMonitor.cpp \
+cpp/tests/MockTimeSource.cpp \
+cpp/tests/MockUpperLayer.cpp \
+cpp/tests/PhysicalLayerWrapper.cpp \
+cpp/tests/PhysLoopback.cpp \
+cpp/tests/RandomizedBuffer.cpp \
+cpp/tests/ResponseLoaderTestObject.cpp \
+cpp/tests/SlaveTestObject.cpp \
+cpp/tests/StopWatch.cpp \
+cpp/tests/TestAPDU.cpp \
+cpp/tests/TestAPDUWriting.cpp \
+cpp/tests/TestAppLayer.cpp \
+cpp/tests/TestASIO.cpp \
+cpp/tests/TestASIOThreadPool.cpp \
+cpp/tests/TestAsyncTask.cpp \
+cpp/tests/TestCastLongLongDouble.cpp \
+cpp/tests/TestChangeBuffer.cpp \
+cpp/tests/TestCommandHelpers.cpp \
+cpp/tests/TestCommandTask.cpp \
+cpp/tests/TestCommandTypes.cpp \
+cpp/tests/TestCRC.cpp \
+cpp/tests/TestDatabase.cpp \
+cpp/tests/TestDNP3Manager.cpp \
+cpp/tests/TestEnhancedVtoRouter.cpp \
+cpp/tests/TestEventBufferBase.cpp \
+cpp/tests/TestEventBuffers.cpp \
+cpp/tests/TestIntegration.cpp \
+cpp/tests/TestLinkFrameDNP.cpp \
+cpp/tests/TestLinkLayer.cpp \
+cpp/tests/TestLinkLayerRouter.cpp \
+cpp/tests/TestLinkReceiver.cpp \
+cpp/tests/TestLinkRoute.cpp \
+cpp/tests/TestLog.cpp \
+cpp/tests/TestMaster.cpp \
+cpp/tests/TestMisc.cpp \
+cpp/tests/TestObjects.cpp \
+cpp/tests/TestPackingUnpacking.cpp \
+cpp/tests/TestParsing.cpp \
+cpp/tests/TestPhysicalLayerAsyncBase.cpp \
+cpp/tests/TestPhysicalLayerAsyncSerial.cpp \
+cpp/tests/TestPhysicalLayerAsyncTCP.cpp \
+cpp/tests/TestPhysicalLayerLoopback.cpp \
+cpp/tests/TestPhysicalLayerMonitor.cpp \
+cpp/tests/TestResponseLoader.cpp \
+cpp/tests/TestShiftableBuffer.cpp \
+cpp/tests/TestSlave.cpp \
+cpp/tests/TestSlaveEventBuffer.cpp \
+cpp/tests/TestStartBoostUTF.cpp \
+cpp/tests/TestTime.cpp \
+cpp/tests/TestTimers.cpp \
+cpp/tests/TestTransportLayer.cpp \
+cpp/tests/TestTransportLoopback.cpp \
+cpp/tests/TestTransportScalability.cpp \
+cpp/tests/TestTypes.cpp \
+cpp/tests/TestUtil.cpp \
+cpp/tests/TestVtoRouter.cpp \
+cpp/tests/TestVtoWriter.cpp \
+cpp/tests/Timeout.cpp \
+cpp/tests/TransportIntegrationStack.cpp \
+cpp/tests/TransportLoopbackTestObject.cpp \
+cpp/tests/TransportScalabilityTestObject.cpp \
+cpp/tests/TransportStackPair.cpp \
+cpp/tests/TransportTestObject.cpp \
+cpp/tests/WrappedTcpPipe.cpp
 
 
 if WANT_JAVA

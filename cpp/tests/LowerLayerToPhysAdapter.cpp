@@ -29,10 +29,10 @@ using namespace openpal;
 namespace opendnp3
 {
 
-LowerLayerToPhysAdapter::LowerLayerToPhysAdapter(Logger& arLogger, IPhysicalLayerAsync* apPhys, bool aAutoRead) :
-	Loggable(arLogger),
-	IHandlerAsync(arLogger),
-	ILowerLayer(arLogger),
+LowerLayerToPhysAdapter::LowerLayerToPhysAdapter(Logger aLogger, IPhysicalLayerAsync* apPhys, bool aAutoRead) :
+	Loggable(aLogger),
+	IHandlerAsync(aLogger),
+	ILowerLayer(aLogger),
 	mAutoRead(aAutoRead),
 	mNumOpenFailure(0),
 	mpPhys(apPhys)

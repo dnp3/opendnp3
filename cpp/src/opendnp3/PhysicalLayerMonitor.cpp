@@ -37,9 +37,9 @@ using namespace std::chrono;
 namespace opendnp3
 {
 
-PhysicalLayerMonitor::PhysicalLayerMonitor(Logger& arLogger, IPhysicalLayerAsync* apPhys, timer_clock::duration aMinOpenRetry, timer_clock::duration aMaxOpenRetry) :
-	Loggable(arLogger),
-	IHandlerAsync(arLogger),
+PhysicalLayerMonitor::PhysicalLayerMonitor(Logger aLogger, IPhysicalLayerAsync* apPhys, timer_clock::duration aMinOpenRetry, timer_clock::duration aMaxOpenRetry) :
+	Loggable(aLogger),
+	IHandlerAsync(aLogger),
 	mpPhys(apPhys),
 	mpOpenTimer(NULL),
 	mpState(MonitorStateInit::Inst()),

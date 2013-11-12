@@ -31,11 +31,11 @@ using namespace openpal;
 namespace opendnp3
 {
 
-TransportIntegrationStack::TransportIntegrationStack(Logger& arLogger, IPhysicalLayerAsync* apPhys, LinkConfig aCfg) :
-	mRouter(arLogger, apPhys, 1000),
-	mLink(arLogger, apPhys->GetExecutor(), aCfg),
-	mTransport(arLogger),
-	mUpper(arLogger)
+TransportIntegrationStack::TransportIntegrationStack(Logger aLogger, IPhysicalLayerAsync* apPhys, LinkConfig aCfg) :
+	mRouter(aLogger, apPhys, 1000),
+	mLink(aLogger, apPhys->GetExecutor(), aCfg),
+	mTransport(aLogger),
+	mUpper(aLogger)
 {
 	LinkRoute route(aCfg.RemoteAddr, aCfg.LocalAddr);
 	mRouter.AddContext(&mLink, route);

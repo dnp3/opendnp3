@@ -42,7 +42,7 @@ class DLL_LOCAL EnhancedVtoRouter : public VtoRouter
 {
 public:
 
-	EnhancedVtoRouter(const VtoRouterSettings& arSettings, openpal::Logger& arLogger, IVtoWriter* apWriter, openpal::IPhysicalLayerAsync* apPhysLayer);
+	EnhancedVtoRouter(const VtoRouterSettings& arSettings, openpal::Logger aLogger, IVtoWriter* apWriter, openpal::IPhysicalLayerAsync* apPhysLayer);
 
 	// these base functions handle updating the state variables
 	// and inform the remote side of local connection changes
@@ -92,7 +92,7 @@ class DLL_LOCAL ServerSocketVtoRouter : public EnhancedVtoRouter
 {
 public:
 
-	ServerSocketVtoRouter(const VtoRouterSettings& arSettings, openpal::Logger& arLogger, IVtoWriter* apWriter, openpal::IPhysicalLayerAsync* apPhysLayer);
+	ServerSocketVtoRouter(const VtoRouterSettings& arSettings, openpal::Logger aLogger, IVtoWriter* apWriter, openpal::IPhysicalLayerAsync* apPhysLayer);
 
 	void HandleVtoRemoteConnectedChanged();
 	void HandleSetLocalConnected();
@@ -113,7 +113,7 @@ class DLL_LOCAL ClientSocketVtoRouter : public EnhancedVtoRouter
 {
 public:
 
-	ClientSocketVtoRouter(const VtoRouterSettings& arSettings, openpal::Logger& arLogger, IVtoWriter* apWriter, openpal::IPhysicalLayerAsync* apPhysLayer);
+	ClientSocketVtoRouter(const VtoRouterSettings& arSettings, openpal::Logger aLogger, IVtoWriter* apWriter, openpal::IPhysicalLayerAsync* apPhysLayer);
 
 	void HandleVtoRemoteConnectedChanged();
 	void HandleSetLocalConnected();

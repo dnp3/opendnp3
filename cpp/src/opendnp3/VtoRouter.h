@@ -107,7 +107,7 @@ public:
 	 *
 	 * @return				a new VtoRouter instance
 	 */
-	VtoRouter(const VtoRouterSettings& arSettings, openpal::Logger& arLogger, IVtoWriter* apWriter, openpal::IPhysicalLayerAsync* apPhysLayer);
+	VtoRouter(const VtoRouterSettings& arSettings, openpal::Logger aLogger, IVtoWriter* apWriter, openpal::IPhysicalLayerAsync* apPhysLayer);
 
 	/**
 	 * Receives data from the VTO channel and forwards it to the

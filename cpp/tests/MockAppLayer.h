@@ -38,7 +38,7 @@ namespace opendnp3
 class MockAppLayer : public IAppLayer, public openpal::Loggable
 {
 public:
-	MockAppLayer(openpal::Logger&);
+	MockAppLayer(openpal::Logger);
 	virtual ~MockAppLayer() {}
 
 

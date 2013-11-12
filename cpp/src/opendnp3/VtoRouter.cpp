@@ -37,9 +37,9 @@ using namespace std::chrono;
 namespace opendnp3
 {
 
-VtoRouter::VtoRouter(const VtoRouterSettings& arSettings, Logger& arLogger, IVtoWriter* apWriter, IPhysicalLayerAsync* apPhysLayer) :
-	Loggable(arLogger),
-	PhysicalLayerMonitor(arLogger, apPhysLayer, milliseconds(arSettings.MIN_OPEN_RETRY_MS), milliseconds(arSettings.MAX_OPEN_RETRY_MS)),
+VtoRouter::VtoRouter(const VtoRouterSettings& arSettings, Logger aLogger, IVtoWriter* apWriter, IPhysicalLayerAsync* apPhysLayer) :
+	Loggable(aLogger),
+	PhysicalLayerMonitor(aLogger, apPhysLayer, milliseconds(arSettings.MIN_OPEN_RETRY_MS), milliseconds(arSettings.MAX_OPEN_RETRY_MS)),
 	IVtoCallbacks(arSettings.CHANNEL_ID),
 	mpVtoWriter(apWriter),
 	mReadBuffer(1024),

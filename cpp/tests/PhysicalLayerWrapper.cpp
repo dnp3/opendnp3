@@ -29,9 +29,9 @@ using namespace openpal;
 namespace opendnp3
 {
 
-PhysicalLayerWrapper::PhysicalLayerWrapper(openpal::Logger& arLogger, IPhysicalLayerAsync* apProxy) :
-	Loggable(arLogger),
-	IHandlerAsync(arLogger),
+PhysicalLayerWrapper::PhysicalLayerWrapper(openpal::Logger aLogger, IPhysicalLayerAsync* apProxy) :
+	Loggable(aLogger),
+	IHandlerAsync(aLogger),
 	mCorruptionProbability(-1.0),
 	mpProxy(apProxy),
 	mpHandler(NULL)

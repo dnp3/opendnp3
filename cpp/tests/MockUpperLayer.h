@@ -54,7 +54,7 @@ public:
 		}
 	};
 
-	MockUpperLayer(openpal::Logger&);
+	MockUpperLayer(openpal::Logger);
 	virtual ~MockUpperLayer() {}
 
 	void SendDown(const std::string&);

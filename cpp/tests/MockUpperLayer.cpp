@@ -34,9 +34,9 @@ using namespace openpal;
 namespace opendnp3
 {
 
-MockUpperLayer::MockUpperLayer(openpal::Logger& arLogger) :
-	Loggable(arLogger),
-	IUpperLayer(arLogger)
+MockUpperLayer::MockUpperLayer(openpal::Logger aLogger) :
+	Loggable(aLogger),
+	IUpperLayer(aLogger)
 {}
 
 void MockUpperLayer::_OnReceive(const uint8_t* apData, size_t aLength)

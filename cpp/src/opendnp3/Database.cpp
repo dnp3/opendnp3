@@ -34,8 +34,8 @@ using namespace openpal;
 namespace opendnp3
 {
 
-Database::Database(Logger& arLogger) :
-	Loggable(arLogger),
+Database::Database(Logger aLogger) :
+	Loggable(aLogger),
 	mpEventBuffer(NULL)
 {
 

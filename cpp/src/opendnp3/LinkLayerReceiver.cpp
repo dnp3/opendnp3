@@ -36,8 +36,8 @@ namespace opendnp3
 
 const uint8_t LinkLayerReceiver::M_SYNC_PATTERN[2] = {0x05, 0x64};
 
-LinkLayerReceiver::LinkLayerReceiver(Logger& arLogger, IFrameSink* apSink) :
-	Loggable(arLogger),
+LinkLayerReceiver::LinkLayerReceiver(Logger aLogger, IFrameSink* apSink) :
+	Loggable(aLogger),
 	mFrameSize(0),
 	mpSink(apSink),
 	mpState(LRS_Sync::Inst()),

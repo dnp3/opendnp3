@@ -39,7 +39,7 @@ class DLL_LOCAL AlwaysOpeningVtoRouter : public VtoRouter
 {
 public:
 
-	AlwaysOpeningVtoRouter(const VtoRouterSettings& arSettings, openpal::Logger& arLogger, IVtoWriter* apWriter, openpal::IPhysicalLayerAsync* apPhysLayer);
+	AlwaysOpeningVtoRouter(const VtoRouterSettings& arSettings, openpal::Logger aLogger, IVtoWriter* apWriter, openpal::IPhysicalLayerAsync* apPhysLayer);
 
 	/// we don't care about any of the callbacks so we have empty implementations
 	void DoVtoRemoteConnectedChanged(bool aOpened) {}

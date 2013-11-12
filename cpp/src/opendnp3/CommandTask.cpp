@@ -31,7 +31,7 @@ using namespace openpal;
 namespace opendnp3
 {
 
-CommandTask::CommandTask(Logger& arLogger) : MasterTaskBase(arLogger)
+CommandTask::CommandTask(Logger aLogger) : MasterTaskBase(aLogger)
 {
 
 }

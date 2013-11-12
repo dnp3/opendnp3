@@ -39,7 +39,7 @@ namespace opendnp3
 class LowerLayerToPhysAdapter : public openpal::IHandlerAsync, public openpal::ILowerLayer
 {
 public:
-	LowerLayerToPhysAdapter(openpal::Logger&, openpal::IPhysicalLayerAsync*, bool aAutoRead = true);
+	LowerLayerToPhysAdapter(openpal::Logger, openpal::IPhysicalLayerAsync*, bool aAutoRead = true);
 	~LowerLayerToPhysAdapter();
 
 	size_t GetNumOpenFailure() {

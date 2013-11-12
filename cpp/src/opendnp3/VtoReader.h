@@ -59,7 +59,7 @@ public:
 	 *
 	 * @return					a new VtoReader instance
 	 */
-	VtoReader(openpal::Logger& arLogger) : Loggable(arLogger) {}
+	VtoReader(openpal::Logger aLogger) : Loggable(aLogger) {}
 
 	/**
 	 * Register an IVtoCallbacks instance with the VtoReader

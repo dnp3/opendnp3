@@ -34,7 +34,7 @@ namespace opendnp3
 class PhysicalLayerWrapper : public openpal::IPhysicalLayerAsync, public openpal::IHandlerAsync
 {
 public:
-	PhysicalLayerWrapper(openpal::Logger& arLogger, openpal::IPhysicalLayerAsync* apProxy);
+	PhysicalLayerWrapper(openpal::Logger aLogger, openpal::IPhysicalLayerAsync* apProxy);
 
 	openpal::IExecutor* GetExecutor() {
 		return mpProxy->GetExecutor();

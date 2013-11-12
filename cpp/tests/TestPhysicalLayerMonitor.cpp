@@ -40,9 +40,9 @@ class ConcretePhysicalLayerMonitor : public PhysicalLayerMonitor
 {
 public:
 
-	ConcretePhysicalLayerMonitor(openpal::Logger& arLogger, IPhysicalLayerAsync* apPhys) :
-		Loggable(arLogger),
-		PhysicalLayerMonitor(arLogger.GetSubLogger("monitor"), apPhys, seconds(1), seconds(10)),
+	ConcretePhysicalLayerMonitor(openpal::Logger aLogger, IPhysicalLayerAsync* apPhys) :
+		Loggable(aLogger),
+		PhysicalLayerMonitor(aLogger.GetSubLogger("monitor"), apPhys, seconds(1), seconds(10)),
 		mOpenCallbackCount(0),
 		mCloseCallbackCount(0) {
 	}

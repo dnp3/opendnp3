@@ -30,9 +30,9 @@ using namespace openpal;
 namespace opendnp3
 {
 
-MockLowerLayer::MockLowerLayer(Logger& arLogger) :
-	Loggable(arLogger),
-	ILowerLayer(arLogger),
+MockLowerLayer::MockLowerLayer(Logger aLogger) :
+	Loggable(aLogger),
+	ILowerLayer(aLogger),
 	mAutoSendCallback(true),
 	mIsSuccess(true)
 {

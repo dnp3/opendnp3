@@ -34,8 +34,8 @@ using namespace openpal;
 namespace opendnp3
 {
 
-MockPhysicalLayerAsync::MockPhysicalLayerAsync(openpal::Logger& arLogger, openpal::IExecutor* apExecutor) :
-	PhysicalLayerAsyncBase(arLogger),
+MockPhysicalLayerAsync::MockPhysicalLayerAsync(openpal::Logger aLogger, openpal::IExecutor* apExecutor) :
+	PhysicalLayerAsyncBase(aLogger),
 	mpWriteBuff(NULL),
 	mNumToRead(0),
 	mNumToWrite(0),

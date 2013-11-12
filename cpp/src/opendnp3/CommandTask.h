@@ -45,7 +45,7 @@ class DLL_LOCAL CommandTask : public MasterTaskBase
 	typedef std::function<void (CommandStatus)> Responder;
 
 public:
-	CommandTask(openpal::Logger&);
+	CommandTask(openpal::Logger);
 
 	void Configure(const Formatter& arFormatter, const Responder& arResponder);
 	void AddCommandCode(FunctionCodes aCode);

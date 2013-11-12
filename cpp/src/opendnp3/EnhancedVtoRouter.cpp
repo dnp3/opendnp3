@@ -31,9 +31,9 @@ using namespace openpal;
 namespace opendnp3
 {
 
-EnhancedVtoRouter::EnhancedVtoRouter(const VtoRouterSettings& arSettings, Logger& arLogger, IVtoWriter* apWriter, IPhysicalLayerAsync* apPhysLayer) :
-	Loggable(arLogger),
-	VtoRouter(arSettings, arLogger, apWriter, apPhysLayer),
+EnhancedVtoRouter::EnhancedVtoRouter(const VtoRouterSettings& arSettings, Logger aLogger, IVtoWriter* apWriter, IPhysicalLayerAsync* apPhysLayer) :
+	Loggable(aLogger),
+	VtoRouter(arSettings, aLogger, apWriter, apPhysLayer),
 	mRemoteConnected(false),
 	mLocalConnected(false),
 	mInstRemoteConnected(false)
@@ -110,9 +110,9 @@ void EnhancedVtoRouter::CloseAndFlushBuffers()
  * Server socket specific implementation
  *************************************/
 
-ServerSocketVtoRouter::ServerSocketVtoRouter(const VtoRouterSettings& arSettings, Logger& arLogger, IVtoWriter* apWriter, IPhysicalLayerAsync* apPhysLayer) :
-	Loggable(arLogger),
-	EnhancedVtoRouter(arSettings, arLogger, apWriter, apPhysLayer)
+ServerSocketVtoRouter::ServerSocketVtoRouter(const VtoRouterSettings& arSettings, Logger aLogger, IVtoWriter* apWriter, IPhysicalLayerAsync* apPhysLayer) :
+	Loggable(aLogger),
+	EnhancedVtoRouter(arSettings, aLogger, apWriter, apPhysLayer)
 {
 	this->Start();
 }
@@ -164,9 +164,9 @@ void ServerSocketVtoRouter::HandleDuplicateClose()
 /*****************************************
  * Client socket specific implementation
  *************************************/
-ClientSocketVtoRouter::ClientSocketVtoRouter(const VtoRouterSettings& arSettings, Logger& arLogger, IVtoWriter* apWriter, IPhysicalLayerAsync* apPhysLayer) :
-	Loggable(arLogger),
-	EnhancedVtoRouter(arSettings, arLogger, apWriter, apPhysLayer)
+ClientSocketVtoRouter::ClientSocketVtoRouter(const VtoRouterSettings& arSettings, Logger aLogger, IVtoWriter* apWriter, IPhysicalLayerAsync* apPhysLayer) :
+	Loggable(aLogger),
+	EnhancedVtoRouter(arSettings, aLogger, apWriter, apPhysLayer)
 {
 
 }

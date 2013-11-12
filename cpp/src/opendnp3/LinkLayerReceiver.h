@@ -50,7 +50,7 @@ public:
 		@param arLogger Logger that the receiver is to use.
 		@param apSink Complete frames are sent to this interface.
 	*/
-	LinkLayerReceiver(openpal::Logger& arLogger, IFrameSink* apSink);
+	LinkLayerReceiver(openpal::Logger aLogger, IFrameSink* apSink);
 
 	/**
 		Called when valid data has been written to the current buffer write position

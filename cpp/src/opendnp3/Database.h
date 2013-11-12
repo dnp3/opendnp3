@@ -57,7 +57,7 @@ class DLL_LOCAL Database : public IDataObserver, public openpal::Loggable
 {
 public:
 
-	Database(openpal::Logger& arLogger);
+	Database(openpal::Logger aLogger);
 
 	virtual ~Database();
 
