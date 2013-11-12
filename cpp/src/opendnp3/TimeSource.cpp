@@ -37,19 +37,4 @@ timer_clock::time_point TimeSource::GetUTC()
 	return timer_clock::now();
 }
 
-TimeSourceSystemOffset::TimeSourceSystemOffset()
-	: mOffset(0)
-{
-}
-
-timer_clock::time_point TimeSourceSystemOffset::GetUTC()
-{
-	return timer_clock::now() + mOffset;
-}
-
-void TimeSourceSystemOffset::SetTime(const timer_clock::time_point& arTime)
-{
-	mOffset = arTime - timer_clock::now();
-}
-
 }

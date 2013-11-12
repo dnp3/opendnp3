@@ -47,20 +47,6 @@ class DLL_LOCAL TimeSource : public ITimeSource
 	openpal::timer_clock::time_point GetUTC();
 };
 
-/** Maintains an external time by keeping an offset from system time.
-*/
-class DLL_LOCAL TimeSourceSystemOffset : public  ITimeManager
-{
-public:
-	TimeSourceSystemOffset();
-
-	openpal::timer_clock::time_point GetUTC();
-	void SetTime(const openpal::timer_clock::time_point& arTime);
-
-private:
-	openpal::timer_clock::duration mOffset;
-};
-
 }
 
 #endif

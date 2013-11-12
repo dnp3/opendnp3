@@ -20,29 +20,31 @@
 // you under the terms of the License.
 //
 
-#include "MockTimeSource.h"
+#ifndef __MOCK_TIME_WRITE_HANDLER_H_
+#define __MOCK_TIME_WRITE_HANDLER_H_
 
-using namespace openpal;
-using namespace std::chrono;
+#include <opendnp3/ITimeWriteHandler.h>
+
+#include <functional>
 
 namespace opendnp3
 {
 
-	//mock time source
-MockTimeSource::MockTimeSource()
+class MockTimeWriteHandler : public ITimeWriteHandler
 {
+public:
+	MockTimeWriteHandler(std::function<void (openpal::millis_t)> aTimeWriteCallback) : mTimeWriteCallback(aTimeWriteCallback) {}
+
+	void WriteAbsoluteTime(openpal::millis_t aMillisecSinceEpoch)
+	{
+		mTimeWriteCallback(aMillisecSinceEpoch);	
+	}
+	
+private:
+	std::function<void (openpal::millis_t)> mTimeWriteCallback;
+};
 
 }
 
-void MockTimeSource::Advance(const timer_clock::duration& arDuration)
-{
-	mTime += arDuration;
-}
+#endif
 
-void MockTimeSource::SetToNow()
-{
-	mTime = timer_clock::now();
-}
-
-
-}

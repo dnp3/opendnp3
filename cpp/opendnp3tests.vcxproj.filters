@@ -171,7 +171,10 @@
     <ClInclude Include="tests\MockTimeSource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="tests\MockTimeManager.h">
+    <ClInclude Include="tests\MockTimeWriteHandler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tests\NullTimeWriteHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -443,7 +446,7 @@
     <ClCompile Include="tests\RandomizedBuffer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="tests\MockTimeSource.cpp">
+    <ClCompile Include="tests\NullTimeWriteHandler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

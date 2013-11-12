@@ -222,7 +222,10 @@ BOOST_AUTO_TEST_CASE(WriteTimeDate)
 	
 	
 	t.SendToSlave("C0 02 32 01 07 01 D2 04 00 00 00 00"); //write Grp50Var1, value = 1234 ms after epoch
-	BOOST_REQUIRE_EQUAL(t.fakeTime.GetMillisecondsSinceEpoch(), 1234);
+	BOOST_REQUIRE_EQUAL(t.mTimeWrites.size(), 0);
+	t.mts.DispatchOne();
+	BOOST_REQUIRE_EQUAL(t.mTimeWrites.size(), 1);
+	BOOST_REQUIRE_EQUAL(t.mTimeWrites.front(), 1234);	
 	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 00");
 }
 BOOST_AUTO_TEST_CASE(WriteTimeDateNotAsking)
@@ -233,7 +236,8 @@ BOOST_AUTO_TEST_CASE(WriteTimeDateNotAsking)
 	t.slave.OnLowerLayerUp();
 
 	t.SendToSlave("C0 02 32 01 07 01 D2 04 00 00 00 00"); //write Grp50Var1, value = 1234 ms after epoch
-	BOOST_REQUIRE_EQUAL(t.fakeTime.GetMillisecondsSinceEpoch(), 0);
+	t.mts.DispatchOne();
+	BOOST_REQUIRE_EQUAL(t.mTimeWrites.size(), 0);		
 	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 00");
 }
 BOOST_AUTO_TEST_CASE(WriteTimeDateMultipleObjects)
@@ -244,8 +248,8 @@ BOOST_AUTO_TEST_CASE(WriteTimeDateMultipleObjects)
 	t.slave.OnLowerLayerUp();
 
 	t.SendToSlave("C0 02 32 01 07 02 D2 04 00 00 00 00 D2 04 00 00 00 00"); //write Grp50Var1, value = 1234 ms after epoch
-	BOOST_REQUIRE_EQUAL(t.fakeTime.GetMillisecondsSinceEpoch(), 0);
-	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 90 04");
+	t.mts.DispatchOne();
+	BOOST_REQUIRE_EQUAL(t.mTimeWrites.size(), 0);	
 }
 
 BOOST_AUTO_TEST_CASE(BlankIntegrityPoll)

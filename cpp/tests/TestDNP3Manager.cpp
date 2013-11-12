@@ -22,8 +22,6 @@
 
 #include <boost/test/unit_test.hpp>
 
-#include "TestHelpers.h"
-
 #include <opendnp3/DNP3Manager.h>
 #include <opendnp3/IChannel.h>
 #include <opendnp3/IMaster.h>
@@ -32,6 +30,9 @@
 #include <opendnp3/IVtoEndpoint.h>
 #include <opendnp3/LogToStdio.h>
 #include <opendnp3/SimpleDataObserver.h>
+
+#include "TestHelpers.h"
+#include "NullTimeWriteHandler.h"
 
 #include <thread>
 
@@ -50,7 +51,7 @@ BOOST_AUTO_TEST_CASE(ConstructionDestruction)
 		auto pClient = mgr.AddTCPClient("client", LEV_INFO, 5000, "127.0.0.1", 20000);
 		auto pServer = mgr.AddTCPServer("server", LEV_INFO, 5000, "127.0.0.1", 20000);
 		pClient->AddMaster("master", LEV_INFO, NullDataObserver::Inst(), MasterStackConfig());
-		pServer->AddOutstation("outstation", LEV_INFO, SuccessCommandHandler::Inst(), SlaveStackConfig());
+		pServer->AddOutstation("outstation", LEV_INFO, SuccessCommandHandler::Inst(), NullTimeWriteHandler::Inst(), SlaveStackConfig());
 
 	}
 }
@@ -63,7 +64,7 @@ BOOST_AUTO_TEST_CASE(ManualStackShutdown)
 
 		auto pClient = mgr.AddTCPClient("client", LEV_INFO, 5000, "127.0.0.1", 20000);
 		auto pServer = mgr.AddTCPServer("server", LEV_INFO, 5000, "127.0.0.1", 20000);
-		auto pOutstation = pServer->AddOutstation("outstation", LEV_INFO, SuccessCommandHandler::Inst(), SlaveStackConfig());
+		auto pOutstation = pServer->AddOutstation("outstation", LEV_INFO, SuccessCommandHandler::Inst(), NullTimeWriteHandler::Inst(), SlaveStackConfig());
 		auto pMaster = pClient->AddMaster("master", LEV_INFO, NullDataObserver::Inst(), MasterStackConfig());
 
 		pOutstation->Shutdown();
@@ -103,7 +104,7 @@ BOOST_AUTO_TEST_CASE(ConstructionDestructionWithVtoRouters)
 		auto pClient = mgr.AddTCPClient("client", LEV_INFO, 5000, "127.0.0.1", 20000);
 		auto pServer = mgr.AddTCPServer("server", LEV_INFO, 5000, "127.0.0.1", 20000);
 		auto pMaster = pClient->AddMaster("master", LEV_INFO, NullDataObserver::Inst(), MasterStackConfig());
-		auto pOutstation = pServer->AddOutstation("outstation", LEV_INFO, SuccessCommandHandler::Inst(), SlaveStackConfig());
+		auto pOutstation = pServer->AddOutstation("outstation", LEV_INFO, SuccessCommandHandler::Inst(), NullTimeWriteHandler::Inst(), SlaveStackConfig());
 
 		pMaster->StartVtoRouterTCPClient("vtoclient", LEV_INFO, "127.0.0.1", 20001, VtoRouterSettings(0, true, false));
 		pOutstation->StartVtoRouterTCPServer("vtoclient", LEV_INFO, "127.0.0.1", 20001, VtoRouterSettings(0, true, false));
@@ -120,7 +121,7 @@ BOOST_AUTO_TEST_CASE(ConstructionDestructionWithVtoRoutersManualVtoShutdown)
 		auto pClient = mgr.AddTCPClient("client", LEV_INFO, 5000, "127.0.0.1", 20000);
 		auto pServer = mgr.AddTCPServer("server", LEV_INFO, 5000, "127.0.0.1", 20000);
 		auto pMaster = pClient->AddMaster("master", LEV_INFO, NullDataObserver::Inst(), MasterStackConfig());
-		auto pOutstation = pServer->AddOutstation("outstation", LEV_INFO, SuccessCommandHandler::Inst(), SlaveStackConfig());
+		auto pOutstation = pServer->AddOutstation("outstation", LEV_INFO, SuccessCommandHandler::Inst(), NullTimeWriteHandler::Inst(), SlaveStackConfig());
 
 		auto pClientVto = pMaster->StartVtoRouterTCPClient("vtoclient", LEV_INFO, "127.0.0.1", 20001, VtoRouterSettings(0, true, false));
 		auto pServerVto = pOutstation->StartVtoRouterTCPServer("vtoclient", LEV_INFO, "127.0.0.1", 20001, VtoRouterSettings(0, true, false));

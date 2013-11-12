@@ -30,6 +30,8 @@
 #include <opendnp3/IMaster.h>
 #include <opendnp3/IOutstation.h>
 
+#include "NullTimeWriteHandler.h"
+
 #include <thread>
 
 namespace opendnp3
@@ -57,7 +59,7 @@ VtoIntegrationTestBase::VtoIntegrationTestBase(
 	SlaveStackConfig sconfig;
 	sconfig.app.NumRetry = 3;
 	sconfig.app.RspTimeout = 500;
-	auto pOutstation = pServerChannel->AddOutstation("outstation", level, &cmdHandler, sconfig);
+	auto pOutstation = pServerChannel->AddOutstation("outstation", level, &cmdHandler, NullTimeWriteHandler::Inst(), sconfig);
 
 
 

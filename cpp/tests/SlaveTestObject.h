@@ -31,7 +31,7 @@
 #include "LogTester.h"
 #include "MockCommandHandler.h"
 #include "MockAppLayer.h"
-#include "MockTimeManager.h"
+#include "MockTimeWriteHandler.h"
 
 namespace opendnp3
 {
@@ -53,7 +53,7 @@ public:
 
 
 	LogTester log;
-	MockTimeManager fakeTime;
+	MockTimeWriteHandler mMockTimeWriteHandler;
 	MockExecutor mts;
 	MockAppLayer app;
 	Database db;
@@ -61,6 +61,8 @@ public:
 	Slave slave;
 	APDU mAPDU;
 	openpal::Logger mLogger;
+
+	std::queue<openpal::millis_t> mTimeWrites;
 
 };
 

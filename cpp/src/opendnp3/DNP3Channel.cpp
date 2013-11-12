@@ -100,7 +100,7 @@ IMaster* DNP3Channel::AddMaster(const std::string& arLoggerId, FilterLevel aLeve
 }
 #endif
 
-IOutstation* DNP3Channel::AddOutstation(const std::string& arLoggerId, FilterLevel aLevel, ICommandHandler* apCmdHandler, const SlaveStackConfig& arCfg)
+IOutstation* DNP3Channel::AddOutstation(const std::string& arLoggerId, FilterLevel aLevel, ICommandHandler* apCmdHandler, ITimeWriteHandler* apTimeWriteHandler, const SlaveStackConfig& arCfg)
 {
 	LinkRoute route(arCfg.link.RemoteAddr, arCfg.link.LocalAddr);
 	ExecutorPause p(mpPhys->GetExecutor());
@@ -109,7 +109,7 @@ IOutstation* DNP3Channel::AddOutstation(const std::string& arLoggerId, FilterLev
 	}
 	else {
 		auto logger = mLogger.GetSubLogger(arLoggerId, aLevel);
-		auto pOutstation = new OutstationStackImpl(logger, mpService, mpPhys->GetExecutor(), apCmdHandler, arCfg, [this, route](IStack * apStack) {
+		auto pOutstation = new OutstationStackImpl(logger, mpService, mpPhys->GetExecutor(), apTimeWriteHandler, apCmdHandler, arCfg, [this, route](IStack * apStack) {
 			this->OnStackShutdown(apStack, route);
 		});
 		pOutstation->SetLinkRouter(&mRouter);

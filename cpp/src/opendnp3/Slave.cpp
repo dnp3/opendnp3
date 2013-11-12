@@ -40,9 +40,10 @@ using namespace openpal;
 namespace opendnp3
 {
 
-Slave::Slave(openpal::Logger aLogger, IAppLayer* apAppLayer, IExecutor* apExecutor, ITimeManager* apTime, Database* apDatabase, ICommandHandler* apCmdHandler, const SlaveConfig& arCfg, ITimeSource* apTimeSource) :
+Slave::Slave(openpal::Logger aLogger, IAppLayer* apAppLayer, IExecutor* apExecutor, ITimeWriteHandler* apTimeWriteHandler, Database* apDatabase, ICommandHandler* apCmdHandler, const SlaveConfig& arCfg, ITimeSource* apTimeSource) :
 	Loggable(aLogger),
 	StackBase(apExecutor),
+	mpTimeWriteHandler(apTimeWriteHandler),
 	mpAppLayer(apAppLayer),
 	mpDatabase(apDatabase),
 	mpCmdHandler(apCmdHandler),
@@ -56,7 +57,6 @@ Slave::Slave(openpal::Logger aLogger, IAppLayer* apAppLayer, IExecutor* apExecut
 	mSBOHandler(arCfg.mSelectTimeout, apCmdHandler, apTimeSource),
 	mHaveLastRequest(false),
 	mLastRequest(arCfg.mMaxFragSize),
-	mpTime(apTime),
 	mDeferredUpdate(false),
 	mDeferredRequest(false),
 	mDeferredUnsol(false),
@@ -373,7 +373,8 @@ void Slave::HandleWriteTimeDate(HeaderReadIterator& arHWI)
 	}
 
 	millis_t ms = Group50Var1::Inst()->mTime.Get(*obj);
-	mpTime->SetTime(timer_clock::time_point(std::chrono::milliseconds(ms)));
+	//make the callback with the stack unwound
+	mpExecutor->Post([ms, this](){ mpTimeWriteHandler->WriteAbsoluteTime(ms); });  
 
 	mIIN.SetNeedTime(false);
 

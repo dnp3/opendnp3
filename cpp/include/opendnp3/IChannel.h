@@ -45,6 +45,7 @@ class IDataObserver;
 class IMaster;
 class IOutstation;
 class ICommandHandler;
+class ITimeWriteHandler;
 
 /**
 * Represents a communication channel upon which masters and outstations can be bound.
@@ -118,6 +119,7 @@ public:
 	virtual IOutstation* AddOutstation(	const std::string& arLoggerId,
 	                                        openpal::FilterLevel aLevel,
 	                                        ICommandHandler* apCmdHandler,
+											ITimeWriteHandler* apTimeWriteHandler,
 	                                        const SlaveStackConfig& arCfg) = 0;
 };
 

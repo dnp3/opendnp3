@@ -30,6 +30,7 @@
 #define __SLAVE_H_
 
 #include <opendnp3/ICommandHandler.h>
+#include <opendnp3/ITimeWriteHandler.h>
 #include <opendnp3/SlaveConfig.h>
 
 #include <openpal/Visibility.h>
@@ -48,6 +49,7 @@
 #include "VtoReader.h"
 #include "VtoWriter.h"
 #include "OutstationSBOHandler.h"
+
 
 
 namespace openpal {
@@ -91,7 +93,7 @@ class DLL_LOCAL Slave : public openpal::Loggable, public IAppUser, public StackB
 
 public:
 
-	Slave(openpal::Logger, IAppLayer*, openpal::IExecutor*, ITimeManager*, Database*, ICommandHandler*, const SlaveConfig&, ITimeSource* apTimeSource = TimeSource::Inst());
+	Slave(openpal::Logger, IAppLayer*, openpal::IExecutor*, ITimeWriteHandler* apWriteHandler, Database*, ICommandHandler*, const SlaveConfig&, ITimeSource* apTimeSource = TimeSource::Inst());
 	~Slave();
 
 	////////////////////////
@@ -168,6 +170,7 @@ private:
 	SlaveResponseTypes mRspTypes;			// converts the group/var in the config to dnp singletons
 
 	openpal::ITimer* mpUnsolTimer;			// timer for sending unsol responsess
+	ITimeWriteHandler* mpTimeWriteHandler;   
 
 	INotifier* mpVtoNotifier;
 
@@ -182,8 +185,7 @@ private:
 
 	bool mHaveLastRequest;
 	APDU mLastRequest;						// APDU used to form responses
-
-	ITimeManager* mpTime;
+	
 
 	// Flags that tell us that some action has been Deferred
 	// until the slave is in a state capable of handling it.

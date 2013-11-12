@@ -39,13 +39,6 @@ public:
 
 };
 
-class DLL_LOCAL ITimeManager : public ITimeSource
-{
-public:
-	virtual void SetTime(const openpal::timer_clock::time_point& arTime) = 0;
-};
-
-
 
 }
 

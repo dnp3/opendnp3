@@ -26,6 +26,7 @@
 #include <thread>
 
 #include "AsyncTestObjectASIO.h"
+#include "NullTimeWriteHandler.h"
 
 #include <openpal/IPhysicalLayerAsync.h>
 
@@ -163,7 +164,7 @@ void IntegrationTest::AddStackPair(FilterLevel aLevel, size_t aNumPoints)
 		cfg.slave.mDisableUnsol = false;
 		cfg.slave.mUnsolPackDelay = 0;
 		cfg.device = DeviceTemplate(aNumPoints, aNumPoints, aNumPoints);
-		auto pOutstation = pServer->AddOutstation(server, aLevel, &mCmdHandler, cfg);
+		auto pOutstation = pServer->AddOutstation(server, aLevel, &mCmdHandler, NullTimeWriteHandler::Inst(), cfg);
 		this->mFanout.AddObserver(pOutstation->GetDataObserver());
 	}
 

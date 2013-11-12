@@ -58,6 +58,7 @@ class ITimeSource;
 class IStack;
 class IOutstation;
 class ICommandHandler;
+class ITimeWriteHandler;
 
 class DLL_LOCAL DNP3Channel: public IChannel, private openpal::Loggable
 {
@@ -83,6 +84,7 @@ public:
 	IOutstation* AddOutstation(	const std::string& arLoggerId,
 	                                FilterLevel aLevel,
 	                                ICommandHandler* apCmdHandler,
+									ITimeWriteHandler* apTimeWriteHandler,
 	                                const SlaveStackConfig&);
 
 	// Helper functions only available inside DNP3Manager

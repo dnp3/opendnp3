@@ -20,48 +20,18 @@
 // you under the terms of the License.
 //
 
-#ifndef __MOCK_TIME_SOURCE_H_
-#define __MOCK_TIME_SOURCE_H_
-
-#include <opendnp3/ITimeSource.h>
+#include "NullTimeWriteHandler.h"
 
 namespace opendnp3
 {
+	NullTimeWriteHandler NullTimeWriteHandler::mInstance;
 
-class MockTimeSource : public ITimeSource
-{
-public:
-
-	MockTimeSource() : mTime(openpal::timer_clock::time_point::min()) {}
-
-	// Implement ITimeSource
-	openpal::timer_clock::time_point GetUTC() {
-		return mTime;
-	}
-
-	openpal::timer_clock::time_point GetTimeStampUTC()
+	ITimeWriteHandler* NullTimeWriteHandler::Inst()
 	{
-		return mTime;
+		return &mInstance;
 	}
-
-	void SetTime(const openpal::timer_clock::time_point& arTime) {
-		mTime = arTime;
-	}
-
-	void Advance(const openpal::timer_clock::duration& arDuration) {
-		mTime += arDuration;
-	}
-
-	void SetToNow() {
-		mTime = openpal::timer_clock::now();
-	}
-
-private:
-
-	openpal::timer_clock::time_point mTime;
-};
 
 }
 
-#endif
+
 

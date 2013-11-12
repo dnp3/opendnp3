@@ -20,29 +20,25 @@
 // you under the terms of the License.
 //
 
-#ifndef __MOCK_TIME_MANAGER_H_
-#define __MOCK_TIME_MANAGER_H_
+#ifndef __NULL_TIME_WRITE_HANDLER_H_
+#define __NULL_TIME_WRITE_HANDLER_H_
 
-#include <opendnp3/ITimeSource.h>
+#include <opendnp3/ITimeWriteHandler.h>
 
 namespace opendnp3
 {
 
-class MockTimeManager : public ITimeManager
+class NullTimeWriteHandler : public ITimeWriteHandler
 {
 public:
-	MockTimeManager() : mTime() {}
-
-	openpal::timer_clock::time_point GetUTC() {
-		return mTime;
-	}
-
-	void SetTime(const openpal::timer_clock::time_point& arTime) {
-		mTime = arTime;
-	}
+	static ITimeWriteHandler* Inst();
 
 private:
-	openpal::timer_clock::time_point mTime;
+	static NullTimeWriteHandler mInstance;
+
+	NullTimeWriteHandler() {}
+
+	void WriteAbsoluteTime(openpal::millis_t aMillisecSinceEpoch) {}	
 };
 
 }

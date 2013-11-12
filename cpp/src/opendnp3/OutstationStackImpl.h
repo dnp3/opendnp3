@@ -51,6 +51,7 @@ public:
 	        openpal::Logger&,
 	        boost::asio::io_service* apService,
 	        openpal::IExecutor* apExecutor,
+			ITimeWriteHandler* apTimeWriteHandler,
 	        ICommandHandler* apCmdHandler,
 	        const SlaveStackConfig& arCfg,
 	        std::function<void (IOutstation*)> aOnShutdown);
@@ -72,8 +73,7 @@ protected:
 
 private:
 	openpal::IExecutor* mpExecutor;
-	ApplicationStack mAppStack;
-	TimeSourceSystemOffset mTimeSource;
+	ApplicationStack mAppStack;	
 	Database mDB;
 	Slave mSlave;
 	std::function<void (IOutstation*)> mOnShutdown;

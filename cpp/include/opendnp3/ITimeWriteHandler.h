@@ -17,48 +17,29 @@
 //
 // This file was forked on 01/01/2013 by Automatak, LLC and modifications
 // have been made to this file. Automatak, LLC licenses these modifications to
-// you under the terms of the License.
+// you under the GNU Affero General Public License Version 3.0
+// (the "Additional License"). You may not use these modifications except in
+// compliance with the additional license. You may obtain a copy of the Additional
+// License at
 //
+// http://www.gnu.org/licenses/agpl.html
+//
+// Contact Automatak, LLC for a commercial license to these modifications
+//
+#ifndef __I_TIME_WRITE_HANDLER_H_
+#define __I_TIME_WRITE_HANDLER_H_
 
-#ifndef __MOCK_TIME_SOURCE_H_
-#define __MOCK_TIME_SOURCE_H_
-
-#include <opendnp3/ITimeSource.h>
+#include <openpal/Types.h>
 
 namespace opendnp3
 {
 
-class MockTimeSource : public ITimeSource
+class ITimeWriteHandler
 {
 public:
-
-	MockTimeSource() : mTime(openpal::timer_clock::time_point::min()) {}
-
-	// Implement ITimeSource
-	openpal::timer_clock::time_point GetUTC() {
-		return mTime;
-	}
-
-	openpal::timer_clock::time_point GetTimeStampUTC()
-	{
-		return mTime;
-	}
-
-	void SetTime(const openpal::timer_clock::time_point& arTime) {
-		mTime = arTime;
-	}
-
-	void Advance(const openpal::timer_clock::duration& arDuration) {
-		mTime += arDuration;
-	}
-
-	void SetToNow() {
-		mTime = openpal::timer_clock::now();
-	}
-
-private:
-
-	openpal::timer_clock::time_point mTime;
+	virtual ~ITimeWriteHandler() {}	
+	
+	virtual void WriteAbsoluteTime(openpal::millis_t aMillisecSinceEpoch) = 0;
 };
 
 }
