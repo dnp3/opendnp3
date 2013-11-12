@@ -46,7 +46,7 @@ namespace Adapter
 
 		virtual IMaster^ AddMaster(System::String^ loggerId, LogLevel level, IDataObserver^ publisher, MasterStackConfig^ config);
 
-		virtual IOutstation^ AddOutstation(System::String^ loggerId, LogLevel level, ICommandHandler^ cmdHandler, SlaveStackConfig^ config);
+		virtual IOutstation^ AddOutstation(System::String^ loggerId, LogLevel level, ICommandHandler^ cmdHandler, ITimeWriteHandler^ timeHandler, SlaveStackConfig^ config);
 
 		virtual void Shutdown();
 		

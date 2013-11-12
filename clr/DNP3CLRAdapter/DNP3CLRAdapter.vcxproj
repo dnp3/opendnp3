@@ -168,6 +168,7 @@
     <ClInclude Include="MasterAdapter.h" />
     <ClInclude Include="MasterDataObserverAdapter.h" />
     <ClInclude Include="OutstationAdapter.h" />
+    <ClInclude Include="OutstationTimeWriteAdapter.h" />
     <ClInclude Include="SlaveCommandHandlerAdapter.h" />
     <ClInclude Include="SlaveDataObserverAdapter.h" />
     <ClInclude Include="StackStateCallback.h" />
@@ -181,6 +182,7 @@
     <ClCompile Include="MasterAdapter.cpp" />
     <ClCompile Include="MasterDataObserverAdapter.cpp" />
     <ClCompile Include="OutstationAdapter.cpp" />
+    <ClCompile Include="OutstationTimeWriteAdapter.cpp" />
     <ClCompile Include="SlaveCommandHandlerAdapter.cpp" />
     <ClCompile Include="SlaveDataObserverAdapter.cpp" />
     <ClCompile Include="StackStateCallback.cpp" />

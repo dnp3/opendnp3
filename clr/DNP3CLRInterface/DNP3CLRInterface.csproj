@@ -47,9 +47,11 @@
     <Compile Include="ConfigObjects.cs" />
     <Compile Include="Conversions.cs" />
     <Compile Include="DataTypes.cs" />
+    <Compile Include="ICommandHandler.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="IDNP3Manager.cs" />
     <Compile Include="IChannel.cs" />
-    <Compile Include="ICommandHandler.cs" />
     <Compile Include="ICommandProcessor.cs" />
     <Compile Include="IDataObserver.cs" />
     <Compile Include="IFuture.cs" />
@@ -61,6 +63,7 @@
     <Compile Include="IStack.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ITimeWriteHandler.cs" />
     <Compile Include="LogTypes.cs" />
     <Compile Include="NamespaceDoc.cs">
       <SubType>Code</SubType>

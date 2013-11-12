@@ -24,6 +24,7 @@
 #include "Conversions.h"
 #include "MasterDataObserverAdapter.h"
 #include "SlaveCommandHandlerAdapter.h"
+#include "OutstationTimeWriteAdapter.h"
 #include "MasterAdapter.h"
 #include "OutstationAdapter.h"
 #include "DeleteAnything.h"
@@ -72,16 +73,18 @@ IMaster^ ChannelAdapter::AddMaster(System::String^ loggerId, LogLevel level, IDa
 	}
 }
 
-IOutstation^ ChannelAdapter::AddOutstation(System::String^ loggerId, LogLevel level, ICommandHandler^ cmdHandler, SlaveStackConfig^ config)
+IOutstation^ ChannelAdapter::AddOutstation(System::String^ loggerId, LogLevel level, ICommandHandler^ cmdHandler, ITimeWriteHandler^ timeHandler, SlaveStackConfig^ config)
 {	
 	std::string stdLoggerId = Conversions::convertString(loggerId);
 	openpal::FilterLevel stdLevel = Conversions::convertFilterLevel(level);
 
-	SlaveCommandHandlerWrapper^ wrapper = gcnew SlaveCommandHandlerWrapper(cmdHandler);
+	SlaveCommandHandlerWrapper^ cmdWrapper = gcnew SlaveCommandHandlerWrapper(cmdHandler);
+	OutstationTimeWriteWrapper^ timeWrapper = gcnew OutstationTimeWriteWrapper(timeHandler);
+
 	opendnp3::SlaveStackConfig cfg = Conversions::convertConfig(config);
 
 	try {
-		auto pOutstation = mpChannel->AddOutstation(stdLoggerId, stdLevel, wrapper->Get(), Conversions::convertConfig(config));
+		auto pOutstation = mpChannel->AddOutstation(stdLoggerId, stdLevel, cmdWrapper->Get(), timeWrapper->Get(), Conversions::convertConfig(config));
 		return gcnew OutstationAdapter(pOutstation);
 	} 
 	catch(openpal::Exception ex){
