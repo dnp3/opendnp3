@@ -29,6 +29,9 @@
 #include "OutstationAdapter.h"
 #include "DeleteAnything.h"
 
+
+#include <asiopal/UTCTimeSource.h>
+
 using namespace System::Collections::Generic;
 
 namespace DNP3
@@ -65,7 +68,7 @@ IMaster^ ChannelAdapter::AddMaster(System::String^ loggerId, LogLevel level, IDa
 	opendnp3::MasterStackConfig cfg = Conversions::convertConfig(config);
 
 	try {
-		auto pMaster = mpChannel->AddMaster(stdLoggerId, stdLevel, wrapper->Get(), cfg);
+		auto pMaster = mpChannel->AddMaster(stdLoggerId, stdLevel, wrapper->Get(), asiopal::UTCTimeSource::Inst(), cfg); // TODO expose time source
 		return gcnew MasterAdapter(pMaster);
 	} 
 	catch(openpal::Exception ex){

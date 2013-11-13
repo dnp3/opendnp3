@@ -25,6 +25,8 @@
 
 #include <openpal/Exception.h>
 
+#include <asiopal/UTCTimeSource.h>
+
 #include "JNIHelpers.hpp"
 #include "DataObserverAdapter.hpp"
 #include "CommandHandlerAdapter.hpp"
@@ -71,7 +73,7 @@ JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ChannelImpl_get_1native_1ma
 		std::string loggerId = JNIHelpers::GetString(jloggerId, pEnv);
 		MasterStackConfig config = ConfigReader::ConvertMasterStackConfig(pEnv, jconfig);
 		FilterLevel lev = LogTypes::ConvertIntToFilterLevel(logLevel);
-		auto pMaster = pChannel->AddMaster(loggerId, lev, pPublisher, config);
+		auto pMaster = pChannel->AddMaster(loggerId, lev, pPublisher, asiopal::UTCTimeSource::Inst(), config);
 		pMaster->AddDestructorHook([pJVM, global]() {
 			JNIHelpers::DeleteGlobalReference(pJVM, global);
 		});

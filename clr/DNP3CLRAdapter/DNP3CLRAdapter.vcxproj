@@ -62,6 +62,7 @@
     <Import Project="$(SolutionDir)\config\boost_includes.props" />
     <Import Project="$(SolutionDir)\config\openpal_include.props" />
     <Import Project="$(SolutionDir)\config\output_dirs.props" />
+    <Import Project="..\..\config\asiopal_include.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
@@ -69,6 +70,7 @@
     <Import Project="$(SolutionDir)\config\boostlib64.props" />
     <Import Project="$(SolutionDir)\config\openpal_include.props" />
     <Import Project="$(SolutionDir)\config\output_dirs.props" />
+    <Import Project="..\..\config\asiopal_include.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
@@ -76,6 +78,7 @@
     <Import Project="$(SolutionDir)\config\boost_includes.props" />
     <Import Project="$(SolutionDir)\config\openpal_include.props" />
     <Import Project="$(SolutionDir)\config\output_dirs.props" />
+    <Import Project="..\..\config\asiopal_include.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
@@ -83,6 +86,7 @@
     <Import Project="$(SolutionDir)\config\boostlib64.props" />
     <Import Project="$(SolutionDir)\config\openpal_include.props" />
     <Import Project="$(SolutionDir)\config\output_dirs.props" />
+    <Import Project="..\..\config\asiopal_include.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -188,6 +192,9 @@
     <ClCompile Include="StackStateCallback.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\asiopal\asiopal.vcxproj">
+      <Project>{3807677b-061a-4d15-aa03-65e944864384}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\..\cpp\opendnp3.vcxproj">
       <Project>{e6404405-ba2d-4f95-a268-d467783d0433}</Project>
     </ProjectReference>
