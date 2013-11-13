@@ -9,7 +9,7 @@ TEST_BOOST_LIBS = $(CORE_BOOST_LIBS) $(BOOST_UNIT_TEST_FRAMEWORK_LIB)
 BOOST_DEFINES = $(BOOST_CPPFLAGS) -DBOOST_TEST_DYN_LINK -DBOOST_ASIO_ENABLE_CANCELIO -DBOOST_REGEX_NO_LIB -D_GLIBCXX_USE_NANOSLEEP
 #AM_LDFLAGS  = $(BOOST_LDFLAGS)
 
-lib_LTLIBRARIES = libopenpal.la libopendnp3.la
+lib_LTLIBRARIES = libopenpal.la libasiopal.la libopendnp3.la
 
 #ls openpal/src/* -1 | awk '{print $0" \\"}'
 libopenpal_la_LDFLAGS = -version-info 1:1:0
@@ -26,10 +26,15 @@ openpal/src/LogTypes.cpp \
 openpal/src/Parsing.cpp \
 openpal/src/ToHex.cpp
 
+#ls asiopal/src/*.cpp -1 | awk '{print $0" \\"}'
+libasiopal_la_LDFLAGS = -version-info 1:1:0
+libasiopal_la_CXXFLAGS = -I$(top_srcdir)/openpal/include -I$(top_srcdir)/asiopal/include
+libasiopal_la_SOURCES = \
+asiopal/src/UTCTimeSource.cpp
+
 #ls cpp/src/opendnp3/*.cpp -1 | awk '{print $0" \\"}'
 libopendnp3_la_LDFLAGS = $(BOOST_LDFLAGS) -version-info 1:1:0
 libopendnp3_la_CXXFLAGS = -I$(top_srcdir)/openpal/include -I$(top_srcdir)/cpp/include
-#libopendnp3_la_LIBADD = $(CORE_BOOST_LIBS)
 libopendnp3_la_SOURCES = \
 cpp/src/opendnp3/AlwaysOpeningVtoRouter.cpp \
 cpp/src/opendnp3/AnalogOutput.cpp \
@@ -155,8 +160,8 @@ cpp/src/opendnp3/VtoWriter.cpp
 #ls cpp/src/opendnp3/*.cpp -1 | awk '{print $0" \\"}'
 check_PROGRAMS = dnp3test
 TESTS = dnp3test
-dnp3test_CXXFLAGS = -I$(top_srcdir)/cpp/src -I$(top_srcdir)/cpp/include -I$(top_srcdir)/openpal/include $(BOOST_DEFINES)
-dnp3test_LDADD = libopenpal.la libopendnp3.la $(TEST_BOOST_LIBS)
+dnp3test_CXXFLAGS = -I$(top_srcdir)/cpp/src -I$(top_srcdir)/cpp/include -I$(top_srcdir)/openpal/include -I$(top_srcdir)/asiopal/include $(BOOST_DEFINES)
+dnp3test_LDADD = libopenpal.la libasiopal.la libopendnp3.la $(TEST_BOOST_LIBS)
 dnp3test_LDFLAGS = $(BOOST_LDFLAGS)
 dnp3test_SOURCES = \
 cpp/tests/AppLayerTest.cpp \
