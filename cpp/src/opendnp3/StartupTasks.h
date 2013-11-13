@@ -31,6 +31,7 @@
 
 #include <openpal/Types.h>
 #include <openpal/Visibility.h>
+#include <openpal/IUTCTimeSource.h>
 
 #include "MasterTaskBase.h"
 
@@ -80,7 +81,7 @@ private:
 class DLL_LOCAL TimeSync : public SingleRspBase
 {
 public:
-	TimeSync(openpal::Logger&, ITimeSource*);
+	TimeSync(openpal::Logger&, openpal::IUTCTimeSource*);
 
 	// override Init
 	void Init();
@@ -94,13 +95,13 @@ public:
 #endif
 
 private:
-	ITimeSource* mpTimeSrc;
+	openpal::IUTCTimeSource* mpTimeSrc;
 
 	// < 0 implies the delay measure hasn't happened yet
-	openpal::millis_t mDelay;
+	int64_t mDelay;
 
 	// what time we sent the delay meas
-	openpal::timer_clock::time_point mStart;
+	openpal::UTCTimestamp mStart;
 };
 
 } //ens ns

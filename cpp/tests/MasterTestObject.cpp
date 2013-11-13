@@ -36,11 +36,12 @@ namespace opendnp3
 MasterTestObject::MasterTestObject(MasterConfig cfg, openpal::FilterLevel aLevel, bool aImmediate) :
 	log(),
 	fake_time(),
+	fixedUTC(0),
 	mts(),
 	group(&mts, &fake_time),
 	fdo(),
 	app(Logger(&log, aLevel, "MockAppLayer")),
-	master(Logger(&log, aLevel, "master"), cfg, &app, &fdo, &group, &mts, &fake_time)
+	master(Logger(&log, aLevel, "master"), cfg, &app, &fdo, &group, &mts, &fixedUTC)
 {
 	app.SetUser(&master);
 }

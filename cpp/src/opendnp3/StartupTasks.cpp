@@ -73,7 +73,7 @@ void ConfigureUnsol::ConfigureRequest(APDU& arAPDU)
 
 /* ------ Time Sync ------- */
 
-TimeSync::TimeSync(openpal::Logger& arLogger, ITimeSource* apTimeSrc) :
+TimeSync::TimeSync(openpal::Logger& arLogger, IUTCTimeSource* apTimeSrc) :
 	SingleRspBase(arLogger),
 	mpTimeSrc(apTimeSrc),
 	mDelay(-1)
@@ -87,20 +87,20 @@ void TimeSync::Init()
 void TimeSync::ConfigureRequest(APDU& arAPDU)
 {
 	if(mDelay < 0) {
-		arAPDU.Set(FC_DELAY_MEASURE);
-		mStart = mpTimeSrc->GetUTC();
+		arAPDU.Set(FC_DELAY_MEASURE);		
+		mStart = mpTimeSrc->Now();
 	}
 	else {
 		arAPDU.Set(FC_WRITE);
 		ObjectWriteIterator owi = arAPDU.WriteContiguous(Group50Var1::Inst(), 0, 0, QC_1B_CNT);
-		Group50Var1::Inst()->mTime.Set(*owi, mpTimeSrc->GetMillisecondsSinceEpoch() + mDelay);
+		Group50Var1::Inst()->mTime.Set(*owi, mpTimeSrc->Now().msSinceEpoch + mDelay);
 	}
 }
 
 TaskResult TimeSync::_OnFinalResponse(const APDU& arAPDU)
 {
 	if(mDelay < 0) {
-		timer_clock::time_point now = mpTimeSrc->GetUTC();
+		auto now = mpTimeSrc->Now();
 
 		HeaderReadIterator hri = arAPDU.BeginRead();
 		if(hri.Count() != 1) {
@@ -119,8 +119,8 @@ TaskResult TimeSync::_OnFinalResponse(const APDU& arAPDU)
 			return TR_FAIL;
 		}
 
-		millis_t send_rcv_time = std::chrono::duration_cast<std::chrono::milliseconds>(now - mStart).count();
-		millis_t rtu_turn_around = Group52Var2::Inst()->mTime.Get(*ori);
+		auto send_rcv_time = now.msSinceEpoch - mStart.msSinceEpoch;
+		auto rtu_turn_around = Group52Var2::Inst()->mTime.Get(*ori);
 
 		// The later shouldn't happen, but could cause a negative delay which would
 		// result in a weird time setting

@@ -63,7 +63,7 @@ class ITimeWriteHandler;
 class DLL_LOCAL DNP3Channel: public IChannel, private openpal::Loggable
 {
 public:
-	DNP3Channel(openpal::Logger aLogger, openpal::millis_t aOpenRetry, boost::asio::io_service* apService, IPhysicalLayerAsync* apPhys, ITimeSource* apTimerSource, std::function<void (DNP3Channel*)> aOnShutdown);
+	DNP3Channel(openpal::Logger aLogger, openpal::millis_t aOpenRetry, boost::asio::io_service* apService, IPhysicalLayerAsync* apPhys, ITimeSource* apTimeSource, std::function<void (DNP3Channel*)> aOnShutdown);
 	~DNP3Channel();
 
 	// Implement IChannel - these are exposed to clients
@@ -77,6 +77,7 @@ public:
 	IMaster* AddMaster(		const std::string& arLoggerId,
 	                                FilterLevel aLevel,
 	                                IDataObserver* apPublisher,
+									openpal::IUTCTimeSource* apTimeSource,
 	                                const MasterStackConfig& arCfg);
 
 #endif

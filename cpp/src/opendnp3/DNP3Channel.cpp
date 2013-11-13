@@ -80,7 +80,7 @@ for(auto pStack: copy) pStack->Shutdown();
 }
 
 #ifndef OPENDNP3_NO_MASTER
-IMaster* DNP3Channel::AddMaster(const std::string& arLoggerId, FilterLevel aLevel, IDataObserver* apPublisher, const MasterStackConfig& arCfg)
+IMaster* DNP3Channel::AddMaster(const std::string& arLoggerId, FilterLevel aLevel, IDataObserver* apPublisher, IUTCTimeSource* apTimeSource, const MasterStackConfig& arCfg)
 {	
 	LinkRoute route(arCfg.link.RemoteAddr, arCfg.link.LocalAddr);
 	ExecutorPause p(mpPhys->GetExecutor());
@@ -89,7 +89,7 @@ IMaster* DNP3Channel::AddMaster(const std::string& arLoggerId, FilterLevel aLeve
 	}
 	else {
 		auto logger = mLogger.GetSubLogger(arLoggerId, aLevel);
-		auto pMaster = new MasterStackImpl(logger, mpService, mpPhys->GetExecutor(), apPublisher, &mGroup, arCfg, [this, route](IStack * apStack) {
+		auto pMaster = new MasterStackImpl(logger, mpService, mpPhys->GetExecutor(), apPublisher, apTimeSource, &mGroup, arCfg, [this, route](IStack * apStack) {
 			this->OnStackShutdown(apStack, route);
 		});
 		pMaster->SetLinkRouter(&mRouter);

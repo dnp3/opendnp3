@@ -35,6 +35,7 @@
 #include "DestructorHook.h"
 
 #include <openpal/LogTypes.h>
+#include <openpal/IUTCTimeSource.h>
 
 #include <functional>
 
@@ -103,6 +104,7 @@ public:
 	virtual IMaster* AddMaster(	const std::string& arLoggerId,
 	                                openpal::FilterLevel aLevel,
 	                                IDataObserver* apPublisher,
+									openpal::IUTCTimeSource* apTimeSource,
 	                                const MasterStackConfig& arCfg) = 0;
 
 #endif

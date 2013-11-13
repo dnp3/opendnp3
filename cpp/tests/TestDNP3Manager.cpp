@@ -32,12 +32,15 @@
 #include <opendnp3/SimpleDataObserver.h>
 #include <opendnp3/ITimeWriteHandler.h>
 
+#include <asiopal/UTCTimeSource.h>
+
 #include "TestHelpers.h"
 
 
 #include <thread>
 
 using namespace opendnp3;
+using namespace asiopal;
 
 BOOST_AUTO_TEST_SUITE(DNP3ManagerTestSuite)
 
@@ -51,7 +54,7 @@ BOOST_AUTO_TEST_CASE(ConstructionDestruction)
 
 		auto pClient = mgr.AddTCPClient("client", LEV_INFO, 5000, "127.0.0.1", 20000);
 		auto pServer = mgr.AddTCPServer("server", LEV_INFO, 5000, "127.0.0.1", 20000);
-		pClient->AddMaster("master", LEV_INFO, NullDataObserver::Inst(), MasterStackConfig());
+		pClient->AddMaster("master", LEV_INFO, NullDataObserver::Inst(), UTCTimeSource::Inst(), MasterStackConfig());
 		pServer->AddOutstation("outstation", LEV_INFO, SuccessCommandHandler::Inst(), NullTimeWriteHandler::Inst(), SlaveStackConfig());
 
 	}
@@ -66,7 +69,7 @@ BOOST_AUTO_TEST_CASE(ManualStackShutdown)
 		auto pClient = mgr.AddTCPClient("client", LEV_INFO, 5000, "127.0.0.1", 20000);
 		auto pServer = mgr.AddTCPServer("server", LEV_INFO, 5000, "127.0.0.1", 20000);
 		auto pOutstation = pServer->AddOutstation("outstation", LEV_INFO, SuccessCommandHandler::Inst(), NullTimeWriteHandler::Inst(), SlaveStackConfig());
-		auto pMaster = pClient->AddMaster("master", LEV_INFO, NullDataObserver::Inst(), MasterStackConfig());
+		auto pMaster = pClient->AddMaster("master", LEV_INFO, NullDataObserver::Inst(), UTCTimeSource::Inst(), MasterStackConfig());
 
 		pOutstation->Shutdown();
 		pMaster->Shutdown();
@@ -81,7 +84,7 @@ BOOST_AUTO_TEST_CASE(ManualChannelShutdownWithStack)
 		DNP3Manager mgr(std::thread::hardware_concurrency());
 
 		auto pChannel = mgr.AddTCPClient("client", LEV_INFO, 5000, "127.0.0.1", 20000);
-		pChannel->AddMaster("master", LEV_INFO, NullDataObserver::Inst(), MasterStackConfig());
+		pChannel->AddMaster("master", LEV_INFO, NullDataObserver::Inst(), UTCTimeSource::Inst(), MasterStackConfig());
 		pChannel->Shutdown();
 	}
 }
@@ -104,7 +107,7 @@ BOOST_AUTO_TEST_CASE(ConstructionDestructionWithVtoRouters)
 
 		auto pClient = mgr.AddTCPClient("client", LEV_INFO, 5000, "127.0.0.1", 20000);
 		auto pServer = mgr.AddTCPServer("server", LEV_INFO, 5000, "127.0.0.1", 20000);
-		auto pMaster = pClient->AddMaster("master", LEV_INFO, NullDataObserver::Inst(), MasterStackConfig());
+		auto pMaster = pClient->AddMaster("master", LEV_INFO, NullDataObserver::Inst(), UTCTimeSource::Inst(), MasterStackConfig());
 		auto pOutstation = pServer->AddOutstation("outstation", LEV_INFO, SuccessCommandHandler::Inst(), NullTimeWriteHandler::Inst(), SlaveStackConfig());
 
 		pMaster->StartVtoRouterTCPClient("vtoclient", LEV_INFO, "127.0.0.1", 20001, VtoRouterSettings(0, true, false));
@@ -121,7 +124,7 @@ BOOST_AUTO_TEST_CASE(ConstructionDestructionWithVtoRoutersManualVtoShutdown)
 
 		auto pClient = mgr.AddTCPClient("client", LEV_INFO, 5000, "127.0.0.1", 20000);
 		auto pServer = mgr.AddTCPServer("server", LEV_INFO, 5000, "127.0.0.1", 20000);
-		auto pMaster = pClient->AddMaster("master", LEV_INFO, NullDataObserver::Inst(), MasterStackConfig());
+		auto pMaster = pClient->AddMaster("master", LEV_INFO, NullDataObserver::Inst(), UTCTimeSource::Inst(), MasterStackConfig());
 		auto pOutstation = pServer->AddOutstation("outstation", LEV_INFO, SuccessCommandHandler::Inst(), NullTimeWriteHandler::Inst(), SlaveStackConfig());
 
 		auto pClientVto = pMaster->StartVtoRouterTCPClient("vtoclient", LEV_INFO, "127.0.0.1", 20001, VtoRouterSettings(0, true, false));

@@ -31,6 +31,8 @@
 #include <opendnp3/IOutstation.h>
 #include <opendnp3/ITimeWriteHandler.h>
 
+#include <asiopal/UTCTimeSource.h>
+
 #include <thread>
 
 namespace opendnp3
@@ -67,7 +69,7 @@ VtoIntegrationTestBase::VtoIntegrationTestBase(
 	mconfig.app.NumRetry = 3;
 	mconfig.app.RspTimeout = 500;
 	mconfig.master.UseNonStandardVtoFunction = true;
-	auto pMaster = pClientChannel->AddMaster("master", level, &fdo, mconfig);
+	auto pMaster = pClientChannel->AddMaster("master", level, &fdo, asiopal::UTCTimeSource::Inst(), mconfig);
 
 
 	// switch if master or slave gets the loopback half of the server

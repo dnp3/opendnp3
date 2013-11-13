@@ -20,51 +20,26 @@
 // you under the terms of the License.
 //
 
-#ifndef __MASTER_TEST_OBJECT_H_
-#define __MASTER_TEST_OBJECT_H_
+#include <asiopal/UTCTimeSource.h>
 
-#include "MockExecutor.h"
-#include "LogTester.h"
-#include "MockTimeSource.h"
+#include <chrono>
 
-#include <opendnp3/Master.h>
-#include <opendnp3/AsyncTaskGroup.h>
-
-#include <deque>
-
-#include "FlexibleDataObserver.h"
-#include "MockAppLayer.h"
-
-namespace opendnp3
+namespace asiopal
 {
 
+UTCTimeSource UTCTimeSource::mInstance;
 
-struct MasterConfig;
-
-class MasterTestObject
+openpal::IUTCTimeSource* UTCTimeSource::Inst()
 {
-public:
-	MasterTestObject(MasterConfig, openpal::FilterLevel aLevel = openpal::LEV_INFO, bool aImmediate = false);
+	return &mInstance;
+}
 
-	void RespondToMaster(const std::string& arData, bool aFinal = true);
-	void SendUnsolToMaster(const std::string& arData);
-	std::string Read();
-
-	void BindStateListener();
-
-	LogTester log;
-	MockTimeSource fake_time;
-	openpal::FixedUTCTimeSource fixedUTC;
-	MockExecutor mts;	
-	AsyncTaskGroup group;
-	FlexibleDataObserver fdo;
-	MockAppLayer app;
-	Master master;
-	APDU mAPDU;
-	std::deque<StackState> states;
-};
+openpal::UTCTimestamp UTCTimeSource::Now()
+{
+	auto time = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+	return openpal::UTCTimestamp(time);
+}
 
 }
 
-#endif
 

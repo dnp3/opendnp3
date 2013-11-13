@@ -35,6 +35,8 @@
 #include <opendnp3/IOutstation.h>
 #include <opendnp3/ITimeWriteHandler.h>
 
+#include <asiopal/UTCTimeSource.h>
+
 #include <boost/asio.hpp>
 #include <boost/random/variate_generator.hpp>
 #include <boost/random/uniform_int.hpp>
@@ -151,7 +153,7 @@ void IntegrationTest::AddStackPair(FilterLevel aLevel, size_t aNumPoints)
 		cfg.master.EnableUnsol = true;
 		cfg.master.DoUnsolOnStartup = true;
 		cfg.master.UnsolClassMask = PC_ALL_EVENTS;
-		pClient->AddMaster(client, aLevel, pMasterFDO.get(), cfg);
+		pClient->AddMaster(client, aLevel, pMasterFDO.get(), asiopal::UTCTimeSource::Inst(), cfg);
 	}
 
 	/*

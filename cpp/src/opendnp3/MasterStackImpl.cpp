@@ -24,13 +24,16 @@
 
 #include <openpal/IExecutor.h>
 
+using namespace openpal;
+
 namespace opendnp3
 {
 
-MasterStackImpl::MasterStackImpl(	openpal::Logger& arLogger,
+MasterStackImpl::MasterStackImpl(	Logger& arLogger,
                                         boost::asio::io_service* apService,
                                         IExecutor* apExecutor,
                                         IDataObserver* apPublisher,
+										IUTCTimeSource* apTimeSource,
                                         AsyncTaskGroup* apTaskGroup,
                                         const MasterStackConfig& arCfg,
                                         std::function<void (IMaster*)> aOnShutdown) :
@@ -38,7 +41,7 @@ MasterStackImpl::MasterStackImpl(	openpal::Logger& arLogger,
 	IMaster(arLogger, apService),
 	mpExecutor(apExecutor),
 	mAppStack(arLogger, apExecutor, arCfg.app, arCfg.link),
-	mMaster(arLogger.GetSubLogger("master"), arCfg.master, &mAppStack.mApplication, apPublisher, apTaskGroup, apExecutor),
+	mMaster(arLogger.GetSubLogger("master"), arCfg.master, &mAppStack.mApplication, apPublisher, apTaskGroup, apExecutor, apTimeSource),
 	mOnShutdown(aOnShutdown)
 {
 	mAppStack.mApplication.SetUser(&mMaster);

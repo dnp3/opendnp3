@@ -20,49 +20,43 @@
 // you under the terms of the License.
 //
 
-#ifndef __MASTER_TEST_OBJECT_H_
-#define __MASTER_TEST_OBJECT_H_
+#ifndef __I_UTC_TIME_SOURCE_H_
+#define __I_UTC_TIME_SOURCE_H_
 
-#include "MockExecutor.h"
-#include "LogTester.h"
-#include "MockTimeSource.h"
+#include <openpal/UTCTimestamp.h>
 
-#include <opendnp3/Master.h>
-#include <opendnp3/AsyncTaskGroup.h>
-
-#include <deque>
-
-#include "FlexibleDataObserver.h"
-#include "MockAppLayer.h"
-
-namespace opendnp3
+namespace openpal
 {
 
-
-struct MasterConfig;
-
-class MasterTestObject
+/**
+*  Interface that defines a method to get UTC timestamps
+*/
+class IUTCTimeSource
 {
+
 public:
-	MasterTestObject(MasterConfig, openpal::FilterLevel aLevel = openpal::LEV_INFO, bool aImmediate = false);
-
-	void RespondToMaster(const std::string& arData, bool aFinal = true);
-	void SendUnsolToMaster(const std::string& arData);
-	std::string Read();
-
-	void BindStateListener();
-
-	LogTester log;
-	MockTimeSource fake_time;
-	openpal::FixedUTCTimeSource fixedUTC;
-	MockExecutor mts;	
-	AsyncTaskGroup group;
-	FlexibleDataObserver fdo;
-	MockAppLayer app;
-	Master master;
-	APDU mAPDU;
-	std::deque<StackState> states;
+	/**
+	*  Returns a UTCTimestamp of the current time
+	*/
+	virtual UTCTimestamp Now() = 0;
 };
+
+/**
+* Mock usable for testing 
+*/
+class FixedUTCTimeSource : public IUTCTimeSource
+{
+	public:
+		FixedUTCTimeSource(int64_t aTimeSinceEpoch): mTimeSinceEpoch(aTimeSinceEpoch)
+		{}
+
+	UTCTimestamp Now() { 
+		return UTCTimestamp (mTimeSinceEpoch); 		
+	}
+	
+	int64_t mTimeSinceEpoch;
+};
+
 
 }
 

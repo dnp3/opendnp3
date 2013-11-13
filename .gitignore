@@ -46,6 +46,8 @@ cpp/Debug
 cpp/Release
 openpal/Debug
 openpal/Release
+asiopal/Debug
+asiopal/Release
 java/Debug
 java/Release
 *.suo

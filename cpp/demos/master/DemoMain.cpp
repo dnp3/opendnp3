@@ -35,6 +35,8 @@
 #include <opendnp3/MasterStackConfig.h>
 #include <opendnp3/ICommandProcessor.h>
 
+#include <asiopal/UTCTimeSource.h>
+
 #include <iostream>
 #include <future>
 
@@ -78,6 +80,7 @@ int main(int argc, char* argv[])
 	                       "master",						// stack name
 	                       LOG_LEVEL,						// log filter level
 	                       PrintingDataObserver::Inst(),	// callback for data processing
+						   asiopal::UTCTimeSource::Inst(),	// system clock for time syncing
 	                       stackConfig						// stack configuration
 	               );
 

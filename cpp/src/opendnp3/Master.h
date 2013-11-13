@@ -33,6 +33,7 @@
 #include <opendnp3/ObjectInterfaces.h>
 #include <openpal/Visibility.h>
 #include <openpal/IExecutor.h>
+#include <openpal/IUTCTimeSource.h>
 
 #include "TimeSource.h"
 #include "APDU.h"
@@ -85,7 +86,7 @@ class DLL_LOCAL Master : public openpal::Loggable, public IAppUser, public Stack
 
 public:
 
-	Master(openpal::Logger, MasterConfig aCfg, IAppLayer*, IDataObserver*, AsyncTaskGroup*, openpal::IExecutor*, ITimeSource* apTimeSrc = TimeSource::Inst());
+	Master(openpal::Logger, MasterConfig aCfg, IAppLayer*, IDataObserver*, AsyncTaskGroup*, openpal::IExecutor*, openpal::IUTCTimeSource* apTimeSrc);
 	virtual ~Master() {}
 
 	ICommandProcessor* GetCommandProcessor() {
@@ -211,7 +212,7 @@ private:
 	IAppLayer* mpAppLayer;					// lower application layer
 	IDataObserver* mpPublisher;				// where the data measurements are pushed
 	AsyncTaskGroup* mpTaskGroup;			// How task execution is controlled
-	ITimeSource* mpTimeSrc;					// Access to UTC, normally system time but can be a mock for testing
+	openpal::IUTCTimeSource* mpTimeSrc;		// Access to UTC, normally system time but can be a mock for testing
 
 	AMS_Base* mpState;						// Pointer to active state, start in TLS_Closed
 	MasterTaskBase* mpTask;					// The current master task

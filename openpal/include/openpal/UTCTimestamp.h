@@ -20,51 +20,31 @@
 // you under the terms of the License.
 //
 
-#ifndef __MASTER_TEST_OBJECT_H_
-#define __MASTER_TEST_OBJECT_H_
+#ifndef __UTC_TIMESTAMP_H_
+#define __UTC_TIMESTAMP_H_
 
-#include "MockExecutor.h"
-#include "LogTester.h"
-#include "MockTimeSource.h"
+#include <cstdint>
 
-#include <opendnp3/Master.h>
-#include <opendnp3/AsyncTaskGroup.h>
-
-#include <deque>
-
-#include "FlexibleDataObserver.h"
-#include "MockAppLayer.h"
-
-namespace opendnp3
+namespace openpal
 {
 
-
-struct MasterConfig;
-
-class MasterTestObject
+/**
+*  Strong typing for UTCTimestamps
+*/
+class UTCTimestamp
 {
+
 public:
-	MasterTestObject(MasterConfig, openpal::FilterLevel aLevel = openpal::LEV_INFO, bool aImmediate = false);
+	UTCTimestamp() : msSinceEpoch(0)
+	{}
 
-	void RespondToMaster(const std::string& arData, bool aFinal = true);
-	void SendUnsolToMaster(const std::string& arData);
-	std::string Read();
+	UTCTimestamp(int64_t aMsSinceEpoch) : msSinceEpoch(aMsSinceEpoch)
+	{}
+	
+	int64_t msSinceEpoch;
 
-	void BindStateListener();
-
-	LogTester log;
-	MockTimeSource fake_time;
-	openpal::FixedUTCTimeSource fixedUTC;
-	MockExecutor mts;	
-	AsyncTaskGroup group;
-	FlexibleDataObserver fdo;
-	MockAppLayer app;
-	Master master;
-	APDU mAPDU;
-	std::deque<StackState> states;
 };
 
 }
 
 #endif
-

@@ -52,6 +52,7 @@ public:
 	        boost::asio::io_service* apService,
 	        IExecutor* apExecutor,
 	        IDataObserver* apPublisher,
+			IUTCTimeSource* apTimeSource,
 	        AsyncTaskGroup* apTaskGroup,
 	        const MasterStackConfig& arCfg,
 	        std::function<void (IMaster*)> aOnShutdown);
