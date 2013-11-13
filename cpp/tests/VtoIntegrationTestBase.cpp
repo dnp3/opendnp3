@@ -29,8 +29,7 @@
 #include <opendnp3/IChannel.h>
 #include <opendnp3/IMaster.h>
 #include <opendnp3/IOutstation.h>
-
-#include "NullTimeWriteHandler.h"
+#include <opendnp3/ITimeWriteHandler.h>
 
 #include <thread>
 

@@ -198,7 +198,6 @@
     <ClInclude Include="tests\MockTimeWriteHandler.h" />
     <ClInclude Include="tests\MockTimeSource.h" />
     <ClInclude Include="tests\MockUpperLayer.h" />
-    <ClInclude Include="tests\NullTimeWriteHandler.h" />
     <ClInclude Include="tests\PhysicalLayerWrapper.h" />
     <ClInclude Include="tests\PhysicalLayerWrapperFactory.h" />
     <ClInclude Include="tests\PhysLoopback.h" />
@@ -247,7 +246,6 @@
     <ClCompile Include="tests\MockPhysicalLayerAsync.cpp" />
     <ClCompile Include="tests\MockPhysicalLayerMonitor.cpp" />
     <ClCompile Include="tests\MockUpperLayer.cpp" />
-    <ClCompile Include="tests\NullTimeWriteHandler.cpp" />
     <ClCompile Include="tests\PhysicalLayerWrapper.cpp" />
     <ClCompile Include="tests\PhysLoopback.cpp" />
     <ClCompile Include="tests\RandomizedBuffer.cpp" />

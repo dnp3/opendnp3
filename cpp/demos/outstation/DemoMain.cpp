@@ -34,6 +34,7 @@
 #include <opendnp3/IOutstation.h>
 #include <opendnp3/SimpleCommandHandler.h>
 #include <opendnp3/TimeTransaction.h>
+#include <opendnp3/ITimeWriteHandler.h>
 
 #include <openpal/Clock.h>
 
@@ -80,7 +81,7 @@ int main(int argc, char* argv[])
 	// Create a new slave with a log level, command handler, and
 	// config info this	returns a thread-safe interface used for
 	// updating the slave's database.
-	auto pOutstation = pServer->AddOutstation("outstation", LOG_LEVEL, SuccessCommandHandler::Inst(), stackConfig);
+	auto pOutstation = pServer->AddOutstation("outstation", LOG_LEVEL, SuccessCommandHandler::Inst(), NullTimeWriteHandler::Inst(), stackConfig);
 
 	// You can optionally add a listener to the stack to observer communicate health. You
 	// can do this anytime and you will receive a stream of all state changes.

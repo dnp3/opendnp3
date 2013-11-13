@@ -17,31 +17,28 @@
 //
 // This file was forked on 01/01/2013 by Automatak, LLC and modifications
 // have been made to this file. Automatak, LLC licenses these modifications to
-// you under the terms of the License.
+// you under the GNU Affero General Public License Version 3.0
+// (the "Additional License"). You may not use these modifications except in
+// compliance with the additional license. You may obtain a copy of the Additional
+// License at
 //
-
-#ifndef __NULL_TIME_WRITE_HANDLER_H_
-#define __NULL_TIME_WRITE_HANDLER_H_
+// http://www.gnu.org/licenses/agpl.html
+//
+// Contact Automatak, LLC for a commercial license to these modifications
+//
 
 #include <opendnp3/ITimeWriteHandler.h>
 
 namespace opendnp3
 {
 
-class NullTimeWriteHandler : public ITimeWriteHandler
+NullTimeWriteHandler NullTimeWriteHandler::mInstance;
+
+ITimeWriteHandler* NullTimeWriteHandler::Inst()
 {
-public:
-	static ITimeWriteHandler* Inst();
-
-private:
-	static NullTimeWriteHandler mInstance;
-
-	NullTimeWriteHandler() {}
-
-	void WriteAbsoluteTime(openpal::millis_t aMillisecSinceEpoch) {}	
-};
+	return &mInstance;
+}
 
 }
 
-#endif
 

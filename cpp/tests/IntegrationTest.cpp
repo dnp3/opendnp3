@@ -26,7 +26,6 @@
 #include <thread>
 
 #include "AsyncTestObjectASIO.h"
-#include "NullTimeWriteHandler.h"
 
 #include <openpal/IPhysicalLayerAsync.h>
 
@@ -34,6 +33,7 @@
 #include <opendnp3/SlaveStackConfig.h>
 #include <opendnp3/IChannel.h>
 #include <opendnp3/IOutstation.h>
+#include <opendnp3/ITimeWriteHandler.h>
 
 #include <boost/asio.hpp>
 #include <boost/random/variate_generator.hpp>

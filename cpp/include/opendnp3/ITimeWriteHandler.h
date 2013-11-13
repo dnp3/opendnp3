@@ -31,6 +31,8 @@
 
 #include <openpal/Types.h>
 
+#include <functional>
+
 namespace opendnp3
 {
 
@@ -40,6 +42,34 @@ public:
 	virtual ~ITimeWriteHandler() {}	
 	
 	virtual void WriteAbsoluteTime(openpal::millis_t aMillisecSinceEpoch) = 0;
+};
+
+class FunctionTimeWriteHandler : public ITimeWriteHandler
+{
+public:
+	FunctionTimeWriteHandler(std::function<void (openpal::millis_t)> aCallback) : 
+		mCallback(aCallback)
+	{}
+
+	void WriteAbsoluteTime(openpal::millis_t aMillisecSinceEpoch)
+	{
+		mCallback(aMillisecSinceEpoch);
+	}
+
+private:
+	std::function<void (openpal::millis_t)> mCallback;
+	
+};
+
+class NullTimeWriteHandler : public FunctionTimeWriteHandler
+{
+public:
+	static ITimeWriteHandler* Inst();
+
+private:
+	static NullTimeWriteHandler mInstance;
+
+	NullTimeWriteHandler() : FunctionTimeWriteHandler([](openpal::millis_t){}) {}	
 };
 
 }

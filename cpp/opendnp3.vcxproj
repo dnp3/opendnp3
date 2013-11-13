@@ -358,6 +358,7 @@
     <ClCompile Include="src\opendnp3\CRC.cpp" />
     <ClCompile Include="src\opendnp3\Database.cpp" />
     <ClCompile Include="src\opendnp3\DataPoll.cpp" />
+    <ClCompile Include="src\opendnp3\ITimeWriteHandler.cpp" />
     <ClCompile Include="src\opendnp3\TimeTransaction.cpp" />
     <ClCompile Include="src\opendnp3\DestructorHook.cpp" />
     <ClCompile Include="src\opendnp3\DeviceTemplate.cpp" />

@@ -30,9 +30,10 @@
 #include <opendnp3/IVtoEndpoint.h>
 #include <opendnp3/LogToStdio.h>
 #include <opendnp3/SimpleDataObserver.h>
+#include <opendnp3/ITimeWriteHandler.h>
 
 #include "TestHelpers.h"
-#include "NullTimeWriteHandler.h"
+
 
 #include <thread>
 

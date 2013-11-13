@@ -21,6 +21,7 @@
 #include <opendnp3/IChannel.h>
 #include <opendnp3/IMaster.h>
 #include <opendnp3/IOutstation.h>
+#include <opendnp3/ITimeWriteHandler.h>
 
 #include <openpal/Exception.h>
 
@@ -95,7 +96,7 @@ JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ChannelImpl_get_1native_1sl
 		jobject global = pEnv->NewGlobalRef(commandAdapter);
 		auto pCmdHandler = new CommandHandlerAdapter(pJVM, global);
 		FilterLevel lev = LogTypes::ConvertIntToFilterLevel(logLevel);
-		auto pOutstation = pChannel->AddOutstation(loggerId, lev, pCmdHandler, config);
+		auto pOutstation = pChannel->AddOutstation(loggerId, lev, pCmdHandler, NullTimeWriteHandler::Inst(), config);  //TODO wrap time callbacks
 		pOutstation->AddDestructorHook([pJVM, global]() {
 			JNIHelpers::DeleteGlobalReference(pJVM, global);
 		});

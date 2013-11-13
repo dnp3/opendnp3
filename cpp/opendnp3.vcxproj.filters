@@ -872,6 +872,9 @@
     <ClCompile Include="src\opendnp3\TimeTransaction.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\opendnp3\ITimeWriteHandler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\gecapache.licenseheader" />
