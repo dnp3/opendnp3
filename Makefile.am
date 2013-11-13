@@ -75,6 +75,7 @@ cpp/src/opendnp3/IndexedWriteIterator.cpp \
 cpp/src/opendnp3/IOServiceThreadPool.cpp \
 cpp/src/opendnp3/IStack.cpp \
 cpp/src/opendnp3/ITimeSource.cpp \
+cpp/src/opendnp3/ITimeWriteHandler.cpp \
 cpp/src/opendnp3/LinkFrame.cpp \
 cpp/src/opendnp3/LinkHeader.cpp \
 cpp/src/opendnp3/LinkLayerConstants.cpp \
@@ -184,7 +185,6 @@ cpp/tests/MockLowerLayer.cpp \
 cpp/tests/MockPhysicalLayerAsync.cpp \
 cpp/tests/MockPhysicalLayerMonitor.cpp \
 cpp/tests/MockUpperLayer.cpp \
-cpp/tests/NullTimeWriteHandler.cpp \
 cpp/tests/PhysicalLayerWrapper.cpp \
 cpp/tests/PhysLoopback.cpp \
 cpp/tests/RandomizedBuffer.cpp \
