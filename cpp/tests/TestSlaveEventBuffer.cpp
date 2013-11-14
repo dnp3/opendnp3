@@ -27,7 +27,6 @@
 #include <openpal/Exception.h>
 
 #include <opendnp3/SlaveEventBuffer.h>
-#include <opendnp3/VtoWriter.h>
 
 #include "RandomizedBuffer.h"
 

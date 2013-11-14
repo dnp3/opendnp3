@@ -27,7 +27,6 @@
 #include "MasterStates.h"
 #include "ObjectReadIterator.h"
 #include "ResponseLoader.h"
-#include "VtoEventBufferAdapter.h"
 #include "ConstantCommandProcessor.h"
 #include "AsyncTaskInterfaces.h"
 #include "AsyncTaskGroup.h"
@@ -47,9 +46,7 @@ namespace opendnp3
 
 Master::Master(Logger aLogger, MasterConfig aCfg, IAppLayer* apAppLayer, IDataObserver* apPublisher, AsyncTaskGroup* apTaskGroup, openpal::IExecutor* apExecutor, IUTCTimeSource* apTimeSrc) :
 	Loggable(aLogger),
-	StackBase(apExecutor),
-	mVtoReader(aLogger),
-	mVtoWriter(aLogger.GetSubLogger("VtoWriter"), aCfg.VtoWriterQueueSize),
+	StackBase(apExecutor),	
 	mRequest(aCfg.FragSize),
 	mpAppLayer(apAppLayer),
 	mpPublisher(apPublisher),
@@ -60,12 +57,11 @@ Master::Master(Logger aLogger, MasterConfig aCfg, IAppLayer* apAppLayer, IDataOb
 	mpScheduledTask(NULL),
 	mState(SS_UNKNOWN),
 	mSchedule(apTaskGroup, this, aCfg),
-	mClassPoll(aLogger, apPublisher, &mVtoReader),
+	mClassPoll(aLogger, apPublisher),
 	mClearRestart(aLogger),
 	mConfigureUnsol(aLogger),
 	mTimeSync(aLogger, apTimeSrc),
-	mCommandTask(aLogger),
-	mVtoTransmitTask(aLogger, aCfg.FragSize, aCfg.UseNonStandardVtoFunction)
+	mCommandTask(aLogger)	
 {
 	/*
 	 * Establish a link between the mCommandQueue and the
@@ -76,14 +72,6 @@ Master::Master(Logger aLogger, MasterConfig aCfg, IAppLayer* apAppLayer, IDataOb
 		this->mSchedule.mpCommandTask->Enable();
 	});
 
-	/*
-	 * Establish a link between the mVtoWriter and the
-	 * mSchedule.mpVtoTransmitTask.  When new data is written to
-	 * mVtoWriter, wake up the mSchedule.mpVtoTransmitTask.
-	 */
-	mVtoWriter.AddObserver(mpExecutor, [this]() {
-		this->mSchedule.mpVtoTransmitTask->Enable();
-	});
 
 	/*
 	 * Set the initial state of the communication link.
@@ -96,10 +84,7 @@ void Master::UpdateState(StackState aState)
 	if(mState != aState) {
 		LOG_BLOCK(LEV_INFO, "StackState: " << ConvertStackStateToString(aState));
 		mState = aState;
-		this->NotifyListeners(aState);
-		if(mState == SS_COMMS_UP) {
-			mSchedule.mpVtoTransmitTask->Enable();
-		}
+		this->NotifyListeners(aState);		
 	}
 }
 
@@ -254,6 +239,7 @@ void Master::ChangeUnsol(ITask* apTask, bool aEnable, int aClassMask)
 	mpState->StartTask(this, apTask, &mConfigureUnsol);
 }
 
+/*
 void Master::TransmitVtoData(ITask* apTask)
 {
 	if(mpState == AMS_Closed::Inst()) apTask->Disable();
@@ -264,17 +250,18 @@ void Master::TransmitVtoData(ITask* apTask)
 
 		LOG_BLOCK(LEV_DEBUG, "TransmitVtoData: " << std::boolalpha << mVtoTransmitTask.mBuffer.IsFull() << " size: " << mVtoTransmitTask.mBuffer.Size());
 
-		/* Any data to transmit? */
+		// Any data to transmit?
 		if (mVtoTransmitTask.mBuffer.Size() > 0) {
-			/* Start the mVtoTransmitTask */
+			// Start the mVtoTransmitTask
 			mpState->StartTask(this, apTask, &mVtoTransmitTask);
 		}
 		else {
-			/* Stop the mVtoTransmitTask */
+			// Stop the mVtoTransmitTask
 			apTask->Disable();
 		}
 	}
 }
+*/
 
 /* Implement IAppUser */
 
@@ -338,7 +325,7 @@ void Master::OnUnsolResponse(const APDU& arAPDU)
 void Master::ProcessDataResponse(const APDU& arResponse)
 {
 	try {
-		ResponseLoader loader(this->mLogger, this->mpPublisher, this->GetVtoReader());
+		ResponseLoader loader(this->mLogger, this->mpPublisher);
 
 		for(HeaderReadIterator hdr = arResponse.BeginRead(); !hdr.IsEnd(); ++hdr)
 			loader.Process(hdr);

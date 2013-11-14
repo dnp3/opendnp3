@@ -39,7 +39,6 @@
 
 #include "CTOHistory.h"
 #include "ObjectReadIterator.h"
-#include "VtoReader.h"
 
 namespace opendnp3
 {
@@ -63,8 +62,7 @@ public:
 	 * @return				a new ResponseLoader instance
 	 */
 	ResponseLoader(openpal::Logger& arLogger,
-	               IDataObserver* apPublisher,
-	               VtoReader* apVtoReader);
+	               IDataObserver* apPublisher);
 
 	/**
 	 * Processes a DNP3 object received by the Master.  The real heavy
@@ -119,15 +117,9 @@ private:
 	 * @param apObj		the pointer to the DNP3 object instance that can
 	 * 					read/write the byte stream
 	 */
-	void ReadVto(HeaderReadIterator& arIter, SizeByVariationObject* apObj);
+	// void ReadVto(HeaderReadIterator& arIter, SizeByVariationObject* apObj);
 
 	IDataObserver* mpPublisher;
-
-	/**
-	 * A pointer to the VtoReader instance that will accept the VtoData
-	 * processed by this ResponseLoader.
-	 */
-	VtoReader* mpVtoReader;
 
 	Transaction mTransaction;
 

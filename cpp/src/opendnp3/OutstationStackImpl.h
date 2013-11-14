@@ -48,8 +48,7 @@ class DLL_LOCAL OutstationStackImpl : public IOutstation
 public:
 
 	OutstationStackImpl(
-	        openpal::Logger&,
-	        boost::asio::io_service* apService,
+	        openpal::Logger&,	        
 	        openpal::IExecutor* apExecutor,
 			ITimeWriteHandler* apTimeWriteHandler,
 	        ICommandHandler* apCmdHandler,
@@ -65,11 +64,6 @@ public:
 	void AddStateListener(std::function<void (StackState)> aListener);
 
 	void Shutdown();
-
-protected:
-
-	IVtoWriter* GetVtoWriter();
-	IVtoReader* GetVtoReader();
 
 private:
 	openpal::IExecutor* mpExecutor;

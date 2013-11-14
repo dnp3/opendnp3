@@ -45,7 +45,7 @@ class IDataObserver;
 class IOutstation : public IStack
 {
 public:
-    IOutstation(openpal::Logger& arLogger, boost::asio::io_service* apService): IStack(arLogger, apService) {}
+    IOutstation(openpal::Logger& arLogger): IStack(arLogger) {}
     virtual ~IOutstation() {}
 
     /**

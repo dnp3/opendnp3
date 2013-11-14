@@ -89,7 +89,7 @@ IMaster* DNP3Channel::AddMaster(const std::string& arLoggerId, FilterLevel aLeve
 	}
 	else {
 		auto logger = mLogger.GetSubLogger(arLoggerId, aLevel);
-		auto pMaster = new MasterStackImpl(logger, mpService, mpPhys->GetExecutor(), apPublisher, apTimeSource, &mGroup, arCfg, [this, route](IStack * apStack) {
+		auto pMaster = new MasterStackImpl(logger, mpPhys->GetExecutor(), apPublisher, apTimeSource, &mGroup, arCfg, [this, route](IStack * apStack) {
 			this->OnStackShutdown(apStack, route);
 		});
 		pMaster->SetLinkRouter(&mRouter);
@@ -109,7 +109,7 @@ IOutstation* DNP3Channel::AddOutstation(const std::string& arLoggerId, FilterLev
 	}
 	else {
 		auto logger = mLogger.GetSubLogger(arLoggerId, aLevel);
-		auto pOutstation = new OutstationStackImpl(logger, mpService, mpPhys->GetExecutor(), apTimeWriteHandler, apCmdHandler, arCfg, [this, route](IStack * apStack) {
+		auto pOutstation = new OutstationStackImpl(logger, mpPhys->GetExecutor(), apTimeWriteHandler, apCmdHandler, arCfg, [this, route](IStack * apStack) {
 			this->OnStackShutdown(apStack, route);
 		});
 		pOutstation->SetLinkRouter(&mRouter);

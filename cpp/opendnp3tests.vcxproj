@@ -270,7 +270,6 @@
     <ClCompile Include="tests\TestCRC.cpp" />
     <ClCompile Include="tests\TestDatabase.cpp" />
     <ClCompile Include="tests\TestDNP3Manager.cpp" />
-    <ClCompile Include="tests\TestEnhancedVtoRouter.cpp" />
     <ClCompile Include="tests\TestEventBufferBase.cpp" />
     <ClCompile Include="tests\TestEventBuffers.cpp" />
     <ClCompile Include="tests\TestIntegration.cpp" />
@@ -302,16 +301,12 @@
     <ClCompile Include="tests\TestTransportScalability.cpp" />
     <ClCompile Include="tests\TestTypes.cpp" />
     <ClCompile Include="tests\TestUtil.cpp" />
-    <ClCompile Include="tests\TestVtoInterface.cpp" />
-    <ClCompile Include="tests\TestVtoRouter.cpp" />
-    <ClCompile Include="tests\TestVtoWriter.cpp" />
     <ClCompile Include="tests\Timeout.cpp" />
     <ClCompile Include="tests\TransportIntegrationStack.cpp" />
     <ClCompile Include="tests\TransportLoopbackTestObject.cpp" />
     <ClCompile Include="tests\TransportScalabilityTestObject.cpp" />
     <ClCompile Include="tests\TransportStackPair.cpp" />
     <ClCompile Include="tests\TransportTestObject.cpp" />
-    <ClCompile Include="tests\VtoIntegrationTestBase.cpp" />
     <ClCompile Include="tests\WrappedTcpPipe.cpp" />
   </ItemGroup>
   <ItemGroup>

@@ -139,13 +139,7 @@ for(ExceptionScan e: arCfg.mScans) {
 	                             AMP_CLEAR_RESTART,
 	                             std::bind(&Master::WriteIIN, apMaster, _1),
 	                             "Clear IIN");
-
-	mpVtoTransmitTask = mTracking.AddContinuous(
-	                            AMP_VTO_TRANSMIT,
-	                            std::bind(&Master::TransmitVtoData, apMaster, _1),
-	                            "Buffer VTO Data");
-
-	mpVtoTransmitTask->SetFlags(ONLINE_ONLY_TASKS);
+	
 	mpTimeTask->SetFlags(ONLINE_ONLY_TASKS);
 	mpClearRestartTask->SetFlags(ONLINE_ONLY_TASKS);
 

@@ -81,9 +81,6 @@
     <ClInclude Include="include\opendnp3\ITransactable.h">
       <Filter>Include Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\opendnp3\IVtoEndpoint.h">
-      <Filter>Include Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\opendnp3\LinkConfig.h">
       <Filter>Include Files</Filter>
     </ClInclude>
@@ -145,9 +142,6 @@
       <Filter>Include Files</Filter>
     </ClInclude>
     <ClInclude Include="include\opendnp3\Util.h">
-      <Filter>Include Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\opendnp3\VtoRouterSettings.h">
       <Filter>Include Files</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\AlwaysOpeningVtoRouter.h">
@@ -286,9 +280,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\ITimeSource.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\IVtoEventAcceptor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\LinkFrame.h">
@@ -453,27 +444,6 @@
     <ClInclude Include="src\opendnp3\VtoData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\VtoDataInterface.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\VtoEndpointImpl.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\VtoEventBufferAdapter.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\VtoReader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\VtoRouter.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\VtoTransmitTask.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\VtoWriter.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\opendnp3\LogEntryCircularBuffer.h">
       <Filter>Include Files</Filter>
     </ClInclude>
@@ -524,9 +494,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\opendnp3\AlwaysOpeningVtoRouter.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\opendnp3\AnalogOutput.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -624,12 +591,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\DNPCrc.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\EnhancedVto.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\EnhancedVtoRouter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\ExecutorPause.cpp">
@@ -834,24 +795,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\VtoData.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\VtoEndpointImpl.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\VtoReader.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\VtoRouter.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\VtoRouterSettings.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\VtoTransmitTask.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\VtoWriter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\SerialTypes.cpp">

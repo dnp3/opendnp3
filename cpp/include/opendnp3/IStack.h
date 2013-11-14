@@ -33,17 +33,8 @@
 
 #include <openpal/Logger.h>
 
-#include "VtoRouterSettings.h"
 #include "DestructorHook.h"
 #include "StackState.h"
-
-namespace boost
-{
-namespace asio
-{
-class io_service;
-}
-}
 
 namespace openpal {
 class IPhysicalLayerAsync;
@@ -53,43 +44,14 @@ class IPhysicalLayerAsync;
 namespace opendnp3
 {
 
-class IVtoEndpoint;
-class IVtoWriter;
-class IVtoReader;
-class VtoEndpointImpl;
-
 /**
 * Base class for masters or outstations. Can be used to bind a vto endpoint or shutdown.
 */
 class IStack : public DestructorHook
 {
 public:
-	IStack(openpal::Logger& arLogger, boost::asio::io_service* apService);
-	virtual ~IStack();
-
-	/**
-	* Bind a vto endpoint as a tcp client
-	*
-	* @param arLoggerId Name used in all log messages
-	* @param aLevel Lowest log level recorded
-	* @param arHost IP address for connection
-	* @param aPort port for connection
-	* @param arSettings settings for the vto connection
-	* @return interface representing the running endpoint
-	*/
-	IVtoEndpoint* StartVtoRouterTCPClient(const std::string& arLoggerId, openpal::FilterLevel aLevel, const std::string& arHost, uint16_t aPort, const VtoRouterSettings& arSettings);
-
-	/**
-	* Bind a vto endpoint as a tcp server
-	*
-	* @param arLoggerId Name used in all log messages
-	* @param aLevel Lowest log level recorded
-	* @param arEndpoint Network adapter to bind to (i.e. 127.0.0.1 or 0.0.0.0)
-	* @param aPort port to listen on
-	* @param arSettings settings for the vto connection
-	* @return interface representing the running endpoint
-	*/
-	IVtoEndpoint* StartVtoRouterTCPServer(const std::string& arLoggerId, openpal::FilterLevel aLevel, const std::string& arEndpoint, uint16_t aPort, const VtoRouterSettings& arSettings);
+	IStack(openpal::Logger& arLogger);
+	virtual ~IStack();	
 
 	/**
 	* Add a listener for changes to the stack state. All callbacks come from the thread pool.
@@ -102,33 +64,9 @@ public:
 	/// Synchronously shutdown the endpoint
 	virtual void Shutdown() = 0;
 
-protected:
+private:	
 
-	void CleanupVto();
-
-	/**
-	 * Returns a pointer to the IVtoWriter instance for the layer.
-	 *
-	 * @return		a pointer to the IVtoWriter for the layer
-	 */
-	virtual IVtoWriter* GetVtoWriter() = 0;
-
-	/**
-	 * Returns a pointer to the IVtoReader instance for the layer.
-	 *
-	 * @return		a pointer to the IVtoReader for the layer
-	 */
-	virtual IVtoReader* GetVtoReader() = 0;
-
-private:
-
-	void OnVtoEndpointShutdown(VtoEndpointImpl* apEndpoint);
-
-	IVtoEndpoint* CreateVtoEndpoint(openpal::IPhysicalLayerAsync* apPhys, const VtoRouterSettings& arSettings);
-
-	openpal::Logger mLogger;
-	boost::asio::io_service* mpService;
-	std::set<IVtoEndpoint*> mVtoEndpoints;
+	openpal::Logger mLogger;	
 };
 
 }

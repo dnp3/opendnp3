@@ -48,8 +48,7 @@ class DLL_LOCAL MasterStackImpl : public IMaster
 public:
 
 	MasterStackImpl(
-	        openpal::Logger&,
-	        boost::asio::io_service* apService,
+	        openpal::Logger&,	        
 	        IExecutor* apExecutor,
 	        IDataObserver* apPublisher,
 			IUTCTimeSource* apTimeSource,
@@ -66,11 +65,6 @@ public:
 	void AddStateListener(std::function<void (StackState)> aListener);
 
 	void Shutdown();
-
-protected:
-
-	IVtoWriter* GetVtoWriter();
-	IVtoReader* GetVtoReader();
 
 private:
 	IExecutor* mpExecutor;

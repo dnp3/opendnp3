@@ -37,10 +37,9 @@ namespace opendnp3
 {
 
 ResponseLoaderTestObject::ResponseLoaderTestObject() :
-	log(),
 	fdo(),
-	mLogger(Logger(&log, LEV_INFO, "rsp")),
-	vto(mLogger)
+	log(),	
+	mLogger(Logger(&log, LEV_INFO, "rsp"))	
 {}
 
 void ResponseLoaderTestObject::Load(const std::string& arAPDU)
@@ -51,7 +50,7 @@ void ResponseLoaderTestObject::Load(const std::string& arAPDU)
 	f.Write(hs, hs.Size());
 	f.Interpret();
 
-	ResponseLoader rl(mLogger, &fdo, &vto);
+	ResponseLoader rl(mLogger, &fdo);
 	for(HeaderReadIterator hdr = f.BeginRead(); !hdr.IsEnd(); ++hdr) {
 		rl.Process(hdr);
 	}

@@ -29,8 +29,7 @@ using namespace openpal;
 namespace opendnp3
 {
 
-MasterStackImpl::MasterStackImpl(	Logger& arLogger,
-                                        boost::asio::io_service* apService,
+MasterStackImpl::MasterStackImpl(	Logger& arLogger,                                        
                                         IExecutor* apExecutor,
                                         IDataObserver* apPublisher,
 										IUTCTimeSource* apTimeSource,
@@ -38,7 +37,7 @@ MasterStackImpl::MasterStackImpl(	Logger& arLogger,
                                         const MasterStackConfig& arCfg,
                                         std::function<void (IMaster*)> aOnShutdown) :
 
-	IMaster(arLogger, apService),
+	IMaster(arLogger),
 	mpExecutor(apExecutor),
 	mAppStack(arLogger, apExecutor, arCfg.app, arCfg.link),
 	mMaster(arLogger.GetSubLogger("master"), arCfg.master, &mAppStack.mApplication, apPublisher, apTaskGroup, apExecutor, apTimeSource),
@@ -63,24 +62,13 @@ void MasterStackImpl::SetLinkRouter(ILinkRouter* apRouter)
 }
 
 void MasterStackImpl::Shutdown()
-{
-	this->CleanupVto();
+{	
 	mOnShutdown(this);
 }
 
 void MasterStackImpl::AddStateListener(std::function<void (StackState)> aListener)
 {
 	mMaster.AddStateListener(aListener);
-}
-
-IVtoWriter* MasterStackImpl::GetVtoWriter()
-{
-	return mMaster.GetVtoWriter();
-}
-
-IVtoReader* MasterStackImpl::GetVtoReader()
-{
-	return mMaster.GetVtoReader();
 }
 
 }

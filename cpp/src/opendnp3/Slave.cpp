@@ -63,9 +63,7 @@ Slave::Slave(openpal::Logger aLogger, IAppLayer* apAppLayer, IExecutor* apExecut
 	mDeferredUnknown(false),
 	mStartupNullUnsol(false),
 	mState(SS_UNKNOWN),
-	mpTimeTimer(NULL),
-	mVtoReader(aLogger),
-	mVtoWriter(aLogger.GetSubLogger("VtoWriter"), arCfg.mVtoWriterQueueSize)
+	mpTimeTimer(NULL)	
 {
 	/* Link the event buffer to the database */
 	mpDatabase->SetEventBuffer(mRspContext.GetBuffer());
@@ -78,15 +76,7 @@ Slave::Slave(openpal::Logger aLogger, IAppLayer* apAppLayer, IExecutor* apExecut
 	 */
 	mChangeBuffer.AddObserver(mpExecutor, [this]() {
 		this->OnDataUpdate();
-	});
-
-	/*
-	 * Incoming vto data will trigger a POST on the timer source to call
-	 * Slave::OnVtoUpdate().
-	 */
-	mVtoWriter.AddObserver(mpExecutor, [this]() {
-		this->OnVtoUpdate();
-	});
+	});	
 
 	/* Cause the slave to go through the null-unsol startup sequence */
 	if (!mConfig.mDisableUnsol) {
@@ -230,20 +220,6 @@ void Slave::FlushDeferredEvents()
 	}
 }
 
-size_t Slave::FlushVtoUpdates()
-{
-	/*
-	 * Copy as much data as we can from the VtoWriter into the
-	 * SlaveEventBuffer's VtoEvent buffer.
-	 */
-	IEventBuffer* pBuff = this->mRspContext.GetBuffer();
-	size_t available = mVtoWriter.Size();
-	size_t space = pBuff->NumVtoEventsAvailable();
-	size_t flushed = this->mVtoWriter.Flush(pBuff, space);
-	if(available > space) this->mDeferredUpdate = true;
-	return flushed;
-}
-
 size_t Slave::FlushUpdates()
 {
 	size_t num = 0;
@@ -257,8 +233,7 @@ size_t Slave::FlushUpdates()
 		mChangeBuffer.Clear();
 		return 0;
 	}
-
-	num += this->FlushVtoUpdates();
+	
 
 	LOG_BLOCK(LEV_DEBUG, "Processed " << num << " updates");
 	return num;
@@ -311,6 +286,7 @@ void Slave::ConfigureDelayMeasurement(const APDU& arRequest)
 	pObj->mTime.Set(*i, 0);
 }
 
+/*
 void Slave::HandleWriteVto(HeaderReadIterator& arHdr)
 {
 	Transaction tr(mVtoReader);
@@ -320,10 +296,8 @@ void Slave::HandleWriteVto(HeaderReadIterator& arHdr)
 		if(index > std::numeric_limits<uint8_t>::max()) {
 			LOG_BLOCK(LEV_WARNING, "Ignoring VTO index that exceeds bit width of uint8_t: " << index);
 		}
-		else {
-			/*
-			 * Pass the data to the vto reader
-			 */
+		else {			
+			//Pass the data to the vto reader			 
 			uint8_t channel = static_cast<uint8_t>(index);
 
 			VtoData vto(arHdr->GetVariation());
@@ -334,6 +308,7 @@ void Slave::HandleWriteVto(HeaderReadIterator& arHdr)
 		}
 	}
 }
+*/
 
 void Slave::HandleWriteIIN(HeaderReadIterator& arHdr)
 {
@@ -386,41 +361,21 @@ void Slave::HandleWriteTimeDate(HeaderReadIterator& arHWI)
 	}
 }
 
-void Slave::HandleVtoTransfer(const APDU& arRequest)
-{
-	for(HeaderReadIterator hdr = arRequest.BeginRead(); !hdr.IsEnd(); ++hdr) {
-		switch(hdr->GetGroup()) {
-		case 112:
-			this->HandleWriteVto(hdr);
-			break;
-		default:
-			mRspIIN.SetFuncNotSupported(true);
-			ERROR_BLOCK(LEV_WARNING, "Object/Function mismatch", SERR_OBJ_FUNC_MISMATCH);
-			break;
-		}
-	}
-}
-
 void Slave::HandleWrite(const APDU& arRequest)
 {
 	for (HeaderReadIterator hdr = arRequest.BeginRead(); !hdr.IsEnd(); ++hdr) {
-		switch (hdr->GetGroup()) {
-		case 112:
-			this->HandleWriteVto(hdr);
-			continue;
-		}
-
+		
 		switch (MACRO_DNP_RADIX(hdr->GetGroup(), hdr->GetVariation())) {
-		case (MACRO_DNP_RADIX(80, 1)):
-			this->HandleWriteIIN(hdr);
-			break;
-		case (MACRO_DNP_RADIX(50, 1)):
-			this->HandleWriteTimeDate(hdr);
-			break;
-		default:
-			mRspIIN.SetFuncNotSupported(true);
-			ERROR_BLOCK(LEV_WARNING, "Object/Function mismatch", SERR_OBJ_FUNC_MISMATCH);
-			break;
+			case (MACRO_DNP_RADIX(80, 1)):
+				this->HandleWriteIIN(hdr);
+				break;
+			case (MACRO_DNP_RADIX(50, 1)):
+				this->HandleWriteTimeDate(hdr);
+				break;
+			default:
+				mRspIIN.SetFuncNotSupported(true);
+				ERROR_BLOCK(LEV_WARNING, "Object/Function mismatch", SERR_OBJ_FUNC_MISMATCH);
+				break;
 		}
 	}
 }

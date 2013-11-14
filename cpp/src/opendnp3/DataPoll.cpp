@@ -30,8 +30,6 @@
 #include "APDU.h"
 #include "ResponseLoader.h"
 
-#include "VtoReader.h"
-
 using namespace openpal;
 
 namespace opendnp3
@@ -39,10 +37,9 @@ namespace opendnp3
 
 /* DataPoll - base class */
 
-DataPoll::DataPoll(Logger& arLogger, IDataObserver* apObs, VtoReader* apVtoReader) :
+DataPoll::DataPoll(Logger& arLogger, IDataObserver* apObs) :
 	MasterTaskBase(arLogger),
-	mpObs(apObs),
-	mpVtoReader(apVtoReader)
+	mpObs(apObs)	
 {}
 
 TaskResult DataPoll::_OnPartialResponse(const APDU& f)
@@ -59,7 +56,7 @@ TaskResult DataPoll::_OnFinalResponse(const APDU& f)
 
 void DataPoll::ReadData(const APDU& f)
 {
-	ResponseLoader loader(mLogger, mpObs, mpVtoReader);
+	ResponseLoader loader(mLogger, mpObs);
 	HeaderReadIterator hdr = f.BeginRead();
 	for ( ; !hdr.IsEnd(); ++hdr) {
 		loader.Process(hdr);
@@ -68,8 +65,8 @@ void DataPoll::ReadData(const APDU& f)
 
 /* Class Poll */
 
-ClassPoll::ClassPoll(Logger& arLogger, IDataObserver* apObs, VtoReader* apVtoReader) :
-	DataPoll(arLogger, apObs, apVtoReader),
+ClassPoll::ClassPoll(Logger& arLogger, IDataObserver* apObs) :
+	DataPoll(arLogger, apObs),
 	mClassMask(PC_INVALID)
 {}
 

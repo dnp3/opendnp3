@@ -21,21 +21,14 @@
 //
 
 #include <opendnp3/IStack.h>
-#include <opendnp3/IVtoEndpoint.h>
 
-#include "VtoEndpointImpl.h"
-#include "VtoDataInterface.h"
-#include "PhysicalLayerAsyncTCPClient.h"
-#include "PhysicalLayerAsyncTCPServer.h"
 
 using namespace openpal;
 
 namespace opendnp3
 {
 
-IStack::IStack(Logger& arLogger, boost::asio::io_service* apService) :
-	mLogger(arLogger),
-	mpService(apService)
+IStack::IStack(Logger& arLogger) : mLogger(arLogger)	
 {
 
 
@@ -44,43 +37,6 @@ IStack::IStack(Logger& arLogger, boost::asio::io_service* apService) :
 IStack::~IStack()
 {
 
-}
-
-void IStack::CleanupVto()
-{
-	std::set<IVtoEndpoint*> copy(mVtoEndpoints);
-for(auto pEndpoint: copy) pEndpoint->Shutdown();
-}
-
-IVtoEndpoint* IStack::StartVtoRouterTCPClient(const std::string& arName, FilterLevel aLevel, const std::string& arAddr, uint16_t aPort, const VtoRouterSettings& arSettings)
-{
-	auto pPhys = new PhysicalLayerAsyncTCPClient(mLogger.GetSubLogger("arName", aLevel), mpService, arAddr, aPort);
-	return CreateVtoEndpoint(pPhys, arSettings);
-}
-
-IVtoEndpoint* IStack::StartVtoRouterTCPServer(const std::string& arName, FilterLevel aLevel, const std::string& arEndpoint, uint16_t aPort, const VtoRouterSettings& arSettings)
-{
-	auto pPhys = new PhysicalLayerAsyncTCPServer(mLogger.GetSubLogger("arName", aLevel), mpService, arEndpoint, aPort);
-	return CreateVtoEndpoint(pPhys, arSettings);
-}
-
-IVtoEndpoint* IStack::CreateVtoEndpoint(IPhysicalLayerAsync* apPhys, const VtoRouterSettings& arSettings)
-{
-	auto pEndpoint = new VtoEndpointImpl(mLogger.GetSubLogger("vto"), this->GetVtoWriter(), apPhys, arSettings, [this](VtoEndpointImpl * apEndpoint) {
-		OnVtoEndpointShutdown(apEndpoint);
-	});
-	this->GetVtoReader()->AddVtoChannel(pEndpoint->GetVtoCallbacks());
-	this->GetVtoWriter()->AddVtoCallback(pEndpoint->GetVtoCallbacks());
-	mVtoEndpoints.insert(pEndpoint);
-	return pEndpoint;
-}
-
-void IStack::OnVtoEndpointShutdown(VtoEndpointImpl* apEndpoint)
-{
-	mVtoEndpoints.erase(apEndpoint);
-	this->GetVtoReader()->RemoveVtoChannel(apEndpoint->GetVtoCallbacks());
-	this->GetVtoWriter()->RemoveVtoCallback(apEndpoint->GetVtoCallbacks());
-	delete apEndpoint;
 }
 
 }

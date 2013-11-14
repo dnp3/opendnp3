@@ -302,9 +302,6 @@
     <ClCompile Include="tests\TestDNP3Manager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="tests\TestEnhancedVtoRouter.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="tests\TestEventBufferBase.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -398,15 +395,6 @@
     <ClCompile Include="tests\TestUtil.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="tests\TestVtoInterface.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="tests\TestVtoRouter.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="tests\TestVtoWriter.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="tests\Timeout.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -423,9 +411,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="tests\TransportTestObject.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="tests\VtoIntegrationTestBase.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="tests\WrappedTcpPipe.cpp">

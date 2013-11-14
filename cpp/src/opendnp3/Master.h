@@ -40,15 +40,12 @@
 #include "AppInterfaces.h"
 #include "ObjectReadIterator.h"
 #include "MasterSchedule.h"
-#include "VtoReader.h"
-#include "VtoWriter.h"
 #include "QueuedCommandProcessor.h"
 #include "CommandHelpers.h"
 
 // includes for tasks
 #include "StartupTasks.h"
 #include "DataPoll.h"
-#include "VtoTransmitTask.h"
 #include "CommandTask.h"
 #include "StackBase.h"
 
@@ -91,30 +88,7 @@ public:
 
 	ICommandProcessor* GetCommandProcessor() {
 		return &mCommandQueue;
-	}
-
-	/**
-	 * Returns a pointer to the VTO reader object.  This should only be
-	 * used by internal subsystems in the library.  External user
-	 * applications should associate IVtoCallbacks objects using the
-	 * AsyncStackManager.
-	 *
-	 * @return			a pointer to the VtoReader instance for this stack
-	 */
-	VtoReader* GetVtoReader() {
-		return &mVtoReader;
-	}
-
-	/**
-	 * Returns a pointer to the VtoWriter instance for this stack.
-	 * External user applications should use this hook to write new data
-	 * to the Slave (outstation) via the Master.
-	 *
-	 * @return			a pointer to the VtoWriter instance for this stack
-	 */
-	IVtoWriter* GetVtoWriter() {
-		return &mVtoWriter;
-	}
+	}	
 
 	/* Implement IAppUser - callbacks from the app layer */
 
@@ -182,7 +156,7 @@ private:
 	void ChangeUnsol(ITask* apTask, bool aEnable, int aClassMask);
 	void SyncTime(ITask* apTask);
 	void ProcessCommand(ITask* apTask);
-	void TransmitVtoData(ITask* apTask);
+	//void TransmitVtoData(ITask* apTask);
 
 	IINField mLastIIN;						// last IIN received from the outstation
 
@@ -191,21 +165,6 @@ private:
 	void StartTask(MasterTaskBase*, bool aInit);	// Starts a task running
 
 	QueuedCommandProcessor mCommandQueue;				// Threadsafe queue for buffering command requests
-
-	/**
-	 * The VtoReader instance for this stack which will direct received
-	 * VTO data to the user application.  The user application should
-	 * register an IVtoCallbacks instance for the desired virtual channel
-	 * id(s) using AsyncStackManager::AddVtoChannel().
-	 */
-	VtoReader mVtoReader;
-
-	/**
-	 * The VtoWriter instance for this stack which will buffer new data
-	 * from the user application to the DNP3 stream.  This handler is
-	 * thread-safe.
-	 */
-	VtoWriter mVtoWriter;
 
 	APDU mRequest;							// APDU that gets reused for requests
 
@@ -231,8 +190,7 @@ private:
 	ClearRestartIIN mClearRestart;			// used to clear the restart
 	ConfigureUnsol mConfigureUnsol;			// manipulates how the outstation does unsolictied reporting
 	TimeSync mTimeSync;						// performs time sync on the outstation
-	CommandTask mCommandTask;				// performs command execution
-	VtoTransmitTask mVtoTransmitTask;		// used to transmit VTO data in mVtoWriter
+	CommandTask mCommandTask;				// performs command execution	
 
 };
 

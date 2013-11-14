@@ -34,10 +34,9 @@ using namespace openpal;
 namespace opendnp3
 {
 
-ResponseLoader::ResponseLoader(openpal::Logger& arLogger, IDataObserver* apPublisher, VtoReader* apVtoReader) :
+ResponseLoader::ResponseLoader(openpal::Logger& arLogger, IDataObserver* apPublisher) :
 	Loggable(arLogger),
-	mpPublisher(apPublisher),
-	mpVtoReader(apVtoReader),
+	mpPublisher(apPublisher),	
 	mTransaction(apPublisher)
 {}
 
@@ -123,8 +122,8 @@ void ResponseLoader::ProcessSizeByVariation(HeaderReadIterator& arIter, int aGrp
 	 */
 	switch (aGrp) {
 		/* Virtual Terminal Objects */
-	case (112): this->ReadVto(arIter, Group112Var0::Inst()); break;
-	case (113): this->ReadVto(arIter, Group113Var0::Inst()); break;
+	//case (112): this->ReadVto(arIter, Group112Var0::Inst()); break;
+	//case (113): this->ReadVto(arIter, Group113Var0::Inst()); break;
 
 	default:
 		/*
@@ -138,16 +137,17 @@ void ResponseLoader::ProcessSizeByVariation(HeaderReadIterator& arIter, int aGrp
 	}
 }
 
+/*
 void ResponseLoader::ReadVto(HeaderReadIterator& arIter, SizeByVariationObject* apObj)
 {
-	/* Get an iterator to the object data */
+	// Get an iterator to the object data 
 	ObjectReadIterator objIter = arIter.BeginRead();
 
-	/* Copy the object data to a VtoData instance */
+	// Copy the object data to a VtoData instance
 	VtoData data;
 	data.Copy(*objIter, arIter->GetVariation());
 
-	/* Determine the Virtual Terminal port/channel number */
+	// Determine the Virtual Terminal port/channel number
 	size_t index = objIter->Index();
 	if(index > std::numeric_limits<uint8_t>::max()) {
 		LOG_BLOCK(LEV_WARNING, "Ignoring VTO index that exceeds bit width of uint8_t: " << index);
@@ -158,6 +158,7 @@ void ResponseLoader::ReadVto(HeaderReadIterator& arIter, SizeByVariationObject* 
 		this->mpVtoReader->Update(data, channel);
 	}
 }
+*/
 
 }
 

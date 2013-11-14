@@ -185,7 +185,6 @@
     <ClInclude Include="include\opendnp3\IOutstation.h" />
     <ClInclude Include="include\opendnp3\IStack.h" />
     <ClInclude Include="include\opendnp3\ITransactable.h" />
-    <ClInclude Include="include\opendnp3\IVtoEndpoint.h" />
     <ClInclude Include="include\opendnp3\LinkConfig.h" />
     <ClInclude Include="include\opendnp3\LinkLayerConstants.h" />
     <ClInclude Include="include\opendnp3\LogEntry.h" />
@@ -211,7 +210,6 @@
     <ClInclude Include="include\opendnp3\TransportConstants.h" />
     <ClInclude Include="include\opendnp3\Uncopyable.h" />
     <ClInclude Include="include\opendnp3\Util.h" />
-    <ClInclude Include="include\opendnp3\VtoRouterSettings.h" />
     <ClInclude Include="src\opendnp3\AlwaysOpeningVtoRouter.h" />
     <ClInclude Include="src\opendnp3\APDU.h" />
     <ClInclude Include="src\opendnp3\AppChannelStates.h" />
@@ -260,7 +258,6 @@
     <ClInclude Include="src\opendnp3\IndexedWriteIterator.h" />
     <ClInclude Include="src\opendnp3\IOServiceThreadPool.h" />
     <ClInclude Include="src\opendnp3\ITimeSource.h" />
-    <ClInclude Include="src\opendnp3\IVtoEventAcceptor.h" />
     <ClInclude Include="src\opendnp3\LinkFrame.h" />
     <ClInclude Include="src\opendnp3\LinkHeader.h" />
     <ClInclude Include="src\opendnp3\LinkLayer.h" />
@@ -318,17 +315,9 @@
     <ClInclude Include="src\opendnp3\TransportTx.h" />
     <ClInclude Include="src\opendnp3\UnsolicitedChannel.h" />
     <ClInclude Include="src\opendnp3\VtoData.h" />
-    <ClInclude Include="src\opendnp3\VtoDataInterface.h" />
-    <ClInclude Include="src\opendnp3\VtoEndpointImpl.h" />
-    <ClInclude Include="src\opendnp3\VtoEventBufferAdapter.h" />
-    <ClInclude Include="src\opendnp3\VtoReader.h" />
-    <ClInclude Include="src\opendnp3\VtoRouter.h" />
-    <ClInclude Include="src\opendnp3\VtoTransmitTask.h" />
-    <ClInclude Include="src\opendnp3\VtoWriter.h" />
     <ClInclude Include="StackBase.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\opendnp3\AlwaysOpeningVtoRouter.cpp" />
     <ClCompile Include="src\opendnp3\AnalogOutput.cpp" />
     <ClCompile Include="src\opendnp3\APDU.cpp" />
     <ClCompile Include="src\opendnp3\APDUConstants.cpp" />
@@ -365,8 +354,6 @@
     <ClCompile Include="src\opendnp3\DNP3Channel.cpp" />
     <ClCompile Include="src\opendnp3\DNP3Manager.cpp" />
     <ClCompile Include="src\opendnp3\DNPCrc.cpp" />
-    <ClCompile Include="src\opendnp3\EnhancedVto.cpp" />
-    <ClCompile Include="src\opendnp3\EnhancedVtoRouter.cpp" />
     <ClCompile Include="src\opendnp3\ExecutorPause.cpp" />
     <ClCompile Include="src\opendnp3\HeaderReadIterator.cpp" />
     <ClCompile Include="src\opendnp3\IExecutor.cpp" />
@@ -439,12 +426,6 @@
     <ClCompile Include="src\opendnp3\UnsolicitedChannel.cpp" />
     <ClCompile Include="src\opendnp3\Util.cpp" />
     <ClCompile Include="src\opendnp3\VtoData.cpp" />
-    <ClCompile Include="src\opendnp3\VtoEndpointImpl.cpp" />
-    <ClCompile Include="src\opendnp3\VtoReader.cpp" />
-    <ClCompile Include="src\opendnp3\VtoRouter.cpp" />
-    <ClCompile Include="src\opendnp3\VtoRouterSettings.cpp" />
-    <ClCompile Include="src\opendnp3\VtoTransmitTask.cpp" />
-    <ClCompile Include="src\opendnp3\VtoWriter.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\gecapache.licenseheader" />

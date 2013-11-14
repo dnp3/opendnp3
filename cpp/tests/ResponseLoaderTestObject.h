@@ -24,7 +24,8 @@
 #define __RESPONSE_LOADER_TEST_OBJECT_H_
 
 #include <opendnp3/Log.h>
-#include <opendnp3/VtoReader.h>
+
+#include <openpal/Logger.h>
 
 #include "FlexibleDataObserver.h"
 
@@ -44,10 +45,11 @@ public:
 
 	void Load(const std::string& arAPDU);
 
-private: EventLog log;
-public: FlexibleDataObserver fdo;
-private: openpal::Logger mLogger;
-public: VtoReader vto;
+	FlexibleDataObserver fdo;
+
+	private: 
+		EventLog log;		
+		openpal::Logger mLogger;
 
 };
 

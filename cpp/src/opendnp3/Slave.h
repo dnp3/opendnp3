@@ -46,10 +46,7 @@
 #include "ResponseContext.h"
 #include "SlaveEventBuffer.h"
 #include "SlaveResponseTypes.h"
-#include "VtoReader.h"
-#include "VtoWriter.h"
 #include "OutstationSBOHandler.h"
-
 
 
 namespace openpal {
@@ -133,30 +130,7 @@ public:
 	 */
 	IDataObserver* GetDataObserver() {
 		return &mChangeBuffer;
-	}
-
-	/**
-	 * Returns a pointer to the VTO reader object.  This should only be
-	 * used by internal subsystems in the library.  External user
-	 * applications should associate IVtoCallbacks objects using the
-	 * AsyncStackManager.
-	 *
-	 * @return			a pointer to the VtoReader instance for this stack
-	 */
-	VtoReader* GetVtoReader() {
-		return &mVtoReader;
-	}
-
-	/**
-	 * Returns a pointer to the VtoWriter instance for this stack.
-	 * External user applications should use this hook to write new data
-	 * to the Master via the Slave (outstation).
-	 *
-	 * @return			a pointer to the VtoWriter instance for this stack
-	 */
-	IVtoWriter* GetVtoWriter() {
-		return &mVtoWriter;
-	}
+	}	
 
 private:
 
@@ -214,11 +188,9 @@ private:
 	void Send(APDU& arAPDU, const IINField& arIIN); // overload with additional IIN data
 	void SendUnsolicited(APDU& arAPDU);
 
-	void HandleWrite(const APDU& arRequest);
-	void HandleVtoTransfer(const APDU& arRequest);
+	void HandleWrite(const APDU& arRequest);	
 	void HandleWriteIIN(HeaderReadIterator& arHdr);
-	void HandleWriteTimeDate(HeaderReadIterator& arHWI);
-	void HandleWriteVto(HeaderReadIterator& arHdr);
+	void HandleWriteTimeDate(HeaderReadIterator& arHWI);	
 	void HandleSelect(const APDU& arRequest, SequenceInfo aSeqInfo);
 	void HandleOperate(const APDU& arRequest, SequenceInfo aSeqInfo);
 	void HandleDirectOperate(const APDU& arRequest, SequenceInfo aSeqInfo);
@@ -229,8 +201,7 @@ private:
 	void CreateResponseContext(const APDU& arRequest);
 
 	// Helpers
-
-	size_t FlushVtoUpdates();
+	
 	size_t FlushUpdates();
 	void FlushDeferredEvents();
 	void StartUnsolTimer(openpal::millis_t aTimeout);
@@ -239,21 +210,6 @@ private:
 
 	void ResetTimeIIN();
 	openpal::ITimer* mpTimeTimer;
-
-	/**
-	 * The VtoReader instance for this stack which will direct received
-	 * VTO data to the user application.  The user application should
-	 * register an IVtoCallbacks instance for the desired virtual channel
-	 * id(s) using AsyncStackManager::AddVtoChannel().
-	 */
-	VtoReader mVtoReader;
-
-	/**
-	 * The VtoWriter instance for this stack which will buffer new data
-	 * from the user application to the DNP3 stream.  This handler is
-	 * thread-safe.
-	 */
-	VtoWriter mVtoWriter;
 
 	/**
 	 * A structure to provide the C++ equivalent of templated typedefs.

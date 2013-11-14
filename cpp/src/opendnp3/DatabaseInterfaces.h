@@ -25,7 +25,6 @@
 
 #include "DNPDatabaseTypes.h"
 #include "VtoData.h"
-#include "IVtoEventAcceptor.h"
 
 #include <openpal/Visibility.h>
 
@@ -33,7 +32,7 @@ namespace opendnp3
 {
 
 // @section desc Used by the database
-class DLL_LOCAL IEventBuffer : public IVtoEventAcceptor
+class DLL_LOCAL IEventBuffer
 {
 public:
 

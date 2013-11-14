@@ -24,7 +24,6 @@
 #define __DATA_POLL_H_
 
 #include "MasterTaskBase.h"
-#include "VtoReader.h"
 
 #include <openpal/Visibility.h>
 
@@ -40,7 +39,7 @@ class DLL_LOCAL DataPoll : public MasterTaskBase
 {
 public:
 
-	DataPoll(openpal::Logger&, IDataObserver*, VtoReader*);
+	DataPoll(openpal::Logger&, IDataObserver*);
 
 private:
 
@@ -50,9 +49,7 @@ private:
 	TaskResult _OnPartialResponse(const APDU&);
 	TaskResult _OnFinalResponse(const APDU&);
 
-	IDataObserver* mpObs;
-
-	VtoReader* mpVtoReader;
+	IDataObserver* mpObs;	
 
 };
 
@@ -62,7 +59,7 @@ class DLL_LOCAL ClassPoll : public DataPoll
 {
 public:
 
-	ClassPoll(openpal::Logger&, IDataObserver*, VtoReader*);
+	ClassPoll(openpal::Logger&, IDataObserver*);
 
 	void Set(int aClassMask);
 

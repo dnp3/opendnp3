@@ -65,11 +65,6 @@ public:
 	 */
 	AsyncTaskBase* mpClearRestartTask;
 
-	/**
-	 * A task to transmit data from the Master::mVtoWriter queue.
-	 */
-	AsyncTaskBase* mpVtoTransmitTask;
-
 	// Enables all of the tasks that run when the layer is Open
 	void EnableOnlineTasks();
 

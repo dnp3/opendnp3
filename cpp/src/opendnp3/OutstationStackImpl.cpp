@@ -26,14 +26,13 @@ namespace opendnp3
 {
 
 OutstationStackImpl::OutstationStackImpl(
-        openpal::Logger& arLogger,
-        boost::asio::io_service* apService,
+        openpal::Logger& arLogger,        
         openpal::IExecutor* apExecutor,
 		ITimeWriteHandler* apTimeWriteHandler,
         ICommandHandler* apCmdHandler,
         const SlaveStackConfig& arCfg,
         std::function<void (IOutstation*)> aOnShutdown) :
-	IOutstation(arLogger, apService),
+	IOutstation(arLogger),
 	mpExecutor(apExecutor),
 	mAppStack(arLogger, apExecutor, arCfg.app, arCfg.link),
 	mDB(arLogger),
@@ -66,18 +65,7 @@ void OutstationStackImpl::AddStateListener(std::function<void (StackState)> aLis
 
 void OutstationStackImpl::Shutdown()
 {
-	this->CleanupVto();
 	mOnShutdown(this);
-}
-
-IVtoWriter* OutstationStackImpl::GetVtoWriter()
-{
-	return mSlave.GetVtoWriter();
-}
-
-IVtoReader* OutstationStackImpl::GetVtoReader()
-{
-	return mSlave.GetVtoReader();
 }
 
 }
