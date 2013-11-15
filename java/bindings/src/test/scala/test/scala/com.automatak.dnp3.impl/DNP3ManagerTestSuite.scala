@@ -67,16 +67,6 @@ class DNP3ManagerTestSuite extends FunSuite with ShouldMatchers {
     outstation
   }
 
-  def createClientEndpoint(stack: Stack): VTOEndpoint = {
-    val cfg = new VTOEndpointConfig(1, true, false)
-    stack.addTCPClientVTOEndpoint("vtoclient", LogLevel.INFO, "127.0.0.1", 50000, cfg)
-  }
-
-  def createServerEndpoint(stack: Stack): VTOEndpoint = {
-    val cfg = new VTOEndpointConfig(1, true, false)
-    stack.addTCPClientVTOEndpoint("vtoclient", LogLevel.INFO, "127.0.0.1", 50001, cfg)
-  }
-
   test("starts/stops cleanly") {
     fixture { mgr =>
 
@@ -116,23 +106,5 @@ class DNP3ManagerTestSuite extends FunSuite with ShouldMatchers {
       master.shutdown()
     }
   }
-
-  test("Can add vto routers and automatically shutdown") {
-    fixture { mgr =>
-      createClientEndpoint(createOutstation(createServer(mgr)))
-      createServerEndpoint(createMaster(createClient(mgr)))
-    }
-  }
-
-  test("Can add vto routers and manually shutdown") {
-    fixture { mgr =>
-      val clientEndpoint = createClientEndpoint(createOutstation(createServer(mgr)))
-      val serverEndpoint = createServerEndpoint(createMaster(createClient(mgr)))
-
-      clientEndpoint.shutdown()
-      serverEndpoint.shutdown()
-    }
-  }
-
 
 }
