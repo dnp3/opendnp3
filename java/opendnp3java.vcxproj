@@ -168,7 +168,6 @@
     <ClInclude Include="cpp\com_automatak_dnp3_impl_MasterImpl.h" />
     <ClInclude Include="cpp\com_automatak_dnp3_impl_OutstationImpl.h" />
     <ClInclude Include="cpp\com_automatak_dnp3_impl_StackBase.h" />
-    <ClInclude Include="cpp\com_automatak_dnp3_impl_VTOEndpointImpl.h" />
     <ClInclude Include="cpp\ConfigReader.h" />
     <ClInclude Include="cpp\DataObserverAdapter.h" />
     <ClInclude Include="cpp\JNIHelpers.h" />
@@ -183,7 +182,6 @@
     <ClCompile Include="cpp\com_automatak_dnp3_impl_MasterImpl.cpp" />
     <ClCompile Include="cpp\com_automatak_dnp3_impl_OutstationImpl.cpp" />
     <ClCompile Include="cpp\com_automatak_dnp3_impl_StackBase.cpp" />
-    <ClCompile Include="cpp\com_automatak_dnp3_impl_VTOEndpointImpl.cpp" />
     <ClCompile Include="cpp\ConfigReader.cpp" />
     <ClCompile Include="cpp\DataObserverAdapter.cpp" />
     <ClCompile Include="cpp\JNIHelpers.cpp" />

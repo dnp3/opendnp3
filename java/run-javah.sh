@@ -5,6 +5,5 @@ com.automatak.dnp3.impl.MasterImpl \
 com.automatak.dnp3.impl.OutstationImpl \
 com.automatak.dnp3.impl.CommandProcessorImpl \
 com.automatak.dnp3.impl.DataObserverImpl \
-com.automatak.dnp3.impl.StackBase \
-com.automatak.dnp3.impl.VTOEndpointImpl
+com.automatak.dnp3.impl.StackBase
 
