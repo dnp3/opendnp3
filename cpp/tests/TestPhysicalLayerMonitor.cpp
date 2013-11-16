@@ -42,7 +42,7 @@ public:
 
 	ConcretePhysicalLayerMonitor(openpal::Logger aLogger, IPhysicalLayerAsync* apPhys) :
 		Loggable(aLogger),
-		PhysicalLayerMonitor(aLogger.GetSubLogger("monitor"), apPhys, seconds(1), seconds(10)),
+		PhysicalLayerMonitor(aLogger.GetSubLogger("monitor"), apPhys, TimeDuration(1000), TimeDuration(10000)),
 		mOpenCallbackCount(0),
 		mCloseCallbackCount(0) {
 	}
@@ -269,13 +269,13 @@ BOOST_AUTO_TEST_CASE(OpenFailureGoesToWaitingAndExponentialBackoff)
 	test.phys.SignalOpenFailure();
 	BOOST_REQUIRE_EQUAL(CS_WAITING, test.monitor.GetState());
 	BOOST_REQUIRE_EQUAL(1, test.exe.NumActive());
-	BOOST_REQUIRE(seconds(1) == test.exe.NextDurationTimer());
+	BOOST_REQUIRE(MonotonicTimestamp(1000) == test.exe.NextTimerExpiration());
 	BOOST_REQUIRE(test.exe.DispatchOne());
 	BOOST_REQUIRE_EQUAL(CS_OPENING, test.monitor.GetState());
 	test.phys.SignalOpenFailure();
 	BOOST_REQUIRE_EQUAL(CS_WAITING, test.monitor.GetState());
 	BOOST_REQUIRE_EQUAL(1, test.exe.NumActive());
-	BOOST_REQUIRE(seconds(2) == test.exe.NextDurationTimer());
+	BOOST_REQUIRE(MonotonicTimestamp(2000) == test.exe.NextTimerExpiration());
 }
 
 BOOST_AUTO_TEST_CASE(OpenFailureGoesToClosedIfSuspended)

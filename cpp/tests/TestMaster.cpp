@@ -123,7 +123,7 @@ BOOST_AUTO_TEST_CASE(StateTransitionSuccessFailure)
 	BOOST_REQUIRE_EQUAL(t.states.front(), SS_COMMS_UP);
 	t.states.pop_front();
 
-	t.fake_time.Advance(std::chrono::milliseconds(2000));
+	t.mts.AdvanceTime(TimeDuration(2000));
 	BOOST_REQUIRE(t.mts.DispatchOne());
 	TestForIntegrityPoll(t, false);
 
@@ -132,7 +132,7 @@ BOOST_AUTO_TEST_CASE(StateTransitionSuccessFailure)
 	BOOST_REQUIRE_EQUAL(t.states.front(), SS_COMMS_DOWN);
 	t.states.pop_front();
 
-	t.fake_time.Advance(std::chrono::milliseconds(10000));
+	t.mts.AdvanceTime(TimeDuration(10000));
 	BOOST_REQUIRE(t.mts.DispatchOne());
 	TestForIntegrityPoll(t);
 
@@ -221,9 +221,7 @@ BOOST_AUTO_TEST_CASE(RestartLayerDown)
 {
 	MasterConfig master_cfg;
 	MasterTestObject t(master_cfg);
-	t.master.OnLowerLayerUp();
-
-	t.fake_time.SetTime(timer_clock::time_point(milliseconds(100))); //100 ms since epoch
+	t.master.OnLowerLayerUp();	
 
 	BOOST_REQUIRE_EQUAL("C0 01 3C 01 06", t.Read()); //integrity
 	t.RespondToMaster("C0 81 90 00"); // need time and device restart
@@ -240,9 +238,7 @@ BOOST_AUTO_TEST_CASE(DelayMeasLayerDown)
 {
 	MasterConfig master_cfg;
 	MasterTestObject t(master_cfg);
-	t.master.OnLowerLayerUp();
-
-	t.fake_time.SetTime(timer_clock::time_point(milliseconds(100))); //100 ms since epoch
+	t.master.OnLowerLayerUp();	
 
 	BOOST_REQUIRE_EQUAL("C0 01 3C 01 06", t.Read()); //integrity
 	t.RespondToMaster("C0 81 90 00"); // need time and device restart
@@ -261,9 +257,7 @@ BOOST_AUTO_TEST_CASE(DelayMeasFailure)
 {
 	MasterConfig master_cfg;
 	MasterTestObject t(master_cfg);
-	t.master.OnLowerLayerUp();
-
-	t.fake_time.SetTime(timer_clock::time_point(milliseconds(100))); //100 ms since epoch
+	t.master.OnLowerLayerUp();	
 
 	BOOST_REQUIRE_EQUAL("C0 01 3C 01 06", t.Read()); //integrity
 	t.RespondToMaster("C0 81 90 00"); // need time and device restart
@@ -502,13 +496,12 @@ BOOST_AUTO_TEST_CASE(SolicitedResponseWithData)
 BOOST_AUTO_TEST_CASE(SolicitedResponseFailure)
 {
 	MasterConfig master_cfg;
-	MasterTestObject t(master_cfg);
-	t.fake_time.SetTime(timer_clock::time_point(milliseconds(0)));
+	MasterTestObject t(master_cfg);	
 	t.master.OnLowerLayerUp();
 
 	BOOST_REQUIRE_EQUAL(t.Read(), "C0 01 3C 01 06"); ;
 	t.master.OnSolFailure();
-	t.fake_time.Advance(milliseconds(master_cfg.TaskRetryRate));
+	t.mts.AdvanceTime(TimeDuration(master_cfg.TaskRetryRate));
 	BOOST_REQUIRE(t.mts.DispatchOne());
 	BOOST_REQUIRE_EQUAL(t.Read(), "C0 01 3C 01 06"); ;
 }
@@ -516,8 +509,7 @@ BOOST_AUTO_TEST_CASE(SolicitedResponseFailure)
 BOOST_AUTO_TEST_CASE(SolicitedResponseLayerDown)
 {
 	MasterConfig master_cfg;
-	MasterTestObject t(master_cfg);
-	t.fake_time.SetTime(timer_clock::time_point(milliseconds(0)));
+	MasterTestObject t(master_cfg);	
 	t.master.OnLowerLayerUp();
 
 	BOOST_REQUIRE_EQUAL(t.Read(), "C0 01 3C 01 06"); ;

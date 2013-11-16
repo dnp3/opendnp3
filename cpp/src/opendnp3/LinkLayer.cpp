@@ -159,7 +159,7 @@ void LinkLayer::SendDelayedUserData(bool aFCB)
 void LinkLayer::StartTimer()
 {
 	assert(mpTimer == NULL);
-	mpTimer = this->mpExecutor->Start(std::chrono::milliseconds(mCONFIG.Timeout), std::bind(&LinkLayer::OnTimeout, this));
+	mpTimer = this->mpExecutor->Start(TimeDuration(mCONFIG.Timeout), std::bind(&LinkLayer::OnTimeout, this));
 }
 
 void LinkLayer::CancelTimer()

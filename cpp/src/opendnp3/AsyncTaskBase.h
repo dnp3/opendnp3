@@ -28,8 +28,7 @@
 #include <openpal/Types.h>
 #include <opendnp3/Uncopyable.h>
 #include <openpal/Visibility.h>
-
-
+#include <openpal/MonotonicTimestamp.h>
 
 #include <vector>
 #include <chrono>
@@ -88,7 +87,7 @@ protected:
 	        int aPriority,
 	        const TaskHandler& arCallback,
 	        AsyncTaskGroup* apGroup,
-	        const openpal::timer_clock::time_point& arInitialTime,
+			const openpal::MonotonicTimestamp& arInitialTime,
 	        const std::string& arName);
 
 	// optional NVII function for special bookkeeping
@@ -106,7 +105,7 @@ protected:
 
 	// Update the task's completion and expired status
 	// base upon the input time
-	void UpdateTime(const openpal::timer_clock::time_point& arTime);
+	void UpdateTime(const openpal::MonotonicTimestamp& arTime);
 
 	bool IsEnabled() const {
 		return mIsEnabled;
@@ -133,25 +132,25 @@ protected:
 	}
 
 	// @returns max_date_time if the task is currently running or will not run again
-	openpal::timer_clock::time_point NextRunTime() const {
+	openpal::MonotonicTimestamp NextRunTime() const {
 		return mNextRunTime;
 	}
 
-	std::string mName;						// Every task has a name
-	bool mIsEnabled;						// Tasks can be enabled or disabled
-	bool mIsComplete;						// Every task has a flag that
+	std::string mName;								// Every task has a name
+	bool mIsEnabled;								// Tasks can be enabled or disabled
+	bool mIsComplete;								// Every task has a flag that
 	// executes it's completion status
-	bool mIsExpired;						// Indicate wether the time from
+	bool mIsExpired;								// Indicate wether the time from
 	// the last UpdateTime call >=
 	// mNextRunTime
-	bool mIsRunning;						// Every task has an execution
+	bool mIsRunning;								// Every task has an execution
 	// status
-	int mPriority;							// Every task has a pr
-	TaskHandler mHandler;					// Every task has a handler for
+	int mPriority;									// Every task has a pr
+	TaskHandler mHandler;							// Every task has a handler for
 	// executing the task
-	AsyncTaskGroup* mpGroup;				// owning task group
-	openpal::timer_clock::time_point mNextRunTime;	// next execution time for the task
-	const openpal::timer_clock::time_point M_INITIAL_TIME;
+	AsyncTaskGroup* mpGroup;						// owning task group
+	openpal::MonotonicTimestamp mNextRunTime;		// next execution time for the task
+	const openpal::MonotonicTimestamp M_INITIAL_TIME;
 	int mFlags;
 };
 

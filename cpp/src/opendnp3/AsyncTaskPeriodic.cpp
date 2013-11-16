@@ -32,7 +32,7 @@ namespace opendnp3
 {
 
 AsyncTaskPeriodic::AsyncTaskPeriodic(millis_t aPeriod,openpal::millis_t aRetryDelay, int aPriority, const TaskHandler& arCallback, AsyncTaskGroup* apGroup, const std::string& arName) :
-	AsyncTaskBase(aPriority, arCallback, apGroup, timer_clock::time_point::min(), arName),
+	AsyncTaskBase(aPriority, arCallback, apGroup, MonotonicTimestamp::Min(), arName),
 	mPeriod(aPeriod),
 	mRetryDelay(aRetryDelay)
 {
@@ -41,13 +41,13 @@ AsyncTaskPeriodic::AsyncTaskPeriodic(millis_t aPeriod,openpal::millis_t aRetryDe
 
 void AsyncTaskPeriodic::_OnComplete(bool aSuccess)
 {
-	const timer_clock::time_point now = mpGroup->GetUTC();
+	const auto now = mpGroup->GetCurrentTime();
 	if(aSuccess) {
 		mIsComplete = true;
-		mNextRunTime = now + std::chrono::milliseconds(mPeriod);
+		mNextRunTime = now.Add(mPeriod);
 	}
 	else {
-		mNextRunTime = now + std::chrono::milliseconds(mRetryDelay);
+		mNextRunTime = now.Add(mPeriod);
 	}
 }
 

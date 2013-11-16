@@ -29,9 +29,11 @@ using namespace openpal;
 namespace openpal
 {
 
+/*
 ITimer* IExecutor::Start(milliseconds aMs, const function<void ()>& arFunc)
 {
 	return this->Start(timer_clock::duration(aMs), arFunc);
 }
+*/
 
 }

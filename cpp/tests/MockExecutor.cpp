@@ -28,7 +28,9 @@ using namespace std::chrono;
 namespace opendnp3
 {
 
-MockExecutor::MockExecutor() : mPostIsSynchronous(false)
+MockExecutor::MockExecutor() : 
+	mPostIsSynchronous(false),
+	mCurrentTime(0)
 {
 
 }
@@ -38,14 +40,19 @@ MockExecutor::~MockExecutor()
 for(auto pTimer: mAllTimers) delete pTimer;
 }
 
-timer_clock::duration MockExecutor::NextDurationTimer()
+openpal::MonotonicTimestamp MockExecutor::NextTimerExpiration()
 {
-	if(!mDurationTimerQueue.empty()) {
-		auto ret = mDurationTimerQueue.front();
-		mDurationTimerQueue.pop_front();
+	if(!mTimerExpirationQueue.empty()) {
+		auto ret = mTimerExpirationQueue.front();
+		mTimerExpirationQueue.pop_front();
 		return ret;
 	}
-	else return timer_clock::duration::min();
+	else return MonotonicTimestamp::Min();
+}
+
+void MockExecutor::AdvanceTime(TimeDuration aDuration)
+{
+	mCurrentTime = mCurrentTime.Add(aDuration);
 }
 
 bool MockExecutor::DispatchOne()
@@ -95,14 +102,19 @@ void MockExecutor::PostSync(const std::function<void ()>& arHandler)
 	arHandler();
 }
 
-ITimer* MockExecutor::Start(timer_clock::duration aDelay, const std::function<void ()>& arCallback)
+openpal::MonotonicTimestamp MockExecutor::GetTime()
 {
-	timer_clock::time_point time =  timer_clock::now() + aDelay;
-	mDurationTimerQueue.push_back(aDelay);
-	return Start(time, arCallback);
+	return mCurrentTime;
 }
 
-ITimer* MockExecutor::Start(const timer_clock::time_point& arTime, const std::function<void ()>& arCallback)
+ITimer* MockExecutor::Start(const openpal::TimeDuration& aDelay, const std::function<void ()>& arCallback)
+{
+	auto expiration = mCurrentTime.Add(aDelay);
+	mTimerExpirationQueue.push_back(expiration);
+	return Start(expiration, arCallback);
+}
+
+ITimer* MockExecutor::Start(const openpal::MonotonicTimestamp& arTime, const std::function<void ()>& arCallback)
 {
 	MockTimer* pTimer;
 	if(mIdle.size() > 0) {
@@ -115,7 +127,7 @@ ITimer* MockExecutor::Start(const timer_clock::time_point& arTime, const std::fu
 		mAllTimers.push_back(pTimer);
 	}
 
-	mTimerMap.insert(std::pair<timer_clock::time_point, MockTimer*>(arTime, pTimer));
+	mTimerMap.insert(std::pair<openpal::MonotonicTimestamp, MockTimer*>(arTime, pTimer));
 	return pTimer;
 }
 
@@ -130,7 +142,7 @@ void MockExecutor::Cancel(ITimer* apTimer)
 	}
 }
 
-MockTimer::MockTimer(MockExecutor* apSource, const timer_clock::time_point& arTime, const std::function<void ()>& arCallback) :
+MockTimer::MockTimer(MockExecutor* apSource, const openpal::MonotonicTimestamp& arTime, const std::function<void ()>& arCallback) :
 	mTime(arTime),
 	mpSource(apSource),
 	mCallback(arCallback)
@@ -143,7 +155,7 @@ void MockTimer::Cancel()
 	mpSource->Cancel(this);
 }
 
-timer_clock::time_point MockTimer::ExpiresAt()
+openpal::MonotonicTimestamp MockTimer::ExpiresAt()
 {
 	return mTime;
 }

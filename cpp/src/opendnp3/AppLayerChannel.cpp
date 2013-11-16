@@ -122,7 +122,7 @@ void AppLayerChannel::DoFinalResponse(APDU& arAPDU)
 void AppLayerChannel::StartTimer()
 {
 	assert(mpTimer == NULL);
-	mpTimer = mpExecutor->Start(std::chrono::milliseconds(M_TIMEOUT), std::bind(&AppLayerChannel::Timeout, this));
+	mpTimer = mpExecutor->Start(TimeDuration(M_TIMEOUT), std::bind(&AppLayerChannel::Timeout, this));
 }
 
 void AppLayerChannel::CancelTimer()

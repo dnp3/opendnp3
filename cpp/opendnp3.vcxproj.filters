@@ -599,9 +599,6 @@
     <ClCompile Include="src\opendnp3\HeaderReadIterator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\IExecutor.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\opendnp3\IndexedWriteIterator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

@@ -37,7 +37,7 @@ namespace opendnp3
 AsyncTaskBase::AsyncTaskBase(int aPriority,
                              const TaskHandler& arCallback,
                              AsyncTaskGroup* apGroup,
-                             const timer_clock::time_point& arInitialTime,
+							 const MonotonicTimestamp& arInitialTime,
                              const std::string& arName) :
 	mName(arName),
 	mIsEnabled(false),
@@ -128,9 +128,9 @@ void AsyncTaskBase::Reset()
 	this->_Reset();
 }
 
-void AsyncTaskBase::UpdateTime(const timer_clock::time_point& arTime)
+void AsyncTaskBase::UpdateTime(const MonotonicTimestamp& arTime)
 {
-	if(arTime >= mNextRunTime) {
+	if(arTime.milliseconds >= mNextRunTime.milliseconds) {
 		mIsComplete = false;
 		mIsExpired = true;
 	}
@@ -160,7 +160,7 @@ bool AsyncTaskBase::LessThan(const AsyncTaskBase* l, const AsyncTaskBase* r)
 		return true; // right expired but left is not
 	}
 	else { // if they're both not expired, the one with the lowest run time is higher
-		return l->NextRunTime() > r->NextRunTime();
+		return l->NextRunTime().milliseconds > r->NextRunTime().milliseconds;
 	}
 }
 

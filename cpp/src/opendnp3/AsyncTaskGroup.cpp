@@ -40,11 +40,10 @@ using namespace std::chrono;
 namespace opendnp3
 {
 
-AsyncTaskGroup::AsyncTaskGroup(IExecutor* apExecutor, ITimeSource* apTimeSrc) :
+AsyncTaskGroup::AsyncTaskGroup(IExecutor* apExecutor) :
 	mIsRunning(false),
 	mShutdown(false),
-	mpExecutor(apExecutor),
-	mpTimeSrc(apTimeSrc),
+	mpExecutor(apExecutor),	
 	mpTimer(NULL)
 {
 
@@ -137,7 +136,7 @@ for(AsyncTaskBase * p: mTaskVec) {
 	this->CheckState();
 }
 
-AsyncTaskBase* AsyncTaskGroup::GetNext(const timer_clock::time_point& arTime)
+AsyncTaskBase* AsyncTaskGroup::GetNext(const MonotonicTimestamp& arTime)
 {
 	this->Update(arTime);
 	TaskVec::iterator max = max_element(mTaskVec.begin(), mTaskVec.end(), AsyncTaskBase::LessThanGroupLevel);
@@ -154,13 +153,13 @@ AsyncTaskBase* AsyncTaskGroup::GetNext(const timer_clock::time_point& arTime)
 void AsyncTaskGroup::CheckState()
 {
 	if(!mShutdown) {
-		timer_clock::time_point now = GetUTC();
+		auto now = mpExecutor->GetTime();
 		AsyncTaskBase* pTask = GetNext(now);
 
 		if(pTask == NULL) return;
-		if(pTask->NextRunTime() == timer_clock::time_point::max()) return;
+		if(pTask->NextRunTime().milliseconds == MonotonicTimestamp::Max().milliseconds) return;
 
-		if(pTask->NextRunTime() <= now) {
+		if(pTask->NextRunTime().milliseconds <= now.milliseconds) {
 			mIsRunning = true;
 			pTask->Dispatch();
 		}
@@ -177,22 +176,24 @@ void AsyncTaskGroup::OnCompletion()
 	this->CheckState();
 }
 
-timer_clock::time_point AsyncTaskGroup::GetUTC() const
+
+openpal::MonotonicTimestamp AsyncTaskGroup::GetCurrentTime() const
 {
-	return mpTimeSrc->GetUTC();
+	return mpExecutor->GetTime();
 }
 
-void AsyncTaskGroup::Update(const timer_clock::time_point& arTime)
+void AsyncTaskGroup::Update(const MonotonicTimestamp& arTime)
 {
-for(AsyncTaskBase * p: mTaskVec) {
+	for(AsyncTaskBase * p: mTaskVec) {
 		p->UpdateTime(arTime);
 	}
 }
 
-void AsyncTaskGroup::RestartTimer(const timer_clock::time_point& arTime)
+
+void AsyncTaskGroup::RestartTimer(const openpal::MonotonicTimestamp& arTime)
 {
 	if(mpTimer != NULL) {
-		if(mpTimer->ExpiresAt() != arTime) {
+		if(mpTimer->ExpiresAt().milliseconds != arTime.milliseconds) {
 			mpTimer->Cancel();
 			mpTimer = NULL;
 		}

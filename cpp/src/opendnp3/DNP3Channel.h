@@ -38,23 +38,14 @@
 #include <memory>
 #include <functional>
 
-namespace boost
-{
-namespace asio
-{
-class io_service;
-}
-}
-
 namespace openpal {
-	class IPhysicalLayerAsync;
+class IPhysicalLayerAsync;
 }
 
 
 namespace opendnp3
 {
 
-class ITimeSource;
 class IStack;
 class IOutstation;
 class ICommandHandler;
@@ -63,7 +54,7 @@ class ITimeWriteHandler;
 class DLL_LOCAL DNP3Channel: public IChannel, private openpal::Loggable
 {
 public:
-	DNP3Channel(openpal::Logger aLogger, openpal::millis_t aOpenRetry, boost::asio::io_service* apService, IPhysicalLayerAsync* apPhys, ITimeSource* apTimeSource, std::function<void (DNP3Channel*)> aOnShutdown);
+	DNP3Channel(openpal::Logger aLogger, openpal::millis_t aOpenRetry, IPhysicalLayerAsync* apPhys, std::function<void (DNP3Channel*)> aOnShutdown);
 	~DNP3Channel();
 
 	// Implement IChannel - these are exposed to clients
@@ -94,9 +85,7 @@ private:
 
 	void Cleanup();
 
-	void OnStackShutdown(IStack* apStack, LinkRoute aRoute);
-
-	boost::asio::io_service* mpService;
+	void OnStackShutdown(IStack* apStack, LinkRoute aRoute);	
 	std::auto_ptr<IPhysicalLayerAsync> mpPhys;
 	std::function<void (DNP3Channel*)> mOnShutdown;
 	LinkLayerRouter mRouter;

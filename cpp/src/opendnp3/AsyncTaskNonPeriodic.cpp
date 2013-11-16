@@ -21,8 +21,9 @@
 //
 
 #include "AsyncTaskNonPeriodic.h"
-
 #include "AsyncTaskGroup.h"
+
+#include <openpal/TimeDuration.h>
 
 #include <chrono>
 
@@ -34,21 +35,20 @@ namespace opendnp3
 
 
 AsyncTaskNonPeriodic::AsyncTaskNonPeriodic(millis_t aRetryDelay, int aPriority, const TaskHandler& arCallback, AsyncTaskGroup* apGroup, const std::string& arName) :
-	AsyncTaskBase(aPriority, arCallback, apGroup, timer_clock::time_point::min(), arName),
+	AsyncTaskBase(aPriority, arCallback, apGroup, MonotonicTimestamp::Min(), arName),
 	mRetryDelay(aRetryDelay)
 {
 
 }
 
 void AsyncTaskNonPeriodic::_OnComplete(bool aSuccess)
-{
-	timer_clock::time_point now = mpGroup->GetUTC();
+{	
 	if(aSuccess) {
 		mIsComplete = true;
-		mNextRunTime = timer_clock::time_point::max();
+		mNextRunTime = MonotonicTimestamp::Max();
 	}
 	else {
-		mNextRunTime = now + milliseconds(mRetryDelay);
+		mNextRunTime = mpGroup->GetCurrentTime().Add(mRetryDelay);
 	}
 }
 

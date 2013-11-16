@@ -23,9 +23,9 @@
 #ifndef __I_TIMER_H_
 #define __I_TIMER_H_
 
-#include <openpal/Types.h>
-#include <openpal/Visibility.h>
-
+#include "Types.h"
+#include "Visibility.h"
+#include "MonotonicTimestamp.h"
 
 namespace openpal
 {
@@ -51,7 +51,7 @@ class DLL_LOCAL ITimer
 public:
 	virtual ~ITimer() {}
 	virtual void Cancel() = 0;
-	virtual openpal::timer_clock::time_point ExpiresAt() = 0;
+	virtual MonotonicTimestamp ExpiresAt() = 0;
 };
 
 }

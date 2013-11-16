@@ -133,10 +133,10 @@ BOOST_AUTO_TEST_CASE(ExpirationAndReuse)
 	boost::asio::strand strand(srv);
 	ASIOExecutor exe(&strand);
 
-	ITimer* pT1 = exe.Start(milliseconds(1), std::bind(&MockTimerHandler::OnExpiration, &mth));
+	ITimer* pT1 = exe.Start(TimeDuration(1), std::bind(&MockTimerHandler::OnExpiration, &mth));
 	BOOST_REQUIRE_EQUAL(1, srv.run_one());
 	BOOST_REQUIRE_EQUAL(1, mth.GetCount());
-	ITimer* pT2 = exe.Start(milliseconds(1), std::bind(&MockTimerHandler::OnExpiration, &mth));
+	ITimer* pT2 = exe.Start(TimeDuration(1), std::bind(&MockTimerHandler::OnExpiration, &mth));
 	srv.reset();
 	BOOST_REQUIRE_EQUAL(1, srv.run_one());
 	BOOST_REQUIRE_EQUAL(pT1, pT2); //The ASIO implementation should reuse timers
@@ -148,11 +148,11 @@ BOOST_AUTO_TEST_CASE(Cancelation)
 	boost::asio::io_service srv;
 	boost::asio::strand strand(srv);
 	ASIOExecutor exe(&strand);
-	ITimer* pT1 = exe.Start(milliseconds(1), std::bind(&MockTimerHandler::OnExpiration, &mth));
+	ITimer* pT1 = exe.Start(TimeDuration(1), std::bind(&MockTimerHandler::OnExpiration, &mth));
 	pT1->Cancel();
 	BOOST_REQUIRE_EQUAL(1, srv.run_one());
 	BOOST_REQUIRE_EQUAL(0, mth.GetCount());
-	ITimer* pT2 = exe.Start(milliseconds(1), std::bind(&MockTimerHandler::OnExpiration, &mth));
+	ITimer* pT2 = exe.Start(TimeDuration(1), std::bind(&MockTimerHandler::OnExpiration, &mth));
 	srv.reset();
 	BOOST_REQUIRE_EQUAL(1, srv.run_one());
 	BOOST_REQUIRE_EQUAL(pT1, pT2);
@@ -166,8 +166,8 @@ BOOST_AUTO_TEST_CASE(MultipleOutstanding)
 	boost::asio::io_service srv;
 	boost::asio::strand strand(srv);
 	ASIOExecutor ts(&strand);
-	ITimer* pT1 = ts.Start(milliseconds(0), std::bind(&MockTimerHandler::OnExpiration, &mth1));
-	ITimer* pT2 = ts.Start(milliseconds(100), std::bind(&MockTimerHandler::OnExpiration, &mth2));
+	ITimer* pT1 = ts.Start(TimeDuration(0), std::bind(&MockTimerHandler::OnExpiration, &mth1));
+	ITimer* pT2 = ts.Start(TimeDuration(100), std::bind(&MockTimerHandler::OnExpiration, &mth2));
 
 	BOOST_REQUIRE_NOT_EQUAL(pT1, pT2);
 

@@ -356,7 +356,6 @@
     <ClCompile Include="src\opendnp3\DNPCrc.cpp" />
     <ClCompile Include="src\opendnp3\ExecutorPause.cpp" />
     <ClCompile Include="src\opendnp3\HeaderReadIterator.cpp" />
-    <ClCompile Include="src\opendnp3\IExecutor.cpp" />
     <ClCompile Include="src\opendnp3\IndexedWriteIterator.cpp" />
     <ClCompile Include="src\opendnp3\IOServiceThreadPool.cpp" />
     <ClCompile Include="src\opendnp3\IStack.cpp" />

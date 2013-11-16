@@ -36,8 +36,8 @@ public:
 	MockPhysicalLayerMonitor(
 	        openpal::Logger& arLogger,
 	        openpal::IPhysicalLayerAsync* apPhys,
-	        openpal::timer_clock::duration aMinOpenRetry,
-	        openpal::timer_clock::duration aMaxOpenRetry
+	        openpal::TimeDuration aMinOpenRetry,
+	        openpal::TimeDuration aMaxOpenRetry
 	);
 
 	size_t mOpens;

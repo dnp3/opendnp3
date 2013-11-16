@@ -41,7 +41,7 @@ namespace opendnp3
 
 LinkLayerRouter::LinkLayerRouter(Logger aLogger, IPhysicalLayerAsync* apPhys, openpal::millis_t aOpenRetry) :
 	Loggable(aLogger),
-	PhysicalLayerMonitor(aLogger, apPhys, milliseconds(aOpenRetry), milliseconds(aOpenRetry)),
+	PhysicalLayerMonitor(aLogger, apPhys, TimeDuration(aOpenRetry), TimeDuration(aOpenRetry)),
 	mReceiver(aLogger, this),
 	mTransmitting(false)
 {}

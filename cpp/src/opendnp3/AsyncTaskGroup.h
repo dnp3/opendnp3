@@ -27,6 +27,7 @@
 #include <openpal/Types.h>
 #include <opendnp3/Uncopyable.h>
 #include <openpal/Visibility.h>
+#include <openpal/MonotonicTimestamp.h>
 
 #include "AsyncTaskInterfaces.h"
 #include "TimeSource.h"
@@ -60,7 +61,7 @@ class DLL_LOCAL AsyncTaskGroup : private Uncopyable
 
 public:
 
-	AsyncTaskGroup(openpal::IExecutor*, ITimeSource* = TimeSource::Inst());
+	AsyncTaskGroup(openpal::IExecutor*);
 	~AsyncTaskGroup();
 
 	AsyncTaskBase* Add(openpal::millis_t aPeriod, openpal::millis_t aRetryDelay, int aPriority, const TaskHandler& arCallback, const std::string& arName = "");
@@ -83,23 +84,20 @@ public:
 		return mIsRunning;
 	}
 
-	openpal::timer_clock::time_point GetUTC() const;
+	openpal::MonotonicTimestamp GetCurrentTime() const;
 
 private:
 
 	void OnCompletion();
-	void RestartTimer(const openpal::timer_clock::time_point& arTime);
+	void RestartTimer(const openpal::MonotonicTimestamp& arTime);
 	void OnTimerExpiration();
-	void Update(const openpal::timer_clock::time_point& arTime);
-	AsyncTaskBase* GetNext(const openpal::timer_clock::time_point& arTime);
+	void Update(const  openpal::MonotonicTimestamp& arTime);
+	AsyncTaskBase* GetNext(const  openpal::MonotonicTimestamp& arTime);
 
 	bool mIsRunning;
 	bool mShutdown;
-	openpal::IExecutor* mpExecutor;
-	ITimeSource* mpTimeSrc;
+	openpal::IExecutor* mpExecutor;	
 	openpal::ITimer* mpTimer;
-
-
 
 	typedef std::vector< AsyncTaskBase* > TaskVec;
 	TaskVec mTaskVec;

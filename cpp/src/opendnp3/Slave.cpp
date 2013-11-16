@@ -573,14 +573,14 @@ void Slave::HandleUnknown()
 void Slave::StartUnsolTimer(millis_t aTimeout)
 {
 	assert(mpUnsolTimer == NULL);
-	mpUnsolTimer = mpExecutor->Start(std::chrono::milliseconds(aTimeout), std::bind(&Slave::OnUnsolTimerExpiration, this));
+	mpUnsolTimer = mpExecutor->Start(TimeDuration(aTimeout), std::bind(&Slave::OnUnsolTimerExpiration, this));
 }
 
 void Slave::ResetTimeIIN()
 {
 	mpTimeTimer = NULL;
 	mIIN.SetNeedTime(true);
-	mpTimeTimer = mpExecutor->Start(std::chrono::milliseconds(mConfig.mTimeSyncPeriod), std::bind(&Slave::ResetTimeIIN, this));
+	mpTimeTimer = mpExecutor->Start(TimeDuration(mConfig.mTimeSyncPeriod), std::bind(&Slave::ResetTimeIIN, this));
 }
 
 } //end ns

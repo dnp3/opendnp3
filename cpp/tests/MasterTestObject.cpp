@@ -34,11 +34,10 @@ namespace opendnp3
 {
 
 MasterTestObject::MasterTestObject(MasterConfig cfg, openpal::FilterLevel aLevel, bool aImmediate) :
-	log(),
-	fake_time(),
+	log(),	
 	fixedUTC(0),
 	mts(),
-	group(&mts, &fake_time),
+	group(&mts),
 	fdo(),
 	app(Logger(&log, aLevel, "MockAppLayer")),
 	master(Logger(&log, aLevel, "master"), cfg, &app, &fdo, &group, &mts, &fixedUTC)

@@ -20,45 +20,44 @@
 // you under the terms of the License.
 //
 
-#ifndef __I_EXECUTOR_H_
-#define __I_EXECUTOR_H_
+#include <openpal/MonotonicTimestamp.h>
 
-#include <functional>
-
-#include "ITimer.h"
-#include "Visibility.h"
-#include "TimeDuration.h"
-#include "MonotonicTimestamp.h"
+#include <limits>
 
 namespace openpal
 {
 
-/**
- * Interface for posting events to a queue.  Events can be posted for
- * immediate consumption or some time in the future.  Events can be consumbed
- * by the posting thread or another thread.
- *
- */
-class DLL_LOCAL IExecutor
+MonotonicTimestamp MonotonicTimestamp::Max()
 {
-public:
+	return MonotonicTimestamp(std::numeric_limits<int64_t>::max());
+}
 
-	virtual ~IExecutor() {}
+MonotonicTimestamp MonotonicTimestamp::Min()
+{
+	return MonotonicTimestamp(std::numeric_limits<int64_t>::min());
+}
 
-	/** A non-absolute timestamp for the monotonic time source */
-	virtual MonotonicTimestamp GetTime() = 0;
+MonotonicTimestamp::MonotonicTimestamp() : milliseconds(0)
+{}
 
-	/** Returns a new timer based on a relative time duration */
-	virtual ITimer* Start(const TimeDuration& arDuration, const std::function<void ()> &) = 0;
+MonotonicTimestamp::MonotonicTimestamp(int64_t aMilliseconds) : milliseconds(aMilliseconds)
+{}
 
-	/** Returns a new timer based on an absolute timestamp of the monotonic clock */
-	virtual ITimer* Start(const MonotonicTimestamp&, const std::function<void ()> &) = 0;
 
-	/** Thread-safe way to post an event to be handled asynchronously */
-	virtual void Post(const std::function<void ()> &) = 0;
+MonotonicTimestamp MonotonicTimestamp::Add(const TimeDuration& arDuration) const
+{
+	return MonotonicTimestamp(milliseconds + arDuration.milliseconds);
+}	
+	
+bool operator==(const MonotonicTimestamp& first, const MonotonicTimestamp& second)
+{
+	return first.milliseconds == second.milliseconds;
+}
 
-};
+bool operator<(const MonotonicTimestamp& first, const MonotonicTimestamp& second)
+{
+	return first.milliseconds < second.milliseconds;
+}
 
 }
 
-#endif

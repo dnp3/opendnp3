@@ -85,7 +85,7 @@ IChannel* DNP3Manager::AddSerial(const std::string& arName, FilterLevel aLevel,o
 
 IChannel* DNP3Manager::CreateChannel(openpal::Logger& arLogger,openpal::millis_t aOpenRetry, IPhysicalLayerAsync* apPhys)
 {
-	auto pChannel = new DNP3Channel(arLogger, aOpenRetry, mpThreadPool->GetIOService(), apPhys, TimeSource::Inst(), [this](DNP3Channel * apChannel) {
+	auto pChannel = new DNP3Channel(arLogger, aOpenRetry, apPhys, [this](DNP3Channel * apChannel) {
 		this->OnChannelShutdownCallback(apChannel);
 	});
 	mChannels.insert(pChannel);

@@ -37,7 +37,7 @@ using namespace std::chrono;
 namespace opendnp3
 {
 
-PhysicalLayerMonitor::PhysicalLayerMonitor(Logger aLogger, IPhysicalLayerAsync* apPhys, timer_clock::duration aMinOpenRetry, timer_clock::duration aMaxOpenRetry) :
+	PhysicalLayerMonitor::PhysicalLayerMonitor(Logger aLogger, IPhysicalLayerAsync* apPhys, TimeDuration aMinOpenRetry, TimeDuration aMaxOpenRetry) :
 	Loggable(aLogger),
 	IHandlerAsync(aLogger),
 	mpPhys(apPhys),
@@ -144,7 +144,7 @@ void PhysicalLayerMonitor::_OnOpenFailure()
 	LOG_BLOCK(LEV_DEBUG, "_OnOpenFailure()");
 	mpState->OnOpenFailure(this);
 	this->OnPhysicalLayerOpenFailureCallback();
-	this->mCurrentRetry = std::min(2 * mCurrentRetry, mMaxOpenRetry);
+	this->mCurrentRetry.milliseconds = std::min(2 * mCurrentRetry.milliseconds, mMaxOpenRetry.milliseconds);
 }
 
 void PhysicalLayerMonitor::_OnLowerLayerUp()

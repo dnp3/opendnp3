@@ -37,9 +37,9 @@ TimerASIO::TimerASIO(boost::asio::strand* apStrand) :
 /**
  * Return the timer's expiry time as an absolute time.
  */
-timer_clock::time_point TimerASIO::ExpiresAt()
+openpal::MonotonicTimestamp TimerASIO::ExpiresAt()
 {
-	return mTimer.expires_at();
+	return std::chrono::duration_cast<std::chrono::milliseconds>(mTimer.expires_at().time_since_epoch()).count();
 }
 
 void TimerASIO::Cancel()

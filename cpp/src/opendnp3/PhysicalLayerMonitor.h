@@ -59,8 +59,8 @@ class DLL_LOCAL PhysicalLayerMonitor : public openpal::IHandlerAsync
 public:
 	PhysicalLayerMonitor(	openpal::Logger,
 	                        openpal::IPhysicalLayerAsync*,
-	                        openpal::timer_clock::duration aMinOpenRetry,
-	                        openpal::timer_clock::duration aMaxOpenRetry);
+	                        openpal::TimeDuration aMinOpenRetry,
+	                        openpal::TimeDuration aMaxOpenRetry);
 
 	~PhysicalLayerMonitor();
 
@@ -127,10 +127,10 @@ private:
 	std::mutex mMutex;
 	std::condition_variable mCondition;
 
-	const openpal::timer_clock::duration mMinOpenRetry;
-	const openpal::timer_clock::duration mMaxOpenRetry;
+	const openpal::TimeDuration mMinOpenRetry;
+	const openpal::TimeDuration mMaxOpenRetry;
 
-	openpal::timer_clock::duration mCurrentRetry;
+	openpal::TimeDuration mCurrentRetry;
 
 	// Implement from IHandlerAsync - Try to reconnect using a timer
 	void _OnOpenFailure();

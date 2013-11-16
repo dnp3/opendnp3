@@ -43,10 +43,11 @@ public:
 	~MockExecutor();
 
 	// Implement IExecutor
-	openpal::ITimer* Start(const openpal::timer_clock::time_point&, const std::function<void ()>&);
-	openpal::ITimer* Start(openpal::timer_clock::duration, const std::function<void ()>&);
+	openpal::ITimer* Start(const openpal::MonotonicTimestamp&, const std::function<void ()>&);
+	openpal::ITimer* Start(const openpal::TimeDuration&, const std::function<void ()>&);
 	void Post(const std::function<void ()>&);
 	void PostSync(const std::function<void ()>&);
+	openpal::MonotonicTimestamp GetTime();
 
 	/** Turns the auto-post feature on/off. When Auto post is on, Post() is executed synchronously */
 	void SetAutoPost(bool aAutoPost) {
@@ -69,7 +70,9 @@ public:
 		return mTimerMap.size() + mPostQueue.size();
 	}
 
-	openpal::timer_clock::duration NextDurationTimer();
+	openpal::MonotonicTimestamp NextTimerExpiration();
+
+	void AdvanceTime(openpal::TimeDuration aDuration);
 
 
 private:
@@ -77,17 +80,18 @@ private:
 	void Cancel(openpal::ITimer* apTimer);
 
 	typedef std::deque<std::function<void ()>> PostQueue;
-	typedef std::multimap<openpal::timer_clock::time_point, MockTimer*> TimerMap;
+	typedef std::multimap<openpal::MonotonicTimestamp, MockTimer*> TimerMap;
 	typedef std::deque<MockTimer*> TimerQueue;
-	typedef std::deque<openpal::timer_clock::duration> DurationTimerQueue;
+	typedef std::deque<openpal::MonotonicTimestamp> TimerExpirationQueue;
 
 	bool mPostIsSynchronous;
 	bool mAutoPost;
+	openpal::MonotonicTimestamp mCurrentTime;
 	PostQueue mPostQueue;
 	TimerMap mTimerMap;
 	TimerQueue mIdle;
 	TimerQueue mAllTimers;
-	DurationTimerQueue mDurationTimerQueue;
+	TimerExpirationQueue mTimerExpirationQueue;
 
 };
 
@@ -97,14 +101,14 @@ class MockTimer : public openpal::ITimer
 	friend class MockExecutor;
 
 public:
-	MockTimer(MockExecutor*, const openpal::timer_clock::time_point&, const std::function<void ()>&);
+	MockTimer(MockExecutor*, const openpal::MonotonicTimestamp &, const std::function<void ()>&);
 
 	//implement ITimer
 	void Cancel();
-	openpal::timer_clock::time_point ExpiresAt();
+	openpal::MonotonicTimestamp ExpiresAt();
 
 private:
-	openpal::timer_clock::time_point mTime;
+	openpal::MonotonicTimestamp mTime;
 	MockExecutor* mpSource;
 	std::function<void ()> mCallback;
 };

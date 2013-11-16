@@ -52,8 +52,7 @@ public:
 
 	void BindStateListener();
 
-	LogTester log;
-	MockTimeSource fake_time;
+	LogTester log;	
 	openpal::FixedUTCTimeSource fixedUTC;
 	MockExecutor mts;	
 	AsyncTaskGroup group;

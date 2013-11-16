@@ -167,12 +167,10 @@ BOOST_AUTO_TEST_CASE(DecoupledGroupsMode)
 BOOST_AUTO_TEST_CASE(NonPeriodic)
 {
 	MockTaskHandler mth;
-
-	MockTimeSource fakeTime;
-	fakeTime.SetToNow();
+	
 	MockExecutor exe;
 
-	AsyncTaskGroup group(&exe, &fakeTime);
+	AsyncTaskGroup group(&exe);
 
 
 	AsyncTaskBase* pT1 = group.Add(-1, 100, 0, mth.GetHandler()); //non-periodic task
@@ -191,7 +189,7 @@ BOOST_AUTO_TEST_CASE(NonPeriodic)
 	// a timer should be registered for the next periodic task execution
 	BOOST_REQUIRE_EQUAL(exe.NumActive(), 1);
 	BOOST_REQUIRE_EQUAL(mth.Size(), 0);
-	fakeTime.Advance(milliseconds(2000));
+	exe.AdvanceTime(TimeDuration(2000));
 	BOOST_REQUIRE(exe.DispatchOne());
 	BOOST_REQUIRE_EQUAL(mth.Size(), 1);
 	BOOST_REQUIRE_EQUAL(mth.Front(), pT2);
@@ -233,13 +231,11 @@ BOOST_AUTO_TEST_CASE(DependenciesEnforced)
 
 BOOST_AUTO_TEST_CASE(TimerUsage)
 {
-	MockTaskHandler mth;
-	MockTimeSource fake_time;
+	MockTaskHandler mth;	
 	MockExecutor exe;	
 
-	fake_time.SetToNow();
 
-	AsyncTaskGroup group(&exe, &fake_time);
+	AsyncTaskGroup group(&exe);
 	AsyncTaskBase* pT1 = group.Add(1000, 100, 0, mth.GetHandler());
 	AsyncTaskBase* pT2 = group.Add(1500, 100, 0, mth.GetHandler());
 
@@ -252,11 +248,11 @@ BOOST_AUTO_TEST_CASE(TimerUsage)
 	//if you disptach the call back early, nothing should happen except a new timer
 	BOOST_REQUIRE(exe.DispatchOne());
 
-	fake_time.Advance(milliseconds(1001));
+	exe.AdvanceTime(TimeDuration(1001));
 	BOOST_REQUIRE(exe.DispatchOne());
 	BOOST_REQUIRE_EQUAL(mth.Front(), pT1); mth.Complete(true);
 
-	fake_time.Advance(milliseconds(500));
+	exe.AdvanceTime(TimeDuration(500));
 	BOOST_REQUIRE(exe.DispatchOne());
 	BOOST_REQUIRE_EQUAL(mth.Front(), pT2); mth.Complete(true);
 }
