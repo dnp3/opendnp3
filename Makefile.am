@@ -23,6 +23,7 @@ openpal/src/LogEntry.cpp \
 openpal/src/Loggable.cpp \
 openpal/src/Logger.cpp \
 openpal/src/LogTypes.cpp \
+openpal/src/MonotonicTimestamp.cpp \
 openpal/src/Parsing.cpp \
 openpal/src/ToHex.cpp
 
@@ -36,7 +37,6 @@ asiopal/src/UTCTimeSource.cpp
 libopendnp3_la_LDFLAGS = $(BOOST_LDFLAGS) -version-info 1:1:0
 libopendnp3_la_CXXFLAGS = -I$(top_srcdir)/openpal/include -I$(top_srcdir)/cpp/include
 libopendnp3_la_SOURCES = \
-cpp/src/opendnp3/AlwaysOpeningVtoRouter.cpp \
 cpp/src/opendnp3/AnalogOutput.cpp \
 cpp/src/opendnp3/APDUConstants.cpp \
 cpp/src/opendnp3/APDU.cpp \
@@ -71,11 +71,8 @@ cpp/src/opendnp3/DeviceTemplate.cpp \
 cpp/src/opendnp3/DNP3Channel.cpp \
 cpp/src/opendnp3/DNP3Manager.cpp \
 cpp/src/opendnp3/DNPCrc.cpp \
-cpp/src/opendnp3/EnhancedVto.cpp \
-cpp/src/opendnp3/EnhancedVtoRouter.cpp \
 cpp/src/opendnp3/ExecutorPause.cpp \
 cpp/src/opendnp3/HeaderReadIterator.cpp \
-cpp/src/opendnp3/IExecutor.cpp \
 cpp/src/opendnp3/IndexedWriteIterator.cpp \
 cpp/src/opendnp3/IOServiceThreadPool.cpp \
 cpp/src/opendnp3/IStack.cpp \
@@ -146,13 +143,7 @@ cpp/src/opendnp3/TransportStates.cpp \
 cpp/src/opendnp3/TransportTx.cpp \
 cpp/src/opendnp3/UnsolicitedChannel.cpp \
 cpp/src/opendnp3/Util.cpp \
-cpp/src/opendnp3/VtoData.cpp \
-cpp/src/opendnp3/VtoEndpointImpl.cpp \
-cpp/src/opendnp3/VtoReader.cpp \
-cpp/src/opendnp3/VtoRouter.cpp \
-cpp/src/opendnp3/VtoRouterSettings.cpp \
-cpp/src/opendnp3/VtoTransmitTask.cpp \
-cpp/src/opendnp3/VtoWriter.cpp
+cpp/src/opendnp3/VtoData.cpp
 
 #pkginclude_HEADERS = \
 #cpp/include/opendnp3/AnalogOutput.h
@@ -210,7 +201,6 @@ cpp/tests/TestCommandTypes.cpp \
 cpp/tests/TestCRC.cpp \
 cpp/tests/TestDatabase.cpp \
 cpp/tests/TestDNP3Manager.cpp \
-cpp/tests/TestEnhancedVtoRouter.cpp \
 cpp/tests/TestEventBufferBase.cpp \
 cpp/tests/TestEventBuffers.cpp \
 cpp/tests/TestIntegration.cpp \
@@ -242,8 +232,6 @@ cpp/tests/TestTransportLoopback.cpp \
 cpp/tests/TestTransportScalability.cpp \
 cpp/tests/TestTypes.cpp \
 cpp/tests/TestUtil.cpp \
-cpp/tests/TestVtoRouter.cpp \
-cpp/tests/TestVtoWriter.cpp \
 cpp/tests/Timeout.cpp \
 cpp/tests/TransportIntegrationStack.cpp \
 cpp/tests/TransportLoopbackTestObject.cpp \

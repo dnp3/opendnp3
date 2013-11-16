@@ -153,8 +153,7 @@ void ResponseLoader::Read(HeaderReadIterator& arIter, StreamObject<T>* apObj)
 
 	ObjectReadIterator obj = arIter.BeginRead();
 	LOG_BLOCK(openpal::LEV_INTERPRET,
-	          "Converting " << obj.Count() << " " << apObj->Name() << " "
-	          "To " << typeid(T).name());
+	          "Converting " << obj.Count() << " " << apObj->Name());
 
 	for ( ; !obj.IsEnd(); ++obj) {
 		size_t index = obj->Index();
@@ -182,7 +181,7 @@ void ResponseLoader::ReadBitfield(HeaderReadIterator& arIter)
 	ObjectReadIterator obj = arIter.BeginRead();
 	LOG_BLOCK(openpal::LEV_INTERPRET,
 	          "Converting " << obj.Count() << " " << T::Inst()->Name() << " "
-	          "To " << typeid(b).name());
+	          "To Binary");
 
 	for (; !obj.IsEnd(); ++obj) {
 		bool val = BitfieldObject::StaticRead(*obj, obj->Start(), obj->Index());
