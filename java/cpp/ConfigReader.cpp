@@ -57,10 +57,10 @@ SlaveConfig ConfigReader::ConvertOutstationConfig(JNIEnv* apEnv, jobject jCfg)
 	cfg.mDisableUnsol = JNIHelpers::GetBoolField(apEnv, jCfg, "disableUnsol");
 	cfg.mUnsolMask  = ClassMask(JNIHelpers::GetIntField(apEnv, jCfg, "unsolMask"));
 	cfg.mAllowTimeSync = JNIHelpers::GetBoolField(apEnv, jCfg, "allowTimeSync");
-	cfg.mTimeSyncPeriod  = JNIHelpers::GetLongField(apEnv, jCfg, "timeSyncPeriodMs");
-	cfg.mUnsolPackDelay  = JNIHelpers::GetLongField(apEnv, jCfg, "unsolPackDelayMs");
-	cfg.mUnsolRetryDelay  = JNIHelpers::GetLongField(apEnv, jCfg, "unsolRetryDelayMs");
-	cfg.mSelectTimeout = JNIHelpers::GetLongField(apEnv, jCfg, "selectTimeoutMs");
+	cfg.mTimeSyncPeriod  = TimeDuration::Milliseconds(JNIHelpers::GetLongField(apEnv, jCfg, "timeSyncPeriodMs"));
+	cfg.mUnsolPackDelay  = TimeDuration::Milliseconds(JNIHelpers::GetLongField(apEnv, jCfg, "unsolPackDelayMs"));
+	cfg.mUnsolRetryDelay  = TimeDuration::Milliseconds(JNIHelpers::GetLongField(apEnv, jCfg, "unsolRetryDelayMs"));
+	cfg.mSelectTimeout = TimeDuration::Milliseconds(JNIHelpers::GetLongField(apEnv, jCfg, "selectTimeoutMs"));
 	cfg.mMaxFragSize  = JNIHelpers::GetIntField(apEnv, jCfg, "maxFragSize");
 	cfg.mVtoWriterQueueSize = JNIHelpers::GetIntField(apEnv, jCfg, "vtoWriterQueueSize");
 
@@ -271,22 +271,21 @@ MasterConfig ConfigReader::ConvertMasterConfig(JNIEnv* apEnv, jobject jCfg)
 {
 	MasterConfig cfg;
 
-	cfg.FragSize = JNIHelpers::GetIntField(apEnv, jCfg, "maxRequestFragmentSize");
-	cfg.VtoWriterQueueSize = JNIHelpers::GetIntField(apEnv, jCfg, "vtoWriterQueueSize");
+	cfg.FragSize = JNIHelpers::GetIntField(apEnv, jCfg, "maxRequestFragmentSize");	
 	cfg.UseNonStandardVtoFunction = JNIHelpers::GetBoolField(apEnv, jCfg, "useNonStandardVtoFunction");
 	cfg.AllowTimeSync = JNIHelpers::GetBoolField(apEnv, jCfg, "allowTimeSync");
 	cfg.DoUnsolOnStartup = JNIHelpers::GetBoolField(apEnv, jCfg, "doUnsolOnStartup");
 	cfg.EnableUnsol = JNIHelpers::GetBoolField(apEnv, jCfg, "enableUnsol");
 	cfg.UnsolClassMask = JNIHelpers::GetIntField(apEnv, jCfg, "unsolClassMask");
-	cfg.IntegrityRate = JNIHelpers::GetLongField(apEnv, jCfg, "integrityRateMs");
-	cfg.TaskRetryRate = JNIHelpers::GetLongField(apEnv, jCfg, "taskRetryRateMs");
+	cfg.IntegrityRate = TimeDuration::Milliseconds(JNIHelpers::GetLongField(apEnv, jCfg, "integrityRateMs"));
+	cfg.TaskRetryRate = TimeDuration::Milliseconds(JNIHelpers::GetLongField(apEnv, jCfg, "taskRetryRateMs"));
 
 	jobject list = JNIHelpers::GetObjectField(apEnv, jCfg, "scans", "Ljava/util/List;");
 
 	JNIHelpers::IterateOverListOfObjects(apEnv, list, [&](jobject scan) {
 		int mask = JNIHelpers::GetIntField(apEnv, scan, "classMask");
 		long rate = JNIHelpers::GetLongField(apEnv, scan, "scanRateMs");
-		cfg.AddExceptionScan(mask, rate);
+		cfg.AddExceptionScan(mask, TimeDuration::Milliseconds(rate));
 	});
 
 	return cfg;
@@ -297,7 +296,7 @@ AppConfig ConfigReader::ConvertAppConfig(JNIEnv* apEnv, jobject jCfg)
 	AppConfig cfg;
 	jclass clazz = apEnv->GetObjectClass(jCfg);
 
-	cfg.RspTimeout = JNIHelpers::GetLongField(apEnv, jCfg, "rspTimeoutMs");
+	cfg.RspTimeout = TimeDuration::Milliseconds(JNIHelpers::GetLongField(apEnv, jCfg, "rspTimeoutMs"));
 	cfg.NumRetry = JNIHelpers::GetIntField(apEnv, jCfg, "numRetry");
 	cfg.FragSize = JNIHelpers::GetIntField(apEnv, jCfg, "maxFragSize");
 

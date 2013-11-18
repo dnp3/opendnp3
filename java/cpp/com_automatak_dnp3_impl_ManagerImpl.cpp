@@ -61,7 +61,7 @@ JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1ch
 		std::string loggerId = JNIHelpers::GetString(jloggerId, pEnv);
 		std::string host = JNIHelpers::GetString(jhost, pEnv);
 		FilterLevel lev = LogTypes::ConvertIntToFilterLevel(logLevel);
-		return (jlong) pMgr->AddTCPClient(loggerId, lev, timeoutMs, host, port);
+		return (jlong) pMgr->AddTCPClient(loggerId, lev, TimeDuration::Milliseconds(timeoutMs), host, port);
 	}
 	catch(Exception ex) {
 		MACRO_RETHROW_EXCEPTION(pEnv, ex);
@@ -76,7 +76,7 @@ JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1ch
 		std::string loggerId = JNIHelpers::GetString(jloggerId, pEnv);
 		std::string endpoint = JNIHelpers::GetString(jendpoint, pEnv);
 		FilterLevel lev = LogTypes::ConvertIntToFilterLevel(logLevel);
-		return (jlong) pMgr->AddTCPServer(loggerId, lev, timeoutMs, endpoint, port);
+		return (jlong) pMgr->AddTCPServer(loggerId, lev, TimeDuration::Milliseconds(timeoutMs), endpoint, port);
 	}
 	catch(Exception ex) {
 		MACRO_RETHROW_EXCEPTION(pEnv, ex)
@@ -98,7 +98,7 @@ JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1ch
 		ss.mParity = GetParityFromInt(parity);
 		ss.mFlowType = GetFlowTypeFromInt(flowControl);
 		FilterLevel lev = LogTypes::ConvertIntToFilterLevel(logLevel);
-		return (jlong) pMgr->AddSerial(loggerId, lev, timeoutMs, ss);
+		return (jlong) pMgr->AddSerial(loggerId, lev, TimeDuration::Milliseconds(timeoutMs), ss);
 	}
 	catch(Exception ex) {
 		MACRO_RETHROW_EXCEPTION(pEnv, ex)
