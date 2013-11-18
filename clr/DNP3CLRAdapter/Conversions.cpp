@@ -354,12 +354,12 @@ namespace Adapter
 
 	opendnp3::LinkConfig Conversions::convertConfig(LinkConfig^ config)
 	{
-		return opendnp3::LinkConfig(config->isMaster, config->useConfirms, config->numRetry, config->localAddr, config->remoteAddr, config->timeout);
+		return opendnp3::LinkConfig(config->isMaster, config->useConfirms, config->numRetry, config->localAddr, config->remoteAddr, TimeDuration::Milliseconds(config->timeout));
 	}
 
 	opendnp3::AppConfig Conversions::convertConfig(AppConfig^ config)
 	{
-		return opendnp3::AppConfig(config->rspTimeout, config->numRetry, config->fragSize);
+		return opendnp3::AppConfig(TimeDuration::Milliseconds(config->rspTimeout), config->numRetry, config->fragSize);
 	}
 
 	opendnp3::ClassMask Conversions::convertClassMask(ClassMask^ cm)
@@ -501,10 +501,10 @@ namespace Adapter
 		sc.mMaxControls = config->maxControls;
 		sc.mUnsolMask = convertClassMask(config->unsolMask);		
 		sc.mAllowTimeSync = config->allowTimeSync;
-		sc.mTimeSyncPeriod = config->timeSyncPeriod;
-		sc.mUnsolPackDelay = config->unsolPackDelay;
-		sc.mUnsolRetryDelay = config->unsolRetryDelay;
-		sc.mSelectTimeout = config->selectTimeout;
+		sc.mTimeSyncPeriod = TimeDuration::Milliseconds(config->timeSyncPeriod);
+		sc.mUnsolPackDelay = TimeDuration::Milliseconds(config->unsolPackDelay);
+		sc.mUnsolRetryDelay = TimeDuration::Milliseconds(config->unsolRetryDelay);
+		sc.mSelectTimeout = TimeDuration::Milliseconds(config->selectTimeout);
 		sc.mMaxFragSize = config->maxFragSize;
 		sc.mEventMaxConfig = convertEventMaxConfig(config->eventMaxConfig);
 		sc.mStaticBinary = convert(config->staticBinary);
@@ -558,12 +558,12 @@ namespace Adapter
 		mc.DoUnsolOnStartup = config->doUnsolOnStartup;
 		mc.EnableUnsol = config->enableUnsol;
 		mc.UnsolClassMask = config->unsolClassMask;
-		mc.IntegrityRate = config->integrityRate;
-		mc.TaskRetryRate = config->taskRetryRate;
+		mc.IntegrityRate = TimeDuration::Milliseconds(config->integrityRate);
+		mc.TaskRetryRate = TimeDuration::Milliseconds(config->taskRetryRate);
 
 		for each(ExceptionScan^ es in config->scans)
 		{
-			mc.AddExceptionScan(es->classMask, es->scanRateMs);
+			mc.AddExceptionScan(es->classMask, TimeDuration::Milliseconds(es->scanRateMs));
 		}
 
 		return mc;

@@ -41,7 +41,7 @@ namespace Adapter
 		public:
 			OutstationTimeWriteAdapter(DNP3::Interface::ITimeWriteHandler^ proxy);
 
-			void WriteAbsoluteTime(openpal::millis_t aMillisecSinceEpoch);
+			void WriteAbsoluteTime(openpal::UTCTimestamp aTimestamp);
 			
 
 		private:

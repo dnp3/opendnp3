@@ -61,7 +61,7 @@ namespace Adapter
 		auto lev = Conversions::convertFilterLevel(level);
 		
 		try {
-			auto pChannel = pMgr->AddTCPClient(stdName, lev, retryMs, stdAddress, stdPort);
+			auto pChannel = pMgr->AddTCPClient(stdName, lev, TimeDuration::Milliseconds(retryMs), stdAddress, stdPort);
 			return gcnew ChannelAdapter(pChannel);
 		} 
 		catch(openpal::Exception ex){
@@ -77,7 +77,7 @@ namespace Adapter
 		auto lev = Conversions::convertFilterLevel(level);		
 		
 		try {
-			auto pChannel = pMgr->AddTCPServer(stdName, lev, retryMs, stdEndpoint, stdPort);
+			auto pChannel = pMgr->AddTCPServer(stdName, lev, TimeDuration::Milliseconds(retryMs), stdEndpoint, stdPort);
 			return gcnew ChannelAdapter(pChannel);
 		} 
 		catch(openpal::Exception ex){
@@ -92,7 +92,7 @@ namespace Adapter
 		auto s = Conversions::convertSerialSettings(settings);
 		
 		try {
-			auto pChannel = pMgr->AddSerial(stdName, lev, retryMs, s);
+			auto pChannel = pMgr->AddSerial(stdName, lev, TimeDuration::Milliseconds(retryMs), s);
 			return gcnew ChannelAdapter(pChannel);
 		} 
 		catch(openpal::Exception ex){

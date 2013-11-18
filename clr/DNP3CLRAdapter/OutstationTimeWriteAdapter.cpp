@@ -34,9 +34,9 @@ namespace Adapter
 	
 	}
 
-	void OutstationTimeWriteAdapter::WriteAbsoluteTime(openpal::millis_t aMillisecSinceEpoch)
+	void OutstationTimeWriteAdapter::WriteAbsoluteTime(openpal::UTCTimestamp aTimestamp)
 	{
-		mProxy->WriteAbsoluteTime(aMillisecSinceEpoch);
+		mProxy->WriteAbsoluteTime(aTimestamp.msSinceEpoch);
 	}
 				
 }}

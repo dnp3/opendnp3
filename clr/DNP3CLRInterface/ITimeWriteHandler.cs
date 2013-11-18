@@ -32,7 +32,7 @@ namespace DNP3.Interface
     /// </summary>
     public interface ITimeWriteHandler
     {
-        void WriteAbsoluteTime(UInt64 millisecSinceEpoch);
+        void WriteAbsoluteTime(Int64 millisecSinceEpoch);
     }
 
     public class PrintingTimeWriteHandler : ITimeWriteHandler
@@ -49,7 +49,7 @@ namespace DNP3.Interface
 
         private PrintingTimeWriteHandler() {}
 
-        public void WriteAbsoluteTime(ulong millisecSinceEpoch)
+        public void WriteAbsoluteTime(Int64 millisecSinceEpoch)
         {
             Console.WriteLine("Time write: " + millisecSinceEpoch);
         }
