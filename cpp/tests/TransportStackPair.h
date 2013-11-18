@@ -32,8 +32,8 @@ class io_service;
 }
 
 
-#include <opendnp3/PhysicalLayerAsyncTCPClient.h>
-#include <opendnp3/PhysicalLayerAsyncTCPServer.h>
+#include <asiopal/PhysicalLayerAsyncTCPClient.h>
+#include <asiopal/PhysicalLayerAsyncTCPServer.h>
 
 #include <openpal/IExecutor.h>
 
@@ -58,8 +58,8 @@ public:
 	bool BothLayersUp();
 
 public:
-	PhysicalLayerAsyncTCPClient mClient;
-	PhysicalLayerAsyncTCPServer mServer;
+	asiopal::PhysicalLayerAsyncTCPClient mClient;
+	asiopal::PhysicalLayerAsyncTCPServer mServer;
 
 	TransportIntegrationStack mClientStack;
 	TransportIntegrationStack mServerStack;

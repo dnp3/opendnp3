@@ -30,7 +30,7 @@
 
 #include <opendnp3/ProtocolUtil.h>
 #include <opendnp3/Log.h>
-#include <opendnp3/PhysicalLayerAsyncSerial.h>
+#include <asiopal/PhysicalLayerAsyncSerial.h>
 
 #include "TestHelpers.h"
 #include "BufferHelpers.h"

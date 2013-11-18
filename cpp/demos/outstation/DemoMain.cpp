@@ -36,6 +36,8 @@
 #include <opendnp3/TimeTransaction.h>
 #include <opendnp3/ITimeWriteHandler.h>
 
+#include <opendnp3/IOServiceThreadPool.h>
+
 #include <asiopal/UTCTimeSource.h>
 
 #include <string>
@@ -51,8 +53,10 @@ int main(int argc, char* argv[])
 	// Log statements with a lower priority will not be logged.
 	const FilterLevel LOG_LEVEL = LEV_INFO;
 
+	//IOServerThreadPool pool;
+
 	// This is the main point of interaction with the stack
-	DNP3Manager mgr(1); // only 1 thread is needed for a single stack
+	DNP3Manager mgr; // only 1 thread is needed for a single stack
 
 	// You can optionally subcribe to log messages
 	// This singleton logger just prints messages to the console

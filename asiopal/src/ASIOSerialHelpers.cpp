@@ -20,7 +20,7 @@
 // you under the terms of the License.
 //
 
-#include "ASIOSerialHelpers.h"
+#include <asiopal/ASIOSerialHelpers.h>
 
 #include <sstream>
 
@@ -33,7 +33,7 @@ using namespace boost::asio;
 using namespace boost::system;
 using namespace openpal;
 
-namespace opendnp3
+namespace asiopal
 {
 
 template<class T>

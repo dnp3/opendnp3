@@ -9,19 +9,87 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    <Filter Include="Include Files">
+      <UniqueIdentifier>{c1711c50-b236-41b6-9fb8-e6318f8ded85}</UniqueIdentifier>
     </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="include\UTCTimeSource.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\UTCTimeSource.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\IOServiceThreadPool.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ASIOExecutor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ASIOSerialHelpers.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\PhysicalLayerAsyncBase.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\PhysicalLayerAsyncBaseTCP.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\PhysicalLayerAsyncSerial.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\PhysicalLayerAsyncTCPClient.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\PhysicalLayerAsyncTCPServer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\TimerASIO.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\SerialTypes.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\UTCTimeSource.h">
+      <Filter>Include Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\asiopal\IOServiceThreadPool.h">
+      <Filter>Include Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\asiopal\DeadlineTimerSteadyClock.h">
+      <Filter>Include Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\asiopal\ASIOExecutor.h">
+      <Filter>Include Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\asiopal\ASIOSerialHelpers.h">
+      <Filter>Include Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\asiopal\PhysicalLayerAsyncASIO.h">
+      <Filter>Include Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\asiopal\PhysicalLayerAsyncBase.h">
+      <Filter>Include Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\asiopal\PhysicalLayerAsyncBaseTCP.h">
+      <Filter>Include Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\asiopal\PhysicalLayerAsyncSerial.h">
+      <Filter>Include Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\asiopal\PhysicalLayerAsyncTCPClient.h">
+      <Filter>Include Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\asiopal\PhysicalLayerAsyncTCPServer.h">
+      <Filter>Include Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\asiopal\UTCTimeSource.h">
+      <Filter>Include Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\asiopal\SerialTypes.h">
+      <Filter>Include Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TimerASIO.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

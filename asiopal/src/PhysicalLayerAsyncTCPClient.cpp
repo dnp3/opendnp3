@@ -20,7 +20,7 @@
 // you under the terms of the License.
 //
 
-#include "PhysicalLayerAsyncTCPClient.h"
+#include <asiopal/PhysicalLayerAsyncTCPClient.h>
 
 #include <boost/asio.hpp>
 #include <functional>
@@ -36,7 +36,7 @@ using namespace boost::asio;
 using namespace std;
 using namespace openpal;
 
-namespace opendnp3
+namespace asiopal
 {
 
 PhysicalLayerAsyncTCPClient::PhysicalLayerAsyncTCPClient(Logger aLogger, boost::asio::io_service* apIOService, const std::string& arAddress, uint16_t aPort) :

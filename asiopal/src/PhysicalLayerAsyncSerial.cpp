@@ -20,7 +20,7 @@
 // you under the terms of the License.
 //
 
-#include "PhysicalLayerAsyncSerial.h"
+#include <asiopal/PhysicalLayerAsyncSerial.h>
 
 #include <boost/asio.hpp>
 #include <boost/system/error_code.hpp>
@@ -32,7 +32,7 @@
 #include <openpal/LoggableMacros.h>
 #include <openpal/IHandlerAsync.h>
 
-#include "ASIOSerialHelpers.h"
+#include <asiopal/ASIOSerialHelpers.h>
 
 using namespace boost;
 using namespace boost::asio;
@@ -40,7 +40,7 @@ using namespace boost::system;
 using namespace std;
 using namespace openpal;
 
-namespace opendnp3
+namespace asiopal
 {
 
 PhysicalLayerAsyncSerial::PhysicalLayerAsyncSerial(

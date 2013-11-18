@@ -26,55 +26,58 @@
 //
 // Contact Automatak, LLC for a commercial license to these modifications
 //
-#ifndef __TIMER_ASIO_H_
-#define __TIMER_ASIO_H_
+#ifndef __SERIAL_TYPES_H_
+#define __SERIAL_TYPES_H_
 
-#include <boost/asio.hpp>
+#include <string>
 
-#include <openpal/Visibility.h>
-
-#include "MonotonicDeadlineTimer.h"
-#include <openpal/IExecutor.h>
-
-namespace opendnp3
+namespace asiopal
 {
 
-/**
- * This is a wrapper for ASIO timers that are used to post events
- * on a queue. Events can be posted for immediate consumption or
- * some time in the future. Events can be consumbed by the posting
- * thread or another thread.
- *
- * @section Class Goals
- *
- * Decouple APL code form ASIO so ASIO could be replace if need be.
- *
- * There is a problem with ASIO. When cancel is called, an event is
- * posted. We wanted a cancel that does not generate any events.
- *
- */
-class DLL_LOCAL TimerASIO : public openpal::ITimer
-{
-	friend class ASIOExecutor;
+/// Enumeration for setting serial port parity
+enum ParityType {
+	PAR_NONE = 0,
+	PAR_EVEN = 1,
+	PAR_ODD = 2
+};
 
-public:
-	TimerASIO(boost::asio::strand* apStrand);
+/// Enumeration for setting serial port flow control
+enum FlowType {
+	FLOW_NONE = 0,
+	FLOW_HARDWARE = 1,
+	FLOW_XONXOFF = 2
+};
 
-	// Implement ITimer
-	void Cancel();
+ParityType GetParityFromInt(int parity);
+FlowType GetFlowTypeFromInt(int parity);
 
-	/**
-	 * Return the timer's expiry time as an absolute time.
-	 */
-	openpal::MonotonicTimestamp ExpiresAt();
+/// Settings structure for the serial port
+struct SerialSettings {
 
-private:
+	/// Defaults to the familiar 9600 8/N/1, no flow control
+	SerialSettings() :
+		mBaud(9600),
+		mDataBits(8),
+		mStopBits(1),
+		mParity(PAR_NONE),
+		mFlowType(FLOW_NONE)
+	{}
 
-	bool mCanceled;
-
-	boost::asio::monotonic_timer mTimer;
+	/// name of the port, i.e. "COM1" or "/dev/tty0"
+	std::string mDevice;
+	/// Baud rate of the port, i.e. 9600 or 57600
+	int mBaud;
+	/// Data bits, usually 8
+	int mDataBits;
+	/// Stop bits, usually set to 1
+	int mStopBits;
+	/// Parity setting for the port, usually PAR_NONE
+	ParityType mParity;
+	/// Flow control setting, usually FLOW_NONE
+	FlowType mFlowType;
 };
 
 }
 
 #endif
+

@@ -34,9 +34,9 @@
 #include <opendnp3/IChannel.h>
 #include <opendnp3/IOutstation.h>
 #include <opendnp3/ITimeWriteHandler.h>
-#include <opendnp3/PhysicalLayerAsyncTCPClient.h>
-#include <opendnp3/PhysicalLayerAsyncTCPServer.h>
 
+#include <asiopal/PhysicalLayerAsyncTCPClient.h>
+#include <asiopal/PhysicalLayerAsyncTCPServer.h>
 #include <asiopal/UTCTimeSource.h>
 
 #include <boost/asio.hpp>
@@ -44,6 +44,7 @@
 #include <boost/random/uniform_int.hpp>
 
 using namespace std;
+using namespace asiopal;
 using namespace opendnp3;
 
 IntegrationTest::IntegrationTest(FilterLevel aLevel, boost::uint16_t aStartPort, size_t aNumPairs, size_t aNumPoints) :
@@ -137,17 +138,17 @@ void IntegrationTest::AddStackPair(FilterLevel aLevel, size_t aNumPoints)
 
 	ostringstream oss;
 	oss << "Port: " << port;
-	std::string client = oss.str() + " Client ";
-	std::string server = oss.str() + " Server ";
+	Logger clientLogger(&mLog, aLevel, oss.str() + " Client ");
+	Logger serverLogger(&mLog, aLevel, oss.str() + " Server ");
 
 	std::shared_ptr<ComparingDataObserver> pMasterFDO(new ComparingDataObserver(&mLocalFDO));
 	mMasterObservers.push_back(pMasterFDO);
 
-	auto pClientPhys = new PhysicalLayerAsyncTCPClient(Logger(&mLog, aLevel, client), mPool.GetIOService(), "127.0.0.1", port);
-	auto pClient = this->mMgr.CreateChannel(Logger(&mLog, aLevel, client), TimeDuration::Seconds(1), pClientPhys);
+	auto pClientPhys = new PhysicalLayerAsyncTCPClient(clientLogger, mPool.GetIOService(), "127.0.0.1", port);
+	auto pClient = this->mMgr.CreateChannel(clientLogger, TimeDuration::Seconds(1), pClientPhys);
 
-	auto pServerPhys = new PhysicalLayerAsyncTCPServer(Logger(&mLog, aLevel, server), mPool.GetIOService(), "127.0.0.1", port);
-	auto pServer = this->mMgr.CreateChannel(Logger(&mLog, aLevel, server), TimeDuration::Seconds(1), pServerPhys);
+	auto pServerPhys = new PhysicalLayerAsyncTCPServer(serverLogger, mPool.GetIOService(), "127.0.0.1", port);
+	auto pServer = this->mMgr.CreateChannel(serverLogger, TimeDuration::Seconds(1), pServerPhys);
 
 	/*
 	 * Add a Master instance.  The code is wrapped in braces so that we can
@@ -160,7 +161,7 @@ void IntegrationTest::AddStackPair(FilterLevel aLevel, size_t aNumPoints)
 		cfg.master.EnableUnsol = true;
 		cfg.master.DoUnsolOnStartup = true;
 		cfg.master.UnsolClassMask = PC_ALL_EVENTS;
-		pClient->AddMaster(client, aLevel, pMasterFDO.get(), asiopal::UTCTimeSource::Inst(), cfg);
+		pClient->AddMaster(oss.str() + " master", aLevel, pMasterFDO.get(), asiopal::UTCTimeSource::Inst(), cfg);
 	}
 
 	/*
@@ -173,7 +174,7 @@ void IntegrationTest::AddStackPair(FilterLevel aLevel, size_t aNumPoints)
 		cfg.slave.mDisableUnsol = false;
 		cfg.slave.mUnsolPackDelay = TimeDuration::Zero();
 		cfg.device = DeviceTemplate(aNumPoints, aNumPoints, aNumPoints);
-		auto pOutstation = pServer->AddOutstation(server, aLevel, &mCmdHandler, NullTimeWriteHandler::Inst(), cfg);
+		auto pOutstation = pServer->AddOutstation(oss.str() + " outstation", aLevel, &mCmdHandler, NullTimeWriteHandler::Inst(), cfg);
 		this->mFanout.AddObserver(pOutstation->GetDataObserver());
 	}
 

@@ -23,7 +23,7 @@
 #ifndef __LOOP_BACK_PHYSICAL_LAYER_ASYNC_H_
 #define __LOOP_BACK_PHYSICAL_LAYER_ASYNC_H_
 
-#include <opendnp3/PhysicalLayerAsyncASIO.h>
+#include <asiopal/PhysicalLayerAsyncASIO.h>
 
 #include <openpal/IHandlerAsync.h>
 
@@ -41,7 +41,7 @@ namespace opendnp3
 {
 
 // Provides a backend for testing physical layers
-class LoopbackPhysicalLayerAsync : public PhysicalLayerAsyncASIO
+class LoopbackPhysicalLayerAsync : public asiopal::PhysicalLayerAsyncASIO
 {
 public:
 	LoopbackPhysicalLayerAsync(openpal::Logger, boost::asio::io_service* apSrv);

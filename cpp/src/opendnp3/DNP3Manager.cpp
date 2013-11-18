@@ -22,13 +22,6 @@
 
 #include <opendnp3/DNP3Manager.h>
 
-#include "PhysicalLayerAsyncTCPClient.h"
-#include "PhysicalLayerAsyncTCPServer.h"
-#ifndef OPENDNP3_NO_SERIAL
-#include "PhysicalLayerAsyncSerial.h"
-#endif
-#include "IOServiceThreadPool.h"
-#include "Log.h"
 #include "DNP3Channel.h"
 
 using namespace openpal;

@@ -27,8 +27,9 @@
 #include <openpal/Exception.h>
 #include <openpal/Location.h>
 
-#include <opendnp3/ASIOExecutor.h>
-#include <opendnp3/IOServiceThreadPool.h>
+#include <asiopal/ASIOExecutor.h>
+#include <asiopal/IOServiceThreadPool.h>
+
 #include <opendnp3/Log.h>
 #include <opendnp3/ExecutorPause.h>
 
@@ -41,6 +42,7 @@ using namespace std;
 using namespace std::chrono;
 using namespace openpal;
 using namespace opendnp3;
+using namespace asiopal;
 
 class TimerTestObject
 {
@@ -72,11 +74,11 @@ public:
 
 private:
 	EventLog mLog;
-	IOServiceThreadPool mPool;
+	asiopal::IOServiceThreadPool mPool;
 	boost::asio::strand mStrand;
 
 public:
-	ASIOExecutor exe;
+	asiopal::ASIOExecutor exe;
 
 private:
 

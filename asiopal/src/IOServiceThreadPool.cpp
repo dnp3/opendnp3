@@ -20,7 +20,7 @@
 // you under the terms of the License.
 //
 
-#include "IOServiceThreadPool.h"
+#include <asiopal/IOServiceThreadPool.h>
 
 #include <openpal/Exception.h>
 
@@ -33,7 +33,7 @@ using namespace std;
 using namespace std::chrono;
 using namespace openpal;
 
-namespace opendnp3
+namespace asiopal
 {
 
 IOServiceThreadPool::IOServiceThreadPool(

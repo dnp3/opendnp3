@@ -32,13 +32,13 @@
 #include "PhysicalLayerAsyncASIO.h"
 
 #include <openpal/Location.h>
-#include <opendnp3/SerialTypes.h>
+#include <asiopal/SerialTypes.h>
 
 #include <boost/asio/serial_port.hpp>
 
 #include <memory>
 
-namespace opendnp3
+namespace asiopal
 {
 
 /** Serial implementation of PhysicalLayerAsyncASIO

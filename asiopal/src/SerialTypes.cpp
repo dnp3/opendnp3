@@ -20,34 +20,31 @@
 // you under the terms of the License.
 //
 
-#include "TimerASIO.h"
+#include <asiopal/SerialTypes.h>
 
-using namespace openpal;
-
-namespace opendnp3
+namespace asiopal
 {
 
-TimerASIO::TimerASIO(boost::asio::strand* apStrand) :
-	mCanceled(false),
-	mTimer(apStrand->get_io_service())
+
+ParityType GetParityFromInt(int parity)
 {
+	switch(parity) {
+	case (1): return PAR_EVEN;
+	case (2): return PAR_ODD;
+	default: return PAR_NONE;
+	}
+}
+
+FlowType GetFlowTypeFromInt(int flowControl)
+{
+	switch(flowControl) {
+	case (1): return FLOW_HARDWARE;
+	case (2): return FLOW_XONXOFF;
+	default: return FLOW_NONE;
+	}
+}
 
 }
 
-/**
- * Return the timer's expiry time as an absolute time.
- */
-openpal::MonotonicTimestamp TimerASIO::ExpiresAt()
-{
-	return std::chrono::duration_cast<std::chrono::milliseconds>(mTimer.expires_at().time_since_epoch()).count();
-}
-
-void TimerASIO::Cancel()
-{
-	assert(!mCanceled);
-	mTimer.cancel();
-	mCanceled = true;
-}
 
 
-}

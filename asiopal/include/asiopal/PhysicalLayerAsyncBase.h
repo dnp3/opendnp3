@@ -35,7 +35,7 @@
 #include <openpal/Loggable.h>
 #include <openpal/Location.h>
 
-namespace opendnp3
+namespace asiopal
 {
 
 class PLAS_Base;

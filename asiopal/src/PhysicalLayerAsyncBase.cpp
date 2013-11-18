@@ -20,7 +20,7 @@
 // you under the terms of the License.
 //
 
-#include "PhysicalLayerAsyncBase.h"
+#include <asiopal/PhysicalLayerAsyncBase.h>
 
 #include <openpal/IHandlerAsync.h>
 #include <openpal/LoggableMacros.h>
@@ -31,7 +31,7 @@
 using namespace openpal;
 using namespace std;
 
-namespace opendnp3
+namespace asiopal
 {
 
 ///////////////////////////////////

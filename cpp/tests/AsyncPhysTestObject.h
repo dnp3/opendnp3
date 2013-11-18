@@ -27,8 +27,8 @@
 #include "MockUpperLayer.h"
 #include "LogTester.h"
 
-#include <opendnp3/PhysicalLayerAsyncTCPClient.h>
-#include <opendnp3/PhysicalLayerAsyncTCPServer.h>
+#include <asiopal/PhysicalLayerAsyncTCPClient.h>
+#include <asiopal/PhysicalLayerAsyncTCPServer.h>
 
 #include "LowerLayerToPhysAdapter.h"
 
@@ -45,8 +45,8 @@ private:
 	openpal::Logger logger;
 
 public:
-	PhysicalLayerAsyncTCPClient mTCPClient;
-	PhysicalLayerAsyncTCPServer mTCPServer;
+	asiopal::PhysicalLayerAsyncTCPClient mTCPClient;
+	asiopal::PhysicalLayerAsyncTCPServer mTCPServer;
 
 	LowerLayerToPhysAdapter mClientAdapter;
 	LowerLayerToPhysAdapter mServerAdapter;

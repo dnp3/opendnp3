@@ -26,31 +26,53 @@
 //
 // Contact Automatak, LLC for a commercial license to these modifications
 //
-#ifndef __PHYSICAL_LAYER_ASYNC_TCP_CLIENT_H_
-#define __PHYSICAL_LAYER_ASYNC_TCP_CLIENT_H_
+#ifndef __TIMER_ASIO_H_
+#define __TIMER_ASIO_H_
 
-#include "PhysicalLayerAsyncBaseTCP.h"
+#include <boost/asio.hpp>
 
-#include <boost/asio/ip/tcp.hpp>
+#include <openpal/Visibility.h>
+#include <openpal/IExecutor.h>
 
-#include <openpal/Location.h>
+#include <asiopal/DeadlineTimerSteadyClock.h>
 
-namespace opendnp3
+namespace asiopal
 {
 
-class DLL_LOCAL PhysicalLayerAsyncTCPClient : public PhysicalLayerAsyncBaseTCP
+/**
+ * This is a wrapper for ASIO timers that are used to post events
+ * on a queue. Events can be posted for immediate consumption or
+ * some time in the future. Events can be consumbed by the posting
+ * thread or another thread.
+ *
+ * @section Class Goals
+ *
+ * Decouple APL code form ASIO so ASIO could be replace if need be.
+ *
+ * There is a problem with ASIO. When cancel is called, an event is
+ * posted. We wanted a cancel that does not generate any events.
+ *
+ */
+class DLL_LOCAL TimerASIO : public openpal::ITimer
 {
+	friend class ASIOExecutor;
+
 public:
-	PhysicalLayerAsyncTCPClient(openpal::Logger aLogger, boost::asio::io_service* apIOService, const std::string& arAddress, uint16_t aPort);
+	TimerASIO(boost::asio::strand* apStrand);
 
-	/* Implement the remaining actions */
-	void DoOpen();
-	void DoOpeningClose(); //override this to just close the socket insead of shutting is down too
-	void DoOpenSuccess();
+	// Implement ITimer
+	void Cancel();
+
+	/**
+	 * Return the timer's expiry time as an absolute time.
+	 */
+	openpal::MonotonicTimestamp ExpiresAt();
 
 private:
-	boost::asio::ip::tcp::endpoint mRemoteEndpoint;
 
+	bool mCanceled;
+
+	boost::asio::monotonic_timer mTimer;
 };
 
 }

@@ -27,7 +27,7 @@
 #include "AsyncTestObjectASIO.h"
 #include "LogTester.h"
 
-#include <opendnp3/ASIOExecutor.h>
+#include <asiopal/ASIOExecutor.h>
 
 namespace opendnp3
 {

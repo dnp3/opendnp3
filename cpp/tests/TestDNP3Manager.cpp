@@ -32,9 +32,10 @@
 #include <opendnp3/ITimeWriteHandler.h>
 
 #include <opendnp3/Log.h>
-#include <opendnp3/IOServiceThreadPool.h>
-#include <opendnp3/PhysicalLayerAsyncTCPClient.h>
-#include <opendnp3/PhysicalLayerAsyncTCPServer.h>
+
+#include <asiopal/IOServiceThreadPool.h>
+#include <asiopal/PhysicalLayerAsyncTCPClient.h>
+#include <asiopal/PhysicalLayerAsyncTCPServer.h>
 
 
 #include <asiopal/UTCTimeSource.h>

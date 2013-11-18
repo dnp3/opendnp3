@@ -117,9 +117,6 @@
     <ClInclude Include="include\opendnp3\QualityMasks.h">
       <Filter>Include Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\opendnp3\SerialTypes.h">
-      <Filter>Include Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\opendnp3\SimpleCommandHandler.h">
       <Filter>Include Files</Filter>
     </ClInclude>
@@ -166,12 +163,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\ApplicationStack.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\ASIOExecutor.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\ASIOSerialHelpers.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\AsyncTaskBase.h">
@@ -276,9 +267,6 @@
     <ClInclude Include="src\opendnp3\IndexedWriteIterator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\IOServiceThreadPool.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\LinkFrame.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -345,24 +333,6 @@
     <ClInclude Include="src\opendnp3\PackingUnpacking.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\PhysicalLayerAsyncASIO.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\PhysicalLayerAsyncBase.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\PhysicalLayerAsyncBaseTCP.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\PhysicalLayerAsyncSerial.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\PhysicalLayerAsyncTCPClient.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\PhysicalLayerAsyncTCPServer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\PhysicalLayerMonitor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -409,9 +379,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\Thread.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\TimerASIO.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\TLS_Base.h">
@@ -474,9 +441,6 @@
     <ClInclude Include="src\opendnp3\OutstationSBOHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\MonotonicDeadlineTimer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\opendnp3\TimeTransaction.h">
       <Filter>Include Files</Filter>
     </ClInclude>
@@ -485,6 +449,9 @@
     </ClInclude>
     <ClInclude Include="include\opendnp3\ITimeWriteHandler.h">
       <Filter>Include Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\DeadlineTimerSteadyClock.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -513,12 +480,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\ApplicationStack.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\ASIOExecutor.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\ASIOSerialHelpers.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\AsyncTaskBase.cpp">
@@ -596,9 +557,6 @@
     <ClCompile Include="src\opendnp3\IndexedWriteIterator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\IOServiceThreadPool.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\opendnp3\IStack.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -671,21 +629,6 @@
     <ClCompile Include="src\opendnp3\PackingUnpacking.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\PhysicalLayerAsyncBase.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\PhysicalLayerAsyncBaseTCP.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\PhysicalLayerAsyncSerial.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\PhysicalLayerAsyncTCPClient.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\PhysicalLayerAsyncTCPServer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\opendnp3\PhysicalLayerMonitor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -752,9 +695,6 @@
     <ClCompile Include="src\opendnp3\Threadable.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\TimerASIO.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\opendnp3\TLS_Base.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -780,9 +720,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\VtoData.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\SerialTypes.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\ChannelStates.cpp">

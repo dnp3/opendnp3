@@ -23,7 +23,7 @@
 #ifndef __ASYNC_SERIAL_TEST_OBJECT_H_
 #define __ASYNC_SERIAL_TEST_OBJECT_H_
 
-#include <opendnp3/PhysicalLayerAsyncSerial.h>
+#include <asiopal/PhysicalLayerAsyncSerial.h>
 
 #include "LowerLayerToPhysAdapter.h"
 #include "AsyncTestObjectASIO.h"
@@ -36,11 +36,11 @@ namespace opendnp3
 class AsyncSerialTestObject : public AsyncTestObjectASIO
 {
 public:
-	AsyncSerialTestObject(SerialSettings cfg, openpal::FilterLevel aLevel = openpal::LEV_INFO, bool aImmediate = false);
+	AsyncSerialTestObject(asiopal::SerialSettings cfg, openpal::FilterLevel aLevel = openpal::LEV_INFO, bool aImmediate = false);
 	virtual ~AsyncSerialTestObject() {}
 
 	LogTester log;
-	PhysicalLayerAsyncSerial mPort;
+	asiopal::PhysicalLayerAsyncSerial mPort;
 	LowerLayerToPhysAdapter mAdapter;
 	MockUpperLayer mUpper;
 };

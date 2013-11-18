@@ -24,6 +24,7 @@
 #include <boost/asio.hpp>
 
 using namespace openpal;
+using namespace asiopal;
 
 namespace opendnp3
 {

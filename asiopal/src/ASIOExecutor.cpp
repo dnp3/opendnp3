@@ -20,7 +20,7 @@
 // you under the terms of the License.
 //
 
-#include "ASIOExecutor.h"
+#include <asiopal/ASIOExecutor.h>
 
 #include "TimerASIO.h"
 
@@ -33,7 +33,7 @@
 
 using namespace std;
 
-namespace opendnp3
+namespace asiopal
 {
 
 ASIOExecutor::ASIOExecutor(boost::asio::strand* apStrand) :

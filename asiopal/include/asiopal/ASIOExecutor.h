@@ -34,7 +34,7 @@
 #include <condition_variable>
 
 
-namespace opendnp3
+namespace asiopal
 {
 
 class TimerASIO;

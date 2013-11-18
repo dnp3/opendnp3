@@ -26,43 +26,37 @@
 //
 // Contact Automatak, LLC for a commercial license to these modifications
 //
-#ifndef __PHYSICAL_LAYER_ASYNC_BASE_TCP_H_
-#define __PHYSICAL_LAYER_ASYNC_BASE_TCP_H_
+#ifndef __PHYSICAL_LAYER_ASYNC_TCP_SERVER_H_
+#define __PHYSICAL_LAYER_ASYNC_TCP_SERVER_H_
 
-#include "PhysicalLayerAsyncASIO.h"
+#include "PhysicalLayerAsyncBaseTCP.h"
 
 #include <openpal/Location.h>
 
-#include <boost/asio.hpp>
 #include <boost/asio/ip/tcp.hpp>
-#include <memory>
 
-namespace opendnp3
+namespace asiopal
 {
 
-/**
-Common socket object and some shared implementations for server/client.
-*/
-class DLL_LOCAL PhysicalLayerAsyncBaseTCP : public PhysicalLayerAsyncASIO
+class DLL_LOCAL PhysicalLayerAsyncTCPServer : public PhysicalLayerAsyncBaseTCP
 {
 public:
-	PhysicalLayerAsyncBaseTCP(openpal::Logger&, boost::asio::io_service* apIOService);
+	PhysicalLayerAsyncTCPServer(openpal::Logger, boost::asio::io_service* apIOService, const std::string& arEndpoint, uint16_t aPort);
 
-	virtual ~PhysicalLayerAsyncBaseTCP() {}
-
-	/* Implement the shared client/server actions */
-	void DoClose();
-	void DoAsyncRead(uint8_t*, size_t);
-	void DoAsyncWrite(const uint8_t*, size_t);
-	void DoOpenFailure();
-
-protected:
-	boost::asio::ip::tcp::socket mSocket;
-	void CloseSocket();
+	/* Implement the remainging actions */
+	void DoOpen();
+	void DoOpeningClose(); //override this to cancel the acceptor instead of the socket
+	void DoOpenSuccess();
+	void DoOpenCallback();
 
 private:
-	void ShutdownSocket();
 
+	void CloseAcceptor();
+
+	boost::asio::ip::tcp::endpoint mLocalEndpoint;
+	boost::asio::ip::tcp::endpoint mRemoteEndpoint;
+
+	boost::asio::ip::tcp::acceptor mAcceptor;
 };
 }
 

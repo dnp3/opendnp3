@@ -42,7 +42,7 @@ class io_service;
 }
 }
 
-namespace opendnp3
+namespace asiopal
 {
 
 // This is the base class for the new async physical layers. It assumes that all of the functions

@@ -26,7 +26,8 @@
 #include <functional>
 
 #include <opendnp3/LogToStdio.h>
-#include <opendnp3/ASIOExecutor.h>
+
+#include <asiopal/ASIOExecutor.h>
 
 #include <openpal/Exception.h>
 
@@ -42,6 +43,7 @@
 using namespace opendnp3;
 using namespace boost;
 using namespace openpal;
+using namespace asiopal;
 
 
 BOOST_AUTO_TEST_SUITE(PhysicalLayerAsyncTCPSuite)

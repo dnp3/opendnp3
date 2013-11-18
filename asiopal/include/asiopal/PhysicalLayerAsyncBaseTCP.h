@@ -26,58 +26,44 @@
 //
 // Contact Automatak, LLC for a commercial license to these modifications
 //
-#ifndef __SERIAL_TYPES_H_
-#define __SERIAL_TYPES_H_
+#ifndef __PHYSICAL_LAYER_ASYNC_BASE_TCP_H_
+#define __PHYSICAL_LAYER_ASYNC_BASE_TCP_H_
 
-#include <string>
+#include "PhysicalLayerAsyncASIO.h"
 
-namespace opendnp3
+#include <openpal/Location.h>
+
+#include <boost/asio.hpp>
+#include <boost/asio/ip/tcp.hpp>
+#include <memory>
+
+namespace asiopal
 {
 
-/// Enumeration for setting serial port parity
-enum ParityType {
-	PAR_NONE = 0,
-	PAR_EVEN = 1,
-	PAR_ODD = 2
+/**
+Common socket object and some shared implementations for server/client.
+*/
+class DLL_LOCAL PhysicalLayerAsyncBaseTCP : public PhysicalLayerAsyncASIO
+{
+public:
+	PhysicalLayerAsyncBaseTCP(openpal::Logger&, boost::asio::io_service* apIOService);
+
+	virtual ~PhysicalLayerAsyncBaseTCP() {}
+
+	/* Implement the shared client/server actions */
+	void DoClose();
+	void DoAsyncRead(uint8_t*, size_t);
+	void DoAsyncWrite(const uint8_t*, size_t);
+	void DoOpenFailure();
+
+protected:
+	boost::asio::ip::tcp::socket mSocket;
+	void CloseSocket();
+
+private:
+	void ShutdownSocket();
+
 };
-
-/// Enumeration for setting serial port flow control
-enum FlowType {
-	FLOW_NONE = 0,
-	FLOW_HARDWARE = 1,
-	FLOW_XONXOFF = 2
-};
-
-ParityType GetParityFromInt(int parity);
-FlowType GetFlowTypeFromInt(int parity);
-
-/// Settings structure for the serial port
-struct SerialSettings {
-
-	/// Defaults to the familiar 9600 8/N/1, no flow control
-	SerialSettings() :
-		mBaud(9600),
-		mDataBits(8),
-		mStopBits(1),
-		mParity(PAR_NONE),
-		mFlowType(FLOW_NONE)
-	{}
-
-	/// name of the port, i.e. "COM1" or "/dev/tty0"
-	std::string mDevice;
-	/// Baud rate of the port, i.e. 9600 or 57600
-	int mBaud;
-	/// Data bits, usually 8
-	int mDataBits;
-	/// Stop bits, usually set to 1
-	int mStopBits;
-	/// Parity setting for the port, usually PAR_NONE
-	ParityType mParity;
-	/// Flow control setting, usually FLOW_NONE
-	FlowType mFlowType;
-};
-
 }
 
 #endif
-

@@ -22,13 +22,13 @@
 
 #include <boost/test/unit_test.hpp>
 
+#include <opendnp3/ExecutorPause.h>
 #include <opendnp3/Log.h>
-#include <opendnp3/IOServiceThreadPool.h>
+
+#include <asiopal/IOServiceThreadPool.h>
+#include <asiopal/ASIOExecutor.h>
 
 #include <openpal/Exception.h>
-
-#include <opendnp3/ExecutorPause.h>
-#include <opendnp3/ASIOExecutor.h>
 
 #include <thread>
 
@@ -38,6 +38,7 @@ using namespace boost::asio;
 using namespace boost::system;
 using namespace opendnp3;
 using namespace openpal;
+using namespace asiopal;
 
 
 BOOST_AUTO_TEST_SUITE(ASIOThreadPoolTestSuite)

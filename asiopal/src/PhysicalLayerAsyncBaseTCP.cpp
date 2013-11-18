@@ -20,7 +20,7 @@
 // you under the terms of the License.
 //
 
-#include "PhysicalLayerAsyncBaseTCP.h"
+#include <asiopal/PhysicalLayerAsyncBaseTCP.h>
 
 #include <string>
 #include <functional>
@@ -39,7 +39,7 @@ using namespace boost::system;
 using namespace std;
 using namespace openpal;
 
-namespace opendnp3
+namespace asiopal
 {
 
 PhysicalLayerAsyncBaseTCP::PhysicalLayerAsyncBaseTCP(Logger& arLogger, boost::asio::io_service* apIOService) :

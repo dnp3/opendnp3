@@ -20,41 +20,58 @@
 // you under the terms of the License.
 //
 
-#ifndef __ALWAYS_OPENING_VTO_ROUTER_H_
-#define __ALWAYS_OPENING_VTO_ROUTER_H_
-
-#include "VtoRouter.h"
+#ifndef __IO_SERVICE_THREAD_POOL_
+#define __IO_SERVICE_THREAD_POOL_
 
 #include <openpal/Visibility.h>
+#include <openpal/Loggable.h>
 
-namespace opendnp3
+
+#include "DeadlineTimerSteadyClock.h"
+
+#include <boost/asio.hpp>
+
+#include <thread>
+#include <functional>
+
+
+namespace asiopal
 {
 
-/**
- * the simplest type of vto router, useful for vto ports that should always be
- * online regardless of dnp connection state. The vtorouter on the other side
- * of the dnp connection can be either an AlwaysOpening or a ServerSocket router.
- */
-class DLL_LOCAL AlwaysOpeningVtoRouter : public VtoRouter
+class DLL_LOCAL IOServiceThreadPool : private openpal::Loggable
 {
 public:
 
-	AlwaysOpeningVtoRouter(const VtoRouterSettings& arSettings, openpal::Logger aLogger, IVtoWriter* apWriter, openpal::IPhysicalLayerAsync* apPhysLayer);
+	IOServiceThreadPool(
+	        openpal::Logger aLogger,
+	        uint32_t aConcurrency,
+	std::function<void()> onThreadStart = []() {},
+	std::function<void()> onThreadExit = []() {}
+	);
 
-	/// we don't care about any of the callbacks so we have empty implementations
-	void DoVtoRemoteConnectedChanged(bool aOpened) {}
-	void SetLocalConnected(bool aConnected) {}
+	~IOServiceThreadPool();
 
-	// doesn't care what type of data under any condition
-	bool CheckIncomingVtoData(const VtoData& arData) {
-		return true;
-	}
+	boost::asio::io_service* GetIOService();
 
+	void Shutdown();
+
+private:
+
+	std::function<void ()> mOnThreadStart;
+	std::function<void ()> mOnThreadExit;
+
+	bool mIsShutdown;
+
+	void OnTimerExpiration(const boost::system::error_code& ec);
+
+	void Run();
+
+	boost::asio::io_service mService;
+	boost::asio::monotonic_timer mInfiniteTimer;
+	std::vector<std::thread*> mThreads;
 };
 
 }
 
-/* vim: set ts=4 sw=4: */
 
 #endif
-

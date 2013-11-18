@@ -26,7 +26,7 @@
 #include <boost/asio.hpp>
 #include <functional>
 
-#include <opendnp3/MonotonicDeadlineTimer.h>
+#include <asiopal/DeadlineTimerSteadyClock.h>
 
 using namespace std;
 using namespace boost;

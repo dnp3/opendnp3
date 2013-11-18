@@ -20,56 +20,34 @@
 // you under the terms of the License.
 //
 
-#ifndef __IO_SERVICE_THREAD_POOL_
-#define __IO_SERVICE_THREAD_POOL_
+#include "TimerASIO.h"
 
-#include <openpal/Visibility.h>
-#include <openpal/Loggable.h>
+using namespace openpal;
 
-#include <boost/asio.hpp>
-
-#include <thread>
-#include <functional>
-
-#include "MonotonicDeadlineTimer.h"
-
-namespace opendnp3
+namespace asiopal
 {
 
-class DLL_LOCAL IOServiceThreadPool : private openpal::Loggable
+TimerASIO::TimerASIO(boost::asio::strand* apStrand) :
+	mCanceled(false),
+	mTimer(apStrand->get_io_service())
 {
-public:
-
-	IOServiceThreadPool(
-	        openpal::Logger aLogger,
-	        uint32_t aConcurrency,
-	std::function<void()> onThreadStart = []() {},
-	std::function<void()> onThreadExit = []() {}
-	);
-
-	~IOServiceThreadPool();
-
-	boost::asio::io_service* GetIOService();
-
-	void Shutdown();
-
-private:
-
-	std::function<void ()> mOnThreadStart;
-	std::function<void ()> mOnThreadExit;
-
-	bool mIsShutdown;
-
-	void OnTimerExpiration(const boost::system::error_code& ec);
-
-	void Run();
-
-	boost::asio::io_service mService;
-	boost::asio::monotonic_timer mInfiniteTimer;
-	std::vector<std::thread*> mThreads;
-};
 
 }
 
+/**
+ * Return the timer's expiry time as an absolute time.
+ */
+openpal::MonotonicTimestamp TimerASIO::ExpiresAt()
+{
+	return std::chrono::duration_cast<std::chrono::milliseconds>(mTimer.expires_at().time_since_epoch()).count();
+}
 
-#endif
+void TimerASIO::Cancel()
+{
+	assert(!mCanceled);
+	mTimer.cancel();
+	mCanceled = true;
+}
+
+
+}
