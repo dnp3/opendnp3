@@ -36,13 +36,14 @@
 #include <opendnp3/TimeTransaction.h>
 #include <opendnp3/ITimeWriteHandler.h>
 
-#include <openpal/Clock.h>
+#include <asiopal/UTCTimeSource.h>
 
 #include <string>
 #include <iostream>
 
 using namespace std;
 using namespace opendnp3;
+using namespace asiopal;
 
 int main(int argc, char* argv[])
 {
@@ -59,7 +60,7 @@ int main(int argc, char* argv[])
 
 	// Add a TCPServer to the manager with the name "tcpserver".
 	// The server will wait 3000 ms in between failed bind calls.
-	auto pServer = mgr.AddTCPServer("tcpserver", LOG_LEVEL, 5000, "127.0.0.1", 20000);
+	auto pServer = mgr.AddTCPServer("tcpserver", LOG_LEVEL, TimeDuration::Seconds(5), "127.0.0.1", 20000);
 
 	// You can optionally add a listener to the channel. You can do this anytime and
 	// you will receive a stream of all state changes
@@ -98,7 +99,7 @@ int main(int argc, char* argv[])
 		std::cin >> input;
 		if(input == "exit") break;
 		else {
-			TimeTransaction tx(pDataObserver, Clock::Now()); //automatically calls Start()/End() and sets time for each measurement
+			TimeTransaction tx(pDataObserver, UTCTimeSource::Inst()->Now()); //automatically calls Start()/End() and sets time for each measurement
 			tx.Update(Counter(count, CQ_ONLINE), 0);			
 			++count;
 		}

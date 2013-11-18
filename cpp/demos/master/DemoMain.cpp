@@ -61,7 +61,7 @@ int main(int argc, char* argv[])
 
 	// Connect via a TCPClient socket to a slave.  The server will
 	// wait 3000 ms in between failed connect calls.
-	auto pClient = mgr.AddTCPClient("tcpclient", LOG_LEVEL, 3000, "127.0.0.1", 20000);
+	auto pClient = mgr.AddTCPClient("tcpclient", LOG_LEVEL, TimeDuration::Seconds(3), "127.0.0.1", 20000);
 
 	// You can optionally add a listener to the channel. You can do this anytime and
 	// you will receive a stream of all state changes
