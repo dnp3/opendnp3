@@ -30,6 +30,7 @@
 #define __BASE_DATA_TYPES_H_
 
 #include <openpal/Types.h>
+#include <openpal/TimeDuration.h>
 
 #include "QualityMasks.h"
 
@@ -107,13 +108,13 @@ public:
 	virtual ~DataPoint() {}
 
 	DataTypes GetType() const;
-	openpal::millis_t GetTime() const;
+	int64_t GetTime() const;
 
 	virtual uint8_t GetQuality() const;
 	bool CheckQualityBit(uint8_t aQualMask) const;
 
 	virtual void SetQuality(uint8_t aQuality);
-	void SetTime(openpal::millis_t aTime);
+	void SetTime(int64_t aTime);
 
 #ifndef OPENDNP3_STRIP_LOG_MESSAGES
 	virtual std::string ToString() const = 0;
@@ -124,8 +125,8 @@ protected:
 	//These constructors can only be invoked by super classes
 	DataPoint(uint8_t aQuality, DataTypes aType);
 
-	uint8_t mQuality;	//	bitfield that stores type specific quality information
-	openpal::millis_t mTime;		//	timestamp associated with the measurement, -1 if it was never timestamped
+	uint8_t mQuality;					//	bitfield that stores type specific quality information
+	int64_t mTime;						//	timestamp associated with the measurement, -1 if it was never timestamped
 
 private:
 	DataPoint();
@@ -136,7 +137,7 @@ inline DataTypes DataPoint::GetType() const
 {
 	return mType;
 }
-inline openpal::millis_t DataPoint::GetTime() const
+inline int64_t DataPoint::GetTime() const
 {
 	return mTime;
 }
@@ -148,9 +149,9 @@ inline bool DataPoint::CheckQualityBit(uint8_t aQualMask) const
 {
 	return (aQualMask & mQuality) != 0;
 }
-inline void DataPoint::SetTime(openpal::millis_t arTime)
+inline void DataPoint::SetTime(int64_t aTime)
 {
-	mTime = arTime;
+	mTime = aTime;
 }
 inline void DataPoint::SetQuality(uint8_t aQuality)
 {

@@ -70,7 +70,7 @@ BOOST_AUTO_TEST_CASE(TestSimpleSend)
 
 	t.SendToAll(b, b.Size());
 
-	BOOST_REQUIRE(t.ProceedUntil(std::bind(&TransportScalabilityTestObject::AllLayerReceived, &t, b.Size()), 120000));
+	BOOST_REQUIRE(t.ProceedUntil(std::bind(&TransportScalabilityTestObject::AllLayerReceived, &t, b.Size())));
 	BOOST_REQUIRE(t.AllLayerEqual(b, b.Size()));
 }
 

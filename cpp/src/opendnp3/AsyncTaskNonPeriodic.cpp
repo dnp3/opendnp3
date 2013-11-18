@@ -34,7 +34,7 @@ namespace opendnp3
 {
 
 
-AsyncTaskNonPeriodic::AsyncTaskNonPeriodic(millis_t aRetryDelay, int aPriority, const TaskHandler& arCallback, AsyncTaskGroup* apGroup, const std::string& arName) :
+AsyncTaskNonPeriodic::AsyncTaskNonPeriodic(openpal::TimeDuration aRetryDelay, int aPriority, const TaskHandler& arCallback, AsyncTaskGroup* apGroup, const std::string& arName) :
 	AsyncTaskBase(aPriority, arCallback, apGroup, MonotonicTimestamp::Min(), arName),
 	mRetryDelay(aRetryDelay)
 {

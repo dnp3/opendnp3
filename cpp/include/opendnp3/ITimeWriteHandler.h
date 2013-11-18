@@ -30,6 +30,7 @@
 #define __I_TIME_WRITE_HANDLER_H_
 
 #include <openpal/Types.h>
+#include <openpal/UTCTimestamp.h>
 
 #include <functional>
 
@@ -41,23 +42,23 @@ class ITimeWriteHandler
 public:
 	virtual ~ITimeWriteHandler() {}	
 	
-	virtual void WriteAbsoluteTime(openpal::millis_t aMillisecSinceEpoch) = 0;
+	virtual void WriteAbsoluteTime(openpal::UTCTimestamp aTimestamp) = 0;
 };
 
 class FunctionTimeWriteHandler : public ITimeWriteHandler
 {
 public:
-	FunctionTimeWriteHandler(std::function<void (openpal::millis_t)> aCallback) : 
+	FunctionTimeWriteHandler(std::function<void (openpal::UTCTimestamp aTimestamp)> aCallback) : 
 		mCallback(aCallback)
 	{}
 
-	void WriteAbsoluteTime(openpal::millis_t aMillisecSinceEpoch)
+	void WriteAbsoluteTime(openpal::UTCTimestamp aTimestamp)
 	{
-		mCallback(aMillisecSinceEpoch);
+		mCallback(aTimestamp);
 	}
 
 private:
-	std::function<void (openpal::millis_t)> mCallback;
+	std::function<void (openpal::UTCTimestamp aTimestamp)> mCallback;
 	
 };
 
@@ -69,7 +70,7 @@ public:
 private:
 	static NullTimeWriteHandler mInstance;
 
-	NullTimeWriteHandler() : FunctionTimeWriteHandler([](openpal::millis_t){}) {}	
+	NullTimeWriteHandler() : FunctionTimeWriteHandler([](openpal::UTCTimestamp){}) {}	
 };
 
 }

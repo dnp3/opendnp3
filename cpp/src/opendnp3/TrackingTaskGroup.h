@@ -30,8 +30,10 @@
 #define __TRACKING_TASK_GROUP_H_
 
 #include <openpal/Types.h>
-#include <opendnp3/Uncopyable.h>
 #include <openpal/Visibility.h>
+#include <openpal/TimeDuration.h>
+
+#include <opendnp3/Uncopyable.h>
 
 #include "AsyncTaskInterfaces.h"
 
@@ -59,7 +61,7 @@ public:
 
 	void ResetTasks(int aMask);
 
-	AsyncTaskBase* Add(openpal::millis_t aPeriod, openpal::millis_t aRetryDelay, int aPriority, const TaskHandler& arCallback, const std::string& arName = "");
+	AsyncTaskBase* Add(openpal::TimeDuration aPeriod, openpal::TimeDuration aRetryDelay, int aPriority, const TaskHandler& arCallback, const std::string& arName = "");
 	AsyncTaskContinuous* AddContinuous(int aPriority, const TaskHandler& arCallback, const std::string& arName = "");
 
 

@@ -227,7 +227,7 @@ void AS_Idle::OnDataUpdate(Slave* c)
 
 	// start the unsol timer or act immediately if there's no pack timer
 	if (!c->mConfig.mDisableUnsol && c->mStartupNullUnsol && c->mRspContext.HasEvents(c->mConfig.mUnsolMask)) {
-		if (c->mConfig.mUnsolPackDelay == 0) {
+		if (c->mConfig.mUnsolPackDelay.GetMilliseconds() <= 0) {
 			ChangeState(c, AS_WaitForUnsolSuccess::Inst());
 			c->mRspContext.LoadUnsol(c->mUnsol, c->mIIN, c->mConfig.mUnsolMask);
 			c->SendUnsolicited(c->mUnsol);
@@ -356,7 +356,7 @@ void AS_WaitForSolUnsolSuccess::OnUnsolFailure(Slave* c)
 {
 	ChangeState(c, AS_WaitForRspSuccess::Inst());
 	c->mRspContext.Reset();
-	if (c->mConfig.mUnsolRetryDelay > 0)
+	if (c->mConfig.mUnsolRetryDelay.GetMilliseconds() > 0)
 		c->StartUnsolTimer(c->mConfig.mUnsolRetryDelay);
 	else
 		c->OnUnsolTimerExpiration();

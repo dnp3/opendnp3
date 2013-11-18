@@ -62,7 +62,7 @@ public:
 	APDU mAPDU;
 	openpal::Logger mLogger;
 
-	std::queue<openpal::millis_t> mTimeWrites;
+	std::queue<openpal::UTCTimestamp> mTimeWrites;
 
 };
 

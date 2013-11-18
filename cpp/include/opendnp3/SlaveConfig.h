@@ -32,6 +32,7 @@
 #include <assert.h>
 
 #include <openpal/Exception.h>
+#include <openpal/TimeDuration.h>
 
 #include "ClassMask.h"
 #include "ObjectInterfaces.h"
@@ -85,16 +86,16 @@ struct SlaveConfig {
 
 
 	/// The period of time sync interval in milliseconds
-	openpal::millis_t mTimeSyncPeriod;
+	openpal::TimeDuration mTimeSyncPeriod;
 
 	/// The amount of time the slave will wait before sending new unsolicited data ( <= 0 == immediate)
-	openpal::millis_t mUnsolPackDelay;
+	openpal::TimeDuration mUnsolPackDelay;
 
 	/// How long the slave will wait before retrying an unsuccessful unsol response
-	openpal::millis_t mUnsolRetryDelay;
+	openpal::TimeDuration mUnsolRetryDelay;
 
 	/// How long the slave will allow an operate to proceed after a prior select
-	openpal::millis_t mSelectTimeout;
+	openpal::TimeDuration mSelectTimeout;
 
 	/// The maximum fragment size the slave will use for data it sends
 	size_t mMaxFragSize;

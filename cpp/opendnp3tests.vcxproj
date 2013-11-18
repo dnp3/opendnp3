@@ -200,7 +200,6 @@
     <ClInclude Include="tests\MockPhysicalLayerAsync.h" />
     <ClInclude Include="tests\MockPhysicalLayerMonitor.h" />
     <ClInclude Include="tests\MockTimeWriteHandler.h" />
-    <ClInclude Include="tests\MockTimeSource.h" />
     <ClInclude Include="tests\MockUpperLayer.h" />
     <ClInclude Include="tests\PhysicalLayerWrapper.h" />
     <ClInclude Include="tests\PhysicalLayerWrapperFactory.h" />

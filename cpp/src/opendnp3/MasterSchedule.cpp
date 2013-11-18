@@ -29,6 +29,7 @@
 
 #include <functional>
 
+using namespace openpal;
 using namespace std::placeholders;
 
 namespace opendnp3
@@ -79,7 +80,7 @@ void MasterSchedule::Init(const MasterConfig& arCfg, Master* apMaster)
 		                           false,
 		                           PC_ALL_EVENTS);
 		AsyncTaskBase* pUnsolDisable = mTracking.Add(
-		                                       -1,
+		                                       TimeDuration::Min(),
 		                                       arCfg.TaskRetryRate,
 		                                       AMP_UNSOL_CHANGE,
 		                                       handler,
@@ -96,8 +97,7 @@ void MasterSchedule::Init(const MasterConfig& arCfg, Master* apMaster)
 			                              true,
 			                              arCfg.UnsolClassMask);
 
-			AsyncTaskBase* pUnsolEnable = mTracking.Add(
-			                                      -1,
+			AsyncTaskBase* pUnsolEnable = mTracking.Add(TimeDuration::Min(),
 			                                      arCfg.TaskRetryRate,
 			                                      AMP_UNSOL_CHANGE,
 			                                      handler,

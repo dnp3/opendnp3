@@ -30,6 +30,7 @@
 #define __EXCEPTION_SCAN_H_
 
 #include <openpal/Types.h>
+#include <openpal/TimeDuration.h>
 
 namespace  opendnp3
 {
@@ -42,10 +43,10 @@ struct ExceptionScan {
 	/// Defaults to all events every 5 seconds
 	ExceptionScan() :
 		ClassMask(PC_ALL_EVENTS),
-		ScanRate(5000)
+		ScanRate(openpal::TimeDuration::Seconds(5))
 	{}
 
-	ExceptionScan(int aClassMask,openpal::millis_t aScanRate) :
+	ExceptionScan(int aClassMask, openpal::TimeDuration aScanRate) :
 		ClassMask(aClassMask),
 		ScanRate(aScanRate)
 	{}
@@ -53,8 +54,8 @@ struct ExceptionScan {
 	/// Bitmask for which classes will be scanned
 	int ClassMask;
 
-	/// Scan period in milliseconds
-	openpal::millis_t ScanRate;
+	/// Scan period
+	openpal::TimeDuration ScanRate;
 };
 
 }

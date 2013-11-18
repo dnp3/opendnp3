@@ -33,6 +33,8 @@
 #include "PointClass.h"
 #include "MasterConfigTypes.h"
 
+#include <openpal/TimeDuration.h>
+
 #include <vector>
 
 namespace opendnp3
@@ -46,15 +48,14 @@ struct MasterConfig {
 
 	/// Default constructor
 	MasterConfig() :
-		FragSize(DEFAULT_FRAG_SIZE),
-		VtoWriterQueueSize(DEFAULT_VTO_WRITER_QUEUE_SIZE),
+		FragSize(DEFAULT_FRAG_SIZE),		
 		UseNonStandardVtoFunction(false),
 		AllowTimeSync(true),
 		DoUnsolOnStartup(false),
 		EnableUnsol(true),
 		UnsolClassMask(PC_ALL_EVENTS),
-		IntegrityRate(5000),
-		TaskRetryRate(5000)
+		IntegrityRate(openpal::TimeDuration::Seconds(5)),
+		TaskRetryRate(openpal::TimeDuration::Seconds(5))
 	{}
 
 	/** Adds a periodic exception scan to the configuration
@@ -62,16 +63,13 @@ struct MasterConfig {
 		@param aClassMask	Bitwise mask representing the classes to scan
 		@param aPeriod		Period of the scan in milliseconds
 	*/
-	void AddExceptionScan(int aClassMask,openpal::millis_t aPeriod) {
+	void AddExceptionScan(int aClassMask, openpal::TimeDuration aPeriod) {
 		ExceptionScan ex(aClassMask, aPeriod);
 		mScans.push_back(ex);
 	}
 
 	/// Maximum fragment size to use for requests
 	size_t FragSize;
-
-	/// The number of objects to store in the VtoWriter queue.
-	size_t VtoWriterQueueSize;
 
 	/// Using FC_WRITE is a problem with vto because the spec won't allow it to retry
 	bool UseNonStandardVtoFunction;
@@ -89,10 +87,10 @@ struct MasterConfig {
 	int UnsolClassMask;
 
 	/// Period for integrity scans (class 0), -1 for non periodic
-	openpal::millis_t IntegrityRate;
+	openpal::TimeDuration IntegrityRate;
 
 	/// Time delay between task retries
-	openpal::millis_t TaskRetryRate;
+	openpal::TimeDuration TaskRetryRate;
 
 	/// vector that holds exception scans
 	std::vector<ExceptionScan> mScans;

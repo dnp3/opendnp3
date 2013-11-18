@@ -48,12 +48,12 @@ public:
 		++mHeaderNum;
 	}
 
-	void SetCTO(openpal::millis_t aTime) {
+	void SetCTO(int64_t aTime) {
 		mCTO = aTime;
 		mTimeHeaderNum = mHeaderNum;
 	}
 
-	bool GetCTO(openpal::millis_t& arTime) {
+	bool GetCTO(int64_t& arTime) {
 		if(mCTO >= 0 && mTimeHeaderNum == (mHeaderNum - 1)) {
 			arTime = mCTO;
 			return true;
@@ -63,7 +63,7 @@ public:
 
 private:
 
-	openpal::millis_t mCTO;
+	int64_t mCTO;
 	size_t mHeaderNum;
 	size_t mTimeHeaderNum;
 

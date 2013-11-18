@@ -35,7 +35,6 @@
 #include <openpal/IExecutor.h>
 #include <openpal/IUTCTimeSource.h>
 
-#include "TimeSource.h"
 #include "APDU.h"
 #include "AppInterfaces.h"
 #include "ObjectReadIterator.h"

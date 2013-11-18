@@ -26,7 +26,6 @@
 #include <openpal/Exception.h>
 #include <opendnp3/PointClass.h>
 
-#include "ITimeSource.h"
 #include "APDU.h"
 #include "ResponseLoader.h"
 

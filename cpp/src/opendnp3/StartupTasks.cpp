@@ -24,7 +24,6 @@
 
 #include "APDU.h"
 #include "ObjectReadIterator.h"
-#include "ITimeSource.h"
 
 #include <opendnp3/PointClass.h>
 #include <openpal/LoggableMacros.h>

@@ -44,7 +44,7 @@ TrackingTaskGroup::~TrackingTaskGroup()
 	for(auto pTask: mTaskVec) mpGroup->Remove(pTask);
 }
 
-AsyncTaskBase* TrackingTaskGroup::Add(openpal::millis_t aPeriod, openpal::millis_t aRetryDelay, int aPriority, const TaskHandler& arCallback, const std::string& arName)
+AsyncTaskBase* TrackingTaskGroup::Add(openpal::TimeDuration aPeriod, openpal::TimeDuration aRetryDelay, int aPriority, const TaskHandler& arCallback, const std::string& arName)
 {
 	AsyncTaskBase* pTask = mpGroup->Add(aPeriod, aRetryDelay, aPriority, arCallback, arName);
 	mTaskVec.push_back(pTask);

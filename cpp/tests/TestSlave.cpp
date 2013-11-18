@@ -225,7 +225,7 @@ BOOST_AUTO_TEST_CASE(WriteTimeDate)
 	BOOST_REQUIRE_EQUAL(t.mTimeWrites.size(), 0);
 	t.mts.DispatchOne();
 	BOOST_REQUIRE_EQUAL(t.mTimeWrites.size(), 1);
-	BOOST_REQUIRE_EQUAL(t.mTimeWrites.front(), 1234);	
+	BOOST_REQUIRE_EQUAL(t.mTimeWrites.front().msSinceEpoch, 1234);	
 	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 00");
 }
 BOOST_AUTO_TEST_CASE(WriteTimeDateNotAsking)
@@ -431,7 +431,7 @@ BOOST_AUTO_TEST_CASE(UnsolEventBufferOverflow)
 	SlaveConfig cfg;
 	cfg.mUnsolMask.class1 = true; // this allows the EnableUnsol sequence to be skipped
 	cfg.mEventMaxConfig.mMaxBinaryEvents = 2; // set the max to 2 to make testing easy
-	cfg.mUnsolPackDelay = 0;
+	cfg.mUnsolPackDelay = TimeDuration::Milliseconds(0);
 	SlaveTestObject t(cfg);
 	t.db.Configure(DT_BINARY, 1);
 	t.db.SetClass(DT_BINARY, PC_CLASS_1);
@@ -495,7 +495,7 @@ BOOST_AUTO_TEST_CASE(UnsolMultiFragments)
 // response to unsolicited data
 BOOST_AUTO_TEST_CASE(WriteDuringUnsol)
 {
-	SlaveConfig cfg; cfg.mUnsolPackDelay = 0;
+	SlaveConfig cfg; cfg.mUnsolPackDelay = TimeDuration::Zero();
 	cfg.mUnsolMask.class1 = true; //allows us to skip this step
 	SlaveTestObject t(cfg);
 	t.db.Configure(DT_BINARY, 1);
@@ -523,7 +523,7 @@ BOOST_AUTO_TEST_CASE(WriteDuringUnsol)
 
 BOOST_AUTO_TEST_CASE(ReadDuringUnsol)
 {
-	SlaveConfig cfg; cfg.mUnsolPackDelay = 0;
+	SlaveConfig cfg; cfg.mUnsolPackDelay = TimeDuration::Zero();
 	cfg.mUnsolMask.class1 = true; //allows us to skip this step
 	SlaveTestObject t(cfg);
 	t.db.Configure(DT_BINARY, 1);
@@ -549,7 +549,7 @@ BOOST_AUTO_TEST_CASE(ReadDuringUnsol)
 
 BOOST_AUTO_TEST_CASE(ReadWriteDuringUnsol)
 {
-	SlaveConfig cfg; cfg.mUnsolPackDelay = 0;
+	SlaveConfig cfg; cfg.mUnsolPackDelay = TimeDuration::Zero();
 	cfg.mUnsolMask.class1 = true; //allows us to skip this step
 	SlaveTestObject t(cfg);
 	t.db.Configure(DT_BINARY, 1);
@@ -830,7 +830,7 @@ BOOST_AUTO_TEST_CASE(DirectOperateBadObject)
 
 BOOST_AUTO_TEST_CASE(UnsolEnable)
 {
-	SlaveConfig cfg; cfg.mUnsolPackDelay = 0; cfg.mUnsolMask = ClassMask(false, false, false);
+	SlaveConfig cfg; cfg.mUnsolPackDelay = TimeDuration::Zero(); cfg.mUnsolMask = ClassMask(false, false, false);
 	SlaveTestObject t(cfg);
 	t.db.Configure(DT_BINARY, 1);
 	t.db.SetClass(DT_BINARY, PC_CLASS_1);
@@ -856,7 +856,7 @@ BOOST_AUTO_TEST_CASE(UnsolEnable)
 
 BOOST_AUTO_TEST_CASE(UnsolEnableBadObject)
 {
-	SlaveConfig cfg; cfg.mUnsolPackDelay = 0; cfg.mUnsolMask = ClassMask(false, false, false);
+	SlaveConfig cfg; cfg.mUnsolPackDelay = TimeDuration::Zero(); cfg.mUnsolMask = ClassMask(false, false, false);
 	SlaveTestObject t(cfg);
 	t.db.Configure(DT_BINARY, 1);
 	t.db.SetClass(DT_BINARY, PC_CLASS_1);

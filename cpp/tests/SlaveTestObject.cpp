@@ -37,7 +37,7 @@ namespace opendnp3
 
 SlaveTestObject::SlaveTestObject(const SlaveConfig& arCfg, FilterLevel aLevel, bool aImmediate) :
 	log(),
-	mMockTimeWriteHandler([this](millis_t time) { mTimeWrites.push(time); }),
+	mMockTimeWriteHandler([this](UTCTimestamp time) { mTimeWrites.push(time); }),
 	mts(),
 	app(Logger(&log, aLevel, "app")),
 	db(Logger(&log, aLevel, "db")),

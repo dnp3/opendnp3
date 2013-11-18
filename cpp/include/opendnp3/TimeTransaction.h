@@ -32,12 +32,14 @@
 #include "ITransactable.h"
 #include "IDataObserver.h"
 
+#include <openpal/UTCTimestamp.h>
+
 namespace opendnp3
 {
 	class TimeTransaction : private Transaction
 	{
 		public:
-			TimeTransaction(IDataObserver* apObserver,openpal::millis_t aTimestamp);
+			TimeTransaction(IDataObserver* apObserver, openpal::UTCTimestamp aTimestamp);
 
 			void Update(Binary aMeas, size_t aIndex);
 			void Update(Analog aMeas, size_t aIndex);
@@ -47,7 +49,7 @@ namespace opendnp3
 
 		private:
 			IDataObserver* mpObserver;
-			openpal::millis_t mTimestamp;
+			openpal::UTCTimestamp mTimestamp;
 	};
 }
 

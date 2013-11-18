@@ -168,9 +168,6 @@
     <ClInclude Include="tests\RandomizedBuffer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="tests\MockTimeSource.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="tests\MockTimeWriteHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>

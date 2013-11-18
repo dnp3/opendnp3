@@ -41,16 +41,16 @@ namespace opendnp3
 struct AppConfig {
 
 	/// Default constructor
-	AppConfig() : RspTimeout(5000), NumRetry(0), FragSize(DEFAULT_FRAG_SIZE) {}
+	AppConfig() : RspTimeout(TimeDuration::Seconds(5)), NumRetry(0), FragSize(DEFAULT_FRAG_SIZE) {}
 
-	AppConfig(millis_t aRspTimeout, size_t aNumRetry = 0, size_t aFragSize = DEFAULT_FRAG_SIZE) :
+	AppConfig(TimeDuration aRspTimeout, size_t aNumRetry = 0, size_t aFragSize = DEFAULT_FRAG_SIZE) :
 		RspTimeout(aRspTimeout),
 		NumRetry(aNumRetry),
 		FragSize(aFragSize)
 	{}
 
 	/// The response/confirm timeout in millisec
-	millis_t RspTimeout;
+	TimeDuration RspTimeout;
 
 	/// Number of retries performed for applicable frames
 	size_t NumRetry;

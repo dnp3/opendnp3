@@ -53,7 +53,7 @@ class DLL_LOCAL LinkLayerRouter : public PhysicalLayerMonitor, public IFrameSink
 {
 public:
 
-	LinkLayerRouter(openpal::Logger, openpal::IPhysicalLayerAsync*, openpal::millis_t aOpenRetry);
+	LinkLayerRouter(openpal::Logger, openpal::IPhysicalLayerAsync*, openpal::TimeDuration aOpenRetry);
 
 	bool IsRouteInUse(const LinkRoute& arRoute);
 

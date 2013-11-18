@@ -27,23 +27,56 @@
 
 namespace openpal
 {
+	
+template <class T>
+class TimeDurationBase
+{
+
+public:		
+
+	TimeDurationBase() : milliseconds(0)
+	{}
+
+	T GetMilliseconds() const 
+	{
+		return milliseconds;
+	}
+	
+protected:
+	TimeDurationBase(T aMilliseconds) : milliseconds(aMilliseconds)
+	{}
+
+private:
+	T milliseconds;
+
+};
+
 
 /**
 *  Strong typing for millisecond based time durations
 */
-class TimeDuration
+class TimeDuration : public TimeDurationBase<int64_t>
 {
 
 public:
-	TimeDuration() : milliseconds(0)
-	{}
 
-	TimeDuration(uint32_t aMilliseconds) : milliseconds(aMilliseconds)
-	{}
+	TimeDuration();
+
+	static TimeDuration Min();
+
+	static TimeDuration Zero();
+
+	static TimeDuration Milliseconds(int64_t aMilliseconds);
 	
-	uint32_t milliseconds;
+	static TimeDuration Seconds(int64_t aSeconds);
 
+	static TimeDuration Minutes(int64_t aMinutes);
+			
+private:
+	TimeDuration(int64_t aMilliseconds);
 };
+
+bool operator==(const TimeDuration& lhs, const TimeDuration& rhs);
 
 }
 

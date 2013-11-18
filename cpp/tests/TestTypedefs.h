@@ -23,14 +23,14 @@
 #ifndef __TEST_TYPEDEFS_H_
 #define __TEST_TYPEDEFS_H_
 
-#include <openpal/Types.h>
+#include <openpal/TimeDuration.h>
 #include <functional>
 
 namespace opendnp3
 {
 
 class FlexibleDataObserver;
-const openpal::millis_t G_TEST_TIMEOUT = 40000;
+const auto G_TEST_TIMEOUT = openpal::TimeDuration::Seconds(60);
 
 typedef std::function<bool ()> EvalFunc;
 typedef std::function<bool (FlexibleDataObserver*)> OutputEvalFunc;

@@ -42,7 +42,7 @@ public:
 
 	ConcretePhysicalLayerMonitor(openpal::Logger aLogger, IPhysicalLayerAsync* apPhys) :
 		Loggable(aLogger),
-		PhysicalLayerMonitor(aLogger.GetSubLogger("monitor"), apPhys, TimeDuration(1000), TimeDuration(10000)),
+		PhysicalLayerMonitor(aLogger.GetSubLogger("monitor"), apPhys, TimeDuration::Seconds(1),  TimeDuration::Seconds(10)),
 		mOpenCallbackCount(0),
 		mCloseCallbackCount(0) {
 	}
@@ -269,13 +269,13 @@ BOOST_AUTO_TEST_CASE(OpenFailureGoesToWaitingAndExponentialBackoff)
 	test.phys.SignalOpenFailure();
 	BOOST_REQUIRE_EQUAL(CS_WAITING, test.monitor.GetState());
 	BOOST_REQUIRE_EQUAL(1, test.exe.NumActive());
-	BOOST_REQUIRE(MonotonicTimestamp(1000) == test.exe.NextTimerExpiration());
+	BOOST_REQUIRE_EQUAL(1000, test.exe.NextTimerExpiration().milliseconds);
 	BOOST_REQUIRE(test.exe.DispatchOne());
 	BOOST_REQUIRE_EQUAL(CS_OPENING, test.monitor.GetState());
 	test.phys.SignalOpenFailure();
 	BOOST_REQUIRE_EQUAL(CS_WAITING, test.monitor.GetState());
 	BOOST_REQUIRE_EQUAL(1, test.exe.NumActive());
-	BOOST_REQUIRE(MonotonicTimestamp(2000) == test.exe.NextTimerExpiration());
+	BOOST_REQUIRE_EQUAL(2000, test.exe.NextTimerExpiration().milliseconds);
 }
 
 BOOST_AUTO_TEST_CASE(OpenFailureGoesToClosedIfSuspended)
@@ -292,11 +292,11 @@ BOOST_AUTO_TEST_CASE(ShutdownPostsToTimer)
 {
 	TestObject test;
 	BOOST_REQUIRE_EQUAL(0, test.exe.NumActive());
-	BOOST_REQUIRE_FALSE(test.monitor.WaitForShutdown(0));
+	BOOST_REQUIRE_FALSE(test.monitor.WaitForShutdown(TimeDuration::Seconds(0)));
 	test.monitor.Shutdown();
 	BOOST_REQUIRE_EQUAL(CS_SHUTDOWN, test.monitor.GetState());
 	BOOST_REQUIRE_EQUAL(1, test.exe.NumActive());
-	BOOST_REQUIRE_FALSE(test.monitor.WaitForShutdown(0));
+	BOOST_REQUIRE_FALSE(test.monitor.WaitForShutdown(TimeDuration::Seconds(0)));
 	BOOST_REQUIRE(test.exe.DispatchOne());
 	BOOST_REQUIRE(test.monitor.WaitForShutdown()); //wait indefinitely, but it's already shutdown
 }

@@ -29,7 +29,7 @@
 #ifndef __DEADLINE_TIMER_STEADY_CLOCK_H_
 #define __DEADLINE_TIMER_STEADY_CLOCK_H_
 
-#include <openpal/Clock.h>
+#include <openpal/Types.h>
 #include <boost/asio.hpp>
 
 namespace boost {

@@ -60,12 +60,12 @@ ChannelState PhysicalLayerMonitor::GetState()
 	return mpState->GetState();
 }
 
-bool PhysicalLayerMonitor::WaitForShutdown(millis_t aTimeout)
+bool PhysicalLayerMonitor::WaitForShutdown(openpal::TimeDuration aTimeout)
 {
 	std::unique_lock<std::mutex> lock(mMutex);
 	while(!mFinalShutdown) {
-		if(aTimeout >= 0) {
-			mCondition.wait_for(lock, milliseconds(aTimeout));
+		if(aTimeout.GetMilliseconds() >= 0) {
+			mCondition.wait_for(lock, milliseconds(aTimeout.GetMilliseconds()));
 			break;
 		}
 		else mCondition.wait(lock);
@@ -144,7 +144,7 @@ void PhysicalLayerMonitor::_OnOpenFailure()
 	LOG_BLOCK(LEV_DEBUG, "_OnOpenFailure()");
 	mpState->OnOpenFailure(this);
 	this->OnPhysicalLayerOpenFailureCallback();
-	this->mCurrentRetry.milliseconds = std::min(2 * mCurrentRetry.milliseconds, mMaxOpenRetry.milliseconds);
+	this->mCurrentRetry = TimeDuration::Milliseconds(std::min(2 * mCurrentRetry.GetMilliseconds(), mMaxOpenRetry.GetMilliseconds()));
 }
 
 void PhysicalLayerMonitor::_OnLowerLayerUp()

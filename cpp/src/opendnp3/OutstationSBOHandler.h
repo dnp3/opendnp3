@@ -31,11 +31,12 @@
 #define __OUTSTATION_SBO_HANDLER_H_
 
 #include <openpal/Types.h>
+#include <openpal/Location.h>
+#include <openpal/TimeDuration.h>
+#include <openpal/IExecutor.h>
+
 #include <opendnp3/ICommandHandler.h>
 #include <opendnp3/APDUConstants.h>
-#include <openpal/Location.h>
-
-#include "ITimeSource.h"
 
 #include <map>
 
@@ -44,11 +45,12 @@ namespace opendnp3
 
 class DLL_LOCAL OutstationSBOHandler
 {
+	
 	template <class T>
 	class SelectInfo
 	{
 	public:
-		SelectInfo(const T& arCommand, uint8_t aSequence, QualifierCode aCode,openpal::millis_t aTimestamp) :
+		SelectInfo(const T& arCommand, uint8_t aSequence, QualifierCode aCode, openpal::MonotonicTimestamp aTimestamp) :
 			mCommand(arCommand),
 			mSequence(aSequence),
 			mCode(aCode),
@@ -58,15 +60,15 @@ class DLL_LOCAL OutstationSBOHandler
 
 		SelectInfo() :
 			mSequence(0),
-			mCode(QC_UNDEFINED),
-			mTimestamp(0),
+			mCode(QC_UNDEFINED),			
+			mTimestamp(),
 			mOperated(false)
 		{}
 
 		T mCommand;
 		uint8_t mSequence;
 		QualifierCode mCode;
-		openpal::millis_t mTimestamp;
+		openpal::MonotonicTimestamp mTimestamp;
 		bool mOperated;
 	};
 
@@ -77,7 +79,7 @@ class DLL_LOCAL OutstationSBOHandler
 	typedef std::map<size_t, SelectInfo<AnalogOutputDouble64>> AnalogDoubleSelectMap;
 
 public:
-	OutstationSBOHandler(openpal::millis_t aSelectTimeout, ICommandHandler* apCmdHandler, ITimeSource* apTimeSource);
+	OutstationSBOHandler(openpal::TimeDuration aSelectTimeout, ICommandHandler* apCmdHandler, openpal::IExecutor* apExecutor);
 
 	CommandStatus Select(const ControlRelayOutputBlock& arCommand, size_t aIndex, uint8_t aSequence, QualifierCode aCode);
 	CommandStatus Operate(const ControlRelayOutputBlock& arCommand, size_t aIndex, uint8_t aSequence, QualifierCode aCode);
@@ -104,9 +106,9 @@ private:
 	template <class T>
 	CommandStatus Operate(const T& arCommand, size_t aIndex, uint8_t aSequence, QualifierCode aCode, std::map<size_t, SelectInfo<T>>& arMap);
 
-	openpal::millis_t mSelectTimeout;
+	openpal::TimeDuration mSelectTimeout;
 	ICommandHandler* mpCmdHandler;
-	ITimeSource* mpTimeSource;
+	openpal::IExecutor* mpExecutor;
 	uint8_t mCurrentSequenceNum;
 
 	CROBSelectMap mCROBSelectMap;
@@ -127,7 +129,7 @@ CommandStatus OutstationSBOHandler::Select(const T& arCommand, size_t aIndex, ui
 
 	CommandStatus status =  mpCmdHandler->Select(arCommand, aIndex);
 	if(status == CS_SUCCESS) { //outstation supports this point
-		auto time = mpTimeSource->GetMillisecondsSinceEpoch();
+		auto time = mpExecutor->GetTime();
 		SelectInfo<T> info(arCommand, aSequence, aCode, time);
 		arMap[aIndex] = info; // record the select by index
 	}
@@ -148,8 +150,8 @@ CommandStatus OutstationSBOHandler::Operate(const T& arCommand, size_t aIndex, u
 		// are all values what we expect them to be?
 		if(expectedSeq == aSequence && aCode == iter->second.mCode && arCommand == iter->second.mCommand) {
 			// now check the timestamp
-			auto now = mpTimeSource->GetMillisecondsSinceEpoch();
-			if((now - iter->second.mTimestamp) < mSelectTimeout) {
+			auto now = mpExecutor->GetTime();
+			if((now.milliseconds - iter->second.mTimestamp.milliseconds) < mSelectTimeout.GetMilliseconds()) {
 				if(iter->second.mOperated) {
 					return CS_SUCCESS;
 				}

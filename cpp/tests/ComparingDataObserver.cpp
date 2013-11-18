@@ -59,10 +59,10 @@ bool ComparingDataObserver::IsSameData()
 
 }
 
-bool ComparingDataObserver::WaitForSameData(millis_t aWaitMs)
+bool ComparingDataObserver::WaitForSameData(TimeDuration aWaitMs)
 {
 	std::unique_lock<std::mutex> lock(mMutex);
-	if(!mSameData) mCondition.wait_for(lock, std::chrono::milliseconds(aWaitMs));
+	if(!mSameData) mCondition.wait_for(lock, std::chrono::milliseconds(aWaitMs.GetMilliseconds()));
 	return mSameData;
 }
 

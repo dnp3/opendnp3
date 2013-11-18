@@ -30,7 +30,7 @@ namespace opendnp3
 {
 
 
-UnsolicitedChannel::UnsolicitedChannel(openpal::Logger aLogger, AppLayer* apApp, IExecutor* apExecutor,openpal::millis_t aTimeout) :
+UnsolicitedChannel::UnsolicitedChannel(openpal::Logger aLogger, AppLayer* apApp, IExecutor* apExecutor, openpal::TimeDuration aTimeout) :
 	AppLayerChannel("Unsolicited", aLogger, apApp, apExecutor, aTimeout)
 {}
 

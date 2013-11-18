@@ -27,10 +27,10 @@ using namespace openpal;
 namespace opendnp3
 {
 
-OutstationSBOHandler::OutstationSBOHandler(millis_t aSelectTimeout, ICommandHandler* apCmdHandler, ITimeSource* apTimeSource) :
+OutstationSBOHandler::OutstationSBOHandler(TimeDuration aSelectTimeout, ICommandHandler* apCmdHandler, IExecutor* apExecutor) :
 	mSelectTimeout(aSelectTimeout),
 	mpCmdHandler(apCmdHandler),
-	mpTimeSource(apTimeSource),
+	mpExecutor(apExecutor),
 	mCurrentSequenceNum(0)
 {
 

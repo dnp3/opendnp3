@@ -157,7 +157,7 @@ BOOST_AUTO_TEST_CASE(TimeBasedSorting)
 	const size_t NUM = 3;
 	TimeOrderedEventBuffer<BinaryEvent> b(NUM);
 
-	millis_t times[NUM] = {3, 2, 1};
+	int64_t times[NUM] = {3, 2, 1};
 
 	Binary v; // false, restart, t = 0
 

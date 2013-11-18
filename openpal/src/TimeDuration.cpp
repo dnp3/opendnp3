@@ -20,48 +20,46 @@
 // you under the terms of the License.
 //
 
-#ifndef __MOCK_TIME_SOURCE_H_
-#define __MOCK_TIME_SOURCE_H_
+#include <openpal/TimeDuration.h>
 
-#include <opendnp3/ITimeSource.h>
+#include <limits>
 
-namespace opendnp3
+namespace openpal
 {
-
-class MockTimeSource : public ITimeSource
+	
+TimeDuration TimeDuration::Min()
 {
-public:
-
-	MockTimeSource() : mTime(openpal::timer_clock::time_point::min()) {}
-
-	// Implement ITimeSource
-	openpal::timer_clock::time_point GetUTC() {
-		return mTime;
-	}
-
-	openpal::timer_clock::time_point GetTimeStampUTC()
-	{
-		return mTime;
-	}
-
-	void SetTime(const openpal::timer_clock::time_point& arTime) {
-		mTime = arTime;
-	}
-
-	void Advance(const openpal::timer_clock::duration& arDuration) {
-		mTime += arDuration;
-	}
-
-	void SetToNow() {
-		mTime = openpal::timer_clock::now();
-	}
-
-private:
-
-	openpal::timer_clock::time_point mTime;
-};
-
+	return TimeDuration(std::numeric_limits<int64_t>::min());
 }
 
-#endif
+TimeDuration TimeDuration::Zero()
+{
+	return TimeDuration(0);
+}
 
+TimeDuration TimeDuration::Milliseconds(int64_t aMilliseconds)
+{
+	return TimeDuration(aMilliseconds);
+}
+
+TimeDuration TimeDuration::Seconds(int64_t aSeconds)
+{
+	return TimeDuration(1000*aSeconds);
+}	
+
+TimeDuration TimeDuration::Minutes(int64_t aMinutes)
+{
+	return TimeDuration(1000*60*aMinutes);
+}
+	
+TimeDuration::TimeDuration() : TimeDurationBase(0) {}
+
+TimeDuration::TimeDuration(int64_t aMilliseconds) : TimeDurationBase(aMilliseconds)
+{}
+
+bool operator==(const TimeDuration& lhs, const TimeDuration& rhs)
+{
+	return lhs.GetMilliseconds() == rhs.GetMilliseconds();
+}
+
+}

@@ -37,9 +37,9 @@ class AsyncTestObject
 public:
 	AsyncTestObject() {}
 
-	void ProceedForTime(openpal::millis_t aTimeout);
-	bool ProceedUntil(const EvalFunc& arFunc,openpal::millis_t aTimeout = G_TEST_TIMEOUT);
-	bool ProceedUntilFalse(const EvalFunc& arFunc,openpal::millis_t aTimeout = G_TEST_TIMEOUT);
+	void ProceedForTime(openpal::TimeDuration aTimeout);
+	bool ProceedUntil(const EvalFunc& arFunc, openpal::TimeDuration aTimeout = G_TEST_TIMEOUT);
+	bool ProceedUntilFalse(const EvalFunc& arFunc, openpal::TimeDuration aTimeout = G_TEST_TIMEOUT);
 
 	static bool Negate(const EvalFunc& arFunc) {
 		return !arFunc();

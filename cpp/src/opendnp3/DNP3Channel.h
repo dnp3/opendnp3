@@ -54,7 +54,7 @@ class ITimeWriteHandler;
 class DLL_LOCAL DNP3Channel: public IChannel, private openpal::Loggable
 {
 public:
-	DNP3Channel(openpal::Logger aLogger, openpal::millis_t aOpenRetry, IPhysicalLayerAsync* apPhys, std::function<void (DNP3Channel*)> aOnShutdown);
+	DNP3Channel(openpal::Logger aLogger, openpal::TimeDuration aOpenRetry, IPhysicalLayerAsync* apPhys, std::function<void (DNP3Channel*)> aOnShutdown);
 	~DNP3Channel();
 
 	// Implement IChannel - these are exposed to clients

@@ -44,7 +44,7 @@ namespace opendnp3
 class DLL_LOCAL SolicitedChannel : public AppLayerChannel
 {
 public:
-	SolicitedChannel(openpal::Logger aLogger, AppLayer* apApp, openpal::IExecutor* apExecutor, openpal::millis_t aTimeout);
+	SolicitedChannel(openpal::Logger aLogger, AppLayer* apApp, openpal::IExecutor* apExecutor, openpal::TimeDuration aTimeout);
 	virtual ~SolicitedChannel() {}
 
 	// Called when the app layer has a problem parsing an object header

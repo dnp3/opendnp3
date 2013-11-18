@@ -38,7 +38,6 @@
 
 #include "StackBase.h"
 #include "ChangeBuffer.h"
-#include "TimeSource.h"
 #include "APDU.h"
 #include "AppInterfaces.h"
 #include "EventBuffers.h"
@@ -90,7 +89,7 @@ class DLL_LOCAL Slave : public openpal::Loggable, public IAppUser, public StackB
 
 public:
 
-	Slave(openpal::Logger, IAppLayer*, openpal::IExecutor*, ITimeWriteHandler* apWriteHandler, Database*, ICommandHandler*, const SlaveConfig&, ITimeSource* apTimeSource = TimeSource::Inst());
+	Slave(openpal::Logger, IAppLayer*, openpal::IExecutor*, ITimeWriteHandler* apWriteHandler, Database*, ICommandHandler*, const SlaveConfig&);
 	~Slave();
 
 	////////////////////////
@@ -204,7 +203,7 @@ private:
 	
 	size_t FlushUpdates();
 	void FlushDeferredEvents();
-	void StartUnsolTimer(openpal::millis_t aTimeout);
+	void StartUnsolTimer(openpal::TimeDuration aTimeout);
 
 	// Task handlers
 

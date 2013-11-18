@@ -39,9 +39,6 @@ namespace openpal
 #define SIZE_MAX ~0
 #endif
 
-/// millisecond time type
-typedef int64_t millis_t;
-
 #define GCC_VERSION (__GNUC__ * 10000 + __GNUC_MINOR__ * 100 + __GNUC_PATCHLEVEL__)
 
 #if defined(__GNUC__) && (GCC_VERSION < 40700)

@@ -136,14 +136,14 @@ void ResponseLoader::ReadCTO(HeaderReadIterator& arIter)
 		return;
 	}
 
-	openpal::millis_t t = T::Inst()->mTime.Get(*i);
+	auto t = T::Inst()->mTime.Get(*i);
 	mCTO.SetCTO(t);
 }
 
 template <class T>
 void ResponseLoader::Read(HeaderReadIterator& arIter, StreamObject<T>* apObj)
 {
-	openpal::millis_t t = 0; //base time
+	int64_t t = 0;
 
 	if (apObj->UseCTO() && !mCTO.GetCTO(t)) {
 		LOG_BLOCK(openpal::LEV_ERROR,

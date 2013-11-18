@@ -25,8 +25,8 @@
 
 #include <openpal/Types.h>
 #include <openpal/Visibility.h>
-
 #include <openpal/Loggable.h>
+#include <openpal/TimeDuration.h>
 
 namespace openpal {
 class IExecutor;
@@ -61,7 +61,7 @@ class DLL_LOCAL AppLayerChannel : public openpal::Loggable
 	friend class ACS_WaitForFinalResponse;
 
 public:
-	AppLayerChannel(const std::string& arName, openpal::Logger&, AppLayer*, openpal::IExecutor*, openpal::millis_t aTimeout);
+	AppLayerChannel(const std::string& arName, openpal::Logger&, AppLayer*, openpal::IExecutor*, openpal::TimeDuration aTimeout);
 	virtual ~AppLayerChannel() {}
 
 	// Resets the channel to the initial state
@@ -123,7 +123,7 @@ private:
 	openpal::IExecutor* mpExecutor;
 	openpal::ITimer* mpTimer;
 	bool mConfirming;
-	const openpal::millis_t M_TIMEOUT;
+	const openpal::TimeDuration M_TIMEOUT;
 	const std::string M_NAME;
 };
 

@@ -60,7 +60,7 @@ openpal::ITimer* ASIOExecutor::Start(const openpal::TimeDuration& arDelay, const
 	std::lock_guard<std::mutex> lock(mMutex);
 	if(mIsShuttingDown) MACRO_THROW_EXCEPTION(openpal::InvalidStateException, "Can't start a timer while executor is shutting down");
 	TimerASIO* pTimer = GetTimer();
-	pTimer->mTimer.expires_from_now(std::chrono::milliseconds(arDelay.milliseconds));
+	pTimer->mTimer.expires_from_now(std::chrono::milliseconds(arDelay.GetMilliseconds()));
 	this->StartTimer(pTimer, arCallback);
 	return pTimer;
 }

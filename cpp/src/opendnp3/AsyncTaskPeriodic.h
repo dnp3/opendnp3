@@ -65,11 +65,11 @@ private:
 		@param apGroup Associated task group
 		@param arName Name associated with the task
 	*/
-	AsyncTaskPeriodic(openpal::millis_t aPeriod, openpal::millis_t aRetryDelay, int aPriority, const TaskHandler& arCallback, AsyncTaskGroup* apGroup, const std::string& arName);
+	AsyncTaskPeriodic(openpal::TimeDuration aPeriod, openpal::TimeDuration aRetryDelay, int aPriority, const TaskHandler& arCallback, AsyncTaskGroup* apGroup, const std::string& arName);
 
 
-	openpal::millis_t mPeriod;
-	openpal::millis_t mRetryDelay;
+	openpal::TimeDuration mPeriod;
+	openpal::TimeDuration mRetryDelay;
 };
 
 }

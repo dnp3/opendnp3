@@ -17,9 +17,6 @@
     <ClInclude Include="include\openpal\Types.h">
       <Filter>Include Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\openpal\Clock.h">
-      <Filter>Include Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\openpal\Visibility.h">
       <Filter>Include Files</Filter>
     </ClInclude>
@@ -82,9 +79,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Clock.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\LogEntry.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -113,6 +107,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\MonotonicTimestamp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\TimeDuration.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

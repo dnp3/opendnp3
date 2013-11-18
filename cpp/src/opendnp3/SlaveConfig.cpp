@@ -24,6 +24,8 @@
 
 #include <opendnp3/DNPConstants.h>
 
+using namespace openpal;
+
 namespace opendnp3
 {
 
@@ -46,10 +48,10 @@ SlaveConfig::SlaveConfig() :
 	mDisableUnsol(false),
 	mUnsolMask(true, true, true),
 	mAllowTimeSync(false),
-	mTimeSyncPeriod(10 * 60 * 1000), //every 10 min
-	mUnsolPackDelay(200),
-	mUnsolRetryDelay(2000),
-	mSelectTimeout(5000),
+	mTimeSyncPeriod(TimeDuration::Minutes(10)),
+	mUnsolPackDelay(TimeDuration::Milliseconds(200)),
+	mUnsolRetryDelay(TimeDuration::Seconds(2)),
+	mSelectTimeout(TimeDuration::Seconds(5)),
 	mMaxFragSize(DEFAULT_FRAG_SIZE),
 	mVtoWriterQueueSize(DEFAULT_VTO_WRITER_QUEUE_SIZE),
 	mEventMaxConfig(),

@@ -75,7 +75,7 @@ BOOST_AUTO_TEST_CASE(MasterToSlaveThroughput)
 	StopWatch sw;
 	for (size_t j = 0; j < NUM_CHANGE_SETS; ++j) {
 		num_points_per_pair += t.IncrementData();
-		BOOST_REQUIRE(t.WaitForSameData(60000, true));
+		BOOST_REQUIRE(t.WaitForSameData(TimeDuration::Seconds(60), true));
 		//cout << "iteration: " << j << endl;
 	}
 

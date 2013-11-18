@@ -40,7 +40,7 @@ using namespace openpal;
 namespace opendnp3
 {
 
-Slave::Slave(openpal::Logger aLogger, IAppLayer* apAppLayer, IExecutor* apExecutor, ITimeWriteHandler* apTimeWriteHandler, Database* apDatabase, ICommandHandler* apCmdHandler, const SlaveConfig& arCfg, ITimeSource* apTimeSource) :
+Slave::Slave(openpal::Logger aLogger, IAppLayer* apAppLayer, IExecutor* apExecutor, ITimeWriteHandler* apTimeWriteHandler, Database* apDatabase, ICommandHandler* apCmdHandler, const SlaveConfig& arCfg) :
 	Loggable(aLogger),
 	StackBase(apExecutor),
 	mpTimeWriteHandler(apTimeWriteHandler),
@@ -54,7 +54,7 @@ Slave::Slave(openpal::Logger aLogger, IAppLayer* apAppLayer, IExecutor* apExecut
 	mResponse(arCfg.mMaxFragSize),
 	mUnsol(arCfg.mMaxFragSize),
 	mRspContext(aLogger, apDatabase, &mRspTypes, arCfg.mEventMaxConfig),
-	mSBOHandler(arCfg.mSelectTimeout, apCmdHandler, apTimeSource),
+	mSBOHandler(arCfg.mSelectTimeout, apCmdHandler, apExecutor),
 	mHaveLastRequest(false),
 	mLastRequest(arCfg.mMaxFragSize),
 	mDeferredUpdate(false),
@@ -347,16 +347,16 @@ void Slave::HandleWriteTimeDate(HeaderReadIterator& arHWI)
 		return;
 	}
 
-	millis_t ms = Group50Var1::Inst()->mTime.Get(*obj);
+	auto utc = UTCTimestamp(Group50Var1::Inst()->mTime.Get(*obj));
 	//make the callback with the stack unwound
-	mpExecutor->Post([ms, this](){ mpTimeWriteHandler->WriteAbsoluteTime(ms); });  
+	mpExecutor->Post([utc, this](){ mpTimeWriteHandler->WriteAbsoluteTime(utc); });  
 
 	mIIN.SetNeedTime(false);
 
 	if(mLogger.IsEnabled(LEV_EVENT)) {
 		LogEntry le(LEV_EVENT, mLogger.GetName(), LOCATION,
 		            "Time synchronized with master", TIME_SYNC_UPDATED);
-		le.AddValue("MILLISEC_SINCE_EPOCH", ms);
+		le.AddValue("MILLISEC_SINCE_EPOCH", utc.msSinceEpoch);
 		mLogger.Log(le);
 	}
 }
@@ -570,17 +570,17 @@ void Slave::HandleUnknown()
 	mRspIIN.SetObjectUnknown(true);
 }
 
-void Slave::StartUnsolTimer(millis_t aTimeout)
+void Slave::StartUnsolTimer(openpal::TimeDuration aTimeout)
 {
 	assert(mpUnsolTimer == NULL);
-	mpUnsolTimer = mpExecutor->Start(TimeDuration(aTimeout), std::bind(&Slave::OnUnsolTimerExpiration, this));
+	mpUnsolTimer = mpExecutor->Start(aTimeout, std::bind(&Slave::OnUnsolTimerExpiration, this));
 }
 
 void Slave::ResetTimeIIN()
 {
 	mpTimeTimer = NULL;
 	mIIN.SetNeedTime(true);
-	mpTimeTimer = mpExecutor->Start(TimeDuration(mConfig.mTimeSyncPeriod), std::bind(&Slave::ResetTimeIIN, this));
+	mpTimeTimer = mpExecutor->Start(mConfig.mTimeSyncPeriod, std::bind(&Slave::ResetTimeIIN, this));
 }
 
 } //end ns

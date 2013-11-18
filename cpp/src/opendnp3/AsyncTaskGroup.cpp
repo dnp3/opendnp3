@@ -26,9 +26,8 @@
 #include "AsyncTaskPeriodic.h"
 #include "AsyncTaskNonPeriodic.h"
 #include "AsyncTaskContinuous.h"
-#include <openpal/IExecutor.h>
-#include "ITimeSource.h"
 
+#include <openpal/IExecutor.h>
 #include <openpal/Exception.h>
 #include <openpal/Location.h>
 
@@ -56,13 +55,13 @@ AsyncTaskGroup::~AsyncTaskGroup()
 for(AsyncTaskBase * p: mTaskVec) delete p;
 }
 
-AsyncTaskBase* AsyncTaskGroup::Add(openpal::millis_t aPeriod,openpal::millis_t aRetryDelay, int aPriority, const TaskHandler& arCallback, const std::string& arName)
+AsyncTaskBase* AsyncTaskGroup::Add(openpal::TimeDuration aPeriod, openpal::TimeDuration aRetryDelay, int aPriority, const TaskHandler& arCallback, const std::string& arName)
 {
 	AsyncTaskBase* pTask;
-	if(aPeriod >= 0)
-		pTask = new AsyncTaskPeriodic(aPeriod, aRetryDelay, aPriority, arCallback, this, arName);
+	if(aPeriod.GetMilliseconds() < 0)
+		pTask = new AsyncTaskNonPeriodic(aRetryDelay, aPriority, arCallback, this, arName);		
 	else
-		pTask = new AsyncTaskNonPeriodic(aRetryDelay, aPriority, arCallback, this, arName);
+		pTask = new AsyncTaskPeriodic(aPeriod, aRetryDelay, aPriority, arCallback, this, arName);
 
 	mTaskVec.push_back(pTask);
 	return pTask;

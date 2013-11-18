@@ -31,9 +31,11 @@
 
 #include <openpal/IHandlerAsync.h>
 #include <openpal/IExecutor.h>
+#include <openpal/Location.h>
+#include <openpal/TimeDuration.h>
 
 #include <opendnp3/ChannelStates.h>
-#include <openpal/Location.h>
+
 
 #include <set>
 #include <mutex>
@@ -84,7 +86,7 @@ public:
 
 	/** Posts a Shutdown() call and then waits for shutdown to complete.
 	*/
-	bool WaitForShutdown(openpal::millis_t aTimeout = -1);
+	bool WaitForShutdown(openpal::TimeDuration aTimeout = openpal::TimeDuration::Min());
 
 	openpal::Logger& GetLogger() {
 		return mLogger;

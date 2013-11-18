@@ -75,7 +75,7 @@ void IntegrationTest::ResetObservers()
 	}
 }
 
-bool IntegrationTest::WaitForSameData(millis_t aTimeout, bool aDescribeAnyMissingData)
+bool IntegrationTest::WaitForSameData(TimeDuration aTimeout, bool aDescribeAnyMissingData)
 {
 	for (size_t i = 0; i < this->mMasterObservers.size(); ++i) {
 		ComparingDataObserver* pObs = mMasterObservers[i].get();
@@ -139,8 +139,8 @@ void IntegrationTest::AddStackPair(FilterLevel aLevel, size_t aNumPoints)
 	std::shared_ptr<ComparingDataObserver> pMasterFDO(new ComparingDataObserver(&mLocalFDO));
 	mMasterObservers.push_back(pMasterFDO);
 
-	auto pClient = this->mMgr.AddTCPClient(client, aLevel, 1000, "127.0.0.1", port);
-	auto pServer = this->mMgr.AddTCPServer(server, aLevel, 1000, "127.0.0.1", port);
+	auto pClient = this->mMgr.AddTCPClient(client, aLevel, TimeDuration::Seconds(1), "127.0.0.1", port);
+	auto pServer = this->mMgr.AddTCPServer(server, aLevel, TimeDuration::Seconds(1), "127.0.0.1", port);
 
 	/*
 	 * Add a Master instance.  The code is wrapped in braces so that we can
@@ -148,8 +148,8 @@ void IntegrationTest::AddStackPair(FilterLevel aLevel, size_t aNumPoints)
 	 */
 	{
 		MasterStackConfig cfg;
-		cfg.app.RspTimeout = 20000;
-		cfg.master.IntegrityRate = -1;
+		cfg.app.RspTimeout = TimeDuration::Seconds(10);
+		cfg.master.IntegrityRate = TimeDuration::Min();
 		cfg.master.EnableUnsol = true;
 		cfg.master.DoUnsolOnStartup = true;
 		cfg.master.UnsolClassMask = PC_ALL_EVENTS;
@@ -162,9 +162,9 @@ void IntegrationTest::AddStackPair(FilterLevel aLevel, size_t aNumPoints)
 	 */
 	{
 		SlaveStackConfig cfg;
-		cfg.app.RspTimeout = 20000;
+		cfg.app.RspTimeout = TimeDuration::Seconds(10);
 		cfg.slave.mDisableUnsol = false;
-		cfg.slave.mUnsolPackDelay = 0;
+		cfg.slave.mUnsolPackDelay = TimeDuration::Zero();
 		cfg.device = DeviceTemplate(aNumPoints, aNumPoints, aNumPoints);
 		auto pOutstation = pServer->AddOutstation(server, aLevel, &mCmdHandler, NullTimeWriteHandler::Inst(), cfg);
 		this->mFanout.AddObserver(pOutstation->GetDataObserver());

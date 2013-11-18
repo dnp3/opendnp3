@@ -107,7 +107,7 @@ BOOST_AUTO_TEST_CASE(IntegrityOnStartup)
 
 BOOST_AUTO_TEST_CASE(StateTransitionSuccessFailure)
 {
-	MasterConfig cfg; cfg.IntegrityRate = 1000;
+	MasterConfig cfg; cfg.IntegrityRate = TimeDuration::Seconds(1);
 	MasterTestObject t(cfg);
 	t.BindStateListener();
 	BOOST_REQUIRE(t.mts.DispatchOne());
@@ -123,7 +123,7 @@ BOOST_AUTO_TEST_CASE(StateTransitionSuccessFailure)
 	BOOST_REQUIRE_EQUAL(t.states.front(), SS_COMMS_UP);
 	t.states.pop_front();
 
-	t.mts.AdvanceTime(TimeDuration(2000));
+	t.mts.AdvanceTime(TimeDuration::Seconds(2));
 	BOOST_REQUIRE(t.mts.DispatchOne());
 	TestForIntegrityPoll(t, false);
 
@@ -132,7 +132,7 @@ BOOST_AUTO_TEST_CASE(StateTransitionSuccessFailure)
 	BOOST_REQUIRE_EQUAL(t.states.front(), SS_COMMS_DOWN);
 	t.states.pop_front();
 
-	t.mts.AdvanceTime(TimeDuration(10000));
+	t.mts.AdvanceTime(TimeDuration::Seconds(10));
 	BOOST_REQUIRE(t.mts.DispatchOne());
 	TestForIntegrityPoll(t);
 
@@ -540,7 +540,7 @@ BOOST_AUTO_TEST_CASE(EventPoll)
 	MasterConfig master_cfg;
 	ExceptionScan scan;
 	scan.ClassMask = PC_CLASS_1 | PC_CLASS_2;
-	scan.ScanRate = 10;
+	scan.ScanRate = TimeDuration::Milliseconds(10);
 	master_cfg.mScans.push_back(scan);
 	scan.ClassMask = PC_CLASS_3;
 	master_cfg.mScans.push_back(scan);

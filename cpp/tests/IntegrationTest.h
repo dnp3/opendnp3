@@ -47,7 +47,7 @@ public:
 
 	size_t IncrementData();
 
-	bool WaitForSameData(openpal::millis_t aTimeout, bool aDescribeAnyMissingData);
+	bool WaitForSameData(openpal::TimeDuration aTimeout, bool aDescribeAnyMissingData);
 
 private:
 

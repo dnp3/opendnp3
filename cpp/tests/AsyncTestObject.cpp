@@ -33,10 +33,9 @@ using namespace std;
 namespace opendnp3
 {
 
-bool AsyncTestObject::ProceedUntil(const EvalFunc& arFunc,openpal::millis_t aTimeout)
+bool AsyncTestObject::ProceedUntil(const EvalFunc& arFunc, openpal::TimeDuration aTimeout)
 {
-	std::chrono::milliseconds ms = std::chrono::milliseconds(aTimeout);
-	Timeout to(ms);
+	Timeout to(std::chrono::milliseconds(aTimeout.GetMilliseconds()));
 
 	do {
 		if(arFunc()) return true;
@@ -47,12 +46,12 @@ bool AsyncTestObject::ProceedUntil(const EvalFunc& arFunc,openpal::millis_t aTim
 	return false;
 }
 
-void AsyncTestObject::ProceedForTime(millis_t aTimeout)
+void AsyncTestObject::ProceedForTime(openpal::TimeDuration aTimeout)
 {
 	ProceedUntil(std::bind(&AsyncTestObject::AlwaysBoolean, false), aTimeout);
 }
 
-bool AsyncTestObject::ProceedUntilFalse(const EvalFunc& arFunc,openpal::millis_t aTimeout)
+bool AsyncTestObject::ProceedUntilFalse(const EvalFunc& arFunc, openpal::TimeDuration aTimeout)
 {
 	return ProceedUntil(std::bind(&AsyncTestObject::Negate, std::cref(arFunc)), aTimeout);
 }

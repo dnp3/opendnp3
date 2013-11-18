@@ -32,7 +32,7 @@ AppLayerTest::AppLayerTest(bool aIsMaster, size_t aNumRetry, FilterLevel aLevel,
 	user(aIsMaster),
 	lower(Logger(&log, aLevel, "lower")),
 	mts(),
-	app(Logger(&log, aLevel, "app"), &mts, AppConfig(1000, aNumRetry))
+	app(Logger(&log, aLevel, "app"), &mts, AppConfig(TimeDuration::Seconds(1), aNumRetry))
 {
 	lower.SetUpperLayer(&app);
 	app.SetUser(&user);

@@ -51,8 +51,8 @@ BOOST_AUTO_TEST_CASE(ConstructionDestruction)
 
 		DNP3Manager mgr(std::thread::hardware_concurrency());
 
-		auto pClient = mgr.AddTCPClient("client", LEV_INFO, 5000, "127.0.0.1", 20000);
-		auto pServer = mgr.AddTCPServer("server", LEV_INFO, 5000, "127.0.0.1", 20000);
+		auto pClient = mgr.AddTCPClient("client", LEV_INFO, TimeDuration::Seconds(5), "127.0.0.1", 20000);
+		auto pServer = mgr.AddTCPServer("server", LEV_INFO, TimeDuration::Seconds(5), "127.0.0.1", 20000);
 		pClient->AddMaster("master", LEV_INFO, NullDataObserver::Inst(), UTCTimeSource::Inst(), MasterStackConfig());
 		pServer->AddOutstation("outstation", LEV_INFO, SuccessCommandHandler::Inst(), NullTimeWriteHandler::Inst(), SlaveStackConfig());
 
@@ -65,8 +65,8 @@ BOOST_AUTO_TEST_CASE(ManualStackShutdown)
 
 		DNP3Manager mgr(std::thread::hardware_concurrency());
 
-		auto pClient = mgr.AddTCPClient("client", LEV_INFO, 5000, "127.0.0.1", 20000);
-		auto pServer = mgr.AddTCPServer("server", LEV_INFO, 5000, "127.0.0.1", 20000);
+		auto pClient = mgr.AddTCPClient("client", LEV_INFO, TimeDuration::Seconds(5), "127.0.0.1", 20000);
+		auto pServer = mgr.AddTCPServer("server", LEV_INFO, TimeDuration::Seconds(5), "127.0.0.1", 20000);
 		auto pOutstation = pServer->AddOutstation("outstation", LEV_INFO, SuccessCommandHandler::Inst(), NullTimeWriteHandler::Inst(), SlaveStackConfig());
 		auto pMaster = pClient->AddMaster("master", LEV_INFO, NullDataObserver::Inst(), UTCTimeSource::Inst(), MasterStackConfig());
 
@@ -82,7 +82,7 @@ BOOST_AUTO_TEST_CASE(ManualChannelShutdownWithStack)
 
 		DNP3Manager mgr(std::thread::hardware_concurrency());
 
-		auto pChannel = mgr.AddTCPClient("client", LEV_INFO, 5000, "127.0.0.1", 20000);
+		auto pChannel = mgr.AddTCPClient("client", LEV_INFO, TimeDuration::Seconds(5), "127.0.0.1", 20000);
 		pChannel->AddMaster("master", LEV_INFO, NullDataObserver::Inst(), UTCTimeSource::Inst(), MasterStackConfig());
 		pChannel->Shutdown();
 	}
@@ -93,7 +93,7 @@ BOOST_AUTO_TEST_CASE(ManualChannelShutdown)
 	for(int i = 0; i < ITERATIONS; ++i) {
 
 		DNP3Manager mgr(std::thread::hardware_concurrency());
-		mgr.AddTCPClient("client", LEV_INFO, 5000, "127.0.0.1", 20000)->Shutdown();
+		mgr.AddTCPClient("client", LEV_INFO, TimeDuration::Seconds(5), "127.0.0.1", 20000)->Shutdown();
 
 	}
 }

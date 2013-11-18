@@ -24,7 +24,6 @@
 
 #include <openpal/Types.h>
 #include <opendnp3/Thread.h>
-#include <opendnp3/TimeSource.h>
 #include <opendnp3/Util.h>
 
 #include "TestHelpers.h"
