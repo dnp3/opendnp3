@@ -16,7 +16,6 @@ libopenpal_la_LDFLAGS = -version-info 1:1:0
 libopenpal_la_CXXFLAGS = -I$(top_srcdir)/openpal/include
 libopenpal_la_SOURCES = \
 openpal/src/AsyncLayerInterfaces.cpp \
-openpal/src/Clock.cpp \
 openpal/src/Exception.cpp \
 openpal/src/IHandlerAsync.cpp \
 openpal/src/LogEntry.cpp \
@@ -25,6 +24,7 @@ openpal/src/Logger.cpp \
 openpal/src/LogTypes.cpp \
 openpal/src/MonotonicTimestamp.cpp \
 openpal/src/Parsing.cpp \
+openpal/src/TimeDuration.cpp \
 openpal/src/ToHex.cpp
 
 #ls asiopal/src/*.cpp -1 | awk '{print $0" \\"}'
@@ -76,7 +76,6 @@ cpp/src/opendnp3/HeaderReadIterator.cpp \
 cpp/src/opendnp3/IndexedWriteIterator.cpp \
 cpp/src/opendnp3/IOServiceThreadPool.cpp \
 cpp/src/opendnp3/IStack.cpp \
-cpp/src/opendnp3/ITimeSource.cpp \
 cpp/src/opendnp3/ITimeWriteHandler.cpp \
 cpp/src/opendnp3/LinkFrame.cpp \
 cpp/src/opendnp3/LinkHeader.cpp \
@@ -133,7 +132,6 @@ cpp/src/opendnp3/SubjectBase.cpp \
 cpp/src/opendnp3/Threadable.cpp \
 cpp/src/opendnp3/Thread.cpp \
 cpp/src/opendnp3/TimerASIO.cpp \
-cpp/src/opendnp3/TimeSource.cpp \
 cpp/src/opendnp3/TimeTransaction.cpp \
 cpp/src/opendnp3/TLS_Base.cpp \
 cpp/src/opendnp3/TrackingTaskGroup.cpp \
