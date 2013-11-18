@@ -36,9 +36,7 @@ using namespace openpal;
 namespace opendnp3
 {
 
-DNP3Manager::DNP3Manager(uint32_t aConcurrency, std::function<void()> aOnThreadStart, std::function<void()> aOnThreadExit) :
-	mpLog(new EventLog()),
-	mpThreadPool(new IOServiceThreadPool(Logger(mpLog.get(), LEV_INFO, "ThreadPool"),  aConcurrency, aOnThreadStart, aOnThreadExit))
+DNP3Manager::DNP3Manager()	
 {
 
 }
@@ -48,54 +46,22 @@ DNP3Manager::~DNP3Manager()
 	this->Shutdown();
 }
 
-void DNP3Manager::AddLogSubscriber(ILogBase* apLog)
-{
-	mpLog->AddLogSubscriber(apLog);
-}
-
 void DNP3Manager::Shutdown()
 {
 	std::set<DNP3Channel*> copy(mChannels);
-for(auto pChannel: copy) pChannel->Shutdown();
+	for(auto pChannel: copy) pChannel->Shutdown();
 }
-
-IChannel* DNP3Manager::AddTCPClient(const std::string& arName, FilterLevel aLevel, openpal::TimeDuration aOpenRetry, const std::string& arAddr, uint16_t aPort)
-{
-	auto logger = Logger(mpLog.get(), aLevel, arName);
-	auto pPhys = new PhysicalLayerAsyncTCPClient(logger, mpThreadPool->GetIOService(), arAddr, aPort);
-	return CreateChannel(logger, aOpenRetry, pPhys);
-}
-
-IChannel* DNP3Manager::AddTCPServer(const std::string& arName, FilterLevel aLevel,openpal::TimeDuration aOpenRetry, const std::string& arEndpoint, uint16_t aPort)
-{
-	auto logger = Logger(mpLog.get(), aLevel, arName);
-	auto pPhys = new PhysicalLayerAsyncTCPServer(logger, mpThreadPool->GetIOService(), arEndpoint, aPort);
-	return CreateChannel(logger, aOpenRetry, pPhys);
-}
-
-#ifndef OPENDNP3_NO_SERIAL
-IChannel* DNP3Manager::AddSerial(const std::string& arName, FilterLevel aLevel, openpal::TimeDuration aOpenRetry, SerialSettings aSettings)
-{
-	auto logger = Logger(mpLog.get(), aLevel, arName);
-	auto pPhys = new PhysicalLayerAsyncSerial(logger, mpThreadPool->GetIOService(), aSettings);
-	return CreateChannel(logger, aOpenRetry, pPhys);
-}
-#endif
 
 IChannel* DNP3Manager::CreateChannel(openpal::Logger& arLogger, openpal::TimeDuration aOpenRetry, IPhysicalLayerAsync* apPhys)
 {
 	auto pChannel = new DNP3Channel(arLogger, aOpenRetry, apPhys, [this](DNP3Channel * apChannel) {
-		this->OnChannelShutdownCallback(apChannel);
+		mChannels.erase(apChannel);
+		delete apChannel;
 	});
 	mChannels.insert(pChannel);
 	return pChannel;
 }
 
-void DNP3Manager::OnChannelShutdownCallback(DNP3Channel* apChannel)
-{
-	mChannels.erase(apChannel);
-	delete apChannel;
-}
 
 }
 

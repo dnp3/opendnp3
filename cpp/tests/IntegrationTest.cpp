@@ -34,6 +34,8 @@
 #include <opendnp3/IChannel.h>
 #include <opendnp3/IOutstation.h>
 #include <opendnp3/ITimeWriteHandler.h>
+#include <opendnp3/PhysicalLayerAsyncTCPClient.h>
+#include <opendnp3/PhysicalLayerAsyncTCPServer.h>
 
 #include <asiopal/UTCTimeSource.h>
 
@@ -46,7 +48,9 @@ using namespace opendnp3;
 
 IntegrationTest::IntegrationTest(FilterLevel aLevel, boost::uint16_t aStartPort, size_t aNumPairs, size_t aNumPoints) :
 	M_START_PORT(aStartPort),
-	mMgr(std::thread::hardware_concurrency()),
+	mLog(),
+	mPool(Logger(&mLog, aLevel, "pool"), std::thread::hardware_concurrency()),
+	mMgr(),
 	NUM_POINTS(aNumPoints)
 {
 	this->InitLocalObserver();
@@ -139,8 +143,11 @@ void IntegrationTest::AddStackPair(FilterLevel aLevel, size_t aNumPoints)
 	std::shared_ptr<ComparingDataObserver> pMasterFDO(new ComparingDataObserver(&mLocalFDO));
 	mMasterObservers.push_back(pMasterFDO);
 
-	auto pClient = this->mMgr.AddTCPClient(client, aLevel, TimeDuration::Seconds(1), "127.0.0.1", port);
-	auto pServer = this->mMgr.AddTCPServer(server, aLevel, TimeDuration::Seconds(1), "127.0.0.1", port);
+	auto pClientPhys = new PhysicalLayerAsyncTCPClient(Logger(&mLog, aLevel, client), mPool.GetIOService(), "127.0.0.1", port);
+	auto pClient = this->mMgr.CreateChannel(Logger(&mLog, aLevel, client), TimeDuration::Seconds(1), pClientPhys);
+
+	auto pServerPhys = new PhysicalLayerAsyncTCPServer(Logger(&mLog, aLevel, server), mPool.GetIOService(), "127.0.0.1", port);
+	auto pServer = this->mMgr.CreateChannel(Logger(&mLog, aLevel, server), TimeDuration::Seconds(1), pServerPhys);
 
 	/*
 	 * Add a Master instance.  The code is wrapped in braces so that we can

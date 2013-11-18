@@ -42,9 +42,7 @@
 
 #include "DestructorHook.h"
 
-#ifndef OPENDNP3_NO_SERIAL
-#include "SerialTypes.h"
-#endif
+
 
 /*! \mainpage opendnp3
 
@@ -73,8 +71,6 @@ int main(int argc, char* argv[])
 namespace opendnp3
 {
 
-class IOServiceThreadPool;
-class EventLog;
 class IChannel;
 class DNP3Channel;
 
@@ -92,24 +88,12 @@ All callbacks come from a thread in the pool.
 class DNP3Manager : public DestructorHook
 {
 public:
-	/** Constructor with optional callback paramters
-	*   @param aConcurrency The number of threads allocated to the pool.
-	*	@param aOnThreadStart Callback each thread will make before doing any work
-	*   @param aOnThreadExit Callback each thread will make just before exiting
-	*/
-	DNP3Manager(
-	        uint32_t aConcurrency,
-	std::function<void()> aOnThreadStart = []() {},
-	std::function<void()> aOnThreadExit = []() {}
-	);
+	
+	DNP3Manager();
 
 	~DNP3Manager();
-
-	/**
-	* Add a callback to receive log messages
-	* @param apLog Pointer to a callback object
-	*/
-	void AddLogSubscriber(openpal::ILogBase* apLog);
+	
+	IChannel* CreateChannel(openpal::Logger& arLogger, openpal::TimeDuration aOpenRetry, openpal::IPhysicalLayerAsync* apPhys);
 
 	/**
 	* Permanently shutdown the manager and all sub-objects that have been created. Stop
@@ -117,47 +101,10 @@ public:
 	*/
 	void Shutdown();
 
-	/**
-	* Add a tcp client channel
-	*
-	* @param arLoggerId name that will be used in all log messages
-	* @param aLevel lowest log level of all messages
-	* @param aOpenRetry connection retry interval on failure in milliseconds
-	* @param arHost IP address of remote outstation (i.e. 127.0.0.1 or www.google.com)
-	* @param aPort Port of remote outstation is listening on
-	*/
-	IChannel* AddTCPClient(const std::string& arLoggerId, openpal::FilterLevel aLevel, openpal::TimeDuration aOpenRetry, const std::string& arHost, uint16_t aPort);
-
-	/**
-	* Add a tcp server channel
-	*
-	* @param arLoggerId name that will be used in all log messages
-	* @param aLevel lowest log level of all messages
-	* @param aOpenRetry connection retry interval on bind failure in milliseconds
-	* @param arEndpoint Network adapter to listen on, i.e. 127.0.0.1 or 0.0.0.0
-	* @param aPort Port to listen on
-	*/
-	IChannel* AddTCPServer(const std::string& arLoggerId, openpal::FilterLevel aLevel, openpal::TimeDuration aOpenRetry, const std::string& arEndpoint, uint16_t aPort);
-
-#ifndef OPENDNP3_NO_SERIAL
-	/**
-	* Add a serial channel
-	* @param arLoggerId name that will be used in all log messages
-	* @param aLevel lowest log level of all messages
-	* @param aOpenRetry connection retry interval on open failure in milliseconds
-	* @param aSettings settings object that fully parameterizes the serial port
-	*/
-	IChannel* AddSerial(const std::string& arLoggerId, openpal::FilterLevel aLevel, openpal::TimeDuration aOpenRetry, SerialSettings aSettings);
-#endif
-
 private:
 
-	void OnChannelShutdownCallback(DNP3Channel* apChannel);
-
-	IChannel* CreateChannel(openpal::Logger& arLogger, openpal::TimeDuration aOpenRetry, openpal::IPhysicalLayerAsync* apPhys);
-
-	std::auto_ptr<EventLog> mpLog;
-	std::auto_ptr<IOServiceThreadPool> mpThreadPool;
+	void OnChannelShutdownCallback(DNP3Channel* apChannel);	
+	
 	std::set<DNP3Channel*> mChannels;
 };
 
