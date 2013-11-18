@@ -22,8 +22,6 @@
 
 #include "LogTester.h"
 
-#include <opendnp3/LogToStdio.h>
-
 using namespace openpal;
 
 namespace opendnp3

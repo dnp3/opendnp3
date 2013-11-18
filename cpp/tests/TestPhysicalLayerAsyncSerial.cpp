@@ -30,8 +30,6 @@
 #include <boost/bind.hpp>
 
 #include <opendnp3/Thread.h>
-#include <opendnp3/Log.h>
-
 #include <openpal/Exception.h>
 
 using namespace opendnp3;

@@ -17,60 +17,52 @@
 //
 // This file was forked on 01/01/2013 by Automatak, LLC and modifications
 // have been made to this file. Automatak, LLC licenses these modifications to
-// you under the terms of the License.
+// you under the GNU Affero General Public License Version 3.0
+// (the "Additional License"). You may not use these modifications except in
+// compliance with the additional license. You may obtain a copy of the Additional
+// License at
 //
+// http://www.gnu.org/licenses/agpl.html
+//
+// Contact Automatak, LLC for a commercial license to these modifications
+//
+#ifndef __LOG_TO_STDIO_H_
+#define __LOG_TO_STDIO_H_
 
-#ifndef __EVENT_LOG_H_
-#define __EVENT_LOG_H_
-
-
-#include <assert.h>
-#include <map>
-#include <vector>
 #include <mutex>
-#include <set>
-
 #include <openpal/LogBase.h>
-#include <opendnp3/Uncopyable.h>
-#include <openpal/Visibility.h>
 
-namespace opendnp3
+namespace asiopal
 {
 
-class DLL_LOCAL EventLog : public openpal::ILogBase, private Uncopyable
+/**
+* Singleton class that prints all log messages to the console
+*
+*
+*/
+class LogToStdio : public openpal::ILogBase
 {
-public:	
 
-	/**
-	* Binds a listener to ALL log messages
-	*/
-	void AddLogSubscriber(ILogBase* apSubscriber);
+public:
+	static LogToStdio* Inst() {
+		return &mInstance;
+	}
 
-	/**
-	* Binds a listener to only certain error messages
-	*/
-	void AddLogSubscriber(ILogBase* apSubscriber, int aErrorCode);
-
-	/**
-	* Cancels a previous binding
-	*/
-	void RemoveLogSubscriber(ILogBase* apBase);
-
-	//implement the log function from ILogBase
 	void Log( const openpal::LogEntry& arEntry );
+	void SetVar(const std::string& aSource, const std::string& aVarName, int aValue) {}
+
+	void SetPrintLocation(bool aPrintLocation);
+
+protected:
+	LogToStdio();
 
 private:
-
-	bool SetContains(const std::set<int>& arSet, int aValue);
-
-	std::mutex mMutex;	
-	typedef std::map<ILogBase*, std::set<int> > SubscriberMap;
-	SubscriberMap mSubscribers;
-
+	std::string ToNormalizedString(const std::chrono::high_resolution_clock::time_point& arTime);
+	static LogToStdio mInstance;
+	bool mPrintLocation;
+	std::mutex mMutex;
 };
-
 
 }
 
 #endif
-

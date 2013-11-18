@@ -90,9 +90,6 @@
     <ClInclude Include="include\opendnp3\LogEntry.h">
       <Filter>Include Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\opendnp3\LogToStdio.h">
-      <Filter>Include Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\opendnp3\LogTypes.h">
       <Filter>Include Files</Filter>
     </ClInclude>
@@ -582,12 +579,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\LinkRoute.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\Log.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\LogToStdio.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\Master.cpp">

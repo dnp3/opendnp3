@@ -20,7 +20,7 @@
 // you under the terms of the License.
 //
 
-#include <opendnp3/LogToStdio.h>
+#include <asiopal/LogToStdio.h>
 
 #include <ctime>
 
@@ -31,7 +31,7 @@
 using namespace std;
 using namespace std::chrono;
 
-namespace opendnp3
+namespace asiopal
 {
 
 LogToStdio LogToStdio::mInstance;

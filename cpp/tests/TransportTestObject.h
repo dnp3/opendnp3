@@ -23,7 +23,7 @@
 #ifndef __TRANSPORT_TEST_OBJECT_H_
 #define __TRANSPORT_TEST_OBJECT_H_
 
-#include <opendnp3/Log.h>
+#include <asiopal/Log.h>
 #include <opendnp3/TransportLayer.h>
 
 #include <vector>

@@ -25,8 +25,8 @@
 #include "TestHelpers.h"
 #include "StopWatch.h"
 
-#include <opendnp3/Log.h>
-#include <opendnp3/LogToStdio.h>
+#include <asiopal/Log.h>
+#include <asiopal/LogToStdio.h>
 
 #include <openpal/Exception.h>
 

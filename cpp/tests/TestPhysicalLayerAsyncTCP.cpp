@@ -25,8 +25,7 @@
 
 #include <functional>
 
-#include <opendnp3/LogToStdio.h>
-
+#include <asiopal/Log.h>
 #include <asiopal/ASIOExecutor.h>
 
 #include <openpal/Exception.h>

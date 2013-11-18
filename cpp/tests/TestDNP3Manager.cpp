@@ -27,12 +27,11 @@
 #include <opendnp3/IMaster.h>
 #include <opendnp3/IOutstation.h>
 #include <opendnp3/SimpleCommandHandler.h>
-#include <opendnp3/LogToStdio.h>
 #include <opendnp3/SimpleDataObserver.h>
 #include <opendnp3/ITimeWriteHandler.h>
 
-#include <opendnp3/Log.h>
-
+#include <asiopal/Log.h>
+#include <asiopal/LogToStdio.h>
 #include <asiopal/IOServiceThreadPool.h>
 #include <asiopal/PhysicalLayerAsyncTCPClient.h>
 #include <asiopal/PhysicalLayerAsyncTCPServer.h>

@@ -24,7 +24,7 @@
 #include "TestHelpers.h"
 #include "LogTester.h"
 
-#include <opendnp3/Log.h>
+#include <asiopal/Log.h>
 
 #include <openpal/Exception.h>
 
@@ -35,13 +35,6 @@
 using namespace boost;
 using namespace std;
 using namespace opendnp3;
-
-
-#ifdef GetMessage
-//to deal with that stupid windows GetMessageA define.
-#undef GetMessage
-#endif
-
 using namespace openpal;
 
 BOOST_AUTO_TEST_SUITE(LogTest)

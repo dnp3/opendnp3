@@ -24,7 +24,8 @@
 
 #include <openpal/Exception.h>
 
-#include <opendnp3/Log.h>
+#include <asiopal/Log.h>
+
 #include <opendnp3/PhysicalLayerMonitor.h>
 #include <opendnp3/PhysicalLayerMonitorStates.h>
 
@@ -35,6 +36,7 @@
 using namespace opendnp3;
 using namespace std::chrono;
 using namespace openpal;
+using namespace asiopal;
 
 class ConcretePhysicalLayerMonitor : public PhysicalLayerMonitor
 {

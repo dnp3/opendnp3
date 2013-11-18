@@ -27,7 +27,6 @@
 // Contact Automatak, LLC for a commercial license to these modifications
 //
 
-#include <opendnp3/LogToStdio.h>
 #include <opendnp3/SimpleDataObserver.h>
 #include <opendnp3/DNP3Manager.h>
 #include <opendnp3/IChannel.h>
@@ -35,12 +34,17 @@
 #include <opendnp3/MasterStackConfig.h>
 #include <opendnp3/ICommandProcessor.h>
 
+#include <asiopal/Log.h>
+#include <asiopal/LogToStdio.h>
 #include <asiopal/UTCTimeSource.h>
+#include <asiopal/PhysicalLayerAsyncTCPClient.h>
+#include <asiopal/IOServiceThreadPool.h>
 
 #include <iostream>
 #include <future>
 
 using namespace std;
+using namespace asiopal;
 using namespace opendnp3;
 
 int main(int argc, char* argv[])
@@ -50,18 +54,21 @@ int main(int argc, char* argv[])
 	// Log statements with a lower priority will not be logged.
 	const FilterLevel LOG_LEVEL = LEV_INFO;
 
-	// This is the main point of interaction with the stack. The
-	// AsyncStackManager object instantiates master/slave DNP
-	// stacks, as well as their physical layers.
-	DNP3Manager mgr(1); // 1 stack only needs 1 thread
-
+	EventLog log;
 	// You can optionally subcribe to log messages
 	// This singleton logger just prints messages to the console
-	mgr.AddLogSubscriber(LogToStdio::Inst());
+	log.AddLogSubscriber(LogToStdio::Inst());
 
-	// Connect via a TCPClient socket to a slave.  The server will
+	// asio thread pool that drives the stack
+	IOServiceThreadPool pool(Logger(&log, LOG_LEVEL, "pool"), 1); // 1 stack only needs 1 thread	
+
+	// This is the main point of interaction with the stack
+	DNP3Manager mgr; 
+
+	// Connect via a TCPClient socket to a slave
+	auto pClientPhys = new PhysicalLayerAsyncTCPClient(Logger(&log, LOG_LEVEL, "tcpclient"), pool.GetIOService(), "127.0.0.1", 20000);
 	// wait 3000 ms in between failed connect calls.
-	auto pClient = mgr.AddTCPClient("tcpclient", LOG_LEVEL, TimeDuration::Seconds(3), "127.0.0.1", 20000);
+	auto pClient = mgr.CreateChannel(Logger(&log, LOG_LEVEL, "tcpclient"), TimeDuration::Seconds(3), pClientPhys);
 
 	// You can optionally add a listener to the channel. You can do this anytime and
 	// you will receive a stream of all state changes

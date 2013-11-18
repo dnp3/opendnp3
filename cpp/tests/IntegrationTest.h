@@ -23,7 +23,7 @@
 #ifndef __INTEGRATION_TEST_H_
 #define __INTEGRATION_TEST_H_
 
-#include <opendnp3/Log.h>
+#include <asiopal/Log.h>
 #include <opendnp3/DNP3Manager.h>
 
 #include <asiopal/IOServiceThreadPool.h>
@@ -78,7 +78,7 @@ private:
 	FlexibleDataObserver mLocalFDO;
 	MockCommandHandler mCmdHandler;
 
-	EventLog mLog;
+	asiopal::EventLog mLog;
 	asiopal::IOServiceThreadPool mPool;
 	DNP3Manager mMgr;
 	size_t NUM_POINTS;

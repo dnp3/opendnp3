@@ -27,7 +27,7 @@
 // Contact Automatak, LLC for a commercial license to these modifications
 //
 
-#include <opendnp3/LogToStdio.h>
+
 #include <opendnp3/DNP3Manager.h>
 #include <opendnp3/SlaveStackConfig.h>
 #include <opendnp3/IChannel.h>
@@ -36,9 +36,11 @@
 #include <opendnp3/TimeTransaction.h>
 #include <opendnp3/ITimeWriteHandler.h>
 
-#include <opendnp3/IOServiceThreadPool.h>
-
+#include <asiopal/Log.h>
+#include <asiopal/LogToStdio.h>
+#include <asiopal/IOServiceThreadPool.h>
 #include <asiopal/UTCTimeSource.h>
+#include <asiopal/PhysicalLayerAsyncTCPServer.h>
 
 #include <string>
 #include <iostream>
@@ -52,19 +54,21 @@ int main(int argc, char* argv[])
 	// Specify a FilterLevel for the stack/physical layer to use.
 	// Log statements with a lower priority will not be logged.
 	const FilterLevel LOG_LEVEL = LEV_INFO;
+		
+	EventLog log;
+	// You can optionally subcribe to log messages
+	// This singleton logger just prints messages to the console
+	log.AddLogSubscriber(LogToStdio::Inst());
 
-	//IOServerThreadPool pool;
+	IOServiceThreadPool pool(Logger(&log, LOG_LEVEL, "pool"), 1); // only 1 thread is needed for a single stack
 
 	// This is the main point of interaction with the stack
 	DNP3Manager mgr; // only 1 thread is needed for a single stack
 
-	// You can optionally subcribe to log messages
-	// This singleton logger just prints messages to the console
-	mgr.AddLogSubscriber(LogToStdio::Inst());
-
-	// Add a TCPServer to the manager with the name "tcpserver".
-	// The server will wait 3000 ms in between failed bind calls.
-	auto pServer = mgr.AddTCPServer("tcpserver", LOG_LEVEL, TimeDuration::Seconds(5), "127.0.0.1", 20000);
+	// Create the raw physical layer
+	auto pServerPhys = new PhysicalLayerAsyncTCPServer(Logger(&log, LOG_LEVEL, "tcpserver"), pool.GetIOService(), "127.0.0.1", 20000);
+	// Wrap the physical layer in a DNP channel
+	auto pServer = mgr.CreateChannel(Logger(&log, LOG_LEVEL, "tcpserver"), TimeDuration::Seconds(5), pServerPhys);
 
 	// You can optionally add a listener to the channel. You can do this anytime and
 	// you will receive a stream of all state changes

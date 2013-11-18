@@ -47,6 +47,12 @@
     <ClCompile Include="src\SerialTypes.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Log.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\LogToStdio.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\UTCTimeSource.h">
@@ -90,6 +96,12 @@
     </ClInclude>
     <ClInclude Include="src\TimerASIO.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\asiopal\Log.h">
+      <Filter>Include Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\asiopal\LogToStdio.h">
+      <Filter>Include Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

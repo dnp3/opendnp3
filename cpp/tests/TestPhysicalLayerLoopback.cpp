@@ -22,7 +22,7 @@
 
 #include <boost/test/unit_test.hpp>
 
-#include <opendnp3/Log.h>
+#include <asiopal/Log.h>
 
 #include "PhysLoopback.h"
 #include "MockExecutor.h"
@@ -47,7 +47,7 @@ public:
 		loopback.Start();
 	}
 
-	EventLog log;
+	asiopal::EventLog log;
 	MockExecutor exe;
 	MockPhysicalLayerAsync phys;
 	PhysLoopback loopback;

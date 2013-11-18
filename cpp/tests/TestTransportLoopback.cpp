@@ -29,7 +29,8 @@
 #include <openpal/Exception.h>
 
 #include <opendnp3/ProtocolUtil.h>
-#include <opendnp3/Log.h>
+
+#include <asiopal/Log.h>
 #include <asiopal/PhysicalLayerAsyncSerial.h>
 
 #include "TestHelpers.h"
@@ -39,6 +40,7 @@
 using namespace std;
 using namespace opendnp3;
 using namespace openpal;
+using namespace asiopal;
 using namespace boost;
 
 BOOST_AUTO_TEST_SUITE(AsyncTransportLoopback)

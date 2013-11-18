@@ -23,7 +23,7 @@
 #ifndef __RESPONSE_LOADER_TEST_OBJECT_H_
 #define __RESPONSE_LOADER_TEST_OBJECT_H_
 
-#include <opendnp3/Log.h>
+#include <asiopal/Log.h>
 
 #include <openpal/Logger.h>
 
@@ -48,7 +48,7 @@ public:
 	FlexibleDataObserver fdo;
 
 	private: 
-		EventLog log;		
+		asiopal::EventLog log;		
 		openpal::Logger mLogger;
 
 };

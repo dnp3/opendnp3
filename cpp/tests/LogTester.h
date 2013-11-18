@@ -23,7 +23,6 @@
 #ifndef __LOG_TESTER_H_
 #define __LOG_TESTER_H_
 
-#include <opendnp3/Log.h>
 #include <openpal/Logger.h>
 #include <queue>
 

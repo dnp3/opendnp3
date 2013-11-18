@@ -25,7 +25,7 @@
 
 #include <queue>
 #include <opendnp3/Database.h>
-#include <opendnp3/Log.h>
+#include <asiopal/Log.h>
 
 namespace opendnp3
 {
@@ -74,7 +74,7 @@ public:
 		db.SetEventBuffer(&buffer);
 	}
 
-	EventLog log;
+	asiopal::EventLog log;
 	MockEventBuffer buffer;
 	Database db;
 };

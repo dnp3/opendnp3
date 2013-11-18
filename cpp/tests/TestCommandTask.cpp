@@ -27,10 +27,11 @@
 
 #include <opendnp3/CommandTask.h>
 #include <opendnp3/CommandHelpers.h>
-#include <opendnp3/Log.h>
+#include <asiopal/Log.h>
 
 using namespace opendnp3;
 using namespace openpal;
+using namespace asiopal;
 
 BOOST_AUTO_TEST_SUITE(CommandTaskTestSuite)
 

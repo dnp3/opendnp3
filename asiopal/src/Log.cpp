@@ -23,15 +23,14 @@
 #include <sstream>
 #include <exception>
 
-#include "Log.h"
-#include "Thread.h"
+#include <asiopal/Log.h>
 
 #include <openpal/Exception.h>
 
 using namespace std;
 using namespace openpal;
 
-namespace opendnp3
+namespace asiopal
 {
 
 

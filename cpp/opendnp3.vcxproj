@@ -189,7 +189,6 @@
     <ClInclude Include="include\opendnp3\LinkLayerConstants.h" />
     <ClInclude Include="include\opendnp3\LogEntry.h" />
     <ClInclude Include="include\opendnp3\LogEntryCircularBuffer.h" />
-    <ClInclude Include="include\opendnp3\LogToStdio.h" />
     <ClInclude Include="include\opendnp3\LogTypes.h" />
     <ClInclude Include="include\opendnp3\MasterConfig.h" />
     <ClInclude Include="include\opendnp3\MasterConfigTypes.h" />
@@ -351,8 +350,6 @@
     <ClCompile Include="src\opendnp3\LinkLayerRouter.cpp" />
     <ClCompile Include="src\opendnp3\LinkReceiverStates.cpp" />
     <ClCompile Include="src\opendnp3\LinkRoute.cpp" />
-    <ClCompile Include="src\opendnp3\Log.cpp" />
-    <ClCompile Include="src\opendnp3\LogToStdio.cpp" />
     <ClCompile Include="src\opendnp3\Master.cpp" />
     <ClCompile Include="src\opendnp3\MasterSchedule.cpp" />
     <ClCompile Include="src\opendnp3\MasterStackImpl.cpp" />
