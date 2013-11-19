@@ -65,6 +65,7 @@ JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1ch
 	}
 	catch(Exception ex) {
 		MACRO_RETHROW_EXCEPTION(pEnv, ex);
+		return NULL;
 	}
 }
 
@@ -80,6 +81,7 @@ JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1ch
 	}
 	catch(Exception ex) {
 		MACRO_RETHROW_EXCEPTION(pEnv, ex)
+		return NULL;
 	}
 }
 
@@ -102,6 +104,7 @@ JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1ch
 	}
 	catch(Exception ex) {
 		MACRO_RETHROW_EXCEPTION(pEnv, ex)
+		return NULL;
 	}
 }
 
