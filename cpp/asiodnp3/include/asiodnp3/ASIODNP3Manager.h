@@ -28,7 +28,7 @@ public:
 			std::function<void()> aOnThreadExit = []() {}
         );     
 
-		ASIODNP3Manager::~ASIODNP3Manager();
+	~ASIODNP3Manager();
 
         /**
         * Add a callback to receive log messages

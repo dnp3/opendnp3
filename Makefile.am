@@ -5,12 +5,12 @@ ACLOCAL_AMFLAGS = -I m4
 CORE_BOOST_LIBS = $(BOOST_SYSTEM_LIB)
 TEST_BOOST_LIBS = $(CORE_BOOST_LIBS) $(BOOST_UNIT_TEST_FRAMEWORK_LIB)
 
-
 BOOST_DEFINES = $(BOOST_CPPFLAGS) -DBOOST_TEST_DYN_LINK -DBOOST_ASIO_ENABLE_CANCELIO -DBOOST_REGEX_NO_LIB -D_GLIBCXX_USE_NANOSLEEP
 
 OPENPAL_INCLUDE = $(top_srcdir)/cpp/openpal/include
 ASIOPAL_INCLUDE = $(top_srcdir)/cpp/asiopal/include
 OPENDNP3_INCLUDE = $(top_srcdir)/cpp/opendnp3/include
+ASIODNP3_INCLUDE = $(top_srcdir)/cpp/asiodnp3/include
 OPENDNP3_SRCS = $(top_srcdir)/cpp/opendnp3/src
 
 
@@ -240,27 +240,34 @@ cpp/opendnp3tests/src/TransportStackPair.cpp \
 cpp/opendnp3tests/src/TransportTestObject.cpp \
 cpp/opendnp3tests/src/WrappedTcpPipe.cpp
 
-
-
 if WANT_JAVA
-	
-#lib_LTLIBRARIES += libopendnp3java.la
-#libopendnp3java_la_CPPFLAGS = -I./cpp/src
-#libopendnp3java_la_LDFLAGS = -version-info 1:1:0
-#libopendnp3java_la_LIBADD = libopendnp3.la
-#libopendnp3java_la_SOURCES = \
-#	java/cpp/com_automatak_dnp3_impl_ChannelImpl.cpp \
-#	java/cpp/com_automatak_dnp3_impl_CommandProcessorImpl.cpp \
-#	java/cpp/com_automatak_dnp3_impl_DataObserverImpl.cpp \
-#	java/cpp/com_automatak_dnp3_impl_ManagerImpl.cpp \
-#	java/cpp/com_automatak_dnp3_impl_MasterImpl.cpp \
-#	java/cpp/com_automatak_dnp3_impl_OutstationImpl.cpp \
-#	java/cpp/com_automatak_dnp3_impl_VTOEndpointImpl.cpp \
-#	java/cpp/com_automatak_dnp3_impl_StackBase.cpp \
-#	java/cpp/CommandHandlerAdapter.cpp \
-#	java/cpp/ConfigReader.cpp \
-#	java/cpp/DataObserverAdapter.cpp \
-#	java/cpp/JNIHelpers.cpp \
-#	java/cpp/LogSubscriberAdapter.cpp
+
+#ls cpp/asiodnp3/src/asiodnp3/*.cpp -1 | awk '{print $0" \\"}'
+lib_LTLIBRARIES += libasiodnp3.la
+libasiodnp3_la_CPPFLAGS = -I$(OPENPAL_INCLUDE) -I$(ASIOPAL_INCLUDE) -I $(OPENDNP3_INCLUDE) -I$(ASIODNP3_INCLUDE) $(BOOST_DEFINES)
+libasiodnp3_la_LDFLAGS = -version-info 1:1:0
+libasiodnp3_la_SOURCES = \
+cpp/asiodnp3/src/asiodnp3/ASIODNP3Manager.cpp
+
+#ls java/cpp/*.cpp -1 | awk '{print $0" \\"}'	
+lib_LTLIBRARIES += libopendnp3java.la
+libopendnp3java_la_CPPFLAGS = -I$(OPENPAL_INCLUDE) -I$(ASIOPAL_INCLUDE) -I $(OPENDNP3_INCLUDE) -I$(ASIODNP3_INCLUDE) $(BOOST_DEFINES)
+libopendnp3java_la_LDFLAGS = -version-info 1:1:0
+libopendnp3java_la_LIBADD = libopenpal.la libasiopal.la libopendnp3.la libasiodnp3.la
+libopendnp3java_la_SOURCES = \
+java/cpp/com_automatak_dnp3_impl_ChannelImpl.cpp \
+java/cpp/com_automatak_dnp3_impl_CommandProcessorImpl.cpp \
+java/cpp/com_automatak_dnp3_impl_DataObserverImpl.cpp \
+java/cpp/com_automatak_dnp3_impl_ManagerImpl.cpp \
+java/cpp/com_automatak_dnp3_impl_MasterImpl.cpp \
+java/cpp/com_automatak_dnp3_impl_OutstationImpl.cpp \
+java/cpp/com_automatak_dnp3_impl_StackBase.cpp \
+java/cpp/CommandHandlerAdapter.cpp \
+java/cpp/ConfigReader.cpp \
+java/cpp/DataObserverAdapter.cpp \
+java/cpp/JNIHelpers.cpp \
+java/cpp/LogSubscriberAdapter.cpp
+
+
 endif
 
