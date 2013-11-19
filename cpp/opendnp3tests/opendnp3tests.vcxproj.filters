@@ -9,424 +9,414 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="tests\AppLayerTest.h">
+    <ClInclude Include="src\AppLayerTest.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="tests\AsyncPhysBaseTest.h">
+    <ClInclude Include="src\AsyncPhysBaseTest.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="tests\AsyncPhysTestObject.h">
+    <ClInclude Include="src\AsyncPhysTestObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="tests\AsyncSerialTestObject.h">
+    <ClInclude Include="src\AsyncSerialTestObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="tests\AsyncTestObject.h">
+    <ClInclude Include="src\AsyncTestObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="tests\AsyncTestObjectASIO.h">
+    <ClInclude Include="src\AsyncTestObjectASIO.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="tests\BufferHelpers.h">
+    <ClInclude Include="src\BufferHelpers.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="tests\BufferTestObject.h">
+    <ClInclude Include="src\BufferTestObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="tests\ComparingDataObserver.h">
+    <ClInclude Include="src\ComparingDataObserver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="tests\DatabaseTestObject.h">
+    <ClInclude Include="src\DatabaseTestObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="tests\DNPHelpers.h">
+    <ClInclude Include="src\DNPHelpers.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="tests\FanoutDataObserver.h">
+    <ClInclude Include="src\FanoutDataObserver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="tests\IntegrationTest.h">
+    <ClInclude Include="src\FlexibleDataObserver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="tests\LinkLayerRouterTest.h">
+    <ClInclude Include="src\IntegrationTest.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="tests\LinkLayerTest.h">
+    <ClInclude Include="src\LinkLayerRouterTest.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="tests\LinkReceiverTest.h">
+    <ClInclude Include="src\LinkLayerTest.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="tests\LogTester.h">
+    <ClInclude Include="src\LinkReceiverTest.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="tests\LoopbackPhysicalLayerAsync.h">
+    <ClInclude Include="src\LogTester.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="tests\MasterTestObject.h">
+    <ClInclude Include="src\LoopbackPhysicalLayerAsync.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="tests\MockAppLayer.h">
+    <ClInclude Include="src\LowerLayerToPhysAdapter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="tests\MockAppUser.h">
+    <ClInclude Include="src\MasterTestObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="tests\MockCommandHandler.h">
+    <ClInclude Include="src\MockAppLayer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="tests\MockExecutor.h">
+    <ClInclude Include="src\MockAppUser.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="tests\MockFrameSink.h">
+    <ClInclude Include="src\MockCommandHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="tests\MockLogSubscriber.h">
+    <ClInclude Include="src\MockExecutor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="tests\MockLowerLayer.h">
+    <ClInclude Include="src\MockFrameSink.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="tests\MockPhysicalLayerAsync.h">
+    <ClInclude Include="src\MockLogSubscriber.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="tests\MockPhysicalLayerMonitor.h">
+    <ClInclude Include="src\MockLowerLayer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="tests\MockUpperLayer.h">
+    <ClInclude Include="src\MockPhysicalLayerAsync.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="tests\PhysicalLayerWrapper.h">
+    <ClInclude Include="src\MockPhysicalLayerMonitor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="tests\PhysicalLayerWrapperFactory.h">
+    <ClInclude Include="src\MockTimeWriteHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="tests\ReadableVtoWriter.h">
+    <ClInclude Include="src\MockUpperLayer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="tests\ResponseLoaderTestObject.h">
+    <ClInclude Include="src\PhysicalLayerWrapper.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="tests\SlaveTestObject.h">
+    <ClInclude Include="src\PhysicalLayerWrapperFactory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="tests\StopWatch.h">
+    <ClInclude Include="src\PhysLoopback.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="tests\TestHelpers.h">
+    <ClInclude Include="src\Random.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="tests\TestTypedefs.h">
+    <ClInclude Include="src\RandomDouble.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="tests\Timeout.h">
+    <ClInclude Include="src\RandomizedBuffer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="tests\TransportIntegrationStack.h">
+    <ClInclude Include="src\ReadableVtoWriter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="tests\TransportLoopbackTestObject.h">
+    <ClInclude Include="src\ResponseLoaderTestObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="tests\TransportScalabilityTestObject.h">
+    <ClInclude Include="src\SlaveTestObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="tests\TransportStackPair.h">
+    <ClInclude Include="src\StopWatch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="tests\TransportTestObject.h">
+    <ClInclude Include="src\TestHelpers.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="tests\VtoIntegrationTestBase.h">
+    <ClInclude Include="src\TestTypedefs.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="tests\WrappedTcpPipe.h">
+    <ClInclude Include="src\Timeout.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="tests\FlexibleDataObserver.h">
+    <ClInclude Include="src\TransportIntegrationStack.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="tests\LowerLayerToPhysAdapter.h">
+    <ClInclude Include="src\TransportLoopbackTestObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="tests\PhysLoopback.h">
+    <ClInclude Include="src\TransportScalabilityTestObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="tests\Random.h">
+    <ClInclude Include="src\TransportStackPair.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="tests\RandomDouble.h">
+    <ClInclude Include="src\TransportTestObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="tests\RandomizedBuffer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="tests\MockTimeWriteHandler.h">
+    <ClInclude Include="src\WrappedTcpPipe.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="tests\AppLayerTest.cpp">
+    <ClCompile Include="src\AppLayerTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="tests\AsyncPhysBaseTest.cpp">
+    <ClCompile Include="src\AsyncPhysBaseTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="tests\AsyncPhysTestObject.cpp">
+    <ClCompile Include="src\AsyncPhysTestObject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="tests\AsyncSerialTestObject.cpp">
+    <ClCompile Include="src\AsyncSerialTestObject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="tests\AsyncTestObject.cpp">
+    <ClCompile Include="src\AsyncTestObject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="tests\AsyncTestObjectASIO.cpp">
+    <ClCompile Include="src\AsyncTestObjectASIO.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="tests\BufferHelpers.cpp">
+    <ClCompile Include="src\BufferHelpers.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="tests\BufferTestObject.cpp">
+    <ClCompile Include="src\BufferTestObject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="tests\ComparingDataObserver.cpp">
+    <ClCompile Include="src\ComparingDataObserver.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="tests\DNPHelpers.cpp">
+    <ClCompile Include="src\DNPHelpers.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="tests\IntegrationTest.cpp">
+    <ClCompile Include="src\FlexibleDataObserver.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="tests\LinkLayerRouterTest.cpp">
+    <ClCompile Include="src\IntegrationTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="tests\LinkLayerTest.cpp">
+    <ClCompile Include="src\LinkLayerRouterTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="tests\LogTester.cpp">
+    <ClCompile Include="src\LinkLayerTest.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="tests\LoopbackPhysicalLayerAsync.cpp">
+    <ClCompile Include="src\LogTester.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="tests\MasterTestObject.cpp">
+    <ClCompile Include="src\LoopbackPhysicalLayerAsync.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="tests\MockAppLayer.cpp">
+    <ClCompile Include="src\LowerLayerToPhysAdapter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="tests\MockAppUser.cpp">
+    <ClCompile Include="src\MasterTestObject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="tests\MockExecutor.cpp">
+    <ClCompile Include="src\MockAppLayer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="tests\MockFrameSink.cpp">
+    <ClCompile Include="src\MockAppUser.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="tests\MockLowerLayer.cpp">
+    <ClCompile Include="src\MockExecutor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="tests\MockPhysicalLayerAsync.cpp">
+    <ClCompile Include="src\MockFrameSink.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="tests\MockPhysicalLayerMonitor.cpp">
+    <ClCompile Include="src\MockLowerLayer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="tests\MockUpperLayer.cpp">
+    <ClCompile Include="src\MockPhysicalLayerAsync.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="tests\PhysicalLayerWrapper.cpp">
+    <ClCompile Include="src\MockPhysicalLayerMonitor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="tests\ResponseLoaderTestObject.cpp">
+    <ClCompile Include="src\MockUpperLayer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="tests\SlaveTestObject.cpp">
+    <ClCompile Include="src\PhysicalLayerWrapper.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="tests\StopWatch.cpp">
+    <ClCompile Include="src\PhysLoopback.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="tests\TestAPDU.cpp">
+    <ClCompile Include="src\RandomizedBuffer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="tests\TestAPDUWriting.cpp">
+    <ClCompile Include="src\ResponseLoaderTestObject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="tests\TestAppLayer.cpp">
+    <ClCompile Include="src\SlaveTestObject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="tests\TestASIO.cpp">
+    <ClCompile Include="src\StopWatch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="tests\TestASIOThreadPool.cpp">
+    <ClCompile Include="src\TestAPDU.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="tests\TestAsyncTask.cpp">
+    <ClCompile Include="src\TestAPDUWriting.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="tests\TestCastLongLongDouble.cpp">
+    <ClCompile Include="src\TestAppLayer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="tests\TestChangeBuffer.cpp">
+    <ClCompile Include="src\TestASIO.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="tests\TestCommandHelpers.cpp">
+    <ClCompile Include="src\TestASIOThreadPool.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="tests\TestCommandTask.cpp">
+    <ClCompile Include="src\TestAsyncTask.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="tests\TestCommandTypes.cpp">
+    <ClCompile Include="src\TestCastLongLongDouble.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="tests\TestCRC.cpp">
+    <ClCompile Include="src\TestChangeBuffer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="tests\TestDatabase.cpp">
+    <ClCompile Include="src\TestCommandHelpers.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="tests\TestDNP3Manager.cpp">
+    <ClCompile Include="src\TestCommandTask.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="tests\TestEventBufferBase.cpp">
+    <ClCompile Include="src\TestCommandTypes.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="tests\TestEventBuffers.cpp">
+    <ClCompile Include="src\TestCRC.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="tests\TestIntegration.cpp">
+    <ClCompile Include="src\TestDatabase.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="tests\TestLinkFrameDNP.cpp">
+    <ClCompile Include="src\TestDNP3Manager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="tests\TestLinkLayer.cpp">
+    <ClCompile Include="src\TestEventBufferBase.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="tests\TestLinkLayerRouter.cpp">
+    <ClCompile Include="src\TestEventBuffers.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="tests\TestLinkReceiver.cpp">
+    <ClCompile Include="src\TestIntegration.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="tests\TestLinkRoute.cpp">
+    <ClCompile Include="src\TestLinkFrameDNP.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="tests\TestLog.cpp">
+    <ClCompile Include="src\TestLinkLayer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="tests\TestMaster.cpp">
+    <ClCompile Include="src\TestLinkLayerRouter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="tests\TestMisc.cpp">
+    <ClCompile Include="src\TestLinkReceiver.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="tests\TestObjects.cpp">
+    <ClCompile Include="src\TestLinkRoute.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="tests\TestPackingUnpacking.cpp">
+    <ClCompile Include="src\TestLog.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="tests\TestParsing.cpp">
+    <ClCompile Include="src\TestMaster.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="tests\TestPhysicalLayerAsyncBase.cpp">
+    <ClCompile Include="src\TestMisc.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="tests\TestPhysicalLayerAsyncSerial.cpp">
+    <ClCompile Include="src\TestObjects.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="tests\TestPhysicalLayerAsyncTCP.cpp">
+    <ClCompile Include="src\TestPackingUnpacking.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="tests\TestPhysicalLayerLoopback.cpp">
+    <ClCompile Include="src\TestParsing.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="tests\TestPhysicalLayerMonitor.cpp">
+    <ClCompile Include="src\TestPhysicalLayerAsyncBase.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="tests\TestResponseLoader.cpp">
+    <ClCompile Include="src\TestPhysicalLayerAsyncSerial.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="tests\TestShiftableBuffer.cpp">
+    <ClCompile Include="src\TestPhysicalLayerAsyncTCP.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="tests\TestSlave.cpp">
+    <ClCompile Include="src\TestPhysicalLayerLoopback.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="tests\TestSlaveEventBuffer.cpp">
+    <ClCompile Include="src\TestPhysicalLayerMonitor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="tests\TestStartBoostUTF.cpp">
+    <ClCompile Include="src\TestResponseLoader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="tests\TestTime.cpp">
+    <ClCompile Include="src\TestShiftableBuffer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="tests\TestTimers.cpp">
+    <ClCompile Include="src\TestSlave.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="tests\TestTransportLayer.cpp">
+    <ClCompile Include="src\TestSlaveEventBuffer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="tests\TestTransportLoopback.cpp">
+    <ClCompile Include="src\TestStartBoostUTF.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="tests\TestTransportScalability.cpp">
+    <ClCompile Include="src\TestTime.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="tests\TestTypes.cpp">
+    <ClCompile Include="src\TestTimers.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="tests\TestUtil.cpp">
+    <ClCompile Include="src\TestTransportLayer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="tests\Timeout.cpp">
+    <ClCompile Include="src\TestTransportLoopback.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="tests\TransportIntegrationStack.cpp">
+    <ClCompile Include="src\TestTransportScalability.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="tests\TransportLoopbackTestObject.cpp">
+    <ClCompile Include="src\TestTypes.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="tests\TransportScalabilityTestObject.cpp">
+    <ClCompile Include="src\TestUtil.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="tests\TransportStackPair.cpp">
+    <ClCompile Include="src\Timeout.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="tests\TransportTestObject.cpp">
+    <ClCompile Include="src\TransportIntegrationStack.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="tests\WrappedTcpPipe.cpp">
+    <ClCompile Include="src\TransportLoopbackTestObject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="tests\FlexibleDataObserver.cpp">
+    <ClCompile Include="src\TransportScalabilityTestObject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="tests\LowerLayerToPhysAdapter.cpp">
+    <ClCompile Include="src\TransportStackPair.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="tests\PhysLoopback.cpp">
+    <ClCompile Include="src\TransportTestObject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="tests\RandomizedBuffer.cpp">
+    <ClCompile Include="src\WrappedTcpPipe.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\gecapache.licenseheader" />
   </ItemGroup>
 </Project>
