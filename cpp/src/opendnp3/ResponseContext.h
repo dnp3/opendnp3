@@ -32,8 +32,6 @@
 #include <queue>
 #include <functional>
 
-#include <boost/bind.hpp>
-
 #include "APDU.h"
 #include "Database.h"
 #include "SlaveEventBuffer.h"
@@ -240,7 +238,7 @@ private:
 	void RecordStaticObjectsByRange(StreamObject<typename T::MeasType>* apObject, size_t aStart, size_t aStop);
 
 	template <class T>
-	bool WriteStaticObjects(StreamObject<typename T::MeasType>* apObject, typename StaticIter<T>::Type& arStart, typename StaticIter<T>::Type& arStop, const ResponseKey& arKey, APDU& arAPDU);
+	bool WriteStaticObjects(StreamObject<typename T::MeasType>* apObject, typename StaticIter<T>::Type aStart, typename StaticIter<T>::Type aStop, ResponseKey aKey, APDU& arAPDU);
 };
 
 template <class T>
@@ -314,24 +312,29 @@ void ResponseContext::RecordStaticObjectsByRange(StreamObject<typename T::MeasTy
 	last = first + aStop;
 	first = first + aStart;
 	ResponseKey key(RT_STATIC, this->mStaticWriteMap.size());
-	WriteFunction func = boost::bind(&ResponseContext::WriteStaticObjects<T>, this, apObject, first, last, key, _1);
+	WriteFunction func = [=](APDU& arAPDU){
+		return this->WriteStaticObjects<T>(apObject, first, last, key, arAPDU);
+	};
+		//std::bind(&ResponseContext::WriteStaticObjects<T>, this, apObject, std::ref(first), std::ref(last), key, std::placeholders::_1);
 	this->mStaticWriteMap[key] = func;
 }
 
 template <class T>
-bool ResponseContext::WriteStaticObjects(StreamObject<typename T::MeasType>* apObject, typename StaticIter<T>::Type& arStart, typename StaticIter<T>::Type& arStop, const ResponseKey& arKey, APDU& arAPDU)
+bool ResponseContext::WriteStaticObjects(StreamObject<typename T::MeasType>* apObject, typename StaticIter<T>::Type aStart, typename StaticIter<T>::Type aStop, ResponseKey aKey, APDU& arAPDU)
 {
-	size_t start = arStart->mIndex;
-	size_t stop = arStop->mIndex;
+	size_t start = aStart->mIndex;
+	size_t stop = aStop->mIndex;
 	ObjectWriteIterator owi = arAPDU.WriteContiguous(apObject, start, stop);
 
 	for(size_t i = start; i <= stop; ++i) {
 		if(owi.IsEnd()) { // out of space in the fragment
-			this->mStaticWriteMap[arKey] = boost::bind(&ResponseContext::WriteStaticObjects<T>, this, apObject, arStart, arStop, arKey, _1);
+			this->mStaticWriteMap[aKey] = [=](APDU& arAPDU){
+				return this->WriteStaticObjects<T>(apObject, aStart, aStop, aKey, arAPDU);
+			};
 			return false;
 		}
-		apObject->Write(*owi, arStart->mValue);
-		++arStart; //increment the iterators
+		apObject->Write(*owi, aStart->mValue);
+		++aStart; //increment the iterators
 		++owi;
 	}
 

@@ -29,13 +29,9 @@
 
 #include "ObjectWriteIterator.h"
 
-
 #include <assert.h>
 #include <sstream>
 #include <limits>
-#include <boost/numeric/conversion/converter.hpp>
-
-
 
 using namespace std;
 
@@ -475,7 +471,10 @@ IndexedWriteIterator APDU::WriteIndexed(const SizeByVariationObject* apObj, size
 	this->CheckWriteState(apObj);
 
 	// This object type encodes the size in the variation field, the prefix is used to encode something else
-	uint8_t variation = boost::numeric::converter<uint8_t, size_t>::convert(aSize);
+	
+	if(aSize > 255) throw openpal::ArgumentException(LOCATION, "size out of range");
+	uint8_t variation = static_cast<uint8_t>(aSize);
+
 	size_t obj_size = APDU::HasData(this->GetFunction()) ? aSize : 0;
 	size_t prefix_size = this->GetPrefixSizeAndValidate(aCode, apObj->GetType());
 

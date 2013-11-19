@@ -32,7 +32,6 @@
 #include "Database.h"
 #include "ObjectReadIterator.h"
 
-#include <boost/bind.hpp>
 #include <functional>
 
 using namespace openpal;
