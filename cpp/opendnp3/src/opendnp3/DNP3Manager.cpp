@@ -29,7 +29,7 @@ using namespace openpal;
 namespace opendnp3
 {
 
-DNP3Manager::DNP3Manager()	
+DNP3Manager::DNP3Manager()
 {
 
 }
@@ -42,7 +42,7 @@ DNP3Manager::~DNP3Manager()
 void DNP3Manager::Shutdown()
 {
 	std::set<DNP3Channel*> copy(mChannels);
-	for(auto pChannel: copy) pChannel->Shutdown();
+for(auto pChannel: copy) pChannel->Shutdown();
 }
 
 IChannel* DNP3Manager::CreateChannel(openpal::Logger aLogger, openpal::TimeDuration aOpenRetry, IPhysicalLayerAsync* apPhys)

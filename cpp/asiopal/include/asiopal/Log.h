@@ -38,7 +38,7 @@ namespace asiopal
 
 class DLL_LOCAL EventLog : public openpal::ILogBase
 {
-public:	
+public:
 
 	/**
 	* Binds a listener to ALL log messages
@@ -62,7 +62,7 @@ private:
 
 	bool SetContains(const std::set<int>& arSet, int aValue);
 
-	std::mutex mMutex;	
+	std::mutex mMutex;
 	typedef std::map<ILogBase*, std::set<int> > SubscriberMap;
 	SubscriberMap mSubscribers;
 

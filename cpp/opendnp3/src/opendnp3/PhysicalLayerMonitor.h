@@ -41,8 +41,9 @@
 #include <mutex>
 #include <condition_variable>
 
-namespace openpal {
-	class IPhysicalLayerAsync;
+namespace openpal
+{
+class IPhysicalLayerAsync;
 }
 
 

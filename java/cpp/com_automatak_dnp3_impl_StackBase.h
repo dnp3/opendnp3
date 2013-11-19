@@ -7,13 +7,13 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-/*
- * Class:     com_automatak_dnp3_impl_StackBase
- * Method:    add_native_stack_state_listener
- * Signature: (JLcom/automatak/dnp3/impl/StackStateProxy;)V
- */
-JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_StackBase_add_1native_1stack_1state_1listener
-  (JNIEnv *, jobject, jlong, jobject);
+	/*
+	 * Class:     com_automatak_dnp3_impl_StackBase
+	 * Method:    add_native_stack_state_listener
+	 * Signature: (JLcom/automatak/dnp3/impl/StackStateProxy;)V
+	 */
+	JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_StackBase_add_1native_1stack_1state_1listener
+	(JNIEnv*, jobject, jlong, jobject);
 
 #ifdef __cplusplus
 }

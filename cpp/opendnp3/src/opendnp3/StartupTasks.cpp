@@ -86,7 +86,7 @@ void TimeSync::Init()
 void TimeSync::ConfigureRequest(APDU& arAPDU)
 {
 	if(mDelay < 0) {
-		arAPDU.Set(FC_DELAY_MEASURE);		
+		arAPDU.Set(FC_DELAY_MEASURE);
 		mStart = mpTimeSrc->Now();
 	}
 	else {

@@ -86,7 +86,7 @@ protected:
 	        int aPriority,
 	        const TaskHandler& arCallback,
 	        AsyncTaskGroup* apGroup,
-			const openpal::MonotonicTimestamp& arInitialTime,
+	        const openpal::MonotonicTimestamp& arInitialTime,
 	        const std::string& arName);
 
 	// optional NVII function for special bookkeeping

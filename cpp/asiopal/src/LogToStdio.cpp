@@ -46,14 +46,14 @@ void LogToStdio::SetPrintLocation(bool aPrintLocation)
 
 void LogToStdio::Log(const openpal::LogEntry& arEntry)
 {
-#ifndef OPENDNP3_STRIP_LOG_MESSAGES	
+#ifndef OPENDNP3_STRIP_LOG_MESSAGES
 	ostringstream oss;
 	oss << ToNormalizedString(arEntry.GetTimeStamp()) << openpal::LogTypes::GetLevelString( arEntry.GetFilterLevel()) << " - "
-		<< arEntry.GetDeviceName();
+	    << arEntry.GetDeviceName();
 	if(mPrintLocation && !arEntry.GetLocation().empty()) oss << " - " << arEntry.GetMessage();
 	oss << " - " << arEntry.GetMessage();
 
-	if(arEntry.GetErrorCode() != -1) oss << " - " <<arEntry.GetErrorCode();
+	if(arEntry.GetErrorCode() != -1) oss << " - " << arEntry.GetErrorCode();
 
 	std::unique_lock<std::mutex> lock(mMutex);
 	cout << oss.str() << std::endl;

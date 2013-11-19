@@ -62,7 +62,7 @@ Slave::Slave(openpal::Logger aLogger, IAppLayer* apAppLayer, IExecutor* apExecut
 	mDeferredUnknown(false),
 	mStartupNullUnsol(false),
 	mState(SS_UNKNOWN),
-	mpTimeTimer(NULL)	
+	mpTimeTimer(NULL)
 {
 	/* Link the event buffer to the database */
 	mpDatabase->SetEventBuffer(mRspContext.GetBuffer());
@@ -75,7 +75,7 @@ Slave::Slave(openpal::Logger aLogger, IAppLayer* apAppLayer, IExecutor* apExecut
 	 */
 	mChangeBuffer.AddObserver(mpExecutor, [this]() {
 		this->OnDataUpdate();
-	});	
+	});
 
 	/* Cause the slave to go through the null-unsol startup sequence */
 	if (!mConfig.mDisableUnsol) {
@@ -232,7 +232,7 @@ size_t Slave::FlushUpdates()
 		mChangeBuffer.Clear();
 		return 0;
 	}
-	
+
 
 	LOG_BLOCK(LEV_DEBUG, "Processed " << num << " updates");
 	return num;
@@ -295,8 +295,8 @@ void Slave::HandleWriteVto(HeaderReadIterator& arHdr)
 		if(index > std::numeric_limits<uint8_t>::max()) {
 			LOG_BLOCK(LEV_WARNING, "Ignoring VTO index that exceeds bit width of uint8_t: " << index);
 		}
-		else {			
-			//Pass the data to the vto reader			 
+		else {
+			//Pass the data to the vto reader
 			uint8_t channel = static_cast<uint8_t>(index);
 
 			VtoData vto(arHdr->GetVariation());
@@ -348,7 +348,9 @@ void Slave::HandleWriteTimeDate(HeaderReadIterator& arHWI)
 
 	auto utc = UTCTimestamp(Group50Var1::Inst()->mTime.Get(*obj));
 	//make the callback with the stack unwound
-	mpExecutor->Post([utc, this](){ mpTimeWriteHandler->WriteAbsoluteTime(utc); });  
+	mpExecutor->Post([utc, this]() {
+		mpTimeWriteHandler->WriteAbsoluteTime(utc);
+	});
 
 	mIIN.SetNeedTime(false);
 
@@ -363,18 +365,18 @@ void Slave::HandleWriteTimeDate(HeaderReadIterator& arHWI)
 void Slave::HandleWrite(const APDU& arRequest)
 {
 	for (HeaderReadIterator hdr = arRequest.BeginRead(); !hdr.IsEnd(); ++hdr) {
-		
+
 		switch (MACRO_DNP_RADIX(hdr->GetGroup(), hdr->GetVariation())) {
-			case (MACRO_DNP_RADIX(80, 1)):
-				this->HandleWriteIIN(hdr);
-				break;
-			case (MACRO_DNP_RADIX(50, 1)):
-				this->HandleWriteTimeDate(hdr);
-				break;
-			default:
-				mRspIIN.SetFuncNotSupported(true);
-				ERROR_BLOCK(LEV_WARNING, "Object/Function mismatch", SERR_OBJ_FUNC_MISMATCH);
-				break;
+		case (MACRO_DNP_RADIX(80, 1)):
+			this->HandleWriteIIN(hdr);
+			break;
+		case (MACRO_DNP_RADIX(50, 1)):
+			this->HandleWriteTimeDate(hdr);
+			break;
+		default:
+			mRspIIN.SetFuncNotSupported(true);
+			ERROR_BLOCK(LEV_WARNING, "Object/Function mismatch", SERR_OBJ_FUNC_MISMATCH);
+			break;
 		}
 	}
 }

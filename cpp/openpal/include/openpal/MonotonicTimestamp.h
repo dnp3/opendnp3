@@ -38,13 +38,13 @@ class MonotonicTimestamp
 
 public:
 
-	static MonotonicTimestamp Max();	
+	static MonotonicTimestamp Max();
 	static MonotonicTimestamp Min();
-	
+
 	MonotonicTimestamp();
 	MonotonicTimestamp(int64_t aMilliseconds);
 	MonotonicTimestamp Add(const TimeDuration& arDuration) const;
-	
+
 	int64_t milliseconds;
 };
 

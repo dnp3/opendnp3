@@ -34,7 +34,8 @@
 
 #include <opendnp3/AppConfig.h>
 
-namespace openpal {
+namespace openpal
+{
 class IExecutor;
 class ITimer;
 }

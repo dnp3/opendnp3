@@ -38,8 +38,8 @@ namespace opendnp3
 
 ResponseLoaderTestObject::ResponseLoaderTestObject() :
 	fdo(),
-	log(),	
-	mLogger(Logger(&log, LEV_INFO, "rsp"))	
+	log(),
+	mLogger(Logger(&log, LEV_INFO, "rsp"))
 {}
 
 void ResponseLoaderTestObject::Load(const std::string& arAPDU)

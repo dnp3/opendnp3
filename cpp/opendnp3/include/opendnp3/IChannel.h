@@ -104,7 +104,7 @@ public:
 	virtual IMaster* AddMaster(	const std::string& arLoggerId,
 	                                openpal::FilterLevel aLevel,
 	                                IDataObserver* apPublisher,
-									openpal::IUTCTimeSource* apTimeSource,
+	                                openpal::IUTCTimeSource* apTimeSource,
 	                                const MasterStackConfig& arCfg) = 0;
 
 #endif
@@ -121,7 +121,7 @@ public:
 	virtual IOutstation* AddOutstation(	const std::string& arLoggerId,
 	                                        openpal::FilterLevel aLevel,
 	                                        ICommandHandler* apCmdHandler,
-											ITimeWriteHandler* apTimeWriteHandler,
+	                                        ITimeWriteHandler* apTimeWriteHandler,
 	                                        const SlaveStackConfig& arCfg) = 0;
 };
 

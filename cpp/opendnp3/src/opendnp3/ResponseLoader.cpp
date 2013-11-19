@@ -36,7 +36,7 @@ namespace opendnp3
 
 ResponseLoader::ResponseLoader(openpal::Logger& arLogger, IDataObserver* apPublisher) :
 	Loggable(arLogger),
-	mpPublisher(apPublisher),	
+	mpPublisher(apPublisher),
 	mTransaction(apPublisher)
 {}
 
@@ -122,8 +122,8 @@ void ResponseLoader::ProcessSizeByVariation(HeaderReadIterator& arIter, int aGrp
 	 */
 	switch (aGrp) {
 		/* Virtual Terminal Objects */
-	//case (112): this->ReadVto(arIter, Group112Var0::Inst()); break;
-	//case (113): this->ReadVto(arIter, Group113Var0::Inst()); break;
+		//case (112): this->ReadVto(arIter, Group112Var0::Inst()); break;
+		//case (113): this->ReadVto(arIter, Group113Var0::Inst()); break;
 
 	default:
 		/*
@@ -140,7 +140,7 @@ void ResponseLoader::ProcessSizeByVariation(HeaderReadIterator& arIter, int aGrp
 /*
 void ResponseLoader::ReadVto(HeaderReadIterator& arIter, SizeByVariationObject* apObj)
 {
-	// Get an iterator to the object data 
+	// Get an iterator to the object data
 	ObjectReadIterator objIter = arIter.BeginRead();
 
 	// Copy the object data to a VtoData instance

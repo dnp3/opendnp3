@@ -69,7 +69,7 @@ BOOST_AUTO_TEST_CASE(BasicTest)
 {
 	StopWatch sw;
 
-	BOOST_REQUIRE(sw.Elapsed(false) <= milliseconds(100));	
+	BOOST_REQUIRE(sw.Elapsed(false) <= milliseconds(100));
 }
 
 BOOST_AUTO_TEST_SUITE_END()

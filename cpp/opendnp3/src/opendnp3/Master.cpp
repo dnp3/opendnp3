@@ -46,7 +46,7 @@ namespace opendnp3
 
 Master::Master(Logger aLogger, MasterConfig aCfg, IAppLayer* apAppLayer, IDataObserver* apPublisher, AsyncTaskGroup* apTaskGroup, openpal::IExecutor* apExecutor, IUTCTimeSource* apTimeSrc) :
 	Loggable(aLogger),
-	StackBase(apExecutor),	
+	StackBase(apExecutor),
 	mRequest(aCfg.FragSize),
 	mpAppLayer(apAppLayer),
 	mpPublisher(apPublisher),
@@ -61,7 +61,7 @@ Master::Master(Logger aLogger, MasterConfig aCfg, IAppLayer* apAppLayer, IDataOb
 	mClearRestart(aLogger),
 	mConfigureUnsol(aLogger),
 	mTimeSync(aLogger, apTimeSrc),
-	mCommandTask(aLogger)	
+	mCommandTask(aLogger)
 {
 	/*
 	 * Establish a link between the mCommandQueue and the
@@ -84,7 +84,7 @@ void Master::UpdateState(StackState aState)
 	if(mState != aState) {
 		LOG_BLOCK(LEV_INFO, "StackState: " << ConvertStackStateToString(aState));
 		mState = aState;
-		this->NotifyListeners(aState);		
+		this->NotifyListeners(aState);
 	}
 }
 

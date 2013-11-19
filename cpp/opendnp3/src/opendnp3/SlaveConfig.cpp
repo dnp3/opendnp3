@@ -61,7 +61,7 @@ SlaveConfig::SlaveConfig() :
 	mStaticSetpointStatus(SSSR_GROUP40_VAR1),
 	mEventBinary(EBR_GROUP2_VAR1),
 	mEventAnalog(EAR_GROUP32_VAR1),
-	mEventCounter(ECR_GROUP22_VAR1)	
+	mEventCounter(ECR_GROUP22_VAR1)
 {}
 
 }

@@ -26,11 +26,11 @@
 
 
 namespace DNP3
-{	
+{
 namespace Adapter
 {
 
-SlaveCommandHandlerAdapter::SlaveCommandHandlerAdapter(DNP3::Interface::ICommandHandler^ proxy) : proxy(proxy)
+SlaveCommandHandlerAdapter::SlaveCommandHandlerAdapter(DNP3::Interface::ICommandHandler ^ proxy) : proxy(proxy)
 {
 
 }
@@ -113,6 +113,7 @@ opendnp3::CommandStatus SlaveCommandHandlerAdapter::DirectOperate(const opendnp3
 
 
 
-	
-}}
+
+}
+}
 

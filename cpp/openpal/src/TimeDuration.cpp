@@ -26,7 +26,7 @@
 
 namespace openpal
 {
-	
+
 TimeDuration TimeDuration::Min()
 {
 	return TimeDuration(std::numeric_limits<int64_t>::min());
@@ -44,14 +44,14 @@ TimeDuration TimeDuration::Milliseconds(int64_t aMilliseconds)
 
 TimeDuration TimeDuration::Seconds(int64_t aSeconds)
 {
-	return TimeDuration(1000*aSeconds);
-}	
+	return TimeDuration(1000 * aSeconds);
+}
 
 TimeDuration TimeDuration::Minutes(int64_t aMinutes)
 {
-	return TimeDuration(1000*60*aMinutes);
+	return TimeDuration(1000 * 60 * aMinutes);
 }
-	
+
 TimeDuration::TimeDuration() : TimeDurationBase(0) {}
 
 TimeDuration::TimeDuration(int64_t aMilliseconds) : TimeDurationBase(aMilliseconds)

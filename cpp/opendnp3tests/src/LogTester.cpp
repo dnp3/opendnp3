@@ -28,8 +28,8 @@ namespace opendnp3
 {
 
 LogTester::LogTester() : mTestLogger(this, LEV_DEBUG, "LogTester")
-{	
-	
+{
+
 }
 
 void LogTester::Log( const LogEntry& arEntry )
@@ -41,7 +41,7 @@ int LogTester::ClearLog()
 {
 	int max = -1;
 	LogEntry le;
-	while(!mBuffer.empty()) {		
+	while(!mBuffer.empty()) {
 		if(mBuffer.front().GetErrorCode() > max) max = le.GetErrorCode();
 		mBuffer.pop();
 	}
@@ -60,7 +60,7 @@ int LogTester::NextErrorCode()
 	while(!mBuffer.empty()) {
 		le = mBuffer.front();
 		mBuffer.pop();
-		if(le.GetErrorCode() >= 0) {						
+		if(le.GetErrorCode() >= 0) {
 			return le.GetErrorCode();
 		}
 	}

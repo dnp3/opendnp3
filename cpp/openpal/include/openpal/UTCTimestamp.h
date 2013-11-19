@@ -40,7 +40,7 @@ public:
 
 	UTCTimestamp(int64_t aMsSinceEpoch) : msSinceEpoch(aMsSinceEpoch)
 	{}
-	
+
 	int64_t msSinceEpoch;
 
 };

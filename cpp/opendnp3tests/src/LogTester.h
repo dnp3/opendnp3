@@ -42,11 +42,11 @@ public:
 	int ClearLog();
 	int NextErrorCode();
 	bool GetNextEntry(openpal::LogEntry& arEntry);
-	bool IsLogErrorFree();	
+	bool IsLogErrorFree();
 
-	openpal::Logger mTestLogger;	
+	openpal::Logger mTestLogger;
 
-protected:	
+protected:
 	std::queue<openpal::LogEntry> mBuffer;
 
 };

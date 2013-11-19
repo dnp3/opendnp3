@@ -43,7 +43,7 @@ JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_create_1native_
 	[pJVM]() {
 		JNIHelpers::DetachThread(pJVM);
 	}
-	                               );
+	                                   );
 	return (jlong) pManager;
 }
 

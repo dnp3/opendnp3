@@ -67,19 +67,19 @@ public:
 
 	inline void SetFilters(int aLevel) {
 		mLevel = aLevel;
-	}	
+	}
 
 	int GetFilters() const {
 		return mLevel;
 	}
 
 	Logger GetSubLogger(std::string aSubName, int aLevel) const;
-	Logger GetSubLogger(std::string aName) const;		
+	Logger GetSubLogger(std::string aName) const;
 
 private:
 
 	int					mLevel;   // bit field describing what is being logged
-	ILogBase*			mpLog;			
+	ILogBase*			mpLog;
 	std::string			mName;
 };
 

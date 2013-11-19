@@ -44,7 +44,7 @@ struct LinkConfig {
 	        size_t aNumRetry,
 	        uint16_t aLocalAddr,
 	        uint16_t aRemoteAddr,
-			openpal::TimeDuration aTimeout) :
+	        openpal::TimeDuration aTimeout) :
 
 		IsMaster(aIsMaster),
 		UseConfirms(aUseConfirms),

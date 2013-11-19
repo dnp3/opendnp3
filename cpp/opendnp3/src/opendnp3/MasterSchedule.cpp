@@ -98,10 +98,10 @@ void MasterSchedule::Init(const MasterConfig& arCfg, Master* apMaster)
 			                              arCfg.UnsolClassMask);
 
 			AsyncTaskBase* pUnsolEnable = mTracking.Add(TimeDuration::Min(),
-			                                      arCfg.TaskRetryRate,
-			                                      AMP_UNSOL_CHANGE,
-			                                      handler,
-			                                      "Unsol Enable");
+			                              arCfg.TaskRetryRate,
+			                              AMP_UNSOL_CHANGE,
+			                              handler,
+			                              "Unsol Enable");
 
 			pUnsolEnable->SetFlags(ONLINE_ONLY_TASKS | START_UP_TASKS);
 			pUnsolEnable->AddDependency(pIntegrity);
@@ -139,7 +139,7 @@ for(ExceptionScan e: arCfg.mScans) {
 	                             AMP_CLEAR_RESTART,
 	                             std::bind(&Master::WriteIIN, apMaster, _1),
 	                             "Clear IIN");
-	
+
 	mpTimeTask->SetFlags(ONLINE_ONLY_TASKS);
 	mpClearRestartTask->SetFlags(ONLINE_ONLY_TASKS);
 

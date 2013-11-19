@@ -48,8 +48,9 @@
 #include "OutstationSBOHandler.h"
 
 
-namespace openpal {
-	class IExecutor;
+namespace openpal
+{
+class IExecutor;
 }
 
 namespace opendnp3
@@ -129,7 +130,7 @@ public:
 	 */
 	IDataObserver* GetDataObserver() {
 		return &mChangeBuffer;
-	}	
+	}
 
 private:
 
@@ -143,7 +144,7 @@ private:
 	SlaveResponseTypes mRspTypes;			// converts the group/var in the config to dnp singletons
 
 	openpal::ITimer* mpUnsolTimer;			// timer for sending unsol responsess
-	ITimeWriteHandler* mpTimeWriteHandler;   
+	ITimeWriteHandler* mpTimeWriteHandler;
 
 	INotifier* mpVtoNotifier;
 
@@ -158,7 +159,7 @@ private:
 
 	bool mHaveLastRequest;
 	APDU mLastRequest;						// APDU used to form responses
-	
+
 
 	// Flags that tell us that some action has been Deferred
 	// until the slave is in a state capable of handling it.
@@ -187,9 +188,9 @@ private:
 	void Send(APDU& arAPDU, const IINField& arIIN); // overload with additional IIN data
 	void SendUnsolicited(APDU& arAPDU);
 
-	void HandleWrite(const APDU& arRequest);	
+	void HandleWrite(const APDU& arRequest);
 	void HandleWriteIIN(HeaderReadIterator& arHdr);
-	void HandleWriteTimeDate(HeaderReadIterator& arHWI);	
+	void HandleWriteTimeDate(HeaderReadIterator& arHWI);
 	void HandleSelect(const APDU& arRequest, SequenceInfo aSeqInfo);
 	void HandleOperate(const APDU& arRequest, SequenceInfo aSeqInfo);
 	void HandleDirectOperate(const APDU& arRequest, SequenceInfo aSeqInfo);
@@ -200,7 +201,7 @@ private:
 	void CreateResponseContext(const APDU& arRequest);
 
 	// Helpers
-	
+
 	size_t FlushUpdates();
 	void FlushDeferredEvents();
 	void StartUnsolTimer(openpal::TimeDuration aTimeout);

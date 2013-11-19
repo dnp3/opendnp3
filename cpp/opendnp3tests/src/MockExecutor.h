@@ -101,7 +101,7 @@ class MockTimer : public openpal::ITimer
 	friend class MockExecutor;
 
 public:
-	MockTimer(MockExecutor*, const openpal::MonotonicTimestamp &, const std::function<void ()>&);
+	MockTimer(MockExecutor*, const openpal::MonotonicTimestamp&, const std::function<void ()>&);
 
 	//implement ITimer
 	void Cancel();

@@ -28,8 +28,9 @@
 #include <mutex>
 #include <condition_variable>
 
-namespace openpal {
-	class IExecutor;
+namespace openpal
+{
+class IExecutor;
 }
 
 namespace opendnp3

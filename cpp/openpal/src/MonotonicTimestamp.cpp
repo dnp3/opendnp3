@@ -47,8 +47,8 @@ MonotonicTimestamp::MonotonicTimestamp(int64_t aMilliseconds) : milliseconds(aMi
 MonotonicTimestamp MonotonicTimestamp::Add(const TimeDuration& arDuration) const
 {
 	return MonotonicTimestamp(milliseconds + arDuration.GetMilliseconds());
-}	
-	
+}
+
 bool operator==(const MonotonicTimestamp& first, const MonotonicTimestamp& second)
 {
 	return first.milliseconds == second.milliseconds;

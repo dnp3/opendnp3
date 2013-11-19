@@ -29,10 +29,10 @@ using namespace openpal;
 namespace opendnp3
 {
 
-MasterStackImpl::MasterStackImpl(	Logger& arLogger,                                        
+MasterStackImpl::MasterStackImpl(	Logger& arLogger,
                                         IExecutor* apExecutor,
                                         IDataObserver* apPublisher,
-										IUTCTimeSource* apTimeSource,
+                                        IUTCTimeSource* apTimeSource,
                                         AsyncTaskGroup* apTaskGroup,
                                         const MasterStackConfig& arCfg,
                                         std::function<void (IMaster*)> aOnShutdown) :
@@ -62,7 +62,7 @@ void MasterStackImpl::SetLinkRouter(ILinkRouter* apRouter)
 }
 
 void MasterStackImpl::Shutdown()
-{	
+{
 	mOnShutdown(this);
 }
 

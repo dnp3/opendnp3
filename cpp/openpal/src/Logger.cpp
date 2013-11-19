@@ -36,7 +36,7 @@ Logger::Logger(ILogBase* apLog, int aLevel, const std::string& aName)
 	mpLog(apLog),
 	mName(aName)
 {
-	
+
 }
 
 
@@ -52,7 +52,7 @@ Logger::Logger(ILogBase* apLog, FilterLevel aLevel, const std::string& aName)
 Logger Logger::GetSubLogger(std::string aSubName, int aLevel) const
 {
 	std::ostringstream oss;
-	oss << mName << "." << aSubName;	
+	oss << mName << "." << aSubName;
 	return Logger(mpLog, aLevel, oss.str());
 }
 

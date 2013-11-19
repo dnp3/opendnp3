@@ -178,7 +178,7 @@ BOOST_AUTO_TEST_CASE(RestartAndTimeBits)
 	MasterConfig master_cfg;
 	MasterTestObject t(master_cfg);
 	t.master.OnLowerLayerUp();
-	
+
 	t.fixedUTC.mTimeSinceEpoch = 100;
 
 	BOOST_REQUIRE_EQUAL("C0 01 3C 01 06", t.Read()); ; //integrity
@@ -221,7 +221,7 @@ BOOST_AUTO_TEST_CASE(RestartLayerDown)
 {
 	MasterConfig master_cfg;
 	MasterTestObject t(master_cfg);
-	t.master.OnLowerLayerUp();	
+	t.master.OnLowerLayerUp();
 
 	BOOST_REQUIRE_EQUAL("C0 01 3C 01 06", t.Read()); //integrity
 	t.RespondToMaster("C0 81 90 00"); // need time and device restart
@@ -238,7 +238,7 @@ BOOST_AUTO_TEST_CASE(DelayMeasLayerDown)
 {
 	MasterConfig master_cfg;
 	MasterTestObject t(master_cfg);
-	t.master.OnLowerLayerUp();	
+	t.master.OnLowerLayerUp();
 
 	BOOST_REQUIRE_EQUAL("C0 01 3C 01 06", t.Read()); //integrity
 	t.RespondToMaster("C0 81 90 00"); // need time and device restart
@@ -257,7 +257,7 @@ BOOST_AUTO_TEST_CASE(DelayMeasFailure)
 {
 	MasterConfig master_cfg;
 	MasterTestObject t(master_cfg);
-	t.master.OnLowerLayerUp();	
+	t.master.OnLowerLayerUp();
 
 	BOOST_REQUIRE_EQUAL("C0 01 3C 01 06", t.Read()); //integrity
 	t.RespondToMaster("C0 81 90 00"); // need time and device restart
@@ -496,7 +496,7 @@ BOOST_AUTO_TEST_CASE(SolicitedResponseWithData)
 BOOST_AUTO_TEST_CASE(SolicitedResponseFailure)
 {
 	MasterConfig master_cfg;
-	MasterTestObject t(master_cfg);	
+	MasterTestObject t(master_cfg);
 	t.master.OnLowerLayerUp();
 
 	BOOST_REQUIRE_EQUAL(t.Read(), "C0 01 3C 01 06"); ;
@@ -509,7 +509,7 @@ BOOST_AUTO_TEST_CASE(SolicitedResponseFailure)
 BOOST_AUTO_TEST_CASE(SolicitedResponseLayerDown)
 {
 	MasterConfig master_cfg;
-	MasterTestObject t(master_cfg);	
+	MasterTestObject t(master_cfg);
 	t.master.OnLowerLayerUp();
 
 	BOOST_REQUIRE_EQUAL(t.Read(), "C0 01 3C 01 06"); ;

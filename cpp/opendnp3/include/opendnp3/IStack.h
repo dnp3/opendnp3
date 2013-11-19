@@ -36,7 +36,8 @@
 #include "DestructorHook.h"
 #include "StackState.h"
 
-namespace openpal {
+namespace openpal
+{
 class IPhysicalLayerAsync;
 }
 
@@ -51,7 +52,7 @@ class IStack : public DestructorHook
 {
 public:
 	IStack(openpal::Logger& arLogger);
-	virtual ~IStack();	
+	virtual ~IStack();
 
 	/**
 	* Add a listener for changes to the stack state. All callbacks come from the thread pool.
@@ -64,9 +65,9 @@ public:
 	/// Synchronously shutdown the endpoint
 	virtual void Shutdown() = 0;
 
-private:	
+private:
 
-	openpal::Logger mLogger;	
+	openpal::Logger mLogger;
 };
 
 }

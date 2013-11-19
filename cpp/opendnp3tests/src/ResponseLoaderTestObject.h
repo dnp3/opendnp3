@@ -47,9 +47,9 @@ public:
 
 	FlexibleDataObserver fdo;
 
-	private: 
-		asiopal::EventLog log;		
-		openpal::Logger mLogger;
+private:
+	asiopal::EventLog log;
+	openpal::Logger mLogger;
 
 };
 

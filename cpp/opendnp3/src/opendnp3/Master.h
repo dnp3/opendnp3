@@ -48,7 +48,8 @@
 #include "CommandTask.h"
 #include "StackBase.h"
 
-namespace openpal {
+namespace openpal
+{
 
 class IExecutor;
 
@@ -87,7 +88,7 @@ public:
 
 	ICommandProcessor* GetCommandProcessor() {
 		return &mCommandQueue;
-	}	
+	}
 
 	/* Implement IAppUser - callbacks from the app layer */
 
@@ -189,7 +190,7 @@ private:
 	ClearRestartIIN mClearRestart;			// used to clear the restart
 	ConfigureUnsol mConfigureUnsol;			// manipulates how the outstation does unsolictied reporting
 	TimeSync mTimeSync;						// performs time sync on the outstation
-	CommandTask mCommandTask;				// performs command execution	
+	CommandTask mCommandTask;				// performs command execution
 
 };
 

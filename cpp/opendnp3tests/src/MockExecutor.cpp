@@ -28,7 +28,7 @@ using namespace std::chrono;
 namespace opendnp3
 {
 
-MockExecutor::MockExecutor() : 
+MockExecutor::MockExecutor() :
 	mPostIsSynchronous(false),
 	mCurrentTime(0)
 {

@@ -28,7 +28,8 @@
 #include <openpal/Loggable.h>
 #include <openpal/TimeDuration.h>
 
-namespace openpal {
+namespace openpal
+{
 class IExecutor;
 class ITimer;
 }

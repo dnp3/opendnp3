@@ -30,26 +30,27 @@ using namespace System::Collections::ObjectModel;
 using namespace DNP3::Interface;
 
 namespace DNP3
-{	
+{
 namespace Adapter
-{	
-	private ref class OutstationAdapter : IOutstation
-	{
-		public:
+{
+private ref class OutstationAdapter : IOutstation
+{
+public:
 
-		OutstationAdapter(opendnp3::IOutstation* apOutstation);		
+	OutstationAdapter(opendnp3::IOutstation* apOutstation);
 
-		virtual IDataObserver^ GetDataObserver();
+	virtual IDataObserver ^ GetDataObserver();
 
-		virtual void AddStateListener(System::Action<StackState>^ aListener);
+	virtual void AddStateListener(System::Action<StackState> ^ aListener);
 
-		virtual void Shutdown();
-		
-		private:
-		opendnp3::IOutstation* mpOutstation;
-		IDataObserver^ mDataObserverAdapter;
-	};
-	
-}}
+	virtual void Shutdown();
+
+private:
+	opendnp3::IOutstation* mpOutstation;
+	IDataObserver ^ mDataObserverAdapter;
+};
+
+}
+}
 
 #endif

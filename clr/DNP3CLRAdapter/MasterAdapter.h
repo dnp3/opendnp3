@@ -30,26 +30,27 @@ using namespace System::Collections::ObjectModel;
 using namespace DNP3::Interface;
 
 namespace DNP3
-{	
+{
 namespace Adapter
-{	
-	private ref class MasterAdapter : IMaster
-	{
-		public:
+{
+private ref class MasterAdapter : IMaster
+{
+public:
 
-		MasterAdapter(opendnp3::IMaster* apMaster);
+	MasterAdapter(opendnp3::IMaster* apMaster);
 
-		virtual ICommandProcessor^ GetCommandProcessor();
+	virtual ICommandProcessor ^ GetCommandProcessor();
 
-		virtual void Shutdown();
+	virtual void Shutdown();
 
-		virtual void AddStateListener(System::Action<StackState>^ aListener);
-		
-		private:
-		opendnp3::IMaster* mpMaster;
-		ICommandProcessor^ mCommandAdapter;
-	};
-	
-}}
+	virtual void AddStateListener(System::Action<StackState> ^ aListener);
+
+private:
+	opendnp3::IMaster* mpMaster;
+	ICommandProcessor ^ mCommandAdapter;
+};
+
+}
+}
 
 #endif

@@ -32,40 +32,42 @@ using namespace System::Collections::ObjectModel;
 using namespace DNP3::Interface;
 
 namespace DNP3
-{	
+{
 namespace Adapter
-{				
-	//this object goes into the stack
-	private class OutstationTimeWriteAdapter : public opendnp3::ITimeWriteHandler
-	{
-		public:
-			OutstationTimeWriteAdapter(DNP3::Interface::ITimeWriteHandler^ proxy);
+{
+//this object goes into the stack
+private class OutstationTimeWriteAdapter : public opendnp3::ITimeWriteHandler
+{
+public:
+	OutstationTimeWriteAdapter(DNP3::Interface::ITimeWriteHandler ^ proxy);
 
-			void WriteAbsoluteTime(openpal::UTCTimestamp aTimestamp);
-			
+	void WriteAbsoluteTime(openpal::UTCTimestamp aTimestamp);
 
-		private:
-			gcroot<DNP3::Interface::ITimeWriteHandler^> mProxy;
-	};	
-	
-	private ref class OutstationTimeWriteWrapper
-	{
-		public:
 
-			OutstationTimeWriteWrapper(DNP3::Interface::ITimeWriteHandler^ proxy) :
-				mpAdapter(new OutstationTimeWriteAdapter(proxy))
-		{}
+private:
+	gcroot < DNP3::Interface::ITimeWriteHandler ^ > mProxy;
+};
 
-		~OutstationTimeWriteWrapper()
-		{ 
-			delete mpAdapter;
-		}
+private ref class OutstationTimeWriteWrapper
+{
+public:
 
-		opendnp3::ITimeWriteHandler* Get() { return mpAdapter; }
-		
-		private:
-		OutstationTimeWriteAdapter* mpAdapter;
-	};
-}}
+	OutstationTimeWriteWrapper(DNP3::Interface::ITimeWriteHandler ^ proxy) :
+		mpAdapter(new OutstationTimeWriteAdapter(proxy))
+	{}
+
+	~OutstationTimeWriteWrapper() {
+		delete mpAdapter;
+	}
+
+	opendnp3::ITimeWriteHandler* Get() {
+		return mpAdapter;
+	}
+
+private:
+	OutstationTimeWriteAdapter* mpAdapter;
+};
+}
+}
 
 #endif

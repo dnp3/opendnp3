@@ -73,39 +73,39 @@ SlaveConfig ConfigReader::ConvertOutstationConfig(JNIEnv* apEnv, jobject jCfg)
 
 
 	{
-	jobject jenum = JNIHelpers::GetObjectField(apEnv, jCfg, "staticBinaryInput", "Lcom/automatak/dnp3/StaticBinaryResponse;");
-	cfg.mStaticBinary = ConvertStaticBinary(GetEnumId(apEnv, jenum));
+		jobject jenum = JNIHelpers::GetObjectField(apEnv, jCfg, "staticBinaryInput", "Lcom/automatak/dnp3/StaticBinaryResponse;");
+		cfg.mStaticBinary = ConvertStaticBinary(GetEnumId(apEnv, jenum));
 	}
-	
+
 
 	{
-	jobject jenum = JNIHelpers::GetObjectField(apEnv, jCfg, "staticAnalogInput", "Lcom/automatak/dnp3/StaticAnalogResponse;");
-	cfg.mStaticAnalog = ConvertStaticAnalog(GetEnumId(apEnv, jenum));
-	}
-	
-	{
-	jobject jenum = JNIHelpers::GetObjectField(apEnv, jCfg, "staticCounter", "Lcom/automatak/dnp3/StaticCounterResponse;");
-	cfg.mStaticCounter = ConvertStaticCounter(GetEnumId(apEnv, jenum));
+		jobject jenum = JNIHelpers::GetObjectField(apEnv, jCfg, "staticAnalogInput", "Lcom/automatak/dnp3/StaticAnalogResponse;");
+		cfg.mStaticAnalog = ConvertStaticAnalog(GetEnumId(apEnv, jenum));
 	}
 
 	{
-	jobject jenum = JNIHelpers::GetObjectField(apEnv, jCfg, "staticAnalogOutputStatus", "Lcom/automatak/dnp3/StaticAnalogOutputStatusResponse;");
-	cfg.mStaticSetpointStatus = ConvertStaticAnalogOutputStatus(GetEnumId(apEnv, jenum));
+		jobject jenum = JNIHelpers::GetObjectField(apEnv, jCfg, "staticCounter", "Lcom/automatak/dnp3/StaticCounterResponse;");
+		cfg.mStaticCounter = ConvertStaticCounter(GetEnumId(apEnv, jenum));
 	}
 
 	{
-	jobject jenum = JNIHelpers::GetObjectField(apEnv, jCfg, "eventBinaryInput", "Lcom/automatak/dnp3/EventBinaryResponse;");
-	cfg.mEventBinary = ConvertEventBinary(GetEnumId(apEnv, jenum));
+		jobject jenum = JNIHelpers::GetObjectField(apEnv, jCfg, "staticAnalogOutputStatus", "Lcom/automatak/dnp3/StaticAnalogOutputStatusResponse;");
+		cfg.mStaticSetpointStatus = ConvertStaticAnalogOutputStatus(GetEnumId(apEnv, jenum));
 	}
 
 	{
-	jobject jenum = JNIHelpers::GetObjectField(apEnv, jCfg, "eventAnalogInput", "Lcom/automatak/dnp3/EventAnalogResponse;");
-	cfg.mEventAnalog = ConvertEventAnalog(GetEnumId(apEnv, jenum));
+		jobject jenum = JNIHelpers::GetObjectField(apEnv, jCfg, "eventBinaryInput", "Lcom/automatak/dnp3/EventBinaryResponse;");
+		cfg.mEventBinary = ConvertEventBinary(GetEnumId(apEnv, jenum));
 	}
 
-	{		
-	jobject jenum = JNIHelpers::GetObjectField(apEnv, jCfg, "eventCounter", "Lcom/automatak/dnp3/EventCounterResponse;");
-	cfg.mEventCounter = ConvertEventCounter(GetEnumId(apEnv, jenum));
+	{
+		jobject jenum = JNIHelpers::GetObjectField(apEnv, jCfg, "eventAnalogInput", "Lcom/automatak/dnp3/EventAnalogResponse;");
+		cfg.mEventAnalog = ConvertEventAnalog(GetEnumId(apEnv, jenum));
+	}
+
+	{
+		jobject jenum = JNIHelpers::GetObjectField(apEnv, jCfg, "eventCounter", "Lcom/automatak/dnp3/EventCounterResponse;");
+		cfg.mEventCounter = ConvertEventCounter(GetEnumId(apEnv, jenum));
 	}
 
 	return cfg;
@@ -120,7 +120,7 @@ jint ConfigReader::GetEnumId(JNIEnv* apEnv, jobject jenum)
 
 opendnp3::StaticBinaryResponse ConfigReader::ConvertStaticBinary(jint value)
 {
-	switch(value) {	
+	switch(value) {
 	default:
 		return SBR_GROUP1_VAR2;
 	}
@@ -128,99 +128,93 @@ opendnp3::StaticBinaryResponse ConfigReader::ConvertStaticBinary(jint value)
 
 opendnp3::StaticAnalogResponse ConfigReader::ConvertStaticAnalog(jint value)
 {
-	switch(value)
-	{
-		case(0):
-			return opendnp3::SAR_GROUP30_VAR1;
-		case(1):
-			return opendnp3::SAR_GROUP30_VAR2;
-		case(2):
-			return opendnp3::SAR_GROUP30_VAR3;
-		case(3):
-			return opendnp3::SAR_GROUP30_VAR4;
-		case(4):
-			return opendnp3::SAR_GROUP30_VAR5;
-		default:
-			return opendnp3::SAR_GROUP30_VAR6;
+	switch(value) {
+	case(0):
+		return opendnp3::SAR_GROUP30_VAR1;
+	case(1):
+		return opendnp3::SAR_GROUP30_VAR2;
+	case(2):
+		return opendnp3::SAR_GROUP30_VAR3;
+	case(3):
+		return opendnp3::SAR_GROUP30_VAR4;
+	case(4):
+		return opendnp3::SAR_GROUP30_VAR5;
+	default:
+		return opendnp3::SAR_GROUP30_VAR6;
 	}
 }
 
 opendnp3::StaticCounterResponse ConfigReader::ConvertStaticCounter(jint value)
 {
-	switch(value)
-	{
-		case(0):
-			return opendnp3::SCR_GROUP20_VAR1;
-		case(1):
-			return opendnp3::SCR_GROUP20_VAR2;
-		case(2):
-			return opendnp3::SCR_GROUP20_VAR5;
-		default:
-			return opendnp3::SCR_GROUP20_VAR6;
+	switch(value) {
+	case(0):
+		return opendnp3::SCR_GROUP20_VAR1;
+	case(1):
+		return opendnp3::SCR_GROUP20_VAR2;
+	case(2):
+		return opendnp3::SCR_GROUP20_VAR5;
+	default:
+		return opendnp3::SCR_GROUP20_VAR6;
 	}
 }
 
 opendnp3::StaticSetpointStatusResponse ConfigReader::ConvertStaticAnalogOutputStatus(jint value)
 {
-	switch(value)
-	{
-		case(0):
-			return opendnp3::SSSR_GROUP40_VAR1;
-		case(1):
-			return opendnp3::SSSR_GROUP40_VAR2;
-		case(2):
-			return opendnp3::SSSR_GROUP40_VAR3;
-		default:
-			return opendnp3::SSSR_GROUP40_VAR4;
+	switch(value) {
+	case(0):
+		return opendnp3::SSSR_GROUP40_VAR1;
+	case(1):
+		return opendnp3::SSSR_GROUP40_VAR2;
+	case(2):
+		return opendnp3::SSSR_GROUP40_VAR3;
+	default:
+		return opendnp3::SSSR_GROUP40_VAR4;
 	}
 }
 
 opendnp3::EventBinaryResponse ConfigReader::ConvertEventBinary(jint value)
 {
-	switch(value)
-	{
-		case(0):
-			return opendnp3::EBR_GROUP2_VAR1;
-		default:
-			return opendnp3::EBR_GROUP2_VAR2;
+	switch(value) {
+	case(0):
+		return opendnp3::EBR_GROUP2_VAR1;
+	default:
+		return opendnp3::EBR_GROUP2_VAR2;
 	}
 }
 
 opendnp3::EventAnalogResponse ConfigReader::ConvertEventAnalog(jint value)
 {
-	switch(value)
-	{
-		case(0):
-			return opendnp3::EAR_GROUP32_VAR1;
-		case(1):
-			return opendnp3::EAR_GROUP32_VAR2;
-		case(2):
-			return opendnp3::EAR_GROUP32_VAR3;
-		case(3):
-			return opendnp3::EAR_GROUP32_VAR4;
-		case(4):
-			return opendnp3::EAR_GROUP32_VAR5;
-		case(5):
-			return opendnp3::EAR_GROUP32_VAR6;
-		case(6):
-			return opendnp3::EAR_GROUP32_VAR7;
-		default:
-			return opendnp3::EAR_GROUP32_VAR8;
+	switch(value) {
+	case(0):
+		return opendnp3::EAR_GROUP32_VAR1;
+	case(1):
+		return opendnp3::EAR_GROUP32_VAR2;
+	case(2):
+		return opendnp3::EAR_GROUP32_VAR3;
+	case(3):
+		return opendnp3::EAR_GROUP32_VAR4;
+	case(4):
+		return opendnp3::EAR_GROUP32_VAR5;
+	case(5):
+		return opendnp3::EAR_GROUP32_VAR6;
+	case(6):
+		return opendnp3::EAR_GROUP32_VAR7;
+	default:
+		return opendnp3::EAR_GROUP32_VAR8;
 	}
 }
 
 opendnp3::EventCounterResponse ConfigReader::ConvertEventCounter(jint value)
 {
-	switch(value)
-	{
-		case(0):
-			return opendnp3::ECR_GROUP22_VAR1;
-		case(1):
-			return opendnp3::ECR_GROUP22_VAR2;
-		case(2):
-			return opendnp3::ECR_GROUP22_VAR5;
-		default:
-			return opendnp3::ECR_GROUP22_VAR6;
+	switch(value) {
+	case(0):
+		return opendnp3::ECR_GROUP22_VAR1;
+	case(1):
+		return opendnp3::ECR_GROUP22_VAR2;
+	case(2):
+		return opendnp3::ECR_GROUP22_VAR5;
+	default:
+		return opendnp3::ECR_GROUP22_VAR6;
 	}
 }
 
@@ -271,7 +265,7 @@ MasterConfig ConfigReader::ConvertMasterConfig(JNIEnv* apEnv, jobject jCfg)
 {
 	MasterConfig cfg;
 
-	cfg.FragSize = JNIHelpers::GetIntField(apEnv, jCfg, "maxRequestFragmentSize");	
+	cfg.FragSize = JNIHelpers::GetIntField(apEnv, jCfg, "maxRequestFragmentSize");
 	cfg.UseNonStandardVtoFunction = JNIHelpers::GetBoolField(apEnv, jCfg, "useNonStandardVtoFunction");
 	cfg.AllowTimeSync = JNIHelpers::GetBoolField(apEnv, jCfg, "allowTimeSync");
 	cfg.DoUnsolOnStartup = JNIHelpers::GetBoolField(apEnv, jCfg, "doUnsolOnStartup");

@@ -27,21 +27,20 @@
 
 namespace openpal
 {
-	
+
 template <class T>
 class TimeDurationBase
 {
 
-public:		
+public:
 
 	TimeDurationBase() : milliseconds(0)
 	{}
 
-	T GetMilliseconds() const 
-	{
+	T GetMilliseconds() const {
 		return milliseconds;
 	}
-	
+
 protected:
 	TimeDurationBase(T aMilliseconds) : milliseconds(aMilliseconds)
 	{}
@@ -67,11 +66,11 @@ public:
 	static TimeDuration Zero();
 
 	static TimeDuration Milliseconds(int64_t aMilliseconds);
-	
+
 	static TimeDuration Seconds(int64_t aSeconds);
 
 	static TimeDuration Minutes(int64_t aMinutes);
-			
+
 private:
 	TimeDuration(int64_t aMilliseconds);
 };

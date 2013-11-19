@@ -130,7 +130,7 @@ BOOST_AUTO_TEST_CASE(ResetEventsProperlyOnFailure)
 	for (size_t i = 0; i < b.NumSelected(); ++i) {
 		const uint8_t* value = itr->mValue.mpData;
 		for (size_t j = 0; j < dataSize; ++j) {
-	//		BOOST_REQUIRE_EQUAL(value[j], i);
+			//		BOOST_REQUIRE_EQUAL(value[j], i);
 		}
 		++itr;
 	}
@@ -182,12 +182,12 @@ BOOST_AUTO_TEST_CASE(TimeBasedSorting)
 BOOST_AUTO_TEST_CASE(EventOverflow)
 {
 	TimeOrderedEventBuffer<BinaryEvent> buffer(1);
-	buffer.Update(Binary(true), PC_CLASS_1, 0); 
+	buffer.Update(Binary(true), PC_CLASS_1, 0);
 	BOOST_REQUIRE(buffer.IsFull());
 	BOOST_REQUIRE_FALSE(buffer.IsOverflown());
 	buffer.Update(Binary(false), PC_CLASS_1, 1);
 	BOOST_REQUIRE(buffer.IsOverflown());
-	BOOST_REQUIRE_EQUAL(1, buffer.Size());	
+	BOOST_REQUIRE_EQUAL(1, buffer.Size());
 }
 
 BOOST_AUTO_TEST_SUITE_END()

@@ -42,18 +42,18 @@ public:
 };
 
 /**
-* Mock usable for testing 
+* Mock usable for testing
 */
 class FixedUTCTimeSource : public IUTCTimeSource
 {
-	public:
-		FixedUTCTimeSource(int64_t aTimeSinceEpoch): mTimeSinceEpoch(aTimeSinceEpoch)
-		{}
+public:
+	FixedUTCTimeSource(int64_t aTimeSinceEpoch): mTimeSinceEpoch(aTimeSinceEpoch)
+	{}
 
-	UTCTimestamp Now() { 
-		return UTCTimestamp (mTimeSinceEpoch); 		
+	UTCTimestamp Now() {
+		return UTCTimestamp (mTimeSinceEpoch);
 	}
-	
+
 	int64_t mTimeSinceEpoch;
 };
 

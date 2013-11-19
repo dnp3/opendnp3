@@ -32,7 +32,7 @@ namespace openpal
 Loggable::Loggable(Logger& arLogger)
 	: mLogger(arLogger)
 {
-	
+
 }
 
 }

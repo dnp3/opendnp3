@@ -29,8 +29,9 @@
 
 #include "BufferTestObject.h"
 
-namespace openpal {
-	class IExecutor;
+namespace openpal
+{
+class IExecutor;
 }
 
 namespace opendnp3

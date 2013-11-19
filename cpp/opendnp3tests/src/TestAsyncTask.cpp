@@ -82,7 +82,7 @@ BOOST_AUTO_TEST_SUITE(AsyncTaskSuite)
 BOOST_AUTO_TEST_CASE(DependencyAnalysis)
 {
 	MockTaskHandler mth;
-	MockExecutor exe;	
+	MockExecutor exe;
 
 	AsyncTaskGroup group(&exe);
 
@@ -166,7 +166,7 @@ BOOST_AUTO_TEST_CASE(DecoupledGroupsMode)
 BOOST_AUTO_TEST_CASE(NonPeriodic)
 {
 	MockTaskHandler mth;
-	
+
 	MockExecutor exe;
 
 	AsyncTaskGroup group(&exe);
@@ -203,7 +203,7 @@ BOOST_AUTO_TEST_CASE(PriorityBreaksTies)
 	AsyncTaskGroup group(&exe);
 
 	group.Add(TimeDuration::Milliseconds(100), TimeDuration::Milliseconds(100), 0, mth.GetHandler());
-	AsyncTaskBase* pT2 =group.Add(TimeDuration::Milliseconds(100), TimeDuration::Milliseconds(100), 1, mth.GetHandler()); // higher priority
+	AsyncTaskBase* pT2 = group.Add(TimeDuration::Milliseconds(100), TimeDuration::Milliseconds(100), 1, mth.GetHandler()); // higher priority
 
 	group.Enable();
 
@@ -214,7 +214,7 @@ BOOST_AUTO_TEST_CASE(PriorityBreaksTies)
 BOOST_AUTO_TEST_CASE(DependenciesEnforced)
 {
 	MockTaskHandler mth;
-	MockExecutor exe;	
+	MockExecutor exe;
 
 	AsyncTaskGroup group(&exe);
 	AsyncTaskBase* pT1 = group.Add(TimeDuration::Milliseconds(100), TimeDuration::Milliseconds(100), 0, mth.GetHandler());
@@ -230,8 +230,8 @@ BOOST_AUTO_TEST_CASE(DependenciesEnforced)
 
 BOOST_AUTO_TEST_CASE(TimerUsage)
 {
-	MockTaskHandler mth;	
-	MockExecutor exe;	
+	MockTaskHandler mth;
+	MockExecutor exe;
 
 
 	AsyncTaskGroup group(&exe);

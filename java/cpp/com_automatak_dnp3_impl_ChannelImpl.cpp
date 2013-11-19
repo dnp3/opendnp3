@@ -51,8 +51,8 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_ChannelImpl_add_1native_1sta
 	auto pChannel = (IChannel*) ptr;
 	JavaVM* pJVM = JNIHelpers::GetJVMFromEnv(apEnv);
 	jobject global = apEnv->NewGlobalRef(stateChangeProxy);
-	pChannel->AddDestructorHook([pJVM, global]() {		
-		JNIHelpers::DeleteGlobalReference(pJVM, global);		
+	pChannel->AddDestructorHook([pJVM, global]() {
+		JNIHelpers::DeleteGlobalReference(pJVM, global);
 	});
 	pChannel->AddStateListener([pJVM, global](ChannelState state) {
 		JNIEnv* pEnv = JNIHelpers::GetEnvFromJVM(pJVM);

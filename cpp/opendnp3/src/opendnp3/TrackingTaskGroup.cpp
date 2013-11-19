@@ -33,7 +33,7 @@ TrackingTaskGroup::TrackingTaskGroup(AsyncTaskGroup* apGroup) : mpGroup(apGroup)
 
 void TrackingTaskGroup::ResetTasks(int aMask)
 {
-	for(AsyncTaskBase * p: mTaskVec) {
+for(AsyncTaskBase * p: mTaskVec) {
 		if(!p->IsRunning() && (p->GetFlags() & aMask)) p->Reset();
 	}
 }
@@ -41,7 +41,7 @@ void TrackingTaskGroup::ResetTasks(int aMask)
 TrackingTaskGroup::~TrackingTaskGroup()
 {
 	//remove all the tasks that were created
-	for(auto pTask: mTaskVec) mpGroup->Remove(pTask);
+for(auto pTask: mTaskVec) mpGroup->Remove(pTask);
 }
 
 AsyncTaskBase* TrackingTaskGroup::Add(openpal::TimeDuration aPeriod, openpal::TimeDuration aRetryDelay, int aPriority, const TaskHandler& arCallback, const std::string& arName)

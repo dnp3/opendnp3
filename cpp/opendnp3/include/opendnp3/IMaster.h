@@ -44,15 +44,15 @@ class ICommandProcessor;
 class IMaster : public IStack
 {
 public:
-    IMaster(openpal::Logger& arLogger): IStack(arLogger) {}
+	IMaster(openpal::Logger& arLogger): IStack(arLogger) {}
 
-    virtual ~IMaster() {}
+	virtual ~IMaster() {}
 
-    /**
-    * Get a command processor interface to execute controls on the master
-    * @return Interface used to invoke commands
-    */
-    virtual ICommandProcessor* GetCommandProcessor() = 0;
+	/**
+	* Get a command processor interface to execute controls on the master
+	* @return Interface used to invoke commands
+	*/
+	virtual ICommandProcessor* GetCommandProcessor() = 0;
 };
 
 }

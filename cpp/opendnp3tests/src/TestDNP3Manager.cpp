@@ -60,12 +60,12 @@ BOOST_AUTO_TEST_CASE(ConstructionDestruction)
 		IOServiceThreadPool pool(Logger(&log, LEV_INFO, "pool"), std::thread::hardware_concurrency());
 		DNP3Manager mgr;
 
-		auto pClientPhys = new PhysicalLayerAsyncTCPClient(Logger(&log, LEV_INFO, "client"), pool.GetIOService(), "127.0.0.1", 20000); 
+		auto pClientPhys = new PhysicalLayerAsyncTCPClient(Logger(&log, LEV_INFO, "client"), pool.GetIOService(), "127.0.0.1", 20000);
 		auto pClient = mgr.CreateChannel(Logger(&log, LEV_INFO, "clientChannel"), TimeDuration::Seconds(5), pClientPhys);
 
 		auto pServerPhys = new PhysicalLayerAsyncTCPServer(Logger(&log, LEV_INFO, "server"), pool.GetIOService(), "127.0.0.1", 20000);
 		auto pServer = mgr.CreateChannel(Logger(&log, LEV_INFO, "serverChannel"), TimeDuration::Seconds(5), pServerPhys);
-				
+
 		pClient->AddMaster("master", LEV_INFO, NullDataObserver::Inst(), UTCTimeSource::Inst(), MasterStackConfig());
 		pServer->AddOutstation("outstation", LEV_INFO, SuccessCommandHandler::Inst(), NullTimeWriteHandler::Inst(), SlaveStackConfig());
 	}
@@ -79,7 +79,7 @@ BOOST_AUTO_TEST_CASE(ManualStackShutdown)
 		IOServiceThreadPool pool(Logger(&log, LEV_INFO, "pool"), std::thread::hardware_concurrency());
 		DNP3Manager mgr;
 
-		auto pClientPhys = new PhysicalLayerAsyncTCPClient(Logger(&log, LEV_INFO, "client"), pool.GetIOService(), "127.0.0.1", 20000); 
+		auto pClientPhys = new PhysicalLayerAsyncTCPClient(Logger(&log, LEV_INFO, "client"), pool.GetIOService(), "127.0.0.1", 20000);
 		auto pClient = mgr.CreateChannel(Logger(&log, LEV_INFO, "clientChannel"), TimeDuration::Seconds(5), pClientPhys);
 
 		auto pServerPhys = new PhysicalLayerAsyncTCPServer(Logger(&log, LEV_INFO, "server"), pool.GetIOService(), "127.0.0.1", 20000);
@@ -102,7 +102,7 @@ BOOST_AUTO_TEST_CASE(ManualChannelShutdownWithStack)
 		IOServiceThreadPool pool(Logger(&log, LEV_INFO, "pool"), std::thread::hardware_concurrency());
 		DNP3Manager mgr;
 
-		auto pClientPhys = new PhysicalLayerAsyncTCPClient(Logger(&log, LEV_INFO, "client"), pool.GetIOService(), "127.0.0.1", 20000); 
+		auto pClientPhys = new PhysicalLayerAsyncTCPClient(Logger(&log, LEV_INFO, "client"), pool.GetIOService(), "127.0.0.1", 20000);
 		auto pChannel = mgr.CreateChannel(Logger(&log, LEV_INFO, "clientChannel"), TimeDuration::Seconds(5), pClientPhys);
 
 		pChannel->AddMaster("master", LEV_INFO, NullDataObserver::Inst(), UTCTimeSource::Inst(), MasterStackConfig());
@@ -118,7 +118,7 @@ BOOST_AUTO_TEST_CASE(ManualChannelShutdown)
 		IOServiceThreadPool pool(Logger(&log, LEV_INFO, "pool"), std::thread::hardware_concurrency());
 		DNP3Manager mgr;
 
-		auto pClientPhys = new PhysicalLayerAsyncTCPClient(Logger(&log, LEV_INFO, "client"), pool.GetIOService(), "127.0.0.1", 20000); 
+		auto pClientPhys = new PhysicalLayerAsyncTCPClient(Logger(&log, LEV_INFO, "client"), pool.GetIOService(), "127.0.0.1", 20000);
 		mgr.CreateChannel(Logger(&log, LEV_INFO, "clientChannel"), TimeDuration::Seconds(5), pClientPhys)->Shutdown();
 
 	}

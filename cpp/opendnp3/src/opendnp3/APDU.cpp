@@ -61,14 +61,14 @@ bool APDU::operator==(const APDU& rhs)
 
 AppControlField APDU::GetControl() const
 {
-	assert(mpAppHeader != NULL);	
+	assert(mpAppHeader != NULL);
 
 	return mpAppHeader->GetControl(mBuffer);
 }
 
 IINField APDU::GetIIN() const
 {
-	assert(mpAppHeader != NULL);	
+	assert(mpAppHeader != NULL);
 
 	if(mpAppHeader->GetType() != AHT_RESPONSE) {
 		MACRO_THROW_EXCEPTION(openpal::Exception, "Only response packets have IIN fields");
@@ -79,14 +79,14 @@ IINField APDU::GetIIN() const
 
 FunctionCodes APDU::GetFunction() const
 {
-	assert(mpAppHeader != NULL);	
+	assert(mpAppHeader != NULL);
 
 	return mpAppHeader->GetFunction(mBuffer);
 }
 
 void APDU::SetFunction(FunctionCodes aCode)
 {
-	assert(mpAppHeader == NULL);	
+	assert(mpAppHeader == NULL);
 
 	if(aCode == FC_RESPONSE || aCode == FC_UNSOLICITED_RESPONSE) {
 		mpAppHeader = ResponseHeader::Inst();
@@ -102,7 +102,7 @@ void APDU::SetFunction(FunctionCodes aCode)
 
 void APDU::SetControl(const AppControlField& arControl)
 {
-	assert(mpAppHeader != NULL);	
+	assert(mpAppHeader != NULL);
 
 	mpAppHeader->SetControl(mBuffer, arControl);
 }
@@ -110,7 +110,7 @@ void APDU::SetControl(const AppControlField& arControl)
 void APDU::SetIIN(const IINField& arIIN)
 {
 	assert(mpAppHeader != NULL);
-	assert(mpAppHeader->GetType() == AHT_RESPONSE);	
+	assert(mpAppHeader->GetType() == AHT_RESPONSE);
 
 	static_cast<ResponseHeader*>(mpAppHeader)->SetIIN(mBuffer, arIIN);
 }
@@ -471,7 +471,7 @@ IndexedWriteIterator APDU::WriteIndexed(const SizeByVariationObject* apObj, size
 	this->CheckWriteState(apObj);
 
 	// This object type encodes the size in the variation field, the prefix is used to encode something else
-	
+
 	if(aSize > 255) throw openpal::ArgumentException(LOCATION, "size out of range");
 	uint8_t variation = static_cast<uint8_t>(aSize);
 

@@ -40,26 +40,25 @@ namespace opendnp3
 class ITimeWriteHandler
 {
 public:
-	virtual ~ITimeWriteHandler() {}	
-	
+	virtual ~ITimeWriteHandler() {}
+
 	virtual void WriteAbsoluteTime(openpal::UTCTimestamp aTimestamp) = 0;
 };
 
 class FunctionTimeWriteHandler : public ITimeWriteHandler
 {
 public:
-	FunctionTimeWriteHandler(std::function<void (openpal::UTCTimestamp aTimestamp)> aCallback) : 
+	FunctionTimeWriteHandler(std::function<void (openpal::UTCTimestamp aTimestamp)> aCallback) :
 		mCallback(aCallback)
 	{}
 
-	void WriteAbsoluteTime(openpal::UTCTimestamp aTimestamp)
-	{
+	void WriteAbsoluteTime(openpal::UTCTimestamp aTimestamp) {
 		mCallback(aTimestamp);
 	}
 
 private:
 	std::function<void (openpal::UTCTimestamp aTimestamp)> mCallback;
-	
+
 };
 
 class NullTimeWriteHandler : public FunctionTimeWriteHandler
@@ -70,7 +69,7 @@ public:
 private:
 	static NullTimeWriteHandler mInstance;
 
-	NullTimeWriteHandler() : FunctionTimeWriteHandler([](openpal::UTCTimestamp){}) {}	
+	NullTimeWriteHandler() : FunctionTimeWriteHandler([](openpal::UTCTimestamp) {}) {}
 };
 
 }

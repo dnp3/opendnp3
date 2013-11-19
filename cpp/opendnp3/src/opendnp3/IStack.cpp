@@ -28,7 +28,7 @@ using namespace openpal;
 namespace opendnp3
 {
 
-IStack::IStack(Logger& arLogger) : mLogger(arLogger)	
+IStack::IStack(Logger& arLogger) : mLogger(arLogger)
 {
 
 

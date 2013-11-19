@@ -84,7 +84,7 @@ void IndexedWriteIterator::SetIndex(size_t aIndex)
 
 	switch(mIndexMode) {
 	case(IM_1B):
-		if(aIndex > UInt8::Max) MACRO_THROW_EXCEPTION(openpal::ArgumentException ,"");
+		if(aIndex > UInt8::Max) MACRO_THROW_EXCEPTION(openpal::ArgumentException , "");
 		UInt8::Write(mpPos, static_cast<uint8_t>(aIndex));
 		break;
 	case(IM_2B):

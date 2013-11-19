@@ -60,10 +60,10 @@ int main(int argc, char* argv[])
 	log.AddLogSubscriber(LogToStdio::Inst());
 
 	// asio thread pool that drives the stack
-	IOServiceThreadPool pool(Logger(&log, LOG_LEVEL, "pool"), 1); // 1 stack only needs 1 thread	
+	IOServiceThreadPool pool(Logger(&log, LOG_LEVEL, "pool"), 1); // 1 stack only needs 1 thread
 
 	// This is the main point of interaction with the stack
-	DNP3Manager mgr; 
+	DNP3Manager mgr;
 
 	// Connect via a TCPClient socket to a slave
 	auto pClientPhys = new PhysicalLayerAsyncTCPClient(Logger(&log, LOG_LEVEL, "tcpclient"), pool.GetIOService(), "127.0.0.1", 20000);
@@ -87,7 +87,7 @@ int main(int argc, char* argv[])
 	                       "master",						// stack name
 	                       LOG_LEVEL,						// log filter level
 	                       PrintingDataObserver::Inst(),	// callback for data processing
-						   asiopal::UTCTimeSource::Inst(),	// system clock for time syncing
+	                       asiopal::UTCTimeSource::Inst(),	// system clock for time syncing
 	                       stackConfig						// stack configuration
 	               );
 

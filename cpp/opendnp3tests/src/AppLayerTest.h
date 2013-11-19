@@ -36,7 +36,8 @@ namespace opendnp3
 {
 
 
-class AppLayerTest {
+class AppLayerTest
+{
 public:
 	AppLayerTest(bool aIsMaster = false, size_t aNumRetry = 0, FilterLevel aLevel = LEV_WARNING, bool aImmediate = false);
 
@@ -47,7 +48,7 @@ public:
 	void SendResponse(FunctionCodes aCode, bool aFIR, bool aFIN, bool aCON, bool aUNS);
 	void SendUnsolicited(FunctionCodes aCode, bool aFIR, bool aFIN, bool aCON, bool aUNS);
 
-	bool CheckSentAPDU(FunctionCodes aCode, bool aFIR, bool aFIN, bool aCON, bool aUNS, int aSEQ);	
+	bool CheckSentAPDU(FunctionCodes aCode, bool aFIR, bool aFIN, bool aCON, bool aUNS, int aSEQ);
 
 	LogTester log;
 	MockAppUser user;

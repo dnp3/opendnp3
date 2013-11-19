@@ -36,21 +36,21 @@
 
 namespace opendnp3
 {
-	class TimeTransaction : private Transaction
-	{
-		public:
-			TimeTransaction(IDataObserver* apObserver, openpal::UTCTimestamp aTimestamp);
+class TimeTransaction : private Transaction
+{
+public:
+	TimeTransaction(IDataObserver* apObserver, openpal::UTCTimestamp aTimestamp);
 
-			void Update(Binary aMeas, size_t aIndex);
-			void Update(Analog aMeas, size_t aIndex);
-			void Update(Counter aMeas, size_t aIndex);
-			void Update(ControlStatus aMeas, size_t aIndex);
-			void Update(SetpointStatus aMeas, size_t aIndex);
+	void Update(Binary aMeas, size_t aIndex);
+	void Update(Analog aMeas, size_t aIndex);
+	void Update(Counter aMeas, size_t aIndex);
+	void Update(ControlStatus aMeas, size_t aIndex);
+	void Update(SetpointStatus aMeas, size_t aIndex);
 
-		private:
-			IDataObserver* mpObserver;
-			openpal::UTCTimestamp mTimestamp;
-	};
+private:
+	IDataObserver* mpObserver;
+	openpal::UTCTimestamp mTimestamp;
+};
 }
 
 #endif

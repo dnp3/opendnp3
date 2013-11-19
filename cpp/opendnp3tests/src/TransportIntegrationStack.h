@@ -29,8 +29,9 @@
 
 #include "MockUpperLayer.h"
 
-namespace openpal {
-	class IPhysicalLayerAsync;
+namespace openpal
+{
+class IPhysicalLayerAsync;
 }
 
 namespace opendnp3

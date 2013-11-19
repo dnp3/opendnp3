@@ -45,7 +45,7 @@ namespace opendnp3
 
 class DLL_LOCAL OutstationSBOHandler
 {
-	
+
 	template <class T>
 	class SelectInfo
 	{
@@ -60,7 +60,7 @@ class DLL_LOCAL OutstationSBOHandler
 
 		SelectInfo() :
 			mSequence(0),
-			mCode(QC_UNDEFINED),			
+			mCode(QC_UNDEFINED),
 			mTimestamp(),
 			mOperated(false)
 		{}
@@ -144,7 +144,7 @@ CommandStatus OutstationSBOHandler::Operate(const T& arCommand, size_t aIndex, u
 		this->ClearAll();
 		return CS_NO_SELECT; //no prior select
 	}
-	else {		
+	else {
 		// what should the sequence number be?
 		uint8_t expectedSeq = (iter->second.mSequence + 1) % 16;
 		// are all values what we expect them to be?

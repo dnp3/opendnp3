@@ -35,7 +35,8 @@
 #include <queue>
 #include <string>
 
-namespace openpal {
+namespace openpal
+{
 class IExecutor;
 class ITimer;
 }
@@ -62,7 +63,7 @@ public:
 	AsyncTaskGroup(openpal::IExecutor*);
 	~AsyncTaskGroup();
 
-	AsyncTaskBase* Add(openpal::TimeDuration aPeriod,openpal::TimeDuration aRetryDelay, int aPriority, const TaskHandler& arCallback, const std::string& arName = "");
+	AsyncTaskBase* Add(openpal::TimeDuration aPeriod, openpal::TimeDuration aRetryDelay, int aPriority, const TaskHandler& arCallback, const std::string& arName = "");
 	AsyncTaskContinuous* AddContinuous(int aPriority, const TaskHandler& arCallback, const std::string& arName = "");
 	void Remove(AsyncTaskBase* apTask);
 
@@ -94,7 +95,7 @@ private:
 
 	bool mIsRunning;
 	bool mShutdown;
-	openpal::IExecutor* mpExecutor;	
+	openpal::IExecutor* mpExecutor;
 	openpal::ITimer* mpTimer;
 
 	typedef std::vector< AsyncTaskBase* > TaskVec;

@@ -38,7 +38,8 @@
 #include <memory>
 #include <functional>
 
-namespace openpal {
+namespace openpal
+{
 class IPhysicalLayerAsync;
 }
 
@@ -68,7 +69,7 @@ public:
 	IMaster* AddMaster(		const std::string& arLoggerId,
 	                                FilterLevel aLevel,
 	                                IDataObserver* apPublisher,
-									openpal::IUTCTimeSource* apTimeSource,
+	                                openpal::IUTCTimeSource* apTimeSource,
 	                                const MasterStackConfig& arCfg);
 
 #endif
@@ -76,7 +77,7 @@ public:
 	IOutstation* AddOutstation(	const std::string& arLoggerId,
 	                                FilterLevel aLevel,
 	                                ICommandHandler* apCmdHandler,
-									ITimeWriteHandler* apTimeWriteHandler,
+	                                ITimeWriteHandler* apTimeWriteHandler,
 	                                const SlaveStackConfig&);
 
 	// Helper functions only available inside DNP3Manager
@@ -85,7 +86,7 @@ private:
 
 	void Cleanup();
 
-	void OnStackShutdown(IStack* apStack, LinkRoute aRoute);	
+	void OnStackShutdown(IStack* apStack, LinkRoute aRoute);
 	std::auto_ptr<IPhysicalLayerAsync> mpPhys;
 	std::function<void (DNP3Channel*)> mOnShutdown;
 	LinkLayerRouter mRouter;

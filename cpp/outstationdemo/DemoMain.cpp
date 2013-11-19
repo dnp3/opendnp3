@@ -54,9 +54,9 @@ int main(int argc, char* argv[])
 	// Specify a FilterLevel for the stack/physical layer to use.
 	// Log statements with a lower priority will not be logged.
 	const FilterLevel LOG_LEVEL = LEV_INFO;
-	
+
 	//A default logging backend that can proxy to multiple other backends
-	EventLog log;	
+	EventLog log;
 	log.AddLogSubscriber(LogToStdio::Inst()); // This singleton logger just prints messages to the console
 
 	IOServiceThreadPool pool(Logger(&log, LOG_LEVEL, "pool"), 1); // only 1 thread is needed for a single stack
@@ -107,7 +107,7 @@ int main(int argc, char* argv[])
 		if(input == "exit") break;
 		else {
 			TimeTransaction tx(pDataObserver, UTCTimeSource::Inst()->Now()); //automatically calls Start()/End() and sets time for each measurement
-			tx.Update(Counter(count, CQ_ONLINE), 0);			
+			tx.Update(Counter(count, CQ_ONLINE), 0);
 			++count;
 		}
 	}

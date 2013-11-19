@@ -164,15 +164,16 @@ void PLLS_ConfDataWait::Ack(LinkLayer* apLL, bool aIsRcvBuffFull)
 	apLL->DoSendSuccess();
 }
 
-void PLLS_ConfDataWait::Nack(LinkLayer* apLL, bool aIsRcvBuffFull) {
-		if(aIsRcvBuffFull) Failure(apLL);
-		else {
-			apLL->ResetRetry();
-			apLL->CancelTimer();
-			apLL->StartTimer();
-			apLL->ChangeState(PLLS_ResetLinkWait::Inst());
-			apLL->SendResetLinks();
-		}
+void PLLS_ConfDataWait::Nack(LinkLayer* apLL, bool aIsRcvBuffFull)
+{
+	if(aIsRcvBuffFull) Failure(apLL);
+	else {
+		apLL->ResetRetry();
+		apLL->CancelTimer();
+		apLL->StartTimer();
+		apLL->ChangeState(PLLS_ResetLinkWait::Inst());
+		apLL->SendResetLinks();
+	}
 }
 
 void PLLS_ConfDataWait::Failure(LinkLayer* apLL)

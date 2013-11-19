@@ -38,7 +38,7 @@ TransportScalabilityTestObject::TransportScalabilityTestObject(
         boost::uint16_t aNumPair,
         FilterLevel aLevel,
         bool aImmediate) :
-	
+
 	AsyncTestObjectASIO(),
 	log()
 {
@@ -47,7 +47,7 @@ TransportScalabilityTestObject::TransportScalabilityTestObject(
 
 	for(boost::uint16_t port = START; port < STOP; ++port) {
 		ostringstream oss;
-		oss << "pair" << port;		
+		oss << "pair" << port;
 		TransportStackPair* pPair = new TransportStackPair(aClientCfg, aServerCfg, log.mTestLogger, this->GetService(), port);
 		mPairs.push_back(pPair);
 	}

@@ -7,21 +7,21 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-/*
- * Class:     com_automatak_dnp3_impl_MasterImpl
- * Method:    get_native_command_processor
- * Signature: (J)J
- */
-JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_MasterImpl_get_1native_1command_1processor
-  (JNIEnv *, jobject, jlong);
+	/*
+	 * Class:     com_automatak_dnp3_impl_MasterImpl
+	 * Method:    get_native_command_processor
+	 * Signature: (J)J
+	 */
+	JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_MasterImpl_get_1native_1command_1processor
+	(JNIEnv*, jobject, jlong);
 
-/*
- * Class:     com_automatak_dnp3_impl_MasterImpl
- * Method:    shutdown_native
- * Signature: (J)V
- */
-JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_MasterImpl_shutdown_1native
-  (JNIEnv *, jobject, jlong);
+	/*
+	 * Class:     com_automatak_dnp3_impl_MasterImpl
+	 * Method:    shutdown_native
+	 * Signature: (J)V
+	 */
+	JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_MasterImpl_shutdown_1native
+	(JNIEnv*, jobject, jlong);
 
 #ifdef __cplusplus
 }

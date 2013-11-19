@@ -34,7 +34,7 @@ namespace asiopal
 class UTCTimeSource : public openpal::IUTCTimeSource
 {
 
-public:	
+public:
 	static openpal::IUTCTimeSource* Inst();
 	openpal::UTCTimestamp Now();
 

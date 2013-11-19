@@ -48,7 +48,7 @@ struct MasterConfig {
 
 	/// Default constructor
 	MasterConfig() :
-		FragSize(DEFAULT_FRAG_SIZE),		
+		FragSize(DEFAULT_FRAG_SIZE),
 		UseNonStandardVtoFunction(false),
 		AllowTimeSync(true),
 		DoUnsolOnStartup(false),

@@ -11,7 +11,8 @@
 
 using namespace openpal;
 
-namespace asiodnp3 {
+namespace asiodnp3
+{
 
 
 ASIODNP3Manager::ASIODNP3Manager(uint32_t aConcurrency, std::function<void()> aOnThreadStart, std::function<void()> aOnThreadExit) :
@@ -36,7 +37,7 @@ openpal::ILogBase* ASIODNP3Manager::GetLog()
 {
 	return mpLog.get();
 }
-      
+
 void ASIODNP3Manager::Shutdown()
 {
 	mpManager->Shutdown();
@@ -59,6 +60,6 @@ opendnp3::IChannel* ASIODNP3Manager::AddSerial(openpal::Logger aLogger, openpal:
 	auto pPhys = new asiopal::PhysicalLayerAsyncSerial(aLogger, mpThreadPool->GetIOService(), aSettings);
 	return mpManager->CreateChannel(aLogger, aOpenRetry, pPhys);
 }
-	
+
 }
 

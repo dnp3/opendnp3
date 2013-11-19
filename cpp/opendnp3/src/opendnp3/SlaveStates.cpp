@@ -102,7 +102,7 @@ void AS_Base::SwitchOnFunction(Slave* c, AS_Base* apNext, const APDU& arRequest,
 		ChangeState(c, apNext);
 		if(aSeqInfo != SI_PREV) c->HandleWrite(arRequest);
 		c->ConfigureAndSendSimpleResponse();
-		break;	
+		break;
 	case (FC_SELECT):
 		ChangeState(c, apNext);
 		c->HandleSelect(arRequest, aSeqInfo);
@@ -136,7 +136,7 @@ void AS_Base::SwitchOnFunction(Slave* c, AS_Base* apNext, const APDU& arRequest,
 		c->ConfigureDelayMeasurement(arRequest);
 		c->Send(c->mResponse);
 		break;
-	default: 
+	default:
 		MACRO_THROW_EXCEPTION_COMPLEX_WITH_CODE(NotSupportedException, "Function not supported: " << arRequest.GetFunction() , SERR_FUNC_NOT_SUPPORTED);
 	}
 }

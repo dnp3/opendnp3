@@ -37,7 +37,7 @@ namespace opendnp3
 {
 
 DNP3Channel::DNP3Channel(openpal::Logger aLogger, openpal::TimeDuration aOpenRetry, IPhysicalLayerAsync* apPhys, std::function<void (DNP3Channel*)> aOnShutdown) :
-	Loggable(aLogger),	
+	Loggable(aLogger),
 	mpPhys(apPhys),
 	mOnShutdown(aOnShutdown),
 	mRouter(aLogger.GetSubLogger("Router"), mpPhys.get(), aOpenRetry)
@@ -72,7 +72,7 @@ for(auto pStack: copy) pStack->Shutdown();
 		ExecutorPause p(mpPhys->GetExecutor());
 #ifndef OPENDNP3_NO_MASTER
 		this->mGroup.Shutdown();	// no more task callbacks
-#endif		
+#endif
 		this->mRouter.Shutdown();	// start shutting down the router
 	}
 	mRouter.WaitForShutdown();
@@ -80,7 +80,7 @@ for(auto pStack: copy) pStack->Shutdown();
 
 #ifndef OPENDNP3_NO_MASTER
 IMaster* DNP3Channel::AddMaster(const std::string& arLoggerId, FilterLevel aLevel, IDataObserver* apPublisher, IUTCTimeSource* apTimeSource, const MasterStackConfig& arCfg)
-{	
+{
 	LinkRoute route(arCfg.link.RemoteAddr, arCfg.link.LocalAddr);
 	ExecutorPause p(mpPhys->GetExecutor());
 	if(mRouter.IsRouteInUse(route)) {
@@ -95,7 +95,7 @@ IMaster* DNP3Channel::AddMaster(const std::string& arLoggerId, FilterLevel aLeve
 		mStacks.insert(pMaster);
 		mRouter.AddContext(pMaster->GetLinkContext(), route);
 		return pMaster;
-	}		
+	}
 }
 #endif
 
@@ -115,7 +115,7 @@ IOutstation* DNP3Channel::AddOutstation(const std::string& arLoggerId, FilterLev
 		mStacks.insert(pOutstation);
 		mRouter.AddContext(pOutstation->GetLinkContext(), route);
 		return pOutstation;
-	}		
+	}
 }
 
 void DNP3Channel::OnStackShutdown(IStack* apStack, LinkRoute route)

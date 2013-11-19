@@ -31,36 +31,40 @@ using namespace System::Collections::ObjectModel;
 using namespace DNP3::Interface;
 
 namespace DNP3
-{	
+{
 namespace Adapter
 {
-	private class LogAdapter : public openpal::ILogBase
-	{
-		public:
+private class LogAdapter : public openpal::ILogBase
+{
+public:
 
-		LogAdapter(ILogHandler^ proxy);
+	LogAdapter(ILogHandler ^ proxy);
 
-		// logging error messages, etc
-		void Log( const openpal::LogEntry& arEntry );		
+	// logging error messages, etc
+	void Log( const openpal::LogEntry& arEntry );
 
-		private:		
-		gcroot<ILogHandler^> proxy;
-	};
-	
-	private ref class LogAdapterWrapper
-	{
-		public:
-		LogAdapterWrapper(ILogHandler^ proxy) : mpAdapter(new LogAdapter(proxy))
-		{}
+private:
+	gcroot < ILogHandler ^ > proxy;
+};
 
-		openpal::ILogBase* GetLogAdapter() { return mpAdapter; }
+private ref class LogAdapterWrapper
+{
+public:
+	LogAdapterWrapper(ILogHandler ^ proxy) : mpAdapter(new LogAdapter(proxy))
+	{}
 
-		~LogAdapterWrapper()
-		{ delete mpAdapter; }
+	openpal::ILogBase* GetLogAdapter() {
+		return mpAdapter;
+	}
 
-		private:
-		LogAdapter* mpAdapter;
-	};
-}}
+	~LogAdapterWrapper() {
+		delete mpAdapter;
+	}
+
+private:
+	LogAdapter* mpAdapter;
+};
+}
+}
 
 #endif

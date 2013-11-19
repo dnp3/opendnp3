@@ -34,7 +34,7 @@ namespace opendnp3
 {
 
 MasterTestObject::MasterTestObject(MasterConfig cfg, openpal::FilterLevel aLevel, bool aImmediate) :
-	log(),	
+	log(),
 	fixedUTC(0),
 	mts(),
 	group(&mts),

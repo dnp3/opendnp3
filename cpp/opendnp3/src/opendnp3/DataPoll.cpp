@@ -38,7 +38,7 @@ namespace opendnp3
 
 DataPoll::DataPoll(Logger& arLogger, IDataObserver* apObs) :
 	MasterTaskBase(arLogger),
-	mpObs(apObs)	
+	mpObs(apObs)
 {}
 
 TaskResult DataPoll::_OnPartialResponse(const APDU& f)

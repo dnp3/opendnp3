@@ -49,7 +49,7 @@ private:
 	TaskResult _OnPartialResponse(const APDU&);
 	TaskResult _OnFinalResponse(const APDU&);
 
-	IDataObserver* mpObs;	
+	IDataObserver* mpObs;
 
 };
 

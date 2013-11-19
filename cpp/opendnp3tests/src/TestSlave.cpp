@@ -219,13 +219,13 @@ BOOST_AUTO_TEST_CASE(WriteTimeDate)
 	cfg.mAllowTimeSync = true;
 	SlaveTestObject t(cfg);
 	t.slave.OnLowerLayerUp();
-	
-	
+
+
 	t.SendToSlave("C0 02 32 01 07 01 D2 04 00 00 00 00"); //write Grp50Var1, value = 1234 ms after epoch
 	BOOST_REQUIRE_EQUAL(t.mTimeWrites.size(), 0);
 	t.mts.DispatchOne();
 	BOOST_REQUIRE_EQUAL(t.mTimeWrites.size(), 1);
-	BOOST_REQUIRE_EQUAL(t.mTimeWrites.front().msSinceEpoch, 1234);	
+	BOOST_REQUIRE_EQUAL(t.mTimeWrites.front().msSinceEpoch, 1234);
 	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 00");
 }
 BOOST_AUTO_TEST_CASE(WriteTimeDateNotAsking)
@@ -237,7 +237,7 @@ BOOST_AUTO_TEST_CASE(WriteTimeDateNotAsking)
 
 	t.SendToSlave("C0 02 32 01 07 01 D2 04 00 00 00 00"); //write Grp50Var1, value = 1234 ms after epoch
 	t.mts.DispatchOne();
-	BOOST_REQUIRE_EQUAL(t.mTimeWrites.size(), 0);		
+	BOOST_REQUIRE_EQUAL(t.mTimeWrites.size(), 0);
 	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 00");
 }
 BOOST_AUTO_TEST_CASE(WriteTimeDateMultipleObjects)
@@ -249,7 +249,7 @@ BOOST_AUTO_TEST_CASE(WriteTimeDateMultipleObjects)
 
 	t.SendToSlave("C0 02 32 01 07 02 D2 04 00 00 00 00 D2 04 00 00 00 00"); //write Grp50Var1, value = 1234 ms after epoch
 	t.mts.DispatchOne();
-	BOOST_REQUIRE_EQUAL(t.mTimeWrites.size(), 0);	
+	BOOST_REQUIRE_EQUAL(t.mTimeWrites.size(), 0);
 }
 
 BOOST_AUTO_TEST_CASE(BlankIntegrityPoll)
@@ -1108,7 +1108,7 @@ BOOST_AUTO_TEST_CASE(ReadByRangeHeader)
 
 template <class PointType, class T>
 void TestStaticType(SlaveConfig& aCfg, T aVal, const std::string& aRsp)
-{	
+{
 	SlaveTestObject t(aCfg);
 	t.db.Configure(PointType::MeasEnum, 1);
 	t.db.SetClass(PointType::MeasEnum, PC_CLASS_1);

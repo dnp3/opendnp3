@@ -88,11 +88,11 @@ All callbacks come from a thread in the pool.
 class DNP3Manager : public DestructorHook
 {
 public:
-	
+
 	DNP3Manager();
 
 	~DNP3Manager();
-	
+
 	IChannel* CreateChannel(openpal::Logger aLogger, openpal::TimeDuration aOpenRetry, openpal::IPhysicalLayerAsync* apPhys);
 
 	/**
@@ -103,8 +103,8 @@ public:
 
 private:
 
-	void OnChannelShutdownCallback(DNP3Channel* apChannel);	
-	
+	void OnChannelShutdownCallback(DNP3Channel* apChannel);
+
 	std::set<DNP3Channel*> mChannels;
 };
 

@@ -50,7 +50,7 @@ public:
 	* @return result of request
 	*/
 	virtual CommandStatus Select(const ControlRelayOutputBlock& arCommand, size_t aIndex) = 0;
-	
+
 	/**
 	* Operate a ControlRelayOutputBlock - group 12 variation 1
 	* @param arCommand command to operate
@@ -58,7 +58,7 @@ public:
 	* @return result of request
 	*/
 	virtual CommandStatus Operate(const ControlRelayOutputBlock& arCommand, size_t aIndex) = 0;
-	
+
 	/**
 	* Direct operate a ControlRelayOutputBlock - group 12 variation 1
 	* @param arCommand command to operate
@@ -82,7 +82,7 @@ public:
 	* @return result of request
 	*/
 	virtual CommandStatus Operate(const AnalogOutputInt16& arCommand, size_t aIndex) = 0;
-	
+
 	/**
 	* Direct operate a 16 bit analog output - group 41 variation 2
 	* @param arCommand command to operate
@@ -154,7 +154,7 @@ public:
 	* @return result of request
 	*/
 	virtual CommandStatus Operate(const AnalogOutputDouble64& arCommand, size_t aIndex) = 0;
-	
+
 	/**
 	* Direct operate a double precision, floating point analog output - group 41 variation 4
 	* @param arCommand command to operate

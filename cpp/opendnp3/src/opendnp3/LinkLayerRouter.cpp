@@ -54,17 +54,17 @@ void LinkLayerRouter::AddContext(ILinkContext* apContext, const LinkRoute& arRou
 {
 	assert(apContext != NULL);
 
-	if(IsRouteInUse(arRoute)) {		
+	if(IsRouteInUse(arRoute)) {
 		MACRO_THROW_EXCEPTION_COMPLEX(ArgumentException, "Route already in use: " << arRoute);
 	}
 
-	for(AddressMap::value_type v: mAddressMap) {
+for(AddressMap::value_type v: mAddressMap) {
 		if(apContext == v.second) {
 			MACRO_THROW_EXCEPTION_COMPLEX(ArgumentException, "Context already is bound to route:  " << v.first);
 		}
 	}
 
-	mAddressMap[arRoute] = apContext;	
+	mAddressMap[arRoute] = apContext;
 	if(this->GetState() == CS_OPEN) apContext->OnLowerLayerUp();
 	this->Start();
 }
@@ -267,7 +267,7 @@ void LinkLayerRouter::OnPhysicalLayerCloseCallback()
 	// Drop frames queued for transmit and tell the contexts that the router has closed
 	mTransmitting = false;
 	mTransmitQueue.erase(mTransmitQueue.begin(), mTransmitQueue.end());
-	for(auto pair: mAddressMap) pair.second->OnLowerLayerDown();
+for(auto pair: mAddressMap) pair.second->OnLowerLayerDown();
 }
 
 }

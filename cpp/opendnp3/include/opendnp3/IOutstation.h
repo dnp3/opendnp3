@@ -45,14 +45,14 @@ class IDataObserver;
 class IOutstation : public IStack
 {
 public:
-    IOutstation(openpal::Logger& arLogger): IStack(arLogger) {}
-    virtual ~IOutstation() {}
+	IOutstation(openpal::Logger& arLogger): IStack(arLogger) {}
+	virtual ~IOutstation() {}
 
-    /**
-    * Get a data observer interface to load measurements on the outstation
-    * @return Inteface used to load measurements into the outstation
-    */
-    virtual IDataObserver* GetDataObserver() = 0;
+	/**
+	* Get a data observer interface to load measurements on the outstation
+	* @return Inteface used to load measurements into the outstation
+	*/
+	virtual IDataObserver* GetDataObserver() = 0;
 };
 
 }

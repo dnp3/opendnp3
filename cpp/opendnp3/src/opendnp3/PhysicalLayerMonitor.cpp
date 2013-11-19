@@ -36,7 +36,7 @@ using namespace openpal;
 namespace opendnp3
 {
 
-	PhysicalLayerMonitor::PhysicalLayerMonitor(Logger aLogger, IPhysicalLayerAsync* apPhys, TimeDuration aMinOpenRetry, TimeDuration aMaxOpenRetry) :
+PhysicalLayerMonitor::PhysicalLayerMonitor(Logger aLogger, IPhysicalLayerAsync* apPhys, TimeDuration aMinOpenRetry, TimeDuration aMaxOpenRetry) :
 	Loggable(aLogger),
 	IHandlerAsync(aLogger),
 	mpPhys(apPhys),

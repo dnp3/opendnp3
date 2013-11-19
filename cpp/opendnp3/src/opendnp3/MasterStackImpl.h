@@ -48,10 +48,10 @@ class DLL_LOCAL MasterStackImpl : public IMaster
 public:
 
 	MasterStackImpl(
-	        openpal::Logger&,	        
+	        openpal::Logger&,
 	        IExecutor* apExecutor,
 	        IDataObserver* apPublisher,
-			IUTCTimeSource* apTimeSource,
+	        IUTCTimeSource* apTimeSource,
 	        AsyncTaskGroup* apTaskGroup,
 	        const MasterStackConfig& arCfg,
 	        std::function<void (IMaster*)> aOnShutdown);

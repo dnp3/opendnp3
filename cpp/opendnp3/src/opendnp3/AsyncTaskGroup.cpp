@@ -41,7 +41,7 @@ namespace opendnp3
 AsyncTaskGroup::AsyncTaskGroup(IExecutor* apExecutor) :
 	mIsRunning(false),
 	mShutdown(false),
-	mpExecutor(apExecutor),	
+	mpExecutor(apExecutor),
 	mpTimer(NULL)
 {
 
@@ -58,7 +58,7 @@ AsyncTaskBase* AsyncTaskGroup::Add(openpal::TimeDuration aPeriod, openpal::TimeD
 {
 	AsyncTaskBase* pTask;
 	if(aPeriod.GetMilliseconds() < 0)
-		pTask = new AsyncTaskNonPeriodic(aRetryDelay, aPriority, arCallback, this, arName);		
+		pTask = new AsyncTaskNonPeriodic(aRetryDelay, aPriority, arCallback, this, arName);
 	else
 		pTask = new AsyncTaskPeriodic(aPeriod, aRetryDelay, aPriority, arCallback, this, arName);
 
@@ -182,7 +182,7 @@ openpal::MonotonicTimestamp AsyncTaskGroup::GetCurrentTime() const
 
 void AsyncTaskGroup::Update(const MonotonicTimestamp& arTime)
 {
-	for(AsyncTaskBase * p: mTaskVec) {
+for(AsyncTaskBase * p: mTaskVec) {
 		p->UpdateTime(arTime);
 	}
 }

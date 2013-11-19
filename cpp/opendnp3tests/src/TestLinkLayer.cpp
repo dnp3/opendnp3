@@ -390,12 +390,12 @@ BOOST_AUTO_TEST_CASE(ResetLinkRetries)
 
 	ByteStr bytes(250, 0);
 	t.link.Send(bytes, bytes.Size());
-	for(int i=1; i<5; ++i) {
+	for(int i = 1; i < 5; ++i) {
 		BOOST_REQUIRE_EQUAL(t.mNumSend, i); // sends link retry
 		LinkFrame f;
 		f.FormatResetLinkStates(true, 1024, 1);
 		BOOST_REQUIRE_EQUAL(f, t.mLastSend);
-		BOOST_REQUIRE(t.mts.DispatchOne()); //timeout		
+		BOOST_REQUIRE(t.mts.DispatchOne()); //timeout
 	}
 	BOOST_REQUIRE_EQUAL(t.mNumSend, 4);
 }
@@ -420,7 +420,7 @@ BOOST_AUTO_TEST_CASE(ConfirmedDataNackDFCClear)
 	BOOST_REQUIRE_EQUAL(t.mLastSend.GetFunc(), FuncCodes::FC_PRI_RESET_LINK_STATES);
 	t.link.Ack(false, false, 1, 1024); // ACK the link reset
 	BOOST_REQUIRE_EQUAL(t.mNumSend, 4);
-	BOOST_REQUIRE_EQUAL(t.mLastSend.GetFunc(), FuncCodes::FC_PRI_CONFIRMED_USER_DATA);	
+	BOOST_REQUIRE_EQUAL(t.mLastSend.GetFunc(), FuncCodes::FC_PRI_CONFIRMED_USER_DATA);
 }
 
 BOOST_AUTO_TEST_CASE(SendDataTimerExpiration)

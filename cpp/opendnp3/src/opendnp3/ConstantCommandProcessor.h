@@ -27,7 +27,8 @@
 #include <opendnp3/ICommandProcessor.h>
 #include <openpal/Visibility.h>
 
-namespace openpal {
+namespace openpal
+{
 class IExecutor;
 }
 

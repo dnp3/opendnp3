@@ -186,14 +186,14 @@ BOOST_AUTO_TEST_CASE(LinkLayerRouterClearsBufferOnLowerLayerDown)
 	t.phys.TriggerRead("05 64 D5 C4 00 04 01 00 F0 BC C0 C0 01 3C 01 06 FF 50");
 	BOOST_REQUIRE_EQUAL(0, mfs.mNumFrames);
 	t.phys.SignalReadFailure(); // closes the layer
-	
+
 	t.phys.ClearBuffer();
 	t.phys.SignalOpenSuccess();
-	
+
 	LinkFrame f;
 	f.FormatAck(true, false, 1024, 1);
 	t.phys.TriggerRead(toHex(f.GetBuffer(), f.GetSize()));
-	
+
 	BOOST_REQUIRE_EQUAL(1, mfs.mNumFrames);
 }
 

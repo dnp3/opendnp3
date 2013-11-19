@@ -148,7 +148,7 @@ for(auto i: arIdxVec) indexSet.insert(i->Index);
 template<typename T>
 inline void Database::SetAllOnline( std::vector< PointInfo<T> >& arVector )
 {
-	for(size_t i=0; i<arVector.size(); ++i) arVector[i].mValue.SetQuality(T::ONLINE);
+	for(size_t i = 0; i < arVector.size(); ++i) arVector[i].mValue.SetQuality(T::ONLINE);
 }
 
 template<typename T>

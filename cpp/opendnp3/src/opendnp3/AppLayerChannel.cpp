@@ -35,7 +35,7 @@ using namespace openpal;
 namespace opendnp3
 {
 
-	AppLayerChannel::AppLayerChannel(const std::string& arName, openpal::Logger& arLogger, AppLayer* apAppLayer, IExecutor* apExecutor, TimeDuration aTimeout) :
+AppLayerChannel::AppLayerChannel(const std::string& arName, openpal::Logger& arLogger, AppLayer* apAppLayer, IExecutor* apExecutor, TimeDuration aTimeout) :
 	Loggable(arLogger),
 	mpAppLayer(apAppLayer),
 	mpSendAPDU(NULL),

@@ -117,7 +117,7 @@ public:
 class IndexOutOfBoundsException : public Exception
 {
 
-static std::string GetMessage(int aIndex);
+	static std::string GetMessage(int aIndex);
 
 public:
 	IndexOutOfBoundsException(const std::string& aSource, int aIndex) throw() :

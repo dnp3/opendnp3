@@ -57,7 +57,7 @@ void JNIHelpers::DetachThread(JavaVM* apJVM)
 
 void JNIHelpers::DeleteGlobalReference(JavaVM* apJVM, jobject ref)
 {
-	JNIEnv* pEnv = GetEnvFromJVM(apJVM);			
+	JNIEnv* pEnv = GetEnvFromJVM(apJVM);
 	pEnv->DeleteGlobalRef(ref);
 }
 
@@ -73,7 +73,7 @@ JavaVM* JNIHelpers::GetJVMFromEnv(JNIEnv* apEnv)
 JNIEnv* JNIHelpers::GetEnvFromJVM(JavaVM* apJVM)
 {
 	JNIEnv* pEnv = nullptr;
-	jint ret = apJVM->GetEnv((void**) &pEnv, JNI_VERSION_1_6);	
+	jint ret = apJVM->GetEnv((void**) &pEnv, JNI_VERSION_1_6);
 	assert(ret == 0);
 	assert(pEnv != nullptr);
 	return pEnv;

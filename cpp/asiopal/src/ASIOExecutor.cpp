@@ -47,7 +47,7 @@ ASIOExecutor::ASIOExecutor(boost::asio::strand* apStrand) :
 ASIOExecutor::~ASIOExecutor()
 {
 	this->Shutdown();
-	for(auto pTimer: mAllTimers) delete pTimer;
+for(auto pTimer: mAllTimers) delete pTimer;
 }
 
 openpal::MonotonicTimestamp ASIOExecutor::GetTime()
@@ -65,7 +65,7 @@ openpal::ITimer* ASIOExecutor::Start(const openpal::TimeDuration& arDelay, const
 	return pTimer;
 }
 
-openpal::ITimer* ASIOExecutor::Start(const openpal::MonotonicTimestamp & arTime, const function<void ()>& arCallback)
+openpal::ITimer* ASIOExecutor::Start(const openpal::MonotonicTimestamp& arTime, const function<void ()>& arCallback)
 {
 	std::lock_guard<std::mutex> lock(mMutex);
 	if(mIsShuttingDown) MACRO_THROW_EXCEPTION(openpal::InvalidStateException, "Can't start a timer while executor is shutting down");

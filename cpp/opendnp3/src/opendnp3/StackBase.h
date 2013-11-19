@@ -35,7 +35,8 @@
 #include <functional>
 #include <vector>
 
-namespace openpal {
+namespace openpal
+{
 class IExecutor;
 }
 

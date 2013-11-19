@@ -48,9 +48,9 @@ class DLL_LOCAL OutstationStackImpl : public IOutstation
 public:
 
 	OutstationStackImpl(
-	        openpal::Logger&,	        
+	        openpal::Logger&,
 	        openpal::IExecutor* apExecutor,
-			ITimeWriteHandler* apTimeWriteHandler,
+	        ITimeWriteHandler* apTimeWriteHandler,
 	        ICommandHandler* apCmdHandler,
 	        const SlaveStackConfig& arCfg,
 	        std::function<void (IOutstation*)> aOnShutdown);
@@ -67,7 +67,7 @@ public:
 
 private:
 	openpal::IExecutor* mpExecutor;
-	ApplicationStack mAppStack;	
+	ApplicationStack mAppStack;
 	Database mDB;
 	Slave mSlave;
 	std::function<void (IOutstation*)> mOnShutdown;

@@ -42,7 +42,7 @@ TransportLoopbackTestObject::TransportLoopbackTestObject(
         LinkConfig aCfgB,
         FilterLevel aLevel,
         bool aImmediate) :
-	
+
 	AsyncTestObjectASIO(apService),
 	log(),
 	mLogger(Logger(&log, aLevel, "test")),

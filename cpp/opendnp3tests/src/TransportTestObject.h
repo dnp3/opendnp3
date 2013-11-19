@@ -50,7 +50,7 @@ public:
 
 	LogTester log;
 
-private:	
+private:
 	openpal::Logger logger;
 	TransportLayer transport;
 

@@ -31,30 +31,31 @@ using namespace System::Collections::ObjectModel;
 using namespace DNP3::Interface;
 
 namespace DNP3
-{	
+{
 namespace Adapter
-{	
-	void CallbackListener(gcroot<System::Action<ChannelState>^>* listener, opendnp3::ChannelState);	
+{
+void CallbackListener(gcroot < System::Action<ChannelState> ^ > * listener, opendnp3::ChannelState);
 
-	private ref class ChannelAdapter : IChannel
-	{
-		public:
+private ref class ChannelAdapter : IChannel
+{
+public:
 
-		ChannelAdapter(opendnp3::IChannel* apChannel);		
+	ChannelAdapter(opendnp3::IChannel* apChannel);
 
-		virtual void AddStateListener(System::Action<ChannelState>^ listener);
+	virtual void AddStateListener(System::Action<ChannelState> ^ listener);
 
-		virtual IMaster^ AddMaster(System::String^ loggerId, LogLevel level, IDataObserver^ publisher, MasterStackConfig^ config);
+	virtual IMaster ^ AddMaster(System::String ^ loggerId, LogLevel level, IDataObserver ^ publisher, MasterStackConfig ^ config);
 
-		virtual IOutstation^ AddOutstation(System::String^ loggerId, LogLevel level, ICommandHandler^ cmdHandler, ITimeWriteHandler^ timeHandler, SlaveStackConfig^ config);
+	virtual IOutstation ^ AddOutstation(System::String ^ loggerId, LogLevel level, ICommandHandler ^ cmdHandler, ITimeWriteHandler ^ timeHandler, SlaveStackConfig ^ config);
 
-		virtual void Shutdown();
-		
-		private:
+	virtual void Shutdown();
 
-		opendnp3::IChannel* mpChannel;		
-	};
-	
-}}
+private:
+
+	opendnp3::IChannel* mpChannel;
+};
+
+}
+}
 
 #endif

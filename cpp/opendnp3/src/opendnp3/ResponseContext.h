@@ -312,10 +312,10 @@ void ResponseContext::RecordStaticObjectsByRange(StreamObject<typename T::MeasTy
 	last = first + aStop;
 	first = first + aStart;
 	ResponseKey key(RT_STATIC, this->mStaticWriteMap.size());
-	WriteFunction func = [=](APDU& arAPDU){
+	WriteFunction func = [ = ](APDU & arAPDU) {
 		return this->WriteStaticObjects<T>(apObject, first, last, key, arAPDU);
 	};
-		//std::bind(&ResponseContext::WriteStaticObjects<T>, this, apObject, std::ref(first), std::ref(last), key, std::placeholders::_1);
+	//std::bind(&ResponseContext::WriteStaticObjects<T>, this, apObject, std::ref(first), std::ref(last), key, std::placeholders::_1);
 	this->mStaticWriteMap[key] = func;
 }
 
@@ -328,7 +328,7 @@ bool ResponseContext::WriteStaticObjects(StreamObject<typename T::MeasType>* apO
 
 	for(size_t i = start; i <= stop; ++i) {
 		if(owi.IsEnd()) { // out of space in the fragment
-			this->mStaticWriteMap[aKey] = [=](APDU& arAPDU){
+			this->mStaticWriteMap[aKey] = [ = ](APDU & arAPDU) {
 				return this->WriteStaticObjects<T>(apObject, aStart, aStop, aKey, arAPDU);
 			};
 			return false;

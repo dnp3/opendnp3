@@ -66,7 +66,7 @@ void IOServiceThreadPool::OnTimerExpiration(const boost::system::error_code& ec)
 IOServiceThreadPool::~IOServiceThreadPool()
 {
 	this->Shutdown();
-	for(auto pThread: mThreads) {
+for(auto pThread: mThreads) {
 		delete pThread;
 	}
 }

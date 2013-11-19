@@ -51,9 +51,9 @@ public:
 
 	void BindStateListener();
 
-	LogTester log;	
+	LogTester log;
 	openpal::FixedUTCTimeSource fixedUTC;
-	MockExecutor mts;	
+	MockExecutor mts;
 	AsyncTaskGroup group;
 	FlexibleDataObserver fdo;
 	MockAppLayer app;

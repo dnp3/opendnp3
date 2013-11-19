@@ -211,7 +211,7 @@ public:
 
 protected:
 
-	static T SafeRead(const uint8_t* apStart) {		
+	static T SafeRead(const uint8_t* apStart) {
 		T d;
 		memcpy(&d, apStart, sizeof(T));
 		return d;
