@@ -100,9 +100,6 @@ struct SlaveConfig {
 	/// The maximum fragment size the slave will use for data it sends
 	size_t mMaxFragSize;
 
-	/// The number of objects to store in the VtoWriter queue.
-	size_t mVtoWriterQueueSize;
-
 	/// Structure that defines the maximum number of events to buffer
 	EventMaxConfig mEventMaxConfig;
 

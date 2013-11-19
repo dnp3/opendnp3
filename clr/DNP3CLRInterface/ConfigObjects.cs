@@ -147,6 +147,7 @@ namespace DNP3.Interface
         public System.Int32 fragSize;
 	}
 
+/*
 	/// <summary>
     /// Defines a periodic class based scan (Class 0,1,2,3)
 	/// </summary>
@@ -183,6 +184,7 @@ namespace DNP3.Interface
         public System.Int64 scanRateMs;
 
 	};
+*/
 	
     /// <summary>
     /// Enumeration for controlling class based scanning / eventing
@@ -216,19 +218,8 @@ namespace DNP3.Interface
 			enableUnsol = true;
 			unsolClassMask = (System.Int32) (PointClass.PC_ALL_EVENTS);
 			integrityRate = 5000;
-			taskRetryRate = 5000;
-			scans = new List<ExceptionScan>();
-		}
-
-		/// <summary>
-		/// Add an exception scan
-		/// </summary>
-		/// <param name="classMask">bitmask that determines which classes are scanned</param>
-		/// <param name="period">scan period in milliseconds</param>
-		public void AddExceptionScan(System.Int32 classMask, System.Int64 period)
-        {
-			scans.Add(new ExceptionScan(classMask, period));			
-		}
+			taskRetryRate = 5000;			
+		}		
 
 		/// <summary>
         /// Maximum fragment size to use for requests
@@ -263,12 +254,7 @@ namespace DNP3.Interface
 		/// <summary>
         /// Time delay between task retries
 		/// </summary>
-		public System.Int64 taskRetryRate;
-
-		/// <summary>
-        /// vector that holds exception scans
-		/// </summary>
-		public List<ExceptionScan> scans;
+		public System.Int64 taskRetryRate;		
 	}
 
     /// <summary>

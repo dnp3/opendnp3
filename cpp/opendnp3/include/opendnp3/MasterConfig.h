@@ -31,10 +31,8 @@
 
 #include "DNPConstants.h"
 #include "PointClass.h"
-#include "MasterConfigTypes.h"
 
 #include <openpal/TimeDuration.h>
-
 #include <vector>
 
 namespace opendnp3
@@ -57,16 +55,6 @@ struct MasterConfig {
 		IntegrityRate(openpal::TimeDuration::Seconds(5)),
 		TaskRetryRate(openpal::TimeDuration::Seconds(5))
 	{}
-
-	/** Adds a periodic exception scan to the configuration
-
-		@param aClassMask	Bitwise mask representing the classes to scan
-		@param aPeriod		Period of the scan in milliseconds
-	*/
-	void AddExceptionScan(int aClassMask, openpal::TimeDuration aPeriod) {
-		ExceptionScan ex(aClassMask, aPeriod);
-		mScans.push_back(ex);
-	}
 
 	/// Maximum fragment size to use for requests
 	size_t FragSize;
@@ -91,9 +79,6 @@ struct MasterConfig {
 
 	/// Time delay between task retries
 	openpal::TimeDuration TaskRetryRate;
-
-	/// vector that holds exception scans
-	std::vector<ExceptionScan> mScans;
 };
 
 }

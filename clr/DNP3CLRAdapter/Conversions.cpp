@@ -546,10 +546,6 @@ opendnp3::MasterConfig Conversions::convertConfig(MasterConfig ^ config)
 	mc.IntegrityRate = TimeDuration::Milliseconds(config->integrityRate);
 	mc.TaskRetryRate = TimeDuration::Milliseconds(config->taskRetryRate);
 
-	for each(ExceptionScan ^ es in config->scans) {
-		mc.AddExceptionScan(es->classMask, TimeDuration::Milliseconds(es->scanRateMs));
-	}
-
 	return mc;
 }
 

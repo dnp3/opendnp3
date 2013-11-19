@@ -61,8 +61,7 @@ SlaveConfig ConfigReader::ConvertOutstationConfig(JNIEnv* apEnv, jobject jCfg)
 	cfg.mUnsolPackDelay  = TimeDuration::Milliseconds(JNIHelpers::GetLongField(apEnv, jCfg, "unsolPackDelayMs"));
 	cfg.mUnsolRetryDelay  = TimeDuration::Milliseconds(JNIHelpers::GetLongField(apEnv, jCfg, "unsolRetryDelayMs"));
 	cfg.mSelectTimeout = TimeDuration::Milliseconds(JNIHelpers::GetLongField(apEnv, jCfg, "selectTimeoutMs"));
-	cfg.mMaxFragSize  = JNIHelpers::GetIntField(apEnv, jCfg, "maxFragSize");
-	cfg.mVtoWriterQueueSize = JNIHelpers::GetIntField(apEnv, jCfg, "vtoWriterQueueSize");
+	cfg.mMaxFragSize  = JNIHelpers::GetIntField(apEnv, jCfg, "maxFragSize");	
 
 	jint maxBinaryEvents = JNIHelpers::GetIntField(apEnv, jCfg, "maxBinaryEvents");
 	jint maxAnalogEvents = JNIHelpers::GetIntField(apEnv, jCfg, "maxAnalogEvents");
@@ -274,6 +273,8 @@ MasterConfig ConfigReader::ConvertMasterConfig(JNIEnv* apEnv, jobject jCfg)
 	cfg.IntegrityRate = TimeDuration::Milliseconds(JNIHelpers::GetLongField(apEnv, jCfg, "integrityRateMs"));
 	cfg.TaskRetryRate = TimeDuration::Milliseconds(JNIHelpers::GetLongField(apEnv, jCfg, "taskRetryRateMs"));
 
+/*  TODO - convert Java to new scan api
+
 	jobject list = JNIHelpers::GetObjectField(apEnv, jCfg, "scans", "Ljava/util/List;");
 
 	JNIHelpers::IterateOverListOfObjects(apEnv, list, [&](jobject scan) {
@@ -281,6 +282,7 @@ MasterConfig ConfigReader::ConvertMasterConfig(JNIEnv* apEnv, jobject jCfg)
 		long rate = JNIHelpers::GetLongField(apEnv, scan, "scanRateMs");
 		cfg.AddExceptionScan(mask, TimeDuration::Milliseconds(rate));
 	});
+*/
 
 	return cfg;
 }

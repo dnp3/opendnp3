@@ -112,6 +112,7 @@ void MasterSchedule::Init(const MasterConfig& arCfg, Master* apMaster)
 	 * Load any exception scans and make them dependent on the
 	 * integrity poll.
 	 */
+/*
 for(ExceptionScan e: arCfg.mScans) {
 		AsyncTaskBase* pEventScan = mTracking.Add(
 		                                    e.ScanRate,
@@ -123,6 +124,7 @@ for(ExceptionScan e: arCfg.mScans) {
 		pEventScan->SetFlags(ONLINE_ONLY_TASKS);
 		pEventScan->AddDependency(pIntegrity);
 	}
+*/
 
 	/* Tasks are executed when the master is is idle */
 	mpCommandTask = mTracking.AddContinuous(
