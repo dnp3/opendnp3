@@ -42,6 +42,8 @@ unittest.log
 
 # visual studio generated files
 ipch
+**/**/Debug
+**/**/Release
 cpp/Debug
 cpp/Release
 openpal/Debug

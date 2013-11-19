@@ -6,6 +6,9 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "java", "java", "{8CEA48C2-C785-47A6-9BF2-A25C6778ACB3}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "opendnp3java", "java\opendnp3java.vcxproj", "{1067322B-30C3-4D7B-9EB6-165F45ECC81E}"
+	ProjectSection(ProjectDependencies) = postProject
+		{ABF09BDA-75A5-47D7-9F15-D7B7EC69F1E7} = {ABF09BDA-75A5-47D7-9F15-D7B7EC69F1E7}
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "clr", "clr", "{285B0B06-97CD-4598-AD14-621BEDF42BB7}"
 EndProject
@@ -14,6 +17,7 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DNP3CLRAdapter", "clr\DNP3CLRAdapter\DNP3CLRAdapter.vcxproj", "{D2119BEE-135F-422C-8166-26D73113D689}"
 	ProjectSection(ProjectDependencies) = postProject
 		{5F06C7BE-3107-4B3E-8559-E5E1BB4008B5} = {5F06C7BE-3107-4B3E-8559-E5E1BB4008B5}
+		{ABF09BDA-75A5-47D7-9F15-D7B7EC69F1E7} = {ABF09BDA-75A5-47D7-9F15-D7B7EC69F1E7}
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DNP3CLRMasterDemo", "clr\DNP3CLRMasterDemo\DNP3CLRMasterDemo.csproj", "{791073B4-2132-4588-AFA7-3A9728D444B4}"
@@ -24,6 +28,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
 	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "openpal", "cpp\openpal\openpal.vcxproj", "{ABF09BDA-75A5-47D7-9F15-D7B7EC69F1E7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -104,11 +110,26 @@ Global
 		{3E8C9DE9-9626-4FC6-90A2-802DEFC1A39D}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{3E8C9DE9-9626-4FC6-90A2-802DEFC1A39D}.Release|Win32.ActiveCfg = Release|Any CPU
 		{3E8C9DE9-9626-4FC6-90A2-802DEFC1A39D}.Release|x64.ActiveCfg = Release|Any CPU
+		{ABF09BDA-75A5-47D7-9F15-D7B7EC69F1E7}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{ABF09BDA-75A5-47D7-9F15-D7B7EC69F1E7}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
+		{ABF09BDA-75A5-47D7-9F15-D7B7EC69F1E7}.Debug|Mixed Platforms.Build.0 = Debug|Win32
+		{ABF09BDA-75A5-47D7-9F15-D7B7EC69F1E7}.Debug|Win32.ActiveCfg = Debug|Win32
+		{ABF09BDA-75A5-47D7-9F15-D7B7EC69F1E7}.Debug|Win32.Build.0 = Debug|Win32
+		{ABF09BDA-75A5-47D7-9F15-D7B7EC69F1E7}.Debug|x64.ActiveCfg = Debug|x64
+		{ABF09BDA-75A5-47D7-9F15-D7B7EC69F1E7}.Debug|x64.Build.0 = Debug|x64
+		{ABF09BDA-75A5-47D7-9F15-D7B7EC69F1E7}.Release|Any CPU.ActiveCfg = Release|Win32
+		{ABF09BDA-75A5-47D7-9F15-D7B7EC69F1E7}.Release|Mixed Platforms.ActiveCfg = Release|Win32
+		{ABF09BDA-75A5-47D7-9F15-D7B7EC69F1E7}.Release|Mixed Platforms.Build.0 = Release|Win32
+		{ABF09BDA-75A5-47D7-9F15-D7B7EC69F1E7}.Release|Win32.ActiveCfg = Release|Win32
+		{ABF09BDA-75A5-47D7-9F15-D7B7EC69F1E7}.Release|Win32.Build.0 = Release|Win32
+		{ABF09BDA-75A5-47D7-9F15-D7B7EC69F1E7}.Release|x64.ActiveCfg = Release|x64
+		{ABF09BDA-75A5-47D7-9F15-D7B7EC69F1E7}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{ABF09BDA-75A5-47D7-9F15-D7B7EC69F1E7} = {E52D8660-095E-45AD-AF11-9B43E53DDBF5}
 		{1067322B-30C3-4D7B-9EB6-165F45ECC81E} = {8CEA48C2-C785-47A6-9BF2-A25C6778ACB3}
 		{5F06C7BE-3107-4B3E-8559-E5E1BB4008B5} = {285B0B06-97CD-4598-AD14-621BEDF42BB7}
 		{D2119BEE-135F-422C-8166-26D73113D689} = {285B0B06-97CD-4598-AD14-621BEDF42BB7}
