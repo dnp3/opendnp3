@@ -29,7 +29,6 @@
 #include <boost/test/unit_test.hpp>
 #include <boost/bind.hpp>
 
-#include <opendnp3/Thread.h>
 #include <openpal/Exception.h>
 
 using namespace opendnp3;

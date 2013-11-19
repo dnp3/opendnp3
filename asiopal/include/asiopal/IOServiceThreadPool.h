@@ -30,10 +30,8 @@
 #include "DeadlineTimerSteadyClock.h"
 
 #include <boost/asio.hpp>
-
-#include <thread>
 #include <functional>
-
+#include <thread>
 
 namespace asiopal
 {

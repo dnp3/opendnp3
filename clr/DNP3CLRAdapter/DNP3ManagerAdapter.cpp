@@ -24,7 +24,10 @@
 #include "Conversions.h"
 #include "LogAdapter.h"
 #include "ChannelAdapter.h"
-#include <opendnp3/DNP3Manager.h>
+
+#include <asiodnp3/ASIODNP3Manager.h>
+
+using namespace asiopal;
 
 namespace DNP3
 {	
@@ -41,15 +44,15 @@ namespace Adapter
 	}
 
 
-	DNP3ManagerAdapter::DNP3ManagerAdapter(System::Int32 aConcurrency) :
-		pMgr(new opendnp3::DNP3Manager(aConcurrency))
+	DNP3ManagerAdapter::DNP3ManagerAdapter(System::Int32 aConcurrency) :					
+		mpMgr(new asiodnp3::ASIODNP3Manager(aConcurrency))
 	{
 		
 	}
 
 	DNP3ManagerAdapter::~DNP3ManagerAdapter()
 	{
-		delete pMgr;
+		delete mpMgr;		
 	}	
 
 	IChannel^ DNP3ManagerAdapter::AddTCPClient(System::String^ name, LogLevel level, System::UInt64 retryMs, System::String^ address, System::UInt16 port)
@@ -61,7 +64,8 @@ namespace Adapter
 		auto lev = Conversions::convertFilterLevel(level);
 		
 		try {
-			auto pChannel = pMgr->AddTCPClient(stdName, lev, TimeDuration::Milliseconds(retryMs), stdAddress, stdPort);
+			Logger logger(mpMgr->GetLog(), lev, stdName);			
+			auto pChannel = mpMgr->AddTCPClient(logger, TimeDuration::Milliseconds(retryMs), stdAddress, stdPort);
 			return gcnew ChannelAdapter(pChannel);
 		} 
 		catch(openpal::Exception ex){
@@ -77,7 +81,8 @@ namespace Adapter
 		auto lev = Conversions::convertFilterLevel(level);		
 		
 		try {
-			auto pChannel = pMgr->AddTCPServer(stdName, lev, TimeDuration::Milliseconds(retryMs), stdEndpoint, stdPort);
+			Logger logger(mpMgr->GetLog(), lev, stdName);			
+			auto pChannel = mpMgr->AddTCPServer(logger, TimeDuration::Milliseconds(retryMs), stdEndpoint, stdPort);
 			return gcnew ChannelAdapter(pChannel);
 		} 
 		catch(openpal::Exception ex){
@@ -85,14 +90,15 @@ namespace Adapter
 		}
 	}
 
-	IChannel^ DNP3ManagerAdapter::AddSerial(System::String^ name, LogLevel level, System::UInt64 retryMs, SerialSettings^ settings)
+	IChannel^ DNP3ManagerAdapter::AddSerial(System::String^ name, LogLevel level, System::UInt64 retryMs, DNP3::Interface::SerialSettings^ settings)
 	{
 		std::string stdName = Conversions::convertString(name);
 		auto lev = Conversions::convertFilterLevel(level);		
 		auto s = Conversions::convertSerialSettings(settings);
 		
 		try {
-			auto pChannel = pMgr->AddSerial(stdName, lev, TimeDuration::Milliseconds(retryMs), s);
+			Logger logger(mpMgr->GetLog(), lev, stdName);			
+			auto pChannel = mpMgr->AddSerial(logger, TimeDuration::Milliseconds(retryMs), s);
 			return gcnew ChannelAdapter(pChannel);
 		} 
 		catch(openpal::Exception ex){
@@ -104,7 +110,7 @@ namespace Adapter
 	{
 		try {
 			LogAdapterWrapper^ wrapper = gcnew LogAdapterWrapper(logHandler);
-			pMgr->AddLogSubscriber(wrapper->GetLogAdapter());
+			mpMgr->AddLogSubscriber(wrapper->GetLogAdapter());
 		} 
 		catch(openpal::Exception ex){
 			throw Conversions::convertException(ex);

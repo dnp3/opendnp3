@@ -1,0 +1,15 @@
+﻿Build started 11/18/2013 6:45:37 PM.
+     1>Project "C:\Users\jadamcrain\Documents\GitHub\dnp3\asiodnp3\asiodnp3.vcxproj" on node 3 (Build target(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /IC:\Users\jadamcrain\Documents\GitHub\dnp3\\asiodnp3\include /IC:\tools\boost_1_53_0 /IC:\Users\jadamcrain\Documents\GitHub\dnp3\\cpp\include /IC:\Users\jadamcrain\Documents\GitHub\dnp3\\openpal\include /IC:\Users\jadamcrain\Documents\GitHub\dnp3\\asiopal\include /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _LIB /D _WIN32_WINNT=0x0501 /D BOOST_LIB_DIAGNOSTIC /D BOOST_ASIO_HAS_STD_CHRONO /D BOOST_ASIO_ENABLE_CANCELIO /D BOOST_REGEX_NO_LIB /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt src\asiodnp3\ASIODNP3Manager.cpp
+         ASIODNP3Manager.cpp
+         Linking to lib file: libboost_system-vc110-mt-gd-1_53.lib
+         Linking to lib file: libboost_date_time-vc110-mt-gd-1_53.lib
+       Lib:
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\Lib.exe /OUT:"C:\Users\jadamcrain\Documents\GitHub\dnp3\Debug\asiodnp3.lib" /NOLOGO Debug\ASIODNP3Manager.obj
+         asiodnp3.vcxproj -> C:\Users\jadamcrain\Documents\GitHub\dnp3\Debug\asiodnp3.lib
+     1>Done Building Project "C:\Users\jadamcrain\Documents\GitHub\dnp3\asiodnp3\asiodnp3.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:22.50

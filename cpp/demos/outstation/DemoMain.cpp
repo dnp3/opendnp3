@@ -54,16 +54,15 @@ int main(int argc, char* argv[])
 	// Specify a FilterLevel for the stack/physical layer to use.
 	// Log statements with a lower priority will not be logged.
 	const FilterLevel LOG_LEVEL = LEV_INFO;
-		
-	EventLog log;
-	// You can optionally subcribe to log messages
-	// This singleton logger just prints messages to the console
-	log.AddLogSubscriber(LogToStdio::Inst());
+	
+	//A default logging backend that can proxy to multiple other backends
+	EventLog log;	
+	log.AddLogSubscriber(LogToStdio::Inst()); // This singleton logger just prints messages to the console
 
 	IOServiceThreadPool pool(Logger(&log, LOG_LEVEL, "pool"), 1); // only 1 thread is needed for a single stack
 
 	// This is the main point of interaction with the stack
-	DNP3Manager mgr; // only 1 thread is needed for a single stack
+	DNP3Manager mgr;
 
 	// Create the raw physical layer
 	auto pServerPhys = new PhysicalLayerAsyncTCPServer(Logger(&log, LOG_LEVEL, "tcpserver"), pool.GetIOService(), "127.0.0.1", 20000);

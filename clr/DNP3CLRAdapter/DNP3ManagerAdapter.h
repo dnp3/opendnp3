@@ -26,8 +26,8 @@
 using namespace System;
 using namespace DNP3::Interface;
 
-namespace opendnp3 {
-	class DNP3Manager;
+namespace asiodnp3 {
+	class ASIODNP3Manager;
 }
 
 namespace DNP3
@@ -66,12 +66,12 @@ namespace Adapter
 			
 			virtual IChannel^ AddTCPClient(System::String^ name, LogLevel level, System::UInt64 retryMs, System::String^ address, System::UInt16 port);					
 			virtual IChannel^ AddTCPServer(System::String^ name, LogLevel level, System::UInt64 retryMs, System::String^ endpoint, System::UInt16 port);
-			virtual IChannel^ AddSerial(System::String^ name, LogLevel level, System::UInt64 retryMs, SerialSettings^ settings);
+			virtual IChannel^ AddSerial(System::String^ name, LogLevel level, System::UInt64 retryMs, DNP3::Interface::SerialSettings^ settings);
 
 			virtual void AddLogHandler(ILogHandler^ logHandler);			
 			
-		private:
-			opendnp3::DNP3Manager* pMgr;
+		private:						
+			asiodnp3::ASIODNP3Manager* mpMgr;
 	};
 
 }}

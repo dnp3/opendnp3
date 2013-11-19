@@ -28,7 +28,6 @@
 #include <openpal/LogTypes.h>
 
 #include <opendnp3/DataTypes.h>
-#include <opendnp3/SerialTypes.h>
 #include <opendnp3/CommandStatus.h>
 #include <opendnp3/SlaveStackConfig.h>
 #include <opendnp3/MasterStackConfig.h>
@@ -36,6 +35,8 @@
 #include <opendnp3/AnalogOutput.h>
 #include <opendnp3/ChannelStates.h>
 #include <opendnp3/StackState.h>
+
+#include <asiopal/SerialTypes.h>
 
 using namespace DNP3::Interface;
 
@@ -105,7 +106,7 @@ namespace Adapter
 		static opendnp3::ControlStatus convertMeas(ControlStatus^ meas);
 
 		//Convert the configuration types
-		static opendnp3::SerialSettings convertSerialSettings(SerialSettings^ settings);
+		static asiopal::SerialSettings convertSerialSettings(SerialSettings^ settings);
 		static opendnp3::ClassMask convertClassMask(ClassMask^ cm);
 		static opendnp3::EventMaxConfig convertEventMaxConfig(EventMaxConfig^ cm);	
 

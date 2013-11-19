@@ -340,15 +340,15 @@ namespace Adapter
 		return m;
 	}
 
-	opendnp3::SerialSettings Conversions::convertSerialSettings(SerialSettings^ settings)
+	asiopal::SerialSettings Conversions::convertSerialSettings(SerialSettings^ settings)
 	{
-		opendnp3::SerialSettings s;
+		asiopal::SerialSettings s;
 		s.mDevice = convertString(settings->port);
 		s.mBaud = settings->baud;
 		s.mDataBits = settings->dataBits;
 		s.mStopBits = settings->stopBits;
-		s.mParity = (opendnp3::ParityType) settings->parity;
-		s.mFlowType = (opendnp3::FlowType) settings->flowControl;
+		s.mParity = (asiopal::ParityType) settings->parity;
+		s.mFlowType = (asiopal::FlowType) settings->flowControl;
 		return s;
 	}
 

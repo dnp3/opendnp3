@@ -34,7 +34,6 @@
 #include <vector>
 
 #include <opendnp3/Util.h>
-#include <opendnp3/Thread.h>
 
 using namespace std;
 using namespace opendnp3;
