@@ -39,7 +39,6 @@
 #include <limits>
 #include <math.h>
 #include <string.h>
-#include <chrono>
 
 #ifdef max
 #undef max

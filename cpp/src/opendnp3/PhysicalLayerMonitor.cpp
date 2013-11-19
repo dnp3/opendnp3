@@ -32,7 +32,6 @@
 #include <assert.h>
 
 using namespace openpal;
-using namespace std::chrono;
 
 namespace opendnp3
 {
@@ -65,7 +64,7 @@ bool PhysicalLayerMonitor::WaitForShutdown(openpal::TimeDuration aTimeout)
 	std::unique_lock<std::mutex> lock(mMutex);
 	while(!mFinalShutdown) {
 		if(aTimeout.GetMilliseconds() >= 0) {
-			mCondition.wait_for(lock, milliseconds(aTimeout.GetMilliseconds()));
+			mCondition.wait_for(lock, std::chrono::milliseconds(aTimeout.GetMilliseconds()));
 			break;
 		}
 		else mCondition.wait(lock);

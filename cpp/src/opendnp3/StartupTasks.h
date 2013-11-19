@@ -35,8 +35,6 @@
 
 #include "MasterTaskBase.h"
 
-#include <chrono>
-
 
 namespace opendnp3
 {

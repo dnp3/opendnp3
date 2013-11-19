@@ -24,8 +24,6 @@
 
 #include "AsyncTaskGroup.h"
 
-#include <chrono>
-
 namespace opendnp3
 {
 

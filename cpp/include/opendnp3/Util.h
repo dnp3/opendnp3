@@ -34,9 +34,7 @@
 #include <assert.h>
 #include <stdlib.h>
 #include <memory.h>
-#include <chrono>
 #include <vector>
-#include <chrono>
 
 #include <openpal/Types.h>
 

@@ -31,7 +31,6 @@
 #include <openpal/MonotonicTimestamp.h>
 
 #include <vector>
-#include <chrono>
 #include <string>
 
 namespace opendnp3

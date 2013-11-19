@@ -40,7 +40,6 @@
 #include <set>
 #include <mutex>
 #include <condition_variable>
-#include <chrono>
 
 namespace openpal {
 	class IPhysicalLayerAsync;

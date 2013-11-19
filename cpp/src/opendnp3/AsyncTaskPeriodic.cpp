@@ -24,8 +24,6 @@
 
 #include "AsyncTaskGroup.h"
 
-using namespace std::chrono;
-
 using namespace openpal;
 
 namespace opendnp3

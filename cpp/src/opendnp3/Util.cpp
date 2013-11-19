@@ -37,11 +37,9 @@
 #endif
 
 using namespace std;
-using namespace std::chrono;
 
 #include <iomanip>
 #include <iterator>
-#include <chrono>
 
 namespace opendnp3
 {

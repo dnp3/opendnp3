@@ -25,10 +25,7 @@
 
 #include <openpal/TimeDuration.h>
 
-#include <chrono>
-
 using namespace openpal;
-using namespace std::chrono;
 
 namespace opendnp3
 {
