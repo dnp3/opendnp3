@@ -138,9 +138,6 @@
     <ClInclude Include="include\opendnp3\Util.h">
       <Filter>Include Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\AlwaysOpeningVtoRouter.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\APDU.h">
       <Filter>Header Files</Filter>
     </ClInclude>

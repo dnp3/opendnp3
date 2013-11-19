@@ -24,7 +24,6 @@
 #define __DATABASE_INTERFACES_H_
 
 #include "DNPDatabaseTypes.h"
-#include "VtoData.h"
 
 #include <openpal/Visibility.h>
 
