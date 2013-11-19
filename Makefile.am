@@ -5,238 +5,241 @@ ACLOCAL_AMFLAGS = -I m4
 CORE_BOOST_LIBS = $(BOOST_SYSTEM_LIB)
 TEST_BOOST_LIBS = $(CORE_BOOST_LIBS) $(BOOST_UNIT_TEST_FRAMEWORK_LIB)
 
-#AM_CXXFLAGS = $(BOOST_CPPFLAGS) -DBOOST_TEST_DYN_LINK -DBOOST_ASIO_ENABLE_CANCELIO -DBOOST_REGEX_NO_LIB -D_GLIBCXX_USE_NANOSLEEP
+
 BOOST_DEFINES = $(BOOST_CPPFLAGS) -DBOOST_TEST_DYN_LINK -DBOOST_ASIO_ENABLE_CANCELIO -DBOOST_REGEX_NO_LIB -D_GLIBCXX_USE_NANOSLEEP
-#AM_LDFLAGS  = $(BOOST_LDFLAGS)
+
+OPENPAL_INCLUDE = $(top_srcdir)/cpp/openpal/include
+ASIOPAL_INCLUDE = $(top_srcdir)/cpp/asiopal/include
+OPENDNP3_INCLUDE = $(top_srcdir)/cpp/opendnp3/include
+OPENDNP3_SRCS = $(top_srcdir)/cpp/opendnp3/src
+
 
 lib_LTLIBRARIES = libopenpal.la libasiopal.la libopendnp3.la
 
-#ls openpal/src/* -1 | awk '{print $0" \\"}'
+#ls cpp/openpal/src/* -1 | awk '{print $0" \\"}'
 libopenpal_la_LDFLAGS = -version-info 1:1:0
-libopenpal_la_CXXFLAGS = -I$(top_srcdir)/openpal/include
+libopenpal_la_CXXFLAGS = -I$(OPENPAL_INCLUDE)
 libopenpal_la_SOURCES = \
-openpal/src/AsyncLayerInterfaces.cpp \
-openpal/src/Exception.cpp \
-openpal/src/IHandlerAsync.cpp \
-openpal/src/LogEntry.cpp \
-openpal/src/Loggable.cpp \
-openpal/src/Logger.cpp \
-openpal/src/LogTypes.cpp \
-openpal/src/MonotonicTimestamp.cpp \
-openpal/src/Parsing.cpp \
-openpal/src/TimeDuration.cpp \
-openpal/src/ToHex.cpp
+cpp/openpal/src/AsyncLayerInterfaces.cpp \
+cpp/openpal/src/Exception.cpp \
+cpp/openpal/src/IHandlerAsync.cpp \
+cpp/openpal/src/LogEntry.cpp \
+cpp/openpal/src/Loggable.cpp \
+cpp/openpal/src/Logger.cpp \
+cpp/openpal/src/LogTypes.cpp \
+cpp/openpal/src/MonotonicTimestamp.cpp \
+cpp/openpal/src/Parsing.cpp \
+cpp/openpal/src/TimeDuration.cpp \
+cpp/openpal/src/ToHex.cpp
 
-#ls asiopal/src/*.cpp -1 | awk '{print $0" \\"}'
+
+#ls cpp/asiopal/src/*.cpp -1 | awk '{print $0" \\"}'
 libasiopal_la_LDFLAGS = -version-info 1:1:0
-libasiopal_la_CXXFLAGS = -I$(top_srcdir)/openpal/include -I$(top_srcdir)/asiopal/include
+libasiopal_la_CXXFLAGS = -I$(OPENPAL_INCLUDE) -I$(ASIOPAL_INCLUDE) $(BOOST_DEFINES)
 libasiopal_la_SOURCES = \
-asiopal/src/UTCTimeSource.cpp
+cpp/asiopal/src/ASIOExecutor.cpp \
+cpp/asiopal/src/ASIOSerialHelpers.cpp \
+cpp/asiopal/src/IOServiceThreadPool.cpp \
+cpp/asiopal/src/Log.cpp \
+cpp/asiopal/src/LogToStdio.cpp \
+cpp/asiopal/src/PhysicalLayerAsyncBase.cpp \
+cpp/asiopal/src/PhysicalLayerAsyncBaseTCP.cpp \
+cpp/asiopal/src/PhysicalLayerAsyncSerial.cpp \
+cpp/asiopal/src/PhysicalLayerAsyncTCPClient.cpp \
+cpp/asiopal/src/PhysicalLayerAsyncTCPServer.cpp \
+cpp/asiopal/src/SerialTypes.cpp \
+cpp/asiopal/src/TimerASIO.cpp \
+cpp/asiopal/src/UTCTimeSource.cpp
 
-#ls cpp/src/opendnp3/*.cpp -1 | awk '{print $0" \\"}'
+#ls cpp/opendnp3/src/opendnp3/*.cpp -1 | awk '{print $0" \\"}'
 libopendnp3_la_LDFLAGS = $(BOOST_LDFLAGS) -version-info 1:1:0
-libopendnp3_la_CXXFLAGS = -I$(top_srcdir)/openpal/include -I$(top_srcdir)/cpp/include
+libopendnp3_la_CXXFLAGS = -I$(OPENPAL_INCLUDE) -I$(ASIOPAL_INCLUDE) -I $(OPENDNP3_INCLUDE)
 libopendnp3_la_SOURCES = \
-cpp/src/opendnp3/AnalogOutput.cpp \
-cpp/src/opendnp3/APDUConstants.cpp \
-cpp/src/opendnp3/APDU.cpp \
-cpp/src/opendnp3/AppChannelStates.cpp \
-cpp/src/opendnp3/AppHeader.cpp \
-cpp/src/opendnp3/AppInterfaces.cpp \
-cpp/src/opendnp3/AppLayerChannel.cpp \
-cpp/src/opendnp3/AppLayer.cpp \
-cpp/src/opendnp3/ApplicationStack.cpp \
-cpp/src/opendnp3/ASIOExecutor.cpp \
-cpp/src/opendnp3/ASIOSerialHelpers.cpp \
-cpp/src/opendnp3/AsyncTaskBase.cpp \
-cpp/src/opendnp3/AsyncTaskContinuous.cpp \
-cpp/src/opendnp3/AsyncTaskGroup.cpp \
-cpp/src/opendnp3/AsyncTaskNonPeriodic.cpp \
-cpp/src/opendnp3/AsyncTaskPeriodic.cpp \
-cpp/src/opendnp3/BaseDataTypes.cpp \
-cpp/src/opendnp3/BufferTypes.cpp \
-cpp/src/opendnp3/ChangeBuffer.cpp \
-cpp/src/opendnp3/ChannelStates.cpp \
-cpp/src/opendnp3/ClassCounter.cpp \
-cpp/src/opendnp3/CommandStatus.cpp \
-cpp/src/opendnp3/CommandTask.cpp \
-cpp/src/opendnp3/ConstantCommandProcessor.cpp \
-cpp/src/opendnp3/ControlRelayOutputBlock.cpp \
-cpp/src/opendnp3/CopyableBuffer.cpp \
-cpp/src/opendnp3/CRC.cpp \
-cpp/src/opendnp3/Database.cpp \
-cpp/src/opendnp3/DataPoll.cpp \
-cpp/src/opendnp3/DestructorHook.cpp \
-cpp/src/opendnp3/DeviceTemplate.cpp \
-cpp/src/opendnp3/DNP3Channel.cpp \
-cpp/src/opendnp3/DNP3Manager.cpp \
-cpp/src/opendnp3/DNPCrc.cpp \
-cpp/src/opendnp3/ExecutorPause.cpp \
-cpp/src/opendnp3/HeaderReadIterator.cpp \
-cpp/src/opendnp3/IndexedWriteIterator.cpp \
-cpp/src/opendnp3/IOServiceThreadPool.cpp \
-cpp/src/opendnp3/IStack.cpp \
-cpp/src/opendnp3/ITimeWriteHandler.cpp \
-cpp/src/opendnp3/LinkFrame.cpp \
-cpp/src/opendnp3/LinkHeader.cpp \
-cpp/src/opendnp3/LinkLayerConstants.cpp \
-cpp/src/opendnp3/LinkLayer.cpp \
-cpp/src/opendnp3/LinkLayerReceiver.cpp \
-cpp/src/opendnp3/LinkLayerRouter.cpp \
-cpp/src/opendnp3/LinkReceiverStates.cpp \
-cpp/src/opendnp3/LinkRoute.cpp \
-cpp/src/opendnp3/Log.cpp \
-cpp/src/opendnp3/LogToStdio.cpp \
-cpp/src/opendnp3/Master.cpp \
-cpp/src/opendnp3/MasterSchedule.cpp \
-cpp/src/opendnp3/MasterStackImpl.cpp \
-cpp/src/opendnp3/MasterStates.cpp \
-cpp/src/opendnp3/MasterTaskBase.cpp \
-cpp/src/opendnp3/MultiplexingDataObserver.cpp \
-cpp/src/opendnp3/ObjectHeader.cpp \
-cpp/src/opendnp3/ObjectInterfaces.cpp \
-cpp/src/opendnp3/ObjectReadIterator.cpp \
-cpp/src/opendnp3/Objects.cpp \
-cpp/src/opendnp3/ObjectWriteIterator.cpp \
-cpp/src/opendnp3/OutstationSBOHandler.cpp \
-cpp/src/opendnp3/OutstationStackImpl.cpp \
-cpp/src/opendnp3/PackingUnpacking.cpp \
-cpp/src/opendnp3/PhysicalLayerAsyncBase.cpp \
-cpp/src/opendnp3/PhysicalLayerAsyncBaseTCP.cpp \
-cpp/src/opendnp3/PhysicalLayerAsyncSerial.cpp \
-cpp/src/opendnp3/PhysicalLayerAsyncTCPClient.cpp \
-cpp/src/opendnp3/PhysicalLayerAsyncTCPServer.cpp \
-cpp/src/opendnp3/PhysicalLayerMonitor.cpp \
-cpp/src/opendnp3/PhysicalLayerMonitorStates.cpp \
-cpp/src/opendnp3/PointClass.cpp \
-cpp/src/opendnp3/PriLinkLayerStates.cpp \
-cpp/src/opendnp3/ProtocolUtil.cpp \
-cpp/src/opendnp3/QueuedCommandProcessor.cpp \
-cpp/src/opendnp3/ResponseContext.cpp \
-cpp/src/opendnp3/ResponseLoader.cpp \
-cpp/src/opendnp3/SecLinkLayerStates.cpp \
-cpp/src/opendnp3/SerialTypes.cpp \
-cpp/src/opendnp3/ShiftableBuffer.cpp \
-cpp/src/opendnp3/SimpleCommandHandler.cpp \
-cpp/src/opendnp3/SimpleDataObserver.cpp \
-cpp/src/opendnp3/SlaveConfig.cpp \
-cpp/src/opendnp3/Slave.cpp \
-cpp/src/opendnp3/SlaveEventBuffer.cpp \
-cpp/src/opendnp3/SlaveResponseTypes.cpp \
-cpp/src/opendnp3/SlaveStates.cpp \
-cpp/src/opendnp3/SolicitedChannel.cpp \
-cpp/src/opendnp3/StackBase.cpp \
-cpp/src/opendnp3/StackState.cpp \
-cpp/src/opendnp3/StartupTasks.cpp \
-cpp/src/opendnp3/SubjectBase.cpp \
-cpp/src/opendnp3/Threadable.cpp \
-cpp/src/opendnp3/Thread.cpp \
-cpp/src/opendnp3/TimerASIO.cpp \
-cpp/src/opendnp3/TimeTransaction.cpp \
-cpp/src/opendnp3/TLS_Base.cpp \
-cpp/src/opendnp3/TrackingTaskGroup.cpp \
-cpp/src/opendnp3/TransportLayer.cpp \
-cpp/src/opendnp3/TransportRx.cpp \
-cpp/src/opendnp3/TransportStates.cpp \
-cpp/src/opendnp3/TransportTx.cpp \
-cpp/src/opendnp3/UnsolicitedChannel.cpp \
-cpp/src/opendnp3/Util.cpp \
-cpp/src/opendnp3/VtoData.cpp
+cpp/opendnp3/src/opendnp3/AnalogOutput.cpp \
+cpp/opendnp3/src/opendnp3/APDUConstants.cpp \
+cpp/opendnp3/src/opendnp3/APDU.cpp \
+cpp/opendnp3/src/opendnp3/AppChannelStates.cpp \
+cpp/opendnp3/src/opendnp3/AppHeader.cpp \
+cpp/opendnp3/src/opendnp3/AppInterfaces.cpp \
+cpp/opendnp3/src/opendnp3/AppLayerChannel.cpp \
+cpp/opendnp3/src/opendnp3/AppLayer.cpp \
+cpp/opendnp3/src/opendnp3/ApplicationStack.cpp \
+cpp/opendnp3/src/opendnp3/AsyncTaskBase.cpp \
+cpp/opendnp3/src/opendnp3/AsyncTaskContinuous.cpp \
+cpp/opendnp3/src/opendnp3/AsyncTaskGroup.cpp \
+cpp/opendnp3/src/opendnp3/AsyncTaskNonPeriodic.cpp \
+cpp/opendnp3/src/opendnp3/AsyncTaskPeriodic.cpp \
+cpp/opendnp3/src/opendnp3/BaseDataTypes.cpp \
+cpp/opendnp3/src/opendnp3/BufferTypes.cpp \
+cpp/opendnp3/src/opendnp3/ChangeBuffer.cpp \
+cpp/opendnp3/src/opendnp3/ChannelStates.cpp \
+cpp/opendnp3/src/opendnp3/ClassCounter.cpp \
+cpp/opendnp3/src/opendnp3/CommandStatus.cpp \
+cpp/opendnp3/src/opendnp3/CommandTask.cpp \
+cpp/opendnp3/src/opendnp3/ConstantCommandProcessor.cpp \
+cpp/opendnp3/src/opendnp3/ControlRelayOutputBlock.cpp \
+cpp/opendnp3/src/opendnp3/CopyableBuffer.cpp \
+cpp/opendnp3/src/opendnp3/CRC.cpp \
+cpp/opendnp3/src/opendnp3/Database.cpp \
+cpp/opendnp3/src/opendnp3/DataPoll.cpp \
+cpp/opendnp3/src/opendnp3/DestructorHook.cpp \
+cpp/opendnp3/src/opendnp3/DeviceTemplate.cpp \
+cpp/opendnp3/src/opendnp3/DNP3Channel.cpp \
+cpp/opendnp3/src/opendnp3/DNP3Manager.cpp \
+cpp/opendnp3/src/opendnp3/DNPCrc.cpp \
+cpp/opendnp3/src/opendnp3/ExecutorPause.cpp \
+cpp/opendnp3/src/opendnp3/HeaderReadIterator.cpp \
+cpp/opendnp3/src/opendnp3/IExecutor.cpp \
+cpp/opendnp3/src/opendnp3/IndexedWriteIterator.cpp \
+cpp/opendnp3/src/opendnp3/IStack.cpp \
+cpp/opendnp3/src/opendnp3/ITimeWriteHandler.cpp \
+cpp/opendnp3/src/opendnp3/LinkFrame.cpp \
+cpp/opendnp3/src/opendnp3/LinkHeader.cpp \
+cpp/opendnp3/src/opendnp3/LinkLayerConstants.cpp \
+cpp/opendnp3/src/opendnp3/LinkLayer.cpp \
+cpp/opendnp3/src/opendnp3/LinkLayerReceiver.cpp \
+cpp/opendnp3/src/opendnp3/LinkLayerRouter.cpp \
+cpp/opendnp3/src/opendnp3/LinkReceiverStates.cpp \
+cpp/opendnp3/src/opendnp3/LinkRoute.cpp \
+cpp/opendnp3/src/opendnp3/Master.cpp \
+cpp/opendnp3/src/opendnp3/MasterSchedule.cpp \
+cpp/opendnp3/src/opendnp3/MasterStackImpl.cpp \
+cpp/opendnp3/src/opendnp3/MasterStates.cpp \
+cpp/opendnp3/src/opendnp3/MasterTaskBase.cpp \
+cpp/opendnp3/src/opendnp3/MultiplexingDataObserver.cpp \
+cpp/opendnp3/src/opendnp3/ObjectHeader.cpp \
+cpp/opendnp3/src/opendnp3/ObjectInterfaces.cpp \
+cpp/opendnp3/src/opendnp3/ObjectReadIterator.cpp \
+cpp/opendnp3/src/opendnp3/Objects.cpp \
+cpp/opendnp3/src/opendnp3/ObjectWriteIterator.cpp \
+cpp/opendnp3/src/opendnp3/OutstationSBOHandler.cpp \
+cpp/opendnp3/src/opendnp3/OutstationStackImpl.cpp \
+cpp/opendnp3/src/opendnp3/PackingUnpacking.cpp \
+cpp/opendnp3/src/opendnp3/PhysicalLayerMonitor.cpp \
+cpp/opendnp3/src/opendnp3/PhysicalLayerMonitorStates.cpp \
+cpp/opendnp3/src/opendnp3/PointClass.cpp \
+cpp/opendnp3/src/opendnp3/PriLinkLayerStates.cpp \
+cpp/opendnp3/src/opendnp3/ProtocolUtil.cpp \
+cpp/opendnp3/src/opendnp3/QueuedCommandProcessor.cpp \
+cpp/opendnp3/src/opendnp3/ResponseContext.cpp \
+cpp/opendnp3/src/opendnp3/ResponseLoader.cpp \
+cpp/opendnp3/src/opendnp3/SecLinkLayerStates.cpp \
+cpp/opendnp3/src/opendnp3/ShiftableBuffer.cpp \
+cpp/opendnp3/src/opendnp3/SimpleCommandHandler.cpp \
+cpp/opendnp3/src/opendnp3/SimpleDataObserver.cpp \
+cpp/opendnp3/src/opendnp3/SlaveConfig.cpp \
+cpp/opendnp3/src/opendnp3/Slave.cpp \
+cpp/opendnp3/src/opendnp3/SlaveEventBuffer.cpp \
+cpp/opendnp3/src/opendnp3/SlaveResponseTypes.cpp \
+cpp/opendnp3/src/opendnp3/SlaveStates.cpp \
+cpp/opendnp3/src/opendnp3/SolicitedChannel.cpp \
+cpp/opendnp3/src/opendnp3/StackBase.cpp \
+cpp/opendnp3/src/opendnp3/StackState.cpp \
+cpp/opendnp3/src/opendnp3/StartupTasks.cpp \
+cpp/opendnp3/src/opendnp3/SubjectBase.cpp \
+cpp/opendnp3/src/opendnp3/TimeTransaction.cpp \
+cpp/opendnp3/src/opendnp3/TLS_Base.cpp \
+cpp/opendnp3/src/opendnp3/TrackingTaskGroup.cpp \
+cpp/opendnp3/src/opendnp3/TransportLayer.cpp \
+cpp/opendnp3/src/opendnp3/TransportRx.cpp \
+cpp/opendnp3/src/opendnp3/TransportStates.cpp \
+cpp/opendnp3/src/opendnp3/TransportTx.cpp \
+cpp/opendnp3/src/opendnp3/UnsolicitedChannel.cpp \
+cpp/opendnp3/src/opendnp3/Util.cpp \
+cpp/opendnp3/src/opendnp3/VtoData.cpp
 
-#pkginclude_HEADERS = \
-#cpp/include/opendnp3/AnalogOutput.h
-
-#ls cpp/src/opendnp3/*.cpp -1 | awk '{print $0" \\"}'
+#ls cpp/opendnp3tests/src/*.cpp -1 | awk '{print $0" \\"}'
 check_PROGRAMS = dnp3test
 TESTS = dnp3test
-dnp3test_CXXFLAGS = -I$(top_srcdir)/cpp/src -I$(top_srcdir)/cpp/include -I$(top_srcdir)/openpal/include -I$(top_srcdir)/asiopal/include $(BOOST_DEFINES)
+dnp3test_CXXFLAGS = -I$(OPENPAL_INCLUDE) -I$(ASIOPAL_INCLUDE) -I $(OPENDNP3_INCLUDE) -I$(OPENDNP3_SRCS) $(BOOST_DEFINES)
 dnp3test_LDADD = libopenpal.la libasiopal.la libopendnp3.la $(TEST_BOOST_LIBS)
 dnp3test_LDFLAGS = $(BOOST_LDFLAGS)
 dnp3test_SOURCES = \
-cpp/tests/AppLayerTest.cpp \
-cpp/tests/AsyncPhysBaseTest.cpp \
-cpp/tests/AsyncPhysTestObject.cpp \
-cpp/tests/AsyncSerialTestObject.cpp \
-cpp/tests/AsyncTestObjectASIO.cpp \
-cpp/tests/AsyncTestObject.cpp \
-cpp/tests/BufferHelpers.cpp \
-cpp/tests/BufferTestObject.cpp \
-cpp/tests/ComparingDataObserver.cpp \
-cpp/tests/DNPHelpers.cpp \
-cpp/tests/FlexibleDataObserver.cpp \
-cpp/tests/IntegrationTest.cpp \
-cpp/tests/LinkLayerRouterTest.cpp \
-cpp/tests/LinkLayerTest.cpp \
-cpp/tests/LogTester.cpp \
-cpp/tests/LoopbackPhysicalLayerAsync.cpp \
-cpp/tests/LowerLayerToPhysAdapter.cpp \
-cpp/tests/MasterTestObject.cpp \
-cpp/tests/MockAppLayer.cpp \
-cpp/tests/MockAppUser.cpp \
-cpp/tests/MockExecutor.cpp \
-cpp/tests/MockFrameSink.cpp \
-cpp/tests/MockLowerLayer.cpp \
-cpp/tests/MockPhysicalLayerAsync.cpp \
-cpp/tests/MockPhysicalLayerMonitor.cpp \
-cpp/tests/MockUpperLayer.cpp \
-cpp/tests/PhysicalLayerWrapper.cpp \
-cpp/tests/PhysLoopback.cpp \
-cpp/tests/RandomizedBuffer.cpp \
-cpp/tests/ResponseLoaderTestObject.cpp \
-cpp/tests/SlaveTestObject.cpp \
-cpp/tests/StopWatch.cpp \
-cpp/tests/TestAPDU.cpp \
-cpp/tests/TestAPDUWriting.cpp \
-cpp/tests/TestAppLayer.cpp \
-cpp/tests/TestASIO.cpp \
-cpp/tests/TestASIOThreadPool.cpp \
-cpp/tests/TestAsyncTask.cpp \
-cpp/tests/TestCastLongLongDouble.cpp \
-cpp/tests/TestChangeBuffer.cpp \
-cpp/tests/TestCommandHelpers.cpp \
-cpp/tests/TestCommandTask.cpp \
-cpp/tests/TestCommandTypes.cpp \
-cpp/tests/TestCRC.cpp \
-cpp/tests/TestDatabase.cpp \
-cpp/tests/TestDNP3Manager.cpp \
-cpp/tests/TestEventBufferBase.cpp \
-cpp/tests/TestEventBuffers.cpp \
-cpp/tests/TestIntegration.cpp \
-cpp/tests/TestLinkFrameDNP.cpp \
-cpp/tests/TestLinkLayer.cpp \
-cpp/tests/TestLinkLayerRouter.cpp \
-cpp/tests/TestLinkReceiver.cpp \
-cpp/tests/TestLinkRoute.cpp \
-cpp/tests/TestLog.cpp \
-cpp/tests/TestMaster.cpp \
-cpp/tests/TestMisc.cpp \
-cpp/tests/TestObjects.cpp \
-cpp/tests/TestPackingUnpacking.cpp \
-cpp/tests/TestParsing.cpp \
-cpp/tests/TestPhysicalLayerAsyncBase.cpp \
-cpp/tests/TestPhysicalLayerAsyncSerial.cpp \
-cpp/tests/TestPhysicalLayerAsyncTCP.cpp \
-cpp/tests/TestPhysicalLayerLoopback.cpp \
-cpp/tests/TestPhysicalLayerMonitor.cpp \
-cpp/tests/TestResponseLoader.cpp \
-cpp/tests/TestShiftableBuffer.cpp \
-cpp/tests/TestSlave.cpp \
-cpp/tests/TestSlaveEventBuffer.cpp \
-cpp/tests/TestStartBoostUTF.cpp \
-cpp/tests/TestTime.cpp \
-cpp/tests/TestTimers.cpp \
-cpp/tests/TestTransportLayer.cpp \
-cpp/tests/TestTransportLoopback.cpp \
-cpp/tests/TestTransportScalability.cpp \
-cpp/tests/TestTypes.cpp \
-cpp/tests/TestUtil.cpp \
-cpp/tests/Timeout.cpp \
-cpp/tests/TransportIntegrationStack.cpp \
-cpp/tests/TransportLoopbackTestObject.cpp \
-cpp/tests/TransportScalabilityTestObject.cpp \
-cpp/tests/TransportStackPair.cpp \
-cpp/tests/TransportTestObject.cpp \
-cpp/tests/WrappedTcpPipe.cpp
+cpp/opendnp3tests/src/AppLayerTest.cpp \
+cpp/opendnp3tests/src/AsyncPhysBaseTest.cpp \
+cpp/opendnp3tests/src/AsyncPhysTestObject.cpp \
+cpp/opendnp3tests/src/AsyncSerialTestObject.cpp \
+cpp/opendnp3tests/src/AsyncTestObjectASIO.cpp \
+cpp/opendnp3tests/src/AsyncTestObject.cpp \
+cpp/opendnp3tests/src/BufferHelpers.cpp \
+cpp/opendnp3tests/src/BufferTestObject.cpp \
+cpp/opendnp3tests/src/ComparingDataObserver.cpp \
+cpp/opendnp3tests/src/DNPHelpers.cpp \
+cpp/opendnp3tests/src/FlexibleDataObserver.cpp \
+cpp/opendnp3tests/src/IntegrationTest.cpp \
+cpp/opendnp3tests/src/LinkLayerRouterTest.cpp \
+cpp/opendnp3tests/src/LinkLayerTest.cpp \
+cpp/opendnp3tests/src/LogTester.cpp \
+cpp/opendnp3tests/src/LoopbackPhysicalLayerAsync.cpp \
+cpp/opendnp3tests/src/LowerLayerToPhysAdapter.cpp \
+cpp/opendnp3tests/src/MasterTestObject.cpp \
+cpp/opendnp3tests/src/MockAppLayer.cpp \
+cpp/opendnp3tests/src/MockAppUser.cpp \
+cpp/opendnp3tests/src/MockExecutor.cpp \
+cpp/opendnp3tests/src/MockFrameSink.cpp \
+cpp/opendnp3tests/src/MockLowerLayer.cpp \
+cpp/opendnp3tests/src/MockPhysicalLayerAsync.cpp \
+cpp/opendnp3tests/src/MockPhysicalLayerMonitor.cpp \
+cpp/opendnp3tests/src/MockUpperLayer.cpp \
+cpp/opendnp3tests/src/PhysicalLayerWrapper.cpp \
+cpp/opendnp3tests/src/PhysLoopback.cpp \
+cpp/opendnp3tests/src/RandomizedBuffer.cpp \
+cpp/opendnp3tests/src/ResponseLoaderTestObject.cpp \
+cpp/opendnp3tests/src/SlaveTestObject.cpp \
+cpp/opendnp3tests/src/StopWatch.cpp \
+cpp/opendnp3tests/src/TestAPDU.cpp \
+cpp/opendnp3tests/src/TestAPDUWriting.cpp \
+cpp/opendnp3tests/src/TestAppLayer.cpp \
+cpp/opendnp3tests/src/TestASIO.cpp \
+cpp/opendnp3tests/src/TestASIOThreadPool.cpp \
+cpp/opendnp3tests/src/TestAsyncTask.cpp \
+cpp/opendnp3tests/src/TestCastLongLongDouble.cpp \
+cpp/opendnp3tests/src/TestChangeBuffer.cpp \
+cpp/opendnp3tests/src/TestCommandHelpers.cpp \
+cpp/opendnp3tests/src/TestCommandTask.cpp \
+cpp/opendnp3tests/src/TestCommandTypes.cpp \
+cpp/opendnp3tests/src/TestCRC.cpp \
+cpp/opendnp3tests/src/TestDatabase.cpp \
+cpp/opendnp3tests/src/TestDNP3Manager.cpp \
+cpp/opendnp3tests/src/TestEventBufferBase.cpp \
+cpp/opendnp3tests/src/TestEventBuffers.cpp \
+cpp/opendnp3tests/src/TestIntegration.cpp \
+cpp/opendnp3tests/src/TestLinkFrameDNP.cpp \
+cpp/opendnp3tests/src/TestLinkLayer.cpp \
+cpp/opendnp3tests/src/TestLinkLayerRouter.cpp \
+cpp/opendnp3tests/src/TestLinkReceiver.cpp \
+cpp/opendnp3tests/src/TestLinkRoute.cpp \
+cpp/opendnp3tests/src/TestLog.cpp \
+cpp/opendnp3tests/src/TestMaster.cpp \
+cpp/opendnp3tests/src/TestMisc.cpp \
+cpp/opendnp3tests/src/TestObjects.cpp \
+cpp/opendnp3tests/src/TestPackingUnpacking.cpp \
+cpp/opendnp3tests/src/TestParsing.cpp \
+cpp/opendnp3tests/src/TestPhysicalLayerAsyncBase.cpp \
+cpp/opendnp3tests/src/TestPhysicalLayerAsyncSerial.cpp \
+cpp/opendnp3tests/src/TestPhysicalLayerAsyncTCP.cpp \
+cpp/opendnp3tests/src/TestPhysicalLayerLoopback.cpp \
+cpp/opendnp3tests/src/TestPhysicalLayerMonitor.cpp \
+cpp/opendnp3tests/src/TestResponseLoader.cpp \
+cpp/opendnp3tests/src/TestShiftableBuffer.cpp \
+cpp/opendnp3tests/src/TestSlave.cpp \
+cpp/opendnp3tests/src/TestSlaveEventBuffer.cpp \
+cpp/opendnp3tests/src/TestStartBoostUTF.cpp \
+cpp/opendnp3tests/src/TestTime.cpp \
+cpp/opendnp3tests/src/TestTimers.cpp \
+cpp/opendnp3tests/src/TestTransportLayer.cpp \
+cpp/opendnp3tests/src/TestTransportLoopback.cpp \
+cpp/opendnp3tests/src/TestTransportScalability.cpp \
+cpp/opendnp3tests/src/TestTypes.cpp \
+cpp/opendnp3tests/src/TestUtil.cpp \
+cpp/opendnp3tests/src/Timeout.cpp \
+cpp/opendnp3tests/src/TransportIntegrationStack.cpp \
+cpp/opendnp3tests/src/TransportLoopbackTestObject.cpp \
+cpp/opendnp3tests/src/TransportScalabilityTestObject.cpp \
+cpp/opendnp3tests/src/TransportStackPair.cpp \
+cpp/opendnp3tests/src/TransportTestObject.cpp \
+cpp/opendnp3tests/src/WrappedTcpPipe.cpp
+
 
 
 if WANT_JAVA

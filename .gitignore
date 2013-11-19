@@ -44,14 +44,6 @@ unittest.log
 ipch
 **/**/Debug
 **/**/Release
-cpp/Debug
-cpp/Release
-openpal/Debug
-openpal/Release
-asiopal/Debug
-asiopal/Release
-asiodnp3/Debug
-asiodnp3/Release
 java/Debug
 java/Release
 *.suo

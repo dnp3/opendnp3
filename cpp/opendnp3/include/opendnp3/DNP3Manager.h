@@ -93,7 +93,7 @@ public:
 
 	~DNP3Manager();
 	
-	IChannel* CreateChannel(openpal::Logger& arLogger, openpal::TimeDuration aOpenRetry, openpal::IPhysicalLayerAsync* apPhys);
+	IChannel* CreateChannel(openpal::Logger aLogger, openpal::TimeDuration aOpenRetry, openpal::IPhysicalLayerAsync* apPhys);
 
 	/**
 	* Permanently shutdown the manager and all sub-objects that have been created. Stop

@@ -45,9 +45,9 @@ void DNP3Manager::Shutdown()
 	for(auto pChannel: copy) pChannel->Shutdown();
 }
 
-IChannel* DNP3Manager::CreateChannel(openpal::Logger& arLogger, openpal::TimeDuration aOpenRetry, IPhysicalLayerAsync* apPhys)
+IChannel* DNP3Manager::CreateChannel(openpal::Logger aLogger, openpal::TimeDuration aOpenRetry, IPhysicalLayerAsync* apPhys)
 {
-	auto pChannel = new DNP3Channel(arLogger, aOpenRetry, apPhys, [this](DNP3Channel * apChannel) {
+	auto pChannel = new DNP3Channel(aLogger, aOpenRetry, apPhys, [this](DNP3Channel * apChannel) {
 		mChannels.erase(apChannel);
 		delete apChannel;
 	});
