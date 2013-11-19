@@ -55,15 +55,43 @@
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\..\config\output_dirs.props" />
+    <Import Project="..\..\config\openpal_include.props" />
+    <Import Project="..\..\config\asiopal_include.props" />
+    <Import Project="..\..\config\opendnp3_include.props" />
+    <Import Project="..\..\config\boost_includes.props" />
+    <Import Project="..\..\config\common_boost_defines.props" />
+    <Import Project="..\..\config\boostlib32.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\..\config\output_dirs.props" />
+    <Import Project="..\..\config\openpal_include.props" />
+    <Import Project="..\..\config\asiopal_include.props" />
+    <Import Project="..\..\config\opendnp3_include.props" />
+    <Import Project="..\..\config\boost_includes.props" />
+    <Import Project="..\..\config\common_boost_defines.props" />
+    <Import Project="..\..\config\boostlib64.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\..\config\output_dirs.props" />
+    <Import Project="..\..\config\openpal_include.props" />
+    <Import Project="..\..\config\asiopal_include.props" />
+    <Import Project="..\..\config\opendnp3_include.props" />
+    <Import Project="..\..\config\boost_includes.props" />
+    <Import Project="..\..\config\common_boost_defines.props" />
+    <Import Project="..\..\config\boostlib32.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\..\config\output_dirs.props" />
+    <Import Project="..\..\config\openpal_include.props" />
+    <Import Project="..\..\config\asiopal_include.props" />
+    <Import Project="..\..\config\opendnp3_include.props" />
+    <Import Project="..\..\config\boost_includes.props" />
+    <Import Project="..\..\config\common_boost_defines.props" />
+    <Import Project="..\..\config\boostlib64.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -143,6 +171,17 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="DemoMain.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\asiopal\asiopal.vcxproj">
+      <Project>{3807677b-061a-4d15-aa03-65e944864384}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\opendnp3\opendnp3.vcxproj">
+      <Project>{e6404405-ba2d-4f95-a268-d467783d0433}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\openpal\openpal.vcxproj">
+      <Project>{abf09bda-75a5-47d7-9f15-d7b7ec69f1e7}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
