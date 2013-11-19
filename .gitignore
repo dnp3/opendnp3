@@ -28,6 +28,8 @@ stamp-h1
 INSTALL
 cpp/demos/INSTALL
 
+outstationdemo
+masterdemo
 dnp3test
 *~
 *.dirstamp
