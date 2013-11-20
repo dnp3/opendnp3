@@ -50,15 +50,18 @@
     <Compile Include="ICommandHandler.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="IDataObserver.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="IDNP3Manager.cs" />
     <Compile Include="IChannel.cs" />
     <Compile Include="ICommandProcessor.cs" />
-    <Compile Include="IDataObserver.cs" />
     <Compile Include="IFuture.cs" />
     <Compile Include="ILogHandler.cs" />
     <Compile Include="IMaster.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="IMeasurementHandler.cs" />
     <Compile Include="IOutstation.cs" />
     <Compile Include="IStack.cs">
       <SubType>Code</SubType>
@@ -69,7 +72,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="OutstationResponses.cs" />
-    <Compile Include="PrintingDataObserver.cs" />
+    <Compile Include="PrintingMeasurementHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SerialSettings.cs" />
     <Compile Include="SimpleCommandHandler.cs" />

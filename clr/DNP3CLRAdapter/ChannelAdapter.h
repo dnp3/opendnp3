@@ -44,7 +44,7 @@ public:
 
 	virtual void AddStateListener(System::Action<ChannelState> ^ listener);
 
-	virtual IMaster ^ AddMaster(System::String ^ loggerId, LogLevel level, IDataObserver ^ publisher, MasterStackConfig ^ config);
+	virtual IMaster ^ AddMaster(System::String ^ loggerId, LogLevel level, IMeasurementHandler ^ publisher, MasterStackConfig ^ config);
 
 	virtual IOutstation ^ AddOutstation(System::String ^ loggerId, LogLevel level, ICommandHandler ^ cmdHandler, ITimeWriteHandler ^ timeHandler, SlaveStackConfig ^ config);
 

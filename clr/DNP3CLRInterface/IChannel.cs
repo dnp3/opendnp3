@@ -40,7 +40,7 @@ namespace DNP3.Interface
         /// <param name="publisher">Where measurements will be sent as they are received from the outstation</param>
         /// <param name="config">configuration information for the master stack</param>
         /// <returns>reference to the created master</returns>
-		IMaster AddMaster(String loggerId, LogLevel level, IDataObserver publisher, MasterStackConfig config);
+		IMaster AddMaster(String loggerId, LogLevel level, IMeasurementHandler publisher, MasterStackConfig config);
 
         /// <summary>
         /// Adds an outstation to the channel

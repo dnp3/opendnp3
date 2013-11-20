@@ -21,13 +21,18 @@
 
 #include <jni.h>
 #include <opendnp3/IDataObserver.h>
+#include <opendnp3/IMeasurementHandler.h>
 
-class DataObserverAdapter : public opendnp3::IDataObserver
+class DataObserverAdapter : public opendnp3::IMeasurementHandler
 {
+
 public:
 	DataObserverAdapter(JavaVM* apJVM, jobject aProxy);
 
-protected:
+	void Load(const opendnp3::IMeasurementUpdate& arUpdate);
+	
+
+private:
 
 	void _Start();
 	void _Update(const opendnp3::Binary& arMeas, size_t aIndex);
@@ -36,9 +41,7 @@ protected:
 	void _Update(const opendnp3::SetpointStatus& arMeas, size_t aIndex);
 	void _Update(const opendnp3::ControlStatus& arMeas, size_t aIndex);
 	void _End();
-
-private:
-
+	
 	JNIEnv* GetEnv();
 
 	JavaVM* mpJVM;

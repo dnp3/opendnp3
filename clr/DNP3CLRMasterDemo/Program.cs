@@ -49,7 +49,7 @@ namespace DotNetMasterDemo
 
             var config = new MasterStackConfig();
             config.link.useConfirms = true; //setup your stack configuration here.
-            var master = channel.AddMaster("master", LogLevel.INFO, PrintingDataObserver.Instance, config);
+            var master = channel.AddMaster("master", LogLevel.INFO, PrintingMeasurementHandler.Instance, config);
 
             //optionally, add a listener for the stack state
             master.AddStateListener(state => Console.WriteLine("Master state: " + state));

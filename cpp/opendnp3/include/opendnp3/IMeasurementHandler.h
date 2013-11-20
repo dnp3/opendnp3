@@ -51,7 +51,7 @@ public:
 	ProxiedMeasurementHandler(const std::function<void (const IMeasurementUpdate&)>& arProxy) : mProxy(arProxy)
 	{}
 
-	void Load(const IMeasurementUpdate& arUpdate) override
+	void Load(const IMeasurementUpdate& arUpdate)
 	{
 		mProxy(arUpdate);
 	}

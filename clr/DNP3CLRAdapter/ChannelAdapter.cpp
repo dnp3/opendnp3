@@ -22,7 +22,7 @@
 
 #include "ChannelAdapter.h"
 #include "Conversions.h"
-#include "MasterDataObserverAdapter.h"
+#include "MasterMeasurementHandlerAdapter.h"
 #include "SlaveCommandHandlerAdapter.h"
 #include "OutstationTimeWriteAdapter.h"
 #include "MasterAdapter.h"
@@ -59,12 +59,12 @@ void CallbackListener(gcroot < System::Action<ChannelState> ^ > * listener, open
 	(*listener)->Invoke(state);
 }
 
-IMaster ^ ChannelAdapter::AddMaster(System::String ^ loggerId, LogLevel level, IDataObserver ^ publisher, MasterStackConfig ^ config)
+IMaster ^ ChannelAdapter::AddMaster(System::String ^ loggerId, LogLevel level, IMeasurementHandler ^ publisher, MasterStackConfig ^ config)
 {
 	std::string stdLoggerId = Conversions::convertString(loggerId);
 	openpal::FilterLevel stdLevel = Conversions::convertFilterLevel(level);
 
-	MasterDataObserverWrapper ^ wrapper = gcnew MasterDataObserverWrapper(publisher);
+	MasterMeasurementHandlerWrapper ^ wrapper = gcnew MasterMeasurementHandlerWrapper(publisher);
 	opendnp3::MasterStackConfig cfg = Conversions::convertConfig(config);
 
 	try {
