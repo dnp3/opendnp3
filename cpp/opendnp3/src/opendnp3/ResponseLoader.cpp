@@ -34,11 +34,16 @@ using namespace openpal;
 namespace opendnp3
 {
 
-ResponseLoader::ResponseLoader(openpal::Logger& arLogger, IDataObserver* apPublisher) :
+ResponseLoader::ResponseLoader(openpal::Logger& arLogger, IMeasurementHandler* apPublisher) :
 	Loggable(arLogger),
 	mpPublisher(apPublisher),
-	mTransaction(apPublisher)
+	mUpdate()
 {}
+
+ResponseLoader::~ResponseLoader()
+{
+	if(mUpdate.HasUpdates()) mpPublisher->Load(mUpdate);
+}
 
 void ResponseLoader::Process(HeaderReadIterator& arIter)
 {

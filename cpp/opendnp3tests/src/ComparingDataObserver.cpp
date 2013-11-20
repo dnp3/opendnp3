@@ -73,6 +73,11 @@ void ComparingDataObserver::DescribeMissingData()
 	this->DescribeAny<Counter>(mpObserver->mCounterMap, mCounterMap);
 }
 
+void ComparingDataObserver::Load(const IMeasurementUpdate& arUpdate)
+{
+	arUpdate.Apply(this);
+}
+
 void ComparingDataObserver::_Start()
 {
 	mMutex.lock();

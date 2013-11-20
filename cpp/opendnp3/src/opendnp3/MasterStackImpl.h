@@ -48,9 +48,9 @@ class DLL_LOCAL MasterStackImpl : public IMaster
 public:
 
 	MasterStackImpl(
-	        openpal::Logger&,
-	        IExecutor* apExecutor,
-	        IDataObserver* apPublisher,
+	        openpal::Logger,
+	        openpal::IExecutor* apExecutor,
+	        IMeasurementHandler* apPublisher,
 	        IUTCTimeSource* apTimeSource,
 	        AsyncTaskGroup* apTaskGroup,
 	        const MasterStackConfig& arCfg,

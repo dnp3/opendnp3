@@ -31,6 +31,8 @@
 #include "DataTypes.h"
 #include <vector>
 
+#include "IDataObserver.h"
+
 namespace opendnp3 
 {
   
@@ -60,6 +62,17 @@ namespace opendnp3
 	  virtual const CounterContainer& CounterUpdates() const = 0;
 	  virtual const ControlStatusContainer& ControlStatusUpdates() const = 0;
 	  virtual const SetpointStatusContainer& SetpointStatusUpdates() const = 0;
+
+	  // TODO - remove this function, it's only a temporary adapter
+	  void Apply(IDataObserver* apObserver) const
+	  {
+		Transaction t(apObserver);
+		for(auto b: this->BinaryUpdates()) apObserver->Update(b.value, b.index);
+		for(auto b: this->AnalogUpdates()) apObserver->Update(b.value, b.index);
+		for(auto b: this->CounterUpdates()) apObserver->Update(b.value, b.index);
+		for(auto b: this->ControlStatusUpdates()) apObserver->Update(b.value, b.index);
+		for(auto b: this->SetpointStatusUpdates()) apObserver->Update(b.value, b.index);
+	  }
 		
   };
 

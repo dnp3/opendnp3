@@ -728,6 +728,9 @@
     <ClCompile Include="src\opendnp3\MeasurementUpdate.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\opendnp3\IMeasurementHandler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\gecapache.licenseheader" />

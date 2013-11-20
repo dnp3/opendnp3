@@ -26,52 +26,12 @@
 //
 // Contact Automatak, LLC for a commercial license to these modifications
 //
-#ifndef __I_MEASUREMENT_HANDLER_H_
-#define	__I_MEASUREMENT_HANDLER_H_
 
-#include "IMeasurementUpdate.h"
-
-#include <functional>
+#include <opendnp3/IMeasurementHandler.h>
 
 namespace opendnp3
 {
 
-class IMeasurementHandler
-{
-public:
-
-	virtual ~IMeasurementHandler() {}	
-	virtual void Load(const IMeasurementUpdate& arUpdate) = 0;
-};
-
-class ProxiedMeasurementHandler : public IMeasurementHandler
-{
-public:
-	ProxiedMeasurementHandler(const std::function<void (const IMeasurementUpdate&)>& arProxy) : mProxy(arProxy)
-	{}
-
-	void Load(const IMeasurementUpdate& arUpdate) override
-	{
-		mProxy(arUpdate);
-	}
-
-private:
-	std::function<void (const IMeasurementUpdate&)> mProxy;
-};
-
-class NullMeasurementHandler : public ProxiedMeasurementHandler
-{
-
-public:
-	static IMeasurementHandler* Inst() { return &msInstance; }
-
-private:
-	NullMeasurementHandler() : ProxiedMeasurementHandler([](const IMeasurementUpdate&){})
-	{}
-	
-	static NullMeasurementHandler msInstance;
-};
+NullMeasurementHandler NullMeasurementHandler::msInstance;
 
 }
-
-#endif

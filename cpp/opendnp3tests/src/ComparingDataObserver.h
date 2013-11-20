@@ -35,7 +35,7 @@
 namespace opendnp3
 {
 
-class ComparingDataObserver : public IDataObserver
+class ComparingDataObserver : public IDataObserver, public IMeasurementHandler
 {
 public:
 
@@ -46,6 +46,8 @@ public:
 	bool WaitForSameData(openpal::TimeDuration aTimeout);
 
 	void DescribeMissingData();
+
+	void Load(const IMeasurementUpdate& arUpdate);
 
 private:
 

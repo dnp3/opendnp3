@@ -30,8 +30,9 @@
 #define __RESPONSE_LOADER_H_
 
 #include <openpal/Types.h>
-#include <opendnp3/IDataObserver.h>
+#include <opendnp3/IMeasurementHandler.h>
 #include <opendnp3/ObjectInterfaces.h>
+#include <opendnp3/MeasurementUpdate.h>
 
 #include <openpal/Visibility.h>
 #include <openpal/Loggable.h>
@@ -56,13 +57,19 @@ public:
 	 *
 	 * @param arLogger			the Logger that the loader should use for
 	 * 						message reporting
-	 * @param apPublisher	the IDataObserver for any responses that match
+	 * @param apPublisher	the IMeasurementHandler for any responses that match
 	 * @param apVtoReader	the VtoReader for any responses that match
 	 *
 	 * @return				a new ResponseLoader instance
 	 */
 	ResponseLoader(openpal::Logger& arLogger,
-	               IDataObserver* apPublisher);
+	               IMeasurementHandler* apPublisher);
+
+	/**
+	* When the response loader destructs, it flushes an update to the publisher if
+	* any measurements were loaded via Process()
+	*/
+	~ResponseLoader();
 
 	/**
 	 * Processes a DNP3 object received by the Master.  The real heavy
@@ -119,10 +126,8 @@ private:
 	 */
 	// void ReadVto(HeaderReadIterator& arIter, SizeByVariationObject* apObj);
 
-	IDataObserver* mpPublisher;
-
-	Transaction mTransaction;
-
+	IMeasurementHandler* mpPublisher;
+	MeasurementUpdate mUpdate;
 	CTOHistory mCTO;
 };
 
@@ -169,7 +174,8 @@ void ResponseLoader::Read(HeaderReadIterator& arIter, StreamObject<T>* apObj)
 			value.SetQuality(T::ONLINE);
 		}
 
-		mpPublisher->Update(value, index);
+		mUpdate.Add(value, index);
+		
 	}
 }
 
@@ -186,7 +192,7 @@ void ResponseLoader::ReadBitfield(HeaderReadIterator& arIter)
 	for (; !obj.IsEnd(); ++obj) {
 		bool val = BitfieldObject::StaticRead(*obj, obj->Start(), obj->Index());
 		b.SetValue(val);
-		mpPublisher->Update(b, obj->Index());
+		mUpdate.Add(b, obj->Index());
 	}
 }
 

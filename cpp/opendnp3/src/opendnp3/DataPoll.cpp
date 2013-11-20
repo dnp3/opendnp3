@@ -36,9 +36,9 @@ namespace opendnp3
 
 /* DataPoll - base class */
 
-DataPoll::DataPoll(Logger& arLogger, IDataObserver* apObs) :
+DataPoll::DataPoll(Logger& arLogger, IMeasurementHandler* apMeasurementHandler) :
 	MasterTaskBase(arLogger),
-	mpObs(apObs)
+	mpMeasurementHandler(apMeasurementHandler)
 {}
 
 TaskResult DataPoll::_OnPartialResponse(const APDU& f)
@@ -55,7 +55,7 @@ TaskResult DataPoll::_OnFinalResponse(const APDU& f)
 
 void DataPoll::ReadData(const APDU& f)
 {
-	ResponseLoader loader(mLogger, mpObs);
+	ResponseLoader loader(mLogger, mpMeasurementHandler);
 	HeaderReadIterator hdr = f.BeginRead();
 	for ( ; !hdr.IsEnd(); ++hdr) {
 		loader.Process(hdr);
@@ -64,8 +64,8 @@ void DataPoll::ReadData(const APDU& f)
 
 /* Class Poll */
 
-ClassPoll::ClassPoll(Logger& arLogger, IDataObserver* apObs) :
-	DataPoll(arLogger, apObs),
+ClassPoll::ClassPoll(Logger& arLogger, IMeasurementHandler* apHandler) :
+	DataPoll(arLogger, apHandler),
 	mClassMask(PC_INVALID)
 {}
 

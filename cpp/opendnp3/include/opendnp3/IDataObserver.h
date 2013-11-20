@@ -138,7 +138,6 @@ inline void IDataObserver::Update(const SetpointStatus& arPoint, size_t aIndex)
 	this->_Update(arPoint, aIndex);
 }
 
-
 }
 
 #endif

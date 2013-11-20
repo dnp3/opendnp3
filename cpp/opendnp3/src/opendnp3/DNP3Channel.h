@@ -51,6 +51,7 @@ class IStack;
 class IOutstation;
 class ICommandHandler;
 class ITimeWriteHandler;
+class IMeasurementHandler;
 
 class DLL_LOCAL DNP3Channel: public IChannel, private openpal::Loggable
 {
@@ -68,7 +69,7 @@ public:
 
 	IMaster* AddMaster(		const std::string& arLoggerId,
 	                                FilterLevel aLevel,
-	                                IDataObserver* apPublisher,
+	                                IMeasurementHandler* apPublisher,
 	                                openpal::IUTCTimeSource* apTimeSource,
 	                                const MasterStackConfig& arCfg);
 

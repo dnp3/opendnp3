@@ -29,18 +29,18 @@ using namespace openpal;
 namespace opendnp3
 {
 
-MasterStackImpl::MasterStackImpl(	Logger& arLogger,
+MasterStackImpl::MasterStackImpl(	Logger aLogger,
                                         IExecutor* apExecutor,
-                                        IDataObserver* apPublisher,
+                                        IMeasurementHandler* apPublisher,
                                         IUTCTimeSource* apTimeSource,
                                         AsyncTaskGroup* apTaskGroup,
                                         const MasterStackConfig& arCfg,
                                         std::function<void (IMaster*)> aOnShutdown) :
 
-	IMaster(arLogger),
+	IMaster(aLogger),
 	mpExecutor(apExecutor),
-	mAppStack(arLogger, apExecutor, arCfg.app, arCfg.link),
-	mMaster(arLogger.GetSubLogger("master"), arCfg.master, &mAppStack.mApplication, apPublisher, apTaskGroup, apExecutor, apTimeSource),
+	mAppStack(aLogger, apExecutor, arCfg.app, arCfg.link),
+	mMaster(aLogger.GetSubLogger("master"), arCfg.master, &mAppStack.mApplication, apPublisher, apTaskGroup, apExecutor, apTimeSource),
 	mOnShutdown(aOnShutdown)
 {
 	mAppStack.mApplication.SetUser(&mMaster);

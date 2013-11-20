@@ -30,7 +30,7 @@
 namespace opendnp3
 {
 
-class IDataObserver;
+class IMeasurementHandler;
 
 /**
  * Base class for all data acquistion polls
@@ -39,7 +39,7 @@ class DLL_LOCAL DataPoll : public MasterTaskBase
 {
 public:
 
-	DataPoll(openpal::Logger&, IDataObserver*);
+	DataPoll(openpal::Logger&, IMeasurementHandler*);
 
 private:
 
@@ -49,7 +49,7 @@ private:
 	TaskResult _OnPartialResponse(const APDU&);
 	TaskResult _OnFinalResponse(const APDU&);
 
-	IDataObserver* mpObs;
+	IMeasurementHandler* mpMeasurementHandler;
 
 };
 
@@ -59,7 +59,7 @@ class DLL_LOCAL ClassPoll : public DataPoll
 {
 public:
 
-	ClassPoll(openpal::Logger&, IDataObserver*);
+	ClassPoll(openpal::Logger&, IMeasurementHandler*);
 
 	void Set(int aClassMask);
 

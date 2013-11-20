@@ -44,7 +44,7 @@ using namespace openpal;
 namespace opendnp3
 {
 
-Master::Master(Logger aLogger, MasterConfig aCfg, IAppLayer* apAppLayer, IDataObserver* apPublisher, AsyncTaskGroup* apTaskGroup, openpal::IExecutor* apExecutor, IUTCTimeSource* apTimeSrc) :
+Master::Master(Logger aLogger, MasterConfig aCfg, IAppLayer* apAppLayer, IMeasurementHandler* apPublisher, AsyncTaskGroup* apTaskGroup, openpal::IExecutor* apExecutor, IUTCTimeSource* apTimeSrc) :
 	Loggable(aLogger),
 	StackBase(apExecutor),
 	mRequest(aCfg.FragSize),
