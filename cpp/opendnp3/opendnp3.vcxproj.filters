@@ -441,6 +441,12 @@
     <ClInclude Include="src\opendnp3\DeadlineTimerSteadyClock.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\opendnp3\MeasurementUpdate.h">
+      <Filter>Include Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\opendnp3\IMeasurementUpdate.h">
+      <Filter>Include Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\opendnp3\AnalogOutput.cpp">
@@ -714,6 +720,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\ITimeWriteHandler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\MeasurementUpdate.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

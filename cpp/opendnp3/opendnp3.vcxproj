@@ -159,7 +159,9 @@
     <ClInclude Include="include\opendnp3\CommandResponse.h" />
     <ClInclude Include="include\opendnp3\CommandStatus.h" />
     <ClInclude Include="include\opendnp3\ControlRelayOutputBlock.h" />
+    <ClInclude Include="include\opendnp3\IMeasurementUpdate.h" />
     <ClInclude Include="include\opendnp3\ITimeWriteHandler.h" />
+    <ClInclude Include="include\opendnp3\MeasurementUpdate.h" />
     <ClInclude Include="include\opendnp3\OutstationResponses.h" />
     <ClInclude Include="include\opendnp3\TimeTransaction.h" />
     <ClInclude Include="include\opendnp3\DataTypes.h" />
@@ -321,6 +323,7 @@
     <ClCompile Include="src\opendnp3\Database.cpp" />
     <ClCompile Include="src\opendnp3\DataPoll.cpp" />
     <ClCompile Include="src\opendnp3\ITimeWriteHandler.cpp" />
+    <ClCompile Include="src\opendnp3\MeasurementUpdate.cpp" />
     <ClCompile Include="src\opendnp3\TimeTransaction.cpp" />
     <ClCompile Include="src\opendnp3\DestructorHook.cpp" />
     <ClCompile Include="src\opendnp3\DeviceTemplate.cpp" />

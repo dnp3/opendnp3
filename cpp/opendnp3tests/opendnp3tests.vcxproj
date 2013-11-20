@@ -293,6 +293,7 @@
     <ClCompile Include="src\TestLinkRoute.cpp" />
     <ClCompile Include="src\TestLog.cpp" />
     <ClCompile Include="src\TestMaster.cpp" />
+    <ClCompile Include="src\TestMeasurementUpdate.cpp" />
     <ClCompile Include="src\TestMisc.cpp" />
     <ClCompile Include="src\TestObjects.cpp" />
     <ClCompile Include="src\TestPackingUnpacking.cpp" />

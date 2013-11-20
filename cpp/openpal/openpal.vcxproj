@@ -157,6 +157,7 @@
     <ClInclude Include="include\openpal\Logger.h" />
     <ClInclude Include="include\openpal\LogTypes.h" />
     <ClInclude Include="include\openpal\MonotonicTimestamp.h" />
+    <ClInclude Include="include\openpal\MoveOnCopy.h" />
     <ClInclude Include="include\openpal\Parsing.h" />
     <ClInclude Include="include\openpal\TimeDuration.h" />
     <ClInclude Include="include\openpal\ToHex.h" />
