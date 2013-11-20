@@ -159,6 +159,7 @@
     <ClInclude Include="include\opendnp3\CommandResponse.h" />
     <ClInclude Include="include\opendnp3\CommandStatus.h" />
     <ClInclude Include="include\opendnp3\ControlRelayOutputBlock.h" />
+    <ClInclude Include="include\opendnp3\IMeasurementHandler.h" />
     <ClInclude Include="include\opendnp3\IMeasurementUpdate.h" />
     <ClInclude Include="include\opendnp3\ITimeWriteHandler.h" />
     <ClInclude Include="include\opendnp3\MeasurementUpdate.h" />
