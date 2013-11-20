@@ -57,13 +57,13 @@ public:
 	 *
 	 * @param arLogger			the Logger that the loader should use for
 	 * 						message reporting
-	 * @param apPublisher	the IMeasurementHandler for any responses that match
+	 * @param aUpdate		the callback to use for dispatching measurements
 	 * @param apVtoReader	the VtoReader for any responses that match
 	 *
 	 * @return				a new ResponseLoader instance
 	 */
 	ResponseLoader(openpal::Logger& arLogger,
-	               IMeasurementHandler* apPublisher);
+	               const std::function<void (MeasurementUpdate&)>& aUpdate);
 
 	/**
 	* When the response loader destructs, it flushes an update to the publisher if
@@ -126,7 +126,7 @@ private:
 	 */
 	// void ReadVto(HeaderReadIterator& arIter, SizeByVariationObject* apObj);
 
-	IMeasurementHandler* mpPublisher;
+	std::function<void (MeasurementUpdate&)> mCallback;
 	MeasurementUpdate mUpdate;
 	CTOHistory mCTO;
 };

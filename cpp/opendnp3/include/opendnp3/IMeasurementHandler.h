@@ -32,6 +32,7 @@
 #include "IMeasurementUpdate.h"
 
 #include <functional>
+#include <iostream>
 
 namespace opendnp3
 {
@@ -71,6 +72,34 @@ private:
 	
 	static NullMeasurementHandler msInstance;
 };
+
+class PrintingMeasurementHandler : public ProxiedMeasurementHandler
+{
+
+public:
+	static IMeasurementHandler* Inst() { return &msInstance; }
+
+private:
+	PrintingMeasurementHandler() : ProxiedMeasurementHandler(Print)
+	{}
+
+	static void Print(const IMeasurementUpdate& arUpdate);
+
+	template<class T>
+	static void PrintAny(const T&, uint32_t aIndex);
+	
+	static PrintingMeasurementHandler msInstance;
+};
+
+template<class T>
+void PrintingMeasurementHandler::PrintAny(const T& arPoint, uint32_t aIndex)
+{
+	std::ostringstream oss;
+	oss << arPoint.ToString() << " : " << aIndex;
+	std::cout << oss.str() << std::endl;
+}
+
+
 
 }
 

@@ -27,22 +27,27 @@
 // Contact Automatak, LLC for a commercial license to these modifications
 //
 
-#include <opendnp3/IMeasurementHandler.h>
+#include "PostingMeasurementHandler.h"
+
+#include <openpal/IExecutor.h>
+#include <openpal/MoveOnCopy.h>
+
+using namespace openpal;
 
 namespace opendnp3
 {
 
-NullMeasurementHandler NullMeasurementHandler::msInstance;
-
-PrintingMeasurementHandler PrintingMeasurementHandler::msInstance;
-
-void PrintingMeasurementHandler::Print(const IMeasurementUpdate& arUpdate)
+PostingMeasurementHandler::PostingMeasurementHandler(IMeasurementHandler* apProxy, openpal::IExecutor* apExecutor) : 
+	mpProxy(apProxy),
+	mpExecutor(apExecutor),
+	Load([this](MeasurementUpdate& update) {
+		move_on_copy<MeasurementUpdate> wrapper(std::move(update));
+		mpExecutor->Post([this, wrapper](){ mpProxy->Load(wrapper.Value()); });
+	})	
 {
-	for(auto pair: arUpdate.BinaryUpdates()) PrintAny(pair.value, pair.index);
-	for(auto pair: arUpdate.AnalogUpdates()) PrintAny(pair.value, pair.index);
-	for(auto pair: arUpdate.CounterUpdates()) PrintAny(pair.value, pair.index);
-	for(auto pair: arUpdate.ControlStatusUpdates()) PrintAny(pair.value, pair.index);
-	for(auto pair: arUpdate.SetpointStatusUpdates()) PrintAny(pair.value, pair.index);
+
+	
 }
 
 }
+

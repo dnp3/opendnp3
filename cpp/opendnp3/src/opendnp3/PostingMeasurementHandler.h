@@ -17,68 +17,42 @@
 //
 // This file was forked on 01/01/2013 by Automatak, LLC and modifications
 // have been made to this file. Automatak, LLC licenses these modifications to
-// you under the terms of the License.
+// you under the GNU Affero General Public License Version 3.0
+// (the "Additional License"). You may not use these modifications except in
+// compliance with the additional license. You may obtain a copy of the Additional
+// License at
 //
-
-#ifndef __DATA_POLL_H_
-#define __DATA_POLL_H_
+// http://www.gnu.org/licenses/agpl.html
+//
+// Contact Automatak, LLC for a commercial license to these modifications
+//
+#ifndef __POSTING_MEASUREMENT_HANDLER_H_
+#define	__POSTING_MEASUREMENT_HANDLER_H_
 
 #include <opendnp3/MeasurementUpdate.h>
-#include "MasterTaskBase.h"
+#include <opendnp3/IMeasurementHandler.h>
 
-#include <functional>
-#include <openpal/Visibility.h>
+namespace openpal
+{
+	class IExecutor;
+}
 
 namespace opendnp3
 {
 
-class IMeasurementHandler;
-
-/**
- * Base class for all data acquistion polls
- */
-class DLL_LOCAL DataPoll : public MasterTaskBase
+class PostingMeasurementHandler
 {
 public:
 
-	DataPoll(openpal::Logger&, const std::function<void (MeasurementUpdate&)>& aUpdate);
-
+	PostingMeasurementHandler(IMeasurementHandler* apProxy, openpal::IExecutor* apExecutor);
+	
+	const std::function<void (MeasurementUpdate&)> Load;
+	
 private:
-
-	void ReadData(const APDU&);
-
-	//Implement MasterTaskBase
-	TaskResult _OnPartialResponse(const APDU&);
-	TaskResult _OnFinalResponse(const APDU&);
-
-	std::function<void (MeasurementUpdate&)> mUpdateCallback;
-
+	IMeasurementHandler* mpProxy;
+	openpal::IExecutor* mpExecutor;
 };
 
-/** Task that acquires class data from the outstation
-*/
-class DLL_LOCAL ClassPoll : public DataPoll
-{
-public:
-
-	ClassPoll(openpal::Logger&, const std::function<void (MeasurementUpdate&)>& aUpdate);
-
-	void Set(int aClassMask);
-
-	//Implement MasterTaskBase
-	void ConfigureRequest(APDU& arAPDU);
-	virtual std::string Name() const {
-		return "Class Poll";
-	}
-
-private:
-
-	int mClassMask;
-
-};
-
-} //ens ns
-
-/* vim: set ts=4 sw=4: */
+}
 
 #endif

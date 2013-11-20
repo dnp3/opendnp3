@@ -27,12 +27,12 @@
 // Contact Automatak, LLC for a commercial license to these modifications
 //
 
-#include <opendnp3/SimpleDataObserver.h>
 #include <opendnp3/DNP3Manager.h>
 #include <opendnp3/IChannel.h>
 #include <opendnp3/IMaster.h>
 #include <opendnp3/MasterStackConfig.h>
 #include <opendnp3/ICommandProcessor.h>
+#include <opendnp3/IMeasurementHandler.h>
 
 #include <asiopal/Log.h>
 #include <asiopal/LogToStdio.h>
@@ -86,7 +86,7 @@ int main(int argc, char* argv[])
 	auto pMaster = pClient->AddMaster(
 	                       "master",						// stack name
 	                       LOG_LEVEL,						// log filter level
-	                       PrintingDataObserver::Inst(),	// callback for data processing
+						   PrintingMeasurementHandler::Inst(),	// callback for data processing
 	                       asiopal::UTCTimeSource::Inst(),	// system clock for time syncing
 	                       stackConfig						// stack configuration
 	               );

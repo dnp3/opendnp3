@@ -50,7 +50,7 @@ void ResponseLoaderTestObject::Load(const std::string& arAPDU)
 	f.Write(hs, hs.Size());
 	f.Interpret();
 
-	ResponseLoader rl(mLogger, &fdo);
+	ResponseLoader rl(mLogger, [this](MeasurementUpdate& update){ fdo.Load(update); });
 	for(HeaderReadIterator hdr = f.BeginRead(); !hdr.IsEnd(); ++hdr) {
 		rl.Process(hdr);
 	}

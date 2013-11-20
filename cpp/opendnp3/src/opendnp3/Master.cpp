@@ -49,7 +49,7 @@ Master::Master(Logger aLogger, MasterConfig aCfg, IAppLayer* apAppLayer, IMeasur
 	StackBase(apExecutor),
 	mRequest(aCfg.FragSize),
 	mpAppLayer(apAppLayer),
-	mpPublisher(apPublisher),
+	mHandler(apPublisher, apExecutor),
 	mpTaskGroup(apTaskGroup),
 	mpTimeSrc(apTimeSrc),
 	mpState(AMS_Closed::Inst()),
@@ -57,7 +57,7 @@ Master::Master(Logger aLogger, MasterConfig aCfg, IAppLayer* apAppLayer, IMeasur
 	mpScheduledTask(NULL),
 	mState(SS_UNKNOWN),
 	mSchedule(apTaskGroup, this, aCfg),
-	mClassPoll(aLogger, apPublisher),
+	mClassPoll(aLogger, mHandler.Load),
 	mClearRestart(aLogger),
 	mConfigureUnsol(aLogger),
 	mTimeSync(aLogger, apTimeSrc),
@@ -325,7 +325,7 @@ void Master::OnUnsolResponse(const APDU& arAPDU)
 void Master::ProcessDataResponse(const APDU& arResponse)
 {
 	try {
-		ResponseLoader loader(this->mLogger, this->mpPublisher);
+		ResponseLoader loader(this->mLogger, mHandler.Load);
 
 		for(HeaderReadIterator hdr = arResponse.BeginRead(); !hdr.IsEnd(); ++hdr)
 			loader.Process(hdr);

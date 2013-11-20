@@ -43,6 +43,7 @@
 #include "MasterSchedule.h"
 #include "QueuedCommandProcessor.h"
 #include "CommandHelpers.h"
+#include "PostingMeasurementHandler.h"
 
 // includes for tasks
 #include "StartupTasks.h"
@@ -171,7 +172,7 @@ private:
 	APDU mRequest;							// APDU that gets reused for requests
 
 	IAppLayer* mpAppLayer;					// lower application layer
-	IMeasurementHandler* mpPublisher;	    // where the measurements are pushed
+	PostingMeasurementHandler mHandler;     // marshalls measurement callbacks via the executor
 	AsyncTaskGroup* mpTaskGroup;			// How task execution is controlled
 	openpal::IUTCTimeSource* mpTimeSrc;		// Access to UTC, normally system time but can be a mock for testing
 

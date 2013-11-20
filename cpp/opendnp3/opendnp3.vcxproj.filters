@@ -450,6 +450,9 @@
     <ClInclude Include="include\opendnp3\IMeasurementHandler.h">
       <Filter>Include Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\opendnp3\PostingMeasurementHandler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\opendnp3\AnalogOutput.cpp">
@@ -729,6 +732,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\IMeasurementHandler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\PostingMeasurementHandler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
