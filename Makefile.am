@@ -93,6 +93,7 @@ cpp/opendnp3/src/opendnp3/HeaderReadIterator.cpp \
 cpp/opendnp3/src/opendnp3/IExecutor.cpp \
 cpp/opendnp3/src/opendnp3/IndexedWriteIterator.cpp \
 cpp/opendnp3/src/opendnp3/IStack.cpp \
+cpp/opendnp3/src/opendnp3/IMeasurementHandler.cpp \
 cpp/opendnp3/src/opendnp3/ITimeWriteHandler.cpp \
 cpp/opendnp3/src/opendnp3/LinkFrame.cpp \
 cpp/opendnp3/src/opendnp3/LinkHeader.cpp \
@@ -107,6 +108,7 @@ cpp/opendnp3/src/opendnp3/MasterSchedule.cpp \
 cpp/opendnp3/src/opendnp3/MasterStackImpl.cpp \
 cpp/opendnp3/src/opendnp3/MasterStates.cpp \
 cpp/opendnp3/src/opendnp3/MasterTaskBase.cpp \
+cpp/opendnp3/src/opendnp3/MeasurementUpdate.cpp \
 cpp/opendnp3/src/opendnp3/MultiplexingDataObserver.cpp \
 cpp/opendnp3/src/opendnp3/ObjectHeader.cpp \
 cpp/opendnp3/src/opendnp3/ObjectInterfaces.cpp \
@@ -118,6 +120,7 @@ cpp/opendnp3/src/opendnp3/OutstationStackImpl.cpp \
 cpp/opendnp3/src/opendnp3/PackingUnpacking.cpp \
 cpp/opendnp3/src/opendnp3/PhysicalLayerMonitor.cpp \
 cpp/opendnp3/src/opendnp3/PhysicalLayerMonitorStates.cpp \
+cpp/opendnp3/src/opendnp3/PostingMeasurementHandler.cpp \
 cpp/opendnp3/src/opendnp3/PointClass.cpp \
 cpp/opendnp3/src/opendnp3/PriLinkLayerStates.cpp \
 cpp/opendnp3/src/opendnp3/ProtocolUtil.cpp \
@@ -212,6 +215,7 @@ cpp/opendnp3tests/src/TestLinkReceiver.cpp \
 cpp/opendnp3tests/src/TestLinkRoute.cpp \
 cpp/opendnp3tests/src/TestLog.cpp \
 cpp/opendnp3tests/src/TestMaster.cpp \
+cpp/opendnp3tests/src/TestMeasurementUpdate.cpp \
 cpp/opendnp3tests/src/TestMisc.cpp \
 cpp/opendnp3tests/src/TestObjects.cpp \
 cpp/opendnp3tests/src/TestPackingUnpacking.cpp \
