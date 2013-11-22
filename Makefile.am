@@ -29,7 +29,6 @@ cpp/openpal/src/Loggable.cpp \
 cpp/openpal/src/Logger.cpp \
 cpp/openpal/src/LogTypes.cpp \
 cpp/openpal/src/MonotonicTimestamp.cpp \
-cpp/openpal/src/Parsing.cpp \
 cpp/openpal/src/TimeDuration.cpp \
 cpp/openpal/src/ToHex.cpp
 
@@ -90,7 +89,6 @@ cpp/opendnp3/src/opendnp3/DNP3Manager.cpp \
 cpp/opendnp3/src/opendnp3/DNPCrc.cpp \
 cpp/opendnp3/src/opendnp3/ExecutorPause.cpp \
 cpp/opendnp3/src/opendnp3/HeaderReadIterator.cpp \
-cpp/opendnp3/src/opendnp3/IExecutor.cpp \
 cpp/opendnp3/src/opendnp3/IndexedWriteIterator.cpp \
 cpp/opendnp3/src/opendnp3/IStack.cpp \
 cpp/opendnp3/src/opendnp3/IMeasurementHandler.cpp \
@@ -219,7 +217,6 @@ cpp/opendnp3tests/src/TestMeasurementUpdate.cpp \
 cpp/opendnp3tests/src/TestMisc.cpp \
 cpp/opendnp3tests/src/TestObjects.cpp \
 cpp/opendnp3tests/src/TestPackingUnpacking.cpp \
-cpp/opendnp3tests/src/TestParsing.cpp \
 cpp/opendnp3tests/src/TestPhysicalLayerAsyncBase.cpp \
 cpp/opendnp3tests/src/TestPhysicalLayerAsyncSerial.cpp \
 cpp/opendnp3tests/src/TestPhysicalLayerAsyncTCP.cpp \

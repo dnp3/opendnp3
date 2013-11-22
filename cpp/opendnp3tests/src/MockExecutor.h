@@ -23,10 +23,12 @@
 #ifndef __MOCK_EXECUTOR_H_
 #define __MOCK_EXECUTOR_H_
 
-
 #include <openpal/IExecutor.h>
+
 #include <map>
 #include <queue>
+#include <limits>
+#include <stddef.h>
 
 namespace opendnp3
 {
