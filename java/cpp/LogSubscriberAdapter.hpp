@@ -32,6 +32,9 @@ public:
 private:
 	JavaVM* mpJVM;
 	jobject mProxy;
+
+	jclass mLogEntryClazz;
+	jmethodID mLogEntryInitMid;
 };
 
 #endif

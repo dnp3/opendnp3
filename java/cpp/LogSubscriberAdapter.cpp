@@ -25,21 +25,20 @@
 
 LogSubscriberAdapter::LogSubscriberAdapter(JavaVM* apJVM, jobject aProxy) :
 	mpJVM(apJVM),
-	mProxy(aProxy)
+	mProxy(aProxy),
+	mLogEntryClazz(NULL),
+	mLogEntryInitMid(NULL)
 {
-
+	auto pEnv = JNIHelpers::GetEnvFromJVM(mpJVM);
+	mLogEntryClazz = pEnv->FindClass("com/automatak/dnp3/impl/LogEntryImpl");
+	assert(mLogEntryClazz != NULL);
+	mLogEntryInitMid = pEnv->GetMethodID(mLogEntryClazz, "<init>", "(ILjava/lang/String;Ljava/lang/String;JI)V");
+	assert(mLogEntryInitMid != NULL);
 }
 
 void LogSubscriberAdapter::Log(const opendnp3::LogEntry& arEntry)
 {
-	JNIEnv* pEnv = NULL;
-	mpJVM->GetEnv((void**) &pEnv, JNI_VERSION_1_6);
-	assert(pEnv != NULL);
-
-	jclass leClz = pEnv->FindClass("com/automatak/dnp3/impl/LogEntryImpl");
-	assert(leClz != NULL);
-	jmethodID mid = pEnv->GetMethodID(leClz, "<init>", "(ILjava/lang/String;Ljava/lang/String;JI)V");
-	assert(mid != NULL);
+	JNIEnv* pEnv = JNIHelpers::GetEnvFromJVM(mpJVM);
 
 	jint level = arEntry.GetFilterLevel();
 	jstring name = pEnv->NewStringUTF(arEntry.GetDeviceName().c_str());
@@ -47,8 +46,7 @@ void LogSubscriberAdapter::Log(const opendnp3::LogEntry& arEntry)
 	jlong time = std::chrono::duration_cast<std::chrono::milliseconds>(arEntry.GetTimeStamp().time_since_epoch()).count();
 	jint error = arEntry.GetErrorCode();
 
-	jobject le = pEnv->NewObject(leClz, mid, level, name, msg, time, error);
-
+	jobject le = pEnv->NewObject(mLogEntryClazz, mLogEntryInitMid, level, name, msg, time, error);
 	assert(le != NULL);
 
 	jclass clazz = pEnv->GetObjectClass(mProxy);
