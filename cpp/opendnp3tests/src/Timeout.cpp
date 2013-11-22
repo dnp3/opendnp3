@@ -22,7 +22,7 @@
 
 #include "Timeout.h"
 
-using namespace openpal;
+using namespace asiopal;
 using namespace std::chrono;
 
 namespace opendnp3

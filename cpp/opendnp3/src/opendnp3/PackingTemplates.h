@@ -29,7 +29,6 @@
 #ifndef __PACKING_TEMPLATES_H_
 #define __PACKING_TEMPLATES_H_
 
-#include <openpal/Types.h>
 #include <openpal/Location.h>
 
 #include <assert.h>

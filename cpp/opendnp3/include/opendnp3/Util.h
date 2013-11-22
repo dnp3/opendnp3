@@ -30,13 +30,7 @@
 #define __UTIL_H_
 
 #include <string>
-#include <sstream>
-#include <assert.h>
-#include <stdlib.h>
-#include <memory.h>
-#include <vector>
-
-#include <openpal/Types.h>
+#include <cstdint>
 
 namespace opendnp3
 {

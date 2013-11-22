@@ -30,7 +30,6 @@
 #ifndef __OUTSTATION_SBO_HANDLER_H_
 #define __OUTSTATION_SBO_HANDLER_H_
 
-#include <openpal/Types.h>
 #include <openpal/Location.h>
 #include <openpal/TimeDuration.h>
 #include <openpal/IExecutor.h>

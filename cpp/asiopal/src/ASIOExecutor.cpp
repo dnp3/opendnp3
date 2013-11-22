@@ -24,7 +24,6 @@
 
 #include "TimerASIO.h"
 
-#include <openpal/Types.h>
 #include <openpal/Exception.h>
 #include <openpal/Location.h>
 
@@ -52,7 +51,7 @@ for(auto pTimer: mAllTimers) delete pTimer;
 
 openpal::MonotonicTimestamp ASIOExecutor::GetTime()
 {
-	return std::chrono::duration_cast<std::chrono::milliseconds>(openpal::timer_clock::now().time_since_epoch()).count();
+	return std::chrono::duration_cast<std::chrono::milliseconds>(asiopal::timer_clock::now().time_since_epoch()).count();
 }
 
 openpal::ITimer* ASIOExecutor::Start(const openpal::TimeDuration& arDelay, const function<void ()>& arCallback)
@@ -70,7 +69,7 @@ openpal::ITimer* ASIOExecutor::Start(const openpal::MonotonicTimestamp& arTime, 
 	std::lock_guard<std::mutex> lock(mMutex);
 	if(mIsShuttingDown) MACRO_THROW_EXCEPTION(openpal::InvalidStateException, "Can't start a timer while executor is shutting down");
 	TimerASIO* pTimer = GetTimer();
-	pTimer->mTimer.expires_at(openpal::timer_clock::time_point(std::chrono::milliseconds(arTime.milliseconds)));
+	pTimer->mTimer.expires_at(asiopal::timer_clock::time_point(std::chrono::milliseconds(arTime.milliseconds)));
 	this->StartTimer(pTimer, arCallback);
 	return pTimer;
 }

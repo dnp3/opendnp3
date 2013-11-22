@@ -29,7 +29,6 @@
 #ifndef __TRACKING_TASK_GROUP_H_
 #define __TRACKING_TASK_GROUP_H_
 
-#include <openpal/Types.h>
 #include <openpal/Visibility.h>
 #include <openpal/TimeDuration.h>
 

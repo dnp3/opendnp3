@@ -26,7 +26,6 @@
 #include <opendnp3/APDUConstants.h>
 
 #include <openpal/Exception.h>
-#include <openpal/Types.h>
 #include <openpal/Location.h>
 #include <openpal/Visibility.h>
 

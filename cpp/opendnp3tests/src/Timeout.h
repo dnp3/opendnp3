@@ -24,7 +24,7 @@
 #define _TIMEOUT_H__
 
 #include <chrono>
-#include <openpal/Types.h>
+#include <asiopal/TimerClockType.h>
 
 namespace opendnp3
 {
@@ -51,18 +51,18 @@ class Timeout
 {
 public:
 	// constuctor, timeout will expire this many mills in the future
-	Timeout(openpal::timer_clock::duration aTimeout);
+	Timeout(asiopal::timer_clock::duration aTimeout);
 
 	// returns whether its expired
 	bool IsExpired();
 
 	// returns how much time is left
-	openpal::timer_clock::duration Remaining();
+	asiopal::timer_clock::duration Remaining();
 
 
 private:
 
-	openpal::timer_clock::time_point mExpireTime;
+	asiopal::timer_clock::time_point mExpireTime;
 
 };
 

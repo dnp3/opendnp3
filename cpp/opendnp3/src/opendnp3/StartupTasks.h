@@ -29,7 +29,6 @@
 #ifndef __STARTUP_TASKS_H_
 #define __STARTUP_TASKS_H_
 
-#include <openpal/Types.h>
 #include <openpal/Visibility.h>
 #include <openpal/IUTCTimeSource.h>
 

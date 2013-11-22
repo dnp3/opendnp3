@@ -29,7 +29,6 @@
 #ifndef __BASE_DATA_TYPES_H_
 #define __BASE_DATA_TYPES_H_
 
-#include <openpal/Types.h>
 #include <openpal/TimeDuration.h>
 
 #include "QualityMasks.h"

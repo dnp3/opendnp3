@@ -29,11 +29,11 @@
 #ifndef __PACKING_UNPACKING_H_
 #define __PACKING_UNPACKING_H_
 
-#include <openpal/Types.h>
 #include <openpal/Visibility.h>
 
 #include <stddef.h>
 #include <limits>
+#include <cstdint>
 #include <string.h>
 
 #ifdef max

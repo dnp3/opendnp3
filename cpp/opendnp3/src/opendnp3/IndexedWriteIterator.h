@@ -23,7 +23,6 @@
 #ifndef __INDEXED_WRITE_ITERATOR_H_
 #define __INDEXED_WRITE_ITERATOR_H_
 
-#include <openpal/Types.h>
 #include <opendnp3/APDUConstants.h>
 #include <openpal/Visibility.h>
 

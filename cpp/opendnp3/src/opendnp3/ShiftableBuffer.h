@@ -29,10 +29,10 @@
 #ifndef __SHIFTABLE_BUFFER_H_
 #define __SHIFTABLE_BUFFER_H_
 
-#include <openpal/Types.h>
 #include <openpal/Visibility.h>
 
 #include <stddef.h>
+#include <cstdint>
 
 namespace opendnp3
 {

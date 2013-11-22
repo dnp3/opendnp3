@@ -29,7 +29,6 @@
 #ifndef __TRANSPORT_TX_H_
 #define __TRANSPORT_TX_H_
 
-#include <openpal/Types.h>
 #include <openpal/Visibility.h>
 #include <openpal/Loggable.h>
 

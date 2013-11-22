@@ -23,10 +23,10 @@
 #ifndef __LINK_ROUTE_H_
 #define __LINK_ROUTE_H_
 
-#include <openpal/Types.h>
 #include <openpal/Visibility.h>
 
-#include <iostream>
+#include <cstdint>
+#include <string>
 
 namespace opendnp3
 {
@@ -62,9 +62,6 @@ public:
 
 };
 
-#ifndef OPENDNP3_STRIP_LOG_MESSAGES
-std::ostream& operator<<(std::ostream& oss, const LinkRoute&);
-#endif
 
 }
 

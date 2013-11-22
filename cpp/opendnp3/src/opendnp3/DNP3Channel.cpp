@@ -84,7 +84,7 @@ IMaster* DNP3Channel::AddMaster(const std::string& arLoggerId, FilterLevel aLeve
 	LinkRoute route(arCfg.link.RemoteAddr, arCfg.link.LocalAddr);
 	ExecutorPause p(mpPhys->GetExecutor());
 	if(mRouter.IsRouteInUse(route)) {
-		MACRO_THROW_EXCEPTION_COMPLEX(ArgumentException, "Route already in use: " << route);
+		MACRO_THROW_EXCEPTION_COMPLEX(ArgumentException, "Route already in use: " << route.ToString());
 	}
 	else {
 		auto logger = mLogger.GetSubLogger(arLoggerId, aLevel);
@@ -104,7 +104,7 @@ IOutstation* DNP3Channel::AddOutstation(const std::string& arLoggerId, FilterLev
 	LinkRoute route(arCfg.link.RemoteAddr, arCfg.link.LocalAddr);
 	ExecutorPause p(mpPhys->GetExecutor());
 	if(mRouter.IsRouteInUse(route)) {
-		MACRO_THROW_EXCEPTION_COMPLEX(ArgumentException, "Route already in use: " << route);
+		MACRO_THROW_EXCEPTION_COMPLEX(ArgumentException, "Route already in use: " << route.ToString());
 	}
 	else {
 		auto logger = mLogger.GetSubLogger(arLoggerId, aLevel);

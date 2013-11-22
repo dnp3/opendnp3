@@ -103,5 +103,8 @@
     <ClInclude Include="include\asiopal\LogToStdio.h">
       <Filter>Include Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\asiopal\TimerClockType.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

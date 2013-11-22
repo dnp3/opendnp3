@@ -29,12 +29,11 @@
 #ifndef __OBJECT_INTERFACES_H_
 #define __OBJECT_INTERFACES_H_
 
-#include <openpal/Types.h>
-
 #include <assert.h>
 #include <stddef.h>
 #include <cstring>
 #include <string>
+#include <cstdint>
 
 /*
  * Object hierarchy

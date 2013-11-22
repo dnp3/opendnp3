@@ -23,7 +23,6 @@
 #include <boost/test/unit_test.hpp>
 #include "TestHelpers.h"
 
-#include <openpal/Types.h>
 #include <opendnp3/Util.h>
 
 #include <math.h>

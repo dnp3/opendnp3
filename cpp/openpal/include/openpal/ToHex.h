@@ -29,9 +29,9 @@
 #ifndef __TO_HEX_H_
 #define __TO_HEX_H_
 
-#include <openpal/Types.h>
 #include <openpal/Visibility.h>
 
+#include <cstdint>
 #include <string>
 #include <sstream>
 

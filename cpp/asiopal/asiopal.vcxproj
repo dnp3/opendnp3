@@ -32,6 +32,7 @@
     <ClInclude Include="include\asiopal\PhysicalLayerAsyncTCPClient.h" />
     <ClInclude Include="include\asiopal\PhysicalLayerAsyncTCPServer.h" />
     <ClInclude Include="include\asiopal\SerialTypes.h" />
+    <ClInclude Include="include\asiopal\TimerClockType.h" />
     <ClInclude Include="include\asiopal\UTCTimeSource.h" />
     <ClInclude Include="include\UTCTimeSource.h" />
     <ClInclude Include="src\TimerASIO.h" />

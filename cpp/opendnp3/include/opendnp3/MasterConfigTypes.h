@@ -29,7 +29,6 @@
 #ifndef __EXCEPTION_SCAN_H_
 #define __EXCEPTION_SCAN_H_
 
-#include <openpal/Types.h>
 #include <openpal/TimeDuration.h>
 
 namespace  opendnp3

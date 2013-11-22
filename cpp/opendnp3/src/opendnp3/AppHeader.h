@@ -23,11 +23,11 @@
 #ifndef __APP_HEADER_H_
 #define __APP_HEADER_H_
 
-#include <openpal/Types.h>
 #include <opendnp3/Singleton.h>
 #include <opendnp3/APDUConstants.h>
 #include <openpal/Visibility.h>
 
+#include <cstdint>
 #include <stddef.h>
 
 namespace opendnp3

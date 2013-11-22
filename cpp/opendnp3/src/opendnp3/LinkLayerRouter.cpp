@@ -55,12 +55,12 @@ void LinkLayerRouter::AddContext(ILinkContext* apContext, const LinkRoute& arRou
 	assert(apContext != NULL);
 
 	if(IsRouteInUse(arRoute)) {
-		MACRO_THROW_EXCEPTION_COMPLEX(ArgumentException, "Route already in use: " << arRoute);
+		MACRO_THROW_EXCEPTION_COMPLEX(ArgumentException, "Route already in use: " << arRoute.ToString());
 	}
 
 for(AddressMap::value_type v: mAddressMap) {
 		if(apContext == v.second) {
-			MACRO_THROW_EXCEPTION_COMPLEX(ArgumentException, "Context already is bound to route:  " << v.first);
+			MACRO_THROW_EXCEPTION_COMPLEX(ArgumentException, "Context already is bound to route:  " << v.first.ToString());
 		}
 	}
 
@@ -106,7 +106,7 @@ ILinkContext* LinkLayerRouter::GetDestination(uint16_t aDest, uint16_t aSrc)
 
 	if(pDest == NULL) {
 
-		ERROR_BLOCK(LEV_WARNING, "Frame w/ unknown route: " << route, DLERR_UNKNOWN_ROUTE);
+		ERROR_BLOCK(LEV_WARNING, "Frame w/ unknown route: " << route.ToString(), DLERR_UNKNOWN_ROUTE);
 	}
 	
 	return pDest;
@@ -184,7 +184,7 @@ void LinkLayerRouter::Transmit(const LinkFrame& arFrame)
 		this->CheckForSend();
 	}
 	else {
-		MACRO_THROW_EXCEPTION_COMPLEX(ArgumentException, "Unassociated context w/ route: " << lr);
+		MACRO_THROW_EXCEPTION_COMPLEX(ArgumentException, "Unassociated context w/ route: " << lr.ToString());
 	}
 }
 

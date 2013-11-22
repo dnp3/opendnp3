@@ -23,10 +23,10 @@
 #ifndef __I_FRAME_SINK_H_
 #define __I_FRAME_SINK_H_
 
-#include <openpal/Types.h>
 #include <openpal/Visibility.h>
 
 #include <stddef.h>
+#include <cstdint>
 
 namespace opendnp3
 {

@@ -29,7 +29,6 @@
 #ifndef __OBJECT_WRITE_ITERATOR_H_
 #define __OBJECT_WRITE_ITERATOR_H_
 
-#include <openpal/Types.h>
 #include <openpal/Exception.h>
 #include <openpal/Location.h>
 #include <opendnp3/APDUConstants.h>

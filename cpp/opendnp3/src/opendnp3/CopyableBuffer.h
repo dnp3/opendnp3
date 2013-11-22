@@ -23,7 +23,6 @@
 #ifndef __COPYABLE_BUFFER_H_
 #define __COPYABLE_BUFFER_H_
 
-#include <openpal/Types.h>
 #include <openpal/Visibility.h>
 
 #include <stddef.h>

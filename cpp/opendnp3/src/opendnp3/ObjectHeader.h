@@ -29,7 +29,6 @@
 #ifndef __OBJECT_HEADER_H_
 #define __OBJECT_HEADER_H_
 
-#include <openpal/Types.h>
 #include <opendnp3/Singleton.h>
 #include <openpal/Exception.h>
 #include <openpal/Location.h>

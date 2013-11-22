@@ -29,7 +29,6 @@
 #ifndef __RESPONSE_LOADER_H_
 #define __RESPONSE_LOADER_H_
 
-#include <openpal/Types.h>
 #include <opendnp3/IMeasurementHandler.h>
 #include <opendnp3/ObjectInterfaces.h>
 #include <opendnp3/MeasurementUpdate.h>

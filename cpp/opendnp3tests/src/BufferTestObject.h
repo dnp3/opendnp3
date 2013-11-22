@@ -23,9 +23,9 @@
 #ifndef __BUFFER_TEST_OBJECT_H_
 #define __BUFFER_TEST_OBJECT_H_
 
-#include <openpal/Types.h>
 #include <string>
 #include <vector>
+#include <cstdint>
 
 namespace opendnp3
 {

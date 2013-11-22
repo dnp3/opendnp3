@@ -22,11 +22,9 @@
 
 #include <boost/test/unit_test.hpp>
 
-#include <openpal/Types.h>
 #include <limits>
 
 using namespace std;
-using namespace openpal;
 
 #undef max
 #undef min

@@ -29,11 +29,11 @@
 #ifndef __TLS_BASE_H_
 #define __TLS_BASE_H_
 
-#include <openpal/Types.h>
 #include <opendnp3/Uncopyable.h>
 #include <openpal/Visibility.h>
 
 #include <string>
+#include <cstdint>
 
 namespace opendnp3
 {

@@ -31,9 +31,6 @@
 
 #include "LogTypes.h"
 
-#include <openpal/Types.h>
-
-
 namespace openpal
 {
 

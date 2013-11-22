@@ -29,7 +29,6 @@
 #ifndef __TRANSPORT_RX_H_
 #define __TRANSPORT_RX_H_
 
-#include <openpal/Types.h>
 #include <opendnp3/TransportConstants.h>
 #include <openpal/Visibility.h>
 #include <openpal/Loggable.h>

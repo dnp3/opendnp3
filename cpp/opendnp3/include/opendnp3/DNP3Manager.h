@@ -35,7 +35,6 @@
 #include <memory>
 #include <functional>
 
-#include <openpal/Types.h>
 #include <openpal/Logger.h>
 #include <openpal/IPhysicalLayerAsync.h>
 #include <openpal/TimeDuration.h>

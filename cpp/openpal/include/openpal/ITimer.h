@@ -23,7 +23,6 @@
 #ifndef __I_TIMER_H_
 #define __I_TIMER_H_
 
-#include "Types.h"
 #include "Visibility.h"
 #include "MonotonicTimestamp.h"
 

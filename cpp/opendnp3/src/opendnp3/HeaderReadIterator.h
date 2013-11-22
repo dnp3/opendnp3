@@ -26,7 +26,6 @@
 #include <vector>
 #include <assert.h>
 
-#include <openpal/Types.h>
 #include <openpal/Exception.h>
 #include <openpal/Location.h>
 #include <opendnp3/APDUConstants.h>

@@ -29,10 +29,10 @@
 #ifndef __VTO_DATA_H_
 #define __VTO_DATA_H_
 
-#include <openpal/Types.h>
 #include <openpal/Visibility.h>
 
 #include <string>
+#include <cstdint>
 
 
 namespace opendnp3

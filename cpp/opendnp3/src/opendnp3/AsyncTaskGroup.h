@@ -24,7 +24,6 @@
 #define __ASYNC_TASK_GROUP_H_
 
 
-#include <openpal/Types.h>
 #include <opendnp3/Uncopyable.h>
 #include <openpal/Visibility.h>
 #include <openpal/MonotonicTimestamp.h>

@@ -23,9 +23,10 @@
 #ifndef __ASYNC_LAYER_INTERFACES_H_
 #define __ASYNC_LAYER_INTERFACES_H_
 
-#include <openpal/Types.h>
 #include <openpal/Visibility.h>
 #include <openpal/Loggable.h>
+
+#include <cstdint>
 
 namespace openpal
 {

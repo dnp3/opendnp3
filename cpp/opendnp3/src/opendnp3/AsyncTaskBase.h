@@ -25,7 +25,6 @@
 
 #include "AsyncTaskInterfaces.h"
 
-#include <openpal/Types.h>
 #include <opendnp3/Uncopyable.h>
 #include <openpal/Visibility.h>
 #include <openpal/MonotonicTimestamp.h>

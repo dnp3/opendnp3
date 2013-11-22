@@ -23,10 +23,10 @@
 #ifndef __DNP_CRC_H_
 #define __DNP_CRC_H_
 
-#include <openpal/Types.h>
 #include <openpal/Visibility.h>
 
 #include <stddef.h>
+#include <cstdint>
 
 namespace opendnp3
 {

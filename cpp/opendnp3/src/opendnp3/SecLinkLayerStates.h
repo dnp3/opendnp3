@@ -31,7 +31,6 @@
 
 #include <string>
 
-#include <openpal/Types.h>
 #include <opendnp3/Singleton.h>
 #include <openpal/Visibility.h>
 

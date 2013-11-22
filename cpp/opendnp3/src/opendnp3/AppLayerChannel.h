@@ -23,7 +23,6 @@
 #ifndef __APP_LAYER_CHANNEL_H_
 #define __APP_LAYER_CHANNEL_H_
 
-#include <openpal/Types.h>
 #include <openpal/Visibility.h>
 #include <openpal/Loggable.h>
 #include <openpal/TimeDuration.h>

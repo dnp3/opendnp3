@@ -26,13 +26,12 @@
 //
 // Contact Automatak, LLC for a commercial license to these modifications
 //
-#ifndef __TYPES_H_
-#define __TYPES_H_
+#ifndef __TIMER_CLOCK_TYPE_H_
+#define __TIMER_CLOCK_TYPE_H_
 
-#include <cstdint>
 #include <chrono>
 
-namespace openpal
+namespace asiopal
 {
 
 #ifndef SIZE_MAX
