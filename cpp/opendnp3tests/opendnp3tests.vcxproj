@@ -297,7 +297,6 @@
     <ClCompile Include="src\TestMisc.cpp" />
     <ClCompile Include="src\TestObjects.cpp" />
     <ClCompile Include="src\TestPackingUnpacking.cpp" />
-    <ClCompile Include="src\TestParsing.cpp" />
     <ClCompile Include="src\TestPhysicalLayerAsyncBase.cpp" />
     <ClCompile Include="src\TestPhysicalLayerAsyncSerial.cpp" />
     <ClCompile Include="src\TestPhysicalLayerAsyncTCP.cpp" />
@@ -322,6 +321,9 @@
     <ClCompile Include="src\TransportStackPair.cpp" />
     <ClCompile Include="src\TransportTestObject.cpp" />
     <ClCompile Include="src\WrappedTcpPipe.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

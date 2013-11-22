@@ -30,7 +30,6 @@
 #define __LOG_ENTRY_H_
 
 #include "LogTypes.h"
-#include "Parsing.h"
 
 #include <openpal/Types.h>
 

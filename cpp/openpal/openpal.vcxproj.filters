@@ -32,9 +32,6 @@
     <ClInclude Include="include\openpal\LogTypes.h">
       <Filter>Include Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\openpal\Parsing.h">
-      <Filter>Include Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\openpal\Loggable.h">
       <Filter>Include Files</Filter>
     </ClInclude>
@@ -83,9 +80,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\LogTypes.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Parsing.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Loggable.cpp">

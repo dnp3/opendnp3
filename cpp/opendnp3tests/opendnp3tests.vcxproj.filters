@@ -343,9 +343,6 @@
     <ClCompile Include="src\TestPackingUnpacking.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\TestParsing.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\TestPhysicalLayerAsyncBase.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -421,5 +418,8 @@
     <ClCompile Include="src\TestMeasurementUpdate.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
 </Project>

@@ -25,8 +25,8 @@
 #include <ctime>
 
 #include <chrono>
+#include <sstream>
 #include <iostream>
-#include <ostream>
 
 using namespace std;
 using namespace std::chrono;
@@ -57,7 +57,7 @@ void LogToStdio::Log(const openpal::LogEntry& arEntry)
 	if(arEntry.GetErrorCode() != -1) oss << " - " << arEntry.GetErrorCode();
 
 	std::unique_lock<std::mutex> lock(mMutex);
-	cout << oss.str() << std::endl;
+	std::cout << oss.str() << std::endl;
 #endif
 }
 

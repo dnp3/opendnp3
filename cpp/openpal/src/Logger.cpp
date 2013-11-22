@@ -23,7 +23,9 @@
 #include <openpal/Logger.h>
 
 #include <openpal/LogBase.h>
+
 #include <assert.h>
+#include <sstream>
 
 using namespace std;
 

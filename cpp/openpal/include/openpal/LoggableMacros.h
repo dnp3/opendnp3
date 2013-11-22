@@ -25,6 +25,8 @@
 
 #include "Location.h"
 
+#include <sstream>
+
 //macro to remove boiler-plate code for logging messages
 #define LOG_BLOCK(severity, string) ERROR_BLOCK(severity, string, -1)
 
