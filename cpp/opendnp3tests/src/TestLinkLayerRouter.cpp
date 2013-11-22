@@ -60,11 +60,6 @@ BOOST_AUTO_TEST_CASE(UnknownDestination)
 	LogEntry le;
 	BOOST_REQUIRE(t.log.GetNextEntry(le));
 	BOOST_REQUIRE_EQUAL(le.GetErrorCode(), DLERR_UNKNOWN_ROUTE);
-	int address;
-	BOOST_REQUIRE(le.GetValue("DESTINATION", address));
-	BOOST_REQUIRE_EQUAL(1, address);
-	BOOST_REQUIRE(le.GetValue("SOURCE", address));
-	BOOST_REQUIRE_EQUAL(1024, address);
 }
 
 // Test that the router rejects sends until it is online

@@ -40,8 +40,8 @@ void LogAdapter::Log( const openpal::LogEntry& arEntry )
 	System::String ^ loggerName = Conversions::convertString(arEntry.GetDeviceName());
 	System::String ^ location = Conversions::convertString(arEntry.GetLocation());
 	System::String ^ message = Conversions::convertString(arEntry.GetMessage());
-	System::DateTime time = TimeStamp::Convert(std::chrono::duration_cast<std::chrono::milliseconds>(arEntry.GetTimeStamp().time_since_epoch()).count());
-	DNP3::Interface::LogEntry ^ le = gcnew DNP3::Interface::LogEntry(level, loggerName, location, message, time, arEntry.GetErrorCode());
+	
+	DNP3::Interface::LogEntry ^ le = gcnew DNP3::Interface::LogEntry(level, loggerName, location, message, System::DateTime::Now, arEntry.GetErrorCode());
 
 	proxy->Log(le);
 }

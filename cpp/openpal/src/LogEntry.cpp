@@ -35,54 +35,11 @@ LogEntry::LogEntry( FilterLevel aLevel, const std::string& aDeviceName, const st
 	mFilterLevel(aLevel),
 	mDeviceName(aDeviceName),
 	mLocation(aLocation),
-	mMessage(aMessage),
-	mTime(std::chrono::high_resolution_clock::now()),
+	mMessage(aMessage),	
 	mErrorCode(aErrorCode)
 {
+
 }
-
-void LogEntry :: AddKeyValue(const std::string& arKey, const std::string& arValue)
-{
-	mKeyValues.insert(KeyValueMap::value_type(arKey, arValue));
-}
-
-void LogEntry :: AddValue(const std::string& arKey, int aValue)
-{
-	this->AddAnyValue(arKey, aValue);
-}
-
-void LogEntry :: AddValue(const std::string& arKey, int64_t aValue)
-{
-	this->AddAnyValue(arKey, aValue);
-}
-
-void LogEntry :: AddValue(const std::string& arKey, const std::string& arValue)
-{
-	this->AddKeyValue(arKey, arValue);
-}
-
-bool LogEntry :: GetValue(const std::string& arKey, std::string& arValue) const
-{
-	KeyValueMap::const_iterator i = mKeyValues.find(arKey);
-	if(i == mKeyValues.end()) return false;
-	else {
-		arValue = i->second;
-		return true;
-	}
-}
-
-bool LogEntry :: GetValue(const std::string& arKey, int& arValue) const
-{
-	return GetAnyValue<int>(arKey, arValue);
-}
-
-bool LogEntry :: GetValue(const std::string& arKey, int64_t& arValue) const
-{
-	return GetAnyValue<int64_t>(arKey, arValue);
-}
-
-
-
 
 
 }

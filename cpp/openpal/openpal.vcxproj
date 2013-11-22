@@ -161,7 +161,6 @@
     <ClInclude Include="include\openpal\Parsing.h" />
     <ClInclude Include="include\openpal\TimeDuration.h" />
     <ClInclude Include="include\openpal\ToHex.h" />
-    <ClInclude Include="include\openpal\Types.h" />
     <ClInclude Include="include\openpal\UTCTimestamp.h" />
     <ClInclude Include="include\openpal\Visibility.h" />
   </ItemGroup>

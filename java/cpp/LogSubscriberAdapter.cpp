@@ -33,6 +33,9 @@ LogSubscriberAdapter::LogSubscriberAdapter(JavaVM* apJVM, jobject aProxy) :
 
 void LogSubscriberAdapter::Log(const openpal::LogEntry& arEntry)
 {
+	//get the timestamp early for better accuracy
+	jlong time = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now().time_since_epoch()).count();
+
 	JNIEnv* pEnv = NULL;
 	mpJVM->GetEnv((void**) &pEnv, JNI_VERSION_1_6);
 	assert(pEnv != NULL);
@@ -44,8 +47,7 @@ void LogSubscriberAdapter::Log(const openpal::LogEntry& arEntry)
 
 	jint level = arEntry.GetFilterLevel();
 	jstring name = pEnv->NewStringUTF(arEntry.GetDeviceName().c_str());
-	jstring msg = pEnv->NewStringUTF(arEntry.GetMessage().c_str());
-	jlong time = std::chrono::duration_cast<std::chrono::milliseconds>(arEntry.GetTimeStamp().time_since_epoch()).count();
+	jstring msg = pEnv->NewStringUTF(arEntry.GetMessage().c_str());	
 	jint error = arEntry.GetErrorCode();
 
 	jobject le = pEnv->NewObject(leClz, mid, level, name, msg, time, error);

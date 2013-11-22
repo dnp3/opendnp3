@@ -87,12 +87,6 @@
     <ClInclude Include="include\opendnp3\LinkLayerConstants.h">
       <Filter>Include Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\opendnp3\LogEntry.h">
-      <Filter>Include Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\opendnp3\LogTypes.h">
-      <Filter>Include Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\opendnp3\MasterConfig.h">
       <Filter>Include Files</Filter>
     </ClInclude>

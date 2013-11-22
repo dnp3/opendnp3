@@ -34,8 +34,6 @@
 
 #include <openpal/Types.h>
 
-#include <chrono>
-#include <map>
 
 namespace openpal
 {
@@ -45,13 +43,10 @@ namespace openpal
 */
 class LogEntry
 {
-	typedef std::map<std::string, std::string> KeyValueMap;
-
+	
 public:
 
-	LogEntry():
-		mErrorCode(-1),
-		mTime(std::chrono::high_resolution_clock::time_point::min())
+	LogEntry(): mErrorCode(-1)		
 	{}
 
 	LogEntry( FilterLevel aLevel, const std::string& aDeviceName, const std::string& aLocation, const std::string& aMessage, int aErrorCode);
@@ -75,91 +70,20 @@ public:
 	FilterLevel			GetFilterLevel() const {
 		return mFilterLevel;
 	}
-
-	/// @return the timestamp of the message
-	std::chrono::high_resolution_clock::time_point GetTimeStamp() const {
-		return mTime;
-	}
+	
 
 	/// @return the error code associated with the message
-	int					GetErrorCode() const {
+	int	GetErrorCode() const {
 		return mErrorCode;
 	}
 
-
-	/**
-	* Retrieve a value of the attribute map
-	* @param arKey key of the value to retrieve
-	* @param arValue reference to be written if the value is present
-	* @return true if present, false otherwise
-	*/
-	bool GetValue(const std::string& arKey, std::string& arValue) const;
-
-	/**
-	* Retrieve a value of the attribute map
-	* @param arKey key of the value to retrieve
-	* @param arValue reference to be written if the value is present
-	* @return true if present, false otherwise
-	*/
-	bool GetValue(const std::string& arKey, int& arValue) const;
-
-	/**
-	* Retrieve a value of the attribute map
-	* @param arKey key of the value to retrieve
-	* @param arValue reference to be written if the value is present
-	* @return true if present, false otherwise
-	*/
-	bool GetValue(const std::string& arKey, int64_t& arValue) const;
-
-	/**
-	* Add a key value pair to the attribute map
-	* @param arKey key of the value to write
-	* @param arValue value to be written
-	*/
-	void AddValue(const std::string& arKey, const std::string& arValue);
-
-	/**
-	* Add a key value pair to the attribute map
-	* @param arKey key of the value to write
-	* @param arValue value to be written
-	*/
-	void AddValue(const std::string& arKey, int aValue);
-
-	/**
-	* Add a key value pair to the attribute map
-	* @param arKey key of the value to write
-	* @param arValue value to be written
-	*/
-	void AddValue(const std::string& arKey, int64_t aValue);
-
-private:
-
-	void AddKeyValue(const std::string& arKey, const std::string& arValue);
-
-	template <class T>
-	void AddAnyValue(const std::string& arKey, const T& arValue) {
-		std::ostringstream oss;
-		oss << arValue;
-		AddKeyValue(arKey, oss.str());
-	}
-
-	template <class T>
-	bool GetAnyValue(const std::string& arKey, T& arValue) const {
-		std::string text;
-		if(GetValue(arKey, text)) {
-			Parsing::Get(text, arValue);
-			return true;
-		}
-		else return false;
-	}
+private:	
 
 	FilterLevel		mFilterLevel;
 	std::string		mDeviceName;
 	std::string		mLocation;
-	std::string		mMessage;
-	std::chrono::high_resolution_clock::time_point mTime;
-	int				mErrorCode;
-	KeyValueMap		mKeyValues;
+	std::string		mMessage;	
+	int				mErrorCode;	
 };
 
 }

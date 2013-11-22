@@ -182,9 +182,7 @@
     <ClInclude Include="include\opendnp3\ITransactable.h" />
     <ClInclude Include="include\opendnp3\LinkConfig.h" />
     <ClInclude Include="include\opendnp3\LinkLayerConstants.h" />
-    <ClInclude Include="include\opendnp3\LogEntry.h" />
     <ClInclude Include="include\opendnp3\LogEntryCircularBuffer.h" />
-    <ClInclude Include="include\opendnp3\LogTypes.h" />
     <ClInclude Include="include\opendnp3\MasterConfig.h" />
     <ClInclude Include="include\opendnp3\MasterConfigTypes.h" />
     <ClInclude Include="include\opendnp3\MasterStackConfig.h" />
