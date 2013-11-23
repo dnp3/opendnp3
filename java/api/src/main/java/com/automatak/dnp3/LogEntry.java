@@ -18,7 +18,6 @@
  */
 package com.automatak.dnp3;
 
-import java.util.Date;
 
 /**
  * A logged event
@@ -43,11 +42,6 @@ public interface LogEntry {
      */
     String getMessage();
 
-    /**
-     *
-     * @return Timestamp of the event
-     */
-    Date getTimestamp();
 
     /**
      *

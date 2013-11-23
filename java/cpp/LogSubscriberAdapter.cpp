@@ -26,14 +26,10 @@
 LogSubscriberAdapter::LogSubscriberAdapter(JavaVM* apJVM, jobject aProxy) :
 	mpJVM(apJVM),
 	mProxy(aProxy),
-	mLogEntryClazz(NULL),
-	mLogEntryInitMid(NULL)
+	mOnLogEntryCallbackMID(NULL)
 {
 	auto pEnv = JNIHelpers::GetEnvFromJVM(mpJVM);
-	mLogEntryClazz = pEnv->FindClass("com/automatak/dnp3/impl/LogEntryImpl");
-	assert(mLogEntryClazz != NULL);
-	mLogEntryInitMid = pEnv->GetMethodID(mLogEntryClazz, "<init>", "(ILjava/lang/String;Ljava/lang/String;JI)V");
-	assert(mLogEntryInitMid != NULL);
+	mOnLogEntryCallbackMID = JNIHelpers::GetMethodID(pEnv, aProxy, "onLogEntry", "(ILjava/lang/String;Ljava/lang/String;I)V");		
 }
 
 void LogSubscriberAdapter::Log(const opendnp3::LogEntry& arEntry)
@@ -43,16 +39,7 @@ void LogSubscriberAdapter::Log(const opendnp3::LogEntry& arEntry)
 	jint level = arEntry.GetFilterLevel();
 	jstring name = pEnv->NewStringUTF(arEntry.GetDeviceName().c_str());
 	jstring msg = pEnv->NewStringUTF(arEntry.GetMessage().c_str());
-	jlong time = std::chrono::duration_cast<std::chrono::milliseconds>(arEntry.GetTimeStamp().time_since_epoch()).count();
 	jint error = arEntry.GetErrorCode();
-
-	jobject le = pEnv->NewObject(mLogEntryClazz, mLogEntryInitMid, level, name, msg, time, error);
-	assert(le != NULL);
-
-	jclass clazz = pEnv->GetObjectClass(mProxy);
-	assert(clazz != NULL);
-	jmethodID mid2 = pEnv->GetMethodID(clazz, "onLogEntry", "(Lcom/automatak/dnp3/LogEntry;)V");
-	assert(mid2 != NULL);
-
-	pEnv->CallVoidMethod(mProxy, mid2, le);
+	
+	pEnv->CallVoidMethod(mProxy, mOnLogEntryCallbackMID, level, name, msg, error);
 }
