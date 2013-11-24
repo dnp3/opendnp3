@@ -1,3 +1,9 @@
+opendnp3 (1.1.1rc1-1) unstable; urgency=low
+
+  * Fixed issue 39
+
+ -- Chris Verges <chris.verges@gmail.com>  Mon, 23 Nov 2013 14:00:00 -0800
+
 opendnp3 (1.1.0rc1-4) unstable; urgency=low
 
   * Fixed issue with monotonic clocks being used instead of system

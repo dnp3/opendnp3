@@ -1,4 +1,4 @@
-AC_INIT([opendnp3], [1.1.0], [jadamcrain@automatak.com])
+AC_INIT([opendnp3], [1.1.1], [jadamcrain@automatak.com])
 AC_CONFIG_AUX_DIR([build-aux])
 AC_CONFIG_MACRO_DIR([m4])
 AC_COPYRIGHT([(C) 2010, 2011 Green EneryCorp. (C) 2013 Automatak, LLC. All right reserved.])

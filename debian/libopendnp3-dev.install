@@ -1,5 +1,5 @@
 usr/include/*
-usr/share/java/opendnp3-api-1.1.0-javadoc.jar
-usr/share/java/opendnp3-api-1.1.0-sources.jar
-usr/share/java/opendnp3-bindings-1.1.0-javadoc.jar
-usr/share/java/opendnp3-bindings-1.1.0-sources.jar
+usr/share/java/opendnp3-api-1.1.1.RC1-javadoc.jar
+usr/share/java/opendnp3-api-1.1.1.RC1-sources.jar
+usr/share/java/opendnp3-bindings-1.1.1.RC1-javadoc.jar
+usr/share/java/opendnp3-bindings-1.1.1.RC1-sources.jar
