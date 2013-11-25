@@ -59,14 +59,14 @@ void MasterSchedule::ResetStartupTasks()
 
 void MasterSchedule::Init(const MasterConfig& arCfg, Master* apMaster)
 {
-	AsyncTaskBase* pIntegrity = mTracking.Add(
+	mpIntegrityPoll = mTracking.Add(
 	                                    arCfg.IntegrityRate,
 	                                    arCfg.TaskRetryRate,
 	                                    AMP_POLL,
 	                                    bind(&Master::IntegrityPoll, apMaster, _1),
 	                                    "Integrity Poll");	
 
-	pIntegrity->SetFlags(ONLINE_ONLY_TASKS | START_UP_TASKS);
+	mpIntegrityPoll->SetFlags(ONLINE_ONLY_TASKS | START_UP_TASKS);
 
 	if (arCfg.DoUnsolOnStartup) {
 		/*
@@ -87,7 +87,7 @@ void MasterSchedule::Init(const MasterConfig& arCfg, Master* apMaster)
 		                                       "Unsol Disable");
 
 		pUnsolDisable->SetFlags(ONLINE_ONLY_TASKS | START_UP_TASKS);
-		pIntegrity->AddDependency(pUnsolDisable);
+		mpIntegrityPoll->AddDependency(pUnsolDisable);
 
 		if (arCfg.EnableUnsol) {
 			TaskHandler handler = bind(
@@ -104,7 +104,7 @@ void MasterSchedule::Init(const MasterConfig& arCfg, Master* apMaster)
 			                              "Unsol Enable");
 
 			pUnsolEnable->SetFlags(ONLINE_ONLY_TASKS | START_UP_TASKS);
-			pUnsolEnable->AddDependency(pIntegrity);
+			pUnsolEnable->AddDependency(mpIntegrityPoll);
 		}
 	}
 

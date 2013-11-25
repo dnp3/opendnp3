@@ -120,7 +120,7 @@ for(AsyncTaskBase * p: mTaskVec) {
 
 void AsyncTaskGroup::Enable(int aMask)
 {
-for(AsyncTaskBase * p: mTaskVec) {
+	for(AsyncTaskBase * p: mTaskVec) {
 		if((p->GetFlags() & aMask) != 0) p->SilentEnable();
 	}
 	this->CheckState();

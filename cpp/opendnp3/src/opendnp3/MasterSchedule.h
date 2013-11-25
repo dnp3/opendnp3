@@ -50,6 +50,11 @@ public:
 	MasterSchedule(AsyncTaskGroup* apGroup, Master* apMaster, const MasterConfig& arCfg);
 
 	/**
+	* Task that controls the integrity poll
+	*/
+	AsyncTaskBase* mpIntegrityPoll;
+
+	/**
 	 * A task to read the Master::mCommandQueue and pass objects to
 	 * Master::ProcessControl.
 	 */
@@ -75,6 +80,9 @@ public:
 	void ResetStartupTasks();
 
 private:
+
+	MasterSchedule();
+	MasterSchedule(const MasterSchedule&);
 
 	void Init(const MasterConfig& arCfg, Master* mpMaster);
 
