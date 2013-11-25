@@ -38,10 +38,11 @@ LinkLayerTest::LinkLayerTest(LinkConfig arCfg, FilterLevel aLevel, bool aImmedia
 	link.SetRouter(this);
 }
 
-void LinkLayerTest::Transmit(const LinkFrame& arFrame)
+bool LinkLayerTest::Transmit(const LinkFrame& arFrame)
 {
 	mLastSend = arFrame;
 	++mNumSend;
+	return true;
 }
 
 LinkConfig LinkLayerTest::DefaultConfig()

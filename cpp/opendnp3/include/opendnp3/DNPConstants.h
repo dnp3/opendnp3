@@ -109,7 +109,8 @@ enum DNPErrorCodes {
 	DLERR_UNEXPECTED_FCB,	//  FCB set unexpectedly
 
 	// Data Link Layer
-	DLERR_UNKNOWN_ROUTE,	// carries 2 pieces of meta-data: SRC<uint16_t> and DEST<uint16_t>
+	DLERR_ROUTER_OFFLINE,
+	DLERR_UNKNOWN_ROUTE,
 	DLERR_UNKNOWN_DESTINATION,
 	DLERR_UNKNOWN_SOURCE,
 	DLERR_CONFIRM_NOT_RECEIVED,

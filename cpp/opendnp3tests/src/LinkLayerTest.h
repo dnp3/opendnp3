@@ -40,7 +40,7 @@ public:
 	LinkLayerTest(LinkConfig arCfg = DefaultConfig(), openpal::FilterLevel aLevel = openpal::LEV_WARNING, bool aImmediate = false);
 
 	//ILinkRouter interface
-	void Transmit(const LinkFrame&);
+	bool Transmit(const LinkFrame&);
 
 	static LinkConfig DefaultConfig();
 

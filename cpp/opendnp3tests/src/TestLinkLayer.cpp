@@ -35,7 +35,7 @@
 using namespace openpal;
 using namespace opendnp3;
 
-BOOST_AUTO_TEST_SUITE(LinkLayerSuite)
+BOOST_AUTO_TEST_SUITE(LinkLayerTestSuite)
 
 // All operations should fail except for OnLowerLayerUp, just a representative
 // number of them

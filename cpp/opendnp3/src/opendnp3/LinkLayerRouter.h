@@ -59,7 +59,18 @@ public:
 	bool IsRouteInUse(const LinkRoute& arRoute);
 
 	// Ties the lower part of the link layer to the upper part
-	void AddContext(ILinkContext*, const LinkRoute& arRoute);
+	bool AddContext(ILinkContext*, const LinkRoute& arRoute);
+
+	/**
+	*  Tells the router to begin sending messages to the context associated with this route
+	*/
+	bool EnableRoute(const LinkRoute& arRoute);
+
+	/**
+	*  Tells the router to stop sending messages to the context associated with this route
+	*  Does not remove the context entirely
+	*/
+	bool DisableRoute(const LinkRoute& arRoute);
 
 	// This is safe to do at runtime, so long as the request happens from the io_service thread.
 	void RemoveContext(const LinkRoute& arRoute);
@@ -76,7 +87,7 @@ public:
 	void UnconfirmedUserData(bool aIsMaster, uint16_t aDest, uint16_t aSrc, const uint8_t* apData, size_t aDataLength);
 
 	// ILinkRouter interface
-	void Transmit(const LinkFrame&);
+	bool Transmit(const LinkFrame&);
 
 	// Notify the listener when the state changes
 	void AddStateListener(std::function<void (ChannelState)> aListener);
@@ -88,17 +99,32 @@ protected:
 
 private:
 
+	bool HasEnabledContext();
+
+	class ContextRecord
+	{
+		public:
+			ContextRecord(ILinkContext* context) : pContext(context), enabled(false)
+			{}
+
+		ContextRecord() : pContext(NULL), enabled(false)
+		{}
+
+		ILinkContext* pContext;
+		bool enabled;
+	};
+
 	void NotifyListener(std::function<void (ChannelState)> aListener, ChannelState state);
 
 	std::vector<std::function<void (ChannelState)>> mListeners;
 
 	ILinkContext* GetDestination(uint16_t aDest, uint16_t aSrc);
-	ILinkContext* GetContext(const LinkRoute&);
+	ILinkContext* GetEnabledContext(const LinkRoute&);
 
 	void CheckForSend();
 
 
-	typedef std::map<LinkRoute, ILinkContext*, LinkRoute::LessThan> AddressMap;
+	typedef std::map<LinkRoute, ContextRecord, LinkRoute::LessThan> AddressMap;
 	typedef std::deque<LinkFrame> TransmitQueue;
 
 	AddressMap mAddressMap;

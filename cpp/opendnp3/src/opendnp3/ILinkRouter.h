@@ -37,7 +37,7 @@ public:
 
 	virtual ~ILinkRouter() {}
 
-	virtual void Transmit(const LinkFrame&) = 0;
+	virtual bool Transmit(const LinkFrame&) = 0;
 };
 
 }

@@ -67,7 +67,7 @@ void DNP3Channel::AddStateListener(std::function<void (ChannelState)> aListener)
 void DNP3Channel::Cleanup()
 {
 	std::set<IStack*> copy(mStacks);
-for(auto pStack: copy) pStack->Shutdown();
+	for(auto pStack: copy) pStack->Shutdown();
 	{
 		ExecutorPause p(mpPhys->GetExecutor());
 #ifndef OPENDNP3_NO_MASTER
@@ -94,6 +94,7 @@ IMaster* DNP3Channel::AddMaster(const std::string& arLoggerId, FilterLevel aLeve
 		pMaster->SetLinkRouter(&mRouter);
 		mStacks.insert(pMaster);
 		mRouter.AddContext(pMaster->GetLinkContext(), route);
+		mRouter.EnableRoute(route);
 		return pMaster;
 	}
 }
@@ -114,6 +115,7 @@ IOutstation* DNP3Channel::AddOutstation(const std::string& arLoggerId, FilterLev
 		pOutstation->SetLinkRouter(&mRouter);
 		mStacks.insert(pOutstation);
 		mRouter.AddContext(pOutstation->GetLinkContext(), route);
+		mRouter.EnableRoute(route);
 		return pOutstation;
 	}
 }

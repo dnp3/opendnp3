@@ -39,12 +39,13 @@ using namespace openpal;
 BOOST_AUTO_TEST_SUITE(LinkLayerRouterSuite)
 
 // Test that send frames from unknown sources are rejected
-BOOST_AUTO_TEST_CASE(UnknownSourceException)
+BOOST_AUTO_TEST_CASE(TransmittingFromUnknownSourceLogsError)
 {
 	LinkLayerRouterTest t;
 	LinkFrame f;
 	f.FormatAck(true, false, 1, 2);
-	BOOST_REQUIRE_THROW(t.router.Transmit(f), ArgumentException);
+	t.router.Transmit(f);
+	BOOST_REQUIRE_EQUAL(DLERR_UNKNOWN_ROUTE, t.log.NextErrorCode());
 }
 
 // Test that frames with unknown destinations are correctly logged
@@ -53,8 +54,15 @@ BOOST_AUTO_TEST_CASE(UnknownDestination)
 	LinkLayerRouterTest t;
 
 	MockFrameSink mfs;
-	t.router.AddContext(&mfs, LinkRoute(1, 1024));
+
+	LinkRoute route(1, 1024);
+
+	BOOST_REQUIRE(t.router.AddContext(&mfs, route));
+	BOOST_REQUIRE(!t.phys.IsOpening());
+	BOOST_REQUIRE(t.router.EnableRoute(route));
+	BOOST_REQUIRE(t.phys.IsOpening());
 	t.phys.SignalOpenSuccess();
+
 
 	t.phys.TriggerRead("05 64 05 C0 01 00 00 04 E9 21");
 	LogEntry le;
@@ -67,10 +75,13 @@ BOOST_AUTO_TEST_CASE(LayerNotOnline)
 {
 	LinkLayerRouterTest t;
 	MockFrameSink mfs;
-	t.router.AddContext(&mfs, LinkRoute(1, 1024));
+	LinkRoute route(1, 1024);
+	t.router.AddContext(&mfs, route);
+	t.router.EnableRoute(route);
 	LinkFrame f;
 	f.FormatAck(true, false, 1, 1024);
-	BOOST_REQUIRE_THROW(t.router.Transmit(f), InvalidStateException);
+	BOOST_REQUIRE_FALSE(t.router.Transmit(f));
+	BOOST_REQUIRE_EQUAL(t.log.NextErrorCode(), DLERR_ROUTER_OFFLINE);
 }
 
 // Test that the router rejects sends until it is online
@@ -78,9 +89,11 @@ BOOST_AUTO_TEST_CASE(AutomaticallyClosesWhenAllContextsAreRemoved)
 {
 	LinkLayerRouterTest t;
 	MockFrameSink mfs;
-	t.router.AddContext(&mfs, LinkRoute(1, 1024));
+	LinkRoute route(1, 1024);
+	t.router.AddContext(&mfs, route);
+	t.router.EnableRoute(route);
 	BOOST_REQUIRE_EQUAL(CS_OPENING, t.router.GetState());
-	t.router.RemoveContext(LinkRoute(1, 1024));
+	t.router.RemoveContext(route);
 	BOOST_REQUIRE_EQUAL(CS_OPENING, t.router.GetState());
 	t.phys.SignalOpenFailure();
 	BOOST_REQUIRE_EQUAL(CS_CLOSED, t.router.GetState());
@@ -91,7 +104,9 @@ BOOST_AUTO_TEST_CASE(CloseBehavior)
 {
 	LinkLayerRouterTest t;
 	MockFrameSink mfs;
-	t.router.AddContext(&mfs, LinkRoute(1, 1024));
+	LinkRoute route(1, 1024);
+	t.router.AddContext(&mfs, route);
+	t.router.EnableRoute(route);
 	t.phys.SignalOpenSuccess();
 	LinkFrame f;
 	f.FormatAck(true, false, 1, 1024);
@@ -124,7 +139,9 @@ BOOST_AUTO_TEST_CASE(ReentrantCloseWorks)
 {
 	LinkLayerRouterTest t;
 	MockFrameSink mfs;
-	t.router.AddContext(&mfs, LinkRoute(1, 1024));
+	LinkRoute route(1, 1024);
+	t.router.AddContext(&mfs, route);
+	t.router.EnableRoute(route);
 	t.phys.SignalOpenSuccess();
 	BOOST_REQUIRE(mfs.mLowerOnline);
 	mfs.AddAction(std::bind(&LinkLayerRouter::Shutdown, &t.router));
@@ -138,17 +155,18 @@ BOOST_AUTO_TEST_CASE(MultiAddressBindError)
 {
 	LinkLayerRouterTest t;
 	MockFrameSink mfs;
-	t.router.AddContext(&mfs, LinkRoute(1, 1024));
-	BOOST_REQUIRE_THROW(t.router.AddContext(&mfs, LinkRoute(1, 1024)), ArgumentException);
+	LinkRoute route(1, 1024);
+	BOOST_REQUIRE(t.router.AddContext(&mfs, route));
+	BOOST_REQUIRE_FALSE(t.router.AddContext(&mfs, route));	
 }
 
 /// Test that the second bind fails when a non-unique context is added
 BOOST_AUTO_TEST_CASE(MultiContextBindError)
 {
 	LinkLayerRouterTest t;
-	MockFrameSink mfs;
-	t.router.AddContext(&mfs, LinkRoute(1, 1024));
-	BOOST_REQUIRE_THROW(t.router.AddContext(&mfs, LinkRoute(1, 2048)), ArgumentException);
+	MockFrameSink mfs;	
+	BOOST_REQUIRE(t.router.AddContext(&mfs, LinkRoute(1, 1024)));
+	BOOST_REQUIRE_FALSE(t.router.AddContext(&mfs, LinkRoute(1, 2048)));
 }
 
 /// Test that router correctly buffers and sends frames from multiple contexts
@@ -157,8 +175,14 @@ BOOST_AUTO_TEST_CASE(MultiContextSend)
 	LinkLayerRouterTest t;
 	MockFrameSink mfs1;
 	MockFrameSink mfs2;
-	t.router.AddContext(&mfs1, LinkRoute(1, 1024));
-	t.router.AddContext(&mfs2, LinkRoute(1, 2048));
+
+	LinkRoute route1(1, 1024);
+	LinkRoute route2(1, 2048);
+
+	t.router.AddContext(&mfs1, route1);
+	t.router.EnableRoute(route1);
+	t.router.AddContext(&mfs2, route2);
+	t.router.EnableRoute(route2);
 	LinkFrame f1; f1.FormatAck(true, false, 1, 1024);
 	LinkFrame f2; f2.FormatAck(true, false, 1, 2048);
 	t.phys.SignalOpenSuccess();
@@ -176,7 +200,9 @@ BOOST_AUTO_TEST_CASE(LinkLayerRouterClearsBufferOnLowerLayerDown)
 {
 	LinkLayerRouterTest t;
 	MockFrameSink mfs;
-	t.router.AddContext(&mfs, LinkRoute(1, 1024));
+	LinkRoute route(1, 1024);
+	t.router.AddContext(&mfs, route);
+	t.router.EnableRoute(route);
 	t.phys.SignalOpenSuccess();
 	t.phys.TriggerRead("05 64 D5 C4 00 04 01 00 F0 BC C0 C0 01 3C 01 06 FF 50");
 	BOOST_REQUIRE_EQUAL(0, mfs.mNumFrames);

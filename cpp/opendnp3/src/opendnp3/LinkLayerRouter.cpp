@@ -50,23 +50,49 @@ bool LinkLayerRouter::IsRouteInUse(const LinkRoute& arRoute)
 	return mAddressMap.find(arRoute) != mAddressMap.end();
 }
 
-void LinkLayerRouter::AddContext(ILinkContext* apContext, const LinkRoute& arRoute)
+bool LinkLayerRouter::AddContext(ILinkContext* apContext, const LinkRoute& arRoute)
 {
 	assert(apContext != NULL);
 
-	if(IsRouteInUse(arRoute)) {
-		MACRO_THROW_EXCEPTION_COMPLEX(ArgumentException, "Route already in use: " << arRoute.ToString());
+	if(IsRouteInUse(arRoute)) return false;
+	
+	for(AddressMap::value_type v: mAddressMap) {
+		if(apContext == v.second.pContext) return false;		
 	}
 
-for(AddressMap::value_type v: mAddressMap) {
-		if(apContext == v.second) {
-			MACRO_THROW_EXCEPTION_COMPLEX(ArgumentException, "Context already is bound to route:  " << v.first.ToString());
+	mAddressMap[arRoute] = ContextRecord(apContext); //context is always disabled by default
+	
+	return true;
+}
+
+bool LinkLayerRouter::EnableRoute(const LinkRoute& arRoute)
+{
+	auto iter = mAddressMap.find(arRoute);
+	if(iter == mAddressMap.end()) return false;
+	else {
+		if(!iter->second.enabled)
+		{
+			iter->second.enabled = true;
+			if(this->IsLowerLayerUp()) iter->second.pContext->OnLowerLayerUp();
+			this->Start(); // idempotent call to start router
 		}
+		return true;
 	}
+}
 
-	mAddressMap[arRoute] = apContext;
-	if(this->GetState() == CS_OPEN) apContext->OnLowerLayerUp();
-	this->Start();
+bool LinkLayerRouter::DisableRoute(const LinkRoute& arRoute)
+{
+	auto iter = mAddressMap.find(arRoute);
+	if(iter == mAddressMap.end()) return false;
+	else {
+		if(iter->second.enabled)
+		{
+			iter->second.enabled = false;
+			if(this->IsLowerLayerUp()) iter->second.pContext->OnLowerLayerDown();
+			if(!this->HasEnabledContext()) this->Suspend();
+		}
+		return true;
+	}
 }
 
 void LinkLayerRouter::RemoveContext(const LinkRoute& arRoute)
@@ -77,24 +103,21 @@ void LinkLayerRouter::RemoveContext(const LinkRoute& arRoute)
 	}
 	else {
 
-		ILinkContext* pContext = i->second;
+		auto record = i->second;
 		mAddressMap.erase(i);
 
-		if(this->GetState() == CS_OPEN) pContext->OnLowerLayerDown();
+		if(this->GetState() == CS_OPEN && record.enabled) record.pContext->OnLowerLayerDown();
 
-		// if no stacks are bound, suspend the router
-		if(mAddressMap.size() == 0) {
-			this->Suspend();
-		}
+		// if no contexts are enabled, suspend the router
+		if(!HasEnabledContext()) this->Suspend();		
 	}
-
-
 }
 
-ILinkContext* LinkLayerRouter::GetContext(const LinkRoute& arRoute)
+ILinkContext* LinkLayerRouter::GetEnabledContext(const LinkRoute& arRoute)
 {
 	AddressMap::iterator i = mAddressMap.find(arRoute);
-	return (i == mAddressMap.end()) ? NULL : i->second;
+	if(i == mAddressMap.end()) return NULL;
+	else return (i->second.enabled) ? i->second.pContext : NULL;	
 }
 
 
@@ -102,7 +125,7 @@ ILinkContext* LinkLayerRouter::GetDestination(uint16_t aDest, uint16_t aSrc)
 {
 	LinkRoute route(aSrc, aDest);
 
-	ILinkContext* pDest = GetContext(route);
+	ILinkContext* pDest = GetEnabledContext(route);
 
 	if(pDest == NULL) {
 
@@ -172,19 +195,25 @@ void LinkLayerRouter::_OnReceive(const uint8_t*, size_t aNumBytes)
 	}
 }
 
-void LinkLayerRouter::Transmit(const LinkFrame& arFrame)
+bool LinkLayerRouter::Transmit(const LinkFrame& arFrame)
 {
 	LinkRoute lr(arFrame.GetDest(), arFrame.GetSrc());
 
-	if (this->GetContext(lr)) {
-		if (!this->IsLowerLayerUp()) {
-			MACRO_THROW_EXCEPTION(InvalidStateException, "LowerLayerDown");
+	if (this->GetEnabledContext(lr)) {				
+		if(this->IsLowerLayerUp())
+		{
+			this->mTransmitQueue.push_back(arFrame);
+			this->CheckForSend();
+			return true;
 		}
-		this->mTransmitQueue.push_back(arFrame);
-		this->CheckForSend();
+		else {
+			ERROR_BLOCK(LEV_ERROR, "Cannot queue a frame while router if offline", DLERR_ROUTER_OFFLINE);
+			return false;
+		}
 	}
 	else {
-		MACRO_THROW_EXCEPTION_COMPLEX(ArgumentException, "Unassociated context w/ route: " << lr.ToString());
+		ERROR_BLOCK(LEV_ERROR, "Ignoring unassociated transmit w/ route: " << lr.ToString(), DLERR_UNKNOWN_ROUTE);		
+		return false;
 	}
 }
 
@@ -203,6 +232,15 @@ void LinkLayerRouter::OnStateChange(ChannelState aState)
 for(auto listener: mListeners) NotifyListener(listener, aState);
 }
 
+bool LinkLayerRouter::HasEnabledContext()
+{
+	for(auto record: mAddressMap) {
+		if(record.second.enabled) return true;
+	}
+	
+	return false;
+}
+
 void LinkLayerRouter::NotifyListener(std::function<void (ChannelState)> aListener, ChannelState state)
 {
 	this->mpPhys->GetExecutor()->Post([ = ]() {
@@ -214,10 +252,12 @@ void LinkLayerRouter::_OnSendSuccess()
 {
 	assert(mTransmitQueue.size() > 0);
 	assert(mTransmitting);
+	/* TODO - remove dead code
 	const LinkFrame& f = mTransmitQueue.front();
 	LinkRoute lr(f.GetDest(), f.GetSrc());
 	ILinkContext* pContext = this->GetContext(lr);
 	assert(pContext != NULL);
+	*/
 	mTransmitting = false;
 	mTransmitQueue.pop_front();
 	this->CheckForSend();
@@ -232,7 +272,7 @@ void LinkLayerRouter::_OnSendFailure()
 
 void LinkLayerRouter::CheckForSend()
 {
-	if(mTransmitQueue.size() > 0 && !mTransmitting) {
+	if(mTransmitQueue.size() > 0 && !mTransmitting && mpPhys->CanWrite()) {
 		mTransmitting = true;
 		const LinkFrame& f = mTransmitQueue.front();
 		LOG_BLOCK(LEV_INTERPRET, "~> " << f.ToString());
@@ -245,8 +285,8 @@ void LinkLayerRouter::OnPhysicalLayerOpenSuccessCallback()
 	if(mpPhys->CanRead())
 		mpPhys->AsyncRead(mReceiver.WriteBuff(), mReceiver.NumWriteBytes());
 
-for(AddressMap::value_type p: mAddressMap) {
-		p.second->OnLowerLayerUp();
+	for(AddressMap::value_type p: mAddressMap) {
+		if(p.second.enabled) p.second.pContext->OnLowerLayerUp();		
 	}
 }
 
@@ -258,7 +298,9 @@ void LinkLayerRouter::OnPhysicalLayerCloseCallback()
 	// Drop frames queued for transmit and tell the contexts that the router has closed
 	mTransmitting = false;
 	mTransmitQueue.erase(mTransmitQueue.begin(), mTransmitQueue.end());
-for(auto pair: mAddressMap) pair.second->OnLowerLayerDown();
+	for(auto pair: mAddressMap) {
+		if(pair.second.enabled) pair.second.pContext->OnLowerLayerDown();		
+	}
 }
 
 }
