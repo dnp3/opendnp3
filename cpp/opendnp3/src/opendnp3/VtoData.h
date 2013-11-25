@@ -38,16 +38,6 @@
 namespace opendnp3
 {
 
-enum VtoDataType {
-	VTODT_REMOTE_CLOSED,
-	VTODT_REMOTE_OPENED,
-	VTODT_DATA
-};
-
-#ifndef OPENDNP3_STRIP_LOG_MESSAGES
-std::string DLL_LOCAL ToString(VtoDataType aType);
-#endif
-
 class DLL_LOCAL VtoData
 {
 public:
@@ -58,23 +48,17 @@ public:
 
 	VtoData(size_t aSize);
 
-	VtoData(const uint8_t* apValue, size_t aSize);
-
-	VtoData(VtoDataType aType);
+	VtoData(const uint8_t* apValue, size_t aSize);	
 
 	size_t GetSize() const;
-
-	VtoDataType GetType() const;
-
-
+	
 	void Copy(const uint8_t* apValue, size_t aSize);
 
 	uint8_t mpData[MAX_SIZE];
 
 private:
 	size_t mSize;
-
-	VtoDataType mType;
+	
 };
 
 }

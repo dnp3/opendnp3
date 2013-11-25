@@ -28,34 +28,15 @@
 namespace opendnp3
 {
 
-#ifndef OPENDNP3_STRIP_LOG_MESSAGES
-std::string ToString(VtoDataType aType)
-{
-	switch(aType) {
-	case(VTODT_DATA): return "DATA";
-	case(VTODT_REMOTE_CLOSED): return "REMOTE_CLOSED";
-	case(VTODT_REMOTE_OPENED): return "REMOTE_OPENED";
-	default: return "Unknown VtoDataType";
-	}
-}
-#endif
-
-VtoData::VtoData() :
-	mSize(0), mType(VTODT_DATA)
+VtoData::VtoData() : mSize(0)
 {}
 
-VtoData::VtoData(size_t aSize) :
-	mSize(aSize), mType(VTODT_DATA)
+VtoData::VtoData(size_t aSize) : mSize(aSize)
 {
 	assert(aSize <= MAX_SIZE);
 }
 
-VtoData::VtoData(VtoDataType aType) :
-	mSize(0), mType(aType)
-{}
-
-VtoData::VtoData(const uint8_t* apValue, size_t aSize) :
-	mType(VTODT_DATA)
+VtoData::VtoData(const uint8_t* apValue, size_t aSize)	
 {
 	this->Copy(apValue, aSize);
 }
@@ -63,11 +44,6 @@ VtoData::VtoData(const uint8_t* apValue, size_t aSize) :
 size_t VtoData::GetSize() const
 {
 	return this->mSize;
-}
-
-VtoDataType VtoData::GetType() const
-{
-	return this->mType;
 }
 
 void VtoData::Copy(const uint8_t* apValue, size_t aSize)
