@@ -90,8 +90,9 @@ protected:
 
 	// optional NVII function for special bookkeeping
 	virtual void _OnComplete(bool aSuccess) {}
-	virtual void _Reset() {}
+	//virtual void _Reset() {}
 
+	
 	// Reset the task to it's original state
 	void Reset();
 

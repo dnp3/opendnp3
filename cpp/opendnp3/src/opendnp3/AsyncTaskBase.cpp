@@ -124,8 +124,7 @@ void AsyncTaskBase::OnComplete(bool aSuccess)
 void AsyncTaskBase::Reset()
 {
 	mIsComplete = mIsExpired = mIsRunning = false;
-	mNextRunTime = M_INITIAL_TIME;
-	this->_Reset();
+	mNextRunTime = M_INITIAL_TIME;	
 }
 
 void AsyncTaskBase::UpdateTime(const MonotonicTimestamp& arTime)

@@ -70,8 +70,7 @@ Master::Master(Logger aLogger, MasterConfig aCfg, IAppLayer* apAppLayer, IMeasur
 	 */
 	mCommandQueue.AddObserver(mpExecutor, [this]() {
 		this->mSchedule.mpCommandTask->Enable();
-	});
-
+	});	
 
 	/*
 	 * Set the initial state of the communication link.
