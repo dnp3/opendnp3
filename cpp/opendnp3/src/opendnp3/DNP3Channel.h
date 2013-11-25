@@ -85,6 +85,9 @@ public:
 
 private:
 
+	std::function<void (bool)> GetEnableDisableRoute(IExecutor*, LinkLayerRouter*, LinkRoute);
+	
+
 	void Cleanup();
 
 	void OnStackShutdown(IStack* apStack, LinkRoute aRoute);

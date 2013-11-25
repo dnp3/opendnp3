@@ -32,6 +32,7 @@
 #include <set>
 
 #include <openpal/Logger.h>
+#include <functional>
 
 #include "DestructorHook.h"
 #include "StackState.h"
@@ -51,7 +52,7 @@ namespace opendnp3
 class IStack : public DestructorHook
 {
 public:
-	IStack(openpal::Logger& arLogger);
+	IStack(openpal::Logger& arLogger, std::function<void (bool)> aEnableDisableFunc);
 	virtual ~IStack();
 
 	/**
@@ -62,12 +63,26 @@ public:
 	*/
 	virtual void AddStateListener(std::function<void (StackState)> aListener) = 0;
 
-	/// Synchronously shutdown the endpoint
+	/**
+	* Enable communications
+	*/
+	void Enable();
+
+	/**
+	* Enable communications
+	*/
+	void Disable();
+
+	/** 
+	* Synchronously shutdown the endpoint
+    * No more calls are allowed after this call.
+	*/
 	virtual void Shutdown() = 0;
 
 private:
 
 	openpal::Logger mLogger;
+	std::function<void (bool)> mEnableDisableFunc;
 };
 
 }

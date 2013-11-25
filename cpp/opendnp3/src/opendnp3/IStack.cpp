@@ -28,7 +28,9 @@ using namespace openpal;
 namespace opendnp3
 {
 
-IStack::IStack(Logger& arLogger) : mLogger(arLogger)
+IStack::IStack(Logger& arLogger, std::function<void (bool)> aEnableDisableFunc) : 
+	mLogger(arLogger),
+	mEnableDisableFunc(aEnableDisableFunc)
 {
 
 
@@ -37,6 +39,18 @@ IStack::IStack(Logger& arLogger) : mLogger(arLogger)
 IStack::~IStack()
 {
 
+}
+
+
+void IStack::Enable()
+{
+	mEnableDisableFunc(true);
+}
+
+	
+void IStack::Disable()
+{
+	mEnableDisableFunc(false);
 }
 
 }

@@ -87,10 +87,10 @@ IMaster* DNP3Channel::AddMaster(const std::string& arLoggerId, FilterLevel aLeve
 		MACRO_THROW_EXCEPTION_COMPLEX(ArgumentException, "Route already in use: " << route.ToString());
 	}
 	else {
-		auto logger = mLogger.GetSubLogger(arLoggerId, aLevel);
-		auto pMaster = new MasterStackImpl(logger, mpPhys->GetExecutor(), apPublisher, apTimeSource, &mGroup, arCfg, [this, route](IStack * apStack) {
-			this->OnStackShutdown(apStack, route);
-		});
+		auto logger = mLogger.GetSubLogger(arLoggerId, aLevel);		
+		auto routeFunc = GetEnableDisableRoute(mpPhys->GetExecutor(), &mRouter, route);
+		auto shutdownFunc = [this, route](IStack * apStack) { this->OnStackShutdown(apStack, route); };
+		auto pMaster = new MasterStackImpl(logger, mpPhys->GetExecutor(), apPublisher, apTimeSource, &mGroup, arCfg, routeFunc, shutdownFunc);
 		pMaster->SetLinkRouter(&mRouter);
 		mStacks.insert(pMaster);
 		mRouter.AddContext(pMaster->GetLinkContext(), route);
@@ -109,15 +109,25 @@ IOutstation* DNP3Channel::AddOutstation(const std::string& arLoggerId, FilterLev
 	}
 	else {
 		auto logger = mLogger.GetSubLogger(arLoggerId, aLevel);
-		auto pOutstation = new OutstationStackImpl(logger, mpPhys->GetExecutor(), apTimeWriteHandler, apCmdHandler, arCfg, [this, route](IStack * apStack) {
-			this->OnStackShutdown(apStack, route);
-		});
+		auto routeFunc = GetEnableDisableRoute(mpPhys->GetExecutor(), &mRouter, route);
+		auto shutdownFunc = [this, route](IStack * apStack) { this->OnStackShutdown(apStack, route); };
+		auto pOutstation = new OutstationStackImpl(logger, mpPhys->GetExecutor(), apTimeWriteHandler, apCmdHandler, arCfg, routeFunc, shutdownFunc);
 		pOutstation->SetLinkRouter(&mRouter);
 		mStacks.insert(pOutstation);
 		mRouter.AddContext(pOutstation->GetLinkContext(), route);
 		mRouter.EnableRoute(route);
 		return pOutstation;
 	}
+}
+
+std::function<void (bool)> DNP3Channel::GetEnableDisableRoute(IExecutor* apExecutor,  LinkLayerRouter* apRouter, LinkRoute aRoute)
+{
+	return [apExecutor, apRouter, aRoute](bool enable) {
+		apExecutor->Post([=](){
+			if(enable) apRouter->EnableRoute(aRoute);
+			else apRouter->DisableRoute(aRoute);
+		});
+	};
 }
 
 void DNP3Channel::OnStackShutdown(IStack* apStack, LinkRoute route)

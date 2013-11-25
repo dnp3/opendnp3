@@ -54,6 +54,7 @@ public:
 	        IUTCTimeSource* apTimeSource,
 	        AsyncTaskGroup* apTaskGroup,
 	        const MasterStackConfig& arCfg,
+			std::function<void (bool)> aEnableDisableFunc,
 	        std::function<void (IMaster*)> aOnShutdown);
 
 	ICommandProcessor* GetCommandProcessor();

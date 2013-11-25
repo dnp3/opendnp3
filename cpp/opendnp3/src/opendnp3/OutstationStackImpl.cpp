@@ -31,8 +31,9 @@ OutstationStackImpl::OutstationStackImpl(
         ITimeWriteHandler* apTimeWriteHandler,
         ICommandHandler* apCmdHandler,
         const SlaveStackConfig& arCfg,
+		std::function<void (bool)> aEnableDisableFunc,
         std::function<void (IOutstation*)> aOnShutdown) :
-	IOutstation(arLogger),
+	IOutstation(arLogger, aEnableDisableFunc),
 	mpExecutor(apExecutor),
 	mAppStack(arLogger, apExecutor, arCfg.app, arCfg.link),
 	mDB(arLogger),

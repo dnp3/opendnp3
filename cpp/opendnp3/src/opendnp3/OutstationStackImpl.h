@@ -53,6 +53,7 @@ public:
 	        ITimeWriteHandler* apTimeWriteHandler,
 	        ICommandHandler* apCmdHandler,
 	        const SlaveStackConfig& arCfg,
+			std::function<void (bool)> aEnableDisableFunc,
 	        std::function<void (IOutstation*)> aOnShutdown);
 
 	IDataObserver* GetDataObserver();
