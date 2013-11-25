@@ -64,7 +64,7 @@ void MasterSchedule::Init(const MasterConfig& arCfg, Master* apMaster)
 	                                    arCfg.TaskRetryRate,
 	                                    AMP_POLL,
 	                                    bind(&Master::IntegrityPoll, apMaster, _1),
-	                                    "Integrity Poll");
+	                                    "Integrity Poll");	
 
 	pIntegrity->SetFlags(ONLINE_ONLY_TASKS | START_UP_TASKS);
 
