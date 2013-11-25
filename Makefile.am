@@ -102,6 +102,7 @@ cpp/opendnp3/src/opendnp3/LinkLayerRouter.cpp \
 cpp/opendnp3/src/opendnp3/LinkReceiverStates.cpp \
 cpp/opendnp3/src/opendnp3/LinkRoute.cpp \
 cpp/opendnp3/src/opendnp3/Master.cpp \
+cpp/opendnp3/src/opendnp3/MasterScan.cpp \
 cpp/opendnp3/src/opendnp3/MasterSchedule.cpp \
 cpp/opendnp3/src/opendnp3/MasterStackImpl.cpp \
 cpp/opendnp3/src/opendnp3/MasterStates.cpp \
