@@ -80,6 +80,7 @@ JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ChannelImpl_get_1native_1ma
 		pMaster->AddDestructorHook([pPublisher]() {
 			delete pPublisher;
 		});
+		pMaster->Enable(); // TODO - move this to bindings
 		return (jlong) pMaster;
 	}
 	catch(const openpal::Exception& ex) {
@@ -106,6 +107,7 @@ JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ChannelImpl_get_1native_1sl
 		pOutstation->AddDestructorHook([pCmdHandler]() {
 			delete pCmdHandler;
 		});
+		pOutstation->Enable(); // TODO - move this to bindings
 		return (jlong) pOutstation;
 	}
 	catch(const openpal::Exception& ex) {

@@ -97,6 +97,9 @@ int main(int argc, char* argv[])
 		std::cout << "master state: " << ConvertStackStateToString(state) << std::endl;
 	});
 
+	// Enable the master. This will start communications.
+	pMaster->Enable();
+
 	auto pCmdProcessor = pMaster->GetCommandProcessor();
 
 	std::string cmd;

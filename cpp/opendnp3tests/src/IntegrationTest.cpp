@@ -34,6 +34,8 @@
 #include <opendnp3/IChannel.h>
 #include <opendnp3/IOutstation.h>
 #include <opendnp3/ITimeWriteHandler.h>
+#include <opendnp3/IMaster.h>
+#include <opendnp3/IOutstation.h>
 
 #include <asiopal/PhysicalLayerAsyncTCPClient.h>
 #include <asiopal/PhysicalLayerAsyncTCPServer.h>
@@ -161,7 +163,8 @@ void IntegrationTest::AddStackPair(FilterLevel aLevel, size_t aNumPoints)
 		cfg.master.EnableUnsol = true;
 		cfg.master.DoUnsolOnStartup = true;
 		cfg.master.UnsolClassMask = PC_ALL_EVENTS;
-		pClient->AddMaster(oss.str() + " master", aLevel, pMasterFDO.get(), asiopal::UTCTimeSource::Inst(), cfg);
+		auto pMaster = pClient->AddMaster(oss.str() + " master", aLevel, pMasterFDO.get(), asiopal::UTCTimeSource::Inst(), cfg);
+		pMaster->Enable();
 	}
 
 	/*
@@ -176,6 +179,7 @@ void IntegrationTest::AddStackPair(FilterLevel aLevel, size_t aNumPoints)
 		cfg.device = DeviceTemplate(aNumPoints, aNumPoints, aNumPoints);
 		auto pOutstation = pServer->AddOutstation(oss.str() + " outstation", aLevel, &mCmdHandler, NullTimeWriteHandler::Inst(), cfg);
 		this->mFanout.AddObserver(pOutstation->GetDataObserver());
+		pOutstation->Enable();
 	}
 
 }

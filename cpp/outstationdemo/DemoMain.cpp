@@ -97,6 +97,9 @@ int main(int argc, char* argv[])
 		std::cout << "outstation state: " << ConvertStackStateToString(state) << std::endl;
 	});
 
+	// Enable the outstation and start communications
+	pOutstation->Enable();
+
 	auto pDataObserver = pOutstation->GetDataObserver();
 
 	std::string input;

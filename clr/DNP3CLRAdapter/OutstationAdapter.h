@@ -45,6 +45,10 @@ public:
 
 	virtual void Shutdown();
 
+	virtual void Enable();
+
+	virtual void Disable();
+
 private:
 	opendnp3::IOutstation* mpOutstation;
 	IDataObserver ^ mDataObserverAdapter;

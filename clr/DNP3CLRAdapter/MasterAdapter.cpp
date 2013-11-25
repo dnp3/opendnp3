@@ -47,6 +47,17 @@ ICommandProcessor ^ MasterAdapter::GetCommandProcessor()
 	return mCommandAdapter;
 }
 
+
+void MasterAdapter::Enable()
+{
+	mpMaster->Enable();
+}
+
+void MasterAdapter::Disable()
+{
+	mpMaster->Disable();
+}
+
 void MasterAdapter::Shutdown()
 {
 	mpMaster->Shutdown();

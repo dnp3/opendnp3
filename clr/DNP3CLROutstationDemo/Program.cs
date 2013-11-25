@@ -53,6 +53,8 @@ namespace DotNetSlaveDemo
             //optionally, add a listener for the stack state
             outstation.AddStateListener(state => Console.WriteLine("Outstation state: " + state));
 
+            outstation.Enable(); // enable communications
+
             Console.WriteLine("Press <Enter> to randomly change a value");
             var publisher = outstation.GetDataObserver();
             Random r = new Random();

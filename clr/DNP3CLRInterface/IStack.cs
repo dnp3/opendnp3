@@ -38,6 +38,16 @@ namespace DNP3.Interface
         void Shutdown();
 
         /// <summary>
+        /// Enable communications
+        /// </summary>
+        void Enable();
+
+        /// <summary>
+        /// Disable communications
+        /// </summary>
+        void Disable();
+
+        /// <summary>
         /// Add a listener for changes to the stack state. All callbacks come from the thread pool.
 		/// An immediate callback will be made with the current state.		
         /// </summary>

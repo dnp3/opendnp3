@@ -53,5 +53,16 @@ void OutstationAdapter::Shutdown()
 	mpOutstation->Shutdown();
 }
 
+
+void OutstationAdapter::Enable()
+{
+	mpOutstation->Enable();
+}
+
+void OutstationAdapter::Disable()
+{
+	mpOutstation->Disable();
+}
+
 }
 }

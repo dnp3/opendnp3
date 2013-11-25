@@ -41,6 +41,10 @@ public:
 
 	virtual ICommandProcessor ^ GetCommandProcessor();
 
+	virtual void Enable();
+
+	virtual void Disable();
+        
 	virtual void Shutdown();
 
 	virtual void AddStateListener(System::Action<StackState> ^ aListener);

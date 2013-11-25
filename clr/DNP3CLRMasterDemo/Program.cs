@@ -54,6 +54,8 @@ namespace DotNetMasterDemo
             //optionally, add a listener for the stack state
             master.AddStateListener(state => Console.WriteLine("Master state: " + state));
 
+            master.Enable(); // enable communications
+
             Console.WriteLine("Enter an index to send a command");
 
             while (true)

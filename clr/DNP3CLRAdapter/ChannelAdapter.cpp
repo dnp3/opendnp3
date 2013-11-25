@@ -68,7 +68,7 @@ IMaster ^ ChannelAdapter::AddMaster(System::String ^ loggerId, LogLevel level, I
 	opendnp3::MasterStackConfig cfg = Conversions::convertConfig(config);
 
 	try {
-		auto pMaster = mpChannel->AddMaster(stdLoggerId, stdLevel, wrapper->Get(), asiopal::UTCTimeSource::Inst(), cfg); // TODO expose time source
+		auto pMaster = mpChannel->AddMaster(stdLoggerId, stdLevel, wrapper->Get(), asiopal::UTCTimeSource::Inst(), cfg); // TODO expose time source		
 		return gcnew MasterAdapter(pMaster);
 	}
 	catch(openpal::Exception ex) {
