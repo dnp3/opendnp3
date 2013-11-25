@@ -63,6 +63,11 @@ void MasterAdapter::Shutdown()
 	mpMaster->Shutdown();
 }
 
+void MasterAdapter::DemandIntegrityScan()
+{
+	mpMaster->DemandIntegrityScan();
+}
+
 }
 }
 

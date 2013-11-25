@@ -194,6 +194,49 @@ BOOST_AUTO_TEST_CASE(NonPeriodic)
 	BOOST_REQUIRE_EQUAL(mth.Front(), pT2);
 }
 
+BOOST_AUTO_TEST_CASE(DemandPeriodicTaskWhileNotExecuting)
+{
+	MockTaskHandler mth;
+
+	MockExecutor exe;
+
+	AsyncTaskGroup group(&exe);
+	
+	AsyncTaskBase* pT1 = group.Add(TimeDuration::Milliseconds(2000), TimeDuration::Milliseconds(100), 0, mth.GetHandler());
+
+	group.Enable();
+	
+	//complete both the tasks
+	BOOST_REQUIRE_EQUAL(mth.Size(), 1);
+	BOOST_REQUIRE_EQUAL(mth.Front(), pT1);
+	mth.Complete(true);
+	BOOST_REQUIRE_EQUAL(mth.Size(), 0);
+
+	pT1->Demand();
+	BOOST_REQUIRE_EQUAL(mth.Size(), 1);
+	BOOST_REQUIRE_EQUAL(mth.Front(), pT1);	
+}
+
+BOOST_AUTO_TEST_CASE(DemandPeriodicTaskWhileExecuting)
+{
+	MockTaskHandler mth;
+
+	MockExecutor exe;
+
+	AsyncTaskGroup group(&exe);
+	
+	AsyncTaskBase* pT1 = group.Add(TimeDuration::Milliseconds(2000), TimeDuration::Milliseconds(100), 0, mth.GetHandler());
+
+	group.Enable();
+	
+	//complete both the tasks
+	BOOST_REQUIRE_EQUAL(mth.Size(), 1);
+	BOOST_REQUIRE_EQUAL(mth.Front(), pT1);
+	pT1->Demand();
+	mth.Complete(true);
+	BOOST_REQUIRE_EQUAL(mth.Size(), 0);
+}
+
 
 BOOST_AUTO_TEST_CASE(PriorityBreaksTies)
 {

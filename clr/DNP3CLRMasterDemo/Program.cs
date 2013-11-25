@@ -38,7 +38,7 @@ namespace DotNetMasterDemo
 {
     class Program
     {
-        static void Main(string[] args)
+        static int Main(string[] args)
         {
             IDNP3Manager mgr = DNP3ManagerFactory.CreateManager();            
             mgr.AddLogHandler(PrintingLogAdapter.Instance); //this is optional
@@ -59,11 +59,23 @@ namespace DotNetMasterDemo
             Console.WriteLine("Enter an index to send a command");
 
             while (true)
-            {
-                System.UInt32 index = System.UInt32.Parse(Console.ReadLine());
-                var future = master.GetCommandProcessor().SelectAndOperate(new ControlRelayOutputBlock(ControlCode.CC_PULSE, 1, 100, 100), index);
-                CommandStatus result = future.Await();                
-                Console.WriteLine("Result: " + result);
+            {                
+                switch (Console.ReadLine())
+                { 
+                    case "c":
+                        UInt32 index = 0;
+                        var future = master.GetCommandProcessor().SelectAndOperate(new ControlRelayOutputBlock(ControlCode.CC_PULSE, 1, 100, 100), index);
+                        future.Listen((status) => Console.WriteLine("Result: " + status));
+                        break;
+                    case "d":
+                        Console.WriteLine("Performing demand scan");
+                        master.DemandIntegrityScan();
+                        break;
+                    case "x":
+                        return 0;                        
+                    default:
+                        break;
+                }                           
             }            
         }
     }

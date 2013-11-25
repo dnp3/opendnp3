@@ -93,6 +93,8 @@ public:
 		return &mCommandQueue;
 	}
 
+	void DemandIntegrityScan();
+
 	/* Implement IAppUser - callbacks from the app layer */
 
 	void OnLowerLayerUp();

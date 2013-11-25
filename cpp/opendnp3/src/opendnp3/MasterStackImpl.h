@@ -65,6 +65,8 @@ public:
 
 	void AddStateListener(std::function<void (StackState)> aListener);
 
+	void DemandIntegrityScan();
+
 	void Shutdown();
 
 private:

@@ -58,12 +58,15 @@ public:
 	void AddDependency(const AsyncTaskBase* apTask);
 	bool IsDependency(const AsyncTaskBase*) const;
 
+	// Do the task now if it is enabled, regardless of periodicity
+	void Demand();
+
 	void SetFlags(int aFlags) {
 		mFlags = aFlags;
 	}
 	int GetFlags() {
 		return mFlags;
-	}
+	}	
 
 	void Enable();  // Enable the task and notify the task group which might execute another task
 	void Disable(); // Disable ''

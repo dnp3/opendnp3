@@ -37,5 +37,10 @@ namespace DNP3.Interface
         /// </summary>
         /// <returns>Interface used to dispatch command requests</returns>
         ICommandProcessor GetCommandProcessor();
+        
+        /// <summary>
+        /// Perform an on demand integrity scan
+        /// </summary>
+        void DemandIntegrityScan();
     }
 }

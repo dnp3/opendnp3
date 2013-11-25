@@ -52,7 +52,7 @@ int main(int argc, char* argv[])
 
 	// Specify a FilterLevel for the stack/physical layer to use.
 	// Log statements with a lower priority will not be logged.
-	const FilterLevel LOG_LEVEL = LEV_INFO;
+	const FilterLevel LOG_LEVEL = LEV_INTERPRET;
 
 	EventLog log;
 	// You can optionally subcribe to log messages
@@ -102,21 +102,21 @@ int main(int argc, char* argv[])
 
 	auto pCmdProcessor = pMaster->GetCommandProcessor();
 
-	std::string cmd;
+	char cmd;
 	do {
-		std::cout << "Enter something to perform a SELECT/OPERATE sequence, or type exit" << std::endl;
+		std::cout << "Enter a command {x == exit, d == demand scan, c == control}" << std::endl;
 		std::cin >> cmd;
-		if(cmd == "exit") break;
-		else {
-			ControlRelayOutputBlock crob(CC_LATCH_ON);
-
-			promise<CommandResponse> selectResult;
-			pCmdProcessor->SelectAndOperate(crob, 0, [&](CommandResponse cr) {
-				selectResult.set_value(cr);
-			});
-			CommandResponse rsp = selectResult.get_future().get();
-			std::cout << "Select/Operate result: " << rsp.mResult << std::endl;
+		if(cmd == 'x') break;
+		else if(cmd == 'd')
+		{
+			pMaster->DemandIntegrityScan();
 		}
+		else if(cmd == 'c') {
+			ControlRelayOutputBlock crob(CC_LATCH_ON);			
+			pCmdProcessor->SelectAndOperate(crob, 0, [&](CommandResponse cr) {
+				std::cout << "Select/Operate result: " << cr.mResult << std::endl;
+			});						
+		}		
 	}
 	while(true);
 

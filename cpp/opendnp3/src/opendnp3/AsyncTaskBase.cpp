@@ -109,6 +109,18 @@ for(const AsyncTaskBase * p: mDependencies) {
 	return false;
 }
 
+// Do the task now if it is enabled, regardless of periodicity
+void AsyncTaskBase::Demand()
+{
+	if(this->IsEnabled() && !this->IsRunning())
+	{
+		this->SilentEnable();
+		this->mNextRunTime = this->M_INITIAL_TIME;
+		mpGroup->CheckState();
+	}
+}
+
+
 void AsyncTaskBase::OnComplete(bool aSuccess)
 {
 	if(!mIsRunning) {

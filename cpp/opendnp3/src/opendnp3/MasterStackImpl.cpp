@@ -62,6 +62,11 @@ void MasterStackImpl::SetLinkRouter(ILinkRouter* apRouter)
 	mAppStack.mLink.SetRouter(apRouter);
 }
 
+void MasterStackImpl::DemandIntegrityScan()
+{
+	mpExecutor->Post([this]() { this->mMaster.DemandIntegrityScan(); });
+}
+
 void MasterStackImpl::Shutdown()
 {
 	mOnShutdown(this);

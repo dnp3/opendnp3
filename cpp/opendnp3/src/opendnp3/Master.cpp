@@ -70,7 +70,7 @@ Master::Master(Logger aLogger, MasterConfig aCfg, IAppLayer* apAppLayer, IMeasur
 	 */
 	mCommandQueue.AddObserver(mpExecutor, [this]() {
 		this->mSchedule.mpCommandTask->Enable();
-	});	
+	});
 
 	/*
 	 * Set the initial state of the communication link.
@@ -238,7 +238,7 @@ void Master::ChangeUnsol(ITask* apTask, bool aEnable, int aClassMask)
 	mpState->StartTask(this, apTask, &mConfigureUnsol);
 }
 
-/*
+/* TODO - remove or repair dead codes
 void Master::TransmitVtoData(ITask* apTask)
 {
 	if(mpState == AMS_Closed::Inst()) apTask->Disable();
@@ -261,6 +261,11 @@ void Master::TransmitVtoData(ITask* apTask)
 	}
 }
 */
+
+void Master::DemandIntegrityScan()
+{
+	mSchedule.mpIntegrityPoll->Demand();
+}
 
 /* Implement IAppUser */
 

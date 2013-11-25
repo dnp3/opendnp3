@@ -51,6 +51,12 @@ public:
 	virtual ~IMaster() {}
 
 	/**
+	*  Perform an integrity scan now if the master is online
+	*  Doesn't matter if the scan is configured to be periodic or non-periodic
+	*/
+	virtual void DemandIntegrityScan() = 0;
+
+	/**
 	* Get a command processor interface to execute controls on the master
 	* @return Interface used to invoke commands
 	*/
