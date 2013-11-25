@@ -1,0 +1,40 @@
+Source: opendnp3
+Section: libs
+Priority: extra
+Maintainer: Chris Verges <chris.verges@gmail.com>
+Build-Depends: debhelper (>= 8.0.0), dh-autoreconf, autoconf, automake, libtool, oracle-java7-installer, oracle-java7-set-default
+Standards-Version: 3.9.2
+Homepage: http://dnp3.github.io
+
+Package: libopendnp3
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: A C++ library for the OpenDNP3 stack
+ This package provides C++ bindings for the OpenDNP3 stack.  This stack
+ implements both a DNP3 master and DNP3 outstation.
+
+Package: libopendnp3-java
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, libopendnp3
+Description: Java Native Interface (JNI) library for the OpenDNP3 stack
+ This package provides a JNI library for the C++-based OpenDNP3 stack.
+
+Package: libopendnp3-dev
+Architecture: any
+Depends: libopendnp3, libopendnp3-java
+Recommends: libopendnp3-cpp-demos, libopendnp3-java-demos
+Description: C++/Java development files for the OpenDNP3 stack
+ This package provides complimentary C++ and Java files for development
+ with the Automatak DNP3 stack.
+
+Package: libopendnp3-cpp-demos
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: C++ master/outstation demos for the OpenDNP3 stack
+ This package provides C++ master/outstation demos.
+
+Package: libopendnp3-java-demos
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, libopendnp3-java
+Description: Java master/outstation demos for the OpenDNP3 stack
+ This package provides Java master/outstation demos.

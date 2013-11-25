@@ -27,6 +27,7 @@
 #include <opendnp3/Types.h>
 #include <opendnp3/Uncopyable.h>
 #include <opendnp3/Visibility.h>
+#include <opendnp3/Clock.h>
 
 #include "AsyncTaskInterfaces.h"
 #include "TimeSource.h"
@@ -57,7 +58,7 @@ class DLL_LOCAL AsyncTaskGroup : private Uncopyable
 
 public:
 
-	AsyncTaskGroup(IExecutor*, ITimeSource* = TimeSource::Inst());
+	AsyncTaskGroup(IExecutor*, IMonotonicTimeSource* = MonotonicTimeSource::Inst());
 	~AsyncTaskGroup();
 
 	AsyncTaskBase* Add(millis_t aPeriod, millis_t aRetryDelay, int aPriority, const TaskHandler& arCallback, const std::string& arName = "");
@@ -80,7 +81,7 @@ public:
 		return mIsRunning;
 	}
 
-	timer_clock::time_point GetUTC() const;
+	timer_clock::time_point Now() const;
 
 private:
 
@@ -93,7 +94,7 @@ private:
 	bool mIsRunning;
 	bool mShutdown;
 	IExecutor* mpExecutor;
-	ITimeSource* mpTimeSrc;
+	IMonotonicTimeSource* mpTimeSrc;
 	ITimer* mpTimer;
 
 

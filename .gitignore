@@ -41,6 +41,8 @@ doc
 # demo files
 cpp/demos/master/masterdemo
 cpp/demos/outstation/outstationdemo
+dnp3-demo-master
+dnp3-demo-outstation
 unittest.log
 
 # visual studio generated files
@@ -70,7 +72,6 @@ cpp/unittest.log
 #sandcastle generated files
 clr/Help
 clr/opendnp3.shfbproj_*
-
 
 # intellij/maven generated files
 java/*.iml

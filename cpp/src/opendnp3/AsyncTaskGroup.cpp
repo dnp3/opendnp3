@@ -39,7 +39,7 @@ using namespace std::chrono;
 namespace opendnp3
 {
 
-AsyncTaskGroup::AsyncTaskGroup(IExecutor* apExecutor, ITimeSource* apTimeSrc) :
+AsyncTaskGroup::AsyncTaskGroup(IExecutor* apExecutor, IMonotonicTimeSource* apTimeSrc) :
 	mIsRunning(false),
 	mShutdown(false),
 	mpExecutor(apExecutor),
@@ -153,7 +153,7 @@ AsyncTaskBase* AsyncTaskGroup::GetNext(const timer_clock::time_point& arTime)
 void AsyncTaskGroup::CheckState()
 {
 	if(!mShutdown) {
-		timer_clock::time_point now = GetUTC();
+		timer_clock::time_point now = Now();
 		AsyncTaskBase* pTask = GetNext(now);
 
 		if(pTask == NULL) return;
@@ -176,9 +176,9 @@ void AsyncTaskGroup::OnCompletion()
 	this->CheckState();
 }
 
-timer_clock::time_point AsyncTaskGroup::GetUTC() const
+timer_clock::time_point AsyncTaskGroup::Now() const
 {
-	return mpTimeSrc->GetUTC();
+	return mpTimeSrc->Now();
 }
 
 void AsyncTaskGroup::Update(const timer_clock::time_point& arTime)

@@ -52,7 +52,8 @@ public:
 
 	void BindStateListener();
 
-	MockTimeSource fake_time;
+	MockMonotonicTimeSource fake_time;
+	MockTimeSource fake_real_time;
 	MockExecutor mts;	
 	AsyncTaskGroup group;
 	FlexibleDataObserver fdo;

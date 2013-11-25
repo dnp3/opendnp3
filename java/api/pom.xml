@@ -5,7 +5,7 @@
     <parent>
         <groupId>com.automatak.dnp3</groupId>
         <artifactId>opendnp3-parent</artifactId>
-        <version>1.1.0</version>
+        <version>1.1.1.RC1</version>
     </parent>
 
     <artifactId>opendnp3-api</artifactId>

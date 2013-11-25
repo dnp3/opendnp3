@@ -1,0 +1,32 @@
+opendnp3 (1.1.1rc1-1) unstable; urgency=low
+
+  * Fixed issue 39
+
+ -- Chris Verges <chris.verges@gmail.com>  Mon, 23 Nov 2013 14:00:00 -0800
+
+opendnp3 (1.1.0rc1-4) unstable; urgency=low
+
+  * Fixed issue with monotonic clocks being used instead of system
+    clocks for time synchronization
+
+ -- Chris Verges <chris.verges@gmail.com>  Mon, 04 Nov 2013 14:03:56 -0800
+
+opendnp3 (1.1.0rc1-3) unstable; urgency=low
+
+  * Moved Java demos to separate package
+  * Moved Java JARs related to development to -dev package
+  * Setup additional relationships between packages
+
+ -- Chris Verges <chris.verges@gmail.com>  Mon, 26 Aug 2013 15:20:32 -0700
+
+opendnp3 (1.1.0rc1-2) unstable; urgency=low
+
+  * Added support for Java bindings
+
+ -- Chris Verges <chris.verges@gmail.com>  Mon, 26 Aug 2013 10:01:39 -0700
+
+opendnp3 (1.1.0rc1-1) unstable; urgency=low
+
+  * Initial release
+
+ -- Chris Verges <chris.verges@gmail.com>  Mon, 08 Jul 2013 09:00:43 -0700

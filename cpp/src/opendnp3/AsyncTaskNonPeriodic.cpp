@@ -41,7 +41,7 @@ AsyncTaskNonPeriodic::AsyncTaskNonPeriodic(millis_t aRetryDelay, int aPriority, 
 
 void AsyncTaskNonPeriodic::_OnComplete(bool aSuccess)
 {
-	timer_clock::time_point now = mpGroup->GetUTC();
+	timer_clock::time_point now = mpGroup->Now();
 	if(aSuccess) {
 		mIsComplete = true;
 		mNextRunTime = timer_clock::time_point::max();

@@ -177,9 +177,11 @@ BOOST_AUTO_TEST_CASE(RestartAndTimeBits)
 {
 	MasterConfig master_cfg;
 	MasterTestObject t(master_cfg);
+	t.fake_real_time.SetTime(std::chrono::system_clock::time_point::min());
+
 	t.master.OnLowerLayerUp();
 
-	t.fake_time.SetTime(timer_clock::time_point(milliseconds(100))); //100 ms since epoch
+	t.fake_real_time.SetTime(std::chrono::system_clock::time_point(milliseconds(100))); //100 ms since epoch	
 
 	BOOST_REQUIRE_EQUAL("C0 01 3C 01 06", t.Read()); ; //integrity
 	t.RespondToMaster("C0 81 90 00"); // need time and device restart
@@ -189,7 +191,7 @@ BOOST_AUTO_TEST_CASE(RestartAndTimeBits)
 	t.RespondToMaster("C0 81 10 00"); // need time
 
 	BOOST_REQUIRE_EQUAL("C0 17", t.Read()); ; //Delay measure
-	t.fake_time.Advance(milliseconds(100)); //advance time by 100ms so that the master sees 100ms for a response
+	t.fake_real_time.Advance(milliseconds(100)); //advance time by 100ms so that the master sees 100ms for a response
 	t.RespondToMaster("C0 81 10 00 34 02 07 01 0A 00"); // still need time, 52 Var 2, delay == 10ms
 
 	// Write group 50 var 1
@@ -283,7 +285,7 @@ BOOST_AUTO_TEST_CASE(RestartBadResponses)
 	MasterTestObject t(master_cfg);
 	t.master.OnLowerLayerUp();
 
-	t.fake_time.SetTime(timer_clock::time_point(milliseconds(100))); //100 ms since epoch
+	t.fake_real_time.SetTime(std::chrono::system_clock::time_point(milliseconds(100))); //100 ms since epoch
 
 	BOOST_REQUIRE_EQUAL("C0 01 3C 01 06", t.Read()); //integrity
 	t.RespondToMaster("C0 81 10 00"); // need time
@@ -298,7 +300,7 @@ BOOST_AUTO_TEST_CASE(RestartBadResponses)
 	t.RespondToMaster("C0 81 10 00 34 02 07 02 0A 00 03 00"); // too many objects
 
 	BOOST_REQUIRE_EQUAL("C0 17", t.Read()); ; //Delay measure
-	t.fake_time.Advance(milliseconds(100)); //advance time by 100ms so that the master sees 100ms for a response
+	t.fake_real_time.Advance(milliseconds(100)); //advance time by 100ms so that the master sees 100ms for a response
 	t.RespondToMaster("C0 81 10 00 34 02 07 01 90 01"); // still need time, 52 Var 2, delay == 400ms
 
 	// Write group 50 var 1

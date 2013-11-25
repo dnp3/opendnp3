@@ -100,7 +100,7 @@ private:
 	millis_t mDelay;
 
 	// what time we sent the delay meas
-	timer_clock::time_point mStart;
+	std::chrono::system_clock::time_point mStart;
 };
 
 } //ens ns

@@ -35,11 +35,12 @@ namespace opendnp3
 MasterTestObject::MasterTestObject(MasterConfig cfg, FilterLevel aLevel, bool aImmediate) :
 	LogTester(aImmediate),
 	fake_time(),
+	fake_real_time(),
 	mts(),
 	group(&mts, &fake_time),
 	fdo(),
 	app(mLog.GetLogger(aLevel, "MockAppLayer")),
-	master(mLog.GetLogger(aLevel, "master"), cfg, &app, &fdo, &group, &mts, &fake_time)
+	master(mLog.GetLogger(aLevel, "master"), cfg, &app, &fdo, &group, &mts, &fake_real_time)
 {
 	app.SetUser(&master);
 }

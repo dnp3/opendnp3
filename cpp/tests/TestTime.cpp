@@ -70,13 +70,7 @@ BOOST_AUTO_TEST_CASE(BasicTest)
 {
 	StopWatch sw;
 
-	BOOST_REQUIRE(sw.Elapsed(false) <= milliseconds(100));
-
-	//sleep for 5 millis
-	std::this_thread::sleep_for(milliseconds(100));
-
-	//make sure the stopwatch recorded atleast 5 millis elapsed (override default bool)
-	BOOST_REQUIRE(sw.Elapsed(false) >= milliseconds(100));
+	BOOST_REQUIRE(sw.Elapsed(false) <= milliseconds(100));	
 }
 
 BOOST_AUTO_TEST_SUITE_END()
@@ -86,7 +80,7 @@ BOOST_AUTO_TEST_CASE(TimeSourceSystemOffsetTest)
 {
 
 	TimeSourceSystemOffset time;
-	timer_clock::time_point base = time.GetUTC();
+	auto base = time.GetUTC();
 	time.SetTime(base + milliseconds(5000));
 	BOOST_REQUIRE(time.GetUTC() >= base + milliseconds(5000));
 }
@@ -94,7 +88,7 @@ BOOST_AUTO_TEST_CASE(TimeSourceSystemOffsetTestNeg)
 {
 
 	TimeSourceSystemOffset time;
-	timer_clock::time_point base = time.GetUTC();
+	auto base = time.GetUTC();
 	time.SetTime(base - milliseconds(5000));
 	BOOST_REQUIRE(time.GetUTC() >= base - milliseconds(5000));
 }

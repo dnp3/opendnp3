@@ -169,8 +169,8 @@ private:
 	std::string		mDeviceName;
 	std::string		mLocation;
 	std::string		mMessage;
-	std::chrono::high_resolution_clock::time_point mTime;
 	int				mErrorCode;
+	std::chrono::high_resolution_clock::time_point mTime;
 	KeyValueMap		mKeyValues;
 };
 

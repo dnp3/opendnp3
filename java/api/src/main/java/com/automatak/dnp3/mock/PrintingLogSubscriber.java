@@ -21,6 +21,8 @@ package com.automatak.dnp3.mock;
 import com.automatak.dnp3.LogEntry;
 import com.automatak.dnp3.LogSubscriber;
 
+import java.util.Date;
+
 /**
  * Singleton that prints log information as it is received
  */
@@ -30,7 +32,8 @@ public class PrintingLogSubscriber implements LogSubscriber {
     @Override
     public void onLogEntry(LogEntry le)
     {
-        System.out.println(le.getTimestamp() + " - " + le.getLogLevel().name() + " - " + le.getLoggerName() + " - " + le.getMessage());
+        Date now = new Date();
+        System.out.println(now + " - " + le.getLogLevel().name() + " - " + le.getLoggerName() + " - " + le.getMessage());
 
     }
 
