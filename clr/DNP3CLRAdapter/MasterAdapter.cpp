@@ -24,6 +24,7 @@
 #include "CommandProcessorAdapter.h"
 #include "StackStateCallback.h"
 #include "DeleteAnything.h"
+#include "MasterScanAdapter.h"
 
 namespace DNP3
 {
@@ -47,7 +48,6 @@ ICommandProcessor ^ MasterAdapter::GetCommandProcessor()
 	return mCommandAdapter;
 }
 
-
 void MasterAdapter::Enable()
 {
 	mpMaster->Enable();
@@ -66,6 +66,12 @@ void MasterAdapter::Shutdown()
 void MasterAdapter::DemandIntegrityScan()
 {
 	mpMaster->DemandIntegrityScan();
+}
+
+IMasterScan^ MasterAdapter::AddClassScan(int aClassMask, System::Int64 aPeriodMs, System::Int64 aTaskRetry)
+{
+	auto scan = mpMaster->AddClassScan(aClassMask, openpal::TimeDuration::Milliseconds(aPeriodMs), openpal::TimeDuration::Milliseconds(aTaskRetry));
+	return gcnew MasterScanAdapter(scan);
 }
 
 }

@@ -79,15 +79,18 @@ public:
 	// Resets all of the tasks that run on startup. This is typically done after a failure
 	void ResetStartupTasks();
 
+	AsyncTaskBase* AddClassScan(int aClassMask, openpal::TimeDuration aScanRate, openpal::TimeDuration aRetryRate);
+
 private:
 
 	MasterSchedule();
 	MasterSchedule(const MasterSchedule&);
 
-	void Init(const MasterConfig& arCfg, Master* mpMaster);
+	void Init(const MasterConfig& arCfg);
 
 
 	AsyncTaskGroup* mpGroup;
+	Master* mpMaster;
 	TrackingTaskGroup mTracking;
 
 	enum MasterPriority {

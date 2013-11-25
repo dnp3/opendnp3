@@ -68,6 +68,7 @@
     </Compile>
     <Compile Include="ITimeWriteHandler.cs" />
     <Compile Include="LogTypes.cs" />
+    <Compile Include="IMasterScan.cs" />
     <Compile Include="NamespaceDoc.cs">
       <SubType>Code</SubType>
     </Compile>

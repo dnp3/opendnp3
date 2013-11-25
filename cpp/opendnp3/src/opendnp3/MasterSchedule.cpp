@@ -37,9 +37,10 @@ namespace opendnp3
 
 MasterSchedule::MasterSchedule(AsyncTaskGroup* apGroup, Master* apMaster, const MasterConfig& arCfg) :
 	mpGroup(apGroup),
-	mTracking(apGroup)
+	mpMaster(apMaster),
+	mTracking(apGroup)	
 {
-	this->Init(arCfg, apMaster);
+	this->Init(arCfg);
 }
 
 void MasterSchedule::EnableOnlineTasks()
@@ -57,13 +58,13 @@ void MasterSchedule::ResetStartupTasks()
 	mTracking.ResetTasks(START_UP_TASKS);
 }
 
-void MasterSchedule::Init(const MasterConfig& arCfg, Master* apMaster)
+void MasterSchedule::Init(const MasterConfig& arCfg)
 {
 	mpIntegrityPoll = mTracking.Add(
 	                                    arCfg.IntegrityRate,
 	                                    arCfg.TaskRetryRate,
 	                                    AMP_POLL,
-	                                    bind(&Master::IntegrityPoll, apMaster, _1),
+	                                    bind(&Master::IntegrityPoll, mpMaster, _1),
 	                                    "Integrity Poll");	
 
 	mpIntegrityPoll->SetFlags(ONLINE_ONLY_TASKS | START_UP_TASKS);
@@ -75,7 +76,7 @@ void MasterSchedule::Init(const MasterConfig& arCfg, Master* apMaster)
 		 * is done.
 		 */
 		TaskHandler handler = bind(&Master::ChangeUnsol,
-		                           apMaster,
+		                           mpMaster,
 		                           _1,
 		                           false,
 		                           PC_ALL_EVENTS);
@@ -92,7 +93,7 @@ void MasterSchedule::Init(const MasterConfig& arCfg, Master* apMaster)
 		if (arCfg.EnableUnsol) {
 			TaskHandler handler = bind(
 			                              &Master::ChangeUnsol,
-			                              apMaster,
+			                              mpMaster,
 			                              _1,
 			                              true,
 			                              arCfg.UnsolClassMask);
@@ -108,43 +109,38 @@ void MasterSchedule::Init(const MasterConfig& arCfg, Master* apMaster)
 		}
 	}
 
-	/*
-	 * Load any exception scans and make them dependent on the
-	 * integrity poll.
-	 */
-/*
-for(ExceptionScan e: arCfg.mScans) {
-		AsyncTaskBase* pEventScan = mTracking.Add(
-		                                    e.ScanRate,
-		                                    arCfg.TaskRetryRate,
-		                                    AMP_POLL,
-		                                    bind(&Master::EventPoll, apMaster, _1, e.ClassMask),
-		                                    "Event Scan");
-
-		pEventScan->SetFlags(ONLINE_ONLY_TASKS);
-		pEventScan->AddDependency(pIntegrity);
-	}
-*/
-
 	/* Tasks are executed when the master is is idle */
 	mpCommandTask = mTracking.AddContinuous(
 	                        AMP_COMMAND,
-	                        std::bind(&Master::ProcessCommand, apMaster, _1),
+	                        std::bind(&Master::ProcessCommand, mpMaster, _1),
 	                        "Command");
 
 	mpTimeTask = mTracking.AddContinuous(
 	                     AMP_TIME_SYNC,
-	                     std::bind(&Master::SyncTime, apMaster, _1),
+	                     std::bind(&Master::SyncTime, mpMaster, _1),
 	                     "TimeSync");
 
 	mpClearRestartTask = mTracking.AddContinuous(
 	                             AMP_CLEAR_RESTART,
-	                             std::bind(&Master::WriteIIN, apMaster, _1),
+	                             std::bind(&Master::WriteIIN, mpMaster, _1),
 	                             "Clear IIN");
 
 	mpTimeTask->SetFlags(ONLINE_ONLY_TASKS);
 	mpClearRestartTask->SetFlags(ONLINE_ONLY_TASKS);
 
+}
+
+AsyncTaskBase* MasterSchedule::AddClassScan(int aClassMask, TimeDuration aScanRate, TimeDuration aRetryRate)
+{
+	auto pClassScan = mTracking.Add(		aScanRate,
+		                                    aRetryRate,
+		                                    AMP_POLL,
+											bind(&Master::EventPoll, mpMaster, _1, aClassMask),
+		                                    "Class Scan");
+
+	pClassScan->SetFlags(ONLINE_ONLY_TASKS);
+	pClassScan->AddDependency(mpIntegrityPoll);
+	return pClassScan;
 }
 
 }

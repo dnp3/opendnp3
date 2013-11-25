@@ -79,6 +79,7 @@ int main(int argc, char* argv[])
 	// The master config object for a master. The default are
 	// useable, but understanding the options are important.
 	MasterStackConfig stackConfig;
+	stackConfig.master.IntegrityRate = TimeDuration::Minutes(1);
 
 	// Create a new master on a previously declared port, with a
 	// name, log level, command acceptor, and config info. This
@@ -97,25 +98,38 @@ int main(int argc, char* argv[])
 		std::cout << "master state: " << ConvertStackStateToString(state) << std::endl;
 	});
 
+	auto exceptionScan = pMaster->AddClassScan(PC_CLASS_1 | PC_CLASS_2 | PC_CLASS_3, TimeDuration::Seconds(5), TimeDuration::Seconds(5));
+
 	// Enable the master. This will start communications.
 	pMaster->Enable();
 
 	auto pCmdProcessor = pMaster->GetCommandProcessor();
-
-	char cmd;
+	
 	do {
+		
 		std::cout << "Enter a command {x == exit, d == demand scan, c == control}" << std::endl;
+		char cmd;
 		std::cin >> cmd;
-		if(cmd == 'x') break;
-		else if(cmd == 'd')
+		switch(cmd)
 		{
-			pMaster->DemandIntegrityScan();
-		}
-		else if(cmd == 'c') {
-			ControlRelayOutputBlock crob(CC_LATCH_ON);			
-			pCmdProcessor->SelectAndOperate(crob, 0, [&](CommandResponse cr) {
-				std::cout << "Select/Operate result: " << cr.mResult << std::endl;
-			});						
+			case('x'):
+				return 0;
+			case('d'):
+				pMaster->DemandIntegrityScan();
+				break;
+			case('e'):
+				exceptionScan.Demand();
+				break;
+			case('c'):
+			{
+				ControlRelayOutputBlock crob(CC_LATCH_ON);			
+				pCmdProcessor->SelectAndOperate(crob, 0, [&](CommandResponse cr) {
+					std::cout << "Select/Operate result: " << cr.mResult << std::endl;
+				});
+				break;
+			}
+			default:
+				break;
 		}		
 	}
 	while(true);

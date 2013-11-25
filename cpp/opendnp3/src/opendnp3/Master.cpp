@@ -267,6 +267,12 @@ void Master::DemandIntegrityScan()
 	mSchedule.mpIntegrityPoll->Demand();
 }
 
+MasterScan Master::AddClassScan(int aClassMask, openpal::TimeDuration aScanRate, openpal::TimeDuration aRetryRate)
+{
+	auto pTask = mSchedule.AddClassScan(aClassMask, aScanRate, aRetryRate);
+	return MasterScan(mpExecutor, pTask);
+}
+
 /* Implement IAppUser */
 
 void Master::OnLowerLayerUp()

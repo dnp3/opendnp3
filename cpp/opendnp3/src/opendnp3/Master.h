@@ -32,6 +32,7 @@
 #include <opendnp3/MasterConfig.h>
 #include <opendnp3/ObjectInterfaces.h>
 #include <opendnp3/IMeasurementHandler.h>
+#include <opendnp3/MasterScan.h>
 
 #include <openpal/Visibility.h>
 #include <openpal/IExecutor.h>
@@ -94,6 +95,8 @@ public:
 	}
 
 	void DemandIntegrityScan();
+
+	MasterScan AddClassScan(int aClassMask, openpal::TimeDuration aScanRate, openpal::TimeDuration aRetryRate);
 
 	/* Implement IAppUser - callbacks from the app layer */
 

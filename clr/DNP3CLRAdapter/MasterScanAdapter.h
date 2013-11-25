@@ -17,50 +17,49 @@
 //
 // This file was forked on 01/01/2013 by Automatak, LLC and modifications
 // have been made to this file. Automatak, LLC licenses these modifications to
-// you under the GNU Affero General Public License Version 3.0
-// (the "Additional License"). You may not use these modifications except in
-// compliance with the additional license. You may obtain a copy of the Additional
-// License at
+// you under the terms of the License.
 //
-// http://www.gnu.org/licenses/agpl.html
-//
-// Contact Automatak, LLC for a commercial license to these modifications
-//
-#ifndef __LOG_TO_STDIO_H_
-#define __LOG_TO_STDIO_H_
 
-#include <mutex>
-#include <openpal/LogBase.h>
+#ifndef __MASTER_SCAN_ADAPTER_H_
+#define __MASTER_SCAN_ADAPTER_H_
 
-namespace asiopal
+using namespace System::Collections::ObjectModel;
+
+#include <opendnp3/MasterScan.h>
+#include <vcclr.h>
+
+using namespace DNP3::Interface;
+
+namespace DNP3
+{
+namespace Adapter
 {
 
-/**
-* Singleton class that prints all log messages to the console
-*
-*
-*/
-class LogToStdio : public openpal::ILogBase
+private ref class MasterScanAdapter : IMasterScan
 {
-
 public:
-	static LogToStdio* Inst() {
-		return &mInstance;
+
+	MasterScanAdapter(const opendnp3::MasterScan& arScan)
+	{
+		mpScan = new opendnp3::MasterScan(arScan);
 	}
 
-	void Log( const openpal::LogEntry& arEntry );	
-	void SetPrintLocation(bool aPrintLocation);
+	~MasterScanAdapter()
+	{
+		delete mpScan;
+	}
 
-protected:
-	LogToStdio();
+	virtual void Demand()
+	{
+		mpScan->Demand();
+	}
 
 private:
-	std::string ToNormalizedString(const std::chrono::high_resolution_clock::time_point& arTime);
-	static LogToStdio mInstance;
-	bool mPrintLocation;
-	std::mutex mMutex;
+
+	opendnp3::MasterScan* mpScan;
 };
 
+}
 }
 
 #endif

@@ -25,54 +25,24 @@
 //
 // Contact Automatak, LLC for a commercial license to these modifications
 //
-#ifndef __I_MASTER_H_
-#define __I_MASTER_H_
 
-#include "IStack.h"
-#include "MasterScan.h"
+#include <opendnp3/MasterScan.h>
 
-#include <openpal/TimeDuration.h>
+#include <openpal/IExecutor.h>
+#include "AsyncTaskBase.h"
 
 namespace opendnp3
 {
-
-class ICommandProcessor;
-
-/** Interface that represents a running master.
-* To get a command processor interface to execute controls on the master:-
-\code
-	ICommandProcessor* pCmdProcessor = pMaster->GetCommandProcessor();
-\endcode
-*/
-class IMaster : public IStack
-{
-public:
-	IMaster(openpal::Logger& arLogger, std::function<void (bool)> aEnableDisableFunc): 
-		IStack(arLogger, aEnableDisableFunc)
-	{}
-
-	virtual ~IMaster() {}
-
-	/**
-	*  Perform an integrity scan now if the master is online
-	*  Doesn't matter if the scan is configured to be periodic or non-periodic
-	*/
-	virtual void DemandIntegrityScan() = 0;
+	MasterScan::MasterScan(openpal::IExecutor* apExecutor, AsyncTaskBase* apTask) : 
+		mpExecutor(apExecutor),
+		mpTask(apTask)
+	{
 	
-	/**
-	* Add a class-based scan to the master
-	* @return A proxy class used to manipulate the scan
-	*/
-	virtual MasterScan AddClassScan(int aClassMask, openpal::TimeDuration aScanRate, openpal::TimeDuration aRetryRate) = 0;
+	}
 
-	/**
-	* Get a command processor interface to execute controls on the master
-	* @return Interface used to invoke commands
-	*/
-	virtual ICommandProcessor* GetCommandProcessor() = 0;
-};
+	void MasterScan::Demand()
+	{
+		mpExecutor->Post([this]() { mpTask->Demand(); });
+	}
 
 }
-
-#endif
-

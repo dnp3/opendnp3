@@ -146,45 +146,6 @@ namespace DNP3.Interface
 		/// </summary>
         public System.Int32 fragSize;
 	}
-
-/*
-	/// <summary>
-    /// Defines a periodic class based scan (Class 0,1,2,3)
-	/// </summary>
-	public class ExceptionScan {
-		
-        /// <summary>
-        /// Constructor that sets all values
-        /// </summary>
-        /// <param name="classMask">Bit-field that determines which classes are scanned </param>
-        /// <param name="scanRateMs">Periodic scan rate in milliseconds</param>
-        public ExceptionScan(System.Int32 classMask, System.Int64 scanRateMs)
-        {
-		    this.classMask = classMask;
-            this.scanRateMs = scanRateMs;
-	    }
-
-        /// <summary>
-        /// Scan all events every 5 seconds
-        /// </summary>
-        public ExceptionScan() 
-        {
-            this.classMask = (Int32) PointClass.PC_CLASS_0;
-            this.scanRateMs = 5000;
-        }
-
-        /// <summary>
-        /// Bit-field that determines which classes are scanned
-        /// </summary>
-        public System.Int32 classMask;
-
-        /// <summary>
-        /// Periodic scan rate in milliseconds
-        /// </summary>
-        public System.Int64 scanRateMs;
-
-	};
-*/
 	
     /// <summary>
     /// Enumeration for controlling class based scanning / eventing
@@ -199,8 +160,18 @@ namespace DNP3.Interface
 		PC_CLASS_2 = 0x04,
 		PC_CLASS_3 = 0x08,
 		PC_ALL_EVENTS = PC_CLASS_1 | PC_CLASS_2 | PC_CLASS_3,
-        PC_INVALID = 0x10
+        PC_INVALID = 0x10       
 	}
+
+    public static class PointClassHelpers
+    {
+        public static int GetMask(params PointClass[] values)
+        {
+            var i = 0;
+            foreach(var e in values) i |= (int) e;
+            return i;
+        }        
+    }
 
 	/// <summary>
     /// Configuration information for the dnp3 master

@@ -447,6 +447,9 @@
     <ClInclude Include="src\opendnp3\PostingMeasurementHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\opendnp3\MasterScan.h">
+      <Filter>Include Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\opendnp3\AnalogOutput.cpp">
@@ -729,6 +732,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\PostingMeasurementHandler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\MasterScan.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

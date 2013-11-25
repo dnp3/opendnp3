@@ -48,11 +48,15 @@ namespace DotNetMasterDemo
             channel.AddStateListener(state => Console.WriteLine("Client state: " + state));
 
             var config = new MasterStackConfig();
+            config.master.integrityRate = 60000;
             config.link.useConfirms = true; //setup your stack configuration here.
-            var master = channel.AddMaster("master", LogLevel.INFO, PrintingMeasurementHandler.Instance, config);
+            var master = channel.AddMaster("master", LogLevel.INTERPRET, PrintingMeasurementHandler.Instance, config);
 
             //optionally, add a listener for the stack state
             master.AddStateListener(state => Console.WriteLine("Master state: " + state));
+
+            var classMask = PointClassHelpers.GetMask(PointClass.PC_CLASS_1, PointClass.PC_CLASS_2, PointClass.PC_CLASS_3);
+            var classScan = master.AddClassScan(classMask, 5000, 5000);
 
             master.Enable(); // enable communications
 
@@ -67,9 +71,11 @@ namespace DotNetMasterDemo
                         var future = master.GetCommandProcessor().SelectAndOperate(new ControlRelayOutputBlock(ControlCode.CC_PULSE, 1, 100, 100), index);
                         future.Listen((status) => Console.WriteLine("Result: " + status));
                         break;
-                    case "d":
-                        Console.WriteLine("Performing demand scan");
+                    case "d":                        
                         master.DemandIntegrityScan();
+                        break;
+                    case "e":
+                        classScan.Demand();                        
                         break;
                     case "x":
                         return 0;                        

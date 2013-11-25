@@ -24,6 +24,8 @@
 
 #include <openpal/IExecutor.h>
 
+#include "ExecutorPause.h"
+
 using namespace openpal;
 
 namespace opendnp3
@@ -60,6 +62,12 @@ ILinkContext* MasterStackImpl::GetLinkContext()
 void MasterStackImpl::SetLinkRouter(ILinkRouter* apRouter)
 {
 	mAppStack.mLink.SetRouter(apRouter);
+}
+
+MasterScan MasterStackImpl::AddClassScan(int aClassMask, openpal::TimeDuration aScanRate, openpal::TimeDuration aRetryRate)
+{
+	ExecutorPause pause(mpExecutor);
+	return mMaster.AddClassScan(aClassMask, aScanRate, aRetryRate);
 }
 
 void MasterStackImpl::DemandIntegrityScan()
