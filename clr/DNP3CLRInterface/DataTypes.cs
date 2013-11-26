@@ -247,4 +247,31 @@ public class SetpointStatus {
     public readonly DateTime time;
 }
 
+public class OctetData
+{
+    public OctetData(byte[] bytes)
+    {
+        if (bytes.Length > 255) throw new ArgumentException("byte array cannot exceed length of 255", "bytes");
+        this.bytes = bytes;
+    }
+
+    public String AsString()
+    {
+        return new String(Encoding.ASCII.GetChars(bytes));
+    }
+
+    public byte[] Bytes
+    {
+        get { return Bytes; }
+    }
+
+    private readonly byte[] bytes;    
+}
+
+public class OctetString : OctetData
+{
+    public OctetString(byte[] bytes) : base(bytes)
+    { }
+}
+
 }

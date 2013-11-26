@@ -297,6 +297,13 @@ ControlStatus ^ Conversions::convertMeas(opendnp3::ControlStatus meas)
 	return gcnew ControlStatus(meas.GetValue(), meas.GetQuality(), TimeStamp::Convert(meas.GetTime()));
 }
 
+OctetString^ Conversions::convertMeas(const opendnp3::OctetString& arMeas)
+{
+	array<System::Byte>^ bytes = gcnew array<System::Byte>(arMeas.GetSize());
+	for(size_t i = 0; i< arMeas.GetSize(); ++i) bytes[i] = arMeas.Data()[i];
+	return gcnew OctetString(bytes);	
+}
+
 opendnp3::Binary Conversions::convertMeas(Binary ^ meas)
 {
 	opendnp3::Binary m(meas->value, meas->quality);

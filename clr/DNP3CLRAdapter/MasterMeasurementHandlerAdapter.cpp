@@ -41,6 +41,7 @@ void MasterMeasurementHandlerAdapter::Load(const opendnp3::IMeasurementUpdate& a
 	for(auto v: arUpdate.CounterUpdates()) updates->Load(Conversions::convertMeas(v.value), v.index);
 	for(auto v: arUpdate.ControlStatusUpdates()) updates->Load(Conversions::convertMeas(v.value), v.index);
 	for(auto v: arUpdate.SetpointStatusUpdates()) updates->Load(Conversions::convertMeas(v.value), v.index);
+	for(auto v: arUpdate.OctetStringUpdates()) updates->Load(Conversions::convertMeas(v.value), v.index);
 	proxy->Load(updates);
 }
 

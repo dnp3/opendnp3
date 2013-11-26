@@ -35,6 +35,7 @@
 #include <opendnp3/AnalogOutput.h>
 #include <opendnp3/ChannelStates.h>
 #include <opendnp3/StackState.h>
+#include <opendnp3/OctetString.h>
 
 #include <asiopal/SerialTypes.h>
 
@@ -98,6 +99,8 @@ public:
 	static Counter ^ convertMeas(opendnp3::Counter meas);
 	static SetpointStatus ^ convertMeas(opendnp3::SetpointStatus meas);
 	static ControlStatus ^ convertMeas(opendnp3::ControlStatus meas);
+	static OctetString^ Conversions::convertMeas(const opendnp3::OctetString& arMeas);
+
 
 	static opendnp3::Binary convertMeas(Binary ^ meas);
 	static opendnp3::Analog convertMeas(Analog ^ meas);

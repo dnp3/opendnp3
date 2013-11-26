@@ -48,7 +48,8 @@ namespace DNP3.Interface
         IReadOnlyCollection<IndexedValue<Analog>> AnalogUpdates { get; }
         IReadOnlyCollection<IndexedValue<Counter>> CounterUpdates { get; }
         IReadOnlyCollection<IndexedValue<ControlStatus>> ControlStatusUpdates { get; }
-        IReadOnlyCollection<IndexedValue<SetpointStatus>> SetpointStatusUpdates { get; }        
+        IReadOnlyCollection<IndexedValue<SetpointStatus>> SetpointStatusUpdates { get; }
+        IReadOnlyCollection<IndexedValue<OctetString>> OctetStringUpdates { get; }
     }
 
     public class MeasurementUpdate : IMeasurementUpdate
@@ -58,6 +59,8 @@ namespace DNP3.Interface
         public void Load(Counter v, UInt32 index) { this.counterUpdates.Add(new IndexedValue<Counter>(v, index)); }
         public void Load(ControlStatus v, UInt32 index) { this.controlStatusUpdates.Add(new IndexedValue<ControlStatus>(v, index)); }
         public void Load(SetpointStatus v, UInt32 index) { this.setpointStatusUpdates.Add(new IndexedValue<SetpointStatus>(v, index)); }
+        public void Load(OctetString v, UInt32 index) { this.octetStringUpdates.Add(new IndexedValue<OctetString>(v, index)); }
+
 
         public IReadOnlyCollection<IndexedValue<Binary>> BinaryUpdates
         {
@@ -84,11 +87,17 @@ namespace DNP3.Interface
             get { return setpointStatusUpdates; }
         }
 
+        public IReadOnlyCollection<IndexedValue<OctetString>> OctetStringUpdates
+        {
+            get { return octetStringUpdates; }
+        }
+
         private readonly List<IndexedValue<Binary>> binaryUpdates = new List<IndexedValue<Binary>>();
         private readonly List<IndexedValue<Analog>> analogUpdates = new List<IndexedValue<Analog>>();
         private readonly List<IndexedValue<Counter>> counterUpdates = new List<IndexedValue<Counter>>();
         private readonly List<IndexedValue<ControlStatus>> controlStatusUpdates = new List<IndexedValue<ControlStatus>>();
         private readonly List<IndexedValue<SetpointStatus>> setpointStatusUpdates = new List<IndexedValue<SetpointStatus>>();
+        private readonly List<IndexedValue<OctetString>> octetStringUpdates = new List<IndexedValue<OctetString>>();
     }
 
     /// <summary>
