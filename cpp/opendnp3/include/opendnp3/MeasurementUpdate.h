@@ -47,6 +47,7 @@ namespace opendnp3
 	    const CounterContainer& CounterUpdates() const override;
 	    const ControlStatusContainer& ControlStatusUpdates() const override;
 	    const SetpointStatusContainer& SetpointStatusUpdates() const override;
+		const OctetStringContainer& OctetStringUpdates() const override;
 
 		bool HasUpdates();
 
@@ -56,6 +57,7 @@ namespace opendnp3
 		void Add(const Counter& arValue, uint32_t aIndex);
 		void Add(const ControlStatus& arValue, uint32_t aIndex);
 		void Add(const SetpointStatus& arValue, uint32_t aIndex);
+		void Add(const OctetString& arValue, uint32_t aIndex);
 		
 	private:
 		std::vector<IndexedValue<Binary>> mBinaryVec;
@@ -63,6 +65,7 @@ namespace opendnp3
 		std::vector<IndexedValue<Counter>> mCounterVec;
 		std::vector<IndexedValue<ControlStatus>> mControlStatusVec;
 		std::vector<IndexedValue<SetpointStatus>> mSetpointStatusVec;		
+		std::vector<IndexedValue<OctetString>> mOctetStringVec;
 
 		MeasurementUpdate(const MeasurementUpdate& that);
 		MeasurementUpdate& operator=(const MeasurementUpdate& that);
