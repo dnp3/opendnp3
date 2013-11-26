@@ -43,7 +43,7 @@ using namespace openpal;
 using namespace asiopal;
 using namespace boost;
 
-BOOST_AUTO_TEST_SUITE(AsyncTransportLoopback)
+BOOST_AUTO_TEST_SUITE(TransportLoopbackTestSuite)
 
 // Do a bidirectional send operation and proceed until both sides have correctly
 // received all the data

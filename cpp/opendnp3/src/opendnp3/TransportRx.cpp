@@ -57,42 +57,43 @@ void TransportRx::Reset()
 
 void TransportRx::HandleReceive(const uint8_t* apData, size_t aNumBytes)
 {
-	switch(aNumBytes) {
-	case(1):
-		ERROR_BLOCK(LEV_WARNING, "Received tpdu with no payload", TLERR_NO_PAYLOAD);
-		return;
-	case(0):
-		MACRO_THROW_EXCEPTION(ArgumentException, "Zero length invalid");
-	default:
-		if(aNumBytes > TL_MAX_TPDU_LENGTH) {
-			MACRO_THROW_EXCEPTION_COMPLEX(ArgumentException, "Illegal arg: " << aNumBytes << " exceeds max tpdu size of " << TL_MAX_TPDU_LENGTH);
-		}
+	if(aNumBytes < 2)
+	{
+		ERROR_BLOCK(LEV_WARNING, "Received tpdu with no payload, size: " << aNumBytes, TLERR_NO_PAYLOAD);
 	}
+	else if(aNumBytes > TL_MAX_TPDU_LENGTH) 
+	{
+		ERROR_BLOCK(LEV_WARNING, "Illegal arg: " << aNumBytes << " exceeds max tpdu size of " << TL_MAX_TPDU_LENGTH, TLERR_TOO_MUCH_DATA);
 
-	uint8_t hdr = apData[0];
-	LOG_BLOCK(LEV_INTERPRET, "<- " << TransportLayer::ToString(hdr));
-	bool first = (hdr & TL_HDR_FIR) != 0;
-	bool last = (hdr & TL_HDR_FIN) != 0;
-	int seq = hdr & TL_HDR_SEQ;
-	size_t payload_len = aNumBytes - 1;
+	} else {
 
-	if(this->ValidateHeader(first, last, seq, payload_len)) {
-		if(BufferRemaining() < payload_len) {
-			ERROR_BLOCK(LEV_WARNING, "Exceeded the buffer size before a complete fragment was read", TLERR_BUFFER_FULL);
-			mNumBytesRead = 0;
-		}
-		else { //passed all validation
-			memcpy(mBuffer + mNumBytesRead, apData + 1, payload_len);
-			mNumBytesRead += payload_len;
-			mSeq = (mSeq + 1) % 64;
+		uint8_t hdr = apData[0];
+		LOG_BLOCK(LEV_INTERPRET, "<- " << TransportLayer::ToString(hdr));
+		bool first = (hdr & TL_HDR_FIR) != 0;
+		bool last = (hdr & TL_HDR_FIN) != 0;
+		int seq = hdr & TL_HDR_SEQ;
+		size_t payload_len = aNumBytes - 1;
 
-			if(last) {
-				size_t tmp = mNumBytesRead;
+		if(this->ValidateHeader(first, last, seq, payload_len)) {
+			if(BufferRemaining() < payload_len) {
+				ERROR_BLOCK(LEV_WARNING, "Exceeded the buffer size before a complete fragment was read", TLERR_BUFFER_FULL);
 				mNumBytesRead = 0;
-				mpContext->ReceiveAPDU(mBuffer, tmp);
+			}
+			else { //passed all validation
+				memcpy(mBuffer + mNumBytesRead, apData + 1, payload_len);
+				mNumBytesRead += payload_len;
+				mSeq = (mSeq + 1) % 64;
+
+				if(last) {
+					size_t tmp = mNumBytesRead;
+					mNumBytesRead = 0;
+					mpContext->ReceiveAPDU(mBuffer, tmp);
+				}
 			}
 		}
 	}
+	
+	
 }
 
 bool TransportRx::ValidateHeader(bool aFir, bool aFin, int aSeq, size_t aPayloadSize)

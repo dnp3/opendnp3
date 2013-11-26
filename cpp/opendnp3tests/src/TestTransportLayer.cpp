@@ -35,7 +35,7 @@ using namespace std;
 using namespace openpal;
 using namespace opendnp3;
 
-BOOST_AUTO_TEST_SUITE(AsyncTransportSuite)
+BOOST_AUTO_TEST_SUITE(TransportLayerTestSuite)
 
 // make sure an invalid state exception gets thrown
 // for every event other than LowerLayerUp() since
@@ -68,10 +68,17 @@ BOOST_AUTO_TEST_CASE(TestStateReady)
 
 BOOST_AUTO_TEST_CASE(TestReceiveBadArguments)
 {
-	TransportTestObject test(true);
+	TransportTestObject test(true);	
+
 	//check that the wrong aruments throw argument exceptions, and it's doesn't go to the sending state
-	BOOST_REQUIRE_THROW(test.lower.SendUp(""), ArgumentException);   // length 0
-	BOOST_REQUIRE_THROW(test.lower.SendUp(test.GetData("C0", 0, 250)), ArgumentException); // length 251
+	test.lower.SendUp("");
+	BOOST_REQUIRE_EQUAL(TLERR_NO_PAYLOAD, test.log.NextErrorCode());
+	test.lower.SendUp("FF");
+	BOOST_REQUIRE_EQUAL(TLERR_NO_PAYLOAD, test.log.NextErrorCode());	
+
+	test.lower.SendUp(test.GetData("C0", 0, 250)); // length 251
+
+	BOOST_REQUIRE_EQUAL(TLERR_TOO_MUCH_DATA, test.log.NextErrorCode());
 }
 
 BOOST_AUTO_TEST_CASE(TestReceiveNoPayload)
