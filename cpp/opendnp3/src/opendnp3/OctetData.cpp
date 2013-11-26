@@ -20,7 +20,7 @@
 // you under the terms of the License.
 //
 
-#include "VtoData.h"
+#include "OctetData.h"
 
 #include <assert.h>
 #include <memory.h>
@@ -28,30 +28,44 @@
 namespace opendnp3
 {
 
-VtoData::VtoData() : mSize(0)
-{}
+OctetData::OctetData() :  mpData(NULL), mSize(0)
+{
 
-VtoData::VtoData(size_t aSize) : mSize(aSize)
+}
+
+OctetData::OctetData(const uint8_t* apValue, size_t aSize) : mpData(NULL), mSize(0)	
 {
 	assert(aSize <= MAX_SIZE);
+	mpData = new uint8_t[aSize];
+	mSize = aSize;
 }
 
-VtoData::VtoData(const uint8_t* apValue, size_t aSize)	
+
+OctetData::OctetData(const OctetData& arCopy) : mpData(NULL), mSize(0)
 {
-	this->Copy(apValue, aSize);
+	mSize = arCopy.GetSize();
+	mpData = new uint8_t[mSize];
+	memcpy(mpData, arCopy.Data(), mSize);	
 }
 
-size_t VtoData::GetSize() const
+OctetData::~OctetData()
+{
+	if(mpData != NULL) {
+		delete[] mpData;
+		mpData = NULL;
+	}
+}
+
+const uint8_t* OctetData::Data() const
+{
+	return mpData;
+}
+
+size_t OctetData::GetSize() const
 {
 	return this->mSize;
 }
 
-void VtoData::Copy(const uint8_t* apValue, size_t aSize)
-{
-	assert(aSize <= MAX_SIZE);
-	memcpy(this->mpData, apValue, aSize);
-	this->mSize = aSize;
-}
 
 }
 

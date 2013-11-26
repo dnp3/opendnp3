@@ -104,8 +104,6 @@ BOOST_AUTO_TEST_CASE(ResetEventsProperlyOnFailure)
 
 	InsertionOrderedEventBuffer<VtoEvent> b(NUM);
 
-	VtoData info;
-
 	size_t numResults;
 
 	VtoDataEventIter itr;
@@ -115,8 +113,8 @@ BOOST_AUTO_TEST_CASE(ResetEventsProperlyOnFailure)
 		uint8_t j;
 		for (j = 0; j < dataSize; ++j)
 			trash[j] = i;
-
-		info.Copy(trash, dataSize);
+		
+		VtoData info(trash, dataSize);		
 		b.Update(info, PC_CLASS_1, dataSize);
 	}
 
@@ -128,7 +126,7 @@ BOOST_AUTO_TEST_CASE(ResetEventsProperlyOnFailure)
 
 	itr = b.Begin();
 	for (size_t i = 0; i < b.NumSelected(); ++i) {
-		const uint8_t* value = itr->mValue.mpData;
+		const uint8_t* value = itr->mValue.Data();
 		for (size_t j = 0; j < dataSize; ++j) {
 			//		BOOST_REQUIRE_EQUAL(value[j], i);
 		}
@@ -141,7 +139,7 @@ BOOST_AUTO_TEST_CASE(ResetEventsProperlyOnFailure)
 
 	itr = b.Begin();
 	for (size_t i = 0; i < b.NumSelected(); ++i) {
-		const uint8_t* value = itr->mValue.mpData;
+		const uint8_t* value = itr->mValue.Data();
 		for (size_t j = 0; j < dataSize; ++j) {
 //			BOOST_REQUIRE_EQUAL(value[j], i);
 		}

@@ -292,7 +292,8 @@
     <ClInclude Include="src\opendnp3\TransportStates.h" />
     <ClInclude Include="src\opendnp3\TransportTx.h" />
     <ClInclude Include="src\opendnp3\UnsolicitedChannel.h" />
-    <ClInclude Include="src\opendnp3\VtoData.h" />
+    <ClInclude Include="src\opendnp3\OctetData.h" />
+    <ClInclude Include="src\opendnp3\VTOData.h" />
     <ClInclude Include="StackBase.h" />
   </ItemGroup>
   <ItemGroup>
@@ -390,7 +391,7 @@
     <ClCompile Include="src\opendnp3\TransportTx.cpp" />
     <ClCompile Include="src\opendnp3\UnsolicitedChannel.cpp" />
     <ClCompile Include="src\opendnp3\Util.cpp" />
-    <ClCompile Include="src\opendnp3\VtoData.cpp" />
+    <ClCompile Include="src\opendnp3\OctetData.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\gecapache.licenseheader" />

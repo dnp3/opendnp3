@@ -406,7 +406,7 @@ size_t ResponseContext::IterateIndexed(VtoEventRequest& arRequest, VtoDataEventI
 		arRequest.pObj->Write(
 		        *itr,
 		        arIter->mValue.GetSize(),
-		        arIter->mValue.mpData
+				arIter->mValue.Data()
 		);
 
 		/* Mark the data segment as being written */

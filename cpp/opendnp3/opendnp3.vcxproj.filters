@@ -387,9 +387,6 @@
     <ClInclude Include="src\opendnp3\UnsolicitedChannel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\VtoData.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\opendnp3\LogEntryCircularBuffer.h">
       <Filter>Include Files</Filter>
     </ClInclude>
@@ -449,6 +446,12 @@
     </ClInclude>
     <ClInclude Include="include\opendnp3\MasterScan.h">
       <Filter>Include Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\OctetData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\VTOData.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -704,9 +707,6 @@
     <ClCompile Include="src\opendnp3\Util.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\VtoData.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\opendnp3\ChannelStates.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -735,6 +735,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\MasterScan.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\OctetData.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
