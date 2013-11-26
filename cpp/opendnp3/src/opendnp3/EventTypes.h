@@ -24,7 +24,8 @@
 #define __EVENT_TYPES_H_
 
 #include "DNPDatabaseTypes.h"
-#include "VtoData.h"
+
+#include <opendnp3/VTOData.h>
 
 #include <openpal/Visibility.h>
 

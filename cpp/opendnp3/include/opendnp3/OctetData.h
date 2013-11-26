@@ -26,28 +26,35 @@
 //
 // Contact Automatak, LLC for a commercial license to these modifications
 //
-#ifndef __VTO_DATA_H_
-#define __VTO_DATA_H_
+#ifndef __OCTET_DATA_H_
+#define __OCTET_DATA_H_
 
-#include "OctetData.h"
-
+#include <string>
+#include <cstdint>
 
 namespace opendnp3
 {
 
-class DLL_LOCAL VtoData : public OctetData
+class OctetData
 {
-public:	
+public:
 
-	VtoData() : OctetData()
-	{}
-	
-	VtoData(const VtoData& arData) : OctetData(arData)
-	{}
+	const static size_t MAX_SIZE = 255;
 
-	VtoData(const uint8_t* apValue, size_t aSize) : OctetData(apValue, aSize)
-	{}
-	
+	OctetData();	
+	OctetData(const uint8_t* apValue, size_t aSize);
+	OctetData(const OctetData&);
+
+	~OctetData();
+
+	const uint8_t* Data() const;
+
+	size_t GetSize() const;	
+
+private:
+
+	uint8_t* mpData;
+	size_t mSize;	
 };
 
 }

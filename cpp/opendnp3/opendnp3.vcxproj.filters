@@ -447,11 +447,14 @@
     <ClInclude Include="include\opendnp3\MasterScan.h">
       <Filter>Include Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\OctetData.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="include\opendnp3\OctetData.h">
+      <Filter>Include Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\VTOData.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="include\opendnp3\OctetString.h">
+      <Filter>Include Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\opendnp3\VTOData.h">
+      <Filter>Include Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

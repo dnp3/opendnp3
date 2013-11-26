@@ -17,58 +17,41 @@
 //
 // This file was forked on 01/01/2013 by Automatak, LLC and modifications
 // have been made to this file. Automatak, LLC licenses these modifications to
-// you under the terms of the License.
+// you under the GNU Affero General Public License Version 3.0
+// (the "Additional License"). You may not use these modifications except in
+// compliance with the additional license. You may obtain a copy of the Additional
+// License at
 //
+// http://www.gnu.org/licenses/agpl.html
+//
+// Contact Automatak, LLC for a commercial license to these modifications
+//
+#ifndef __OCTET_STRING_H_
+#define __OCTET_STRING_H_
 
-#include <opendnp3/OctetData.h>
-
-#include <assert.h>
-#include <memory.h>
+#include "OctetData.h"
 
 namespace opendnp3
 {
 
-OctetData::OctetData() :  mpData(NULL), mSize(0)
+class OctetString : public OctetData
 {
+public:	
 
-}
+	OctetString() : OctetData()
+	{}
+	
+	OctetString(const OctetString& arData) : OctetData(arData)
+	{}
 
-OctetData::OctetData(const uint8_t* apValue, size_t aSize) : mpData(NULL), mSize(0)	
-{
-	assert(aSize <= MAX_SIZE);
-	mpData = new uint8_t[aSize];
-	mSize = aSize;
-}
-
-
-OctetData::OctetData(const OctetData& arCopy) : mpData(NULL), mSize(0)
-{
-	mSize = arCopy.GetSize();
-	mpData = new uint8_t[mSize];
-	memcpy(mpData, arCopy.Data(), mSize);	
-}
-
-OctetData::~OctetData()
-{
-	if(mpData != NULL) {
-		delete[] mpData;
-		mpData = NULL;
-	}
-}
-
-const uint8_t* OctetData::Data() const
-{
-	return mpData;
-}
-
-size_t OctetData::GetSize() const
-{
-	return this->mSize;
-}
-
+	OctetString(const uint8_t* apValue, size_t aSize) : OctetData(apValue, aSize)
+	{}
+	
+};
 
 }
 
 /* vim: set ts=4 sw=4: */
 
+#endif
 
