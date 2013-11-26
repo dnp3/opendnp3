@@ -51,6 +51,8 @@ public:
 
 	virtual ~IOutstation() {}
 
+	virtual void SetNeedTimeIIN() = 0;
+
 	/**
 	* Get a data observer interface to load measurements on the outstation
 	* @return Inteface used to load measurements into the outstation

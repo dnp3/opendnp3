@@ -49,6 +49,11 @@ IDataObserver* OutstationStackImpl::GetDataObserver()
 	return mSlave.GetDataObserver();
 }
 
+void OutstationStackImpl::SetNeedTimeIIN()
+{
+	mpExecutor->Post([this](){ this->mSlave.SetNeedTimeIIN(); });
+}
+
 ILinkContext* OutstationStackImpl::GetLinkContext()
 {
 	return &mAppStack.mLink;

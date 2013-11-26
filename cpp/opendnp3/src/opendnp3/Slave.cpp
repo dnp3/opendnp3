@@ -67,7 +67,7 @@ Slave::Slave(openpal::Logger aLogger, IAppLayer* apAppLayer, IExecutor* apExecut
 	/* Link the event buffer to the database */
 	mpDatabase->SetEventBuffer(mRspContext.GetBuffer());
 
-	mIIN.SetDeviceRestart(true);	/* Always set on restart */
+	mIIN.SetDeviceRestart(true);	// Always set on restart
 
 	/*
 	 * Incoming data will trigger a POST on the timer source to call
@@ -90,6 +90,11 @@ Slave::~Slave()
 	if(mpUnsolTimer) mpUnsolTimer->Cancel();
 	if(mpTimeTimer) mpTimeTimer->Cancel();
 
+}
+
+void Slave::SetNeedTimeIIN()
+{
+	mIIN.SetNeedTime(true);
 }
 
 void Slave::UpdateState(StackState aState)

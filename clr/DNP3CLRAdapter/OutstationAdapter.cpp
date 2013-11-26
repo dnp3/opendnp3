@@ -48,6 +48,11 @@ IDataObserver ^ OutstationAdapter::GetDataObserver()
 	return mDataObserverAdapter;
 }
 
+void OutstationAdapter::SetNeedTimeIIN()
+{
+	mpOutstation->SetNeedTimeIIN();
+}
+
 void OutstationAdapter::Shutdown()
 {
 	mpOutstation->Shutdown();

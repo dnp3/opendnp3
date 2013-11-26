@@ -97,6 +97,8 @@ public:
 	// External events
 	////////////////////////
 
+	void SetNeedTimeIIN();
+
 	/* Implement IAppUser - callbacks from the app layer */
 	void OnLowerLayerUp();
 	void OnLowerLayerDown();

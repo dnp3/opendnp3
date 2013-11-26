@@ -58,6 +58,8 @@ public:
 
 	IDataObserver* GetDataObserver();
 
+	void SetNeedTimeIIN();
+
 	ILinkContext* GetLinkContext();
 
 	void SetLinkRouter(ILinkRouter* apRouter);
