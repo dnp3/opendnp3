@@ -37,7 +37,25 @@ OctetData::OctetData(const uint8_t* apValue, size_t aSize) : mpData(NULL), mSize
 {
 	assert(aSize <= MAX_SIZE);
 	mpData = new uint8_t[aSize];
+	memcpy(mpData, apValue, aSize);
 	mSize = aSize;
+}
+
+OctetData& OctetData::operator=( const OctetData& rhs )
+{
+	if(&rhs != this) {
+		assert(rhs.mSize <= MAX_SIZE);
+		if(mpData != NULL)
+		{
+			delete[] mpData;
+			mpData = NULL;
+			mSize = 0;
+		}
+		mpData = new uint8_t[rhs.mSize];
+		memcpy(mpData, rhs.mpData, rhs.mSize);
+		mSize = rhs.mSize;
+	}
+	return *this;
 }
 
 
@@ -59,6 +77,11 @@ OctetData::~OctetData()
 const uint8_t* OctetData::Data() const
 {
 	return mpData;
+}
+
+std::string OctetData::AsString() const
+{
+	return std::string(reinterpret_cast<char*>(mpData), mSize);
 }
 
 size_t OctetData::GetSize() const

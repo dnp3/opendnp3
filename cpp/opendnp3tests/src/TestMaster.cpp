@@ -492,7 +492,7 @@ BOOST_AUTO_TEST_CASE(SolicitedResponseWithData)
 
 	BOOST_REQUIRE(t.mts.DispatchOne()); //disptach measurement callback
 
-	BOOST_REQUIRE(Binary(true, BQ_ONLINE) == t.meas.mBinaryMap[2]);
+	BOOST_REQUIRE(Binary(true, BQ_ONLINE) == t.meas.GetBinary(2));
 }
 
 BOOST_AUTO_TEST_CASE(SolicitedResponseFailure)
@@ -532,13 +532,13 @@ BOOST_AUTO_TEST_CASE(SolicitedMultiFragResponse)
 
 	BOOST_REQUIRE(t.mts.DispatchOne()); //dispatch measurement callback
 
-	BOOST_REQUIRE(Binary(true, BQ_ONLINE) == t.meas.mBinaryMap[2]);
+	BOOST_REQUIRE(Binary(true, BQ_ONLINE) == t.meas.GetBinary(2));
 
 	BOOST_REQUIRE_EQUAL(0, t.app.NumAPDU());
 
 	t.RespondToMaster("C0 81 00 00 01 02 00 03 03 02");
 	BOOST_REQUIRE(t.mts.DispatchOne()); //disptch measurement callback
-	BOOST_REQUIRE(Binary(false, BQ_RESTART) == t.meas.mBinaryMap[3]);
+	BOOST_REQUIRE(Binary(false, BQ_RESTART) == t.meas.GetBinary(3));
 }
 
 BOOST_AUTO_TEST_CASE(EventPoll)
@@ -566,7 +566,40 @@ BOOST_AUTO_TEST_CASE(EventPoll)
 
 	BOOST_REQUIRE(t.mts.DispatchOne());
 
-	BOOST_REQUIRE(Binary(true, BQ_ONLINE) == t.meas.mBinaryMap[2]);
+	BOOST_REQUIRE(Binary(true, BQ_ONLINE) == t.meas.GetBinary(2));
+}
+
+BOOST_AUTO_TEST_CASE(ParsesOctetStringResponseWithFiveCharacters)
+{
+	MasterConfig master_cfg;
+	MasterTestObject t(master_cfg);
+	t.master.OnLowerLayerUp();
+
+	TestForIntegrityPoll(t);
+
+	// Group 111 (0x6F) Variation (length), 1 byte count / 1 byte index (4), count of 1, "hello" == [0x68, 0x65, 0x6C, 0x6C, 0x6F]
+	t.SendUnsolToMaster("C0 82 00 00 6F 05 17 01 04 68 65 6C 6C 6F");
+
+	BOOST_REQUIRE(t.mts.DispatchOne());
+
+	BOOST_REQUIRE_EQUAL("hello", t.meas.GetOctetString(4).AsString());
+}
+
+BOOST_AUTO_TEST_CASE(ParsesOctetStringResponseWithNoCharacters)
+{
+	MasterConfig master_cfg;
+	MasterTestObject t(master_cfg);
+	t.master.OnLowerLayerUp();	
+
+	// octet strings shouldn't be found in class 0 polls, but we'll test that we can process them anyway
+	BOOST_REQUIRE_EQUAL("C0 01 3C 01 06", t.Read());
+
+	// Group 110 (0x6E) Variation (length), 1 byte count / 1 byte index (3), count of 1, ""
+	t.RespondToMaster("C0 81 00 00 6E 00 17 01 03");
+
+	BOOST_REQUIRE(t.mts.DispatchOne());
+
+	BOOST_REQUIRE_EQUAL("", t.meas.GetOctetString(3).AsString());
 }
 
 BOOST_AUTO_TEST_SUITE_END() //end suite

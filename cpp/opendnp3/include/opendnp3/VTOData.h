@@ -46,7 +46,7 @@ public:
 
 	VtoData(const uint8_t* apValue, size_t aSize) : OctetData(apValue, aSize)
 	{}
-	
+
 };
 
 }

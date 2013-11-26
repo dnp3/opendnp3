@@ -119,11 +119,9 @@ private:
 	 * via the VtoReader instance.
 	 *
 	 * @param arIter	the header iterator that provides access to the
-	 * 					group, variation, data, etc.
-	 * @param apObj		the pointer to the DNP3 object instance that can
-	 * 					read/write the byte stream
+	 * 					group, variation, data, etc.	 
 	 */
-	// void ReadVto(HeaderReadIterator& arIter, SizeByVariationObject* apObj);
+	void ReadOctetData(HeaderReadIterator& arIter, const std::function<void (const uint8_t*, size_t, uint32_t)>& process);
 
 	std::function<void (MeasurementUpdate&)> mCallback;
 	MeasurementUpdate mUpdate;

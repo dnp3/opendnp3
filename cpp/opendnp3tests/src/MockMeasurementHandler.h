@@ -33,10 +33,7 @@
 namespace opendnp3
 {
 
-template <typename T>
-struct PointMap {
-	typedef std::map<size_t, T> Type;
-};
+
 
 // simple measurement handler for testing purposes
 class MockMeasurementHandler : public IMeasurementHandler
@@ -45,15 +42,7 @@ public:
 
 	MockMeasurementHandler()
 	{}
-
-	// allow direct access to the maps
-	PointMap<Binary>::Type mBinaryMap;
-	PointMap<Analog>::Type mAnalogMap;
-	PointMap<Counter>::Type mCounterMap;
-	PointMap<ControlStatus>::Type mControlStatusMap;
-	PointMap<SetpointStatus>::Type mSetpointStatusMap;
-	PointMap<OctetString>::Type mOctetStringMap;
-		
+			
 	void Load(const IMeasurementUpdate& arUpdate) override
 	{
 		for(auto v: arUpdate.BinaryUpdates()) mBinaryMap[v.index] = v.value;
@@ -73,6 +62,37 @@ public:
 		mSetpointStatusMap.clear();
 		mOctetStringMap.clear();
 	}
+
+	Binary GetBinary(uint32_t aIndex) { return GetAny<Binary>(aIndex, mBinaryMap); }
+	Analog GetAnalog(uint32_t aIndex) { return GetAny<Analog>(aIndex, mAnalogMap); }
+	Counter GetCounter(uint32_t aIndex) { return GetAny<Counter>(aIndex, mCounterMap); }
+	ControlStatus GetControlStatus(uint32_t aIndex) { return GetAny<ControlStatus>(aIndex, mControlStatusMap); }
+	SetpointStatus GetSetpointStatus(uint32_t aIndex) { return GetAny<SetpointStatus>(aIndex, mSetpointStatusMap); }
+	OctetString GetOctetString(uint32_t aIndex) { return GetAny<OctetString>(aIndex, mOctetStringMap); }
+
+	
+
+private:
+
+	template <typename T>
+	struct PointMap {
+		typedef std::map<uint32_t, T> Type;
+	};
+
+	template <class T>
+	T GetAny(uint32_t aIndex, const typename PointMap<T>::Type& arMap)
+	{
+		auto iter = arMap.find(aIndex);
+		if(iter == arMap.end()) throw Exception(LOCATION, "Index not found in map");
+		else return iter->second;
+	}
+		
+	PointMap<Binary>::Type mBinaryMap;
+	PointMap<Analog>::Type mAnalogMap;
+	PointMap<Counter>::Type mCounterMap;
+	PointMap<ControlStatus>::Type mControlStatusMap;
+	PointMap<SetpointStatus>::Type mSetpointStatusMap;
+	PointMap<OctetString>::Type mOctetStringMap;
 
 };
 

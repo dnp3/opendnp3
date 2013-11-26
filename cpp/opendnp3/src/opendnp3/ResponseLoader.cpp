@@ -130,6 +130,14 @@ void ResponseLoader::ProcessSizeByVariation(HeaderReadIterator& arIter, int aGrp
 		//case (112): this->ReadVto(arIter, Group112Var0::Inst()); break;
 		//case (113): this->ReadVto(arIter, Group113Var0::Inst()); break;
 
+
+	case (110):  // static/event octet strings get processed the same way
+	case (111):
+			this->ReadOctetData(arIter, [this](const uint8_t* apBuffer, size_t aSize, uint32_t aIndex) {
+				this->mUpdate.Add(OctetString(apBuffer, aSize), aIndex);
+			});
+		break;
+
 	default:
 		/*
 		* If we reach this point, then we don't yet support this object type.
@@ -142,28 +150,21 @@ void ResponseLoader::ProcessSizeByVariation(HeaderReadIterator& arIter, int aGrp
 	}
 }
 
-/*
-void ResponseLoader::ReadVto(HeaderReadIterator& arIter, SizeByVariationObject* apObj)
+void ResponseLoader::ReadOctetData(HeaderReadIterator& arIter, const std::function<void (const uint8_t*, size_t, uint32_t)>& process)
 {
 	// Get an iterator to the object data
 	ObjectReadIterator objIter = arIter.BeginRead();
 
-	// Copy the object data to a VtoData instance
-	VtoData data;
-	data.Copy(*objIter, arIter->GetVariation());
-
-	// Determine the Virtual Terminal port/channel number
-	size_t index = objIter->Index();
-	if(index > std::numeric_limits<uint8_t>::max()) {
-		LOG_BLOCK(LEV_WARNING, "Ignoring VTO index that exceeds bit width of uint8_t: " << index);
-	}
-	else {
-		uint8_t channel = static_cast<uint8_t>(index);
-		Transaction t(mpVtoReader);
-		this->mpVtoReader->Update(data, channel);
+	while(!objIter.IsEnd())
+	{
+		uint32_t index = objIter->Index();
+		const uint8_t* pData = *objIter;
+		size_t size = arIter->GetVariation();
+		process(pData, size, index);
+		++objIter;
 	}
 }
-*/
+
 
 }
 
