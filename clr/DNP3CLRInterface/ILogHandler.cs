@@ -117,7 +117,7 @@ namespace DNP3.Interface
 
         public void Log(LogEntry entry)
         {
-            Console.WriteLine(entry.message);
+            Console.WriteLine(DateTime.Now + " - " + entry.message);
         }
 
         private PrintingLogAdapter()

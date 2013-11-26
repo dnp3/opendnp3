@@ -31,7 +31,7 @@ using namespace std;
 
 namespace openpal
 {
-
+	
 Logger::Logger(ILogBase* apLog, int aLevel, const std::string& aName)
 	:
 	mLevel(aLevel),
@@ -41,7 +41,6 @@ Logger::Logger(ILogBase* apLog, int aLevel, const std::string& aName)
 
 }
 
-
 Logger::Logger(ILogBase* apLog, FilterLevel aLevel, const std::string& aName)
 	:
 	mLevel(LogTypes::FilterLevelToMask(aLevel)),
@@ -49,6 +48,13 @@ Logger::Logger(ILogBase* apLog, FilterLevel aLevel, const std::string& aName)
 	mName(aName)
 {
 
+}
+
+Logger Logger::GetSubLogger(std::string aSubName, FilterLevel aLevel) const
+{
+	std::ostringstream oss;
+	oss << mName << "." << aSubName;
+	return Logger(mpLog, aLevel, oss.str());
 }
 
 Logger Logger::GetSubLogger(std::string aSubName, int aLevel) const

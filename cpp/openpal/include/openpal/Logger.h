@@ -48,9 +48,7 @@ class Logger
 
 public:
 
-	Logger(ILogBase* apLog, FilterLevel aLevel, const std::string& aName);
-
-	Logger(ILogBase* apLog, int aLevel, const std::string& aName);
+	Logger(ILogBase* apLog, FilterLevel aLevel, const std::string& aName);	
 
 	void Log( FilterLevel aFilterLevel, const std::string& arLocation, const std::string& aMessage, int aErrorCode = -1);
 
@@ -73,10 +71,13 @@ public:
 		return mLevel;
 	}
 
-	Logger GetSubLogger(std::string aSubName, int aLevel) const;
+	Logger GetSubLogger(std::string aSubName, FilterLevel aLevel) const;	
 	Logger GetSubLogger(std::string aName) const;
 
 private:
+
+	Logger(ILogBase* apLog, int aLevel, const std::string& aName);
+	Logger GetSubLogger(std::string aSubName, int aLevel) const;
 
 	int					mLevel;   // bit field describing what is being logged
 	ILogBase*			mpLog;
