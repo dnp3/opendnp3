@@ -109,6 +109,7 @@ cpp/opendnp3/src/opendnp3/MasterStates.cpp \
 cpp/opendnp3/src/opendnp3/MasterTaskBase.cpp \
 cpp/opendnp3/src/opendnp3/MeasurementUpdate.cpp \
 cpp/opendnp3/src/opendnp3/MultiplexingDataObserver.cpp \
+cpp/opendnp3/src/opendnp3/OctetData.cpp \
 cpp/opendnp3/src/opendnp3/ObjectHeader.cpp \
 cpp/opendnp3/src/opendnp3/ObjectInterfaces.cpp \
 cpp/opendnp3/src/opendnp3/ObjectReadIterator.cpp \
@@ -148,8 +149,7 @@ cpp/opendnp3/src/opendnp3/TransportRx.cpp \
 cpp/opendnp3/src/opendnp3/TransportStates.cpp \
 cpp/opendnp3/src/opendnp3/TransportTx.cpp \
 cpp/opendnp3/src/opendnp3/UnsolicitedChannel.cpp \
-cpp/opendnp3/src/opendnp3/Util.cpp \
-cpp/opendnp3/src/opendnp3/VtoData.cpp
+cpp/opendnp3/src/opendnp3/Util.cpp
 
 #ls cpp/opendnp3tests/src/*.cpp -1 | awk '{print $0" \\"}'
 check_PROGRAMS = dnp3test

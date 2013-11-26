@@ -26,7 +26,7 @@
 
 #include <opendnp3/EventBuffers.h>
 #include <opendnp3/EventTypes.h>
-#include <opendnp3/VtoData.h>
+#include <opendnp3/VTOData.h>
 
 #include <iostream>
 #include <limits>
