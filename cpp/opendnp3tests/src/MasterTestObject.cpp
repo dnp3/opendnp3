@@ -38,9 +38,9 @@ MasterTestObject::MasterTestObject(MasterConfig cfg, openpal::FilterLevel aLevel
 	fixedUTC(0),
 	mts(),
 	group(&mts),
-	fdo(),
+	meas(),
 	app(Logger(&log, aLevel, "MockAppLayer")),
-	master(Logger(&log, aLevel, "master"), cfg, &app, &fdo, &group, &mts, &fixedUTC)
+	master(Logger(&log, aLevel, "master"), cfg, &app, &meas, &group, &mts, &fixedUTC)
 {
 	app.SetUser(&master);
 }

@@ -164,6 +164,9 @@
     <ClInclude Include="src\WrappedTcpPipe.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\MockMeasurementHandler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\AppLayerTest.cpp">

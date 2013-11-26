@@ -31,7 +31,7 @@
 
 #include <deque>
 
-#include "FlexibleDataObserver.h"
+#include "MockMeasurementHandler.h"
 #include "MockAppLayer.h"
 
 namespace opendnp3
@@ -55,7 +55,7 @@ public:
 	openpal::FixedUTCTimeSource fixedUTC;
 	MockExecutor mts;
 	AsyncTaskGroup group;
-	FlexibleDataObserver fdo;
+	MockMeasurementHandler meas;
 	MockAppLayer app;
 	Master master;
 	APDU mAPDU;

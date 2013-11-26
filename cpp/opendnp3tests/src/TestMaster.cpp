@@ -492,7 +492,7 @@ BOOST_AUTO_TEST_CASE(SolicitedResponseWithData)
 
 	BOOST_REQUIRE(t.mts.DispatchOne()); //disptach measurement callback
 
-	BOOST_REQUIRE(t.fdo.Check(true, BQ_ONLINE, 2, 0));
+	BOOST_REQUIRE(Binary(true, BQ_ONLINE) == t.meas.mBinaryMap[2]);
 }
 
 BOOST_AUTO_TEST_CASE(SolicitedResponseFailure)
@@ -531,40 +531,43 @@ BOOST_AUTO_TEST_CASE(SolicitedMultiFragResponse)
 	t.RespondToMaster("C0 81 00 00 01 02 00 02 02 81", false); //trigger partial response
 
 	BOOST_REQUIRE(t.mts.DispatchOne()); //dispatch measurement callback
-	BOOST_REQUIRE(t.fdo.Check(true, BQ_ONLINE, 2, 0));
+
+	BOOST_REQUIRE(Binary(true, BQ_ONLINE) == t.meas.mBinaryMap[2]);
 
 	BOOST_REQUIRE_EQUAL(0, t.app.NumAPDU());
 
 	t.RespondToMaster("C0 81 00 00 01 02 00 03 03 02");
 	BOOST_REQUIRE(t.mts.DispatchOne()); //disptch measurement callback
-	BOOST_REQUIRE(t.fdo.Check(false, BQ_RESTART, 3, 0));
+	BOOST_REQUIRE(Binary(false, BQ_RESTART) == t.meas.mBinaryMap[3]);
 }
 
-/* TODO - re-enable test with new scan interface
 BOOST_AUTO_TEST_CASE(EventPoll)
 {
 	MasterConfig master_cfg;
-	ExceptionScan scan;
-	scan.ClassMask = PC_CLASS_1 | PC_CLASS_2;
-	scan.ScanRate = TimeDuration::Milliseconds(10);
-	master_cfg.mScans.push_back(scan);
-	scan.ClassMask = PC_CLASS_3;
-	master_cfg.mScans.push_back(scan);
 	MasterTestObject t(master_cfg);
+
+	t.master.AddClassScan(PC_CLASS_1 | PC_CLASS_2, TimeDuration::Milliseconds(10), TimeDuration::Seconds(1));
+	t.master.AddClassScan(PC_CLASS_3, TimeDuration::Milliseconds(10), TimeDuration::Seconds(1));
+
 	t.master.OnLowerLayerUp();
 
 	BOOST_REQUIRE_EQUAL(t.Read(), "C0 01 3C 01 06");
 	t.RespondToMaster("C0 81 00 00 01 02 00 02 02 81"); //group 2 var 1, index = 2, 0x81 = Online, true
 
+	BOOST_REQUIRE(t.mts.DispatchOne());
+
 	BOOST_REQUIRE_EQUAL(t.Read(), "C0 01 3C 02 06 3C 03 06");
 	t.RespondToMaster("C0 81 00 00 01 02 00 02 02 81"); //group 2 var 1, index = 2, 0x81 = Online, true
+
+	BOOST_REQUIRE(t.mts.DispatchOne());
 
 	BOOST_REQUIRE_EQUAL(t.Read(), "C0 01 3C 04 06");
 	t.RespondToMaster("C0 81 00 00 01 02 00 02 02 81"); //group 2 var 1, index = 2, 0x81 = Online, true
 
-	BOOST_REQUIRE(t.fdo.Check(true, BQ_ONLINE, 2, 0));
+	BOOST_REQUIRE(t.mts.DispatchOne());
+
+	BOOST_REQUIRE(Binary(true, BQ_ONLINE) == t.meas.mBinaryMap[2]);
 }
-*/
 
 BOOST_AUTO_TEST_SUITE_END() //end suite
 
