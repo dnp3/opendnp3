@@ -75,9 +75,6 @@ class IChannel : public DestructorHook
 {
 public:
 
-	IChannel(openpal::IExecutor* apExecutor) : DestructorHook(apExecutor)
-	{}
-
 	virtual ~IChannel() {}
 
 	/**

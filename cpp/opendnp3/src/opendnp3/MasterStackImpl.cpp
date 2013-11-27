@@ -40,7 +40,7 @@ MasterStackImpl::MasterStackImpl(	Logger aLogger,
 										std::function<void (bool)> aEnableDisableFunc,
                                         std::function<void (IMaster*)> aOnShutdown) :
 
-	IMaster(apExecutor, aLogger, aEnableDisableFunc),
+	IMaster(aLogger, aEnableDisableFunc),
 	mpExecutor(apExecutor),
 	mAppStack(aLogger, apExecutor, arCfg.app, arCfg.link),
 	mMaster(aLogger.GetSubLogger("master"), arCfg.master, &mAppStack.mApplication, apPublisher, apTaskGroup, apExecutor, apTimeSource),

@@ -37,7 +37,6 @@ namespace opendnp3
 {
 
 DNP3Channel::DNP3Channel(openpal::Logger aLogger, openpal::TimeDuration aOpenRetry, IPhysicalLayerAsync* apPhys, std::function<void (DNP3Channel*)> aOnShutdown) :
-	IChannel(apPhys->GetExecutor()),
 	Loggable(aLogger),
 	mpPhys(apPhys),
 	mOnShutdown(aOnShutdown),

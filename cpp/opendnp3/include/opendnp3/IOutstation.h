@@ -45,8 +45,8 @@ class IDataObserver;
 class IOutstation : public IStack
 {
 public:
-	IOutstation(openpal::IExecutor* apExecutor, openpal::Logger& arLogger, std::function<void (bool)> aEnableDisableFunc): 
-		IStack(apExecutor, arLogger,aEnableDisableFunc)	
+	IOutstation(openpal::Logger& arLogger, std::function<void (bool)> aEnableDisableFunc): 
+		IStack(arLogger,aEnableDisableFunc)	
 	{}
 
 	virtual ~IOutstation() {}

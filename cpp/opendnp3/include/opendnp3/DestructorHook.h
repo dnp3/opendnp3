@@ -32,8 +32,6 @@
 #include <vector>
 #include <functional>
 
-namespace openpal { class IExecutor; }
-
 namespace opendnp3
 {
 
@@ -45,12 +43,6 @@ class DestructorHook
 {
 public:
 
-	/**
-	* @param apExecutor If apExecutor == NULL calls are made during destruction, otherwise
-	*                   they are deferred to the executor
-	* 
-	*/
-	DestructorHook(openpal::IExecutor* apExecutor);
 	virtual ~DestructorHook();
 
 	/**
@@ -60,9 +52,6 @@ public:
 	void AddDestructorHook(std::function<void ()> aHook);
 
 private:
-	DestructorHook();
-	
-	openpal::IExecutor* mpExecutor;
 	std::vector<std::function<void ()>> mHooks;
 };
 
