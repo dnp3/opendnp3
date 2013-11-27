@@ -45,8 +45,8 @@ public class Counter extends BaseMeasurement
     /**
      * @return Quality flags as a set of enumerations
      */
-    public Set<CounterInputQuality> getQualitySet()
+    public Set<CounterQuality> getQualitySet()
     {
-        return CounterInputQuality.getValuesInBitField(this.getQuality());
+        return CounterQuality.getValuesInBitField(this.getQuality());
     }
 }

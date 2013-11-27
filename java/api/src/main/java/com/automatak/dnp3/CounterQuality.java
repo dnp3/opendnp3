@@ -26,7 +26,7 @@ import java.util.Set;
 /**
  * Quality enumeration for counters
  */
-public enum CounterInputQuality implements QualityField {
+public enum CounterQuality implements QualityField {
     /**
      * Set when the data is "good", meaning that rest of the system can trust the value
      */
@@ -67,14 +67,14 @@ public enum CounterInputQuality implements QualityField {
 
     private final byte id;
 
-    private CounterInputQuality(byte id)
+    private CounterQuality(byte id)
     {
         this.id = id;
     }
 
-    public static Set<CounterInputQuality> getValuesInBitField(byte bitfield)
+    public static Set<CounterQuality> getValuesInBitField(byte bitfield)
     {
-        Set<CounterInputQuality> set = new HashSet<CounterInputQuality>();
+        Set<CounterQuality> set = new HashSet<CounterQuality>();
         if((bitfield & ONLINE.toByte()) != 0)  set.add(ONLINE);
         if((bitfield & RESTART.toByte()) != 0)  set.add(RESTART);
         if((bitfield & COMM_LOST.toByte()) != 0)  set.add(COMM_LOST);

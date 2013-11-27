@@ -86,7 +86,7 @@ public class OutstationDemo {
             if(line.equals("quit")) break;
             else {
                 data.start();
-                data.update(new Counter(i, CounterInputQuality.ONLINE.toByte(), 0), 0);
+                data.update(new Counter(i, CounterQuality.ONLINE.toByte(), 0), 0);
                 data.end();
                 ++i;
             }
