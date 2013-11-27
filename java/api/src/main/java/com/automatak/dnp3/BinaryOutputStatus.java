@@ -20,7 +20,6 @@ package com.automatak.dnp3;
 
 
 import java.util.List;
-import java.util.Set;
 
 /**
  * Represents the state of a digital output

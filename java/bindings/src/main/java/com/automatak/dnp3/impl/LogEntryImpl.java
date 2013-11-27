@@ -21,8 +21,6 @@ package com.automatak.dnp3.impl;
 import com.automatak.dnp3.LogEntry;
 import com.automatak.dnp3.LogLevel;
 
-import java.util.Date;
-
 class LogEntryImpl implements LogEntry {
 
     private final int filterLevel;

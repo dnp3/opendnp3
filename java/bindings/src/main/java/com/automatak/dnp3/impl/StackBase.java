@@ -19,7 +19,8 @@
 package com.automatak.dnp3.impl;
 
 
-import com.automatak.dnp3.*;
+import com.automatak.dnp3.Stack;
+import com.automatak.dnp3.StackStateListener;
 
 abstract class StackBase implements Stack {
 

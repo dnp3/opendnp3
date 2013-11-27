@@ -18,8 +18,6 @@
  */
 package com.automatak.dnp3;
 
-import java.util.Date;
-
 /**
  * A logged event
  */

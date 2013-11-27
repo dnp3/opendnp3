@@ -19,7 +19,6 @@
 package com.automatak.dnp3;
 
 import java.util.List;
-import java.util.Set;
 
 /**
  * A discrete or continuous analog value

@@ -23,7 +23,6 @@ import com.automatak.dnp3.ListenableFuture;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 class BasicListenableFuture<T> implements ListenableFuture<T>, Promise<T> {

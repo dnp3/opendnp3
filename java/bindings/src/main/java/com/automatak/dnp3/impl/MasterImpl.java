@@ -19,7 +19,8 @@
 package com.automatak.dnp3.impl;
 
 
-import com.automatak.dnp3.*;
+import com.automatak.dnp3.CommandProcessor;
+import com.automatak.dnp3.Master;
 
 class MasterImpl extends StackBase implements Master {
 

@@ -18,7 +18,9 @@
  */
 package com.automatak.dnp3;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Quality enumeration for BinaryOutputStatus values
