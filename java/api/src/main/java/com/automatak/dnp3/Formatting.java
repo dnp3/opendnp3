@@ -18,46 +18,28 @@
  */
 package com.automatak.dnp3;
 
-import java.util.List;
+import java.util.Iterator;
 
-/**
- * Represents the status of analog output on an outstation.
- */
-public class AnalogOutputStatus extends BaseMeasurement
-{
-    private final double value;
+public class Formatting {
 
-    public AnalogOutputStatus(double value, byte quality, long timestamp)
+    public static String collectionToSetString(Iterable<?> collection)
     {
-        super(quality, timestamp);
-        this.value = value;
+        StringBuilder s = new StringBuilder();
+        s.append("{");
+        Iterator<?> iter = collection.iterator();
+        while(iter.hasNext()) {
+            s.append(iter.next().toString());
+            if(iter.hasNext()) s.append(",");
+        }
+        s.append("}");
+        return s.toString();
     }
 
-    /**
-     * @return Value of measurement
-     */
-    public double getValue()
+    public static byte fromQualityFields(QualityField ... enums)
     {
-        return value;
+        byte b = (byte) 0;
+        for(QualityField q: enums) b |= q.toByte();
+        return b;
     }
 
-    /**
-     * @return Quality flags as a set of enumerations
-     */
-    public List<AnalogOutputStatusQuality> getQualitySet()
-    {
-        return AnalogOutputStatusQuality.getValuesInBitField(this.getQuality());
-    }
-
-    @Override
-    public String getQualityAsString()
-    {
-        return Formatting.collectionToSetString(getQualitySet());
-    }
-
-    @Override
-    public String getValueAsString()
-    {
-        return Double.toString(value);
-    }
 }

@@ -19,9 +19,7 @@
 package com.automatak.dnp3;
 
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Quality enumeration for AnalogOutputStatusValues
@@ -62,18 +60,18 @@ public enum AnalogOutputStatusQuality implements QualityField {
         this.id = id;
     }
 
-    public static Set<AnalogOutputStatusQuality> getValuesInBitField(byte bitfield)
+    public static List<AnalogOutputStatusQuality> getValuesInBitField(byte bitfield)
     {
-        Set<AnalogOutputStatusQuality> set = new HashSet<AnalogOutputStatusQuality>();
-        if((bitfield & ONLINE.toByte()) != 0)  set.add(ONLINE);
-        if((bitfield & RESTART.toByte()) != 0)  set.add(RESTART);
-        if((bitfield & COMM_LOST.toByte()) != 0)  set.add(COMM_LOST);
-        if((bitfield & REMOTE_FORCED_DATA.toByte()) != 0) set.add(REMOTE_FORCED_DATA);
-        if((bitfield & RESERVED_1.toByte()) != 0) set.add(RESERVED_1);
-        if((bitfield & RESERVED_2.toByte()) != 0) set.add(RESERVED_2);
-        if((bitfield & RESERVED_3.toByte()) != 0) set.add(RESERVED_3);
-        if((bitfield & RESERVED_4.toByte()) != 0) set.add(RESERVED_4);
-        return Collections.unmodifiableSet(set);
+        List<AnalogOutputStatusQuality> list = new ArrayList<AnalogOutputStatusQuality>();
+        if((bitfield & ONLINE.toByte()) != 0)  list.add(ONLINE);
+        if((bitfield & RESTART.toByte()) != 0)  list.add(RESTART);
+        if((bitfield & COMM_LOST.toByte()) != 0)  list.add(COMM_LOST);
+        if((bitfield & REMOTE_FORCED_DATA.toByte()) != 0) list.add(REMOTE_FORCED_DATA);
+        if((bitfield & RESERVED_1.toByte()) != 0) list.add(RESERVED_1);
+        if((bitfield & RESERVED_2.toByte()) != 0) list.add(RESERVED_2);
+        if((bitfield & RESERVED_3.toByte()) != 0) list.add(RESERVED_3);
+        if((bitfield & RESERVED_4.toByte()) != 0) list.add(RESERVED_4);
+        return Collections.unmodifiableList(list);
     }
 
     /**

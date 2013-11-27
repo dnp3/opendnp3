@@ -18,6 +18,7 @@
  */
 package com.automatak.dnp3;
 
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -42,7 +43,7 @@ public class AnalogInput extends BaseMeasurement
     /**
      * @return Quality flags as a set of enumerations
      */
-    public Set<AnalogInputQuality> getQualitySet()
+    public List<AnalogInputQuality> getQualitySet()
     {
         return AnalogInputQuality.getValuesInBitField(this.getQuality());
     }
@@ -53,6 +54,18 @@ public class AnalogInput extends BaseMeasurement
     public double getValue()
     {
         return value;
+    }
+
+    @Override
+    public String getQualityAsString()
+    {
+        return Formatting.collectionToSetString(getQualitySet());
+    }
+
+    @Override
+    public String getValueAsString()
+    {
+        return Double.toString(value);
     }
 
 }

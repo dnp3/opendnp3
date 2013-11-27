@@ -18,9 +18,7 @@
  */
 package com.automatak.dnp3;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Quality enumeration for BinaryInput values
@@ -73,18 +71,20 @@ public enum BinaryInputQuality implements QualityField {
         this.id = id;
     }
 
-    public static Set<BinaryInputQuality> getValuesInBitField(byte bitfield)
+
+
+    public static List<BinaryInputQuality> getValuesInBitField(byte bitfield)
     {
-        Set<BinaryInputQuality> set = new HashSet<BinaryInputQuality>();
-        if((bitfield & ONLINE.toByte()) != 0)  set.add(ONLINE);
-        if((bitfield & RESTART.toByte()) != 0)  set.add(RESTART);
-        if((bitfield & COMM_LOST.toByte()) != 0)  set.add(COMM_LOST);
-        if((bitfield & REMOTE_FORCED_DATA.toByte()) != 0) set.add(REMOTE_FORCED_DATA);
-        if((bitfield & LOCAL_FORCED_DATA.toByte()) != 0) set.add(LOCAL_FORCED_DATA);
-        if((bitfield & CHATTER_FILTER.toByte()) != 0) set.add(CHATTER_FILTER);
-        if((bitfield & RESERVED.toByte()) != 0) set.add(RESERVED);
-        if((bitfield & STATE.toByte()) != 0) set.add(STATE);
-        return Collections.unmodifiableSet(set);
+        List<BinaryInputQuality> list = new ArrayList<BinaryInputQuality>();
+        if((bitfield & ONLINE.toByte()) != 0)  list.add(ONLINE);
+        if((bitfield & RESTART.toByte()) != 0)  list.add(RESTART);
+        if((bitfield & COMM_LOST.toByte()) != 0)  list.add(COMM_LOST);
+        if((bitfield & REMOTE_FORCED_DATA.toByte()) != 0) list.add(REMOTE_FORCED_DATA);
+        if((bitfield & LOCAL_FORCED_DATA.toByte()) != 0) list.add(LOCAL_FORCED_DATA);
+        if((bitfield & CHATTER_FILTER.toByte()) != 0) list.add(CHATTER_FILTER);
+        if((bitfield & RESERVED.toByte()) != 0) list.add(RESERVED);
+        if((bitfield & STATE.toByte()) != 0) list.add(STATE);
+        return Collections.unmodifiableList(list);
     }
 
     /**

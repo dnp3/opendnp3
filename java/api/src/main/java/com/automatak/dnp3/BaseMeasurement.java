@@ -48,4 +48,16 @@ public abstract class BaseMeasurement implements Measurement {
         return quality;
     }
 
+    @Override
+    public String toString()
+    {
+        StringBuilder s = new StringBuilder();
+        s.append(this.getClass().getSimpleName());
+        s.append(" - ");
+        s.append(this.getValueAsString());
+        s.append(" - ");
+        s.append(this.getQualityAsString());
+        return s.toString();
+    }
+
 }

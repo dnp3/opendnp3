@@ -18,29 +18,23 @@
  */
 package com.automatak.dnp3;
 
-/**
- *  Represents all measurements have a quality bit-field and a timestamp
- */
-public interface Measurement {
+import org.junit.Test;
+import static org.junit.Assert.*;
 
-    /**
-     * @return quality flags as a bit-field
-     */
-    byte getQuality();
 
-    /**
-     * @return milliseconds since Unix epoch UTC
-     */
-    long getMsSinceEpoch();
+public class MeasurementTypeTestSuite {
 
-    /**
-     * @return retuns the quality field as an interpreted set {} string
-     */
-    String getQualityAsString();
+    @Test
+    public void testBinaryToString() throws Exception {
+        byte bitfield = Formatting.fromQualityFields(BinaryInputQuality.COMM_LOST, BinaryInputQuality.RESTART);
+        BinaryInput b = new BinaryInput(true, bitfield, 0);
+        assertEquals("BinaryInput - true - {RESTART,COMM_LOST}", b.toString());
+    }
 
-    /**
-     * @return retuns the value field as a String
-     */
-    String getValueAsString();
-
+    @Test
+    public void testCounterToString() throws Exception {
+        byte bitfield = Formatting.fromQualityFields(CounterQuality.ONLINE, CounterQuality.ROLLOVER);
+        Counter c = new Counter(123, bitfield, 0);
+        assertEquals("Counter - 123 - {ONLINE,ROLLOVER}", c.toString());
+    }
 }

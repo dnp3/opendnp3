@@ -19,6 +19,7 @@
 package com.automatak.dnp3;
 
 
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -45,8 +46,20 @@ public class Counter extends BaseMeasurement
     /**
      * @return Quality flags as a set of enumerations
      */
-    public Set<CounterQuality> getQualitySet()
+    public List<CounterQuality> getQualitySet()
     {
         return CounterQuality.getValuesInBitField(this.getQuality());
+    }
+
+    @Override
+    public String getQualityAsString()
+    {
+        return Formatting.collectionToSetString(getQualitySet());
+    }
+
+    @Override
+    public String getValueAsString()
+    {
+        return Long.toString(value);
     }
 }

@@ -19,9 +19,7 @@
 package com.automatak.dnp3;
 
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Quality enumeration for counters
@@ -72,18 +70,18 @@ public enum CounterQuality implements QualityField {
         this.id = id;
     }
 
-    public static Set<CounterQuality> getValuesInBitField(byte bitfield)
+    public static List<CounterQuality> getValuesInBitField(byte bitfield)
     {
-        Set<CounterQuality> set = new HashSet<CounterQuality>();
-        if((bitfield & ONLINE.toByte()) != 0)  set.add(ONLINE);
-        if((bitfield & RESTART.toByte()) != 0)  set.add(RESTART);
-        if((bitfield & COMM_LOST.toByte()) != 0)  set.add(COMM_LOST);
-        if((bitfield & REMOTE_FORCED_DATA.toByte()) != 0) set.add(REMOTE_FORCED_DATA);
-        if((bitfield & LOCAL_FORCED_DATA.toByte()) != 0) set.add(LOCAL_FORCED_DATA);
-        if((bitfield & ROLLOVER.toByte()) != 0) set.add(ROLLOVER);
-        if((bitfield & DISCONTINUITY.toByte()) != 0) set.add(DISCONTINUITY);
-        if((bitfield & RESERVED.toByte()) != 0) set.add(RESERVED);
-        return Collections.unmodifiableSet(set);
+        List<CounterQuality> list = new ArrayList<CounterQuality>();
+        if((bitfield & ONLINE.toByte()) != 0)  list.add(ONLINE);
+        if((bitfield & RESTART.toByte()) != 0)  list.add(RESTART);
+        if((bitfield & COMM_LOST.toByte()) != 0)  list.add(COMM_LOST);
+        if((bitfield & REMOTE_FORCED_DATA.toByte()) != 0) list.add(REMOTE_FORCED_DATA);
+        if((bitfield & LOCAL_FORCED_DATA.toByte()) != 0) list.add(LOCAL_FORCED_DATA);
+        if((bitfield & ROLLOVER.toByte()) != 0) list.add(ROLLOVER);
+        if((bitfield & DISCONTINUITY.toByte()) != 0) list.add(DISCONTINUITY);
+        if((bitfield & RESERVED.toByte()) != 0) list.add(RESERVED);
+        return Collections.unmodifiableList(list);
     }
 
     /**
