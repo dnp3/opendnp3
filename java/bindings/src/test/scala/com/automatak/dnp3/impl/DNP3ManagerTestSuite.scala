@@ -68,14 +68,6 @@ class DNP3ManagerTestSuite extends FunSuite with ShouldMatchers {
     outstation
   }
 
-  test("Test future timeout") {
-
-     val future = new BasicListenableFuture[Int]()
-
-     intercept[TimeoutException](future.get(10))
-
-  }
-
   test("starts/stops cleanly") {
     fixture { mgr =>
 
