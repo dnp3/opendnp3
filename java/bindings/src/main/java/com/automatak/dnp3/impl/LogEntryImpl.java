@@ -23,22 +23,22 @@ import com.automatak.dnp3.LogLevel;
 
 class LogEntryImpl implements LogEntry {
 
-    private final int filterLevel;
+    private final LogLevel filterLevel;
     private final String loggerName;
     private final String message;
     private final int errorCode;
 
     public LogEntryImpl(int filterLevel, String loggerName, String message, int errorCode)
     {
-        this.filterLevel = filterLevel;
+        this.filterLevel = convertLogLevel(filterLevel);
         this.loggerName = loggerName;
         this.message = message;
         this.errorCode = errorCode;
     }
 
-    public LogLevel getLogLevel()
+    public static LogLevel convertLogLevel(int level)
     {
-        switch(filterLevel)
+        switch(level)
         {
             case(0x01):
                 return LogLevel.EVENT;
@@ -55,8 +55,13 @@ class LogEntryImpl implements LogEntry {
             case(0x40):
                 return LogLevel.DEBUG;
             default:
-                throw new IllegalArgumentException("Invalid native log level: " + filterLevel);
+                return LogLevel.ERROR;
         }
+    }
+
+    public LogLevel getLogLevel()
+    {
+        return filterLevel;
     }
 
     public String getLoggerName()
@@ -72,6 +77,18 @@ class LogEntryImpl implements LogEntry {
     public int getErrorCode()
     {
         return errorCode;
+    }
+
+    @Override
+    public String toString()
+    {
+        StringBuilder sb = new StringBuilder();
+        sb.append(filterLevel);
+        sb.append(" - ");
+        sb.append(loggerName);
+        sb.append(" - ");
+        sb.append(message);
+        return sb.toString();
     }
 
 }
