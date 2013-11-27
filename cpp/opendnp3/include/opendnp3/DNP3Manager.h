@@ -39,7 +39,7 @@
 #include <openpal/IPhysicalLayerAsync.h>
 #include <openpal/TimeDuration.h>
 
-#include "DestructorHook.h"
+//#include "DestructorHook.h"
 
 
 
@@ -84,7 +84,7 @@ All callbacks come from a thread in the pool.
 \endcode
 
 */
-class DNP3Manager : public DestructorHook
+class DNP3Manager// : public DestructorHook
 {
 public:
 

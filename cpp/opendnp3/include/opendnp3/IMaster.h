@@ -47,8 +47,8 @@ class ICommandProcessor;
 class IMaster : public IStack
 {
 public:
-	IMaster(openpal::Logger& arLogger, std::function<void (bool)> aEnableDisableFunc): 
-		IStack(arLogger, aEnableDisableFunc)
+	IMaster(openpal::IExecutor* apExecutor, openpal::Logger& arLogger, std::function<void (bool)> aEnableDisableFunc): 
+		IStack(apExecutor, arLogger, aEnableDisableFunc)
 	{}
 
 	virtual ~IMaster() {}

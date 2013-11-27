@@ -52,7 +52,7 @@ namespace opendnp3
 class IStack : public DestructorHook
 {
 public:
-	IStack(openpal::Logger& arLogger, std::function<void (bool)> aEnableDisableFunc);
+	IStack(openpal::IExecutor* apExecutor, openpal::Logger& arLogger, std::function<void (bool)> aEnableDisableFunc);
 	virtual ~IStack();
 
 	/**

@@ -16,6 +16,7 @@ namespace asiodnp3
 
 
 ASIODNP3Manager::ASIODNP3Manager(uint32_t aConcurrency, std::function<void()> aOnThreadStart, std::function<void()> aOnThreadExit) :
+	DestructorHook(nullptr),
 	mpLog(new asiopal::EventLog()),
 	mpThreadPool(new asiopal::IOServiceThreadPool(Logger(mpLog.get(), LEV_INFO, "pool"), aConcurrency, aOnThreadStart, aOnThreadExit)),
 	mpManager(new opendnp3::DNP3Manager())
