@@ -32,6 +32,8 @@
 #include <vector>
 #include <functional>
 
+namespace openpal { class IExecutor; }
+
 namespace opendnp3
 {
 
@@ -42,6 +44,8 @@ namespace opendnp3
 class DestructorHook
 {
 public:
+	DestructorHook();
+	DestructorHook(openpal::IExecutor*);
 
 	virtual ~DestructorHook();
 
@@ -52,6 +56,7 @@ public:
 	void AddDestructorHook(std::function<void ()> aHook);
 
 private:
+	openpal::IExecutor* mpExecutor;
 	std::vector<std::function<void ()>> mHooks;
 };
 

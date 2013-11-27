@@ -33,7 +33,7 @@ class StackStateProxy {
         this.listener = listener;
     }
 
-    void onStateChange(int state)
+    public void onStackStateChange(int state)
     {
         listener.onStateChange(StackState.fromInt(state));
     }
