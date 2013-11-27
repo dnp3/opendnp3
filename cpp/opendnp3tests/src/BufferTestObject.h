@@ -43,6 +43,9 @@ public:
 	bool BufferEqualsHex(const std::string& arData);
 	bool BufferEqualsString(const std::string& arData);
 	bool BufferContains(const std::string& arData);
+
+	std::string BufferTestObject::GetBufferAsHexString(bool spaced = true) const;
+
 	bool IsBufferEmpty() {
 		return mBuffer.size() == 0;
 	}

@@ -28,6 +28,7 @@
 
 #include <openpal/Exception.h>
 #include <openpal/Location.h>
+#include <openpal/ToHex.h>
 
 using namespace openpal;
 
@@ -70,6 +71,11 @@ bool BufferTestObject::BufferContains(const std::string& arPattern)
 		s.append(c);
 	}
 	return s.find(arPattern) != std::string::npos;
+}
+
+std::string BufferTestObject::GetBufferAsHexString(bool spaced) const
+{	
+	return toHex(mBuffer, mBuffer.size(), spaced);
 }
 
 bool BufferTestObject::BufferEqualsHex(const std::string& arData)

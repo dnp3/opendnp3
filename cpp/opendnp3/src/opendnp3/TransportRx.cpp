@@ -103,9 +103,7 @@ bool TransportRx::ValidateHeader(bool aFir, bool aFin, int aSeq, size_t aPayload
 	if(aFir) {
 		mSeq = aSeq; //always accept the sequence on FIR
 		if(mNumBytesRead > 0) {
-			/*  2004-03-29_DNP3_Doc_Library.pdf: 2-2 Page 64.
-				When a secondary station receives a frame with the FIR bit set,
-				all previously received unterminated frame sequences are discarded. */
+			// drop existing received bytes from segment
 			ERROR_BLOCK(LEV_WARNING, "FIR received mid-fragment, discarding: " << mNumBytesRead << "bytes", TLERR_NEW_FIR);
 			mNumBytesRead = 0;
 		}
@@ -114,19 +112,11 @@ bool TransportRx::ValidateHeader(bool aFir, bool aFin, int aSeq, size_t aPayload
 		ERROR_BLOCK(LEV_WARNING, "non-FIR packet with 0 prior bytes", TLERR_MESSAGE_WITHOUT_FIR);
 		return false;
 	}
-
-	if(!aFin && aPayloadSize != TL_MAX_TPDU_PAYLOAD) {
-		//if it's not a FIN packet it should have a length of
-		ERROR_BLOCK(LEV_WARNING, "Partial non-FIN frame, payload= " << aPayloadSize, TLERR_BAD_LENGTH);
-		return false;
-	}
-
+	
 	if(aSeq != mSeq) {
 		ERROR_BLOCK(LEV_WARNING, "Ignoring bad sequence, got: " << aSeq << " expected: " << mSeq, TLERR_BAD_SEQUENCE);
 		return false;
 	}
-
-
 
 	return true;
 }

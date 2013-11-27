@@ -40,7 +40,7 @@ BOOST_AUTO_TEST_SUITE(TransportLayerTestSuite)
 // make sure an invalid state exception gets thrown
 // for every event other than LowerLayerUp() since
 // the layer starts in the online state
-BOOST_AUTO_TEST_CASE(TestStateOffline)
+BOOST_AUTO_TEST_CASE(StateOffline)
 {
 	TransportTestObject test;
 
@@ -50,7 +50,7 @@ BOOST_AUTO_TEST_CASE(TestStateOffline)
 	BOOST_REQUIRE_THROW(test.lower.ThisLayerDown(), InvalidStateException);
 }
 
-BOOST_AUTO_TEST_CASE(TestStateReady)
+BOOST_AUTO_TEST_CASE(StateReady)
 {
 	TransportTestObject test(true); //makes an implicit call to 'test.lower.ThisLayerUp()'
 
@@ -66,7 +66,7 @@ BOOST_AUTO_TEST_CASE(TestStateReady)
 	BOOST_REQUIRE_THROW(test.lower.SendSuccess(), InvalidStateException);
 }
 
-BOOST_AUTO_TEST_CASE(TestReceiveBadArguments)
+BOOST_AUTO_TEST_CASE(ReceiveBadArguments)
 {
 	TransportTestObject test(true);	
 
@@ -81,7 +81,7 @@ BOOST_AUTO_TEST_CASE(TestReceiveBadArguments)
 	BOOST_REQUIRE_EQUAL(TLERR_TOO_MUCH_DATA, test.log.NextErrorCode());
 }
 
-BOOST_AUTO_TEST_CASE(TestReceiveNoPayload)
+BOOST_AUTO_TEST_CASE(ReceiveNoPayload)
 {
 	TransportTestObject test(true);
 	//try sending a FIR/FIN packet with no payload (1 byte)
@@ -89,7 +89,7 @@ BOOST_AUTO_TEST_CASE(TestReceiveNoPayload)
 	BOOST_REQUIRE_EQUAL(test.log.NextErrorCode(), TLERR_NO_PAYLOAD);
 }
 
-BOOST_AUTO_TEST_CASE(TestReceiveNoFIR)
+BOOST_AUTO_TEST_CASE(ReceiveNoFIR)
 {
 	TransportTestObject test(true);
 	//try sending a non-FIR w/ no prior packet
@@ -97,7 +97,7 @@ BOOST_AUTO_TEST_CASE(TestReceiveNoFIR)
 	BOOST_REQUIRE_EQUAL(test.log.NextErrorCode(), TLERR_MESSAGE_WITHOUT_FIR);
 }
 
-BOOST_AUTO_TEST_CASE(TestReceiveWrongSequence)
+BOOST_AUTO_TEST_CASE(ReceiveWrongSequence)
 {
 	TransportTestObject test(true);
 	//send a FIR, followed by a FIN w/ the wrong sequence
@@ -106,23 +106,25 @@ BOOST_AUTO_TEST_CASE(TestReceiveWrongSequence)
 	BOOST_REQUIRE_EQUAL(test.log.NextErrorCode(), TLERR_BAD_SEQUENCE);
 }
 
-BOOST_AUTO_TEST_CASE(TestReceiveNonFinLessThanMaxTpduSize)
+BOOST_AUTO_TEST_CASE(PacketsCanBeOfVaryingSize)
 {
-	TransportTestObject test(true);
-	//send a FIR, followed by a FIN w/ the wrong sequence
+	TransportTestObject test(true);	
 	test.lower.SendUp("40 0A 0B 0C"); // FIR/_/0
-	BOOST_REQUIRE_EQUAL(test.log.NextErrorCode(), TLERR_BAD_LENGTH);
+	BOOST_REQUIRE(test.log.IsLogErrorFree());
+	test.lower.SendUp("81 0D 0E 0F"); // _/FIN/1
+	BOOST_REQUIRE(test.log.IsLogErrorFree());
+	BOOST_REQUIRE_EQUAL("0A 0B 0C 0D 0E 0F", test.upper.GetBufferAsHexString());
 }
 
-BOOST_AUTO_TEST_CASE(TestReceiveSinglePacket)
+BOOST_AUTO_TEST_CASE(ReceiveSinglePacket)
 {
 	TransportTestObject test(true);
 	//now try receiving 1 a single FIR/FIN with a magic value
 	test.lower.SendUp("C0 77");
-	test.upper.BufferEqualsHex("77");
+	BOOST_REQUIRE_EQUAL("77", test.upper.GetBufferAsHexString());	
 }
 
-BOOST_AUTO_TEST_CASE(TestReceiveLargestPossibleAPDU)
+BOOST_AUTO_TEST_CASE(ReceiveLargestPossibleAPDU)
 {
 	TransportTestObject test(true);
 
@@ -131,7 +133,7 @@ BOOST_AUTO_TEST_CASE(TestReceiveLargestPossibleAPDU)
 
 	vector<string> packets;
 	string apdu = test.GeneratePacketSequence(packets, num_packets, last_packet_length);
-for(string s: packets) {
+	for(string s: packets) {
 		test.lower.SendUp(s);
 	}
 
@@ -139,7 +141,7 @@ for(string s: packets) {
 	BOOST_REQUIRE(test.upper.BufferEqualsHex(apdu)); //check that the correct data was written
 }
 
-BOOST_AUTO_TEST_CASE(TestReceiveBufferOverflow)
+BOOST_AUTO_TEST_CASE(ReceiveBufferOverflow)
 {
 	TransportTestObject test(true);
 
@@ -157,26 +159,26 @@ for(string s: packets) {
 	BOOST_REQUIRE_EQUAL(test.log.NextErrorCode(), TLERR_BUFFER_FULL);
 }
 
-BOOST_AUTO_TEST_CASE(TestReceiveNewFir)
+BOOST_AUTO_TEST_CASE(ReceiveNewFir)
 {
 	TransportTestObject test(true);
 
 	test.lower.SendUp(test.GetData("40"));	// FIR/_/0
 	BOOST_REQUIRE(test.upper.IsBufferEmpty());
 
-	test.lower.SendUp(test.GetData("C0"));	// FIR/FIN/0
-	test.upper.BufferEqualsHex(test.GetData(""));
-	BOOST_REQUIRE_EQUAL(test.log.NextErrorCode(), TLERR_NEW_FIR);
+	test.lower.SendUp("C0 AB CD");	// FIR/FIN/0	
+	BOOST_REQUIRE_EQUAL("AB CD", test.upper.GetBufferAsHexString());
+	BOOST_REQUIRE_EQUAL(test.log.NextErrorCode(), TLERR_NEW_FIR); //make sure it logs the dropped frames
 }
 
-BOOST_AUTO_TEST_CASE(TestSendArguments)
+BOOST_AUTO_TEST_CASE(SendArguments)
 {
 	TransportTestObject test(true);
 	BOOST_REQUIRE_THROW(test.upper.SendDown(""), ArgumentException); // 0 Length
 	BOOST_REQUIRE_THROW(test.upper.SendDown(test.GetData("", 0, DEFAULT_FRAG_SIZE + 1)), ArgumentException); // Max Size + 1
 }
 
-BOOST_AUTO_TEST_CASE(TestStateSending)
+BOOST_AUTO_TEST_CASE(StateSending)
 {
 	TransportTestObject test(true);
 
@@ -201,7 +203,7 @@ BOOST_AUTO_TEST_CASE(TestStateSending)
 	BOOST_REQUIRE_THROW(test.lower.SendSuccess(), InvalidStateException);
 }
 
-BOOST_AUTO_TEST_CASE(TestSendFailure)
+BOOST_AUTO_TEST_CASE(SendFailure)
 {
 	TransportTestObject test(true);
 
@@ -224,7 +226,7 @@ BOOST_AUTO_TEST_CASE(TestSendFailure)
 	BOOST_REQUIRE_EQUAL(test.upper.GetState().mFailureCnt, 1);
 }
 
-BOOST_AUTO_TEST_CASE(TestSendSuccess)
+BOOST_AUTO_TEST_CASE(SendSuccess)
 {
 	TransportTestObject test(true);
 
@@ -240,7 +242,7 @@ BOOST_AUTO_TEST_CASE(TestSendSuccess)
 }
 
 //if we're in the middle of a send and the layer goes down
-BOOST_AUTO_TEST_CASE(TestClosedWhileSending)
+BOOST_AUTO_TEST_CASE(ClosedWhileSending)
 {
 	TransportTestObject test(true);
 	test.upper.SendDown("11"); //get the layer into the sending state
@@ -249,7 +251,7 @@ BOOST_AUTO_TEST_CASE(TestClosedWhileSending)
 	BOOST_REQUIRE_FALSE(test.upper.IsLowerLayerUp());
 }
 
-BOOST_AUTO_TEST_CASE(TestSendFullAPDU)
+BOOST_AUTO_TEST_CASE(SendFullAPDU)
 {
 	TransportTestObject test(true);
 
