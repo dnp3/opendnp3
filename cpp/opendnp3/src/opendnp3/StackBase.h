@@ -53,6 +53,8 @@ public:
 protected:
 	void NotifyListeners(StackState aState);
 
+	void Queue(const std::function<void (StackState)>& arFunc, StackState aState);
+
 	// implement in inherited class
 	virtual StackState GetState() = 0;
 

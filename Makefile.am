@@ -266,7 +266,7 @@ cpp/asiodnp3/src/asiodnp3/ASIODNP3Manager.cpp
 lib_LTLIBRARIES += libopendnp3java.la
 libopendnp3java_la_CPPFLAGS = -I$(OPENPAL_INCLUDE) -I$(ASIOPAL_INCLUDE) -I $(OPENDNP3_INCLUDE) -I$(ASIODNP3_INCLUDE) $(BOOST_DEFINES)
 libopendnp3java_la_LDFLAGS = -version-info 1:1:0
-libopendnp3java_la_LIBADD = libopenpal.la libasiopal.la libopendnp3.la libasiodnp3.la
+libopendnp3java_la_LIBADD = libopenpal.la libasiopal.la libopendnp3.la libasiodnp3.la $(CORE_BOOST_LIBS)
 libopendnp3java_la_SOURCES = \
 java/cpp/com_automatak_dnp3_impl_ChannelImpl.cpp \
 java/cpp/com_automatak_dnp3_impl_CommandProcessorImpl.cpp \

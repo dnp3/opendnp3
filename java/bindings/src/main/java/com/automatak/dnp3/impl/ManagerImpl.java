@@ -32,7 +32,8 @@ class ManagerImpl implements DNP3Manager {
     @Override
     public void addLogSubscriber(LogSubscriber sub)
     {
-         native_add_log_subscriber(nativePointer, sub);
+        LogSubscriberProxy proxy = new LogSubscriberProxy(sub);
+        native_add_log_subscriber(nativePointer, proxy);
     }
 
     @Override
@@ -83,6 +84,6 @@ class ManagerImpl implements DNP3Manager {
     private native long get_native_channel_tcp_server(long ptrManager, String name, int level, long retryMs, String endpoint, int port);
     private native long get_native_channel_serial(long ptrManager, String name, int level, long retryMs, String port, int baudRate, int dataBits, int parity, int stopBits, int flowControl);
 
-    private native void native_add_log_subscriber(long ptrManager, LogSubscriber sub);
+    private native void native_add_log_subscriber(long ptrManager, LogSubscriberProxy proxy);
 
 }

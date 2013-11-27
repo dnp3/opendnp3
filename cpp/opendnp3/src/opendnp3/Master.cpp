@@ -55,7 +55,7 @@ Master::Master(Logger aLogger, MasterConfig aCfg, IAppLayer* apAppLayer, IMeasur
 	mpState(AMS_Closed::Inst()),
 	mpTask(NULL),
 	mpScheduledTask(NULL),
-	mState(SS_UNKNOWN),
+	mState(SS_COMMS_DOWN),
 	mSchedule(apTaskGroup, this, aCfg),
 	mClassPoll(aLogger, mHandler.Load),
 	mClearRestart(aLogger),
@@ -72,10 +72,6 @@ Master::Master(Logger aLogger, MasterConfig aCfg, IAppLayer* apAppLayer, IMeasur
 		this->mSchedule.mpCommandTask->Enable();
 	});
 
-	/*
-	 * Set the initial state of the communication link.
-	 */
-	this->UpdateState(SS_COMMS_DOWN);
 }
 
 void Master::UpdateState(StackState aState)

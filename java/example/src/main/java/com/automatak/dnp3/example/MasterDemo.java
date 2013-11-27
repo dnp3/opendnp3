@@ -45,6 +45,7 @@ public class MasterDemo {
         Channel channel = manager.addTCPClient("client", LogLevel.INFO, 5000, "127.0.0.1", 20000);
 
         // You can optionally add a listener to receive state changes on the channel
+
         channel.addStateListener(new ChannelStateListener() {
             @Override
             public void onStateChange(ChannelState state) {

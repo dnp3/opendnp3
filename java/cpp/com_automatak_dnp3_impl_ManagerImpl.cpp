@@ -42,8 +42,7 @@ JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_create_1native_
 	},
 	[pJVM]() {
 		JNIHelpers::DetachThread(pJVM);
-	}
-	                                   );
+	});
 	return (jlong) pManager;
 }
 
@@ -110,13 +109,13 @@ JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1ch
 
 
 JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_native_1add_1log_1subscriber
-(JNIEnv* pEnv, jobject, jlong ptrManager, jobject jsubscriber)
+(JNIEnv* pEnv, jobject, jlong ptrManager, jobject jproxy)
 {
 	auto pMgr = (ASIODNP3Manager*) ptrManager;
 	JavaVM* pJVM;
 	pEnv->GetJavaVM(&pJVM);
 	assert(pJVM != NULL);
-	jobject global = pEnv->NewGlobalRef(jsubscriber);
+	jobject global = pEnv->NewGlobalRef(jproxy);
 	pMgr->AddDestructorHook([pJVM, global]() {
 		JNIHelpers::DeleteGlobalReference(pJVM, global);
 	});

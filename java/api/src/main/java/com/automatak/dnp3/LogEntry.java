@@ -45,12 +45,6 @@ public interface LogEntry {
 
     /**
      *
-     * @return Timestamp of the event
-     */
-    Date getTimestamp();
-
-    /**
-     *
      * @return Error code associated with the event
      */
     int getErrorCode();

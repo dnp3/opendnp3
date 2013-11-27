@@ -61,7 +61,7 @@ Slave::Slave(openpal::Logger aLogger, IAppLayer* apAppLayer, IExecutor* apExecut
 	mDeferredUnsol(false),
 	mDeferredUnknown(false),
 	mStartupNullUnsol(false),
-	mState(SS_UNKNOWN),
+	mState(SS_COMMS_DOWN),
 	mpTimeTimer(NULL)
 {
 	/* Link the event buffer to the database */
@@ -81,8 +81,6 @@ Slave::Slave(openpal::Logger aLogger, IAppLayer* apAppLayer, IExecutor* apExecut
 	if (!mConfig.mDisableUnsol) {
 		mDeferredUnsol = true;
 	}
-
-	this->UpdateState(SS_COMMS_DOWN);
 }
 
 Slave::~Slave()

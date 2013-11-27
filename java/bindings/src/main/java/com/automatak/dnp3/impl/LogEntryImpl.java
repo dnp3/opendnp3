@@ -28,15 +28,13 @@ class LogEntryImpl implements LogEntry {
     private final int filterLevel;
     private final String loggerName;
     private final String message;
-    private final Date date;
     private final int errorCode;
 
-    public LogEntryImpl(int filterLevel, String loggerName, String message, long timeMsSinceEpoch, int errorCode)
+    public LogEntryImpl(int filterLevel, String loggerName, String message, int errorCode)
     {
         this.filterLevel = filterLevel;
         this.loggerName = loggerName;
         this.message = message;
-        this.date = new Date(timeMsSinceEpoch);
         this.errorCode = errorCode;
     }
 
@@ -71,11 +69,6 @@ class LogEntryImpl implements LogEntry {
     public String getMessage()
     {
         return message;
-    }
-
-    public Date getTimestamp()
-    {
-        return date;
     }
 
     public int getErrorCode()

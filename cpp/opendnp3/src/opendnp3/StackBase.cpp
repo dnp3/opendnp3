@@ -31,17 +31,19 @@ StackBase::StackBase(openpal::IExecutor* apExecutor) : mpExecutor(apExecutor)
 {}
 
 void StackBase::AddStateListener(std::function<void (StackState)> aCallback)
+{	
+	mListeners.push_back(aCallback);
+	Queue(aCallback, this->GetState());
+}
+
+void StackBase::Queue(const std::function<void (StackState)>& arFunc, StackState aState)
 {
-	auto callback = [=](StackState state) { 
-		mpExecutor->Post([=]() { aCallback(state); });
-	};
-	mListeners.push_back(callback);
-	callback(this->GetState());		
+	mpExecutor->Post([=]() { arFunc(aState); });
 }
 
 void StackBase::NotifyListeners(StackState aState)
 {
-	for(auto callback : mListeners) callback(aState);	
+	for(auto callback : mListeners) Queue(callback, aState);	
 }
 
 }

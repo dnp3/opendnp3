@@ -32,6 +32,7 @@ public:
 private:
 	JavaVM* mpJVM;
 	jobject mProxy;
+	jmethodID mOnLogEntryCallbackMID;
 };
 
 #endif
