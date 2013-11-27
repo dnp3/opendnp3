@@ -10,11 +10,11 @@ import mock.{FormattingDataObserver, OutputHandler, ConstantCommandHandler}
 @RunWith(classOf[JUnitRunner])
 class DNP3ManagerTestSuite extends FunSuite with ShouldMatchers {
 
-  val iterations = 1000
+  val iterations = 10
 
   def fixture(test: DNP3Manager => Unit): Unit = {
 
-      for(i <- (0 to iterations)) {
+      for(i <- 0 to iterations) {
         val mgr = DNP3ManagerFactory.createDNP3ManagerWithDefaultConcurrency
 
         mgr.addLogSubscriber(new LogSubscriber {    // add this just to stress the callbacks

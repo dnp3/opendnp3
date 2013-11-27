@@ -65,6 +65,8 @@ public:
 
 	void AddStateListener(std::function<void (ChannelState)> aListener);
 
+	openpal::IExecutor* GetExecutor();
+
 #ifndef OPENDNP3_NO_MASTER
 
 	IMaster* AddMaster(		const std::string& arLoggerId,

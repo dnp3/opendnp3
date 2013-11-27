@@ -90,6 +90,12 @@ public:
 	*/
 	virtual void AddStateListener(std::function<void (ChannelState)> aListener) = 0;
 
+
+	/**
+        * @return The execution context associated with the channel
+        */
+	virtual openpal::IExecutor* GetExecutor() = 0;
+
 #ifndef OPENDNP3_NO_MASTER
 
 	/**

@@ -64,6 +64,11 @@ void DNP3Channel::AddStateListener(std::function<void (ChannelState)> aListener)
 	mRouter.AddStateListener(aListener);
 }
 
+openpal::IExecutor* DNP3Channel::GetExecutor()
+{
+	return mpPhys->GetExecutor();
+}
+
 void DNP3Channel::Cleanup()
 {
 	std::set<IStack*> copy(mStacks);
