@@ -24,6 +24,7 @@
 #include <opendnp3/ITimeWriteHandler.h>
 
 #include <openpal/Exception.h>
+#include <openpal/IExecutor.h>
 
 #include <asiopal/UTCTimeSource.h>
 
@@ -74,18 +75,20 @@ JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ChannelImpl_get_1native_1ma
 		MasterStackConfig config = ConfigReader::ConvertMasterStackConfig(pEnv, jconfig);
 		FilterLevel lev = LogTypes::ConvertIntToFilterLevel(logLevel);
 		auto pMaster = pChannel->AddMaster(loggerId, lev, pPublisher, asiopal::UTCTimeSource::Inst(), config);
-		pMaster->AddDestructorHook([pJVM, global]() {
+		auto pExecutor = pChannel->GetExecutor();
+		auto cleanup = [pJVM, global, pPublisher]() {
 			JNIHelpers::DeleteGlobalReference(pJVM, global);
-		});
-		pMaster->AddDestructorHook([pPublisher]() {
 			delete pPublisher;
-		});
+		};
+		
+		pMaster->AddDestructorHook([pExecutor, cleanup](){ pExecutor->Post(cleanup); });
+
 		pMaster->Enable(); // TODO - move this to bindings
 		return (jlong) pMaster;
 	}
 	catch(const openpal::Exception& ex) {
 		MACRO_RETHROW_EXCEPTION(pEnv, ex);
-		return NULL;
+		return (jlong) NULL;
 	}
 }
 
@@ -101,18 +104,20 @@ JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ChannelImpl_get_1native_1sl
 		auto pCmdHandler = new CommandHandlerAdapter(pJVM, global);
 		FilterLevel lev = LogTypes::ConvertIntToFilterLevel(logLevel);
 		auto pOutstation = pChannel->AddOutstation(loggerId, lev, pCmdHandler, NullTimeWriteHandler::Inst(), config);  //TODO wrap time callbacks
-		pOutstation->AddDestructorHook([pJVM, global]() {
+		auto pExecutor = pChannel->GetExecutor();
+		auto cleanup = [pJVM, global, pCmdHandler]() {
 			JNIHelpers::DeleteGlobalReference(pJVM, global);
-		});
-		pOutstation->AddDestructorHook([pCmdHandler]() {
 			delete pCmdHandler;
-		});
+		};
+
+		pOutstation->AddDestructorHook([pExecutor, cleanup](){ pExecutor->Post(cleanup); });
+		
 		pOutstation->Enable(); // TODO - move this to bindings
 		return (jlong) pOutstation;
 	}
 	catch(const openpal::Exception& ex) {
 		MACRO_RETHROW_EXCEPTION(pEnv, ex);
-		return NULL;
+		return (jlong) NULL;
 	}
 }
 
