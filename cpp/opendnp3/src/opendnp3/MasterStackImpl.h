@@ -67,6 +67,8 @@ public:
 
 	void DemandIntegrityScan();
 
+	openpal::IExecutor* GetExecutor() { return mpExecutor; }
+
 	MasterScan AddClassScan(int aClassMask, openpal::TimeDuration aScanRate, openpal::TimeDuration aRetryRate);
 
 	void Shutdown();

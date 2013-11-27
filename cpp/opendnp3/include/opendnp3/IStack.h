@@ -63,6 +63,8 @@ public:
 	*/
 	virtual void AddStateListener(std::function<void (StackState)> aListener) = 0;
 
+	virtual openpal::IExecutor* GetExecutor() = 0;
+
 	/**
 	* Enable communications
 	*/

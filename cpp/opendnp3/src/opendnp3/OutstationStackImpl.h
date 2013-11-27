@@ -64,6 +64,8 @@ public:
 
 	void SetLinkRouter(ILinkRouter* apRouter);
 
+	openpal::IExecutor* GetExecutor() { return mpExecutor; }
+
 	void AddStateListener(std::function<void (StackState)> aListener);
 
 	void Shutdown();
