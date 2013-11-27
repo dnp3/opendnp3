@@ -6,6 +6,7 @@ import org.junit.runner.RunWith
 import org.scalatest.matchers.ShouldMatchers
 import com.automatak.dnp3._
 import mock.{FormattingDataObserver, OutputHandler, ConstantCommandHandler}
+import java.util.concurrent.TimeoutException
 
 @RunWith(classOf[JUnitRunner])
 class DNP3ManagerTestSuite extends FunSuite with ShouldMatchers {
@@ -65,6 +66,14 @@ class DNP3ManagerTestSuite extends FunSuite with ShouldMatchers {
       def onStateChange(state: StackState) {}
     })
     outstation
+  }
+
+  test("Test future timeout") {
+
+     val future = new BasicListenableFuture[Int]()
+
+     intercept[TimeoutException](future.get(10))
+
   }
 
   test("starts/stops cleanly") {

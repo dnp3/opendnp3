@@ -18,6 +18,9 @@
  */
 package com.automatak.dnp3;
 
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
+
 /**
  * Represents the future result of asynchronous operation.
  * @param <T> The return type of the operation.
@@ -42,6 +45,14 @@ public interface ListenableFuture<T> {
      * @return The result of the operation
      */
     T get();
+
+    /**
+     * Blocks until the asynchronous operation completes or throws a timeout exception
+     * @param timeoutMs maximum count of milliseconds to wait
+     * @return  The completed value of the future
+     * @throws TimeoutException If the operation times out
+     */
+    T get(long timeoutMs) throws TimeoutException;
 
     /**
      * Adds a callback that is invoked when the asynchronous operation completes.

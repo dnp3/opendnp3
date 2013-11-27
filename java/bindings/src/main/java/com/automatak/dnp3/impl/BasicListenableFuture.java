@@ -23,12 +23,38 @@ import com.automatak.dnp3.ListenableFuture;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 class BasicListenableFuture<T> implements ListenableFuture<T>, Promise<T> {
 
     private final Object mutex = new Object();
     private final List<CompletionListener<T>> listeners = new LinkedList<CompletionListener<T>>();
     private T value = null;
+
+    private final static long NanoSecPerMilliSec = 1000000;
+
+    public T get(long timeoutMs) throws TimeoutException
+    {
+        long start = System.nanoTime();
+        long timeoutNano = NanoSecPerMilliSec * timeoutMs;
+        synchronized (mutex)
+        {
+            while(value == null) {
+                try {
+                    mutex.wait(timeoutMs);
+                    long elapsed = System.nanoTime() - start;
+                    if(elapsed > timeoutNano && value == null) {
+                        throw new TimeoutException("Timed out while waiting for future");
+                    }
+                }
+                catch(InterruptedException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+            return value;
+        }
+    }
 
     public T get()
     {
