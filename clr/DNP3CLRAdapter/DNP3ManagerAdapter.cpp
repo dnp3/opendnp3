@@ -55,7 +55,7 @@ DNP3ManagerAdapter::~DNP3ManagerAdapter()
 	delete mpMgr;
 }
 
-IChannel ^ DNP3ManagerAdapter::AddTCPClient(System::String ^ name, LogLevel level, System::UInt64 retryMs, System::String ^ address, System::UInt16 port)
+IChannel ^ DNP3ManagerAdapter::AddTCPClient(System::String ^ name, LogLevel level, System::TimeSpan retryDelay, System::String ^ address, System::UInt16 port)
 {
 
 	std::string stdName = Conversions::convertString(name);
@@ -65,7 +65,7 @@ IChannel ^ DNP3ManagerAdapter::AddTCPClient(System::String ^ name, LogLevel leve
 
 	try {
 		Logger logger(mpMgr->GetLog(), lev, stdName);
-		auto pChannel = mpMgr->AddTCPClient(logger, TimeDuration::Milliseconds(retryMs), stdAddress, stdPort);
+		auto pChannel = mpMgr->AddTCPClient(logger, TimeDuration::Milliseconds(retryDelay.Milliseconds), stdAddress, stdPort);
 		return gcnew ChannelAdapter(pChannel);
 	}
 	catch(openpal::Exception ex) {
@@ -73,7 +73,7 @@ IChannel ^ DNP3ManagerAdapter::AddTCPClient(System::String ^ name, LogLevel leve
 	}
 }
 
-IChannel ^ DNP3ManagerAdapter::AddTCPServer(System::String ^ name, LogLevel level, System::UInt64 retryMs, System::String ^ endpoint, System::UInt16 port)
+IChannel ^ DNP3ManagerAdapter::AddTCPServer(System::String ^ name, LogLevel level, System::TimeSpan retryDelay, System::String ^ endpoint, System::UInt16 port)
 {
 	std::string stdName = Conversions::convertString(name);
 	std::string stdEndpoint = Conversions::convertString(endpoint);
@@ -82,7 +82,7 @@ IChannel ^ DNP3ManagerAdapter::AddTCPServer(System::String ^ name, LogLevel leve
 
 	try {
 		Logger logger(mpMgr->GetLog(), lev, stdName);
-		auto pChannel = mpMgr->AddTCPServer(logger, TimeDuration::Milliseconds(retryMs), stdEndpoint, stdPort);
+		auto pChannel = mpMgr->AddTCPServer(logger, TimeDuration::Milliseconds(retryDelay.Milliseconds), stdEndpoint, stdPort);
 		return gcnew ChannelAdapter(pChannel);
 	}
 	catch(openpal::Exception ex) {
@@ -90,7 +90,7 @@ IChannel ^ DNP3ManagerAdapter::AddTCPServer(System::String ^ name, LogLevel leve
 	}
 }
 
-IChannel ^ DNP3ManagerAdapter::AddSerial(System::String ^ name, LogLevel level, System::UInt64 retryMs, DNP3::Interface::SerialSettings ^ settings)
+IChannel ^ DNP3ManagerAdapter::AddSerial(System::String ^ name, LogLevel level, System::TimeSpan retryDelay, DNP3::Interface::SerialSettings ^ settings)
 {
 	std::string stdName = Conversions::convertString(name);
 	auto lev = Conversions::convertFilterLevel(level);
@@ -98,7 +98,7 @@ IChannel ^ DNP3ManagerAdapter::AddSerial(System::String ^ name, LogLevel level, 
 
 	try {
 		Logger logger(mpMgr->GetLog(), lev, stdName);
-		auto pChannel = mpMgr->AddSerial(logger, TimeDuration::Milliseconds(retryMs), s);
+		auto pChannel = mpMgr->AddSerial(logger, TimeDuration::Milliseconds(retryDelay.Milliseconds), s);
 		return gcnew ChannelAdapter(pChannel);
 	}
 	catch(openpal::Exception ex) {

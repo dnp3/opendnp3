@@ -39,32 +39,32 @@ namespace DNP3.Interface
 		/// </summary>
         /// <param name="name">An id used for logging purposes</param>
         /// <param name="level">The starting level for logging output</param>
-        /// <param name="retryMs">The number of milliseconds in between connection attempts</param>
+        /// <param name="retryDelay">Timespan between connection attempts</param>
         /// <param name="address">The address of remote host as a INET address i.e. "127.0.0.1" or name "www.google.com"</param>
         /// <param name="port">The port to make the connection on</param>
         /// <returns>A channel interface</returns>
-		IChannel AddTCPClient(String name, LogLevel level, UInt64 retryMs, String address, UInt16 port);
+		IChannel AddTCPClient(String name, LogLevel level, TimeSpan retryDelay, String address, UInt16 port);
 
         /// <summary>
         /// Add a TCP server channel. The channel does not try to listen until you add a stack.
         /// </summary>
         /// <param name="name">An id used for logging purposes</param>
         /// <param name="level">The starting level for logging output</param>
-        /// <param name="retryMs">The number of milliseconds in between connection attempts</param>
+        /// <param name="retryDelay">Timespan between connection attempts</param>
         /// <param name="endpoint">The address that identifies the network adapter to bind i.e. "127.0.0.1" or "0.0.0.0"</param>
         /// <param name="port">The port to listen on</param>
         /// <returns>A channel interface</returns>
-		IChannel AddTCPServer(String name, LogLevel level, UInt64 retryMs, String endpoint, UInt16 port);
+		IChannel AddTCPServer(String name, LogLevel level, TimeSpan retryDelay, String endpoint, UInt16 port);
 
         /// <summary>
         /// Add a serial channel. The port does not try to open until you add a stack.
         /// </summary>
         /// <param name="name">An id used for logging purposes</param>
         /// <param name="level">The starting level for logging output</param>
-        /// <param name="retryMs">The number of milliseconds in between connection attempts</param>
+        /// <param name="retryDelay">Timespan between connection attempts</param>
         /// <param name="settings">Configuration struct for the serial port</param>        
         /// <returns>A channel interface</returns>
-		IChannel AddSerial(String name, LogLevel level, UInt64 retryMs, SerialSettings settings);
+        IChannel AddSerial(String name, LogLevel level, TimeSpan retryDelay, SerialSettings settings);
 
         /// <summary>
         /// Subscribe to all log messages
