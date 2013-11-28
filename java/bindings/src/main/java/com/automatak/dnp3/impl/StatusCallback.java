@@ -18,7 +18,7 @@
  */
 package com.automatak.dnp3.impl;
 
-interface StatusCallback
+interface CommandResultCallback
 {
-    void onStatusCallback(int status);
+    void onCommandCallback(int result, int status);
 }

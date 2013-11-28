@@ -18,6 +18,7 @@
  */
 package com.automatak.dnp3.example;
 
+import com.automatak.CommandResponse;
 import com.automatak.dnp3.*;
 import com.automatak.dnp3.impl.DNP3ManagerFactory;
 import com.automatak.dnp3.mock.PrintingDataObserver;
@@ -31,7 +32,7 @@ import java.io.InputStreamReader;
  * Example master than can be run against the example outstation
  */
 public class MasterDemo {
-
+                                 c
     public static void main(String[] args) throws IOException, InterruptedException {
 
         // create the root class with a thread pool size of 1
@@ -81,8 +82,8 @@ public class MasterDemo {
             if(line.equals("quit")) break;
             else {
                 ControlRelayOutputBlock crob = new ControlRelayOutputBlock(ControlCode.LATCH_ON, (short) 1, 100, 100, CommandStatus.SUCCESS);
-                ListenableFuture<CommandStatus> future = processor.selectAndOperate(crob, 0);
-                System.out.println("Control result: " + future.get().name());
+                ListenableFuture<CommandResponse> future = processor.selectAndOperate(crob, 0);
+                System.out.println("Control result: " + future.get());
             }
         }
 

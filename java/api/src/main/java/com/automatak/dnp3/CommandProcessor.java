@@ -18,6 +18,8 @@
  */
 package com.automatak.dnp3;
 
+import com.automatak.CommandResponse;
+
 /**
  * Interface for dispatching command requests from a master to an outstation
  */
@@ -29,7 +31,7 @@ public interface CommandProcessor {
      * @param index index of request
      * @return future to the result of the operation
      */
-    ListenableFuture<CommandStatus> selectAndOperate(ControlRelayOutputBlock command, long index);
+    ListenableFuture<CommandResponse> selectAndOperate(ControlRelayOutputBlock command, long index);
 
     /**
      * Select and operate a 32-bit integer AnalogOutput (Group41Variation1)
@@ -37,7 +39,7 @@ public interface CommandProcessor {
      * @param index index of request
      * @return future to the result of the operation
      */
-    ListenableFuture<CommandStatus> selectAndOperate(AnalogOutputInt32 command, long index);
+    ListenableFuture<CommandResponse> selectAndOperate(AnalogOutputInt32 command, long index);
 
     /**
      * Select and operate a 16-bit integer AnalogOutput (Group41Variation2)
@@ -45,7 +47,7 @@ public interface CommandProcessor {
      * @param index index of request
      * @return future to the result of the operation
      */
-    ListenableFuture<CommandStatus> selectAndOperate(AnalogOutputInt16 command, long index);
+    ListenableFuture<CommandResponse> selectAndOperate(AnalogOutputInt16 command, long index);
 
     /**
      * Select and operate single precision AnalogOutput (Group41Variation3)
@@ -53,7 +55,7 @@ public interface CommandProcessor {
      * @param index index of request
      * @return future to the result of the operation
      */
-    ListenableFuture<CommandStatus> selectAndOperate(AnalogOutputFloat32 command, long index);
+    ListenableFuture<CommandResponse> selectAndOperate(AnalogOutputFloat32 command, long index);
 
     /**
      * Select and operate double precision AnalogOutput (Group41Variation4)
@@ -61,7 +63,7 @@ public interface CommandProcessor {
      * @param index index of request
      * @return future to the result of the operation
      */
-    ListenableFuture<CommandStatus> selectAndOperate(AnalogOutputDouble64 command, long index);
+    ListenableFuture<CommandResponse> selectAndOperate(AnalogOutputDouble64 command, long index);
 
     /**
      * Direct operate a ControlRelayOutputBlock (Group12Variation1)
@@ -69,7 +71,7 @@ public interface CommandProcessor {
      * @param index index of request
      * @return future to the result of the operation
      */
-    ListenableFuture<CommandStatus> directOperate(ControlRelayOutputBlock command, long index);
+    ListenableFuture<CommandResponse> directOperate(ControlRelayOutputBlock command, long index);
 
     /**
      * Direct operate a 32-bit integer AnalogOutput (Group41Variation1)
@@ -77,7 +79,7 @@ public interface CommandProcessor {
      * @param index index of request
      * @return future to the result of the operation
      */
-    ListenableFuture<CommandStatus> directOperate(AnalogOutputInt32 command, long index);
+    ListenableFuture<CommandResponse> directOperate(AnalogOutputInt32 command, long index);
 
     /**
      * Direct operate a 16-bit integer AnalogOutput (Group41Variation2)
@@ -85,7 +87,7 @@ public interface CommandProcessor {
      * @param index index of request
      * @return future to the result of the operation
      */
-    ListenableFuture<CommandStatus> directOperate(AnalogOutputInt16 command, long index);
+    ListenableFuture<CommandResponse> directOperate(AnalogOutputInt16 command, long index);
 
     /**
      * Direct operate a single precision AnalogOutput (Group41Variation3)
@@ -93,7 +95,7 @@ public interface CommandProcessor {
      * @param index index of request
      * @return future to the result of the operation
      */
-    ListenableFuture<CommandStatus> directOperate(AnalogOutputFloat32 command, long index);
+    ListenableFuture<CommandResponse> directOperate(AnalogOutputFloat32 command, long index);
 
     /**
      * Direct operate  a double precision AnalogOutput (Group41Variation4)
@@ -101,6 +103,6 @@ public interface CommandProcessor {
      * @param index index of request
      * @return future to the result of the operation
      */
-    ListenableFuture<CommandStatus> directOperate(AnalogOutputDouble64 command, long index);
+    ListenableFuture<CommandResponse> directOperate(AnalogOutputDouble64 command, long index);
 
 }
