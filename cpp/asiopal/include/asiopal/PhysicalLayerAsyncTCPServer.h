@@ -41,7 +41,12 @@ namespace asiopal
 class DLL_LOCAL PhysicalLayerAsyncTCPServer : public PhysicalLayerAsyncBaseTCP
 {
 public:
-	PhysicalLayerAsyncTCPServer(openpal::Logger, boost::asio::io_service* apIOService, const std::string& arEndpoint, uint16_t aPort);
+	PhysicalLayerAsyncTCPServer(
+		openpal::Logger, 
+		boost::asio::io_service* apIOService, 
+		const std::string& arEndpoint,
+		uint16_t aPort,
+		std::function<void (boost::asio::ip::tcp::socket&)> aConfigure = [](boost::asio::ip::tcp::socket&){});
 
 	/* Implement the remainging actions */
 	void DoOpen();
@@ -55,8 +60,8 @@ private:
 
 	boost::asio::ip::tcp::endpoint mLocalEndpoint;
 	boost::asio::ip::tcp::endpoint mRemoteEndpoint;
-
 	boost::asio::ip::tcp::acceptor mAcceptor;
+	std::function<void (boost::asio::ip::tcp::socket&)> mConfigure;
 };
 }
 

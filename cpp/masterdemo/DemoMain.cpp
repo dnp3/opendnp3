@@ -65,8 +65,15 @@ int main(int argc, char* argv[])
 	// This is the main point of interaction with the stack
 	DNP3Manager mgr;
 
+
+	// you can optionally pass a function into the client constructor to configure your socket
+	// using platform specific options
+	auto configure = [](boost::asio::ip::tcp::socket& socket){
+		// platfrom specific socket configuration here
+	};
+
 	// Connect via a TCPClient socket to a slave
-	auto pClientPhys = new PhysicalLayerAsyncTCPClient(Logger(&log, LOG_LEVEL, "tcpclient"), pool.GetIOService(), "127.0.0.1", 20000);
+	auto pClientPhys = new PhysicalLayerAsyncTCPClient(Logger(&log, LOG_LEVEL, "tcpclient"), pool.GetIOService(), "127.0.0.1", 20000, configure);
 	// wait 3000 ms in between failed connect calls.
 	auto pClient = mgr.CreateChannel(Logger(&log, LOG_LEVEL, "tcpclient"), TimeDuration::Seconds(3), pClientPhys);
 

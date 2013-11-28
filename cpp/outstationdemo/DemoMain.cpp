@@ -64,8 +64,14 @@ int main(int argc, char* argv[])
 	// This is the main point of interaction with the stack
 	DNP3Manager mgr;
 
+	// you can optionally pass a function into the client constructor to configure your socket
+	// using platform specific options
+	auto configure = [](boost::asio::ip::tcp::socket& socket){
+		// platfrom specific socket configuration here
+	};
+
 	// Create the raw physical layer
-	auto pServerPhys = new PhysicalLayerAsyncTCPServer(Logger(&log, LOG_LEVEL, "tcpserver"), pool.GetIOService(), "127.0.0.1", 20000);
+	auto pServerPhys = new PhysicalLayerAsyncTCPServer(Logger(&log, LOG_LEVEL, "tcpserver"), pool.GetIOService(), "127.0.0.1", 20000, configure);
 	// Wrap the physical layer in a DNP channel
 	auto pServer = mgr.CreateChannel(Logger(&log, LOG_LEVEL, "tcpserver"), TimeDuration::Seconds(5), pServerPhys);
 

@@ -57,6 +57,7 @@ public:
 	void DoOpenFailure();
 
 protected:
+
 	boost::asio::ip::tcp::socket mSocket;
 	void CloseSocket();
 
