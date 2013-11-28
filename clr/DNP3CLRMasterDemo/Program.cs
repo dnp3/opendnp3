@@ -68,8 +68,8 @@ namespace DotNetMasterDemo
                 switch (Console.ReadLine())
                 { 
                     case "c":
-                        UInt32 index = 0;
-                        var future = master.GetCommandProcessor().SelectAndOperate(new ControlRelayOutputBlock(ControlCode.CC_PULSE, 1, 100, 100), index);
+                        var crob = new ControlRelayOutputBlock(ControlCode.CC_PULSE, 1, 100, 100);
+                        var future = master.GetCommandProcessor().SelectAndOperate(crob, 0);
                         future.Listen((status) => Console.WriteLine("Result: " + status));
                         break;
                     case "i":
