@@ -11,7 +11,8 @@
     <url>www.automatak.com/opendnp3</url>
     <description>Code generator for opendnp3 project</description>
 
-    <modules>        
+    <modules>
+	<module>cpp</module>        
     </modules>
 
     <properties>
@@ -149,8 +150,18 @@
     </build>
 
     <dependencies>
-        
-
+      <dependency>
+            <groupId>org.scala-lang</groupId>
+            <artifactId>scala-library</artifactId>
+            <version>${scala.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.scalatest</groupId>
+            <artifactId>scalatest_${scala.version}</artifactId>
+            <version>${scalatest.version}</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
 </project>
