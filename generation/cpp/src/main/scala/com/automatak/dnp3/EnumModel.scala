@@ -21,7 +21,7 @@ package com.automatak.dnp3
 case class EnumValue(name: String, value: Option[String] = None)
 
 
-object Enumeration {
+object EnumModel {
 
   sealed trait Type
   case object UInt8 extends Type
@@ -29,4 +29,4 @@ object Enumeration {
 
 }
 
-case class Enumeration(name: String, enumType: Option[Enumeration.Type], values: List[EnumValue])
+case class EnumModel(name: String, enumType: Option[EnumModel.Type], values: List[EnumValue])

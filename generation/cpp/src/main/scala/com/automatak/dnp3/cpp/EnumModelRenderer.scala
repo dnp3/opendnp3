@@ -20,17 +20,17 @@ package com.automatak.dnp3.cpp
 
 import com.automatak.dnp3._
 
-object EnumerationRenderer extends Renderer[Enumeration] {
+object EnumModelRenderer extends ModelRenderer[EnumModel] {
 
-  def apply(enum: Enumeration) : Lines = new Lines {
+  def apply(enum: EnumModel) : Lines = new Lines {
 
     private def render(ev: EnumValue): String = {
       List(Some(ev.name), ev.value.map(x => "="), ev.value).flatten.spaced
     }
 
-    private def render(typ: Enumeration.Type): String = typ match {
-      case Enumeration.UInt8 => "uint8_t"
-      case Enumeration.UInt16 => "uint16_t"
+    private def render(typ: EnumModel.Type): String = typ match {
+      case EnumModel.UInt8 => "uint8_t"
+      case EnumModel.UInt16 => "uint16_t"
     }
 
     def foreach[A](f: String => A): Unit = {
