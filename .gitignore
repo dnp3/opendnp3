@@ -72,11 +72,10 @@ clr/opendnp3.shfbproj_*
 
 
 # intellij/maven generated files
-java/*.iml
-java/target
-java/.idea
-java/**/**.iml
-java/**/target/
+*.iml
+**/**/target
+**/.idea
+
 
 # lcov/gcov generated files
 *.gcno
