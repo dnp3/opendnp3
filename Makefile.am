@@ -74,6 +74,7 @@ cpp/opendnp3/src/opendnp3/BufferTypes.cpp \
 cpp/opendnp3/src/opendnp3/ChangeBuffer.cpp \
 cpp/opendnp3/src/opendnp3/ChannelStates.cpp \
 cpp/opendnp3/src/opendnp3/ClassCounter.cpp \
+cpp/opendnp3/src/opendnp3/CommandResponse.cpp \
 cpp/opendnp3/src/opendnp3/CommandStatus.cpp \
 cpp/opendnp3/src/opendnp3/CommandTask.cpp \
 cpp/opendnp3/src/opendnp3/ConstantCommandProcessor.cpp \
