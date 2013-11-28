@@ -65,7 +65,6 @@
                 <artifactId>maven-license-plugin</artifactId>
                 <version>${maven-license-plugin.version}</version>
                 <configuration>
-                    <basedir>../</basedir>
                     <strictCheck>true</strictCheck>
                     <failIfMissing>true</failIfMissing>
                     <aggregate>true</aggregate>
