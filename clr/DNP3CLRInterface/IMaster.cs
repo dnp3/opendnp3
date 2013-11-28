@@ -39,9 +39,10 @@ namespace DNP3.Interface
         ICommandProcessor GetCommandProcessor();
         
         /// <summary>
-        /// Perform an on demand integrity scan
+        /// Retrieve an interface representing the integrity scan
         /// </summary>
-        void DemandIntegrityScan();
+        /// <returns>IMasterScan interface representing the integrity scan</returns>
+        IMasterScan GetIntegrityScan();
 
         /// <summary>
         /// Adds a class scan to the master

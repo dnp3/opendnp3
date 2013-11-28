@@ -47,7 +47,7 @@ public:
         
 	virtual void Shutdown();
 
-	virtual void DemandIntegrityScan();
+	virtual IMasterScan^ GetIntegrityScan();
 
 	virtual void AddStateListener(System::Action<StackState> ^ aListener);
 

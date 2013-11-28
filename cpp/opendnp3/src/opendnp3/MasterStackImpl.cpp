@@ -70,9 +70,9 @@ MasterScan MasterStackImpl::AddClassScan(int aClassMask, openpal::TimeDuration a
 	return mMaster.AddClassScan(aClassMask, aScanRate, aRetryRate);
 }
 
-void MasterStackImpl::DemandIntegrityScan()
+MasterScan MasterStackImpl::GetIntegrityScan()
 {
-	mpExecutor->Post([this]() { this->mMaster.DemandIntegrityScan(); });
+	return mMaster.GetIntegrityScan();
 }
 
 void MasterStackImpl::Shutdown()

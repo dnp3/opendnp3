@@ -63,9 +63,9 @@ void MasterAdapter::Shutdown()
 	mpMaster->Shutdown();
 }
 
-void MasterAdapter::DemandIntegrityScan()
+IMasterScan^ MasterAdapter::GetIntegrityScan()
 {
-	mpMaster->DemandIntegrityScan();
+	return gcnew MasterScanAdapter(mpMaster->GetIntegrityScan());
 }
 
 IMasterScan^ MasterAdapter::AddClassScan(int aClassMask, System::Int64 aPeriodMs, System::Int64 aTaskRetry)

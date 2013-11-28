@@ -94,7 +94,7 @@ public:
 		return &mCommandQueue;
 	}
 
-	void DemandIntegrityScan();
+	MasterScan GetIntegrityScan();
 
 	MasterScan AddClassScan(int aClassMask, openpal::TimeDuration aScanRate, openpal::TimeDuration aRetryRate);
 

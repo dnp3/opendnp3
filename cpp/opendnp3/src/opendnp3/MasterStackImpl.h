@@ -65,7 +65,7 @@ public:
 
 	void AddStateListener(std::function<void (StackState)> aListener);
 
-	void DemandIntegrityScan();
+	MasterScan GetIntegrityScan();
 
 	openpal::IExecutor* GetExecutor() { return mpExecutor; }
 

@@ -54,10 +54,9 @@ public:
 	virtual ~IMaster() {}
 
 	/**
-	*  Perform an integrity scan now if the master is online
-	*  Doesn't matter if the scan is configured to be periodic or non-periodic
+	*  Returns a master scan object representing the configured integrity scan
 	*/
-	virtual void DemandIntegrityScan() = 0;
+	virtual MasterScan GetIntegrityScan() = 0;
 	
 	/**
 	* Add a class-based scan to the master

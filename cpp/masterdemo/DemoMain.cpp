@@ -98,6 +98,7 @@ int main(int argc, char* argv[])
 		std::cout << "master state: " << ConvertStackStateToString(state) << std::endl;
 	});
 
+	auto integrityScan = pMaster->GetIntegrityScan();
 	auto exceptionScan = pMaster->AddClassScan(PC_CLASS_1 | PC_CLASS_2 | PC_CLASS_3, TimeDuration::Seconds(5), TimeDuration::Seconds(5));
 
 	// Enable the master. This will start communications.
@@ -114,8 +115,8 @@ int main(int argc, char* argv[])
 		{
 			case('x'):
 				return 0;
-			case('d'):
-				pMaster->DemandIntegrityScan();
+			case('i'):
+				integrityScan.Demand();
 				break;
 			case('e'):
 				exceptionScan.Demand();

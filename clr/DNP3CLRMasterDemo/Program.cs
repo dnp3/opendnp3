@@ -57,6 +57,7 @@ namespace DotNetMasterDemo
 
             var classMask = PointClassHelpers.GetMask(PointClass.PC_CLASS_1, PointClass.PC_CLASS_2, PointClass.PC_CLASS_3);
             var classScan = master.AddClassScan(classMask, 5000, 5000);
+            var integrityScan = master.GetIntegrityScan();
 
             master.Enable(); // enable communications
 
@@ -71,8 +72,8 @@ namespace DotNetMasterDemo
                         var future = master.GetCommandProcessor().SelectAndOperate(new ControlRelayOutputBlock(ControlCode.CC_PULSE, 1, 100, 100), index);
                         future.Listen((status) => Console.WriteLine("Result: " + status));
                         break;
-                    case "d":                        
-                        master.DemandIntegrityScan();
+                    case "i":
+                        integrityScan.Demand();
                         break;
                     case "e":
                         classScan.Demand();                        

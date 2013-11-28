@@ -234,33 +234,9 @@ void Master::ChangeUnsol(ITask* apTask, bool aEnable, int aClassMask)
 	mpState->StartTask(this, apTask, &mConfigureUnsol);
 }
 
-/* TODO - remove or repair dead codes
-void Master::TransmitVtoData(ITask* apTask)
+MasterScan Master::GetIntegrityScan()
 {
-	if(mpState == AMS_Closed::Inst()) apTask->Disable();
-	else {
-		size_t max = mVtoTransmitTask.mBuffer.NumAvailable();
-		VtoEventBufferAdapter adapter(&mVtoTransmitTask.mBuffer);
-		mVtoWriter.Flush(&adapter, max);
-
-		LOG_BLOCK(LEV_DEBUG, "TransmitVtoData: " << std::boolalpha << mVtoTransmitTask.mBuffer.IsFull() << " size: " << mVtoTransmitTask.mBuffer.Size());
-
-		// Any data to transmit?
-		if (mVtoTransmitTask.mBuffer.Size() > 0) {
-			// Start the mVtoTransmitTask
-			mpState->StartTask(this, apTask, &mVtoTransmitTask);
-		}
-		else {
-			// Stop the mVtoTransmitTask
-			apTask->Disable();
-		}
-	}
-}
-*/
-
-void Master::DemandIntegrityScan()
-{
-	mSchedule.mpIntegrityPoll->Demand();
+	return MasterScan(mpExecutor, mSchedule.mpIntegrityPoll);
 }
 
 MasterScan Master::AddClassScan(int aClassMask, openpal::TimeDuration aScanRate, openpal::TimeDuration aRetryRate)
