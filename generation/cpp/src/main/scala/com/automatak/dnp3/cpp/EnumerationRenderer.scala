@@ -19,11 +19,10 @@
 package com.automatak.dnp3.cpp
 
 import com.automatak.dnp3._
-import scala.Some
 
-object EnumerationRenderer {
+object EnumerationRenderer extends Renderer[Enumeration] {
 
-  def apply(enum: Enumeration) : HasLines = new HasLines {
+  def apply(enum: Enumeration) : Lines = new Lines {
 
     private def render(ev: EnumValue): String = {
       List(Some(ev.name), ev.value.map(x => "="), ev.value).flatten.spaced
