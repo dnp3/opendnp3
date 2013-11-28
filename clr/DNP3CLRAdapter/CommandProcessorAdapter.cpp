@@ -37,7 +37,7 @@ namespace Adapter
 void ResponseRouter::Set(gcroot < Future<CommandStatus> ^ > * apFuture, opendnp3::CommandResponse cr)
 {
 	std::auto_ptr < gcroot < Future<CommandStatus> ^ >> ptr(apFuture);
-	(*apFuture)->Set(Conversions::convertCommandStatus(cr.mResult));
+	(*apFuture)->Set(Conversions::convertCommandStatus(cr.GetStatus()));
 }
 
 CommandProcessorAdapter::CommandProcessorAdapter(opendnp3::ICommandProcessor* apProxy) : mpProxy(apProxy)

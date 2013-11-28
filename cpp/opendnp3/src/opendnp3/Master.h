@@ -146,9 +146,9 @@ private:
 		auto formatter = [ = ](APDU & arAPDU, FunctionCodes aCode) {
 			return CommandHelpers::ConfigureRequest(arAPDU, aCode, arCommand, aIndex, apObj);
 		};
-		auto responder = [ = ](CommandStatus aStatus) {
+		auto responder = [ = ](CommandResponse rsp) {
 			mpExecutor->Post([ = ]() {
-				aCallback(CommandResponse(aStatus));
+				aCallback(rsp);
 			});
 		};
 		mCommandTask.Configure(formatter, responder);

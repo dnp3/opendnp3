@@ -26,43 +26,44 @@
 //
 // Contact Automatak, LLC for a commercial license to these modifications
 //
-#ifndef __COMMAND_RESPONSE_H_
-#define __COMMAND_RESPONSE_H_
 
-#include "CommandStatus.h"
+#include <opendnp3/CommandResponse.h>
+
+#include <sstream>
 
 namespace opendnp3
 {
+	
+CommandResponse::CommandResponse(CommandResult aResult, CommandStatus aStatus) : 
+	mResult(CR_NO_COMMS), 
+	mStatus(aStatus) 
+{}
 
-/**
-* Represents the result of a command request
-*/
-class CommandResponse
+CommandResponse CommandResponse::OK(CommandStatus aStatus)
 {
-public:
+	return CommandResponse(CR_RESPONSE_OK, aStatus); 
+}
 	
-	CommandResponse(CommandResult aResult = CR_NO_COMMS, CommandStatus aStatus = CS_UNDEFINED);
+CommandResult CommandResponse::GetResult()
+{ return mResult; }
 
-	static CommandResponse OK(CommandStatus aStatus);
-	
-	///  The result of the operation, should be examined before looking at the status code
-	CommandResult GetResult();
+CommandStatus CommandResponse::GetStatus()
+{ return mStatus; }
 
-	/// The command status enumeration received from the outstation, if applicable
-	CommandStatus GetStatus();
+bool CommandResponse::operator==(const CommandResponse& arRHS)
+{
+	return (mResult == arRHS.mResult) && (mStatus == arRHS.mStatus);
+}
 
-	bool operator==(const CommandResponse& arRHS);
-
-	std::string ToString() const;
-
-private:
-	
-	CommandResult mResult;	
-	CommandStatus mStatus;
-};
+std::string CommandResponse::ToString() const
+{
+	std::ostringstream oss;
+	if(mResult == CR_RESPONSE_OK) oss << "Response: " << CommandStatusToString(mStatus);
+	else oss << "Failure: " << CommandResultToString(mResult);
+	return oss.str();
+}
 
 }
 
 /* vim: set ts=4 sw=4: */
 
-#endif

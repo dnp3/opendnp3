@@ -39,12 +39,12 @@ BOOST_AUTO_TEST_CASE(FullSequence)
 {
 	EventLog log;
 	CommandTask ct(Logger(&log, LEV_INFO, "task"));
-	CommandStatus rsp = CS_UNDEFINED;
+	CommandResponse rsp;
 	auto formatter = [](APDU & arAPDU, FunctionCodes aCode) {
 		return CommandHelpers::ConfigureRequest(arAPDU, aCode, ControlRelayOutputBlock(CC_LATCH_ON), 0, Group12Var1::Inst());
 	};
-	auto responder = [&rsp](CommandStatus status) {
-		rsp = status;
+	auto responder = [&rsp](CommandResponse aRsp) {
+		rsp = aRsp;
 	};
 	ct.Configure(formatter, responder);
 	ct.AddCommandCode(FC_SELECT);
@@ -57,7 +57,7 @@ BOOST_AUTO_TEST_CASE(FullSequence)
 	frag.Interpret();
 	auto result = ct.OnFinalResponse(frag);
 	BOOST_REQUIRE_EQUAL(TR_SUCCESS, result);
-	BOOST_REQUIRE_EQUAL(CS_SUCCESS, rsp);
+	BOOST_REQUIRE(CommandResponse::OK(CS_SUCCESS) == rsp);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

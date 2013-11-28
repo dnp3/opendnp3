@@ -28,7 +28,7 @@ void DoCommandCallback(JavaVM* apJVM, jobject gref, CommandResponse rsp)
 	JNIEnv* pEnv = JNIHelpers::GetEnvFromJVM(apJVM);
 	jclass clazz = pEnv->GetObjectClass(gref);
 	jmethodID mid = pEnv->GetMethodID(clazz, "onStatusCallback", "(I)V");
-	pEnv->CallVoidMethod(gref, mid, rsp.mResult);
+	pEnv->CallVoidMethod(gref, mid, rsp.GetStatus());
 	pEnv->DeleteGlobalRef(gref);
 }
 

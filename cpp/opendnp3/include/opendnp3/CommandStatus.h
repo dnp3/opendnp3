@@ -56,6 +56,18 @@ enum CommandStatus {
 };
 
 /**
+*  Opendnp3 only codes used for differentiating cases where a command sequence fails without a response from the outstation
+*/
+enum CommandResult
+{
+	CR_RESPONSE_OK,  // A response was received from the outstation, check the CommandStatus enumeration
+	CR_TIMEOUT,   // The operation timed out without a response
+	CR_NO_COMMS   // There is no communication with the outstation, and the command was not attempted
+};
+
+
+
+/**
 * Converts an integer to a CommandStatus enumeration
 *
 * @param aField The integer to convert
@@ -70,7 +82,9 @@ CommandStatus IntToCommandStatus(int aField);
 * @param aCode The status to convert
 * @return string representation of the command status
 */
-std::string ToString(CommandStatus aCode);
+std::string CommandStatusToString(CommandStatus aCode);
+std::string CommandResultToString(CommandResult aResult);
+
 #endif
 
 }

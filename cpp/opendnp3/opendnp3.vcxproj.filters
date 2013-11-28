@@ -743,6 +743,9 @@
     <ClCompile Include="src\opendnp3\OctetData.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\opendnp3\CommandResponse.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\gecapache.licenseheader" />

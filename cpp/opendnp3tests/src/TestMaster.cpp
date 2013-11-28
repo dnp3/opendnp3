@@ -313,12 +313,12 @@ BOOST_AUTO_TEST_CASE(ControlExecutionClosedState)
 	ControlRelayOutputBlock bo(CC_PULSE);
 
 	for(int i = 0; i < 10; ++i) {
-		CommandResponse rsp(CS_UNDEFINED);
+		CommandResponse rsp;
 		pCmdProcessor->SelectAndOperate(bo, 1, [&](CommandResponse r) {
 			rsp = r;
 		});
 		t.mts.Dispatch();
-		BOOST_REQUIRE_EQUAL(rsp.mResult, CS_HARDWARE_ERROR);
+		BOOST_REQUIRE(CommandResponse(CR_NO_COMMS) == rsp);
 	}
 
 }
@@ -355,7 +355,7 @@ BOOST_AUTO_TEST_CASE(SelectAndOperate)
 
 	BOOST_REQUIRE_EQUAL(t.app.NumAPDU(), 0); //nore more packets
 	BOOST_REQUIRE_EQUAL(1, rsps.size());
-	BOOST_REQUIRE_EQUAL(rsps[0].mResult, CS_SUCCESS);
+	BOOST_REQUIRE(CommandResponse::OK(CS_SUCCESS) == rsps[0]);
 }
 
 BOOST_AUTO_TEST_CASE(ControlExecutionSelectFailure)
@@ -374,7 +374,7 @@ BOOST_AUTO_TEST_CASE(ControlExecutionSelectFailure)
 	t.mts.DispatchOne();
 
 	BOOST_REQUIRE_EQUAL(1, rsps.size());
-	BOOST_REQUIRE_EQUAL(rsps[0].mResult, CS_HARDWARE_ERROR);
+	BOOST_REQUIRE(CommandResponse(CR_TIMEOUT) == rsps[0]);
 }
 
 BOOST_AUTO_TEST_CASE(ControlExecutionSelectLayerDown)
@@ -393,7 +393,7 @@ BOOST_AUTO_TEST_CASE(ControlExecutionSelectLayerDown)
 	t.mts.DispatchOne();
 
 	BOOST_REQUIRE_EQUAL(1, rsps.size());
-	BOOST_REQUIRE_EQUAL(rsps[0].mResult, CS_HARDWARE_ERROR);
+	BOOST_REQUIRE(CommandResponse(CR_TIMEOUT) == rsps[0]);
 }
 
 BOOST_AUTO_TEST_CASE(ControlExecutionSelectErrorResponse)
@@ -411,7 +411,7 @@ BOOST_AUTO_TEST_CASE(ControlExecutionSelectErrorResponse)
 	t.mts.DispatchOne();
 
 	BOOST_REQUIRE_EQUAL(1, rsps.size());
-	BOOST_REQUIRE_EQUAL(CS_NOT_SUPPORTED, rsps[0].mResult);
+	BOOST_REQUIRE(CommandResponse::OK(CS_NOT_SUPPORTED) == rsps[0]);
 }
 
 BOOST_AUTO_TEST_CASE(ControlExecutionSelectPartialResponse)
@@ -433,7 +433,7 @@ BOOST_AUTO_TEST_CASE(ControlExecutionSelectPartialResponse)
 	t.mts.DispatchOne();
 
 	BOOST_REQUIRE_EQUAL(1, rsps.size());
-	BOOST_REQUIRE_EQUAL(CS_NOT_SUPPORTED, rsps[0].mResult);
+	BOOST_REQUIRE(CommandResponse::OK(CS_NOT_SUPPORTED) == rsps[0]);
 }
 
 BOOST_AUTO_TEST_CASE(DeferredControlExecution)

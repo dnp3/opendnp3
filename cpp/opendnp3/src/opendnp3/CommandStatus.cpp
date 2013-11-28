@@ -50,7 +50,19 @@ CommandStatus IntToCommandStatus(int aField)
 #define TO_STRING_CASE(c) case (c): return #c;
 
 #ifndef OPENDNP3_STRIP_LOG_MESSAGES
-std::string ToString(CommandStatus aType)
+
+std::string CommandResultToString(CommandResult aResult)
+{
+	switch(aResult) {
+		TO_STRING_CASE(CR_RESPONSE_OK)
+		TO_STRING_CASE(CR_TIMEOUT)
+		TO_STRING_CASE(CR_NO_COMMS)
+	default:
+		return "Unknown";
+	}
+}
+
+std::string CommandStatusToString(CommandStatus aType)
 {
 	switch(aType) {
 		TO_STRING_CASE(CS_SUCCESS)

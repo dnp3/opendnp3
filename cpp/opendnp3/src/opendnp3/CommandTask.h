@@ -26,7 +26,7 @@
 #include "MasterTaskBase.h"
 
 #include <opendnp3/APDUConstants.h>
-#include <opendnp3/CommandStatus.h>
+#include <opendnp3/CommandResponse.h>
 
 #include <openpal/Visibility.h>
 #include <openpal/Logger.h>
@@ -42,7 +42,7 @@ class DLL_LOCAL CommandTask : public MasterTaskBase
 {
 	typedef std::function<CommandStatus (const APDU&)> Validator;
 	typedef std::function<Validator (APDU&, FunctionCodes)> Formatter;
-	typedef std::function<void (CommandStatus)> Responder;
+	typedef std::function<void (CommandResponse)> Responder;
 
 public:
 	CommandTask(openpal::Logger);
