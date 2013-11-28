@@ -38,7 +38,7 @@ namespace DNP3.Interface
         /// <param name="command">command to operate</param>
         /// <param name="index">index of command</param>
         /// <returns>A reference to future value of the result</returns>
-        IFuture<CommandStatus> SelectAndOperate(ControlRelayOutputBlock command, System.UInt32 index);
+        IFuture<CommandResponse> SelectAndOperate(ControlRelayOutputBlock command, System.UInt32 index);
 
         /// <summary>
         /// Select and operate a 32-bit AnalogOutput (Group 41 Var1)
@@ -46,7 +46,7 @@ namespace DNP3.Interface
         /// <param name="command">command to operate</param>
         /// <param name="index">index of command</param>
         /// <returns>A reference to future value of the result</returns>
-        IFuture<CommandStatus> SelectAndOperate(AnalogOutputInt32 command, System.UInt32 index);
+        IFuture<CommandResponse> SelectAndOperate(AnalogOutputInt32 command, System.UInt32 index);
 
         /// <summary>
         /// Select and operate a 16-bit AnalogOutput (Group 41 Var2)
@@ -54,7 +54,7 @@ namespace DNP3.Interface
         /// <param name="command">command to operate</param>
         /// <param name="index">index of command</param>
         /// <returns>A reference to future value of the result</returns>
-        IFuture<CommandStatus> SelectAndOperate(AnalogOutputInt16 command, System.UInt32 index);
+        IFuture<CommandResponse> SelectAndOperate(AnalogOutputInt16 command, System.UInt32 index);
 
         /// <summary>
         /// Select and operate a single precision AnalogOutput (Group 41 Var3)
@@ -62,7 +62,7 @@ namespace DNP3.Interface
         /// <param name="command">command to operate</param>
         /// <param name="index">index of command</param>
         /// <returns>A reference to future value of the result</returns>
-        IFuture<CommandStatus> SelectAndOperate(AnalogOutputFloat32 command, System.UInt32 index);
+        IFuture<CommandResponse> SelectAndOperate(AnalogOutputFloat32 command, System.UInt32 index);
 
         /// <summary>
         /// Select and operate a double precision AnalogOutput (Group 41 Var4)
@@ -70,7 +70,7 @@ namespace DNP3.Interface
         /// <param name="command">command to operate</param>
         /// <param name="index">index of command</param>
         /// <returns>A reference to future value of the result</returns>
-        IFuture<CommandStatus> SelectAndOperate(AnalogOutputDouble64 command, System.UInt32 index);
+        IFuture<CommandResponse> SelectAndOperate(AnalogOutputDouble64 command, System.UInt32 index);
 
         /// <summary>
         /// Direct operate a ControlRelayOutputBlock
@@ -78,7 +78,7 @@ namespace DNP3.Interface
         /// <param name="command">command to operate</param>
         /// <param name="index">index of command</param>
         /// <returns>A reference to future value of the result</returns>
-        IFuture<CommandStatus> DirectOperate(ControlRelayOutputBlock command, System.UInt32 index);
+        IFuture<CommandResponse> DirectOperate(ControlRelayOutputBlock command, System.UInt32 index);
 
         /// <summary>
         /// Direct operate a 32-bit AnalogOutput (Group 41 Var1)
@@ -86,7 +86,7 @@ namespace DNP3.Interface
         /// <param name="command">command to operate</param>
         /// <param name="index">index of command</param>
         /// <returns>A reference to future value of the result</returns>
-        IFuture<CommandStatus> DirectOperate(AnalogOutputInt32 command, System.UInt32 index);
+        IFuture<CommandResponse> DirectOperate(AnalogOutputInt32 command, System.UInt32 index);
 
         /// <summary>
         /// Direct operate a 16-bit AnalogOutput (Group 41 Var2)
@@ -94,7 +94,7 @@ namespace DNP3.Interface
         /// <param name="command">command to operate</param>
         /// <param name="index">index of command</param>
         /// <returns>A reference to future value of the result</returns>
-        IFuture<CommandStatus> DirectOperate(AnalogOutputInt16 command, System.UInt32 index);
+        IFuture<CommandResponse> DirectOperate(AnalogOutputInt16 command, System.UInt32 index);
 
         /// <summary>
         /// Direct operate a single precision AnalogOutput (Group 41 Var3)
@@ -102,7 +102,7 @@ namespace DNP3.Interface
         /// <param name="command">command to operate</param>
         /// <param name="index">index of command</param>
         /// <returns>A reference to future value of the result</returns>
-        IFuture<CommandStatus> DirectOperate(AnalogOutputFloat32 command, System.UInt32 index);
+        IFuture<CommandResponse> DirectOperate(AnalogOutputFloat32 command, System.UInt32 index);
 
         /// <summary>
         /// Direct operate a double precision AnalogOutput (Group 41 Var4)
@@ -110,6 +110,6 @@ namespace DNP3.Interface
         /// <param name="command">command to operate</param>
         /// <param name="index">index of command</param>
         /// <returns>A reference to future value of the result</returns>
-        IFuture<CommandStatus> DirectOperate(AnalogOutputDouble64 command, System.UInt32 index);
+        IFuture<CommandResponse> DirectOperate(AnalogOutputDouble64 command, System.UInt32 index);
     }
 }

@@ -124,6 +124,27 @@ StackState  Conversions::convertStackState(opendnp3::StackState aState)
 	}
 }
 
+CommandResponse Conversions::convertCommandResponse(opendnp3::CommandResponse response)
+{
+	auto result = convertCommandResult(response.GetResult());
+	auto status = convertCommandStatus(response.GetStatus());	
+	return CommandResponse(result, status);
+}
+
+CommandResult Conversions::convertCommandResult(opendnp3::CommandResult result)
+{
+	switch(result) {
+		case(opendnp3::CR_RESPONSE_OK):
+			return CommandResult::RESPONSE_OK;
+		case(opendnp3::CR_TIMEOUT):
+			return CommandResult::TIMEOUT;
+		case(opendnp3::CR_NO_COMMS):
+			return CommandResult::NO_COMMS;
+		default:
+			return CommandResult::NO_COMMS;
+	}
+}
+
 CommandStatus Conversions::convertCommandStatus(opendnp3::CommandStatus status)
 {
 	switch(status) {

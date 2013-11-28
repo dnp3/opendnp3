@@ -34,10 +34,10 @@ namespace DNP3
 namespace Adapter
 {
 
-void ResponseRouter::Set(gcroot < Future<CommandStatus> ^ > * apFuture, opendnp3::CommandResponse cr)
+void ResponseRouter::Set(gcroot < Future<CommandResponse> ^ > * apFuture, opendnp3::CommandResponse cr)
 {
-	std::auto_ptr < gcroot < Future<CommandStatus> ^ >> ptr(apFuture);
-	(*apFuture)->Set(Conversions::convertCommandStatus(cr.GetStatus()));
+	std::auto_ptr < gcroot < Future<CommandResponse> ^ >> ptr(apFuture);
+	(*apFuture)->Set(Conversions::convertCommandResponse(cr));
 }
 
 CommandProcessorAdapter::CommandProcessorAdapter(opendnp3::ICommandProcessor* apProxy) : mpProxy(apProxy)
@@ -45,52 +45,52 @@ CommandProcessorAdapter::CommandProcessorAdapter(opendnp3::ICommandProcessor* ap
 
 }
 
-IFuture<CommandStatus> ^ CommandProcessorAdapter::SelectAndOperate(ControlRelayOutputBlock ^ command, System::UInt32 index)
+IFuture<CommandResponse> ^ CommandProcessorAdapter::SelectAndOperate(ControlRelayOutputBlock ^ command, System::UInt32 index)
 {
 	return this->SelectAndOperateT(command, index);
 }
 
-IFuture<CommandStatus> ^ CommandProcessorAdapter::SelectAndOperate(AnalogOutputInt32 ^ command, System::UInt32 index)
+IFuture<CommandResponse> ^ CommandProcessorAdapter::SelectAndOperate(AnalogOutputInt32 ^ command, System::UInt32 index)
 {
 	return this->SelectAndOperateT(command, index);
 }
 
-IFuture<CommandStatus> ^ CommandProcessorAdapter::SelectAndOperate(AnalogOutputInt16 ^ command, System::UInt32 index)
+IFuture<CommandResponse> ^ CommandProcessorAdapter::SelectAndOperate(AnalogOutputInt16 ^ command, System::UInt32 index)
 {
 	return this->SelectAndOperateT(command, index);
 }
 
-IFuture<CommandStatus> ^ CommandProcessorAdapter::SelectAndOperate(AnalogOutputFloat32 ^ command, System::UInt32 index)
+IFuture<CommandResponse> ^ CommandProcessorAdapter::SelectAndOperate(AnalogOutputFloat32 ^ command, System::UInt32 index)
 {
 	return this->SelectAndOperateT(command, index);
 }
 
-IFuture<CommandStatus> ^ CommandProcessorAdapter::SelectAndOperate(AnalogOutputDouble64 ^ command, System::UInt32 index)
+IFuture<CommandResponse> ^ CommandProcessorAdapter::SelectAndOperate(AnalogOutputDouble64 ^ command, System::UInt32 index)
 {
 	return this->SelectAndOperateT(command, index);
 }
 
-IFuture<CommandStatus> ^ CommandProcessorAdapter::DirectOperate(ControlRelayOutputBlock ^ command, System::UInt32 index)
+IFuture<CommandResponse> ^ CommandProcessorAdapter::DirectOperate(ControlRelayOutputBlock ^ command, System::UInt32 index)
 {
 	return this->DirectOperateT(command, index);
 }
 
-IFuture<CommandStatus> ^ CommandProcessorAdapter::DirectOperate(AnalogOutputInt32 ^ command, System::UInt32 index)
+IFuture<CommandResponse> ^ CommandProcessorAdapter::DirectOperate(AnalogOutputInt32 ^ command, System::UInt32 index)
 {
 	return this->DirectOperateT(command, index);
 }
 
-IFuture<CommandStatus> ^ CommandProcessorAdapter::DirectOperate(AnalogOutputInt16 ^ command, System::UInt32 index)
+IFuture<CommandResponse> ^ CommandProcessorAdapter::DirectOperate(AnalogOutputInt16 ^ command, System::UInt32 index)
 {
 	return this->DirectOperateT(command, index);
 }
 
-IFuture<CommandStatus> ^ CommandProcessorAdapter::DirectOperate(AnalogOutputFloat32 ^ command, System::UInt32 index)
+IFuture<CommandResponse> ^ CommandProcessorAdapter::DirectOperate(AnalogOutputFloat32 ^ command, System::UInt32 index)
 {
 	return this->DirectOperateT(command, index);
 }
 
-IFuture<CommandStatus> ^ CommandProcessorAdapter::DirectOperate(AnalogOutputDouble64 ^ command, System::UInt32 index)
+IFuture<CommandResponse> ^ CommandProcessorAdapter::DirectOperate(AnalogOutputDouble64 ^ command, System::UInt32 index)
 {
 	return this->DirectOperateT(command, index);
 }

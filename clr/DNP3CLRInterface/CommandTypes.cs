@@ -79,6 +79,57 @@ namespace DNP3.Interface
 	    UNDEFINED
     }
 
+    /**
+    *  Opendnp3 only codes used for differentiating cases where a command sequence fails without a response from the outstation
+    */
+    public enum CommandResult
+    {
+        /// <summary>
+        /// A response was received from the outstation, check the CommandStatus enumeration
+        /// </summary>
+        RESPONSE_OK,
+        /// <summary>
+        /// The operation timed out without a response
+        /// </summary>
+        TIMEOUT,
+        /// <summary>
+        /// // There is no communication with the outstation, and the command was not attempted
+        /// </summary>
+        NO_COMMS
+    };
+
+    /// <summary>
+    /// Aggregate result of command operation.  Check the Result before checking the status.
+    /// Status is only valid when Result == RESPONSE_OK
+    /// </summary>
+    public struct CommandResponse
+    {        
+        public CommandResponse(CommandResult result, CommandStatus status)
+        {
+            this.result = result;
+            this.status = status;
+        }
+
+        public override string ToString() 
+        {
+            if (result == CommandResult.RESPONSE_OK) return "Response(" + status + ")";
+            else return "Failure(" + result + ")";
+        }
+
+        public CommandResult Result
+        {
+            get { return result; }
+        }
+
+        public CommandStatus Status
+        {
+            get { return status; }
+        }
+
+        private readonly CommandResult result;
+        private readonly CommandStatus status;
+    }
+
     /// <summary>
     /// Possible action types from a ControlRelayOutputBlock
     /// </summary>

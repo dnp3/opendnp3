@@ -28,7 +28,7 @@
 #include <openpal/LogTypes.h>
 
 #include <opendnp3/DataTypes.h>
-#include <opendnp3/CommandStatus.h>
+#include <opendnp3/CommandResponse.h>
 #include <opendnp3/SlaveStackConfig.h>
 #include <opendnp3/MasterStackConfig.h>
 #include <opendnp3/ControlRelayOutputBlock.h>
@@ -69,6 +69,10 @@ public:
 	// Convert the command status enumeration
 	static CommandStatus convertCommandStatus(opendnp3::CommandStatus status);
 	static opendnp3::CommandStatus convertCommandStatus(CommandStatus status);
+
+	static CommandResult convertCommandResult(opendnp3::CommandResult result);
+
+	static CommandResponse convertCommandResponse(opendnp3::CommandResponse response);
 
 	//functions for converting binary outputs
 

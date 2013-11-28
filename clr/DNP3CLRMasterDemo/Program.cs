@@ -70,7 +70,7 @@ namespace DotNetMasterDemo
                     case "c":
                         var crob = new ControlRelayOutputBlock(ControlCode.CC_PULSE, 1, 100, 100);
                         var future = master.GetCommandProcessor().SelectAndOperate(crob, 0);
-                        future.Listen((status) => Console.WriteLine("Result: " + status));
+                        future.Listen((result) => Console.WriteLine("Result: " + result));
                         break;
                     case "i":
                         integrityScan.Demand();
