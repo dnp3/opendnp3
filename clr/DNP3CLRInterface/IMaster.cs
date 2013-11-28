@@ -48,9 +48,9 @@ namespace DNP3.Interface
         /// Adds a class scan to the master
         /// </summary>
         /// <param name="aClassMask">bitfield of class values</param>
-        /// <param name="aPeriodMs">period in milliseconds, -1 for non-periodic</param>
-        /// <param name="aTaskRetry">task retry rate on failure in milliseconds</param>
+        /// <param name="period">period, negative for non-periodic</param>
+        /// <param name="taskRetryPeriod">task retry rate on failure in milliseconds</param>
         /// <returns></returns>
-        IMasterScan AddClassScan(int aClassMask, Int64 aPeriodMs, Int64 aTaskRetry);
+        IMasterScan AddClassScan(int aClassMask, TimeSpan period, TimeSpan taskRetryPeriod);
     }
 }

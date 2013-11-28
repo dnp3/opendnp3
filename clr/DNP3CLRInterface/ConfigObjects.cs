@@ -46,7 +46,7 @@ namespace DNP3.Interface
 						    System.UInt32 numRetry, 
 						    System.UInt16 localAddr, 
 						    System.UInt16 remoteAddr, 
-						    System.UInt64 timeout)							
+						    TimeSpan timeout)							
 		{
             this.isMaster = isMaster;
             this.useConfirms = useConfirms;
@@ -68,7 +68,7 @@ namespace DNP3.Interface
 			this.numRetry = 0;
 			this.localAddr = (ushort) (isMaster ? 1 : 1024);
 			this.remoteAddr = (ushort) (isMaster ? 1024 : 1);
-			this.timeout = 1000;
+            this.timeout = TimeSpan.FromSeconds(1);
 		}        
 
 		/// <summary>
@@ -97,9 +97,9 @@ namespace DNP3.Interface
 		public System.UInt16 remoteAddr;
 
 		/// <summary>
-		/// the response timeout in milliseconds for confirmed requests
+		/// the response timeout for confirmed requests
 		/// </summary>
-		public System.UInt64 timeout;
+		public TimeSpan timeout;
 	}
 
     /// <summary>
@@ -112,7 +112,7 @@ namespace DNP3.Interface
 	    /// </summary>
 		public AppConfig()
         {
-            this.rspTimeout = 5000;
+            this.rspTimeout = TimeSpan.FromSeconds(5);
             this.numRetry = 0;
             this.fragSize = 2048;
         }
@@ -123,7 +123,7 @@ namespace DNP3.Interface
         /// <param name="rspTimeout"> The response/confirm timeout in millisec</param>
         /// <param name="numRetry">Number of retries performed for applicable frames</param>
         /// <param name="fragSize">The maximum size of received application layer fragments</param>
-		public AppConfig(System.Int64 rspTimeout, System.Int32 numRetry, System.Int32 fragSize)
+		public AppConfig(TimeSpan rspTimeout, System.Int32 numRetry, System.Int32 fragSize)
         {
 			this.rspTimeout = rspTimeout;
 			this.numRetry = numRetry;
@@ -134,7 +134,7 @@ namespace DNP3.Interface
 		/// <summary>
 		/// The response/confirm timeout in millisec
 		/// </summary>
-		public System.Int64 rspTimeout;
+		public TimeSpan rspTimeout;
 
 		/// <summary>
 		/// Number of retries performed for applicable frames
@@ -188,8 +188,8 @@ namespace DNP3.Interface
 			doUnsolOnStartup = false;
 			enableUnsol = true;
 			unsolClassMask = (System.Int32) (PointClass.PC_ALL_EVENTS);
-			integrityRate = 5000;
-			taskRetryRate = 5000;			
+            integrityPeriod = TimeSpan.FromSeconds(5);
+            taskRetryPeriod = TimeSpan.FromSeconds(5);
 		}		
 
 		/// <summary>
@@ -220,12 +220,12 @@ namespace DNP3.Interface
 		/// <summary>
         /// Period for integrity scans (class 0), -1 for non periodic
 		/// </summary>
-		public System.Int64 integrityRate;
+        public TimeSpan integrityPeriod;
 
 		/// <summary>
         /// Time delay between task retries
 		/// </summary>
-		public System.Int64 taskRetryRate;		
+        public TimeSpan taskRetryPeriod;	
 	}
 
     /// <summary>
@@ -313,10 +313,10 @@ namespace DNP3.Interface
             this.disableUnsol = false;
             this.unsolMask = new ClassMask(true, true, true);
             this.allowTimeSync = false;
-            this.timeSyncPeriod = 10 * 60 * 1000; // every 10 min
-            this.unsolPackDelay = 200;
-            this.unsolRetryDelay = 2000;
-            this.selectTimeout = 5000;
+            this.timeSyncPeriod = TimeSpan.FromMinutes(10);
+            this.unsolPackDelay = TimeSpan.FromMilliseconds(200);
+            this.unsolRetryDelay = TimeSpan.FromSeconds(2);
+            this.selectTimeout = TimeSpan.FromSeconds(5);
             this.maxFragSize = 2048;
             this.eventMaxConfig = new EventMaxConfig();
             this.staticBinary = StaticBinaryResponse.GROUP1_VAR2;
@@ -351,22 +351,22 @@ namespace DNP3.Interface
 	    /// <summary>
         /// The period of time sync interval in milliseconds
 	    /// </summary>
-        public System.Int64 timeSyncPeriod;
+        public TimeSpan timeSyncPeriod;
 
 	    /// <summary>
         /// The amount of time the slave will wait before sending new unsolicited data (less than 0 == immediate)
 	    /// </summary>
-        public System.Int64 unsolPackDelay;
+        public TimeSpan unsolPackDelay;
 
 	    /// <summary>
         /// How long the slave will wait before retrying an unsuccessful unsol response
 	    /// </summary>
-        public System.Int64 unsolRetryDelay;
+        public TimeSpan unsolRetryDelay;
 
         /// <summary>
         /// How long the outstation will allow an operate to proceed after a prior select
         /// </summary>
-        public System.Int64 selectTimeout;
+        public TimeSpan selectTimeout;
 
 	    /// <summary>
         /// The maximum fragment size the slave will use for data it sends

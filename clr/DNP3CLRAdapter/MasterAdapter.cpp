@@ -68,9 +68,9 @@ IMasterScan^ MasterAdapter::GetIntegrityScan()
 	return gcnew MasterScanAdapter(mpMaster->GetIntegrityScan());
 }
 
-IMasterScan^ MasterAdapter::AddClassScan(int aClassMask, System::Int64 aPeriodMs, System::Int64 aTaskRetry)
+IMasterScan^ MasterAdapter::AddClassScan(int aClassMask, System::TimeSpan period, System::TimeSpan taskRetryPeriod)
 {
-	auto scan = mpMaster->AddClassScan(aClassMask, openpal::TimeDuration::Milliseconds(aPeriodMs), openpal::TimeDuration::Milliseconds(aTaskRetry));
+	auto scan = mpMaster->AddClassScan(aClassMask, openpal::TimeDuration::Milliseconds(period.Milliseconds), openpal::TimeDuration::Milliseconds(taskRetryPeriod.Milliseconds));
 	return gcnew MasterScanAdapter(scan);
 }
 

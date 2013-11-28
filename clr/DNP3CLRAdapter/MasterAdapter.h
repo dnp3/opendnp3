@@ -51,7 +51,7 @@ public:
 
 	virtual void AddStateListener(System::Action<StackState> ^ aListener);
 
-	virtual IMasterScan^ AddClassScan(int aClassMask, System::Int64 aPeriodMs, System::Int64 aTaskRetry);
+	virtual IMasterScan^ AddClassScan(int aClassMask, System::TimeSpan period, System::TimeSpan taskRetryPeriod);
 
 private:
 	opendnp3::IMaster* mpMaster;

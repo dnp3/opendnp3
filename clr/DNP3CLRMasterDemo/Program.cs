@@ -48,7 +48,7 @@ namespace DotNetMasterDemo
             channel.AddStateListener(state => Console.WriteLine("Client state: " + state));
 
             var config = new MasterStackConfig();
-            config.master.integrityRate = 60000;
+            config.master.integrityPeriod = TimeSpan.FromSeconds(60);
             config.link.useConfirms = true; //setup your stack configuration here.
             var master = channel.AddMaster("master", LogLevel.INTERPRET, PrintingMeasurementHandler.Instance, config);
 
@@ -56,7 +56,7 @@ namespace DotNetMasterDemo
             master.AddStateListener(state => Console.WriteLine("Master state: " + state));
 
             var classMask = PointClassHelpers.GetMask(PointClass.PC_CLASS_1, PointClass.PC_CLASS_2, PointClass.PC_CLASS_3);
-            var classScan = master.AddClassScan(classMask, 5000, 5000);
+            var classScan = master.AddClassScan(classMask, TimeSpan.FromSeconds(5), TimeSpan.FromSeconds(5));
             var integrityScan = master.GetIntegrityScan();
 
             master.Enable(); // enable communications
