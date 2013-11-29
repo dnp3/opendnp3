@@ -8,16 +8,16 @@ object QualifierCode {
   def apply(): EnumModel = EnumModel("QualifierCode", Some(EnumModel.UInt8), codes, Some(codes.last), Hex)
 
   private val codes = List(
-    EnumValue("1B_START_STOP", 0x00),
-    EnumValue("2B_START_STOP", 0x01),
-    EnumValue("4B_START_STOP", 0x02),
-    EnumValue("ALL_OBJ", 0x06),
-    EnumValue("1B_CNT", 0x07),
-    EnumValue("2B_CNT", 0x08),
-    EnumValue("4B_CNT", 0x09),
-    EnumValue("1B_CNT_1B_INDEX", 0x17),
-    EnumValue("2B_CNT_2B_INDEX", 0x28),
-    EnumValue("4B_CNT_4B_INDEX", 0x39),
+    EnumValue("UINT8_START_STOP", 0x00),
+    EnumValue("UINT16_START_STOP", 0x01),
+    EnumValue("UINT32_START_STOP", 0x02),
+    EnumValue("ALL_OBJECTS", 0x06),
+    EnumValue("UINT8_CNT", 0x07),
+    EnumValue("UINT16_CNT", 0x08),
+    EnumValue("UINT32_CNT", 0x09),
+    EnumValue("UINT8_CNT_UINT8_INDEX", 0x17),
+    EnumValue("UINT16_CNT_UINT16_INDEX", 0x28),
+    EnumValue("UINT32_CNT_UINT32_INDEX", 0x39),
     EnumValue("UNDEFINED", 0xFF)
   )
 

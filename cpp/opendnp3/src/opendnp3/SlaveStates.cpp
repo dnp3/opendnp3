@@ -90,7 +90,7 @@ void AS_Base::OnUnsolExpiration(Slave* c)
 void AS_Base::SwitchOnFunction(Slave* c, AS_Base* apNext, const APDU& arRequest, SequenceInfo aSeqInfo)
 {
 	switch (arRequest.GetFunction()) {
-	case (FC_READ): {
+	case (FunctionCode::READ): {
 			ChangeState(c, apNext);
 			c->mRspContext.Reset();
 			IINField iin = c->mRspContext.Configure(arRequest);
@@ -98,46 +98,46 @@ void AS_Base::SwitchOnFunction(Slave* c, AS_Base* apNext, const APDU& arRequest,
 			c->Send(c->mResponse, iin);
 			break;
 		}
-	case (FC_WRITE):
+	case (FunctionCode::WRITE):
 		ChangeState(c, apNext);
 		if(aSeqInfo != SI_PREV) c->HandleWrite(arRequest);
 		c->ConfigureAndSendSimpleResponse();
 		break;
-	case (FC_SELECT):
+	case (FunctionCode::SELECT):
 		ChangeState(c, apNext);
 		c->HandleSelect(arRequest, aSeqInfo);
 		c->Send(c->mResponse);
 		break;
-	case (FC_OPERATE):
+	case (FunctionCode::OPERATE):
 		ChangeState(c, apNext);
 		c->HandleOperate(arRequest, aSeqInfo);
 		c->Send(c->mResponse);
 		break;
-	case (FC_DIRECT_OPERATE):
+	case (FunctionCode::DIRECT_OPERATE):
 		ChangeState(c, apNext);
 		c->HandleDirectOperate(arRequest, aSeqInfo);
 		c->Send(c->mResponse);
 		break;
-	case (FC_DIRECT_OPERATE_NO_ACK):
+	case (FunctionCode::DIRECT_OPERATE_NO_ACK):
 		c->HandleDirectOperate(arRequest, aSeqInfo);
 		break;
-	case (FC_ENABLE_UNSOLICITED):
+	case (FunctionCode::ENABLE_UNSOLICITED):
 		ChangeState(c, apNext);
 		c->HandleEnableUnsolicited(arRequest, true);
 		c->Send(c->mResponse);
 		break;
-	case (FC_DISABLE_UNSOLICITED):
+	case (FunctionCode::DISABLE_UNSOLICITED):
 		ChangeState(c, apNext);
 		c->HandleEnableUnsolicited(arRequest, false);
 		c->Send(c->mResponse);
 		break;
-	case (FC_DELAY_MEASURE):
+	case (FunctionCode::DELAY_MEASURE):
 		ChangeState(c, apNext);
 		c->ConfigureDelayMeasurement(arRequest);
 		c->Send(c->mResponse);
 		break;
 	default:
-		MACRO_THROW_EXCEPTION_COMPLEX_WITH_CODE(NotSupportedException, "Function not supported: " << arRequest.GetFunction() , SERR_FUNC_NOT_SUPPORTED);
+		MACRO_THROW_EXCEPTION_COMPLEX_WITH_CODE(NotSupportedException, "Function not supported: " << FunctionCodeToString(arRequest.GetFunction()) , SERR_FUNC_NOT_SUPPORTED);
 	}
 }
 
@@ -317,7 +317,7 @@ void AS_WaitForUnsolSuccess::OnUnsolSendSuccess(Slave* c)
 
 void AS_WaitForUnsolSuccess::OnRequest(Slave* c, const APDU& arAPDU, SequenceInfo aSeqInfo)
 {
-	if (arAPDU.GetFunction() == FC_READ) {
+	if (arAPDU.GetFunction() == FunctionCode::READ) {
 		//read requests should be defered until after the unsol
 		c->mRequest = arAPDU;
 		c->mSeqInfo = aSeqInfo;

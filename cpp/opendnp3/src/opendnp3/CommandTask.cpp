@@ -43,7 +43,7 @@ void CommandTask::Configure(const Formatter& arFormatter, const Responder& arRes
 	mCodes.clear();
 }
 
-void CommandTask::AddCommandCode(FunctionCodes aCode)
+void CommandTask::AddCommandCode(FunctionCode aCode)
 {
 	this->mCodes.push_back(aCode);
 }

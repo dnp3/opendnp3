@@ -31,6 +31,9 @@
 
 #include <string>
 
+#include <opendnp3/gen/FunctionCode.h>
+#include <opendnp3/gen/QualifierCode.h>
+
 namespace opendnp3
 {
 
@@ -87,90 +90,11 @@ enum IINMasksMSB {
 	IIN_MSB_RESERVED2 = 0x80
 };
 
-/// All valid application layer function codes
-enum FunctionCodes {
-	FC_CONFIRM = 0,
-	FC_READ = 1,
-	FC_WRITE = 2,
-	FC_SELECT = 3,
-	FC_OPERATE = 4,
-	FC_DIRECT_OPERATE = 5,
-	FC_DIRECT_OPERATE_NO_ACK = 6,
-
-	FC_FREEZE = 7,
-	FC_FREEZE_NO_ACK = 8,
-	FC_FREEZE_CLEAR = 9,
-	FC_FREEZE_CLEAR_NO_ACK = 10,
-	FC_FREEZE_AT_TIME = 11,
-	FC_FREEZE_AT_TIME_NO_ACK = 12,
-
-	FC_COLD_RESTART = 13,
-	FC_WARM_RESTART = 14,
-	FC_INITIALIZE_DATA = 15,
-	FC_INITIALIZE_APPLICATION = 16,
-	FC_START_APPLICATION = 17,
-	FC_STOP_APPLICATION = 18,
-	FC_SAVE_CONFIGURATION = 19,
-	FC_ENABLE_UNSOLICITED = 20,
-	FC_DISABLE_UNSOLICITED = 21,
-	FC_ASSIGN_CLASS = 22,
-	FC_DELAY_MEASURE = 23,
-	FC_RECORD_TIME = 24,
-
-	FC_FILE_OPEN = 25,
-	FC_FILE_CLOSE = 26,
-	FC_FILE_DELETE = 27,
-	FC_FILE_INFO = 28,
-	FC_FILE_AUTHENTICATE = 29,
-	FC_FILE_ABORT = 30,
-
-	FC_RESPONSE = 129,
-	FC_UNSOLICITED_RESPONSE = 130,
-
-	FC_UNKNOWN = 255
-};
-
-/**
-* Valid qualifier codes
-*/
-enum QualifierCode {
-	QC_1B_START_STOP = 0x00,
-	QC_2B_START_STOP = 0x01,
-	QC_4B_START_STOP = 0x02,
-
-	QC_ALL_OBJ = 0x06,
-
-	QC_1B_CNT = 0x07,
-	QC_2B_CNT = 0x08,
-	QC_4B_CNT = 0x09,
-
-	QC_1B_CNT_1B_INDEX = 0x17,
-	QC_2B_CNT_2B_INDEX = 0x28,
-	QC_4B_CNT_4B_INDEX = 0x39,
-
-	QC_1B_VCNT_1B_SIZE = 0x4B,
-	QC_1B_VCNT_2B_SIZE = 0x5B,
-	QC_1B_VCNT_4B_SIZE = 0x6B,
-
-	QC_UNDEFINED = 0xFF
-
-};
-
 /// @return true if the function is a response, false otherwise
-bool IsResponse(FunctionCodes aCode);
+bool IsResponse(FunctionCode aCode);
 
 /// @return true if the function is a request, false otherwise
-bool IsRequest(FunctionCodes aCode);
-
-#ifndef OPENDNP3_STRIP_LOG_MESSAGES
-/**
-* Converts a function code to string representation
-*
-* @param aCode The function code to convert
-* @return string representation of the code
-*/
-std::string FunctionCodeToString(FunctionCodes aCode);
-#endif
+bool IsRequest(FunctionCode aCode);
 
 }
 

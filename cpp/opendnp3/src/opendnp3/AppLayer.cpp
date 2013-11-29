@@ -42,7 +42,7 @@ AppLayer::AppLayer(Logger aLogger, openpal::IExecutor* apExecutor, AppConfig aAp
 	mUnsolicited(aLogger.GetSubLogger("unsol"), this, apExecutor, aAppCfg.RspTimeout),
 	mNumRetry(aAppCfg.NumRetry)
 {
-	mConfirm.SetFunction(FC_CONFIRM);
+	mConfirm.SetFunction(FunctionCode::CONFIRM);
 }
 
 void AppLayer::SetUser(IAppUser* apUser)
@@ -59,22 +59,22 @@ void AppLayer::SendResponse(APDU& arAPDU)
 {
 	this->Validate(arAPDU.GetControl(), false, false, true, false);
 
-	if(arAPDU.GetFunction() != FC_RESPONSE) {
+	if(arAPDU.GetFunction() != FunctionCode::RESPONSE) {
 		MACRO_THROW_EXCEPTION(ArgumentException, "Non-response function code");
 	}
 
-	mSolicited.Send(arAPDU, this->GetRetries(FC_RESPONSE));
+	mSolicited.Send(arAPDU, this->GetRetries(FunctionCode::RESPONSE));
 }
 
 void AppLayer::SendUnsolicited(APDU& arAPDU)
 {
 	this->Validate(arAPDU.GetControl(), false, true, true, true);
 
-	if(arAPDU.GetFunction() != FC_UNSOLICITED_RESPONSE ) {
+	if(arAPDU.GetFunction() != FunctionCode::UNSOLICITED_RESPONSE ) {
 		MACRO_THROW_EXCEPTION(ArgumentException, "Non-unsolicited function code");
 	}
 
-	mUnsolicited.Send(arAPDU, this->GetRetries(FC_UNSOLICITED_RESPONSE));
+	mUnsolicited.Send(arAPDU, this->GetRetries(FunctionCode::UNSOLICITED_RESPONSE));
 }
 
 void AppLayer::SendRequest(APDU& arAPDU)
@@ -109,17 +109,17 @@ void AppLayer::_OnReceive(const uint8_t* apBuffer, size_t aSize)
 
 		LOG_BLOCK(LEV_INTERPRET, "<= AL " << mIncoming.ToString());
 
-		FunctionCodes func = mIncoming.GetFunction();
+		FunctionCode func = mIncoming.GetFunction();
 		AppControlField ctrl = mIncoming.GetControl();
 
 		switch(func) {
-		case(FC_CONFIRM):
+		case(FunctionCode::CONFIRM):
 			this->OnConfirm(ctrl, mIncoming);
 			break;
-		case(FC_RESPONSE):
+		case(FunctionCode::RESPONSE):
 			this->OnResponse(ctrl, mIncoming);
 			break;
-		case(FC_UNSOLICITED_RESPONSE):
+		case(FunctionCode::UNSOLICITED_RESPONSE):
 			this->OnUnsolResponse(ctrl, mIncoming);
 			break;
 		default:	//otherwise, assume it's a request
@@ -164,20 +164,20 @@ void AppLayer::OnSendResult(bool aSuccess)
 	assert(mSendQueue.size() > 0);
 	mSending = false;
 
-	FunctionCodes func = mSendQueue.front()->GetFunction();
+	FunctionCode func = mSendQueue.front()->GetFunction();
 	mSendQueue.pop_front();
 
-	if(func == FC_CONFIRM) {
+	if(func == FunctionCode::CONFIRM) {
 		assert(mConfirmSending);
 		mConfirmSending = false;
 	}
 	else {
 		if(aSuccess) {
-			if(func == FC_UNSOLICITED_RESPONSE) mUnsolicited.OnSendSuccess();
+			if(func == FunctionCode::UNSOLICITED_RESPONSE) mUnsolicited.OnSendSuccess();
 			else mSolicited.OnSendSuccess();
 		}
 		else {
-			if(func == FC_UNSOLICITED_RESPONSE) mUnsolicited.OnSendFailure();
+			if(func == FunctionCode::UNSOLICITED_RESPONSE) mUnsolicited.OnSendFailure();
 			else mSolicited.OnSendFailure();
 		}
 	}
@@ -249,14 +249,14 @@ void AppLayer::OnConfirm(const AppControlField& arCtrl, APDU& arAPDU)
 }
 
 
-void AppLayer::OnUnknownObject(FunctionCodes aCode, const AppControlField& arCtrl)
+void AppLayer::OnUnknownObject(FunctionCode aCode, const AppControlField& arCtrl)
 {
 	if(!mpUser->IsMaster()) {
 		switch(aCode) {
-		case(FC_CONFIRM):
-		case(FC_RESPONSE):
-		case(FC_UNSOLICITED_RESPONSE):
-		case(FC_DIRECT_OPERATE_NO_ACK):
+		case(FunctionCode::CONFIRM):
+		case(FunctionCode::RESPONSE):
+		case(FunctionCode::UNSOLICITED_RESPONSE):
+		case(FunctionCode::DIRECT_OPERATE_NO_ACK):
 			break;
 		default:
 			mSolicited.OnUnknownObjectInRequest(arCtrl);
@@ -342,13 +342,13 @@ void AppLayer::Validate(const AppControlField& arCtrl, bool aMaster, bool aRequi
 	}
 }
 
-size_t AppLayer::GetRetries(FunctionCodes aCode)
+size_t AppLayer::GetRetries(FunctionCode aCode)
 {
 	switch(aCode) {
-	case(FC_DIRECT_OPERATE):
-	case(FC_DIRECT_OPERATE_NO_ACK):
-	case(FC_RESPONSE):
-	case(FC_WRITE): // b/c these can contain time objects which are sensitive to retries
+	case(FunctionCode::DIRECT_OPERATE):
+	case(FunctionCode::DIRECT_OPERATE_NO_ACK):
+	case(FunctionCode::RESPONSE):
+	case(FunctionCode::WRITE): // b/c these can contain time objects which are sensitive to retries
 		return 0;
 	default:
 		return mNumRetry; //use the configured

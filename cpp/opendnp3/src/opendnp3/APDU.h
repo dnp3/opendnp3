@@ -37,6 +37,7 @@
 #include "HeaderReadIterator.h"
 #include "ObjectWriteIterator.h"
 #include "IndexedWriteIterator.h"
+#include "ErrorCode.h"
 
 #include <vector>
 #include <string>
@@ -130,7 +131,7 @@ public:
 
 		@return		the function code of the APDU message
 	 */
-	FunctionCodes GetFunction() const;
+	FunctionCode GetFunction() const;
 
 	/**
 		Sets the Function Code (FC) field of the DNP3 Application Layer
@@ -138,7 +139,7 @@ public:
 
 		@param aCode	the new function code for the APDU message
 	 */
-	void SetFunction(FunctionCodes aCode);
+	void SetFunction(FunctionCode aCode);
 
 	/**
 		Returns the Function Code (FC) field from the DNP3 Application
@@ -200,7 +201,7 @@ public:
 
 		@throw ArgumentException	if the sequence number is invalid
 	 */
-	void Set(FunctionCodes aCode, bool aFIR = true, bool aFIN = true,
+	void Set(FunctionCode aCode, bool aFIR = true, bool aFIN = true,
 	         bool aCON = false, bool aUNS = false, int aSEQ = 0) {
 		this->Reset();
 		this->SetFunction(aCode);
@@ -250,7 +251,7 @@ public:
 
 		@return				an Iterator to the object data
 	 */
-	ObjectWriteIterator WriteContiguous(const FixedObject* apObj, size_t aStart, size_t aStop, QualifierCode aCode = QC_UNDEFINED);
+	ObjectWriteIterator WriteContiguous(const FixedObject* apObj, size_t aStart, size_t aStop, QualifierCode aCode = QualifierCode::UNDEFINED);
 
 	/**
 		Writes a contiguous block of bitfield data to the message, where
@@ -265,7 +266,7 @@ public:
 
 		@return				an Iterator to the object data
 	 */
-	ObjectWriteIterator WriteContiguous(const BitfieldObject* apObj, size_t aStart, size_t aStop, QualifierCode aCode = QC_UNDEFINED);
+	ObjectWriteIterator WriteContiguous(const BitfieldObject* apObj, size_t aStart, size_t aStop, QualifierCode aCode = QualifierCode::UNDEFINED);
 
 	/**
 		Writes a block of indexed data.
@@ -341,7 +342,7 @@ public:
 		@return				true if the function code specifies a data
 							component, false if not
 	 */
-	static bool HasData(FunctionCodes aCode);
+	static bool HasData(FunctionCode aCode);
 
 #ifndef OPENDNP3_STRIP_LOG_MESSAGES
 	/**
@@ -395,7 +396,7 @@ private:
 
 	size_t ReadObjectHeader(size_t aOffset, size_t aRemainder);
 
-	size_t GetPrefixSizeAndValidate(QualifierCode aCode, ObjectTypes aType);
+	ErrorCode<size_t> GetPrefixSizeAndValidate(QualifierCode aCode, ObjectTypes aType);
 	size_t GetNumObjects(const IObjectHeader* apHeader, const uint8_t* pStart);
 
 };

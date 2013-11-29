@@ -33,8 +33,6 @@
 namespace opendnp3
 {
 
-FunctionCodes DLL_LOCAL IntToFunction(int aFunction);
-
 /** Represents the first byte in every APDU
 */
 struct DLL_LOCAL AppControlField {
@@ -162,11 +160,11 @@ public:
 	void SetControl(uint8_t* apStart, const AppControlField& arControl) const;
 	AppControlField GetControl(const uint8_t* apStart) const;
 
-	void SetFunction(uint8_t* apStart, FunctionCodes aCode) const {
-		*(++apStart) = aCode;
+	void SetFunction(uint8_t* apStart, FunctionCode aCode) const {
+		*(++apStart) = FunctionCodeToType(aCode);
 	}
-	FunctionCodes GetFunction(const uint8_t* apStart) const {
-		return IntToFunction(*(++apStart));
+	FunctionCode GetFunction(const uint8_t* apStart) const {
+		return FunctionCodeFromType(*(++apStart));
 	}
 
 };

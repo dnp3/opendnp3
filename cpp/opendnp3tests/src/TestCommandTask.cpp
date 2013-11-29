@@ -40,14 +40,14 @@ BOOST_AUTO_TEST_CASE(FullSequence)
 	EventLog log;
 	CommandTask ct(Logger(&log, LEV_INFO, "task"));
 	CommandResponse rsp;
-	auto formatter = [](APDU & arAPDU, FunctionCodes aCode) {
+	auto formatter = [](APDU & arAPDU, FunctionCode aCode) {
 		return CommandHelpers::ConfigureRequest(arAPDU, aCode, ControlRelayOutputBlock(CC_LATCH_ON), 0, Group12Var1::Inst());
 	};
 	auto responder = [&rsp](CommandResponse aRsp) {
 		rsp = aRsp;
 	};
 	ct.Configure(formatter, responder);
-	ct.AddCommandCode(FC_SELECT);
+	ct.AddCommandCode(FunctionCode::SELECT);
 
 	APDU frag;
 	ct.ConfigureRequest(frag);

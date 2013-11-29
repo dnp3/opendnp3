@@ -244,7 +244,7 @@ size_t Slave::FlushUpdates()
 
 void Slave::ConfigureAndSendSimpleResponse()
 {
-	mResponse.Set(FC_RESPONSE);
+	mResponse.Set(FunctionCode::RESPONSE);
 	mRspIIN.BitwiseOR(mIIN);
 	mResponse.SetIIN(mRspIIN);
 	mpAppLayer->SendResponse(mResponse);
@@ -281,9 +281,9 @@ void Slave::ConfigureDelayMeasurement(const APDU& arRequest)
 
 	Group52Var2* pObj = Group52Var2::Inst();
 
-	mResponse.Set(FC_RESPONSE);
+	mResponse.Set(FunctionCode::RESPONSE);
 
-	IndexedWriteIterator i = mResponse.WriteIndexed(pObj, 1, QC_1B_CNT);
+	IndexedWriteIterator i = mResponse.WriteIndexed(pObj, 1, QualifierCode::UINT8_CNT);
 	i.SetIndex(0);
 	pObj->mTime.Set(*i, 0);
 }
@@ -381,7 +381,7 @@ void Slave::HandleWrite(const APDU& arRequest)
 
 void Slave::HandleSelect(const APDU& arRequest, SequenceInfo aSeqInfo)
 {
-	mResponse.Set(FC_RESPONSE);
+	mResponse.Set(FunctionCode::RESPONSE);
 	uint8_t seq = arRequest.GetControl().SEQ;
 
 	for (HeaderReadIterator hdr = arRequest.BeginRead(); !hdr.IsEnd(); ++hdr) {
@@ -431,7 +431,7 @@ void Slave::HandleSelect(const APDU& arRequest, SequenceInfo aSeqInfo)
 
 void Slave::HandleOperate(const APDU& arRequest, SequenceInfo aSeqInfo)
 {
-	mResponse.Set(FC_RESPONSE);
+	mResponse.Set(FunctionCode::RESPONSE);
 	uint8_t seq = arRequest.GetControl().SEQ;
 
 	for (HeaderReadIterator hdr = arRequest.BeginRead(); !hdr.IsEnd(); ++hdr) {
@@ -481,7 +481,7 @@ void Slave::HandleOperate(const APDU& arRequest, SequenceInfo aSeqInfo)
 
 void Slave::HandleDirectOperate(const APDU& arRequest, SequenceInfo aSeqInfo)
 {
-	mResponse.Set(FC_RESPONSE);
+	mResponse.Set(FunctionCode::RESPONSE);
 
 	for (HeaderReadIterator hdr = arRequest.BeginRead(); !hdr.IsEnd(); ++hdr) {
 
@@ -529,7 +529,7 @@ void Slave::HandleDirectOperate(const APDU& arRequest, SequenceInfo aSeqInfo)
 
 void Slave::HandleEnableUnsolicited(const APDU& arRequest, bool aIsEnable)
 {
-	mResponse.Set(FC_RESPONSE);
+	mResponse.Set(FunctionCode::RESPONSE);
 
 	if (mConfig.mDisableUnsol) {
 		mRspIIN.SetFuncNotSupported(true);
@@ -565,7 +565,7 @@ void Slave::HandleEnableUnsolicited(const APDU& arRequest, bool aIsEnable)
 
 void Slave::HandleUnknown()
 {
-	mResponse.Set(FC_RESPONSE);
+	mResponse.Set(FunctionCode::RESPONSE);
 	mRspIIN.SetObjectUnknown(true);
 }
 

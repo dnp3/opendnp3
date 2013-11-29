@@ -52,50 +52,50 @@ BOOST_AUTO_TEST_CASE(WriteTooMuch)
 BOOST_AUTO_TEST_CASE(FunctionCodeToStringNamesAreUnique)
 {
 	const size_t NUM_CODES = 34;
-	FunctionCodes codes[NUM_CODES] = {
-		FC_CONFIRM,
-		FC_READ,
-		FC_WRITE,
-		FC_SELECT,
-		FC_OPERATE,
-		FC_DIRECT_OPERATE,
-		FC_DIRECT_OPERATE_NO_ACK,
-		FC_FREEZE,
-		FC_FREEZE_NO_ACK,
-		FC_FREEZE_CLEAR,
-		FC_FREEZE_CLEAR_NO_ACK,
-		FC_FREEZE_AT_TIME,
-		FC_FREEZE_AT_TIME_NO_ACK,
-		FC_COLD_RESTART,
-		FC_WARM_RESTART,
-		FC_INITIALIZE_DATA,
-		FC_INITIALIZE_APPLICATION,
-		FC_START_APPLICATION,
-		FC_STOP_APPLICATION,
-		FC_SAVE_CONFIGURATION,
-		FC_ENABLE_UNSOLICITED,
-		FC_DISABLE_UNSOLICITED,
-		FC_ASSIGN_CLASS,
-		FC_DELAY_MEASURE,
-		FC_RECORD_TIME,
-		FC_FILE_OPEN,
-		FC_FILE_CLOSE,
-		FC_FILE_DELETE,
-		FC_FILE_INFO,
-		FC_FILE_AUTHENTICATE,
-		FC_FILE_ABORT,
-		FC_RESPONSE,
-		FC_UNSOLICITED_RESPONSE,
-		FC_UNKNOWN
+	FunctionCode codes[NUM_CODES] = {
+		FunctionCode::CONFIRM,
+		FunctionCode::READ,
+		FunctionCode::WRITE,
+		FunctionCode::SELECT,
+		FunctionCode::OPERATE,
+		FunctionCode::DIRECT_OPERATE,
+		FunctionCode::DIRECT_OPERATE_NO_ACK,
+		FunctionCode::FREEZE,
+		FunctionCode::FREEZE_NO_ACK,
+		FunctionCode::FREEZE_CLEAR,
+		FunctionCode::FREEZE_CLEAR_NO_ACK,
+		FunctionCode::FREEZE_AT_TIME,
+		FunctionCode::FREEZE_AT_TIME_NO_ACK,
+		FunctionCode::COLD_RESTART,
+		FunctionCode::WARM_RESTART,
+		FunctionCode::INITIALIZE_DATA,
+		FunctionCode::INITIALIZE_APPLICATION,
+		FunctionCode::START_APPLICATION,
+		FunctionCode::STOP_APPLICATION,
+		FunctionCode::SAVE_CONFIGURATION,
+		FunctionCode::ENABLE_UNSOLICITED,
+		FunctionCode::DISABLE_UNSOLICITED,
+		FunctionCode::ASSIGN_CLASS,
+		FunctionCode::DELAY_MEASURE,
+		FunctionCode::RECORD_TIME,
+		FunctionCode::FILE_OPEN,
+		FunctionCode::FILE_CLOSE,
+		FunctionCode::FILE_DELETE,
+		FunctionCode::FILE_INFO,
+		FunctionCode::FILE_AUTHENTICATE,
+		FunctionCode::FILE_ABORT,
+		FunctionCode::RESPONSE,
+		FunctionCode::UNSOLICITED_RESPONSE,
+		FunctionCode::UNKNOWN
 	};
 
 	set<string> strings;
 	for(int i = 0; i < NUM_CODES; ++i) {
-		FunctionCodes code = static_cast<FunctionCodes>(codes[i]);
+		FunctionCode code = static_cast<FunctionCode>(codes[i]);
 		string text = FunctionCodeToString(code);
 		if(strings.find(text) != strings.end()) {
 			ostringstream oss;
-			oss << "The string " << text << " was encountered 2x with int " << i << " and function code " << code;
+			oss << "The string " << text << " was encountered 2x with int " << i << " and function code " << FunctionCodeToString(code);
 			oss << " when there were " << strings.size() << " strings in the set";
 			BOOST_FAIL(oss.str());
 		}
@@ -127,7 +127,7 @@ BOOST_AUTO_TEST_CASE(ClassPollRequest)
 	//Test the Application header
 	AppControlField control = frag.GetControl();
 
-	BOOST_REQUIRE_EQUAL(frag.GetFunction(), FC_READ);
+	BOOST_REQUIRE(frag.GetFunction() == FunctionCode::READ);
 	BOOST_REQUIRE(control.FIR);
 	BOOST_REQUIRE(control.FIN);
 	BOOST_REQUIRE(!control.CON);
@@ -178,7 +178,7 @@ BOOST_AUTO_TEST_CASE(ResponseWithDataAndFlags)
 
 	//Test the Application header
 	AppControlField control = frag.GetControl();
-	BOOST_REQUIRE_EQUAL(frag.GetFunction(), FC_RESPONSE);
+	BOOST_REQUIRE(frag.GetFunction() == FunctionCode::RESPONSE);
 	BOOST_REQUIRE(control.FIR);
 	BOOST_REQUIRE(control.FIN);
 	BOOST_REQUIRE(control.CON);
@@ -296,7 +296,7 @@ BOOST_AUTO_TEST_CASE(Confirm)
 	frag.Interpret();
 
 	AppControlField control = frag.GetControl();
-	BOOST_REQUIRE_EQUAL(frag.GetFunction(), FC_CONFIRM);
+	BOOST_REQUIRE(frag.GetFunction() == FunctionCode::CONFIRM);
 	BOOST_REQUIRE(control.FIR);
 	BOOST_REQUIRE(control.FIN);
 	BOOST_REQUIRE(!control.CON);
@@ -313,7 +313,7 @@ BOOST_AUTO_TEST_CASE(ClearIIN)
 
 	AppControlField control = frag.GetControl();
 
-	BOOST_REQUIRE_EQUAL(frag.GetFunction(), FC_WRITE);
+	BOOST_REQUIRE(frag.GetFunction() == FunctionCode::WRITE);
 
 	HeaderReadIterator hdrs = frag.BeginRead();
 	BOOST_REQUIRE_EQUAL(hdrs.Count(), 1);

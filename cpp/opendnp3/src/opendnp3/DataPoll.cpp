@@ -80,7 +80,7 @@ void ClassPoll::ConfigureRequest(APDU& arAPDU)
 		MACRO_THROW_EXCEPTION(InvalidStateException, "Class mask has not been set");
 	}
 
-	arAPDU.Set(FC_READ);
+	arAPDU.Set(FunctionCode::READ);
 	if (mClassMask & PC_CLASS_0) arAPDU.DoPlaceholderWrite(Group60Var1::Inst());
 	if (mClassMask & PC_CLASS_1) arAPDU.DoPlaceholderWrite(Group60Var2::Inst());
 	if (mClassMask & PC_CLASS_2) arAPDU.DoPlaceholderWrite(Group60Var3::Inst());

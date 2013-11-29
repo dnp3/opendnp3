@@ -44,7 +44,7 @@ void AppLayerTest::SendUp(const std::string& aBytes)
 	lower.SendUp(hs, hs.Size());
 }
 
-void AppLayerTest::SendUp(FunctionCodes aCode, bool aFIR, bool aFIN, bool aCON, bool aUNS, int aSEQ)
+void AppLayerTest::SendUp(FunctionCode aCode, bool aFIR, bool aFIN, bool aCON, bool aUNS, int aSEQ)
 {
 	APDU f;
 	f.SetFunction(aCode);
@@ -52,7 +52,7 @@ void AppLayerTest::SendUp(FunctionCodes aCode, bool aFIR, bool aFIN, bool aCON, 
 	lower.SendUp(f.GetBuffer(), f.Size());
 }
 
-void AppLayerTest::SendRequest(FunctionCodes aCode, bool aFIR, bool aFIN, bool aCON, bool aUNS)
+void AppLayerTest::SendRequest(FunctionCode aCode, bool aFIR, bool aFIN, bool aCON, bool aUNS)
 {
 	mFragment.Reset();
 	mFragment.SetFunction(aCode);
@@ -61,36 +61,36 @@ void AppLayerTest::SendRequest(FunctionCodes aCode, bool aFIR, bool aFIN, bool a
 	app.SendRequest(mFragment);
 }
 
-void AppLayerTest::SendResponse(FunctionCodes aCode, bool aFIR, bool aFIN, bool aCON, bool aUNS)
+void AppLayerTest::SendResponse(FunctionCode aCode, bool aFIR, bool aFIN, bool aCON, bool aUNS)
 {
 	mFragment.Reset();
 	mFragment.SetFunction(aCode);
 	mFragment.SetControl(aFIR, aFIN, aCON, aUNS);
-	if(aCode == FC_RESPONSE) { //write a NULL IIN so that the buffers will match
+	if(aCode == FunctionCode::RESPONSE) { //write a NULL IIN so that the buffers will match
 		IINField iin;
 		mFragment.SetIIN(iin);
 	}
 	app.SendResponse(mFragment);
 }
 
-void AppLayerTest::SendUnsolicited(FunctionCodes aCode, bool aFIR, bool aFIN, bool aCON, bool aUNS)
+void AppLayerTest::SendUnsolicited(FunctionCode aCode, bool aFIR, bool aFIN, bool aCON, bool aUNS)
 {
 	mFragment.Reset();
 	mFragment.SetFunction(aCode);
 	mFragment.SetControl(aFIR, aFIN, aCON, aUNS);
-	if(aCode == FC_UNSOLICITED_RESPONSE) { //write a NULL IIN so that the buffers will match
+	if(aCode == FunctionCode::UNSOLICITED_RESPONSE) { //write a NULL IIN so that the buffers will match
 		IINField iin;
 		mFragment.SetIIN(iin);
 	}
 	app.SendUnsolicited(mFragment);
 }
 
-bool AppLayerTest::CheckSentAPDU(FunctionCodes aCode, bool aFIR, bool aFIN, bool aCON, bool aUNS, int aSEQ)
+bool AppLayerTest::CheckSentAPDU(FunctionCode aCode, bool aFIR, bool aFIN, bool aCON, bool aUNS, int aSEQ)
 {
 	APDU f;
 	f.SetFunction(aCode);
 	f.SetControl(aFIR, aFIN, aCON, aUNS, aSEQ);
-	if(aCode == FC_UNSOLICITED_RESPONSE || aCode == FC_RESPONSE) {
+	if(aCode == FunctionCode::UNSOLICITED_RESPONSE || aCode == FunctionCode::RESPONSE) {
 		IINField iin;
 		f.SetIIN(iin);
 	}

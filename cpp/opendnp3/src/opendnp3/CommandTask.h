@@ -41,14 +41,14 @@ namespace opendnp3
 class DLL_LOCAL CommandTask : public MasterTaskBase
 {
 	typedef std::function<CommandStatus (const APDU&)> Validator;
-	typedef std::function<Validator (APDU&, FunctionCodes)> Formatter;
+	typedef std::function<Validator (APDU&, FunctionCode)> Formatter;
 	typedef std::function<void (CommandResponse)> Responder;
 
 public:
 	CommandTask(openpal::Logger);
 
 	void Configure(const Formatter& arFormatter, const Responder& arResponder);
-	void AddCommandCode(FunctionCodes aCode);
+	void AddCommandCode(FunctionCode aCode);
 
 	void ConfigureRequest(APDU& arAPDU);
 
@@ -65,7 +65,7 @@ protected:
 
 private:
 
-	std::deque<FunctionCodes> mCodes;
+	std::deque<FunctionCode> mCodes;
 
 	void Respond(CommandStatus aStatus);
 

@@ -42,13 +42,13 @@ public:
 	AppLayerTest(bool aIsMaster = false, size_t aNumRetry = 0, FilterLevel aLevel = LEV_WARNING, bool aImmediate = false);
 
 	void SendUp(const std::string& aBytes);
-	void SendUp(FunctionCodes aCode, bool aFIR, bool aFIN, bool aCON, bool aUNS, int aSEQ);
+	void SendUp(FunctionCode aCode, bool aFIR, bool aFIN, bool aCON, bool aUNS, int aSEQ);
 
-	void SendRequest(FunctionCodes aCode, bool aFIR, bool aFIN, bool aCON, bool aUNS);
-	void SendResponse(FunctionCodes aCode, bool aFIR, bool aFIN, bool aCON, bool aUNS);
-	void SendUnsolicited(FunctionCodes aCode, bool aFIR, bool aFIN, bool aCON, bool aUNS);
+	void SendRequest(FunctionCode aCode, bool aFIR, bool aFIN, bool aCON, bool aUNS);
+	void SendResponse(FunctionCode aCode, bool aFIR, bool aFIN, bool aCON, bool aUNS);
+	void SendUnsolicited(FunctionCode aCode, bool aFIR, bool aFIN, bool aCON, bool aUNS);
 
-	bool CheckSentAPDU(FunctionCodes aCode, bool aFIR, bool aFIN, bool aCON, bool aUNS, int aSEQ);
+	bool CheckSentAPDU(FunctionCode aCode, bool aFIR, bool aFIN, bool aCON, bool aUNS, int aSEQ);
 
 	LogTester log;
 	MockAppUser user;

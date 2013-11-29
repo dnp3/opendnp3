@@ -18,18 +18,16 @@
  */
 package com.automatak.render.cpp
 
-import com.automatak.render.{EnumModel, Lines, ModelRenderer}
+import com.automatak.render._
 
-object EnumerationFileRenderer extends ModelRenderer[EnumModel] {
+object EnumToType {
+  def signature(em: EnumModel) : String = List(getType(em.enumType.get), List(em.name,"ToType(", em.name," arg)").mkString).mkString(" ")
 
-  def render(a : EnumModel): Lines = new Lines {
-
-    def foreach[U](f: (String) => U): Unit = {
-
-      //val render = EnumModelRenderer()
-
+  case class HeaderRender(i: Indentation) extends ModelRenderer[EnumModel] {
+    def render(em: EnumModel) : Lines = new Lines {
+      def foreach[A](f: String => A): Unit = f(signature(em)+";")
     }
-
   }
-
 }
+
+

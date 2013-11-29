@@ -81,7 +81,7 @@ BOOST_AUTO_TEST_CASE(InitialState)
 	MasterTestObject t(master_cfg);
 
 	APDU f;
-	f.Set(FC_RESPONSE);
+	f.Set(FunctionCode::RESPONSE);
 	IINField iin;
 	f.SetIIN(iin);
 

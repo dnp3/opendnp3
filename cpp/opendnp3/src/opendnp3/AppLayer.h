@@ -92,7 +92,7 @@ private:
 	// Internal Events
 	////////////////////
 
-	void OnUnknownObject(FunctionCodes aCode, const AppControlField&);
+	void OnUnknownObject(FunctionCode aCode, const AppControlField&);
 	void OnResponse(const AppControlField&, APDU&);
 	void OnUnsolResponse(const AppControlField&, APDU&);
 	void OnConfirm(const AppControlField&, APDU&);
@@ -125,7 +125,7 @@ private:
 	void QueueConfirm(bool aUns, int aSeq);
 	void QueueFrame(const APDU& arAPDU);
 	void CheckForSend();
-	size_t GetRetries(FunctionCodes aCode);
+	size_t GetRetries(FunctionCode aCode);
 
 	void Validate(const AppControlField& arCtrl, bool aMaster, bool aRequireFIRFIN, bool aAllowCON, bool aUNS);
 };

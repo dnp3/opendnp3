@@ -60,27 +60,16 @@ void ObjectReadIterator::SetObjectInfo()
 size_t ObjectReadIterator::CalcObjSize(const uint8_t* apPrefixPos)
 {
 	if(!mHasData) return 0;
-
-	switch(mHeaderInfo.GetQualifier()) {
-
-	case(QC_1B_VCNT_1B_SIZE):
-		return UInt8::Read(apPrefixPos);
-	case(QC_1B_VCNT_2B_SIZE):
-		return UInt16LE::Read(apPrefixPos);
-	case(QC_1B_VCNT_4B_SIZE):
-		return UInt32LE::Read(apPrefixPos);
+	
+	//for all other types, the size should be static or collective
+	switch(mHeaderInfo.GetObjectType()) {
+	case(OT_FIXED):
+		return static_cast<const FixedObject*>(mHeaderInfo.GetBaseObject())->GetSize();
+	case(OT_BITFIELD):
+		return static_cast<const BitfieldObject*>(mHeaderInfo.GetBaseObject())->GetSize(mHeaderInfo.GetCount());
 	default:
-		//for all other types, the size should be static or collective
-		switch(mHeaderInfo.GetObjectType()) {
-		case(OT_FIXED):
-			return static_cast<const FixedObject*>(mHeaderInfo.GetBaseObject())->GetSize();
-		case(OT_BITFIELD):
-			return static_cast<const BitfieldObject*>(mHeaderInfo.GetBaseObject())->GetSize(mHeaderInfo.GetCount());
-		default:
-			break;
-		}
 		MACRO_THROW_EXCEPTION(Exception, "Invalid object type for non-sized prefix");
-	}
+	}		
 }
 
 // calculate the index of the current object, assumes that the
@@ -122,17 +111,17 @@ size_t ObjectReadIterator::CalcCountIndex(QualifierCode aCode, const uint8_t* ap
 		// if there's no prefix or it's prefixed
 		// with a size assume the index is implicit
 		// based on the object number in the sequence from 0
-	case(QC_1B_CNT):
-	case(QC_2B_CNT):
-	case(QC_4B_CNT):
-	case(QC_ALL_OBJ):
+	case(QualifierCode::UINT8_CNT):
+	case(QualifierCode::UINT16_CNT):
+	case(QualifierCode::UINT32_CNT):
+	case(QualifierCode::ALL_OBJECTS):
 		return this->mCurrentObjectNum;
 		// if it's prefixed with an index, return the index
-	case(QC_1B_CNT_1B_INDEX):
+	case(QualifierCode::UINT8_CNT_UINT8_INDEX):
 		return UInt8::Read(apPrefixPos);
-	case(QC_2B_CNT_2B_INDEX):
+	case(QualifierCode::UINT16_CNT_UINT16_INDEX):
 		return UInt16LE::Read(apPrefixPos);
-	case(QC_4B_CNT_4B_INDEX):
+	case(QualifierCode::UINT32_CNT_UINT32_INDEX):
 		return UInt32LE::Read(apPrefixPos);
 	default:
 		MACRO_THROW_EXCEPTION(Exception, "Invalid qualifier code");

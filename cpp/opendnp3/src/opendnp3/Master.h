@@ -143,7 +143,7 @@ private:
 
 	template <class T>
 	void ConfigureCommandTask(const T& arCommand, size_t aIndex, CommandObject<T>* apObj, std::function<void (CommandResponse)> aCallback) {
-		auto formatter = [ = ](APDU & arAPDU, FunctionCodes aCode) {
+		auto formatter = [ = ](APDU & arAPDU, FunctionCode aCode) {
 			return CommandHelpers::ConfigureRequest(arAPDU, aCode, arCommand, aIndex, apObj);
 		};
 		auto responder = [ = ](CommandResponse rsp) {

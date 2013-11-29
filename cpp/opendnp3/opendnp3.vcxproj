@@ -159,6 +159,8 @@
     <ClInclude Include="include\opendnp3\CommandResponse.h" />
     <ClInclude Include="include\opendnp3\CommandStatus.h" />
     <ClInclude Include="include\opendnp3\ControlRelayOutputBlock.h" />
+    <ClInclude Include="include\opendnp3\gen\FunctionCode.h" />
+    <ClInclude Include="include\opendnp3\gen\QualifierCode.h" />
     <ClInclude Include="include\opendnp3\MasterScan.h" />
     <ClInclude Include="include\opendnp3\IMeasurementHandler.h" />
     <ClInclude Include="include\opendnp3\IMeasurementUpdate.h" />
@@ -238,6 +240,7 @@
     <ClInclude Include="src\opendnp3\DNPToStream.h" />
     <ClInclude Include="src\opendnp3\EnhancedVto.h" />
     <ClInclude Include="src\opendnp3\EnhancedVtoRouter.h" />
+    <ClInclude Include="src\opendnp3\ErrorCode.h" />
     <ClInclude Include="src\opendnp3\EventBufferBase.h" />
     <ClInclude Include="src\opendnp3\EventBuffers.h" />
     <ClInclude Include="src\opendnp3\EventTypes.h" />
@@ -298,6 +301,8 @@
     <ClInclude Include="StackBase.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="include\opendnp3\gen\FunctionCode.cpp" />
+    <ClCompile Include="include\opendnp3\gen\QualifierCode.cpp" />
     <ClCompile Include="src\opendnp3\AnalogOutput.cpp" />
     <ClCompile Include="src\opendnp3\APDU.cpp" />
     <ClCompile Include="src\opendnp3\APDUConstants.cpp" />

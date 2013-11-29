@@ -20,26 +20,14 @@ package com.automatak.render.cpp
 
 import com.automatak.render._
 
-class EnumModelRenderer(i: Indentation) extends ModelRenderer[EnumModel] {
+object EnumFromType {
+  def signature(enum: EnumModel) = List(enum.name, List(enum.name, "FromType(", getType(enum.enumType.get)," arg)").mkString).mkString(" ")
 
-  def render(enum: EnumModel) : Lines = new Lines {
-
-    private def toString(ir: IntRender)(ev: EnumValue): String = {
-      List(Some(ev.name), ev.value.map(x => "="), ev.value.map(ir.apply)).flatten.spaced
+  case class HeaderRender(i: Indentation) extends ModelRenderer[EnumModel] {
+    def render(em: EnumModel) : Lines = new Lines {
+      def foreach[A](f: String => A): Unit = f(signature(em)+";")
     }
-
-    def foreach[A](f: String => A): Unit = {
-      header(f)
-      bracketSemiColon(i)(f) {
-        enum.values.map(toString(enum.render)).commaDelimited.foreach(s => f(i.wrap(s)))
-      }
-    }
-
-    def header[A](f: String => A): Unit = {
-      val list : List[Option[String]] = List("enum","class", enum.name).map(x => Some(x)) ::: List(enum.enumType.map(x => ":"), enum.enumType.map(getType))
-      f(list.flatten.spaced)
-    }
-
   }
-
 }
+
+

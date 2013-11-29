@@ -59,7 +59,7 @@ struct MasterConfig {
 	/// Maximum fragment size to use for requests
 	size_t FragSize;
 
-	/// Using FC_WRITE is a problem with vto because the spec won't allow it to retry
+	/// Using FunctionCode::WRITE is a problem with vto because the spec won't allow it to retry
 	bool UseNonStandardVtoFunction;
 
 	/// If true, the master will do time syncs when it sees the time IIN bit from the slave

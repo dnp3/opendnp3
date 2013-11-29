@@ -41,7 +41,7 @@ ClearRestartIIN::ClearRestartIIN(openpal::Logger& arLogger) :
 
 void ClearRestartIIN::ConfigureRequest(APDU& arAPDU)
 {
-	arAPDU.Set(FC_WRITE);
+	arAPDU.Set(FunctionCode::WRITE);
 	Group80Var1* pObj = Group80Var1::Inst(); // Internal indications object
 	ObjectWriteIterator i = arAPDU.WriteContiguous(pObj, 7, 7); // index 7 == device restart
 	pObj->Write(*i, 7, 7, false);
@@ -63,7 +63,7 @@ void ConfigureUnsol::Set(bool aIsEnable, int aClassMask)
 
 void ConfigureUnsol::ConfigureRequest(APDU& arAPDU)
 {
-	arAPDU.Set(mIsEnable ? FC_ENABLE_UNSOLICITED : FC_DISABLE_UNSOLICITED);
+	arAPDU.Set(mIsEnable ? FunctionCode::ENABLE_UNSOLICITED : FunctionCode::DISABLE_UNSOLICITED);
 	if(mClassMask & PC_CLASS_1) arAPDU.DoPlaceholderWrite(Group60Var2::Inst());
 	if(mClassMask & PC_CLASS_2) arAPDU.DoPlaceholderWrite(Group60Var3::Inst());
 	if(mClassMask & PC_CLASS_3) arAPDU.DoPlaceholderWrite(Group60Var4::Inst());
@@ -86,12 +86,12 @@ void TimeSync::Init()
 void TimeSync::ConfigureRequest(APDU& arAPDU)
 {
 	if(mDelay < 0) {
-		arAPDU.Set(FC_DELAY_MEASURE);
+		arAPDU.Set(FunctionCode::DELAY_MEASURE);
 		mStart = mpTimeSrc->Now();
 	}
 	else {
-		arAPDU.Set(FC_WRITE);
-		ObjectWriteIterator owi = arAPDU.WriteContiguous(Group50Var1::Inst(), 0, 0, QC_1B_CNT);
+		arAPDU.Set(FunctionCode::WRITE);
+		ObjectWriteIterator owi = arAPDU.WriteContiguous(Group50Var1::Inst(), 0, 0, QualifierCode::UINT8_CNT);
 		Group50Var1::Inst()->mTime.Set(*owi, mpTimeSrc->Now().msSinceEpoch + mDelay);
 	}
 }

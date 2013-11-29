@@ -40,7 +40,7 @@ class DLL_LOCAL CommandHelpers
 {
 public:
 	template <class T>
-	static std::function<CommandStatus (const APDU&)> ConfigureRequest(APDU& arAPDU, FunctionCodes aCode, const T& arCommand, size_t aIndex, CommandObject<T>* apObj);
+	static std::function<CommandStatus (const APDU&)> ConfigureRequest(APDU& arAPDU, FunctionCode aCode, const T& arCommand, size_t aIndex, CommandObject<T>* apObj);
 
 private:
 	template <class T>
@@ -48,7 +48,7 @@ private:
 };
 
 template <class T>
-std::function<CommandStatus (const APDU&)> CommandHelpers::ConfigureRequest(APDU& arAPDU, FunctionCodes aCode, const T& arCommand, size_t aIndex, CommandObject<T>* apObj)
+std::function<CommandStatus (const APDU&)> CommandHelpers::ConfigureRequest(APDU& arAPDU, FunctionCode aCode, const T& arCommand, size_t aIndex, CommandObject<T>* apObj)
 {
 	arAPDU.Set(aCode, true, true, false, false);
 	IndexedWriteIterator i = arAPDU.WriteIndexed(apObj, 1, aIndex);

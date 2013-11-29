@@ -76,7 +76,7 @@ class DLL_LOCAL ACS_Idle : public ACS_Base
 	void Send(AppLayerChannel*, APDU&, size_t aNumRetry);
 
 private:
-	ACS_Base* NextState(AppLayerChannel* c, FunctionCodes, bool aConfirm);
+	ACS_Base* NextState(AppLayerChannel* c, FunctionCode, bool aConfirm);
 };
 
 //default implementations for failure and cancel events

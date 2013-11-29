@@ -16,6 +16,7 @@
 #ifndef __OPENDNP3_GENERATED_FUNCTIONCODE_H_
 #define __OPENDNP3_GENERATED_FUNCTIONCODE_H_
 
+#include <string>
 #include <cstdint>
 
 namespace opendnp3 {
@@ -57,6 +58,10 @@ enum class FunctionCode : uint8_t
   UNSOLICITED_RESPONSE = 0x82,
   UNKNOWN = 0xFF
 };
+
+std::string FunctionCodeToString(FunctionCode arg);
+FunctionCode FunctionCodeFromType(uint8_t arg);
+uint8_t FunctionCodeToType(FunctionCode arg);
 
 }
 

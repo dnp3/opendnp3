@@ -63,13 +63,13 @@ uint8_t* IndexedWriteIterator::operator*() const
 IndexedWriteIterator::IndexMode IndexedWriteIterator::GetIndexMode(QualifierCode aCode)
 {
 	switch(aCode) {
-	case(QC_1B_CNT_1B_INDEX): return IM_1B;
-	case(QC_2B_CNT_2B_INDEX): return IM_2B;
-	case(QC_4B_CNT_4B_INDEX): return IM_4B;
+	case(QualifierCode::UINT8_CNT_UINT8_INDEX): return IM_1B;
+	case(QualifierCode::UINT16_CNT_UINT16_INDEX): return IM_2B;
+	case(QualifierCode::UINT32_CNT_UINT32_INDEX): return IM_4B;
 
-	case(QC_1B_CNT):
-	case(QC_2B_CNT):
-	case(QC_4B_CNT):
+	case(QualifierCode::UINT8_CNT):
+	case(QualifierCode::UINT16_CNT):
+	case(QualifierCode::UINT32_CNT):
 		return IM_NONE;
 
 	default:

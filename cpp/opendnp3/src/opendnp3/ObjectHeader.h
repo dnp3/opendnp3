@@ -90,8 +90,7 @@ public:
 #ifndef OPENDNP3_STRIP_LOG_MESSAGES
 	virtual std::string ToString(const uint8_t* apStart) const = 0;
 #endif
-
-	static QualifierCode ByteToQualifierCode(uint8_t aCode);
+	
 };
 
 struct RangeInfo {

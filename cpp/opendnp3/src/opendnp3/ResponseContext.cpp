@@ -99,8 +99,8 @@ void ResponseContext::ClearAndReset()
 inline size_t GetEventCount(const HeaderInfo& arHeader)
 {
 	switch(arHeader.GetQualifier()) {
-	case QC_1B_CNT:
-	case QC_2B_CNT:
+	case QualifierCode::UINT8_CNT:
+	case QualifierCode::UINT16_CNT:
 		return arHeader.GetCount();
 	default:
 		return std::numeric_limits<size_t>::max();
@@ -300,7 +300,7 @@ size_t ResponseContext::SelectVtoEvents(PointClass aClass, const SizeByVariation
 void ResponseContext::LoadResponse(APDU& arAPDU)
 {
 	//delay the setting of FIR/FIN until we know if it will be multifragmented or not
-	arAPDU.Set(FC_RESPONSE);
+	arAPDU.Set(FunctionCode::RESPONSE);
 
 	bool wrote_all = this->LoadEventData(arAPDU);
 
@@ -331,7 +331,7 @@ void ResponseContext::LoadUnsol(APDU& arAPDU, const IINField& arIIN, ClassMask m
 {
 	this->SelectUnsol(m);
 
-	arAPDU.Set(FC_UNSOLICITED_RESPONSE, true, true, true, true);
+	arAPDU.Set(FunctionCode::UNSOLICITED_RESPONSE, true, true, true, true);
 	this->LoadEventData(arAPDU);
 }
 

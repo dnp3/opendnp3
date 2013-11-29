@@ -57,7 +57,7 @@ BOOST_AUTO_TEST_CASE(WriteIIN)
 	HexSequence hs("C4 02 50 01 00 07 07 00");
 
 	APDU frag;
-	frag.SetFunction(FC_WRITE);
+	frag.SetFunction(FunctionCode::WRITE);
 	frag.SetControl(true, true, false, false, 4);
 
 	Group80Var1* pObj = Group80Var1::Inst();
@@ -77,7 +77,7 @@ BOOST_AUTO_TEST_CASE(ResponseWithDataAndFlags)
 	HexSequence hs("E3 81 96 00 02 01 28 01 00 00 00 01 02 01 28 01 00 01 00 01 02 01 28 01 00 02 00 01 02 01 28 01 00 03 00 01 20 02 28 01 00 00 00 01 00 00 20 02 28 01 00 01 00 01 00 00 01 01 01 00 00 03 00 00 1E 02 01 00 00 01 00 01 00 00 01 00 00");
 
 	APDU frag;
-	frag.SetFunction(FC_RESPONSE);
+	frag.SetFunction(FunctionCode::RESPONSE);
 	frag.SetControl(true, true, true, false, 3);
 	IINField iin;
 	iin.SetDeviceRestart(true);
@@ -91,14 +91,14 @@ BOOST_AUTO_TEST_CASE(ResponseWithDataAndFlags)
 
 	{
 		Group2Var1* pObj = Group2Var1::Inst();
-		IndexedWriteIterator i = frag.WriteIndexed(pObj, 1, QC_2B_CNT_2B_INDEX); //300 max index forces the index bit with to 2 octet
+		IndexedWriteIterator i = frag.WriteIndexed(pObj, 1, QualifierCode::UINT16_CNT_UINT16_INDEX); //300 max index forces the index bit with to 2 octet
 		i.SetIndex(0);
 		pObj->mFlag.Set(*i, BQ_ONLINE);
 		++i;
 		BOOST_REQUIRE(i.IsEnd());
 
 		BOOST_REQUIRE_EQUAL(frag.Size(), 12);
-		i = frag.WriteIndexed(pObj, 1, QC_2B_CNT_2B_INDEX);
+		i = frag.WriteIndexed(pObj, 1, QualifierCode::UINT16_CNT_UINT16_INDEX);
 		i.SetIndex(1);
 		pObj->mFlag.Set(*i, BQ_ONLINE);
 		++i;
@@ -106,7 +106,7 @@ BOOST_AUTO_TEST_CASE(ResponseWithDataAndFlags)
 
 		BOOST_REQUIRE_EQUAL(frag.Size(), 20);
 
-		i = frag.WriteIndexed(pObj, 1, QC_2B_CNT_2B_INDEX);
+		i = frag.WriteIndexed(pObj, 1, QualifierCode::UINT16_CNT_UINT16_INDEX);
 		i.SetIndex(2);
 		pObj->mFlag.Set(*i, BQ_ONLINE);
 		++i;
@@ -114,7 +114,7 @@ BOOST_AUTO_TEST_CASE(ResponseWithDataAndFlags)
 
 		BOOST_REQUIRE_EQUAL(frag.Size(), 28);
 
-		i = frag.WriteIndexed(pObj, 1, QC_2B_CNT_2B_INDEX);
+		i = frag.WriteIndexed(pObj, 1, QualifierCode::UINT16_CNT_UINT16_INDEX);
 		i.SetIndex(3);
 		pObj->mFlag.Set(*i, BQ_ONLINE);
 
@@ -151,7 +151,7 @@ BOOST_AUTO_TEST_CASE(ResponseWithDataAndFlags)
 	{
 		// 01 01 01 00 00 03 00 00 - Obj1Var1 with 2octet start/stop indices
 		Group1Var1* pObj = Group1Var1::Inst();
-		ObjectWriteIterator i = frag.WriteContiguous(pObj, 0, 3, QC_2B_START_STOP);
+		ObjectWriteIterator i = frag.WriteContiguous(pObj, 0, 3, QualifierCode::UINT16_START_STOP);
 
 		pObj->Write(*i, 0, 0, false);
 		++i;
@@ -177,7 +177,7 @@ BOOST_AUTO_TEST_CASE(ResponseWithDataAndFlags)
 
 	{
 		Group30Var2* pObj = Group30Var2::Inst();
-		ObjectWriteIterator i = frag.WriteContiguous(pObj, 0, 1, QC_2B_START_STOP);
+		ObjectWriteIterator i = frag.WriteContiguous(pObj, 0, 1, QualifierCode::UINT16_START_STOP);
 
 		pObj->mFlag.Set(*i, AQ_ONLINE);
 		pObj->mValue.Set(*i, 0);
@@ -199,7 +199,7 @@ BOOST_AUTO_TEST_CASE(Obj1Var1Write)
 	HexSequence hs("C0 81 00 00 01 01 00 00 05 2A");
 
 	APDU frag;
-	frag.SetFunction(FC_RESPONSE);
+	frag.SetFunction(FunctionCode::RESPONSE);
 	IINField iin;
 	frag.SetIIN(iin);
 	frag.SetControl(true, true);
@@ -219,12 +219,12 @@ BOOST_AUTO_TEST_CASE(Obj1Var1Write)
 BOOST_AUTO_TEST_CASE(Obj32Var2Write)
 {
 	APDU frag;
-	frag.SetFunction(FC_RESPONSE);
+	frag.SetFunction(FunctionCode::RESPONSE);
 	IINField iin;
 	frag.SetIIN(iin);
 	frag.SetControl(true, true);
 
-	IndexedWriteIterator iter = frag.WriteIndexed(Group32Var2::Inst(), 1, QC_4B_CNT_4B_INDEX);
+	IndexedWriteIterator iter = frag.WriteIndexed(Group32Var2::Inst(), 1, QualifierCode::UINT32_CNT_UINT32_INDEX);
 	iter.SetIndex(2);
 	Analog a(3, AQ_RESTART);
 	Group32Var2::Inst()->Write(*iter, a);
@@ -237,12 +237,12 @@ BOOST_AUTO_TEST_CASE(Obj32Var2Write)
 BOOST_AUTO_TEST_CASE(SingleSetpoint)
 {
 	APDU frag;
-	frag.SetFunction(FC_RESPONSE);
+	frag.SetFunction(FunctionCode::RESPONSE);
 	IINField f;
 	frag.SetIIN(f);
 	frag.SetControl(true, true, false, false, 0);
 
-	IndexedWriteIterator itr = frag.WriteIndexed(Group41Var3::Inst(), 1, QC_1B_CNT_1B_INDEX);
+	IndexedWriteIterator itr = frag.WriteIndexed(Group41Var3::Inst(), 1, QualifierCode::UINT8_CNT_UINT8_INDEX);
 	AnalogOutputFloat32 s(100.0);
 
 	itr.SetIndex(1);
@@ -256,12 +256,12 @@ BOOST_AUTO_TEST_CASE(SingleSetpoint)
 BOOST_AUTO_TEST_CASE(DoubleSetpoint)
 {
 	APDU frag;
-	frag.SetFunction(FC_RESPONSE);
+	frag.SetFunction(FunctionCode::RESPONSE);
 	IINField f;
 	frag.SetIIN(f);
 	frag.SetControl(true, true, false, false, 0);
 
-	IndexedWriteIterator itr = frag.WriteIndexed(Group41Var4::Inst(), 1, QC_1B_CNT_1B_INDEX);
+	IndexedWriteIterator itr = frag.WriteIndexed(Group41Var4::Inst(), 1, QualifierCode::UINT8_CNT_UINT8_INDEX);
 	AnalogOutputDouble64 s(100.0);
 
 	itr.SetIndex(1);
@@ -278,7 +278,7 @@ BOOST_AUTO_TEST_CASE(ClassPollRequest)
 	HexSequence hs("C3 01 3C 02 06 3C 03 06 3C 04 06 3C 01 06");
 
 	APDU frag;
-	frag.SetFunction(FC_READ);
+	frag.SetFunction(FunctionCode::READ);
 	frag.SetControl(true, true, false, false, 3);
 
 	BOOST_REQUIRE_EQUAL(frag.Size(), 2);
@@ -301,7 +301,7 @@ BOOST_AUTO_TEST_CASE(Confirm)
 	HexSequence hs("C3 00");
 
 	APDU frag;
-	frag.SetFunction(FC_CONFIRM);
+	frag.SetFunction(FunctionCode::CONFIRM);
 	frag.SetControl(true, true, false, false, 3);
 
 	BOOST_REQUIRE_EQUAL(frag.Size(), hs.Size());
@@ -313,7 +313,7 @@ BOOST_AUTO_TEST_CASE(IndexRead)
 	HexSequence hs("C0 01 01 02 17 03 01 03 05");
 
 	APDU frag;
-	frag.SetFunction(FC_READ);
+	frag.SetFunction(FunctionCode::READ);
 	frag.SetControl(true, true);
 	IndexedWriteIterator i = frag.WriteIndexed(Group1Var2::Inst(), 3, 255);
 
@@ -332,7 +332,7 @@ BOOST_AUTO_TEST_CASE(Sequence15Correct)
 	HexSequence hs("CF 00");
 
 	APDU frag;
-	frag.SetFunction(FC_CONFIRM);
+	frag.SetFunction(FunctionCode::CONFIRM);
 	frag.SetControl(true, true, false, false, 15);
 
 	BOOST_REQUIRE_EQUAL(frag.Size(), hs.Size());
@@ -342,7 +342,7 @@ BOOST_AUTO_TEST_CASE(Sequence15Correct)
 BOOST_AUTO_TEST_CASE(VirtualTerminalWrite)
 {
 	APDU frag;
-	frag.SetFunction(FC_WRITE);
+	frag.SetFunction(FunctionCode::WRITE);
 	frag.SetControl(true, true, false, false, 2);
 
 	std::string str("hello");
@@ -361,7 +361,7 @@ BOOST_AUTO_TEST_CASE(VirtualTerminalWrite)
 BOOST_AUTO_TEST_CASE(VirtualTerminalWriteMultipleIndices)
 {
 	APDU frag;
-	frag.SetFunction(FC_WRITE);
+	frag.SetFunction(FunctionCode::WRITE);
 	frag.SetControl(true, true, false, false, 2);
 
 	// Write the first object

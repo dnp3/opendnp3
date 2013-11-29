@@ -50,7 +50,7 @@ class SlaveResponseTypes;
 
 
 /**
- * Builds and tracks the state of responses. Interprets FC_READ requests or
+ * Builds and tracks the state of responses. Interprets FunctionCode::READ requests or
  * can be prompted for an unsolicited response fragment.
  *
  * Coordinates the Database and SlaveEventBuffer.
@@ -423,7 +423,7 @@ size_t ResponseContext::IterateCTO(const StreamObject<T>* apObj, size_t aCount, 
 	auto start = arIter->mValue.GetTime();
 
 	// first try to write a CTO object for the first value that we're pushing
-	ObjectWriteIterator itr = arAPDU.WriteContiguous(Group51Var1::Inst(), 0, 0, QC_1B_CNT);
+	ObjectWriteIterator itr = arAPDU.WriteContiguous(Group51Var1::Inst(), 0, 0, QualifierCode::UINT8_CNT);
 	if(itr.IsEnd()) return 0;
 	else Group51Var1::Inst()->mTime.Set(*itr, start);
 

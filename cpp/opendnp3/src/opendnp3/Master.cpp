@@ -129,66 +129,66 @@ void Master::ProcessCommand(ITask* apTask)
 void Master::SelectAndOperate(const ControlRelayOutputBlock& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback)
 {
 	this->ConfigureCommandTask(arCommand, aIndex, Group12Var1::Inst(), aCallback);
-	this->mCommandTask.AddCommandCode(FC_SELECT);
-	this->mCommandTask.AddCommandCode(FC_OPERATE);
+	this->mCommandTask.AddCommandCode(FunctionCode::SELECT);
+	this->mCommandTask.AddCommandCode(FunctionCode::OPERATE);
 }
 
 void Master::SelectAndOperate(const AnalogOutputInt32& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback)
 {
 	this->ConfigureCommandTask(arCommand, aIndex, Group41Var1::Inst(), aCallback);
-	this->mCommandTask.AddCommandCode(FC_SELECT);
-	this->mCommandTask.AddCommandCode(FC_OPERATE);
+	this->mCommandTask.AddCommandCode(FunctionCode::SELECT);
+	this->mCommandTask.AddCommandCode(FunctionCode::OPERATE);
 }
 
 void Master::SelectAndOperate(const AnalogOutputInt16& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback)
 {
 	this->ConfigureCommandTask(arCommand, aIndex, Group41Var2::Inst(), aCallback);
-	this->mCommandTask.AddCommandCode(FC_SELECT);
-	this->mCommandTask.AddCommandCode(FC_OPERATE);
+	this->mCommandTask.AddCommandCode(FunctionCode::SELECT);
+	this->mCommandTask.AddCommandCode(FunctionCode::OPERATE);
 }
 
 void Master::SelectAndOperate(const AnalogOutputFloat32& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback)
 {
 	this->ConfigureCommandTask(arCommand, aIndex, Group41Var3::Inst(), aCallback);
-	this->mCommandTask.AddCommandCode(FC_SELECT);
-	this->mCommandTask.AddCommandCode(FC_OPERATE);
+	this->mCommandTask.AddCommandCode(FunctionCode::SELECT);
+	this->mCommandTask.AddCommandCode(FunctionCode::OPERATE);
 }
 
 void Master::SelectAndOperate(const AnalogOutputDouble64& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback)
 {
 	this->ConfigureCommandTask(arCommand, aIndex, Group41Var4::Inst(), aCallback);
-	this->mCommandTask.AddCommandCode(FC_SELECT);
-	this->mCommandTask.AddCommandCode(FC_OPERATE);
+	this->mCommandTask.AddCommandCode(FunctionCode::SELECT);
+	this->mCommandTask.AddCommandCode(FunctionCode::OPERATE);
 }
 
 void Master::DirectOperate(const ControlRelayOutputBlock& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback)
 {
 	this->ConfigureCommandTask(arCommand, aIndex, Group12Var1::Inst(), aCallback);
-	this->mCommandTask.AddCommandCode(FC_DIRECT_OPERATE);
+	this->mCommandTask.AddCommandCode(FunctionCode::DIRECT_OPERATE);
 }
 
 void Master::DirectOperate(const AnalogOutputInt32& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback)
 {
 	this->ConfigureCommandTask(arCommand, aIndex, Group41Var1::Inst(), aCallback);
-	this->mCommandTask.AddCommandCode(FC_DIRECT_OPERATE);
+	this->mCommandTask.AddCommandCode(FunctionCode::DIRECT_OPERATE);
 }
 
 void Master::DirectOperate(const AnalogOutputInt16& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback)
 {
 	this->ConfigureCommandTask(arCommand, aIndex, Group41Var2::Inst(), aCallback);
-	this->mCommandTask.AddCommandCode(FC_DIRECT_OPERATE);
+	this->mCommandTask.AddCommandCode(FunctionCode::DIRECT_OPERATE);
 }
 
 void Master::DirectOperate(const AnalogOutputFloat32& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback)
 {
 	this->ConfigureCommandTask(arCommand, aIndex, Group41Var3::Inst(), aCallback);
-	this->mCommandTask.AddCommandCode(FC_DIRECT_OPERATE);
+	this->mCommandTask.AddCommandCode(FunctionCode::DIRECT_OPERATE);
 }
 
 void Master::DirectOperate(const AnalogOutputDouble64& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback)
 {
 	this->ConfigureCommandTask(arCommand, aIndex, Group41Var4::Inst(), aCallback);
-	this->mCommandTask.AddCommandCode(FC_DIRECT_OPERATE);
+	this->mCommandTask.AddCommandCode(FunctionCode::DIRECT_OPERATE);
 }
 
 void Master::StartTask(MasterTaskBase* apMasterTask, bool aInit)

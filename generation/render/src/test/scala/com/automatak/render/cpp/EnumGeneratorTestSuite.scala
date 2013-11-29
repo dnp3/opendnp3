@@ -33,7 +33,7 @@ class EnumGeneratorTestSuite extends FunSuite with ShouldMatchers {
      val values = List(EnumValue("red", 2), EnumValue("green"), EnumValue("blue"))
      val eg = EnumModel("Colors", Some(EnumModel.UInt8), values, None)
 
-     val lines =  EnumModelRenderer(CppIndentation()).render(eg)
+     val lines =  new EnumModelRenderer(CppIndentation()).render(eg)
 
      lines.toList should equal(
      List(  "enum class Colors : uint8_t",

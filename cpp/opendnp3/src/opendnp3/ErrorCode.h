@@ -20,63 +20,55 @@
 // you under the terms of the License.
 //
 
-#ifndef __MOCK_APP_LAYER_H_
-#define __MOCK_APP_LAYER_H_
-
-#include <opendnp3/AppInterfaces.h>
-#include <opendnp3/APDUConstants.h>
-#include <opendnp3/APDU.h>
-
-#include <openpal/Loggable.h>
-
-#include <queue>
+#ifndef __ERROR_CODE_H_
+#define __ERROR_CODE_H_
 
 namespace opendnp3
 {
+	template<class T>
+	class ErrorCode
+	{
+		public:
 
-/**	@section desc Test class to mock async app layer for master/slave */
-class MockAppLayer : public IAppLayer, public openpal::Loggable
-{
-public:
-	MockAppLayer(openpal::Logger);
-	virtual ~MockAppLayer() {}
+			static ErrorCode Success(T aValue)
+			{
+				return ErrorCode(aValue, 0);
+			}
 
+			static ErrorCode Failure(int aCode)
+			{
+				assert(aCode != 0);
+				return ErrorCode(aCode);
+			}
 
-	void SetUser(IAppUser*);
+			bool IsError()
+			{
+				return code != 0;
+			}
+			
+			int Code()
+			{
+				return 0;
+			}
 
-	void SendResponse(APDU&);
-	void SendUnsolicited(APDU&);
-	void SendRequest(APDU&);
-	void CancelResponse();
+			T Result()
+			{
+				assert(code == 0);
+				return value;
+			}
 
-	bool NothingToRead();
+		private:
+			ErrorCode(T aValue, int aCode): value(aValue), code(aCode)
+			{}
 
-	size_t mNumCancel;
+			ErrorCode(int aCode): value(), code(aCode)
+			{}
 
-	void EnableAutoSendCallback(bool aIsSuccess);
-	void DisableAutoSendCallback();
+			T value;
+			int code;
+	};
 
-	APDU Read();
-	size_t Count() {
-		return mFragments.size();
-	}
-	FunctionCode ReadFunction();
-	size_t NumAPDU() {
-		return mFragments.size();
-	}
-
-private:
-
-	void DoSendUnsol();
-	void DoSendSol();
-
-	IAppUser* mpUser;
-	bool mAutoSendCallback;
-	bool mIsSuccess;
-	std::deque<APDU> mFragments;
-};
 
 }
 
 #endif
-

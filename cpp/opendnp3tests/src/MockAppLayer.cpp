@@ -112,11 +112,11 @@ APDU MockAppLayer::Read()
 	return frag;
 }
 
-FunctionCodes MockAppLayer::ReadFunction()
+FunctionCode MockAppLayer::ReadFunction()
 {
 	if(mFragments.size() == 0) throw InvalidStateException(LOCATION, "No more fragments");
 	else {
-		FunctionCodes func = mFragments.front().GetFunction();
+		FunctionCode func = mFragments.front().GetFunction();
 		mFragments.pop_front();
 		return func;
 	}

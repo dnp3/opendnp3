@@ -77,18 +77,18 @@ IINField APDU::GetIIN() const
 	return static_cast<ResponseHeader*>(mpAppHeader)->GetIIN(mBuffer);
 }
 
-FunctionCodes APDU::GetFunction() const
+FunctionCode APDU::GetFunction() const
 {
 	assert(mpAppHeader != NULL);
 
 	return mpAppHeader->GetFunction(mBuffer);
 }
 
-void APDU::SetFunction(FunctionCodes aCode)
+void APDU::SetFunction(FunctionCode aCode)
 {
 	assert(mpAppHeader == NULL);
 
-	if(aCode == FC_RESPONSE || aCode == FC_UNSOLICITED_RESPONSE) {
+	if(aCode == FunctionCode::RESPONSE || aCode == FunctionCode::UNSOLICITED_RESPONSE) {
 		mpAppHeader = ResponseHeader::Inst();
 	}
 	else {
@@ -167,7 +167,7 @@ IAppHeader* APDU::ParseHeader() const
 
 	// start by assuming that it's a request header since they have same starting structure
 	IAppHeader* pHeader = RequestHeader::Inst();
-	FunctionCodes function = pHeader->GetFunction(mBuffer);
+	FunctionCode function = pHeader->GetFunction(mBuffer);
 	AppControlField control = pHeader->GetControl(mBuffer);
 
 	if( IsResponse(function) ) {
@@ -195,7 +195,7 @@ size_t APDU::ReadObjectHeader(size_t aOffset, size_t aRemainder)
 	//Read the header data and select the correct object header based on this information
 	pHdr->Get(pStart, hdrData);
 
-	if(hdrData.Qualifier == QC_UNDEFINED) {
+	if(hdrData.Qualifier == QualifierCode::UNDEFINED) {
 		MACRO_THROW_EXCEPTION_WITH_CODE(openpal::Exception, "Unknown qualifier", ALERR_UNKNOWN_QUALIFIER);
 	}
 
@@ -214,8 +214,10 @@ size_t APDU::ReadObjectHeader(size_t aOffset, size_t aRemainder)
 
 	aRemainder -= pHdr->GetSize();
 
-	//figure out what the size of the prefixes are in bytes and how many objects there are.
-	size_t prefixSize = this->GetPrefixSizeAndValidate(hdrData.Qualifier, pObj->GetType());
+	//figure out what the size of the prefixes are in bytes and how many objects there are.	 
+	auto result = this->GetPrefixSizeAndValidate(hdrData.Qualifier, pObj->GetType());
+	if(result.IsError()) throw openpal::Exception(LOCATION, "Unknown prefix code", result.Code());
+	size_t prefixSize = result.Result();
 	size_t objCount = this->GetNumObjects(pHdr, pStart);
 
 	//pStart += pHdr->GetSize(); //move the reading position to the first object
@@ -256,25 +258,22 @@ size_t APDU::ReadObjectHeader(size_t aOffset, size_t aRemainder)
 IObjectHeader* APDU::GetObjectHeader(QualifierCode aCode)
 {
 	switch(aCode) {
-	case(QC_1B_START_STOP):
+	case(QualifierCode::UINT8_START_STOP):
 		return Ranged2OctetHeader::Inst();
-	case(QC_2B_START_STOP):
+	case(QualifierCode::UINT16_START_STOP):
 		return Ranged4OctetHeader::Inst();
-	case(QC_4B_START_STOP):
+	case(QualifierCode::UINT32_START_STOP):
 		return Ranged8OctetHeader::Inst();
-	case(QC_ALL_OBJ):
+	case(QualifierCode::ALL_OBJECTS):
 		return AllObjectsHeader::Inst();
-	case(QC_1B_CNT):
-	case(QC_1B_CNT_1B_INDEX):
-	case(QC_1B_VCNT_1B_SIZE):
-	case(QC_1B_VCNT_2B_SIZE):
-	case(QC_1B_VCNT_4B_SIZE):
+	case(QualifierCode::UINT8_CNT):
+	case(QualifierCode::UINT8_CNT_UINT8_INDEX):
 		return Count1OctetHeader::Inst();
-	case(QC_2B_CNT):
-	case(QC_2B_CNT_2B_INDEX):
+	case(QualifierCode::UINT16_CNT):
+	case(QualifierCode::UINT16_CNT_UINT16_INDEX):
 		return Count2OctetHeader::Inst();
-	case(QC_4B_CNT):
-	case(QC_4B_CNT_4B_INDEX):
+	case(QualifierCode::UINT32_CNT):
+	case(QualifierCode::UINT32_CNT_UINT32_INDEX):
 		return Count4OctetHeader::Inst();
 	default:
 		MACRO_THROW_EXCEPTION(openpal::Exception, "Unknown range specifier");
@@ -305,52 +304,128 @@ size_t APDU::GetNumObjects(const IObjectHeader* apHeader, const uint8_t* apStart
 	}
 }
 
-#define MACRO_QUAL_OBJ_RADIX(qual, type) (qual << 8) | type
-
-size_t APDU::GetPrefixSizeAndValidate(QualifierCode aCode, ObjectTypes aType)
+ErrorCode<size_t> APDU::GetPrefixSizeAndValidate(QualifierCode aCode, ObjectTypes aType)
 {
-
-	switch(MACRO_QUAL_OBJ_RADIX(aCode, aType)) {
-		//allowed cases with no prefix
-	case(MACRO_QUAL_OBJ_RADIX(QC_ALL_OBJ, OT_PLACEHOLDER)):
-	case(MACRO_QUAL_OBJ_RADIX(QC_ALL_OBJ, OT_FIXED)):
-	case(MACRO_QUAL_OBJ_RADIX(QC_ALL_OBJ, OT_BITFIELD)):
-	case(MACRO_QUAL_OBJ_RADIX(QC_1B_START_STOP, OT_FIXED)):
-	case(MACRO_QUAL_OBJ_RADIX(QC_2B_START_STOP, OT_FIXED)):
-	case(MACRO_QUAL_OBJ_RADIX(QC_4B_START_STOP, OT_FIXED)):
-	case(MACRO_QUAL_OBJ_RADIX(QC_1B_START_STOP, OT_PLACEHOLDER)):
-	case(MACRO_QUAL_OBJ_RADIX(QC_2B_START_STOP, OT_PLACEHOLDER)):
-	case(MACRO_QUAL_OBJ_RADIX(QC_4B_START_STOP, OT_PLACEHOLDER)):
-	case(MACRO_QUAL_OBJ_RADIX(QC_1B_START_STOP, OT_BITFIELD)):
-	case(MACRO_QUAL_OBJ_RADIX(QC_2B_START_STOP, OT_BITFIELD)):
-	case(MACRO_QUAL_OBJ_RADIX(QC_4B_START_STOP, OT_BITFIELD)):
-	case(MACRO_QUAL_OBJ_RADIX(QC_1B_CNT, OT_FIXED)):
-	case(MACRO_QUAL_OBJ_RADIX(QC_2B_CNT, OT_FIXED)):
-	case(MACRO_QUAL_OBJ_RADIX(QC_4B_CNT, OT_FIXED)):
-	case(MACRO_QUAL_OBJ_RADIX(QC_1B_CNT, OT_BITFIELD)):
-	case(MACRO_QUAL_OBJ_RADIX(QC_2B_CNT, OT_BITFIELD)):
-	case(MACRO_QUAL_OBJ_RADIX(QC_4B_CNT, OT_BITFIELD)):
-	case(MACRO_QUAL_OBJ_RADIX(QC_1B_CNT, OT_PLACEHOLDER)):
-	case(MACRO_QUAL_OBJ_RADIX(QC_2B_CNT, OT_PLACEHOLDER)):
-	case(MACRO_QUAL_OBJ_RADIX(QC_4B_CNT, OT_PLACEHOLDER)):
-		return 0;
-
-		//Objects prefixed with an index can only be OT_STATIC or OT_VARIABLE
-	case(MACRO_QUAL_OBJ_RADIX(QC_1B_CNT_1B_INDEX, OT_FIXED)):	return 1;
-	case(MACRO_QUAL_OBJ_RADIX(QC_2B_CNT_2B_INDEX, OT_FIXED)):	return 2;
-	case(MACRO_QUAL_OBJ_RADIX(QC_4B_CNT_4B_INDEX, OT_FIXED)):	return 4;
-	case(MACRO_QUAL_OBJ_RADIX(QC_1B_CNT_1B_INDEX, OT_SIZE_BY_VARIATION)):	return 1;
-	case(MACRO_QUAL_OBJ_RADIX(QC_2B_CNT_2B_INDEX, OT_SIZE_BY_VARIATION)):	return 2;
-	case(MACRO_QUAL_OBJ_RADIX(QC_4B_CNT_4B_INDEX, OT_SIZE_BY_VARIATION)):	return 4;
-
-		// Objects prefixed with a size must be of variable length type
-	case(MACRO_QUAL_OBJ_RADIX(QC_1B_VCNT_1B_SIZE, OT_VARIABLE)): return 1;
-	case(MACRO_QUAL_OBJ_RADIX(QC_1B_VCNT_2B_SIZE, OT_VARIABLE)): return 2;
-	case(MACRO_QUAL_OBJ_RADIX(QC_1B_VCNT_4B_SIZE, OT_VARIABLE)): return 4;
-
-	default:
-		MACRO_THROW_EXCEPTION_WITH_CODE(openpal::Exception, "Unknown Prefix Size", ALERR_ILLEGAL_QUALIFIER_AND_OBJECT);
+	switch(aCode) 
+	{
+		case(QualifierCode::ALL_OBJECTS):
+			switch(aType)
+			{
+				case(OT_PLACEHOLDER):
+					return ErrorCode<size_t>::Success(0);
+				case(OT_FIXED):
+					return ErrorCode<size_t>::Success(0);
+				case(OT_BITFIELD):
+					return ErrorCode<size_t>::Success(0);
+				default:
+					return ErrorCode<size_t>::Failure(ALERR_ILLEGAL_QUALIFIER_AND_OBJECT);
+			}			
+		case(QualifierCode::UINT8_START_STOP):
+			switch(aType)
+			{
+				case(OT_PLACEHOLDER):
+					return ErrorCode<size_t>::Success(0);
+				case(OT_FIXED):
+					return ErrorCode<size_t>::Success(0);
+				case(OT_BITFIELD):
+					return ErrorCode<size_t>::Success(0);
+				default:
+					return ErrorCode<size_t>::Failure(ALERR_ILLEGAL_QUALIFIER_AND_OBJECT);
+			}
+		case(QualifierCode::UINT16_START_STOP):
+			switch(aType)
+			{
+				case(OT_PLACEHOLDER):
+					return ErrorCode<size_t>::Success(0);
+				case(OT_FIXED):
+					return ErrorCode<size_t>::Success(0);
+				case(OT_BITFIELD):
+					return ErrorCode<size_t>::Success(0);
+				default:
+					return ErrorCode<size_t>::Failure(ALERR_ILLEGAL_QUALIFIER_AND_OBJECT);
+			}
+		case(QualifierCode::UINT32_START_STOP):
+			switch(aType)
+			{
+				case(OT_PLACEHOLDER):
+					return ErrorCode<size_t>::Success(0);
+				case(OT_FIXED):
+					return ErrorCode<size_t>::Success(0);
+				case(OT_BITFIELD):
+					return ErrorCode<size_t>::Success(0);
+				default:
+					return ErrorCode<size_t>::Failure(ALERR_ILLEGAL_QUALIFIER_AND_OBJECT);
+			}
+		case(QualifierCode::UINT8_CNT):
+			switch(aType)
+			{
+				case(OT_PLACEHOLDER):
+					return ErrorCode<size_t>::Success(0);
+				case(OT_FIXED):
+					return ErrorCode<size_t>::Success(0);
+				case(OT_BITFIELD):
+					return ErrorCode<size_t>::Success(0);
+				default:
+					return ErrorCode<size_t>::Failure(ALERR_ILLEGAL_QUALIFIER_AND_OBJECT);
+			}
+		case(QualifierCode::UINT16_CNT):
+			switch(aType)
+			{
+				case(OT_PLACEHOLDER):
+					return ErrorCode<size_t>::Success(0);
+				case(OT_FIXED):
+					return ErrorCode<size_t>::Success(0);
+				case(OT_BITFIELD):
+					return ErrorCode<size_t>::Success(0);
+				default:
+					return ErrorCode<size_t>::Failure(ALERR_ILLEGAL_QUALIFIER_AND_OBJECT);
+			}
+		case(QualifierCode::UINT32_CNT):
+			switch(aType)
+			{
+				case(OT_PLACEHOLDER):
+					return ErrorCode<size_t>::Success(0);
+				case(OT_FIXED):
+					return ErrorCode<size_t>::Success(0);
+				case(OT_BITFIELD):
+					return ErrorCode<size_t>::Success(0);
+				default:
+					return ErrorCode<size_t>::Failure(ALERR_ILLEGAL_QUALIFIER_AND_OBJECT);
+			}
+		case(QualifierCode::UINT8_CNT_UINT8_INDEX):
+			switch(aType)
+			{
+				case(OT_FIXED):
+					return ErrorCode<size_t>::Success(1);
+				case(OT_SIZE_BY_VARIATION):
+					return ErrorCode<size_t>::Success(1);
+				default:
+					return ErrorCode<size_t>::Failure(ALERR_ILLEGAL_QUALIFIER_AND_OBJECT);
+			}
+		case(QualifierCode::UINT16_CNT_UINT16_INDEX):
+			switch(aType)
+			{
+				case(OT_FIXED):
+					return ErrorCode<size_t>::Success(2);
+				case(OT_SIZE_BY_VARIATION):
+					return ErrorCode<size_t>::Success(2);
+				default:
+					return ErrorCode<size_t>::Failure(ALERR_ILLEGAL_QUALIFIER_AND_OBJECT);
+			}
+		case(QualifierCode::UINT32_CNT_UINT32_INDEX):
+			switch(aType)
+			{
+				case(OT_FIXED):
+					return ErrorCode<size_t>::Success(4);
+				case(OT_SIZE_BY_VARIATION):
+					return ErrorCode<size_t>::Success(4);
+				default:
+					return ErrorCode<size_t>::Failure(ALERR_ILLEGAL_QUALIFIER_AND_OBJECT);
+			}
+		default:
+			return ErrorCode<size_t>::Failure(ALERR_ILLEGAL_QUALIFIER_AND_OBJECT);
 	}
+
 }
 
 HeaderReadIterator APDU::BeginRead() const
@@ -358,11 +433,11 @@ HeaderReadIterator APDU::BeginRead() const
 	return HeaderReadIterator(&mObjectHeaders, mBuffer, HasData(this->GetFunction()));
 }
 
-bool APDU::HasData(FunctionCodes aCode)
+bool APDU::HasData(FunctionCode aCode)
 {
 	switch(aCode) {
-	case(FC_READ):
-	case(FC_ASSIGN_CLASS):
+	case(FunctionCode::READ):
+	case(FunctionCode::ASSIGN_CLASS):
 		return false;
 	default:
 		return true;
@@ -372,7 +447,7 @@ bool APDU::HasData(FunctionCodes aCode)
 ObjectWriteIterator APDU::WriteContiguous(const FixedObject* apObj, size_t aStart, size_t aStop, QualifierCode aCode)
 {
 	this->CheckWriteState(apObj);
-	if(aCode == QC_UNDEFINED)  aCode = this->GetContiguousQualifier(aStart, aStop);
+	if(aCode == QualifierCode::UNDEFINED)  aCode = this->GetContiguousQualifier(aStart, aStop);
 
 	IObjectHeader* pHdr = this->GetObjectHeader(aCode);
 	if(pHdr->GetSize() > this->Remainder()) return ObjectWriteIterator();
@@ -404,7 +479,7 @@ ObjectWriteIterator APDU::WriteContiguous(const FixedObject* apObj, size_t aStar
 ObjectWriteIterator APDU::WriteContiguous(const BitfieldObject* apObj, size_t aStart, size_t aStop, QualifierCode aCode)
 {
 	this->CheckWriteState(apObj);
-	if(aCode == QC_UNDEFINED)  aCode = this->GetContiguousQualifier(aStart, aStop);
+	if(aCode == QualifierCode::UNDEFINED)  aCode = this->GetContiguousQualifier(aStart, aStop);
 
 	IObjectHeader* pHdr = this->GetObjectHeader(aCode);
 	if(pHdr->GetSize() > this->Remainder()) return ObjectWriteIterator();
@@ -476,7 +551,9 @@ IndexedWriteIterator APDU::WriteIndexed(const SizeByVariationObject* apObj, size
 	uint8_t variation = static_cast<uint8_t>(aSize);
 
 	size_t obj_size = APDU::HasData(this->GetFunction()) ? aSize : 0;
-	size_t prefix_size = this->GetPrefixSizeAndValidate(aCode, apObj->GetType());
+	auto result = this->GetPrefixSizeAndValidate(aCode, apObj->GetType());
+	if(result.IsError()) throw openpal::Exception(LOCATION, "Unable to get prefix size", result.Code());
+	size_t prefix_size = result.Result();
 
 	return WriteCountHeader(obj_size, prefix_size, apObj->GetGroup(), variation, 1, aCode);
 }
@@ -486,7 +563,10 @@ IndexedWriteIterator APDU::WriteIndexed(const FixedObject* apObj, size_t aCount,
 	this->CheckWriteState(apObj);
 
 	size_t obj_size = APDU::HasData(this->GetFunction()) ? apObj->GetSize() : 0;
-	size_t prefix_size = this->GetPrefixSizeAndValidate(aCode, apObj->GetType());
+
+	auto result = this->GetPrefixSizeAndValidate(aCode, apObj->GetType());
+	if(result.IsError()) throw openpal::Exception(LOCATION, "Unable to get prefix size", result.Code());
+	size_t prefix_size = result.Result();
 
 	return WriteCountHeader(obj_size, prefix_size, apObj->GetGroup(), apObj->GetVariation(), aCount, aCode);
 }
@@ -531,7 +611,7 @@ bool APDU::DoPlaceholderWrite(ObjectBase* apObj)
 	size_t remainder = mBuffer.Size() - mFragmentSize;
 	if(pHdr->GetSize() > remainder) return false;
 
-	pHdr->Set(mBuffer + mFragmentSize, apObj->GetGroup(), apObj->GetVariation(), QC_ALL_OBJ);
+	pHdr->Set(mBuffer + mFragmentSize, apObj->GetGroup(), apObj->GetVariation(), QualifierCode::ALL_OBJECTS);
 	mFragmentSize += pHdr->GetSize();
 
 	return true;
@@ -549,17 +629,14 @@ void APDU::CheckWriteState(const ObjectBase* apObj)
 ICountHeader* APDU::GetCountHeader(QualifierCode aCode)
 {
 	switch(aCode) {
-	case(QC_1B_CNT):
-	case(QC_1B_CNT_1B_INDEX):
-	case(QC_1B_VCNT_1B_SIZE):
-	case(QC_1B_VCNT_2B_SIZE):
-	case(QC_1B_VCNT_4B_SIZE):
+	case(QualifierCode::UINT8_CNT):
+	case(QualifierCode::UINT8_CNT_UINT8_INDEX):	
 		return Count1OctetHeader::Inst();
-	case(QC_2B_CNT):
-	case(QC_2B_CNT_2B_INDEX):
+	case(QualifierCode::UINT16_CNT):
+	case(QualifierCode::UINT16_CNT_UINT16_INDEX):
 		return Count2OctetHeader::Inst();
-	case(QC_4B_CNT):
-	case(QC_4B_CNT_4B_INDEX):
+	case(QualifierCode::UINT32_CNT):
+	case(QualifierCode::UINT32_CNT_UINT32_INDEX):
 		return Count4OctetHeader::Inst();
 	default:
 		MACRO_THROW_EXCEPTION(openpal::ArgumentException, "Invalid qualifier for count header");
@@ -572,13 +649,13 @@ ICountHeader* APDU::GetCountHeader(QualifierCode aCode)
 QualifierCode APDU::GetIndexedQualifier(size_t aMaxIndex, size_t aCount)
 {
 	if(aMaxIndex <= Count1OctetHeader::MaxCount() && aCount <= Count1OctetHeader::MaxCount()) {
-		return QC_1B_CNT_1B_INDEX;
+		return QualifierCode::UINT8_CNT_UINT8_INDEX;
 	}
 	else if(aMaxIndex <= Count2OctetHeader::MaxCount() && aCount <= Count2OctetHeader::MaxCount()) {
-		return QC_2B_CNT_2B_INDEX;
+		return QualifierCode::UINT16_CNT_UINT16_INDEX;
 	}
 	else {
-		return QC_4B_CNT_4B_INDEX;
+		return QualifierCode::UINT32_CNT_UINT32_INDEX;
 	}
 
 }
@@ -586,13 +663,13 @@ QualifierCode APDU::GetIndexedQualifier(size_t aMaxIndex, size_t aCount)
 QualifierCode APDU::GetContiguousQualifier(size_t aStart, size_t aStop)
 {
 	if(aStop <= Ranged2OctetHeader::MaxRange()) {
-		return QC_1B_START_STOP;
+		return QualifierCode::UINT8_START_STOP;
 	}
 	else if(aStop <= Ranged4OctetHeader::MaxRange()) {
-		return QC_2B_START_STOP;
+		return QualifierCode::UINT16_START_STOP;
 	}
 	else {
-		return QC_4B_START_STOP;
+		return QualifierCode::UINT32_START_STOP;
 	}
 }
 
@@ -603,7 +680,7 @@ std::string APDU::ToString() const
 
 	APDU copy(*this);
 
-	FunctionCodes func = copy.GetFunction();
+	FunctionCode func = copy.GetFunction();
 	AppControlField acf = copy.GetControl();
 
 	oss << "FIR: " << acf.FIR;
@@ -623,7 +700,7 @@ std::string APDU::ToString() const
 		for ( ; !itr.IsEnd(); ++itr) {
 			oss << " Header: (Grp: " << itr->GetGroup();
 			oss << ", Var: " << itr->GetVariation();
-			oss << ", Qual: " << itr->GetQualifier() << ", ";
+			oss << ", Qual: " << QualifierCodeToString(itr->GetQualifier()) << ", ";
 			oss << itr->GetHeader()->ToString(*itr);
 			oss << ")";
 		}

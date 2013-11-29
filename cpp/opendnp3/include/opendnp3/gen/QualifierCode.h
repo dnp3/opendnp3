@@ -16,24 +16,29 @@
 #ifndef __OPENDNP3_GENERATED_QUALIFIERCODE_H_
 #define __OPENDNP3_GENERATED_QUALIFIERCODE_H_
 
+#include <string>
 #include <cstdint>
 
 namespace opendnp3 {
 
 enum class QualifierCode : uint8_t
 {
-  1B_START_STOP = 0x0,
-  2B_START_STOP = 0x1,
-  4B_START_STOP = 0x2,
-  ALL_OBJ = 0x6,
-  1B_CNT = 0x7,
-  2B_CNT = 0x8,
-  4B_CNT = 0x9,
-  1B_CNT_1B_INDEX = 0x17,
-  2B_CNT_2B_INDEX = 0x28,
-  4B_CNT_4B_INDEX = 0x39,
+  UINT8_START_STOP = 0x0,
+  UINT16_START_STOP = 0x1,
+  UINT32_START_STOP = 0x2,
+  ALL_OBJECTS = 0x6,
+  UINT8_CNT = 0x7,
+  UINT16_CNT = 0x8,
+  UINT32_CNT = 0x9,
+  UINT8_CNT_UINT8_INDEX = 0x17,
+  UINT16_CNT_UINT16_INDEX = 0x28,
+  UINT32_CNT_UINT32_INDEX = 0x39,
   UNDEFINED = 0xFF
 };
+
+std::string QualifierCodeToString(QualifierCode arg);
+QualifierCode QualifierCodeFromType(uint8_t arg);
+uint8_t QualifierCodeToType(QualifierCode arg);
 
 }
 

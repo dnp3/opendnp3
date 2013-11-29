@@ -20,6 +20,17 @@ package com.automatak.render
 
 package object cpp {
 
+  private val quote : String = "\""
+
+  def quotes(s: String): String = List(quote, s, quote).mkString
+
+  def stdString: String = "std::string"
+
+  def getType(typ: EnumModel.Type): String = typ match {
+    case EnumModel.UInt8 => "uint8_t"
+    case EnumModel.UInt16 => "uint16_t"
+  }
+
   def commented(lines: List[String]): List[String] = {
     lines.map(l => "// " + l)
   }
@@ -50,5 +61,7 @@ package object cpp {
   def include(s: String): String = "#include " + s
 
   def cstdint : Iterator[String] = Iterator.apply(include("<cstdint>"))
+
+  def string : Iterator[String] = Iterator.apply(include("<string>"))
 
 }

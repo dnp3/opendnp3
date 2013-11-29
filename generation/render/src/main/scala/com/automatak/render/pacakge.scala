@@ -25,13 +25,15 @@ package object render {
 
     def space: Iterator[String] = Iterator.apply("")
 
-    def bracketSemiColon[A](indent: Indentation)(lines: String => A)(inner: => Unit): Unit = {
-       lines("{")
-       indent {
-         inner
-       }
-       lines("};")
+    def bracket[A](indent: Indentation, cap: String = "")(lines: String => A)(inner: => Unit): Unit = {
+      lines(indent.wrap("{"))
+      indent {
+        inner
+      }
+      lines(indent.wrap("}"+cap))
     }
+
+    def bracketSemiColon[A](indent: Indentation)(lines: String => A)(inner: => Unit): Unit = bracket(indent,";")(lines)(inner)
 
     implicit class RichStringList(list: List[String]) {
 
@@ -43,7 +45,7 @@ package object render {
 
     def writeLinesTo(path: Path, lines: Iterator[String]): Unit = {
 
-      val writer = Files.newBufferedWriter( path, Charset.defaultCharset, StandardOpenOption.CREATE)
+      val writer = Files.newBufferedWriter( path, Charset.defaultCharset, StandardOpenOption.TRUNCATE_EXISTING)
 
       def writeLine(s: String) = {
         writer.write(s)

@@ -59,7 +59,7 @@ class DLL_LOCAL OutstationSBOHandler
 
 		SelectInfo() :
 			mSequence(0),
-			mCode(QC_UNDEFINED),
+			mCode(QualifierCode::UNDEFINED),
 			mTimestamp(),
 			mOperated(false)
 		{}

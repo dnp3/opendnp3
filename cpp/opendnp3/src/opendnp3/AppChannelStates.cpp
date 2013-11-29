@@ -121,29 +121,29 @@ ACS_Idle ACS_Idle::mInstance;
 void ACS_Idle::Send(AppLayerChannel* c, APDU& arAPDU, size_t aNumRetry)
 {
 	AppControlField acf = arAPDU.GetControl();
-	FunctionCodes func = arAPDU.GetFunction();
-	acf.SEQ = (acf.FIR && func == FC_RESPONSE) ? c->Sequence() : c->IncrSequence();
+	FunctionCode func = arAPDU.GetFunction();
+	acf.SEQ = (acf.FIR && func == FunctionCode::RESPONSE) ? c->Sequence() : c->IncrSequence();
 	arAPDU.SetControl(acf);
 	c->ChangeState(NextState(c, arAPDU.GetFunction(), acf.CON));
 	c->SetRetry(aNumRetry);
 	c->QueueSend(arAPDU);
 }
 
-ACS_Base* ACS_Idle::NextState(AppLayerChannel* c, FunctionCodes aFunc, bool aConfirm)
+ACS_Base* ACS_Idle::NextState(AppLayerChannel* c, FunctionCode aFunc, bool aConfirm)
 {
 	switch(aFunc) {
-	case(FC_CONFIRM):
+	case(FunctionCode::CONFIRM):
 		MACRO_THROW_EXCEPTION(ArgumentException, "Confirms are automatic only");
-	case(FC_RESPONSE):
+	case(FunctionCode::RESPONSE):
 		if(c->Sequence() < 0) {
 			MACRO_THROW_EXCEPTION(InvalidStateException, "Can't respond until we've received a request");
 		}
 
-	case(FC_UNSOLICITED_RESPONSE):
+	case(FunctionCode::UNSOLICITED_RESPONSE):
 		if(aConfirm) return ACS_SendConfirmed::Inst();
 		else return ACS_Send::Inst();
 
-	case(FC_DIRECT_OPERATE_NO_ACK):
+	case(FunctionCode::DIRECT_OPERATE_NO_ACK):
 		if(aConfirm) {
 			MACRO_THROW_EXCEPTION(ArgumentException, "DO no ACK can't be confirmed");
 		}

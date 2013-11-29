@@ -16,6 +16,12 @@
     <Filter Include="Include Files">
       <UniqueIdentifier>{ba74e9a3-db12-4c15-8657-9db1cadbce1a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Include Files\gen">
+      <UniqueIdentifier>{09f7874a-3b59-4323-97b9-c2a4fc0d0ea1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\gen">
+      <UniqueIdentifier>{2192fe9f-a96e-41b2-b414-f5101f5b7eaa}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\opendnp3\AnalogOutput.h">
@@ -456,6 +462,15 @@
     <ClInclude Include="include\opendnp3\VTOData.h">
       <Filter>Include Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\opendnp3\gen\FunctionCode.h">
+      <Filter>Include Files\gen</Filter>
+    </ClInclude>
+    <ClInclude Include="include\opendnp3\gen\QualifierCode.h">
+      <Filter>Include Files\gen</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\ErrorCode.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\opendnp3\AnalogOutput.cpp">
@@ -745,6 +760,12 @@
     </ClCompile>
     <ClCompile Include="src\opendnp3\CommandResponse.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="include\opendnp3\gen\FunctionCode.cpp">
+      <Filter>Source Files\gen</Filter>
+    </ClCompile>
+    <ClCompile Include="include\opendnp3\gen\QualifierCode.cpp">
+      <Filter>Source Files\gen</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
