@@ -56,6 +56,7 @@ libopendnp3_la_LDFLAGS = $(BOOST_LDFLAGS) -version-info 1:1:0
 libopendnp3_la_CXXFLAGS = -I$(OPENPAL_INCLUDE) -I$(ASIOPAL_INCLUDE) -I $(OPENDNP3_INCLUDE)
 libopendnp3_la_SOURCES = \
 cpp/opendnp3/src/opendnp3/gen/FunctionCode.cpp \
+cpp/opendnp3/src/opendnp3/gen/LinkFunction.cpp \
 cpp/opendnp3/src/opendnp3/gen/QualifierCode.cpp \
 cpp/opendnp3/src/opendnp3/AnalogOutput.cpp \
 cpp/opendnp3/src/opendnp3/APDU.cpp \
@@ -98,7 +99,6 @@ cpp/opendnp3/src/opendnp3/IMeasurementHandler.cpp \
 cpp/opendnp3/src/opendnp3/ITimeWriteHandler.cpp \
 cpp/opendnp3/src/opendnp3/LinkFrame.cpp \
 cpp/opendnp3/src/opendnp3/LinkHeader.cpp \
-cpp/opendnp3/src/opendnp3/LinkLayerConstants.cpp \
 cpp/opendnp3/src/opendnp3/LinkLayer.cpp \
 cpp/opendnp3/src/opendnp3/LinkLayerReceiver.cpp \
 cpp/opendnp3/src/opendnp3/LinkLayerRouter.cpp \
