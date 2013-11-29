@@ -25,6 +25,8 @@
 #include <openpal/LoggableMacros.h>
 #include <openpal/IExecutor.h>
 
+#include "FunctionCodeHelpers.h"
+
 using namespace std;
 
 namespace opendnp3

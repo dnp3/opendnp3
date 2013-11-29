@@ -17,29 +17,29 @@
 //
 // This file was forked on 01/01/2013 by Automatak, LLC and modifications
 // have been made to this file. Automatak, LLC licenses these modifications to
-// you under the terms of the License.
+// you under the GNU Affero General Public License Version 3.0
+// (the "Additional License"). You may not use these modifications except in
+// compliance with the additional license. You may obtain a copy of the Additional
+// License at
 //
+// http://www.gnu.org/licenses/agpl.html
+//
+// Contact Automatak, LLC for a commercial license to these modifications
+//
+#ifndef __FUNCTION_CODE_HELPERS_H_
+#define __FUNCTION_CODE_HELPERS_H_
 
-#include <opendnp3/APDUConstants.h>
+#include "gen/FunctionCode.h"
 
 namespace opendnp3
 {
 
-bool IsResponse(FunctionCode aCode)
-{
-	return (aCode == FunctionCode::RESPONSE) || (aCode == FunctionCode::UNSOLICITED_RESPONSE);
-}
+/// @return true if the function is a response, false otherwise
+bool IsResponse(FunctionCode aCode);
 
-bool IsRequest(FunctionCode aCode)
-{
-	switch(aCode) {
-	case(FunctionCode::CONFIRM):
-	case(FunctionCode::RESPONSE):
-	case(FunctionCode::UNSOLICITED_RESPONSE):
-		return false;
-	default:
-		return true;
-	}
-}
+/// @return true if the function is a request, false otherwise
+bool IsRequest(FunctionCode aCode);
 
 }
+
+#endif

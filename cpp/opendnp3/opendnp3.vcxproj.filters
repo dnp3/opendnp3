@@ -22,6 +22,9 @@
     <Filter Include="Source Files\gen">
       <UniqueIdentifier>{2192fe9f-a96e-41b2-b414-f5101f5b7eaa}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\gen">
+      <UniqueIdentifier>{be493713-2169-49da-992e-f849f4ea35c8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\opendnp3\AnalogOutput.h">
@@ -462,13 +465,16 @@
     <ClInclude Include="include\opendnp3\VTOData.h">
       <Filter>Include Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\opendnp3\gen\FunctionCode.h">
-      <Filter>Include Files\gen</Filter>
-    </ClInclude>
-    <ClInclude Include="include\opendnp3\gen\QualifierCode.h">
-      <Filter>Include Files\gen</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\ErrorCode.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\gen\FunctionCode.h">
+      <Filter>Header Files\gen</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\gen\QualifierCode.h">
+      <Filter>Header Files\gen</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\FunctionCodeHelpers.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -477,9 +483,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\APDU.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\APDUConstants.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\AppChannelStates.cpp">
@@ -761,11 +764,14 @@
     <ClCompile Include="src\opendnp3\CommandResponse.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="include\opendnp3\gen\FunctionCode.cpp">
+    <ClCompile Include="src\opendnp3\gen\FunctionCode.cpp">
       <Filter>Source Files\gen</Filter>
     </ClCompile>
-    <ClCompile Include="include\opendnp3\gen\QualifierCode.cpp">
+    <ClCompile Include="src\opendnp3\gen\QualifierCode.cpp">
       <Filter>Source Files\gen</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\FunctionCodeHelpers.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

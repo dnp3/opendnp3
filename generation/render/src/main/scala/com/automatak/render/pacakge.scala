@@ -45,6 +45,9 @@ package object render {
 
     def writeLinesTo(path: Path, lines: Iterator[String]): Unit = {
 
+      if(!Files.exists(path.getParent)) Files.createDirectory(path.getParent)
+      if(!Files.exists(path)) Files.createFile(path)
+
       val writer = Files.newBufferedWriter( path, Charset.defaultCharset, StandardOpenOption.TRUNCATE_EXISTING)
 
       def writeLine(s: String) = {

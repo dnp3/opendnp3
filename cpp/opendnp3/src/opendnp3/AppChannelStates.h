@@ -30,6 +30,7 @@
 #include <openpal/Visibility.h>
 
 #include "AppLayerChannel.h"
+#include "gen/FunctionCode.h"
 
 namespace opendnp3
 {

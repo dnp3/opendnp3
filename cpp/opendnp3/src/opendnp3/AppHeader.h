@@ -27,6 +27,8 @@
 #include <opendnp3/APDUConstants.h>
 #include <openpal/Visibility.h>
 
+#include "gen/FunctionCode.h"
+
 #include <cstdint>
 #include <stddef.h>
 

@@ -159,8 +159,6 @@
     <ClInclude Include="include\opendnp3\CommandResponse.h" />
     <ClInclude Include="include\opendnp3\CommandStatus.h" />
     <ClInclude Include="include\opendnp3\ControlRelayOutputBlock.h" />
-    <ClInclude Include="include\opendnp3\gen\FunctionCode.h" />
-    <ClInclude Include="include\opendnp3\gen\QualifierCode.h" />
     <ClInclude Include="include\opendnp3\MasterScan.h" />
     <ClInclude Include="include\opendnp3\IMeasurementHandler.h" />
     <ClInclude Include="include\opendnp3\IMeasurementUpdate.h" />
@@ -245,6 +243,9 @@
     <ClInclude Include="src\opendnp3\EventBuffers.h" />
     <ClInclude Include="src\opendnp3\EventTypes.h" />
     <ClInclude Include="src\opendnp3\ExecutorPause.h" />
+    <ClInclude Include="src\opendnp3\FunctionCodeHelpers.h" />
+    <ClInclude Include="src\opendnp3\gen\FunctionCode.h" />
+    <ClInclude Include="src\opendnp3\gen\QualifierCode.h" />
     <ClInclude Include="src\opendnp3\GetKeys.h" />
     <ClInclude Include="src\opendnp3\HeaderReadIterator.h" />
     <ClInclude Include="src\opendnp3\IFrameSink.h" />
@@ -301,11 +302,8 @@
     <ClInclude Include="StackBase.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="include\opendnp3\gen\FunctionCode.cpp" />
-    <ClCompile Include="include\opendnp3\gen\QualifierCode.cpp" />
     <ClCompile Include="src\opendnp3\AnalogOutput.cpp" />
     <ClCompile Include="src\opendnp3\APDU.cpp" />
-    <ClCompile Include="src\opendnp3\APDUConstants.cpp" />
     <ClCompile Include="src\opendnp3\AppChannelStates.cpp" />
     <ClCompile Include="src\opendnp3\AppHeader.cpp" />
     <ClCompile Include="src\opendnp3\AppInterfaces.cpp" />
@@ -331,6 +329,9 @@
     <ClCompile Include="src\opendnp3\CRC.cpp" />
     <ClCompile Include="src\opendnp3\Database.cpp" />
     <ClCompile Include="src\opendnp3\DataPoll.cpp" />
+    <ClCompile Include="src\opendnp3\FunctionCodeHelpers.cpp" />
+    <ClCompile Include="src\opendnp3\gen\FunctionCode.cpp" />
+    <ClCompile Include="src\opendnp3\gen\QualifierCode.cpp" />
     <ClCompile Include="src\opendnp3\IMeasurementHandler.cpp" />
     <ClCompile Include="src\opendnp3\ITimeWriteHandler.cpp" />
     <ClCompile Include="src\opendnp3\MasterScan.cpp" />

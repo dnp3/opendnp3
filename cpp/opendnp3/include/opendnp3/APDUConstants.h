@@ -31,9 +31,6 @@
 
 #include <string>
 
-#include <opendnp3/gen/FunctionCode.h>
-#include <opendnp3/gen/QualifierCode.h>
-
 namespace opendnp3
 {
 
@@ -89,12 +86,6 @@ enum IINMasksMSB {
 	IIN_MSB_RESERVED1 = 0x40,
 	IIN_MSB_RESERVED2 = 0x80
 };
-
-/// @return true if the function is a response, false otherwise
-bool IsResponse(FunctionCode aCode);
-
-/// @return true if the function is a request, false otherwise
-bool IsRequest(FunctionCode aCode);
 
 }
 

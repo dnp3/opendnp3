@@ -31,6 +31,8 @@
 #include <openpal/Visibility.h>
 #include <openpal/Logger.h>
 
+#include "gen/FunctionCode.h"
+
 #include <functional>
 #include <queue>
 

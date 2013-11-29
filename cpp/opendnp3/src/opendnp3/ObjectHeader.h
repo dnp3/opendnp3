@@ -36,6 +36,7 @@
 #include <openpal/Visibility.h>
 
 #include "PackingUnpacking.h"
+#include "gen/QualifierCode.h"
 
 #include <limits>
 #include <sstream>

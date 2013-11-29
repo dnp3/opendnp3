@@ -28,6 +28,7 @@
 #include <opendnp3/APDUConstants.h>
 
 #include "ObjectWriteIterator.h"
+#include "FunctionCodeHelpers.h"
 
 #include <assert.h>
 #include <sstream>
