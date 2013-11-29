@@ -4,9 +4,16 @@ import com.automatak.render.dnp3.enums.{QualifierCode, FunctionCode}
 
 import com.automatak.render.cpp.{CppIndentation, EnumModelRenderer}
 
+import com.automatak.render._
+import java.nio.file.{Files, FileSystems}
+
 object Generate {
 
+  val cppInclude = FileSystems.getDefault().getPath("../cpp/opendnp3/include/opendnp3/gen/")
+
   def main(args: Array[String]): Unit = {
+
+     if(!Files.exists(cppInclude)) Files.createDirectory(cppInclude)
 
     // list of all enumerations that we want to generate
     val enums = List(
@@ -14,12 +21,14 @@ object Generate {
       QualifierCode()
     )
 
-    enums.foreach { e =>
+    val emr = EnumModelRenderer(CppIndentation())
 
-     EnumModelRenderer(CppIndentation()).render(e).foreach(println)
+    enums.foreach(e => writeEnumFile(emr)(e))
+  }
 
-    }
-
+  def writeEnumFile(render: EnumModelRenderer)(model: EnumModel): Unit = {
+      val path = cppInclude.resolve(model.name + ".hpp")
+      writeLinesTo(path, render.render(model))
   }
 
 }

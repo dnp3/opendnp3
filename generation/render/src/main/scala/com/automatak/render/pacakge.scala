@@ -18,6 +18,10 @@
  */
 package com.automatak
 
+import java.nio.file.{Files, StandardOpenOption, Path}
+import java.nio.charset.Charset
+import scala.compat.Platform
+
 package object render {
 
     def bracketSemiColon[A](indent: Indentation)(lines: String => A)(inner: => Unit): Unit = {
@@ -35,5 +39,22 @@ package object render {
       def commaDelimited: List[String] = list.sliding(2).map(x => x.head + ",").toList ::: List(list.last)
 
     }
+
+    def writeLinesTo(path: Path, lines: Traversable[String]): Unit = {
+
+      val writer = Files.newBufferedWriter( path, Charset.defaultCharset, StandardOpenOption.CREATE)
+
+      def writeLine(s: String) = {
+        writer.write(s)
+        writer.write(System.lineSeparator)
+      }
+
+      try { lines.foreach(writeLine) }
+      finally { writer.close() }
+
+    }
+
+
+
 
 }
