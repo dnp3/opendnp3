@@ -55,8 +55,9 @@ cpp/asiopal/src/UTCTimeSource.cpp
 libopendnp3_la_LDFLAGS = $(BOOST_LDFLAGS) -version-info 1:1:0
 libopendnp3_la_CXXFLAGS = -I$(OPENPAL_INCLUDE) -I$(ASIOPAL_INCLUDE) -I $(OPENDNP3_INCLUDE)
 libopendnp3_la_SOURCES = \
+cpp/opendnp3/src/opendnp3/gen/FunctionCode.cpp \
+cpp/opendnp3/src/opendnp3/gen/QualifierCode.cpp \
 cpp/opendnp3/src/opendnp3/AnalogOutput.cpp \
-cpp/opendnp3/src/opendnp3/APDUConstants.cpp \
 cpp/opendnp3/src/opendnp3/APDU.cpp \
 cpp/opendnp3/src/opendnp3/AppChannelStates.cpp \
 cpp/opendnp3/src/opendnp3/AppHeader.cpp \
@@ -89,6 +90,7 @@ cpp/opendnp3/src/opendnp3/DNP3Channel.cpp \
 cpp/opendnp3/src/opendnp3/DNP3Manager.cpp \
 cpp/opendnp3/src/opendnp3/DNPCrc.cpp \
 cpp/opendnp3/src/opendnp3/ExecutorPause.cpp \
+cpp/opendnp3/src/opendnp3/FunctionCodeHelpers.cpp \
 cpp/opendnp3/src/opendnp3/HeaderReadIterator.cpp \
 cpp/opendnp3/src/opendnp3/IndexedWriteIterator.cpp \
 cpp/opendnp3/src/opendnp3/IStack.cpp \
