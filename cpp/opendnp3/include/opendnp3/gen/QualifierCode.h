@@ -37,8 +37,8 @@ enum class QualifierCode : uint8_t
 };
 
 std::string QualifierCodeToString(QualifierCode arg);
-QualifierCode QualifierCodeFromType(uint8_t arg);
 uint8_t QualifierCodeToType(QualifierCode arg);
+QualifierCode QualifierCodeFromType(uint8_t arg);
 
 }
 

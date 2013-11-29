@@ -25,13 +25,9 @@ object Generate {
     val indent = CppIndentation()
 
     val emr = new EnumModelRenderer(indent)
-    val e2s = new EnumToString.HeaderRender(indent)
-    val eft = new EnumFromType.HeaderRender(indent)
-    val e2t = new EnumToType.HeaderRender(indent)
 
-    val conversions = List(e2s,eft,e2t)
-
-    val impls = List(EnumToString.ImplRender(indent))
+    val conversionDecls = List(EnumToString.HeaderRender(indent), EnumToType.HeaderRender(indent), EnumFromType.HeaderRender(indent))
+    val conversionImpls = List(EnumToString.ImplRender(indent), EnumToType.ImplRender(indent), EnumFromType.ImplRender(indent))
 
     def writeLinesToFile(model: EnumModel): Unit = {
       val pathHeader = cppInclude.resolve(model.name + ".h")
@@ -40,14 +36,14 @@ object Generate {
       def writeHeader() {
         val license = commented(LicenseHeader.lines).toIterator
         val enum = emr.render(model).toIterator
-        val signatures = conversions.map(c => c.render(model)).flatten.toIterator
+        val signatures = conversionDecls.map(c => c.render(model)).flatten.toIterator
         val lines = license ++ space ++ includeGuards(model.name)(string ++ cstdint ++ space ++ namespace(opendnp3)(enum ++ space ++ signatures))
         writeLinesTo(pathHeader, lines)
       }
 
       def writeImpl() {
         val license = commented(LicenseHeader.lines).toIterator
-        val funcs = impls.map(x => x.render(model)).flatten.toIterator
+        val funcs = conversionImpls.map(x => x.render(model)).flatten.toIterator
         val lines = license ++ space ++ Iterator.apply(include(quotes(model.name + ".h"))) ++ space ++ namespace(opendnp3)(funcs)
         writeLinesTo(pathImpl, lines)
       }

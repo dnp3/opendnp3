@@ -111,8 +111,8 @@ BOOST_AUTO_TEST_CASE(APDUToString)
 	frag.Write(hs, hs.Size());
 	frag.Interpret();
 
-	std::string expected = "FIR: 1, FIN: 1, CON: 0, UNS: 0, SEQ: 3, Func: Read HdrCount: 4, Header: (Grp: 60, Var: 2, Qual: 6, All Objects) Header: (Grp: 60, Var: 3, Qual: 6, All Objects) Header: (Grp: 60, Var: 4, Qual: 6, All Objects) Header: (Grp: 60, Var: 1, Qual: 6, All Objects), Size: 14";
-	std::string interpreted = frag.ToString();
+	std::string expected = "FIR: 1, FIN: 1, CON: 0, UNS: 0, SEQ: 3, Func: READ HdrCount: 4, Header: (Grp: 60, Var: 2, Qual: ALL_OBJECTS) Header: (Grp: 60, Var: 3, Qual: ALL_OBJECTS) Header: (Grp: 60, Var: 4, Qual: ALL_OBJECTS) Header: (Grp: 60, Var: 1, Qual: ALL_OBJECTS), Size: 14";
+	std::string interpreted = frag.ToString();	
 
 	BOOST_REQUIRE_EQUAL(expected, interpreted);
 }
@@ -441,23 +441,6 @@ BOOST_AUTO_TEST_CASE(NonstaticObjectWithIndexPrefix)
 {
 	APDU frag;
 	HexSequence hs("C4 81 00 00 01 01 17 00 00");  //obj 1 var 1 with 1 octet index prefix and 1 octet count
-	frag.Write(hs, hs.Size());
-
-	int code = -1;
-	try {
-		frag.Interpret();
-	}
-	catch(Exception ex) {
-		code = ex.ErrorCode();
-	}
-
-	BOOST_REQUIRE_EQUAL(code, ALERR_ILLEGAL_QUALIFIER_AND_OBJECT);
-}
-
-BOOST_AUTO_TEST_CASE(NonvariableObjectWithSizePrefix)
-{
-	APDU frag;
-	HexSequence hs("C4 81 00 00 01 01 4B 00 00");  //obj 1 var 1 with size prefix and variable array
 	frag.Write(hs, hs.Size());
 
 	int code = -1;

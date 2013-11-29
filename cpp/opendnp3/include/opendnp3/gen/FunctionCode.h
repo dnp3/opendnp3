@@ -60,8 +60,8 @@ enum class FunctionCode : uint8_t
 };
 
 std::string FunctionCodeToString(FunctionCode arg);
-FunctionCode FunctionCodeFromType(uint8_t arg);
 uint8_t FunctionCodeToType(FunctionCode arg);
+FunctionCode FunctionCodeFromType(uint8_t arg);
 
 }
 

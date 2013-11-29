@@ -700,9 +700,7 @@ std::string APDU::ToString() const
 		for ( ; !itr.IsEnd(); ++itr) {
 			oss << " Header: (Grp: " << itr->GetGroup();
 			oss << ", Var: " << itr->GetVariation();
-			oss << ", Qual: " << QualifierCodeToString(itr->GetQualifier()) << ", ";
-			oss << itr->GetHeader()->ToString(*itr);
-			oss << ")";
+			oss << ", Qual: " << QualifierCodeToString(itr->GetQualifier()) << ")";			
 		}
 	}
 	catch(openpal::Exception) {

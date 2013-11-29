@@ -5,7 +5,7 @@ import com.automatak.render._
 
 object FunctionCode {
 
-  def apply(): EnumModel = EnumModel("FunctionCode", Some(EnumModel.UInt8), codes, Some(codes.last), Hex)
+  def apply(): EnumModel = EnumModel("FunctionCode", EnumModel.UInt8, codes, Some(codes.last), Hex)
 
   private val codes = List(
     EnumValue("CONFIRM",0),

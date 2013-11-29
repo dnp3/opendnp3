@@ -21,11 +21,27 @@ package com.automatak.render.cpp
 import com.automatak.render._
 
 object EnumFromType {
-  def signature(enum: EnumModel) = List(enum.name, List(enum.name, "FromType(", getType(enum.enumType.get)," arg)").mkString).mkString(" ")
+  def signature(enum: EnumModel) = List(enum.name, List(enum.name, "FromType(", getType(enum.enumType)," arg)").mkString).mkString(" ")
 
   case class HeaderRender(i: Indentation) extends ModelRenderer[EnumModel] {
     def render(em: EnumModel) : Iterator[String] = {
       Iterator(signature(em)+";")
+    }
+  }
+
+  case class ImplRender(indent: Indentation) extends ModelRenderer[EnumModel] {
+
+    def render(em: EnumModel) : Iterator[String] = {
+
+      def header = Iterator(signature(em))
+      def smr = new ReturnSwitchModelRenderer[EnumValue](indent)(ev => em.render(ev.value.get))(ev => em.qualified(ev))
+      def switch = smr.render(em.values)
+      def returnDefault = Iterator(List("return ", em.qualified(em.default.get),";").mkString)
+
+      header ++ bracket(indent) {
+        switch ++
+          returnDefault
+      }
     }
   }
 }

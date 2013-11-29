@@ -48,7 +48,8 @@ namespace opendnp3
 			
 			int Code()
 			{
-				return 0;
+				assert(code != 0);
+				return code;
 			}
 
 			T Result()

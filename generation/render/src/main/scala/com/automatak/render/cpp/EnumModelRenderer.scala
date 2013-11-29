@@ -28,10 +28,7 @@ class EnumModelRenderer(i: Indentation) extends ModelRenderer[EnumModel] {
       List(Some(ev.name), ev.value.map(x => "="), ev.value.map(ir.apply)).flatten.spaced
     }
 
-    def header: Iterator[String] = {
-      val list : List[Option[String]] = List("enum","class", enum.name).map(x => Some(x)) ::: List(enum.enumType.map(x => ":"), enum.enumType.map(getType))
-      Iterator(list.flatten.spaced)
-    }
+    def header: Iterator[String] = Iterator(List("enum","class", enum.name, ":", getType(enum.enumType)).spaced)
 
     def values = enum.values.map(toString(enum.render)).commaDelimited.toIterator
 

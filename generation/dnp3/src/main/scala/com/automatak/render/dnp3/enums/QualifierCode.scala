@@ -5,7 +5,7 @@ import com.automatak.render.{Hex, EnumModel, EnumValue}
 
 object QualifierCode {
 
-  def apply(): EnumModel = EnumModel("QualifierCode", Some(EnumModel.UInt8), codes, Some(codes.last), Hex)
+  def apply(): EnumModel = EnumModel("QualifierCode", EnumModel.UInt8, codes, Some(codes.last), Hex)
 
   private val codes = List(
     EnumValue("UINT8_START_STOP", 0x00),

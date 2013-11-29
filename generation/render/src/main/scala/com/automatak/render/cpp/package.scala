@@ -58,6 +58,10 @@ package object cpp {
 
   }
 
+  def staticCast(typ: EnumModel.Type)(arg: String): String = staticCast(getType(typ))(arg)
+
+  def staticCast(typ: String)(arg: String): String = List("static_cast<",typ,">(",arg,")").mkString
+
   def include(s: String): String = "#include " + s
 
   def cstdint : Iterator[String] = Iterator.apply(include("<cstdint>"))
