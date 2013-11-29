@@ -18,14 +18,12 @@
  */
 package com.automatak.render
 
-trait Lines extends Traversable[String]
-
 /**
- * Converts some type into a traversable set of lines
+ * Converts some type into a line iterator
  * @tparam A
  */
 trait ModelRenderer[A] {
 
-  def render(a: A): Lines
+  def render(a: A): Iterator[String]
 
 }

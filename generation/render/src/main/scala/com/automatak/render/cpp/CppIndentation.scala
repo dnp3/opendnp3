@@ -11,12 +11,16 @@ private case class IndentationImpl(indent: String) extends Indentation {
 
   private var count = 0
 
-  def apply(f: => Unit): Unit = {
+  def apply(f: => Iterator[String]): Iterator[String] = {
     count += 1
-    f
+    val padding = Iterator.fill(count)(indent).mkString("") //calculate padding NOW instead of lazily
+    def transform(s: String): String = {
+      if(s.isEmpty) s
+      else padding + s
+    }
+    val iter = f.map(transform)
     count -= 1
+    iter
   }
-
-  def wrap(s: String): String = Iterator.fill(count)(indent).mkString("") + s
 
 }

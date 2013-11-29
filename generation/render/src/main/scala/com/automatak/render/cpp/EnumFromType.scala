@@ -24,8 +24,8 @@ object EnumFromType {
   def signature(enum: EnumModel) = List(enum.name, List(enum.name, "FromType(", getType(enum.enumType.get)," arg)").mkString).mkString(" ")
 
   case class HeaderRender(i: Indentation) extends ModelRenderer[EnumModel] {
-    def render(em: EnumModel) : Lines = new Lines {
-      def foreach[A](f: String => A): Unit = f(signature(em)+";")
+    def render(em: EnumModel) : Iterator[String] = {
+      Iterator(signature(em)+";")
     }
   }
 }

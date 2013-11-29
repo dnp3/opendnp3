@@ -22,22 +22,21 @@ import com.automatak.render._
 
 class EnumModelRenderer(i: Indentation) extends ModelRenderer[EnumModel] {
 
-  def render(enum: EnumModel) : Lines = new Lines {
+  def render(enum: EnumModel) : Iterator[String] = {
 
-    private def toString(ir: IntRender)(ev: EnumValue): String = {
+    def toString(ir: IntRender)(ev: EnumValue): String = {
       List(Some(ev.name), ev.value.map(x => "="), ev.value.map(ir.apply)).flatten.spaced
     }
 
-    def foreach[A](f: String => A): Unit = {
-      header(f)
-      bracketSemiColon(i)(f) {
-        enum.values.map(toString(enum.render)).commaDelimited.foreach(s => f(i.wrap(s)))
-      }
+    def header: Iterator[String] = {
+      val list : List[Option[String]] = List("enum","class", enum.name).map(x => Some(x)) ::: List(enum.enumType.map(x => ":"), enum.enumType.map(getType))
+      Iterator(list.flatten.spaced)
     }
 
-    def header[A](f: String => A): Unit = {
-      val list : List[Option[String]] = List("enum","class", enum.name).map(x => Some(x)) ::: List(enum.enumType.map(x => ":"), enum.enumType.map(getType))
-      f(list.flatten.spaced)
+    def values = enum.values.map(toString(enum.render)).commaDelimited.toIterator
+
+    header ++ bracketSemiColon(i) {
+      values
     }
 
   }

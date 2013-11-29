@@ -22,32 +22,24 @@ import com.automatak.render._
 
 object EnumToString {
 
-
-
-  def signature(name: String) = List(stdString, List(name,"ToString(", name," arg)").mkString).mkString(" ")
+  def signature(name: String) : String = List(stdString, List(name,"ToString(", name," arg)").mkString).mkString(" ")
 
   case class HeaderRender(i: Indentation) extends ModelRenderer[EnumModel] {
-    def render(em: EnumModel) : Lines = new Lines {
-      def foreach[A](f: String => A): Unit = f(signature(em.name)+";")
-    }
+    def render(em: EnumModel) : Iterator[String] = Iterator(signature(em.name)+";")
   }
 
-  case class ImplRender(i: Indentation) extends ModelRenderer[EnumModel] {
-    def render(em: EnumModel) : Lines = new Lines {
-      def foreach[A](f: String => A): Unit = {
-        f(i.wrap(signature(em.name)))
-        bracket(i)(f) {
-          f(i.wrap("switch(arg)"))
-          bracket(i)(f) {
-            em.values.foreach { v =>
-              f(i.wrap(List("case(", em.qualified(v),"):").mkString))
-              i {
-                f(i.wrap(List("return ", quotes(v.name), ";").mkString))
-              }
-            }
-          }
-          f(i.wrap(List("return ", quotes(em.default.get.name),";").mkString))
-        }
+  case class ImplRender(indent: Indentation) extends ModelRenderer[EnumModel] {
+
+    def render(em: EnumModel) : Iterator[String] = {
+
+      def header = Iterator(signature(em.name))
+      def smr = new ReturnSwitchModelRenderer[EnumValue](indent)(ev => em.qualified(ev))(ev => quotes(ev.name))
+      def switch = smr.render(em.values)
+      def returnDefault = Iterator(List("return ", quotes(em.default.get.name),";").mkString)
+
+      header ++ bracket(indent) {
+        switch ++
+          returnDefault
       }
     }
   }
