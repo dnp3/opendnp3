@@ -20,9 +20,10 @@ package com.automatak
 
 import java.nio.file.{Files, StandardOpenOption, Path}
 import java.nio.charset.Charset
-import scala.compat.Platform
 
 package object render {
+
+    def space: Iterator[String] = Iterator.apply("")
 
     def bracketSemiColon[A](indent: Indentation)(lines: String => A)(inner: => Unit): Unit = {
        lines("{")
@@ -40,7 +41,7 @@ package object render {
 
     }
 
-    def writeLinesTo(path: Path, lines: Traversable[String]): Unit = {
+    def writeLinesTo(path: Path, lines: Iterator[String]): Unit = {
 
       val writer = Files.newBufferedWriter( path, Charset.defaultCharset, StandardOpenOption.CREATE)
 

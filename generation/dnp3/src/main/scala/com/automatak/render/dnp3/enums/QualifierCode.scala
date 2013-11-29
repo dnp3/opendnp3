@@ -1,11 +1,11 @@
 package com.automatak.render.dnp3.enums
 
-import com.automatak.render.{EnumModel, EnumValue}
+import com.automatak.render.{Hex, EnumModel, EnumValue}
 
 
 object QualifierCode {
 
-  def apply(): EnumModel = EnumModel("QualifierCode", Some(EnumModel.UInt8), codes, Some(codes.last))
+  def apply(): EnumModel = EnumModel("QualifierCode", Some(EnumModel.UInt8), codes, Some(codes.last), Hex)
 
   private val codes = List(
     EnumValue("1B_START_STOP", 0x00),

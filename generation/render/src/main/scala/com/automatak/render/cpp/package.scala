@@ -18,7 +18,37 @@
  */
 package com.automatak.render
 
-
 package object cpp {
+
+  def commented(lines: List[String]): List[String] = {
+    lines.map(l => "// " + l)
+  }
+
+  def namespace(ns: String)(internals: Iterator[String]): Iterator[String] = {
+
+    Iterator.apply(List("namespace",ns,"{").spaced) ++
+    space ++
+    internals ++
+    space ++
+    Iterator.apply("}")
+
+  }
+
+  def includeGuards(name: String)(internals: Iterator[String]): Iterator[String] = {
+
+    val pattern = "__OPENDNP3_GENERATED_"+ name.toUpperCase + "_H_"
+
+    Iterator.apply("#ifndef " + pattern) ++
+    Iterator.apply("#define " + pattern) ++
+    space ++
+    internals ++
+    space ++
+    Iterator.apply("#endif")
+
+  }
+
+  def include(s: String): String = "#include " + s
+
+  def cstdint : Iterator[String] = Iterator.apply(include("<cstdint>"))
 
 }
