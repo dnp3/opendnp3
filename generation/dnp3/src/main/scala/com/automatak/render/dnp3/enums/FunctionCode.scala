@@ -1,11 +1,11 @@
-package com.automatak.render.dnp3
+package com.automatak.render.dnp3.enums
 
 import com.automatak.render._
 
 
 object FunctionCode {
 
-  def enum: EnumModel = EnumModel("FunctionCode", Some(EnumModel.UInt8), codes, Some(codes.last))
+  def apply(): EnumModel = EnumModel("FunctionCode", Some(EnumModel.UInt8), codes, Some(codes.last), Hex)
 
   private val codes = List(
     EnumValue("CONFIRM",0),

@@ -18,7 +18,14 @@
  */
 package com.automatak.render
 
-case class EnumValue(name: String, value: Option[String] = None)
+
+
+object EnumValue {
+  def apply(name: String, value: Int) : EnumValue = EnumValue(name, Some(value))
+  def apply(name: String) : EnumValue = EnumValue(name, None)
+}
+
+case class EnumValue(name: String, value: Option[Int])
 
 
 object EnumModel {
@@ -29,4 +36,9 @@ object EnumModel {
 
 }
 
-case class EnumModel(name: String, enumType: Option[EnumModel.Type], values: List[EnumValue])
+sealed trait IntRender { def apply(i: Int): String }
+case object Hex extends IntRender { def apply(i: Int): String = "0x"+Integer.toHexString(i).toUpperCase }
+case object Base10 extends IntRender { def apply(i: Int): String = i.toString }
+
+
+case class EnumModel(name: String, enumType: Option[EnumModel.Type], values: List[EnumValue], default: Option[EnumValue], render: IntRender = Base10)

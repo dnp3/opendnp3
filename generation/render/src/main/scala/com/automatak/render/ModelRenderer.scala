@@ -26,6 +26,6 @@ trait Lines extends Traversable[String]
  */
 trait ModelRenderer[A] {
 
-  def apply(a: A): Lines
+  def render(a: A): Lines
 
 }

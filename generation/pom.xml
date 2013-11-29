@@ -12,7 +12,8 @@
     <description>Code generator for opendnp3 project</description>
 
     <modules>
-	    <module>render</module>
+	<module>render</module>
+	<module>dnp3</module>
     </modules>
 
     <properties>

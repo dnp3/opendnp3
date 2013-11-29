@@ -20,9 +20,11 @@ package com.automatak
 
 package object render {
 
-    def bracketSemiColon[A](lines: String => A)(inner: => Unit): Unit = {
+    def bracketSemiColon[A](indent: Indentation)(lines: String => A)(inner: => Unit): Unit = {
        lines("{")
-       inner
+       indent {
+         inner
+       }
        lines("};")
     }
 

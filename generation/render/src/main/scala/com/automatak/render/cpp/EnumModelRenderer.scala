@@ -20,12 +20,12 @@ package com.automatak.render.cpp
 
 import com.automatak.render._
 
-object EnumModelRenderer extends ModelRenderer[EnumModel] {
+case class EnumModelRenderer(i: Indentation) extends ModelRenderer[EnumModel] {
 
-  def apply(enum: EnumModel) : Lines = new Lines {
+  def render(enum: EnumModel) : Lines = new Lines {
 
-    private def render(ev: EnumValue): String = {
-      List(Some(ev.name), ev.value.map(x => "="), ev.value).flatten.spaced
+    private def toString(ir: IntRender)(ev: EnumValue): String = {
+      List(Some(ev.name), ev.value.map(x => "="), ev.value.map(ir.apply)).flatten.spaced
     }
 
     private def render(typ: EnumModel.Type): String = typ match {
@@ -35,8 +35,8 @@ object EnumModelRenderer extends ModelRenderer[EnumModel] {
 
     def foreach[A](f: String => A): Unit = {
       header(f)
-      bracketSemiColon(f) {
-        enum.values.map(render).commaDelimited.foreach(f)
+      bracketSemiColon(i)(f) {
+        enum.values.map(toString(enum.render)).commaDelimited.foreach(s => f(i.wrap(s)))
       }
     }
 
