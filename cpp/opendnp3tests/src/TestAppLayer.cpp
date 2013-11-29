@@ -103,7 +103,7 @@ BOOST_AUTO_TEST_CASE(UnsolSuccess)
 // Test that the various send methods reject
 // illegal function codes. Also check that the app layer
 // is slave/master aware with respect to send
-BOOST_AUTO_TEST_CASE(SendBadFuncCodeSlave)
+BOOST_AUTO_TEST_CASE(SendBadLinkFunctionlave)
 {
 	AppLayerTest t(false);	// slave
 	t.lower.ThisLayerUp();

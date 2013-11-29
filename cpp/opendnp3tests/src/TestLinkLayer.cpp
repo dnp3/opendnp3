@@ -417,10 +417,10 @@ BOOST_AUTO_TEST_CASE(ConfirmedDataNackDFCClear)
 
 	t.link.Nack(false, false, 1, 1024);  // test that we try to reset the link again
 	BOOST_REQUIRE_EQUAL(t.mNumSend, 3);
-	BOOST_REQUIRE_EQUAL(t.mLastSend.GetFunc(), FuncCodes::FC_PRI_RESET_LINK_STATES);
+	BOOST_REQUIRE(t.mLastSend.GetFunc() == LinkFunction::PRI_RESET_LINK_STATES);
 	t.link.Ack(false, false, 1, 1024); // ACK the link reset
 	BOOST_REQUIRE_EQUAL(t.mNumSend, 4);
-	BOOST_REQUIRE_EQUAL(t.mLastSend.GetFunc(), FuncCodes::FC_PRI_CONFIRMED_USER_DATA);
+	BOOST_REQUIRE(t.mLastSend.GetFunc() == LinkFunction::PRI_CONFIRMED_USER_DATA);
 }
 
 BOOST_AUTO_TEST_CASE(SendDataTimerExpiration)

@@ -29,10 +29,6 @@
 #ifndef __LINK_LAYER_CONSTANTS_
 #define __LINK_LAYER_CONSTANTS_
 
-#include <cstdint>
-
-#include <string>
-
 namespace opendnp3
 {
 
@@ -59,43 +55,6 @@ enum LinkHeaderIndex {
 	LI_SOURCE = 6,
 	LI_CRC = 8
 };
-
-/** These func codes are a little different then those defined in the specification for the following reason.
-	For simplicity the PRM bit is included to make the Pri-To-Sec and Sec-To-Pri codes non-overlapping
-	This is much simplier and for all intents and purposes you don't have to deal with the PRM bit anymore.
-
-	No implementation of function code 1:
-
-	2004-03-29_DNP3_Doc_Library.pdf: Page 526.
-	DNP3 does not define any action associated with the Data Link Layer Reset User Process request function
-	code. Support of this function is not required. Function code 1 is now obsolete.
-	*/
-enum FuncCodes {
-	// Pri-To-Sec functions, add 0x40 to each to for the PRM bit
-	FC_PRI_RESET_LINK_STATES = 0x40,
-	FC_PRI_TEST_LINK_STATES = 0x42,
-	FC_PRI_CONFIRMED_USER_DATA = 0x43,
-	FC_PRI_UNCONFIRMED_USER_DATA = 0x44,
-	FC_PRI_REQUEST_LINK_STATUS = 0x49,
-	// Sec-to-Pri functions, just as in the specification
-	FC_SEC_ACK = 0x00,
-	FC_SEC_NACK = 0x01,
-	FC_SEC_LINK_STATUS = 0x0B,
-	FC_SEC_NOT_SUPPORTED = 0x0F,
-
-	// Used as an error code for return values
-	FC_INVALID = 0xFF
-};
-
-/** @param aByte Any byte
-	@return Returns FC_INVALID if byte is not a valid function code */
-FuncCodes ByteToFuncCode(uint8_t aByte);
-
-#ifndef OPENDNP3_STRIP_LOG_MESSAGES
-/** @param aCode Any function code
-	@return Returns string representation */
-std::string FuncCodeToString(FuncCodes aCode);
-#endif
 
 /// Masks for use with the CONTROL byte
 enum ControlMask {

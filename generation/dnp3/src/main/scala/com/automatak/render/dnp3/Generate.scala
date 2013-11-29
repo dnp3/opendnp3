@@ -1,6 +1,6 @@
 package com.automatak.render.dnp3
 
-import com.automatak.render.dnp3.enums.{QualifierCode, FunctionCode}
+import com.automatak.render.dnp3.enums.{LinkFunction, QualifierCode, FunctionCode}
 
 import com.automatak.render.cpp._
 
@@ -16,8 +16,6 @@ object Generate {
 
   def main(args: Array[String]): Unit = {
 
-    //if(!Files.exists(cppInclude)) Files.createDirectory(cppInclude)
-
     case class EnumConfig(model: EnumModel, headerDest: Path, implDest: Path) {
       def headerName = model.name + ".h"
       def implName = model.name + ".cpp"
@@ -25,11 +23,10 @@ object Generate {
       def implPath = implDest.resolve(implName)
     }
 
+    val sourceEnums = List(FunctionCode(), QualifierCode(), LinkFunction())
+
     // list of all enumerations that we want to generate
-    val enums = List(
-      EnumConfig(FunctionCode(), cppSource, cppSource),
-      EnumConfig(QualifierCode(), cppSource, cppSource)
-    )
+    val enums = sourceEnums.map(e => EnumConfig(e, cppSource, cppSource))
 
     val indent = CppIndentation()
 

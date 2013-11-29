@@ -118,22 +118,22 @@ size_t LinkFrame::CalcFrameSize(size_t aDataLength)
 
 void LinkFrame::FormatAck(bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc)
 {
-	this->FormatHeader(0, aIsMaster, false, aIsRcvBuffFull, FC_SEC_ACK, aDest, aSrc);
+	this->FormatHeader(0, aIsMaster, false, aIsRcvBuffFull, LinkFunction::SEC_ACK, aDest, aSrc);
 }
 
 void LinkFrame::FormatNack(bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc)
 {
-	this->FormatHeader(0, aIsMaster, false, aIsRcvBuffFull, FC_SEC_NACK, aDest, aSrc);
+	this->FormatHeader(0, aIsMaster, false, aIsRcvBuffFull, LinkFunction::SEC_NACK, aDest, aSrc);
 }
 
 void LinkFrame::FormatLinkStatus(bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc)
 {
-	this->FormatHeader(0, aIsMaster, false, aIsRcvBuffFull, FC_SEC_LINK_STATUS, aDest, aSrc);
+	this->FormatHeader(0, aIsMaster, false, aIsRcvBuffFull, LinkFunction::SEC_LINK_STATUS, aDest, aSrc);
 }
 
 void LinkFrame::FormatNotSupported(bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc)
 {
-	this->FormatHeader(0, aIsMaster, false, aIsRcvBuffFull, FC_SEC_NOT_SUPPORTED, aDest, aSrc);
+	this->FormatHeader(0, aIsMaster, false, aIsRcvBuffFull, LinkFunction::SEC_NOT_SUPPORTED, aDest, aSrc);
 }
 
 ////////////////////////////////////////////////
@@ -144,24 +144,24 @@ void LinkFrame::FormatNotSupported(bool aIsMaster, bool aIsRcvBuffFull, uint16_t
 
 void LinkFrame::FormatResetLinkStates(bool aIsMaster, uint16_t aDest, uint16_t aSrc)
 {
-	this->FormatHeader(0, aIsMaster, false, false, FC_PRI_RESET_LINK_STATES, aDest, aSrc);
+	this->FormatHeader(0, aIsMaster, false, false, LinkFunction::PRI_RESET_LINK_STATES, aDest, aSrc);
 }
 
 void LinkFrame::FormatRequestLinkStatus(bool aIsMaster, uint16_t aDest, uint16_t aSrc)
 {
-	this->FormatHeader(0, aIsMaster, false, false, FC_PRI_REQUEST_LINK_STATUS, aDest, aSrc);
+	this->FormatHeader(0, aIsMaster, false, false, LinkFunction::PRI_REQUEST_LINK_STATUS, aDest, aSrc);
 }
 
 void LinkFrame::FormatTestLinkStatus(bool aIsMaster, bool aFcb, uint16_t aDest, uint16_t aSrc)
 {
-	this->FormatHeader(0, aIsMaster, aFcb, true, FC_PRI_TEST_LINK_STATES, aDest, aSrc);
+	this->FormatHeader(0, aIsMaster, aFcb, true, LinkFunction::PRI_TEST_LINK_STATES, aDest, aSrc);
 }
 
 void LinkFrame::FormatConfirmedUserData(bool aIsMaster, bool aFcb, uint16_t aDest, uint16_t aSrc, const uint8_t* apData, size_t aDataLength)
 {
 	assert(aDataLength > 0);
 	assert(aDataLength <= 250);
-	this->FormatHeader(aDataLength, aIsMaster, aFcb, true, FC_PRI_CONFIRMED_USER_DATA, aDest, aSrc);
+	this->FormatHeader(aDataLength, aIsMaster, aFcb, true, LinkFunction::PRI_CONFIRMED_USER_DATA, aDest, aSrc);
 	WriteUserData(apData, mpBuffer + LS_HEADER_SIZE, aDataLength);
 }
 
@@ -169,7 +169,7 @@ void LinkFrame::FormatUnconfirmedUserData(bool aIsMaster, uint16_t aDest, uint16
 {
 	assert(aDataLength > 0);
 	assert(aDataLength <= 250);
-	this->FormatHeader(aDataLength, aIsMaster, false, false, FC_PRI_UNCONFIRMED_USER_DATA, aDest, aSrc);
+	this->FormatHeader(aDataLength, aIsMaster, false, false, LinkFunction::PRI_UNCONFIRMED_USER_DATA, aDest, aSrc);
 	WriteUserData(apData, mpBuffer + LS_HEADER_SIZE, aDataLength);
 }
 
@@ -182,7 +182,7 @@ void LinkFrame::ChangeFCB(bool aFCB)
 
 }
 
-void LinkFrame::FormatHeader(size_t aDataLength, bool aIsMaster, bool aFcb, bool aFcvDfc, FuncCodes aFuncCode, uint16_t aDest, uint16_t aSrc)
+void LinkFrame::FormatHeader(size_t aDataLength, bool aIsMaster, bool aFcb, bool aFcvDfc, LinkFunction aFuncCode, uint16_t aDest, uint16_t aSrc)
 {
 	mSize = this->CalcFrameSize(aDataLength);
 

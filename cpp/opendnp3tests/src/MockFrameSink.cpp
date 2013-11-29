@@ -44,17 +44,17 @@ void MockFrameSink::Reset()
 	mNumFrames = 0;
 }
 
-bool MockFrameSink::CheckLast(FuncCodes aCode, bool aIsMaster, uint16_t aDest, uint16_t aSrc)
+bool MockFrameSink::CheckLast(LinkFunction aCode, bool aIsMaster, uint16_t aDest, uint16_t aSrc)
 {
 	return (mCode == aCode) && (aIsMaster == mIsMaster) && (mSrc == aSrc) && (mDest == aDest);
 }
 
-bool MockFrameSink::CheckLastWithFCB(FuncCodes aCode, bool aIsMaster, bool aFcb, uint16_t aDest, uint16_t aSrc)
+bool MockFrameSink::CheckLastWithFCB(LinkFunction aCode, bool aIsMaster, bool aFcb, uint16_t aDest, uint16_t aSrc)
 {
 	return (mFcb == aFcb) && CheckLast(aCode, aIsMaster, aDest, aSrc);
 }
 
-bool MockFrameSink::CheckLastWithDFC(FuncCodes aCode, bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc)
+bool MockFrameSink::CheckLastWithDFC(LinkFunction aCode, bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc)
 {
 	return  (mIsRcvBuffFull == aIsRcvBuffFull) && CheckLast(aCode, aIsMaster, aDest, aSrc);
 }
@@ -64,25 +64,25 @@ bool MockFrameSink::CheckLastWithDFC(FuncCodes aCode, bool aIsMaster, bool aIsRc
 void MockFrameSink::Ack(bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc)
 {
 	mIsRcvBuffFull = aIsRcvBuffFull;
-	this->Update(FC_SEC_ACK, aIsMaster, aDest, aSrc);
+	this->Update(LinkFunction::SEC_ACK, aIsMaster, aDest, aSrc);
 }
 
 void MockFrameSink::Nack(bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc)
 {
 	mIsRcvBuffFull = aIsRcvBuffFull;
-	this->Update(FC_SEC_NACK, aIsMaster, aDest, aSrc);
+	this->Update(LinkFunction::SEC_NACK, aIsMaster, aDest, aSrc);
 }
 
 void MockFrameSink::LinkStatus(bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc)
 {
 	mIsRcvBuffFull = aIsRcvBuffFull;
-	this->Update(FC_SEC_LINK_STATUS, aIsMaster, aDest, aSrc);
+	this->Update(LinkFunction::SEC_LINK_STATUS, aIsMaster, aDest, aSrc);
 }
 
 void MockFrameSink::NotSupported (bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc)
 {
 	mIsRcvBuffFull = aIsRcvBuffFull;
-	this->Update(FC_SEC_NOT_SUPPORTED, aIsMaster, aDest, aSrc);
+	this->Update(LinkFunction::SEC_NOT_SUPPORTED, aIsMaster, aDest, aSrc);
 }
 
 //	Pri to Sec
@@ -90,30 +90,30 @@ void MockFrameSink::NotSupported (bool aIsMaster, bool aIsRcvBuffFull, uint16_t 
 void MockFrameSink::TestLinkStatus(bool aIsMaster, bool aFcb, uint16_t aDest, uint16_t aSrc)
 {
 	mFcb = aFcb;
-	this->Update(FC_PRI_TEST_LINK_STATES, aIsMaster, aDest, aSrc);
+	this->Update(LinkFunction::PRI_TEST_LINK_STATES, aIsMaster, aDest, aSrc);
 }
 
 void MockFrameSink::ResetLinkStates(bool aIsMaster, uint16_t aDest, uint16_t aSrc)
 {
-	this->Update(FC_PRI_RESET_LINK_STATES, aIsMaster, aDest, aSrc);
+	this->Update(LinkFunction::PRI_RESET_LINK_STATES, aIsMaster, aDest, aSrc);
 }
 
 void MockFrameSink::RequestLinkStatus(bool aIsMaster, uint16_t aDest, uint16_t aSrc)
 {
-	this->Update(FC_PRI_REQUEST_LINK_STATUS, aIsMaster, aDest, aSrc);
+	this->Update(LinkFunction::PRI_REQUEST_LINK_STATUS, aIsMaster, aDest, aSrc);
 }
 
 void MockFrameSink::ConfirmedUserData(bool aIsMaster, bool aFcb, uint16_t aDest, uint16_t aSrc, const uint8_t* apData, size_t aDataLength)
 {
 	mFcb = aFcb;
 	this->WriteToBuffer(apData, aDataLength);
-	this->Update(FC_PRI_CONFIRMED_USER_DATA, aIsMaster, aDest, aSrc);
+	this->Update(LinkFunction::PRI_CONFIRMED_USER_DATA, aIsMaster, aDest, aSrc);
 }
 
 void MockFrameSink::UnconfirmedUserData(bool aIsMaster, uint16_t aDest, uint16_t aSrc, const uint8_t* apData, size_t aDataLength)
 {
 	this->WriteToBuffer(apData, aDataLength);
-	this->Update(FC_PRI_UNCONFIRMED_USER_DATA, aIsMaster, aDest, aSrc);
+	this->Update(LinkFunction::PRI_UNCONFIRMED_USER_DATA, aIsMaster, aDest, aSrc);
 }
 
 void MockFrameSink::AddAction(std::function<void ()> aFunc)
@@ -130,7 +130,7 @@ void MockFrameSink::ExecuteAction()
 	}
 }
 
-void MockFrameSink::Update(FuncCodes aCode, bool aIsMaster, uint16_t aDest, uint16_t aSrc)
+void MockFrameSink::Update(LinkFunction aCode, bool aIsMaster, uint16_t aDest, uint16_t aSrc)
 {
 	++mNumFrames;
 	mCode = aCode;

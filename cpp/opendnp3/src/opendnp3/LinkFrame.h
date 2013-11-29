@@ -23,9 +23,9 @@
 #ifndef __LINK_FRAME_H_
 #define __LINK_FRAME_H_
 
-#include <opendnp3/LinkLayerConstants.h>
 #include <openpal/Visibility.h>
 
+#include "gen/FunctionCode.h"
 #include "PackingUnpacking.h"
 #include "LinkHeader.h"
 
@@ -72,7 +72,7 @@ public:
 	inline uint8_t	GetLength() const {
 		return mHeader.GetLength();
 	}
-	inline FuncCodes	GetFunc() const {
+	inline LinkFunction	GetFunc() const {
 		return mHeader.GetFuncEnum();
 	}
 
@@ -152,7 +152,7 @@ private:
 	static void WriteUserData(const uint8_t* apSrc, uint8_t* apDest, size_t aLength);
 
 	/** Write 10 header bytes to to buffer including 0x0564, all fields, and CRC */
-	void FormatHeader(size_t aDataLength, bool aIsMaster, bool aFcb, bool aFcvDfc, FuncCodes aCode, uint16_t aDest, uint16_t aSrc);
+	void FormatHeader(size_t aDataLength, bool aIsMaster, bool aFcb, bool aFcvDfc, LinkFunction aCode, uint16_t aDest, uint16_t aSrc);
 
 	bool mIsComplete;
 	size_t mSize;

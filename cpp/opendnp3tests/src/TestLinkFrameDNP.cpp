@@ -49,27 +49,27 @@ BOOST_AUTO_TEST_SUITE(DNPLinkFrame)
 BOOST_AUTO_TEST_CASE(LinkHeaderChangeFCB)
 {
 	LinkHeader hdr;
-	hdr.Set(5, 1, 1024, true, true, true, FC_PRI_CONFIRMED_USER_DATA);
+	hdr.Set(5, 1, 1024, true, true, true, LinkFunction::PRI_CONFIRMED_USER_DATA);
 
-	BOOST_REQUIRE_EQUAL(hdr.ControlByte(true, true, true, FC_PRI_CONFIRMED_USER_DATA), hdr.GetControl());
+	BOOST_REQUIRE_EQUAL(hdr.ControlByte(true, true, true, LinkFunction::PRI_CONFIRMED_USER_DATA), hdr.GetControl());
 
 	hdr.ChangeFCB(false);
 
-	BOOST_REQUIRE_EQUAL(hdr.ControlByte(true, false, true, FC_PRI_CONFIRMED_USER_DATA), hdr.GetControl());
+	BOOST_REQUIRE_EQUAL(hdr.ControlByte(true, false, true, LinkFunction::PRI_CONFIRMED_USER_DATA), hdr.GetControl());
 }
 
 BOOST_AUTO_TEST_CASE(LinkHeaderToString)
 {
 	LinkHeader hdr;
 
-	hdr.Set(5, 1, 1024, true, true, true, FC_PRI_CONFIRMED_USER_DATA);
-	BOOST_REQUIRE_EQUAL("DL 1 to 1024 : FC_PRI_CONFIRMED_USER_DATA PayloadSize: 0 From Master Pri->Sec FCB=1 FCV=1", hdr.ToString());
+	hdr.Set(5, 1, 1024, true, true, true, LinkFunction::PRI_CONFIRMED_USER_DATA);
+	BOOST_REQUIRE_EQUAL("DL 1 to 1024 : PRI_CONFIRMED_USER_DATA PayloadSize: 0 From Master Pri->Sec FCB=1 FCV=1", hdr.ToString());
 
-	hdr.Set(5, 1, 1024, true, true, false, FC_SEC_ACK);
-	BOOST_REQUIRE_EQUAL("DL 1 to 1024 : FC_SEC_ACK PayloadSize: 0 From Master Sec->Pri DFC=1", hdr.ToString());
+	hdr.Set(5, 1, 1024, true, true, false, LinkFunction::SEC_ACK);
+	BOOST_REQUIRE_EQUAL("DL 1 to 1024 : SEC_ACK PayloadSize: 0 From Master Sec->Pri DFC=1", hdr.ToString());
 
-	hdr.Set(5, 1, 1024, true, true, true, FC_SEC_ACK);
-	BOOST_REQUIRE_EQUAL("DL 1 to 1024 : FC_SEC_ACK PayloadSize: 0 From Master Sec->Pri ERROR: FCB not Blank!! DFC=1", hdr.ToString());
+	hdr.Set(5, 1, 1024, true, true, true, LinkFunction::SEC_ACK);
+	BOOST_REQUIRE_EQUAL("DL 1 to 1024 : SEC_ACK PayloadSize: 0 From Master Sec->Pri ERROR: FCB not Blank!! DFC=1", hdr.ToString());
 }
 
 BOOST_AUTO_TEST_CASE(CopyConstructor) //make sure the default copies the buffer properly

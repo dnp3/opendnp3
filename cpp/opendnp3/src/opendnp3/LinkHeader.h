@@ -23,8 +23,10 @@
 #ifndef __LINK_HEADER_H_
 #define __LINK_HEADER_H_
 
-#include <opendnp3/LinkLayerConstants.h>
 #include <openpal/Visibility.h>
+
+#include "LinkLayerConstants.h"
+#include "gen/LinkFunction.h"
 
 namespace opendnp3
 {
@@ -35,7 +37,7 @@ struct DLL_LOCAL LinkHeader {
 
 	// Setter
 
-	void Set(uint8_t aLen, uint16_t aSrc, uint16_t aDest, bool aFromMaster, bool aFcvDfc, bool aFcb, FuncCodes aCode);
+	void Set(uint8_t aLen, uint16_t aSrc, uint16_t aDest, bool aFromMaster, bool aFcvDfc, bool aFcb, LinkFunction aCode);
 
 	void ChangeFCB(bool aFCB);
 
@@ -68,8 +70,8 @@ struct DLL_LOCAL LinkHeader {
 	uint8_t GetFuncByte() const {
 		return ctrl & MASK_FUNC;
 	}
-	FuncCodes GetFuncEnum() const {
-		return ByteToFuncCode(ctrl & MASK_FUNC_OR_PRM);
+	LinkFunction GetFuncEnum() const {
+		return LinkFunctionFromType(ctrl & MASK_FUNC_OR_PRM);
 	}
 
 	bool ValidLength() {
@@ -88,7 +90,7 @@ struct DLL_LOCAL LinkHeader {
 	std::string ToString() const;
 #endif
 
-	static uint8_t ControlByte(bool aIsMaster, bool aFcb, bool aFcvDfc, FuncCodes aFunc);
+	static uint8_t ControlByte(bool aIsMaster, bool aFcb, bool aFcvDfc, LinkFunction aFunc);
 
 private:
 

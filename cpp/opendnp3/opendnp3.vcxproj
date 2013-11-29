@@ -184,7 +184,6 @@
     <ClInclude Include="include\opendnp3\IStack.h" />
     <ClInclude Include="include\opendnp3\ITransactable.h" />
     <ClInclude Include="include\opendnp3\LinkConfig.h" />
-    <ClInclude Include="include\opendnp3\LinkLayerConstants.h" />
     <ClInclude Include="include\opendnp3\LogEntryCircularBuffer.h" />
     <ClInclude Include="include\opendnp3\MasterConfig.h" />
     <ClInclude Include="include\opendnp3\MasterConfigTypes.h" />
@@ -245,6 +244,7 @@
     <ClInclude Include="src\opendnp3\ExecutorPause.h" />
     <ClInclude Include="src\opendnp3\FunctionCodeHelpers.h" />
     <ClInclude Include="src\opendnp3\gen\FunctionCode.h" />
+    <ClInclude Include="src\opendnp3\gen\LinkFunction.h" />
     <ClInclude Include="src\opendnp3\gen\QualifierCode.h" />
     <ClInclude Include="src\opendnp3\GetKeys.h" />
     <ClInclude Include="src\opendnp3\HeaderReadIterator.h" />
@@ -255,6 +255,7 @@
     <ClInclude Include="src\opendnp3\LinkFrame.h" />
     <ClInclude Include="src\opendnp3\LinkHeader.h" />
     <ClInclude Include="src\opendnp3\LinkLayer.h" />
+    <ClInclude Include="src\opendnp3\LinkLayerConstants.h" />
     <ClInclude Include="src\opendnp3\LinkLayerReceiver.h" />
     <ClInclude Include="src\opendnp3\LinkLayerRouter.h" />
     <ClInclude Include="src\opendnp3\LinkReceiverStates.h" />
@@ -331,6 +332,7 @@
     <ClCompile Include="src\opendnp3\DataPoll.cpp" />
     <ClCompile Include="src\opendnp3\FunctionCodeHelpers.cpp" />
     <ClCompile Include="src\opendnp3\gen\FunctionCode.cpp" />
+    <ClCompile Include="src\opendnp3\gen\LinkFunction.cpp" />
     <ClCompile Include="src\opendnp3\gen\QualifierCode.cpp" />
     <ClCompile Include="src\opendnp3\IMeasurementHandler.cpp" />
     <ClCompile Include="src\opendnp3\ITimeWriteHandler.cpp" />
@@ -350,7 +352,6 @@
     <ClCompile Include="src\opendnp3\LinkFrame.cpp" />
     <ClCompile Include="src\opendnp3\LinkHeader.cpp" />
     <ClCompile Include="src\opendnp3\LinkLayer.cpp" />
-    <ClCompile Include="src\opendnp3\LinkLayerConstants.cpp" />
     <ClCompile Include="src\opendnp3\LinkLayerReceiver.cpp" />
     <ClCompile Include="src\opendnp3\LinkLayerRouter.cpp" />
     <ClCompile Include="src\opendnp3\LinkReceiverStates.cpp" />

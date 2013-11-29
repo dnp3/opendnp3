@@ -34,7 +34,7 @@ namespace opendnp3
 
 LinkHeader::LinkHeader() {}
 
-void LinkHeader::Set(uint8_t aLen, uint16_t aSrc, uint16_t aDest, bool aFromMaster, bool aFcvDfc, bool aFcb, FuncCodes aCode)
+void LinkHeader::Set(uint8_t aLen, uint16_t aSrc, uint16_t aDest, bool aFromMaster, bool aFcvDfc, bool aFcb, LinkFunction aCode)
 {
 	length = aLen;
 	src = aSrc;
@@ -48,9 +48,9 @@ void LinkHeader::ChangeFCB(bool aFCB)
 	else ctrl &= ~MASK_FCB;
 }
 
-uint8_t LinkHeader::ControlByte(bool aIsMaster, bool aFcb, bool aFcvDfc, FuncCodes aFunc)
+uint8_t LinkHeader::ControlByte(bool aIsMaster, bool aFcb, bool aFcvDfc, LinkFunction aFunc)
 {
-	uint8_t ret = aFunc;
+	uint8_t ret = LinkFunctionToType(aFunc);
 
 	if(aIsMaster) ret |= MASK_DIR;
 	if(aFcb) ret |= MASK_FCB;
@@ -85,7 +85,7 @@ std::string LinkHeader::ToString() const
 {
 	ostringstream oss;
 	oss << "DL " << this->GetSrc() << " to " << this->GetDest();
-	oss << " : " << FuncCodeToString(this->GetFuncEnum());
+	oss << " : " << LinkFunctionToString(this->GetFuncEnum());
 	oss << " PayloadSize: " << (this->GetLength() - 5);
 	oss << ((this->IsFromMaster()) ? " From Master" : " From Outstation");
 	if(this->IsPriToSec()) {

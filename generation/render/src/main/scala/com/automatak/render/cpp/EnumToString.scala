@@ -35,7 +35,7 @@ object EnumToString {
       def header = Iterator(signature(em.name))
       def smr = new ReturnSwitchModelRenderer[EnumValue](indent)(ev => em.qualified(ev))(ev => quotes(ev.name))
       def switch = smr.render(em.values)
-      def returnDefault = Iterator(List("return ", quotes(em.default.get.name),";").mkString)
+      def returnDefault = Iterator(List("return ", quotes(em.default.name),";").mkString)
 
       header ++ bracket(indent) {
         switch ++

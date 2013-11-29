@@ -93,9 +93,6 @@
     <ClInclude Include="include\opendnp3\LinkConfig.h">
       <Filter>Include Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\opendnp3\LinkLayerConstants.h">
-      <Filter>Include Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\opendnp3\MasterConfig.h">
       <Filter>Include Files</Filter>
     </ClInclude>
@@ -477,6 +474,12 @@
     <ClInclude Include="src\opendnp3\FunctionCodeHelpers.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\opendnp3\LinkLayerConstants.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\gen\LinkFunction.h">
+      <Filter>Header Files\gen</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\opendnp3\AnalogOutput.cpp">
@@ -588,9 +591,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\LinkLayer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\LinkLayerConstants.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\LinkLayerReceiver.cpp">
@@ -772,6 +772,9 @@
     </ClCompile>
     <ClCompile Include="src\opendnp3\FunctionCodeHelpers.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\gen\LinkFunction.cpp">
+      <Filter>Source Files\gen</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

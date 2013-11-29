@@ -71,33 +71,33 @@ void LinkLayerReceiver::OnRead(size_t aNumBytes)
 void LinkLayerReceiver::PushFrame()
 {
 	switch(mHeader.GetFuncEnum()) {
-	case(FC_PRI_RESET_LINK_STATES):
+	case(LinkFunction::PRI_RESET_LINK_STATES):
 		mpSink->ResetLinkStates(mHeader.IsFromMaster(), mHeader.GetDest(), mHeader.GetSrc());
 		break;
-	case(FC_PRI_TEST_LINK_STATES):
+	case(LinkFunction::PRI_TEST_LINK_STATES):
 		mpSink->TestLinkStatus(mHeader.IsFromMaster(), mHeader.IsFcbSet(), mHeader.GetDest(), mHeader.GetSrc());
 		break;
-	case(FC_PRI_CONFIRMED_USER_DATA):
+	case(LinkFunction::PRI_CONFIRMED_USER_DATA):
 		mpSink->ConfirmedUserData(mHeader.IsFromMaster(), mHeader.IsFcbSet(), mHeader.GetDest(), mHeader.GetSrc(),
 		                          mpUserData, TransferUserData());
 		break;
-	case(FC_PRI_UNCONFIRMED_USER_DATA):
+	case(LinkFunction::PRI_UNCONFIRMED_USER_DATA):
 		mpSink->UnconfirmedUserData(mHeader.IsFromMaster(), mHeader.GetDest(), mHeader.GetSrc(),
 		                            mpUserData, TransferUserData());
 		break;
-	case(FC_PRI_REQUEST_LINK_STATUS):
+	case(LinkFunction::PRI_REQUEST_LINK_STATUS):
 		mpSink->RequestLinkStatus(mHeader.IsFromMaster(), mHeader.GetDest(), mHeader.GetSrc());
 		break;
-	case(FC_SEC_ACK):
+	case(LinkFunction::SEC_ACK):
 		mpSink->Ack(mHeader.IsFromMaster(), mHeader.IsFcvDfcSet(), mHeader.GetDest(), mHeader.GetSrc());
 		break;
-	case(FC_SEC_NACK):
+	case(LinkFunction::SEC_NACK):
 		mpSink->Nack(mHeader.IsFromMaster(), mHeader.IsFcvDfcSet(), mHeader.GetDest(), mHeader.GetSrc());
 		break;
-	case(FC_SEC_LINK_STATUS):
+	case(LinkFunction::SEC_LINK_STATUS):
 		mpSink->LinkStatus(mHeader.IsFromMaster(), mHeader.IsFcvDfcSet(), mHeader.GetDest(), mHeader.GetSrc());
 		break;
-	case(FC_SEC_NOT_SUPPORTED):
+	case(LinkFunction::SEC_NOT_SUPPORTED):
 		mpSink->NotSupported(mHeader.IsFromMaster(), mHeader.IsFcvDfcSet(), mHeader.GetDest(), mHeader.GetSrc());
 		break;
 	default:
@@ -153,39 +153,39 @@ bool LinkLayerReceiver::ValidateHeader()
 
 	uint8_t user_data_length = mHeader.GetLength() - LS_MIN_LENGTH;
 	mFrameSize = LinkFrame::CalcFrameSize(user_data_length);
-	FuncCodes func = mHeader.GetFuncEnum();
+	LinkFunction func = mHeader.GetFuncEnum();
 
 	// make sure that the presence/absence of user data
 	// matches the function code
-	if(func == FC_PRI_CONFIRMED_USER_DATA || func == FC_PRI_UNCONFIRMED_USER_DATA) {
+	if(func == LinkFunction::PRI_CONFIRMED_USER_DATA || func == LinkFunction::PRI_UNCONFIRMED_USER_DATA) {
 		if(user_data_length > 0) {
 			//mFrameSize = LinkFrame::CalcFrameSize(user_data_length);
 		}
 		else {
-			ERROR_BLOCK(LEV_ERROR, "User data packet received with zero payload. FUNCTION: " << func, DLERR_NO_DATA);
+			ERROR_BLOCK(LEV_ERROR, "User data packet received with zero payload. FUNCTION: " << LinkFunctionToString(func), DLERR_NO_DATA);
 			return false;
 		}
 	}
 	else {
 		if(user_data_length > 0) {
-			ERROR_BLOCK(LEV_ERROR, "Unexpected LENGTH in frame: " << static_cast<int>(user_data_length) << " with FUNCTION: " << func, DLERR_UNEXPECTED_DATA);
+			ERROR_BLOCK(LEV_ERROR, "Unexpected LENGTH in frame: " << static_cast<int>(user_data_length) << " with FUNCTION: " << LinkFunctionToString(func), DLERR_UNEXPECTED_DATA);
 			return false;
 		}
 
 	}
 
 	if(user_data_length > 0) {
-		if(func == FC_PRI_CONFIRMED_USER_DATA || func == FC_PRI_UNCONFIRMED_USER_DATA) {
+		if(func == LinkFunction::PRI_CONFIRMED_USER_DATA || func == LinkFunction::PRI_UNCONFIRMED_USER_DATA) {
 
 		}
 		else {
-			ERROR_BLOCK(LEV_ERROR, "Unexpected LENGTH in frame: " << static_cast<int>(user_data_length) << " with FUNCTION: " << func, DLERR_UNEXPECTED_DATA);
+			ERROR_BLOCK(LEV_ERROR, "Unexpected LENGTH in frame: " << static_cast<int>(user_data_length) << " with FUNCTION: " << LinkFunctionToString(func), DLERR_UNEXPECTED_DATA);
 			return false;
 		}
 	}
 	else {
-		if(func == FC_PRI_CONFIRMED_USER_DATA || func == FC_PRI_UNCONFIRMED_USER_DATA) {
-			ERROR_BLOCK(LEV_ERROR, "User data packet received with zero payload. FUNCTION: " << func, DLERR_NO_DATA);
+		if(func == LinkFunction::PRI_CONFIRMED_USER_DATA || func == LinkFunction::PRI_UNCONFIRMED_USER_DATA) {
+			ERROR_BLOCK(LEV_ERROR, "User data packet received with zero payload. FUNCTION: " << LinkFunctionToString(func), DLERR_NO_DATA);
 			return false;
 		}
 	}
@@ -206,23 +206,23 @@ bool LinkLayerReceiver::ValidateFunctionCode()
 		bool fcv_set = false;
 
 		switch(mHeader.GetFuncEnum()) {
-		case(FC_PRI_CONFIRMED_USER_DATA):
-		case(FC_PRI_TEST_LINK_STATES):
+		case(LinkFunction::PRI_CONFIRMED_USER_DATA):
+		case(LinkFunction::PRI_TEST_LINK_STATES):
 			fcv_set = true;
 			break;
-		case(FC_PRI_REQUEST_LINK_STATUS):
-		case(FC_PRI_RESET_LINK_STATES):
-		case(FC_PRI_UNCONFIRMED_USER_DATA):
+		case(LinkFunction::PRI_REQUEST_LINK_STATUS):
+		case(LinkFunction::PRI_RESET_LINK_STATES):
+		case(LinkFunction::PRI_UNCONFIRMED_USER_DATA):
 			break;
 		default: {
-				ERROR_BLOCK(LEV_WARNING, "Unknown PriToSec FUNCTION: " << mHeader.GetFuncEnum(), DLERR_UNKNOWN_FUNC);
+				ERROR_BLOCK(LEV_WARNING, "Unknown PriToSec FUNCTION: " << LinkFunctionToString(mHeader.GetFuncEnum()), DLERR_UNKNOWN_FUNC);
 				return false;
 			}
 		}
 
 		//now check the fcv
 		if(fcv_set != mHeader.IsFcvDfcSet()) {
-			ERROR_BLOCK(LEV_WARNING, "Bad FCV for FUNCTION: " << mHeader.GetFuncEnum(), DLERR_UNEXPECTED_FCV);
+			ERROR_BLOCK(LEV_WARNING, "Bad FCV for FUNCTION: " << LinkFunctionToString(mHeader.GetFuncEnum()), DLERR_UNEXPECTED_FCV);
 			return false;
 		}
 
@@ -231,20 +231,20 @@ bool LinkLayerReceiver::ValidateFunctionCode()
 	}
 	else { // SecToPri - just validate the function codes and that FCB is 0
 		switch(mHeader.GetFuncEnum()) {
-		case(FC_SEC_ACK):
-		case(FC_SEC_NACK):
-		case(FC_SEC_LINK_STATUS):
-		case(FC_SEC_NOT_SUPPORTED):
+		case(LinkFunction::SEC_ACK):
+		case(LinkFunction::SEC_NACK):
+		case(LinkFunction::SEC_LINK_STATUS):
+		case(LinkFunction::SEC_NOT_SUPPORTED):
 			break;
 		default: {
-				ERROR_BLOCK(LEV_ERROR, "Unknown SecToPri FUNCTION: " << mHeader.GetFuncEnum(), DLERR_UNKNOWN_FUNC);
+				ERROR_BLOCK(LEV_ERROR, "Unknown SecToPri FUNCTION: " << LinkFunctionToString(mHeader.GetFuncEnum()), DLERR_UNKNOWN_FUNC);
 				return false;
 			}
 		}
 
 		//now check the fcb, it should always be zero
 		if(mHeader.IsFcbSet()) {
-			ERROR_BLOCK(LEV_ERROR, "FCB set for SecToPri FUNCTION: " << mHeader.GetFuncEnum(), DLERR_UNEXPECTED_FCB);
+			ERROR_BLOCK(LEV_ERROR, "FCB set for SecToPri FUNCTION: " << LinkFunctionToString(mHeader.GetFuncEnum()), DLERR_UNEXPECTED_FCB);
 			return false;
 		}
 	}

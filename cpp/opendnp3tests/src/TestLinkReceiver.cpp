@@ -144,7 +144,7 @@ BOOST_AUTO_TEST_CASE(ReadACK)
 	t.WriteData(f);
 	BOOST_REQUIRE(t.log.IsLogErrorFree());
 	BOOST_REQUIRE_EQUAL(t.mSink.mNumFrames, 1);
-	BOOST_REQUIRE(t.mSink.CheckLastWithDFC(FC_SEC_ACK, true, false, 1, 2));
+	BOOST_REQUIRE(t.mSink.CheckLastWithDFC(LinkFunction::SEC_ACK, true, false, 1, 2));
 }
 
 BOOST_AUTO_TEST_CASE(ReadNACK)
@@ -155,7 +155,7 @@ BOOST_AUTO_TEST_CASE(ReadNACK)
 	t.WriteData(f);
 	BOOST_REQUIRE(t.log.IsLogErrorFree());
 	BOOST_REQUIRE_EQUAL(t.mSink.mNumFrames, 1);
-	BOOST_REQUIRE(t.mSink.CheckLastWithDFC(FC_SEC_NACK, false, true, 1, 2));
+	BOOST_REQUIRE(t.mSink.CheckLastWithDFC(LinkFunction::SEC_NACK, false, true, 1, 2));
 }
 
 BOOST_AUTO_TEST_CASE(LinkStatus)
@@ -166,7 +166,7 @@ BOOST_AUTO_TEST_CASE(LinkStatus)
 	t.WriteData(f);
 	BOOST_REQUIRE(t.log.IsLogErrorFree());
 	BOOST_REQUIRE_EQUAL(t.mSink.mNumFrames, 1);
-	BOOST_REQUIRE(t.mSink.CheckLastWithDFC(FC_SEC_LINK_STATUS, true, true, 1, 2));
+	BOOST_REQUIRE(t.mSink.CheckLastWithDFC(LinkFunction::SEC_LINK_STATUS, true, true, 1, 2));
 }
 
 BOOST_AUTO_TEST_CASE(NotSupported)
@@ -177,7 +177,7 @@ BOOST_AUTO_TEST_CASE(NotSupported)
 	t.WriteData(f);
 	BOOST_REQUIRE(t.log.IsLogErrorFree());
 	BOOST_REQUIRE_EQUAL(t.mSink.mNumFrames, 1);
-	BOOST_REQUIRE(t.mSink.CheckLastWithDFC(FC_SEC_NOT_SUPPORTED, true, false, 1, 2));
+	BOOST_REQUIRE(t.mSink.CheckLastWithDFC(LinkFunction::SEC_NOT_SUPPORTED, true, false, 1, 2));
 }
 
 //////////////////////////////////////////
@@ -192,7 +192,7 @@ BOOST_AUTO_TEST_CASE(TestLinkStates)
 	t.WriteData(f);
 	BOOST_REQUIRE(t.log.IsLogErrorFree());
 	BOOST_REQUIRE_EQUAL(t.mSink.mNumFrames, 1);
-	BOOST_REQUIRE(t.mSink.CheckLastWithFCB(FC_PRI_TEST_LINK_STATES, false, true, 1, 2));
+	BOOST_REQUIRE(t.mSink.CheckLastWithFCB(LinkFunction::PRI_TEST_LINK_STATES, false, true, 1, 2));
 }
 
 BOOST_AUTO_TEST_CASE(ResetLinkStates)
@@ -203,7 +203,7 @@ BOOST_AUTO_TEST_CASE(ResetLinkStates)
 	t.WriteData(f);
 	BOOST_REQUIRE(t.log.IsLogErrorFree());
 	BOOST_REQUIRE_EQUAL(t.mSink.mNumFrames, 1);
-	BOOST_REQUIRE(t.mSink.CheckLast(FC_PRI_RESET_LINK_STATES, false, 1, 2));
+	BOOST_REQUIRE(t.mSink.CheckLast(LinkFunction::PRI_RESET_LINK_STATES, false, 1, 2));
 }
 
 BOOST_AUTO_TEST_CASE(RequestLinkStatus)
@@ -214,7 +214,7 @@ BOOST_AUTO_TEST_CASE(RequestLinkStatus)
 	t.WriteData(f);
 	BOOST_REQUIRE(t.log.IsLogErrorFree());
 	BOOST_REQUIRE_EQUAL(t.mSink.mNumFrames, 1);
-	BOOST_REQUIRE(t.mSink.CheckLast(FC_PRI_REQUEST_LINK_STATUS, true, 1, 2));
+	BOOST_REQUIRE(t.mSink.CheckLast(LinkFunction::PRI_REQUEST_LINK_STATUS, true, 1, 2));
 }
 
 BOOST_AUTO_TEST_CASE(UnconfirmedUserData)
@@ -226,7 +226,7 @@ BOOST_AUTO_TEST_CASE(UnconfirmedUserData)
 	t.WriteData(f);
 	BOOST_REQUIRE(t.log.IsLogErrorFree());
 	BOOST_REQUIRE_EQUAL(t.mSink.mNumFrames, 1);
-	BOOST_REQUIRE(t.mSink.CheckLast(FC_PRI_UNCONFIRMED_USER_DATA, true, 1, 2));
+	BOOST_REQUIRE(t.mSink.CheckLast(LinkFunction::PRI_UNCONFIRMED_USER_DATA, true, 1, 2));
 	BOOST_REQUIRE(t.mSink.BufferEquals(data, data.Size()));
 }
 
@@ -239,7 +239,7 @@ BOOST_AUTO_TEST_CASE(ConfirmedUserData)
 	t.WriteData(f);
 	BOOST_REQUIRE(t.log.IsLogErrorFree());
 	BOOST_REQUIRE_EQUAL(t.mSink.mNumFrames, 1);
-	BOOST_REQUIRE(t.mSink.CheckLastWithFCB(FC_PRI_CONFIRMED_USER_DATA, true, true, 1, 2));
+	BOOST_REQUIRE(t.mSink.CheckLastWithFCB(LinkFunction::PRI_CONFIRMED_USER_DATA, true, true, 1, 2));
 	BOOST_REQUIRE(t.mSink.BufferEquals(data, data.Size()));
 }
 
@@ -254,7 +254,7 @@ BOOST_AUTO_TEST_CASE(TestTwoPackets)
 	t.WriteData("05 64 05 C0 01 00 00 04 E9 21 05 64 05 C0 01 00 00 04 E9 21");
 	BOOST_REQUIRE(t.log.IsLogErrorFree());
 	BOOST_REQUIRE_EQUAL(t.mSink.mNumFrames, 2);
-	BOOST_REQUIRE(t.mSink.CheckLast(FC_PRI_RESET_LINK_STATES, true, 1, 1024));
+	BOOST_REQUIRE(t.mSink.CheckLast(LinkFunction::PRI_RESET_LINK_STATES, true, 1, 1024));
 }
 
 //////////////////////////////////////////
@@ -268,7 +268,7 @@ BOOST_AUTO_TEST_CASE(Resync0564)
 	t.WriteData("05 64 05 64 05 C0 01 00 00 04 E9 21");
 	BOOST_REQUIRE_EQUAL(t.log.NextErrorCode(), DLERR_CRC);
 	BOOST_REQUIRE_EQUAL(t.mSink.mNumFrames, 1);
-	BOOST_REQUIRE(t.mSink.CheckLast(FC_PRI_RESET_LINK_STATES, true, 1, 1024));
+	BOOST_REQUIRE(t.mSink.CheckLast(LinkFunction::PRI_RESET_LINK_STATES, true, 1, 1024));
 }
 
 //////////////////////////////////////////
@@ -287,7 +287,7 @@ BOOST_AUTO_TEST_CASE(ManyReceives)
 		t.WriteData(f);
 		BOOST_REQUIRE(t.log.IsLogErrorFree());
 		BOOST_REQUIRE_EQUAL(t.mSink.mNumFrames, i);
-		BOOST_REQUIRE(t.mSink.CheckLastWithDFC(FC_SEC_ACK, true, false, 1, 2));
+		BOOST_REQUIRE(t.mSink.CheckLastWithDFC(LinkFunction::SEC_ACK, true, false, 1, 2));
 	}
 }
 BOOST_AUTO_TEST_SUITE_END()

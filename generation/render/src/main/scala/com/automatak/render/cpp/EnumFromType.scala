@@ -34,9 +34,9 @@ object EnumFromType {
     def render(em: EnumModel) : Iterator[String] = {
 
       def header = Iterator(signature(em))
-      def smr = new ReturnSwitchModelRenderer[EnumValue](indent)(ev => em.render(ev.value.get))(ev => em.qualified(ev))
+      def smr = new ReturnSwitchModelRenderer[EnumValue](indent)(ev => em.render(ev.value))(ev => em.qualified(ev))
       def switch = smr.render(em.values)
-      def returnDefault = Iterator(List("return ", em.qualified(em.default.get),";").mkString)
+      def returnDefault = Iterator(List("return ", em.qualified(em.default),";").mkString)
 
       header ++ bracket(indent) {
         switch ++

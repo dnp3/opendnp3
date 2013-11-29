@@ -18,15 +18,14 @@
  */
 package com.automatak.render
 
+object EnumValues {
 
+  def from(list: List[String], i: Int = 0) : List[EnumValue] = from(list, Iterator.from(i,1))
+  def from(list: List[String], iterator: Iterator[Int]) : List[EnumValue] = list.map(s => EnumValue(s, iterator.next()))
 
-object EnumValue {
-  def apply(name: String, value: Int) : EnumValue = EnumValue(name, Some(value))
-  def apply(name: String) : EnumValue = EnumValue(name, None)
 }
 
-case class EnumValue(name: String, value: Option[Int])
-
+case class EnumValue(name: String, value: Int)
 
 object EnumModel {
 
@@ -41,6 +40,6 @@ case object Hex extends IntRender { def apply(i: Int): String = "0x"+Integer.toH
 case object Base10 extends IntRender { def apply(i: Int): String = i.toString }
 
 
-case class EnumModel(name: String, enumType: EnumModel.Type, values: List[EnumValue], default: Option[EnumValue], render: IntRender = Base10) {
+case class EnumModel(name: String, enumType: EnumModel.Type, values: List[EnumValue], default: EnumValue, render: IntRender = Base10) {
   def qualified(ev: EnumValue): String = List(name,"::",ev.name).mkString
 }

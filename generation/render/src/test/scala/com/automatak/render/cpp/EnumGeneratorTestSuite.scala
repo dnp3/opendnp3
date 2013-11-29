@@ -23,15 +23,15 @@ import org.scalatest.junit.JUnitRunner
 import org.junit.runner.RunWith
 import org.scalatest.matchers.ShouldMatchers
 
-import com.automatak.render.{EnumValue, EnumModel}
+import com.automatak.render.{EnumValues, EnumValue, EnumModel}
 
 @RunWith(classOf[JUnitRunner])
 class EnumGeneratorTestSuite extends FunSuite with ShouldMatchers {
 
   test("Simple output") {
 
-     val values = List(EnumValue("red", 2), EnumValue("green"), EnumValue("blue"))
-     val eg = EnumModel("Colors", EnumModel.UInt8, values, None)
+     val values = EnumValues.from(List("red", "green", "blue"), 2)
+     val eg = EnumModel("Colors", EnumModel.UInt8, values, values.last)
 
      val lines =  new EnumModelRenderer(CppIndentation()).render(eg)
 
@@ -39,8 +39,8 @@ class EnumGeneratorTestSuite extends FunSuite with ShouldMatchers {
      List(  "enum class Colors : uint8_t",
             "{",
             "  red = 2,",
-            "  green,",
-            "  blue",
+            "  green = 3,",
+            "  blue = 4",
             "};"
      ))
 

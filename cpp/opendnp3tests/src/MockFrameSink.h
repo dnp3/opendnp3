@@ -28,6 +28,8 @@
 
 #include "BufferTestObject.h"
 
+#include <opendnp3/gen/LinkFunction.h>
+
 #include <functional>
 #include <queue>
 
@@ -63,12 +65,12 @@ public:
 
 	size_t mNumFrames;
 
-	bool CheckLast(FuncCodes aCode, bool aIsMaster, uint16_t aDest, uint16_t aSrc);
-	bool CheckLastWithFCB(FuncCodes aCode, bool aIsMaster, bool aFcb, uint16_t aDest, uint16_t aSrc);
-	bool CheckLastWithDFC(FuncCodes aCode, bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc);
+	bool CheckLast(LinkFunction aCode, bool aIsMaster, uint16_t aDest, uint16_t aSrc);
+	bool CheckLastWithFCB(LinkFunction aCode, bool aIsMaster, bool aFcb, uint16_t aDest, uint16_t aSrc);
+	bool CheckLastWithDFC(LinkFunction aCode, bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc);
 
 	// Last frame information
-	FuncCodes mCode;
+	LinkFunction mCode;
 	bool mIsMaster;
 	bool mIsRcvBuffFull;
 	uint16_t mSrc;
@@ -88,7 +90,7 @@ private:
 
 	std::deque< std::function<void ()> > mActions;
 
-	void Update(FuncCodes aCode, bool aIsMaster, uint16_t aSrc, uint16_t aDest);
+	void Update(LinkFunction aCode, bool aIsMaster, uint16_t aSrc, uint16_t aDest);
 };
 
 }
