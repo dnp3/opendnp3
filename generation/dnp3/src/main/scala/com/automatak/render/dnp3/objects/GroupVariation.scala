@@ -9,8 +9,8 @@ sealed trait GroupVariation {
 }
 
 class AnyVariation(g: ObjectGroup, v: Byte) extends BasicGroupVariation(g,v)
-
 class SingleBitfield(g: ObjectGroup, v: Byte) extends BasicGroupVariation(g,v)
+class DoubleBitfield(g: ObjectGroup, v: Byte) extends BasicGroupVariation(g,v)
 
 class BasicGroupVariation(g: ObjectGroup, v: Byte) extends  GroupVariation {
   def variation: Byte = v
