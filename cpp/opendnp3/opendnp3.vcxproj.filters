@@ -108,9 +108,6 @@
     <ClInclude Include="include\opendnp3\PointClass.h">
       <Filter>Include Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\opendnp3\QualityConverter.h">
-      <Filter>Include Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\opendnp3\QualityMasks.h">
       <Filter>Include Files</Filter>
     </ClInclude>

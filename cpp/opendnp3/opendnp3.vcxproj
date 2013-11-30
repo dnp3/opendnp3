@@ -190,7 +190,6 @@
     <ClInclude Include="include\opendnp3\MasterStackConfig.h" />
     <ClInclude Include="include\opendnp3\ObjectInterfaces.h" />
     <ClInclude Include="include\opendnp3\PointClass.h" />
-    <ClInclude Include="include\opendnp3\QualityConverter.h" />
     <ClInclude Include="include\opendnp3\QualityMasks.h" />
     <ClInclude Include="include\opendnp3\SimpleCommandHandler.h" />
     <ClInclude Include="include\opendnp3\SimpleDataObserver.h" />
