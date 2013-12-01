@@ -23,6 +23,7 @@
 #ifndef __BUFFER_WRAPPER_H_
 #define __BUFFER_WRAPPER_H_
 
+#include <cstddef>
 #include <cstdint>
 
 namespace openpal

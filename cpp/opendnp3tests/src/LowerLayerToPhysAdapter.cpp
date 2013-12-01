@@ -47,7 +47,8 @@ LowerLayerToPhysAdapter::~LowerLayerToPhysAdapter()
 
 void LowerLayerToPhysAdapter::StartRead()
 {
-	mpPhys->AsyncRead(WriteBuffer(mpBuff, BUFFER_SIZE));
+	WriteBuffer buffer(mpBuff, BUFFER_SIZE);
+	mpPhys->AsyncRead(buffer);
 }
 
 /* Implement IAsyncHandler */
@@ -94,7 +95,8 @@ void LowerLayerToPhysAdapter::_OnLowerLayerShutdown()
 /* Implement ILowerLayer */
 void LowerLayerToPhysAdapter::_Send(const uint8_t* apData, size_t aNumBytes)
 {
-	mpPhys->AsyncWrite(ReadOnlyBuffer(apData, aNumBytes));
+	ReadOnlyBuffer buffer(apData, aNumBytes);
+	mpPhys->AsyncWrite(buffer);
 }
 
 }//end namespace

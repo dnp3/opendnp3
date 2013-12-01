@@ -22,6 +22,7 @@ libopenpal_la_LDFLAGS = -version-info 1:1:0
 libopenpal_la_CXXFLAGS = -I$(OPENPAL_INCLUDE)
 libopenpal_la_SOURCES = \
 cpp/openpal/src/AsyncLayerInterfaces.cpp \
+cpp/openpal/src/BufferWrapper.cpp \
 cpp/openpal/src/Exception.cpp \
 cpp/openpal/src/IHandlerAsync.cpp \
 cpp/openpal/src/LogEntry.cpp \
@@ -31,7 +32,6 @@ cpp/openpal/src/LogTypes.cpp \
 cpp/openpal/src/MonotonicTimestamp.cpp \
 cpp/openpal/src/TimeDuration.cpp \
 cpp/openpal/src/ToHex.cpp
-
 
 #ls cpp/asiopal/src/*.cpp -1 | awk '{print $0" \\"}'
 libasiopal_la_LDFLAGS = -version-info 1:1:0

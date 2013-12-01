@@ -22,7 +22,7 @@
 
 #include <openpal/BufferWrapper.h>
 
-#include <memory>
+#include <cstring>
 
 namespace openpal
 {

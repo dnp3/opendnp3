@@ -42,7 +42,8 @@ PhysLoopback::PhysLoopback(openpal::Logger aLogger, openpal::IPhysicalLayerAsync
 
 void PhysLoopback::StartRead()
 {
-	mpPhys->AsyncRead(WriteBuffer(mBuffer, mBuffer.Size()));
+	WriteBuffer buffer(mBuffer, mBuffer.Size());
+	mpPhys->AsyncRead(buffer);
 }
 
 void PhysLoopback::_OnReceive(const uint8_t* apData, size_t aNumBytes)

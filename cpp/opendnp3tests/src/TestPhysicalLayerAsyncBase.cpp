@@ -35,10 +35,11 @@ BOOST_AUTO_TEST_CASE(ClosedState)
 {
 	AsyncPhysBaseTest t;
 	uint8_t buff;
+	WriteBuffer wb(&buff, 1);
 
 	BOOST_REQUIRE_THROW(t.phys.AsyncClose(), InvalidStateException);
 	BOOST_REQUIRE_THROW(t.upper.SendDown("00"), InvalidStateException);
-	BOOST_REQUIRE_THROW(t.phys.AsyncRead(WriteBuffer(&buff, 1)), InvalidStateException);
+	BOOST_REQUIRE_THROW(t.phys.AsyncRead(wb), InvalidStateException);
 	BOOST_REQUIRE_THROW(t.phys.SignalOpenFailure(), InvalidStateException);
 	BOOST_REQUIRE_THROW(t.phys.SignalOpenSuccess(), InvalidStateException);
 	BOOST_REQUIRE_THROW(t.phys.SignalSendSuccess(), InvalidStateException);
