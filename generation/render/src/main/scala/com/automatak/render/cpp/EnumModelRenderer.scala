@@ -24,21 +24,16 @@ object EnumModelRenderer extends ModelRenderer[EnumModel] {
 
   def render(enum: EnumModel)(implicit indent: Indentation) : Iterator[String] = {
 
-    def pair(ir: IntRender)(ev: EnumValue): String = {
-      List(ev.name, "=", ir(ev.value)).spaced
-    }
+    def pair(ir: IntRender)(ev: EnumValue): String = List(ev.name, "=", ir(ev.value)).spaced
 
     def header: Iterator[String] = Iterator(List("enum","class", enum.name, ":", getType(enum.enumType)).spaced)
 
-    def values : Iterator[String] = {
-      val comments: Iterator[Option[String]] = enum.values.map(ev => ev.comment.map(c => "/// " + c)).iterator
-      val definitions : Iterator[String] = commaDelimited(enum.values.map(pair(enum.render)).iterator)
+    def comments: Iterator[Option[String]] = enum.values.map(ev => ev.comment.map(c => "/// " + c)).iterator
 
-      merge(comments, definitions)
-    }
+    def definitions : Iterator[String] = commaDelimited(enum.values.map(pair(enum.render)).iterator)
 
     header ++ bracketSemiColon {
-      values
+      merge(comments, definitions)
     }
 
   }
