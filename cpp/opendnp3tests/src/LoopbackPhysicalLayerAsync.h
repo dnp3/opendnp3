@@ -60,8 +60,7 @@ private:
 
 	std::deque<uint8_t> mWritten;
 
-	size_t mReadSize;
-	uint8_t* mpReadBuff;
+	openpal::WriteBuffer mBytesForReading;
 };
 }
 

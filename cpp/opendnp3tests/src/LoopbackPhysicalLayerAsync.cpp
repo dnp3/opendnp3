@@ -23,7 +23,6 @@
 #include "LoopbackPhysicalLayerAsync.h"
 
 #include <boost/asio.hpp>
-#include <boost/bind.hpp>
 
 #include <openpal/LoggableMacros.h>
 
@@ -35,18 +34,17 @@ namespace opendnp3
 {
 
 LoopbackPhysicalLayerAsync::LoopbackPhysicalLayerAsync(openpal::Logger aLogger, boost::asio::io_service* apSrv) :
-	PhysicalLayerAsyncASIO(aLogger, apSrv),
-	mReadSize(0),
-	mpReadBuff(NULL)
+	PhysicalLayerAsyncASIO(aLogger, apSrv)	
 {
 
 }
 
 void LoopbackPhysicalLayerAsync::DoOpen()
 {
-	//always open successfully
-	error_code ec(errc::success, get_generic_category());
-	mExecutor.Post(bind(&LoopbackPhysicalLayerAsync::OnOpenCallback, this, ec));
+	//always open successfully	
+	mExecutor.Post([this](){ 
+		this->OnOpenCallback(error_code(errc::success, get_generic_category())); 
+	});				
 }
 
 void LoopbackPhysicalLayerAsync::DoOpenSuccess()
@@ -59,20 +57,19 @@ void LoopbackPhysicalLayerAsync::DoClose()
 	//empty any remaining written data
 	mWritten.erase(mWritten.begin(), mWritten.end());
 
-	//dispatch any pending reads with failures
-	if(mReadSize > 0) {
-		mReadSize = 0;
-		error_code ec(errc::permission_denied, get_generic_category());
-		mExecutor.Post(bind(&LoopbackPhysicalLayerAsync::OnReadCallback, this, ec, mpReadBuff, 0));
+	// dispatch any pending reads with failures
+	if(mBytesForReading.IsNotEmpty()) {		
+		mBytesForReading.Clear();		
+		mExecutor.Post([this](){ 
+			this->OnReadCallback(error_code(errc::permission_denied, get_generic_category()), nullptr, 0);
+		});						
 	}
 }
 
 void LoopbackPhysicalLayerAsync::DoAsyncRead(openpal::WriteBuffer& arBuffer)
 {
-	assert(mReadSize == 0);
-	mReadSize = arBuffer.Size();
-	mpReadBuff = arBuffer;
-
+	assert(mBytesForReading.IsEmpty());
+	mBytesForReading = arBuffer;	
 	this->CheckForReadDispatch();
 }
 
@@ -81,8 +78,12 @@ void LoopbackPhysicalLayerAsync::DoAsyncWrite(const openpal::ReadOnlyBuffer& arB
 	for(size_t i = 0; i < arBuffer.Size(); ++i) mWritten.push_back(arBuffer[i]);
 
 	//always write successfully
-	error_code ec(errc::success, get_generic_category());
-	mExecutor.Post(bind(&LoopbackPhysicalLayerAsync::OnWriteCallback, this, ec, arBuffer.Size()));
+
+	auto size = arBuffer.Size();
+	
+	mExecutor.Post([this, size](){
+		this->OnWriteCallback(error_code(errc::success, get_generic_category()), size);		
+	});
 
 	//now check to see if this write will dispatch a read
 	this->CheckForReadDispatch();
@@ -90,18 +91,19 @@ void LoopbackPhysicalLayerAsync::DoAsyncWrite(const openpal::ReadOnlyBuffer& arB
 
 void LoopbackPhysicalLayerAsync::CheckForReadDispatch()
 {
-	if(mReadSize > 0 && mWritten.size() > 0) {
-		size_t num = (mReadSize < mWritten.size()) ? mReadSize : mWritten.size();
+	if(!mBytesForReading.IsEmpty() && mWritten.size() > 0) {
+		size_t num = (mBytesForReading.Size() < mWritten.size()) ?mBytesForReading.Size() : mWritten.size();
 
 		for(size_t i = 0; i < num; ++i) {
-			mpReadBuff[i] = mWritten.front();
+			mBytesForReading[i] = mWritten.front();
 			mWritten.pop_front();
 		}
 
-		mReadSize = 0;
-
-		error_code ec(errc::success, get_generic_category());
-		mExecutor.Post(bind(&LoopbackPhysicalLayerAsync::OnReadCallback, this, ec, mpReadBuff, num));
+		mBytesForReading.Clear();
+		
+		mExecutor.Post([this, num](){
+			this->OnReadCallback(error_code(errc::success, get_generic_category()), mBytesForReading, num);
+		});
 	}
 
 }

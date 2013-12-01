@@ -34,6 +34,16 @@ namespace openpal
 		return mSize;
 	}
 
+	bool HasSize::IsNotEmpty() const
+	{
+		return mSize > 0;
+	}
+
+	bool HasSize::IsEmpty() const
+	{
+		return mSize == 0;
+	}
+
 	ReadOnlyBuffer::ReadOnlyBuffer(): HasSize(0), mpBuffer(nullptr)
 	{
 	
@@ -58,6 +68,12 @@ namespace openpal
 		HasSize(aSize),
 		mpBuffer(apBuffer)
 	{}
+
+	void WriteBuffer::Clear()
+	{
+		mpBuffer = nullptr;
+		mSize = 0;
+	}
 
 	ReadOnlyBuffer WriteBuffer::ToReadOnly() const
 	{

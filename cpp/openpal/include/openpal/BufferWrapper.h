@@ -36,6 +36,10 @@ public:
 
 	size_t Size() const;
 
+	bool IsEmpty() const;
+
+	bool IsNotEmpty() const;
+
 protected:
 
 	size_t mSize;
@@ -66,6 +70,8 @@ class WriteBuffer : public HasSize
 
     WriteBuffer();
 	WriteBuffer(uint8_t* apBuffer, size_t aSize);
+
+	void Clear();
 
 	ReadOnlyBuffer ToReadOnly() const;
 
