@@ -22,7 +22,10 @@ object EnumValues {
 
   def from(list: List[String], i: Int = 0) : List[EnumValue] = from(list, Iterator.from(i,1))
   def from(list: List[String], iterator: Iterator[Int]) : List[EnumValue] = list.map(s => EnumValue(s, iterator.next(), None))
+}
 
+object EnumValue {
+  def apply(name: String, value: Int, comment: String): EnumValue = EnumValue(name, value, Some(comment))
 }
 
 case class EnumValue(name: String, value: Int, comment: Option[String] = None)

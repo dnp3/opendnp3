@@ -64,7 +64,7 @@ std::string CommandTask::Name() const
 
 void CommandTask::OnFailure()
 {
-	mResponder(CommandResponse(CR_TIMEOUT));
+	mResponder(CommandResponse(CommandResult::TIMEOUT));
 }
 
 TaskResult CommandTask::_OnPartialResponse(const APDU& arAPDU)
@@ -76,15 +76,15 @@ TaskResult CommandTask::_OnPartialResponse(const APDU& arAPDU)
 TaskResult CommandTask::_OnFinalResponse(const APDU& arAPDU)
 {
 	CommandStatus cs = mValidator(arAPDU);
-	if(cs == CS_SUCCESS) {
+	if(cs == CommandStatus::SUCCESS) {
 		if(mCodes.empty()) {
-			mResponder(CommandResponse(CR_RESPONSE_OK, cs));
+			mResponder(CommandResponse(CommandResult::RESPONSE_OK, cs));
 			return TR_SUCCESS;
 		}
 		else return TR_CONTINUE;
 	}
 	else {
-		mResponder(CommandResponse(CR_RESPONSE_OK, cs));
+		mResponder(CommandResponse(CommandResult::RESPONSE_OK, cs));
 		return TR_SUCCESS;
 	}
 }

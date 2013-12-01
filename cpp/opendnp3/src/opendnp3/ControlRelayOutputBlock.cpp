@@ -73,7 +73,7 @@ ControlRelayOutputBlock::ControlRelayOutputBlock(ControlCode aCode, uint8_t aCou
 	mCount(aCount),
 	mOnTimeMS(aOnTime),
 	mOffTimeMS(aOffTime),
-	mStatus(CS_SUCCESS)
+	mStatus(CommandStatus::SUCCESS)
 {
 
 }

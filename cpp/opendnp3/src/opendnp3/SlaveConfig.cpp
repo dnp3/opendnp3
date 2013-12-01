@@ -56,11 +56,11 @@ SlaveConfig::SlaveConfig() :
 	mEventMaxConfig(),
 	mStaticBinary(SBR_GROUP1_VAR2),
 	mStaticAnalog(SAR_GROUP30_VAR1),
-	mStaticCounter(SCR_GROUP20_VAR1),
+	mStaticCounter(SCommandResult::GROUP20_VAR1),
 	mStaticSetpointStatus(SSSR_GROUP40_VAR1),
 	mEventBinary(EBR_GROUP2_VAR1),
 	mEventAnalog(EAR_GROUP32_VAR1),
-	mEventCounter(ECR_GROUP22_VAR1)
+	mEventCounter(ECommandResult::GROUP22_VAR1)
 {}
 
 }

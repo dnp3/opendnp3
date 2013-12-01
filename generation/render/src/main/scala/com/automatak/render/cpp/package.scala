@@ -22,7 +22,9 @@ package object cpp {
 
   private val quote : String = "\""
 
-  def quotes(s: String): String = List(quote, s, quote).mkString
+  def quoted(s: String): String = List(quote, s, quote).mkString
+
+  def bracketed(s: String): String = List("<", s, ">").mkString
 
   def concat(a: Iterator[String], b: Iterator[Option[String]]): Iterator[String] = {
 

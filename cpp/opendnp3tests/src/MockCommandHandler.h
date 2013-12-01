@@ -32,7 +32,7 @@ class MockCommandHandler : public SimpleCommandHandler
 {
 public:
 
-	MockCommandHandler(CommandStatus aStatus = CS_SUCCESS) :
+	MockCommandHandler(CommandStatus aStatus = CommandStatus::SUCCESS) :
 		SimpleCommandHandler([&]() {
 		++mNumInvocations;
 		return mStatus;

@@ -581,12 +581,12 @@ BOOST_AUTO_TEST_CASE(SelectCROBNotSupported)
 	SlaveTestObject t(cfg);
 	t.slave.OnLowerLayerUp();
 
-	t.cmdHandler.SetResponse(CS_NOT_SUPPORTED);
+	t.cmdHandler.SetResponse(CommandStatus::NOT_SUPPORTED);
 
 	// Select group 12 Var 1, count = 1, index = 3
 	t.SendToSlave("C0 03 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00");
 	std::string response = t.Read();
-	BOOST_REQUIRE_EQUAL(response, "C0 81 80 04 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 04"); // 0x04 status == CS_NOT_SUPPORTED
+	BOOST_REQUIRE_EQUAL(response, "C0 81 80 04 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 04"); // 0x04 status == CommandStatus::NOT_SUPPORTED
 }
 BOOST_AUTO_TEST_CASE(SelectCROBTooMany)
 {
@@ -597,7 +597,7 @@ BOOST_AUTO_TEST_CASE(SelectCROBTooMany)
 
 	// Select group 12 Var 1, count = 1, index = 3
 	t.SendToSlave("C0 03 0C 01 17 02 03 01 01 01 00 00 00 01 00 00 00 00 04 01 01 01 00 00 00 01 00 00 00 00");
-	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 00 0C 01 17 02 03 01 01 01 00 00 00 01 00 00 00 00 04 01 01 01 00 00 00 01 00 00 00 08"); // 0x08 status == CS_TOO_MANY_OPS
+	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 00 0C 01 17 02 03 01 01 01 00 00 00 01 00 00 00 00 04 01 01 01 00 00 00 01 00 00 00 08"); // 0x08 status == CommandStatus::TOO_MANY_OPS
 }
 
 BOOST_AUTO_TEST_CASE(SelectOperateCROB)
@@ -608,7 +608,7 @@ BOOST_AUTO_TEST_CASE(SelectOperateCROB)
 
 	// Select group 12 Var 1, count = 1, index = 3
 	t.SendToSlave("C0 03 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00", SI_OTHER);
-	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 00 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00"); // 0x00 status == CS_SUCCESS
+	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 00 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00"); // 0x00 status == CommandStatus::SUCCESS
 
 
 	// operate
@@ -627,7 +627,7 @@ BOOST_AUTO_TEST_CASE(SelectOperateCROBSameSequenceNumber)
 
 	// Select group 12 Var 1, count = 1, index = 3
 	t.SendToSlave("C0 03 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00", SI_OTHER);
-	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 00 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00"); // 0x00 status == CS_SUCCESS
+	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 00 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00"); // 0x00 status == CommandStatus::SUCCESS
 	BOOST_REQUIRE_EQUAL(1, t.cmdHandler.mNumInvocations);
 
 
@@ -697,11 +697,11 @@ BOOST_AUTO_TEST_CASE(SelectOperateGroup41Var1)
 
 	// Select group 41 Var 1, count = 1, index = 3
 	t.SendToSlave("C0 03 29 01 17 01 03 00 00 00 00 00");
-	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 00 29 01 17 01 03 00 00 00 00 00"); // 0x00 status == CS_SUCCESS
+	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 00 29 01 17 01 03 00 00 00 00 00"); // 0x00 status == CommandStatus::SUCCESS
 
 	// Select group 41 Var 1, count = 1, index = 3
 	t.SendToSlave("C1 04 29 01 17 01 03 00 00 00 00 00");
-	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 00 29 01 17 01 03 00 00 00 00 00"); // 0x00 status == CS_SUCCESS
+	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 00 29 01 17 01 03 00 00 00 00 00"); // 0x00 status == CommandStatus::SUCCESS
 
 }
 
@@ -713,12 +713,12 @@ BOOST_AUTO_TEST_CASE(SelectOperateGroup41Var2)
 
 	// Select group 41 Var 2, count = 1, index = 3
 	t.SendToSlave("C0 03 29 02 17 01 03 00 00 00");
-	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 00 29 02 17 01 03 00 00 00"); // 0x00 status == CS_SUCCESS
+	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 00 29 02 17 01 03 00 00 00"); // 0x00 status == CommandStatus::SUCCESS
 
 
 	// Select group 41 Var 1, count = 1, index = 3
 	t.SendToSlave("C1 04 29 02 17 01 03 00 00 00");
-	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 00 29 02 17 01 03 00 00 00"); // 0x00 status == CS_SUCCESS
+	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 00 29 02 17 01 03 00 00 00"); // 0x00 status == CommandStatus::SUCCESS
 
 }
 
@@ -730,11 +730,11 @@ BOOST_AUTO_TEST_CASE(SelectOperateGroup41Var3)
 
 	// Select group 41 Var 3, count = 1, index = 1
 	t.SendToSlave("C0 03 29 03 17 01 01 00 00 C8 42 00");
-	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 00 29 03 17 01 01 00 00 C8 42 00"); // 0x00 status == CS_SUCCESS
+	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 00 29 03 17 01 01 00 00 C8 42 00"); // 0x00 status == CommandStatus::SUCCESS
 
 	// operate group 41 Var 3, count = 1, index = 1
 	t.SendToSlave("C1 04 29 03 17 01 01 00 00 C8 42 00");
-	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 00 29 03 17 01 01 00 00 C8 42 00"); // 0x00 status == CS_SUCCESS
+	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 00 29 03 17 01 01 00 00 C8 42 00"); // 0x00 status == CommandStatus::SUCCESS
 }
 
 BOOST_AUTO_TEST_CASE(SelectOperateGroup41Var4)
@@ -745,12 +745,12 @@ BOOST_AUTO_TEST_CASE(SelectOperateGroup41Var4)
 
 	// Select group 41 Var 4, count = 1, index = 1
 	t.SendToSlave("C0 03 29 04 17 01 01 00 00 00 00 00 00 59 40 00");
-	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 00 29 04 17 01 01 00 00 00 00 00 00 59 40 00"); // 0x00 status == CS_SUCCESS
+	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 00 29 04 17 01 01 00 00 00 00 00 00 59 40 00"); // 0x00 status == CommandStatus::SUCCESS
 
 
 	// operate group 41 Var 4, count = 1, index = 1
 	t.SendToSlave("C1 04 29 04 17 01 01 00 00 00 00 00 00 59 40 00");
-	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 00 29 04 17 01 01 00 00 00 00 00 00 59 40 00"); // 0x00 status == CS_SUCCESS
+	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 00 29 04 17 01 01 00 00 00 00 00 00 59 40 00"); // 0x00 status == CommandStatus::SUCCESS
 }
 
 BOOST_AUTO_TEST_CASE(DirectOperateGroup41Var1)
@@ -761,7 +761,7 @@ BOOST_AUTO_TEST_CASE(DirectOperateGroup41Var1)
 
 	// Select group 41 Var 1, count = 1, index = 3
 	t.SendToSlave("C1 05 29 01 17 01 03 00 00 00 00 00");
-	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 00 29 01 17 01 03 00 00 00 00 00"); // 0x00 status == CS_SUCCESS
+	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 00 29 01 17 01 03 00 00 00 00 00"); // 0x00 status == CommandStatus::SUCCESS
 }
 BOOST_AUTO_TEST_CASE(DirectOperateGroup41Var2)
 {
@@ -771,7 +771,7 @@ BOOST_AUTO_TEST_CASE(DirectOperateGroup41Var2)
 
 	// Select group 41 Var 1, count = 1, index = 3
 	t.SendToSlave("C1 05 29 02 17 01 03 00 00 00");
-	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 00 29 02 17 01 03 00 00 00"); // 0x00 status == CS_SUCCESS
+	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 00 29 02 17 01 03 00 00 00"); // 0x00 status == CommandStatus::SUCCESS
 
 }
 BOOST_AUTO_TEST_CASE(DirectOperateGroup41Var3)
@@ -782,7 +782,7 @@ BOOST_AUTO_TEST_CASE(DirectOperateGroup41Var3)
 
 	// operate group 41 Var 3, count = 1, index = 1
 	t.SendToSlave("C1 05 29 03 17 01 01 00 00 C8 42 00");
-	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 00 29 03 17 01 01 00 00 C8 42 00"); // 0x00 status == CS_SUCCESS
+	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 00 29 03 17 01 01 00 00 C8 42 00"); // 0x00 status == CommandStatus::SUCCESS
 
 }
 BOOST_AUTO_TEST_CASE(DirectOperateGroup41Var4)
@@ -793,7 +793,7 @@ BOOST_AUTO_TEST_CASE(DirectOperateGroup41Var4)
 
 	// operate group 41 Var 4, count = 1, index = 1
 	t.SendToSlave("C1 05 29 04 17 01 01 00 00 00 00 00 00 59 40 00");
-	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 00 29 04 17 01 01 00 00 00 00 00 00 59 40 00"); // 0x00 status == CS_SUCCESS
+	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 00 29 04 17 01 01 00 00 00 00 00 00 59 40 00"); // 0x00 status == CommandStatus::SUCCESS
 }
 
 BOOST_AUTO_TEST_CASE(SelectBadObject)
@@ -804,7 +804,7 @@ BOOST_AUTO_TEST_CASE(SelectBadObject)
 
 	// Select a binary input
 	t.SendToSlave("C0 03 02 01 06");
-	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 01"); // 0x04 status == CS_NOT_SUPPORTED
+	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 01"); // 0x04 status == CommandStatus::NOT_SUPPORTED
 }
 
 BOOST_AUTO_TEST_CASE(OperateBadObject)
@@ -815,7 +815,7 @@ BOOST_AUTO_TEST_CASE(OperateBadObject)
 
 	// Operate a binary input
 	t.SendToSlave("C0 04 02 01 06");
-	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 01"); // 0x04 status == CS_NOT_SUPPORTED
+	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 01"); // 0x04 status == CommandStatus::NOT_SUPPORTED
 }
 BOOST_AUTO_TEST_CASE(DirectOperateBadObject)
 {
@@ -825,7 +825,7 @@ BOOST_AUTO_TEST_CASE(DirectOperateBadObject)
 
 	// Operate a binary input
 	t.SendToSlave("C0 05 02 01 06");
-	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 01"); // 0x04 status == CS_NOT_SUPPORTED
+	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 01"); // 0x04 status == CommandStatus::NOT_SUPPORTED
 }
 
 BOOST_AUTO_TEST_CASE(UnsolEnable)
@@ -1132,22 +1132,22 @@ void TestStaticCounter(StaticCounterResponse aRsp, T aValue, const std::string& 
 
 BOOST_AUTO_TEST_CASE(ReadGrp20Var1)
 {
-	TestStaticCounter(SCR_GROUP20_VAR1, 5, "C0 81 80 00 14 01 00 00 00 01 05 00 00 00");
+	TestStaticCounter(SCommandResult::GROUP20_VAR1, 5, "C0 81 80 00 14 01 00 00 00 01 05 00 00 00");
 }
 
 BOOST_AUTO_TEST_CASE(ReadGrp20Var2)
 {
-	TestStaticCounter(SCR_GROUP20_VAR2, 5, "C0 81 80 00 14 02 00 00 00 01 05 00");
+	TestStaticCounter(SCommandResult::GROUP20_VAR2, 5, "C0 81 80 00 14 02 00 00 00 01 05 00");
 }
 
 BOOST_AUTO_TEST_CASE(ReadGrp20Var5)
 {
-	TestStaticCounter(SCR_GROUP20_VAR5, 5, "C0 81 80 00 14 05 00 00 00 05 00 00 00");
+	TestStaticCounter(SCommandResult::GROUP20_VAR5, 5, "C0 81 80 00 14 05 00 00 00 05 00 00 00");
 }
 
 BOOST_AUTO_TEST_CASE(ReadGrp20Var6)
 {
-	TestStaticCounter(SCR_GROUP20_VAR6, 5, "C0 81 80 00 14 06 00 00 00 05 00");
+	TestStaticCounter(SCommandResult::GROUP20_VAR6, 5, "C0 81 80 00 14 06 00 00 00 05 00");
 }
 
 template <class T>

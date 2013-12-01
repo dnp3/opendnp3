@@ -20,22 +20,25 @@ package com.automatak.render.cpp
 
 import com.automatak.render._
 
-object EnumToString {
+object EnumToString extends HeaderImplModelRender[EnumModel] {
 
-  def signature(name: String) : String = List(stdString, List(name,"ToString(", name," arg)").mkString).mkString(" ")
+  def impl: ModelRenderer[EnumModel]  = ImplRender
+  def header: ModelRenderer[EnumModel]  = HeaderRender
 
-  object HeaderRender extends ModelRenderer[EnumModel] {
+  private def signature(name: String) : String = List(stdString, List(name,"ToString(", name," arg)").mkString).mkString(" ")
+
+  private object HeaderRender extends ModelRenderer[EnumModel] {
     def render(em: EnumModel)(implicit indent: Indentation) : Iterator[String] = Iterator(signature(em.name)+";")
   }
 
-  object ImplRender extends ModelRenderer[EnumModel] {
+  private object ImplRender extends ModelRenderer[EnumModel] {
 
     def render(em: EnumModel)(implicit indent: Indentation) : Iterator[String] = {
 
       def header = Iterator(signature(em.name))
-      def smr = new ReturnSwitchModelRenderer[EnumValue](ev => em.qualified(ev))(ev => quotes(ev.name))
+      def smr = new ReturnSwitchModelRenderer[EnumValue](ev => em.qualified(ev))(ev => quoted(ev.name))
       def switch = smr.render(em.values)
-      def returnDefault = Iterator(List("return ", quotes(em.default.name),";").mkString)
+      def returnDefault = Iterator(List("return ", quoted(em.default.name),";").mkString)
 
       header ++ bracket {
         switch ++

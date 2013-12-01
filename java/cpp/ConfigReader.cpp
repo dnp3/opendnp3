@@ -147,13 +147,13 @@ opendnp3::StaticCounterResponse ConfigReader::ConvertStaticCounter(jint value)
 {
 	switch(value) {
 	case(0):
-		return opendnp3::SCR_GROUP20_VAR1;
+		return opendnp3::SCommandResult::GROUP20_VAR1;
 	case(1):
-		return opendnp3::SCR_GROUP20_VAR2;
+		return opendnp3::SCommandResult::GROUP20_VAR2;
 	case(2):
-		return opendnp3::SCR_GROUP20_VAR5;
+		return opendnp3::SCommandResult::GROUP20_VAR5;
 	default:
-		return opendnp3::SCR_GROUP20_VAR6;
+		return opendnp3::SCommandResult::GROUP20_VAR6;
 	}
 }
 
@@ -207,13 +207,13 @@ opendnp3::EventCounterResponse ConfigReader::ConvertEventCounter(jint value)
 {
 	switch(value) {
 	case(0):
-		return opendnp3::ECR_GROUP22_VAR1;
+		return opendnp3::ECommandResult::GROUP22_VAR1;
 	case(1):
-		return opendnp3::ECR_GROUP22_VAR2;
+		return opendnp3::ECommandResult::GROUP22_VAR2;
 	case(2):
-		return opendnp3::ECR_GROUP22_VAR5;
+		return opendnp3::ECommandResult::GROUP22_VAR5;
 	default:
-		return opendnp3::ECR_GROUP22_VAR6;
+		return opendnp3::ECommandResult::GROUP22_VAR6;
 	}
 }
 

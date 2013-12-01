@@ -98,7 +98,7 @@ CommandStatus SimpleCommandHandler::DirectOperate(const AnalogOutputDouble64& ar
 
 SuccessCommandHandler::SuccessCommandHandler() : SimpleCommandHandler([]()
 {
-	return CS_SUCCESS;
+	return CommandStatus::SUCCESS;
 })
 {
 

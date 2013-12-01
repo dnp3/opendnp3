@@ -57,7 +57,7 @@ BOOST_AUTO_TEST_CASE(FullSequence)
 	frag.Interpret();
 	auto result = ct.OnFinalResponse(frag);
 	BOOST_REQUIRE_EQUAL(TR_SUCCESS, result);
-	BOOST_REQUIRE(CommandResponse::OK(CS_SUCCESS) == rsp);
+	BOOST_REQUIRE(CommandResponse::OK(CommandStatus::SUCCESS) == rsp);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

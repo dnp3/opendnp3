@@ -33,31 +33,31 @@ BOOST_AUTO_TEST_SUITE(CommandTypesSuite)
 
 BOOST_AUTO_TEST_CASE(ByteToCommand)
 {
-	BOOST_REQUIRE_EQUAL(CS_SUCCESS, IntToCommandStatus(0));
-	BOOST_REQUIRE_EQUAL(CS_TIMEOUT, IntToCommandStatus(1));
-	BOOST_REQUIRE_EQUAL(CS_NO_SELECT, IntToCommandStatus(2));
-	BOOST_REQUIRE_EQUAL(CS_FORMAT_ERROR, IntToCommandStatus(3));
-	BOOST_REQUIRE_EQUAL(CS_NOT_SUPPORTED, IntToCommandStatus(4));
-	BOOST_REQUIRE_EQUAL(CS_ALREADY_ACTIVE, IntToCommandStatus(5));
-	BOOST_REQUIRE_EQUAL(CS_HARDWARE_ERROR, IntToCommandStatus(6));
-	BOOST_REQUIRE_EQUAL(CS_LOCAL, IntToCommandStatus(7));
-	BOOST_REQUIRE_EQUAL(CS_TOO_MANY_OPS, IntToCommandStatus(8));
-	BOOST_REQUIRE_EQUAL(CS_NOT_AUTHORIZED, IntToCommandStatus(9));
+	BOOST_REQUIRE_EQUAL(CommandStatus::SUCCESS, IntToCommandStatus(0));
+	BOOST_REQUIRE_EQUAL(CommandStatus::TIMEOUT, IntToCommandStatus(1));
+	BOOST_REQUIRE_EQUAL(CommandStatus::NO_SELECT, IntToCommandStatus(2));
+	BOOST_REQUIRE_EQUAL(CommandStatus::FORMAT_ERROR, IntToCommandStatus(3));
+	BOOST_REQUIRE_EQUAL(CommandStatus::NOT_SUPPORTED, IntToCommandStatus(4));
+	BOOST_REQUIRE_EQUAL(CommandStatus::ALREADY_ACTIVE, IntToCommandStatus(5));
+	BOOST_REQUIRE_EQUAL(CommandStatus::HARDWARE_ERROR, IntToCommandStatus(6));
+	BOOST_REQUIRE_EQUAL(CommandStatus::LOCAL, IntToCommandStatus(7));
+	BOOST_REQUIRE_EQUAL(CommandStatus::TOO_MANY_OPS, IntToCommandStatus(8));
+	BOOST_REQUIRE_EQUAL(CommandStatus::NOT_AUTHORIZED, IntToCommandStatus(9));
 }
 
 BOOST_AUTO_TEST_CASE(CommandToString)
 {
-	BOOST_REQUIRE_EQUAL("CS_SUCCESS", CommandStatusToString(CS_SUCCESS));
-	BOOST_REQUIRE_EQUAL("CS_TIMEOUT", CommandStatusToString(CS_TIMEOUT));
-	BOOST_REQUIRE_EQUAL("CS_NO_SELECT", CommandStatusToString(CS_NO_SELECT));
-	BOOST_REQUIRE_EQUAL("CS_FORMAT_ERROR", CommandStatusToString(CS_FORMAT_ERROR));
-	BOOST_REQUIRE_EQUAL("CS_NOT_SUPPORTED", CommandStatusToString(CS_NOT_SUPPORTED));
-	BOOST_REQUIRE_EQUAL("CS_ALREADY_ACTIVE", CommandStatusToString(CS_ALREADY_ACTIVE));
-	BOOST_REQUIRE_EQUAL("CS_HARDWARE_ERROR", CommandStatusToString(CS_HARDWARE_ERROR));
-	BOOST_REQUIRE_EQUAL("CS_LOCAL", CommandStatusToString(CS_LOCAL));
-	BOOST_REQUIRE_EQUAL("CS_TOO_MANY_OPS", CommandStatusToString(CS_TOO_MANY_OPS));
-	BOOST_REQUIRE_EQUAL("CS_NOT_AUTHORIZED", CommandStatusToString(CS_NOT_AUTHORIZED));
-	BOOST_REQUIRE_EQUAL("Unknown", CommandStatusToString(CS_UNDEFINED));
+	BOOST_REQUIRE_EQUAL("CommandStatus::SUCCESS", CommandStatusToString(CommandStatus::SUCCESS));
+	BOOST_REQUIRE_EQUAL("CommandStatus::TIMEOUT", CommandStatusToString(CommandStatus::TIMEOUT));
+	BOOST_REQUIRE_EQUAL("CommandStatus::NO_SELECT", CommandStatusToString(CommandStatus::NO_SELECT));
+	BOOST_REQUIRE_EQUAL("CommandStatus::FORMAT_ERROR", CommandStatusToString(CommandStatus::FORMAT_ERROR));
+	BOOST_REQUIRE_EQUAL("CommandStatus::NOT_SUPPORTED", CommandStatusToString(CommandStatus::NOT_SUPPORTED));
+	BOOST_REQUIRE_EQUAL("CommandStatus::ALREADY_ACTIVE", CommandStatusToString(CommandStatus::ALREADY_ACTIVE));
+	BOOST_REQUIRE_EQUAL("CommandStatus::HARDWARE_ERROR", CommandStatusToString(CommandStatus::HARDWARE_ERROR));
+	BOOST_REQUIRE_EQUAL("CommandStatus::LOCAL", CommandStatusToString(CommandStatus::LOCAL));
+	BOOST_REQUIRE_EQUAL("CommandStatus::TOO_MANY_OPS", CommandStatusToString(CommandStatus::TOO_MANY_OPS));
+	BOOST_REQUIRE_EQUAL("CommandStatus::NOT_AUTHORIZED", CommandStatusToString(CommandStatus::NOT_AUTHORIZED));
+	BOOST_REQUIRE_EQUAL("Unknown", CommandStatusToString(CommandStatus::UNDEFINED));
 }
 
 BOOST_AUTO_TEST_CASE(ByteToControl)

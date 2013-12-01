@@ -114,7 +114,7 @@ void Master::ProcessIIN(const IINField& arIIN)
 void Master::ProcessCommand(ITask* apTask)
 {
 	if(mpState == AMS_Closed::Inst()) { //we're closed
-		ConstantCommandProcessor ccp(mpExecutor, CommandResponse(CR_NO_COMMS));
+		ConstantCommandProcessor ccp(mpExecutor, CommandResponse(CommandResult::NO_COMMS));
 		while(mCommandQueue.Dispatch(&ccp));
 		apTask->Disable();
 	}

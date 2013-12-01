@@ -225,7 +225,7 @@ BOOST_AUTO_TEST_CASE(SingleSetpoint)
 	itr.SetIndex(1);
 	Group41Var3::Inst()->Write(*itr, s);	
 
-	// group 41 var 4, count = 1, index = 0, value = 100.0, status = CS_SUCCESS
+	// group 41 var 4, count = 1, index = 0, value = 100.0, status = CommandStatus::SUCCESS
 	BOOST_REQUIRE_EQUAL("C0 81 00 00 29 03 17 01 01 00 00 C8 42 00", toHex(frag.ToReadOnly(), true));
 }
 
@@ -244,7 +244,7 @@ BOOST_AUTO_TEST_CASE(DoubleSetpoint)
 
 	Group41Var4::Inst()->Write(*itr, s);	
 
-	// group 41 var 4, count = 1, index = 0, value = 100.0, status = CS_SUCCESS
+	// group 41 var 4, count = 1, index = 0, value = 100.0, status = CommandStatus::SUCCESS
 	BOOST_REQUIRE_EQUAL("C0 81 00 00 29 04 17 01 01 00 00 00 00 00 00 59 40 00", toHex(frag.ToReadOnly(), true));
 }
 

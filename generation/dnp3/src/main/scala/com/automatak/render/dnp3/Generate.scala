@@ -12,7 +12,7 @@ object Generate {
   def main(args: Array[String]): Unit = {
 
     // generate all enumerations
-    EnumGenerator(opendnp3, cppSource)
+    EnumGenerator(opendnp3, cppInclude, cppSource)
 
   }
 

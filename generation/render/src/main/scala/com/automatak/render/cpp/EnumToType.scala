@@ -20,15 +20,18 @@ package com.automatak.render.cpp
 
 import com.automatak.render._
 
-object EnumToType {
+object EnumToType extends HeaderImplModelRender[EnumModel] {
+
+  def header: ModelRenderer[EnumModel] = HeaderRender
+  def impl: ModelRenderer[EnumModel] =  ImplRender
 
   private def signature(em: EnumModel) : String = List(getType(em.enumType), List(em.name,"ToType(", em.name," arg)").mkString).mkString(" ")
 
-  object HeaderRender extends ModelRenderer[EnumModel] {
+  private object HeaderRender extends ModelRenderer[EnumModel] {
     def render(em: EnumModel)(implicit indent: Indentation) : Iterator[String] = Iterator(signature(em)+";")
   }
 
-  object ImplRender extends ModelRenderer[EnumModel] {
+  private object ImplRender extends ModelRenderer[EnumModel] {
     def render(em: EnumModel)(implicit indent: Indentation) : Iterator[String] = {
       Iterator(signature(em)) ++ bracket {
         Iterator(List("return ", staticCast(em.enumType)("arg"),";").mkString)

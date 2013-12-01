@@ -130,7 +130,7 @@ CommandStatus OutstationSBOHandler::Select(const T& arCommand, size_t aIndex, ui
 	mCurrentSequenceNum = aSequence;
 
 	CommandStatus status =  mpCmdHandler->Select(arCommand, aIndex);
-	if(status == CS_SUCCESS) { //outstation supports this point
+	if(status == CommandStatus::SUCCESS) { //outstation supports this point
 		auto time = mpExecutor->GetTime();
 		SelectInfo<T> info(arCommand, aSequence, aCode, time);
 		arMap[aIndex] = info; // record the select by index
@@ -144,7 +144,7 @@ CommandStatus OutstationSBOHandler::Operate(const T& arCommand, size_t aIndex, u
 	auto iter = arMap.find(aIndex);
 	if(iter == arMap.end()) {
 		this->ClearAll();
-		return CS_NO_SELECT; //no prior select
+		return CommandStatus::NO_SELECT; //no prior select
 	}
 	else {
 		// what should the sequence number be?
@@ -155,18 +155,18 @@ CommandStatus OutstationSBOHandler::Operate(const T& arCommand, size_t aIndex, u
 			auto now = mpExecutor->GetTime();
 			if((now.milliseconds - iter->second.mTimestamp.milliseconds) < mSelectTimeout.GetMilliseconds()) {
 				if(iter->second.mOperated) {
-					return CS_SUCCESS;
+					return CommandStatus::SUCCESS;
 				}
 				else {
 					iter->second.mOperated = true;
 					return mpCmdHandler->Operate(arCommand, aIndex);
 				}
 			}
-			else return CS_TIMEOUT;
+			else return CommandStatus::TIMEOUT;
 		}
 		else {
 			this->ClearAll();
-			return CS_NO_SELECT;
+			return CommandStatus::NO_SELECT;
 		}
 	}
 }
