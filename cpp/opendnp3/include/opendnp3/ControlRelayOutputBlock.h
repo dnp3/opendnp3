@@ -29,7 +29,7 @@
 #ifndef __CONTROL_RELAY_OUTPUT_BLOCK_H_
 #define __CONTROL_RELAY_OUTPUT_BLOCK_H_
 
-#include "CommandStatus.h"
+#include "gen/CommandStatus.h"
 
 namespace opendnp3
 {

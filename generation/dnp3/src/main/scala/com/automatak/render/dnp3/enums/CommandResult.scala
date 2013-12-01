@@ -9,7 +9,7 @@ object CommandResult {
 
   private val codes = List(
        EnumValue("RESPONSE_OK", 0,  "A response was received from the outstation, check the CommandStatus enumeration"),
-       EnumValue("RTIMEOUT", 1,  "The operation timed out without a response"),
+       EnumValue("TIMEOUT", 1,  "The operation timed out without a response"),
        EnumValue("NO_COMMS", 2,  "There is no communication with the outstation, and the command was not attempted")
   )
 

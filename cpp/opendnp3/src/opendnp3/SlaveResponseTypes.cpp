@@ -76,10 +76,10 @@ StreamObject<Analog>* SlaveResponseTypes::GetStaticAnalog(StaticAnalogResponse r
 StreamObject<Counter>* SlaveResponseTypes::GetStaticCounter(StaticCounterResponse rsp)
 {
 	switch(rsp) {
-	case(SCommandResult::GROUP20_VAR1): return Group20Var1::Inst();
-	case(SCommandResult::GROUP20_VAR2): return Group20Var2::Inst();
-	case(SCommandResult::GROUP20_VAR5): return Group20Var5::Inst();
-	case(SCommandResult::GROUP20_VAR6): return Group20Var6::Inst();
+	case(SCR_GROUP20_VAR1): return Group20Var1::Inst();
+	case(SCR_GROUP20_VAR2): return Group20Var2::Inst();
+	case(SCR_GROUP20_VAR5): return Group20Var5::Inst();
+	case(SCR_GROUP20_VAR6): return Group20Var6::Inst();
 	default:
 		MACRO_THROW_EXCEPTION(ArgumentException, "Invalid static counter");
 	}
@@ -127,10 +127,10 @@ StreamObject<Analog>* SlaveResponseTypes::GetEventAnalog(EventAnalogResponse rsp
 StreamObject<Counter>* SlaveResponseTypes::GetEventCounter(EventCounterResponse rsp)
 {
 	switch(rsp) {
-	case(ECommandResult::GROUP22_VAR1): return Group22Var1::Inst();
-	case(ECommandResult::GROUP22_VAR2): return Group22Var2::Inst();
-	case(ECommandResult::GROUP22_VAR5): return Group22Var5::Inst();
-	case(ECommandResult::GROUP22_VAR6): return Group22Var6::Inst();
+	case(ECR_GROUP22_VAR1): return Group22Var1::Inst();
+	case(ECR_GROUP22_VAR2): return Group22Var2::Inst();
+	case(ECR_GROUP22_VAR5): return Group22Var5::Inst();
+	case(ECR_GROUP22_VAR6): return Group22Var6::Inst();
 	default:
 		MACRO_THROW_EXCEPTION(ArgumentException, "Invalid event counter");
 	}

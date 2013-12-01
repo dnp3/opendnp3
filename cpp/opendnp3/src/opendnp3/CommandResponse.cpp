@@ -35,13 +35,13 @@ namespace opendnp3
 {
 	
 CommandResponse::CommandResponse(CommandResult aResult, CommandStatus aStatus) : 
-	mResult(CR_NO_COMMS), 
+	mResult(CommandResult::NO_COMMS), 
 	mStatus(aStatus) 
 {}
 
 CommandResponse CommandResponse::OK(CommandStatus aStatus)
 {
-	return CommandResponse(CR_RESPONSE_OK, aStatus); 
+	return CommandResponse(CommandResult::RESPONSE_OK, aStatus); 
 }
 	
 CommandResult CommandResponse::GetResult()
@@ -58,7 +58,7 @@ bool CommandResponse::operator==(const CommandResponse& arRHS)
 std::string CommandResponse::ToString() const
 {
 	std::ostringstream oss;
-	if(mResult == CR_RESPONSE_OK) oss << "Response: " << CommandStatusToString(mStatus);
+	if(mResult == CommandResult::RESPONSE_OK) oss << "Response: " << CommandStatusToString(mStatus);
 	else oss << "Failure: " << CommandResultToString(mResult);
 	return oss.str();
 }

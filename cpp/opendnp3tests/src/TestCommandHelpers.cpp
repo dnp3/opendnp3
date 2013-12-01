@@ -50,8 +50,8 @@ BOOST_AUTO_TEST_CASE(ConfigurationAndValidation)
 		rsp.Write(hs);
 		rsp.Interpret();
 	}
-	CommandStatus status = validator(rsp);
-	BOOST_REQUIRE_EQUAL(CommandStatus::SUCCESS, status);
+	auto status = validator(rsp);
+	BOOST_REQUIRE(CommandStatus::SUCCESS == status);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

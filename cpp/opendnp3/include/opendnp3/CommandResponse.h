@@ -29,7 +29,8 @@
 #ifndef __COMMAND_RESPONSE_H_
 #define __COMMAND_RESPONSE_H_
 
-#include "CommandStatus.h"
+#include "gen/CommandStatus.h"
+#include "gen/CommandResult.h"
 
 namespace opendnp3
 {
@@ -41,7 +42,7 @@ class CommandResponse
 {
 public:
 	
-	CommandResponse(CommandResult aResult = CR_NO_COMMS, CommandStatus aStatus = CS_UNDEFINED);
+	CommandResponse(CommandResult aResult = CommandResult::NO_COMMS, CommandStatus aStatus = CommandStatus::UNDEFINED);
 
 	static CommandResponse OK(CommandStatus aStatus);
 	

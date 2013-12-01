@@ -29,7 +29,7 @@
 #ifndef __ANALOG_OUTPUT_H_
 #define __ANALOG_OUTPUT_H_
 
-#include "CommandStatus.h"
+#include "gen/CommandStatus.h"
 
 namespace opendnp3
 {
@@ -48,12 +48,12 @@ public:
 	*/
 	AnalogOutput(T aValue) :
 		mValue(aValue),
-		mStatus(CommandStatus::CS_SUCCESS)
+		mStatus(CommandStatus::SUCCESS)
 	{}
 
 	AnalogOutput() :
 		mValue(0),
-		mStatus(CommandStatus::CS_SUCCESS)
+		mStatus(CommandStatus::SUCCESS)
 	{}
 
 #ifndef OPENDNP3_STRIP_LOG_MESSAGES

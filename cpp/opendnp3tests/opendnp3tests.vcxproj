@@ -279,7 +279,6 @@
     <ClCompile Include="src\TestChangeBuffer.cpp" />
     <ClCompile Include="src\TestCommandHelpers.cpp" />
     <ClCompile Include="src\TestCommandTask.cpp" />
-    <ClCompile Include="src\TestCommandTypes.cpp" />
     <ClCompile Include="src\TestCRC.cpp" />
     <ClCompile Include="src\TestDatabase.cpp" />
     <ClCompile Include="src\TestDNP3Manager.cpp" />

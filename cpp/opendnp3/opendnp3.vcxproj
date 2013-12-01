@@ -157,8 +157,9 @@
     <ClInclude Include="include\opendnp3\ChannelStates.h" />
     <ClInclude Include="include\opendnp3\ClassMask.h" />
     <ClInclude Include="include\opendnp3\CommandResponse.h" />
-    <ClInclude Include="include\opendnp3\CommandStatus.h" />
     <ClInclude Include="include\opendnp3\ControlRelayOutputBlock.h" />
+    <ClInclude Include="include\opendnp3\gen\CommandResult.h" />
+    <ClInclude Include="include\opendnp3\gen\CommandStatus.h" />
     <ClInclude Include="include\opendnp3\MasterScan.h" />
     <ClInclude Include="include\opendnp3\IMeasurementHandler.h" />
     <ClInclude Include="include\opendnp3\IMeasurementUpdate.h" />
@@ -321,7 +322,6 @@
     <ClCompile Include="src\opendnp3\ChannelStates.cpp" />
     <ClCompile Include="src\opendnp3\ClassCounter.cpp" />
     <ClCompile Include="src\opendnp3\CommandResponse.cpp" />
-    <ClCompile Include="src\opendnp3\CommandStatus.cpp" />
     <ClCompile Include="src\opendnp3\CommandTask.cpp" />
     <ClCompile Include="src\opendnp3\ConstantCommandProcessor.cpp" />
     <ClCompile Include="src\opendnp3\ControlRelayOutputBlock.cpp" />
@@ -330,6 +330,8 @@
     <ClCompile Include="src\opendnp3\Database.cpp" />
     <ClCompile Include="src\opendnp3\DataPoll.cpp" />
     <ClCompile Include="src\opendnp3\FunctionCodeHelpers.cpp" />
+    <ClCompile Include="src\opendnp3\gen\CommandResult.cpp" />
+    <ClCompile Include="src\opendnp3\gen\CommandStatus.cpp" />
     <ClCompile Include="src\opendnp3\gen\FunctionCode.cpp" />
     <ClCompile Include="src\opendnp3\gen\LinkFunction.cpp" />
     <ClCompile Include="src\opendnp3\gen\QualifierCode.cpp" />

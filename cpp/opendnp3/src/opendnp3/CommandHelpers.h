@@ -74,12 +74,12 @@ CommandStatus CommandHelpers::ValidateCommandResponse(const APDU& arAPDU, Comman
 			if(obj.Count() == 1 && obj->Index() == aIndex) { //compare what was written to what was received
 				T cmd = apObj->Read(*obj);
 				if(arData == apObj->GetValueBytes(*obj)) return cmd.mStatus;
-				else return CS_FORMAT_ERROR;
+				else return CommandStatus::FORMAT_ERROR;
 			}
 		}
 	}
 
-	return CS_UNDEFINED;
+	return CommandStatus::UNDEFINED;
 }
 
 }

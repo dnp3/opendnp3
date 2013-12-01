@@ -23,8 +23,8 @@ std::string CommandResultToString(CommandResult arg)
   {
     case(CommandResult::RESPONSE_OK):
       return "RESPONSE_OK";
-    case(CommandResult::RTIMEOUT):
-      return "RTIMEOUT";
+    case(CommandResult::TIMEOUT):
+      return "TIMEOUT";
     case(CommandResult::NO_COMMS):
       return "NO_COMMS";
   }

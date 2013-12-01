@@ -134,11 +134,11 @@ CommandResponse Conversions::convertCommandResponse(opendnp3::CommandResponse re
 CommandResult Conversions::convertCommandResult(opendnp3::CommandResult result)
 {
 	switch(result) {
-		case(opendnp3::CR_RESPONSE_OK):
+		case(opendnp3::CommandResult::RESPONSE_OK):
 			return CommandResult::RESPONSE_OK;
-		case(opendnp3::CR_TIMEOUT):
+		case(opendnp3::CommandResult::TIMEOUT):
 			return CommandResult::TIMEOUT;
-		case(opendnp3::CR_NO_COMMS):
+		case(opendnp3::CommandResult::NO_COMMS):
 			return CommandResult::NO_COMMS;
 		default:
 			return CommandResult::NO_COMMS;
@@ -148,25 +148,25 @@ CommandResult Conversions::convertCommandResult(opendnp3::CommandResult result)
 CommandStatus Conversions::convertCommandStatus(opendnp3::CommandStatus status)
 {
 	switch(status) {
-	case(opendnp3::CS_SUCCESS):
+	case(opendnp3::CommandStatus::SUCCESS):
 		return CommandStatus::SUCCESS;
-	case(opendnp3::CS_TIMEOUT):
+	case(opendnp3::CommandStatus::TIMEOUT):
 		return CommandStatus::TIMEOUT;
-	case(opendnp3::CS_NO_SELECT):
+	case(opendnp3::CommandStatus::NO_SELECT):
 		return CommandStatus::NO_SELECT;
-	case(opendnp3::CS_FORMAT_ERROR):
+	case(opendnp3::CommandStatus::FORMAT_ERROR):
 		return CommandStatus::FORMAT_ERROR;
-	case(opendnp3::CS_NOT_SUPPORTED):
+	case(opendnp3::CommandStatus::NOT_SUPPORTED):
 		return CommandStatus::NOT_SUPPORTED;
-	case(opendnp3::CS_ALREADY_ACTIVE):
+	case(opendnp3::CommandStatus::ALREADY_ACTIVE):
 		return CommandStatus::ALREADY_ACTIVE;
-	case(opendnp3::CS_HARDWARE_ERROR):
+	case(opendnp3::CommandStatus::HARDWARE_ERROR):
 		return CommandStatus::HARDWARE_ERROR;
-	case(opendnp3::CS_LOCAL):
+	case(opendnp3::CommandStatus::LOCAL):
 		return CommandStatus::LOCAL;
-	case(opendnp3::CS_TOO_MANY_OPS):
+	case(opendnp3::CommandStatus::TOO_MANY_OPS):
 		return CommandStatus::TOO_MANY_OPS;
-	case(opendnp3::CS_NOT_AUTHORIZED):
+	case(opendnp3::CommandStatus::NOT_AUTHORIZED):
 		return CommandStatus::NOT_AUTHORIZED;
 
 	default:
@@ -178,28 +178,28 @@ opendnp3::CommandStatus Conversions::convertCommandStatus(CommandStatus status)
 {
 	switch(status) {
 	case(CommandStatus::SUCCESS):
-		return opendnp3::CS_SUCCESS;
+		return opendnp3::CommandStatus::SUCCESS;
 	case(CommandStatus::TIMEOUT):
-		return opendnp3::CS_TIMEOUT;
+		return opendnp3::CommandStatus::TIMEOUT;
 	case(CommandStatus::NO_SELECT):
-		return opendnp3::CS_NO_SELECT;
+		return opendnp3::CommandStatus::NO_SELECT;
 	case(CommandStatus::FORMAT_ERROR):
-		return opendnp3::CS_FORMAT_ERROR;
+		return opendnp3::CommandStatus::FORMAT_ERROR;
 	case(CommandStatus::NOT_SUPPORTED):
-		return opendnp3::CS_NOT_SUPPORTED;
+		return opendnp3::CommandStatus::NOT_SUPPORTED;
 	case(CommandStatus::ALREADY_ACTIVE):
-		return opendnp3::CS_ALREADY_ACTIVE;
+		return opendnp3::CommandStatus::ALREADY_ACTIVE;
 	case(CommandStatus::HARDWARE_ERROR):
-		return opendnp3::CS_HARDWARE_ERROR;
+		return opendnp3::CommandStatus::HARDWARE_ERROR;
 	case(CommandStatus::LOCAL):
-		return opendnp3::CS_LOCAL;
+		return opendnp3::CommandStatus::LOCAL;
 	case(CommandStatus::TOO_MANY_OPS):
-		return opendnp3::CS_TOO_MANY_OPS;
+		return opendnp3::CommandStatus::TOO_MANY_OPS;
 	case(CommandStatus::NOT_AUTHORIZED):
-		return opendnp3::CS_NOT_AUTHORIZED;
+		return opendnp3::CommandStatus::NOT_AUTHORIZED;
 
 	default:
-		return opendnp3::CS_UNDEFINED;
+		return opendnp3::CommandStatus::UNDEFINED;
 	}
 }
 

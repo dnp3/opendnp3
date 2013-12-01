@@ -1132,22 +1132,22 @@ void TestStaticCounter(StaticCounterResponse aRsp, T aValue, const std::string& 
 
 BOOST_AUTO_TEST_CASE(ReadGrp20Var1)
 {
-	TestStaticCounter(SCommandResult::GROUP20_VAR1, 5, "C0 81 80 00 14 01 00 00 00 01 05 00 00 00");
+	TestStaticCounter(SCR_GROUP20_VAR1, 5, "C0 81 80 00 14 01 00 00 00 01 05 00 00 00");
 }
 
 BOOST_AUTO_TEST_CASE(ReadGrp20Var2)
 {
-	TestStaticCounter(SCommandResult::GROUP20_VAR2, 5, "C0 81 80 00 14 02 00 00 00 01 05 00");
+	TestStaticCounter(SCR_GROUP20_VAR2, 5, "C0 81 80 00 14 02 00 00 00 01 05 00");
 }
 
 BOOST_AUTO_TEST_CASE(ReadGrp20Var5)
 {
-	TestStaticCounter(SCommandResult::GROUP20_VAR5, 5, "C0 81 80 00 14 05 00 00 00 05 00 00 00");
+	TestStaticCounter(SCR_GROUP20_VAR5, 5, "C0 81 80 00 14 05 00 00 00 05 00 00 00");
 }
 
 BOOST_AUTO_TEST_CASE(ReadGrp20Var6)
 {
-	TestStaticCounter(SCommandResult::GROUP20_VAR6, 5, "C0 81 80 00 14 06 00 00 00 05 00");
+	TestStaticCounter(SCR_GROUP20_VAR6, 5, "C0 81 80 00 14 06 00 00 00 05 00");
 }
 
 template <class T>

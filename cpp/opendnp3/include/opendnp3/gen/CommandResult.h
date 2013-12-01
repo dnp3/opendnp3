@@ -26,7 +26,7 @@ enum class CommandResult : uint8_t
   /// A response was received from the outstation, check the CommandStatus enumeration
   RESPONSE_OK = 0,
   /// The operation timed out without a response
-  RTIMEOUT = 1,
+  TIMEOUT = 1,
   /// There is no communication with the outstation, and the command was not attempted
   NO_COMMS = 2
 };

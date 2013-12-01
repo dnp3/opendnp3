@@ -119,10 +119,7 @@ jint ConfigReader::GetEnumId(JNIEnv* apEnv, jobject jenum)
 
 opendnp3::StaticBinaryResponse ConfigReader::ConvertStaticBinary(jint value)
 {
-	switch(value) {
-	default:
-		return SBR_GROUP1_VAR2;
-	}
+	return SBR_GROUP1_VAR2;	
 }
 
 opendnp3::StaticAnalogResponse ConfigReader::ConvertStaticAnalog(jint value)
@@ -147,13 +144,13 @@ opendnp3::StaticCounterResponse ConfigReader::ConvertStaticCounter(jint value)
 {
 	switch(value) {
 	case(0):
-		return opendnp3::SCommandResult::GROUP20_VAR1;
+		return opendnp3::SCR_GROUP20_VAR1;
 	case(1):
-		return opendnp3::SCommandResult::GROUP20_VAR2;
+		return opendnp3::SCR_GROUP20_VAR2;
 	case(2):
-		return opendnp3::SCommandResult::GROUP20_VAR5;
+		return opendnp3::SCR_GROUP20_VAR5;
 	default:
-		return opendnp3::SCommandResult::GROUP20_VAR6;
+		return opendnp3::SCR_GROUP20_VAR6;
 	}
 }
 
@@ -207,13 +204,13 @@ opendnp3::EventCounterResponse ConfigReader::ConvertEventCounter(jint value)
 {
 	switch(value) {
 	case(0):
-		return opendnp3::ECommandResult::GROUP22_VAR1;
+		return opendnp3::ECR_GROUP22_VAR1;
 	case(1):
-		return opendnp3::ECommandResult::GROUP22_VAR2;
+		return opendnp3::ECR_GROUP22_VAR2;
 	case(2):
-		return opendnp3::ECommandResult::GROUP22_VAR5;
+		return opendnp3::ECR_GROUP22_VAR5;
 	default:
-		return opendnp3::ECommandResult::GROUP22_VAR6;
+		return opendnp3::ECR_GROUP22_VAR6;
 	}
 }
 
@@ -272,17 +269,6 @@ MasterConfig ConfigReader::ConvertMasterConfig(JNIEnv* apEnv, jobject jCfg)
 	cfg.UnsolClassMask = JNIHelpers::GetIntField(apEnv, jCfg, "unsolClassMask");
 	cfg.IntegrityRate = TimeDuration::Milliseconds(JNIHelpers::GetLongField(apEnv, jCfg, "integrityRateMs"));
 	cfg.TaskRetryRate = TimeDuration::Milliseconds(JNIHelpers::GetLongField(apEnv, jCfg, "taskRetryRateMs"));
-
-/*  TODO - convert Java to new scan api
-
-	jobject list = JNIHelpers::GetObjectField(apEnv, jCfg, "scans", "Ljava/util/List;");
-
-	JNIHelpers::IterateOverListOfObjects(apEnv, list, [&](jobject scan) {
-		int mask = JNIHelpers::GetIntField(apEnv, scan, "classMask");
-		long rate = JNIHelpers::GetLongField(apEnv, scan, "scanRateMs");
-		cfg.AddExceptionScan(mask, TimeDuration::Milliseconds(rate));
-	});
-*/
 
 	return cfg;
 }
