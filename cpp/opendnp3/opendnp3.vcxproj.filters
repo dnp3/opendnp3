@@ -480,6 +480,9 @@
     <ClInclude Include="include\opendnp3\gen\CommandStatus.h">
       <Filter>Include Files\gen</Filter>
     </ClInclude>
+    <ClInclude Include="include\opendnp3\gen\ControlCode.h">
+      <Filter>Include Files\gen</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\opendnp3\AnalogOutput.cpp">
@@ -777,6 +780,9 @@
       <Filter>Source Files\gen</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\gen\CommandStatus.cpp">
+      <Filter>Source Files\gen</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\gen\ControlCode.cpp">
       <Filter>Source Files\gen</Filter>
     </ClCompile>
   </ItemGroup>

@@ -68,7 +68,7 @@ namespace DotNetMasterDemo
                 switch (Console.ReadLine())
                 { 
                     case "c":
-                        var crob = new ControlRelayOutputBlock(ControlCode.CC_PULSE, 1, 100, 100);
+                        var crob = new ControlRelayOutputBlock(ControlCode.PULSE, 1, 100, 100);
                         var future = master.GetCommandProcessor().SelectAndOperate(crob, 0);
                         future.Listen((result) => Console.WriteLine("Result: " + result));
                         break;

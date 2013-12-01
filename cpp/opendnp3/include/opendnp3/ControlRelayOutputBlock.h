@@ -30,44 +30,10 @@
 #define __CONTROL_RELAY_OUTPUT_BLOCK_H_
 
 #include "gen/CommandStatus.h"
+#include "gen/ControlCode.h"
 
 namespace opendnp3
 {
-
-/**
- * There are a number of types of controls. The best way to understand this
- * difference is to think about the hardware controls the communication
- * protocols are emulating. The most common to use are CC_PULSE,
- * CC_LATCH_ON and CC_LATCH_OFF.
- *
- * NOTE: Current implementation doesn't support queue/clear.
- */
-enum ControlCode {
-	CC_NULL = 0,			//!< illegal command code (used internally)
-	CC_PULSE = 0x01,		//!< a 'push-button' interface, can only be pressed one way (reset button on pedometer)
-	CC_LATCH_ON = 0x03,		//!< a 'light-switch' moved to the ON position
-	CC_LATCH_OFF = 0x04,	//!< a 'light-switch' moved to the OFF position
-	CC_PULSE_CLOSE = 0x41,	//!< a 'doorbell' that rings while the button is depressed
-	CC_PULSE_TRIP = 0x81,	//!< a 'doorbell' that stops ringing (is normally on) while depreseed
-	CC_UNDEFINED = 0xFF		//!< undefined command (used by DNP standard)
-};
-
-/**
-* Converts an integer to a control code
-*
-* @param aField The integer to convert
-* @return ControlCode enumeration corresponding to the integer
-*/
-ControlCode IntToControlCode(int aField);
-
-/**
-* Converts a control code to string representation
-*
-* @param aCode The control code to convert
-* @return string representation of the code
-*/
-std::string ControlCodeToString(ControlCode aType);
-
 
 /**
  * Describes an incoming control request from the master. It is the
@@ -80,7 +46,7 @@ class ControlRelayOutputBlock
 {
 public:
 
-	ControlRelayOutputBlock(ControlCode aCode = CC_LATCH_ON, uint8_t aCount = 1, uint32_t aOnTime = 100, uint32_t aOffTime = 100);
+	ControlRelayOutputBlock(ControlCode aCode = ControlCode::LATCH_ON, uint8_t aCount = 1, uint32_t aOnTime = 100, uint32_t aOffTime = 100);
 
 	/// @return the ControlCode enumeration corresponding to the raw code
 	ControlCode GetCode() const;

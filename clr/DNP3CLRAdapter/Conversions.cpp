@@ -133,114 +133,27 @@ CommandResponse Conversions::convertCommandResponse(opendnp3::CommandResponse re
 
 CommandResult Conversions::convertCommandResult(opendnp3::CommandResult result)
 {
-	switch(result) {
-		case(opendnp3::CommandResult::RESPONSE_OK):
-			return CommandResult::RESPONSE_OK;
-		case(opendnp3::CommandResult::TIMEOUT):
-			return CommandResult::TIMEOUT;
-		case(opendnp3::CommandResult::NO_COMMS):
-			return CommandResult::NO_COMMS;
-		default:
-			return CommandResult::NO_COMMS;
-	}
+	return (CommandResult) result;
 }
 
 CommandStatus Conversions::convertCommandStatus(opendnp3::CommandStatus status)
 {
-	switch(status) {
-	case(opendnp3::CommandStatus::SUCCESS):
-		return CommandStatus::SUCCESS;
-	case(opendnp3::CommandStatus::TIMEOUT):
-		return CommandStatus::TIMEOUT;
-	case(opendnp3::CommandStatus::NO_SELECT):
-		return CommandStatus::NO_SELECT;
-	case(opendnp3::CommandStatus::FORMAT_ERROR):
-		return CommandStatus::FORMAT_ERROR;
-	case(opendnp3::CommandStatus::NOT_SUPPORTED):
-		return CommandStatus::NOT_SUPPORTED;
-	case(opendnp3::CommandStatus::ALREADY_ACTIVE):
-		return CommandStatus::ALREADY_ACTIVE;
-	case(opendnp3::CommandStatus::HARDWARE_ERROR):
-		return CommandStatus::HARDWARE_ERROR;
-	case(opendnp3::CommandStatus::LOCAL):
-		return CommandStatus::LOCAL;
-	case(opendnp3::CommandStatus::TOO_MANY_OPS):
-		return CommandStatus::TOO_MANY_OPS;
-	case(opendnp3::CommandStatus::NOT_AUTHORIZED):
-		return CommandStatus::NOT_AUTHORIZED;
-
-	default:
-		return CommandStatus::UNDEFINED;
-	}
+	return (CommandStatus) status;
 }
 
 opendnp3::CommandStatus Conversions::convertCommandStatus(CommandStatus status)
 {
-	switch(status) {
-	case(CommandStatus::SUCCESS):
-		return opendnp3::CommandStatus::SUCCESS;
-	case(CommandStatus::TIMEOUT):
-		return opendnp3::CommandStatus::TIMEOUT;
-	case(CommandStatus::NO_SELECT):
-		return opendnp3::CommandStatus::NO_SELECT;
-	case(CommandStatus::FORMAT_ERROR):
-		return opendnp3::CommandStatus::FORMAT_ERROR;
-	case(CommandStatus::NOT_SUPPORTED):
-		return opendnp3::CommandStatus::NOT_SUPPORTED;
-	case(CommandStatus::ALREADY_ACTIVE):
-		return opendnp3::CommandStatus::ALREADY_ACTIVE;
-	case(CommandStatus::HARDWARE_ERROR):
-		return opendnp3::CommandStatus::HARDWARE_ERROR;
-	case(CommandStatus::LOCAL):
-		return opendnp3::CommandStatus::LOCAL;
-	case(CommandStatus::TOO_MANY_OPS):
-		return opendnp3::CommandStatus::TOO_MANY_OPS;
-	case(CommandStatus::NOT_AUTHORIZED):
-		return opendnp3::CommandStatus::NOT_AUTHORIZED;
-
-	default:
-		return opendnp3::CommandStatus::UNDEFINED;
-	}
+	return (opendnp3::CommandStatus) status;
 }
 
 ControlCode Conversions::convertControlCode(opendnp3::ControlCode code)
 {
-	switch(code) {
-	case (opendnp3::CC_NULL):
-		return ControlCode::CC_NULL;
-	case (opendnp3::CC_PULSE):
-		return ControlCode::CC_PULSE;
-	case (opendnp3::CC_LATCH_ON):
-		return ControlCode::CC_LATCH_ON;
-	case (opendnp3::CC_LATCH_OFF):
-		return ControlCode::CC_LATCH_OFF;
-	case (opendnp3::CC_PULSE_CLOSE):
-		return ControlCode::CC_PULSE_CLOSE;
-	case (opendnp3::CC_PULSE_TRIP):
-		return ControlCode::CC_PULSE_TRIP;
-	default:
-		return ControlCode::CC_UNDEFINED;
-	}
+	return (ControlCode) ControlCodeToType(code);
 }
 
 opendnp3::ControlCode Conversions::convertControlCode(ControlCode code)
 {
-	switch(code) {
-	case (ControlCode::CC_NULL):
-		return opendnp3::CC_NULL;
-	case (ControlCode::CC_PULSE):
-		return opendnp3::CC_PULSE;
-	case (ControlCode::CC_LATCH_ON):
-		return opendnp3::CC_LATCH_ON;
-	case (ControlCode::CC_LATCH_OFF):
-		return opendnp3::CC_LATCH_OFF;
-	case (ControlCode::CC_PULSE_CLOSE):
-		return opendnp3::CC_PULSE_CLOSE;
-	case (ControlCode::CC_PULSE_TRIP):
-		return opendnp3::CC_PULSE_TRIP;
-	default:
-		return opendnp3::CC_UNDEFINED;
-	}
+	return (opendnp3::ControlCode) code;
 }
 
 ControlRelayOutputBlock ^ Conversions::convertCommand(const opendnp3::ControlRelayOutputBlock& bo)

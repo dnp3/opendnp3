@@ -38,7 +38,7 @@ BOOST_AUTO_TEST_SUITE(CommandHelpersTestSuite)
 BOOST_AUTO_TEST_CASE(ConfigurationAndValidation)
 {
 	APDU frag;
-	ControlRelayOutputBlock crob(ControlCode::CC_LATCH_ON);
+	ControlRelayOutputBlock crob(ControlCode::LATCH_ON);
 	auto validator = CommandHelpers::ConfigureRequest<ControlRelayOutputBlock>(frag, FunctionCode::OPERATE, crob, 0, Group12Var1::Inst());
 	
 

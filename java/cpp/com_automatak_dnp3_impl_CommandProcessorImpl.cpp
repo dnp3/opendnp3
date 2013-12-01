@@ -36,7 +36,7 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_CommandProcessorImpl_selectA
 (JNIEnv* apEnv, jobject, jlong ptr, jint code, jshort count, jlong onTime, jlong offTime, jint status, jlong index, jobject callback)
 {
 	auto pCmdProcessor = (ICommandProcessor*) ptr;
-	ControlRelayOutputBlock crob(IntToControlCode(code), count, onTime, offTime);
+	ControlRelayOutputBlock crob(ControlCodeFromType(code), count, onTime, offTime);
 	jobject gref = apEnv->NewGlobalRef(callback);
 	JavaVM* pJVM = JNIHelpers::GetJVMFromEnv(apEnv);
 	pCmdProcessor->SelectAndOperate(crob, index, [ = ](CommandResponse rsp) {
@@ -48,7 +48,7 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_CommandProcessorImpl_directO
 (JNIEnv* apEnv, jobject, jlong ptr, jint code, jshort count, jlong onTime, jlong offTime, jint status, jlong index, jobject callback)
 {
 	auto pCmdProcessor = (ICommandProcessor*) ptr;
-	ControlRelayOutputBlock crob(IntToControlCode(code), count, onTime, offTime);
+	ControlRelayOutputBlock crob(ControlCodeFromType(code), count, onTime, offTime);
 	jobject gref = apEnv->NewGlobalRef(callback);
 	JavaVM* pJVM = JNIHelpers::GetJVMFromEnv(apEnv);
 	pCmdProcessor->DirectOperate(crob, index, [ = ](CommandResponse rsp) {

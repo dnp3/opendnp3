@@ -46,7 +46,7 @@ void DoControlSelectAndOperate(MasterTestObject& t, std::function<void (CommandR
 	TestForIntegrityPoll(t);
 	BOOST_REQUIRE_EQUAL(t.app.NumAPDU(), 0); // check that the master sends no more packets
 
-	ControlRelayOutputBlock bo(CC_PULSE); bo.mStatus = CommandStatus::SUCCESS;
+	ControlRelayOutputBlock bo(ControlCode::PULSE); bo.mStatus = CommandStatus::SUCCESS;
 	t.master.GetCommandProcessor()->SelectAndOperate(bo, 1, callback);
 	BOOST_REQUIRE(t.mts.DispatchOne());
 
@@ -310,7 +310,7 @@ BOOST_AUTO_TEST_CASE(ControlExecutionClosedState)
 
 	auto pCmdProcessor = t.master.GetCommandProcessor();
 
-	ControlRelayOutputBlock bo(CC_PULSE);
+	ControlRelayOutputBlock bo(ControlCode::PULSE);
 
 	for(int i = 0; i < 10; ++i) {
 		CommandResponse rsp;
@@ -332,7 +332,7 @@ BOOST_AUTO_TEST_CASE(SelectAndOperate)
 	TestForIntegrityPoll(t);
 	BOOST_REQUIRE_EQUAL(t.app.NumAPDU(), 0); // check that the master sends no more packets
 
-	ControlRelayOutputBlock bo(CC_PULSE); bo.mStatus = CommandStatus::SUCCESS;
+	ControlRelayOutputBlock bo(ControlCode::PULSE); bo.mStatus = CommandStatus::SUCCESS;
 
 	std::vector<CommandResponse> rsps;
 	t.master.GetCommandProcessor()->SelectAndOperate(bo, 1, [&](CommandResponse rsp) {
@@ -446,7 +446,7 @@ BOOST_AUTO_TEST_CASE(DeferredControlExecution)
 	BOOST_REQUIRE_EQUAL(t.Read(), "C0 01 3C 01 06"); ;
 
 	//issue a command while the master is waiting for a response from the slave
-	ControlRelayOutputBlock bo(CC_PULSE); bo.mStatus = CommandStatus::SUCCESS;
+	ControlRelayOutputBlock bo(ControlCode::PULSE); bo.mStatus = CommandStatus::SUCCESS;
 	t.master.GetCommandProcessor()->SelectAndOperate(bo, 1, [](CommandResponse) {});
 	BOOST_REQUIRE(t.mts.DispatchOne());
 

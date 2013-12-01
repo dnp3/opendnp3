@@ -130,7 +130,7 @@ int main(int argc, char* argv[])
 				break;
 			case('c'):
 			{
-				ControlRelayOutputBlock crob(CC_LATCH_ON);
+				ControlRelayOutputBlock crob(ControlCode::LATCH_ON);
 				auto print = [](CommandResponse cr) { cout << "Select/Operate result: " << cr.ToString() << endl; };
 				// asynchronously call the 'print' function when complete/failed
 				pCmdProcessor->SelectAndOperate(crob, 0, print);

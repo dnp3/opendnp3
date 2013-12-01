@@ -22,54 +22,12 @@
 
 #include <opendnp3/ControlRelayOutputBlock.h>
 
-#include "PackingUnpacking.h"
-
-#include <openpal/Exception.h>
-
-#include <assert.h>
-#include <sstream>
 
 namespace opendnp3
 {
 
-#define MACRO_CASE_DECLARE(type) case(type): return type;
-
-ControlCode IntToControlCode(int aField)
-{
-	switch(aField) {
-		MACRO_CASE_DECLARE(CC_NULL)
-		MACRO_CASE_DECLARE(CC_PULSE)
-		MACRO_CASE_DECLARE(CC_LATCH_ON)
-		MACRO_CASE_DECLARE(CC_LATCH_OFF)
-		MACRO_CASE_DECLARE(CC_PULSE_CLOSE)
-		MACRO_CASE_DECLARE(CC_PULSE_TRIP)
-		MACRO_CASE_DECLARE(CC_UNDEFINED)
-
-	default:
-		return CC_UNDEFINED;
-	}
-}
-
-#define TO_STRING_CASE(c) case (c): return #c;
-
-#ifndef OPENDNP3_STRIP_LOG_MESSAGES
-std::string ControlCodeToString(ControlCode aType)
-{
-	switch(aType) {
-		TO_STRING_CASE(CC_NULL)
-		TO_STRING_CASE(CC_PULSE)
-		TO_STRING_CASE(CC_LATCH_ON)
-		TO_STRING_CASE(CC_LATCH_OFF)
-		TO_STRING_CASE(CC_PULSE_CLOSE)
-		TO_STRING_CASE(CC_PULSE_TRIP)
-	default:
-		return "Unknown";
-	}
-}
-#endif
-
 ControlRelayOutputBlock::ControlRelayOutputBlock(ControlCode aCode, uint8_t aCount, uint32_t aOnTime, uint32_t aOffTime) :
-	mRawCode(aCode),
+	mRawCode(ControlCodeToType(aCode)),
 	mCount(aCount),
 	mOnTimeMS(aOnTime),
 	mOffTimeMS(aOffTime),
@@ -80,18 +38,9 @@ ControlRelayOutputBlock::ControlRelayOutputBlock(ControlCode aCode, uint8_t aCou
 
 ControlCode ControlRelayOutputBlock::GetCode() const
 {
-	return IntToControlCode(mRawCode);
+	return ControlCodeFromType(mRawCode);
 }
 
-#ifndef OPENDNP3_STRIP_LOG_MESSAGES
-std::string ControlRelayOutputBlock::ToString() const
-{
-	std::ostringstream oss;
-	oss << "ControlRelayOutputBlock - function: " << ControlCodeToString(static_cast<ControlCode>(mRawCode));
-	oss << " count: " << static_cast<size_t>(mCount) << " on: " << mOnTimeMS << " off: " << mOffTimeMS;
-	return oss.str();
-}
-#endif
 
 }
 

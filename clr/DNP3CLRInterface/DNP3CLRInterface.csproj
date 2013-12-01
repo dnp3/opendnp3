@@ -49,6 +49,7 @@
     <Compile Include="DataTypes.cs" />
     <Compile Include="gen\CommandResult.cs" />
     <Compile Include="gen\CommandStatus.cs" />
+    <Compile Include="gen\ControlCode.cs" />
     <Compile Include="ICommandHandler.cs">
       <SubType>Code</SubType>
     </Compile>

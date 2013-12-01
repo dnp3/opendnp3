@@ -54,7 +54,7 @@ CommandHandlerAdapter::CommandHandlerAdapter(JavaVM* apJVM, jobject aProxy) : mp
 
 CommandStatus CommandHandlerAdapter::Select(const ControlRelayOutputBlock& arCommand, size_t aIndex)
 {
-	jint func = arCommand.GetCode();
+	jint func = arCommand.mRawCode;
 	jshort count = arCommand.mCount;
 	jlong ontime = arCommand.mOnTimeMS;
 	jlong offtime = arCommand.mOffTimeMS;
@@ -67,7 +67,7 @@ CommandStatus CommandHandlerAdapter::Select(const ControlRelayOutputBlock& arCom
 
 CommandStatus CommandHandlerAdapter::Operate(const ControlRelayOutputBlock& arCommand, size_t aIndex)
 {
-	jint func = arCommand.GetCode();
+	jint func = arCommand.mRawCode;
 	jshort count = arCommand.mCount;
 	jlong ontime = arCommand.mOnTimeMS;
 	jlong offtime = arCommand.mOffTimeMS;
@@ -80,7 +80,7 @@ CommandStatus CommandHandlerAdapter::Operate(const ControlRelayOutputBlock& arCo
 
 CommandStatus CommandHandlerAdapter::DirectOperate(const ControlRelayOutputBlock& arCommand, size_t aIndex)
 {
-	jint func = arCommand.GetCode();
+	jint func = arCommand.mRawCode;
 	jshort count = arCommand.mCount;
 	jlong ontime = arCommand.mOnTimeMS;
 	jlong offtime = arCommand.mOffTimeMS;

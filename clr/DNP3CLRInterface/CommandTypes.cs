@@ -58,41 +58,7 @@ namespace DNP3.Interface
 
         private readonly CommandResult result;
         private readonly CommandStatus status;
-    }
-
-    /// <summary>
-    /// Possible action types from a ControlRelayOutputBlock
-    /// </summary>
-    public enum ControlCode {
-        /// <summary>
-        /// Only used internally
-        /// </summary>
-	    CC_NULL,
-        /// <summary>
-        /// 'push-button' interface, can only be pressed one way (reset button on pedometer)
-        /// </summary>
-	    CC_PULSE,
-        /// <summary>
-        /// 'light-switch' moved to the ON position
-        /// </summary>
-	    CC_LATCH_ON,
-        /// <summary>
-        /// 'light-switch' moved to the OFF position
-        /// </summary>
-	    CC_LATCH_OFF,
-        /// <summary>
-        /// 'doorbell' that rings while the button is depressed
-        /// </summary>
-	    CC_PULSE_CLOSE,
-        /// <summary>
-        /// 'doorbell' that stops ringing (is normally on) while depressed
-        /// </summary>
-	    CC_PULSE_TRIP,
-        /// <summary>
-        /// 'doorbell' that stops ringing (is normally on) while depressed
-        /// </summary>
-	    CC_UNDEFINED
-    }
+    }   
 
     /// <summary>
     /// Command request to control a relay output.

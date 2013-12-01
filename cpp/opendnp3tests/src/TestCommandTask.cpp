@@ -41,7 +41,7 @@ BOOST_AUTO_TEST_CASE(FullSequence)
 	CommandTask ct(Logger(&log, LEV_INFO, "task"));
 	CommandResponse rsp;
 	auto formatter = [](APDU & arAPDU, FunctionCode aCode) {
-		return CommandHelpers::ConfigureRequest(arAPDU, aCode, ControlRelayOutputBlock(CC_LATCH_ON), 0, Group12Var1::Inst());
+		return CommandHelpers::ConfigureRequest(arAPDU, aCode, ControlRelayOutputBlock(ControlCode::LATCH_ON), 0, Group12Var1::Inst());
 	};
 	auto responder = [&rsp](CommandResponse aRsp) {
 		rsp = aRsp;
