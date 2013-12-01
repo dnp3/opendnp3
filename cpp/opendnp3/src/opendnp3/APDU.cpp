@@ -185,7 +185,7 @@ IAppHeader* APDU::ParseHeader() const
 size_t APDU::ReadObjectHeader(size_t aOffset, size_t aRemainder)
 {
 
-	const uint8_t* pStart = mBuffer.Buffer() + aOffset;
+	const uint8_t* pStart = mBuffer + aOffset;
 	IObjectHeader* pHdr = AllObjectsHeader::Inst(); //Start by interpreting using the smallest possible header
 	ObjectHeaderField hdrData;
 

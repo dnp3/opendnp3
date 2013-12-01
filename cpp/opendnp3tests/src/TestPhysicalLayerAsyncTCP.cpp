@@ -131,7 +131,7 @@ BOOST_AUTO_TEST_CASE(TestSendShutdown)
 	BOOST_REQUIRE(t.ProceedUntil(std::bind(&MockUpperLayer::IsLowerLayerUp, &t.mClientUpper)));
 
 	ByteStr bs(1024, 77); //give some interesting seed value to make sure bytes are correctly written
-	t.mClientUpper.SendDown(bs.Buffer(), bs.Size());
+	t.mClientUpper.SendDown(bs.ToReadOnly());
 
 	t.mTCPClient.AsyncClose();
 	BOOST_REQUIRE(t.ProceedUntilFalse(std::bind(&MockUpperLayer::IsLowerLayerUp, &t.mServerUpper)));
@@ -151,14 +151,14 @@ BOOST_AUTO_TEST_CASE(TwoWaySend)
 
 	//both layers are now up and reading, start them both writing
 	ByteStr bs(SEND_SIZE, 77); //give some interesting seed value to make sure bytes are correctly written
-	t.mClientUpper.SendDown(bs.Buffer(), bs.Size());
-	t.mServerUpper.SendDown(bs.Buffer(), bs.Size());
+	t.mClientUpper.SendDown(bs.ToReadOnly());
+	t.mServerUpper.SendDown(bs.ToReadOnly());
 
 	BOOST_REQUIRE(t.ProceedUntil(std::bind(&MockUpperLayer::SizeEquals, &t.mServerUpper, SEND_SIZE)));
 	BOOST_REQUIRE(t.ProceedUntil(std::bind(&MockUpperLayer::SizeEquals, &t.mClientUpper, SEND_SIZE)));
 
-	BOOST_REQUIRE(t.mClientUpper.BufferEquals(bs.Buffer(), bs.Size()));
-	BOOST_REQUIRE(t.mServerUpper.BufferEquals(bs.Buffer(), bs.Size()));
+	BOOST_REQUIRE(t.mClientUpper.BufferEquals(bs.ToReadOnly()));
+	BOOST_REQUIRE(t.mServerUpper.BufferEquals(bs.ToReadOnly()));
 
 	t.mTCPServer.AsyncClose(); //stop one side
 	BOOST_REQUIRE(t.ProceedUntilFalse(std::bind(&MockUpperLayer::IsLowerLayerUp, &t.mServerUpper)));
@@ -242,9 +242,9 @@ BOOST_AUTO_TEST_CASE(Loopback)
 
 	for(size_t i = 0; i < ITERATIONS; ++i) {
 		rb.Randomize();
-		upper.SendDown(rb, rb.Size());
-		BOOST_REQUIRE(test.ProceedUntil(std::bind(&MockUpperLayer::BufferEquals, &upper, rb.Buffer(), rb.Size())));
-		BOOST_REQUIRE(test.ProceedUntil(std::bind(&MockUpperLayer::CountersEqual, &upper, 1, 0)));
+		upper.SendDown(rb.ToReadOnly());
+		BOOST_REQUIRE(test.ProceedUntil([&](){  return upper.BufferEquals(rb.ToReadOnly()); }));
+		BOOST_REQUIRE(test.ProceedUntil([&](){  return upper.CountersEqual(1, 0); }));
 		upper.ClearBuffer();
 		upper.Reset();
 	}

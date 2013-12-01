@@ -238,7 +238,7 @@ void PhysicalLayerAsyncBase::OnOpenCallback(const boost::system::error_code& arE
 	}
 }
 
-void PhysicalLayerAsyncBase::OnReadCallback(const boost::system::error_code& arErr, uint8_t* apBuff, size_t aSize)
+void PhysicalLayerAsyncBase::OnReadCallback(const boost::system::error_code& arErr, uint8_t* apBuffer, size_t aNumRead)
 {
 	if(mState.mReading) {
 		mState.mReading = false;
@@ -249,10 +249,11 @@ void PhysicalLayerAsyncBase::OnReadCallback(const boost::system::error_code& arE
 		}
 		else {
 			if(mState.mClosing) {
-				LOG_BLOCK(LEV_DEBUG, "Ignoring received bytes since layer is closing: " << aSize);
+				LOG_BLOCK(LEV_DEBUG, "Ignoring received bytes since layer is closing: " << aNumRead);
 			}
 			else {
-				this->DoReadCallback(apBuff, aSize);
+				ReadOnlyBuffer buffer(apBuffer, aNumRead);
+				this->DoReadCallback(buffer);
 			}
 		}
 
@@ -302,9 +303,9 @@ void PhysicalLayerAsyncBase::DoThisLayerDown()
 	if(mpHandler) mpHandler->OnLowerLayerDown();
 }
 
-void PhysicalLayerAsyncBase::DoReadCallback(uint8_t* apBuff, size_t aNumBytes)
+void PhysicalLayerAsyncBase::DoReadCallback(const ReadOnlyBuffer& arBuffer)
 {
-	if(mpHandler) mpHandler->OnReceive(apBuff, aNumBytes);
+	if(mpHandler) mpHandler->OnReceive(arBuffer);
 }
 
 } //end namespace

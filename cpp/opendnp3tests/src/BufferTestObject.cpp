@@ -53,7 +53,12 @@ void BufferTestObject::ClearBuffer()
 	mBuffer.clear();
 }
 
-bool BufferTestObject::BufferEquals(const uint8_t* apData, size_t aNumBytes)
+bool BufferTestObject::BufferEquals(const openpal::ReadOnlyBuffer& arBuffer) const
+{
+	return BufferEquals(arBuffer, arBuffer.Size());
+}
+
+bool BufferTestObject::BufferEquals(const uint8_t* apData, size_t aNumBytes) const
 {
 
 	if(aNumBytes != mBuffer.size()) return false;
@@ -64,7 +69,7 @@ bool BufferTestObject::BufferEquals(const uint8_t* apData, size_t aNumBytes)
 	return true;
 }
 
-bool BufferTestObject::BufferContains(const std::string& arPattern)
+bool BufferTestObject::BufferContains(const std::string& arPattern) const
 {
 	std::string s;
 	for(size_t i = 0; i < mBuffer.size(); ++i) {
@@ -76,16 +81,19 @@ bool BufferTestObject::BufferContains(const std::string& arPattern)
 
 std::string BufferTestObject::GetBufferAsHexString(bool spaced) const
 {	
-	return toHex(mBuffer, mBuffer.size(), spaced);
+	CopyableBuffer buffer(mBuffer.size());
+	for(size_t i=0; i<mBuffer.size(); ++i) buffer[i] = mBuffer[i];
+	return toHex(buffer, buffer.Size(), spaced);
 }
 
-bool BufferTestObject::BufferEqualsHex(const std::string& arData)
+
+bool BufferTestObject::BufferEqualsHex(const std::string& arData) const
 {
 	HexSequence hs(arData);
-	return BufferEquals(hs.Buffer(), hs.Size());
+	return BufferEquals(hs, hs.Size());
 }
 
-bool BufferTestObject::BufferEqualsString(const std::string& arData)
+bool BufferTestObject::BufferEqualsString(const std::string& arData) const
 {
 	if(arData.size() != mBuffer.size()) return false;
 	for(size_t i = 0; i < mBuffer.size(); i++)

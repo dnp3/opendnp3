@@ -25,7 +25,6 @@
 
 #include "AsyncLayerInterfaces.h"
 
-#include <openpal/Visibility.h>
 #include <openpal/BufferWrapper.h>
 
 namespace openpal
@@ -34,7 +33,7 @@ namespace openpal
 class IExecutor;
 class IHandlerAsync;
 
-class DLL_LOCAL IChannelState
+class IChannelState
 {
 
 public:
@@ -76,7 +75,7 @@ public:
 /**
  * Defines an asynchronous interface for serial/tcp/?
  */
-class DLL_LOCAL IPhysicalLayerAsync : public IChannelState
+class IPhysicalLayerAsync : public IChannelState
 {
 public:
 

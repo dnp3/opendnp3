@@ -39,10 +39,10 @@ MockUpperLayer::MockUpperLayer(openpal::Logger aLogger) :
 	IUpperLayer(aLogger)
 {}
 
-void MockUpperLayer::_OnReceive(const uint8_t* apData, size_t aLength)
+void MockUpperLayer::_OnReceive(const openpal::ReadOnlyBuffer& arBuffer)
 {
-	this->WriteToBuffer(ReadOnlyBuffer(apData, aLength));
-	if(mOnReceiveHandler) mOnReceiveHandler(apData, aLength);
+	this->WriteToBuffer(arBuffer);
+	if(mOnReceiveHandler) mOnReceiveHandler(arBuffer);
 }
 
 void MockUpperLayer::_OnSendSuccess()
@@ -69,15 +69,15 @@ void MockUpperLayer::_OnLowerLayerDown()
 	++mState.mNumLayerDown;
 }
 
-void MockUpperLayer::SendDown(const uint8_t* apData, size_t aNumBytes)
+void MockUpperLayer::SendDown(const openpal::ReadOnlyBuffer& arBuffer)
 {
-	if(this->mpLowerLayer) mpLowerLayer->Send(apData, aNumBytes);
+	if(this->mpLowerLayer) mpLowerLayer->Send(arBuffer);
 }
 
 void MockUpperLayer::SendDown(const std::string& arHexData)
 {
-	HexSequence hs(arHexData);
-	this->SendDown(hs.Buffer(), hs.Size());
+	HexSequence hs(arHexData);	
+	this->SendDown(hs.ToReadOnly());
 }
 
 }

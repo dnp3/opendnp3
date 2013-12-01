@@ -82,14 +82,11 @@ void PhysicalLayerAsyncSerial::DoOpenSuccess()
 
 void PhysicalLayerAsyncSerial::DoAsyncRead(openpal::WriteBuffer& arBuffer)
 {
+	uint8_t* pBuff = arBuffer;
 	mPort.async_read_some(buffer(arBuffer, arBuffer.Size()),
-	                      mStrand.wrap(
-	                              std::bind(&PhysicalLayerAsyncSerial::OnReadCallback,
-	                                        this,
-	                                        std::placeholders::_1,
-	                                        arBuffer,
-	                                        std::placeholders::_2)
-	                      ));
+	                      mStrand.wrap([this, pBuff](const boost::system::error_code& error, size_t numRead) {
+							  this->OnReadCallback(error, pBuff, numRead);
+						  }));	
 }
 
 void PhysicalLayerAsyncSerial::DoAsyncWrite(const ReadOnlyBuffer& arBuffer)

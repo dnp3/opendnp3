@@ -79,7 +79,7 @@ private:
 
 	// Parse the header of the incoming APDU and direct to the appropriate
 	// internal event handler
-	void _OnReceive(const uint8_t*, size_t);
+	void _OnReceive(const openpal::ReadOnlyBuffer&);
 
 	void _OnLowerLayerUp();
 	void _OnLowerLayerDown();

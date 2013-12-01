@@ -31,6 +31,7 @@
 
 #include <openpal/Visibility.h>
 #include <openpal/Loggable.h>
+#include <openpal/BufferWrapper.h>
 
 #include <opendnp3/TransportConstants.h>
 #include "CopyableBuffer.h"
@@ -49,7 +50,7 @@ public:
 	TransportTx(openpal::Logger&, TransportLayer*, size_t aFragSize);
 
 
-	void Send(const uint8_t*, size_t); // A fresh call to Send() will reset the state
+	void Send(const openpal::ReadOnlyBuffer &arBuffer); // A fresh call to Send() will reset the state
 	bool SendSuccess();
 
 

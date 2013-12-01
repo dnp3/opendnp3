@@ -58,11 +58,11 @@ void LowerLayerToPhysAdapter::_OnOpenFailure()
 }
 
 /* Implement IUpperLayer */
-void LowerLayerToPhysAdapter::_OnReceive(const uint8_t* apData, size_t aNumBytes)
+void LowerLayerToPhysAdapter::_OnReceive(const openpal::ReadOnlyBuffer& arBuffer)
 {
 	// process the data into another buffer *before* kicking off another call,
 	// otherwise you have a potential race condition
-	if(mpUpperLayer != nullptr) mpUpperLayer->OnReceive(apData, aNumBytes);
+	if(mpUpperLayer != nullptr) mpUpperLayer->OnReceive(arBuffer);
 	if(mAutoRead) this->StartRead();
 }
 
@@ -93,10 +93,9 @@ void LowerLayerToPhysAdapter::_OnLowerLayerShutdown()
 }
 
 /* Implement ILowerLayer */
-void LowerLayerToPhysAdapter::_Send(const uint8_t* apData, size_t aNumBytes)
-{
-	ReadOnlyBuffer buffer(apData, aNumBytes);
-	mpPhys->AsyncWrite(buffer);
+void LowerLayerToPhysAdapter::_Send(const openpal::ReadOnlyBuffer& arBuffer)
+{	
+	mpPhys->AsyncWrite(arBuffer);
 }
 
 }//end namespace

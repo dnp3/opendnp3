@@ -23,11 +23,11 @@
 #ifndef __COPYABLE_BUFFER_H_
 #define __COPYABLE_BUFFER_H_
 
-#include <openpal/Visibility.h>
-
 #include <stddef.h>
 #include <memory>
 #include <sstream>
+
+#include <openpal/BufferWrapper.h>
 
 namespace opendnp3
 {
@@ -36,7 +36,7 @@ namespace opendnp3
 	copy constructor. This makes it easier to compose with
 	classes without requiring an explicit copy constructor
 */
-class DLL_LOCAL CopyableBuffer
+class CopyableBuffer
 {
 
 #ifndef OPENDNP3_STRIP_LOG_MESSAGES
@@ -48,7 +48,8 @@ public:
 	CopyableBuffer();
 	// Construct based on starting size of buffer
 	CopyableBuffer(size_t aSize);
-	CopyableBuffer(const uint8_t*, size_t aSize);
+	CopyableBuffer(const openpal::ReadOnlyBuffer&);
+	CopyableBuffer(const uint8_t* apBuff, size_t aSize);
 	CopyableBuffer(const CopyableBuffer&);
 	CopyableBuffer& operator=(const CopyableBuffer&);
 	~CopyableBuffer();
@@ -58,15 +59,15 @@ public:
 		return ! (*this == other);
 	}
 
-	const uint8_t* Buffer() const {
-		return mpBuff;
+	openpal::ReadOnlyBuffer ToReadOnly() const
+	{
+		return openpal::ReadOnlyBuffer(mpBuff, mSize);
 	}
-	const uint8_t* WriteBuffer() const {
-		return mpBuff;
-	}
+
 	operator const uint8_t* () const {
 		return mpBuff;
 	}
+	
 	operator uint8_t* () {
 		return mpBuff;
 	}
@@ -74,6 +75,7 @@ public:
 	size_t Size() const {
 		return mSize;
 	}
+
 	void Zero();
 
 protected:

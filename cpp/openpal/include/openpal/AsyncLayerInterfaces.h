@@ -23,15 +23,14 @@
 #ifndef __ASYNC_LAYER_INTERFACES_H_
 #define __ASYNC_LAYER_INTERFACES_H_
 
-#include <openpal/Visibility.h>
 #include <openpal/Loggable.h>
 
-#include <cstdint>
+#include "BufferWrapper.h"
 
 namespace openpal
 {
 
-class DLL_LOCAL IUpDown
+class IUpDown
 {
 public:
 	IUpDown() : mIsLowerLayerUp(false) {}
@@ -60,14 +59,14 @@ private:
 
 class ILowerLayer;
 
-class DLL_LOCAL IUpperLayer : public IUpDown, protected virtual openpal::Loggable
+class IUpperLayer : public IUpDown, protected virtual openpal::Loggable
 {
 public:
 	IUpperLayer(openpal::Logger&);
 	virtual ~IUpperLayer() {}
 
 	// Called by 'layer down' when data arrives
-	void OnReceive(const uint8_t*, size_t);
+	void OnReceive(const ReadOnlyBuffer&);
 
 	// Called by 'layer down' when a previously requested send operation succeeds
 	// Layers can only have 1 outstanding send operation. The callback is guaranteed
@@ -85,7 +84,7 @@ protected:
 	ILowerLayer* mpLowerLayer;
 
 	//these are the NVII delegates
-	virtual void _OnReceive(const uint8_t*, size_t) = 0;
+	virtual void _OnReceive(const ReadOnlyBuffer&) = 0;
 	virtual void _OnSendSuccess() = 0;
 	virtual void _OnSendFailure() = 0;
 	virtual bool LogReceive() {
@@ -101,13 +100,13 @@ protected:
 
 };
 
-class DLL_LOCAL ILowerLayer : protected virtual openpal::Loggable
+class ILowerLayer : protected virtual openpal::Loggable
 {
 public:
 	ILowerLayer(openpal::Logger&);
 	virtual ~ILowerLayer() {}
 
-	void Send(const uint8_t*, size_t);
+	void Send(const ReadOnlyBuffer&);
 
 	void SetUpperLayer(IUpperLayer*);
 
@@ -117,7 +116,7 @@ protected:
 
 private:
 
-	virtual void _Send(const uint8_t*, size_t) = 0;
+	virtual void _Send(const ReadOnlyBuffer&) = 0;
 
 #ifndef OPENDNP3_STRIP_LOG_MESSAGES
 	// override this descriptor, it's use in the Hex log messages

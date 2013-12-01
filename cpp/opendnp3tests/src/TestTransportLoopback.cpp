@@ -55,8 +55,8 @@ void TestLoopback(TransportLoopbackTestObject* apTest, size_t aNumBytes)
 
 	ByteStr b(aNumBytes, 0);
 
-	apTest->mUpperA.SendDown(b, b.Size());
-	apTest->mUpperB.SendDown(b, b.Size());
+	apTest->mUpperA.SendDown(b.ToReadOnly());
+	apTest->mUpperB.SendDown(b.ToReadOnly());
 
 	BOOST_REQUIRE(apTest->ProceedUntil(std::bind(&MockUpperLayer::SizeEquals, &(apTest->mUpperA), b.Size())));
 	BOOST_REQUIRE(apTest->ProceedUntil(std::bind(&MockUpperLayer::SizeEquals, &(apTest->mUpperB), b.Size())));

@@ -55,24 +55,24 @@ void TransportRx::Reset()
 	mSeq = 0;
 }
 
-void TransportRx::HandleReceive(const uint8_t* apData, size_t aNumBytes)
+void TransportRx::HandleReceive(const openpal::ReadOnlyBuffer& arBuffer)
 {
-	if(aNumBytes < 2)
+	if(arBuffer.Size() < 2)
 	{
-		ERROR_BLOCK(LEV_WARNING, "Received tpdu with no payload, size: " << aNumBytes, TLERR_NO_PAYLOAD);
+		ERROR_BLOCK(LEV_WARNING, "Received tpdu with no payload, size: " << arBuffer.Size(), TLERR_NO_PAYLOAD);
 	}
-	else if(aNumBytes > TL_MAX_TPDU_LENGTH) 
+	else if(arBuffer.Size() > TL_MAX_TPDU_LENGTH) 
 	{
-		ERROR_BLOCK(LEV_WARNING, "Illegal arg: " << aNumBytes << " exceeds max tpdu size of " << TL_MAX_TPDU_LENGTH, TLERR_TOO_MUCH_DATA);
+		ERROR_BLOCK(LEV_WARNING, "Illegal arg: " << arBuffer.Size() << " exceeds max tpdu size of " << TL_MAX_TPDU_LENGTH, TLERR_TOO_MUCH_DATA);
 
 	} else {
 
-		uint8_t hdr = apData[0];
+		uint8_t hdr = arBuffer[0];
 		LOG_BLOCK(LEV_INTERPRET, "<- " << TransportLayer::ToString(hdr));
 		bool first = (hdr & TL_HDR_FIR) != 0;
 		bool last = (hdr & TL_HDR_FIN) != 0;
 		int seq = hdr & TL_HDR_SEQ;
-		size_t payload_len = aNumBytes - 1;
+		size_t payload_len = arBuffer.Size() - 1;
 
 		if(this->ValidateHeader(first, last, seq, payload_len)) {
 			if(BufferRemaining() < payload_len) {
@@ -80,14 +80,14 @@ void TransportRx::HandleReceive(const uint8_t* apData, size_t aNumBytes)
 				mNumBytesRead = 0;
 			}
 			else { //passed all validation
-				memcpy(mBuffer + mNumBytesRead, apData + 1, payload_len);
+				memcpy(mBuffer + mNumBytesRead, arBuffer + 1, payload_len);
 				mNumBytesRead += payload_len;
 				mSeq = (mSeq + 1) % 64;
 
 				if(last) {
-					size_t tmp = mNumBytesRead;
-					mNumBytesRead = 0;
-					mpContext->ReceiveAPDU(mBuffer, tmp);
+					ReadOnlyBuffer buffer(mBuffer, mNumBytesRead);
+					mNumBytesRead = 0;					
+					mpContext->ReceiveAPDU(buffer);
 				}
 			}
 		}

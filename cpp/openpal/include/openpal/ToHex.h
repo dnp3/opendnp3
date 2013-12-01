@@ -29,37 +29,32 @@
 #ifndef __TO_HEX_H_
 #define __TO_HEX_H_
 
-#include <openpal/Visibility.h>
-
 #include <cstdint>
 #include <string>
-#include <sstream>
+
+#include "BufferWrapper.h"
 
 namespace openpal
 {
 
 #ifndef OPENDNP3_STRIP_LOG_MESSAGES
-char DLL_LOCAL toHex(char c);
-std::string DLL_LOCAL ByteToHex(uint8_t b);
 
-template<typename T>
-std::string DLL_LOCAL toHex(T aBuff, size_t aLength, bool spaced = false)
-{
-	std::ostringstream oss;
-	size_t last = aLength - 1;
-	for(size_t i = 0; i < aLength; i++) {
-		char c = aBuff[i];
-		oss << toHex((c & 0xf0) >> 4) << toHex(c & 0xf);
-		if(spaced && i != last)oss << " ";
-	}
-	return oss.str();
-};
+char toHex(char c);
+std::string ByteToHex(uint8_t b);
 
+
+std::string toHex(const uint8_t* apBuff, size_t aLength, bool spaced = false);
+
+std::string toHex(const ReadOnlyBuffer& arBuffer, bool spaced = false);
+
+/*
 template<class T>
-std::string DLL_LOCAL TypeToHex(T x)
+std::string TypeToHex(T x)
 {
 	return toHex(reinterpret_cast<uint8_t*>(&x), sizeof(T), true);
 }
+*/
+
 #endif
 
 }

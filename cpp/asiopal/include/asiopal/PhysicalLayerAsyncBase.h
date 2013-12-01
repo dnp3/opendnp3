@@ -31,6 +31,7 @@
 
 #include <boost/system/error_code.hpp>
 
+#include <openpal/Visibility.h>
 #include <openpal/IPhysicalLayerAsync.h>
 #include <openpal/Loggable.h>
 #include <openpal/Location.h>
@@ -147,7 +148,7 @@ public:
 
 	void DoWriteSuccess();
 	void DoThisLayerDown();
-	void DoReadCallback(uint8_t*, size_t);
+	void DoReadCallback(const openpal::ReadOnlyBuffer& arBuffer);
 
 	//Error reporting function(s)
 	openpal::Logger& GetLogger() {
@@ -158,8 +159,8 @@ protected:
 
 	//Internally produced events
 	void OnOpenCallback(const boost::system::error_code& arError);
-	void OnReadCallback(const boost::system::error_code& arError, uint8_t*, size_t aSize);
-	void OnWriteCallback(const boost::system::error_code& arError, size_t aSize);
+	void OnReadCallback(const boost::system::error_code& arError, uint8_t* apBuffer, size_t aNumRead);
+	void OnWriteCallback(const boost::system::error_code& arError, size_t aNumBytes);
 
 	// "user" object that recieves the callbacks
 	openpal::IHandlerAsync* mpHandler;

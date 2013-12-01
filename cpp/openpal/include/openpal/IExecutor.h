@@ -26,7 +26,6 @@
 #include <functional>
 
 #include "ITimer.h"
-#include "Visibility.h"
 #include "TimeDuration.h"
 #include "MonotonicTimestamp.h"
 
@@ -39,7 +38,7 @@ namespace openpal
  * by the posting thread or another thread.
  *
  */
-class DLL_LOCAL IExecutor
+class IExecutor
 {
 public:
 

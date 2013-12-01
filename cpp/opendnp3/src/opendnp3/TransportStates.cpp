@@ -43,10 +43,10 @@ void TLS_Closed::LowerLayerUp(TransportLayer* apContext)
 //////////////////////////////////////////////////////
 TLS_Ready TLS_Ready::mInstance;
 
-void TLS_Ready::Send(const uint8_t* apData, size_t aNumBytes, TransportLayer* apContext)
+void TLS_Ready::Send(const openpal::ReadOnlyBuffer& arBuffer, TransportLayer* apContext)
 {
 	apContext->ChangeState(TLS_Sending::Inst());
-	apContext->TransmitAPDU(apData, aNumBytes);
+	apContext->TransmitAPDU(arBuffer);
 }
 
 void TLS_Ready::LowerLayerDown(TransportLayer* apContext)
@@ -55,9 +55,9 @@ void TLS_Ready::LowerLayerDown(TransportLayer* apContext)
 	apContext->ThisLayerDown();
 }
 
-void TLS_Ready::HandleReceive(const uint8_t* apData, size_t aNumBytes, TransportLayer* apContext)
+void TLS_Ready::HandleReceive(const openpal::ReadOnlyBuffer& arBuffer, TransportLayer* apContext)
 {
-	apContext->ReceiveTPDU(apData, aNumBytes);
+	apContext->ReceiveTPDU(arBuffer);
 }
 
 //////////////////////////////////////////////////////
@@ -65,9 +65,9 @@ void TLS_Ready::HandleReceive(const uint8_t* apData, size_t aNumBytes, Transport
 //////////////////////////////////////////////////////
 TLS_Sending TLS_Sending::mInstance;
 
-void TLS_Sending::HandleReceive(const uint8_t* apData, size_t aNumBytes, TransportLayer* apContext)
+void TLS_Sending::HandleReceive(const openpal::ReadOnlyBuffer& arBuffer, TransportLayer* apContext)
 {
-	apContext->ReceiveTPDU(apData, aNumBytes);
+	apContext->ReceiveTPDU(arBuffer);
 }
 
 void TLS_Sending::HandleSendSuccess(TransportLayer* apContext)

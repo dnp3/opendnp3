@@ -51,25 +51,25 @@ void MockLowerLayer::DisableAutoSendCallback()
 	mAutoSendCallback = false;
 }
 
-void MockLowerLayer::_Send(const uint8_t* apData, size_t aNumBytes)
+void MockLowerLayer::_Send(const openpal::ReadOnlyBuffer& arBuffer)
 {
-	this->WriteToBuffer(ReadOnlyBuffer(apData, aNumBytes));
+	this->WriteToBuffer(arBuffer);
 	if(mAutoSendCallback && mpUpperLayer != nullptr) {
 		if(mIsSuccess) mpUpperLayer->OnSendSuccess();
 		else mpUpperLayer->OnSendFailure();
 	}
 }
 
-void MockLowerLayer::SendUp(const uint8_t* apData, size_t aNumBytes)
+void MockLowerLayer::SendUp(const openpal::ReadOnlyBuffer& arBuffer)
 {
 	if(this->mpUpperLayer != nullptr)
-		mpUpperLayer->OnReceive(apData, aNumBytes);
+		mpUpperLayer->OnReceive(arBuffer);
 }
 
 void MockLowerLayer::SendUp(const std::string& arHexData)
 {
 	HexSequence hs(arHexData);
-	this->SendUp(hs.Buffer(), hs.Size());
+	this->SendUp(hs.ToReadOnly());
 }
 
 void MockLowerLayer::SendSuccess()

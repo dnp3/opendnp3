@@ -41,7 +41,7 @@ AppLayerTest::AppLayerTest(bool aIsMaster, size_t aNumRetry, FilterLevel aLevel,
 void AppLayerTest::SendUp(const std::string& aBytes)
 {
 	HexSequence hs(aBytes);
-	lower.SendUp(hs, hs.Size());
+	lower.SendUp(hs.ToReadOnly());
 }
 
 void AppLayerTest::SendUp(FunctionCode aCode, bool aFIR, bool aFIN, bool aCON, bool aUNS, int aSEQ)
@@ -49,7 +49,7 @@ void AppLayerTest::SendUp(FunctionCode aCode, bool aFIR, bool aFIN, bool aCON, b
 	APDU f;
 	f.SetFunction(aCode);
 	f.SetControl(aFIR, aFIN, aCON, aUNS, aSEQ);
-	lower.SendUp(f.GetBuffer(), f.Size());
+	lower.SendUp(f.ToReadOnly());
 }
 
 void AppLayerTest::SendRequest(FunctionCode aCode, bool aFIR, bool aFIN, bool aCON, bool aUNS)

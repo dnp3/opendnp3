@@ -23,29 +23,16 @@
 #ifndef __I_TIMER_H_
 #define __I_TIMER_H_
 
-#include "Visibility.h"
 #include "MonotonicTimestamp.h"
 
 namespace openpal
 {
 
 /**
- * This is a wrapper for ASIO timers that are used to post events
- * on a queue. Events can be posted for immediate consumption or
- * some time in the future. Events can be consumbed by the posting
- * thread or another thread.
- *
- * @section Class Goals
- *
- * Decouple APL code form ASIO so ASIO could be replace if need be.
- *
- * There is a problem with ASIO. When cancel is called, an event is
- * posted. We wanted a cancel that does not generate any events.
- *
- * @see TimerASIO
+ * Timer are used to defer events for a later time on an executor.
  */
 
-class DLL_LOCAL ITimer
+class ITimer
 {
 public:
 	virtual ~ITimer() {}

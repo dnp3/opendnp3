@@ -72,11 +72,11 @@ for(TransportStackPair * pPair: mPairs) {
 	return true;
 }
 
-bool TransportScalabilityTestObject::AllLayerEqual(const uint8_t* apData, size_t aNumBytes)
+bool TransportScalabilityTestObject::AllLayerEqual(const openpal::ReadOnlyBuffer& arBuffer)
 {
 for(TransportStackPair * pPair: mPairs) {
-		if(! pPair->mServerStack.mUpper.BufferEquals(apData, aNumBytes)) return false;
-		if(! pPair->mClientStack.mUpper.BufferEquals(apData, aNumBytes)) return false;
+		if(! pPair->mServerStack.mUpper.BufferEquals(arBuffer)) return false;
+		if(! pPair->mClientStack.mUpper.BufferEquals(arBuffer)) return false;
 	}
 
 	return true;
@@ -92,11 +92,11 @@ for(TransportStackPair * pPair: mPairs) {
 	return true;
 }
 
-void TransportScalabilityTestObject::SendToAll(const uint8_t* apData, size_t aNumBytes)
+void TransportScalabilityTestObject::SendToAll(const openpal::ReadOnlyBuffer& arBuffer)
 {
 for(TransportStackPair * pPair: mPairs) {
-		pPair->mClientStack.mUpper.SendDown(apData, aNumBytes);
-		pPair->mServerStack.mUpper.SendDown(apData, aNumBytes);
+		pPair->mClientStack.mUpper.SendDown(arBuffer);
+		pPair->mServerStack.mUpper.SendDown(arBuffer);
 	}
 }
 

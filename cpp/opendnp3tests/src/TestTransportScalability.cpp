@@ -68,10 +68,10 @@ BOOST_AUTO_TEST_CASE(TestSimpleSend)
 
 	ByteStr b(2048, 0);
 
-	t.SendToAll(b, b.Size());
+	t.SendToAll(b.ToReadOnly());
 
 	BOOST_REQUIRE(t.ProceedUntil(std::bind(&TransportScalabilityTestObject::AllLayerReceived, &t, b.Size())));
-	BOOST_REQUIRE(t.AllLayerEqual(b, b.Size()));
+	BOOST_REQUIRE(t.AllLayerEqual(b.ToReadOnly()));
 }
 
 

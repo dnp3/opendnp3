@@ -48,13 +48,13 @@ TransportTx::TransportTx(Logger& arLogger, TransportLayer* apContext, size_t aFr
 	mSeq(0)
 {}
 
-void TransportTx::Send(const uint8_t* apData, size_t aNumBytes)
+void TransportTx::Send(const ReadOnlyBuffer &arBuffer)
 {
-	assert(aNumBytes > 0);
-	assert(aNumBytes <= mBufferAPDU.Size());
+	assert(arBuffer.IsNotEmpty());
+	assert(arBuffer.Size() <= mBufferAPDU.Size());
 
-	memcpy(mBufferAPDU, apData, aNumBytes);
-	mNumBytesToSend = aNumBytes;
+	arBuffer.CopyTo(mBufferAPDU);	
+	mNumBytesToSend = arBuffer.Size();
 	mNumBytesSent = 0;
 
 	this->CheckForSend();
@@ -65,16 +65,17 @@ bool TransportTx::CheckForSend()
 	size_t remainder = this->BytesRemaining();
 
 	if(remainder > 0) {
-		size_t num_to_send = remainder < TL_MAX_TPDU_PAYLOAD ? remainder : TL_MAX_TPDU_PAYLOAD;
-		memcpy(mBufferTPDU + 1, mBufferAPDU + mNumBytesSent, num_to_send);
+		size_t numToSend = remainder < TL_MAX_TPDU_PAYLOAD ? remainder : TL_MAX_TPDU_PAYLOAD;
+		memcpy(mBufferTPDU + 1, mBufferAPDU + mNumBytesSent, numToSend);
 
 		bool fir = (mNumBytesSent == 0);
-		mNumBytesSent += num_to_send;
+		mNumBytesSent += numToSend;
 		bool fin = (mNumBytesSent == mNumBytesToSend);
 
 		mBufferTPDU[0] = GetHeader(fir, fin, mSeq);
 		LOG_BLOCK(LEV_INTERPRET, "-> " << TransportLayer::ToString(mBufferTPDU[0]));
-		mpContext->TransmitTPDU(mBufferTPDU, num_to_send + 1);
+		ReadOnlyBuffer buffer(mBufferTPDU, numToSend + 1);
+		mpContext->TransmitTPDU(buffer);
 		return false;
 	}
 	else {

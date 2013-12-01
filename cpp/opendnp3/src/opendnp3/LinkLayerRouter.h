@@ -83,8 +83,8 @@ public:
 	void TestLinkStatus(bool aIsMaster, bool aFcb, uint16_t aDest, uint16_t aSrc);
 	void ResetLinkStates(bool aIsMaster, uint16_t aDest, uint16_t aSrc);
 	void RequestLinkStatus(bool aIsMaster, uint16_t aDest, uint16_t aSrc);
-	void ConfirmedUserData(bool aIsMaster, bool aFcb, uint16_t aDest, uint16_t aSrc, const uint8_t* apData, size_t aDataLength);
-	void UnconfirmedUserData(bool aIsMaster, uint16_t aDest, uint16_t aSrc, const uint8_t* apData, size_t aDataLength);
+	void ConfirmedUserData(bool aIsMaster, bool aFcb, uint16_t aDest, uint16_t aSrc, const openpal::ReadOnlyBuffer& arBuffer);
+	void UnconfirmedUserData(bool aIsMaster, uint16_t aDest, uint16_t aSrc, const openpal::ReadOnlyBuffer& arBuffer);
 
 	// ILinkRouter interface
 	bool Transmit(const LinkFrame&);
@@ -137,7 +137,7 @@ private:
 	/* Events - NVII delegates from IUpperLayer */
 
 	// Called when the physical layer has read data into to the requested buffer
-	void _OnReceive(const uint8_t*, size_t);
+	void _OnReceive(const openpal::ReadOnlyBuffer&);
 	void _OnSendSuccess();
 	void _OnSendFailure();
 

@@ -33,8 +33,7 @@ namespace opendnp3
 PhysLoopback::PhysLoopback(openpal::Logger aLogger, openpal::IPhysicalLayerAsync* apPhys) :
 	Loggable(aLogger),
 	PhysicalLayerMonitor(aLogger, apPhys, openpal::TimeDuration::Seconds(5), openpal::TimeDuration::Seconds(5)),
-	mBytesRead(0),
-	mBytesWritten(0),
+	mBytesReadWritten(0),	
 	mBuffer(1024)
 {
 
@@ -46,11 +45,10 @@ void PhysLoopback::StartRead()
 	mpPhys->AsyncRead(buffer);
 }
 
-void PhysLoopback::_OnReceive(const uint8_t* apData, size_t aNumBytes)
+void PhysLoopback::_OnReceive(const openpal::ReadOnlyBuffer& arBuffer)
 {
-	mBytesRead += aNumBytes;
-	mBytesWritten += aNumBytes;
-	mpPhys->AsyncWrite(ReadOnlyBuffer(mBuffer, aNumBytes));
+	mBytesReadWritten += arBuffer.Size();
+	mpPhys->AsyncWrite(arBuffer);
 }
 
 void PhysLoopback::_OnSendSuccess(void)

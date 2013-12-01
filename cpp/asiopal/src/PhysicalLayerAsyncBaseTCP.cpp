@@ -59,25 +59,19 @@ void PhysicalLayerAsyncBaseTCP::DoClose()
 
 void PhysicalLayerAsyncBaseTCP::DoAsyncRead(WriteBuffer& arBuffer)
 {
+	uint8_t* pBuff = arBuffer;
 	mSocket.async_read_some(buffer(arBuffer, arBuffer.Size()),
-	                        mStrand.wrap(
-	                                std::bind(&PhysicalLayerAsyncBaseTCP::OnReadCallback,
-	                                                this,
-	                                                std::placeholders::_1,
-	                                                arBuffer,
-	                                                std::placeholders::_2)
-	                        ));
+							mStrand.wrap([this, pBuff](const boost::system::error_code& code, size_t numRead){
+								this->OnReadCallback(code, pBuff, numRead);
+							}));
 }
 
 void PhysicalLayerAsyncBaseTCP::DoAsyncWrite(const ReadOnlyBuffer& arBuffer)
 {
 	async_write(mSocket, buffer(arBuffer, arBuffer.Size()),
-	            mStrand.wrap(
-	                    std::bind(&PhysicalLayerAsyncBaseTCP::OnWriteCallback,
-	                              this,
-	                              std::placeholders::_1,
-								  arBuffer.Size())
-	            ));
+	            mStrand.wrap([this](const boost::system::error_code& code, size_t numWritten){
+					this->OnWriteCallback(code, numWritten);
+				}));
 }
 
 void PhysicalLayerAsyncBaseTCP::DoOpenFailure()

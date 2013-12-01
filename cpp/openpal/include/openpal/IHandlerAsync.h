@@ -24,12 +24,11 @@
 #define __I_HANDLER_ASYNC_H_
 
 #include <openpal/AsyncLayerInterfaces.h>
-#include <openpal/Visibility.h>
 
 namespace openpal
 {
 
-class DLL_LOCAL IHandlerAsync : public IUpperLayer
+class IHandlerAsync : public IUpperLayer
 {
 public:
 	IHandlerAsync(openpal::Logger&);

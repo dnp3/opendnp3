@@ -51,9 +51,9 @@ public:
 	// Test helpers
 	bool AllLayersUp();
 	bool AllLayerReceived(size_t aNumBytes);
-	bool AllLayerEqual(const uint8_t*, size_t);
+	bool AllLayerEqual(const openpal::ReadOnlyBuffer& arBuffer);
 
-	void SendToAll(const uint8_t*, size_t);
+	void SendToAll(const openpal::ReadOnlyBuffer& arBuffer);
 
 	LogTester log;
 	std::vector<TransportStackPair*> mPairs;

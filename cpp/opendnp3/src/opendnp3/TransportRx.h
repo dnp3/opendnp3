@@ -30,8 +30,10 @@
 #define __TRANSPORT_RX_H_
 
 #include <opendnp3/TransportConstants.h>
+
 #include <openpal/Visibility.h>
 #include <openpal/Loggable.h>
+#include <openpal/BufferWrapper.h>
 
 #include "CopyableBuffer.h"
 
@@ -48,7 +50,7 @@ class DLL_LOCAL TransportRx : public openpal::Loggable
 public:
 	TransportRx(openpal::Logger&, TransportLayer*, size_t aFragSize);
 
-	void HandleReceive(const uint8_t*, size_t);
+	void HandleReceive(const openpal::ReadOnlyBuffer& arBuffer);
 
 	void Reset();
 

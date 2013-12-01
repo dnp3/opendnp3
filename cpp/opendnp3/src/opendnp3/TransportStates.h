@@ -52,8 +52,8 @@ class DLL_LOCAL TLS_Ready : public TLS_Base
 {
 	MACRO_STATE_SINGLETON_INSTANCE(TLS_Ready);
 
-	void Send(const uint8_t*, size_t, TransportLayer*);
-	void HandleReceive(const uint8_t*, size_t, TransportLayer*);
+	void Send(const openpal::ReadOnlyBuffer&, TransportLayer*);
+	void HandleReceive(const openpal::ReadOnlyBuffer&, TransportLayer*);
 	void LowerLayerDown(TransportLayer*);
 };
 
@@ -63,7 +63,7 @@ class DLL_LOCAL TLS_Sending : public TLS_Base
 {
 	MACRO_STATE_SINGLETON_INSTANCE(TLS_Sending);
 
-	void HandleReceive(const uint8_t*, size_t, TransportLayer*);
+	void HandleReceive(const openpal::ReadOnlyBuffer&, TransportLayer*);
 	void HandleSendSuccess(TransportLayer*);
 	void HandleSendFailure(TransportLayer*);
 	void LowerLayerDown(TransportLayer*);

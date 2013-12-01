@@ -31,6 +31,7 @@
 
 #include <opendnp3/Uncopyable.h>
 #include <openpal/Visibility.h>
+#include <openpal/BufferWrapper.h>
 
 #include <string>
 #include <cstdint>
@@ -47,8 +48,8 @@ Base class for all TransportLayerStates (TLS)
 class DLL_LOCAL TLS_Base
 {
 public:
-	virtual void Send(const uint8_t*, size_t, TransportLayer*);
-	virtual void HandleReceive(const uint8_t*, size_t, TransportLayer*);
+	virtual void Send(const openpal::ReadOnlyBuffer& arBuffer, TransportLayer*);
+	virtual void HandleReceive(const openpal::ReadOnlyBuffer& arBuffer, TransportLayer*);
 
 	// TPDU failure/success handlers
 	virtual void HandleSendSuccess(TransportLayer*);

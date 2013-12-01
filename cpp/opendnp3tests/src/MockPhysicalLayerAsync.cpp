@@ -104,7 +104,7 @@ void MockPhysicalLayerAsync::TriggerRead(const std::string& arData)
 {
 	HexSequence hs(arData);
 	assert(hs.Size() <= this->mNumToRead);
-	memcpy(mpWriteBuff, hs.Buffer(), hs.Size());
+	memcpy(mpWriteBuff, hs, hs.Size());
 	mNumToRead = 0;
 	error_code ec(errc::success, get_generic_category());
 	this->OnReadCallback(ec, mpWriteBuff, hs.Size());

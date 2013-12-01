@@ -24,6 +24,7 @@
 #define __I_FRAME_SINK_H_
 
 #include <openpal/Visibility.h>
+#include <openpal/BufferWrapper.h>
 
 #include <stddef.h>
 #include <cstdint>
@@ -50,8 +51,8 @@ public:
 	virtual void TestLinkStatus(bool aIsMaster, bool aFcb, uint16_t aDest, uint16_t aSrc) = 0;
 	virtual void ResetLinkStates(bool aIsMaster, uint16_t aDest, uint16_t aSrc) = 0;
 	virtual void RequestLinkStatus(bool aIsMaster, uint16_t aDest, uint16_t aSrc) = 0;
-	virtual void ConfirmedUserData(bool aIsMaster, bool aFcb, uint16_t aDest, uint16_t aSrc, const uint8_t* apData, size_t aDataLength) = 0;
-	virtual void UnconfirmedUserData(bool aIsMaster, uint16_t aDest, uint16_t aSrc, const uint8_t* apData, size_t aDataLength) = 0;
+	virtual void ConfirmedUserData(bool aIsMaster, bool aFcb, uint16_t aDest, uint16_t aSrc, const openpal::ReadOnlyBuffer& arBuffer) = 0;
+	virtual void UnconfirmedUserData(bool aIsMaster, uint16_t aDest, uint16_t aSrc, const openpal::ReadOnlyBuffer& arBuffer) = 0;
 };
 
 }

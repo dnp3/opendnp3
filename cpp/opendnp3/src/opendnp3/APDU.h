@@ -81,6 +81,11 @@ public:
 	 */
 	void InterpretHeader();
 
+	openpal::ReadOnlyBuffer ToReadOnly()
+	{
+		return openpal::ReadOnlyBuffer(mBuffer, mFragmentSize);
+	}
+
 	/**
 		Returns the current fragment size.
 

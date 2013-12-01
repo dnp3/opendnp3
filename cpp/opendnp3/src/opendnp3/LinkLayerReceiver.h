@@ -27,6 +27,7 @@
 #include <opendnp3/DNPConstants.h>
 #include <openpal/Visibility.h>
 #include <openpal/Loggable.h>
+#include <openpal/BufferWrapper.h>
 
 #include "ShiftableBuffer.h"
 #include "LinkFrame.h"
@@ -57,14 +58,11 @@ public:
 		@param aNumBytes Number of bytes written
 	*/
 	void OnRead(size_t aNumBytes);
-
-	size_t NumWriteBytes() const {
-		return mBuffer.NumWriteBytes();
-	}
-
-	uint8_t* WriteBuff() const {
-		return mBuffer.WriteBuff();
-	}
+	
+	/**
+	* Buffer that can currently be used for writing
+	*/
+	openpal::WriteBuffer WriteBuff() const;
 
 	/**
 		Resets the state of parser
@@ -90,7 +88,7 @@ private:
 	bool ValidateFunctionCode();
 	void FailFrame();
 	void PushFrame();
-	size_t TransferUserData();
+	openpal::ReadOnlyBuffer TransferUserData();
 	size_t NumReadBytes() {
 		return mBuffer.NumReadBytes();
 	}

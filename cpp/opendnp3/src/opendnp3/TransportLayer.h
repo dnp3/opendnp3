@@ -58,10 +58,10 @@ public:
 	void ThisLayerDown();
 	void ChangeState(TLS_Base* apNewState);
 
-	void TransmitAPDU(const uint8_t* apData, size_t aNumBytes);
-	void TransmitTPDU(const uint8_t* apData, size_t aNumBytes);
-	void ReceiveAPDU(const uint8_t* apData, size_t aNumBytes);
-	void ReceiveTPDU(const uint8_t* apData, size_t aNumBytes);
+	void TransmitAPDU(const openpal::ReadOnlyBuffer&);
+	void TransmitTPDU(const openpal::ReadOnlyBuffer&);
+	void ReceiveAPDU(const openpal::ReadOnlyBuffer&);
+	void ReceiveTPDU(const openpal::ReadOnlyBuffer&);
 
 	bool ContinueSend(); // return true if
 	void SignalSendSuccess();
@@ -74,8 +74,9 @@ public:
 private:
 
 	//delegated to the states
-	void _Send(const uint8_t*, size_t); //Implement ILowerLayer
-	void _OnReceive(const uint8_t*, size_t); //Implement IUpperLayer
+	void _Send(const openpal::ReadOnlyBuffer&); //Implement ILowerLayer
+	void _OnReceive(const openpal::ReadOnlyBuffer&); //Implement IUpperLayer
+
 	void _OnLowerLayerUp();
 	void _OnLowerLayerDown();
 	void _OnSendSuccess();

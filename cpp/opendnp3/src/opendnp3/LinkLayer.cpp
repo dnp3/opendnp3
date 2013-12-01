@@ -143,9 +143,9 @@ void LinkLayer::SendResetLinks()
 	this->Transmit(mPriFrame);
 }
 
-void LinkLayer::SendUnconfirmedUserData(const uint8_t* apData, size_t aLength)
+void LinkLayer::SendUnconfirmedUserData(const ReadOnlyBuffer& arBuffer)
 {
-	mPriFrame.FormatUnconfirmedUserData(mCONFIG.IsMaster, mCONFIG.RemoteAddr, mCONFIG.LocalAddr, apData, aLength);
+	mPriFrame.FormatUnconfirmedUserData(mCONFIG.IsMaster, mCONFIG.RemoteAddr, mCONFIG.LocalAddr, arBuffer, arBuffer.Size());
 	this->Transmit(mPriFrame);
 	this->DoSendSuccess();
 }
@@ -229,28 +229,28 @@ void LinkLayer::RequestLinkStatus(bool aIsMaster, uint16_t aDest, uint16_t aSrc)
 		mpSecState->RequestLinkStatus(this);
 }
 
-void LinkLayer::ConfirmedUserData(bool aIsMaster, bool aFcb, uint16_t aDest, uint16_t aSrc, const uint8_t* apData, size_t aDataLength)
+void LinkLayer::ConfirmedUserData(bool aIsMaster, bool aFcb, uint16_t aDest, uint16_t aSrc, const ReadOnlyBuffer& arBuffer)
 {
 	if(this->Validate(aIsMaster, aSrc, aDest))
-		mpSecState->ConfirmedUserData(this, aFcb, apData, aDataLength);
+		mpSecState->ConfirmedUserData(this, aFcb, arBuffer);
 }
 
-void LinkLayer::UnconfirmedUserData(bool aIsMaster, uint16_t aDest, uint16_t aSrc, const uint8_t* apData, size_t aDataLength)
+void LinkLayer::UnconfirmedUserData(bool aIsMaster, uint16_t aDest, uint16_t aSrc, const ReadOnlyBuffer& arBuffer)
 {
 	if(this->Validate(aIsMaster, aSrc, aDest))
-		mpSecState->UnconfirmedUserData(this, apData, aDataLength);
+		mpSecState->UnconfirmedUserData(this, arBuffer);
 }
 
 ////////////////////////////////
 // ILowerLayer
 ////////////////////////////////
 
-void LinkLayer::_Send(const uint8_t* apData, size_t aDataLength)
+void LinkLayer::_Send(const ReadOnlyBuffer& arBuffer)
 {
 	if(!mIsOnline)
 		MACRO_THROW_EXCEPTION(InvalidStateException, "LowerLayerDown");
-	if(mCONFIG.UseConfirms) mpPriState->SendConfirmed(this, apData, aDataLength);
-	else mpPriState->SendUnconfirmed(this, apData, aDataLength);
+	if(mCONFIG.UseConfirms) mpPriState->SendConfirmed(this, arBuffer);
+	else mpPriState->SendUnconfirmed(this, arBuffer);
 }
 
 void LinkLayer::OnTimeout()

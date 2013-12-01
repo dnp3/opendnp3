@@ -36,7 +36,7 @@ public:
 	MockLowerLayer(openpal::Logger);
 	virtual ~MockLowerLayer() {}
 
-	void SendUp(const uint8_t*, size_t);
+	void SendUp(const openpal::ReadOnlyBuffer& arBuffer);
 	void SendUp(const std::string&);
 	void SendSuccess();
 	void SendFailure();
@@ -56,7 +56,7 @@ private:
 	}
 
 	//these are the NVII delegates
-	void _Send(const uint8_t*, size_t);
+	void _Send(const openpal::ReadOnlyBuffer& arBuffer);
 };
 
 }

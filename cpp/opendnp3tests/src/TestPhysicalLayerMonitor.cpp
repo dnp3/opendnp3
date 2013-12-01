@@ -68,7 +68,7 @@ protected:
 		++mCloseCallbackCount;
 	}
 
-	void _OnReceive(const uint8_t* apData, size_t aNumBytes) {}
+	void _OnReceive(const openpal::ReadOnlyBuffer&) {}
 	void _OnSendSuccess() {}
 	void _OnSendFailure() {}
 };

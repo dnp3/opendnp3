@@ -79,7 +79,7 @@ void MockPhysicalLayerMonitor::_OnReceive(const uint8_t* apData, size_t aNumByte
 	if(mExpectReadBuffer.Size() < mBytesRead + aNumBytes) {
 		BOOST_FAIL("Read more data than expected");
 	}
-	CopyableBuffer expecting(mExpectReadBuffer.Buffer() + mBytesRead, aNumBytes);
+	CopyableBuffer expecting(mExpectReadBuffer + mBytesRead, aNumBytes);
 	CopyableBuffer read(apData, aNumBytes);
 	// check that we're receiving what was written
 	if(expecting != read) {
@@ -145,7 +145,8 @@ void MockPhysicalLayerMonitor::TransmitNext()
 	if(mWriteBuffer.Size() > this->mBytesWritten) {
 		size_t remaining = mWriteBuffer.Size() - mBytesWritten;
 		size_t toWrite = Min<size_t>(4096, remaining);
-		mpPhys->AsyncWrite(ReadOnlyBuffer(mWriteBuffer.Buffer() + mBytesWritten, toWrite));
+		ReadOnlyBuffer buff(mWriteBuffer + mBytesWritten, toWrite);
+		mpPhys->AsyncWrite(buff);
 		this->mLastWriteSize = toWrite;
 	}
 }

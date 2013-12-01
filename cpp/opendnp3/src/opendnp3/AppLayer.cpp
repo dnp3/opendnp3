@@ -99,14 +99,14 @@ void AppLayer::CancelResponse()
 // External events
 ////////////////////
 
-void AppLayer::_OnReceive(const uint8_t* apBuffer, size_t aSize)
+void AppLayer::_OnReceive(const ReadOnlyBuffer& arBuffer)
 {
 	if(!this->IsLowerLayerUp()) {
 		MACRO_THROW_EXCEPTION(InvalidStateException, "LowerLaterDown");
 	}
 
 	try {
-		mIncoming.Write(apBuffer, aSize);
+		mIncoming.Write(arBuffer, arBuffer.Size());
 		mIncoming.Interpret();
 
 		LOG_BLOCK(LEV_INTERPRET, "<= AL " << mIncoming.ToString());
@@ -313,7 +313,8 @@ void AppLayer::CheckForSend()
 		mSending = true;
 		const APDU* pAPDU = mSendQueue.front();
 		LOG_BLOCK(LEV_INTERPRET, "=> AL " << pAPDU->ToString());
-		mpLowerLayer->Send(pAPDU->GetBuffer(), pAPDU->Size());
+		ReadOnlyBuffer buffer(pAPDU->GetBuffer(), pAPDU->Size());
+		mpLowerLayer->Send(buffer);
 	}
 }
 

@@ -74,7 +74,7 @@ private:
 	void _OnOpenFailure();
 
 	/* Implement IUpperLayer */
-	void _OnReceive(const uint8_t*, size_t);
+	void _OnReceive(const openpal::ReadOnlyBuffer& arBuffer);
 	void _OnSendSuccess();
 	void _OnSendFailure();
 	void _OnLowerLayerUp();
@@ -84,7 +84,7 @@ private:
 	openpal::IPhysicalLayerAsync* mpPhys;
 
 	/* Implement ILowerLayer */
-	void _Send(const uint8_t*, size_t);
+	void _Send(const openpal::ReadOnlyBuffer& arBuffer);
 };
 
 }

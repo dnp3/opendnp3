@@ -50,9 +50,9 @@ void SecStateBase::RequestLinkStatus(LinkLayer* apLL)
 	apLL->SendLinkStatus();
 }
 
-void SecStateBase::UnconfirmedUserData(LinkLayer* apLL, const uint8_t* apData, size_t aDataLength)
+void SecStateBase::UnconfirmedUserData(LinkLayer* apLL, const ReadOnlyBuffer& arBuffer)
 {
-	apLL->DoDataUp(apData, aDataLength);
+	apLL->DoDataUp(arBuffer);
 }
 
 ////////////////////////////////////////////////////////
@@ -65,7 +65,7 @@ void SLLS_NotReset::TestLinkStatus(LinkLayer* apLL, bool aFcb)
 	ERROR_LOGGER_BLOCK(apLL->GetLogger(), LEV_WARNING, "TestLinkStatus ignored", DLERR_UNEXPECTED_FRAME);
 }
 
-void SLLS_NotReset::ConfirmedUserData(LinkLayer* apLL, bool aFcb, const uint8_t* apData, size_t aDataLength)
+void SLLS_NotReset::ConfirmedUserData(LinkLayer* apLL, bool aFcb, const openpal::ReadOnlyBuffer&)
 {
 	ERROR_LOGGER_BLOCK(apLL->GetLogger(), LEV_WARNING, "ConfirmedUserData ignored", DLERR_UNEXPECTED_FRAME);
 }
@@ -88,13 +88,13 @@ void SLLS_Reset::TestLinkStatus(LinkLayer* apLL, bool aFcb)
 	}
 }
 
-void SLLS_Reset::ConfirmedUserData(LinkLayer* apLL, bool aFcb, const uint8_t* apData, size_t aDataLength)
+void SLLS_Reset::ConfirmedUserData(LinkLayer* apLL, bool aFcb, const openpal::ReadOnlyBuffer& arBuffer)
 {
 	apLL->SendAck();
 
 	if(apLL->NextReadFCB() == aFcb) {
 		apLL->ToggleReadFCB();
-		apLL->DoDataUp(apData, aDataLength);
+		apLL->DoDataUp(arBuffer);
 	}
 	else {
 		ERROR_LOGGER_BLOCK(apLL->GetLogger(), LEV_WARNING, "Confirmed data w/ wrong FCB", DLERR_WRONG_FCB_ON_RECEIVE_DATA);

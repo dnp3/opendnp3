@@ -41,10 +41,11 @@ public:
 	BufferTestObject();
 	~BufferTestObject();
 
-	bool BufferEquals(const uint8_t*, size_t);
-	bool BufferEqualsHex(const std::string& arData);
-	bool BufferEqualsString(const std::string& arData);
-	bool BufferContains(const std::string& arData);
+	bool BufferEquals(const openpal::ReadOnlyBuffer& arBuffer) const;
+	bool BufferEquals(const uint8_t*, size_t) const;
+	bool BufferEqualsHex(const std::string& arData) const;
+	bool BufferEqualsString(const std::string& arData) const;
+	bool BufferContains(const std::string& arData) const;
 
 	std::string GetBufferAsHexString(bool spaced = true) const;
 

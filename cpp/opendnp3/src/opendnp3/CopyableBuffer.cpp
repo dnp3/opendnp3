@@ -32,7 +32,7 @@ namespace opendnp3
 #ifndef OPENDNP3_STRIP_LOG_MESSAGES
 std::ostream& operator<<(std::ostream& output, const CopyableBuffer& arBuff)
 {
-	output << "[" << openpal::toHex(arBuff.Buffer(), arBuff.Size(), true) << "]";
+	output << "[" << openpal::toHex(arBuff.ToReadOnly(), true) << "]";
 	return output;
 }
 #endif
@@ -51,11 +51,18 @@ CopyableBuffer::CopyableBuffer(size_t aSize) :
 	this->Zero();
 }
 
-CopyableBuffer::CopyableBuffer(const uint8_t* apData, size_t aSize) :
+CopyableBuffer::CopyableBuffer(const openpal::ReadOnlyBuffer& arBuffer) :
+	mpBuff(new uint8_t[arBuffer.Size()]),
+	mSize(arBuffer.Size())
+{
+	arBuffer.CopyTo(mpBuff);	
+}
+
+CopyableBuffer::CopyableBuffer(const uint8_t* apBuff, size_t aSize) :
 	mpBuff(new uint8_t[aSize]),
 	mSize(aSize)
 {
-	memcpy(mpBuff, apData, mSize);
+	memcpy(mpBuff, apBuff, aSize);
 }
 
 CopyableBuffer::CopyableBuffer(const CopyableBuffer& arBuffer) :

@@ -62,8 +62,8 @@ public:
 	void TestLinkStatus(bool aIsMaster, bool aFcb, uint16_t aDest, uint16_t aSrc);
 	void ResetLinkStates(bool aIsMaster, uint16_t aDest, uint16_t aSrc);
 	void RequestLinkStatus(bool aIsMaster, uint16_t aDest, uint16_t aSrc);
-	void ConfirmedUserData(bool aIsMaster, bool aFcb, uint16_t aDest, uint16_t aSrc, const uint8_t* apData, size_t aDataLength);
-	void UnconfirmedUserData(bool aIsMaster, uint16_t aDest, uint16_t aSrc, const uint8_t* apData, size_t aDataLength);
+	void ConfirmedUserData(bool aIsMaster, bool aFcb, uint16_t aDest, uint16_t aSrc, const openpal::ReadOnlyBuffer& arBuffer);
+	void UnconfirmedUserData(bool aIsMaster, uint16_t aDest, uint16_t aSrc, const openpal::ReadOnlyBuffer& arBuffer);
 
 	// Functions called by the primary and secondary station states
 	void ChangeState(PriStateBase*);
@@ -73,8 +73,8 @@ public:
 		return mLogger;
 	}
 
-	void DoDataUp(const uint8_t* apData, size_t aLength) {
-		if(mpUpperLayer) mpUpperLayer->OnReceive(apData, aLength);
+	void DoDataUp(const openpal::ReadOnlyBuffer& arBuffer) {
+		if(mpUpperLayer) mpUpperLayer->OnReceive(arBuffer);
 	}
 
 	void DoSendSuccess() {
@@ -109,7 +109,7 @@ public:
 	void SendAck();
 	void SendLinkStatus();
 	void SendResetLinks();
-	void SendUnconfirmedUserData(const uint8_t* apData, size_t aLength);
+	void SendUnconfirmedUserData(const openpal::ReadOnlyBuffer&);
 	void SendDelayedUserData(bool aFCB);
 
 	void StartTimer();
@@ -147,7 +147,7 @@ private:
 	bool Validate(bool aIsMaster, uint16_t aSrc, uint16_t aDest);
 
 	/* Events - NVII delegates from ILayerDown and Events produced internally */
-	void _Send(const uint8_t*, size_t);
+	void _Send(const openpal::ReadOnlyBuffer& arBuffer);
 
 #ifndef OPENDNP3_STRIP_LOG_MESSAGES
 	std::string SendString() {

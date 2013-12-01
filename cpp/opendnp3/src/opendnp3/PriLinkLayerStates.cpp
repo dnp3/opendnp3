@@ -60,12 +60,12 @@ void PriStateBase::OnTimeout(LinkLayer* apLL)
 	MACRO_THROW_EXCEPTION(InvalidStateException, this->Name());
 }
 
-void PriStateBase::SendConfirmed(LinkLayer*, const uint8_t*, size_t)
+void PriStateBase::SendConfirmed(LinkLayer*, const ReadOnlyBuffer&)
 {
 	MACRO_THROW_EXCEPTION(InvalidStateException, this->Name());
 }
 
-void PriStateBase::SendUnconfirmed(LinkLayer*, const uint8_t*, size_t)
+void PriStateBase::SendUnconfirmed(LinkLayer*, const ReadOnlyBuffer&)
 {
 	MACRO_THROW_EXCEPTION(InvalidStateException, this->Name());
 }
@@ -76,20 +76,20 @@ void PriStateBase::SendUnconfirmed(LinkLayer*, const uint8_t*, size_t)
 
 PLLS_SecNotReset PLLS_SecNotReset::mInstance;
 
-void PLLS_SecNotReset::SendUnconfirmed(LinkLayer* apLL, const uint8_t* apData, size_t aLength)
+void PLLS_SecNotReset::SendUnconfirmed(LinkLayer* apLL, const ReadOnlyBuffer& arBuffer)
 {
-	apLL->SendUnconfirmedUserData(apData, aLength);
+	apLL->SendUnconfirmedUserData(arBuffer);
 
 }
 
-void PLLS_SecNotReset::SendConfirmed(LinkLayer* apLL, const uint8_t* apData, size_t aLength)
+void PLLS_SecNotReset::SendConfirmed(LinkLayer* apLL, const ReadOnlyBuffer& arBuffer)
 {
 	apLL->ResetRetry();
 	apLL->StartTimer();
 	apLL->ChangeState(PLLS_ResetLinkWait::Inst());
 
 	// what we'll send if we successfully reset link state
-	apLL->mDelayedPriFrame.FormatConfirmedUserData(apLL->mCONFIG.IsMaster, true, apLL->mCONFIG.RemoteAddr, apLL->mCONFIG.LocalAddr, apData, aLength);
+	apLL->mDelayedPriFrame.FormatConfirmedUserData(apLL->mCONFIG.IsMaster, true, apLL->mCONFIG.RemoteAddr, apLL->mCONFIG.LocalAddr, arBuffer, arBuffer.Size());
 	apLL->SendResetLinks();
 }
 
@@ -99,18 +99,18 @@ void PLLS_SecNotReset::SendConfirmed(LinkLayer* apLL, const uint8_t* apData, siz
 
 PLLS_SecReset PLLS_SecReset::mInstance;
 
-void PLLS_SecReset::SendUnconfirmed(LinkLayer* apLL, const uint8_t* apData, size_t aLength)
+void PLLS_SecReset::SendUnconfirmed(LinkLayer* apLL, const ReadOnlyBuffer& arBuffer)
 {
-	apLL->SendUnconfirmedUserData(apData, aLength);
+	apLL->SendUnconfirmedUserData(arBuffer);
 }
 
-void PLLS_SecReset::SendConfirmed(LinkLayer* apLL, const uint8_t* apData, size_t aLength)
+void PLLS_SecReset::SendConfirmed(LinkLayer* apLL, const ReadOnlyBuffer& arBuffer)
 {
 	apLL->ResetRetry();
 	apLL->StartTimer();
 	apLL->ChangeState(PLLS_ConfDataWait::Inst());
 
-	apLL->mDelayedPriFrame.FormatConfirmedUserData(apLL->mCONFIG.IsMaster, apLL->NextWriteFCB(), apLL->mCONFIG.RemoteAddr, apLL->mCONFIG.LocalAddr, apData, aLength);
+	apLL->mDelayedPriFrame.FormatConfirmedUserData(apLL->mCONFIG.IsMaster, apLL->NextWriteFCB(), apLL->mCONFIG.RemoteAddr, apLL->mCONFIG.LocalAddr, arBuffer, arBuffer.Size());
 	apLL->SendDelayedUserData(apLL->NextWriteFCB());
 }
 

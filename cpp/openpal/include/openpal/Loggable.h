@@ -24,12 +24,11 @@
 #define __LOGGABLE_H_
 
 #include "Logger.h"
-#include "Visibility.h"
 
 namespace openpal
 {
 
-class DLL_LOCAL Loggable
+class Loggable
 {
 public:
 	Loggable(Logger& arLogger);

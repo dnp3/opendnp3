@@ -79,11 +79,9 @@ void PhysicalLayerAsyncTCPServer::DoOpen()
 
 	mAcceptor.async_accept(mSocket,
 	                       mRemoteEndpoint,
-	                       mStrand.wrap(
-	                               std::bind(&PhysicalLayerAsyncTCPServer::OnOpenCallback,
-	                                               this,
-	                                               std::placeholders::_1)
-	                       ));
+						   mStrand.wrap([this](const boost::system::error_code& code){
+								this->OnOpenCallback(code);
+						   }));						  
 }
 
 void PhysicalLayerAsyncTCPServer::CloseAcceptor()

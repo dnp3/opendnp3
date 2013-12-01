@@ -238,7 +238,7 @@ ControlRelayOutputBlock Group12Var1::Read(const uint8_t* apPos) const
 }
 
 CopyableBuffer Group12Var1::GetValueBytes(const uint8_t* apPos) const
-{
+{	
 	return CopyableBuffer(apPos, 10); //first 10 bytes, everything but the status
 }
 

@@ -39,12 +39,11 @@ public:
 
 private:
 
-	size_t mBytesRead;
-	size_t mBytesWritten;
+	size_t mBytesReadWritten;	
 
 	CopyableBuffer mBuffer;
 
-	void _OnReceive(const uint8_t*, size_t);
+	void _OnReceive(const openpal::ReadOnlyBuffer&);
 	void _OnSendSuccess(void);
 	void _OnSendFailure(void);
 

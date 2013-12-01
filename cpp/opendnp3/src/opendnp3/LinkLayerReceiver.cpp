@@ -53,6 +53,12 @@ void LinkLayerReceiver::Reset()
 	mBuffer.Reset();
 }
 
+WriteBuffer LinkLayerReceiver::WriteBuff() const 
+{
+	WriteBuffer b(mBuffer.WriteBuff(), mBuffer.NumWriteBytes());
+	return b;
+}
+
 void LinkLayerReceiver::OnRead(size_t aNumBytes)
 {
 	// This is a serious condition if it occurs
@@ -78,12 +84,10 @@ void LinkLayerReceiver::PushFrame()
 		mpSink->TestLinkStatus(mHeader.IsFromMaster(), mHeader.IsFcbSet(), mHeader.GetDest(), mHeader.GetSrc());
 		break;
 	case(LinkFunction::PRI_CONFIRMED_USER_DATA):
-		mpSink->ConfirmedUserData(mHeader.IsFromMaster(), mHeader.IsFcbSet(), mHeader.GetDest(), mHeader.GetSrc(),
-		                          mpUserData, TransferUserData());
+		mpSink->ConfirmedUserData(mHeader.IsFromMaster(), mHeader.IsFcbSet(), mHeader.GetDest(), mHeader.GetSrc(), TransferUserData());
 		break;
 	case(LinkFunction::PRI_UNCONFIRMED_USER_DATA):
-		mpSink->UnconfirmedUserData(mHeader.IsFromMaster(), mHeader.GetDest(), mHeader.GetSrc(),
-		                            mpUserData, TransferUserData());
+		mpSink->UnconfirmedUserData(mHeader.IsFromMaster(), mHeader.GetDest(), mHeader.GetSrc(), TransferUserData());
 		break;
 	case(LinkFunction::PRI_REQUEST_LINK_STATUS):
 		mpSink->RequestLinkStatus(mHeader.IsFromMaster(), mHeader.GetDest(), mHeader.GetSrc());
@@ -107,11 +111,11 @@ void LinkLayerReceiver::PushFrame()
 	mBuffer.AdvanceRead(mFrameSize);
 }
 
-size_t LinkLayerReceiver::TransferUserData()
+ReadOnlyBuffer LinkLayerReceiver::TransferUserData()
 {
 	size_t len = mHeader.GetLength() - LS_MIN_LENGTH;
 	LinkFrame::ReadUserData(mBuffer.ReadBuff() + LS_HEADER_SIZE, mpUserData, len);
-	return len;
+	return ReadOnlyBuffer(mpUserData, len);	
 }
 
 bool LinkLayerReceiver::ReadHeader()

@@ -105,16 +105,16 @@ void MockFrameSink::RequestLinkStatus(bool aIsMaster, uint16_t aDest, uint16_t a
 	this->Update(LinkFunction::PRI_REQUEST_LINK_STATUS, aIsMaster, aDest, aSrc);
 }
 
-void MockFrameSink::ConfirmedUserData(bool aIsMaster, bool aFcb, uint16_t aDest, uint16_t aSrc, const uint8_t* apData, size_t aDataLength)
+void MockFrameSink::ConfirmedUserData(bool aIsMaster, bool aFcb, uint16_t aDest, uint16_t aSrc, const openpal::ReadOnlyBuffer& arBuffer)
 {
 	mFcb = aFcb;
-	this->WriteToBuffer(ReadOnlyBuffer(apData, aDataLength));
+	this->WriteToBuffer(arBuffer);
 	this->Update(LinkFunction::PRI_CONFIRMED_USER_DATA, aIsMaster, aDest, aSrc);
 }
 
-void MockFrameSink::UnconfirmedUserData(bool aIsMaster, uint16_t aDest, uint16_t aSrc, const uint8_t* apData, size_t aDataLength)
+void MockFrameSink::UnconfirmedUserData(bool aIsMaster, uint16_t aDest, uint16_t aSrc, const openpal::ReadOnlyBuffer& arBuffer)
 {
-	this->WriteToBuffer(ReadOnlyBuffer(apData, aDataLength));
+	this->WriteToBuffer(arBuffer);
 	this->Update(LinkFunction::PRI_UNCONFIRMED_USER_DATA, aIsMaster, aDest, aSrc);
 }
 

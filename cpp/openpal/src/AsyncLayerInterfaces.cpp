@@ -60,12 +60,12 @@ IUpperLayer::IUpperLayer(openpal::Logger& arLogger) :
 
 }
 
-void IUpperLayer::OnReceive(const uint8_t* apData, size_t aNumBytes)
+void IUpperLayer::OnReceive(const ReadOnlyBuffer& arBuffer)
 {
 	if(this->LogReceive()) {
-		LOG_BLOCK(LEV_COMM, RecvString() << " " << toHex(apData, aNumBytes, true));
+		LOG_BLOCK(LEV_COMM, RecvString() << " " << toHex(arBuffer, true));
 	}
-	this->_OnReceive(apData, aNumBytes); //call the implementation
+	this->_OnReceive(arBuffer); //call the implementation
 }
 
 void IUpperLayer::SetLowerLayer(ILowerLayer* apLowerLayer)
@@ -95,10 +95,10 @@ ILowerLayer::ILowerLayer(openpal::Logger& arLogger) :
 
 }
 
-void ILowerLayer::Send(const uint8_t* apData, size_t aNumBytes)
+void ILowerLayer::Send(const ReadOnlyBuffer& arBuffer)
 {
-	LOG_BLOCK(LEV_COMM, SendString() << " " << toHex(apData, aNumBytes, true));
-	this->_Send(apData, aNumBytes);
+	LOG_BLOCK(LEV_COMM, SendString() << " " << toHex(arBuffer, true));
+	this->_Send(arBuffer);
 }
 
 void ILowerLayer::SetUpperLayer(IUpperLayer* apUpperLayer)

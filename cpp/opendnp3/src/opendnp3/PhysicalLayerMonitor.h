@@ -31,11 +31,10 @@
 
 #include <openpal/IHandlerAsync.h>
 #include <openpal/IExecutor.h>
-#include <openpal/Location.h>
+#include <openpal/Visibility.h>
 #include <openpal/TimeDuration.h>
 
 #include <opendnp3/ChannelStates.h>
-
 
 #include <set>
 #include <mutex>

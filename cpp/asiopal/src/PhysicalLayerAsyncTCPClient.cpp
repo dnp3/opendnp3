@@ -57,11 +57,9 @@ PhysicalLayerAsyncTCPClient::PhysicalLayerAsyncTCPClient(
 void PhysicalLayerAsyncTCPClient::DoOpen()
 {
 	mSocket.async_connect(mRemoteEndpoint,
-	                      mStrand.wrap(
-	                              std::bind(&PhysicalLayerAsyncTCPClient::OnOpenCallback,
-	                                        this,
-	                                        std::placeholders::_1)
-	                      ));
+							mStrand.wrap([this](const boost::system::error_code& code){
+								this->OnOpenCallback(code);
+							}));					   							
 }
 
 void PhysicalLayerAsyncTCPClient::DoOpeningClose()

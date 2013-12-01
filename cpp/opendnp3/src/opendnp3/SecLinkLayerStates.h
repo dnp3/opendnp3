@@ -47,10 +47,10 @@ public:
 
 	void ResetLinkStates(LinkLayer*);
 	void RequestLinkStatus(LinkLayer*);
-	void UnconfirmedUserData(LinkLayer*, const uint8_t* apData, size_t aDataLength);
+	void UnconfirmedUserData(LinkLayer*, const openpal::ReadOnlyBuffer&);
 
 	virtual void TestLinkStatus(LinkLayer*, bool aFcb) = 0;
-	virtual void ConfirmedUserData(LinkLayer*, bool aFcb, const uint8_t* apData, size_t aDataLength) = 0;
+	virtual void ConfirmedUserData(LinkLayer*, bool aFcb, const openpal::ReadOnlyBuffer&) = 0;
 
 #ifndef OPENDNP3_STRIP_LOG_MESSAGES
 	//every concrete state implements this for logging purposes
@@ -66,7 +66,7 @@ class DLL_LOCAL SLLS_NotReset : public SecStateBase
 	MACRO_STATE_SINGLETON_INSTANCE(SLLS_NotReset);
 
 	void TestLinkStatus(LinkLayer*, bool aFcb);
-	void ConfirmedUserData(LinkLayer*, bool aFcb, const uint8_t* apData, size_t aDataLength);
+	void ConfirmedUserData(LinkLayer*, bool aFcb, const openpal::ReadOnlyBuffer&);
 };
 
 ////////////////////////////////////////////////////////
@@ -77,7 +77,7 @@ class DLL_LOCAL SLLS_Reset : public SecStateBase
 	MACRO_STATE_SINGLETON_INSTANCE(SLLS_Reset);
 
 	void TestLinkStatus(LinkLayer*, bool aFcb);
-	void ConfirmedUserData(LinkLayer*, bool aFcb, const uint8_t* apData, size_t aDataLength);
+	void ConfirmedUserData(LinkLayer*, bool aFcb, const openpal::ReadOnlyBuffer&);
 };
 
 } //end namepsace

@@ -54,8 +54,8 @@ public:
 	virtual void OnTimeout(LinkLayer*);
 
 	/*Upper layer events to handle */
-	virtual void SendConfirmed(LinkLayer*, const uint8_t*, size_t);
-	virtual void SendUnconfirmed(LinkLayer*, const uint8_t*, size_t);
+	virtual void SendConfirmed(LinkLayer*, const openpal::ReadOnlyBuffer& arBuffer);
+	virtual void SendUnconfirmed(LinkLayer*, const openpal::ReadOnlyBuffer& arBuffer);
 
 #ifndef OPENDNP3_STRIP_LOG_MESSAGES
 	//every concrete state implements this for logging purposes
@@ -68,16 +68,16 @@ public:
 class DLL_LOCAL PLLS_SecNotReset : public PriStateBase
 {
 	MACRO_STATE_SINGLETON_INSTANCE(PLLS_SecNotReset);
-	void SendUnconfirmed(LinkLayer*, const uint8_t*, size_t);
-	void SendConfirmed(LinkLayer*, const uint8_t*, size_t);
+	void SendUnconfirmed(LinkLayer*, const openpal::ReadOnlyBuffer& arBuffer);
+	void SendConfirmed(LinkLayer*, const openpal::ReadOnlyBuffer& arBuffer);
 };
 
 //	@section desc for reset state
 class DLL_LOCAL PLLS_SecReset : public PriStateBase
 {
 	MACRO_STATE_SINGLETON_INSTANCE(PLLS_SecReset);
-	void SendUnconfirmed(LinkLayer*, const uint8_t*, size_t);
-	void SendConfirmed(LinkLayer*, const uint8_t*, size_t);
+	void SendUnconfirmed(LinkLayer*, const openpal::ReadOnlyBuffer& arBuffer);
+	void SendConfirmed(LinkLayer*, const openpal::ReadOnlyBuffer& arBuffer);
 };
 
 //	@section desc As soon as we get an ACK, send the delayed pri frame

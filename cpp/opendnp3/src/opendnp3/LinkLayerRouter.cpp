@@ -174,25 +174,24 @@ void LinkLayerRouter::RequestLinkStatus(bool aIsMaster, uint16_t aDest, uint16_t
 	ILinkContext* pDest = GetDestination(aDest, aSrc);
 	if(pDest) pDest->RequestLinkStatus(aIsMaster, aDest, aSrc);
 }
-void LinkLayerRouter::ConfirmedUserData(bool aIsMaster, bool aFcb, uint16_t aDest, uint16_t aSrc, const uint8_t* apData, size_t aDataLength)
+void LinkLayerRouter::ConfirmedUserData(bool aIsMaster, bool aFcb, uint16_t aDest, uint16_t aSrc, const ReadOnlyBuffer& arBuffer)
 {
 	ILinkContext* pDest = GetDestination(aDest, aSrc);
-	if(pDest) pDest->ConfirmedUserData(aIsMaster, aFcb, aDest, aSrc, apData, aDataLength);
+	if(pDest) pDest->ConfirmedUserData(aIsMaster, aFcb, aDest, aSrc, arBuffer);
 }
-void LinkLayerRouter::UnconfirmedUserData(bool aIsMaster, uint16_t aDest, uint16_t aSrc, const uint8_t* apData, size_t aDataLength)
+void LinkLayerRouter::UnconfirmedUserData(bool aIsMaster, uint16_t aDest, uint16_t aSrc, const ReadOnlyBuffer& arBuffer)
 {
 	ILinkContext* pDest = GetDestination(aDest, aSrc);
-	if(pDest) pDest->UnconfirmedUserData(aIsMaster, aDest, aSrc, apData, aDataLength);
+	if(pDest) pDest->UnconfirmedUserData(aIsMaster, aDest, aSrc, arBuffer);
 }
 
-void LinkLayerRouter::_OnReceive(const uint8_t*, size_t aNumBytes)
+void LinkLayerRouter::_OnReceive(const openpal::ReadOnlyBuffer& arBuffer)
 {
 	// The order is important here. You must let the receiver process the byte or another read could write
 	// over the buffer before it is processed
-	mReceiver.OnRead(aNumBytes); //this may trigger callbacks to the local ILinkContext interface
-	if(mpPhys->CanRead()) { // this is required because the call above could trigger the layer to be closed
-		auto wrapper = WriteBuffer(mReceiver.WriteBuff(), mReceiver.NumWriteBytes());
-		mpPhys->AsyncRead(wrapper); //start another read
+	mReceiver.OnRead(arBuffer.Size()); //this may trigger callbacks to the local ILinkContext interface
+	if(mpPhys->CanRead()) { // this is required because the call above could trigger the layer to be closed		
+		mpPhys->AsyncRead(mReceiver.WriteBuff()); //start another read
 	}
 }
 
@@ -284,9 +283,8 @@ void LinkLayerRouter::CheckForSend()
 
 void LinkLayerRouter::OnPhysicalLayerOpenSuccessCallback()
 {
-	if(mpPhys->CanRead()) {
-		WriteBuffer buff(mReceiver.WriteBuff(), mReceiver.NumWriteBytes());
-		mpPhys->AsyncRead(buff);
+	if(mpPhys->CanRead()) {		
+		mpPhys->AsyncRead(mReceiver.WriteBuff());
 	}
 
 	for(AddressMap::value_type p: mAddressMap) {

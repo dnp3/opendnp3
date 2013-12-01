@@ -74,24 +74,24 @@ void TransportLayer::ChangeState(TLS_Base* apNewState)
 	mpState = apNewState;
 }
 
-void TransportLayer::TransmitAPDU(const uint8_t* apData, size_t aNumBytes)
+void TransportLayer::TransmitAPDU(const openpal::ReadOnlyBuffer& arBuffer)
 {
-	mTransmitter.Send(apData, aNumBytes);
+	mTransmitter.Send(arBuffer);
 }
 
-void TransportLayer::TransmitTPDU(const uint8_t* apData, size_t aNumBytes)
+void TransportLayer::TransmitTPDU(const openpal::ReadOnlyBuffer& arBuffer)
 {
-	if(mpLowerLayer != nullptr) mpLowerLayer->Send(apData, aNumBytes);
+	if(mpLowerLayer != nullptr) mpLowerLayer->Send(arBuffer);
 }
 
-void TransportLayer::ReceiveTPDU(const uint8_t* apData, size_t aNumBytes)
+void TransportLayer::ReceiveTPDU(const openpal::ReadOnlyBuffer& arBuffer)
 {
-	mReceiver.HandleReceive(apData, aNumBytes);
+	mReceiver.HandleReceive(arBuffer);
 }
 
-void TransportLayer::ReceiveAPDU(const uint8_t* apData, size_t aNumBytes)
+void TransportLayer::ReceiveAPDU(const openpal::ReadOnlyBuffer& arBuffer)
 {
-	if(mpUpperLayer != nullptr) mpUpperLayer->OnReceive(apData, aNumBytes);
+	if(mpUpperLayer != nullptr) mpUpperLayer->OnReceive(arBuffer);
 }
 
 bool TransportLayer::ContinueSend()
@@ -112,21 +112,21 @@ void TransportLayer::SignalSendFailure()
 ///////////////////////////////////////
 // ILayerDown NVII implementations
 ///////////////////////////////////////
-void TransportLayer::_Send(const uint8_t* apData, size_t aNumBytes)
+void TransportLayer::_Send(const ReadOnlyBuffer& arBuffer)
 {
-	if(aNumBytes == 0 || aNumBytes > M_FRAG_SIZE) {
-		MACRO_THROW_EXCEPTION_COMPLEX(ArgumentException, "Illegal arg: " << aNumBytes << ", Array length must be in the range [1," << M_FRAG_SIZE << "]");
+	if(arBuffer.IsEmpty() || arBuffer.Size() > M_FRAG_SIZE) {
+		MACRO_THROW_EXCEPTION_COMPLEX(ArgumentException, "Illegal arg: " << arBuffer.Size() << ", Array length must be in the range [1," << M_FRAG_SIZE << "]");
 	}
 
-	mpState->Send(apData, aNumBytes, this);
+	mpState->Send(arBuffer, this);
 }
 
 ///////////////////////////////////////
 // ILayerUp NVII implementations
 ///////////////////////////////////////
-void TransportLayer::_OnReceive(const uint8_t* apData, size_t aNumBytes)
+void TransportLayer::_OnReceive(const ReadOnlyBuffer& arBuffer)
 {
-	mpState->HandleReceive(apData, aNumBytes, this);
+	mpState->HandleReceive(arBuffer, this);
 }
 
 void TransportLayer::_OnSendSuccess()

@@ -42,15 +42,17 @@ public:
 	{}
 
 	void WriteData(const LinkFrame& arFrame) {
-		assert(arFrame.GetSize() <= mRx.NumWriteBytes());
-		memcpy(mRx.WriteBuff(), arFrame.GetBuffer(), arFrame.GetSize());
+		auto buff = mRx.WriteBuff();
+		assert(arFrame.GetSize() <= buff.Size());
+		memcpy(buff, arFrame.GetBuffer(), arFrame.GetSize());
 		mRx.OnRead(arFrame.GetSize());
 	}
 
 	void WriteData(const std::string& arHex) {
 		HexSequence hs(arHex);
-		assert(hs.Size() <= mRx.NumWriteBytes());
-		memcpy(mRx.WriteBuff(), hs, hs.Size());
+		auto buff = mRx.WriteBuff();
+		assert(hs.Size() <= buff.Size());
+		memcpy(buff, hs, hs.Size());
 		mRx.OnRead(hs.Size());
 	}
 

@@ -112,7 +112,7 @@ BOOST_AUTO_TEST_CASE(UnconfirmedDataPassedUpFromIdleUnreset)
 {
 	LinkLayerTest t; t.link.OnLowerLayerUp();
 	ByteStr bs(250, 0);
-	t.link.UnconfirmedUserData(false, 1, 1024, bs, bs.Size());
+	t.link.UnconfirmedUserData(false, 1, 1024, bs.ToReadOnly());
 	BOOST_REQUIRE(t.log.IsLogErrorFree());
 	BOOST_REQUIRE(t.upper.BufferEquals(bs, bs.Size()));
 }
@@ -122,7 +122,7 @@ BOOST_AUTO_TEST_CASE(ConfirmedDataIgnoredFromIdleUnreset)
 {
 	LinkLayerTest t; t.link.OnLowerLayerUp();
 	ByteStr bs(250, 0);
-	t.link.ConfirmedUserData(false, false, 1, 1024, bs, bs.Size());
+	t.link.ConfirmedUserData(false, false, 1, 1024, bs.ToReadOnly());
 	BOOST_REQUIRE(t.upper.IsBufferEmpty());
 	BOOST_REQUIRE_EQUAL(t.log.NextErrorCode(), DLERR_UNEXPECTED_FRAME);
 }
@@ -150,7 +150,7 @@ BOOST_AUTO_TEST_CASE(SecAckWrongFCB)
 	BOOST_REQUIRE_EQUAL(t.mNumSend, 1);
 
 	ByteStr b(250, 0);
-	t.link.ConfirmedUserData(false, false, 1, 1024, b, b.Size());
+	t.link.ConfirmedUserData(false, false, 1, 1024, b.ToReadOnly());
 	BOOST_REQUIRE_EQUAL(t.mNumSend, 2);
 	LinkFrame f; f.FormatAck(true, false, 1024, 1);
 	BOOST_REQUIRE_EQUAL(t.mLastSend, f);
@@ -179,13 +179,13 @@ BOOST_AUTO_TEST_CASE(SecondaryResetConfirmedUserData)
 	t.link.ResetLinkStates(false, 1, 1024);
 
 	ByteStr bytes(250, 0);
-	t.link.ConfirmedUserData(false, true, 1, 1024, bytes, bytes.Size());
+	t.link.ConfirmedUserData(false, true, 1, 1024, bytes.ToReadOnly());
 	BOOST_REQUIRE_EQUAL(t.mNumSend, 2);
 	BOOST_REQUIRE(t.upper.BufferEquals(bytes, bytes.Size()));
 	BOOST_REQUIRE(t.log.IsLogErrorFree());
 	t.upper.ClearBuffer();
 
-	t.link.ConfirmedUserData(false, true, 1, 1024, bytes, bytes.Size()); //send with wrong FCB
+	t.link.ConfirmedUserData(false, true, 1, 1024, bytes.ToReadOnly()); //send with wrong FCB
 	BOOST_REQUIRE_EQUAL(t.mNumSend, 3); //should still get an ACK
 	BOOST_REQUIRE(t.upper.IsBufferEmpty()); //but no data
 	BOOST_REQUIRE_EQUAL(t.log.NextErrorCode(), DLERR_WRONG_FCB_ON_RECEIVE_DATA);
@@ -230,7 +230,7 @@ BOOST_AUTO_TEST_CASE(SendUnconfirmed)
 
 	ByteStr bytes(250, 0);
 
-	t.link.Send(bytes, bytes.Size());
+	t.link.Send(bytes.ToReadOnly());
 	BOOST_REQUIRE_EQUAL(t.mNumSend, 1);
 	LinkFrame f; f.FormatUnconfirmedUserData(true, 1024, 1, bytes, bytes.Size());
 	BOOST_REQUIRE_EQUAL(t.mLastSend, f);
@@ -244,7 +244,7 @@ BOOST_AUTO_TEST_CASE(CloseBehavior)
 	t.link.OnLowerLayerUp();
 
 	ByteStr bytes(250, 0);
-	t.link.Send(bytes, bytes.Size());
+	t.link.Send(bytes.ToReadOnly());
 	BOOST_REQUIRE(t.upper.CountersEqual(1, 0));
 	t.link.OnLowerLayerDown(); //take it down during the middle of a send
 	BOOST_REQUIRE_FALSE(t.upper.IsLowerLayerUp());
@@ -252,7 +252,7 @@ BOOST_AUTO_TEST_CASE(CloseBehavior)
 
 	t.link.OnLowerLayerUp();
 	BOOST_REQUIRE(t.upper.IsLowerLayerUp());
-	t.link.Send(bytes, bytes.Size());
+	t.link.Send(bytes.ToReadOnly());
 	BOOST_REQUIRE_EQUAL(t.mNumSend, 2);
 
 }
@@ -266,7 +266,7 @@ BOOST_AUTO_TEST_CASE(ResetLinkTimerExpiration)
 	t.link.OnLowerLayerUp();
 
 	ByteStr bytes(250, 0);
-	t.link.Send(bytes, bytes.Size());
+	t.link.Send(bytes.ToReadOnly());
 	BOOST_REQUIRE_EQUAL(t.mNumSend, 1);
 	LinkFrame f; f.FormatResetLinkStates(true, 1024, 1);
 	BOOST_REQUIRE_EQUAL(t.mLastSend, f);
@@ -288,7 +288,7 @@ BOOST_AUTO_TEST_CASE(ResetLinkTimerExpirationWithRetry)
 	t.link.OnLowerLayerUp();
 
 	ByteStr bytes(250, 0);
-	t.link.Send(bytes, bytes.Size());
+	t.link.Send(bytes.ToReadOnly());
 	BOOST_REQUIRE_EQUAL(t.mNumSend, 1);
 
 	BOOST_REQUIRE(t.log.IsLogErrorFree());
@@ -309,7 +309,7 @@ BOOST_AUTO_TEST_CASE(ResetLinkTimerExpirationWithRetry)
 	BOOST_REQUIRE(t.upper.CountersEqual(0, 1));
 
 	// Test retry reset
-	t.link.Send(bytes, bytes.Size());
+	t.link.Send(bytes.ToReadOnly());
 	BOOST_REQUIRE_EQUAL(t.mNumSend, 4);
 
 	BOOST_REQUIRE(t.log.IsLogErrorFree());
@@ -327,12 +327,12 @@ BOOST_AUTO_TEST_CASE(ResetLinkTimerExpirationWithRetryResetState)
 	t.link.OnLowerLayerUp();
 
 	ByteStr bytes(250, 0);
-	t.link.Send(bytes, bytes.Size());
+	t.link.Send(bytes.ToReadOnly());
 	t.link.Ack(false, false, 1, 1024);
 	t.link.Ack(false, false, 1, 1024);
 	BOOST_REQUIRE(t.upper.CountersEqual(1, 0));
 
-	t.link.Send(bytes, bytes.Size());
+	t.link.Send(bytes.ToReadOnly());
 	BOOST_REQUIRE_EQUAL(t.mNumSend, 3);
 
 	BOOST_REQUIRE(t.log.IsLogErrorFree());
@@ -345,7 +345,7 @@ BOOST_AUTO_TEST_CASE(ResetLinkTimerExpirationWithRetryResetState)
 	BOOST_REQUIRE(t.upper.CountersEqual(2, 0));
 
 	// Test retry reset
-	t.link.Send(bytes, bytes.Size());
+	t.link.Send(bytes.ToReadOnly());
 	BOOST_REQUIRE_EQUAL(t.mNumSend, 5);	// Should now be waiting for an ACK with active timer
 
 	BOOST_REQUIRE(t.log.IsLogErrorFree());
@@ -363,7 +363,7 @@ BOOST_AUTO_TEST_CASE(ConfirmedDataRetry)
 	LinkLayerTest t(cfg); t.link.OnLowerLayerUp();
 
 	ByteStr bytes(250, 0);
-	t.link.Send(bytes, bytes.Size());
+	t.link.Send(bytes.ToReadOnly());
 	BOOST_REQUIRE_EQUAL(t.mNumSend, 1); // Should now be waiting for an ACK with active timer
 
 	t.link.Ack(false, false, 1, 1024);
@@ -389,7 +389,7 @@ BOOST_AUTO_TEST_CASE(ResetLinkRetries)
 	LinkLayerTest t(cfg); t.link.OnLowerLayerUp();
 
 	ByteStr bytes(250, 0);
-	t.link.Send(bytes, bytes.Size());
+	t.link.Send(bytes.ToReadOnly());
 	for(int i = 1; i < 5; ++i) {
 		BOOST_REQUIRE_EQUAL(t.mNumSend, i); // sends link retry
 		LinkFrame f;
@@ -409,7 +409,7 @@ BOOST_AUTO_TEST_CASE(ConfirmedDataNackDFCClear)
 	LinkLayerTest t(cfg); t.link.OnLowerLayerUp();
 
 	ByteStr bytes(250, 0);
-	t.link.Send(bytes, bytes.Size());
+	t.link.Send(bytes.ToReadOnly());
 	BOOST_REQUIRE_EQUAL(t.mNumSend, 1); // Should now be waiting for an ACK with active timer
 
 	t.link.Ack(false, false, 1, 1024);
@@ -432,7 +432,7 @@ BOOST_AUTO_TEST_CASE(SendDataTimerExpiration)
 	t.link.OnLowerLayerUp();
 
 	ByteStr bytes(250, 0);
-	t.link.Send(bytes, bytes.Size());
+	t.link.Send(bytes.ToReadOnly());
 	BOOST_REQUIRE_EQUAL(t.mNumSend, 1);
 	t.link.Ack(false, false, 1, 1024); // ACK the reset links
 	BOOST_REQUIRE_EQUAL(t.mNumSend, 2);
@@ -452,13 +452,13 @@ BOOST_AUTO_TEST_CASE(SendDataSuccess)
 	t.link.OnLowerLayerUp();
 
 	ByteStr bytes(250, 0);
-	t.link.Send(bytes, bytes.Size()); // Should now be waiting for an ACK
+	t.link.Send(bytes.ToReadOnly()); // Should now be waiting for an ACK
 	t.link.Ack(false, false, 1, 1024); //this
 
 	t.link.Ack(false, false, 1, 1024);
 	BOOST_REQUIRE(t.upper.CountersEqual(1, 0));
 
-	t.link.Send(bytes, bytes.Size()); // now we should be directly sending w/o having to reset, and the FCB should flip
+	t.link.Send(bytes.ToReadOnly()); // now we should be directly sending w/o having to reset, and the FCB should flip
 	LinkFrame f; f.FormatConfirmedUserData(true, false, 1024, 1, bytes, bytes.Size());
 	BOOST_REQUIRE_EQUAL(t.mNumSend, 3);
 	BOOST_REQUIRE_EQUAL(t.mLastSend, f);
