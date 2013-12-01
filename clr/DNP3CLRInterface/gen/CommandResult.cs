@@ -15,22 +15,25 @@
 // http://www.apache.org/licenses/LICENSE-2.0.html
 //
 
-#include <opendnp3/gen/CommandResult.h>
 
-namespace opendnp3 {
-
-std::string CommandResultToString(CommandResult arg)
+namespace DNP3.Interface
 {
-  switch(arg)
+  /// <summary>
+  /// Opendnp3 API enum used for differentiating cases when a command sequence fails without a response from the outstation
+  /// </summary>
+  public enum CommandResult : byte
   {
-    case(CommandResult::RESPONSE_OK):
-      return "RESPONSE_OK";
-    case(CommandResult::TIMEOUT):
-      return "TIMEOUT";
-    case(CommandResult::NO_COMMS):
-      return "NO_COMMS";
+    /// <summary>
+    /// A response was received from the outstation, check the CommandStatus enumeration
+    /// </summary>
+    RESPONSE_OK = 0,
+    /// <summary>
+    /// The operation timed out without a response
+    /// </summary>
+    TIMEOUT = 1,
+    /// <summary>
+    /// There is no communication with the outstation, and the command was not attempted
+    /// </summary>
+    NO_COMMS = 2
   }
-  return "NO_COMMS";
-}
-
 }

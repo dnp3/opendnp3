@@ -43,6 +43,6 @@ case object Hex extends IntRender { def apply(i: Int): String = "0x"+Integer.toH
 case object Base10 extends IntRender { def apply(i: Int): String = i.toString }
 
 
-case class EnumModel(name: String, enumType: EnumModel.Type, values: List[EnumValue], default: EnumValue, render: IntRender = Base10) {
+case class EnumModel(name: String, comments: List[String], enumType: EnumModel.Type, values: List[EnumValue], default: EnumValue, render: IntRender = Base10) {
   def qualified(ev: EnumValue): String = List(name,"::",ev.name).mkString
 }

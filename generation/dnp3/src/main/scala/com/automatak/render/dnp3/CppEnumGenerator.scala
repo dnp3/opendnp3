@@ -5,7 +5,7 @@ import java.nio.file.Path
 import com.automatak.render.dnp3.enums._
 import com.automatak.render.cpp._
 
-object EnumGenerator {
+object CppEnumGenerator {
 
   def apply(ns: String, cppInclude: Path, cppSource: Path): Unit = {
 
@@ -33,7 +33,7 @@ object EnumGenerator {
       val renders = if(cfg.conversions) List(EnumToString, EnumToType, EnumFromType) else List(EnumToString)
 
       def writeHeader() {
-        val license = commented(LicenseHeader.lines).toIterator
+        val license = commented(LicenseHeader())
         val enum = EnumModelRenderer.render(cfg.model).toIterator
         val signatures = renders.map(c => c.header.render(cfg.model)).flatten.toIterator
         val lines = license ++ space ++ includeGuards(cfg.model.name)(string ++ cstdint ++ space ++ namespace(ns)(enum ++ space ++ signatures))
@@ -42,7 +42,7 @@ object EnumGenerator {
       }
 
       def writeImpl() {
-        val license = commented(LicenseHeader.lines).toIterator
+        val license = commented(LicenseHeader())
         val funcs = renders.map(r => r.impl.render(cfg.model)).flatten.toIterator
         val inc = if(cfg.localInclude) quoted(cfg.headerName) else bracketed(List(ns,"/gen/",cfg.headerName).mkString)
         val lines = license ++ space ++ Iterator(include(inc)) ++ space ++ namespace(ns)(funcs)

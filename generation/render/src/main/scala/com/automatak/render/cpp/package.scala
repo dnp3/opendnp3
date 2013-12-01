@@ -22,6 +22,11 @@ package object cpp {
 
   private val quote : String = "\""
 
+  def getEnumType(typ: EnumModel.Type): String = typ match {
+    case EnumModel.UInt8 => "uint8_t"
+    case EnumModel.UInt16 => "uint16_t"
+  }
+
   def quoted(s: String): String = List(quote, s, quote).mkString
 
   def bracketed(s: String): String = List("<", s, ">").mkString
@@ -41,33 +46,7 @@ package object cpp {
     }
   }
 
-  def merge(a: Iterator[Option[String]], b: Iterator[String]): Iterator[String] = {
-
-    val iter = new Iterator[Iterator[String]] {
-      def hasNext = a.hasNext && b.hasNext
-
-      def next(): Iterator[String] = {
-        val d = b.next()
-        a.next() match {
-          case Some(c) => Iterator(c,d)
-          case None => Iterator(d)
-        }
-      }
-    }
-
-    iter.flatten
-  }
-
   def stdString: String = "std::string"
-
-  def getType(typ: EnumModel.Type): String = typ match {
-    case EnumModel.UInt8 => "uint8_t"
-    case EnumModel.UInt16 => "uint16_t"
-  }
-
-  def commented(lines: List[String]): List[String] = {
-    lines.map(l => "// " + l)
-  }
 
   def namespace(ns: String)(internals: Iterator[String]): Iterator[String] = {
 
@@ -92,7 +71,7 @@ package object cpp {
 
   }
 
-  def staticCast(typ: EnumModel.Type)(arg: String): String = staticCast(getType(typ))(arg)
+  def staticCast(typ: EnumModel.Type)(arg: String): String = staticCast(getEnumType(typ))(arg)
 
   def staticCast(typ: String)(arg: String): String = List("static_cast<",typ,">(",arg,")").mkString
 

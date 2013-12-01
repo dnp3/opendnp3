@@ -5,7 +5,9 @@ package com.automatak.render
  */
 object LicenseHeader {
 
-  val lines = List(
+  def apply(): Iterator[String] = list.iterator
+
+  private val list = List(
 
     """ _   _         ______    _ _ _   _             _ _ _""",
     """| \ | |       |  ____|  | (_) | (_)           | | | |""",

@@ -1,3 +1,4 @@
+//
 //  _   _         ______    _ _ _   _             _ _ _
 // | \ | |       |  ____|  | (_) | (_)           | | | |
 // |  \| | ___   | |__   __| |_| |_ _ _ __   __ _| | | |
@@ -12,6 +13,7 @@
 // to you under the the Apache License Version 2.0 (the "License"):
 // 
 // http://www.apache.org/licenses/LICENSE-2.0.html
+//
 
 #ifndef __OPENDNP3_GENERATED_FUNCTIONCODE_H_
 #define __OPENDNP3_GENERATED_FUNCTIONCODE_H_
@@ -21,6 +23,9 @@
 
 namespace opendnp3 {
 
+/**
+  Application layer function code enumeration
+*/
 enum class FunctionCode : uint8_t
 {
   CONFIRM = 0x0,

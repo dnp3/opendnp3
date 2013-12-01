@@ -1,3 +1,4 @@
+//
 //  _   _         ______    _ _ _   _             _ _ _
 // | \ | |       |  ____|  | (_) | (_)           | | | |
 // |  \| | ___   | |__   __| |_| |_ _ _ __   __ _| | | |
@@ -12,6 +13,7 @@
 // to you under the the Apache License Version 2.0 (the "License"):
 // 
 // http://www.apache.org/licenses/LICENSE-2.0.html
+//
 
 #ifndef __OPENDNP3_GENERATED_COMMANDSTATUS_H_
 #define __OPENDNP3_GENERATED_COMMANDSTATUS_H_
@@ -21,6 +23,10 @@
 
 namespace opendnp3 {
 
+/**
+  An enumeration of result codes received from an outstation in response to command request.
+  These correspond to those defined in the DNP3 standard
+*/
 enum class CommandStatus : uint8_t
 {
   /// command was successfully received and handled

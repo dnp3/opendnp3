@@ -16,7 +16,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.automatak.render.cpp
+package com.automatak.render.csharp
 
 import com.automatak.render._
 
@@ -26,18 +26,23 @@ object EnumModelRenderer extends ModelRenderer[EnumModel] {
 
     def pair(ir: IntRender)(ev: EnumValue): String = List(ev.name, "=", ir(ev.value)).spaced
 
-    def header: Iterator[String] = Iterator(List("enum","class", enum.name, ":", getEnumType(enum.enumType)).spaced)
+    def getEnumType(typ: EnumModel.Type): String = typ match {
+      case EnumModel.UInt8 => "byte"
+      case EnumModel.UInt16 => "ushort"
+    }
 
-    def comments: Iterator[Option[Iterator[String]]] = enum.values.map(ev => ev.comment.map(c => Iterator("/// " + c))).iterator
+    def header: Iterator[String] = Iterator(List("public", "enum", enum.name, ":", getEnumType(enum.enumType)).spaced)
+
+    def summary(comments: Iterator[String]): Iterator[String] = {
+      Iterator("/// <summary>") ++ comments.map("/// " + _) ++ Iterator("/// </summary>")
+    }
+
+    def comments: Iterator[Option[Iterator[String]]] = enum.values.map(ev => ev.comment.map(c => summary(Iterator(c)))).iterator
 
     def definitions : Iterator[String] = commaDelimited(enum.values.map(pair(enum.render)).iterator)
 
-    def summary = if(enum.comments.isEmpty) Iterator.empty else {
-      Iterator("/**") ++ indent(enum.comments.toIterator) ++ Iterator("*/")
-    }
-
-    summary ++
-    header ++ bracketSemiColon {
+    summary(enum.comments.toIterator) ++
+    header ++ bracket {
       merge(comments, definitions)
     }
 

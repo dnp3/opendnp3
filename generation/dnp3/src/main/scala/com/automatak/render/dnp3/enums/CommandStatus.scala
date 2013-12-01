@@ -5,7 +5,12 @@ import com.automatak.render._
 
 object CommandStatus {
 
-  def apply(): EnumModel = EnumModel("CommandStatus", EnumModel.UInt8, codes, codes.last, Base10)
+  private val comments = List(
+    "An enumeration of result codes received from an outstation in response to command request.",
+    "These correspond to those defined in the DNP3 standard"
+  )
+
+  def apply(): EnumModel = EnumModel("CommandStatus", comments, EnumModel.UInt8, codes, codes.last, Base10)
 
   private val codes = List(
     EnumValue("SUCCESS", 0, "command was successfully received and handled"),

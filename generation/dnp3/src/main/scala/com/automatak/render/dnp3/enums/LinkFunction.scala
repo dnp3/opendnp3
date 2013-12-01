@@ -5,7 +5,9 @@ import com.automatak.render._
 
 object LinkFunction {
 
-  def apply(): EnumModel = EnumModel("LinkFunction", EnumModel.UInt8, codes, codes.last, Hex)
+  private val comments = List("Link layer function code enumeration")
+
+  def apply(): EnumModel = EnumModel("LinkFunction", comments, EnumModel.UInt8, codes, codes.last, Hex)
 
   val codes = List(
     EnumValue("PRI_RESET_LINK_STATES", 0x40),

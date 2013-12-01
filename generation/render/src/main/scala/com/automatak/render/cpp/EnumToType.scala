@@ -25,7 +25,7 @@ object EnumToType extends HeaderImplModelRender[EnumModel] {
   def header: ModelRenderer[EnumModel] = HeaderRender
   def impl: ModelRenderer[EnumModel] =  ImplRender
 
-  private def signature(em: EnumModel) : String = List(getType(em.enumType), List(em.name,"ToType(", em.name," arg)").mkString).mkString(" ")
+  private def signature(em: EnumModel) : String = List(getEnumType(em.enumType), List(em.name,"ToType(", em.name," arg)").mkString).mkString(" ")
 
   private object HeaderRender extends ModelRenderer[EnumModel] {
     def render(em: EnumModel)(implicit indent: Indentation) : Iterator[String] = Iterator(signature(em)+";")

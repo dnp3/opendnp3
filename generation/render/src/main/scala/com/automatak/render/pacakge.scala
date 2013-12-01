@@ -25,6 +25,27 @@ package object render {
 
     def space: Iterator[String] = Iterator.apply("")
 
+    def commented(lines: Iterator[String]): Iterator[String] = {
+      Iterator("//") ++ lines.map(l => "// " + l) ++ Iterator("//")
+    }
+
+    def merge(a: Iterator[Option[Iterator[String]]], b: Iterator[String]): Iterator[String] = {
+
+      val iter = new Iterator[Iterator[String]] {
+        def hasNext = a.hasNext && b.hasNext
+
+        def next(): Iterator[String] = {
+          val d = b.next()
+          a.next() match {
+            case Some(c) => c ++ Iterator(d)
+            case None => Iterator(d)
+          }
+        }
+      }
+
+      iter.flatten
+    }
+
     def bracketWithCap[A](indent: Indentation, cap: String)(inner: => Iterator[String]): Iterator[String] = {
       Iterator("{") ++
         indent(
