@@ -24,11 +24,18 @@ class EnumModelRenderer(i: Indentation) extends ModelRenderer[EnumModel] {
 
   def render(enum: EnumModel) : Iterator[String] = {
 
-    def toString(ir: IntRender)(ev: EnumValue): String = List(ev.name, "=", ir(ev.value)).spaced
+    def pair(ir: IntRender)(ev: EnumValue): String = {
+      List(ev.name, "=", ir(ev.value)).spaced
+    }
 
     def header: Iterator[String] = Iterator(List("enum","class", enum.name, ":", getType(enum.enumType)).spaced)
 
-    def values = enum.values.map(toString(enum.render)).commaDelimited.toIterator
+    def values : Iterator[String] = {
+      val comments: Iterator[Option[String]] = enum.values.map(ev => ev.comment.map(c => "/// " + c)).iterator
+      val definitions : Iterator[String] = commaDelimited(enum.values.map(pair(enum.render)).iterator)
+
+      merge(comments, definitions)
+    }
 
     header ++ bracketSemiColon(i) {
       values

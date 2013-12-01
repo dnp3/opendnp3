@@ -39,9 +39,18 @@ package object render {
 
       def spaced : String = list.mkString(" ")
 
-      def commaDelimited: List[String] = list.sliding(2).map(x => x.head + ",").toList ::: List(list.last)
-
     }
+
+    def delimited(delim: String)(s: Iterator[String]) : Iterator[String] = new Iterator[String] {
+      def hasNext: Boolean = s.hasNext
+
+      def next(): String = {
+        val ret = s.next()
+        if(s.hasNext) (ret + delim) else ret
+      }
+    }
+
+    def commaDelimited(s: Iterator[String]) : Iterator[String] = delimited(",")(s)
 
     def writeLinesTo(path: Path, lines: Iterator[String]): Unit = {
 

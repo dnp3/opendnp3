@@ -21,11 +21,11 @@ package com.automatak.render
 object EnumValues {
 
   def from(list: List[String], i: Int = 0) : List[EnumValue] = from(list, Iterator.from(i,1))
-  def from(list: List[String], iterator: Iterator[Int]) : List[EnumValue] = list.map(s => EnumValue(s, iterator.next()))
+  def from(list: List[String], iterator: Iterator[Int]) : List[EnumValue] = list.map(s => EnumValue(s, iterator.next(), None))
 
 }
 
-case class EnumValue(name: String, value: Int)
+case class EnumValue(name: String, value: Int, comment: Option[String] = None)
 
 object EnumModel {
 

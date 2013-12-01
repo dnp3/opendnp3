@@ -24,6 +24,23 @@ package object cpp {
 
   def quotes(s: String): String = List(quote, s, quote).mkString
 
+  def merge(a: Iterator[Option[String]], b: Iterator[String]): Iterator[String] = {
+
+    val iter = new Iterator[Iterator[String]] {
+      def hasNext = a.hasNext && b.hasNext
+
+      def next(): Iterator[String] = {
+        val d = b.next()
+        a.next() match {
+          case Some(c) => Iterator(c,d)
+          case None => Iterator(d)
+        }
+      }
+    }
+
+    iter.flatten
+  }
+
   def stdString: String = "std::string"
 
   def getType(typ: EnumModel.Type): String = typ match {
