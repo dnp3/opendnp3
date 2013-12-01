@@ -121,7 +121,7 @@ public:
 	 * Starts a read operation.
 	 *
 	 * Use SetHandler to provide a callback that is called by
-	 * OnReceive(const uint8_t*, size_t) or a failure will
+	 * OnReceive(const ReadOnlyBuffer&) or a failure will
 	 * result in the layer closing.
 	 *
 	 * @param arBuffer		Read into the underlying buffer

@@ -94,7 +94,7 @@ bool AppLayerTest::CheckSentAPDU(FunctionCode aCode, bool aFIR, bool aFIN, bool 
 		IINField iin;
 		f.SetIIN(iin);
 	}
-	bool ret = lower.BufferEquals(f.GetBuffer(), f.Size());
+	bool ret = lower.BufferEquals(f.ToReadOnly());
 	if(ret) lower.ClearBuffer();
 	return ret;
 }

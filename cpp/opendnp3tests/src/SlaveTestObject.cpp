@@ -54,7 +54,7 @@ void SlaveTestObject::SendToSlave(const std::string& arData, SequenceInfo aSeq)
 {
 	HexSequence hs(arData);
 	mAPDU.Reset();
-	mAPDU.Write(hs, hs.Size());
+	mAPDU.Write(hs.ToReadOnly());
 	mAPDU.Interpret();
 	LOG_BLOCK(LEV_INTERPRET, "<= " << mAPDU.ToString());
 	slave.OnRequest(mAPDU, aSeq);
@@ -72,9 +72,8 @@ bool SlaveTestObject::NothingToRead()
 
 std::string SlaveTestObject::Read()
 {
-	mAPDU = app.Read();
-	std::string hex = toHex(mAPDU.GetBuffer(), mAPDU.Size(), true);
-	return hex;
+	mAPDU = app.Read();	
+	return toHex(mAPDU.ToReadOnly(), true);
 }
 
 }

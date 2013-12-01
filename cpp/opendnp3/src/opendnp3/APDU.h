@@ -81,27 +81,20 @@ public:
 	 */
 	void InterpretHeader();
 
-	openpal::ReadOnlyBuffer ToReadOnly()
-	{
-		return openpal::ReadOnlyBuffer(mBuffer, mFragmentSize);
-	}
-
 	/**
-		Returns the current fragment size.
-
-		@return		the current fragment size
-	 */
-	size_t Size() const {
+	* @return Size of the written/parsed APDU
+	*/
+	size_t Size() const
+	{
 		return mFragmentSize;
 	}
 
 	/**
-		Returns a byte pointer to the current buffer.
-
-		@return		a pointer to the current byte buffer
-	 */
-	const uint8_t* GetBuffer() const {
-		return mBuffer;
+	* @return Buffer wrapper that defines the bounds of what's been written/parsed
+	*/
+	openpal::ReadOnlyBuffer ToReadOnly() const
+	{
+		return openpal::ReadOnlyBuffer(mBuffer, mFragmentSize);
 	}
 
 	/**
@@ -122,13 +115,11 @@ public:
 		Reset the buffer to be empty and then write the provided byte
 		stream into the buffer.  aLength must be less than MaxSize().
 
-		@param apStart				the new byte stream to use
-		@param aLength				the length of the byte stream
-									provided
+		@param arBuffer				Buffer to write	
 
 		@throw ArgumentException	if aLength exceeds MaxSize()
 	 */
-	void Write(const uint8_t* apStart, size_t aLength);
+	void Write(const openpal::ReadOnlyBuffer& arBuffer);
 
 	/**
 		Returns the Function Code (FC) field from the DNP3 Application

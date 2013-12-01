@@ -44,9 +44,9 @@ BOOST_AUTO_TEST_SUITE(APDUReading)
 BOOST_AUTO_TEST_CASE(WriteTooMuch)
 {
 	APDU frag(100);
-	uint8_t buff[101];
+	CopyableBuffer buff(101);	
 
-	BOOST_REQUIRE_THROW(frag.Write(buff, 101), ArgumentException);
+	BOOST_REQUIRE_THROW(frag.Write(buff.ToReadOnly()), ArgumentException);
 }
 
 BOOST_AUTO_TEST_CASE(FunctionCodeToStringNamesAreUnique)
@@ -108,7 +108,7 @@ BOOST_AUTO_TEST_CASE(APDUToString)
 {
 	APDU frag;
 	HexSequence hs("C3 01 3C 02 06 3C 03 06 3C 04 06 3C 01 06");
-	frag.Write(hs, hs.Size());
+	frag.Write(hs);
 	frag.Interpret();
 
 	std::string expected = "FIR: 1, FIN: 1, CON: 0, UNS: 0, SEQ: 3, Func: READ HdrCount: 4, Header: (Grp: 60, Var: 2, Qual: ALL_OBJECTS) Header: (Grp: 60, Var: 3, Qual: ALL_OBJECTS) Header: (Grp: 60, Var: 4, Qual: ALL_OBJECTS) Header: (Grp: 60, Var: 1, Qual: ALL_OBJECTS), Size: 14";
@@ -121,7 +121,7 @@ BOOST_AUTO_TEST_CASE(ClassPollRequest)
 {
 	APDU frag;
 	HexSequence hs("C3 01 3C 02 06 3C 03 06 3C 04 06 3C 01 06");
-	frag.Write(hs, hs.Size());
+	frag.Write(hs.ToReadOnly());
 	frag.Interpret();
 
 	//Test the Application header
@@ -173,7 +173,7 @@ BOOST_AUTO_TEST_CASE(ResponseWithDataAndFlags)
 {
 	APDU frag;
 	HexSequence hs("E3 81 96 00 02 01 28 01 00 00 00 01 02 01 28 01 00 01 00 01 02 01 28 01 00 02 00 01 02 01 28 01 00 03 00 01 20 02 28 01 00 00 00 01 00 00 20 02 28 01 00 01 00 01 00 00 01 01 01 00 00 03 00 00 1E 02 01 00 00 01 00 01 00 00 01 00 00");
-	frag.Write(hs, hs.Size());
+	frag.Write(hs);
 	frag.Interpret();
 
 	//Test the Application header
@@ -292,7 +292,7 @@ BOOST_AUTO_TEST_CASE(Confirm)
 {
 	APDU frag;
 	HexSequence hs("C3 00");
-	frag.Write(hs, hs.Size());
+	frag.Write(hs);
 	frag.Interpret();
 
 	AppControlField control = frag.GetControl();
@@ -308,7 +308,7 @@ BOOST_AUTO_TEST_CASE(ClearIIN)
 {
 	APDU frag;
 	HexSequence hs("C4 02 50 01 00 07 07 00");
-	frag.Write(hs, hs.Size());
+	frag.Write(hs);
 	frag.Interpret();
 
 	AppControlField control = frag.GetControl();
@@ -335,7 +335,7 @@ BOOST_AUTO_TEST_CASE(ReadIndices)
 {
 	APDU frag;
 	HexSequence hs("C0 01 01 02 17 03 01 03 05");
-	frag.Write(hs, hs.Size());
+	frag.Write(hs);
 	frag.Interpret();
 
 	HeaderReadIterator i = frag.BeginRead();
@@ -358,7 +358,7 @@ BOOST_AUTO_TEST_CASE(InsufficientDataForFragment)
 {
 	APDU frag;
 	HexSequence hs("C4");
-	frag.Write(hs, hs.Size());
+	frag.Write(hs);
 
 	int code = -1;
 	try {
@@ -374,7 +374,7 @@ BOOST_AUTO_TEST_CASE(InsufficientDataForResponse)
 {
 	APDU frag;
 	HexSequence hs("C4 81 00");
-	frag.Write(hs, hs.Size());
+	frag.Write(hs);
 
 	int code = -1;
 	try {
@@ -390,7 +390,7 @@ BOOST_AUTO_TEST_CASE(InsufficientDataForObjectHeader)
 {
 	APDU frag;
 	HexSequence hs("C4 81 00 00 00");
-	frag.Write(hs, hs.Size());
+	frag.Write(hs);
 
 	int code = -1;
 	try {
@@ -407,7 +407,7 @@ BOOST_AUTO_TEST_CASE(UnknownGroupVar)
 {
 	APDU frag;
 	HexSequence hs("C4 81 00 00 FF FF 06");
-	frag.Write(hs, hs.Size());
+	frag.Write(hs);
 
 	bool gotIt = false;
 	try {
@@ -424,7 +424,7 @@ BOOST_AUTO_TEST_CASE(StartStopMismach)
 {
 	APDU frag;
 	HexSequence hs("C4 81 00 00 01 01 00 02 00 01 00");  //obj 1 var 1 with 1 octet start = 0x02, stop = 0x01
-	frag.Write(hs, hs.Size());
+	frag.Write(hs);
 
 	int code = -1;
 	try {
@@ -441,7 +441,7 @@ BOOST_AUTO_TEST_CASE(NonstaticObjectWithIndexPrefix)
 {
 	APDU frag;
 	HexSequence hs("C4 81 00 00 01 01 17 00 00");  //obj 1 var 1 with 1 octet index prefix and 1 octet count
-	frag.Write(hs, hs.Size());
+	frag.Write(hs);
 
 	int code = -1;
 	try {
@@ -458,7 +458,7 @@ BOOST_AUTO_TEST_CASE(UnknownQualifer)
 {
 	APDU frag;
 	HexSequence hs("C4 81 00 00 01 02 10 00 00");  //obj 1 var 2 with index 1octet prefix and 1octet start stop
-	frag.Write(hs, hs.Size());
+	frag.Write(hs);
 
 	int code = -1;
 	try {
@@ -512,7 +512,7 @@ BOOST_AUTO_TEST_CASE(VirtualTerminalObjectWrite)
 	//              AC FC GP VR QF RF IX h  e  l  l  o
 	HexSequence hs("C2 02 70 05 17 01 00 68 65 6C 6C 6F");
 
-	frag.Write(hs, hs.Size());
+	frag.Write(hs);
 	frag.Interpret();
 
 	HeaderReadIterator i = frag.BeginRead();
@@ -598,7 +598,7 @@ BOOST_AUTO_TEST_CASE(VtoObjectWriteMultipleIndices)
 	//              AC FC GP VR QF RF IX h  e  l  l  o  GP VR QF RF IX w  o  r  l  d
 	HexSequence hs("C2 02 70 05 17 01 00 68 65 6C 6C 6F 70 05 17 43 00 77 6F 72 6C 64");
 
-	frag.Write(hs, hs.Size());
+	frag.Write(hs);
 	frag.Interpret();
 
 	/* First object */
@@ -644,8 +644,8 @@ BOOST_AUTO_TEST_CASE(OperatorEquals)
 	APDU frag3;
 
 	HexSequence hs("C3 01 3C 02 06 3C 03 06 3C 04 06 3C 01 06");
-	frag1.Write(hs, hs.Size());
-	frag2.Write(hs, hs.Size());
+	frag1.Write(hs);
+	frag2.Write(hs);
 
 	BOOST_REQUIRE(frag1 == frag2);
 	BOOST_REQUIRE(frag2 != frag3);

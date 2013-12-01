@@ -56,7 +56,7 @@ void MasterTestObject::RespondToMaster(const std::string& arData, bool aFinal)
 {
 	HexSequence hs(arData);
 	mAPDU.Reset();
-	mAPDU.Write(hs, hs.Size());
+	mAPDU.Write(hs.ToReadOnly());
 	mAPDU.Interpret();
 	if(aFinal) master.OnFinalResponse(mAPDU);
 	else master.OnPartialResponse(mAPDU);
@@ -66,7 +66,7 @@ void MasterTestObject::SendUnsolToMaster(const std::string& arData)
 {
 	HexSequence hs(arData);
 	mAPDU.Reset();
-	mAPDU.Write(hs, hs.Size());
+	mAPDU.Write(hs.ToReadOnly());
 	mAPDU.Interpret();
 	master.OnUnsolResponse(mAPDU);
 }
@@ -74,7 +74,7 @@ void MasterTestObject::SendUnsolToMaster(const std::string& arData)
 std::string MasterTestObject::Read()
 {
 	mAPDU = app.Read();
-	std::string hex = toHex(mAPDU.GetBuffer(), mAPDU.Size(), true);
+	std::string hex = toHex(mAPDU.ToReadOnly(), true);
 	return hex;
 }
 

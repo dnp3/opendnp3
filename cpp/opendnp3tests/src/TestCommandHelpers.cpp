@@ -40,15 +40,14 @@ BOOST_AUTO_TEST_CASE(ConfigurationAndValidation)
 	APDU frag;
 	ControlRelayOutputBlock crob(ControlCode::CC_LATCH_ON);
 	auto validator = CommandHelpers::ConfigureRequest<ControlRelayOutputBlock>(frag, FunctionCode::OPERATE, crob, 0, Group12Var1::Inst());
+	
 
-	std::string hex = toHex(frag.GetBuffer(), frag.Size(), true);
-
-	BOOST_REQUIRE_EQUAL(hex, "C0 04 0C 01 17 01 00 03 01 64 00 00 00 64 00 00 00 00");
+	BOOST_REQUIRE_EQUAL("C0 04 0C 01 17 01 00 03 01 64 00 00 00 64 00 00 00 00", toHex(frag.ToReadOnly(), true));
 
 	APDU rsp;
 	{
 		HexSequence hs("C0 81 00 00 0C 01 17 01 00 03 01 64 00 00 00 64 00 00 00 00");
-		rsp.Write(hs, hs.Size());
+		rsp.Write(hs);
 		rsp.Interpret();
 	}
 	CommandStatus status = validator(rsp);

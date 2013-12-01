@@ -53,7 +53,7 @@ BOOST_AUTO_TEST_CASE(FullSequence)
 	ct.ConfigureRequest(frag);
 	HexSequence hs("C0 81 00 00 0C 01 17 01 00 03 01 64 00 00 00 64 00 00 00 00");
 	frag.Reset();
-	frag.Write(hs, hs.Size());
+	frag.Write(hs);
 	frag.Interpret();
 	auto result = ct.OnFinalResponse(frag);
 	BOOST_REQUIRE_EQUAL(TR_SUCCESS, result);

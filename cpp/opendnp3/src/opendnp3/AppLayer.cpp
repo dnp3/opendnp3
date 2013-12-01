@@ -106,7 +106,7 @@ void AppLayer::_OnReceive(const ReadOnlyBuffer& arBuffer)
 	}
 
 	try {
-		mIncoming.Write(arBuffer, arBuffer.Size());
+		mIncoming.Write(arBuffer);
 		mIncoming.Interpret();
 
 		LOG_BLOCK(LEV_INTERPRET, "<= AL " << mIncoming.ToString());
@@ -312,9 +312,8 @@ void AppLayer::CheckForSend()
 	if(!mSending && mSendQueue.size() > 0) {
 		mSending = true;
 		const APDU* pAPDU = mSendQueue.front();
-		LOG_BLOCK(LEV_INTERPRET, "=> AL " << pAPDU->ToString());
-		ReadOnlyBuffer buffer(pAPDU->GetBuffer(), pAPDU->Size());
-		mpLowerLayer->Send(buffer);
+		LOG_BLOCK(LEV_INTERPRET, "=> AL " << pAPDU->ToString());		
+		mpLowerLayer->Send(pAPDU->ToReadOnly());
 	}
 }
 

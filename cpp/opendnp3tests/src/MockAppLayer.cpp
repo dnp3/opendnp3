@@ -76,7 +76,7 @@ void MockAppLayer::DoSendSol()
 
 void MockAppLayer::SendResponse(APDU& arAPDU)
 {
-	LOG_BLOCK(LEV_COMM, "=> " << toHex(arAPDU.GetBuffer(), arAPDU.Size(), true));
+	LOG_BLOCK(LEV_COMM, "=> " << toHex(arAPDU.ToReadOnly(), true));
 	LOG_BLOCK(LEV_INTERPRET, "=> " << arAPDU.ToString());
 	mFragments.push_back(arAPDU);
 	this->DoSendSol();
@@ -85,7 +85,7 @@ void MockAppLayer::SendResponse(APDU& arAPDU)
 
 void MockAppLayer::SendUnsolicited(APDU& arAPDU)
 {
-	LOG_BLOCK(LEV_COMM, "=> " << toHex(arAPDU.GetBuffer(), arAPDU.Size(), true));
+	LOG_BLOCK(LEV_COMM, "=> " << toHex(arAPDU.ToReadOnly(), true));
 	LOG_BLOCK(LEV_INTERPRET, "=> " << arAPDU.ToString());
 	mFragments.push_back(arAPDU);
 	this->DoSendUnsol();
@@ -93,7 +93,7 @@ void MockAppLayer::SendUnsolicited(APDU& arAPDU)
 
 void MockAppLayer::SendRequest(APDU& arAPDU)
 {
-	LOG_BLOCK(LEV_COMM, "=> " << toHex(arAPDU.GetBuffer(), arAPDU.Size(), true));
+	LOG_BLOCK(LEV_COMM, "=> " << toHex(arAPDU.ToReadOnly(), true));
 	LOG_BLOCK(LEV_INTERPRET, "=> " << arAPDU.ToString());
 	mFragments.push_back(arAPDU);
 }

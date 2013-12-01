@@ -25,11 +25,6 @@
 #include <sstream>
 #include <iostream>
 
-#define MACRO_THROW_EXCEPTION(msg) { \
-	ostringstream oss; \
-	oss << msg; \
-	throw Exception(LOCATION, oss.str()); }
-
 using namespace openpal;
 using namespace std;
 
@@ -57,8 +52,7 @@ void JNIHelpers::DetachThread(JavaVM* apJVM)
 
 void JNIHelpers::DeleteGlobalReference(JavaVM* apJVM, jobject ref)
 {
-	JNIEnv* pEnv = GetEnvFromJVM(apJVM);
-	pEnv->DeleteGlobalRef(ref);
+	 GetEnvFromJVM(apJVM)->DeleteGlobalRef(ref);	
 }
 
 
@@ -83,7 +77,7 @@ jmethodID JNIHelpers::GetMethodID(JNIEnv* apEnv, jclass clazz, const char* name,
 {
 	jmethodID mid = apEnv->GetMethodID(clazz, name, sig);
 	if(mid == nullptr) {
-		MACRO_THROW_EXCEPTION("Unable to get methodID with name/size: " << name << " / " << sig);
+		MACRO_THROW_EXCEPTION_COMPLEX(openpal::Exception, "Unable to get methodID with name/size: " << name << " / " << sig);
 	}
 	return mid;
 }
@@ -103,28 +97,28 @@ jmethodID JNIHelpers::GetMethodID(JNIEnv* apEnv, jobject obj, const char* name, 
 jint JNIHelpers::GetIntField(JNIEnv* apEnv, jobject obj, const char* fieldId)
 {
 	jfieldID field = apEnv->GetFieldID(GetClassForObject(apEnv, obj), fieldId, "I");
-	if(field == nullptr) MACRO_THROW_EXCEPTION("Unable to get int field: " << fieldId)
+	if(field == nullptr) MACRO_THROW_EXCEPTION_COMPLEX(openpal::Exception, "Unable to get int field: " << fieldId)
 		return apEnv->GetIntField(obj, field);
 }
 
 jlong JNIHelpers::GetLongField(JNIEnv* apEnv, jobject obj, const char* fieldId)
 {
 	jfieldID field = apEnv->GetFieldID(GetClassForObject(apEnv, obj), fieldId, "J");
-	if(field == nullptr) MACRO_THROW_EXCEPTION("Unable to get long field: " << fieldId)
+	if(field == nullptr) MACRO_THROW_EXCEPTION_COMPLEX(openpal::Exception, "Unable to get long field: " << fieldId)
 		return apEnv->GetLongField(obj, field);
 }
 
 bool JNIHelpers::GetBoolField(JNIEnv* apEnv, jobject obj, const char* fieldId)
 {
 	jfieldID field = apEnv->GetFieldID(GetClassForObject(apEnv, obj), fieldId, "Z");
-	if(field == nullptr) MACRO_THROW_EXCEPTION("Unable to get bool field: " << fieldId)
+	if(field == nullptr) MACRO_THROW_EXCEPTION_COMPLEX(openpal::Exception, "Unable to get bool field: " << fieldId)
 		return apEnv->GetBooleanField(obj, field);
 }
 
 jdouble JNIHelpers::GetDoubleField(JNIEnv* apEnv, jobject obj, const char* fieldId)
 {
 	jfieldID field = apEnv->GetFieldID(GetClassForObject(apEnv, obj), fieldId, "D");
-	if(field == nullptr) MACRO_THROW_EXCEPTION("Unable to get double field: " << fieldId)
+	if(field == nullptr) MACRO_THROW_EXCEPTION_COMPLEX(openpal::Exception, "Unable to get double field: " << fieldId)
 		return apEnv->GetDoubleField(obj, field);
 }
 
@@ -132,9 +126,9 @@ jobject JNIHelpers::GetObjectField(JNIEnv* apEnv, jobject obj, const char* field
 {
 
 	jfieldID field = apEnv->GetFieldID(GetClassForObject(apEnv, obj), fieldId, fqcn);
-	if(field == nullptr) MACRO_THROW_EXCEPTION("Unable to get object field id: " << fieldId << " / " << fqcn)
+	if(field == nullptr) MACRO_THROW_EXCEPTION_COMPLEX(openpal::Exception, "Unable to get object field id: " << fieldId << " / " << fqcn)
 		jobject ret = apEnv->GetObjectField(obj, field);
-	if(ret == nullptr) MACRO_THROW_EXCEPTION("Unable to get object field")
+	if(ret == nullptr) MACRO_THROW_EXCEPTION(openpal::Exception, "Unable to get object field")
 		return ret;
 }
 
@@ -147,7 +141,7 @@ void JNIHelpers::IterateOverListOfObjects(JNIEnv* apEnv, jobject list, std::func
 
 	for(jint i = 0; i < size; ++i) {
 		jobject obj = apEnv->CallObjectMethod(list, getMID, i);
-		if(obj == nullptr) MACRO_THROW_EXCEPTION("Unable to call object method")
+		if(obj == nullptr) MACRO_THROW_EXCEPTION(openpal::Exception, "Unable to call object method")
 			fun(obj);
 	}
 }

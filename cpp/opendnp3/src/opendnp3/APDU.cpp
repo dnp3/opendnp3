@@ -52,10 +52,12 @@ APDU::APDU(size_t aFragSize) :
 
 bool APDU::operator==(const APDU& rhs)
 {
-	if ( this->Size() != rhs.Size() )
+	auto rhsBuff = rhs.ToReadOnly();
+	auto lhsBuff = this->ToReadOnly();
+	if ( rhsBuff.Size() != lhsBuff.Size() )
 		return false;
-	for ( size_t i = 0; i < this->Size(); i++ )
-		if ( this->GetBuffer()[i] != rhs.GetBuffer()[i] ) return false;
+	for ( size_t i = 0; i < rhsBuff.Size(); i++ )
+		if (rhsBuff[i] != lhsBuff[i] ) return false;
 	return true;
 }
 
@@ -124,15 +126,15 @@ void APDU::Reset()
 	mObjectHeaders.clear();
 }
 
-void APDU::Write(const uint8_t* apData, size_t aLength)
+void APDU::Write(const openpal::ReadOnlyBuffer& arBuffer)
 {
-	if(aLength > mBuffer.Size()) {
-		MACRO_THROW_EXCEPTION_COMPLEX(openpal::ArgumentException, "Size " << aLength << " exceeds max fragment size of " << mBuffer.Size());
+	if(arBuffer.Size() > mBuffer.Size()) {
+		MACRO_THROW_EXCEPTION_COMPLEX(openpal::ArgumentException, "Size " << arBuffer.Size() << " exceeds max fragment size of " << mBuffer.Size());
 	}
 
 	this->Reset();
-	memcpy(mBuffer, apData, aLength);
-	mFragmentSize = aLength;
+	arBuffer.CopyTo(mBuffer);	
+	mFragmentSize = arBuffer.Size();
 }
 
 void APDU::Interpret()
@@ -708,7 +710,7 @@ std::string APDU::ToString() const
 		oss << " Malformed header data preceeds";
 	}
 
-	oss << ", Size: " << this->Size();
+	oss << ", Size: " << this->ToReadOnly().Size();
 
 	return oss.str();
 }

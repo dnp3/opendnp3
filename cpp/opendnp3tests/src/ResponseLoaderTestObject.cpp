@@ -47,7 +47,7 @@ void ResponseLoaderTestObject::Load(const std::string& arAPDU)
 	fdo.Clear();
 	HexSequence hs(arAPDU);
 	APDU f;
-	f.Write(hs, hs.Size());
+	f.Write(hs.ToReadOnly());
 	f.Interpret();
 
 	ResponseLoader rl(mLogger, [this](MeasurementUpdate& update){ fdo.Load(update); });

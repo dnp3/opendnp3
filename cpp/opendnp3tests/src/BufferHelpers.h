@@ -51,6 +51,8 @@ class HexSequence : public ByteStr
 public:
 	HexSequence(const std::string& aSequence);
 
+	operator openpal::ReadOnlyBuffer() { return this->ToReadOnly(); }
+
 private:
 	std::string RemoveSpaces(const std::string& aSequence);
 	void RemoveSpacesInPlace(std::string& aSequence);
