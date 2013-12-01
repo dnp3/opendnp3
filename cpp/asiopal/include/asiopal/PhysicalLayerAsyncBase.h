@@ -174,8 +174,8 @@ private:
 
 inline void PhysicalLayerAsyncBase::SetHandler(openpal::IHandlerAsync* apHandler)
 {
-	assert(mpHandler == NULL);
-	assert(apHandler != NULL);
+	assert(mpHandler == nullptr);
+	assert(apHandler != nullptr);
 	this->mpHandler = apHandler;
 }
 

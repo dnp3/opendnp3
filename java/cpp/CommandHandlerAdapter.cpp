@@ -28,7 +28,7 @@ CommandHandlerAdapter::CommandHandlerAdapter(JavaVM* apJVM, jobject aProxy) : mp
 {
 	auto pEnv = GetEnv();
 	jclass clazz = pEnv->GetObjectClass(mProxy);
-	assert(clazz != NULL);
+	assert(clazz != nullptr);
 
 	mSelectCROB = JNIHelpers::GetMethodID(pEnv, clazz, "Select",  "(ISJJIJ)I");
 	mOperateCROB = JNIHelpers::GetMethodID(pEnv, clazz, "Operate",  "(ISJJIJ)I");

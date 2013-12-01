@@ -23,7 +23,7 @@
 LogSubscriberAdapter::LogSubscriberAdapter(JavaVM* apJVM, jobject aProxy) :
 	mpJVM(apJVM),
 	mProxy(aProxy),
-	mOnLogEntryCallbackMID(NULL)
+	mOnLogEntryCallbackMID(nullptr)
 {	
 	auto pEnv = JNIHelpers::GetEnvFromJVM(apJVM);
 	mOnLogEntryCallbackMID = JNIHelpers::GetMethodID(pEnv, aProxy, "onLogEntry", "(ILjava/lang/String;Ljava/lang/String;I)V");

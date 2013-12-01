@@ -34,7 +34,7 @@ namespace opendnp3
 ObjectReadIterator::ObjectReadIterator(const HeaderInfo& arInfo, const uint8_t* apBuffer, bool aHasData) :
 	mHeaderInfo(arInfo),
 	mCurrentObjectNum(0),
-	mpPrefixPos(NULL),
+	mpPrefixPos(nullptr),
 	mpBuffer(apBuffer),
 	mHasData(aHasData)
 {

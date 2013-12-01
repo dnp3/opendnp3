@@ -61,29 +61,29 @@ void LowerLayerToPhysAdapter::_OnReceive(const uint8_t* apData, size_t aNumBytes
 {
 	// process the data into another buffer *before* kicking off another call,
 	// otherwise you have a potential race condition
-	if(mpUpperLayer != NULL) mpUpperLayer->OnReceive(apData, aNumBytes);
+	if(mpUpperLayer != nullptr) mpUpperLayer->OnReceive(apData, aNumBytes);
 	if(mAutoRead) this->StartRead();
 }
 
 void LowerLayerToPhysAdapter::_OnSendSuccess()
 {
-	if(mpUpperLayer != NULL) mpUpperLayer->OnSendSuccess();
+	if(mpUpperLayer != nullptr) mpUpperLayer->OnSendSuccess();
 }
 
 void LowerLayerToPhysAdapter::_OnSendFailure()
 {
-	if(mpUpperLayer != NULL) mpUpperLayer->OnSendFailure();
+	if(mpUpperLayer != nullptr) mpUpperLayer->OnSendFailure();
 }
 
 void LowerLayerToPhysAdapter::_OnLowerLayerUp()
 {
 	if(mAutoRead) this->StartRead();
-	if(mpUpperLayer != NULL) mpUpperLayer->OnLowerLayerUp();
+	if(mpUpperLayer != nullptr) mpUpperLayer->OnLowerLayerUp();
 }
 
 void LowerLayerToPhysAdapter::_OnLowerLayerDown()
 {
-	if(mpUpperLayer != NULL) mpUpperLayer->OnLowerLayerDown();
+	if(mpUpperLayer != nullptr) mpUpperLayer->OnLowerLayerDown();
 }
 
 void LowerLayerToPhysAdapter::_OnLowerLayerShutdown()

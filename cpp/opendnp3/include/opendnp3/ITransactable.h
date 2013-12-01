@@ -125,24 +125,24 @@ public:
 	}
 
 	Transaction()
-		: mpTransactable(NULL), mIsEnded(false) {
+		: mpTransactable(nullptr), mIsEnded(false) {
 
 	}
 
 	void Start(ITransactable* apTransactable) {
-		assert(mpTransactable == NULL); assert(!mIsEnded);
+		assert(mpTransactable == nullptr); assert(!mIsEnded);
 		mpTransactable = apTransactable;
 		mpTransactable->Start();
 	}
 
 	void End() {
-		assert(mpTransactable != NULL); assert(!mIsEnded);
+		assert(mpTransactable != nullptr); assert(!mIsEnded);
 		mIsEnded = true;
 		mpTransactable->End();
 	}
 
 	~Transaction() {
-		if(mpTransactable != NULL && !mIsEnded) mpTransactable->End();
+		if(mpTransactable != nullptr && !mIsEnded) mpTransactable->End();
 	}
 
 private:

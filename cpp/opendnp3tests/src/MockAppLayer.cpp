@@ -33,7 +33,7 @@ namespace opendnp3
 MockAppLayer::MockAppLayer(openpal::Logger aLogger) :
 	Loggable(aLogger),
 	mNumCancel(0),
-	mpUser(NULL),
+	mpUser(nullptr),
 	mAutoSendCallback(true),
 	mIsSuccess(true)
 {
@@ -59,7 +59,7 @@ void MockAppLayer::DisableAutoSendCallback()
 void MockAppLayer::DoSendUnsol()
 {
 	if(mAutoSendCallback) {
-		assert(mpUser != NULL);
+		assert(mpUser != nullptr);
 		if(mIsSuccess) mpUser->OnUnsolSendSuccess();
 		else mpUser->OnUnsolFailure();
 	}
@@ -68,7 +68,7 @@ void MockAppLayer::DoSendUnsol()
 void MockAppLayer::DoSendSol()
 {
 	if(mAutoSendCallback) {
-		assert(mpUser != NULL);
+		assert(mpUser != nullptr);
 		if(mIsSuccess) mpUser->OnSolSendSuccess();
 		else mpUser->OnSolFailure();
 	}

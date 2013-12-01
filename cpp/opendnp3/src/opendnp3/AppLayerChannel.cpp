@@ -38,10 +38,10 @@ namespace opendnp3
 AppLayerChannel::AppLayerChannel(const std::string& arName, openpal::Logger& arLogger, AppLayer* apAppLayer, IExecutor* apExecutor, TimeDuration aTimeout) :
 	Loggable(arLogger),
 	mpAppLayer(apAppLayer),
-	mpSendAPDU(NULL),
+	mpSendAPDU(nullptr),
 	mNumRetry(0),
 	mpExecutor(apExecutor),
-	mpTimer(NULL),
+	mpTimer(nullptr),
 	M_TIMEOUT(aTimeout),
 	M_NAME(arName)
 {
@@ -55,7 +55,7 @@ void AppLayerChannel::Reset()
 	mSequence = -1;
 	if(mpTimer) {
 		mpTimer->Cancel();
-		mpTimer = NULL;
+		mpTimer = nullptr;
 	}
 }
 
@@ -121,15 +121,15 @@ void AppLayerChannel::DoFinalResponse(APDU& arAPDU)
 
 void AppLayerChannel::StartTimer()
 {
-	assert(mpTimer == NULL);
+	assert(mpTimer == nullptr);
 	mpTimer = mpExecutor->Start(TimeDuration(M_TIMEOUT), std::bind(&AppLayerChannel::Timeout, this));
 }
 
 void AppLayerChannel::CancelTimer()
 {
-	assert(mpTimer != NULL);
+	assert(mpTimer != nullptr);
 	mpTimer->Cancel();
-	mpTimer = NULL;
+	mpTimer = nullptr;
 }
 
 void AppLayerChannel::ChangeState(ACS_Base* apState)
@@ -142,7 +142,7 @@ void AppLayerChannel::ChangeState(ACS_Base* apState)
 
 void AppLayerChannel::Timeout()
 {
-	mpTimer = NULL;
+	mpTimer = nullptr;
 	mpState->OnTimeout(this);
 }
 

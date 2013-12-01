@@ -38,7 +38,7 @@ std::ostream& operator<<(std::ostream& output, const CopyableBuffer& arBuff)
 #endif
 
 CopyableBuffer::CopyableBuffer() :
-	mpBuff(NULL),
+	mpBuff(nullptr),
 	mSize(0)
 {
 

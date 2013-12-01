@@ -36,7 +36,7 @@ namespace opendnp3
 
 Database::Database(Logger aLogger) :
 	Loggable(aLogger),
-	mpEventBuffer(NULL)
+	mpEventBuffer(nullptr)
 {
 
 }
@@ -188,8 +188,8 @@ void Database::SetDeadband(DataTypes aType, size_t aIndex, double aDeadband)
 
 void Database::SetEventBuffer(IEventBuffer* apEventBuffer)
 {
-	assert(apEventBuffer != NULL);
-	assert(mpEventBuffer == NULL);
+	assert(apEventBuffer != nullptr);
+	assert(mpEventBuffer == nullptr);
 	mpEventBuffer = apEventBuffer;
 }
 

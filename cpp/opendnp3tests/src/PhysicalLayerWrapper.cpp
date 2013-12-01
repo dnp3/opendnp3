@@ -34,15 +34,15 @@ PhysicalLayerWrapper::PhysicalLayerWrapper(openpal::Logger aLogger, IPhysicalLay
 	IHandlerAsync(aLogger),
 	mCorruptionProbability(-1.0),
 	mpProxy(apProxy),
-	mpHandler(NULL)
+	mpHandler(nullptr)
 {
 	mpProxy->SetHandler(this);
 }
 
 void PhysicalLayerWrapper::SetHandler(IHandlerAsync* apHandler)
 {
-	assert(apHandler != NULL);
-	assert(mpHandler == NULL);
+	assert(apHandler != nullptr);
+	assert(mpHandler == nullptr);
 	mpHandler = apHandler;
 }
 

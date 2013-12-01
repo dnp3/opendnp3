@@ -66,7 +66,7 @@ void AppLayerTest::SendResponse(FunctionCode aCode, bool aFIR, bool aFIN, bool a
 	mFragment.Reset();
 	mFragment.SetFunction(aCode);
 	mFragment.SetControl(aFIR, aFIN, aCON, aUNS);
-	if(aCode == FunctionCode::RESPONSE) { //write a NULL IIN so that the buffers will match
+	if(aCode == FunctionCode::RESPONSE) { //write a nullptr IIN so that the buffers will match
 		IINField iin;
 		mFragment.SetIIN(iin);
 	}
@@ -78,7 +78,7 @@ void AppLayerTest::SendUnsolicited(FunctionCode aCode, bool aFIR, bool aFIN, boo
 	mFragment.Reset();
 	mFragment.SetFunction(aCode);
 	mFragment.SetControl(aFIR, aFIN, aCON, aUNS);
-	if(aCode == FunctionCode::UNSOLICITED_RESPONSE) { //write a NULL IIN so that the buffers will match
+	if(aCode == FunctionCode::UNSOLICITED_RESPONSE) { //write a nullptr IIN so that the buffers will match
 		IINField iin;
 		mFragment.SetIIN(iin);
 	}

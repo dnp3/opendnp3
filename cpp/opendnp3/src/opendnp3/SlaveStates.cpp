@@ -171,7 +171,7 @@ void AS_Base::ChangeState(Slave* c, AS_Base* apState)
 {
 	if (apState == AS_Closed::Inst() && c->mpTimeTimer) {
 		c->mpTimeTimer->Cancel();
-		c->mpTimeTimer = NULL;
+		c->mpTimeTimer = nullptr;
 	}
 	LOGGER_BLOCK(c->mLogger, LEV_DEBUG, "State changed from " << c->mpState->Name() << " to " << apState->Name());
 	c->mpState = apState;
@@ -232,7 +232,7 @@ void AS_Idle::OnDataUpdate(Slave* c)
 			c->mRspContext.LoadUnsol(c->mUnsol, c->mIIN, c->mConfig.mUnsolMask);
 			c->SendUnsolicited(c->mUnsol);
 		}
-		else if (c->mpUnsolTimer == NULL) {
+		else if (c->mpUnsolTimer == nullptr) {
 			c->StartUnsolTimer(c->mConfig.mUnsolPackDelay);
 		}
 	}

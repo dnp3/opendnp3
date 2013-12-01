@@ -128,7 +128,7 @@ std::string PhysicalLayerAsyncBase::State::ConvertStateToString() const
 
 PhysicalLayerAsyncBase::PhysicalLayerAsyncBase(openpal::Logger& arLogger) :
 	Loggable(arLogger),
-	mpHandler(NULL)
+	mpHandler(nullptr)
 {
 
 }

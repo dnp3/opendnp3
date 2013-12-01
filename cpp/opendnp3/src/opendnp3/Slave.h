@@ -171,7 +171,7 @@ private:
 	bool mDeferredUnsol;					// Indicates that the unsol timer expired, but the event was Deferred
 	bool mDeferredUnknown;
 
-	bool mStartupNullUnsol;					// Tracks whether the device has completed the NULL unsol startup message
+	bool mStartupNullUnsol;					// Tracks whether the device has completed the nullptr unsol startup message
 
 	StackState mState;
 

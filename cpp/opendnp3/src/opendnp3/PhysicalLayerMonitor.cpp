@@ -40,14 +40,14 @@ PhysicalLayerMonitor::PhysicalLayerMonitor(Logger aLogger, IPhysicalLayerAsync* 
 	Loggable(aLogger),
 	IHandlerAsync(aLogger),
 	mpPhys(apPhys),
-	mpOpenTimer(NULL),
+	mpOpenTimer(nullptr),
 	mpState(MonitorStateInit::Inst()),
 	mFinalShutdown(false),
 	mMinOpenRetry(aMinOpenRetry),
 	mMaxOpenRetry(aMaxOpenRetry),
 	mCurrentRetry(aMinOpenRetry)
 {
-	assert(apPhys != NULL);
+	assert(apPhys != nullptr);
 	mpPhys->SetHandler(this);
 }
 
@@ -133,8 +133,8 @@ void PhysicalLayerMonitor::Shutdown()
 void PhysicalLayerMonitor::OnOpenTimerExpiration()
 {
 	LOG_BLOCK(LEV_DEBUG, "OnOpenTimerExpiration()");
-	assert(mpOpenTimer != NULL);
-	mpOpenTimer = NULL;
+	assert(mpOpenTimer != nullptr);
+	mpOpenTimer = nullptr;
 	mpState->OnOpenTimeout(this);
 }
 
@@ -165,15 +165,15 @@ void PhysicalLayerMonitor::_OnLowerLayerDown()
 
 void PhysicalLayerMonitor::StartOpenTimer()
 {
-	assert(mpOpenTimer == NULL);
+	assert(mpOpenTimer == nullptr);
 	mpOpenTimer = mpPhys->GetExecutor()->Start(mCurrentRetry, std::bind(&PhysicalLayerMonitor::OnOpenTimerExpiration, this));
 }
 
 void PhysicalLayerMonitor::CancelOpenTimer()
 {
-	assert(mpOpenTimer != NULL);
+	assert(mpOpenTimer != nullptr);
 	mpOpenTimer->Cancel();
-	mpOpenTimer = NULL;
+	mpOpenTimer = nullptr;
 }
 
 /* ------- Internal helper functions ------- */

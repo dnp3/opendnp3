@@ -54,7 +54,7 @@ void MockLowerLayer::DisableAutoSendCallback()
 void MockLowerLayer::_Send(const uint8_t* apData, size_t aNumBytes)
 {
 	this->WriteToBuffer(ReadOnlyBuffer(apData, aNumBytes));
-	if(mAutoSendCallback && mpUpperLayer != NULL) {
+	if(mAutoSendCallback && mpUpperLayer != nullptr) {
 		if(mIsSuccess) mpUpperLayer->OnSendSuccess();
 		else mpUpperLayer->OnSendFailure();
 	}
@@ -62,7 +62,7 @@ void MockLowerLayer::_Send(const uint8_t* apData, size_t aNumBytes)
 
 void MockLowerLayer::SendUp(const uint8_t* apData, size_t aNumBytes)
 {
-	if(this->mpUpperLayer != NULL)
+	if(this->mpUpperLayer != nullptr)
 		mpUpperLayer->OnReceive(apData, aNumBytes);
 }
 
@@ -74,21 +74,21 @@ void MockLowerLayer::SendUp(const std::string& arHexData)
 
 void MockLowerLayer::SendSuccess()
 {
-	if(mpUpperLayer != NULL) mpUpperLayer->OnSendSuccess();
+	if(mpUpperLayer != nullptr) mpUpperLayer->OnSendSuccess();
 }
 
 void MockLowerLayer::SendFailure()
 {
-	if(mpUpperLayer != NULL) mpUpperLayer->OnSendFailure();
+	if(mpUpperLayer != nullptr) mpUpperLayer->OnSendFailure();
 }
 
 void MockLowerLayer::ThisLayerUp()
 {
-	if(mpUpperLayer != NULL) mpUpperLayer->OnLowerLayerUp();
+	if(mpUpperLayer != nullptr) mpUpperLayer->OnLowerLayerUp();
 }
 void MockLowerLayer::ThisLayerDown()
 {
-	if(mpUpperLayer != NULL) mpUpperLayer->OnLowerLayerDown();
+	if(mpUpperLayer != nullptr) mpUpperLayer->OnLowerLayerDown();
 }
 
 }

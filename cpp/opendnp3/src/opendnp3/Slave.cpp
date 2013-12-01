@@ -49,7 +49,7 @@ Slave::Slave(openpal::Logger aLogger, IAppLayer* apAppLayer, IExecutor* apExecut
 	mpState(AS_Closed::Inst()),
 	mConfig(arCfg),
 	mRspTypes(arCfg),
-	mpUnsolTimer(NULL),
+	mpUnsolTimer(nullptr),
 	mResponse(arCfg.mMaxFragSize),
 	mUnsol(arCfg.mMaxFragSize),
 	mRspContext(aLogger, apDatabase, &mRspTypes, arCfg.mEventMaxConfig),
@@ -62,7 +62,7 @@ Slave::Slave(openpal::Logger aLogger, IAppLayer* apAppLayer, IExecutor* apExecut
 	mDeferredUnknown(false),
 	mStartupNullUnsol(false),
 	mState(SS_COMMS_DOWN),
-	mpTimeTimer(NULL)
+	mpTimeTimer(nullptr)
 {
 	/* Link the event buffer to the database */
 	mpDatabase->SetEventBuffer(mRspContext.GetBuffer());
@@ -180,7 +180,7 @@ void Slave::OnDataUpdate()
 void Slave::OnUnsolTimerExpiration()
 {
 	// let the current state decide how to handle the timer expiration
-	mpUnsolTimer = NULL;
+	mpUnsolTimer = nullptr;
 	mpState->OnUnsolExpiration(this);
 	this->FlushDeferredEvents();
 }
@@ -571,13 +571,13 @@ void Slave::HandleUnknown()
 
 void Slave::StartUnsolTimer(openpal::TimeDuration aTimeout)
 {
-	assert(mpUnsolTimer == NULL);
+	assert(mpUnsolTimer == nullptr);
 	mpUnsolTimer = mpExecutor->Start(aTimeout, std::bind(&Slave::OnUnsolTimerExpiration, this));
 }
 
 void Slave::ResetTimeIIN()
 {
-	mpTimeTimer = NULL;
+	mpTimeTimer = nullptr;
 	mIIN.SetNeedTime(true);
 	mpTimeTimer = mpExecutor->Start(mConfig.mTimeSyncPeriod, std::bind(&Slave::ResetTimeIIN, this));
 }

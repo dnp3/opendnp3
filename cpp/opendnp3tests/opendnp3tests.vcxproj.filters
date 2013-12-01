@@ -125,9 +125,6 @@
     <ClInclude Include="src\RandomizedBuffer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\ReadableVtoWriter.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\ResponseLoaderTestObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>

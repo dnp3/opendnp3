@@ -42,7 +42,7 @@ AsyncTaskGroup::AsyncTaskGroup(IExecutor* apExecutor) :
 	mIsRunning(false),
 	mShutdown(false),
 	mpExecutor(apExecutor),
-	mpTimer(NULL)
+	mpTimer(nullptr)
 {
 
 }
@@ -96,7 +96,7 @@ void AsyncTaskGroup::Shutdown()
 {
 	if(mpTimer) {
 		mpTimer->Cancel();
-		mpTimer = NULL;
+		mpTimer = nullptr;
 	}
 
 	mShutdown = true;
@@ -139,7 +139,7 @@ AsyncTaskBase* AsyncTaskGroup::GetNext(const MonotonicTimestamp& arTime)
 	this->Update(arTime);
 	TaskVec::iterator max = max_element(mTaskVec.begin(), mTaskVec.end(), AsyncTaskBase::LessThanGroupLevel);
 
-	AsyncTaskBase* pRet = NULL;
+	AsyncTaskBase* pRet = nullptr;
 	if(max != mTaskVec.end()) {
 		AsyncTaskBase* p = *max;
 		if(!p->IsRunning() && p->IsEnabled()) pRet = p;
@@ -154,7 +154,7 @@ void AsyncTaskGroup::CheckState()
 		auto now = mpExecutor->GetTime();
 		AsyncTaskBase* pTask = GetNext(now);
 
-		if(pTask == NULL) return;
+		if(pTask == nullptr) return;
 		if(pTask->NextRunTime().milliseconds == MonotonicTimestamp::Max().milliseconds) return;
 
 		if(pTask->NextRunTime().milliseconds <= now.milliseconds) {
@@ -190,20 +190,20 @@ for(AsyncTaskBase * p: mTaskVec) {
 
 void AsyncTaskGroup::RestartTimer(const openpal::MonotonicTimestamp& arTime)
 {
-	if(mpTimer != NULL) {
+	if(mpTimer != nullptr) {
 		if(mpTimer->ExpiresAt().milliseconds != arTime.milliseconds) {
 			mpTimer->Cancel();
-			mpTimer = NULL;
+			mpTimer = nullptr;
 		}
 	}
 
-	if(mpTimer == NULL)
+	if(mpTimer == nullptr)
 		mpTimer = mpExecutor->Start(arTime, std::bind(&AsyncTaskGroup::OnTimerExpiration, this));
 }
 
 void AsyncTaskGroup::OnTimerExpiration()
 {
-	mpTimer = NULL;
+	mpTimer = nullptr;
 	this->CheckState();
 }
 

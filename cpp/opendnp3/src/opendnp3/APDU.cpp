@@ -41,7 +41,7 @@ namespace opendnp3
 
 APDU::APDU(size_t aFragSize) :
 	mIsInterpreted(false),
-	mpAppHeader(NULL),
+	mpAppHeader(nullptr),
 	mObjectHeaders(0),
 	mBuffer(aFragSize),
 	mFragmentSize(0)
@@ -62,14 +62,14 @@ bool APDU::operator==(const APDU& rhs)
 
 AppControlField APDU::GetControl() const
 {
-	assert(mpAppHeader != NULL);
+	assert(mpAppHeader != nullptr);
 
 	return mpAppHeader->GetControl(mBuffer);
 }
 
 IINField APDU::GetIIN() const
 {
-	assert(mpAppHeader != NULL);
+	assert(mpAppHeader != nullptr);
 
 	if(mpAppHeader->GetType() != AHT_RESPONSE) {
 		MACRO_THROW_EXCEPTION(openpal::Exception, "Only response packets have IIN fields");
@@ -80,14 +80,14 @@ IINField APDU::GetIIN() const
 
 FunctionCode APDU::GetFunction() const
 {
-	assert(mpAppHeader != NULL);
+	assert(mpAppHeader != nullptr);
 
 	return mpAppHeader->GetFunction(mBuffer);
 }
 
 void APDU::SetFunction(FunctionCode aCode)
 {
-	assert(mpAppHeader == NULL);
+	assert(mpAppHeader == nullptr);
 
 	if(aCode == FunctionCode::RESPONSE || aCode == FunctionCode::UNSOLICITED_RESPONSE) {
 		mpAppHeader = ResponseHeader::Inst();
@@ -103,14 +103,14 @@ void APDU::SetFunction(FunctionCode aCode)
 
 void APDU::SetControl(const AppControlField& arControl)
 {
-	assert(mpAppHeader != NULL);
+	assert(mpAppHeader != nullptr);
 
 	mpAppHeader->SetControl(mBuffer, arControl);
 }
 
 void APDU::SetIIN(const IINField& arIIN)
 {
-	assert(mpAppHeader != NULL);
+	assert(mpAppHeader != nullptr);
 	assert(mpAppHeader->GetType() == AHT_RESPONSE);
 
 	static_cast<ResponseHeader*>(mpAppHeader)->SetIIN(mBuffer, arIIN);
@@ -120,7 +120,7 @@ void APDU::Reset()
 {
 	mFragmentSize = 0;
 	mIsInterpreted = false;
-	mpAppHeader = NULL;
+	mpAppHeader = nullptr;
 	mObjectHeaders.clear();
 }
 
@@ -156,7 +156,7 @@ void APDU::Interpret()
 // Parse the header only. Throws exception if header is malformed
 void APDU::InterpretHeader()
 {
-	if(mpAppHeader != NULL) return;
+	if(mpAppHeader != nullptr) return;
 	mpAppHeader = this->ParseHeader();
 }
 
@@ -205,7 +205,7 @@ size_t APDU::ReadObjectHeader(size_t aOffset, size_t aRemainder)
 	//lookup the object type
 	ObjectBase* pObj = ObjectBase::Get(hdrData.Group, hdrData.Variation);
 
-	if(pObj == NULL) {
+	if(pObj == nullptr) {
 		MACRO_THROW_EXCEPTION_COMPLEX(openpal::ObjectException, "Undefined object, " << "Group: " << static_cast<int>(hdrData.Group) << " Var: " << static_cast<int>(hdrData.Variation));
 	}
 
@@ -622,9 +622,9 @@ bool APDU::DoPlaceholderWrite(ObjectBase* apObj)
 
 void APDU::CheckWriteState(const ObjectBase* apObj)
 {
-	if(mpAppHeader == NULL) MACRO_THROW_EXCEPTION(openpal::InvalidStateException, "Header has not be configured");
+	if(mpAppHeader == nullptr) MACRO_THROW_EXCEPTION(openpal::InvalidStateException, "Header has not be configured");
 	if(mIsInterpreted) MACRO_THROW_EXCEPTION(openpal::InvalidStateException, "APDU is interpreted");
-	if(apObj == NULL) MACRO_THROW_EXCEPTION(openpal::ArgumentException, "Object cannot be NULL");
+	if(apObj == nullptr) MACRO_THROW_EXCEPTION(openpal::ArgumentException, "Object cannot be nullptr");
 }
 
 ICountHeader* APDU::GetCountHeader(QualifierCode aCode)

@@ -58,14 +58,14 @@ TransportLayer::TransportLayer(Logger aLogger, size_t aFragSize) :
 void TransportLayer::ThisLayerUp()
 {
 	mThisLayerUp = true;
-	if(mpUpperLayer != NULL) mpUpperLayer->OnLowerLayerUp();
+	if(mpUpperLayer != nullptr) mpUpperLayer->OnLowerLayerUp();
 }
 
 void TransportLayer::ThisLayerDown()
 {
 	mReceiver.Reset();
 	mThisLayerUp = false;
-	if(mpUpperLayer != NULL) mpUpperLayer->OnLowerLayerDown();
+	if(mpUpperLayer != nullptr) mpUpperLayer->OnLowerLayerDown();
 }
 
 void TransportLayer::ChangeState(TLS_Base* apNewState)
@@ -81,7 +81,7 @@ void TransportLayer::TransmitAPDU(const uint8_t* apData, size_t aNumBytes)
 
 void TransportLayer::TransmitTPDU(const uint8_t* apData, size_t aNumBytes)
 {
-	if(mpLowerLayer != NULL) mpLowerLayer->Send(apData, aNumBytes);
+	if(mpLowerLayer != nullptr) mpLowerLayer->Send(apData, aNumBytes);
 }
 
 void TransportLayer::ReceiveTPDU(const uint8_t* apData, size_t aNumBytes)
@@ -91,7 +91,7 @@ void TransportLayer::ReceiveTPDU(const uint8_t* apData, size_t aNumBytes)
 
 void TransportLayer::ReceiveAPDU(const uint8_t* apData, size_t aNumBytes)
 {
-	if(mpUpperLayer != NULL) mpUpperLayer->OnReceive(apData, aNumBytes);
+	if(mpUpperLayer != nullptr) mpUpperLayer->OnReceive(apData, aNumBytes);
 }
 
 bool TransportLayer::ContinueSend()
@@ -101,12 +101,12 @@ bool TransportLayer::ContinueSend()
 
 void TransportLayer::SignalSendSuccess()
 {
-	if(mpUpperLayer != NULL) mpUpperLayer->OnSendSuccess();
+	if(mpUpperLayer != nullptr) mpUpperLayer->OnSendSuccess();
 }
 
 void TransportLayer::SignalSendFailure()
 {
-	if(mpUpperLayer != NULL) mpUpperLayer->OnSendFailure();
+	if(mpUpperLayer != nullptr) mpUpperLayer->OnSendFailure();
 }
 
 ///////////////////////////////////////

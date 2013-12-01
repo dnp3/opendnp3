@@ -223,7 +223,6 @@
     <ClInclude Include="src\Random.h" />
     <ClInclude Include="src\RandomDouble.h" />
     <ClInclude Include="src\RandomizedBuffer.h" />
-    <ClInclude Include="src\ReadableVtoWriter.h" />
     <ClInclude Include="src\ResponseLoaderTestObject.h" />
     <ClInclude Include="src\SlaveTestObject.h" />
     <ClInclude Include="src\StopWatch.h" />

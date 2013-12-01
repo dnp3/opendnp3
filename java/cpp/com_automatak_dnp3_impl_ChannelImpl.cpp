@@ -89,7 +89,7 @@ JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ChannelImpl_get_1native_1ma
 	}
 	catch(const openpal::Exception& ex) {
 		MACRO_RETHROW_EXCEPTION(pEnv, ex);
-		return (jlong) NULL;
+		return (jlong) nullptr;
 	}
 }
 
@@ -118,7 +118,7 @@ JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ChannelImpl_get_1native_1sl
 	}
 	catch(const openpal::Exception& ex) {
 		MACRO_RETHROW_EXCEPTION(pEnv, ex);
-		return (jlong) NULL;
+		return (jlong) nullptr;
 	}
 }
 

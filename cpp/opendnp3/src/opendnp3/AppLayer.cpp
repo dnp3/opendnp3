@@ -39,7 +39,7 @@ AppLayer::AppLayer(Logger aLogger, openpal::IExecutor* apExecutor, AppConfig aAp
 	mConfirm(2), // only need 2 bytes for a confirm message
 	mSending(false),
 	mConfirmSending(false),
-	mpUser(NULL),
+	mpUser(nullptr),
 	mSolicited(aLogger.GetSubLogger("sol"), this, apExecutor, aAppCfg.RspTimeout),
 	mUnsolicited(aLogger.GetSubLogger("unsol"), this, apExecutor, aAppCfg.RspTimeout),
 	mNumRetry(aAppCfg.NumRetry)
@@ -49,7 +49,7 @@ AppLayer::AppLayer(Logger aLogger, openpal::IExecutor* apExecutor, AppConfig aAp
 
 void AppLayer::SetUser(IAppUser* apUser)
 {
-	assert(mpUser == NULL); assert(apUser != NULL);
+	assert(mpUser == nullptr); assert(apUser != nullptr);
 	mpUser = apUser;
 }
 

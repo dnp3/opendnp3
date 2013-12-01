@@ -33,7 +33,7 @@ namespace opendnp3
 {
 
 IndexedWriteIterator::IndexedWriteIterator() :
-	mpPos(NULL),
+	mpPos(nullptr),
 	mIndexMode(IM_NONE),
 	mIndex(0),
 	mCount(0),

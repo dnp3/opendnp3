@@ -60,8 +60,8 @@ public:
 		mPos(0),
 		mCount(0),
 		mPrefixSize(0),
-		mpHeader(NULL),
-		mpObjectBase(NULL)
+		mpHeader(nullptr),
+		mpObjectBase(nullptr)
 	{}
 
 

@@ -36,7 +36,7 @@ using namespace std;
 
 std::string JNIHelpers::GetString(jstring s, JNIEnv* pEnv)
 {
-	auto cstr = pEnv->GetStringUTFChars(s, NULL);
+	auto cstr = pEnv->GetStringUTFChars(s, nullptr);
 	std::string copy(cstr);
 	pEnv->ReleaseStringUTFChars(s, cstr);
 	return copy;

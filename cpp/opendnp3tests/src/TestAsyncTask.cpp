@@ -55,7 +55,7 @@ public:
 	}
 
 	ITask* Front() {
-		return (Size() > 0) ? mTasks.front() : NULL;
+		return (Size() > 0) ? mTasks.front() : nullptr;
 	}
 
 	void Pop() {

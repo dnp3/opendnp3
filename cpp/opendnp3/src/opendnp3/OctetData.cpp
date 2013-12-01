@@ -28,12 +28,12 @@
 namespace opendnp3
 {
 
-OctetData::OctetData() :  mpData(NULL), mSize(0)
+OctetData::OctetData() :  mpData(nullptr), mSize(0)
 {
 
 }
 
-OctetData::OctetData(const uint8_t* apValue, size_t aSize) : mpData(NULL), mSize(0)	
+OctetData::OctetData(const uint8_t* apValue, size_t aSize) : mpData(nullptr), mSize(0)	
 {
 	assert(aSize <= MAX_SIZE);
 	mpData = new uint8_t[aSize];
@@ -45,10 +45,10 @@ OctetData& OctetData::operator=( const OctetData& rhs )
 {
 	if(&rhs != this) {
 		assert(rhs.mSize <= MAX_SIZE);
-		if(mpData != NULL)
+		if(mpData != nullptr)
 		{
 			delete[] mpData;
-			mpData = NULL;
+			mpData = nullptr;
 			mSize = 0;
 		}
 		mpData = new uint8_t[rhs.mSize];
@@ -59,7 +59,7 @@ OctetData& OctetData::operator=( const OctetData& rhs )
 }
 
 
-OctetData::OctetData(const OctetData& arCopy) : mpData(NULL), mSize(0)
+OctetData::OctetData(const OctetData& arCopy) : mpData(nullptr), mSize(0)
 {
 	mSize = arCopy.GetSize();
 	mpData = new uint8_t[mSize];
@@ -68,9 +68,9 @@ OctetData::OctetData(const OctetData& arCopy) : mpData(NULL), mSize(0)
 
 OctetData::~OctetData()
 {
-	if(mpData != NULL) {
+	if(mpData != nullptr) {
 		delete[] mpData;
-		mpData = NULL;
+		mpData = nullptr;
 	}
 }
 

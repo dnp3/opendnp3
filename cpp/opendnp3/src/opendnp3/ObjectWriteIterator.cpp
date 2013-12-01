@@ -31,7 +31,7 @@ namespace opendnp3
 {
 
 ObjectWriteIterator::ObjectWriteIterator() :
-	mpPos(NULL),
+	mpPos(nullptr),
 	mIndex(1),
 	mStart(0),
 	mStop(0),

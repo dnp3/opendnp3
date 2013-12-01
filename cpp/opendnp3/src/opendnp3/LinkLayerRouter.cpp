@@ -52,7 +52,7 @@ bool LinkLayerRouter::IsRouteInUse(const LinkRoute& arRoute)
 
 bool LinkLayerRouter::AddContext(ILinkContext* apContext, const LinkRoute& arRoute)
 {
-	assert(apContext != NULL);
+	assert(apContext != nullptr);
 
 	if(IsRouteInUse(arRoute)) return false;
 	
@@ -116,8 +116,8 @@ void LinkLayerRouter::RemoveContext(const LinkRoute& arRoute)
 ILinkContext* LinkLayerRouter::GetEnabledContext(const LinkRoute& arRoute)
 {
 	AddressMap::iterator i = mAddressMap.find(arRoute);
-	if(i == mAddressMap.end()) return NULL;
-	else return (i->second.enabled) ? i->second.pContext : NULL;	
+	if(i == mAddressMap.end()) return nullptr;
+	else return (i->second.enabled) ? i->second.pContext : nullptr;	
 }
 
 
@@ -127,7 +127,7 @@ ILinkContext* LinkLayerRouter::GetDestination(uint16_t aDest, uint16_t aSrc)
 
 	ILinkContext* pDest = GetEnabledContext(route);
 
-	if(pDest == NULL) {
+	if(pDest == nullptr) {
 
 		ERROR_BLOCK(LEV_WARNING, "Frame w/ unknown route: " << route.ToString(), DLERR_UNKNOWN_ROUTE);
 	}
@@ -257,7 +257,7 @@ void LinkLayerRouter::_OnSendSuccess()
 	const LinkFrame& f = mTransmitQueue.front();
 	LinkRoute lr(f.GetDest(), f.GetSrc());
 	ILinkContext* pContext = this->GetContext(lr);
-	assert(pContext != NULL);
+	assert(pContext != nullptr);
 	*/
 	mTransmitting = false;
 	mTransmitQueue.pop_front();

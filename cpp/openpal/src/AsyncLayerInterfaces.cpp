@@ -55,7 +55,7 @@ void IUpDown::OnLowerLayerDown()
 //////////////////////////////////
 IUpperLayer::IUpperLayer(openpal::Logger& arLogger) :
 	Loggable(arLogger),
-	mpLowerLayer(NULL)
+	mpLowerLayer(nullptr)
 {
 
 }
@@ -70,7 +70,7 @@ void IUpperLayer::OnReceive(const uint8_t* apData, size_t aNumBytes)
 
 void IUpperLayer::SetLowerLayer(ILowerLayer* apLowerLayer)
 {
-	assert(apLowerLayer != NULL);
+	assert(apLowerLayer != nullptr);
 	mpLowerLayer = apLowerLayer;
 }
 
@@ -90,7 +90,7 @@ void IUpperLayer::OnSendFailure()
 
 ILowerLayer::ILowerLayer(openpal::Logger& arLogger) :
 	Loggable(arLogger),
-	mpUpperLayer(NULL)
+	mpUpperLayer(nullptr)
 {
 
 }
@@ -103,7 +103,7 @@ void ILowerLayer::Send(const uint8_t* apData, size_t aNumBytes)
 
 void ILowerLayer::SetUpperLayer(IUpperLayer* apUpperLayer)
 {
-	assert(apUpperLayer != NULL);
+	assert(apUpperLayer != nullptr);
 	mpUpperLayer = apUpperLayer;
 	apUpperLayer->SetLowerLayer(this);
 }

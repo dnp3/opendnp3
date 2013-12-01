@@ -36,7 +36,7 @@ namespace opendnp3
 
 MockPhysicalLayerAsync::MockPhysicalLayerAsync(openpal::Logger aLogger, openpal::IExecutor* apExecutor) :
 	PhysicalLayerAsyncBase(aLogger),
-	mpWriteBuff(NULL),
+	mpWriteBuff(nullptr),
 	mNumToRead(0),
 	mNumToWrite(0),
 	mNumWrites(0),

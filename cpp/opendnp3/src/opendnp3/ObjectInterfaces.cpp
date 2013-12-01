@@ -213,7 +213,7 @@ ObjectBase* ObjectBase::Get(int aGroup, int aVariation)
 	}
 
 	/* Nothing matched if we reach this point */
-	return NULL;
+	return nullptr;
 }
 
 }

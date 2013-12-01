@@ -29,34 +29,34 @@ DataObserverAdapter::DataObserverAdapter(JavaVM* apJVM, jobject aProxy) :
 {
 	JNIEnv* pEnv = this->GetEnv();
 	jclass clazz = pEnv->GetObjectClass(mProxy);
-	assert(clazz != NULL);
+	assert(clazz != nullptr);
 
 	mStartId = pEnv->GetMethodID(clazz, "start", "()V");
-	assert(mStartId != NULL);
+	assert(mStartId != nullptr);
 	mEndId = pEnv->GetMethodID(clazz, "end", "()V");
-	assert(mEndId != NULL);
+	assert(mEndId != nullptr);
 
 	mUpdateBinaryInput = pEnv->GetMethodID(clazz, "updateBI", "(ZBJJ)V");
-	assert(mUpdateBinaryInput != NULL);
+	assert(mUpdateBinaryInput != nullptr);
 
 	mUpdateAnalogInput = pEnv->GetMethodID(clazz, "updateAI", "(DBJJ)V");
-	assert(mUpdateAnalogInput != NULL);
+	assert(mUpdateAnalogInput != nullptr);
 
 	mUpdateCounter = pEnv->GetMethodID(clazz, "updateC", "(JBJJ)V");
-	assert(mUpdateCounter != NULL);
+	assert(mUpdateCounter != nullptr);
 
 	mUpdateBinaryOutputStatus = pEnv->GetMethodID(clazz, "updateBOS", "(ZBJJ)V");
-	assert(mUpdateBinaryOutputStatus != NULL);
+	assert(mUpdateBinaryOutputStatus != nullptr);
 
 	mUpdateAnalogOutputStatus = pEnv->GetMethodID(clazz, "updateAOS", "(DBJJ)V");
-	assert(mUpdateAnalogOutputStatus != NULL);
+	assert(mUpdateAnalogOutputStatus != nullptr);
 }
 
 JNIEnv* DataObserverAdapter::GetEnv()
 {
-	JNIEnv* pEnv = NULL;
+	JNIEnv* pEnv = nullptr;
 	mpJVM->GetEnv((void**) &pEnv, JNI_VERSION_1_6);
-	assert(pEnv != NULL);
+	assert(pEnv != nullptr);
 	return pEnv;
 }
 

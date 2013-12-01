@@ -107,7 +107,7 @@ private:
 			ContextRecord(ILinkContext* context) : pContext(context), enabled(false)
 			{}
 
-		ContextRecord() : pContext(NULL), enabled(false)
+		ContextRecord() : pContext(nullptr), enabled(false)
 		{}
 
 		ILinkContext* pContext;

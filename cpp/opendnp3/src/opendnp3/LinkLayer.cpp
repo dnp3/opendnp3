@@ -45,18 +45,18 @@ LinkLayer::LinkLayer(Logger aLogger, openpal::IExecutor* apExecutor, const LinkC
 	mCONFIG(arConfig),
 	mRetryRemaining(0),
 	mpExecutor(apExecutor),
-	mpTimer(NULL),
+	mpTimer(nullptr),
 	mNextReadFCB(false),
 	mNextWriteFCB(false),
 	mIsOnline(false),
-	mpRouter(NULL),
+	mpRouter(nullptr),
 	mpPriState(PLLS_SecNotReset::Inst()),
 	mpSecState(SLLS_NotReset::Inst())
 {}
 
 void LinkLayer::SetRouter(ILinkRouter* apRouter)
 {
-	assert(mpRouter == NULL); assert(apRouter != NULL);
+	assert(mpRouter == nullptr); assert(apRouter != nullptr);
 	mpRouter = apRouter;
 }
 
@@ -112,7 +112,7 @@ void LinkLayer::OnLowerLayerDown()
 	if(!mIsOnline)
 		MACRO_THROW_EXCEPTION(InvalidStateException, "LowerLayerDown");
 
-	if(mpTimer != NULL) this->CancelTimer();
+	if(mpTimer != nullptr) this->CancelTimer();
 	mIsOnline = false;
 	mpPriState = PLLS_SecNotReset::Inst();
 	mpSecState = SLLS_NotReset::Inst();
@@ -158,7 +158,7 @@ void LinkLayer::SendDelayedUserData(bool aFCB)
 
 void LinkLayer::StartTimer()
 {
-	assert(mpTimer == NULL);
+	assert(mpTimer == nullptr);
 	mpTimer = this->mpExecutor->Start(TimeDuration(mCONFIG.Timeout), std::bind(&LinkLayer::OnTimeout, this));
 }
 
@@ -166,7 +166,7 @@ void LinkLayer::CancelTimer()
 {
 	assert(mpTimer);
 	mpTimer->Cancel();
-	mpTimer = NULL;
+	mpTimer = nullptr;
 }
 
 void LinkLayer::ResetRetry()
@@ -256,7 +256,7 @@ void LinkLayer::_Send(const uint8_t* apData, size_t aDataLength)
 void LinkLayer::OnTimeout()
 {
 	assert(mpTimer);
-	mpTimer = NULL;
+	mpTimer = nullptr;
 	mpPriState->OnTimeout(this);
 }
 
