@@ -25,15 +25,18 @@ package object render {
 
     def space: Iterator[String] = Iterator.apply("")
 
-    def bracket[A](indent: Indentation, cap: String = "")(inner: => Iterator[String]): Iterator[String] = {
+    def bracketWithCap[A](indent: Indentation, cap: String)(inner: => Iterator[String]): Iterator[String] = {
       Iterator("{") ++
-      indent(
-        inner
-      ) ++
-      Iterator("}"+cap)
+        indent(
+          inner
+        ) ++
+        Iterator("}"+cap)
     }
 
-    def bracketSemiColon[A](indent: Indentation)(inner: => Iterator[String]): Iterator[String] = bracket(indent,";")(inner)
+    def bracket[A](inner: => Iterator[String])(implicit indent: Indentation): Iterator[String] = bracketWithCap(indent,"")(inner)
+
+
+    def bracketSemiColon[A](inner: => Iterator[String])(implicit indent: Indentation): Iterator[String] = bracketWithCap(indent,";")(inner)
 
     implicit class RichStringList(list: List[String]) {
 

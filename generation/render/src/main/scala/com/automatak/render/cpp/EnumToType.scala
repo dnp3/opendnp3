@@ -22,15 +22,15 @@ import com.automatak.render._
 
 object EnumToType {
 
-  def signature(em: EnumModel) : String = List(getType(em.enumType), List(em.name,"ToType(", em.name," arg)").mkString).mkString(" ")
+  private def signature(em: EnumModel) : String = List(getType(em.enumType), List(em.name,"ToType(", em.name," arg)").mkString).mkString(" ")
 
-  case class HeaderRender(i: Indentation) extends ModelRenderer[EnumModel] {
-    def render(em: EnumModel) : Iterator[String] = Iterator(signature(em)+";")
+  object HeaderRender extends ModelRenderer[EnumModel] {
+    def render(em: EnumModel)(implicit indent: Indentation) : Iterator[String] = Iterator(signature(em)+";")
   }
 
-  case class ImplRender(i: Indentation) extends ModelRenderer[EnumModel] {
-    def render(em: EnumModel) : Iterator[String] = {
-      Iterator(signature(em)) ++ bracket(i) {
+  object ImplRender extends ModelRenderer[EnumModel] {
+    def render(em: EnumModel)(implicit indent: Indentation) : Iterator[String] = {
+      Iterator(signature(em)) ++ bracket {
         Iterator(List("return ", staticCast(em.enumType)("arg"),";").mkString)
       }
     }

@@ -24,6 +24,6 @@ package com.automatak.render
  */
 trait ModelRenderer[A] {
 
-  def render(a: A): Iterator[String]
+  def render(a: A)(implicit i: Indentation): Iterator[String]
 
 }

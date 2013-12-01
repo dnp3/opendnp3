@@ -20,18 +20,16 @@ object EnumGenerator {
     // list of all enumerations that we want to generate
     val enums = sourceEnums.map(e => EnumConfig(e, cppSource, cppSource))
 
-    val indent = CppIndentation()
+    implicit val indent = CppIndentation()
 
-    val emr = new EnumModelRenderer(indent)
-
-    val conversionDecls = List(EnumToString.HeaderRender(indent), EnumToType.HeaderRender(indent), EnumFromType.HeaderRender(indent))
-    val conversionImpls = List(EnumToString.ImplRender(indent), EnumToType.ImplRender(indent), EnumFromType.ImplRender(indent))
+    val conversionDecls = List(EnumToString.HeaderRender, EnumToType.HeaderRender, EnumFromType.HeaderRender)
+    val conversionImpls = List(EnumToString.ImplRender, EnumToType.ImplRender, EnumFromType.ImplRender)
 
     def writeEnumToFiles(cfg: EnumConfig): Unit = {
 
       def writeHeader() {
         val license = commented(LicenseHeader.lines).toIterator
-        val enum = emr.render(cfg.model).toIterator
+        val enum = EnumModelRenderer.render(cfg.model).toIterator
         val signatures = conversionDecls.map(c => c.render(cfg.model)).flatten.toIterator
         val lines = license ++ space ++ includeGuards(cfg.model.name)(string ++ cstdint ++ space ++ namespace(ns)(enum ++ space ++ signatures))
         writeLinesTo(cfg.headerPath, lines)

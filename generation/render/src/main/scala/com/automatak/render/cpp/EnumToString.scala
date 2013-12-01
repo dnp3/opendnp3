@@ -24,20 +24,20 @@ object EnumToString {
 
   def signature(name: String) : String = List(stdString, List(name,"ToString(", name," arg)").mkString).mkString(" ")
 
-  case class HeaderRender(i: Indentation) extends ModelRenderer[EnumModel] {
-    def render(em: EnumModel) : Iterator[String] = Iterator(signature(em.name)+";")
+  object HeaderRender extends ModelRenderer[EnumModel] {
+    def render(em: EnumModel)(implicit indent: Indentation) : Iterator[String] = Iterator(signature(em.name)+";")
   }
 
-  case class ImplRender(indent: Indentation) extends ModelRenderer[EnumModel] {
+  object ImplRender extends ModelRenderer[EnumModel] {
 
-    def render(em: EnumModel) : Iterator[String] = {
+    def render(em: EnumModel)(implicit indent: Indentation) : Iterator[String] = {
 
       def header = Iterator(signature(em.name))
-      def smr = new ReturnSwitchModelRenderer[EnumValue](indent)(ev => em.qualified(ev))(ev => quotes(ev.name))
+      def smr = new ReturnSwitchModelRenderer[EnumValue](ev => em.qualified(ev))(ev => quotes(ev.name))
       def switch = smr.render(em.values)
       def returnDefault = Iterator(List("return ", quotes(em.default.name),";").mkString)
 
-      header ++ bracket(indent) {
+      header ++ bracket {
         switch ++
           returnDefault
       }

@@ -8,13 +8,11 @@ object ReturnSwitchModelRenderer {
 
 }
 
-class ReturnSwitchModelRenderer[A](indent: Indentation)(fCase: A => String)(fAction: A => String)
-  extends SwitchModelRenderer(indent)(fCase)(ReturnSwitchModelRenderer.wrap(fAction))
+class ReturnSwitchModelRenderer[A](fCase: A => String)(fAction: A => String) extends SwitchModelRenderer(fCase)(ReturnSwitchModelRenderer.wrap(fAction))
 
-class SwitchModelRenderer[A](indent: Indentation)(fCase: A => String)(fAction: A => String)
-  extends ModelRenderer[List[A]] {
+class SwitchModelRenderer[A](fCase: A => String)(fAction: A => String) extends ModelRenderer[List[A]] {
 
-  def render(a: List[A]): Iterator[String] = {
+  def render(a: List[A])(implicit indent: Indentation): Iterator[String] = {
 
     def switch = Iterator("switch(arg)")
 
@@ -25,7 +23,7 @@ class SwitchModelRenderer[A](indent: Indentation)(fCase: A => String)(fAction: A
         }
     }.flatten.toIterator
 
-    switch ++ bracket(indent) {
+    switch ++ bracket {
       cases
     }
   }

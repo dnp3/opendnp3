@@ -20,9 +20,9 @@ package com.automatak.render.cpp
 
 import com.automatak.render._
 
-class EnumModelRenderer(i: Indentation) extends ModelRenderer[EnumModel] {
+object EnumModelRenderer extends ModelRenderer[EnumModel] {
 
-  def render(enum: EnumModel) : Iterator[String] = {
+  def render(enum: EnumModel)(implicit indent: Indentation) : Iterator[String] = {
 
     def pair(ir: IntRender)(ev: EnumValue): String = {
       List(ev.name, "=", ir(ev.value)).spaced
@@ -37,7 +37,7 @@ class EnumModelRenderer(i: Indentation) extends ModelRenderer[EnumModel] {
       merge(comments, definitions)
     }
 
-    header ++ bracketSemiColon(i) {
+    header ++ bracketSemiColon {
       values
     }
 

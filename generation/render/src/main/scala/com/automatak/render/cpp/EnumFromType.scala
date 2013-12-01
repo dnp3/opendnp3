@@ -23,22 +23,22 @@ import com.automatak.render._
 object EnumFromType {
   def signature(enum: EnumModel) = List(enum.name, List(enum.name, "FromType(", getType(enum.enumType)," arg)").mkString).mkString(" ")
 
-  case class HeaderRender(i: Indentation) extends ModelRenderer[EnumModel] {
-    def render(em: EnumModel) : Iterator[String] = {
+  object HeaderRender extends ModelRenderer[EnumModel] {
+    def render(em: EnumModel)(implicit i: Indentation) : Iterator[String] = {
       Iterator(signature(em)+";")
     }
   }
 
-  case class ImplRender(indent: Indentation) extends ModelRenderer[EnumModel] {
+  object ImplRender extends ModelRenderer[EnumModel] {
 
-    def render(em: EnumModel) : Iterator[String] = {
+    def render(em: EnumModel)(implicit i: Indentation) : Iterator[String] = {
 
       def header = Iterator(signature(em))
-      def smr = new ReturnSwitchModelRenderer[EnumValue](indent)(ev => em.render(ev.value))(ev => em.qualified(ev))
+      def smr = new ReturnSwitchModelRenderer[EnumValue](ev => em.render(ev.value))(ev => em.qualified(ev))
       def switch = smr.render(em.values)
       def returnDefault = Iterator(List("return ", em.qualified(em.default),";").mkString)
 
-      header ++ bracket(indent) {
+      header ++ bracket {
         switch ++
           returnDefault
       }

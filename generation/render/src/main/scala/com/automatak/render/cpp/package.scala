@@ -24,6 +24,21 @@ package object cpp {
 
   def quotes(s: String): String = List(quote, s, quote).mkString
 
+  def concat(a: Iterator[String], b: Iterator[Option[String]]): Iterator[String] = {
+
+    new Iterator[String] {
+      def hasNext = a.hasNext && b.hasNext
+
+      def next(): String = {
+        val d = a.next()
+        b.next() match {
+          case Some(c) => d + c
+          case None => d
+        }
+      }
+    }
+  }
+
   def merge(a: Iterator[Option[String]], b: Iterator[String]): Iterator[String] = {
 
     val iter = new Iterator[Iterator[String]] {
