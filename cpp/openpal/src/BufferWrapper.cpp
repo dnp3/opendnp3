@@ -20,52 +20,50 @@
 // you under the terms of the License.
 //
 
-#include "PhysLoopback.h"
+#include <openpal/BufferWrapper.h>
 
-#include <openpal/IPhysicalLayerAsync.h>
+#include <memory>
 
-using namespace openpal;
-using namespace std::chrono;
-
-namespace opendnp3
+namespace openpal
 {
+	HasSize::HasSize(size_t aSize) : mSize(aSize)
+	{}
 
-PhysLoopback::PhysLoopback(openpal::Logger aLogger, openpal::IPhysicalLayerAsync* apPhys) :
-	Loggable(aLogger),
-	PhysicalLayerMonitor(aLogger, apPhys, openpal::TimeDuration::Seconds(5), openpal::TimeDuration::Seconds(5)),
-	mBytesRead(0),
-	mBytesWritten(0),
-	mBuffer(1024)
-{
+	size_t HasSize::Size() const
+	{
+		return mSize;
+	}
+
+	ReadOnlyBuffer::ReadOnlyBuffer(): HasSize(0), mpBuffer(nullptr)
+	{
+	
+	}
+
+	ReadOnlyBuffer::ReadOnlyBuffer(const uint8_t* apBuffer, size_t aSize) :
+		HasSize(aSize),
+		mpBuffer(apBuffer)
+	{}
+
+	void ReadOnlyBuffer::CopyTo(uint8_t* apDest) const
+	{
+		memcpy(apDest, mpBuffer, mSize);
+	}
+
+	WriteBuffer::WriteBuffer(): HasSize(0), mpBuffer(nullptr)
+	{
+		
+	}
+
+	WriteBuffer::WriteBuffer(uint8_t* apBuffer, size_t aSize) :
+		HasSize(aSize),
+		mpBuffer(apBuffer)
+	{}
+
+	ReadOnlyBuffer WriteBuffer::ToReadOnly() const
+	{
+		return ReadOnlyBuffer(mpBuffer, mSize);
+	}
 
 }
 
-void PhysLoopback::StartRead()
-{
-	mpPhys->AsyncRead(WriteBuffer(mBuffer, mBuffer.Size()));
-}
-
-void PhysLoopback::_OnReceive(const uint8_t* apData, size_t aNumBytes)
-{
-	mBytesRead += aNumBytes;
-	mBytesWritten += aNumBytes;
-	mpPhys->AsyncWrite(ReadOnlyBuffer(mBuffer, aNumBytes));
-}
-
-void PhysLoopback::_OnSendSuccess(void)
-{
-	this->StartRead();
-}
-
-void PhysLoopback::_OnSendFailure(void)
-{
-
-}
-
-void PhysLoopback::OnPhysicalLayerOpenSuccessCallback(void)
-{
-	this->StartRead();
-}
-
-}
 

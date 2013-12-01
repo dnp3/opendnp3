@@ -80,26 +80,26 @@ void PhysicalLayerAsyncSerial::DoOpenSuccess()
 	LOG_BLOCK(LEV_INFO, "Port successfully opened");
 }
 
-void PhysicalLayerAsyncSerial::DoAsyncRead(uint8_t* apBuffer, size_t aMaxBytes)
+void PhysicalLayerAsyncSerial::DoAsyncRead(openpal::WriteBuffer& arBuffer)
 {
-	mPort.async_read_some(buffer(apBuffer, aMaxBytes),
+	mPort.async_read_some(buffer(arBuffer, arBuffer.Size()),
 	                      mStrand.wrap(
 	                              std::bind(&PhysicalLayerAsyncSerial::OnReadCallback,
 	                                        this,
 	                                        std::placeholders::_1,
-	                                        apBuffer,
+	                                        arBuffer,
 	                                        std::placeholders::_2)
 	                      ));
 }
 
-void PhysicalLayerAsyncSerial::DoAsyncWrite(const uint8_t* apBuffer, size_t aNumBytes)
+void PhysicalLayerAsyncSerial::DoAsyncWrite(const ReadOnlyBuffer& arBuffer)
 {
-	async_write(mPort, buffer(apBuffer, aNumBytes),
+	async_write(mPort, buffer(arBuffer, arBuffer.Size()),
 	            mStrand.wrap(
 	                    std::bind(&PhysicalLayerAsyncSerial::OnWriteCallback,
 	                              this,
 	                              std::placeholders::_1,
-	                              aNumBytes)
+								  arBuffer.Size())
 	            ));
 }
 

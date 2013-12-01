@@ -30,6 +30,7 @@
 #include <openpal/Location.h>
 #include <openpal/ToHex.h>
 
+
 using namespace openpal;
 
 namespace opendnp3
@@ -94,11 +95,11 @@ bool BufferTestObject::BufferEqualsString(const std::string& arData)
 	return true;
 }
 
-void BufferTestObject::WriteToBuffer(const uint8_t* apData, size_t aNumBytes)
+void BufferTestObject::WriteToBuffer(const ReadOnlyBuffer& arBuffer)
 {
-	if( (mBuffer.size() + aNumBytes) > MAX_SIZE ) throw Exception(LOCATION, "Max size exceeded");
+	if( (mBuffer.size() + arBuffer.Size()) > MAX_SIZE ) throw Exception(LOCATION, "Max size exceeded");
 	++mNumWrites;
-	for(size_t i = 0; i < aNumBytes; ++i) mBuffer.push_back(apData[i]);
+	for(size_t i = 0; i < arBuffer.Size(); ++i) mBuffer.push_back(arBuffer[i]);
 }
 
 } //end namespace

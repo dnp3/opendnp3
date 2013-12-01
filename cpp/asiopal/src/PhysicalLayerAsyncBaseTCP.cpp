@@ -57,26 +57,26 @@ void PhysicalLayerAsyncBaseTCP::DoClose()
 	this->CloseSocket();
 }
 
-void PhysicalLayerAsyncBaseTCP::DoAsyncRead(uint8_t* apBuffer, size_t aMaxBytes)
+void PhysicalLayerAsyncBaseTCP::DoAsyncRead(WriteBuffer& arBuffer)
 {
-	mSocket.async_read_some(buffer(apBuffer, aMaxBytes),
+	mSocket.async_read_some(buffer(arBuffer, arBuffer.Size()),
 	                        mStrand.wrap(
 	                                std::bind(&PhysicalLayerAsyncBaseTCP::OnReadCallback,
 	                                                this,
 	                                                std::placeholders::_1,
-	                                                apBuffer,
+	                                                arBuffer,
 	                                                std::placeholders::_2)
 	                        ));
 }
 
-void PhysicalLayerAsyncBaseTCP::DoAsyncWrite(const uint8_t* apBuffer, size_t aNumBytes)
+void PhysicalLayerAsyncBaseTCP::DoAsyncWrite(const ReadOnlyBuffer& arBuffer)
 {
-	async_write(mSocket, buffer(apBuffer, aNumBytes),
+	async_write(mSocket, buffer(arBuffer, arBuffer.Size()),
 	            mStrand.wrap(
 	                    std::bind(&PhysicalLayerAsyncBaseTCP::OnWriteCallback,
 	                              this,
 	                              std::placeholders::_1,
-	                              aNumBytes)
+								  arBuffer.Size())
 	            ));
 }
 

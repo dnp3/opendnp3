@@ -56,14 +56,14 @@ void PhysicalLayerWrapper::AsyncClose()
 	return mpProxy->AsyncClose();
 }
 
-void PhysicalLayerWrapper::AsyncWrite(const uint8_t* apData, size_t apSize)
+void PhysicalLayerWrapper::AsyncWrite(const openpal::ReadOnlyBuffer&  arBuffer)
 {
-	return mpProxy->AsyncWrite(apData, apSize);
+	return mpProxy->AsyncWrite(arBuffer);
 }
 
-void PhysicalLayerWrapper::AsyncRead(uint8_t* apData, size_t apSize)
+void PhysicalLayerWrapper::AsyncRead(WriteBuffer& arBuffer)
 {
-	return mpProxy->AsyncRead(apData, apSize);
+	return mpProxy->AsyncRead(arBuffer);
 }
 
 void PhysicalLayerWrapper::_OnLowerLayerUp()

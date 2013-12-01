@@ -67,22 +67,22 @@ void LoopbackPhysicalLayerAsync::DoClose()
 	}
 }
 
-void LoopbackPhysicalLayerAsync::DoAsyncRead(uint8_t* apBuff, size_t aNumBytes)
+void LoopbackPhysicalLayerAsync::DoAsyncRead(openpal::WriteBuffer& arBuffer)
 {
 	assert(mReadSize == 0);
-	mReadSize = aNumBytes;
-	mpReadBuff = apBuff;
+	mReadSize = arBuffer.Size();
+	mpReadBuff = arBuffer;
 
 	this->CheckForReadDispatch();
 }
 
-void LoopbackPhysicalLayerAsync::DoAsyncWrite(const uint8_t* apData, size_t aNumBytes)
+void LoopbackPhysicalLayerAsync::DoAsyncWrite(const openpal::ReadOnlyBuffer& arBuffer)
 {
-	for(size_t i = 0; i < aNumBytes; ++i) mWritten.push_back(apData[i]);
+	for(size_t i = 0; i < arBuffer.Size(); ++i) mWritten.push_back(arBuffer[i]);
 
 	//always write successfully
 	error_code ec(errc::success, get_generic_category());
-	mExecutor.Post(bind(&LoopbackPhysicalLayerAsync::OnWriteCallback, this, ec, aNumBytes));
+	mExecutor.Post(bind(&LoopbackPhysicalLayerAsync::OnWriteCallback, this, ec, arBuffer.Size()));
 
 	//now check to see if this write will dispatch a read
 	this->CheckForReadDispatch();

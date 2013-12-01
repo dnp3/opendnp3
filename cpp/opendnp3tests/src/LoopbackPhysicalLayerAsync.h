@@ -52,8 +52,8 @@ private:
 	void DoOpen();
 	void DoClose();
 	void DoOpenSuccess();
-	void DoAsyncRead(uint8_t* apBuff, size_t aNumBytes);
-	void DoAsyncWrite(const uint8_t*, size_t aNumBytes);
+	void DoAsyncRead(openpal::WriteBuffer&);
+	void DoAsyncWrite(const openpal::ReadOnlyBuffer&);
 
 
 	void CheckForReadDispatch();

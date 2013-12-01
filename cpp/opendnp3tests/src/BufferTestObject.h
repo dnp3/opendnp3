@@ -27,6 +27,8 @@
 #include <vector>
 #include <cstdint>
 
+#include <openpal/BufferWrapper.h>
+
 namespace opendnp3
 {
 class ByteStr;
@@ -61,7 +63,7 @@ public:
 	}
 
 protected:
-	void WriteToBuffer(const uint8_t*, size_t);
+	void WriteToBuffer(const openpal::ReadOnlyBuffer& arBuffer);
 
 private:
 	size_t mNumWrites;

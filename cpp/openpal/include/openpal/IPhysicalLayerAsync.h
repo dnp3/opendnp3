@@ -26,6 +26,7 @@
 #include "AsyncLayerInterfaces.h"
 
 #include <openpal/Visibility.h>
+#include <openpal/BufferWrapper.h>
 
 namespace openpal
 {
@@ -110,14 +111,12 @@ public:
 	 * Callback is IHandlerAsync::OnSendSuccess or a failure will
 	 * result in the layer closing.
 	 *
-	 * @param apBuffer		The buffer from which the write operation
-	 * 						will write data. This buffer must remain
-	 * 						available until the write callback or close
-	 * 						occurs.
-	 * @param aLength		Number of bytes to write. Callback occurs
-	 * 						after ALL bytes have been written.
+	 * @param arBuffer		The buffer from which the write operation
+	 * 						will write data. The underlying buffer must 
+	 *						remain available until the write callback or 
+	 *                      close occurs.
 	 */
-	virtual void AsyncWrite(const uint8_t* apBuffer, size_t aLength) = 0;
+	virtual void AsyncWrite(const ReadOnlyBuffer& arBuffer) = 0;
 
 	/**
 	 * Starts a read operation.
@@ -126,13 +125,11 @@ public:
 	 * OnReceive(const uint8_t*, size_t) or a failure will
 	 * result in the layer closing.
 	 *
-	 * @param apBuffer		The buffer the read operation will fill.
-	 * 						This buffer must remain available until the
-	 * 						read callback or close occurs.
-	 * @param aMaxLength	Maximum number of bytes to read. Callback
-	 * 						occurs after any bytes are available.
+	 * @param arBuffer		Read into the underlying buffer
+	 *                      defined by the wrapper.  The underlying buffer
+	 *                      must remain available until the read callback
 	 */
-	virtual void AsyncRead(uint8_t* apBuffer, size_t aMaxLength) = 0;
+	virtual void AsyncRead(WriteBuffer& arBuffer) = 0;
 
 	/**
 	 * Set the handler interface for callbacks. A read interface has

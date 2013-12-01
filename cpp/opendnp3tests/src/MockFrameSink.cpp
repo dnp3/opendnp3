@@ -22,6 +22,8 @@
 
 #include "MockFrameSink.h"
 
+using namespace openpal;
+
 namespace opendnp3
 {
 
@@ -106,13 +108,13 @@ void MockFrameSink::RequestLinkStatus(bool aIsMaster, uint16_t aDest, uint16_t a
 void MockFrameSink::ConfirmedUserData(bool aIsMaster, bool aFcb, uint16_t aDest, uint16_t aSrc, const uint8_t* apData, size_t aDataLength)
 {
 	mFcb = aFcb;
-	this->WriteToBuffer(apData, aDataLength);
+	this->WriteToBuffer(ReadOnlyBuffer(apData, aDataLength));
 	this->Update(LinkFunction::PRI_CONFIRMED_USER_DATA, aIsMaster, aDest, aSrc);
 }
 
 void MockFrameSink::UnconfirmedUserData(bool aIsMaster, uint16_t aDest, uint16_t aSrc, const uint8_t* apData, size_t aDataLength)
 {
-	this->WriteToBuffer(apData, aDataLength);
+	this->WriteToBuffer(ReadOnlyBuffer(apData, aDataLength));
 	this->Update(LinkFunction::PRI_UNCONFIRMED_USER_DATA, aIsMaster, aDest, aSrc);
 }
 

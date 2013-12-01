@@ -63,7 +63,7 @@ MockPhysicalLayerMonitor::MockPhysicalLayerMonitor(
 void MockPhysicalLayerMonitor::OnPhysicalLayerOpenSuccessCallback()
 {
 	mOpens++;
-	mpPhys->AsyncRead(mReadBuffer, mReadBuffer.Size());
+	mpPhys->AsyncRead(WriteBuffer(mReadBuffer, mReadBuffer.Size()));
 }
 
 void MockPhysicalLayerMonitor::OnPhysicalLayerCloseCallback()
@@ -88,7 +88,7 @@ void MockPhysicalLayerMonitor::_OnReceive(const uint8_t* apData, size_t aNumByte
 	}
 	mBytesRead += aNumBytes;
 	LOG_BLOCK(LEV_INFO, "Received " << mBytesRead << " of " << mExpectReadBuffer.Size());
-	mpPhys->AsyncRead(mReadBuffer, mReadBuffer.Size());
+	mpPhys->AsyncRead(WriteBuffer(mReadBuffer, mReadBuffer.Size()));
 }
 
 void MockPhysicalLayerMonitor::ExpectData(const CopyableBuffer& arData)
@@ -143,7 +143,7 @@ void MockPhysicalLayerMonitor::TransmitNext()
 	if(mWriteBuffer.Size() > this->mBytesWritten) {
 		size_t remaining = mWriteBuffer.Size() - mBytesWritten;
 		size_t toWrite = Min<size_t>(4096, remaining);
-		mpPhys->AsyncWrite(mWriteBuffer.Buffer() + mBytesWritten, toWrite);
+		mpPhys->AsyncWrite(ReadOnlyBuffer(mWriteBuffer.Buffer() + mBytesWritten, toWrite));
 		this->mLastWriteSize = toWrite;
 	}
 }

@@ -53,7 +53,7 @@ void MockLowerLayer::DisableAutoSendCallback()
 
 void MockLowerLayer::_Send(const uint8_t* apData, size_t aNumBytes)
 {
-	this->WriteToBuffer(apData, aNumBytes);
+	this->WriteToBuffer(ReadOnlyBuffer(apData, aNumBytes));
 	if(mAutoSendCallback && mpUpperLayer != NULL) {
 		if(mIsSuccess) mpUpperLayer->OnSendSuccess();
 		else mpUpperLayer->OnSendFailure();

@@ -41,7 +41,7 @@ MockUpperLayer::MockUpperLayer(openpal::Logger aLogger) :
 
 void MockUpperLayer::_OnReceive(const uint8_t* apData, size_t aLength)
 {
-	this->WriteToBuffer(apData, aLength);
+	this->WriteToBuffer(ReadOnlyBuffer(apData, aLength));
 	if(mOnReceiveHandler) mOnReceiveHandler(apData, aLength);
 }
 

@@ -124,8 +124,8 @@ public:
 	/* Implement IPhysicalLayerAsync - Events from the outside */
 	void AsyncOpen();
 	void AsyncClose();
-	void AsyncWrite(const uint8_t*, size_t);
-	void AsyncRead(uint8_t*, size_t);
+	void AsyncWrite(const openpal::ReadOnlyBuffer&);
+	void AsyncRead(openpal::WriteBuffer&);
 
 	// Not an event delegated to the states
 	void SetHandler(openpal::IHandlerAsync* apHandler);
@@ -137,8 +137,8 @@ public:
 	virtual void DoOpeningClose() {
 		DoClose();    //optionally override this action
 	}
-	virtual void DoAsyncRead(uint8_t*, size_t) = 0;
-	virtual void DoAsyncWrite(const uint8_t*, size_t) = 0;
+	virtual void DoAsyncRead(openpal::WriteBuffer&) = 0;
+	virtual void DoAsyncWrite(const openpal::ReadOnlyBuffer&) = 0;
 
 	// These can be optionally overriden to do something more interesting, i.e. specific logging
 	virtual void DoOpenCallback() {}

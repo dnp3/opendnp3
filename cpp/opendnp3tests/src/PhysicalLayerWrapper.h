@@ -78,8 +78,8 @@ public:
 
 	void AsyncOpen();
 	void AsyncClose();
-	void AsyncWrite(const uint8_t* apData, size_t apSize);
-	void AsyncRead(uint8_t* apData, size_t apSize);
+	void AsyncWrite(const openpal::ReadOnlyBuffer&);
+	void AsyncRead(openpal::WriteBuffer&);
 
 	void SetHandler(openpal::IHandlerAsync* apHandler);
 

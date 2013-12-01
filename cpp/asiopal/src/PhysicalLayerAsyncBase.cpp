@@ -173,30 +173,30 @@ void PhysicalLayerAsyncBase::StartClose()
 	}
 }
 
-void PhysicalLayerAsyncBase::AsyncWrite(const uint8_t* apBuff, size_t aNumBytes)
+void PhysicalLayerAsyncBase::AsyncWrite(const openpal::ReadOnlyBuffer& arBuffer)
 {
-	if(aNumBytes < 1) {
+	if(arBuffer.Size() < 1) {		
 		MACRO_THROW_EXCEPTION(ArgumentException, "aNumBytes must be > 0");
 	}
 
 	if(mState.CanWrite()) {
 		mState.mWriting = true;
-		this->DoAsyncWrite(apBuff, aNumBytes);
+		this->DoAsyncWrite(arBuffer);
 	}
 	else {
 		MACRO_THROW_EXCEPTION_COMPLEX(InvalidStateException, "AsyncWrite: " << this->ConvertStateToString());
 	}
 }
 
-void PhysicalLayerAsyncBase::AsyncRead(uint8_t* apBuff, size_t aMaxBytes)
+void PhysicalLayerAsyncBase::AsyncRead(WriteBuffer& arBuffer)
 {
-	if(aMaxBytes < 1) {
-		MACRO_THROW_EXCEPTION(ArgumentException, "aMaxBytes must be > 0");
+	if(arBuffer.Size() < 1) {
+		MACRO_THROW_EXCEPTION(ArgumentException, "Buffer size must be > 0");
 	}
 
 	if(mState.CanRead()) {
 		mState.mReading = true;
-		this->DoAsyncRead(apBuff, aMaxBytes);
+		this->DoAsyncRead(arBuffer);
 	}
 	else {
 		MACRO_THROW_EXCEPTION_COMPLEX(InvalidStateException, "AsyncRead: " << this->ConvertStateToString());

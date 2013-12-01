@@ -51,15 +51,16 @@ BOOST_AUTO_TEST_CASE(TestStateClosed)
 {
 	AsyncPhysTestObject t(LEV_INFO, false);
 
-	uint8_t buff[100];
+	uint8_t b[100];
+	WriteBuffer buff(b, 100);	
 
 	// Test that reads/writes of length 0 throw ArgumentException
-	BOOST_REQUIRE_THROW(t.mTCPClient.AsyncWrite(buff, 0), ArgumentException);
-	BOOST_REQUIRE_THROW(t.mTCPClient.AsyncRead(buff, 0), ArgumentException);
+	BOOST_REQUIRE_THROW(t.mTCPClient.AsyncWrite(ReadOnlyBuffer()), ArgumentException);
+	BOOST_REQUIRE_THROW(t.mTCPClient.AsyncRead(WriteBuffer()), ArgumentException);
 
 	//Test that in the closed state we get the proper invalid state exceptions
-	BOOST_REQUIRE_THROW(t.mTCPClient.AsyncWrite(buff, 100), InvalidStateException);
-	BOOST_REQUIRE_THROW(t.mTCPClient.AsyncRead(buff, 100), InvalidStateException);
+	BOOST_REQUIRE_THROW(t.mTCPClient.AsyncWrite(buff.ToReadOnly()), InvalidStateException);
+	BOOST_REQUIRE_THROW(t.mTCPClient.AsyncRead(buff), InvalidStateException);
 	BOOST_REQUIRE_THROW(t.mTCPClient.AsyncClose(), InvalidStateException);
 }
 

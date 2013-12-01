@@ -51,8 +51,8 @@ public:
 	/* Implement the shared client/server actions */
 	void DoClose();
 	void DoOpenSuccess();
-	void DoAsyncRead(uint8_t*, size_t);
-	void DoAsyncWrite(const uint8_t*, size_t);
+	void DoAsyncRead(openpal::WriteBuffer&);
+	void DoAsyncWrite(const openpal::ReadOnlyBuffer&);
 
 	void DoOpen();
 

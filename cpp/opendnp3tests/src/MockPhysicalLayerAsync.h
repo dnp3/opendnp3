@@ -85,15 +85,15 @@ private:
 		++mNumOpenFailure;
 	}
 
-	void DoAsyncRead(uint8_t* apBuff, size_t aNumBytes) {
-		mpWriteBuff = apBuff;
-		mNumToRead = aNumBytes;
+	void DoAsyncRead(openpal::WriteBuffer& arBuffer) {
+		mpWriteBuff = arBuffer;
+		mNumToRead = arBuffer.Size();
 	}
 
-	void DoAsyncWrite(const uint8_t* apData, size_t aNumBytes) {
-		mNumToWrite = aNumBytes;
+	void DoAsyncWrite(const openpal::ReadOnlyBuffer& arBuffer) {
+		mNumToWrite = arBuffer.Size();
 		++mNumWrites;
-		WriteToBuffer(apData, aNumBytes);
+		WriteToBuffer(arBuffer);
 	}
 
 	uint8_t* mpWriteBuff;

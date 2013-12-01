@@ -191,7 +191,8 @@ void LinkLayerRouter::_OnReceive(const uint8_t*, size_t aNumBytes)
 	// over the buffer before it is processed
 	mReceiver.OnRead(aNumBytes); //this may trigger callbacks to the local ILinkContext interface
 	if(mpPhys->CanRead()) { // this is required because the call above could trigger the layer to be closed
-		mpPhys->AsyncRead(mReceiver.WriteBuff(), mReceiver.NumWriteBytes()); //start another read
+		auto wrapper = WriteBuffer(mReceiver.WriteBuff(), mReceiver.NumWriteBytes());
+		mpPhys->AsyncRead(wrapper); //start another read
 	}
 }
 
@@ -276,14 +277,17 @@ void LinkLayerRouter::CheckForSend()
 		mTransmitting = true;
 		const LinkFrame& f = mTransmitQueue.front();
 		LOG_BLOCK(LEV_INTERPRET, "~> " << f.ToString());
-		mpPhys->AsyncWrite(f.GetBuffer(), f.GetSize());
+		ReadOnlyBuffer buff(f.GetBuffer(), f.GetSize());
+		mpPhys->AsyncWrite(buff);
 	}
 }
 
 void LinkLayerRouter::OnPhysicalLayerOpenSuccessCallback()
 {
-	if(mpPhys->CanRead())
-		mpPhys->AsyncRead(mReceiver.WriteBuff(), mReceiver.NumWriteBytes());
+	if(mpPhys->CanRead()) {
+		WriteBuffer buff(mReceiver.WriteBuff(), mReceiver.NumWriteBytes());
+		mpPhys->AsyncRead(buff);
+	}
 
 	for(AddressMap::value_type p: mAddressMap) {
 		if(p.second.enabled) p.second.pContext->OnLowerLayerUp();		
