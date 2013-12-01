@@ -190,8 +190,9 @@ void LinkLayerRouter::_OnReceive(const openpal::ReadOnlyBuffer& arBuffer)
 	// The order is important here. You must let the receiver process the byte or another read could write
 	// over the buffer before it is processed
 	mReceiver.OnRead(arBuffer.Size()); //this may trigger callbacks to the local ILinkContext interface
-	if(mpPhys->CanRead()) { // this is required because the call above could trigger the layer to be closed		
-		mpPhys->AsyncRead(mReceiver.WriteBuff()); //start another read
+	if(mpPhys->CanRead()) { // this is required because the call above could trigger the layer to be closed
+		auto buff = mReceiver.WriteBuff();
+		mpPhys->AsyncRead(buff); //start another read
 	}
 }
 
@@ -284,7 +285,8 @@ void LinkLayerRouter::CheckForSend()
 void LinkLayerRouter::OnPhysicalLayerOpenSuccessCallback()
 {
 	if(mpPhys->CanRead()) {		
-		mpPhys->AsyncRead(mReceiver.WriteBuff());
+		auto buff = mReceiver.WriteBuff();
+		mpPhys->AsyncRead(buff);
 	}
 
 	for(AddressMap::value_type p: mAddressMap) {
