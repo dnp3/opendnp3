@@ -23,10 +23,10 @@ class BasicGroupVariation(g: ObjectGroup, v: Byte) extends  GroupVariation {
   def parent: ObjectGroup = g
 }
 
-abstract class FixedSizeGroupVariation(g: ObjectGroup, v: Byte) extends BasicGroupVariation(g,v) {
+class FixedSize(g: ObjectGroup, v: Byte)(fs: FixedSizeField*) extends BasicGroupVariation(g,v) {
 
   def size: Int = fields.foldLeft(0)((sum, f) => sum + f.typ.numBytes)
 
-  def fields : List[FixedSizeField]
+  final def fields : List[FixedSizeField] = fs.toList
 
 }

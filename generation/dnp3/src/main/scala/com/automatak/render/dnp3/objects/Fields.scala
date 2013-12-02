@@ -15,9 +15,17 @@ case class EnumField(model: EnumModel) extends FixedSizeFieldType(1)
 
 object FixedSizeField {
 
+  //common flags field
   val flags = FixedSizeField("flags", UInt8Field)
+
+  // timestamps
   val time16 = FixedSizeField("time16", UInt16Field)
   val time48 = FixedSizeField("time48", UInt48Field)
+
+  // counter values
+  val count16 = FixedSizeField("count", UInt16Field)
+  val count32 = FixedSizeField("count", UInt32Field)
+
 
   //enums
   val controlCode = FixedSizeField("controlCode", EnumField(ControlCode()))

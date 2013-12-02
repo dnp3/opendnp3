@@ -4,12 +4,15 @@ import com.automatak.render.dnp3.objects.groups._
 
 object ObjectGroup {
 
- val all: List[ObjectGroup] = List(
+ val all = List(
     Group1,
     Group2,
     Group3,
     Group4,
-    Group10
+    Group10,
+    Group11,
+    Group12,
+    Group20
   )
 
 }

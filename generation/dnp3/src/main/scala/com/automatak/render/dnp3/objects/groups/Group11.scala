@@ -1,6 +1,6 @@
 package com.automatak.render.dnp3.objects.groups
 
-import com.automatak.render.dnp3.objects.{FixedSizeGroupVariation, ObjectGroup, FixedSizeField}
+import com.automatak.render.dnp3.objects.{FixedSize, ObjectGroup, FixedSizeField}
 
 import FixedSizeField._
 
@@ -9,9 +9,5 @@ object Group11 extends ObjectGroup {
   def group: Byte = 11
 }
 
-object Group11Var1 extends FixedSizeGroupVariation(Group11, 1) {
-  def fields = List(flags)
-}
-object Group11Var2 extends FixedSizeGroupVariation(Group11, 2) {
-  def fields = List(flags, time48)
-}
+object Group11Var1 extends FixedSize(Group11, 1)(flags)
+object Group11Var2 extends FixedSize(Group11, 2)(flags, time48)
