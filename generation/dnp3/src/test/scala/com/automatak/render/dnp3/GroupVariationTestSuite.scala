@@ -4,11 +4,20 @@ import org.scalatest.FunSuite
 import org.scalatest.matchers.ShouldMatchers
 import org.scalatest.junit.JUnitRunner
 import org.junit.runner.RunWith
+
+import com.automatak.render.dnp3.objects.GroupVariation.Id
 import com.automatak.render.dnp3.objects.ObjectGroup
 import com.automatak.render.dnp3.objects.groups.Group12Var1
 
 @RunWith(classOf[JUnitRunner])
 class GroupVariationTestSuite extends FunSuite with ShouldMatchers {
+
+  test("Groups are all unique") {
+    ObjectGroup.all.foldLeft(Set.empty[Byte]) { (set, group) =>
+      if(set(group.group)) fail("collision at " + group.group)
+      set + group.group
+    }
+  }
 
   test("Object ids are not repeated") {
 
@@ -17,8 +26,10 @@ class GroupVariationTestSuite extends FunSuite with ShouldMatchers {
       gv <- group.objects
     } yield gv.id
 
-    ids.toSet.size should equal(ids.size)
-
+    ids.foldLeft(Set.empty[Id]) { (set, id) =>
+      if(set(id)) fail("collision at " + id)
+      set + id
+    }
   }
 
   test("Fixed size calculated correctly") {

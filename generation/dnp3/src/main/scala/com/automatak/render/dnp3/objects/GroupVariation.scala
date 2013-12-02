@@ -1,11 +1,15 @@
 package com.automatak.render.dnp3.objects
 
+object GroupVariation {
+  case class Id(group: Byte, variation: Byte)
+}
+
 /**
  * Base trait for DNP3 objects
  */
 sealed trait GroupVariation {
 
-  case class Id(group: Byte, variation: Byte)
+  import GroupVariation.Id
 
   final def group: Byte = parent.group
   final def id: Id = Id(group, variation)

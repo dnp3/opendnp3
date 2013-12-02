@@ -12,7 +12,17 @@ object ObjectGroup {
     Group10,
     Group11,
     Group12,
-    Group20
+    Group20,
+    Group21,
+    Group22,
+    Group23,
+    Group30,
+    Group32,
+    Group40,
+    Group41,
+    Group42,
+    Group50,
+    Group51
   )
 
 }

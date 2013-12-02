@@ -10,6 +10,10 @@ case object UInt8Field extends FixedSizeFieldType(1)
 case object UInt16Field extends FixedSizeFieldType(2)
 case object UInt32Field extends FixedSizeFieldType(4)
 case object UInt48Field extends FixedSizeFieldType(6)
+case object SInt16Field extends FixedSizeFieldType(2)
+case object SInt32Field extends FixedSizeFieldType(4)
+case object Float32Field extends FixedSizeFieldType(4)
+case object Float64Field extends FixedSizeFieldType(8)
 case class EnumField(model: EnumModel) extends FixedSizeFieldType(1)
 
 
@@ -26,9 +30,15 @@ object FixedSizeField {
   val count16 = FixedSizeField("count", UInt16Field)
   val count32 = FixedSizeField("count", UInt32Field)
 
+  // analog values
+  val value16 = FixedSizeField("value", SInt16Field)
+  val value32 = FixedSizeField("value", SInt32Field)
+  val float32 = FixedSizeField("value", Float32Field)
+  val float64 = FixedSizeField("value", Float32Field)
+
 
   //enums
-  val controlCode = FixedSizeField("controlCode", EnumField(ControlCode()))
+  val controlCode = FixedSizeField("code", EnumField(ControlCode()))
   val commandStatus = FixedSizeField("status", EnumField(CommandStatus()))
 }
 
