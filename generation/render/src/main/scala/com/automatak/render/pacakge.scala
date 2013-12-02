@@ -23,6 +23,14 @@ import java.nio.charset.Charset
 
 package object render {
 
+    // a custom flatten that adds a blank line in between blocks
+    def spaced(i: Iterator[Iterator[String]]): Iterator[String] = {
+
+      def map(iter: Iterator[String]): Iterator[String] = if(iter.hasNext) iter ++ space else iter
+
+      i.foldLeft(Iterator.apply[String]())((sum, i) => sum ++ map(i))
+    }
+
     def space: Iterator[String] = Iterator.apply("")
 
     def commented(lines: Iterator[String]): Iterator[String] = {
