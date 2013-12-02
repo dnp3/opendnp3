@@ -29,7 +29,6 @@ cpp/openpal/src/IHandlerAsync.cpp \
 cpp/openpal/src/LogEntry.cpp \
 cpp/openpal/src/Loggable.cpp \
 cpp/openpal/src/Logger.cpp \
-cpp/openpal/src/LogTypes.cpp \
 cpp/openpal/src/MonotonicTimestamp.cpp \
 cpp/openpal/src/TimeDuration.cpp \
 cpp/openpal/src/ToHex.cpp
