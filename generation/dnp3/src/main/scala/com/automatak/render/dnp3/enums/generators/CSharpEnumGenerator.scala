@@ -30,10 +30,10 @@ object CSharpEnumGenerator {
     implicit val indent = CppIndentation()
 
     def writeEnumToFile(cfg: EnumConfig): Unit = {
-        val license = commented(LicenseHeader())
-        val enum = EnumModelRenderer.render(cfg.model)
-        val lines = license ++ space ++ namespace(ns)(enum)
-        writeLinesTo(cfg.filePath, lines)
+        def license = commented(LicenseHeader())
+        def enum = EnumModelRenderer.render(cfg.model)
+        def lines = license ++ space ++ namespace(ns)(enum)
+        writeTo(cfg.filePath)(lines)
         println("Wrote: " + cfg.filePath)
     }
 

@@ -41,20 +41,20 @@ object CppEnumGenerator {
       val renders = if(cfg.conversions) List(EnumToString, EnumToType, EnumFromType) else List(EnumToString)
 
       def writeHeader() {
-        val license = commented(LicenseHeader())
-        val enum = EnumModelRenderer.render(cfg.model).toIterator
-        val signatures = renders.map(c => c.header.render(cfg.model)).flatten.toIterator
-        val lines = license ++ space ++ includeGuards(cfg.model.name)(string ++ cstdint ++ space ++ namespace(cfg.ns)(enum ++ space ++ signatures))
-        writeLinesTo(cfg.headerPath, lines)
+        def license = commented(LicenseHeader())
+        def enum = EnumModelRenderer.render(cfg.model).toIterator
+        def signatures = renders.map(c => c.header.render(cfg.model)).flatten.toIterator
+        def lines = license ++ space ++ includeGuards(cfg.model.name)(string ++ cstdint ++ space ++ namespace(cfg.ns)(enum ++ space ++ signatures))
+        writeTo(cfg.headerPath)(lines)
         println("Wrote: " + cfg.headerPath)
       }
 
       def writeImpl() {
-        val license = commented(LicenseHeader())
-        val funcs = renders.map(r => r.impl.render(cfg.model)).flatten.toIterator
-        val inc = if(cfg.localInclude) quoted(cfg.headerName) else bracketed(List(cfg.ns,"/gen/",cfg.headerName).mkString)
-        val lines = license ++ space ++ Iterator(include(inc)) ++ space ++ namespace(cfg.ns)(funcs)
-        writeLinesTo(cfg.implPath, lines)
+        def license = commented(LicenseHeader())
+        def funcs = renders.map(r => r.impl.render(cfg.model)).flatten.toIterator
+        def inc = if(cfg.localInclude) quoted(cfg.headerName) else bracketed(List(cfg.ns,"/gen/",cfg.headerName).mkString)
+        def lines = license ++ space ++ Iterator(include(inc)) ++ space ++ namespace(cfg.ns)(funcs)
+        writeTo(cfg.implPath)(lines)
         println("Wrote: " + cfg.implPath)
       }
 

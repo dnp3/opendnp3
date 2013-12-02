@@ -83,7 +83,7 @@ package object render {
 
     def commaDelimited(s: Iterator[String]) : Iterator[String] = delimited(",")(s)
 
-    def writeLinesTo(path: Path, lines: Iterator[String]): Unit = {
+    def writeTo(path: Path)(lines: => Iterator[String]): Unit = {
 
       if(!Files.exists(path.getParent)) Files.createDirectory(path.getParent)
       if(!Files.exists(path)) Files.createFile(path)
