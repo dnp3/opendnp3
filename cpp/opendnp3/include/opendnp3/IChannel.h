@@ -29,12 +29,13 @@
 #ifndef __I_CHANNEL_H_
 #define __I_CHANNEL_H_
 
+#include "gen/ChannelState.h"
+
 #include "MasterStackConfig.h"
 #include "SlaveStackConfig.h"
-#include "gen/ChannelState.h"
 #include "DestructorHook.h"
 
-#include <openpal/LogTypes.h>
+#include <openpal/gen/LogLevel.h>
 #include <openpal/IUTCTimeSource.h>
 
 #include <functional>

@@ -24,8 +24,6 @@
 
 #include <openpal/LogBase.h>
 
-#include <openpal/LogTypes.h>
-
 #include <assert.h>
 #include <sstream>
 
@@ -33,6 +31,14 @@ using namespace std;
 
 namespace openpal
 {
+
+int Logger::LogLevelToMask(LogLevel aFilter)
+{
+	//since LogLevel is a power of 2 (single bit), subtracting 1 will
+	//set all the bits below the set bit.
+	//set the filter bit and all the bits below it
+	return LogLevelToType(aFilter) | (LogLevelToType(aFilter) - 1);
+}
 	
 Logger::Logger(ILogBase* apLog, int aLevel, const std::string& aName)
 	:

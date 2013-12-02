@@ -25,7 +25,7 @@
 
 #include <string>
 
-#include <openpal/LogTypes.h>
+#include <openpal/gen/LogLevel.h>
 
 #include <opendnp3/gen/ChannelState.h>
 #include <opendnp3/gen/StackState.h>

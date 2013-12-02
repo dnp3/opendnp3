@@ -157,7 +157,6 @@
     <ClInclude Include="include\openpal\Loggable.h" />
     <ClInclude Include="include\openpal\LoggableMacros.h" />
     <ClInclude Include="include\openpal\Logger.h" />
-    <ClInclude Include="include\openpal\LogTypes.h" />
     <ClInclude Include="include\openpal\MonotonicTimestamp.h" />
     <ClInclude Include="include\openpal\MoveOnCopy.h" />
     <ClInclude Include="include\openpal\TimeDuration.h" />
@@ -174,7 +173,6 @@
     <ClCompile Include="src\LogEntry.cpp" />
     <ClCompile Include="src\Loggable.cpp" />
     <ClCompile Include="src\Logger.cpp" />
-    <ClCompile Include="src\LogTypes.cpp" />
     <ClCompile Include="src\MonotonicTimestamp.cpp" />
     <ClCompile Include="src\TimeDuration.cpp" />
     <ClCompile Include="src\ToHex.cpp" />

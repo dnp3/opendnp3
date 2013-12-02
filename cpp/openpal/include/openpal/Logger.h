@@ -48,6 +48,8 @@ class Logger
 
 public:
 
+	static int LogLevelToMask(LogLevel);
+
 	Logger(ILogBase* apLog, LogLevel aLevel, const std::string& aName);	
 
 	void Log( LogLevel aLogLevel, const std::string& arLocation, const std::string& aMessage, int aErrorCode = -1);
