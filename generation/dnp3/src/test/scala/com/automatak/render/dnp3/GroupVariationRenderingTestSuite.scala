@@ -5,8 +5,8 @@ import org.scalatest.junit.JUnitRunner
 import org.scalatest.FunSuite
 import org.scalatest.matchers.ShouldMatchers
 
-import com.automatak.render.dnp3.objects.{GroupVariation, ObjectGroup}
-import com.automatak.render.dnp3.objects.generators.GroupVariationRenderer
+import com.automatak.render.dnp3.objects.ObjectGroup
+import com.automatak.render.dnp3.objects.generators._
 import com.automatak.render.cpp.CppIndentation
 
 
@@ -20,7 +20,7 @@ class GroupVariationRenderingTestSuite extends FunSuite with ShouldMatchers {
       for {
         g <- ObjectGroup.all
         v <- g.objects
-      } GroupVariationRenderer.render(v).foreach(println)
+      } GroupVariationImplRenderer.render(v).foreach(println)
   }
 
 
