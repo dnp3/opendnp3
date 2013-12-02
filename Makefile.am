@@ -21,6 +21,7 @@ lib_LTLIBRARIES = libopenpal.la libasiopal.la libopendnp3.la
 libopenpal_la_LDFLAGS = -version-info 1:1:0
 libopenpal_la_CXXFLAGS = -I$(OPENPAL_INCLUDE)
 libopenpal_la_SOURCES = \
+cpp/openpal/src/gen/LogLevel.cpp \
 cpp/openpal/src/AsyncLayerInterfaces.cpp \
 cpp/openpal/src/BufferWrapper.cpp \
 cpp/openpal/src/Exception.cpp \
@@ -55,9 +56,14 @@ cpp/asiopal/src/UTCTimeSource.cpp
 libopendnp3_la_LDFLAGS = $(BOOST_LDFLAGS) -version-info 1:1:0
 libopendnp3_la_CXXFLAGS = -I$(OPENPAL_INCLUDE) -I$(ASIOPAL_INCLUDE) -I $(OPENDNP3_INCLUDE)
 libopendnp3_la_SOURCES = \
+cpp/opendnp3/src/opendnp3/gen/ChannelState.cpp \
+cpp/opendnp3/src/opendnp3/gen/CommandResult.cpp \
+cpp/opendnp3/src/opendnp3/gen/CommandStatus.cpp \
+cpp/opendnp3/src/opendnp3/gen/ControlCode.cpp \
 cpp/opendnp3/src/opendnp3/gen/FunctionCode.cpp \
 cpp/opendnp3/src/opendnp3/gen/LinkFunction.cpp \
 cpp/opendnp3/src/opendnp3/gen/QualifierCode.cpp \
+cpp/opendnp3/src/opendnp3/gen/StackState.cpp \
 cpp/opendnp3/src/opendnp3/AnalogOutput.cpp \
 cpp/opendnp3/src/opendnp3/APDU.cpp \
 cpp/opendnp3/src/opendnp3/AppChannelStates.cpp \
@@ -74,10 +80,8 @@ cpp/opendnp3/src/opendnp3/AsyncTaskPeriodic.cpp \
 cpp/opendnp3/src/opendnp3/BaseDataTypes.cpp \
 cpp/opendnp3/src/opendnp3/BufferTypes.cpp \
 cpp/opendnp3/src/opendnp3/ChangeBuffer.cpp \
-cpp/opendnp3/src/opendnp3/ChannelStates.cpp \
 cpp/opendnp3/src/opendnp3/ClassCounter.cpp \
 cpp/opendnp3/src/opendnp3/CommandResponse.cpp \
-cpp/opendnp3/src/opendnp3/CommandStatus.cpp \
 cpp/opendnp3/src/opendnp3/CommandTask.cpp \
 cpp/opendnp3/src/opendnp3/ConstantCommandProcessor.cpp \
 cpp/opendnp3/src/opendnp3/ControlRelayOutputBlock.cpp \
@@ -141,7 +145,6 @@ cpp/opendnp3/src/opendnp3/SlaveResponseTypes.cpp \
 cpp/opendnp3/src/opendnp3/SlaveStates.cpp \
 cpp/opendnp3/src/opendnp3/SolicitedChannel.cpp \
 cpp/opendnp3/src/opendnp3/StackBase.cpp \
-cpp/opendnp3/src/opendnp3/StackState.cpp \
 cpp/opendnp3/src/opendnp3/StartupTasks.cpp \
 cpp/opendnp3/src/opendnp3/SubjectBase.cpp \
 cpp/opendnp3/src/opendnp3/TimeTransaction.cpp \
@@ -203,7 +206,6 @@ cpp/opendnp3tests/src/TestCastLongLongDouble.cpp \
 cpp/opendnp3tests/src/TestChangeBuffer.cpp \
 cpp/opendnp3tests/src/TestCommandHelpers.cpp \
 cpp/opendnp3tests/src/TestCommandTask.cpp \
-cpp/opendnp3tests/src/TestCommandTypes.cpp \
 cpp/opendnp3tests/src/TestCRC.cpp \
 cpp/opendnp3tests/src/TestDatabase.cpp \
 cpp/opendnp3tests/src/TestDNP3Manager.cpp \
