@@ -4,6 +4,7 @@ import com.automatak.render.dnp3.objects.{FixedSize, ObjectGroup, FixedSizeField
 
 import FixedSizeField._
 
+// counters
 object Group20 extends ObjectGroup {
   def objects = List(Group20Var1, Group20Var2, Group20Var3, Group20Var4, Group20Var5, Group20Var6, Group20Var7, Group20Var8)
   def group: Byte = 20
