@@ -61,7 +61,7 @@ Slave::Slave(openpal::Logger aLogger, IAppLayer* apAppLayer, IExecutor* apExecut
 	mDeferredUnsol(false),
 	mDeferredUnknown(false),
 	mStartupNullUnsol(false),
-	mState(SS_COMMS_DOWN),
+	mState(StackState::COMMS_DOWN),
 	mpTimeTimer(nullptr)
 {
 	/* Link the event buffer to the database */
@@ -98,7 +98,7 @@ void Slave::SetNeedTimeIIN()
 void Slave::UpdateState(StackState aState)
 {
 	if(mState != aState) {
-		LOG_BLOCK(LEV_INFO, "StackState: " << ConvertStackStateToString(aState));
+		LOG_BLOCK(LEV_INFO, "StackState: " << StackStateToString(aState));
 		mState = aState;
 		this->NotifyListeners(aState);
 	}
@@ -116,14 +116,14 @@ void Slave::OnLowerLayerDown()
 {
 	mpState->OnLowerLayerDown(this);
 	this->FlushDeferredEvents();
-	this->UpdateState(SS_COMMS_DOWN);
+	this->UpdateState(StackState::COMMS_DOWN);
 }
 
 void Slave::OnSolSendSuccess()
 {
 	mpState->OnSolSendSuccess(this);
 	this->FlushDeferredEvents();
-	this->UpdateState(SS_COMMS_UP);
+	this->UpdateState(StackState::COMMS_UP);
 }
 
 void Slave::OnSolFailure()
@@ -137,7 +137,7 @@ void Slave::OnUnsolSendSuccess()
 {
 	mpState->OnUnsolSendSuccess(this);
 	this->FlushDeferredEvents();
-	this->UpdateState(SS_COMMS_UP);
+	this->UpdateState(StackState::COMMS_UP);
 }
 
 void Slave::OnUnsolFailure()

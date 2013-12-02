@@ -112,7 +112,7 @@ BOOST_AUTO_TEST_CASE(StateTransitionSuccessFailure)
 	t.BindStateListener();
 	BOOST_REQUIRE(t.mts.DispatchOne());
 	BOOST_REQUIRE_EQUAL(t.states.size(), 1);
-	BOOST_REQUIRE_EQUAL(t.states.front(), SS_COMMS_DOWN);
+	BOOST_REQUIRE(t.states.front() == StackState::COMMS_DOWN);
 	t.states.pop_front();
 	t.master.OnLowerLayerUp();
 	BOOST_REQUIRE_EQUAL(t.states.size(), 0);
@@ -120,7 +120,7 @@ BOOST_AUTO_TEST_CASE(StateTransitionSuccessFailure)
 	TestForIntegrityPoll(t);
 	BOOST_REQUIRE(t.mts.DispatchOne());
 	BOOST_REQUIRE_EQUAL(t.states.size(), 1);
-	BOOST_REQUIRE_EQUAL(t.states.front(), SS_COMMS_UP);
+	BOOST_REQUIRE(t.states.front() == StackState::COMMS_UP);
 	t.states.pop_front();
 
 	t.mts.AdvanceTime(TimeDuration::Seconds(2));
@@ -129,7 +129,7 @@ BOOST_AUTO_TEST_CASE(StateTransitionSuccessFailure)
 
 	BOOST_REQUIRE(t.mts.DispatchOne());
 	BOOST_REQUIRE_EQUAL(t.states.size(), 1);
-	BOOST_REQUIRE_EQUAL(t.states.front(), SS_COMMS_DOWN);
+	BOOST_REQUIRE(t.states.front() == StackState::COMMS_DOWN);
 	t.states.pop_front();
 
 	t.mts.AdvanceTime(TimeDuration::Seconds(10));
@@ -138,14 +138,14 @@ BOOST_AUTO_TEST_CASE(StateTransitionSuccessFailure)
 
 	BOOST_REQUIRE(t.mts.DispatchOne());
 	BOOST_REQUIRE_EQUAL(t.states.size(), 1);
-	BOOST_REQUIRE_EQUAL(t.states.front(), SS_COMMS_UP);
+	BOOST_REQUIRE(t.states.front() == StackState::COMMS_UP);
 	t.states.pop_front();
 
 	t.master.OnLowerLayerDown();
 
 	BOOST_REQUIRE(t.mts.DispatchOne());
 	BOOST_REQUIRE_EQUAL(t.states.size(), 1);
-	BOOST_REQUIRE_EQUAL(t.states.front(), SS_COMMS_DOWN);
+	BOOST_REQUIRE(t.states.front() == StackState::COMMS_DOWN);
 	t.states.pop_front();
 }
 

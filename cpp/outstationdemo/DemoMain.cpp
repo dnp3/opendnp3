@@ -100,7 +100,7 @@ int main(int argc, char* argv[])
 	// You can optionally add a listener to the stack to observer communicate health. You
 	// can do this anytime and you will receive a stream of all state changes.
 	pOutstation->AddStateListener([](StackState state) {
-		std::cout << "outstation state: " << ConvertStackStateToString(state) << std::endl;
+		std::cout << "outstation state: " << StackStateToString(state) << std::endl;
 	});
 
 	// Enable the outstation and start communications

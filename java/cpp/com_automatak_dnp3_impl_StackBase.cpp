@@ -44,7 +44,7 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_StackBase_add_1native_1stack
 	pStack->AddStateListener([pJVM, pExecutor, global](StackState state) {					
 		JNIEnv* pEnv = JNIHelpers::GetEnvFromJVM(pJVM);
 		jmethodID changeID = JNIHelpers::GetMethodID(pEnv, global, "onStackStateChange", "(I)V");
-		int intstate = state;
+		int intstate = (int) state;
 		pEnv->CallIntMethod(global, changeID, intstate);			
 	});
 }

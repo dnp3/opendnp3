@@ -50,6 +50,7 @@
     <Compile Include="gen\CommandResult.cs" />
     <Compile Include="gen\CommandStatus.cs" />
     <Compile Include="gen\ControlCode.cs" />
+    <Compile Include="gen\StackState.cs" />
     <Compile Include="ICommandHandler.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -80,7 +81,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SerialSettings.cs" />
     <Compile Include="SimpleCommandHandler.cs" />
-    <Compile Include="StackState.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

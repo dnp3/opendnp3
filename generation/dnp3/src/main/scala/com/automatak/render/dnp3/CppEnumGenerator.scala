@@ -20,7 +20,8 @@ object CppEnumGenerator {
       EnumConfig(CommandStatus(), cppInclude, cppSource, true, false),
       EnumConfig(CommandResult(), cppInclude, cppSource, false, false),
       EnumConfig(ControlCode(), cppInclude, cppSource, true, false),
-      EnumConfig(ChannelState(), cppInclude, cppSource, false, false)
+      EnumConfig(ChannelState(), cppInclude, cppSource, false, false),
+      EnumConfig(StackState(), cppInclude, cppSource, false, false)
     )
 
     // list of all enumerations that we want to generate

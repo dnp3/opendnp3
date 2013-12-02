@@ -102,7 +102,7 @@ int main(int argc, char* argv[])
 	// You can optionally add a listener to the stack to observer communicate health. You
 	// can do this anytime and you will receive a stream of all state changes.
 	pMaster->AddStateListener([](StackState state) {
-		std::cout << "master state: " << ConvertStackStateToString(state) << std::endl;
+		std::cout << "master state: " << StackStateToString(state) << std::endl;
 	});
 
 	auto integrityScan = pMaster->GetIntegrityScan();

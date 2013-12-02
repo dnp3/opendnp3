@@ -55,7 +55,7 @@ Master::Master(Logger aLogger, MasterConfig aCfg, IAppLayer* apAppLayer, IMeasur
 	mpState(AMS_Closed::Inst()),
 	mpTask(nullptr),
 	mpScheduledTask(nullptr),
-	mState(SS_COMMS_DOWN),
+	mState(StackState::COMMS_DOWN),
 	mSchedule(apTaskGroup, this, aCfg),
 	mClassPoll(aLogger, mHandler.Load),
 	mClearRestart(aLogger),
@@ -77,7 +77,7 @@ Master::Master(Logger aLogger, MasterConfig aCfg, IAppLayer* apAppLayer, IMeasur
 void Master::UpdateState(StackState aState)
 {
 	if(mState != aState) {
-		LOG_BLOCK(LEV_INFO, "StackState: " << ConvertStackStateToString(aState));
+		LOG_BLOCK(LEV_INFO, "StackState: " << StackStateToString(aState));
 		mState = aState;
 		this->NotifyListeners(aState);
 	}
@@ -85,7 +85,7 @@ void Master::UpdateState(StackState aState)
 
 void Master::ProcessIIN(const IINField& arIIN)
 {
-	this->UpdateState(SS_COMMS_UP);
+	this->UpdateState(StackState::COMMS_UP);
 
 	bool check_state = false;
 
@@ -257,7 +257,7 @@ void Master::OnLowerLayerDown()
 {
 	mpState->OnLowerLayerDown(this);
 	mSchedule.DisableOnlineTasks();
-	this->UpdateState(SS_COMMS_DOWN);
+	this->UpdateState(StackState::COMMS_DOWN);
 }
 
 void Master::OnSolSendSuccess()
@@ -267,7 +267,7 @@ void Master::OnSolSendSuccess()
 
 void Master::OnSolFailure()
 {
-	this->UpdateState(SS_COMMS_DOWN);
+	this->UpdateState(StackState::COMMS_DOWN);
 	mpState->OnFailure(this);
 }
 

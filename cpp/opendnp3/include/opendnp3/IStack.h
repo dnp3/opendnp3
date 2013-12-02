@@ -28,14 +28,13 @@
 #ifndef __I_STACK_H_
 #define __I_STACK_H_
 
+#include <functional>
 #include <string>
-#include <set>
 
 #include <openpal/Logger.h>
-#include <functional>
 
 #include "DestructorHook.h"
-#include "StackState.h"
+#include "gen/StackState.h"
 
 namespace openpal
 {

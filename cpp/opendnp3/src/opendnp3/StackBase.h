@@ -29,8 +29,8 @@
 #ifndef __STACK_BASE_H_
 #define __STACK_BASE_H_
 
-#include <opendnp3/StackState.h>
 #include <openpal/Visibility.h>
+#include <opendnp3/gen/StackState.h>
 
 #include <functional>
 #include <vector>

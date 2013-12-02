@@ -101,14 +101,7 @@ ChannelState Conversions::convertChannelState(opendnp3::ChannelState aState)
 
 StackState  Conversions::convertStackState(opendnp3::StackState aState)
 {
-	switch(aState) {
-	case(opendnp3::StackState::SS_COMMS_UP):
-		return StackState::COMMS_UP;
-	case(opendnp3::StackState::SS_COMMS_DOWN):
-		return StackState::COMMS_DOWN;
-	default:
-		return StackState::UNKNOWN;
-	}
+	return (StackState) aState;
 }
 
 CommandResponse Conversions::convertCommandResponse(opendnp3::CommandResponse response)

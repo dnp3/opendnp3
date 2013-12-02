@@ -16,11 +16,12 @@ object CSharpEnumGenerator {
     }
 
     def enums = List(
-      EnumConfig(CommandStatus(), csharpPath),
-      EnumConfig(CommandResult(), csharpPath),
-      EnumConfig(ControlCode(), csharpPath),
-      EnumConfig(ChannelState(), csharpPath)
-    )
+      CommandStatus(),
+      CommandResult(),
+      ControlCode(),
+      ChannelState(),
+      StackState()
+    ).map(EnumConfig.apply(_, csharpPath))
 
     implicit val indent = CppIndentation()
 

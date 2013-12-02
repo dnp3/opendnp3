@@ -402,9 +402,6 @@
     <ClInclude Include="include\opendnp3\IDataObserver.h">
       <Filter>Include Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\opendnp3\StackState.h">
-      <Filter>Include Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\opendnp3\IOutstation.h">
       <Filter>Include Files</Filter>
     </ClInclude>
@@ -481,6 +478,9 @@
       <Filter>Include Files\gen</Filter>
     </ClInclude>
     <ClInclude Include="include\opendnp3\gen\ChannelState.h">
+      <Filter>Include Files\gen</Filter>
+    </ClInclude>
+    <ClInclude Include="include\opendnp3\gen\StackState.h">
       <Filter>Include Files\gen</Filter>
     </ClInclude>
   </ItemGroup>
@@ -728,9 +728,6 @@
     <ClCompile Include="src\opendnp3\Util.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\StackState.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\opendnp3\StackBase.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -783,6 +780,9 @@
       <Filter>Source Files\gen</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\gen\ChannelState.cpp">
+      <Filter>Source Files\gen</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\gen\StackState.cpp">
       <Filter>Source Files\gen</Filter>
     </ClCompile>
   </ItemGroup>

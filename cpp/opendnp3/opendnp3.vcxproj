@@ -161,6 +161,7 @@
     <ClInclude Include="include\opendnp3\gen\CommandResult.h" />
     <ClInclude Include="include\opendnp3\gen\CommandStatus.h" />
     <ClInclude Include="include\opendnp3\gen\ControlCode.h" />
+    <ClInclude Include="include\opendnp3\gen\StackState.h" />
     <ClInclude Include="include\opendnp3\MasterScan.h" />
     <ClInclude Include="include\opendnp3\IMeasurementHandler.h" />
     <ClInclude Include="include\opendnp3\IMeasurementUpdate.h" />
@@ -198,7 +199,6 @@
     <ClInclude Include="include\opendnp3\Singleton.h" />
     <ClInclude Include="include\opendnp3\SlaveConfig.h" />
     <ClInclude Include="include\opendnp3\SlaveStackConfig.h" />
-    <ClInclude Include="include\opendnp3\StackState.h" />
     <ClInclude Include="include\opendnp3\SubjectBase.h" />
     <ClInclude Include="include\opendnp3\TransportConstants.h" />
     <ClInclude Include="include\opendnp3\Uncopyable.h" />
@@ -337,6 +337,7 @@
     <ClCompile Include="src\opendnp3\gen\FunctionCode.cpp" />
     <ClCompile Include="src\opendnp3\gen\LinkFunction.cpp" />
     <ClCompile Include="src\opendnp3\gen\QualifierCode.cpp" />
+    <ClCompile Include="src\opendnp3\gen\StackState.cpp" />
     <ClCompile Include="src\opendnp3\IMeasurementHandler.cpp" />
     <ClCompile Include="src\opendnp3\ITimeWriteHandler.cpp" />
     <ClCompile Include="src\opendnp3\MasterScan.cpp" />
@@ -392,7 +393,6 @@
     <ClCompile Include="src\opendnp3\SlaveStates.cpp" />
     <ClCompile Include="src\opendnp3\SolicitedChannel.cpp" />
     <ClCompile Include="src\opendnp3\StackBase.cpp" />
-    <ClCompile Include="src\opendnp3\StackState.cpp" />
     <ClCompile Include="src\opendnp3\StartupTasks.cpp" />
     <ClCompile Include="src\opendnp3\SubjectBase.cpp" />
     <ClCompile Include="src\opendnp3\TLS_Base.cpp" />

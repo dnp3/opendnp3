@@ -27,7 +27,8 @@ using namespace System::Collections::ObjectModel;
 using namespace DNP3::Interface;
 
 
-#include <opendnp3/StackState.h>
+#include <opendnp3/gen/StackState.h>
+
 #include <functional>
 #include <vcclr.h>
 

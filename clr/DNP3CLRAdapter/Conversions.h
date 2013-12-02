@@ -28,6 +28,7 @@
 #include <openpal/LogTypes.h>
 
 #include <opendnp3/gen/ChannelState.h>
+#include <opendnp3/gen/StackState.h>
 
 #include <opendnp3/DataTypes.h>
 #include <opendnp3/CommandResponse.h>
@@ -35,7 +36,6 @@
 #include <opendnp3/MasterStackConfig.h>
 #include <opendnp3/ControlRelayOutputBlock.h>
 #include <opendnp3/AnalogOutput.h>
-#include <opendnp3/StackState.h>
 #include <opendnp3/OctetString.h>
 
 #include <asiopal/SerialTypes.h>
