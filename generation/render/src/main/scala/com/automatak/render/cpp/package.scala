@@ -25,6 +25,7 @@ package object cpp {
   def getEnumType(typ: EnumModel.Type): String = typ match {
     case EnumModel.UInt8 => "uint8_t"
     case EnumModel.UInt16 => "uint16_t"
+    case EnumModel.Integer => "int"
   }
 
   def quoted(s: String): String = List(quote, s, quote).mkString

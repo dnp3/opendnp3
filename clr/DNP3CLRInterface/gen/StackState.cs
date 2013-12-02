@@ -21,7 +21,7 @@ namespace DNP3.Interface
   /// <summary>
   /// Enumeration for possible communication states of a stack
   /// </summary>
-  public enum StackState : byte
+  public enum StackState : int
   {
     /// <summary>
     /// communications are online

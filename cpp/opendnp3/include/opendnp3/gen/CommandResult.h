@@ -26,7 +26,7 @@ namespace opendnp3 {
 /**
   Opendnp3 API enum used for differentiating cases when a command sequence fails without a response from the outstation
 */
-enum class CommandResult : uint8_t
+enum class CommandResult : int
 {
   /// A response was received from the outstation, check the CommandStatus enumeration
   RESPONSE_OK = 0,

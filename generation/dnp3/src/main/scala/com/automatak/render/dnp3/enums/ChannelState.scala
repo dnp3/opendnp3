@@ -6,7 +6,7 @@ object ChannelState {
 
   private val comments = List("Enumeration for possible states of a channel")
 
-  def apply(): EnumModel = EnumModel("ChannelState", comments, EnumModel.UInt8, codes, codes.last, Base10)
+  def apply(): EnumModel = EnumModel("ChannelState", comments, EnumModel.Integer, codes, codes.last, Base10)
 
   private val codes = List(
     EnumValue("CLOSED", 0, "offline and idle"),

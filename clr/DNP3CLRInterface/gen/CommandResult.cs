@@ -21,7 +21,7 @@ namespace DNP3.Interface
   /// <summary>
   /// Opendnp3 API enum used for differentiating cases when a command sequence fails without a response from the outstation
   /// </summary>
-  public enum CommandResult : byte
+  public enum CommandResult : int
   {
     /// <summary>
     /// A response was received from the outstation, check the CommandStatus enumeration

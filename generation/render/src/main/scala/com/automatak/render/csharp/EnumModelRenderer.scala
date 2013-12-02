@@ -29,6 +29,7 @@ object EnumModelRenderer extends ModelRenderer[EnumModel] {
     def getEnumType(typ: EnumModel.Type): String = typ match {
       case EnumModel.UInt8 => "byte"
       case EnumModel.UInt16 => "ushort"
+      case EnumModel.Integer => "int"
     }
 
     def header: Iterator[String] = Iterator(List("public", "enum", enum.name, ":", getEnumType(enum.enumType)).spaced)

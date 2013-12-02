@@ -26,7 +26,7 @@ namespace opendnp3 {
 /**
   Enumeration for possible communication states of a stack
 */
-enum class StackState : uint8_t
+enum class StackState : int
 {
   /// communications are online
   COMMS_UP = 0,

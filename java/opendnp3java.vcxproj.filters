@@ -45,10 +45,10 @@
     <ClInclude Include="cpp\LogSubscriberAdapter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="cpp\ConfigReader.h">
+    <ClInclude Include="cpp\com_automatak_dnp3_impl_StackBase.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="cpp\com_automatak_dnp3_impl_StackBase.h">
+    <ClInclude Include="cpp\ConfigReader.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

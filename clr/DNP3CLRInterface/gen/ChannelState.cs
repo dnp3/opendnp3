@@ -21,7 +21,7 @@ namespace DNP3.Interface
   /// <summary>
   /// Enumeration for possible states of a channel
   /// </summary>
-  public enum ChannelState : byte
+  public enum ChannelState : int
   {
     /// <summary>
     /// offline and idle

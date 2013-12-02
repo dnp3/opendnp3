@@ -6,7 +6,7 @@ object StackState {
 
   private val comments = List("Enumeration for possible communication states of a stack")
 
-  def apply(): EnumModel = EnumModel("StackState", comments, EnumModel.UInt8, codes, codes.last, Base10)
+  def apply(): EnumModel = EnumModel("StackState", comments, EnumModel.Integer, codes, codes.last, Base10)
 
   private val codes = List(
     EnumValue("COMMS_UP", 0, "communications are online"),
