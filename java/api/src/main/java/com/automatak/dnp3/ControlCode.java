@@ -90,4 +90,4 @@ public enum ControlCode {
                 return UNDEFINED;
         }
     }
-};
+}

@@ -1,15 +1,13 @@
 package com.automatak.render.dnp3
 
+import _root_.java.nio.file.Path
 import com.automatak.render._
-import java.nio.file.Path
 import com.automatak.render.dnp3.enums._
 import com.automatak.render.cpp._
 
 object CppEnumGenerator {
 
   case class DualPath(include: Path, source: Path)
-
-
 
   def apply(opendnp3: DualPath, openpal: DualPath): Unit = {
 

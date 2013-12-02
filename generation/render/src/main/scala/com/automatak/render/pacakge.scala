@@ -65,14 +65,21 @@ package object render {
 
     }
 
-    def delimited(delim: String)(s: Iterator[String]) : Iterator[String] = new Iterator[String] {
+    def delimited(delim: String, last: Option[String] = None)(s: Iterator[String]) : Iterator[String] = new Iterator[String] {
       def hasNext: Boolean = s.hasNext
 
       def next(): String = {
         val ret = s.next()
-        if(s.hasNext) (ret + delim) else ret
+        if(s.hasNext) (ret + delim) else {
+          last match {
+            case Some(l) => ret + l
+            case None => ret
+          }
+        }
       }
     }
+
+    def commaDelimitedWithSemicolon(s: Iterator[String]) : Iterator[String] = delimited(",", Some(";"))(s)
 
     def commaDelimited(s: Iterator[String]) : Iterator[String] = delimited(",")(s)
 

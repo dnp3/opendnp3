@@ -16,34 +16,61 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.automatak.render.csharp
+package com.automatak.render.java
 
 import com.automatak.render._
+import com.automatak.render.cpp.ReturnSwitchModelRenderer
 
 object EnumModelRenderer extends ModelRenderer[EnumModel] {
 
   def render(enum: EnumModel)(implicit indent: Indentation) : Iterator[String] = {
 
-    def pair(ir: IntRender)(ev: EnumValue): String = List(ev.name, "=", ir(ev.value)).spaced
+    def pair(ir: IntRender)(ev: EnumValue): String = List(ev.name, "((" + getEnumType(enum.enumType)+")", ir(ev.value) + ")").spaced
 
     def getEnumType(typ: EnumModel.Type): String = typ match {
       case EnumModel.UInt8 => "byte"
       case EnumModel.Integer => "int"
     }
 
-    def header: Iterator[String] = Iterator(List("public", "enum", enum.name, ":", getEnumType(enum.enumType)).spaced)
+    def header: Iterator[String] = Iterator(List("public", "enum", enum.name).spaced)
 
     def summary(comments: Iterator[String]): Iterator[String] = {
-      Iterator("/// <summary>") ++ comments.map("/// " + _) ++ Iterator("/// </summary>")
+      Iterator("/**") ++ comments.map("* " + _) ++ Iterator("*/")
     }
 
     def comments: Iterator[Option[Iterator[String]]] = enum.values.map(ev => ev.comment.map(c => summary(Iterator(c)))).iterator
 
-    def definitions : Iterator[String] = commaDelimited(enum.values.map(pair(enum.render)).iterator)
+    def definitions : Iterator[String] = commaDelimitedWithSemicolon(enum.values.map(pair(enum.render)).iterator)
+
+    def id = Iterator(List("private final", getEnumType(enum.enumType),"id;").spaced)
+
+    def constructor = Iterator(List("private ", enum.name, "(", getEnumType(enum.enumType), " id)").mkString) ++ bracket {
+        Iterator("this.id = id;")
+    }
+
+    def toType = Iterator(List("public ", getEnumType(enum.enumType), " toType()").mkString) ++ bracket {
+      Iterator("return id;")
+    }
+
+    def fromType(inner: => Iterator[String]) = Iterator(List("public static fromType(", getEnumType(enum.enumType), " arg)").mkString) ++ bracket {
+      inner
+    }
+
+    def switch = new ReturnSwitchModelRenderer[EnumValue](v => enum.render(v.value))(v => v.name).render(enum.values)
+
+    def returnDefault = Iterator("return " + enum.default.name + ";")
+
 
     summary(enum.comments.toIterator) ++
     header ++ bracket {
-      merge(comments, definitions)
+      merge(comments, definitions) ++ space ++
+      id ++ space ++
+      constructor ++ space ++
+      toType ++ space ++
+      fromType {
+        switch ++
+        returnDefault
+      }
     }
 
   }

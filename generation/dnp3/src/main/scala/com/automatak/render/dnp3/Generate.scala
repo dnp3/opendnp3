@@ -1,6 +1,8 @@
 package com.automatak.render.dnp3
 
 import java.nio.file.FileSystems
+import com.automatak.render.dnp3.enums.ControlCode
+import com.automatak.render.cpp.CppIndentation
 
 object Generate {
 
@@ -20,8 +22,9 @@ object Generate {
 
     // generate all enumerations
     CppEnumGenerator(opendnp3Paths, openpalPaths)
+    CSharpEnumGenerator("DNP3.Interface", csharpInterfacePath)
 
-    CSharpEnumGenerator(List("DNP3","Interface"), csharpInterfacePath)
+
 
   }
 
