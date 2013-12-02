@@ -319,13 +319,13 @@ namespace DNP3.Interface
             this.selectTimeout = TimeSpan.FromSeconds(5);
             this.maxFragSize = 2048;
             this.eventMaxConfig = new EventMaxConfig();
-            this.staticBinary = StaticBinaryResponse.GROUP1_VAR2;
-            this.staticAnalog = StaticAnalogResponse.GROUP30_VAR1;
-            this.staticCounter = StaticCounterResponse.GROUP20_VAR1;
-            this.staticSetpointStatus = StaticSetpointStatusResponse.GROUP40_VAR1;
-            this.eventBinary = EventBinaryResponse.GROUP2_VAR1;
-            this.eventAnalog = EventAnalogResponse.GROUP32_VAR1;
-            this.eventCounter = EventCounterResponse.GROUP22_VAR1;
+            this.staticBinary = StaticBinaryResponse.Group1Var2;
+            this.staticAnalog = StaticAnalogResponse.Group30Var1;
+            this.staticCounter = StaticCounterResponse.Group20Var1;
+            this.staticSetpointStatus = StaticSetpointStatusResponse.Group40Var1;
+            this.eventBinary = EventBinaryResponse.Group2Var1;
+            this.eventAnalog = EventAnalogResponse.Group32Var1;
+            this.eventCounter = EventCounterResponse.Group22Var1;
         }
 
 	    /// <summary>

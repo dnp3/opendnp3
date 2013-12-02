@@ -7,7 +7,7 @@ object FunctionCode {
 
   private val comments = List("Application layer function code enumeration")
 
-  def apply(): EnumModel = EnumModel("FunctionCode", comments, EnumModel.UInt8, codes, codes.last, Hex)
+  def apply(): EnumModel = EnumModel("FunctionCode", comments, EnumModel.UInt8, codes, Hex)
 
   private val codes = List(
     EnumValue("CONFIRM",0),

@@ -417,9 +417,6 @@
     <ClInclude Include="include\opendnp3\TimeTransaction.h">
       <Filter>Include Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\opendnp3\OutstationResponses.h">
-      <Filter>Include Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\opendnp3\ITimeWriteHandler.h">
       <Filter>Include Files</Filter>
     </ClInclude>
@@ -481,6 +478,27 @@
       <Filter>Include Files\gen</Filter>
     </ClInclude>
     <ClInclude Include="include\opendnp3\gen\StackState.h">
+      <Filter>Include Files\gen</Filter>
+    </ClInclude>
+    <ClInclude Include="include\opendnp3\gen\EventAnalogResponse.h">
+      <Filter>Include Files\gen</Filter>
+    </ClInclude>
+    <ClInclude Include="include\opendnp3\gen\EventBinaryResponse.h">
+      <Filter>Include Files\gen</Filter>
+    </ClInclude>
+    <ClInclude Include="include\opendnp3\gen\EventCounterResponse.h">
+      <Filter>Include Files\gen</Filter>
+    </ClInclude>
+    <ClInclude Include="include\opendnp3\gen\StaticAnalogResponse.h">
+      <Filter>Include Files\gen</Filter>
+    </ClInclude>
+    <ClInclude Include="include\opendnp3\gen\StaticBinaryResponse.h">
+      <Filter>Include Files\gen</Filter>
+    </ClInclude>
+    <ClInclude Include="include\opendnp3\gen\StaticCounterResponse.h">
+      <Filter>Include Files\gen</Filter>
+    </ClInclude>
+    <ClInclude Include="include\opendnp3\gen\StaticSetpointStatusResponse.h">
       <Filter>Include Files\gen</Filter>
     </ClInclude>
   </ItemGroup>
@@ -783,6 +801,27 @@
       <Filter>Source Files\gen</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\gen\StackState.cpp">
+      <Filter>Source Files\gen</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\gen\EventAnalogResponse.cpp">
+      <Filter>Source Files\gen</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\gen\EventBinaryResponse.cpp">
+      <Filter>Source Files\gen</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\gen\EventCounterResponse.cpp">
+      <Filter>Source Files\gen</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\gen\StaticAnalogResponse.cpp">
+      <Filter>Source Files\gen</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\gen\StaticBinaryResponse.cpp">
+      <Filter>Source Files\gen</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\gen\StaticCounterResponse.cpp">
+      <Filter>Source Files\gen</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\gen\StaticSetpointStatusResponse.cpp">
       <Filter>Source Files\gen</Filter>
     </ClCompile>
   </ItemGroup>

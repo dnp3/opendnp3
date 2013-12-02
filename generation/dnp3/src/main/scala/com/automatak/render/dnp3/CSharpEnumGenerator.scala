@@ -15,14 +15,16 @@ object CSharpEnumGenerator {
       def filePath = dest.resolve(fileName)
     }
 
-    def enums = List(
+    def events = EventTypes.enums.map(m => EnumConfig(m, csharpPath))
+
+    def enums : List[EnumConfig] = List(
       CommandStatus(),
       CommandResult(),
       ControlCode(),
       ChannelState(),
       StackState(),
       LogLevel()
-    ).map(EnumConfig.apply(_, csharpPath))
+    ).map(e => EnumConfig.apply(e, csharpPath)) ::: events
 
     implicit val indent = CppIndentation()
 

@@ -27,7 +27,7 @@ object CppEnumGenerator {
       EnumConfig(ChannelState(), "opendnp3", opendnp3, false, false),
       EnumConfig(StackState(), "opendnp3", opendnp3, false, false),
       EnumConfig(LogLevel(), "openpal", openpal, true, false)
-    )
+    ) ::: EventTypes.enums.map(m => EnumConfig(m, "opendnp3", opendnp3, true, false))
 
     // list of all enumerations that we want to generate
     def sourceEnums = List(FunctionCode(), QualifierCode(), LinkFunction()).map { em =>

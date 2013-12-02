@@ -16,7 +16,7 @@ object ControlCode {
     "These correspond to those defined in the DNP3 standard"
   )
 
-  def apply(): EnumModel = EnumModel("ControlCode", comments, EnumModel.UInt8, codes, codes.last, Hex)
+  def apply(): EnumModel = EnumModel("ControlCode", comments, EnumModel.UInt8, codes, Hex)
 
   private val codes = List(
     EnumValue("NUL", 0, "illegal command code (used internally)"),

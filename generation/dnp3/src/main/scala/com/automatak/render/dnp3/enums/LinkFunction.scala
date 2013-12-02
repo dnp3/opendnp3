@@ -7,7 +7,7 @@ object LinkFunction {
 
   private val comments = List("Link layer function code enumeration")
 
-  def apply(): EnumModel = EnumModel("LinkFunction", comments, EnumModel.UInt8, codes, codes.last, Hex)
+  def apply(): EnumModel = EnumModel("LinkFunction", comments, EnumModel.UInt8, codes, Hex)
 
   val codes = List(
     EnumValue("PRI_RESET_LINK_STATES", 0x40),

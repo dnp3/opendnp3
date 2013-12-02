@@ -253,116 +253,37 @@ opendnp3::EventMaxConfig Conversions::convertEventMaxConfig(EventMaxConfig ^ cm)
 
 opendnp3::StaticBinaryResponse Conversions::convert(StaticBinaryResponse rsp)
 {
-	switch(rsp) {
-	case(StaticBinaryResponse::GROUP1_VAR2):
-		return opendnp3::SBR_GROUP1_VAR2;
-	default:
-		throw gcnew System::ArgumentException(rsp.ToString());
-	}
+	return (opendnp3::StaticBinaryResponse) rsp;
 }
 
 opendnp3::StaticAnalogResponse Conversions::convert(StaticAnalogResponse rsp)
 {
-	switch(rsp) {
-	case(StaticAnalogResponse::GROUP30_VAR1):
-		return opendnp3::SAR_GROUP30_VAR1;
-	case(StaticAnalogResponse::GROUP30_VAR2):
-		return opendnp3::SAR_GROUP30_VAR2;
-	case(StaticAnalogResponse::GROUP30_VAR3):
-		return opendnp3::SAR_GROUP30_VAR3;
-	case(StaticAnalogResponse::GROUP30_VAR4):
-		return opendnp3::SAR_GROUP30_VAR4;
-	case(StaticAnalogResponse::GROUP30_VAR5):
-		return opendnp3::SAR_GROUP30_VAR5;
-	case(StaticAnalogResponse::GROUP30_VAR6):
-		return opendnp3::SAR_GROUP30_VAR6;
-	default:
-		throw gcnew System::ArgumentException(rsp.ToString());
-	}
+	return (opendnp3::StaticAnalogResponse) rsp;	
 }
 
 opendnp3::StaticCounterResponse Conversions::convert(StaticCounterResponse rsp)
 {
-	switch(rsp) {
-	case(StaticCounterResponse::GROUP20_VAR1):
-		return opendnp3::SCR_GROUP20_VAR1;
-	case(StaticCounterResponse::GROUP20_VAR2):
-		return opendnp3::SCR_GROUP20_VAR2;
-	case(StaticCounterResponse::GROUP20_VAR5):
-		return opendnp3::SCR_GROUP20_VAR5;
-	case(StaticCounterResponse::GROUP20_VAR6):
-		return opendnp3::SCR_GROUP20_VAR6;
-	default:
-		throw gcnew System::ArgumentException(rsp.ToString());
-	}
+	return (opendnp3::StaticCounterResponse) rsp;
 }
 
 opendnp3::StaticSetpointStatusResponse Conversions::convert(StaticSetpointStatusResponse rsp)
 {
-	switch(rsp) {
-	case(StaticSetpointStatusResponse::GROUP40_VAR1):
-		return opendnp3::SSSR_GROUP40_VAR1;
-	case(StaticSetpointStatusResponse::GROUP40_VAR2):
-		return opendnp3::SSSR_GROUP40_VAR2;
-	case(StaticSetpointStatusResponse::GROUP40_VAR3):
-		return opendnp3::SSSR_GROUP40_VAR3;
-	case(StaticSetpointStatusResponse::GROUP40_VAR4):
-		return opendnp3::SSSR_GROUP40_VAR4;
-	default:
-		throw gcnew System::ArgumentException(rsp.ToString());
-	}
+	return (opendnp3::StaticSetpointStatusResponse) rsp;
 }
 
 opendnp3::EventBinaryResponse Conversions::convert(EventBinaryResponse rsp)
 {
-	switch(rsp) {
-	case(EventBinaryResponse::GROUP2_VAR1):
-		return opendnp3::EBR_GROUP2_VAR1;
-	case(EventBinaryResponse::GROUP2_VAR2):
-		return opendnp3::EBR_GROUP2_VAR2;
-	default:
-		throw gcnew System::ArgumentException(rsp.ToString());
-	}
+	return (opendnp3::EventBinaryResponse) rsp;
 }
 
 opendnp3::EventAnalogResponse Conversions::convert(EventAnalogResponse rsp)
 {
-	switch(rsp) {
-	case(EventAnalogResponse::GROUP32_VAR1):
-		return opendnp3::EAR_GROUP32_VAR1;
-	case(EventAnalogResponse::GROUP32_VAR2):
-		return opendnp3::EAR_GROUP32_VAR2;
-	case(EventAnalogResponse::GROUP32_VAR3):
-		return opendnp3::EAR_GROUP32_VAR3;
-	case(EventAnalogResponse::GROUP32_VAR4):
-		return opendnp3::EAR_GROUP32_VAR4;
-	case(EventAnalogResponse::GROUP32_VAR5):
-		return opendnp3::EAR_GROUP32_VAR5;
-	case(EventAnalogResponse::GROUP32_VAR6):
-		return opendnp3::EAR_GROUP32_VAR6;
-	case(EventAnalogResponse::GROUP32_VAR7):
-		return opendnp3::EAR_GROUP32_VAR7;
-	case(EventAnalogResponse::GROUP32_VAR8):
-		return opendnp3::EAR_GROUP32_VAR8;
-	default:
-		throw gcnew System::ArgumentException(rsp.ToString());
-	}
+	return (opendnp3::EventAnalogResponse) rsp;
 }
 
 opendnp3::EventCounterResponse Conversions::convert(EventCounterResponse rsp)
 {
-	switch(rsp) {
-	case(EventCounterResponse::GROUP22_VAR1):
-		return opendnp3::ECR_GROUP22_VAR1;
-	case(EventCounterResponse::GROUP22_VAR2):
-		return opendnp3::ECR_GROUP22_VAR2;
-	case(EventCounterResponse::GROUP22_VAR5):
-		return opendnp3::ECR_GROUP22_VAR5;
-	case(EventCounterResponse::GROUP22_VAR6):
-		return opendnp3::ECR_GROUP22_VAR6;
-	default:
-		throw gcnew System::ArgumentException(rsp.ToString());
-	}
+	return (opendnp3::EventCounterResponse) rsp;
 }
 
 opendnp3::SlaveConfig Conversions::convertConfig(SlaveConfig ^ config)

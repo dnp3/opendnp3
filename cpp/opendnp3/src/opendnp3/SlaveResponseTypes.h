@@ -31,13 +31,12 @@
 
 #include <opendnp3/ObjectInterfaces.h>
 #include <opendnp3/DataTypes.h>
+#include <opendnp3/SlaveConfig.h>
+
 #include <openpal/Visibility.h>
-#include <opendnp3/OutstationResponses.h>
 
 namespace opendnp3
 {
-
-struct SlaveConfig;
 
 /**
  * Reads a slave config object and and translates the configuration to

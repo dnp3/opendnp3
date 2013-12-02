@@ -7,7 +7,7 @@ object QualifierCode {
 
   private val comments = List("Object header range/prefix as a single enumeration")
 
-  def apply(): EnumModel = EnumModel("QualifierCode", comments, EnumModel.UInt8, codes, codes.last, Hex)
+  def apply(): EnumModel = EnumModel("QualifierCode", comments, EnumModel.UInt8, codes, Hex)
 
   private val codes = List(
     EnumValue("UINT8_START_STOP", 0x00),

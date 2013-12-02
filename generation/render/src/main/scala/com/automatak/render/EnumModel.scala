@@ -21,7 +21,7 @@ package com.automatak.render
 object EnumValues {
 
   def bitmask(list: List[String]): List[EnumValue] = from(list, Iterator.iterate(1)(i => i << 1))
-  def froms(list: List[String], i: Int = 0) : List[EnumValue] = from(list, Iterator.from(i,1))
+  def from(list: List[String], i: Int = 0) : List[EnumValue] = from(list, Iterator.from(i,1))
   def from(list: List[String], iterator: Iterator[Int]) : List[EnumValue] = list.map(s => EnumValue(s, iterator.next(), None))
 }
 
@@ -45,6 +45,7 @@ case object Hex extends IntRender { def apply(i: Int): String = "0x"+Integer.toH
 case object Base10 extends IntRender { def apply(i: Int): String = i.toString }
 
 
-case class EnumModel(name: String, comments: List[String], enumType: EnumModel.Type, values: List[EnumValue], default: EnumValue, render: IntRender = Base10) {
+case class EnumModel(name: String, comments: List[String], enumType: EnumModel.Type, values: List[EnumValue], render: IntRender = Base10) {
+  def default: EnumValue = values.last
   def qualified(ev: EnumValue): String = List(name,"::",ev.name).mkString
 }

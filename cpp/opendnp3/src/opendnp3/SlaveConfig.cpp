@@ -54,13 +54,13 @@ SlaveConfig::SlaveConfig() :
 	mSelectTimeout(TimeDuration::Seconds(5)),
 	mMaxFragSize(DEFAULT_FRAG_SIZE),	
 	mEventMaxConfig(),
-	mStaticBinary(SBR_GROUP1_VAR2),
-	mStaticAnalog(SAR_GROUP30_VAR1),
-	mStaticCounter(SCR_GROUP20_VAR1),
-	mStaticSetpointStatus(SSSR_GROUP40_VAR1),
-	mEventBinary(EBR_GROUP2_VAR1),
-	mEventAnalog(EAR_GROUP32_VAR1),
-	mEventCounter(ECR_GROUP22_VAR1)
+	mStaticBinary(StaticBinaryResponse::Group1Var2),
+	mStaticAnalog(StaticAnalogResponse::Group30Var1),
+	mStaticCounter(StaticCounterResponse::Group20Var1),
+	mStaticSetpointStatus(StaticSetpointStatusResponse::Group40Var1),
+	mEventBinary(EventBinaryResponse::Group2Var1),
+	mEventAnalog(EventAnalogResponse::Group32Var1),
+	mEventCounter(EventCounterResponse::Group22Var1)
 {}
 
 }

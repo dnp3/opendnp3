@@ -1132,22 +1132,22 @@ void TestStaticCounter(StaticCounterResponse aRsp, T aValue, const std::string& 
 
 BOOST_AUTO_TEST_CASE(ReadGrp20Var1)
 {
-	TestStaticCounter(SCR_GROUP20_VAR1, 5, "C0 81 80 00 14 01 00 00 00 01 05 00 00 00");
+	TestStaticCounter(StaticCounterResponse::Group20Var1, 5, "C0 81 80 00 14 01 00 00 00 01 05 00 00 00");
 }
 
 BOOST_AUTO_TEST_CASE(ReadGrp20Var2)
 {
-	TestStaticCounter(SCR_GROUP20_VAR2, 5, "C0 81 80 00 14 02 00 00 00 01 05 00");
+	TestStaticCounter(StaticCounterResponse::Group20Var2, 5, "C0 81 80 00 14 02 00 00 00 01 05 00");
 }
 
 BOOST_AUTO_TEST_CASE(ReadGrp20Var5)
 {
-	TestStaticCounter(SCR_GROUP20_VAR5, 5, "C0 81 80 00 14 05 00 00 00 05 00 00 00");
+	TestStaticCounter(StaticCounterResponse::Group20Var5, 5, "C0 81 80 00 14 05 00 00 00 05 00 00 00");
 }
 
 BOOST_AUTO_TEST_CASE(ReadGrp20Var6)
 {
-	TestStaticCounter(SCR_GROUP20_VAR6, 5, "C0 81 80 00 14 06 00 00 00 05 00");
+	TestStaticCounter(StaticCounterResponse::Group20Var6, 5, "C0 81 80 00 14 06 00 00 00 05 00");
 }
 
 template <class T>
@@ -1159,27 +1159,27 @@ void TestStaticAnalog(StaticAnalogResponse aRsp, T aVal, const std::string& arRs
 
 BOOST_AUTO_TEST_CASE(ReadGrp30Var2)
 {
-	TestStaticAnalog(SAR_GROUP30_VAR2, 100, "C0 81 80 00 1E 02 00 00 00 01 64 00");
+	TestStaticAnalog(StaticAnalogResponse::Group30Var2, 100, "C0 81 80 00 1E 02 00 00 00 01 64 00");
 }
 
 BOOST_AUTO_TEST_CASE(ReadGrp30Var3)
 {
-	TestStaticAnalog(SAR_GROUP30_VAR3, 65536, "C0 81 80 00 1E 03 00 00 00 00 00 01 00");
+	TestStaticAnalog(StaticAnalogResponse::Group30Var3, 65536, "C0 81 80 00 1E 03 00 00 00 00 00 01 00");
 }
 
 BOOST_AUTO_TEST_CASE(ReadGrp30Var4)
 {
-	TestStaticAnalog(SAR_GROUP30_VAR4, 100, "C0 81 80 00 1E 04 00 00 00 64 00");
+	TestStaticAnalog(StaticAnalogResponse::Group30Var4, 100, "C0 81 80 00 1E 04 00 00 00 64 00");
 }
 
 BOOST_AUTO_TEST_CASE(ReadGrp30Var5)
 {
-	TestStaticAnalog(SAR_GROUP30_VAR5, 95.6, "C0 81 80 00 1E 05 00 00 00 01 33 33 BF 42");
+	TestStaticAnalog(StaticAnalogResponse::Group30Var5, 95.6, "C0 81 80 00 1E 05 00 00 00 01 33 33 BF 42");
 }
 
 BOOST_AUTO_TEST_CASE(ReadGrp30Var6)
 {
-	TestStaticAnalog(SAR_GROUP30_VAR6, -20, "C0 81 80 00 1E 06 00 00 00 01 00 00 00 00 00 00 34 C0");
+	TestStaticAnalog(StaticAnalogResponse::Group30Var6, -20, "C0 81 80 00 1E 06 00 00 00 01 00 00 00 00 00 00 34 C0");
 }
 
 template <class T>
@@ -1215,22 +1215,22 @@ void TestStaticSetpointStatus(StaticSetpointStatusResponse aRsp, T aVal, const s
 
 BOOST_AUTO_TEST_CASE(ReadGrp40Var1)
 {
-	TestStaticSetpointStatus(SSSR_GROUP40_VAR1, 100, "C0 81 80 00 28 01 00 00 00 01 64 00 00 00");
+	TestStaticSetpointStatus(StaticSetpointStatusResponse::Group40Var1, 100, "C0 81 80 00 28 01 00 00 00 01 64 00 00 00");
 }
 
 BOOST_AUTO_TEST_CASE(ReadGrp40Var2)
 {
-	TestStaticSetpointStatus(SSSR_GROUP40_VAR2, 100, "C0 81 80 00 28 02 00 00 00 01 64 00");
+	TestStaticSetpointStatus(StaticSetpointStatusResponse::Group40Var2, 100, "C0 81 80 00 28 02 00 00 00 01 64 00");
 }
 
 BOOST_AUTO_TEST_CASE(ReadGrp40Var3)
 {
-	TestStaticSetpointStatus(SSSR_GROUP40_VAR3, 95.6, "C0 81 80 00 28 03 00 00 00 01 33 33 BF 42");
+	TestStaticSetpointStatus(StaticSetpointStatusResponse::Group40Var3, 95.6, "C0 81 80 00 28 03 00 00 00 01 33 33 BF 42");
 }
 
 BOOST_AUTO_TEST_CASE(ReadGrp40Var4)
 {
-	TestStaticSetpointStatus(SSSR_GROUP40_VAR4, -20.0, "C0 81 80 00 28 04 00 00 00 01 00 00 00 00 00 00 34 C0");
+	TestStaticSetpointStatus(StaticSetpointStatusResponse::Group40Var4, -20.0, "C0 81 80 00 28 04 00 00 00 01 00 00 00 00 00 00 34 C0");
 }
 
 

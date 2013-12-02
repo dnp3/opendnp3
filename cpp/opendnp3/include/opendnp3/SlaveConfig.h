@@ -36,7 +36,15 @@
 
 #include "ClassMask.h"
 #include "ObjectInterfaces.h"
-#include "OutstationResponses.h"
+
+#include <opendnp3/gen/EventAnalogResponse.h>
+#include <opendnp3/gen/EventBinaryResponse.h>
+#include <opendnp3/gen/EventCounterResponse.h>
+
+#include <opendnp3/gen/StaticAnalogResponse.h>
+#include <opendnp3/gen/StaticBinaryResponse.h>
+#include <opendnp3/gen/StaticCounterResponse.h>
+#include <opendnp3/gen/StaticSetpointStatusResponse.h>
 
 namespace opendnp3
 {

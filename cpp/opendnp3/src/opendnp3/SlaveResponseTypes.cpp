@@ -52,7 +52,7 @@ SlaveResponseTypes::SlaveResponseTypes(const SlaveConfig& arCfg)
 StreamObject<Binary>* SlaveResponseTypes::GetStaticBinary(StaticBinaryResponse rsp)
 {
 	switch(rsp) {
-	case(SBR_GROUP1_VAR2):
+	case(StaticBinaryResponse::Group1Var2):
 		return Group1Var2::Inst();
 	default:
 		MACRO_THROW_EXCEPTION(ArgumentException, "Invalid static binary");
@@ -62,12 +62,12 @@ StreamObject<Binary>* SlaveResponseTypes::GetStaticBinary(StaticBinaryResponse r
 StreamObject<Analog>* SlaveResponseTypes::GetStaticAnalog(StaticAnalogResponse rsp)
 {
 	switch(rsp) {
-	case(SAR_GROUP30_VAR1): return Group30Var1::Inst();
-	case(SAR_GROUP30_VAR2): return Group30Var2::Inst();
-	case(SAR_GROUP30_VAR3): return Group30Var3::Inst();
-	case(SAR_GROUP30_VAR4): return Group30Var4::Inst();
-	case(SAR_GROUP30_VAR5): return Group30Var5::Inst();
-	case(SAR_GROUP30_VAR6): return Group30Var6::Inst();
+	case(StaticAnalogResponse::Group30Var1): return Group30Var1::Inst();
+	case(StaticAnalogResponse::Group30Var2): return Group30Var2::Inst();
+	case(StaticAnalogResponse::Group30Var3): return Group30Var3::Inst();
+	case(StaticAnalogResponse::Group30Var4): return Group30Var4::Inst();
+	case(StaticAnalogResponse::Group30Var5): return Group30Var5::Inst();
+	case(StaticAnalogResponse::Group30Var6): return Group30Var6::Inst();
 	default:
 		MACRO_THROW_EXCEPTION(ArgumentException, "Invalid static analog");
 	}
@@ -76,10 +76,10 @@ StreamObject<Analog>* SlaveResponseTypes::GetStaticAnalog(StaticAnalogResponse r
 StreamObject<Counter>* SlaveResponseTypes::GetStaticCounter(StaticCounterResponse rsp)
 {
 	switch(rsp) {
-	case(SCR_GROUP20_VAR1): return Group20Var1::Inst();
-	case(SCR_GROUP20_VAR2): return Group20Var2::Inst();
-	case(SCR_GROUP20_VAR5): return Group20Var5::Inst();
-	case(SCR_GROUP20_VAR6): return Group20Var6::Inst();
+	case(StaticCounterResponse::Group20Var1): return Group20Var1::Inst();
+	case(StaticCounterResponse::Group20Var2): return Group20Var2::Inst();
+	case(StaticCounterResponse::Group20Var5): return Group20Var5::Inst();
+	case(StaticCounterResponse::Group20Var6): return Group20Var6::Inst();
 	default:
 		MACRO_THROW_EXCEPTION(ArgumentException, "Invalid static counter");
 	}
@@ -88,10 +88,10 @@ StreamObject<Counter>* SlaveResponseTypes::GetStaticCounter(StaticCounterRespons
 StreamObject<SetpointStatus>* SlaveResponseTypes::GetStaticSetpointStatus(StaticSetpointStatusResponse rsp)
 {
 	switch(rsp) {
-	case(SSSR_GROUP40_VAR1): return Group40Var1::Inst();
-	case(SSSR_GROUP40_VAR2): return Group40Var2::Inst();
-	case(SSSR_GROUP40_VAR3): return Group40Var3::Inst();
-	case(SSSR_GROUP40_VAR4): return Group40Var4::Inst();
+	case(StaticSetpointStatusResponse::Group40Var1): return Group40Var1::Inst();
+	case(StaticSetpointStatusResponse::Group40Var2): return Group40Var2::Inst();
+	case(StaticSetpointStatusResponse::Group40Var3): return Group40Var3::Inst();
+	case(StaticSetpointStatusResponse::Group40Var4): return Group40Var4::Inst();
 	default:
 		MACRO_THROW_EXCEPTION(ArgumentException, "Invalid static analog output status");
 	}
@@ -100,8 +100,8 @@ StreamObject<SetpointStatus>* SlaveResponseTypes::GetStaticSetpointStatus(Static
 StreamObject<Binary>* SlaveResponseTypes::GetEventBinary(EventBinaryResponse rsp)
 {
 	switch(rsp) {
-	case(EBR_GROUP2_VAR1): return Group2Var1::Inst();
-	case(EBR_GROUP2_VAR2): return Group2Var2::Inst();
+	case(EventBinaryResponse::Group2Var1): return Group2Var1::Inst();
+	case(EventBinaryResponse::Group2Var2): return Group2Var2::Inst();
 	default:
 		MACRO_THROW_EXCEPTION(ArgumentException, "Invalid event binary");
 	}
@@ -111,14 +111,14 @@ StreamObject<Binary>* SlaveResponseTypes::GetEventBinary(EventBinaryResponse rsp
 StreamObject<Analog>* SlaveResponseTypes::GetEventAnalog(EventAnalogResponse rsp)
 {
 	switch(rsp) {
-	case(EAR_GROUP32_VAR1): return Group32Var1::Inst();
-	case(EAR_GROUP32_VAR2): return Group32Var2::Inst();
-	case(EAR_GROUP32_VAR3): return Group32Var3::Inst();
-	case(EAR_GROUP32_VAR4): return Group32Var4::Inst();
-	case(EAR_GROUP32_VAR5): return Group32Var5::Inst();
-	case(EAR_GROUP32_VAR6): return Group32Var6::Inst();
-	case(EAR_GROUP32_VAR7): return Group32Var7::Inst();
-	case(EAR_GROUP32_VAR8): return Group32Var8::Inst();
+	case(EventAnalogResponse::Group32Var1): return Group32Var1::Inst();
+	case(EventAnalogResponse::Group32Var2): return Group32Var2::Inst();
+	case(EventAnalogResponse::Group32Var3): return Group32Var3::Inst();
+	case(EventAnalogResponse::Group32Var4): return Group32Var4::Inst();
+	case(EventAnalogResponse::Group32Var5): return Group32Var5::Inst();
+	case(EventAnalogResponse::Group32Var6): return Group32Var6::Inst();
+	case(EventAnalogResponse::Group32Var7): return Group32Var7::Inst();
+	case(EventAnalogResponse::Group32Var8): return Group32Var8::Inst();
 	default:
 		MACRO_THROW_EXCEPTION(ArgumentException, "Invalid event analog");
 	}
@@ -127,10 +127,10 @@ StreamObject<Analog>* SlaveResponseTypes::GetEventAnalog(EventAnalogResponse rsp
 StreamObject<Counter>* SlaveResponseTypes::GetEventCounter(EventCounterResponse rsp)
 {
 	switch(rsp) {
-	case(ECR_GROUP22_VAR1): return Group22Var1::Inst();
-	case(ECR_GROUP22_VAR2): return Group22Var2::Inst();
-	case(ECR_GROUP22_VAR5): return Group22Var5::Inst();
-	case(ECR_GROUP22_VAR6): return Group22Var6::Inst();
+	case(EventCounterResponse::Group22Var1): return Group22Var1::Inst();
+	case(EventCounterResponse::Group22Var2): return Group22Var2::Inst();
+	case(EventCounterResponse::Group22Var5): return Group22Var5::Inst();
+	case(EventCounterResponse::Group22Var6): return Group22Var6::Inst();
 	default:
 		MACRO_THROW_EXCEPTION(ArgumentException, "Invalid event counter");
 	}
