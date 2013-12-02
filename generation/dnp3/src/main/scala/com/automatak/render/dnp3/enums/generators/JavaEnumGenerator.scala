@@ -1,4 +1,4 @@
-package com.automatak.render.dnp3
+package com.automatak.render.dnp3.enums.generators
 
 import _root_.java.nio.file.Path
 import com.automatak.render._

@@ -1,8 +1,7 @@
 package com.automatak.render.dnp3
 
 import java.nio.file.FileSystems
-import com.automatak.render.dnp3.enums.ControlCode
-import com.automatak.render.cpp.CppIndentation
+import com.automatak.render.dnp3.enums.generators.{JavaEnumGenerator, CSharpEnumGenerator, CppEnumGenerator}
 
 object Generate {
 
