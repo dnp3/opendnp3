@@ -88,7 +88,7 @@ SlaveConfig ConfigReader::ConvertOutstationConfig(JNIEnv* apEnv, jobject jCfg)
 	}
 
 	{
-		jobject jenum = JNIHelpers::GetObjectField(apEnv, jCfg, "staticAnalogOutputStatus", "Lcom/automatak/dnp3/StaticAnalogOutputStatusResponse;");
+		jobject jenum = JNIHelpers::GetObjectField(apEnv, jCfg, "staticSetpointStatus", "Lcom/automatak/dnp3/StaticSetpointStatusResponse;");
 		cfg.mStaticSetpointStatus = StaticSetpointStatusResponseFromType(GetEnumId(apEnv, jenum));
 	}
 
@@ -112,7 +112,7 @@ SlaveConfig ConfigReader::ConvertOutstationConfig(JNIEnv* apEnv, jobject jCfg)
 
 jint ConfigReader::GetEnumId(JNIEnv* apEnv, jobject jenum)
 {
-	jmethodID mid = JNIHelpers::GetMethodID(apEnv, jenum, "getId", "()I");
+	jmethodID mid = JNIHelpers::GetMethodID(apEnv, jenum, "toType", "()I");
 	return apEnv->CallIntMethod(jenum, mid);
 }
 
