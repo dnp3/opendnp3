@@ -23,6 +23,7 @@
 #include <openpal/BufferWrapper.h>
 
 #include <cstring>
+#include <assert.h>
 
 namespace openpal
 {
@@ -49,7 +50,7 @@ namespace openpal
 	
 	}
 
-	ReadOnlyBuffer::ReadOnlyBuffer(const uint8_t* apBuffer, size_t aSize) :
+	ReadOnlyBuffer::ReadOnlyBuffer(uint8_t const* apBuffer, size_t aSize) :
 		HasSize(aSize),
 		mpBuffer(apBuffer)
 	{}
@@ -57,6 +58,13 @@ namespace openpal
 	void ReadOnlyBuffer::CopyTo(uint8_t* apDest) const
 	{
 		memcpy(apDest, mpBuffer, mSize);
+	}
+
+	void ReadOnlyBuffer::Advance(size_t aNum)
+	{
+		assert(aNum <= mSize);
+		mpBuffer += aNum;
+		mSize -= aNum;
 	}
 
 	WriteBuffer::WriteBuffer(): HasSize(0), mpBuffer(nullptr)

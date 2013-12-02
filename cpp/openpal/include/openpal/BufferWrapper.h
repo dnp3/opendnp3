@@ -54,14 +54,16 @@ class ReadOnlyBuffer : public HasSize
 public:
 
 	ReadOnlyBuffer();
-	ReadOnlyBuffer(const uint8_t* apBuffer, size_t aSize);
+	ReadOnlyBuffer(uint8_t const* apBuffer, size_t aSize);
 
-	void CopyTo(uint8_t* apDest) const;	
+	void CopyTo(uint8_t* apDest) const;
+
+	void Advance(size_t aNum);
 
 	operator uint8_t const *() const { return mpBuffer; };
 
 private:
-	const uint8_t* mpBuffer;
+	uint8_t const* mpBuffer;
 	
 };
 
