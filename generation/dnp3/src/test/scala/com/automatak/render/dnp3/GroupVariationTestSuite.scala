@@ -5,6 +5,7 @@ import org.scalatest.matchers.ShouldMatchers
 import org.scalatest.junit.JUnitRunner
 import org.junit.runner.RunWith
 import com.automatak.render.dnp3.objects.ObjectGroup
+import com.automatak.render.dnp3.objects.groups.Group12Var1
 
 @RunWith(classOf[JUnitRunner])
 class GroupVariationTestSuite extends FunSuite with ShouldMatchers {
@@ -18,6 +19,10 @@ class GroupVariationTestSuite extends FunSuite with ShouldMatchers {
 
     ids.toSet.size should equal(ids.size)
 
+  }
+
+  test("Fixed size calculated correctly") {
+    Group12Var1.size should equal(11)
   }
 
 }
