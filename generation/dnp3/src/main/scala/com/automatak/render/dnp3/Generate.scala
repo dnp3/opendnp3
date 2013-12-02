@@ -6,7 +6,8 @@ import com.automatak.render.cpp.CppIndentation
 
 object Generate {
 
-  val csharpInterfacePath = FileSystems.getDefault.getPath("../clr/DNP3CLRInterface/gen")
+  val csharpPath = FileSystems.getDefault.getPath("../clr/DNP3CLRInterface/gen")
+  val javaPath = FileSystems.getDefault.getPath("../java/api/src/main/java/com/automatak/dnp3")
 
   val opendnp3Paths = CppEnumGenerator.DualPath(
     FileSystems.getDefault.getPath("../cpp/opendnp3/include/opendnp3/gen/"),
@@ -22,8 +23,8 @@ object Generate {
 
     // generate all enumerations
     CppEnumGenerator(opendnp3Paths, openpalPaths)
-    CSharpEnumGenerator("DNP3.Interface", csharpInterfacePath)
-
+    CSharpEnumGenerator("DNP3.Interface", csharpPath)
+    JavaEnumGenerator("com.automatak.dnp3", javaPath)
 
 
   }

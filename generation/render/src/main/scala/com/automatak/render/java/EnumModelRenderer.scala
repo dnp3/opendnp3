@@ -25,7 +25,7 @@ object EnumModelRenderer extends ModelRenderer[EnumModel] {
 
   def render(enum: EnumModel)(implicit indent: Indentation) : Iterator[String] = {
 
-    def pair(ir: IntRender)(ev: EnumValue): String = List(ev.name, "((" + getEnumType(enum.enumType)+")", ir(ev.value) + ")").spaced
+    def pair(ir: IntRender)(ev: EnumValue): String = ev.name + "((" + getEnumType(enum.enumType)+") " + ir(ev.value) + ")"
 
     def getEnumType(typ: EnumModel.Type): String = typ match {
       case EnumModel.UInt8 => "byte"
