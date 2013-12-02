@@ -31,8 +31,8 @@ class CommandProcessorImpl implements CommandProcessor {
         return new CommandResultCallback() {
             @Override
             public void onCommandCallback(int result, int status) {
-                CommandResult r = CommandResult.fromInt(result);
-                CommandStatus s = CommandStatus.fromInt(status);
+                CommandResult r = CommandResult.fromType(result);
+                CommandStatus s = CommandStatus.fromType(status);
                 p.set(new CommandResponse(r,s));
             }
         };
@@ -46,60 +46,60 @@ class CommandProcessorImpl implements CommandProcessor {
     public ListenableFuture<CommandResponse> selectAndOperate(ControlRelayOutputBlock command, long index)
     {
         final BasicListenableFuture<CommandResponse> future = new BasicListenableFuture<CommandResponse>();
-        selectAndOperateCROB(nativeptr, command.function.toInt(), command.count, command.onTimeMs, command.offTimeMs, command.status.toInt(), index, fromPromise(future));
+        selectAndOperateCROB(nativeptr, command.function.toType(), command.count, command.onTimeMs, command.offTimeMs, command.status.toType(), index, fromPromise(future));
         return future;
     }
     public ListenableFuture<CommandResponse> selectAndOperate(AnalogOutputInt32 command, long index)
     {
         BasicListenableFuture<CommandResponse> future = new BasicListenableFuture<CommandResponse>();
-        selectAndOperateAnalogInt32(nativeptr, command.value, command.status.toInt(), index, fromPromise(future));
+        selectAndOperateAnalogInt32(nativeptr, command.value, command.status.toType(), index, fromPromise(future));
         return future;
     }
     public ListenableFuture<CommandResponse> selectAndOperate(AnalogOutputInt16 command, long index)
     {
         BasicListenableFuture<CommandResponse> future = new BasicListenableFuture<CommandResponse>();
-        selectAndOperateAnalogInt16(nativeptr, command.value, command.status.toInt(), index, fromPromise(future));
+        selectAndOperateAnalogInt16(nativeptr, command.value, command.status.toType(), index, fromPromise(future));
         return future;
     }
     public ListenableFuture<CommandResponse> selectAndOperate(AnalogOutputFloat32 command, long index)
     {
         BasicListenableFuture<CommandResponse> future = new BasicListenableFuture<CommandResponse>();
-        selectAndOperateAnalogFloat32(nativeptr, command.value, command.status.toInt(), index, fromPromise(future));
+        selectAndOperateAnalogFloat32(nativeptr, command.value, command.status.toType(), index, fromPromise(future));
         return future;
     }
     public ListenableFuture<CommandResponse> selectAndOperate(AnalogOutputDouble64 command, long index){
         BasicListenableFuture<CommandResponse> future = new BasicListenableFuture<CommandResponse>();
-        selectAndOperateAnalogDouble64(nativeptr, command.value, command.status.toInt(), index, fromPromise(future));
+        selectAndOperateAnalogDouble64(nativeptr, command.value, command.status.toType(), index, fromPromise(future));
         return future;
     }
 
     public ListenableFuture<CommandResponse> directOperate(ControlRelayOutputBlock command, long index)
     {
         BasicListenableFuture<CommandResponse> future = new BasicListenableFuture<CommandResponse>();
-        directOperateCROB(nativeptr, command.function.toInt(), command.count, command.onTimeMs, command.offTimeMs, command.status.toInt(), index, fromPromise(future));
+        directOperateCROB(nativeptr, command.function.toType(), command.count, command.onTimeMs, command.offTimeMs, command.status.toType(), index, fromPromise(future));
         return future;
     }
     public ListenableFuture<CommandResponse> directOperate(AnalogOutputInt32 command, long index){
         BasicListenableFuture<CommandResponse> future = new BasicListenableFuture<CommandResponse>();
-        directOperateAnalogInt32(nativeptr, command.value, command.status.toInt(), index, fromPromise(future));
+        directOperateAnalogInt32(nativeptr, command.value, command.status.toType(), index, fromPromise(future));
         return future;
     }
     public ListenableFuture<CommandResponse> directOperate(AnalogOutputInt16 command, long index)
     {
         BasicListenableFuture<CommandResponse> future = new BasicListenableFuture<CommandResponse>();
-        directOperateAnalogInt16(nativeptr, command.value, command.status.toInt(), index, fromPromise(future));
+        directOperateAnalogInt16(nativeptr, command.value, command.status.toType(), index, fromPromise(future));
         return future;
     }
     public ListenableFuture<CommandResponse> directOperate(AnalogOutputFloat32 command, long index)
     {
         BasicListenableFuture<CommandResponse> future = new BasicListenableFuture<CommandResponse>();
-        directOperateAnalogFloat32(nativeptr, command.value, command.status.toInt(), index, fromPromise(future));
+        directOperateAnalogFloat32(nativeptr, command.value, command.status.toType(), index, fromPromise(future));
         return future;
     }
     public ListenableFuture<CommandResponse> directOperate(AnalogOutputDouble64 command, long index)
     {
         BasicListenableFuture<CommandResponse> future = new BasicListenableFuture<CommandResponse>();
-        directOperateAnalogDouble64(nativeptr, command.value, command.status.toInt(), index, fromPromise(future));
+        directOperateAnalogDouble64(nativeptr, command.value, command.status.toType(), index, fromPromise(future));
         return future;
     }
 

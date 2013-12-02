@@ -25,10 +25,10 @@ object EnumModelRenderer extends ModelRenderer[EnumModel] {
 
   def render(enum: EnumModel)(implicit indent: Indentation) : Iterator[String] = {
 
-    def pair(ir: IntRender)(ev: EnumValue): String = ev.name + "((" + getEnumType(enum.enumType)+") " + ir(ev.value) + ")"
+    def noCast(ir: IntRender)(ev: EnumValue): String = ev.name + "(" + ir(ev.value) + ")"
 
     def getEnumType(typ: EnumModel.Type): String = typ match {
-      case EnumModel.UInt8 => "byte"
+      case EnumModel.UInt8 => "int"
       case EnumModel.Integer => "int"
     }
 
@@ -40,7 +40,7 @@ object EnumModelRenderer extends ModelRenderer[EnumModel] {
 
     def comments: Iterator[Option[Iterator[String]]] = enum.values.map(ev => ev.comment.map(c => summary(Iterator(c)))).iterator
 
-    def definitions : Iterator[String] = commaDelimitedWithSemicolon(enum.values.map(pair(enum.render)).iterator)
+    def definitions : Iterator[String] = commaDelimitedWithSemicolon(enum.values.map(noCast(enum.render)).iterator)
 
     def id = Iterator(List("private final", getEnumType(enum.enumType),"id;").spaced)
 
@@ -52,7 +52,7 @@ object EnumModelRenderer extends ModelRenderer[EnumModel] {
       Iterator("return id;")
     }
 
-    def fromType(inner: => Iterator[String]) = Iterator(List("public static fromType(", getEnumType(enum.enumType), " arg)").mkString) ++ bracket {
+    def fromType(inner: => Iterator[String]) = Iterator(List("public static " +  enum.name + " fromType(", getEnumType(enum.enumType), " arg)").mkString) ++ bracket {
       inner
     }
 

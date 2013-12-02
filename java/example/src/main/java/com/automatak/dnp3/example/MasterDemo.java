@@ -32,7 +32,7 @@ import java.io.InputStreamReader;
  * Example master than can be run against the example outstation
  */
 public class MasterDemo {
-                                 c
+
     public static void main(String[] args) throws IOException, InterruptedException {
 
         // create the root class with a thread pool size of 1
@@ -43,7 +43,7 @@ public class MasterDemo {
         manager.addLogSubscriber(PrintingLogSubscriber.getInstance());
 
         // Create a tcp channel class that will connect to the loopback
-        Channel channel = manager.addTCPClient("client", LogLevel.INFO, 5000, "127.0.0.1", 20000);
+        Channel channel = manager.addTCPClient("client", LogLevel.Info, 5000, "127.0.0.1", 20000);
 
         // You can optionally add a listener to receive state changes on the channel
 
@@ -58,7 +58,7 @@ public class MasterDemo {
         MasterStackConfig config = new MasterStackConfig();
 
         // Create a master instance, pass in a simple singleton to print received values to the console
-        Master master = channel.addMaster("master", LogLevel.INTERPRET, PrintingDataObserver.getInstance(), config);
+        Master master = channel.addMaster("master", LogLevel.Interpret, PrintingDataObserver.getInstance(), config);
 
         // You can optionally add a listener to receive state changes on the stack
         master.addStateListener(new StackStateListener() {

@@ -41,7 +41,7 @@ class ChannelImpl implements Channel {
     public Master addMaster(String loggerId, LogLevel level, DataObserver publisher, MasterStackConfig config)
     {
         DataObserverAdapter adapter = new DataObserverAdapter(publisher);
-        long ptr = get_native_master(nativeChannel, loggerId, level.toInt(), adapter, config);
+        long ptr = get_native_master(nativeChannel, loggerId, level.toType(), adapter, config);
         return new MasterImpl(ptr);
     }
 
@@ -49,7 +49,7 @@ class ChannelImpl implements Channel {
     public Outstation addOutstation(String loggerId, LogLevel level, CommandHandler cmdHandler, OutstationStackConfig config)
     {
         CommandHandlerAdapter adapter = new CommandHandlerAdapter(cmdHandler);
-        long ptr = get_native_slave(nativeChannel, loggerId, level.toInt(), adapter, config);
+        long ptr = get_native_slave(nativeChannel, loggerId, level.toType(), adapter, config);
         return new OutstationImpl(ptr);
     }
 

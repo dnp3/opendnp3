@@ -40,14 +40,14 @@ class DNP3ManagerTestSuite extends FunSuite with ShouldMatchers {
   })
 
   def createClient(mgr: DNP3Manager): Channel = {
-    val channel = mgr.addTCPClient("client", LogLevel.INFO, 3000, "127.0.0.1", 20000)
+    val channel = mgr.addTCPClient("client", LogLevel.Info, 3000, "127.0.0.1", 20000)
     channel.addStateListener(new ChannelStateListener {
       def onStateChange(state: ChannelState) {}
     })
     channel
   }
   def createServer(mgr: DNP3Manager): Channel = {
-    val channel = mgr.addTCPServer("server", LogLevel.INFO, 3000, "127.0.0.1", 20000)
+    val channel = mgr.addTCPServer("server", LogLevel.Info, 3000, "127.0.0.1", 20000)
     channel.addStateListener(new ChannelStateListener {
       def onStateChange(state: ChannelState) {}
     })
@@ -57,7 +57,7 @@ class DNP3ManagerTestSuite extends FunSuite with ShouldMatchers {
   def createMaster(channel: Channel) : Master = {
     val config = new MasterStackConfig
     config.masterConfig.scans.add(new ExceptionScan(PointClass.ALL_EVENTS.toInt(), 5000))
-    val master = channel.addMaster("master", LogLevel.INFO, NullDataObserver, config)
+    val master = channel.addMaster("master", LogLevel.Info, NullDataObserver, config)
     master.addStateListener(new StackStateListener {
       def onStateChange(state: StackState) {}
     })
@@ -67,7 +67,7 @@ class DNP3ManagerTestSuite extends FunSuite with ShouldMatchers {
   def createOutstation(channel: Channel): Outstation = {
     val db = new DatabaseConfig(5,5,5,5,5)
     val config = new OutstationStackConfig(db)
-    val outstation = channel.addOutstation("outstation", LogLevel.INFO, SuccessCommandHandler, config)
+    val outstation = channel.addOutstation("outstation", LogLevel.Info, SuccessCommandHandler, config)
     outstation.addStateListener(new StackStateListener {
       def onStateChange(state: StackState) {}
     })

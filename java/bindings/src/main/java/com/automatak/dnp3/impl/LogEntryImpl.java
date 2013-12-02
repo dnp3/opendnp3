@@ -23,14 +23,14 @@ import com.automatak.dnp3.LogLevel;
 
 class LogEntryImpl implements LogEntry {
 
-    private final LogLevel filterLevel;
+    private final LogLevel level;
     private final String loggerName;
     private final String message;
     private final int errorCode;
 
-    public LogEntryImpl(int filterLevel, String loggerName, String message, int errorCode)
+    public LogEntryImpl(int level, String loggerName, String message, int errorCode)
     {
-        this.filterLevel = convertLogLevel(filterLevel);
+        this.level = LogLevel.fromType(level);
         this.loggerName = loggerName;
         this.message = message;
         this.errorCode = errorCode;
@@ -38,30 +38,13 @@ class LogEntryImpl implements LogEntry {
 
     public static LogLevel convertLogLevel(int level)
     {
-        switch(level)
-        {
-            case(0x01):
-                return LogLevel.EVENT;
-            case(0x02):
-                return LogLevel.ERROR;
-            case(0x04):
-                return LogLevel.WARNING;
-            case(0x08):
-                return LogLevel.INFO;
-            case(0x10):
-                return LogLevel.INTERPRET;
-            case(0x20):
-                return LogLevel.COMM;
-            case(0x40):
-                return LogLevel.DEBUG;
-            default:
-                return LogLevel.ERROR;
-        }
+        return LogLevel.fromType(level);
+
     }
 
     public LogLevel getLogLevel()
     {
-        return filterLevel;
+        return level;
     }
 
     public String getLoggerName()
@@ -83,7 +66,7 @@ class LogEntryImpl implements LogEntry {
     public String toString()
     {
         StringBuilder sb = new StringBuilder();
-        sb.append(filterLevel);
+        sb.append(level);
         sb.append(" - ");
         sb.append(loggerName);
         sb.append(" - ");

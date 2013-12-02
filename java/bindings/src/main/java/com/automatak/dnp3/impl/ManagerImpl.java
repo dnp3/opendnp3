@@ -39,14 +39,14 @@ class ManagerImpl implements DNP3Manager {
     @Override
     public Channel addTCPClient(String name, LogLevel level, long retryMs, String address, int port)
     {
-        long ptr = get_native_channel_tcp_client(nativePointer, name, level.toInt(), retryMs, address, port);
+        long ptr = get_native_channel_tcp_client(nativePointer, name, level.toType(), retryMs, address, port);
         return new ChannelImpl(ptr);
     }
 
     @Override
     public Channel addTCPServer(String name, LogLevel level, long retryMs, String endpoint, int port)
     {
-        long ptr = get_native_channel_tcp_server(nativePointer, name, level.toInt(), retryMs, endpoint, port);
+        long ptr = get_native_channel_tcp_server(nativePointer, name, level.toType(), retryMs, endpoint, port);
         return new ChannelImpl(ptr);
     }
 
@@ -56,7 +56,7 @@ class ManagerImpl implements DNP3Manager {
          long ptr = get_native_channel_serial(
                  nativePointer,
                  id,
-                 level.toInt(),
+                 level.toType(),
                  retryMs,
                  settings.port,
                  settings.baudRate,

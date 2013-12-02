@@ -42,7 +42,7 @@ public class OutstationDemo {
         manager.addLogSubscriber(PrintingLogSubscriber.getInstance());
 
         // Create a tcp channel class that will connect to the loopback
-        Channel channel = manager.addTCPServer("client", LogLevel.INFO, 5000, "127.0.0.1", 20000);
+        Channel channel = manager.addTCPServer("client", LogLevel.Info, 5000, "127.0.0.1", 20000);
 
         // You can optionally add a listener to receive state changes on the channel
         channel.addStateListener(new ChannelStateListener() {
@@ -57,10 +57,10 @@ public class OutstationDemo {
 
         // Create the default outstation configuration
         OutstationStackConfig config = new OutstationStackConfig(db);
-        config.outstationConfig.staticAnalogInput = StaticAnalogResponse.GROUP30_VAR1;
+        config.outstationConfig.staticAnalogInput = StaticAnalogResponse.Group30Var1;
 
         // Create an Outstation instance, pass in a simple a command handler that responds successfully to everything
-        Outstation outstation = channel.addOutstation("outstation", LogLevel.INTERPRET, SuccessCommandHandler.getInstance(), config);
+        Outstation outstation = channel.addOutstation("outstation", LogLevel.Interpret, SuccessCommandHandler.getInstance(), config);
 
         // You can optionally add a listener to receive state changes on the stack
         outstation.addStateListener(new StackStateListener() {

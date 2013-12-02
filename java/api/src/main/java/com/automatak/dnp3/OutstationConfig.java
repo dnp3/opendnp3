@@ -107,17 +107,17 @@ public class OutstationConfig {
     /**
      * The default group/variation to use for static binary responses (default 1:2)
      */
-    public StaticBinaryResponse staticBinaryInput  = StaticBinaryResponse.GROUP1_VAR2;
+    public StaticBinaryResponse staticBinaryInput  = StaticBinaryResponse.Group1Var2;
 
     /**
      * The default group/variation to use for static analog responses (default 30:1)
      */
-    public StaticAnalogResponse staticAnalogInput = StaticAnalogResponse.GROUP30_VAR1;
+    public StaticAnalogResponse staticAnalogInput = StaticAnalogResponse.Group30Var1;
 
     /**
      * The default group/variation to use for static counter responses (default 20:1)
      */
-    public StaticCounterResponse staticCounter = StaticCounterResponse.GROUP20_VAR1;
+    public StaticCounterResponse staticCounter = StaticCounterResponse.Group20Var1;
 
     /**
      * The default group/variation to use for static AnalogOutput status responses (default 40:1)
@@ -127,16 +127,16 @@ public class OutstationConfig {
     /**
      * The default group/variation to use for binary event responses (default 2:1)
      */
-    public EventBinaryResponse eventBinaryInput = EventBinaryResponse.GROUP2_VAR1;
+    public EventBinaryResponse eventBinaryInput = EventBinaryResponse.Group2Var1;
 
     /**
      * The default group/variation to use for analog event responses (default 32:1)
      */
-    public EventAnalogResponse eventAnalogInput = EventAnalogResponse.GROUP32_VAR1;
+    public EventAnalogResponse eventAnalogInput = EventAnalogResponse.Group32Var1;
 
     /**
      * The default group/variation to use for counter event responses (default 22:1)
      */
-    public EventCounterResponse eventCounter = EventCounterResponse.GROUP22_VAR1;
+    public EventCounterResponse eventCounter = EventCounterResponse.Group22Var1;
 
 }
