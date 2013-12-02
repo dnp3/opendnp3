@@ -59,7 +59,7 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_ChannelImpl_add_1native_1sta
 	pChannel->AddStateListener([pJVM, global](ChannelState state) {
 		JNIEnv* pEnv = JNIHelpers::GetEnvFromJVM(pJVM);
 		jmethodID changeID = JNIHelpers::GetMethodID(pEnv, global, "onStateChange", "(I)V");
-		int intstate = state;
+		jint intstate = static_cast<jint>(state);
 		pEnv->CallIntMethod(global, changeID, intstate);
 	});
 }

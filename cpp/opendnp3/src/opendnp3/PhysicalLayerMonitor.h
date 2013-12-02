@@ -34,7 +34,7 @@
 #include <openpal/Visibility.h>
 #include <openpal/TimeDuration.h>
 
-#include <opendnp3/ChannelStates.h>
+#include <opendnp3/gen/ChannelState.h>
 
 #include <set>
 #include <mutex>

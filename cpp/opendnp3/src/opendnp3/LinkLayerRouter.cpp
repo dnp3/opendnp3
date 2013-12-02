@@ -106,7 +106,7 @@ void LinkLayerRouter::RemoveContext(const LinkRoute& arRoute)
 		auto record = i->second;
 		mAddressMap.erase(i);
 
-		if(this->GetState() == ChannelState::CS_OPEN && record.enabled) record.pContext->OnLowerLayerDown();
+		if(this->GetState() == ChannelState::OPEN && record.enabled) record.pContext->OnLowerLayerDown();
 
 		// if no contexts are enabled, suspend the router
 		if(!HasEnabledContext()) this->Suspend();		

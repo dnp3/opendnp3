@@ -67,7 +67,7 @@ void MonitorStateActions::AsyncOpen(PhysicalLayerMonitor* apContext)
 std::string IMonitorState::ConvertToString()
 {
 	std::ostringstream oss;
-	oss << this->Name() << "(" << ConvertChannelStateToString(this->GetState()) << ")";
+	oss << this->Name() << "(" << ChannelStateToString(this->GetState()) << ")";
 	return oss.str();
 }
 #endif

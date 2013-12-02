@@ -92,11 +92,11 @@ BOOST_AUTO_TEST_CASE(AutomaticallyClosesWhenAllContextsAreRemoved)
 	LinkRoute route(1, 1024);
 	t.router.AddContext(&mfs, route);
 	t.router.EnableRoute(route);
-	BOOST_REQUIRE_EQUAL(ChannelState::CS_OPENING, t.router.GetState());
+	BOOST_REQUIRE(ChannelState::OPENING == t.router.GetState());
 	t.router.RemoveContext(route);
-	BOOST_REQUIRE_EQUAL(ChannelState::CS_OPENING, t.router.GetState());
+	BOOST_REQUIRE(ChannelState::OPENING == t.router.GetState());
 	t.phys.SignalOpenFailure();
-	BOOST_REQUIRE_EQUAL(ChannelState::CS_CLOSED, t.router.GetState());
+	BOOST_REQUIRE(ChannelState::CLOSED == t.router.GetState());
 }
 
 /// Test that router is correctly clears the send buffer on close

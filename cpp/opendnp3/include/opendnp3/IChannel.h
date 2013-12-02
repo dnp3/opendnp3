@@ -31,7 +31,7 @@
 
 #include "MasterStackConfig.h"
 #include "SlaveStackConfig.h"
-#include "ChannelStates.h"
+#include "gen/ChannelState.h"
 #include "DestructorHook.h"
 
 #include <openpal/LogTypes.h>

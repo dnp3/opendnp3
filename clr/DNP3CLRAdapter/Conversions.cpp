@@ -95,20 +95,7 @@ LogLevel Conversions::convertFilterLevel(openpal::FilterLevel level)
 
 ChannelState Conversions::convertChannelState(opendnp3::ChannelState aState)
 {
-	switch(aState) {
-	case(opendnp3::ChannelState::CS_CLOSED):
-		return ChannelState::CLOSED;
-	case(opendnp3::ChannelState::CS_OPEN):
-		return ChannelState::OPEN;
-	case(opendnp3::ChannelState::CS_OPENING):
-		return ChannelState::OPENING;
-	case(opendnp3::ChannelState::CS_SHUTDOWN):
-		return ChannelState::SHUTDOWN;
-	case(opendnp3::ChannelState::CS_WAITING):
-		return ChannelState::WAITING;
-	default:
-		return ChannelState::CLOSED;
-	}
+	return (ChannelState) aState;
 }
 
 

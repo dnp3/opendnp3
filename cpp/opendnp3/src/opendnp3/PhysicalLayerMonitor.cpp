@@ -85,7 +85,7 @@ void PhysicalLayerMonitor::ChangeState(IMonitorState* apState)
 
 		// signaling this way makes sure we're free and clear of the event that causes this
 		// before someone else and deletes
-		if(mpState->GetState() == ChannelState::CS_SHUTDOWN) {
+		if(mpState->GetState() == ChannelState::SHUTDOWN) {
 			mpPhys->GetExecutor()->Post([this]() { this->DoFinalShutdown(); });
 		}
 	}

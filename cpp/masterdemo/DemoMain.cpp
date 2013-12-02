@@ -80,7 +80,7 @@ int main(int argc, char* argv[])
 	// You can optionally add a listener to the channel. You can do this anytime and
 	// you will receive a stream of all state changes
 	pClient->AddStateListener([](ChannelState state) {
-		std::cout << "Client state: " << ConvertChannelStateToString(state) << std::endl;
+		std::cout << "Client state: " << ChannelStateToString(state) << std::endl;
 	});
 
 	// The master config object for a master. The default are

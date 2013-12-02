@@ -78,7 +78,7 @@ int main(int argc, char* argv[])
 	// You can optionally add a listener to the channel. You can do this anytime and
 	// you will receive a stream of all state changes
 	pServer->AddStateListener([](ChannelState state) {
-		std::cout << "Server state: " << ConvertChannelStateToString(state) << std::endl;
+		std::cout << "Server state: " << ChannelStateToString(state) << std::endl;
 	});
 
 	// The master config object for a slave. The default are

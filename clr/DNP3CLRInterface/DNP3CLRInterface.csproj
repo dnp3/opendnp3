@@ -42,11 +42,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ChannelState.cs" />
     <Compile Include="CommandTypes.cs" />
     <Compile Include="ConfigObjects.cs" />
     <Compile Include="Conversions.cs" />
     <Compile Include="DataTypes.cs" />
+    <Compile Include="gen\ChannelState.cs" />
     <Compile Include="gen\CommandResult.cs" />
     <Compile Include="gen\CommandStatus.cs" />
     <Compile Include="gen\ControlCode.cs" />
