@@ -13,6 +13,8 @@ sealed trait GroupVariation {
 
   final def group: Byte = parent.group
   final def id: Id = Id(group, variation)
+  final def name: String = List("Group",group,"Var",variation).mkString
+
 
   def variation: Byte
   def parent: ObjectGroup
@@ -22,7 +24,7 @@ class AnyVariation(g: ObjectGroup, v: Byte) extends BasicGroupVariation(g,v)
 class SingleBitfield(g: ObjectGroup, v: Byte) extends BasicGroupVariation(g,v)
 class DoubleBitfield(g: ObjectGroup, v: Byte) extends BasicGroupVariation(g,v)
 
-class BasicGroupVariation(g: ObjectGroup, v: Byte) extends  GroupVariation {
+sealed abstract class BasicGroupVariation(g: ObjectGroup, v: Byte) extends  GroupVariation {
   def variation: Byte = v
   def parent: ObjectGroup = g
 }

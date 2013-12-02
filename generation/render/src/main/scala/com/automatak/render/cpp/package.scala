@@ -58,6 +58,27 @@ package object cpp {
 
   }
 
+  def classPublic(inner: => Iterator[String])(implicit i: Indentation): Iterator[String] = Iterator("public:","") ++ inner
+
+  def classPrivate(inner: => Iterator[String])(implicit i: Indentation): Iterator[String] = Iterator("private:","") ++ inner
+
+  def struct(name: String)(inner: => Iterator[String])(implicit i: Indentation): Iterator[String] = {
+    def header = Iterator("struct " + name)
+    header ++
+      bracketSemiColon {
+        inner
+      }
+  }
+
+  def clazz(name: String, bases: List[String] = Nil)(inner: => Iterator[String])(implicit i: Indentation): Iterator[String] = {
+    def header = "class " + name
+    def headerWithBases = Iterator(if(bases.isEmpty) header else header + ": " + bases.map(b => "public " + b).mkString(","))
+    headerWithBases ++
+    bracketSemiColon {
+      inner
+    }
+  }
+
   def includeGuards(name: String)(internals: Iterator[String]): Iterator[String] = {
 
     val pattern = "__OPENDNP3_GENERATED_"+ name.toUpperCase + "_H_"
