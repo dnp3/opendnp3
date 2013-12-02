@@ -8,7 +8,7 @@ object EventTypes {
 
   private def group(i: Int)(vars: Int*): List[EnumValue] = EnumValues.from(vars.map(v => List("Group",i.toString,"Var", v.toString).mkString).toList)
 
-  // defined used syntactic sugar above
+  // defined using syntactic sugar above
   def enums : List[EnumModel] = List(
     create("StaticBinaryResponse", group(1)(2)),
     create("StaticAnalogResponse", group(30)(1,2,3,4,5,6)),
