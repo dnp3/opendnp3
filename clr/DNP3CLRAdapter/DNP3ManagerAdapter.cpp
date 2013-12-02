@@ -55,13 +55,13 @@ DNP3ManagerAdapter::~DNP3ManagerAdapter()
 	delete mpMgr;
 }
 
-IChannel ^ DNP3ManagerAdapter::AddTCPClient(System::String ^ name, LogLevel level, System::TimeSpan retryDelay, System::String ^ address, System::UInt16 port)
+IChannel ^ DNP3ManagerAdapter::AddTCPClient(System::String ^ name, DNP3::Interface::LogLevel level, System::TimeSpan retryDelay, System::String ^ address, System::UInt16 port)
 {
 
 	std::string stdName = Conversions::convertString(name);
 	std::string stdAddress = Conversions::convertString(address);
 	uint16_t stdPort = port;
-	auto lev = Conversions::convertFilterLevel(level);
+	auto lev = Conversions::convertLogLevel(level);
 
 	try {
 		Logger logger(mpMgr->GetLog(), lev, stdName);
@@ -73,12 +73,12 @@ IChannel ^ DNP3ManagerAdapter::AddTCPClient(System::String ^ name, LogLevel leve
 	}
 }
 
-IChannel ^ DNP3ManagerAdapter::AddTCPServer(System::String ^ name, LogLevel level, System::TimeSpan retryDelay, System::String ^ endpoint, System::UInt16 port)
+IChannel ^ DNP3ManagerAdapter::AddTCPServer(System::String ^ name, DNP3::Interface::LogLevel level, System::TimeSpan retryDelay, System::String ^ endpoint, System::UInt16 port)
 {
 	std::string stdName = Conversions::convertString(name);
 	std::string stdEndpoint = Conversions::convertString(endpoint);
 	uint16_t stdPort = port;
-	auto lev = Conversions::convertFilterLevel(level);
+	auto lev = Conversions::convertLogLevel(level);
 
 	try {
 		Logger logger(mpMgr->GetLog(), lev, stdName);
@@ -90,10 +90,10 @@ IChannel ^ DNP3ManagerAdapter::AddTCPServer(System::String ^ name, LogLevel leve
 	}
 }
 
-IChannel ^ DNP3ManagerAdapter::AddSerial(System::String ^ name, LogLevel level, System::TimeSpan retryDelay, DNP3::Interface::SerialSettings ^ settings)
+IChannel ^ DNP3ManagerAdapter::AddSerial(System::String ^ name, DNP3::Interface::LogLevel level, System::TimeSpan retryDelay, DNP3::Interface::SerialSettings ^ settings)
 {
 	std::string stdName = Conversions::convertString(name);
-	auto lev = Conversions::convertFilterLevel(level);
+	auto lev = Conversions::convertLogLevel(level);
 	auto s = Conversions::convertSerialSettings(settings);
 
 	try {

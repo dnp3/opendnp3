@@ -35,15 +35,15 @@ namespace DNP3.Interface
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="filterLevel">Level enumeration of the message</param>
+        /// <param name="LogLevel">Level enumeration of the message</param>
         /// <param name="loggerName">Logger id that recorded the message</param>
         /// <param name="location">Location in the code</param>
         /// <param name="message">Body of the message</param>
         /// <param name="time">Timestamp on the message</param>
         /// <param name="errorCode">dnp3 error code</param>
-        public LogEntry(LogLevel filterLevel, String loggerName, String location, string message, DateTime time, int errorCode)
+        public LogEntry(LogLevel LogLevel, String loggerName, String location, string message, DateTime time, int errorCode)
         {
-            this.filterLevel = filterLevel;
+            this.LogLevel = LogLevel;
             this.loggerName = loggerName;
             this.location = location;
             this.message = message;
@@ -55,7 +55,7 @@ namespace DNP3.Interface
         /// <summary>
         /// Level enumeration of the message
         /// </summary>
-        public readonly LogLevel filterLevel;
+        public readonly LogLevel LogLevel;
 
         /// <summary>
         /// Logger id that recorded the message

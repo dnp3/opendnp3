@@ -76,19 +76,19 @@ bool LinkLayer::Validate(bool aIsMaster, uint16_t aSrc, uint16_t aDest)
 		MACRO_THROW_EXCEPTION(InvalidStateException, "LowerLayerDown");
 
 	if(aIsMaster == mCONFIG.IsMaster) {
-		ERROR_BLOCK(LEV_WARNING,
+		ERROR_BLOCK(LogLevel::Warning,
 		            (aIsMaster ? "Master frame received for master" : "Slave frame received for slave"),
 		            DLERR_MASTER_BIT_MATCH);
 		return false;
 	}
 
 	if(aDest != mCONFIG.LocalAddr) {
-		ERROR_BLOCK(LEV_WARNING, "Frame for unknown destintation", DLERR_UNKNOWN_DESTINATION);
+		ERROR_BLOCK(LogLevel::Warning, "Frame for unknown destintation", DLERR_UNKNOWN_DESTINATION);
 		return false;
 	}
 
 	if(aSrc != mCONFIG.RemoteAddr) {
-		ERROR_BLOCK(LEV_WARNING, "Frame from unknwon source", DLERR_UNKNOWN_SOURCE);
+		ERROR_BLOCK(LogLevel::Warning, "Frame from unknwon source", DLERR_UNKNOWN_SOURCE);
 		return false;
 	}
 

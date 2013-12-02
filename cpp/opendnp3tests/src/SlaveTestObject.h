@@ -39,7 +39,7 @@ namespace opendnp3
 class SlaveTestObject
 {
 public:
-	SlaveTestObject(const SlaveConfig& arCfg, openpal::FilterLevel aLevel = openpal::LEV_INFO, bool aImmediate = false);
+	SlaveTestObject(const SlaveConfig& arCfg, openpal::LogLevel aLevel = openpal::LogLevel::Info, bool aImmediate = false);
 
 	void SendToSlave(const std::string& arData, SequenceInfo aSeq = SI_OTHER);
 

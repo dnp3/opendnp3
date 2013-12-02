@@ -43,7 +43,7 @@ public:
 	        openpal::IPhysicalLayerAsync*,
 	        LinkConfig,
 	        LinkConfig,
-	        openpal::FilterLevel aLevel = openpal::LEV_INFO,
+	        openpal::LogLevel aLevel = openpal::LogLevel::Info,
 	        bool aImmediate = false);
 
 	~TransportLoopbackTestObject();

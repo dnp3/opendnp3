@@ -48,9 +48,9 @@ class Logger
 
 public:
 
-	Logger(ILogBase* apLog, FilterLevel aLevel, const std::string& aName);	
+	Logger(ILogBase* apLog, LogLevel aLevel, const std::string& aName);	
 
-	void Log( FilterLevel aFilterLevel, const std::string& arLocation, const std::string& aMessage, int aErrorCode = -1);
+	void Log( LogLevel aLogLevel, const std::string& arLocation, const std::string& aMessage, int aErrorCode = -1);
 
 	void Log( const LogEntry& arEntry);
 
@@ -59,8 +59,8 @@ public:
 	}
 
 	// functions for manipulating filter levels
-	inline bool IsEnabled(FilterLevel aFilter) {
-		return (mLevel & aFilter) != 0;
+	inline bool IsEnabled(LogLevel aFilter) {
+		return (mLevel & LogLevelToType(aFilter)) != 0;
 	}
 
 	inline void SetFilters(int aLevel) {
@@ -71,7 +71,7 @@ public:
 		return mLevel;
 	}
 
-	Logger GetSubLogger(std::string aSubName, FilterLevel aLevel) const;	
+	Logger GetSubLogger(std::string aSubName, LogLevel aLevel) const;	
 	Logger GetSubLogger(std::string aName) const;
 
 private:

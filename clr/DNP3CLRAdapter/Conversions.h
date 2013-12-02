@@ -58,8 +58,8 @@ public:
 	static System::String ^ convertString(const std::string& s);
 
 	// Convert the log filter enumeration
-	static openpal::FilterLevel convertFilterLevel(LogLevel level);
-	static LogLevel convertFilterLevel(openpal::FilterLevel level);
+	static openpal::LogLevel convertLogLevel(DNP3::Interface::LogLevel level);
+	static DNP3::Interface::LogLevel convertLogLevel(openpal::LogLevel level);
 
 	// Converting channel state enumeration
 	static ChannelState convertChannelState(opendnp3::ChannelState aState);

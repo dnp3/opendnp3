@@ -80,8 +80,8 @@ public:
 	TestObject() :
 		log(),
 		exe(),
-		phys(Logger(&log, LEV_INFO, "mock-phys"), &exe),
-		monitor(Logger(&log, LEV_INFO, "test"), &phys)
+		phys(Logger(&log, LogLevel::Info, "mock-phys"), &exe),
+		monitor(Logger(&log, LogLevel::Info, "test"), &phys)
 	{}
 
 	EventLog log;

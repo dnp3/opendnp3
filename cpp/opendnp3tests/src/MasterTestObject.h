@@ -43,7 +43,7 @@ struct MasterConfig;
 class MasterTestObject
 {
 public:
-	MasterTestObject(MasterConfig, openpal::FilterLevel aLevel = openpal::LEV_INFO, bool aImmediate = false);
+	MasterTestObject(MasterConfig, openpal::LogLevel aLevel = openpal::LogLevel::Info, bool aImmediate = false);
 
 	void RespondToMaster(const std::string& arData, bool aFinal = true);
 	void SendUnsolToMaster(const std::string& arData);

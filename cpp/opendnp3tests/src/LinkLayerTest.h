@@ -37,7 +37,7 @@ class LinkLayerTest : public ILinkRouter
 {
 public:
 
-	LinkLayerTest(LinkConfig arCfg = DefaultConfig(), openpal::FilterLevel aLevel = openpal::LEV_WARNING, bool aImmediate = false);
+	LinkLayerTest(LinkConfig arCfg = DefaultConfig(), openpal::LogLevel aLevel = openpal::LogLevel::Warning, bool aImmediate = false);
 
 	//ILinkRouter interface
 	bool Transmit(const LinkFrame&);

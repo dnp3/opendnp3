@@ -63,7 +63,7 @@ IUpperLayer::IUpperLayer(openpal::Logger& arLogger) :
 void IUpperLayer::OnReceive(const ReadOnlyBuffer& arBuffer)
 {
 	if(this->LogReceive()) {
-		LOG_BLOCK(LEV_COMM, RecvString() << " " << toHex(arBuffer, true));
+		LOG_BLOCK(LogLevel::Comm, RecvString() << " " << toHex(arBuffer, true));
 	}
 	this->_OnReceive(arBuffer); //call the implementation
 }
@@ -97,7 +97,7 @@ ILowerLayer::ILowerLayer(openpal::Logger& arLogger) :
 
 void ILowerLayer::Send(const ReadOnlyBuffer& arBuffer)
 {
-	LOG_BLOCK(LEV_COMM, SendString() << " " << toHex(arBuffer, true));
+	LOG_BLOCK(LogLevel::Comm, SendString() << " " << toHex(arBuffer, true));
 	this->_Send(arBuffer);
 }
 

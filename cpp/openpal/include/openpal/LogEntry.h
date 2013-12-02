@@ -29,7 +29,7 @@
 #ifndef __LOG_ENTRY_H_
 #define __LOG_ENTRY_H_
 
-#include "LogTypes.h"
+#include "gen/LogLevel.h"
 
 namespace openpal
 {
@@ -45,7 +45,7 @@ public:
 	LogEntry(): mErrorCode(-1)		
 	{}
 
-	LogEntry( FilterLevel aLevel, const std::string& aDeviceName, const std::string& aLocation, const std::string& aMessage, int aErrorCode);
+	LogEntry( LogLevel aLevel, const std::string& aDeviceName, const std::string& aLocation, const std::string& aMessage, int aErrorCode);
 
 	/// @return The name of the logger that recorded the message
 	const std::string&	GetDeviceName() const {
@@ -63,8 +63,8 @@ public:
 	}
 
 	/// @return the log level of the message
-	FilterLevel			GetFilterLevel() const {
-		return mFilterLevel;
+	LogLevel GetLogLevel() const {
+		return mLogLevel;
 	}
 	
 
@@ -75,7 +75,7 @@ public:
 
 private:	
 
-	FilterLevel		mFilterLevel;
+	LogLevel		mLogLevel;
 	std::string		mDeviceName;
 	std::string		mLocation;
 	std::string		mMessage;	

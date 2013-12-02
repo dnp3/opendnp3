@@ -27,7 +27,7 @@ using namespace openpal;
 namespace opendnp3
 {
 
-AsyncPhysBaseTest::AsyncPhysBaseTest(FilterLevel aLevel, bool aImmediate) :
+AsyncPhysBaseTest::AsyncPhysBaseTest(LogLevel aLevel, bool aImmediate) :
 	log(),
 	exe(),
 	phys(Logger(&log, aLevel, "phys"), &exe),

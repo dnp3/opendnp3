@@ -39,7 +39,7 @@ namespace opendnp3
 class TransportTestObject
 {
 public:
-	TransportTestObject(bool aOpenOnStart = false, openpal::FilterLevel aLevel = openpal::LEV_INFO, bool aImmediate = false);
+	TransportTestObject(bool aOpenOnStart = false, openpal::LogLevel aLevel = openpal::LogLevel::Info, bool aImmediate = false);
 
 	// Generate a complete packet sequence inside the vector and
 	// return the corresponding reassembled APDU

@@ -40,7 +40,7 @@ public:
 	        LinkConfig aServerCfg,
 	        boost::uint16_t aPortStart,
 	        boost::uint16_t aNumPair,
-	        openpal::FilterLevel aLevel = openpal::LEV_INFO,
+	        openpal::LogLevel aLevel = openpal::LogLevel::Info,
 	        bool aImmediate = false);
 
 	~TransportScalabilityTestObject();

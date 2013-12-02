@@ -65,9 +65,9 @@ public:
 	DNP3ManagerAdapter(System::Int32 aConcurrency);
 	~DNP3ManagerAdapter();
 
-	virtual IChannel ^ AddTCPClient(System::String ^ name, LogLevel level, System::TimeSpan retryDelay, System::String ^ address, System::UInt16 port);
-	virtual IChannel ^ AddTCPServer(System::String ^ name, LogLevel level, System::TimeSpan retryDelay, System::String ^ endpoint, System::UInt16 port);
-	virtual IChannel ^ AddSerial(System::String ^ name, LogLevel level, System::TimeSpan retryDelay, DNP3::Interface::SerialSettings ^ settings);
+	virtual IChannel ^ AddTCPClient(System::String ^ name, DNP3::Interface::LogLevel level, System::TimeSpan retryDelay, System::String ^ address, System::UInt16 port);
+	virtual IChannel ^ AddTCPServer(System::String ^ name, DNP3::Interface::LogLevel level, System::TimeSpan retryDelay, System::String ^ endpoint, System::UInt16 port);
+	virtual IChannel ^ AddSerial(System::String ^ name, DNP3::Interface::LogLevel level, System::TimeSpan retryDelay, DNP3::Interface::SerialSettings ^ settings);
 
 	virtual void AddLogHandler(ILogHandler ^ logHandler);
 

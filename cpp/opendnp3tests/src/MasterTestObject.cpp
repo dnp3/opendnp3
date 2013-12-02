@@ -33,7 +33,7 @@ using namespace openpal;
 namespace opendnp3
 {
 
-MasterTestObject::MasterTestObject(MasterConfig cfg, openpal::FilterLevel aLevel, bool aImmediate) :
+MasterTestObject::MasterTestObject(MasterConfig cfg, openpal::LogLevel aLevel, bool aImmediate) :
 	log(),
 	fixedUTC(0),
 	mts(),

@@ -98,7 +98,7 @@ void Slave::SetNeedTimeIIN()
 void Slave::UpdateState(StackState aState)
 {
 	if(mState != aState) {
-		LOG_BLOCK(LEV_INFO, "StackState: " << StackStateToString(aState));
+		LOG_BLOCK(LogLevel::Info, "StackState: " << StackStateToString(aState));
 		mState = aState;
 		this->NotifyListeners(aState);
 	}
@@ -130,7 +130,7 @@ void Slave::OnSolFailure()
 {
 	mpState->OnSolFailure(this);
 	this->FlushDeferredEvents();
-	LOG_BLOCK(LEV_WARNING, "Response failure");
+	LOG_BLOCK(LogLevel::Warning, "Response failure");
 }
 
 void Slave::OnUnsolSendSuccess()
@@ -143,7 +143,7 @@ void Slave::OnUnsolSendSuccess()
 void Slave::OnUnsolFailure()
 {
 	mpState->OnUnsolFailure(this);
-	LOG_BLOCK(LEV_WARNING, "Unsol response failure");
+	LOG_BLOCK(LogLevel::Warning, "Unsol response failure");
 	this->FlushDeferredEvents();
 }
 
@@ -230,14 +230,14 @@ size_t Slave::FlushUpdates()
 		num = mChangeBuffer.FlushUpdates(mpDatabase);
 	}
 	catch (Exception& ex) {
-		LOG_BLOCK(LEV_ERROR, "Error in flush updates: " << ex.Message());
+		LOG_BLOCK(LogLevel::Error, "Error in flush updates: " << ex.Message());
 		Transaction tr(mChangeBuffer);
 		mChangeBuffer.Clear();
 		return 0;
 	}
 
 
-	LOG_BLOCK(LEV_DEBUG, "Processed " << num << " updates");
+	LOG_BLOCK(LogLevel::Debug, "Processed " << num << " updates");
 	return num;
 }
 
@@ -296,7 +296,7 @@ void Slave::HandleWriteVto(HeaderReadIterator& arHdr)
 		size_t index = obj->Index();
 
 		if(index > std::numeric_limits<uint8_t>::max()) {
-			LOG_BLOCK(LEV_WARNING, "Ignoring VTO index that exceeds bit width of uint8_t: " << index);
+			LOG_BLOCK(LogLevel::Warning, "Ignoring VTO index that exceeds bit width of uint8_t: " << index);
 		}
 		else {
 			//Pass the data to the vto reader
@@ -323,13 +323,13 @@ void Slave::HandleWriteIIN(HeaderReadIterator& arHdr)
 				}
 				else {
 					mRspIIN.SetParameterError(true);
-					ERROR_BLOCK(LEV_WARNING, "", SERR_INVALID_IIN_WRITE);
+					ERROR_BLOCK(LogLevel::Warning, "", SERR_INVALID_IIN_WRITE);
 				}
 				break;
 			}
 		default:
 			mRspIIN.SetParameterError(true);
-			ERROR_BLOCK(LEV_WARNING, "", SERR_INVALID_IIN_WRITE);
+			ERROR_BLOCK(LogLevel::Warning, "", SERR_INVALID_IIN_WRITE);
 			break;
 		}
 	}
@@ -338,7 +338,7 @@ void Slave::HandleWriteIIN(HeaderReadIterator& arHdr)
 void Slave::HandleWriteTimeDate(HeaderReadIterator& arHWI)
 {
 	if (!mIIN.GetNeedTime()) {
-		LOG_BLOCK(LEV_WARNING, "Master is attempting to write time but slave is not requesting time sync");
+		LOG_BLOCK(LogLevel::Warning, "Master is attempting to write time but slave is not requesting time sync");
 		return;
 	}
 
@@ -357,7 +357,7 @@ void Slave::HandleWriteTimeDate(HeaderReadIterator& arHWI)
 
 	mIIN.SetNeedTime(false);
 
-	ERROR_BLOCK(LEV_EVENT, "Time synchronized with master", TIME_SYNC_UPDATED);
+	ERROR_BLOCK(LogLevel::Event, "Time synchronized with master", TIME_SYNC_UPDATED);
 }
 
 void Slave::HandleWrite(const APDU& arRequest)
@@ -373,7 +373,7 @@ void Slave::HandleWrite(const APDU& arRequest)
 			break;
 		default:
 			mRspIIN.SetFuncNotSupported(true);
-			ERROR_BLOCK(LEV_WARNING, "Object/Function mismatch", SERR_OBJ_FUNC_MISMATCH);
+			ERROR_BLOCK(LogLevel::Warning, "Object/Function mismatch", SERR_OBJ_FUNC_MISMATCH);
 			break;
 		}
 	}
@@ -423,7 +423,7 @@ void Slave::HandleSelect(const APDU& arRequest, SequenceInfo aSeqInfo)
 
 		default:
 			mRspIIN.SetFuncNotSupported(true);
-			ERROR_BLOCK(LEV_WARNING, "Object/Function mismatch", SERR_OBJ_FUNC_MISMATCH);
+			ERROR_BLOCK(LogLevel::Warning, "Object/Function mismatch", SERR_OBJ_FUNC_MISMATCH);
 			break;
 		}
 	}
@@ -473,7 +473,7 @@ void Slave::HandleOperate(const APDU& arRequest, SequenceInfo aSeqInfo)
 
 		default:
 			mRspIIN.SetFuncNotSupported(true);
-			ERROR_BLOCK(LEV_WARNING, "Object/Function mismatch", SERR_OBJ_FUNC_MISMATCH);
+			ERROR_BLOCK(LogLevel::Warning, "Object/Function mismatch", SERR_OBJ_FUNC_MISMATCH);
 			break;
 		}
 	}
@@ -521,7 +521,7 @@ void Slave::HandleDirectOperate(const APDU& arRequest, SequenceInfo aSeqInfo)
 
 		default:
 			mRspIIN.SetFuncNotSupported(true);
-			ERROR_BLOCK(LEV_WARNING, "Object/Function mismatch", SERR_OBJ_FUNC_MISMATCH);
+			ERROR_BLOCK(LogLevel::Warning, "Object/Function mismatch", SERR_OBJ_FUNC_MISMATCH);
 			break;
 		}
 	}
@@ -556,7 +556,7 @@ void Slave::HandleEnableUnsolicited(const APDU& arRequest, bool aIsEnable)
 
 			default:
 				mRspIIN.SetFuncNotSupported(true);
-				LOG_BLOCK(LEV_WARNING, "Cannot enable/disable unsol for " << hdr->GetBaseObject()->Name());
+				LOG_BLOCK(LogLevel::Warning, "Cannot enable/disable unsol for " << hdr->GetBaseObject()->Name());
 				break;
 			}
 		}

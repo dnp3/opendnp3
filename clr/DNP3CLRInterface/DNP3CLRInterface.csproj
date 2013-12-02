@@ -50,6 +50,7 @@
     <Compile Include="gen\CommandResult.cs" />
     <Compile Include="gen\CommandStatus.cs" />
     <Compile Include="gen\ControlCode.cs" />
+    <Compile Include="gen\LogLevel.cs" />
     <Compile Include="gen\StackState.cs" />
     <Compile Include="ICommandHandler.cs">
       <SubType>Code</SubType>
@@ -71,7 +72,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ITimeWriteHandler.cs" />
-    <Compile Include="LogTypes.cs" />
     <Compile Include="IMasterScan.cs" />
     <Compile Include="NamespaceDoc.cs">
       <SubType>Code</SubType>

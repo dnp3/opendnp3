@@ -70,7 +70,7 @@ public:
 #ifndef OPENDNP3_NO_MASTER
 
 	IMaster* AddMaster(		const std::string& arLoggerId,
-	                                FilterLevel aLevel,
+	                                LogLevel aLevel,
 	                                IMeasurementHandler* apPublisher,
 	                                openpal::IUTCTimeSource* apTimeSource,
 	                                const MasterStackConfig& arCfg);
@@ -78,7 +78,7 @@ public:
 #endif
 
 	IOutstation* AddOutstation(	const std::string& arLoggerId,
-	                                FilterLevel aLevel,
+	                                LogLevel aLevel,
 	                                ICommandHandler* apCmdHandler,
 	                                ITimeWriteHandler* apTimeWriteHandler,
 	                                const SlaveStackConfig&);

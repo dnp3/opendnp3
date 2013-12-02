@@ -23,14 +23,18 @@
 #include <asiopal/IOServiceThreadPool.h>
 
 #include <openpal/Exception.h>
-
 #include <openpal/LoggableMacros.h>
 
 #include <chrono>
+#include <sstream>
 
 using namespace std;
 using namespace std::chrono;
 using namespace openpal;
+
+#ifdef ERROR
+#undef ERROR
+#endif
 
 namespace asiopal
 {
@@ -49,7 +53,7 @@ IOServiceThreadPool::IOServiceThreadPool(
 {
 	if(aConcurrency == 0) {
 		aConcurrency = 1;
-		LOG_BLOCK(LEV_WARNING, "Concurrency was set to 0, defaulting to 1 thread");
+		LOG_BLOCK(LogLevel::Warning, "Concurrency was set to 0, defaulting to 1 thread");
 	}
 	mInfiniteTimer.expires_at(timer_clock::time_point::max());
 	mInfiniteTimer.async_wait(bind(&IOServiceThreadPool::OnTimerExpiration, this, placeholders::_1));
@@ -97,7 +101,8 @@ void IOServiceThreadPool::Run()
 		}
 		catch(const std::exception& ex) {
 			num = 0;
-			LOG_BLOCK(LEV_ERROR, "Unhandled exception in thread pool: " << ex.what());
+									
+			LOG_BLOCK(LogLevel::Error, "Unhandled exception in thread pool: " << ex.what());			
 		}
 	}
 	while(num > 0);

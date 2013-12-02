@@ -150,13 +150,13 @@ void AS_Base::DoRequest(Slave* c, AS_Base* apNext, const APDU& arAPDU, SequenceI
 	}
 	catch (const ParameterException& ex) {
 		ChangeState(c, apNext);
-		ERROR_LOGGER_BLOCK(c->mLogger, LEV_ERROR, ex.Message(), ex.ErrorCode());
+		ERROR_LOGGER_BLOCK(c->mLogger, LogLevel::Error, ex.Message(), ex.ErrorCode());
 		c->mRspIIN.SetParameterError(true);
 		c->ConfigureAndSendSimpleResponse();
 	}
 	catch (const NotSupportedException& ex) {
 		ChangeState(c, apNext);
-		ERROR_LOGGER_BLOCK(c->mLogger, LEV_ERROR, ex.Message(), ex.ErrorCode());
+		ERROR_LOGGER_BLOCK(c->mLogger, LogLevel::Error, ex.Message(), ex.ErrorCode());
 		c->mRspIIN.SetFuncNotSupported(true);
 		c->ConfigureAndSendSimpleResponse();
 	}
@@ -173,7 +173,7 @@ void AS_Base::ChangeState(Slave* c, AS_Base* apState)
 		c->mpTimeTimer->Cancel();
 		c->mpTimeTimer = nullptr;
 	}
-	LOGGER_BLOCK(c->mLogger, LEV_DEBUG, "State changed from " << c->mpState->Name() << " to " << apState->Name());
+	LOGGER_BLOCK(c->mLogger, LogLevel::Debug, "State changed from " << c->mpState->Name() << " to " << apState->Name());
 	c->mpState = apState;
 }
 

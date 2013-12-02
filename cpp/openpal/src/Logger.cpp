@@ -24,6 +24,8 @@
 
 #include <openpal/LogBase.h>
 
+#include <openpal/LogTypes.h>
+
 #include <assert.h>
 #include <sstream>
 
@@ -41,16 +43,16 @@ Logger::Logger(ILogBase* apLog, int aLevel, const std::string& aName)
 
 }
 
-Logger::Logger(ILogBase* apLog, FilterLevel aLevel, const std::string& aName)
+Logger::Logger(ILogBase* apLog, LogLevel aLevel, const std::string& aName)
 	:
-	mLevel(LogTypes::FilterLevelToMask(aLevel)),
+	mLevel(LogLevelToMask(aLevel)),
 	mpLog(apLog),
 	mName(aName)
 {
 
 }
 
-Logger Logger::GetSubLogger(std::string aSubName, FilterLevel aLevel) const
+Logger Logger::GetSubLogger(std::string aSubName, LogLevel aLevel) const
 {
 	std::ostringstream oss;
 	oss << mName << "." << aSubName;
@@ -71,13 +73,13 @@ Logger Logger::GetSubLogger(std::string aSubName) const
 
 void Logger::Log( const LogEntry& arEntry)
 {
-	if(this->IsEnabled(arEntry.GetFilterLevel())) mpLog->Log(arEntry);
+	if(this->IsEnabled(arEntry.GetLogLevel())) mpLog->Log(arEntry);
 }
 
-void Logger::Log( FilterLevel aFilterLevel, const std::string& arLocation, const std::string& aMessage, int aErrorCode)
+void Logger::Log( LogLevel aLogLevel, const std::string& arLocation, const std::string& aMessage, int aErrorCode)
 {
-	if(this->IsEnabled(aFilterLevel)) {
-		LogEntry le(aFilterLevel, mName, arLocation, aMessage, aErrorCode);
+	if(this->IsEnabled(aLogLevel)) {
+		LogEntry le(aLogLevel, mName, arLocation, aMessage, aErrorCode);
 		mpLog->Log(le);
 	}
 }

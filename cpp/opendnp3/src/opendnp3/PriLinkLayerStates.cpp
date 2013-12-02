@@ -40,19 +40,19 @@ namespace opendnp3
 
 void PriStateBase::Ack(LinkLayer* apLL, bool aIsRcvBuffFull)
 {
-	ERROR_LOGGER_BLOCK(apLL->GetLogger(), LEV_WARNING, "Frame context not understood", DLERR_UNEXPECTED_FRAME);
+	ERROR_LOGGER_BLOCK(apLL->GetLogger(), LogLevel::Warning, "Frame context not understood", DLERR_UNEXPECTED_FRAME);
 }
 void PriStateBase::Nack(LinkLayer* apLL, bool aIsRcvBuffFull)
 {
-	ERROR_LOGGER_BLOCK(apLL->GetLogger(), LEV_WARNING, "Frame context not understood", DLERR_UNEXPECTED_FRAME);
+	ERROR_LOGGER_BLOCK(apLL->GetLogger(), LogLevel::Warning, "Frame context not understood", DLERR_UNEXPECTED_FRAME);
 }
 void PriStateBase::LinkStatus(LinkLayer* apLL, bool aIsRcvBuffFull)
 {
-	ERROR_LOGGER_BLOCK(apLL->GetLogger(), LEV_WARNING, "Frame context not understood", DLERR_UNEXPECTED_FRAME);
+	ERROR_LOGGER_BLOCK(apLL->GetLogger(), LogLevel::Warning, "Frame context not understood", DLERR_UNEXPECTED_FRAME);
 }
 void PriStateBase::NotSupported (LinkLayer* apLL, bool aIsRcvBuffFull)
 {
-	ERROR_LOGGER_BLOCK(apLL->GetLogger(), LEV_WARNING, "Frame context not understood", DLERR_UNEXPECTED_FRAME);
+	ERROR_LOGGER_BLOCK(apLL->GetLogger(), LogLevel::Warning, "Frame context not understood", DLERR_UNEXPECTED_FRAME);
 }
 
 void PriStateBase::OnTimeout(LinkLayer* apLL)
@@ -132,12 +132,12 @@ void PLLS_ResetLinkWait::Ack(LinkLayer* apLL, bool aIsRcvBuffFull)
 void PLLS_ResetLinkWait::OnTimeout(LinkLayer* apLL)
 {
 	if(apLL->Retry()) {
-		ERROR_LOGGER_BLOCK(apLL->GetLogger(), LEV_WARNING, "Confirmed data timeout, retrying, " << apLL->RetryRemaining() << " remaining", DLERR_TIMEOUT_RETRY);
+		ERROR_LOGGER_BLOCK(apLL->GetLogger(), LogLevel::Warning, "Confirmed data timeout, retrying, " << apLL->RetryRemaining() << " remaining", DLERR_TIMEOUT_RETRY);
 		apLL->StartTimer();
 		apLL->SendResetLinks();
 	}
 	else {
-		ERROR_LOGGER_BLOCK(apLL->GetLogger(), LEV_WARNING, "Confirmed data final timeout", DLERR_TIMEOUT_NO_RETRY);
+		ERROR_LOGGER_BLOCK(apLL->GetLogger(), LogLevel::Warning, "Confirmed data final timeout", DLERR_TIMEOUT_NO_RETRY);
 		apLL->ChangeState(PLLS_SecNotReset::Inst());
 		apLL->DoSendFailure();
 	}
@@ -186,13 +186,13 @@ void PLLS_ConfDataWait::Failure(LinkLayer* apLL)
 void PLLS_ConfDataWait::OnTimeout(LinkLayer* apLL)
 {
 	if(apLL->Retry()) {
-		ERROR_LOGGER_BLOCK(apLL->GetLogger(), LEV_WARNING, "Retry confirmed data", DLERR_TIMEOUT_RETRY);
+		ERROR_LOGGER_BLOCK(apLL->GetLogger(), LogLevel::Warning, "Retry confirmed data", DLERR_TIMEOUT_RETRY);
 		apLL->StartTimer();
 		apLL->ChangeState(PLLS_ConfDataWait::Inst());
 		apLL->SendDelayedUserData(apLL->NextWriteFCB());
 	}
 	else {
-		ERROR_LOGGER_BLOCK(apLL->GetLogger(), LEV_WARNING, "Confirmed data timeout", DLERR_TIMEOUT_NO_RETRY);
+		ERROR_LOGGER_BLOCK(apLL->GetLogger(), LogLevel::Warning, "Confirmed data timeout", DLERR_TIMEOUT_NO_RETRY);
 		apLL->ChangeState(PLLS_SecNotReset::Inst());
 		apLL->DoSendFailure();
 	}

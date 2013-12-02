@@ -77,7 +77,7 @@ Master::Master(Logger aLogger, MasterConfig aCfg, IAppLayer* apAppLayer, IMeasur
 void Master::UpdateState(StackState aState)
 {
 	if(mState != aState) {
-		LOG_BLOCK(LEV_INFO, "StackState: " << StackStateToString(aState));
+		LOG_BLOCK(LogLevel::Info, "StackState: " << StackStateToString(aState));
 		mState = aState;
 		this->NotifyListeners(aState);
 	}
@@ -91,18 +91,18 @@ void Master::ProcessIIN(const IINField& arIIN)
 
 	//The clear IIN task only happens in response to detecting an IIN bit.
 	if(arIIN.GetNeedTime()) {
-		LOG_BLOCK(LEV_INFO, "Need time detected");
+		LOG_BLOCK(LogLevel::Info, "Need time detected");
 		mSchedule.mpTimeTask->SilentEnable();
 		check_state = true;
 	}
 
-	if(mLastIIN.GetDeviceTrouble()) LOG_BLOCK(LEV_WARNING, "IIN Device trouble detected");
+	if(mLastIIN.GetDeviceTrouble()) LOG_BLOCK(LogLevel::Warning, "IIN Device trouble detected");
 
-	if(mLastIIN.GetEventBufferOverflow()) LOG_BLOCK(LEV_WARNING, "Event buffer overflow detected");
+	if(mLastIIN.GetEventBufferOverflow()) LOG_BLOCK(LogLevel::Warning, "Event buffer overflow detected");
 
 	// If this is detected, we need to reset the startup tasks
 	if(mLastIIN.GetDeviceRestart()) {
-		LOG_BLOCK(LEV_WARNING, "Device restart detected");
+		LOG_BLOCK(LogLevel::Warning, "Device restart detected");
 		mSchedule.ResetStartupTasks();
 		mSchedule.mpClearRestartTask->SilentEnable();
 		check_state = true;
@@ -313,7 +313,7 @@ void Master::ProcessDataResponse(const APDU& arResponse)
 			loader.Process(hdr);
 	}
 	catch(const Exception& ex) {
-		EXCEPTION_BLOCK(LEV_WARNING, ex)
+		EXCEPTION_BLOCK(LogLevel::Warning, ex)
 	}
 }
 

@@ -12,6 +12,12 @@
     <Filter Include="Include Files">
       <UniqueIdentifier>{f67995ab-9876-4dfb-bc83-7110ad7e3e3b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Include Files\gen">
+      <UniqueIdentifier>{d0c7bb34-4b80-426a-901f-c830aae888e0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\gen">
+      <UniqueIdentifier>{aea3b78c-f415-4a34-98fa-2172b96ffda1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\openpal\Visibility.h">
@@ -77,6 +83,9 @@
     <ClInclude Include="include\openpal\BufferWrapper.h">
       <Filter>Include Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\openpal\gen\LogLevel.h">
+      <Filter>Include Files\gen</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\LogEntry.cpp">
@@ -111,6 +120,9 @@
     </ClCompile>
     <ClCompile Include="src\BufferWrapper.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gen\LogLevel.cpp">
+      <Filter>Source Files\gen</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

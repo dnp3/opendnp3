@@ -73,7 +73,7 @@ bool TransportTx::CheckForSend()
 		bool fin = (mNumBytesSent == mNumBytesToSend);
 
 		mBufferTPDU[0] = GetHeader(fir, fin, mSeq);
-		LOG_BLOCK(LEV_INTERPRET, "-> " << TransportLayer::ToString(mBufferTPDU[0]));
+		LOG_BLOCK(LogLevel::Interpret, "-> " << TransportLayer::ToString(mBufferTPDU[0]));
 		ReadOnlyBuffer buffer(mBufferTPDU, numToSend + 1);
 		mpContext->TransmitTPDU(buffer);
 		return false;

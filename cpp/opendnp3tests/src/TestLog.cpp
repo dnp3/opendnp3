@@ -42,8 +42,8 @@ BOOST_AUTO_TEST_SUITE(LogTest)
 BOOST_AUTO_TEST_CASE( LogErrorCounting)
 {
 	LogTester log;
-	Logger logger(&log, LEV_DEBUG, "test1");
-	logger.Log( LEV_DEBUG, "LogEntryParamsTest", "MessageMessage", 5 );
+	Logger logger(&log, LogLevel::Debug, "test1");
+	logger.Log( LogLevel::Debug, "LogEntryParamsTest", "MessageMessage", 5 );
 
 	BOOST_REQUIRE_EQUAL(log.NextErrorCode(), 5);
 	BOOST_REQUIRE_EQUAL(log.NextErrorCode(), -1);

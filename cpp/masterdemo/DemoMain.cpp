@@ -50,9 +50,9 @@ using namespace opendnp3;
 int main(int argc, char* argv[])
 {
 
-	// Specify a FilterLevel for the stack/physical layer to use.
+	// Specify a LogLevel for the stack/physical layer to use.
 	// Log statements with a lower priority will not be logged.
-	const FilterLevel LOG_LEVEL = LEV_INTERPRET;
+	const LogLevel LOG_LEVEL = LogLevel::Interpret;
 
 	EventLog log;
 	// You can optionally subcribe to log messages

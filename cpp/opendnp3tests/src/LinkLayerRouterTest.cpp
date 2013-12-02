@@ -27,7 +27,7 @@ using namespace openpal;
 namespace opendnp3
 {
 
-LinkLayerRouterTest::LinkLayerRouterTest(FilterLevel aLevel, bool aImmediate) :
+LinkLayerRouterTest::LinkLayerRouterTest(LogLevel aLevel, bool aImmediate) :
 	log(),
 	exe(),
 	phys(Logger(&log, aLevel, "Physical"), &exe),

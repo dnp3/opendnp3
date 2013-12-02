@@ -49,7 +49,7 @@ using namespace std;
 using namespace asiopal;
 using namespace opendnp3;
 
-IntegrationTest::IntegrationTest(FilterLevel aLevel, boost::uint16_t aStartPort, size_t aNumPairs, size_t aNumPoints) :
+IntegrationTest::IntegrationTest(LogLevel aLevel, boost::uint16_t aStartPort, size_t aNumPairs, size_t aNumPoints) :
 	M_START_PORT(aStartPort),
 	mLog(),
 	mPool(Logger(&mLog, aLevel, "pool"), std::thread::hardware_concurrency()),
@@ -134,7 +134,7 @@ Counter IntegrationTest::Next(const Counter& arPoint)
 	return point;
 }
 
-void IntegrationTest::AddStackPair(FilterLevel aLevel, size_t aNumPoints)
+void IntegrationTest::AddStackPair(LogLevel aLevel, size_t aNumPoints)
 {
 	boost::uint16_t port = M_START_PORT + static_cast<boost::uint16_t>(this->mMasterObservers.size());
 

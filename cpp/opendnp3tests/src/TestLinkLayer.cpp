@@ -130,7 +130,7 @@ BOOST_AUTO_TEST_CASE(ConfirmedDataIgnoredFromIdleUnreset)
 // Secondary Reset Links
 BOOST_AUTO_TEST_CASE(SecondaryResetLink)
 {
-	LinkLayerTest t(LinkLayerTest::DefaultConfig(), LEV_INTERPRET, true);
+	LinkLayerTest t(LinkLayerTest::DefaultConfig(), LogLevel::Interpret, true);
 	t.link.OnLowerLayerUp();
 	t.link.ResetLinkStates(false, 1, 1024);
 	LinkFrame f; f.FormatAck(true, false, 1024, 1);

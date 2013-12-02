@@ -65,7 +65,7 @@ const boost::uint16_t START_PORT = MACRO_PORT_START;
 const size_t NUM_PAIRS = MACRO_NUM_PAIRS;
 const size_t NUM_POINTS = 500;
 const size_t NUM_CHANGE_SETS = 10;
-const FilterLevel FILTER_LEVEL = LEV_INFO;
+const LogLevel FILTER_LEVEL = LogLevel::Info;
 
 BOOST_AUTO_TEST_CASE(MasterToSlaveThroughput)
 {

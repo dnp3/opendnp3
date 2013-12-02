@@ -62,13 +62,13 @@ void ACS_Base::OnSendFailure(AppLayerChannel*)
 
 void ACS_Base::OnConfirm(AppLayerChannel* c, int aSeq)
 {
-	ERROR_LOGGER_BLOCK(c->GetLogger(), LEV_WARNING,
+	ERROR_LOGGER_BLOCK(c->GetLogger(), LogLevel::Warning,
 	                   "Unexpected confirm with sequence: " << aSeq, ALERR_UNEXPECTED_CONFIRM);
 }
 
 void ACS_Base::OnResponse(AppLayerChannel* c, APDU& arAPDU)
 {
-	LOGGER_BLOCK(c->GetLogger(), LEV_WARNING,
+	LOGGER_BLOCK(c->GetLogger(), LogLevel::Warning,
 	             "Unexpected response with sequence: " << arAPDU.GetControl().SEQ);
 }
 
@@ -106,11 +106,11 @@ void ACS_Base::ProcessResponse(AppLayerChannel* c, APDU& arAPDU, bool aExpectFIR
 			}
 		}
 		else {
-			ERROR_LOGGER_BLOCK(c->GetLogger(), LEV_WARNING, "Unexpected fir bit " << acf.FIR, ALERR_BAD_FIR_FIN);
+			ERROR_LOGGER_BLOCK(c->GetLogger(), LogLevel::Warning, "Unexpected fir bit " << acf.FIR, ALERR_BAD_FIR_FIN);
 		}
 	}
 	else {
-		ERROR_LOGGER_BLOCK(c->GetLogger(), LEV_WARNING, "Bad sequence number " << acf.SEQ, ALERR_BAD_SEQUENCE);
+		ERROR_LOGGER_BLOCK(c->GetLogger(), LogLevel::Warning, "Bad sequence number " << acf.SEQ, ALERR_BAD_SEQUENCE);
 	}
 }
 
@@ -238,7 +238,7 @@ void ACS_WaitForConfirm::OnConfirm(AppLayerChannel* c, int aSeq)
 		c->DoSendSuccess();
 	}
 	else {
-		ERROR_LOGGER_BLOCK(c->GetLogger(), LEV_WARNING,
+		ERROR_LOGGER_BLOCK(c->GetLogger(), LogLevel::Warning,
 		                   "Unexpected confirm w/ sequence " << aSeq, ALERR_UNEXPECTED_CONFIRM);
 	}
 
@@ -246,7 +246,7 @@ void ACS_WaitForConfirm::OnConfirm(AppLayerChannel* c, int aSeq)
 
 void ACS_WaitForConfirm::OnTimeout(AppLayerChannel* c)
 {
-	LOGGER_BLOCK(c->GetLogger(), LEV_WARNING, "Timeout while waiting for confirm");
+	LOGGER_BLOCK(c->GetLogger(), LogLevel::Warning, "Timeout while waiting for confirm");
 	if(!c->Retry(ACS_SendConfirmed::Inst())) {
 		c->ChangeState(ACS_Idle::Inst());
 		c->DoFailure();
@@ -257,7 +257,7 @@ void ACS_WaitForConfirm::OnTimeout(AppLayerChannel* c)
 
 void ACS_WaitForResponseBase::OnTimeout(AppLayerChannel* c)
 {
-	LOGGER_BLOCK(c->GetLogger(), LEV_WARNING, "Timeout while waiting for response");
+	LOGGER_BLOCK(c->GetLogger(), LogLevel::Warning, "Timeout while waiting for response");
 	if(!c->Retry(ACS_SendExpectResponse::Inst())) {
 		c->ChangeState(ACS_Idle::Inst());
 		c->DoFailure();

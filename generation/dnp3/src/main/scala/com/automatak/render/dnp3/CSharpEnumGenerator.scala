@@ -20,7 +20,8 @@ object CSharpEnumGenerator {
       CommandResult(),
       ControlCode(),
       ChannelState(),
-      StackState()
+      StackState(),
+      LogLevel()
     ).map(EnumConfig.apply(_, csharpPath))
 
     implicit val indent = CppIndentation()

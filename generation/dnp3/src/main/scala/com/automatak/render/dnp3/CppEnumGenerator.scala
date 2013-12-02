@@ -7,25 +7,32 @@ import com.automatak.render.cpp._
 
 object CppEnumGenerator {
 
-  def apply(ns: String, cppInclude: Path, cppSource: Path): Unit = {
+  case class DualPath(include: Path, source: Path)
 
-    case class EnumConfig(model: EnumModel, headerDest: Path, implDest: Path, conversions: Boolean = true, localInclude: Boolean = true) {
+
+
+  def apply(opendnp3: DualPath, openpal: DualPath): Unit = {
+
+    case class EnumConfig(model: EnumModel, ns: String, paths: DualPath, conversions: Boolean = true, localInclude: Boolean = true) {
       def headerName = model.name + ".h"
       def implName = model.name + ".cpp"
-      def headerPath = headerDest.resolve(headerName)
-      def implPath = implDest.resolve(implName)
+      def headerPath = paths.include.resolve(headerName)
+      def implPath = paths.source.resolve(implName)
     }
 
     def includeEnums = List(
-      EnumConfig(CommandStatus(), cppInclude, cppSource, true, false),
-      EnumConfig(CommandResult(), cppInclude, cppSource, false, false),
-      EnumConfig(ControlCode(), cppInclude, cppSource, true, false),
-      EnumConfig(ChannelState(), cppInclude, cppSource, false, false),
-      EnumConfig(StackState(), cppInclude, cppSource, false, false)
+      EnumConfig(CommandStatus(), "opendnp3", opendnp3, true, false),
+      EnumConfig(CommandResult(), "opendnp3", opendnp3, false, false),
+      EnumConfig(ControlCode(), "opendnp3", opendnp3, true, false),
+      EnumConfig(ChannelState(), "opendnp3", opendnp3, false, false),
+      EnumConfig(StackState(), "opendnp3", opendnp3, false, false),
+      EnumConfig(LogLevel(), "openpal", openpal, true, false)
     )
 
     // list of all enumerations that we want to generate
-    def sourceEnums = List(FunctionCode(), QualifierCode(), LinkFunction()).map(EnumConfig.apply(_, cppSource, cppSource))
+    def sourceEnums = List(FunctionCode(), QualifierCode(), LinkFunction()).map { em =>
+      EnumConfig.apply(em, "opendnp3", opendnp3.copy(include = opendnp3.source))
+    }
 
     val enums = sourceEnums ::: includeEnums
 
@@ -39,7 +46,7 @@ object CppEnumGenerator {
         val license = commented(LicenseHeader())
         val enum = EnumModelRenderer.render(cfg.model).toIterator
         val signatures = renders.map(c => c.header.render(cfg.model)).flatten.toIterator
-        val lines = license ++ space ++ includeGuards(cfg.model.name)(string ++ cstdint ++ space ++ namespace(ns)(enum ++ space ++ signatures))
+        val lines = license ++ space ++ includeGuards(cfg.model.name)(string ++ cstdint ++ space ++ namespace(cfg.ns)(enum ++ space ++ signatures))
         writeLinesTo(cfg.headerPath, lines)
         println("Wrote: " + cfg.headerPath)
       }
@@ -47,8 +54,8 @@ object CppEnumGenerator {
       def writeImpl() {
         val license = commented(LicenseHeader())
         val funcs = renders.map(r => r.impl.render(cfg.model)).flatten.toIterator
-        val inc = if(cfg.localInclude) quoted(cfg.headerName) else bracketed(List(ns,"/gen/",cfg.headerName).mkString)
-        val lines = license ++ space ++ Iterator(include(inc)) ++ space ++ namespace(ns)(funcs)
+        val inc = if(cfg.localInclude) quoted(cfg.headerName) else bracketed(List(cfg.ns,"/gen/",cfg.headerName).mkString)
+        val lines = license ++ space ++ Iterator(include(inc)) ++ space ++ namespace(cfg.ns)(funcs)
         writeLinesTo(cfg.implPath, lines)
         println("Wrote: " + cfg.implPath)
       }

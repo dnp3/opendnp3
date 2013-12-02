@@ -69,7 +69,7 @@ void PhysicalLayerAsyncTCPClient::DoOpeningClose()
 
 void PhysicalLayerAsyncTCPClient::DoOpenSuccess()
 {
-	LOG_BLOCK(LEV_INFO, "Connected to: " << mRemoteEndpoint);
+	LOG_BLOCK(LogLevel::Info, "Connected to: " << mRemoteEndpoint);
 	mConfigure(mSocket);
 }
 

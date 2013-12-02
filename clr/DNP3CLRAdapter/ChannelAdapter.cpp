@@ -59,10 +59,10 @@ void CallbackListener(gcroot < System::Action<ChannelState> ^ > * listener, open
 	(*listener)->Invoke(state);
 }
 
-IMaster ^ ChannelAdapter::AddMaster(System::String ^ loggerId, LogLevel level, IMeasurementHandler ^ publisher, MasterStackConfig ^ config)
+IMaster ^ ChannelAdapter::AddMaster(System::String ^ loggerId, DNP3::Interface::LogLevel level, IMeasurementHandler ^ publisher, MasterStackConfig ^ config)
 {
 	std::string stdLoggerId = Conversions::convertString(loggerId);
-	openpal::FilterLevel stdLevel = Conversions::convertFilterLevel(level);
+	openpal::LogLevel stdLevel = Conversions::convertLogLevel(level);
 
 	MasterMeasurementHandlerWrapper ^ wrapper = gcnew MasterMeasurementHandlerWrapper(publisher);
 	opendnp3::MasterStackConfig cfg = Conversions::convertConfig(config);
@@ -76,10 +76,10 @@ IMaster ^ ChannelAdapter::AddMaster(System::String ^ loggerId, LogLevel level, I
 	}
 }
 
-IOutstation ^ ChannelAdapter::AddOutstation(System::String ^ loggerId, LogLevel level, ICommandHandler ^ cmdHandler, ITimeWriteHandler ^ timeHandler, SlaveStackConfig ^ config)
+IOutstation ^ ChannelAdapter::AddOutstation(System::String ^ loggerId, DNP3::Interface::LogLevel level, ICommandHandler ^ cmdHandler, ITimeWriteHandler ^ timeHandler, SlaveStackConfig ^ config)
 {
 	std::string stdLoggerId = Conversions::convertString(loggerId);
-	openpal::FilterLevel stdLevel = Conversions::convertFilterLevel(level);
+	openpal::LogLevel stdLevel = Conversions::convertLogLevel(level);
 
 	SlaveCommandHandlerWrapper ^ cmdWrapper = gcnew SlaveCommandHandlerWrapper(cmdHandler);
 	OutstationTimeWriteWrapper ^ timeWrapper = gcnew OutstationTimeWriteWrapper(timeHandler);

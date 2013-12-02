@@ -70,7 +70,7 @@ void TransportLayer::ThisLayerDown()
 
 void TransportLayer::ChangeState(TLS_Base* apNewState)
 {
-	LOG_BLOCK(LEV_DEBUG, "State Change: " << mpState->Name() << " -> " << apNewState->Name());
+	LOG_BLOCK(LogLevel::Debug, "State Change: " << mpState->Name() << " -> " << apNewState->Name());
 	mpState = apNewState;
 }
 

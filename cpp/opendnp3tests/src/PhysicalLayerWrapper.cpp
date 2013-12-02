@@ -79,7 +79,7 @@ void PhysicalLayerWrapper::_OnLowerLayerDown()
 void PhysicalLayerWrapper::_OnReceive(const openpal::ReadOnlyBuffer& arBuffer)
 {
 	if(mCorruptionProbability > mRandom.Next()) {
-		LOG_BLOCK(LEV_INFO, "Corrupting data");
+		LOG_BLOCK(LogLevel::Info, "Corrupting data");
 		uint8_t* pData = const_cast<uint8_t*>(arBuffer.operator const uint8_t *());
 		for(size_t i = 0; i < arBuffer.Size(); ++i) pData[i] = 0;
 	}

@@ -27,7 +27,7 @@ using namespace openpal;
 namespace opendnp3
 {
 
-LinkLayerTest::LinkLayerTest(LinkConfig arCfg, FilterLevel aLevel, bool aImmediate) :
+LinkLayerTest::LinkLayerTest(LinkConfig arCfg, LogLevel aLevel, bool aImmediate) :
 	log(),
 	mts(),
 	upper(Logger(&log, aLevel, "MockUpperLayer")),

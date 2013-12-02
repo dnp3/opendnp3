@@ -29,7 +29,7 @@ using namespace asiopal;
 namespace opendnp3
 {
 
-AsyncSerialTestObject::AsyncSerialTestObject(SerialSettings cfg, FilterLevel aLevel, bool aImmediate) :
+AsyncSerialTestObject::AsyncSerialTestObject(SerialSettings cfg, LogLevel aLevel, bool aImmediate) :
 	AsyncTestObjectASIO(),
 	log(),
 	mPort(Logger(&log, aLevel, "Serial"), this->GetService(), cfg),

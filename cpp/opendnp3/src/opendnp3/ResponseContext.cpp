@@ -87,7 +87,7 @@ void ResponseContext::ClearWritten()
 
 	size_t deselected = mBuffer.Deselect();
 
-	LOG_BLOCK(LEV_DEBUG, "Clearing written events: " << written << " deselected: " << deselected);
+	LOG_BLOCK(LogLevel::Debug, "Clearing written events: " << written << " deselected: " << deselected);
 }
 
 void ResponseContext::ClearAndReset()
@@ -255,7 +255,7 @@ IINField ResponseContext::Configure(const APDU& arRequest)
 			this->SelectEvents(PC_CLASS_3, GetEventCount(hdr.info()));
 			break;
 		default:
-			LOG_BLOCK(LEV_WARNING, "READ for obj " << hdr->GetGroup() << " var " << hdr->GetVariation() << " not supported.");
+			LOG_BLOCK(LogLevel::Warning, "READ for obj " << hdr->GetGroup() << " var " << hdr->GetVariation() << " not supported.");
 			this->mTempIIN.SetFuncNotSupported(true);
 			break;
 		}
@@ -287,7 +287,7 @@ size_t ResponseContext::SelectVtoEvents(PointClass aClass, const SizeByVariation
 	size_t selectable = Min<size_t>(aNum, MAX_VTO_EVENTS);
 	size_t num = mBuffer.Select(BT_VTO, aClass, selectable);
 
-	LOG_BLOCK(LEV_INTERPRET, "Selected: " << num << " vto events");
+	LOG_BLOCK(LogLevel::Interpret, "Selected: " << num << " vto events");
 
 	if (num > 0) {
 		VtoEventRequest r(apObj, aNum);

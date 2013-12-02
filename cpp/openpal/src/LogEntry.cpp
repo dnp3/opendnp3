@@ -30,9 +30,9 @@ namespace openpal
 {
 
 
-LogEntry::LogEntry( FilterLevel aLevel, const std::string& aDeviceName, const std::string& aLocation, const std::string& aMessage, int aErrorCode)
+LogEntry::LogEntry( LogLevel aLevel, const std::string& aDeviceName, const std::string& aLocation, const std::string& aMessage, int aErrorCode)
 	:
-	mFilterLevel(aLevel),
+	mLogLevel(aLevel),
 	mDeviceName(aDeviceName),
 	mLocation(aLocation),
 	mMessage(aMessage),	

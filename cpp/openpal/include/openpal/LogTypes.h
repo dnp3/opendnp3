@@ -29,56 +29,13 @@
 #ifndef __LOG_TYPES_H_
 #define __LOG_TYPES_H_
 
-#include <string>
+#include "gen/LogLevel.h"
 
 namespace openpal
 {
 
-/// Bitmasks for the various log levels
-enum FilterLevel {
-	LEV_EVENT =		0x01,
-	LEV_ERROR =		0x02,
-	LEV_WARNING =	0x04,
-	LEV_INFO  =		0x08,
-	LEV_INTERPRET =	0x10,
-	LEV_COMM =		0x20,
-	LEV_DEBUG =		0x40
-};
-
-struct FilterAssoc {
-
-	FilterLevel lev;
-	char id;
-};
-
-
-/// Contains helper functions for manipulating, levels, filters, and strings
-class LogTypes
-{
-
-public:
-
-	static const size_t NUM_FILTER = 7;
-	static const FilterAssoc filters[NUM_FILTER];
-
-	/// Mask for all of the values
-	static const int MASK_ALL_LEVELS = LEV_DEBUG | LEV_INFO | LEV_COMM | LEV_INTERPRET | LEV_WARNING | LEV_ERROR | LEV_EVENT;
-
-	/// Converts a filter level enumeration to a mask with all higher levels set
-	static int FilterLevelToMask(FilterLevel);
-
-	/// Converts an integer to a FilterLevel
-	static FilterLevel ConvertIntToFilterLevel(int aLevel);
-
-#ifndef OPENDNP3_STRIP_LOG_MESSAGES
-	/// converts a filter level to its string representation
-	static std::string GetLevelString(FilterLevel aLevel);
-
-	/// converts an integer filter level to its string representation
-	static std::string GetFilterString(int aLevel);
-#endif
-
-};
+/// Converts a filter level enumeration to a mask with all higher levels set
+int LogLevelToMask(LogLevel);
 
 }
 

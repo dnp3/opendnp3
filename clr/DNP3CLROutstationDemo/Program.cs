@@ -42,13 +42,13 @@ namespace DotNetSlaveDemo
         {
             IDNP3Manager mgr = DNP3ManagerFactory.CreateManager();
             mgr.AddLogHandler(PrintingLogAdapter.Instance); //this is optional
-            var channel = mgr.AddTCPServer("server", LogLevel.INFO, TimeSpan.FromSeconds(5), "127.0.0.1", 20000);
+            var channel = mgr.AddTCPServer("server", LogLevel.Interpret, TimeSpan.FromSeconds(5), "127.0.0.1", 20000);
 
             //optionally, add a listener for the channel state
             channel.AddStateListener(state => Console.WriteLine("Server state: " + state));
 
             var config = new SlaveStackConfig();
-            var outstation = channel.AddOutstation("outstation", LogLevel.INFO, RejectingCommandHandler.Instance, PrintingTimeWriteHandler.Instance, config);
+            var outstation = channel.AddOutstation("outstation", LogLevel.Info, RejectingCommandHandler.Instance, PrintingTimeWriteHandler.Instance, config);
             
             //optionally, add a listener for the stack state
             outstation.AddStateListener(state => Console.WriteLine("Outstation state: " + state));

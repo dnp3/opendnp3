@@ -59,16 +59,16 @@ void TransportRx::HandleReceive(const openpal::ReadOnlyBuffer& arBuffer)
 {
 	if(arBuffer.Size() < 2)
 	{
-		ERROR_BLOCK(LEV_WARNING, "Received tpdu with no payload, size: " << arBuffer.Size(), TLERR_NO_PAYLOAD);
+		ERROR_BLOCK(LogLevel::Warning, "Received tpdu with no payload, size: " << arBuffer.Size(), TLERR_NO_PAYLOAD);
 	}
 	else if(arBuffer.Size() > TL_MAX_TPDU_LENGTH) 
 	{
-		ERROR_BLOCK(LEV_WARNING, "Illegal arg: " << arBuffer.Size() << " exceeds max tpdu size of " << TL_MAX_TPDU_LENGTH, TLERR_TOO_MUCH_DATA);
+		ERROR_BLOCK(LogLevel::Warning, "Illegal arg: " << arBuffer.Size() << " exceeds max tpdu size of " << TL_MAX_TPDU_LENGTH, TLERR_TOO_MUCH_DATA);
 
 	} else {
 
 		uint8_t hdr = arBuffer[0];
-		LOG_BLOCK(LEV_INTERPRET, "<- " << TransportLayer::ToString(hdr));
+		LOG_BLOCK(LogLevel::Interpret, "<- " << TransportLayer::ToString(hdr));
 		bool first = (hdr & TL_HDR_FIR) != 0;
 		bool last = (hdr & TL_HDR_FIN) != 0;
 		int seq = hdr & TL_HDR_SEQ;
@@ -76,7 +76,7 @@ void TransportRx::HandleReceive(const openpal::ReadOnlyBuffer& arBuffer)
 
 		if(this->ValidateHeader(first, last, seq, payload_len)) {
 			if(BufferRemaining() < payload_len) {
-				ERROR_BLOCK(LEV_WARNING, "Exceeded the buffer size before a complete fragment was read", TLERR_BUFFER_FULL);
+				ERROR_BLOCK(LogLevel::Warning, "Exceeded the buffer size before a complete fragment was read", TLERR_BUFFER_FULL);
 				mNumBytesRead = 0;
 			}
 			else { //passed all validation
@@ -104,17 +104,17 @@ bool TransportRx::ValidateHeader(bool aFir, bool aFin, int aSeq, size_t aPayload
 		mSeq = aSeq; //always accept the sequence on FIR
 		if(mNumBytesRead > 0) {
 			// drop existing received bytes from segment
-			ERROR_BLOCK(LEV_WARNING, "FIR received mid-fragment, discarding: " << mNumBytesRead << "bytes", TLERR_NEW_FIR);
+			ERROR_BLOCK(LogLevel::Warning, "FIR received mid-fragment, discarding: " << mNumBytesRead << "bytes", TLERR_NEW_FIR);
 			mNumBytesRead = 0;
 		}
 	}
 	else if(mNumBytesRead == 0) { //non-first packet with 0 prior bytes
-		ERROR_BLOCK(LEV_WARNING, "non-FIR packet with 0 prior bytes", TLERR_MESSAGE_WITHOUT_FIR);
+		ERROR_BLOCK(LogLevel::Warning, "non-FIR packet with 0 prior bytes", TLERR_MESSAGE_WITHOUT_FIR);
 		return false;
 	}
 	
 	if(aSeq != mSeq) {
-		ERROR_BLOCK(LEV_WARNING, "Ignoring bad sequence, got: " << aSeq << " expected: " << mSeq, TLERR_BAD_SEQUENCE);
+		ERROR_BLOCK(LogLevel::Warning, "Ignoring bad sequence, got: " << aSeq << " expected: " << mSeq, TLERR_BAD_SEQUENCE);
 		return false;
 	}
 

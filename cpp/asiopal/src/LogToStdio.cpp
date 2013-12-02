@@ -49,7 +49,7 @@ void LogToStdio::Log(const openpal::LogEntry& arEntry)
 #ifndef OPENDNP3_STRIP_LOG_MESSAGES
 	auto time = std::chrono::high_resolution_clock::now();
 	ostringstream oss;
-	oss << ToNormalizedString(time) << openpal::LogTypes::GetLevelString( arEntry.GetFilterLevel()) << " - "
+	oss << ToNormalizedString(time) << openpal::LogLevelToString( arEntry.GetLogLevel()) << " - "
 	    << arEntry.GetDeviceName();
 	if(mPrintLocation && !arEntry.GetLocation().empty()) oss << " - " << arEntry.GetMessage();
 	oss << " - " << arEntry.GetMessage();

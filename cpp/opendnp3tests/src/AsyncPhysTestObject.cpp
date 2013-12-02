@@ -27,7 +27,7 @@ using namespace openpal;
 namespace opendnp3
 {
 
-AsyncPhysTestObject::AsyncPhysTestObject(FilterLevel aLevel, bool aImmediate, bool aAutoRead) :
+AsyncPhysTestObject::AsyncPhysTestObject(LogLevel aLevel, bool aImmediate, bool aAutoRead) :
 	AsyncTestObjectASIO(),
 	log(),
 	logger(&log, aLevel, "test"),

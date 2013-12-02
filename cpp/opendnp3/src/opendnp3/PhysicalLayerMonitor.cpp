@@ -74,7 +74,7 @@ bool PhysicalLayerMonitor::WaitForShutdown(openpal::TimeDuration aTimeout)
 
 void PhysicalLayerMonitor::ChangeState(IMonitorState* apState)
 {
-	LOG_BLOCK(LEV_DEBUG, mpState->ConvertToString() << " -> " << apState->ConvertToString() << " : " << mpPhys->ConvertStateToString());
+	LOG_BLOCK(LogLevel::Debug, mpState->ConvertToString() << " -> " << apState->ConvertToString() << " : " << mpPhys->ConvertStateToString());
 	IMonitorState* pLast = mpState;
 
 	std::unique_lock<std::mutex> lock(mMutex);
@@ -102,31 +102,31 @@ void PhysicalLayerMonitor::DoFinalShutdown()
 
 void PhysicalLayerMonitor::Start()
 {
-	LOG_BLOCK(LEV_DEBUG, "Start()");
+	LOG_BLOCK(LogLevel::Debug, "Start()");
 	mpState->OnStartRequest(this);
 }
 
 void PhysicalLayerMonitor::StartOne()
 {
-	LOG_BLOCK(LEV_DEBUG, "StartOne()");
+	LOG_BLOCK(LogLevel::Debug, "StartOne()");
 	mpState->OnStartOneRequest(this);
 }
 
 void PhysicalLayerMonitor::Close()
 {
-	LOG_BLOCK(LEV_DEBUG, "Close()");
+	LOG_BLOCK(LogLevel::Debug, "Close()");
 	mpState->OnCloseRequest(this);
 }
 
 void PhysicalLayerMonitor::Suspend()
 {
-	LOG_BLOCK(LEV_DEBUG, "Suspend()");
+	LOG_BLOCK(LogLevel::Debug, "Suspend()");
 	mpState->OnSuspendRequest(this);
 }
 
 void PhysicalLayerMonitor::Shutdown()
 {
-	LOG_BLOCK(LEV_DEBUG, "Shutdown()");
+	LOG_BLOCK(LogLevel::Debug, "Shutdown()");
 	mpState->OnShutdownRequest(this);
 }
 
@@ -134,7 +134,7 @@ void PhysicalLayerMonitor::Shutdown()
 
 void PhysicalLayerMonitor::OnOpenTimerExpiration()
 {
-	LOG_BLOCK(LEV_DEBUG, "OnOpenTimerExpiration()");
+	LOG_BLOCK(LogLevel::Debug, "OnOpenTimerExpiration()");
 	assert(mpOpenTimer != nullptr);
 	mpOpenTimer = nullptr;
 	mpState->OnOpenTimeout(this);
@@ -142,7 +142,7 @@ void PhysicalLayerMonitor::OnOpenTimerExpiration()
 
 void PhysicalLayerMonitor::_OnOpenFailure()
 {
-	LOG_BLOCK(LEV_DEBUG, "_OnOpenFailure()");
+	LOG_BLOCK(LogLevel::Debug, "_OnOpenFailure()");
 	mpState->OnOpenFailure(this);
 	this->OnPhysicalLayerOpenFailureCallback();
 	this->mCurrentRetry = TimeDuration::Milliseconds(std::min(2 * mCurrentRetry.GetMilliseconds(), mMaxOpenRetry.GetMilliseconds()));
@@ -150,7 +150,7 @@ void PhysicalLayerMonitor::_OnOpenFailure()
 
 void PhysicalLayerMonitor::_OnLowerLayerUp()
 {
-	LOG_BLOCK(LEV_DEBUG, "_OnLowerLayerUp");
+	LOG_BLOCK(LogLevel::Debug, "_OnLowerLayerUp");
 	this->mCurrentRetry = mMinOpenRetry;
 	mpState->OnLayerOpen(this);
 	this->OnPhysicalLayerOpenSuccessCallback();
@@ -158,7 +158,7 @@ void PhysicalLayerMonitor::_OnLowerLayerUp()
 
 void PhysicalLayerMonitor::_OnLowerLayerDown()
 {
-	LOG_BLOCK(LEV_DEBUG, "_OnLowerLayerDown");
+	LOG_BLOCK(LogLevel::Debug, "_OnLowerLayerDown");
 	mpState->OnLayerClose(this);
 	this->OnPhysicalLayerCloseCallback();
 }

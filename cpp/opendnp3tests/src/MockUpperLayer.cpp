@@ -47,25 +47,25 @@ void MockUpperLayer::_OnReceive(const openpal::ReadOnlyBuffer& arBuffer)
 
 void MockUpperLayer::_OnSendSuccess()
 {
-	LOG_BLOCK(LEV_DEBUG, "OnSendSuccess");
+	LOG_BLOCK(LogLevel::Debug, "OnSendSuccess");
 	++mState.mSuccessCnt;
 }
 
 void MockUpperLayer::_OnSendFailure()
 {
-	LOG_BLOCK(LEV_DEBUG, "OnSendFailure");
+	LOG_BLOCK(LogLevel::Debug, "OnSendFailure");
 	++mState.mFailureCnt;
 }
 
 void MockUpperLayer::_OnLowerLayerUp()
 {
-	LOG_BLOCK(LEV_DEBUG, "OnLowerLayerUp");
+	LOG_BLOCK(LogLevel::Debug, "OnLowerLayerUp");
 	++mState.mNumLayerUp;
 }
 
 void MockUpperLayer::_OnLowerLayerDown()
 {
-	LOG_BLOCK(LEV_DEBUG, "OnLowerLayerDown");
+	LOG_BLOCK(LogLevel::Debug, "OnLowerLayerDown");
 	++mState.mNumLayerDown;
 }
 

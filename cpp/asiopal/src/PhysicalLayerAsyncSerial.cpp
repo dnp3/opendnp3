@@ -72,12 +72,12 @@ void PhysicalLayerAsyncSerial::DoClose()
 {
 	boost::system::error_code ec;
 	mPort.close(ec);
-	if(ec) LOG_BLOCK(LEV_WARNING, ec.message());
+	if(ec) LOG_BLOCK(LogLevel::Warning, ec.message());
 }
 
 void PhysicalLayerAsyncSerial::DoOpenSuccess()
 {
-	LOG_BLOCK(LEV_INFO, "Port successfully opened");
+	LOG_BLOCK(LogLevel::Info, "Port successfully opened");
 }
 
 void PhysicalLayerAsyncSerial::DoAsyncRead(openpal::WriteBuffer& arBuffer)

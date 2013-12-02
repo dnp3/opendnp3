@@ -215,7 +215,7 @@ void PhysicalLayerAsyncBase::OnOpenCallback(const boost::system::error_code& arE
 		this->DoOpenCallback();
 
 		if(arErr) {
-			LOG_BLOCK(LEV_WARNING, arErr.message());
+			LOG_BLOCK(LogLevel::Warning, arErr.message());
 			mState.CheckForClose();
 			this->DoOpenFailure();
 			if(mpHandler) mpHandler->OnOpenFailure();
@@ -244,12 +244,12 @@ void PhysicalLayerAsyncBase::OnReadCallback(const boost::system::error_code& arE
 		mState.mReading = false;
 
 		if(arErr) {
-			LOG_BLOCK(LEV_WARNING, arErr.message());
+			LOG_BLOCK(LogLevel::Warning, arErr.message());
 			if(mState.CanClose()) this->StartClose();
 		}
 		else {
 			if(mState.mClosing) {
-				LOG_BLOCK(LEV_DEBUG, "Ignoring received bytes since layer is closing: " << aNumRead);
+				LOG_BLOCK(LogLevel::Debug, "Ignoring received bytes since layer is closing: " << aNumRead);
 			}
 			else {
 				ReadOnlyBuffer buffer(apBuffer, aNumRead);
@@ -270,12 +270,12 @@ void PhysicalLayerAsyncBase::OnWriteCallback(const boost::system::error_code& ar
 		mState.mWriting = false;
 
 		if(arErr) {
-			LOG_BLOCK(LEV_WARNING, arErr.message());
+			LOG_BLOCK(LogLevel::Warning, arErr.message());
 			if(mState.CanClose()) this->StartClose();
 		}
 		else {
 			if(mState.mClosing) {
-				LOG_BLOCK(LEV_DEBUG, "Ignoring written bytes since layer is closing: " << aNumBytes);
+				LOG_BLOCK(LogLevel::Debug, "Ignoring written bytes since layer is closing: " << aNumBytes);
 			}
 			else {
 				this->DoWriteSuccess();

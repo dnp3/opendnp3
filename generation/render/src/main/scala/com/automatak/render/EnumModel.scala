@@ -20,7 +20,8 @@ package com.automatak.render
 
 object EnumValues {
 
-  def from(list: List[String], i: Int = 0) : List[EnumValue] = from(list, Iterator.from(i,1))
+  def bitmask(list: List[String]): List[EnumValue] = from(list, Iterator.iterate(1)(i => i << 1))
+  def froms(list: List[String], i: Int = 0) : List[EnumValue] = from(list, Iterator.from(i,1))
   def from(list: List[String], iterator: Iterator[Int]) : List[EnumValue] = list.map(s => EnumValue(s, iterator.next(), None))
 }
 

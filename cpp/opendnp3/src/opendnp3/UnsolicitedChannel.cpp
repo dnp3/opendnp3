@@ -39,7 +39,7 @@ void UnsolicitedChannel::OnUnsol(APDU& arAPDU)
 	AppControlField acf = arAPDU.GetControl();
 
 	if(acf.SEQ == mSequence) {
-		LOG_BLOCK(LEV_INFO, "Ignoring repeat unsol seq: " << acf.SEQ)
+		LOG_BLOCK(LogLevel::Info, "Ignoring repeat unsol seq: " << acf.SEQ)
 	}
 	else { // only process the data if the sequence number is new
 		mSequence = acf.SEQ;

@@ -104,14 +104,14 @@ void NotWaitingForTimer::OnOpenTimeout(PhysicalLayerMonitor* apContext)
 
 void IgnoresClose::OnCloseRequest(PhysicalLayerMonitor* apContext)
 {
-	LOGGER_BLOCK(apContext->GetLogger(), LEV_DEBUG, "Ignoring Close(): " << this->Name());
+	LOGGER_BLOCK(apContext->GetLogger(), LogLevel::Debug, "Ignoring Close(): " << this->Name());
 }
 
 /* --- IgnoresSuspend --- */
 
 void IgnoresSuspend::OnSuspendRequest(PhysicalLayerMonitor* apContext)
 {
-	LOGGER_BLOCK(apContext->GetLogger(), LEV_DEBUG, "Ignoring Suspend(): " << this->Name());
+	LOGGER_BLOCK(apContext->GetLogger(), LogLevel::Debug, "Ignoring Suspend(): " << this->Name());
 }
 
 /* --- StartsOnClose --- */
@@ -126,21 +126,21 @@ void StartsOnClose::OnLayerClose(PhysicalLayerMonitor* apContext)
 
 void IgnoresShutdown::OnShutdownRequest(PhysicalLayerMonitor* apContext)
 {
-	LOGGER_BLOCK(apContext->GetLogger(), LEV_DEBUG, "Ignoring Stop(): " << this->Name());
+	LOGGER_BLOCK(apContext->GetLogger(), LogLevel::Debug, "Ignoring Stop(): " << this->Name());
 }
 
 /* --- IgnoresStart --- */
 
 void IgnoresStart::OnStartRequest(PhysicalLayerMonitor* apContext)
 {
-	LOGGER_BLOCK(apContext->GetLogger(), LEV_DEBUG, "Ignoring Start(): " << this->Name());
+	LOGGER_BLOCK(apContext->GetLogger(), LogLevel::Debug, "Ignoring Start(): " << this->Name());
 }
 
 /* --- IgnoresStartOne --- */
 
 void IgnoresStartOne::OnStartOneRequest(PhysicalLayerMonitor* apContext)
 {
-	LOGGER_BLOCK(apContext->GetLogger(), LEV_DEBUG, "Ignoring StartOne(): " << this->Name());
+	LOGGER_BLOCK(apContext->GetLogger(), LogLevel::Debug, "Ignoring StartOne(): " << this->Name());
 }
 
 /* --- OpenFailureCausesWait --- */

@@ -69,7 +69,7 @@ public:
 class DatabaseTestObject
 {
 public:
-	DatabaseTestObject(openpal::FilterLevel aLevel = openpal::LEV_INFO) :
+	DatabaseTestObject(openpal::LogLevel aLevel = openpal::LogLevel::Info) :
 		db(openpal::Logger(&log, aLevel, "test")) {
 		db.SetEventBuffer(&buffer);
 	}

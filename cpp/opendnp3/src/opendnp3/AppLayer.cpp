@@ -109,7 +109,7 @@ void AppLayer::_OnReceive(const ReadOnlyBuffer& arBuffer)
 		mIncoming.Write(arBuffer);
 		mIncoming.Interpret();
 
-		LOG_BLOCK(LEV_INTERPRET, "<= AL " << mIncoming.ToString());
+		LOG_BLOCK(LogLevel::Interpret, "<= AL " << mIncoming.ToString());
 
 		FunctionCode func = mIncoming.GetFunction();
 		AppControlField ctrl = mIncoming.GetControl();
@@ -130,11 +130,11 @@ void AppLayer::_OnReceive(const ReadOnlyBuffer& arBuffer)
 		}
 	}
 	catch(const ObjectException& oex) {
-		EXCEPTION_BLOCK(LEV_WARNING, oex);
+		EXCEPTION_BLOCK(LogLevel::Warning, oex);
 		this->OnUnknownObject(mIncoming.GetFunction(), mIncoming.GetControl());
 	}
 	catch(const Exception& ex) {
-		EXCEPTION_BLOCK(LEV_WARNING, ex);
+		EXCEPTION_BLOCK(LogLevel::Warning, ex);
 	}
 }
 
@@ -312,7 +312,7 @@ void AppLayer::CheckForSend()
 	if(!mSending && mSendQueue.size() > 0) {
 		mSending = true;
 		const APDU* pAPDU = mSendQueue.front();
-		LOG_BLOCK(LEV_INTERPRET, "=> AL " << pAPDU->ToString());		
+		LOG_BLOCK(LogLevel::Interpret, "=> AL " << pAPDU->ToString());		
 		mpLowerLayer->Send(pAPDU->ToReadOnly());
 	}
 }

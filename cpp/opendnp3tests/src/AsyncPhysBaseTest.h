@@ -35,7 +35,7 @@ namespace opendnp3
 class AsyncPhysBaseTest
 {
 public:
-	AsyncPhysBaseTest(openpal::FilterLevel aLevel = openpal::LEV_INFO, bool aImmediate = false);
+	AsyncPhysBaseTest(openpal::LogLevel aLevel = openpal::LogLevel::Info, bool aImmediate = false);
 
 	LogTester log;
 	MockExecutor exe;

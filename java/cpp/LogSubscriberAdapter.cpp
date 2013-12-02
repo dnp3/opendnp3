@@ -33,7 +33,7 @@ void LogSubscriberAdapter::Log(const openpal::LogEntry& arEntry)
 {			
 	JNIEnv* pEnv = JNIHelpers::GetEnvFromJVM(mpJVM);
 		
-	jint level = arEntry.GetFilterLevel();
+	jint level = LogLevelToType(arEntry.GetLogLevel());
 	jstring name = pEnv->NewStringUTF(arEntry.GetDeviceName().c_str());
 	jstring msg = pEnv->NewStringUTF(arEntry.GetMessage().c_str());
 	jint error = arEntry.GetErrorCode();

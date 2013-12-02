@@ -129,7 +129,7 @@ ILinkContext* LinkLayerRouter::GetDestination(uint16_t aDest, uint16_t aSrc)
 
 	if(pDest == nullptr) {
 
-		ERROR_BLOCK(LEV_WARNING, "Frame w/ unknown route: " << route.ToString(), DLERR_UNKNOWN_ROUTE);
+		ERROR_BLOCK(LogLevel::Warning, "Frame w/ unknown route: " << route.ToString(), DLERR_UNKNOWN_ROUTE);
 	}
 	
 	return pDest;
@@ -208,12 +208,12 @@ bool LinkLayerRouter::Transmit(const LinkFrame& arFrame)
 			return true;
 		}
 		else {
-			ERROR_BLOCK(LEV_ERROR, "Cannot queue a frame while router if offline", DLERR_ROUTER_OFFLINE);
+			ERROR_BLOCK(LogLevel::Error, "Cannot queue a frame while router if offline", DLERR_ROUTER_OFFLINE);
 			return false;
 		}
 	}
 	else {
-		ERROR_BLOCK(LEV_ERROR, "Ignoring unassociated transmit w/ route: " << lr.ToString(), DLERR_UNKNOWN_ROUTE);		
+		ERROR_BLOCK(LogLevel::Error, "Ignoring unassociated transmit w/ route: " << lr.ToString(), DLERR_UNKNOWN_ROUTE);		
 		return false;
 	}
 }
@@ -266,7 +266,7 @@ void LinkLayerRouter::_OnSendSuccess()
 
 void LinkLayerRouter::_OnSendFailure()
 {
-	LOG_BLOCK(LEV_ERROR, "Unexpected _OnSendFailure");
+	LOG_BLOCK(LogLevel::Error, "Unexpected _OnSendFailure");
 	mTransmitting = false;
 	this->CheckForSend();
 }
@@ -276,7 +276,7 @@ void LinkLayerRouter::CheckForSend()
 	if(mTransmitQueue.size() > 0 && !mTransmitting && mpPhys->CanWrite()) {
 		mTransmitting = true;
 		const LinkFrame& f = mTransmitQueue.front();
-		LOG_BLOCK(LEV_INTERPRET, "~> " << f.ToString());
+		LOG_BLOCK(LogLevel::Interpret, "~> " << f.ToString());
 		ReadOnlyBuffer buff(f.GetBuffer(), f.GetSize());
 		mpPhys->AsyncWrite(buff);
 	}

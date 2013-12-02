@@ -49,7 +49,7 @@ class TimerTestObject
 public:
 	TimerTestObject() :
 		mLog(),
-		mPool(Logger(&mLog, LEV_ERROR, "thread-pool"), 1),
+		mPool(Logger(&mLog, LogLevel::Error, "thread-pool"), 1),
 		mStrand(*mPool.GetIOService()),
 		exe(&mStrand),
 		mLast(-1),

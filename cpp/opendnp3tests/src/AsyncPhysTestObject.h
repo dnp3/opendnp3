@@ -38,7 +38,7 @@ namespace opendnp3
 class AsyncPhysTestObject : public AsyncTestObjectASIO
 {
 public:
-	AsyncPhysTestObject(openpal::FilterLevel aLevel = openpal::LEV_INFO, bool aImmediate = false, bool aAutoRead = true);
+	AsyncPhysTestObject(openpal::LogLevel aLevel = openpal::LogLevel::Info, bool aImmediate = false, bool aAutoRead = true);
 
 private:
 	LogTester log;

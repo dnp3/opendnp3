@@ -35,7 +35,7 @@ using namespace openpal;
 namespace opendnp3
 {
 
-SlaveTestObject::SlaveTestObject(const SlaveConfig& arCfg, FilterLevel aLevel, bool aImmediate) :
+SlaveTestObject::SlaveTestObject(const SlaveConfig& arCfg, LogLevel aLevel, bool aImmediate) :
 	log(),
 	mMockTimeWriteHandler([this](UTCTimestamp time)
 {
@@ -56,7 +56,7 @@ void SlaveTestObject::SendToSlave(const std::string& arData, SequenceInfo aSeq)
 	mAPDU.Reset();
 	mAPDU.Write(hs.ToReadOnly());
 	mAPDU.Interpret();
-	LOG_BLOCK(LEV_INTERPRET, "<= " << mAPDU.ToString());
+	LOG_BLOCK(LogLevel::Interpret, "<= " << mAPDU.ToString());
 	slave.OnRequest(mAPDU, aSeq);
 }
 

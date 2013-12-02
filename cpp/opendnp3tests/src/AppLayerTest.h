@@ -39,7 +39,7 @@ namespace opendnp3
 class AppLayerTest
 {
 public:
-	AppLayerTest(bool aIsMaster = false, size_t aNumRetry = 0, FilterLevel aLevel = LEV_WARNING, bool aImmediate = false);
+	AppLayerTest(bool aIsMaster = false, size_t aNumRetry = 0, LogLevel aLevel = LogLevel::Warning, bool aImmediate = false);
 
 	void SendUp(const std::string& aBytes);
 	void SendUp(FunctionCode aCode, bool aFIR, bool aFIN, bool aCON, bool aUNS, int aSEQ);

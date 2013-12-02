@@ -89,7 +89,7 @@ void PhysicalLayerAsyncTCPServer::CloseAcceptor()
 	boost::system::error_code ec;
 	mAcceptor.close(ec);
 	if(ec) {
-		LOG_BLOCK(LEV_WARNING, "Error while closing tcp acceptor: " << ec);
+		LOG_BLOCK(LogLevel::Warning, "Error while closing tcp acceptor: " << ec);
 	}
 }
 
@@ -105,7 +105,7 @@ void PhysicalLayerAsyncTCPServer::DoOpeningClose()
 
 void PhysicalLayerAsyncTCPServer::DoOpenSuccess()
 {
-	LOG_BLOCK(LEV_INFO, "Accepted connection from: " << mRemoteEndpoint);
+	LOG_BLOCK(LogLevel::Info, "Accepted connection from: " << mRemoteEndpoint);
 	mConfigure(mSocket);
 }
 

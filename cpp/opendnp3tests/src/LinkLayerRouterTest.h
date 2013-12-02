@@ -36,7 +36,7 @@ namespace opendnp3
 class LinkLayerRouterTest
 {
 public:
-	LinkLayerRouterTest(openpal::FilterLevel aLevel = openpal::LEV_WARNING, bool aImmediate = false);
+	LinkLayerRouterTest(openpal::LogLevel aLevel = openpal::LogLevel::Warning, bool aImmediate = false);
 
 	LogTester log;
 	MockExecutor exe;

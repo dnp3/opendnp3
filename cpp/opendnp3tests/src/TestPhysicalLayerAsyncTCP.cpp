@@ -49,7 +49,7 @@ BOOST_AUTO_TEST_SUITE(PhysicalLayerAsyncTCPSuite)
 
 BOOST_AUTO_TEST_CASE(TestStateClosed)
 {
-	AsyncPhysTestObject t(LEV_INFO, false);
+	AsyncPhysTestObject t(LogLevel::Info, false);
 
 	uint8_t b[100];
 	WriteBuffer buff(b, 100);		
@@ -68,7 +68,7 @@ BOOST_AUTO_TEST_CASE(TestStateClosed)
 
 BOOST_AUTO_TEST_CASE(ClientConnectionRejected)
 {
-	AsyncPhysTestObject t(LEV_INFO, false);
+	AsyncPhysTestObject t(LogLevel::Info, false);
 
 	BOOST_REQUIRE_EQUAL(t.mClientAdapter.GetNumOpenFailure(), 0);
 
@@ -80,7 +80,7 @@ BOOST_AUTO_TEST_CASE(ClientConnectionRejected)
 
 BOOST_AUTO_TEST_CASE(ClientConnectionCanceled)
 {
-	AsyncPhysTestObject t(LEV_INFO, false);
+	AsyncPhysTestObject t(LogLevel::Info, false);
 
 	for(size_t i = 0; i < 2; ++i) {
 		t.mTCPClient.AsyncOpen();
@@ -92,7 +92,7 @@ BOOST_AUTO_TEST_CASE(ClientConnectionCanceled)
 
 BOOST_AUTO_TEST_CASE(ServerAcceptCanceled)
 {
-	AsyncPhysTestObject t(LEV_INFO, false);
+	AsyncPhysTestObject t(LogLevel::Info, false);
 
 	for(size_t i = 0; i < 2; ++i) {
 		t.mTCPServer.AsyncOpen();
@@ -104,7 +104,7 @@ BOOST_AUTO_TEST_CASE(ServerAcceptCanceled)
 
 BOOST_AUTO_TEST_CASE(ConnectDisconnect)
 {
-	AsyncPhysTestObject t(LEV_INFO, false);
+	AsyncPhysTestObject t(LogLevel::Info, false);
 
 	for(size_t i = 0; i < 10; ++i) {
 
@@ -123,7 +123,7 @@ BOOST_AUTO_TEST_CASE(ConnectDisconnect)
 
 BOOST_AUTO_TEST_CASE(TestSendShutdown)
 {
-	AsyncPhysTestObject t(LEV_INFO, false);
+	AsyncPhysTestObject t(LogLevel::Info, false);
 
 	t.mTCPServer.AsyncOpen();
 	t.mTCPClient.AsyncOpen();
@@ -142,7 +142,7 @@ BOOST_AUTO_TEST_CASE(TwoWaySend)
 {
 	const size_t SEND_SIZE = 1 << 20; // 1 MB
 
-	AsyncPhysTestObject t(LEV_INFO, false);
+	AsyncPhysTestObject t(LogLevel::Info, false);
 
 	t.mTCPServer.AsyncOpen();
 	t.mTCPClient.AsyncOpen();
@@ -167,7 +167,7 @@ BOOST_AUTO_TEST_CASE(TwoWaySend)
 
 BOOST_AUTO_TEST_CASE(ServerAsyncCloseWhileOpeningKillsAcceptor)
 {
-	AsyncPhysTestObject t(LEV_INFO, false);
+	AsyncPhysTestObject t(LogLevel::Info, false);
 
 	BOOST_REQUIRE_EQUAL(0, t.mClientAdapter.GetNumOpenFailure());
 
@@ -186,7 +186,7 @@ BOOST_AUTO_TEST_CASE(ServerAsyncCloseWhileOpeningKillsAcceptor)
 
 BOOST_AUTO_TEST_CASE(ServerAsyncCloseAfterOpeningKillsAcceptor)
 {
-	AsyncPhysTestObject t(LEV_INFO, false);
+	AsyncPhysTestObject t(LogLevel::Info, false);
 
 	BOOST_REQUIRE_EQUAL(t.mClientAdapter.GetNumOpenFailure(), 0);
 
@@ -223,7 +223,7 @@ BOOST_AUTO_TEST_CASE(Loopback)
 	const size_t ITERATIONS = MACRO_LOOPBACK_ITERATIONS;
 
 	EventLog log;
-	Logger logger(&log, LEV_INFO, "test");
+	Logger logger(&log, LogLevel::Info, "test");
 	AsyncTestObjectASIO test;
 	PhysicalLayerAsyncTCPServer server(logger.GetSubLogger("server"), test.GetService(), "127.0.0.1", 30000);
 

@@ -88,7 +88,7 @@ void MockPhysicalLayerMonitor::_OnReceive(const uint8_t* apData, size_t aNumByte
 		BOOST_FAIL(oss.str());
 	}
 	mBytesRead += aNumBytes;
-	LOG_BLOCK(LEV_INFO, "Received " << mBytesRead << " of " << mExpectReadBuffer.Size());
+	LOG_BLOCK(LogLevel::Info, "Received " << mBytesRead << " of " << mExpectReadBuffer.Size());
 	WriteBuffer buffer(mReadBuffer, mReadBuffer.Size());
 	mpPhys->AsyncRead(buffer);
 }
@@ -129,7 +129,7 @@ bool MockPhysicalLayerMonitor::NextStateIs(ChannelState aState)
 	if(mState.empty()) return false;
 	else {
 		ChannelState state = mState.front();
-		LOG_BLOCK(LEV_INFO, "Saw state: " + ChannelStateToString(state));
+		LOG_BLOCK(LogLevel::Info, "Saw state: " + ChannelStateToString(state));
 		mState.pop();
 		return (state == aState);
 	}

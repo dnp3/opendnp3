@@ -74,7 +74,7 @@ JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ChannelImpl_get_1native_1ma
 		auto pPublisher = new DataObserverAdapter(pJVM, global);
 		std::string loggerId = JNIHelpers::GetString(jloggerId, pEnv);
 		MasterStackConfig config = ConfigReader::ConvertMasterStackConfig(pEnv, jconfig);
-		FilterLevel lev = LogTypes::ConvertIntToFilterLevel(logLevel);
+		LogLevel lev = LogLevelFromType(logLevel);
 		auto pMaster = pChannel->AddMaster(loggerId, lev, pPublisher, asiopal::UTCTimeSource::Inst(), config);
 		auto pExecutor = pChannel->GetExecutor();
 		auto cleanup = [pJVM, global, pPublisher]() {
@@ -103,7 +103,7 @@ JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ChannelImpl_get_1native_1sl
 		JavaVM* pJVM = JNIHelpers::GetJVMFromEnv(pEnv);
 		jobject global = pEnv->NewGlobalRef(commandAdapter);
 		auto pCmdHandler = new CommandHandlerAdapter(pJVM, global);
-		FilterLevel lev = LogTypes::ConvertIntToFilterLevel(logLevel);
+		LogLevel lev = LogLevelFromType(logLevel);
 		auto pOutstation = pChannel->AddOutstation(loggerId, lev, pCmdHandler, NullTimeWriteHandler::Inst(), config);  //TODO wrap time callbacks
 		auto pExecutor = pChannel->GetExecutor();
 		auto cleanup = [pJVM, global, pCmdHandler]() {

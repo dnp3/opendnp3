@@ -51,9 +51,9 @@ using namespace asiopal;
 
 int main(int argc, char* argv[])
 {
-	// Specify a FilterLevel for the stack/physical layer to use.
+	// Specify a LogLevel for the stack/physical layer to use.
 	// Log statements with a lower priority will not be logged.
-	const FilterLevel LOG_LEVEL = LEV_INFO;
+	const LogLevel LOG_LEVEL = LogLevel::Info;
 
 	//A default logging backend that can proxy to multiple other backends
 	EventLog log;

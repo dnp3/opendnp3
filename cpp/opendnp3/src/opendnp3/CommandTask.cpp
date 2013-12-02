@@ -69,7 +69,7 @@ void CommandTask::OnFailure()
 
 TaskResult CommandTask::_OnPartialResponse(const APDU& arAPDU)
 {
-	LOG_BLOCK(LEV_ERROR, "Non fin responses not allowed for control tasks");
+	LOG_BLOCK(LogLevel::Error, "Non fin responses not allowed for control tasks");
 	return TR_CONTINUE;
 }
 

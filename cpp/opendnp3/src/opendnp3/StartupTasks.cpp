@@ -103,18 +103,18 @@ TaskResult TimeSync::_OnFinalResponse(const APDU& arAPDU)
 
 		HeaderReadIterator hri = arAPDU.BeginRead();
 		if(hri.Count() != 1) {
-			LOG_BLOCK(LEV_WARNING, "DelayMeas response w/ unexcpected header count");
+			LOG_BLOCK(LogLevel::Warning, "DelayMeas response w/ unexcpected header count");
 			return TR_FAIL;
 		}
 
 		if(!hri->GetBaseObject()->Equals(Group52Var2::Inst())) {
-			LOG_BLOCK(LEV_WARNING, "DelayMeas response w/ unexpected object: " << hri->GetBaseObject()->Name());
+			LOG_BLOCK(LogLevel::Warning, "DelayMeas response w/ unexpected object: " << hri->GetBaseObject()->Name());
 			return TR_FAIL;
 		}
 
 		ObjectReadIterator ori = hri.BeginRead();
 		if(ori.Count() != 1) {
-			LOG_BLOCK(LEV_WARNING, "DelayMeas got more than 1 object in response");
+			LOG_BLOCK(LogLevel::Warning, "DelayMeas got more than 1 object in response");
 			return TR_FAIL;
 		}
 

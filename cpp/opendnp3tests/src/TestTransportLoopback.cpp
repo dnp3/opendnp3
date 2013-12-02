@@ -71,7 +71,7 @@ BOOST_AUTO_TEST_CASE(TestTransportWithMockLoopback)
 
 	EventLog log;
 	boost::asio::io_service service;
-	LoopbackPhysicalLayerAsync phys(Logger(&log, LEV_WARNING, "loopback"), &service);
+	LoopbackPhysicalLayerAsync phys(Logger(&log, LogLevel::Warning, "loopback"), &service);
 	TransportLoopbackTestObject t(&service, &phys, cfgA, cfgB);
 
 	TestLoopback(&t, DEFAULT_FRAG_SIZE);
@@ -96,7 +96,7 @@ BOOST_AUTO_TEST_CASE(TestTransportWithSerialLoopback)
 
 	EventLog log;
 	boost::asio::io_service service;
-	PhysicalLayerAsyncSerial phys(log.GetLogger(LEV_WARNING, "serial"), &service, s);
+	PhysicalLayerAsyncSerial phys(log.GetLogger(LogLevel::Warning, "serial"), &service, s);
 	TransportLoopbackTestObject t(&service, &phys, cfgA, cfgB);
 
 	TestLoopback(&t, DEFAULT_FRAG_SIZE);

@@ -27,7 +27,7 @@
 namespace opendnp3
 {
 
-AppLayerTest::AppLayerTest(bool aIsMaster, size_t aNumRetry, FilterLevel aLevel, bool aImmediate) :
+AppLayerTest::AppLayerTest(bool aIsMaster, size_t aNumRetry, LogLevel aLevel, bool aImmediate) :
 	log(),
 	user(aIsMaster),
 	lower(Logger(&log, aLevel, "lower")),

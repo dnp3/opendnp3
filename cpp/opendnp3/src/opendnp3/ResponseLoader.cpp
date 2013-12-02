@@ -142,7 +142,7 @@ void ResponseLoader::ProcessSizeByVariation(HeaderReadIterator& arIter, int aGrp
 		/*
 		* If we reach this point, then we don't yet support this object type.
 		*/
-		ERROR_BLOCK(LEV_WARNING,
+		ERROR_BLOCK(LogLevel::Warning,
 		            "Group: " << aGrp << " "
 		            "Var: " << aVar << " "
 		            "does not map to a data type", MERR_UNSUPPORTED_OBJECT_TYPE);

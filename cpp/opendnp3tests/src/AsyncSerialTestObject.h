@@ -36,7 +36,7 @@ namespace opendnp3
 class AsyncSerialTestObject : public AsyncTestObjectASIO
 {
 public:
-	AsyncSerialTestObject(asiopal::SerialSettings cfg, openpal::FilterLevel aLevel = openpal::LEV_INFO, bool aImmediate = false);
+	AsyncSerialTestObject(asiopal::SerialSettings cfg, openpal::LogLevel aLevel = openpal::LogLevel::Info, bool aImmediate = false);
 	virtual ~AsyncSerialTestObject() {}
 
 	LogTester log;

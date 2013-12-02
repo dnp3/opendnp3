@@ -58,7 +58,7 @@ SingleRspBase::SingleRspBase(openpal::Logger& arLogger) : MasterTaskBase(arLogge
 
 TaskResult SingleRspBase::_OnPartialResponse(const APDU&)
 {
-	LOG_BLOCK(LEV_WARNING, "Ignoring non-FIN response to task: " << this->Name());
+	LOG_BLOCK(LogLevel::Warning, "Ignoring non-FIN response to task: " << this->Name());
 	return TR_FAIL;
 }
 
@@ -68,7 +68,7 @@ SimpleRspBase::SimpleRspBase(openpal::Logger& arLogger) : SingleRspBase(arLogger
 TaskResult SimpleRspBase::_OnFinalResponse(const APDU& arAPDU)
 {
 	if(arAPDU.BeginRead().Count() > 0) {
-		LOG_BLOCK(LEV_WARNING, "Unexpected object headers in response: " << this->Name());
+		LOG_BLOCK(LogLevel::Warning, "Unexpected object headers in response: " << this->Name());
 	}
 
 	return TR_SUCCESS;

@@ -49,48 +49,14 @@ System::String ^ Conversions::convertString(const std::string& s)
 	return gcnew System::String(s.c_str());
 }
 
-openpal::FilterLevel Conversions::convertFilterLevel(LogLevel level)
+openpal::LogLevel Conversions::convertLogLevel(DNP3::Interface::LogLevel level)
 {
-	switch(level) {
-	case (LogLevel::EVENT):
-		return openpal::LEV_EVENT;
-	case (LogLevel::ERROR):
-		return openpal::LEV_ERROR;
-	case (LogLevel::WARNING):
-		return openpal::LEV_WARNING;
-	case (LogLevel::INFO):
-		return openpal::LEV_INFO;
-	case (LogLevel::INTERPRET):
-		return openpal::LEV_INTERPRET;
-	case (LogLevel::COMM):
-		return openpal::LEV_COMM;
-	case (LogLevel::DEBUG):
-		return openpal::LEV_DEBUG;
-	default:
-		return openpal::LEV_DEBUG;
-	}
+	return (openpal::LogLevel)  level;
 }
 
-LogLevel Conversions::convertFilterLevel(openpal::FilterLevel level)
+DNP3::Interface::LogLevel Conversions::convertLogLevel(openpal::LogLevel level)
 {
-	switch(level) {
-	case (openpal::LEV_EVENT):
-		return LogLevel::EVENT;
-	case (openpal::LEV_ERROR):
-		return LogLevel::ERROR;
-	case (openpal::LEV_WARNING):
-		return LogLevel::WARNING;
-	case (openpal::LEV_INFO):
-		return LogLevel::INFO;
-	case (openpal::LEV_INTERPRET):
-		return LogLevel::INTERPRET;
-	case (openpal::LEV_COMM):
-		return LogLevel::COMM;
-	case (openpal::LEV_DEBUG):
-		return LogLevel::DEBUG;
-	default:
-		return LogLevel::DEBUG;
-	}
+	return (DNP3::Interface::LogLevel) level;
 }
 
 ChannelState Conversions::convertChannelState(opendnp3::ChannelState aState)

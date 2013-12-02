@@ -42,8 +42,8 @@ public:
 	LoopbackTest() :
 		log(),
 		exe(),
-		phys(Logger(&log, LEV_INFO, "phys"), &exe),
-		loopback(Logger(&log, LEV_INFO, "loopback"), &phys) {
+		phys(Logger(&log, LogLevel::Info, "phys"), &exe),
+		loopback(Logger(&log, LogLevel::Info, "loopback"), &phys) {
 		loopback.Start();
 	}
 

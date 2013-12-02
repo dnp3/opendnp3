@@ -200,7 +200,7 @@ void Database::SetEventBuffer(IEventBuffer* apEventBuffer)
 void Database::_Update(const Binary& arPoint, size_t aIndex)
 {
 	if(UpdateValue<Binary>(mBinaryVec, arPoint, aIndex)) {
-		LOG_BLOCK(LEV_DEBUG, "Binary Change: " << arPoint.ToString() << " Index: " << aIndex);
+		LOG_BLOCK(LogLevel::Debug, "Binary Change: " << arPoint.ToString() << " Index: " << aIndex);
 		BinaryInfo& v = mBinaryVec[aIndex];
 		if(mpEventBuffer) mpEventBuffer->Update(v.mValue, v.mClass, aIndex);
 	}
@@ -209,7 +209,7 @@ void Database::_Update(const Binary& arPoint, size_t aIndex)
 void Database::_Update(const Analog& arPoint, size_t aIndex)
 {
 	if(UpdateValue<Analog>(mAnalogVec, arPoint, aIndex)) {
-		LOG_BLOCK(LEV_DEBUG, "Analog Change: " << arPoint.ToString() << " Index: " << aIndex);
+		LOG_BLOCK(LogLevel::Debug, "Analog Change: " << arPoint.ToString() << " Index: " << aIndex);
 		mAnalogVec[aIndex].mLastEventValue = mAnalogVec[aIndex].mValue.GetValue();
 		AnalogInfo& v = mAnalogVec[aIndex];
 		if(mpEventBuffer) mpEventBuffer->Update(v.mValue, v.mClass, aIndex);
@@ -219,7 +219,7 @@ void Database::_Update(const Analog& arPoint, size_t aIndex)
 void Database::_Update(const Counter& arPoint, size_t aIndex)
 {
 	if(UpdateValue<Counter>(mCounterVec, arPoint, aIndex)) {
-		LOG_BLOCK(LEV_DEBUG, "Counter Change: " << arPoint.ToString() << " Index: " << aIndex);
+		LOG_BLOCK(LogLevel::Debug, "Counter Change: " << arPoint.ToString() << " Index: " << aIndex);
 		mCounterVec[aIndex].mLastEventValue = mCounterVec[aIndex].mValue.GetValue();
 		CounterInfo& v = mCounterVec[aIndex];
 		if(mpEventBuffer) mpEventBuffer->Update(v.mValue, v.mClass, aIndex);

@@ -35,7 +35,7 @@ namespace opendnp3
 class LinkReceiverTest
 {
 public:
-	LinkReceiverTest(openpal::FilterLevel aLevel = openpal::LEV_WARNING, bool aImmediate = false) :
+	LinkReceiverTest(openpal::LogLevel aLevel = openpal::LogLevel::Warning, bool aImmediate = false) :
 		log(),
 		mSink(),
 		mRx(openpal::Logger(&log, aLevel, "ReceiverTest"), &mSink)

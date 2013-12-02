@@ -108,7 +108,7 @@ public:
 	* @return interface representing the running master
 	*/
 	virtual IMaster* AddMaster(	const std::string& arLoggerId,
-	                                openpal::FilterLevel aLevel,
+	                                openpal::LogLevel aLevel,
 	                                IMeasurementHandler* apPublisher,
 	                                openpal::IUTCTimeSource* apTimeSource,
 	                                const MasterStackConfig& arCfg) = 0;
@@ -125,7 +125,7 @@ public:
 	* @return interface representing the running outstations
 	*/
 	virtual IOutstation* AddOutstation(	const std::string& arLoggerId,
-	                                        openpal::FilterLevel aLevel,
+	                                        openpal::LogLevel aLevel,
 	                                        ICommandHandler* apCmdHandler,
 	                                        ITimeWriteHandler* apTimeWriteHandler,
 	                                        const SlaveStackConfig& arCfg) = 0;
