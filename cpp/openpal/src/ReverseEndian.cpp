@@ -20,15 +20,15 @@
 // you under the terms of the License.
 //
 
-#include <openpal/Serialization.h>
+#include <openpal/ReverseEndian.h>
 
 namespace openpal
 {
 
-const uint8_t UInt8::Max = std::numeric_limits<uint8_t>::max();
-const uint8_t UInt8::Min = std::numeric_limits<uint8_t>::min();
+const uint8_t UInt8Simple::Max = std::numeric_limits<uint8_t>::max();
+const uint8_t UInt8Simple::Min = std::numeric_limits<uint8_t>::min();
 
-int64_t UInt48::Read(const uint8_t* apStart) {
+int64_t UInt48LE::Read(const uint8_t* apStart) {
 
 	int64_t  ret = *(apStart);
 	ret |= static_cast<int64_t>(*(++apStart)) << 8;
@@ -40,7 +40,7 @@ int64_t UInt48::Read(const uint8_t* apStart) {
 	return ret;
 }
 
-void UInt48::Write(uint8_t* apStart, int64_t aValue) 
+void UInt48LE::Write(uint8_t* apStart, int64_t aValue) 
 {
 	if(aValue > MAX) aValue = MAX;
 
@@ -52,22 +52,22 @@ void UInt48::Write(uint8_t* apStart, int64_t aValue)
 	*(++apStart) = static_cast<uint8_t>((aValue >> 40) & 0xFF);
 }
 
-float SingleFloat::Read(const uint8_t* apStart)
+float SingleFloatSafe::Read(const uint8_t* apStart)
 {
 	return Float<float>::SafeRead(apStart);
 }
 
-void SingleFloat::Write(uint8_t* apStart, float aValue)
+void SingleFloatSafe::Write(uint8_t* apStart, float aValue)
 {
 	Float<float>::SafeWrite(apStart, aValue);
 }
 
-double DoubleFloat::Read(const uint8_t* apStart)
+double DoubleFloatSafe::Read(const uint8_t* apStart)
 {
 	return Float<double>::SafeRead(apStart);
 }
 
-void DoubleFloat::Write(uint8_t* apStart, double aValue)
+void DoubleFloatSafe::Write(uint8_t* apStart, double aValue)
 {
 	Float<double>::SafeWrite(apStart, aValue);
 }

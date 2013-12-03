@@ -1,4 +1,3 @@
-
 //
 // Licensed to Green Energy Corp (www.greenenergycorp.com) under one or
 // more contributor license agreements. See the NOTICE file distributed
@@ -27,27 +26,61 @@
 // Contact Automatak, LLC for a commercial license to these modifications
 //
 
-#ifndef __OPENPAL_SERIALIZATION_H_
-#define __OPENPAL_SERIALIZATION_H_
+#ifndef __OPENPAL_REVERSE_ENDIAN_H_
+#define __OPENPAL_REVERSE_ENDIAN_H_
 
-#include <openpal/ReverseEndian.h>
+#include <cstdint>
 
-namespace openpal
+#include "SerializationTemplates.h"
+
+namespace openpal {
+
+class UInt8Simple
 {
+public:
 
-/*
-Users should only use these typedefs. This will allow these to be switched
-if we ever need to support systems with reverse endian
-*/
+	inline static uint8_t Read(const uint8_t* apStart) 
+	{
+		return (*apStart);
+	}
 
-typedef UInt8Simple			UInt8;
-typedef Bit16LE<int16_t>	Int16;
-typedef Bit16LE<uint16_t>	UInt16;
-typedef Bit32LE<int32_t>	Int32;
-typedef Bit32LE<uint32_t>	UInt32;
-typedef UInt48LE			UInt48;
-typedef SingleFloatSafe		SingleFloat;
-typedef DoubleFloatSafe		DoubleFloat;
+	inline static void Write(uint8_t* apStart, uint8_t aValue) 
+	{
+		*(apStart) = aValue;
+	}
+
+	const static size_t Size = 1;
+	const static uint8_t Max;
+	const static uint8_t Min;
+
+	typedef uint8_t Type;
+};
+
+class UInt48LE
+{
+public:
+
+	static int64_t Read(const uint8_t* apStart);	
+	static void Write(uint8_t* apStart, int64_t aValue);
+
+	const static int64_t MAX = 281474976710655ULL; // 2^48 -1
+	const static size_t Size = 6;
+	typedef int64_t Type;
+};
+
+class SingleFloatSafe : public Float<float>
+{
+public:
+	static float Read(const uint8_t* apStart);
+	static void Write(uint8_t* apStart, float aValue);
+};
+
+class DoubleFloatSafe : public Float<double>
+{
+public:
+	static double Read(const uint8_t* apStart);
+	static void Write(uint8_t* apStart, double aValue);
+};
 
 }
 
