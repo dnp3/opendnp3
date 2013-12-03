@@ -30,6 +30,8 @@
 
 #include <limits>
 #include <cstdint>
+#include <cstddef>
+#include <cstring>
 
 #ifdef max
 #undef max

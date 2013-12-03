@@ -22,6 +22,8 @@
 
 #include <openpal/ReverseEndian.h>
 
+#include <cstring>
+
 namespace openpal
 {
 

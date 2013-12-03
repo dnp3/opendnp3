@@ -32,13 +32,14 @@
 #include <queue>
 #include <functional>
 
+#include <openpal/Location.h>
+
+#include <opendnp3/ClassMask.h>
+
 #include "APDU.h"
 #include "Database.h"
 #include "SlaveEventBuffer.h"
 #include "DNPDatabaseTypes.h"
-
-#include <opendnp3/ClassMask.h>
-#include <openpal/Location.h>
 
 namespace opendnp3
 {
@@ -406,7 +407,7 @@ size_t ResponseContext::CalcPossibleCTO(typename EvtItr< EventInfo<T> >::Type aI
 
 	size_t num = 0;
 	while(num < aMax) {
-		if((aIter->mValue.GetTime() - start) > UInt16::Max) break;
+		if((aIter->mValue.GetTime() - start) > openpal::UInt16::Max) break;
 		++num;
 		++aIter;
 	}

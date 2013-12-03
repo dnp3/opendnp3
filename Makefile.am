@@ -30,6 +30,7 @@ cpp/openpal/src/LogEntry.cpp \
 cpp/openpal/src/Loggable.cpp \
 cpp/openpal/src/Logger.cpp \
 cpp/openpal/src/MonotonicTimestamp.cpp \
+cpp/openpal/src/ReverseEndian.cpp \
 cpp/openpal/src/TimeDuration.cpp \
 cpp/openpal/src/ToHex.cpp
 
@@ -147,7 +148,6 @@ cpp/opendnp3/src/opendnp3/Objects.cpp \
 cpp/opendnp3/src/opendnp3/ObjectWriteIterator.cpp \
 cpp/opendnp3/src/opendnp3/OutstationSBOHandler.cpp \
 cpp/opendnp3/src/opendnp3/OutstationStackImpl.cpp \
-cpp/opendnp3/src/opendnp3/PackingUnpacking.cpp \
 cpp/opendnp3/src/opendnp3/PhysicalLayerMonitor.cpp \
 cpp/opendnp3/src/opendnp3/PhysicalLayerMonitorStates.cpp \
 cpp/opendnp3/src/opendnp3/PostingMeasurementHandler.cpp \
@@ -245,13 +245,13 @@ cpp/opendnp3tests/src/TestMaster.cpp \
 cpp/opendnp3tests/src/TestMeasurementUpdate.cpp \
 cpp/opendnp3tests/src/TestMisc.cpp \
 cpp/opendnp3tests/src/TestObjects.cpp \
-cpp/opendnp3tests/src/TestPackingUnpacking.cpp \
 cpp/opendnp3tests/src/TestPhysicalLayerAsyncBase.cpp \
 cpp/opendnp3tests/src/TestPhysicalLayerAsyncSerial.cpp \
 cpp/opendnp3tests/src/TestPhysicalLayerAsyncTCP.cpp \
 cpp/opendnp3tests/src/TestPhysicalLayerLoopback.cpp \
 cpp/opendnp3tests/src/TestPhysicalLayerMonitor.cpp \
 cpp/opendnp3tests/src/TestResponseLoader.cpp \
+cpp/opendnp3tests/src/TestSerialization.cpp \
 cpp/opendnp3tests/src/TestShiftableBuffer.cpp \
 cpp/opendnp3tests/src/TestSlave.cpp \
 cpp/opendnp3tests/src/TestSlaveEventBuffer.cpp \
@@ -270,6 +270,7 @@ cpp/opendnp3tests/src/TransportScalabilityTestObject.cpp \
 cpp/opendnp3tests/src/TransportStackPair.cpp \
 cpp/opendnp3tests/src/TransportTestObject.cpp \
 cpp/opendnp3tests/src/WrappedTcpPipe.cpp
+
 
 masterdemo_CXXFLAGS = -I$(OPENPAL_INCLUDE) -I$(ASIOPAL_INCLUDE) -I $(OPENDNP3_INCLUDE) $(BOOST_DEFINES)
 masterdemo_LDFLAGS = $(BOOST_LDFLAGS) -pthread
