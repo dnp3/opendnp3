@@ -60,14 +60,6 @@ typedef Bit16LE<uint16_t> UInt16LE;
 typedef Bit32LE<int32_t> Int32LE;
 typedef Bit32LE<uint32_t> UInt32LE;
 
-typedef BytesBE<uint16_t> UInt16BE;
-typedef BytesBE<int16_t> Int16BE;
-typedef BytesBE<uint32_t> UInt32BE;
-typedef BytesBE<int32_t> Int32BE;
-
-typedef BytesBE<uint64_t> UInt64BE;
-typedef BytesBE<int64_t> Int64BE;
-
 class UInt48LE
 {
 public:

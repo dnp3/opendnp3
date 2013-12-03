@@ -43,35 +43,6 @@ namespace opendnp3
 {
 
 template <class T>
-class BytesBE
-{
-public:
-	static T Read( const uint8_t* apStart ) {
-		T ret = 0;
-		for ( size_t i = 0; i < Size; i++ ) {
-			ret |= static_cast<T>(apStart[i]) << (8 * (Size - 1 - i));
-		}
-		return ret;
-	}
-	static void Write( uint8_t* apStart, T aValue ) {
-		for ( size_t i = 0; i < Size; i++ ) {
-			apStart[i] = static_cast<uint8_t>((aValue >> 8 * (Size - 1 - i)) & 0xFF);
-		}
-	}
-
-	typedef T Type;
-	const static size_t Size = sizeof(T);
-	const static T Max;
-	const static T Min;
-};
-
-template <class T>
-const T BytesBE<T>::Max = std::numeric_limits<T>::max();
-
-template <class T>
-const T BytesBE<T>::Min = std::numeric_limits<T>::min();
-
-template <class T>
 class Bit16LE
 {
 public:
@@ -119,7 +90,7 @@ public:
 
 	typedef T Type;
 
-	const static size_t Size = 4;
+	const static size_t Size = sizeof(T);
 	const static T Max;
 	const static T Min;
 };
