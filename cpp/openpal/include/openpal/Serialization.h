@@ -34,6 +34,12 @@
 namespace openpal
 {
 
+// typedefs from the templates
+typedef Bit16LE<int16_t> Int16;
+typedef Bit16LE<uint16_t> UInt16;
+typedef Bit32LE<int32_t> Int32;
+typedef Bit32LE<uint32_t> UInt32;
+
 class UInt8
 {
 public:
@@ -55,12 +61,7 @@ public:
 	typedef uint8_t Type;
 };
 
-typedef Bit16LE<int16_t> Int16LE;
-typedef Bit16LE<uint16_t> UInt16LE;
-typedef Bit32LE<int32_t> Int32LE;
-typedef Bit32LE<uint32_t> UInt32LE;
-
-class UInt48LE
+class UInt48
 {
 public:
 

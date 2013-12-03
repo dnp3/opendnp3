@@ -28,7 +28,7 @@ Group40Var1 Group40Var1::Read(ReadOnlyBuffer& buffer)
   Group40Var1 obj;
   obj.flags = UInt8::Read(buffer);
   buffer.Advance(1);
-  obj.value = Int32LE::Read(buffer);
+  obj.value = Int32::Read(buffer);
   buffer.Advance(4);
   return obj;
 }
@@ -38,7 +38,7 @@ Group40Var2 Group40Var2::Read(ReadOnlyBuffer& buffer)
   Group40Var2 obj;
   obj.flags = UInt8::Read(buffer);
   buffer.Advance(1);
-  obj.value = Int16LE::Read(buffer);
+  obj.value = Int16::Read(buffer);
   buffer.Advance(2);
   return obj;
 }

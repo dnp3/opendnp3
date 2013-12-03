@@ -90,12 +90,12 @@ void IndexedWriteIterator::SetIndex(size_t aIndex)
 		UInt8::Write(mpPos, static_cast<uint8_t>(aIndex));
 		break;
 	case(IM_2B):
-		if(aIndex > UInt16LE::Max) MACRO_THROW_EXCEPTION(openpal::ArgumentException, "");
-		UInt16LE::Write(mpPos, static_cast<uint16_t>(aIndex));
+		if(aIndex > UInt16::Max) MACRO_THROW_EXCEPTION(openpal::ArgumentException, "");
+		UInt16::Write(mpPos, static_cast<uint16_t>(aIndex));
 		break;
 	case(IM_4B):
-		if(aIndex > UInt32LE::Max) MACRO_THROW_EXCEPTION(openpal::ArgumentException, "");
-		UInt32LE::Write(mpPos, static_cast<uint32_t>(aIndex));
+		if(aIndex > UInt32::Max) MACRO_THROW_EXCEPTION(openpal::ArgumentException, "");
+		UInt32::Write(mpPos, static_cast<uint32_t>(aIndex));
 		break;
 	default:
 		break;

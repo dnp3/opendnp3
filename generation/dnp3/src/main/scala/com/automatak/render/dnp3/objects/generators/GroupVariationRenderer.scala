@@ -68,11 +68,11 @@ object GroupVariationImplRenderer extends ModelRenderer[GroupVariation]{
 
     def getFieldTypeParser(x: FixedSizeFieldType): String = x match {
       case UInt8Field => "UInt8"
-      case UInt16Field => "UInt16LE"
-      case UInt32Field => "UInt32LE"
-      case UInt48Field => "UInt48LE"
-      case SInt16Field => "Int16LE"
-      case SInt32Field => "Int32LE"
+      case UInt16Field => "UInt16"
+      case UInt32Field => "UInt32"
+      case UInt48Field => "UInt48"
+      case SInt16Field => "Int16"
+      case SInt32Field => "Int32"
       case Float32Field => "SingleFloat"
       case Float64Field => "DoubleFloat"
       case EnumField(model: EnumModel) => model.name

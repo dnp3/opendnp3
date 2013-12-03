@@ -83,10 +83,7 @@
     <ClInclude Include="include\openpal\gen\LogLevel.h">
       <Filter>Include Files\gen</Filter>
     </ClInclude>
-    <ClInclude Include="include\openpal\Serialization - Copy.h">
-      <Filter>Include Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\openpal\SerializationTemplates - Copy.h">
+    <ClInclude Include="include\openpal\Serialization.h">
       <Filter>Include Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -406,7 +406,7 @@ size_t ResponseContext::CalcPossibleCTO(typename EvtItr< EventInfo<T> >::Type aI
 
 	size_t num = 0;
 	while(num < aMax) {
-		if((aIter->mValue.GetTime() - start) > UInt16LE::Max) break;
+		if((aIter->mValue.GetTime() - start) > UInt16::Max) break;
 		++num;
 		++aIter;
 	}

@@ -49,7 +49,7 @@ void DNPCrc::AddCrc(uint8_t* aInput, size_t aLength)
 
 bool DNPCrc::IsCorrectCRC(const uint8_t* aInput, size_t aLength)
 {
-	return CalcCrc(aInput, aLength) == openpal::UInt16LE::Read(aInput + aLength);
+	return CalcCrc(aInput, aLength) == openpal::UInt16::Read(aInput + aLength);
 }
 
 bool DNPCrc::InitCrcTable()

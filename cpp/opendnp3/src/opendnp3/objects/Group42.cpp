@@ -28,7 +28,7 @@ Group42Var1 Group42Var1::Read(ReadOnlyBuffer& buffer)
   Group42Var1 obj;
   obj.flags = UInt8::Read(buffer);
   buffer.Advance(1);
-  obj.value = Int32LE::Read(buffer);
+  obj.value = Int32::Read(buffer);
   buffer.Advance(4);
   return obj;
 }
@@ -38,7 +38,7 @@ Group42Var2 Group42Var2::Read(ReadOnlyBuffer& buffer)
   Group42Var2 obj;
   obj.flags = UInt8::Read(buffer);
   buffer.Advance(1);
-  obj.value = Int16LE::Read(buffer);
+  obj.value = Int16::Read(buffer);
   buffer.Advance(2);
   return obj;
 }
@@ -48,9 +48,9 @@ Group42Var3 Group42Var3::Read(ReadOnlyBuffer& buffer)
   Group42Var3 obj;
   obj.flags = UInt8::Read(buffer);
   buffer.Advance(1);
-  obj.value = Int32LE::Read(buffer);
+  obj.value = Int32::Read(buffer);
   buffer.Advance(4);
-  obj.time48 = UInt48LE::Read(buffer);
+  obj.time48 = UInt48::Read(buffer);
   buffer.Advance(6);
   return obj;
 }
@@ -60,9 +60,9 @@ Group42Var4 Group42Var4::Read(ReadOnlyBuffer& buffer)
   Group42Var4 obj;
   obj.flags = UInt8::Read(buffer);
   buffer.Advance(1);
-  obj.value = Int16LE::Read(buffer);
+  obj.value = Int16::Read(buffer);
   buffer.Advance(2);
-  obj.time48 = UInt48LE::Read(buffer);
+  obj.time48 = UInt48::Read(buffer);
   buffer.Advance(6);
   return obj;
 }
@@ -94,7 +94,7 @@ Group42Var7 Group42Var7::Read(ReadOnlyBuffer& buffer)
   buffer.Advance(1);
   obj.value = SingleFloat::Read(buffer);
   buffer.Advance(4);
-  obj.time48 = UInt48LE::Read(buffer);
+  obj.time48 = UInt48::Read(buffer);
   buffer.Advance(6);
   return obj;
 }
@@ -106,7 +106,7 @@ Group42Var8 Group42Var8::Read(ReadOnlyBuffer& buffer)
   buffer.Advance(1);
   obj.value = SingleFloat::Read(buffer);
   buffer.Advance(4);
-  obj.time48 = UInt48LE::Read(buffer);
+  obj.time48 = UInt48::Read(buffer);
   buffer.Advance(6);
   return obj;
 }

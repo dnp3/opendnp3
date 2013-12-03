@@ -120,9 +120,9 @@ size_t ObjectReadIterator::CalcCountIndex(QualifierCode aCode, const uint8_t* ap
 	case(QualifierCode::UINT8_CNT_UINT8_INDEX):
 		return UInt8::Read(apPrefixPos);
 	case(QualifierCode::UINT16_CNT_UINT16_INDEX):
-		return UInt16LE::Read(apPrefixPos);
+		return UInt16::Read(apPrefixPos);
 	case(QualifierCode::UINT32_CNT_UINT32_INDEX):
-		return UInt32LE::Read(apPrefixPos);
+		return UInt32::Read(apPrefixPos);
 	default:
 		MACRO_THROW_EXCEPTION(Exception, "Invalid qualifier code");
 	}

@@ -159,8 +159,7 @@
     <ClInclude Include="include\openpal\Logger.h" />
     <ClInclude Include="include\openpal\MonotonicTimestamp.h" />
     <ClInclude Include="include\openpal\MoveOnCopy.h" />
-    <ClInclude Include="include\openpal\Serialization - Copy.h" />
-    <ClInclude Include="include\openpal\SerializationTemplates - Copy.h" />
+    <ClInclude Include="include\openpal\Serialization.h" />
     <ClInclude Include="include\openpal\TimeDuration.h" />
     <ClInclude Include="include\openpal\ToHex.h" />
     <ClInclude Include="include\openpal\UTCTimestamp.h" />

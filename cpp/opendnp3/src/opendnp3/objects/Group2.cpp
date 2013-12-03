@@ -36,7 +36,7 @@ Group2Var2 Group2Var2::Read(ReadOnlyBuffer& buffer)
   Group2Var2 obj;
   obj.flags = UInt8::Read(buffer);
   buffer.Advance(1);
-  obj.time48 = UInt48LE::Read(buffer);
+  obj.time48 = UInt48::Read(buffer);
   buffer.Advance(6);
   return obj;
 }
@@ -46,7 +46,7 @@ Group2Var3 Group2Var3::Read(ReadOnlyBuffer& buffer)
   Group2Var3 obj;
   obj.flags = UInt8::Read(buffer);
   buffer.Advance(1);
-  obj.time16 = UInt16LE::Read(buffer);
+  obj.time16 = UInt16::Read(buffer);
   buffer.Advance(2);
   return obj;
 }

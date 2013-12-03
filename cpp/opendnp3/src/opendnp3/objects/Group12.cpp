@@ -30,9 +30,9 @@ Group12Var1 Group12Var1::Read(ReadOnlyBuffer& buffer)
   buffer.Advance(1);
   obj.count = UInt8::Read(buffer);
   buffer.Advance(1);
-  obj.onTime = UInt32LE::Read(buffer);
+  obj.onTime = UInt32::Read(buffer);
   buffer.Advance(4);
-  obj.offTime = UInt32LE::Read(buffer);
+  obj.offTime = UInt32::Read(buffer);
   buffer.Advance(4);
   obj.status = CommandStatusFromType(*buffer);
   buffer.Advance(1);

@@ -26,7 +26,7 @@ namespace opendnp3 {
 Group51Var1 Group51Var1::Read(ReadOnlyBuffer& buffer)
 {
   Group51Var1 obj;
-  obj.time48 = UInt48LE::Read(buffer);
+  obj.time48 = UInt48::Read(buffer);
   buffer.Advance(6);
   return obj;
 }
@@ -34,7 +34,7 @@ Group51Var1 Group51Var1::Read(ReadOnlyBuffer& buffer)
 Group51Var2 Group51Var2::Read(ReadOnlyBuffer& buffer)
 {
   Group51Var2 obj;
-  obj.time48 = UInt48LE::Read(buffer);
+  obj.time48 = UInt48::Read(buffer);
   buffer.Advance(6);
   return obj;
 }

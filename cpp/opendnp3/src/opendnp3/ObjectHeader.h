@@ -225,12 +225,12 @@ CountHeader<T, U> CountHeader<T, U>::mInstance;
 
 //Typedefs so you don't have to direcly use the templates
 typedef RangedHeader<openpal::UInt8, OHT_RANGED_2_OCTET>	Ranged2OctetHeader;
-typedef RangedHeader<openpal::UInt16LE, OHT_RANGED_4_OCTET> Ranged4OctetHeader;
-typedef RangedHeader<openpal::UInt32LE, OHT_RANGED_8_OCTET> Ranged8OctetHeader;
+typedef RangedHeader<openpal::UInt16, OHT_RANGED_4_OCTET> Ranged4OctetHeader;
+typedef RangedHeader<openpal::UInt32, OHT_RANGED_8_OCTET> Ranged8OctetHeader;
 
 typedef CountHeader<openpal::UInt8, OHT_COUNT_1_OCTET>		Count1OctetHeader;
-typedef CountHeader<openpal::UInt16LE, OHT_COUNT_2_OCTET>	Count2OctetHeader;
-typedef CountHeader<openpal::UInt32LE, OHT_COUNT_4_OCTET>	Count4OctetHeader;
+typedef CountHeader<openpal::UInt16, OHT_COUNT_2_OCTET>	Count2OctetHeader;
+typedef CountHeader<openpal::UInt32, OHT_COUNT_4_OCTET>	Count4OctetHeader;
 
 }
 

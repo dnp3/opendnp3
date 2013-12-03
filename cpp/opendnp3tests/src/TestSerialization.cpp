@@ -124,39 +124,39 @@ BOOST_AUTO_TEST_CASE(UInt8)
 	BOOST_REQUIRE(TestReadWrite<openpal::UInt8>(255));
 }
 
-BOOST_AUTO_TEST_CASE(UInt16LE)
+BOOST_AUTO_TEST_CASE(UInt16)
 {
-	BOOST_REQUIRE(TestReadWrite<openpal::UInt16LE>(0));
-	BOOST_REQUIRE(TestReadWrite<openpal::UInt16LE>(123));
-	BOOST_REQUIRE(TestReadWrite<openpal::UInt16LE>(65535));
+	BOOST_REQUIRE(TestReadWrite<openpal::UInt16>(0));
+	BOOST_REQUIRE(TestReadWrite<openpal::UInt16>(123));
+	BOOST_REQUIRE(TestReadWrite<openpal::UInt16>(65535));
 }
 
-BOOST_AUTO_TEST_CASE(Int16LE)
+BOOST_AUTO_TEST_CASE(Int16)
 {
-	BOOST_REQUIRE(TestReadWrite<openpal::Int16LE>(-32768));
-	BOOST_REQUIRE(TestReadWrite<openpal::Int16LE>(0));
-	BOOST_REQUIRE(TestReadWrite<openpal::Int16LE>(32767));
+	BOOST_REQUIRE(TestReadWrite<openpal::Int16>(-32768));
+	BOOST_REQUIRE(TestReadWrite<openpal::Int16>(0));
+	BOOST_REQUIRE(TestReadWrite<openpal::Int16>(32767));
 }
 
-BOOST_AUTO_TEST_CASE(UInt32LE)
+BOOST_AUTO_TEST_CASE(UInt32)
 {
-	BOOST_REQUIRE(TestReadWrite<openpal::UInt32LE>(0));
-	BOOST_REQUIRE(TestReadWrite<openpal::UInt32LE>(123));
-	BOOST_REQUIRE(TestReadWrite<openpal::UInt32LE>(4294967295UL));
+	BOOST_REQUIRE(TestReadWrite<openpal::UInt32>(0));
+	BOOST_REQUIRE(TestReadWrite<openpal::UInt32>(123));
+	BOOST_REQUIRE(TestReadWrite<openpal::UInt32>(4294967295UL));
 }
 
-BOOST_AUTO_TEST_CASE(Int32LE)
+BOOST_AUTO_TEST_CASE(Int32)
 {
-	BOOST_REQUIRE(TestReadWrite<openpal::Int32LE>(0x80000000));
-	BOOST_REQUIRE(TestReadWrite<openpal::Int32LE>(0));
-	BOOST_REQUIRE(TestReadWrite<openpal::Int32LE>(0x7fffffff));
+	BOOST_REQUIRE(TestReadWrite<openpal::Int32>(0x80000000));
+	BOOST_REQUIRE(TestReadWrite<openpal::Int32>(0));
+	BOOST_REQUIRE(TestReadWrite<openpal::Int32>(0x7fffffff));
 }
 
 BOOST_AUTO_TEST_CASE(UInt48LE)
 {
-	BOOST_REQUIRE(TestReadWrite<openpal::UInt48LE>(0));
-	BOOST_REQUIRE(TestReadWrite<openpal::UInt48LE>(123));
-	BOOST_REQUIRE(TestReadWrite<openpal::UInt48LE>(281474976710655LL));
+	BOOST_REQUIRE(TestReadWrite<openpal::UInt48>(0));
+	BOOST_REQUIRE(TestReadWrite<openpal::UInt48>(123));
+	BOOST_REQUIRE(TestReadWrite<openpal::UInt48>(281474976710655LL));
 }
 
 BOOST_AUTO_TEST_SUITE_END()

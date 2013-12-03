@@ -26,7 +26,7 @@ namespace opendnp3 {
 Group41Var1 Group41Var1::Read(ReadOnlyBuffer& buffer)
 {
   Group41Var1 obj;
-  obj.value = Int32LE::Read(buffer);
+  obj.value = Int32::Read(buffer);
   buffer.Advance(4);
   obj.status = CommandStatusFromType(*buffer);
   buffer.Advance(1);
@@ -36,7 +36,7 @@ Group41Var1 Group41Var1::Read(ReadOnlyBuffer& buffer)
 Group41Var2 Group41Var2::Read(ReadOnlyBuffer& buffer)
 {
   Group41Var2 obj;
-  obj.value = Int16LE::Read(buffer);
+  obj.value = Int16::Read(buffer);
   buffer.Advance(2);
   obj.status = CommandStatusFromType(*buffer);
   buffer.Advance(1);

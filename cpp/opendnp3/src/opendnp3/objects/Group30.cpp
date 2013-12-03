@@ -28,7 +28,7 @@ Group30Var1 Group30Var1::Read(ReadOnlyBuffer& buffer)
   Group30Var1 obj;
   obj.flags = UInt8::Read(buffer);
   buffer.Advance(1);
-  obj.value = Int32LE::Read(buffer);
+  obj.value = Int32::Read(buffer);
   buffer.Advance(4);
   return obj;
 }
@@ -38,7 +38,7 @@ Group30Var2 Group30Var2::Read(ReadOnlyBuffer& buffer)
   Group30Var2 obj;
   obj.flags = UInt8::Read(buffer);
   buffer.Advance(1);
-  obj.value = Int16LE::Read(buffer);
+  obj.value = Int16::Read(buffer);
   buffer.Advance(2);
   return obj;
 }
@@ -46,7 +46,7 @@ Group30Var2 Group30Var2::Read(ReadOnlyBuffer& buffer)
 Group30Var3 Group30Var3::Read(ReadOnlyBuffer& buffer)
 {
   Group30Var3 obj;
-  obj.value = Int32LE::Read(buffer);
+  obj.value = Int32::Read(buffer);
   buffer.Advance(4);
   return obj;
 }
@@ -54,7 +54,7 @@ Group30Var3 Group30Var3::Read(ReadOnlyBuffer& buffer)
 Group30Var4 Group30Var4::Read(ReadOnlyBuffer& buffer)
 {
   Group30Var4 obj;
-  obj.value = Int16LE::Read(buffer);
+  obj.value = Int16::Read(buffer);
   buffer.Advance(2);
   return obj;
 }

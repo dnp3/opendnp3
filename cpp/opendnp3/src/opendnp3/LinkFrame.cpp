@@ -80,7 +80,7 @@ void LinkFrame::ReadUserData(const uint8_t* apSrc, uint8_t* apDest, size_t aLeng
 
 bool LinkFrame::ValidateHeaderCRC() const
 {
-	return openpal::UInt16LE::Read(mpBuffer + LI_CRC) == DNPCrc::CalcCrc(mpBuffer, LI_CRC);
+	return openpal::UInt16::Read(mpBuffer + LI_CRC) == DNPCrc::CalcCrc(mpBuffer, LI_CRC);
 }
 
 bool LinkFrame::ValidateBodyCRC() const
