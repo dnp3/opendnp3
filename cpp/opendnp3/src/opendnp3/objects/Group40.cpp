@@ -17,11 +17,13 @@
 
 #include "Group40.h"
 
-#include "../PackingUnpacking.h"
+#include <openpal/Serialization.h>
+
+using namespace openpal;
 
 namespace opendnp3 {
 
-Group40Var1 Group40Var1::Read(openpal::ReadOnlyBuffer& buffer)
+Group40Var1 Group40Var1::Read(ReadOnlyBuffer& buffer)
 {
   Group40Var1 obj;
   obj.flags = UInt8::Read(buffer);
@@ -31,7 +33,7 @@ Group40Var1 Group40Var1::Read(openpal::ReadOnlyBuffer& buffer)
   return obj;
 }
 
-Group40Var2 Group40Var2::Read(openpal::ReadOnlyBuffer& buffer)
+Group40Var2 Group40Var2::Read(ReadOnlyBuffer& buffer)
 {
   Group40Var2 obj;
   obj.flags = UInt8::Read(buffer);
@@ -41,7 +43,7 @@ Group40Var2 Group40Var2::Read(openpal::ReadOnlyBuffer& buffer)
   return obj;
 }
 
-Group40Var3 Group40Var3::Read(openpal::ReadOnlyBuffer& buffer)
+Group40Var3 Group40Var3::Read(ReadOnlyBuffer& buffer)
 {
   Group40Var3 obj;
   obj.flags = UInt8::Read(buffer);
@@ -51,7 +53,7 @@ Group40Var3 Group40Var3::Read(openpal::ReadOnlyBuffer& buffer)
   return obj;
 }
 
-Group40Var4 Group40Var4::Read(openpal::ReadOnlyBuffer& buffer)
+Group40Var4 Group40Var4::Read(ReadOnlyBuffer& buffer)
 {
   Group40Var4 obj;
   obj.flags = UInt8::Read(buffer);

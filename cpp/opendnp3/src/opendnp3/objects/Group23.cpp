@@ -17,11 +17,13 @@
 
 #include "Group23.h"
 
-#include "../PackingUnpacking.h"
+#include <openpal/Serialization.h>
+
+using namespace openpal;
 
 namespace opendnp3 {
 
-Group23Var1 Group23Var1::Read(openpal::ReadOnlyBuffer& buffer)
+Group23Var1 Group23Var1::Read(ReadOnlyBuffer& buffer)
 {
   Group23Var1 obj;
   obj.flags = UInt8::Read(buffer);
@@ -31,7 +33,7 @@ Group23Var1 Group23Var1::Read(openpal::ReadOnlyBuffer& buffer)
   return obj;
 }
 
-Group23Var2 Group23Var2::Read(openpal::ReadOnlyBuffer& buffer)
+Group23Var2 Group23Var2::Read(ReadOnlyBuffer& buffer)
 {
   Group23Var2 obj;
   obj.flags = UInt8::Read(buffer);
@@ -41,7 +43,7 @@ Group23Var2 Group23Var2::Read(openpal::ReadOnlyBuffer& buffer)
   return obj;
 }
 
-Group23Var3 Group23Var3::Read(openpal::ReadOnlyBuffer& buffer)
+Group23Var3 Group23Var3::Read(ReadOnlyBuffer& buffer)
 {
   Group23Var3 obj;
   obj.flags = UInt8::Read(buffer);
@@ -51,7 +53,7 @@ Group23Var3 Group23Var3::Read(openpal::ReadOnlyBuffer& buffer)
   return obj;
 }
 
-Group23Var4 Group23Var4::Read(openpal::ReadOnlyBuffer& buffer)
+Group23Var4 Group23Var4::Read(ReadOnlyBuffer& buffer)
 {
   Group23Var4 obj;
   obj.flags = UInt8::Read(buffer);
@@ -61,7 +63,7 @@ Group23Var4 Group23Var4::Read(openpal::ReadOnlyBuffer& buffer)
   return obj;
 }
 
-Group23Var5 Group23Var5::Read(openpal::ReadOnlyBuffer& buffer)
+Group23Var5 Group23Var5::Read(ReadOnlyBuffer& buffer)
 {
   Group23Var5 obj;
   obj.flags = UInt8::Read(buffer);
@@ -73,7 +75,7 @@ Group23Var5 Group23Var5::Read(openpal::ReadOnlyBuffer& buffer)
   return obj;
 }
 
-Group23Var6 Group23Var6::Read(openpal::ReadOnlyBuffer& buffer)
+Group23Var6 Group23Var6::Read(ReadOnlyBuffer& buffer)
 {
   Group23Var6 obj;
   obj.flags = UInt8::Read(buffer);
@@ -85,7 +87,7 @@ Group23Var6 Group23Var6::Read(openpal::ReadOnlyBuffer& buffer)
   return obj;
 }
 
-Group23Var7 Group23Var7::Read(openpal::ReadOnlyBuffer& buffer)
+Group23Var7 Group23Var7::Read(ReadOnlyBuffer& buffer)
 {
   Group23Var7 obj;
   obj.flags = UInt8::Read(buffer);
@@ -97,7 +99,7 @@ Group23Var7 Group23Var7::Read(openpal::ReadOnlyBuffer& buffer)
   return obj;
 }
 
-Group23Var8 Group23Var8::Read(openpal::ReadOnlyBuffer& buffer)
+Group23Var8 Group23Var8::Read(ReadOnlyBuffer& buffer)
 {
   Group23Var8 obj;
   obj.flags = UInt8::Read(buffer);

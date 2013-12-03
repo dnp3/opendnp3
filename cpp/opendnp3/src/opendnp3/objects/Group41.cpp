@@ -17,11 +17,13 @@
 
 #include "Group41.h"
 
-#include "../PackingUnpacking.h"
+#include <openpal/Serialization.h>
+
+using namespace openpal;
 
 namespace opendnp3 {
 
-Group41Var1 Group41Var1::Read(openpal::ReadOnlyBuffer& buffer)
+Group41Var1 Group41Var1::Read(ReadOnlyBuffer& buffer)
 {
   Group41Var1 obj;
   obj.value = Int32LE::Read(buffer);
@@ -31,7 +33,7 @@ Group41Var1 Group41Var1::Read(openpal::ReadOnlyBuffer& buffer)
   return obj;
 }
 
-Group41Var2 Group41Var2::Read(openpal::ReadOnlyBuffer& buffer)
+Group41Var2 Group41Var2::Read(ReadOnlyBuffer& buffer)
 {
   Group41Var2 obj;
   obj.value = Int16LE::Read(buffer);
@@ -41,7 +43,7 @@ Group41Var2 Group41Var2::Read(openpal::ReadOnlyBuffer& buffer)
   return obj;
 }
 
-Group41Var3 Group41Var3::Read(openpal::ReadOnlyBuffer& buffer)
+Group41Var3 Group41Var3::Read(ReadOnlyBuffer& buffer)
 {
   Group41Var3 obj;
   obj.value = SingleFloat::Read(buffer);
@@ -51,7 +53,7 @@ Group41Var3 Group41Var3::Read(openpal::ReadOnlyBuffer& buffer)
   return obj;
 }
 
-Group41Var4 Group41Var4::Read(openpal::ReadOnlyBuffer& buffer)
+Group41Var4 Group41Var4::Read(ReadOnlyBuffer& buffer)
 {
   Group41Var4 obj;
   obj.value = SingleFloat::Read(buffer);

@@ -324,9 +324,6 @@
     <ClInclude Include="src\opendnp3\PackingTemplates.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\PackingUnpacking.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\PhysicalLayerMonitor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -558,9 +555,6 @@
     <ClInclude Include="src\opendnp3\objects\Group60.h">
       <Filter>Header Files\objects</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\SerializationTemplates.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\opendnp3\AnalogOutput.cpp">
@@ -717,9 +711,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\OutstationStackImpl.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\PackingUnpacking.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\PhysicalLayerMonitor.cpp">

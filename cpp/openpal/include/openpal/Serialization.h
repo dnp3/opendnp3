@@ -31,7 +31,7 @@
 
 #include "SerializationTemplates.h"
 
-namespace opendnp3
+namespace openpal
 {
 
 class UInt8

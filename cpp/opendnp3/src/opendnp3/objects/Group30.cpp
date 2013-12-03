@@ -17,11 +17,13 @@
 
 #include "Group30.h"
 
-#include "../PackingUnpacking.h"
+#include <openpal/Serialization.h>
+
+using namespace openpal;
 
 namespace opendnp3 {
 
-Group30Var1 Group30Var1::Read(openpal::ReadOnlyBuffer& buffer)
+Group30Var1 Group30Var1::Read(ReadOnlyBuffer& buffer)
 {
   Group30Var1 obj;
   obj.flags = UInt8::Read(buffer);
@@ -31,7 +33,7 @@ Group30Var1 Group30Var1::Read(openpal::ReadOnlyBuffer& buffer)
   return obj;
 }
 
-Group30Var2 Group30Var2::Read(openpal::ReadOnlyBuffer& buffer)
+Group30Var2 Group30Var2::Read(ReadOnlyBuffer& buffer)
 {
   Group30Var2 obj;
   obj.flags = UInt8::Read(buffer);
@@ -41,7 +43,7 @@ Group30Var2 Group30Var2::Read(openpal::ReadOnlyBuffer& buffer)
   return obj;
 }
 
-Group30Var3 Group30Var3::Read(openpal::ReadOnlyBuffer& buffer)
+Group30Var3 Group30Var3::Read(ReadOnlyBuffer& buffer)
 {
   Group30Var3 obj;
   obj.value = Int32LE::Read(buffer);
@@ -49,7 +51,7 @@ Group30Var3 Group30Var3::Read(openpal::ReadOnlyBuffer& buffer)
   return obj;
 }
 
-Group30Var4 Group30Var4::Read(openpal::ReadOnlyBuffer& buffer)
+Group30Var4 Group30Var4::Read(ReadOnlyBuffer& buffer)
 {
   Group30Var4 obj;
   obj.value = Int16LE::Read(buffer);
@@ -57,7 +59,7 @@ Group30Var4 Group30Var4::Read(openpal::ReadOnlyBuffer& buffer)
   return obj;
 }
 
-Group30Var5 Group30Var5::Read(openpal::ReadOnlyBuffer& buffer)
+Group30Var5 Group30Var5::Read(ReadOnlyBuffer& buffer)
 {
   Group30Var5 obj;
   obj.flags = UInt8::Read(buffer);
@@ -67,7 +69,7 @@ Group30Var5 Group30Var5::Read(openpal::ReadOnlyBuffer& buffer)
   return obj;
 }
 
-Group30Var6 Group30Var6::Read(openpal::ReadOnlyBuffer& buffer)
+Group30Var6 Group30Var6::Read(ReadOnlyBuffer& buffer)
 {
   Group30Var6 obj;
   obj.flags = UInt8::Read(buffer);

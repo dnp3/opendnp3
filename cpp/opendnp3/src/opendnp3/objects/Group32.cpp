@@ -17,11 +17,13 @@
 
 #include "Group32.h"
 
-#include "../PackingUnpacking.h"
+#include <openpal/Serialization.h>
+
+using namespace openpal;
 
 namespace opendnp3 {
 
-Group32Var1 Group32Var1::Read(openpal::ReadOnlyBuffer& buffer)
+Group32Var1 Group32Var1::Read(ReadOnlyBuffer& buffer)
 {
   Group32Var1 obj;
   obj.flags = UInt8::Read(buffer);
@@ -31,7 +33,7 @@ Group32Var1 Group32Var1::Read(openpal::ReadOnlyBuffer& buffer)
   return obj;
 }
 
-Group32Var2 Group32Var2::Read(openpal::ReadOnlyBuffer& buffer)
+Group32Var2 Group32Var2::Read(ReadOnlyBuffer& buffer)
 {
   Group32Var2 obj;
   obj.flags = UInt8::Read(buffer);
@@ -41,7 +43,7 @@ Group32Var2 Group32Var2::Read(openpal::ReadOnlyBuffer& buffer)
   return obj;
 }
 
-Group32Var3 Group32Var3::Read(openpal::ReadOnlyBuffer& buffer)
+Group32Var3 Group32Var3::Read(ReadOnlyBuffer& buffer)
 {
   Group32Var3 obj;
   obj.flags = UInt8::Read(buffer);
@@ -53,7 +55,7 @@ Group32Var3 Group32Var3::Read(openpal::ReadOnlyBuffer& buffer)
   return obj;
 }
 
-Group32Var4 Group32Var4::Read(openpal::ReadOnlyBuffer& buffer)
+Group32Var4 Group32Var4::Read(ReadOnlyBuffer& buffer)
 {
   Group32Var4 obj;
   obj.flags = UInt8::Read(buffer);
@@ -65,7 +67,7 @@ Group32Var4 Group32Var4::Read(openpal::ReadOnlyBuffer& buffer)
   return obj;
 }
 
-Group32Var5 Group32Var5::Read(openpal::ReadOnlyBuffer& buffer)
+Group32Var5 Group32Var5::Read(ReadOnlyBuffer& buffer)
 {
   Group32Var5 obj;
   obj.flags = UInt8::Read(buffer);
@@ -75,7 +77,7 @@ Group32Var5 Group32Var5::Read(openpal::ReadOnlyBuffer& buffer)
   return obj;
 }
 
-Group32Var6 Group32Var6::Read(openpal::ReadOnlyBuffer& buffer)
+Group32Var6 Group32Var6::Read(ReadOnlyBuffer& buffer)
 {
   Group32Var6 obj;
   obj.flags = UInt8::Read(buffer);
@@ -85,7 +87,7 @@ Group32Var6 Group32Var6::Read(openpal::ReadOnlyBuffer& buffer)
   return obj;
 }
 
-Group32Var7 Group32Var7::Read(openpal::ReadOnlyBuffer& buffer)
+Group32Var7 Group32Var7::Read(ReadOnlyBuffer& buffer)
 {
   Group32Var7 obj;
   obj.flags = UInt8::Read(buffer);
@@ -97,7 +99,7 @@ Group32Var7 Group32Var7::Read(openpal::ReadOnlyBuffer& buffer)
   return obj;
 }
 
-Group32Var8 Group32Var8::Read(openpal::ReadOnlyBuffer& buffer)
+Group32Var8 Group32Var8::Read(ReadOnlyBuffer& buffer)
 {
   Group32Var8 obj;
   obj.flags = UInt8::Read(buffer);

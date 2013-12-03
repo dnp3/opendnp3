@@ -83,6 +83,12 @@
     <ClInclude Include="include\openpal\gen\LogLevel.h">
       <Filter>Include Files\gen</Filter>
     </ClInclude>
+    <ClInclude Include="include\openpal\Serialization - Copy.h">
+      <Filter>Include Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\openpal\SerializationTemplates - Copy.h">
+      <Filter>Include Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\LogEntry.cpp">
@@ -117,6 +123,9 @@
     </ClCompile>
     <ClCompile Include="src\gen\LogLevel.cpp">
       <Filter>Source Files\gen</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Serialization.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

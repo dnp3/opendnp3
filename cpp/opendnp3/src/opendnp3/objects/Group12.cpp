@@ -17,11 +17,13 @@
 
 #include "Group12.h"
 
-#include "../PackingUnpacking.h"
+#include <openpal/Serialization.h>
+
+using namespace openpal;
 
 namespace opendnp3 {
 
-Group12Var1 Group12Var1::Read(openpal::ReadOnlyBuffer& buffer)
+Group12Var1 Group12Var1::Read(ReadOnlyBuffer& buffer)
 {
   Group12Var1 obj;
   obj.code = ControlCodeFromType(*buffer);

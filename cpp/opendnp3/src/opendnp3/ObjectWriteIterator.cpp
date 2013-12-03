@@ -22,7 +22,6 @@
 
 #include "ObjectWriteIterator.h"
 
-#include "PackingUnpacking.h"
 #include "ObjectHeader.h"
 
 #include <openpal/Exception.h>

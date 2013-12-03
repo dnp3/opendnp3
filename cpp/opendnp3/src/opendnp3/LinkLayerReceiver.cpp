@@ -22,7 +22,6 @@
 
 #include <assert.h>
 
-#include "PackingUnpacking.h"
 #include "DNPCrc.h"
 #include "LinkReceiverStates.h"
 #include "IFrameSink.h"

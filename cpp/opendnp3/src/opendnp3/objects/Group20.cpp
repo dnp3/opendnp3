@@ -17,11 +17,13 @@
 
 #include "Group20.h"
 
-#include "../PackingUnpacking.h"
+#include <openpal/Serialization.h>
+
+using namespace openpal;
 
 namespace opendnp3 {
 
-Group20Var1 Group20Var1::Read(openpal::ReadOnlyBuffer& buffer)
+Group20Var1 Group20Var1::Read(ReadOnlyBuffer& buffer)
 {
   Group20Var1 obj;
   obj.flags = UInt8::Read(buffer);
@@ -31,7 +33,7 @@ Group20Var1 Group20Var1::Read(openpal::ReadOnlyBuffer& buffer)
   return obj;
 }
 
-Group20Var2 Group20Var2::Read(openpal::ReadOnlyBuffer& buffer)
+Group20Var2 Group20Var2::Read(ReadOnlyBuffer& buffer)
 {
   Group20Var2 obj;
   obj.flags = UInt8::Read(buffer);
@@ -41,7 +43,7 @@ Group20Var2 Group20Var2::Read(openpal::ReadOnlyBuffer& buffer)
   return obj;
 }
 
-Group20Var3 Group20Var3::Read(openpal::ReadOnlyBuffer& buffer)
+Group20Var3 Group20Var3::Read(ReadOnlyBuffer& buffer)
 {
   Group20Var3 obj;
   obj.flags = UInt8::Read(buffer);
@@ -51,7 +53,7 @@ Group20Var3 Group20Var3::Read(openpal::ReadOnlyBuffer& buffer)
   return obj;
 }
 
-Group20Var4 Group20Var4::Read(openpal::ReadOnlyBuffer& buffer)
+Group20Var4 Group20Var4::Read(ReadOnlyBuffer& buffer)
 {
   Group20Var4 obj;
   obj.flags = UInt8::Read(buffer);
@@ -61,7 +63,7 @@ Group20Var4 Group20Var4::Read(openpal::ReadOnlyBuffer& buffer)
   return obj;
 }
 
-Group20Var5 Group20Var5::Read(openpal::ReadOnlyBuffer& buffer)
+Group20Var5 Group20Var5::Read(ReadOnlyBuffer& buffer)
 {
   Group20Var5 obj;
   obj.count = UInt32LE::Read(buffer);
@@ -69,7 +71,7 @@ Group20Var5 Group20Var5::Read(openpal::ReadOnlyBuffer& buffer)
   return obj;
 }
 
-Group20Var6 Group20Var6::Read(openpal::ReadOnlyBuffer& buffer)
+Group20Var6 Group20Var6::Read(ReadOnlyBuffer& buffer)
 {
   Group20Var6 obj;
   obj.count = UInt16LE::Read(buffer);
@@ -77,7 +79,7 @@ Group20Var6 Group20Var6::Read(openpal::ReadOnlyBuffer& buffer)
   return obj;
 }
 
-Group20Var7 Group20Var7::Read(openpal::ReadOnlyBuffer& buffer)
+Group20Var7 Group20Var7::Read(ReadOnlyBuffer& buffer)
 {
   Group20Var7 obj;
   obj.count = UInt32LE::Read(buffer);
@@ -85,7 +87,7 @@ Group20Var7 Group20Var7::Read(openpal::ReadOnlyBuffer& buffer)
   return obj;
 }
 
-Group20Var8 Group20Var8::Read(openpal::ReadOnlyBuffer& buffer)
+Group20Var8 Group20Var8::Read(ReadOnlyBuffer& buffer)
 {
   Group20Var8 obj;
   obj.count = UInt16LE::Read(buffer);

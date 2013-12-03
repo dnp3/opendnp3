@@ -26,12 +26,15 @@
 #include "BufferHelpers.h"
 
 #include <opendnp3/Util.h>
-#include <opendnp3/PackingUnpacking.h>
+
+#include <openpal/Serialization.h>
 
 #include <memory>
 
-using namespace std;
+using namespace openpal;
 using namespace opendnp3;
+
+using namespace std;
 
 template <class T>
 bool TestReadWrite(typename T::Type aValue)
@@ -81,79 +84,79 @@ bool TestFloatParsing(std::string aHex, typename T::Type aValue)
 BOOST_AUTO_TEST_SUITE(PackingUnpacking)
 BOOST_AUTO_TEST_CASE(DoublePacking)
 {
-	BOOST_REQUIRE(TestFloatParsing<opendnp3::DoubleFloat>("20 74 85 2F C7 2B A2 C0", -2.3258890344E3));
-	BOOST_REQUIRE(TestFloatParsing<opendnp3::DoubleFloat>("00 00 00 00 64 89 67 41", 12340000.0));
-	BOOST_REQUIRE(TestFloatParsing<opendnp3::DoubleFloat>("00 00 00 00 00 00 34 C0", -20.0));
-	BOOST_REQUIRE(TestFloatParsing<opendnp3::DoubleFloat>("8F 81 9C 95 2D F9 64 BB", -13.879E-23));
-	BOOST_REQUIRE(TestFloatParsing<opendnp3::DoubleFloat>("00 00 00 00 00 00 59 40", 100.0));
+	BOOST_REQUIRE(TestFloatParsing<openpal::DoubleFloat>("20 74 85 2F C7 2B A2 C0", -2.3258890344E3));
+	BOOST_REQUIRE(TestFloatParsing<openpal::DoubleFloat>("00 00 00 00 64 89 67 41", 12340000.0));
+	BOOST_REQUIRE(TestFloatParsing<openpal::DoubleFloat>("00 00 00 00 00 00 34 C0", -20.0));
+	BOOST_REQUIRE(TestFloatParsing<openpal::DoubleFloat>("8F 81 9C 95 2D F9 64 BB", -13.879E-23));
+	BOOST_REQUIRE(TestFloatParsing<openpal::DoubleFloat>("00 00 00 00 00 00 59 40", 100.0));
 }
 
 BOOST_AUTO_TEST_CASE(SinglePacking)
 {
-	BOOST_REQUIRE(TestFloatParsing<opendnp3::SingleFloat>("20 4B 3C 4B", 12340000.0f));
-	BOOST_REQUIRE(TestFloatParsing<opendnp3::SingleFloat>("6D C9 27 9B", -13.879E-23f));
-	BOOST_REQUIRE(TestFloatParsing<opendnp3::SingleFloat>("00 00 A0 C1", -20.0));
+	BOOST_REQUIRE(TestFloatParsing<openpal::SingleFloat>("20 4B 3C 4B", 12340000.0f));
+	BOOST_REQUIRE(TestFloatParsing<openpal::SingleFloat>("6D C9 27 9B", -13.879E-23f));
+	BOOST_REQUIRE(TestFloatParsing<openpal::SingleFloat>("00 00 A0 C1", -20.0));
 }
 
 
 BOOST_AUTO_TEST_CASE(DoubleFloat)
 {
-	BOOST_REQUIRE(TestReadWriteDouble<opendnp3::DoubleFloat>(0.0));
-	BOOST_REQUIRE(TestReadWriteDouble<opendnp3::DoubleFloat>(-100000));
-	BOOST_REQUIRE(TestReadWriteDouble<opendnp3::DoubleFloat>(-2.3258890344E3));
-	BOOST_REQUIRE(TestReadWriteDouble<opendnp3::DoubleFloat>(1E20));
-	BOOST_REQUIRE(TestReadWriteDouble<opendnp3::DoubleFloat>(100.0));
+	BOOST_REQUIRE(TestReadWriteDouble<openpal::DoubleFloat>(0.0));
+	BOOST_REQUIRE(TestReadWriteDouble<openpal::DoubleFloat>(-100000));
+	BOOST_REQUIRE(TestReadWriteDouble<openpal::DoubleFloat>(-2.3258890344E3));
+	BOOST_REQUIRE(TestReadWriteDouble<openpal::DoubleFloat>(1E20));
+	BOOST_REQUIRE(TestReadWriteDouble<openpal::DoubleFloat>(100.0));
 }
 
 BOOST_AUTO_TEST_CASE(SingleFloat)
 {
-	BOOST_REQUIRE(TestReadWriteDouble<opendnp3::SingleFloat>(0.0f));
-	BOOST_REQUIRE(TestReadWriteDouble<opendnp3::SingleFloat>(-100000.0f));
-	BOOST_REQUIRE(TestReadWriteDouble<opendnp3::SingleFloat>(-2.3258890344E3f));
-	BOOST_REQUIRE(TestReadWriteDouble<opendnp3::SingleFloat>(1E20f));
-	BOOST_REQUIRE(TestReadWriteDouble<opendnp3::SingleFloat>(100.0f));
+	BOOST_REQUIRE(TestReadWriteDouble<openpal::SingleFloat>(0.0f));
+	BOOST_REQUIRE(TestReadWriteDouble<openpal::SingleFloat>(-100000.0f));
+	BOOST_REQUIRE(TestReadWriteDouble<openpal::SingleFloat>(-2.3258890344E3f));
+	BOOST_REQUIRE(TestReadWriteDouble<openpal::SingleFloat>(1E20f));
+	BOOST_REQUIRE(TestReadWriteDouble<openpal::SingleFloat>(100.0f));
 }
 
 BOOST_AUTO_TEST_CASE(UInt8)
 {
-	BOOST_REQUIRE(TestReadWrite<opendnp3::UInt8>(0));
-	BOOST_REQUIRE(TestReadWrite<opendnp3::UInt8>(123));
-	BOOST_REQUIRE(TestReadWrite<opendnp3::UInt8>(255));
+	BOOST_REQUIRE(TestReadWrite<openpal::UInt8>(0));
+	BOOST_REQUIRE(TestReadWrite<openpal::UInt8>(123));
+	BOOST_REQUIRE(TestReadWrite<openpal::UInt8>(255));
 }
 
 BOOST_AUTO_TEST_CASE(UInt16LE)
 {
-	BOOST_REQUIRE(TestReadWrite<opendnp3::UInt16LE>(0));
-	BOOST_REQUIRE(TestReadWrite<opendnp3::UInt16LE>(123));
-	BOOST_REQUIRE(TestReadWrite<opendnp3::UInt16LE>(65535));
+	BOOST_REQUIRE(TestReadWrite<openpal::UInt16LE>(0));
+	BOOST_REQUIRE(TestReadWrite<openpal::UInt16LE>(123));
+	BOOST_REQUIRE(TestReadWrite<openpal::UInt16LE>(65535));
 }
 
 BOOST_AUTO_TEST_CASE(Int16LE)
 {
-	BOOST_REQUIRE(TestReadWrite<opendnp3::Int16LE>(-32768));
-	BOOST_REQUIRE(TestReadWrite<opendnp3::Int16LE>(0));
-	BOOST_REQUIRE(TestReadWrite<opendnp3::Int16LE>(32767));
+	BOOST_REQUIRE(TestReadWrite<openpal::Int16LE>(-32768));
+	BOOST_REQUIRE(TestReadWrite<openpal::Int16LE>(0));
+	BOOST_REQUIRE(TestReadWrite<openpal::Int16LE>(32767));
 }
 
 BOOST_AUTO_TEST_CASE(UInt32LE)
 {
-	BOOST_REQUIRE(TestReadWrite<opendnp3::UInt32LE>(0));
-	BOOST_REQUIRE(TestReadWrite<opendnp3::UInt32LE>(123));
-	BOOST_REQUIRE(TestReadWrite<opendnp3::UInt32LE>(4294967295UL));
+	BOOST_REQUIRE(TestReadWrite<openpal::UInt32LE>(0));
+	BOOST_REQUIRE(TestReadWrite<openpal::UInt32LE>(123));
+	BOOST_REQUIRE(TestReadWrite<openpal::UInt32LE>(4294967295UL));
 }
 
 BOOST_AUTO_TEST_CASE(Int32LE)
 {
-	BOOST_REQUIRE(TestReadWrite<opendnp3::Int32LE>(0x80000000));
-	BOOST_REQUIRE(TestReadWrite<opendnp3::Int32LE>(0));
-	BOOST_REQUIRE(TestReadWrite<opendnp3::Int32LE>(0x7fffffff));
+	BOOST_REQUIRE(TestReadWrite<openpal::Int32LE>(0x80000000));
+	BOOST_REQUIRE(TestReadWrite<openpal::Int32LE>(0));
+	BOOST_REQUIRE(TestReadWrite<openpal::Int32LE>(0x7fffffff));
 }
 
 BOOST_AUTO_TEST_CASE(UInt48LE)
 {
-	BOOST_REQUIRE(TestReadWrite<opendnp3::UInt48LE>(0));
-	BOOST_REQUIRE(TestReadWrite<opendnp3::UInt48LE>(123));
-	BOOST_REQUIRE(TestReadWrite<opendnp3::UInt48LE>(281474976710655LL));
+	BOOST_REQUIRE(TestReadWrite<openpal::UInt48LE>(0));
+	BOOST_REQUIRE(TestReadWrite<openpal::UInt48LE>(123));
+	BOOST_REQUIRE(TestReadWrite<openpal::UInt48LE>(281474976710655LL));
 }
 
 BOOST_AUTO_TEST_SUITE_END()

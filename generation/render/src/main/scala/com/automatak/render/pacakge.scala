@@ -107,8 +107,4 @@ package object render {
       finally { writer.close() }
 
     }
-
-
-
-
 }

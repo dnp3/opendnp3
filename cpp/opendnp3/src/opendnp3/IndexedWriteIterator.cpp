@@ -24,10 +24,12 @@
 
 
 #include "ObjectHeader.h"
-#include "PackingUnpacking.h"
 
 #include <openpal/Exception.h>
 #include <openpal/Location.h>
+#include <openpal/Serialization.h>
+
+using namespace openpal;
 
 namespace opendnp3
 {

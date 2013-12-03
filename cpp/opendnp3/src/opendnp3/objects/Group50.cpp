@@ -17,11 +17,13 @@
 
 #include "Group50.h"
 
-#include "../PackingUnpacking.h"
+#include <openpal/Serialization.h>
+
+using namespace openpal;
 
 namespace opendnp3 {
 
-Group50Var1 Group50Var1::Read(openpal::ReadOnlyBuffer& buffer)
+Group50Var1 Group50Var1::Read(ReadOnlyBuffer& buffer)
 {
   Group50Var1 obj;
   obj.time48 = UInt48LE::Read(buffer);

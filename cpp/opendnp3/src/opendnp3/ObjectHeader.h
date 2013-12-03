@@ -29,13 +29,14 @@
 #ifndef __OBJECT_HEADER_H_
 #define __OBJECT_HEADER_H_
 
-#include <opendnp3/Singleton.h>
 #include <openpal/Exception.h>
 #include <openpal/Location.h>
-#include <opendnp3/APDUConstants.h>
 #include <openpal/Visibility.h>
+#include <openpal/Serialization.h>
 
-#include "PackingUnpacking.h"
+#include <opendnp3/Singleton.h>
+#include <opendnp3/APDUConstants.h>
+
 #include "gen/QualifierCode.h"
 
 #include <limits>
@@ -223,13 +224,13 @@ template <class T, ObjectHeaderTypes U>
 CountHeader<T, U> CountHeader<T, U>::mInstance;
 
 //Typedefs so you don't have to direcly use the templates
-typedef RangedHeader<UInt8, OHT_RANGED_2_OCTET>	Ranged2OctetHeader;
-typedef RangedHeader<UInt16LE, OHT_RANGED_4_OCTET> Ranged4OctetHeader;
-typedef RangedHeader<UInt32LE, OHT_RANGED_8_OCTET> Ranged8OctetHeader;
+typedef RangedHeader<openpal::UInt8, OHT_RANGED_2_OCTET>	Ranged2OctetHeader;
+typedef RangedHeader<openpal::UInt16LE, OHT_RANGED_4_OCTET> Ranged4OctetHeader;
+typedef RangedHeader<openpal::UInt32LE, OHT_RANGED_8_OCTET> Ranged8OctetHeader;
 
-typedef CountHeader<UInt8, OHT_COUNT_1_OCTET>		Count1OctetHeader;
-typedef CountHeader<UInt16LE, OHT_COUNT_2_OCTET>	Count2OctetHeader;
-typedef CountHeader<UInt32LE, OHT_COUNT_4_OCTET>	Count4OctetHeader;
+typedef CountHeader<openpal::UInt8, OHT_COUNT_1_OCTET>		Count1OctetHeader;
+typedef CountHeader<openpal::UInt16LE, OHT_COUNT_2_OCTET>	Count2OctetHeader;
+typedef CountHeader<openpal::UInt32LE, OHT_COUNT_4_OCTET>	Count4OctetHeader;
 
 }
 

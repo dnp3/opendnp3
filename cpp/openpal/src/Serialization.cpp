@@ -20,9 +20,9 @@
 // you under the terms of the License.
 //
 
-#include "PackingUnpacking.h"
+#include <openpal/Serialization.h>
 
-namespace opendnp3
+namespace openpal
 {
 
 const uint8_t UInt8::Max = std::numeric_limits<uint8_t>::max();

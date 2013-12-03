@@ -87,7 +87,7 @@ object GroupVariationImplRenderer extends ModelRenderer[GroupVariation]{
 
     def advance(i: Int): String = "buffer.Advance("+i+");"
 
-    def readSignature: Iterator[String] = Iterator(x.name + " " + x.name + "::" + "Read(openpal::ReadOnlyBuffer& buffer)")
+    def readSignature: Iterator[String] = Iterator(x.name + " " + x.name + "::" + "Read(ReadOnlyBuffer& buffer)")
 
     readSignature ++ bracket {
       Iterator(x.name + " obj;") ++

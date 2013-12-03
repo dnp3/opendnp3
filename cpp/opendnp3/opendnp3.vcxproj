@@ -299,7 +299,6 @@
     <ClInclude Include="src\opendnp3\OutstationSBOHandler.h" />
     <ClInclude Include="src\opendnp3\OutstationStackImpl.h" />
     <ClInclude Include="src\opendnp3\PackingTemplates.h" />
-    <ClInclude Include="src\opendnp3\PackingUnpacking.h" />
     <ClInclude Include="src\opendnp3\PhysicalLayerMonitor.h" />
     <ClInclude Include="src\opendnp3\PhysicalLayerMonitorStates.h" />
     <ClInclude Include="src\opendnp3\PostingMeasurementHandler.h" />
@@ -309,7 +308,6 @@
     <ClInclude Include="src\opendnp3\ResponseContext.h" />
     <ClInclude Include="src\opendnp3\ResponseLoader.h" />
     <ClInclude Include="src\opendnp3\SecLinkLayerStates.h" />
-    <ClInclude Include="src\opendnp3\SerializationTemplates.h" />
     <ClInclude Include="src\opendnp3\ShiftableBuffer.h" />
     <ClInclude Include="src\opendnp3\Slave.h" />
     <ClInclude Include="src\opendnp3\SlaveEventBuffer.h" />
@@ -421,7 +419,6 @@
     <ClCompile Include="src\opendnp3\ObjectWriteIterator.cpp" />
     <ClCompile Include="src\opendnp3\OutstationSBOHandler.cpp" />
     <ClCompile Include="src\opendnp3\OutstationStackImpl.cpp" />
-    <ClCompile Include="src\opendnp3\PackingUnpacking.cpp" />
     <ClCompile Include="src\opendnp3\PhysicalLayerMonitor.cpp" />
     <ClCompile Include="src\opendnp3\PhysicalLayerMonitorStates.cpp" />
     <ClCompile Include="src\opendnp3\PointClass.cpp" />

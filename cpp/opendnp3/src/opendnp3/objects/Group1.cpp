@@ -17,11 +17,13 @@
 
 #include "Group1.h"
 
-#include "../PackingUnpacking.h"
+#include <openpal/Serialization.h>
+
+using namespace openpal;
 
 namespace opendnp3 {
 
-Group1Var2 Group1Var2::Read(openpal::ReadOnlyBuffer& buffer)
+Group1Var2 Group1Var2::Read(ReadOnlyBuffer& buffer)
 {
   Group1Var2 obj;
   obj.flags = UInt8::Read(buffer);

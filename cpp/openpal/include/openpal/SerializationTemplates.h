@@ -39,7 +39,7 @@
 #undef min
 #endif
 
-namespace opendnp3
+namespace openpal
 {
 
 template <class T>
@@ -115,13 +115,13 @@ protected:
 
 	// Some platforms like ARM have WORD alignment issue when using reinterpret cast. 
 	// The float/double read routines use intermediate buffer that the compiler word aligns
-	static T SafeRead(const uint8_t* apStart) {
+	inline static T SafeRead(const uint8_t* apStart) {
 		T d;
 		memcpy(&d, apStart, Size);
 		return d;
 	}
 
-	static void SafeWrite(uint8_t* apStart, T aValue) {
+	inline static void SafeWrite(uint8_t* apStart, T aValue) {
 		memcpy(apStart, &aValue, Size);
 	}
 };

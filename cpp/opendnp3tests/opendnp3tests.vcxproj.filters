@@ -337,9 +337,6 @@
     <ClCompile Include="src\TestObjects.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\TestPackingUnpacking.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\TestPhysicalLayerAsyncBase.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -413,6 +410,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\TestMeasurementUpdate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\TestSerialization.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

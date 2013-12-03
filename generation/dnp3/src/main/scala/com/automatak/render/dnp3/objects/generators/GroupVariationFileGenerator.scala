@@ -48,7 +48,8 @@ object GroupVariationFileGenerator {
     def implFile(group: ObjectGroup): Iterator[String] = {
       commented(LicenseHeader()) ++ space ++
         includeHeader(group) ++ space ++
-        Iterator("#include \"../PackingUnpacking.h\"") ++ space ++
+        Iterator("#include <openpal/Serialization.h>") ++ space ++
+        Iterator("using namespace openpal;") ++ space ++
         namespace("opendnp3") {
           definitions(GroupVariationImplRenderer)(group)
         }

@@ -22,8 +22,9 @@
 
 #include "LinkHeader.h"
 
-#include "PackingUnpacking.h"
 #include "DNPCrc.h"
+
+#include <openpal/Serialization.h>
 
 #include <sstream>
 
@@ -62,8 +63,8 @@ uint8_t LinkHeader::ControlByte(bool aIsMaster, bool aFcb, bool aFcvDfc, LinkFun
 void LinkHeader::Read(const uint8_t* apBuff)
 {
 	length = apBuff[LI_LENGTH];
-	dest = UInt16LE::Read(apBuff + LI_DESTINATION);
-	src = UInt16LE::Read(apBuff + LI_SOURCE);
+	dest = openpal::UInt16LE::Read(apBuff + LI_DESTINATION);
+	src = openpal::UInt16LE::Read(apBuff + LI_SOURCE);
 	ctrl = apBuff[LI_CONTROL];
 }
 
@@ -73,8 +74,8 @@ void LinkHeader::Write(uint8_t* apBuff) const
 	apBuff[LI_START_64] = 0x64;
 
 	apBuff[LI_LENGTH] = length;
-	UInt16LE::Write(apBuff + LI_DESTINATION, dest);
-	UInt16LE::Write(apBuff + LI_SOURCE, src);
+	openpal::UInt16LE::Write(apBuff + LI_DESTINATION, dest);
+	openpal::UInt16LE::Write(apBuff + LI_SOURCE, src);
 	apBuff[LI_CONTROL] = ctrl;
 
 	DNPCrc::AddCrc(apBuff, LI_CRC);
