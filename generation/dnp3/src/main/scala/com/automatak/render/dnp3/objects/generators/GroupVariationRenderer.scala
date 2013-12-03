@@ -38,7 +38,7 @@ object GroupVariationHeaderRenderer extends ModelRenderer[GroupVariation]{
 
     def members: Iterator[String] = x.fields.map(f => getFieldString(f)).iterator
 
-    def readSignature: Iterator[String] = Iterator("static " + x.name + " Read(ReadOnlyBuffer&);")
+    def readSignature: Iterator[String] = Iterator("static " + x.name + " Read(openpal::ReadOnlyBuffer&);")
 
     struct(x.name) {
         readSignature ++
@@ -71,8 +71,8 @@ object GroupVariationImplRenderer extends ModelRenderer[GroupVariation]{
       case UInt16Field => "UInt16LE"
       case UInt32Field => "UInt32LE"
       case UInt48Field => "UInt48LE"
-      case SInt16Field => "SInt16LE"
-      case SInt32Field => "SInt32LE"
+      case SInt16Field => "Int16LE"
+      case SInt32Field => "Int32LE"
       case Float32Field => "SingleFloat"
       case Float64Field => "DoubleFloat"
       case EnumField(model: EnumModel) => model.name
@@ -87,7 +87,7 @@ object GroupVariationImplRenderer extends ModelRenderer[GroupVariation]{
 
     def advance(i: Int): String = "buffer.Advance("+i+");"
 
-    def readSignature: Iterator[String] = Iterator(x.name + " " + x.name + "::" + "Read(ReadOnlyBuffer& buffer)")
+    def readSignature: Iterator[String] = Iterator(x.name + " " + x.name + "::" + "Read(openpal::ReadOnlyBuffer& buffer)")
 
     readSignature ++ bracket {
       Iterator(x.name + " obj;") ++

@@ -31,4 +31,5 @@ object ObjectGroup {
 trait ObjectGroup {
   def objects: List[GroupVariation]
   def group: Byte
+  def name: String = "Group"+group
 }
