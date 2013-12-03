@@ -309,6 +309,7 @@
     <ClInclude Include="src\opendnp3\ResponseContext.h" />
     <ClInclude Include="src\opendnp3\ResponseLoader.h" />
     <ClInclude Include="src\opendnp3\SecLinkLayerStates.h" />
+    <ClInclude Include="src\opendnp3\SerializationTemplates.h" />
     <ClInclude Include="src\opendnp3\ShiftableBuffer.h" />
     <ClInclude Include="src\opendnp3\Slave.h" />
     <ClInclude Include="src\opendnp3\SlaveEventBuffer.h" />
