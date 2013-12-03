@@ -34,7 +34,7 @@ object FixedSizeField {
   val value16 = FixedSizeField("value", SInt16Field)
   val value32 = FixedSizeField("value", SInt32Field)
   val float32 = FixedSizeField("value", Float32Field)
-  val float64 = FixedSizeField("value", Float32Field)
+  val float64 = FixedSizeField("value", Float64Field)
 
 
   //enums

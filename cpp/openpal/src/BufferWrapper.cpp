@@ -83,6 +83,13 @@ namespace openpal
 		mSize = 0;
 	}
 
+	void WriteBuffer::Advance(size_t aNum)
+	{
+		assert(aNum <= mSize);
+		mpBuffer += aNum;
+		mSize -= aNum;
+	}
+
 	ReadOnlyBuffer WriteBuffer::ToReadOnly() const
 	{
 		return ReadOnlyBuffer(mpBuffer, mSize);

@@ -26,7 +26,7 @@ namespace opendnp3 {
 Group12Var1 Group12Var1::Read(ReadOnlyBuffer& buffer)
 {
   Group12Var1 obj;
-  obj.code = ControlCodeFromType(*buffer);
+  obj.code = ControlCodeFromType(UInt8::Read(buffer));
   buffer.Advance(1);
   obj.count = UInt8::Read(buffer);
   buffer.Advance(1);
@@ -34,9 +34,23 @@ Group12Var1 Group12Var1::Read(ReadOnlyBuffer& buffer)
   buffer.Advance(4);
   obj.offTime = UInt32::Read(buffer);
   buffer.Advance(4);
-  obj.status = CommandStatusFromType(*buffer);
+  obj.status = CommandStatusFromType(UInt8::Read(buffer));
   buffer.Advance(1);
   return obj;
+}
+
+void Group12Var1::Write(const Group12Var1& arg, openpal::WriteBuffer& buffer)
+{
+  UInt8::Write(buffer, ControlCodeToType(arg.code));
+  buffer.Advance(1);
+  UInt8::Write(buffer, arg.count);
+  buffer.Advance(1);
+  UInt32::Write(buffer, arg.onTime);
+  buffer.Advance(4);
+  UInt32::Write(buffer, arg.offTime);
+  buffer.Advance(4);
+  UInt8::Write(buffer, CommandStatusToType(arg.status));
+  buffer.Advance(1);
 }
 
 

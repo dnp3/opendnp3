@@ -76,6 +76,8 @@ class WriteBuffer : public HasSize
 
 	void Clear();
 
+	void Advance(size_t aNum);
+
 	ReadOnlyBuffer ToReadOnly() const;
 
 	operator uint8_t *() { return mpBuffer; };

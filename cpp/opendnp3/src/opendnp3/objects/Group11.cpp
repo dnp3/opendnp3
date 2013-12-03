@@ -31,6 +31,12 @@ Group11Var1 Group11Var1::Read(ReadOnlyBuffer& buffer)
   return obj;
 }
 
+void Group11Var1::Write(const Group11Var1& arg, openpal::WriteBuffer& buffer)
+{
+  UInt8::Write(buffer, arg.flags);
+  buffer.Advance(1);
+}
+
 Group11Var2 Group11Var2::Read(ReadOnlyBuffer& buffer)
 {
   Group11Var2 obj;
@@ -39,6 +45,14 @@ Group11Var2 Group11Var2::Read(ReadOnlyBuffer& buffer)
   obj.time48 = UInt48::Read(buffer);
   buffer.Advance(6);
   return obj;
+}
+
+void Group11Var2::Write(const Group11Var2& arg, openpal::WriteBuffer& buffer)
+{
+  UInt8::Write(buffer, arg.flags);
+  buffer.Advance(1);
+  UInt48::Write(buffer, arg.time48);
+  buffer.Advance(6);
 }
 
 

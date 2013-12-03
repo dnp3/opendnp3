@@ -22,6 +22,7 @@ namespace opendnp3 {
 struct Group1Var2
 {
   static Group1Var2 Read(openpal::ReadOnlyBuffer&);
+  static void Write(const Group1Var2&, openpal::WriteBuffer&);
 
   uint8_t flags;
 };

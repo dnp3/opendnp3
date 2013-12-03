@@ -24,6 +24,7 @@ namespace opendnp3 {
 struct Group12Var1
 {
   static Group12Var1 Read(openpal::ReadOnlyBuffer&);
+  static void Write(const Group12Var1&, openpal::WriteBuffer&);
 
   ControlCode code;
   uint8_t count;

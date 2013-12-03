@@ -33,6 +33,14 @@ Group40Var1 Group40Var1::Read(ReadOnlyBuffer& buffer)
   return obj;
 }
 
+void Group40Var1::Write(const Group40Var1& arg, openpal::WriteBuffer& buffer)
+{
+  UInt8::Write(buffer, arg.flags);
+  buffer.Advance(1);
+  Int32::Write(buffer, arg.value);
+  buffer.Advance(4);
+}
+
 Group40Var2 Group40Var2::Read(ReadOnlyBuffer& buffer)
 {
   Group40Var2 obj;
@@ -41,6 +49,14 @@ Group40Var2 Group40Var2::Read(ReadOnlyBuffer& buffer)
   obj.value = Int16::Read(buffer);
   buffer.Advance(2);
   return obj;
+}
+
+void Group40Var2::Write(const Group40Var2& arg, openpal::WriteBuffer& buffer)
+{
+  UInt8::Write(buffer, arg.flags);
+  buffer.Advance(1);
+  Int16::Write(buffer, arg.value);
+  buffer.Advance(2);
 }
 
 Group40Var3 Group40Var3::Read(ReadOnlyBuffer& buffer)
@@ -53,14 +69,30 @@ Group40Var3 Group40Var3::Read(ReadOnlyBuffer& buffer)
   return obj;
 }
 
+void Group40Var3::Write(const Group40Var3& arg, openpal::WriteBuffer& buffer)
+{
+  UInt8::Write(buffer, arg.flags);
+  buffer.Advance(1);
+  SingleFloat::Write(buffer, arg.value);
+  buffer.Advance(4);
+}
+
 Group40Var4 Group40Var4::Read(ReadOnlyBuffer& buffer)
 {
   Group40Var4 obj;
   obj.flags = UInt8::Read(buffer);
   buffer.Advance(1);
-  obj.value = SingleFloat::Read(buffer);
-  buffer.Advance(4);
+  obj.value = DoubleFloat::Read(buffer);
+  buffer.Advance(8);
   return obj;
+}
+
+void Group40Var4::Write(const Group40Var4& arg, openpal::WriteBuffer& buffer)
+{
+  UInt8::Write(buffer, arg.flags);
+  buffer.Advance(1);
+  DoubleFloat::Write(buffer, arg.value);
+  buffer.Advance(8);
 }
 
 

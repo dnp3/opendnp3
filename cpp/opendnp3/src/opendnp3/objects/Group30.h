@@ -22,6 +22,7 @@ namespace opendnp3 {
 struct Group30Var1
 {
   static Group30Var1 Read(openpal::ReadOnlyBuffer&);
+  static void Write(const Group30Var1&, openpal::WriteBuffer&);
 
   uint8_t flags;
   int32_t value;
@@ -30,6 +31,7 @@ struct Group30Var1
 struct Group30Var2
 {
   static Group30Var2 Read(openpal::ReadOnlyBuffer&);
+  static void Write(const Group30Var2&, openpal::WriteBuffer&);
 
   uint8_t flags;
   int16_t value;
@@ -38,6 +40,7 @@ struct Group30Var2
 struct Group30Var3
 {
   static Group30Var3 Read(openpal::ReadOnlyBuffer&);
+  static void Write(const Group30Var3&, openpal::WriteBuffer&);
 
   int32_t value;
 };
@@ -45,6 +48,7 @@ struct Group30Var3
 struct Group30Var4
 {
   static Group30Var4 Read(openpal::ReadOnlyBuffer&);
+  static void Write(const Group30Var4&, openpal::WriteBuffer&);
 
   int16_t value;
 };
@@ -52,6 +56,7 @@ struct Group30Var4
 struct Group30Var5
 {
   static Group30Var5 Read(openpal::ReadOnlyBuffer&);
+  static void Write(const Group30Var5&, openpal::WriteBuffer&);
 
   uint8_t flags;
   float value;
@@ -60,9 +65,10 @@ struct Group30Var5
 struct Group30Var6
 {
   static Group30Var6 Read(openpal::ReadOnlyBuffer&);
+  static void Write(const Group30Var6&, openpal::WriteBuffer&);
 
   uint8_t flags;
-  float value;
+  double value;
 };
 
 

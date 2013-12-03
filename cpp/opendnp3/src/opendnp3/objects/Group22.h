@@ -22,6 +22,7 @@ namespace opendnp3 {
 struct Group22Var1
 {
   static Group22Var1 Read(openpal::ReadOnlyBuffer&);
+  static void Write(const Group22Var1&, openpal::WriteBuffer&);
 
   uint8_t flags;
   uint32_t count;
@@ -30,6 +31,7 @@ struct Group22Var1
 struct Group22Var2
 {
   static Group22Var2 Read(openpal::ReadOnlyBuffer&);
+  static void Write(const Group22Var2&, openpal::WriteBuffer&);
 
   uint8_t flags;
   uint16_t count;
@@ -38,6 +40,7 @@ struct Group22Var2
 struct Group22Var3
 {
   static Group22Var3 Read(openpal::ReadOnlyBuffer&);
+  static void Write(const Group22Var3&, openpal::WriteBuffer&);
 
   uint8_t flags;
   uint32_t count;
@@ -46,6 +49,7 @@ struct Group22Var3
 struct Group22Var4
 {
   static Group22Var4 Read(openpal::ReadOnlyBuffer&);
+  static void Write(const Group22Var4&, openpal::WriteBuffer&);
 
   uint8_t flags;
   uint16_t count;
@@ -54,6 +58,7 @@ struct Group22Var4
 struct Group22Var5
 {
   static Group22Var5 Read(openpal::ReadOnlyBuffer&);
+  static void Write(const Group22Var5&, openpal::WriteBuffer&);
 
   uint8_t flags;
   uint32_t count;
@@ -63,6 +68,7 @@ struct Group22Var5
 struct Group22Var6
 {
   static Group22Var6 Read(openpal::ReadOnlyBuffer&);
+  static void Write(const Group22Var6&, openpal::WriteBuffer&);
 
   uint8_t flags;
   uint16_t count;
@@ -72,6 +78,7 @@ struct Group22Var6
 struct Group22Var7
 {
   static Group22Var7 Read(openpal::ReadOnlyBuffer&);
+  static void Write(const Group22Var7&, openpal::WriteBuffer&);
 
   uint8_t flags;
   uint32_t count;
@@ -81,6 +88,7 @@ struct Group22Var7
 struct Group22Var8
 {
   static Group22Var8 Read(openpal::ReadOnlyBuffer&);
+  static void Write(const Group22Var8&, openpal::WriteBuffer&);
 
   uint8_t flags;
   uint16_t count;

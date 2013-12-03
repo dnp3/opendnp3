@@ -33,6 +33,14 @@ Group32Var1 Group32Var1::Read(ReadOnlyBuffer& buffer)
   return obj;
 }
 
+void Group32Var1::Write(const Group32Var1& arg, openpal::WriteBuffer& buffer)
+{
+  UInt8::Write(buffer, arg.flags);
+  buffer.Advance(1);
+  Int32::Write(buffer, arg.value);
+  buffer.Advance(4);
+}
+
 Group32Var2 Group32Var2::Read(ReadOnlyBuffer& buffer)
 {
   Group32Var2 obj;
@@ -41,6 +49,14 @@ Group32Var2 Group32Var2::Read(ReadOnlyBuffer& buffer)
   obj.value = Int16::Read(buffer);
   buffer.Advance(2);
   return obj;
+}
+
+void Group32Var2::Write(const Group32Var2& arg, openpal::WriteBuffer& buffer)
+{
+  UInt8::Write(buffer, arg.flags);
+  buffer.Advance(1);
+  Int16::Write(buffer, arg.value);
+  buffer.Advance(2);
 }
 
 Group32Var3 Group32Var3::Read(ReadOnlyBuffer& buffer)
@@ -55,6 +71,16 @@ Group32Var3 Group32Var3::Read(ReadOnlyBuffer& buffer)
   return obj;
 }
 
+void Group32Var3::Write(const Group32Var3& arg, openpal::WriteBuffer& buffer)
+{
+  UInt8::Write(buffer, arg.flags);
+  buffer.Advance(1);
+  Int32::Write(buffer, arg.value);
+  buffer.Advance(4);
+  UInt48::Write(buffer, arg.time48);
+  buffer.Advance(6);
+}
+
 Group32Var4 Group32Var4::Read(ReadOnlyBuffer& buffer)
 {
   Group32Var4 obj;
@@ -67,6 +93,16 @@ Group32Var4 Group32Var4::Read(ReadOnlyBuffer& buffer)
   return obj;
 }
 
+void Group32Var4::Write(const Group32Var4& arg, openpal::WriteBuffer& buffer)
+{
+  UInt8::Write(buffer, arg.flags);
+  buffer.Advance(1);
+  Int16::Write(buffer, arg.value);
+  buffer.Advance(2);
+  UInt48::Write(buffer, arg.time48);
+  buffer.Advance(6);
+}
+
 Group32Var5 Group32Var5::Read(ReadOnlyBuffer& buffer)
 {
   Group32Var5 obj;
@@ -77,14 +113,30 @@ Group32Var5 Group32Var5::Read(ReadOnlyBuffer& buffer)
   return obj;
 }
 
+void Group32Var5::Write(const Group32Var5& arg, openpal::WriteBuffer& buffer)
+{
+  UInt8::Write(buffer, arg.flags);
+  buffer.Advance(1);
+  SingleFloat::Write(buffer, arg.value);
+  buffer.Advance(4);
+}
+
 Group32Var6 Group32Var6::Read(ReadOnlyBuffer& buffer)
 {
   Group32Var6 obj;
   obj.flags = UInt8::Read(buffer);
   buffer.Advance(1);
-  obj.value = SingleFloat::Read(buffer);
-  buffer.Advance(4);
+  obj.value = DoubleFloat::Read(buffer);
+  buffer.Advance(8);
   return obj;
+}
+
+void Group32Var6::Write(const Group32Var6& arg, openpal::WriteBuffer& buffer)
+{
+  UInt8::Write(buffer, arg.flags);
+  buffer.Advance(1);
+  DoubleFloat::Write(buffer, arg.value);
+  buffer.Advance(8);
 }
 
 Group32Var7 Group32Var7::Read(ReadOnlyBuffer& buffer)
@@ -99,16 +151,36 @@ Group32Var7 Group32Var7::Read(ReadOnlyBuffer& buffer)
   return obj;
 }
 
+void Group32Var7::Write(const Group32Var7& arg, openpal::WriteBuffer& buffer)
+{
+  UInt8::Write(buffer, arg.flags);
+  buffer.Advance(1);
+  SingleFloat::Write(buffer, arg.value);
+  buffer.Advance(4);
+  UInt48::Write(buffer, arg.time48);
+  buffer.Advance(6);
+}
+
 Group32Var8 Group32Var8::Read(ReadOnlyBuffer& buffer)
 {
   Group32Var8 obj;
   obj.flags = UInt8::Read(buffer);
   buffer.Advance(1);
-  obj.value = SingleFloat::Read(buffer);
-  buffer.Advance(4);
+  obj.value = DoubleFloat::Read(buffer);
+  buffer.Advance(8);
   obj.time48 = UInt48::Read(buffer);
   buffer.Advance(6);
   return obj;
+}
+
+void Group32Var8::Write(const Group32Var8& arg, openpal::WriteBuffer& buffer)
+{
+  UInt8::Write(buffer, arg.flags);
+  buffer.Advance(1);
+  DoubleFloat::Write(buffer, arg.value);
+  buffer.Advance(8);
+  UInt48::Write(buffer, arg.time48);
+  buffer.Advance(6);
 }
 
 

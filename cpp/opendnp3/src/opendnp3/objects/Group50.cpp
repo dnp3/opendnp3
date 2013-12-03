@@ -31,5 +31,11 @@ Group50Var1 Group50Var1::Read(ReadOnlyBuffer& buffer)
   return obj;
 }
 
+void Group50Var1::Write(const Group50Var1& arg, openpal::WriteBuffer& buffer)
+{
+  UInt48::Write(buffer, arg.time48);
+  buffer.Advance(6);
+}
+
 
 }

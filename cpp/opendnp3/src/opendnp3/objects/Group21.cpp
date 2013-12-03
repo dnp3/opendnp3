@@ -33,6 +33,14 @@ Group21Var1 Group21Var1::Read(ReadOnlyBuffer& buffer)
   return obj;
 }
 
+void Group21Var1::Write(const Group21Var1& arg, openpal::WriteBuffer& buffer)
+{
+  UInt8::Write(buffer, arg.flags);
+  buffer.Advance(1);
+  UInt32::Write(buffer, arg.count);
+  buffer.Advance(4);
+}
+
 Group21Var2 Group21Var2::Read(ReadOnlyBuffer& buffer)
 {
   Group21Var2 obj;
@@ -41,6 +49,14 @@ Group21Var2 Group21Var2::Read(ReadOnlyBuffer& buffer)
   obj.count = UInt16::Read(buffer);
   buffer.Advance(2);
   return obj;
+}
+
+void Group21Var2::Write(const Group21Var2& arg, openpal::WriteBuffer& buffer)
+{
+  UInt8::Write(buffer, arg.flags);
+  buffer.Advance(1);
+  UInt16::Write(buffer, arg.count);
+  buffer.Advance(2);
 }
 
 Group21Var3 Group21Var3::Read(ReadOnlyBuffer& buffer)
@@ -53,6 +69,14 @@ Group21Var3 Group21Var3::Read(ReadOnlyBuffer& buffer)
   return obj;
 }
 
+void Group21Var3::Write(const Group21Var3& arg, openpal::WriteBuffer& buffer)
+{
+  UInt8::Write(buffer, arg.flags);
+  buffer.Advance(1);
+  UInt32::Write(buffer, arg.count);
+  buffer.Advance(4);
+}
+
 Group21Var4 Group21Var4::Read(ReadOnlyBuffer& buffer)
 {
   Group21Var4 obj;
@@ -61,6 +85,14 @@ Group21Var4 Group21Var4::Read(ReadOnlyBuffer& buffer)
   obj.count = UInt16::Read(buffer);
   buffer.Advance(2);
   return obj;
+}
+
+void Group21Var4::Write(const Group21Var4& arg, openpal::WriteBuffer& buffer)
+{
+  UInt8::Write(buffer, arg.flags);
+  buffer.Advance(1);
+  UInt16::Write(buffer, arg.count);
+  buffer.Advance(2);
 }
 
 Group21Var5 Group21Var5::Read(ReadOnlyBuffer& buffer)
@@ -75,6 +107,16 @@ Group21Var5 Group21Var5::Read(ReadOnlyBuffer& buffer)
   return obj;
 }
 
+void Group21Var5::Write(const Group21Var5& arg, openpal::WriteBuffer& buffer)
+{
+  UInt8::Write(buffer, arg.flags);
+  buffer.Advance(1);
+  UInt32::Write(buffer, arg.count);
+  buffer.Advance(4);
+  UInt48::Write(buffer, arg.time48);
+  buffer.Advance(6);
+}
+
 Group21Var6 Group21Var6::Read(ReadOnlyBuffer& buffer)
 {
   Group21Var6 obj;
@@ -85,6 +127,16 @@ Group21Var6 Group21Var6::Read(ReadOnlyBuffer& buffer)
   obj.time48 = UInt48::Read(buffer);
   buffer.Advance(6);
   return obj;
+}
+
+void Group21Var6::Write(const Group21Var6& arg, openpal::WriteBuffer& buffer)
+{
+  UInt8::Write(buffer, arg.flags);
+  buffer.Advance(1);
+  UInt16::Write(buffer, arg.count);
+  buffer.Advance(2);
+  UInt48::Write(buffer, arg.time48);
+  buffer.Advance(6);
 }
 
 Group21Var7 Group21Var7::Read(ReadOnlyBuffer& buffer)
@@ -99,6 +151,16 @@ Group21Var7 Group21Var7::Read(ReadOnlyBuffer& buffer)
   return obj;
 }
 
+void Group21Var7::Write(const Group21Var7& arg, openpal::WriteBuffer& buffer)
+{
+  UInt8::Write(buffer, arg.flags);
+  buffer.Advance(1);
+  UInt32::Write(buffer, arg.count);
+  buffer.Advance(4);
+  UInt48::Write(buffer, arg.time48);
+  buffer.Advance(6);
+}
+
 Group21Var8 Group21Var8::Read(ReadOnlyBuffer& buffer)
 {
   Group21Var8 obj;
@@ -111,12 +173,28 @@ Group21Var8 Group21Var8::Read(ReadOnlyBuffer& buffer)
   return obj;
 }
 
+void Group21Var8::Write(const Group21Var8& arg, openpal::WriteBuffer& buffer)
+{
+  UInt8::Write(buffer, arg.flags);
+  buffer.Advance(1);
+  UInt16::Write(buffer, arg.count);
+  buffer.Advance(2);
+  UInt48::Write(buffer, arg.time48);
+  buffer.Advance(6);
+}
+
 Group21Var9 Group21Var9::Read(ReadOnlyBuffer& buffer)
 {
   Group21Var9 obj;
   obj.count = UInt16::Read(buffer);
   buffer.Advance(2);
   return obj;
+}
+
+void Group21Var9::Write(const Group21Var9& arg, openpal::WriteBuffer& buffer)
+{
+  UInt16::Write(buffer, arg.count);
+  buffer.Advance(2);
 }
 
 Group21Var10 Group21Var10::Read(ReadOnlyBuffer& buffer)
@@ -127,6 +205,12 @@ Group21Var10 Group21Var10::Read(ReadOnlyBuffer& buffer)
   return obj;
 }
 
+void Group21Var10::Write(const Group21Var10& arg, openpal::WriteBuffer& buffer)
+{
+  UInt32::Write(buffer, arg.count);
+  buffer.Advance(4);
+}
+
 Group21Var11 Group21Var11::Read(ReadOnlyBuffer& buffer)
 {
   Group21Var11 obj;
@@ -135,12 +219,24 @@ Group21Var11 Group21Var11::Read(ReadOnlyBuffer& buffer)
   return obj;
 }
 
+void Group21Var11::Write(const Group21Var11& arg, openpal::WriteBuffer& buffer)
+{
+  UInt16::Write(buffer, arg.count);
+  buffer.Advance(2);
+}
+
 Group21Var12 Group21Var12::Read(ReadOnlyBuffer& buffer)
 {
   Group21Var12 obj;
   obj.count = UInt32::Read(buffer);
   buffer.Advance(4);
   return obj;
+}
+
+void Group21Var12::Write(const Group21Var12& arg, openpal::WriteBuffer& buffer)
+{
+  UInt32::Write(buffer, arg.count);
+  buffer.Advance(4);
 }
 
 

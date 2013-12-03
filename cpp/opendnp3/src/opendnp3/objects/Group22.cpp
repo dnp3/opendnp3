@@ -33,6 +33,14 @@ Group22Var1 Group22Var1::Read(ReadOnlyBuffer& buffer)
   return obj;
 }
 
+void Group22Var1::Write(const Group22Var1& arg, openpal::WriteBuffer& buffer)
+{
+  UInt8::Write(buffer, arg.flags);
+  buffer.Advance(1);
+  UInt32::Write(buffer, arg.count);
+  buffer.Advance(4);
+}
+
 Group22Var2 Group22Var2::Read(ReadOnlyBuffer& buffer)
 {
   Group22Var2 obj;
@@ -41,6 +49,14 @@ Group22Var2 Group22Var2::Read(ReadOnlyBuffer& buffer)
   obj.count = UInt16::Read(buffer);
   buffer.Advance(2);
   return obj;
+}
+
+void Group22Var2::Write(const Group22Var2& arg, openpal::WriteBuffer& buffer)
+{
+  UInt8::Write(buffer, arg.flags);
+  buffer.Advance(1);
+  UInt16::Write(buffer, arg.count);
+  buffer.Advance(2);
 }
 
 Group22Var3 Group22Var3::Read(ReadOnlyBuffer& buffer)
@@ -53,6 +69,14 @@ Group22Var3 Group22Var3::Read(ReadOnlyBuffer& buffer)
   return obj;
 }
 
+void Group22Var3::Write(const Group22Var3& arg, openpal::WriteBuffer& buffer)
+{
+  UInt8::Write(buffer, arg.flags);
+  buffer.Advance(1);
+  UInt32::Write(buffer, arg.count);
+  buffer.Advance(4);
+}
+
 Group22Var4 Group22Var4::Read(ReadOnlyBuffer& buffer)
 {
   Group22Var4 obj;
@@ -61,6 +85,14 @@ Group22Var4 Group22Var4::Read(ReadOnlyBuffer& buffer)
   obj.count = UInt16::Read(buffer);
   buffer.Advance(2);
   return obj;
+}
+
+void Group22Var4::Write(const Group22Var4& arg, openpal::WriteBuffer& buffer)
+{
+  UInt8::Write(buffer, arg.flags);
+  buffer.Advance(1);
+  UInt16::Write(buffer, arg.count);
+  buffer.Advance(2);
 }
 
 Group22Var5 Group22Var5::Read(ReadOnlyBuffer& buffer)
@@ -75,6 +107,16 @@ Group22Var5 Group22Var5::Read(ReadOnlyBuffer& buffer)
   return obj;
 }
 
+void Group22Var5::Write(const Group22Var5& arg, openpal::WriteBuffer& buffer)
+{
+  UInt8::Write(buffer, arg.flags);
+  buffer.Advance(1);
+  UInt32::Write(buffer, arg.count);
+  buffer.Advance(4);
+  UInt48::Write(buffer, arg.time48);
+  buffer.Advance(6);
+}
+
 Group22Var6 Group22Var6::Read(ReadOnlyBuffer& buffer)
 {
   Group22Var6 obj;
@@ -85,6 +127,16 @@ Group22Var6 Group22Var6::Read(ReadOnlyBuffer& buffer)
   obj.time48 = UInt48::Read(buffer);
   buffer.Advance(6);
   return obj;
+}
+
+void Group22Var6::Write(const Group22Var6& arg, openpal::WriteBuffer& buffer)
+{
+  UInt8::Write(buffer, arg.flags);
+  buffer.Advance(1);
+  UInt16::Write(buffer, arg.count);
+  buffer.Advance(2);
+  UInt48::Write(buffer, arg.time48);
+  buffer.Advance(6);
 }
 
 Group22Var7 Group22Var7::Read(ReadOnlyBuffer& buffer)
@@ -99,6 +151,16 @@ Group22Var7 Group22Var7::Read(ReadOnlyBuffer& buffer)
   return obj;
 }
 
+void Group22Var7::Write(const Group22Var7& arg, openpal::WriteBuffer& buffer)
+{
+  UInt8::Write(buffer, arg.flags);
+  buffer.Advance(1);
+  UInt32::Write(buffer, arg.count);
+  buffer.Advance(4);
+  UInt48::Write(buffer, arg.time48);
+  buffer.Advance(6);
+}
+
 Group22Var8 Group22Var8::Read(ReadOnlyBuffer& buffer)
 {
   Group22Var8 obj;
@@ -109,6 +171,16 @@ Group22Var8 Group22Var8::Read(ReadOnlyBuffer& buffer)
   obj.time48 = UInt48::Read(buffer);
   buffer.Advance(6);
   return obj;
+}
+
+void Group22Var8::Write(const Group22Var8& arg, openpal::WriteBuffer& buffer)
+{
+  UInt8::Write(buffer, arg.flags);
+  buffer.Advance(1);
+  UInt16::Write(buffer, arg.count);
+  buffer.Advance(2);
+  UInt48::Write(buffer, arg.time48);
+  buffer.Advance(6);
 }
 
 

@@ -33,6 +33,14 @@ Group30Var1 Group30Var1::Read(ReadOnlyBuffer& buffer)
   return obj;
 }
 
+void Group30Var1::Write(const Group30Var1& arg, openpal::WriteBuffer& buffer)
+{
+  UInt8::Write(buffer, arg.flags);
+  buffer.Advance(1);
+  Int32::Write(buffer, arg.value);
+  buffer.Advance(4);
+}
+
 Group30Var2 Group30Var2::Read(ReadOnlyBuffer& buffer)
 {
   Group30Var2 obj;
@@ -43,6 +51,14 @@ Group30Var2 Group30Var2::Read(ReadOnlyBuffer& buffer)
   return obj;
 }
 
+void Group30Var2::Write(const Group30Var2& arg, openpal::WriteBuffer& buffer)
+{
+  UInt8::Write(buffer, arg.flags);
+  buffer.Advance(1);
+  Int16::Write(buffer, arg.value);
+  buffer.Advance(2);
+}
+
 Group30Var3 Group30Var3::Read(ReadOnlyBuffer& buffer)
 {
   Group30Var3 obj;
@@ -51,12 +67,24 @@ Group30Var3 Group30Var3::Read(ReadOnlyBuffer& buffer)
   return obj;
 }
 
+void Group30Var3::Write(const Group30Var3& arg, openpal::WriteBuffer& buffer)
+{
+  Int32::Write(buffer, arg.value);
+  buffer.Advance(4);
+}
+
 Group30Var4 Group30Var4::Read(ReadOnlyBuffer& buffer)
 {
   Group30Var4 obj;
   obj.value = Int16::Read(buffer);
   buffer.Advance(2);
   return obj;
+}
+
+void Group30Var4::Write(const Group30Var4& arg, openpal::WriteBuffer& buffer)
+{
+  Int16::Write(buffer, arg.value);
+  buffer.Advance(2);
 }
 
 Group30Var5 Group30Var5::Read(ReadOnlyBuffer& buffer)
@@ -69,14 +97,30 @@ Group30Var5 Group30Var5::Read(ReadOnlyBuffer& buffer)
   return obj;
 }
 
+void Group30Var5::Write(const Group30Var5& arg, openpal::WriteBuffer& buffer)
+{
+  UInt8::Write(buffer, arg.flags);
+  buffer.Advance(1);
+  SingleFloat::Write(buffer, arg.value);
+  buffer.Advance(4);
+}
+
 Group30Var6 Group30Var6::Read(ReadOnlyBuffer& buffer)
 {
   Group30Var6 obj;
   obj.flags = UInt8::Read(buffer);
   buffer.Advance(1);
-  obj.value = SingleFloat::Read(buffer);
-  buffer.Advance(4);
+  obj.value = DoubleFloat::Read(buffer);
+  buffer.Advance(8);
   return obj;
+}
+
+void Group30Var6::Write(const Group30Var6& arg, openpal::WriteBuffer& buffer)
+{
+  UInt8::Write(buffer, arg.flags);
+  buffer.Advance(1);
+  DoubleFloat::Write(buffer, arg.value);
+  buffer.Advance(8);
 }
 
 

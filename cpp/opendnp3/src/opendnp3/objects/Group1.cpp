@@ -31,5 +31,11 @@ Group1Var2 Group1Var2::Read(ReadOnlyBuffer& buffer)
   return obj;
 }
 
+void Group1Var2::Write(const Group1Var2& arg, openpal::WriteBuffer& buffer)
+{
+  UInt8::Write(buffer, arg.flags);
+  buffer.Advance(1);
+}
+
 
 }
