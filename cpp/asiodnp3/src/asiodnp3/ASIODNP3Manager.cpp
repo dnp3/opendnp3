@@ -1,4 +1,3 @@
-
 #include <asiodnp3/ASIODNP3Manager.h>
 
 #include <asiopal/Log.h>
