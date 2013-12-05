@@ -20,7 +20,8 @@
     <configuration>
         <header>APACHE_LICENSE_HEADER</header>        
         <includes>
-            <include>cpp/**/*.cpp</include>
+	    <include>cpp/**/*.h</include>
+            <include>cpp/**/*.cpp</include>	    
         </includes>
 	<excludes>
 	    <exclude>cpp/opendnp3/src/opendnp3/gen/*</exclude>
