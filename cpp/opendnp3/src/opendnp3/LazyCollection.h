@@ -18,33 +18,33 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __LAZY_DATA_COLLECTION_H_
-#define __LAZY_DATA_COLLECTION_H_
+#ifndef __LAZY_COLLECTION_H_
+#define __LAZY_COLLECTION_H_
 
 #include <functional>
+
+#include "BufferIterator.h"
 
 namespace opendnp3
 {
 
 template <class T>
-class LazyDataCollection
+class LazyCollection
 {
 	public:
 
-		class const_iterator : public std::iterator<std::random_access_iterator_tag, T> 
+		typedef std::function<T (openpal::ReadOnlyBuffer&)> ReadFromBuffer;
+
+		class const_iterator : private BufferIterator, public std::iterator<std::output_iterator_tag, T> 
 		{
-			openpal::ReadOnlyBuffer mBuffer;
-			std::function<T (openpal::ReadOnlyBuffer&)> mReadType;
-			size_t mCount;
-			size_t mNumValues;
+			
+			ReadFromBuffer mReadType;
 			
 			public:
 		
-			const_iterator(const openpal::ReadOnlyBuffer& arBuffer, const std::function<T (openpal::ReadOnlyBuffer&)>& aReadType, size_t aNumValues):
-				mBuffer(arBuffer),
-				mReadType(aReadType),
-				mCount(0),
-				mNumValues(aNumValues)
+			const_iterator(const openpal::ReadOnlyBuffer& arBuffer, size_t aNumValues, const ReadFromBuffer& aReadType):
+				BufferIterator(arBuffer, aNumValues),
+				mReadType(aReadType)
 			{
 				
 			}
@@ -66,45 +66,41 @@ class LazyDataCollection
 			}
 
 			const_iterator(const const_iterator& rhs) : 
-				mBuffer(rhs.mBuffer),
-				mReadType(rhs.mReadType),
-				mCount(rhs.mCount),
-				mNumValues(rhs.mNumValues)
+				BufferIterator(rhs),
+				mReadType(rhs.mReadType),				
 			{
 				
 			}			 
 		};
 
 
-
-		LazyDataCollection(const openpal::ReadOnlyBuffer& arBuffer, const std::function<T (openpal::ReadOnlyBuffer&)>& aReadType, size_t aCount):
+		LazyCollection(const openpal::ReadOnlyBuffer& arBuffer, size_t aCount, const ReadFromBuffer& aReadType):
 			mBuffer(arBuffer),
-			mConvert(aReadType),
-			mCount(aCount)
+			mCount(aCount),
+			mConvert(aReadType)			
 		{
 		
 		}
 
 		const_iterator begin() const
 		{
-			return const_iterator(mBuffer, mConvert, mCount);
+			return const_iterator(mBuffer, mCount, mConvert);
 		}
 		
 		const_iterator end() const
 		{
-			return const_iterator(mBuffer, mConvert, 0);
+			return const_iterator(mBuffer, 0, mConvert);
 		}
 
 	private:
 		
-		LazyDataCollection();
-		LazyDataCollection(const LazyDataCollection&);
+		LazyCollection();
+		LazyCollection(const LazyCollection&);
 
-		openpal::ReadOnlyBuffer mBuffer;
-		std::function<T (openpal::ReadOnlyBuffer&)> mConvert;
+		openpal::ReadOnlyBuffer mBuffer;		
 		size_t mCount;
+		ReadFromBuffer mConvert;
 };
-
 
 
 }

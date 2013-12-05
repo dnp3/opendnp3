@@ -18,37 +18,27 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include <boost/test/unit_test.hpp>
+#include "BufferIterator.h"
 
-#include "TestHelpers.h"
-#include "BufferHelpers.h"
-
-#include <opendnp3/LazyDataCollection.h>
-#include <opendnp3/objects/Group30.h>
-
-#include <iostream>
-
-using namespace std;
-using namespace openpal;
-using namespace opendnp3;
-
-BOOST_AUTO_TEST_SUITE(LazyDataCollectionTestSuite)
-
-BOOST_AUTO_TEST_CASE(ReadsSimpleTypes)
+namespace opendnp3
 {
-	HexSequence hex("AB 01 00 CD 02 00");
-		
-	LazyDataCollection<Group30Var2> collection(hex.ToReadOnly(), Group30Var2::Read, 2);
 
-	std::vector<Group30Var2> vec;
-	for(auto m: collection) {		
-		vec.push_back(m);
-	}
-	BOOST_REQUIRE_EQUAL(2, vec.size());
-	BOOST_REQUIRE_EQUAL(1, vec[0].value);
-	BOOST_REQUIRE_EQUAL(0xAB, vec[0].flags);
-	BOOST_REQUIRE_EQUAL(2, vec[1].value);
-	BOOST_REQUIRE_EQUAL(0xCD, vec[1].flags);
+BufferIterator::BufferIterator(const openpal::ReadOnlyBuffer& arBuffer, size_t aNumValues):
+	mBuffer(arBuffer),		
+	mCount(0),
+	mNumValues(aNumValues)
+{
+				
+}
+				
+BufferIterator::BufferIterator(const BufferIterator& rhs) : 
+	mBuffer(rhs.mBuffer),		
+	mCount(rhs.mCount),
+	mNumValues(rhs.mNumValues)
+{
+				
+}		
+
 }
 
-BOOST_AUTO_TEST_SUITE_END()
+

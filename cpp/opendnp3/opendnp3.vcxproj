@@ -223,6 +223,7 @@
     <ClInclude Include="src\opendnp3\AsyncTaskInterfaces.h" />
     <ClInclude Include="src\opendnp3\AsyncTaskNonPeriodic.h" />
     <ClInclude Include="src\opendnp3\AsyncTaskPeriodic.h" />
+    <ClInclude Include="src\opendnp3\BufferIterator.h" />
     <ClInclude Include="src\opendnp3\BufferSetTypes.h" />
     <ClInclude Include="src\opendnp3\BufferTypes.h" />
     <ClInclude Include="src\opendnp3\ChangeBuffer.h" />
@@ -255,7 +256,9 @@
     <ClInclude Include="src\opendnp3\gen\QualifierCode.h" />
     <ClInclude Include="src\opendnp3\GetKeys.h" />
     <ClInclude Include="src\opendnp3\HeaderReadIterator.h" />
+    <ClInclude Include="src\opendnp3\IAPDUHeaderHandler.h" />
     <ClInclude Include="src\opendnp3\IFrameSink.h" />
+    <ClInclude Include="src\opendnp3\LazyCollection.h" />
     <ClInclude Include="src\opendnp3\ILinkContext.h" />
     <ClInclude Include="src\opendnp3\ILinkRouter.h" />
     <ClInclude Include="src\opendnp3\IndexedWriteIterator.h" />
@@ -340,6 +343,7 @@
     <ClCompile Include="src\opendnp3\AsyncTaskNonPeriodic.cpp" />
     <ClCompile Include="src\opendnp3\AsyncTaskPeriodic.cpp" />
     <ClCompile Include="src\opendnp3\BaseDataTypes.cpp" />
+    <ClCompile Include="src\opendnp3\BufferIterator.cpp" />
     <ClCompile Include="src\opendnp3\BufferTypes.cpp" />
     <ClCompile Include="src\opendnp3\ChangeBuffer.cpp" />
     <ClCompile Include="src\opendnp3\ClassCounter.cpp" />
