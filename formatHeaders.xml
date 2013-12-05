@@ -10,34 +10,34 @@
     <name>opendnp3</name>
     <url>http://www.github.com/automatak/dnp3</url>
     <description>This is a project only for header formatting, nothing more</description>
-      
+
     <build>
-        <plugins>            
+        <plugins>
             <plugin>
-    <groupId>com.mycila</groupId>
-    <artifactId>license-maven-plugin</artifactId>
-    <version>2.5</version>
-    <configuration>
-        <header>APACHE_LICENSE_HEADER</header>        
-        <includes>
-	    <include>cpp/**/*.h</include>
-            <include>cpp/**/*.cpp</include>	    
-        </includes>
-	<excludes>
-	    <exclude>cpp/opendnp3/src/opendnp3/gen/*</exclude>
-	    <exclude>cpp/opendnp3/src/opendnp3/objects/*</exclude>
-	</excludes>
-    </configuration>
-    <executions>
-        <execution>
-            <goals>
-                <goal>check</goal>
-            </goals>
-        </execution>
-    </executions>
-</plugin>         
+                <groupId>com.mycila</groupId>
+                <artifactId>license-maven-plugin</artifactId>
+                <version>2.5</version>
+                <configuration>
+                    <header>APACHE_LICENSE_HEADER</header>
+                    <includes>
+                        <include>cpp/**/*.h</include>
+                        <include>cpp/**/*.cpp</include>
+                    </includes>
+                    <excludes>
+                        <exclude>cpp/opendnp3/src/opendnp3/gen/*</exclude>
+                        <exclude>cpp/opendnp3/src/opendnp3/objects/*</exclude>
+                    </excludes>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
-    </build>   
+    </build>
 
 </project>
 
