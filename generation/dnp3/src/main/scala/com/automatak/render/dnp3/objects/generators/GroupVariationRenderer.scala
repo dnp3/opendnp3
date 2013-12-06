@@ -38,15 +38,18 @@ object GroupVariationHeaderRenderer extends ModelRenderer[GroupVariation]{
 
     def members: Iterator[String] = x.fields.map(f => getFieldString(f)).iterator
 
+    def sizeSignature: Iterator[String] = Iterator("static const size_t SIZE = " + x.size + ";")
+
     def readSignature: Iterator[String] = Iterator("static " + x.name + " Read(openpal::ReadOnlyBuffer&);")
 
     def writeSignature: Iterator[String] = Iterator("static void Write(const " + x.name + "&, openpal::WriteBuffer&);")
 
     struct(x.name) {
-        readSignature ++
-          writeSignature ++
-          space ++
-          members
+      sizeSignature ++
+      readSignature ++
+      writeSignature ++
+      space ++
+      members
     }
   }
 }

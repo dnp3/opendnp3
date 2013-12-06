@@ -21,6 +21,7 @@ namespace opendnp3 {
 
 struct Group51Var1
 {
+  static const size_t SIZE = 6;
   static Group51Var1 Read(openpal::ReadOnlyBuffer&);
   static void Write(const Group51Var1&, openpal::WriteBuffer&);
 
@@ -29,6 +30,7 @@ struct Group51Var1
 
 struct Group51Var2
 {
+  static const size_t SIZE = 6;
   static Group51Var2 Read(openpal::ReadOnlyBuffer&);
   static void Write(const Group51Var2&, openpal::WriteBuffer&);
 

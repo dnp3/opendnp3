@@ -21,6 +21,7 @@ namespace opendnp3 {
 
 struct Group32Var1
 {
+  static const size_t SIZE = 5;
   static Group32Var1 Read(openpal::ReadOnlyBuffer&);
   static void Write(const Group32Var1&, openpal::WriteBuffer&);
 
@@ -30,6 +31,7 @@ struct Group32Var1
 
 struct Group32Var2
 {
+  static const size_t SIZE = 3;
   static Group32Var2 Read(openpal::ReadOnlyBuffer&);
   static void Write(const Group32Var2&, openpal::WriteBuffer&);
 
@@ -39,6 +41,7 @@ struct Group32Var2
 
 struct Group32Var3
 {
+  static const size_t SIZE = 11;
   static Group32Var3 Read(openpal::ReadOnlyBuffer&);
   static void Write(const Group32Var3&, openpal::WriteBuffer&);
 
@@ -49,6 +52,7 @@ struct Group32Var3
 
 struct Group32Var4
 {
+  static const size_t SIZE = 9;
   static Group32Var4 Read(openpal::ReadOnlyBuffer&);
   static void Write(const Group32Var4&, openpal::WriteBuffer&);
 
@@ -59,6 +63,7 @@ struct Group32Var4
 
 struct Group32Var5
 {
+  static const size_t SIZE = 5;
   static Group32Var5 Read(openpal::ReadOnlyBuffer&);
   static void Write(const Group32Var5&, openpal::WriteBuffer&);
 
@@ -68,6 +73,7 @@ struct Group32Var5
 
 struct Group32Var6
 {
+  static const size_t SIZE = 9;
   static Group32Var6 Read(openpal::ReadOnlyBuffer&);
   static void Write(const Group32Var6&, openpal::WriteBuffer&);
 
@@ -77,6 +83,7 @@ struct Group32Var6
 
 struct Group32Var7
 {
+  static const size_t SIZE = 11;
   static Group32Var7 Read(openpal::ReadOnlyBuffer&);
   static void Write(const Group32Var7&, openpal::WriteBuffer&);
 
@@ -87,6 +94,7 @@ struct Group32Var7
 
 struct Group32Var8
 {
+  static const size_t SIZE = 15;
   static Group32Var8 Read(openpal::ReadOnlyBuffer&);
   static void Write(const Group32Var8&, openpal::WriteBuffer&);
 
