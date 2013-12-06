@@ -61,19 +61,6 @@ struct MaxMinWrapper<double> { //partial specialization for double
 	}
 };
 
-// useful template for pairing a value with an index
-template <class T>
-struct Change {
-	Change() {}
-	Change(const T& arVal, size_t aIndex) :
-		mValue(arVal),
-		mIndex(aIndex)
-	{}
-
-	T mValue;
-	size_t mIndex;
-};
-
 enum DataTypes {
 	DT_BINARY,
 	DT_ANALOG,
@@ -97,7 +84,6 @@ class DataPoint
 public:
 	virtual ~DataPoint() {}
 
-	DataTypes GetType() const;
 	int64_t GetTime() const;
 
 	virtual uint8_t GetQuality() const;
@@ -113,20 +99,15 @@ public:
 protected:
 
 	//These constructors can only be invoked by super classes
-	DataPoint(uint8_t aQuality, DataTypes aType);
+	DataPoint(uint8_t aQuality);
 
 	uint8_t mQuality;					//	bitfield that stores type specific quality information
 	int64_t mTime;						//	timestamp associated with the measurement, -1 if it was never timestamped
 
 private:
-	DataPoint();
-	DataTypes mType;
+	DataPoint();	
 };
 
-inline DataTypes DataPoint::GetType() const
-{
-	return mType;
-}
 inline int64_t DataPoint::GetTime() const
 {
 	return mTime;
@@ -175,7 +156,7 @@ public:
 
 protected:
 	//BoolDataPoint(const BoolDataPoint& arRHS);
-	BoolDataPoint(uint8_t aQuality, DataTypes aType, uint8_t aValueMask);
+	BoolDataPoint(uint8_t aQuality, uint8_t aValueMask);
 
 private:
 	BoolDataPoint();
@@ -251,8 +232,8 @@ public:
 	typedef T Type;
 
 	static const T MAX_VALUE;
-
 	static const T MIN_VALUE;
+
 #ifndef OPENDNP3_STRIP_LOG_MESSAGES
 	std::string ToString() const;
 #endif
@@ -263,7 +244,7 @@ public:
 
 protected:
 	// IntDataPoints have seperate fields for quality and value
-	TypedDataPoint(uint8_t aQuality, DataTypes aType);
+	TypedDataPoint(uint8_t aQuality);
 	T mValue;
 
 private:
@@ -277,8 +258,8 @@ template <class T>
 const T TypedDataPoint<T>::MIN_VALUE = MaxMinWrapper<T>::Min();
 
 template <class T>
-TypedDataPoint<T>::TypedDataPoint(uint8_t aQuality, DataTypes aType) :
-	DataPoint(aQuality, aType),
+TypedDataPoint<T>::TypedDataPoint(uint8_t aQuality) :
+	DataPoint(aQuality),
 	mValue(0)
 {
 

@@ -18,24 +18,36 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __INDEXED_VALUE_H_
-#define __INDEXED_VALUE_H_
+#ifndef __GROUP_VARIATION_H_
+#define __GROUP_VARIATION_H_
 
-namespace opendnp3 
-{  
-	/** 
-	* A simple tuple for pairing Values with an index
-	*/
-	template <class T>
-	class IndexedValue
-	{
+#include <cstdint>
+
+namespace opendnp3
+{
+
+enum class GroupVariation : int
+{	
+	Group1Var1,
+	Group1Var2,
+
+	Group2Var0,
+	Group2Var1,
+	Group2Var2,
+	Group2Var3,
+
+	UNKNOWN
+};
+
+class GroupVariationDescriptor
+{
 	public:
-		IndexedValue(const T& arValue, uint32_t aIndex) : value(arValue), index(aIndex)
-		{}
 
-		T value;
-		uint32_t index;
-	};
+	static GroupVariation GetEnum(uint8_t group, uint8_t variation);
+
+	static GroupVariationDescriptor GetDescriptor(GroupVariation values);
+		
+};
 
 }
 

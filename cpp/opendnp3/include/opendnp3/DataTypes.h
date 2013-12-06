@@ -34,11 +34,11 @@ namespace opendnp3
 class Binary : public BoolDataPoint
 {
 public:
-	Binary(bool aValue, uint8_t aQuality = BQ_RESTART) : BoolDataPoint(BQ_RESTART, DT_BINARY, BQ_STATE) {
+	Binary(bool aValue, uint8_t aQuality = BQ_RESTART) : BoolDataPoint(BQ_RESTART, BQ_STATE) {
 		SetQuality(aQuality);
 		SetValue(aValue);
 	}
-	Binary() : BoolDataPoint(BQ_RESTART, DT_BINARY, BQ_STATE) {}
+	Binary() : BoolDataPoint(BQ_RESTART, BQ_STATE) {}
 
 	typedef bool ValueType;
 	typedef BinaryQuality QualityType;
@@ -66,12 +66,12 @@ class ControlStatus : public BoolDataPoint
 {
 public:
 
-	ControlStatus(bool aValue, uint8_t aQuality = TQ_RESTART) : BoolDataPoint(TQ_RESTART, DT_CONTROL_STATUS, TQ_STATE) {
+	ControlStatus(bool aValue, uint8_t aQuality = TQ_RESTART) : BoolDataPoint(TQ_RESTART, TQ_STATE) {
 		SetValue(aValue);
 		SetQuality(aQuality);
 	}
 
-	ControlStatus() : BoolDataPoint(TQ_RESTART, DT_CONTROL_STATUS, TQ_STATE) {}
+	ControlStatus() : BoolDataPoint(TQ_RESTART, TQ_STATE) {}
 
 	typedef bool ValueType;
 	typedef ControlQuality QualityType;
@@ -97,9 +97,9 @@ public:
 class Analog : public TypedDataPoint<double>
 {
 public:
-	Analog() : TypedDataPoint<double>(AQ_RESTART, DT_ANALOG) {}
+	Analog() : TypedDataPoint<double>(AQ_RESTART) {}
 
-	Analog(double aVal, uint8_t aQuality = AQ_RESTART) : TypedDataPoint<double>(AQ_RESTART, DT_ANALOG) {
+	Analog(double aVal, uint8_t aQuality = AQ_RESTART) : TypedDataPoint<double>(AQ_RESTART) {
 		SetValue(aVal);
 		SetQuality(aQuality);
 	}
@@ -130,8 +130,8 @@ public:
 class Counter : public TypedDataPoint<uint32_t>
 {
 public:
-	Counter() : TypedDataPoint<uint32_t>(CQ_RESTART, DT_COUNTER) {}
-	Counter(uint32_t aVal, uint8_t aQuality = CQ_RESTART) : TypedDataPoint<uint32_t>(CQ_RESTART, DT_COUNTER) {
+	Counter() : TypedDataPoint<uint32_t>(CQ_RESTART) {}
+	Counter(uint32_t aVal, uint8_t aQuality = CQ_RESTART) : TypedDataPoint<uint32_t>(CQ_RESTART) {
 		SetValue(aVal);
 		SetQuality(aQuality);
 	}
@@ -159,8 +159,8 @@ public:
 class SetpointStatus : public TypedDataPoint<double>
 {
 public:
-	SetpointStatus() : TypedDataPoint<double>(PQ_RESTART, DT_SETPOINT_STATUS) {}
-	SetpointStatus(double aVal, uint8_t aQuality = PQ_RESTART) : TypedDataPoint<double>(PQ_RESTART, DT_SETPOINT_STATUS) {
+	SetpointStatus() : TypedDataPoint<double>(PQ_RESTART) {}
+	SetpointStatus(double aVal, uint8_t aQuality = PQ_RESTART) : TypedDataPoint<double>(PQ_RESTART) {
 		SetValue(aVal);
 		SetQuality(aQuality);
 	}

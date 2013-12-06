@@ -26,6 +26,8 @@
 #include <cstddef>
 #include <cstring>
 
+#include "BufferWrapper.h"
+
 #ifdef max
 #undef max
 #endif
@@ -41,6 +43,7 @@ template <class T>
 class Bit16LE
 {
 public:
+
 	static T Read(const uint8_t* apStart) {
 		T ret = *(apStart);
 		ret |= *(++apStart) << 8;
@@ -50,6 +53,13 @@ public:
 	static void Write(uint8_t* apStart, T aValue) {
 		*(apStart) = static_cast<uint8_t>(aValue & 0xFF);
 		*(++apStart) = static_cast<uint8_t>((aValue >> 8) & 0xFF);
+	}
+
+	inline static T ReadBuffer(ReadOnlyBuffer& arBuffer) 
+	{
+		auto ret = Read(arBuffer);
+		arBuffer.Advance(Size);
+		return ret;
 	}
 
 	typedef T Type;
@@ -69,6 +79,7 @@ template <class T>
 class Bit32LE
 {
 public:
+	
 	static T Read(const uint8_t* apStart) {
 		T  ret = *(apStart);
 		ret |= *(++apStart) << 8;
@@ -81,6 +92,13 @@ public:
 		*(++apStart) = static_cast<uint8_t>((aValue >> 8) & 0xFF);
 		*(++apStart) = static_cast<uint8_t>((aValue >> 16) & 0xFF);
 		*(++apStart) = static_cast<uint8_t>((aValue >> 24) & 0xFF);
+	}
+
+	inline static T ReadBuffer(ReadOnlyBuffer& arBuffer) 
+	{
+		auto ret = Read(arBuffer);
+		arBuffer.Advance(Size);
+		return ret;
 	}
 
 	typedef T Type;
@@ -105,6 +123,13 @@ public:
 	const static size_t Size = sizeof(T);
 	const static T Max;
 	const static T Min;
+
+	inline static T ReadBuffer(ReadOnlyBuffer& arBuffer) 
+	{
+		auto ret = Read(arBuffer);
+		arBuffer.Advance(Size);
+		return ret;
+	}
 
 protected:
 

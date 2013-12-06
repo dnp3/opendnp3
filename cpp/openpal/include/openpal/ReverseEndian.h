@@ -36,6 +36,13 @@ public:
 		return (*apStart);
 	}
 
+	inline static uint8_t ReadBuffer(ReadOnlyBuffer& arBuffer) 
+	{
+		auto ret = Read(arBuffer);
+		arBuffer.Advance(Size);
+		return ret;
+	}
+
 	inline static void Write(uint8_t* apStart, uint8_t aValue) 
 	{
 		*(apStart) = aValue;
@@ -54,6 +61,13 @@ public:
 
 	static int64_t Read(const uint8_t* apStart);	
 	static void Write(uint8_t* apStart, int64_t aValue);
+
+	inline static int64_t ReadBuffer(ReadOnlyBuffer& arBuffer) 
+	{
+		auto ret = Read(arBuffer);
+		arBuffer.Advance(Size);
+		return ret;
+	}
 
 	const static int64_t MAX = 281474976710655ULL; // 2^48 -1
 	const static size_t Size = 6;

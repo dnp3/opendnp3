@@ -205,6 +205,7 @@
     <ClInclude Include="src\LoopbackPhysicalLayerAsync.h" />
     <ClInclude Include="src\LowerLayerToPhysAdapter.h" />
     <ClInclude Include="src\MasterTestObject.h" />
+    <ClInclude Include="src\MockAPDUHeaderHandler.h" />
     <ClInclude Include="src\MockAppLayer.h" />
     <ClInclude Include="src\MockAppUser.h" />
     <ClInclude Include="src\MockCommandHandler.h" />
@@ -270,6 +271,7 @@
     <ClCompile Include="src\SlaveTestObject.cpp" />
     <ClCompile Include="src\StopWatch.cpp" />
     <ClCompile Include="src\TestAPDU.cpp" />
+    <ClCompile Include="src\TestAPDUParsing.cpp" />
     <ClCompile Include="src\TestAPDUWriting.cpp" />
     <ClCompile Include="src\TestAppLayer.cpp" />
     <ClCompile Include="src\TestASIO.cpp" />

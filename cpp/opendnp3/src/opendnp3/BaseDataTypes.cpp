@@ -49,16 +49,15 @@ std::string GetDataTypeName(DataTypes aType)
 // DataPoint
 
 
-DataPoint::DataPoint(uint8_t aQuality, DataTypes aType) :
-	mQuality(aQuality), mTime(0),
-	mType(aType)
+DataPoint::DataPoint(uint8_t aQuality) :
+	mQuality(aQuality), mTime(0)	
 {}
 
 // BoolDataPoint
 
 
-BoolDataPoint::BoolDataPoint(uint8_t aQuality, DataTypes aType, uint8_t aValueMask) :
-	DataPoint(aQuality, aType),
+BoolDataPoint::BoolDataPoint(uint8_t aQuality, uint8_t aValueMask) :
+	DataPoint(aQuality),
 	mValueMask(aValueMask)
 {}
 

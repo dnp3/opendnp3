@@ -18,24 +18,41 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __INDEXED_VALUE_H_
-#define __INDEXED_VALUE_H_
+#ifndef __APDU_HEADER_PARSER_H_
+#define __APDU_HEADER_PARSER_H_
 
-namespace opendnp3 
-{  
-	/** 
-	* A simple tuple for pairing Values with an index
-	*/
-	template <class T>
-	class IndexedValue
+#include <vector>
+#include <functional>
+
+#include <openpal/BufferWrapper.h>
+
+#include "IAPDUHeaderHandler.h"
+
+namespace opendnp3
+{
+
+class APDUParser
+{
+	public:	
+
+	enum Result: int 
 	{
-	public:
-		IndexedValue(const T& arValue, uint32_t aIndex) : value(arValue), index(aIndex)
-		{}
-
-		T value;
-		uint32_t index;
+		OK,
+		NOT_ENOUGH_DATA_FOR_HEADER,
+		UNKNOWN_OBJECT,
+		UNKNOWN_QUALIFIER,
+		NOT_ENOUGH_DATA_FOR_INDICATED_OBJECTS,
 	};
+
+	static Result ParseHeaders(openpal::ReadOnlyBuffer, IAPDUHeaderHandler& output);
+
+	private:
+
+	static Result ParseHeader(openpal::ReadOnlyBuffer&, IAPDUHeaderHandler& output);
+
+	APDUParser();
+	APDUParser(const APDUParser&);
+};
 
 }
 

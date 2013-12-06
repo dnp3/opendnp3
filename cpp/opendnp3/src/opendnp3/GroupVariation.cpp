@@ -18,25 +18,50 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __INDEXED_VALUE_H_
-#define __INDEXED_VALUE_H_
 
-namespace opendnp3 
-{  
-	/** 
-	* A simple tuple for pairing Values with an index
-	*/
-	template <class T>
-	class IndexedValue
+#include "GroupVariation.h"
+
+namespace opendnp3
+{
+
+GroupVariation GroupVariationDescriptor::GetEnum(uint8_t group, uint8_t variation)
+{
+	switch(group)
 	{
-	public:
-		IndexedValue(const T& arValue, uint32_t aIndex) : value(arValue), index(aIndex)
-		{}
+		case(1):
+			switch(variation)
+			{
+				case(1):
+					return GroupVariation::Group1Var1;				
+			}
+		case(2):
+			switch(variation)
+			{
+				case(0):
+					return GroupVariation::Group2Var0;
+				case(1):
+					return GroupVariation::Group2Var1;
+				case(2):
+					return GroupVariation::Group2Var2;
+				case(3):
+					return GroupVariation::Group2Var3;
+			}
+	}
 
-		T value;
-		uint32_t index;
-	};
+	return GroupVariation::UNKNOWN;
+}
+
+GroupVariationDescriptor GroupVariationDescriptor::GetDescriptor(GroupVariation gv)
+{
+	switch(gv)
+	{
+		default:
+			return GroupVariationDescriptor();
+	}
+}
+
+
 
 }
 
-#endif
+
