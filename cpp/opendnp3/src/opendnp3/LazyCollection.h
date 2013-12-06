@@ -92,6 +92,11 @@ class LazyCollection
 			return const_iterator(mBuffer, 0, mConvert);
 		}
 
+		size_t Size()
+		{
+			return mCount;
+		}
+
 	private:
 		
 		LazyCollection();

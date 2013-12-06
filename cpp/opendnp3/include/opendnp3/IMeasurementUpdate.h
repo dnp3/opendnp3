@@ -26,22 +26,12 @@
 
 #include <vector>
 
+#include "IndexedValue.h"
 #include "IDataObserver.h"
 
 namespace opendnp3 
 {
   
-  template <class T>
-  class IndexedValue
-  {
-	public:
-		IndexedValue(const T& arValue, uint32_t aIndex) : value(arValue), index(aIndex)
-		{}
-
-		T value;
-		uint32_t index;
-  };
-
   class IMeasurementUpdate
   {
 	  public:
