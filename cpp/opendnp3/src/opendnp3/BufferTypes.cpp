@@ -25,7 +25,7 @@
 
 namespace opendnp3
 {
-
+	
 BufferTypes Convert(DataTypes aType)
 {
 	switch(aType) {

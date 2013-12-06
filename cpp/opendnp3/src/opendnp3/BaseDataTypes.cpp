@@ -25,37 +25,13 @@ using namespace std;
 namespace opendnp3
 {
 
-#ifndef OPENDNP3_STRIP_LOG_MESSAGES
-std::string GetDataTypeName(DataTypes aType)
-{
-	switch(aType) {
-	case(DT_BINARY):
-		return "Binary";
-	case(DT_ANALOG):
-		return "Analog";
-	case(DT_COUNTER):
-		return "Counter";
-	case(DT_CONTROL_STATUS):
-		return "ControlStatus";
-	case(DT_SETPOINT_STATUS):
-		return "SetpointStatus";
-	default:
-		return "Unknown";
-	}
-}
-#endif
-
 
 // DataPoint
-
-
 DataPoint::DataPoint(uint8_t aQuality) :
 	mQuality(aQuality), mTime(0)	
 {}
 
 // BoolDataPoint
-
-
 BoolDataPoint::BoolDataPoint(uint8_t aQuality, uint8_t aValueMask) :
 	DataPoint(aQuality),
 	mValueMask(aValueMask)
@@ -79,7 +55,7 @@ bool ExceedsDeadband<double>(const double& val1, const double& val2, double aDea
 	else {
 		return fabs(val) > aDeadband;
 	}
-
 }
+
 }
 

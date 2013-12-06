@@ -41,25 +41,6 @@
 
 namespace opendnp3
 {
-template <class T>
-struct MaxMinWrapper {
-	static T Max() {
-		return std::numeric_limits<T>::max();
-	}
-	static T Min() {
-		return std::numeric_limits<T>::min();
-	}
-};
-
-template <>
-struct MaxMinWrapper<double> { //partial specialization for double
-	static double Max() {
-		return std::numeric_limits<double>::max();
-	}
-	static double Min() {
-		return -std::numeric_limits<double>::max();
-	}
-};
 
 enum DataTypes {
 	DT_BINARY,
@@ -69,7 +50,6 @@ enum DataTypes {
 	DT_SETPOINT_STATUS
 };
 
-std::string GetDataTypeName(DataTypes aType);
 
 /**
   Base class shared by all of the DataPoint types. There are 5 major data types and they all have
@@ -231,9 +211,6 @@ public:
 
 	typedef T Type;
 
-	static const T MAX_VALUE;
-	static const T MIN_VALUE;
-
 #ifndef OPENDNP3_STRIP_LOG_MESSAGES
 	std::string ToString() const;
 #endif
@@ -250,12 +227,6 @@ protected:
 private:
 	TypedDataPoint();
 };
-
-template <class T>
-const T TypedDataPoint<T>::MAX_VALUE = MaxMinWrapper<T>::Max();
-
-template <class T>
-const T TypedDataPoint<T>::MIN_VALUE = MaxMinWrapper<T>::Min();
 
 template <class T>
 TypedDataPoint<T>::TypedDataPoint(uint8_t aQuality) :

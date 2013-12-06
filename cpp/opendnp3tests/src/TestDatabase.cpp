@@ -92,30 +92,6 @@ BOOST_AUTO_TEST_CASE(AnalogNoEventNegative)
 	TestDataEvent(false, Analog(-34), Analog(-36), 2);
 }
 
-BOOST_AUTO_TEST_CASE(AnalogMaxRangeNoEvent)
-{
-	TestDataEvent(false, Analog(Analog::MAX_VALUE), Analog(0), std::numeric_limits<Analog::Type>::max());
-	TestDataEvent(false, Analog(0), Analog(Analog::MAX_VALUE), std::numeric_limits<Analog::Type>::max());
-}
-
-BOOST_AUTO_TEST_CASE(AnalogMaxRangeEvent)
-{
-	TestDataEvent(true, Analog(Analog::MAX_VALUE), Analog(Analog::MIN_VALUE), std::numeric_limits<Analog::Type>::max());
-	TestDataEvent(true, Analog(Analog::MIN_VALUE), Analog(Analog::MAX_VALUE), std::numeric_limits<Analog::Type>::max());
-}
-
-BOOST_AUTO_TEST_CASE(CounterMaxRangeNoEvent)
-{
-	TestDataEvent(false, Counter(Counter::MAX_VALUE), Counter(Counter::MIN_VALUE), std::numeric_limits<uint32_t>::max());
-	TestDataEvent(false, Counter(Counter::MIN_VALUE), Counter(Counter::MAX_VALUE), std::numeric_limits<uint32_t>::max());
-}
-
-BOOST_AUTO_TEST_CASE(CounterMaxRangeEvent)
-{
-	TestDataEvent(true, Counter(Counter::MAX_VALUE), Counter(Counter::MIN_VALUE), std::numeric_limits<uint32_t>::max() - 1);
-	TestDataEvent(true, Counter(Counter::MIN_VALUE), Counter(Counter::MAX_VALUE), std::numeric_limits<uint32_t>::max() - 1);
-}
-
 // Next 3 tests prove that "no change" doesn't get forwared to IEventBuffer
 BOOST_AUTO_TEST_CASE(BinaryNoChange)
 {
