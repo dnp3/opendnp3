@@ -59,19 +59,8 @@ void TestBufferForEvent(bool aIsEvent, const T& arNewVal, DatabaseTestObject& te
 }
 
 BOOST_AUTO_TEST_SUITE(TestDatabase)
-// Show that updating a value with an invalid index throws an exception
-BOOST_AUTO_TEST_CASE(IndexOutOfBounds)
-{
-	DatabaseTestObject t;
-	t.db.Configure(DT_BINARY, 1);
-
-	Transaction tr(&t.db);
-	Binary b;
-	BOOST_REQUIRE_THROW(t.db.Update(b, 1), IndexOutOfBoundsException);
-}
 
 // tests for the various analog event conditions
-
 BOOST_AUTO_TEST_CASE(AnalogEventZeroDeadband)
 {
 	TestDataEvent(true, Analog(0), Analog(1), 0);
@@ -96,24 +85,24 @@ BOOST_AUTO_TEST_CASE(AnalogNoEventNegative)
 BOOST_AUTO_TEST_CASE(BinaryNoChange)
 {
 	DatabaseTestObject t;
-	t.db.Configure(DT_BINARY, 1);
-	t.db.SetClass(DT_BINARY, 0, PC_CLASS_1);
+	t.db.Configure(MeasurementType::BINARY, 1);
+	t.db.SetClass(MeasurementType::BINARY, 0, PC_CLASS_1);
 	TestBufferForEvent(false, Binary(false), t, t.buffer.mBinaryEvents);
 }
 
 BOOST_AUTO_TEST_CASE(AnalogNoChange)
 {
 	DatabaseTestObject t;
-	t.db.Configure(DT_ANALOG, 1);
-	t.db.SetClass(DT_ANALOG, 0, PC_CLASS_1);
+	t.db.Configure(MeasurementType::ANALOG, 1);
+	t.db.SetClass(MeasurementType::ANALOG, 0, PC_CLASS_1);
 	TestBufferForEvent(false, Analog(0), t, t.buffer.mAnalogEvents);
 }
 
 BOOST_AUTO_TEST_CASE(CounterNoChange)
 {
 	DatabaseTestObject t;
-	t.db.Configure(DT_COUNTER, 1);
-	t.db.SetClass(DT_COUNTER, 0, PC_CLASS_1);
+	t.db.Configure(MeasurementType::COUNTER, 1);
+	t.db.SetClass(MeasurementType::COUNTER, 0, PC_CLASS_1);
 	TestBufferForEvent(false, Counter(0), t, t.buffer.mCounterEvents);
 }
 
@@ -121,24 +110,24 @@ BOOST_AUTO_TEST_CASE(CounterNoChange)
 BOOST_AUTO_TEST_CASE(BinaryChange)
 {
 	DatabaseTestObject t;
-	t.db.Configure(DT_BINARY, 1);
-	t.db.SetClass(DT_BINARY, 0, PC_CLASS_1);
+	t.db.Configure(MeasurementType::BINARY, 1);
+	t.db.SetClass(MeasurementType::BINARY, 0, PC_CLASS_1);
 	TestBufferForEvent(true, Binary(false, BQ_ONLINE), t, t.buffer.mBinaryEvents);
 }
 
 BOOST_AUTO_TEST_CASE(AnalogChange)
 {
 	DatabaseTestObject t;
-	t.db.Configure(DT_ANALOG, 1);
-	t.db.SetClass(DT_ANALOG, 0, PC_CLASS_1);
+	t.db.Configure(MeasurementType::ANALOG, 1);
+	t.db.SetClass(MeasurementType::ANALOG, 0, PC_CLASS_1);
 	TestBufferForEvent(true, Analog(0, AQ_ONLINE), t, t.buffer.mAnalogEvents);
 }
 
 BOOST_AUTO_TEST_CASE(CounterChange)
 {
 	DatabaseTestObject t;
-	t.db.Configure(DT_COUNTER, 1);
-	t.db.SetClass(DT_COUNTER, 0, PC_CLASS_1);
+	t.db.Configure(MeasurementType::COUNTER, 1);
+	t.db.SetClass(MeasurementType::COUNTER, 0, PC_CLASS_1);
 	TestBufferForEvent(true, Counter(0, CQ_ONLINE), t, t.buffer.mCounterEvents);
 }
 
@@ -146,9 +135,9 @@ BOOST_AUTO_TEST_CASE(CounterChange)
 BOOST_AUTO_TEST_CASE(AnalogLastReportedChange)
 {
 	DatabaseTestObject t;
-	t.db.Configure(DT_ANALOG, 1);
-	t.db.SetClass(DT_ANALOG, 0, PC_CLASS_1);
-	t.db.SetDeadband(DT_ANALOG, 0, 5); //value must change by more than 5 before being reported
+	t.db.Configure(MeasurementType::ANALOG, 1);
+	t.db.SetClass(MeasurementType::ANALOG, 0, PC_CLASS_1);
+	t.db.SetDeadband(MeasurementType::ANALOG, 0, 5); //value must change by more than 5 before being reported
 
 	TestBufferForEvent(false, Analog(-2), t, t.buffer.mAnalogEvents);
 	TestBufferForEvent(false, Analog(5), t, t.buffer.mAnalogEvents);
@@ -160,9 +149,9 @@ BOOST_AUTO_TEST_CASE(AnalogLastReportedChange)
 BOOST_AUTO_TEST_CASE(CounterLastReportedChange)
 {
 	DatabaseTestObject t;
-	t.db.Configure(DT_COUNTER, 1);
-	t.db.SetClass(DT_COUNTER, 0, PC_CLASS_1);
-	t.db.SetDeadband(DT_COUNTER, 0, 5); //value must change by more than 5 before being reported
+	t.db.Configure(MeasurementType::COUNTER, 1);
+	t.db.SetClass(MeasurementType::COUNTER, 0, PC_CLASS_1);
+	t.db.SetDeadband(MeasurementType::COUNTER, 0, 5); //value must change by more than 5 before being reported
 
 	TestBufferForEvent(false, Counter(1), t, t.buffer.mCounterEvents);
 	TestBufferForEvent(false, Counter(5), t, t.buffer.mCounterEvents);

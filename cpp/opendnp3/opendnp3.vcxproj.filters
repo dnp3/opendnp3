@@ -180,9 +180,6 @@
     <ClInclude Include="src\opendnp3\BufferSetTypes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\BufferTypes.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\ChangeBuffer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -570,6 +567,12 @@
     <ClInclude Include="include\opendnp3\IndexedValue.h">
       <Filter>Include Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\opendnp3\MeasurementType.h">
+      <Filter>Include Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\BufferType.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\opendnp3\AnalogOutput.cpp">
@@ -612,9 +615,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\BaseDataTypes.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\BufferTypes.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\ChangeBuffer.cpp">
@@ -948,6 +948,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\APDUParser.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\BufferType.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -67,22 +67,22 @@ BOOST_AUTO_TEST_CASE(AnalogInsertion)
 	/* Fill the entire buffer with events, but do not overflow */
 	PushEvents(b, NUM_INDICES, NUM_INDICES);
 	BOOST_REQUIRE_FALSE(b.IsOverflow());
-	BOOST_REQUIRE_EQUAL(b.NumType(BT_ANALOG), NUM_INDICES);
+	BOOST_REQUIRE_EQUAL(b.NumType(BufferType::ANALOG), NUM_INDICES);
 
 	/* Overflow the event buffer */
 	PushEvents(b, NUM_EVENT, NUM_INDICES);
 	BOOST_REQUIRE(b.IsOverflow());
-	BOOST_REQUIRE_EQUAL(b.NumType(BT_ANALOG), NUM_INDICES);
+	BOOST_REQUIRE_EQUAL(b.NumType(BufferType::ANALOG), NUM_INDICES);
 
-	b.Select(BT_ANALOG, PC_CLASS_1); //select all the events
-	BOOST_REQUIRE_EQUAL(b.NumType(BT_ANALOG), NUM_INDICES);
+	b.Select(BufferType::ANALOG, PC_CLASS_1); //select all the events
+	BOOST_REQUIRE_EQUAL(b.NumType(BufferType::ANALOG), NUM_INDICES);
 	PushEvents(b, NUM_EVENT, NUM_INDICES);
 	BOOST_REQUIRE(b.IsOverflow());
-	BOOST_REQUIRE_EQUAL(b.NumType(BT_ANALOG), 2 * NUM_INDICES);
+	BOOST_REQUIRE_EQUAL(b.NumType(BufferType::ANALOG), 2 * NUM_INDICES);
 
 	//now deselect
 	b.Deselect();
-	BOOST_REQUIRE_EQUAL(b.NumType(BT_ANALOG), 2 * NUM_INDICES);
+	BOOST_REQUIRE_EQUAL(b.NumType(BufferType::ANALOG), 2 * NUM_INDICES);
 	BOOST_REQUIRE(b.IsOverflow());
 }
 
@@ -113,28 +113,28 @@ BOOST_AUTO_TEST_CASE(ClassSelect)
 	b.Update(Counter(3), PC_CLASS_1, 1);
 
 	b.Select(PC_CLASS_1, 1);
-	BOOST_REQUIRE_EQUAL(b.NumSelected(BT_BINARY), 1);
+	BOOST_REQUIRE_EQUAL(b.NumSelected(BufferType::BINARY), 1);
 	b.Deselect();
 
 	b.Select(PC_CLASS_1, 3);
-	BOOST_REQUIRE_EQUAL(b.NumSelected(BT_BINARY), 2);
-	BOOST_REQUIRE_EQUAL(b.NumSelected(BT_ANALOG), 1);
+	BOOST_REQUIRE_EQUAL(b.NumSelected(BufferType::BINARY), 2);
+	BOOST_REQUIRE_EQUAL(b.NumSelected(BufferType::ANALOG), 1);
 	b.Deselect();
 
 	b.Select(PC_CLASS_1, 5);
-	BOOST_REQUIRE_EQUAL(b.NumSelected(BT_BINARY), 2);
-	BOOST_REQUIRE_EQUAL(b.NumSelected(BT_ANALOG), 2);
-	BOOST_REQUIRE_EQUAL(b.NumSelected(BT_COUNTER), 1);
+	BOOST_REQUIRE_EQUAL(b.NumSelected(BufferType::BINARY), 2);
+	BOOST_REQUIRE_EQUAL(b.NumSelected(BufferType::ANALOG), 2);
+	BOOST_REQUIRE_EQUAL(b.NumSelected(BufferType::COUNTER), 1);
 	b.Deselect();
 
 	b.Select(PC_CLASS_1, 6);
-	BOOST_REQUIRE_EQUAL(b.NumSelected(BT_BINARY), 2);
-	BOOST_REQUIRE_EQUAL(b.NumSelected(BT_ANALOG), 2);
-	BOOST_REQUIRE_EQUAL(b.NumSelected(BT_COUNTER), 2);
+	BOOST_REQUIRE_EQUAL(b.NumSelected(BufferType::BINARY), 2);
+	BOOST_REQUIRE_EQUAL(b.NumSelected(BufferType::ANALOG), 2);
+	BOOST_REQUIRE_EQUAL(b.NumSelected(BufferType::COUNTER), 2);
 
-	BOOST_REQUIRE(!b.IsFull(BT_BINARY));
-	BOOST_REQUIRE(!b.IsFull(BT_ANALOG));
-	BOOST_REQUIRE(!b.IsFull(BT_COUNTER));
+	BOOST_REQUIRE(!b.IsFull(BufferType::BINARY));
+	BOOST_REQUIRE(!b.IsFull(BufferType::ANALOG));
+	BOOST_REQUIRE(!b.IsFull(BufferType::COUNTER));
 }
 
 /* TODO - Write a Vto Only test here */
@@ -150,9 +150,9 @@ BOOST_AUTO_TEST_CASE(SimpleNegativeTests)
 	EventMaxConfig cfg(5, 5, 5, 5);
 	SlaveEventBuffer b(cfg);
 
-	BOOST_REQUIRE_THROW(b.NumSelected(BT_INVALID), ArgumentException);
-	BOOST_REQUIRE_THROW(b.NumType(BT_INVALID), ArgumentException);
-	BOOST_REQUIRE_THROW(b.Select(BT_INVALID, PC_CLASS_1, 1), ArgumentException);
-	BOOST_REQUIRE_THROW(b.IsFull(BT_INVALID), ArgumentException);
+	BOOST_REQUIRE_FALSE(b.NumSelected(BufferType::INVALID));
+	BOOST_REQUIRE_FALSE(b.NumType(BufferType::INVALID));
+	BOOST_REQUIRE_FALSE(b.Select(BufferType::INVALID, PC_CLASS_1, 1));
+	BOOST_REQUIRE_FALSE(b.IsFull(BufferType::INVALID));
 }
 BOOST_AUTO_TEST_SUITE_END()

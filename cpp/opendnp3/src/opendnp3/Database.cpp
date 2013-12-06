@@ -45,34 +45,34 @@ Database::~Database() {}
 // Public functions
 ////////////////////////////////////////////////////
 
-void Database::Configure(DataTypes aType, size_t aNumPoints, bool aStartOnline)
+void Database::Configure(MeasurementType aType, size_t aNumPoints, bool aStartOnline)
 {
 	switch(aType) {
-	case(DT_BINARY):
+	case(MeasurementType::BINARY):
 		this->mBinaryVec.resize(aNumPoints);
 		this->AssignIndices(mBinaryVec);
 		if ( aStartOnline )
 			this->SetAllOnline(mBinaryVec);
 		break;
-	case(DT_ANALOG):
+	case(MeasurementType::ANALOG):
 		this->mAnalogVec.resize(aNumPoints);
 		this->AssignIndices(mAnalogVec);
 		if ( aStartOnline )
 			this->SetAllOnline(mAnalogVec);
 		break;
-	case(DT_COUNTER):
+	case(MeasurementType::COUNTER):
 		this->mCounterVec.resize(aNumPoints);
 		this->AssignIndices(mCounterVec);
 		if ( aStartOnline )
 			this->SetAllOnline(mCounterVec);
 		break;
-	case(DT_CONTROL_STATUS):
+	case(MeasurementType::CONTROL_STATUS):
 		this->mControlStatusVec.resize(aNumPoints);
 		this->AssignIndices(mControlStatusVec);
 		if ( aStartOnline )
 			this->SetAllOnline(mControlStatusVec);
 		break;
-	case(DT_SETPOINT_STATUS):
+	case(MeasurementType::SETPOINT_STATUS):
 		this->mSetpointStatusVec.resize(aNumPoints);
 		this->AssignIndices(mSetpointStatusVec);
 		if ( aStartOnline )
@@ -90,97 +90,90 @@ void Database::Configure(const DeviceTemplate& arTmp)
 	size_t numSetpointStatus = arTmp.mSetpointStatus.size();
 
 	//configure the database for these objects
-	this->Configure(DT_BINARY, numBinary, arTmp.mStartOnline);
-	this->Configure(DT_ANALOG, numAnalog, arTmp.mStartOnline);
-	this->Configure(DT_COUNTER, numCounter, arTmp.mStartOnline);
-	this->Configure(DT_CONTROL_STATUS, numControlStatus, arTmp.mStartOnline);
-	this->Configure(DT_SETPOINT_STATUS, numSetpointStatus, arTmp.mStartOnline);
+	this->Configure(MeasurementType::BINARY, numBinary, arTmp.mStartOnline);
+	this->Configure(MeasurementType::ANALOG, numAnalog, arTmp.mStartOnline);
+	this->Configure(MeasurementType::COUNTER, numCounter, arTmp.mStartOnline);
+	this->Configure(MeasurementType::CONTROL_STATUS, numControlStatus, arTmp.mStartOnline);
+	this->Configure(MeasurementType::SETPOINT_STATUS, numSetpointStatus, arTmp.mStartOnline);
 
 	for(size_t i = 0; i < arTmp.mBinary.size(); ++i) {
-		this->SetClass(DT_BINARY, i, arTmp.mBinary[i].EventClass);
+		this->SetClass(MeasurementType::BINARY, i, arTmp.mBinary[i].EventClass);
 	}
 
 	for(size_t i = 0; i < arTmp.mCounter.size(); ++i) {
-		this->SetClass(DT_COUNTER, i, arTmp.mCounter[i].EventClass);
+		this->SetClass(MeasurementType::COUNTER, i, arTmp.mCounter[i].EventClass);
 	}
 
 	for(size_t i = 0; i < arTmp.mAnalog.size(); ++i) {
-		this->SetClass(DT_ANALOG, i, arTmp.mAnalog[i].EventClass);
-		this->SetDeadband(DT_ANALOG, i, arTmp.mAnalog[i].Deadband);
-	}
-
-	/*for(size_t i=0; i<arTmp.mControlStatus.size(); ++i)
-	{ this->SetClass(DT_CONTROL_STATUS, i, arTmp.mControlStatus[i].EventClass); }
-
-	for(size_t i=0; i<arTmp.mSetpointStatus.size(); ++i)
-	{ this->SetClass(DT_SETPOINT_STATUS, i, arTmp.mSetpointStatus[i].EventClass); }*/
-}
-
-void Database::SetClass(DataTypes aType, PointClass aClass)
-{
-	switch(aType) {
-	case(DT_BINARY):
-		for(size_t i = 0; i < mBinaryVec.size(); ++i) mBinaryVec[i].mClass = aClass;
-		break;
-	case(DT_ANALOG):
-		for(size_t i = 0; i < mAnalogVec.size(); ++i) mAnalogVec[i].mClass = aClass;
-		break;
-	case(DT_COUNTER):
-		for(size_t i = 0; i < mCounterVec.size(); ++i) mCounterVec[i].mClass = aClass;
-		break;
-	case(DT_CONTROL_STATUS):
-		for(size_t i = 0; i < mControlStatusVec.size(); ++i) mControlStatusVec[i].mClass = aClass;
-		break;
-	case(DT_SETPOINT_STATUS):
-		for(size_t i = 0; i < mSetpointStatusVec.size(); ++i) mSetpointStatusVec[i].mClass = aClass;
-		break;
-	default:
-		MACRO_THROW_EXCEPTION(ArgumentException, "Class cannot be assigned for this type");
-		break;
+		this->SetClass(MeasurementType::ANALOG, i, arTmp.mAnalog[i].EventClass);
+		this->SetDeadband(MeasurementType::ANALOG, i, arTmp.mAnalog[i].Deadband);
 	}
 }
 
-void Database::SetClass(DataTypes aType, size_t aIndex, PointClass aClass)
+void Database::SetClass(MeasurementType aType, PointClass aClass)
 {
 	switch(aType) {
-	case(DT_BINARY):
-		if(aIndex >= mBinaryVec.size()) MACRO_THROW_EXCEPTION_WITH_CODE(Exception, "", ERR_INDEX_OUT_OF_BOUNDS);
-		mBinaryVec[aIndex].mClass = aClass;
-		break;
-	case(DT_ANALOG):
-		if(aIndex >= mAnalogVec.size()) MACRO_THROW_EXCEPTION_WITH_CODE(Exception, "", ERR_INDEX_OUT_OF_BOUNDS);
-		mAnalogVec[aIndex].mClass = aClass;
-		break;
-	case(DT_COUNTER):
-		if(aIndex >= mCounterVec.size()) MACRO_THROW_EXCEPTION_WITH_CODE(Exception, "", ERR_INDEX_OUT_OF_BOUNDS);
-		mCounterVec[aIndex].mClass = aClass;
-		break;
-	case(DT_CONTROL_STATUS):
-		if(aIndex >= mControlStatusVec.size()) MACRO_THROW_EXCEPTION_WITH_CODE(Exception, "", ERR_INDEX_OUT_OF_BOUNDS);
-		mControlStatusVec[aIndex].mClass = aClass;
-		break;
-	case(DT_SETPOINT_STATUS):
-		if(aIndex >= mSetpointStatusVec.size()) MACRO_THROW_EXCEPTION_WITH_CODE(Exception, "", ERR_INDEX_OUT_OF_BOUNDS);
-		mSetpointStatusVec[aIndex].mClass = aClass;
-		break;
-	default:
-		MACRO_THROW_EXCEPTION(ArgumentException, "Class cannot be assigned for this type");
+		case(MeasurementType::BINARY):
+			for(auto& m: mBinaryVec) m.mClass = aClass;		
+			break;
+		case(MeasurementType::ANALOG):
+			for(auto& m: mAnalogVec) m.mClass = aClass;			
+			break;
+		case(MeasurementType::COUNTER):
+			for(auto& m: mCounterVec) m.mClass = aClass;			
+			break;
+		case(MeasurementType::CONTROL_STATUS):
+			for(auto& m: mControlStatusVec) m.mClass = aClass;				
+			break;
+		case(MeasurementType::SETPOINT_STATUS):
+			for(auto& m: mSetpointStatusVec) m.mClass = aClass;			
+			break;
+		default:		
+			break;
 	}
 }
 
-void Database::SetDeadband(DataTypes aType, size_t aIndex, double aDeadband)
+bool Database::SetClass(MeasurementType aType, size_t aIndex, PointClass aClass)
 {
 	switch(aType) {
-	case(DT_ANALOG):
-		if(aIndex >= mAnalogVec.size()) MACRO_THROW_EXCEPTION_WITH_CODE(Exception, "", ERR_INDEX_OUT_OF_BOUNDS);
-		mAnalogVec[aIndex].mDeadband = aDeadband;
-		break;
-	case(DT_COUNTER):
-		if(aIndex >= mCounterVec.size()) MACRO_THROW_EXCEPTION_WITH_CODE(Exception, "", ERR_INDEX_OUT_OF_BOUNDS);
-		mCounterVec[aIndex].mDeadband = aDeadband;
-		break;
-	default:
-		MACRO_THROW_EXCEPTION(ArgumentException, "Deadband cannot be assigned for this type");
+		case(MeasurementType::BINARY):
+			if(aIndex >= mBinaryVec.size()) return false;
+			mBinaryVec[aIndex].mClass = aClass;
+			return true;
+		case(MeasurementType::ANALOG):
+			if(aIndex >= mAnalogVec.size()) return false;
+			mAnalogVec[aIndex].mClass = aClass;
+			return true;
+		case(MeasurementType::COUNTER):
+			if(aIndex >= mCounterVec.size()) return false;
+			mCounterVec[aIndex].mClass = aClass;
+			return true;
+		case(MeasurementType::CONTROL_STATUS):
+			if(aIndex >= mControlStatusVec.size()) return false;
+			mControlStatusVec[aIndex].mClass = aClass;
+			return true;
+		case(MeasurementType::SETPOINT_STATUS):
+			if(aIndex >= mSetpointStatusVec.size()) return false;
+			mSetpointStatusVec[aIndex].mClass = aClass;
+			return true;
+		default:
+			return false;
+	}	
+}
+
+bool Database::SetDeadband(MeasurementType aType, size_t aIndex, double aDeadband)
+{
+	switch(aType) {
+		case(MeasurementType::ANALOG):
+			if(aIndex >= mAnalogVec.size()) return false;
+			mAnalogVec[aIndex].mDeadband = aDeadband;
+			return true;
+		case(MeasurementType::COUNTER):
+			if(aIndex >= mCounterVec.size()) return false;
+			mCounterVec[aIndex].mDeadband = aDeadband;
+			return true;
+		default:
+			return false;
 	}
 }
 
@@ -238,28 +231,19 @@ void Database::_Update(const SetpointStatus& arPoint, size_t aIndex)
 // misc public functions
 ////////////////////////////////////////////////////
 
-size_t Database::MaxIndex(DataTypes aType)
-{
-	size_t num = NumType(aType);
-	if(num == 0) {
-		MACRO_THROW_EXCEPTION(ArgumentException, "No points for datatype");
-	}
-	else return (num - 1);
-}
-
-size_t Database::NumType(DataTypes aType)
+size_t Database::NumType(MeasurementType aType)
 {
 	switch(aType) {
-	case(DT_BINARY):
-		return mBinaryVec.size();
-	case(DT_ANALOG):
-		return mAnalogVec.size();
-	case(DT_COUNTER):
-		return mCounterVec.size();
-	case(DT_CONTROL_STATUS):
-		return mControlStatusVec.size();
-	case(DT_SETPOINT_STATUS):
-		return mSetpointStatusVec.size();
+		case(MeasurementType::BINARY):
+			return mBinaryVec.size();
+		case(MeasurementType::ANALOG):
+			return mAnalogVec.size();
+		case(MeasurementType::COUNTER):
+			return mCounterVec.size();
+		case(MeasurementType::CONTROL_STATUS):
+			return mControlStatusVec.size();
+		case(MeasurementType::SETPOINT_STATUS):
+			return mSetpointStatusVec.size();
 	}
 
 	return 0;

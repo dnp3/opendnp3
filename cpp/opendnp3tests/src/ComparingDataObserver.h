@@ -23,6 +23,8 @@
 
 #include <opendnp3/IDataObserver.h>
 
+#include <openpal/TimeDuration.h>
+
 #include "FlexibleDataObserver.h"
 
 #include <map>

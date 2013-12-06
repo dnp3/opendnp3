@@ -376,8 +376,8 @@ bool ResponseContext::LoadEvents(APDU& arAPDU, std::deque< EventRequest<T> >& ar
 template <class T>
 size_t ResponseContext::IterateIndexed(EventRequest<T>& arRequest, typename EvtItr< EventInfo<T> >::Type& arIter, APDU& arAPDU)
 {
-	size_t max_index = mpDB->MaxIndex(T::MeasEnum);
-	IndexedWriteIterator write = arAPDU.WriteIndexed(arRequest.pObj, arRequest.count, max_index);
+	size_t numType = mpDB->NumType(T::MeasEnum);
+	IndexedWriteIterator write = arAPDU.WriteIndexed(arRequest.pObj, arRequest.count, numType);
 
 	for(size_t i = 0; i < arRequest.count; ++i) {
 		if(write.IsEnd()) return i;										//that's all we can get into this fragment
@@ -411,7 +411,7 @@ size_t ResponseContext::CalcPossibleCTO(typename EvtItr< EventInfo<T> >::Type aI
 template <class T>
 size_t ResponseContext::IterateCTO(const StreamObject<T>* apObj, size_t aCount, typename EvtItr< EventInfo<T> >::Type& arIter, APDU& arAPDU)
 {
-	size_t max_index = mpDB->MaxIndex(T::MeasEnum);
+	size_t numType = mpDB->NumType(T::MeasEnum);	
 
 	auto start = arIter->mValue.GetTime();
 
@@ -422,7 +422,7 @@ size_t ResponseContext::IterateCTO(const StreamObject<T>* apObj, size_t aCount, 
 
 	// predetermine how many results you're going to be able to fit given the time differences
 	size_t num = this->CalcPossibleCTO<T>(arIter, aCount);
-	IndexedWriteIterator write = arAPDU.WriteIndexed(apObj, num, max_index); //start the object write
+	IndexedWriteIterator write = arAPDU.WriteIndexed(apObj, num, numType); //start the object write
 
 	for(size_t i = 0; i < num; ++i) {
 		if(write.IsEnd()) return i;										// that's all we can get into this fragment

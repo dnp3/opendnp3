@@ -65,9 +65,9 @@ BOOST_AUTO_TEST_CASE(DataPost)
 {
 	SlaveConfig cfg;
 	SlaveTestObject t(cfg);
-	t.db.Configure(DT_BINARY, 1);
+	t.db.Configure(MeasurementType::BINARY, 1);
 
-	t.db.SetClass(DT_BINARY, PC_CLASS_1);
+	t.db.SetClass(MeasurementType::BINARY, PC_CLASS_1);
 
 	IDataObserver* pObs = t.slave.GetDataObserver();
 	{
@@ -85,8 +85,8 @@ BOOST_AUTO_TEST_CASE(DataPostToNonExistent)
 {
 	SlaveConfig cfg;
 	SlaveTestObject t(cfg);
-	t.db.Configure(DT_BINARY, 1);
-	t.db.SetClass(DT_BINARY, PC_CLASS_1);
+	t.db.Configure(MeasurementType::BINARY, 1);
+	t.db.SetClass(MeasurementType::BINARY, PC_CLASS_1);
 
 	IDataObserver* pObs = t.slave.GetDataObserver();
 	{
@@ -275,7 +275,7 @@ BOOST_AUTO_TEST_CASE(ReadClass0MultiFrag)
 	SlaveConfig cfg; cfg.mDisableUnsol = true;
 	cfg.mMaxFragSize = 20; // override to use a fragment length of 20
 	SlaveTestObject t(cfg);
-	t.db.Configure(DT_ANALOG, 8);
+	t.db.Configure(MeasurementType::ANALOG, 8);
 	t.slave.OnLowerLayerUp();
 
 	{
@@ -298,10 +298,10 @@ BOOST_AUTO_TEST_CASE(ReadClass1)
 	SlaveConfig cfg; cfg.mDisableUnsol = true;
 	SlaveTestObject t(cfg);
 
-	t.db.Configure(DT_ANALOG, 100);
-	t.db.SetClass(DT_ANALOG, 0x10, PC_CLASS_1);
-	t.db.SetClass(DT_ANALOG, 0x17, PC_CLASS_1);
-	t.db.SetClass(DT_ANALOG, 0x05, PC_CLASS_1);
+	t.db.Configure(MeasurementType::ANALOG, 100);
+	t.db.SetClass(MeasurementType::ANALOG, 0x10, PC_CLASS_1);
+	t.db.SetClass(MeasurementType::ANALOG, 0x17, PC_CLASS_1);
+	t.db.SetClass(MeasurementType::ANALOG, 0x05, PC_CLASS_1);
 	t.slave.OnLowerLayerUp();
 
 	{
@@ -331,8 +331,8 @@ BOOST_AUTO_TEST_CASE(ReadClass1TimeOrdered)
 	SlaveConfig cfg; cfg.mDisableUnsol = true;
 	SlaveTestObject t(cfg);
 
-	t.db.Configure(DT_ANALOG, 100);
-	t.db.SetClass(DT_ANALOG, 0x10, PC_CLASS_1);
+	t.db.Configure(MeasurementType::ANALOG, 100);
+	t.db.SetClass(MeasurementType::ANALOG, 0x10, PC_CLASS_1);
 	t.slave.OnLowerLayerUp();
 
 	{
@@ -402,8 +402,8 @@ BOOST_AUTO_TEST_CASE(UnsolData)
 	SlaveConfig cfg;
 	cfg.mUnsolMask.class1 = true; // this allows the EnableUnsol sequence to be skipped
 	SlaveTestObject t(cfg);
-	t.db.Configure(DT_BINARY, 1);
-	t.db.SetClass(DT_BINARY, PC_CLASS_1);
+	t.db.Configure(MeasurementType::BINARY, 1);
+	t.db.SetClass(MeasurementType::BINARY, PC_CLASS_1);
 
 	// do a transaction before the layer comes online to prove that the null transaction
 	// is occuring before unsol data is sent
@@ -431,8 +431,8 @@ BOOST_AUTO_TEST_CASE(UnsolEventBufferOverflow)
 	cfg.mEventMaxConfig.mMaxBinaryEvents = 2; // set the max to 2 to make testing easy
 	cfg.mUnsolPackDelay = TimeDuration::Milliseconds(0);
 	SlaveTestObject t(cfg);
-	t.db.Configure(DT_BINARY, 1);
-	t.db.SetClass(DT_BINARY, PC_CLASS_1);
+	t.db.Configure(MeasurementType::BINARY, 1);
+	t.db.SetClass(MeasurementType::BINARY, PC_CLASS_1);
 
 	// null unsol
 	t.slave.OnLowerLayerUp();
@@ -463,8 +463,8 @@ BOOST_AUTO_TEST_CASE(UnsolMultiFragments)
 	cfg.mMaxFragSize = 10; //this will cause the unsol response to get fragmented
 	cfg.mUnsolMask.class1 = true; // this allows the EnableUnsol sequence to be skipped
 	SlaveTestObject t(cfg);
-	t.db.Configure(DT_BINARY, 2);
-	t.db.SetClass(DT_BINARY, PC_CLASS_1);
+	t.db.Configure(MeasurementType::BINARY, 2);
+	t.db.SetClass(MeasurementType::BINARY, PC_CLASS_1);
 
 	t.slave.OnLowerLayerUp();
 	BOOST_REQUIRE_EQUAL(t.Read(), "F0 82 80 00");
@@ -496,8 +496,8 @@ BOOST_AUTO_TEST_CASE(WriteDuringUnsol)
 	SlaveConfig cfg; cfg.mUnsolPackDelay = TimeDuration::Zero();
 	cfg.mUnsolMask.class1 = true; //allows us to skip this step
 	SlaveTestObject t(cfg);
-	t.db.Configure(DT_BINARY, 1);
-	t.db.SetClass(DT_BINARY, PC_CLASS_1);
+	t.db.Configure(MeasurementType::BINARY, 1);
+	t.db.SetClass(MeasurementType::BINARY, PC_CLASS_1);
 	t.slave.OnLowerLayerUp();
 
 	BOOST_REQUIRE_EQUAL(t.Read(), "F0 82 80 00");
@@ -524,8 +524,8 @@ BOOST_AUTO_TEST_CASE(ReadDuringUnsol)
 	SlaveConfig cfg; cfg.mUnsolPackDelay = TimeDuration::Zero();
 	cfg.mUnsolMask.class1 = true; //allows us to skip this step
 	SlaveTestObject t(cfg);
-	t.db.Configure(DT_BINARY, 1);
-	t.db.SetClass(DT_BINARY, PC_CLASS_1);
+	t.db.Configure(MeasurementType::BINARY, 1);
+	t.db.SetClass(MeasurementType::BINARY, PC_CLASS_1);
 	t.slave.OnLowerLayerUp();
 
 	BOOST_REQUIRE_EQUAL(t.Read(), "F0 82 80 00");
@@ -550,8 +550,8 @@ BOOST_AUTO_TEST_CASE(ReadWriteDuringUnsol)
 	SlaveConfig cfg; cfg.mUnsolPackDelay = TimeDuration::Zero();
 	cfg.mUnsolMask.class1 = true; //allows us to skip this step
 	SlaveTestObject t(cfg);
-	t.db.Configure(DT_BINARY, 1);
-	t.db.SetClass(DT_BINARY, PC_CLASS_1);
+	t.db.Configure(MeasurementType::BINARY, 1);
+	t.db.SetClass(MeasurementType::BINARY, PC_CLASS_1);
 	t.slave.OnLowerLayerUp();
 
 	BOOST_REQUIRE_EQUAL(t.Read(), "F0 82 80 00");
@@ -830,8 +830,8 @@ BOOST_AUTO_TEST_CASE(UnsolEnable)
 {
 	SlaveConfig cfg; cfg.mUnsolPackDelay = TimeDuration::Zero(); cfg.mUnsolMask = ClassMask(false, false, false);
 	SlaveTestObject t(cfg);
-	t.db.Configure(DT_BINARY, 1);
-	t.db.SetClass(DT_BINARY, PC_CLASS_1);
+	t.db.Configure(MeasurementType::BINARY, 1);
+	t.db.SetClass(MeasurementType::BINARY, PC_CLASS_1);
 	t.slave.OnLowerLayerUp();
 
 	BOOST_REQUIRE_EQUAL(t.Read(), "F0 82 80 00"); //Null UNSOL
@@ -856,8 +856,8 @@ BOOST_AUTO_TEST_CASE(UnsolEnableBadObject)
 {
 	SlaveConfig cfg; cfg.mUnsolPackDelay = TimeDuration::Zero(); cfg.mUnsolMask = ClassMask(false, false, false);
 	SlaveTestObject t(cfg);
-	t.db.Configure(DT_BINARY, 1);
-	t.db.SetClass(DT_BINARY, PC_CLASS_1);
+	t.db.Configure(MeasurementType::BINARY, 1);
+	t.db.SetClass(MeasurementType::BINARY, PC_CLASS_1);
 	t.slave.OnLowerLayerUp();
 
 	BOOST_REQUIRE_EQUAL(t.Read(), "F0 82 80 00"); //Null UNSOL
@@ -879,8 +879,8 @@ BOOST_AUTO_TEST_CASE(UnsolEnableDisableFailure)
 {
 	SlaveConfig cfg; cfg.mDisableUnsol = true;
 	SlaveTestObject t(cfg);
-	t.db.Configure(DT_BINARY, 1);
-	t.db.SetClass(DT_BINARY, PC_CLASS_1);
+	t.db.Configure(MeasurementType::BINARY, 1);
+	t.db.SetClass(MeasurementType::BINARY, PC_CLASS_1);
 	t.slave.OnLowerLayerUp();
 
 	t.SendToSlave("C0 14 3C 02 06");
@@ -903,11 +903,11 @@ void TestStaticRead(const std::string& arRequest, const std::string& arResponse)
 {
 	SlaveConfig cfg; cfg.mDisableUnsol = true;
 	SlaveTestObject t(cfg);
-	t.db.Configure(DT_BINARY, 1);
-	t.db.Configure(DT_ANALOG, 1);
-	t.db.Configure(DT_COUNTER, 1);
-	t.db.Configure(DT_CONTROL_STATUS, 1);
-	t.db.Configure(DT_SETPOINT_STATUS, 1);
+	t.db.Configure(MeasurementType::BINARY, 1);
+	t.db.Configure(MeasurementType::ANALOG, 1);
+	t.db.Configure(MeasurementType::COUNTER, 1);
+	t.db.Configure(MeasurementType::CONTROL_STATUS, 1);
+	t.db.Configure(MeasurementType::SETPOINT_STATUS, 1);
 	t.slave.OnLowerLayerUp();
 
 	t.SendToSlave(arRequest);
@@ -915,18 +915,6 @@ void TestStaticRead(const std::string& arRequest, const std::string& arResponse)
 }
 
 /* ---- Static data reads ----- */
-
-
-/*BOOST_AUTO_TEST_CASE(ReadGrp1Var1)
-{
-	SlaveConfig cfg; cfg.mStaticBinary = GrpVar(1,1);
-	SlaveTestObject t(cfg);
-	t.db.Configure(DT_BINARY, 9);
-	t.slave.OnLowerLayerUp();
-
-	t.SendToSlave("C0 01 01 01 06");
-	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 00 01 01 00 00 00 00 00"); // 1 byte start/stop, 2 bytes for bitfield with 9 members
-}*/
 
 BOOST_AUTO_TEST_CASE(ReadGrp1Var0ViaIntegrity)
 {
@@ -985,14 +973,14 @@ void TestEventRead(const std::string& arRequest, const std::string& arResponse)
 {
 	SlaveConfig cfg; cfg.mDisableUnsol = true;
 	SlaveTestObject t(cfg);
-	t.db.Configure(DT_BINARY, 1);
-	t.db.Configure(DT_ANALOG, 1);
-	t.db.Configure(DT_COUNTER, 1);
-	t.db.Configure(DT_CONTROL_STATUS, 1);
-	t.db.Configure(DT_SETPOINT_STATUS, 1);
-	t.db.SetClass(DT_BINARY, PC_CLASS_1);
-	t.db.SetClass(DT_ANALOG, PC_CLASS_1);
-	t.db.SetClass(DT_COUNTER, PC_CLASS_1);
+	t.db.Configure(MeasurementType::BINARY, 1);
+	t.db.Configure(MeasurementType::ANALOG, 1);
+	t.db.Configure(MeasurementType::COUNTER, 1);
+	t.db.Configure(MeasurementType::CONTROL_STATUS, 1);
+	t.db.Configure(MeasurementType::SETPOINT_STATUS, 1);
+	t.db.SetClass(MeasurementType::BINARY, PC_CLASS_1);
+	t.db.SetClass(MeasurementType::ANALOG, PC_CLASS_1);
+	t.db.SetClass(MeasurementType::COUNTER, PC_CLASS_1);
 	t.slave.OnLowerLayerUp();
 
 
@@ -1055,8 +1043,8 @@ BOOST_AUTO_TEST_CASE(ComplexReadSequence)
 	const size_t NUM = 4;
 	SlaveConfig cfg; cfg.mDisableUnsol = true;
 	SlaveTestObject t(cfg);
-	t.db.Configure(DT_BINARY, NUM);
-	t.db.SetClass(DT_BINARY, PC_CLASS_1);
+	t.db.Configure(MeasurementType::BINARY, NUM);
+	t.db.SetClass(MeasurementType::BINARY, PC_CLASS_1);
 	t.slave.OnLowerLayerUp();
 
 	{
@@ -1091,7 +1079,7 @@ BOOST_AUTO_TEST_CASE(ReadByRangeHeader)
 	SlaveConfig cfg;
 	cfg.mDisableUnsol = true;
 	SlaveTestObject t(cfg);
-	t.db.Configure(DT_ANALOG, 10);
+	t.db.Configure(MeasurementType::ANALOG, 10);
 	t.slave.OnLowerLayerUp();
 
 	{
@@ -1185,8 +1173,8 @@ void TestStaticControlStatus(T aVal, const std::string& aRsp)
 {
 	SlaveConfig cfg; cfg.mDisableUnsol = true;
 	SlaveTestObject t(cfg);
-	t.db.Configure(DT_CONTROL_STATUS, 1);
-	t.db.SetClass(DT_CONTROL_STATUS, PC_CLASS_1);
+	t.db.Configure(MeasurementType::CONTROL_STATUS, 1);
+	t.db.SetClass(MeasurementType::CONTROL_STATUS, PC_CLASS_1);
 	t.slave.OnLowerLayerUp();
 
 	{

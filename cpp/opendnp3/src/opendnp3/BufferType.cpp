@@ -18,22 +18,19 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include "BufferTypes.h"
-
-#include <openpal/Exception.h>
-#include <openpal/Location.h>
+#include "BufferType.h"
 
 namespace opendnp3
 {
 	
-BufferTypes Convert(DataTypes aType)
+BufferType Convert(MeasurementType aType)
 {
 	switch(aType) {
-	case(DT_BINARY):	return BT_BINARY;
-	case(DT_ANALOG):	return BT_ANALOG;
-	case(DT_COUNTER):	return BT_COUNTER;
+		case(MeasurementType::BINARY):	return BufferType::BINARY;
+		case(MeasurementType::ANALOG):	return BufferType::ANALOG;
+		case(MeasurementType::COUNTER):	return BufferType::COUNTER;
 	default:
-		MACRO_THROW_EXCEPTION_COMPLEX(openpal::ArgumentException, "Invalid conversion to BufferType: " << aType);
+		return BufferType::INVALID;
 	}
 }
 

@@ -21,8 +21,6 @@
 #ifndef __BASE_DATA_TYPES_H_
 #define __BASE_DATA_TYPES_H_
 
-#include <openpal/TimeDuration.h>
-
 #include "QualityMasks.h"
 
 #include <sstream>
@@ -30,26 +28,10 @@
 #include <limits>
 #include <math.h>
 #include <string.h>
-
-#ifdef max
-#undef max
-#endif
-
-#ifdef min
-#undef min
-#endif
+#include <cstdint>
 
 namespace opendnp3
 {
-
-enum DataTypes {
-	DT_BINARY,
-	DT_ANALOG,
-	DT_COUNTER,
-	DT_CONTROL_STATUS,
-	DT_SETPOINT_STATUS
-};
-
 
 /**
   Base class shared by all of the DataPoint types. There are 5 major data types and they all have

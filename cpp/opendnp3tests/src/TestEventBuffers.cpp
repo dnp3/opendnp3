@@ -30,7 +30,6 @@
 #include <limits>
 
 using namespace std;
-using namespace openpal;
 using namespace opendnp3;
 
 BOOST_AUTO_TEST_SUITE(SingleEventBufferSuite)

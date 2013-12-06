@@ -20,9 +20,6 @@
  */
 #include "SlaveEventBuffer.h"
 
-#include <openpal/Exception.h>
-#include <openpal/Location.h>
-
 using namespace openpal;
 
 namespace opendnp3
@@ -60,35 +57,35 @@ size_t SlaveEventBuffer::NumVtoEventsAvailable()
 	return mVtoEvents.NumAvailable();
 }
 
-size_t SlaveEventBuffer::NumSelected(BufferTypes aType)
+size_t SlaveEventBuffer::NumSelected(BufferType aType)
 {
 	switch(aType) {
-	case BT_BINARY:
-		return mBinaryEvents.NumSelected();
-	case BT_ANALOG:
-		return mAnalogEvents.NumSelected();
-	case BT_COUNTER:
-		return mCounterEvents.NumSelected();
-	case BT_VTO:
-		return mVtoEvents.NumSelected();
-	default:
-		MACRO_THROW_EXCEPTION(ArgumentException, "Invalid BufferType");
+		case BufferType::BINARY:
+			return mBinaryEvents.NumSelected();
+		case BufferType::ANALOG:
+			return mAnalogEvents.NumSelected();
+		case BufferType::COUNTER:
+			return mCounterEvents.NumSelected();
+		case BufferType::VTO:
+			return mVtoEvents.NumSelected();
+		default:
+			return 0;
 	}
 }
 
-size_t SlaveEventBuffer::NumType(BufferTypes aType)
+size_t SlaveEventBuffer::NumType(BufferType aType)
 {
 	switch(aType) {
-	case BT_BINARY:
-		return mBinaryEvents.Size();
-	case BT_ANALOG:
-		return mAnalogEvents.Size();
-	case BT_COUNTER:
-		return mCounterEvents.Size();
-	case BT_VTO:
-		return mVtoEvents.Size();
-	default:
-		MACRO_THROW_EXCEPTION(ArgumentException, "Invalid BufferType");
+		case BufferType::BINARY:
+			return mBinaryEvents.Size();
+		case BufferType::ANALOG:
+			return mAnalogEvents.Size();
+		case BufferType::COUNTER:
+			return mCounterEvents.Size();
+		case BufferType::VTO:
+			return mVtoEvents.Size();
+		default:
+			return 0;
 	}
 }
 
@@ -128,19 +125,19 @@ bool SlaveEventBuffer::HasClassData(PointClass aClass)
 	       || mVtoEvents.HasClassData(aClass);
 }
 
-size_t SlaveEventBuffer::Select(BufferTypes aType, PointClass aClass, size_t aMaxEvent)
+size_t SlaveEventBuffer::Select(BufferType aType, PointClass aClass, size_t aMaxEvent)
 {
 	switch(aType) {
-	case BT_BINARY:
+	case BufferType::BINARY:
 		return mBinaryEvents.Select(aClass, aMaxEvent);
-	case BT_ANALOG:
+	case BufferType::ANALOG:
 		return mAnalogEvents.Select(aClass, aMaxEvent);
-	case BT_COUNTER:
+	case BufferType::COUNTER:
 		return mCounterEvents.Select(aClass, aMaxEvent);
-	case BT_VTO:
+	case BufferType::VTO:
 		return mVtoEvents.Select(aClass, aMaxEvent);
 	default:
-		MACRO_THROW_EXCEPTION(ArgumentException, "Invalid BufferType");
+		return 0;
 	}
 }
 
@@ -148,7 +145,7 @@ size_t SlaveEventBuffer::Select(PointClass aClass, size_t aMaxEvent)
 {
 	size_t left = aMaxEvent;
 
-	/*
+	/* TODO - examine how this is used.
 	 * ONLY USED IN TESTS!
 	 * The following implies a natural order of importance.  From 'most
 	 * important' to 'least important', the order is:
@@ -186,19 +183,19 @@ size_t SlaveEventBuffer::Deselect()
 	return sum;
 }
 
-bool SlaveEventBuffer::IsFull(BufferTypes aType)
+bool SlaveEventBuffer::IsFull(BufferType aType)
 {
 	switch (aType) {
-	case BT_BINARY:
-		return mBinaryEvents.IsFull();
-	case BT_ANALOG:
-		return mAnalogEvents.IsFull();
-	case BT_COUNTER:
-		return mCounterEvents.IsFull();
-	case BT_VTO:
-		return mVtoEvents.IsFull();
-	default:
-		MACRO_THROW_EXCEPTION(ArgumentException, "Invalid BufferType");
+		case BufferType::BINARY:
+			return mBinaryEvents.IsFull();
+		case BufferType::ANALOG:
+			return mAnalogEvents.IsFull();
+		case BufferType::COUNTER:
+			return mCounterEvents.IsFull();
+		case BufferType::VTO:
+			return mVtoEvents.IsFull();
+		default:
+			return false;
 	}
 }
 

@@ -25,8 +25,6 @@
 
 #include <opendnp3/DNPConstants.h>
 #include <opendnp3/IDataObserver.h>
-#include <openpal/Exception.h>
-#include <openpal/Location.h>
 
 #include <openpal/Visibility.h>
 #include <openpal/Loggable.h>
@@ -62,13 +60,13 @@ public:
 	/* Configuration functions */
 
 	void Configure(const DeviceTemplate& arTmp);
-	void Configure(DataTypes aType, size_t aNumPoints, bool aStartOnline = false);
+	void Configure(MeasurementType aType, size_t aNumPoints, bool aStartOnline = false);
 
-	size_t NumType(DataTypes aType);
-	size_t MaxIndex(DataTypes aType);
-	void SetDeadband(DataTypes, size_t aIndex, double aDeadband);
-	void SetClass(DataTypes aType, size_t aIndex, PointClass aClass);
-	void SetClass(DataTypes aType, PointClass aClass); //set classes for all indices
+	size_t NumType(MeasurementType aType);
+	
+	bool SetDeadband(MeasurementType, size_t aIndex, double aDeadband);
+	bool SetClass(MeasurementType aType, size_t aIndex, PointClass aClass);
+	void SetClass(MeasurementType aType, PointClass aClass); //set classes for all indices
 
 	void SetEventBuffer(IEventBuffer*);
 
@@ -160,19 +158,18 @@ inline void Database::AssignIndices( std::vector< PointInfo<T> >& arVector )
 template<typename T>
 bool Database::UpdateValue(std::vector< PointInfo<T> >& arVec, const T& arValue, size_t aIndex)
 {
-	if(aIndex >= arVec.size()) {
-		MACRO_THROW_INDEX_OUT_OF_BOUNDS(aIndex);
-	}
-
-	T& value = arVec[aIndex].mValue;
-
-	if(value.ShouldGenerateEvent(arValue, arVec[aIndex].mDeadband, arVec[aIndex].mLastEventValue)) {
-		value = arValue;
-		return ((arVec[aIndex].mClass & PC_ALL_EVENTS) != 0);
-	}
+	if(aIndex >= arVec.size()) return false;
 	else {
-		value = arValue;
-		return false;
+		T& value = arVec[aIndex].mValue;
+
+		if(value.ShouldGenerateEvent(arValue, arVec[aIndex].mDeadband, arVec[aIndex].mLastEventValue)) {
+			value = arValue;
+			return ((arVec[aIndex].mClass & PC_ALL_EVENTS) != 0);
+		}
+		else {
+			value = arValue;
+			return false;
+		}
 	}
 }
 

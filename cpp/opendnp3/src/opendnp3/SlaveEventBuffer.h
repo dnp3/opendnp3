@@ -26,7 +26,7 @@
 #include <openpal/Visibility.h>
 
 #include "DNPDatabaseTypes.h"
-#include "BufferTypes.h"
+#include "BufferType.h"
 #include "DatabaseInterfaces.h"
 #include "EventBuffers.h"
 
@@ -105,7 +105,7 @@ public:
 	 *
 	 * @return				the number of events selected
 	 */
-	size_t NumSelected(BufferTypes aType);
+	size_t NumSelected(BufferType aType);
 
 	/**
 	 * Returns the number of events that were previously selected through
@@ -122,7 +122,7 @@ public:
 	 *
 	 * @return				the number of events selected
 	 */
-	size_t NumType(BufferTypes aType);
+	size_t NumType(BufferType aType);
 
 	/**
 	 * Provides an EvtItr iterator object for accessing the data previously
@@ -195,7 +195,7 @@ public:
 	 *
 	 * @return				the number of events selected
 	 */
-	size_t Select(BufferTypes aType, PointClass aClass, size_t aMaxEvent = std::numeric_limits<size_t>::max());
+	size_t Select(BufferType aType, PointClass aClass, size_t aMaxEvent = std::numeric_limits<size_t>::max());
 
 	/**
 	 * Selects data in the buffer that matches the given PointClass, up to
@@ -227,7 +227,7 @@ public:
 	 *
 	 * @return				'true' if the buffer is full, 'false' if not
 	 */
-	bool IsFull(BufferTypes aType);
+	bool IsFull(BufferType aType);
 
 protected:
 

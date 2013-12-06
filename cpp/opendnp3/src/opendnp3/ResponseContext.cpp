@@ -283,7 +283,7 @@ size_t ResponseContext::SelectVtoEvents(PointClass aClass, const SizeByVariation
 	const size_t MAX_VTO_EVENTS = 7;
 
 	size_t selectable = Min<size_t>(aNum, MAX_VTO_EVENTS);
-	size_t num = mBuffer.Select(BT_VTO, aClass, selectable);
+	size_t num = mBuffer.Select(BufferType::VTO, aClass, selectable);
 
 	LOG_BLOCK(LogLevel::Interpret, "Selected: " << num << " vto events");
 
@@ -347,7 +347,7 @@ bool ResponseContext::LoadVtoEvents(APDU& arAPDU)
 {
 	VtoDataEventIter itr;
 	mBuffer.Begin(itr);
-	size_t remain = mBuffer.NumSelected(BT_VTO);
+	size_t remain = mBuffer.NumSelected(BufferType::VTO);
 
 	while (this->mVtoEvents.size() > 0) {
 		/* Get the number of events requested */

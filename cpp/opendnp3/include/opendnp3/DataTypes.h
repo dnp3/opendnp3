@@ -22,6 +22,7 @@
 #define __DATA_TYPES_H_
 
 #include "BaseDataTypes.h"
+#include "MeasurementType.h"
 
 namespace opendnp3
 {
@@ -44,7 +45,7 @@ public:
 	typedef BinaryQuality QualityType;
 
 	// Describes the static data type of the measurement as an enum
-	static const DataTypes MeasEnum = DT_BINARY;
+	static const MeasurementType MeasEnum = MeasurementType ::BINARY;
 
 	static const int ONLINE = BQ_ONLINE;
 
@@ -76,7 +77,7 @@ public:
 	typedef bool ValueType;
 	typedef ControlQuality QualityType;
 
-	static const DataTypes MeasEnum = DT_CONTROL_STATUS;
+	static const MeasurementType MeasEnum = MeasurementType::CONTROL_STATUS;
 
 	static const int ONLINE = TQ_ONLINE;
 
@@ -108,7 +109,7 @@ public:
 	typedef double ValueType;
 	typedef AnalogQuality QualityType;
 
-	static const DataTypes MeasEnum = DT_ANALOG;
+	static const MeasurementType MeasEnum = MeasurementType::ANALOG;
 
 	static const int ONLINE = AQ_ONLINE;
 
@@ -141,7 +142,7 @@ public:
 
 	static const int ONLINE = CQ_ONLINE;
 
-	static const DataTypes MeasEnum = DT_COUNTER;
+	static const MeasurementType MeasEnum = MeasurementType::COUNTER;
 
 	operator ValueType() const {
 		return this->GetValue();
@@ -170,7 +171,7 @@ public:
 
 	static const int ONLINE = PQ_ONLINE;
 
-	static const DataTypes MeasEnum = DT_SETPOINT_STATUS;
+	static const MeasurementType MeasEnum = MeasurementType::SETPOINT_STATUS;
 
 	operator ValueType() const {
 		return this->GetValue();
