@@ -66,7 +66,7 @@ BOOST_AUTO_TEST_CASE(AllObjects)
 
 BOOST_AUTO_TEST_CASE(TestUnknownQualifier)
 {
-	HexSequence hex("02 02 AB"); // (2,2) unknown qual AB
+	HexSequence hex("02 02 AB"); // (2,2) unknown qualifier 0xAB
 	MockApduHeaderHandler mock;
 	auto result = APDUParser::ParseHeaders(hex.ToReadOnly(), mock);
 

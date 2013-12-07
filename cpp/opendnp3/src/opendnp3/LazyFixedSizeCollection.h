@@ -18,28 +18,55 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __BUFFER_ITERATOR_H_
-#define __BUFFER_ITERATOR_H_
+#ifndef __LAZY_FIXED_SIZE_COLLECTION_H_
+#define __LAZY_FIXED_SIZE_COLLECTION_H_
 
-#include <openpal/BufferWrapper.h>
+#include <functional>
+#include <assert.h>
+
+#include "LazyCollection.h"
 
 namespace opendnp3
 {
 
-class BufferIterator
+template <class T>
+class LazyFixedSizeCollection : public LazyCollection<T>
 {
-	protected:
-	
-	openpal::ReadOnlyBuffer mBuffer;	
-	size_t mCount;
-	size_t mNumValues;
-			
 	public:
-		
-	BufferIterator(const openpal::ReadOnlyBuffer& arBuffer, size_t aNumValues);
 
-	BufferIterator(const BufferIterator& rhs);
+		LazyFixedSizeCollection(const openpal::ReadOnlyBuffer& arBuffer, size_t aCount, const typename LazyIterator<T>::ReadFunction& aReadFunction):
+			mBuffer(arBuffer),
+			mCount(aCount),
+			mReadFunction(aReadFunction)
+		{
+		
+		}
+
+		LazyIterator<T> begin() const
+		{
+			return LazyIterator<T>(mBuffer, mCount, mReadFunction);
+		}
+		
+		LazyIterator<T> end() const
+		{
+			return LazyIterator<T>::End();
+		}
+
+		size_t size() const
+		{
+			return mCount;
+		}
+
+	private:
+		
+		LazyFixedSizeCollection();
+		LazyFixedSizeCollection(const LazyCollection&);
+
+		const openpal::ReadOnlyBuffer mBuffer;		
+		const size_t mCount;
+		const typename LazyIterator<T>::ReadFunction mReadFunction;
 };
+
 
 }
 

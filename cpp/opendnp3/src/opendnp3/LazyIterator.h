@@ -18,32 +18,62 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __LAZY_COLLECTION_H_
-#define __LAZY_COLLECTION_H_
+#ifndef __LAZY_ITERATOR_H_
+#define __LAZY_ITERATOR_H_
 
 #include <functional>
 #include <assert.h>
 
-#include "LazyIterator.h"
+#include "BufferRange.h"
 
 namespace opendnp3
 {
 
 template <class T>
-class LazyCollection
-{
+class LazyIterator : private BufferRange, public std::iterator<std::output_iterator_tag, T> 
+{						
 	public:
 
-		virtual ~LazyCollection()
-		{}
-		
-		virtual LazyIterator<T> begin() const = 0;
-		
-		virtual LazyIterator<T> end() const = 0;
+	static LazyIterator LazyIterator::End()
+	{
+		return LazyIterator(ReadOnlyBuffer(nullptr, 0), 0);
+	}
 
-		virtual size_t size() const = 0;
+	typedef std::function<T (openpal::ReadOnlyBuffer&)> ReadFunction;
+		
+	LazyIterator(const openpal::ReadOnlyBuffer& arBuffer, size_t aNumValues, const ReadFunction& aReadFunction):
+		BufferRange(arBuffer, aNumValues),
+		mReadFunction(aReadFunction)
+	{}
+
+	LazyIterator(const LazyIterator& rhs) : BufferRange(rhs), mReadFunction(rhs.mReadFunction)
+	{}	
+				
+	bool operator!=(const LazyIterator&)
+	{
+		return mPosition < mNumValues;		
+	}
+
+	void operator ++()
+	{
+		assert(mPosition < mNumValues);
+		++mPosition;
+	}
+
+	T operator *()
+	{	
+		assert(mReadFunction);
+		assert(mPosition < mNumValues);
+		return mReadFunction(mBuffer);
+	}
+
+	private:		 
+	LazyIterator();
+	LazyIterator(const openpal::ReadOnlyBuffer& arBuffer, size_t aNumValues): BufferRange(arBuffer, aNumValues)		
+	{}
+
+	ReadFunction mReadFunction;
 };
-
 
 }
 

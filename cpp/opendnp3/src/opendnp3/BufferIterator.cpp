@@ -18,22 +18,22 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include "BufferIterator.h"
+#include "BufferRange.h"
 
 namespace opendnp3
 {
 
-BufferIterator::BufferIterator(const openpal::ReadOnlyBuffer& arBuffer, size_t aNumValues):
+BufferRange::BufferRange(const openpal::ReadOnlyBuffer& arBuffer, size_t aNumValues):
 	mBuffer(arBuffer),		
-	mCount(0),
+	mPosition(0),
 	mNumValues(aNumValues)
 {
 				
 }
 				
-BufferIterator::BufferIterator(const BufferIterator& rhs) : 
+BufferRange::BufferRange(const BufferRange& rhs) : 
 	mBuffer(rhs.mBuffer),		
-	mCount(rhs.mCount),
+	mPosition(rhs.mPosition),
 	mNumValues(rhs.mNumValues)
 {
 				

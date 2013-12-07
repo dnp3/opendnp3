@@ -226,7 +226,7 @@
     <ClInclude Include="src\opendnp3\AsyncTaskInterfaces.h" />
     <ClInclude Include="src\opendnp3\AsyncTaskNonPeriodic.h" />
     <ClInclude Include="src\opendnp3\AsyncTaskPeriodic.h" />
-    <ClInclude Include="src\opendnp3\BufferIterator.h" />
+    <ClInclude Include="src\opendnp3\BufferRange.h" />
     <ClInclude Include="src\opendnp3\BufferSetTypes.h" />
     <ClInclude Include="src\opendnp3\BufferType.h" />
     <ClInclude Include="src\opendnp3\ChangeBuffer.h" />
@@ -265,6 +265,8 @@
     <ClInclude Include="src\opendnp3\ILinkContext.h" />
     <ClInclude Include="src\opendnp3\ILinkRouter.h" />
     <ClInclude Include="src\opendnp3\IndexedWriteIterator.h" />
+    <ClInclude Include="src\opendnp3\LazyFixedSizeCollection.h" />
+    <ClInclude Include="src\opendnp3\LazyIterator.h" />
     <ClInclude Include="src\opendnp3\LinkFrame.h" />
     <ClInclude Include="src\opendnp3\LinkHeader.h" />
     <ClInclude Include="src\opendnp3\LinkLayer.h" />

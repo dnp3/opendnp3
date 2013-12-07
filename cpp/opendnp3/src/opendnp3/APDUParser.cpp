@@ -64,4 +64,3 @@ APDUParser::Result APDUParser::ParseHeader(ReadOnlyBuffer& arBuffer, IAPDUHeader
 
 }
 
-

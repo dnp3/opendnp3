@@ -18,42 +18,29 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include <boost/test/unit_test.hpp>
+#ifndef __BUFFER_RANGE_H_
+#define __BUFFER_RANGE_H_
 
-#include "TestHelpers.h"
-#include "BufferHelpers.h"
+#include <openpal/BufferWrapper.h>
 
-#include <opendnp3/LazyFixedSizeCollection.h>
-#include <opendnp3/objects/Group30.h>
-
-#include <iostream>
-
-using namespace std;
-using namespace openpal;
-using namespace opendnp3;
-
-BOOST_AUTO_TEST_SUITE(LazyCollectionTestSuite)
-
-BOOST_AUTO_TEST_CASE(ReadSimpleTypes)
+namespace opendnp3
 {
-	HexSequence hex("AB 01 01 CD 02 00");
-		
-	LazyFixedSizeCollection<Group30Var2> collection(hex.ToReadOnly(), 2, Group30Var2::Read);
-	
-	auto test = [&]() {
-		std::vector<Group30Var2> vec;
-		for(auto m: collection) vec.push_back(m);	
-					
-		BOOST_REQUIRE_EQUAL(2, vec.size());
-		BOOST_REQUIRE_EQUAL(257, vec[0].value);
-		BOOST_REQUIRE_EQUAL(0xAB, vec[0].flags);
-		BOOST_REQUIRE_EQUAL(2, vec[1].value);
-		BOOST_REQUIRE_EQUAL(0xCD, vec[1].flags);
-	};
 
-	// calling the function 2x proves that the buffer can be read again.
-	test();
-	test();
+class BufferRange
+{
+	protected:
+	
+	openpal::ReadOnlyBuffer mBuffer;	
+	size_t mPosition;
+	size_t mNumValues;			
+		
+	BufferRange(const BufferRange& rhs);
+	BufferRange(const openpal::ReadOnlyBuffer& arBuffer, size_t aNumValues);
+
+	private:
+	BufferRange();
+};
+
 }
 
-BOOST_AUTO_TEST_SUITE_END()
+#endif
