@@ -22,6 +22,7 @@
 #define __LAZY_COLLECTION_H_
 
 #include <functional>
+#include <assert.h>
 
 #include "BufferIterator.h"
 
@@ -67,7 +68,7 @@ class LazyCollection
 
 			const_iterator(const const_iterator& rhs) : 
 				BufferIterator(rhs),
-				mReadType(rhs.mReadType),				
+				mReadType(rhs.mReadType)				
 			{
 				
 			}			 

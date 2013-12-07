@@ -61,7 +61,7 @@ template <typename T>
 inline typename T::DataType DNPFromStream::ReadQ(const uint8_t* apPos, const T* apObj)
 {
 	auto flags = apObj->mFlag.Get(apPos);
-	return T::DataType(flags);
+	return typename T::DataType(flags);
 }
 
 template <typename T>
@@ -69,14 +69,14 @@ inline typename T::DataType DNPFromStream::ReadQT(const uint8_t* apPos, const T*
 {
 	auto flags = apObj->mFlag.Get(apPos);
 	auto time = apObj->mTime.Get(apPos);
-	return T::DataType(flags, time);
+	return typename T::DataType(flags, time);
 }
 
 template <typename T>
 inline typename T::DataType DNPFromStream::ReadV(const uint8_t* apPos, const T* apObj)
 {	
 	auto value = apObj->mValue.Get(apPos);
-	return T::DataType(value);	
+	return typename T::DataType(value);	
 }
 
 template <typename T>
@@ -84,7 +84,7 @@ inline typename T::DataType DNPFromStream::ReadQV(const uint8_t* apPos, const T*
 {
 	auto flags = apObj->mFlag.Get(apPos);
 	auto value = apObj->mValue.Get(apPos);
-	return T::DataType(value, flags);
+	return typename T::DataType(value, flags);
 }
 
 template <typename T>
@@ -93,7 +93,7 @@ inline typename T::DataType DNPFromStream::ReadQVT(const uint8_t* apPos, const T
 	auto flags = apObj->mFlag.Get(apPos);
 	auto value = apObj->mValue.Get(apPos);
 	auto time = apObj->mTime.Get(apPos);
-	return T::DataType(value, flags, time);
+	return typename T::DataType(value, flags, time);
 }
 
 }

@@ -74,20 +74,6 @@ public:
 	typedef int64_t Type;
 };
 
-class SingleFloatSafe : public Float<float>
-{
-public:
-	static float Read(const uint8_t* apStart);
-	static void Write(uint8_t* apStart, float aValue);
-};
-
-class DoubleFloatSafe : public Float<double>
-{
-public:
-	static double Read(const uint8_t* apStart);
-	static void Write(uint8_t* apStart, double aValue);
-};
-
 }
 
 #endif

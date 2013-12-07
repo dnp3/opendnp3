@@ -21,6 +21,8 @@
 #include "MeasurementHelpers.h"
 
 #include <iostream>
+#include <limits>
+#include <math.h>
 
 namespace opendnp3
 {

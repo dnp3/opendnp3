@@ -39,20 +39,6 @@ std::string ToString(const TypedMeasurement<T>& arMeas)
 }
 
 template <class T>
-bool IsEvent(const T& newValue, const T& aLastReport, double aDeadband)
-{
-	if(newValue.GetQuality() != aLastReport.GetQuality()) return true;
-	else {
-		return ExceedsDeadband<T::Type>(newValue.GetValue(), aLastReport.GetValue(), aDeadband);
-	}            
-}
-
-//specialization for BoolDataPoint
-template <>
-bool IsEvent<Binary>(const Binary& newValue, const Binary& aLastReport, double aDeadband);
-
-
-template <class T>
 bool ExceedsDeadband(const T& val1, const T& val2, double aDeadband)
 {
 	// T can be unsigned data type so std::abs won't work since it only directly supports signed data types
@@ -65,6 +51,20 @@ bool ExceedsDeadband(const T& val1, const T& val2, double aDeadband)
 template <>
 bool ExceedsDeadband<double>(const double& val1, const double& val2, double aDeadband);
 
+template <class T>
+bool IsEvent(const T& newValue, const T& aLastReport, double aDeadband)
+{
+	if(newValue.GetQuality() != aLastReport.GetQuality()) return true;
+	else {
+		return ExceedsDeadband<typename T::Type>(newValue.GetValue(), aLastReport.GetValue(), aDeadband);
+	}            
+}
+
+//specialization for BoolDataPoint
+template <>
+bool IsEvent<Binary>(const Binary& newValue, const Binary& aLastReport, double aDeadband);
+
 }
 
 #endif
+

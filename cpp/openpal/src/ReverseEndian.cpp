@@ -52,24 +52,4 @@ void UInt48LE::Write(uint8_t* apStart, int64_t aValue)
 	*(++apStart) = static_cast<uint8_t>((aValue >> 40) & 0xFF);
 }
 
-float SingleFloatSafe::Read(const uint8_t* apStart)
-{
-	return Float<float>::SafeRead(apStart);
-}
-
-void SingleFloatSafe::Write(uint8_t* apStart, float aValue)
-{
-	Float<float>::SafeWrite(apStart, aValue);
-}
-
-double DoubleFloatSafe::Read(const uint8_t* apStart)
-{
-	return Float<double>::SafeRead(apStart);
-}
-
-void DoubleFloatSafe::Write(uint8_t* apStart, double aValue)
-{
-	Float<double>::SafeWrite(apStart, aValue);
-}
-
 }

@@ -22,6 +22,7 @@
 #define __DATABASE_H_
 
 #include "DatabaseInterfaces.h"
+#include "MeasurementHelpers.h"
 
 #include <opendnp3/DNPConstants.h>
 #include <opendnp3/IDataObserver.h>

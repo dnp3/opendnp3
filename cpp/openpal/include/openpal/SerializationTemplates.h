@@ -131,17 +131,15 @@ public:
 		return ret;
 	}
 
-protected:
-
 	// Some platforms like ARM have WORD alignment issue when using reinterpret cast. 
 	// The float/double read routines use intermediate buffer that the compiler word aligns
-	inline static T SafeRead(const uint8_t* apStart) {
+	inline static T Read(const uint8_t* apStart) {
 		T d;
 		memcpy(&d, apStart, Size);
 		return d;
 	}
 
-	inline static void SafeWrite(uint8_t* apStart, T aValue) {
+	inline static void Write(uint8_t* apStart, T aValue) {
 		memcpy(apStart, &aValue, Size);
 	}
 };
