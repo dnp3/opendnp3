@@ -25,6 +25,7 @@
 #include "Singleton.h"
 
 #include <iostream>
+#include <string>
 #include <functional>
 
 namespace opendnp3

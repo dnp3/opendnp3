@@ -23,9 +23,12 @@
 
 #include <opendnp3/IDataObserver.h>
 
+#include <opendnp3/MeasurementHelpers.h>
+
 #include <openpal/TimeDuration.h>
 
 #include "FlexibleDataObserver.h"
+#include "MeasurementComparisons.h"
 
 #include <map>
 #include <mutex>
@@ -87,10 +90,10 @@ private:
 template <class T>
 void ComparingDataObserver::DescribeAny(const typename PointMap<T>::Type& arMap, const CompareMap& arCompareMap)
 {
-for(auto pair: arMap) {
+	for(auto pair: arMap) {
 		CompareMap::const_iterator j = arCompareMap.find(pair.first);
 		if(j == arCompareMap.end()) {
-			std::cout << "Missing: " << pair.first << " - " << pair.second.ToString() << std::endl;
+			std::cout << "Missing: " << pair.first << " - " << ToString(pair.second) << std::endl;
 		}
 	}
 }
@@ -100,13 +103,14 @@ void ComparingDataObserver::UpdateAny(const T& arPoint, size_t aIndex, const typ
 {
 	typename PointMap<T>::Type::const_iterator i = arMap.find(aIndex);
 	if(i == arMap.end()) {
-		std::cout << "Unexpected index: " << aIndex << " - " << arPoint.ToString() << std::endl;
+		std::cout << "Unexpected index: " << aIndex << " - " << ToString(arPoint) << std::endl;
 	}
 	else {
 		if(i->second == arPoint) {
 			arCompareMap[aIndex] = true;
 		}
 		else {
+			//std::cout << ToString(arPoint) << " not equal to " << ToString(i->second) << std::endl;
 			arCompareMap.erase(aIndex);
 		}
 	}

@@ -24,7 +24,7 @@
 #include "IMeasurementUpdate.h"
 
 #include <functional>
-#include <iostream>
+#include <sstream>
 
 namespace opendnp3
 {
@@ -76,20 +76,10 @@ private:
 	{}
 
 	static void Print(const IMeasurementUpdate& arUpdate);
-
-	template<class T>
-	static void PrintAny(const T&, uint32_t aIndex);
 	
 	static PrintingMeasurementHandler msInstance;
 };
 
-template<class T>
-void PrintingMeasurementHandler::PrintAny(const T& arPoint, uint32_t aIndex)
-{
-	std::ostringstream oss;
-	oss << arPoint.ToString() << " : " << aIndex;
-	std::cout << oss.str() << std::endl;
-}
 
 
 

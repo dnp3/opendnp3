@@ -182,19 +182,19 @@ void Group2Var3::Write(uint8_t* p, const Binary& v) const
 
 Binary Group1Var2::Read(const uint8_t* p) const
 {
-	return DNPFromStream::ReadBinaryQV(p, Group1Var2::Inst());
+	return DNPFromStream::ReadQ(p, Group1Var2::Inst());
 }
 Binary Group2Var1::Read(const uint8_t* p) const
 {
-	return DNPFromStream::ReadBinaryQV(p, Group2Var1::Inst());
+	return DNPFromStream::ReadQ(p, Group2Var1::Inst());
 }
 Binary Group2Var2::Read(const uint8_t* p) const
 {
-	return DNPFromStream::ReadBinaryQVT(p, Group2Var2::Inst());
+	return DNPFromStream::ReadQT(p, Group2Var2::Inst());
 }
 Binary Group2Var3::Read(const uint8_t* p) const
 {
-	return DNPFromStream::ReadBinaryQVT(p, Group2Var3::Inst());
+	return DNPFromStream::ReadQT(p, Group2Var3::Inst());
 }
 
 

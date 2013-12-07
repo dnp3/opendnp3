@@ -18,22 +18,21 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include <opendnp3/IMeasurementHandler.h>
+#ifndef __MEASUREMENT_COMPARISONS_H_
+#define __MEASUREMENT_COMPARISONS_H_
 
-namespace opendnp3
+#include <opendnp3/BaseDataTypes.h>
+
+template<class T>
+bool operator==(const opendnp3::TypedMeasurement<T>& lhs, const opendnp3::TypedMeasurement<T>& rhs)
 {
-
-NullMeasurementHandler NullMeasurementHandler::msInstance;
-
-PrintingMeasurementHandler PrintingMeasurementHandler::msInstance;
-
-void PrintingMeasurementHandler::Print(const IMeasurementUpdate& arUpdate)
-{
-	for(auto pair: arUpdate.BinaryUpdates()) {}
-	for(auto pair: arUpdate.AnalogUpdates()) {}
-	for(auto pair: arUpdate.CounterUpdates()) {}
-	for(auto pair: arUpdate.ControlStatusUpdates()) {}
-	for(auto pair: arUpdate.SetpointStatusUpdates()) {}
+	return (lhs.GetQuality() == rhs.GetQuality()) && (lhs.GetValue() == rhs.GetValue());
 }
 
+template<class T>
+bool operator!=(const opendnp3::TypedMeasurement<T>& lhs, const opendnp3::TypedMeasurement<T>& rhs)
+{
+	return !(lhs == rhs);
 }
+
+#endif

@@ -18,22 +18,29 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include <opendnp3/IMeasurementHandler.h>
+#include "MeasurementHelpers.h"
+
+#include <iostream>
 
 namespace opendnp3
 {
 
-NullMeasurementHandler NullMeasurementHandler::msInstance;
+template <>
+bool IsEvent<Binary>(const Binary& newValue, const Binary& aLastReport, double aDeadband)
+{	
+	return (newValue.GetValue() != aLastReport.GetValue()) || newValue.GetQuality() != aLastReport.GetQuality();
+}
+ 
 
-PrintingMeasurementHandler PrintingMeasurementHandler::msInstance;
-
-void PrintingMeasurementHandler::Print(const IMeasurementUpdate& arUpdate)
+template<>
+bool ExceedsDeadband<double>(const double& val1, const double& val2, double aDeadband)
 {
-	for(auto pair: arUpdate.BinaryUpdates()) {}
-	for(auto pair: arUpdate.AnalogUpdates()) {}
-	for(auto pair: arUpdate.CounterUpdates()) {}
-	for(auto pair: arUpdate.ControlStatusUpdates()) {}
-	for(auto pair: arUpdate.SetpointStatusUpdates()) {}
+	double diff = fabs(val1 - val2);
+
+	if(diff == std::numeric_limits<double>::infinity()) return true;
+	else return diff > aDeadband;
+	
 }
 
 }
+

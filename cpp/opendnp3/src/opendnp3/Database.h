@@ -144,7 +144,8 @@ for(auto i: arIdxVec) indexSet.insert(i->Index);
 template<typename T>
 inline void Database::SetAllOnline( std::vector< PointInfo<T> >& arVector )
 {
-	for(size_t i = 0; i < arVector.size(); ++i) arVector[i].mValue.SetQuality(T::ONLINE);
+	// TODO
+	// for(size_t i = 0; i < arVector.size(); ++i) arVector[i].mValue.SetQuality(T::ONLINE);
 }
 
 template<typename T>
@@ -162,7 +163,8 @@ bool Database::UpdateValue(std::vector< PointInfo<T> >& arVec, const T& arValue,
 	else {
 		T& value = arVec[aIndex].mValue;
 
-		if(value.ShouldGenerateEvent(arValue, arVec[aIndex].mDeadband, arVec[aIndex].mLastEventValue)) {
+		if(IsEvent<T>(arValue, arVec[aIndex].mLastEvent, arVec[aIndex].mDeadband))
+		{
 			value = arValue;
 			return ((arVec[aIndex].mClass & PC_ALL_EVENTS) != 0);
 		}

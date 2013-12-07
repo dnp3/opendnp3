@@ -20,6 +20,7 @@
  */
 #include "FlexibleDataObserver.h"
 
+#include "MeasurementComparisons.h"
 
 #include <iostream>
 

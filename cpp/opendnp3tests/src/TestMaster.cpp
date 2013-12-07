@@ -22,11 +22,11 @@
 
 #include <openpal/Exception.h>
 
-
 #include <queue>
 
 #include "TestHelpers.h"
 #include "MasterTestObject.h"
+#include "MeasurementComparisons.h"
 
 using namespace opendnp3;
 using namespace std::chrono;
@@ -536,7 +536,7 @@ BOOST_AUTO_TEST_CASE(SolicitedMultiFragResponse)
 
 	t.RespondToMaster("C0 81 00 00 01 02 00 03 03 02");
 	BOOST_REQUIRE(t.mts.DispatchOne()); //disptch measurement callback
-	BOOST_REQUIRE(Binary(false, BQ_RESTART) == t.meas.GetBinary(3));
+	BOOST_REQUIRE(Binary(false, BQ_RESTART) ==  t.meas.GetBinary(3));
 }
 
 BOOST_AUTO_TEST_CASE(EventPoll)

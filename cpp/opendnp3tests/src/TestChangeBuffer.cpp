@@ -23,6 +23,7 @@
 #include <opendnp3/ChangeBuffer.h>
 
 #include "FlexibleDataObserver.h"
+#include "MeasurementComparisons.h"
 
 using namespace opendnp3;
 
@@ -48,9 +49,9 @@ BOOST_AUTO_TEST_CASE(ChangeBufferMarshallsUpdates)
 		Transaction t(&cb);
 		size_t num = cb.FlushUpdates(&fdo);
 		BOOST_REQUIRE_EQUAL(num, 3);
-		BOOST_REQUIRE_EQUAL(fdo.mBinaryMap[0], b);
-		BOOST_REQUIRE_EQUAL(fdo.mAnalogMap[1], a);
-		BOOST_REQUIRE_EQUAL(fdo.mCounterMap[2], c);
+		BOOST_REQUIRE(fdo.mBinaryMap[0] == b);
+		BOOST_REQUIRE(fdo.mAnalogMap[1] == a);
+		BOOST_REQUIRE(fdo.mCounterMap[2] == c);
 	}
 
 }

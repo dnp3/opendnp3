@@ -22,6 +22,7 @@
 #define __DATA_TYPES_H_
 
 #include "BaseDataTypes.h"
+#include "QualityMasks.h"
 #include "MeasurementType.h"
 
 namespace opendnp3
@@ -32,29 +33,40 @@ namespace opendnp3
 	binaries are alarms, mode settings, enabled/disabled flags etc. Think of it as a status
 	LED on a piece of equipment.
 */
-class Binary : public BoolDataPoint
+class Binary : public TypedMeasurement<bool>
 {
 public:
-	Binary(bool aValue, uint8_t aQuality = BQ_RESTART) : BoolDataPoint(BQ_RESTART, BQ_STATE) {
-		SetQuality(aQuality);
-		SetValue(aValue);
-	}
-	Binary() : BoolDataPoint(BQ_RESTART, BQ_STATE) {}
 
-	typedef bool ValueType;
-	typedef BinaryQuality QualityType;
+	Binary() : TypedMeasurement(false, BQ_RESTART) 
+	{}
 
-	// Describes the static data type of the measurement as an enum
+	Binary(bool aValue) : TypedMeasurement(aValue, GetQual(BQ_ONLINE, aValue))
+	{}
+	
+	Binary(bool aValue, uint8_t aQuality) : TypedMeasurement(aValue, GetQual(aQuality, aValue))
+	{}
+
+	Binary(bool aValue, uint8_t aQuality, int64_t aTime) : TypedMeasurement(aValue, GetQual(aQuality, aValue), aTime) 
+	{}
+	
+	typedef BinaryQuality QualityType;	
 	static const MeasurementType MeasEnum = MeasurementType ::BINARY;
+	static const int ONLINE = BQ_ONLINE;	
 
-	static const int ONLINE = BQ_ONLINE;
-
-	operator ValueType() const {
-		return this->GetValue();
+	static Binary From(uint8_t aQuality)
+	{
+		return Binary((aQuality & BQ_STATE) != 0, aQuality);
 	}
-	ValueType operator=(ValueType aValue) {
-		this->SetValue(aValue);
-		return GetValue();
+
+	static Binary From(uint8_t aQuality, uint64_t aTime)
+	{
+		return Binary((aQuality & BQ_STATE) != 0, aQuality, aTime);
+	}	
+
+private:
+	static uint8_t GetQual(uint8_t q, bool aValue)
+	{
+		return (aValue) ? (q | BQ_STATE) : (q & (~BQ_STATE));
 	}
 };
 
@@ -63,30 +75,34 @@ public:
 	used and many masters don't provide any mechanisms for reading these values so their use is
 	strongly discouraged, a Binary should be used instead.
 */
-class ControlStatus : public BoolDataPoint
+class ControlStatus : public TypedMeasurement<bool>
 {
 public:
+	ControlStatus() : TypedMeasurement(false, TQ_RESTART) 
+	{}
 
-	ControlStatus(bool aValue, uint8_t aQuality = TQ_RESTART) : BoolDataPoint(TQ_RESTART, TQ_STATE) {
-		SetValue(aValue);
-		SetQuality(aQuality);
-	}
+	ControlStatus(bool aValue) : TypedMeasurement(aValue, GetQual(TQ_ONLINE, aValue))
+	{}
 
-	ControlStatus() : BoolDataPoint(TQ_RESTART, TQ_STATE) {}
+	ControlStatus(bool aValue, uint8_t aQuality) : TypedMeasurement(aValue, GetQual(aQuality, aValue))
+	{}
 
-	typedef bool ValueType;
+	ControlStatus(bool aValue, uint8_t aQuality, int64_t aTime) : TypedMeasurement(aValue, GetQual(aQuality, aValue), aTime) 
+	{}
+	
 	typedef ControlQuality QualityType;
-
 	static const MeasurementType MeasEnum = MeasurementType::CONTROL_STATUS;
+	static const int ONLINE = TQ_ONLINE;	
 
-	static const int ONLINE = TQ_ONLINE;
-
-	operator ValueType() const {
-		return this->GetValue();
+	static ControlStatus From(uint8_t aQuality)
+	{
+		return ControlStatus((aQuality & TQ_STATE) != 0, aQuality);
 	}
-	ValueType operator=(ValueType aValue) {
-		this->SetValue(aValue);
-		return GetValue();
+
+private:
+	static uint8_t GetQual(uint8_t q, bool aValue)
+	{
+		return (aValue) ? (q | TQ_STATE) : (q & (~TQ_STATE));
 	}
 };
 
@@ -95,61 +111,77 @@ public:
 	Good examples are current, voltage, sensor readouts, etc. Think of a speedometer gauge.
 */
 
-class Analog : public TypedDataPoint<double>
+class Analog : public TypedMeasurement<double>
 {
 public:
-	Analog() : TypedDataPoint<double>(AQ_RESTART) {}
+	Analog() : TypedMeasurement(AQ_RESTART) 
+	{}
 
-	Analog(double aVal, uint8_t aQuality = AQ_RESTART) : TypedDataPoint<double>(AQ_RESTART) {
-		SetValue(aVal);
-		SetQuality(aQuality);
-	}
+	Analog(double aValue) : TypedMeasurement(aValue, AQ_ONLINE) 
+	{}
 
+	Analog(double aValue, uint8_t aQuality) : TypedMeasurement(aValue, aQuality) 
+	{}
 
-	typedef double ValueType;
+	Analog(double aValue, uint8_t aQuality, int64_t aTime) : TypedMeasurement<double>(aValue, aQuality, aTime) 
+	{}
+	
 	typedef AnalogQuality QualityType;
-
 	static const MeasurementType MeasEnum = MeasurementType::ANALOG;
-
 	static const int ONLINE = AQ_ONLINE;
 
-	operator ValueType() const {
-		return this->GetValue();
-	}
-	ValueType operator=(ValueType aValue) {
-		this->SetValue(aValue);
-		return GetValue();
+	static Analog From(double aValue)
+	{
+		return Analog(aValue);
 	}
 
+	static Analog From(double aValue, uint8_t aQuality)
+	{
+		return Analog(aValue, aQuality);
+	}
 
+	static Analog From(double aValue, uint8_t aQuality, int64_t aTime)
+	{
+		return Analog(aValue, aQuality, aTime);
+	}
 };
 
 /**
 	Counters are used for describing generally increasing values (non-negative!). Good examples are
 	total power consumed, max voltage. Think odometer on a car.
 */
-class Counter : public TypedDataPoint<uint32_t>
+class Counter : public TypedMeasurement<uint32_t>
 {
 public:
-	Counter() : TypedDataPoint<uint32_t>(CQ_RESTART) {}
-	Counter(uint32_t aVal, uint8_t aQuality = CQ_RESTART) : TypedDataPoint<uint32_t>(CQ_RESTART) {
-		SetValue(aVal);
-		SetQuality(aQuality);
+
+	static Counter From(uint32_t aValue, uint8_t aQuality)
+	{
+		return Counter(aValue, aQuality);
 	}
 
-	typedef uint8_t ValueType;
+	Counter() : TypedMeasurement(0, CQ_RESTART) {}
+
+	Counter(uint32_t aValue) : TypedMeasurement<uint32_t>(aValue, CQ_ONLINE) 
+	{}
+
+	Counter(uint32_t aValue, uint8_t aQuality) : TypedMeasurement<uint32_t>(aValue, aQuality) 
+	{}
+
+	Counter(uint32_t aValue, uint8_t aQuality, int64_t aTime) : TypedMeasurement<uint32_t>(aValue, aQuality, aTime) 
+	{}
+	
 	typedef CounterQuality QualityType;
-
 	static const int ONLINE = CQ_ONLINE;
+	static const MeasurementType MeasEnum = MeasurementType::COUNTER;	
 
-	static const MeasurementType MeasEnum = MeasurementType::COUNTER;
-
-	operator ValueType() const {
-		return this->GetValue();
+	static Counter From(uint32_t aValue)
+	{
+		return Counter(aValue);
 	}
-	ValueType operator=(ValueType aValue) {
-		this->SetValue(aValue);
-		return GetValue();
+
+	static Counter From(uint32_t aValue, uint8_t aQuality, int64_t aTime)
+	{
+		return Counter(aValue, aQuality, aTime);
 	}
 };
 
@@ -157,28 +189,28 @@ public:
 	Describes the last set value of the setpoint. Like the ControlStatus data type it is not
 	well supportted and its generally better practice to use an explict analog.
 */
-class SetpointStatus : public TypedDataPoint<double>
+class SetpointStatus : public TypedMeasurement<double>
 {
 public:
-	SetpointStatus() : TypedDataPoint<double>(PQ_RESTART) {}
-	SetpointStatus(double aVal, uint8_t aQuality = PQ_RESTART) : TypedDataPoint<double>(PQ_RESTART) {
-		SetValue(aVal);
-		SetQuality(aQuality);
-	}
+	
+	SetpointStatus() : TypedMeasurement<double>(PQ_RESTART) {}
 
-	typedef double ValueType;
+	SetpointStatus(double aValue) : TypedMeasurement<double>(aValue, PQ_ONLINE) 
+	{}
+	
+	SetpointStatus(double aValue, uint8_t aQuality) : TypedMeasurement<double>(aValue, aQuality) 
+	{}
+
+	SetpointStatus(double aValue, uint8_t aQuality, int64_t aTime) : TypedMeasurement<double>(aValue, aQuality, aTime) 
+	{}
+	
 	typedef SetpointQuality QualityType;
-
 	static const int ONLINE = PQ_ONLINE;
-
 	static const MeasurementType MeasEnum = MeasurementType::SETPOINT_STATUS;
 
-	operator ValueType() const {
-		return this->GetValue();
-	}
-	ValueType operator=(ValueType aValue) {
-		this->SetValue(aValue);
-		return GetValue();
+	static SetpointStatus From(double aValue, uint8_t aQuality)
+	{
+		return SetpointStatus(aValue, aQuality);
 	}
 };
 

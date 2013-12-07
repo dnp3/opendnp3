@@ -280,6 +280,7 @@
     <ClInclude Include="src\opendnp3\MasterStackImpl.h" />
     <ClInclude Include="src\opendnp3\MasterStates.h" />
     <ClInclude Include="src\opendnp3\MasterTaskBase.h" />
+    <ClInclude Include="src\opendnp3\MeasurementHelpers.h" />
     <ClInclude Include="src\opendnp3\MultiplexingDataObserver.h" />
     <ClInclude Include="src\opendnp3\ObjectHeader.h" />
     <ClInclude Include="src\opendnp3\ObjectReadIterator.h" />
@@ -379,6 +380,7 @@
     <ClCompile Include="src\opendnp3\IMeasurementHandler.cpp" />
     <ClCompile Include="src\opendnp3\ITimeWriteHandler.cpp" />
     <ClCompile Include="src\opendnp3\MasterScan.cpp" />
+    <ClCompile Include="src\opendnp3\MeasurementHelpers.cpp" />
     <ClCompile Include="src\opendnp3\MeasurementUpdate.cpp" />
     <ClCompile Include="src\opendnp3\objects\Group1.cpp" />
     <ClCompile Include="src\opendnp3\objects\Group10.cpp" />

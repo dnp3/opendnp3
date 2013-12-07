@@ -54,74 +54,46 @@ public:
 	static typename T::DataType ReadQV(const uint8_t* apPos, const T* apObj);
 
 	template <typename T>
-	static typename T::DataType ReadBinaryQV(const uint8_t* apPos, const T* apObj);
-
-	template <typename T>
-	static typename T::DataType ReadBinaryQVT(const uint8_t* apPos, const T* apObj);
-
-	template <typename T>
 	static typename T::DataType ReadQVT(const uint8_t* apPos, const T* apObj);
 };
 
 template <typename T>
 inline typename T::DataType DNPFromStream::ReadQ(const uint8_t* apPos, const T* apObj)
 {
-	typename T::DataType ret;
-	ret.SetQuality(apObj->mFlag.Get(apPos));
-	return ret;
-}
-
-template <typename T>
-inline typename T::DataType DNPFromStream::ReadBinaryQV(const uint8_t* apPos, const T* apObj)
-{
-	typename T::DataType ret;
-	ret.SetQualityValue(apObj->mFlag.Get(apPos));
-	return ret;
-}
-
-template <typename T>
-inline typename T::DataType DNPFromStream::ReadBinaryQVT(const uint8_t* apPos, const T* apObj)
-{
-	typename T::DataType ret;
-	ret.SetQualityValue(apObj->mFlag.Get(apPos));
-	ret.SetTime(apObj->mTime.Get(apPos));
-	return ret;
+	auto flags = apObj->mFlag.Get(apPos);
+	return T::DataType::From(flags);
 }
 
 template <typename T>
 inline typename T::DataType DNPFromStream::ReadQT(const uint8_t* apPos, const T* apObj)
 {
-	typename T::DataType ret;
-	ret.SetQuality(apObj->mFlag.Get(apPos));
-	ret.SetTime(apObj->mTime.Get(apPos));
-	return ret;
+	auto flags = apObj->mFlag.Get(apPos);
+	auto time = apObj->mTime.Get(apPos);
+	return T::DataType::From(flags, time);
 }
 
 template <typename T>
 inline typename T::DataType DNPFromStream::ReadV(const uint8_t* apPos, const T* apObj)
-{
-	typename T::DataType ret;
-	ret.SetValue(apObj->mValue.Get(apPos));
-	return ret;
+{	
+	auto value = apObj->mValue.Get(apPos);
+	return T::DataType::From(value);	
 }
 
 template <typename T>
 inline typename T::DataType DNPFromStream::ReadQV(const uint8_t* apPos, const T* apObj)
 {
-	typename T::DataType ret;
-	ret.SetQuality(apObj->mFlag.Get(apPos));
-	ret.SetValue(apObj->mValue.Get(apPos));
-	return ret;
+	auto flags = apObj->mFlag.Get(apPos);
+	auto value = apObj->mValue.Get(apPos);
+	return T::DataType::From(value, flags);
 }
 
 template <typename T>
 inline typename T::DataType DNPFromStream::ReadQVT(const uint8_t* apPos, const T* apObj)
-{
-	typename T::DataType ret;
-	ret.SetQuality(apObj->mFlag.Get(apPos));
-	ret.SetValue(apObj->mValue.Get(apPos));
-	ret.SetTime(apObj->mTime.Get(apPos));
-	return ret;
+{	
+	auto flags = apObj->mFlag.Get(apPos);
+	auto value = apObj->mValue.Get(apPos);
+	auto time = apObj->mTime.Get(apPos);
+	return T::DataType::From(value, flags, time);
 }
 
 }

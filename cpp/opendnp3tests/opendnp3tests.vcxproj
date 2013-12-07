@@ -205,6 +205,7 @@
     <ClInclude Include="src\LoopbackPhysicalLayerAsync.h" />
     <ClInclude Include="src\LowerLayerToPhysAdapter.h" />
     <ClInclude Include="src\MasterTestObject.h" />
+    <ClInclude Include="src\MeasurementComparisons.h" />
     <ClInclude Include="src\MockAPDUHeaderHandler.h" />
     <ClInclude Include="src\MockAppLayer.h" />
     <ClInclude Include="src\MockAppUser.h" />

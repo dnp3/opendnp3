@@ -21,8 +21,10 @@
 #include <boost/test/unit_test.hpp>
 
 #include "TestHelpers.h"
-
+#include "MeasurementComparisons.h"
 #include "DatabaseTestObject.h"
+
+#include <opendnp3/MeasurementHelpers.h>
 
 #include <limits>
 
@@ -34,10 +36,10 @@ template <class T>
 void TestDataEvent(bool aIsEvent, const T& val1, const T& val2, double aDeadband)
 {
 	if(aIsEvent) {
-		BOOST_REQUIRE(val1.ShouldGenerateEvent(val2, aDeadband, val1.GetValue()));
+		BOOST_REQUIRE(IsEvent(val1, val2, aDeadband));
 	}
 	else {
-		BOOST_REQUIRE_FALSE(val1.ShouldGenerateEvent(val2, aDeadband, val1.GetValue()));
+		BOOST_REQUIRE_FALSE(IsEvent(val1, val2, aDeadband));
 	}
 }
 
@@ -49,7 +51,7 @@ void TestBufferForEvent(bool aIsEvent, const T& arNewVal, DatabaseTestObject& te
 
 	if(aIsEvent) {
 		BOOST_REQUIRE_EQUAL(arQueue.size(), 1);
-		BOOST_REQUIRE_EQUAL(arNewVal, arQueue.front().mValue);
+		BOOST_REQUIRE(arNewVal == arQueue.front().mValue);
 		BOOST_REQUIRE_EQUAL(0, arQueue.front().mIndex);
 		arQueue.pop_front();
 	}
@@ -58,7 +60,7 @@ void TestBufferForEvent(bool aIsEvent, const T& arNewVal, DatabaseTestObject& te
 	}
 }
 
-BOOST_AUTO_TEST_SUITE(TestDatabase)
+BOOST_AUTO_TEST_SUITE(DatabaseTestSuite)
 
 // tests for the various analog event conditions
 BOOST_AUTO_TEST_CASE(AnalogEventZeroDeadband)
@@ -87,7 +89,7 @@ BOOST_AUTO_TEST_CASE(BinaryNoChange)
 	DatabaseTestObject t;
 	t.db.Configure(MeasurementType::BINARY, 1);
 	t.db.SetClass(MeasurementType::BINARY, 0, PC_CLASS_1);
-	TestBufferForEvent(false, Binary(false), t, t.buffer.mBinaryEvents);
+	TestBufferForEvent(false, Binary(false, BQ_RESTART), t, t.buffer.mBinaryEvents);
 }
 
 BOOST_AUTO_TEST_CASE(AnalogNoChange)
@@ -95,7 +97,7 @@ BOOST_AUTO_TEST_CASE(AnalogNoChange)
 	DatabaseTestObject t;
 	t.db.Configure(MeasurementType::ANALOG, 1);
 	t.db.SetClass(MeasurementType::ANALOG, 0, PC_CLASS_1);
-	TestBufferForEvent(false, Analog(0), t, t.buffer.mAnalogEvents);
+	TestBufferForEvent(false, Analog(0, AQ_RESTART), t, t.buffer.mAnalogEvents);
 }
 
 BOOST_AUTO_TEST_CASE(CounterNoChange)
@@ -103,7 +105,7 @@ BOOST_AUTO_TEST_CASE(CounterNoChange)
 	DatabaseTestObject t;
 	t.db.Configure(MeasurementType::COUNTER, 1);
 	t.db.SetClass(MeasurementType::COUNTER, 0, PC_CLASS_1);
-	TestBufferForEvent(false, Counter(0), t, t.buffer.mCounterEvents);
+	TestBufferForEvent(false, Counter(0, CQ_RESTART), t, t.buffer.mCounterEvents);
 }
 
 // Next 3 tests prove that a change detection will forward to the buffer
@@ -139,11 +141,11 @@ BOOST_AUTO_TEST_CASE(AnalogLastReportedChange)
 	t.db.SetClass(MeasurementType::ANALOG, 0, PC_CLASS_1);
 	t.db.SetDeadband(MeasurementType::ANALOG, 0, 5); //value must change by more than 5 before being reported
 
-	TestBufferForEvent(false, Analog(-2), t, t.buffer.mAnalogEvents);
-	TestBufferForEvent(false, Analog(5), t, t.buffer.mAnalogEvents);
-	TestBufferForEvent(true, Analog(6), t, t.buffer.mAnalogEvents); //change by 6, so 6 should get recorded
-	TestBufferForEvent(false, Analog(1), t, t.buffer.mAnalogEvents);
-	TestBufferForEvent(true, Analog(-1), t, t.buffer.mAnalogEvents);
+	TestBufferForEvent(false, Analog(-2, AQ_RESTART), t, t.buffer.mAnalogEvents);
+	TestBufferForEvent(false, Analog(5, AQ_RESTART), t, t.buffer.mAnalogEvents);
+	TestBufferForEvent(true, Analog(6, AQ_RESTART), t, t.buffer.mAnalogEvents); //change by 6, so 6 should get recorded
+	TestBufferForEvent(false, Analog(1, AQ_RESTART), t, t.buffer.mAnalogEvents);
+	TestBufferForEvent(true, Analog(-1, AQ_RESTART), t, t.buffer.mAnalogEvents);
 }
 
 BOOST_AUTO_TEST_CASE(CounterLastReportedChange)
@@ -153,11 +155,11 @@ BOOST_AUTO_TEST_CASE(CounterLastReportedChange)
 	t.db.SetClass(MeasurementType::COUNTER, 0, PC_CLASS_1);
 	t.db.SetDeadband(MeasurementType::COUNTER, 0, 5); //value must change by more than 5 before being reported
 
-	TestBufferForEvent(false, Counter(1), t, t.buffer.mCounterEvents);
-	TestBufferForEvent(false, Counter(5), t, t.buffer.mCounterEvents);
-	TestBufferForEvent(true, Counter(6), t, t.buffer.mCounterEvents); //change by 6, so 6 should get recorded
-	TestBufferForEvent(false, Counter(1), t, t.buffer.mCounterEvents);
-	TestBufferForEvent(true, Counter(0), t, t.buffer.mCounterEvents);
+	TestBufferForEvent(false, Counter(1, CQ_RESTART), t, t.buffer.mCounterEvents);
+	TestBufferForEvent(false, Counter(5, CQ_RESTART), t, t.buffer.mCounterEvents);
+	TestBufferForEvent(true, Counter(6, CQ_RESTART), t, t.buffer.mCounterEvents); //change by 6, so 6 should get recorded
+	TestBufferForEvent(false, Counter(1, CQ_RESTART), t, t.buffer.mCounterEvents);
+	TestBufferForEvent(true, Counter(0, CQ_RESTART), t, t.buffer.mCounterEvents);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

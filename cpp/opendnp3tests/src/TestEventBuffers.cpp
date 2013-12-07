@@ -33,6 +33,7 @@ using namespace std;
 using namespace opendnp3;
 
 BOOST_AUTO_TEST_SUITE(SingleEventBufferSuite)
+
 BOOST_AUTO_TEST_CASE(SingleIndexSorting)
 {
 	SingleEventBuffer<AnalogEvent> b(3);

@@ -156,23 +156,15 @@ void ResponseLoader::Read(HeaderReadIterator& arIter, StreamObject<T>* apObj)
 		/* Make sure the value has time information */
 		if (apObj->UseCTO()) {
 			value.SetTime(t + value.GetTime());
-		}
+		}	
 
-		/* Make sure the value has quality information */
-		if (!apObj->HasQuality()) {
-			value.SetQuality(T::ONLINE);
-		}
-
-		mUpdate.Add(value, index);
-		
+		mUpdate.Add(value, index);		
 	}
 }
 
 template <class T>
 void ResponseLoader::ReadBitfield(HeaderReadIterator& arIter)
 {
-	Binary b; b.SetQuality(Binary::ONLINE);
-
 	ObjectReadIterator obj = arIter.BeginRead();
 	LOG_BLOCK(openpal::LogLevel::Interpret,
 	          "Converting " << obj.Count() << " " << T::Inst()->Name() << " "
@@ -180,7 +172,7 @@ void ResponseLoader::ReadBitfield(HeaderReadIterator& arIter)
 
 	for (; !obj.IsEnd(); ++obj) {
 		bool val = BitfieldObject::StaticRead(*obj, obj->Start(), obj->Index());
-		b.SetValue(val);
+		Binary b(val);		
 		mUpdate.Add(b, obj->Index());
 	}
 }
