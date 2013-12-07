@@ -42,6 +42,12 @@ public:
 
 	Binary(bool aValue) : TypedMeasurement(aValue, GetQual(BQ_ONLINE, aValue))
 	{}
+
+	Binary(uint8_t aQuality) : TypedMeasurement((aQuality & BQ_STATE) != 0, aQuality)
+	{}
+
+	Binary(uint8_t aQuality, int64_t aTime) : TypedMeasurement((aQuality & BQ_STATE) != 0, aQuality, aTime)
+	{}
 	
 	Binary(bool aValue, uint8_t aQuality) : TypedMeasurement(aValue, GetQual(aQuality, aValue))
 	{}
@@ -51,17 +57,7 @@ public:
 	
 	typedef BinaryQuality QualityType;	
 	static const MeasurementType MeasEnum = MeasurementType ::BINARY;
-	static const int ONLINE = BQ_ONLINE;	
-
-	static Binary From(uint8_t aQuality)
-	{
-		return Binary((aQuality & BQ_STATE) != 0, aQuality);
-	}
-
-	static Binary From(uint8_t aQuality, uint64_t aTime)
-	{
-		return Binary((aQuality & BQ_STATE) != 0, aQuality, aTime);
-	}	
+	static const int ONLINE = BQ_ONLINE;		
 
 private:
 	static uint8_t GetQual(uint8_t q, bool aValue)
@@ -84,6 +80,9 @@ public:
 	ControlStatus(bool aValue) : TypedMeasurement(aValue, GetQual(TQ_ONLINE, aValue))
 	{}
 
+	ControlStatus(uint8_t aQuality) : TypedMeasurement((aQuality & TQ_STATE) != 0, aQuality)
+	{}
+
 	ControlStatus(bool aValue, uint8_t aQuality) : TypedMeasurement(aValue, GetQual(aQuality, aValue))
 	{}
 
@@ -92,14 +91,10 @@ public:
 	
 	typedef ControlQuality QualityType;
 	static const MeasurementType MeasEnum = MeasurementType::CONTROL_STATUS;
-	static const int ONLINE = TQ_ONLINE;	
-
-	static ControlStatus From(uint8_t aQuality)
-	{
-		return ControlStatus((aQuality & TQ_STATE) != 0, aQuality);
-	}
+	static const int ONLINE = TQ_ONLINE;		
 
 private:
+
 	static uint8_t GetQual(uint8_t q, bool aValue)
 	{
 		return (aValue) ? (q | TQ_STATE) : (q & (~TQ_STATE));
@@ -128,22 +123,7 @@ public:
 	
 	typedef AnalogQuality QualityType;
 	static const MeasurementType MeasEnum = MeasurementType::ANALOG;
-	static const int ONLINE = AQ_ONLINE;
-
-	static Analog From(double aValue)
-	{
-		return Analog(aValue);
-	}
-
-	static Analog From(double aValue, uint8_t aQuality)
-	{
-		return Analog(aValue, aQuality);
-	}
-
-	static Analog From(double aValue, uint8_t aQuality, int64_t aTime)
-	{
-		return Analog(aValue, aQuality, aTime);
-	}
+	static const int ONLINE = AQ_ONLINE;	
 };
 
 /**
@@ -153,11 +133,6 @@ public:
 class Counter : public TypedMeasurement<uint32_t>
 {
 public:
-
-	static Counter From(uint32_t aValue, uint8_t aQuality)
-	{
-		return Counter(aValue, aQuality);
-	}
 
 	Counter() : TypedMeasurement(0, CQ_RESTART) {}
 
@@ -173,16 +148,6 @@ public:
 	typedef CounterQuality QualityType;
 	static const int ONLINE = CQ_ONLINE;
 	static const MeasurementType MeasEnum = MeasurementType::COUNTER;	
-
-	static Counter From(uint32_t aValue)
-	{
-		return Counter(aValue);
-	}
-
-	static Counter From(uint32_t aValue, uint8_t aQuality, int64_t aTime)
-	{
-		return Counter(aValue, aQuality, aTime);
-	}
 };
 
 /**
@@ -206,12 +171,7 @@ public:
 	
 	typedef SetpointQuality QualityType;
 	static const int ONLINE = PQ_ONLINE;
-	static const MeasurementType MeasEnum = MeasurementType::SETPOINT_STATUS;
-
-	static SetpointStatus From(double aValue, uint8_t aQuality)
-	{
-		return SetpointStatus(aValue, aQuality);
-	}
+	static const MeasurementType MeasEnum = MeasurementType::SETPOINT_STATUS;	
 };
 
 }
