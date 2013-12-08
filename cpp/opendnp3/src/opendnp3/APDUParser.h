@@ -23,6 +23,7 @@
 
 #include <vector>
 #include <functional>
+#include <limits>
 
 #include <openpal/BufferWrapper.h>
 
@@ -77,7 +78,9 @@ APDUParser::Result APDUParser::ParseRange(openpal::ReadOnlyBuffer& arBuffer, IAP
 		if(start > stop) return BAD_START_STOP;
 		else {
 			CountType count = static_cast<CountType>(stop) - static_cast<CountType>(start) + 1;
-			if(count > std::numeric_limits<size_t>::max()) return UNREASONABLE_OBJECT_COUNT;
+			// 65535 is a reasonable upper bound for object counts. This
+			// will ensure that size calculations never overflow with 2^32 sizes
+			if(count > std::numeric_limits<uint16_t>::max()) return UNREASONABLE_OBJECT_COUNT;
 			else {
 				Range range(start, stop, static_cast<size_t>(count));
 				return ParseRange(arBuffer, output, gv, range);
