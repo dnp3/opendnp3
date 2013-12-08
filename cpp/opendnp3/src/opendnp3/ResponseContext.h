@@ -206,13 +206,13 @@ private:
 	// Static write functions
 
 	template <class T>
-	void RecordStaticObjects(StreamObject<typename T::MeasType>* apObject, const HeaderReadIterator& arIter);
+	void RecordStaticObjects(StreamObject<T>* apObject, const HeaderReadIterator& arIter);
 
 	template <class T>
-	void RecordStaticObjectsByRange(StreamObject<typename T::MeasType>* apObject, size_t aStart, size_t aStop);
+	void RecordStaticObjectsByRange(StreamObject<T>* apObject, size_t aStart, size_t aStop);
 
 	template <class T>
-	bool WriteStaticObjects(StreamObject<typename T::MeasType>* apObject, typename StaticIter<T>::Type aStart, typename StaticIter<T>::Type aStop, ResponseKey aKey, APDU& arAPDU);
+	bool WriteStaticObjects(StreamObject<T>* apObject, typename StaticIter<T>::Type aStart, typename StaticIter<T>::Type aStop, ResponseKey aKey, APDU& arAPDU);
 };
 
 template <class T>
@@ -229,9 +229,9 @@ size_t ResponseContext::SelectEvents(PointClass aClass, const StreamObject<T>* a
 }
 
 template <class T>
-void ResponseContext::RecordStaticObjects(StreamObject<typename T::MeasType>* apObject, const HeaderReadIterator& arIter)
+void ResponseContext::RecordStaticObjects(StreamObject<T>* apObject, const HeaderReadIterator& arIter)
 {
-	size_t num = mpDB->NumType(T::MeasType::MeasEnum);
+	size_t num = mpDB->NumType(T::MeasEnum);
 
 	//figure out what type of read request this is
 	switch(arIter->GetHeaderType()) {
@@ -278,7 +278,7 @@ void ResponseContext::RecordStaticObjects(StreamObject<typename T::MeasType>* ap
 }
 
 template <class T>
-void ResponseContext::RecordStaticObjectsByRange(StreamObject<typename T::MeasType>* apObject, size_t aStart, size_t aStop)
+void ResponseContext::RecordStaticObjectsByRange(StreamObject<T>* apObject, size_t aStart, size_t aStop)
 {
 	typename StaticIter<T>::Type first;
 	typename StaticIter<T>::Type last;
@@ -288,13 +288,12 @@ void ResponseContext::RecordStaticObjectsByRange(StreamObject<typename T::MeasTy
 	ResponseKey key(RT_STATIC, this->mStaticWriteMap.size());
 	WriteFunction func = [ = ](APDU & arAPDU) {
 		return this->WriteStaticObjects<T>(apObject, first, last, key, arAPDU);
-	};
-	//std::bind(&ResponseContext::WriteStaticObjects<T>, this, apObject, std::ref(first), std::ref(last), key, std::placeholders::_1);
+	};	
 	this->mStaticWriteMap[key] = func;
 }
 
 template <class T>
-bool ResponseContext::WriteStaticObjects(StreamObject<typename T::MeasType>* apObject, typename StaticIter<T>::Type aStart, typename StaticIter<T>::Type aStop, ResponseKey aKey, APDU& arAPDU)
+bool ResponseContext::WriteStaticObjects(StreamObject<T>* apObject, typename StaticIter<T>::Type aStart, typename StaticIter<T>::Type aStop, ResponseKey aKey, APDU& arAPDU)
 {
 	size_t start = aStart->index;
 	size_t stop = aStop->index;

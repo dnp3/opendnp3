@@ -47,9 +47,7 @@ class Event : public IndexedValue<T>
 	Event() : clazz(PC_CLASS_0)
 	{}
 	
-	PointClass clazz;	// class of the point (PC_CLASS<0-3>)
-
-	//typedef T MeasType;
+	PointClass clazz;	// class of the point (PC_CLASS<0-3>)	
 };
 
 /**
@@ -65,17 +63,15 @@ struct PointInfo : public Event<T> {
 	{}
 
 	PointInfo() : deadband(0)
-	{}
-
-	typedef T MeasType;
+	{}	
 
 	double deadband;	// deadband associated with measurement (optional)
 	T lastEvent;		// the last value that was reported	
 };
 
-template <class DataInfoType>
+template <class T>
 struct StaticIter {
-	typedef typename std::vector< DataInfoType >::const_iterator Type;
+	typedef typename std::vector<PointInfo<T>>::const_iterator Type;
 };
 
 typedef PointInfo<Binary>				BinaryInfo;
@@ -85,11 +81,11 @@ typedef PointInfo<ControlStatus>		ControlStatusInfo;
 typedef PointInfo<SetpointStatus>		SetpointStatusInfo;
 
 
-typedef StaticIter<BinaryInfo>::Type			BinaryIterator;
-typedef StaticIter<AnalogInfo>::Type			AnalogIterator;
-typedef StaticIter<CounterInfo>::Type			CounterIterator;
-typedef StaticIter<ControlStatusInfo>::Type		ControlIterator;
-typedef StaticIter<SetpointStatusInfo>::Type	SetpointIterator;
+typedef StaticIter<Binary>::Type			BinaryIterator;
+typedef StaticIter<Analog>::Type			AnalogIterator;
+typedef StaticIter<Counter>::Type			CounterIterator;
+typedef StaticIter<ControlStatus>::Type		ControlIterator;
+typedef StaticIter<SetpointStatus>::Type	SetpointIterator;
 
 } //end namespace
 
