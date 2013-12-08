@@ -194,7 +194,7 @@ void Database::_Update(const Binary& arPoint, size_t aIndex)
 {
 	if(UpdateValue<Binary>(mBinaryVec, arPoint, aIndex)) {
 		LOG_BLOCK(LogLevel::Debug, "Binary Change: " << ToString(arPoint) << " Index: " << aIndex);
-		BinaryInfo& v = mBinaryVec[aIndex];
+		auto& v = mBinaryVec[aIndex];
 		if(mpEventBuffer) mpEventBuffer->Update(v.value, v.clazz, aIndex);
 	}
 }
@@ -204,7 +204,7 @@ void Database::_Update(const Analog& arPoint, size_t aIndex)
 	if(UpdateValue<Analog>(mAnalogVec, arPoint, aIndex)) {
 		LOG_BLOCK(LogLevel::Debug, "Analog Change: " << ToString(arPoint) << " Index: " << aIndex);
 		mAnalogVec[aIndex].lastEvent = mAnalogVec[aIndex].value;
-		AnalogInfo& v = mAnalogVec[aIndex];
+		auto& v = mAnalogVec[aIndex];
 		if(mpEventBuffer) mpEventBuffer->Update(v.value, v.clazz, aIndex);
 	}
 }
@@ -214,7 +214,7 @@ void Database::_Update(const Counter& arPoint, size_t aIndex)
 	if(UpdateValue<Counter>(mCounterVec, arPoint, aIndex)) {
 		LOG_BLOCK(LogLevel::Debug, "Counter Change: " << ToString(arPoint) << " Index: " << aIndex);
 		mCounterVec[aIndex].lastEvent = mCounterVec[aIndex].value;
-		CounterInfo& v = mCounterVec[aIndex];
+		auto& v = mCounterVec[aIndex];
 		if(mpEventBuffer) mpEventBuffer->Update(v.value, v.clazz, aIndex);
 	}
 }

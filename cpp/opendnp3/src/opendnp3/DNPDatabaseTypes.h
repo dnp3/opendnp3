@@ -74,19 +74,6 @@ struct StaticIterator {
 	typedef typename std::vector<PointInfo<T>>::const_iterator Type;
 };
 
-typedef PointInfo<Binary>				BinaryInfo;
-typedef PointInfo<Analog>				AnalogInfo;
-typedef PointInfo<Counter>				CounterInfo;
-typedef PointInfo<ControlStatus>		ControlStatusInfo;
-typedef PointInfo<SetpointStatus>		SetpointStatusInfo;
-
-
-typedef StaticIterator<Binary>::Type			BinaryIterator;
-typedef StaticIterator<Analog>::Type			AnalogIterator;
-typedef StaticIterator<Counter>::Type			CounterIterator;
-typedef StaticIterator<ControlStatus>::Type		ControlIterator;
-typedef StaticIterator<SetpointStatus>::Type	SetpointIterator;
-
 } //end namespace
 
 /* vim: set ts=4 sw=4: */

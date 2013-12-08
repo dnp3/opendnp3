@@ -27,7 +27,6 @@
 #include <opendnp3/DNPConstants.h>
 #include <opendnp3/IDataObserver.h>
 
-
 #include <openpal/Loggable.h>
 
 #include <set>
@@ -73,19 +72,19 @@ public:
 
 	/* Functions for obtaining iterators */
 
-	void Begin(BinaryIterator& arIter)		{
+	void Begin(StaticIterator<Binary>::Type& arIter)		{
 		arIter = mBinaryVec.begin();
 	}
-	void Begin(AnalogIterator& arIter)		{
+	void Begin(StaticIterator<Analog>::Type& arIter)		{
 		arIter = mAnalogVec.begin();
 	}
-	void Begin(CounterIterator& arIter)		{
+	void Begin(StaticIterator<Counter>::Type& arIter)		{
 		arIter = mCounterVec.begin();
 	}
-	void Begin(ControlIterator& arIter)		{
+	void Begin(StaticIterator<ControlStatus>::Type& arIter)		{
 		arIter = mControlStatusVec.begin();
 	}
-	void Begin(SetpointIterator& arIter)	{
+	void Begin(StaticIterator<SetpointStatus>::Type& arIter)	{
 		arIter = mSetpointStatusVec.begin();
 	}
 

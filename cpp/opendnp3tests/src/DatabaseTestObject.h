@@ -34,24 +34,24 @@ public:
 
 	virtual ~MockEventBuffer() {}
 
-	void Update(const Binary& arEvent, PointClass aClass, size_t aIndex) {
-		BinaryInfo v(arEvent, aClass, aIndex);
+	void Update(const Binary& aEvent, PointClass aClass, size_t aIndex) {
+		PointInfo<Binary> v(aEvent, aClass, aIndex);
 		mBinaryEvents.push_back(v);
 	}
 
-	void Update(const Analog& arEvent, PointClass aClass, size_t aIndex) {
-		AnalogInfo v(arEvent, aClass, aIndex);
+	void Update(const Analog& aEvent, PointClass aClass, size_t aIndex) {
+		PointInfo<Analog> v(aEvent, aClass, aIndex);
 		mAnalogEvents.push_back(v);
 	}
 
-	void Update(const Counter& arEvent, PointClass aClass, size_t aIndex) {
-		CounterInfo v(arEvent, aClass, aIndex);
+	void Update(const Counter& aEvent, PointClass aClass, size_t aIndex) {
+		PointInfo<Counter> v(aEvent, aClass, aIndex);
 		mCounterEvents.push_back(v);
 	}	
 
-	std::deque<BinaryInfo> mBinaryEvents;
-	std::deque<AnalogInfo> mAnalogEvents;
-	std::deque<CounterInfo> mCounterEvents;
+	std::deque<PointInfo<Binary>> mBinaryEvents;
+	std::deque<PointInfo<Analog>> mAnalogEvents;
+	std::deque<PointInfo<Counter>> mCounterEvents;
 };
 
 class DatabaseTestObject
