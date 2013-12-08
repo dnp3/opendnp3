@@ -34,13 +34,13 @@ namespace opendnp3
 /**
  * Record of an event that includes value, index, and class
  */
-template<typename T>
+template <typename T>
 class Event : public IndexedValue<T>
 {
 	public:
 
 	 Event(const T& arValue, uint32_t aIndex, PointClass aClass) :
-		IndexedValue(arValue, aIndex),		
+		IndexedValue<T>(arValue, aIndex),		
 		clazz(aClass)
 	{}
 
