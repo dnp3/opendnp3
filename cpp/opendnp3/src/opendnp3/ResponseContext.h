@@ -212,7 +212,7 @@ private:
 	void RecordStaticObjectsByRange(StreamObject<T>* apObject, size_t aStart, size_t aStop);
 
 	template <class T>
-	bool WriteStaticObjects(StreamObject<T>* apObject, typename StaticIter<T>::Type aStart, typename StaticIter<T>::Type aStop, ResponseKey aKey, APDU& arAPDU);
+	bool WriteStaticObjects(StreamObject<T>* apObject, typename StaticIterator<T>::Type aStart, typename StaticIterator<T>::Type aStop, ResponseKey aKey, APDU& arAPDU);
 };
 
 template <class T>
@@ -280,8 +280,8 @@ void ResponseContext::RecordStaticObjects(StreamObject<T>* apObject, const Heade
 template <class T>
 void ResponseContext::RecordStaticObjectsByRange(StreamObject<T>* apObject, size_t aStart, size_t aStop)
 {
-	typename StaticIter<T>::Type first;
-	typename StaticIter<T>::Type last;
+	typename StaticIterator<T>::Type first;
+	typename StaticIterator<T>::Type last;
 	mpDB->Begin(first);
 	last = first + aStop;
 	first = first + aStart;
@@ -293,7 +293,7 @@ void ResponseContext::RecordStaticObjectsByRange(StreamObject<T>* apObject, size
 }
 
 template <class T>
-bool ResponseContext::WriteStaticObjects(StreamObject<T>* apObject, typename StaticIter<T>::Type aStart, typename StaticIter<T>::Type aStop, ResponseKey aKey, APDU& arAPDU)
+bool ResponseContext::WriteStaticObjects(StreamObject<T>* apObject, typename StaticIterator<T>::Type aStart, typename StaticIterator<T>::Type aStop, ResponseKey aKey, APDU& arAPDU)
 {
 	size_t start = aStart->index;
 	size_t stop = aStop->index;

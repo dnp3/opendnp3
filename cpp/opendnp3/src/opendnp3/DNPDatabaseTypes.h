@@ -70,7 +70,7 @@ struct PointInfo : public Event<T> {
 };
 
 template <class T>
-struct StaticIter {
+struct StaticIterator {
 	typedef typename std::vector<PointInfo<T>>::const_iterator Type;
 };
 
@@ -81,11 +81,11 @@ typedef PointInfo<ControlStatus>		ControlStatusInfo;
 typedef PointInfo<SetpointStatus>		SetpointStatusInfo;
 
 
-typedef StaticIter<Binary>::Type			BinaryIterator;
-typedef StaticIter<Analog>::Type			AnalogIterator;
-typedef StaticIter<Counter>::Type			CounterIterator;
-typedef StaticIter<ControlStatus>::Type		ControlIterator;
-typedef StaticIter<SetpointStatus>::Type	SetpointIterator;
+typedef StaticIterator<Binary>::Type			BinaryIterator;
+typedef StaticIterator<Analog>::Type			AnalogIterator;
+typedef StaticIterator<Counter>::Type			CounterIterator;
+typedef StaticIterator<ControlStatus>::Type		ControlIterator;
+typedef StaticIterator<SetpointStatus>::Type	SetpointIterator;
 
 } //end namespace
 
