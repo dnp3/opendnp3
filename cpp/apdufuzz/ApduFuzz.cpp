@@ -95,17 +95,26 @@ int main(int argc, char* argv[])
 		auto pThread = new std::thread([&]() { f.Run(); });
 		threads.push_back(pThread);
 	}
-	
-	cout << "running" << endl;
 
-	for(auto pThread: threads) pThread->join();	
+	for(auto pThread: threads) pThread->join();
+	for(auto pThread: threads) delete pThread;
 
 	ResultSet rs;
 	for(auto& f: fuzzers) rs.Merge(f.results);
 
-	cout << "complete" << endl;
+	size_t expected = iterations * concurrency;
+	size_t sum = rs.Sum();
 
-	for(auto pThread: threads) delete pThread;
+	cout << "complete:  [ " << sum << " / " << expected << " ] - " << (expected == sum) << endl;
+	cout << endl;	
+	cout << "NotEnoughDataForHeader: " << rs.numNotEnoughDataForHeader << endl;
+	cout << "NotEnoughDataForRange: " << rs.numNotEnoughDataForRange << endl;
+	cout << "NotEnoughDataForObjects: " << rs.numNotEnoughDataForObjects << endl;
+	cout << "UnReasonableObjectCount: " << rs.numUnReasonableObjectCount << endl;
+	cout << "UnknownObject: " << rs.numUnknownObject << endl;
+	cout << "UnknownQualifier: " << rs.numUnknownQualifier << endl;
+	cout << "IllegalObjectQualifier: " << rs.numIllegalObjectQualifier << endl;
+	cout << "BadStartStop: " << rs.numBadStartStop << endl;
 
 	return 0;
 }

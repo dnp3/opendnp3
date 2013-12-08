@@ -31,6 +31,7 @@ cpp/demos/INSTALL
 outstationdemo
 masterdemo
 dnp3test
+apdufuzz
 *~
 *.dirstamp
 

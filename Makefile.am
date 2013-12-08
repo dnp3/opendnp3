@@ -13,7 +13,7 @@ OPENDNP3_INCLUDE = $(top_srcdir)/cpp/opendnp3/include
 ASIODNP3_INCLUDE = $(top_srcdir)/cpp/asiodnp3/include
 OPENDNP3_SRCS = $(top_srcdir)/cpp/opendnp3/src
 
-bin_PROGRAMS = masterdemo outstationdemo
+bin_PROGRAMS = masterdemo outstationdemo apdufuzz
 
 lib_LTLIBRARIES = libopenpal.la libasiopal.la libopendnp3.la
 
@@ -287,6 +287,11 @@ outstationdemo_CXXFLAGS = -I$(OPENPAL_INCLUDE) -I$(ASIOPAL_INCLUDE) -I $(OPENDNP
 outstationdemo_LDFLAGS = $(BOOST_LDFLAGS) -pthread
 outstationdemo_LDADD = libopenpal.la libasiopal.la libopendnp3.la $(CORE_BOOST_LIBS)
 outstationdemo_SOURCES = cpp/outstationdemo/DemoMain.cpp
+
+apdufuzz_CXXFLAGS = -I$(OPENPAL_INCLUDE) -I$(OPENDNP3_INCLUDE) -I$(OPENDNP3_SRCS) 
+apdufuzz_LDFLAGS = -pthread
+apdufuzz_LDADD = libopenpal.la libopendnp3.la
+apdufuzz_SOURCES = cpp/apdufuzz/ApduFuzz.cpp
 
 if WANT_JAVA
 

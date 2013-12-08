@@ -62,6 +62,19 @@ class ResultSet
 			numBadStartStop += rhs.numBadStartStop;
 		}
 
+		size_t Sum()
+		{
+			return numOK +
+			numNotEnoughDataForHeader +
+			numNotEnoughDataForRange +
+			numNotEnoughDataForObjects +
+			numUnReasonableObjectCount +
+			numUnknownObject +
+			numUnknownQualifier +
+			numIllegalObjectQualifier +
+			numBadStartStop;
+		}
+
 
 		void Update(APDUParser::Result result)
 		{
