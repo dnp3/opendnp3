@@ -50,7 +50,7 @@ void TestSimple(const std::string& hex, APDUParser::Result expected, size_t numC
 	TestComplex(hex, expected, numCalls, [](MockApduHeaderHandler&) {});
 }
 
-BOOST_AUTO_TEST_SUITE(APDUParsingSuite)
+BOOST_AUTO_TEST_SUITE(APDUParsingTestSuite)
 
 BOOST_AUTO_TEST_CASE(EmptyStringParsesOK)
 {

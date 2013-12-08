@@ -24,6 +24,8 @@
 #include <functional>
 #include <assert.h>
 
+#include <openpal/BufferWrapper.h>
+
 #include "BufferRange.h"
 
 namespace opendnp3
@@ -34,9 +36,9 @@ class LazyIterator : private BufferRange, public std::iterator<std::output_itera
 {						
 	public:
 
-	static LazyIterator LazyIterator::End()
+	static LazyIterator End()
 	{
-		return LazyIterator(ReadOnlyBuffer(nullptr, 0), 0);
+		return LazyIterator(openpal::ReadOnlyBuffer(nullptr, 0), 0);
 	}
 
 	typedef std::function<T (openpal::ReadOnlyBuffer&)> ReadFunction;

@@ -27,8 +27,10 @@
 
 #include <openpal/BufferWrapper.h>
 
-#include "IAPDUHeaderHandler.h"
 #include "Range.h"
+#include "IAPDUHeaderHandler.h"
+#include "LazyFixedSizeCollection.h"
+#include "ObjectDescriptors.h"
 
 namespace opendnp3
 {
@@ -96,7 +98,7 @@ APDUParser::Result APDUParser::ParseRangeFixedSize(openpal::ReadOnlyBuffer& buff
 	auto size = range.count * Descriptor::Underlying::SIZE;
 	if(buffer.Size() < size) return APDUParser::Result::NOT_ENOUGH_DATA_FOR_OBJECTS;
 	else {
-		LazyFixedSizeCollection<Descriptor::Target> collection(buffer, range.count, Compose<Descriptor>::Read);
+		LazyFixedSizeCollection<typename Descriptor::Target> collection(buffer, range.count, Compose<Descriptor>::Read);
 		output.OnStaticData(range.start, collection);
 		buffer.Advance(size);
 		return APDUParser::Result::OK;

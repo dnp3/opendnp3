@@ -35,7 +35,7 @@ namespace opendnp3
 	{
 		static typename Desc::Target Read(openpal::ReadOnlyBuffer& buff)
 		{
-			auto a = typename Desc::Underlying::Read(buff);
+			typename Desc::Underlying a = Desc::Underlying::Read(buff);
 			return Desc::Convert(a);
 		}		
 	};
