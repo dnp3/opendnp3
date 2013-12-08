@@ -18,33 +18,39 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __DATABASE_INTERFACES_H_
-#define __DATABASE_INTERFACES_H_
+#ifndef __POINT_INFO_H_
+#define __POINT_INFO_H_
 
-#include "DNPDatabaseTypes.h"
+#include "Event.h"
 
-
+#include <opendnp3/IndexedValue.h>
 
 namespace opendnp3
 {
 
-// @section desc Used by the database
-class IEventBuffer
-{
-public:
+/**
+ * Structure for holding static data information. Adds a deadband and a last
+ * event value to the base class.
+ */
+template<typename T>
+struct PointInfo : public Event<T> {
+	
+	PointInfo(const T& aValue, uint32_t aIndex, PointClass aClass) :
+		Event<T>(aValue, aIndex, aClass),
+		deadband(0)
+	{}
 
-	virtual ~IEventBuffer() {}
+	PointInfo() : deadband(0)
+	{}	
 
-	virtual void Update(const Binary& arEvent, PointClass aClass, size_t aIndex) = 0;
-
-	virtual void Update(const Analog& arEvent, PointClass aClass, size_t aIndex) = 0;
-
-	virtual void Update(const Counter& arEvent, PointClass aClass, size_t aIndex) = 0;
-
+	double deadband;	// deadband associated with measurement (optional)
+	T lastEvent;		// the last value that was reported	
 };
 
-}
 
+} //end namespace
+
+/* vim: set ts=4 sw=4: */
 
 #endif
 

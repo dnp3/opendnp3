@@ -31,7 +31,6 @@
 #include "APDU.h"
 #include "Database.h"
 #include "SlaveEventBuffer.h"
-#include "DNPDatabaseTypes.h"
 
 namespace opendnp3
 {

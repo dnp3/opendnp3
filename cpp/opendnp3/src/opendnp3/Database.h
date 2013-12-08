@@ -21,8 +21,9 @@
 #ifndef __DATABASE_H_
 #define __DATABASE_H_
 
-#include "DatabaseInterfaces.h"
+#include "IEventBuffer.h"
 #include "MeasurementHelpers.h"
+#include "PointInfo.h"
 
 #include <opendnp3/DNPConstants.h>
 #include <opendnp3/IDataObserver.h>

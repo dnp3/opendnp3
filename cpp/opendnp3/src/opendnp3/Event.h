@@ -18,30 +18,37 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __INDEXED_VALUE_H_
-#define __INDEXED_VALUE_H_
+#ifndef __EVENT_H_
+#define __EVENT_H_
 
-#include <cstdint>
+#include <opendnp3/PointClass.h>
+#include <opendnp3/IndexedValue.h>
 
-namespace opendnp3 
-{  
-	/** 
-	* A simple tuple for pairing Values with an index
-	*/
-	template <class T>
-	class IndexedValue
-	{
+namespace opendnp3
+{
+
+/**
+ * Record of an event that includes value, index, and class
+ */
+template <typename T>
+class Event : public IndexedValue<T>
+{
 	public:
-		IndexedValue(const T& arValue, uint32_t aIndex) : value(arValue), index(aIndex)
-		{}
 
-		IndexedValue() : index(0)
-		{}
+	 Event(const T& arValue, uint32_t aIndex, PointClass aClass) :
+		IndexedValue<T>(arValue, aIndex),		
+		clazz(aClass)
+	{}
 
-		T value;
-		uint32_t index;
-	};
+	Event() : clazz(PC_CLASS_0)
+	{}
+	
+	PointClass clazz;	// class of the point (PC_CLASS<0-3>)	
+};
 
-}
+} //end namespace
+
+/* vim: set ts=4 sw=4: */
 
 #endif
+

@@ -24,10 +24,8 @@
 #include <opendnp3/DataTypes.h>
 #include <opendnp3/SlaveConfig.h>
 
-
-#include "DNPDatabaseTypes.h"
+#include "IEventBuffer.h"
 #include "BufferType.h"
-#include "DatabaseInterfaces.h"
 #include "EventBuffers.h"
 
 

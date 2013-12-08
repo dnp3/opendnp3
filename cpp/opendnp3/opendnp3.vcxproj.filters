@@ -207,9 +207,6 @@
     <ClInclude Include="src\opendnp3\Database.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\DatabaseInterfaces.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\DataPoll.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -392,9 +389,6 @@
     </ClInclude>
     <ClInclude Include="include\opendnp3\SubjectBase.h">
       <Filter>Include Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\DNPDatabaseTypes.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\DNP3Channel.h">
       <Filter>Header Files</Filter>
@@ -586,6 +580,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\ObjectDescriptors.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\Event.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\IEventBuffer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\PointInfo.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

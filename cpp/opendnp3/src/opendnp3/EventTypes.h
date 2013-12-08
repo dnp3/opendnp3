@@ -21,11 +21,7 @@
 #ifndef __EVENT_TYPES_H_
 #define __EVENT_TYPES_H_
 
-#include "DNPDatabaseTypes.h"
-
-#include <opendnp3/VTOData.h>
-
-
+#include "Event.h"
 
 namespace opendnp3
 {
