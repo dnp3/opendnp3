@@ -49,14 +49,10 @@ struct EventInfo : public Event<T>
 	bool mWritten;		// true if the event has been written
 };
 
-template <typename EventType>
-struct EvtItr {
-	typedef typename std::vector< EventType >::iterator Type;
+template <typename T>
+struct EventIterator {
+	typedef typename std::vector< EventInfo<T> >::iterator Type;
 };
-
-typedef EvtItr<EventInfo<Binary>>::Type			BinaryEventIter;
-typedef EvtItr<EventInfo<Analog>>::Type			AnalogEventIter;
-typedef EvtItr<EventInfo<Counter>>::Type		CounterEventIter;
 
 
 } //end namespace

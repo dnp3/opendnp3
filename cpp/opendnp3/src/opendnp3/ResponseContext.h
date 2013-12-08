@@ -184,7 +184,7 @@ private:
 	CounterEventQueue mCounterEvents;	
 
 	template <class T>
-	bool LoadEvents(APDU& arAPDU, std::deque< EventRequest<T> >& arQueue);	
+	bool LoadEvents(APDU& arAPDU, const typename EventIterator<T>::Type& aBegin, std::deque< EventRequest<T> >& arQueue);	
 
 	//wrappers that select the event buffer and add to the event queues
 	void SelectEvents(PointClass aClass, size_t aNum = std::numeric_limits<size_t>::max());
@@ -194,13 +194,13 @@ private:
 
 	// T is the event type
 	template <class T>
-	size_t IterateIndexed(EventRequest<T>& arIters, typename EvtItr< EventInfo<T> >::Type& arIter, APDU& arAPDU);
+	size_t IterateIndexed(EventRequest<T>& arIters, typename EventIterator<T>::Type& arIter, APDU& arAPDU);
 
 	template <class T>
-	size_t IterateCTO(const StreamObject<T>* apObj, size_t aCount, typename EvtItr< EventInfo<T> >::Type& arIter, APDU& arAPDU);
+	size_t IterateCTO(const StreamObject<T>* apObj, size_t aCount, typename EventIterator<T>::Type& arIter, APDU& arAPDU);
 
 	template <class T>
-	size_t CalcPossibleCTO(typename EvtItr< EventInfo<T> >::Type aIter, size_t aMax);
+	size_t CalcPossibleCTO(typename EventIterator<T>::Type aIter, size_t aMax);
 
 
 	// Static write functions
@@ -313,10 +313,9 @@ bool ResponseContext::WriteStaticObjects(StreamObject<T>* apObject, typename Sta
 }
 
 template <class T>
-bool ResponseContext::LoadEvents(APDU& arAPDU, std::deque< EventRequest<T> >& arQueue)
+bool ResponseContext::LoadEvents(APDU& arAPDU, const typename EventIterator<T>::Type& aBegin, std::deque< EventRequest<T> >& arQueue)
 {
-	typename EvtItr< EventInfo<T> >::Type itr;
-	mBuffer.Begin(itr);
+	auto itr = aBegin;	
 	size_t remain = mBuffer.NumSelected(Convert(T::MeasEnum));
 
 	while (arQueue.size() > 0) {
@@ -352,7 +351,7 @@ bool ResponseContext::LoadEvents(APDU& arAPDU, std::deque< EventRequest<T> >& ar
 
 // T is the point info type
 template <class T>
-size_t ResponseContext::IterateIndexed(EventRequest<T>& arRequest, typename EvtItr< EventInfo<T> >::Type& arIter, APDU& arAPDU)
+size_t ResponseContext::IterateIndexed(EventRequest<T>& arRequest, typename EventIterator<T>::Type& arIter, APDU& arAPDU)
 {
 	size_t numType = mpDB->NumType(T::MeasEnum);
 	IndexedWriteIterator write = arAPDU.WriteIndexed(arRequest.pObj, arRequest.count, numType);
@@ -371,7 +370,7 @@ size_t ResponseContext::IterateIndexed(EventRequest<T>& arRequest, typename EvtI
 }
 
 template <class T>
-size_t ResponseContext::CalcPossibleCTO(typename EvtItr< EventInfo<T> >::Type aIter, size_t aMax)
+size_t ResponseContext::CalcPossibleCTO(typename EventIterator<T>::Type aIter, size_t aMax)
 {
 	auto start = aIter->value.GetTime();
 
@@ -387,7 +386,7 @@ size_t ResponseContext::CalcPossibleCTO(typename EvtItr< EventInfo<T> >::Type aI
 
 // T is the point info type
 template <class T>
-size_t ResponseContext::IterateCTO(const StreamObject<T>* apObj, size_t aCount, typename EvtItr< EventInfo<T> >::Type& arIter, APDU& arAPDU)
+size_t ResponseContext::IterateCTO(const StreamObject<T>* apObj, size_t aCount, typename EventIterator<T>::Type& arIter, APDU& arAPDU)
 {
 	size_t numType = mpDB->NumType(T::MeasEnum);	
 

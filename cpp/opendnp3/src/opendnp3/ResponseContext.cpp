@@ -292,9 +292,9 @@ void ResponseContext::LoadUnsol(APDU& arAPDU, const IINField& arIIN, ClassMask m
 
 bool ResponseContext::LoadEventData(APDU& arAPDU)
 {
-	if (!this->LoadEvents<Binary>(arAPDU, mBinaryEvents)) return false;
-	if (!this->LoadEvents<Analog>(arAPDU, mAnalogEvents)) return false;
-	if (!this->LoadEvents<Counter>(arAPDU, mCounterEvents)) return false;	
+	if (!this->LoadEvents<Binary>(arAPDU, mBuffer.BeginBinary(), mBinaryEvents)) return false;
+	if (!this->LoadEvents<Analog>(arAPDU, mBuffer.BeginAnalog(), mAnalogEvents)) return false;
+	if (!this->LoadEvents<Counter>(arAPDU, mBuffer.BeginCounter(), mCounterEvents)) return false;	
 
 	return true;
 }

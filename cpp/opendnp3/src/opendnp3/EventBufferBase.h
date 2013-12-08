@@ -108,9 +108,9 @@ public:
 	 * Returns an EvtItr iterator object for accessing the data previously
 	 * selected through EventBufferBase::Select().
 	 *
-	 * @return				the iterator object to the data from Select()
+	 * @return the iterator object to the data from Select()
 	 */
-	typename EvtItr<EventInfo<T>>::Type Begin();
+	typename EventIterator<T>::Type Begin();
 
 	/**
 	 * Returns the number of events that were previously selected through
@@ -280,7 +280,7 @@ size_t EventBufferBase<T, SetType> :: ClearWrittenEvents()
 }
 
 template <class T, class SetType>
-typename EvtItr<EventInfo<T>>::Type EventBufferBase<T, SetType> :: Begin()
+typename EventIterator<T>::Type EventBufferBase<T, SetType> :: Begin()
 {
 	return mSelectedEvents.begin();
 }

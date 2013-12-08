@@ -120,24 +120,27 @@ public:
 	 * Provides an EvtItr iterator object for accessing the data previously
 	 * selected through SlaveEventBuffer::Select().
 	 */
-	void Begin(BinaryEventIter& arIter) {
-		arIter = mBinaryEvents.Begin();
+	EventIterator<Binary>::Type BeginBinary() 
+	{
+		return mBinaryEvents.Begin();
 	}
 
 	/**
 	 * Provides an EvtItr iterator object for accessing the data previously
 	 * selected through SlaveEventBuffer::Select().
 	 */
-	void Begin(AnalogEventIter& arIter) {
-		arIter = mAnalogEvents.Begin();
+	EventIterator<Analog>::Type BeginAnalog()
+	{
+		return mAnalogEvents.Begin();
 	}
 
 	/**
 	 * Provides an EvtItr iterator object for accessing the data previously
 	 * selected through SlaveEventBuffer::Select().
 	 */
-	void Begin(CounterEventIter& arIter) {
-		arIter = mCounterEvents.Begin();
+	EventIterator<Counter>::Type BeginCounter() 
+	{
+		return mCounterEvents.Begin();
 	}	
 
 	/**
