@@ -31,19 +31,22 @@ SlaveEventBuffer::SlaveEventBuffer(const EventMaxConfig& arEventMaxConfig) :
 	mCounterEvents(arEventMaxConfig.mMaxCounterEvents)	
 {}
 
-void SlaveEventBuffer::Update(const Binary& arEvent, PointClass aClass, size_t aIndex)
+void SlaveEventBuffer::Update(const Binary& aEvent, PointClass aClass, size_t aIndex)
 {
-	mBinaryEvents.Update(arEvent, aClass, aIndex);
+	Event<Binary> e(aEvent, aIndex, aClass);
+	mBinaryEvents.Update(e);
 }
 
-void SlaveEventBuffer::Update(const Analog& arEvent, PointClass aClass, size_t aIndex)
+void SlaveEventBuffer::Update(const Analog& aEvent, PointClass aClass, size_t aIndex)
 {
-	mAnalogEvents.Update(arEvent, aClass, aIndex);
+	Event<Analog> e(aEvent, aIndex, aClass);
+	mAnalogEvents.Update(e);
 }
 
-void SlaveEventBuffer::Update(const Counter& arEvent, PointClass aClass, size_t aIndex)
+void SlaveEventBuffer::Update(const Counter& aEvent, PointClass aClass, size_t aIndex)
 {
-	mCounterEvents.Update(arEvent, aClass, aIndex);
+	Event<Counter> e(aEvent, aIndex, aClass);
+	mCounterEvents.Update(e);
 }
 
 size_t SlaveEventBuffer::NumSelected(BufferType aType)

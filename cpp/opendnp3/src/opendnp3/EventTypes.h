@@ -35,12 +35,13 @@ namespace opendnp3
  * written flag to the data member.
  */
 template<typename T>
-struct EventInfo : public Event<T> {
-	EventInfo(const T& arValue, uint32_t aIndex, PointClass aClass) :
-		Event<T>(arValue, aIndex, aClass),
+struct EventInfo : public Event<T> 
+{
+	EventInfo(const Event<T>& aEvent) :
+		Event<T>(aEvent),
 		mSequence(0),
 		mWritten(false)
-	{}
+	{}	
 
 	EventInfo() : mSequence(0), mWritten(false) {}
 
@@ -48,20 +49,15 @@ struct EventInfo : public Event<T> {
 	bool mWritten;		// true if the event has been written
 };
 
-typedef EventInfo<Binary>				BinaryEvent;
-typedef EventInfo<Analog>				AnalogEvent;
-typedef EventInfo<Counter>				CounterEvent;
-typedef EventInfo<VtoData>				VtoEvent;
-
 template <typename EventType>
 struct EvtItr {
 	typedef typename std::vector< EventType >::iterator Type;
 };
 
-typedef EvtItr<BinaryEvent>::Type			BinaryEventIter;
-typedef EvtItr<AnalogEvent>::Type			AnalogEventIter;
-typedef EvtItr<CounterEvent>::Type			CounterEventIter;
-typedef EvtItr<VtoEvent>::Type				VtoDataEventIter;
+typedef EvtItr<EventInfo<Binary>>::Type			BinaryEventIter;
+typedef EvtItr<EventInfo<Analog>>::Type			AnalogEventIter;
+typedef EvtItr<EventInfo<Counter>>::Type		CounterEventIter;
+
 
 } //end namespace
 

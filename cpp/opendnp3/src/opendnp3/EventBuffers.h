@@ -38,19 +38,19 @@ namespace opendnp3
 
 	Note: EventType must have the public property mIndex.
 	*/
-template <class EventType>
-class SingleEventBuffer : public EventBufferBase<EventType, IndexSet< EventType > >
+template <class T>
+class SingleEventBuffer : public EventBufferBase<T, IndexSet< EventInfo<T> > >
 {
 public:
 
 	SingleEventBuffer(size_t aMaxEvents);
 
-	void _Update(const EventType& arEvent);
+	void _Update(const EventInfo<T>& arEvent);
 };
 
 /** Event buffer that stores all changes to all points in the order. */
-template <class EventType>
-class TimeOrderedEventBuffer : public EventBufferBase<EventType, TimeMultiSet< EventType > >
+template <class T>
+class TimeOrderedEventBuffer : public EventBufferBase<T, TimeMultiSet<EventInfo<T> > >
 {
 public:
 
@@ -58,43 +58,43 @@ public:
 };
 
 /** Event buffer that stores all changes to all points in the order. */
-template <class EventType>
-class InsertionOrderedEventBuffer : public EventBufferBase<EventType, InsertionOrderSet< EventType > >
+template <class T>
+class InsertionOrderedEventBuffer : public EventBufferBase<T, InsertionOrderSet<EventInfo<T> > >
 {
 public:
 
 	InsertionOrderedEventBuffer(size_t aMaxEvents);
 };
 
-template <class EventType>
-SingleEventBuffer<EventType> :: SingleEventBuffer(size_t aMaxEvents) :
-	EventBufferBase< EventType, IndexSet< EventType > >(aMaxEvents)
+template <class T>
+SingleEventBuffer<T> :: SingleEventBuffer(size_t aMaxEvents) :
+	EventBufferBase< T, IndexSet< EventInfo<T> > >(aMaxEvents)
 {}
 
-template <class EventType>
-TimeOrderedEventBuffer<EventType> :: TimeOrderedEventBuffer(size_t aMaxEvents) :
-	EventBufferBase <EventType, TimeMultiSet< EventType > >(aMaxEvents)
+template <class T>
+TimeOrderedEventBuffer<T> :: TimeOrderedEventBuffer(size_t aMaxEvents) :
+	EventBufferBase <T, TimeMultiSet< EventInfo<T> > >(aMaxEvents)
 {}
 
-template <class EventType>
-InsertionOrderedEventBuffer<EventType> :: InsertionOrderedEventBuffer(size_t aMaxEvents) :
-	EventBufferBase<EventType, InsertionOrderSet< EventType > >(aMaxEvents)
+template <class T>
+InsertionOrderedEventBuffer<T> :: InsertionOrderedEventBuffer(size_t aMaxEvents) :
+	EventBufferBase<T, InsertionOrderSet< EventInfo<T> > >(aMaxEvents)
 {}
 
-template <class EventType>
-void SingleEventBuffer<EventType> :: _Update(const EventType& arEvent)
+template <class T>
+void SingleEventBuffer<T> :: _Update(const EventInfo<T>& aEvent)
 {
-	typename IndexSet< EventType >::Type::iterator i = this->mEventSet.find(arEvent);
+	auto i = this->mEventSet.find(aEvent);
 
 	if(i != this->mEventSet.end() ) {
-		if(arEvent.value.GetTime() >= i->value.GetTime()) {
+		if(aEvent.value.GetTime() >= i->value.GetTime()) {
 			this->mEventSet.erase(i);
-			this->mEventSet.insert(arEvent); //new event
+			this->mEventSet.insert(aEvent); //new event
 		}
 	}
 	else {
-		this->mEventSet.insert(arEvent); //new event
-		this->mCounter.IncrCount(arEvent.clazz);
+		this->mEventSet.insert(aEvent); //new event
+		this->mCounter.IncrCount(aEvent.clazz);
 	}
 }
 

@@ -29,11 +29,12 @@
 namespace opendnp3
 {
 
-template <class EventType>
+template <class T>
 class EventAcceptor
 {
 public:
-	virtual void Update(const typename EventType::MeasType& arVal, PointClass aClass, size_t aIndex) = 0;
+	
+	virtual void Update(const Event<T>& aEvent) = 0;	
 };
 
 /**
@@ -42,22 +43,26 @@ public:
  *
  * Single-threaded for asynchronous/event-based model.
 */
-template <class EventType, class SetType>
-class EventBufferBase : public EventAcceptor<EventType>
+template <class T, class SetType>
+class EventBufferBase : public EventAcceptor<T>
 {
 public:
 	EventBufferBase(size_t aMaxEvents);
 	virtual ~EventBufferBase() {}
 
+	void Update(const T& aValue, PointClass aClass, uint32_t aIndex)
+	{
+		Event<T> e(aValue, aIndex, aClass);
+		this->Update(e);
+	}
+
 	/**
 	 * Adds an event to the buffer, tracking insertion order. Calls _Update
 	 * which can be overriden to do special types of insertion.
 	 *
-	 * @param arVal			Event update to add to the buffer
-	 * @param aClass		Class of the measurement
-	 * @param aIndex		Index of the measurement
+	 * @param aEvent Event update to add to the buffer
 	 */
-	void Update(const typename EventType::MeasType& arVal, PointClass aClass, size_t aIndex);
+	void Update(const Event<T>& aEvent);
 
 	/**
 	 * Returns true if the buffer contains any data matching the given
@@ -105,7 +110,7 @@ public:
 	 *
 	 * @return				the iterator object to the data from Select()
 	 */
-	typename EvtItr< EventType >::Type Begin();
+	typename EvtItr<EventInfo<T>>::Type Begin();
 
 	/**
 	 * Returns the number of events that were previously selected through
@@ -173,10 +178,10 @@ protected:
 	 *
 	 * @param arEvent		Event update to add to the buffer
 	 * @param aNewValue		a new sequence value will be assigned to the
-	 * 						arEvent if the value is true, otherwise the
+	 * 						event if the value is true, otherwise the
 	 * 						existing arEvent sequence number will be used
 	 */
-	void Update(EventType& arEvent, bool aNewValue = true);
+	void Update(EventInfo<T>& aEvent, bool aNewValue = true);
 
 	/**
 	 * Overridable NVII function called by Update.  The default
@@ -184,7 +189,7 @@ protected:
 	 *
 	 * @param arEvent		Event update to add to the buffer
 	 */
-	virtual void _Update(const EventType& arEvent);
+	virtual void _Update(const EventInfo<T>& aEvent);
 
 	ClassCounter mCounter;		// counter for class events
 	const size_t M_MAX_EVENTS;	// max number of events to accept before setting overflow
@@ -192,24 +197,24 @@ protected:
 	bool mIsOverflown;			// flag that tracks when an overflow occurs
 
 	// vector to hold all selected events until they are cleared or failed back into mEventSet
-	typename std::vector< EventType > mSelectedEvents;
+	typename std::vector< EventInfo<T> > mSelectedEvents;
 
 	// store to keep and order incoming events
 	typename SetType::Type mEventSet;
 };
 
-template <class EventType, class SetType>
-EventBufferBase <EventType, SetType> :: EventBufferBase(size_t aMaxEvents) :
+template <class T, class SetType>
+EventBufferBase <T, SetType> :: EventBufferBase(size_t aMaxEvents) :
 	M_MAX_EVENTS(aMaxEvents),
 	mSequence(0),
 	mIsOverflown(false)
 {}
 
-template <class EventType, class SetType>
-void EventBufferBase<EventType, SetType> :: Update(const typename EventType::MeasType& arVal, PointClass aClass, size_t aIndex)
-{
-	EventType evt(arVal, aIndex, aClass);
-	this->Update(evt, true);
+template <class T, class SetType>
+void EventBufferBase<T, SetType> :: Update(const Event<T>& aEvent)
+{	
+	EventInfo<T> info(aEvent);
+	this->Update(info, true);
 
 	if(this->NumUnselected() > M_MAX_EVENTS) { //we've overflown and we've got to drop an event
 		mIsOverflown = true;
@@ -219,26 +224,26 @@ void EventBufferBase<EventType, SetType> :: Update(const typename EventType::Mea
 	}
 }
 
-template <class EventType, class SetType>
-void EventBufferBase<EventType, SetType> :: Update(EventType& arEvent, bool aNewValue)
+template <class T, class SetType>
+void EventBufferBase<T, SetType> :: Update(EventInfo<T>& aEvent, bool aNewValue)
 {
 	// prevents numerical overflow of the increasing sequence number
 	if(this->Size() == 0) mSequence = 0;
 
-	if(aNewValue) arEvent.mSequence = mSequence++;
+	if(aNewValue) aEvent.mSequence = mSequence++;
 
-	this->_Update(arEvent); // call the overridable NVII function
+	this->_Update(aEvent); // call the overridable NVII function
 }
 
-template <class EventType, class SetType>
-void EventBufferBase<EventType, SetType> :: _Update(const EventType& arEvent)
+template <class T, class SetType>
+void EventBufferBase<T, SetType> :: _Update(const EventInfo<T>& aEvent)
 {
-	this->mCounter.IncrCount(arEvent.clazz);
-	this->mEventSet.insert(arEvent);
+	this->mCounter.IncrCount(aEvent.clazz);
+	this->mEventSet.insert(aEvent);
 }
 
-template <class EventType, class SetType>
-size_t EventBufferBase<EventType, SetType> :: Deselect()
+template <class T, class SetType>
+size_t EventBufferBase<T, SetType> :: Deselect()
 {
 	size_t num = mSelectedEvents.size();
 
@@ -250,8 +255,8 @@ size_t EventBufferBase<EventType, SetType> :: Deselect()
 	return num;
 }
 
-template <class EventType, class SetType>
-bool EventBufferBase <EventType, SetType> :: IsOverflown()
+template <class T, class SetType>
+bool EventBufferBase <T, SetType> :: IsOverflown()
 {
 	// if the buffer previously overflowed, but is no longer full, reset the flag
 	if(mIsOverflown && this->Size() < M_MAX_EVENTS) mIsOverflown = false;
@@ -259,10 +264,10 @@ bool EventBufferBase <EventType, SetType> :: IsOverflown()
 	return mIsOverflown;
 }
 
-template <class EventType, class SetType>
-size_t EventBufferBase<EventType, SetType> :: ClearWrittenEvents()
+template <class T, class SetType>
+size_t EventBufferBase<T, SetType> :: ClearWrittenEvents()
 {
-	typename std::vector<EventType>::iterator itr = this->mSelectedEvents.begin();
+	auto itr = this->mSelectedEvents.begin();
 
 	size_t num = 0;
 	while(itr != this->mSelectedEvents.end() && itr->mWritten) {
@@ -274,16 +279,16 @@ size_t EventBufferBase<EventType, SetType> :: ClearWrittenEvents()
 	return num;
 }
 
-template <class EventType, class SetType>
-typename EvtItr< EventType >::Type EventBufferBase<EventType, SetType> :: Begin()
+template <class T, class SetType>
+typename EvtItr<EventInfo<T>>::Type EventBufferBase<T, SetType> :: Begin()
 {
 	return mSelectedEvents.begin();
 }
 
-template <class EventType, class SetType>
-size_t EventBufferBase <EventType, SetType> :: Select(PointClass aClass, size_t aMaxEvent)
+template <class T, class SetType>
+size_t EventBufferBase <T, SetType> :: Select(PointClass aClass, size_t aMaxEvent)
 {
-	typename SetType::Type::iterator i = mEventSet.begin();
+	auto i = mEventSet.begin();
 
 	size_t count = 0;
 

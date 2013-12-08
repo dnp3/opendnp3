@@ -220,19 +220,19 @@ private:
 	 * A buffer for binary events that require ordering based on the
 	 * time of occurrence.
 	 */
-	TimeOrderedEventBuffer<BinaryEvent> mBinaryEvents;
+	TimeOrderedEventBuffer<Binary> mBinaryEvents;
 
 	/**
 	 * A buffer for analog events that require ordering based on the
 	 * time of occurrence.
 	 */
-	TimeOrderedEventBuffer<AnalogEvent> mAnalogEvents;
+	TimeOrderedEventBuffer<Analog> mAnalogEvents;
 
 	/**
 	 * A buffer for counter events where a single event is needed per
 	 * point and previous events for that point can be overridden.
 	 */
-	SingleEventBuffer<CounterEvent> mCounterEvents;
+	SingleEventBuffer<Counter> mCounterEvents;
 
 };
 

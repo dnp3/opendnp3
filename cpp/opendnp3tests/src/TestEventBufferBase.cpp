@@ -43,20 +43,21 @@ struct SetWrapper {
 };
 
 template <class T>
-class SimpleBuffer : public EventBufferBase<T, SetWrapper<T> >
+class SimpleBuffer : public EventBufferBase<T, SetWrapper<EventInfo<T>> >
 {
 public:
 
-	SimpleBuffer(size_t aMaxEvents) : EventBufferBase<T, SetWrapper<T> >(aMaxEvents)
+	SimpleBuffer(size_t aMaxEvents) : EventBufferBase<T, SetWrapper <EventInfo<T> > >(aMaxEvents)
 	{}
 };
 
 BOOST_AUTO_TEST_SUITE(TestEventBufferBase)
-typedef EventInfo<int> intevt;
+
+	typedef SimpleBuffer<int> SimpleIntBuffer;
 
 BOOST_AUTO_TEST_CASE(SetInitState)
 {
-	SimpleBuffer< intevt > b(2);
+	SimpleIntBuffer b(2);
 
 	BOOST_REQUIRE_EQUAL(b.ClearWrittenEvents(), 0);
 	BOOST_REQUIRE_EQUAL(b.Deselect(), 0);
@@ -64,7 +65,7 @@ BOOST_AUTO_TEST_CASE(SetInitState)
 
 BOOST_AUTO_TEST_CASE(SetUpdate)
 {
-	SimpleBuffer< intevt > b(2);
+	SimpleIntBuffer b(2);
 
 	b.Update(1, PC_CLASS_1, 0);
 	BOOST_REQUIRE_EQUAL(b.Size(), 1);
@@ -74,7 +75,7 @@ BOOST_AUTO_TEST_CASE(SetUpdate)
 
 BOOST_AUTO_TEST_CASE(SimpleOverflow)
 {
-	SimpleBuffer< intevt > b(1);
+	SimpleIntBuffer b(1);
 
 	b.Update(1, PC_CLASS_1, 0);
 	BOOST_REQUIRE_EQUAL(b.Size(), 1);
@@ -85,7 +86,7 @@ BOOST_AUTO_TEST_CASE(SimpleOverflow)
 
 BOOST_AUTO_TEST_CASE(OverflowDuringSelection)
 {
-	SimpleBuffer< intevt > b(2);
+	SimpleIntBuffer b(2);
 
 	b.Update(1, PC_CLASS_1, 0);
 	b.Update(2, PC_CLASS_1, 1);
@@ -115,7 +116,7 @@ BOOST_AUTO_TEST_CASE(OverflowDuringSelection)
 
 BOOST_AUTO_TEST_CASE(SelectDeselect)
 {
-	SimpleBuffer< intevt > b(5);
+	SimpleIntBuffer b(5);
 
 	b.Update(1, PC_CLASS_1, 0);
 	b.Update(2, PC_CLASS_1, 0);
@@ -130,7 +131,7 @@ BOOST_AUTO_TEST_CASE(SelectDeselect)
 
 BOOST_AUTO_TEST_CASE(SelectAndClear)
 {
-	SimpleBuffer< intevt > b(5);
+	SimpleIntBuffer b(5);
 
 	b.Update(1, PC_CLASS_1, 0);
 	b.Update(2, PC_CLASS_1, 0);
@@ -139,7 +140,7 @@ BOOST_AUTO_TEST_CASE(SelectAndClear)
 	BOOST_REQUIRE_EQUAL(b.NumSelected(), 2);
 	BOOST_REQUIRE_EQUAL(b.Select(PC_CLASS_1), 0); //performing an additional select should add no more values
 	BOOST_REQUIRE_EQUAL(b.NumSelected(), 2);
-	EvtItr<intevt>::Type itr = b.Begin();
+	auto itr = b.Begin();
 
 	itr->mWritten = true;
 

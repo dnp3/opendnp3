@@ -36,7 +36,8 @@ BOOST_AUTO_TEST_SUITE(SingleEventBufferSuite)
 
 BOOST_AUTO_TEST_CASE(SingleIndexSorting)
 {
-	SingleEventBuffer<AnalogEvent> b(3);
+	SingleEventBuffer<Analog> b(3);
+		
 
 	b.Update(Analog(0), PC_CLASS_1, 0);
 	b.Update(Analog(0), PC_CLASS_1, 1);
@@ -54,13 +55,12 @@ BOOST_AUTO_TEST_SUITE_END()
 
 // index is irrelevant in these tests, only insertion order matters
 BOOST_AUTO_TEST_SUITE(InsertionOrderedEventBufferSuite)
-typedef EventInfo<int> intevt;
 
 BOOST_AUTO_TEST_CASE(InsertionOrderSorting)
 {
 	const size_t NUM = 3;
 
-	InsertionOrderedEventBuffer<intevt> b(NUM);
+	InsertionOrderedEventBuffer<int> b(NUM);
 
 	int vals[NUM] = {2, 1, 0};
 
@@ -69,7 +69,7 @@ BOOST_AUTO_TEST_CASE(InsertionOrderSorting)
 	{
 		//now verify the order
 		b.Select(PC_CLASS_1);
-		EvtItr<intevt>::Type itr = b.Begin();
+		auto itr = b.Begin();
 
 		for(size_t i = 0; i < b.NumSelected(); ++i) {
 			BOOST_REQUIRE_EQUAL(itr->value, vals[i]);
@@ -82,7 +82,7 @@ BOOST_AUTO_TEST_CASE(InsertionOrderSorting)
 	{
 		//now verify the order
 		b.Select(PC_CLASS_1);
-		EvtItr<intevt>::Type itr = b.Begin();
+		auto itr = b.Begin();
 
 		for(size_t i = 0; i < b.NumSelected(); ++i) {
 			BOOST_REQUIRE_EQUAL(itr->value, vals[i]);
@@ -100,11 +100,9 @@ BOOST_AUTO_TEST_CASE(ResetEventsProperlyOnFailure)
 
 	const uint8_t numEvents = NUM;
 
-	InsertionOrderedEventBuffer<VtoEvent> b(NUM);
+	InsertionOrderedEventBuffer<VtoData> b(NUM);
 
 	size_t numResults;
-
-	VtoDataEventIter itr;
 
 	for (uint8_t i = 0; i < numEvents; i++) {
 		uint8_t trash[dataSize];
@@ -122,7 +120,7 @@ BOOST_AUTO_TEST_CASE(ResetEventsProperlyOnFailure)
 	numResults = b.Select(PC_CLASS_1);
 	BOOST_REQUIRE_EQUAL(numResults, numEvents);
 
-	itr = b.Begin();
+	auto itr = b.Begin();
 	for (size_t i = 0; i < b.NumSelected(); ++i) {
 		const uint8_t* value = itr->value.Data();
 		for (size_t j = 0; j < dataSize; ++j) {
@@ -151,7 +149,7 @@ BOOST_AUTO_TEST_SUITE(TimeOrderedEventBufferSuite)
 BOOST_AUTO_TEST_CASE(TimeBasedSorting)
 {
 	const size_t NUM = 3;
-	TimeOrderedEventBuffer<BinaryEvent> b(NUM);
+	TimeOrderedEventBuffer<Binary> b(NUM);
 
 	int64_t times[NUM] = {3, 2, 1};
 
@@ -167,7 +165,7 @@ BOOST_AUTO_TEST_CASE(TimeBasedSorting)
 
 	//now verify the order
 	b.Select(PC_CLASS_1);
-	EvtItr<BinaryEvent>::Type itr = b.Begin();
+	auto itr = b.Begin();
 
 	for(size_t i = 0; i < b.NumSelected(); ++i) {
 		BOOST_REQUIRE_EQUAL(itr->value.GetTime(), times[NUM - i - 1]); //reverse order of array above
@@ -177,7 +175,7 @@ BOOST_AUTO_TEST_CASE(TimeBasedSorting)
 
 BOOST_AUTO_TEST_CASE(EventOverflow)
 {
-	TimeOrderedEventBuffer<BinaryEvent> buffer(1);
+	TimeOrderedEventBuffer<Binary> buffer(1);
 	buffer.Update(Binary(true), PC_CLASS_1, 0);
 	BOOST_REQUIRE(buffer.IsFull());
 	BOOST_REQUIRE_FALSE(buffer.IsOverflown());

@@ -49,7 +49,7 @@ class Event : public IndexedValue<T>
 	
 	PointClass clazz;	// class of the point (PC_CLASS<0-3>)
 
-	typedef T MeasType;
+	//typedef T MeasType;
 };
 
 /**
@@ -66,6 +66,8 @@ struct PointInfo : public Event<T> {
 
 	PointInfo() : deadband(0)
 	{}
+
+	typedef T MeasType;
 
 	double deadband;	// deadband associated with measurement (optional)
 	T lastEvent;		// the last value that was reported	
