@@ -208,13 +208,13 @@ EventBufferBase <EventType, SetType> :: EventBufferBase(size_t aMaxEvents) :
 template <class EventType, class SetType>
 void EventBufferBase<EventType, SetType> :: Update(const typename EventType::MeasType& arVal, PointClass aClass, size_t aIndex)
 {
-	EventType evt(arVal, aClass, aIndex);
+	EventType evt(arVal, aIndex, aClass);
 	this->Update(evt, true);
 
 	if(this->NumUnselected() > M_MAX_EVENTS) { //we've overflown and we've got to drop an event
 		mIsOverflown = true;
 		typename SetType::Type::iterator itr = mEventSet.begin();
-		this->mCounter.DecrCount(itr->mClass);
+		this->mCounter.DecrCount(itr->clazz);
 		mEventSet.erase(itr);
 	}
 }
@@ -233,7 +233,7 @@ void EventBufferBase<EventType, SetType> :: Update(EventType& arEvent, bool aNew
 template <class EventType, class SetType>
 void EventBufferBase<EventType, SetType> :: _Update(const EventType& arEvent)
 {
-	this->mCounter.IncrCount(arEvent.mClass);
+	this->mCounter.IncrCount(arEvent.clazz);
 	this->mEventSet.insert(arEvent);
 }
 
@@ -288,8 +288,8 @@ size_t EventBufferBase <EventType, SetType> :: Select(PointClass aClass, size_t 
 	size_t count = 0;
 
 	while( i != mEventSet.end() && count < aMaxEvent) {
-		if( ( i->mClass & aClass) != 0 ) {
-			mCounter.DecrCount(i->mClass);
+		if( ( i->clazz & aClass) != 0 ) {
+			mCounter.DecrCount(i->clazz);
 			mSelectedEvents.push_back(*i);
 			mEventSet.erase(i++);
 			++count;

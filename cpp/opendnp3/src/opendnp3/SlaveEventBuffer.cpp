@@ -28,8 +28,7 @@ namespace opendnp3
 SlaveEventBuffer::SlaveEventBuffer(const EventMaxConfig& arEventMaxConfig) :
 	mBinaryEvents(arEventMaxConfig.mMaxBinaryEvents),
 	mAnalogEvents(arEventMaxConfig.mMaxAnalogEvents),
-	mCounterEvents(arEventMaxConfig.mMaxCounterEvents),
-	mVtoEvents(arEventMaxConfig.mMaxVtoEvents)
+	mCounterEvents(arEventMaxConfig.mMaxCounterEvents)	
 {}
 
 void SlaveEventBuffer::Update(const Binary& arEvent, PointClass aClass, size_t aIndex)
@@ -47,16 +46,6 @@ void SlaveEventBuffer::Update(const Counter& arEvent, PointClass aClass, size_t 
 	mCounterEvents.Update(arEvent, aClass, aIndex);
 }
 
-void SlaveEventBuffer::Update(const VtoData& arEvent, PointClass aClass, size_t aIndex)
-{
-	mVtoEvents.Update(arEvent, aClass, aIndex);
-}
-
-size_t SlaveEventBuffer::NumVtoEventsAvailable()
-{
-	return mVtoEvents.NumAvailable();
-}
-
 size_t SlaveEventBuffer::NumSelected(BufferType aType)
 {
 	switch(aType) {
@@ -66,8 +55,6 @@ size_t SlaveEventBuffer::NumSelected(BufferType aType)
 			return mAnalogEvents.NumSelected();
 		case BufferType::COUNTER:
 			return mCounterEvents.NumSelected();
-		case BufferType::VTO:
-			return mVtoEvents.NumSelected();
 		default:
 			return 0;
 	}
@@ -82,8 +69,6 @@ size_t SlaveEventBuffer::NumType(BufferType aType)
 			return mAnalogEvents.Size();
 		case BufferType::COUNTER:
 			return mCounterEvents.Size();
-		case BufferType::VTO:
-			return mVtoEvents.Size();
 		default:
 			return 0;
 	}
@@ -96,7 +81,6 @@ size_t SlaveEventBuffer::NumSelected()
 	num += mBinaryEvents.NumSelected();
 	num += mAnalogEvents.NumSelected();
 	num += mCounterEvents.NumSelected();
-	num += mVtoEvents.NumSelected();
 
 	return num;
 }
@@ -105,24 +89,21 @@ bool SlaveEventBuffer::IsOverflow()
 {
 	return	mBinaryEvents.IsOverflown()
 	        || mAnalogEvents.IsOverflown()
-	        || mCounterEvents.IsOverflown()
-	        || mVtoEvents.IsOverflown();
+	        || mCounterEvents.IsOverflown();	        
 }
 
 bool SlaveEventBuffer::HasEventData()
 {
 	return mBinaryEvents.NumUnselected() > 0
 	       || mAnalogEvents.NumUnselected() > 0
-	       || mCounterEvents.NumUnselected() > 0
-	       || mVtoEvents.NumUnselected() > 0;
+	       || mCounterEvents.NumUnselected() > 0;	       
 }
 
 bool SlaveEventBuffer::HasClassData(PointClass aClass)
 {
 	return mBinaryEvents.HasClassData(aClass)
 	       || mAnalogEvents.HasClassData(aClass)
-	       || mCounterEvents.HasClassData(aClass)
-	       || mVtoEvents.HasClassData(aClass);
+	       || mCounterEvents.HasClassData(aClass);	       
 }
 
 size_t SlaveEventBuffer::Select(BufferType aType, PointClass aClass, size_t aMaxEvent)
@@ -134,8 +115,6 @@ size_t SlaveEventBuffer::Select(BufferType aType, PointClass aClass, size_t aMax
 		return mAnalogEvents.Select(aClass, aMaxEvent);
 	case BufferType::COUNTER:
 		return mCounterEvents.Select(aClass, aMaxEvent);
-	case BufferType::VTO:
-		return mVtoEvents.Select(aClass, aMaxEvent);
 	default:
 		return 0;
 	}
@@ -157,8 +136,7 @@ size_t SlaveEventBuffer::Select(PointClass aClass, size_t aMaxEvent)
 	 */
 	if (left > 0) left -= mBinaryEvents.Select(aClass, left);
 	if (left > 0) left -= mAnalogEvents.Select(aClass, left);
-	if (left > 0) left -= mCounterEvents.Select(aClass, left);
-	if (left > 0) left -= mVtoEvents.Select(aClass, left);
+	if (left > 0) left -= mCounterEvents.Select(aClass, left);	
 
 	return aMaxEvent - left;
 }
@@ -168,8 +146,7 @@ size_t SlaveEventBuffer::ClearWritten()
 	size_t sum = 0;
 	sum += mBinaryEvents.ClearWrittenEvents();
 	sum += mAnalogEvents.ClearWrittenEvents();
-	sum += mCounterEvents.ClearWrittenEvents();
-	sum += mVtoEvents.ClearWrittenEvents();
+	sum += mCounterEvents.ClearWrittenEvents();	
 	return sum;
 }
 
@@ -178,8 +155,7 @@ size_t SlaveEventBuffer::Deselect()
 	size_t sum = 0;
 	sum += mBinaryEvents.Deselect();
 	sum += mAnalogEvents.Deselect();
-	sum += mCounterEvents.Deselect();
-	sum += mVtoEvents.Deselect();
+	sum += mCounterEvents.Deselect();	
 	return sum;
 }
 
@@ -192,8 +168,6 @@ bool SlaveEventBuffer::IsFull(BufferType aType)
 			return mAnalogEvents.IsFull();
 		case BufferType::COUNTER:
 			return mCounterEvents.IsFull();
-		case BufferType::VTO:
-			return mVtoEvents.IsFull();
 		default:
 			return false;
 	}

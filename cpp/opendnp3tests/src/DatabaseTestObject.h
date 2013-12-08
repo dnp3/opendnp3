@@ -47,21 +47,11 @@ public:
 	void Update(const Counter& arEvent, PointClass aClass, size_t aIndex) {
 		CounterInfo v(arEvent, aClass, aIndex);
 		mCounterEvents.push_back(v);
-	}
-
-	void Update(const VtoData& arEvent, PointClass aClass, size_t aIndex) {
-		VtoDataInfo v(arEvent, aClass, aIndex);
-		mVtoEvents.push_back(v);
-	}
-
-	size_t NumVtoEventsAvailable() {
-		return std::numeric_limits<size_t>::max() - mVtoEvents.size();
-	}
+	}	
 
 	std::deque<BinaryInfo> mBinaryEvents;
 	std::deque<AnalogInfo> mAnalogEvents;
 	std::deque<CounterInfo> mCounterEvents;
-	std::deque<VtoDataInfo> mVtoEvents;
 };
 
 class DatabaseTestObject

@@ -116,19 +116,19 @@ void Database::SetClass(MeasurementType aType, PointClass aClass)
 {
 	switch(aType) {
 		case(MeasurementType::BINARY):
-			for(auto& m: mBinaryVec) m.mClass = aClass;		
+			for(auto& m: mBinaryVec) m.clazz = aClass;		
 			break;
 		case(MeasurementType::ANALOG):
-			for(auto& m: mAnalogVec) m.mClass = aClass;			
+			for(auto& m: mAnalogVec) m.clazz = aClass;			
 			break;
 		case(MeasurementType::COUNTER):
-			for(auto& m: mCounterVec) m.mClass = aClass;			
+			for(auto& m: mCounterVec) m.clazz = aClass;			
 			break;
 		case(MeasurementType::CONTROL_STATUS):
-			for(auto& m: mControlStatusVec) m.mClass = aClass;				
+			for(auto& m: mControlStatusVec) m.clazz = aClass;				
 			break;
 		case(MeasurementType::SETPOINT_STATUS):
-			for(auto& m: mSetpointStatusVec) m.mClass = aClass;			
+			for(auto& m: mSetpointStatusVec) m.clazz = aClass;			
 			break;
 		default:		
 			break;
@@ -140,23 +140,23 @@ bool Database::SetClass(MeasurementType aType, size_t aIndex, PointClass aClass)
 	switch(aType) {
 		case(MeasurementType::BINARY):
 			if(aIndex >= mBinaryVec.size()) return false;
-			mBinaryVec[aIndex].mClass = aClass;
+			mBinaryVec[aIndex].clazz = aClass;
 			return true;
 		case(MeasurementType::ANALOG):
 			if(aIndex >= mAnalogVec.size()) return false;
-			mAnalogVec[aIndex].mClass = aClass;
+			mAnalogVec[aIndex].clazz = aClass;
 			return true;
 		case(MeasurementType::COUNTER):
 			if(aIndex >= mCounterVec.size()) return false;
-			mCounterVec[aIndex].mClass = aClass;
+			mCounterVec[aIndex].clazz = aClass;
 			return true;
 		case(MeasurementType::CONTROL_STATUS):
 			if(aIndex >= mControlStatusVec.size()) return false;
-			mControlStatusVec[aIndex].mClass = aClass;
+			mControlStatusVec[aIndex].clazz = aClass;
 			return true;
 		case(MeasurementType::SETPOINT_STATUS):
 			if(aIndex >= mSetpointStatusVec.size()) return false;
-			mSetpointStatusVec[aIndex].mClass = aClass;
+			mSetpointStatusVec[aIndex].clazz = aClass;
 			return true;
 		default:
 			return false;
@@ -168,11 +168,11 @@ bool Database::SetDeadband(MeasurementType aType, size_t aIndex, double aDeadban
 	switch(aType) {
 		case(MeasurementType::ANALOG):
 			if(aIndex >= mAnalogVec.size()) return false;
-			mAnalogVec[aIndex].mDeadband = aDeadband;
+			mAnalogVec[aIndex].deadband = aDeadband;
 			return true;
 		case(MeasurementType::COUNTER):
 			if(aIndex >= mCounterVec.size()) return false;
-			mCounterVec[aIndex].mDeadband = aDeadband;
+			mCounterVec[aIndex].deadband = aDeadband;
 			return true;
 		default:
 			return false;
@@ -195,7 +195,7 @@ void Database::_Update(const Binary& arPoint, size_t aIndex)
 	if(UpdateValue<Binary>(mBinaryVec, arPoint, aIndex)) {
 		LOG_BLOCK(LogLevel::Debug, "Binary Change: " << ToString(arPoint) << " Index: " << aIndex);
 		BinaryInfo& v = mBinaryVec[aIndex];
-		if(mpEventBuffer) mpEventBuffer->Update(v.mValue, v.mClass, aIndex);
+		if(mpEventBuffer) mpEventBuffer->Update(v.value, v.clazz, aIndex);
 	}
 }
 
@@ -203,9 +203,9 @@ void Database::_Update(const Analog& arPoint, size_t aIndex)
 {
 	if(UpdateValue<Analog>(mAnalogVec, arPoint, aIndex)) {
 		LOG_BLOCK(LogLevel::Debug, "Analog Change: " << ToString(arPoint) << " Index: " << aIndex);
-		mAnalogVec[aIndex].mLastEvent = mAnalogVec[aIndex].mValue;
+		mAnalogVec[aIndex].lastEvent = mAnalogVec[aIndex].value;
 		AnalogInfo& v = mAnalogVec[aIndex];
-		if(mpEventBuffer) mpEventBuffer->Update(v.mValue, v.mClass, aIndex);
+		if(mpEventBuffer) mpEventBuffer->Update(v.value, v.clazz, aIndex);
 	}
 }
 
@@ -213,9 +213,9 @@ void Database::_Update(const Counter& arPoint, size_t aIndex)
 {
 	if(UpdateValue<Counter>(mCounterVec, arPoint, aIndex)) {
 		LOG_BLOCK(LogLevel::Debug, "Counter Change: " << ToString(arPoint) << " Index: " << aIndex);
-		mCounterVec[aIndex].mLastEvent = mCounterVec[aIndex].mValue;
+		mCounterVec[aIndex].lastEvent = mCounterVec[aIndex].value;
 		CounterInfo& v = mCounterVec[aIndex];
-		if(mpEventBuffer) mpEventBuffer->Update(v.mValue, v.mClass, aIndex);
+		if(mpEventBuffer) mpEventBuffer->Update(v.value, v.clazz, aIndex);
 	}
 }
 

@@ -33,6 +33,9 @@ namespace opendnp3
 		IndexedValue(const T& arValue, uint32_t aIndex) : value(arValue), index(aIndex)
 		{}
 
+		IndexedValue() : index(0)
+		{}
+
 		T value;
 		uint32_t index;
 	};

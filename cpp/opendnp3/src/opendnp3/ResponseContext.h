@@ -167,17 +167,7 @@ private:
 
 		const StreamObject<T>* pObj;		// Type to use to write
 		size_t count;						// Number of events to read
-	};
-
-	struct VtoEventRequest {
-		VtoEventRequest(const SizeByVariationObject* apObj, size_t aCount = std::numeric_limits<size_t>::max()) :
-			pObj(apObj),
-			count(aCount)
-		{}
-
-		const SizeByVariationObject* pObj;	// Type to use to write
-		size_t count;						// Number of events to read
-	};
+	};	
 
 	typedef std::map <ResponseKey, WriteFunction, ResponseKey >	WriteMap;
 
@@ -186,28 +176,21 @@ private:
 
 	typedef std::deque< EventRequest<Binary> >				BinaryEventQueue;
 	typedef std::deque< EventRequest<Analog> >				AnalogEventQueue;
-	typedef std::deque< EventRequest<Counter> >				CounterEventQueue;
-	typedef std::deque<VtoEventRequest>						VtoEventQueue;
+	typedef std::deque< EventRequest<Counter> >				CounterEventQueue;	
 
 	//these queues track what events have been requested
 	BinaryEventQueue mBinaryEvents;
 	AnalogEventQueue mAnalogEvents;
-	CounterEventQueue mCounterEvents;
-	VtoEventQueue mVtoEvents;
+	CounterEventQueue mCounterEvents;	
 
 	template <class T>
-	bool LoadEvents(APDU& arAPDU, std::deque< EventRequest<T> >& arQueue);
-
-	bool LoadVtoEvents(APDU& arAPDU);
+	bool LoadEvents(APDU& arAPDU, std::deque< EventRequest<T> >& arQueue);	
 
 	//wrappers that select the event buffer and add to the event queues
 	void SelectEvents(PointClass aClass, size_t aNum = std::numeric_limits<size_t>::max());
 
 	template <class T>
 	size_t SelectEvents(PointClass aClass, const StreamObject<T>* apObj, std::deque< EventRequest<T> >& arQueue, size_t aNum = std::numeric_limits<size_t>::max());
-
-	size_t SelectVtoEvents(PointClass aClass, const SizeByVariationObject* apObj, size_t aNum);
-
 
 	// T is the event type
 	template <class T>
@@ -218,8 +201,6 @@ private:
 
 	template <class T>
 	size_t CalcPossibleCTO(typename EvtItr< EventInfo<T> >::Type aIter, size_t aMax);
-
-	size_t IterateIndexed(VtoEventRequest& arRequest, VtoDataEventIter& arIter, APDU& arAPDU);
 
 
 	// Static write functions
@@ -315,8 +296,8 @@ void ResponseContext::RecordStaticObjectsByRange(StreamObject<typename T::MeasTy
 template <class T>
 bool ResponseContext::WriteStaticObjects(StreamObject<typename T::MeasType>* apObject, typename StaticIter<T>::Type aStart, typename StaticIter<T>::Type aStop, ResponseKey aKey, APDU& arAPDU)
 {
-	size_t start = aStart->mIndex;
-	size_t stop = aStop->mIndex;
+	size_t start = aStart->index;
+	size_t stop = aStop->index;
 	ObjectWriteIterator owi = arAPDU.WriteContiguous(apObject, start, stop);
 
 	for(size_t i = start; i <= stop; ++i) {
@@ -326,7 +307,7 @@ bool ResponseContext::WriteStaticObjects(StreamObject<typename T::MeasType>* apO
 			};
 			return false;
 		}
-		apObject->Write(*owi, aStart->mValue);
+		apObject->Write(*owi, aStart->value);
 		++aStart; //increment the iterators
 		++owi;
 	}
@@ -382,8 +363,8 @@ size_t ResponseContext::IterateIndexed(EventRequest<T>& arRequest, typename EvtI
 	for(size_t i = 0; i < arRequest.count; ++i) {
 		if(write.IsEnd()) return i;										//that's all we can get into this fragment
 
-		write.SetIndex(arIter->mIndex);
-		arRequest.pObj->Write(*write, arIter->mValue);					// do the write
+		write.SetIndex(arIter->index);
+		arRequest.pObj->Write(*write, arIter->value);					// do the write
 		arIter->mWritten = true;										// flag it as written
 		++arIter;														// advance the read iterator
 		++write;														// advance the write iterator
@@ -395,11 +376,11 @@ size_t ResponseContext::IterateIndexed(EventRequest<T>& arRequest, typename EvtI
 template <class T>
 size_t ResponseContext::CalcPossibleCTO(typename EvtItr< EventInfo<T> >::Type aIter, size_t aMax)
 {
-	auto start = aIter->mValue.GetTime();
+	auto start = aIter->value.GetTime();
 
 	size_t num = 0;
 	while(num < aMax) {
-		if((aIter->mValue.GetTime() - start) > openpal::UInt16::Max) break;
+		if((aIter->value.GetTime() - start) > openpal::UInt16::Max) break;
 		++num;
 		++aIter;
 	}
@@ -413,7 +394,7 @@ size_t ResponseContext::IterateCTO(const StreamObject<T>* apObj, size_t aCount, 
 {
 	size_t numType = mpDB->NumType(T::MeasEnum);	
 
-	auto start = arIter->mValue.GetTime();
+	auto start = arIter->value.GetTime();
 
 	// first try to write a CTO object for the first value that we're pushing
 	ObjectWriteIterator itr = arAPDU.WriteContiguous(Group51Var1::Inst(), 0, 0, QualifierCode::UINT8_CNT);
@@ -427,10 +408,10 @@ size_t ResponseContext::IterateCTO(const StreamObject<T>* apObj, size_t aCount, 
 	for(size_t i = 0; i < num; ++i) {
 		if(write.IsEnd()) return i;										// that's all we can get into this fragment
 
-		T tmp = arIter->mValue;											// make a copy and adjust the time
+		T tmp = arIter->value;											// make a copy and adjust the time
 		tmp.SetTime(tmp.GetTime() - start);
 
-		write.SetIndex(arIter->mIndex);
+		write.SetIndex(arIter->index);
 		apObj->Write(*write, tmp);										// do the write, with the tmp
 		arIter->mWritten = true;										// flag it as written
 		++arIter;														// advance the read iterator

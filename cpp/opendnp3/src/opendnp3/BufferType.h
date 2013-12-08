@@ -35,8 +35,7 @@ namespace opendnp3
 enum class BufferType {
 	BINARY,
 	ANALOG,
-	COUNTER,
-	VTO,
+	COUNTER,	
 	INVALID
 };
 

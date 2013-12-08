@@ -35,9 +35,9 @@ namespace opendnp3
  * written flag to the data member.
  */
 template<typename T>
-struct EventInfo : public PointInfoBase<T> {
-	EventInfo(const T& arValue, PointClass aClass, size_t aIndex) :
-		PointInfoBase<T>(arValue, aClass, aIndex),
+struct EventInfo : public Event<T> {
+	EventInfo(const T& arValue, uint32_t aIndex, PointClass aClass) :
+		Event<T>(arValue, aIndex, aClass),
 		mSequence(0),
 		mWritten(false)
 	{}

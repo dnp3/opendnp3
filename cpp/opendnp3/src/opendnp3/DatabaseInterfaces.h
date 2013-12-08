@@ -41,10 +41,6 @@ public:
 
 	virtual void Update(const Counter& arEvent, PointClass aClass, size_t aIndex) = 0;
 
-	virtual void Update(const VtoData& arEvent, PointClass aClass, size_t aIndex) = 0;
-
-	virtual size_t NumVtoEventsAvailable() = 0;
-
 };
 
 }

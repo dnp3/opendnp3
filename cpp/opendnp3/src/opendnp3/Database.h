@@ -153,7 +153,7 @@ template<typename T>
 inline void Database::AssignIndices( std::vector< PointInfo<T> >& arVector )
 {
 	for(size_t i = 0; i < arVector.size(); i++) {
-		arVector[i].mIndex = i;
+		arVector[i].index = i;
 	}
 }
 
@@ -162,12 +162,12 @@ bool Database::UpdateValue(std::vector< PointInfo<T> >& arVec, const T& arValue,
 {
 	if(aIndex >= arVec.size()) return false;
 	else {
-		T& value = arVec[aIndex].mValue;
+		T& value = arVec[aIndex].value;
 
-		if(IsEvent<T>(arValue, arVec[aIndex].mLastEvent, arVec[aIndex].mDeadband))
+		if(IsEvent<T>(arValue, arVec[aIndex].lastEvent, arVec[aIndex].deadband))
 		{
 			value = arValue;
-			return ((arVec[aIndex].mClass & PC_ALL_EVENTS) != 0);
+			return ((arVec[aIndex].clazz & PC_ALL_EVENTS) != 0);
 		}
 		else {
 			value = arValue;

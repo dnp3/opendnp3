@@ -73,8 +73,7 @@ void ResponseContext::Reset()
 
 	this->mBinaryEvents.clear();
 	this->mAnalogEvents.clear();
-	this->mCounterEvents.clear();
-	this->mVtoEvents.clear();
+	this->mCounterEvents.clear();	
 
 	mBuffer.Deselect();
 }
@@ -111,29 +110,7 @@ IINField ResponseContext::Configure(const APDU& arRequest)
 	mMode = SOLICITED;
 
 	for (HeaderReadIterator hdr = arRequest.BeginRead(); !hdr.IsEnd(); ++hdr) {
-		/*
-		 * Handle all of the objects that only use a Group identifier.  The
-		 * switch statement is responsible for selecting all of the events
-		 * that are in the various queues that could be used to respond to the
-		 * arRequest message.  Then a separate handler will loop through and
-		 * cherry pick the events that will make it into the response.
-		 *
-		 * For this first switch statement set, use "continue" rather than
-		 * "break" so that control loops back around to the for loop.
-		 */
-		switch (hdr->GetGroup()) {
-			/* Virtual Terminal Objects */
-		case 113:
-			this->SelectVtoEvents(PC_ALL_EVENTS, Group113Var0::Inst(), GetEventCount(hdr.info()));
-			continue;
-		default:
-			/*
-			 * Note: the next switch statement's default statement will
-			 * catch unknown object types.
-			 */
-			break;
-		}
-
+		
 		/* Handle all of the objects that have a Group/Variation tuple */
 		switch (MACRO_DNP_RADIX(hdr->GetGroup(), hdr->GetVariation())) {
 
@@ -272,27 +249,7 @@ void ResponseContext::SelectEvents(PointClass aClass, size_t aNum)
 
 	remain -= this->SelectEvents(aClass, mpRspTypes->mpEventBinary, mBinaryEvents, remain);
 	remain -= this->SelectEvents(aClass, mpRspTypes->mpEventAnalog, mAnalogEvents, remain);
-	remain -= this->SelectEvents(aClass, mpRspTypes->mpEventCounter, mCounterEvents, remain);
-	remain -= this->SelectVtoEvents(aClass, mpRspTypes->mpEventVto, remain);
-}
-
-size_t ResponseContext::SelectVtoEvents(PointClass aClass, const SizeByVariationObject* apObj, size_t aNum)
-{
-	// only select as many messages we are likley to be able to send
-	// TODO: remove MAX_VTO_EVENTS once eventbuffer is fixed so selecting/adding/deselecting events keeps same size
-	const size_t MAX_VTO_EVENTS = 7;
-
-	size_t selectable = Min<size_t>(aNum, MAX_VTO_EVENTS);
-	size_t num = mBuffer.Select(BufferType::VTO, aClass, selectable);
-
-	LOG_BLOCK(LogLevel::Interpret, "Selected: " << num << " vto events");
-
-	if (num > 0) {
-		VtoEventRequest r(apObj, aNum);
-		this->mVtoEvents.push_back(r);
-	}
-
-	return num;
+	remain -= this->SelectEvents(aClass, mpRspTypes->mpEventCounter, mCounterEvents, remain);	
 }
 
 void ResponseContext::LoadResponse(APDU& arAPDU)
@@ -337,84 +294,9 @@ bool ResponseContext::LoadEventData(APDU& arAPDU)
 {
 	if (!this->LoadEvents<Binary>(arAPDU, mBinaryEvents)) return false;
 	if (!this->LoadEvents<Analog>(arAPDU, mAnalogEvents)) return false;
-	if (!this->LoadEvents<Counter>(arAPDU, mCounterEvents)) return false;
-	if (!this->LoadVtoEvents(arAPDU)) return false;
+	if (!this->LoadEvents<Counter>(arAPDU, mCounterEvents)) return false;	
 
 	return true;
-}
-
-bool ResponseContext::LoadVtoEvents(APDU& arAPDU)
-{
-	VtoDataEventIter itr;
-	mBuffer.Begin(itr);
-	size_t remain = mBuffer.NumSelected(BufferType::VTO);
-
-	while (this->mVtoEvents.size() > 0) {
-		/* Get the number of events requested */
-		VtoEventRequest& r = this->mVtoEvents.front();
-
-		if (r.count > remain) {
-			r.count = remain;
-		}
-
-		size_t written = this->IterateIndexed(r, itr, arAPDU);
-		remain -= written;
-
-		if (written > 0) {
-			/* At least one event was loaded */
-			this->mLoadedEventData = true;
-		}
-
-		if (written == r.count) {
-			/* all events were written, finished with request */
-			this->mVtoEvents.pop_front();
-		}
-		else {
-			/* more event data remains in the queue */
-			r.count -= written;
-			return false;
-		}
-	}
-
-	return true;	// the queue has been exhausted on this iteration
-}
-
-size_t ResponseContext::IterateIndexed(VtoEventRequest& arRequest, VtoDataEventIter& arIter, APDU& arAPDU)
-{
-	for (size_t i = 0; i < arRequest.count; ++i) {
-		IndexedWriteIterator itr = arAPDU.WriteIndexed(
-		                                   arRequest.pObj,
-		                                   arIter->mValue.GetSize(),
-		                                   arIter->mIndex
-		                           );
-
-		/*
-		 * Check to see if the APDU fragment has enough room for the
-		 * data segment.  If the fragment is full, return out of this
-		 * function and let the fragment send.
-		 */
-		if (itr.IsEnd()) {
-			return i;
-		}
-
-		/* Set the object index */
-		itr.SetIndex(arIter->mIndex);
-
-		/* Write the data to the APDU message */
-		arRequest.pObj->Write(
-		        *itr,
-		        arIter->mValue.GetSize(),
-				arIter->mValue.Data()
-		);
-
-		/* Mark the data segment as being written */
-		arIter->mWritten = true;
-
-		/* Move to the next data segment in the reader buffer */
-		++arIter;
-	}
-
-	return arRequest.count; // all requested events were written
 }
 
 bool ResponseContext::IsEmpty()

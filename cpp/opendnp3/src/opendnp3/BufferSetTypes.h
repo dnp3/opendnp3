@@ -39,7 +39,7 @@ struct IndexSet {
 	struct LessThanByIndex {
 		// Const to fix VS compilation bug
 		bool operator()(const T& a, const T& b) const {
-			return a.mIndex < b.mIndex;
+			return a.index < b.index;
 		}
 	};
 	typedef std::set< T, LessThanByIndex > Type;
@@ -50,7 +50,7 @@ template <class T>
 struct TimeMultiSet {
 	struct LessThanByTime {
 		bool operator()(const T& a, const T& b) const {
-			return a.mValue.GetTime() < b.mValue.GetTime();
+			return a.value.GetTime() < b.value.GetTime();
 		}
 	};
 

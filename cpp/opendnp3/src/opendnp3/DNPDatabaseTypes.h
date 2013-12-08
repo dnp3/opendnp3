@@ -24,8 +24,7 @@
 #include <opendnp3/DataTypes.h>
 #include <opendnp3/PointClass.h>
 #include <opendnp3/VTOData.h>
-
-
+#include <opendnp3/IndexedValue.h>
 
 #include <vector>
 
@@ -33,26 +32,22 @@ namespace opendnp3
 {
 
 /**
- * Common base class for point information and associated meta-data needed for
- * processing it.  The common base class allows some common operations to be
- * performed on static and event types.
+ * Record of an event that includes value, index, and class
  */
 template<typename T>
-struct PointInfoBase {
-	PointInfoBase(const T& arValue, PointClass aClass, size_t aIndex) :
-		mValue(arValue),
-		mClass(aClass),
-		mIndex(aIndex)
+class Event : public IndexedValue<T>
+{
+	public:
+
+	 Event(const T& arValue, uint32_t aIndex, PointClass aClass) :
+		IndexedValue(arValue, aIndex),		
+		clazz(aClass)
 	{}
 
-	PointInfoBase() :
-		mClass(PC_CLASS_0),
-		mIndex(0)
+	Event() : clazz(PC_CLASS_0)
 	{}
-
-	T mValue;			// current measurment (i.e. Binary, Analog, etc)
-	PointClass mClass;	// class of the point (PC_CLASS<0-3>)
-	size_t mIndex;		// index of the measurement
+	
+	PointClass clazz;	// class of the point (PC_CLASS<0-3>)
 
 	typedef T MeasType;
 };
@@ -62,18 +57,18 @@ struct PointInfoBase {
  * event value to the base class.
  */
 template<typename T>
-struct PointInfo : public PointInfoBase<T> {
+struct PointInfo : public Event<T> {
 	
 	PointInfo(const T& arVal, PointClass aClass, size_t aIndex) :
-		PointInfoBase<T>(arVal, aClass, aIndex),
-		mDeadband(0)
+		Event<T>(arVal, aIndex, aClass),
+		deadband(0)
 	{}
 
-	PointInfo() : mDeadband(0)
+	PointInfo() : deadband(0)
 	{}
 
-	double mDeadband;	// deadband associated with measurement (optional)
-	T mLastEvent;		// the last value that was reported	
+	double deadband;	// deadband associated with measurement (optional)
+	T lastEvent;		// the last value that was reported	
 };
 
 template <class DataInfoType>
@@ -84,15 +79,15 @@ struct StaticIter {
 typedef PointInfo<Binary>				BinaryInfo;
 typedef PointInfo<Analog>				AnalogInfo;
 typedef PointInfo<Counter>				CounterInfo;
-typedef PointInfo<ControlStatus>			ControlStatusInfo;
-typedef PointInfo<SetpointStatus>			SetpointStatusInfo;
-typedef PointInfoBase<VtoData>				VtoDataInfo;
+typedef PointInfo<ControlStatus>		ControlStatusInfo;
+typedef PointInfo<SetpointStatus>		SetpointStatusInfo;
+
 
 typedef StaticIter<BinaryInfo>::Type			BinaryIterator;
 typedef StaticIter<AnalogInfo>::Type			AnalogIterator;
 typedef StaticIter<CounterInfo>::Type			CounterIterator;
 typedef StaticIter<ControlStatusInfo>::Type		ControlIterator;
-typedef StaticIter<SetpointStatusInfo>::Type		SetpointIterator;
+typedef StaticIter<SetpointStatusInfo>::Type	SetpointIterator;
 
 } //end namespace
 

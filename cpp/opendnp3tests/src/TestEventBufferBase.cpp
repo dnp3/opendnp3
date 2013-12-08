@@ -35,7 +35,7 @@ template <class T>
 struct SetWrapper {
 	struct ValueOrder {
 		bool operator()(const T& a, const T& b) {
-			return a.mValue < b.mValue;
+			return a.value < b.value;
 		}
 	};
 

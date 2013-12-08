@@ -87,14 +87,14 @@ void SingleEventBuffer<EventType> :: _Update(const EventType& arEvent)
 	typename IndexSet< EventType >::Type::iterator i = this->mEventSet.find(arEvent);
 
 	if(i != this->mEventSet.end() ) {
-		if(arEvent.mValue.GetTime() >= i->mValue.GetTime()) {
+		if(arEvent.value.GetTime() >= i->value.GetTime()) {
 			this->mEventSet.erase(i);
 			this->mEventSet.insert(arEvent); //new event
 		}
 	}
 	else {
 		this->mEventSet.insert(arEvent); //new event
-		this->mCounter.IncrCount(arEvent.mClass);
+		this->mCounter.IncrCount(arEvent.clazz);
 	}
 }
 

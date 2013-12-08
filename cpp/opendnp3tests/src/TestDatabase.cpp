@@ -51,8 +51,8 @@ void TestBufferForEvent(bool aIsEvent, const T& arNewVal, DatabaseTestObject& te
 
 	if(aIsEvent) {
 		BOOST_REQUIRE_EQUAL(arQueue.size(), 1);
-		BOOST_REQUIRE(arNewVal == arQueue.front().mValue);
-		BOOST_REQUIRE_EQUAL(0, arQueue.front().mIndex);
+		BOOST_REQUIRE(arNewVal == arQueue.front().value);
+		BOOST_REQUIRE_EQUAL(0, arQueue.front().index);
 		arQueue.pop_front();
 	}
 	else {

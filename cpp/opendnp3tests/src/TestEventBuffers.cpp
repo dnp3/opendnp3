@@ -48,7 +48,7 @@ BOOST_AUTO_TEST_CASE(SingleIndexSorting)
 
 	BOOST_REQUIRE_EQUAL(b.Size(), 2);
 	b.Select(PC_CLASS_1);
-	BOOST_REQUIRE_EQUAL(b.Begin()->mValue.GetTime(), 2); //prove the newest value was kept
+	BOOST_REQUIRE_EQUAL(b.Begin()->value.GetTime(), 2); //prove the newest value was kept
 }
 BOOST_AUTO_TEST_SUITE_END()
 
@@ -72,7 +72,7 @@ BOOST_AUTO_TEST_CASE(InsertionOrderSorting)
 		EvtItr<intevt>::Type itr = b.Begin();
 
 		for(size_t i = 0; i < b.NumSelected(); ++i) {
-			BOOST_REQUIRE_EQUAL(itr->mValue, vals[i]);
+			BOOST_REQUIRE_EQUAL(itr->value, vals[i]);
 			++itr;
 		}
 	}
@@ -85,7 +85,7 @@ BOOST_AUTO_TEST_CASE(InsertionOrderSorting)
 		EvtItr<intevt>::Type itr = b.Begin();
 
 		for(size_t i = 0; i < b.NumSelected(); ++i) {
-			BOOST_REQUIRE_EQUAL(itr->mValue, vals[i]);
+			BOOST_REQUIRE_EQUAL(itr->value, vals[i]);
 			++itr;
 		}
 	}
@@ -124,7 +124,7 @@ BOOST_AUTO_TEST_CASE(ResetEventsProperlyOnFailure)
 
 	itr = b.Begin();
 	for (size_t i = 0; i < b.NumSelected(); ++i) {
-		const uint8_t* value = itr->mValue.Data();
+		const uint8_t* value = itr->value.Data();
 		for (size_t j = 0; j < dataSize; ++j) {
 			//		BOOST_REQUIRE_EQUAL(value[j], i);
 		}
@@ -137,7 +137,7 @@ BOOST_AUTO_TEST_CASE(ResetEventsProperlyOnFailure)
 
 	itr = b.Begin();
 	for (size_t i = 0; i < b.NumSelected(); ++i) {
-		const uint8_t* value = itr->mValue.Data();
+		const uint8_t* value = itr->value.Data();
 		for (size_t j = 0; j < dataSize; ++j) {
 //			BOOST_REQUIRE_EQUAL(value[j], i);
 		}
@@ -170,7 +170,7 @@ BOOST_AUTO_TEST_CASE(TimeBasedSorting)
 	EvtItr<BinaryEvent>::Type itr = b.Begin();
 
 	for(size_t i = 0; i < b.NumSelected(); ++i) {
-		BOOST_REQUIRE_EQUAL(itr->mValue.GetTime(), times[NUM - i - 1]); //reverse order of array above
+		BOOST_REQUIRE_EQUAL(itr->value.GetTime(), times[NUM - i - 1]); //reverse order of array above
 		++itr;
 	}
 }

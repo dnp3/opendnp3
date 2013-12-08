@@ -86,14 +86,6 @@ public:
 	 */
 	void Update(const Counter& arEvent, PointClass aClass, size_t aIndex);
 
-	/**
-	 * Adds an event to the buffer.
-	 *
-	 * @param arEvent		Event update to add to the buffer
-	 */
-	void Update(const VtoData& arEvent, PointClass aClass, size_t aIndex);
-
-	size_t NumVtoEventsAvailable();
 
 	/**
 	 * Returns the number of events that were previously selected through
@@ -146,15 +138,7 @@ public:
 	 */
 	void Begin(CounterEventIter& arIter) {
 		arIter = mCounterEvents.Begin();
-	}
-
-	/**
-	 * Provides an EvtItr iterator object for accessing the data previously
-	 * selected through SlaveEventBuffer::Select().
-	 */
-	void Begin(VtoDataEventIter& arIter) {
-		arIter = mVtoEvents.Begin();
-	}
+	}	
 
 	/**
 	 * Returns a flag to indicate whether the buffer has been overflown.
@@ -229,18 +213,6 @@ public:
 	 */
 	bool IsFull(BufferType aType);
 
-protected:
-
-	/**
-	 * Returns a pointer to the buffer for VtoEvent objects.  This is used
-	 * by the Slave::OnVtoUpdate() function to copy data from the Slave's
-	 * VtoWriter instance into the event buffer.
-	 *
-	 * @return				a pointer to the VtoEvent buffer
-	 */
-	InsertionOrderedEventBuffer<VtoEvent>* GetVtoEventBuffer() {
-		return &this->mVtoEvents;
-	}
 
 private:
 
@@ -261,12 +233,6 @@ private:
 	 * point and previous events for that point can be overridden.
 	 */
 	SingleEventBuffer<CounterEvent> mCounterEvents;
-
-	/**
-	 * A buffer for VTO data where the queue-style (FCFS) insertion
-	 * order is important.
-	 */
-	InsertionOrderedEventBuffer<VtoEvent> mVtoEvents;
 
 };
 
