@@ -26,7 +26,7 @@
 #include <opendnp3/IMeasurementHandler.h>
 #include <opendnp3/MasterScan.h>
 
-#include <openpal/Visibility.h>
+
 #include <openpal/IExecutor.h>
 #include <openpal/IUTCTimeSource.h>
 
@@ -69,7 +69,7 @@ class AMS_Base;
  *
  * Coordination of tasks is handled by a higher level task scheduler.
  */
-class DLL_LOCAL Master : public openpal::Loggable, public IAppUser, public StackBase, private ICommandProcessor
+class Master : public openpal::Loggable, public IAppUser, public StackBase, private ICommandProcessor
 {
 	friend class AMS_Base;
 	friend class AMS_Idle;

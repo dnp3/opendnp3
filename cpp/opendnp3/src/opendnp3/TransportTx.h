@@ -21,7 +21,7 @@
 #ifndef __TRANSPORT_TX_H_
 #define __TRANSPORT_TX_H_
 
-#include <openpal/Visibility.h>
+
 #include <openpal/Loggable.h>
 #include <openpal/BufferWrapper.h>
 
@@ -36,7 +36,7 @@ class TransportLayer;
 /**
 State/validation for the DNP3 transport layer's send channel.
 */
-class DLL_LOCAL TransportTx : public openpal::Loggable
+class TransportTx : public openpal::Loggable
 {
 public:
 	TransportTx(openpal::Logger&, TransportLayer*, size_t aFragSize);

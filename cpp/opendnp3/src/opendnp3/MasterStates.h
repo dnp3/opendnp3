@@ -25,7 +25,7 @@
 
 #include <opendnp3/Singleton.h>
 #include <opendnp3/ObjectInterfaces.h>
-#include <openpal/Visibility.h>
+
 
 namespace opendnp3
 {
@@ -36,7 +36,7 @@ class Master;
 class MasterTaskBase;
 class APDU;
 
-class DLL_LOCAL AMS_Base
+class AMS_Base
 {
 public:
 
@@ -68,7 +68,7 @@ protected:
 
 /* AMS_Closed */
 
-class DLL_LOCAL AMS_Closed : public AMS_Base
+class AMS_Closed : public AMS_Base
 {
 	MACRO_STATE_SINGLETON_INSTANCE(AMS_Closed);
 
@@ -77,7 +77,7 @@ class DLL_LOCAL AMS_Closed : public AMS_Base
 
 /* AMS_OpenBase */
 
-class DLL_LOCAL AMS_OpenBase : public AMS_Base
+class AMS_OpenBase : public AMS_Base
 {
 public:
 	void OnUnsolResponse(Master*, const APDU&);
@@ -87,7 +87,7 @@ public:
 /* AMS_Idle */
 
 // The only state from which a task can be started
-class DLL_LOCAL AMS_Idle : public AMS_OpenBase
+class AMS_Idle : public AMS_OpenBase
 {
 	MACRO_STATE_SINGLETON_INSTANCE(AMS_Idle);
 
@@ -98,7 +98,7 @@ class DLL_LOCAL AMS_Idle : public AMS_OpenBase
 
 // Wait for responses or failure. Manipulates
 // the current task instance.
-class DLL_LOCAL AMS_Waiting : public AMS_OpenBase
+class AMS_Waiting : public AMS_OpenBase
 {
 	MACRO_STATE_SINGLETON_INSTANCE(AMS_Waiting);
 

@@ -23,7 +23,7 @@
 
 #include <opendnp3/Singleton.h>
 #include <opendnp3/APDUConstants.h>
-#include <openpal/Visibility.h>
+
 
 #include "gen/FunctionCode.h"
 
@@ -35,7 +35,7 @@ namespace opendnp3
 
 /** Represents the first byte in every APDU
 */
-struct DLL_LOCAL AppControlField {
+struct AppControlField {
 
 	AppControlField() :
 		FIR(true),
@@ -61,7 +61,7 @@ struct DLL_LOCAL AppControlField {
 
 /** DNP3 two-byte IIN field.
 */
-class DLL_LOCAL IINField
+class IINField
 {
 public:
 
@@ -150,7 +150,7 @@ enum AppHeaderTypes {
 	AHT_REQUEST
 };
 
-class DLL_LOCAL IAppHeader
+class IAppHeader
 {
 public:
 	virtual ~IAppHeader() {}
@@ -169,7 +169,7 @@ public:
 
 };
 
-class DLL_LOCAL RequestHeader : public IAppHeader
+class RequestHeader : public IAppHeader
 {
 	MACRO_SINGLETON_INSTANCE(RequestHeader)
 
@@ -181,7 +181,7 @@ class DLL_LOCAL RequestHeader : public IAppHeader
 	}
 };
 
-class DLL_LOCAL ResponseHeader : public IAppHeader
+class ResponseHeader : public IAppHeader
 {
 	MACRO_SINGLETON_INSTANCE(ResponseHeader)
 

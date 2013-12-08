@@ -23,7 +23,7 @@
 
 #include <string>
 
-#include <openpal/Visibility.h>
+
 #include <openpal/Loggable.h>
 
 
@@ -46,7 +46,7 @@ enum TaskResult {
 /**
  * A generic interface for defining master request/response style tasks.
  */
-class DLL_LOCAL MasterTaskBase : public openpal::Loggable
+class MasterTaskBase : public openpal::Loggable
 {
 public:
 
@@ -136,14 +136,14 @@ private:
 /**
 All non-read tasks that only return a single fragment can inherit from this task
 */
-class DLL_LOCAL SingleRspBase : public MasterTaskBase
+class SingleRspBase : public MasterTaskBase
 {
 public:
 	SingleRspBase(openpal::Logger&);
 	TaskResult _OnPartialResponse(const APDU&);
 };
 
-class DLL_LOCAL SimpleRspBase : public SingleRspBase
+class SimpleRspBase : public SingleRspBase
 {
 public:
 	SimpleRspBase(openpal::Logger&);

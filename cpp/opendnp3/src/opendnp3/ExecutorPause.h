@@ -21,7 +21,7 @@
 #ifndef __EXECUTOR_PAUSE_H_
 #define __EXECUTOR_PAUSE_H_
 
-#include <openpal/Visibility.h>
+
 
 #include <mutex>
 #include <condition_variable>
@@ -34,7 +34,7 @@ class IExecutor;
 namespace opendnp3
 {
 
-class DLL_LOCAL ExecutorPause
+class ExecutorPause
 {
 public:
 	ExecutorPause(openpal::IExecutor* apExecutor);

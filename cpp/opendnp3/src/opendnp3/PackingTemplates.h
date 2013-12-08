@@ -29,7 +29,7 @@ namespace opendnp3
 {
 
 template <class T, int U>
-class DLL_LOCAL Pack
+class Pack
 {
 public:
 	typename T::Type Get(const uint8_t* apBuffer) const {
@@ -50,7 +50,7 @@ public:
 };
 
 template <class T, int U, uint8_t V>
-class DLL_LOCAL PackOverRange : public Pack<T, U>
+class PackOverRange : public Pack<T, U>
 {
 public:
 	uint8_t OverRangeMask() const {
@@ -58,7 +58,7 @@ public:
 	}
 };
 
-class DLL_LOCAL BitfieldPacker
+class BitfieldPacker
 {
 public:
 	size_t GetSize(size_t aNumValues) const {

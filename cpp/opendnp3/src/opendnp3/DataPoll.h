@@ -25,7 +25,7 @@
 #include "MasterTaskBase.h"
 
 #include <functional>
-#include <openpal/Visibility.h>
+
 
 namespace opendnp3
 {
@@ -35,7 +35,7 @@ class IMeasurementHandler;
 /**
  * Base class for all data acquistion polls
  */
-class DLL_LOCAL DataPoll : public MasterTaskBase
+class DataPoll : public MasterTaskBase
 {
 public:
 
@@ -55,7 +55,7 @@ private:
 
 /** Task that acquires class data from the outstation
 */
-class DLL_LOCAL ClassPoll : public DataPoll
+class ClassPoll : public DataPoll
 {
 public:
 

@@ -35,7 +35,7 @@ namespace opendnp3
 class ILinkContext;
 
 /** @section desc A stack object for a master */
-class DLL_LOCAL OutstationStackImpl : public IOutstation
+class OutstationStackImpl : public IOutstation
 {
 public:
 

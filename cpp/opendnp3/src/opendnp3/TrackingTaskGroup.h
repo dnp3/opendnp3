@@ -21,7 +21,7 @@
 #ifndef __TRACKING_TASK_GROUP_H_
 #define __TRACKING_TASK_GROUP_H_
 
-#include <openpal/Visibility.h>
+
 #include <openpal/TimeDuration.h>
 
 #include <opendnp3/Uncopyable.h>
@@ -42,7 +42,7 @@ class AsyncTaskBase;
 /**
  Tracks all tasks that are created and releases them on destruction
 */
-class DLL_LOCAL TrackingTaskGroup
+class TrackingTaskGroup
 {
 
 public:

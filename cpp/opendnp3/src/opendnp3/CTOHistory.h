@@ -21,12 +21,12 @@
 #ifndef __CTO_HISTORY_H_
 #define __CTO_HISTORY_H_
 
-#include <openpal/Visibility.h>
+
 
 namespace opendnp3
 {
 
-class DLL_LOCAL CTOHistory
+class CTOHistory
 {
 public:
 	CTOHistory() :

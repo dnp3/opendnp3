@@ -22,7 +22,6 @@
 #define __BUFFER_TYPES_H_
 
 #include <opendnp3/MeasurementType.h>
-#include <openpal/Visibility.h>
 
 namespace opendnp3
 {
@@ -51,7 +50,7 @@ enum class BufferType {
  * 						value
  * 
  */
-BufferType DLL_LOCAL Convert(MeasurementType aType);
+BufferType Convert(MeasurementType aType);
 
 }
 

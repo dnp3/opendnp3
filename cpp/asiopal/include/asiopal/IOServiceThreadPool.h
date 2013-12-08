@@ -21,9 +21,8 @@
 #ifndef __IO_SERVICE_THREAD_POOL_
 #define __IO_SERVICE_THREAD_POOL_
 
-#include <openpal/Visibility.h>
-#include <openpal/Loggable.h>
 
+#include <openpal/Loggable.h>
 
 #include "DeadlineTimerSteadyClock.h"
 
@@ -34,7 +33,7 @@
 namespace asiopal
 {
 
-class DLL_LOCAL IOServiceThreadPool : private openpal::Loggable
+class IOServiceThreadPool : private openpal::Loggable
 {
 public:
 

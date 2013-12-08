@@ -21,7 +21,7 @@
 #ifndef __LINK_FRAME_H_
 #define __LINK_FRAME_H_
 
-#include <openpal/Visibility.h>
+
 
 #include "gen/FunctionCode.h"
 #include "LinkHeader.h"
@@ -31,7 +31,7 @@
 namespace opendnp3
 {
 
-class DLL_LOCAL LinkFrame
+class LinkFrame
 {
 	friend std::ostream& operator<<(std::ostream&, const LinkFrame&);
 	friend class FrameReaderDNP;

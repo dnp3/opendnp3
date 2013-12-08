@@ -21,7 +21,7 @@
 #ifndef __STARTUP_TASKS_H_
 #define __STARTUP_TASKS_H_
 
-#include <openpal/Visibility.h>
+
 #include <openpal/IUTCTimeSource.h>
 
 #include "MasterTaskBase.h"
@@ -33,7 +33,7 @@ namespace opendnp3
 class ITimeSource;
 
 // Clears the outstation IIN restart bit
-class DLL_LOCAL ClearRestartIIN : public SimpleRspBase
+class ClearRestartIIN : public SimpleRspBase
 {
 public:
 	ClearRestartIIN(openpal::Logger& arLogger);
@@ -47,7 +47,7 @@ public:
 };
 
 // Enables or disables unsolicited reporting
-class DLL_LOCAL ConfigureUnsol : public SimpleRspBase
+class ConfigureUnsol : public SimpleRspBase
 {
 public:
 	ConfigureUnsol(openpal::Logger&);
@@ -67,7 +67,7 @@ private:
 };
 
 // Synchronizes the time on the outstation
-class DLL_LOCAL TimeSync : public SingleRspBase
+class TimeSync : public SingleRspBase
 {
 public:
 	TimeSync(openpal::Logger&, openpal::IUTCTimeSource*);

@@ -23,13 +23,13 @@
 
 #include "IFrameSink.h"
 
-#include <openpal/Visibility.h>
+
 
 namespace opendnp3
 {
 
 // @section DESCRIPTION Interface from the link router to the link layer
-class DLL_LOCAL ILinkContext : public IFrameSink
+class ILinkContext : public IFrameSink
 {
 public:
 

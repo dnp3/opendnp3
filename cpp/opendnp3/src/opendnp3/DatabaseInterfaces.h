@@ -23,13 +23,13 @@
 
 #include "DNPDatabaseTypes.h"
 
-#include <openpal/Visibility.h>
+
 
 namespace opendnp3
 {
 
 // @section desc Used by the database
-class DLL_LOCAL IEventBuffer
+class IEventBuffer
 {
 public:
 

@@ -21,7 +21,7 @@
 #ifndef __BUFFER_SET_TYPES_H_
 #define __BUFFER_SET_TYPES_H_
 
-#include <openpal/Visibility.h>
+
 
 #include <map>
 #include <set>
@@ -35,7 +35,7 @@ namespace opendnp3
 
 // Set that forces data exclusivity by index
 template <class T>
-struct DLL_LOCAL IndexSet {
+struct IndexSet {
 	struct LessThanByIndex {
 		// Const to fix VS compilation bug
 		bool operator()(const T& a, const T& b) const {
@@ -47,7 +47,7 @@ struct DLL_LOCAL IndexSet {
 
 //  Multiset that orders data by order by timestamp, multi-entries allowed
 template <class T>
-struct DLL_LOCAL TimeMultiSet {
+struct TimeMultiSet {
 	struct LessThanByTime {
 		bool operator()(const T& a, const T& b) const {
 			return a.mValue.GetTime() < b.mValue.GetTime();
@@ -61,7 +61,7 @@ struct DLL_LOCAL TimeMultiSet {
 	The last event value has been hijacked here for use with VTO.
 */
 template <class T>
-struct DLL_LOCAL InsertionOrderSet {
+struct InsertionOrderSet {
 	struct InsertionOrder {
 		bool operator()(const T& a, const T& b) const {
 			return a.mSequence < b.mSequence;

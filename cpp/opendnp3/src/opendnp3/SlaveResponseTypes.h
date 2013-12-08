@@ -25,7 +25,7 @@
 #include <opendnp3/DataTypes.h>
 #include <opendnp3/SlaveConfig.h>
 
-#include <openpal/Visibility.h>
+
 
 namespace opendnp3
 {
@@ -34,7 +34,7 @@ namespace opendnp3
  * Reads a slave config object and and translates the configuration to
  * singletons.
  */
-class DLL_LOCAL SlaveResponseTypes
+class SlaveResponseTypes
 {
 public:
 

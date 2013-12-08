@@ -21,7 +21,7 @@
 #ifndef __DNP_FROM_STREAM_H_
 #define __DNP_FROM_STREAM_H_
 
-#include <openpal/Visibility.h>
+
 
 #ifdef WIN32
 //disable the type converstion warnings
@@ -36,7 +36,7 @@ namespace opendnp3
 	Used in the dnp3 object definitions to define how
 	they deserialize themeselves.
 */
-class DLL_LOCAL DNPFromStream
+class DNPFromStream
 {
 public:
 

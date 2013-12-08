@@ -25,7 +25,7 @@
 
 #include <openpal/Exception.h>
 #include <openpal/Location.h>
-#include <openpal/Visibility.h>
+
 
 #include "CopyableBuffer.h"
 #include "AppHeader.h"
@@ -50,7 +50,7 @@ namespace opendnp3
 	Interpret method and read iterators form the read interface, while Set
 	method and object write iterators form the write interface.
 */
-class DLL_LOCAL APDU
+class APDU
 {
 
 public:

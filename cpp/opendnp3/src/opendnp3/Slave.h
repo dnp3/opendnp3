@@ -25,7 +25,7 @@
 #include <opendnp3/ITimeWriteHandler.h>
 #include <opendnp3/SlaveConfig.h>
 
-#include <openpal/Visibility.h>
+
 #include <openpal/ITimer.h>
 
 #include "StackBase.h"
@@ -69,7 +69,7 @@ class AS_Base;
  * The Slave is responsible for building all aspects of APDU packet responses
  * except for the application sequence number.
  */
-class DLL_LOCAL Slave : public openpal::Loggable, public IAppUser, public StackBase
+class Slave : public openpal::Loggable, public IAppUser, public StackBase
 {
 
 	friend class AS_Base; //make the state base class a friend

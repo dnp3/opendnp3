@@ -21,9 +21,7 @@
 #ifndef __ASYNC_TASK_GROUP_H_
 #define __ASYNC_TASK_GROUP_H_
 
-
 #include <opendnp3/Uncopyable.h>
-#include <openpal/Visibility.h>
 #include <openpal/MonotonicTimestamp.h>
 
 #include "AsyncTaskInterfaces.h"
@@ -50,7 +48,7 @@ class ITimeSource;
 /**
  A collection of related tasks with optional dependencies
 */
-class DLL_LOCAL AsyncTaskGroup : private Uncopyable
+class AsyncTaskGroup : private Uncopyable
 {
 	friend class AsyncTaskBase;
 	friend class AsyncTaskContinuous;

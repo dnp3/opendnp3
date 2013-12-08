@@ -22,7 +22,7 @@
 #define __OUTSTATION_SBO_HANDLER_H_
 
 #include <openpal/Location.h>
-#include <openpal/Visibility.h>
+
 #include <openpal/TimeDuration.h>
 #include <openpal/IExecutor.h>
 
@@ -36,7 +36,7 @@
 namespace opendnp3
 {
 
-class DLL_LOCAL OutstationSBOHandler
+class OutstationSBOHandler
 {
 
 	template <class T>

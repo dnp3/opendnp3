@@ -21,7 +21,7 @@
 #ifndef __STACK_BASE_H_
 #define __STACK_BASE_H_
 
-#include <openpal/Visibility.h>
+
 #include <opendnp3/gen/StackState.h>
 
 #include <functional>
@@ -35,7 +35,7 @@ class IExecutor;
 namespace opendnp3
 {
 
-class DLL_LOCAL StackBase
+class StackBase
 {
 public:
 	StackBase(openpal::IExecutor* apExecutor);

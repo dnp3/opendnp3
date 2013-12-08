@@ -32,7 +32,7 @@
 #include "ILinkRouter.h"
 #include "LinkRoute.h"
 
-#include <openpal/Visibility.h>
+
 
 namespace openpal
 {
@@ -48,7 +48,7 @@ class LinkFrame;
 //	Implements the parsing and de-multiplexing portion of
 //	of DNP 3 Data Link Layer. PhysicalLayerMonitor inherits
 // from IHandlerAsync, which inherits from IUpperLayer
-class DLL_LOCAL LinkLayerRouter : public PhysicalLayerMonitor, public IFrameSink, public ILinkRouter
+class LinkLayerRouter : public PhysicalLayerMonitor, public IFrameSink, public ILinkRouter
 {
 public:
 

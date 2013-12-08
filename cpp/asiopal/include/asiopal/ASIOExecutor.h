@@ -23,7 +23,7 @@
 
 #include <openpal/Exception.h>
 #include <openpal/IExecutor.h>
-#include <openpal/Visibility.h>
+
 
 #include <queue>
 
@@ -37,7 +37,7 @@ namespace asiopal
 
 class TimerASIO;
 
-class DLL_LOCAL ASIOExecutor : public openpal::IExecutor
+class ASIOExecutor : public openpal::IExecutor
 {
 
 public:

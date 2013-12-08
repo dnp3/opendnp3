@@ -24,14 +24,14 @@
 #include "TLS_Base.h"
 
 #include <opendnp3/Singleton.h>
-#include <openpal/Visibility.h>
+
 
 namespace opendnp3
 {
 
 /** Represents the closed state, only come online
 */
-class DLL_LOCAL TLS_Closed : public TLS_Base
+class TLS_Closed : public TLS_Base
 {
 	MACRO_STATE_SINGLETON_INSTANCE(TLS_Closed);
 
@@ -40,7 +40,7 @@ class DLL_LOCAL TLS_Closed : public TLS_Base
 
 /** Represents the ready state
 */
-class DLL_LOCAL TLS_Ready : public TLS_Base
+class TLS_Ready : public TLS_Base
 {
 	MACRO_STATE_SINGLETON_INSTANCE(TLS_Ready);
 
@@ -51,7 +51,7 @@ class DLL_LOCAL TLS_Ready : public TLS_Base
 
 /** Represents the sending state
 */
-class DLL_LOCAL TLS_Sending : public TLS_Base
+class TLS_Sending : public TLS_Base
 {
 	MACRO_STATE_SINGLETON_INSTANCE(TLS_Sending);
 

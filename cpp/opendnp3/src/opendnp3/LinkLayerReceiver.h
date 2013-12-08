@@ -22,10 +22,10 @@
 #define __LINK_LAYER_RECEIVER_H_
 
 
-#include <opendnp3/DNPConstants.h>
-#include <openpal/Visibility.h>
 #include <openpal/Loggable.h>
 #include <openpal/BufferWrapper.h>
+
+#include <opendnp3/DNPConstants.h>
 
 #include "ShiftableBuffer.h"
 #include "LinkFrame.h"
@@ -40,7 +40,7 @@ class LRS_Base;
 
 /** Parses incoming ft3 frames for the link layer router.
 */
-class DLL_LOCAL LinkLayerReceiver : public openpal::Loggable
+class LinkLayerReceiver : public openpal::Loggable
 {
 	static const size_t BUFFER_SIZE = (4096 / 249 + 1) * 292;
 

@@ -23,7 +23,7 @@
 
 #include <queue>
 
-#include <openpal/Visibility.h>
+
 #include <openpal/AsyncLayerInterfaces.h>
 #include <openpal/IExecutor.h>
 
@@ -40,7 +40,7 @@ class PriStateBase;
 class SecStateBase;
 
 //	@section desc Implements the contextual state of DNP3 Data Link Layer
-class DLL_LOCAL LinkLayer : public openpal::ILowerLayer, public ILinkContext
+class LinkLayer : public openpal::ILowerLayer, public ILinkContext
 {
 public:
 

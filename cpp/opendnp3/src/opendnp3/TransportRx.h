@@ -23,7 +23,7 @@
 
 #include <opendnp3/TransportConstants.h>
 
-#include <openpal/Visibility.h>
+
 #include <openpal/Loggable.h>
 #include <openpal/BufferWrapper.h>
 
@@ -37,7 +37,7 @@ class TransportLayer;
 /**
 State/validation for the DNP3 transport layer's receive channel.
 */
-class DLL_LOCAL TransportRx : public openpal::Loggable
+class TransportRx : public openpal::Loggable
 {
 public:
 	TransportRx(openpal::Logger&, TransportLayer*, size_t aFragSize);

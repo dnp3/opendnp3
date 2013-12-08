@@ -29,12 +29,12 @@
 #include <set>
 
 #include <openpal/LogBase.h>
-#include <openpal/Visibility.h>
+
 
 namespace asiopal
 {
 
-class DLL_LOCAL EventLog : public openpal::ILogBase
+class EventLog : public openpal::ILogBase
 {
 public:
 

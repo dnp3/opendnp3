@@ -23,7 +23,7 @@
 
 #include <opendnp3/Singleton.h>
 #include <opendnp3/gen/ChannelState.h>
-#include <openpal/Visibility.h>
+
 
 #include "PhysicalLayerMonitor.h"
 
@@ -40,7 +40,7 @@ class PhysicalLayerMonitor;
 
 /* --- Base classes --- */
 
-class DLL_LOCAL IMonitorState
+class IMonitorState
 {
 public:
 
@@ -67,7 +67,7 @@ public:
 
 };
 
-class DLL_LOCAL MonitorStateActions
+class MonitorStateActions
 {
 public:
 
@@ -78,74 +78,74 @@ public:
 	static void AsyncOpen(PhysicalLayerMonitor* apContext);
 };
 
-class DLL_LOCAL ExceptsOnLayerOpen : public virtual IMonitorState
+class ExceptsOnLayerOpen : public virtual IMonitorState
 {
 public:
 	void OnLayerOpen(PhysicalLayerMonitor* apContext);
 };
 
-class DLL_LOCAL NotOpening : public ExceptsOnLayerOpen
+class NotOpening : public ExceptsOnLayerOpen
 {
 public:
 	void OnOpenFailure(PhysicalLayerMonitor* apContext);
 };
 
-class DLL_LOCAL NotOpen : public virtual IMonitorState
+class NotOpen : public virtual IMonitorState
 {
 public:
 	void OnLayerClose(PhysicalLayerMonitor* apContext);
 };
 
-class DLL_LOCAL NotWaitingForTimer : public virtual IMonitorState
+class NotWaitingForTimer : public virtual IMonitorState
 {
 public:
 	void OnOpenTimeout(PhysicalLayerMonitor* apContext);
 };
 
-class DLL_LOCAL IgnoresClose : public virtual IMonitorState
+class IgnoresClose : public virtual IMonitorState
 {
 public:
 	void OnCloseRequest(PhysicalLayerMonitor* apContext);
 };
 
-class DLL_LOCAL IgnoresSuspend : public virtual IMonitorState
+class IgnoresSuspend : public virtual IMonitorState
 {
 public:
 	void OnSuspendRequest(PhysicalLayerMonitor* apContext);
 };
 
-class DLL_LOCAL StartsOnClose : public virtual IMonitorState
+class StartsOnClose : public virtual IMonitorState
 {
 public:
 	void OnLayerClose(PhysicalLayerMonitor* apContext);
 };
 
-class DLL_LOCAL IgnoresShutdown : public virtual IMonitorState
+class IgnoresShutdown : public virtual IMonitorState
 {
 public:
 	void OnShutdownRequest(PhysicalLayerMonitor* apContext);
 };
 
-class DLL_LOCAL IgnoresStart : public virtual IMonitorState
+class IgnoresStart : public virtual IMonitorState
 {
 public:
 	void OnStartRequest(PhysicalLayerMonitor* apContext);
 };
 
-class DLL_LOCAL IgnoresStartOne : public virtual IMonitorState
+class IgnoresStartOne : public virtual IMonitorState
 {
 public:
 	void OnStartOneRequest(PhysicalLayerMonitor* apContext);
 };
 
-class DLL_LOCAL OpenFailureCausesWait : public virtual IMonitorState
+class OpenFailureCausesWait : public virtual IMonitorState
 {
 public:
 	void OnOpenFailure(PhysicalLayerMonitor* apContext);
 };
 
 template <class T>
-class DLL_LOCAL OpenFailureGoesToState : public virtual IMonitorState
+class OpenFailureGoesToState : public virtual IMonitorState
 {
 public:
 	void OnOpenFailure(PhysicalLayerMonitor* apContext);
@@ -158,7 +158,7 @@ public:
 #pragma warning(disable:4250)
 #endif
 
-class DLL_LOCAL MonitorStateWaitingBase : public virtual IMonitorState,
+class MonitorStateWaitingBase : public virtual IMonitorState,
 	private NotOpening, private NotOpen, private IgnoresClose
 {
 	void OnSuspendRequest(PhysicalLayerMonitor* apContext);
@@ -167,7 +167,7 @@ class DLL_LOCAL MonitorStateWaitingBase : public virtual IMonitorState,
 
 /* --- Concrete classes --- */
 
-class DLL_LOCAL MonitorStateShutdown : public virtual IMonitorState,
+class MonitorStateShutdown : public virtual IMonitorState,
 	private NotOpening,
 	private NotOpen,
 	private NotWaitingForTimer,
@@ -180,7 +180,7 @@ class DLL_LOCAL MonitorStateShutdown : public virtual IMonitorState,
 	MACRO_MONITOR_SINGLETON(MonitorStateShutdown, ChannelState::SHUTDOWN, true);
 };
 
-class DLL_LOCAL MonitorStateSuspendedBase : public virtual IMonitorState,
+class MonitorStateSuspendedBase : public virtual IMonitorState,
 	private NotOpening,
 	private NotOpen,
 	private NotWaitingForTimer,
@@ -193,17 +193,17 @@ class DLL_LOCAL MonitorStateSuspendedBase : public virtual IMonitorState,
 };
 
 
-class DLL_LOCAL MonitorStateSuspended : public MonitorStateSuspendedBase
+class MonitorStateSuspended : public MonitorStateSuspendedBase
 {
 	MACRO_MONITOR_SINGLETON(MonitorStateSuspended, ChannelState::CLOSED, false);
 };
 
-class DLL_LOCAL MonitorStateInit : public MonitorStateSuspendedBase
+class MonitorStateInit : public MonitorStateSuspendedBase
 {
 	MACRO_MONITOR_SINGLETON(MonitorStateInit, ChannelState::CLOSED, false);
 };
 
-class DLL_LOCAL MonitorStateOpeningBase : public virtual IMonitorState,
+class MonitorStateOpeningBase : public virtual IMonitorState,
 	private NotOpen,
 	private NotWaitingForTimer
 {
@@ -212,7 +212,7 @@ class DLL_LOCAL MonitorStateOpeningBase : public virtual IMonitorState,
 };
 
 
-class DLL_LOCAL MonitorStateOpening : public MonitorStateOpeningBase,
+class MonitorStateOpening : public MonitorStateOpeningBase,
 	private OpenFailureCausesWait,
 	private IgnoresStart
 {
@@ -223,7 +223,7 @@ class DLL_LOCAL MonitorStateOpening : public MonitorStateOpeningBase,
 	void OnLayerOpen(PhysicalLayerMonitor* apContext);
 };
 
-class DLL_LOCAL MonitorStateOpeningOne : public MonitorStateOpeningBase,
+class MonitorStateOpeningOne : public MonitorStateOpeningBase,
 	private IgnoresStartOne
 {
 	MACRO_MONITOR_SINGLETON(MonitorStateOpeningOne, ChannelState::OPENING, false);
@@ -234,7 +234,7 @@ class DLL_LOCAL MonitorStateOpeningOne : public MonitorStateOpeningBase,
 	void OnLayerOpen(PhysicalLayerMonitor* apContext);
 };
 
-class DLL_LOCAL MonitorStateOpeningClosing : public virtual IMonitorState,
+class MonitorStateOpeningClosing : public virtual IMonitorState,
 	private NotOpen,
 	private NotWaitingForTimer,
 	private ExceptsOnLayerOpen,
@@ -249,7 +249,7 @@ class DLL_LOCAL MonitorStateOpeningClosing : public virtual IMonitorState,
 	void OnSuspendRequest(PhysicalLayerMonitor* apContext);
 };
 
-class DLL_LOCAL MonitorStateOpeningStopping : public virtual IMonitorState,
+class MonitorStateOpeningStopping : public virtual IMonitorState,
 	private NotOpen,
 	private NotWaitingForTimer,
 	private ExceptsOnLayerOpen,
@@ -263,7 +263,7 @@ class DLL_LOCAL MonitorStateOpeningStopping : public virtual IMonitorState,
 	MACRO_MONITOR_SINGLETON(MonitorStateOpeningStopping, ChannelState::OPENING, true);
 };
 
-class DLL_LOCAL MonitorStateOpeningSuspending : public virtual IMonitorState,
+class MonitorStateOpeningSuspending : public virtual IMonitorState,
 	private NotOpen,
 	private NotWaitingForTimer,
 	private ExceptsOnLayerOpen,
@@ -278,7 +278,7 @@ class DLL_LOCAL MonitorStateOpeningSuspending : public virtual IMonitorState,
 	void OnShutdownRequest(PhysicalLayerMonitor* apContext);
 };
 
-class DLL_LOCAL MonitorStateOpen : public virtual IMonitorState,
+class MonitorStateOpen : public virtual IMonitorState,
 	private NotOpening,
 	private NotWaitingForTimer,
 	private IgnoresStart,
@@ -292,7 +292,7 @@ class DLL_LOCAL MonitorStateOpen : public virtual IMonitorState,
 	void OnShutdownRequest(PhysicalLayerMonitor* apContext);
 };
 
-class DLL_LOCAL MonitorStateOpenOne : public virtual IMonitorState,
+class MonitorStateOpenOne : public virtual IMonitorState,
 	private NotOpening,
 	private NotWaitingForTimer,
 	private IgnoresStartOne
@@ -306,7 +306,7 @@ class DLL_LOCAL MonitorStateOpenOne : public virtual IMonitorState,
 	void OnShutdownRequest(PhysicalLayerMonitor* apContext);
 };
 
-class DLL_LOCAL MonitorStateWaiting : public MonitorStateWaitingBase, private IgnoresStart
+class MonitorStateWaiting : public MonitorStateWaitingBase, private IgnoresStart
 {
 	MACRO_MONITOR_SINGLETON(MonitorStateWaiting, ChannelState::WAITING, false);
 
@@ -314,7 +314,7 @@ class DLL_LOCAL MonitorStateWaiting : public MonitorStateWaitingBase, private Ig
 	void OnOpenTimeout(PhysicalLayerMonitor* apContext);
 };
 
-class DLL_LOCAL MonitorStateWaitingOne : public MonitorStateWaitingBase, private IgnoresStartOne
+class MonitorStateWaitingOne : public MonitorStateWaitingBase, private IgnoresStartOne
 {
 	MACRO_MONITOR_SINGLETON(MonitorStateWaitingOne, ChannelState::WAITING, false);
 
@@ -322,7 +322,7 @@ class DLL_LOCAL MonitorStateWaitingOne : public MonitorStateWaitingBase, private
 	void OnOpenTimeout(PhysicalLayerMonitor* apContext);
 };
 
-class DLL_LOCAL MonitorStateClosing : public virtual IMonitorState,
+class MonitorStateClosing : public virtual IMonitorState,
 	private NotOpening, private NotWaitingForTimer, private IgnoresStart, private IgnoresClose, private StartsOnClose
 {
 	MACRO_MONITOR_SINGLETON(MonitorStateClosing, ChannelState::CLOSED, false);
@@ -332,7 +332,7 @@ class DLL_LOCAL MonitorStateClosing : public virtual IMonitorState,
 	void OnShutdownRequest(PhysicalLayerMonitor* apContext);
 };
 
-class DLL_LOCAL MonitorStateSuspending : public virtual IMonitorState,
+class MonitorStateSuspending : public virtual IMonitorState,
 	private NotOpening, private NotWaitingForTimer, private IgnoresClose, private IgnoresSuspend, private IgnoresStartOne
 {
 	MACRO_MONITOR_SINGLETON(MonitorStateSuspending, ChannelState::CLOSED, false);
@@ -342,7 +342,7 @@ class DLL_LOCAL MonitorStateSuspending : public virtual IMonitorState,
 	void OnShutdownRequest(PhysicalLayerMonitor* apContext);
 };
 
-class DLL_LOCAL MonitorStateShutingDown : public virtual IMonitorState,
+class MonitorStateShutingDown : public virtual IMonitorState,
 	private NotOpening,
 	private NotWaitingForTimer,
 	private IgnoresStart,
@@ -357,7 +357,7 @@ class DLL_LOCAL MonitorStateShutingDown : public virtual IMonitorState,
 };
 
 template <class T>
-void DLL_LOCAL OpenFailureGoesToState<T>::OnOpenFailure(PhysicalLayerMonitor* apContext)
+void OpenFailureGoesToState<T>::OnOpenFailure(PhysicalLayerMonitor* apContext)
 {
 	MonitorStateActions::ChangeState(apContext, T::Inst());
 }

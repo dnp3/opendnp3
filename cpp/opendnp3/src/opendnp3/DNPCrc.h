@@ -21,7 +21,7 @@
 #ifndef __DNP_CRC_H_
 #define __DNP_CRC_H_
 
-#include <openpal/Visibility.h>
+
 
 #include <stddef.h>
 #include <cstdint>
@@ -29,7 +29,7 @@
 namespace opendnp3
 {
 
-class DLL_LOCAL DNPCrc
+class DNPCrc
 {
 public:
 

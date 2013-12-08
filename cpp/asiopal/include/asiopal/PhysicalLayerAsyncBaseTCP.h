@@ -35,7 +35,7 @@ namespace asiopal
 /**
 Common socket object and some shared implementations for server/client.
 */
-class DLL_LOCAL PhysicalLayerAsyncBaseTCP : public PhysicalLayerAsyncASIO
+class PhysicalLayerAsyncBaseTCP : public PhysicalLayerAsyncASIO
 {
 public:
 	PhysicalLayerAsyncBaseTCP(openpal::Logger&, boost::asio::io_service* apIOService);

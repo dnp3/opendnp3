@@ -37,7 +37,7 @@ namespace opendnp3
 /**
 Buffer iterator to write objects with continuous indices.
 */
-class DLL_LOCAL ObjectWriteIterator
+class ObjectWriteIterator
 {
 
 	friend class APDU;

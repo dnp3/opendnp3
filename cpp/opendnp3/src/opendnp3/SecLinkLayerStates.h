@@ -24,14 +24,14 @@
 #include <string>
 
 #include <opendnp3/Singleton.h>
-#include <openpal/Visibility.h>
+
 
 #include "LinkLayer.h"
 
 namespace opendnp3
 {
 
-class DLL_LOCAL SecStateBase
+class SecStateBase
 {
 public:
 
@@ -53,7 +53,7 @@ public:
 ////////////////////////////////////////////////////////
 //	Class SLLS_UnReset
 ////////////////////////////////////////////////////////
-class DLL_LOCAL SLLS_NotReset : public SecStateBase
+class SLLS_NotReset : public SecStateBase
 {
 	MACRO_STATE_SINGLETON_INSTANCE(SLLS_NotReset);
 
@@ -64,7 +64,7 @@ class DLL_LOCAL SLLS_NotReset : public SecStateBase
 ////////////////////////////////////////////////////////
 //	Class SLLS_Reset
 ////////////////////////////////////////////////////////
-class DLL_LOCAL SLLS_Reset : public SecStateBase
+class SLLS_Reset : public SecStateBase
 {
 	MACRO_STATE_SINGLETON_INSTANCE(SLLS_Reset);
 

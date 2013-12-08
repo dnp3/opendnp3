@@ -21,7 +21,7 @@
 #ifndef __SHIFTABLE_BUFFER_H_
 #define __SHIFTABLE_BUFFER_H_
 
-#include <openpal/Visibility.h>
+
 
 #include <stddef.h>
 #include <cstdint>
@@ -32,7 +32,7 @@ namespace opendnp3
 
 /** @section DESCRIPTION
 		Implements a buffer that can shift its contents as it is read */
-class DLL_LOCAL ShiftableBuffer
+class ShiftableBuffer
 {
 public:
 	/** @param aSize Size of the buffer in bytes */

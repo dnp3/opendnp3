@@ -22,7 +22,7 @@
 #define __DNP_TO_STREAM_H_
 
 #include <opendnp3/DataTypes.h>
-#include <openpal/Visibility.h>
+
 
 #ifdef WIN32
 //disable the type converstion warnings
@@ -33,7 +33,7 @@
 namespace opendnp3
 {
 
-class DLL_LOCAL DNPToStream
+class DNPToStream
 {
 public:
 

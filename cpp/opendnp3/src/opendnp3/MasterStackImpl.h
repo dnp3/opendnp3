@@ -23,7 +23,7 @@
 
 #include <opendnp3/IMaster.h>
 #include <opendnp3/MasterStackConfig.h>
-#include <openpal/Visibility.h>
+
 
 #include "Master.h"
 #include "ApplicationStack.h"
@@ -35,7 +35,7 @@ namespace opendnp3
 class ILinkContext;
 
 /** @section desc A stack object for a master */
-class DLL_LOCAL MasterStackImpl : public IMaster
+class MasterStackImpl : public IMaster
 {
 public:
 

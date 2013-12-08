@@ -21,7 +21,6 @@
 #ifndef __APP_LAYER_CHANNEL_H_
 #define __APP_LAYER_CHANNEL_H_
 
-#include <openpal/Visibility.h>
 #include <openpal/Loggable.h>
 #include <openpal/TimeDuration.h>
 
@@ -44,7 +43,7 @@ struct AppControlField;
 	 number and some state associated with wether it is sending, waiting
 	 for a response, etc
 */
-class DLL_LOCAL AppLayerChannel : public openpal::Loggable
+class AppLayerChannel : public openpal::Loggable
 {
 	friend class ACS_Base;
 	friend class ACS_Idle;

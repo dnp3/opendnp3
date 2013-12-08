@@ -22,7 +22,7 @@
 #define __TLS_BASE_H_
 
 #include <opendnp3/Uncopyable.h>
-#include <openpal/Visibility.h>
+
 #include <openpal/BufferWrapper.h>
 
 #include <string>
@@ -37,7 +37,7 @@ class TransportLayer;
 /**
 Base class for all TransportLayerStates (TLS)
 */
-class DLL_LOCAL TLS_Base
+class TLS_Base
 {
 public:
 	virtual void Send(const openpal::ReadOnlyBuffer& arBuffer, TransportLayer*);

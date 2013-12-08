@@ -24,7 +24,7 @@
 #include "AsyncTaskInterfaces.h"
 
 #include <opendnp3/Uncopyable.h>
-#include <openpal/Visibility.h>
+
 #include <openpal/MonotonicTimestamp.h>
 
 #include <vector>
@@ -40,7 +40,7 @@ class AsyncTaskGroup;
  * priority (for resolving ties) and task dependencies.
  *
  */
-class DLL_LOCAL AsyncTaskBase : public ITask, private Uncopyable
+class AsyncTaskBase : public ITask, private Uncopyable
 {
 	friend class AsyncTaskGroup;
 	friend class TrackingTaskGroup;

@@ -21,7 +21,7 @@
 #ifndef __I_FRAME_SINK_H_
 #define __I_FRAME_SINK_H_
 
-#include <openpal/Visibility.h>
+
 #include <openpal/BufferWrapper.h>
 
 #include <stddef.h>
@@ -31,7 +31,7 @@ namespace opendnp3
 {
 
 // @section DESCRIPTION Interface that receives parsed FT3 frame information
-class DLL_LOCAL IFrameSink
+class IFrameSink
 {
 public:
 

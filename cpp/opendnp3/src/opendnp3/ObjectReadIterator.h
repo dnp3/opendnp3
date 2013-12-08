@@ -24,7 +24,7 @@
 #include <assert.h>
 
 #include <opendnp3/ObjectInterfaces.h>
-#include <openpal/Visibility.h>
+
 
 #include "HeaderReadIterator.h"
 #include "ObjectHeader.h"
@@ -32,7 +32,7 @@
 namespace opendnp3
 {
 
-class DLL_LOCAL ObjectInfo
+class ObjectInfo
 {
 	friend class ObjectReadIterator;
 
@@ -62,7 +62,7 @@ private:
  * APDU object.  This class is usually used in conjunction with the
  * HeaderReadIterator class.
 */
-class DLL_LOCAL ObjectReadIterator
+class ObjectReadIterator
 {
 	friend class HeaderReadIterator;
 

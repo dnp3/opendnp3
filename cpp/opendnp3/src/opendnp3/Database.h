@@ -27,7 +27,7 @@
 #include <opendnp3/DNPConstants.h>
 #include <opendnp3/IDataObserver.h>
 
-#include <openpal/Visibility.h>
+
 #include <openpal/Loggable.h>
 
 #include <set>
@@ -50,7 +50,7 @@ Manages the static data model of a DNP3 slave. Dual-interface to update data poi
 
 Passes data updates to an associated event buffer for event generation/management.
 */
-class DLL_LOCAL Database : public IDataObserver, public openpal::Loggable
+class Database : public IDataObserver, public openpal::Loggable
 {
 public:
 

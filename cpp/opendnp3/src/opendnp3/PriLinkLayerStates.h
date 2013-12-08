@@ -33,7 +33,7 @@ namespace opendnp3
 
 class LinkLayer;
 
-class DLL_LOCAL PriStateBase
+class PriStateBase
 {
 public:
 
@@ -57,7 +57,7 @@ public:
 };
 
 //	@section desc Entry state for primary station
-class DLL_LOCAL PLLS_SecNotReset : public PriStateBase
+class PLLS_SecNotReset : public PriStateBase
 {
 	MACRO_STATE_SINGLETON_INSTANCE(PLLS_SecNotReset);
 	void SendUnconfirmed(LinkLayer*, const openpal::ReadOnlyBuffer& arBuffer);
@@ -65,7 +65,7 @@ class DLL_LOCAL PLLS_SecNotReset : public PriStateBase
 };
 
 //	@section desc for reset state
-class DLL_LOCAL PLLS_SecReset : public PriStateBase
+class PLLS_SecReset : public PriStateBase
 {
 	MACRO_STATE_SINGLETON_INSTANCE(PLLS_SecReset);
 	void SendUnconfirmed(LinkLayer*, const openpal::ReadOnlyBuffer& arBuffer);
@@ -73,7 +73,7 @@ class DLL_LOCAL PLLS_SecReset : public PriStateBase
 };
 
 //	@section desc As soon as we get an ACK, send the delayed pri frame
-class DLL_LOCAL PLLS_ResetLinkWait : public PriStateBase
+class PLLS_ResetLinkWait : public PriStateBase
 {
 	MACRO_STATE_SINGLETON_INSTANCE(PLLS_ResetLinkWait);
 
@@ -95,7 +95,7 @@ private:
 };
 
 //	@section desc As soon as we get an ACK, send the delayed pri frame
-class DLL_LOCAL PLLS_ConfDataWait : public PriStateBase
+class PLLS_ConfDataWait : public PriStateBase
 {
 	MACRO_STATE_SINGLETON_INSTANCE(PLLS_ConfDataWait);
 

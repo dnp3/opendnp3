@@ -25,7 +25,7 @@
 
 #include <opendnp3/VTOData.h>
 
-#include <openpal/Visibility.h>
+
 
 namespace opendnp3
 {
@@ -35,7 +35,7 @@ namespace opendnp3
  * written flag to the data member.
  */
 template<typename T>
-struct DLL_LOCAL EventInfo : public PointInfoBase<T> {
+struct EventInfo : public PointInfoBase<T> {
 	EventInfo(const T& arValue, PointClass aClass, size_t aIndex) :
 		PointInfoBase<T>(arValue, aClass, aIndex),
 		mSequence(0),
@@ -54,7 +54,7 @@ typedef EventInfo<Counter>				CounterEvent;
 typedef EventInfo<VtoData>				VtoEvent;
 
 template <typename EventType>
-struct DLL_LOCAL EvtItr {
+struct EvtItr {
 	typedef typename std::vector< EventType >::iterator Type;
 };
 

@@ -23,7 +23,6 @@
 
 #include <openpal/IHandlerAsync.h>
 #include <openpal/IExecutor.h>
-#include <openpal/Visibility.h>
 #include <openpal/TimeDuration.h>
 
 #include <opendnp3/gen/ChannelState.h>
@@ -45,7 +44,7 @@ class IMonitorState;
 
 /** Manages the lifecycle of a physical layer
   */
-class DLL_LOCAL PhysicalLayerMonitor : public openpal::IHandlerAsync
+class PhysicalLayerMonitor : public openpal::IHandlerAsync
 {
 	friend class MonitorStateActions;
 

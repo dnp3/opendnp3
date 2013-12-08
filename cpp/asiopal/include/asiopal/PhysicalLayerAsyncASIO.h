@@ -40,7 +40,7 @@ namespace asiopal
 // This is the base class for the new async physical layers. It assumes that all of the functions
 // are called from a single thread.
 
-class DLL_LOCAL PhysicalLayerAsyncASIO : public PhysicalLayerAsyncBase
+class PhysicalLayerAsyncASIO : public PhysicalLayerAsyncBase
 {
 public:
 	PhysicalLayerAsyncASIO(openpal::Logger& arLogger, boost::asio::io_service* apService) :

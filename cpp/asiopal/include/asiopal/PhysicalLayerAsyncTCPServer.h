@@ -30,7 +30,7 @@
 namespace asiopal
 {
 
-class DLL_LOCAL PhysicalLayerAsyncTCPServer : public PhysicalLayerAsyncBaseTCP
+class PhysicalLayerAsyncTCPServer : public PhysicalLayerAsyncBaseTCP
 {
 public:
 	PhysicalLayerAsyncTCPServer(

@@ -35,7 +35,7 @@ namespace asiopal
 
 /** Serial implementation of PhysicalLayerAsyncASIO
 */
-class DLL_LOCAL PhysicalLayerAsyncSerial : public PhysicalLayerAsyncASIO
+class PhysicalLayerAsyncSerial : public PhysicalLayerAsyncASIO
 {
 public:
 	PhysicalLayerAsyncSerial(openpal::Logger, boost::asio::io_service* apIOService, const SerialSettings& arSettings);

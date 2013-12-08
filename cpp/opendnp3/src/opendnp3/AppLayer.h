@@ -49,7 +49,7 @@ Implements the sequencing/confirm/response logic for the DNP3 application layer.
 
 Allows for canceling response transactions, as dictated by the spec.
 */
-class DLL_LOCAL AppLayer : public IUpperLayer, public IAppLayer
+class AppLayer : public IUpperLayer, public IAppLayer
 {
 	friend class AppLayerChannel;
 	friend class SolicitedChannel;

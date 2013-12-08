@@ -22,7 +22,7 @@
 #define __MASTER_SCHEDULE_H_
 
 #include <opendnp3/MasterConfig.h>
-#include <openpal/Visibility.h>
+
 
 #include "TrackingTaskGroup.h"
 
@@ -35,7 +35,7 @@ class Master;
  * Create all the tasks required for the Master from the AsyncTaskGroup.
  * Defines the types and the dependencies between them.
  */
-class DLL_LOCAL MasterSchedule
+class MasterSchedule
 {
 public:
 

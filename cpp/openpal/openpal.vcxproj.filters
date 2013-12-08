@@ -20,9 +20,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\openpal\Visibility.h">
-      <Filter>Include Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\openpal\ITimer.h">
       <Filter>Include Files</Filter>
     </ClInclude>

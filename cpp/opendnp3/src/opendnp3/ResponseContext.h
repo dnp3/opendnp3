@@ -48,7 +48,7 @@ class SlaveResponseTypes;
  *
  * Coordinates the Database and SlaveEventBuffer.
  */
-class DLL_LOCAL ResponseContext : public openpal::Loggable
+class ResponseContext : public openpal::Loggable
 {
 	enum Mode {
 		UNDEFINED,

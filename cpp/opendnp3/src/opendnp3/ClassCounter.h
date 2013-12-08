@@ -25,14 +25,14 @@
 #include <assert.h>
 
 #include <opendnp3/PointClass.h>
-#include <openpal/Visibility.h>
+
 
 namespace opendnp3
 {
 
 /** Utility class that keeps class event counters accessible by enumeration.
 */
-class DLL_LOCAL ClassCounter
+class ClassCounter
 {
 public:
 

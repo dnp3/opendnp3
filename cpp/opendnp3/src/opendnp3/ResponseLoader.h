@@ -25,7 +25,7 @@
 #include <opendnp3/ObjectInterfaces.h>
 #include <opendnp3/MeasurementUpdate.h>
 
-#include <openpal/Visibility.h>
+
 #include <openpal/Loggable.h>
 #include <openpal/LoggableMacros.h>
 
@@ -40,7 +40,7 @@ class HeaderReadIterator;
 /**
  * Dedicated class for processing response data in the master.
  */
-class DLL_LOCAL ResponseLoader : openpal::Loggable
+class ResponseLoader : openpal::Loggable
 {
 public:
 	/**

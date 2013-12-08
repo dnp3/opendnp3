@@ -23,7 +23,7 @@
 
 #include "AppLayerChannel.h"
 
-#include <openpal/Visibility.h>
+
 
 namespace opendnp3
 {
@@ -33,7 +33,7 @@ namespace opendnp3
 	 number and some state associated with wether it is sending, waiting
 	 for a response, etc
 */
-class DLL_LOCAL SolicitedChannel : public AppLayerChannel
+class SolicitedChannel : public AppLayerChannel
 {
 public:
 	SolicitedChannel(openpal::Logger aLogger, AppLayer* apApp, openpal::IExecutor* apExecutor, openpal::TimeDuration aTimeout);

@@ -22,7 +22,7 @@
 #define __INDEXED_WRITE_ITERATOR_H_
 
 #include <opendnp3/APDUConstants.h>
-#include <openpal/Visibility.h>
+
 
 #include "ObjectHeader.h"
 #include "gen/QualifierCode.h"
@@ -36,7 +36,7 @@ namespace opendnp3
 /**
 Buffer iterator to write objects prefixed with specific indices.
 */
-class DLL_LOCAL IndexedWriteIterator
+class IndexedWriteIterator
 {
 	friend class APDU;
 

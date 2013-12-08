@@ -23,7 +23,7 @@
 
 #include <boost/asio.hpp>
 
-#include <openpal/Visibility.h>
+
 
 #include "SerialTypes.h"
 
@@ -39,8 +39,8 @@ namespace asiopal
 {
 
 // Serial port configuration functions "free" to keep the classes simple.
-void DLL_LOCAL Configure(SerialSettings& arSettings, boost::asio::serial_port& arPort, boost::system::error_code& ec);
-void DLL_LOCAL Configure(SerialSettings& arSettings, boost::asio::serial_port& arPort);
+void Configure(SerialSettings& arSettings, boost::asio::serial_port& arPort, boost::system::error_code& ec);
+void Configure(SerialSettings& arSettings, boost::asio::serial_port& arPort);
 
 }
 

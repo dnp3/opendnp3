@@ -21,7 +21,7 @@
 #ifndef __LINK_ROUTE_H_
 #define __LINK_ROUTE_H_
 
-#include <openpal/Visibility.h>
+
 
 #include <cstdint>
 #include <string>
@@ -38,7 +38,7 @@ namespace opendnp3
  *
  * Primary used as a key for stl map/set.
  */
-class DLL_LOCAL LinkRoute
+class LinkRoute
 {
 public:
 	LinkRoute(const uint16_t aRemoteAddr, const uint16_t aLocalAddr);

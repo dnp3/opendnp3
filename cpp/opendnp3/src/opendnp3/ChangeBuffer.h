@@ -24,7 +24,7 @@
 #include <opendnp3/DataTypes.h>
 #include <opendnp3/IDataObserver.h>
 #include <opendnp3/SubjectBase.h>
-#include <openpal/Visibility.h>
+
 
 #include <queue>
 #include <mutex>
@@ -34,7 +34,7 @@ namespace opendnp3
 
 /** Moves measurement data across thread boundaries.
 */
-class DLL_LOCAL ChangeBuffer : public IDataObserver, public SubjectBase
+class ChangeBuffer : public IDataObserver, public SubjectBase
 {
 
 public:

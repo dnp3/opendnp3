@@ -23,7 +23,7 @@
 
 
 #include <opendnp3/ICommandProcessor.h>
-#include <openpal/Visibility.h>
+
 
 namespace openpal
 {
@@ -33,7 +33,7 @@ class IExecutor;
 namespace opendnp3
 {
 
-class DLL_LOCAL ConstantCommandProcessor : public ICommandProcessor
+class ConstantCommandProcessor : public ICommandProcessor
 {
 public:
 

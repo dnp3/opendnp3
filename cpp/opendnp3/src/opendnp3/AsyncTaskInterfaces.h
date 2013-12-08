@@ -23,12 +23,10 @@
 
 #include <functional>
 
-#include <openpal/Visibility.h>
-
 namespace opendnp3
 {
 
-class DLL_LOCAL ITask
+class ITask
 {
 public:
 

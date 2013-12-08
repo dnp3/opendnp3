@@ -29,7 +29,7 @@
 #include <opendnp3/APDUConstants.h>
 #include <opendnp3/ObjectInterfaces.h>
 #include <opendnp3/DNPConstants.h>
-#include <openpal/Visibility.h>
+
 
 #include "ObjectHeader.h"
 
@@ -41,7 +41,7 @@ class ObjectReadIterator;
 /**
  * A class that represents a DNP3 Object Header in an APDU object.
  */
-class DLL_LOCAL HeaderInfo
+class HeaderInfo
 {
 public:
 
@@ -112,7 +112,7 @@ private:
  * An interator that clients can use to loop over the object headers in an
  * APDU object.
  */
-class DLL_LOCAL HeaderReadIterator
+class HeaderReadIterator
 {
 	friend class APDU;
 

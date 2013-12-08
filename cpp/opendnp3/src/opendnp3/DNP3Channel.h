@@ -24,7 +24,7 @@
 #include <opendnp3/IChannel.h>
 #include <opendnp3/SlaveStackConfig.h>
 
-#include <openpal/Visibility.h>
+
 #include <openpal/Loggable.h>
 
 #include "LinkLayerRouter.h"
@@ -51,7 +51,7 @@ class ICommandHandler;
 class ITimeWriteHandler;
 class IMeasurementHandler;
 
-class DLL_LOCAL DNP3Channel: public IChannel, private openpal::Loggable
+class DNP3Channel: public IChannel, private openpal::Loggable
 {
 public:
 	DNP3Channel(openpal::Logger aLogger, openpal::TimeDuration aOpenRetry, IPhysicalLayerAsync* apPhys, std::function<void (DNP3Channel*)> aOnShutdown);

@@ -24,7 +24,7 @@
 #include "AsyncTaskInterfaces.h"
 #include "AsyncTaskBase.h"
 
-#include <openpal/Visibility.h>
+
 
 namespace opendnp3
 {
@@ -34,7 +34,7 @@ class AsyncTaskGroup;
 /** Continus asynchronous task, runs over and over as long as it is enabled.
 */
 
-class DLL_LOCAL AsyncTaskContinuous : public AsyncTaskBase
+class AsyncTaskContinuous : public AsyncTaskBase
 {
 	friend class AsyncTaskGroup;
 

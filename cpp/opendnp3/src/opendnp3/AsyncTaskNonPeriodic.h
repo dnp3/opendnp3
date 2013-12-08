@@ -25,7 +25,7 @@
 #include "AsyncTaskBase.h"
 
 #include <opendnp3/Uncopyable.h>
-#include <openpal/Visibility.h>
+
 
 #include <vector>
 
@@ -40,7 +40,7 @@ class AsyncTaskGroup;
 	and task dependencies.
 */
 
-class DLL_LOCAL AsyncTaskNonPeriodic : public AsyncTaskBase
+class AsyncTaskNonPeriodic : public AsyncTaskBase
 {
 	friend class AsyncTaskGroup;
 

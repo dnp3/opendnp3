@@ -23,7 +23,7 @@
 
 #include <boost/asio.hpp>
 
-#include <openpal/Visibility.h>
+
 #include <openpal/IExecutor.h>
 
 #include <asiopal/DeadlineTimerSteadyClock.h>
@@ -45,7 +45,7 @@ namespace asiopal
  * posted. We wanted a cancel that does not generate any events.
  *
  */
-class DLL_LOCAL TimerASIO : public openpal::ITimer
+class TimerASIO : public openpal::ITimer
 {
 	friend class ASIOExecutor;
 

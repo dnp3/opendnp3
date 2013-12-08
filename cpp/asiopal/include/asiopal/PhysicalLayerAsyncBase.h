@@ -23,7 +23,7 @@
 
 #include <boost/system/error_code.hpp>
 
-#include <openpal/Visibility.h>
+
 #include <openpal/IPhysicalLayerAsync.h>
 #include <openpal/Loggable.h>
 #include <openpal/Location.h>
@@ -35,7 +35,7 @@ class PLAS_Base;
 
 // This is the base class for the new async physical layers. It assumes that all of the functions
 // are called from a single thread.
-class DLL_LOCAL PhysicalLayerAsyncBase : public openpal::IPhysicalLayerAsync, public openpal::Loggable
+class PhysicalLayerAsyncBase : public openpal::IPhysicalLayerAsync, public openpal::Loggable
 {
 	class State : public openpal::IChannelState
 	{

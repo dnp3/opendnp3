@@ -26,7 +26,7 @@
 #include <opendnp3/APDUConstants.h>
 #include <opendnp3/CommandResponse.h>
 
-#include <openpal/Visibility.h>
+
 #include <openpal/Logger.h>
 
 #include "gen/FunctionCode.h"
@@ -38,7 +38,7 @@ namespace opendnp3
 {
 
 // Base class with machinery for performing command operations
-class DLL_LOCAL CommandTask : public MasterTaskBase
+class CommandTask : public MasterTaskBase
 {
 	typedef std::function<CommandStatus (const APDU&)> Validator;
 	typedef std::function<Validator (APDU&, FunctionCode)> Formatter;
