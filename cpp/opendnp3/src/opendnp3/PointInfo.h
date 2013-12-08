@@ -25,6 +25,8 @@
 
 #include <opendnp3/IndexedValue.h>
 
+#include "MeasurementHelpers.h"
+
 namespace opendnp3
 {
 
@@ -33,18 +35,26 @@ namespace opendnp3
  * event value to the base class.
  */
 template<typename T>
-struct PointInfo : public Event<T> {
-	
+class PointInfo : public Event<T> 
+{
+	public:
+
 	PointInfo(const T& aValue, uint32_t aIndex, PointClass aClass) :
 		Event<T>(aValue, aIndex, aClass),
+		lastEvent(aValue),
 		deadband(0)
 	{}
 
 	PointInfo() : deadband(0)
-	{}	
+	{}
 
+	bool IsEvent(const T& aNewValue) const
+	{
+		return IsChangeEvent(aNewValue, lastEvent, deadband);         
+	}
+	
+	T lastEvent;		// the last value that was reported
 	double deadband;	// deadband associated with measurement (optional)
-	T lastEvent;		// the last value that was reported	
 };
 
 

@@ -33,17 +33,6 @@ using namespace openpal;
 using namespace opendnp3;
 
 template <class T>
-void TestDataEvent(bool aIsEvent, const T& val1, const T& val2, double aDeadband)
-{
-	if(aIsEvent) {
-		BOOST_REQUIRE(IsEvent(val1, val2, aDeadband));
-	}
-	else {
-		BOOST_REQUIRE_FALSE(IsEvent(val1, val2, aDeadband));
-	}
-}
-
-template <class T>
 void TestBufferForEvent(bool aIsEvent, const T& arNewVal, DatabaseTestObject& test, std::deque< PointInfo <T> >& arQueue)
 {
 	Transaction tr(&test.db);
@@ -65,22 +54,22 @@ BOOST_AUTO_TEST_SUITE(DatabaseTestSuite)
 // tests for the various analog event conditions
 BOOST_AUTO_TEST_CASE(AnalogEventZeroDeadband)
 {
-	TestDataEvent(true, Analog(0), Analog(1), 0);
+	BOOST_REQUIRE(IsChangeEvent(Analog(0), Analog(1), 0));	
 }
 
 BOOST_AUTO_TEST_CASE(AnalogEventOnDeadband)
 {
-	TestDataEvent(false, Analog(0), Analog(1), 1);
+	BOOST_REQUIRE_FALSE(IsChangeEvent(Analog(0), Analog(1), 1));
 }
 
 BOOST_AUTO_TEST_CASE(AnalogEventNegative)
 {
-	TestDataEvent(true, Analog(-34), Analog(-36), 1);
+	BOOST_REQUIRE(IsChangeEvent(Analog(-34), Analog(-36), 1));
 }
 
 BOOST_AUTO_TEST_CASE(AnalogNoEventNegative)
 {
-	TestDataEvent(false, Analog(-34), Analog(-36), 2);
+	BOOST_REQUIRE_FALSE(IsChangeEvent(Analog(-34), Analog(-36), 2));
 }
 
 // Next 3 tests prove that "no change" doesn't get forwared to IEventBuffer

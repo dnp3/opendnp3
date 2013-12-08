@@ -52,7 +52,7 @@ template <>
 bool ExceedsDeadband<double>(const double& val1, const double& val2, double aDeadband);
 
 template <class T>
-bool IsEvent(const T& newValue, const T& aLastReport, double aDeadband)
+bool IsChangeEvent(const T& newValue, const T& aLastReport, double aDeadband)
 {
 	if(newValue.GetQuality() != aLastReport.GetQuality()) return true;
 	else {
@@ -62,7 +62,7 @@ bool IsEvent(const T& newValue, const T& aLastReport, double aDeadband)
 
 //specialization for BoolDataPoint
 template <>
-bool IsEvent<Binary>(const Binary& newValue, const Binary& aLastReport, double aDeadband);
+bool IsChangeEvent<Binary>(const Binary& newValue, const Binary& aLastReport, double aDeadband);
 
 }
 

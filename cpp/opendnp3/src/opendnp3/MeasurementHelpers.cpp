@@ -28,7 +28,7 @@ namespace opendnp3
 {
 
 template <>
-bool IsEvent<Binary>(const Binary& newValue, const Binary& aLastReport, double aDeadband)
+bool IsChangeEvent<Binary>(const Binary& newValue, const Binary& aLastReport, double aDeadband)
 {	
 	return (newValue.GetValue() != aLastReport.GetValue()) || newValue.GetQuality() != aLastReport.GetQuality();
 }
