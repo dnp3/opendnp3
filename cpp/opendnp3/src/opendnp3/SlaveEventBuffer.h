@@ -64,7 +64,7 @@ public:
 	 * @param aClass		the class of data for the event
 	 * @param aIndex		Index of the measurement
 	 */
-	void Update(const Binary& arEvent, PointClass aClass, size_t aIndex);
+	void Update(const Binary& arEvent, PointClass aClass, uint32_t aIndex);
 
 	/**
 	 * Adds an event to the buffer.
@@ -73,7 +73,7 @@ public:
 	 * @param aClass		the class of data for the event
 	 * @param aIndex		Index of the measurement
 	 */
-	void Update(const Analog& arEvent, PointClass aClass, size_t aIndex);
+	void Update(const Analog& arEvent, PointClass aClass, uint32_t aIndex);
 
 	/**
 	 * Adds an event to the buffer.
@@ -82,7 +82,7 @@ public:
 	 * @param aClass		the class of data for the event
 	 * @param aIndex		Index of the measurement
 	 */
-	void Update(const Counter& arEvent, PointClass aClass, size_t aIndex);
+	void Update(const Counter& arEvent, PointClass aClass, uint32_t aIndex);
 
 
 	/**

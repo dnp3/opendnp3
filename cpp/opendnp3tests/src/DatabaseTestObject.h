@@ -34,17 +34,17 @@ public:
 
 	virtual ~MockEventBuffer() {}
 
-	void Update(const Binary& aValue, PointClass aClass, size_t aIndex) {
+	void Update(const Binary& aValue, PointClass aClass, uint32_t aIndex) {
 		PointInfo<Binary> v(aValue, aIndex, aClass);
 		mBinaryEvents.push_back(v);
 	}
 
-	void Update(const Analog& aValue, PointClass aClass, size_t aIndex) {
+	void Update(const Analog& aValue, PointClass aClass, uint32_t aIndex) {
 		PointInfo<Analog> v(aValue, aIndex, aClass);
 		mAnalogEvents.push_back(v);
 	}
 
-	void Update(const Counter& aValue, PointClass aClass, size_t aIndex) {
+	void Update(const Counter& aValue, PointClass aClass, uint32_t aIndex) {
 		PointInfo<Counter> v(aValue, aIndex, aClass);
 		mCounterEvents.push_back(v);
 	}	
