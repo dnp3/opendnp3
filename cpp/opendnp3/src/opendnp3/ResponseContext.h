@@ -206,10 +206,10 @@ private:
 	// Static write functions
 
 	template <class T>
-	void RecordStaticObjects(StreamObject<T>* apObject, const HeaderReadIterator& arIter);
+	void RecordStaticObjects(StreamObject<T>* apObject, const HeaderReadIterator& arIter, const typename StaticIterator<T>::Type& begin);
 
 	template <class T>
-	void RecordStaticObjectsByRange(StreamObject<T>* apObject, size_t aStart, size_t aStop);
+	void RecordStaticObjectsByRange(StreamObject<T>* apObject, typename StaticIterator<T>::Type begin, size_t aStart, size_t aStop);
 
 	template <class T>
 	bool WriteStaticObjects(StreamObject<T>* apObject, typename StaticIterator<T>::Type aStart, typename StaticIterator<T>::Type aStop, ResponseKey aKey, APDU& arAPDU);
@@ -229,14 +229,14 @@ size_t ResponseContext::SelectEvents(PointClass aClass, const StreamObject<T>* a
 }
 
 template <class T>
-void ResponseContext::RecordStaticObjects(StreamObject<T>* apObject, const HeaderReadIterator& arIter)
+void ResponseContext::RecordStaticObjects(StreamObject<T>* apObject, const HeaderReadIterator& arIter, const typename StaticIterator<T>::Type& begin)
 {
 	size_t num = mpDB->NumType(T::MeasEnum);
 
 	//figure out what type of read request this is
 	switch(arIter->GetHeaderType()) {
 	case(OHT_ALL_OBJECTS): {
-			if(num > 0) this->RecordStaticObjectsByRange<T>(apObject, 0, num - 1);
+			if(num > 0) this->RecordStaticObjectsByRange<T>(apObject, begin, 0, num - 1);
 		}
 		break;
 
@@ -250,7 +250,7 @@ void ResponseContext::RecordStaticObjects(StreamObject<T>* apObject, const Heade
 				pHeader->GetRange(*arIter, ri);
 
 				if(ri.Start > max || ri.Stop > max || ri.Start > ri.Stop) this->mTempIIN.SetParameterError(true);
-				else this->RecordStaticObjectsByRange<T>(apObject, ri.Start, ri.Stop);
+				else this->RecordStaticObjectsByRange<T>(apObject, begin, ri.Start, ri.Stop);
 			}
 			else this->mTempIIN.SetParameterError(true);
 		}
@@ -267,7 +267,7 @@ void ResponseContext::RecordStaticObjects(StreamObject<T>* apObject, const Heade
 					size_t stop = count - 1;
 
 					if(start > max || stop > max || start > stop) this->mTempIIN.SetParameterError(true);
-					else this->RecordStaticObjectsByRange<T>(apObject, start, stop);
+					else this->RecordStaticObjectsByRange<T>(apObject, begin, start, stop);
 				}
 				else this->mTempIIN.SetParameterError(true);
 			}
@@ -278,13 +278,11 @@ void ResponseContext::RecordStaticObjects(StreamObject<T>* apObject, const Heade
 }
 
 template <class T>
-void ResponseContext::RecordStaticObjectsByRange(StreamObject<T>* apObject, size_t aStart, size_t aStop)
-{
-	typename StaticIterator<T>::Type first;
-	typename StaticIterator<T>::Type last;
-	mpDB->Begin(first);
-	last = first + aStop;
-	first = first + aStart;
+void ResponseContext::RecordStaticObjectsByRange(StreamObject<T>* apObject, typename StaticIterator<T>::Type start, size_t aStart, size_t aStop)
+{	
+	auto first = start + aStart;
+	auto last = start + aStop;	
+	
 	ResponseKey key(RT_STATIC, this->mStaticWriteMap.size());
 	WriteFunction func = [ = ](APDU & arAPDU) {
 		return this->WriteStaticObjects<T>(apObject, first, last, key, arAPDU);

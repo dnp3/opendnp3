@@ -115,79 +115,79 @@ IINField ResponseContext::Configure(const APDU& arRequest)
 		switch (MACRO_DNP_RADIX(hdr->GetGroup(), hdr->GetVariation())) {
 
 		case(MACRO_DNP_RADIX(1, 0)):
-			this->RecordStaticObjects<Binary>(mpRspTypes->mpStaticBinary, hdr);
+			this->RecordStaticObjects<Binary>(mpRspTypes->mpStaticBinary, hdr, mpDB->BeginBinary());
 			break;
 		case(MACRO_DNP_RADIX(1, 2)):
-			this->RecordStaticObjects<Binary>(Group1Var2::Inst(), hdr);
+			this->RecordStaticObjects<Binary>(Group1Var2::Inst(), hdr, mpDB->BeginBinary());
 			break;
 		case(MACRO_DNP_RADIX(10, 0)):
-			this->RecordStaticObjects<ControlStatus>(mpRspTypes->mpStaticControlStatus, hdr);
+			this->RecordStaticObjects<ControlStatus>(mpRspTypes->mpStaticControlStatus, hdr, mpDB->BeginControlStatus());
 			break;
 		case(MACRO_DNP_RADIX(10, 2)):
-			this->RecordStaticObjects<ControlStatus>(Group10Var2::Inst(), hdr);
+			this->RecordStaticObjects<ControlStatus>(Group10Var2::Inst(), hdr, mpDB->BeginControlStatus());
 			break;
 		case(MACRO_DNP_RADIX(20, 0)):
-			this->RecordStaticObjects<Counter>(mpRspTypes->mpStaticCounter, hdr);
+			this->RecordStaticObjects<Counter>(mpRspTypes->mpStaticCounter, hdr, mpDB->BeginCounter());
 			break;
 		case(MACRO_DNP_RADIX(20, 1)):
-			this->RecordStaticObjects<Counter>(Group20Var1::Inst(), hdr);
+			this->RecordStaticObjects<Counter>(Group20Var1::Inst(), hdr, mpDB->BeginCounter());
 			break;
 		case(MACRO_DNP_RADIX(20, 2)):
-			this->RecordStaticObjects<Counter>(Group20Var2::Inst(), hdr);
+			this->RecordStaticObjects<Counter>(Group20Var2::Inst(), hdr, mpDB->BeginCounter());
 			break;
 		case(MACRO_DNP_RADIX(20, 3)):
-			this->RecordStaticObjects<Counter>(Group20Var3::Inst(), hdr);
+			this->RecordStaticObjects<Counter>(Group20Var3::Inst(), hdr, mpDB->BeginCounter());
 			break;
 		case(MACRO_DNP_RADIX(20, 4)):
-			this->RecordStaticObjects<Counter>(Group20Var4::Inst(), hdr);
+			this->RecordStaticObjects<Counter>(Group20Var4::Inst(), hdr, mpDB->BeginCounter());
 			break;
 		case(MACRO_DNP_RADIX(20, 5)):
-			this->RecordStaticObjects<Counter>(Group20Var5::Inst(), hdr);
+			this->RecordStaticObjects<Counter>(Group20Var5::Inst(), hdr, mpDB->BeginCounter());
 			break;
 		case(MACRO_DNP_RADIX(20, 6)):
-			this->RecordStaticObjects<Counter>(Group20Var6::Inst(), hdr);
+			this->RecordStaticObjects<Counter>(Group20Var6::Inst(), hdr, mpDB->BeginCounter());
 			break;
 		case(MACRO_DNP_RADIX(20, 7)):
-			this->RecordStaticObjects<Counter>(Group20Var7::Inst(), hdr);
+			this->RecordStaticObjects<Counter>(Group20Var7::Inst(), hdr, mpDB->BeginCounter());
 			break;
 		case(MACRO_DNP_RADIX(20, 8)):
-			this->RecordStaticObjects<Counter>(Group20Var8::Inst(), hdr);
+			this->RecordStaticObjects<Counter>(Group20Var8::Inst(), hdr, mpDB->BeginCounter());
 			break;
 		case(MACRO_DNP_RADIX(30, 0)):
-			this->RecordStaticObjects<Analog>(mpRspTypes->mpStaticAnalog, hdr);
+			this->RecordStaticObjects<Analog>(mpRspTypes->mpStaticAnalog, hdr, mpDB->BeginAnalog());
 			break;
 		case(MACRO_DNP_RADIX(30, 1)):
-			this->RecordStaticObjects<Analog>(Group30Var1::Inst(), hdr);
+			this->RecordStaticObjects<Analog>(Group30Var1::Inst(), hdr, mpDB->BeginAnalog());
 			break;
 		case(MACRO_DNP_RADIX(30, 2)):
-			this->RecordStaticObjects<Analog>(Group30Var2::Inst(), hdr);
+			this->RecordStaticObjects<Analog>(Group30Var2::Inst(), hdr, mpDB->BeginAnalog());
 			break;
 		case(MACRO_DNP_RADIX(30, 3)):
-			this->RecordStaticObjects<Analog>(Group30Var3::Inst(), hdr);
+			this->RecordStaticObjects<Analog>(Group30Var3::Inst(), hdr, mpDB->BeginAnalog());
 			break;
 		case(MACRO_DNP_RADIX(30, 4)):
-			this->RecordStaticObjects<Analog>(Group30Var4::Inst(), hdr);
+			this->RecordStaticObjects<Analog>(Group30Var4::Inst(), hdr, mpDB->BeginAnalog());
 			break;
 		case(MACRO_DNP_RADIX(30, 5)):
-			this->RecordStaticObjects<Analog>(Group30Var5::Inst(), hdr);
+			this->RecordStaticObjects<Analog>(Group30Var5::Inst(), hdr, mpDB->BeginAnalog());
 			break;
 		case(MACRO_DNP_RADIX(30, 6)):
-			this->RecordStaticObjects<Analog>(Group30Var6::Inst(), hdr);
+			this->RecordStaticObjects<Analog>(Group30Var6::Inst(), hdr, mpDB->BeginAnalog());
 			break;
 		case(MACRO_DNP_RADIX(40, 0)):
-			this->RecordStaticObjects<SetpointStatus>(mpRspTypes->mpStaticSetpointStatus, hdr);
+			this->RecordStaticObjects<SetpointStatus>(mpRspTypes->mpStaticSetpointStatus, hdr, mpDB->BeginSetpointStatus());
 			break;
 		case(MACRO_DNP_RADIX(40, 1)):
-			this->RecordStaticObjects<SetpointStatus>(Group40Var1::Inst(), hdr);
+			this->RecordStaticObjects<SetpointStatus>(Group40Var1::Inst(), hdr, mpDB->BeginSetpointStatus());
 			break;
 		case(MACRO_DNP_RADIX(40, 2)):
-			this->RecordStaticObjects<SetpointStatus>(Group40Var2::Inst(), hdr);
+			this->RecordStaticObjects<SetpointStatus>(Group40Var2::Inst(), hdr, mpDB->BeginSetpointStatus());
 			break;
 		case(MACRO_DNP_RADIX(40, 3)):
-			this->RecordStaticObjects<SetpointStatus>(Group40Var3::Inst(), hdr);
+			this->RecordStaticObjects<SetpointStatus>(Group40Var3::Inst(), hdr, mpDB->BeginSetpointStatus());
 			break;
 		case(MACRO_DNP_RADIX(40, 4)):
-			this->RecordStaticObjects<SetpointStatus>(Group40Var4::Inst(), hdr);
+			this->RecordStaticObjects<SetpointStatus>(Group40Var4::Inst(), hdr, mpDB->BeginSetpointStatus());
 			break;
 
 			// event objects
@@ -214,11 +214,11 @@ IINField ResponseContext::Configure(const APDU& arRequest)
 
 			// Class Objects
 		case(MACRO_DNP_RADIX(60, 1)):
-			this->RecordStaticObjects<Binary>(mpRspTypes->mpStaticBinary, hdr);
-			this->RecordStaticObjects<Analog>(mpRspTypes->mpStaticAnalog, hdr);
-			this->RecordStaticObjects<Counter>(mpRspTypes->mpStaticCounter, hdr);
-			this->RecordStaticObjects<ControlStatus>(mpRspTypes->mpStaticControlStatus, hdr);
-			this->RecordStaticObjects<SetpointStatus>(mpRspTypes->mpStaticSetpointStatus, hdr);
+			this->RecordStaticObjects<Binary>(mpRspTypes->mpStaticBinary, hdr, mpDB->BeginBinary());
+			this->RecordStaticObjects<Analog>(mpRspTypes->mpStaticAnalog, hdr, mpDB->BeginAnalog());
+			this->RecordStaticObjects<Counter>(mpRspTypes->mpStaticCounter, hdr, mpDB->BeginCounter());
+			this->RecordStaticObjects<ControlStatus>(mpRspTypes->mpStaticControlStatus, hdr, mpDB->BeginControlStatus());
+			this->RecordStaticObjects<SetpointStatus>(mpRspTypes->mpStaticSetpointStatus, hdr, mpDB->BeginSetpointStatus());
 			break;
 		case(MACRO_DNP_RADIX(60, 2)):
 			this->SelectEvents(PC_CLASS_1, GetEventCount(hdr.info()));

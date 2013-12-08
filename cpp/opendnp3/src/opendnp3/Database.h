@@ -72,21 +72,11 @@ public:
 
 	/* Functions for obtaining iterators */
 
-	void Begin(StaticIterator<Binary>::Type& arIter)		{
-		arIter = mBinaryVec.begin();
-	}
-	void Begin(StaticIterator<Analog>::Type& arIter)		{
-		arIter = mAnalogVec.begin();
-	}
-	void Begin(StaticIterator<Counter>::Type& arIter)		{
-		arIter = mCounterVec.begin();
-	}
-	void Begin(StaticIterator<ControlStatus>::Type& arIter)		{
-		arIter = mControlStatusVec.begin();
-	}
-	void Begin(StaticIterator<SetpointStatus>::Type& arIter)	{
-		arIter = mSetpointStatusVec.begin();
-	}
+	StaticIterator<Binary>::Type BeginBinary() { return mBinaryVec.begin(); }	
+	StaticIterator<Analog>::Type BeginAnalog() { return mAnalogVec.begin(); }
+	StaticIterator<Counter>::Type BeginCounter() { return mCounterVec.begin(); }
+	StaticIterator<ControlStatus>::Type BeginControlStatus() { return mControlStatusVec.begin(); }	
+	StaticIterator<SetpointStatus>::Type BeginSetpointStatus() { return mSetpointStatusVec.begin(); }
 
 
 private:
@@ -129,6 +119,7 @@ private:
 	template <typename T>
 	size_t CalcNumType(const std::vector<T*>& arIdxVec);
 };
+
 
 template <typename T>
 size_t Database::CalcNumType(const std::vector<T*>& arIdxVec)
