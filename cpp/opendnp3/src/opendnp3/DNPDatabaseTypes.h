@@ -23,10 +23,7 @@
 
 #include <opendnp3/DataTypes.h>
 #include <opendnp3/PointClass.h>
-#include <opendnp3/VTOData.h>
 #include <opendnp3/IndexedValue.h>
-
-#include <vector>
 
 namespace opendnp3
 {
@@ -57,8 +54,8 @@ class Event : public IndexedValue<T>
 template<typename T>
 struct PointInfo : public Event<T> {
 	
-	PointInfo(const T& arVal, PointClass aClass, size_t aIndex) :
-		Event<T>(arVal, aIndex, aClass),
+	PointInfo(const T& aValue, uint32_t aIndex, PointClass aClass) :
+		Event<T>(aValue, aIndex, aClass),
 		deadband(0)
 	{}
 
@@ -69,10 +66,6 @@ struct PointInfo : public Event<T> {
 	T lastEvent;		// the last value that was reported	
 };
 
-template <class T>
-struct StaticIterator {
-	typedef typename std::vector<PointInfo<T>>::const_iterator Type;
-};
 
 } //end namespace
 

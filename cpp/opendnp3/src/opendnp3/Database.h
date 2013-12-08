@@ -44,6 +44,12 @@ class INotifier;
 class EventLog;
 struct DeviceTemplate;
 
+template <class T>
+struct StaticIterator {
+	typedef typename std::vector<PointInfo<T>>::const_iterator Type;
+};
+
+
 /**
 Manages the static data model of a DNP3 slave. Dual-interface to update data points and read current values.
 
