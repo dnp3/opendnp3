@@ -25,6 +25,9 @@
 
 #include "gen/QualifierCode.h"
 #include "GroupVariation.h"
+#include "LazyFixedSizeCollection.h"
+
+#include "ObjectDescriptors.h"
 
 using namespace openpal;
 
@@ -56,10 +59,27 @@ APDUParser::Result APDUParser::ParseHeader(ReadOnlyBuffer& arBuffer, IAPDUHeader
 			case(QualifierCode::ALL_OBJECTS):
 				arHandler.AllObjects(gv);
 				return APDUParser::Result::OK;
+			case(QualifierCode::UINT8_START_STOP):
+				return ParseRange<UInt8, uint16_t>(arBuffer, arHandler, gv);
+			case(QualifierCode::UINT16_START_STOP):
+				return ParseRange<UInt16, uint32_t>(arBuffer, arHandler, gv);
+			case(QualifierCode::UINT32_START_STOP):
+				return ParseRange<UInt32, uint64_t>(arBuffer, arHandler, gv);
 			default:
 				return APDUParser::Result::UNKNOWN_QUALIFIER;
 		}
 	}
+}
+
+APDUParser::Result APDUParser::ParseRange(openpal::ReadOnlyBuffer& buffer, IAPDUHeaderHandler& output, GroupVariation gv, const Range& range)
+{
+	switch(gv)
+	{		
+		case(GroupVariation::Group1Var2):
+			return ParseRangeFixedSize<Group1Var2Desc>(buffer, output, range);
+		default:
+			return APDUParser::Result::ILLEGAL_OBJECT_QUALIFIER;
+	}	
 }
 
 }

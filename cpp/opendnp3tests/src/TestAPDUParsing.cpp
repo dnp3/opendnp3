@@ -23,55 +23,76 @@
 #include "TestHelpers.h"
 #include "BufferHelpers.h"
 #include "MockAPDUHeaderHandler.h"
+#include "MeasurementComparisons.h"
 
 #include <opendnp3/APDUParser.h>
+
+#include <functional>
 
 using namespace std;
 using namespace openpal;
 using namespace opendnp3;
 
+void TestComplex(const std::string& hex, APDUParser::Result expected, size_t numCalls, std::function<void (MockApduHeaderHandler&)> validate)
+{
+	HexSequence buffer(hex);
+	MockApduHeaderHandler mock;
+	auto result = APDUParser::ParseHeaders(buffer.ToReadOnly(), mock);
+
+	BOOST_REQUIRE(result == expected);
+	BOOST_REQUIRE_EQUAL(numCalls, mock.numRequests);
+
+	validate(mock);
+}
+
+void TestSimple(const std::string& hex, APDUParser::Result expected, size_t numCalls)
+{
+	TestComplex(hex, expected, numCalls, [](MockApduHeaderHandler&) {});
+}
+
 BOOST_AUTO_TEST_SUITE(APDUParsingSuite)
 
 BOOST_AUTO_TEST_CASE(EmptyStringParsesOK)
 {
-	HexSequence hex("");
-	MockApduHeaderHandler mock;
-	auto result = APDUParser::ParseHeaders(hex.ToReadOnly(), mock);
-
-	BOOST_REQUIRE(result == APDUParser::Result::OK);
-	BOOST_REQUIRE_EQUAL(0, mock.numRequests);
+	TestSimple("", APDUParser::Result::OK, 0);
 }
 
 BOOST_AUTO_TEST_CASE(NotEnoughData)
 {
-	HexSequence hex("AB CD");	
-	MockApduHeaderHandler mock;
-	auto result = APDUParser::ParseHeaders(hex.ToReadOnly(), mock);
-
-	BOOST_REQUIRE(result == APDUParser::Result::NOT_ENOUGH_DATA_FOR_HEADER);	
+	TestSimple("AB CD", APDUParser::Result::NOT_ENOUGH_DATA_FOR_HEADER, 0);
 }
 
 BOOST_AUTO_TEST_CASE(AllObjects)
 {
-	HexSequence hex("02 02 06 02 00 06"); // (2,2) all, (2,0) all
-	MockApduHeaderHandler mock;
-	auto result = APDUParser::ParseHeaders(hex.ToReadOnly(), mock);
-
-	BOOST_REQUIRE(result == APDUParser::Result::OK);
-	BOOST_REQUIRE_EQUAL(2, mock.numRequests);
-	BOOST_REQUIRE_EQUAL(2, mock.allObjectRequests.size());
-	BOOST_REQUIRE(GroupVariation::Group2Var2 == mock.allObjectRequests[0]);
-	BOOST_REQUIRE(GroupVariation::Group2Var0 == mock.allObjectRequests[1]);
+	// (2,2) all, (2,0) all
+	TestComplex("02 02 06 02 00 06", APDUParser::Result::OK, 2, [](MockApduHeaderHandler& mock) {		
+		BOOST_REQUIRE_EQUAL(2, mock.allObjectRequests.size());
+		BOOST_REQUIRE(GroupVariation::Group2Var2 == mock.allObjectRequests[0]);
+		BOOST_REQUIRE(GroupVariation::Group2Var0 == mock.allObjectRequests[1]);
+	});	
 }
 
 BOOST_AUTO_TEST_CASE(TestUnknownQualifier)
 {
-	HexSequence hex("02 02 AB"); // (2,2) unknown qualifier 0xAB
-	MockApduHeaderHandler mock;
-	auto result = APDUParser::ParseHeaders(hex.ToReadOnly(), mock);
+	// (2,2) unknown qualifier 0xAB
+	TestSimple("02 02 AB", APDUParser::Result::UNKNOWN_QUALIFIER, 0);	
+}
 
-	BOOST_REQUIRE(result == APDUParser::Result::UNKNOWN_QUALIFIER);
-	BOOST_REQUIRE_EQUAL(0, mock.numRequests);	
+BOOST_AUTO_TEST_CASE(NotEnoughDataForObjects)
+{
+	// 1 byte start/stop  1->4, 3 octests data
+	TestSimple("01 02 00 01 04 FF FF FF", APDUParser::Result::NOT_ENOUGH_DATA_FOR_OBJECTS, 0);
+}
+
+BOOST_AUTO_TEST_CASE(Group1Var2Range)
+{
+	// 1 byte start/stop  3->5, 3 octests data
+	TestComplex("01 02 00 03 05 81 01 81", APDUParser::Result::OK, 1, [](MockApduHeaderHandler& mock) {		
+		BOOST_REQUIRE_EQUAL(3, mock.staticBinaries.size());
+		BOOST_REQUIRE(IndexedValue<Binary>(Binary(true), 3) == mock.staticBinaries[0]);
+		BOOST_REQUIRE(IndexedValue<Binary>(Binary(false), 4) == mock.staticBinaries[1]);
+		BOOST_REQUIRE(IndexedValue<Binary>(Binary(true), 5) == mock.staticBinaries[2]);
+	});	
 }
 
 BOOST_AUTO_TEST_SUITE_END()

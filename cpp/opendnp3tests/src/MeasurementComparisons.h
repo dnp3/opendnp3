@@ -22,17 +22,30 @@
 #define __MEASUREMENT_COMPARISONS_H_
 
 #include <opendnp3/BaseDataTypes.h>
+#include <opendnp3/IndexedValue.h>
 
 template<class T>
-bool operator==(const opendnp3::TypedMeasurement<T>& lhs, const opendnp3::TypedMeasurement<T>& rhs)
+bool Equals(const opendnp3::TypedMeasurement<T>& lhs, const opendnp3::TypedMeasurement<T>& rhs)
 {
 	return (lhs.GetQuality() == rhs.GetQuality()) && (lhs.GetValue() == rhs.GetValue());
 }
 
 template<class T>
+bool operator==(const opendnp3::TypedMeasurement<T>& lhs, const opendnp3::TypedMeasurement<T>& rhs)
+{
+	return Equals(lhs, rhs);
+}
+
+template<class T>
 bool operator!=(const opendnp3::TypedMeasurement<T>& lhs, const opendnp3::TypedMeasurement<T>& rhs)
 {
-	return !(lhs == rhs);
+	return !Equals(lhs, rhs);
+}
+
+template<class T>
+bool operator==(const opendnp3::IndexedValue<T>& lhs, const opendnp3::IndexedValue<T>& rhs)
+{
+	return (lhs.value == rhs.value) && (lhs.index == rhs.index);
 }
 
 #endif

@@ -35,63 +35,26 @@ class MockApduHeaderHandler : public IAPDUHeaderHandler
 		MockApduHeaderHandler() : numRequests(0)
 		{}
 
-		virtual void OnMeasurements(const LazyCollection<IndexedValue<Group1Var2>>& meas) override
-		{
-			++numRequests;
-		}
-
-		virtual void OnMeasurements(const LazyCollection<IndexedValue<Group2Var1>>& meas)  override
-		{
-			++numRequests;
-		}
-
-		virtual void OnMeasurements(const LazyCollection<IndexedValue<Group2Var2>>& meas)
-		{
-			++numRequests;
-		}
-		
-		virtual void OnMeasurements(const LazyCollection<IndexedValue<Group2Var3>>& meas)
-		{
-			++numRequests;
-		}
-
-		virtual void OnMeasurements(const LazyCollection<IndexedValue<Group30Var1>>& meas)
-		{
-			++numRequests;
-		}
-		
-		virtual void OnMeasurements(const LazyCollection<IndexedValue<Group30Var2>>& meas)
-		{
-			++numRequests;
-		}
-		
-		virtual void OnMeasurements(const LazyCollection<IndexedValue<Group30Var3>>& meas)
-		{
-			++numRequests;
-		}
-		
-		virtual void OnMeasurements(const LazyCollection<IndexedValue<Group30Var4>>& meas)
-		{
-			++numRequests;
-		}
-		
-		virtual void OnMeasurements(const LazyCollection<IndexedValue<Group30Var5>>& meas)
-		{
-			++numRequests;
-		}
-		
-		virtual void OnMeasurements(const LazyCollection<IndexedValue<Group30Var6>>& meas)
-		{
-			++numRequests;
-		}
-
-		virtual void AllObjects(GroupVariation gv)
+		virtual void AllObjects(GroupVariation gv) override
 		{
 			allObjectRequests.push_back(gv);
 			++numRequests;
 		}
+				
+		virtual void OnStaticData(uint32_t startIndex, const LazyCollection<Binary>& meas) override
+		{
+			for(auto b: meas) staticBinaries.push_back(IndexedValue<Binary>(b, startIndex++));
+			++numRequests;
+		}		
 
+		virtual void OnEventData(const LazyCollection<IndexedValue<Binary>>& meas) override
+		{
+			++numRequests;
+		}
+		
 		size_t numRequests;
+
+		std::vector<IndexedValue<Binary>> staticBinaries;
 		std::vector<GroupVariation> allObjectRequests;
 };
 

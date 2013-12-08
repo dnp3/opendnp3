@@ -284,6 +284,7 @@
     <ClInclude Include="src\opendnp3\MasterTaskBase.h" />
     <ClInclude Include="src\opendnp3\MeasurementHelpers.h" />
     <ClInclude Include="src\opendnp3\MultiplexingDataObserver.h" />
+    <ClInclude Include="src\opendnp3\ObjectDescriptors.h" />
     <ClInclude Include="src\opendnp3\ObjectHeader.h" />
     <ClInclude Include="src\opendnp3\ObjectReadIterator.h" />
     <ClInclude Include="src\opendnp3\Objects.h" />
@@ -314,6 +315,7 @@
     <ClInclude Include="src\opendnp3\PriLinkLayerStates.h" />
     <ClInclude Include="src\opendnp3\ProtocolUtil.h" />
     <ClInclude Include="src\opendnp3\QueuedCommandProcessor.h" />
+    <ClInclude Include="src\opendnp3\Range.h" />
     <ClInclude Include="src\opendnp3\ResponseContext.h" />
     <ClInclude Include="src\opendnp3\ResponseLoader.h" />
     <ClInclude Include="src\opendnp3\SecLinkLayerStates.h" />

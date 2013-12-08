@@ -37,6 +37,16 @@ private:
 	Uncopyable& operator=(const Uncopyable&); //prevent assignment
 };
 
+class PureStatic
+{
+
+private:
+	// prevent these functions
+	PureStatic();	
+	PureStatic(const PureStatic&);
+	PureStatic& operator=(const PureStatic&);
+};
+
 }
 
 #endif

@@ -18,54 +18,34 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
+#ifndef __RANGE_H_
+#define __RANGE_H_
 
-#include "GroupVariation.h"
+#include <cstdint>
 
 namespace opendnp3
 {
 
-GroupVariation GroupVariationDescriptor::GetEnum(uint8_t group, uint8_t variation)
+class Range
 {
-	switch(group)
-	{
-		case(1):
-			switch(variation)
-			{
-				case(1):
-					return GroupVariation::Group1Var1;	
-				case(2):
-					return GroupVariation::Group1Var2;
-				default:
-					return GroupVariation::UNKNOWN;
-			}
-		case(2):
-			switch(variation)
-			{
-				case(0):
-					return GroupVariation::Group2Var0;
-				case(1):
-					return GroupVariation::Group2Var1;
-				case(2):
-					return GroupVariation::Group2Var2;
-				case(3):
-					return GroupVariation::Group2Var3;
-				default:
-					return GroupVariation::UNKNOWN;
-			}
-	}	
-}
+	public:
 
-GroupVariationDescriptor GroupVariationDescriptor::GetDescriptor(GroupVariation gv)
-{
-	switch(gv)
-	{
-		default:
-			return GroupVariationDescriptor();
-	}
-}
+	Range(uint32_t aStart, uint32_t aStop, size_t aCount) :
+		start(aStart),
+		stop(aStop),
+		count(aCount)
+	{}
 
+	uint32_t start;
+	uint32_t stop;
+	size_t count;
 
+	private:
+
+	Range();
+	Range(const Range&);
+};
 
 }
 
-
+#endif

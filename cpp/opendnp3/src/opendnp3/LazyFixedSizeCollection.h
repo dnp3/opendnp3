@@ -60,11 +60,10 @@ class LazyFixedSizeCollection : public LazyCollection<T>
 	private:
 		
 		LazyFixedSizeCollection();
-		LazyFixedSizeCollection(const LazyCollection&);
-
-		const openpal::ReadOnlyBuffer mBuffer;		
-		const size_t mCount;
-		const typename LazyIterator<T>::ReadFunction mReadFunction;
+		
+		openpal::ReadOnlyBuffer mBuffer;		
+		size_t mCount;
+		typename LazyIterator<T>::ReadFunction mReadFunction;
 };
 
 

@@ -18,54 +18,36 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
+#ifndef __OBJECT_DESCRIPTORS_H_
+#define __OBJECT_DESCRIPTORS_H_
 
-#include "GroupVariation.h"
+#include <openpal/BufferWrapper.h>
+
+#include <opendnp3/Uncopyable.h>
+#include <opendnp3/DataTypes.h>
+
+#include "objects/Group1.h"
 
 namespace opendnp3
 {
-
-GroupVariation GroupVariationDescriptor::GetEnum(uint8_t group, uint8_t variation)
-{
-	switch(group)
+	template <class Desc>
+	struct Compose : private PureStatic
 	{
-		case(1):
-			switch(variation)
-			{
-				case(1):
-					return GroupVariation::Group1Var1;	
-				case(2):
-					return GroupVariation::Group1Var2;
-				default:
-					return GroupVariation::UNKNOWN;
-			}
-		case(2):
-			switch(variation)
-			{
-				case(0):
-					return GroupVariation::Group2Var0;
-				case(1):
-					return GroupVariation::Group2Var1;
-				case(2):
-					return GroupVariation::Group2Var2;
-				case(3):
-					return GroupVariation::Group2Var3;
-				default:
-					return GroupVariation::UNKNOWN;
-			}
-	}	
-}
+		static typename Desc::Target Read(openpal::ReadOnlyBuffer& buff)
+		{
+			auto a = typename Desc::Underlying::Read(buff);
+			return Desc::Convert(a);
+		}		
+	};
 
-GroupVariationDescriptor GroupVariationDescriptor::GetDescriptor(GroupVariation gv)
-{
-	switch(gv)
-	{
-		default:
-			return GroupVariationDescriptor();
-	}
-}
-
-
+	struct Group1Var2Desc : private PureStatic
+	{		
+		typedef Binary Target;
+		typedef Group1Var2 Underlying;
+				
+		static Binary Convert(const Group1Var2& gv) { return Binary(gv.flags); }	
+	};
 
 }
 
-
+#endif

@@ -246,9 +246,9 @@ size_t Database::NumType(MeasurementType aType)
 			return mControlStatusVec.size();
 		case(MeasurementType::SETPOINT_STATUS):
 			return mSetpointStatusVec.size();
-	}
-
-	return 0;
+		default:
+			return 0;
+	}	
 }
 
 }
