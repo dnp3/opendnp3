@@ -63,20 +63,18 @@ struct DLL_LOCAL PointInfoBase {
  */
 template<typename T>
 struct DLL_LOCAL PointInfo : public PointInfoBase<T> {
+	
 	PointInfo(const T& arVal, PointClass aClass, size_t aIndex) :
 		PointInfoBase<T>(arVal, aClass, aIndex),
-		mDeadband(0),		
-		mSequence(0)
+		mDeadband(0)
 	{}
 
 	PointInfo() :
-		mDeadband(0),		
-		mSequence(0)
+		mDeadband(0)
 	{}
 
 	double mDeadband;	// deadband associated with measurement (optional)
-	T mLastEvent;		// the last value that was reported
-	size_t mSequence;
+	T mLastEvent;		// the last value that was reported	
 };
 
 template <class DataInfoType>
