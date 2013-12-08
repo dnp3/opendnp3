@@ -52,31 +52,34 @@ class APDUParser
 		BAD_START_STOP		
 	};
 
-	static Result ParseHeaders(openpal::ReadOnlyBuffer, IAPDUHeaderHandler& output);
+	static Result ParseHeaders(openpal::ReadOnlyBuffer buffer, IAPDUHeaderHandler& output);
 
 	private:
 
-	static Result ParseHeader(openpal::ReadOnlyBuffer&, IAPDUHeaderHandler& output);
+	static Result ParseHeader(openpal::ReadOnlyBuffer& buffer, IAPDUHeaderHandler& output);
 
-	static Result ParseRange(openpal::ReadOnlyBuffer& arBuffer, IAPDUHeaderHandler& output, GroupVariation gv, const Range& range);
+	static Result ParseRange(openpal::ReadOnlyBuffer& buffer, IAPDUHeaderHandler&  output, GroupVariation, const Range& range);
 
 	APDUParser();
 	APDUParser(const APDUParser&);
 
 	template <class ParserType, class CountType>
-	static Result ParseRange(openpal::ReadOnlyBuffer& arBuffer, IAPDUHeaderHandler& output, GroupVariation gv);	
+	static Result ParseRange(openpal::ReadOnlyBuffer& buffer, IAPDUHeaderHandler& output, GroupVariation gv);
+
+	template <class ParserType>
+	static Result ParseCount(openpal::ReadOnlyBuffer& buffer, IAPDUHeaderHandler& output, GroupVariation gv);
 
 	template <class Descriptor>
-	static Result ParseRangeFixedSize(openpal::ReadOnlyBuffer& arBuffer, IAPDUHeaderHandler& output, const Range& range);	
+	static Result ParseRangeFixedSize(openpal::ReadOnlyBuffer& buffer, IAPDUHeaderHandler& output, const Range& range);	
 };
 
 template <class ParserType, class CountType>
-APDUParser::Result APDUParser::ParseRange(openpal::ReadOnlyBuffer& arBuffer, IAPDUHeaderHandler& output, GroupVariation gv)
+APDUParser::Result APDUParser::ParseRange(openpal::ReadOnlyBuffer& buffer, IAPDUHeaderHandler& output, GroupVariation gv)
 {
-	if(arBuffer.Size() < (2*ParserType::Size)) return Result::NOT_ENOUGH_DATA_FOR_RANGE;
+	if(buffer.Size() < (2*ParserType::Size)) return Result::NOT_ENOUGH_DATA_FOR_RANGE;
 	else {
-		auto start = ParserType::ReadBuffer(arBuffer);
-		auto stop = ParserType::ReadBuffer(arBuffer);
+		auto start = ParserType::ReadBuffer(buffer);
+		auto stop = ParserType::ReadBuffer(buffer);
 		if(start > stop) return BAD_START_STOP;
 		else {
 			CountType count = static_cast<CountType>(stop) - static_cast<CountType>(start) + 1;
@@ -84,8 +87,25 @@ APDUParser::Result APDUParser::ParseRange(openpal::ReadOnlyBuffer& arBuffer, IAP
 			// will ensure that size calculations never overflow with 2^32 sizes
 			if(count > std::numeric_limits<uint16_t>::max()) return UNREASONABLE_OBJECT_COUNT;
 			else {
-				Range range(start, stop, static_cast<size_t>(count));
-				return ParseRange(arBuffer, output, gv, range);
+				Range range(start, static_cast<size_t>(count));
+				return ParseRange(buffer, output, gv, range);
+			}
+		}
+	}
+}
+
+template <class ParserType>
+APDUParser::Result APDUParser::ParseCount(openpal::ReadOnlyBuffer& buffer, IAPDUHeaderHandler& output, GroupVariation gv)
+{
+	if(buffer.Size() < ParserType::Size) return Result::NOT_ENOUGH_DATA_FOR_RANGE;
+	else {
+		auto count = ParserType::ReadBuffer(buffer);
+		if(count == 0) return Result::OK;
+		else {
+			if(count > std::numeric_limits<uint16_t>::max()) return UNREASONABLE_OBJECT_COUNT;
+			else {
+				Range range(0, static_cast<size_t>(count));
+				return ParseRange(buffer, output, gv, range);
 			}
 		}
 	}

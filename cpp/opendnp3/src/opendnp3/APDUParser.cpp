@@ -45,26 +45,32 @@ APDUParser::Result APDUParser::ParseHeaders(ReadOnlyBuffer aBuffer, IAPDUHeaderH
 	return APDUParser::Result::OK;
 }
 
-APDUParser::Result APDUParser::ParseHeader(ReadOnlyBuffer& arBuffer, IAPDUHeaderHandler& arHandler)
+APDUParser::Result APDUParser::ParseHeader(ReadOnlyBuffer& buffer, IAPDUHeaderHandler& handler)
 {
-	if(arBuffer.Size() < 3) return APDUParser::Result::NOT_ENOUGH_DATA_FOR_HEADER; 
+	if(buffer.Size() < 3) return APDUParser::Result::NOT_ENOUGH_DATA_FOR_HEADER; 
 	else {
-		uint8_t group = UInt8::ReadBuffer(arBuffer);		
-		uint8_t variation = UInt8::ReadBuffer(arBuffer);		
-		auto gv = GroupVariationDescriptor::GetEnum(group, variation);
+		uint8_t group = UInt8::ReadBuffer(buffer);		
+		uint8_t variation = UInt8::ReadBuffer(buffer);		
+		auto gv = GroupVariationEnum::Get(group, variation);
 		if(gv == GroupVariation::UNKNOWN) return APDUParser::Result::UNKNOWN_OBJECT;
-		QualifierCode qualifier = QualifierCodeFromType(UInt8::ReadBuffer(arBuffer));
+		QualifierCode qualifier = QualifierCodeFromType(UInt8::ReadBuffer(buffer));
 		switch(qualifier)
 		{
 			case(QualifierCode::ALL_OBJECTS):
-				arHandler.AllObjects(gv);
+				handler.AllObjects(gv);
 				return APDUParser::Result::OK;
+			case(QualifierCode::UINT8_CNT):
+				return ParseCount<UInt8>(buffer, handler, gv);
+			case(QualifierCode::UINT16_CNT):
+				return ParseCount<UInt16>(buffer, handler, gv);
+			case(QualifierCode::UINT32_CNT):
+				return ParseCount<UInt32>(buffer, handler, gv);
 			case(QualifierCode::UINT8_START_STOP):
-				return ParseRange<UInt8, uint16_t>(arBuffer, arHandler, gv);
+				return ParseRange<UInt8, uint16_t>(buffer, handler, gv);
 			case(QualifierCode::UINT16_START_STOP):
-				return ParseRange<UInt16, uint32_t>(arBuffer, arHandler, gv);
+				return ParseRange<UInt16, uint32_t>(buffer, handler, gv);
 			case(QualifierCode::UINT32_START_STOP):
-				return ParseRange<UInt32, uint64_t>(arBuffer, arHandler, gv);
+				return ParseRange<UInt32, uint64_t>(buffer, handler, gv);			
 			default:
 				return APDUParser::Result::UNKNOWN_QUALIFIER;
 		}

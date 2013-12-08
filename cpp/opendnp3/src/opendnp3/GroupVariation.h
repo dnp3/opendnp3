@@ -23,6 +23,8 @@
 
 #include <cstdint>
 
+#include <opendnp3/Uncopyable.h>
+
 namespace opendnp3
 {
 
@@ -39,13 +41,11 @@ enum class GroupVariation : int
 	UNKNOWN
 };
 
-class GroupVariationDescriptor
+class GroupVariationEnum : private PureStatic
 {
 	public:
 
-	static GroupVariation GetEnum(uint8_t group, uint8_t variation);
-
-	static GroupVariationDescriptor GetDescriptor(GroupVariation values);
+	static GroupVariation Get(uint8_t group, uint8_t variation);	
 		
 };
 

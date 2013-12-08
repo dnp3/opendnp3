@@ -30,14 +30,12 @@ class Range
 {
 	public:
 
-	Range(uint32_t aStart, uint32_t aStop, size_t aCount) :
-		start(aStart),
-		stop(aStop),
+	Range(uint32_t aStart, size_t aCount) :
+		start(aStart),		
 		count(aCount)
 	{}
 
-	uint32_t start;
-	uint32_t stop;
+	uint32_t start;	
 	size_t count;
 
 	private:

@@ -24,7 +24,7 @@
 namespace opendnp3
 {
 
-GroupVariation GroupVariationDescriptor::GetEnum(uint8_t group, uint8_t variation)
+GroupVariation GroupVariationEnum::Get(uint8_t group, uint8_t variation)
 {
 	switch(group)
 	{
@@ -38,6 +38,7 @@ GroupVariation GroupVariationDescriptor::GetEnum(uint8_t group, uint8_t variatio
 				default:
 					return GroupVariation::UNKNOWN;
 			}
+
 		case(2):
 			switch(variation)
 			{
@@ -52,20 +53,10 @@ GroupVariation GroupVariationDescriptor::GetEnum(uint8_t group, uint8_t variatio
 				default:
 					return GroupVariation::UNKNOWN;
 			}
+		
+		default:
+			return GroupVariation::UNKNOWN;
 	}	
 }
 
-GroupVariationDescriptor GroupVariationDescriptor::GetDescriptor(GroupVariation gv)
-{
-	switch(gv)
-	{
-		default:
-			return GroupVariationDescriptor();
-	}
-}
-
-
-
-}
-
-
+} //end ns
