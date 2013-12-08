@@ -95,7 +95,7 @@ APDUParser::Result APDUParser::ParseRange(openpal::ReadOnlyBuffer& arBuffer, IAP
 template <class Descriptor>
 APDUParser::Result APDUParser::ParseRangeFixedSize(openpal::ReadOnlyBuffer& buffer, IAPDUHeaderHandler& output, const Range& range)
 {
-	auto size = range.count * Descriptor::Underlying::SIZE;
+	size_t size = range.count * Descriptor::Underlying::SIZE;
 	if(buffer.Size() < size) return APDUParser::Result::NOT_ENOUGH_DATA_FOR_OBJECTS;
 	else {
 		LazyFixedSizeCollection<typename Descriptor::Target> collection(buffer, range.count, Compose<Descriptor>::Read);

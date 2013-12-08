@@ -95,5 +95,25 @@ BOOST_AUTO_TEST_CASE(Group1Var2Range)
 	});	
 }
 
+BOOST_AUTO_TEST_CASE(FlippedRange)
+{
+	// 1 byte start/stop w/ start > stop
+	TestSimple("01 02 00 05 03", APDUParser::Result::BAD_START_STOP, 0);
+	TestSimple("01 02 00 FF 00", APDUParser::Result::BAD_START_STOP, 0);
+}
+
+BOOST_AUTO_TEST_CASE(TestUnreasonableRanges)
+{
+	// 2 byte start/stop 0->65535, no data
+	TestSimple("01 02 01 00 00 FF FF", APDUParser::Result::UNREASONABLE_OBJECT_COUNT, 0);
+
+	// 4 byte start/stop 0->(2^32-1), no data
+	TestSimple("01 02 02 00 00 00 00 FF FF FF FF", APDUParser::Result::UNREASONABLE_OBJECT_COUNT, 0);
+
+	// 4 byte start/stop 0->65535, no data
+	TestSimple("01 02 02 00 00 00 00 FF FF 00 00", APDUParser::Result::UNREASONABLE_OBJECT_COUNT, 0);
+}
+
+
 BOOST_AUTO_TEST_SUITE_END()
 
