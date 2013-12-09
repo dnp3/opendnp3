@@ -47,38 +47,28 @@ Database::~Database() {}
 // Public functions
 ////////////////////////////////////////////////////
 
-void Database::Configure(MeasurementType aType, size_t aNumPoints, bool aStartOnline)
+void Database::Configure(MeasurementType aType, size_t aNumPoints)
 {
 	switch(aType) {
 	case(MeasurementType::BINARY):
 		this->mBinaryVec.resize(aNumPoints);
 		this->AssignIndices(mBinaryVec);
-		if ( aStartOnline )
-			this->SetAllOnline(mBinaryVec);
 		break;
 	case(MeasurementType::ANALOG):
 		this->mAnalogVec.resize(aNumPoints);
-		this->AssignIndices(mAnalogVec);
-		if ( aStartOnline )
-			this->SetAllOnline(mAnalogVec);
+		this->AssignIndices(mAnalogVec);		
 		break;
 	case(MeasurementType::COUNTER):
 		this->mCounterVec.resize(aNumPoints);
 		this->AssignIndices(mCounterVec);
-		if ( aStartOnline )
-			this->SetAllOnline(mCounterVec);
 		break;
 	case(MeasurementType::CONTROL_STATUS):
 		this->mControlStatusVec.resize(aNumPoints);
 		this->AssignIndices(mControlStatusVec);
-		if ( aStartOnline )
-			this->SetAllOnline(mControlStatusVec);
 		break;
 	case(MeasurementType::SETPOINT_STATUS):
 		this->mSetpointStatusVec.resize(aNumPoints);
 		this->AssignIndices(mSetpointStatusVec);
-		if ( aStartOnline )
-			this->SetAllOnline(mSetpointStatusVec);
 		break;
 	}
 }
@@ -92,11 +82,11 @@ void Database::Configure(const DeviceTemplate& arTmp)
 	size_t numSetpointStatus = arTmp.mSetpointStatus.size();
 
 	//configure the database for these objects
-	this->Configure(MeasurementType::BINARY, numBinary, arTmp.mStartOnline);
-	this->Configure(MeasurementType::ANALOG, numAnalog, arTmp.mStartOnline);
-	this->Configure(MeasurementType::COUNTER, numCounter, arTmp.mStartOnline);
-	this->Configure(MeasurementType::CONTROL_STATUS, numControlStatus, arTmp.mStartOnline);
-	this->Configure(MeasurementType::SETPOINT_STATUS, numSetpointStatus, arTmp.mStartOnline);
+	this->Configure(MeasurementType::BINARY, numBinary);
+	this->Configure(MeasurementType::ANALOG, numAnalog);
+	this->Configure(MeasurementType::COUNTER, numCounter);
+	this->Configure(MeasurementType::CONTROL_STATUS, numControlStatus);
+	this->Configure(MeasurementType::SETPOINT_STATUS, numSetpointStatus);
 
 	for(size_t i = 0; i < arTmp.mBinary.size(); ++i) {
 		this->SetClass(MeasurementType::BINARY, i, arTmp.mBinary[i].EventClass);

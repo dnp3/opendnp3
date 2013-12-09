@@ -67,7 +67,7 @@ public:
 	/* Configuration functions */
 
 	void Configure(const DeviceTemplate& arTmp);
-	void Configure(MeasurementType aType, size_t aNumPoints, bool aStartOnline = false);
+	void Configure(MeasurementType aType, size_t aNumPoints);
 
 	size_t NumType(MeasurementType aType);
 	
@@ -84,7 +84,6 @@ public:
 	StaticIterator<Counter>::Type BeginCounter() { return mCounterVec.begin(); }
 	StaticIterator<ControlStatus>::Type BeginControlStatus() { return mControlStatusVec.begin(); }	
 	StaticIterator<SetpointStatus>::Type BeginSetpointStatus() { return mSetpointStatusVec.begin(); }
-
 
 private:
 
@@ -122,29 +121,7 @@ private:
 	std::vector< PointInfo<SetpointStatus> > mSetpointStatusVec;
 
 	IEventBuffer* mpEventBuffer;
-
-	template <typename T>
-	size_t CalcNumType(const std::vector<T*>& arIdxVec);
 };
-
-
-template <typename T>
-size_t Database::CalcNumType(const std::vector<T*>& arIdxVec)
-{
-	std::set<size_t> indexSet;
-
-for(auto i: arIdxVec) indexSet.insert(i->Index);
-
-	if(indexSet.size() > 0) return *indexSet.rbegin() + 1;
-	else return 0;
-}
-
-template<typename T>
-inline void Database::SetAllOnline( std::vector< PointInfo<T> >& arVector )
-{
-	// TODO
-	// for(size_t i = 0; i < arVector.size(); ++i) arVector[i].mValue.SetQuality(T::ONLINE);
-}
 
 template<typename T>
 inline void Database::AssignIndices( std::vector< PointInfo<T> >& arVector )
