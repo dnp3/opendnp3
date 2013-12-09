@@ -28,13 +28,12 @@ namespace opendnp3
 {
 
 template<>
-bool ExceedsDeadband<double>(const double& val1, const double& val2, double aDeadband)
+bool ExceedsDeadband<double, double>(const double& val1, const double& val2, double aDeadband)
 {
 	double diff = fabs(val1 - val2);
 
 	if(diff == std::numeric_limits<double>::infinity()) return true;
-	else return diff > aDeadband;
-	
+	else return diff > aDeadband;	
 }
 
 }

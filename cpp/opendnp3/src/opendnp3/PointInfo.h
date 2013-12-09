@@ -34,21 +34,28 @@ namespace opendnp3
  * Structure for holding static data information. Adds a deadband and a last
  * event value to the base class.
  */
-template<typename T>
-struct PointInfo : public Event<T> 
+template <typename T, typename U, typename V>
+struct DeadbandPointInfo : public Event<T> 
 {	
-	PointInfo() : deadband(0) {}
+	DeadbandPointInfo() : deadband(0) {}
 
-	bool Load(const T& aNewValue)
+	bool Load(const T& aValue)
 	{
-		auto event = IsChangeEvent(aNewValue, lastEvent, deadband);
-		if(event) lastEvent = aNewValue;
-		this->value = aNewValue;
-		return this->HasEventClass() && event;			
+		auto qualityChange = value.GetQuality() != aValue.GetQuality();
+		auto event = qualityChange || ExceedsDeadband<U,V>(aValue.GetValue(), lastEvent.GetValue(), deadband);
+		if(event) lastEvent = aValue;
+		this->value = aValue;
+		return event;			
 	}
 		
 	T lastEvent;	 // the last value that was reported
-	double deadband; // deadband associated with measurement (optional)
+	U deadband; // deadband associated with measurement (optional)
+};
+
+template <typename T>
+struct PointInfo : public DeadbandPointInfo<T, double, double>
+{	
+	PointInfo(){}
 };
 
 template <>
@@ -74,7 +81,7 @@ struct PointInfo<Binary> : public Event<Binary>
 	{		
 		auto event = aValue.GetQuality() != value.GetQuality();
 		value = aValue;
-		return HasEventClass() && event;		
+		return event;		
 	}
 };
 

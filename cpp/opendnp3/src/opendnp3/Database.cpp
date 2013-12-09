@@ -171,7 +171,7 @@ void Database::_Update(const Binary& aValue, size_t aIndex)
 	if(aIndex < mBinaryVec.size())	
 	{	
 		auto& record = mBinaryVec[aIndex];		
-		if(record.Load(aValue) && mpEventBuffer)
+		if(record.Load(aValue) && record.HasEventClass() && mpEventBuffer)
 		{				
 			mpEventBuffer->Update(record);			
 		}		
@@ -183,7 +183,7 @@ void Database::_Update(const Analog& aValue, size_t aIndex)
 	if(aIndex < mAnalogVec.size())	
 	{	
 		auto& record = mAnalogVec[aIndex];		
-		if(record.Load(aValue) && mpEventBuffer)
+		if(record.Load(aValue) && record.HasEventClass() && mpEventBuffer)
 		{			
 			mpEventBuffer->Update(record);
 		}		
@@ -195,7 +195,7 @@ void Database::_Update(const Counter& aValue, size_t aIndex)
 	if(aIndex < mCounterVec.size())	
 	{	
 		auto& record = mCounterVec[aIndex];		
-		if(record.Load(aValue) && mpEventBuffer)
+		if(record.Load(aValue) && record.HasEventClass() && mpEventBuffer)
 		{			
 			mpEventBuffer->Update(record);
 		}		

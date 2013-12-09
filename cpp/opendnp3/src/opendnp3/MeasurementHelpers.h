@@ -38,27 +38,21 @@ std::string ToString(const TypedMeasurement<T>& arMeas)
 	return oss.str();
 }
 
-template <class T>
-bool ExceedsDeadband(const T& val1, const T& val2, double aDeadband)
+template <class T, class U>
+bool ExceedsDeadband(const T& val1, const T& val2, T aDeadband)
 {
 	// T can be unsigned data type so std::abs won't work since it only directly supports signed data types
 	// If one uses std::abs and T is unsigned one will get an ambiguous override error.
-	auto diff = (val1 < val2) ? (val2 - val1) : (val1 - val2);
 
-	return (diff > aDeadband);
+	U diff = (val2 > val1) ? (static_cast<U>(val2) - static_cast<U>(val1)) : (static_cast<U>(val1) - static_cast<U>(val2));
+
+	return diff > aDeadband;	
 }
 
 template <>
-bool ExceedsDeadband<double>(const double& val1, const double& val2, double aDeadband);
+bool ExceedsDeadband<double, double>(const double& val1, const double& val2, double aDeadband);
 
-template <class T>
-bool IsChangeEvent(const T& newValue, const T& aLastReport, double aDeadband)
-{
-	if(newValue.GetQuality() != aLastReport.GetQuality()) return true;
-	else {
-		return ExceedsDeadband<typename T::Type>(newValue.GetValue(), aLastReport.GetValue(), aDeadband);
-	}            
-}
+
 
 }
 

@@ -54,22 +54,49 @@ BOOST_AUTO_TEST_SUITE(DatabaseTestSuite)
 // tests for the various analog event conditions
 BOOST_AUTO_TEST_CASE(AnalogEventZeroDeadband)
 {
-	BOOST_REQUIRE(IsChangeEvent(Analog(0), Analog(1), 0));	
+	PointInfo<Analog> pi;
+	pi.deadband = 0.0;	
+	BOOST_REQUIRE(pi.Load(Analog(0.0)));	
 }
 
 BOOST_AUTO_TEST_CASE(AnalogEventOnDeadband)
 {
-	BOOST_REQUIRE_FALSE(IsChangeEvent(Analog(0), Analog(1), 1));
+	PointInfo<Analog> pi;
+	pi.deadband = 1.0;
+	pi.lastEvent = pi.value = Analog(0.0);
+	BOOST_REQUIRE_FALSE(pi.Load(Analog(1.0)));
 }
 
 BOOST_AUTO_TEST_CASE(AnalogEventNegative)
 {
-	BOOST_REQUIRE(IsChangeEvent(Analog(-34), Analog(-36), 1));
+	PointInfo<Analog> pi;
+	pi.deadband = 1.0;
+	pi.value = pi.lastEvent = Analog(-34);	
+	BOOST_REQUIRE(pi.Load(Analog(-36)));
+}
+
+BOOST_AUTO_TEST_CASE(AnalogInfiniteChange)
+{
+	PointInfo<Analog> pi;
+	pi.deadband = 1.0;
+	pi.value = pi.lastEvent = Analog(std::numeric_limits<double>::max());	
+	BOOST_REQUIRE(pi.Load(Analog(-std::numeric_limits<double>::max())));
+}
+
+BOOST_AUTO_TEST_CASE(CounterMaxChange)
+{
+	PointInfo<Counter> pi;
+	pi.deadband = std::numeric_limits<uint32_t>::max() - 1;
+	pi.value = pi.lastEvent = Counter(0);	
+	BOOST_REQUIRE(pi.Load(Counter(std::numeric_limits<uint32_t>::max())));
 }
 
 BOOST_AUTO_TEST_CASE(AnalogNoEventNegative)
 {
-	BOOST_REQUIRE_FALSE(IsChangeEvent(Analog(-34), Analog(-36), 2));
+	PointInfo<Analog> pi;
+	pi.deadband = 2.0;
+	pi.value = pi.lastEvent = Analog(-34);
+	BOOST_REQUIRE_FALSE(pi.Load(Analog(-36)));
 }
 
 // Next 3 tests prove that "no change" doesn't get forwared to IEventBuffer
