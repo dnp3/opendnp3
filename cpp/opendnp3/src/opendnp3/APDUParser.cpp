@@ -57,27 +57,53 @@ APDUParser::Result APDUParser::ParseHeader(ReadOnlyBuffer& buffer, IAPDUHeaderHa
 		switch(qualifier)
 		{
 			case(QualifierCode::ALL_OBJECTS):
+			{
 				handler.AllObjects(gv);
 				return APDUParser::Result::OK;
+			}
 			case(QualifierCode::UINT8_CNT):
-				return ParseCount<UInt8>(buffer, handler, gv);
+			{
+				Range range;
+				auto res = ParseCountAsRange<UInt8>(buffer, handler, gv, range);
+				return (res == APDUParser::Result::OK) ? ParseObjectsWithRange(buffer, handler, gv, range) : res;				
+			}
 			case(QualifierCode::UINT16_CNT):
-				return ParseCount<UInt16>(buffer, handler, gv);
+			{
+				Range range;
+				auto res = ParseCountAsRange<UInt16>(buffer, handler, gv, range);
+				return (res == APDUParser::Result::OK) ? ParseObjectsWithRange(buffer, handler, gv, range) : res;				
+			}
 			case(QualifierCode::UINT32_CNT):
-				return ParseCount<UInt32>(buffer, handler, gv);
+			{
+				Range range;
+				auto res = ParseCountAsRange<UInt32>(buffer, handler, gv, range);
+				return (res == APDUParser::Result::OK) ? ParseObjectsWithRange(buffer, handler, gv, range) : res;				
+			}
 			case(QualifierCode::UINT8_START_STOP):
-				return ParseRange<UInt8, uint16_t>(buffer, handler, gv);
+			{
+				Range range;
+				auto res = ParseRange<UInt8, uint16_t>(buffer, handler, gv, range);
+				return (res == APDUParser::Result::OK) ? ParseObjectsWithRange(buffer, handler, gv, range) : res;
+			}
 			case(QualifierCode::UINT16_START_STOP):
-				return ParseRange<UInt16, uint32_t>(buffer, handler, gv);
+			{
+				Range range;
+				auto res = ParseRange<UInt16, uint32_t>(buffer, handler, gv, range);
+				return (res == APDUParser::Result::OK) ? ParseObjectsWithRange(buffer, handler, gv, range) : res;
+			}
 			case(QualifierCode::UINT32_START_STOP):
-				return ParseRange<UInt32, uint64_t>(buffer, handler, gv);			
+			{
+				Range range;
+				auto res = ParseRange<UInt32, uint64_t>(buffer, handler, gv, range);
+				return (res == APDUParser::Result::OK) ? ParseObjectsWithRange(buffer, handler, gv, range) : res;			
+			}
 			default:
 				return APDUParser::Result::UNKNOWN_QUALIFIER;
 		}
 	}
 }
 
-APDUParser::Result APDUParser::ParseRange(openpal::ReadOnlyBuffer& buffer, IAPDUHeaderHandler& output, GroupVariation gv, const Range& range)
+APDUParser::Result APDUParser::ParseObjectsWithRange(openpal::ReadOnlyBuffer& buffer, IAPDUHeaderHandler& output, GroupVariation gv, const Range& range)
 {
 	switch(gv)
 	{		

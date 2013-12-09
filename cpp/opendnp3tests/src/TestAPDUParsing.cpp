@@ -98,7 +98,7 @@ BOOST_AUTO_TEST_CASE(Group1Var2Range)
 BOOST_AUTO_TEST_CASE(Group1Var2CountOfZero)
 {
 	// 1 byte count == 0, 0 octets data
-	TestSimple("01 02 07 00", APDUParser::Result::OK, 0);
+	TestSimple("01 02 07 00", APDUParser::Result::COUNT_OF_ZERO, 0);
 }
 
 BOOST_AUTO_TEST_CASE(Group1Var2Count8)

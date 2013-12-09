@@ -35,13 +35,11 @@ class Range
 		count(aCount)
 	{}
 
+	Range() : start(0), count(0)
+	{}
+
 	uint32_t start;	
 	size_t count;
-
-	private:
-
-	Range();
-	Range(const Range&);
 };
 
 }
