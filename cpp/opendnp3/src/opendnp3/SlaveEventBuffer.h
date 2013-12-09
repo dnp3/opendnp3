@@ -60,29 +60,23 @@ public:
 	/**
 	 * Adds an event to the buffer.
 	 *
-	 * @param arEvent		Event update to add to the buffer
-	 * @param aClass		the class of data for the event
-	 * @param aIndex		Index of the measurement
+	 * @param arEvent		Event update to add to the buffer	
 	 */
-	void Update(const Binary& arEvent, PointClass aClass, uint32_t aIndex);
+	void Update(const Event<Binary>& aEvent);
 
 	/**
 	 * Adds an event to the buffer.
 	 *
 	 * @param arEvent		Event update to add to the buffer
-	 * @param aClass		the class of data for the event
-	 * @param aIndex		Index of the measurement
 	 */
-	void Update(const Analog& arEvent, PointClass aClass, uint32_t aIndex);
+	void Update(const Event<Analog>& aEvent);
 
 	/**
 	 * Adds an event to the buffer.
 	 *
-	 * @param arEvent		Event update to add to the buffer
-	 * @param aClass		the class of data for the event
-	 * @param aIndex		Index of the measurement
+	 * @param arEvent		Event update to add to the buffer	
 	 */
-	void Update(const Counter& arEvent, PointClass aClass, uint32_t aIndex);
+	void Update(const Event<Counter>& aEvent);
 
 
 	/**

@@ -22,8 +22,12 @@
 #define __DATABASE_TEST_OBJECT_H_
 
 #include <queue>
+
+#include <opendnp3/Event.h>
 #include <opendnp3/Database.h>
+
 #include <asiopal/Log.h>
+
 
 namespace opendnp3
 {
@@ -34,24 +38,21 @@ public:
 
 	virtual ~MockEventBuffer() {}
 
-	void Update(const Binary& aValue, PointClass aClass, uint32_t aIndex) {
-		PointInfo<Binary> v(aValue, aIndex, aClass);
-		mBinaryEvents.push_back(v);
+	void Update(const Event<Binary>& aEvent) {		
+		mBinaryEvents.push_back(aEvent);
 	}
 
-	void Update(const Analog& aValue, PointClass aClass, uint32_t aIndex) {
-		PointInfo<Analog> v(aValue, aIndex, aClass);
-		mAnalogEvents.push_back(v);
+	void Update(const Event<Analog>& aEvent) {		
+		mAnalogEvents.push_back(aEvent);
 	}
 
-	void Update(const Counter& aValue, PointClass aClass, uint32_t aIndex) {
-		PointInfo<Counter> v(aValue, aIndex, aClass);
-		mCounterEvents.push_back(v);
+	void Update(const Event<Counter>& aEvent) {		
+		mCounterEvents.push_back(aEvent);
 	}	
 
-	std::deque<PointInfo<Binary>> mBinaryEvents;
-	std::deque<PointInfo<Analog>> mAnalogEvents;
-	std::deque<PointInfo<Counter>> mCounterEvents;
+	std::deque<Event<Binary>> mBinaryEvents;
+	std::deque<Event<Analog>> mAnalogEvents;
+	std::deque<Event<Counter>> mCounterEvents;
 };
 
 class DatabaseTestObject

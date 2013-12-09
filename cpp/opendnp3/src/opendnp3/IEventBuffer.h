@@ -24,6 +24,8 @@
 #include <opendnp3/DataTypes.h>
 #include <opendnp3/PointClass.h>
 
+#include "Event.h"
+
 namespace opendnp3
 {
 
@@ -34,11 +36,11 @@ public:
 
 	virtual ~IEventBuffer() {}
 
-	virtual void Update(const Binary& arEvent, PointClass aClass, uint32_t aIndex) = 0;
+	virtual void Update(const Event<Binary>& aEvent) = 0;
 
-	virtual void Update(const Analog& arEvent, PointClass aClass, uint32_t aIndex) = 0;
+	virtual void Update(const Event<Analog>& aEvent) = 0;
 
-	virtual void Update(const Counter& arEvent, PointClass aClass, uint32_t aIndex) = 0;
+	virtual void Update(const Event<Counter>& aEvent) = 0;
 
 };
 

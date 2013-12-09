@@ -113,13 +113,7 @@ void Database::SetClass(MeasurementType aType, PointClass aClass)
 			break;
 		case(MeasurementType::COUNTER):
 			for(auto& m: mCounterVec) m.clazz = aClass;			
-			break;
-		case(MeasurementType::CONTROL_STATUS):
-			for(auto& m: mControlStatusVec) m.clazz = aClass;				
-			break;
-		case(MeasurementType::SETPOINT_STATUS):
-			for(auto& m: mSetpointStatusVec) m.clazz = aClass;			
-			break;
+			break;		
 		default:		
 			break;
 	}
@@ -139,15 +133,7 @@ bool Database::SetClass(MeasurementType aType, size_t aIndex, PointClass aClass)
 		case(MeasurementType::COUNTER):
 			if(aIndex >= mCounterVec.size()) return false;
 			mCounterVec[aIndex].clazz = aClass;
-			return true;
-		case(MeasurementType::CONTROL_STATUS):
-			if(aIndex >= mControlStatusVec.size()) return false;
-			mControlStatusVec[aIndex].clazz = aClass;
-			return true;
-		case(MeasurementType::SETPOINT_STATUS):
-			if(aIndex >= mSetpointStatusVec.size()) return false;
-			mSetpointStatusVec[aIndex].clazz = aClass;
-			return true;
+			return true;		
 		default:
 			return false;
 	}	
@@ -184,13 +170,11 @@ void Database::_Update(const Binary& aValue, size_t aIndex)
 {
 	if(aIndex < mBinaryVec.size())	
 	{	
-		auto& record = mBinaryVec[aIndex];
-		record.value = aValue;
-		if(record.IsEvent(aValue))
-		{
-			record.lastEvent = record.value;			
-			if(mpEventBuffer) mpEventBuffer->Update(record.value, record.clazz, aIndex);
-		}
+		auto& record = mBinaryVec[aIndex];		
+		if(record.Load(aValue) && mpEventBuffer)
+		{				
+			mpEventBuffer->Update(record);			
+		}		
 	}	
 }
 
@@ -198,13 +182,11 @@ void Database::_Update(const Analog& aValue, size_t aIndex)
 {
 	if(aIndex < mAnalogVec.size())	
 	{	
-		auto& record = mAnalogVec[aIndex];
-		record.value = aValue;
-		if(record.IsEvent(aValue))
-		{
-			record.lastEvent = record.value;			
-			if(mpEventBuffer) mpEventBuffer->Update(record.value, record.clazz, aIndex);
-		}
+		auto& record = mAnalogVec[aIndex];		
+		if(record.Load(aValue) && mpEventBuffer)
+		{			
+			mpEventBuffer->Update(record);
+		}		
 	}	
 }
 
@@ -212,13 +194,11 @@ void Database::_Update(const Counter& aValue, size_t aIndex)
 {
 	if(aIndex < mCounterVec.size())	
 	{	
-		auto& record = mCounterVec[aIndex];
-		record.value = aValue;
-		if(record.IsEvent(aValue))
-		{
-			record.lastEvent = record.value;			
-			if(mpEventBuffer) mpEventBuffer->Update(record.value, record.clazz, aIndex);
-		}
+		auto& record = mCounterVec[aIndex];		
+		if(record.Load(aValue) && mpEventBuffer)
+		{			
+			mpEventBuffer->Update(record);
+		}		
 	}
 }
 

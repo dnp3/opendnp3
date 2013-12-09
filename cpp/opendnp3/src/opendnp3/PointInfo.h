@@ -35,17 +35,14 @@ namespace opendnp3
  * event value to the base class.
  */
 template<typename T>
-class LastEvent : public Event<T> 
-{
-	public:
-
+struct LastEvent : public Event<T> 
+{	
 	LastEvent(const T& aValue, uint32_t aIndex, PointClass aClass) :
 		Event<T>(aValue, aIndex, aClass),
 		lastEvent(aValue)		
 	{}
 
-	LastEvent() : Event<T>()
-	{}
+	LastEvent() : Event<T>() {}
 		
 	T lastEvent;		// the last value that was reported	
 };
@@ -55,45 +52,45 @@ class LastEvent : public Event<T>
  * event value to the base class.
  */
 template<typename T>
-class PointInfo : public LastEvent<T> 
-{
-	public:
+struct PointInfo : public LastEvent<T> 
+{	
+	PointInfo() : deadband(0) {}
 
-	PointInfo(const T& aValue, uint32_t aIndex, PointClass aClass) :
-		LastEvent<T>(aValue, aIndex, aClass),		
-		deadband(0)
-	{}
-
-	PointInfo() : deadband(0)
-	{}
-
-	bool IsEvent(const T& aNewValue) const
+	bool Load(const T& aNewValue)
 	{
-		return this->HasEventClass() && IsChangeEvent(aNewValue, lastEvent, deadband);
+		auto event = IsChangeEvent(aNewValue, lastEvent, deadband);
+		if(event) lastEvent = aNewValue;
+		value = aNewValue;
+		return HasEventClass() && event;			
 	}
 		
 	double deadband; // deadband associated with measurement (optional)
 };
 
 template <>
-class PointInfo<Binary> : public LastEvent<Binary>
+struct PointInfo<ControlStatus> : public IndexedValue<ControlStatus>
+{
+		PointInfo(){}
+};
+
+template <>
+struct PointInfo<SetpointStatus> : public IndexedValue<SetpointStatus>
+{
+		PointInfo(){}
+};
+
+template <>
+struct PointInfo<Binary> : public Event<Binary>
 {
 	public:
-
-	PointInfo(const Binary& aValue, uint32_t aIndex, PointClass aClass) :
-		LastEvent<Binary>(aValue, aIndex, aClass)		
-	{}
-
-	PointInfo()
-	{}
-
-	bool IsEvent(const Binary& aValue) const
-	{
-		if(this->HasEventClass())
-		{
-			return aValue.GetQuality() != lastEvent.GetQuality();
-		}
-		else return false;		
+	
+	PointInfo() {}
+	
+	bool Load(const Binary& aValue)
+	{		
+		auto event = aValue.GetQuality() != value.GetQuality();
+		value = aValue;
+		return HasEventClass() && event;		
 	}
 };
 

@@ -38,7 +38,8 @@ BOOST_AUTO_TEST_SUITE(SlaveEventBufferSuite)
 void PushEvents(SlaveEventBuffer& b, size_t aNumEvent, size_t aNumIndices)
 {
 	for(size_t i = 0; i < aNumEvent; ++i) {
-		b.Update(Analog(i), PC_CLASS_1, i % aNumIndices);
+		Event<Analog> e(Analog(i), i % aNumIndices, PC_CLASS_1);
+		b.Update(e);
 	}
 }
 
@@ -47,11 +48,11 @@ void OverflowTest(const T& first, const T& second)
 {
 	EventMaxConfig cfg(1, 1, 1, 0);
 	SlaveEventBuffer b(cfg);
-	b.Update(first, PC_CLASS_1, 0);
+	b.Update(Event<T>(first, 0, PC_CLASS_1));
 	BOOST_REQUIRE_FALSE(b.IsOverflow());
 	BOOST_REQUIRE(b.HasEventData());
 	BOOST_REQUIRE_EQUAL(b.NumType(Convert(T::MeasEnum)), 1);
-	b.Update(second, PC_CLASS_1, 1);
+	b.Update(Event<T>(second, 1, PC_CLASS_1));
 	BOOST_REQUIRE(b.IsOverflow());
 }
 
@@ -105,12 +106,12 @@ BOOST_AUTO_TEST_CASE(ClassSelect)
 {
 	EventMaxConfig cfg(10, 10, 10, 0);
 	SlaveEventBuffer b(cfg);
-	b.Update(Binary(true), PC_CLASS_1, 0);
-	b.Update(Binary(false), PC_CLASS_1, 0);
-	b.Update(Analog(5), PC_CLASS_1, 0);
-	b.Update(Analog(6), PC_CLASS_1, 1);
-	b.Update(Counter(1), PC_CLASS_1, 0);
-	b.Update(Counter(3), PC_CLASS_1, 1);
+	b.Update(Event<Binary>(Binary(true), 0, PC_CLASS_1));
+	b.Update(Event<Binary>(Binary(false), 0, PC_CLASS_1));
+	b.Update(Event<Analog>(Analog(5), 0, PC_CLASS_1));
+	b.Update(Event<Analog>(Analog(6), 1, PC_CLASS_1));
+	b.Update(Event<Counter>(Counter(1), 0, PC_CLASS_1));
+	b.Update(Event<Counter>(Counter(3), 1, PC_CLASS_1));
 
 	b.Select(PC_CLASS_1, 1);
 	BOOST_REQUIRE_EQUAL(b.NumSelected(BufferType::BINARY), 1);
