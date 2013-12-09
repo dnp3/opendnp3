@@ -31,17 +31,36 @@ namespace opendnp3
 {
 
 /**
+ * Extends an event structure wtih a lastEvent value
+ * event value to the base class.
+ */
+template<typename T>
+class LastEvent : public Event<T> 
+{
+	public:
+
+	LastEvent(const T& aValue, uint32_t aIndex, PointClass aClass) :
+		Event<T>(aValue, aIndex, aClass),
+		lastEvent(aValue)		
+	{}
+
+	LastEvent() : Event<T>()
+	{}
+		
+	T lastEvent;		// the last value that was reported	
+};
+
+/**
  * Structure for holding static data information. Adds a deadband and a last
  * event value to the base class.
  */
 template<typename T>
-class PointInfo : public Event<T> 
+class PointInfo : public LastEvent<T> 
 {
 	public:
 
 	PointInfo(const T& aValue, uint32_t aIndex, PointClass aClass) :
-		Event<T>(aValue, aIndex, aClass),
-		lastEvent(aValue),
+		LastEvent<T>(aValue, aIndex, aClass),		
 		deadband(0)
 	{}
 
@@ -52,10 +71,32 @@ class PointInfo : public Event<T>
 	{
 		return this->HasEventClass() && IsChangeEvent(aNewValue, lastEvent, deadband);
 	}
-	
-	T lastEvent;		// the last value that was reported
-	double deadband;	// deadband associated with measurement (optional)
+		
+	double deadband; // deadband associated with measurement (optional)
 };
+
+template <>
+class PointInfo<Binary> : public LastEvent<Binary>
+{
+	public:
+
+	PointInfo(const Binary& aValue, uint32_t aIndex, PointClass aClass) :
+		LastEvent<Binary>(aValue, aIndex, aClass)		
+	{}
+
+	PointInfo()
+	{}
+
+	bool IsEvent(const Binary& aValue) const
+	{
+		if(this->HasEventClass())
+		{
+			return aValue.GetQuality() != lastEvent.GetQuality();
+		}
+		else return false;		
+	}
+};
+
 
 
 } //end namespace
