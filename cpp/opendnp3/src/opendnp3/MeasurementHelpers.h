@@ -60,10 +60,6 @@ bool IsChangeEvent(const T& newValue, const T& aLastReport, double aDeadband)
 	}            
 }
 
-//specialization for BoolDataPoint
-template <>
-bool IsChangeEvent<Binary>(const Binary& newValue, const Binary& aLastReport, double aDeadband);
-
 }
 
 #endif

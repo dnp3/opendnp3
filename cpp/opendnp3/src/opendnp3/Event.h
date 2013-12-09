@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __EVENT_H_
-#define __EVENT_H_
+#ifndef __OPENDNP3_EVENT_H_
+#define __OPENDNP3_EVENT_H_
 
 #include <opendnp3/PointClass.h>
 #include <opendnp3/IndexedValue.h>
@@ -31,11 +31,9 @@ namespace opendnp3
  * Record of an event that includes value, index, and class
  */
 template <typename T>
-class Event : public IndexedValue<T>
-{
-	public:
-
-	 Event(const T& arValue, uint32_t aIndex, PointClass aClass) :
+struct Event : public IndexedValue<T>
+{	
+	Event(const T& arValue, uint32_t aIndex, PointClass aClass) :
 		IndexedValue<T>(arValue, aIndex),		
 		clazz(aClass)
 	{}

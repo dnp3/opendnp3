@@ -27,13 +27,6 @@
 namespace opendnp3
 {
 
-template <>
-bool IsChangeEvent<Binary>(const Binary& newValue, const Binary& aLastReport, double aDeadband)
-{	
-	return (newValue.GetValue() != aLastReport.GetValue()) || newValue.GetQuality() != aLastReport.GetQuality();
-}
- 
-
 template<>
 bool ExceedsDeadband<double>(const double& val1, const double& val2, double aDeadband)
 {

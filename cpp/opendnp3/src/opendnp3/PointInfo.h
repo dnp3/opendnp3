@@ -31,28 +31,11 @@ namespace opendnp3
 {
 
 /**
- * Extends an event structure wtih a lastEvent value
- * event value to the base class.
- */
-template<typename T>
-struct LastEvent : public Event<T> 
-{	
-	LastEvent(const T& aValue, uint32_t aIndex, PointClass aClass) :
-		Event<T>(aValue, aIndex, aClass),
-		lastEvent(aValue)		
-	{}
-
-	LastEvent() : Event<T>() {}
-		
-	T lastEvent;		// the last value that was reported	
-};
-
-/**
  * Structure for holding static data information. Adds a deadband and a last
  * event value to the base class.
  */
 template<typename T>
-struct PointInfo : public LastEvent<T> 
+struct PointInfo : public Event<T> 
 {	
 	PointInfo() : deadband(0) {}
 
@@ -60,10 +43,11 @@ struct PointInfo : public LastEvent<T>
 	{
 		auto event = IsChangeEvent(aNewValue, lastEvent, deadband);
 		if(event) lastEvent = aNewValue;
-		value = aNewValue;
-		return HasEventClass() && event;			
+		this->value = aNewValue;
+		return this->HasEventClass() && event;			
 	}
 		
+	T lastEvent;	 // the last value that was reported
 	double deadband; // deadband associated with measurement (optional)
 };
 
