@@ -149,27 +149,8 @@ inline void Database::SetAllOnline( std::vector< PointInfo<T> >& arVector )
 template<typename T>
 inline void Database::AssignIndices( std::vector< PointInfo<T> >& arVector )
 {
-	for(size_t i = 0; i < arVector.size(); i++) {
-		arVector[i].index = i;
-	}
-}
-
-template<typename T>
-bool Database::UpdateValue(std::vector< PointInfo<T> >& aVec, const T& aValue, size_t aIndex)
-{
-	if(aIndex >= aVec.size()) return false;
-	else {
-		
-		if(aVec[aIndex].IsEvent(aValue))
-		{
-			aVec[aIndex].value = aValue;
-			return (aVec[aIndex].clazz & PC_ALL_EVENTS) != 0;
-		}
-		else {
-			aVec[aIndex].value = aValue;
-			return false;
-		}
-	}
+	uint32_t i = 0;
+	for(auto& record: arVector) record.index = i++;	
 }
 
 }

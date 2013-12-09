@@ -190,43 +190,56 @@ void Database::SetEventBuffer(IEventBuffer* apEventBuffer)
 // IDataObserver interfae - Private NVII functions -
 ////////////////////////////////////////////////////
 
-void Database::_Update(const Binary& arPoint, size_t aIndex)
+void Database::_Update(const Binary& aValue, size_t aIndex)
 {
-	if(UpdateValue<Binary>(mBinaryVec, arPoint, aIndex)) {
-		LOG_BLOCK(LogLevel::Debug, "Binary Change: " << ToString(arPoint) << " Index: " << aIndex);
-		auto& v = mBinaryVec[aIndex];
-		if(mpEventBuffer) mpEventBuffer->Update(v.value, v.clazz, aIndex);
+	if(aIndex < mBinaryVec.size())	
+	{	
+		auto& record = mBinaryVec[aIndex];
+		record.value = aValue;
+		if(record.IsEvent(aValue))
+		{
+			record.lastEvent = record.value;			
+			if(mpEventBuffer) mpEventBuffer->Update(record.value, record.clazz, aIndex);
+		}
+	}	
+}
+
+void Database::_Update(const Analog& aValue, size_t aIndex)
+{
+	if(aIndex < mAnalogVec.size())	
+	{	
+		auto& record = mAnalogVec[aIndex];
+		record.value = aValue;
+		if(record.IsEvent(aValue))
+		{
+			record.lastEvent = record.value;			
+			if(mpEventBuffer) mpEventBuffer->Update(record.value, record.clazz, aIndex);
+		}
+	}	
+}
+
+void Database::_Update(const Counter& aValue, size_t aIndex)
+{
+	if(aIndex < mCounterVec.size())	
+	{	
+		auto& record = mCounterVec[aIndex];
+		record.value = aValue;
+		if(record.IsEvent(aValue))
+		{
+			record.lastEvent = record.value;			
+			if(mpEventBuffer) mpEventBuffer->Update(record.value, record.clazz, aIndex);
+		}
 	}
 }
 
-void Database::_Update(const Analog& arPoint, size_t aIndex)
+void Database::_Update(const ControlStatus& aValue, size_t aIndex)
 {
-	if(UpdateValue<Analog>(mAnalogVec, arPoint, aIndex)) {
-		LOG_BLOCK(LogLevel::Debug, "Analog Change: " << ToString(arPoint) << " Index: " << aIndex);
-		mAnalogVec[aIndex].lastEvent = mAnalogVec[aIndex].value;
-		auto& v = mAnalogVec[aIndex];
-		if(mpEventBuffer) mpEventBuffer->Update(v.value, v.clazz, aIndex);
-	}
+	if(aIndex < mControlStatusVec.size()) mControlStatusVec[aIndex].value = aValue;	
 }
 
-void Database::_Update(const Counter& arPoint, size_t aIndex)
+void Database::_Update(const SetpointStatus& aValue, size_t aIndex)
 {
-	if(UpdateValue<Counter>(mCounterVec, arPoint, aIndex)) {
-		LOG_BLOCK(LogLevel::Debug, "Counter Change: " << ToString(arPoint) << " Index: " << aIndex);
-		mCounterVec[aIndex].lastEvent = mCounterVec[aIndex].value;
-		auto& v = mCounterVec[aIndex];
-		if(mpEventBuffer) mpEventBuffer->Update(v.value, v.clazz, aIndex);
-	}
-}
-
-void Database::_Update(const ControlStatus& arPoint, size_t aIndex)
-{
-	UpdateValue<ControlStatus>(mControlStatusVec, arPoint, aIndex);
-}
-
-void Database::_Update(const SetpointStatus& arPoint, size_t aIndex)
-{
-	UpdateValue<SetpointStatus>(mSetpointStatusVec, arPoint, aIndex);
+	if(aIndex < mSetpointStatusVec.size()) mSetpointStatusVec[aIndex].value = aValue;
 }
 
 ////////////////////////////////////////////////////
