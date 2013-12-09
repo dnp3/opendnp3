@@ -42,6 +42,11 @@ class Event : public IndexedValue<T>
 
 	Event() : clazz(PC_CLASS_0)
 	{}
+
+	bool HasEventClass() const
+	{
+		return (clazz & PC_ALL_EVENTS) != 0;
+	}
 	
 	PointClass clazz;	// class of the point (PC_CLASS<0-3>)	
 };

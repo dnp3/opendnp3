@@ -50,8 +50,7 @@ class PointInfo : public Event<T>
 
 	bool IsEvent(const T& aNewValue) const
 	{
-		if((clazz & PC_ALL_EVENTS) == 0) return false;
-		else return IsChangeEvent(aNewValue, lastEvent, deadband);         
+		return this->HasEventClass() && IsChangeEvent(aNewValue, lastEvent, deadband);
 	}
 	
 	T lastEvent;		// the last value that was reported
