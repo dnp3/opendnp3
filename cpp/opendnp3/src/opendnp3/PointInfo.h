@@ -41,8 +41,8 @@ struct DeadbandPointInfo : public Event<T>
 
 	bool Load(const T& aValue)
 	{
-		auto qualityChange = value.GetQuality() != aValue.GetQuality();
-		auto event = qualityChange || ExceedsDeadband<U,V>(aValue.GetValue(), lastEvent.GetValue(), deadband);
+		bool qualityChange = this->value.GetQuality() != aValue.GetQuality();
+		bool event = qualityChange || ExceedsDeadband<U,V>(aValue.GetValue(), lastEvent.GetValue(), deadband);
 		if(event) lastEvent = aValue;
 		this->value = aValue;
 		return event;			
