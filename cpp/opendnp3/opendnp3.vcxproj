@@ -264,12 +264,12 @@
     <ClInclude Include="src\opendnp3\HeaderReadIterator.h" />
     <ClInclude Include="src\opendnp3\IAPDUHeaderHandler.h" />
     <ClInclude Include="src\opendnp3\IFrameSink.h" />
-    <ClInclude Include="src\opendnp3\LazyCollection.h" />
+    <ClInclude Include="src\opendnp3\Iterable.h" />
     <ClInclude Include="src\opendnp3\ILinkContext.h" />
     <ClInclude Include="src\opendnp3\ILinkRouter.h" />
     <ClInclude Include="src\opendnp3\IndexedWriteIterator.h" />
-    <ClInclude Include="src\opendnp3\LazyFixedSizeCollection.h" />
-    <ClInclude Include="src\opendnp3\LazyIterator.h" />
+    <ClInclude Include="src\opendnp3\LazyIterable.h" />
+    <ClInclude Include="src\opendnp3\Iterator.h" />
     <ClInclude Include="src\opendnp3\LinkFrame.h" />
     <ClInclude Include="src\opendnp3\LinkHeader.h" />
     <ClInclude Include="src\opendnp3\LinkLayer.h" />

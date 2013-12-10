@@ -23,7 +23,7 @@
 #include "TestHelpers.h"
 #include "BufferHelpers.h"
 
-#include <opendnp3/LazyFixedSizeCollection.h>
+#include <opendnp3/LazyIterable.h>
 #include <opendnp3/objects/Group30.h>
 
 #include <iostream>
@@ -40,12 +40,12 @@ BOOST_AUTO_TEST_CASE(ReadSimpleTypes)
 
 	auto read = [](ReadOnlyBuffer& b, size_t position) { return Group30Var2::Read(b); };
 		
-	LazyFixedSizeCollection<Group30Var2> collection(hex.ToReadOnly(), 2, read);
+	LazyIterable<Group30Var2> collection(hex.ToReadOnly(), 2, read);
 	
 	auto test = [&]() {
 		std::vector<Group30Var2> vec;
-		for(auto m: collection) vec.push_back(m);	
-					
+		collection.Foreach([&](const Group30Var2& gv) { vec.push_back(gv); });
+								
 		BOOST_REQUIRE_EQUAL(2, vec.size());
 		BOOST_REQUIRE_EQUAL(257, vec[0].value);
 		BOOST_REQUIRE_EQUAL(0xAB, vec[0].flags);

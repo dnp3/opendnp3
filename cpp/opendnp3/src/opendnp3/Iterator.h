@@ -18,54 +18,51 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __LAZY_FIXED_SIZE_COLLECTION_H_
-#define __LAZY_FIXED_SIZE_COLLECTION_H_
+#ifndef __OPENDNP3_ITERATOR_H_
+#define __OPENDNP3_ITERATOR_H_
 
 #include <functional>
 #include <assert.h>
 
-#include "LazyCollection.h"
+#include <openpal/BufferWrapper.h>
+
+#include "BufferRange.h"
 
 namespace opendnp3
 {
 
 template <class T>
-class LazyFixedSizeCollection : public LazyCollection<T>
-{
+class Iterator : private BufferRange
+{						
 	public:
-		
-		LazyFixedSizeCollection(const openpal::ReadOnlyBuffer& arBuffer, size_t aCount, const typename LazyIterator<T>::ReadFunction& aReadFunction):
-			mBuffer(arBuffer),
-			mCount(aCount),
-			mReadFunction(aReadFunction)
-		{
-		
-		}
 
-		LazyIterator<T> begin() const
-		{
-			return LazyIterator<T>(mBuffer, mCount, mReadFunction);
-		}
+	typedef std::function<T (openpal::ReadOnlyBuffer& buffer, size_t position)> ReadFunction;
 		
-		LazyIterator<T> end() const
-		{
-			return LazyIterator<T>::End();
-		}
+	Iterator(const openpal::ReadOnlyBuffer& arBuffer, size_t aNumValues, const ReadFunction& aReadFunction):
+		BufferRange(arBuffer, aNumValues),
+		mReadFunction(aReadFunction)
+	{}
 
-		size_t size() const
-		{
-			return mCount;
-		}
+	Iterator(const Iterator& rhs) : BufferRange(rhs), mReadFunction(rhs.mReadFunction)
+	{}		
 
-	private:
-		
-		LazyFixedSizeCollection();
-		
-		openpal::ReadOnlyBuffer mBuffer;		
-		size_t mCount;
-		typename LazyIterator<T>::ReadFunction mReadFunction;
+	bool HasNext() const
+	{
+		return mPosition < mNumValues;		
+	}
+
+	T Next()
+	{			
+		assert(mPosition < mNumValues);
+		size_t pos = mPosition++;
+		return mReadFunction(mBuffer, pos);
+	}
+
+	private:		 
+	Iterator();	
+
+	ReadFunction mReadFunction;
 };
-
 
 }
 

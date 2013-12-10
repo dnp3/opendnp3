@@ -18,30 +18,33 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __LAZY_COLLECTION_H_
-#define __LAZY_COLLECTION_H_
+#ifndef __ITERABLE_H_
+#define __ITERABLE_H_
 
 #include <functional>
-#include <assert.h>
 
-#include "LazyIterator.h"
+#include "Iterator.h"
 
 namespace opendnp3
 {
 
 template <class T>
-class LazyCollection
+class Iterable
 {
 	public:
 
-		virtual ~LazyCollection()
+		virtual ~Iterable()
 		{}
-		
-		virtual LazyIterator<T> begin() const = 0;
-		
-		virtual LazyIterator<T> end() const = 0;
 
-		virtual size_t size() const = 0;
+		void Foreach(const std::function<void (const T&)>& fun) const
+		{
+			auto i = this->GetIterator();
+			while(i.HasNext()) fun(i.Next());
+		}
+		
+		virtual Iterator<T> GetIterator() const = 0;		
+
+		virtual size_t Size() const = 0;
 };
 
 

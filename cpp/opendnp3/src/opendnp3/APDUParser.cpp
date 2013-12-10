@@ -25,7 +25,7 @@
 
 #include "gen/QualifierCode.h"
 #include "GroupVariation.h"
-#include "LazyFixedSizeCollection.h"
+#include "LazyIterable.h"
 
 #include "ObjectDescriptors.h"
 #include "BitReader.h"
@@ -152,7 +152,7 @@ APDUParser::Result APDUParser::ParseRangeAsBitField(openpal::ReadOnlyBuffer& buf
 	size_t numBytes = NumBytesInBits(range.count);
 	if(buffer.Size() < numBytes) return Result::NOT_ENOUGH_DATA_FOR_OBJECTS;
 	else {
-		LazyFixedSizeCollection<Binary> collection(buffer, range.count, GetBit);
+		LazyIterable<Binary> collection(buffer, range.count, GetBit);
 		output.OnStaticData(range.start, collection);
 		buffer.Advance(numBytes);
 		return APDUParser::Result::OK;

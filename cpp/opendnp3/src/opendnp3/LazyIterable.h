@@ -18,64 +18,53 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __LAZY_ITERATOR_H_
-#define __LAZY_ITERATOR_H_
+#ifndef __LAZY_ITERABLE_H_
+#define __LAZY_ITERABLE_H_
 
 #include <functional>
 #include <assert.h>
 
 #include <openpal/BufferWrapper.h>
 
-#include "BufferRange.h"
+#include "Iterator.h"
+#include "Iterable.h"
 
 namespace opendnp3
 {
 
 template <class T>
-class LazyIterator : private BufferRange, public std::iterator<std::output_iterator_tag, T> 
-{						
+class LazyIterable : public Iterable<T>
+{
 	public:
-
-	static LazyIterator End()
-	{
-		return LazyIterator(openpal::ReadOnlyBuffer(nullptr, 0), 0);
-	}
-
-	typedef std::function<T (openpal::ReadOnlyBuffer& buffer, size_t position)> ReadFunction;
 		
-	LazyIterator(const openpal::ReadOnlyBuffer& arBuffer, size_t aNumValues, const ReadFunction& aReadFunction):
-		BufferRange(arBuffer, aNumValues),
-		mReadFunction(aReadFunction)
-	{}
+		LazyIterable(const openpal::ReadOnlyBuffer& arBuffer, size_t aCount, const typename Iterator<T>::ReadFunction& aReadFunction):
+			mBuffer(arBuffer),
+			mCount(aCount),
+			mReadFunction(aReadFunction)
+		{
+		
+		}
 
-	LazyIterator(const LazyIterator& rhs) : BufferRange(rhs), mReadFunction(rhs.mReadFunction)
-	{}	
-				
-	bool operator!=(const LazyIterator&)
-	{
-		return mPosition < mNumValues;		
-	}
+		Iterator<T> GetIterator() const
+		{
+			return Iterator<T>(mBuffer, mCount, mReadFunction);
+		}
+		
 
-	void operator ++()
-	{
-		assert(mPosition < mNumValues);
-		++mPosition;
-	}
+		size_t Size() const
+		{
+			return mCount;
+		}
 
-	T operator *()
-	{	
-		assert(mReadFunction);
-		assert(mPosition < mNumValues);
-		return mReadFunction(mBuffer, mPosition);
-	}
-
-	private:		 
-	LazyIterator();
-	LazyIterator(const openpal::ReadOnlyBuffer& arBuffer, size_t aNumValues): BufferRange(arBuffer, aNumValues)		
-	{}
-
-	ReadFunction mReadFunction;
+	private:
+		
+		LazyIterable();
+		
+		openpal::ReadOnlyBuffer mBuffer;		
+		size_t mCount;
+		typename Iterator<T>::ReadFunction mReadFunction;
 };
+
 
 }
 

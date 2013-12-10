@@ -21,7 +21,6 @@
 #ifndef __APDU_HEADER_PARSER_H_
 #define __APDU_HEADER_PARSER_H_
 
-#include <vector>
 #include <functional>
 #include <limits>
 
@@ -31,7 +30,7 @@
 
 #include "Range.h"
 #include "IAPDUHeaderHandler.h"
-#include "LazyFixedSizeCollection.h"
+#include "LazyIterable.h"
 #include "ObjectDescriptors.h"
 #include "IndexParser.h"
 
@@ -127,7 +126,7 @@ APDUParser::Result APDUParser::ParseRangeFixedSize(openpal::ReadOnlyBuffer& buff
 	if(buffer.Size() < size) return APDUParser::Result::NOT_ENOUGH_DATA_FOR_OBJECTS;
 	else {
 		auto read = [](ReadOnlyBuffer& buffer, size_t) { return Descriptor::Read(buffer); };
-		LazyFixedSizeCollection<typename Descriptor::Target> collection(buffer, range.count, read);
+		LazyIterable<typename Descriptor::Target> collection(buffer, range.count, read);
 		output.OnStaticData(range.start, collection);
 		buffer.Advance(size);
 		return APDUParser::Result::OK;
@@ -145,7 +144,7 @@ APDUParser::Result APDUParser::ParseCountFixedSizeWithIndex(openpal::ReadOnlyBuf
 			auto value = Descriptor::Read(buffer);
 			return IndexedValue<typename Descriptor::Target>(value, index);
 		};		
-		LazyFixedSizeCollection< IndexedValue <typename Descriptor::Target> > collection(buffer, count, readWithIndex);
+		LazyIterable< IndexedValue <typename Descriptor::Target> > collection(buffer, count, readWithIndex);
 		output.OnEventData(collection);
 		buffer.Advance(size);
 		return APDUParser::Result::OK;

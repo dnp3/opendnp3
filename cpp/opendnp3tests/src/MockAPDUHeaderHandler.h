@@ -41,15 +41,20 @@ class MockApduHeaderHandler : public IAPDUHeaderHandler
 			++numRequests;
 		}
 				
-		virtual void OnStaticData(uint32_t startIndex, const LazyCollection<Binary>& meas) override
+		virtual void OnStaticData(uint32_t startIndex, const LazyIterable<Binary>& meas) override
 		{
-			for(auto b: meas) staticBinaries.push_back(IndexedValue<Binary>(b, startIndex++));
+			meas.Foreach([&](const Binary& v) {  
+				staticBinaries.push_back(IndexedValue<Binary>(v, startIndex++));
+			});
+			
 			++numRequests;
 		}		
 
-		virtual void OnEventData(const LazyCollection<IndexedValue<Binary>>& meas) override
+		virtual void OnEventData(const LazyIterable<IndexedValue<Binary>>& meas) override
 		{
-			for(auto b: meas) eventBinaries.push_back(b);
+			meas.Foreach([&](const IndexedValue<Binary>& v) {  
+				eventBinaries.push_back(v);
+			});
 			++numRequests;
 		}
 		

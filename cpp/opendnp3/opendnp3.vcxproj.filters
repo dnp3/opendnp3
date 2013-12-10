@@ -549,9 +549,6 @@
     <ClInclude Include="src\opendnp3\IAPDUHeaderHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\LazyCollection.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\APDUParser.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -568,12 +565,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\BufferRange.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\LazyFixedSizeCollection.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\LazyIterator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\Range.h">
@@ -595,6 +586,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\BitReader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\Iterable.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\Iterator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\LazyIterable.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

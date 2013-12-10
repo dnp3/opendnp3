@@ -21,7 +21,7 @@
 #ifndef __I_APDU_HANDLER_H_
 #define __I_APDU_HANDLER_H_
 
-#include "LazyCollection.h"
+#include "LazyIterable.h"
 #include "GroupVariation.h"
 
 #include <opendnp3/DataTypes.h>
@@ -36,9 +36,9 @@ class IAPDUHeaderHandler
 
 		virtual void AllObjects(GroupVariation gv) = 0;
 
-		virtual void OnEventData(const LazyCollection<IndexedValue<Binary>>& meas) = 0;
+		virtual void OnEventData(const LazyIterable<IndexedValue<Binary>>& meas) = 0;
 
-		virtual void OnStaticData(uint32_t aStartIndex, const LazyCollection<Binary>& meas) = 0;				
+		virtual void OnStaticData(uint32_t aStartIndex, const LazyIterable<Binary>& meas) = 0;				
 };
 
 }

@@ -25,7 +25,7 @@
 #include "MeasurementComparisons.h"
 
 #include <opendnp3/BitReader.h>
-#include <opendnp3/LazyFixedSizeCollection.h>
+#include <opendnp3/LazyIterable.h>
 
 #include <iostream>
 
@@ -38,18 +38,18 @@ BOOST_AUTO_TEST_SUITE(LazyBitCollectionTestSuite)
 BOOST_AUTO_TEST_CASE(SingleValue)
 {
 	HexSequence hex("01");
-	LazyFixedSizeCollection<Binary> collection(hex.ToReadOnly(), 1, GetBit);
-	BOOST_REQUIRE_EQUAL(1, collection.size());
-	std::vector<Binary> values;
-	for(auto b: collection) values.push_back(b);
+	LazyIterable<Binary> collection(hex.ToReadOnly(), 1, GetBit);
+	BOOST_REQUIRE_EQUAL(1, collection.Size());
+	std::vector<Binary> values;	
+	collection.Foreach([&](const Binary& v) { values.push_back(v); });
 }
 
 BOOST_AUTO_TEST_CASE(ComplexCount)
 {
 	HexSequence hex("FF 00 00");
-	LazyFixedSizeCollection<Binary> collection(hex.ToReadOnly(), 17, GetBit);
+	LazyIterable<Binary> collection(hex.ToReadOnly(), 17, GetBit);
 	std::vector<Binary> values;
-	for(auto b: collection) values.push_back(b);
+	collection.Foreach([&](const Binary& v) { values.push_back(v); });
 	
 	BOOST_REQUIRE_EQUAL(17, values.size());
 	BOOST_REQUIRE(Binary(true) == values[7]);
@@ -59,9 +59,9 @@ BOOST_AUTO_TEST_CASE(ComplexCount)
 BOOST_AUTO_TEST_CASE(HighestBitSet)
 {
 	HexSequence hex("80");
-	LazyFixedSizeCollection<Binary> collection(hex.ToReadOnly(), 8, GetBit);	
+	LazyIterable<Binary> collection(hex.ToReadOnly(), 8, GetBit);	
 	std::vector<Binary> values;
-	for(auto b: collection) values.push_back(b);	
+	collection.Foreach([&](const Binary& v) { values.push_back(v); });	
 	BOOST_REQUIRE_EQUAL(8, values.size());
 	BOOST_REQUIRE(Binary(true) == values[7]);
 }
