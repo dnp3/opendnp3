@@ -22,8 +22,12 @@
 
 #include "TestHelpers.h"
 #include "BufferHelpers.h"
+#include "MeasurementComparisons.h"
 
 #include <opendnp3/LazyIterable.h>
+
+#include <opendnp3/DataTypes.h>
+#include <opendnp3/BitReader.h>
 #include <opendnp3/objects/Group30.h>
 
 #include <iostream>
@@ -56,6 +60,37 @@ BOOST_AUTO_TEST_CASE(ReadSimpleTypes)
 	// calling the function 2x proves that the buffer can be read again.
 	test();
 	test();
+}
+
+BOOST_AUTO_TEST_CASE(SingleBitValue)
+{
+	HexSequence hex("01");
+	LazyIterable<Binary> collection(hex.ToReadOnly(), 1, GetBit);
+	BOOST_REQUIRE_EQUAL(1, collection.Size());
+	std::vector<Binary> values;	
+	collection.Foreach([&](const Binary& v) { values.push_back(v); });
+}
+
+BOOST_AUTO_TEST_CASE(ComplexBitCount)
+{
+	HexSequence hex("FF 00 00");
+	LazyIterable<Binary> collection(hex.ToReadOnly(), 17, GetBit);
+	std::vector<Binary> values;
+	collection.Foreach([&](const Binary& v) { values.push_back(v); });
+	
+	BOOST_REQUIRE_EQUAL(17, values.size());
+	BOOST_REQUIRE(Binary(true) == values[7]);
+	BOOST_REQUIRE(Binary(false) == values[8]);
+}
+
+BOOST_AUTO_TEST_CASE(HighestBitSet)
+{
+	HexSequence hex("80");
+	LazyIterable<Binary> collection(hex.ToReadOnly(), 8, GetBit);	
+	std::vector<Binary> values;
+	collection.Foreach([&](const Binary& v) { values.push_back(v); });	
+	BOOST_REQUIRE_EQUAL(8, values.size());
+	BOOST_REQUIRE(Binary(true) == values[7]);
 }
 
 BOOST_AUTO_TEST_SUITE_END()
