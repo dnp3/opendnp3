@@ -103,7 +103,7 @@ cpp/opendnp3/src/opendnp3/AsyncTaskGroup.cpp \
 cpp/opendnp3/src/opendnp3/AsyncTaskNonPeriodic.cpp \
 cpp/opendnp3/src/opendnp3/AsyncTaskPeriodic.cpp \
 cpp/opendnp3/src/opendnp3/BaseDataTypes.cpp \
-cpp/opendnp3/src/opendnp3/BufferIterator.cpp \
+cpp/opendnp3/src/opendnp3/BitReader.cpp \
 cpp/opendnp3/src/opendnp3/BufferType.cpp \
 cpp/opendnp3/src/opendnp3/ChangeBuffer.cpp \
 cpp/opendnp3/src/opendnp3/ClassCounter.cpp \

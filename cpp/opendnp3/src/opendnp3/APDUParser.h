@@ -125,7 +125,7 @@ APDUParser::Result APDUParser::ParseRangeFixedSize(openpal::ReadOnlyBuffer& buff
 	size_t size = range.count * Descriptor::Underlying::SIZE;
 	if(buffer.Size() < size) return APDUParser::Result::NOT_ENOUGH_DATA_FOR_OBJECTS;
 	else {
-		auto read = [](ReadOnlyBuffer& buffer, size_t) { return Descriptor::Read(buffer); };
+		auto read = [](openpal::ReadOnlyBuffer& buffer, size_t) { return Descriptor::Read(buffer); };
 		LazyIterable<typename Descriptor::Target> collection(buffer, range.count, read);
 		output.OnStaticData(range.start, collection);
 		buffer.Advance(size);
@@ -139,7 +139,7 @@ APDUParser::Result APDUParser::ParseCountFixedSizeWithIndex(openpal::ReadOnlyBuf
 	size_t size = count * (pParser->IndexSize() + Descriptor::Underlying::SIZE);
 	if(buffer.Size() < size) return APDUParser::Result::NOT_ENOUGH_DATA_FOR_OBJECTS;
 	else {
-		auto readWithIndex = [&](ReadOnlyBuffer& buffer, size_t) {
+		auto readWithIndex = [&](openpal::ReadOnlyBuffer& buffer, size_t) {
 			uint32_t index = pParser->ReadIndex(buffer);
 			auto value = Descriptor::Read(buffer);
 			return IndexedValue<typename Descriptor::Target>(value, index);

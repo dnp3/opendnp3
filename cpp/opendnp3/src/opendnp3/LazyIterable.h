@@ -49,7 +49,7 @@ class LazyIterable : public Iterable<T>
 
 		Iterator<T> GetIterator() const
 		{			
-			ReadOnlyBuffer copy(mBuffer);
+			openpal::ReadOnlyBuffer copy(mBuffer);
 			auto convert = [copy, this](size_t index) mutable { return mReadFunction(copy, index); };
 			return Iterator<T>(mCount, convert);
 		}

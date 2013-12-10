@@ -39,11 +39,15 @@ class Handler : public IAPDUHeaderHandler
 		virtual void AllObjects(GroupVariation gv) override
 		{}
 
-		void OnEventData(const LazyCollection<IndexedValue<Binary>>& meas) override
-		{ for(auto b: meas); }
+		void OnEventData(const LazyIterable<IndexedValue<Binary>>& meas) override
+		{ 
+			meas.Foreach([](const IndexedValue<Binary>&){});	
+		}
 
-		void OnStaticData(uint32_t aStartIndex, const LazyCollection<Binary>& meas)  override
-		{ for(auto b: meas); }
+		void OnStaticData(uint32_t aStartIndex, const LazyIterable<Binary>& meas)  override
+		{
+			meas.Foreach([](const Binary&){});
+		}
 };
 
 class Fuzzer
