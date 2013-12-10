@@ -36,18 +36,18 @@ class Handler : public IAPDUHeaderHandler
 {
 	public:
 
-		virtual void AllObjects(GroupVariation gv) override
-		{}
+	virtual void AllObjects(GroupVariation gv) override
+	{}
 
-		virtual void OnRange(const openpal::ReadOnlyBuffer& header, const LazyIterable<IndexedValue<Binary>>& meas) override
-		{
-			meas.Foreach([](const IndexedValue<Binary>& v){});
-		}
+	virtual void OnRange(const openpal::ReadOnlyBuffer& header, const LazyIterable<IndexedValue<Binary>>& meas) override
+	{
+		meas.Foreach([](const IndexedValue<Binary>& v){});
+	}
 
-		virtual void OnIndexPrefix(const openpal::ReadOnlyBuffer& header, const LazyIterable<IndexedValue<Binary>>& meas) override
-		{
-			meas.Foreach([](const IndexedValue<Binary>& v){});
-		}
+	virtual void OnIndexPrefix(const openpal::ReadOnlyBuffer& header, const LazyIterable<IndexedValue<Binary>>& meas) override
+	{
+		meas.Foreach([](const IndexedValue<Binary>& v){});
+	}
 };
 
 class Fuzzer
@@ -94,14 +94,13 @@ int main(int argc, char* argv[])
 	std::vector<Fuzzer> fuzzers;
 	for(size_t i = 0;  i <  concurrency; ++i) fuzzers.push_back(Fuzzer(iterations, i+1));
 
-	std::vector<std::thread*> threads;
+	std::vector<std::unique_ptr<std::thread>> threads;
 	for(auto& f: fuzzers) {
-		auto pThread = new std::thread([&]() { f.Run(); });
-		threads.push_back(pThread);
+		std::unique_ptr<std::thread> pThread(new std::thread([&]() { f.Run(); }));
+		threads.push_back(std::move(pThread));
 	}
 
-	for(auto pThread: threads) pThread->join();
-	for(auto pThread: threads) delete pThread;
+	for(auto& pThread: threads) pThread->join();
 
 	ResultSet rs;
 	for(auto& f: fuzzers) rs.Merge(f.results);
