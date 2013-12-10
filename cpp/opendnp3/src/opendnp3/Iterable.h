@@ -44,7 +44,7 @@ class Iterable
 		
 		virtual Iterator<T> GetIterator() const = 0;		
 
-		virtual size_t Size() const = 0;
+		virtual uint32_t Size() const = 0;
 };
 
 

@@ -56,6 +56,8 @@ public:
 
 	void CopyTo(uint8_t* apDest) const;
 
+	ReadOnlyBuffer Truncate(size_t aSize) const;
+
 	void Advance(size_t aNum);
 
 	operator uint8_t const *() const { return mpBuffer; };

@@ -41,17 +41,19 @@ class MockApduHeaderHandler : public IAPDUHeaderHandler
 			++numRequests;
 		}
 				
-		virtual void OnStaticData(uint32_t startIndex, const LazyIterable<Binary>& meas) override
+		virtual void OnRange(const openpal::ReadOnlyBuffer& header, const LazyIterable<IndexedValue<Binary>>& meas) override
 		{
-			meas.Foreach([&](const Binary& v) {  
-				staticBinaries.push_back(IndexedValue<Binary>(v, startIndex++));
+			headers.push_back(header);
+			meas.Foreach([&](const IndexedValue<Binary>& v) {  
+				staticBinaries.push_back(v);
 			});
 			
 			++numRequests;
 		}		
 
-		virtual void OnEventData(const LazyIterable<IndexedValue<Binary>>& meas) override
+		virtual void OnIndexPrefix(const openpal::ReadOnlyBuffer& header, const LazyIterable<IndexedValue<Binary>>& meas) override
 		{
+			headers.push_back(header);
 			meas.Foreach([&](const IndexedValue<Binary>& v) {  
 				eventBinaries.push_back(v);
 			});
@@ -60,6 +62,7 @@ class MockApduHeaderHandler : public IAPDUHeaderHandler
 		
 		size_t numRequests;
 
+		std::vector<openpal::ReadOnlyBuffer> headers;
 
 		std::vector<GroupVariation> allObjectRequests;
 

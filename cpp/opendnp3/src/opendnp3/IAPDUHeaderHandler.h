@@ -24,6 +24,8 @@
 #include "LazyIterable.h"
 #include "GroupVariation.h"
 
+#include <openpal/BufferWrapper.h>
+
 #include <opendnp3/DataTypes.h>
 #include <opendnp3/IndexedValue.h>
 
@@ -36,9 +38,11 @@ class IAPDUHeaderHandler
 
 		virtual void AllObjects(GroupVariation gv) = 0;
 
-		virtual void OnEventData(const LazyIterable<IndexedValue<Binary>>& meas) = 0;
+		virtual void OnRange(const openpal::ReadOnlyBuffer& header, const LazyIterable<IndexedValue<Binary>>& meas) = 0;
 
-		virtual void OnStaticData(uint32_t aStartIndex, const LazyIterable<Binary>& meas) = 0;				
+		virtual void OnIndexPrefix(const openpal::ReadOnlyBuffer& header, const LazyIterable<IndexedValue<Binary>>& meas) = 0;
+
+						
 };
 
 }

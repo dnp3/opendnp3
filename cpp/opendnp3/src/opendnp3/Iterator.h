@@ -32,7 +32,7 @@ class Iterator
 {						
 	public:
 		
-	Iterator(size_t aCount, const std::function<T (size_t position)>& aNext):
+	Iterator(uint32_t aCount, const std::function<T (uint32_t position)>& aNext):
 		count(aCount),
 		position(0),
 		next(aNext)
@@ -46,16 +46,16 @@ class Iterator
 	T Next()
 	{			
 		assert(position < count);
-		size_t pos = position++;
+		uint32_t pos = position++;
 		return next(pos);
 	}
 
 	private:		 
 	Iterator();	
 
-	size_t position;
-	size_t count;
-	std::function<T (size_t position)> next;
+	uint32_t position;
+	uint32_t count;
+	std::function<T (uint32_t position)> next;
 };
 
 }

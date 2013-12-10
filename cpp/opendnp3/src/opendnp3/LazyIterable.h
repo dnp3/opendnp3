@@ -37,36 +37,36 @@ class LazyIterable : public Iterable<T>
 {
 	public:
 
-		typedef std::function<T (openpal::ReadOnlyBuffer&, size_t)> ReadFunction;
+		typedef std::function<T (openpal::ReadOnlyBuffer&, uint32_t)> ReadFunction;
 		
-		LazyIterable(const openpal::ReadOnlyBuffer& arBuffer, size_t aCount, const ReadFunction& aReadFunction):
-			mBuffer(arBuffer),
-			mCount(aCount),
-			mReadFunction(aReadFunction)
+		LazyIterable(const openpal::ReadOnlyBuffer& aBuffer, uint32_t aCount, const ReadFunction& aReadBuffer):
+			buffer(aBuffer),
+			count(aCount),
+			readBuffer(aReadBuffer)
 		{
 		
 		}
 
 		Iterator<T> GetIterator() const
 		{			
-			openpal::ReadOnlyBuffer copy(mBuffer);
-			auto convert = [copy, this](size_t index) mutable { return mReadFunction(copy, index); };
-			return Iterator<T>(mCount, convert);
+			openpal::ReadOnlyBuffer copy(buffer);
+			auto convert = [copy, this](uint32_t index) mutable { return readBuffer(copy, index); };
+			return Iterator<T>(count, convert);
 		}
 		
 
-		size_t Size() const
+		uint32_t Size() const
 		{
-			return mCount;
+			return count;
 		}
 
 	private:
 		
 		LazyIterable();
 		
-		openpal::ReadOnlyBuffer mBuffer;		
-		size_t mCount;
-		ReadFunction mReadFunction;
+		openpal::ReadOnlyBuffer buffer;		
+		uint32_t count;
+		ReadFunction readBuffer;
 };
 
 

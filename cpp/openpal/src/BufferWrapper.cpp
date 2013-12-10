@@ -58,6 +58,12 @@ namespace openpal
 		memcpy(apDest, mpBuffer, mSize);
 	}
 
+	ReadOnlyBuffer ReadOnlyBuffer::Truncate(size_t aSize) const
+	{
+		assert(aSize <= mSize);
+		return ReadOnlyBuffer(mpBuffer, aSize);
+	}
+
 	void ReadOnlyBuffer::Advance(size_t aNum)
 	{
 		assert(aNum <= mSize);

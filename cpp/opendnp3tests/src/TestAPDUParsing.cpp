@@ -25,6 +25,8 @@
 #include "MockAPDUHeaderHandler.h"
 #include "MeasurementComparisons.h"
 
+#include <openpal/ToHex.h>
+
 #include <opendnp3/APDUParser.h>
 
 #include <functional>
@@ -100,6 +102,20 @@ BOOST_AUTO_TEST_CASE(Group1Var2CountOfZero)
 	// 1 byte count == 0, 0 octets data
 	TestSimple("01 02 07 00", APDUParser::Result::COUNT_OF_ZERO, 0);
 }
+
+BOOST_AUTO_TEST_CASE(Group1Var2HeaderWrappers)
+{
+	
+	TestComplex("01 02 07 01 81 01 02 07 02 81 81", APDUParser::Result::OK, 2, [](MockApduHeaderHandler& mock) {		
+		BOOST_REQUIRE_EQUAL(2, mock.headers.size());
+		auto hex1 = toHex(mock.headers[0]);
+		auto hex2 = toHex(mock.headers[1]);
+
+		BOOST_REQUIRE_EQUAL("01 02 07 01 81", hex1);
+		BOOST_REQUIRE_EQUAL("01 02 07 02 81 81", hex2);
+	});
+}
+
 
 BOOST_AUTO_TEST_CASE(Group1Var2Count8)
 {
