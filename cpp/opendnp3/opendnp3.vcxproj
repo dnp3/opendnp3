@@ -226,7 +226,6 @@
     <ClInclude Include="src\opendnp3\AsyncTaskInterfaces.h" />
     <ClInclude Include="src\opendnp3\AsyncTaskNonPeriodic.h" />
     <ClInclude Include="src\opendnp3\AsyncTaskPeriodic.h" />
-    <ClInclude Include="src\opendnp3\BufferRange.h" />
     <ClInclude Include="src\opendnp3\BufferSetTypes.h" />
     <ClInclude Include="src\opendnp3\BufferType.h" />
     <ClInclude Include="src\opendnp3\ChangeBuffer.h" />
@@ -356,7 +355,6 @@
     <ClCompile Include="src\opendnp3\AsyncTaskPeriodic.cpp" />
     <ClCompile Include="src\opendnp3\BaseDataTypes.cpp" />
     <ClCompile Include="src\opendnp3\BitReader.cpp" />
-    <ClCompile Include="src\opendnp3\BufferIterator.cpp" />
     <ClCompile Include="src\opendnp3\BufferType.cpp" />
     <ClCompile Include="src\opendnp3\ChangeBuffer.cpp" />
     <ClCompile Include="src\opendnp3\ClassCounter.cpp" />

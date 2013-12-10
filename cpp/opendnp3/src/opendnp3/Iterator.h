@@ -18,50 +18,44 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __OPENDNP3_ITERATOR_H_
-#define __OPENDNP3_ITERATOR_H_
+#ifndef __ITERATOR_H_
+#define __ITERATOR_H_
 
 #include <functional>
 #include <assert.h>
-
-#include <openpal/BufferWrapper.h>
-
-#include "BufferRange.h"
 
 namespace opendnp3
 {
 
 template <class T>
-class Iterator : private BufferRange
+class Iterator
 {						
 	public:
-
-	typedef std::function<T (openpal::ReadOnlyBuffer& buffer, size_t position)> ReadFunction;
 		
-	Iterator(const openpal::ReadOnlyBuffer& arBuffer, size_t aNumValues, const ReadFunction& aReadFunction):
-		BufferRange(arBuffer, aNumValues),
-		mReadFunction(aReadFunction)
+	Iterator(size_t aCount, const std::function<T (size_t position)>& aNext):
+		count(aCount),
+		position(0),
+		next(aNext)
 	{}
-
-	Iterator(const Iterator& rhs) : BufferRange(rhs), mReadFunction(rhs.mReadFunction)
-	{}		
 
 	bool HasNext() const
 	{
-		return mPosition < mNumValues;		
+		return position < count;		
 	}
 
 	T Next()
 	{			
-		assert(mPosition < mNumValues);
-		size_t pos = mPosition++;
-		return mReadFunction(mBuffer, pos);
+		assert(position < count);
+		size_t pos = position++;
+		return next(pos);
 	}
 
 	private:		 
 	Iterator();	
 
-	ReadFunction mReadFunction;
+	size_t position;
+	size_t count;
+	std::function<T (size_t position)> next;
 };
 
 }

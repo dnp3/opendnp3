@@ -36,8 +36,10 @@ template <class T>
 class LazyIterable : public Iterable<T>
 {
 	public:
+
+		typedef std::function<T (openpal::ReadOnlyBuffer&, size_t)> ReadFunction;
 		
-		LazyIterable(const openpal::ReadOnlyBuffer& arBuffer, size_t aCount, const typename Iterator<T>::ReadFunction& aReadFunction):
+		LazyIterable(const openpal::ReadOnlyBuffer& arBuffer, size_t aCount, const ReadFunction& aReadFunction):
 			mBuffer(arBuffer),
 			mCount(aCount),
 			mReadFunction(aReadFunction)
@@ -46,8 +48,10 @@ class LazyIterable : public Iterable<T>
 		}
 
 		Iterator<T> GetIterator() const
-		{
-			return Iterator<T>(mBuffer, mCount, mReadFunction);
+		{			
+			ReadOnlyBuffer copy(mBuffer);
+			auto convert = [copy, this](size_t index) mutable { return mReadFunction(copy, index); };
+			return Iterator<T>(mCount, convert);
 		}
 		
 
@@ -62,7 +66,7 @@ class LazyIterable : public Iterable<T>
 		
 		openpal::ReadOnlyBuffer mBuffer;		
 		size_t mCount;
-		typename Iterator<T>::ReadFunction mReadFunction;
+		ReadFunction mReadFunction;
 };
 
 
