@@ -243,6 +243,7 @@
     <ClInclude Include="src\opendnp3\DeadlineTimerSteadyClock.h" />
     <ClInclude Include="src\opendnp3\DNP3Channel.h" />
     <ClInclude Include="src\opendnp3\DNPCrc.h" />
+    <ClInclude Include="src\opendnp3\IndexParser.h" />
     <ClInclude Include="src\opendnp3\PointInfo.h" />
     <ClInclude Include="src\opendnp3\DNPFromStream.h" />
     <ClInclude Include="src\opendnp3\DNPToStream.h" />

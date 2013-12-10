@@ -121,14 +121,17 @@ BOOST_AUTO_TEST_CASE(Group1Var2Count16)
 	});
 }
 
-BOOST_AUTO_TEST_CASE(Group1Var2Count32)
+BOOST_AUTO_TEST_CASE(Group1Var2AllCountQualifiers)
 {
-	// 4 byte count == 2, 2 octet data 
-	TestComplex("01 02 09 02 00 00 00 81 81", APDUParser::Result::OK, 1, [](MockApduHeaderHandler& mock) {		
+	auto validator = [](MockApduHeaderHandler& mock) {		
 		BOOST_REQUIRE_EQUAL(2, mock.staticBinaries.size());
 		BOOST_REQUIRE(IndexedValue<Binary>(Binary(true), 0) == mock.staticBinaries[0]);
-		BOOST_REQUIRE(IndexedValue<Binary>(Binary(true), 1) == mock.staticBinaries[1]);
-	});
+		BOOST_REQUIRE(IndexedValue<Binary>(Binary(false), 1) == mock.staticBinaries[1]);
+	};
+	
+	TestComplex("01 02 07 02 81 01", APDUParser::Result::OK, 1, validator);
+	TestComplex("01 02 08 02 00 81 01", APDUParser::Result::OK, 1, validator);
+	TestComplex("01 02 09 02 00 00 00 81 01", APDUParser::Result::OK, 1, validator);	
 }
 
 BOOST_AUTO_TEST_CASE(FlippedRange)
@@ -149,6 +152,26 @@ BOOST_AUTO_TEST_CASE(TestUnreasonableRanges)
 	// 4 byte start/stop 0->65535, no data
 	TestSimple("01 02 02 00 00 00 00 FF FF 00 00", APDUParser::Result::UNREASONABLE_OBJECT_COUNT, 0);
 }
+
+BOOST_AUTO_TEST_CASE(Group1Var2CountWithIndexUInt8)
+{
+	// 1 byte count, 1 byte index, index == 09, value = 0x81
+	TestSimple("01 02 17 01 09 81", APDUParser::Result::ILLEGAL_OBJECT_QUALIFIER, 0);	
+}
+
+BOOST_AUTO_TEST_CASE(Group2Var1CountWithAllIndexSizes)
+{	
+	auto validator = [](MockApduHeaderHandler& mock) {		
+		BOOST_REQUIRE_EQUAL(1, mock.eventBinaries.size());
+		BOOST_REQUIRE(IndexedValue<Binary>(Binary(true), 9) == mock.eventBinaries[0]);		
+	};
+
+	// 1 byte count, 1 byte index, index == 09, value = 0x81
+	TestComplex("02 01 17 01 09 81", APDUParser::Result::OK, 1, validator);
+	TestComplex("02 01 28 01 00 09 00 81", APDUParser::Result::OK, 1, validator);
+	TestComplex("02 01 39 01 00 00 00 09 00 00 00 81", APDUParser::Result::OK, 1, validator);
+}
+
 
 
 BOOST_AUTO_TEST_SUITE_END()

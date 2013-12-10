@@ -49,13 +49,17 @@ class MockApduHeaderHandler : public IAPDUHeaderHandler
 
 		virtual void OnEventData(const LazyCollection<IndexedValue<Binary>>& meas) override
 		{
+			for(auto b: meas) eventBinaries.push_back(b);
 			++numRequests;
 		}
 		
 		size_t numRequests;
 
-		std::vector<IndexedValue<Binary>> staticBinaries;
+
 		std::vector<GroupVariation> allObjectRequests;
+
+		std::vector<IndexedValue<Binary>> eventBinaries;
+		std::vector<IndexedValue<Binary>> staticBinaries;		
 };
 
 }

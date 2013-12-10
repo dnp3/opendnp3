@@ -63,21 +63,21 @@ APDUParser::Result APDUParser::ParseHeader(ReadOnlyBuffer& buffer, IAPDUHeaderHa
 			}
 			case(QualifierCode::UINT8_CNT):
 			{
-				Range range;
-				auto res = ParseCountAsRange<UInt8>(buffer, handler, gv, range);
-				return (res == APDUParser::Result::OK) ? ParseObjectsWithRange(buffer, handler, gv, range) : res;				
+				uint32_t count;
+				auto res = ParseCount<UInt8>(buffer, handler, gv, count);
+				return (res == APDUParser::Result::OK) ? ParseObjectsWithRange(buffer, handler, gv, Range(0, count)) : res;				
 			}
 			case(QualifierCode::UINT16_CNT):
 			{
-				Range range;
-				auto res = ParseCountAsRange<UInt16>(buffer, handler, gv, range);
-				return (res == APDUParser::Result::OK) ? ParseObjectsWithRange(buffer, handler, gv, range) : res;				
+				uint32_t count;
+				auto res = ParseCount<UInt16>(buffer, handler, gv, count);
+				return (res == APDUParser::Result::OK) ? ParseObjectsWithRange(buffer, handler, gv, Range(0, count)) : res;				
 			}
 			case(QualifierCode::UINT32_CNT):
 			{
-				Range range;
-				auto res = ParseCountAsRange<UInt32>(buffer, handler, gv, range);
-				return (res == APDUParser::Result::OK) ? ParseObjectsWithRange(buffer, handler, gv, range) : res;				
+				uint32_t count;
+				auto res = ParseCount<UInt32>(buffer, handler, gv, count);
+				return (res == APDUParser::Result::OK) ? ParseObjectsWithRange(buffer, handler, gv, Range(0, count)) : res;				
 			}
 			case(QualifierCode::UINT8_START_STOP):
 			{
@@ -97,10 +97,40 @@ APDUParser::Result APDUParser::ParseHeader(ReadOnlyBuffer& buffer, IAPDUHeaderHa
 				auto res = ParseRange<UInt32, uint64_t>(buffer, handler, gv, range);
 				return (res == APDUParser::Result::OK) ? ParseObjectsWithRange(buffer, handler, gv, range) : res;			
 			}
+			case(QualifierCode::UINT8_CNT_UINT8_INDEX):
+			{
+				uint32_t count;
+				auto res = ParseCount<UInt8>(buffer, handler, gv, count);
+				return (res == APDUParser::Result::OK) ? ParseObjectsWithIndexPrefix(buffer, handler, gv, count, TypedIndexParser<UInt8>::Inst()) : res;				
+			}
+			case(QualifierCode::UINT16_CNT_UINT16_INDEX):
+			{
+				uint32_t count;
+				auto res = ParseCount<UInt16>(buffer, handler, gv, count);
+				return (res == APDUParser::Result::OK) ? ParseObjectsWithIndexPrefix(buffer, handler, gv, count, TypedIndexParser<UInt16>::Inst()) : res;				
+			}
+			case(QualifierCode::UINT32_CNT_UINT32_INDEX):
+			{
+				uint32_t count;
+				auto res = ParseCount<UInt32>(buffer, handler, gv, count);
+				return (res == APDUParser::Result::OK) ? ParseObjectsWithIndexPrefix(buffer, handler, gv, count, TypedIndexParser<UInt32>::Inst()) : res;				
+			}
 			default:
 				return APDUParser::Result::UNKNOWN_QUALIFIER;
 		}
 	}
+}
+
+APDUParser::Result APDUParser::ParseObjectsWithIndexPrefix(openpal::ReadOnlyBuffer& buffer, IAPDUHeaderHandler&  output, GroupVariation gv, uint32_t count, IndexParser* pParser)
+{
+	switch(gv)
+	{
+		case(GroupVariation::Group2Var1):
+			return ParseCountFixedSizeWithIndex<Group2Var1Parser>(buffer, output, count, pParser);			
+		default:
+			return APDUParser::Result::ILLEGAL_OBJECT_QUALIFIER;
+	}
+	
 }
 
 APDUParser::Result APDUParser::ParseObjectsWithRange(openpal::ReadOnlyBuffer& buffer, IAPDUHeaderHandler& output, GroupVariation gv, const Range& range)
@@ -108,7 +138,7 @@ APDUParser::Result APDUParser::ParseObjectsWithRange(openpal::ReadOnlyBuffer& bu
 	switch(gv)
 	{		
 		case(GroupVariation::Group1Var2):
-			return ParseRangeFixedSize<Group1Var2Desc>(buffer, output, range);
+			return ParseRangeFixedSize<Group1Var2Parser>(buffer, output, range);
 		default:
 			return APDUParser::Result::ILLEGAL_OBJECT_QUALIFIER;
 	}	

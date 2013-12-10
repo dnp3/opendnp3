@@ -27,25 +27,42 @@
 #include <opendnp3/DataTypes.h>
 
 #include "objects/Group1.h"
+#include "objects/Group2.h"
 
 namespace opendnp3
-{
-	template <class Desc>
-	struct Compose : private PureStatic
-	{
-		static typename Desc::Target Read(openpal::ReadOnlyBuffer& buff)
-		{
-			typename Desc::Underlying a = Desc::Underlying::Read(buff);
-			return Desc::Convert(a);
-		}		
-	};
-
-	struct Group1Var2Desc : private PureStatic
+{	
+	struct Group1Var2Parser : private PureStatic
 	{		
 		typedef Binary Target;
 		typedef Group1Var2 Underlying;
 				
-		static Binary Convert(const Group1Var2& gv) { return Binary(gv.flags); }	
+		static Binary Read(openpal::ReadOnlyBuffer& buffer) { 
+			auto gv =  Group1Var2::Read(buffer);
+			return Binary(gv.flags); 
+		}	
+	};
+
+	struct Group2Var1Parser : private PureStatic
+	{		
+		typedef Binary Target;
+		typedef Group2Var1 Underlying;
+				
+		static Binary Read(openpal::ReadOnlyBuffer& buffer) { 
+			auto gv =  Group2Var1::Read(buffer);
+			return Binary(gv.flags); 
+		}	
+	};
+
+
+	struct Group2Var2Parser : private PureStatic
+	{		
+		typedef Binary Target;
+		typedef Group2Var2 Underlying;
+				
+		static Binary Read(openpal::ReadOnlyBuffer& buffer) { 
+			auto gv =  Group2Var2::Read(buffer);
+			return Binary(gv.flags, gv.time48); 
+		}	
 	};
 
 }
