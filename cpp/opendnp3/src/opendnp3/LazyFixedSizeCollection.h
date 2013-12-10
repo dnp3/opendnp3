@@ -33,7 +33,7 @@ template <class T>
 class LazyFixedSizeCollection : public LazyCollection<T>
 {
 	public:
-
+		
 		LazyFixedSizeCollection(const openpal::ReadOnlyBuffer& arBuffer, size_t aCount, const typename LazyIterator<T>::ReadFunction& aReadFunction):
 			mBuffer(arBuffer),
 			mCount(aCount),

@@ -172,7 +172,17 @@ BOOST_AUTO_TEST_CASE(Group2Var1CountWithAllIndexSizes)
 	TestComplex("02 01 39 01 00 00 00 09 00 00 00 81", APDUParser::Result::OK, 1, validator);
 }
 
-
+BOOST_AUTO_TEST_CASE(Group1Var1ByRange)
+{
+	// 1 byte start/stop 3 -> 6
+	TestComplex("01 01 00 03 06 09", APDUParser::Result::OK, 1, [](MockApduHeaderHandler& mock) {		
+		BOOST_REQUIRE_EQUAL(4, mock.staticBinaries.size());
+		BOOST_REQUIRE(IndexedValue<Binary>(Binary(true), 3) == mock.staticBinaries[0]);		
+		BOOST_REQUIRE(IndexedValue<Binary>(Binary(false), 4) == mock.staticBinaries[1]);	
+		BOOST_REQUIRE(IndexedValue<Binary>(Binary(false), 5) == mock.staticBinaries[2]);	
+		BOOST_REQUIRE(IndexedValue<Binary>(Binary(true), 6) == mock.staticBinaries[3]);
+	});
+}
 
 BOOST_AUTO_TEST_SUITE_END()
 

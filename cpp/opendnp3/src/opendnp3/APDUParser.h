@@ -68,6 +68,8 @@ class APDUParser : private PureStatic
 	
 	static Result ParseObjectsWithIndexPrefix(openpal::ReadOnlyBuffer& buffer, IAPDUHeaderHandler&  output, GroupVariation, uint32_t count, IndexParser* pParser);
 	
+	static Result ParseRangeAsBitField(openpal::ReadOnlyBuffer& buffer, IAPDUHeaderHandler& output, const Range& range);
+	
 	template <class ParserType, class CountType>
 	static Result ParseRange(openpal::ReadOnlyBuffer& buffer, IAPDUHeaderHandler& output, GroupVariation gv, Range& range);
 
@@ -124,7 +126,8 @@ APDUParser::Result APDUParser::ParseRangeFixedSize(openpal::ReadOnlyBuffer& buff
 	size_t size = range.count * Descriptor::Underlying::SIZE;
 	if(buffer.Size() < size) return APDUParser::Result::NOT_ENOUGH_DATA_FOR_OBJECTS;
 	else {
-		LazyFixedSizeCollection<typename Descriptor::Target> collection(buffer, range.count, Descriptor::Read);
+		auto read = [](ReadOnlyBuffer& buffer, size_t) { return Descriptor::Read(buffer); };
+		LazyFixedSizeCollection<typename Descriptor::Target> collection(buffer, range.count, read);
 		output.OnStaticData(range.start, collection);
 		buffer.Advance(size);
 		return APDUParser::Result::OK;
@@ -137,7 +140,7 @@ APDUParser::Result APDUParser::ParseCountFixedSizeWithIndex(openpal::ReadOnlyBuf
 	size_t size = count * (pParser->IndexSize() + Descriptor::Underlying::SIZE);
 	if(buffer.Size() < size) return APDUParser::Result::NOT_ENOUGH_DATA_FOR_OBJECTS;
 	else {
-		auto readWithIndex = [&](ReadOnlyBuffer& buffer) {
+		auto readWithIndex = [&](ReadOnlyBuffer& buffer, size_t) {
 			uint32_t index = pParser->ReadIndex(buffer);
 			auto value = Descriptor::Read(buffer);
 			return IndexedValue<typename Descriptor::Target>(value, index);

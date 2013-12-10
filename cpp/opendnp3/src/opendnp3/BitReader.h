@@ -18,44 +18,22 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include <boost/test/unit_test.hpp>
+#ifndef __BIT_READER_H_
+#define __BIT_READER_H_
 
-#include "TestHelpers.h"
-#include "BufferHelpers.h"
+#include <assert.h>
 
-#include <opendnp3/LazyFixedSizeCollection.h>
-#include <opendnp3/objects/Group30.h>
+#include <openpal/BufferWrapper.h>
 
-#include <iostream>
+#include <opendnp3/DataTypes.h>
 
-using namespace std;
-using namespace openpal;
-using namespace opendnp3;
-
-BOOST_AUTO_TEST_SUITE(LazyCollectionTestSuite)
-
-BOOST_AUTO_TEST_CASE(ReadSimpleTypes)
+namespace opendnp3
 {
-	HexSequence hex("AB 01 01 CD 02 00");
 
-	auto read = [](ReadOnlyBuffer& b, size_t position) { return Group30Var2::Read(b); };
-		
-	LazyFixedSizeCollection<Group30Var2> collection(hex.ToReadOnly(), 2, read);
-	
-	auto test = [&]() {
-		std::vector<Group30Var2> vec;
-		for(auto m: collection) vec.push_back(m);	
-					
-		BOOST_REQUIRE_EQUAL(2, vec.size());
-		BOOST_REQUIRE_EQUAL(257, vec[0].value);
-		BOOST_REQUIRE_EQUAL(0xAB, vec[0].flags);
-		BOOST_REQUIRE_EQUAL(2, vec[1].value);
-		BOOST_REQUIRE_EQUAL(0xCD, vec[1].flags);
-	};
+size_t NumBytesInBits(size_t numBits);
 
-	// calling the function 2x proves that the buffer can be read again.
-	test();
-	test();
+Binary GetBit(const openpal::ReadOnlyBuffer& buffer, size_t position);
+
 }
 
-BOOST_AUTO_TEST_SUITE_END()
+#endif

@@ -41,7 +41,7 @@ class LazyIterator : private BufferRange, public std::iterator<std::output_itera
 		return LazyIterator(openpal::ReadOnlyBuffer(nullptr, 0), 0);
 	}
 
-	typedef std::function<T (openpal::ReadOnlyBuffer&)> ReadFunction;
+	typedef std::function<T (openpal::ReadOnlyBuffer& buffer, size_t position)> ReadFunction;
 		
 	LazyIterator(const openpal::ReadOnlyBuffer& arBuffer, size_t aNumValues, const ReadFunction& aReadFunction):
 		BufferRange(arBuffer, aNumValues),
@@ -66,7 +66,7 @@ class LazyIterator : private BufferRange, public std::iterator<std::output_itera
 	{	
 		assert(mReadFunction);
 		assert(mPosition < mNumValues);
-		return mReadFunction(mBuffer);
+		return mReadFunction(mBuffer, mPosition);
 	}
 
 	private:		 

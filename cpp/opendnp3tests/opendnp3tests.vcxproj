@@ -288,6 +288,7 @@
     <ClCompile Include="src\TestEventBufferBase.cpp" />
     <ClCompile Include="src\TestEventBuffers.cpp" />
     <ClCompile Include="src\TestIntegration.cpp" />
+    <ClCompile Include="src\TestLazyBitCollection.cpp" />
     <ClCompile Include="src\TestLazyCollection.cpp" />
     <ClCompile Include="src\TestLinkFrameDNP.cpp" />
     <ClCompile Include="src\TestLinkLayer.cpp" />

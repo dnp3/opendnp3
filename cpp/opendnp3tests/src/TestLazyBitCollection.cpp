@@ -22,9 +22,10 @@
 
 #include "TestHelpers.h"
 #include "BufferHelpers.h"
+#include "MeasurementComparisons.h"
 
+#include <opendnp3/BitReader.h>
 #include <opendnp3/LazyFixedSizeCollection.h>
-#include <opendnp3/objects/Group30.h>
 
 #include <iostream>
 
@@ -32,30 +33,37 @@ using namespace std;
 using namespace openpal;
 using namespace opendnp3;
 
-BOOST_AUTO_TEST_SUITE(LazyCollectionTestSuite)
+BOOST_AUTO_TEST_SUITE(LazyBitCollectionTestSuite)
 
-BOOST_AUTO_TEST_CASE(ReadSimpleTypes)
+BOOST_AUTO_TEST_CASE(SingleValue)
 {
-	HexSequence hex("AB 01 01 CD 02 00");
+	HexSequence hex("01");
+	LazyFixedSizeCollection<Binary> collection(hex.ToReadOnly(), 1, GetBit);
+	BOOST_REQUIRE_EQUAL(1, collection.size());
+	std::vector<Binary> values;
+	for(auto b: collection) values.push_back(b);
+}
 
-	auto read = [](ReadOnlyBuffer& b, size_t position) { return Group30Var2::Read(b); };
-		
-	LazyFixedSizeCollection<Group30Var2> collection(hex.ToReadOnly(), 2, read);
+BOOST_AUTO_TEST_CASE(ComplexCount)
+{
+	HexSequence hex("FF 00 00");
+	LazyFixedSizeCollection<Binary> collection(hex.ToReadOnly(), 17, GetBit);
+	std::vector<Binary> values;
+	for(auto b: collection) values.push_back(b);
 	
-	auto test = [&]() {
-		std::vector<Group30Var2> vec;
-		for(auto m: collection) vec.push_back(m);	
-					
-		BOOST_REQUIRE_EQUAL(2, vec.size());
-		BOOST_REQUIRE_EQUAL(257, vec[0].value);
-		BOOST_REQUIRE_EQUAL(0xAB, vec[0].flags);
-		BOOST_REQUIRE_EQUAL(2, vec[1].value);
-		BOOST_REQUIRE_EQUAL(0xCD, vec[1].flags);
-	};
+	BOOST_REQUIRE_EQUAL(17, values.size());
+	BOOST_REQUIRE(Binary(true) == values[7]);
+	BOOST_REQUIRE(Binary(false) == values[8]);
+}
 
-	// calling the function 2x proves that the buffer can be read again.
-	test();
-	test();
+BOOST_AUTO_TEST_CASE(HighestBitSet)
+{
+	HexSequence hex("80");
+	LazyFixedSizeCollection<Binary> collection(hex.ToReadOnly(), 8, GetBit);	
+	std::vector<Binary> values;
+	for(auto b: collection) values.push_back(b);	
+	BOOST_REQUIRE_EQUAL(8, values.size());
+	BOOST_REQUIRE(Binary(true) == values[7]);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

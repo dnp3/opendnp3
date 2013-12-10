@@ -28,6 +28,7 @@
 #include "LazyFixedSizeCollection.h"
 
 #include "ObjectDescriptors.h"
+#include "BitReader.h"
 
 using namespace openpal;
 
@@ -136,12 +137,26 @@ APDUParser::Result APDUParser::ParseObjectsWithIndexPrefix(openpal::ReadOnlyBuff
 APDUParser::Result APDUParser::ParseObjectsWithRange(openpal::ReadOnlyBuffer& buffer, IAPDUHeaderHandler& output, GroupVariation gv, const Range& range)
 {
 	switch(gv)
-	{		
+	{	
+		case(GroupVariation::Group1Var1):
+			return ParseRangeAsBitField(buffer, output, range);
 		case(GroupVariation::Group1Var2):
 			return ParseRangeFixedSize<Group1Var2Parser>(buffer, output, range);
 		default:
 			return APDUParser::Result::ILLEGAL_OBJECT_QUALIFIER;
 	}	
+}
+
+APDUParser::Result APDUParser::ParseRangeAsBitField(openpal::ReadOnlyBuffer& buffer, IAPDUHeaderHandler& output, const Range& range)
+{
+	size_t numBytes = NumBytesInBits(range.count);
+	if(buffer.Size() < numBytes) return Result::NOT_ENOUGH_DATA_FOR_OBJECTS;
+	else {
+		LazyFixedSizeCollection<Binary> collection(buffer, range.count, GetBit);
+		output.OnStaticData(range.start, collection);
+		buffer.Advance(numBytes);
+		return APDUParser::Result::OK;
+	}
 }
 
 }
