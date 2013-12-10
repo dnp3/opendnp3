@@ -39,14 +39,14 @@ class Handler : public IAPDUHeaderHandler
 		virtual void AllObjects(GroupVariation gv) override
 		{}
 
-		void OnEventData(const LazyIterable<IndexedValue<Binary>>& meas) override
-		{ 
-			meas.Foreach([](const IndexedValue<Binary>&){});	
+		virtual void OnRange(const openpal::ReadOnlyBuffer& header, const LazyIterable<IndexedValue<Binary>>& meas) override
+		{
+			meas.Foreach([](const IndexedValue<Binary>& v){});
 		}
 
-		void OnStaticData(uint32_t aStartIndex, const LazyIterable<Binary>& meas)  override
+		virtual void OnIndexPrefix(const openpal::ReadOnlyBuffer& header, const LazyIterable<IndexedValue<Binary>>& meas) override
 		{
-			meas.Foreach([](const Binary&){});
+			meas.Foreach([](const IndexedValue<Binary>& v){});
 		}
 };
 
