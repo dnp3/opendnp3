@@ -11,5 +11,5 @@ object Group1Var0 extends AnyVariation(Group1, 0)
 
 object Group1Var1 extends SingleBitfield(Group1, 1)
 
-object Group1Var2 extends FixedSize(Group1, 2)(FixedSizeField.flags)
+object Group1Var2 extends FixedSize(Group1, 2)(FixedSizeField.flags) with ConversionToBinary
 

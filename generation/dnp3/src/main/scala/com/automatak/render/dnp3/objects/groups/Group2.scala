@@ -10,6 +10,6 @@ object Group2 extends ObjectGroup {
 }
 
 object Group2Var0 extends AnyVariation(Group2, 0)
-object Group2Var1 extends FixedSize(Group2, 1)(flags)
-object Group2Var2 extends FixedSize(Group2, 2)(flags, time48)
-object Group2Var3 extends FixedSize(Group2, 3)(flags, time16)
+object Group2Var1 extends FixedSize(Group2, 1)(flags) with ConversionToBinary
+object Group2Var2 extends FixedSize(Group2, 2)(flags, time48) with ConversionToBinary
+object Group2Var3 extends FixedSize(Group2, 3)(flags, time16) with ConversionToBinary

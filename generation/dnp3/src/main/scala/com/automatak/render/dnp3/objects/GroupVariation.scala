@@ -1,5 +1,7 @@
 package com.automatak.render.dnp3.objects
 
+import com.automatak.render.Indentation
+
 object GroupVariation {
   case class Id(group: Byte, variation: Byte)
 }
@@ -29,7 +31,15 @@ sealed abstract class BasicGroupVariation(g: ObjectGroup, v: Byte) extends  Grou
   def parent: ObjectGroup = g
 }
 
+trait Conversion {
+  def signatures : Iterator[String]
+  def impl(fields: FixedSize)(implicit indent: Indentation): Iterator[String]
+  def headers: List[String]
+}
+
 class FixedSize(g: ObjectGroup, v: Byte)(fs: FixedSizeField*) extends BasicGroupVariation(g,v) {
+
+  def conversion: Option[Conversion] = None // overridable
 
   def size: Int = fields.foldLeft(0)((sum, f) => sum + f.typ.numBytes)
 

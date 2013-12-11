@@ -17,9 +17,9 @@ object GroupVariationFileGenerator {
 
     def definitions(r: ModelRenderer[GroupVariation])(group: ObjectGroup): Iterator[String] = spaced(group.objects.iterator.map(o => r.render(o)))
 
-    def enumIncludes(group: ObjectGroup) : List[String] = {
+    def optionalIncludes(group: ObjectGroup) : Set[String] = {
 
-      def getEnums(gv: GroupVariation):  Set[String] = {
+      def getEnums(gv: GroupVariation):  List[String] = {
 
         def extract(typ: FixedSizeFieldType): Option[String] = typ match {
           case EnumField(model) => Some("<opendnp3/gen/"+model.name+".h>")
@@ -27,19 +27,33 @@ object GroupVariationFileGenerator {
         }
 
         gv match {
-          case fs : FixedSize => fs.fields.flatMap(f => extract(f.typ)).toSet
-          case _ => Set.empty
+          case fs : FixedSize => fs.fields.flatMap(f => extract(f.typ))
+          case _ => Nil
         }
       }
 
-      group.objects.flatMap(o => getEnums(o)).map(inc => "#include " + inc)
+      def getConversionHeaders(gv: GroupVariation):  List[String] = {
+
+        gv match {
+          case fs : FixedSize => fs.conversion match {
+            case Some(con) => con.headers
+            case None => Nil
+          }
+          case _ => Nil
+        }
+      }
+
+      def include(file: String): String = "#include " + file
+
+      group.objects.flatMap(o => getEnums(o) ++ getConversionHeaders(o)).map(include).toSet
     }
 
     def includeHeader(group: ObjectGroup): Iterator[String] = Iterator("#include " + quoted(group.name+".h"))
 
     def headerFile(group: ObjectGroup): Iterator[String] = {
       commented(LicenseHeader()) ++ space ++
-      Iterator("#include <openpal/BufferWrapper.h>") ++ enumIncludes(group) ++ space ++
+      Iterator("#include <openpal/BufferWrapper.h>") ++
+      optionalIncludes(group) ++ space ++
       namespace("opendnp3") {
         definitions(GroupVariationHeaderRenderer)(group)
       }

@@ -1,6 +1,6 @@
 package com.automatak.render.dnp3.objects.groups
 
-import com.automatak.render.dnp3.objects.{FixedSize, FixedSizeField, ObjectGroup}
+import com.automatak.render.dnp3.objects._
 
 import FixedSizeField._
 

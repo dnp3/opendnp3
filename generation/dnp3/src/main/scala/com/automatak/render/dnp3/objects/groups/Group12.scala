@@ -15,4 +15,4 @@ object Group12Var1 extends FixedSize(Group12, 1)(
   FixedSizeField("onTime", UInt32Field),
   FixedSizeField("offTime", UInt32Field),
   commandStatus
-)
+) with ConversionToCROB

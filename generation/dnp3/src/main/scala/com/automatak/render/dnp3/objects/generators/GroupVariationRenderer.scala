@@ -38,6 +38,11 @@ object GroupVariationHeaderRenderer extends ModelRenderer[GroupVariation]{
 
     def members: Iterator[String] = x.fields.map(f => getFieldString(f)).iterator
 
+    def conversions: Iterator[String] = x.conversion match {
+      case Some(c) => space ++ c.signatures ++ space
+      case None => Iterator.empty
+    }
+
     def sizeSignature: Iterator[String] = Iterator("static const size_t SIZE = " + x.size + ";")
 
     def readSignature: Iterator[String] = Iterator("static " + x.name + " Read(openpal::ReadOnlyBuffer&);")
@@ -46,6 +51,7 @@ object GroupVariationHeaderRenderer extends ModelRenderer[GroupVariation]{
 
     struct(x.name) {
       sizeSignature ++
+      conversions ++
       readSignature ++
       writeSignature ++
       space ++
@@ -106,6 +112,11 @@ object GroupVariationImplRenderer extends ModelRenderer[GroupVariation]{
 
     def writeSignature: Iterator[String] = Iterator("void " + x.name + "::Write(const " + x.name + "& arg, openpal::WriteBuffer& buffer)")
 
+    def convertFunction: Iterator[String] = x.conversion match {
+      case Some(c) => space ++ c.impl(x) ++ space
+      case None => Iterator.empty
+    }
+
     def readFunction: Iterator[String] = readSignature ++ bracket {
       Iterator(x.name + " obj;") ++
         x.fields.iterator.map(readOperation).flatten ++
@@ -118,7 +129,7 @@ object GroupVariationImplRenderer extends ModelRenderer[GroupVariation]{
 
     }
 
-    readFunction ++ space ++ writeFunction
+    readFunction ++ space ++ writeFunction ++ convertFunction
   }
 
 }
