@@ -57,7 +57,13 @@ public:
 	CommandStatus status;
 
 	bool operator==(const ControlRelayOutputBlock& aLHS) const
-	{ return false; }
+	{
+		return (functionCode == aLHS.functionCode) &&
+			(count == aLHS.count) &&
+			(onTimeMS == aLHS.onTimeMS) &&
+			(offTimeMS == aLHS.offTimeMS) &&
+			(status == aLHS.status);
+	}
 };
 
 
