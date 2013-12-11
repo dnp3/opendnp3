@@ -27,7 +27,12 @@
 #include "GroupVariation.h"
 #include "LazyIterable.h"
 
-#include "ObjectDescriptors.h"
+#include "objects/Group1.h"
+#include "objects/Group2.h"
+#include "objects/Group12.h"
+
+#include "objects/MeasurementFactory.h"
+
 #include "BitReader.h"
 
 using namespace openpal;
@@ -130,11 +135,11 @@ APDUParser::Result APDUParser::ParseObjectsWithIndexPrefix(const HeaderRecord& r
 	{
 		case(GroupVariation::Group2Var1):
 		{			
-			return ParseCountFixedSizeWithIndex<Group2Var1Parser>(record, buffer, count, pParser, output);
+			return ParseCountFixedSizeWithIndex<Group2Var1>(record, buffer, count, pParser, output);
 		}
 		case(GroupVariation::Group12Var1):
 		{
-			return ParseCountFixedSizeWithIndex<Group12Var1Parser>(record, buffer,count, pParser, output);
+			return ParseCountFixedSizeWithIndex<Group12Var1>(record, buffer,count, pParser, output);
 		}
 		default:
 			return APDUParser::Result::ILLEGAL_OBJECT_QUALIFIER;
@@ -149,7 +154,7 @@ APDUParser::Result APDUParser::ParseObjectsWithRange(const APDUParser::HeaderRec
 		case(GroupVariation::Group1Var1):
 			return ParseRangeAsBitField(record, buffer, range, output);
 		case(GroupVariation::Group1Var2):
-			return ParseRangeFixedSize<Group1Var2Parser>(record, buffer, range, output);
+			return ParseRangeFixedSize<Group1Var2>(record, buffer, range, output);
 		default:
 			return APDUParser::Result::ILLEGAL_OBJECT_QUALIFIER;
 	}	

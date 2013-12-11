@@ -17,6 +17,7 @@
 
 #include "Group30.h"
 
+#include "MeasurementFactory.h"
 #include <openpal/Serialization.h>
 
 using namespace openpal;
@@ -41,6 +42,13 @@ void Group30Var1::Write(const Group30Var1& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(4);
 }
 
+Analog Group30Var1::Convert(ReadOnlyBuffer& buff)
+{
+  auto gv = Read(buff);
+  return AnalogFactory::From(gv.flags, gv.value);
+}
+
+
 Group30Var2 Group30Var2::Read(ReadOnlyBuffer& buffer)
 {
   Group30Var2 obj;
@@ -59,6 +67,13 @@ void Group30Var2::Write(const Group30Var2& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(2);
 }
 
+Analog Group30Var2::Convert(ReadOnlyBuffer& buff)
+{
+  auto gv = Read(buff);
+  return AnalogFactory::From(gv.flags, gv.value);
+}
+
+
 Group30Var3 Group30Var3::Read(ReadOnlyBuffer& buffer)
 {
   Group30Var3 obj;
@@ -73,6 +88,13 @@ void Group30Var3::Write(const Group30Var3& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(4);
 }
 
+Analog Group30Var3::Convert(ReadOnlyBuffer& buff)
+{
+  auto gv = Read(buff);
+  return AnalogFactory::From(gv.value);
+}
+
+
 Group30Var4 Group30Var4::Read(ReadOnlyBuffer& buffer)
 {
   Group30Var4 obj;
@@ -86,6 +108,13 @@ void Group30Var4::Write(const Group30Var4& arg, openpal::WriteBuffer& buffer)
   Int16::Write(buffer, arg.value);
   buffer.Advance(2);
 }
+
+Analog Group30Var4::Convert(ReadOnlyBuffer& buff)
+{
+  auto gv = Read(buff);
+  return AnalogFactory::From(gv.value);
+}
+
 
 Group30Var5 Group30Var5::Read(ReadOnlyBuffer& buffer)
 {
@@ -105,6 +134,13 @@ void Group30Var5::Write(const Group30Var5& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(4);
 }
 
+Analog Group30Var5::Convert(ReadOnlyBuffer& buff)
+{
+  auto gv = Read(buff);
+  return AnalogFactory::From(gv.flags, gv.value);
+}
+
+
 Group30Var6 Group30Var6::Read(ReadOnlyBuffer& buffer)
 {
   Group30Var6 obj;
@@ -122,6 +158,13 @@ void Group30Var6::Write(const Group30Var6& arg, openpal::WriteBuffer& buffer)
   DoubleFloat::Write(buffer, arg.value);
   buffer.Advance(8);
 }
+
+Analog Group30Var6::Convert(ReadOnlyBuffer& buff)
+{
+  auto gv = Read(buff);
+  return AnalogFactory::From(gv.flags, gv.value);
+}
+
 
 
 }

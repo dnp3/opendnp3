@@ -36,7 +36,7 @@ namespace opendnp3
  */
 class ControlRelayOutputBlock
 {
-public:
+public:	
 
 	ControlRelayOutputBlock(
 		ControlCode aCode = ControlCode::LATCH_ON, 

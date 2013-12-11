@@ -17,9 +17,6 @@
 
 #include <openpal/BufferWrapper.h>
 #include <opendnp3/gen/CommandStatus.h>
-#include <opendnp3/gen/CommandStatus.h>
-#include <opendnp3/gen/CommandStatus.h>
-#include <opendnp3/gen/CommandStatus.h>
 
 namespace opendnp3 {
 

@@ -16,12 +16,17 @@
 //
 
 #include <openpal/BufferWrapper.h>
+#include <opendnp3/DataTypes.h>
 
 namespace opendnp3 {
 
 struct Group20Var1
 {
   static const size_t SIZE = 5;
+
+  typedef Counter Target;
+  static Counter Convert(openpal::ReadOnlyBuffer&);
+
   static Group20Var1 Read(openpal::ReadOnlyBuffer&);
   static void Write(const Group20Var1&, openpal::WriteBuffer&);
 
@@ -32,6 +37,10 @@ struct Group20Var1
 struct Group20Var2
 {
   static const size_t SIZE = 3;
+
+  typedef Counter Target;
+  static Counter Convert(openpal::ReadOnlyBuffer&);
+
   static Group20Var2 Read(openpal::ReadOnlyBuffer&);
   static void Write(const Group20Var2&, openpal::WriteBuffer&);
 
@@ -42,6 +51,10 @@ struct Group20Var2
 struct Group20Var3
 {
   static const size_t SIZE = 5;
+
+  typedef Counter Target;
+  static Counter Convert(openpal::ReadOnlyBuffer&);
+
   static Group20Var3 Read(openpal::ReadOnlyBuffer&);
   static void Write(const Group20Var3&, openpal::WriteBuffer&);
 
@@ -52,6 +65,10 @@ struct Group20Var3
 struct Group20Var4
 {
   static const size_t SIZE = 3;
+
+  typedef Counter Target;
+  static Counter Convert(openpal::ReadOnlyBuffer&);
+
   static Group20Var4 Read(openpal::ReadOnlyBuffer&);
   static void Write(const Group20Var4&, openpal::WriteBuffer&);
 
@@ -62,6 +79,10 @@ struct Group20Var4
 struct Group20Var5
 {
   static const size_t SIZE = 4;
+
+  typedef Counter Target;
+  static Counter Convert(openpal::ReadOnlyBuffer&);
+
   static Group20Var5 Read(openpal::ReadOnlyBuffer&);
   static void Write(const Group20Var5&, openpal::WriteBuffer&);
 
@@ -71,6 +92,10 @@ struct Group20Var5
 struct Group20Var6
 {
   static const size_t SIZE = 2;
+
+  typedef Counter Target;
+  static Counter Convert(openpal::ReadOnlyBuffer&);
+
   static Group20Var6 Read(openpal::ReadOnlyBuffer&);
   static void Write(const Group20Var6&, openpal::WriteBuffer&);
 
@@ -80,6 +105,10 @@ struct Group20Var6
 struct Group20Var7
 {
   static const size_t SIZE = 4;
+
+  typedef Counter Target;
+  static Counter Convert(openpal::ReadOnlyBuffer&);
+
   static Group20Var7 Read(openpal::ReadOnlyBuffer&);
   static void Write(const Group20Var7&, openpal::WriteBuffer&);
 
@@ -89,6 +118,10 @@ struct Group20Var7
 struct Group20Var8
 {
   static const size_t SIZE = 2;
+
+  typedef Counter Target;
+  static Counter Convert(openpal::ReadOnlyBuffer&);
+
   static Group20Var8 Read(openpal::ReadOnlyBuffer&);
   static void Write(const Group20Var8&, openpal::WriteBuffer&);
 

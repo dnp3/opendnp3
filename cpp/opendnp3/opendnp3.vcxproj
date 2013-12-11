@@ -244,6 +244,7 @@
     <ClInclude Include="src\opendnp3\DNPCrc.h" />
     <ClInclude Include="src\opendnp3\IndexParser.h" />
     <ClInclude Include="src\opendnp3\BitReader.h" />
+    <ClInclude Include="src\opendnp3\objects\MeasurementFactory.h" />
     <ClInclude Include="src\opendnp3\PointInfo.h" />
     <ClInclude Include="src\opendnp3\DNPFromStream.h" />
     <ClInclude Include="src\opendnp3\DNPToStream.h" />
@@ -286,7 +287,6 @@
     <ClInclude Include="src\opendnp3\MasterTaskBase.h" />
     <ClInclude Include="src\opendnp3\MeasurementHelpers.h" />
     <ClInclude Include="src\opendnp3\MultiplexingDataObserver.h" />
-    <ClInclude Include="src\opendnp3\ObjectDescriptors.h" />
     <ClInclude Include="src\opendnp3\ObjectHeader.h" />
     <ClInclude Include="src\opendnp3\ObjectReadIterator.h" />
     <ClInclude Include="src\opendnp3\Objects.h" />

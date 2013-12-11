@@ -31,7 +31,6 @@
 #include "Range.h"
 #include "IAPDUHeaderHandler.h"
 #include "LazyIterable.h"
-#include "ObjectDescriptors.h"
 #include "IndexParser.h"
 
 namespace opendnp3
@@ -101,10 +100,10 @@ class APDUParser : private PureStatic
 	static Result ParseObjectsWithIndexPrefix(const HeaderRecord& record, openpal::ReadOnlyBuffer& buffer, GroupVariation, uint32_t count, IndexParser* pParser, IAPDUHeaderHandler&  output);
 	
 	static Result ParseRangeAsBitField(const HeaderRecord& record, openpal::ReadOnlyBuffer& buffer, const Range& range, IAPDUHeaderHandler& output);
-	
+		
 	template <class Descriptor>
 	static Result ParseRangeFixedSize(const HeaderRecord& record, openpal::ReadOnlyBuffer& buffer, const Range& range, IAPDUHeaderHandler& output);
-
+	
 	template <class Descriptor>
 	static Result ParseCountFixedSizeWithIndex(const HeaderRecord& record, openpal::ReadOnlyBuffer& buffer, uint32_t count, IndexParser* pParser, IAPDUHeaderHandler& output);	
 };
@@ -145,17 +144,16 @@ APDUParser::Result APDUParser::ParseCount(openpal::ReadOnlyBuffer& buffer, uint3
 	}
 }
 
-
 template <class Descriptor>
 APDUParser::Result APDUParser::ParseRangeFixedSize(const HeaderRecord& record, openpal::ReadOnlyBuffer& buffer, const Range& range, IAPDUHeaderHandler& output)
 {
-	size_t size = range.count * Descriptor::Underlying::SIZE;
+	size_t size = range.count * Descriptor::SIZE;
 	if(buffer.Size() < size) return APDUParser::Result::NOT_ENOUGH_DATA_FOR_OBJECTS;
 	else {
 		auto start = range.start;
 		auto readWithIndex = [start](openpal::ReadOnlyBuffer& buffer, size_t pos) 
 		{
-			return IndexedValue<typename Descriptor::Target>(Descriptor::Read(buffer), start + pos);
+			return IndexedValue<typename Descriptor::Target>(Descriptor::Convert(buffer), start + pos);
 		};
 		LazyIterable< IndexedValue <typename Descriptor::Target>>collection(buffer, range.count, readWithIndex);
 		output.OnRange(record.Complete(size), collection);
@@ -172,11 +170,11 @@ APDUParser::Result APDUParser::ParseCountFixedSizeWithIndex(
 	IndexParser* pParser, 
 	IAPDUHeaderHandler& output)
 {
-	size_t size = count * (pParser->IndexSize() + Descriptor::Underlying::SIZE);
+	size_t size = count * (pParser->IndexSize() + Descriptor::SIZE);
 	if(buffer.Size() < size) return APDUParser::Result::NOT_ENOUGH_DATA_FOR_OBJECTS;
 	else {
 		auto readWithIndex = [&](openpal::ReadOnlyBuffer& buffer, size_t) {			
-			return IndexedValue<typename Descriptor::Target>(Descriptor::Read(buffer), pParser->ReadIndex(buffer));
+			return IndexedValue<typename Descriptor::Target>(Descriptor::Convert(buffer), pParser->ReadIndex(buffer));
 		};		
 		LazyIterable< IndexedValue <typename Descriptor::Target> > collection(buffer, count, readWithIndex);
 		output.OnIndexPrefix(record.Complete(size), collection);

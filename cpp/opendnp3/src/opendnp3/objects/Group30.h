@@ -16,12 +16,17 @@
 //
 
 #include <openpal/BufferWrapper.h>
+#include <opendnp3/DataTypes.h>
 
 namespace opendnp3 {
 
 struct Group30Var1
 {
   static const size_t SIZE = 5;
+
+  typedef Analog Target;
+  static Analog Convert(openpal::ReadOnlyBuffer&);
+
   static Group30Var1 Read(openpal::ReadOnlyBuffer&);
   static void Write(const Group30Var1&, openpal::WriteBuffer&);
 
@@ -32,6 +37,10 @@ struct Group30Var1
 struct Group30Var2
 {
   static const size_t SIZE = 3;
+
+  typedef Analog Target;
+  static Analog Convert(openpal::ReadOnlyBuffer&);
+
   static Group30Var2 Read(openpal::ReadOnlyBuffer&);
   static void Write(const Group30Var2&, openpal::WriteBuffer&);
 
@@ -42,6 +51,10 @@ struct Group30Var2
 struct Group30Var3
 {
   static const size_t SIZE = 4;
+
+  typedef Analog Target;
+  static Analog Convert(openpal::ReadOnlyBuffer&);
+
   static Group30Var3 Read(openpal::ReadOnlyBuffer&);
   static void Write(const Group30Var3&, openpal::WriteBuffer&);
 
@@ -51,6 +64,10 @@ struct Group30Var3
 struct Group30Var4
 {
   static const size_t SIZE = 2;
+
+  typedef Analog Target;
+  static Analog Convert(openpal::ReadOnlyBuffer&);
+
   static Group30Var4 Read(openpal::ReadOnlyBuffer&);
   static void Write(const Group30Var4&, openpal::WriteBuffer&);
 
@@ -60,6 +77,10 @@ struct Group30Var4
 struct Group30Var5
 {
   static const size_t SIZE = 5;
+
+  typedef Analog Target;
+  static Analog Convert(openpal::ReadOnlyBuffer&);
+
   static Group30Var5 Read(openpal::ReadOnlyBuffer&);
   static void Write(const Group30Var5&, openpal::WriteBuffer&);
 
@@ -70,6 +91,10 @@ struct Group30Var5
 struct Group30Var6
 {
   static const size_t SIZE = 9;
+
+  typedef Analog Target;
+  static Analog Convert(openpal::ReadOnlyBuffer&);
+
   static Group30Var6 Read(openpal::ReadOnlyBuffer&);
   static void Write(const Group30Var6&, openpal::WriteBuffer&);
 

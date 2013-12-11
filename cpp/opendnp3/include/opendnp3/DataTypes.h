@@ -109,6 +109,7 @@ private:
 class Analog : public TypedMeasurement<double>
 {
 public:
+
 	Analog() : TypedMeasurement(AQ_RESTART) 
 	{}
 

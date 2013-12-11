@@ -18,12 +18,17 @@
 #include <openpal/BufferWrapper.h>
 #include <opendnp3/gen/ControlCode.h>
 #include <opendnp3/gen/CommandStatus.h>
+#include <opendnp3/ControlRelayOutputBlock.h>
 
 namespace opendnp3 {
 
 struct Group12Var1
 {
   static const size_t SIZE = 11;
+
+  typedef ControlRelayOutputBlock Target;
+  static ControlRelayOutputBlock Convert(openpal::ReadOnlyBuffer&);
+
   static Group12Var1 Read(openpal::ReadOnlyBuffer&);
   static void Write(const Group12Var1&, openpal::WriteBuffer&);
 

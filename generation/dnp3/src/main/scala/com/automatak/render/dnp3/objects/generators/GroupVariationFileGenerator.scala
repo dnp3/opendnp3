@@ -36,7 +36,7 @@ object GroupVariationFileGenerator {
 
         gv match {
           case fs : FixedSize => fs.conversion match {
-            case Some(con) => con.headers
+            case Some(con) => con.includeHeaders
             case None => Nil
           }
           case _ => Nil
@@ -50,6 +50,21 @@ object GroupVariationFileGenerator {
 
     def includeHeader(group: ObjectGroup): Iterator[String] = Iterator("#include " + quoted(group.name+".h"))
 
+    def optionalCppIncludes(group: ObjectGroup) : Set[String] = {
+
+      def getConversionHeaders(gv: GroupVariation):  List[String] = gv match {
+          case fs : FixedSize => fs.conversion match {
+            case Some(con) => con.implHeaders
+            case None => Nil
+          }
+          case _ => Nil
+      }
+
+      def include(file: String): String = "#include " + file
+
+      group.objects.flatMap(o => getConversionHeaders(o)).map(include).toSet
+    }
+
     def headerFile(group: ObjectGroup): Iterator[String] = {
       commented(LicenseHeader()) ++ space ++
       Iterator("#include <openpal/BufferWrapper.h>") ++
@@ -62,6 +77,7 @@ object GroupVariationFileGenerator {
     def implFile(group: ObjectGroup): Iterator[String] = {
       commented(LicenseHeader()) ++ space ++
         includeHeader(group) ++ space ++
+        optionalCppIncludes(group) ++
         Iterator("#include <openpal/Serialization.h>") ++ space ++
         Iterator("using namespace openpal;") ++ space ++
         namespace("opendnp3") {

@@ -17,6 +17,7 @@
 
 #include "Group12.h"
 
+#include "MeasurementFactory.h"
 #include <openpal/Serialization.h>
 
 using namespace openpal;
@@ -52,6 +53,13 @@ void Group12Var1::Write(const Group12Var1& arg, openpal::WriteBuffer& buffer)
   UInt8::Write(buffer, CommandStatusToType(arg.status));
   buffer.Advance(1);
 }
+
+ControlRelayOutputBlock Group12Var1::Convert(ReadOnlyBuffer& buff)
+{
+  auto gv = Read(buff);
+  return ControlRelayOutputBlockFactory::From(gv.code, gv.count, gv.onTime, gv.offTime, gv.status);
+}
+
 
 
 }

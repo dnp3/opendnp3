@@ -34,7 +34,8 @@ sealed abstract class BasicGroupVariation(g: ObjectGroup, v: Byte) extends  Grou
 trait Conversion {
   def signatures : Iterator[String]
   def impl(fields: FixedSize)(implicit indent: Indentation): Iterator[String]
-  def headers: List[String]
+  def includeHeaders: List[String]
+  def implHeaders: List[String]
 }
 
 class FixedSize(g: ObjectGroup, v: Byte)(fs: FixedSizeField*) extends BasicGroupVariation(g,v) {

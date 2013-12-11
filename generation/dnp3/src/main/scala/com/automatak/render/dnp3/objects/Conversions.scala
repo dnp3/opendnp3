@@ -1,13 +1,16 @@
 package com.automatak.render.dnp3.objects
 
 import com.automatak.render._
+import com.automatak.render.cpp.quoted
 
-class ArbitraryConversion(name: String, header: String) extends Conversion {
+class ArbitraryConversion(name: String, incHeaders: String, cppHeaders: String) extends Conversion {
 
-  def headers: List[String] = List(header)
+  def includeHeaders: List[String] = List(incHeaders)
+  def implHeaders: List[String] = List(cppHeaders)
 
   def signatures : Iterator[String] =
-    Iterator("typedef " + name + " Target;", "static " + name + " Convert(openpal::ReadOnlyBuffer&);")
+    Iterator("typedef " + name + " Target;",
+      "static " + name + " Convert(openpal::ReadOnlyBuffer&);")
 
 
   def impl(fs: FixedSize)(implicit indent: Indentation): Iterator[String] = {
@@ -16,7 +19,7 @@ class ArbitraryConversion(name: String, header: String) extends Conversion {
 
     Iterator(name + " " + fs.name + "::Convert(ReadOnlyBuffer& buff)") ++ bracket {
       Iterator("auto gv = Read(buff);",
-               "return " + name + "::From(" + args + ");")
+               "return " + name + "Factory::From(" + args + ");")
     }
   }
 
@@ -26,17 +29,18 @@ object ConversionHeaders {
 
   val dataTypes = "<opendnp3/DataTypes.h>"
   val crob = "<opendnp3/ControlRelayOutputBlock.h>"
+  val factory = quoted("MeasurementFactory.h")
 
 }
 
 import ConversionHeaders._
 
-object BinaryConversion extends ArbitraryConversion("Binary", dataTypes)
-object AnalogConversion extends ArbitraryConversion("Analog", dataTypes)
-object CounterConversion extends ArbitraryConversion("Counter", dataTypes)
-object ControlStatusConversion extends ArbitraryConversion("ControlStatus", dataTypes)
-object SetpointStatusConversion extends ArbitraryConversion("SetpointStatus", dataTypes)
-object CrobConversion extends ArbitraryConversion("ControlRelayOutputBlock", crob)
+object BinaryConversion extends ArbitraryConversion("Binary", dataTypes, factory)
+object AnalogConversion extends ArbitraryConversion("Analog", dataTypes, factory)
+object CounterConversion extends ArbitraryConversion("Counter", dataTypes, factory)
+object ControlStatusConversion extends ArbitraryConversion("ControlStatus", dataTypes, factory)
+object SetpointStatusConversion extends ArbitraryConversion("SetpointStatus", dataTypes, factory)
+object CrobConversion extends ArbitraryConversion("ControlRelayOutputBlock", crob, factory)
 
 trait ConversionToBinary {
   self : FixedSize =>

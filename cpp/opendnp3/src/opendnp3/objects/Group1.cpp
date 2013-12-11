@@ -17,6 +17,7 @@
 
 #include "Group1.h"
 
+#include "MeasurementFactory.h"
 #include <openpal/Serialization.h>
 
 using namespace openpal;
@@ -36,6 +37,13 @@ void Group1Var2::Write(const Group1Var2& arg, openpal::WriteBuffer& buffer)
   UInt8::Write(buffer, arg.flags);
   buffer.Advance(1);
 }
+
+Binary Group1Var2::Convert(ReadOnlyBuffer& buff)
+{
+  auto gv = Read(buff);
+  return BinaryFactory::From(gv.flags);
+}
+
 
 
 }
