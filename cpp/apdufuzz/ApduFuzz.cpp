@@ -49,6 +49,11 @@ class Handler : public IAPDUHeaderHandler
 	{
 		meas.Foreach([](const IndexedValue<Binary>& v){});
 	}
+
+	virtual void OnIndexPrefix(const openpal::ReadOnlyBuffer& header, const LazyIterable<IndexedValue<ControlRelayOutputBlock>>& meas) override
+	{
+		meas.Foreach([](const IndexedValue<ControlRelayOutputBlock>& v){});
+	}
 };
 
 class Fuzzer
