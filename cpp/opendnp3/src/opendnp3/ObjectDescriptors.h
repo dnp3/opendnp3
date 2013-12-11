@@ -25,9 +25,11 @@
 
 #include <opendnp3/Uncopyable.h>
 #include <opendnp3/DataTypes.h>
+#include <opendnp3/ControlRelayOutputBlock.h>
 
 #include "objects/Group1.h"
 #include "objects/Group2.h"
+#include "objects/Group12.h"
 
 namespace opendnp3
 {	
@@ -62,6 +64,17 @@ namespace opendnp3
 		static Binary Read(openpal::ReadOnlyBuffer& buffer) { 
 			auto gv =  Group2Var2::Read(buffer);
 			return Binary(gv.flags, gv.time48); 
+		}	
+	};
+
+	struct Group12Var1Parser : private PureStatic
+	{		
+		typedef ControlRelayOutputBlock Target;
+		typedef Group12Var1 Underlying;
+				
+		static ControlRelayOutputBlock Read(openpal::ReadOnlyBuffer& buffer) { 
+			auto gv =  Group12Var1::Read(buffer);
+			return ControlRelayOutputBlock(gv.code, gv.count, gv.onTime, gv.offTime);
 		}	
 	};
 

@@ -38,6 +38,8 @@ enum class GroupVariation : int
 	Group2Var2,
 	Group2Var3,
 
+	Group12Var1,
+
 	UNKNOWN
 };
 

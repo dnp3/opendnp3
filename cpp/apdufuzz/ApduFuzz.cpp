@@ -25,6 +25,7 @@
 #include <iostream>
 #include <vector>
 #include <thread>
+#include <memory>
 
 #include "ResultSet.h"
 

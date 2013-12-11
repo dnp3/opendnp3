@@ -28,6 +28,7 @@
 #include <openpal/ToHex.h>
 
 #include <opendnp3/APDUParser.h>
+#include <opendnp3/ControlRelayOutputBlock.h>
 
 #include <functional>
 
@@ -199,6 +200,26 @@ BOOST_AUTO_TEST_CASE(Group1Var1ByRange)
 		BOOST_REQUIRE(IndexedValue<Binary>(Binary(true), 6) == mock.staticBinaries[3]);
 	});
 }
+
+BOOST_AUTO_TEST_CASE(Group12Var1WithIndexSizes)
+{	
+	auto hex = "0C 01 17 01 09 03 01 64 00 00 00 C8 00 00 00 00";
+
+
+	auto validator = [&](MockApduHeaderHandler& mock) {		
+		BOOST_REQUIRE_EQUAL(1, mock.crobRequests.size());
+		ControlRelayOutputBlock crob(ControlCode::LATCH_ON, 1, 100, 200);
+		BOOST_REQUIRE(IndexedValue<ControlRelayOutputBlock>(crob, 9) == mock.crobRequests[0]);
+
+		BOOST_REQUIRE_EQUAL(1, mock.headers.size());		
+		BOOST_REQUIRE_EQUAL(hex, toHex(mock.headers[0]));
+	};
+
+	
+	TestComplex(hex, APDUParser::Result::OK, 1, validator);
+
+}
+
 
 BOOST_AUTO_TEST_SUITE_END()
 

@@ -27,6 +27,7 @@
 #include <openpal/BufferWrapper.h>
 
 #include <opendnp3/DataTypes.h>
+#include <opendnp3/ControlRelayOutputBlock.h>
 #include <opendnp3/IndexedValue.h>
 
 namespace opendnp3
@@ -41,6 +42,10 @@ class IAPDUHeaderHandler
 		virtual void OnRange(const openpal::ReadOnlyBuffer& header, const LazyIterable<IndexedValue<Binary>>& meas) = 0;
 
 		virtual void OnIndexPrefix(const openpal::ReadOnlyBuffer& header, const LazyIterable<IndexedValue<Binary>>& meas) = 0;
+
+
+
+		virtual void OnIndexPrefix(const openpal::ReadOnlyBuffer& header, const LazyIterable<IndexedValue<ControlRelayOutputBlock>>& meas) = 0;
 
 						
 };

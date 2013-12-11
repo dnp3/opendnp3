@@ -132,6 +132,10 @@ APDUParser::Result APDUParser::ParseObjectsWithIndexPrefix(const HeaderRecord& r
 		{			
 			return ParseCountFixedSizeWithIndex<Group2Var1Parser>(record, buffer, count, pParser, output);
 		}
+		case(GroupVariation::Group12Var1):
+		{
+			return ParseCountFixedSizeWithIndex<Group12Var1Parser>(record, buffer,count, pParser, output);
+		}
 		default:
 			return APDUParser::Result::ILLEGAL_OBJECT_QUALIFIER;
 	}

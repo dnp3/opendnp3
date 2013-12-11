@@ -59,6 +59,15 @@ class MockApduHeaderHandler : public IAPDUHeaderHandler
 			});
 			++numRequests;
 		}
+
+		void OnIndexPrefix(const openpal::ReadOnlyBuffer& header, const LazyIterable<IndexedValue<ControlRelayOutputBlock>>& meas) override
+		{
+			headers.push_back(header);
+			meas.Foreach([&](const IndexedValue<ControlRelayOutputBlock>& v) {
+				crobRequests.push_back(v);
+			});
+			++numRequests;
+		}
 		
 		size_t numRequests;
 
@@ -67,7 +76,9 @@ class MockApduHeaderHandler : public IAPDUHeaderHandler
 		std::vector<GroupVariation> allObjectRequests;
 
 		std::vector<IndexedValue<Binary>> eventBinaries;
-		std::vector<IndexedValue<Binary>> staticBinaries;		
+		std::vector<IndexedValue<Binary>> staticBinaries;
+
+		std::vector<IndexedValue<ControlRelayOutputBlock>> crobRequests;
 };
 
 }
