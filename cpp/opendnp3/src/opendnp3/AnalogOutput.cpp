@@ -31,12 +31,15 @@ namespace opendnp3
 AnalogOutputInt16::AnalogOutputInt16(int16_t aValue) : AnalogOutput<int16_t>(aValue)
 {}
 
+AnalogOutputInt16::AnalogOutputInt16(int16_t aValue, CommandStatus aStatus) : AnalogOutput<int16_t>(aValue, aStatus)
+{}
+
 AnalogOutputInt16::AnalogOutputInt16() : AnalogOutput<int16_t>(0)
 {}
 
 bool AnalogOutputInt16::operator==(const AnalogOutputInt16& arRHS) const
 {
-	return value == arRHS.value;
+	return value == arRHS.value && status == arRHS.status;
 }
 
 #ifndef OPENDNP3_STRIP_LOG_MESSAGES
@@ -51,12 +54,15 @@ std::string AnalogOutputInt16::ToString() const
 AnalogOutputInt32::AnalogOutputInt32(int32_t aValue) : AnalogOutput<int32_t>(aValue)
 {}
 
+AnalogOutputInt32::AnalogOutputInt32(int32_t aValue, CommandStatus aStatus) : AnalogOutput<int32_t>(aValue, aStatus)
+{}
+
 AnalogOutputInt32::AnalogOutputInt32() : AnalogOutput<int32_t>(0)
 {}
 
 bool AnalogOutputInt32::operator==(const AnalogOutputInt32& arRHS) const
 {
-	return value == arRHS.value;
+	return value == arRHS.value && status == arRHS.status;
 }
 
 #ifndef OPENDNP3_STRIP_LOG_MESSAGES
@@ -71,12 +77,15 @@ std::string AnalogOutputInt32::ToString() const
 AnalogOutputFloat32::AnalogOutputFloat32(float aValue) : AnalogOutput<float>(aValue)
 {}
 
+AnalogOutputFloat32::AnalogOutputFloat32(float aValue, CommandStatus aStatus) : AnalogOutput<float>(aValue, aStatus)
+{}
+
 AnalogOutputFloat32::AnalogOutputFloat32() : AnalogOutput<float>(0)
 {}
 
 bool AnalogOutputFloat32::operator==(const AnalogOutputFloat32& arRHS) const
 {
-	return value == arRHS.value;
+	return value == arRHS.value && status == arRHS.status;
 }
 
 #ifndef OPENDNP3_STRIP_LOG_MESSAGES
@@ -91,12 +100,15 @@ std::string AnalogOutputFloat32::ToString() const
 AnalogOutputDouble64::AnalogOutputDouble64(double aValue) : AnalogOutput<double>(aValue)
 {}
 
+AnalogOutputDouble64::AnalogOutputDouble64(double aValue, CommandStatus aStatus) : AnalogOutput<double>(aValue, aStatus)
+{}
+
 AnalogOutputDouble64::AnalogOutputDouble64() : AnalogOutput<double>(0)
 {}
 
 bool AnalogOutputDouble64::operator==(const AnalogOutputDouble64& arRHS) const
 {
-	return value == arRHS.value;
+	return value == arRHS.value && status == arRHS.status;
 }
 
 #ifndef OPENDNP3_STRIP_LOG_MESSAGES

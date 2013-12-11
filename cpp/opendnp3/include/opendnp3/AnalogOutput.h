@@ -35,19 +35,20 @@ class AnalogOutput
 {
 public:
 
-	/**
-	 * Creates a new instance with underlying type T
-	*/
+	AnalogOutput() :
+		value(0),
+		status(CommandStatus::SUCCESS)
+	{}
+	
 	AnalogOutput(T aValue) :
 		value(aValue),
 		status(CommandStatus::SUCCESS)
 	{}
 
-	AnalogOutput() :
-		value(0),
-		status(CommandStatus::SUCCESS)
+	AnalogOutput(T aValue, CommandStatus aStatus) :
+		value(aValue),
+		status(aStatus)
 	{}
-
 
 	/**
 	* The status value defaults to CS_SUCCESS for requests
@@ -70,6 +71,7 @@ public:
 
 	AnalogOutputInt16();
 	AnalogOutputInt16(int16_t);
+	AnalogOutputInt16(int16_t, CommandStatus);
 
 	bool operator==(const AnalogOutputInt16& arRHS) const;
 
@@ -88,6 +90,7 @@ public:
 
 	AnalogOutputInt32();
 	AnalogOutputInt32(int32_t);
+	AnalogOutputInt32(int32_t, CommandStatus);
 
 	bool operator==(const AnalogOutputInt32& arRHS) const;
 
@@ -106,6 +109,7 @@ public:
 
 	AnalogOutputFloat32();
 	AnalogOutputFloat32(float);
+	AnalogOutputFloat32(float, CommandStatus);
 
 	bool operator==(const AnalogOutputFloat32& arRHS) const;
 
@@ -124,6 +128,7 @@ public:
 
 	AnalogOutputDouble64();
 	AnalogOutputDouble64(double);
+	AnalogOutputDouble64(double, CommandStatus);
 
 	bool operator==(const AnalogOutputDouble64& arRHS) const;
 
