@@ -39,35 +39,26 @@ public:
 	 * Creates a new instance with underlying type T
 	*/
 	AnalogOutput(T aValue) :
-		mValue(aValue),
-		mStatus(CommandStatus::SUCCESS)
+		value(aValue),
+		status(CommandStatus::SUCCESS)
 	{}
 
 	AnalogOutput() :
-		mValue(0),
-		mStatus(CommandStatus::SUCCESS)
+		value(0),
+		status(CommandStatus::SUCCESS)
 	{}
 
-#ifndef OPENDNP3_STRIP_LOG_MESSAGES
-	virtual std::string ToString() const = 0;
-#endif
-
-	/**
-	* @return the underlying value type
-	*/
-	T GetValue() const {
-		return mValue;
-	}
-
-public:
 
 	/**
 	* The status value defaults to CS_SUCCESS for requests
 	*/
-	CommandStatus mStatus;
+	CommandStatus status;
 
-protected:
-	T mValue;
+	T value;
+
+	#ifndef OPENDNP3_STRIP_LOG_MESSAGES
+		virtual std::string ToString() const = 0;
+	#endif
 };
 
 /**

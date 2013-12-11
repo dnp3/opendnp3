@@ -236,11 +236,11 @@ void Slave::RespondToCommands(const StreamObject<T>* apObj, ObjectReadIterator& 
 		T val = apObj->Read(*arIter);
 		size_t index = arIter->Index();
 		if (count > mConfig.mMaxControls) {
-			val.mStatus = CommandStatus::TOO_MANY_OPS;
+			val.status = CommandStatus::TOO_MANY_OPS;
 		}
 		else {
-			val.mStatus = CommandHandler(val, index);
-			if(val.mStatus == CommandStatus::NOT_SUPPORTED) {
+			val.status = CommandHandler(val, index);
+			if(val.status == CommandStatus::NOT_SUPPORTED) {
 				this->mRspIIN.SetParameterError(true);
 			}
 		}

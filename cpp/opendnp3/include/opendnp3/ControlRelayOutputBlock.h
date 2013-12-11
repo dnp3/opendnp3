@@ -38,32 +38,26 @@ class ControlRelayOutputBlock
 {
 public:
 
-	ControlRelayOutputBlock(ControlCode aCode = ControlCode::LATCH_ON, uint8_t aCount = 1, uint32_t aOnTime = 100, uint32_t aOffTime = 100);
-
-	/// @return the ControlCode enumeration corresponding to the raw code
-	ControlCode GetCode() const;
+	ControlRelayOutputBlock(
+		ControlCode aCode = ControlCode::LATCH_ON, 
+		uint8_t aCount = 1, 
+		uint32_t aOnTime = 100, 
+		uint32_t aOffTime = 100, 
+		CommandStatus aStatus = CommandStatus::SUCCESS);
 
 	/// allows matching of exact code
-	uint8_t mRawCode;
+	ControlCode functionCode;
 	/// the number of times to repeat the operation
-	uint8_t mCount;
+	uint8_t count;
 	/// the 'on' time for the pulse train
-	uint32_t mOnTimeMS;
+	uint32_t onTimeMS;
 	/// the 'off' time for the pulse train
-	uint32_t mOffTimeMS;
+	uint32_t offTimeMS;
 	/// status of the resulting operation
-	CommandStatus mStatus;
+	CommandStatus status;
 
-	/// @return string representation of the CROB
-	std::string ToString() const;
-
-	/**
-	* @param arRHS the CROB to compare to this object
-	* @return true if all fields of arRHS match
-	*/
-	bool operator==(const ControlRelayOutputBlock& arRHS) const {
-		return (mRawCode == arRHS.mRawCode) && (mCount == arRHS.mCount) && (mOnTimeMS == arRHS.mOnTimeMS) && (mOffTimeMS == arRHS.mOffTimeMS);
-	}
+	bool operator==(const ControlRelayOutputBlock& aLHS) const
+	{ return false; }
 };
 
 

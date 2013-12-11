@@ -71,7 +71,7 @@ CommandStatus CommandHelpers::ValidateCommandResponse(const APDU& arAPDU, Comman
 			ObjectReadIterator obj = hdr.BeginRead();
 			if(obj.Count() == 1 && obj->Index() == aIndex) { //compare what was written to what was received
 				T cmd = apObj->Read(*obj);
-				if(arData == apObj->GetValueBytes(*obj)) return cmd.mStatus;
+				if(arData == apObj->GetValueBytes(*obj)) return cmd.status;
 				else return CommandStatus::FORMAT_ERROR;
 			}
 		}

@@ -41,7 +41,7 @@ namespace opendnp3
 		static Binary Read(openpal::ReadOnlyBuffer& buffer) { 
 			auto gv =  Group1Var2::Read(buffer);
 			return Binary(gv.flags); 
-		}	
+		}
 	};
 
 	struct Group2Var1Parser : private PureStatic

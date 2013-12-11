@@ -217,21 +217,21 @@ void Group10Var2::Write(uint8_t* apPos, const ControlStatus& arObj) const
 
 void Group12Var1::Write(uint8_t* apPos, const ControlRelayOutputBlock& arControl) const
 {
-	mCode.Set(apPos, arControl.mRawCode);
-	mCount.Set(apPos, arControl.mCount);
-	mOffTime.Set(apPos, arControl.mOffTimeMS);
-	mOnTime.Set(apPos, arControl.mOnTimeMS);
-	mStatus.Set(apPos, CommandStatusToType(arControl.mStatus));
+	mCode.Set(apPos, ControlCodeToType(arControl.functionCode));
+	mCount.Set(apPos, arControl.count);
+	mOffTime.Set(apPos, arControl.offTimeMS);
+	mOnTime.Set(apPos, arControl.onTimeMS);
+	mStatus.Set(apPos, CommandStatusToType(arControl.status));
 }
 
 ControlRelayOutputBlock Group12Var1::Read(const uint8_t* apPos) const
 {
 	ControlRelayOutputBlock b;
-	b.mRawCode = mCode.Get(apPos);
-	b.mCount = mCount.Get(apPos);
-	b.mOffTimeMS = mOffTime.Get(apPos);
-	b.mOnTimeMS = mOnTime.Get(apPos);
-	b.mStatus = CommandStatusFromType(mStatus.Get(apPos));
+	b.functionCode = ControlCodeFromType(mCode.Get(apPos));
+	b.count = mCount.Get(apPos);
+	b.offTimeMS = mOffTime.Get(apPos);
+	b.onTimeMS = mOnTime.Get(apPos);
+	b.status = CommandStatusFromType(mStatus.Get(apPos));
 	return b;
 }
 
@@ -540,14 +540,14 @@ void Group40Var4::Write(uint8_t* apPos, const SetpointStatus& arObj) const
 
 void Group41Var1::Write(uint8_t* apBuff, const AnalogOutputInt32& arVal) const
 {
-	this->mValue.Set(apBuff, arVal.GetValue());
-	this->mStatus.Set(apBuff, CommandStatusToType(arVal.mStatus));
+	this->mValue.Set(apBuff, arVal.value);
+	this->mStatus.Set(apBuff, CommandStatusToType(arVal.status));
 }
 
 AnalogOutputInt32 Group41Var1::Read(const uint8_t* apBuff) const
 {
 	AnalogOutputInt32 ao(this->mValue.Get(apBuff));
-	ao.mStatus = CommandStatusFromType(this->mStatus.Get(apBuff));
+	ao.status = CommandStatusFromType(this->mStatus.Get(apBuff));
 	return ao;
 }
 
@@ -558,14 +558,14 @@ CopyableBuffer Group41Var1::GetValueBytes(const uint8_t* apBuff) const
 
 void Group41Var2::Write(uint8_t* apBuff, const AnalogOutputInt16& arVal) const
 {
-	this->mValue.Set(apBuff, arVal.GetValue());
-	this->mStatus.Set(apBuff, CommandStatusToType(arVal.mStatus));
+	this->mValue.Set(apBuff, arVal.value);
+	this->mStatus.Set(apBuff, CommandStatusToType(arVal.status));
 }
 
 AnalogOutputInt16 Group41Var2::Read(const uint8_t* apBuff) const
 {
 	AnalogOutputInt16 ao(this->mValue.Get(apBuff));
-	ao.mStatus = CommandStatusFromType(this->mStatus.Get(apBuff));
+	ao.status = CommandStatusFromType(this->mStatus.Get(apBuff));
 	return ao;
 }
 
@@ -576,14 +576,14 @@ CopyableBuffer Group41Var2::GetValueBytes(const uint8_t* apBuff) const
 
 void Group41Var3::Write(uint8_t* apBuff, const AnalogOutputFloat32& arVal) const
 {
-	this->mValue.Set(apBuff, arVal.GetValue());
-	this->mStatus.Set(apBuff, CommandStatusToType(arVal.mStatus));
+	this->mValue.Set(apBuff, arVal.value);
+	this->mStatus.Set(apBuff, CommandStatusToType(arVal.status));
 }
 
 AnalogOutputFloat32 Group41Var3::Read(const uint8_t* apBuff) const
 {
 	AnalogOutputFloat32 ao(this->mValue.Get(apBuff));
-	ao.mStatus = CommandStatusFromType(this->mStatus.Get(apBuff));
+	ao.status = CommandStatusFromType(this->mStatus.Get(apBuff));
 	return ao;
 }
 
@@ -594,14 +594,14 @@ CopyableBuffer Group41Var3::GetValueBytes(const uint8_t* apBuff) const
 
 void Group41Var4::Write(uint8_t* apBuff, const AnalogOutputDouble64& arVal) const
 {
-	this->mValue.Set(apBuff, arVal.GetValue());
-	this->mStatus.Set(apBuff, CommandStatusToType(arVal.mStatus));
+	this->mValue.Set(apBuff, arVal.value);
+	this->mStatus.Set(apBuff, CommandStatusToType(arVal.status));
 }
 
 AnalogOutputDouble64 Group41Var4::Read(const uint8_t* apBuff) const
 {
 	AnalogOutputDouble64 ao(this->mValue.Get(apBuff));
-	ao.mStatus = CommandStatusFromType(this->mStatus.Get(apBuff));
+	ao.status = CommandStatusFromType(this->mStatus.Get(apBuff));
 	return ao;
 }
 

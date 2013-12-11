@@ -82,7 +82,7 @@ opendnp3::ControlCode Conversions::convertControlCode(ControlCode code)
 
 ControlRelayOutputBlock ^ Conversions::convertCommand(const opendnp3::ControlRelayOutputBlock& bo)
 {
-	return gcnew ControlRelayOutputBlock(convertControlCode(bo.GetCode()), bo.mCount, bo.mOnTimeMS, bo.mOffTimeMS);
+	return gcnew ControlRelayOutputBlock(convertControlCode(bo.functionCode), bo.count, bo.onTimeMS, bo.offTimeMS);
 }
 
 opendnp3::ControlRelayOutputBlock Conversions::convertCommand(ControlRelayOutputBlock ^ bo)
@@ -97,7 +97,7 @@ opendnp3::AnalogOutputInt32 Conversions::convertCommand(AnalogOutputInt32 ^ sp)
 
 AnalogOutputInt32 ^ Conversions::convertCommand(const opendnp3::AnalogOutputInt32& sp)
 {
-	return gcnew AnalogOutputInt32(sp.GetValue());
+	return gcnew AnalogOutputInt32(sp.value);
 }
 
 opendnp3::AnalogOutputInt16 Conversions::convertCommand(AnalogOutputInt16 ^ sp)
@@ -107,7 +107,7 @@ opendnp3::AnalogOutputInt16 Conversions::convertCommand(AnalogOutputInt16 ^ sp)
 
 AnalogOutputInt16 ^ Conversions::convertCommand(const opendnp3::AnalogOutputInt16& sp)
 {
-	return gcnew AnalogOutputInt16(sp.GetValue());
+	return gcnew AnalogOutputInt16(sp.value);
 }
 
 opendnp3::AnalogOutputFloat32 Conversions::convertCommand(AnalogOutputFloat32 ^ sp)
@@ -117,7 +117,7 @@ opendnp3::AnalogOutputFloat32 Conversions::convertCommand(AnalogOutputFloat32 ^ 
 
 AnalogOutputFloat32 ^ Conversions::convertCommand(const opendnp3::AnalogOutputFloat32& sp)
 {
-	return gcnew AnalogOutputFloat32(sp.GetValue());
+	return gcnew AnalogOutputFloat32(sp.value);
 }
 
 opendnp3::AnalogOutputDouble64 Conversions::convertCommand(AnalogOutputDouble64 ^ sp)
@@ -127,7 +127,7 @@ opendnp3::AnalogOutputDouble64 Conversions::convertCommand(AnalogOutputDouble64 
 
 AnalogOutputDouble64 ^ Conversions::convertCommand(const opendnp3::AnalogOutputDouble64& sp)
 {
-	return gcnew AnalogOutputDouble64(sp.GetValue());
+	return gcnew AnalogOutputDouble64(sp.value);
 }
 
 Binary ^ Conversions::convertMeas(opendnp3::Binary meas)
