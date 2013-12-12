@@ -27,15 +27,15 @@ class ResultSet
 {
 	public:
 
-		size_t numOK;
-		size_t numNotEnoughDataForHeader;
-		size_t numNotEnoughDataForRange;
-		size_t numNotEnoughDataForObjects;
-		size_t numUnReasonableObjectCount;
-		size_t numUnknownObject;
-		size_t numUnknownQualifier;
-		size_t numIllegalObjectQualifier;
-		size_t numBadStartStop;
+		uint64_t numOK;
+		uint64_t numNotEnoughDataForHeader;
+		uint64_t numNotEnoughDataForRange;
+		uint64_t numNotEnoughDataForObjects;
+		uint64_t numUnReasonableObjectCount;
+		uint64_t numUnknownObject;
+		uint64_t numUnknownQualifier;
+		uint64_t numIllegalObjectQualifier;
+		uint64_t numBadStartStop;
 
 		ResultSet(): 
 			numOK(0),
@@ -62,7 +62,7 @@ class ResultSet
 			numBadStartStop += rhs.numBadStartStop;
 		}
 
-		size_t Sum()
+		uint64_t Sum()
 		{
 			return numOK +
 			numNotEnoughDataForHeader +

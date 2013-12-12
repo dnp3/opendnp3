@@ -26,6 +26,7 @@
 #include <vector>
 #include <thread>
 #include <memory>
+#include <chrono>
 
 #include "ResultSet.h"
 
@@ -95,7 +96,7 @@ class Fuzzer
 {
 	public:
 
-	Fuzzer(size_t iter, size_t s) : seed(s), iterations(iter)
+	Fuzzer(uint64_t iter, size_t s) : seed(s), iterations(iter)
 	{}
 
 	static const size_t MAX_SIZE = 100;
@@ -107,7 +108,7 @@ class Fuzzer
 		std::uniform_int_distribution<size_t> size(1, MAX_SIZE);
 		std::uniform_int_distribution<uint8_t> value(0x00, 0xFF);
 
-		for(size_t i = 0; i<iterations; ++i)
+		for(uint64_t i = 0; i<iterations; ++i)
 		{
 			size_t count  = size(gen);
 			for(size_t i = 0; i < count; ++i) buffer[i] = value(gen);
@@ -123,33 +124,45 @@ class Fuzzer
 	private:
 
 	size_t seed;
-	size_t iterations;
+	uint64_t iterations;
 	uint8_t buffer[MAX_SIZE];
 };
 
 int main(int argc, char* argv[])
 {
-	size_t iterations = 10*1000*1000;
-	size_t concurrency = std::thread::hardware_concurrency();
+	if(argc < 2) {
+		std::cout << "iteration argument required" << std::endl;
+		return -1;
+	}
+
+	std::string arg(argv[1]);	
+	uint64_t iterations = std::stoull(arg);
+	uint64_t concurrency = std::thread::hardware_concurrency();
+	uint64_t totalCases = iterations*concurrency; 
 
 	std::vector<Fuzzer> fuzzers;
 	for(size_t i = 0;  i <  concurrency; ++i) fuzzers.push_back(Fuzzer(iterations, i+1));
 
+	auto start = std::chrono::high_resolution_clock::now();
 	std::vector<std::unique_ptr<std::thread>> threads;
 	for(auto& f: fuzzers) {
 		std::unique_ptr<std::thread> pThread(new std::thread([&]() { f.Run(); }));
 		threads.push_back(std::move(pThread));
 	}
-
 	for(auto& pThread: threads) pThread->join();
+	auto stop = std::chrono::high_resolution_clock::now();
+
+	auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(stop - start).count();
+
+	auto casesPerSec = 1000.0 * (static_cast<double>(totalCases) / static_cast<double>(ms));
 
 	ResultSet rs;
 	for(auto& f: fuzzers) rs.Merge(f.results);
+	
+	uint64_t sum = rs.Sum();
 
-	size_t expected = iterations * concurrency;
-	size_t sum = rs.Sum();
-
-	cout << "complete:  [ " << sum << " / " << expected << " ] - " << (expected == sum) << endl;
+	cout << "complete:  [ " << sum << " / " << totalCases << " ] - " << (totalCases == sum) << endl;
+	cout << "fuzz tests per second: " << casesPerSec << endl;
 	cout << endl;
 	cout << "OK: " << rs.numOK << endl;
 	cout << "NotEnoughDataForHeader: " << rs.numNotEnoughDataForHeader << endl;
