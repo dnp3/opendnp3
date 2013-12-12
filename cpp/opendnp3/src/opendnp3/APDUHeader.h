@@ -24,16 +24,25 @@
 #include <openpal/BufferWrapper.h>
 
 #include "gen/FunctionCode.h"
+#include "AppControlField.h"
 
 namespace opendnp3
 {
 
 struct APDUHeader
 {
-	uint8_t sequence;
+	AppControlField control;
+	FunctionCode function;
 
-	//FunctionCode
+	static const size_t SIZE = 2;
+};
 
+struct APDUResponseHeader
+{
+	APDUHeader header;
+	
+
+	static const size_t SIZE = 4;
 };
 
 }
