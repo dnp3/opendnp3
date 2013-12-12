@@ -21,11 +21,30 @@
 #ifndef __IIN_FIELD_H_
 #define __IIN_FIELD_H_
 
-#include <opendnp3/APDUConstants.h>
 #include <cstdint>
+#include <string>
 
 namespace opendnp3
 {
+
+enum class IINBit : uint8_t {
+	ALL_STATIONS = 0,
+	CLASS1_EVENTS,
+	CLASS2_EVENTS,
+	CLASS3_EVENTS,
+	NEED_TIME,
+	LOCAL_CONTROL,
+	DEVICE_TROUBLE,
+	DEVICE_RESTART,
+	FUNC_NOT_SUPPORTED,
+	OBJECT_UNKNOWN,
+	PARAM_ERROR,
+	EVENT_BUFFER_OVERFLOW,
+	ALREADY_EXECUTING,
+	CONFIG_CORRUPT,
+	RESERVED1,
+	RESERVED2 = 15
+};
 
 /** DNP3 two-byte IIN field.
 */
@@ -33,55 +52,16 @@ class IINField
 {
 public:
 
-	IINField() : LSB(0), MSB(0) 
-	{}
-
 	IINField(uint8_t aLSB, uint8_t aMSB) : 	LSB(aLSB), MSB(aMSB) 
 	{}
 
-	#define MACRO_GET_BIT(value, mask) { return (mask&value) != 0; }
+	IINField() : LSB(0), MSB(0)
+	{}
 
-	// LSB
-	bool GetAllStations() const				MACRO_GET_BIT(LSB, IIN_LSB_ALL_STATIONS)
-	bool GetClass1Events() const			MACRO_GET_BIT(LSB, IIN_LSB_CLASS1_EVENTS)
-	bool GetClass2Events() const			MACRO_GET_BIT(LSB, IIN_LSB_CLASS2_EVENTS)
-	bool GetClass3Events() const			MACRO_GET_BIT(LSB, IIN_LSB_CLASS3_EVENTS)
-	bool GetNeedTime() const				MACRO_GET_BIT(LSB, IIN_LSB_NEED_TIME)
-	bool GetLocalControl() const			MACRO_GET_BIT(LSB, IIN_LSB_LOCAL_CONTROL)
-	bool GetDeviceTrouble() const			MACRO_GET_BIT(LSB, IIN_LSB_DEVICE_TROUBLE)
-	bool GetDeviceRestart() const			MACRO_GET_BIT(LSB, IIN_LSB_DEVICE_RESTART)
-
-	// MSB
-	bool GetFuncNotSupported() const		MACRO_GET_BIT(MSB, IIN_MSB_FUNC_NOT_SUPPORTED)
-	bool GetObjectUnknown() const			MACRO_GET_BIT(MSB, IIN_MSB_OBJECT_UNKNOWN)
-	bool GetParameterError() const			MACRO_GET_BIT(MSB, IIN_MSB_PARAM_ERROR)
-	bool GetEventBufferOverflow() const		MACRO_GET_BIT(MSB, IIN_MSB_EVENT_BUFFER_OVERFLOW)
-	bool GetAlreadyExecuting() const		MACRO_GET_BIT(MSB, IIN_MSB_ALREADY_EXECUTING)
-	bool GetConfigurationCorrupt() const	MACRO_GET_BIT(MSB, IIN_MSB_CONFIG_CORRUPT)
-	bool GetReserved1() const				MACRO_GET_BIT(MSB, IIN_MSB_RESERVED1)
-	bool GetReserved2() const				MACRO_GET_BIT(MSB, IIN_MSB_RESERVED2)
-
-	#define MACRO_SET_BIT(value, mask) { value = (aVal) ? (value|mask) : (value&(~mask)); }
-
-	// LSB
-	void SetAllStations(bool aVal)			MACRO_SET_BIT(LSB, IIN_LSB_ALL_STATIONS)
-	void SetClass1Events(bool aVal)			MACRO_SET_BIT(LSB, IIN_LSB_CLASS1_EVENTS)
-	void SetClass2Events(bool aVal)			MACRO_SET_BIT(LSB, IIN_LSB_CLASS2_EVENTS)
-	void SetClass3Events(bool aVal)			MACRO_SET_BIT(LSB, IIN_LSB_CLASS3_EVENTS)
-	void SetNeedTime(bool aVal)				MACRO_SET_BIT(LSB, IIN_LSB_NEED_TIME)
-	void SetLocalControl(bool aVal)			MACRO_SET_BIT(LSB, IIN_LSB_LOCAL_CONTROL)
-	void SetDeviceTrouble(bool aVal)		MACRO_SET_BIT(LSB, IIN_LSB_DEVICE_TROUBLE)
-	void SetDeviceRestart(bool aVal)		MACRO_SET_BIT(LSB, IIN_LSB_DEVICE_RESTART)
-
-	void SetFuncNotSupported(bool aVal)		MACRO_SET_BIT(MSB, IIN_MSB_FUNC_NOT_SUPPORTED)
-	void SetObjectUnknown(bool aVal)		MACRO_SET_BIT(MSB, IIN_MSB_OBJECT_UNKNOWN)
-	void SetParameterError(bool aVal)		MACRO_SET_BIT(MSB, IIN_MSB_PARAM_ERROR)
-	void SetEventBufferOverflow(bool aVal)	MACRO_SET_BIT(MSB, IIN_MSB_EVENT_BUFFER_OVERFLOW)
-	void SetAlreadyExecuting(bool aVal)		MACRO_SET_BIT(MSB, IIN_MSB_ALREADY_EXECUTING)
-	void SetConfigurationCorrupt(bool aVal) MACRO_SET_BIT(MSB, IIN_MSB_CONFIG_CORRUPT)
-	void SetReserved1(bool aVal)			MACRO_SET_BIT(MSB, IIN_MSB_RESERVED1)
-	void SetReserved2(bool aVal)			MACRO_SET_BIT(MSB, IIN_MSB_RESERVED2)
-
+	bool Get(IINBit bit) const;
+	void Set(IINBit bit);
+	void Clear(IINBit bit);
+	
 	bool operator==(const IINField& arRHS) const;
 	
 	void Zero() 
@@ -94,12 +74,47 @@ public:
 		MSB |= aIIN.MSB;
 	}
 
-#ifndef OPENDNP3_STRIP_LOG_MESSAGES
-	std::string ToString() const;
-#endif
-
 	uint8_t LSB;
 	uint8_t MSB;
+
+	#ifndef OPENDNP3_STRIP_LOG_MESSAGES
+	std::string ToString() const;
+	#endif	
+
+	private:
+
+	enum class LSBMask : uint8_t 
+	{
+		ALL_STATIONS = 0x01,
+		CLASS1_EVENTS = 0x02,
+		CLASS2_EVENTS = 0x04,
+		CLASS3_EVENTS = 0x08,
+		NEED_TIME = 0x10,
+		LOCAL_CONTROL = 0x20,
+		DEVICE_TROUBLE = 0x40,
+		DEVICE_RESTART = 0x80,
+	};
+
+	enum class MSBMask : uint8_t 
+	{
+		FUNC_NOT_SUPPORTED = 0x01,
+		OBJECT_UNKNOWN = 0x02,
+		PARAM_ERROR = 0x04,
+		EVENT_BUFFER_OVERFLOW = 0x08,
+		ALREADY_EXECUTING = 0x10,
+		CONFIG_CORRUPT = 0x20,
+		RESERVED1 = 0x40,
+		RESERVED2 = 0x80
+	};
+
+	inline bool Get(LSBMask bit) const { return (LSB & static_cast<uint8_t>(bit)) != 0; }
+	inline bool Get(MSBMask bit) const { return (MSB & static_cast<uint8_t>(bit)) != 0; }
+
+	inline void Set(LSBMask bit) { LSB |= static_cast<uint8_t>(bit); }
+	inline void Set(MSBMask bit) { MSB |= static_cast<uint8_t>(bit); }
+
+	inline void Clear(LSBMask bit) { LSB &= ~static_cast<uint8_t>(bit); }
+	inline void Clear(MSBMask bit) { MSB &= ~static_cast<uint8_t>(bit); }
 };
 
 }

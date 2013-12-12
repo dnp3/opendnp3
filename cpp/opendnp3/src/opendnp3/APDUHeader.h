@@ -25,6 +25,7 @@
 
 #include "gen/FunctionCode.h"
 #include "AppControlField.h"
+#include "IINField.h"
 
 namespace opendnp3
 {
@@ -40,7 +41,7 @@ struct APDUHeader
 struct APDUResponseHeader
 {
 	APDUHeader header;
-	
+	IINField iin;
 
 	static const size_t SIZE = 4;
 };

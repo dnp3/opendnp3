@@ -248,10 +248,10 @@ void ResponseContext::RecordStaticObjects(StreamObject<T>* apObject, const Heade
 				const IRangeHeader* pHeader = reinterpret_cast<const IRangeHeader*>(arIter->GetHeader());
 				pHeader->GetRange(*arIter, ri);
 
-				if(ri.Start > max || ri.Stop > max || ri.Start > ri.Stop) this->mTempIIN.SetParameterError(true);
+				if(ri.Start > max || ri.Stop > max || ri.Start > ri.Stop) this->mTempIIN.Set(IINBit::PARAM_ERROR);
 				else this->RecordStaticObjectsByRange<T>(apObject, begin, ri.Start, ri.Stop);
 			}
-			else this->mTempIIN.SetParameterError(true);
+			else this->mTempIIN.Set(IINBit::PARAM_ERROR);
 		}
 		break;
 
@@ -265,12 +265,12 @@ void ResponseContext::RecordStaticObjects(StreamObject<T>* apObject, const Heade
 					size_t start = 0;
 					size_t stop = count - 1;
 
-					if(start > max || stop > max || start > stop) this->mTempIIN.SetParameterError(true);
+					if(start > max || stop > max || start > stop) this->mTempIIN.Set(IINBit::PARAM_ERROR);
 					else this->RecordStaticObjectsByRange<T>(apObject, begin, start, stop);
 				}
-				else this->mTempIIN.SetParameterError(true);
+				else this->mTempIIN.Set(IINBit::PARAM_ERROR);
 			}
-			else this->mTempIIN.SetParameterError(true);
+			else this->mTempIIN.Set(IINBit::PARAM_ERROR);
 		}
 		break;
 	}

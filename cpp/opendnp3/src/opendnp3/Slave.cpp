@@ -65,7 +65,7 @@ Slave::Slave(openpal::Logger aLogger, IAppLayer* apAppLayer, IExecutor* apExecut
 	/* Link the event buffer to the database */
 	mpDatabase->SetEventBuffer(mRspContext.GetBuffer());
 
-	mIIN.SetDeviceRestart(true);	// Always set on restart
+	mIIN.Set(IINBit::DEVICE_RESTART);	// Always set on restart
 
 	/*
 	 * Incoming data will trigger a POST on the timer source to call
@@ -90,7 +90,7 @@ Slave::~Slave()
 
 void Slave::SetNeedTimeIIN()
 {
-	mIIN.SetNeedTime(true);
+	mIIN.Set(IINBit::NEED_TIME);
 }
 
 void Slave::UpdateState(StackState aState)
@@ -274,7 +274,7 @@ void Slave::ConfigureDelayMeasurement(const APDU& arRequest)
 {
 	HeaderReadIterator hdr = arRequest.BeginRead();
 	if (hdr.Count() > 0) {
-		mRspIIN.SetFuncNotSupported(true);
+		mRspIIN.Set(IINBit::FUNC_NOT_SUPPORTED);
 	}
 
 	Group52Var2* pObj = Group52Var2::Inst();
@@ -314,19 +314,20 @@ void Slave::HandleWriteIIN(HeaderReadIterator& arHdr)
 {
 	for (ObjectReadIterator obj = arHdr.BeginRead(); !obj.IsEnd(); ++obj) {
 		switch (obj->Index()) {
-		case IINI_DEVICE_RESTART: {
+			case(IINBit::DEVICE_RESTART): 
+			{
 				bool value = Group80Var1::Inst()->Read(*obj, obj->Start(), obj->Index());
 				if (!value) {
-					mIIN.SetDeviceRestart(false);
+					mIIN.Clear(IINBit::DEVICE_RESTART);
 				}
 				else {
-					mRspIIN.SetParameterError(true);
+					mRspIIN.Set(IINBit::PARAM_ERROR);
 					ERROR_BLOCK(LogLevel::Warning, "", SERR_INVALID_IIN_WRITE);
 				}
 				break;
 			}
 		default:
-			mRspIIN.SetParameterError(true);
+			mRspIIN.Set(IINBit::PARAM_ERROR);
 			ERROR_BLOCK(LogLevel::Warning, "", SERR_INVALID_IIN_WRITE);
 			break;
 		}
@@ -335,27 +336,25 @@ void Slave::HandleWriteIIN(HeaderReadIterator& arHdr)
 
 void Slave::HandleWriteTimeDate(HeaderReadIterator& arHWI)
 {
-	if (!mIIN.GetNeedTime()) {
+	if (!mIIN.Get(IINBit::NEED_TIME)) {
 		LOG_BLOCK(LogLevel::Warning, "Master is attempting to write time but slave is not requesting time sync");
 		return;
 	}
 
 	ObjectReadIterator obj = arHWI.BeginRead();
 
-	if (obj.Count() != 1) {
-		mRspIIN.SetParameterError(true);
-		return;
+	if (obj.Count() == 1) {
+
+		auto utc = UTCTimestamp(Group50Var1::Inst()->mTime.Get(*obj));
+		
+		//make the callback with the stack unwound
+		mpExecutor->Post([utc, this]() { mpTimeWriteHandler->WriteAbsoluteTime(utc); });
+
+		mIIN.Clear(IINBit::NEED_TIME);
+
+		ERROR_BLOCK(LogLevel::Event, "Time synchronized with master", TIME_SYNC_UPDATED);
 	}
-
-	auto utc = UTCTimestamp(Group50Var1::Inst()->mTime.Get(*obj));
-	//make the callback with the stack unwound
-	mpExecutor->Post([utc, this]() {
-		mpTimeWriteHandler->WriteAbsoluteTime(utc);
-	});
-
-	mIIN.SetNeedTime(false);
-
-	ERROR_BLOCK(LogLevel::Event, "Time synchronized with master", TIME_SYNC_UPDATED);
+	else mRspIIN.Set(IINBit::PARAM_ERROR);	
 }
 
 void Slave::HandleWrite(const APDU& arRequest)
@@ -370,7 +369,7 @@ void Slave::HandleWrite(const APDU& arRequest)
 			this->HandleWriteTimeDate(hdr);
 			break;
 		default:
-			mRspIIN.SetFuncNotSupported(true);
+			mRspIIN.Set(IINBit::FUNC_NOT_SUPPORTED);
 			ERROR_BLOCK(LogLevel::Warning, "Object/Function mismatch", SERR_OBJ_FUNC_MISMATCH);
 			break;
 		}
@@ -420,7 +419,7 @@ void Slave::HandleSelect(const APDU& arRequest, SequenceInfo aSeqInfo)
 			break;
 
 		default:
-			mRspIIN.SetFuncNotSupported(true);
+			mRspIIN.Set(IINBit::FUNC_NOT_SUPPORTED);
 			ERROR_BLOCK(LogLevel::Warning, "Object/Function mismatch", SERR_OBJ_FUNC_MISMATCH);
 			break;
 		}
@@ -470,7 +469,7 @@ void Slave::HandleOperate(const APDU& arRequest, SequenceInfo aSeqInfo)
 			break;
 
 		default:
-			mRspIIN.SetFuncNotSupported(true);
+			mRspIIN.Set(IINBit::FUNC_NOT_SUPPORTED);
 			ERROR_BLOCK(LogLevel::Warning, "Object/Function mismatch", SERR_OBJ_FUNC_MISMATCH);
 			break;
 		}
@@ -518,7 +517,7 @@ void Slave::HandleDirectOperate(const APDU& arRequest, SequenceInfo aSeqInfo)
 			break;
 
 		default:
-			mRspIIN.SetFuncNotSupported(true);
+			mRspIIN.Set(IINBit::FUNC_NOT_SUPPORTED);
 			ERROR_BLOCK(LogLevel::Warning, "Object/Function mismatch", SERR_OBJ_FUNC_MISMATCH);
 			break;
 		}
@@ -530,7 +529,7 @@ void Slave::HandleEnableUnsolicited(const APDU& arRequest, bool aIsEnable)
 	mResponse.Set(FunctionCode::RESPONSE);
 
 	if (mConfig.mDisableUnsol) {
-		mRspIIN.SetFuncNotSupported(true);
+		mRspIIN.Set(IINBit::FUNC_NOT_SUPPORTED);
 	}
 	else {
 		if (aIsEnable) {
@@ -553,7 +552,7 @@ void Slave::HandleEnableUnsolicited(const APDU& arRequest, bool aIsEnable)
 				break;
 
 			default:
-				mRspIIN.SetFuncNotSupported(true);
+				mRspIIN.Set(IINBit::FUNC_NOT_SUPPORTED);
 				LOG_BLOCK(LogLevel::Warning, "Cannot enable/disable unsol for " << hdr->GetBaseObject()->Name());
 				break;
 			}
@@ -564,7 +563,7 @@ void Slave::HandleEnableUnsolicited(const APDU& arRequest, bool aIsEnable)
 void Slave::HandleUnknown()
 {
 	mResponse.Set(FunctionCode::RESPONSE);
-	mRspIIN.SetObjectUnknown(true);
+	mRspIIN.Set(IINBit::OBJECT_UNKNOWN);
 }
 
 void Slave::StartUnsolTimer(openpal::TimeDuration aTimeout)
@@ -576,7 +575,7 @@ void Slave::StartUnsolTimer(openpal::TimeDuration aTimeout)
 void Slave::ResetTimeIIN()
 {
 	mpTimeTimer = nullptr;
-	mIIN.SetNeedTime(true);
+	mIIN.Set(IINBit::NEED_TIME);
 	mpTimeTimer = mpExecutor->Start(mConfig.mTimeSyncPeriod, std::bind(&Slave::ResetTimeIIN, this));
 }
 

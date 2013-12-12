@@ -231,7 +231,7 @@ IINField ResponseContext::Configure(const APDU& arRequest)
 			break;
 		default:
 			LOG_BLOCK(LogLevel::Warning, "READ for obj " << hdr->GetGroup() << " var " << hdr->GetVariation() << " not supported.");
-			this->mTempIIN.SetFuncNotSupported(true);
+			this->mTempIIN.Set(IINBit::FUNC_NOT_SUPPORTED);
 			break;
 		}
 	}
@@ -244,7 +244,7 @@ void ResponseContext::SelectEvents(PointClass aClass, size_t aNum)
 	size_t remain = aNum;
 
 	if (mBuffer.IsOverflow()) {
-		mTempIIN.SetEventBufferOverflow(true);
+		mTempIIN.Set(IINBit::EVENT_BUFFER_OVERFLOW);
 	}
 
 	remain -= this->SelectEvents(aClass, mpRspTypes->mpEventBinary, mBinaryEvents, remain);

@@ -67,10 +67,10 @@ BOOST_AUTO_TEST_CASE(ResponseWithDataAndFlags)
 	frag.SetFunction(FunctionCode::RESPONSE);
 	frag.SetControl(true, true, true, false, 3);
 	IINField iin;
-	iin.SetDeviceRestart(true);
-	iin.SetNeedTime(true);
-	iin.SetClass1Events(true);
-	iin.SetClass2Events(true);
+	iin.Set(IINBit::DEVICE_RESTART);
+	iin.Set(IINBit::NEED_TIME);
+	iin.Set(IINBit::CLASS1_EVENTS);
+	iin.Set(IINBit::CLASS2_EVENTS);
 	frag.SetIIN(iin);
 
 	{

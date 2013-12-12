@@ -182,30 +182,7 @@ BOOST_AUTO_TEST_CASE(ResponseWithDataAndFlags)
 	BOOST_REQUIRE(control.CON);
 	BOOST_REQUIRE(!control.UNS);
 	BOOST_REQUIRE_EQUAL(control.SEQ, 3);
-
-	IINField iin = frag.GetIIN();
-
-	//device restart, need
-	//time, class 1 & 2 events should be set
-	BOOST_REQUIRE(iin.GetDeviceRestart());
-	BOOST_REQUIRE(iin.GetNeedTime());
-	BOOST_REQUIRE(iin.GetClass1Events());
-	BOOST_REQUIRE(iin.GetClass2Events());
-
-	// the others should not
-	BOOST_REQUIRE(!iin.GetAllStations());
-	BOOST_REQUIRE(!iin.GetAlreadyExecuting());
-	BOOST_REQUIRE(!iin.GetClass3Events());
-	BOOST_REQUIRE(!iin.GetConfigurationCorrupt());
-	BOOST_REQUIRE(!iin.GetDeviceTrouble());
-	BOOST_REQUIRE(!iin.GetEventBufferOverflow());
-	BOOST_REQUIRE(!iin.GetFuncNotSupported());
-	BOOST_REQUIRE(!iin.GetLocalControl());
-	BOOST_REQUIRE(!iin.GetObjectUnknown());
-	BOOST_REQUIRE(!iin.GetParameterError());
-	BOOST_REQUIRE(!iin.GetReserved1());
-	BOOST_REQUIRE(!iin.GetReserved2());
-
+	
 	size_t hdr_count = 0;
 
 	// 4 binary event headers (1 event), 2 analog event headers (1 event), 1 binary input header (1 Object,4 values), 1 analog input header (2) values = 8 headers

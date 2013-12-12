@@ -241,7 +241,7 @@ void Slave::RespondToCommands(const StreamObject<T>* apObj, ObjectReadIterator& 
 		else {
 			val.status = CommandHandler(val, index);
 			if(val.status == CommandStatus::NOT_SUPPORTED) {
-				this->mRspIIN.SetParameterError(true);
+				this->mRspIIN.Set(IINBit::PARAM_ERROR);
 			}
 		}
 		i.SetIndex(index);
