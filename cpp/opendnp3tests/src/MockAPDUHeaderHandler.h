@@ -164,6 +164,24 @@ class MockApduHeaderHandler : public IAPDUHeaderHandler
 				aoDouble64Requests.push_back(v);
 			});	
 		}
+
+		virtual void OnRangeOfOctets(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const LazyIterable<IndexedValue<openpal::ReadOnlyBuffer>>& meas) override
+		{
+			groupVariations.push_back(gv);
+			headers.push_back(header);
+			meas.Foreach([&](const IndexedValue<openpal::ReadOnlyBuffer>& v) {
+				rangedOctets.push_back(v);
+			});
+		}
+		
+		virtual void OnIndexPrefixOfOctets(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const LazyIterable<IndexedValue<openpal::ReadOnlyBuffer>>& meas) override
+		{
+			groupVariations.push_back(gv);
+			headers.push_back(header);
+			meas.Foreach([&](const IndexedValue<openpal::ReadOnlyBuffer>& v) {
+				indexPrefixedOctets.push_back(v);
+			});
+		}
 		
 		std::vector<openpal::ReadOnlyBuffer> headers;
 		std::vector<GroupVariation> groupVariations;
@@ -189,6 +207,9 @@ class MockApduHeaderHandler : public IAPDUHeaderHandler
 		std::vector<IndexedValue<AnalogOutputInt32>> aoInt32Requests;
 		std::vector<IndexedValue<AnalogOutputFloat32>> aoFloat32Requests;
 		std::vector<IndexedValue<AnalogOutputDouble64>> aoDouble64Requests;
+
+		std::vector<IndexedValue<openpal::ReadOnlyBuffer>> indexPrefixedOctets;
+		std::vector<IndexedValue<openpal::ReadOnlyBuffer>> rangedOctets;
 };
 
 }

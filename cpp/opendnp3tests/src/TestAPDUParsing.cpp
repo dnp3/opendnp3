@@ -53,6 +53,12 @@ void TestSimple(const std::string& hex, APDUParser::Result expected, size_t numC
 	TestComplex(hex, expected, numCalls, [](MockApduHeaderHandler&) {});
 }
 
+std::string BufferToString(const ReadOnlyBuffer& buff)
+{
+	const uint8_t* pBuffer = buff;	
+	return std::string(reinterpret_cast<const char*>(pBuffer), buff.Size());
+}
+
 BOOST_AUTO_TEST_SUITE(APDUParsingTestSuite)
 
 BOOST_AUTO_TEST_CASE(EmptyStringParsesOK)
@@ -233,6 +239,30 @@ BOOST_AUTO_TEST_CASE(Group60Var1Var2Var3Var4)
 		BOOST_REQUIRE(GroupVariation::Group60Var2 == mock.groupVariations[1]);
 		BOOST_REQUIRE(GroupVariation::Group60Var3 == mock.groupVariations[2]);
 		BOOST_REQUIRE(GroupVariation::Group60Var4 == mock.groupVariations[3]);
+	});
+}
+
+BOOST_AUTO_TEST_CASE(OctetStrings)
+{
+	// "hello" == [0x68, 0x65, 0x6C, 0x6C, 0x6F]
+	// "world" == [0x77, 0x6F, 0x72, 0x6C, 0x64]
+
+	// Group 111 (0x6F) Variation (length == 5), 1 byte count / 1 byte index (4), count of 1, "hello" == [0x68, 0x65, 0x6C, 0x6C, 0x6F]
+	TestComplex("6F 05 17 02 04 68 65 6C 6C 6F FF 77 6F 72 6C 64", APDUParser::Result::OK, 1, [&](MockApduHeaderHandler& mock) {
+		BOOST_REQUIRE_EQUAL(2, mock.indexPrefixedOctets.size());		
+		BOOST_REQUIRE_EQUAL(4, mock.indexPrefixedOctets[0].index);
+		BOOST_REQUIRE_EQUAL("hello", BufferToString(mock.indexPrefixedOctets[0].value));
+		BOOST_REQUIRE_EQUAL(255, mock.indexPrefixedOctets[1].index);
+		BOOST_REQUIRE_EQUAL("world", BufferToString(mock.indexPrefixedOctets[1].value));
+	});
+
+	// Group 110 (0x6E) Variation (length == 5), 1 byte start/stop (7), count of 1, "hello" == [0x68, 0x65, 0x6C, 0x6C, 0x6F]
+	TestComplex("6E 05 00 07 08 68 65 6C 6C 6F 77 6F 72 6C 64", APDUParser::Result::OK, 1, [&](MockApduHeaderHandler& mock) {
+		BOOST_REQUIRE_EQUAL(2, mock.rangedOctets.size());		
+		BOOST_REQUIRE_EQUAL(7, mock.rangedOctets[0].index);
+		BOOST_REQUIRE_EQUAL("hello", BufferToString(mock.rangedOctets[0].value));
+		BOOST_REQUIRE_EQUAL(8, mock.rangedOctets[1].index);
+		BOOST_REQUIRE_EQUAL("world", BufferToString(mock.rangedOctets[1].value));		
 	});
 }
 

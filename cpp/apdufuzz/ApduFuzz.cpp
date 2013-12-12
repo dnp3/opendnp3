@@ -112,6 +112,17 @@ class Handler : public IAPDUHeaderHandler
 	{
 		meas.Foreach([](const IndexedValue<AnalogOutputDouble64>& v){});
 	}
+
+	virtual void OnIndexPrefixOfOctets(opendnp3::GroupVariation, const openpal::ReadOnlyBuffer& header, const opendnp3::LazyIterable<IndexedValue<openpal::ReadOnlyBuffer>>& meas) override
+	{
+		meas.Foreach([](const IndexedValue<ReadOnlyBuffer>& v){});
+	}
+
+	virtual void OnRangeOfOctets(opendnp3::GroupVariation, const openpal::ReadOnlyBuffer& header, const opendnp3::LazyIterable<IndexedValue<openpal::ReadOnlyBuffer>>& meas) override
+	{
+		meas.Foreach([](const IndexedValue<ReadOnlyBuffer>& v){});
+	}
+
 };
 
 class Fuzzer
