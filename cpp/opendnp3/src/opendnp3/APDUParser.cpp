@@ -36,6 +36,7 @@
 #include "objects/Group30.h"
 #include "objects/Group32.h"
 #include "objects/Group40.h"
+#include "objects/Group41.h"
 
 #include "objects/MeasurementFactory.h"
 
@@ -166,6 +167,11 @@ APDUParser::Result APDUParser::ParseObjectsWithIndexPrefix(const HeaderRecord& r
 		MACRO_PARSE_COUNT_FIXED_SIZE_WITH_INDEX(Group32Var6);
 		MACRO_PARSE_COUNT_FIXED_SIZE_WITH_INDEX(Group32Var7);
 		MACRO_PARSE_COUNT_FIXED_SIZE_WITH_INDEX(Group32Var8);
+
+		MACRO_PARSE_COUNT_FIXED_SIZE_WITH_INDEX(Group41Var1);
+		MACRO_PARSE_COUNT_FIXED_SIZE_WITH_INDEX(Group41Var2);
+		MACRO_PARSE_COUNT_FIXED_SIZE_WITH_INDEX(Group41Var3);
+		MACRO_PARSE_COUNT_FIXED_SIZE_WITH_INDEX(Group41Var4);	
 
 		default:
 			return Result::ILLEGAL_OBJECT_QUALIFIER;

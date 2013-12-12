@@ -29,6 +29,7 @@ object ConversionHeaders {
 
   val dataTypes = "<opendnp3/DataTypes.h>"
   val crob = "<opendnp3/ControlRelayOutputBlock.h>"
+  val ao = "<opendnp3/AnalogOutput.h>"
   val factory = quoted("MeasurementFactory.h")
 
 }
@@ -41,6 +42,10 @@ object CounterConversion extends ArbitraryConversion("Counter", dataTypes, facto
 object ControlStatusConversion extends ArbitraryConversion("ControlStatus", dataTypes, factory)
 object SetpointStatusConversion extends ArbitraryConversion("SetpointStatus", dataTypes, factory)
 object CrobConversion extends ArbitraryConversion("ControlRelayOutputBlock", crob, factory)
+object AnalogOutputInt16Conversion extends ArbitraryConversion("AnalogOutputInt16", ao, factory)
+object AnalogOutputInt32Conversion extends ArbitraryConversion("AnalogOutputInt32", ao, factory)
+object AnalogOutputFloat32Conversion extends ArbitraryConversion("AnalogOutputFloat32", ao, factory)
+object AnalogOutputDouble64Conversion extends ArbitraryConversion("AnalogOutputDouble64", ao, factory)
 
 trait ConversionToBinary {
   self : FixedSize =>
@@ -71,3 +76,24 @@ trait ConversionToCROB {
   self : FixedSize =>
   override def conversion: Option[Conversion] = Some(CrobConversion)
 }
+
+trait ConversionToAnalogOutputInt16 {
+  self : FixedSize =>
+  override def conversion: Option[Conversion] = Some(AnalogOutputInt16Conversion)
+}
+
+trait ConversionToAnalogOutputInt32 {
+  self : FixedSize =>
+  override def conversion: Option[Conversion] = Some(AnalogOutputInt32Conversion)
+}
+
+trait ConversionToAnalogOutputFloat32 {
+  self : FixedSize =>
+  override def conversion: Option[Conversion] = Some(AnalogOutputFloat32Conversion)
+}
+
+trait ConversionToAnalogOutputDouble64 {
+  self : FixedSize =>
+  override def conversion: Option[Conversion] = Some(AnalogOutputDouble64Conversion)
+}
+

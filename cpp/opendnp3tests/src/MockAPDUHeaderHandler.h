@@ -128,6 +128,42 @@ class MockApduHeaderHandler : public IAPDUHeaderHandler
 				crobRequests.push_back(v);
 			});			
 		}
+
+		virtual void OnIndexPrefix(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const LazyIterable<IndexedValue<AnalogOutputInt16>>& meas) override
+		{
+			groupVariations.push_back(gv);
+			headers.push_back(header);
+			meas.Foreach([&](const IndexedValue<AnalogOutputInt16>& v) {
+				aoInt16Requests.push_back(v);
+			});	
+		}
+		
+		virtual void OnIndexPrefix(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const LazyIterable<IndexedValue<AnalogOutputInt32>>& meas) override
+		{
+			groupVariations.push_back(gv);
+			headers.push_back(header);
+			meas.Foreach([&](const IndexedValue<AnalogOutputInt32>& v) {
+				aoInt32Requests.push_back(v);
+			});	
+		}
+		
+		virtual void OnIndexPrefix(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const LazyIterable<IndexedValue<AnalogOutputFloat32>>& meas) override
+		{
+			groupVariations.push_back(gv);
+			headers.push_back(header);
+			meas.Foreach([&](const IndexedValue<AnalogOutputFloat32>& v) {
+				aoFloat32Requests.push_back(v);
+			});	
+		}
+		
+		virtual void OnIndexPrefix(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const LazyIterable<IndexedValue<AnalogOutputDouble64>>& meas) override
+		{
+			groupVariations.push_back(gv);
+			headers.push_back(header);
+			meas.Foreach([&](const IndexedValue<AnalogOutputDouble64>& v) {
+				aoDouble64Requests.push_back(v);
+			});	
+		}
 		
 		std::vector<openpal::ReadOnlyBuffer> headers;
 		std::vector<GroupVariation> groupVariations;
@@ -148,6 +184,11 @@ class MockApduHeaderHandler : public IAPDUHeaderHandler
 		std::vector<IndexedValue<SetpointStatus>> staticSetpointStatii;
 
 		std::vector<IndexedValue<ControlRelayOutputBlock>> crobRequests;
+
+		std::vector<IndexedValue<AnalogOutputInt16>> aoInt16Requests;
+		std::vector<IndexedValue<AnalogOutputInt32>> aoInt32Requests;
+		std::vector<IndexedValue<AnalogOutputFloat32>> aoFloat32Requests;
+		std::vector<IndexedValue<AnalogOutputDouble64>> aoDouble64Requests;
 };
 
 }

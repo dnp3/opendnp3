@@ -169,6 +169,20 @@ GroupVariation GroupVariationEnum::Get(uint8_t group, uint8_t variation)
 				default:
 					return GroupVariation::UNKNOWN;
 			}
+		case(41):
+			switch(variation)
+			{
+				case(1):
+					return GroupVariation::Group41Var1;
+				case(2):
+					return GroupVariation::Group41Var2;
+				case(3):
+					return GroupVariation::Group41Var3;
+				case(4):
+					return GroupVariation::Group41Var4;
+				default:
+					return GroupVariation::UNKNOWN;
+			}
 		case(60):
 			switch(variation)
 			{

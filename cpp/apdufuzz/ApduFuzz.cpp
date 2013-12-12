@@ -92,6 +92,26 @@ class Handler : public IAPDUHeaderHandler
 	{
 		meas.Foreach([](const IndexedValue<ControlRelayOutputBlock>& v){});
 	}
+
+	virtual void OnIndexPrefix(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const LazyIterable<IndexedValue<AnalogOutputInt16>>& meas) override
+	{
+		meas.Foreach([](const IndexedValue<AnalogOutputInt16>& v){});
+	}
+
+	virtual void OnIndexPrefix(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const LazyIterable<IndexedValue<AnalogOutputInt32>>& meas) override
+	{
+		meas.Foreach([](const IndexedValue<AnalogOutputInt32>& v){});
+	}
+
+	virtual void OnIndexPrefix(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const LazyIterable<IndexedValue<AnalogOutputFloat32>>& meas) override
+	{
+		meas.Foreach([](const IndexedValue<AnalogOutputFloat32>& v){});
+	}
+
+	virtual void OnIndexPrefix(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const LazyIterable<IndexedValue<AnalogOutputDouble64>>& meas) override
+	{
+		meas.Foreach([](const IndexedValue<AnalogOutputDouble64>& v){});
+	}
 };
 
 class Fuzzer
@@ -109,7 +129,7 @@ class Fuzzer
 		for(uint64_t i = 0; i<iter; ++i)
 		{
 			size_t count  = size(gen);
-			for(size_t i = 0; i < count; ++i) buffer[i] = value(gen);
+			for(size_t j = 0; j < count; ++j) buffer[j] = value(gen);
 			ReadOnlyBuffer rb(buffer, count);
 			APDUParser::Result result = APDUParser::ParseHeaders(rb, h);
 			results.Update(result);

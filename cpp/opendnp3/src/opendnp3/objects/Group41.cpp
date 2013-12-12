@@ -17,6 +17,7 @@
 
 #include "Group41.h"
 
+#include "MeasurementFactory.h"
 #include <openpal/Serialization.h>
 
 using namespace openpal;
@@ -41,6 +42,13 @@ void Group41Var1::Write(const Group41Var1& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(1);
 }
 
+AnalogOutputInt32 Group41Var1::Convert(ReadOnlyBuffer& buff)
+{
+  auto gv = Read(buff);
+  return AnalogOutputInt32Factory::From(gv.value, gv.status);
+}
+
+
 Group41Var2 Group41Var2::Read(ReadOnlyBuffer& buffer)
 {
   Group41Var2 obj;
@@ -58,6 +66,13 @@ void Group41Var2::Write(const Group41Var2& arg, openpal::WriteBuffer& buffer)
   UInt8::Write(buffer, CommandStatusToType(arg.status));
   buffer.Advance(1);
 }
+
+AnalogOutputInt16 Group41Var2::Convert(ReadOnlyBuffer& buff)
+{
+  auto gv = Read(buff);
+  return AnalogOutputInt16Factory::From(gv.value, gv.status);
+}
+
 
 Group41Var3 Group41Var3::Read(ReadOnlyBuffer& buffer)
 {
@@ -77,6 +92,13 @@ void Group41Var3::Write(const Group41Var3& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(1);
 }
 
+AnalogOutputFloat32 Group41Var3::Convert(ReadOnlyBuffer& buff)
+{
+  auto gv = Read(buff);
+  return AnalogOutputFloat32Factory::From(gv.value, gv.status);
+}
+
+
 Group41Var4 Group41Var4::Read(ReadOnlyBuffer& buffer)
 {
   Group41Var4 obj;
@@ -94,6 +116,13 @@ void Group41Var4::Write(const Group41Var4& arg, openpal::WriteBuffer& buffer)
   UInt8::Write(buffer, CommandStatusToType(arg.status));
   buffer.Advance(1);
 }
+
+AnalogOutputDouble64 Group41Var4::Convert(ReadOnlyBuffer& buff)
+{
+  auto gv = Read(buff);
+  return AnalogOutputDouble64Factory::From(gv.value, gv.status);
+}
+
 
 
 }

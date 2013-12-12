@@ -24,6 +24,7 @@
 #include <opendnp3/Uncopyable.h>
 #include <opendnp3/DataTypes.h>
 #include <opendnp3/ControlRelayOutputBlock.h>
+#include <opendnp3/AnalogOutput.h>
 
 namespace opendnp3
 {
@@ -71,6 +72,17 @@ struct SetpointStatusFactory: private PureStatic
 {
 	inline static SetpointStatus From(uint8_t flags, double value) { return SetpointStatus(value, flags); }
 };
+
+template <class Target, class ValueType>
+struct AnalogOutputFactory: private PureStatic
+{
+	inline static Target From(ValueType value, CommandStatus status) { return Target(value, status); }
+};
+
+typedef AnalogOutputFactory<AnalogOutputInt32, int32_t> AnalogOutputInt32Factory;
+typedef AnalogOutputFactory<AnalogOutputInt16, int16_t> AnalogOutputInt16Factory;
+typedef AnalogOutputFactory<AnalogOutputFloat32, float> AnalogOutputFloat32Factory;
+typedef AnalogOutputFactory<AnalogOutputDouble64, double> AnalogOutputDouble64Factory;
 
 }
 
