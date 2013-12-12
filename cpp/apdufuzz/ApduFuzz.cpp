@@ -28,6 +28,8 @@
 #include <memory>
 #include <chrono>
 
+#include <openpal/ToHex.h>
+
 #include "ResultSet.h"
 
 using namespace std;
@@ -42,7 +44,7 @@ class Handler : public IAPDUHeaderHandler
 	{}
 
 	virtual void OnIIN(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const LazyIterable<IndexedValue<bool>>& bits) override
-	{		
+	{
 		bits.Foreach([&](const IndexedValue<bool>& v) {});
 	}
 
@@ -97,31 +99,30 @@ class Fuzzer
 	public:
 
 	void Run(uint64_t iter, size_t maxSize, size_t seed)
-	{		
-		uint8_t* buffer = new uint8_t[maxSize]; 
+	{
+		uint8_t* buffer = new uint8_t[maxSize];
 		std::mt19937 gen;
 		gen.seed(seed);
 		std::uniform_int_distribution<size_t> size(1, maxSize);
 		std::uniform_int_distribution<uint8_t> value(0x00, 0xFF);
 
-		for(uint64_t i = 0; i<iterations; ++i)
+		for(uint64_t i = 0; i<iter; ++i)
 		{
 			size_t count  = size(gen);
 			for(size_t i = 0; i < count; ++i) buffer[i] = value(gen);
 			ReadOnlyBuffer rb(buffer, count);
 			APDUParser::Result result = APDUParser::ParseHeaders(rb, h);
 			results.Update(result);
+			if(result == APDUParser::Result::OK) {
+				auto percent = static_cast<double>(i)/static_cast<double>(iter)*100.0;
+				cout << "iter<" << i << "> - " << percent << "% - " << openpal::toHex(rb) << endl;
+			}
 		}
 		delete[] buffer;
 	}
-	
+
 	Handler h;
 	ResultSet results;
-	
-	private:
-
-	size_t seed;
-	uint64_t iterations;	
 };
 
 int main(int argc, char* argv[])
@@ -133,16 +134,20 @@ int main(int argc, char* argv[])
 
 	uint64_t iterations = std::stoull(argv[1]);
 	uint32_t maxApduSize = std::stoul(argv[2]);
-	uint32_t concurrency = std::thread::hardware_concurrency();
-	uint64_t totalCases = iterations*concurrency; 
+	size_t concurrency = std::thread::hardware_concurrency();
+	uint64_t totalCases = iterations*static_cast<uint64_t>(concurrency);
 
-	std::vector<Fuzzer> fuzzers(concurrency);	
+	std::cout << "Running " << iterations << " iterations with a concurrency of " << concurrency << std::endl;
+
+	std::vector<Fuzzer> fuzzers(concurrency, Fuzzer());
 
 	auto start = std::chrono::high_resolution_clock::now();
 	std::vector<std::unique_ptr<std::thread>> threads;
+	size_t seed = 1;	
 	for(auto& f: fuzzers) {
-		std::unique_ptr<std::thread> pThread(new std::thread([&]() { f.Run(iterations, maxApduSize, 1); }));
+		std::unique_ptr<std::thread> pThread(new std::thread([&]() { f.Run(iterations, maxApduSize, seed); }));
 		threads.push_back(std::move(pThread));
+		++seed;
 	}
 	for(auto& pThread: threads) pThread->join();
 	auto stop = std::chrono::high_resolution_clock::now();
@@ -157,7 +162,7 @@ int main(int argc, char* argv[])
 	uint64_t sum = rs.Sum();
 
 	cout << "complete:  [ " << sum << " / " << totalCases << " ] - " << (totalCases == sum) << endl;
-	cout << "fuzz tests per second: " << casesPerSec << endl;
+	cout << "fuzz tests per second: " << casesPerSec <<  " in " << ms << " milliseconds" << endl;
 	cout << endl;
 	cout << "OK: " << rs.numOK << endl;
 	cout << "NotEnoughDataForHeader: " << rs.numNotEnoughDataForHeader << endl;
