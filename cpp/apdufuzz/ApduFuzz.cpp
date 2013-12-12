@@ -96,16 +96,12 @@ class Fuzzer
 {
 	public:
 
-	Fuzzer(uint64_t iter, size_t s) : seed(s), iterations(iter)
-	{}
-
-	static const size_t MAX_SIZE = 100;
-
-	void Run()
+	void Run(uint64_t iter, size_t maxSize, size_t seed)
 	{		
+		uint8_t* buffer = new uint8_t[maxSize]; 
 		std::mt19937 gen;
 		gen.seed(seed);
-		std::uniform_int_distribution<size_t> size(1, MAX_SIZE);
+		std::uniform_int_distribution<size_t> size(1, maxSize);
 		std::uniform_int_distribution<uint8_t> value(0x00, 0xFF);
 
 		for(uint64_t i = 0; i<iterations; ++i)
@@ -116,37 +112,36 @@ class Fuzzer
 			APDUParser::Result result = APDUParser::ParseHeaders(rb, h);
 			results.Update(result);
 		}
+		delete[] buffer;
 	}
-
+	
 	Handler h;
 	ResultSet results;
 	
 	private:
 
 	size_t seed;
-	uint64_t iterations;
-	uint8_t buffer[MAX_SIZE];
+	uint64_t iterations;	
 };
 
 int main(int argc, char* argv[])
 {
-	if(argc < 2) {
-		std::cout << "iteration argument required" << std::endl;
+	if(argc < 3) {
+		std::cout << "iteration & size arguments required" << std::endl;
 		return -1;
 	}
 
-	std::string arg(argv[1]);	
-	uint64_t iterations = std::stoull(arg);
-	uint64_t concurrency = std::thread::hardware_concurrency();
+	uint64_t iterations = std::stoull(argv[1]);
+	uint32_t maxApduSize = std::stoul(argv[2]);
+	uint32_t concurrency = std::thread::hardware_concurrency();
 	uint64_t totalCases = iterations*concurrency; 
 
-	std::vector<Fuzzer> fuzzers;
-	for(size_t i = 0;  i <  concurrency; ++i) fuzzers.push_back(Fuzzer(iterations, i+1));
+	std::vector<Fuzzer> fuzzers(concurrency);	
 
 	auto start = std::chrono::high_resolution_clock::now();
 	std::vector<std::unique_ptr<std::thread>> threads;
 	for(auto& f: fuzzers) {
-		std::unique_ptr<std::thread> pThread(new std::thread([&]() { f.Run(); }));
+		std::unique_ptr<std::thread> pThread(new std::thread([&]() { f.Run(iterations, maxApduSize, 1); }));
 		threads.push_back(std::move(pThread));
 	}
 	for(auto& pThread: threads) pThread->join();
