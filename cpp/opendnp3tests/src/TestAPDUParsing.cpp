@@ -225,6 +225,15 @@ BOOST_AUTO_TEST_CASE(TestIINValue)
 	});
 }
 
+BOOST_AUTO_TEST_CASE(Group60Var1Var2Var3Var4)
+{
+	TestComplex("3C 01 06 3C 02 06 3C 03 06 3C 04 06", APDUParser::Result::OK, 4, [&](MockApduHeaderHandler& mock) {
+		BOOST_REQUIRE_EQUAL(4, mock.groupVariations.size());		
+		BOOST_REQUIRE(GroupVariation::Group60Var1 == mock.groupVariations[0]);
+		BOOST_REQUIRE(GroupVariation::Group60Var2 == mock.groupVariations[1]);
+		BOOST_REQUIRE(GroupVariation::Group60Var3 == mock.groupVariations[2]);
+		BOOST_REQUIRE(GroupVariation::Group60Var4 == mock.groupVariations[3]);
+	});
+}
 
 BOOST_AUTO_TEST_SUITE_END()
-
