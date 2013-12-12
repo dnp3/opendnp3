@@ -67,7 +67,7 @@ APDUParser::Result APDUParser::ParseHeader(ReadOnlyBuffer& buffer, IAPDUHeaderHa
 		{
 			case(QualifierCode::ALL_OBJECTS):
 			{
-				handler.AllObjects(gv);
+				handler.AllObjects(gv, record.Complete(0));
 				return Result::OK;
 			}
 			case(QualifierCode::UINT8_CNT):

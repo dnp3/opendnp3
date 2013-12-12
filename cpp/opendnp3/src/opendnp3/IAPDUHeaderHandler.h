@@ -37,7 +37,7 @@ class IAPDUHeaderHandler
 {
 	public:
 
-		virtual void AllObjects(GroupVariation gv) = 0;
+		virtual void AllObjects(GroupVariation gv, const openpal::ReadOnlyBuffer& header) = 0;
 
 		virtual void OnRange(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const LazyIterable<IndexedValue<Binary>>& meas) = 0;
 		virtual void OnIndexPrefix(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const LazyIterable<IndexedValue<Binary>>& meas) = 0;

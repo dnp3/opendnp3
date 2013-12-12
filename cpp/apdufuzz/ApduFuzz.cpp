@@ -37,8 +37,10 @@ class Handler : public IAPDUHeaderHandler
 {
 	public:
 
-	virtual void AllObjects(GroupVariation gv) override
-	{}
+	virtual void AllObjects(GroupVariation gv, const openpal::ReadOnlyBuffer& header) override
+	{
+	
+	}
 
 	virtual void OnRange(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const LazyIterable<IndexedValue<Binary>>& meas) override
 	{

@@ -35,9 +35,10 @@ class MockApduHeaderHandler : public IAPDUHeaderHandler
 		MockApduHeaderHandler()
 		{}
 
-		virtual void AllObjects(GroupVariation gv) override
+		virtual void AllObjects(GroupVariation gv, const openpal::ReadOnlyBuffer& header) override
 		{
-			groupVariations.push_back(gv);			
+			groupVariations.push_back(gv);
+			headers.push_back(header);
 		}
 				
 		virtual void OnRange(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const LazyIterable<IndexedValue<Binary>>& meas) override
