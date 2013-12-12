@@ -87,7 +87,6 @@ cpp/opendnp3/src/opendnp3/objects/Group41.cpp \
 cpp/opendnp3/src/opendnp3/objects/Group42.cpp \
 cpp/opendnp3/src/opendnp3/objects/Group50.cpp \
 cpp/opendnp3/src/opendnp3/objects/Group51.cpp \
-cpp/opendnp3/src/opendnp3/objects/Group60.cpp \
 cpp/opendnp3/src/opendnp3/AnalogOutput.cpp \
 cpp/opendnp3/src/opendnp3/APDU.cpp \
 cpp/opendnp3/src/opendnp3/APDUParser.cpp \
