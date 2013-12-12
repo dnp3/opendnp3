@@ -24,7 +24,7 @@
 #include <opendnp3/Singleton.h>
 #include <opendnp3/APDUConstants.h>
 
-
+#include "AppControlField.h"
 #include "gen/FunctionCode.h"
 
 #include <cstdint>
@@ -33,31 +33,6 @@
 namespace opendnp3
 {
 
-/** Represents the first byte in every APDU
-*/
-struct AppControlField {
-
-	AppControlField() :
-		FIR(true),
-		FIN(true),
-		CON(false),
-		UNS(false),
-		SEQ(0)
-	{}
-
-	AppControlField(bool aFIR, bool aFIN, bool aCON, bool aUNS, uint8_t aSEQ = 0) :
-		FIR(aFIR),
-		FIN(aFIN),
-		CON(aCON),
-		UNS(aUNS),
-		SEQ(aSEQ) {}
-
-	bool FIR;
-	bool FIN;
-	bool CON;
-	bool UNS;
-	uint8_t  SEQ;
-};
 
 /** DNP3 two-byte IIN field.
 */
@@ -155,18 +130,7 @@ class IAppHeader
 public:
 	virtual ~IAppHeader() {}
 	virtual AppHeaderTypes GetType() const = 0;
-	virtual size_t GetSize() const = 0;
-
-	void SetControl(uint8_t* apStart, const AppControlField& arControl) const;
-	AppControlField GetControl(const uint8_t* apStart) const;
-
-	void SetFunction(uint8_t* apStart, FunctionCode aCode) const {
-		*(++apStart) = FunctionCodeToType(aCode);
-	}
-	FunctionCode GetFunction(const uint8_t* apStart) const {
-		return FunctionCodeFromType(*(++apStart));
-	}
-
+	virtual size_t GetSize() const = 0;	
 };
 
 class RequestHeader : public IAppHeader

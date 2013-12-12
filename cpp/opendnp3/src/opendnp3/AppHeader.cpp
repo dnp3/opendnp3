@@ -74,32 +74,6 @@ std::string IINField::ToString() const
 }
 #endif
 
-void IAppHeader::SetControl(uint8_t* apStart, const AppControlField& arControl) const
-{
-	(*apStart) = 0;
-	if(arControl.FIR) (*apStart) |= ACM_FIR;
-	if(arControl.FIN) (*apStart) |= ACM_FIN;
-	if(arControl.CON) (*apStart) |= ACM_CON;
-	if(arControl.UNS) (*apStart) |= ACM_UNS;
-
-	(*apStart) |= (arControl.SEQ % 16);
-}
-
-AppControlField IAppHeader::GetControl(const uint8_t* apStart) const
-{
-	AppControlField f;
-
-	f.FIR = ((*apStart) & ACM_FIR) != 0;
-	f.FIN = ((*apStart) & ACM_FIN) != 0;
-	f.CON = ((*apStart) & ACM_CON) != 0;
-	f.UNS = ((*apStart) & ACM_UNS) != 0;
-	f.SEQ = (*apStart) & ACM_SEQ;
-
-	return f;
-}
-
-
-
 IINField ResponseHeader::GetIIN(const uint8_t* apStart) const
 {
 	IINField f;

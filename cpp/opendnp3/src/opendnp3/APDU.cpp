@@ -61,10 +61,8 @@ bool APDU::operator==(const APDU& rhs)
 
 
 AppControlField APDU::GetControl() const
-{
-	assert(mpAppHeader != nullptr);
-
-	return mpAppHeader->GetControl(mBuffer);
+{	
+	return AppControlField(mBuffer[0]);	
 }
 
 IINField APDU::GetIIN() const
@@ -80,9 +78,7 @@ IINField APDU::GetIIN() const
 
 FunctionCode APDU::GetFunction() const
 {
-	assert(mpAppHeader != nullptr);
-
-	return mpAppHeader->GetFunction(mBuffer);
+	return FunctionCodeFromType(mBuffer[1]);
 }
 
 void APDU::SetFunction(FunctionCode aCode)
@@ -98,14 +94,12 @@ void APDU::SetFunction(FunctionCode aCode)
 
 	mFragmentSize = mpAppHeader->GetSize();
 
-	mpAppHeader->SetFunction(mBuffer, aCode);
+	mBuffer[1] = FunctionCodeToType(aCode);	
 }
 
 void APDU::SetControl(const AppControlField& arControl)
 {
-	assert(mpAppHeader != nullptr);
-
-	mpAppHeader->SetControl(mBuffer, arControl);
+	mBuffer[0] = arControl.ToByte();	
 }
 
 void APDU::SetIIN(const IINField& arIIN)
@@ -168,8 +162,8 @@ IAppHeader* APDU::ParseHeader() const
 
 	// start by assuming that it's a request header since they have same starting structure
 	IAppHeader* pHeader = RequestHeader::Inst();
-	FunctionCode function = pHeader->GetFunction(mBuffer);
-	AppControlField control = pHeader->GetControl(mBuffer);
+	FunctionCode function = FunctionCodeFromType(mBuffer[1]);
+	AppControlField control(mBuffer[0]);
 
 	if( IsResponse(function) ) {
 		if(mFragmentSize < 4) {

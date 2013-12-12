@@ -591,6 +591,12 @@
     <ClInclude Include="src\opendnp3\objects\MeasurementFactory.h">
       <Filter>Header Files\objects</Filter>
     </ClInclude>
+    <ClInclude Include="src\opendnp3\APDUHeader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\AppControlField.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\opendnp3\AnalogOutput.cpp">
@@ -969,6 +975,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\BitReader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\AppControlField.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -26,15 +26,6 @@
 namespace opendnp3
 {
 
-/// Masks for the various parts of the control field
-enum AppControlMasks {
-	ACM_FIR = 0x80,
-	ACM_FIN = 0x40,
-	ACM_CON = 0x20,
-	ACM_UNS = 0x10,
-	ACM_SEQ = 0x0F
-};
-
 /// Indices for the various IIN bits
 enum IINIndices {
 	IINI_ALL_STATIONS = 0,

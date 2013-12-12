@@ -213,8 +213,10 @@
     <ClInclude Include="include\opendnp3\Util.h" />
     <ClInclude Include="include\opendnp3\VTOData.h" />
     <ClInclude Include="src\opendnp3\APDU.h" />
+    <ClInclude Include="src\opendnp3\APDUHeader.h" />
     <ClInclude Include="src\opendnp3\APDUParser.h" />
     <ClInclude Include="src\opendnp3\AppChannelStates.h" />
+    <ClInclude Include="src\opendnp3\AppControlField.h" />
     <ClInclude Include="src\opendnp3\AppHeader.h" />
     <ClInclude Include="src\opendnp3\AppInterfaces.h" />
     <ClInclude Include="src\opendnp3\AppLayer.h" />
@@ -342,6 +344,7 @@
     <ClCompile Include="src\opendnp3\APDU.cpp" />
     <ClCompile Include="src\opendnp3\APDUParser.cpp" />
     <ClCompile Include="src\opendnp3\AppChannelStates.cpp" />
+    <ClCompile Include="src\opendnp3\AppControlField.cpp" />
     <ClCompile Include="src\opendnp3\AppHeader.cpp" />
     <ClCompile Include="src\opendnp3\AppInterfaces.cpp" />
     <ClCompile Include="src\opendnp3\AppLayer.cpp" />
