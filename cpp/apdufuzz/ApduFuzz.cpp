@@ -38,9 +38,7 @@ class Handler : public IAPDUHeaderHandler
 	public:
 
 	virtual void AllObjects(GroupVariation gv, const openpal::ReadOnlyBuffer& header) override
-	{
-	
-	}
+	{}
 
 	virtual void OnIIN(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const LazyIterable<IndexedValue<bool>>& bits) override
 	{		
@@ -55,6 +53,11 @@ class Handler : public IAPDUHeaderHandler
 	virtual void OnIndexPrefix(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const LazyIterable<IndexedValue<Binary>>& meas) override
 	{
 		meas.Foreach([](const IndexedValue<Binary>& v){});
+	}
+
+	virtual void OnRange(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const LazyIterable<IndexedValue<ControlStatus>>& meas) override
+	{
+		meas.Foreach([](const IndexedValue<ControlStatus>& v){});
 	}
 
 	virtual void OnRange(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const LazyIterable<IndexedValue<Counter>>& meas) override
@@ -77,6 +80,11 @@ class Handler : public IAPDUHeaderHandler
 		meas.Foreach([](const IndexedValue<Analog>& v){});
 	}
 
+	virtual void OnRange(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const LazyIterable<IndexedValue<SetpointStatus>>& meas) override
+	{
+		meas.Foreach([](const IndexedValue<SetpointStatus>& v){});
+	}
+
 	virtual void OnIndexPrefix(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const LazyIterable<IndexedValue<ControlRelayOutputBlock>>& meas) override
 	{
 		meas.Foreach([](const IndexedValue<ControlRelayOutputBlock>& v){});
@@ -93,8 +101,7 @@ class Fuzzer
 	static const size_t MAX_SIZE = 100;
 
 	void Run()
-	{
-		Handler h;
+	{		
 		std::mt19937 gen;
 		gen.seed(seed);
 		std::uniform_int_distribution<size_t> size(1, MAX_SIZE);
@@ -110,8 +117,9 @@ class Fuzzer
 		}
 	}
 
+	Handler h;
 	ResultSet results;
-
+	
 	private:
 
 	size_t seed;

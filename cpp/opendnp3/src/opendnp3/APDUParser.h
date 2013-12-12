@@ -118,6 +118,7 @@ class APDUParser : private PureStatic
 		IAPDUHeaderHandler& handler);	
 
 	static IndexedValue<Binary> BoolToBinary(const IndexedValue<bool>& v);
+	static IndexedValue<ControlStatus> BoolToControlStatus(const IndexedValue<bool>& v);
 };
 
 template <class ParserType, class RangeType>

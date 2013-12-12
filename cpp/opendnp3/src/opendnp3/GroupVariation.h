@@ -38,6 +38,9 @@ enum class GroupVariation : int
 	Group2Var2,
 	Group2Var3,
 
+	Group10Var1,
+	Group10Var2,
+
 	Group12Var1,
 
 	Group20Var1,
@@ -73,6 +76,11 @@ enum class GroupVariation : int
 	Group32Var6,
 	Group32Var7,
 	Group32Var8,
+
+	Group40Var1,
+	Group40Var2,
+	Group40Var3,
+	Group40Var4,
 
 	Group60Var1,
 	Group60Var2,

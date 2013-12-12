@@ -16,12 +16,17 @@
 //
 
 #include <openpal/BufferWrapper.h>
+#include <opendnp3/DataTypes.h>
 
 namespace opendnp3 {
 
 struct Group10Var2
 {
   static const size_t SIZE = 1;
+
+  typedef ControlStatus Target;
+  static ControlStatus Convert(openpal::ReadOnlyBuffer&);
+
   static Group10Var2 Read(openpal::ReadOnlyBuffer&);
   static void Write(const Group10Var2&, openpal::WriteBuffer&);
 

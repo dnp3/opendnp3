@@ -63,13 +63,13 @@ struct ControlRelayOutputBlockFactory: private PureStatic
 
 struct ControlStatusFactory: private PureStatic
 {
-
+	inline static ControlStatus From(uint8_t flags) { return ControlStatus(flags); }
 };
 
 
 struct SetpointStatusFactory: private PureStatic
 {
-	
+	inline static SetpointStatus From(uint8_t flags, double value) { return SetpointStatus(value, flags); }
 };
 
 }

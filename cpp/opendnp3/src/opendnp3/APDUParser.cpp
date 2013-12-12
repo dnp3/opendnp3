@@ -29,11 +29,13 @@
 
 #include "objects/Group1.h"
 #include "objects/Group2.h"
+#include "objects/Group10.h"
 #include "objects/Group12.h"
 #include "objects/Group20.h"
 #include "objects/Group22.h"
 #include "objects/Group30.h"
 #include "objects/Group32.h"
+#include "objects/Group40.h"
 
 #include "objects/MeasurementFactory.h"
 
@@ -175,6 +177,11 @@ IndexedValue<Binary> APDUParser::BoolToBinary(const IndexedValue<bool>& v)
 	return IndexedValue<Binary>(Binary(v.value), v.index);
 }
 
+IndexedValue<ControlStatus> APDUParser::BoolToControlStatus(const IndexedValue<bool>& v)
+{
+	return IndexedValue<ControlStatus>(ControlStatus(v.value), v.index);
+}
+
 #define MACRO_PARSE_OBJECTS_WITH_RANGE(descriptor) \
 	case(GroupVariation::descriptor): \
 			return ParseRangeFixedSize<descriptor>(gv, record, buffer, range, output);
@@ -189,6 +196,13 @@ APDUParser::Result APDUParser::ParseObjectsWithRange(const APDUParser::HeaderRec
 			});		
 		
 		MACRO_PARSE_OBJECTS_WITH_RANGE(Group1Var2);
+
+		case(GroupVariation::Group10Var1):				
+			return ParseRangeAsBitField(buffer, record, range, [&](const ReadOnlyBuffer& header, const LazyIterable<IndexedValue<bool>>& values) {				
+				output.OnRange(gv, header, values.Map<IndexedValue<ControlStatus>>(BoolToControlStatus));
+			});
+
+		MACRO_PARSE_OBJECTS_WITH_RANGE(Group10Var2);
 
 		MACRO_PARSE_OBJECTS_WITH_RANGE(Group20Var1);
 		MACRO_PARSE_OBJECTS_WITH_RANGE(Group20Var2);
@@ -205,6 +219,11 @@ APDUParser::Result APDUParser::ParseObjectsWithRange(const APDUParser::HeaderRec
 		MACRO_PARSE_OBJECTS_WITH_RANGE(Group30Var4);
 		MACRO_PARSE_OBJECTS_WITH_RANGE(Group30Var5);
 		MACRO_PARSE_OBJECTS_WITH_RANGE(Group30Var6);
+
+		MACRO_PARSE_OBJECTS_WITH_RANGE(Group40Var1);
+		MACRO_PARSE_OBJECTS_WITH_RANGE(Group40Var2);
+		MACRO_PARSE_OBJECTS_WITH_RANGE(Group40Var3);
+		MACRO_PARSE_OBJECTS_WITH_RANGE(Group40Var4);
 
 		case(GroupVariation::Group80Var1):		
 			return ParseRangeAsBitField(buffer, record, range, [&](const ReadOnlyBuffer& header, const LazyIterable<IndexedValue<bool>>& values) { 

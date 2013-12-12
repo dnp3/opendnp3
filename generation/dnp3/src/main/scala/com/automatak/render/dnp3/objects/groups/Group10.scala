@@ -13,5 +13,5 @@ object Group10Var0 extends AnyVariation(Group10, 0)
 
 object Group10Var1 extends SingleBitfield(Group10, 1)
 
-object Group10Var2 extends FixedSize(Group10, 2)(flags)
+object Group10Var2 extends FixedSize(Group10, 2)(flags) with ConversionToControlStatus
 

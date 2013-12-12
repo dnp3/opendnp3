@@ -17,6 +17,7 @@
 
 #include "Group40.h"
 
+#include "MeasurementFactory.h"
 #include <openpal/Serialization.h>
 
 using namespace openpal;
@@ -41,6 +42,13 @@ void Group40Var1::Write(const Group40Var1& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(4);
 }
 
+SetpointStatus Group40Var1::Convert(ReadOnlyBuffer& buff)
+{
+  auto gv = Read(buff);
+  return SetpointStatusFactory::From(gv.flags, gv.value);
+}
+
+
 Group40Var2 Group40Var2::Read(ReadOnlyBuffer& buffer)
 {
   Group40Var2 obj;
@@ -58,6 +66,13 @@ void Group40Var2::Write(const Group40Var2& arg, openpal::WriteBuffer& buffer)
   Int16::Write(buffer, arg.value);
   buffer.Advance(2);
 }
+
+SetpointStatus Group40Var2::Convert(ReadOnlyBuffer& buff)
+{
+  auto gv = Read(buff);
+  return SetpointStatusFactory::From(gv.flags, gv.value);
+}
+
 
 Group40Var3 Group40Var3::Read(ReadOnlyBuffer& buffer)
 {
@@ -77,6 +92,13 @@ void Group40Var3::Write(const Group40Var3& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(4);
 }
 
+SetpointStatus Group40Var3::Convert(ReadOnlyBuffer& buff)
+{
+  auto gv = Read(buff);
+  return SetpointStatusFactory::From(gv.flags, gv.value);
+}
+
+
 Group40Var4 Group40Var4::Read(ReadOnlyBuffer& buffer)
 {
   Group40Var4 obj;
@@ -94,6 +116,13 @@ void Group40Var4::Write(const Group40Var4& arg, openpal::WriteBuffer& buffer)
   DoubleFloat::Write(buffer, arg.value);
   buffer.Advance(8);
 }
+
+SetpointStatus Group40Var4::Convert(ReadOnlyBuffer& buff)
+{
+  auto gv = Read(buff);
+  return SetpointStatusFactory::From(gv.flags, gv.value);
+}
+
 
 
 }

@@ -66,6 +66,15 @@ class MockApduHeaderHandler : public IAPDUHeaderHandler
 			});			
 		}
 
+		virtual void OnRange(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const LazyIterable<IndexedValue<ControlStatus>>& meas) override
+		{
+			groupVariations.push_back(gv);
+			headers.push_back(header);
+			meas.Foreach([&](const IndexedValue<ControlStatus>& v) {  
+				staticControlStatii.push_back(v);
+			});	
+		}
+
 		virtual void OnRange(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const LazyIterable<IndexedValue<Counter>>& meas) override
 		{
 			groupVariations.push_back(gv);
@@ -95,10 +104,19 @@ class MockApduHeaderHandler : public IAPDUHeaderHandler
 		
 		virtual void OnIndexPrefix(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const LazyIterable<IndexedValue<Analog>>& meas)  override
 		{
-		groupVariations.push_back(gv);
+			groupVariations.push_back(gv);
 			headers.push_back(header);
 			meas.Foreach([&](const IndexedValue<Analog>& v) {  
 				eventAnalogs.push_back(v);
+			});	
+		}
+
+		virtual void OnRange(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const LazyIterable<IndexedValue<SetpointStatus>>& meas) override
+		{
+			groupVariations.push_back(gv);
+			headers.push_back(header);
+			meas.Foreach([&](const IndexedValue<SetpointStatus>& v) {  
+				staticSetpointStatii.push_back(v);
 			});	
 		}
 
@@ -119,11 +137,15 @@ class MockApduHeaderHandler : public IAPDUHeaderHandler
 		std::vector<IndexedValue<Binary>> eventBinaries;
 		std::vector<IndexedValue<Binary>> staticBinaries;
 
+		std::vector<IndexedValue<ControlStatus>> staticControlStatii;
+
 		std::vector<IndexedValue<Counter>> eventCounters;
 		std::vector<IndexedValue<Counter>> staticCounters;
 
 		std::vector<IndexedValue<Analog>> eventAnalogs;
 		std::vector<IndexedValue<Analog>> staticAnalogs;
+
+		std::vector<IndexedValue<SetpointStatus>> staticSetpointStatii;
 
 		std::vector<IndexedValue<ControlRelayOutputBlock>> crobRequests;
 };

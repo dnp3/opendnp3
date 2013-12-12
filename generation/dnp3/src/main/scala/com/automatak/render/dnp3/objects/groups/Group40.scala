@@ -1,6 +1,6 @@
 package com.automatak.render.dnp3.objects.groups
 
-import com.automatak.render.dnp3.objects.{FixedSize, FixedSizeField, ObjectGroup}
+import com.automatak.render.dnp3.objects.{ConversionToSetpointStatus, FixedSize, FixedSizeField, ObjectGroup}
 
 import FixedSizeField._
 
@@ -10,7 +10,7 @@ object Group40 extends ObjectGroup {
   def group: Byte = 40
 }
 
-object Group40Var1 extends FixedSize(Group40, 1)(flags, value32)
-object Group40Var2 extends FixedSize(Group40, 2)(flags, value16)
-object Group40Var3 extends FixedSize(Group40, 3)(flags, float32)
-object Group40Var4 extends FixedSize(Group40, 4)(flags, float64)
+object Group40Var1 extends FixedSize(Group40, 1)(flags, value32) with ConversionToSetpointStatus
+object Group40Var2 extends FixedSize(Group40, 2)(flags, value16) with ConversionToSetpointStatus
+object Group40Var3 extends FixedSize(Group40, 3)(flags, float32) with ConversionToSetpointStatus
+object Group40Var4 extends FixedSize(Group40, 4)(flags, float64) with ConversionToSetpointStatus
