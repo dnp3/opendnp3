@@ -32,48 +32,55 @@ class MockApduHeaderHandler : public IAPDUHeaderHandler
 {
 	public:
 
-		MockApduHeaderHandler() : numRequests(0)
+		MockApduHeaderHandler()
 		{}
 
 		virtual void AllObjects(GroupVariation gv) override
 		{
-			allObjectRequests.push_back(gv);
-			++numRequests;
+			groupVariations.push_back(gv);			
 		}
 				
-		virtual void OnRange(const openpal::ReadOnlyBuffer& header, const LazyIterable<IndexedValue<Binary>>& meas) override
+		virtual void OnRange(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const LazyIterable<IndexedValue<Binary>>& meas) override
 		{
+			groupVariations.push_back(gv);
 			headers.push_back(header);
 			meas.Foreach([&](const IndexedValue<Binary>& v) {  
 				staticBinaries.push_back(v);
-			});
-			
-			++numRequests;
+			});						
 		}		
 
-		virtual void OnIndexPrefix(const openpal::ReadOnlyBuffer& header, const LazyIterable<IndexedValue<Binary>>& meas) override
+		virtual void OnIndexPrefix(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const LazyIterable<IndexedValue<Binary>>& meas) override
 		{
+			groupVariations.push_back(gv);
 			headers.push_back(header);
 			meas.Foreach([&](const IndexedValue<Binary>& v) {  
 				eventBinaries.push_back(v);
-			});
-			++numRequests;
+			});			
 		}
 
-		void OnIndexPrefix(const openpal::ReadOnlyBuffer& header, const LazyIterable<IndexedValue<ControlRelayOutputBlock>>& meas) override
+		virtual void OnRange(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const LazyIterable<IndexedValue<Counter>>& meas) override
 		{
+			groupVariations.push_back(gv);
+		}
+
+		virtual void OnIndexPrefix(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const LazyIterable<IndexedValue<Counter>>& meas)  override
+		{
+			groupVariations.push_back(gv);
+		}
+
+		void OnIndexPrefix(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const LazyIterable<IndexedValue<ControlRelayOutputBlock>>& meas) override
+		{
+			groupVariations.push_back(gv);
 			headers.push_back(header);
 			meas.Foreach([&](const IndexedValue<ControlRelayOutputBlock>& v) {
 				crobRequests.push_back(v);
-			});
-			++numRequests;
+			});			
 		}
 		
-		size_t numRequests;
+	
 
 		std::vector<openpal::ReadOnlyBuffer> headers;
-
-		std::vector<GroupVariation> allObjectRequests;
+		std::vector<GroupVariation> groupVariations;
 
 		std::vector<IndexedValue<Binary>> eventBinaries;
 		std::vector<IndexedValue<Binary>> staticBinaries;

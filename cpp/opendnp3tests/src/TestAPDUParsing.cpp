@@ -43,7 +43,7 @@ void TestComplex(const std::string& hex, APDUParser::Result expected, size_t num
 	auto result = APDUParser::ParseHeaders(buffer.ToReadOnly(), mock);
 
 	BOOST_REQUIRE(result == expected);
-	BOOST_REQUIRE_EQUAL(numCalls, mock.numRequests);
+	BOOST_REQUIRE_EQUAL(numCalls, mock.groupVariations.size());
 
 	validate(mock);
 }
@@ -68,10 +68,9 @@ BOOST_AUTO_TEST_CASE(NotEnoughData)
 BOOST_AUTO_TEST_CASE(AllObjects)
 {
 	// (2,2) all, (2,0) all
-	TestComplex("02 02 06 02 00 06", APDUParser::Result::OK, 2, [](MockApduHeaderHandler& mock) {		
-		BOOST_REQUIRE_EQUAL(2, mock.allObjectRequests.size());
-		BOOST_REQUIRE(GroupVariation::Group2Var2 == mock.allObjectRequests[0]);
-		BOOST_REQUIRE(GroupVariation::Group2Var0 == mock.allObjectRequests[1]);
+	TestComplex("02 02 06 02 00 06", APDUParser::Result::OK, 2, [](MockApduHeaderHandler& mock) {				
+		BOOST_REQUIRE(GroupVariation::Group2Var2 == mock.groupVariations[0]);
+		BOOST_REQUIRE(GroupVariation::Group2Var0 == mock.groupVariations[1]);
 	});	
 }
 
