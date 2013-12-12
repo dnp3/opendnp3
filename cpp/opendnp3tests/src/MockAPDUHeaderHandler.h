@@ -40,6 +40,13 @@ class MockApduHeaderHandler : public IAPDUHeaderHandler
 			groupVariations.push_back(gv);
 			headers.push_back(header);
 		}
+
+		virtual void OnIIN(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const LazyIterable<IndexedValue<bool>>& bits) override
+		{
+			groupVariations.push_back(gv);
+			headers.push_back(header);
+			bits.Foreach([&](const IndexedValue<bool>& v) { iinBits.push_back(v); });
+		}
 				
 		virtual void OnRange(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const LazyIterable<IndexedValue<Binary>>& meas) override
 		{
@@ -62,11 +69,37 @@ class MockApduHeaderHandler : public IAPDUHeaderHandler
 		virtual void OnRange(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const LazyIterable<IndexedValue<Counter>>& meas) override
 		{
 			groupVariations.push_back(gv);
+			headers.push_back(header);
+			meas.Foreach([&](const IndexedValue<Counter>& v) {  
+				eventCounters.push_back(v);
+			});	
 		}
 
 		virtual void OnIndexPrefix(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const LazyIterable<IndexedValue<Counter>>& meas)  override
 		{
 			groupVariations.push_back(gv);
+			headers.push_back(header);
+			meas.Foreach([&](const IndexedValue<Counter>& v) {  
+				eventCounters.push_back(v);
+			});	
+		}
+
+		virtual void OnRange(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const LazyIterable<IndexedValue<Analog>>& meas)  override
+		{
+			groupVariations.push_back(gv);
+			headers.push_back(header);
+			meas.Foreach([&](const IndexedValue<Analog>& v) {  
+				eventAnalogs.push_back(v);
+			});	
+		}
+		
+		virtual void OnIndexPrefix(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const LazyIterable<IndexedValue<Analog>>& meas)  override
+		{
+		groupVariations.push_back(gv);
+			headers.push_back(header);
+			meas.Foreach([&](const IndexedValue<Analog>& v) {  
+				eventAnalogs.push_back(v);
+			});	
 		}
 
 		void OnIndexPrefix(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const LazyIterable<IndexedValue<ControlRelayOutputBlock>>& meas) override
@@ -78,13 +111,19 @@ class MockApduHeaderHandler : public IAPDUHeaderHandler
 			});			
 		}
 		
-	
-
 		std::vector<openpal::ReadOnlyBuffer> headers;
 		std::vector<GroupVariation> groupVariations;
 
+		std::vector<IndexedValue<bool>> iinBits;
+
 		std::vector<IndexedValue<Binary>> eventBinaries;
 		std::vector<IndexedValue<Binary>> staticBinaries;
+
+		std::vector<IndexedValue<Counter>> eventCounters;
+		std::vector<IndexedValue<Counter>> staticCounters;
+
+		std::vector<IndexedValue<Analog>> eventAnalogs;
+		std::vector<IndexedValue<Analog>> staticAnalogs;
 
 		std::vector<IndexedValue<ControlRelayOutputBlock>> crobRequests;
 };

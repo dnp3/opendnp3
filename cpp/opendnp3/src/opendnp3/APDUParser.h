@@ -99,7 +99,11 @@ class APDUParser : private PureStatic
 	
 	static Result ParseObjectsWithIndexPrefix(const HeaderRecord& record, openpal::ReadOnlyBuffer& buffer, GroupVariation, uint32_t count, IndexParser* pParser, IAPDUHeaderHandler&  output);
 	
-	static Result ParseRangeAsBitField(GroupVariation gv, const HeaderRecord& record, openpal::ReadOnlyBuffer& buffer, const Range& range, IAPDUHeaderHandler& output);
+	static Result ParseRangeAsBitField(		
+		openpal::ReadOnlyBuffer& buffer, 
+		const HeaderRecord& record,
+		const Range& range, 
+		const std::function<void (const openpal::ReadOnlyBuffer&, const LazyIterable<IndexedValue<bool>>&)>&);
 		
 	template <class Descriptor>
 	static Result ParseRangeFixedSize(GroupVariation gv, const HeaderRecord& record, openpal::ReadOnlyBuffer& buffer, const Range& range, IAPDUHeaderHandler& output);
@@ -112,6 +116,8 @@ class APDUParser : private PureStatic
 		uint32_t count, 
 		IndexParser* pParser, 
 		IAPDUHeaderHandler& handler);	
+
+	static IndexedValue<Binary> BoolToBinary(const IndexedValue<bool>& v);
 };
 
 template <class ParserType, class RangeType>

@@ -32,4 +32,6 @@ trait ObjectGroup {
   def objects: List[GroupVariation]
   def group: Byte
   def name: String = "Group"+group
+
+  def hasSizedObjects: Boolean = objects.find(o => o.isInstanceOf[FixedSize]).isDefined
 }

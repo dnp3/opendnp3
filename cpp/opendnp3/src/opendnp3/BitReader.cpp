@@ -30,13 +30,12 @@ size_t NumBytesInBits(size_t numBits)
 	return ((numBits % 8) == 0) ? numBytes : numBytes + 1;	
 }
 
-Binary GetBit(const openpal::ReadOnlyBuffer& buffer, size_t position)
+bool GetBit(const openpal::ReadOnlyBuffer& buffer, size_t position)
 {
 	size_t byte = position / 8;
 	size_t bit = position % 8;
 	assert(byte < buffer.Size());
-	bool value = (buffer[byte] & (1 << bit)) != 0;
-	return Binary(value);
+	return (buffer[byte] & (1 << bit)) != 0;	
 }
 
 }

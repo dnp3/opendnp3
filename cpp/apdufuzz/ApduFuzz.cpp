@@ -42,6 +42,11 @@ class Handler : public IAPDUHeaderHandler
 	
 	}
 
+	virtual void OnIIN(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const LazyIterable<IndexedValue<bool>>& bits) override
+	{		
+		bits.Foreach([&](const IndexedValue<bool>& v) {});
+	}
+
 	virtual void OnRange(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const LazyIterable<IndexedValue<Binary>>& meas) override
 	{
 		meas.Foreach([](const IndexedValue<Binary>& v){});
@@ -60,6 +65,16 @@ class Handler : public IAPDUHeaderHandler
 	virtual void OnIndexPrefix(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const LazyIterable<IndexedValue<Counter>>& meas) override
 	{
 		meas.Foreach([](const IndexedValue<Counter>& v){});
+	}
+
+	virtual void OnRange(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const LazyIterable<IndexedValue<Analog>>& meas) override
+	{
+		meas.Foreach([](const IndexedValue<Analog>& v){});
+	}
+
+	virtual void OnIndexPrefix(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const LazyIterable<IndexedValue<Analog>>& meas) override
+	{
+		meas.Foreach([](const IndexedValue<Analog>& v){});
 	}
 
 	virtual void OnIndexPrefix(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const LazyIterable<IndexedValue<ControlRelayOutputBlock>>& meas) override

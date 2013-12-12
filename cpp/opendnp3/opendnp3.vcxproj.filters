@@ -543,9 +543,6 @@
     <ClInclude Include="src\opendnp3\objects\Group51.h">
       <Filter>Header Files\objects</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\objects\Group60.h">
-      <Filter>Header Files\objects</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\IAPDUHeaderHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -957,9 +954,6 @@
       <Filter>Source Files\objects</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\objects\Group51.cpp">
-      <Filter>Source Files\objects</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\objects\Group60.cpp">
       <Filter>Source Files\objects</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\GroupVariation.cpp">

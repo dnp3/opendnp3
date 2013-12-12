@@ -17,6 +17,7 @@
 
 #include "Group32.h"
 
+#include "MeasurementFactory.h"
 #include <openpal/Serialization.h>
 
 using namespace openpal;
@@ -41,6 +42,13 @@ void Group32Var1::Write(const Group32Var1& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(4);
 }
 
+Analog Group32Var1::Convert(ReadOnlyBuffer& buff)
+{
+  auto gv = Read(buff);
+  return AnalogFactory::From(gv.flags, gv.value);
+}
+
+
 Group32Var2 Group32Var2::Read(ReadOnlyBuffer& buffer)
 {
   Group32Var2 obj;
@@ -58,6 +66,13 @@ void Group32Var2::Write(const Group32Var2& arg, openpal::WriteBuffer& buffer)
   Int16::Write(buffer, arg.value);
   buffer.Advance(2);
 }
+
+Analog Group32Var2::Convert(ReadOnlyBuffer& buff)
+{
+  auto gv = Read(buff);
+  return AnalogFactory::From(gv.flags, gv.value);
+}
+
 
 Group32Var3 Group32Var3::Read(ReadOnlyBuffer& buffer)
 {
@@ -81,6 +96,13 @@ void Group32Var3::Write(const Group32Var3& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(6);
 }
 
+Analog Group32Var3::Convert(ReadOnlyBuffer& buff)
+{
+  auto gv = Read(buff);
+  return AnalogFactory::From(gv.flags, gv.value, gv.time48);
+}
+
+
 Group32Var4 Group32Var4::Read(ReadOnlyBuffer& buffer)
 {
   Group32Var4 obj;
@@ -103,6 +125,13 @@ void Group32Var4::Write(const Group32Var4& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(6);
 }
 
+Analog Group32Var4::Convert(ReadOnlyBuffer& buff)
+{
+  auto gv = Read(buff);
+  return AnalogFactory::From(gv.flags, gv.value, gv.time48);
+}
+
+
 Group32Var5 Group32Var5::Read(ReadOnlyBuffer& buffer)
 {
   Group32Var5 obj;
@@ -121,6 +150,13 @@ void Group32Var5::Write(const Group32Var5& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(4);
 }
 
+Analog Group32Var5::Convert(ReadOnlyBuffer& buff)
+{
+  auto gv = Read(buff);
+  return AnalogFactory::From(gv.flags, gv.value);
+}
+
+
 Group32Var6 Group32Var6::Read(ReadOnlyBuffer& buffer)
 {
   Group32Var6 obj;
@@ -138,6 +174,13 @@ void Group32Var6::Write(const Group32Var6& arg, openpal::WriteBuffer& buffer)
   DoubleFloat::Write(buffer, arg.value);
   buffer.Advance(8);
 }
+
+Analog Group32Var6::Convert(ReadOnlyBuffer& buff)
+{
+  auto gv = Read(buff);
+  return AnalogFactory::From(gv.flags, gv.value);
+}
+
 
 Group32Var7 Group32Var7::Read(ReadOnlyBuffer& buffer)
 {
@@ -161,6 +204,13 @@ void Group32Var7::Write(const Group32Var7& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(6);
 }
 
+Analog Group32Var7::Convert(ReadOnlyBuffer& buff)
+{
+  auto gv = Read(buff);
+  return AnalogFactory::From(gv.flags, gv.value, gv.time48);
+}
+
+
 Group32Var8 Group32Var8::Read(ReadOnlyBuffer& buffer)
 {
   Group32Var8 obj;
@@ -182,6 +232,13 @@ void Group32Var8::Write(const Group32Var8& arg, openpal::WriteBuffer& buffer)
   UInt48::Write(buffer, arg.time48);
   buffer.Advance(6);
 }
+
+Analog Group32Var8::Convert(ReadOnlyBuffer& buff)
+{
+  auto gv = Read(buff);
+  return AnalogFactory::From(gv.flags, gv.value, gv.time48);
+}
+
 
 
 }

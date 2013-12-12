@@ -47,6 +47,15 @@ class LazyIterable : public Iterable<T>
 		
 		}
 
+		template <class U>
+		LazyIterable<U> Map(const std::function<U (const T&)>& fun) const
+		{
+			auto convert = [fun, this](openpal::ReadOnlyBuffer& buff, uint32_t position) { 
+				return fun(this->readBuffer(buff, position));
+			};
+			return LazyIterable<U>(buffer, count, convert);
+		}
+
 		Iterator<T> GetIterator() const
 		{			
 			openpal::ReadOnlyBuffer copy(buffer);
@@ -68,7 +77,6 @@ class LazyIterable : public Iterable<T>
 		uint32_t count;
 		ReadFunction readBuffer;
 };
-
 
 }
 

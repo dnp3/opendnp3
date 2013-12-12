@@ -306,7 +306,6 @@
     <ClInclude Include="src\opendnp3\objects\Group42.h" />
     <ClInclude Include="src\opendnp3\objects\Group50.h" />
     <ClInclude Include="src\opendnp3\objects\Group51.h" />
-    <ClInclude Include="src\opendnp3\objects\Group60.h" />
     <ClInclude Include="src\opendnp3\ObjectWriteIterator.h" />
     <ClInclude Include="src\opendnp3\OutstationSBOHandler.h" />
     <ClInclude Include="src\opendnp3\OutstationStackImpl.h" />
@@ -404,7 +403,6 @@
     <ClCompile Include="src\opendnp3\objects\Group42.cpp" />
     <ClCompile Include="src\opendnp3\objects\Group50.cpp" />
     <ClCompile Include="src\opendnp3\objects\Group51.cpp" />
-    <ClCompile Include="src\opendnp3\objects\Group60.cpp" />
     <ClCompile Include="src\opendnp3\PostingMeasurementHandler.cpp" />
     <ClCompile Include="src\opendnp3\TimeTransaction.cpp" />
     <ClCompile Include="src\opendnp3\DestructorHook.cpp" />

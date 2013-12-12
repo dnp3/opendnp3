@@ -85,8 +85,12 @@ object GroupVariationFileGenerator {
         }
     }
 
-    ObjectGroup.all.foreach(g => writeTo(headerPath(g))(headerFile(g)))
-    ObjectGroup.all.foreach(g => writeTo(implPath(g))(implFile(g)))
+    ObjectGroup.all.foreach(g =>
+      if(g.hasSizedObjects) {
+        writeTo(headerPath(g))(headerFile(g))
+        writeTo(implPath(g))(implFile(g))
+      }
+    )
   }
 
 }

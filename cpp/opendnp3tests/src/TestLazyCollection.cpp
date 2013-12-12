@@ -86,9 +86,11 @@ BOOST_AUTO_TEST_CASE(ComplexBitCount)
 BOOST_AUTO_TEST_CASE(HighestBitSet)
 {
 	HexSequence hex("80");
-	LazyIterable<Binary> collection(hex.ToReadOnly(), 8, GetBit);	
+	LazyIterable<bool> collection(hex.ToReadOnly(), 8, GetBit);
+	auto collection2 = collection.Map<Binary>([](bool bit) { return Binary(bit); });
+
 	std::vector<Binary> values;
-	collection.Foreach([&](const Binary& v) { values.push_back(v); });	
+	collection2.Foreach([&](const Binary& v) { values.push_back(v); });	
 	BOOST_REQUIRE_EQUAL(8, values.size());
 	BOOST_REQUIRE(Binary(true) == values[7]);
 }

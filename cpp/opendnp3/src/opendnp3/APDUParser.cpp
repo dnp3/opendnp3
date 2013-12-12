@@ -30,7 +30,10 @@
 #include "objects/Group1.h"
 #include "objects/Group2.h"
 #include "objects/Group12.h"
+#include "objects/Group20.h"
 #include "objects/Group22.h"
+#include "objects/Group30.h"
+#include "objects/Group32.h"
 
 #include "objects/MeasurementFactory.h"
 
@@ -151,11 +154,25 @@ APDUParser::Result APDUParser::ParseObjectsWithIndexPrefix(const HeaderRecord& r
 		MACRO_PARSE_COUNT_FIXED_SIZE_WITH_INDEX(Group22Var5);
 		MACRO_PARSE_COUNT_FIXED_SIZE_WITH_INDEX(Group22Var6);
 		MACRO_PARSE_COUNT_FIXED_SIZE_WITH_INDEX(Group22Var7);
-		MACRO_PARSE_COUNT_FIXED_SIZE_WITH_INDEX(Group22Var8);		
+		MACRO_PARSE_COUNT_FIXED_SIZE_WITH_INDEX(Group22Var8);	
+
+		MACRO_PARSE_COUNT_FIXED_SIZE_WITH_INDEX(Group32Var1);
+		MACRO_PARSE_COUNT_FIXED_SIZE_WITH_INDEX(Group32Var2);
+		MACRO_PARSE_COUNT_FIXED_SIZE_WITH_INDEX(Group32Var3);
+		MACRO_PARSE_COUNT_FIXED_SIZE_WITH_INDEX(Group32Var4);
+		MACRO_PARSE_COUNT_FIXED_SIZE_WITH_INDEX(Group32Var5);
+		MACRO_PARSE_COUNT_FIXED_SIZE_WITH_INDEX(Group32Var6);
+		MACRO_PARSE_COUNT_FIXED_SIZE_WITH_INDEX(Group32Var7);
+		MACRO_PARSE_COUNT_FIXED_SIZE_WITH_INDEX(Group32Var8);
 
 		default:
 			return Result::ILLEGAL_OBJECT_QUALIFIER;
 	}	
+}
+
+IndexedValue<Binary> APDUParser::BoolToBinary(const IndexedValue<bool>& v)
+{
+	return IndexedValue<Binary>(Binary(v.value), v.index);
 }
 
 #define MACRO_PARSE_OBJECTS_WITH_RANGE(descriptor) \
@@ -166,28 +183,54 @@ APDUParser::Result APDUParser::ParseObjectsWithRange(const APDUParser::HeaderRec
 {
 	switch(gv)
 	{	
-		case(GroupVariation::Group1Var1):
-			return ParseRangeAsBitField(gv, record, buffer, range, output);
+		case(GroupVariation::Group1Var1):				
+			return ParseRangeAsBitField(buffer, record, range, [&](const ReadOnlyBuffer& header, const LazyIterable<IndexedValue<bool>>& values) {				
+				output.OnRange(gv, header, values.Map<IndexedValue<Binary>>(BoolToBinary));
+			});		
 		
 		MACRO_PARSE_OBJECTS_WITH_RANGE(Group1Var2);
+
+		MACRO_PARSE_OBJECTS_WITH_RANGE(Group20Var1);
+		MACRO_PARSE_OBJECTS_WITH_RANGE(Group20Var2);
+		MACRO_PARSE_OBJECTS_WITH_RANGE(Group20Var3);
+		MACRO_PARSE_OBJECTS_WITH_RANGE(Group20Var4);
+		MACRO_PARSE_OBJECTS_WITH_RANGE(Group20Var5);
+		MACRO_PARSE_OBJECTS_WITH_RANGE(Group20Var6);
+		MACRO_PARSE_OBJECTS_WITH_RANGE(Group20Var7);
+		MACRO_PARSE_OBJECTS_WITH_RANGE(Group20Var8);
+
+		MACRO_PARSE_OBJECTS_WITH_RANGE(Group30Var1);
+		MACRO_PARSE_OBJECTS_WITH_RANGE(Group30Var2);
+		MACRO_PARSE_OBJECTS_WITH_RANGE(Group30Var3);
+		MACRO_PARSE_OBJECTS_WITH_RANGE(Group30Var4);
+		MACRO_PARSE_OBJECTS_WITH_RANGE(Group30Var5);
+		MACRO_PARSE_OBJECTS_WITH_RANGE(Group30Var6);
+
+		case(GroupVariation::Group80Var1):		
+			return ParseRangeAsBitField(buffer, record, range, [&](const ReadOnlyBuffer& header, const LazyIterable<IndexedValue<bool>>& values) { 
+				output.OnIIN(gv, header, values); 
+			});		
 		
 		default:
 			return Result::ILLEGAL_OBJECT_QUALIFIER;
 	}	
 }
 
-APDUParser::Result APDUParser::ParseRangeAsBitField(GroupVariation gv, const APDUParser::HeaderRecord& record, openpal::ReadOnlyBuffer& buffer, const Range& range, IAPDUHeaderHandler& output)
+APDUParser::Result APDUParser::ParseRangeAsBitField(	
+	openpal::ReadOnlyBuffer& buffer,
+	const HeaderRecord& record,
+	const Range& range, 
+	const std::function<void (const ReadOnlyBuffer& header, const LazyIterable<IndexedValue<bool>>&)>& handler)
 {
 	size_t numBytes = NumBytesInBits(range.count);
 	if(buffer.Size() < numBytes) return Result::NOT_ENOUGH_DATA_FOR_OBJECTS;
 	else {
 		auto start = range.start;
 		auto readBitWithIndex = [start](openpal::ReadOnlyBuffer& buffer, size_t pos) {
-			return IndexedValue<Binary>(GetBit(buffer, pos), pos + start);
+			return IndexedValue<bool>(GetBit(buffer, pos), pos + start);
 		};
-		LazyIterable<IndexedValue<Binary>> collection(buffer, range.count, readBitWithIndex);
-		auto header = record.Complete(numBytes); 
-		output.OnRange(gv, header, collection);
+		LazyIterable<IndexedValue<bool>> collection(buffer, range.count, readBitWithIndex);		
+		handler(record.Complete(numBytes), collection);
 		buffer.Advance(numBytes);
 		return Result::OK;
 	}

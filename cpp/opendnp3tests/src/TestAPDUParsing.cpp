@@ -204,7 +204,6 @@ BOOST_AUTO_TEST_CASE(Group12Var1WithIndexSizes)
 {	
 	auto hex = "0C 01 17 01 09 03 01 64 00 00 00 C8 00 00 00 00";
 
-
 	auto validator = [&](MockApduHeaderHandler& mock) {		
 		BOOST_REQUIRE_EQUAL(1, mock.crobRequests.size());
 		ControlRelayOutputBlock crob(ControlCode::LATCH_ON, 1, 100, 200);
@@ -216,7 +215,14 @@ BOOST_AUTO_TEST_CASE(Group12Var1WithIndexSizes)
 
 	
 	TestComplex(hex, APDUParser::Result::OK, 1, validator);
+}
 
+BOOST_AUTO_TEST_CASE(TestIINValue)
+{
+	TestComplex("50 01 00 07 07 00", APDUParser::Result::OK, 1, [&](MockApduHeaderHandler& mock) {
+		BOOST_REQUIRE_EQUAL(1, mock.iinBits.size());		
+		BOOST_REQUIRE(IndexedValue<bool>(false, 7) == mock.iinBits[0]);	
+	});
 }
 
 

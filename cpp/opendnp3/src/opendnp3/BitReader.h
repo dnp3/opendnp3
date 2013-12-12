@@ -25,14 +25,12 @@
 
 #include <openpal/BufferWrapper.h>
 
-#include <opendnp3/DataTypes.h>
-
 namespace opendnp3
 {
 
 size_t NumBytesInBits(size_t numBits);
 
-Binary GetBit(const openpal::ReadOnlyBuffer& buffer, size_t position);
+bool GetBit(const openpal::ReadOnlyBuffer& buffer, size_t position);
 
 }
 

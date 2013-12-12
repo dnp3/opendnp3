@@ -65,6 +65,28 @@ GroupVariation GroupVariationEnum::Get(uint8_t group, uint8_t variation)
 			switch(variation)
 			{
 				case(1):
+					return GroupVariation::Group20Var1;
+				case(2):
+					return GroupVariation::Group20Var2;
+				case(3):
+					return GroupVariation::Group20Var3;
+				case(4):
+					return GroupVariation::Group20Var4;
+				case(5):
+					return GroupVariation::Group20Var5;
+				case(6):
+					return GroupVariation::Group20Var6;
+				case(7):
+					return GroupVariation::Group20Var7;
+				case(8):
+					return GroupVariation::Group20Var8;
+				default:
+					return GroupVariation::UNKNOWN;
+			}
+		case(22):
+			switch(variation)
+			{
+				case(1):
 					return GroupVariation::Group22Var1;
 				case(2):
 					return GroupVariation::Group22Var2;
@@ -83,7 +105,68 @@ GroupVariation GroupVariationEnum::Get(uint8_t group, uint8_t variation)
 				default:
 					return GroupVariation::UNKNOWN;
 			}
-		
+		case(30):
+			switch(variation)
+			{
+				case(1):
+					return GroupVariation::Group30Var1;
+				case(2):
+					return GroupVariation::Group30Var2;
+				case(3):
+					return GroupVariation::Group30Var3;
+				case(4):
+					return GroupVariation::Group30Var4;
+				case(5):
+					return GroupVariation::Group30Var5;
+				case(6):
+					return GroupVariation::Group30Var6;				
+				default:
+					return GroupVariation::UNKNOWN;
+			}
+		case(32):
+			switch(variation)
+			{
+				case(1):
+					return GroupVariation::Group32Var1;
+				case(2):
+					return GroupVariation::Group32Var2;
+				case(3):
+					return GroupVariation::Group32Var3;
+				case(4):
+					return GroupVariation::Group32Var4;
+				case(5):
+					return GroupVariation::Group32Var5;
+				case(6):
+					return GroupVariation::Group32Var6;
+				case(7):
+					return GroupVariation::Group32Var7;
+				case(8):
+					return GroupVariation::Group32Var8;			
+				default:
+					return GroupVariation::UNKNOWN;
+			}
+		case(60):
+			switch(variation)
+			{
+				case(1):
+					return GroupVariation::Group60Var1;
+				case(2):
+					return GroupVariation::Group60Var2;
+				case(3):
+					return GroupVariation::Group60Var3;
+				case(4):
+					return GroupVariation::Group60Var4;			
+				default:
+					return GroupVariation::UNKNOWN;
+			}
+		case(80):
+			switch(variation)
+			{
+				case(1):
+					return GroupVariation::Group80Var1;				
+				default:
+					return GroupVariation::UNKNOWN;
+			}		
 		default:
 			return GroupVariation::UNKNOWN;
 	}	
