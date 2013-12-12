@@ -67,7 +67,7 @@ void ResponseContext::Reset()
 	mFIR = true;
 	mLoadedEventData = false;
 	mMode = UNDEFINED;
-	mTempIIN.Zero();
+	mTempIIN.Clear();
 
 	this->mStaticWriteMap.clear();
 

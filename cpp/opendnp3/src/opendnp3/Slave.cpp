@@ -243,29 +243,28 @@ size_t Slave::FlushUpdates()
 void Slave::ConfigureAndSendSimpleResponse()
 {
 	mResponse.Set(FunctionCode::RESPONSE);
-	mRspIIN.BitwiseOR(mIIN);
+	mRspIIN |= mIIN;
 	mResponse.SetIIN(mRspIIN);
 	mpAppLayer->SendResponse(mResponse);
 }
 
 void Slave::Send(APDU& arAPDU, const IINField& arIIN)
 {
-	mRspIIN.BitwiseOR(mIIN);
-	mRspIIN.BitwiseOR(arIIN);
+	mRspIIN |= (mIIN | arIIN);	
 	arAPDU.SetIIN(mRspIIN);
 	mpAppLayer->SendResponse(arAPDU);
 }
 
 void Slave::Send(APDU& arAPDU)
 {
-	mRspIIN.BitwiseOR(mIIN);
+	mRspIIN |= mIIN;
 	arAPDU.SetIIN(mRspIIN);
 	mpAppLayer->SendResponse(arAPDU);
 }
 
 void Slave::SendUnsolicited(APDU& arAPDU)
 {
-	mRspIIN.BitwiseOR(mIIN);
+	mRspIIN |= mIIN;
 	arAPDU.SetIIN(mRspIIN);
 	mpAppLayer->SendUnsolicited(arAPDU);
 }

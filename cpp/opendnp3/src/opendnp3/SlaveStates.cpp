@@ -141,7 +141,7 @@ void AS_Base::SwitchOnFunction(Slave* c, AS_Base* apNext, const APDU& arRequest,
 
 void AS_Base::DoRequest(Slave* c, AS_Base* apNext, const APDU& arAPDU, SequenceInfo aSeqInfo)
 {
-	c->mRspIIN.Zero();
+	c->mRspIIN.Clear();
 
 	try {
 		this->SwitchOnFunction(c, apNext, arAPDU, aSeqInfo);

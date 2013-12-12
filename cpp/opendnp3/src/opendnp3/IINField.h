@@ -64,14 +64,20 @@ public:
 	
 	bool operator==(const IINField& arRHS) const;
 	
-	void Zero() 
+	void Clear() 
 	{
 		LSB = MSB = 0;
 	}
 
-	void BitwiseOR(const IINField& aIIN) {
-		LSB |= aIIN.LSB;
+	IINField operator|(const IINField& aIIN) const 
+	{
+		return IINField(LSB | aIIN.LSB, MSB | aIIN.MSB);		
+	}
+
+	void operator|=(const IINField& aIIN)
+	{
 		MSB |= aIIN.MSB;
+		LSB |= aIIN.LSB;		
 	}
 
 	uint8_t LSB;
