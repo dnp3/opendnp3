@@ -25,7 +25,7 @@
 #include <openpal/ToHex.h>
 #include <openpal/LoggableMacros.h>
 
-#include <opendnp3/APDUParser.h>
+#include <opendnp3/APDUHeaderParser.h>
 
 #include <sstream>
 
@@ -54,7 +54,7 @@ void SlaveTestObject::SendToSlave(const std::string& arData, SequenceInfo aSeq)
 {
 	HexSequence hs(arData);
 	APDURecord record;
-	if(APDUParser::ParseRequest(hs.ToReadOnly(), record) != APDUParser::Result::OK)
+	if(APDUHeaderParser::ParseRequest(hs.ToReadOnly(), record) != APDUHeaderParser::Result::OK)
 	{
 		throw Exception("Why are you trying to send bad data?");
 	}	

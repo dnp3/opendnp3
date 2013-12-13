@@ -29,6 +29,7 @@
 #include "AppInterfaces.h"
 #include "SolicitedChannel.h"
 #include "UnsolicitedChannel.h"
+#include "APDUHeaderParser.h"
 
 #include <opendnp3/AppConfig.h>
 
@@ -93,7 +94,9 @@ private:
 	void OnResponse(const APDUResponseRecord&);
 	void OnUnsolResponse(const APDUResponseRecord&);	
 	void OnRequest(const APDURecord&);
-	void OnConfirm(const AppControlField& aControl, size_t aDataSize);	
+	void OnConfirm(const AppControlField& aControl, size_t aDataSize);
+
+	void LogParseError(APDUHeaderParser::Result error, bool aIsResponse);
 
 	////////////////////
 	// State

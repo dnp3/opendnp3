@@ -18,49 +18,45 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __APP_LAYER_TEST_H_
-#define __APP_LAYER_TEST_H_
 
-#include <opendnp3/AppLayer.h>
+#include "APDUHeaderParser.h"
 
-#include "LogTester.h"
-#include "MockLowerLayer.h"
-#include "MockExecutor.h"
+#include <functional>
+#include <limits>
 
-#include "MockAppUser.h"
+#include "APDUHeader.h"
 
+#include <openpal/BufferWrapper.h>
+#include <opendnp3/Uncopyable.h>
 
 namespace opendnp3
 {
 
-
-class AppLayerTest
+APDUHeaderParser::Result APDUHeaderParser::ParseRequest(openpal::ReadOnlyBuffer buffer, APDURecord& header)
 {
-public:
-	AppLayerTest(bool aIsMaster = false, size_t aNumRetry = 0, LogLevel aLevel = LogLevel::Warning, bool aImmediate = false);
+	if(buffer.Size() < 2) return Result::NOT_ENOUGH_DATA_FOR_HEADER;
+	else {
+		header.control = AppControlField(buffer[0]);
+		header.function = FunctionCodeFromType(buffer[1]);		
+		buffer.Advance(2);
+		header.objects = buffer;
+		return Result::OK;
+	}
+}
 
-	void SendUp(const std::string& aBytes);
-	void SendUp(AppControlField control, FunctionCode aCode);
-	void SendUp(AppControlField control, FunctionCode aCode, IINField iin);
-
-	void SendRequest(FunctionCode aCode, bool aFIR, bool aFIN, bool aCON, bool aUNS);
-	void SendResponse(FunctionCode aCode, bool aFIR, bool aFIN, bool aCON, bool aUNS);
-	void SendUnsolicited(FunctionCode aCode, bool aFIR, bool aFIN, bool aCON, bool aUNS);
-
-	bool CheckSentAPDU(FunctionCode aCode, bool aFIR, bool aFIN, bool aCON, bool aUNS, int aSEQ);
-
-	LogTester log;
-	MockAppUser user;
-	MockLowerLayer lower;
-	MockExecutor mts;
-	AppLayer app;
-
-	MockAppUser::State state;
-
-private:
-	APDU mFragment;
-};
+APDUHeaderParser::Result APDUHeaderParser::ParseResponse(openpal::ReadOnlyBuffer buffer, APDUResponseRecord& header)
+{
+	if(buffer.Size() < 4) return Result::NOT_ENOUGH_DATA_FOR_HEADER;
+	else {
+		header.control = AppControlField(buffer[0]);
+		header.function = FunctionCodeFromType(buffer[1]);		
+		header.IIN.LSB = buffer[2];
+		header.IIN.MSB = buffer[3];
+		buffer.Advance(4);
+		header.objects = buffer;
+		return Result::OK;
+	}
+}
 
 }
 
-#endif

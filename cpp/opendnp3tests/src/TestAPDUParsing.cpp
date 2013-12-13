@@ -28,6 +28,7 @@
 #include <openpal/ToHex.h>
 
 #include <opendnp3/APDUParser.h>
+#include <opendnp3/APDUHeaderParser.h>
 #include <opendnp3/ControlRelayOutputBlock.h>
 
 #include <functional>
@@ -65,14 +66,14 @@ BOOST_AUTO_TEST_CASE(HeaderParsingEmptySring)
 {
 	HexSequence buffer("");
 	APDURecord rec;
-	BOOST_REQUIRE(APDUParser::Result::NOT_ENOUGH_DATA_FOR_APP_HEADER == APDUParser::ParseRequest(buffer.ToReadOnly(), rec));
+	BOOST_REQUIRE(APDUHeaderParser::Result::NOT_ENOUGH_DATA_FOR_HEADER == APDUHeaderParser::ParseRequest(buffer.ToReadOnly(), rec));
 }
 
 BOOST_AUTO_TEST_CASE(HeaderParsesReqeust)
 {
 	HexSequence buffer("C0 02 AB CD");
 	APDURecord rec;
-	BOOST_REQUIRE(APDUParser::Result::OK == APDUParser::ParseRequest(buffer.ToReadOnly(), rec));
+	BOOST_REQUIRE(APDUHeaderParser::Result::OK == APDUHeaderParser::ParseRequest(buffer.ToReadOnly(), rec));
 	BOOST_REQUIRE_EQUAL(rec.control.ToByte(), AppControlField(true, true, false, false, 0).ToByte());
 	BOOST_REQUIRE(rec.function == FunctionCode::WRITE);
 	BOOST_REQUIRE_EQUAL("AB CD", toHex(rec.objects));
@@ -82,14 +83,14 @@ BOOST_AUTO_TEST_CASE(ResponseLessThanFour)
 {
 	HexSequence buffer("C0 02 01");
 	APDUResponseRecord rec;
-	BOOST_REQUIRE(APDUParser::Result::NOT_ENOUGH_DATA_FOR_APP_HEADER == APDUParser::ParseResponse(buffer.ToReadOnly(), rec));	
+	BOOST_REQUIRE(APDUHeaderParser::Result::NOT_ENOUGH_DATA_FOR_HEADER == APDUHeaderParser::ParseResponse(buffer.ToReadOnly(), rec));	
 }
 
 BOOST_AUTO_TEST_CASE(HeaderParsesResponse)
 {
 	HexSequence buffer("C0 02 01 02 BE EF");
 	APDUResponseRecord rec;
-	BOOST_REQUIRE(APDUParser::Result::OK == APDUParser::ParseResponse(buffer.ToReadOnly(), rec));
+	BOOST_REQUIRE(APDUHeaderParser::Result::OK == APDUHeaderParser::ParseResponse(buffer.ToReadOnly(), rec));
 	BOOST_REQUIRE_EQUAL(rec.control.ToByte(), AppControlField(true, true, false, false, 0).ToByte());
 	BOOST_REQUIRE(rec.function == FunctionCode::WRITE);
 	BOOST_REQUIRE(rec.IIN == IINField(01, 02));

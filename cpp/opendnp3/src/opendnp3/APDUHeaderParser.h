@@ -18,47 +18,34 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __APP_LAYER_TEST_H_
-#define __APP_LAYER_TEST_H_
+#ifndef __APDU_HEADER_PARSER_H_
+#define __APDU_HEADER_PARSER_H_
 
-#include <opendnp3/AppLayer.h>
+#include <functional>
+#include <limits>
 
-#include "LogTester.h"
-#include "MockLowerLayer.h"
-#include "MockExecutor.h"
+#include "APDUHeader.h"
 
-#include "MockAppUser.h"
-
+#include <openpal/BufferWrapper.h>
+#include <opendnp3/Uncopyable.h>
 
 namespace opendnp3
 {
 
-
-class AppLayerTest
+class APDUHeaderParser : private PureStatic
 {
-public:
-	AppLayerTest(bool aIsMaster = false, size_t aNumRetry = 0, LogLevel aLevel = LogLevel::Warning, bool aImmediate = false);
+	public:	
 
-	void SendUp(const std::string& aBytes);
-	void SendUp(AppControlField control, FunctionCode aCode);
-	void SendUp(AppControlField control, FunctionCode aCode, IINField iin);
+	enum class Result
+	{
+		OK,		
+		NOT_ENOUGH_DATA_FOR_HEADER		
+	};
 
-	void SendRequest(FunctionCode aCode, bool aFIR, bool aFIN, bool aCON, bool aUNS);
-	void SendResponse(FunctionCode aCode, bool aFIR, bool aFIN, bool aCON, bool aUNS);
-	void SendUnsolicited(FunctionCode aCode, bool aFIR, bool aFIN, bool aCON, bool aUNS);
+	static Result ParseRequest(openpal::ReadOnlyBuffer buffer, APDURecord& header);
 
-	bool CheckSentAPDU(FunctionCode aCode, bool aFIR, bool aFIN, bool aCON, bool aUNS, int aSEQ);
+	static Result ParseResponse(openpal::ReadOnlyBuffer buffer, APDUResponseRecord& header);
 
-	LogTester log;
-	MockAppUser user;
-	MockLowerLayer lower;
-	MockExecutor mts;
-	AppLayer app;
-
-	MockAppUser::State state;
-
-private:
-	APDU mFragment;
 };
 
 }

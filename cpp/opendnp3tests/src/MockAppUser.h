@@ -52,8 +52,7 @@ public:
 		size_t NumUnsolFailure;
 		size_t NumPartialRsp;
 		size_t NumFinalRsp;
-		size_t NumRequest;
-		size_t NumUnknown;
+		size_t NumRequest;		
 	};
 
 	// Implement IAppUser
@@ -66,11 +65,10 @@ public:
 	void OnUnsolSendSuccess();
 	void OnUnsolFailure();
 	
-	void OnPartialResponse(const APDU&);
-	void OnFinalResponse(const APDU&);
-	void OnUnsolResponse(const APDU&);
-	void OnRequest(const APDU&, SequenceInfo);
-	void OnUnknownObject();
+	virtual void OnPartialResponse(const APDUResponseRecord&) override;
+	virtual void OnFinalResponse(const  APDUResponseRecord&) override;
+	virtual void OnUnsolResponse(const  APDUResponseRecord&) override;
+	virtual void OnRequest(const  APDURecord&, SequenceInfo) override;
 
 	bool Equals(const State& arState) const;
 

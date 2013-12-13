@@ -42,12 +42,18 @@ void AppLayerTest::SendUp(const std::string& aBytes)
 	lower.SendUp(hs.ToReadOnly());
 }
 
-void AppLayerTest::SendUp(FunctionCode aCode, bool aFIR, bool aFIN, bool aCON, bool aUNS, int aSEQ)
+void AppLayerTest::SendUp(AppControlField control, FunctionCode aCode)
+{	
+	uint8_t bytes[2] = { control.ToByte(),  FunctionCodeToType(aCode) };
+	ReadOnlyBuffer buff(bytes, 2);
+	lower.SendUp(buff);
+}
+	
+void AppLayerTest::SendUp(AppControlField control, FunctionCode aCode, IINField iin)
 {
-	APDU f;
-	f.SetFunction(aCode);
-	f.SetControl(aFIR, aFIN, aCON, aUNS, aSEQ);
-	lower.SendUp(f.ToReadOnly());
+	uint8_t bytes[4] = { control.ToByte(),  FunctionCodeToType(aCode), iin.LSB, iin.MSB };
+	ReadOnlyBuffer buff(bytes, 4);
+	lower.SendUp(buff);
 }
 
 void AppLayerTest::SendRequest(FunctionCode aCode, bool aFIR, bool aFIN, bool aCON, bool aUNS)

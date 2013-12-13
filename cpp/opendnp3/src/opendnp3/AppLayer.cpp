@@ -25,8 +25,6 @@
 
 #include "FunctionCodeHelpers.h"
 
-#include "APDUParser.h"
-
 using namespace std;
 
 namespace opendnp3
@@ -108,8 +106,9 @@ void AppLayer::_OnReceive(const ReadOnlyBuffer& aBuffer)
 
 	if(this->mIsMaster) {
 		APDUResponseRecord record;
-		auto result = APDUParser::ParseResponse(aBuffer, record);
-		if(result == APDUParser::Result::OK) {
+		auto result = APDUHeaderParser::ParseResponse(aBuffer, record);
+		if(result == APDUHeaderParser::Result::OK)
+		{			
 			switch(record.function) {
 				case(FunctionCode::CONFIRM):
 					this->OnConfirm(record.control, record.objects.Size());
@@ -125,14 +124,12 @@ void AppLayer::_OnReceive(const ReadOnlyBuffer& aBuffer)
 					break;
 			}
 		}
-		else {
-			LOG_BLOCK(LogLevel::Error, "TODO - Add error specific parsing desc");
-		}
+		else LogParseError(result, true);
 	}
 	else {
 		APDURecord record;
-		auto result = APDUParser::ParseRequest(aBuffer, record);
-		if(result == APDUParser::Result::OK) {
+		auto result = APDUHeaderParser::ParseRequest(aBuffer, record);
+		if(result == APDUHeaderParser::Result::OK) {
 			switch(record.function) {
 				case(FunctionCode::CONFIRM):
 					this->OnConfirm(record.control, record.objects.Size());
@@ -142,40 +139,21 @@ void AppLayer::_OnReceive(const ReadOnlyBuffer& aBuffer)
 					break;
 			}
 		}
-		else {
-			LOG_BLOCK(LogLevel::Error, "TODO - Add error specific parsing desc");
-		}
-	}
-
-	/*
-	try {
-		mIncoming.Write(arBuffer);
-		mIncoming.Interpret();
-
-		LOG_BLOCK(LogLevel::Interpret, "<= AL " << mIncoming.ToString());
-
-		FunctionCode func = mIncoming.GetFunction();
-		AppControlField ctrl = mIncoming.GetControl();
-
-		switch(func) {
-		case(FunctionCode::CONFIRM):
-			this->OnConfirm(ctrl, mIncoming);
-			break;
-		case(FunctionCode::RESPONSE):
-			this->OnResponse(ctrl, mIncoming);
-			break;
-		case(FunctionCode::UNSOLICITED_RESPONSE):
-			this->OnUnsolResponse(ctrl, mIncoming);
-			break;
-		default:	//otherwise, assume it's a request
-			this->OnRequest(ctrl, mIncoming);
-			break;
-		}
+		else LogParseError(result, false);
 	}	
-	catch(const Exception& ex) {
-		EXCEPTION_BLOCK(LogLevel::Warning, ex);
-	}
-	*/
+}
+
+void AppLayer::LogParseError(APDUHeaderParser::Result error, bool aIsResponse)
+{
+	switch(error)
+	{		
+		case(APDUHeaderParser::Result::NOT_ENOUGH_DATA_FOR_HEADER):
+			ERROR_BLOCK(LogLevel::Error, "Not enough data for header while parsing " << (aIsResponse ? "respose" : "request"), ALERR_INSUFFICIENT_DATA_FOR_FRAG); 
+			break;
+		default:
+			LOG_BLOCK(LogLevel::Error, "Unspecified parse error");
+			break;
+	}		
 }
 
 void AppLayer::_OnLowerLayerUp()
@@ -266,9 +244,7 @@ void AppLayer::OnUnsolResponse(const APDUResponseRecord& record)
 		ERROR_BLOCK(LogLevel::Warning,"Unsolicited response code with uns bit not set", ALERR_BAD_UNSOL_BIT);
 	}
 	else {
-		if(!mIsMaster)
-		MACRO_THROW_EXCEPTION_WITH_CODE(Exception, "", SERR_FUNC_NOT_SUPPORTED);
-
+		
 		if(record.control.CON)
 			this->QueueConfirm(true, record.control.SEQ);
 

@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __APDU_HEADER_PARSER_H_
-#define __APDU_HEADER_PARSER_H_
+#ifndef __APDU_PARSER_H_
+#define __APDU_PARSER_H_
 
 #include <functional>
 #include <limits>
@@ -32,7 +32,6 @@
 #include "IAPDUHeaderHandler.h"
 #include "LazyIterable.h"
 #include "IndexParser.h"
-#include "APDUHeader.h"
 
 namespace opendnp3
 {
@@ -43,8 +42,7 @@ class APDUParser : private PureStatic
 
 	enum class Result
 	{
-		OK,
-		NOT_ENOUGH_DATA_FOR_APP_HEADER,
+		OK,		
 		NOT_ENOUGH_DATA_FOR_HEADER,
 		NOT_ENOUGH_DATA_FOR_RANGE,
 		NOT_ENOUGH_DATA_FOR_OBJECTS,
@@ -54,11 +52,7 @@ class APDUParser : private PureStatic
 		ILLEGAL_OBJECT_QUALIFIER,
 		BAD_START_STOP,
 		COUNT_OF_ZERO
-	};
-
-	static Result ParseRequest(openpal::ReadOnlyBuffer buffer, APDURecord& header);
-
-	static Result ParseResponse(openpal::ReadOnlyBuffer buffer, APDUResponseRecord& header);
+	};	
 
 	static Result ParseHeaders(openpal::ReadOnlyBuffer buffer, IAPDUHeaderHandler& output);
 

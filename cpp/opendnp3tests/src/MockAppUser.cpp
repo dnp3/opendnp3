@@ -38,8 +38,7 @@ ostream& operator<<(ostream& output, const MockAppUser::State& s)
 	       << " UnsolFailure: " << s.NumUnsolFailure
 	       << " PartialResponse: " << s.NumPartialRsp
 	       << " FinalRsp: " << s.NumFinalRsp
-	       << " Request: " << s.NumRequest
-	       << " Unknown: " << s.NumUnknown;
+	       << " Request: " << s.NumRequest;	       
 
 	return output;
 }
@@ -55,8 +54,7 @@ MockAppUser::State::State() :
 	NumUnsolFailure(0),
 	NumPartialRsp(0),
 	NumFinalRsp(0),
-	NumRequest(0),
-	NumUnknown(0)
+	NumRequest(0)	
 {}
 
 bool MockAppUser::State::operator==(const State& arState) const
@@ -70,8 +68,7 @@ bool MockAppUser::State::operator==(const State& arState) const
 	        this->NumUnsolFailure == arState.NumUnsolFailure &&
 	        this->NumPartialRsp == arState.NumPartialRsp &&
 	        this->NumFinalRsp == arState.NumFinalRsp &&
-	        this->NumRequest == arState.NumRequest &&
-	        this->NumUnknown == arState.NumUnknown;
+	        this->NumRequest == arState.NumRequest;	        
 }
 
 // Implement IAppUser
@@ -105,29 +102,24 @@ void MockAppUser::OnUnsolFailure()
 	++mState.NumUnsolFailure;
 }
 
-void MockAppUser::OnPartialResponse(const APDU&)
+void MockAppUser::OnPartialResponse(const APDUResponseRecord&)
 {
 	++mState.NumPartialRsp;
 }
 
-void MockAppUser::OnFinalResponse(const APDU&)
+void MockAppUser::OnFinalResponse(const APDUResponseRecord&)
 {
 	++mState.NumFinalRsp;
 }
 
-void MockAppUser::OnUnsolResponse(const APDU&)
+void MockAppUser::OnUnsolResponse(const APDUResponseRecord&)
 {
 	++mState.NumUnsol;
 }
 
-void MockAppUser::OnRequest(const APDU&, SequenceInfo)
+void MockAppUser::OnRequest(const APDURecord&, SequenceInfo)
 {
 	++mState.NumRequest;
-}
-
-void MockAppUser::OnUnknownObject()
-{
-	++mState.NumUnknown;
 }
 
 bool MockAppUser::Equals(const MockAppUser::State& arState) const
