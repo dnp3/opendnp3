@@ -32,6 +32,7 @@
 #include "IAPDUHeaderHandler.h"
 #include "LazyIterable.h"
 #include "IndexParser.h"
+#include "APDUHeader.h"
 
 namespace opendnp3
 {
@@ -43,6 +44,7 @@ class APDUParser : private PureStatic
 	enum class Result
 	{
 		OK,
+		NOT_ENOUGH_DATA_FOR_APP_HEADER,
 		NOT_ENOUGH_DATA_FOR_HEADER,
 		NOT_ENOUGH_DATA_FOR_RANGE,
 		NOT_ENOUGH_DATA_FOR_OBJECTS,
@@ -53,6 +55,10 @@ class APDUParser : private PureStatic
 		BAD_START_STOP,
 		COUNT_OF_ZERO
 	};
+
+	static Result ParseRequest(openpal::ReadOnlyBuffer buffer, APDURecord& header);
+
+	static Result ParseResponse(openpal::ReadOnlyBuffer buffer, APDUResponseRecord& header);
 
 	static Result ParseHeaders(openpal::ReadOnlyBuffer buffer, IAPDUHeaderHandler& output);
 

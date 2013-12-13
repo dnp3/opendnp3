@@ -30,20 +30,19 @@
 namespace opendnp3
 {
 
-struct APDUHeader
+struct APDURecord
 {
 	AppControlField control;
 	FunctionCode function;
-
-	static const size_t SIZE = 2;
+	openpal::ReadOnlyBuffer objects;
 };
 
-struct APDUResponseHeader
-{
-	APDUHeader header;
+struct APDUResponseRecord
+{	
+	AppControlField control;
+	FunctionCode function;
 	IINField iin;
-
-	static const size_t SIZE = 4;
+	openpal::ReadOnlyBuffer objects;
 };
 
 }

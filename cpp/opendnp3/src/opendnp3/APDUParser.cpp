@@ -47,6 +47,31 @@ using namespace openpal;
 namespace opendnp3
 {
 
+APDUParser::Result APDUParser::ParseRequest(openpal::ReadOnlyBuffer buffer, APDURecord& header)
+{
+	if(buffer.Size() < 2) return Result::NOT_ENOUGH_DATA_FOR_APP_HEADER;
+	else {
+		header.control = AppControlField(buffer[0]);
+		header.function = FunctionCodeFromType(buffer[1]);		
+		buffer.Advance(2);
+		header.objects = buffer;
+		return Result::OK;
+	}
+}
+
+APDUParser::Result APDUParser::ParseResponse(openpal::ReadOnlyBuffer buffer, APDUResponseRecord& header)
+{
+	if(buffer.Size() < 4) return Result::NOT_ENOUGH_DATA_FOR_APP_HEADER;
+	else {
+		header.control = AppControlField(buffer[0]);
+		header.function = FunctionCodeFromType(buffer[1]);		
+		header.iin = IINField(buffer[2], buffer[3]);
+		buffer.Advance(4);
+		header.objects = buffer;
+		return Result::OK;
+	}
+}
+
 APDUParser::Result APDUParser::ParseHeaders(ReadOnlyBuffer aBuffer, IAPDUHeaderHandler& arHandler)
 {
 	while(aBuffer.Size() > 0)
