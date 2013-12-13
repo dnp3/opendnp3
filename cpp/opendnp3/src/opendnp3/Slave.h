@@ -103,17 +103,7 @@ public:
 
 	// Only have to override OnRequest since we're a slave
 	void OnRequest(const APDU&, SequenceInfo);
-	void OnUnknownObject();
-
-	/**
-	 * Implements IAppUser::IsMaster().
-	 *
-	 * @return			'false' since this is a Slave (outstation)
-	 *					implementation
-	 */
-	bool IsMaster() {
-		return false;
-	}
+	void OnUnknownObject();	
 
 	/**
 	 * Returns the buffer that is used for data updates by the user

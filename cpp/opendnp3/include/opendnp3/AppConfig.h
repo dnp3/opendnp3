@@ -33,13 +33,17 @@ namespace opendnp3
 struct AppConfig {
 
 	/// Default constructor
-	AppConfig() : RspTimeout(TimeDuration::Seconds(5)), NumRetry(0), FragSize(DEFAULT_FRAG_SIZE) {}
+	AppConfig(bool aIsMaster = true) : IsMaster(aIsMaster), RspTimeout(TimeDuration::Seconds(5)), NumRetry(0), FragSize(DEFAULT_FRAG_SIZE) {}
 
-	AppConfig(TimeDuration aRspTimeout, size_t aNumRetry = 0, size_t aFragSize = DEFAULT_FRAG_SIZE) :
+	AppConfig(bool aIsMaster, TimeDuration aRspTimeout, size_t aNumRetry = 0, size_t aFragSize = DEFAULT_FRAG_SIZE) :
+		IsMaster(aIsMaster),
 		RspTimeout(aRspTimeout),
 		NumRetry(aNumRetry),
 		FragSize(aFragSize)
 	{}
+
+	/// True if the application layer parser should parse response types. Set to false for outstation
+	bool IsMaster;
 
 	/// The response/confirm timeout in millisec
 	TimeDuration RspTimeout;

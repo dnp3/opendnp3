@@ -74,15 +74,6 @@ bool MockAppUser::State::operator==(const State& arState) const
 	        this->NumUnknown == arState.NumUnknown;
 }
 
-MockAppUser::MockAppUser(bool aIsMaster) :
-	mIsMaster(aIsMaster)
-{}
-
-bool MockAppUser::IsMaster()
-{
-	return mIsMaster;
-}
-
 // Implement IAppUser
 void MockAppUser::OnLowerLayerUp()
 {

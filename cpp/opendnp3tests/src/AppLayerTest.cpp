@@ -27,10 +27,9 @@ namespace opendnp3
 
 AppLayerTest::AppLayerTest(bool aIsMaster, size_t aNumRetry, LogLevel aLevel, bool aImmediate) :
 	log(),
-	user(aIsMaster),
 	lower(Logger(&log, aLevel, "lower")),
 	mts(),
-	app(Logger(&log, aLevel, "app"), &mts, AppConfig(TimeDuration::Seconds(1), aNumRetry))
+	app(Logger(&log, aLevel, "app"), &mts, AppConfig(aIsMaster, TimeDuration::Seconds(1), aNumRetry))
 {
 	lower.SetUpperLayer(&app);
 	app.SetUser(&user);

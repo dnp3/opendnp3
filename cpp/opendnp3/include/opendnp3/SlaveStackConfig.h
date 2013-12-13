@@ -34,7 +34,8 @@ namespace opendnp3
 */
 struct SlaveStackConfig {
 	SlaveStackConfig() :
-		link(false, false)
+		link(false, false),		
+		app(false)
 	{}
 
 	/// Slave config

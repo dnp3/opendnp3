@@ -37,6 +37,7 @@ AppLayer::AppLayer(Logger aLogger, openpal::IExecutor* apExecutor, AppConfig aAp
 	mConfirm(2), // only need 2 bytes for a confirm message
 	mSending(false),
 	mConfirmSending(false),
+	mIsMaster(aAppCfg.IsMaster),
 	mpUser(nullptr),
 	mSolicited(aLogger.GetSubLogger("sol"), this, apExecutor, aAppCfg.RspTimeout),
 	mUnsolicited(aLogger.GetSubLogger("unsol"), this, apExecutor, aAppCfg.RspTimeout),
@@ -222,7 +223,7 @@ void AppLayer::OnUnsolResponse(const AppControlField& arCtrl, APDU& arAPDU)
 		MACRO_THROW_EXCEPTION_WITH_CODE(Exception, "", ALERR_BAD_UNSOL_BIT);
 	}
 
-	if(!mpUser->IsMaster())
+	if(!mIsMaster)
 		MACRO_THROW_EXCEPTION_WITH_CODE(Exception, "", SERR_FUNC_NOT_SUPPORTED);
 
 	if(arCtrl.CON)
@@ -237,7 +238,7 @@ void AppLayer::OnConfirm(const AppControlField& arCtrl, APDU& arAPDU)
 
 	// which channel?
 	if(arCtrl.UNS) {
-		if(mpUser->IsMaster()) {
+		if(mIsMaster) {
 			MACRO_THROW_EXCEPTION_WITH_CODE(Exception, "", ALERR_UNEXPECTED_CONFIRM);
 		}
 
@@ -251,7 +252,7 @@ void AppLayer::OnConfirm(const AppControlField& arCtrl, APDU& arAPDU)
 
 void AppLayer::OnUnknownObject(FunctionCode aCode, const AppControlField& arCtrl)
 {
-	if(!mpUser->IsMaster()) {
+	if(!mIsMaster) {
 		switch(aCode) {
 		case(FunctionCode::CONFIRM):
 		case(FunctionCode::RESPONSE):
@@ -276,7 +277,7 @@ void AppLayer::OnRequest(const AppControlField& arCtrl, APDU& arAPDU)
 		MACRO_THROW_EXCEPTION_WITH_CODE(Exception, "Received non FIR/FIN request", ALERR_MULTI_FRAGEMENT_REQUEST);
 	}
 
-	if(mpUser->IsMaster()) {
+	if(mIsMaster) {
 		MACRO_THROW_EXCEPTION_WITH_CODE(Exception, "Master received request apdu", MERR_FUNC_NOT_SUPPORTED);
 	}
 
@@ -321,11 +322,11 @@ void AppLayer::Validate(const AppControlField& arCtrl, bool aMaster, bool aRequi
 		MACRO_THROW_EXCEPTION(InvalidStateException, "LowerLaterDown");
 	}
 
-	if(aMaster && !mpUser->IsMaster()) {
+	if(aMaster && !mIsMaster) {
 		MACRO_THROW_EXCEPTION(Exception, "Only masters can perform this operation");
 	}
 
-	if(!aMaster && mpUser->IsMaster()) {
+	if(!aMaster && mIsMaster) {
 		MACRO_THROW_EXCEPTION(Exception, "Only slaves can perform this operation");
 	}
 

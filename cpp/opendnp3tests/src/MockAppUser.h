@@ -53,8 +53,6 @@ public:
 		size_t NumUnknown;
 	};
 
-	MockAppUser(bool aIsMaster);
-
 	// Implement IAppUser
 	void OnLowerLayerUp();
 	void OnLowerLayerDown();
@@ -64,8 +62,7 @@ public:
 
 	void OnUnsolSendSuccess();
 	void OnUnsolFailure();
-
-	bool IsMaster();
+	
 	void OnPartialResponse(const APDU&);
 	void OnFinalResponse(const APDU&);
 	void OnUnsolResponse(const APDU&);
@@ -74,11 +71,6 @@ public:
 
 	bool Equals(const State& arState) const;
 
-private:
-
-	bool mIsMaster;
-
-public:
 	State mState;
 };
 

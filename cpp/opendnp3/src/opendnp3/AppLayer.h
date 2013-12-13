@@ -107,6 +107,7 @@ private:
 
 	bool mSending;						// State of send operation to the lower layer
 	bool mConfirmSending;
+	bool mIsMaster;						// True, if the application user is a master
 	SendQueue mSendQueue;				// Buffer of send operations
 
 	IAppUser* mpUser;				// Interface for dispatching callbacks

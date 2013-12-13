@@ -104,16 +104,7 @@ public:
 	// override the response functions
 	void OnPartialResponse(const APDU&);
 	void OnFinalResponse(const APDU&);
-	void OnUnsolResponse(const APDU&);
-
-	/**
-	 * Implements IAppUser::IsMaster().
-	 *
-	 * @return			'true' since this is a Master implementation
-	 */
-	bool IsMaster() {
-		return true;
-	}
+	void OnUnsolResponse(const APDU&);	
 
 	// These methods are inherited privately
 	void SelectAndOperate(const ControlRelayOutputBlock& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback);
