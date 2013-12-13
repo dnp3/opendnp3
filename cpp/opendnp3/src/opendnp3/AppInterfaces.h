@@ -129,13 +129,16 @@ public:
 
 	// A non-final response has been received
 	virtual void OnPartialResponse(const APDU&);
+
 	// A final response has been received
 	virtual void OnFinalResponse(const APDU&);
 
 	// Process unsolicited data
 	virtual void OnUnsolResponse(const APDU&);
+
 	// Process request fragment
 	virtual void OnRequest(const APDU&, SequenceInfo);
+
 	// Unknown Object
 	virtual void OnUnknownObject();
 };

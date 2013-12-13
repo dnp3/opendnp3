@@ -21,7 +21,6 @@
 #ifndef __COMMAND_HELPERS_H_
 #define __COMMAND_HELPERS_H_
 
-#include <opendnp3/APDUConstants.h>
 #include <opendnp3/ObjectInterfaces.h>
 
 

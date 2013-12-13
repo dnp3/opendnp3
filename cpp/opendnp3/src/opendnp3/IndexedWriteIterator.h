@@ -21,8 +21,6 @@
 #ifndef __INDEXED_WRITE_ITERATOR_H_
 #define __INDEXED_WRITE_ITERATOR_H_
 
-#include <opendnp3/APDUConstants.h>
-
 
 #include "ObjectHeader.h"
 #include "gen/QualifierCode.h"

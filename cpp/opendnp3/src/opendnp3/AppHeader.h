@@ -22,7 +22,6 @@
 #define __APP_HEADER_H_
 
 #include <opendnp3/Singleton.h>
-#include <opendnp3/APDUConstants.h>
 
 #include "AppControlField.h"
 #include "IINField.h"

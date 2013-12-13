@@ -21,8 +21,6 @@
 #ifndef __APDU_H_
 #define __APDU_H_
 
-#include <opendnp3/APDUConstants.h>
-
 #include <openpal/Exception.h>
 #include <openpal/Location.h>
 

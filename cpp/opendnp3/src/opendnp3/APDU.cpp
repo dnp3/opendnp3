@@ -23,7 +23,6 @@
 #include <openpal/Exception.h>
 #include <opendnp3/Util.h>
 #include <opendnp3/DNPConstants.h>
-#include <opendnp3/APDUConstants.h>
 
 #include "ObjectWriteIterator.h"
 #include "FunctionCodeHelpers.h"

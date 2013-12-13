@@ -24,8 +24,6 @@
 #include <string>
 
 #include <opendnp3/Singleton.h>
-#include <opendnp3/APDUConstants.h>
-
 
 #include "AppLayerChannel.h"
 #include "gen/FunctionCode.h"

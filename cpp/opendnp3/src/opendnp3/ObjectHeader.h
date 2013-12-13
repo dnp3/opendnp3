@@ -25,9 +25,7 @@
 #include <openpal/Location.h>
 
 #include <openpal/Serialization.h>
-
 #include <opendnp3/Singleton.h>
-#include <opendnp3/APDUConstants.h>
 
 #include "gen/QualifierCode.h"
 

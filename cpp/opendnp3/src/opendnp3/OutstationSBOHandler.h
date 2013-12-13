@@ -27,7 +27,6 @@
 #include <openpal/IExecutor.h>
 
 #include <opendnp3/ICommandHandler.h>
-#include <opendnp3/APDUConstants.h>
 
 #include "gen/QualifierCode.h"
 

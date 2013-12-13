@@ -23,8 +23,6 @@
 
 #include <openpal/Exception.h>
 #include <openpal/Location.h>
-#include <opendnp3/APDUConstants.h>
-#include <openpal/Location.h>
 
 #include "ObjectHeader.h"
 

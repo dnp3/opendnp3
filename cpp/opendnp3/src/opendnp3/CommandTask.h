@@ -23,7 +23,6 @@
 
 #include "MasterTaskBase.h"
 
-#include <opendnp3/APDUConstants.h>
 #include <opendnp3/CommandResponse.h>
 
 
