@@ -22,7 +22,6 @@
 #define __MOCK_APP_LAYER_H_
 
 #include <opendnp3/AppInterfaces.h>
-#include <opendnp3/APDUConstants.h>
 #include <opendnp3/APDU.h>
 
 #include <openpal/Loggable.h>
