@@ -67,7 +67,7 @@ void ACS_Base::OnConfirm(AppLayerChannel* c, int aSeq)
 void ACS_Base::OnResponse(AppLayerChannel* c, APDU& arAPDU)
 {
 	LOGGER_BLOCK(c->GetLogger(), LogLevel::Warning,
-	             "Unexpected response with sequence: " << arAPDU.GetControl().SEQ);
+	             "Unexpected response with sequence: " << static_cast<int>(arAPDU.GetControl().SEQ));
 }
 
 void ACS_Base::OnTimeout(AppLayerChannel*)
