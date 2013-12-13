@@ -24,6 +24,7 @@
 #include "BufferHelpers.h"
 
 #include <openpal/ToHex.h>
+#include <opendnp3/APDUParser.h>
 
 using namespace std;
 using namespace openpal;
@@ -53,20 +54,24 @@ void MasterTestObject::BindStateListener()
 void MasterTestObject::RespondToMaster(const std::string& arData, bool aFinal)
 {
 	HexSequence hs(arData);
-	mAPDU.Reset();
-	mAPDU.Write(hs.ToReadOnly());
-	mAPDU.Interpret();
-	if(aFinal) master.OnFinalResponse(mAPDU);
-	else master.OnPartialResponse(mAPDU);
+	APDUResponseRecord record;
+	if(APDUParser::ParseResponse(hs.ToReadOnly(), record) != APDUParser::Result::OK)
+	{
+		throw Exception("Why are you trying to send bad data?");
+	}
+	if(aFinal) master.OnFinalResponse(record);
+	else master.OnPartialResponse(record);
 }
 
 void MasterTestObject::SendUnsolToMaster(const std::string& arData)
 {
 	HexSequence hs(arData);
-	mAPDU.Reset();
-	mAPDU.Write(hs.ToReadOnly());
-	mAPDU.Interpret();
-	master.OnUnsolResponse(mAPDU);
+	APDUResponseRecord record;
+	if(APDUParser::ParseResponse(hs.ToReadOnly(), record) != APDUParser::Result::OK)
+	{
+		throw Exception("Why are you trying to send bad data?");
+	}	
+	master.OnUnsolResponse(record);
 }
 
 std::string MasterTestObject::Read()

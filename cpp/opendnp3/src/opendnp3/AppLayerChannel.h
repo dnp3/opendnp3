@@ -24,6 +24,8 @@
 #include <openpal/Loggable.h>
 #include <openpal/TimeDuration.h>
 
+#include "APDUHeader.h"
+
 namespace openpal
 {
 class IExecutor;
@@ -92,8 +94,8 @@ protected:
 	virtual void DoSendSuccess() = 0;
 	virtual void DoFailure() = 0;
 
-	void DoPartialResponse(APDU& arAPDU);
-	void DoFinalResponse(APDU& arAPDU);
+	void DoPartialResponse(const APDUResponseRecord&);
+	void DoFinalResponse(const APDUResponseRecord&);
 
 	void StartTimer();
 	void CancelTimer();

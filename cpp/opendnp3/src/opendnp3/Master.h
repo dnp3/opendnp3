@@ -69,7 +69,7 @@ class AMS_Base;
  *
  * Coordination of tasks is handled by a higher level task scheduler.
  */
-class Master : public openpal::Loggable, public IAppUser, public StackBase, private ICommandProcessor
+class Master : public IAppUser, public StackBase, private ICommandProcessor
 {
 	friend class AMS_Base;
 	friend class AMS_Idle;
@@ -102,9 +102,9 @@ public:
 	void OnUnsolFailure();
 
 	// override the response functions
-	void OnPartialResponse(const APDU&);
-	void OnFinalResponse(const APDU&);
-	void OnUnsolResponse(const APDU&);	
+	void OnPartialResponse(const APDUResponseRecord&);
+	void OnFinalResponse(const APDUResponseRecord&);
+	void OnUnsolResponse(const APDUResponseRecord&);		
 
 	// These methods are inherited privately
 	void SelectAndOperate(const ControlRelayOutputBlock& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback);

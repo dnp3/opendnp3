@@ -25,6 +25,8 @@
 
 #include "FunctionCodeHelpers.h"
 
+#include "APDUParser.h"
+
 using namespace std;
 
 namespace opendnp3
@@ -98,12 +100,54 @@ void AppLayer::CancelResponse()
 // External events
 ////////////////////
 
-void AppLayer::_OnReceive(const ReadOnlyBuffer& arBuffer)
+void AppLayer::_OnReceive(const ReadOnlyBuffer& aBuffer)
 {
 	if(!this->IsLowerLayerUp()) {
 		MACRO_THROW_EXCEPTION(InvalidStateException, "LowerLaterDown");
 	}
 
+	if(this->mIsMaster) {
+		APDUResponseRecord record;
+		auto result = APDUParser::ParseResponse(aBuffer, record);
+		if(result == APDUParser::Result::OK) {
+			switch(record.function) {
+				case(FunctionCode::CONFIRM):
+					this->OnConfirm(record.control, record.objects.Size());
+					break;
+				case(FunctionCode::RESPONSE):
+					this->OnResponse(record);
+					break;
+				case(FunctionCode::UNSOLICITED_RESPONSE):
+					this->OnUnsolResponse(record);
+					break;
+				default:
+					LOG_BLOCK(LogLevel::Warning, "Unexpected function code for master: " << FunctionCodeToString(record.function));
+					break;
+			}
+		}
+		else {
+			LOG_BLOCK(LogLevel::Error, "TODO - Add error specific parsing desc");
+		}
+	}
+	else {
+		APDURecord record;
+		auto result = APDUParser::ParseRequest(aBuffer, record);
+		if(result == APDUParser::Result::OK) {
+			switch(record.function) {
+				case(FunctionCode::CONFIRM):
+					this->OnConfirm(record.control, record.objects.Size());
+					break;			
+				default: //otherwise, assume it's a request
+					this->OnRequest(record);
+					break;
+			}
+		}
+		else {
+			LOG_BLOCK(LogLevel::Error, "TODO - Add error specific parsing desc");
+		}
+	}
+
+	/*
 	try {
 		mIncoming.Write(arBuffer);
 		mIncoming.Interpret();
@@ -127,14 +171,11 @@ void AppLayer::_OnReceive(const ReadOnlyBuffer& arBuffer)
 			this->OnRequest(ctrl, mIncoming);
 			break;
 		}
-	}
-	catch(const ObjectException& oex) {
-		EXCEPTION_BLOCK(LogLevel::Warning, oex);
-		this->OnUnknownObject(mIncoming.GetFunction(), mIncoming.GetControl());
-	}
+	}	
 	catch(const Exception& ex) {
 		EXCEPTION_BLOCK(LogLevel::Warning, ex);
 	}
+	*/
 }
 
 void AppLayer::_OnLowerLayerUp()
@@ -201,104 +242,94 @@ void AppLayer::_OnSendFailure()
 // Internal Events
 ////////////////////
 
-void AppLayer::OnResponse(const AppControlField& arCtrl, APDU& arAPDU)
+void AppLayer::OnResponse(const APDUResponseRecord& record)
 {
-	if(arCtrl.UNS) {
-		MACRO_THROW_EXCEPTION_WITH_CODE(Exception, "Bad unsol bit", ALERR_BAD_UNSOL_BIT);
-	}
-
-	// If we get a response that requests confirmation, we shouldn't confirm
-	// if we're not going to handle the data. This is usually indicative of an
-	// early timeout. It will show up in the logs as a response without context.
-	if(arCtrl.CON && mSolicited.AcceptsResponse()) {
-		this->QueueConfirm(false, arCtrl.SEQ);
-	}
-
-	mSolicited.OnResponse(arAPDU);
-}
-
-void AppLayer::OnUnsolResponse(const AppControlField& arCtrl, APDU& arAPDU)
-{
-	if(!arCtrl.UNS) {
-		MACRO_THROW_EXCEPTION_WITH_CODE(Exception, "", ALERR_BAD_UNSOL_BIT);
-	}
-
-	if(!mIsMaster)
-		MACRO_THROW_EXCEPTION_WITH_CODE(Exception, "", SERR_FUNC_NOT_SUPPORTED);
-
-	if(arCtrl.CON)
-		this->QueueConfirm(true, arCtrl.SEQ);
-
-	mUnsolicited.OnUnsol(arAPDU);
-}
-
-void AppLayer::OnConfirm(const AppControlField& arCtrl, APDU& arAPDU)
-{
-	arAPDU.Interpret(); //throws if there is additional data beyond length of 2
-
-	// which channel?
-	if(arCtrl.UNS) {
-		if(mIsMaster) {
-			MACRO_THROW_EXCEPTION_WITH_CODE(Exception, "", ALERR_UNEXPECTED_CONFIRM);
-		}
-
-		mUnsolicited.OnConfirm(arCtrl.SEQ);
+	if(record.control.UNS) {
+		ERROR_BLOCK(LogLevel::Warning, "Bad unsol bit", ALERR_BAD_UNSOL_BIT);		 
 	}
 	else {
-		mSolicited.OnConfirm(arCtrl.SEQ);
-	}
-}
-
-
-void AppLayer::OnUnknownObject(FunctionCode aCode, const AppControlField& arCtrl)
-{
-	if(!mIsMaster) {
-		switch(aCode) {
-		case(FunctionCode::CONFIRM):
-		case(FunctionCode::RESPONSE):
-		case(FunctionCode::UNSOLICITED_RESPONSE):
-		case(FunctionCode::DIRECT_OPERATE_NO_ACK):
-			break;
-		default:
-			mSolicited.OnUnknownObjectInRequest(arCtrl);
-			mpUser->OnUnknownObject();
-			break;
+		// If we get a response that requests confirmation, we shouldn't confirm
+		// if we're not going to handle the data. This is usually indicative of an
+		// early timeout. It will show up in the logs as a response without context.
+		if(record.control.CON && mSolicited.AcceptsResponse()) {
+			this->QueueConfirm(false, record.control.SEQ);
 		}
-	}
+
+		mSolicited.OnResponse(record);
+	}	
 }
 
-void AppLayer::OnRequest(const AppControlField& arCtrl, APDU& arAPDU)
+void AppLayer::OnUnsolResponse(const APDUResponseRecord& record)
 {
-	if(arCtrl.UNS) {
-		MACRO_THROW_EXCEPTION_WITH_CODE(Exception, "Received request with UNS bit", ALERR_BAD_UNSOL_BIT);
+	if(!record.control.UNS) 
+	{
+		ERROR_BLOCK(LogLevel::Warning,"Unsolicited response code with uns bit not set", ALERR_BAD_UNSOL_BIT);
+	}
+	else {
+		if(!mIsMaster)
+		MACRO_THROW_EXCEPTION_WITH_CODE(Exception, "", SERR_FUNC_NOT_SUPPORTED);
+
+		if(record.control.CON)
+			this->QueueConfirm(true, record.control.SEQ);
+
+		mUnsolicited.OnUnsol(record);
 	}
 
-	if(!(arCtrl.FIR && arCtrl.FIN)) {
-		MACRO_THROW_EXCEPTION_WITH_CODE(Exception, "Received non FIR/FIN request", ALERR_MULTI_FRAGEMENT_REQUEST);
-	}
+	
+}
 
-	if(mIsMaster) {
-		MACRO_THROW_EXCEPTION_WITH_CODE(Exception, "Master received request apdu", MERR_FUNC_NOT_SUPPORTED);
+void AppLayer::OnConfirm(const AppControlField& aControl, size_t aDataSize)
+{	
+	if(aDataSize > 0) 
+	{
+		LOG_BLOCK(LogLevel::Warning, "Unexpected payload in confirm of size: " << aDataSize);
 	}
+	else {
+		if(aControl.UNS) // which channel?
+		{
+			if(mIsMaster) 
+			{
+				MACRO_THROW_EXCEPTION_WITH_CODE(Exception, "", ALERR_UNEXPECTED_CONFIRM);
+			}
+			else {
+				mUnsolicited.OnConfirm(aControl.SEQ);
+			}		
+		}
+		else {
+			mSolicited.OnConfirm(aControl.SEQ);
+		}
+	}	
+}
 
-	mSolicited.OnRequest(arAPDU);
+void AppLayer::OnRequest(const APDURecord& record)
+{
+	if(record.control.UNS) {
+		ERROR_BLOCK(LogLevel::Warning, "Received request with UNS bit", ALERR_BAD_UNSOL_BIT);		
+	}
+	else {
+		if(record.control.IsFirAndFin()) mSolicited.OnRequest(record);			
+		else {
+			ERROR_BLOCK(LogLevel::Warning,  "Received non FIR/FIN request", ALERR_MULTI_FRAGEMENT_REQUEST);
+		}						
+	}	
 }
 
 ////////////////////
-// Helperss
+// Helpers
 ////////////////////
 
 void AppLayer::QueueConfirm(bool aUnsol, int aSeq)
 {
 	if(mConfirmSending) {
-		MACRO_THROW_EXCEPTION_WITH_CODE(Exception, "Unsol flood", aUnsol ? ALERR_UNSOL_FLOOD : ALERR_SOL_FLOOD);
+		ERROR_BLOCK(LogLevel::Warning, "Confirm request flood, ignoring confirm", aUnsol ? ALERR_UNSOL_FLOOD : ALERR_SOL_FLOOD);		
 	}
-
-	mConfirmSending = true;
-	mConfirm.SetControl(true, true, false, aUnsol, aSeq);
-
-	this->QueueFrame(mConfirm);
+	else {
+		mConfirmSending = true;
+		mConfirm.SetControl(true, true, false, aUnsol, aSeq);
+		this->QueueFrame(mConfirm);
+	}
 }
+	
 
 void AppLayer::QueueFrame(const APDU& arAPDU)
 {

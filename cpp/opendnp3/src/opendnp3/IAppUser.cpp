@@ -18,40 +18,36 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
+
 #include "AppInterfaces.h"
 
-#include <openpal/Location.h>
-#include <openpal/Exception.h>
+#include <openpal/LoggableMacros.h>
 
 using namespace openpal;
 
 namespace opendnp3
 {
-
-void IAppUser::OnPartialResponse(const APDU&)
+	
+void IAppUser::OnPartialResponse(const APDUResponseRecord&)
 {
-	MACRO_THROW_EXCEPTION(Exception, "Unhandled frame");
+	LOG_BLOCK(LogLevel::Error, "This app user doesn't implement responses, is your app layer configured correctly?");
 }
-
-void IAppUser::OnFinalResponse(const APDU&)
+	
+void IAppUser::OnFinalResponse(const APDUResponseRecord&)
 {
-	MACRO_THROW_EXCEPTION(Exception, "Unhandled frame");
+	LOG_BLOCK(LogLevel::Error, "This app user doesn't implement responses, is your app layer configured correctly?");
 }
-
-void IAppUser::OnUnsolResponse(const APDU&)
+	
+void IAppUser::OnUnsolResponse(const APDUResponseRecord&)
 {
-	MACRO_THROW_EXCEPTION(Exception, "Unhandled frame");
+	LOG_BLOCK(LogLevel::Error, "This app user doesn't implement responses, is your app layer configured correctly?");
 }
-
-void IAppUser::OnRequest(const APDU&, SequenceInfo)
+	
+void IAppUser::OnRequest(const APDURecord&, SequenceInfo)
 {
-	MACRO_THROW_EXCEPTION(Exception, "Unhandled frame");
-}
-
-
-void IAppUser::OnUnknownObject()
-{
-	MACRO_THROW_EXCEPTION(Exception, "Unhandled frame");
+	LOG_BLOCK(LogLevel::Error, "This app user doesn't implement requests, is your app layer configured correctly?");
 }
 
 } //end ns
+
+

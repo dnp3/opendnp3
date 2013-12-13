@@ -347,7 +347,6 @@
     <ClCompile Include="src\opendnp3\AppChannelStates.cpp" />
     <ClCompile Include="src\opendnp3\AppControlField.cpp" />
     <ClCompile Include="src\opendnp3\AppHeader.cpp" />
-    <ClCompile Include="src\opendnp3\AppInterfaces.cpp" />
     <ClCompile Include="src\opendnp3\AppLayer.cpp" />
     <ClCompile Include="src\opendnp3\AppLayerChannel.cpp" />
     <ClCompile Include="src\opendnp3\ApplicationStack.cpp" />
@@ -386,6 +385,7 @@
     <ClCompile Include="src\opendnp3\gen\StaticCounterResponse.cpp" />
     <ClCompile Include="src\opendnp3\gen\StaticSetpointStatusResponse.cpp" />
     <ClCompile Include="src\opendnp3\GroupVariation.cpp" />
+    <ClCompile Include="src\opendnp3\IAppUser.cpp" />
     <ClCompile Include="src\opendnp3\IINField.cpp" />
     <ClCompile Include="src\opendnp3\IMeasurementHandler.cpp" />
     <ClCompile Include="src\opendnp3\ITimeWriteHandler.cpp" />

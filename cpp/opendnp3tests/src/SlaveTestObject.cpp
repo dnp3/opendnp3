@@ -25,6 +25,8 @@
 #include <openpal/ToHex.h>
 #include <openpal/LoggableMacros.h>
 
+#include <opendnp3/APDUParser.h>
+
 #include <sstream>
 
 using namespace std;
@@ -51,11 +53,12 @@ mLogger(Logger(&log, aLevel, "test"))
 void SlaveTestObject::SendToSlave(const std::string& arData, SequenceInfo aSeq)
 {
 	HexSequence hs(arData);
-	mAPDU.Reset();
-	mAPDU.Write(hs.ToReadOnly());
-	mAPDU.Interpret();
-	LOG_BLOCK(LogLevel::Interpret, "<= " << mAPDU.ToString());
-	slave.OnRequest(mAPDU, aSeq);
+	APDURecord record;
+	if(APDUParser::ParseRequest(hs.ToReadOnly(), record) != APDUParser::Result::OK)
+	{
+		throw Exception("Why are you trying to send bad data?");
+	}	
+	slave.OnRequest(record, aSeq);
 }
 
 bool SlaveTestObject::NothingToRead()

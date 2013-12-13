@@ -27,6 +27,7 @@
 
 #include "AppLayerChannel.h"
 #include "gen/FunctionCode.h"
+#include "APDUHeader.h"
 
 namespace opendnp3
 {
@@ -48,7 +49,7 @@ public:
 	virtual void OnSendSuccess(AppLayerChannel*);
 	virtual void OnSendFailure(AppLayerChannel*);
 	virtual void OnConfirm(AppLayerChannel*, int aSequence);
-	virtual void OnResponse(AppLayerChannel*, APDU&);
+	virtual void OnResponse(AppLayerChannel*, const APDUResponseRecord&);
 	virtual void OnTimeout(AppLayerChannel*);
 
 #ifndef OPENDNP3_STRIP_LOG_MESSAGES
@@ -63,7 +64,7 @@ protected:
 
 	void ThrowInvalidState(const std::string& arLocation);
 
-	void ProcessResponse(AppLayerChannel*, APDU&, bool aExpectFIR);
+	void ProcessResponse(AppLayerChannel*, const APDUResponseRecord&, bool aExpectFIR);
 
 };
 
@@ -140,14 +141,14 @@ class ACS_WaitForFirstResponse : public ACS_WaitForResponseBase
 {
 	MACRO_STATE_SINGLETON_INSTANCE(ACS_WaitForFirstResponse);
 
-	void OnResponse(AppLayerChannel*, APDU&);
+	void OnResponse(AppLayerChannel*, const APDUResponseRecord&);
 };
 
 class ACS_WaitForFinalResponse : public ACS_WaitForResponseBase
 {
 	MACRO_STATE_SINGLETON_INSTANCE(ACS_WaitForFinalResponse);
 
-	void OnResponse(AppLayerChannel*, APDU&);
+	void OnResponse(AppLayerChannel*, const APDUResponseRecord&);
 };
 
 }

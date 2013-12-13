@@ -33,6 +33,9 @@ class MockAppUser : public IAppUser
 {
 public:
 
+	MockAppUser(openpal::Logger aLogger) : IAppUser(aLogger)
+	{}
+
 	struct State {
 		friend std::ostream& operator<<(std::ostream& output, const State& s);
 

@@ -64,10 +64,10 @@ void ACS_Base::OnConfirm(AppLayerChannel* c, int aSeq)
 	                   "Unexpected confirm with sequence: " << aSeq, ALERR_UNEXPECTED_CONFIRM);
 }
 
-void ACS_Base::OnResponse(AppLayerChannel* c, APDU& arAPDU)
+void ACS_Base::OnResponse(AppLayerChannel* c, const APDUResponseRecord& rsp)
 {
 	LOGGER_BLOCK(c->GetLogger(), LogLevel::Warning,
-	             "Unexpected response with sequence: " << static_cast<int>(arAPDU.GetControl().SEQ));
+		"Unexpected response with sequence: " << static_cast<int>(rsp.control.SEQ));
 }
 
 void ACS_Base::OnTimeout(AppLayerChannel*)
@@ -84,31 +84,29 @@ void ACS_Base::ThrowInvalidState(const std::string& arLocation)
 #endif
 }
 
-void ACS_Base::ProcessResponse(AppLayerChannel* c, APDU& arAPDU, bool aExpectFIR)
-{
-	AppControlField acf = arAPDU.GetControl();
-
-	if(acf.SEQ == c->Sequence()) {
-		if(acf.FIR == aExpectFIR) {
+void ACS_Base::ProcessResponse(AppLayerChannel* c, const APDUResponseRecord& record, bool aExpectFIR)
+{	
+	if(record.control.SEQ == c->Sequence()) {
+		if(record.control.FIR == aExpectFIR) {
 			c->CancelTimer();
 
-			if(acf.FIN) {
+			if(record.control.FIN) {
 				c->ChangeState(ACS_Idle::Inst());
-				c->DoFinalResponse(arAPDU);
+				c->DoFinalResponse(record);
 			}
 			else {
 				c->IncrSequence();
 				c->ChangeState(ACS_WaitForFinalResponse::Inst());
 				c->StartTimer();
-				c->DoPartialResponse(arAPDU);
+				c->DoPartialResponse(record);
 			}
 		}
 		else {
-			ERROR_LOGGER_BLOCK(c->GetLogger(), LogLevel::Warning, "Unexpected fir bit " << acf.FIR, ALERR_BAD_FIR_FIN);
+			ERROR_LOGGER_BLOCK(c->GetLogger(), LogLevel::Warning, "Unexpected fir bit " << record.control.FIR, ALERR_BAD_FIR_FIN);
 		}
 	}
 	else {
-		ERROR_LOGGER_BLOCK(c->GetLogger(), LogLevel::Warning, "Bad sequence number " << acf.SEQ, ALERR_BAD_SEQUENCE);
+		ERROR_LOGGER_BLOCK(c->GetLogger(), LogLevel::Warning, "Bad sequence number " << static_cast<int>(record.control.SEQ), ALERR_BAD_SEQUENCE);
 	}
 }
 
@@ -266,18 +264,18 @@ void ACS_WaitForResponseBase::OnTimeout(AppLayerChannel* c)
 
 ACS_WaitForFirstResponse ACS_WaitForFirstResponse::mInstance;
 
-void ACS_WaitForFirstResponse::OnResponse(AppLayerChannel* c, APDU& arAPDU)
+void ACS_WaitForFirstResponse::OnResponse(AppLayerChannel* c, const APDUResponseRecord& record)
 {
-	this->ProcessResponse(c, arAPDU, true);
+	this->ProcessResponse(c, record, true);
 }
 
 // ---- ATS_WaitForFinalResponse ----
 
 ACS_WaitForFinalResponse ACS_WaitForFinalResponse::mInstance;
 
-void ACS_WaitForFinalResponse::OnResponse(AppLayerChannel* c, APDU& arAPDU)
+void ACS_WaitForFinalResponse::OnResponse(AppLayerChannel* c, const APDUResponseRecord& record)
 {
-	this->ProcessResponse(c, arAPDU, false);
+	this->ProcessResponse(c, record, false);
 }
 
 }

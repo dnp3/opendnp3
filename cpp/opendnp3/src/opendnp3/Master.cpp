@@ -43,7 +43,7 @@ namespace opendnp3
 {
 
 Master::Master(Logger aLogger, MasterConfig aCfg, IAppLayer* apAppLayer, IMeasurementHandler* apPublisher, AsyncTaskGroup* apTaskGroup, openpal::IExecutor* apExecutor, IUTCTimeSource* apTimeSrc) :
-	Loggable(aLogger),
+	IAppUser(aLogger),
 	StackBase(apExecutor),
 	mRequest(aCfg.FragSize),
 	mpAppLayer(apAppLayer),
@@ -279,25 +279,25 @@ void Master::OnUnsolFailure()
 	MACRO_THROW_EXCEPTION(InvalidStateException, "Master can't send unsol");
 }
 
-void Master::OnPartialResponse(const APDU& arAPDU)
+void Master::OnPartialResponse(const APDUResponseRecord& aRecord)
 {
-	mLastIIN = arAPDU.GetIIN();
+	mLastIIN =  aRecord.IIN;
 	this->ProcessIIN(mLastIIN);
-	mpState->OnPartialResponse(this, arAPDU);
+	//mpState->OnPartialResponse(this, arAPDU);
 }
 
-void Master::OnFinalResponse(const APDU& arAPDU)
+void Master::OnFinalResponse(const APDUResponseRecord& aRecord)
 {
-	mLastIIN = arAPDU.GetIIN();
-	this->ProcessIIN(arAPDU.GetIIN());
-	mpState->OnFinalResponse(this, arAPDU);
+	mLastIIN = aRecord.IIN;
+	this->ProcessIIN(mLastIIN);
+	//mpState->OnFinalResponse(this, arAPDU);
 }
 
-void Master::OnUnsolResponse(const APDU& arAPDU)
+void Master::OnUnsolResponse(const APDUResponseRecord& aRecord)
 {
-	mLastIIN = arAPDU.GetIIN();
+	mLastIIN = aRecord.IIN;
 	this->ProcessIIN(mLastIIN);
-	mpState->OnUnsolResponse(this, arAPDU);
+	//mpState->OnUnsolResponse(this, arAPDU);
 }
 
 /* Private functions */

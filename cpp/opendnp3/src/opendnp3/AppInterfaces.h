@@ -23,6 +23,10 @@
 
 #include <stddef.h>
 
+#include "APDUHeader.h"
+
+#include <openpal/Loggable.h>
+
 namespace opendnp3
 {
 
@@ -113,9 +117,12 @@ enum SequenceInfo {
 };
 
 // Interface for callbacks from an application layer
-class IAppUser
+class IAppUser : protected openpal::Loggable
 {
+
 public:
+	IAppUser(openpal::Logger aLogger): Loggable(aLogger) {}
+
 	virtual void OnLowerLayerUp() = 0;					// The app layer is online
 	virtual void OnLowerLayerDown() = 0;				// The app layer is offline
 
@@ -126,19 +133,16 @@ public:
 	virtual void OnSolFailure() = 0;						// A transaction has failed for some reason
 
 	// A non-final response has been received
-	virtual void OnPartialResponse(const APDU&);
+	virtual void OnPartialResponse(const APDUResponseRecord&);
 
 	// A final response has been received
-	virtual void OnFinalResponse(const APDU&);
+	virtual void OnFinalResponse(const APDUResponseRecord&);
 
 	// Process unsolicited data
-	virtual void OnUnsolResponse(const APDU&);
+	virtual void OnUnsolResponse(const APDUResponseRecord&);
 
 	// Process request fragment
-	virtual void OnRequest(const APDU&, SequenceInfo);
-
-	// Unknown Object
-	virtual void OnUnknownObject();
+	virtual void OnRequest(const APDURecord&, SequenceInfo);
 };
 
 } //end ns

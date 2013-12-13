@@ -89,12 +89,11 @@ private:
 	////////////////////
 	// Internal Events
 	////////////////////
-
-	void OnUnknownObject(FunctionCode aCode, const AppControlField&);
-	void OnResponse(const AppControlField&, APDU&);
-	void OnUnsolResponse(const AppControlField&, APDU&);
-	void OnConfirm(const AppControlField&, APDU&);
-	void OnRequest(const AppControlField&, APDU&);
+	
+	void OnResponse(const APDUResponseRecord&);
+	void OnUnsolResponse(const APDUResponseRecord&);	
+	void OnRequest(const APDURecord&);
+	void OnConfirm(const AppControlField& aControl, size_t aDataSize);	
 
 	////////////////////
 	// State

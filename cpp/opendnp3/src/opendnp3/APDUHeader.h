@@ -41,7 +41,7 @@ struct APDUResponseRecord
 {	
 	AppControlField control;
 	FunctionCode function;
-	IINField iin;
+	IINField IIN;
 	openpal::ReadOnlyBuffer objects;
 };
 

@@ -65,7 +65,8 @@ APDUParser::Result APDUParser::ParseResponse(openpal::ReadOnlyBuffer buffer, APD
 	else {
 		header.control = AppControlField(buffer[0]);
 		header.function = FunctionCodeFromType(buffer[1]);		
-		header.iin = IINField(buffer[2], buffer[3]);
+		header.IIN.LSB = buffer[2];
+		header.IIN.MSB = buffer[3];
 		buffer.Advance(4);
 		header.objects = buffer;
 		return Result::OK;

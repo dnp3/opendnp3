@@ -107,14 +107,14 @@ bool AppLayerChannel::Retry(ACS_Base* apState)
 	}
 }
 
-void AppLayerChannel::DoPartialResponse(APDU& arAPDU)
+void AppLayerChannel::DoPartialResponse(const APDUResponseRecord& record)
 {
-	mpAppLayer->mpUser->OnPartialResponse(arAPDU);
+	mpAppLayer->mpUser->OnPartialResponse(record);
 }
 
-void AppLayerChannel::DoFinalResponse(APDU& arAPDU)
+void AppLayerChannel::DoFinalResponse(const APDUResponseRecord& record)
 {
-	mpAppLayer->mpUser->OnFinalResponse(arAPDU);
+	mpAppLayer->mpUser->OnFinalResponse(record);
 }
 
 void AppLayerChannel::StartTimer()

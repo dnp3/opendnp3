@@ -32,16 +32,15 @@ UnsolicitedChannel::UnsolicitedChannel(openpal::Logger aLogger, AppLayer* apApp,
 	AppLayerChannel("Unsolicited", aLogger, apApp, apExecutor, aTimeout)
 {}
 
-void UnsolicitedChannel::OnUnsol(APDU& arAPDU)
+void UnsolicitedChannel::OnUnsol(const APDUResponseRecord& aRecord)
 {
-	AppControlField acf = arAPDU.GetControl();
-
-	if(acf.SEQ == mSequence) {
-		LOG_BLOCK(LogLevel::Info, "Ignoring repeat unsol seq: " << acf.SEQ)
+	if(aRecord.control.SEQ == mSequence) 
+	{
+		LOG_BLOCK(LogLevel::Info, "Ignoring repeat unsol seq: " << aRecord.control.SEQ)
 	}
 	else { // only process the data if the sequence number is new
-		mSequence = acf.SEQ;
-		mpAppLayer->mpUser->OnUnsolResponse(arAPDU);
+		mSequence = aRecord.control.SEQ;
+		mpAppLayer->mpUser->OnUnsolResponse(aRecord);
 	}
 }
 

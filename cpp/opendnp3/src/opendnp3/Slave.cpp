@@ -38,7 +38,7 @@ namespace opendnp3
 {
 
 Slave::Slave(openpal::Logger aLogger, IAppLayer* apAppLayer, IExecutor* apExecutor, ITimeWriteHandler* apTimeWriteHandler, Database* apDatabase, ICommandHandler* apCmdHandler, const SlaveConfig& arCfg) :
-	Loggable(aLogger),
+	IAppUser(aLogger),
 	StackBase(apExecutor),
 	mpTimeWriteHandler(apTimeWriteHandler),
 	mpAppLayer(apAppLayer),
@@ -145,16 +145,11 @@ void Slave::OnUnsolFailure()
 	this->FlushDeferredEvents();
 }
 
-void Slave::OnRequest(const APDU& arAPDU, SequenceInfo aSeqInfo)
+void Slave::OnRequest(const APDURecord& record, SequenceInfo aSeqInfo)
 {
-	mpState->OnRequest(this, arAPDU, aSeqInfo);
-	this->FlushDeferredEvents();
-}
-
-void Slave::OnUnknownObject()
-{
-	mpState->OnUnknown(this);
-	this->FlushDeferredEvents();
+	// TODO
+	// mpState->OnRequest(this, arAPDU, aSeqInfo);
+	// this->FlushDeferredEvents();
 }
 
 /* Internally generated events */

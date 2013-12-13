@@ -76,21 +76,16 @@ BOOST_AUTO_TEST_SUITE(MasterTestSuite)
 BOOST_AUTO_TEST_CASE(InitialState)
 {
 	MasterConfig master_cfg;
-	MasterTestObject t(master_cfg);
-
-	APDU f;
-	f.Set(FunctionCode::RESPONSE);
-	IINField iin;
-	f.SetIIN(iin);
+	MasterTestObject t(master_cfg);	
 
 	BOOST_REQUIRE_THROW(t.master.OnLowerLayerDown(), InvalidStateException);
 	BOOST_REQUIRE_THROW(t.master.OnSolSendSuccess(), InvalidStateException);
 	BOOST_REQUIRE_THROW(t.master.OnUnsolSendSuccess(), InvalidStateException);
 	BOOST_REQUIRE_THROW(t.master.OnSolFailure(), InvalidStateException);
 	BOOST_REQUIRE_THROW(t.master.OnUnsolFailure(), InvalidStateException);
-	BOOST_REQUIRE_THROW(t.master.OnPartialResponse(f), InvalidStateException);
-	BOOST_REQUIRE_THROW(t.master.OnFinalResponse(f), InvalidStateException);
-	BOOST_REQUIRE_THROW(t.master.OnUnsolResponse(f), InvalidStateException);
+	BOOST_REQUIRE_THROW(t.master.OnPartialResponse(APDUResponseRecord()), InvalidStateException);
+	BOOST_REQUIRE_THROW(t.master.OnFinalResponse(APDUResponseRecord()), InvalidStateException);
+	BOOST_REQUIRE_THROW(t.master.OnUnsolResponse(APDUResponseRecord()), InvalidStateException);
 }
 
 BOOST_AUTO_TEST_CASE(IntegrityOnStartup)

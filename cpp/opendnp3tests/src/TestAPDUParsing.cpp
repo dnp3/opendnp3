@@ -92,7 +92,7 @@ BOOST_AUTO_TEST_CASE(HeaderParsesResponse)
 	BOOST_REQUIRE(APDUParser::Result::OK == APDUParser::ParseResponse(buffer.ToReadOnly(), rec));
 	BOOST_REQUIRE_EQUAL(rec.control.ToByte(), AppControlField(true, true, false, false, 0).ToByte());
 	BOOST_REQUIRE(rec.function == FunctionCode::WRITE);
-	BOOST_REQUIRE(rec.iin == IINField(01,02));
+	BOOST_REQUIRE(rec.IIN == IINField(01, 02));
 	BOOST_REQUIRE_EQUAL("BE EF", toHex(rec.objects));
 }
 

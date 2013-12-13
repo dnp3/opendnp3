@@ -23,6 +23,7 @@
 
 #include "AppLayerChannel.h"
 
+#include "APDUHeader.h"
 
 
 namespace opendnp3
@@ -39,7 +40,7 @@ public:
 	UnsolicitedChannel(openpal::Logger aLogger, AppLayer* apApp, openpal::IExecutor* apExecutor, openpal::TimeDuration aTimeout);
 	virtual ~UnsolicitedChannel() {}
 
-	void OnUnsol(APDU& arAPDU);
+	void OnUnsol(const APDUResponseRecord& aRecord);
 
 	void DoSendSuccess();
 	void DoFailure();

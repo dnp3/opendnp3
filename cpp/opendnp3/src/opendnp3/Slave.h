@@ -25,7 +25,6 @@
 #include <opendnp3/ITimeWriteHandler.h>
 #include <opendnp3/SlaveConfig.h>
 
-
 #include <openpal/ITimer.h>
 
 #include "StackBase.h"
@@ -69,7 +68,7 @@ class AS_Base;
  * The Slave is responsible for building all aspects of APDU packet responses
  * except for the application sequence number.
  */
-class Slave : public openpal::Loggable, public IAppUser, public StackBase
+class Slave : public IAppUser, public StackBase
 {
 
 	friend class AS_Base; //make the state base class a friend
@@ -102,8 +101,8 @@ public:
 	void OnSolFailure();
 
 	// Only have to override OnRequest since we're a slave
-	void OnRequest(const APDU&, SequenceInfo);
-	void OnUnknownObject();	
+	void OnRequest(const APDURecord&, SequenceInfo);
+	
 
 	/**
 	 * Returns the buffer that is used for data updates by the user

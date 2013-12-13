@@ -49,33 +49,25 @@ void SolicitedChannel::DoFailure()
 	mpAppLayer->mpUser->OnSolFailure();
 }
 
-void SolicitedChannel::OnResponse(APDU& arAPDU)
+void SolicitedChannel::OnResponse(const APDUResponseRecord& aRecord)
 {
-	mpState->OnResponse(this, arAPDU);
+	mpState->OnResponse(this, aRecord);
 }
 
-void SolicitedChannel::OnRequest(APDU& arAPDU)
+void SolicitedChannel::OnRequest(const APDURecord& aRecord)
 {
-
-	AppControlField acf = arAPDU.GetControl();
-
 	SequenceInfo seq = SI_OTHER;
-	if (acf.SEQ == this->Sequence()) {
+	if (aRecord.control.SEQ == this->Sequence()) {
 		LOG_BLOCK(LogLevel::Warning, "Received previous sequence");
 		seq = SI_PREV;
 	}
-	else if (acf.SEQ == NextSeq(this->Sequence())) {
+	else if (aRecord.control.SEQ == NextSeq(this->Sequence())) {
 		seq = SI_CORRECT;
 	}
 
-	mSequence = acf.SEQ;
+	mSequence = aRecord.control.SEQ;
 
-	mpAppLayer->mpUser->OnRequest(arAPDU, seq);
-}
-
-void SolicitedChannel::OnUnknownObjectInRequest(const AppControlField& acf)
-{
-	mSequence = acf.SEQ; // capture the sequence number
+	mpAppLayer->mpUser->OnRequest(aRecord, seq);
 }
 
 }

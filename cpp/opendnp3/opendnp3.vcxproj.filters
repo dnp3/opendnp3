@@ -614,9 +614,6 @@
     <ClCompile Include="src\opendnp3\AppHeader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\AppInterfaces.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\opendnp3\AppLayer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -984,6 +981,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\IINField.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\IAppUser.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -39,10 +39,9 @@ public:
 	SolicitedChannel(openpal::Logger aLogger, AppLayer* apApp, openpal::IExecutor* apExecutor, openpal::TimeDuration aTimeout);
 	virtual ~SolicitedChannel() {}
 
-	// Called when the app layer has a problem parsing an object header
-	void OnUnknownObjectInRequest(const AppControlField& acf);
-	void OnResponse(APDU& arAPDU);
-	void OnRequest(APDU& arAPDU);
+	// Called when the app layer has a problem parsing an object header	
+	void OnResponse(const APDUResponseRecord& aRecord);
+	void OnRequest(const APDURecord& aRecord);
 
 	bool AcceptsResponse();
 
