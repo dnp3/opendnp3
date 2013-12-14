@@ -240,6 +240,7 @@
     <ClInclude Include="src\opendnp3\CRC.h" />
     <ClInclude Include="src\opendnp3\CTOHistory.h" />
     <ClInclude Include="src\opendnp3\Database.h" />
+    <ClInclude Include="src\opendnp3\HeaderHandlerBase.h" />
     <ClInclude Include="src\opendnp3\IEventBuffer.h" />
     <ClInclude Include="src\opendnp3\DataPoll.h" />
     <ClInclude Include="src\opendnp3\DeadlineTimerSteadyClock.h" />
@@ -248,6 +249,7 @@
     <ClInclude Include="src\opendnp3\IINField.h" />
     <ClInclude Include="src\opendnp3\IndexParser.h" />
     <ClInclude Include="src\opendnp3\BitReader.h" />
+    <ClInclude Include="src\opendnp3\objects\Group52.h" />
     <ClInclude Include="src\opendnp3\objects\MeasurementFactory.h" />
     <ClInclude Include="src\opendnp3\PointInfo.h" />
     <ClInclude Include="src\opendnp3\DNPFromStream.h" />
@@ -332,6 +334,7 @@
     <ClInclude Include="src\opendnp3\SolicitedChannel.h" />
     <ClInclude Include="src\opendnp3\StackBase.h" />
     <ClInclude Include="src\opendnp3\StartupTasks.h" />
+    <ClInclude Include="src\opendnp3\TimeSyncHandler.h" />
     <ClInclude Include="src\opendnp3\TLS_Base.h" />
     <ClInclude Include="src\opendnp3\TrackingTaskGroup.h" />
     <ClInclude Include="src\opendnp3\TransportLayer.h" />
@@ -387,6 +390,7 @@
     <ClCompile Include="src\opendnp3\gen\StaticCounterResponse.cpp" />
     <ClCompile Include="src\opendnp3\gen\StaticSetpointStatusResponse.cpp" />
     <ClCompile Include="src\opendnp3\GroupVariation.cpp" />
+    <ClCompile Include="src\opendnp3\HeaderHandlerBase.cpp" />
     <ClCompile Include="src\opendnp3\IAppUser.cpp" />
     <ClCompile Include="src\opendnp3\IINField.cpp" />
     <ClCompile Include="src\opendnp3\IMeasurementHandler.cpp" />
@@ -410,6 +414,7 @@
     <ClCompile Include="src\opendnp3\objects\Group42.cpp" />
     <ClCompile Include="src\opendnp3\objects\Group50.cpp" />
     <ClCompile Include="src\opendnp3\objects\Group51.cpp" />
+    <ClCompile Include="src\opendnp3\objects\Group52.cpp" />
     <ClCompile Include="src\opendnp3\PostingMeasurementHandler.cpp" />
     <ClCompile Include="src\opendnp3\TimeTransaction.cpp" />
     <ClCompile Include="src\opendnp3\DestructorHook.cpp" />

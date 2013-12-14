@@ -34,6 +34,9 @@
 #include <openpal/IExecutor.h>
 #include "AsyncTaskContinuous.h"
 #include "CopyableBuffer.h"
+#include "APDUParser.h"
+
+#include <openpal/LoggableMacros.h>
 
 #include <functional>
 
@@ -283,36 +286,36 @@ void Master::OnPartialResponse(const APDUResponseRecord& aRecord)
 {
 	mLastIIN =  aRecord.IIN;
 	this->ProcessIIN(mLastIIN);
-	//mpState->OnPartialResponse(this, arAPDU);
+	mpState->OnPartialResponse(this, aRecord);
 }
 
 void Master::OnFinalResponse(const APDUResponseRecord& aRecord)
 {
 	mLastIIN = aRecord.IIN;
 	this->ProcessIIN(mLastIIN);
-	//mpState->OnFinalResponse(this, arAPDU);
+	mpState->OnFinalResponse(this, aRecord);
 }
 
 void Master::OnUnsolResponse(const APDUResponseRecord& aRecord)
 {
 	mLastIIN = aRecord.IIN;
 	this->ProcessIIN(mLastIIN);
-	//mpState->OnUnsolResponse(this, arAPDU);
+	mpState->OnUnsolResponse(this, aRecord);
 }
 
 /* Private functions */
 
-void Master::ProcessDataResponse(const APDU& arResponse)
+void Master::ProcessDataResponse(const APDUResponseRecord& record)
 {
-	try {
-		ResponseLoader loader(this->mLogger, mHandler.Load);
-
-		for(HeaderReadIterator hdr = arResponse.BeginRead(); !hdr.IsEnd(); ++hdr)
-			loader.Process(hdr);
+	MeasurementHandler handler(mLogger);
+	auto res = APDUParser::ParseHeaders(record.objects, handler);
+	if(res == APDUParser::Result::OK)
+	{
+		if(handler.updates.HasUpdates()) mHandler.Load(handler.updates);
 	}
-	catch(const Exception& ex) {
-		EXCEPTION_BLOCK(LogLevel::Warning, ex)
-	}
+	else {
+		LOG_BLOCK(LogLevel::Warning, "Error parsing response headers: " << static_cast<int>(res)); // TODO - turn these into strings
+	}	
 }
 
 } //end ns

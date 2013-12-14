@@ -15,6 +15,9 @@
 // http://www.apache.org/licenses/LICENSE-2.0.html
 //
 
+#ifndef __OPENDNP3_GENERATED_GROUP22_H_
+#define __OPENDNP3_GENERATED_GROUP22_H_
+
 #include <openpal/BufferWrapper.h>
 #include <opendnp3/DataTypes.h>
 
@@ -138,3 +141,5 @@ struct Group22Var8
 
 
 }
+
+#endif

@@ -603,6 +603,15 @@
     <ClInclude Include="src\opendnp3\APDUHeaderParser.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\opendnp3\HeaderHandlerBase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\TimeSyncHandler.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\objects\Group52.h">
+      <Filter>Header Files\objects</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\opendnp3\AnalogOutput.cpp">
@@ -991,6 +1000,12 @@
     </ClCompile>
     <ClCompile Include="src\opendnp3\APDUHeaderParser.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\HeaderHandlerBase.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\objects\Group52.cpp">
+      <Filter>Source Files\objects</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

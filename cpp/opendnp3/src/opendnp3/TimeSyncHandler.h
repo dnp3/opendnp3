@@ -18,65 +18,63 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __DATA_POLL_H_
-#define __DATA_POLL_H_
+#ifndef __TIME_SYNC_HANDLER_H_
+#define __TIME_SYNC_HANDLER_H_
 
-#include <opendnp3/MeasurementUpdate.h>
-#include "MasterTaskBase.h"
+#include "HeaderHandlerBase.h"
 
-#include <functional>
-
+#include <openpal/LoggableMacros.h>
 
 namespace opendnp3
 {
 
-class IMeasurementHandler;
-
 /**
- * Base class for all data acquistion polls
+ * Dedicated class for processing response data in the master.
  */
-class DataPoll : public MasterTaskBase
+class TimeSyncHandler : public HeaderHandlerBase
 {
+
 public:
+	
+	/**
+	* @param arLogger the Logger that the loader should use for message reporting
+	*/
+	TimeSyncHandler(openpal::Logger& aLogger) : 
+		HeaderHandlerBase(aLogger), 
+		valid(false), 
+		timeOut(0)
+	{}	
 
-	DataPoll(openpal::Logger&, const std::function<void (MeasurementUpdate&)>& aUpdate);
+	std::string HandlerName() const final { return "TimeSyncHandler"; }
 
-private:
+	void _OnCountOf(const opendnp3::LazyIterable<Group52Var2>& times) final
+	{
+		if(times.Size() == 1)
+		{
+			valid = true;
+			timeOut = times.GetIterator().Next().time16;			
+		}
+		else
+		{
+			LOG_BLOCK(openpal::LogLevel::Warning, "Ignoring unexpected time delay count of " << times.Size());
+		}
+	}
 
-	void ReadData(const APDUResponseRecord& record);
-
-	//Implement MasterTaskBase
-	TaskResult _OnPartialResponse(const APDUResponseRecord& record) override;
-	TaskResult _OnFinalResponse(const APDUResponseRecord& record) override;
-
-	std::function<void (MeasurementUpdate&)> mUpdateCallback;
-
-};
-
-/** Task that acquires class data from the outstation
-*/
-class ClassPoll : public DataPoll
-{
-public:
-
-	ClassPoll(openpal::Logger&, const std::function<void (MeasurementUpdate&)>& aUpdate);
-
-	void Set(int aClassMask);
-
-	//Implement MasterTaskBase
-	void ConfigureRequest(APDU& arAPDU);
-	virtual std::string Name() const {
-		return "Class Poll";
+	bool GetTimeDelay(uint16_t& time) 
+	{
+		if(valid) time = timeOut;
+		return valid;		
 	}
 
 private:
-
-	int mClassMask;
+	bool valid;
+	uint16_t timeOut;
 
 };
 
-} //ens ns
+}
 
 /* vim: set ts=4 sw=4: */
 
 #endif
+

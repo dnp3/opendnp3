@@ -225,7 +225,6 @@
     <ClInclude Include="src\Random.h" />
     <ClInclude Include="src\RandomDouble.h" />
     <ClInclude Include="src\RandomizedBuffer.h" />
-    <ClInclude Include="src\ResponseLoaderTestObject.h" />
     <ClInclude Include="src\SlaveTestObject.h" />
     <ClInclude Include="src\StopWatch.h" />
     <ClInclude Include="src\TestHelpers.h" />
@@ -268,7 +267,6 @@
     <ClCompile Include="src\PhysicalLayerWrapper.cpp" />
     <ClCompile Include="src\PhysLoopback.cpp" />
     <ClCompile Include="src\RandomizedBuffer.cpp" />
-    <ClCompile Include="src\ResponseLoaderTestObject.cpp" />
     <ClCompile Include="src\SlaveTestObject.cpp" />
     <ClCompile Include="src\StopWatch.cpp" />
     <ClCompile Include="src\TestAPDU.cpp" />
@@ -305,7 +303,6 @@
     <ClCompile Include="src\TestPhysicalLayerAsyncTCP.cpp" />
     <ClCompile Include="src\TestPhysicalLayerLoopback.cpp" />
     <ClCompile Include="src\TestPhysicalLayerMonitor.cpp" />
-    <ClCompile Include="src\TestResponseLoader.cpp" />
     <ClCompile Include="src\TestShiftableBuffer.cpp" />
     <ClCompile Include="src\TestSlave.cpp" />
     <ClCompile Include="src\TestSlaveEventBuffer.cpp" />

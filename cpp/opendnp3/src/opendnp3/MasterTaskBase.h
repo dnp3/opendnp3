@@ -23,6 +23,7 @@
 
 #include <string>
 
+#include "APDUHeader.h"
 
 #include <openpal/Loggable.h>
 
@@ -72,11 +73,11 @@ public:
 	 * Handler for non-FIN responses, performs common validation and
 	 * delegates to _OnPartialResponse().
 	 *
-	 * @param arAPDU	the DNP3 message as an APDU instance
+	 * @param aRecord	unparsed record
 	 *
 	 * @return			TaskResult enumeration
 	 */
-	TaskResult OnPartialResponse(const APDU& arAPDU);
+	TaskResult OnPartialResponse(const APDUResponseRecord& aRecord);
 
 	/**
 	 * Handler for FIN responses, performs common validation and delegates
@@ -86,7 +87,7 @@ public:
 	 *
 	 * @return			true if a valid response, false otherwise
 	 */
-	TaskResult OnFinalResponse(const APDU& arAPDU);
+	TaskResult OnFinalResponse(const APDUResponseRecord& aRecord);
 
 	/**
 	 * Overridable handler for timeouts, layer closes, etc.  Subclasses
@@ -114,7 +115,7 @@ protected:
 	 *
 	 * @return			a TaskResult value as a response
 	 */
-	virtual TaskResult _OnPartialResponse(const APDU& arAPDU) = 0;
+	virtual TaskResult _OnPartialResponse(const APDUResponseRecord& record) = 0;
 
 	/**
 	 * Handler for FIN responses.  Subclasses should override this
@@ -124,7 +125,7 @@ protected:
 	 *
 	 * @return			a TaskResult value as a response
 	 */
-	virtual TaskResult _OnFinalResponse(const APDU& arAPDU) = 0;
+	virtual TaskResult _OnFinalResponse(const APDUResponseRecord& record) = 0;
 
 private:
 
@@ -140,14 +141,14 @@ class SingleRspBase : public MasterTaskBase
 {
 public:
 	SingleRspBase(openpal::Logger&);
-	TaskResult _OnPartialResponse(const APDU&);
+	TaskResult _OnPartialResponse(const APDUResponseRecord& record) override;
 };
 
 class SimpleRspBase : public SingleRspBase
 {
 public:
 	SimpleRspBase(openpal::Logger&);
-	TaskResult _OnFinalResponse(const APDU&);
+	TaskResult _OnFinalResponse(const APDUResponseRecord& record) override;
 };
 
 } //ens ns

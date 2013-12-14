@@ -125,9 +125,6 @@
     <ClInclude Include="src\RandomizedBuffer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\ResponseLoaderTestObject.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\SlaveTestObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -259,9 +256,6 @@
     <ClCompile Include="src\RandomizedBuffer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\ResponseLoaderTestObject.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\SlaveTestObject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -356,9 +350,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\TestPhysicalLayerMonitor.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\TestResponseLoader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\TestShiftableBuffer.cpp">

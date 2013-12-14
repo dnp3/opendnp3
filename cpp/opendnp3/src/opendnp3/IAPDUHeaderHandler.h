@@ -31,6 +31,8 @@
 #include <opendnp3/AnalogOutput.h>
 #include <opendnp3/IndexedValue.h>
 
+#include "objects/Group52.h"
+
 namespace opendnp3
 {
 
@@ -39,6 +41,8 @@ class IAPDUHeaderHandler
 	public:
 
 		virtual void AllObjects(GroupVariation gv, const openpal::ReadOnlyBuffer& header) = 0;
+
+		virtual void OnCountOf(const LazyIterable<Group52Var2>& times) = 0;
 
 		virtual void OnIIN(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const LazyIterable<IndexedValue<bool>>& meas) = 0;
 

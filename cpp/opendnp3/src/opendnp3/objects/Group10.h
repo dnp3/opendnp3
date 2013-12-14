@@ -15,6 +15,9 @@
 // http://www.apache.org/licenses/LICENSE-2.0.html
 //
 
+#ifndef __OPENDNP3_GENERATED_GROUP10_H_
+#define __OPENDNP3_GENERATED_GROUP10_H_
+
 #include <openpal/BufferWrapper.h>
 #include <opendnp3/DataTypes.h>
 
@@ -35,3 +38,5 @@ struct Group10Var2
 
 
 }
+
+#endif

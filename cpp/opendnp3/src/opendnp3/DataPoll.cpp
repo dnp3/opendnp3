@@ -23,8 +23,10 @@
 
 #include <openpal/Exception.h>
 #include <opendnp3/PointClass.h>
+#include <openpal/LoggableMacros.h>
 
 #include "APDU.h"
+#include "APDUParser.h"
 #include "ResponseLoader.h"
 
 using namespace openpal;
@@ -39,24 +41,28 @@ DataPoll::DataPoll(Logger& arLogger, const std::function<void (MeasurementUpdate
 	mUpdateCallback(aUpdate)
 {}
 
-TaskResult DataPoll::_OnPartialResponse(const APDU& f)
+TaskResult DataPoll::_OnPartialResponse(const APDUResponseRecord& record)
 {
-	this->ReadData(f);
+	this->ReadData(record);
 	return TR_CONTINUE;
 }
 
-TaskResult DataPoll::_OnFinalResponse(const APDU& f)
+TaskResult DataPoll::_OnFinalResponse(const APDUResponseRecord& record)
 {
-	this->ReadData(f);
+	this->ReadData(record);
 	return TR_SUCCESS;
 }
 
-void DataPoll::ReadData(const APDU& f)
+void DataPoll::ReadData(const APDUResponseRecord& record)
 {
-	ResponseLoader loader(mLogger, mUpdateCallback);
-	HeaderReadIterator hdr = f.BeginRead();
-	for ( ; !hdr.IsEnd(); ++hdr) {
-		loader.Process(hdr);
+	MeasurementHandler handler(mLogger);
+	auto res = APDUParser::ParseHeaders(record.objects, handler);
+	if(res == APDUParser::Result::OK)
+	{
+		if(handler.updates.HasUpdates()) mUpdateCallback(handler.updates);
+	}
+	else {
+		LOG_BLOCK(LogLevel::Warning, "Error parsing response headers: " << static_cast<int>(res)); // TODO - turn these into strings
 	}
 }
 

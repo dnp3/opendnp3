@@ -47,6 +47,11 @@ class MockApduHeaderHandler : public IAPDUHeaderHandler
 			headers.push_back(header);
 			bits.Foreach([&](const IndexedValue<bool>& v) { iinBits.push_back(v); });
 		}
+
+		virtual void OnCountOf(const LazyIterable<Group52Var2>& times) override
+		{
+			groupVariations.push_back(GroupVariation::Group52Var2);  // TODO - normalize this record keeping?			
+		}
 				
 		virtual void OnRange(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const LazyIterable<IndexedValue<Binary>>& meas) override
 		{

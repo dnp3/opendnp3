@@ -15,31 +15,29 @@
 // http://www.apache.org/licenses/LICENSE-2.0.html
 //
 
-#ifndef __OPENDNP3_GENERATED_GROUP12_H_
-#define __OPENDNP3_GENERATED_GROUP12_H_
+#ifndef __OPENDNP3_GENERATED_GROUP52_H_
+#define __OPENDNP3_GENERATED_GROUP52_H_
 
 #include <openpal/BufferWrapper.h>
-#include <opendnp3/gen/ControlCode.h>
-#include <opendnp3/gen/CommandStatus.h>
-#include <opendnp3/ControlRelayOutputBlock.h>
 
 namespace opendnp3 {
 
-struct Group12Var1
+struct Group52Var1
 {
-  static const size_t SIZE = 11;
+  static const size_t SIZE = 2;
+  static Group52Var1 Read(openpal::ReadOnlyBuffer&);
+  static void Write(const Group52Var1&, openpal::WriteBuffer&);
 
-  typedef ControlRelayOutputBlock Target;
-  static ControlRelayOutputBlock Convert(openpal::ReadOnlyBuffer&);
+  uint16_t time16;
+};
 
-  static Group12Var1 Read(openpal::ReadOnlyBuffer&);
-  static void Write(const Group12Var1&, openpal::WriteBuffer&);
+struct Group52Var2
+{
+  static const size_t SIZE = 2;
+  static Group52Var2 Read(openpal::ReadOnlyBuffer&);
+  static void Write(const Group52Var2&, openpal::WriteBuffer&);
 
-  ControlCode code;
-  uint8_t count;
-  uint32_t onTime;
-  uint32_t offTime;
-  CommandStatus status;
+  uint16_t time16;
 };
 
 

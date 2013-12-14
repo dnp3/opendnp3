@@ -152,7 +152,7 @@ private:
 	IINField mLastIIN;						// last IIN received from the outstation
 
 	void ProcessIIN(const IINField& arIIN);	// Analyze IIN bits and react accordingly
-	void ProcessDataResponse(const APDU&);	// Read data output of solicited or unsolicited response and publish
+	void ProcessDataResponse(const APDUResponseRecord& aRecord);	// Read data output of solicited or unsolicited response and publish
 	void StartTask(MasterTaskBase*, bool aInit);	// Starts a task running
 
 	QueuedCommandProcessor mCommandQueue;				// Threadsafe queue for buffering command requests

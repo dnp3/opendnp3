@@ -15,6 +15,9 @@
 // http://www.apache.org/licenses/LICENSE-2.0.html
 //
 
+#ifndef __OPENDNP3_GENERATED_GROUP11_H_
+#define __OPENDNP3_GENERATED_GROUP11_H_
+
 #include <openpal/BufferWrapper.h>
 
 namespace opendnp3 {
@@ -40,3 +43,5 @@ struct Group11Var2
 
 
 }
+
+#endif

@@ -271,7 +271,7 @@ void Slave::ConfigureDelayMeasurement(const APDU& arRequest)
 		mRspIIN.Set(IINBit::FUNC_NOT_SUPPORTED);
 	}
 
-	Group52Var2* pObj = Group52Var2::Inst();
+	Group52Var2Temp* pObj = Group52Var2Temp::Inst();
 
 	mResponse.Set(FunctionCode::RESPONSE);
 

@@ -187,8 +187,12 @@ ObjectBase* ObjectBase::Get(int aGroup, int aVariation)
 		MACRO_RADIX_CASE(50, 2);
 		MACRO_RADIX_CASE(51, 1);
 		MACRO_RADIX_CASE(51, 2);
-		MACRO_RADIX_CASE(52, 1);
-		MACRO_RADIX_CASE(52, 2);
+
+		case(RADIX(52, 1)):
+			return Group52Var1Temp::Inst();
+		case(RADIX(52, 2)):
+			return Group52Var2Temp::Inst();
+			
 
 		// Class Objects
 		MACRO_RADIX_CASE(60, 1);

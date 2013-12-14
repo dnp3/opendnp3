@@ -67,12 +67,16 @@ object GroupVariationFileGenerator {
 
     def headerFile(group: ObjectGroup): Iterator[String] = {
       commented(LicenseHeader()) ++ space ++
-      Iterator("#include <openpal/BufferWrapper.h>") ++
-      optionalIncludes(group) ++ space ++
-      namespace("opendnp3") {
-        definitions(GroupVariationHeaderRenderer)(group)
+      includeGuards(group.name.toUpperCase) {
+        Iterator("#include <openpal/BufferWrapper.h>") ++
+        optionalIncludes(group) ++ space ++
+        namespace("opendnp3") {
+          definitions(GroupVariationHeaderRenderer)(group)
+        }
       }
     }
+
+
 
     def implFile(group: ObjectGroup): Iterator[String] = {
       commented(LicenseHeader()) ++ space ++

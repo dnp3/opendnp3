@@ -26,6 +26,8 @@
 #include <opendnp3/Singleton.h>
 #include <opendnp3/ObjectInterfaces.h>
 
+#include "APDUHeader.h"
+
 
 namespace opendnp3
 {
@@ -51,10 +53,9 @@ public:
 	virtual void OnSendSuccess(Master*);
 	virtual void OnFailure(Master*);
 
-	virtual void OnPartialResponse(Master*, const APDU&);
-	virtual void OnFinalResponse(Master*, const APDU&);
-
-	virtual void OnUnsolResponse(Master*, const APDU&);
+	virtual void OnPartialResponse(Master*, const APDUResponseRecord& aRecord);
+	virtual void OnFinalResponse(Master*, const APDUResponseRecord& aRecord);
+	virtual void OnUnsolResponse(Master*, const APDUResponseRecord& aRecord);
 
 #ifndef OPENDNP3_STRIP_LOG_MESSAGES
 	virtual std::string Name() const = 0;
@@ -80,8 +81,8 @@ class AMS_Closed : public AMS_Base
 class AMS_OpenBase : public AMS_Base
 {
 public:
-	void OnUnsolResponse(Master*, const APDU&);
-	virtual void OnLowerLayerDown(Master* c);
+	virtual void OnUnsolResponse(Master*, const APDUResponseRecord& aRecord) override;
+	virtual void OnLowerLayerDown(Master* c)  override;
 };
 
 /* AMS_Idle */
@@ -91,7 +92,7 @@ class AMS_Idle : public AMS_OpenBase
 {
 	MACRO_STATE_SINGLETON_INSTANCE(AMS_Idle);
 
-	void StartTask(Master* c, ITask*, MasterTaskBase*);
+	void StartTask(Master* c, ITask*, MasterTaskBase*) override;
 };
 
 /* AMS_Waiting */
@@ -102,11 +103,11 @@ class AMS_Waiting : public AMS_OpenBase
 {
 	MACRO_STATE_SINGLETON_INSTANCE(AMS_Waiting);
 
-	void OnFailure(Master*);
-	void OnPartialResponse(Master*, const APDU&);
-	void OnFinalResponse(Master*, const APDU&);
+	void OnFailure(Master*) override;
+	void OnPartialResponse(Master*, const APDUResponseRecord& aRecord) override;
+	void OnFinalResponse(Master*, const APDUResponseRecord& aRecord) override;
 
-	void OnLowerLayerDown(Master* c);
+	void OnLowerLayerDown(Master* c) override;
 };
 
 } //ens ns

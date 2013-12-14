@@ -75,7 +75,7 @@ public:
 	// override Init
 	void Init();
 	void ConfigureRequest(APDU& arAPDU);
-	TaskResult _OnFinalResponse(const APDU&);
+	TaskResult _OnFinalResponse(const APDUResponseRecord&);
 
 #ifndef OPENDNP3_STRIP_LOG_MESSAGES
 	std::string Name() const {

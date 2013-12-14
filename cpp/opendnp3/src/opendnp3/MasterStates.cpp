@@ -58,17 +58,17 @@ void AMS_Base::OnFailure(Master*)
 	MACRO_THROW_EXCEPTION(openpal::InvalidStateException, this->Name());
 }
 
-void AMS_Base::OnPartialResponse(Master*, const APDU&)
+void AMS_Base::OnPartialResponse(Master*, const APDUResponseRecord& aRecord)
 {
 	MACRO_THROW_EXCEPTION(openpal::InvalidStateException, this->Name());
 }
 
-void AMS_Base::OnFinalResponse(Master*, const APDU&)
+void AMS_Base::OnFinalResponse(Master*, const APDUResponseRecord& aRecord)
 {
 	MACRO_THROW_EXCEPTION(openpal::InvalidStateException, this->Name());
 }
 
-void AMS_Base::OnUnsolResponse(Master*, const APDU&)
+void AMS_Base::OnUnsolResponse(Master*, const APDUResponseRecord& aRecord)
 {
 	MACRO_THROW_EXCEPTION(openpal::InvalidStateException, this->Name());
 }
@@ -95,9 +95,9 @@ void AMS_Closed::OnLowerLayerUp(Master* c)
 
 /* AMS_OpenBase */
 
-void AMS_OpenBase::OnUnsolResponse(Master* c, const APDU& arAPDU)
+void AMS_OpenBase::OnUnsolResponse(Master* c, const APDUResponseRecord& aRecord)
 {
-	c->ProcessDataResponse(arAPDU);
+	c->ProcessDataResponse(aRecord);
 }
 
 void AMS_OpenBase::OnLowerLayerDown(Master* c)
@@ -135,9 +135,9 @@ void AMS_Waiting::OnFailure(Master* c)
 	c->mpScheduledTask->OnComplete(false);
 }
 
-void AMS_Waiting::OnPartialResponse(Master* c, const APDU& arAPDU)
+void AMS_Waiting::OnPartialResponse(Master* c, const APDUResponseRecord& aRecord)
 {
-	switch(c->mpTask->OnPartialResponse(arAPDU)) {
+	switch(c->mpTask->OnPartialResponse(aRecord)) {
 	case(TR_FAIL):
 		this->ChangeState(c, AMS_Idle::Inst());
 		c->mpScheduledTask->OnComplete(false);
@@ -149,9 +149,9 @@ void AMS_Waiting::OnPartialResponse(Master* c, const APDU& arAPDU)
 	}
 }
 
-void AMS_Waiting::OnFinalResponse(Master* c, const APDU& arAPDU)
+void AMS_Waiting::OnFinalResponse(Master* c, const APDUResponseRecord& aRecord)
 {
-	switch(c->mpTask->OnFinalResponse(arAPDU)) {
+	switch(c->mpTask->OnFinalResponse(aRecord)) {
 	case(TR_FAIL):
 		this->ChangeState(c, AMS_Idle::Inst());
 		c->mpScheduledTask->OnComplete(false);

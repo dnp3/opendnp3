@@ -39,7 +39,7 @@ namespace opendnp3
 // Base class with machinery for performing command operations
 class CommandTask : public MasterTaskBase
 {
-	typedef std::function<CommandStatus (const APDU&)> Validator;
+	typedef std::function<CommandStatus (const openpal::ReadOnlyBuffer&)> Validator;
 	typedef std::function<Validator (APDU&, FunctionCode)> Formatter;
 	typedef std::function<void (CommandResponse)> Responder;
 
@@ -68,8 +68,8 @@ private:
 
 	void Respond(CommandStatus aStatus);
 
-	TaskResult _OnPartialResponse(const APDU&);
-	TaskResult _OnFinalResponse(const APDU&);
+	TaskResult _OnPartialResponse(const APDUResponseRecord&);
+	TaskResult _OnFinalResponse(const APDUResponseRecord&);
 };
 
 } //ens ns

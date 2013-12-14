@@ -34,15 +34,15 @@ MasterTaskBase::MasterTaskBase(openpal::Logger& arLogger) :
 	Loggable(arLogger)
 {}
 
-TaskResult MasterTaskBase::OnPartialResponse(const APDU& arAPDU)
+TaskResult MasterTaskBase::OnPartialResponse(const APDUResponseRecord& record)
 {
-	if(this->ValidateIIN(arAPDU.GetIIN())) return this->_OnPartialResponse(arAPDU);
+	if(this->ValidateIIN(record.IIN)) return this->_OnPartialResponse(record);
 	else return TR_FAIL;
 }
 
-TaskResult MasterTaskBase::OnFinalResponse(const APDU& arAPDU)
+TaskResult MasterTaskBase::OnFinalResponse(const APDUResponseRecord& record)
 {
-	if(this->ValidateIIN(arAPDU.GetIIN())) return this->_OnFinalResponse(arAPDU);
+	if(this->ValidateIIN(record.IIN)) return this->_OnFinalResponse(record);
 	else return TR_FAIL;
 }
 
@@ -54,7 +54,7 @@ bool MasterTaskBase::ValidateIIN(const IINField& GetIIN) const
 SingleRspBase::SingleRspBase(openpal::Logger& arLogger) : MasterTaskBase(arLogger)
 {}
 
-TaskResult SingleRspBase::_OnPartialResponse(const APDU&)
+TaskResult SingleRspBase::_OnPartialResponse(const APDUResponseRecord& record)
 {
 	LOG_BLOCK(LogLevel::Warning, "Ignoring non-FIN response to task: " << this->Name());
 	return TR_FAIL;
@@ -63,10 +63,10 @@ TaskResult SingleRspBase::_OnPartialResponse(const APDU&)
 SimpleRspBase::SimpleRspBase(openpal::Logger& arLogger) : SingleRspBase(arLogger)
 {}
 
-TaskResult SimpleRspBase::_OnFinalResponse(const APDU& arAPDU)
+TaskResult SimpleRspBase::_OnFinalResponse(const APDUResponseRecord& record)
 {
-	if(arAPDU.BeginRead().Count() > 0) {
-		LOG_BLOCK(LogLevel::Warning, "Unexpected object headers in response: " << this->Name());
+	if(record.objects.Size() > 0) {
+		LOG_BLOCK(LogLevel::Warning, "Unexpected object data in response to task: " << this->Name());
 	}
 
 	return TR_SUCCESS;

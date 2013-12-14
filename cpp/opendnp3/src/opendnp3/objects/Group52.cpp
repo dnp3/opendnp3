@@ -15,34 +15,41 @@
 // http://www.apache.org/licenses/LICENSE-2.0.html
 //
 
-#ifndef __OPENDNP3_GENERATED_GROUP12_H_
-#define __OPENDNP3_GENERATED_GROUP12_H_
+#include "Group52.h"
 
-#include <openpal/BufferWrapper.h>
-#include <opendnp3/gen/ControlCode.h>
-#include <opendnp3/gen/CommandStatus.h>
-#include <opendnp3/ControlRelayOutputBlock.h>
+#include <openpal/Serialization.h>
+
+using namespace openpal;
 
 namespace opendnp3 {
 
-struct Group12Var1
+Group52Var1 Group52Var1::Read(ReadOnlyBuffer& buffer)
 {
-  static const size_t SIZE = 11;
+  Group52Var1 obj;
+  obj.time16 = UInt16::Read(buffer);
+  buffer.Advance(2);
+  return obj;
+}
 
-  typedef ControlRelayOutputBlock Target;
-  static ControlRelayOutputBlock Convert(openpal::ReadOnlyBuffer&);
+void Group52Var1::Write(const Group52Var1& arg, openpal::WriteBuffer& buffer)
+{
+  UInt16::Write(buffer, arg.time16);
+  buffer.Advance(2);
+}
 
-  static Group12Var1 Read(openpal::ReadOnlyBuffer&);
-  static void Write(const Group12Var1&, openpal::WriteBuffer&);
+Group52Var2 Group52Var2::Read(ReadOnlyBuffer& buffer)
+{
+  Group52Var2 obj;
+  obj.time16 = UInt16::Read(buffer);
+  buffer.Advance(2);
+  return obj;
+}
 
-  ControlCode code;
-  uint8_t count;
-  uint32_t onTime;
-  uint32_t offTime;
-  CommandStatus status;
-};
+void Group52Var2::Write(const Group52Var2& arg, openpal::WriteBuffer& buffer)
+{
+  UInt16::Write(buffer, arg.time16);
+  buffer.Advance(2);
+}
 
 
 }
-
-#endif

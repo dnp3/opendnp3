@@ -65,15 +65,16 @@ void CommandTask::OnFailure()
 	mResponder(CommandResponse(CommandResult::TIMEOUT));
 }
 
-TaskResult CommandTask::_OnPartialResponse(const APDU& arAPDU)
+TaskResult CommandTask::_OnPartialResponse(const APDUResponseRecord&)
 {
 	LOG_BLOCK(LogLevel::Error, "Non fin responses not allowed for control tasks");
 	return TR_CONTINUE;
 }
 
-TaskResult CommandTask::_OnFinalResponse(const APDU& arAPDU)
+TaskResult CommandTask::_OnFinalResponse(const APDUResponseRecord&)
 {
-	CommandStatus cs = mValidator(arAPDU);
+	CommandStatus cs = CommandStatus::FORMAT_ERROR; // TODO - mValidator(arAPDU); TODO - move validation to something simplier
+
 	if(cs == CommandStatus::SUCCESS) {
 		if(mCodes.empty()) {
 			mResponder(CommandResponse(CommandResult::RESPONSE_OK, cs));

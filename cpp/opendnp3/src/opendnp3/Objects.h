@@ -876,14 +876,14 @@ struct Group51Var2 : public FixedObject {
 	MACRO_DECLARE_TIME(openpal::UInt48, 0)
 };
 
-struct Group52Var1 : public FixedObject {
-	MACRO_NAME_SINGLETON_INSTANCE(Group52Var1)
+struct Group52Var1Temp : public FixedObject {
+	MACRO_NAME_SINGLETON_INSTANCE(Group52Var1Temp)
 	MACRO_GROUP_VAR_SIZE_FUNC(52, 1, 2)
 	MACRO_DECLARE_TIME(openpal::UInt16, 0)
 };
 
-struct Group52Var2 : public FixedObject {
-	MACRO_NAME_SINGLETON_INSTANCE(Group52Var2)
+struct Group52Var2Temp : public FixedObject {
+	MACRO_NAME_SINGLETON_INSTANCE(Group52Var2Temp)
 	MACRO_GROUP_VAR_SIZE_FUNC(52, 2, 2)
 	MACRO_DECLARE_TIME(openpal::UInt16, 0)
 };

@@ -21,7 +21,9 @@
 #include "StartupTasks.h"
 
 #include "APDU.h"
-#include "ObjectReadIterator.h"
+
+#include "TimeSyncHandler.h"
+#include "APDUParser.h"
 
 #include <opendnp3/PointClass.h>
 #include <openpal/LoggableMacros.h>
@@ -94,11 +96,33 @@ void TimeSync::ConfigureRequest(APDU& arAPDU)
 	}
 }
 
-TaskResult TimeSync::_OnFinalResponse(const APDU& arAPDU)
+TaskResult TimeSync::_OnFinalResponse(const APDUResponseRecord& record)
 {
 	if(mDelay < 0) {
-		auto now = mpTimeSrc->Now();
 
+		TimeSyncHandler handler(mLogger);
+		auto result = APDUParser::ParseHeaders(record.objects, handler);
+		if(result == APDUParser::Result::OK) {
+			uint16_t rtuTurnAroundTime;
+			if(handler.GetTimeDelay(rtuTurnAroundTime)) 
+			{
+				auto now = mpTimeSrc->Now();
+				auto sendReceieveTime = now.msSinceEpoch - mStart.msSinceEpoch;				
+
+				// The later shouldn't happen, but could cause a negative delay which would
+				// result in a weird time setting
+				mDelay = (sendReceieveTime >= rtuTurnAroundTime) ? (sendReceieveTime - rtuTurnAroundTime) / 2 : 0;
+
+				return TR_CONTINUE;
+			}
+			else return TR_FAIL;
+		} else {
+			LOG_BLOCK(LogLevel::Warning, "Error parsing response headers: " << static_cast<int>(result)); // TODO - turn these into strings
+			return TR_FAIL;
+		}
+
+		
+		/*  TODO - move this logic to the TimeSyncHandler
 		HeaderReadIterator hri = arAPDU.BeginRead();
 		if(hri.Count() != 1) {
 			LOG_BLOCK(LogLevel::Warning, "DelayMeas response w/ unexcpected header count");
@@ -115,15 +139,9 @@ TaskResult TimeSync::_OnFinalResponse(const APDU& arAPDU)
 			LOG_BLOCK(LogLevel::Warning, "DelayMeas got more than 1 object in response");
 			return TR_FAIL;
 		}
+		*/
 
-		auto send_rcv_time = now.msSinceEpoch - mStart.msSinceEpoch;
-		auto rtu_turn_around = Group52Var2::Inst()->mTime.Get(*ori);
-
-		// The later shouldn't happen, but could cause a negative delay which would
-		// result in a weird time setting
-		mDelay = (send_rcv_time >= rtu_turn_around) ? (send_rcv_time - rtu_turn_around) / 2 : 0;
-
-		return TR_CONTINUE;
+		
 	}
 	else {
 		return TR_SUCCESS;

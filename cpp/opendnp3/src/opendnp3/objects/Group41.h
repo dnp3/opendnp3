@@ -15,6 +15,9 @@
 // http://www.apache.org/licenses/LICENSE-2.0.html
 //
 
+#ifndef __OPENDNP3_GENERATED_GROUP41_H_
+#define __OPENDNP3_GENERATED_GROUP41_H_
+
 #include <openpal/BufferWrapper.h>
 #include <opendnp3/gen/CommandStatus.h>
 #include <opendnp3/AnalogOutput.h>
@@ -79,3 +82,5 @@ struct Group41Var4
 
 
 }
+
+#endif

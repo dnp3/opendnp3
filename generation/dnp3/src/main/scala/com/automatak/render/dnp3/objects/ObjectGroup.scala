@@ -23,6 +23,7 @@ object ObjectGroup {
     Group42,
     Group50,
     Group51,
+    Group52,
     Group60
   )
 
