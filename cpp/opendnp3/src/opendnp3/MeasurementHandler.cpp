@@ -18,7 +18,7 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include "ResponseLoader.h"
+#include "MeasurementHandler.h"
 
 #include <openpal/LoggableMacros.h>
 
@@ -69,6 +69,32 @@ void MeasurementHandler::_OnIndexPrefix(GroupVariation gv, const LazyIterable<In
 void MeasurementHandler::_OnRange(GroupVariation gv, const LazyIterable<IndexedValue<SetpointStatus>>& meas) 
 {
 	meas.Foreach([this](const IndexedValue<SetpointStatus>& v) { updates.Add(v.value, v.index); });
+}
+
+void MeasurementHandler::_OnRangeOfOctets(GroupVariation gv, const LazyIterable<IndexedValue<openpal::ReadOnlyBuffer>>& meas)
+{
+	switch(gv)
+	{
+		case(GroupVariation::Group110AnyVar):
+			meas.Foreach([this](const IndexedValue<ReadOnlyBuffer>& v) { updates.Add(OctetString(v.value), v.index); });
+			break;
+		default:
+			LOG_BLOCK(LogLevel::Warning, "Ignoring unknown octet data"); // TODO - add better logging
+			break;
+	}
+}
+
+void MeasurementHandler::_OnIndexPrefixOfOctets(GroupVariation gv, const LazyIterable<IndexedValue<openpal::ReadOnlyBuffer>>& meas)
+{
+	switch(gv)
+	{
+		case(GroupVariation::Group111AnyVar):			
+			meas.Foreach([this](const IndexedValue<ReadOnlyBuffer>& v) { updates.Add(OctetString(v.value), v.index); });			
+			break;
+		default:
+			LOG_BLOCK(LogLevel::Warning, "Ignoring unknown octet data"); // TODO - add better logging
+			break;
+	}
 }
 
 }

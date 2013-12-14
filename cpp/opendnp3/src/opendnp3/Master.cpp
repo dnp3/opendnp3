@@ -24,7 +24,7 @@
 
 #include "MasterStates.h"
 #include "ObjectReadIterator.h"
-#include "ResponseLoader.h"
+#include "MeasurementHandler.h"
 #include "ConstantCommandProcessor.h"
 #include "AsyncTaskInterfaces.h"
 #include "AsyncTaskGroup.h"

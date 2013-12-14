@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __RESPONSE_LOADER_H_
-#define __RESPONSE_LOADER_H_
+#ifndef __MEASUREMENT_HANDLER_H_
+#define __MEASUREMENT_HANDLER_H_
 
 #include <opendnp3/IMeasurementHandler.h>
 #include <opendnp3/MeasurementUpdate.h>
@@ -58,6 +58,9 @@ public:
 	void _OnIndexPrefix(GroupVariation gv, const LazyIterable<IndexedValue<Analog>>& meas) final;
 
 	void _OnRange(GroupVariation gv, const LazyIterable<IndexedValue<SetpointStatus>>& meas)  final;
+
+	void _OnRangeOfOctets(GroupVariation gv, const LazyIterable<IndexedValue<openpal::ReadOnlyBuffer>>& meas) final;
+	void _OnIndexPrefixOfOctets(GroupVariation gv, const LazyIterable<IndexedValue<openpal::ReadOnlyBuffer>>& meas) final;
 		
 	MeasurementUpdate updates;	
 };

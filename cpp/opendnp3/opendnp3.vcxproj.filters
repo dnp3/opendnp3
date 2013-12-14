@@ -336,9 +336,6 @@
     <ClInclude Include="src\opendnp3\ResponseContext.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\ResponseLoader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\SecLinkLayerStates.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -612,6 +609,9 @@
     <ClInclude Include="src\opendnp3\objects\Group52.h">
       <Filter>Header Files\objects</Filter>
     </ClInclude>
+    <ClInclude Include="src\opendnp3\MeasurementHandler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\opendnp3\AnalogOutput.cpp">
@@ -783,9 +783,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\ResponseContext.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\ResponseLoader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\SecLinkLayerStates.cpp">
@@ -1006,6 +1003,9 @@
     </ClCompile>
     <ClCompile Include="src\opendnp3\objects\Group52.cpp">
       <Filter>Source Files\objects</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\MeasurementHandler.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

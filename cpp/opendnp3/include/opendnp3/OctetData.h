@@ -24,6 +24,8 @@
 #include <string>
 #include <cstdint>
 
+#include <openpal/BufferWrapper.h>
+
 namespace opendnp3
 {
 
@@ -33,19 +35,19 @@ public:
 
 	const static size_t MAX_SIZE = 255;
 
-	OctetData();	
-	OctetData(const uint8_t* apValue, size_t aSize);
+	OctetData();		
+	OctetData(const openpal::ReadOnlyBuffer& buffer);
 	OctetData(const OctetData&);
 	OctetData& operator=( const OctetData& rhs );
 	~OctetData();
 
-	const uint8_t* Data() const;
+	openpal::ReadOnlyBuffer ToReadOnly() const;
 
 	std::string AsString() const;
 
-	size_t GetSize() const;	
+private:
 
-private:	
+	void Initialize(const openpal::ReadOnlyBuffer& buffer);
 
 	uint8_t* mpData;
 	size_t mSize;	

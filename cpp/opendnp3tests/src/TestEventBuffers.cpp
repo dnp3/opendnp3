@@ -93,57 +93,7 @@ BOOST_AUTO_TEST_CASE(InsertionOrderSorting)
 
 }
 
-BOOST_AUTO_TEST_CASE(ResetEventsProperlyOnFailure)
-{
-	const uint8_t NUM = 100;
 
-	const uint8_t dataSize = 255;
-
-	const uint8_t numEvents = NUM;
-
-	InsertionOrderedEventBuffer<VtoData> b(NUM);
-
-	size_t numResults;
-
-	for (uint8_t i = 0; i < numEvents; i++) {
-		uint8_t trash[dataSize];
-		uint8_t j;
-		for (j = 0; j < dataSize; ++j)
-			trash[j] = i;
-		
-		VtoData info(trash, dataSize);		
-		b.Update(info, PC_CLASS_1, dataSize);
-	}
-
-	numResults = b.Size();
-	BOOST_REQUIRE_EQUAL(numResults, numEvents);
-
-	numResults = b.Select(PC_CLASS_1);
-	BOOST_REQUIRE_EQUAL(numResults, numEvents);
-
-	auto itr = b.Begin();
-	for (size_t i = 0; i < b.NumSelected(); ++i) {
-		const uint8_t* value = itr->value.Data();
-		for (size_t j = 0; j < dataSize; ++j) {
-			//		BOOST_REQUIRE_EQUAL(value[j], i);
-		}
-		++itr;
-	}
-	b.Deselect();
-
-	numResults = b.Select(PC_CLASS_1);
-	BOOST_REQUIRE_EQUAL(numResults, numEvents);
-
-	itr = b.Begin();
-	for (size_t i = 0; i < b.NumSelected(); ++i) {
-		const uint8_t* value = itr->value.Data();
-		for (size_t j = 0; j < dataSize; ++j) {
-//			BOOST_REQUIRE_EQUAL(value[j], i);
-		}
-		++itr;
-	}
-	b.Deselect();
-}
 BOOST_AUTO_TEST_SUITE_END()
 
 BOOST_AUTO_TEST_SUITE(TimeOrderedEventBufferSuite)

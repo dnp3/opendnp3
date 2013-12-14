@@ -139,7 +139,7 @@ void HeaderHandlerBase::OnRangeOfOctets(GroupVariation gv, const openpal::ReadOn
 void HeaderHandlerBase::OnIndexPrefixOfOctets(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const LazyIterable<IndexedValue<openpal::ReadOnlyBuffer>>& meas)
 {
 	++currentHeader;
-	this->_OnRangeOfOctets(gv, meas);
+	this->_OnIndexPrefixOfOctets(gv, meas);
 }
 
 void HeaderHandlerBase::_AllObjects(GroupVariation gv)
