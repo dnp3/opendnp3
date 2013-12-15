@@ -157,8 +157,9 @@ ControlStatus ^ Conversions::convertMeas(opendnp3::ControlStatus meas)
 
 OctetString^ Conversions::convertMeas(const opendnp3::OctetString& arMeas)
 {
-	array<System::Byte>^ bytes = gcnew array<System::Byte>(arMeas.GetSize());
-	for(size_t i = 0; i< arMeas.GetSize(); ++i) bytes[i] = arMeas.Data()[i];
+	auto buffer = arMeas.ToReadOnly();
+	array<System::Byte>^ bytes = gcnew array<System::Byte>(buffer.Size());
+	for(size_t i = 0; i< buffer.Size(); ++i) bytes[i] = buffer[i];
 	return gcnew OctetString(bytes);	
 }
 
@@ -209,14 +210,19 @@ asiopal::SerialSettings Conversions::convertSerialSettings(SerialSettings ^ sett
 	return s;
 }
 
+openpal::TimeDuration Conversions::convertTimeSpan(System::TimeSpan ts)
+{
+	return TimeDuration::Milliseconds(static_cast<int64_t>(ts.TotalMilliseconds));
+}
+
 opendnp3::LinkConfig Conversions::convertConfig(LinkConfig ^ config)
 {
-	return opendnp3::LinkConfig(config->isMaster, config->useConfirms, config->numRetry, config->localAddr, config->remoteAddr, TimeDuration::Milliseconds(config->timeout.TotalMilliseconds));
+	return opendnp3::LinkConfig(config->isMaster, config->useConfirms, config->numRetry, config->localAddr, config->remoteAddr, convertTimeSpan(config->timeout));
 }
 
 opendnp3::AppConfig Conversions::convertConfig(AppConfig ^ config)
 {
-	return opendnp3::AppConfig(TimeDuration::Milliseconds(config->rspTimeout.TotalMilliseconds), config->numRetry, config->fragSize);
+	return opendnp3::AppConfig(config->isMaster, convertTimeSpan(config->rspTimeout), config->numRetry, config->fragSize);
 }
 
 opendnp3::ClassMask Conversions::convertClassMask(ClassMask ^ cm)
@@ -272,10 +278,10 @@ opendnp3::SlaveConfig Conversions::convertConfig(SlaveConfig ^ config)
 	sc.mMaxControls = config->maxControls;
 	sc.mUnsolMask = convertClassMask(config->unsolMask);
 	sc.mAllowTimeSync = config->allowTimeSync;
-	sc.mTimeSyncPeriod = TimeDuration::Milliseconds(config->timeSyncPeriod.TotalMilliseconds);
-	sc.mUnsolPackDelay = TimeDuration::Milliseconds(config->unsolPackDelay.TotalMilliseconds);
-	sc.mUnsolRetryDelay = TimeDuration::Milliseconds(config->unsolRetryDelay.TotalMilliseconds);
-	sc.mSelectTimeout = TimeDuration::Milliseconds(config->selectTimeout.TotalMilliseconds);
+	sc.mTimeSyncPeriod = convertTimeSpan(config->timeSyncPeriod);
+	sc.mUnsolPackDelay = convertTimeSpan(config->unsolPackDelay);
+	sc.mUnsolRetryDelay = convertTimeSpan(config->unsolRetryDelay);
+	sc.mSelectTimeout = convertTimeSpan(config->selectTimeout);
 	sc.mMaxFragSize = config->maxFragSize;
 	sc.mEventMaxConfig = convertEventMaxConfig(config->eventMaxConfig);
 	sc.mStaticBinary = convert(config->staticBinary);
@@ -329,8 +335,8 @@ opendnp3::MasterConfig Conversions::convertConfig(MasterConfig ^ config)
 	mc.DoUnsolOnStartup = config->doUnsolOnStartup;
 	mc.EnableUnsol = config->enableUnsol;
 	mc.UnsolClassMask = config->unsolClassMask;
-	mc.IntegrityRate = TimeDuration::Milliseconds(config->integrityPeriod.TotalMilliseconds);
-	mc.TaskRetryRate = TimeDuration::Milliseconds(config->taskRetryPeriod.TotalMilliseconds);
+	mc.IntegrityRate = convertTimeSpan(config->integrityPeriod);
+	mc.TaskRetryRate = convertTimeSpan(config->taskRetryPeriod);
 
 	return mc;
 }

@@ -31,6 +31,8 @@ public:
 
 	static System::Exception ^ convertException(const openpal::Exception& ex);
 
+	static openpal::TimeDuration convertTimeSpan(System::TimeSpan ts);
+
 	// Convert a .NET string to a C++ string
 	static std::string convertString(System::String ^ s);
 	static System::String ^ convertString(const std::string& s);

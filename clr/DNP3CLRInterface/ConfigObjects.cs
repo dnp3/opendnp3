@@ -110,8 +110,9 @@ namespace DNP3.Interface
 	    /// <summary>
 	    /// Constructor with reasonable defaults
 	    /// </summary>
-		public AppConfig()
+		public AppConfig(bool isMaster)
         {
+            this.isMaster = isMaster;
             this.rspTimeout = TimeSpan.FromSeconds(5);
             this.numRetry = 0;
             this.fragSize = 2048;
@@ -123,12 +124,18 @@ namespace DNP3.Interface
         /// <param name="rspTimeout"> The response/confirm timeout in millisec</param>
         /// <param name="numRetry">Number of retries performed for applicable frames</param>
         /// <param name="fragSize">The maximum size of received application layer fragments</param>
-		public AppConfig(TimeSpan rspTimeout, System.Int32 numRetry, System.Int32 fragSize)
+		public AppConfig(bool isMaster, TimeSpan rspTimeout, System.Int32 numRetry, System.Int32 fragSize)
         {
+            this.isMaster = isMaster;
 			this.rspTimeout = rspTimeout;
 			this.numRetry = numRetry;
 			this.fragSize = fragSize;
         }
+
+        /// <summary>
+        /// True if the layer is for a master, false for outstation
+        /// </summary>
+        public bool isMaster;
 		
 
 		/// <summary>
@@ -536,7 +543,7 @@ namespace DNP3.Interface
         {
             this.link = new LinkConfig(true, false);
             this.master = new MasterConfig();
-            this.app = new AppConfig();
+            this.app = new AppConfig(true);
 		}        
 
         /// <summary>
@@ -566,7 +573,7 @@ namespace DNP3.Interface
             this.slave = new SlaveConfig();
             this.device = new DeviceTemplate(10, 10, 10, 10, 10);
             this.link = new LinkConfig(false, false);
-            this.app = new AppConfig();            
+            this.app = new AppConfig(false);            
         }
 
         /// <summary>
