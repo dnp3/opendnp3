@@ -21,23 +21,18 @@
 #ifndef __LAZY_ITERABLE_H_
 #define __LAZY_ITERABLE_H_
 
-#include <functional>
-#include <assert.h>
-
-#include <openpal/BufferWrapper.h>
-
-#include "Iterable.h"
+#include "IterableBuffer.h"
 
 namespace opendnp3
 {
 
 template <class T, class ReadFunc>
-class LazyIterable : public Iterable<T>
+class LazyIterable : public IterableBuffer<T>
 {
 	public:				
 		
 		LazyIterable(const openpal::ReadOnlyBuffer& buffer, uint32_t aSize, const ReadFunc& aReadFunc): 
-			Iterable<T>(buffer, aSize), 
+			IterableBuffer<T>(buffer, aSize), 
 			readFunc(aReadFunc)
 		{}
 
@@ -50,7 +45,6 @@ class LazyIterable : public Iterable<T>
 
 	private:
 		
-		LazyIterable();
 		ReadFunc readFunc;
 };
 

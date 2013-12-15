@@ -42,9 +42,9 @@ BOOST_AUTO_TEST_CASE(ReadSimpleTypes)
 {
 	HexSequence hex("AB 01 01 CD 02 00");	
 		
-	auto collection = Collection<Group30Var2>::Lazily(hex.ToReadOnly(), 2, 
-		[](ReadOnlyBuffer& b, uint32_t) { return Group30Var2::Read(b); 
-	});
+	auto collection = Iterable<Group30Var2>::From(hex.ToReadOnly(), 2, 
+		[](ReadOnlyBuffer& b, uint32_t) { return Group30Var2::Read(b); }
+	);
 	
 	auto test = [&]() {
 		std::vector<Group30Var2> vec;
@@ -65,9 +65,9 @@ BOOST_AUTO_TEST_CASE(ReadSimpleTypes)
 BOOST_AUTO_TEST_CASE(SingleBitValue)
 {
 	HexSequence hex("01");
-	auto collection = Collection<Binary>::Lazily(hex.ToReadOnly(), 1, 
-		[](ReadOnlyBuffer& buff, uint32_t pos) { return Binary(GetBit(buff, pos)); 
-	});
+	auto collection = Iterable<Binary>::From(hex.ToReadOnly(), 1, 
+		[](ReadOnlyBuffer& buff, uint32_t pos) { return Binary(GetBit(buff, pos)); }
+	);
 	BOOST_REQUIRE_EQUAL(1, collection.Count());
 	std::vector<Binary> values;	
 	collection.foreach([&](const Binary& v) { values.push_back(v); });
@@ -77,7 +77,7 @@ BOOST_AUTO_TEST_CASE(SingleBitValue)
 BOOST_AUTO_TEST_CASE(ComplexBitCount)
 {
 	HexSequence hex("FF 00 00");
-	auto collection = Collection<bool>::Lazily(hex.ToReadOnly(), 17, 
+	auto collection = Iterable<bool>::From(hex.ToReadOnly(), 17, 
 		[](ReadOnlyBuffer& buff, uint32_t pos) { return GetBit(buff, pos); }
 	);
 	std::vector<bool> values;
@@ -91,16 +91,19 @@ BOOST_AUTO_TEST_CASE(ComplexBitCount)
 BOOST_AUTO_TEST_CASE(HighestBitSet)
 {
 	HexSequence hex("80");
-	auto collection = Collection<bool>::Lazily(hex.ToReadOnly(), 8, 
+
+	auto collection = Iterable<bool>::From(hex.ToReadOnly(), 8, 
 		[](ReadOnlyBuffer& buffer, uint32_t pos) { return GetBit(buffer, pos); }
 	);
 
-
-	auto collection2 = Collection<bool>::Map<Binary>(collection, [](const bool& bit) { return Binary(bit); });
+	auto collection2 = Iterable<bool>::Map<Binary>(collection, 
+		[](const bool& bit) { return Binary(bit); }
+	);
 
 	std::vector<Binary> values;
 	collection2.foreach([&](const Binary& v) { values.push_back(v); });	
 	BOOST_REQUIRE_EQUAL(8, values.size());
+	BOOST_REQUIRE(Binary(false) == values[6]);
 	BOOST_REQUIRE(Binary(true) == values[7]);
 }
 

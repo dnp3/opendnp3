@@ -250,6 +250,7 @@
     <ClInclude Include="src\opendnp3\IINField.h" />
     <ClInclude Include="src\opendnp3\IndexParser.h" />
     <ClInclude Include="src\opendnp3\BitReader.h" />
+    <ClInclude Include="src\opendnp3\IterableBuffer.h" />
     <ClInclude Include="src\opendnp3\objects\Group52.h" />
     <ClInclude Include="src\opendnp3\objects\MeasurementFactory.h" />
     <ClInclude Include="src\opendnp3\PointInfo.h" />
@@ -271,12 +272,11 @@
     <ClInclude Include="src\opendnp3\HeaderReadIterator.h" />
     <ClInclude Include="src\opendnp3\IAPDUHeaderHandler.h" />
     <ClInclude Include="src\opendnp3\IFrameSink.h" />
-    <ClInclude Include="src\opendnp3\Iterable.h" />
+    <ClInclude Include="src\opendnp3\BufferIterable.h" />
     <ClInclude Include="src\opendnp3\ILinkContext.h" />
     <ClInclude Include="src\opendnp3\ILinkRouter.h" />
     <ClInclude Include="src\opendnp3\IndexedWriteIterator.h" />
     <ClInclude Include="src\opendnp3\LazyIterable.h" />
-    <ClInclude Include="src\opendnp3\Iterator.h" />
     <ClInclude Include="src\opendnp3\LinkFrame.h" />
     <ClInclude Include="src\opendnp3\LinkHeader.h" />
     <ClInclude Include="src\opendnp3\LinkLayer.h" />

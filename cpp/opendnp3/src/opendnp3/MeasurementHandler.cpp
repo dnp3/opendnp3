@@ -30,48 +30,48 @@ namespace opendnp3
 MeasurementHandler::MeasurementHandler(openpal::Logger& arLogger) : HeaderHandlerBase(arLogger)	
 {}
 
-void MeasurementHandler::_OnRange(GroupVariation gv, const Iterable<IndexedValue<Binary>>& meas)
+void MeasurementHandler::_OnRange(GroupVariation gv, const IterableBuffer<IndexedValue<Binary>>& meas)
 {
 	meas.foreach([this](const IndexedValue<Binary>& v) {updates.Add(v.value, v.index); });
 }
 
-void MeasurementHandler::_OnIndexPrefix(GroupVariation gv, const Iterable<IndexedValue<Binary>>& meas)
+void MeasurementHandler::_OnIndexPrefix(GroupVariation gv, const IterableBuffer<IndexedValue<Binary>>& meas)
 {
 	// todo - handle CTO
 	meas.foreach([this](const IndexedValue<Binary>& v) { updates.Add(v.value, v.index); });
 }
 
-void MeasurementHandler::_OnRange(GroupVariation gv, const Iterable<IndexedValue<ControlStatus>>& meas)
+void MeasurementHandler::_OnRange(GroupVariation gv, const IterableBuffer<IndexedValue<ControlStatus>>& meas)
 {
 	meas.foreach([this](const IndexedValue<ControlStatus>& v) { updates.Add(v.value, v.index); });
 }
 		
-void MeasurementHandler::_OnRange(GroupVariation gv, const Iterable<IndexedValue<Counter>>& meas)
+void MeasurementHandler::_OnRange(GroupVariation gv, const IterableBuffer<IndexedValue<Counter>>& meas)
 {
 	meas.foreach([this](const IndexedValue<Counter>& v) { updates.Add(v.value, v.index); });
 }
 
-void MeasurementHandler::_OnIndexPrefix(GroupVariation gv, const Iterable<IndexedValue<Counter>>& meas)
+void MeasurementHandler::_OnIndexPrefix(GroupVariation gv, const IterableBuffer<IndexedValue<Counter>>& meas)
 {
 	meas.foreach([this](const IndexedValue<Counter>& v) { updates.Add(v.value, v.index); });
 }
 
-void MeasurementHandler::_OnRange(GroupVariation gv, const Iterable<IndexedValue<Analog>>& meas)
+void MeasurementHandler::_OnRange(GroupVariation gv, const IterableBuffer<IndexedValue<Analog>>& meas)
 {
 	meas.foreach([this](const IndexedValue<Analog>& v) { updates.Add(v.value, v.index); });
 }
 
-void MeasurementHandler::_OnIndexPrefix(GroupVariation gv, const Iterable<IndexedValue<Analog>>& meas)
+void MeasurementHandler::_OnIndexPrefix(GroupVariation gv, const IterableBuffer<IndexedValue<Analog>>& meas)
 {
 	meas.foreach([this](const IndexedValue<Analog>& v) { updates.Add(v.value, v.index); });
 }
 
-void MeasurementHandler::_OnRange(GroupVariation gv, const Iterable<IndexedValue<SetpointStatus>>& meas) 
+void MeasurementHandler::_OnRange(GroupVariation gv, const IterableBuffer<IndexedValue<SetpointStatus>>& meas) 
 {
 	meas.foreach([this](const IndexedValue<SetpointStatus>& v) { updates.Add(v.value, v.index); });
 }
 
-void MeasurementHandler::_OnRangeOfOctets(GroupVariation gv, const Iterable<IndexedValue<openpal::ReadOnlyBuffer>>& meas)
+void MeasurementHandler::_OnRangeOfOctets(GroupVariation gv, const IterableBuffer<IndexedValue<openpal::ReadOnlyBuffer>>& meas)
 {
 	switch(gv)
 	{
@@ -84,7 +84,7 @@ void MeasurementHandler::_OnRangeOfOctets(GroupVariation gv, const Iterable<Inde
 	}
 }
 
-void MeasurementHandler::_OnIndexPrefixOfOctets(GroupVariation gv, const Iterable<IndexedValue<openpal::ReadOnlyBuffer>>& meas)
+void MeasurementHandler::_OnIndexPrefixOfOctets(GroupVariation gv, const IterableBuffer<IndexedValue<openpal::ReadOnlyBuffer>>& meas)
 {
 	switch(gv)
 	{

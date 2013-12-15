@@ -150,7 +150,7 @@ APDUParser::Result APDUParser::ParseRangeAsBitField(
 	size_t numBytes = NumBytesInBits(range.count);
 	if(buffer.Size() < numBytes) return Result::NOT_ENOUGH_DATA_FOR_OBJECTS;
 	else {	
-		auto collection = Collection<IndexedValue<bool>>::Lazily(buffer, range.count, [range](ReadOnlyBuffer& buffer, uint32_t pos) {
+		auto collection = Iterable<IndexedValue<bool>>::From(buffer, range.count, [range](ReadOnlyBuffer& buffer, uint32_t pos) {
 			return IndexedValue<bool>(GetBit(buffer, pos), pos + range.start);
 		});
 		callback(record.Complete(numBytes), collection);		
@@ -204,7 +204,7 @@ APDUParser::Result APDUParser::ParseRangeFixedSize(GroupVariation gv, const Head
 	if(buffer.Size() < size) return APDUParser::Result::NOT_ENOUGH_DATA_FOR_OBJECTS;
 	else {
 	
-		auto collection = Collection<IndexedValue<typename Descriptor::Target>>::Lazily(buffer, range.count, [range](openpal::ReadOnlyBuffer& buffer, uint32_t pos) {
+		auto collection = Iterable<IndexedValue<typename Descriptor::Target>>::From(buffer, range.count, [range](openpal::ReadOnlyBuffer& buffer, uint32_t pos) {
 			return IndexedValue<typename Descriptor::Target>(Descriptor::Convert(buffer), range.start + pos);
 		});
 
@@ -221,7 +221,7 @@ APDUParser::Result APDUParser::ParseCountOf(openpal::ReadOnlyBuffer& buffer, uin
 	if(buffer.Size() < size) return APDUParser::Result::NOT_ENOUGH_DATA_FOR_OBJECTS;
 	else {				
 		
-		auto collection = Collection<Descriptor>::Lazily(buffer, count, [](openpal::ReadOnlyBuffer& buffer, uint32_t) {
+		auto collection = Iterable<Descriptor>::From(buffer, count, [](openpal::ReadOnlyBuffer& buffer, uint32_t) {
 			return Descriptor::Read(buffer);
 		});
 		output.OnCountOf(collection);
@@ -243,7 +243,7 @@ APDUParser::Result APDUParser::ParseCountFixedSizeWithIndex(
 	if(buffer.Size() < size) return APDUParser::Result::NOT_ENOUGH_DATA_FOR_OBJECTS;
 	else {
 		
-		auto collection = Collection<IndexedValue<typename Descriptor::Target>>::Lazily(buffer, count, [pParser](openpal::ReadOnlyBuffer& buffer, uint32_t) {			
+		auto collection = Iterable<IndexedValue<typename Descriptor::Target>>::From(buffer, count, [pParser](openpal::ReadOnlyBuffer& buffer, uint32_t) {			
 			return IndexedValue<typename Descriptor::Target>(Descriptor::Convert(buffer), pParser->ReadIndex(buffer));
 		});
 		

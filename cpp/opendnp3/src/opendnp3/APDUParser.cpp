@@ -195,15 +195,16 @@ APDUParser::Result APDUParser::ParseIndexPrefixedOctetData(
 	if(buffer.Size() < size) return APDUParser::Result::NOT_ENOUGH_DATA_FOR_OBJECTS;
 	else {
 		
-		auto collection = Collection<IndexedValue<ReadOnlyBuffer>>::Lazily(buffer, count, [pParser, gvRecord](ReadOnlyBuffer& buffer, uint32_t position) {	
-			auto index = pParser->ReadIndex(buffer);
-			auto buff = buffer.Truncate(gvRecord.variation);
-			IndexedValue<ReadOnlyBuffer> value(buff, index);
-			buffer.Advance(gvRecord.variation);
-			return IndexedValue<ReadOnlyBuffer>(buff, index);
-		});		
+		auto iterable = Iterable<IndexedValue<ReadOnlyBuffer>>::From(buffer, count,
+			[&](ReadOnlyBuffer& buffer, uint32_t position) {	
+				auto index = pParser->ReadIndex(buffer);
+				auto buff = buffer.Truncate(gvRecord.variation);
+				buffer.Advance(gvRecord.variation);
+				return IndexedValue<ReadOnlyBuffer>(buff, index);
+			}	
+		);		
 
-		handler.OnIndexPrefixOfOctets(gvRecord.enumeration, record.Complete(size), collection);
+		handler.OnIndexPrefixOfOctets(gvRecord.enumeration, record.Complete(size), iterable);
 		buffer.Advance(size);
 		return APDUParser::Result::OK;
 	}
@@ -228,21 +229,17 @@ APDUParser::Result APDUParser::ParseObjectsWithRange(const APDUParser::HeaderRec
 	switch(gvRecord.enumeration)
 	{	
 		case(GroupVariation::Group1Var1):				
-			return ParseRangeAsBitField(buffer, record, range, [&](const ReadOnlyBuffer& header, Iterable<IndexedValue<bool>>& values) {				
-				output.OnRange(gvRecord.enumeration, header, 
-					Collection<IndexedValue<bool>>::Map<IndexedValue<Binary>>(values, 
-						[](const IndexedValue<bool>& v) { return IndexedValue<Binary>(Binary(v.value), v.index); })
-				);				
+			return ParseRangeAsBitField(buffer, record, range, [&](const ReadOnlyBuffer& header, const IterableBuffer<IndexedValue<bool>>& values) {
+				auto mapped = Iterable<IndexedValue<bool>>::Map<IndexedValue<Binary>>(values, [](const IndexedValue<bool>& v) { return IndexedValue<Binary>(Binary(v.value), v.index); });
+				output.OnRange(gvRecord.enumeration, header, mapped);
 			});		
 		
 		MACRO_PARSE_OBJECTS_WITH_RANGE(Group1Var2);
 
 		case(GroupVariation::Group10Var1):				
-			return ParseRangeAsBitField(buffer, record, range, [&](const ReadOnlyBuffer& header, Iterable<IndexedValue<bool>>& values) {				
-				output.OnRange(gvRecord.enumeration, header, 
-					Collection<IndexedValue<bool>>::Map<IndexedValue<ControlStatus>>(values, 
-						[](const IndexedValue<bool>& v) { return IndexedValue<ControlStatus>(ControlStatus(v.value), v.index); })
-				);
+			return ParseRangeAsBitField(buffer, record, range, [&](const ReadOnlyBuffer& header, IterableBuffer<IndexedValue<bool>>& values) {
+				auto mapped = Iterable<IndexedValue<bool>>::Map<IndexedValue<ControlStatus>>(values, [](const IndexedValue<bool>& v) { return IndexedValue<ControlStatus>(ControlStatus(v.value), v.index); });
+				output.OnRange(gvRecord.enumeration, header, mapped);								
 			});
 
 		MACRO_PARSE_OBJECTS_WITH_RANGE(Group10Var2);
@@ -272,7 +269,7 @@ APDUParser::Result APDUParser::ParseObjectsWithRange(const APDUParser::HeaderRec
 			return ParseCountOf<Group52Var2>(buffer, range.count, output); 
 
 		case(GroupVariation::Group80Var1):		
-			return ParseRangeAsBitField(buffer, record, range, [&](const ReadOnlyBuffer& header, const Iterable<IndexedValue<bool>>& values) { 
+			return ParseRangeAsBitField(buffer, record, range, [&](const ReadOnlyBuffer& header, const IterableBuffer<IndexedValue<bool>>& values) { 
 				output.OnIIN(gvRecord.enumeration, header, values); 
 			});
 
@@ -294,7 +291,7 @@ APDUParser::Result APDUParser::ParseRangeOfOctetData(
 	size_t size = gvRecord.variation*range.count;
 	if(buffer.Size() < size) return Result::NOT_ENOUGH_DATA_FOR_OBJECTS;
 	{
-		auto collection = Collection<IndexedValue<openpal::ReadOnlyBuffer>>::Lazily(buffer, range.count, [range, gvRecord](ReadOnlyBuffer& buffer, uint32_t pos) {			
+		auto collection = Iterable<IndexedValue<openpal::ReadOnlyBuffer>>::From(buffer, range.count, [&](ReadOnlyBuffer& buffer, uint32_t pos) {			
 			IndexedValue<ReadOnlyBuffer> value(buffer.Truncate(gvRecord.variation), range.start + pos);
 			buffer.Advance(gvRecord.variation);
 			return value;

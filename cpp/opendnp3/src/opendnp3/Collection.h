@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __COLLECTION_H_
-#define __COLLECTION_H_
+#ifndef __ITERABLE_H_
+#define __ITERABLE_H_
 
 #include "LazyIterable.h"
 
@@ -28,41 +28,44 @@
 namespace opendnp3
 {
 
-template <class T, class U, class MapFunc>
-class MappedIterable : public Iterable<U>
+template <class T>
+class Iterable : private PureStatic
 {
 	public:
-		MappedIterable(const Iterable<T>& aProxy, const MapFunc& aMapFunc): 
-			Iterable<U>(aProxy.buffer, aProxy.count),
-			proxy(aProxy),
-			mapFunc(aMapFunc)
-		{}
 
-	protected:
-		virtual U ValueAt(openpal::ReadOnlyBuffer& buffer, uint32_t i) const final
-		{
-			return mapFunc(proxy.ValueAt(buffer, i));
-		}
-
-	private:
-		const Iterable<T>& proxy;
-		MapFunc mapFunc;
-};
-
-template <class T>
-struct Collection : private PureStatic
-{
 	template <class ReadFunc>
-	static LazyIterable<T,ReadFunc> Lazily(const openpal::ReadOnlyBuffer& buffer, uint32_t aSize, const ReadFunc& aReadFunc)
+	static LazyIterable<T,ReadFunc> From(const openpal::ReadOnlyBuffer& buffer, uint32_t aSize, const ReadFunc& aReadFunc)
 	{
 		return LazyIterable<T, ReadFunc>(buffer, aSize, aReadFunc);
+	}	
+
+	template <class U, class MapToU>
+	class MappedIterableBuffer : public IterableBuffer<U>
+	{
+		public:
+			MappedIterableBuffer(const IterableBuffer<T>& aProxy, const MapToU& aMapFun) : 
+				IterableBuffer<U>(aProxy.buffer, aProxy.count),
+				proxy(aProxy),
+				mapFun(aMapFun)
+			{}
+
+		protected:
+			virtual U ValueAt(openpal::ReadOnlyBuffer& buff, uint32_t pos) const final
+			{
+				return mapFun(proxy.ValueAt(buff, pos));
+			}
+
+		private:
+			const IterableBuffer<T>& proxy;
+			MapToU mapFun;
+	};
+
+	template<class U, class MapToU>
+	static MappedIterableBuffer<U, MapToU> Map(const IterableBuffer<T> &iter, const MapToU& fun)
+	{
+		return MappedIterableBuffer<U, MapToU>(iter, fun);
 	}
 
-	template <class U, class MapFunc>
-	static MappedIterable<T, U, MapFunc> Map(const Iterable<T>& proxy, const MapFunc& aMapFunc)
-	{
-		return MappedIterable<T, U, MapFunc>(proxy, aMapFunc);
-	}
 };
 
 }

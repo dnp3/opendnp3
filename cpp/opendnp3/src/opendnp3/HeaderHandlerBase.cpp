@@ -40,103 +40,103 @@ void HeaderHandlerBase::AllObjects(GroupVariation gv, const openpal::ReadOnlyBuf
 	this->_AllObjects(gv);
 }
 
-void HeaderHandlerBase::OnIIN(GroupVariation, const openpal::ReadOnlyBuffer&, const Iterable<IndexedValue<bool>>& meas)
+void HeaderHandlerBase::OnIIN(GroupVariation, const openpal::ReadOnlyBuffer&, const IterableBuffer<IndexedValue<bool>>& meas)
 {
 	++currentHeader;
 	this->_OnIIN(meas);
 }
 
-void HeaderHandlerBase::OnCountOf(const opendnp3::Iterable<Group52Var2>& objects)
+void HeaderHandlerBase::OnCountOf(const IterableBuffer<Group52Var2>& objects)
 {
 	++currentHeader;
 	this->_OnCountOf(objects);
 }
 
-void HeaderHandlerBase::OnRange(GroupVariation gv, const openpal::ReadOnlyBuffer&, const Iterable<IndexedValue<Binary>>& meas)
+void HeaderHandlerBase::OnRange(GroupVariation gv, const openpal::ReadOnlyBuffer&, const IterableBuffer<IndexedValue<Binary>>& meas)
 {
 	++currentHeader;
 	this->_OnRange(gv, meas);
 }
 
-void HeaderHandlerBase::OnIndexPrefix(GroupVariation gv, const openpal::ReadOnlyBuffer&, const Iterable<IndexedValue<Binary>>& meas)
+void HeaderHandlerBase::OnIndexPrefix(GroupVariation gv, const openpal::ReadOnlyBuffer&, const IterableBuffer<IndexedValue<Binary>>& meas)
 {
 	++currentHeader;
 	this->_OnIndexPrefix(gv, meas);
 }
 
-void HeaderHandlerBase::OnRange(GroupVariation gv, const openpal::ReadOnlyBuffer&, const Iterable<IndexedValue<ControlStatus>>& meas)
+void HeaderHandlerBase::OnRange(GroupVariation gv, const openpal::ReadOnlyBuffer&, const IterableBuffer<IndexedValue<ControlStatus>>& meas)
 {
 	++currentHeader;
 	this->_OnRange(gv, meas);
 }
 		
-void HeaderHandlerBase::OnRange(GroupVariation gv, const openpal::ReadOnlyBuffer&, const Iterable<IndexedValue<Counter>>& meas)
+void HeaderHandlerBase::OnRange(GroupVariation gv, const openpal::ReadOnlyBuffer&, const IterableBuffer<IndexedValue<Counter>>& meas)
 {
 	++currentHeader;
 	this->_OnRange(gv, meas);
 }
 
-void HeaderHandlerBase::OnIndexPrefix(GroupVariation gv, const openpal::ReadOnlyBuffer&, const Iterable<IndexedValue<Counter>>& meas)
+void HeaderHandlerBase::OnIndexPrefix(GroupVariation gv, const openpal::ReadOnlyBuffer&, const IterableBuffer<IndexedValue<Counter>>& meas)
 {
 	++currentHeader;
 	this->_OnIndexPrefix(gv, meas);
 }
 
-void HeaderHandlerBase::OnRange(GroupVariation gv, const openpal::ReadOnlyBuffer&, const Iterable<IndexedValue<Analog>>& meas)
+void HeaderHandlerBase::OnRange(GroupVariation gv, const openpal::ReadOnlyBuffer&, const IterableBuffer<IndexedValue<Analog>>& meas)
 {
 	++currentHeader;
 	this->_OnRange(gv, meas);
 }
 
-void HeaderHandlerBase::OnIndexPrefix(GroupVariation gv, const openpal::ReadOnlyBuffer&, const Iterable<IndexedValue<Analog>>& meas)
+void HeaderHandlerBase::OnIndexPrefix(GroupVariation gv, const openpal::ReadOnlyBuffer&, const IterableBuffer<IndexedValue<Analog>>& meas)
 {
 	++currentHeader;
 	this->_OnIndexPrefix(gv, meas);
 }
 
-void HeaderHandlerBase::OnRange(GroupVariation gv, const openpal::ReadOnlyBuffer&, const Iterable<IndexedValue<SetpointStatus>>& meas)
+void HeaderHandlerBase::OnRange(GroupVariation gv, const openpal::ReadOnlyBuffer&, const IterableBuffer<IndexedValue<SetpointStatus>>& meas)
 {
 	++currentHeader;
 	this->_OnRange(gv, meas);
 }
 
-void HeaderHandlerBase::OnIndexPrefix(GroupVariation, const openpal::ReadOnlyBuffer& header, const Iterable<IndexedValue<ControlRelayOutputBlock>>& meas)
+void HeaderHandlerBase::OnIndexPrefix(GroupVariation, const openpal::ReadOnlyBuffer& header, const IterableBuffer<IndexedValue<ControlRelayOutputBlock>>& meas)
 {
 	++currentHeader;
 	this->_OnIndexPrefix(header, meas);
 }
 
-void HeaderHandlerBase::OnIndexPrefix(GroupVariation, const openpal::ReadOnlyBuffer& header, const Iterable<IndexedValue<AnalogOutputInt16>>& meas)
+void HeaderHandlerBase::OnIndexPrefix(GroupVariation, const openpal::ReadOnlyBuffer& header, const IterableBuffer<IndexedValue<AnalogOutputInt16>>& meas)
 {
 	++currentHeader;
 	this->_OnIndexPrefix(header, meas);
 }
 
-void HeaderHandlerBase::OnIndexPrefix(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const Iterable<IndexedValue<AnalogOutputInt32>>& meas)
+void HeaderHandlerBase::OnIndexPrefix(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const IterableBuffer<IndexedValue<AnalogOutputInt32>>& meas)
 {
 	++currentHeader;
 	this->_OnIndexPrefix(header, meas);
 }
 
-void HeaderHandlerBase::OnIndexPrefix(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const Iterable<IndexedValue<AnalogOutputFloat32>>& meas)
+void HeaderHandlerBase::OnIndexPrefix(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const IterableBuffer<IndexedValue<AnalogOutputFloat32>>& meas)
 {
 	++currentHeader;
 	this->_OnIndexPrefix(header, meas);
 }
 
-void HeaderHandlerBase::OnIndexPrefix(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const Iterable<IndexedValue<AnalogOutputDouble64>>& meas)
+void HeaderHandlerBase::OnIndexPrefix(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const IterableBuffer<IndexedValue<AnalogOutputDouble64>>& meas)
 {
 	++currentHeader;
 	this->_OnIndexPrefix(header, meas);
 }
 
-void HeaderHandlerBase::OnRangeOfOctets(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const Iterable<IndexedValue<openpal::ReadOnlyBuffer>>& meas)
+void HeaderHandlerBase::OnRangeOfOctets(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const IterableBuffer<IndexedValue<openpal::ReadOnlyBuffer>>& meas)
 {
 	++currentHeader;
 	this->_OnRangeOfOctets(gv, meas);
 }
 
-void HeaderHandlerBase::OnIndexPrefixOfOctets(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const Iterable<IndexedValue<openpal::ReadOnlyBuffer>>& meas)
+void HeaderHandlerBase::OnIndexPrefixOfOctets(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const IterableBuffer<IndexedValue<openpal::ReadOnlyBuffer>>& meas)
 {
 	++currentHeader;
 	this->_OnIndexPrefixOfOctets(gv, meas);
@@ -147,87 +147,87 @@ void HeaderHandlerBase::_AllObjects(GroupVariation gv)
 	LOG_BLOCK(LogLevel::Warning, "Ignoring all objects header in: " << this->HandlerName());
 }
 
-void HeaderHandlerBase::_OnIIN(const Iterable<IndexedValue<bool>>& meas)
+void HeaderHandlerBase::_OnIIN(const IterableBuffer<IndexedValue<bool>>& meas)
 {
 	LOG_BLOCK(LogLevel::Warning, "Ignoring IIN object header in: " << this->HandlerName());
 }
 
-void HeaderHandlerBase::_OnCountOf(const opendnp3::Iterable<Group52Var2> &)
+void HeaderHandlerBase::_OnCountOf(const IterableBuffer<Group52Var2> &)
 {
 	LOG_BLOCK(LogLevel::Warning, "Ignoring count of objects header in: " << this->HandlerName());
 }
 
-void HeaderHandlerBase::_OnRange(GroupVariation gv, const Iterable<IndexedValue<Binary>>& meas)
+void HeaderHandlerBase::_OnRange(GroupVariation gv, const IterableBuffer<IndexedValue<Binary>>& meas)
 {
 	LOG_BLOCK(LogLevel::Warning, "Ignoring measurements in: " << this->HandlerName());	
 }
 
-void HeaderHandlerBase::_OnIndexPrefix(GroupVariation gv, const Iterable<IndexedValue<Binary>>& meas)
+void HeaderHandlerBase::_OnIndexPrefix(GroupVariation gv, const IterableBuffer<IndexedValue<Binary>>& meas)
 {
 	LOG_BLOCK(LogLevel::Warning, "Ignoring measurements in: " << this->HandlerName());	
 }
 
-void HeaderHandlerBase::_OnRange(GroupVariation gv, const Iterable<IndexedValue<ControlStatus>>& meas)
+void HeaderHandlerBase::_OnRange(GroupVariation gv, const IterableBuffer<IndexedValue<ControlStatus>>& meas)
 {
 	LOG_BLOCK(LogLevel::Warning, "Ignoring measurements in: " << this->HandlerName());	
 }
 		
-void HeaderHandlerBase::_OnRange(GroupVariation gv, const Iterable<IndexedValue<Counter>>& meas)
+void HeaderHandlerBase::_OnRange(GroupVariation gv, const IterableBuffer<IndexedValue<Counter>>& meas)
 {
 	LOG_BLOCK(LogLevel::Warning, "Ignoring measurements in: " << this->HandlerName());	
 }
 
-void HeaderHandlerBase::_OnIndexPrefix(GroupVariation gv, const Iterable<IndexedValue<Counter>>& meas)
+void HeaderHandlerBase::_OnIndexPrefix(GroupVariation gv, const IterableBuffer<IndexedValue<Counter>>& meas)
 {
 	LOG_BLOCK(LogLevel::Warning, "Ignoring measurements in: " << this->HandlerName());	
 }
 
-void HeaderHandlerBase::_OnRange(GroupVariation gv, const Iterable<IndexedValue<Analog>>& meas)
+void HeaderHandlerBase::_OnRange(GroupVariation gv, const IterableBuffer<IndexedValue<Analog>>& meas)
 {
 	LOG_BLOCK(LogLevel::Warning, "Ignoring measurements in: " << this->HandlerName());	
 }
 
-void HeaderHandlerBase::_OnIndexPrefix(GroupVariation gv, const Iterable<IndexedValue<Analog>>& meas)
+void HeaderHandlerBase::_OnIndexPrefix(GroupVariation gv, const IterableBuffer<IndexedValue<Analog>>& meas)
 {
 	LOG_BLOCK(LogLevel::Warning, "Ignoring measurements in: " << this->HandlerName());	
 }
 
-void HeaderHandlerBase::_OnRange(GroupVariation gv, const Iterable<IndexedValue<SetpointStatus>>& meas) 
+void HeaderHandlerBase::_OnRange(GroupVariation gv, const IterableBuffer<IndexedValue<SetpointStatus>>& meas) 
 {
 	LOG_BLOCK(LogLevel::Warning, "Ignoring measurements in: " << this->HandlerName());	
 }
 
-void HeaderHandlerBase::_OnIndexPrefix(const openpal::ReadOnlyBuffer& header, const Iterable<IndexedValue<ControlRelayOutputBlock>>& meas)
+void HeaderHandlerBase::_OnIndexPrefix(const openpal::ReadOnlyBuffer& header, const IterableBuffer<IndexedValue<ControlRelayOutputBlock>>& meas)
 {
 	LOG_BLOCK(LogLevel::Warning, "Ignoring command objects header in: " << this->HandlerName());
 }
 
-void HeaderHandlerBase::_OnIndexPrefix(const openpal::ReadOnlyBuffer& header, const Iterable<IndexedValue<AnalogOutputInt16>>& meas)
+void HeaderHandlerBase::_OnIndexPrefix(const openpal::ReadOnlyBuffer& header, const IterableBuffer<IndexedValue<AnalogOutputInt16>>& meas)
 {
 	LOG_BLOCK(LogLevel::Warning, "Ignoring command objects header in: " << this->HandlerName());
 }
 
-void HeaderHandlerBase::_OnIndexPrefix(const openpal::ReadOnlyBuffer& header, const Iterable<IndexedValue<AnalogOutputInt32>>& meas)
+void HeaderHandlerBase::_OnIndexPrefix(const openpal::ReadOnlyBuffer& header, const IterableBuffer<IndexedValue<AnalogOutputInt32>>& meas)
 {
 	LOG_BLOCK(LogLevel::Warning, "Ignoring command objects header in: " << this->HandlerName());	
 }
 
-void HeaderHandlerBase::_OnIndexPrefix(const openpal::ReadOnlyBuffer& header, const Iterable<IndexedValue<AnalogOutputFloat32>>& meas)
+void HeaderHandlerBase::_OnIndexPrefix(const openpal::ReadOnlyBuffer& header, const IterableBuffer<IndexedValue<AnalogOutputFloat32>>& meas)
 {
 	LOG_BLOCK(LogLevel::Warning, "Ignoring command objects header in: " << this->HandlerName());	
 }
 
-void HeaderHandlerBase::_OnIndexPrefix(const openpal::ReadOnlyBuffer& header, const Iterable<IndexedValue<AnalogOutputDouble64>>& meas)
+void HeaderHandlerBase::_OnIndexPrefix(const openpal::ReadOnlyBuffer& header, const IterableBuffer<IndexedValue<AnalogOutputDouble64>>& meas)
 {
 	LOG_BLOCK(LogLevel::Warning, "Ignoring command objects header in: " << this->HandlerName());	
 }
 
-void HeaderHandlerBase::_OnRangeOfOctets(GroupVariation gv, const Iterable<IndexedValue<openpal::ReadOnlyBuffer>>& meas)
+void HeaderHandlerBase::_OnRangeOfOctets(GroupVariation gv, const IterableBuffer<IndexedValue<openpal::ReadOnlyBuffer>>& meas)
 {	
 	LOG_BLOCK(LogLevel::Warning, "Ignoring octet data in: " << this->HandlerName());	
 }
 
-void HeaderHandlerBase::_OnIndexPrefixOfOctets(GroupVariation gv, const Iterable<IndexedValue<openpal::ReadOnlyBuffer>>& meas)
+void HeaderHandlerBase::_OnIndexPrefixOfOctets(GroupVariation gv, const IterableBuffer<IndexedValue<openpal::ReadOnlyBuffer>>& meas)
 {
 	LOG_BLOCK(LogLevel::Warning, "Ignoring octet data in: " << this->HandlerName());	
 }

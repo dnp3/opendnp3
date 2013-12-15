@@ -47,7 +47,7 @@ public:
 
 	std::string HandlerName() const final { return "TimeSyncHandler"; }
 
-	virtual void _OnCountOf(const Iterable<Group52Var2>& times) final
+	virtual void _OnCountOf(const IterableBuffer<Group52Var2>& times) final
 	{
 		if(times.Count() == 1)
 		{

@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __ITERABLE_H_
-#define __ITERABLE_H_
+#ifndef __ITERABLE_BUFFER_H_
+#define __ITERABLE_BUFFER_H_
 
 #include <functional>
 
@@ -30,6 +30,8 @@ namespace opendnp3
 
 class BufferWithCount
 {
+	template <class T> friend class Iterable;
+
 	protected:
 
 	BufferWithCount(const openpal::ReadOnlyBuffer& aBuffer, uint32_t aCount) : 
@@ -44,17 +46,19 @@ class BufferWithCount
 	bool NonEmpty() const { return count != 0; }
 
 	protected:
+
 	uint32_t count;
 	openpal::ReadOnlyBuffer buffer;
 };
 
 template <class T>
-class Iterable : public BufferWithCount
+class IterableBuffer : public BufferWithCount
 {
 	public:
 
-		Iterable(const openpal::ReadOnlyBuffer& aBuffer, uint32_t aSize) :  
-			BufferWithCount(aBuffer, aSize)
+		template <class U> friend class Iterable;
+
+		IterableBuffer(const openpal::ReadOnlyBuffer& aBuffer, uint32_t aSize) : BufferWithCount(aBuffer, aSize)
 		{}
 		
 		template <class IterFunc>
@@ -62,14 +66,11 @@ class Iterable : public BufferWithCount
 		{
 			ReadOnlyBuffer copy(this->buffer);  // iterate over a mutable copy of the buffer
 			for(uint32_t pos = 0; pos < count; ++pos) fun(ValueAt(copy, pos));			
-		}		
-
-		template <class X, class Y, class Z> 
-		friend class MappedIterable;
-
+		}			
+		
 	protected:
 
-		virtual T ValueAt(openpal::ReadOnlyBuffer&, uint32_t pos) const = 0;
+		virtual T ValueAt(openpal::ReadOnlyBuffer&, uint32_t pos) const = 0;		
 };
 
 
