@@ -87,13 +87,14 @@ cpp/opendnp3/src/opendnp3/objects/Group41.cpp \
 cpp/opendnp3/src/opendnp3/objects/Group42.cpp \
 cpp/opendnp3/src/opendnp3/objects/Group50.cpp \
 cpp/opendnp3/src/opendnp3/objects/Group51.cpp \
+cpp/opendnp3/src/opendnp3/objects/Group52.cpp \
 cpp/opendnp3/src/opendnp3/AnalogOutput.cpp \
 cpp/opendnp3/src/opendnp3/APDU.cpp \
 cpp/opendnp3/src/opendnp3/APDUParser.cpp \
+cpp/opendnp3/src/opendnp3/APDUHeaderParser.cpp \
 cpp/opendnp3/src/opendnp3/AppChannelStates.cpp \
 cpp/opendnp3/src/opendnp3/AppControlField.cpp \
 cpp/opendnp3/src/opendnp3/AppHeader.cpp \
-cpp/opendnp3/src/opendnp3/AppInterfaces.cpp \
 cpp/opendnp3/src/opendnp3/AppLayerChannel.cpp \
 cpp/opendnp3/src/opendnp3/AppLayer.cpp \
 cpp/opendnp3/src/opendnp3/ApplicationStack.cpp \
@@ -123,7 +124,9 @@ cpp/opendnp3/src/opendnp3/DNPCrc.cpp \
 cpp/opendnp3/src/opendnp3/ExecutorPause.cpp \
 cpp/opendnp3/src/opendnp3/FunctionCodeHelpers.cpp \
 cpp/opendnp3/src/opendnp3/GroupVariation.cpp \
+cpp/opendnp3/src/opendnp3/HeaderHandlerBase.cpp \
 cpp/opendnp3/src/opendnp3/HeaderReadIterator.cpp \
+cpp/opendnp3/src/opendnp3/IAppUser.cpp \
 cpp/opendnp3/src/opendnp3/IINField.cpp \
 cpp/opendnp3/src/opendnp3/IMeasurementHandler.cpp \
 cpp/opendnp3/src/opendnp3/IndexedWriteIterator.cpp \
@@ -142,6 +145,7 @@ cpp/opendnp3/src/opendnp3/MasterSchedule.cpp \
 cpp/opendnp3/src/opendnp3/MasterStackImpl.cpp \
 cpp/opendnp3/src/opendnp3/MasterStates.cpp \
 cpp/opendnp3/src/opendnp3/MasterTaskBase.cpp \
+cpp/opendnp3/src/opendnp3/MeasurementHandler.cpp \
 cpp/opendnp3/src/opendnp3/MeasurementHelpers.cpp \
 cpp/opendnp3/src/opendnp3/MeasurementUpdate.cpp \
 cpp/opendnp3/src/opendnp3/MultiplexingDataObserver.cpp \
@@ -161,7 +165,6 @@ cpp/opendnp3/src/opendnp3/PriLinkLayerStates.cpp \
 cpp/opendnp3/src/opendnp3/ProtocolUtil.cpp \
 cpp/opendnp3/src/opendnp3/QueuedCommandProcessor.cpp \
 cpp/opendnp3/src/opendnp3/ResponseContext.cpp \
-cpp/opendnp3/src/opendnp3/ResponseLoader.cpp \
 cpp/opendnp3/src/opendnp3/SecLinkLayerStates.cpp \
 cpp/opendnp3/src/opendnp3/ShiftableBuffer.cpp \
 cpp/opendnp3/src/opendnp3/SimpleCommandHandler.cpp \
@@ -221,7 +224,6 @@ cpp/opendnp3tests/src/MockUpperLayer.cpp \
 cpp/opendnp3tests/src/PhysicalLayerWrapper.cpp \
 cpp/opendnp3tests/src/PhysLoopback.cpp \
 cpp/opendnp3tests/src/RandomizedBuffer.cpp \
-cpp/opendnp3tests/src/ResponseLoaderTestObject.cpp \
 cpp/opendnp3tests/src/SlaveTestObject.cpp \
 cpp/opendnp3tests/src/StopWatch.cpp \
 cpp/opendnp3tests/src/TestAPDU.cpp \
@@ -257,7 +259,6 @@ cpp/opendnp3tests/src/TestPhysicalLayerAsyncSerial.cpp \
 cpp/opendnp3tests/src/TestPhysicalLayerAsyncTCP.cpp \
 cpp/opendnp3tests/src/TestPhysicalLayerLoopback.cpp \
 cpp/opendnp3tests/src/TestPhysicalLayerMonitor.cpp \
-cpp/opendnp3tests/src/TestResponseLoader.cpp \
 cpp/opendnp3tests/src/TestSerialization.cpp \
 cpp/opendnp3tests/src/TestShiftableBuffer.cpp \
 cpp/opendnp3tests/src/TestSlave.cpp \

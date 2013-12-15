@@ -34,7 +34,7 @@ class HasSize
 		HasSize(uint32_t aSize) : size(aSize)
 		{}
 
-		size_t Size() const { return size; }
+		uint32_t Size() const { return size; }
 
 		bool IsEmpty() const { return size == 0; }
 

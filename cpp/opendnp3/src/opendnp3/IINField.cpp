@@ -31,7 +31,7 @@ using namespace std;
 namespace opendnp3
 {
 
-bool IINField::Get(IINBit bit) const
+bool IINField::IsSet(IINBit bit) const
 {
 	switch(bit) {
 		case(IINBit::ALL_STATIONS):

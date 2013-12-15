@@ -25,7 +25,6 @@
 
 #include "gen/QualifierCode.h"
 #include "GroupVariation.h"
-#include "Iterable.h"
 
 #include "objects/Group1.h"
 #include "objects/Group2.h"
@@ -40,8 +39,6 @@
 #include "objects/Group52.h"
 
 #include "objects/MeasurementFactory.h"
-
-#include "BitReader.h"
 
 using namespace openpal;
 

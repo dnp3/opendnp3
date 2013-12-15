@@ -280,35 +280,11 @@ void Slave::ConfigureDelayMeasurement(const APDU& arRequest)
 	pObj->mTime.Set(*i, 0);
 }
 
-/*
-void Slave::HandleWriteVto(HeaderReadIterator& arHdr)
-{
-	Transaction tr(mVtoReader);
-	for (ObjectReadIterator obj = arHdr.BeginRead(); !obj.IsEnd(); ++obj) {
-		size_t index = obj->Index();
-
-		if(index > std::numeric_limits<uint8_t>::max()) {
-			LOG_BLOCK(LogLevel::Warning, "Ignoring VTO index that exceeds bit width of uint8_t: " << index);
-		}
-		else {
-			//Pass the data to the vto reader
-			uint8_t channel = static_cast<uint8_t>(index);
-
-			VtoData vto(arHdr->GetVariation());
-
-			Group112Var0::Inst()->Read(*obj, arHdr->GetVariation(), vto.mpData);
-
-			mVtoReader.Update(vto, channel);
-		}
-	}
-}
-*/
-
 void Slave::HandleWriteIIN(HeaderReadIterator& arHdr)
 {
 	for (ObjectReadIterator obj = arHdr.BeginRead(); !obj.IsEnd(); ++obj) {
 		switch (obj->Index()) {
-			case(IINBit::DEVICE_RESTART): 
+			case(static_cast<int>(IINBit::DEVICE_RESTART)): 
 			{
 				bool value = Group80Var1::Inst()->Read(*obj, obj->Start(), obj->Index());
 				if (!value) {
@@ -330,7 +306,7 @@ void Slave::HandleWriteIIN(HeaderReadIterator& arHdr)
 
 void Slave::HandleWriteTimeDate(HeaderReadIterator& arHWI)
 {
-	if (!mIIN.Get(IINBit::NEED_TIME)) {
+	if (mIIN.IsClear(IINBit::NEED_TIME)) {
 		LOG_BLOCK(LogLevel::Warning, "Master is attempting to write time but slave is not requesting time sync");
 		return;
 	}

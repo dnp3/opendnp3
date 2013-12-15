@@ -64,7 +64,7 @@ class IterableBuffer : public BufferWithCount
 		template <class IterFunc>
 		void foreach(const IterFunc& fun) const
 		{
-			ReadOnlyBuffer copy(this->buffer);  // iterate over a mutable copy of the buffer
+			openpal::ReadOnlyBuffer copy(this->buffer);  // iterate over a mutable copy of the buffer
 			for(uint32_t pos = 0; pos < count; ++pos) fun(ValueAt(copy, pos));			
 		}			
 		

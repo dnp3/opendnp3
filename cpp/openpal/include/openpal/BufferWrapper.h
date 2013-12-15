@@ -23,6 +23,8 @@
 
 #include "HasSize.h"
 
+#include <cstddef>
+
 namespace openpal
 {
 	
@@ -32,13 +34,13 @@ class ReadOnlyBuffer : public HasSize
 public:
 
 	ReadOnlyBuffer();
-	ReadOnlyBuffer(uint8_t const* apBuffer, size_t aSize);
+	ReadOnlyBuffer(uint8_t const* apBuffer, uint32_t aSize);
 
 	void CopyTo(uint8_t* apDest) const;
 
-	ReadOnlyBuffer Truncate(size_t aSize) const;
+	ReadOnlyBuffer Truncate(uint32_t aSize) const;
 
-	void Advance(size_t aNum);
+	void Advance(uint32_t aNum);
 
 	operator uint8_t const *() const { return mpBuffer; };
 
@@ -51,12 +53,12 @@ class WriteBuffer : public HasSize
 {
 	public:
 
-    WriteBuffer();
-	WriteBuffer(uint8_t* apBuffer, size_t aSize);
+    	WriteBuffer();
+	WriteBuffer(uint8_t* apBuffer, uint32_t aSize);
 
 	void Clear();
 
-	void Advance(size_t aNum);
+	void Advance(uint32_t aNum);
 
 	ReadOnlyBuffer ToReadOnly() const;
 

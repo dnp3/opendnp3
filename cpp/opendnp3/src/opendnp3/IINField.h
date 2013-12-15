@@ -27,7 +27,7 @@
 namespace opendnp3
 {
 
-enum class IINBit : uint8_t {
+enum class IINBit {
 	ALL_STATIONS = 0,
 	CLASS1_EVENTS,
 	CLASS2_EVENTS,
@@ -58,7 +58,8 @@ public:
 	IINField() : LSB(0), MSB(0)
 	{}
 
-	bool Get(IINBit bit) const;
+	bool IsSet(IINBit bit) const;
+	bool IsClear(IINBit bit) const { return !IsSet(bit); }
 	void Set(IINBit bit);
 	void Clear(IINBit bit);
 	

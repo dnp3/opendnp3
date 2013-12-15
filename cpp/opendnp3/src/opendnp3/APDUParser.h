@@ -32,6 +32,8 @@
 #include "IAPDUHeaderHandler.h"
 #include "LazyIterable.h"
 #include "IndexParser.h"
+#include "BitReader.h"
+#include "Iterable.h"
 
 namespace opendnp3
 {
@@ -150,9 +152,11 @@ APDUParser::Result APDUParser::ParseRangeAsBitField(
 	size_t numBytes = NumBytesInBits(range.count);
 	if(buffer.Size() < numBytes) return Result::NOT_ENOUGH_DATA_FOR_OBJECTS;
 	else {	
-		auto collection = Iterable<IndexedValue<bool>>::From(buffer, range.count, [range](ReadOnlyBuffer& buffer, uint32_t pos) {
-			return IndexedValue<bool>(GetBit(buffer, pos), pos + range.start);
-		});
+		auto collection = Iterable<IndexedValue<bool>>::From(buffer, range.count, 
+			[&](openpal::ReadOnlyBuffer& buffer, uint32_t pos) {
+				return IndexedValue<bool>(GetBit(buffer, pos), pos + range.start);
+			}
+		);
 		callback(record.Complete(numBytes), collection);		
 		buffer.Advance(numBytes);
 		return Result::OK;

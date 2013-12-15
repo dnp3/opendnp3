@@ -91,18 +91,18 @@ void Master::ProcessIIN(const IINField& arIIN)
 	bool check_state = false;
 
 	//The clear IIN task only happens in response to detecting an IIN bit.
-	if(mLastIIN.Get(IINBit::NEED_TIME)) {
+	if(mLastIIN.IsSet(IINBit::NEED_TIME)) {
 		LOG_BLOCK(LogLevel::Info, "Need time detected");
 		mSchedule.mpTimeTask->SilentEnable();
 		check_state = true;
 	}
 
-	if(mLastIIN.Get(IINBit::DEVICE_TROUBLE)) LOG_BLOCK(LogLevel::Warning, "IIN Device trouble detected");
+	if(mLastIIN.IsSet(IINBit::DEVICE_TROUBLE)) LOG_BLOCK(LogLevel::Warning, "IIN Device trouble detected");
 
-	if(mLastIIN.Get(IINBit::EVENT_BUFFER_OVERFLOW)) LOG_BLOCK(LogLevel::Warning, "Event buffer overflow detected");
+	if(mLastIIN.IsSet(IINBit::EVENT_BUFFER_OVERFLOW)) LOG_BLOCK(LogLevel::Warning, "Event buffer overflow detected");
 
 	// If this is detected, we need to reset the startup tasks
-	if(mLastIIN.Get(IINBit::DEVICE_RESTART)) {
+	if(mLastIIN.IsSet(IINBit::DEVICE_RESTART)) {
 		LOG_BLOCK(LogLevel::Warning, "Device restart detected");
 		mSchedule.ResetStartupTasks();
 		mSchedule.mpClearRestartTask->SilentEnable();
@@ -203,7 +203,7 @@ void Master::StartTask(MasterTaskBase* apMasterTask, bool aInit)
 
 void Master::SyncTime(ITask* apTask)
 {
-	if(mLastIIN.Get(IINBit::NEED_TIME)) {
+	if(mLastIIN.IsSet(IINBit::NEED_TIME)) {
 		mpState->StartTask(this, apTask, &mTimeSync);
 	}
 	else apTask->Disable();
@@ -211,7 +211,7 @@ void Master::SyncTime(ITask* apTask)
 
 void Master::WriteIIN(ITask* apTask)
 {
-	if(mLastIIN.Get(IINBit::DEVICE_RESTART)) {
+	if(mLastIIN.IsSet(IINBit::DEVICE_RESTART)) {
 		mpState->StartTask(this, apTask, &mClearRestart);
 	}
 	else apTask->Disable();
