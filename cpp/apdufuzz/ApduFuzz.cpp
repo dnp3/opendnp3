@@ -30,100 +30,12 @@
 
 #include <openpal/ToHex.h>
 
+#include "TrackingHandler.h"
 #include "ResultSet.h"
 
 using namespace std;
 using namespace openpal;
 using namespace opendnp3;
-
-class Handler : public IAPDUHeaderHandler
-{
-	public:
-
-	virtual void AllObjects(GroupVariation gv, const openpal::ReadOnlyBuffer& header) override
-	{}
-
-	virtual void OnIIN(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const LazyIterable<IndexedValue<bool>>& bits) override
-	{
-		bits.Foreach([&](const IndexedValue<bool>& v) {});
-	}
-
-	virtual void OnRange(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const LazyIterable<IndexedValue<Binary>>& meas) override
-	{
-		meas.Foreach([](const IndexedValue<Binary>& v){});
-	}
-
-	virtual void OnIndexPrefix(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const LazyIterable<IndexedValue<Binary>>& meas) override
-	{
-		meas.Foreach([](const IndexedValue<Binary>& v){});
-	}
-
-	virtual void OnRange(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const LazyIterable<IndexedValue<ControlStatus>>& meas) override
-	{
-		meas.Foreach([](const IndexedValue<ControlStatus>& v){});
-	}
-
-	virtual void OnRange(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const LazyIterable<IndexedValue<Counter>>& meas) override
-	{
-		meas.Foreach([](const IndexedValue<Counter>& v){});
-	}
-
-	virtual void OnIndexPrefix(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const LazyIterable<IndexedValue<Counter>>& meas) override
-	{
-		meas.Foreach([](const IndexedValue<Counter>& v){});
-	}
-
-	virtual void OnRange(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const LazyIterable<IndexedValue<Analog>>& meas) override
-	{
-		meas.Foreach([](const IndexedValue<Analog>& v){});
-	}
-
-	virtual void OnIndexPrefix(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const LazyIterable<IndexedValue<Analog>>& meas) override
-	{
-		meas.Foreach([](const IndexedValue<Analog>& v){});
-	}
-
-	virtual void OnRange(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const LazyIterable<IndexedValue<SetpointStatus>>& meas) override
-	{
-		meas.Foreach([](const IndexedValue<SetpointStatus>& v){});
-	}
-
-	virtual void OnIndexPrefix(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const LazyIterable<IndexedValue<ControlRelayOutputBlock>>& meas) override
-	{
-		meas.Foreach([](const IndexedValue<ControlRelayOutputBlock>& v){});
-	}
-
-	virtual void OnIndexPrefix(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const LazyIterable<IndexedValue<AnalogOutputInt16>>& meas) override
-	{
-		meas.Foreach([](const IndexedValue<AnalogOutputInt16>& v){});
-	}
-
-	virtual void OnIndexPrefix(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const LazyIterable<IndexedValue<AnalogOutputInt32>>& meas) override
-	{
-		meas.Foreach([](const IndexedValue<AnalogOutputInt32>& v){});
-	}
-
-	virtual void OnIndexPrefix(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const LazyIterable<IndexedValue<AnalogOutputFloat32>>& meas) override
-	{
-		meas.Foreach([](const IndexedValue<AnalogOutputFloat32>& v){});
-	}
-
-	virtual void OnIndexPrefix(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const LazyIterable<IndexedValue<AnalogOutputDouble64>>& meas) override
-	{
-		meas.Foreach([](const IndexedValue<AnalogOutputDouble64>& v){});
-	}
-
-	virtual void OnIndexPrefixOfOctets(opendnp3::GroupVariation, const openpal::ReadOnlyBuffer& header, const opendnp3::LazyIterable<IndexedValue<openpal::ReadOnlyBuffer>>& meas) override
-	{
-		meas.Foreach([](const IndexedValue<ReadOnlyBuffer>& v){});
-	}
-
-	virtual void OnRangeOfOctets(opendnp3::GroupVariation, const openpal::ReadOnlyBuffer& header, const opendnp3::LazyIterable<IndexedValue<openpal::ReadOnlyBuffer>>& meas) override
-	{
-		meas.Foreach([](const IndexedValue<ReadOnlyBuffer>& v){});
-	}
-
-};
 
 class Fuzzer
 {
@@ -142,7 +54,7 @@ class Fuzzer
 			size_t count  = size(gen);
 			for(size_t j = 0; j < count; ++j) buffer[j] = value(gen);
 			ReadOnlyBuffer rb(buffer, count);
-			APDUParser::Result result = APDUParser::ParseHeaders(rb, h);
+			APDUParser::Result result = APDUParser::ParseHeaders(rb, handler);
 			results.Update(result);
 			if(result == APDUParser::Result::OK) {
 				auto percent = static_cast<double>(i)/static_cast<double>(iter)*100.0;
@@ -152,7 +64,7 @@ class Fuzzer
 		delete[] buffer;
 	}
 
-	Handler h;
+	TrackingHandler handler;
 	ResultSet results;
 };
 
@@ -188,11 +100,16 @@ int main(int argc, char* argv[])
 	auto casesPerSec = 1000.0 * (static_cast<double>(totalCases) / static_cast<double>(ms));
 
 	ResultSet rs;
-	for(auto& f: fuzzers) rs.Merge(f.results);
+	uint64_t calls = 0;
+	for(auto& f: fuzzers) {
+		rs.Merge(f.results);
+		calls += f.handler.count;
+	}
 	
 	uint64_t sum = rs.Sum();
-
+	 
 	cout << "complete:  [ " << sum << " / " << totalCases << " ] - " << (totalCases == sum) << endl;
+	cout << "total calls: " << calls << endl;
 	cout << "fuzz tests per second: " << casesPerSec <<  " in " << ms << " milliseconds" << endl;
 	cout << endl;
 	cout << "OK: " << rs.numOK << endl;

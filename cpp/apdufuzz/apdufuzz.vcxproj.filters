@@ -15,5 +15,8 @@
     <ClInclude Include="ResultSet.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="TrackingHandler.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
