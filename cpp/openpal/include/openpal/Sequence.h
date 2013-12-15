@@ -18,38 +18,31 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include <boost/test/unit_test.hpp>
+#ifndef __SEQUENCE_H_
+#define __SEQUENCE_H_
 
-#include <opendnp3/CommandHelpers.h>
-#include <opendnp3/Objects.h>
-
-#include <openpal/ToHex.h>
-
-#include "TestHelpers.h"
-#include "BufferHelpers.h"
-
-using namespace openpal;
-using namespace opendnp3;
-
-BOOST_AUTO_TEST_SUITE(CommandHelpersTestSuite)
-
-BOOST_AUTO_TEST_CASE(ConfigurationAndValidation)
+namespace openpal
 {
-	APDU frag;
-	ControlRelayOutputBlock crob(ControlCode::LATCH_ON);
-	auto validator = CommandHelpers::ConfigureRequest<ControlRelayOutputBlock>(frag, FunctionCode::OPERATE, crob, 0, Group12Var1::Inst());
-	
 
-	BOOST_REQUIRE_EQUAL("C0 04 0C 01 17 01 00 03 01 64 00 00 00 64 00 00 00 00", toHex(frag.ToReadOnly(), true));
+// template for immutable lists
+template <class T>
+class Sequence
+{
+	public:
 
-	APDU rsp;
-	{
-		HexSequence hs("C0 81 00 00 0C 01 17 01 00 03 01 64 00 00 00 64 00 00 00 00");
-		rsp.Write(hs);
-		rsp.Interpret();
-	}
-	//auto status = validator(rsp);  // TODO restore these tests
-	//BOOST_REQUIRE(CommandStatus::SUCCESS == status);
+	Sequence(const T& aValue, const Sequence<T>* aNext = nullptr) : value(aValue), next(aNext)
+	{}	
+
+	T Value() const { return value; }
+	const Sequence<T>* Next() const { return next; }
+
+private:
+	const T value;
+	const Sequence<T>* next;	
+	Sequence();
+};
+
 }
 
-BOOST_AUTO_TEST_SUITE_END()
+#endif
+

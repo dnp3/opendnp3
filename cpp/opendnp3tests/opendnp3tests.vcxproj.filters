@@ -286,9 +286,6 @@
     <ClCompile Include="src\TestChangeBuffer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\TestCommandHelpers.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\TestCommandTask.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

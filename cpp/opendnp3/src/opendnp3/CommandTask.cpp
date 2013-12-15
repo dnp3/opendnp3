@@ -29,28 +29,99 @@ using namespace openpal;
 namespace opendnp3
 {
 
-CommandTask::CommandTask(Logger aLogger) : MasterTaskBase(aLogger)
+const Sequence<FunctionCode> CommandTask::Operate(FunctionCode::OPERATE);
+const Sequence<FunctionCode> CommandTask::DirectOperate(FunctionCode::DIRECT_OPERATE);
+const Sequence<FunctionCode> CommandTask::SelectAndOperate(FunctionCode::SELECT, &CommandTask::Operate);
+
+//Sequence<FunctionCode> CommandTask::selectAndOperate;
+
+CommandTask::CommandTask(Logger aLogger) : 
+	MasterTaskBase(aLogger), 
+	mpActiveSequence(nullptr),
+	mpFunctionSequence(nullptr),
+	crobSeq(aLogger),
+	analogInt32Seq(aLogger),
+	analogInt16Seq(aLogger),
+	analogFloat32Seq(aLogger),
+	analogDouble64Seq(aLogger)
 {
 
 }
 
-void CommandTask::Configure(const Formatter& arFormatter, const Responder& arResponder)
+void CommandTask::ConfigureSBO(const ControlRelayOutputBlock& command, uint32_t index, std::function<void (CommandResponse)> aCallback)
 {
-	mFormatter = arFormatter;
-	mResponder = arResponder;
-	mCodes.clear();
+	this->Configure(crobSeq, command, index, &SelectAndOperate, aCallback);
 }
 
-void CommandTask::AddCommandCode(FunctionCode aCode)
+void CommandTask::ConfigureSBO(const AnalogOutputInt16& command, uint32_t index,  std::function<void (CommandResponse)> aCallback)
 {
-	this->mCodes.push_back(aCode);
+	this->Configure(analogInt16Seq, command, index, &SelectAndOperate, aCallback);
 }
 
-void CommandTask::ConfigureRequest(APDU& arAPDU)
+void CommandTask::ConfigureSBO(const AnalogOutputInt32& command, uint32_t index,  std::function<void (CommandResponse)> aCallback)
 {
-	if(mCodes.empty()) MACRO_THROW_EXCEPTION(InvalidStateException, "No more functions in sequence");
-	mValidator = mFormatter(arAPDU, mCodes.front());
-	mCodes.pop_front();
+	this->Configure(analogInt32Seq, command, index, &SelectAndOperate, aCallback);
+}
+
+void CommandTask::ConfigureSBO(const AnalogOutputFloat32& command, uint32_t index,  std::function<void (CommandResponse)> aCallback)
+{
+	this->Configure(analogFloat32Seq, command, index, &SelectAndOperate, aCallback);
+}
+
+void CommandTask::ConfigureSBO(const AnalogOutputDouble64& command, uint32_t index,  std::function<void (CommandResponse)> aCallback)
+{
+	this->Configure(analogDouble64Seq, command, index, &SelectAndOperate, aCallback);
+}
+
+void CommandTask::ConfigureDO(const ControlRelayOutputBlock& command, uint32_t index,  std::function<void (CommandResponse)> aCallback)
+{
+	this->Configure(crobSeq, command, index, &DirectOperate, aCallback);
+}
+
+void CommandTask::ConfigureDO(const AnalogOutputInt16& command, uint32_t index,  std::function<void (CommandResponse)> aCallback)
+{
+	this->Configure(analogInt16Seq, command, index, &DirectOperate, aCallback);
+}
+
+void CommandTask::ConfigureDO(const AnalogOutputInt32& command, uint32_t index,  std::function<void (CommandResponse)> aCallback)
+{
+	this->Configure(analogInt32Seq, command, index, &DirectOperate, aCallback);
+}
+
+void CommandTask::ConfigureDO(const AnalogOutputFloat32& command, uint32_t index,  std::function<void (CommandResponse)> aCallback)
+{
+	this->Configure(analogFloat32Seq, command, index, &DirectOperate, aCallback);
+}
+
+void CommandTask::ConfigureDO(const AnalogOutputDouble64& command, uint32_t index,  std::function<void (CommandResponse)> aCallback)
+{
+	this->Configure(analogDouble64Seq, command, index, &DirectOperate, aCallback);
+}
+
+void CommandTask::ConfigureRequest(APDU& aAPDU)
+{
+	assert(mpFunctionSequence != nullptr);
+	assert(mpActiveSequence != nullptr);
+	auto code = mpFunctionSequence->Value();
+	mpFunctionSequence = mpFunctionSequence->Next();
+	mpActiveSequence->FormatAPDU(aAPDU, code); 	
+}
+
+
+void CommandTask::OnFailure()
+{
+	
+}
+
+TaskResult CommandTask::_OnPartialResponse(const APDUResponseRecord&)
+{
+	LOG_BLOCK(LogLevel::Error, "Non fin responses not allowed for control tasks");
+	return TR_CONTINUE;
+}
+
+TaskResult CommandTask::_OnFinalResponse(const APDUResponseRecord& record)
+{
+	return TaskResult::TR_FAIL; // TODO
 }
 
 #ifndef OPENDNP3_STRIP_LOG_MESSAGES
@@ -60,33 +131,6 @@ std::string CommandTask::Name() const
 }
 #endif
 
-void CommandTask::OnFailure()
-{
-	mResponder(CommandResponse(CommandResult::TIMEOUT));
-}
-
-TaskResult CommandTask::_OnPartialResponse(const APDUResponseRecord&)
-{
-	LOG_BLOCK(LogLevel::Error, "Non fin responses not allowed for control tasks");
-	return TR_CONTINUE;
-}
-
-TaskResult CommandTask::_OnFinalResponse(const APDUResponseRecord&)
-{
-	CommandStatus cs = CommandStatus::FORMAT_ERROR; // TODO - mValidator(arAPDU); TODO - move validation to something simplier
-
-	if(cs == CommandStatus::SUCCESS) {
-		if(mCodes.empty()) {
-			mResponder(CommandResponse(CommandResult::RESPONSE_OK, cs));
-			return TR_SUCCESS;
-		}
-		else return TR_CONTINUE;
-	}
-	else {
-		mResponder(CommandResponse(CommandResult::RESPONSE_OK, cs));
-		return TR_SUCCESS;
-	}
-}
 
 } //ens ns
 

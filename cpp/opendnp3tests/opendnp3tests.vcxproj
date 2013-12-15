@@ -278,7 +278,6 @@
     <ClCompile Include="src\TestAsyncTask.cpp" />
     <ClCompile Include="src\TestCastLongLongDouble.cpp" />
     <ClCompile Include="src\TestChangeBuffer.cpp" />
-    <ClCompile Include="src\TestCommandHelpers.cpp" />
     <ClCompile Include="src\TestCommandTask.cpp" />
     <ClCompile Include="src\TestCRC.cpp" />
     <ClCompile Include="src\TestDatabase.cpp" />

@@ -35,7 +35,6 @@
 #include "ObjectReadIterator.h"
 #include "MasterSchedule.h"
 #include "QueuedCommandProcessor.h"
-#include "CommandHelpers.h"
 #include "PostingMeasurementHandler.h"
 
 // includes for tasks
@@ -123,19 +122,6 @@ public:
 	void DirectOperate(const AnalogOutputDouble64& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback);
 
 private:
-
-	template <class T>
-	void ConfigureCommandTask(const T& arCommand, size_t aIndex, CommandObject<T>* apObj, std::function<void (CommandResponse)> aCallback) {
-		auto formatter = [ = ](APDU & arAPDU, FunctionCode aCode) {
-			return CommandHelpers::ConfigureRequest(arAPDU, aCode, arCommand, aIndex, apObj);
-		};
-		auto responder = [ = ](CommandResponse rsp) {
-			mpExecutor->Post([ = ]() {
-				aCallback(rsp);
-			});
-		};
-		mCommandTask.Configure(formatter, responder);
-	}
 
 	void UpdateState(StackState aState);
 

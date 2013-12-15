@@ -161,6 +161,7 @@
     <ClInclude Include="include\openpal\MonotonicTimestamp.h" />
     <ClInclude Include="include\openpal\MoveOnCopy.h" />
     <ClInclude Include="include\openpal\ReverseEndian.h" />
+    <ClInclude Include="include\openpal\Sequence.h" />
     <ClInclude Include="include\openpal\Serialization.h" />
     <ClInclude Include="include\openpal\TimeDuration.h" />
     <ClInclude Include="include\openpal\ToHex.h" />

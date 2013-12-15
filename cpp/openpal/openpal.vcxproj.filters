@@ -89,6 +89,9 @@
     <ClInclude Include="include\openpal\HasSize.h">
       <Filter>Include Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\openpal\Sequence.h">
+      <Filter>Include Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\LogEntry.cpp">

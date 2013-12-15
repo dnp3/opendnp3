@@ -24,14 +24,13 @@
 #include "MasterTaskBase.h"
 
 #include <opendnp3/CommandResponse.h>
-
-
 #include <openpal/Logger.h>
+#include <openpal/Sequence.h>
 
 #include "gen/FunctionCode.h"
+#include "CommandSequence.h"
 
 #include <functional>
-#include <queue>
 
 namespace opendnp3
 {
@@ -39,34 +38,60 @@ namespace opendnp3
 // Base class with machinery for performing command operations
 class CommandTask : public MasterTaskBase
 {
-	typedef std::function<CommandStatus (const openpal::ReadOnlyBuffer&)> Validator;
-	typedef std::function<Validator (APDU&, FunctionCode)> Formatter;
-	typedef std::function<void (CommandResponse)> Responder;
+	// immutable sequences of function codes
+	const static openpal::Sequence<FunctionCode> Operate;
+	const static openpal::Sequence<FunctionCode> DirectOperate;	
+	const static openpal::Sequence<FunctionCode> SelectAndOperate;
+	
+public:	
 
-public:
 	CommandTask(openpal::Logger);
 
-	void Configure(const Formatter& arFormatter, const Responder& arResponder);
-	void AddCommandCode(FunctionCode aCode);
+	void ConfigureSBO(const ControlRelayOutputBlock& command, uint32_t index,  std::function<void (CommandResponse)> aCallback);
+	void ConfigureSBO(const AnalogOutputInt16& command, uint32_t index,  std::function<void (CommandResponse)> aCallback);
+	void ConfigureSBO(const AnalogOutputInt32& command, uint32_t index,  std::function<void (CommandResponse)> aCallback);
+	void ConfigureSBO(const AnalogOutputFloat32& command, uint32_t index,  std::function<void (CommandResponse)> aCallback);
+	void ConfigureSBO(const AnalogOutputDouble64& command, uint32_t index,  std::function<void (CommandResponse)> aCallback);	
+
+	void ConfigureDO(const ControlRelayOutputBlock& command, uint32_t index,  std::function<void (CommandResponse)> aCallback);
+	void ConfigureDO(const AnalogOutputInt16& command, uint32_t index,  std::function<void (CommandResponse)> aCallback);
+	void ConfigureDO(const AnalogOutputInt32& command, uint32_t index,  std::function<void (CommandResponse)> aCallback);
+	void ConfigureDO(const AnalogOutputFloat32& command, uint32_t index,  std::function<void (CommandResponse)> aCallback);
+	void ConfigureDO(const AnalogOutputDouble64& command, uint32_t index,  std::function<void (CommandResponse)> aCallback);
 
 	void ConfigureRequest(APDU& arAPDU);
 
 	std::string Name() const;
 
-protected:
-
-	Formatter mFormatter;
-	Validator mValidator;
-	Responder mResponder;
+protected:	
 
 	// override from base class
 	void OnFailure();
 
 private:
 
-	std::deque<FunctionCode> mCodes;
 
-	void Respond(CommandStatus aStatus);
+	template <class T, class U>
+	void Configure(CommandSequence<T, U>& sequence, const T& value, uint32_t index, const openpal::Sequence<FunctionCode>* apSequence, std::function<void (CommandResponse)> aCallback)
+	{
+		assert(apSequence != nullptr);
+		mpFunctionSequence = apSequence;
+		callback = aCallback;
+		sequence.Configure(value, index);
+		mpActiveSequence = &sequence;		
+	}
+
+	const openpal::Sequence<FunctionCode>* mpFunctionSequence;
+
+	ICommandSequence* mpActiveSequence;
+
+	CommandSequence<ControlRelayOutputBlock, Group12Var1> crobSeq;
+	CommandSequence<AnalogOutputInt32, Group41Var1> analogInt32Seq;
+	CommandSequence<AnalogOutputInt16, Group41Var2> analogInt16Seq;
+	CommandSequence<AnalogOutputFloat32, Group41Var3> analogFloat32Seq;
+	CommandSequence<AnalogOutputDouble64, Group41Var4> analogDouble64Seq;
+
+	std::function<void (CommandResponse)> callback;	
 
 	TaskResult _OnPartialResponse(const APDUResponseRecord&);
 	TaskResult _OnFinalResponse(const APDUResponseRecord&);
