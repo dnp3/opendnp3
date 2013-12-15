@@ -606,13 +606,13 @@
     <ClInclude Include="src\opendnp3\MeasurementHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\Collection.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\BufferIterable.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\IterableBuffer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\Iterable.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -233,7 +233,7 @@
     <ClInclude Include="src\opendnp3\BufferType.h" />
     <ClInclude Include="src\opendnp3\ChangeBuffer.h" />
     <ClInclude Include="src\opendnp3\ClassCounter.h" />
-    <ClInclude Include="src\opendnp3\Collection.h" />
+    <ClInclude Include="src\opendnp3\Iterable.h" />
     <ClInclude Include="src\opendnp3\CommandHelpers.h" />
     <ClInclude Include="src\opendnp3\CommandTask.h" />
     <ClInclude Include="src\opendnp3\ConstantCommandProcessor.h" />

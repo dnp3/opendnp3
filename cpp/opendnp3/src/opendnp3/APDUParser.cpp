@@ -25,7 +25,7 @@
 
 #include "gen/QualifierCode.h"
 #include "GroupVariation.h"
-#include "Collection.h"
+#include "Iterable.h"
 
 #include "objects/Group1.h"
 #include "objects/Group2.h"

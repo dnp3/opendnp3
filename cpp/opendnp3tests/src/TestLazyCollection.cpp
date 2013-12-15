@@ -24,8 +24,7 @@
 #include "BufferHelpers.h"
 #include "MeasurementComparisons.h"
 
-#include <opendnp3/Collection.h>
-
+#include <opendnp3/Iterable.h>
 #include <opendnp3/DataTypes.h>
 #include <opendnp3/BitReader.h>
 #include <opendnp3/objects/Group30.h>
