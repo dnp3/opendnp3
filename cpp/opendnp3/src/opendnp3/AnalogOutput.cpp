@@ -39,7 +39,7 @@ AnalogOutputInt16::AnalogOutputInt16() : AnalogOutput<int16_t>(0)
 
 bool AnalogOutputInt16::operator==(const AnalogOutputInt16& arRHS) const
 {
-	return value == arRHS.value && status == arRHS.status;
+	return this->ValuesEqual(arRHS) && status == arRHS.status;
 }
 
 #ifndef OPENDNP3_STRIP_LOG_MESSAGES
@@ -62,7 +62,7 @@ AnalogOutputInt32::AnalogOutputInt32() : AnalogOutput<int32_t>(0)
 
 bool AnalogOutputInt32::operator==(const AnalogOutputInt32& arRHS) const
 {
-	return value == arRHS.value && status == arRHS.status;
+	return this->ValuesEqual(arRHS) && status == arRHS.status;
 }
 
 #ifndef OPENDNP3_STRIP_LOG_MESSAGES
@@ -85,7 +85,7 @@ AnalogOutputFloat32::AnalogOutputFloat32() : AnalogOutput<float>(0)
 
 bool AnalogOutputFloat32::operator==(const AnalogOutputFloat32& arRHS) const
 {
-	return value == arRHS.value && status == arRHS.status;
+	return this->ValuesEqual(arRHS) && status == arRHS.status;
 }
 
 #ifndef OPENDNP3_STRIP_LOG_MESSAGES
@@ -108,7 +108,7 @@ AnalogOutputDouble64::AnalogOutputDouble64() : AnalogOutput<double>(0)
 
 bool AnalogOutputDouble64::operator==(const AnalogOutputDouble64& arRHS) const
 {
-	return value == arRHS.value && status == arRHS.status;
+	return this->ValuesEqual(arRHS) && status == arRHS.status;
 }
 
 #ifndef OPENDNP3_STRIP_LOG_MESSAGES

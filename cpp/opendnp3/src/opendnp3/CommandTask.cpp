@@ -21,8 +21,9 @@
 #include "CommandTask.h"
 
 #include <openpal/Exception.h>
-
 #include <openpal/LoggableMacros.h>
+
+#include "APDUParser.h"
 
 using namespace openpal;
 
@@ -107,10 +108,9 @@ void CommandTask::ConfigureRequest(APDU& aAPDU)
 	mpActiveSequence->FormatAPDU(aAPDU, code); 	
 }
 
-
 void CommandTask::OnFailure()
 {
-	
+	callback(CommandResponse(CommandResult::TIMEOUT));
 }
 
 TaskResult CommandTask::_OnPartialResponse(const APDUResponseRecord&)
@@ -121,7 +121,32 @@ TaskResult CommandTask::_OnPartialResponse(const APDUResponseRecord&)
 
 TaskResult CommandTask::_OnFinalResponse(const APDUResponseRecord& record)
 {
-	return TaskResult::TR_FAIL; // TODO
+	auto result = APDUParser::ParseHeaders(record.objects, *mpActiveSequence);
+	if(result == APDUParser::Result::OK)
+	{				
+		if(mpFunctionSequence == nullptr) // we're done
+		{
+			auto commandResponse = mpActiveSequence->Validate();		
+			callback(commandResponse);
+			return TaskResult::TR_SUCCESS;
+		}
+		else // we may have more depending on response
+		{
+			auto commandResponse = mpActiveSequence->Validate();
+			if(commandResponse == CommandResponse::Success) return TaskResult::TR_CONTINUE; // more function codes		
+			else
+			{
+				callback(commandResponse);  // something failed, end the task early
+				return TaskResult::TR_SUCCESS;
+			}			
+		}
+	}
+	else
+	{
+		LOG_BLOCK(LogLevel::Error, "Error parsing apdu: " << static_cast<int>(result)); // TODO - improve logging
+		callback(CommandResponse(CommandResult::TIMEOUT));  // maybe another code for malformed response?
+		return TaskResult::TR_FAIL;
+	}	
 }
 
 #ifndef OPENDNP3_STRIP_LOG_MESSAGES

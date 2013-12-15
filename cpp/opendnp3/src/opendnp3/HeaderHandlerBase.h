@@ -69,6 +69,10 @@ public:
 
 	protected:
 
+	inline uint32_t GetCurrentHeader() { return currentHeader; }
+
+	void Reset();
+
 	virtual std::string HandlerName() const = 0;
 
 	bool GetCTO(int64_t& cto);

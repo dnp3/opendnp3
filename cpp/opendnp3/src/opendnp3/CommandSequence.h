@@ -24,6 +24,8 @@
 #include "APDU.h"
 #include "HeaderHandlerBase.h"
 
+#include <iostream>
+
 namespace opendnp3
 {
 
@@ -53,12 +55,26 @@ class CommandSequence : public ICommandSequence
 
 	void Configure(const CommandType& value, uint32_t index) 
 	{ 
+		this->Reset(); // resets all state inside the base class
+		response = CommandResponse(CommandResult::TIMEOUT); // todo change this to some other result like "malformed"
 		command = IndexedValue<CommandType>(value, index); 
 	}
 
-	virtual void OnIndexPrefix(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const IterableBuffer<IndexedValue<CommandType>>& meas) final
+	virtual void _OnIndexPrefix(const openpal::ReadOnlyBuffer& header, const IterableBuffer<IndexedValue<CommandType>>& meas)
 	{
-		// TODOD
+		if(this->GetCurrentHeader() == 0 && meas.Count() == 1)
+		{			
+			IndexedValue<CommandType> received;
+			meas.foreach([&](const IndexedValue<CommandType> v){ received = v; });
+			if(received.index == command.index)
+			{
+				if(received.value.ValuesEqual(command.value))
+				{
+					response = CommandResponse(CommandResult::RESPONSE_OK, received.value.status);
+				}
+			}				
+				
+		}		
 	}
 
 	virtual void FormatAPDU(APDU& apdu, FunctionCode aCode) final 
@@ -71,10 +87,15 @@ class CommandSequence : public ICommandSequence
 
 	virtual CommandResponse Validate() final
 	{
-		return CommandResponse(CommandResult::NO_COMMS);
+		auto numHeaders = this->GetCurrentHeader();
+		auto singleHeader = (numHeaders == 1);
+		this->Reset();
+		if(singleHeader) return response;
+		else return CommandResponse(CommandResult::TIMEOUT); // TODO - better error code
 	}
 
 	private:
+	CommandResponse response;
 	IndexedValue<CommandType> command;
 };
 

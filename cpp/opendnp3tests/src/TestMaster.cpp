@@ -587,8 +587,8 @@ BOOST_AUTO_TEST_CASE(ParsesOctetStringResponseWithNoCharacters)
 	// octet strings shouldn't be found in class 0 polls, but we'll test that we can process them anyway
 	BOOST_REQUIRE_EQUAL("C0 01 3C 01 06", t.Read());
 
-	// Group 110 (0x6E) Variation (length), 1 byte count / 1 byte index (3), count of 1, ""
-	t.RespondToMaster("C0 81 00 00 6E 00 17 01 03");
+	// Group 110 (0x6E) Variation (length), start = 3, stop = 3
+	t.RespondToMaster("C0 81 00 00 6E 00 00 03 03");
 
 	BOOST_REQUIRE(t.mts.DispatchOne());
 

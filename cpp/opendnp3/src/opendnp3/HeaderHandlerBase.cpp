@@ -34,112 +34,119 @@ HeaderHandlerBase::HeaderHandlerBase(Logger& aLogger) :
 	ctoHeader(-1)
 {}
 
-void HeaderHandlerBase::AllObjects(GroupVariation gv, const openpal::ReadOnlyBuffer& header)
+void HeaderHandlerBase::Reset()
 {
-	++currentHeader;
+	currentHeader = 0;	
+	cto = 0;
+	ctoHeader = -1;
+}
+
+void HeaderHandlerBase::AllObjects(GroupVariation gv, const openpal::ReadOnlyBuffer& header)
+{	
 	this->_AllObjects(gv);
+	++currentHeader;
 }
 
 void HeaderHandlerBase::OnIIN(GroupVariation, const openpal::ReadOnlyBuffer&, const IterableBuffer<IndexedValue<bool>>& meas)
-{
-	++currentHeader;
+{	
 	this->_OnIIN(meas);
+	++currentHeader;
 }
 
 void HeaderHandlerBase::OnCountOf(const IterableBuffer<Group52Var2>& objects)
 {
-	++currentHeader;
 	this->_OnCountOf(objects);
+	++currentHeader;
 }
 
 void HeaderHandlerBase::OnRange(GroupVariation gv, const openpal::ReadOnlyBuffer&, const IterableBuffer<IndexedValue<Binary>>& meas)
-{
-	++currentHeader;
+{	
 	this->_OnRange(gv, meas);
+	++currentHeader;
 }
 
 void HeaderHandlerBase::OnIndexPrefix(GroupVariation gv, const openpal::ReadOnlyBuffer&, const IterableBuffer<IndexedValue<Binary>>& meas)
 {
-	++currentHeader;
 	this->_OnIndexPrefix(gv, meas);
+	++currentHeader;
 }
 
 void HeaderHandlerBase::OnRange(GroupVariation gv, const openpal::ReadOnlyBuffer&, const IterableBuffer<IndexedValue<ControlStatus>>& meas)
-{
-	++currentHeader;
+{	
 	this->_OnRange(gv, meas);
+	++currentHeader;
 }
 		
 void HeaderHandlerBase::OnRange(GroupVariation gv, const openpal::ReadOnlyBuffer&, const IterableBuffer<IndexedValue<Counter>>& meas)
-{
-	++currentHeader;
+{	
 	this->_OnRange(gv, meas);
+	++currentHeader;
 }
 
 void HeaderHandlerBase::OnIndexPrefix(GroupVariation gv, const openpal::ReadOnlyBuffer&, const IterableBuffer<IndexedValue<Counter>>& meas)
-{
-	++currentHeader;
+{	
 	this->_OnIndexPrefix(gv, meas);
+	++currentHeader;
 }
 
 void HeaderHandlerBase::OnRange(GroupVariation gv, const openpal::ReadOnlyBuffer&, const IterableBuffer<IndexedValue<Analog>>& meas)
-{
-	++currentHeader;
+{	
 	this->_OnRange(gv, meas);
+	++currentHeader;
 }
 
 void HeaderHandlerBase::OnIndexPrefix(GroupVariation gv, const openpal::ReadOnlyBuffer&, const IterableBuffer<IndexedValue<Analog>>& meas)
-{
-	++currentHeader;
+{	
 	this->_OnIndexPrefix(gv, meas);
+	++currentHeader;
 }
 
 void HeaderHandlerBase::OnRange(GroupVariation gv, const openpal::ReadOnlyBuffer&, const IterableBuffer<IndexedValue<SetpointStatus>>& meas)
-{
-	++currentHeader;
+{	
 	this->_OnRange(gv, meas);
+	++currentHeader;
 }
 
 void HeaderHandlerBase::OnIndexPrefix(GroupVariation, const openpal::ReadOnlyBuffer& header, const IterableBuffer<IndexedValue<ControlRelayOutputBlock>>& meas)
-{
-	++currentHeader;
+{	
 	this->_OnIndexPrefix(header, meas);
+	++currentHeader;
 }
 
 void HeaderHandlerBase::OnIndexPrefix(GroupVariation, const openpal::ReadOnlyBuffer& header, const IterableBuffer<IndexedValue<AnalogOutputInt16>>& meas)
-{
-	++currentHeader;
+{	
 	this->_OnIndexPrefix(header, meas);
+	++currentHeader;
 }
 
 void HeaderHandlerBase::OnIndexPrefix(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const IterableBuffer<IndexedValue<AnalogOutputInt32>>& meas)
-{
-	++currentHeader;
+{	
 	this->_OnIndexPrefix(header, meas);
+	++currentHeader;
 }
 
 void HeaderHandlerBase::OnIndexPrefix(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const IterableBuffer<IndexedValue<AnalogOutputFloat32>>& meas)
-{
-	++currentHeader;
+{	
 	this->_OnIndexPrefix(header, meas);
+	++currentHeader;
 }
 
 void HeaderHandlerBase::OnIndexPrefix(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const IterableBuffer<IndexedValue<AnalogOutputDouble64>>& meas)
-{
-	++currentHeader;
+{	
 	this->_OnIndexPrefix(header, meas);
+	++currentHeader;
 }
 
 void HeaderHandlerBase::OnRangeOfOctets(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const IterableBuffer<IndexedValue<openpal::ReadOnlyBuffer>>& meas)
-{
-	++currentHeader;
+{	
 	this->_OnRangeOfOctets(gv, meas);
+	++currentHeader;
 }
 
 void HeaderHandlerBase::OnIndexPrefixOfOctets(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const IterableBuffer<IndexedValue<openpal::ReadOnlyBuffer>>& meas)
-{
-	++currentHeader;
+{	
 	this->_OnIndexPrefixOfOctets(gv, meas);
+	++currentHeader;
 }
 
 void HeaderHandlerBase::_AllObjects(GroupVariation gv)

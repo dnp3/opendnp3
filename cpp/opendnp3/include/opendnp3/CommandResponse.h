@@ -33,10 +33,13 @@ namespace opendnp3
 class CommandResponse
 {
 public:
+
+	static const CommandResponse Success;
 	
 	CommandResponse(CommandResult aResult = CommandResult::NO_COMMS, CommandStatus aStatus = CommandStatus::UNDEFINED);
 
 	static CommandResponse OK(CommandStatus aStatus);
+	
 	
 	///  The result of the operation, should be examined before looking at the status code
 	CommandResult GetResult();
@@ -44,7 +47,7 @@ public:
 	/// The command status enumeration received from the outstation, if applicable
 	CommandStatus GetStatus();
 
-	bool operator==(const CommandResponse& arRHS);
+	bool operator==(const CommandResponse& arRHS) const;
 
 	std::string ToString() const;
 

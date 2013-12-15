@@ -50,6 +50,8 @@ public:
 		status(aStatus)
 	{}
 
+	bool ValuesEqual(const AnalogOutput<T>& aLHS) const	{ return value == aLHS.value; }
+
 	/**
 	* The status value defaults to CS_SUCCESS for requests
 	*/
@@ -71,7 +73,7 @@ public:
 
 	AnalogOutputInt16();
 	AnalogOutputInt16(int16_t);
-	AnalogOutputInt16(int16_t, CommandStatus);
+	AnalogOutputInt16(int16_t, CommandStatus);	
 
 	bool operator==(const AnalogOutputInt16& arRHS) const;
 
