@@ -43,16 +43,18 @@ public:
 	*/
 	SimpleDataObserver(std::function<void (const std::string&)> aOutputFunc);
 
+	void Update(const Binary& arPoint, uint32_t) final;
+	void Update(const Analog& arPoint, uint32_t) final;
+	void Update(const Counter& arPoint, uint32_t) final;
+	void Update(const ControlStatus& arPoint, uint32_t) final;
+	void Update(const SetpointStatus& arPoint, uint32_t) final;
+
 protected:
 
 	//concrete class will implement these
-	void _Start();
-	void _Update(const Binary& arPoint, size_t);
-	void _Update(const Analog& arPoint, size_t);
-	void _Update(const Counter& arPoint, size_t);
-	void _Update(const ControlStatus& arPoint, size_t);
-	void _Update(const SetpointStatus& arPoint, size_t);
-	void _End();
+	void Start() final;
+
+	void End() final;
 
 private:
 	std::function<void (std::string)> mOutputFunc;

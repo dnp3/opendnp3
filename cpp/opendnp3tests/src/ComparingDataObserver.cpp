@@ -76,12 +76,12 @@ void ComparingDataObserver::Load(const IMeasurementUpdate& arUpdate)
 	arUpdate.Apply(this);
 }
 
-void ComparingDataObserver::_Start()
+void ComparingDataObserver::Start()
 {
 	mMutex.lock();
 }
 
-void ComparingDataObserver::_End()
+void ComparingDataObserver::End()
 {
 	if(this->IsSameData()) {
 		mSameData = true;
@@ -91,27 +91,27 @@ void ComparingDataObserver::_End()
 
 }
 
-void ComparingDataObserver::_Update(const Binary& arPoint, size_t aIndex)
+void ComparingDataObserver::Update(const Binary& arPoint, size_t aIndex)
 {
 	this->UpdateAny<Binary>(arPoint, aIndex, mpObserver->mBinaryMap, mBinaryMap);
 }
 
-void ComparingDataObserver::_Update(const Analog& arPoint, size_t aIndex)
+void ComparingDataObserver::Update(const Analog& arPoint, size_t aIndex)
 {
 	this->UpdateAny<Analog>(arPoint, aIndex, mpObserver->mAnalogMap, mAnalogMap);
 }
 
-void ComparingDataObserver::_Update(const Counter& arPoint, size_t aIndex)
+void ComparingDataObserver::Update(const Counter& arPoint, size_t aIndex)
 {
 	this->UpdateAny<Counter>(arPoint, aIndex, mpObserver->mCounterMap, mCounterMap);
 }
 
-void ComparingDataObserver::_Update(const ControlStatus& arPoint, size_t aIndex)
+void ComparingDataObserver::Update(const ControlStatus& arPoint, size_t aIndex)
 {
 	this->UpdateAny<ControlStatus>(arPoint, aIndex, mpObserver->mControlStatusMap, mControlStatusMap);
 }
 
-void ComparingDataObserver::_Update(const SetpointStatus& arPoint, size_t aIndex)
+void ComparingDataObserver::Update(const SetpointStatus& arPoint, size_t aIndex)
 {
 	this->UpdateAny<SetpointStatus>(arPoint, aIndex, mpObserver->mSetpointStatusMap, mSetpointStatusMap);
 }

@@ -53,9 +53,8 @@ public:
 	virtual void OnUnsolSendSuccess(Slave*);
 	virtual void OnUnsolFailure(Slave*);
 
-	virtual void OnRequest(Slave*, const APDU&, SequenceInfo);
-
-	virtual void OnUnknown(Slave*);
+	virtual void OnRequest(Slave*, const APDURecord&, SequenceInfo);
+	
 
 	/* Events produced from the user layer */
 
@@ -78,16 +77,13 @@ public:
 	}
 	virtual bool AcceptsDeferredUnsolExpiration()  {
 		return false;
-	}
-	virtual bool AcceptsDeferredUnknown()  {
-		return false;
-	}
+	}	
 
 protected:
 
-	void SwitchOnFunction(Slave*, AS_Base* apNext, const APDU& arRequest, SequenceInfo aSeqInfo);
+	void SwitchOnFunction(Slave*, AS_Base* apNext, const APDURecord& record, SequenceInfo aSeqInfo);
 	void DoUnsolSuccess(Slave*);
-	void DoRequest(Slave* c, AS_Base* apNext, const APDU& arAPDU, SequenceInfo aSeqInfo);
+	void DoRequest(Slave* c, AS_Base* apNext, const APDURecord& record, SequenceInfo aSeqInfo);
 
 	//Work functions
 
@@ -132,10 +128,9 @@ public:
 
 	MACRO_STATE_SINGLETON_INSTANCE(AS_Idle);
 
-	void OnRequest(Slave*, const APDU&, SequenceInfo);
+	void OnRequest(Slave*, const APDURecord&, SequenceInfo);
 	void OnDataUpdate(Slave*);
-	void OnUnsolExpiration(Slave*);
-	void OnUnknown(Slave*);
+	void OnUnsolExpiration(Slave*);	
 
 	bool AcceptsDeferredRequests() {
 		return true;
@@ -160,7 +155,7 @@ public:
 
 	MACRO_STATE_SINGLETON_INSTANCE(AS_WaitForRspSuccess);
 
-	void OnRequest(Slave*, const APDU&, SequenceInfo);
+	void OnRequest(Slave*, const APDURecord&, SequenceInfo);
 	void OnSolFailure(Slave*);
 	void OnSolSendSuccess(Slave*);
 
@@ -176,7 +171,7 @@ public:
 
 	MACRO_STATE_SINGLETON_INSTANCE(AS_WaitForUnsolSuccess);
 
-	void OnRequest(Slave*, const APDU&, SequenceInfo);
+	void OnRequest(Slave*, const APDURecord&, SequenceInfo);
 	void OnUnsolFailure(Slave*);
 	void OnUnsolSendSuccess(Slave*);
 
@@ -192,7 +187,7 @@ public:
 
 	MACRO_STATE_SINGLETON_INSTANCE(AS_WaitForSolUnsolSuccess);
 
-	void OnRequest(Slave*, const APDU&, SequenceInfo);
+	void OnRequest(Slave*, const APDURecord&, SequenceInfo);
 	void OnSolFailure(Slave*);
 	void OnSolSendSuccess(Slave*);
 	void OnUnsolFailure(Slave*);

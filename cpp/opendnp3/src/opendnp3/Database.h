@@ -85,18 +85,18 @@ public:
 	StaticIterator<ControlStatus>::Type BeginControlStatus() { return mControlStatusVec.begin(); }	
 	StaticIterator<SetpointStatus>::Type BeginSetpointStatus() { return mSetpointStatusVec.begin(); }
 
+	// IDataObserver functions
+	void Update(const Binary& arPoint, uint32_t) final;
+	void Update(const Analog& arPoint, uint32_t) final;
+	void Update(const Counter& arPoint, uint32_t) final;
+	void Update(const ControlStatus& arPoint, uint32_t) final;
+	void Update(const SetpointStatus& arPoint, uint32_t) final;
+
 private:
 
 	// ITransactable  functions, no lock on this structure.
-	void _Start() {}
-	void _End() {}
-
-	// IDataObserver functions
-	void _Update(const Binary& arPoint, size_t);
-	void _Update(const Analog& arPoint, size_t);
-	void _Update(const Counter& arPoint, size_t);
-	void _Update(const ControlStatus& arPoint, size_t);
-	void _Update(const SetpointStatus& arPoint, size_t);
+	void Start() final {}
+	void End() final {}
 
 	template<typename T>
 	void AssignIndices( std::vector< PointInfo<T> >& arVector );

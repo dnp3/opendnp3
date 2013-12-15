@@ -166,7 +166,7 @@ void Database::SetEventBuffer(IEventBuffer* apEventBuffer)
 // IDataObserver interfae - Private NVII functions -
 ////////////////////////////////////////////////////
 
-void Database::_Update(const Binary& aValue, size_t aIndex)
+void Database::Update(const Binary& aValue, size_t aIndex)
 {
 	if(aIndex < mBinaryVec.size())	
 	{	
@@ -178,7 +178,7 @@ void Database::_Update(const Binary& aValue, size_t aIndex)
 	}	
 }
 
-void Database::_Update(const Analog& aValue, size_t aIndex)
+void Database::Update(const Analog& aValue, size_t aIndex)
 {
 	if(aIndex < mAnalogVec.size())	
 	{	
@@ -190,7 +190,7 @@ void Database::_Update(const Analog& aValue, size_t aIndex)
 	}	
 }
 
-void Database::_Update(const Counter& aValue, size_t aIndex)
+void Database::Update(const Counter& aValue, size_t aIndex)
 {
 	if(aIndex < mCounterVec.size())	
 	{	
@@ -202,12 +202,12 @@ void Database::_Update(const Counter& aValue, size_t aIndex)
 	}
 }
 
-void Database::_Update(const ControlStatus& aValue, size_t aIndex)
+void Database::Update(const ControlStatus& aValue, size_t aIndex)
 {
 	if(aIndex < mControlStatusVec.size()) mControlStatusVec[aIndex].value = aValue;	
 }
 
-void Database::_Update(const SetpointStatus& aValue, size_t aIndex)
+void Database::Update(const SetpointStatus& aValue, size_t aIndex)
 {
 	if(aIndex < mSetpointStatusVec.size()) mSetpointStatusVec[aIndex].value = aValue;
 }

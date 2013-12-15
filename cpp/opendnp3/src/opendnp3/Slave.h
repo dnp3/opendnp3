@@ -149,8 +149,7 @@ private:
 
 	bool mDeferredUpdate;					// Indicates that a data update has been Deferred
 	bool mDeferredRequest;					// Indicates that a request has been Deferred
-	bool mDeferredUnsol;					// Indicates that the unsol timer expired, but the event was Deferred
-	bool mDeferredUnknown;
+	bool mDeferredUnsol;					// Indicates that the unsol timer expired, but the event was Deferred	
 
 	bool mStartupNullUnsol;					// Tracks whether the device has completed the nullptr unsol startup message
 

@@ -158,6 +158,31 @@ public:
 
 	void Load(const IMeasurementUpdate& arUpdate) override;
 
+	virtual void Update(const Binary& arPoint, size_t aIndex) final
+	{
+		Load(arPoint, mBinaryMap, aIndex);
+	}
+	
+	virtual void Update(const Analog& arPoint, size_t aIndex) final
+	{
+		Load(arPoint, mAnalogMap, aIndex);
+	}
+	
+	virtual void Update(const Counter& arPoint, size_t aIndex)  final
+	{
+		Load(arPoint, mCounterMap, aIndex);
+	}
+	
+	virtual void Update(const ControlStatus& arPoint, size_t aIndex) final
+	{
+		Load(arPoint, mControlStatusMap, aIndex);
+	}
+
+	virtual void Update(const SetpointStatus& arPoint, size_t aIndex) final
+	{
+		Load(arPoint, mSetpointStatusMap, aIndex);
+	}
+
 protected:
 
 	template <class T>
@@ -170,31 +195,18 @@ private:
 	bool mNewData;
 	std::mutex mMutex;
 
-	void _Start()	{
+	void Start()	
+	{
 		mMutex.lock();
 	}
-	void _End() {
+
+	void End() 
+	{
 		bool notify = mNewData;
 		mNewData = false;
 		mMutex.unlock();
 		if(notify) this->NotifyObservers();
-	}
-
-	virtual void _Update(const Binary& arPoint, size_t aIndex) {
-		Load(arPoint, mBinaryMap, aIndex);
-	}
-	virtual void _Update(const Analog& arPoint, size_t aIndex) {
-		Load(arPoint, mAnalogMap, aIndex);
-	}
-	virtual void _Update(const Counter& arPoint, size_t aIndex) {
-		Load(arPoint, mCounterMap, aIndex);
-	}
-	virtual void _Update(const ControlStatus& arPoint, size_t aIndex) {
-		Load(arPoint, mControlStatusMap, aIndex);
-	}
-	virtual void _Update(const SetpointStatus& arPoint, size_t aIndex) {
-		Load(arPoint, mSetpointStatusMap, aIndex);
-	}
+	}	
 
 	template <class T, class U>
 	bool Check(typename PointMap<T>::Type& arMap, U aValue, uint8_t aQual, size_t aIndex);

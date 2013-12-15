@@ -56,8 +56,7 @@ Slave::Slave(openpal::Logger aLogger, IAppLayer* apAppLayer, IExecutor* apExecut
 	mLastRequest(arCfg.mMaxFragSize),
 	mDeferredUpdate(false),
 	mDeferredRequest(false),
-	mDeferredUnsol(false),
-	mDeferredUnknown(false),
+	mDeferredUnsol(false),	
 	mStartupNullUnsol(false),
 	mState(StackState::COMMS_DOWN),
 	mpTimeTimer(nullptr)
@@ -146,10 +145,9 @@ void Slave::OnUnsolFailure()
 }
 
 void Slave::OnRequest(const APDURecord& record, SequenceInfo aSeqInfo)
-{
-	// TODO
-	// mpState->OnRequest(this, arAPDU, aSeqInfo);
-	// this->FlushDeferredEvents();
+{	
+	mpState->OnRequest(this, record, aSeqInfo);
+	this->FlushDeferredEvents();
 }
 
 /* Internally generated events */
@@ -197,7 +195,7 @@ void Slave::FlushDeferredEvents()
 	 */
 	if (mpState->AcceptsDeferredRequests() && mDeferredRequest) {
 		mDeferredRequest = false;
-		mpState->OnRequest(this, mRequest, mSeqInfo);
+		//mpState->OnRequest(this, mRequest, mSeqInfo); TODO - request this 
 	}
 
 	/*
@@ -208,30 +206,16 @@ void Slave::FlushDeferredEvents()
 		mDeferredUnsol = false;
 		mpState->OnUnsolExpiration(this);
 	}
-
-	if (mpState->AcceptsDeferredUnknown() && mDeferredUnknown) {
-		mDeferredUnknown = false;
-		mpState->OnUnknown(this);
-	}
 }
 
 size_t Slave::FlushUpdates()
 {
-	size_t num = 0;
-	try {
-		Transaction t(&mChangeBuffer);
-		num = mChangeBuffer.FlushUpdates(mpDatabase);
-	}
-	catch (Exception& ex) {
-		LOG_BLOCK(LogLevel::Error, "Error in flush updates: " << ex.Message());
-		Transaction tr(mChangeBuffer);
-		mChangeBuffer.Clear();
-		return 0;
-	}
-
-
+	
+	size_t num	= Transaction::Apply<size_t>(mChangeBuffer, 
+		[this](ChangeBuffer& buffer) { return buffer.FlushUpdates(mpDatabase); }
+	);	
 	LOG_BLOCK(LogLevel::Debug, "Processed " << num << " updates");
-	return num;
+	return num;		
 }
 
 

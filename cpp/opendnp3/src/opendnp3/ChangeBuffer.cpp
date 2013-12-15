@@ -27,22 +27,26 @@ namespace opendnp3
 
 size_t ChangeBuffer::FlushUpdates(IDataObserver* apObserver)
 {
-	assert(this->InProgress());
-	size_t count = this->mChangeQueue.size();
-	if(count > 0) {
-		Transaction t(apObserver);
-for(auto f: mChangeQueue) f(apObserver);
-	}
+	size_t count = Transaction::Apply<size_t>(*this, 
+		[apObserver](const ChangeBuffer& cb) {
+			size_t cnt = cb.mChangeQueue.size();
+			if(cnt > 0) {
+				Transaction t(apObserver);
+				for(auto& f: cb.mChangeQueue) f(apObserver);
+			}
+			return cnt;
+		}
+	);	
 	this->Clear();
 	return count;
 }
 
-void ChangeBuffer::_Start()
+void ChangeBuffer::Start()
 {
 	mMutex.lock();
 }
 
-void ChangeBuffer::_End()
+void ChangeBuffer::End()
 {
 	bool notify = mNotify;
 	mNotify = false;
@@ -50,43 +54,37 @@ void ChangeBuffer::_End()
 	if(notify) this->NotifyObservers();
 }
 
-void ChangeBuffer::_Update(const Binary& arPoint, size_t aIndex)
+void ChangeBuffer::Update(const Binary& arPoint, size_t aIndex)
 {
 	mChangeQueue.push_back(std::bind(&ChangeBuffer::Dispatch<Binary>, std::placeholders::_1, arPoint, aIndex));
 	mNotify = true;
 }
 
-void ChangeBuffer::_Update(const Analog& arPoint, size_t aIndex)
+void ChangeBuffer::Update(const Analog& arPoint, size_t aIndex)
 {
 	mChangeQueue.push_back(std::bind(&ChangeBuffer::Dispatch<Analog>, std::placeholders::_1, arPoint, aIndex));
 	mNotify = true;
 }
 
-void ChangeBuffer::_Update(const Counter& arPoint, size_t aIndex)
+void ChangeBuffer::Update(const Counter& arPoint, size_t aIndex)
 {
 	mChangeQueue.push_back(std::bind(&ChangeBuffer::Dispatch<Counter>, std::placeholders::_1, arPoint, aIndex));
 	mNotify = true;
 }
 
-void ChangeBuffer::_Update(const ControlStatus& arPoint, size_t aIndex)
+void ChangeBuffer::Update(const ControlStatus& arPoint, size_t aIndex)
 {
 	mChangeQueue.push_back(std::bind(&ChangeBuffer::Dispatch<ControlStatus>, std::placeholders::_1, arPoint, aIndex));
 	mNotify = true;
 }
 
-void ChangeBuffer::_Update(const SetpointStatus& arPoint, size_t aIndex)
+void ChangeBuffer::Update(const SetpointStatus& arPoint, size_t aIndex)
 {
 	mChangeQueue.push_back(std::bind(&ChangeBuffer::Dispatch<SetpointStatus>, std::placeholders::_1, arPoint, aIndex));
 	mNotify = true;
 }
 
 void ChangeBuffer::Clear()
-{
-	assert(this->InProgress());
-	_Clear();
-}
-
-void ChangeBuffer::_Clear()
 {
 	mChangeQueue.clear();
 }

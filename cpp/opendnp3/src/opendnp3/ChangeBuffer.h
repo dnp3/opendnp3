@@ -40,19 +40,23 @@ class ChangeBuffer : public IDataObserver, public SubjectBase
 public:
 
 	ChangeBuffer() : mNotify(false) {}
+	
+	void Update(const Binary& arPoint, size_t aIndex)  final;
+	void Update(const Analog& arPoint, size_t aIndex) final;
+	void Update(const Counter& arPoint, size_t aIndex) final;
+	void Update(const ControlStatus& arPoint, size_t aIndex) final;
+	void Update(const SetpointStatus& arPoint, size_t aIndex) final;
 
-	void _Start();
-	void _End();
-	void _Update(const Binary& arPoint, size_t aIndex);
-	void _Update(const Analog& arPoint, size_t aIndex);
-	void _Update(const Counter& arPoint, size_t aIndex);
-	void _Update(const ControlStatus& arPoint, size_t aIndex);
-	void _Update(const SetpointStatus& arPoint, size_t aIndex);
 	size_t FlushUpdates(IDataObserver* apObserver);
 
-	void Clear();
+protected:
+
+	void Start() final;
+	void End() final;
 
 private:
+
+	void Clear();
 
 	template <class T>
 	static void Dispatch(IDataObserver* apObs, T& arMeas, size_t aIndex) {

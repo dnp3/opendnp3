@@ -51,84 +51,44 @@ class IDataObserver : public ITransactable
 {
 public:
 
-	virtual ~IDataObserver() {}
-
-	// NVII enforces a policy of using these functions only after
-	// a transaction has been initiated
+	virtual ~IDataObserver() {}	
 
 	/**
 	* Update or receive a Binary measurement, must have transaction started
 	* @param arMeas measurement to be processed
 	* @param aIndex index of the measurement
 	*/
-	void Update(const Binary& arMeas, size_t aIndex);
+	virtual void Update(const Binary& arMeas, uint32_t aIndex) = 0;
 
 	/**
 	* Update or receive an Analog measurement, must have transaction started
 	* @param arMeas measurement to be processed
 	* @param aIndex index of the measurement
 	*/
-	void Update(const Analog& arMeas, size_t aIndex);
+	virtual void Update(const Analog& arMeas, uint32_t aIndex) = 0;
 
 	/**
 	* Update or receive a Counter measurement, must have transaction started
 	* @param arMeas measurement to be processed
 	* @param aIndex index of the measurement
 	*/
-	void Update(const Counter& arMeas, size_t aIndex);
+	virtual void Update(const Counter& arMeas, uint32_t aIndex) = 0;
 
 	/**
 	* Update or receive a ControlStatus measurement, must have transaction started
 	* @param arMeas measurement to be processed
 	* @param aIndex index of the measurement
 	*/
-	void Update(const ControlStatus& arMeas, size_t aIndex);
+	virtual void Update(const ControlStatus& arMeas, uint32_t aIndex) = 0;
 
 	/**
 	* Update or receive a SetpointStatus measurement, must have transaction started
 	* @param arMeas measurement to be processed
 	* @param aIndex index of the measurement
 	*/
-	void Update(const SetpointStatus& arMeas, size_t aIndex);
-
-protected:
-
-	//concrete class will implement these
-	virtual void _Update(const Binary& arPoint, size_t) = 0;
-	virtual void _Update(const Analog& arPoint, size_t) = 0;
-	virtual void _Update(const Counter& arPoint, size_t) = 0;
-	virtual void _Update(const ControlStatus& arPoint, size_t) = 0;
-	virtual void _Update(const SetpointStatus& arPoint, size_t) = 0;
-
+	virtual void Update(const SetpointStatus& arMeas, uint32_t aIndex) = 0;
 
 };
-
-//Inline the simple public interface functions
-inline void IDataObserver::Update(const Binary& arPoint, size_t aIndex)
-{
-	assert(this->InProgress());
-	this->_Update(arPoint, aIndex);
-}
-inline void IDataObserver::Update(const Analog& arPoint, size_t aIndex)
-{
-	assert(this->InProgress());
-	this->_Update(arPoint, aIndex);
-}
-inline void IDataObserver::Update(const Counter& arPoint, size_t aIndex)
-{
-	assert(this->InProgress());
-	this->_Update(arPoint, aIndex);
-}
-inline void IDataObserver::Update(const ControlStatus& arPoint, size_t aIndex)
-{
-	assert(this->InProgress());
-	this->_Update(arPoint, aIndex);
-}
-inline void IDataObserver::Update(const SetpointStatus& arPoint, size_t aIndex)
-{
-	assert(this->InProgress());
-	this->_Update(arPoint, aIndex);
-}
 
 }
 

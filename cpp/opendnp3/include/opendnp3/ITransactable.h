@@ -22,7 +22,8 @@
 #define	__I_TRANSACTABLE_H_
 
 #include <assert.h>
-#include <stddef.h>
+
+#include "Uncopyable.h"
 
 namespace opendnp3
 {
@@ -53,48 +54,12 @@ class ITransactable
 	friend class Transaction;
 
 public:
-
-	ITransactable() : mInProgress(false) {}
+	
 	virtual ~ITransactable() {}
 
-	// Enfore pre/post conditions on _Start/_End Operation
-	void Start();
-	void End();
-
-protected:
-
-	bool InProgress();
-
-	// concrete classes will define these functions
-	virtual void _Start() = 0;
-	virtual void _End() = 0;
-
-private:
-
-	bool mInProgress;
-
+	virtual void Start() = 0;
+	virtual void End() = 0;
 };
-
-inline bool ITransactable::InProgress()
-{
-	return mInProgress;
-}
-
-inline void ITransactable::Start()
-{
-	this->_Start();
-	assert(!mInProgress);
-	mInProgress = true;
-}
-
-inline void ITransactable::End()
-{
-	assert(mInProgress);
-	mInProgress = false;
-	this->_End();
-}
-
-
 
 /**
   This is a helper class that handles the starting and ending of the transaction
@@ -103,43 +68,36 @@ inline void ITransactable::End()
   transaction object the stack unwinding will guarentee that the transaction is
   correctly cleaned up.
 */
-class Transaction
+class Transaction : private Uncopyable
 {
-public:
-	Transaction(ITransactable& arTransactable)
-		: mpTransactable(&arTransactable), mIsEnded(false) {
+	public:
+
+	Transaction(ITransactable& arTransactable) : mpTransactable(&arTransactable)
+	{
 		mpTransactable->Start();
 	}
 
-	Transaction(ITransactable* apTransactable)
-		: mpTransactable(apTransactable), mIsEnded(false) {
+	Transaction(ITransactable* apTransactable) : mpTransactable(apTransactable)
+	{
+		assert(mpTransactable != nullptr);
 		mpTransactable->Start();
-	}
+	}	
 
-	Transaction()
-		: mpTransactable(nullptr), mIsEnded(false) {
-
-	}
-
-	void Start(ITransactable* apTransactable) {
-		assert(mpTransactable == nullptr); assert(!mIsEnded);
-		mpTransactable = apTransactable;
-		mpTransactable->Start();
-	}
-
-	void End() {
-		assert(mpTransactable != nullptr); assert(!mIsEnded);
-		mIsEnded = true;
+	~Transaction() 
+	{
 		mpTransactable->End();
 	}
 
-	~Transaction() {
-		if(mpTransactable != nullptr && !mIsEnded) mpTransactable->End();
+	template <class ReturnType, class TransactionType, class Fun>
+	static ReturnType Apply(TransactionType& transactable, const Fun& fun)
+	{
+		Transaction t(transactable);
+		return fun(transactable);
 	}
-
+	
 private:
 	ITransactable* mpTransactable;
-	bool mIsEnded;
+
 };
 
 }

@@ -52,6 +52,12 @@ public:
 
 	void Load(const IMeasurementUpdate& arUpdate);
 
+	void Update(const Binary& arPoint, size_t aIndex);
+	void Update(const Analog& arPoint, size_t aIndex);
+	void Update(const Counter& arPoint, size_t aIndex);
+	void Update(const ControlStatus& arPoint, size_t aIndex);
+	void Update(const SetpointStatus& arPoint, size_t aIndex);
+
 private:
 
 	bool mSameData;
@@ -70,14 +76,8 @@ private:
 	CompareMap mControlStatusMap;
 	CompareMap mSetpointStatusMap;
 
-	void _Start();
-	void _End();
-
-	void _Update(const Binary& arPoint, size_t aIndex);
-	void _Update(const Analog& arPoint, size_t aIndex);
-	void _Update(const Counter& arPoint, size_t aIndex);
-	void _Update(const ControlStatus& arPoint, size_t aIndex);
-	void _Update(const SetpointStatus& arPoint, size_t aIndex);
+	void Start();
+	void End();	
 
 	template <class T>
 	void UpdateAny(const T& arPoint, size_t aIndex, const typename PointMap<T>::Type& arMap, CompareMap& arCompareMap);

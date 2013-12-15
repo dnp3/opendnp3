@@ -30,33 +30,43 @@ class FanoutDataObserver : public IDataObserver
 {
 public:
 
-	void AddObserver(IDataObserver* apObserver) {
+	void AddObserver(IDataObserver* apObserver) 
+	{
 		mObservers.push_back(apObserver);
 	}
 
-	void _Start() {
-for(IDataObserver * pObs: mObservers) pObs->Start();
+	void Start() 
+	{ 
+		for(auto pObs: mObservers) pObs->Start();
 	}
-	void _End() {
-for(IDataObserver * pObs: mObservers) pObs->End();
+	
+	void End()
+	{
+		for(auto pObs: mObservers) pObs->End();
+	}
 
-
+	void Update(const Binary& arPoint, uint32_t aIndex) 
+	{
+		for(auto pObs: mObservers) pObs->Update(arPoint, aIndex);
 	}
 
-	void _Update(const Binary& arPoint, size_t aIndex) {
-for(IDataObserver * pObs: mObservers) pObs->Update(arPoint, aIndex);
+	void Update(const Analog& arPoint, uint32_t aIndex) 
+	{
+		for(auto pObs: mObservers) pObs->Update(arPoint, aIndex);
 	}
-	void _Update(const Analog& arPoint, size_t aIndex) {
-for(IDataObserver * pObs: mObservers) pObs->Update(arPoint, aIndex);
+
+	void Update(const Counter& arPoint, uint32_t aIndex) 
+	{
+		for(auto pObs: mObservers) pObs->Update(arPoint, aIndex);
 	}
-	void _Update(const Counter& arPoint, size_t aIndex) {
-for(IDataObserver * pObs: mObservers) pObs->Update(arPoint, aIndex);
+
+	void Update(const ControlStatus& arPoint, uint32_t aIndex)
+	{
+		for(auto pObs: mObservers) pObs->Update(arPoint, aIndex);
 	}
-	void _Update(const ControlStatus& arPoint, size_t aIndex) {
-for(IDataObserver * pObs: mObservers) pObs->Update(arPoint, aIndex);
-	}
-	void _Update(const SetpointStatus& arPoint, size_t aIndex) {
-for(IDataObserver * pObs: mObservers) pObs->Update(arPoint, aIndex);
+	void Update(const SetpointStatus& arPoint, uint32_t aIndex) 
+	{
+		for(auto pObs: mObservers) pObs->Update(arPoint, aIndex);
 	}
 
 private:
