@@ -24,7 +24,7 @@
 #include "BufferHelpers.h"
 #include "MeasurementComparisons.h"
 
-#include <opendnp3/LazyIterable.h>
+#include <opendnp3/Collection.h>
 
 #include <opendnp3/DataTypes.h>
 #include <opendnp3/BitReader.h>
@@ -40,15 +40,15 @@ BOOST_AUTO_TEST_SUITE(LazyCollectionTestSuite)
 
 BOOST_AUTO_TEST_CASE(ReadSimpleTypes)
 {
-	HexSequence hex("AB 01 01 CD 02 00");
-
-	auto read = [](ReadOnlyBuffer& b, size_t position) { return Group30Var2::Read(b); };
+	HexSequence hex("AB 01 01 CD 02 00");	
 		
-	LazyIterable<Group30Var2> collection(hex.ToReadOnly(), 2, read);
+	auto collection = Collection<Group30Var2>::Lazily(hex.ToReadOnly(), 2, 
+		[](ReadOnlyBuffer& b, uint32_t) { return Group30Var2::Read(b); 
+	});
 	
 	auto test = [&]() {
 		std::vector<Group30Var2> vec;
-		collection.Foreach([&](const Group30Var2& gv) { vec.push_back(gv); });
+		collection.foreach([&](const Group30Var2& gv) { vec.push_back(gv); });
 								
 		BOOST_REQUIRE_EQUAL(2, vec.size());
 		BOOST_REQUIRE_EQUAL(257, vec[0].value);
@@ -65,32 +65,41 @@ BOOST_AUTO_TEST_CASE(ReadSimpleTypes)
 BOOST_AUTO_TEST_CASE(SingleBitValue)
 {
 	HexSequence hex("01");
-	LazyIterable<Binary> collection(hex.ToReadOnly(), 1, GetBit);
-	BOOST_REQUIRE_EQUAL(1, collection.Size());
+	auto collection = Collection<Binary>::Lazily(hex.ToReadOnly(), 1, 
+		[](ReadOnlyBuffer& buff, uint32_t pos) { return Binary(GetBit(buff, pos)); 
+	});
+	BOOST_REQUIRE_EQUAL(1, collection.Count());
 	std::vector<Binary> values;	
-	collection.Foreach([&](const Binary& v) { values.push_back(v); });
+	collection.foreach([&](const Binary& v) { values.push_back(v); });
+	BOOST_REQUIRE_EQUAL(true, values[0].GetValue());
 }
 
 BOOST_AUTO_TEST_CASE(ComplexBitCount)
 {
 	HexSequence hex("FF 00 00");
-	LazyIterable<Binary> collection(hex.ToReadOnly(), 17, GetBit);
-	std::vector<Binary> values;
-	collection.Foreach([&](const Binary& v) { values.push_back(v); });
+	auto collection = Collection<bool>::Lazily(hex.ToReadOnly(), 17, 
+		[](ReadOnlyBuffer& buff, uint32_t pos) { return GetBit(buff, pos); }
+	);
+	std::vector<bool> values;
+	collection.foreach([&](const bool& v) { values.push_back(v); });
 	
 	BOOST_REQUIRE_EQUAL(17, values.size());
-	BOOST_REQUIRE(Binary(true) == values[7]);
-	BOOST_REQUIRE(Binary(false) == values[8]);
+	BOOST_REQUIRE_EQUAL(true, values[7]);
+	BOOST_REQUIRE_EQUAL(false, values[8]);
 }
 
 BOOST_AUTO_TEST_CASE(HighestBitSet)
 {
 	HexSequence hex("80");
-	LazyIterable<bool> collection(hex.ToReadOnly(), 8, GetBit);
-	auto collection2 = collection.Map<Binary>([](bool bit) { return Binary(bit); });
+	auto collection = Collection<bool>::Lazily(hex.ToReadOnly(), 8, 
+		[](ReadOnlyBuffer& buffer, uint32_t pos) { return GetBit(buffer, pos); }
+	);
+
+
+	auto collection2 = Collection<bool>::Map<Binary>(collection, [](const bool& bit) { return Binary(bit); });
 
 	std::vector<Binary> values;
-	collection2.Foreach([&](const Binary& v) { values.push_back(v); });	
+	collection2.foreach([&](const Binary& v) { values.push_back(v); });	
 	BOOST_REQUIRE_EQUAL(8, values.size());
 	BOOST_REQUIRE(Binary(true) == values[7]);
 }

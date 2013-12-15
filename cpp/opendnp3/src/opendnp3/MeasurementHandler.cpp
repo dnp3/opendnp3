@@ -30,53 +30,53 @@ namespace opendnp3
 MeasurementHandler::MeasurementHandler(openpal::Logger& arLogger) : HeaderHandlerBase(arLogger)	
 {}
 
-void MeasurementHandler::_OnRange(GroupVariation gv, const LazyIterable<IndexedValue<Binary>>& meas)
+void MeasurementHandler::_OnRange(GroupVariation gv, const Iterable<IndexedValue<Binary>>& meas)
 {
-	meas.Foreach([this](const IndexedValue<Binary>& v) {updates.Add(v.value, v.index); });
+	meas.foreach([this](const IndexedValue<Binary>& v) {updates.Add(v.value, v.index); });
 }
 
-void MeasurementHandler::_OnIndexPrefix(GroupVariation gv, const LazyIterable<IndexedValue<Binary>>& meas)
+void MeasurementHandler::_OnIndexPrefix(GroupVariation gv, const Iterable<IndexedValue<Binary>>& meas)
 {
 	// todo - handle CTO
-	meas.Foreach([this](const IndexedValue<Binary>& v) { updates.Add(v.value, v.index); });
+	meas.foreach([this](const IndexedValue<Binary>& v) { updates.Add(v.value, v.index); });
 }
 
-void MeasurementHandler::_OnRange(GroupVariation gv, const LazyIterable<IndexedValue<ControlStatus>>& meas)
+void MeasurementHandler::_OnRange(GroupVariation gv, const Iterable<IndexedValue<ControlStatus>>& meas)
 {
-	meas.Foreach([this](const IndexedValue<ControlStatus>& v) { updates.Add(v.value, v.index); });
+	meas.foreach([this](const IndexedValue<ControlStatus>& v) { updates.Add(v.value, v.index); });
 }
 		
-void MeasurementHandler::_OnRange(GroupVariation gv, const LazyIterable<IndexedValue<Counter>>& meas)
+void MeasurementHandler::_OnRange(GroupVariation gv, const Iterable<IndexedValue<Counter>>& meas)
 {
-	meas.Foreach([this](const IndexedValue<Counter>& v) { updates.Add(v.value, v.index); });
+	meas.foreach([this](const IndexedValue<Counter>& v) { updates.Add(v.value, v.index); });
 }
 
-void MeasurementHandler::_OnIndexPrefix(GroupVariation gv, const LazyIterable<IndexedValue<Counter>>& meas)
+void MeasurementHandler::_OnIndexPrefix(GroupVariation gv, const Iterable<IndexedValue<Counter>>& meas)
 {
-	meas.Foreach([this](const IndexedValue<Counter>& v) { updates.Add(v.value, v.index); });
+	meas.foreach([this](const IndexedValue<Counter>& v) { updates.Add(v.value, v.index); });
 }
 
-void MeasurementHandler::_OnRange(GroupVariation gv, const LazyIterable<IndexedValue<Analog>>& meas)
+void MeasurementHandler::_OnRange(GroupVariation gv, const Iterable<IndexedValue<Analog>>& meas)
 {
-	meas.Foreach([this](const IndexedValue<Analog>& v) { updates.Add(v.value, v.index); });
+	meas.foreach([this](const IndexedValue<Analog>& v) { updates.Add(v.value, v.index); });
 }
 
-void MeasurementHandler::_OnIndexPrefix(GroupVariation gv, const LazyIterable<IndexedValue<Analog>>& meas)
+void MeasurementHandler::_OnIndexPrefix(GroupVariation gv, const Iterable<IndexedValue<Analog>>& meas)
 {
-	meas.Foreach([this](const IndexedValue<Analog>& v) { updates.Add(v.value, v.index); });
+	meas.foreach([this](const IndexedValue<Analog>& v) { updates.Add(v.value, v.index); });
 }
 
-void MeasurementHandler::_OnRange(GroupVariation gv, const LazyIterable<IndexedValue<SetpointStatus>>& meas) 
+void MeasurementHandler::_OnRange(GroupVariation gv, const Iterable<IndexedValue<SetpointStatus>>& meas) 
 {
-	meas.Foreach([this](const IndexedValue<SetpointStatus>& v) { updates.Add(v.value, v.index); });
+	meas.foreach([this](const IndexedValue<SetpointStatus>& v) { updates.Add(v.value, v.index); });
 }
 
-void MeasurementHandler::_OnRangeOfOctets(GroupVariation gv, const LazyIterable<IndexedValue<openpal::ReadOnlyBuffer>>& meas)
+void MeasurementHandler::_OnRangeOfOctets(GroupVariation gv, const Iterable<IndexedValue<openpal::ReadOnlyBuffer>>& meas)
 {
 	switch(gv)
 	{
 		case(GroupVariation::Group110AnyVar):
-			meas.Foreach([this](const IndexedValue<ReadOnlyBuffer>& v) { updates.Add(OctetString(v.value), v.index); });
+			meas.foreach([this](const IndexedValue<ReadOnlyBuffer>& v) { updates.Add(OctetString(v.value), v.index); });
 			break;
 		default:
 			LOG_BLOCK(LogLevel::Warning, "Ignoring unknown octet data"); // TODO - add better logging
@@ -84,12 +84,12 @@ void MeasurementHandler::_OnRangeOfOctets(GroupVariation gv, const LazyIterable<
 	}
 }
 
-void MeasurementHandler::_OnIndexPrefixOfOctets(GroupVariation gv, const LazyIterable<IndexedValue<openpal::ReadOnlyBuffer>>& meas)
+void MeasurementHandler::_OnIndexPrefixOfOctets(GroupVariation gv, const Iterable<IndexedValue<openpal::ReadOnlyBuffer>>& meas)
 {
 	switch(gv)
 	{
 		case(GroupVariation::Group111AnyVar):			
-			meas.Foreach([this](const IndexedValue<ReadOnlyBuffer>& v) { updates.Add(OctetString(v.value), v.index); });			
+			meas.foreach([this](const IndexedValue<ReadOnlyBuffer>& v) { updates.Add(OctetString(v.value), v.index); });			
 			break;
 		default:
 			LOG_BLOCK(LogLevel::Warning, "Ignoring unknown octet data"); // TODO - add better logging

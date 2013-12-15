@@ -18,40 +18,32 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __LAZY_ITERABLE_H_
-#define __LAZY_ITERABLE_H_
+#ifndef __HAS_SIZE_H_
+#define __HAS_SIZE_H_
 
-#include <functional>
-#include <assert.h>
+#include <cstdint>
 
-#include <openpal/BufferWrapper.h>
-
-#include "Iterable.h"
-
-namespace opendnp3
+namespace openpal
 {
 
-template <class T, class ReadFunc>
-class LazyIterable : public Iterable<T>
+class HasSize 
 {
-	public:				
-		
-		LazyIterable(const openpal::ReadOnlyBuffer& buffer, uint32_t aSize, const ReadFunc& aReadFunc): 
-			Iterable<T>(buffer, aSize), 
-			readFunc(aReadFunc)
+
+	public:
+
+		HasSize(uint32_t aSize) : size(aSize)
 		{}
 
-	protected:	
+		size_t Size() const { return size; }
 
-		virtual T ValueAt(openpal::ReadOnlyBuffer& buffer, uint32_t aPos) const final
-		{
-			return readFunc(buffer, aPos);
-		}
+		bool IsEmpty() const { return size == 0; }
 
-	private:
-		
-		LazyIterable();
-		ReadFunc readFunc;
+		bool IsNotEmpty() const { return size != 0; }
+
+	protected:
+
+		uint32_t size;
+
 };
 
 }

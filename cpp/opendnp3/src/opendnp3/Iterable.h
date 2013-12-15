@@ -23,28 +23,53 @@
 
 #include <functional>
 
-#include "Iterator.h"
+#include <openpal/BufferWrapper.h>
 
 namespace opendnp3
 {
 
+class BufferWithCount
+{
+	protected:
+
+	BufferWithCount(const openpal::ReadOnlyBuffer& aBuffer, uint32_t aCount) : 
+		count(aCount),
+		buffer(aBuffer)
+	{}
+
+	public:
+
+	uint32_t Count() const { return count; }
+	bool IsEmpty() const { return count == 0; }
+	bool NonEmpty() const { return count != 0; }
+
+	protected:
+	uint32_t count;
+	openpal::ReadOnlyBuffer buffer;
+};
+
 template <class T>
-class Iterable
+class Iterable : public BufferWithCount
 {
 	public:
 
-		virtual ~Iterable()
+		Iterable(const openpal::ReadOnlyBuffer& aBuffer, uint32_t aSize) :  
+			BufferWithCount(aBuffer, aSize)
 		{}
-
-		void Foreach(const std::function<void (const T&)>& fun) const
-		{
-			auto i = this->GetIterator();
-			while(i.HasNext()) fun(i.Next());
-		}
 		
-		virtual Iterator<T> GetIterator() const = 0;		
+		template <class IterFunc>
+		void foreach(const IterFunc& fun) const
+		{
+			ReadOnlyBuffer copy(this->buffer);  // iterate over a mutable copy of the buffer
+			for(uint32_t pos = 0; pos < count; ++pos) fun(ValueAt(copy, pos));			
+		}		
 
-		virtual uint32_t Size() const = 0;
+		template <class X, class Y, class Z> 
+		friend class MappedIterable;
+
+	protected:
+
+		virtual T ValueAt(openpal::ReadOnlyBuffer&, uint32_t pos) const = 0;
 };
 
 

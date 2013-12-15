@@ -99,11 +99,12 @@ class APDUParser : private PureStatic
 	
 	static Result ParseObjectsWithIndexPrefix(const HeaderRecord& record, openpal::ReadOnlyBuffer& buffer, const GroupVariationRecord& gvRecord, uint32_t count, IndexParser* pParser, IAPDUHeaderHandler&  output);
 	
+	template <class Fun>
 	static Result ParseRangeAsBitField(		
 		openpal::ReadOnlyBuffer& buffer, 
 		const HeaderRecord& record,
 		const Range& range, 
-		const std::function<void (const openpal::ReadOnlyBuffer&, const LazyIterable<IndexedValue<bool>>&)>&);
+		const Fun& action);
 
 	static Result ParseRangeOfOctetData(
 		const GroupVariationRecord& gvRecord,
@@ -138,6 +139,25 @@ class APDUParser : private PureStatic
 	static IndexedValue<Binary> BoolToBinary(const IndexedValue<bool>& v);
 	static IndexedValue<ControlStatus> BoolToControlStatus(const IndexedValue<bool>& v);
 };
+
+template <class Callback>
+APDUParser::Result APDUParser::ParseRangeAsBitField(	
+	openpal::ReadOnlyBuffer& buffer,
+	const HeaderRecord& record,
+	const Range& range, 
+	const Callback& callback)
+{
+	size_t numBytes = NumBytesInBits(range.count);
+	if(buffer.Size() < numBytes) return Result::NOT_ENOUGH_DATA_FOR_OBJECTS;
+	else {	
+		auto collection = Collection<IndexedValue<bool>>::Lazily(buffer, range.count, [range](ReadOnlyBuffer& buffer, uint32_t pos) {
+			return IndexedValue<bool>(GetBit(buffer, pos), pos + range.start);
+		});
+		callback(record.Complete(numBytes), collection);		
+		buffer.Advance(numBytes);
+		return Result::OK;
+	}
+}
 
 template <class ParserType, class RangeType>
 APDUParser::Result APDUParser::ParseRange(openpal::ReadOnlyBuffer& buffer, Range& range)
@@ -183,12 +203,11 @@ APDUParser::Result APDUParser::ParseRangeFixedSize(GroupVariation gv, const Head
 	uint32_t size = range.count * Descriptor::SIZE;
 	if(buffer.Size() < size) return APDUParser::Result::NOT_ENOUGH_DATA_FOR_OBJECTS;
 	else {
-		auto start = range.start;
-		auto readWithIndex = [start](openpal::ReadOnlyBuffer& buffer, size_t pos) 
-		{
-			return IndexedValue<typename Descriptor::Target>(Descriptor::Convert(buffer), start + pos);
-		};
-		LazyIterable< IndexedValue <typename Descriptor::Target>> collection(buffer, range.count, readWithIndex);
+	
+		auto collection = Collection<IndexedValue<typename Descriptor::Target>>::Lazily(buffer, range.count, [range](openpal::ReadOnlyBuffer& buffer, uint32_t pos) {
+			return IndexedValue<typename Descriptor::Target>(Descriptor::Convert(buffer), range.start + pos);
+		});
+
 		output.OnRange(gv, record.Complete(size), collection);
 		buffer.Advance(size);
 		return APDUParser::Result::OK;
@@ -201,8 +220,10 @@ APDUParser::Result APDUParser::ParseCountOf(openpal::ReadOnlyBuffer& buffer, uin
 	uint32_t size = count * Descriptor::SIZE;
 	if(buffer.Size() < size) return APDUParser::Result::NOT_ENOUGH_DATA_FOR_OBJECTS;
 	else {				
-		auto read = [](openpal::ReadOnlyBuffer& b, uint32_t) { return Descriptor::Read(b); };
-		LazyIterable<Descriptor> collection(buffer, count, read);
+		
+		auto collection = Collection<Descriptor>::Lazily(buffer, count, [](openpal::ReadOnlyBuffer& buffer, uint32_t) {
+			return Descriptor::Read(buffer);
+		});
 		output.OnCountOf(collection);
 		buffer.Advance(size);
 		return APDUParser::Result::OK;
@@ -221,10 +242,11 @@ APDUParser::Result APDUParser::ParseCountFixedSizeWithIndex(
 	uint32_t size = count * (pParser->IndexSize() + Descriptor::SIZE);
 	if(buffer.Size() < size) return APDUParser::Result::NOT_ENOUGH_DATA_FOR_OBJECTS;
 	else {
-		auto readWithIndex = [&](openpal::ReadOnlyBuffer& buffer, size_t) {			
+		
+		auto collection = Collection<IndexedValue<typename Descriptor::Target>>::Lazily(buffer, count, [pParser](openpal::ReadOnlyBuffer& buffer, uint32_t) {			
 			return IndexedValue<typename Descriptor::Target>(Descriptor::Convert(buffer), pParser->ReadIndex(buffer));
-		};		
-		LazyIterable< IndexedValue <typename Descriptor::Target> > collection(buffer, count, readWithIndex);
+		});
+		
 		handler.OnIndexPrefix(gv, record.Complete(size), collection);
 		buffer.Advance(size);
 		return APDUParser::Result::OK;

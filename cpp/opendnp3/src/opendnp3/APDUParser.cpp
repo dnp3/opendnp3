@@ -25,7 +25,7 @@
 
 #include "gen/QualifierCode.h"
 #include "GroupVariation.h"
-#include "LazyIterable.h"
+#include "Collection.h"
 
 #include "objects/Group1.h"
 #include "objects/Group2.h"
@@ -194,14 +194,15 @@ APDUParser::Result APDUParser::ParseIndexPrefixedOctetData(
 	size_t size = count * (pParser->IndexSize() + gvRecord.variation);
 	if(buffer.Size() < size) return APDUParser::Result::NOT_ENOUGH_DATA_FOR_OBJECTS;
 	else {
-		auto readWithIndex = [&](openpal::ReadOnlyBuffer& buffer, size_t) {	
+		
+		auto collection = Collection<IndexedValue<ReadOnlyBuffer>>::Lazily(buffer, count, [pParser, gvRecord](ReadOnlyBuffer& buffer, uint32_t position) {	
 			auto index = pParser->ReadIndex(buffer);
 			auto buff = buffer.Truncate(gvRecord.variation);
 			IndexedValue<ReadOnlyBuffer> value(buff, index);
 			buffer.Advance(gvRecord.variation);
 			return IndexedValue<ReadOnlyBuffer>(buff, index);
-		};		
-		LazyIterable<IndexedValue<ReadOnlyBuffer>> collection(buffer, count, readWithIndex);
+		});		
+
 		handler.OnIndexPrefixOfOctets(gvRecord.enumeration, record.Complete(size), collection);
 		buffer.Advance(size);
 		return APDUParser::Result::OK;
@@ -227,15 +228,21 @@ APDUParser::Result APDUParser::ParseObjectsWithRange(const APDUParser::HeaderRec
 	switch(gvRecord.enumeration)
 	{	
 		case(GroupVariation::Group1Var1):				
-			return ParseRangeAsBitField(buffer, record, range, [&](const ReadOnlyBuffer& header, const LazyIterable<IndexedValue<bool>>& values) {				
-				output.OnRange(gvRecord.enumeration, header, values.Map<IndexedValue<Binary>>(BoolToBinary));
+			return ParseRangeAsBitField(buffer, record, range, [&](const ReadOnlyBuffer& header, Iterable<IndexedValue<bool>>& values) {				
+				output.OnRange(gvRecord.enumeration, header, 
+					Collection<IndexedValue<bool>>::Map<IndexedValue<Binary>>(values, 
+						[](const IndexedValue<bool>& v) { return IndexedValue<Binary>(Binary(v.value), v.index); })
+				);				
 			});		
 		
 		MACRO_PARSE_OBJECTS_WITH_RANGE(Group1Var2);
 
 		case(GroupVariation::Group10Var1):				
-			return ParseRangeAsBitField(buffer, record, range, [&](const ReadOnlyBuffer& header, const LazyIterable<IndexedValue<bool>>& values) {				
-				output.OnRange(gvRecord.enumeration, header, values.Map<IndexedValue<ControlStatus>>(BoolToControlStatus));
+			return ParseRangeAsBitField(buffer, record, range, [&](const ReadOnlyBuffer& header, Iterable<IndexedValue<bool>>& values) {				
+				output.OnRange(gvRecord.enumeration, header, 
+					Collection<IndexedValue<bool>>::Map<IndexedValue<ControlStatus>>(values, 
+						[](const IndexedValue<bool>& v) { return IndexedValue<ControlStatus>(ControlStatus(v.value), v.index); })
+				);
 			});
 
 		MACRO_PARSE_OBJECTS_WITH_RANGE(Group10Var2);
@@ -265,7 +272,7 @@ APDUParser::Result APDUParser::ParseObjectsWithRange(const APDUParser::HeaderRec
 			return ParseCountOf<Group52Var2>(buffer, range.count, output); 
 
 		case(GroupVariation::Group80Var1):		
-			return ParseRangeAsBitField(buffer, record, range, [&](const ReadOnlyBuffer& header, const LazyIterable<IndexedValue<bool>>& values) { 
+			return ParseRangeAsBitField(buffer, record, range, [&](const ReadOnlyBuffer& header, const Iterable<IndexedValue<bool>>& values) { 
 				output.OnIIN(gvRecord.enumeration, header, values); 
 			});
 
@@ -287,35 +294,13 @@ APDUParser::Result APDUParser::ParseRangeOfOctetData(
 	size_t size = gvRecord.variation*range.count;
 	if(buffer.Size() < size) return Result::NOT_ENOUGH_DATA_FOR_OBJECTS;
 	{
-		auto start = range.start;
-		auto readBufferWithIndex = [start, gvRecord](openpal::ReadOnlyBuffer& buffer, uint32_t pos) {			
-			IndexedValue<ReadOnlyBuffer> value(buffer.Truncate(gvRecord.variation), start + pos);
+		auto collection = Collection<IndexedValue<openpal::ReadOnlyBuffer>>::Lazily(buffer, range.count, [range, gvRecord](ReadOnlyBuffer& buffer, uint32_t pos) {			
+			IndexedValue<ReadOnlyBuffer> value(buffer.Truncate(gvRecord.variation), range.start + pos);
 			buffer.Advance(gvRecord.variation);
 			return value;
-		};
-		LazyIterable<IndexedValue<ReadOnlyBuffer>> collection(buffer, range.count, readBufferWithIndex);
+		});
 		handler.OnRangeOfOctets(gvRecord.enumeration, record.Complete(size), collection);
 		buffer.Advance(size);
-		return Result::OK;
-	}
-}
-
-APDUParser::Result APDUParser::ParseRangeAsBitField(	
-	openpal::ReadOnlyBuffer& buffer,
-	const HeaderRecord& record,
-	const Range& range, 
-	const std::function<void (const ReadOnlyBuffer& header, const LazyIterable<IndexedValue<bool>>&)>& handler)
-{
-	size_t numBytes = NumBytesInBits(range.count);
-	if(buffer.Size() < numBytes) return Result::NOT_ENOUGH_DATA_FOR_OBJECTS;
-	else {
-		auto start = range.start;
-		auto readBitWithIndex = [start](openpal::ReadOnlyBuffer& buffer, size_t pos) {
-			return IndexedValue<bool>(GetBit(buffer, pos), pos + start);
-		};
-		LazyIterable<IndexedValue<bool>> collection(buffer, range.count, readBitWithIndex);		
-		handler(record.Complete(numBytes), collection);
-		buffer.Advance(numBytes);
 		return Result::OK;
 	}
 }

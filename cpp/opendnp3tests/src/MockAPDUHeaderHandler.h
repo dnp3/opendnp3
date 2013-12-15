@@ -41,151 +41,121 @@ class MockApduHeaderHandler : public IAPDUHeaderHandler
 			headers.push_back(header);
 		}
 
-		virtual void OnIIN(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const LazyIterable<IndexedValue<bool>>& bits) override
+		virtual void OnIIN(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const Iterable<IndexedValue<bool>>& bits) override
 		{
 			groupVariations.push_back(gv);
 			headers.push_back(header);
-			bits.Foreach([&](const IndexedValue<bool>& v) { iinBits.push_back(v); });
+			bits.foreach([&](const IndexedValue<bool>& v) { iinBits.push_back(v); });
 		}
 
-		virtual void OnCountOf(const LazyIterable<Group52Var2>& times) override
+		virtual void OnCountOf(const Iterable<Group52Var2>& times) override
 		{
 			groupVariations.push_back(GroupVariation::Group52Var2);  // TODO - normalize this record keeping?			
 		}
 				
-		virtual void OnRange(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const LazyIterable<IndexedValue<Binary>>& meas) override
+		virtual void OnRange(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const Iterable<IndexedValue<Binary>>& meas) override
 		{
 			groupVariations.push_back(gv);
 			headers.push_back(header);
-			meas.Foreach([&](const IndexedValue<Binary>& v) {  
-				staticBinaries.push_back(v);
-			});						
+			meas.foreach([&](const IndexedValue<Binary>& v) { staticBinaries.push_back(v); });						
 		}		
 
-		virtual void OnIndexPrefix(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const LazyIterable<IndexedValue<Binary>>& meas) override
+		virtual void OnIndexPrefix(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const Iterable<IndexedValue<Binary>>& meas) override
 		{
 			groupVariations.push_back(gv);
 			headers.push_back(header);
-			meas.Foreach([&](const IndexedValue<Binary>& v) {  
-				eventBinaries.push_back(v);
-			});			
+			meas.foreach([&](const IndexedValue<Binary>& v) { eventBinaries.push_back(v); });			
 		}
 
-		virtual void OnRange(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const LazyIterable<IndexedValue<ControlStatus>>& meas) override
+		virtual void OnRange(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const Iterable<IndexedValue<ControlStatus>>& meas) override
 		{
 			groupVariations.push_back(gv);
 			headers.push_back(header);
-			meas.Foreach([&](const IndexedValue<ControlStatus>& v) {  
-				staticControlStatii.push_back(v);
-			});	
+			meas.foreach([&](const IndexedValue<ControlStatus>& v) { staticControlStatii.push_back(v); });	
 		}
 
-		virtual void OnRange(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const LazyIterable<IndexedValue<Counter>>& meas) override
+		virtual void OnRange(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const Iterable<IndexedValue<Counter>>& meas) override
 		{
 			groupVariations.push_back(gv);
 			headers.push_back(header);
-			meas.Foreach([&](const IndexedValue<Counter>& v) {  
-				eventCounters.push_back(v);
-			});	
+			meas.foreach([&](const IndexedValue<Counter>& v) { staticCounters.push_back(v); });	
 		}
 
-		virtual void OnIndexPrefix(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const LazyIterable<IndexedValue<Counter>>& meas)  override
+		virtual void OnIndexPrefix(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const Iterable<IndexedValue<Counter>>& meas)  override
 		{
 			groupVariations.push_back(gv);
 			headers.push_back(header);
-			meas.Foreach([&](const IndexedValue<Counter>& v) {  
-				eventCounters.push_back(v);
-			});	
+			meas.foreach([&](const IndexedValue<Counter>& v) { eventCounters.push_back(v); });	
 		}
 
-		virtual void OnRange(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const LazyIterable<IndexedValue<Analog>>& meas)  override
+		virtual void OnRange(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const Iterable<IndexedValue<Analog>>& meas)  override
 		{
 			groupVariations.push_back(gv);
 			headers.push_back(header);
-			meas.Foreach([&](const IndexedValue<Analog>& v) {  
-				eventAnalogs.push_back(v);
-			});	
+			meas.foreach([&](const IndexedValue<Analog>& v) { eventAnalogs.push_back(v); });	
 		}
 		
-		virtual void OnIndexPrefix(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const LazyIterable<IndexedValue<Analog>>& meas)  override
+		virtual void OnIndexPrefix(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const Iterable<IndexedValue<Analog>>& meas)  override
 		{
 			groupVariations.push_back(gv);
 			headers.push_back(header);
-			meas.Foreach([&](const IndexedValue<Analog>& v) {  
-				eventAnalogs.push_back(v);
-			});	
+			meas.foreach([&](const IndexedValue<Analog>& v) { eventAnalogs.push_back(v); });	
 		}
 
-		virtual void OnRange(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const LazyIterable<IndexedValue<SetpointStatus>>& meas) override
+		virtual void OnRange(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const Iterable<IndexedValue<SetpointStatus>>& meas) override
 		{
 			groupVariations.push_back(gv);
 			headers.push_back(header);
-			meas.Foreach([&](const IndexedValue<SetpointStatus>& v) {  
-				staticSetpointStatii.push_back(v);
-			});	
+			meas.foreach([&](const IndexedValue<SetpointStatus>& v) { staticSetpointStatii.push_back(v); });	
 		}
 
-		void OnIndexPrefix(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const LazyIterable<IndexedValue<ControlRelayOutputBlock>>& meas) override
+		void OnIndexPrefix(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const Iterable<IndexedValue<ControlRelayOutputBlock>>& meas) override
 		{
 			groupVariations.push_back(gv);
 			headers.push_back(header);
-			meas.Foreach([&](const IndexedValue<ControlRelayOutputBlock>& v) {
-				crobRequests.push_back(v);
-			});			
+			meas.foreach([&](const IndexedValue<ControlRelayOutputBlock>& v) { crobRequests.push_back(v); });			
 		}
 
-		virtual void OnIndexPrefix(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const LazyIterable<IndexedValue<AnalogOutputInt16>>& meas) override
+		virtual void OnIndexPrefix(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const Iterable<IndexedValue<AnalogOutputInt16>>& meas) override
 		{
 			groupVariations.push_back(gv);
 			headers.push_back(header);
-			meas.Foreach([&](const IndexedValue<AnalogOutputInt16>& v) {
-				aoInt16Requests.push_back(v);
-			});	
+			meas.foreach([&](const IndexedValue<AnalogOutputInt16>& v) { aoInt16Requests.push_back(v); });	
 		}
 		
-		virtual void OnIndexPrefix(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const LazyIterable<IndexedValue<AnalogOutputInt32>>& meas) override
+		virtual void OnIndexPrefix(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const Iterable<IndexedValue<AnalogOutputInt32>>& meas) override
 		{
 			groupVariations.push_back(gv);
 			headers.push_back(header);
-			meas.Foreach([&](const IndexedValue<AnalogOutputInt32>& v) {
-				aoInt32Requests.push_back(v);
-			});	
+			meas.foreach([&](const IndexedValue<AnalogOutputInt32>& v) { aoInt32Requests.push_back(v); });	
 		}
 		
-		virtual void OnIndexPrefix(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const LazyIterable<IndexedValue<AnalogOutputFloat32>>& meas) override
+		virtual void OnIndexPrefix(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const Iterable<IndexedValue<AnalogOutputFloat32>>& meas) override
 		{
 			groupVariations.push_back(gv);
 			headers.push_back(header);
-			meas.Foreach([&](const IndexedValue<AnalogOutputFloat32>& v) {
-				aoFloat32Requests.push_back(v);
-			});	
+			meas.foreach([&](const IndexedValue<AnalogOutputFloat32>& v) { aoFloat32Requests.push_back(v); });	
 		}
 		
-		virtual void OnIndexPrefix(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const LazyIterable<IndexedValue<AnalogOutputDouble64>>& meas) override
+		virtual void OnIndexPrefix(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const Iterable<IndexedValue<AnalogOutputDouble64>>& meas) override
 		{
 			groupVariations.push_back(gv);
 			headers.push_back(header);
-			meas.Foreach([&](const IndexedValue<AnalogOutputDouble64>& v) {
-				aoDouble64Requests.push_back(v);
-			});	
+			meas.foreach([&](const IndexedValue<AnalogOutputDouble64>& v) { aoDouble64Requests.push_back(v); });	
 		}
 
-		virtual void OnRangeOfOctets(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const LazyIterable<IndexedValue<openpal::ReadOnlyBuffer>>& meas) override
+		virtual void OnRangeOfOctets(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const Iterable<IndexedValue<openpal::ReadOnlyBuffer>>& meas) override
 		{
 			groupVariations.push_back(gv);
 			headers.push_back(header);
-			meas.Foreach([&](const IndexedValue<openpal::ReadOnlyBuffer>& v) {
-				rangedOctets.push_back(v);
-			});
+			meas.foreach([&](const IndexedValue<openpal::ReadOnlyBuffer>& v) { rangedOctets.push_back(v); });
 		}
 		
-		virtual void OnIndexPrefixOfOctets(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const LazyIterable<IndexedValue<openpal::ReadOnlyBuffer>>& meas) override
+		virtual void OnIndexPrefixOfOctets(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const Iterable<IndexedValue<openpal::ReadOnlyBuffer>>& meas) override
 		{
 			groupVariations.push_back(gv);
 			headers.push_back(header);
-			meas.Foreach([&](const IndexedValue<openpal::ReadOnlyBuffer>& v) {
-				indexPrefixedOctets.push_back(v);
-			});
+			meas.foreach([&](const IndexedValue<openpal::ReadOnlyBuffer>& v) { indexPrefixedOctets.push_back(v); });
 		}
 		
 		std::vector<openpal::ReadOnlyBuffer> headers;

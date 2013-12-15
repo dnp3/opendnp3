@@ -25,24 +25,6 @@
 
 namespace openpal
 {
-	HasSize::HasSize(size_t aSize) : mSize(aSize)
-	{}
-
-	size_t HasSize::Size() const
-	{
-		return mSize;
-	}
-
-	bool HasSize::IsNotEmpty() const
-	{
-		return mSize > 0;
-	}
-
-	bool HasSize::IsEmpty() const
-	{
-		return mSize == 0;
-	}
-
 	ReadOnlyBuffer::ReadOnlyBuffer(): HasSize(0), mpBuffer(nullptr)
 	{
 	
@@ -55,20 +37,20 @@ namespace openpal
 
 	void ReadOnlyBuffer::CopyTo(uint8_t* apDest) const
 	{
-		memcpy(apDest, mpBuffer, mSize);
+		memcpy(apDest, mpBuffer, size);
 	}
 
 	ReadOnlyBuffer ReadOnlyBuffer::Truncate(size_t aSize) const
 	{
-		assert(aSize <= mSize);
+		assert(aSize <= size);
 		return ReadOnlyBuffer(mpBuffer, aSize);
 	}
 
 	void ReadOnlyBuffer::Advance(size_t aNum)
 	{
-		assert(aNum <= mSize);
+		assert(aNum <= size);
 		mpBuffer += aNum;
-		mSize -= aNum;
+		size -= aNum;
 	}
 
 	WriteBuffer::WriteBuffer(): HasSize(0), mpBuffer(nullptr)
@@ -84,19 +66,19 @@ namespace openpal
 	void WriteBuffer::Clear()
 	{
 		mpBuffer = nullptr;
-		mSize = 0;
+		size = 0;
 	}
 
 	void WriteBuffer::Advance(size_t aNum)
 	{
-		assert(aNum <= mSize);
+		assert(aNum <= size);
 		mpBuffer += aNum;
-		mSize -= aNum;
+		size -= aNum;
 	}
 
 	ReadOnlyBuffer WriteBuffer::ToReadOnly() const
 	{
-		return ReadOnlyBuffer(mpBuffer, mSize);
+		return ReadOnlyBuffer(mpBuffer, size);
 	}
 
 }

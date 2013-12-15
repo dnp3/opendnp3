@@ -41,31 +41,31 @@ public:
 	HeaderHandlerBase(openpal::Logger& arLogger);	
 
 	virtual void AllObjects(GroupVariation gv, const openpal::ReadOnlyBuffer& header) final;
-	virtual void OnIIN(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const LazyIterable<IndexedValue<bool>>& meas) final;
+	virtual void OnIIN(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const Iterable<IndexedValue<bool>>& meas) final;
 
-	virtual void OnCountOf(const opendnp3::LazyIterable<Group52Var2> &) final;
+	virtual void OnCountOf(const opendnp3::Iterable<Group52Var2> &) final;
 
-	virtual void OnRange(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const LazyIterable<IndexedValue<Binary>>& meas) final;
-	virtual void OnIndexPrefix(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const LazyIterable<IndexedValue<Binary>>& meas) final;
+	virtual void OnRange(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const Iterable<IndexedValue<Binary>>& meas) final;
+	virtual void OnIndexPrefix(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const Iterable<IndexedValue<Binary>>& meas) final;
 
-	virtual void OnRange(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const LazyIterable<IndexedValue<ControlStatus>>& meas) final;
+	virtual void OnRange(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const Iterable<IndexedValue<ControlStatus>>& meas) final;
 		
-	virtual void OnRange(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const LazyIterable<IndexedValue<Counter>>& meas) final;
-	virtual void OnIndexPrefix(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const LazyIterable<IndexedValue<Counter>>& meas) final;
+	virtual void OnRange(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const Iterable<IndexedValue<Counter>>& meas) final;
+	virtual void OnIndexPrefix(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const Iterable<IndexedValue<Counter>>& meas) final;
 
-	virtual void OnRange(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const LazyIterable<IndexedValue<Analog>>& meas) final;
-	virtual void OnIndexPrefix(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const LazyIterable<IndexedValue<Analog>>& meas) final;
+	virtual void OnRange(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const Iterable<IndexedValue<Analog>>& meas) final;
+	virtual void OnIndexPrefix(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const Iterable<IndexedValue<Analog>>& meas) final;
 
-	virtual void OnRange(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const LazyIterable<IndexedValue<SetpointStatus>>& meas) final;
+	virtual void OnRange(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const Iterable<IndexedValue<SetpointStatus>>& meas) final;
 
-	virtual void OnIndexPrefix(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const LazyIterable<IndexedValue<ControlRelayOutputBlock>>& meas) final;
-	virtual void OnIndexPrefix(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const LazyIterable<IndexedValue<AnalogOutputInt16>>& meas) final;
-	virtual void OnIndexPrefix(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const LazyIterable<IndexedValue<AnalogOutputInt32>>& meas) final;
-	virtual void OnIndexPrefix(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const LazyIterable<IndexedValue<AnalogOutputFloat32>>& meas) final;
-	virtual void OnIndexPrefix(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const LazyIterable<IndexedValue<AnalogOutputDouble64>>& meas) final;
+	virtual void OnIndexPrefix(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const Iterable<IndexedValue<ControlRelayOutputBlock>>& meas) final;
+	virtual void OnIndexPrefix(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const Iterable<IndexedValue<AnalogOutputInt16>>& meas) final;
+	virtual void OnIndexPrefix(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const Iterable<IndexedValue<AnalogOutputInt32>>& meas) final;
+	virtual void OnIndexPrefix(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const Iterable<IndexedValue<AnalogOutputFloat32>>& meas) final;
+	virtual void OnIndexPrefix(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const Iterable<IndexedValue<AnalogOutputDouble64>>& meas) final;
 
-	virtual void OnRangeOfOctets(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const LazyIterable<IndexedValue<openpal::ReadOnlyBuffer>>& meas) final;
-	virtual void OnIndexPrefixOfOctets(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const LazyIterable<IndexedValue<openpal::ReadOnlyBuffer>>& meas) final;
+	virtual void OnRangeOfOctets(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const Iterable<IndexedValue<openpal::ReadOnlyBuffer>>& meas) final;
+	virtual void OnIndexPrefixOfOctets(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const Iterable<IndexedValue<openpal::ReadOnlyBuffer>>& meas) final;
 
 	protected:
 
@@ -74,32 +74,32 @@ public:
 	bool GetCTO(int64_t& cto);
 
 	virtual void _AllObjects(GroupVariation gv);
-	virtual void _OnIIN(const LazyIterable<IndexedValue<bool>>& meas);
+	virtual void _OnIIN(const Iterable<IndexedValue<bool>>& meas);
 
-	virtual void _OnCountOf(const opendnp3::LazyIterable<Group52Var2> &);
+	virtual void _OnCountOf(const opendnp3::Iterable<Group52Var2> &);
 
-	virtual void _OnRange(GroupVariation gv, const LazyIterable<IndexedValue<Binary>>& meas);
-	virtual void _OnIndexPrefix(GroupVariation gv, const LazyIterable<IndexedValue<Binary>>& meas);
+	virtual void _OnRange(GroupVariation gv, const Iterable<IndexedValue<Binary>>& meas);
+	virtual void _OnIndexPrefix(GroupVariation gv, const Iterable<IndexedValue<Binary>>& meas);
 
-	virtual void _OnRange(GroupVariation gv, const LazyIterable<IndexedValue<ControlStatus>>& meas);
+	virtual void _OnRange(GroupVariation gv, const Iterable<IndexedValue<ControlStatus>>& meas);
 		
-	virtual void _OnRange(GroupVariation gv, const LazyIterable<IndexedValue<Counter>>& meas);
-	virtual void _OnIndexPrefix(GroupVariation gv, const LazyIterable<IndexedValue<Counter>>& meas);
+	virtual void _OnRange(GroupVariation gv, const Iterable<IndexedValue<Counter>>& meas);
+	virtual void _OnIndexPrefix(GroupVariation gv, const Iterable<IndexedValue<Counter>>& meas);
 
-	virtual void _OnRange(GroupVariation gv, const LazyIterable<IndexedValue<Analog>>& meas);
-	virtual void _OnIndexPrefix(GroupVariation gv, const LazyIterable<IndexedValue<Analog>>& meas);
+	virtual void _OnRange(GroupVariation gv, const Iterable<IndexedValue<Analog>>& meas);
+	virtual void _OnIndexPrefix(GroupVariation gv, const Iterable<IndexedValue<Analog>>& meas);
 
-	virtual void _OnRange(GroupVariation gv, const LazyIterable<IndexedValue<SetpointStatus>>& meas) ;
+	virtual void _OnRange(GroupVariation gv, const Iterable<IndexedValue<SetpointStatus>>& meas) ;
 
-	virtual void _OnIndexPrefix(const openpal::ReadOnlyBuffer& header, const LazyIterable<IndexedValue<ControlRelayOutputBlock>>& meas);
+	virtual void _OnIndexPrefix(const openpal::ReadOnlyBuffer& header, const Iterable<IndexedValue<ControlRelayOutputBlock>>& meas);
 
-	virtual void _OnIndexPrefix(const openpal::ReadOnlyBuffer& header, const LazyIterable<IndexedValue<AnalogOutputInt16>>& meas);
-	virtual void _OnIndexPrefix(const openpal::ReadOnlyBuffer& header, const LazyIterable<IndexedValue<AnalogOutputInt32>>& meas);
-	virtual void _OnIndexPrefix(const openpal::ReadOnlyBuffer& header, const LazyIterable<IndexedValue<AnalogOutputFloat32>>& meas);
-	virtual void _OnIndexPrefix(const openpal::ReadOnlyBuffer& header, const LazyIterable<IndexedValue<AnalogOutputDouble64>>& meas);
+	virtual void _OnIndexPrefix(const openpal::ReadOnlyBuffer& header, const Iterable<IndexedValue<AnalogOutputInt16>>& meas);
+	virtual void _OnIndexPrefix(const openpal::ReadOnlyBuffer& header, const Iterable<IndexedValue<AnalogOutputInt32>>& meas);
+	virtual void _OnIndexPrefix(const openpal::ReadOnlyBuffer& header, const Iterable<IndexedValue<AnalogOutputFloat32>>& meas);
+	virtual void _OnIndexPrefix(const openpal::ReadOnlyBuffer& header, const Iterable<IndexedValue<AnalogOutputDouble64>>& meas);
 
-	virtual void _OnRangeOfOctets(GroupVariation gv, const LazyIterable<IndexedValue<openpal::ReadOnlyBuffer>>& meas);
-	virtual void _OnIndexPrefixOfOctets(GroupVariation gv, const LazyIterable<IndexedValue<openpal::ReadOnlyBuffer>>& meas);
+	virtual void _OnRangeOfOctets(GroupVariation gv, const Iterable<IndexedValue<openpal::ReadOnlyBuffer>>& meas);
+	virtual void _OnIndexPrefixOfOctets(GroupVariation gv, const Iterable<IndexedValue<openpal::ReadOnlyBuffer>>& meas);
 
 
 	private:

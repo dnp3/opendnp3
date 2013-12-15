@@ -46,21 +46,21 @@ public:
 	std::string HandlerName() const final { return "MeasurementHandler"; }
 
 
-	void _OnRange(GroupVariation gv, const LazyIterable<IndexedValue<Binary>>& meas) final;
-	void _OnIndexPrefix(GroupVariation gv, const LazyIterable<IndexedValue<Binary>>& meas) final;
+	void _OnRange(GroupVariation gv, const Iterable<IndexedValue<Binary>>& meas) final;
+	void _OnIndexPrefix(GroupVariation gv, const Iterable<IndexedValue<Binary>>& meas) final;
 
-	void _OnRange(GroupVariation gv, const LazyIterable<IndexedValue<ControlStatus>>& meas) final;
+	void _OnRange(GroupVariation gv, const Iterable<IndexedValue<ControlStatus>>& meas) final;
 		
-	void _OnRange(GroupVariation gv, const LazyIterable<IndexedValue<Counter>>& meas) final;
-	void _OnIndexPrefix(GroupVariation gv, const LazyIterable<IndexedValue<Counter>>& meas) final;
+	void _OnRange(GroupVariation gv, const Iterable<IndexedValue<Counter>>& meas) final;
+	void _OnIndexPrefix(GroupVariation gv, const Iterable<IndexedValue<Counter>>& meas) final;
 
-	void _OnRange(GroupVariation gv, const LazyIterable<IndexedValue<Analog>>& meas) final;
-	void _OnIndexPrefix(GroupVariation gv, const LazyIterable<IndexedValue<Analog>>& meas) final;
+	void _OnRange(GroupVariation gv, const Iterable<IndexedValue<Analog>>& meas) final;
+	void _OnIndexPrefix(GroupVariation gv, const Iterable<IndexedValue<Analog>>& meas) final;
 
-	void _OnRange(GroupVariation gv, const LazyIterable<IndexedValue<SetpointStatus>>& meas)  final;
+	void _OnRange(GroupVariation gv, const Iterable<IndexedValue<SetpointStatus>>& meas)  final;
 
-	void _OnRangeOfOctets(GroupVariation gv, const LazyIterable<IndexedValue<openpal::ReadOnlyBuffer>>& meas) final;
-	void _OnIndexPrefixOfOctets(GroupVariation gv, const LazyIterable<IndexedValue<openpal::ReadOnlyBuffer>>& meas) final;
+	void _OnRangeOfOctets(GroupVariation gv, const Iterable<IndexedValue<openpal::ReadOnlyBuffer>>& meas) final;
+	void _OnIndexPrefixOfOctets(GroupVariation gv, const Iterable<IndexedValue<openpal::ReadOnlyBuffer>>& meas) final;
 		
 	MeasurementUpdate updates;	
 };

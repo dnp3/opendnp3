@@ -21,30 +21,10 @@
 #ifndef __BUFFER_WRAPPER_H_
 #define __BUFFER_WRAPPER_H_
 
-#include <cstddef>
-#include <cstdint>
+#include "HasSize.h"
 
 namespace openpal
 {
-
-class HasSize
-{
-
-public:
-	HasSize(size_t aSize);
-
-	size_t Size() const;
-
-	bool IsEmpty() const;
-
-	bool IsNotEmpty() const;
-
-protected:
-
-	size_t mSize;
-
-};
-
 	
 class ReadOnlyBuffer : public HasSize
 {

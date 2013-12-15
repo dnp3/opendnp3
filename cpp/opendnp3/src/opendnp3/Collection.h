@@ -18,40 +18,51 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __LAZY_ITERABLE_H_
-#define __LAZY_ITERABLE_H_
+#ifndef __COLLECTION_H_
+#define __COLLECTION_H_
 
-#include <functional>
-#include <assert.h>
+#include "LazyIterable.h"
 
-#include <openpal/BufferWrapper.h>
-
-#include "Iterable.h"
+#include <opendnp3/Uncopyable.h>
 
 namespace opendnp3
 {
 
-template <class T, class ReadFunc>
-class LazyIterable : public Iterable<T>
+template <class T, class U, class MapFunc>
+class MappedIterable : public Iterable<U>
 {
-	public:				
-		
-		LazyIterable(const openpal::ReadOnlyBuffer& buffer, uint32_t aSize, const ReadFunc& aReadFunc): 
-			Iterable<T>(buffer, aSize), 
-			readFunc(aReadFunc)
+	public:
+		MappedIterable(const Iterable<T>& aProxy, const MapFunc& aMapFunc): 
+			Iterable<U>(aProxy.buffer, aProxy.count),
+			proxy(aProxy),
+			mapFunc(aMapFunc)
 		{}
 
-	protected:	
-
-		virtual T ValueAt(openpal::ReadOnlyBuffer& buffer, uint32_t aPos) const final
+	protected:
+		virtual U ValueAt(openpal::ReadOnlyBuffer& buffer, uint32_t i) const final
 		{
-			return readFunc(buffer, aPos);
+			return mapFunc(proxy.ValueAt(buffer, i));
 		}
 
 	private:
-		
-		LazyIterable();
-		ReadFunc readFunc;
+		const Iterable<T>& proxy;
+		MapFunc mapFunc;
+};
+
+template <class T>
+struct Collection : private PureStatic
+{
+	template <class ReadFunc>
+	static LazyIterable<T,ReadFunc> Lazily(const openpal::ReadOnlyBuffer& buffer, uint32_t aSize, const ReadFunc& aReadFunc)
+	{
+		return LazyIterable<T, ReadFunc>(buffer, aSize, aReadFunc);
+	}
+
+	template <class U, class MapFunc>
+	static MappedIterable<T, U, MapFunc> Map(const Iterable<T>& proxy, const MapFunc& aMapFunc)
+	{
+		return MappedIterable<T, U, MapFunc>(proxy, aMapFunc);
+	}
 };
 
 }

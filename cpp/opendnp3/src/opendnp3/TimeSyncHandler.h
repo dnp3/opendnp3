@@ -47,16 +47,16 @@ public:
 
 	std::string HandlerName() const final { return "TimeSyncHandler"; }
 
-	void _OnCountOf(const opendnp3::LazyIterable<Group52Var2>& times) final
+	virtual void _OnCountOf(const Iterable<Group52Var2>& times) final
 	{
-		if(times.Size() == 1)
+		if(times.Count() == 1)
 		{
 			valid = true;
-			timeOut = times.GetIterator().Next().time16;			
+			times.foreach([this](const Group52Var2& obj) { timeOut = obj.time16; });
 		}
 		else
 		{
-			LOG_BLOCK(openpal::LogLevel::Warning, "Ignoring unexpected time delay count of " << times.Size());
+			LOG_BLOCK(openpal::LogLevel::Warning, "Ignoring unexpected time delay count of " << times.Count());
 		}
 	}
 
