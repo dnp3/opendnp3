@@ -25,7 +25,7 @@
 #include <opendnp3/ITimeWriteHandler.h>
 #include <opendnp3/SlaveConfig.h>
 
-#include <openpal/ITimer.h>
+#include <openpal/IExecutor.h>
 
 #include "StackBase.h"
 #include "ChangeBuffer.h"
@@ -38,11 +38,6 @@
 #include "SlaveResponseTypes.h"
 #include "OutstationSBOHandler.h"
 
-
-namespace openpal
-{
-class IExecutor;
-}
 
 namespace opendnp3
 {
@@ -70,8 +65,8 @@ class AS_Base;
  */
 class Slave : public IAppUser, public StackBase
 {
-
-	friend class AS_Base; //make the state base class a friend
+	// states can operate back on the slave's private functions
+	friend class AS_Base;
 	friend class AS_OpenBase;
 	friend class AS_Closed;
 	friend class AS_Idle;
@@ -111,11 +106,15 @@ public:
 	 *
 	 * @return			a pointer to the buffer
 	 */
-	IDataObserver* GetDataObserver() {
+	IDataObserver* GetDataObserver() 
+	{
 		return &mChangeBuffer;
 	}
 
 private:
+
+	void DoRequest(AS_Base* apNext, const APDURecord& record, SequenceInfo aSeqInfo);
+	void SwitchOnFunction(AS_Base* apNext, const APDURecord& record, SequenceInfo aSeqInfo);
 
 	ChangeBuffer mChangeBuffer;				// how client code gives us updates
 	IAppLayer* mpAppLayer;					// lower application layer
@@ -133,22 +132,17 @@ private:
 
 	IINField mIIN;							// IIN bits that persist between requests (i.e. NeedsTime/Restart/Etc)
 	IINField mRspIIN;						// Transient IIN bits that get merged before a response is issued
-	APDU mResponse;							// APDU used to form responses
-	APDU mRequest;							// APDU used to save Deferred requests
-	SequenceInfo mSeqInfo;
+	APDU mResponse;							// APDU used to form responses	
+	
 	APDU mUnsol;							// APDY used to form unsol respones
 	ResponseContext mRspContext;			// Used to track and construct response fragments
-	OutstationSBOHandler mSBOHandler;       // Tracks SBO requests, forwarding valid sequences to the application
-
-	bool mHaveLastRequest;
-	APDU mLastRequest;						// APDU used to form responses
+	OutstationSBOHandler mSBOHandler;       // Tracks SBO requests, forwarding valid sequences to the application	
 
 
 	// Flags that tell us that some action has been Deferred
 	// until the slave is in a state capable of handling it.
 
-	bool mDeferredUpdate;					// Indicates that a data update has been Deferred
-	bool mDeferredRequest;					// Indicates that a request has been Deferred
+	bool mDeferredUpdate;					// Indicates that a data update has been Deferred	
 	bool mDeferredUnsol;					// Indicates that the unsol timer expired, but the event was Deferred	
 
 	bool mStartupNullUnsol;					// Tracks whether the device has completed the nullptr unsol startup message
@@ -160,8 +154,7 @@ private:
 	}
 
 	void UpdateState(StackState aState);
-
-	void OnVtoUpdate();						// internal event dispatched when user code commits an update to mVtoWriter
+	
 	void OnDataUpdate();					// internal event dispatched when user code commits an update to mChangeBuffer
 	void OnUnsolTimerExpiration();			// internal event dispatched when the unsolicted pack/retry timer expires
 

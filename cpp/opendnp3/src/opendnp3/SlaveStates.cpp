@@ -80,97 +80,7 @@ void AS_Base::OnUnsolExpiration(Slave* c)
 	c->mDeferredUnsol = true;
 }
 
-void AS_Base::SwitchOnFunction(Slave* slave, AS_Base* apNext, const APDURecord& record, SequenceInfo aSeqInfo)
-{
-	switch (record.function) 
-	{
-		/*
-		case (FunctionCode::READ): 
-		{
-			ChangeState(slave, apNext);
-			slave->mRspContext.Reset();
-			IINField iin = slave->mRspContext.Configure(record);
-			slave->mRspContext.LoadResponse(c->mResponse);
-			slave->Send(c->mResponse, iin);
-			break;
-		}
-		case (FunctionCode::WRITE):
-		{
-			ChangeState(slave, apNext);
-			if(aSeqInfo != SI_PREV) slave->HandleWrite(record);
-			c->ConfigureAndSendSimpleResponse();
-			break;
-		}
-		case (FunctionCode::SELECT):
-		{
-			ChangeState(slave, apNext);
-			c->HandleSelect(slave, aSeqInfo);
-			c->Send(c->mResponse);
-			break;
-		}
-		case (FunctionCode::OPERATE):
-			ChangeState(slave, apNext);
-			c->HandleOperate(arRequest, aSeqInfo);
-			c->Send(c->mResponse);
-			break;
-		case (FunctionCode::DIRECT_OPERATE):
-			ChangeState(slave, apNext);
-			c->HandleDirectOperate(arRequest, aSeqInfo);
-			c->Send(c->mResponse);
-			break;
-		case (FunctionCode::DIRECT_OPERATE_NO_ACK):
-			c->HandleDirectOperate(arRequest, aSeqInfo);
-			break;
-		case (FunctionCode::ENABLE_UNSOLICITED):
-			ChangeState(c, apNext);
-			c->HandleEnableUnsolicited(arRequest, true);
-			c->Send(c->mResponse);
-			break;
-		case (FunctionCode::DISABLE_UNSOLICITED):
-			ChangeState(c, apNext);
-			c->HandleEnableUnsolicited(arRequest, false);
-			c->Send(c->mResponse);
-			break;
-		case (FunctionCode::DELAY_MEASURE):
-			ChangeState(c, apNext);
-			c->ConfigureDelayMeasurement(arRequest);
-			c->Send(c->mResponse);
-			break;
-		*/
-		default:
-			ERROR_LOGGER_BLOCK(slave->mLogger, LogLevel::Warning, "Function not supported: " << FunctionCodeToString(record.function), SERR_FUNC_NOT_SUPPORTED);
-			break;
-	}
-}
-
-void AS_Base::DoRequest(Slave* slave, AS_Base* apNext, const APDURecord& record, SequenceInfo aSeqInfo)
-{
-	slave->mRspIIN.Clear();
-
-	this->SwitchOnFunction(slave, apNext, record, aSeqInfo);
-	
-/*
-	catch (const ParameterException& ex) {
-		ChangeState(c, apNext);
-		ERROR_LOGGER_BLOCK(c->mLogger, LogLevel::Error, ex.Message(), ex.ErrorCode());
-		c->mRspIIN.Set(IINBit::PARAM_ERROR);
-		c->ConfigureAndSendSimpleResponse();
-	}
-	catch (const NotSupportedException& ex) {
-		ChangeState(c, apNext);
-		ERROR_LOGGER_BLOCK(c->mLogger, LogLevel::Error, ex.Message(), ex.ErrorCode());
-		c->mRspIIN.Set(IINBit::FUNC_NOT_SUPPORTED);
-		c->ConfigureAndSendSimpleResponse();
-	}
-
-
-	c->mLastRequest = arAPDU;
-	c->mHaveLastRequest = true;  // TODO - restore this?
-*/
-}
-
 // Work functions
-
 void AS_Base::ChangeState(Slave* c, AS_Base* apState)
 {
 	if (apState == AS_Closed::Inst() && c->mpTimeTimer) {
@@ -220,9 +130,9 @@ void AS_OpenBase::OnLowerLayerDown(Slave* c)
 
 AS_Idle AS_Idle::mInstance;
 
-void AS_Idle::OnRequest(Slave* c, const APDURecord& record, SequenceInfo aSeqInfo)
+void AS_Idle::OnRequest(Slave* slave, const APDURecord& record, SequenceInfo aSeqInfo)
 {
-	this->DoRequest(c, AS_WaitForRspSuccess::Inst(), record, aSeqInfo);
+	slave->DoRequest(AS_WaitForRspSuccess::Inst(), record, aSeqInfo);
 }
 
 void AS_Idle::OnDataUpdate(Slave* c)
@@ -286,12 +196,12 @@ void AS_WaitForRspSuccess::OnSolSendSuccess(Slave* c)
 // immediately handle the new request. We implement this behavior asynchronously, by
 // canceling the response transaction, and waiting for an OnFailure callback.
 // The callback may still succeed if
-void AS_WaitForRspSuccess::OnRequest(Slave* c, const APDURecord& record, SequenceInfo aSeqInfo)
+void AS_WaitForRspSuccess::OnRequest(Slave* slave, const APDURecord& record, SequenceInfo aSeqInfo)
 {
-	c->mpAppLayer->CancelResponse();
+	slave->mpAppLayer->CancelResponse();
 	//c->mRequest = arAPDU;  TODO - figure out how we're going to cache requests
-	c->mSeqInfo = aSeqInfo;
-	c->mDeferredRequest = true;
+	//c->mSeqInfo = aSeqInfo;
+	//c->mDeferredRequest = true;
 }
 
 /* AS_WaitForUnsolSuccess */
@@ -312,18 +222,19 @@ void AS_WaitForUnsolSuccess::OnUnsolSendSuccess(Slave* c)
 	this->DoUnsolSuccess(c);
 }
 
-void AS_WaitForUnsolSuccess::OnRequest(Slave* c, const APDURecord& record, SequenceInfo aSeqInfo)
+void AS_WaitForUnsolSuccess::OnRequest(Slave* slave, const APDURecord& record, SequenceInfo aSeqInfo)
 {
-	if (record.function == FunctionCode::READ) {
+	if (record.function == FunctionCode::READ) 
+	{
 		//read requests should be defered until after the unsol
 		//c->mRequest = arAPDU; TODO - deffer the read
-		c->mSeqInfo = aSeqInfo;
-		c->mDeferredRequest = true;
+		//slave->mSeqInfo = aSeqInfo;
+		//slave->mDeferredRequest = true;
 	}
 	else {
 		// all other requests should be handled immediately
-		c->mDeferredRequest = false;
-		this->DoRequest(c, AS_WaitForSolUnsolSuccess::Inst(), record, aSeqInfo);
+		//slave->mDeferredRequest = false;
+		//slave->DoRequest(AS_WaitForSolUnsolSuccess::Inst(), record, aSeqInfo);
 	}
 }
 
@@ -335,8 +246,8 @@ void AS_WaitForSolUnsolSuccess::OnRequest(Slave* c, const APDURecord& record, Se
 {
 	// Both channels are busy... buffer the request
 	// c->mRequest = arAPDU; TODO - buffer the request
-	c->mSeqInfo = aSeqInfo;
-	c->mDeferredRequest = true;
+	// c->mSeqInfo = aSeqInfo;
+	// c->mDeferredRequest = true;
 }
 
 void AS_WaitForSolUnsolSuccess::OnSolFailure(Slave* c)

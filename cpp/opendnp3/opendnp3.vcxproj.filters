@@ -615,6 +615,9 @@
     <ClInclude Include="src\opendnp3\CommandSequence.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\opendnp3\CachedRequest.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\opendnp3\AnalogOutput.cpp">
@@ -1008,6 +1011,12 @@
       <Filter>Source Files\objects</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\MeasurementHandler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\CachedRequest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\DynamicBuffer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

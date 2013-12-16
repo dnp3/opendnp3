@@ -80,11 +80,9 @@ public:
 	}	
 
 protected:
-
-	void SwitchOnFunction(Slave*, AS_Base* apNext, const APDURecord& record, SequenceInfo aSeqInfo);
+	
 	void DoUnsolSuccess(Slave*);
-	void DoRequest(Slave* c, AS_Base* apNext, const APDURecord& record, SequenceInfo aSeqInfo);
-
+	
 	//Work functions
 
 	void ChangeState(Slave*, AS_Base*);
