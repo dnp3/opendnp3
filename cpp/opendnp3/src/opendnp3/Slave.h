@@ -163,6 +163,7 @@ private:
 	void SendUnsolicited(APDU& apdu, const IINField& indications = IINField::Empty);
 
 	IINField HandleWrite(const APDURecord& record, SequenceInfo sequence);
+	IINField HandleRead(const APDURecord& record, SequenceInfo sequence, APDU& apdu);
 	IINField HandleDelayMeasure(const APDURecord& record, SequenceInfo sequence, APDU& apdu);
 
 	// Helpers

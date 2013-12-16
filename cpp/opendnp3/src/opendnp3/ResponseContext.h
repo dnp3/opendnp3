@@ -25,12 +25,14 @@
 #include <functional>
 
 #include <openpal/Location.h>
-
+#include <openpal/Loggable.h>
 #include <opendnp3/ClassMask.h>
 
 #include "APDU.h"
 #include "Database.h"
 #include "SlaveEventBuffer.h"
+#include "GroupVariation.h"
+
 
 namespace opendnp3
 {
@@ -56,7 +58,7 @@ class ResponseContext : public openpal::Loggable
 		UNSOLICITED
 	};
 
-	enum class RequestType 
+	enum class RequestType
 	{
 		STATIC = 0,
 		EVENT = 1
@@ -87,12 +89,11 @@ public:
 
 	ResponseContext(openpal::Logger& arLogger, Database*, SlaveResponseTypes* apRspTypes, const EventMaxConfig& arEventMaxConfig);
 
+	IINField RecordAllObjects(GroupVariation gv);
+
 	Mode GetMode() const { return mMode; }
 
-	IEventBuffer* GetBuffer() { return &mBuffer; }
-
-	// Setup the response context with a new read request
-	IINField Configure(const APDU& arRequest);
+	IEventBuffer* GetBuffer() { return &mBuffer; }	
 
 	// Configure the APDU with response data for the next fragment
 	void LoadResponse(APDU&);
@@ -105,9 +106,7 @@ public:
 	void LoadUnsol(APDU&, const IINField& arIIN, ClassMask aMask);
 
 	// @return TRUE is all of the response data has already been written
-	bool IsComplete() {
-		return IsEmpty();
-	}
+	bool IsComplete() { return IsEmpty(); }
 
 	// Reset the state of the object to the initial state
 	void Reset();
@@ -119,6 +118,11 @@ public:
 	void ClearAndReset();
 
 private:
+
+	IINField RecordIntegrity();
+
+	template <class T>
+	IINField RecordAllStatic(StreamObject<T>* obj, const typename StaticIterator<T>::Type& begin);
 
 	// configure the state for unsol, return true of events exist
 	bool SelectUnsol(ClassMask aMask);
@@ -152,7 +156,7 @@ private:
 	bool mFIN;
 	SlaveResponseTypes* mpRspTypes;
 
-	IINField mTempIIN;
+	//IINField mTempIIN;
 	bool mLoadedEventData;
 
 	template<class T>
@@ -199,25 +203,31 @@ private:
 	template <class T>
 	size_t CalcPossibleCTO(typename EventIterator<T>::Type aIter, size_t aMax);
 
-
-	// Static write functions
-
 	template <class T>
-	void RecordStaticObjects(StreamObject<T>* apObject, const HeaderReadIterator& arIter, const typename StaticIterator<T>::Type& begin);
-
-	template <class T>
-	void RecordStaticObjectsByRange(StreamObject<T>* apObject, typename StaticIterator<T>::Type begin, size_t aStart, size_t aStop);
+	IINField RecordStaticObjectsByRange(StreamObject<T>* apObject, uint32_t aStart, uint32_t aStop, const typename StaticIterator<T>::Type& begin);
 
 	template <class T>
 	bool WriteStaticObjects(StreamObject<T>* apObject, typename StaticIterator<T>::Type aStart, typename StaticIterator<T>::Type aStop, ResponseKey aKey, APDU& arAPDU);
 };
 
 template <class T>
+IINField ResponseContext::RecordAllStatic(StreamObject<T>* obj, const typename StaticIterator<T>::Type& begin)
+{
+	auto numType = mpDB->NumType(T::MeasEnum);
+	if(numType > 0)
+	{
+		return RecordStaticObjectsByRange<T>(obj, 0, numType - 1, begin);
+	}
+	else return IINField::Empty;
+}
+
+template <class T>
 size_t ResponseContext::SelectEvents(PointClass aClass, const StreamObject<T>* apObj, std::deque< EventRequest<T> >& arQueue, size_t aNum)
 {
 	size_t num = mBuffer.Select(Convert(T::MeasEnum), aClass, aNum);
 
-	if (num > 0) {
+	if (num > 0) 
+	{
 		EventRequest<T> r(apObj, aNum);
 		arQueue.push_back(r);
 	}
@@ -226,65 +236,23 @@ size_t ResponseContext::SelectEvents(PointClass aClass, const StreamObject<T>* a
 }
 
 template <class T>
-void ResponseContext::RecordStaticObjects(StreamObject<T>* apObject, const HeaderReadIterator& arIter, const typename StaticIterator<T>::Type& begin)
+IINField ResponseContext::RecordStaticObjectsByRange(StreamObject<T>* apObject, uint32_t aStart, uint32_t aStop, const typename StaticIterator<T>::Type& begin)
 {
-	size_t num = mpDB->NumType(T::MeasEnum);
-
-	//figure out what type of read request this is
-	switch(arIter->GetHeaderType()) {
-	case(OHT_ALL_OBJECTS): {
-			if(num > 0) this->RecordStaticObjectsByRange<T>(apObject, begin, 0, num - 1);
-		}
-		break;
-
-	case(OHT_RANGED_2_OCTET):
-	case(OHT_RANGED_4_OCTET):
-	case(OHT_RANGED_8_OCTET): {
-			if(num > 0) {
-				size_t max = num - 1;
-				RangeInfo ri;
-				const IRangeHeader* pHeader = reinterpret_cast<const IRangeHeader*>(arIter->GetHeader());
-				pHeader->GetRange(*arIter, ri);
-
-				if(ri.Start > max || ri.Stop > max || ri.Start > ri.Stop) this->mTempIIN.Set(IINBit::PARAM_ERROR);
-				else this->RecordStaticObjectsByRange<T>(apObject, begin, ri.Start, ri.Stop);
-			}
-			else this->mTempIIN.Set(IINBit::PARAM_ERROR);
-		}
-		break;
-
-	case(OHT_COUNT_1_OCTET):
-	case(OHT_COUNT_2_OCTET):
-	case(OHT_COUNT_4_OCTET): {
-			if(num > 0) {
-				size_t max = num - 1;
-				size_t count = reinterpret_cast<const ICountHeader*>(arIter->GetHeader())->GetCount(*arIter);
-				if(count > 0) {
-					size_t start = 0;
-					size_t stop = count - 1;
-
-					if(start > max || stop > max || start > stop) this->mTempIIN.Set(IINBit::PARAM_ERROR);
-					else this->RecordStaticObjectsByRange<T>(apObject, begin, start, stop);
-				}
-				else this->mTempIIN.Set(IINBit::PARAM_ERROR);
-			}
-			else this->mTempIIN.Set(IINBit::PARAM_ERROR);
-		}
-		break;
-	}
-}
-
-template <class T>
-void ResponseContext::RecordStaticObjectsByRange(StreamObject<T>* apObject, typename StaticIterator<T>::Type start, size_t aStart, size_t aStop)
-{	
-	auto first = start + aStart;
-	auto last = start + aStop;	
+	uint32_t num = mpDB->NumType(T::MeasEnum);
+	if(aStop < num)
+	{
+		auto first = begin + aStart;
+		auto last = begin + aStop;
 	
-	ResponseKey key(RequestType::STATIC, this->mStaticWriteMap.size());
-	WriteFunction func = [ = ](APDU & arAPDU) {
-		return this->WriteStaticObjects<T>(apObject, first, last, key, arAPDU);
-	};	
-	this->mStaticWriteMap[key] = func;
+		ResponseKey key(RequestType::STATIC, this->mStaticWriteMap.size());
+		auto func = [=](APDU& apdu) { return this->WriteStaticObjects<T>(apObject, first, last, key, apdu); };	
+		this->mStaticWriteMap[key] = func;
+		return IINField::Empty;
+	}
+	else 
+	{
+		return IINField(IINBit::PARAM_ERROR);
+	}	
 }
 
 template <class T>

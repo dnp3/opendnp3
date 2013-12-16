@@ -62,12 +62,34 @@ ResponseContext::ResponseContext(openpal::Logger& arLogger, Database* apDB, Slav
 	mLoadedEventData(false)
 {}
 
+IINField ResponseContext::RecordAllObjects(GroupVariation gv)
+{
+	mMode = Mode::SOLICITED;
+	switch(gv)
+	{
+		case(GroupVariation::Group60Var1):
+			return this->RecordIntegrity();
+		default:
+			return IINField(IINBit::PARAM_ERROR);
+	};	
+}
+
+IINField ResponseContext::RecordIntegrity()
+{
+	return	this->RecordAllStatic(mpRspTypes->mpStaticBinary, mpDB->BeginBinary()) |
+			this->RecordAllStatic(mpRspTypes->mpStaticAnalog, mpDB->BeginAnalog()) |
+			this->RecordAllStatic(mpRspTypes->mpStaticCounter, mpDB->BeginCounter()) |
+			this->RecordAllStatic(mpRspTypes->mpStaticControlStatus, mpDB->BeginControlStatus()) |
+			this->RecordAllStatic(mpRspTypes->mpStaticSetpointStatus, mpDB->BeginSetpointStatus());
+		
+}
+
 void ResponseContext::Reset()
 {
 	mFIR = true;
 	mLoadedEventData = false;
 	mMode = Mode::UNDEFINED;
-	mTempIIN.Clear();
+	
 
 	this->mStaticWriteMap.clear();
 
@@ -104,6 +126,7 @@ inline size_t GetEventCount(const HeaderInfo& arHeader)
 	}
 }
 
+/*
 IINField ResponseContext::Configure(const APDU& arRequest)
 {
 	this->Reset();
@@ -111,7 +134,7 @@ IINField ResponseContext::Configure(const APDU& arRequest)
 
 	for (HeaderReadIterator hdr = arRequest.BeginRead(); !hdr.IsEnd(); ++hdr) {
 		
-		/* Handle all of the objects that have a Group/Variation tuple */
+		// Handle all of the objects that have a Group/Variation tuple
 		switch (MACRO_DNP_RADIX(hdr->GetGroup(), hdr->GetVariation())) {
 
 		case(MACRO_DNP_RADIX(1, 0)):
@@ -238,14 +261,11 @@ IINField ResponseContext::Configure(const APDU& arRequest)
 
 	return mTempIIN;
 }
+*/
 
 void ResponseContext::SelectEvents(PointClass aClass, size_t aNum)
 {
-	size_t remain = aNum;
-
-	if (mBuffer.IsOverflow()) {
-		mTempIIN.Set(IINBit::EVENT_BUFFER_OVERFLOW);
-	}
+	size_t remain = aNum;	
 
 	remain -= this->SelectEvents(aClass, mpRspTypes->mpEventBinary, mBinaryEvents, remain);
 	remain -= this->SelectEvents(aClass, mpRspTypes->mpEventAnalog, mAnalogEvents, remain);

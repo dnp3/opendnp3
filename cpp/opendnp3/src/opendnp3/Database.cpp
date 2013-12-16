@@ -88,15 +88,18 @@ void Database::Configure(const DeviceTemplate& arTmp)
 	this->Configure(MeasurementType::CONTROL_STATUS, numControlStatus);
 	this->Configure(MeasurementType::SETPOINT_STATUS, numSetpointStatus);
 
-	for(size_t i = 0; i < arTmp.mBinary.size(); ++i) {
+	for(size_t i = 0; i < arTmp.mBinary.size(); ++i) 
+	{
 		this->SetClass(MeasurementType::BINARY, i, arTmp.mBinary[i].EventClass);
 	}
 
-	for(size_t i = 0; i < arTmp.mCounter.size(); ++i) {
+	for(size_t i = 0; i < arTmp.mCounter.size(); ++i)
+	{
 		this->SetClass(MeasurementType::COUNTER, i, arTmp.mCounter[i].EventClass);
 	}
 
-	for(size_t i = 0; i < arTmp.mAnalog.size(); ++i) {
+	for(size_t i = 0; i < arTmp.mAnalog.size(); ++i) 
+	{
 		this->SetClass(MeasurementType::ANALOG, i, arTmp.mAnalog[i].EventClass);
 		this->SetDeadband(MeasurementType::ANALOG, i, arTmp.mAnalog[i].Deadband);
 	}
@@ -216,7 +219,7 @@ void Database::Update(const SetpointStatus& aValue, size_t aIndex)
 // misc public functions
 ////////////////////////////////////////////////////
 
-size_t Database::NumType(MeasurementType aType)
+uint32_t Database::NumType(MeasurementType aType)
 {
 	switch(aType) {
 		case(MeasurementType::BINARY):

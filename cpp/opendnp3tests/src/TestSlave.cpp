@@ -269,7 +269,6 @@ BOOST_AUTO_TEST_CASE(WriteTimeDateMultipleObjects)
 	BOOST_REQUIRE_EQUAL(t.mTimeWrites.size(), 0);
 }
 
-/*
 BOOST_AUTO_TEST_CASE(BlankIntegrityPoll)
 {
 	SlaveConfig cfg; cfg.mDisableUnsol = true;
@@ -280,6 +279,7 @@ BOOST_AUTO_TEST_CASE(BlankIntegrityPoll)
 	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 00");
 }
 
+/*
 BOOST_AUTO_TEST_CASE(BlankExceptionScan)
 {
 	SlaveConfig cfg; cfg.mDisableUnsol = true;

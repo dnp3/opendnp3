@@ -32,6 +32,7 @@
 #include "IINHelpers.h"
 
 #include "WriteHandler.h"
+#include "ReadHandler.h"
 
 #include <functional>
 
@@ -189,6 +190,8 @@ IINField Slave::ConfigureResponse(const APDURecord& record, SequenceInfo sequenc
 	{
 		case(FunctionCode::WRITE):			
 			return HandleWrite(record, sequence);
+		case(FunctionCode::READ):			
+			return HandleRead(record, sequence, apduOut);
 		case(FunctionCode::DELAY_MEASURE):			
 			return HandleDelayMeasure(record, sequence, apduOut);
 		default:	
@@ -207,6 +210,27 @@ IINField Slave::HandleWrite(const APDURecord& record, SequenceInfo sequence)
 		}
 	);
 	else return IINFromParseResult(result);
+}
+
+IINField Slave::HandleRead(const APDURecord& record, SequenceInfo sequence, APDU& apdu)
+{
+	ReadHandler handler(mLogger, &mRspContext);
+	auto result = APDUParser::ParseHeaders(record.objects, handler);
+	if(result == APDUParser::Result::OK)
+	{
+		auto errors = handler.Errors();
+		if(errors.Any()) return errors;		
+		else 
+		{			
+			this->mRspContext.LoadResponse(apdu); // todo get the overflow bits out of here & return them
+			return IINField::Empty;
+		}
+	}
+	else 
+	{
+		mRspContext.Reset();
+		return IINFromParseResult(result);
+	}
 }
 
 IINField Slave::HandleDelayMeasure(const APDURecord& record, SequenceInfo sequence, APDU& apdu)

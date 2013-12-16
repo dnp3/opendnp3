@@ -69,7 +69,7 @@ public:
 	void Configure(const DeviceTemplate& arTmp);
 	void Configure(MeasurementType aType, size_t aNumPoints);
 
-	size_t NumType(MeasurementType aType);
+	uint32_t NumType(MeasurementType aType);
 	
 	bool SetDeadband(MeasurementType, size_t aIndex, double aDeadband);
 	bool SetClass(MeasurementType aType, size_t aIndex, PointClass aClass);

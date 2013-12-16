@@ -18,40 +18,27 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __READ_HANDLER_H_
-#define __READ_HANDLER_H_
 
-#include "HeaderHandlerBase.h"
-
-#include <openpal/Loggable.h>
-#include <opendnp3/ITimeWriteHandler.h>
-
-#include "ResponseContext.h"
+#include "ReadHandler.h"
 
 namespace opendnp3
 {
-
-/**
- * Dedicated class for processing response data in the master.
- */
-class ReadHandler : public HeaderHandlerBase, private openpal::Loggable
+	
+ReadHandler::ReadHandler(openpal::Logger& aLogger, ResponseContext* aContext) :
+	Loggable(aLogger),
+	pContext(aContext)
 {
-	public:
-	
-	ReadHandler(openpal::Logger& aLogger, ResponseContext* aContext);
-
-	virtual void _AllObjects(GroupVariation gv) final;
-
-	IINField Errors() const { return errors; }
-
-	private:
-	
-	ResponseContext* pContext;
-};
 
 }
 
-/* vim: set ts=4 sw=4: */
+void ReadHandler::_AllObjects(GroupVariation gv)
+{
+	errors |= pContext->RecordAllObjects(gv);
+}
 
-#endif
+
+
+
+}
+
 
