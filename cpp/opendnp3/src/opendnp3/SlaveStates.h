@@ -22,25 +22,23 @@
 #define __SLAVE_STATES_H_
 
 #include <string>
-
 #include <opendnp3/Singleton.h>
-
 
 #include "AppInterfaces.h"
 
 namespace opendnp3
 {
 
-class ITaskCompletion;
 class Slave;
-class APDU;
 
 /**
  * Base class for all transaction states of a Slave
  */
-class AS_Base
+class SlaveStateBase
 {
 public:
+
+	virtual std::string Name() const = 0;
 
 	/* Events from application layer */
 
@@ -55,64 +53,41 @@ public:
 
 	virtual void OnRequest(Slave*, const APDURecord&, SequenceInfo);
 	
-
-	/* Events produced from the user layer */
-
+	virtual void Enter(Slave*) = 0;
+		
 	// Called when a data update is received from the user layer
-	virtual void OnDataUpdate(Slave*);
+	virtual void OnDataUpdate(Slave* slave);
 
-	// Called when a data update is received from the user layer
+	// Called when the unsolcited timer expires
 	virtual void OnUnsolExpiration(Slave*);
 
-#ifndef OPENDNP3_STRIP_LOG_MESSAGES
-	// @return The name associated with the state
-	virtual std::string Name() const = 0;
-#endif
-
-	virtual bool AcceptsDeferredRequests() {
-		return false;
-	}
-	virtual bool AcceptsDeferredUpdates()  {
-		return false;
-	}
-	virtual bool AcceptsDeferredUnsolExpiration()  {
-		return false;
-	}	
 
 protected:
 	
 	void DoUnsolSuccess(Slave*);
-	
-	//Work functions
-
-	void ChangeState(Slave*, AS_Base*);
-
 };
 
 /**
  * A state that indicates when the application layer has not informed the
  * slave yet that it is up.
  */
-class AS_Closed : public AS_Base
+class AS_Closed : public SlaveStateBase
 {
 public:
 
 	MACRO_STATE_SINGLETON_INSTANCE(AS_Closed);
 
-	void OnLowerLayerUp(Slave*);
-	void OnDataUpdate(Slave*);
+	void Enter(Slave*) final;
 
-	bool AcceptsDeferUpdates() {
-		return true;
-	}
-
+	void OnLowerLayerUp(Slave* slave) final;
+	void OnDataUpdate(Slave*) final;	
 };
 
-class AS_OpenBase : public AS_Base
+class AS_OpenBase : public SlaveStateBase
 {
 public:
 
-	void OnLowerLayerDown(Slave*);
+	void OnLowerLayerDown(Slave*) final;
 
 };
 
@@ -126,20 +101,11 @@ public:
 
 	MACRO_STATE_SINGLETON_INSTANCE(AS_Idle);
 
-	void OnRequest(Slave*, const APDURecord&, SequenceInfo);
-	void OnDataUpdate(Slave*);
-	void OnUnsolExpiration(Slave*);	
-
-	bool AcceptsDeferredRequests() {
-		return true;
-	}
-	bool AcceptsDeferredUpdates() {
-		return true;
-	}
-	bool AcceptsDeferredUnsolExpiration()  {
-		return true;
-	}
-
+	void Enter(Slave*) final;
+	void OnDataUpdate(Slave*) final;
+	void OnUnsolExpiration(Slave*) final;	
+	void OnRequest(Slave*, const APDURecord&, SequenceInfo) final;
+	
 };
 
 
@@ -153,9 +119,10 @@ public:
 
 	MACRO_STATE_SINGLETON_INSTANCE(AS_WaitForRspSuccess);
 
-	void OnRequest(Slave*, const APDURecord&, SequenceInfo);
-	void OnSolFailure(Slave*);
-	void OnSolSendSuccess(Slave*);
+	void Enter(Slave*) final {}	
+	void OnRequest(Slave*, const APDURecord&, SequenceInfo) final;
+	void OnSolFailure(Slave*) final;
+	void OnSolSendSuccess(Slave*) final;
 
 };
 
@@ -169,9 +136,10 @@ public:
 
 	MACRO_STATE_SINGLETON_INSTANCE(AS_WaitForUnsolSuccess);
 
-	void OnRequest(Slave*, const APDURecord&, SequenceInfo);
-	void OnUnsolFailure(Slave*);
-	void OnUnsolSendSuccess(Slave*);
+	void Enter(Slave*) final {}	
+	void OnRequest(Slave*, const APDURecord&, SequenceInfo) final;
+	void OnUnsolFailure(Slave*) final;
+	void OnUnsolSendSuccess(Slave*) final;
 
 };
 
@@ -185,11 +153,12 @@ public:
 
 	MACRO_STATE_SINGLETON_INSTANCE(AS_WaitForSolUnsolSuccess);
 
-	void OnRequest(Slave*, const APDURecord&, SequenceInfo);
-	void OnSolFailure(Slave*);
-	void OnSolSendSuccess(Slave*);
-	void OnUnsolFailure(Slave*);
-	void OnUnsolSendSuccess(Slave*);
+	void Enter(Slave*) final {}
+	void OnRequest(Slave*, const APDURecord&, SequenceInfo) final;
+	void OnSolFailure(Slave*) final;
+	void OnSolSendSuccess(Slave*) final;
+	void OnUnsolFailure(Slave*) final;
+	void OnUnsolSendSuccess(Slave*) final;
 
 };
 

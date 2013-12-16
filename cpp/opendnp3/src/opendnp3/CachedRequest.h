@@ -24,6 +24,7 @@
 
 #include "APDUHeader.h"
 #include "DynamicBuffer.h"
+#include "SequenceInfo.h"
 
 #include <assert.h>
 #include <opendnp3/Uncopyable.h>
@@ -40,7 +41,8 @@ class CachedRequest : private Uncopyable
 
 	CachedRequest(uint32_t aMaxFragmentSize);
 
-	void Set(const APDURecord& record);
+	void Set(const APDURecord& aRecord, SequenceInfo aSequence);
+	void Clear() { isCached = false; }
 
 	bool IsSet() const { return isCached; }
 
@@ -51,6 +53,7 @@ class CachedRequest : private Uncopyable
 
 	bool isCached;
 	APDURecord record;
+	SequenceInfo sequence;
 	DynamicBuffer buffer;
 };
 
@@ -59,7 +62,7 @@ void CachedRequest::Apply(const ApplyFun& fun)
 {
 	assert(isCached);
 	isCached = false;
-	fun(record);
+	fun(record, sequence);
 }
 
 }

@@ -37,6 +37,7 @@
 #include "SlaveEventBuffer.h"
 #include "SlaveResponseTypes.h"
 #include "OutstationSBOHandler.h"
+#include "CachedRequest.h"
 
 
 namespace opendnp3
@@ -66,7 +67,7 @@ class AS_Base;
 class Slave : public IAppUser, public StackBase
 {
 	// states can operate back on the slave's private functions
-	friend class AS_Base;
+	friend class SlaveStateBase;
 	friend class AS_OpenBase;
 	friend class AS_Closed;
 	friend class AS_Idle;
@@ -113,15 +114,16 @@ public:
 
 private:
 
-	void DoRequest(AS_Base* apNext, const APDURecord& record, SequenceInfo aSeqInfo);
-	void SwitchOnFunction(AS_Base* apNext, const APDURecord& record, SequenceInfo aSeqInfo);
+	void ChangeState(SlaveStateBase* apState);
+
+	void RespondToRequest(const APDURecord& record, SequenceInfo aSeqInfo);	
 
 	ChangeBuffer mChangeBuffer;				// how client code gives us updates
 	IAppLayer* mpAppLayer;					// lower application layer
 	Database* mpDatabase;					// holds static data
 	ICommandHandler* mpCmdHandler;			// how commands are selected/operated on application code
 	int mSequence;							// control sequence
-	AS_Base* mpState;						// current state for the state pattern
+	SlaveStateBase* mpState;				// current state for the state pattern
 	SlaveConfig mConfig;					// houses the configurable paramters of the outstation
 	SlaveResponseTypes mRspTypes;			// converts the group/var in the config to dnp singletons
 
@@ -131,10 +133,11 @@ private:
 	INotifier* mpVtoNotifier;
 
 	IINField mIIN;							// IIN bits that persist between requests (i.e. NeedsTime/Restart/Etc)
-	IINField mRspIIN;						// Transient IIN bits that get merged before a response is issued
-	APDU mResponse;							// APDU used to form responses	
+	//IINField mRspIIN;						// Transient IIN bits that get merged before a response is issued
+	APDU mResponse;							// APDU used to form responses
+	CachedRequest mCachedRequest;			// Request cache for when outstation needs to defer a request
 	
-	APDU mUnsol;							// APDY used to form unsol respones
+	APDU mUnsol;							// APDU used to form unsol respones
 	ResponseContext mRspContext;			// Used to track and construct response fragments
 	OutstationSBOHandler mSBOHandler;       // Tracks SBO requests, forwarding valid sequences to the application	
 
@@ -142,7 +145,7 @@ private:
 	// Flags that tell us that some action has been Deferred
 	// until the slave is in a state capable of handling it.
 
-	bool mDeferredUpdate;					// Indicates that a data update has been Deferred	
+	int	 mDeferredUpdateCount;				// > 0 Indicates that a data update has been deferred	
 	bool mDeferredUnsol;					// Indicates that the unsol timer expired, but the event was Deferred	
 
 	bool mStartupNullUnsol;					// Tracks whether the device has completed the nullptr unsol startup message
@@ -158,11 +161,11 @@ private:
 	void OnDataUpdate();					// internal event dispatched when user code commits an update to mChangeBuffer
 	void OnUnsolTimerExpiration();			// internal event dispatched when the unsolicted pack/retry timer expires
 
-	void ConfigureAndSendSimpleResponse();
-	void Send(APDU&);
-	void Send(APDU& arAPDU, const IINField& arIIN); // overload with additional IIN data
-	void SendUnsolicited(APDU& arAPDU);
+	void SendSimpleResponse(const IINField& indications = IINField::Empty);
+	void Send(APDU&, const IINField& indication = IINField::Empty);	
+	void SendUnsolicited(APDU& arAPDU, const IINField& indications = IINField::Empty);
 
+/*
 	void HandleWrite(const APDU& arRequest);
 	void HandleWriteIIN(HeaderReadIterator& arHdr);
 	void HandleWriteTimeDate(HeaderReadIterator& arHWI);
@@ -170,15 +173,13 @@ private:
 	void HandleOperate(const APDU& arRequest, SequenceInfo aSeqInfo);
 	void HandleDirectOperate(const APDU& arRequest, SequenceInfo aSeqInfo);
 	void HandleEnableUnsolicited(const APDU& arRequest, bool aIsEnable);
-	void HandleUnknown();
-
 	void ConfigureDelayMeasurement(const APDU& arRequest);
 	void CreateResponseContext(const APDU& arRequest);
+*/
 
 	// Helpers
 
-	size_t FlushUpdates();
-	void FlushDeferredEvents();
+	size_t FlushUpdates();	
 	void StartUnsolTimer(openpal::TimeDuration aTimeout);
 
 	// Task handlers

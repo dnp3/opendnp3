@@ -56,13 +56,13 @@ void SolicitedChannel::OnResponse(const APDUResponseRecord& aRecord)
 
 void SolicitedChannel::OnRequest(const APDURecord& aRecord)
 {
-	SequenceInfo seq = SI_OTHER;
+	auto seq = SequenceInfo::OTHER;
 	if (aRecord.control.SEQ == this->Sequence()) {
 		LOG_BLOCK(LogLevel::Warning, "Received previous sequence");
-		seq = SI_PREV;
+		seq = SequenceInfo::PREVIOUS;
 	}
 	else if (aRecord.control.SEQ == NextSeq(this->Sequence())) {
-		seq = SI_CORRECT;
+		seq =SequenceInfo::CORRECT;
 	}
 
 	mSequence = aRecord.control.SEQ;

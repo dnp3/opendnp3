@@ -45,14 +45,15 @@ BOOST_AUTO_TEST_CASE(Correctly)
 		HexSequence temp("C0 02 01 02 06");		
 		APDURecord record;
 		BOOST_REQUIRE(APDUHeaderParser::Result::OK == APDUHeaderParser::ParseRequest(temp.ToReadOnly(), record));		
-		cache.Set(record);
+		cache.Set(record, SequenceInfo::PREVIOUS);
 	} // source destructs
 
 	BOOST_REQUIRE(cache.IsSet());
 
 	MockApduHeaderHandler handler;
-	cache.Apply([&](const APDURecord& record){ 
+	cache.Apply([&](const APDURecord& record, SequenceInfo seq){ 
 		
+		BOOST_REQUIRE(SequenceInfo::PREVIOUS == seq);
 		BOOST_REQUIRE(APDUParser::Result::OK == APDUParser::ParseHeaders(record.objects, handler));
 
 	});

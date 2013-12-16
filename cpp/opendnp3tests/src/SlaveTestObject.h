@@ -39,7 +39,7 @@ class SlaveTestObject
 public:
 	SlaveTestObject(const SlaveConfig& arCfg, openpal::LogLevel aLevel = openpal::LogLevel::Info, bool aImmediate = false);
 
-	void SendToSlave(const std::string& arData, SequenceInfo aSeq = SI_OTHER);
+	void SendToSlave(const std::string& arData, SequenceInfo aSeq = SequenceInfo::OTHER);
 
 	std::string Read();
 

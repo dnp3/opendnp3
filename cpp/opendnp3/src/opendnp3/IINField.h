@@ -50,7 +50,15 @@ enum class IINBit {
 */
 class IINField
 {
-public:
+	
+	public:
+
+	static const IINField Empty;
+
+	IINField(IINBit bit) : LSB(0), MSB(0) 
+	{
+		this->Set(bit);
+	}
 
 	IINField(uint8_t aLSB, uint8_t aMSB) : 	LSB(aLSB), MSB(aMSB) 
 	{}

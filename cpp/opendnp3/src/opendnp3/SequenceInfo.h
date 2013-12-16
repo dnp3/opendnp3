@@ -18,28 +18,14 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-
-#include "CachedRequest.h"
+#ifndef __SEQUENCE_INFO_H_
+#define __SEQUENCE_INFO_H_
 
 namespace opendnp3
 {
 
-CachedRequest::CachedRequest(uint32_t aMaxFragmentSize): 
-	isCached(false),
-	buffer(aMaxFragmentSize)
-{}
+enum class SequenceInfo { OTHER, PREVIOUS, CORRECT };
 
-void CachedRequest::Set(const APDURecord& aRecord, SequenceInfo aSequence)
-{
-	auto write = buffer.Get();
-	assert(aRecord.objects.Size() <= write.Size());
-	aRecord.objects.CopyTo(write);
-	record.control = aRecord.control;
-	record.function = aRecord.function;
-	record.objects = openpal::ReadOnlyBuffer(write, aRecord.objects.Size());
-	sequence = aSequence;
-	isCached = true;
-}
-	
+} //end ns
 
-}
+#endif

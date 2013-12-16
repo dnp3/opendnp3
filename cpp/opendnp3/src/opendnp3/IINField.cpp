@@ -31,6 +31,8 @@ using namespace std;
 namespace opendnp3
 {
 
+const IINField IINField::Empty;
+
 bool IINField::IsSet(IINBit bit) const
 {
 	switch(bit) {

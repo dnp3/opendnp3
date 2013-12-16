@@ -24,6 +24,7 @@
 #include <stddef.h>
 
 #include "APDUHeader.h"
+#include "SequenceInfo.h"
 
 #include <openpal/Loggable.h>
 
@@ -109,12 +110,6 @@ public:
 	virtual void CancelResponse() = 0;
 };
 
-
-enum SequenceInfo {
-	SI_OTHER,
-	SI_PREV,
-	SI_CORRECT
-};
 
 // Interface for callbacks from an application layer
 class IAppUser : protected openpal::Loggable

@@ -33,19 +33,25 @@ using namespace opendnp3;
 using namespace openpal;
 using namespace boost;
 
-BOOST_AUTO_TEST_SUITE(SlaveSuite)
+BOOST_AUTO_TEST_SUITE(SlaveTestSuite)
 
 BOOST_AUTO_TEST_CASE(InitialState)
 {
 	SlaveConfig cfg;
 	SlaveTestObject t(cfg);
 
-	BOOST_REQUIRE_THROW(t.slave.OnLowerLayerDown(), InvalidStateException);
-	BOOST_REQUIRE_THROW(t.slave.OnSolSendSuccess(), InvalidStateException);
-	BOOST_REQUIRE_THROW(t.slave.OnUnsolSendSuccess(), InvalidStateException);
-	BOOST_REQUIRE_THROW(t.slave.OnSolFailure(), InvalidStateException);
-	BOOST_REQUIRE_THROW(t.slave.OnUnsolFailure(), InvalidStateException);
-	BOOST_REQUIRE_THROW(t.slave.OnRequest(APDURecord(), SequenceInfo()), InvalidStateException);
+	t.slave.OnLowerLayerDown();
+	
+	t.slave.OnSolSendSuccess();
+	BOOST_REQUIRE_EQUAL(SERR_INVALID_STATE, t.log.NextErrorCode());
+	t.slave.OnUnsolSendSuccess();
+	BOOST_REQUIRE_EQUAL(SERR_INVALID_STATE, t.log.NextErrorCode());
+	t.slave.OnSolFailure();
+	BOOST_REQUIRE_EQUAL(SERR_INVALID_STATE, t.log.NextErrorCode());
+	t.slave.OnUnsolFailure();
+	BOOST_REQUIRE_EQUAL(SERR_INVALID_STATE, t.log.NextErrorCode());
+	t.slave.OnRequest(APDURecord(), SequenceInfo());
+	BOOST_REQUIRE_EQUAL(SERR_INVALID_STATE, t.log.NextErrorCode());
 }
 
 BOOST_AUTO_TEST_CASE(TimersCancledOnClose)
@@ -61,6 +67,7 @@ BOOST_AUTO_TEST_CASE(TimersCancledOnClose)
 
 BOOST_AUTO_TEST_CASE(DataPost)
 {
+
 	SlaveConfig cfg;
 	SlaveTestObject t(cfg);
 	t.db.Configure(MeasurementType::BINARY, 1);
@@ -603,12 +610,12 @@ BOOST_AUTO_TEST_CASE(SelectOperateCROB)
 	t.slave.OnLowerLayerUp();
 
 	// Select group 12 Var 1, count = 1, index = 3
-	t.SendToSlave("C0 03 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00", SI_OTHER);
+	t.SendToSlave("C0 03 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00", SequenceInfo::OTHER);
 	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 00 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00"); // 0x00 status == CommandStatus::SUCCESS
 
 
 	// operate
-	t.SendToSlave("C1 04 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00", SI_CORRECT);
+	t.SendToSlave("C1 04 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00", SequenceInfo::CORRECT);
 	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 00 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00");
 
 }
@@ -622,19 +629,19 @@ BOOST_AUTO_TEST_CASE(SelectOperateCROBSameSequenceNumber)
 	BOOST_REQUIRE_EQUAL(0, t.cmdHandler.mNumInvocations);
 
 	// Select group 12 Var 1, count = 1, index = 3
-	t.SendToSlave("C0 03 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00", SI_OTHER);
+	t.SendToSlave("C0 03 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00", SequenceInfo::OTHER);
 	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 00 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00"); // 0x00 status == CommandStatus::SUCCESS
 	BOOST_REQUIRE_EQUAL(1, t.cmdHandler.mNumInvocations);
 
 
 	// operate the first time with correct sequence #
-	t.SendToSlave("C1 04 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00", SI_CORRECT);
+	t.SendToSlave("C1 04 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00", SequenceInfo::CORRECT);
 	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 00 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00");
 	BOOST_REQUIRE_EQUAL(2, t.cmdHandler.mNumInvocations);
 
 
 	// operate again with same sequence number, should respond success but not really do an operation
-	t.SendToSlave("C1 04 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00", SI_PREV);
+	t.SendToSlave("C1 04 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00", SequenceInfo::PREVIOUS);
 	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 00 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00");
 	BOOST_REQUIRE_EQUAL(2, t.cmdHandler.mNumInvocations);
 }
