@@ -212,12 +212,12 @@ void AS_WaitForRspSuccess::OnSolSendSuccess(Slave* slave)
 
 	if (slave->mRspContext.IsComplete())
 	{
-		slave->ChangeState(AS_Idle::Inst());	
+		slave->ChangeState(AS_Idle::Inst());
 	}
 	else 
 	{
 		slave->mRspContext.LoadResponse(slave->mResponse);
-		slave->Send(slave->mResponse);
+		slave->SendResponse(slave->mResponse);
 	}
 }
 

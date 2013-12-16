@@ -175,12 +175,33 @@ size_t Slave::FlushUpdates()
 
 void Slave::RespondToRequest(const APDURecord& record, SequenceInfo sequence)
 {
-	ERROR_BLOCK(LogLevel::Warning, "Function not supported: " << FunctionCodeToString(record.function), SERR_FUNC_NOT_SUPPORTED);
-	this->SendSimpleResponse(IINField(IINBit::FUNC_NOT_SUPPORTED));
+	mResponse.Set(FunctionCode::RESPONSE);
+	auto indications = ConfigureResponse(record, sequence, mResponse);
+	this->SendResponse(mResponse, indications);	
 }
 
+IINField Slave::ConfigureResponse(const APDURecord& record, SequenceInfo sequence, APDU& apduOut)
+{	
+	switch(record.function)
+	{
+		case(FunctionCode::WRITE):			
+			return HandleWrite(record, sequence, apduOut);
+		default:	
+			ERROR_BLOCK(LogLevel::Warning, "Function not supported: " << FunctionCodeToString(record.function), SERR_FUNC_NOT_SUPPORTED);
+			return IINField(IINBit::FUNC_NOT_SUPPORTED);			
+	}
+}
 
-	
+IINField Slave::HandleWrite(const APDURecord& record, SequenceInfo sequence, APDU& apduOut)
+{
+	return IINField(IINBit::OBJECT_UNKNOWN);
+}
+
+void Slave::SendResponse(APDU& apdu, const IINField& indications)
+{
+	apdu.SetIIN(mIIN | indications);
+	mpAppLayer->SendResponse(apdu);
+}	
 
 /*
 switch (record.function) 
@@ -242,22 +263,6 @@ switch (record.function)
 		break;		
 }
 */
-
-
-
-void Slave::SendSimpleResponse(const IINField& indications)
-{
-	mResponse.Set(FunctionCode::RESPONSE);
-	mResponse.SetIIN(mIIN | indications);
-	mpAppLayer->SendResponse(mResponse);
-}
-
-void Slave::Send(APDU& apdu, const IINField& indications)
-{
-	apdu.SetIIN(mIIN | indications);	
-	mpAppLayer->SendResponse(apdu);
-}
-
 void Slave::SendUnsolicited(APDU& apdu, const IINField& indications)
 {
 	apdu.SetIIN(mIIN | indications);

@@ -116,7 +116,8 @@ private:
 
 	void ChangeState(SlaveStateBase* apState);
 
-	void RespondToRequest(const APDURecord& record, SequenceInfo aSeqInfo);	
+	void RespondToRequest(const APDURecord& record, SequenceInfo sequence);
+	IINField ConfigureResponse(const APDURecord& record, SequenceInfo sequence, APDU& apduOut);
 
 	ChangeBuffer mChangeBuffer;				// how client code gives us updates
 	IAppLayer* mpAppLayer;					// lower application layer
@@ -160,10 +161,11 @@ private:
 	
 	void OnDataUpdate();					// internal event dispatched when user code commits an update to mChangeBuffer
 	void OnUnsolTimerExpiration();			// internal event dispatched when the unsolicted pack/retry timer expires
+	
+	void SendResponse(APDU& apdu, const IINField& indications = IINField::Empty);
+	void SendUnsolicited(APDU& apdu, const IINField& indications = IINField::Empty);
 
-	void SendSimpleResponse(const IINField& indications = IINField::Empty);
-	void Send(APDU&, const IINField& indication = IINField::Empty);	
-	void SendUnsolicited(APDU& arAPDU, const IINField& indications = IINField::Empty);
+	IINField HandleWrite(const APDURecord& record, SequenceInfo sequence, APDU& apduOut);
 
 /*
 	void HandleWrite(const APDU& arRequest);

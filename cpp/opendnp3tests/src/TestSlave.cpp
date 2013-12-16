@@ -176,6 +176,7 @@ BOOST_AUTO_TEST_CASE(WriteIIN)
 	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 00 00");
 }
 
+/*
 BOOST_AUTO_TEST_CASE(WriteIINEnabled)
 {
 	SlaveConfig cfg; cfg.mDisableUnsol = true;
@@ -319,12 +320,9 @@ BOOST_AUTO_TEST_CASE(ReadClass1)
 	}
 
 	t.SendToSlave("C0 01 3C 02 06");
-
-	/*
-	 * The indices should be in reverse-order from how they were
-	 * added, but the values for a given index should be in the same
-	 * order.
-	 */
+	
+	// The indices should be in reverse-order from how they were
+	// added, but the values for a given index should be in the same order	
 	BOOST_REQUIRE_EQUAL(t.Read(), "E0 81 80 00 20 01 17 05 10 01 87 09 00 00 17 01 34 12 00 00 05 01 22 22 00 00 05 01 33 33 00 00 05 01 44 44 00 00");
 
 	t.SendToSlave("C0 01 3C 02 06");			// Repeat read class 1
@@ -355,10 +353,9 @@ BOOST_AUTO_TEST_CASE(ReadClass1TimeOrdered)
 		Analog a3(0x3333, AQ_ONLINE);
 		a3.SetTime(15);
 
-		/*
-		 * Expected order in packet should be:
-		 * a2 -> a0 -> a3 -> a1
-		 */
+		
+		// Expected order in packet should be:
+		// a2 -> a0 -> a3 -> a1		 
 		t.db.Update(a0, 0x10);
 		t.db.Update(a1, 0x10);
 		t.db.Update(a2, 0x10);
@@ -367,11 +364,9 @@ BOOST_AUTO_TEST_CASE(ReadClass1TimeOrdered)
 
 	t.SendToSlave("C0 01 3C 02 06");
 
-	/*
-	 * The indices should be in reverse-order from how they were
-	 * added, but the values for a given index should be in the same
-	 * order.
-	 */
+	// The indices should be in reverse-order from how they were
+	// added, but the values for a given index should be in the same
+	// order.
 	BOOST_REQUIRE_EQUAL(t.Read(), "E0 81 80 00 20 01 17 04 10 01 11 11 00 00 10 01 22 22 00 00 10 01 33 33 00 00 10 01 44 44 00 00");
 
 	t.SendToSlave("C0 01 3C 02 06");			// Repeat read class 1
@@ -919,7 +914,7 @@ void TestStaticRead(const std::string& arRequest, const std::string& arResponse)
 	BOOST_REQUIRE_EQUAL(t.Read(), arResponse);
 }
 
-/* ---- Static data reads ----- */
+// ---- Static data reads ----- //
 
 BOOST_AUTO_TEST_CASE(ReadGrp1Var0ViaIntegrity)
 {
@@ -1031,19 +1026,6 @@ BOOST_AUTO_TEST_CASE(ReadGrp2Var3)
 {
 	TestEventRead("C0 01 02 03 06", "E0 81 80 00 33 01 07 01 00 00 00 00 00 00 02 03 17 01 00 01 00 00"); // 1 byte count == 1, ONLINE quality
 }
-
-/* TODO - write more robust test cases for this scenario
-BOOST_AUTO_TEST_CASE(InvalidObject)
-{
-	SlaveConfig cfg; cfg.mDisableUnsol = true;
-	SlaveTestObject t(cfg);
-	t.slave.OnLowerLayerUp();
-
-	//t.slave.OnUnknownObject();
-	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 02");
-}
-*/
-
 
 BOOST_AUTO_TEST_CASE(ComplexReadSequence)
 {
@@ -1226,8 +1208,7 @@ BOOST_AUTO_TEST_CASE(ReadGrp40Var4)
 	TestStaticSetpointStatus(StaticSetpointStatusResponse::Group40Var4, -20.0, "C0 81 80 00 28 04 00 00 00 01 00 00 00 00 00 00 34 C0");
 }
 
-
-
+*/
 
 BOOST_AUTO_TEST_SUITE_END()
 
