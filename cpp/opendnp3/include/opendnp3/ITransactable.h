@@ -51,11 +51,12 @@ namespace opendnp3
 */
 class ITransactable
 {
-	friend class Transaction;
+	public:
 
-public:
-	
+	friend class Transaction;	
 	virtual ~ITransactable() {}
+
+	protected:
 
 	virtual void Start() = 0;
 	virtual void End() = 0;
@@ -87,6 +88,9 @@ class Transaction : private Uncopyable
 	{
 		mpTransactable->End();
 	}
+
+	static void Start(ITransactable* t) { t->Start(); }
+	static void End(ITransactable* t) { t->End(); }
 
 	template <class ReturnType, class TransactionType, class Fun>
 	static ReturnType Apply(TransactionType& transactable, const Fun& fun)

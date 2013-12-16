@@ -42,35 +42,35 @@ void MultiplexingDataObserver :: AddObserver(IDataObserver* apObserver)
 	mObservers.push_back(apObserver);
 }
 
-void MultiplexingDataObserver :: _Start()
+void MultiplexingDataObserver::Start()
 {
 	mMutex.lock();
-for(auto pObs: mObservers) pObs->Start();
+	for(auto pObs: mObservers) Transaction::Start(pObs);
 }
 
-void MultiplexingDataObserver :: _End()
+void MultiplexingDataObserver::End()
 {
-for(auto pObs: mObservers) pObs->End();
+	for(auto pObs: mObservers) Transaction::End(pObs);
 	mMutex.unlock();
 }
 
-void MultiplexingDataObserver :: _Update(const Binary& arPoint, size_t aIndex)
+void MultiplexingDataObserver :: Update(const Binary& arPoint, size_t aIndex)
 {
 for(auto pObs: mObservers) pObs->Update(arPoint, aIndex);
 }
-void MultiplexingDataObserver :: _Update(const Analog& arPoint, size_t aIndex)
+void MultiplexingDataObserver :: Update(const Analog& arPoint, size_t aIndex)
 {
 for(auto pObs: mObservers) pObs->Update(arPoint, aIndex);
 }
-void MultiplexingDataObserver :: _Update(const Counter& arPoint, size_t aIndex)
+void MultiplexingDataObserver :: Update(const Counter& arPoint, size_t aIndex)
 {
 for(auto pObs: mObservers) pObs->Update(arPoint, aIndex);
 }
-void MultiplexingDataObserver :: _Update(const ControlStatus& arPoint, size_t aIndex)
+void MultiplexingDataObserver :: Update(const ControlStatus& arPoint, size_t aIndex)
 {
 for(auto pObs: mObservers) pObs->Update(arPoint, aIndex);
 }
-void MultiplexingDataObserver :: _Update(const SetpointStatus& arPoint, size_t aIndex)
+void MultiplexingDataObserver :: Update(const SetpointStatus& arPoint, size_t aIndex)
 {
 for(auto pObs: mObservers) pObs->Update(arPoint, aIndex);
 }

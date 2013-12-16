@@ -37,12 +37,12 @@ public:
 
 	void Start() 
 	{ 
-		for(auto pObs: mObservers) pObs->Start();
+		for(auto pObs: mObservers) Transaction::Start(pObs);
 	}
 	
 	void End()
 	{
-		for(auto pObs: mObservers) pObs->End();
+		for(auto pObs: mObservers) Transaction::End(pObs);
 	}
 
 	void Update(const Binary& arPoint, uint32_t aIndex) 

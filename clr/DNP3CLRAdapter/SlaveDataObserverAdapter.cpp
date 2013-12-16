@@ -13,7 +13,7 @@ SlaveDataObserverAdapter::SlaveDataObserverAdapter(opendnp3::IDataObserver* prox
 
 void SlaveDataObserverAdapter::Start()
 {
-	proxy->Start();
+	opendnp3::Transaction::Start(proxy);
 }
 
 void SlaveDataObserverAdapter::Update(Binary ^ meas, System::UInt32 index)
@@ -43,7 +43,7 @@ void SlaveDataObserverAdapter::Update(SetpointStatus ^ meas, System::UInt32 inde
 
 void SlaveDataObserverAdapter::End()
 {
-	proxy->End();
+	opendnp3::Transaction::End(proxy);
 }
 
 

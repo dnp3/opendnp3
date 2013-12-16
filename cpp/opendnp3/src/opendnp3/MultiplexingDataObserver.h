@@ -42,22 +42,21 @@ public:
 
 	void AddObserver(IDataObserver* apObserver1);
 
+	void Update(const Binary& arPoint, size_t aIndex);
+	void Update(const Analog& arPoint, size_t aIndex);
+	void Update(const Counter& arPoint, size_t aIndex);
+	void Update(const ControlStatus& arPoint, size_t aIndex);
+	void Update(const SetpointStatus& arPoint, size_t aIndex);
+
 private:
 
 	std::vector<IDataObserver*> mObservers;
 
 	std::mutex mMutex;
 
-	void _Start();
+	void Start();
 
-	void _End();
-
-	void _Update(const Binary& arPoint, size_t aIndex);
-	void _Update(const Analog& arPoint, size_t aIndex);
-	void _Update(const Counter& arPoint, size_t aIndex);
-	void _Update(const ControlStatus& arPoint, size_t aIndex);
-	void _Update(const SetpointStatus& arPoint, size_t aIndex);
-
+	void End();
 };
 
 }

@@ -26,7 +26,7 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_DataObserverImpl_native_1sta
 (JNIEnv* apEnv, jobject, jlong observer)
 {
 	auto pObs = (IDataObserver*) observer;
-	pObs->Start();
+	Transaction::Start(pObs);
 }
 
 JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_DataObserverImpl_native_1update_1bi
@@ -78,6 +78,6 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_DataObserverImpl_native_1end
 (JNIEnv*, jobject, jlong observer)
 {
 	auto pObs = (IDataObserver*) observer;
-	pObs->End();
+	Transaction::End(pObs);
 }
 
