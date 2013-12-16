@@ -183,7 +183,10 @@ ObjectBase* ObjectBase::Get(int aGroup, int aVariation)
 		MACRO_RADIX_CASE(41, 4);
 
 		// Time Objects
-		MACRO_RADIX_CASE(50, 1);
+		case(RADIX(50, 1)):
+			return Group50Var1Temp::Inst();
+
+
 		MACRO_RADIX_CASE(50, 2);
 		MACRO_RADIX_CASE(51, 1);
 		MACRO_RADIX_CASE(51, 2);

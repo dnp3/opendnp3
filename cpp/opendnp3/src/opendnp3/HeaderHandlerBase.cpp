@@ -53,6 +53,12 @@ void HeaderHandlerBase::OnIIN(GroupVariation, const openpal::ReadOnlyBuffer&, co
 	++currentHeader;
 }
 
+void HeaderHandlerBase::OnCountOf(const IterableBuffer<Group50Var1>& objects)
+{
+	this->_OnCountOf(objects);
+	++currentHeader;
+}
+
 void HeaderHandlerBase::OnCountOf(const IterableBuffer<Group52Var2>& objects)
 {
 	this->_OnCountOf(objects);
@@ -155,6 +161,11 @@ void HeaderHandlerBase::_AllObjects(GroupVariation gv)
 }
 
 void HeaderHandlerBase::_OnIIN(const IterableBuffer<IndexedValue<bool>>& meas)
+{
+	errors.Set(IINBit::FUNC_NOT_SUPPORTED);
+}
+
+void HeaderHandlerBase::_OnCountOf(const IterableBuffer<Group50Var1>& objects)
 {
 	errors.Set(IINBit::FUNC_NOT_SUPPORTED);
 }

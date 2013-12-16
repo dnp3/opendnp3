@@ -23,6 +23,9 @@
 
 #include "HeaderHandlerBase.h"
 #include "IINField.h"
+#include "SettableOnce.h"
+
+#include <opendnp3/ITimeWriteHandler.h>
 
 #include <openpal/Loggable.h>
 
@@ -38,14 +41,43 @@ class WriteHandler : public HeaderHandlerBase, private openpal::Loggable
 	
 	WriteHandler(openpal::Logger& aLogger);		
 
-	virtual void _OnIIN(const IterableBuffer<IndexedValue<bool>>& meas) final;
 
-	IINField Process(IINField& writeIIN);
+	virtual void _OnIIN(const IterableBuffer<IndexedValue<bool>>& meas) final;
+	virtual void _OnCountOf(const IterableBuffer<Group50Var1>& times) final;
+
+	template <class TimeFun>
+	IINField Process(IINField& writeIIN, const TimeFun&);
 
 	private:
 	
+	SettableOnce<Group50Var1> timeWrite;
 	IINField clearMask;
 };
+
+template <class TimeFun>
+IINField WriteHandler::Process(IINField& indications, const TimeFun& fun)
+{
+	if(errors.Any()) return errors;
+	else
+	{
+		if(timeWrite.IsSet())
+		{
+			if(indications.IsSet(IINBit::NEED_TIME)) 
+			{
+				clearMask.Set(IINBit::NEED_TIME);
+				indications &= ~clearMask;
+				fun(timeWrite.Get());
+				return IINField::Empty;
+			}
+			else return IINField(IINBit::PARAM_ERROR); // asked to write time, but we're not asking for it			
+		}
+		else
+		{
+			indications &= ~clearMask;
+			return IINField::Empty;
+		}
+	}
+}
 
 }
 

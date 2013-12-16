@@ -851,8 +851,8 @@ struct Group41Var4 : public CommandObject<AnalogOutputDouble64> {
 //	Time Types
 ///////////////////////////////
 
-struct Group50Var1 : public FixedObject {
-	MACRO_NAME_SINGLETON_INSTANCE(Group50Var1)
+struct Group50Var1Temp : public FixedObject {
+	MACRO_NAME_SINGLETON_INSTANCE(Group50Var1Temp)
 	MACRO_GROUP_VAR_SIZE_FUNC(50, 1, 6)
 	MACRO_DECLARE_TIME(openpal::UInt48, 0)
 };

@@ -42,6 +42,8 @@ public:
 	virtual void AllObjects(GroupVariation gv, const openpal::ReadOnlyBuffer& header) final;
 	virtual void OnIIN(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const IterableBuffer<IndexedValue<bool>>& meas) final;
 
+	virtual void OnCountOf(const opendnp3::IterableBuffer<Group50Var1> &) final;
+
 	virtual void OnCountOf(const opendnp3::IterableBuffer<Group52Var2> &) final;
 
 	virtual void OnRange(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const IterableBuffer<IndexedValue<Binary>>& meas) final;
@@ -79,6 +81,7 @@ public:
 	virtual void _AllObjects(GroupVariation gv);
 	virtual void _OnIIN(const IterableBuffer<IndexedValue<bool>>& meas);
 
+	virtual void _OnCountOf(const IterableBuffer<Group50Var1>& objects);
 	virtual void _OnCountOf(const IterableBuffer<Group52Var2> &);
 
 	virtual void _OnRange(GroupVariation gv, const IterableBuffer<IndexedValue<Binary>>& meas);

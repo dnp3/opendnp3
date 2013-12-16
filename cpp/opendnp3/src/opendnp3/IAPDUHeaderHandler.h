@@ -29,6 +29,7 @@
 #include <opendnp3/AnalogOutput.h>
 #include <opendnp3/IndexedValue.h>
 
+#include "objects/Group50.h"
 #include "objects/Group52.h"
 
 namespace opendnp3
@@ -39,6 +40,8 @@ class IAPDUHeaderHandler
 	public:
 
 		virtual void AllObjects(GroupVariation gv, const openpal::ReadOnlyBuffer& header) = 0;
+
+		virtual void OnCountOf(const IterableBuffer<Group50Var1>& times) = 0;
 
 		virtual void OnCountOf(const IterableBuffer<Group52Var2>& times) = 0;
 

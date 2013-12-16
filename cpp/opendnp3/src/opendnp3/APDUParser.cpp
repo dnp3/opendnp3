@@ -36,6 +36,7 @@
 #include "objects/Group32.h"
 #include "objects/Group40.h"
 #include "objects/Group41.h"
+#include "objects/Group50.h"
 #include "objects/Group52.h"
 
 #include "objects/MeasurementFactory.h"
@@ -261,6 +262,9 @@ APDUParser::Result APDUParser::ParseObjectsWithRange(const APDUParser::HeaderRec
 		MACRO_PARSE_OBJECTS_WITH_RANGE(Group40Var2);
 		MACRO_PARSE_OBJECTS_WITH_RANGE(Group40Var3);
 		MACRO_PARSE_OBJECTS_WITH_RANGE(Group40Var4);
+
+		case(GroupVariation::Group50Var1):
+			return ParseCountOf<Group50Var1>(buffer, range.count, output); 
 		
 		case(GroupVariation::Group52Var2):
 			return ParseCountOf<Group52Var2>(buffer, range.count, output); 

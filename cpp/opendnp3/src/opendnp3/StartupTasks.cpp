@@ -91,8 +91,8 @@ void TimeSync::ConfigureRequest(APDU& arAPDU)
 	}
 	else {
 		arAPDU.Set(FunctionCode::WRITE);
-		ObjectWriteIterator owi = arAPDU.WriteContiguous(Group50Var1::Inst(), 0, 0, QualifierCode::UINT8_CNT);
-		Group50Var1::Inst()->mTime.Set(*owi, mpTimeSrc->Now().msSinceEpoch + mDelay);
+		ObjectWriteIterator owi = arAPDU.WriteContiguous(Group50Var1Temp::Inst(), 0, 0, QualifierCode::UINT8_CNT);
+		Group50Var1Temp::Inst()->mTime.Set(*owi, mpTimeSrc->Now().msSinceEpoch + mDelay);
 	}
 }
 

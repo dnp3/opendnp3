@@ -236,11 +236,12 @@ BOOST_AUTO_TEST_CASE(WriteTimeDate)
 
 
 	t.SendToSlave("C0 02 32 01 07 01 D2 04 00 00 00 00"); // write Grp50Var1, value = 1234 ms after epoch
+	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 00");
 	BOOST_REQUIRE_EQUAL(t.mTimeWrites.size(), 0);
 	t.mts.DispatchOne();
 	BOOST_REQUIRE_EQUAL(t.mTimeWrites.size(), 1);
 	BOOST_REQUIRE_EQUAL(t.mTimeWrites.front().msSinceEpoch, 1234);
-	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 00");
+	
 }
 
 /*

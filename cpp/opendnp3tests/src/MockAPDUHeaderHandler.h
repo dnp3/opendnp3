@@ -48,6 +48,11 @@ class MockApduHeaderHandler : public IAPDUHeaderHandler
 			bits.foreach([&](const IndexedValue<bool>& v) { iinBits.push_back(v); });
 		}
 
+		virtual void OnCountOf(const IterableBuffer<Group50Var1>& times) override
+		{
+			groupVariations.push_back(GroupVariation::Group50Var1);  // TODO - normalize this record keeping?			
+		}
+
 		virtual void OnCountOf(const IterableBuffer<Group52Var2>& times) override
 		{
 			groupVariations.push_back(GroupVariation::Group52Var2);  // TODO - normalize this record keeping?			

@@ -18,47 +18,45 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
+#ifndef __SETTABLE_ONCE_
+#define __SETTABLE_ONCE_
 
-#include "WriteHandler.h"
-
-#include <openpal/LoggableMacros.h>
-
-#include <opendnp3/DNPConstants.h>
-
-using namespace openpal;
+#include <opendnp3/Uncopyable.h>
 
 namespace opendnp3
 {
 
-WriteHandler::WriteHandler(openpal::Logger& aLogger) : Loggable(aLogger)	
-{}
-	
-void WriteHandler::_OnIIN(const IterableBuffer<IndexedValue<bool>>& meas)
-{	
-	IndexedValue<bool> v;
-	if(meas.ReadOnlyValue(v)) 
-	{
-		if(v.index == static_cast<int>(IINBit::DEVICE_RESTART))
-		{
-			if(v.value) errors.Set(IINBit::PARAM_ERROR);			
-			else clearMask.Set(IINBit::DEVICE_RESTART);			
-		}
-		else errors.Set(IINBit::PARAM_ERROR);				
-	}
-	else errors.Set(IINBit::PARAM_ERROR);	
-}
-
-void WriteHandler::_OnCountOf(const IterableBuffer<Group50Var1>& times)
+template <class T>
+class SettableOnce : private Uncopyable
 {
-	Group50Var1 time;
-	if(times.ReadOnlyValue(time))
+	public:
+
+	SettableOnce() : valueIsSet(false)
+	{}
+	
+	SettableOnce(const T& aDefault) : valueIsSet(false), value(aDefault)
+	{}
+
+	bool IsSet() const { return valueIsSet; }
+
+	T Get() const { return value; }
+
+	void Set(const T& aValue)
 	{
-		if(timeWrite.IsSet()) errors.Set(IINBit::PARAM_ERROR);		
-		else timeWrite.Set(time);
+		if(!valueIsSet) {
+			value = aValue;
+			valueIsSet = true;
+		}
 	}
-	else errors.Set(IINBit::PARAM_ERROR);	
-}
+
+	private:
+
+	bool valueIsSet;
+	T value;
+};
 
 }
 
+
+#endif
 

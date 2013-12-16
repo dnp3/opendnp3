@@ -201,7 +201,11 @@ IINField Slave::HandleWrite(const APDURecord& record, SequenceInfo sequence)
 {
 	WriteHandler handler(mLogger);
 	auto result = APDUParser::ParseHeaders(record.objects, handler);
-	if(result == APDUParser::Result::OK) return handler.Process(mIIN);
+	if(result == APDUParser::Result::OK) return handler.Process(mIIN, 
+		[this](const Group50Var1& absTime) { 
+			mpExecutor->Post([this, absTime]() { mpTimeWriteHandler->WriteAbsoluteTime(absTime.time48); });			
+		}
+	);
 	else return IINFromParseResult(result);
 }
 
