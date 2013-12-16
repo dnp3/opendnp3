@@ -49,26 +49,27 @@ class SlaveResponseTypes;
  */
 class ResponseContext : public openpal::Loggable
 {
-	enum Mode {
+	enum class Mode 
+	{
 		UNDEFINED,
 		SOLICITED,
 		UNSOLICITED
 	};
 
-	enum RequestType {
-		RT_STATIC = 0,
-		RT_EVENT = 1
+	enum class RequestType 
+	{
+		STATIC = 0,
+		EVENT = 1
 	};
 
 	//used as a key that decides in what order response headers are packed into APDUs
-	struct ResponseKey {
-
+	struct ResponseKey 
+	{
 		ResponseKey();
-
 		ResponseKey(RequestType aType, size_t aOrder);
 
-		RequestType mType;
-		size_t mOrder;
+		RequestType type;
+		size_t order;
 
 		// custom less than function used by STL
 		bool operator()(const ResponseKey& a, const ResponseKey& b) const;
@@ -83,15 +84,12 @@ class ResponseContext : public openpal::Loggable
 	typedef std::function<bool (APDU&)> WriteFunction;
 
 public:
+
 	ResponseContext(openpal::Logger& arLogger, Database*, SlaveResponseTypes* apRspTypes, const EventMaxConfig& arEventMaxConfig);
 
-	Mode GetMode() {
-		return mMode;
-	}
+	Mode GetMode() const { return mMode; }
 
-	IEventBuffer* GetBuffer() {
-		return &mBuffer;
-	}
+	IEventBuffer* GetBuffer() { return &mBuffer; }
 
 	// Setup the response context with a new read request
 	IINField Configure(const APDU& arRequest);
@@ -282,7 +280,7 @@ void ResponseContext::RecordStaticObjectsByRange(StreamObject<T>* apObject, type
 	auto first = start + aStart;
 	auto last = start + aStop;	
 	
-	ResponseKey key(RT_STATIC, this->mStaticWriteMap.size());
+	ResponseKey key(RequestType::STATIC, this->mStaticWriteMap.size());
 	WriteFunction func = [ = ](APDU & arAPDU) {
 		return this->WriteStaticObjects<T>(apObject, first, last, key, arAPDU);
 	};	

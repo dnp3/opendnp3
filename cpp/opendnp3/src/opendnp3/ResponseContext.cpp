@@ -34,19 +34,19 @@ using namespace openpal;
 namespace opendnp3
 {
 
-ResponseContext::ResponseKey::ResponseKey() : mType(RT_STATIC), mOrder(0)
+ResponseContext::ResponseKey::ResponseKey() : type(RequestType::STATIC), order(0)
 {}
 
-ResponseContext::ResponseKey::ResponseKey(ResponseContext::RequestType aType, size_t aOrder) : mType(aType), mOrder(aOrder)
+ResponseContext::ResponseKey::ResponseKey(ResponseContext::RequestType aType, size_t aOrder) : type(aType), order(aOrder)
 {}
 
 // custom less than function used by STL
 bool ResponseContext::ResponseKey::operator()(const ResponseContext::ResponseKey& a, const ResponseContext::ResponseKey& b) const
 {
-	if(a.mType < b.mType) return true;
-	else if(a.mType > b.mType) return false;
+	if(a.type < b.type) return true;
+	else if(a.type > b.type) return false;
 	else {
-		return a.mOrder < b.mOrder;
+		return a.order < b.order;
 	}
 }
 
@@ -54,7 +54,7 @@ bool ResponseContext::ResponseKey::operator()(const ResponseContext::ResponseKey
 ResponseContext::ResponseContext(openpal::Logger& arLogger, Database* apDB, SlaveResponseTypes* apRspTypes, const EventMaxConfig& arEventMaxConfig) :
 	Loggable(arLogger),
 	mBuffer(arEventMaxConfig),
-	mMode(UNDEFINED),
+	mMode(Mode::UNDEFINED),
 	mpDB(apDB),
 	mFIR(true),
 	mFIN(false),
@@ -66,7 +66,7 @@ void ResponseContext::Reset()
 {
 	mFIR = true;
 	mLoadedEventData = false;
-	mMode = UNDEFINED;
+	mMode = Mode::UNDEFINED;
 	mTempIIN.Clear();
 
 	this->mStaticWriteMap.clear();
@@ -107,7 +107,7 @@ inline size_t GetEventCount(const HeaderInfo& arHeader)
 IINField ResponseContext::Configure(const APDU& arRequest)
 {
 	this->Reset();
-	mMode = SOLICITED;
+	mMode = Mode::SOLICITED;
 
 	for (HeaderReadIterator hdr = arRequest.BeginRead(); !hdr.IsEnd(); ++hdr) {
 		

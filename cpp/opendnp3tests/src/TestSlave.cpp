@@ -244,7 +244,6 @@ BOOST_AUTO_TEST_CASE(WriteTimeDate)
 	
 }
 
-/*
 BOOST_AUTO_TEST_CASE(WriteTimeDateNotAsking)
 {
 	SlaveConfig cfg; cfg.mDisableUnsol = true;
@@ -253,9 +252,9 @@ BOOST_AUTO_TEST_CASE(WriteTimeDateNotAsking)
 	t.slave.OnLowerLayerUp();
 
 	t.SendToSlave("C0 02 32 01 07 01 D2 04 00 00 00 00"); //write Grp50Var1, value = 1234 ms after epoch
+	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 04"); // param error
 	t.mts.DispatchOne();
-	BOOST_REQUIRE_EQUAL(t.mTimeWrites.size(), 0);
-	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 00");
+	BOOST_REQUIRE_EQUAL(t.mTimeWrites.size(), 0);	
 }
 BOOST_AUTO_TEST_CASE(WriteTimeDateMultipleObjects)
 {
@@ -265,10 +264,12 @@ BOOST_AUTO_TEST_CASE(WriteTimeDateMultipleObjects)
 	t.slave.OnLowerLayerUp();
 
 	t.SendToSlave("C0 02 32 01 07 02 D2 04 00 00 00 00 D2 04 00 00 00 00"); //write Grp50Var1, value = 1234 ms after epoch
+	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 90 04"); // param error +  need time still set
 	t.mts.DispatchOne();
 	BOOST_REQUIRE_EQUAL(t.mTimeWrites.size(), 0);
 }
 
+/*
 BOOST_AUTO_TEST_CASE(BlankIntegrityPoll)
 {
 	SlaveConfig cfg; cfg.mDisableUnsol = true;
