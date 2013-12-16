@@ -214,6 +214,7 @@ IINField Slave::HandleWrite(const APDURecord& record, SequenceInfo sequence)
 
 IINField Slave::HandleRead(const APDURecord& record, SequenceInfo sequence, APDU& apdu)
 {
+	mRspContext.Reset();
 	ReadHandler handler(mLogger, &mRspContext);
 	auto result = APDUParser::ParseHeaders(record.objects, handler);
 	if(result == APDUParser::Result::OK)

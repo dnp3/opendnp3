@@ -188,7 +188,7 @@ private:
 	bool LoadEvents(APDU& arAPDU, const typename EventIterator<T>::Type& aBegin, std::deque< EventRequest<T> >& arQueue);	
 
 	//wrappers that select the event buffer and add to the event queues
-	void SelectEvents(PointClass aClass, size_t aNum = std::numeric_limits<size_t>::max());
+	IINField SelectEvents(PointClass aClass, uint32_t maximum = std::numeric_limits<uint32_t>::max());
 
 	template <class T>
 	size_t SelectEvents(PointClass aClass, const StreamObject<T>* apObj, std::deque< EventRequest<T> >& arQueue, size_t aNum = std::numeric_limits<size_t>::max());

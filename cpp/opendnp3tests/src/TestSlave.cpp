@@ -279,17 +279,6 @@ BOOST_AUTO_TEST_CASE(BlankIntegrityPoll)
 	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 00");
 }
 
-/*
-BOOST_AUTO_TEST_CASE(BlankExceptionScan)
-{
-	SlaveConfig cfg; cfg.mDisableUnsol = true;
-	SlaveTestObject t(cfg);
-	t.slave.OnLowerLayerUp();
-
-	t.SendToSlave("C0 01 3C 02 06"); // Read class 1
-	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 00");
-}
-
 BOOST_AUTO_TEST_CASE(ReadClass0MultiFrag)
 {
 	SlaveConfig cfg; cfg.mDisableUnsol = true;
@@ -311,6 +300,16 @@ BOOST_AUTO_TEST_CASE(ReadClass0MultiFrag)
 	BOOST_REQUIRE_EQUAL(t.Read(), "20 81 80 00 1E 01 00 02 03 01 00 00 00 00 01 00 00 00 00");
 	BOOST_REQUIRE_EQUAL(t.Read(), "20 81 80 00 1E 01 00 04 05 01 00 00 00 00 01 00 00 00 00");
 	BOOST_REQUIRE_EQUAL(t.Read(), "40 81 80 00 1E 01 00 06 07 01 00 00 00 00 01 00 00 00 00");
+}
+
+BOOST_AUTO_TEST_CASE(BlankExceptionScan)
+{
+	SlaveConfig cfg; cfg.mDisableUnsol = true;
+	SlaveTestObject t(cfg);
+	t.slave.OnLowerLayerUp();
+
+	t.SendToSlave("C0 01 3C 02 06"); // Read class 1
+	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 00");
 }
 
 BOOST_AUTO_TEST_CASE(ReadClass1)
@@ -438,6 +437,7 @@ BOOST_AUTO_TEST_CASE(UnsolData)
 	BOOST_REQUIRE_EQUAL(t.app.NumAPDU(), 0); //check that no more frags are sent
 }
 
+/*
 BOOST_AUTO_TEST_CASE(UnsolEventBufferOverflow)
 {
 	SlaveConfig cfg;
