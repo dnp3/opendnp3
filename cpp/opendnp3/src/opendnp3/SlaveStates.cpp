@@ -152,6 +152,7 @@ void AS_Idle::Enter(Slave* slave)
 				
 	if(slave->mDeferredUnsol && slave->mpState == this) // TODO - remove ugly HACK
 	{
+		slave->mDeferredUnsol = false;
 		this->OnUnsolExpiration(slave);
 	}		
 }

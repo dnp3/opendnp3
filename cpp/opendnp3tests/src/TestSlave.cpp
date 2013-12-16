@@ -400,7 +400,7 @@ BOOST_AUTO_TEST_CASE(UnsolRetryDelay)
 {
 	SlaveConfig cfg;
 	SlaveTestObject t(cfg);
-	t.app.EnableAutoSendCallback(false); //will respond with failure
+	t.app.EnableAutoSendCallback(false); // will respond with failure
 	t.slave.OnLowerLayerUp();
 
 	// check for the startup null unsol packet, but fail the transaction
