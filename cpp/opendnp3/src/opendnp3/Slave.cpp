@@ -28,7 +28,10 @@
 
 #include "SlaveStates.h"
 #include "Database.h"
-#include "ObjectReadIterator.h"
+#include "APDUParser.h"
+#include "IINHelpers.h"
+
+#include "WriteHandler.h"
 
 #include <functional>
 
@@ -185,16 +188,19 @@ IINField Slave::ConfigureResponse(const APDURecord& record, SequenceInfo sequenc
 	switch(record.function)
 	{
 		case(FunctionCode::WRITE):			
-			return HandleWrite(record, sequence, apduOut);
+			return HandleWrite(record, sequence);
 		default:	
 			ERROR_BLOCK(LogLevel::Warning, "Function not supported: " << FunctionCodeToString(record.function), SERR_FUNC_NOT_SUPPORTED);
 			return IINField(IINBit::FUNC_NOT_SUPPORTED);			
 	}
 }
 
-IINField Slave::HandleWrite(const APDURecord& record, SequenceInfo sequence, APDU& apduOut)
+IINField Slave::HandleWrite(const APDURecord& record, SequenceInfo sequence)
 {
-	return IINField(IINBit::OBJECT_UNKNOWN);
+	WriteHandler handler(mLogger);
+	auto result = APDUParser::ParseHeaders(record.objects, handler);
+	if(result == APDUParser::Result::OK) return handler.Process(mIIN);
+	else return IINFromParseResult(result);
 }
 
 void Slave::SendResponse(APDU& apdu, const IINField& indications)

@@ -73,7 +73,7 @@ class Slave : public IAppUser, public StackBase
 	friend class AS_Idle;
 	friend class AS_WaitForRspSuccess;
 	friend class AS_WaitForUnsolSuccess;
-	friend class AS_WaitForSolUnsolSuccess;
+	friend class AS_WaitForSolUnsolSuccess;	
 
 public:
 
@@ -129,12 +129,9 @@ private:
 	SlaveResponseTypes mRspTypes;			// converts the group/var in the config to dnp singletons
 
 	openpal::ITimer* mpUnsolTimer;			// timer for sending unsol responsess
-	ITimeWriteHandler* mpTimeWriteHandler;
+	ITimeWriteHandler* mpTimeWriteHandler;	
 
-	INotifier* mpVtoNotifier;
-
-	IINField mIIN;							// IIN bits that persist between requests (i.e. NeedsTime/Restart/Etc)
-	//IINField mRspIIN;						// Transient IIN bits that get merged before a response is issued
+	IINField mIIN;							// IIN bits that persist between requests (i.e. NeedsTime/Restart/Etc)	
 	APDU mResponse;							// APDU used to form responses
 	CachedRequest mCachedRequest;			// Request cache for when outstation needs to defer a request
 	
@@ -165,19 +162,7 @@ private:
 	void SendResponse(APDU& apdu, const IINField& indications = IINField::Empty);
 	void SendUnsolicited(APDU& apdu, const IINField& indications = IINField::Empty);
 
-	IINField HandleWrite(const APDURecord& record, SequenceInfo sequence, APDU& apduOut);
-
-/*
-	void HandleWrite(const APDU& arRequest);
-	void HandleWriteIIN(HeaderReadIterator& arHdr);
-	void HandleWriteTimeDate(HeaderReadIterator& arHWI);
-	void HandleSelect(const APDU& arRequest, SequenceInfo aSeqInfo);
-	void HandleOperate(const APDU& arRequest, SequenceInfo aSeqInfo);
-	void HandleDirectOperate(const APDU& arRequest, SequenceInfo aSeqInfo);
-	void HandleEnableUnsolicited(const APDU& arRequest, bool aIsEnable);
-	void ConfigureDelayMeasurement(const APDU& arRequest);
-	void CreateResponseContext(const APDU& arRequest);
-*/
+	IINField HandleWrite(const APDURecord& record, SequenceInfo sequence);
 
 	// Helpers
 

@@ -18,65 +18,61 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __TIME_SYNC_HANDLER_H_
-#define __TIME_SYNC_HANDLER_H_
 
-#include "HeaderHandlerBase.h"
+#include "WriteHandler.h"
 
 #include <openpal/LoggableMacros.h>
+
+#include <opendnp3/DNPConstants.h>
+
+using namespace openpal;
 
 namespace opendnp3
 {
 
-/**
- * Dedicated class for processing response data in the master.
- */
-class TimeSyncHandler : public HeaderHandlerBase, private openpal::Loggable
-{
-
-public:
+WriteHandler::WriteHandler(openpal::Logger& aLogger) : Loggable(aLogger)	
+{}
 	
-	/**
-	* @param arLogger the Logger that the loader should use for message reporting
-	*/
-	TimeSyncHandler(openpal::Logger& aLogger) : 
-		Loggable(aLogger), 
-		valid(false), 
-		timeOut(0)
-	{}		
-
-	virtual void _OnCountOf(const IterableBuffer<Group52Var2>& times) final
+void WriteHandler::_OnIIN(const IterableBuffer<IndexedValue<bool>>& meas)
+{	
+	IndexedValue<bool> v;
+	if(meas.ReadOnlyValue(v)) 
 	{
-		if(times.Count() == 1)
+		if(v.index == static_cast<int>(IINBit::DEVICE_RESTART))
 		{
-			valid = true;
-			times.foreach([this](const Group52Var2& obj) { timeOut = obj.time16; });
+			if(v.value)
+			{
+				ERROR_BLOCK(LogLevel::Warning, "Ignoring device restart IIN write with bit set", SERR_INVALID_IIN_WRITE);
+				errors.Set(IINBit::PARAM_ERROR);
+			}
+			else
+			{
+				clearMask.Set(IINBit::DEVICE_RESTART);
+			}
 		}
 		else
 		{
-			LOG_BLOCK(openpal::LogLevel::Warning, "Ignoring unexpected time delay count of " << times.Count());
-		}
+			ERROR_BLOCK(LogLevel::Warning, "Ignoring IIN write to index: " << v.index, SERR_INVALID_IIN_WRITE);
+			errors.Set(IINBit::PARAM_ERROR);
+		}			
 	}
-
-	bool GetTimeDelay(uint16_t& time) 
+	else 
 	{
-		if(this->errors.Any()) return false;
-		else 
-		{
-			if(valid) time = timeOut;
-			return valid;					
-		}
+		ERROR_BLOCK(LogLevel::Warning, "Ignoring IIN write with a count of: " << meas.Count(), SERR_INVALID_IIN_WRITE);
+		errors.Set(IINBit::PARAM_ERROR);
+	}	
+}
+
+IINField WriteHandler::Process(IINField& indications)
+{
+	if(errors.Any()) return errors;
+	else
+	{
+		indications &= ~clearMask;
+		return IINField::Empty;
 	}
-
-private:
-	bool valid;
-	uint16_t timeOut;
-
-};
+}
 
 }
 
-/* vim: set ts=4 sw=4: */
-
-#endif
 

@@ -24,19 +24,17 @@
 #include "APDU.h"
 #include "HeaderHandlerBase.h"
 
-#include <iostream>
-
 namespace opendnp3
 {
 
 /**
 *  Abstracts information for 
 */
-class ICommandSequence : public HeaderHandlerBase
+class ICommandSequence : public HeaderHandlerBase, private openpal::Loggable
 {
 	public:
 
-	ICommandSequence(openpal::Logger logger): HeaderHandlerBase(logger) {}
+	ICommandSequence(openpal::Logger logger): Loggable(logger) {}
 
 	// Given an APDU and function code, configure the request
 	virtual void FormatAPDU(APDU& apdu, FunctionCode aCode) = 0;
@@ -49,9 +47,7 @@ template <class CommandType, class GroupVariation>
 class CommandSequence : public ICommandSequence
 {
 	public:
-	CommandSequence(openpal::Logger logger) : ICommandSequence(logger) {}
-
-	std::string HandlerName() const final { return "CommandSequenceHandler"; }
+	CommandSequence(openpal::Logger logger) : ICommandSequence(logger) {}	
 
 	void Configure(const CommandType& value, uint32_t index) 
 	{ 
@@ -61,20 +57,18 @@ class CommandSequence : public ICommandSequence
 	}
 
 	virtual void _OnIndexPrefix(const openpal::ReadOnlyBuffer& header, const IterableBuffer<IndexedValue<CommandType>>& meas)
-	{
-		if(this->GetCurrentHeader() == 0 && meas.Count() == 1)
-		{			
+	{		
+		if(this->IsFirstHeader())
+		{						
 			IndexedValue<CommandType> received;
-			meas.foreach([&](const IndexedValue<CommandType> v){ received = v; });
-			if(received.index == command.index)
+			if(meas.ReadOnlyValue(received))
 			{
-				if(received.value.ValuesEqual(command.value))
+				if(received.index == command.index && received.value.ValuesEqual(command.value))
 				{
-					response = CommandResponse(CommandResult::RESPONSE_OK, received.value.status);
+					response = CommandResponse(CommandResult::RESPONSE_OK, received.value.status);				
 				}
-			}				
-				
-		}		
+			}									
+		}				
 	}
 
 	virtual void FormatAPDU(APDU& apdu, FunctionCode aCode) final 

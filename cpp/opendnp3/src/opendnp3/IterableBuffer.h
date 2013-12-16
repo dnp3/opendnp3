@@ -61,6 +61,17 @@ class IterableBuffer : public BufferWithCount
 		IterableBuffer(const openpal::ReadOnlyBuffer& aBuffer, uint32_t aSize) : BufferWithCount(aBuffer, aSize)
 		{}
 		
+		bool ReadOnlyValue(T& value) const
+		{			
+			if(count == 1) 
+			{
+				openpal::ReadOnlyBuffer copy(this->buffer);
+				value = ValueAt(copy, 0);
+				return true;
+			}
+			else return false;
+		}
+
 		template <class IterFunc>
 		void foreach(const IterFunc& fun) const
 		{

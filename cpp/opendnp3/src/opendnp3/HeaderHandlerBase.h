@@ -21,8 +21,7 @@
 #ifndef __HEADER_HANDLER_BASE_H_
 #define __HEADER_HANDLER_BASE_H_
 
-#include <openpal/Loggable.h>
-
+#include "IINField.h"
 #include "IAPDUHeaderHandler.h"
 
 namespace opendnp3
@@ -31,14 +30,14 @@ namespace opendnp3
 /**
  * Base class used to handle APDU object headers
  */
-class HeaderHandlerBase : public openpal::Loggable, public IAPDUHeaderHandler
+class HeaderHandlerBase : public IAPDUHeaderHandler
 {
 public:
 
 	/**	 	 
 	 * @param arLogger	the Logger that the loader should use for message reporting
 	 */
-	HeaderHandlerBase(openpal::Logger& arLogger);	
+	HeaderHandlerBase();	
 
 	virtual void AllObjects(GroupVariation gv, const openpal::ReadOnlyBuffer& header) final;
 	virtual void OnIIN(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const IterableBuffer<IndexedValue<bool>>& meas) final;
@@ -69,14 +68,14 @@ public:
 
 	protected:
 
-	inline uint32_t GetCurrentHeader() { return currentHeader; }
-
 	void Reset();
-
-	virtual std::string HandlerName() const = 0;
-
 	bool GetCTO(int64_t& cto);
 
+	inline uint32_t GetCurrentHeader() { return currentHeader; }	
+
+	inline bool IsFirstHeader() { return currentHeader == 0; }
+	
+	
 	virtual void _AllObjects(GroupVariation gv);
 	virtual void _OnIIN(const IterableBuffer<IndexedValue<bool>>& meas);
 
@@ -106,11 +105,17 @@ public:
 	virtual void _OnIndexPrefixOfOctets(GroupVariation gv, const IterableBuffer<IndexedValue<openpal::ReadOnlyBuffer>>& meas);
 
 
+	protected:
+
+	IINField errors;
+
 	private:
 
-	int32_t currentHeader;
+	
 	int64_t cto;
 	int32_t ctoHeader;
+	int32_t currentHeader;
+	
 };
 
 }

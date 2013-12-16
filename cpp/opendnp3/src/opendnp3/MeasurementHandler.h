@@ -24,6 +24,8 @@
 #include <opendnp3/IMeasurementHandler.h>
 #include <opendnp3/MeasurementUpdate.h>
 
+#include <openpal/Loggable.h>
+
 #include "HeaderHandlerBase.h"
 
 namespace opendnp3
@@ -32,7 +34,7 @@ namespace opendnp3
 /**
  * Dedicated class for processing response data in the master.
  */
-class MeasurementHandler : public HeaderHandlerBase
+class MeasurementHandler : public HeaderHandlerBase, private openpal::Loggable
 
 {
 public:
@@ -42,9 +44,6 @@ public:
 	* @param arLogger	the Logger that the loader should use for message reporting
 	*/
 	MeasurementHandler(openpal::Logger& arLogger);	
-
-	std::string HandlerName() const final { return "MeasurementHandler"; }
-
 
 	void _OnRange(GroupVariation gv, const IterableBuffer<IndexedValue<Binary>>& meas) final;
 	void _OnIndexPrefix(GroupVariation gv, const IterableBuffer<IndexedValue<Binary>>& meas) final;

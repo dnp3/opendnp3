@@ -72,6 +72,8 @@ class IINField
 	void Clear(IINBit bit);
 	
 	bool operator==(const IINField& arRHS) const;
+
+	bool Any() const { return (LSB | MSB) != 0; }
 	
 	void Clear() 
 	{
@@ -83,10 +85,28 @@ class IINField
 		return IINField(LSB | aIIN.LSB, MSB | aIIN.MSB);		
 	}
 
-	void operator|=(const IINField& aIIN)
+	IINField& operator|=(const IINField& aIIN)
 	{
 		MSB |= aIIN.MSB;
-		LSB |= aIIN.LSB;		
+		LSB |= aIIN.LSB;
+		return *this;
+	}
+
+	IINField operator&(const IINField& aIIN) const
+	{
+		return IINField(LSB & aIIN.LSB, MSB & aIIN.MSB);		
+	}
+
+	IINField& operator&=(const IINField& aIIN)
+	{
+		MSB &= aIIN.MSB;
+		LSB &= aIIN.LSB;
+		return *this;
+	}
+
+	IINField operator~() const
+	{
+		return IINField(~LSB, ~MSB);		
 	}
 
 	uint8_t LSB;

@@ -27,18 +27,18 @@ using namespace openpal;
 namespace opendnp3
 {	
 
-HeaderHandlerBase::HeaderHandlerBase(Logger& aLogger) : 
-	Loggable(aLogger), 
-	currentHeader(0),		
+HeaderHandlerBase::HeaderHandlerBase() : 	
 	cto(0),
-	ctoHeader(-1)
+	ctoHeader(-1),
+	currentHeader(0)	
 {}
 
 void HeaderHandlerBase::Reset()
 {
-	currentHeader = 0;	
 	cto = 0;
 	ctoHeader = -1;
+	currentHeader = 0;	
+	errors.Clear();	
 }
 
 void HeaderHandlerBase::AllObjects(GroupVariation gv, const openpal::ReadOnlyBuffer& header)
@@ -150,93 +150,93 @@ void HeaderHandlerBase::OnIndexPrefixOfOctets(GroupVariation gv, const openpal::
 }
 
 void HeaderHandlerBase::_AllObjects(GroupVariation gv)
-{
-	LOG_BLOCK(LogLevel::Warning, "Ignoring all objects header in: " << this->HandlerName());
+{	
+	errors.Set(IINBit::FUNC_NOT_SUPPORTED);
 }
 
 void HeaderHandlerBase::_OnIIN(const IterableBuffer<IndexedValue<bool>>& meas)
 {
-	LOG_BLOCK(LogLevel::Warning, "Ignoring IIN object header in: " << this->HandlerName());
+	errors.Set(IINBit::FUNC_NOT_SUPPORTED);
 }
 
 void HeaderHandlerBase::_OnCountOf(const IterableBuffer<Group52Var2> &)
 {
-	LOG_BLOCK(LogLevel::Warning, "Ignoring count of objects header in: " << this->HandlerName());
+	errors.Set(IINBit::FUNC_NOT_SUPPORTED);
 }
 
 void HeaderHandlerBase::_OnRange(GroupVariation gv, const IterableBuffer<IndexedValue<Binary>>& meas)
 {
-	LOG_BLOCK(LogLevel::Warning, "Ignoring measurements in: " << this->HandlerName());	
+	errors.Set(IINBit::FUNC_NOT_SUPPORTED);
 }
 
 void HeaderHandlerBase::_OnIndexPrefix(GroupVariation gv, const IterableBuffer<IndexedValue<Binary>>& meas)
 {
-	LOG_BLOCK(LogLevel::Warning, "Ignoring measurements in: " << this->HandlerName());	
+	errors.Set(IINBit::FUNC_NOT_SUPPORTED);
 }
 
 void HeaderHandlerBase::_OnRange(GroupVariation gv, const IterableBuffer<IndexedValue<ControlStatus>>& meas)
 {
-	LOG_BLOCK(LogLevel::Warning, "Ignoring measurements in: " << this->HandlerName());	
+	errors.Set(IINBit::FUNC_NOT_SUPPORTED);
 }
 		
 void HeaderHandlerBase::_OnRange(GroupVariation gv, const IterableBuffer<IndexedValue<Counter>>& meas)
 {
-	LOG_BLOCK(LogLevel::Warning, "Ignoring measurements in: " << this->HandlerName());	
+	errors.Set(IINBit::FUNC_NOT_SUPPORTED);
 }
 
 void HeaderHandlerBase::_OnIndexPrefix(GroupVariation gv, const IterableBuffer<IndexedValue<Counter>>& meas)
 {
-	LOG_BLOCK(LogLevel::Warning, "Ignoring measurements in: " << this->HandlerName());	
+	errors.Set(IINBit::FUNC_NOT_SUPPORTED);
 }
 
 void HeaderHandlerBase::_OnRange(GroupVariation gv, const IterableBuffer<IndexedValue<Analog>>& meas)
 {
-	LOG_BLOCK(LogLevel::Warning, "Ignoring measurements in: " << this->HandlerName());	
+	errors.Set(IINBit::FUNC_NOT_SUPPORTED);
 }
 
 void HeaderHandlerBase::_OnIndexPrefix(GroupVariation gv, const IterableBuffer<IndexedValue<Analog>>& meas)
 {
-	LOG_BLOCK(LogLevel::Warning, "Ignoring measurements in: " << this->HandlerName());	
+	errors.Set(IINBit::FUNC_NOT_SUPPORTED);
 }
 
 void HeaderHandlerBase::_OnRange(GroupVariation gv, const IterableBuffer<IndexedValue<SetpointStatus>>& meas) 
 {
-	LOG_BLOCK(LogLevel::Warning, "Ignoring measurements in: " << this->HandlerName());	
+	errors.Set(IINBit::FUNC_NOT_SUPPORTED);
 }
 
 void HeaderHandlerBase::_OnIndexPrefix(const openpal::ReadOnlyBuffer& header, const IterableBuffer<IndexedValue<ControlRelayOutputBlock>>& meas)
 {
-	LOG_BLOCK(LogLevel::Warning, "Ignoring command objects header in: " << this->HandlerName());
+	errors.Set(IINBit::FUNC_NOT_SUPPORTED);
 }
 
 void HeaderHandlerBase::_OnIndexPrefix(const openpal::ReadOnlyBuffer& header, const IterableBuffer<IndexedValue<AnalogOutputInt16>>& meas)
 {
-	LOG_BLOCK(LogLevel::Warning, "Ignoring command objects header in: " << this->HandlerName());
+	errors.Set(IINBit::FUNC_NOT_SUPPORTED);
 }
 
 void HeaderHandlerBase::_OnIndexPrefix(const openpal::ReadOnlyBuffer& header, const IterableBuffer<IndexedValue<AnalogOutputInt32>>& meas)
 {
-	LOG_BLOCK(LogLevel::Warning, "Ignoring command objects header in: " << this->HandlerName());	
+	errors.Set(IINBit::FUNC_NOT_SUPPORTED);
 }
 
 void HeaderHandlerBase::_OnIndexPrefix(const openpal::ReadOnlyBuffer& header, const IterableBuffer<IndexedValue<AnalogOutputFloat32>>& meas)
 {
-	LOG_BLOCK(LogLevel::Warning, "Ignoring command objects header in: " << this->HandlerName());	
+	errors.Set(IINBit::FUNC_NOT_SUPPORTED);
 }
 
 void HeaderHandlerBase::_OnIndexPrefix(const openpal::ReadOnlyBuffer& header, const IterableBuffer<IndexedValue<AnalogOutputDouble64>>& meas)
 {
-	LOG_BLOCK(LogLevel::Warning, "Ignoring command objects header in: " << this->HandlerName());	
+	errors.Set(IINBit::FUNC_NOT_SUPPORTED);
 }
 
 void HeaderHandlerBase::_OnRangeOfOctets(GroupVariation gv, const IterableBuffer<IndexedValue<openpal::ReadOnlyBuffer>>& meas)
 {	
-	LOG_BLOCK(LogLevel::Warning, "Ignoring octet data in: " << this->HandlerName());	
+	errors.Set(IINBit::FUNC_NOT_SUPPORTED);
 }
 
 void HeaderHandlerBase::_OnIndexPrefixOfOctets(GroupVariation gv, const IterableBuffer<IndexedValue<openpal::ReadOnlyBuffer>>& meas)
 {
-	LOG_BLOCK(LogLevel::Warning, "Ignoring octet data in: " << this->HandlerName());	
+	errors.Set(IINBit::FUNC_NOT_SUPPORTED);
 }
 
 bool HeaderHandlerBase::GetCTO(int64_t& aCTO)

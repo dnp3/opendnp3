@@ -254,6 +254,7 @@
     <ClInclude Include="src\opendnp3\IterableBuffer.h" />
     <ClInclude Include="src\opendnp3\objects\Group52.h" />
     <ClInclude Include="src\opendnp3\objects\MeasurementFactory.h" />
+    <ClInclude Include="src\opendnp3\IINHelpers.h" />
     <ClInclude Include="src\opendnp3\PointInfo.h" />
     <ClInclude Include="src\opendnp3\DNPFromStream.h" />
     <ClInclude Include="src\opendnp3\DNPToStream.h" />
@@ -345,6 +346,7 @@
     <ClInclude Include="src\opendnp3\TransportStates.h" />
     <ClInclude Include="src\opendnp3\TransportTx.h" />
     <ClInclude Include="src\opendnp3\UnsolicitedChannel.h" />
+    <ClInclude Include="src\opendnp3\WriteHandler.h" />
     <ClInclude Include="StackBase.h" />
   </ItemGroup>
   <ItemGroup>
@@ -398,6 +400,7 @@
     <ClCompile Include="src\opendnp3\HeaderHandlerBase.cpp" />
     <ClCompile Include="src\opendnp3\IAppUser.cpp" />
     <ClCompile Include="src\opendnp3\IINField.cpp" />
+    <ClCompile Include="src\opendnp3\IINHelpers.cpp" />
     <ClCompile Include="src\opendnp3\IMeasurementHandler.cpp" />
     <ClCompile Include="src\opendnp3\ITimeWriteHandler.cpp" />
     <ClCompile Include="src\opendnp3\MasterScan.cpp" />
@@ -481,6 +484,7 @@
     <ClCompile Include="src\opendnp3\UnsolicitedChannel.cpp" />
     <ClCompile Include="src\opendnp3\Util.cpp" />
     <ClCompile Include="src\opendnp3\OctetData.cpp" />
+    <ClCompile Include="src\opendnp3\WriteHandler.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\gecapache.licenseheader" />

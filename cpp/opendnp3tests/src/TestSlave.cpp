@@ -176,7 +176,6 @@ BOOST_AUTO_TEST_CASE(WriteIIN)
 	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 00 00");
 }
 
-/*
 BOOST_AUTO_TEST_CASE(WriteIINEnabled)
 {
 	SlaveConfig cfg; cfg.mDisableUnsol = true;
@@ -203,10 +202,11 @@ BOOST_AUTO_TEST_CASE(WriteNonWriteObject)
 	SlaveTestObject t(cfg);
 	t.slave.OnLowerLayerUp();
 
-	t.SendToSlave("C0 02 02 01 00 07 07 00");
+	t.SendToSlave("C0 02 01 02 00 07 07 00");
 	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 01");
 }
 
+/*
 BOOST_AUTO_TEST_CASE(DelayMeasure)
 {
 	SlaveConfig cfg;  cfg.mDisableUnsol = true;

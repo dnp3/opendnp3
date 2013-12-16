@@ -18,12 +18,13 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __TIME_SYNC_HANDLER_H_
-#define __TIME_SYNC_HANDLER_H_
+#ifndef __WRITE_HANDLER_H_
+#define __WRITE_HANDLER_H_
 
 #include "HeaderHandlerBase.h"
+#include "IINField.h"
 
-#include <openpal/LoggableMacros.h>
+#include <openpal/Loggable.h>
 
 namespace opendnp3
 {
@@ -31,47 +32,19 @@ namespace opendnp3
 /**
  * Dedicated class for processing response data in the master.
  */
-class TimeSyncHandler : public HeaderHandlerBase, private openpal::Loggable
+class WriteHandler : public HeaderHandlerBase, private openpal::Loggable
 {
-
-public:
+	public:
 	
-	/**
-	* @param arLogger the Logger that the loader should use for message reporting
-	*/
-	TimeSyncHandler(openpal::Logger& aLogger) : 
-		Loggable(aLogger), 
-		valid(false), 
-		timeOut(0)
-	{}		
+	WriteHandler(openpal::Logger& aLogger);		
 
-	virtual void _OnCountOf(const IterableBuffer<Group52Var2>& times) final
-	{
-		if(times.Count() == 1)
-		{
-			valid = true;
-			times.foreach([this](const Group52Var2& obj) { timeOut = obj.time16; });
-		}
-		else
-		{
-			LOG_BLOCK(openpal::LogLevel::Warning, "Ignoring unexpected time delay count of " << times.Count());
-		}
-	}
+	virtual void _OnIIN(const IterableBuffer<IndexedValue<bool>>& meas) final;
 
-	bool GetTimeDelay(uint16_t& time) 
-	{
-		if(this->errors.Any()) return false;
-		else 
-		{
-			if(valid) time = timeOut;
-			return valid;					
-		}
-	}
+	IINField Process(IINField& writeIIN);
 
-private:
-	bool valid;
-	uint16_t timeOut;
-
+	private:
+	
+	IINField clearMask;
 };
 
 }
