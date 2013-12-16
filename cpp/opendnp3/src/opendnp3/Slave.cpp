@@ -189,6 +189,8 @@ IINField Slave::ConfigureResponse(const APDURecord& record, SequenceInfo sequenc
 	{
 		case(FunctionCode::WRITE):			
 			return HandleWrite(record, sequence);
+		case(FunctionCode::DELAY_MEASURE):			
+			return HandleDelayMeasure(record, sequence, apduOut);
 		default:	
 			ERROR_BLOCK(LogLevel::Warning, "Function not supported: " << FunctionCodeToString(record.function), SERR_FUNC_NOT_SUPPORTED);
 			return IINField(IINBit::FUNC_NOT_SUPPORTED);			
@@ -201,6 +203,19 @@ IINField Slave::HandleWrite(const APDURecord& record, SequenceInfo sequence)
 	auto result = APDUParser::ParseHeaders(record.objects, handler);
 	if(result == APDUParser::Result::OK) return handler.Process(mIIN);
 	else return IINFromParseResult(result);
+}
+
+IINField Slave::HandleDelayMeasure(const APDURecord& record, SequenceInfo sequence, APDU& apdu)
+{		
+	if(record.objects.IsEmpty())
+	{
+		Group52Var2Temp* pObj = Group52Var2Temp::Inst();
+		IndexedWriteIterator i = apdu.WriteIndexed(pObj, 1, QualifierCode::UINT8_CNT);
+		i.SetIndex(0);
+		pObj->mTime.Set(*i, 0);
+		return IINField::Empty;
+	}	
+	else return IINField(IINBit::FUNC_NOT_SUPPORTED);
 }
 
 void Slave::SendResponse(APDU& apdu, const IINField& indications)
