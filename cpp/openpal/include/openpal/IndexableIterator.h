@@ -33,48 +33,61 @@ template <class T>
 class IndexableIterator
 {
 	public:
-
-		IndexableIterator(Indexable<T> const* pIndexable, uint32_t aPosition, uint32_t aCount) :
-			indexable(pIndexable),
+		
+		IndexableIterator(const Indexable<T>& aIndexable, uint32_t aPosition, uint32_t aStop) :
+			empty(false)
+			indexable(aIndexable),
 			position(aPosition),
-			count(aCount)
+			stop(aStop)
+		{}
+
+		IndexableIterator(const Indexable<T>& aIndexable) :
+			empty(aIndexable.IsEmpty()),
+			indexable(aIndexable),
+			position(0),
+			stop(aIndexable.IsEmpty() ? 0 : aIndexable.Size() - 1)			
 		{}
 
 		inline const uint32_t Index() const 
 		{ 
-			assert(count > 0);
+			assert(!empty);
 			return position; 
 		}
 		
 		inline const T& Value() const 
 		{
-			assert(count > 0);
-			return indexable->Get(position);
+			assert(!empty);
+			return indexable[position];
 		}
 
 		inline const uint32_t Stop() const
 		{
-			assert(count > 0);
-			return position + count - 1;
+			return stop;
 		}
 		
-		inline bool IsNotEmpty() const { return count > 0; }
+		inline bool IsNotEmpty() const { return !empty; }
 
-		inline bool IsEmpty() const { return count == 0; }
+		inline bool IsEmpty() const { return empty; }
 
 		inline void Next()
 		{
-			assert(count > 0);
-			--count;
-			++position;
+			assert(!empty);
+			if(position == stop)
+			{
+				empty = true;
+			}
+			else
+			{
+				++position;
+			}
 		}
 		
-
 	private:
 
-		Indexable<T> const * indexable;
+		bool empty;
+		Indexable<T> indexable;
 		uint32_t position;
-		uint32_t count;
+		uint32_t stop;
 };
 
 }

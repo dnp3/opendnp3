@@ -66,11 +66,11 @@ public:
 
 	/* Functions for obtaining iterators */
 
-	openpal::Indexable<PointInfo<Binary>>* Binaries() { return &mBinaries; }
-	openpal::Indexable<PointInfo<Analog>>* Analogs() { return &mAnalogs; }
-	openpal::Indexable<PointInfo<Counter>>* Counters() { return &mCounters; }
-	openpal::Indexable<PointInfo<ControlStatus>>* ControlStatii() { return &mControlStatii; }
-	openpal::Indexable<PointInfo<SetpointStatus>>* SetpointStatii() { return &mSetpointStatii; }
+	openpal::Indexable<PointInfo<Binary>> Binaries() { return mBinaries.ToIndexable(); }
+	openpal::Indexable<PointInfo<Analog>> Analogs() { return mAnalogs.ToIndexable(); }
+	openpal::Indexable<PointInfo<Counter>> Counters() { return mCounters.ToIndexable(); }
+	openpal::Indexable<PointInfo<ControlStatus>> ControlStatii() { return mControlStatii.ToIndexable(); }
+	openpal::Indexable<PointInfo<SetpointStatus>> SetpointStatii() { return mSetpointStatii.ToIndexable(); }
 
 	// IDataObserver functions
 	void Update(const Binary& arPoint, uint32_t) final;

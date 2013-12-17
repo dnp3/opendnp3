@@ -27,20 +27,54 @@ namespace openpal
 {
 
 template <class T>
-class DynamicCollection : public Indexable<T> 
+class DynamicCollection : public HasSize
 {
 
 	public:
 
 		DynamicCollection(uint32_t aSize) : 
-			Indexable<T>(aSize),
+			HasSize(aSize),
 			buffer(new T[aSize])
 		{}
 
 		DynamicCollection() : 
-			Indexable<T>(0),
+			HasSize(0),
 			buffer(nullptr)
 		{}
+
+		Indexable<T> ToIndexable()
+		{
+			return Indexable<T>(buffer, size);
+		}
+
+		inline const bool Contains(uint32_t index) const 
+		{
+			return index < size;
+		}
+
+		inline T& operator[](uint32_t index) 
+		{
+			assert(index < size);
+			return buffer[index];
+		}
+
+		const T& operator[](uint32_t index) const
+		{ 
+			assert(index < size);
+			return buffer[index];
+		}
+
+		template <class Action>
+		void foreach(const Action& action)
+		{
+			for(uint32_t i = 0; i < size; ++i) action(buffer[i]);
+		}
+
+		template <class Action>
+		void foreachIndex(const Action& action)
+		{
+			for(uint32_t i = 0; i < size; ++i) action(buffer[i], i);
+		}	
 
 		DynamicCollection<T>& Resize(uint32_t aSize)
 		{
@@ -53,26 +87,13 @@ class DynamicCollection : public Indexable<T>
 		virtual ~DynamicCollection()
 		{
 			delete[] buffer;
-		}	
-
-		T& operator[](uint32_t index) { return Get(index); }
-
-		const T& operator[](uint32_t index) const { return Get(index); }
-
-		virtual T& Get(uint32_t index) final
-		{
-			assert(index < size);
-			return buffer[index]; 
-		}
-
-		virtual const T& Get(uint32_t index) const final
-		{
-			assert(index < size);
-			return buffer[index]; 
-		}
+		}					
 	
 	private:
 		T* buffer;
+
+		DynamicCollection(const DynamicCollection&);
+		DynamicCollection& operator=(const DynamicCollection&);		
 };
 
 }

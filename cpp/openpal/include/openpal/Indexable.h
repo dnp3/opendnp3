@@ -27,49 +27,73 @@
 namespace openpal
 {
 
+/**
+* Acts as a functional facade around a buffer of a certain type
+*/
 template <class T>
 class Indexable : public HasSize 
 {
-
+	
 	public:
 
-		Indexable(uint32_t aSize) : HasSize(aSize)
+		static Indexable Empty()
+		{
+			return Indexable(nullptr, 0);
+		}
+
+		Indexable(T* start, uint32_t aSize) : HasSize(aSize), buffer(start)
 		{}		
 
-		const bool Contains(uint32_t index) const { return index < size; }
+		inline const bool Contains(uint32_t index) const 
+		{
+			return index < size;
+		}
 
-		const bool Contains(uint32_t start, uint32_t stop) const 
+		inline const bool Contains(uint32_t start, uint32_t stop) const 
 		{ 
 			return (start < stop) && Contains(stop);
 		}
 
 		IndexableIterator<T> Range(uint32_t start, uint32_t stop) const 
 		{
-			assert(Contains(start, stop));
-			auto count = stop - start + 1;
-			return IndexableIterator<T>(this, start, count); 		
+			if(Contain(start, stop)) return IndexableIterator<T>(this, start, stop);
+			else return IndexableIterator<T>(Empty());			 		
 		}
 
 		IndexableIterator<T> FullRange() const 
+		{			
+			return IndexableIterator<T>(*this); 
+		}
+
+		inline T& operator[](uint32_t index) 
 		{
-			return IndexableIterator<T>(this, 0, size); 
+			assert(index < size);
+			return buffer[index];
+		}
+
+		const T& operator[](uint32_t index) const
+		{ 
+			assert(index < size);
+			return buffer[index];
 		}
 
 		template <class Action>
 		void foreach(const Action& action)
 		{
-			for(uint32_t i = 0; i < size; ++i) action(Get(i));
+			for(uint32_t i = 0; i < size; ++i) action(buffer[i]);
 		}
 
 		template <class Action>
 		void foreachIndex(const Action& action)
 		{
-			for(uint32_t i = 0; i < size; ++i) action(Get(i), i);
+			for(uint32_t i = 0; i < size; ++i) action(buffer[i], i);
 		}	
 
-		virtual T& Get(uint32_t index) = 0;
-		virtual const T& Get(uint32_t index) const = 0;
+		private:
+		T* buffer;
 };
+
+
 
 }
 

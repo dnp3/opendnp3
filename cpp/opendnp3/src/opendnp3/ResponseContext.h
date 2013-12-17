@@ -124,7 +124,7 @@ private:
 	IINField RecordIntegrity();
 
 	template <class T>
-	IINField RecordAllStatic(StreamObject<T>* obj, const openpal::Indexable<PointInfo<T>>* indexable);
+	IINField RecordAllStatic(StreamObject<T>* obj, openpal::Indexable<PointInfo<T>> indexable);
 
 
 	// configure the state for unsol, return true of events exist
@@ -217,9 +217,9 @@ private:
 };
 
 template <class T>
-IINField ResponseContext::RecordAllStatic(StreamObject<T>* obj, const openpal::Indexable<PointInfo<T>>* indexable)
+IINField ResponseContext::RecordAllStatic(StreamObject<T>* obj, openpal::Indexable<PointInfo<T>> indexable)
 {		
-	return (indexable->IsEmpty()) ? IINField::Empty : RecordStaticObjectsByRange<T>(obj, indexable->FullRange()); 	
+	return (indexable.IsEmpty()) ? IINField::Empty : RecordStaticObjectsByRange<T>(obj, indexable.FullRange()); 	
 }
 
 /*

@@ -84,7 +84,7 @@ void Database::Configure(const DeviceTemplate& devTemplate)
 	this->Configure(mCounters, numCounter);
 	this->Configure(mControlStatii, numControlStatus);
 	this->Configure(mSetpointStatii, numSetpointStatus);
-
+	
 	mBinaries.foreachIndex([&](PointInfo<Binary>& record, uint32_t i) { record.clazz = devTemplate.mBinary[i].EventClass; });
 	mCounters.foreachIndex([&](PointInfo<Counter>& record, uint32_t i) { record.clazz = devTemplate.mCounter[i].EventClass; });
 	
