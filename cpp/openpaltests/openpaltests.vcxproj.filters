@@ -18,5 +18,8 @@
     <ClCompile Include="src\BoostTestStart.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\ListAdapterTestSuite.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
