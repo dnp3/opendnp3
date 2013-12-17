@@ -20,13 +20,36 @@
  */
 #include <boost/test/unit_test.hpp>
 
+#include <openpal/StaticArray.h>
+#include <openpal/ListAdapter.h>
+
+using namespace openpal;
 
 BOOST_AUTO_TEST_SUITE(ListAdapterTestSuite)
 
-// tests for the various analog event conditions
-BOOST_AUTO_TEST_CASE(MyTest)
+BOOST_AUTO_TEST_CASE(CorrectInitialState)
 {
-	
+	StaticArray<int, 3> array;
+	ListAdapter<int> list(array.ToIndexable());
+
+	BOOST_REQUIRE_EQUAL(0, list.Size());
+	BOOST_REQUIRE_EQUAL(3, list.Capacity());
+}
+
+BOOST_AUTO_TEST_CASE(CanAddUntilFull)
+{
+	StaticArray<uint32_t, 3> array;
+	ListAdapter<uint32_t> list(array.ToIndexable());
+
+	BOOST_REQUIRE(list.Add(2));
+	BOOST_REQUIRE(list.Add(4));
+	BOOST_REQUIRE(list.Add(6));
+
+	BOOST_REQUIRE_EQUAL(3, list.Size());
+	list.foreachIndex([](const uint32_t& value, uint32_t i) { BOOST_REQUIRE_EQUAL((i+1)*2, value); });
+
+	BOOST_REQUIRE(!list.Add(8));
+	BOOST_REQUIRE_EQUAL(3, list.Size());
 }
 
 BOOST_AUTO_TEST_SUITE_END()
