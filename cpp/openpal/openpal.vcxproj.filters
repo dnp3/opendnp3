@@ -98,6 +98,9 @@
     <ClInclude Include="include\openpal\DynamicCollection.h">
       <Filter>Include Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\openpal\IndexableIterator.h">
+      <Filter>Include Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\LogEntry.cpp">

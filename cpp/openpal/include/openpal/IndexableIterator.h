@@ -18,57 +18,63 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __INDEXABLE_H_
-#define __INDEXABLE_H_
+#ifndef __INDEXABLE_ITERATOR_H_
+#define __INDEXABLE_ITERATOR_H_
 
-#include "HasSize.h"
-#include "IndexableIterator.h"
+#include <assert.h>
 
 namespace openpal
 {
 
 template <class T>
-class Indexable : public HasSize 
-{
+class Indexable;
 
+template <class T>
+class IndexableIterator
+{
 	public:
 
-		Indexable(uint32_t aSize) : HasSize(aSize)
-		{}		
+		IndexableIterator(Indexable<T> const* pIndexable, uint32_t aPosition, uint32_t aCount) :
+			indexable(pIndexable),
+			position(aPosition),
+			count(aCount)
+		{}
 
-		const bool Contains(uint32_t index) const { return index < size; }
-
-		const bool Contains(uint32_t start, uint32_t stop) const 
+		inline const uint32_t Index() const 
 		{ 
-			return (start < stop) && Contains(stop);
+			assert(count > 0);
+			return position; 
+		}
+		
+		inline const T& Value() const 
+		{
+			assert(count > 0);
+			return indexable->Get(position);
 		}
 
-		IndexableIterator<T> Range(uint32_t start, uint32_t stop) const 
+		inline const uint32_t Stop() const
 		{
-			assert(Contains(start, stop));
-			auto count = stop - start + 1;
-			return IndexableIterator<T>(this, start, count); 		
+			assert(count > 0);
+			return position + count - 1;
 		}
+		
+		inline bool IsNotEmpty() const { return count > 0; }
 
-		IndexableIterator<T> FullRange() const 
+		inline bool IsEmpty() const { return count == 0; }
+
+		inline void Next()
 		{
-			return IndexableIterator<T>(this, 0, size); 
+			assert(count > 0);
+			--count;
+			++position;
 		}
+		
 
-		template <class Action>
-		void foreach(const Action& action)
-		{
-			for(uint32_t i = 0; i < size; ++i) action(Get(i));
-		}
+	private:
 
-		template <class Action>
-		void foreachIndex(const Action& action)
-		{
-			for(uint32_t i = 0; i < size; ++i) action(Get(i), i);
-		}	
-
-		virtual T& Get(uint32_t index) = 0;
-		virtual const T& Get(uint32_t index) const = 0;
+		Indexable<T> const * indexable;
+		uint32_t position;
+		uint32_t count;
 };
 
 }

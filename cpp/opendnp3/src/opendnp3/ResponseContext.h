@@ -210,20 +210,16 @@ private:
 */
 
 	template <class T>
-	IINField RecordStaticObjectsByRange(StreamObject<T>* apObject, uint32_t aStart, uint32_t aStop, const openpal::Indexable<PointInfo<T>>* indexable);
+	IINField RecordStaticObjectsByRange(StreamObject<T>* apObject, openpal::IndexableIterator<PointInfo<T>> range);
 
 	template <class T>
-	bool WriteStaticObjects(StreamObject<T>* apObject, const openpal::Indexable<PointInfo<T>>* indexable, uint32_t start, uint32_t stop, ResponseKey aKey, APDU& apdu);
+	bool WriteStaticObjects(StreamObject<T>* object, openpal::IndexableIterator<PointInfo<T>> range, ResponseKey aKey, APDU& apdu);
 };
 
 template <class T>
 IINField ResponseContext::RecordAllStatic(StreamObject<T>* obj, const openpal::Indexable<PointInfo<T>>* indexable)
 {		
-	if(indexable->IsNotEmpty())
-	{
-		return RecordStaticObjectsByRange<T>(obj, 0, indexable->Size() - 1, indexable);
-	}
-	else return IINField::Empty;
+	return (indexable->IsEmpty()) ? IINField::Empty : RecordStaticObjectsByRange<T>(obj, indexable->FullRange()); 	
 }
 
 /*
@@ -243,37 +239,31 @@ size_t ResponseContext::SelectEvents(PointClass aClass, const StreamObject<T>* a
 */
 
 template <class T>
-IINField ResponseContext::RecordStaticObjectsByRange(StreamObject<T>* object, uint32_t start, uint32_t stop, const openpal::Indexable<PointInfo<T>>* indexable)
-{	
-	if(indexable->Contains(start) && indexable->Contains(stop))
-	{	
-		ResponseKey key(RequestType::STATIC, this->mStaticWriteMap.size());
-		auto func = [=](APDU& apdu) { return this->WriteStaticObjects<T>(object, indexable, start, stop, key, apdu); };	
-		this->mStaticWriteMap[key] = func;
-		return IINField::Empty;
-	}
-	else 
-	{
-		return IINField(IINBit::PARAM_ERROR);
-	}	
+IINField ResponseContext::RecordStaticObjectsByRange(StreamObject<T>* object, openpal::IndexableIterator<PointInfo<T>> range)
+{		
+	ResponseKey key(RequestType::STATIC, this->mStaticWriteMap.size());
+	auto func = [=](APDU& apdu) { return this->WriteStaticObjects<T>(object, range, key, apdu); };	
+	this->mStaticWriteMap[key] = func;
+	return IINField::Empty;	
 }
 
 
 template <class T>
-bool ResponseContext::WriteStaticObjects(StreamObject<T>* object, const openpal::Indexable<PointInfo<T>>* indexable, uint32_t start, uint32_t stop, ResponseKey aKey, APDU& apdu)
-{
-	ObjectWriteIterator owi = apdu.WriteContiguous(object, start, stop);
+bool ResponseContext::WriteStaticObjects(StreamObject<T>* object, openpal::IndexableIterator<PointInfo<T>> range, ResponseKey aKey, APDU& apdu)
+{	
+	ObjectWriteIterator owi = apdu.WriteContiguous(object, range.Index(), range.Stop());
 
-	for(size_t i = start; i <= stop; ++i) 
+	while(range.IsNotEmpty()) 
 	{
 		if(owi.IsEnd()) { // out of space in the fragment
 			this->mStaticWriteMap[aKey] = [ = ](APDU& apdu) 
 			{
-				return this->WriteStaticObjects<T>(object, indexable, i, stop, aKey, apdu);
+				return this->WriteStaticObjects<T>(object, range, aKey, apdu);
 			};
 			return false;
 		}
-		object->Write(*owi, indexable->Get(i).value);		
+		object->Write(*owi, range.Value().value);
+		range.Next();
 		++owi;
 	}
 
