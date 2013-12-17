@@ -47,116 +47,71 @@ Database::~Database() {}
 // Public functions
 ////////////////////////////////////////////////////
 
-void Database::Configure(MeasurementType aType, size_t aNumPoints)
+void Database::Configure(MeasurementType aType, size_t numPoints)
 {
-	switch(aType) {
-	case(MeasurementType::BINARY):
-		this->mBinaryVec.resize(aNumPoints);
-		this->AssignIndices(mBinaryVec);
-		break;
-	case(MeasurementType::ANALOG):
-		this->mAnalogVec.resize(aNumPoints);
-		this->AssignIndices(mAnalogVec);		
-		break;
-	case(MeasurementType::COUNTER):
-		this->mCounterVec.resize(aNumPoints);
-		this->AssignIndices(mCounterVec);
-		break;
-	case(MeasurementType::CONTROL_STATUS):
-		this->mControlStatusVec.resize(aNumPoints);
-		this->AssignIndices(mControlStatusVec);
-		break;
-	case(MeasurementType::SETPOINT_STATUS):
-		this->mSetpointStatusVec.resize(aNumPoints);
-		this->AssignIndices(mSetpointStatusVec);
-		break;
-	}
-}
-
-void Database::Configure(const DeviceTemplate& arTmp)
-{
-	size_t numBinary = arTmp.mBinary.size();
-	size_t numAnalog = arTmp.mAnalog.size();
-	size_t numCounter = arTmp.mCounter.size();
-	size_t numControlStatus = arTmp.mControlStatus.size();
-	size_t numSetpointStatus = arTmp.mSetpointStatus.size();
-
-	//configure the database for these objects
-	this->Configure(MeasurementType::BINARY, numBinary);
-	this->Configure(MeasurementType::ANALOG, numAnalog);
-	this->Configure(MeasurementType::COUNTER, numCounter);
-	this->Configure(MeasurementType::CONTROL_STATUS, numControlStatus);
-	this->Configure(MeasurementType::SETPOINT_STATUS, numSetpointStatus);
-
-	for(size_t i = 0; i < arTmp.mBinary.size(); ++i) 
+	switch(aType) 
 	{
-		this->SetClass(MeasurementType::BINARY, i, arTmp.mBinary[i].EventClass);
-	}
-
-	for(size_t i = 0; i < arTmp.mCounter.size(); ++i)
-	{
-		this->SetClass(MeasurementType::COUNTER, i, arTmp.mCounter[i].EventClass);
-	}
-
-	for(size_t i = 0; i < arTmp.mAnalog.size(); ++i) 
-	{
-		this->SetClass(MeasurementType::ANALOG, i, arTmp.mAnalog[i].EventClass);
-		this->SetDeadband(MeasurementType::ANALOG, i, arTmp.mAnalog[i].Deadband);
-	}
-}
-
-void Database::SetClass(MeasurementType aType, PointClass aClass)
-{
-	switch(aType) {
 		case(MeasurementType::BINARY):
-			for(auto& m: mBinaryVec) m.clazz = aClass;		
+			this->Configure(mBinaries, numPoints);		
 			break;
 		case(MeasurementType::ANALOG):
-			for(auto& m: mAnalogVec) m.clazz = aClass;			
+			this->Configure(mAnalogs, numPoints);	
 			break;
 		case(MeasurementType::COUNTER):
-			for(auto& m: mCounterVec) m.clazz = aClass;			
+			this->Configure(mCounters, numPoints);
+			break;
+		case(MeasurementType::CONTROL_STATUS):
+			this->Configure(mControlStatii, numPoints);
+			break;
+		case(MeasurementType::SETPOINT_STATUS):
+			this->Configure(mSetpointStatii, numPoints);
+			break;
+		default:
+			break;
+	}
+}
+
+void Database::Configure(const DeviceTemplate& devTemplate)
+{
+	size_t numBinary = devTemplate.mBinary.size();
+	size_t numAnalog = devTemplate.mAnalog.size();
+	size_t numCounter = devTemplate.mCounter.size();
+	size_t numControlStatus = devTemplate.mControlStatus.size();
+	size_t numSetpointStatus = devTemplate.mSetpointStatus.size();
+
+	this->Configure(mBinaries, numBinary);				
+	this->Configure(mAnalogs, numAnalog);			
+	this->Configure(mCounters, numCounter);
+	this->Configure(mControlStatii, numControlStatus);
+	this->Configure(mSetpointStatii, numSetpointStatus);
+
+	mBinaries.foreachIndex([&](PointInfo<Binary>& record, uint32_t i) { record.clazz = devTemplate.mBinary[i].EventClass; });
+	mCounters.foreachIndex([&](PointInfo<Counter>& record, uint32_t i) { record.clazz = devTemplate.mCounter[i].EventClass; });
+	
+	mAnalogs.foreachIndex([&](PointInfo<Analog>& record, uint32_t i) { 
+		record.clazz = devTemplate.mAnalog[i].EventClass; 
+		record.deadband =  devTemplate.mAnalog[i].Deadband;
+	});	
+}
+
+void Database::SetClass(MeasurementType type, PointClass clazz)
+{
+	switch(type) 
+	{
+		case(MeasurementType::BINARY):
+			mBinaries.foreach([clazz](PointInfo<Binary>& info) { info.clazz = clazz; })	;		
+			break;
+		case(MeasurementType::ANALOG):
+			mAnalogs.foreach([clazz](PointInfo<Analog>& info) { info.clazz = clazz; });
+			break;
+		case(MeasurementType::COUNTER):
+			mCounters.foreach([clazz](PointInfo<Counter>& info) { info.clazz = clazz; });
 			break;		
 		default:		
 			break;
 	}
 }
 
-bool Database::SetClass(MeasurementType aType, size_t aIndex, PointClass aClass)
-{
-	switch(aType) {
-		case(MeasurementType::BINARY):
-			if(aIndex >= mBinaryVec.size()) return false;
-			mBinaryVec[aIndex].clazz = aClass;
-			return true;
-		case(MeasurementType::ANALOG):
-			if(aIndex >= mAnalogVec.size()) return false;
-			mAnalogVec[aIndex].clazz = aClass;
-			return true;
-		case(MeasurementType::COUNTER):
-			if(aIndex >= mCounterVec.size()) return false;
-			mCounterVec[aIndex].clazz = aClass;
-			return true;		
-		default:
-			return false;
-	}	
-}
-
-bool Database::SetDeadband(MeasurementType aType, size_t aIndex, double aDeadband)
-{
-	switch(aType) {
-		case(MeasurementType::ANALOG):
-			if(aIndex >= mAnalogVec.size()) return false;
-			mAnalogVec[aIndex].deadband = aDeadband;
-			return true;
-		case(MeasurementType::COUNTER):
-			if(aIndex >= mCounterVec.size()) return false;
-			mCounterVec[aIndex].deadband = aDeadband;
-			return true;
-		default:
-			return false;
-	}
-}
 
 void Database::SetEventBuffer(IEventBuffer* apEventBuffer)
 {
@@ -169,72 +124,50 @@ void Database::SetEventBuffer(IEventBuffer* apEventBuffer)
 // IDataObserver interfae - Private NVII functions -
 ////////////////////////////////////////////////////
 
-void Database::Update(const Binary& aValue, size_t aIndex)
+void Database::Update(const Binary& value, uint32_t index)
 {
-	if(aIndex < mBinaryVec.size())	
+	if(mBinaries.Contains(index))
 	{	
-		auto& record = mBinaryVec[aIndex];		
-		if(record.Load(aValue) && record.HasEventClass() && mpEventBuffer)
-		{				
-			mpEventBuffer->Update(record);			
-		}		
-	}	
-}
-
-void Database::Update(const Analog& aValue, size_t aIndex)
-{
-	if(aIndex < mAnalogVec.size())	
-	{	
-		auto& record = mAnalogVec[aIndex];		
-		if(record.Load(aValue) && record.HasEventClass() && mpEventBuffer)
+		auto& record = mBinaries[index];
+		if(record.Load(value) && record.HasEventClass() && mpEventBuffer)
 		{			
 			mpEventBuffer->Update(record);
 		}		
 	}	
 }
 
-void Database::Update(const Counter& aValue, size_t aIndex)
+void Database::Update(const Analog& value, uint32_t index)
 {
-	if(aIndex < mCounterVec.size())	
+	if(mAnalogs.Contains(index))	
 	{	
-		auto& record = mCounterVec[aIndex];		
-		if(record.Load(aValue) && record.HasEventClass() && mpEventBuffer)
+		auto& record = mAnalogs[index];
+		if(record.Load(value) && record.HasEventClass() && mpEventBuffer)
+		{			
+			mpEventBuffer->Update(record);
+		}		
+	}	
+}
+
+void Database::Update(const Counter& value, uint32_t index)
+{
+	if(mCounters.Contains(index))
+	{	
+		auto& record = mCounters[index];
+		if(record.Load(value) && record.HasEventClass() && mpEventBuffer)
 		{			
 			mpEventBuffer->Update(record);
 		}		
 	}
 }
 
-void Database::Update(const ControlStatus& aValue, size_t aIndex)
+void Database::Update(const ControlStatus& value, uint32_t index)
 {
-	if(aIndex < mControlStatusVec.size()) mControlStatusVec[aIndex].value = aValue;	
+	if(mControlStatii.Contains(index)) mControlStatii[index].value = value;
 }
 
-void Database::Update(const SetpointStatus& aValue, size_t aIndex)
+void Database::Update(const SetpointStatus& value, uint32_t index)
 {
-	if(aIndex < mSetpointStatusVec.size()) mSetpointStatusVec[aIndex].value = aValue;
-}
-
-////////////////////////////////////////////////////
-// misc public functions
-////////////////////////////////////////////////////
-
-uint32_t Database::NumType(MeasurementType aType)
-{
-	switch(aType) {
-		case(MeasurementType::BINARY):
-			return mBinaryVec.size();
-		case(MeasurementType::ANALOG):
-			return mAnalogVec.size();
-		case(MeasurementType::COUNTER):
-			return mCounterVec.size();
-		case(MeasurementType::CONTROL_STATUS):
-			return mControlStatusVec.size();
-		case(MeasurementType::SETPOINT_STATUS):
-			return mSetpointStatusVec.size();
-		default:
-			return 0;
-	}	
+	if(mSetpointStatii.Contains(index)) mSetpointStatii[index].value = value;
 }
 
 }

@@ -68,13 +68,7 @@ IINField ResponseContext::RecordAllObjects(GroupVariation gv)
 	switch(gv)
 	{
 		case(GroupVariation::Group60Var1):
-			return this->RecordIntegrity();
-		case(GroupVariation::Group60Var2):
-			return this->SelectEvents(PC_CLASS_1);
-		case(GroupVariation::Group60Var3):
-			return this->SelectEvents(PC_CLASS_2);
-		case(GroupVariation::Group60Var4):
-			return this->SelectEvents(PC_CLASS_3);
+			return this->RecordIntegrity();		
 		default:
 			return IINField(IINBit::PARAM_ERROR);
 	};	
@@ -82,11 +76,11 @@ IINField ResponseContext::RecordAllObjects(GroupVariation gv)
 
 IINField ResponseContext::RecordIntegrity()
 {
-	return	this->RecordAllStatic(mpRspTypes->mpStaticBinary, mpDB->BeginBinary()) |
-			this->RecordAllStatic(mpRspTypes->mpStaticAnalog, mpDB->BeginAnalog()) |
-			this->RecordAllStatic(mpRspTypes->mpStaticCounter, mpDB->BeginCounter()) |
-			this->RecordAllStatic(mpRspTypes->mpStaticControlStatus, mpDB->BeginControlStatus()) |
-			this->RecordAllStatic(mpRspTypes->mpStaticSetpointStatus, mpDB->BeginSetpointStatus());		
+	return	this->RecordAllStatic(mpRspTypes->mpStaticBinary, mpDB->Binaries()) |
+			this->RecordAllStatic(mpRspTypes->mpStaticAnalog, mpDB->Analogs()) |
+			this->RecordAllStatic(mpRspTypes->mpStaticCounter, mpDB->Counters()) |
+			this->RecordAllStatic(mpRspTypes->mpStaticControlStatus, mpDB->ControlStatii()) |
+			this->RecordAllStatic(mpRspTypes->mpStaticSetpointStatus, mpDB->SetpointStatii());		
 }
 
 void ResponseContext::Reset()
@@ -265,7 +259,6 @@ IINField ResponseContext::Configure(const APDU& arRequest)
 
 	return mTempIIN;
 }
-*/
 
 IINField ResponseContext::SelectEvents(PointClass aClass, uint32_t maximum)
 {
@@ -277,19 +270,22 @@ IINField ResponseContext::SelectEvents(PointClass aClass, uint32_t maximum)
 
 	return IINField::Empty;
 }
+*/
 
 void ResponseContext::LoadResponse(APDU& apdu)
 {
 	//delay the setting of FIR/FIN until we know if it will be multifragmented or not
 	apdu.Set(FunctionCode::RESPONSE);
 
-	bool wroteAll = this->LoadEventData(apdu);
+	//bool wroteAll = this->LoadEventData(apdu);
+	bool wroteAll = true;
 
 	if(wroteAll) wroteAll = LoadStaticData(apdu);
 
 	FinalizeResponse(apdu, wroteAll);
 }
 
+/*
 bool ResponseContext::SelectUnsol(ClassMask m)
 {
 	if(m.class1) this->SelectEvents(PC_CLASS_1);
@@ -298,24 +294,26 @@ bool ResponseContext::SelectUnsol(ClassMask m)
 
 	return mBuffer.NumSelected() > 0;
 }
+*/
 
 bool ResponseContext::HasEvents(ClassMask m)
 {
-	if(m.class1 && mBuffer.HasClassData(PC_CLASS_1)) return true;
-	if(m.class2 && mBuffer.HasClassData(PC_CLASS_2)) return true;
-	if(m.class3 && mBuffer.HasClassData(PC_CLASS_3)) return true;
+	//if(m.class1 && mBuffer.HasClassData(PC_CLASS_1)) return true;
+	//if(m.class2 && mBuffer.HasClassData(PC_CLASS_2)) return true;
+	//if(m.class3 && mBuffer.HasClassData(PC_CLASS_3)) return true;
 
 	return false;
 }
 
 void ResponseContext::LoadUnsol(APDU& arAPDU, const IINField& arIIN, ClassMask m)
 {
-	this->SelectUnsol(m);
+	//this->SelectUnsol(m);
 
 	arAPDU.Set(FunctionCode::UNSOLICITED_RESPONSE, true, true, true, true);
-	this->LoadEventData(arAPDU);
+	//this->LoadEventData(arAPDU);
 }
 
+/*
 bool ResponseContext::LoadEventData(APDU& arAPDU)
 {
 	if (!this->LoadEvents<Binary>(arAPDU, mBuffer.BeginBinary(), mBinaryEvents)) return false;
@@ -324,6 +322,7 @@ bool ResponseContext::LoadEventData(APDU& arAPDU)
 
 	return true;
 }
+*/
 
 bool ResponseContext::IsEmpty()
 {

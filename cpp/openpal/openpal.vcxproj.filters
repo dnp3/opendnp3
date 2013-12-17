@@ -92,6 +92,12 @@
     <ClInclude Include="include\openpal\Sequence.h">
       <Filter>Include Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\openpal\Indexable.h">
+      <Filter>Include Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\openpal\DynamicCollection.h">
+      <Filter>Include Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\LogEntry.cpp">

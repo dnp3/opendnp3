@@ -26,12 +26,14 @@
 
 #include <openpal/Location.h>
 #include <openpal/Loggable.h>
+#include <openpal/Indexable.h>
 #include <opendnp3/ClassMask.h>
 
 #include "APDU.h"
 #include "Database.h"
 #include "SlaveEventBuffer.h"
 #include "GroupVariation.h"
+
 
 
 namespace opendnp3
@@ -122,10 +124,11 @@ private:
 	IINField RecordIntegrity();
 
 	template <class T>
-	IINField RecordAllStatic(StreamObject<T>* obj, const typename StaticIterator<T>::Type& begin);
+	IINField RecordAllStatic(StreamObject<T>* obj, const openpal::Indexable<PointInfo<T>>* indexable);
+
 
 	// configure the state for unsol, return true of events exist
-	bool SelectUnsol(ClassMask aMask);
+	//bool SelectUnsol(ClassMask aMask);
 
 	SlaveEventBuffer mBuffer;
 
@@ -143,7 +146,7 @@ private:
 	 * @return					'true' if all of the events were written, or
 	 * 							'false' if more events remain
 	 */
-	bool LoadEventData(APDU& arAPDU);
+	// bool LoadEventData(APDU& arAPDU);
 
 	void FinalizeResponse(APDU&, bool aFIN);
 	bool IsEmpty();
@@ -184,6 +187,7 @@ private:
 	AnalogEventQueue mAnalogEvents;
 	CounterEventQueue mCounterEvents;	
 
+/*
 	template <class T>
 	bool LoadEvents(APDU& arAPDU, const typename EventIterator<T>::Type& aBegin, std::deque< EventRequest<T> >& arQueue);	
 
@@ -197,30 +201,32 @@ private:
 	template <class T>
 	size_t IterateIndexed(EventRequest<T>& arIters, typename EventIterator<T>::Type& arIter, APDU& arAPDU);
 
+
 	template <class T>
 	size_t IterateCTO(const StreamObject<T>* apObj, size_t aCount, typename EventIterator<T>::Type& arIter, APDU& arAPDU);
 
 	template <class T>
 	size_t CalcPossibleCTO(typename EventIterator<T>::Type aIter, size_t aMax);
+*/
 
 	template <class T>
-	IINField RecordStaticObjectsByRange(StreamObject<T>* apObject, uint32_t aStart, uint32_t aStop, const typename StaticIterator<T>::Type& begin);
+	IINField RecordStaticObjectsByRange(StreamObject<T>* apObject, uint32_t aStart, uint32_t aStop, const openpal::Indexable<PointInfo<T>>* indexable);
 
 	template <class T>
-	bool WriteStaticObjects(StreamObject<T>* apObject, typename StaticIterator<T>::Type aStart, typename StaticIterator<T>::Type aStop, ResponseKey aKey, APDU& arAPDU);
+	bool WriteStaticObjects(StreamObject<T>* apObject, const openpal::Indexable<PointInfo<T>>* indexable, uint32_t start, uint32_t stop, ResponseKey aKey, APDU& apdu);
 };
 
 template <class T>
-IINField ResponseContext::RecordAllStatic(StreamObject<T>* obj, const typename StaticIterator<T>::Type& begin)
-{
-	auto numType = mpDB->NumType(T::MeasEnum);
-	if(numType > 0)
+IINField ResponseContext::RecordAllStatic(StreamObject<T>* obj, const openpal::Indexable<PointInfo<T>>* indexable)
+{		
+	if(indexable->IsNotEmpty())
 	{
-		return RecordStaticObjectsByRange<T>(obj, 0, numType - 1, begin);
+		return RecordStaticObjectsByRange<T>(obj, 0, indexable->Size() - 1, indexable);
 	}
 	else return IINField::Empty;
 }
 
+/*
 template <class T>
 size_t ResponseContext::SelectEvents(PointClass aClass, const StreamObject<T>* apObj, std::deque< EventRequest<T> >& arQueue, size_t aNum)
 {
@@ -234,18 +240,15 @@ size_t ResponseContext::SelectEvents(PointClass aClass, const StreamObject<T>* a
 
 	return num;
 }
+*/
 
 template <class T>
-IINField ResponseContext::RecordStaticObjectsByRange(StreamObject<T>* apObject, uint32_t aStart, uint32_t aStop, const typename StaticIterator<T>::Type& begin)
-{
-	uint32_t num = mpDB->NumType(T::MeasEnum);
-	if(aStop < num)
-	{
-		auto first = begin + aStart;
-		auto last = begin + aStop;
-	
+IINField ResponseContext::RecordStaticObjectsByRange(StreamObject<T>* object, uint32_t start, uint32_t stop, const openpal::Indexable<PointInfo<T>>* indexable)
+{	
+	if(indexable->Contains(start) && indexable->Contains(stop))
+	{	
 		ResponseKey key(RequestType::STATIC, this->mStaticWriteMap.size());
-		auto func = [=](APDU& apdu) { return this->WriteStaticObjects<T>(apObject, first, last, key, apdu); };	
+		auto func = [=](APDU& apdu) { return this->WriteStaticObjects<T>(object, indexable, start, stop, key, apdu); };	
 		this->mStaticWriteMap[key] = func;
 		return IINField::Empty;
 	}
@@ -255,28 +258,29 @@ IINField ResponseContext::RecordStaticObjectsByRange(StreamObject<T>* apObject, 
 	}	
 }
 
-template <class T>
-bool ResponseContext::WriteStaticObjects(StreamObject<T>* apObject, typename StaticIterator<T>::Type aStart, typename StaticIterator<T>::Type aStop, ResponseKey aKey, APDU& arAPDU)
-{
-	size_t start = aStart->index;
-	size_t stop = aStop->index;
-	ObjectWriteIterator owi = arAPDU.WriteContiguous(apObject, start, stop);
 
-	for(size_t i = start; i <= stop; ++i) {
+template <class T>
+bool ResponseContext::WriteStaticObjects(StreamObject<T>* object, const openpal::Indexable<PointInfo<T>>* indexable, uint32_t start, uint32_t stop, ResponseKey aKey, APDU& apdu)
+{
+	ObjectWriteIterator owi = apdu.WriteContiguous(object, start, stop);
+
+	for(size_t i = start; i <= stop; ++i) 
+	{
 		if(owi.IsEnd()) { // out of space in the fragment
-			this->mStaticWriteMap[aKey] = [ = ](APDU & arAPDU) {
-				return this->WriteStaticObjects<T>(apObject, aStart, aStop, aKey, arAPDU);
+			this->mStaticWriteMap[aKey] = [ = ](APDU& apdu) 
+			{
+				return this->WriteStaticObjects<T>(object, indexable, i, stop, aKey, apdu);
 			};
 			return false;
 		}
-		apObject->Write(*owi, aStart->value);
-		++aStart; //increment the iterators
+		object->Write(*owi, indexable->Get(i).value);		
 		++owi;
 	}
 
 	return true;
 }
 
+/*
 template <class T>
 bool ResponseContext::LoadEvents(APDU& arAPDU, const typename EventIterator<T>::Type& aBegin, std::deque< EventRequest<T> >& arQueue)
 {
@@ -284,7 +288,7 @@ bool ResponseContext::LoadEvents(APDU& arAPDU, const typename EventIterator<T>::
 	size_t remain = mBuffer.NumSelected(Convert(T::MeasEnum));
 
 	while (arQueue.size() > 0) {
-		/* Get the number of events requested */
+		// Get the number of events requested
 		EventRequest<T>& r = arQueue.front();
 
 		if (r.count > remain) {
@@ -295,16 +299,16 @@ bool ResponseContext::LoadEvents(APDU& arAPDU, const typename EventIterator<T>::
 		remain -= written;
 
 		if (written > 0) {
-			/* At least one event was loaded */
+			// At least one event was loaded
 			this->mLoadedEventData = true;
 		}
 
 		if (written == r.count) {
-			/* all events were written, finished with request */
+			// all events were written, finished with request
 			arQueue.pop_front();
 		}
 		else {
-			/* more event data remains in the queue */
+			// more event data remains in the queue
 			r.count -= written;
 			return false;
 		}
@@ -334,6 +338,7 @@ size_t ResponseContext::IterateIndexed(EventRequest<T>& arRequest, typename Even
 	return arRequest.count; // all requested events were written
 }
 
+
 template <class T>
 size_t ResponseContext::CalcPossibleCTO(typename EventIterator<T>::Type aIter, size_t aMax)
 {
@@ -348,6 +353,7 @@ size_t ResponseContext::CalcPossibleCTO(typename EventIterator<T>::Type aIter, s
 
 	return num;
 }
+
 
 // T is the point info type
 template <class T>
@@ -382,8 +388,10 @@ size_t ResponseContext::IterateCTO(const StreamObject<T>* apObj, size_t aCount, 
 	if(num == aCount) return num;
 	else return num + this->IterateCTO(apObj, aCount - num, arIter, arAPDU); //recurse, and do another CTO header
 }
+*/
 
 }
+
 
 /* vim: set ts=4 sw=4: */
 

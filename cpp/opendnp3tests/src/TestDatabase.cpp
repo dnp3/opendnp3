@@ -104,7 +104,7 @@ BOOST_AUTO_TEST_CASE(BinaryNoChange)
 {
 	DatabaseTestObject t;
 	t.db.Configure(MeasurementType::BINARY, 1);
-	t.db.SetClass(MeasurementType::BINARY, 0, PC_CLASS_1);
+	t.db.mBinaries[0].clazz = PC_CLASS_1;
 	TestBufferForEvent(false, Binary(false, BQ_RESTART), t, t.buffer.mBinaryEvents);
 }
 
@@ -112,7 +112,7 @@ BOOST_AUTO_TEST_CASE(AnalogNoChange)
 {
 	DatabaseTestObject t;
 	t.db.Configure(MeasurementType::ANALOG, 1);
-	t.db.SetClass(MeasurementType::ANALOG, 0, PC_CLASS_1);
+	t.db.mAnalogs[0].clazz = PC_CLASS_1;	
 	TestBufferForEvent(false, Analog(0, AQ_RESTART), t, t.buffer.mAnalogEvents);
 }
 
@@ -120,7 +120,7 @@ BOOST_AUTO_TEST_CASE(CounterNoChange)
 {
 	DatabaseTestObject t;
 	t.db.Configure(MeasurementType::COUNTER, 1);
-	t.db.SetClass(MeasurementType::COUNTER, 0, PC_CLASS_1);
+	t.db.mCounters[0].clazz = PC_CLASS_1;
 	TestBufferForEvent(false, Counter(0, CQ_RESTART), t, t.buffer.mCounterEvents);
 }
 
@@ -129,7 +129,7 @@ BOOST_AUTO_TEST_CASE(BinaryChange)
 {
 	DatabaseTestObject t;
 	t.db.Configure(MeasurementType::BINARY, 1);
-	t.db.SetClass(MeasurementType::BINARY, 0, PC_CLASS_1);
+	t.db.mBinaries[0].clazz = PC_CLASS_1;
 	TestBufferForEvent(true, Binary(false, BQ_ONLINE), t, t.buffer.mBinaryEvents);
 }
 
@@ -137,7 +137,7 @@ BOOST_AUTO_TEST_CASE(AnalogChange)
 {
 	DatabaseTestObject t;
 	t.db.Configure(MeasurementType::ANALOG, 1);
-	t.db.SetClass(MeasurementType::ANALOG, 0, PC_CLASS_1);
+	t.db.mAnalogs[0].clazz = PC_CLASS_1;
 	TestBufferForEvent(true, Analog(0, AQ_ONLINE), t, t.buffer.mAnalogEvents);
 }
 
@@ -145,7 +145,7 @@ BOOST_AUTO_TEST_CASE(CounterChange)
 {
 	DatabaseTestObject t;
 	t.db.Configure(MeasurementType::COUNTER, 1);
-	t.db.SetClass(MeasurementType::COUNTER, 0, PC_CLASS_1);
+	t.db.mCounters[0].clazz = PC_CLASS_1;
 	TestBufferForEvent(true, Counter(0, CQ_ONLINE), t, t.buffer.mCounterEvents);
 }
 
@@ -154,9 +154,9 @@ BOOST_AUTO_TEST_CASE(AnalogLastReportedChange)
 {
 	DatabaseTestObject t;
 	t.db.Configure(MeasurementType::ANALOG, 1);
-	t.db.SetClass(MeasurementType::ANALOG, 0, PC_CLASS_1);
-	t.db.SetDeadband(MeasurementType::ANALOG, 0, 5); //value must change by more than 5 before being reported
-
+	t.db.mAnalogs[0].clazz = PC_CLASS_1;
+	t.db.mAnalogs[0].deadband = 5;//value must change by more than 5 before being reported
+	
 	TestBufferForEvent(false, Analog(-2, AQ_RESTART), t, t.buffer.mAnalogEvents);
 	TestBufferForEvent(false, Analog(5, AQ_RESTART), t, t.buffer.mAnalogEvents);
 	TestBufferForEvent(true, Analog(6, AQ_RESTART), t, t.buffer.mAnalogEvents); //change by 6, so 6 should get recorded
@@ -168,8 +168,8 @@ BOOST_AUTO_TEST_CASE(CounterLastReportedChange)
 {
 	DatabaseTestObject t;
 	t.db.Configure(MeasurementType::COUNTER, 1);
-	t.db.SetClass(MeasurementType::COUNTER, 0, PC_CLASS_1);
-	t.db.SetDeadband(MeasurementType::COUNTER, 0, 5); //value must change by more than 5 before being reported
+	t.db.mCounters[0].clazz = PC_CLASS_1;
+	t.db.mCounters[0].deadband = 5;
 
 	TestBufferForEvent(false, Counter(1, CQ_RESTART), t, t.buffer.mCounterEvents);
 	TestBufferForEvent(false, Counter(5, CQ_RESTART), t, t.buffer.mCounterEvents);

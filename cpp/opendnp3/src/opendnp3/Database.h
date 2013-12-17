@@ -29,8 +29,8 @@
 #include <opendnp3/IDataObserver.h>
 
 #include <openpal/Loggable.h>
+#include <openpal/DynamicCollection.h>
 
-#include <set>
 #include <vector>
 #include <limits>
 
@@ -41,15 +41,7 @@
 namespace opendnp3
 {
 
-class INotifier;
-class EventLog;
 struct DeviceTemplate;
-
-template <class T>
-struct StaticIterator {
-	typedef typename std::vector<PointInfo<T>>::const_iterator Type;
-};
-
 
 /**
 Manages the static data model of a DNP3 slave. Dual-interface to update data points and read current values.
@@ -67,23 +59,18 @@ public:
 	/* Configuration functions */
 
 	void Configure(const DeviceTemplate& arTmp);
-	void Configure(MeasurementType aType, size_t aNumPoints);
-
-	uint32_t NumType(MeasurementType aType);
-	
-	bool SetDeadband(MeasurementType, size_t aIndex, double aDeadband);
-	bool SetClass(MeasurementType aType, size_t aIndex, PointClass aClass);
+	void Configure(MeasurementType aType, size_t aNumPoints);	
 	void SetClass(MeasurementType aType, PointClass aClass); //set classes for all indices
 
 	void SetEventBuffer(IEventBuffer*);
 
 	/* Functions for obtaining iterators */
 
-	StaticIterator<Binary>::Type BeginBinary() { return mBinaryVec.begin(); }	
-	StaticIterator<Analog>::Type BeginAnalog() { return mAnalogVec.begin(); }
-	StaticIterator<Counter>::Type BeginCounter() { return mCounterVec.begin(); }
-	StaticIterator<ControlStatus>::Type BeginControlStatus() { return mControlStatusVec.begin(); }	
-	StaticIterator<SetpointStatus>::Type BeginSetpointStatus() { return mSetpointStatusVec.begin(); }
+	openpal::Indexable<PointInfo<Binary>>* Binaries() { return &mBinaries; }
+	openpal::Indexable<PointInfo<Analog>>* Analogs() { return &mAnalogs; }
+	openpal::Indexable<PointInfo<Counter>>* Counters() { return &mCounters; }
+	openpal::Indexable<PointInfo<ControlStatus>>* ControlStatii() { return &mControlStatii; }
+	openpal::Indexable<PointInfo<SetpointStatus>>* SetpointStatii() { return &mSetpointStatii; }
 
 	// IDataObserver functions
 	void Update(const Binary& arPoint, uint32_t) final;
@@ -92,14 +79,28 @@ public:
 	void Update(const ControlStatus& arPoint, uint32_t) final;
 	void Update(const SetpointStatus& arPoint, uint32_t) final;
 
+	/////////////////////////////////////////
+	//	Static data
+	/////////////////////////////////////////
+
+	openpal::DynamicCollection<PointInfo<Binary>> mBinaries;	
+	openpal::DynamicCollection<PointInfo<Analog>> mAnalogs;
+	openpal::DynamicCollection<PointInfo<Counter>> mCounters;
+	openpal::DynamicCollection<PointInfo<ControlStatus>> mControlStatii;
+	openpal::DynamicCollection<PointInfo<SetpointStatus>> mSetpointStatii;
+
 private:
 
 	// ITransactable  functions, no lock on this structure.
 	void Start() final {}
-	void End() final {}
+	void End() final {}	
 
-	template<typename T>
-	void AssignIndices( std::vector< PointInfo<T> >& arVector );
+	template <typename T>
+	inline static void Configure(openpal::DynamicCollection<PointInfo<T>>& collection, uint32_t size)
+	{	
+		collection.Resize(size);
+		for(uint32_t i = 0; i < collection.Size(); ++i) collection[i].index = i;
+	}
 
 	template<typename T>
 	void SetAllOnline( std::vector< PointInfo<T> >& arVector );
@@ -110,25 +111,12 @@ private:
 	template<typename T>
 	void PerformRead(std::vector< PointInfo<T> >& arVec, T& arValue, size_t aIndex);
 
-	/////////////////////////////////////////
-	//	Static data
-	/////////////////////////////////////////
-
-	std::vector< PointInfo<Binary> > mBinaryVec;
-	std::vector< PointInfo<Analog> > mAnalogVec;
-	std::vector< PointInfo<Counter> > mCounterVec;
-	std::vector< PointInfo<ControlStatus> > mControlStatusVec;
-	std::vector< PointInfo<SetpointStatus> > mSetpointStatusVec;
+	
 
 	IEventBuffer* mpEventBuffer;
 };
 
-template<typename T>
-inline void Database::AssignIndices( std::vector< PointInfo<T> >& arVector )
-{
-	uint32_t i = 0;
-	for(auto& record: arVector) record.index = i++;	
-}
+
 
 }
 

@@ -318,9 +318,10 @@ BOOST_AUTO_TEST_CASE(ReadClass1)
 	SlaveTestObject t(cfg);
 
 	t.db.Configure(MeasurementType::ANALOG, 100);
-	t.db.SetClass(MeasurementType::ANALOG, 0x10, PC_CLASS_1);
-	t.db.SetClass(MeasurementType::ANALOG, 0x17, PC_CLASS_1);
-	t.db.SetClass(MeasurementType::ANALOG, 0x05, PC_CLASS_1);
+	t.db.mAnalogs[0x10].clazz = PC_CLASS_1;
+	t.db.mAnalogs[0x17].clazz = PC_CLASS_1;
+	t.db.mAnalogs[0x05].clazz = PC_CLASS_1;
+	
 	t.slave.OnLowerLayerUp();
 
 	{
@@ -348,7 +349,7 @@ BOOST_AUTO_TEST_CASE(ReadClass1TimeOrdered)
 	SlaveTestObject t(cfg);
 
 	t.db.Configure(MeasurementType::ANALOG, 100);
-	t.db.SetClass(MeasurementType::ANALOG, 0x10, PC_CLASS_1);
+	t.db.mAnalogs[0x10].clazz = PC_CLASS_1;	
 	t.slave.OnLowerLayerUp();
 
 	{
