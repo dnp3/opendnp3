@@ -157,6 +157,8 @@
   <ItemGroup>
     <ClCompile Include="src\BoostTestStart.cpp" />
     <ClCompile Include="src\ListAdapterTestSuite.cpp" />
+    <ClCompile Include="src\RandomInsertAdapterTestSuite.cpp" />
+    <ClCompile Include="src\StackAdapterTestSuite.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\openpal\openpal.vcxproj">

@@ -18,80 +18,61 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __LIST_ADAPTER_H_
-#define __LIST_ADAPTER_H_
+#ifndef __RANDOM_INSERT_ADAPTER_H_
+#define __RANDOM_INSERT_ADAPTER_H_
 
 #include "Indexable.h"
+#include "StackAdapter.h"
 
 namespace openpal
 {
 
-// References a fixed-size buffer somewhere, providing a list-like interface
-// Gives the appearance of a list that can grow, but not shrink
-template <class T>
-class ListAdapter : public HasSize
+template <class ValueType>
+class RandomInsertAdapter
 {
-
 	public:
 
-		ListAdapter(Indexable<T> indexable) : 
-			HasSize(0),
-			indexable(indexable)
-		{}				
-
-		inline T& operator[](uint32_t index) 
+		RandomInsertAdapter(Indexable<ValueType> aValues, Indexable<uint32_t> aIndices) : 
+			values(aValues),
+			availableIndices(aIndices)
 		{
-			assert(index < size);
-			return indexable[index];
-		}
+			assert(aValues.Size() == aIndices.Size());
+			for(uint32_t i = 0; i < aValues.Size(); ++i) availableIndices.Push(i);
+		}				
 
-		inline uint32_t Capacity() const
+		inline ValueType& operator[](uint32_t index) 
 		{
-			return indexable.Size();
-		}
+			assert(index < values.Size());
+			return values[index];
+		}		
 
 		inline bool IsFull() const
 		{
-			return size == indexable.Size();
+			return availableIndices.IsEmpty();
 		}
 
-		inline void Clear()
+		// put in a value and it tells you what index it was assigned
+		// the value will never be overwritten
+		uint32_t Add(const ValueType& value)
 		{
-			size = 0;
+			assert(!availableIndices.IsEmpty());
+			auto index = availableIndices.Pop();
+			values[index] = value;
+			return index;
 		}
 
-		const T& operator[](uint32_t index) const
-		{ 
-			assert(index < size);
-			return indexable[i];
+		// This is really based on trust the index is actually being used		
+		void Release(uint32_t index)
+		{
+			assert(index < values.Size());
+			assert(!availableIndices.IsFull());
+			availableIndices.Push(index);
 		}
-
-		bool Add(const T& value)
-		{
-			if(this->Size() < indexable.Size())
-			{
-				indexable[size] = value;
-				++size;
-				return true;
-			}
-			else return false;
-		}
-
-		template <class Action>
-		void foreach(const Action& action)
-		{
-			for(uint32_t i = 0; i < size; ++i) action(indexable[i]);
-		}		
-
-		template <class Action>
-		void foreachIndex(const Action& action)
-		{
-			for(uint32_t i = 0; i < size; ++i) action(indexable[i], i);
-		}									
 	
 	private:
-		Indexable<T> indexable;
-		ListAdapter();
+		Indexable<ValueType> values;
+		StackAdapter<uint32_t> availableIndices;
+		RandomInsertAdapter();
 };
 
 }

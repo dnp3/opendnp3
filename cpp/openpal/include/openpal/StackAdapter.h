@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __LIST_ADAPTER_H_
-#define __LIST_ADAPTER_H_
+#ifndef __STACK_ADAPTER_H_
+#define __STACK_ADAPTER_H_
 
 #include "Indexable.h"
 
@@ -29,21 +29,15 @@ namespace openpal
 // References a fixed-size buffer somewhere, providing a list-like interface
 // Gives the appearance of a list that can grow, but not shrink
 template <class T>
-class ListAdapter : public HasSize
+class StackAdapter : public HasSize
 {
 
 	public:
 
-		ListAdapter(Indexable<T> indexable) : 
+		StackAdapter(Indexable<T> indexable) : 
 			HasSize(0),
 			indexable(indexable)
-		{}				
-
-		inline T& operator[](uint32_t index) 
-		{
-			assert(index < size);
-			return indexable[index];
-		}
+		{}						
 
 		inline uint32_t Capacity() const
 		{
@@ -55,43 +49,27 @@ class ListAdapter : public HasSize
 			return size == indexable.Size();
 		}
 
-		inline void Clear()
+		bool Push(const T& value)
 		{
-			size = 0;
-		}
-
-		const T& operator[](uint32_t index) const
-		{ 
-			assert(index < size);
-			return indexable[i];
-		}
-
-		bool Add(const T& value)
-		{
-			if(this->Size() < indexable.Size())
+			if(!IsFull())
 			{
 				indexable[size] = value;
 				++size;
 				return true;
 			}
 			else return false;
+		}	
+
+		T Pop()
+		{
+			assert(IsNotEmpty());
+			--size;
+			return indexable[size];			
 		}
-
-		template <class Action>
-		void foreach(const Action& action)
-		{
-			for(uint32_t i = 0; i < size; ++i) action(indexable[i]);
-		}		
-
-		template <class Action>
-		void foreachIndex(const Action& action)
-		{
-			for(uint32_t i = 0; i < size; ++i) action(indexable[i], i);
-		}									
 	
 	private:
 		Indexable<T> indexable;
-		ListAdapter();
+		StackAdapter();
 };
 
 }

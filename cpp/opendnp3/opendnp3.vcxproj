@@ -238,6 +238,7 @@
     <ClInclude Include="src\opendnp3\ClassCounter.h" />
     <ClInclude Include="src\opendnp3\CommandSequence.h" />
     <ClInclude Include="src\opendnp3\DynamicallyAllocatedDatabase.h" />
+    <ClInclude Include="src\opendnp3\EventBufferFacade.h" />
     <ClInclude Include="src\opendnp3\Iterable.h" />
     <ClInclude Include="src\opendnp3\CommandTask.h" />
     <ClInclude Include="src\opendnp3\ConstantCommandProcessor.h" />
@@ -319,6 +320,7 @@
     <ClInclude Include="src\opendnp3\objects\Group50.h" />
     <ClInclude Include="src\opendnp3\objects\Group51.h" />
     <ClInclude Include="src\opendnp3\ObjectWriteIterator.h" />
+    <ClInclude Include="src\opendnp3\OutstationEventBuffer.h" />
     <ClInclude Include="src\opendnp3\OutstationSBOHandler.h" />
     <ClInclude Include="src\opendnp3\OutstationStackImpl.h" />
     <ClInclude Include="src\opendnp3\PackingTemplates.h" />
@@ -333,6 +335,7 @@
     <ClInclude Include="src\opendnp3\ResponseContext.h" />
     <ClInclude Include="src\opendnp3\MeasurementHandler.h" />
     <ClInclude Include="src\opendnp3\SecLinkLayerStates.h" />
+    <ClInclude Include="src\opendnp3\SelectionIterator.h" />
     <ClInclude Include="src\opendnp3\SequenceInfo.h" />
     <ClInclude Include="src\opendnp3\SettableOnce.h" />
     <ClInclude Include="src\opendnp3\ShiftableBuffer.h" />
@@ -432,8 +435,10 @@
     <ClCompile Include="src\opendnp3\objects\Group50.cpp" />
     <ClCompile Include="src\opendnp3\objects\Group51.cpp" />
     <ClCompile Include="src\opendnp3\objects\Group52.cpp" />
+    <ClCompile Include="src\opendnp3\OutstationEventBuffer.cpp" />
     <ClCompile Include="src\opendnp3\PostingMeasurementHandler.cpp" />
     <ClCompile Include="src\opendnp3\ReadHandler.cpp" />
+    <ClCompile Include="src\opendnp3\SelectionIterator.cpp" />
     <ClCompile Include="src\opendnp3\TimeTransaction.cpp" />
     <ClCompile Include="src\opendnp3\DestructorHook.cpp" />
     <ClCompile Include="src\opendnp3\DNP3Channel.cpp" />
