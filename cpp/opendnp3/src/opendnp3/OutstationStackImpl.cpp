@@ -34,12 +34,13 @@ OutstationStackImpl::OutstationStackImpl(
 	IOutstation(arLogger, aEnableDisableFunc),
 	mpExecutor(apExecutor),
 	mAppStack(arLogger, apExecutor, arCfg.app, arCfg.link),
-	mDynamicDatabaseBuffer(arCfg.database),
+	mDynamicDatabaseBuffer(arCfg.database.databaseTemplate),
 	mDB(arLogger, mDynamicDatabaseBuffer.GetFacade()),
 	mSlave(arLogger.GetSubLogger("outstation"), &mAppStack.mApplication, apExecutor, apTimeWriteHandler, &mDB, apCmdHandler, arCfg.slave),
 	mOnShutdown(aOnShutdown)
 {
-	mAppStack.mApplication.SetUser(&mSlave);	
+	mAppStack.mApplication.SetUser(&mSlave);
+	mDynamicDatabaseBuffer.Configure(arCfg.database);
 }
 
 IDataObserver* OutstationStackImpl::GetDataObserver()

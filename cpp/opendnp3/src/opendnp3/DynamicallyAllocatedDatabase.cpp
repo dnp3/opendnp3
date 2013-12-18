@@ -24,15 +24,15 @@
 namespace opendnp3
 {
 
-DynamicallyAllocatedDatabase::DynamicallyAllocatedDatabase(const DatabaseConfiguration& config) :
-	binaryValues(config.databaseTemplate.numBinary),
-	analogValues(config.databaseTemplate.numAnalog),
-	counterValues(config.databaseTemplate.numCounter),
-	controlStatusValues(config.databaseTemplate.numControlStatus),
-	setpointStatusValues(config.databaseTemplate.numSetpointStatus),
-	binaryMetadata(config.databaseTemplate.numBinary),
-	analogMetadata(config.databaseTemplate.numAnalog),
-	counterMetadata(config.databaseTemplate.numCounter)
+DynamicallyAllocatedDatabase::DynamicallyAllocatedDatabase(const DatabaseTemplate& databaseTemplate):
+	binaryValues(databaseTemplate.numBinary),
+	analogValues(databaseTemplate.numAnalog),
+	counterValues(databaseTemplate.numCounter),
+	controlStatusValues(databaseTemplate.numControlStatus),
+	setpointStatusValues(databaseTemplate.numSetpointStatus),
+	binaryMetadata(databaseTemplate.numBinary),
+	analogMetadata(databaseTemplate.numAnalog),
+	counterMetadata(databaseTemplate.numCounter)
 {
 
 }
@@ -40,6 +40,14 @@ DynamicallyAllocatedDatabase::DynamicallyAllocatedDatabase(const DatabaseConfigu
 void DynamicallyAllocatedDatabase::Configure(const DatabaseConfiguration& config)
 {
 	config.binaryMetadata.foreachIndex([this](const EventPointRecord& r, uint32_t i) { binaryMetadata[i].clazz = r.EventClass; });
+	config.analogMetadata.foreachIndex([this](const DeadbandPointRecord<double>& r, uint32_t i) { 
+		analogMetadata[i].clazz = r.EventClass;
+		analogMetadata[i].deadband = r.Deadband;
+	});
+	config.counterMetadata.foreachIndex([this](const DeadbandPointRecord<uint32_t>& r, uint32_t i) { 
+		counterMetadata[i].clazz = r.EventClass; 
+		counterMetadata[i].deadband;
+	});
 }
 
 StaticDataFacade DynamicallyAllocatedDatabase::GetFacade()

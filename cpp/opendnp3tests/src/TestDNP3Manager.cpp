@@ -65,7 +65,7 @@ BOOST_AUTO_TEST_CASE(ConstructionDestruction)
 		auto pServer = mgr.CreateChannel(Logger(&log, LogLevel::Info, "serverChannel"), TimeDuration::Seconds(5), pServerPhys);
 
 		pClient->AddMaster("master", LogLevel::Info, NullMeasurementHandler::Inst(), UTCTimeSource::Inst(), MasterStackConfig());
-		pServer->AddOutstation("outstation", LogLevel::Info, SuccessCommandHandler::Inst(), NullTimeWriteHandler::Inst(), SlaveStackConfig());
+		pServer->AddOutstation("outstation", LogLevel::Info, SuccessCommandHandler::Inst(), NullTimeWriteHandler::Inst(), SlaveStackConfig(DatabaseTemplate()));
 	}
 }
 
@@ -83,7 +83,7 @@ BOOST_AUTO_TEST_CASE(ManualStackShutdown)
 		auto pServerPhys = new PhysicalLayerAsyncTCPServer(Logger(&log, LogLevel::Info, "server"), pool.GetIOService(), "127.0.0.1", 20000);
 		auto pServer = mgr.CreateChannel(Logger(&log, LogLevel::Info, "serverChannel"), TimeDuration::Seconds(5), pServerPhys);
 
-		auto pOutstation = pServer->AddOutstation("outstation", LogLevel::Info, SuccessCommandHandler::Inst(), NullTimeWriteHandler::Inst(), SlaveStackConfig());
+		auto pOutstation = pServer->AddOutstation("outstation", LogLevel::Info, SuccessCommandHandler::Inst(), NullTimeWriteHandler::Inst(), SlaveStackConfig(DatabaseTemplate()));
 		auto pMaster = pClient->AddMaster("master", LogLevel::Info, NullMeasurementHandler::Inst(), UTCTimeSource::Inst(), MasterStackConfig());
 
 		pOutstation->Shutdown();

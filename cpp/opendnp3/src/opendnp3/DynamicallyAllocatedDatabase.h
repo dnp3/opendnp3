@@ -33,13 +33,13 @@ class DynamicallyAllocatedDatabase
 {	
 	public:
 
-	DynamicallyAllocatedDatabase(const DatabaseConfiguration& dataTemplate);
+	DynamicallyAllocatedDatabase(const DatabaseTemplate& databaseTemplate);
 
-	StaticDataFacade GetFacade();
-	
-	private:
+	StaticDataFacade GetFacade();	
 
 	void Configure(const DatabaseConfiguration& dataTemplate);
+
+	private:
 	
 	openpal::DynamicArray<Binary> binaryValues;
 	openpal::DynamicArray<Analog> analogValues;

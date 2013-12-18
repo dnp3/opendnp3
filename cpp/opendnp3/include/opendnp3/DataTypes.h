@@ -181,10 +181,14 @@ public:
 
 	bool IsEvent(const Counter& newValue, uint32_t aDeadband) const
 	{
-		auto val1 = this->GetValue();
-		auto val2 = newValue.GetValue();
-		auto diff = (val1 > val2) ? (val1 - val2) : (val2 - val1);
-		return diff > aDeadband;			
+		if(mQuality != newValue.mQuality) return true;
+		else 
+		{
+			auto val1 = this->GetValue();
+			auto val2 = newValue.GetValue();
+			auto diff = (val1 > val2) ? (val1 - val2) : (val2 - val1);
+			return diff > aDeadband;
+		}
 	}
 	
 	typedef uint32_t DeadbandType;

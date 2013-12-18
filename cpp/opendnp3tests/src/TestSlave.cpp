@@ -38,7 +38,7 @@ BOOST_AUTO_TEST_SUITE(SlaveTestSuite)
 BOOST_AUTO_TEST_CASE(InitialState)
 {
 	SlaveConfig cfg;
-	SlaveTestObject t(cfg);
+	SlaveTestObject t(cfg, DatabaseTemplate());
 
 	t.slave.OnLowerLayerDown();
 	
@@ -57,7 +57,7 @@ BOOST_AUTO_TEST_CASE(InitialState)
 BOOST_AUTO_TEST_CASE(TimersCancledOnClose)
 {
 	SlaveConfig cfg; cfg.mAllowTimeSync = true;
-	SlaveTestObject t(cfg);
+	SlaveTestObject t(cfg, DatabaseTemplate());
 	t.slave.OnLowerLayerUp();
 	t.slave.OnLowerLayerDown();
 
@@ -69,10 +69,9 @@ BOOST_AUTO_TEST_CASE(DataPost)
 {
 
 	SlaveConfig cfg;
-	SlaveTestObject t(cfg);
-	t.db.Configure(MeasurementType::BINARY, 1);
-
-	t.db.SetClass(MeasurementType::BINARY, PC_CLASS_1);
+	SlaveTestObject t(cfg, DatabaseTemplate::BinaryOnly(1));
+	
+	t.db.staticData.binaries.metadata[0].clazz = PC_CLASS_1;
 
 	IDataObserver* pObs = t.slave.GetDataObserver();
 	{
@@ -89,9 +88,8 @@ BOOST_AUTO_TEST_CASE(DataPost)
 BOOST_AUTO_TEST_CASE(DataPostToNonExistent)
 {
 	SlaveConfig cfg;
-	SlaveTestObject t(cfg);
-	t.db.Configure(MeasurementType::BINARY, 1);
-	t.db.SetClass(MeasurementType::BINARY, PC_CLASS_1);
+	SlaveTestObject t(cfg, DatabaseTemplate::BinaryOnly(1));	
+	t.db.staticData.binaries.metadata[0].clazz = PC_CLASS_1;
 
 	IDataObserver* pObs = t.slave.GetDataObserver();
 	{
@@ -117,7 +115,7 @@ BOOST_AUTO_TEST_CASE(DataPostToNonExistent)
 BOOST_AUTO_TEST_CASE(UnsolicitedStaysDisabledEvenIfDataAreLoadedPriorToOpen)
 {
 	SlaveConfig cfg; cfg.mDisableUnsol = true;
-	SlaveTestObject t(cfg);
+	SlaveTestObject t(cfg, DatabaseTemplate::AnalogOnly(1));
 
 	auto pObs = t.slave.GetDataObserver();
 
@@ -137,7 +135,7 @@ BOOST_AUTO_TEST_CASE(UnsolicitedStaysDisabledEvenIfDataAreLoadedPriorToOpen)
 BOOST_AUTO_TEST_CASE(UnsolicitedStaysDisabledEvenIfDataAreLoadedAfterOpen)
 {
 	SlaveConfig cfg; cfg.mDisableUnsol = true;
-	SlaveTestObject t(cfg);
+	SlaveTestObject t(cfg, DatabaseTemplate::AnalogOnly(1));
 
 	auto pObs = t.slave.GetDataObserver();
 
@@ -158,7 +156,7 @@ BOOST_AUTO_TEST_CASE(UnsolicitedStaysDisabledEvenIfDataAreLoadedAfterOpen)
 BOOST_AUTO_TEST_CASE(UnsupportedFunction)
 {
 	SlaveConfig cfg; cfg.mDisableUnsol = true;
-	SlaveTestObject t(cfg);
+	SlaveTestObject t(cfg, DatabaseTemplate());
 	t.slave.OnLowerLayerUp();
 
 
@@ -169,7 +167,7 @@ BOOST_AUTO_TEST_CASE(UnsupportedFunction)
 BOOST_AUTO_TEST_CASE(WriteIIN)
 {
 	SlaveConfig cfg; cfg.mDisableUnsol = true;
-	SlaveTestObject t(cfg);
+	SlaveTestObject t(cfg, DatabaseTemplate());
 	t.slave.OnLowerLayerUp();
 
 	t.SendToSlave("C0 02 50 01 00 07 07 00");
@@ -179,7 +177,7 @@ BOOST_AUTO_TEST_CASE(WriteIIN)
 BOOST_AUTO_TEST_CASE(WriteIINEnabled)
 {
 	SlaveConfig cfg; cfg.mDisableUnsol = true;
-	SlaveTestObject t(cfg);
+	SlaveTestObject t(cfg, DatabaseTemplate());
 	t.slave.OnLowerLayerUp();
 
 	t.SendToSlave("C0 02 50 01 00 07 07 01");
@@ -189,7 +187,7 @@ BOOST_AUTO_TEST_CASE(WriteIINEnabled)
 BOOST_AUTO_TEST_CASE(WriteIINWrongBit)
 {
 	SlaveConfig cfg; cfg.mDisableUnsol = true;
-	SlaveTestObject t(cfg);
+	SlaveTestObject t(cfg, DatabaseTemplate());
 	t.slave.OnLowerLayerUp();
 
 	t.SendToSlave("C0 02 50 01 00 04 04 01");
@@ -199,7 +197,7 @@ BOOST_AUTO_TEST_CASE(WriteIINWrongBit)
 BOOST_AUTO_TEST_CASE(WriteNonWriteObject)
 {
 	SlaveConfig cfg;  cfg.mDisableUnsol = true;
-	SlaveTestObject t(cfg);
+	SlaveTestObject t(cfg, DatabaseTemplate());
 	t.slave.OnLowerLayerUp();
 
 	t.SendToSlave("C0 02 01 02 00 07 07 00");
@@ -210,7 +208,7 @@ BOOST_AUTO_TEST_CASE(WriteNonWriteObject)
 BOOST_AUTO_TEST_CASE(DelayMeasure)
 {
 	SlaveConfig cfg;  cfg.mDisableUnsol = true;
-	SlaveTestObject t(cfg);
+	SlaveTestObject t(cfg, DatabaseTemplate());
 	t.slave.OnLowerLayerUp();
 
 	t.SendToSlave("C0 17"); //delay measure
@@ -220,7 +218,7 @@ BOOST_AUTO_TEST_CASE(DelayMeasure)
 BOOST_AUTO_TEST_CASE(DelayMeasureExtraData)
 {
 	SlaveConfig cfg;  cfg.mDisableUnsol = true;
-	SlaveTestObject t(cfg);
+	SlaveTestObject t(cfg, DatabaseTemplate());
 	t.slave.OnLowerLayerUp();
 
 	t.SendToSlave("C0 17 DE AD BE EF"); //delay measure
@@ -231,7 +229,7 @@ BOOST_AUTO_TEST_CASE(WriteTimeDate)
 {
 	SlaveConfig cfg; cfg.mDisableUnsol = true;
 	cfg.mAllowTimeSync = true;
-	SlaveTestObject t(cfg);
+	SlaveTestObject t(cfg, DatabaseTemplate());
 	t.slave.OnLowerLayerUp();
 
 
@@ -248,7 +246,7 @@ BOOST_AUTO_TEST_CASE(WriteTimeDateNotAsking)
 {
 	SlaveConfig cfg; cfg.mDisableUnsol = true;
 	cfg.mAllowTimeSync = false;
-	SlaveTestObject t(cfg);
+	SlaveTestObject t(cfg, DatabaseTemplate());
 	t.slave.OnLowerLayerUp();
 
 	t.SendToSlave("C0 02 32 01 07 01 D2 04 00 00 00 00"); //write Grp50Var1, value = 1234 ms after epoch
@@ -260,7 +258,7 @@ BOOST_AUTO_TEST_CASE(WriteTimeDateMultipleObjects)
 {
 	SlaveConfig cfg; cfg.mDisableUnsol = true;
 	cfg.mAllowTimeSync = true;
-	SlaveTestObject t(cfg);
+	SlaveTestObject t(cfg, DatabaseTemplate());
 	t.slave.OnLowerLayerUp();
 
 	t.SendToSlave("C0 02 32 01 07 02 D2 04 00 00 00 00 D2 04 00 00 00 00"); //write Grp50Var1, value = 1234 ms after epoch
@@ -272,7 +270,7 @@ BOOST_AUTO_TEST_CASE(WriteTimeDateMultipleObjects)
 BOOST_AUTO_TEST_CASE(BlankIntegrityPoll)
 {
 	SlaveConfig cfg; cfg.mDisableUnsol = true;
-	SlaveTestObject t(cfg);
+	SlaveTestObject t(cfg, DatabaseTemplate());
 	t.slave.OnLowerLayerUp();
 
 	t.SendToSlave("C0 01 3C 01 06"); // Read class 0
@@ -283,8 +281,7 @@ BOOST_AUTO_TEST_CASE(ReadClass0MultiFrag)
 {
 	SlaveConfig cfg; cfg.mDisableUnsol = true;
 	cfg.mMaxFragSize = 20; // override to use a fragment length of 20
-	SlaveTestObject t(cfg);
-	t.db.Configure(MeasurementType::ANALOG, 8);
+	SlaveTestObject t(cfg, DatabaseTemplate::AnalogOnly(8));	
 	t.slave.OnLowerLayerUp();
 
 	{
@@ -302,10 +299,11 @@ BOOST_AUTO_TEST_CASE(ReadClass0MultiFrag)
 	BOOST_REQUIRE_EQUAL(t.Read(), "40 81 80 00 1E 01 00 06 07 01 00 00 00 00 01 00 00 00 00");
 }
 
+/*
 BOOST_AUTO_TEST_CASE(BlankExceptionScan)
 {
 	SlaveConfig cfg; cfg.mDisableUnsol = true;
-	SlaveTestObject t(cfg);
+	SlaveTestObject t(cfg, DatabaseTemplate());
 	t.slave.OnLowerLayerUp();
 
 	t.SendToSlave("C0 01 3C 02 06"); // Read class 1
@@ -315,12 +313,11 @@ BOOST_AUTO_TEST_CASE(BlankExceptionScan)
 BOOST_AUTO_TEST_CASE(ReadClass1)
 {
 	SlaveConfig cfg; cfg.mDisableUnsol = true;
-	SlaveTestObject t(cfg);
-
-	t.db.Configure(MeasurementType::ANALOG, 100);
-	t.db.mAnalogs[0x10].clazz = PC_CLASS_1;
-	t.db.mAnalogs[0x17].clazz = PC_CLASS_1;
-	t.db.mAnalogs[0x05].clazz = PC_CLASS_1;
+	SlaveTestObject t(cfg, DatabaseTemplate::AnalogOnly(100));
+	
+	t.db.staticData.analogs.metadata[0x10].clazz = PC_CLASS_1;
+	t.db.staticData.analogs.metadata[0x17].clazz = PC_CLASS_1;
+	t.db.staticData.analogs.metadata[0x05].clazz = PC_CLASS_1;
 	
 	t.slave.OnLowerLayerUp();
 
@@ -438,7 +435,7 @@ BOOST_AUTO_TEST_CASE(UnsolData)
 	BOOST_REQUIRE_EQUAL(t.app.NumAPDU(), 0); //check that no more frags are sent
 }
 
-/*
+
 BOOST_AUTO_TEST_CASE(UnsolEventBufferOverflow)
 {
 	SlaveConfig cfg;

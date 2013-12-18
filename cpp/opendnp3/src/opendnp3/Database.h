@@ -62,12 +62,12 @@ public:
 	openpal::Indexable<ControlStatus> ControlStatii();
 	openpal::Indexable<SetpointStatus> SetpointStatii();
 
+	StaticDataFacade staticData;
+
 private:
 
 	Database();
 	Database(const Database&);
-
-	StaticDataFacade staticData;
 
 	template <class T>
 	void UpdateEventBuffer(const T& value, uint32_t index, PointClass clazz)

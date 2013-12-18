@@ -24,6 +24,7 @@
 #include <opendnp3/Slave.h>
 #include <opendnp3/Database.h>
 #include <opendnp3/SlaveConfig.h>
+#include <opendnp3/DynamicallyAllocatedDatabase.h>
 
 #include "MockExecutor.h"
 #include "LogTester.h"
@@ -37,7 +38,7 @@ namespace opendnp3
 class SlaveTestObject
 {
 public:
-	SlaveTestObject(const SlaveConfig& arCfg, openpal::LogLevel aLevel = openpal::LogLevel::Info, bool aImmediate = false);
+	SlaveTestObject(const SlaveConfig& arCfg, const DatabaseTemplate& dbTemplate, openpal::LogLevel aLevel = openpal::LogLevel::Info, bool aImmediate = false);
 
 	void SendToSlave(const std::string& arData, SequenceInfo aSeq = SequenceInfo::OTHER);
 
@@ -54,6 +55,7 @@ public:
 	MockTimeWriteHandler mMockTimeWriteHandler;
 	MockExecutor mts;
 	MockAppLayer app;
+	DynamicallyAllocatedDatabase dbBuffers;
 	Database db;
 	MockCommandHandler cmdHandler;
 	Slave slave;

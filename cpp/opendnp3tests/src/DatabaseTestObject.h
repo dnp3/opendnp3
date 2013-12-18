@@ -25,6 +25,7 @@
 
 #include <opendnp3/Event.h>
 #include <opendnp3/Database.h>
+#include <opendnp3/DynamicallyAllocatedDatabase.h>
 
 #include <asiopal/Log.h>
 
@@ -58,11 +59,17 @@ public:
 class DatabaseTestObject
 {
 public:
-	DatabaseTestObject(openpal::LogLevel aLevel = openpal::LogLevel::Info) :
-		db(openpal::Logger(&log, aLevel, "test")) {
-		db.SetEventBuffer(&buffer);
+	DatabaseTestObject(const DatabaseTemplate& dbTemplate, openpal::LogLevel aLevel = openpal::LogLevel::Info) :
+		buffers(dbTemplate),
+		db(openpal::Logger(&log, aLevel, "test"), buffers.GetFacade()) 
+	{
+		db.AddEventBuffer(&buffer);
 	}
 
+private:
+	DynamicallyAllocatedDatabase buffers;
+
+public:
 	asiopal::EventLog log;
 	MockEventBuffer buffer;
 	Database db;

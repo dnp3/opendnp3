@@ -29,6 +29,21 @@ namespace opendnp3
 // template for specifying the size of types in an outstation database
 struct DatabaseTemplate
 {	
+	static DatabaseTemplate BinaryOnly(uint32_t count)
+	{
+		return DatabaseTemplate(count);
+	}
+
+	static DatabaseTemplate AnalogOnly(uint32_t count)
+	{
+		return DatabaseTemplate(0, count, 0);
+	}
+
+	static DatabaseTemplate CounterOnly(uint32_t count)
+	{
+		return DatabaseTemplate(0, 0, count);
+	}
+
 	DatabaseTemplate(uint32_t aNumBinary = 0,
 	              uint32_t aNumAnalog = 0,
 	              uint32_t aNumCounter = 0,

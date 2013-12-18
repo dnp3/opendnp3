@@ -35,19 +35,17 @@ using namespace openpal;
 namespace opendnp3
 {
 
-SlaveTestObject::SlaveTestObject(const SlaveConfig& arCfg, LogLevel aLevel, bool aImmediate) :
+SlaveTestObject::SlaveTestObject(const SlaveConfig& arCfg, const DatabaseTemplate& dbTemplate, LogLevel aLevel, bool aImmediate) :
 	log(),
-	mMockTimeWriteHandler([this](UTCTimestamp time)
+	mMockTimeWriteHandler([this](UTCTimestamp time){mTimeWrites.push(time);}),
+	mts(),
+	app(Logger(&log, aLevel, "app")),
+	dbBuffers(dbTemplate),
+	db(Logger(&log, aLevel, "db"), dbBuffers.GetFacade()),
+	slave(Logger(&log, aLevel, "slave"), &app, &mts, &mMockTimeWriteHandler, &db, &cmdHandler, arCfg),
+	mLogger(Logger(&log, aLevel, "test"))
 {
-	mTimeWrites.push(time);
-}),
-mts(),
-app(Logger(&log, aLevel, "app")),
-db(Logger(&log, aLevel, "db")),
-slave(Logger(&log, aLevel, "slave"), &app, &mts, &mMockTimeWriteHandler, &db, &cmdHandler, arCfg),
-mLogger(Logger(&log, aLevel, "test"))
-{
-	app.SetUser(&slave);
+	app.SetUser(&slave);	
 }
 
 void SlaveTestObject::SendToSlave(const std::string& arData, SequenceInfo aSeq)
