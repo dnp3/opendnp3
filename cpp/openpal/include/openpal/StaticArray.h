@@ -18,30 +18,51 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __DYNAMIC_COLLECTION_H_
-#define __DYNAMIC_COLLECTION_H_
+#ifndef __STATIC_ARRAY_H_
+#define __STATIC_ARRAY_H_
 
+#include "Indexable.h"
 
+#include <type_traits>
 
 namespace openpal
 {
 
-template <class T>
-class Indexable : public HasSize 
+// A statically sized buffer of a certain type
+template <class T, uint32_t N>
+class StaticArray : public HasSize
 {
 
 	public:
 
-		Indexable(uint32_t aSize) : size(aSize)
+		static_assert(N > 0, "StaticArray must have size  > 0");
+
+		StaticArray() : HasSize(N)			
 		{}
 		
-		T& operator[](uint32 index) { return Get(index); }
+		inline Indexable<T> ToIndexable()
+		{
+			return Indexable<T>(buffer, N);
+		}		
 
-		T& operator[](uint32 index) const { return Get(index); }
+		inline T& operator[](uint32_t index) 
+		{
+			assert(index < N);
+			return buffer[index];
+		}
 
+		inline const T& operator[](uint32_t index) const
+		{ 
+			assert(index < N);
+			return buffer[index];
+		}
+		
 	protected:
+		T buffer[N];
 
-		virtual T& Get(uin32_t index) = 0;	
+	private:		
+		StaticArray(const StaticArray&);
+		StaticArray& operator= (const StaticArray&);		
 };
 
 }

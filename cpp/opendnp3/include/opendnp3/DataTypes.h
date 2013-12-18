@@ -21,12 +21,27 @@
 #ifndef __DATA_TYPES_H_
 #define __DATA_TYPES_H_
 
+#include <cmath>
+#include <limits>
+
 #include "BaseDataTypes.h"
 #include "QualityMasks.h"
 #include "MeasurementType.h"
 
 namespace opendnp3
 {
+
+template <class T, class U>
+bool ExceedsDeadband(const T& val1, const T& val2, T aDeadband)
+{
+	// T can be unsigned data type so std::abs won't work since it only directly supports signed data types
+	// If one uses std::abs and T is unsigned one will get an ambiguous override error.
+
+	U diff = (val2 > val1) ? (static_cast<U>(val2) - static_cast<U>(val1)) : (static_cast<U>(val1) - static_cast<U>(val2));
+
+	return diff > aDeadband;	
+}
+
 
 /**
 	The Binary data type is for describing on-off (boolean) type values. Good examples of
@@ -54,7 +69,13 @@ public:
 
 	Binary(bool aValue, uint8_t aQuality, int64_t aTime) : TypedMeasurement(aValue, GetQual(aQuality, aValue), aTime) 
 	{}
-	
+
+	bool IsEvent(const Binary& newValue) const
+	{
+		return mQuality != newValue.mQuality;
+	}
+
+
 	typedef BinaryQuality QualityType;	
 	static const MeasurementType MeasEnum = MeasurementType ::BINARY;
 	static const int ONLINE = BQ_ONLINE;		
@@ -121,7 +142,19 @@ public:
 
 	Analog(double aValue, uint8_t aQuality, int64_t aTime) : TypedMeasurement<double>(aValue, aQuality, aTime) 
 	{}
+
+	bool IsEvent(const Analog& newValue, double aDeadband) const
+	{
+		if(mQuality != newValue.mQuality) return true;
+		else 
+		{
+			double diff = fabs(GetValue() - newValue.GetValue());
+			if(diff == std::numeric_limits<double>::infinity()) return true;
+			else return diff > aDeadband;
+		}		
+	}
 	
+	typedef double DeadbandType;
 	typedef AnalogQuality QualityType;
 	static const MeasurementType MeasEnum = MeasurementType::ANALOG;
 	static const int ONLINE = AQ_ONLINE;	
@@ -145,7 +178,16 @@ public:
 
 	Counter(uint32_t aValue, uint8_t aQuality, int64_t aTime) : TypedMeasurement<uint32_t>(aValue, aQuality, aTime) 
 	{}
+
+	bool IsEvent(const Counter& newValue, uint32_t aDeadband) const
+	{
+		auto val1 = this->GetValue();
+		auto val2 = newValue.GetValue();
+		auto diff = (val1 > val2) ? (val1 - val2) : (val2 - val1);
+		return diff > aDeadband;			
+	}
 	
+	typedef uint32_t DeadbandType;
 	typedef CounterQuality QualityType;
 	static const int ONLINE = CQ_ONLINE;
 	static const MeasurementType MeasEnum = MeasurementType::COUNTER;	

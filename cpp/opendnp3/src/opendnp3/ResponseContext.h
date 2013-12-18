@@ -124,7 +124,7 @@ private:
 	IINField RecordIntegrity();
 
 	template <class T>
-	IINField RecordAllStatic(StreamObject<T>* obj, openpal::Indexable<PointInfo<T>> indexable);
+	IINField RecordAllStatic(StreamObject<T>* obj, openpal::Indexable<T> indexable);
 
 
 	// configure the state for unsol, return true of events exist
@@ -210,14 +210,14 @@ private:
 */
 
 	template <class T>
-	IINField RecordStaticObjectsByRange(StreamObject<T>* apObject, openpal::IndexableIterator<PointInfo<T>> range);
+	IINField RecordStaticObjectsByRange(StreamObject<T>* apObject, openpal::IndexableIterator<T> range);
 
 	template <class T>
-	bool WriteStaticObjects(StreamObject<T>* object, openpal::IndexableIterator<PointInfo<T>> range, ResponseKey aKey, APDU& apdu);
+	bool WriteStaticObjects(StreamObject<T>* object, openpal::IndexableIterator<T> range, ResponseKey aKey, APDU& apdu);
 };
 
 template <class T>
-IINField ResponseContext::RecordAllStatic(StreamObject<T>* obj, openpal::Indexable<PointInfo<T>> indexable)
+IINField ResponseContext::RecordAllStatic(StreamObject<T>* obj, openpal::Indexable<T> indexable)
 {		
 	return (indexable.IsEmpty()) ? IINField::Empty : RecordStaticObjectsByRange<T>(obj, indexable.FullRange()); 	
 }
@@ -239,7 +239,7 @@ size_t ResponseContext::SelectEvents(PointClass aClass, const StreamObject<T>* a
 */
 
 template <class T>
-IINField ResponseContext::RecordStaticObjectsByRange(StreamObject<T>* object, openpal::IndexableIterator<PointInfo<T>> range)
+IINField ResponseContext::RecordStaticObjectsByRange(StreamObject<T>* object, openpal::IndexableIterator<T> range)
 {		
 	ResponseKey key(RequestType::STATIC, this->mStaticWriteMap.size());
 	auto func = [=](APDU& apdu) { return this->WriteStaticObjects<T>(object, range, key, apdu); };	
@@ -249,7 +249,7 @@ IINField ResponseContext::RecordStaticObjectsByRange(StreamObject<T>* object, op
 
 
 template <class T>
-bool ResponseContext::WriteStaticObjects(StreamObject<T>* object, openpal::IndexableIterator<PointInfo<T>> range, ResponseKey aKey, APDU& apdu)
+bool ResponseContext::WriteStaticObjects(StreamObject<T>* object, openpal::IndexableIterator<T> range, ResponseKey aKey, APDU& apdu)
 {	
 	ObjectWriteIterator owi = apdu.WriteContiguous(object, range.Index(), range.Stop());
 
@@ -262,7 +262,7 @@ bool ResponseContext::WriteStaticObjects(StreamObject<T>* object, openpal::Index
 			};
 			return false;
 		}
-		object->Write(*owi, range.Value().value);
+		object->Write(*owi, range.Value());
 		range.Next();
 		++owi;
 	}

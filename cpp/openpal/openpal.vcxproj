@@ -144,7 +144,7 @@
   <ItemGroup>
     <ClInclude Include="include\openpal\AsyncLayerInterfaces.h" />
     <ClInclude Include="include\openpal\BufferWrapper.h" />
-    <ClInclude Include="include\openpal\DynamicCollection.h" />
+    <ClInclude Include="include\openpal\DynamicArray.h" />
     <ClInclude Include="include\openpal\Exception.h" />
     <ClInclude Include="include\openpal\gen\LogLevel.h" />
     <ClInclude Include="include\openpal\HasSize.h" />
@@ -154,6 +154,7 @@
     <ClInclude Include="include\openpal\IHandlerAsync.h" />
     <ClInclude Include="include\openpal\IPhysicalLayerAsync.h" />
     <ClInclude Include="include\openpal\ITimer.h" />
+    <ClInclude Include="include\openpal\ListAdapter.h" />
     <ClInclude Include="include\openpal\Location.h" />
     <ClInclude Include="include\openpal\LogBase.h" />
     <ClInclude Include="include\openpal\LogEntry.h" />
@@ -166,6 +167,8 @@
     <ClInclude Include="include\openpal\ReverseEndian.h" />
     <ClInclude Include="include\openpal\Sequence.h" />
     <ClInclude Include="include\openpal\Serialization.h" />
+    <ClInclude Include="include\openpal\StaticArray.h" />
+    <ClInclude Include="include\openpal\StaticList.h" />
     <ClInclude Include="include\openpal\TimeDuration.h" />
     <ClInclude Include="include\openpal\ToHex.h" />
     <ClInclude Include="include\openpal\UTCTimestamp.h" />

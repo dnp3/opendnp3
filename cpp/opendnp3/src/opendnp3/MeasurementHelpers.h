@@ -22,7 +22,6 @@
 #define	__MEASUREMENT_HELPERS_H_
 
 #include <opendnp3/BaseDataTypes.h>
-#include <opendnp3/DataTypes.h>
 #include <openpal/ToHex.h>
 
 #include <sstream>
@@ -38,23 +37,6 @@ std::string ToString(const TypedMeasurement<T>& arMeas)
 	return oss.str();
 }
 
-template <class T, class U>
-bool ExceedsDeadband(const T& val1, const T& val2, T aDeadband)
-{
-	// T can be unsigned data type so std::abs won't work since it only directly supports signed data types
-	// If one uses std::abs and T is unsigned one will get an ambiguous override error.
-
-	U diff = (val2 > val1) ? (static_cast<U>(val2) - static_cast<U>(val1)) : (static_cast<U>(val1) - static_cast<U>(val2));
-
-	return diff > aDeadband;	
-}
-
-template <>
-bool ExceedsDeadband<double, double>(const double& val1, const double& val2, double aDeadband);
-
-
-
 }
 
 #endif
-

@@ -18,35 +18,17 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include <opendnp3/DeviceTemplate.h>
+
+#include <opendnp3/DatabaseConfiguration.h>
 
 namespace opendnp3
 {
 
-DeviceTemplate::DeviceTemplate(size_t aNumBinary,
-                               size_t aNumAnalog,
-                               size_t aNumCounter,
-                               size_t aNumControlStatus,
-                               size_t aNumSetpointStatus) :
-	mStartOnline(false)
-{
-	this->mBinary.resize(aNumBinary);
-	this->mAnalog.resize(aNumAnalog);
-	this->mCounter.resize(aNumCounter);
-	this->mControlStatus.resize(aNumControlStatus);
-	this->mSetpointStatus.resize(aNumSetpointStatus);
-}
-
-void DeviceTemplate::Publish(IDataObserver* apObs)
-{
-	Transaction tr(apObs);
-	InitObserver<Binary>(apObs, mBinary.size());
-	InitObserver<Analog>(apObs, mAnalog.size());
-	InitObserver<Counter>(apObs, mCounter.size());
-	InitObserver<ControlStatus>(apObs, mControlStatus.size());
-	InitObserver<SetpointStatus>(apObs, mSetpointStatus.size());
-}
+DatabaseConfiguration::DatabaseConfiguration(const DatabaseTemplate& aSizeInformation) :
+	databaseTemplate(aSizeInformation),
+	binaryMetadata(aSizeInformation.numBinary),
+	analogMetadata(aSizeInformation.numAnalog),
+	counterMetadata(aSizeInformation.numCounter)	
+{}
 
 }
-
-

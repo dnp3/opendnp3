@@ -64,7 +64,7 @@ Slave::Slave(openpal::Logger aLogger, IAppLayer* apAppLayer, IExecutor* apExecut
 	mpTimeTimer(nullptr)
 {
 	/* Link the event buffer to the database */
-	mpDatabase->SetEventBuffer(mRspContext.GetBuffer());
+	mpDatabase->AddEventBuffer(mRspContext.GetBuffer());
 
 	mIIN.Set(IINBit::DEVICE_RESTART);	// Always set on restart
 

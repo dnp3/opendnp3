@@ -28,18 +28,18 @@ OutstationStackImpl::OutstationStackImpl(
         openpal::IExecutor* apExecutor,
         ITimeWriteHandler* apTimeWriteHandler,
         ICommandHandler* apCmdHandler,
-        const SlaveStackConfig& arCfg,
+        const SlaveStackConfig& arCfg,		
 		std::function<void (bool)> aEnableDisableFunc,
         std::function<void (IOutstation*)> aOnShutdown) :
 	IOutstation(arLogger, aEnableDisableFunc),
 	mpExecutor(apExecutor),
 	mAppStack(arLogger, apExecutor, arCfg.app, arCfg.link),
-	mDB(arLogger),
+	mDynamicDatabaseBuffer(arCfg.database),
+	mDB(arLogger, mDynamicDatabaseBuffer.GetFacade()),
 	mSlave(arLogger.GetSubLogger("outstation"), &mAppStack.mApplication, apExecutor, apTimeWriteHandler, &mDB, apCmdHandler, arCfg.slave),
 	mOnShutdown(aOnShutdown)
 {
-	mAppStack.mApplication.SetUser(&mSlave);
-	mDB.Configure(arCfg.device);
+	mAppStack.mApplication.SetUser(&mSlave);	
 }
 
 IDataObserver* OutstationStackImpl::GetDataObserver()

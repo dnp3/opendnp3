@@ -18,45 +18,30 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __SLAVE_STACK_CONFIG_H_
-#define __SLAVE_STACK_CONFIG_H_
+#ifndef __VALUE_METADATA_PAIR_H_
+#define __VALUE_METADATA_PAIR_H_
 
-#include "SlaveConfig.h"
-#include "AppConfig.h"
-#include "LinkConfig.h"
-#include "DatabaseConfiguration.h"
+#include <assert.h>
+#include <openpal/Indexable.h>
 
 namespace opendnp3
 {
 
-/** A composite configuration struct that contains all the config
-	information for a dnp3 slave stack
-*/
-struct SlaveStackConfig {
-	
-	SlaveStackConfig(const DatabaseTemplate& dbTemplate) :
-		database(dbTemplate),
-		link(false, false),		
-		app(false)
+template <class T, class U>
+struct ValueMetadataPair
+{	
+	ValueMetadataPair(openpal::Indexable<T> aValues, openpal::Indexable<U> aMetadata) :
+		values(aValues),
+		metadata(aMetadata)
 	{
-	
+		assert(aValues.Size() == aMetadata.Size());
 	}
+			
+	openpal::Indexable<T> values;
+	openpal::Indexable<U> metadata;
 
-	//Configuration of the database
-	DatabaseConfiguration database;
-	/// Slave config
-	SlaveConfig slave;	
-	/// Application layer config
-	AppConfig app;
-	/// Link layer config
-	LinkConfig link;
-
-	private:	
-	SlaveStackConfig();
-	SlaveStackConfig(const SlaveStackConfig&);
 };
 
 }
 
 #endif
-

@@ -18,82 +18,70 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __DYNAMIC_COLLECTION_H_
-#define __DYNAMIC_COLLECTION_H_
+#ifndef __LIST_ADAPTER_H_
+#define __LIST_ADAPTER_H_
 
 #include "Indexable.h"
 
 namespace openpal
 {
 
+// References a fixed-size buffer somewhere, providing a list-like interface
+// Gives the appearance of a list that can grow, but not shrink
 template <class T>
-class DynamicCollection : public HasSize
+class ListAdapter : public HasSize
 {
 
 	public:
 
-		DynamicCollection(uint32_t aSize) : 
-			HasSize(aSize),
-			buffer(new T[aSize])
-		{}
-
-		DynamicCollection() : 
+		ListAdapter(Indexable<T> indexable) : 
 			HasSize(0),
-			buffer(nullptr)
-		{}
-
-		Indexable<T> ToIndexable()
-		{
-			return Indexable<T>(buffer, size);
-		}
-
-		inline const bool Contains(uint32_t index) const 
-		{
-			return index < size;
-		}
+			indexable(indexable)
+		{}				
 
 		inline T& operator[](uint32_t index) 
 		{
 			assert(index < size);
-			return buffer[index];
+			return indexable[i];
+		}
+
+		inline uint32_t Capacity() const
+		{
+			return indexable.Size();
 		}
 
 		const T& operator[](uint32_t index) const
 		{ 
 			assert(index < size);
-			return buffer[index];
+			return indexable[i];
+		}
+
+		bool Add(const T& value)
+		{
+			if(this->Size() < indexable.Size())
+			{
+				indexable[size] = value;
+				++size;
+				return true;
+			}
+			else return false;
 		}
 
 		template <class Action>
 		void foreach(const Action& action)
 		{
-			for(uint32_t i = 0; i < size; ++i) action(buffer[i]);
+			for(uint32_t i = 0; i < size; ++i) action(indexable[i]);
 		}
 
 		template <class Action>
 		void foreachIndex(const Action& action)
 		{
-			for(uint32_t i = 0; i < size; ++i) action(buffer[i], i);
-		}	
-
-		DynamicCollection<T>& Resize(uint32_t aSize)
-		{
-			delete[] buffer;
-			this->size = aSize;
-			buffer = new T[aSize];
-			return *this;
-		}
-
-		virtual ~DynamicCollection()
-		{
-			delete[] buffer;
-		}					
+			for(uint32_t i = 0; i < size; ++i) action(indexable[i], i);
+		}									
 	
 	private:
-		T* buffer;
-
-		DynamicCollection(const DynamicCollection&);
-		DynamicCollection& operator=(const DynamicCollection&);		
+		Indexable<T> indexable;
+		ListAdapter();
 };
 
 }

@@ -21,22 +21,13 @@
 #ifndef __DATABASE_H_
 #define __DATABASE_H_
 
-#include "IEventBuffer.h"
-#include "MeasurementHelpers.h"
-#include "PointInfo.h"
-
-#include <opendnp3/DNPConstants.h>
+#include <openpal/Loggable.h>
+#include <openpal/StaticList.h>
 #include <opendnp3/IDataObserver.h>
 
-#include <openpal/Loggable.h>
-#include <openpal/DynamicCollection.h>
-
-#include <vector>
-#include <limits>
-
-#ifdef max
-#undef max
-#endif
+#include "IEventBuffer.h"
+#include "StaticDataFacade.h"
+#include "StaticSizeConfiguration.h"
 
 namespace opendnp3
 {
@@ -48,29 +39,15 @@ Manages the static data model of a DNP3 slave. Dual-interface to update data poi
 
 Passes data updates to an associated event buffer for event generation/management.
 */
-class Database : public IDataObserver, public openpal::Loggable
+class Database : public openpal::Loggable, public IDataObserver
 {
 public:
 
-	Database(openpal::Logger aLogger);
-
-	virtual ~Database();
-
-	/* Configuration functions */
-
-	void Configure(const DeviceTemplate& arTmp);
-	void Configure(MeasurementType aType, size_t aNumPoints);	
-	void SetClass(MeasurementType aType, PointClass aClass); //set classes for all indices
-
-	void SetEventBuffer(IEventBuffer*);
-
+	Database(openpal::Logger, const StaticDataFacade&);	
+	
 	/* Functions for obtaining iterators */
 
-	openpal::Indexable<PointInfo<Binary>> Binaries() { return mBinaries.ToIndexable(); }
-	openpal::Indexable<PointInfo<Analog>> Analogs() { return mAnalogs.ToIndexable(); }
-	openpal::Indexable<PointInfo<Counter>> Counters() { return mCounters.ToIndexable(); }
-	openpal::Indexable<PointInfo<ControlStatus>> ControlStatii() { return mControlStatii.ToIndexable(); }
-	openpal::Indexable<PointInfo<SetpointStatus>> SetpointStatii() { return mSetpointStatii.ToIndexable(); }
+	bool AddEventBuffer(IEventBuffer* apEventBuffer);	
 
 	// IDataObserver functions
 	void Update(const Binary& arPoint, uint32_t) final;
@@ -79,41 +56,44 @@ public:
 	void Update(const ControlStatus& arPoint, uint32_t) final;
 	void Update(const SetpointStatus& arPoint, uint32_t) final;
 
-	/////////////////////////////////////////
-	//	Static data
-	/////////////////////////////////////////
-
-	openpal::DynamicCollection<PointInfo<Binary>> mBinaries;	
-	openpal::DynamicCollection<PointInfo<Analog>> mAnalogs;
-	openpal::DynamicCollection<PointInfo<Counter>> mCounters;
-	openpal::DynamicCollection<PointInfo<ControlStatus>> mControlStatii;
-	openpal::DynamicCollection<PointInfo<SetpointStatus>> mSetpointStatii;
+	openpal::Indexable<Binary> Binaries();
+	openpal::Indexable<Analog> Analogs();
+	openpal::Indexable<Counter> Counters();
+	openpal::Indexable<ControlStatus> ControlStatii();
+	openpal::Indexable<SetpointStatus> SetpointStatii();
 
 private:
+
+	Database();
+	Database(const Database&);
+
+	StaticDataFacade staticData;
+
+	template <class T>
+	void UpdateEventBuffer(const T& value, uint32_t index, PointClass clazz)
+	{
+		eventBuffers.foreach([&](IEventBuffer* pBuffer) { pBuffer->Update(Event<T>(value, index, clazz)); });
+	}
+
+	template <class T, class U>
+	inline void UpdateEvent(const T& value, uint32_t index, U& collection)
+	{		
+		if(collection.values.Contains(index))
+		{	
+			auto& metadata = collection.metadata[index];
+			if(metadata.CheckForEvent(value) && metadata.HasEventClass())
+			{			
+				this->UpdateEventBuffer(value, index, metadata.clazz);
+			}
+			collection.values[index] = value;
+		}	
+	}
+
+	openpal::StaticList<IEventBuffer*, MACRO_MAX_EVENT_BUFFERS> eventBuffers;
 
 	// ITransactable  functions, no lock on this structure.
 	void Start() final {}
 	void End() final {}	
-
-	template <typename T>
-	inline static void Configure(openpal::DynamicCollection<PointInfo<T>>& collection, uint32_t size)
-	{	
-		collection.Resize(size);
-		for(uint32_t i = 0; i < collection.Size(); ++i) collection[i].index = i;
-	}
-
-	template<typename T>
-	void SetAllOnline( std::vector< PointInfo<T> >& arVector );
-
-	template<typename T>
-	bool UpdateValue(std::vector< PointInfo<T> >& arVec, const T& arValue, size_t aIndex);
-
-	template<typename T>
-	void PerformRead(std::vector< PointInfo<T> >& arVec, T& arValue, size_t aIndex);
-
-	
-
-	IEventBuffer* mpEventBuffer;
 };
 
 

@@ -22,6 +22,7 @@
 
 #include <openpal/StaticArray.h>
 #include <openpal/ListAdapter.h>
+#include <openpal/StaticList.h>
 
 using namespace openpal;
 
@@ -51,5 +52,14 @@ BOOST_AUTO_TEST_CASE(CanAddUntilFull)
 	BOOST_REQUIRE(!list.Add(8));
 	BOOST_REQUIRE_EQUAL(3, list.Size());
 }
+BOOST_AUTO_TEST_CASE(StaticListHasSameBehavior)
+{
+	StaticList<uint32_t, 3> list;
+
+	BOOST_REQUIRE_EQUAL(list.Size(), 0);
+	BOOST_REQUIRE_EQUAL(list.Capacity(), 3);
+	
+}
+
 
 BOOST_AUTO_TEST_SUITE_END()

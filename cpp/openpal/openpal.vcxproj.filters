@@ -95,10 +95,19 @@
     <ClInclude Include="include\openpal\Indexable.h">
       <Filter>Include Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\openpal\DynamicCollection.h">
+    <ClInclude Include="include\openpal\IndexableIterator.h">
       <Filter>Include Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\openpal\IndexableIterator.h">
+    <ClInclude Include="include\openpal\StaticArray.h">
+      <Filter>Include Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\openpal\DynamicArray.h">
+      <Filter>Include Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\openpal\ListAdapter.h">
+      <Filter>Include Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\openpal\StaticList.h">
       <Filter>Include Files</Filter>
     </ClInclude>
   </ItemGroup>

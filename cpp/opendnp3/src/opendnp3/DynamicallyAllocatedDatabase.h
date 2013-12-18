@@ -18,45 +18,40 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __SLAVE_STACK_CONFIG_H_
-#define __SLAVE_STACK_CONFIG_H_
+#ifndef __DYNAMICICALLY_ALLOCATED_DATABASE_H_
+#define __DYNAMICICALLY_ALLOCATED_DATABASE_H_
 
-#include "SlaveConfig.h"
-#include "AppConfig.h"
-#include "LinkConfig.h"
-#include "DatabaseConfiguration.h"
+#include "StaticDataFacade.h"
+#include <opendnp3/DatabaseConfiguration.h>
+
+#include <openpal/DynamicArray.h>
 
 namespace opendnp3
 {
 
-/** A composite configuration struct that contains all the config
-	information for a dnp3 slave stack
-*/
-struct SlaveStackConfig {
-	
-	SlaveStackConfig(const DatabaseTemplate& dbTemplate) :
-		database(dbTemplate),
-		link(false, false),		
-		app(false)
-	{
-	
-	}
+class DynamicallyAllocatedDatabase
+{	
+	public:
 
-	//Configuration of the database
-	DatabaseConfiguration database;
-	/// Slave config
-	SlaveConfig slave;	
-	/// Application layer config
-	AppConfig app;
-	/// Link layer config
-	LinkConfig link;
+	DynamicallyAllocatedDatabase(const DatabaseConfiguration& dataTemplate);
 
-	private:	
-	SlaveStackConfig();
-	SlaveStackConfig(const SlaveStackConfig&);
+	StaticDataFacade GetFacade();
+	
+	private:
+
+	void Configure(const DatabaseConfiguration& dataTemplate);
+	
+	openpal::DynamicArray<Binary> binaryValues;
+	openpal::DynamicArray<Analog> analogValues;
+	openpal::DynamicArray<Counter> counterValues;
+	openpal::DynamicArray<ControlStatus> controlStatusValues;
+	openpal::DynamicArray<SetpointStatus> setpointStatusValues;
+
+	openpal::DynamicArray<BinaryMetadata> binaryMetadata;
+	openpal::DynamicArray<AnalogMetadata> analogMetadata;
+	openpal::DynamicArray<CounterMetadata> counterMetadata;
 };
 
 }
 
 #endif
-

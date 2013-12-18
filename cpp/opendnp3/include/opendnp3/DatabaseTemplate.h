@@ -18,45 +18,36 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __SLAVE_STACK_CONFIG_H_
-#define __SLAVE_STACK_CONFIG_H_
+#ifndef __DATABASE_TEMPLATE_H_
+#define __DATABASE_TEMPLATE_H_
 
-#include "SlaveConfig.h"
-#include "AppConfig.h"
-#include "LinkConfig.h"
-#include "DatabaseConfiguration.h"
+#include <cstdint>
 
 namespace opendnp3
 {
 
-/** A composite configuration struct that contains all the config
-	information for a dnp3 slave stack
-*/
-struct SlaveStackConfig {
-	
-	SlaveStackConfig(const DatabaseTemplate& dbTemplate) :
-		database(dbTemplate),
-		link(false, false),		
-		app(false)
-	{
-	
-	}
+// template for specifying the size of types in an outstation database
+struct DatabaseTemplate
+{	
+	DatabaseTemplate(uint32_t aNumBinary = 0,
+	              uint32_t aNumAnalog = 0,
+	              uint32_t aNumCounter = 0,
+	              uint32_t aNumControlStatus = 0,
+	              uint32_t aNumSetpointStatus = 0) :
+		numBinary(aNumBinary),			
+		numAnalog(aNumAnalog),
+		numCounter(aNumCounter),
+		numControlStatus(aNumControlStatus),
+		numSetpointStatus(aNumSetpointStatus)
+	{}
 
-	//Configuration of the database
-	DatabaseConfiguration database;
-	/// Slave config
-	SlaveConfig slave;	
-	/// Application layer config
-	AppConfig app;
-	/// Link layer config
-	LinkConfig link;
-
-	private:	
-	SlaveStackConfig();
-	SlaveStackConfig(const SlaveStackConfig&);
+	uint32_t numBinary;
+	uint32_t numAnalog;
+	uint32_t numCounter;
+	uint32_t numControlStatus;
+	uint32_t numSetpointStatus;
 };
 
 }
 
 #endif
-

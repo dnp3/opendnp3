@@ -23,11 +23,13 @@
 
 #include <opendnp3/IOutstation.h>
 #include <opendnp3/SlaveStackConfig.h>
+#include <opendnp3/DatabaseConfiguration.h>
+
 #include <openpal/Location.h>
 
 #include "Slave.h"
 #include "ApplicationStack.h"
-
+#include "DynamicallyAllocatedDatabase.h"
 
 namespace opendnp3
 {
@@ -44,7 +46,7 @@ public:
 	        openpal::IExecutor* apExecutor,
 	        ITimeWriteHandler* apTimeWriteHandler,
 	        ICommandHandler* apCmdHandler,
-	        const SlaveStackConfig& arCfg,
+	        const SlaveStackConfig& arCfg,			
 			std::function<void (bool)> aEnableDisableFunc,
 	        std::function<void (IOutstation*)> aOnShutdown);
 
@@ -65,6 +67,7 @@ public:
 private:
 	openpal::IExecutor* mpExecutor;
 	ApplicationStack mAppStack;
+	DynamicallyAllocatedDatabase mDynamicDatabaseBuffer;
 	Database mDB;
 	Slave mSlave;
 	std::function<void (IOutstation*)> mOnShutdown;

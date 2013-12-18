@@ -18,23 +18,15 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include "MeasurementHelpers.h"
+#ifndef __STATIC_SIZE_CONFIGURATION_H_
+#define __STATIC_SIZE_CONFIGURATION_H_
 
-#include <iostream>
-#include <limits>
-#include <math.h>
+// Default configurations for statically allocated buffers int the stack
+// They are liberally set by default, but can be reduced for embedded systems
 
-namespace opendnp3
-{
 
-template<>
-bool ExceedsDeadband<double, double>(const double& val1, const double& val2, double aDeadband)
-{
-	double diff = fabs(val1 - val2);
+// the maximum number of event buffers that can be bound to a database
+#define MACRO_MAX_EVENT_BUFFERS 10
 
-	if(diff == std::numeric_limits<double>::infinity()) return true;
-	else return diff > aDeadband;	
-}
 
-}
-
+#endif

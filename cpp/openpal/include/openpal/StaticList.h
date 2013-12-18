@@ -18,45 +18,32 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __SLAVE_STACK_CONFIG_H_
-#define __SLAVE_STACK_CONFIG_H_
+#ifndef __STATIC_LIST_H_
+#define __STATIC_LIST_H_
 
-#include "SlaveConfig.h"
-#include "AppConfig.h"
-#include "LinkConfig.h"
-#include "DatabaseConfiguration.h"
+#include "ListAdapter.h"
+#include "StaticArray.h"
 
-namespace opendnp3
+namespace openpal
 {
 
-/** A composite configuration struct that contains all the config
-	information for a dnp3 slave stack
-*/
-struct SlaveStackConfig {
-	
-	SlaveStackConfig(const DatabaseTemplate& dbTemplate) :
-		database(dbTemplate),
-		link(false, false),		
-		app(false)
-	{
-	
-	}
+// References a fixed-size buffer somewhere, providing a list-like interface
+// Gives the appearance of a list that can grow, but not shrink
+template <class T, uint32_t N>
+class StaticList : public ListAdapter<T>
+{
 
-	//Configuration of the database
-	DatabaseConfiguration database;
-	/// Slave config
-	SlaveConfig slave;	
-	/// Application layer config
-	AppConfig app;
-	/// Link layer config
-	LinkConfig link;
+	public:
+		StaticList() : underlying(), ListAdapter<T>(underlying.ToIndexable())
+		{}
 
-	private:	
-	SlaveStackConfig();
-	SlaveStackConfig(const SlaveStackConfig&);
+	private:
+
+		StaticList(const StaticList&);
+		StaticList& operator= (const StaticList&);
+		StaticArray<T,N> underlying;
 };
 
 }
 
 #endif
-

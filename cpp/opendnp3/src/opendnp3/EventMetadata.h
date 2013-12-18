@@ -18,43 +18,68 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __DEVICE_TEMPLATE_TYPES_H_
-#define __DEVICE_TEMPLATE_TYPES_H_
+#ifndef __EVENT_METADATA_H_
+#define __EVENT_METADATA_H_
 
-#include <vector>
-
-#include "PointClass.h"
+#include <opendnp3/PointClass.h>
 
 namespace opendnp3
 {
 
-/// Configuration type that has a PointClass member
-struct EventPointRecord 
+// Base class for different types of event metadata
+template <typename T>
+class EventMetadata 
 {
-	EventPointRecord(PointClass aPointClass) : EventClass(aPointClass)
+	public:
+	EventMetadata(): clazz(PC_CLASS_0)
 	{}
 
-	EventPointRecord() : EventClass(PC_CLASS_1) {}
+	inline bool HasEventClass() const { return clazz != PC_CLASS_0; }
 
-	/// when the point changes, it will generate an event unless EventClass == PC_CLASS_0
-	PointClass EventClass;
+	PointClass clazz;
+	T lastEvent;
 };
 
-/// DeadbandPointRecords have a parameter for controlling eventing tolerances
-template <class T>
-struct DeadbandPointRecord : public EventPointRecord {
+template <typename T>
+struct SimpleEventMetadata : EventMetadata<T>
+{
+	public:	
+	
+	bool CheckForEvent(const T& aValue)
+	{		
+		if(aValue.IsEvent(lastEvent))
+		{
+			lastEvent = aValue;
+			return true;
+		}
+		return false;
+	}
+};
 
-	DeadbandPointRecord(PointClass aPointClass, T aDeadband) :
-		EventPointRecord(aPointClass),
-		Deadband(aDeadband)
+/**
+ * Structure for holding metadata information on points that have support deadbanding
+ */
+template <typename T>
+struct DeadbandMetadata : EventMetadata<T>
+{	
+	DeadbandMetadata() : deadband(0) 
 	{}
 
-	DeadbandPointRecord() : Deadband(0) {}
-
-	/// Points can change value within the deadband and not trigger events
-	T Deadband;
+	bool CheckForEvent(const T& aValue)
+	{		
+		if(aValue.IsEvent(lastEvent, deadband))
+		{
+			lastEvent = aValue;
+			return true;
+		}
+		return false;
+	}
+		
+	typename T::DeadbandType deadband;			// deadband associated with measurement (optional)
 };
 
-}
+} //end namespace
+
+/* vim: set ts=4 sw=4: */
 
 #endif

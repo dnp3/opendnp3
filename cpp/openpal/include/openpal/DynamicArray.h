@@ -60,6 +60,12 @@ class DynamicArray : public HasSize
 		}
 
 		template <class Action>
+		void foreach(const Action& action) const
+		{
+			for(uint32_t i = 0; i < size; ++i) action(buffer[i]);
+		}
+
+		template <class Action>
 		void foreach(const Action& action)
 		{
 			for(uint32_t i = 0; i < size; ++i) action(buffer[i]);
@@ -69,7 +75,14 @@ class DynamicArray : public HasSize
 		void foreachIndex(const Action& action)
 		{
 			for(uint32_t i = 0; i < size; ++i) action(buffer[i], i);
-		}			
+		}	
+
+		
+		template <class Action>
+		void foreachIndex(const Action& action) const
+		{
+			for(uint32_t i = 0; i < size; ++i) action(buffer[i], i);
+		}	
 
 		virtual ~DynamicArray()
 		{

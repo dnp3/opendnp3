@@ -25,7 +25,7 @@
 #include <assert.h>
 
 #include <opendnp3/DNPConstants.h>
-#include <opendnp3/DeviceTemplate.h>
+
 
 #include <openpal/LoggableMacros.h>
 
@@ -34,140 +34,52 @@ using namespace openpal;
 namespace opendnp3
 {
 
-Database::Database(Logger aLogger) :
-	Loggable(aLogger),
-	mpEventBuffer(nullptr)
+Database::Database(openpal::Logger aLogger, const StaticDataFacade& aStaticData) :
+	Loggable(aLogger),	
+	staticData(aStaticData)
 {
 
 }
 
-Database::~Database() {}
-
-////////////////////////////////////////////////////
-// Public functions
-////////////////////////////////////////////////////
-
-void Database::Configure(MeasurementType aType, size_t numPoints)
-{
-	switch(aType) 
-	{
-		case(MeasurementType::BINARY):
-			this->Configure(mBinaries, numPoints);		
-			break;
-		case(MeasurementType::ANALOG):
-			this->Configure(mAnalogs, numPoints);	
-			break;
-		case(MeasurementType::COUNTER):
-			this->Configure(mCounters, numPoints);
-			break;
-		case(MeasurementType::CONTROL_STATUS):
-			this->Configure(mControlStatii, numPoints);
-			break;
-		case(MeasurementType::SETPOINT_STATUS):
-			this->Configure(mSetpointStatii, numPoints);
-			break;
-		default:
-			break;
-	}
-}
-
-void Database::Configure(const DeviceTemplate& devTemplate)
-{
-	size_t numBinary = devTemplate.mBinary.size();
-	size_t numAnalog = devTemplate.mAnalog.size();
-	size_t numCounter = devTemplate.mCounter.size();
-	size_t numControlStatus = devTemplate.mControlStatus.size();
-	size_t numSetpointStatus = devTemplate.mSetpointStatus.size();
-
-	this->Configure(mBinaries, numBinary);				
-	this->Configure(mAnalogs, numAnalog);			
-	this->Configure(mCounters, numCounter);
-	this->Configure(mControlStatii, numControlStatus);
-	this->Configure(mSetpointStatii, numSetpointStatus);
-	
-	mBinaries.foreachIndex([&](PointInfo<Binary>& record, uint32_t i) { record.clazz = devTemplate.mBinary[i].EventClass; });
-	mCounters.foreachIndex([&](PointInfo<Counter>& record, uint32_t i) { record.clazz = devTemplate.mCounter[i].EventClass; });
-	
-	mAnalogs.foreachIndex([&](PointInfo<Analog>& record, uint32_t i) { 
-		record.clazz = devTemplate.mAnalog[i].EventClass; 
-		record.deadband =  devTemplate.mAnalog[i].Deadband;
-	});	
-}
-
-void Database::SetClass(MeasurementType type, PointClass clazz)
-{
-	switch(type) 
-	{
-		case(MeasurementType::BINARY):
-			mBinaries.foreach([clazz](PointInfo<Binary>& info) { info.clazz = clazz; })	;		
-			break;
-		case(MeasurementType::ANALOG):
-			mAnalogs.foreach([clazz](PointInfo<Analog>& info) { info.clazz = clazz; });
-			break;
-		case(MeasurementType::COUNTER):
-			mCounters.foreach([clazz](PointInfo<Counter>& info) { info.clazz = clazz; });
-			break;		
-		default:		
-			break;
-	}
-}
-
-
-void Database::SetEventBuffer(IEventBuffer* apEventBuffer)
+bool Database::AddEventBuffer(IEventBuffer* apEventBuffer)
 {
 	assert(apEventBuffer != nullptr);
-	assert(mpEventBuffer == nullptr);
-	mpEventBuffer = apEventBuffer;
+	return eventBuffers.Add(apEventBuffer);
 }
 
+openpal::Indexable<Binary> Database::Binaries() { return staticData.binaries.values; }
+openpal::Indexable<Analog> Database::Analogs() { return staticData.analogs.values; }
+openpal::Indexable<Counter> Database::Counters() { return staticData.counters.values; }
+openpal::Indexable<ControlStatus> Database::ControlStatii() { return staticData.controlStatii; }
+openpal::Indexable<SetpointStatus> Database::SetpointStatii() { return staticData.setpointStatii; }
+
 ////////////////////////////////////////////////////
-// IDataObserver interfae - Private NVII functions -
+// IDataObserver interface
 ////////////////////////////////////////////////////
 
 void Database::Update(const Binary& value, uint32_t index)
 {
-	if(mBinaries.Contains(index))
-	{	
-		auto& record = mBinaries[index];
-		if(record.Load(value) && record.HasEventClass() && mpEventBuffer)
-		{			
-			mpEventBuffer->Update(record);
-		}		
-	}	
+	this->UpdateEvent(value, index, staticData.binaries);
 }
 
 void Database::Update(const Analog& value, uint32_t index)
 {
-	if(mAnalogs.Contains(index))	
-	{	
-		auto& record = mAnalogs[index];
-		if(record.Load(value) && record.HasEventClass() && mpEventBuffer)
-		{			
-			mpEventBuffer->Update(record);
-		}		
-	}	
+	this->UpdateEvent(value, index, staticData.analogs);	
 }
 
 void Database::Update(const Counter& value, uint32_t index)
 {
-	if(mCounters.Contains(index))
-	{	
-		auto& record = mCounters[index];
-		if(record.Load(value) && record.HasEventClass() && mpEventBuffer)
-		{			
-			mpEventBuffer->Update(record);
-		}		
-	}
+	this->UpdateEvent(value, index, staticData.counters);
 }
 
 void Database::Update(const ControlStatus& value, uint32_t index)
 {
-	if(mControlStatii.Contains(index)) mControlStatii[index].value = value;
+	if(staticData.controlStatii.Contains(index)) staticData.controlStatii[index] = value;
 }
 
 void Database::Update(const SetpointStatus& value, uint32_t index)
 {
-	if(mSetpointStatii.Contains(index)) mSetpointStatii[index].value = value;
+	if(staticData.setpointStatii.Contains(index)) staticData.setpointStatii[index] = value;
 }
 
 }

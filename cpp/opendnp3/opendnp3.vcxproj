@@ -150,6 +150,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="DatabaseConfiguration.h" />
     <ClInclude Include="include\opendnp3\AnalogOutput.h" />
     <ClInclude Include="include\opendnp3\APDUConstants.h" />
     <ClInclude Include="include\opendnp3\AppConfig.h" />
@@ -157,6 +158,7 @@
     <ClInclude Include="include\opendnp3\ClassMask.h" />
     <ClInclude Include="include\opendnp3\CommandResponse.h" />
     <ClInclude Include="include\opendnp3\ControlRelayOutputBlock.h" />
+    <ClInclude Include="include\opendnp3\DatabaseTemplate.h" />
     <ClInclude Include="include\opendnp3\gen\ChannelState.h" />
     <ClInclude Include="include\opendnp3\gen\CommandResult.h" />
     <ClInclude Include="include\opendnp3\gen\CommandStatus.h" />
@@ -181,7 +183,7 @@
     <ClInclude Include="include\opendnp3\TimeTransaction.h" />
     <ClInclude Include="include\opendnp3\DataTypes.h" />
     <ClInclude Include="include\opendnp3\DestructorHook.h" />
-    <ClInclude Include="include\opendnp3\DeviceTemplate.h" />
+    <ClInclude Include="include\opendnp3\DatabaseConfiguration.h" />
     <ClInclude Include="include\opendnp3\DeviceTemplateTypes.h" />
     <ClInclude Include="include\opendnp3\DNP3Manager.h" />
     <ClInclude Include="include\opendnp3\DNPConstants.h" />
@@ -235,6 +237,7 @@
     <ClInclude Include="src\opendnp3\ChangeBuffer.h" />
     <ClInclude Include="src\opendnp3\ClassCounter.h" />
     <ClInclude Include="src\opendnp3\CommandSequence.h" />
+    <ClInclude Include="src\opendnp3\DynamicallyAllocatedDatabase.h" />
     <ClInclude Include="src\opendnp3\Iterable.h" />
     <ClInclude Include="src\opendnp3\CommandTask.h" />
     <ClInclude Include="src\opendnp3\ConstantCommandProcessor.h" />
@@ -255,7 +258,7 @@
     <ClInclude Include="src\opendnp3\objects\Group52.h" />
     <ClInclude Include="src\opendnp3\objects\MeasurementFactory.h" />
     <ClInclude Include="src\opendnp3\IINHelpers.h" />
-    <ClInclude Include="src\opendnp3\PointInfo.h" />
+    <ClInclude Include="src\opendnp3\EventMetadata.h" />
     <ClInclude Include="src\opendnp3\DNPFromStream.h" />
     <ClInclude Include="src\opendnp3\DNPToStream.h" />
     <ClInclude Include="src\opendnp3\EnhancedVto.h" />
@@ -340,6 +343,8 @@
     <ClInclude Include="src\opendnp3\SolicitedChannel.h" />
     <ClInclude Include="src\opendnp3\StackBase.h" />
     <ClInclude Include="src\opendnp3\StartupTasks.h" />
+    <ClInclude Include="src\opendnp3\StaticDataFacade.h" />
+    <ClInclude Include="src\opendnp3\StaticSizeConfiguration.h" />
     <ClInclude Include="src\opendnp3\TimeSyncHandler.h" />
     <ClInclude Include="src\opendnp3\TLS_Base.h" />
     <ClInclude Include="src\opendnp3\TrackingTaskGroup.h" />
@@ -348,6 +353,7 @@
     <ClInclude Include="src\opendnp3\TransportStates.h" />
     <ClInclude Include="src\opendnp3\TransportTx.h" />
     <ClInclude Include="src\opendnp3\UnsolicitedChannel.h" />
+    <ClInclude Include="src\opendnp3\ValueMetadataPair.h" />
     <ClInclude Include="src\opendnp3\WriteHandler.h" />
     <ClInclude Include="StackBase.h" />
   </ItemGroup>
@@ -380,7 +386,9 @@
     <ClCompile Include="src\opendnp3\CopyableBuffer.cpp" />
     <ClCompile Include="src\opendnp3\CRC.cpp" />
     <ClCompile Include="src\opendnp3\Database.cpp" />
+    <ClCompile Include="src\opendnp3\DatabaseConfiguration.cpp" />
     <ClCompile Include="src\opendnp3\DataPoll.cpp" />
+    <ClCompile Include="src\opendnp3\DynamicallyAllocatedDatabase.cpp" />
     <ClCompile Include="src\opendnp3\DynamicBuffer.cpp" />
     <ClCompile Include="src\opendnp3\FunctionCodeHelpers.cpp" />
     <ClCompile Include="src\opendnp3\gen\ChannelState.cpp" />
@@ -406,7 +414,6 @@
     <ClCompile Include="src\opendnp3\IMeasurementHandler.cpp" />
     <ClCompile Include="src\opendnp3\ITimeWriteHandler.cpp" />
     <ClCompile Include="src\opendnp3\MasterScan.cpp" />
-    <ClCompile Include="src\opendnp3\MeasurementHelpers.cpp" />
     <ClCompile Include="src\opendnp3\MeasurementUpdate.cpp" />
     <ClCompile Include="src\opendnp3\objects\Group1.cpp" />
     <ClCompile Include="src\opendnp3\objects\Group10.cpp" />
@@ -429,7 +436,6 @@
     <ClCompile Include="src\opendnp3\ReadHandler.cpp" />
     <ClCompile Include="src\opendnp3\TimeTransaction.cpp" />
     <ClCompile Include="src\opendnp3\DestructorHook.cpp" />
-    <ClCompile Include="src\opendnp3\DeviceTemplate.cpp" />
     <ClCompile Include="src\opendnp3\DNP3Channel.cpp" />
     <ClCompile Include="src\opendnp3\DNP3Manager.cpp" />
     <ClCompile Include="src\opendnp3\DNPCrc.cpp" />
