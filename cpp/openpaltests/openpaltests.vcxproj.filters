@@ -27,5 +27,8 @@
     <ClCompile Include="src\RandomInsertAdapterTestSuite.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\DoublyLinkedListAdapterTestSuite.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

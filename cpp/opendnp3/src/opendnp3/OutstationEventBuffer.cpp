@@ -33,12 +33,16 @@ OutstationEventBuffer::OutstationEventBuffer(const EventBufferFacade& aFacade) :
 
 void OutstationEventBuffer::OnTransmitFailure()
 {
-	
+	facade.selectedEvents.Clear();
 }
 
 void OutstationEventBuffer::OnTransmitSuccess()
 {
-	
+	while(facade.selectedEvents.IsNotEmpty()) // guaranteed that 
+	{
+		auto index = facade.selectedEvents.Pop(); // that will be the biggest index =(
+		// we need a linked list facade!! This will allow us to delete O(1)!!!
+	}	
 }
 
 void OutstationEventBuffer::Update(const Event<Binary>& aEvent)

@@ -49,6 +49,11 @@ class StackAdapter : public HasSize
 			return size == indexable.Size();
 		}
 
+		inline void Clear()
+		{
+			size = 0;
+		}
+
 		bool Push(const T& value)
 		{
 			if(!IsFull())

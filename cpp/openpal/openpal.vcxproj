@@ -154,6 +154,7 @@
     <ClInclude Include="include\openpal\IHandlerAsync.h" />
     <ClInclude Include="include\openpal\IPhysicalLayerAsync.h" />
     <ClInclude Include="include\openpal\ITimer.h" />
+    <ClInclude Include="include\openpal\DoublyLinkedListAdapter.h" />
     <ClInclude Include="include\openpal\ListAdapter.h" />
     <ClInclude Include="include\openpal\Location.h" />
     <ClInclude Include="include\openpal\LogBase.h" />

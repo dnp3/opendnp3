@@ -42,9 +42,8 @@ enum class EventType: uint8_t
 struct SequenceRecord
 {
 	EventType type;
-	uint32_t typeIndex;
-	PointClass clazz;
-	bool selected;
+	uint32_t index;
+	PointClass clazz;	
 };
 
 struct EventBufferFacade
@@ -54,12 +53,14 @@ struct EventBufferFacade
 	EventBufferFacade(	openpal::RandomInsertAdapter<Event<Binary>> aBinaryEvents,
 						openpal::RandomInsertAdapter<Event<Analog>> aAnalogEvents,
 						openpal::RandomInsertAdapter<Event<Counter>> aCounterEvents,						
-						openpal::ListAdapter<SequenceRecord> aSequenceOfEvents) :
+						openpal::ListAdapter<SequenceRecord> aSequenceOfEvents,
+						openpal::StackAdapter<uint32_t> aSelectedEvents) :
 
 		binaryEvents(aBinaryEvents),
 		analogEvents(aAnalogEvents),
 		counterEvents(aCounterEvents),		
-		sequenceOfEvents(aSequenceOfEvents)
+		sequenceOfEvents(aSequenceOfEvents),
+		selectedEvents(aSelectedEvents)
 	{
 		
 	}
@@ -68,6 +69,7 @@ struct EventBufferFacade
 	openpal::RandomInsertAdapter<Event<Analog>> analogEvents;
 	openpal::RandomInsertAdapter<Event<Counter>> counterEvents;	
 	openpal::ListAdapter<SequenceRecord> sequenceOfEvents;
+	openpal::StackAdapter<uint32_t> selectedEvents;
 };
 
 

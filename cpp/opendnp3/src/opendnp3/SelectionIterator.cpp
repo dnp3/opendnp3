@@ -52,30 +52,30 @@ bool SelectionIterator::ApplyEvent(IEventWriter* pWriter, SequenceRecord& record
 	{
 		case(EventType::Binary):
 		{
-			auto& value = pFacade->binaryEvents[record.typeIndex];
+			auto& value = pFacade->binaryEvents[record.index];
 			if(pWriter->Write(value))
 			{
-				record.selected = true;
+				pFacade->selectedEvents.Push(record.index);
 				return true;
 			}
 			return false;
 		}
 		case(EventType::Analog):
 		{
-			auto& value = pFacade->analogEvents[record.typeIndex];
+			auto& value = pFacade->analogEvents[record.index];
 			if(pWriter->Write(value))
 			{
-				record.selected = true;
+				pFacade->selectedEvents.Push(record.index);
 				return true;
 			}
 			return false;
 		}
 		case(EventType::Counter):
 		{
-			auto& value = pFacade->counterEvents[record.typeIndex];
+			auto& value = pFacade->counterEvents[record.index];
 			if(pWriter->Write(value))
 			{
-				record.selected = true;
+				pFacade->selectedEvents.Push(record.index);
 				return true;
 			}
 			return false;
