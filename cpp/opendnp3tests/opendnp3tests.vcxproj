@@ -210,6 +210,7 @@
     <ClInclude Include="src\MockAppLayer.h" />
     <ClInclude Include="src\MockAppUser.h" />
     <ClInclude Include="src\MockCommandHandler.h" />
+    <ClInclude Include="src\MockEventWriter.h" />
     <ClInclude Include="src\MockExecutor.h" />
     <ClInclude Include="src\MockFrameSink.h" />
     <ClInclude Include="src\MockLogSubscriber.h" />
@@ -297,6 +298,7 @@
     <ClCompile Include="src\TestMeasurementUpdate.cpp" />
     <ClCompile Include="src\TestMisc.cpp" />
     <ClCompile Include="src\TestObjects.cpp" />
+    <ClCompile Include="src\TestOutstationEventBuffer.cpp" />
     <ClCompile Include="src\TestSerialization.cpp" />
     <ClCompile Include="src\TestPhysicalLayerAsyncBase.cpp" />
     <ClCompile Include="src\TestPhysicalLayerAsyncSerial.cpp" />

@@ -19,16 +19,45 @@
  * to you under the terms of the License.
  */
 
-#ifndef __SELECTION_ITERATOR_H_
-#define __SELECTION_ITERATOR_H_
+#ifndef __SELECTION_CRITERIA_H_
+#define __SELECTION_CRITERIA_H_
 
 #include "EventBufferFacade.h"
 
 namespace opendnp3
 {
 
+class IEventWriter
+{
+	public:
+		
+		// returns true of their was space in the fragment and the event should be added to selection buffer
+		virtual bool Write(const Event<Binary>& evt) = 0;
+		virtual bool Write(const Event<Analog>& evt) = 0;
+		virtual bool Write(const Event<Counter>& evt) = 0;
+};
+
 struct SelectionCriteria
 {
+	SelectionCriteria() : 
+		binary(false),
+		analog(false), 
+		counter(false),
+		class1(false), 
+		class2(false), 
+		class3(false)
+	{}
+
+	void AllEvents()
+	{
+		binary = true;
+		analog = true;
+		counter = true;
+		class1 = true;
+		class2 = true;
+		class3 = true;
+	}
+
 	bool binary;
 	bool analog;	
 	bool counter;
@@ -66,36 +95,6 @@ struct SelectionCriteria
 				return false;
 		}
 	}
-};
-
-class IEventWriter
-{
-	public:
-		
-		// returns true of their was space in the fragment and the event should be added to selection buffer
-		virtual bool Write(const Event<Binary>& evt) = 0;
-		virtual bool Write(const Event<Analog>& evt) = 0;
-		virtual bool Write(const Event<Counter>& evt) = 0;
-};
-
-
-
-// The event buffer doesn't actually own the buffers, it just creates
-// collection facades around the indexable buffers it's given
-class SelectionIterator
-{
-	public:
-		SelectionIterator(EventBufferFacade* apFacade, SelectionCriteria aCriteria);
-
-		// keep applying values meeting the criteria until the event writer returns false
-		void Apply(IEventWriter* pWriter);
-
-	private:
-
-		bool ApplyEvent(IEventWriter* pWriter, SequenceRecord& record);		
-
-		EventBufferFacade* pFacade;
-		SelectionCriteria criteria;
 };
 
 }

@@ -24,8 +24,8 @@
 
 #include "Event.h"
 
-#include <openpal/ListAdapter.h>
 #include <openpal/RandomInsertAdapter.h>
+#include <openpal/DoublyLinkedListAdapter.h>
 #include <opendnp3/DataTypes.h>
 #include <opendnp3/PointClass.h>
 
@@ -43,7 +43,8 @@ struct SequenceRecord
 {
 	EventType type;
 	uint32_t index;
-	PointClass clazz;	
+	PointClass clazz;
+	bool selected;
 };
 
 struct EventBufferFacade
@@ -53,8 +54,8 @@ struct EventBufferFacade
 	EventBufferFacade(	openpal::RandomInsertAdapter<Event<Binary>> aBinaryEvents,
 						openpal::RandomInsertAdapter<Event<Analog>> aAnalogEvents,
 						openpal::RandomInsertAdapter<Event<Counter>> aCounterEvents,						
-						openpal::ListAdapter<SequenceRecord> aSequenceOfEvents,
-						openpal::StackAdapter<uint32_t> aSelectedEvents) :
+						openpal::DoublyLinkedListAdapter<SequenceRecord> aSequenceOfEvents,
+						openpal::StackAdapter<openpal::DoubleListNode<SequenceRecord>*> aSelectedEvents) :
 
 		binaryEvents(aBinaryEvents),
 		analogEvents(aAnalogEvents),
@@ -68,8 +69,8 @@ struct EventBufferFacade
 	openpal::RandomInsertAdapter<Event<Binary>> binaryEvents;
 	openpal::RandomInsertAdapter<Event<Analog>> analogEvents;
 	openpal::RandomInsertAdapter<Event<Counter>> counterEvents;	
-	openpal::ListAdapter<SequenceRecord> sequenceOfEvents;
-	openpal::StackAdapter<uint32_t> selectedEvents;
+	openpal::DoublyLinkedListAdapter<SequenceRecord> sequenceOfEvents;
+	openpal::StackAdapter<openpal::DoubleListNode<SequenceRecord>*> selectedEvents;
 };
 
 

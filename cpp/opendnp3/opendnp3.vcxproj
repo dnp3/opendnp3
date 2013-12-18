@@ -238,6 +238,7 @@
     <ClInclude Include="src\opendnp3\ClassCounter.h" />
     <ClInclude Include="src\opendnp3\CommandSequence.h" />
     <ClInclude Include="src\opendnp3\DynamicallyAllocatedDatabase.h" />
+    <ClInclude Include="src\opendnp3\DynamicallyAllocatedEventBuffer.h" />
     <ClInclude Include="src\opendnp3\EventBufferFacade.h" />
     <ClInclude Include="src\opendnp3\Iterable.h" />
     <ClInclude Include="src\opendnp3\CommandTask.h" />
@@ -335,7 +336,7 @@
     <ClInclude Include="src\opendnp3\ResponseContext.h" />
     <ClInclude Include="src\opendnp3\MeasurementHandler.h" />
     <ClInclude Include="src\opendnp3\SecLinkLayerStates.h" />
-    <ClInclude Include="src\opendnp3\SelectionIterator.h" />
+    <ClInclude Include="src\opendnp3\SelectionCriteria.h" />
     <ClInclude Include="src\opendnp3\SequenceInfo.h" />
     <ClInclude Include="src\opendnp3\SettableOnce.h" />
     <ClInclude Include="src\opendnp3\ShiftableBuffer.h" />
@@ -392,6 +393,7 @@
     <ClCompile Include="src\opendnp3\DatabaseConfiguration.cpp" />
     <ClCompile Include="src\opendnp3\DataPoll.cpp" />
     <ClCompile Include="src\opendnp3\DynamicallyAllocatedDatabase.cpp" />
+    <ClCompile Include="src\opendnp3\DynamicallyAllocatedEventBuffer.cpp" />
     <ClCompile Include="src\opendnp3\DynamicBuffer.cpp" />
     <ClCompile Include="src\opendnp3\FunctionCodeHelpers.cpp" />
     <ClCompile Include="src\opendnp3\gen\ChannelState.cpp" />
@@ -438,7 +440,6 @@
     <ClCompile Include="src\opendnp3\OutstationEventBuffer.cpp" />
     <ClCompile Include="src\opendnp3\PostingMeasurementHandler.cpp" />
     <ClCompile Include="src\opendnp3\ReadHandler.cpp" />
-    <ClCompile Include="src\opendnp3\SelectionIterator.cpp" />
     <ClCompile Include="src\opendnp3\TimeTransaction.cpp" />
     <ClCompile Include="src\opendnp3\DestructorHook.cpp" />
     <ClCompile Include="src\opendnp3\DNP3Channel.cpp" />

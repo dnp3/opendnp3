@@ -167,6 +167,9 @@
     <ClInclude Include="src\MeasurementComparisons.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\MockEventWriter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\AppLayerTest.cpp">
@@ -416,6 +419,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\TestCachedRequest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\TestOutstationEventBuffer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

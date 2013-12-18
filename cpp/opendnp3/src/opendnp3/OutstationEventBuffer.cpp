@@ -31,17 +31,33 @@ OutstationEventBuffer::OutstationEventBuffer(const EventBufferFacade& aFacade) :
 
 }
 
-void OutstationEventBuffer::OnTransmitFailure()
+void OutstationEventBuffer::Reset()
 {
-	facade.selectedEvents.Clear();
+	while(facade.selectedEvents.IsNotEmpty())
+	{
+		auto pNode = facade.selectedEvents.Pop();
+		pNode->value.selected = false;
+	}	
 }
 
-void OutstationEventBuffer::OnTransmitSuccess()
+void OutstationEventBuffer::Clear()
 {
-	while(facade.selectedEvents.IsNotEmpty()) // guaranteed that 
+	while(facade.selectedEvents.IsNotEmpty())
 	{
-		auto index = facade.selectedEvents.Pop(); // that will be the biggest index =(
-		// we need a linked list facade!! This will allow us to delete O(1)!!!
+		auto pNode = facade.selectedEvents.Pop();
+		switch(pNode->value.type)
+		{
+			case(EventType::Binary):
+				facade.binaryEvents.Release(pNode->value.index);
+				break;
+			case(EventType::Analog):
+				facade.analogEvents.Release(pNode->value.index);
+				break;
+			case(EventType::Counter):
+				facade.counterEvents.Release(pNode->value.index);
+				break;
+		}
+		facade.sequenceOfEvents.Remove(pNode); // O(1) from SOE
 	}	
 }
 
@@ -58,6 +74,42 @@ void OutstationEventBuffer::Update(const Event<Analog>& aEvent)
 void OutstationEventBuffer::Update(const Event<Counter>& aEvent)
 {
 	overflow |= !InsertEvent(aEvent, EventType::Counter,  facade.counterEvents);
+}
+
+uint32_t OutstationEventBuffer::SelectEvents(const SelectionCriteria& criteria, IEventWriter* pWriter)
+{	
+	uint32_t count = 0;
+	auto iter = facade.sequenceOfEvents.Iterate();
+	while(iter.HasNext()) // loop over the sequence of events
+	{
+		auto pNode = iter.Next();
+		if(!pNode->value.selected && criteria.IsMatch(pNode->value.clazz, pNode->value.type))
+		{
+			if(ApplyEvent(pWriter, pNode->value)) // the event was written and needs to recorded in the selection buffer
+			{
+				pNode->value.selected = true;
+				facade.selectedEvents.Push(pNode);
+				++count;
+			}				
+			else return count;
+		}
+	}	
+	return count;
+}
+
+bool OutstationEventBuffer::ApplyEvent(IEventWriter* pWriter, SequenceRecord& record)
+{
+	switch(record.type)
+	{
+		case(EventType::Binary):
+			return pWriter->Write(facade.binaryEvents[record.index]);
+		case(EventType::Analog):			
+			return pWriter->Write(facade.analogEvents[record.index]);		
+		case(EventType::Counter):
+			return pWriter->Write(facade.counterEvents[record.index]);		
+		default:
+			return false;
+	}
 }
 
 }

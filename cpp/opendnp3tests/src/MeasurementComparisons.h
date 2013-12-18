@@ -21,8 +21,10 @@
 #ifndef __MEASUREMENT_COMPARISONS_H_
 #define __MEASUREMENT_COMPARISONS_H_
 
-#include <opendnp3/BaseDataTypes.h>
+#include <opendnp3/Event.h>
 #include <opendnp3/IndexedValue.h>
+#include <opendnp3/BaseDataTypes.h>
+#include <opendnp3/MeasurementHelpers.h>
 
 template<class T>
 bool Equals(const opendnp3::TypedMeasurement<T>& lhs, const opendnp3::TypedMeasurement<T>& rhs)
@@ -47,5 +49,13 @@ bool operator==(const opendnp3::IndexedValue<T>& lhs, const opendnp3::IndexedVal
 {
 	return (lhs.value == rhs.value) && (lhs.index == rhs.index);
 }
+
+template<class T>
+bool operator==(const opendnp3::Event<T>& lhs, const opendnp3::Event<T>& rhs)
+{
+	return (lhs.clazz == rhs.clazz) && (lhs.value == rhs.value) && (lhs.index == rhs.index);
+}
+
+
 
 #endif

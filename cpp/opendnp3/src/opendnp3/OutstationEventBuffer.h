@@ -24,6 +24,7 @@
 
 #include "IEventBuffer.h"
 #include "EventBufferFacade.h"
+#include "SelectionCriteria.h"
 
 #include <openpal/ListAdapter.h>
 
@@ -42,13 +43,17 @@ class OutstationEventBuffer : public IEventBuffer
 		void Update(const Event<Analog>& aEvent) final;
 		void Update(const Event<Counter>& aEvent) final;
 		
-		void OnTransmitFailure();
-		void OnTransmitSuccess();
+		void Reset(); // called when a transmission fails
+		void Clear(); // called when a transmission succeeds
 
+		uint32_t SelectEvents(const SelectionCriteria&, IEventWriter* pWriter);
+		
 	private:
 
 		template <class T, class EnumType>
 		bool InsertEvent(const T& aEvent, EnumType eventType, openpal::RandomInsertAdapter<T>& buffer);
+
+		bool ApplyEvent(IEventWriter* pWriter, SequenceRecord& record);
 
 		bool overflow;
 
@@ -62,7 +67,7 @@ bool OutstationEventBuffer::InsertEvent(const T& aEvent, EnumType eventType, ope
 	else 
 	{		
 		auto index = buffer.Add(aEvent);
-		SequenceRecord record = { eventType, index, aEvent.clazz };
+		SequenceRecord record = { eventType, index, aEvent.clazz, false};
 		facade.sequenceOfEvents.Add(record);
 		return true;
 	}
