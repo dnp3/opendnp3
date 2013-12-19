@@ -59,7 +59,7 @@ public:
 	Database db;
 	MockCommandHandler cmdHandler;
 	Slave slave;
-	APDU mAPDU;
+	//APDU mAPDU; TODO
 	openpal::Logger mLogger;
 
 	std::queue<openpal::UTCTimestamp> mTimeWrites;

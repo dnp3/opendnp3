@@ -59,7 +59,7 @@ public:
 	void ConfigureDO(const AnalogOutputFloat32& command, uint32_t index,  std::function<void (CommandResponse)> aCallback);
 	void ConfigureDO(const AnalogOutputDouble64& command, uint32_t index,  std::function<void (CommandResponse)> aCallback);
 
-	void ConfigureRequest(APDU& arAPDU);
+	//void ConfigureRequest(APDU& arAPDU); TODO
 
 	std::string Name() const;
 
@@ -85,11 +85,11 @@ private:
 
 	ICommandSequence* mpActiveSequence;
 
-	CommandSequence<ControlRelayOutputBlock, Group12Var1> crobSeq;
-	CommandSequence<AnalogOutputInt32, Group41Var1> analogInt32Seq;
-	CommandSequence<AnalogOutputInt16, Group41Var2> analogInt16Seq;
-	CommandSequence<AnalogOutputFloat32, Group41Var3> analogFloat32Seq;
-	CommandSequence<AnalogOutputDouble64, Group41Var4> analogDouble64Seq;
+	//CommandSequence<ControlRelayOutputBlock, Group12Var1> crobSeq;
+	//CommandSequence<AnalogOutputInt32, Group41Var1> analogInt32Seq;
+	//CommandSequence<AnalogOutputInt16, Group41Var2> analogInt16Seq;
+	//CommandSequence<AnalogOutputFloat32, Group41Var3> analogFloat32Seq;
+	//CommandSequence<AnalogOutputDouble64, Group41Var4> analogDouble64Seq;
 
 	std::function<void (CommandResponse)> callback;	
 

@@ -32,7 +32,6 @@ namespace opendnp3
 {
 
 class ITask;
-class APDU;
 class IINField;
 
 enum TaskResult {
@@ -67,7 +66,7 @@ public:
 	 *
 	 * @param arAPDU	the DNP3 message as an APDU instance
 	 */
-	virtual void ConfigureRequest(APDU& arAPDU) = 0;
+	//virtual void ConfigureRequest(APDU& arAPDU) = 0;
 
 	/**
 	 * Handler for non-FIN responses, performs common validation and

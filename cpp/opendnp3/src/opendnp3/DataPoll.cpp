@@ -25,7 +25,6 @@
 #include <opendnp3/PointClass.h>
 #include <openpal/LoggableMacros.h>
 
-#include "APDU.h"
 #include "APDUParser.h"
 #include  "MeasurementHandler.h"
 
@@ -78,6 +77,7 @@ void ClassPoll::Set(int aClassMask)
 	mClassMask = aClassMask;
 }
 
+/*
 void ClassPoll::ConfigureRequest(APDU& arAPDU)
 {
 	if (mClassMask == PC_INVALID) {
@@ -90,6 +90,7 @@ void ClassPoll::ConfigureRequest(APDU& arAPDU)
 	if (mClassMask & PC_CLASS_2) arAPDU.DoPlaceholderWrite(Group60Var3::Inst());
 	if (mClassMask & PC_CLASS_3) arAPDU.DoPlaceholderWrite(Group60Var4::Inst());
 }
+*/
 
 
 } //end ns

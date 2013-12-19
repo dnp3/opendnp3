@@ -26,9 +26,7 @@
 namespace openpal
 {
 	ReadOnlyBuffer::ReadOnlyBuffer(): HasSize(0), mpBuffer(nullptr)
-	{
-	
-	}
+	{}
 
 	ReadOnlyBuffer::ReadOnlyBuffer(uint8_t const* apBuffer, uint32_t aSize) :
 		HasSize(aSize),

@@ -56,7 +56,7 @@ public:
 	MockMeasurementHandler meas;
 	MockAppLayer app;
 	Master master;
-	APDU mAPDU;
+	//APDU mAPDU;
 	std::deque<StackState> states;
 };
 

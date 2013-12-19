@@ -20,6 +20,7 @@
  */
 #include "SlaveStates.h"
 
+#include <opendnp3/DNPConstants.h>
 #include <openpal/LoggableMacros.h>
 
 #include "Slave.h"
@@ -130,8 +131,10 @@ AS_Idle AS_Idle::mInstance;
 
 void AS_Idle::OnRequest(Slave* slave, const APDURecord& record, SequenceInfo sequence)
 {
+	/* TODO
 	slave->ChangeState(AS_WaitForRspSuccess::Inst());
 	slave->RespondToRequest(record, sequence);
+	*/
 }
 
 void AS_Idle::Enter(Slave* slave)
@@ -165,10 +168,12 @@ void AS_Idle::OnDataUpdate(Slave* slave)
 	if (!slave->mConfig.mDisableUnsol && slave->mStartupNullUnsol && slave->mRspContext.HasEvents(slave->mConfig.mUnsolMask)) 
 	{
 		if (slave->mConfig.mUnsolPackDelay.GetMilliseconds() <= 0) 
-		{			
+		{	
+			/* TODO
 			slave->mRspContext.LoadUnsol(slave->mUnsol, slave->mIIN, slave->mConfig.mUnsolMask);
 			slave->SendUnsolicited(slave->mUnsol);
 			slave->ChangeState(AS_WaitForUnsolSuccess::Inst());
+			*/
 		}
 		else if (slave->mpUnsolTimer == nullptr) 
 		{
@@ -183,17 +188,21 @@ void AS_Idle::OnUnsolExpiration(Slave* slave)
 	{
 		if (slave->mRspContext.HasEvents(slave->mConfig.mUnsolMask))
 		{
+			/*
 			slave->ChangeState(AS_WaitForUnsolSuccess::Inst());
 			slave->mRspContext.LoadUnsol(slave->mUnsol,  slave->mIIN,  slave->mConfig.mUnsolMask);
 			slave->SendUnsolicited(slave->mUnsol);
+			*/ //TODO
 		}
 	}
 	else 
 	{
+		/* TODO
 		// do the startup null unsol task
 		slave->ChangeState(AS_WaitForUnsolSuccess::Inst());
 		slave->mRspContext.LoadUnsol(slave->mUnsol, slave->mIIN, ClassMask(false, false, false));
 		slave->SendUnsolicited(slave->mUnsol);
+		*/
 	}
 }
 
@@ -217,8 +226,10 @@ void AS_WaitForRspSuccess::OnSolSendSuccess(Slave* slave)
 	}
 	else 
 	{
+		/* TODO
 		slave->mRspContext.LoadResponse(slave->mResponse);
 		slave->SendResponse(slave->mResponse);
+		*/
 	}
 }
 
@@ -259,9 +270,11 @@ void AS_WaitForUnsolSuccess::OnRequest(Slave* slave, const APDURecord& record, S
 	}
 	else 
 	{
+		/* TODO
 		slave->mCachedRequest.Clear(); // idempotent
 		slave->ChangeState(AS_WaitForSolUnsolSuccess::Inst());
-		slave->RespondToRequest(record, sequence);		
+		slave->RespondToRequest(record, sequence);
+		*/
 	}
 }
 

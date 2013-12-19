@@ -29,9 +29,9 @@
 #include <openpal/Indexable.h>
 #include <opendnp3/ClassMask.h>
 
-#include "APDU.h"
 #include "Database.h"
 #include "GroupVariation.h"
+#include "IINField.h"
 
 namespace opendnp3
 {
@@ -82,26 +82,26 @@ class ResponseContext : public openpal::Loggable
 	* ResponseContext class. It returns true if all of the data was written before the APDU was full,
 	* and false otherwise.
 	*/
-	typedef std::function<bool (APDU&)> WriteFunction;
+	//typedef std::function<bool (APDU&)> WriteFunction;
 
 public:
 
 	ResponseContext(openpal::Logger& arLogger, Database*, SlaveResponseTypes* apRspTypes);
 
-	IINField RecordAllObjects(GroupVariation gv);
+	//IINField RecordAllObjects(GroupVariation gv);
 
 	Mode GetMode() const { return mMode; }
 		
 
 	// Configure the APDU with response data for the next fragment
-	void LoadResponse(APDU&);
+	//void LoadResponse(APDU&);
 
 	bool HasEvents(ClassMask aMask);
 
 	/** Configure the APDU with a FIR/FIN unsol packet based on
 		current state of the event buffer
 	*/
-	void LoadUnsol(APDU&, const IINField& arIIN, ClassMask aMask);
+	//void LoadUnsol(APDU&, const IINField& arIIN, ClassMask aMask);
 
 	// @return TRUE is all of the response data has already been written
 	bool IsComplete() { return IsEmpty(); }
@@ -117,10 +117,11 @@ public:
 
 private:
 
-	IINField RecordIntegrity();
-
+	//IINField RecordIntegrity();
+/*
 	template <class T>
 	IINField RecordAllStatic(StreamObject<T>* obj, openpal::Indexable<T> indexable);
+*/
 
 
 	// configure the state for unsol, return true of events exist
@@ -129,7 +130,7 @@ private:
 	Mode mMode;
 
 	// @return TRUE if all of the data has been written
-	bool LoadStaticData(APDU&);
+	//bool LoadStaticData(APDU&);
 
 	/**
 	 * Loads the previously buffered events into the APDU response.
@@ -142,7 +143,7 @@ private:
 	 */
 	// bool LoadEventData(APDU& arAPDU);
 
-	void FinalizeResponse(APDU&, bool aFIN);
+	//void FinalizeResponse(APDU&, bool aFIN);
 	bool IsEmpty();
 
 	bool IsStaticEmpty();
@@ -156,10 +157,10 @@ private:
 	//IINField mTempIIN;
 	bool mLoadedEventData;
 	
-	typedef std::map <ResponseKey, WriteFunction, ResponseKey >	WriteMap;
+	//typedef std::map <ResponseKey, WriteFunction, ResponseKey >	WriteMap;
 
 	// the queue that tracks the pending static write operations
-	WriteMap mStaticWriteMap;
+	//WriteMap mStaticWriteMap;
 
 /*
 	template <class T>
@@ -182,19 +183,22 @@ private:
 	template <class T>
 	size_t CalcPossibleCTO(typename EventIterator<T>::Type aIter, size_t aMax);
 */
-
+	/*
 	template <class T>
 	IINField RecordStaticObjectsByRange(StreamObject<T>* apObject, openpal::IndexableIterator<T> range);
 
 	template <class T>
 	bool WriteStaticObjects(StreamObject<T>* object, openpal::IndexableIterator<T> range, ResponseKey aKey, APDU& apdu);
+	*/
 };
 
+/*
 template <class T>
 IINField ResponseContext::RecordAllStatic(StreamObject<T>* obj, openpal::Indexable<T> indexable)
 {		
 	return (indexable.IsEmpty()) ? IINField::Empty : RecordStaticObjectsByRange<T>(obj, indexable.FullRange()); 	
 }
+*/
 
 /*
 template <class T>
@@ -212,6 +216,7 @@ size_t ResponseContext::SelectEvents(PointClass aClass, const StreamObject<T>* a
 }
 */
 
+/*
 template <class T>
 IINField ResponseContext::RecordStaticObjectsByRange(StreamObject<T>* object, openpal::IndexableIterator<T> range)
 {		
@@ -243,6 +248,7 @@ bool ResponseContext::WriteStaticObjects(StreamObject<T>* object, openpal::Index
 
 	return true;
 }
+*/
 
 /*
 template <class T>

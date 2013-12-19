@@ -272,7 +272,6 @@
     <ClCompile Include="src\SlaveTestObject.cpp" />
     <ClCompile Include="src\StopWatch.cpp" />
     <ClCompile Include="src\TestAPDUParsing.cpp" />
-    <ClCompile Include="src\TestAPDUWriting.cpp" />
     <ClCompile Include="src\TestAppLayer.cpp" />
     <ClCompile Include="src\TestASIO.cpp" />
     <ClCompile Include="src\TestASIOThreadPool.cpp" />

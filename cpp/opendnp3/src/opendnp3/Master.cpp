@@ -35,6 +35,7 @@
 #include "CopyableBuffer.h"
 #include "APDUParser.h"
 
+#include <openpal/Exception.h>
 #include <openpal/LoggableMacros.h>
 
 #include <functional>
@@ -46,8 +47,7 @@ namespace opendnp3
 
 Master::Master(Logger aLogger, MasterConfig aCfg, IAppLayer* apAppLayer, IMeasurementHandler* apPublisher, AsyncTaskGroup* apTaskGroup, openpal::IExecutor* apExecutor, IUTCTimeSource* apTimeSrc) :
 	IAppUser(aLogger),
-	StackBase(apExecutor),
-	mRequest(aCfg.FragSize),
+	StackBase(apExecutor),	
 	mpAppLayer(apAppLayer),
 	mHandler(apPublisher, apExecutor),
 	mpTaskGroup(apTaskGroup),
@@ -176,12 +176,14 @@ void Master::DirectOperate(const AnalogOutputDouble64& arCommand, size_t aIndex,
 	this->mCommandTask.ConfigureDO(arCommand, aIndex, aCallback);
 }
 
+/* TODO
 void Master::StartTask(MasterTaskBase* apMasterTask, bool aInit)
 {
 	if(aInit) apMasterTask->Init();
 	apMasterTask->ConfigureRequest(mRequest);
 	//mpAppLayer->SendRequest(mRequest); // TODO restore transmission
 }
+*/
 
 /* Tasks */
 

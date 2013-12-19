@@ -21,7 +21,6 @@
 #ifndef __COMMAND_SEQUENCE_H_
 #define __COMMAND_SEQUENCE_H_
 
-#include "APDU.h"
 #include "HeaderHandlerBase.h"
 
 namespace opendnp3
@@ -37,7 +36,7 @@ class ICommandSequence : public HeaderHandlerBase, private openpal::Loggable
 	ICommandSequence(openpal::Logger logger): Loggable(logger) {}
 
 	// Given an APDU and function code, configure the request
-	virtual void FormatAPDU(APDU& apdu, FunctionCode aCode) = 0;
+	// virtual void FormatAPDU(APDU& apdu, FunctionCode aCode) = 0;  TODO
 
 	// Given the response, what's the result of the command?
 	virtual CommandResponse Validate() = 0;
@@ -71,6 +70,7 @@ class CommandSequence : public ICommandSequence
 		}				
 	}
 
+	/* TODO
 	virtual void FormatAPDU(APDU& apdu, FunctionCode aCode) final 
 	{		
 		apdu.Set(aCode, true, true, false, false);
@@ -78,6 +78,7 @@ class CommandSequence : public ICommandSequence
 		i.SetIndex(command.index);
 		GroupVariation::Inst()->Write(*i, command.value);
 	}
+	*/
 
 	virtual CommandResponse Validate() final
 	{

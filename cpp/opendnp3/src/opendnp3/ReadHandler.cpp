@@ -33,7 +33,7 @@ ReadHandler::ReadHandler(openpal::Logger& aLogger, ResponseContext* aContext) :
 
 void ReadHandler::_AllObjects(GroupVariation gv)
 {
-	errors |= pContext->RecordAllObjects(gv);
+	//errors |= pContext->RecordAllObjects(gv); TODO
 }
 
 

@@ -38,7 +38,8 @@ class ClearRestartIIN : public SimpleRspBase
 public:
 	ClearRestartIIN(openpal::Logger& arLogger);
 
-	void ConfigureRequest(APDU& arAPDU);
+	//void ConfigureRequest(APDU& arAPDU);
+
 #ifndef OPENDNP3_STRIP_LOG_MESSAGES
 	std::string Name() const {
 		return "ClearRestartIIN";
@@ -54,7 +55,8 @@ public:
 
 	void Set(bool aIsEnable, int aClassMask);
 
-	void ConfigureRequest(APDU& arAPDU);
+	//void ConfigureRequest(APDU& arAPDU);
+
 #ifndef OPENDNP3_STRIP_LOG_MESSAGES
 	std::string Name() const {
 		return "ConfigureUnsol";
@@ -74,7 +76,7 @@ public:
 
 	// override Init
 	void Init();
-	void ConfigureRequest(APDU& arAPDU);
+	//void ConfigureRequest(APDU& arAPDU); TODO
 	TaskResult _OnFinalResponse(const APDUResponseRecord&);
 
 #ifndef OPENDNP3_STRIP_LOG_MESSAGES

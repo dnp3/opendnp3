@@ -30,7 +30,6 @@
 #include <openpal/IExecutor.h>
 #include <openpal/IUTCTimeSource.h>
 
-#include "APDU.h"
 #include "IAppLayer.h"
 #include "IAppUser.h"
 #include "MasterSchedule.h"
@@ -139,11 +138,9 @@ private:
 
 	void ProcessIIN(const IINField& arIIN);	// Analyze IIN bits and react accordingly
 	void ProcessDataResponse(const APDUResponseRecord& aRecord);	// Read data output of solicited or unsolicited response and publish
-	void StartTask(MasterTaskBase*, bool aInit);	// Starts a task running
+	//void StartTask(MasterTaskBase*, bool aInit);	// Starts a task running
 
-	QueuedCommandProcessor mCommandQueue;				// Threadsafe queue for buffering command requests
-
-	APDU mRequest;							// APDU that gets reused for requests
+	QueuedCommandProcessor mCommandQueue;	// Threadsafe queue for buffering command requests	
 
 	IAppLayer* mpAppLayer;					// lower application layer
 	PostingMeasurementHandler mHandler;     // marshalls measurement callbacks via the executor

@@ -21,6 +21,7 @@
 #include <boost/test/unit_test.hpp>
 
 #include <openpal/Exception.h>
+#include <openpal/Serialization.h>
 
 #include <queue>
 

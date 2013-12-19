@@ -24,6 +24,7 @@
 #include <opendnp3/IMeasurementHandler.h>
 #include <opendnp3/OctetString.h>
 
+#include <openpal/Location.h>
 #include <openpal/Exception.h>
 
 #include <map>

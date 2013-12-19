@@ -51,10 +51,8 @@ Slave::Slave(openpal::Logger aLogger, IAppLayer* apAppLayer, IExecutor* apExecut
 	mpState(AS_Closed::Inst()),
 	mConfig(arCfg),
 	mRspTypes(arCfg),
-	mpUnsolTimer(nullptr),
-	mResponse(arCfg.mMaxFragSize),
-	mCachedRequest(arCfg.mMaxControls),
-	mUnsol(arCfg.mMaxFragSize),
+	mpUnsolTimer(nullptr),	
+	mCachedRequest(arCfg.mMaxControls),	
 	mRspContext(aLogger, apDatabase, &mRspTypes),
 	mSBOHandler(arCfg.mSelectTimeout, apCmdHandler, apExecutor),	
 	mDeferredUpdateCount(0),	
@@ -177,6 +175,7 @@ size_t Slave::FlushUpdates()
 	return num;		
 }
 
+/*
 void Slave::RespondToRequest(const APDURecord& record, SequenceInfo sequence)
 {
 	mResponse.Set(FunctionCode::RESPONSE);
@@ -252,6 +251,7 @@ void Slave::SendResponse(APDU& apdu, const IINField& indications)
 	apdu.SetIIN(mIIN | indications);
 	//mpAppLayer->SendResponse(apdu); // TODO
 }	
+*/
 
 /*
 switch (record.function) 
@@ -313,11 +313,14 @@ switch (record.function)
 		break;		
 }
 */
+
+/*
 void Slave::SendUnsolicited(APDU& apdu, const IINField& indications)
 {
 	apdu.SetIIN(mIIN | indications);
 	//mpAppLayer->SendUnsolicited(apdu); // TODO
 }
+*/
 
 /*
 void Slave::ConfigureDelayMeasurement(const APDU& arRequest)

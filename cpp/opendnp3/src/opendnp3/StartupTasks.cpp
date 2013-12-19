@@ -20,8 +20,6 @@
  */
 #include "StartupTasks.h"
 
-#include "APDU.h"
-
 #include "TimeSyncHandler.h"
 #include "APDUParser.h"
 
@@ -39,6 +37,7 @@ ClearRestartIIN::ClearRestartIIN(openpal::Logger& arLogger) :
 	SimpleRspBase(arLogger)
 {}
 
+/*
 void ClearRestartIIN::ConfigureRequest(APDU& arAPDU)
 {
 	arAPDU.Set(FunctionCode::WRITE);
@@ -46,6 +45,7 @@ void ClearRestartIIN::ConfigureRequest(APDU& arAPDU)
 	ObjectWriteIterator i = arAPDU.WriteContiguous(pObj, 7, 7); // index 7 == device restart
 	pObj->Write(*i, 7, 7, false);
 }
+*/
 
 /* ------ Configure Unsol ------- */
 
@@ -61,6 +61,7 @@ void ConfigureUnsol::Set(bool aIsEnable, int aClassMask)
 	mClassMask = aClassMask;
 }
 
+/*
 void ConfigureUnsol::ConfigureRequest(APDU& arAPDU)
 {
 	arAPDU.Set(mIsEnable ? FunctionCode::ENABLE_UNSOLICITED : FunctionCode::DISABLE_UNSOLICITED);
@@ -68,6 +69,7 @@ void ConfigureUnsol::ConfigureRequest(APDU& arAPDU)
 	if(mClassMask & PC_CLASS_2) arAPDU.DoPlaceholderWrite(Group60Var3::Inst());
 	if(mClassMask & PC_CLASS_3) arAPDU.DoPlaceholderWrite(Group60Var4::Inst());
 }
+*/
 
 
 /* ------ Time Sync ------- */
@@ -83,6 +85,7 @@ void TimeSync::Init()
 	mDelay = -1;
 }
 
+/*
 void TimeSync::ConfigureRequest(APDU& arAPDU)
 {
 	if(mDelay < 0) {
@@ -95,6 +98,7 @@ void TimeSync::ConfigureRequest(APDU& arAPDU)
 		Group50Var1Temp::Inst()->mTime.Set(*owi, mpTimeSrc->Now().msSinceEpoch + mDelay);
 	}
 }
+*/
 
 TaskResult TimeSync::_OnFinalResponse(const APDUResponseRecord& record)
 {

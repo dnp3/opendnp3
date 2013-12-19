@@ -20,7 +20,6 @@
  */
 #include "MasterTaskBase.h"
 
-#include "APDU.h"
 #include "AsyncTaskInterfaces.h"
 
 #include <openpal/LoggableMacros.h>

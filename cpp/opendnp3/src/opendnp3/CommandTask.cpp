@@ -39,66 +39,67 @@ const Sequence<FunctionCode> CommandTask::SelectAndOperate(FunctionCode::SELECT,
 CommandTask::CommandTask(Logger aLogger) : 
 	MasterTaskBase(aLogger), 
 	mpActiveSequence(nullptr),
-	mpFunctionSequence(nullptr),
-	crobSeq(aLogger),
-	analogInt32Seq(aLogger),
-	analogInt16Seq(aLogger),
-	analogFloat32Seq(aLogger),
-	analogDouble64Seq(aLogger)
+	mpFunctionSequence(nullptr)
+	//crobSeq(aLogger),
+	//analogInt32Seq(aLogger),
+	//analogInt16Seq(aLogger),
+	//analogFloat32Seq(aLogger),
+	//analogDouble64Seq(aLogger)
 {
 
 }
 
 void CommandTask::ConfigureSBO(const ControlRelayOutputBlock& command, uint32_t index, std::function<void (CommandResponse)> aCallback)
 {
-	this->Configure(crobSeq, command, index, &SelectAndOperate, aCallback);
+	//this->Configure(crobSeq, command, index, &SelectAndOperate, aCallback);
 }
 
 void CommandTask::ConfigureSBO(const AnalogOutputInt16& command, uint32_t index,  std::function<void (CommandResponse)> aCallback)
 {
-	this->Configure(analogInt16Seq, command, index, &SelectAndOperate, aCallback);
+	//this->Configure(analogInt16Seq, command, index, &SelectAndOperate, aCallback);
 }
 
 void CommandTask::ConfigureSBO(const AnalogOutputInt32& command, uint32_t index,  std::function<void (CommandResponse)> aCallback)
 {
-	this->Configure(analogInt32Seq, command, index, &SelectAndOperate, aCallback);
+	//this->Configure(analogInt32Seq, command, index, &SelectAndOperate, aCallback);
 }
 
 void CommandTask::ConfigureSBO(const AnalogOutputFloat32& command, uint32_t index,  std::function<void (CommandResponse)> aCallback)
 {
-	this->Configure(analogFloat32Seq, command, index, &SelectAndOperate, aCallback);
+	//this->Configure(analogFloat32Seq, command, index, &SelectAndOperate, aCallback);
 }
 
 void CommandTask::ConfigureSBO(const AnalogOutputDouble64& command, uint32_t index,  std::function<void (CommandResponse)> aCallback)
 {
-	this->Configure(analogDouble64Seq, command, index, &SelectAndOperate, aCallback);
+	//this->Configure(analogDouble64Seq, command, index, &SelectAndOperate, aCallback);
 }
 
 void CommandTask::ConfigureDO(const ControlRelayOutputBlock& command, uint32_t index,  std::function<void (CommandResponse)> aCallback)
 {
-	this->Configure(crobSeq, command, index, &DirectOperate, aCallback);
+	//this->Configure(crobSeq, command, index, &DirectOperate, aCallback);
 }
 
 void CommandTask::ConfigureDO(const AnalogOutputInt16& command, uint32_t index,  std::function<void (CommandResponse)> aCallback)
 {
-	this->Configure(analogInt16Seq, command, index, &DirectOperate, aCallback);
+	//this->Configure(analogInt16Seq, command, index, &DirectOperate, aCallback);
 }
 
 void CommandTask::ConfigureDO(const AnalogOutputInt32& command, uint32_t index,  std::function<void (CommandResponse)> aCallback)
 {
-	this->Configure(analogInt32Seq, command, index, &DirectOperate, aCallback);
+	//this->Configure(analogInt32Seq, command, index, &DirectOperate, aCallback);
 }
 
 void CommandTask::ConfigureDO(const AnalogOutputFloat32& command, uint32_t index,  std::function<void (CommandResponse)> aCallback)
 {
-	this->Configure(analogFloat32Seq, command, index, &DirectOperate, aCallback);
+	//this->Configure(analogFloat32Seq, command, index, &DirectOperate, aCallback);
 }
 
 void CommandTask::ConfigureDO(const AnalogOutputDouble64& command, uint32_t index,  std::function<void (CommandResponse)> aCallback)
 {
-	this->Configure(analogDouble64Seq, command, index, &DirectOperate, aCallback);
+	//this->Configure(analogDouble64Seq, command, index, &DirectOperate, aCallback);
 }
 
+/*
 void CommandTask::ConfigureRequest(APDU& aAPDU)
 {
 	assert(mpFunctionSequence != nullptr);
@@ -107,6 +108,7 @@ void CommandTask::ConfigureRequest(APDU& aAPDU)
 	mpFunctionSequence = mpFunctionSequence->Next();
 	mpActiveSequence->FormatAPDU(aAPDU, code); 	
 }
+*/
 
 void CommandTask::OnFailure()
 {

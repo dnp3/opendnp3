@@ -29,7 +29,6 @@
 
 #include "StackBase.h"
 #include "ChangeBuffer.h"
-#include "APDU.h"
 #include "IAppLayer.h"
 #include "IAppUser.h"
 
@@ -115,8 +114,8 @@ private:
 
 	void ChangeState(SlaveStateBase* apState);
 
-	void RespondToRequest(const APDURecord& record, SequenceInfo sequence);
-	IINField ConfigureResponse(const APDURecord& record, SequenceInfo sequence, APDU& apduOut);
+	//void RespondToRequest(const APDURecord& record, SequenceInfo sequence);
+	//IINField ConfigureResponse(const APDURecord& record, SequenceInfo sequence, APDU& apduOut);
 
 	ChangeBuffer mChangeBuffer;				// how client code gives us updates
 	IAppLayer* mpAppLayer;					// lower application layer
@@ -130,11 +129,9 @@ private:
 	openpal::ITimer* mpUnsolTimer;			// timer for sending unsol responsess
 	ITimeWriteHandler* mpTimeWriteHandler;	
 
-	IINField mIIN;							// IIN bits that persist between requests (i.e. NeedsTime/Restart/Etc)	
-	APDU mResponse;							// APDU used to form responses
+	IINField mIIN;							// IIN bits that persist between requests (i.e. NeedsTime/Restart/Etc)		
 	CachedRequest mCachedRequest;			// Request cache for when outstation needs to defer a request
-	
-	APDU mUnsol;							// APDU used to form unsol respones
+		
 	ResponseContext mRspContext;			// Used to track and construct response fragments
 	OutstationSBOHandler mSBOHandler;       // Tracks SBO requests, forwarding valid sequences to the application	
 
@@ -158,12 +155,12 @@ private:
 	void OnDataUpdate();					// internal event dispatched when user code commits an update to mChangeBuffer
 	void OnUnsolTimerExpiration();			// internal event dispatched when the unsolicted pack/retry timer expires
 	
-	void SendResponse(APDU& apdu, const IINField& indications = IINField::Empty);
-	void SendUnsolicited(APDU& apdu, const IINField& indications = IINField::Empty);
+	//void SendResponse(APDU& apdu, const IINField& indications = IINField::Empty);
+	//void SendUnsolicited(APDU& apdu, const IINField& indications = IINField::Empty);
 
 	IINField HandleWrite(const APDURecord& record, SequenceInfo sequence);
-	IINField HandleRead(const APDURecord& record, SequenceInfo sequence, APDU& apdu);
-	IINField HandleDelayMeasure(const APDURecord& record, SequenceInfo sequence, APDU& apdu);
+	//IINField HandleRead(const APDURecord& record, SequenceInfo sequence, APDU& apdu);
+	//IINField HandleDelayMeasure(const APDURecord& record, SequenceInfo sequence, APDU& apdu);
 
 	// Helpers
 

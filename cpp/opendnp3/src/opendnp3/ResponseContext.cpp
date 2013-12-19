@@ -61,6 +61,7 @@ ResponseContext::ResponseContext(openpal::Logger& arLogger, Database* apDB, Slav
 	mLoadedEventData(false)
 {}
 
+/*
 IINField ResponseContext::RecordAllObjects(GroupVariation gv)
 {
 	mMode = Mode::SOLICITED;
@@ -73,6 +74,7 @@ IINField ResponseContext::RecordAllObjects(GroupVariation gv)
 	};	
 }
 
+
 IINField ResponseContext::RecordIntegrity()
 {
 	return	this->RecordAllStatic(mpRspTypes->mpStaticBinary, mpDB->Binaries()) |
@@ -81,6 +83,7 @@ IINField ResponseContext::RecordIntegrity()
 			this->RecordAllStatic(mpRspTypes->mpStaticControlStatus, mpDB->ControlStatii()) |
 			this->RecordAllStatic(mpRspTypes->mpStaticSetpointStatus, mpDB->SetpointStatii());		
 }
+*/
 
 void ResponseContext::Reset()
 {
@@ -88,7 +91,7 @@ void ResponseContext::Reset()
 	mLoadedEventData = false;
 	mMode = Mode::UNDEFINED;
 	
-	this->mStaticWriteMap.clear();
+	//this->mStaticWriteMap.clear();
 }
 
 void ResponseContext::ClearAndReset()
@@ -245,6 +248,7 @@ IINField ResponseContext::SelectEvents(PointClass aClass, uint32_t maximum)
 }
 */
 
+/*
 void ResponseContext::LoadResponse(APDU& apdu)
 {
 	//delay the setting of FIR/FIN until we know if it will be multifragmented or not
@@ -257,6 +261,7 @@ void ResponseContext::LoadResponse(APDU& apdu)
 
 	FinalizeResponse(apdu, wroteAll);
 }
+*/
 
 /*
 bool ResponseContext::SelectUnsol(ClassMask m)
@@ -278,6 +283,7 @@ bool ResponseContext::HasEvents(ClassMask m)
 	return false;
 }
 
+/*
 void ResponseContext::LoadUnsol(APDU& arAPDU, const IINField& arIIN, ClassMask m)
 {
 	//this->SelectUnsol(m);
@@ -285,6 +291,7 @@ void ResponseContext::LoadUnsol(APDU& arAPDU, const IINField& arIIN, ClassMask m
 	arAPDU.Set(FunctionCode::UNSOLICITED_RESPONSE, true, true, true, true);
 	//this->LoadEventData(arAPDU);
 }
+*/
 
 /*
 bool ResponseContext::LoadEventData(APDU& arAPDU)
@@ -304,9 +311,10 @@ bool ResponseContext::IsEmpty()
 
 bool ResponseContext::IsStaticEmpty()
 {
-	return this->mStaticWriteMap.empty();
+	return false; // TODO - return this->mStaticWriteMap.empty();
 }
 
+/*
 void ResponseContext::FinalizeResponse(APDU& arAPDU, bool aFIN)
 {
 	mFIN = aFIN;
@@ -315,7 +323,9 @@ void ResponseContext::FinalizeResponse(APDU& arAPDU, bool aFIN)
 	mFIR = false;
 	this->mLoadedEventData = false;
 }
+*/
 
+/*
 bool ResponseContext::LoadStaticData(APDU& arAPDU)
 {
 	while(!this->mStaticWriteMap.empty()) {
@@ -330,6 +340,7 @@ bool ResponseContext::LoadStaticData(APDU& arAPDU)
 
 	return true;
 }
+*/
 
 }
 

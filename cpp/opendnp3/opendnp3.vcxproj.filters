@@ -135,9 +135,6 @@
     <ClInclude Include="include\opendnp3\Util.h">
       <Filter>Include Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\APDU.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\AppChannelStates.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -211,9 +208,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\ILinkRouter.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\IndexedWriteIterator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\LinkFrame.h">
@@ -650,9 +644,6 @@
     <ClCompile Include="src\opendnp3\AnalogOutput.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\APDU.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\opendnp3\AppChannelStates.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -720,9 +711,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\ExecutorPause.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\IndexedWriteIterator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\IStack.cpp">

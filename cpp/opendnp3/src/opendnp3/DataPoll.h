@@ -64,7 +64,9 @@ public:
 	void Set(int aClassMask);
 
 	//Implement MasterTaskBase
-	void ConfigureRequest(APDU& arAPDU);
+
+	//void ConfigureRequest(APDU& arAPDU);
+
 	virtual std::string Name() const {
 		return "Class Poll";
 	}
