@@ -62,7 +62,7 @@ class OutstationEventBuffer : public IEventBuffer
 
 		// Calls the IEventWriter until it returns false or there are no more
 		// matching events
-		uint32_t SelectEvents(const SelectionCriteria&, IEventWriter* pWriter);
+		uint32_t SelectEvents(const SelectionCriteria&, IEventWriter& writer);
 
 		// returns how many events are *unselected* that match the criteria specified
 		uint32_t NumUnselectedMatching(const SelectionCriteria&) const;
@@ -79,7 +79,7 @@ class OutstationEventBuffer : public IEventBuffer
 		template <class T, class EnumType>
 		bool InsertEvent(const T& aEvent, EnumType eventType, openpal::RandomInsertAdapter<T>& buffer);
 
-		bool ApplyEvent(IEventWriter* pWriter, SequenceRecord& record);
+		bool ApplyEvent(IEventWriter& writer, SequenceRecord& record);
 
 		bool overflow;
 

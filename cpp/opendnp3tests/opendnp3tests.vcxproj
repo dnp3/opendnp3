@@ -220,6 +220,7 @@
     <ClInclude Include="src\MockPhysicalLayerMonitor.h" />
     <ClInclude Include="src\MockTimeWriteHandler.h" />
     <ClInclude Include="src\MockUpperLayer.h" />
+    <ClInclude Include="src\OutstationEventBufferFuzzer.h" />
     <ClInclude Include="src\PhysicalLayerWrapper.h" />
     <ClInclude Include="src\PhysicalLayerWrapperFactory.h" />
     <ClInclude Include="src\PhysLoopback.h" />
@@ -299,6 +300,7 @@
     <ClCompile Include="src\TestMisc.cpp" />
     <ClCompile Include="src\TestObjects.cpp" />
     <ClCompile Include="src\TestOutstationEventBuffer.cpp" />
+    <ClCompile Include="src\TestOutstationEventBufferViaFuzz.cpp" />
     <ClCompile Include="src\TestSerialization.cpp" />
     <ClCompile Include="src\TestPhysicalLayerAsyncBase.cpp" />
     <ClCompile Include="src\TestPhysicalLayerAsyncSerial.cpp" />

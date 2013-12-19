@@ -61,6 +61,11 @@ bool ClassCount::IsEmpty() const
 	return (numBinary == 0) && (numAnalog == 0) && (numCounter) == 0;
 }
 
+uint32_t ClassCount::Total() const
+{
+	return numBinary + numAnalog + numCounter;
+}
+
 uint32_t ClassCount::CountOf(uint8_t eventTypeMask) const
 {
 	uint32_t count = 0;
@@ -89,6 +94,11 @@ EventTracker EventTracker::Subtract(const EventTracker& rhs) const
 bool EventTracker::IsEmpty() const
 {
 	return class1.IsEmpty() && class2.IsEmpty() && class3.IsEmpty();
+}
+
+uint32_t EventTracker::Total() const
+{
+	return class1.Total() + class2.Total() + class3.Total();
 }
 
 void EventTracker::Increment(EventType type, EventClass clazz)

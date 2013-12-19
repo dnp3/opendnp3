@@ -51,6 +51,13 @@ class MockEventWriter : public IEventWriter
 	}
 
 	size_t TotalEvents() { return binaries.size() + analogs.size() + counters.size(); }
+
+	void Clear() 
+	{ 
+		binaries.clear();
+		analogs.clear();
+		counters.clear();
+	}
 	
 	std::vector<Event<Binary>> binaries;
 	std::vector<Event<Analog>> analogs;

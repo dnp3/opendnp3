@@ -106,7 +106,7 @@ uint32_t OutstationEventBuffer::NumUnselectedMatching(const SelectionCriteria& c
 	return count;
 }
 
-uint32_t OutstationEventBuffer::SelectEvents(const SelectionCriteria& criteria, IEventWriter* pWriter)
+uint32_t OutstationEventBuffer::SelectEvents(const SelectionCriteria& criteria, IEventWriter& writer)
 {	
 	uint32_t count = 0;
 	uint32_t max = this->NumUnselectedMatching(criteria);
@@ -116,7 +116,7 @@ uint32_t OutstationEventBuffer::SelectEvents(const SelectionCriteria& criteria, 
 		auto pNode = iter.Next();
 		if(!pNode->value.selected && criteria.IsMatch(pNode->value.clazz, pNode->value.type))
 		{
-			if(ApplyEvent(pWriter, pNode->value)) // the event was written and needs to recorded in the selection buffer
+			if(ApplyEvent(writer, pNode->value)) // the event was written and needs to recorded in the selection buffer
 			{
 				selectedTracker.Increment(pNode->value.type, pNode->value.clazz);
 				pNode->value.selected = true;
@@ -129,16 +129,16 @@ uint32_t OutstationEventBuffer::SelectEvents(const SelectionCriteria& criteria, 
 	return count;
 }
 
-bool OutstationEventBuffer::ApplyEvent(IEventWriter* pWriter, SequenceRecord& record)
+bool OutstationEventBuffer::ApplyEvent(IEventWriter& writer, SequenceRecord& record)
 {
 	switch(record.type)
 	{
 		case(EventType::Binary):
-			return pWriter->Write(facade.binaryEvents[record.index]);
+			return writer.Write(facade.binaryEvents[record.index]);
 		case(EventType::Analog):			
-			return pWriter->Write(facade.analogEvents[record.index]);		
+			return writer.Write(facade.analogEvents[record.index]);		
 		case(EventType::Counter):
-			return pWriter->Write(facade.counterEvents[record.index]);		
+			return writer.Write(facade.counterEvents[record.index]);		
 		default:
 			return false;
 	}

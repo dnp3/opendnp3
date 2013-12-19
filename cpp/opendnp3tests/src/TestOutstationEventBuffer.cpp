@@ -30,7 +30,7 @@
 using namespace std;
 using namespace opendnp3;
 
-BOOST_AUTO_TEST_SUITE(OutstationBufferSuiteTestSuite)
+BOOST_AUTO_TEST_SUITE(OutstationEventBufferTestSuite)
 
 BOOST_AUTO_TEST_CASE(InitialState)
 {
@@ -40,8 +40,8 @@ BOOST_AUTO_TEST_CASE(InitialState)
 	MockEventWriter writer;
 
 	SelectionCriteria criteria;	
-	BOOST_REQUIRE_EQUAL(0, buffer.SelectEvents(criteria, &writer));
-	BOOST_REQUIRE_EQUAL(0, buffer.SelectEvents(criteria, &writer));
+	BOOST_REQUIRE_EQUAL(0, buffer.SelectEvents(criteria, writer));
+	BOOST_REQUIRE_EQUAL(0, buffer.SelectEvents(criteria, writer));
 	BOOST_REQUIRE_EQUAL(0, writer.TotalEvents());
 }
 
@@ -57,9 +57,9 @@ BOOST_AUTO_TEST_CASE(SingleValueIsWrittenAndCleared)
 	SelectionCriteria criteria;
 	criteria.class1 = EventTypeMasks::BINARY;
 	
-	BOOST_REQUIRE_EQUAL(1, buffer.SelectEvents(criteria, &writer));
+	BOOST_REQUIRE_EQUAL(1, buffer.SelectEvents(criteria, writer));
 	BOOST_REQUIRE_EQUAL(1, writer.TotalEvents());
-	BOOST_REQUIRE_EQUAL(0, buffer.SelectEvents(criteria, &writer)); //second select does nothing
+	BOOST_REQUIRE_EQUAL(0, buffer.SelectEvents(criteria, writer)); //second select does nothing
 	BOOST_REQUIRE_EQUAL(1, writer.TotalEvents());
 
 	BOOST_REQUIRE_EQUAL(1, buffer.SelectedEvents().class1.numBinary);
@@ -71,7 +71,7 @@ BOOST_AUTO_TEST_CASE(SingleValueIsWrittenAndCleared)
 
 	buffer.Reset();
 
-	BOOST_REQUIRE_EQUAL(1, buffer.SelectEvents(criteria, &writer)); //event goes right back into buffer
+	BOOST_REQUIRE_EQUAL(1, buffer.SelectEvents(criteria, writer)); //event goes right back into buffer
 	BOOST_REQUIRE_EQUAL(2, writer.TotalEvents());
 	BOOST_REQUIRE(writer.binaries[0] == writer.binaries[1]); // same event
 
@@ -80,23 +80,45 @@ BOOST_AUTO_TEST_CASE(SingleValueIsWrittenAndCleared)
 	BOOST_REQUIRE(buffer.TotalEvents().IsEmpty());
 	BOOST_REQUIRE(buffer.SelectedEvents().IsEmpty());
 	BOOST_REQUIRE(buffer.UnselectedEvents().IsEmpty());
+
+
 }
 
 BOOST_AUTO_TEST_CASE(MixedTypesAndClassesOfEvents)
 {
-	DynamicallyAllocatedEventBuffer underlying(2,2,2);
+	DynamicallyAllocatedEventBuffer underlying(3,3,3);
 	OutstationEventBuffer buffer(underlying.GetFacade());
-
-	// reasonable mix of events that fills up the buffer
+	
 	buffer.Update(Event<Binary>(Binary(true), 3, EventClass::EC1));
 	buffer.Update(Event<Binary>(Binary(true), 5, EventClass::EC3));
 	buffer.Update(Event<Analog>(Analog(16), 1, EventClass::EC2));
 	buffer.Update(Event<Analog>(Analog(71), 7, EventClass::EC3));
 	buffer.Update(Event<Counter>(Counter(23), 3, EventClass::EC2));
 	buffer.Update(Event<Counter>(Counter(42), 4, EventClass::EC2));
+	buffer.Update(Event<Counter>(Counter(81), 9, EventClass::EC3));
 		
-	MockEventWriter writer;
+	//construct a select query that designates much, but not all of the data in the buffer
 	SelectionCriteria criteria;
+	criteria.class1 = EventTypeMasks::BINARY;
+	criteria.class2 = EventTypeMasks::COUNTER;
+	criteria.class3 = EventTypeMasks::ANALOG | EventTypeMasks::COUNTER;
+	
+	BOOST_REQUIRE_EQUAL(5, buffer.NumUnselectedMatching(criteria));
+
+	MockEventWriter writer;
+	uint32_t selected = buffer.SelectEvents(criteria, writer);
+	
+	BOOST_REQUIRE_EQUAL(5, selected);
+	BOOST_REQUIRE_EQUAL(5, buffer.SelectedEvents().Total());
+	BOOST_REQUIRE_EQUAL(5, writer.TotalEvents());
+
+	auto unselected = buffer.UnselectedEvents();
+	BOOST_REQUIRE_EQUAL(0, unselected.class1.Total());
+	BOOST_REQUIRE_EQUAL(2, unselected.class2.Total());
+	BOOST_REQUIRE_EQUAL(0, unselected.class3.Total());
+	BOOST_REQUIRE_EQUAL(2, unselected.Total());
+
+	BOOST_REQUIRE(buffer.UnselectedEvents().IsEmpty());
 }
 
 BOOST_AUTO_TEST_SUITE_END()

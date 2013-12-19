@@ -42,7 +42,8 @@ class ClassCount
 
 	void Increment(EventType type);		
 
-	bool IsEmpty() const;	
+	bool IsEmpty() const;
+	uint32_t Total() const;
 
 	uint32_t CountOf(uint8_t eventTypeMask) const;
 
@@ -64,6 +65,7 @@ class EventTracker
 	EventTracker Subtract(const EventTracker& rhs) const;
 
 	bool IsEmpty() const;
+	uint32_t Total() const;
 
 	void Clear();
 
