@@ -62,10 +62,41 @@ BOOST_AUTO_TEST_CASE(SingleValueIsWrittenAndCleared)
 	BOOST_REQUIRE_EQUAL(0, buffer.SelectEvents(criteria, &writer)); //second select does nothing
 	BOOST_REQUIRE_EQUAL(1, writer.TotalEvents());
 
+	BOOST_REQUIRE_EQUAL(1, buffer.SelectedEvents().class1.numBinary);
+	BOOST_REQUIRE_EQUAL(0, buffer.SelectedEvents().class2.numBinary);
+	BOOST_REQUIRE_EQUAL(0, buffer.SelectedEvents().class3.numBinary);
+	BOOST_REQUIRE_EQUAL(0, buffer.SelectedEvents().class1.numAnalog);
+
+	BOOST_REQUIRE_EQUAL(0, buffer.UnselectedEvents().class1.numBinary);
+
 	buffer.Reset();
+
 	BOOST_REQUIRE_EQUAL(1, buffer.SelectEvents(criteria, &writer)); //event goes right back into buffer
 	BOOST_REQUIRE_EQUAL(2, writer.TotalEvents());
-	BOOST_REQUIRE(writer.binaries[0] == writer.binaries[1]); // same event	
+	BOOST_REQUIRE(writer.binaries[0] == writer.binaries[1]); // same event
+
+	buffer.Clear();
+
+	BOOST_REQUIRE(buffer.TotalEvents().IsEmpty());
+	BOOST_REQUIRE(buffer.SelectedEvents().IsEmpty());
+	BOOST_REQUIRE(buffer.UnselectedEvents().IsEmpty());
+}
+
+BOOST_AUTO_TEST_CASE(MixedTypesAndClassesOfEvents)
+{
+	DynamicallyAllocatedEventBuffer underlying(2,2,2);
+	OutstationEventBuffer buffer(underlying.GetFacade());
+
+	// reasonable mix of events that fills up the buffer
+	buffer.Update(Event<Binary>(Binary(true), 3, PC_CLASS_1));
+	buffer.Update(Event<Binary>(Binary(true), 5, PC_CLASS_3));
+	buffer.Update(Event<Analog>(Analog(16), 1, PC_CLASS_2));
+	buffer.Update(Event<Analog>(Analog(71), 7, PC_CLASS_3));
+	buffer.Update(Event<Counter>(Counter(23), 3, PC_CLASS_2));
+	buffer.Update(Event<Counter>(Counter(42), 4, PC_CLASS_2));
+		
+	MockEventWriter writer;
+	SelectionCriteria criteria;
 }
 
 BOOST_AUTO_TEST_SUITE_END()

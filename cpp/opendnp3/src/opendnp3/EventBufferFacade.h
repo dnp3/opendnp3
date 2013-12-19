@@ -29,15 +29,10 @@
 #include <opendnp3/DataTypes.h>
 #include <opendnp3/PointClass.h>
 
+#include "EventCount.h"
+
 namespace opendnp3
 {
-
-enum class EventType: uint8_t
-{
-	Binary,
-	Analog,
-	Counter
-};
 
 struct SequenceRecord
 {

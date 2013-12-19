@@ -25,6 +25,7 @@
 #include "IEventBuffer.h"
 #include "EventBufferFacade.h"
 #include "SelectionCriteria.h"
+#include "EventCount.h"
 
 #include <openpal/ListAdapter.h>
 
@@ -48,7 +49,14 @@ class OutstationEventBuffer : public IEventBuffer
 
 		uint32_t SelectEvents(const SelectionCriteria&, IEventWriter* pWriter);
 		
+		EventTracker TotalEvents() const;
+		EventTracker SelectedEvents() const;
+		EventTracker UnselectedEvents() const;
+		
 	private:
+
+		EventTracker totalTracker;
+		EventTracker selectedTracker;
 
 		template <class T, class EnumType>
 		bool InsertEvent(const T& aEvent, EnumType eventType, openpal::RandomInsertAdapter<T>& buffer);
@@ -66,6 +74,7 @@ bool OutstationEventBuffer::InsertEvent(const T& aEvent, EnumType eventType, ope
 	if(buffer.IsFull() || facade.sequenceOfEvents.IsFull()) return false;	
 	else 
 	{		
+		totalTracker.Increment(eventType, aEvent.clazz);
 		auto index = buffer.Add(aEvent);
 		SequenceRecord record = { eventType, index, aEvent.clazz, false};
 		facade.sequenceOfEvents.Add(record);

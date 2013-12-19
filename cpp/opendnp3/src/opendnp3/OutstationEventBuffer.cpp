@@ -37,7 +37,9 @@ void OutstationEventBuffer::Reset()
 	{
 		auto pNode = facade.selectedEvents.Pop();
 		pNode->value.selected = false;
-	}	
+	}
+
+	selectedTracker.Clear();
 }
 
 void OutstationEventBuffer::Clear()
@@ -58,7 +60,25 @@ void OutstationEventBuffer::Clear()
 				break;
 		}
 		facade.sequenceOfEvents.Remove(pNode); // O(1) from SOE
-	}	
+	}
+
+	totalTracker = totalTracker.Subtract(selectedTracker);
+	selectedTracker.Clear();
+}
+
+EventTracker OutstationEventBuffer::TotalEvents() const
+{
+	return totalTracker;
+}
+
+EventTracker OutstationEventBuffer::UnselectedEvents() const
+{
+	return totalTracker.Subtract(selectedTracker);
+}
+
+EventTracker OutstationEventBuffer::SelectedEvents() const
+{
+	return selectedTracker;
 }
 
 void OutstationEventBuffer::Update(const Event<Binary>& aEvent)
@@ -87,6 +107,7 @@ uint32_t OutstationEventBuffer::SelectEvents(const SelectionCriteria& criteria, 
 		{
 			if(ApplyEvent(pWriter, pNode->value)) // the event was written and needs to recorded in the selection buffer
 			{
+				selectedTracker.Increment(pNode->value.type, pNode->value.clazz);
 				pNode->value.selected = true;
 				facade.selectedEvents.Push(pNode);
 				++count;

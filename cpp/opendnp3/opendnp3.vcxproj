@@ -240,6 +240,7 @@
     <ClInclude Include="src\opendnp3\DynamicallyAllocatedDatabase.h" />
     <ClInclude Include="src\opendnp3\DynamicallyAllocatedEventBuffer.h" />
     <ClInclude Include="src\opendnp3\EventBufferFacade.h" />
+    <ClInclude Include="src\opendnp3\EventCount.h" />
     <ClInclude Include="src\opendnp3\Iterable.h" />
     <ClInclude Include="src\opendnp3\CommandTask.h" />
     <ClInclude Include="src\opendnp3\ConstantCommandProcessor.h" />
@@ -395,6 +396,7 @@
     <ClCompile Include="src\opendnp3\DynamicallyAllocatedDatabase.cpp" />
     <ClCompile Include="src\opendnp3\DynamicallyAllocatedEventBuffer.cpp" />
     <ClCompile Include="src\opendnp3\DynamicBuffer.cpp" />
+    <ClCompile Include="src\opendnp3\EventCount.cpp" />
     <ClCompile Include="src\opendnp3\FunctionCodeHelpers.cpp" />
     <ClCompile Include="src\opendnp3\gen\ChannelState.cpp" />
     <ClCompile Include="src\opendnp3\gen\CommandResult.cpp" />
