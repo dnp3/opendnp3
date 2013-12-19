@@ -60,9 +60,13 @@ class WriteBuffer : public HasSize
 
 	void Advance(uint32_t aNum);
 
+	WriteBuffer Truncate(uint32_t aNum) const;
+
 	ReadOnlyBuffer ToReadOnly() const;
 
 	operator uint8_t *() { return mpBuffer; };
+
+	operator uint8_t const *() const { return mpBuffer; };
 
 	private:
 

@@ -99,13 +99,14 @@ BOOST_AUTO_TEST_CASE(UnsolSuccess)
 // Test that the various send methods reject
 // illegal function codes. Also check that the app layer
 // is slave/master aware with respect to send
-BOOST_AUTO_TEST_CASE(SendBadLinkFunctionlave)
+BOOST_AUTO_TEST_CASE(SendBadFuncCodeSlave)
 {
 	AppLayerTest t(false);	// slave
 	t.lower.ThisLayerUp();
 
 	// can't send a response until at least 1 request has been received
 	// to set the sequence number
+	/* TODO - change these to log tests
 	BOOST_REQUIRE_THROW(
 	        t.SendResponse(FunctionCode::RESPONSE, true, true, false, false),
 	        InvalidStateException);
@@ -114,40 +115,11 @@ BOOST_AUTO_TEST_CASE(SendBadLinkFunctionlave)
 	        t.SendUnsolicited(FunctionCode::RESPONSE, true, true, false, false),
 	        ArgumentException);
 
+
 	BOOST_REQUIRE_THROW(
 	        t.SendRequest(FunctionCode::WRITE, true, true, false, false), // master only
 	        Exception);
-}
-
-// Same test for the master
-BOOST_AUTO_TEST_CASE(SendBadFuncCodeMaster)
-{
-	AppLayerTest t(true);	// master
-	t.lower.ThisLayerUp();
-
-	BOOST_REQUIRE_THROW(
-	        t.SendResponse(FunctionCode::RESPONSE, true, true, false, false), // slave only
-	        Exception);
-
-	BOOST_REQUIRE_THROW(
-	        t.SendUnsolicited(FunctionCode::UNSOLICITED_RESPONSE, true, true, false, false), // slave only
-	        Exception);
-
-	BOOST_REQUIRE_THROW(
-	        t.SendRequest(FunctionCode::RESPONSE, true, true, false, false), //bad code
-	        ArgumentException);
-
-	BOOST_REQUIRE_THROW(
-	        t.SendRequest(FunctionCode::WRITE, true, true, true, false), // bad CON bit
-	        ArgumentException);
-
-	BOOST_REQUIRE_THROW(
-	        t.SendRequest(FunctionCode::WRITE, true, true, false, true), // bad UNS bit
-	        ArgumentException);
-
-	BOOST_REQUIRE_THROW(
-	        t.SendRequest(FunctionCode::WRITE, false, true, false, false), // bad FIR
-	        ArgumentException);
+	*/
 }
 
 BOOST_AUTO_TEST_CASE(SendExtraObjectData)
@@ -286,23 +258,6 @@ BOOST_AUTO_TEST_CASE(SendResponseNonFIR)
 	BOOST_REQUIRE_EQUAL(t.log.NextErrorCode(), ALERR_UNEXPECTED_CONFIRM);
 	t.SendUp(AppControlField(true, true, false, false, 5), FunctionCode::CONFIRM); ++t.state.NumSolSendSuccess; // correct seq
 	BOOST_REQUIRE_EQUAL(t.state, t.user.mState);
-}
-
-// Test the formatting exceptions for unsol send
-BOOST_AUTO_TEST_CASE(SendUnsolBadFormatting)
-{
-	AppLayerTest t(false);	// slave
-	t.lower.ThisLayerUp();
-
-	BOOST_REQUIRE_THROW(
-	        t.SendUnsolicited(FunctionCode::UNSOLICITED_RESPONSE, true, false, true, true), //bad FIN
-	        ArgumentException
-	);
-
-	BOOST_REQUIRE_THROW(
-	        t.SendUnsolicited(FunctionCode::UNSOLICITED_RESPONSE, true, true, true, false), //bad UNS
-	        ArgumentException
-	);
 }
 
 // Test an unsol send with confirm transaction

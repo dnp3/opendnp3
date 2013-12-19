@@ -25,13 +25,15 @@
 
 #include <openpal/AsyncLayerInterfaces.h>
 
-#include "APDU.h"
-#include "AppInterfaces.h"
+#include "IAppUser.h"
+#include "IAppLayer.h"
+
 #include "SolicitedChannel.h"
 #include "UnsolicitedChannel.h"
 #include "APDUHeaderParser.h"
 
 #include <opendnp3/AppConfig.h>
+#include <openpal/StaticArray.h>
 
 namespace openpal
 {
@@ -65,9 +67,9 @@ public:
 	/////////////////////////////////
 	// Implement IAppLayer
 	/////////////////////////////////
-	void SendUnsolicited(APDU&);
-	void SendResponse(APDU&);
-	void SendRequest(APDU&);
+	void SendUnsolicited(APDUOut&);
+	void SendResponse(APDUOut&);
+	void SendRequest(APDUOut&);
 	void CancelResponse();
 
 private:
@@ -102,33 +104,34 @@ private:
 	// State
 	////////////////////
 
-	typedef std::deque<const APDU*> SendQueue;
-
-	APDU mIncoming;						// Fragment used to parse all incoming requests
-	APDU mConfirm;						// Fragment used to do confirms
+	typedef std::deque<APDUOut> SendQueue;	
 
 	bool mSending;						// State of send operation to the lower layer
 	bool mConfirmSending;
 	bool mIsMaster;						// True, if the application user is a master
 	SendQueue mSendQueue;				// Buffer of send operations
 
-	IAppUser* mpUser;				// Interface for dispatching callbacks
+	IAppUser* mpUser;					// Interface for dispatching callbacks
 
 	SolicitedChannel mSolicited;			// Channel used for solicited communications
 	UnsolicitedChannel mUnsolicited;		// Channel used for unsolicited communications
 	size_t mNumRetry;
 
 
+	// a 2 byter buffer and wrapper for the confirms
+	uint8_t confirmBuffer[2];
+	APDUOut confirmAPDU;
+
+
 	////////////////////
 	// Helpers
 	////////////////////
 
-	void QueueConfirm(bool aUns, int aSeq);
-	void QueueFrame(const APDU& arAPDU);
-	void CheckForSend();
 	size_t GetRetries(FunctionCode aCode);
-
-	void Validate(const AppControlField& arCtrl, bool aMaster, bool aRequireFIRFIN, bool aAllowCON, bool aUNS);
+	void QueueConfirm(bool aUns, int aSeq);
+	void QueueFrame(const APDUOut& apdu);
+	void CheckForSend();
+	
 };
 
 }

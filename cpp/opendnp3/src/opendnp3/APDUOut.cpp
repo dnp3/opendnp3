@@ -18,66 +18,53 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __MOCK_APP_LAYER_H_
-#define __MOCK_APP_LAYER_H_
 
-#include <opendnp3/IAppLayer.h>
-#include <opendnp3/APDUOut.h>
+#include "APDUOut.h"
 
-#include <opendnp3/IAppUser.h>
-#include <opendnp3/IAppLayer.h>
+#include <assert.h>
 
-#include <openpal/Loggable.h>
-
-#include <queue>
+#include "AppControlField.h"
 
 namespace opendnp3
 {
 
-/**	@section desc Test class to mock async app layer for master/slave */
-class MockAppLayer : public IAppLayer, public openpal::Loggable
+APDUOut::APDUOut() : buffer()
 {
-public:
-	MockAppLayer(openpal::Logger);
-	virtual ~MockAppLayer() {}
-
-
-	void SetUser(IAppUser*);
-
-	void SendResponse(APDUOut&);
-	void SendUnsolicited(APDUOut&);
-	void SendRequest(APDUOut&);
-	void CancelResponse();
-
-	bool NothingToRead();
-
-	size_t mNumCancel;
-
-	void EnableAutoSendCallback(bool aIsSuccess);
-	void DisableAutoSendCallback();
-
-	APDUOut Read();
-
-	size_t Count() {
-		return mFragments.size();
-	}
-	FunctionCode ReadFunction();
-	size_t NumAPDU() {
-		return mFragments.size();
-	}
-
-private:
-
-	void DoSendUnsol();
-	void DoSendSol();
-
-	IAppUser* mpUser;
-	bool mAutoSendCallback;
-	bool mIsSuccess;
-	std::deque<APDUOut> mFragments;
-};
 
 }
 
-#endif
+APDUOut::APDUOut(const openpal::WriteBuffer& aBuffer) : buffer(aBuffer)
+{
+	assert(aBuffer.Size() >= 2); // need a control & function at a minimum
+}
+
+void APDUOut::SetFunction(FunctionCode code)
+{
+	assert(buffer.IsNotEmpty());
+	buffer[1] = FunctionCodeToType(code);
+}
+
+FunctionCode APDUOut::GetFunction() const
+{
+	assert(buffer.IsNotEmpty());
+	return FunctionCodeFromType(buffer[1]);
+}
+
+AppControlField APDUOut::GetControl() const
+{
+	assert(buffer.IsNotEmpty());
+	return AppControlField(buffer[0]);
+}
+
+void APDUOut::SetControl(const AppControlField& control)
+{
+	buffer[0] = control.ToByte();
+}
+
+openpal::ReadOnlyBuffer APDUOut::ToReadOnly() const
+{
+	return buffer.ToReadOnly();
+}
+
+}
 

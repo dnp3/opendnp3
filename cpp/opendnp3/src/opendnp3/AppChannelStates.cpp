@@ -21,12 +21,14 @@
 #include "AppChannelStates.h"
 
 #include <opendnp3/Singleton.h>
+#include <opendnp3/DNPConstants.h>
+
 #include <openpal/Exception.h>
 
 #include <openpal/LoggableMacros.h>
 
 #include "AppLayerChannel.h"
-#include "APDU.h"
+
 
 #include <string>
 #include <sstream>
@@ -38,7 +40,7 @@ namespace opendnp3
 
 // ---- Default behaviors for the states ----
 
-void ACS_Base::Send(AppLayerChannel*, APDU&, size_t)
+void ACS_Base::Send(AppLayerChannel*, APDUOut&, size_t)
 {
 	this->ThrowInvalidState(LOCATION);
 }
@@ -114,15 +116,15 @@ void ACS_Base::ProcessResponse(AppLayerChannel* c, const APDUResponseRecord& rec
 
 ACS_Idle ACS_Idle::mInstance;
 
-void ACS_Idle::Send(AppLayerChannel* c, APDU& arAPDU, size_t aNumRetry)
+void ACS_Idle::Send(AppLayerChannel* c, APDUOut& apdu, size_t aNumRetry)
 {
-	AppControlField acf = arAPDU.GetControl();
-	FunctionCode func = arAPDU.GetFunction();
+	AppControlField acf = apdu.GetControl();
+	FunctionCode func = apdu.GetFunction();
 	acf.SEQ = (acf.FIR && func == FunctionCode::RESPONSE) ? c->Sequence() : c->IncrSequence();
-	arAPDU.SetControl(acf);
-	c->ChangeState(NextState(c, arAPDU.GetFunction(), acf.CON));
+	apdu.SetControl(acf);
+	c->ChangeState(NextState(c, func, acf.CON));
 	c->SetRetry(aNumRetry);
-	c->QueueSend(arAPDU);
+	c->QueueSend(apdu);
 }
 
 ACS_Base* ACS_Idle::NextState(AppLayerChannel* c, FunctionCode aFunc, bool aConfirm)

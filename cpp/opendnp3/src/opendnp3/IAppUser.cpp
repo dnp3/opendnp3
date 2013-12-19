@@ -19,7 +19,7 @@
  * to you under the terms of the License.
  */
 
-#include "AppInterfaces.h"
+#include "IAppUser.h"
 
 #include <openpal/LoggableMacros.h>
 

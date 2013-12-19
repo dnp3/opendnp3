@@ -69,6 +69,12 @@ namespace openpal
 		size = 0;
 	}
 
+	WriteBuffer WriteBuffer::Truncate(uint32_t aNum) const
+	{
+		assert(aNum <= size);
+		return WriteBuffer(mpBuffer, aNum);
+	}
+
 	void WriteBuffer::Advance(uint32_t aNum)
 	{
 		assert(aNum <= size);

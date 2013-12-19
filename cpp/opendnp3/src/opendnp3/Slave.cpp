@@ -250,7 +250,7 @@ IINField Slave::HandleDelayMeasure(const APDURecord& record, SequenceInfo sequen
 void Slave::SendResponse(APDU& apdu, const IINField& indications)
 {
 	apdu.SetIIN(mIIN | indications);
-	mpAppLayer->SendResponse(apdu);
+	//mpAppLayer->SendResponse(apdu); // TODO
 }	
 
 /*
@@ -316,7 +316,7 @@ switch (record.function)
 void Slave::SendUnsolicited(APDU& apdu, const IINField& indications)
 {
 	apdu.SetIIN(mIIN | indications);
-	mpAppLayer->SendUnsolicited(apdu);
+	//mpAppLayer->SendUnsolicited(apdu); // TODO
 }
 
 /*

@@ -30,7 +30,8 @@
 #include "StackBase.h"
 #include "ChangeBuffer.h"
 #include "APDU.h"
-#include "AppInterfaces.h"
+#include "IAppLayer.h"
+#include "IAppUser.h"
 
 #include "ResponseContext.h"
 #include "SlaveResponseTypes.h"

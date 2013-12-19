@@ -22,6 +22,9 @@
 
 #include <openpal/LoggableMacros.h>
 #include <openpal/ToHex.h>
+#include <openpal/Exception.h>
+
+#include <assert.h>
 
 using namespace openpal;
 
@@ -72,28 +75,28 @@ void MockAppLayer::DoSendSol()
 	}
 }
 
-void MockAppLayer::SendResponse(APDU& arAPDU)
+void MockAppLayer::SendResponse(APDUOut& apdu)
 {
-	LOG_BLOCK(LogLevel::Comm, "=> " << toHex(arAPDU.ToReadOnly(), true));
-	LOG_BLOCK(LogLevel::Interpret, "=> " << arAPDU.ToString());
-	mFragments.push_back(arAPDU);
+	//LOG_BLOCK(LogLevel::Comm, "=> " << toHex(arAPDU.ToReadOnly(), true));
+	//LOG_BLOCK(LogLevel::Interpret, "=> " << arAPDU.ToString());
+	mFragments.push_back(apdu);
 	this->DoSendSol();
 
 }
 
-void MockAppLayer::SendUnsolicited(APDU& arAPDU)
+void MockAppLayer::SendUnsolicited(APDUOut& apdu)
 {
-	LOG_BLOCK(LogLevel::Comm, "=> " << toHex(arAPDU.ToReadOnly(), true));
-	LOG_BLOCK(LogLevel::Interpret, "=> " << arAPDU.ToString());
-	mFragments.push_back(arAPDU);
+	//LOG_BLOCK(LogLevel::Comm, "=> " << toHex(arAPDU.ToReadOnly(), true));
+	//LOG_BLOCK(LogLevel::Interpret, "=> " << arAPDU.ToString());
+	mFragments.push_back(apdu);
 	this->DoSendUnsol();
 }
 
-void MockAppLayer::SendRequest(APDU& arAPDU)
+void MockAppLayer::SendRequest(APDUOut& apdu)
 {
-	LOG_BLOCK(LogLevel::Comm, "=> " << toHex(arAPDU.ToReadOnly(), true));
-	LOG_BLOCK(LogLevel::Interpret, "=> " << arAPDU.ToString());
-	mFragments.push_back(arAPDU);
+	//LOG_BLOCK(LogLevel::Comm, "=> " << toHex(arAPDU.ToReadOnly(), true));
+	//LOG_BLOCK(LogLevel::Interpret, "=> " << arAPDU.ToString());
+	mFragments.push_back(apdu);
 }
 
 bool MockAppLayer::NothingToRead()
@@ -101,11 +104,10 @@ bool MockAppLayer::NothingToRead()
 	return mFragments.size() == 0;
 }
 
-APDU MockAppLayer::Read()
+APDUOut MockAppLayer::Read()
 {
 	if(mFragments.size() == 0) throw InvalidStateException(LOCATION, "no more fragments");
-	APDU frag = mFragments.front();
-	//frag.Interpret();
+	APDUOut frag = mFragments.front();	
 	mFragments.pop_front();
 	return frag;
 }

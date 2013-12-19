@@ -26,6 +26,7 @@
 #include "AppLayer.h"
 #include "AppChannelStates.h"
 
+#include <assert.h>
 #include <functional>
 
 using namespace openpal;
@@ -36,7 +37,7 @@ namespace opendnp3
 AppLayerChannel::AppLayerChannel(const std::string& arName, openpal::Logger& arLogger, AppLayer* apAppLayer, IExecutor* apExecutor, TimeDuration aTimeout) :
 	Loggable(arLogger),
 	mpAppLayer(apAppLayer),
-	mpSendAPDU(nullptr),
+	//mpSendAPDU(nullptr),
 	mNumRetry(0),
 	mpExecutor(apExecutor),
 	mpTimer(nullptr),
@@ -59,10 +60,10 @@ void AppLayerChannel::Reset()
 
 // ---- Events ----
 
-void AppLayerChannel::Send(APDU& arAPDU, size_t aNumRetry)
+void AppLayerChannel::Send(APDUOut& apdu, size_t aNumRetry)
 {
-	mpState->Send(this, arAPDU, aNumRetry);
-	mpSendAPDU = &arAPDU;
+	mpState->Send(this, apdu, aNumRetry);
+	mSendAPDU = apdu; // assign this record so we can retry
 }
 
 void AppLayerChannel::OnSendSuccess()
@@ -88,9 +89,9 @@ void AppLayerChannel::Cancel()
 
 // ---- State Actions ----
 
-void AppLayerChannel::QueueSend(APDU& arAPDU)
+void AppLayerChannel::QueueSend(APDUOut& apdu)
 {
-	mpAppLayer->QueueFrame(arAPDU);
+	mpAppLayer->QueueFrame(apdu);
 }
 
 bool AppLayerChannel::Retry(ACS_Base* apState)
@@ -99,7 +100,7 @@ bool AppLayerChannel::Retry(ACS_Base* apState)
 		--mNumRetry;
 		LOG_BLOCK(LogLevel::Info, "App layer retry, " << mNumRetry << " remaining");
 		this->ChangeState(apState);
-		mpAppLayer->QueueFrame(*mpSendAPDU);
+		mpAppLayer->QueueFrame(mSendAPDU);
 		return true;
 	}
 	else {

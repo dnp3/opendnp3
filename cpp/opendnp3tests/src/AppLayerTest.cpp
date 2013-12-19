@@ -30,8 +30,9 @@ AppLayerTest::AppLayerTest(bool aIsMaster, size_t aNumRetry, LogLevel aLevel, bo
 	user(Logger(&log, LogLevel::Debug, "user")),
 	lower(Logger(&log, aLevel, "lower")),
 	mts(),
-	app(Logger(&log, aLevel, "app"), &mts, AppConfig(aIsMaster, TimeDuration::Seconds(1), aNumRetry))
-{
+	app(Logger(&log, aLevel, "app"), &mts, AppConfig(aIsMaster, TimeDuration::Seconds(1), aNumRetry)),
+	writeBuffer(buffer, 4)	
+{	
 	lower.SetUpperLayer(&app);
 	app.SetUser(&user);
 }
@@ -58,50 +59,56 @@ void AppLayerTest::SendUp(AppControlField control, FunctionCode aCode, IINField 
 
 void AppLayerTest::SendRequest(FunctionCode aCode, bool aFIR, bool aFIN, bool aCON, bool aUNS)
 {
-	mFragment.Reset();
-	mFragment.SetFunction(aCode);
-	mFragment.SetControl(aFIR, aFIN, aCON, aUNS);
-
-	app.SendRequest(mFragment);
+	APDUOut out(writeBuffer.Truncate(2));
+	out.SetFunction(aCode);
+	out.SetControl(AppControlField(aFIR, aFIN, aCON, aUNS));
+	app.SendRequest(out);
+	
 }
 
 void AppLayerTest::SendResponse(FunctionCode aCode, bool aFIR, bool aFIN, bool aCON, bool aUNS)
 {
-	mFragment.Reset();
-	mFragment.SetFunction(aCode);
-	mFragment.SetControl(aFIR, aFIN, aCON, aUNS);
-	if(aCode == FunctionCode::RESPONSE) { //write a nullptr IIN so that the buffers will match
-		IINField iin;
-		mFragment.SetIIN(iin);
-	}
-	app.SendResponse(mFragment);
+	APDUOut out(writeBuffer);
+	out.SetFunction(aCode);
+	out.SetControl(AppControlField(aFIR, aFIN, aCON, aUNS));
+	app.SendResponse(out);	
 }
 
 void AppLayerTest::SendUnsolicited(FunctionCode aCode, bool aFIR, bool aFIN, bool aCON, bool aUNS)
 {
-	mFragment.Reset();
-	mFragment.SetFunction(aCode);
-	mFragment.SetControl(aFIR, aFIN, aCON, aUNS);
-	if(aCode == FunctionCode::UNSOLICITED_RESPONSE) { //write a nullptr IIN so that the buffers will match
-		IINField iin;
-		mFragment.SetIIN(iin);
-	}
-	app.SendUnsolicited(mFragment);
+	APDUOut out(writeBuffer);
+	out.SetFunction(aCode);
+	out.SetControl(AppControlField(aFIR, aFIN, aCON, aUNS));
+	app.SendUnsolicited(out);	
 }
 
 bool AppLayerTest::CheckSentAPDU(FunctionCode aCode, bool aFIR, bool aFIN, bool aCON, bool aUNS, int aSEQ)
 {
-	APDU f;
-	f.SetFunction(aCode);
-	f.SetControl(aFIR, aFIN, aCON, aUNS, aSEQ);
-	if(aCode == FunctionCode::UNSOLICITED_RESPONSE || aCode == FunctionCode::RESPONSE) {
-		IINField iin;
-		f.SetIIN(iin);
+	AppControlField acf(aFIR, aFIN, aCON, aUNS, aSEQ);
+	switch(aCode)
+	{
+		case(FunctionCode::RESPONSE):
+		case(FunctionCode::UNSOLICITED_RESPONSE):
+			return CheckSentAPDUWithSize(aCode, acf, 4);
+		default:
+			return CheckSentAPDUWithSize(aCode, acf, 2);
 	}
-	bool ret = lower.BufferEquals(f.ToReadOnly());
+}
+
+bool AppLayerTest::CheckSentAPDUWithSize(FunctionCode aCode, const AppControlField& acf, uint32_t size)
+{
+	uint8_t buffer[4];
+	assert(size == 2 || size == 4);
+	openpal::WriteBuffer wb(buffer, size);
+	APDUOut apdu(wb);
+	apdu.SetFunction(aCode);
+	apdu.SetControl(acf);	
+	bool ret = lower.BufferEquals(apdu.ToReadOnly());
 	if(ret) lower.ClearBuffer();
 	return ret;
 }
+
+
 
 }
 

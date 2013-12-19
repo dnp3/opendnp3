@@ -18,20 +18,13 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __APP_INTERFACES_H_
-#define __APP_INTERFACES_H_
+#ifndef __I_APP_LAYER_H_
+#define __I_APP_LAYER_H_
 
-#include <stddef.h>
-
-#include "APDUHeader.h"
-#include "SequenceInfo.h"
-
-#include <openpal/Loggable.h>
+#include "APDUOut.h"
 
 namespace opendnp3
 {
-
-class APDU;
 
 /** Interface for the async app layer.
 
@@ -58,7 +51,7 @@ public:
 		OnSendSuccess() - The data was transmitted succesfully and valid confirmation
 		was received within the timeout (if requested)
 	*/
-	virtual void SendResponse(APDU&) = 0;
+	virtual void SendResponse(APDUOut&) = 0;
 
 	/** Start an unsolicited transaction with optional confirmation and retries. This
 		sequence is almost identical to a response transaction.
@@ -76,7 +69,7 @@ public:
 		OnSendSucces() - The data was transmitted succesfully and valid confirmation
 		was received within the timeout (if requested)
 	*/
-	virtual void SendUnsolicited(APDU&) = 0;
+	virtual void SendUnsolicited(APDUOut&) = 0;
 
 	/** Start a send transaction with optional confirmation and retries,
 		that should result in a resposne.
@@ -97,7 +90,7 @@ public:
 
 		OnFinalResponse(APDU) - A FIN response was received. The transaction is complete.
 	*/
-	virtual void SendRequest(APDU&) = 0;
+	virtual void SendRequest(APDUOut&) = 0;
 
 	/**
 		Cancel a running response transaction. The outstation must still wait for an OnFailure()
@@ -108,36 +101,6 @@ public:
 		4.2.1 - ReadRules - Rule 1
 	*/
 	virtual void CancelResponse() = 0;
-};
-
-
-// Interface for callbacks from an application layer
-class IAppUser : protected openpal::Loggable
-{
-
-public:
-	IAppUser(openpal::Logger aLogger): Loggable(aLogger) {}
-
-	virtual void OnLowerLayerUp() = 0;					// The app layer is online
-	virtual void OnLowerLayerDown() = 0;				// The app layer is offline
-
-	virtual void OnUnsolSendSuccess() = 0;					// A Send operation has completed
-	virtual void OnUnsolFailure() = 0;						// A transaction has failed for some reason
-
-	virtual void OnSolSendSuccess() = 0;					// A Send operation has completed
-	virtual void OnSolFailure() = 0;						// A transaction has failed for some reason
-
-	// A non-final response has been received
-	virtual void OnPartialResponse(const APDUResponseRecord&);
-
-	// A final response has been received
-	virtual void OnFinalResponse(const APDUResponseRecord&);
-
-	// Process unsolicited data
-	virtual void OnUnsolResponse(const APDUResponseRecord&);
-
-	// Process request fragment
-	virtual void OnRequest(const APDURecord&, SequenceInfo);
 };
 
 } //end ns

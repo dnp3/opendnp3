@@ -180,7 +180,7 @@ void Master::StartTask(MasterTaskBase* apMasterTask, bool aInit)
 {
 	if(aInit) apMasterTask->Init();
 	apMasterTask->ConfigureRequest(mRequest);
-	mpAppLayer->SendRequest(mRequest);
+	//mpAppLayer->SendRequest(mRequest); // TODO restore transmission
 }
 
 /* Tasks */

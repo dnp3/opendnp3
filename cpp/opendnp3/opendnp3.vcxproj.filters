@@ -141,12 +141,6 @@
     <ClInclude Include="src\opendnp3\AppChannelStates.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\AppInterfaces.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\AppLayer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\AppLayerChannel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -639,6 +633,18 @@
     <ClInclude Include="src\opendnp3\StaticallyAllocatedEventBuffer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\opendnp3\APDUOut.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\IAppUser.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\AppLayer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\IAppLayer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\opendnp3\AnalogOutput.cpp">
@@ -1038,6 +1044,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\EventCount.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\APDUOut.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

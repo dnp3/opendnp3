@@ -25,6 +25,7 @@
 #include <openpal/TimeDuration.h>
 
 #include "APDUHeader.h"
+#include "APDUOut.h"
 
 namespace openpal
 {
@@ -37,7 +38,6 @@ namespace opendnp3
 
 class AppLayer;
 class ACS_Base;
-class APDU;
 struct AppControlField;
 
 /**  The application layer contains two virtual channels, one for
@@ -67,7 +67,7 @@ public:
 	void Reset();
 
 	// send, wether a response is expected is implicit based on func code
-	void Send(APDU&, size_t aNumRetry);
+	void Send(APDUOut&, size_t aNumRetry);
 	void Cancel();
 
 	// Events
@@ -84,7 +84,7 @@ protected:
 	int IncrSequence() {
 		return mSequence = NextSeq(mSequence);
 	}
-	void QueueSend(APDU&);
+	void QueueSend(APDUOut&);
 	void ChangeState(ACS_Base*);
 	void SetRetry(size_t aNumRetry) {
 		mNumRetry = aNumRetry;
@@ -117,7 +117,7 @@ private:
 
 	void Timeout();
 
-	APDU* mpSendAPDU;
+	APDUOut mSendAPDU;
 	size_t mNumRetry;
 	openpal::IExecutor* mpExecutor;
 	openpal::ITimer* mpTimer;

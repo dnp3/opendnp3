@@ -22,8 +22,11 @@
 
 #include <openpal/LoggableMacros.h>
 #include <openpal/IExecutor.h>
+#include <openpal/Exception.h>
 
 #include "FunctionCodeHelpers.h"
+
+#include <assert.h>
 
 using namespace std;
 
@@ -32,23 +35,23 @@ namespace opendnp3
 
 AppLayer::AppLayer(Logger aLogger, openpal::IExecutor* apExecutor, AppConfig aAppCfg) :
 	Loggable(aLogger),
-	IUpperLayer(aLogger),
-	mIncoming(aAppCfg.FragSize),
-	mConfirm(2), // only need 2 bytes for a confirm message
+	IUpperLayer(aLogger),		
 	mSending(false),
 	mConfirmSending(false),
 	mIsMaster(aAppCfg.IsMaster),
 	mpUser(nullptr),
 	mSolicited(aLogger.GetSubLogger("sol"), this, apExecutor, aAppCfg.RspTimeout),
 	mUnsolicited(aLogger.GetSubLogger("unsol"), this, apExecutor, aAppCfg.RspTimeout),
-	mNumRetry(aAppCfg.NumRetry)
+	mNumRetry(aAppCfg.NumRetry),	
+	confirmAPDU(openpal::WriteBuffer(confirmBuffer, 2))
 {
-	mConfirm.SetFunction(FunctionCode::CONFIRM);
+	confirmAPDU.SetFunction(FunctionCode::CONFIRM);
 }
 
 void AppLayer::SetUser(IAppUser* apUser)
 {
-	assert(mpUser == nullptr); assert(apUser != nullptr);
+	assert(mpUser == nullptr); 
+	assert(apUser != nullptr);
 	mpUser = apUser;
 }
 
@@ -56,37 +59,19 @@ void AppLayer::SetUser(IAppUser* apUser)
 // IAppLayer
 ////////////////////
 
-void AppLayer::SendResponse(APDU& arAPDU)
+void AppLayer::SendResponse(APDUOut& apdu)
 {
-	this->Validate(arAPDU.GetControl(), false, false, true, false);
-
-	if(arAPDU.GetFunction() != FunctionCode::RESPONSE) {
-		MACRO_THROW_EXCEPTION(ArgumentException, "Non-response function code");
-	}
-
-	mSolicited.Send(arAPDU, this->GetRetries(FunctionCode::RESPONSE));
+	mSolicited.Send(apdu, this->GetRetries(FunctionCode::RESPONSE));
 }
 
-void AppLayer::SendUnsolicited(APDU& arAPDU)
+void AppLayer::SendUnsolicited(APDUOut& apdu)
 {
-	this->Validate(arAPDU.GetControl(), false, true, true, true);
-
-	if(arAPDU.GetFunction() != FunctionCode::UNSOLICITED_RESPONSE ) {
-		MACRO_THROW_EXCEPTION(ArgumentException, "Non-unsolicited function code");
-	}
-
-	mUnsolicited.Send(arAPDU, this->GetRetries(FunctionCode::UNSOLICITED_RESPONSE));
+	mUnsolicited.Send(apdu, this->GetRetries(FunctionCode::UNSOLICITED_RESPONSE));
 }
 
-void AppLayer::SendRequest(APDU& arAPDU)
+void AppLayer::SendRequest(APDUOut& apdu)
 {
-	this->Validate(arAPDU.GetControl(), true, true, false, false);
-
-	if(!IsRequest(arAPDU.GetFunction())) {
-		MACRO_THROW_EXCEPTION(ArgumentException, "Non-request function code");
-	}
-
-	mSolicited.Send(arAPDU, this->GetRetries(arAPDU.GetFunction()));
+	mSolicited.Send(apdu, this->GetRetries(apdu.GetFunction()));
 }
 
 void AppLayer::CancelResponse()
@@ -184,7 +169,7 @@ void AppLayer::OnSendResult(bool aSuccess)
 	assert(mSendQueue.size() > 0);
 	mSending = false;
 
-	FunctionCode func = mSendQueue.front()->GetFunction();
+	FunctionCode func = mSendQueue.front().GetFunction();
 	mSendQueue.pop_front();
 
 	if(func == FunctionCode::CONFIRM) {
@@ -301,52 +286,25 @@ void AppLayer::QueueConfirm(bool aUnsol, int aSeq)
 	}
 	else {
 		mConfirmSending = true;
-		mConfirm.SetControl(true, true, false, aUnsol, aSeq);
-		this->QueueFrame(mConfirm);
+		AppControlField acf(true, true, false, aUnsol, aSeq);
+		confirmAPDU.SetControl(acf);		
+		this->QueueFrame(confirmAPDU);
 	}
 }
 	
 
-void AppLayer::QueueFrame(const APDU& arAPDU)
+void AppLayer::QueueFrame(const APDUOut& apdu)
 {
-	mSendQueue.push_back(&arAPDU);
+	mSendQueue.push_back(apdu);
 	this->CheckForSend();
 }
 
 void AppLayer::CheckForSend()
 {
 	if(!mSending && mSendQueue.size() > 0) {
-		mSending = true;
-		const APDU* pAPDU = mSendQueue.front();
-		LOG_BLOCK(LogLevel::Interpret, "=> AL " << pAPDU->ToString());		
-		mpLowerLayer->Send(pAPDU->ToReadOnly());
-	}
-}
-
-void AppLayer::Validate(const AppControlField& arCtrl, bool aMaster, bool aRequireFIRFIN, bool aAllowCON, bool aUNS)
-{
-	if(!this->IsLowerLayerUp()) {
-		MACRO_THROW_EXCEPTION(InvalidStateException, "LowerLaterDown");
-	}
-
-	if(aMaster && !mIsMaster) {
-		MACRO_THROW_EXCEPTION(Exception, "Only masters can perform this operation");
-	}
-
-	if(!aMaster && mIsMaster) {
-		MACRO_THROW_EXCEPTION(Exception, "Only slaves can perform this operation");
-	}
-
-	if(aRequireFIRFIN && ! (arCtrl.FIR && arCtrl.FIN)) {
-		MACRO_THROW_EXCEPTION(ArgumentException, "Cannot be multi-fragmented");
-	}
-
-	if(!aAllowCON && arCtrl.CON) {
-		MACRO_THROW_EXCEPTION(ArgumentException, "Confirmation not allowed for this operation");
-	}
-
-	if(aUNS != arCtrl.UNS) {
-		MACRO_THROW_EXCEPTION(ArgumentException, "Bad unsolicited bit");
+		mSending = true;		
+		//LOG_BLOCK(LogLevel::Interpret, "=> AL " << pAPDU->ToString()); TODO - replace outgoing logging
+		mpLowerLayer->Send(mSendQueue.front().ToReadOnly());
 	}
 }
 

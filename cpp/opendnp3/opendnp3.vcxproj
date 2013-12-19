@@ -218,9 +218,10 @@
     <ClInclude Include="src\opendnp3\APDUHeader.h" />
     <ClInclude Include="src\opendnp3\APDUHeaderParser.h" />
     <ClInclude Include="src\opendnp3\APDUParser.h" />
+    <ClInclude Include="src\opendnp3\APDUOut.h" />
     <ClInclude Include="src\opendnp3\AppChannelStates.h" />
     <ClInclude Include="src\opendnp3\AppControlField.h" />
-    <ClInclude Include="src\opendnp3\AppInterfaces.h" />
+    <ClInclude Include="src\opendnp3\IAppLayer.h" />
     <ClInclude Include="src\opendnp3\AppLayer.h" />
     <ClInclude Include="src\opendnp3\AppLayerChannel.h" />
     <ClInclude Include="src\opendnp3\ApplicationStack.h" />
@@ -238,6 +239,7 @@
     <ClInclude Include="src\opendnp3\EventBufferFacade.h" />
     <ClInclude Include="src\opendnp3\EventCount.h" />
     <ClInclude Include="src\opendnp3\EventType.h" />
+    <ClInclude Include="src\opendnp3\IAppUser.h" />
     <ClInclude Include="src\opendnp3\IEventWriter.h" />
     <ClInclude Include="src\opendnp3\Iterable.h" />
     <ClInclude Include="src\opendnp3\CommandTask.h" />
@@ -358,6 +360,7 @@
     <ClCompile Include="src\opendnp3\APDU.cpp" />
     <ClCompile Include="src\opendnp3\APDUHeaderParser.cpp" />
     <ClCompile Include="src\opendnp3\APDUParser.cpp" />
+    <ClCompile Include="src\opendnp3\APDUOut.cpp" />
     <ClCompile Include="src\opendnp3\AppChannelStates.cpp" />
     <ClCompile Include="src\opendnp3\AppControlField.cpp" />
     <ClCompile Include="src\opendnp3\AppLayer.cpp" />

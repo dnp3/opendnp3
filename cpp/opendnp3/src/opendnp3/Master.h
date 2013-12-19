@@ -31,7 +31,8 @@
 #include <openpal/IUTCTimeSource.h>
 
 #include "APDU.h"
-#include "AppInterfaces.h"
+#include "IAppLayer.h"
+#include "IAppUser.h"
 #include "MasterSchedule.h"
 #include "QueuedCommandProcessor.h"
 #include "PostingMeasurementHandler.h"

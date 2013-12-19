@@ -21,9 +21,9 @@
 #ifndef __MOCK_APP_USER_H_
 #define __MOCK_APP_USER_H_
 
-#include <opendnp3/AppInterfaces.h>
-
 #include <sstream>
+
+#include <opendnp3/IAppUser.h>
 
 namespace opendnp3
 {

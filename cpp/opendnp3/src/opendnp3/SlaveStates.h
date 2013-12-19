@@ -24,7 +24,8 @@
 #include <string>
 #include <opendnp3/Singleton.h>
 
-#include "AppInterfaces.h"
+#include "APDUHeader.h"
+#include "SequenceInfo.h"
 
 namespace opendnp3
 {

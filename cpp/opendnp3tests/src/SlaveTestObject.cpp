@@ -71,7 +71,7 @@ bool SlaveTestObject::NothingToRead()
 
 std::string SlaveTestObject::Read()
 {
-	mAPDU = app.Read();	
+	//mAPDU = app.Read();	TODO
 	return toHex(mAPDU.ToReadOnly(), true);
 }
 

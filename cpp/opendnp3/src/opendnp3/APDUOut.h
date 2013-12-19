@@ -18,66 +18,39 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __MOCK_APP_LAYER_H_
-#define __MOCK_APP_LAYER_H_
+#ifndef __APDU_OUT_H_
+#define __APDU_OUT_H_
 
-#include <opendnp3/IAppLayer.h>
-#include <opendnp3/APDUOut.h>
+#include <openpal/BufferWrapper.h>
 
-#include <opendnp3/IAppUser.h>
-#include <opendnp3/IAppLayer.h>
-
-#include <openpal/Loggable.h>
-
-#include <queue>
+#include "gen/FunctionCode.h"
+#include "AppControlField.h"
 
 namespace opendnp3
 {
 
-/**	@section desc Test class to mock async app layer for master/slave */
-class MockAppLayer : public IAppLayer, public openpal::Loggable
+// this is what the application layer sees from the master / outstation for transmission
+class APDUOut
 {
-public:
-	MockAppLayer(openpal::Logger);
-	virtual ~MockAppLayer() {}
+	public:
 
+	APDUOut();
 
-	void SetUser(IAppUser*);
+	APDUOut(const openpal::WriteBuffer& aBuffer);
+	
+	void SetFunction(FunctionCode code);
+	FunctionCode GetFunction() const;
 
-	void SendResponse(APDUOut&);
-	void SendUnsolicited(APDUOut&);
-	void SendRequest(APDUOut&);
-	void CancelResponse();
+	AppControlField GetControl() const;	
+	void SetControl(const AppControlField& control);
 
-	bool NothingToRead();
+	openpal::ReadOnlyBuffer ToReadOnly() const;
 
-	size_t mNumCancel;
-
-	void EnableAutoSendCallback(bool aIsSuccess);
-	void DisableAutoSendCallback();
-
-	APDUOut Read();
-
-	size_t Count() {
-		return mFragments.size();
-	}
-	FunctionCode ReadFunction();
-	size_t NumAPDU() {
-		return mFragments.size();
-	}
-
-private:
-
-	void DoSendUnsol();
-	void DoSendSol();
-
-	IAppUser* mpUser;
-	bool mAutoSendCallback;
-	bool mIsSuccess;
-	std::deque<APDUOut> mFragments;
+	private:
+	
+	openpal::WriteBuffer buffer;
 };
 
 }
 
 #endif
-
