@@ -27,13 +27,17 @@
 #include <opendnp3/DNPConstants.h>
 
 #include "CopyableBuffer.h"
-#include "AppHeader.h"
+
 #include "ObjectHeader.h"
 #include "Objects.h"
 
 #include "ObjectWriteIterator.h"
 #include "IndexedWriteIterator.h"
 #include "ErrorCode.h"
+#include "AppControlField.h"
+#include "IINField.h"
+
+#include "gen/FunctionCode.h"
 
 
 #include <vector>
@@ -314,15 +318,8 @@ private:
 
 	void CheckWriteState(const ObjectBase*);
 
-	IAppHeader* ParseHeader() const;
-	size_t Remainder() {
-		return mBuffer.Size() - mFragmentSize;
-	}
-
 	IndexedWriteIterator WriteCountHeader(size_t aObjectSize, size_t aPrefixSize, uint8_t aGrp, uint8_t aVar, size_t aCount, QualifierCode aQual);
-	void WriteContiguousHeader(IObjectHeader* apHdr, uint8_t* apPos, size_t aStart, size_t aStop);
-	
-	IAppHeader* mpAppHeader;	// uses a singleton so auto copy is safe
+	void WriteContiguousHeader(IObjectHeader* apHdr, uint8_t* apPos, size_t aStart, size_t aStop);	
 	
 	CopyableBuffer mBuffer;		// This makes it dynamically sizable without the need for a special copy constructor.
 	size_t mFragmentSize;		// Number of bytes written to the buffer

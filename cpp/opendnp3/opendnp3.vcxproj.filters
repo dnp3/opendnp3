@@ -141,9 +141,6 @@
     <ClInclude Include="src\opendnp3\AppChannelStates.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\AppHeader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\AppInterfaces.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -651,9 +648,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\AppChannelStates.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\AppHeader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\AppLayer.cpp">

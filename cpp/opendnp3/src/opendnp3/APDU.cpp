@@ -36,8 +36,7 @@ using namespace std;
 namespace opendnp3
 {
 
-APDU::APDU(size_t aFragSize) :	
-	mpAppHeader(nullptr),	
+APDU::APDU(size_t aFragSize) :		
 	mBuffer(aFragSize),
 	mFragmentSize(0)
 {
@@ -64,18 +63,7 @@ AppControlField APDU::GetControl() const
 
 void APDU::SetFunction(FunctionCode aCode)
 {
-	assert(mpAppHeader == nullptr);
-
-	if(aCode == FunctionCode::RESPONSE || aCode == FunctionCode::UNSOLICITED_RESPONSE) {
-		mpAppHeader = ResponseHeader::Inst();
-	}
-	else {
-		mpAppHeader = RequestHeader::Inst();
-	}
-
-	mFragmentSize = mpAppHeader->GetSize();
-
-	mBuffer[1] = FunctionCodeToType(aCode);	
+	
 }
 
 void APDU::SetControl(const AppControlField& arControl)
@@ -85,16 +73,12 @@ void APDU::SetControl(const AppControlField& arControl)
 
 void APDU::SetIIN(const IINField& arIIN)
 {
-	assert(mpAppHeader != nullptr);
-	assert(mpAppHeader->GetType() == AHT_RESPONSE);
-
-	static_cast<ResponseHeader*>(mpAppHeader)->SetIIN(mBuffer, arIIN);
+	
 }
 
 void APDU::Reset()
 {
-	mFragmentSize = 0;	
-	mpAppHeader = nullptr;
+	
 }
 
 void APDU::Write(const openpal::ReadOnlyBuffer& arBuffer)
@@ -298,12 +282,12 @@ ObjectWriteIterator APDU::WriteContiguous(const FixedObject* apObj, size_t aStar
 	if(aCode == QualifierCode::UNDEFINED)  aCode = this->GetContiguousQualifier(aStart, aStop);
 
 	IObjectHeader* pHdr = this->GetObjectHeader(aCode);
-	if(pHdr->GetSize() > this->Remainder()) return ObjectWriteIterator();
+	//if(pHdr->GetSize() > this->Remainder()) return ObjectWriteIterator();
 
-	size_t maxObjects = (this->Remainder() - pHdr->GetSize()) / apObj->GetSize();
+	size_t maxObjects =0;// (this->Remainder() - pHdr->GetSize()) / apObj->GetSize();
 
 	//No point in writing a header if it can't hold an object
-	if(maxObjects == 0) return ObjectWriteIterator();
+	//if(maxObjects == 0) return ObjectWriteIterator();
 
 	//do we write all the objects or the max in the space
 	size_t requested = aStop - aStart + 1;
@@ -330,9 +314,9 @@ ObjectWriteIterator APDU::WriteContiguous(const BitfieldObject* apObj, size_t aS
 	if(aCode == QualifierCode::UNDEFINED)  aCode = this->GetContiguousQualifier(aStart, aStop);
 
 	IObjectHeader* pHdr = this->GetObjectHeader(aCode);
-	if(pHdr->GetSize() > this->Remainder()) return ObjectWriteIterator();
-
-	size_t maxObjects = (this->Remainder() - pHdr->GetSize()) * 8; //bitfield, 8 objects per byte
+	//if(pHdr->GetSize() > this->Remainder()) return ObjectWriteIterator();
+//
+	size_t maxObjects = 0;//(this->Remainder() - pHdr->GetSize()) * 8; //bitfield, 8 objects per byte
 
 	//No point in writing a header if it can't hold an object
 	if(maxObjects == 0) return ObjectWriteIterator();
@@ -422,13 +406,13 @@ IndexedWriteIterator APDU::WriteIndexed(const FixedObject* apObj, size_t aCount,
 IndexedWriteIterator APDU::WriteCountHeader(size_t aObjectSize, size_t aPrefixSize, uint8_t aGrp, uint8_t aVar, size_t aCount, QualifierCode aQual)
 {
 	ICountHeader* pHdr = this->GetCountHeader(aQual); //Get the count header
-	if(pHdr->GetSize() > this->Remainder()) return IndexedWriteIterator();
+	//if(pHdr->GetSize() > this->Remainder()) return IndexedWriteIterator();
 
 	size_t obj_plus_prefix_size = aObjectSize + aPrefixSize;
 
 	//how many objects can we write?
-	size_t max_num = (this->Remainder() - pHdr->GetSize()) / obj_plus_prefix_size;
-
+	size_t max_num = 0;//(this->Remainder() - pHdr->GetSize()) / obj_plus_prefix_size;
+	//
 	// No point in writing a header if it can't hold an object/index
 	if(max_num == 0) return IndexedWriteIterator();
 
