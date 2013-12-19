@@ -23,6 +23,8 @@
 
 #include <opendnp3/PointClass.h>
 
+#include "EventType.h"
+
 namespace opendnp3
 {
 
@@ -34,7 +36,24 @@ class EventMetadata
 	EventMetadata(): clazz(PC_CLASS_0)
 	{}
 
-	inline bool HasEventClass() const { return clazz != PC_CLASS_0; }
+	inline bool GetEventClass(EventClass& eventClass) const 
+	{
+		switch(clazz)
+		{
+			case(PointClass::PC_CLASS_1):
+				eventClass = EventClass::EC1;
+				return true;
+			case(PointClass::PC_CLASS_2):
+				eventClass = EventClass::EC2;
+				return true;
+			case(PointClass::PC_CLASS_3):
+				eventClass = EventClass::EC3;
+				return true;
+			default:
+				return false;
+		}
+	
+	}
 
 	PointClass clazz;
 	T lastEvent;

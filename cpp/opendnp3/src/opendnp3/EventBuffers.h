@@ -94,7 +94,7 @@ void SingleEventBuffer<T> :: _Update(const EventInfo<T>& aEvent)
 	}
 	else {
 		this->mEventSet.insert(aEvent); //new event
-		this->mCounter.IncrCount(aEvent.clazz);
+		//this->mCounter.IncrCount(aEvent.clazz);
 	}
 }
 

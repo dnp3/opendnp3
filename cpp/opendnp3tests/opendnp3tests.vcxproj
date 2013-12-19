@@ -307,7 +307,6 @@
     <ClCompile Include="src\TestPhysicalLayerMonitor.cpp" />
     <ClCompile Include="src\TestShiftableBuffer.cpp" />
     <ClCompile Include="src\TestSlave.cpp" />
-    <ClCompile Include="src\TestSlaveEventBuffer.cpp" />
     <ClCompile Include="src\TestStartBoostUTF.cpp" />
     <ClCompile Include="src\TestTime.cpp" />
     <ClCompile Include="src\TestTimers.cpp" />

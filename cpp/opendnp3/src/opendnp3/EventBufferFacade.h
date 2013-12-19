@@ -27,7 +27,8 @@
 #include <openpal/RandomInsertAdapter.h>
 #include <openpal/DoublyLinkedListAdapter.h>
 #include <opendnp3/DataTypes.h>
-#include <opendnp3/PointClass.h>
+
+#include "EventType.h"
 
 #include "EventCount.h"
 
@@ -38,7 +39,7 @@ struct SequenceRecord
 {
 	EventType type;
 	uint32_t index;
-	PointClass clazz;
+	EventClass clazz;
 	bool selected;
 };
 

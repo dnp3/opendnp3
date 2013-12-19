@@ -52,8 +52,8 @@ public:
 
 	void Update(const T& aValue, PointClass aClass, uint32_t aIndex)
 	{
-		Event<T> e(aValue, aIndex, aClass);
-		this->Update(e);
+		//Event<T> e(aValue, aIndex, aClass);
+		//this->Update(e);
 	}
 
 	/**
@@ -219,7 +219,7 @@ void EventBufferBase<T, SetType> :: Update(const Event<T>& aEvent)
 	if(this->NumUnselected() > M_MAX_EVENTS) { //we've overflown and we've got to drop an event
 		mIsOverflown = true;
 		typename SetType::Type::iterator itr = mEventSet.begin();
-		this->mCounter.DecrCount(itr->clazz);
+		//this->mCounter.DecrCount(itr->clazz);
 		mEventSet.erase(itr);
 	}
 }
@@ -238,7 +238,7 @@ void EventBufferBase<T, SetType> :: Update(EventInfo<T>& aEvent, bool aNewValue)
 template <class T, class SetType>
 void EventBufferBase<T, SetType> :: _Update(const EventInfo<T>& aEvent)
 {
-	this->mCounter.IncrCount(aEvent.clazz);
+	//this->mCounter.IncrCount(aEvent.clazz);
 	this->mEventSet.insert(aEvent);
 }
 
@@ -291,7 +291,7 @@ size_t EventBufferBase <T, SetType> :: Select(PointClass aClass, size_t aMaxEven
 	auto i = mEventSet.begin();
 
 	size_t count = 0;
-
+	/*
 	while( i != mEventSet.end() && count < aMaxEvent) {
 		if( ( i->clazz & aClass) != 0 ) {
 			mCounter.DecrCount(i->clazz);
@@ -302,6 +302,7 @@ size_t EventBufferBase <T, SetType> :: Select(PointClass aClass, size_t aMaxEven
 		}
 		else ++i;
 	}
+	*/
 
 	return count;
 }

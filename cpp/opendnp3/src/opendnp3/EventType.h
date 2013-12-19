@@ -18,35 +18,40 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __OPENDNP3_EVENT_H_
-#define __OPENDNP3_EVENT_H_
 
-#include <opendnp3/IndexedValue.h>
-#include "EventType.h"
+#ifndef __EVENT_TYPE_H_
+#define __EVENT_TYPE_H_
+
+#include <opendnp3/Uncopyable.h>
+
+#include <cstdint>
 
 namespace opendnp3
 {
 
-/**
- * Record of an event that includes value, index, and class
- */
-template <typename T>
-struct Event : public IndexedValue<T>
-{	
-	Event(const T& arValue, uint32_t aIndex, EventClass aClass) :
-		IndexedValue<T>(arValue, aIndex),		
-		clazz(aClass)
-	{}
-
-	Event() : clazz(EventClass::EC1)
-	{}	
-	
-	EventClass clazz;	// class of the event (PC_CLASS<1-3>)	
+enum class EventType: uint8_t
+{
+	Binary = 0x01,
+	Analog = 0x02,
+	Counter = 0x04
 };
 
-} //end namespace
+enum class EventClass: uint8_t
+{
+	EC1 = 0x01,
+	EC2 = 0x02,
+	EC3 = 0x04
+};
 
-/* vim: set ts=4 sw=4: */
+struct EventTypeMasks : private PureStatic
+{
+	static const uint8_t BINARY = static_cast<uint8_t>(EventType::Binary);
+	static const uint8_t ANALOG = static_cast<uint8_t>(EventType::Analog);
+	static const uint8_t COUNTER = static_cast<uint8_t>(EventType::Counter);
+
+	static const uint8_t ALL_TYPES = BINARY | ANALOG | COUNTER;
+};
+
+}
 
 #endif
-

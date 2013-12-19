@@ -25,6 +25,7 @@
 #include "IEventBuffer.h"
 #include "EventBufferFacade.h"
 #include "SelectionCriteria.h"
+#include "IEventWriter.h"
 #include "EventCount.h"
 
 #include <openpal/ListAdapter.h>
@@ -32,8 +33,20 @@
 namespace opendnp3
 {
 
-// The event buffer doesn't actually own the buffers, it just creates
-// collection facades around the indexable buffers it's given
+/* 
+	The event buffer doesn't actually own the buffers, it just creates
+    collection facades around the indexable buffers it's given.
+	This is done so that the buffers can either be statically or dynamically allocated.
+
+	The sequence of events list in the facade is a doubly linked-list implemented
+	in a finite array.  The list is desired for O(1) remove operations from
+	arbitrary parts of the list depending on what the user asks for in terms
+	of event type or Class1/2/3.
+
+	At worst, selection is O(n) in the SOE length but it has some type/class
+	tracking to avoid looping over the SOE list when there are no more events matching
+	the selection criteria.
+*/
 class OutstationEventBuffer : public IEventBuffer
 {
 
@@ -47,7 +60,12 @@ class OutstationEventBuffer : public IEventBuffer
 		void Reset(); // called when a transmission fails
 		void Clear(); // called when a transmission succeeds
 
+		// Calls the IEventWriter until it returns false or there are no more
+		// matching events
 		uint32_t SelectEvents(const SelectionCriteria&, IEventWriter* pWriter);
+
+		// returns how many events are *unselected* that match the criteria specified
+		uint32_t NumUnselectedMatching(const SelectionCriteria&) const;
 		
 		EventTracker TotalEvents() const;
 		EventTracker SelectedEvents() const;

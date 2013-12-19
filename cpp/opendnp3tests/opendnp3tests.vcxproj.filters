@@ -358,9 +358,6 @@
     <ClCompile Include="src\TestSlave.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\TestSlaveEventBuffer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\TestStartBoostUTF.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

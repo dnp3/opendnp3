@@ -22,79 +22,41 @@
 #ifndef __SELECTION_CRITERIA_H_
 #define __SELECTION_CRITERIA_H_
 
-#include "EventBufferFacade.h"
+#include "EventType.h"
 
 namespace opendnp3
 {
 
-class IEventWriter
-{
-	public:
-		
-		// returns true of their was space in the fragment and the event should be added to selection buffer
-		virtual bool Write(const Event<Binary>& evt) = 0;
-		virtual bool Write(const Event<Analog>& evt) = 0;
-		virtual bool Write(const Event<Counter>& evt) = 0;
-};
-
 struct SelectionCriteria
 {
-	SelectionCriteria() : 
-		binary(false),
-		analog(false), 
-		counter(false),
-		class1(false), 
-		class2(false), 
-		class3(false)
+	SelectionCriteria() : class1(0), class2(0), class3(0)
 	{}
 
-	void AllEvents()
-	{
-		binary = true;
-		analog = true;
-		counter = true;
-		class1 = true;
-		class2 = true;
-		class3 = true;
-	}
+	SelectionCriteria(uint8_t clazz1, uint8_t clazz2, uint8_t clazz3) : 
+		class1(clazz1), 
+		class2(clazz2),
+		class3(clazz3)
+	{}
 
-	bool binary;
-	bool analog;	
-	bool counter;
-	bool class1;
-	bool class2;
-	bool class3;
-
-	inline bool IsMatch(PointClass clazz, EventType type) const
-	{
-		return IsMatch(clazz) && IsMatch(type);
-	}
-
-	private:
-
-	inline bool IsMatch(PointClass clazz) const
+	uint8_t class1;  // these represent bit masks for measurement types in each class
+	uint8_t class2;
+	uint8_t class3;
+	
+	inline bool IsMatch(EventClass clazz, EventType type) const
 	{
 		switch(clazz)
 		{
-			case(PointClass::PC_CLASS_1): return class1;
-			case(PointClass::PC_CLASS_2): return class2;
-			case(PointClass::PC_CLASS_3): return class3;
+			case(EventClass::EC1):
+				return (class1 & static_cast<uint8_t>(type)) != 0;
+			case(EventClass::EC2):
+				return (class2 & static_cast<uint8_t>(type)) != 0;
+			case(EventClass::EC3):
+				return (class3 & static_cast<uint8_t>(type)) != 0;
 			default:
 				return false;
-		}
+		}		
 	}
-
-	inline bool IsMatch(EventType type) const
-	{
-		switch(type)
-		{
-			case(EventType::Binary): return binary;
-			case(EventType::Analog): return analog;
-			case(EventType::Counter): return counter;
-			default:
-				return false;
-		}
-	}
+	
 };
 
 }

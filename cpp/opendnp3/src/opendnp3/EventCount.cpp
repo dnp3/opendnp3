@@ -61,6 +61,15 @@ bool ClassCount::IsEmpty() const
 	return (numBinary == 0) && (numAnalog == 0) && (numCounter) == 0;
 }
 
+uint32_t ClassCount::CountOf(uint8_t eventTypeMask) const
+{
+	uint32_t count = 0;
+	if(eventTypeMask & EventTypeMasks::BINARY) count += numBinary;
+	if(eventTypeMask & EventTypeMasks::ANALOG) count += numAnalog;
+	if(eventTypeMask & EventTypeMasks::COUNTER) count += numCounter;	
+	return count;
+}
+
 void EventTracker::Clear()
 {
 	this->class1.Clear();
@@ -82,17 +91,17 @@ bool EventTracker::IsEmpty() const
 	return class1.IsEmpty() && class2.IsEmpty() && class3.IsEmpty();
 }
 
-void EventTracker::Increment(EventType type, PointClass clazz)
+void EventTracker::Increment(EventType type, EventClass clazz)
 {
 	switch(clazz)
 	{
-		case(PointClass::PC_CLASS_1):
+		case(EventClass::EC1):
 			class1.Increment(type);
 			break;
-		case(PointClass::PC_CLASS_2):
+		case(EventClass::EC2):
 			class2.Increment(type);
 			break;
-		case(PointClass::PC_CLASS_3):
+		case(EventClass::EC3):
 			class3.Increment(type);
 			break;
 	}

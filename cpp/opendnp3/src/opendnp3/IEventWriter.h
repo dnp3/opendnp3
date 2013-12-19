@@ -18,35 +18,27 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __OPENDNP3_EVENT_H_
-#define __OPENDNP3_EVENT_H_
 
-#include <opendnp3/IndexedValue.h>
-#include "EventType.h"
+#ifndef __I_EVENT_WRITER_H_
+#define __I_EVENT_WRITER_H_
+
+#include "Event.h"
+#include <opendnp3/DataTypes.h>
 
 namespace opendnp3
 {
 
-/**
- * Record of an event that includes value, index, and class
- */
-template <typename T>
-struct Event : public IndexedValue<T>
-{	
-	Event(const T& arValue, uint32_t aIndex, EventClass aClass) :
-		IndexedValue<T>(arValue, aIndex),		
-		clazz(aClass)
-	{}
-
-	Event() : clazz(EventClass::EC1)
-	{}	
-	
-	EventClass clazz;	// class of the event (PC_CLASS<1-3>)	
+class IEventWriter
+{
+	public:
+		
+		// returns true if the event was written
+		virtual bool Write(const Event<Binary>& evt) = 0;
+		virtual bool Write(const Event<Analog>& evt) = 0;
+		virtual bool Write(const Event<Counter>& evt) = 0;
 };
 
-} //end namespace
 
-/* vim: set ts=4 sw=4: */
+}
 
 #endif
-

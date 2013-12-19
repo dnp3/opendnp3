@@ -70,7 +70,7 @@ private:
 	Database(const Database&);
 
 	template <class T>
-	void UpdateEventBuffer(const T& value, uint32_t index, PointClass clazz)
+	void UpdateEventBuffer(const T& value, uint32_t index, EventClass clazz)
 	{
 		eventBuffers.foreach([&](IEventBuffer* pBuffer) { pBuffer->Update(Event<T>(value, index, clazz)); });
 	}
@@ -81,9 +81,10 @@ private:
 		if(collection.values.Contains(index))
 		{	
 			auto& metadata = collection.metadata[index];
-			if(metadata.CheckForEvent(value) && metadata.HasEventClass())
+			EventClass eventClass;
+			if(metadata.CheckForEvent(value) && metadata.GetEventClass(eventClass))
 			{			
-				this->UpdateEventBuffer(value, index, metadata.clazz);
+				this->UpdateEventBuffer(value, index, eventClass);
 			}
 			collection.values[index] = value;
 		}	

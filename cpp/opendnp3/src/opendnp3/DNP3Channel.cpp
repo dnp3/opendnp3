@@ -142,4 +142,3 @@ void DNP3Channel::OnStackShutdown(IStack* apStack, LinkRoute route)
 }
 
 }
-

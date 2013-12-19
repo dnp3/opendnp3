@@ -241,6 +241,8 @@
     <ClInclude Include="src\opendnp3\DynamicallyAllocatedEventBuffer.h" />
     <ClInclude Include="src\opendnp3\EventBufferFacade.h" />
     <ClInclude Include="src\opendnp3\EventCount.h" />
+    <ClInclude Include="src\opendnp3\EventType.h" />
+    <ClInclude Include="src\opendnp3\IEventWriter.h" />
     <ClInclude Include="src\opendnp3\Iterable.h" />
     <ClInclude Include="src\opendnp3\CommandTask.h" />
     <ClInclude Include="src\opendnp3\ConstantCommandProcessor.h" />

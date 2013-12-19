@@ -23,17 +23,10 @@
 #define __EVENT_COUNT_H_
 
 #include <cstdint>
-#include <opendnp3/PointClass.h>
+#include "EventType.h"
 
 namespace opendnp3
 {
-
-enum class EventType: uint8_t
-{
-	Binary,
-	Analog,
-	Counter
-};
 
 class ClassCount
 {
@@ -51,6 +44,8 @@ class ClassCount
 
 	bool IsEmpty() const;	
 
+	uint32_t CountOf(uint8_t eventTypeMask) const;
+
 	void Clear();
 
 	uint32_t numAnalog;
@@ -63,8 +58,8 @@ class EventTracker
 {
 	public:	
 
-	void Increment(EventType type, PointClass clazz);
-	void Decrement(EventType type, PointClass clazz);
+	void Increment(EventType type, EventClass clazz);
+	void Decrement(EventType type, EventClass clazz);
 
 	EventTracker Subtract(const EventTracker& rhs) const;
 

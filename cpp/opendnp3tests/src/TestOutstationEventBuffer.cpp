@@ -50,12 +50,12 @@ BOOST_AUTO_TEST_CASE(SingleValueIsWrittenAndCleared)
 	DynamicallyAllocatedEventBuffer underlying(3,3,3);
 	OutstationEventBuffer buffer(underlying.GetFacade());
 
-	buffer.Update(Event<Binary>(Binary(true), 3, PC_CLASS_1));
+	buffer.Update(Event<Binary>(Binary(true), 3, EventClass::EC1));
 
 	MockEventWriter writer;
 
 	SelectionCriteria criteria;
-	criteria.AllEvents();
+	criteria.class1 = EventTypeMasks::BINARY;
 	
 	BOOST_REQUIRE_EQUAL(1, buffer.SelectEvents(criteria, &writer));
 	BOOST_REQUIRE_EQUAL(1, writer.TotalEvents());
@@ -88,12 +88,12 @@ BOOST_AUTO_TEST_CASE(MixedTypesAndClassesOfEvents)
 	OutstationEventBuffer buffer(underlying.GetFacade());
 
 	// reasonable mix of events that fills up the buffer
-	buffer.Update(Event<Binary>(Binary(true), 3, PC_CLASS_1));
-	buffer.Update(Event<Binary>(Binary(true), 5, PC_CLASS_3));
-	buffer.Update(Event<Analog>(Analog(16), 1, PC_CLASS_2));
-	buffer.Update(Event<Analog>(Analog(71), 7, PC_CLASS_3));
-	buffer.Update(Event<Counter>(Counter(23), 3, PC_CLASS_2));
-	buffer.Update(Event<Counter>(Counter(42), 4, PC_CLASS_2));
+	buffer.Update(Event<Binary>(Binary(true), 3, EventClass::EC1));
+	buffer.Update(Event<Binary>(Binary(true), 5, EventClass::EC3));
+	buffer.Update(Event<Analog>(Analog(16), 1, EventClass::EC2));
+	buffer.Update(Event<Analog>(Analog(71), 7, EventClass::EC3));
+	buffer.Update(Event<Counter>(Counter(23), 3, EventClass::EC2));
+	buffer.Update(Event<Counter>(Counter(42), 4, EventClass::EC2));
 		
 	MockEventWriter writer;
 	SelectionCriteria criteria;

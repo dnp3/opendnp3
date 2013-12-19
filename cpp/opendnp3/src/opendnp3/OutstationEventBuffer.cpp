@@ -96,11 +96,22 @@ void OutstationEventBuffer::Update(const Event<Counter>& aEvent)
 	overflow |= !InsertEvent(aEvent, EventType::Counter,  facade.counterEvents);
 }
 
+uint32_t OutstationEventBuffer::NumUnselectedMatching(const SelectionCriteria& criteria) const
+{
+	uint32_t count = 0;
+	auto unselected = this->UnselectedEvents();
+	count += unselected.class1.CountOf(criteria.class1);
+	count += unselected.class2.CountOf(criteria.class2);
+	count += unselected.class3.CountOf(criteria.class3);
+	return count;
+}
+
 uint32_t OutstationEventBuffer::SelectEvents(const SelectionCriteria& criteria, IEventWriter* pWriter)
 {	
 	uint32_t count = 0;
+	uint32_t max = this->NumUnselectedMatching(criteria);
 	auto iter = facade.sequenceOfEvents.Iterate();
-	while(iter.HasNext()) // loop over the sequence of events
+	while(iter.HasNext() && count < max) // loop over the sequence of events
 	{
 		auto pNode = iter.Next();
 		if(!pNode->value.selected && criteria.IsMatch(pNode->value.clazz, pNode->value.type))
