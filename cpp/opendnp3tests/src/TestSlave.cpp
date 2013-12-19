@@ -25,7 +25,6 @@
 #include "SlaveTestObject.h"
 
 #include <opendnp3/APDU.h>
-#include <opendnp3/ObjectReadIterator.h>
 #include <opendnp3/Util.h>
 
 using namespace std;

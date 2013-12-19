@@ -23,7 +23,6 @@
 #include <opendnp3/IDataObserver.h>
 
 #include "MasterStates.h"
-#include "ObjectReadIterator.h"
 #include "MeasurementHandler.h"
 #include "ConstantCommandProcessor.h"
 #include "AsyncTaskInterfaces.h"

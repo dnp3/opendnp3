@@ -51,9 +51,8 @@ bool ResponseContext::ResponseKey::operator()(const ResponseContext::ResponseKey
 }
 
 
-ResponseContext::ResponseContext(openpal::Logger& arLogger, Database* apDB, SlaveResponseTypes* apRspTypes, const EventMaxConfig& arEventMaxConfig) :
-	Loggable(arLogger),
-	mBuffer(arEventMaxConfig),
+ResponseContext::ResponseContext(openpal::Logger& arLogger, Database* apDB, SlaveResponseTypes* apRspTypes) :
+	Loggable(arLogger),	
 	mMode(Mode::UNDEFINED),
 	mpDB(apDB),
 	mFIR(true),
@@ -90,38 +89,12 @@ void ResponseContext::Reset()
 	mMode = Mode::UNDEFINED;
 	
 	this->mStaticWriteMap.clear();
-
-	this->mBinaryEvents.clear();
-	this->mAnalogEvents.clear();
-	this->mCounterEvents.clear();	
-
-	mBuffer.Deselect();
-}
-
-void ResponseContext::ClearWritten()
-{
-	size_t written = mBuffer.ClearWritten();
-
-	size_t deselected = mBuffer.Deselect();
-
-	LOG_BLOCK(LogLevel::Debug, "Clearing written events: " << written << " deselected: " << deselected);
 }
 
 void ResponseContext::ClearAndReset()
 {
 	this->ClearWritten();
 	this->Reset();
-}
-
-inline size_t GetEventCount(const HeaderInfo& arHeader)
-{
-	switch(arHeader.GetQualifier()) {
-	case QualifierCode::UINT8_CNT:
-	case QualifierCode::UINT16_CNT:
-		return arHeader.GetCount();
-	default:
-		return std::numeric_limits<size_t>::max();
-	}
 }
 
 /*
@@ -332,12 +305,6 @@ bool ResponseContext::IsEmpty()
 bool ResponseContext::IsStaticEmpty()
 {
 	return this->mStaticWriteMap.empty();
-}
-
-bool ResponseContext::IsEventEmpty()
-{
-	// are there unwritten events in the selection buffer?
-	return mBuffer.NumSelected() == 0;
 }
 
 void ResponseContext::FinalizeResponse(APDU& arAPDU, bool aFIN)

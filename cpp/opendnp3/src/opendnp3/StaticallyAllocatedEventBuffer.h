@@ -18,26 +18,38 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include "HeaderReadIterator.h"
-#include "ObjectReadIterator.h"
+
+#ifndef __STATICALLY_ALLOCATED_EVENT_BUFFER_
+#define __STATICALLY_ALLOCATED_EVENT_BUFFER_
+
+#include "EventBufferFacade.h"
+#include <openpal/StaticArray.h>
 
 namespace opendnp3
 {
 
-HeaderReadIterator::HeaderReadIterator(const std::vector<HeaderInfo>* apHeaders, const uint8_t* apBuffer, bool aHasData) :
-	mpHeaders(apHeaders),
-	mpBuffer(apBuffer),
-	mHasData(aHasData),
-	mIndex(0)
+template <uint32_t B, uint32_t A, uint32_t C>
+class StaticallyAllocatedEventBuffer
 {
+	public:		
+
+		//EventBufferFacade GetFacade();
+
+	private:
+
+		openpal::StaticArray<uint16_t, B> binaryStack;
+		openpal::StaticArray<Event<Binary>, B> binaryArray;
+
+		openpal::StaticArray<uint16_t, A> analogStack;
+		openpal::StaticArray<Event<Analog>, A> analogArray;
+
+		openpal::StaticArray<uint16_t, C> counterStack;
+		openpal::StaticArray<Event<Counter>, C> counterArray;
+
+		openpal::StaticArray<openpal::DoubleListNode<SequenceRecord>, B+A+C> sequenceOfEvents;
+		openpal::StaticArray<openpal::DoubleListNode<SequenceRecord>*, B+A+C> selectedEvents;		
+};
 
 }
 
-
-ObjectReadIterator HeaderReadIterator::BeginRead()
-{
-	return ObjectReadIterator((*mpHeaders)[mIndex], mpBuffer, mHasData);
-}
-
-}
-
+#endif

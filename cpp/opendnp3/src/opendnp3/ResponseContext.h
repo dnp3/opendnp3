@@ -31,10 +31,7 @@
 
 #include "APDU.h"
 #include "Database.h"
-#include "SlaveEventBuffer.h"
 #include "GroupVariation.h"
-
-
 
 namespace opendnp3
 {
@@ -89,13 +86,12 @@ class ResponseContext : public openpal::Loggable
 
 public:
 
-	ResponseContext(openpal::Logger& arLogger, Database*, SlaveResponseTypes* apRspTypes, const EventMaxConfig& arEventMaxConfig);
+	ResponseContext(openpal::Logger& arLogger, Database*, SlaveResponseTypes* apRspTypes);
 
 	IINField RecordAllObjects(GroupVariation gv);
 
 	Mode GetMode() const { return mMode; }
-
-	IEventBuffer* GetBuffer() { return &mBuffer; }	
+		
 
 	// Configure the APDU with response data for the next fragment
 	void LoadResponse(APDU&);
@@ -114,7 +110,7 @@ public:
 	void Reset();
 
 	// Tell the buffer to reset written events
-	void ClearWritten();
+	void ClearWritten() {}
 
 	// Clear written events and reset the state of the object
 	void ClearAndReset();
@@ -129,8 +125,6 @@ private:
 
 	// configure the state for unsol, return true of events exist
 	//bool SelectUnsol(ClassMask aMask);
-
-	SlaveEventBuffer mBuffer;
 
 	Mode mMode;
 
@@ -152,7 +146,7 @@ private:
 	bool IsEmpty();
 
 	bool IsStaticEmpty();
-	bool IsEventEmpty();
+	bool IsEventEmpty() { return true; }
 
 	Database* mpDB;				// Pointer to the database for static data
 	bool mFIR;
@@ -161,31 +155,11 @@ private:
 
 	//IINField mTempIIN;
 	bool mLoadedEventData;
-
-	template<class T>
-	struct EventRequest {
-		EventRequest(const StreamObject<T>* apObj, size_t aCount = std::numeric_limits<size_t>::max()) :
-			pObj(apObj),
-			count(aCount)
-		{}
-
-		const StreamObject<T>* pObj;		// Type to use to write
-		size_t count;						// Number of events to read
-	};	
-
+	
 	typedef std::map <ResponseKey, WriteFunction, ResponseKey >	WriteMap;
 
 	// the queue that tracks the pending static write operations
 	WriteMap mStaticWriteMap;
-
-	typedef std::deque< EventRequest<Binary> >				BinaryEventQueue;
-	typedef std::deque< EventRequest<Analog> >				AnalogEventQueue;
-	typedef std::deque< EventRequest<Counter> >				CounterEventQueue;	
-
-	//these queues track what events have been requested
-	BinaryEventQueue mBinaryEvents;
-	AnalogEventQueue mAnalogEvents;
-	CounterEventQueue mCounterEvents;	
 
 /*
 	template <class T>

@@ -24,16 +24,17 @@
 #include <openpal/Exception.h>
 #include <openpal/Location.h>
 
+#include <opendnp3/DNPConstants.h>
 
 #include "CopyableBuffer.h"
 #include "AppHeader.h"
 #include "ObjectHeader.h"
 #include "Objects.h"
 
-#include "HeaderReadIterator.h"
 #include "ObjectWriteIterator.h"
 #include "IndexedWriteIterator.h"
 #include "ErrorCode.h"
+
 
 #include <vector>
 #include <string>
@@ -60,22 +61,7 @@ public:
 
 		@return					the new APDU instance
 	 */
-	APDU(size_t aFragSize = DEFAULT_FRAG_SIZE);
-
-	/**
-		Parse and validate the entire currently-set buffer.
-
-		@throw Exception		if malformed data is encountered
-	 */
-	void Interpret();
-
-	/**
-		Parse and validate the only the header components of the
-		currently-set buffer.
-
-		@throw Exception		if malformed data is encountered
-	 */
-	void InterpretHeader();
+	APDU(size_t aFragSize = DEFAULT_FRAG_SIZE);	
 
 	/**
 	* @return Size of the written/parsed APDU
@@ -116,14 +102,7 @@ public:
 		@throw ArgumentException	if aLength exceeds MaxSize()
 	 */
 	void Write(const openpal::ReadOnlyBuffer& arBuffer);
-
-	/**
-		Returns the Function Code (FC) field from the DNP3 Application
-		Layer message.
-
-		@return		the function code of the APDU message
-	 */
-	FunctionCode GetFunction() const;
+	
 
 	/**
 		Sets the Function Code (FC) field of the DNP3 Application Layer
@@ -199,18 +178,7 @@ public:
 		this->SetFunction(aCode);
 		this->SetControl(aFIR, aFIN, aCON, aUNS, aSEQ);
 	}
-
-	/**
-		Returns the Internal Indications (IIN) field of the message.
-		The message must be set as a response type before using this
-		function, otherwise an exception will be thrown.
-
-		@returns			the IIN field values for the message
-
-		@throws Exception	if the current message AppHeaderTypes is not
-							a AHT_RESPONSE
-	 */
-	IINField GetIIN() const;
+	
 
 	/**
 		Sets the Internal Indications (IIN) field of the message.  The
@@ -223,13 +191,7 @@ public:
 							a AHT_RESPONSE
 	 */
 	void SetIIN(const IINField& arIIN);
-
-	/**
-		Returns an Iterator to the first DNP3 Object Header.
-
-		@return			an Iterator to the first DNP3 Object Header
-	 */
-	HeaderReadIterator BeginRead() const;
+	
 
 	/**
 		Writes a contiguous block of object data to the message.
@@ -322,19 +284,9 @@ public:
 		@return				true if the object was written successfully,
 							false if the object could not be written.
 	 */
-	bool DoPlaceholderWrite(ObjectBase* apObj);
+	bool DoPlaceholderWrite(ObjectBase* apObj);	
 
-	/**
-		A helper function that indicates whether the given Function Code
-		(FC) in the DNP3 Application Layer message would indicate that a
-		data field should exist in the message.
-
-		@param aCode		the function code to look up
-
-		@return				true if the function code specifies a data
-							component, false if not
-	 */
-	static bool HasData(FunctionCode aCode);
+	FunctionCode GetFunction() const { return FunctionCode::INITIALIZE_APPLICATION; }
 
 #ifndef OPENDNP3_STRIP_LOG_MESSAGES
 	/**
@@ -348,6 +300,7 @@ public:
 		@return				a string representation of the APDU object
 	 */
 	std::string ToString() const;
+
 #endif
 
 	bool operator==(const APDU& rhs);
@@ -356,6 +309,8 @@ public:
 	}
 
 private:
+
+	bool APDU::HasData(FunctionCode aCode);
 
 	void CheckWriteState(const ObjectBase*);
 
@@ -366,12 +321,9 @@ private:
 
 	IndexedWriteIterator WriteCountHeader(size_t aObjectSize, size_t aPrefixSize, uint8_t aGrp, uint8_t aVar, size_t aCount, QualifierCode aQual);
 	void WriteContiguousHeader(IObjectHeader* apHdr, uint8_t* apPos, size_t aStart, size_t aStop);
-
-	// Interpreted Information
-	bool mIsInterpreted;
-	IAppHeader* mpAppHeader;					// uses a singleton so auto copy is safe
-	std::vector<HeaderInfo> mObjectHeaders;
-
+	
+	IAppHeader* mpAppHeader;	// uses a singleton so auto copy is safe
+	
 	CopyableBuffer mBuffer;		// This makes it dynamically sizable without the need for a special copy constructor.
 	size_t mFragmentSize;		// Number of bytes written to the buffer
 

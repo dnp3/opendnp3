@@ -36,10 +36,8 @@ using namespace std;
 namespace opendnp3
 {
 
-APDU::APDU(size_t aFragSize) :
-	mIsInterpreted(false),
-	mpAppHeader(nullptr),
-	mObjectHeaders(0),
+APDU::APDU(size_t aFragSize) :	
+	mpAppHeader(nullptr),	
 	mBuffer(aFragSize),
 	mFragmentSize(0)
 {
@@ -62,22 +60,6 @@ bool APDU::operator==(const APDU& rhs)
 AppControlField APDU::GetControl() const
 {	
 	return AppControlField(mBuffer[0]);	
-}
-
-IINField APDU::GetIIN() const
-{
-	assert(mpAppHeader != nullptr);
-
-	if(mpAppHeader->GetType() != AHT_RESPONSE) {
-		MACRO_THROW_EXCEPTION(openpal::Exception, "Only response packets have IIN fields");
-	}
-
-	return static_cast<ResponseHeader*>(mpAppHeader)->GetIIN(mBuffer);
-}
-
-FunctionCode APDU::GetFunction() const
-{
-	return FunctionCodeFromType(mBuffer[1]);
 }
 
 void APDU::SetFunction(FunctionCode aCode)
@@ -111,10 +93,8 @@ void APDU::SetIIN(const IINField& arIIN)
 
 void APDU::Reset()
 {
-	mFragmentSize = 0;
-	mIsInterpreted = false;
+	mFragmentSize = 0;	
 	mpAppHeader = nullptr;
-	mObjectHeaders.clear();
 }
 
 void APDU::Write(const openpal::ReadOnlyBuffer& arBuffer)
@@ -126,127 +106,6 @@ void APDU::Write(const openpal::ReadOnlyBuffer& arBuffer)
 	this->Reset();
 	arBuffer.CopyTo(mBuffer);	
 	mFragmentSize = arBuffer.Size();
-}
-
-void APDU::Interpret()
-{
-	if(mIsInterpreted) return;
-
-	this->InterpretHeader();
-
-	size_t consumed = mpAppHeader->GetSize();
-	size_t remainder = mFragmentSize - consumed;
-
-	while(remainder > 0) {
-		size_t header_size = this->ReadObjectHeader(consumed, remainder);
-		remainder -= header_size;
-		consumed += header_size;
-	}
-
-	mIsInterpreted = true;
-}
-
-// Parse the header only. Throws exception if header is malformed
-void APDU::InterpretHeader()
-{
-	if(mpAppHeader != nullptr) return;
-	mpAppHeader = this->ParseHeader();
-}
-
-IAppHeader* APDU::ParseHeader() const
-{
-	if(mFragmentSize < 2) {
-		MACRO_THROW_EXCEPTION_WITH_CODE(openpal::Exception, "Insufficent size", ALERR_INSUFFICIENT_DATA_FOR_FRAG);
-	}
-
-	// start by assuming that it's a request header since they have same starting structure
-	IAppHeader* pHeader = RequestHeader::Inst();
-	FunctionCode function = FunctionCodeFromType(mBuffer[1]);
-	AppControlField control(mBuffer[0]);
-
-	if( IsResponse(function) ) {
-		if(mFragmentSize < 4) {
-			MACRO_THROW_EXCEPTION_WITH_CODE(openpal::Exception, "Insufficent size", ALERR_INSUFFICIENT_DATA_FOR_RESPONSE);
-		}
-
-		pHeader = ResponseHeader::Inst();
-	}
-
-	return pHeader;
-}
-
-size_t APDU::ReadObjectHeader(size_t aOffset, size_t aRemainder)
-{
-
-	const uint8_t* pStart = mBuffer + aOffset;
-	IObjectHeader* pHdr = AllObjectsHeader::Inst(); //Start by interpreting using the smallest possible header
-	ObjectHeaderField hdrData;
-
-	if(aRemainder < pHdr->GetSize()) {
-		MACRO_THROW_EXCEPTION_WITH_CODE(openpal::Exception, "Insufficent size", ALERR_INSUFFICIENT_DATA_FOR_HEADER);
-	}
-
-	//Read the header data and select the correct object header based on this information
-	pHdr->Get(pStart, hdrData);
-
-	if(hdrData.Qualifier == QualifierCode::UNDEFINED) {
-		MACRO_THROW_EXCEPTION_WITH_CODE(openpal::Exception, "Unknown qualifier", ALERR_UNKNOWN_QUALIFIER);
-	}
-
-	pHdr = this->GetObjectHeader(hdrData.Qualifier);
-
-	//lookup the object type
-	ObjectBase* pObj = ObjectBase::Get(hdrData.Group, hdrData.Variation);
-
-	if(pObj == nullptr) {
-		MACRO_THROW_EXCEPTION_COMPLEX(openpal::ObjectException, "Undefined object, " << "Group: " << static_cast<int>(hdrData.Group) << " Var: " << static_cast<int>(hdrData.Variation));
-	}
-
-	if(aRemainder < pHdr->GetSize()) {
-		MACRO_THROW_EXCEPTION_WITH_CODE(openpal::Exception, "Insufficent size", ALERR_INSUFFICIENT_DATA_FOR_HEADER);
-	}
-
-	aRemainder -= pHdr->GetSize();
-
-	//figure out what the size of the prefixes are in bytes and how many objects there are.	 
-	auto result = this->GetPrefixSizeAndValidate(hdrData.Qualifier, pObj->GetType());
-	if(result.IsError()) throw openpal::Exception(LOCATION, "Unknown prefix code", result.Code());
-	size_t prefixSize = result.Result();
-	size_t objCount = this->GetNumObjects(pHdr, pStart);
-
-	//pStart += pHdr->GetSize(); //move the reading position to the first object
-
-	size_t data_size = 0;
-
-	//Some function codes, aka read implicitly do not carry data, only indices
-	bool has_data = APDU::HasData(this->GetFunction());
-
-	switch(pObj->GetType()) {
-	case(OT_PLACEHOLDER):
-		break;
-	case(OT_FIXED):
-		data_size = prefixSize;
-		if(has_data) data_size += static_cast<FixedObject*>(pObj)->GetSize();
-		data_size *= objCount;
-		break;
-	case(OT_BITFIELD):
-		data_size = has_data ? static_cast<BitfieldObject*>(pObj)->GetSize(objCount) : 0;
-		break;
-	case(OT_SIZE_BY_VARIATION):
-		data_size = prefixSize;
-		data_size += has_data ? hdrData.Variation : 0;
-		break;
-	default:
-		MACRO_THROW_EXCEPTION(openpal::Exception, "Unknown object type");
-	}
-
-	if(data_size > aRemainder) {
-		MACRO_THROW_EXCEPTION_WITH_CODE(openpal::Exception, "", ALERR_INSUFFICIENT_DATA_FOR_OBJECTS);
-	}
-
-	mObjectHeaders.push_back(HeaderInfo(hdrData, objCount, prefixSize, pHdr, pObj, aOffset));
-
-	return pHdr->GetSize() + data_size;
 }
 
 IObjectHeader* APDU::GetObjectHeader(QualifierCode aCode)
@@ -422,11 +281,6 @@ ErrorCode<size_t> APDU::GetPrefixSizeAndValidate(QualifierCode aCode, ObjectType
 
 }
 
-HeaderReadIterator APDU::BeginRead() const
-{
-	return HeaderReadIterator(&mObjectHeaders, mBuffer, HasData(this->GetFunction()));
-}
-
 bool APDU::HasData(FunctionCode aCode)
 {
 	switch(aCode) {
@@ -463,7 +317,7 @@ ObjectWriteIterator APDU::WriteContiguous(const FixedObject* apObj, size_t aStar
 	this->WriteContiguousHeader(pHdr, pHeaderPos, aStart, stop);
 
 	mFragmentSize += pHdr->GetSize();
-	bool has_data = APDU::HasData(this->GetFunction());
+	bool has_data = false;//APDU::HasData(this->GetFunction());
 	size_t obj_size = has_data ? apObj->GetSize() : 0;
 	mFragmentSize += count * obj_size;
 
@@ -497,7 +351,7 @@ ObjectWriteIterator APDU::WriteContiguous(const BitfieldObject* apObj, size_t aS
 	this->WriteContiguousHeader(pHdr, pHeaderPos, aStart, stop);
 
 	mFragmentSize += pHdr->GetSize();
-	bool has_data = APDU::HasData(this->GetFunction());
+	bool has_data = false;//APDU::HasData(this->GetFunction());
 	size_t data_size = has_data ? apObj->GetSize(count) : 0;
 	mFragmentSize += data_size;
 
@@ -544,7 +398,7 @@ IndexedWriteIterator APDU::WriteIndexed(const SizeByVariationObject* apObj, size
 	if(aSize > 255) throw openpal::ArgumentException(LOCATION, "size out of range");
 	uint8_t variation = static_cast<uint8_t>(aSize);
 
-	size_t obj_size = APDU::HasData(this->GetFunction()) ? aSize : 0;
+	size_t obj_size = 0;//APDU::HasData(this->GetFunction()) ? aSize : 0;
 	auto result = this->GetPrefixSizeAndValidate(aCode, apObj->GetType());
 	if(result.IsError()) throw openpal::Exception(LOCATION, "Unable to get prefix size", result.Code());
 	size_t prefix_size = result.Result();
@@ -556,7 +410,7 @@ IndexedWriteIterator APDU::WriteIndexed(const FixedObject* apObj, size_t aCount,
 {
 	this->CheckWriteState(apObj);
 
-	size_t obj_size = APDU::HasData(this->GetFunction()) ? apObj->GetSize() : 0;
+	size_t obj_size = 0;//APDU::HasData(this->GetFunction()) ? apObj->GetSize() : 0;
 
 	auto result = this->GetPrefixSizeAndValidate(aCode, apObj->GetType());
 	if(result.IsError()) throw openpal::Exception(LOCATION, "Unable to get prefix size", result.Code());
@@ -615,9 +469,11 @@ bool APDU::DoPlaceholderWrite(ObjectBase* apObj)
 
 void APDU::CheckWriteState(const ObjectBase* apObj)
 {
+	/*
 	if(mpAppHeader == nullptr) MACRO_THROW_EXCEPTION(openpal::InvalidStateException, "Header has not be configured");
 	if(mIsInterpreted) MACRO_THROW_EXCEPTION(openpal::InvalidStateException, "APDU is interpreted");
 	if(apObj == nullptr) MACRO_THROW_EXCEPTION(openpal::ArgumentException, "Object cannot be nullptr");
+	*/
 }
 
 ICountHeader* APDU::GetCountHeader(QualifierCode aCode)
@@ -672,38 +528,7 @@ std::string APDU::ToString() const
 {
 	ostringstream oss;
 
-	APDU copy(*this);
-
-	FunctionCode func = copy.GetFunction();
-	AppControlField acf = copy.GetControl();
-
-	oss << "FIR: " << acf.FIR;
-	oss << ", FIN: " << acf.FIN;
-	oss << ", CON: " << acf.CON;
-	oss << ", UNS: " << acf.UNS;
-	oss << ", SEQ: " << static_cast<int>(acf.SEQ);
-	oss << ", Func: " << FunctionCodeToString(func);
-	if ( IsResponse(func) ) oss << copy.GetIIN().ToString();
-
-	try {
-		copy.Interpret();
-		HeaderReadIterator itr = copy.BeginRead();
-		oss << " HdrCount: " << itr.Count();
-		if ( itr.Count() != 0 )
-			oss << ",";
-		for ( ; !itr.IsEnd(); ++itr) {
-			oss << " Header: (Grp: " << itr->GetGroup();
-			oss << ", Var: " << itr->GetVariation();
-			oss << ", Qual: " << QualifierCodeToString(itr->GetQualifier()) << ")";			
-		}
-	}
-	catch(openpal::Exception) {
-		oss << " Malformed header data preceeds";
-	}
-
-	oss << ", Size: " << this->ToReadOnly().Size();
-
-	return oss.str();
+	return "what?";
 }
 #endif
 

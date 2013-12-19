@@ -31,10 +31,8 @@
 #include "ChangeBuffer.h"
 #include "APDU.h"
 #include "AppInterfaces.h"
-#include "EventBuffers.h"
-#include "ObjectReadIterator.h"
+
 #include "ResponseContext.h"
-#include "SlaveEventBuffer.h"
 #include "SlaveResponseTypes.h"
 #include "OutstationSBOHandler.h"
 #include "CachedRequest.h"
@@ -194,10 +192,11 @@ private:
 	 * 						DNP3 objects
 	 * @param aFunc			Function for issuing/selecting
 	 */
-	template <class T>
-	void RespondToCommands(const StreamObject<T>* apObj, ObjectReadIterator& arIter, std::function<CommandStatus (T, size_t)> CommandHandler);
+	//template <class T>
+	//void RespondToCommands(const StreamObject<T>* apObj, ObjectReadIterator& arIter, std::function<CommandStatus (T, size_t)> CommandHandler);
 };
 
+/*
 template<class T>
 void Slave::RespondToCommands(const StreamObject<T>* apObj, ObjectReadIterator& arIter, std::function<CommandStatus (T, size_t)> CommandHandler)
 {
@@ -222,6 +221,7 @@ void Slave::RespondToCommands(const StreamObject<T>* apObj, ObjectReadIterator& 
 		++count;
 	}
 }
+*/
 
 }
 

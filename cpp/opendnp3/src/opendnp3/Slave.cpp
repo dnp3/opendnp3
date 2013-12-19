@@ -55,7 +55,7 @@ Slave::Slave(openpal::Logger aLogger, IAppLayer* apAppLayer, IExecutor* apExecut
 	mResponse(arCfg.mMaxFragSize),
 	mCachedRequest(arCfg.mMaxControls),
 	mUnsol(arCfg.mMaxFragSize),
-	mRspContext(aLogger, apDatabase, &mRspTypes, arCfg.mEventMaxConfig),
+	mRspContext(aLogger, apDatabase, &mRspTypes),
 	mSBOHandler(arCfg.mSelectTimeout, apCmdHandler, apExecutor),	
 	mDeferredUpdateCount(0),	
 	mDeferredUnsol(false),	
@@ -64,7 +64,7 @@ Slave::Slave(openpal::Logger aLogger, IAppLayer* apAppLayer, IExecutor* apExecut
 	mpTimeTimer(nullptr)
 {
 	/* Link the event buffer to the database */
-	mpDatabase->AddEventBuffer(mRspContext.GetBuffer());
+	//mpDatabase->AddEventBuffer(mRspContext.GetBuffer());
 
 	mIIN.Set(IINBit::DEVICE_RESTART);	// Always set on restart
 

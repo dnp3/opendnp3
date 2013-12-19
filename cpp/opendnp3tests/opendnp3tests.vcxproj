@@ -271,7 +271,6 @@
     <ClCompile Include="src\RandomizedBuffer.cpp" />
     <ClCompile Include="src\SlaveTestObject.cpp" />
     <ClCompile Include="src\StopWatch.cpp" />
-    <ClCompile Include="src\TestAPDU.cpp" />
     <ClCompile Include="src\TestAPDUParsing.cpp" />
     <ClCompile Include="src\TestAPDUWriting.cpp" />
     <ClCompile Include="src\TestAppLayer.cpp" />
@@ -285,8 +284,6 @@
     <ClCompile Include="src\TestCRC.cpp" />
     <ClCompile Include="src\TestDatabase.cpp" />
     <ClCompile Include="src\TestDNP3Manager.cpp" />
-    <ClCompile Include="src\TestEventBufferBase.cpp" />
-    <ClCompile Include="src\TestEventBuffers.cpp" />
     <ClCompile Include="src\TestIntegration.cpp" />
     <ClCompile Include="src\TestLazyCollection.cpp" />
     <ClCompile Include="src\TestLinkFrameDNP.cpp" />

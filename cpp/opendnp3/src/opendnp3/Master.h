@@ -32,7 +32,6 @@
 
 #include "APDU.h"
 #include "AppInterfaces.h"
-#include "ObjectReadIterator.h"
 #include "MasterSchedule.h"
 #include "QueuedCommandProcessor.h"
 #include "PostingMeasurementHandler.h"

@@ -22,10 +22,13 @@
 
 #include <opendnp3/OutstationEventBuffer.h>
 #include <opendnp3/DynamicallyAllocatedEventBuffer.h>
+#include <opendnp3/StaticallyAllocatedEventBuffer.h>
 
 #include "MeasurementComparisons.h"
 
 #include "MockEventWriter.h"
+
+#include <iostream>
 
 using namespace std;
 using namespace opendnp3;
@@ -43,6 +46,26 @@ BOOST_AUTO_TEST_CASE(InitialState)
 	BOOST_REQUIRE_EQUAL(0, buffer.SelectEvents(criteria, writer));
 	BOOST_REQUIRE_EQUAL(0, buffer.SelectEvents(criteria, writer));
 	BOOST_REQUIRE_EQUAL(0, writer.TotalEvents());
+}
+
+BOOST_AUTO_TEST_CASE(StaticAllocation)
+{
+	//StaticallyAllocatedEventBuffer<100, 100, 100> underlying;
+
+	openpal::StaticArray<uint16_t, 100> underlying;
+
+	std::cout << sizeof(underlying) << std::endl;
+
+	/*
+	OutstationEventBuffer buffer(underlying.GetFacade());
+
+	MockEventWriter writer;
+
+	SelectionCriteria criteria;	
+	BOOST_REQUIRE_EQUAL(0, buffer.SelectEvents(criteria, writer));
+	BOOST_REQUIRE_EQUAL(0, buffer.SelectEvents(criteria, writer));
+	BOOST_REQUIRE_EQUAL(0, writer.TotalEvents());
+	*/
 }
 
 BOOST_AUTO_TEST_CASE(SingleValueIsWrittenAndCleared)

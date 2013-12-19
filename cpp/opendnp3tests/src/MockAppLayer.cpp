@@ -105,7 +105,7 @@ APDU MockAppLayer::Read()
 {
 	if(mFragments.size() == 0) throw InvalidStateException(LOCATION, "no more fragments");
 	APDU frag = mFragments.front();
-	frag.Interpret();
+	//frag.Interpret();
 	mFragments.pop_front();
 	return frag;
 }
