@@ -23,6 +23,8 @@ using namespace openpal;
 
 namespace opendnp3 {
 
+const GroupVariationID  Group23Var1::ID(23,1);
+
 Group23Var1 Group23Var1::Read(ReadOnlyBuffer& buffer)
 {
   Group23Var1 obj;
@@ -40,6 +42,8 @@ void Group23Var1::Write(const Group23Var1& arg, openpal::WriteBuffer& buffer)
   UInt32::Write(buffer, arg.count);
   buffer.Advance(4);
 }
+
+const GroupVariationID  Group23Var2::ID(23,2);
 
 Group23Var2 Group23Var2::Read(ReadOnlyBuffer& buffer)
 {
@@ -59,6 +63,8 @@ void Group23Var2::Write(const Group23Var2& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(2);
 }
 
+const GroupVariationID  Group23Var3::ID(23,3);
+
 Group23Var3 Group23Var3::Read(ReadOnlyBuffer& buffer)
 {
   Group23Var3 obj;
@@ -77,6 +83,8 @@ void Group23Var3::Write(const Group23Var3& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(4);
 }
 
+const GroupVariationID  Group23Var4::ID(23,4);
+
 Group23Var4 Group23Var4::Read(ReadOnlyBuffer& buffer)
 {
   Group23Var4 obj;
@@ -94,6 +102,8 @@ void Group23Var4::Write(const Group23Var4& arg, openpal::WriteBuffer& buffer)
   UInt16::Write(buffer, arg.count);
   buffer.Advance(2);
 }
+
+const GroupVariationID  Group23Var5::ID(23,5);
 
 Group23Var5 Group23Var5::Read(ReadOnlyBuffer& buffer)
 {
@@ -117,6 +127,8 @@ void Group23Var5::Write(const Group23Var5& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(6);
 }
 
+const GroupVariationID  Group23Var6::ID(23,6);
+
 Group23Var6 Group23Var6::Read(ReadOnlyBuffer& buffer)
 {
   Group23Var6 obj;
@@ -139,6 +151,8 @@ void Group23Var6::Write(const Group23Var6& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(6);
 }
 
+const GroupVariationID  Group23Var7::ID(23,7);
+
 Group23Var7 Group23Var7::Read(ReadOnlyBuffer& buffer)
 {
   Group23Var7 obj;
@@ -160,6 +174,8 @@ void Group23Var7::Write(const Group23Var7& arg, openpal::WriteBuffer& buffer)
   UInt48::Write(buffer, arg.time48);
   buffer.Advance(6);
 }
+
+const GroupVariationID  Group23Var8::ID(23,8);
 
 Group23Var8 Group23Var8::Read(ReadOnlyBuffer& buffer)
 {

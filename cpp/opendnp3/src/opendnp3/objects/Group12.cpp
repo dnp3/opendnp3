@@ -24,6 +24,8 @@ using namespace openpal;
 
 namespace opendnp3 {
 
+const GroupVariationID  Group12Var1::ID(12,1);
+
 Group12Var1 Group12Var1::Read(ReadOnlyBuffer& buffer)
 {
   Group12Var1 obj;

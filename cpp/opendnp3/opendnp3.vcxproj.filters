@@ -573,9 +573,6 @@
     <ClInclude Include="src\opendnp3\IINHelpers.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\SettableOnce.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\ReadHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -638,6 +635,18 @@
     </ClInclude>
     <ClInclude Include="src\opendnp3\IAppLayer.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\APDUWriter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\objects\GroupVariationID.h">
+      <Filter>Header Files\objects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\Settable.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\objects\Group60.h">
+      <Filter>Header Files\objects</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1036,6 +1045,12 @@
     </ClCompile>
     <ClCompile Include="src\opendnp3\APDUOut.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\APDUWriter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\objects\Group60.cpp">
+      <Filter>Source Files\objects</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

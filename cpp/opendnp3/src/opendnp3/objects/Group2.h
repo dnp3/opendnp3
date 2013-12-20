@@ -19,12 +19,19 @@
 #define __OPENDNP3_GENERATED_GROUP2_H_
 
 #include <openpal/BufferWrapper.h>
+#include "GroupVariationID.h"
 #include <opendnp3/DataTypes.h>
 
 namespace opendnp3 {
 
+struct Group2Var0
+{
+  static const GroupVariationID ID;
+};
+
 struct Group2Var1
 {
+  static const GroupVariationID ID;
   static const size_t SIZE = 1;
 
   typedef Binary Target;
@@ -38,6 +45,7 @@ struct Group2Var1
 
 struct Group2Var2
 {
+  static const GroupVariationID ID;
   static const size_t SIZE = 7;
 
   typedef Binary Target;
@@ -52,6 +60,7 @@ struct Group2Var2
 
 struct Group2Var3
 {
+  static const GroupVariationID ID;
   static const size_t SIZE = 3;
 
   typedef Binary Target;

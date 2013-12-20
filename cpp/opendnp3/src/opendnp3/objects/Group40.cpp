@@ -24,6 +24,8 @@ using namespace openpal;
 
 namespace opendnp3 {
 
+const GroupVariationID  Group40Var1::ID(40,1);
+
 Group40Var1 Group40Var1::Read(ReadOnlyBuffer& buffer)
 {
   Group40Var1 obj;
@@ -48,6 +50,8 @@ SetpointStatus Group40Var1::Convert(ReadOnlyBuffer& buff)
   return SetpointStatusFactory::From(gv.flags, gv.value);
 }
 
+
+const GroupVariationID  Group40Var2::ID(40,2);
 
 Group40Var2 Group40Var2::Read(ReadOnlyBuffer& buffer)
 {
@@ -74,6 +78,8 @@ SetpointStatus Group40Var2::Convert(ReadOnlyBuffer& buff)
 }
 
 
+const GroupVariationID  Group40Var3::ID(40,3);
+
 Group40Var3 Group40Var3::Read(ReadOnlyBuffer& buffer)
 {
   Group40Var3 obj;
@@ -98,6 +104,8 @@ SetpointStatus Group40Var3::Convert(ReadOnlyBuffer& buff)
   return SetpointStatusFactory::From(gv.flags, gv.value);
 }
 
+
+const GroupVariationID  Group40Var4::ID(40,4);
 
 Group40Var4 Group40Var4::Read(ReadOnlyBuffer& buffer)
 {

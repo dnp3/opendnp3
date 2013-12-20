@@ -218,6 +218,7 @@
     <ClInclude Include="src\opendnp3\APDUHeaderParser.h" />
     <ClInclude Include="src\opendnp3\APDUParser.h" />
     <ClInclude Include="src\opendnp3\APDUOut.h" />
+    <ClInclude Include="src\opendnp3\APDUWriter.h" />
     <ClInclude Include="src\opendnp3\AppChannelStates.h" />
     <ClInclude Include="src\opendnp3\AppControlField.h" />
     <ClInclude Include="src\opendnp3\IAppLayer.h" />
@@ -258,6 +259,8 @@
     <ClInclude Include="src\opendnp3\BitReader.h" />
     <ClInclude Include="src\opendnp3\IterableBuffer.h" />
     <ClInclude Include="src\opendnp3\objects\Group52.h" />
+    <ClInclude Include="src\opendnp3\objects\Group60.h" />
+    <ClInclude Include="src\opendnp3\objects\GroupVariationID.h" />
     <ClInclude Include="src\opendnp3\objects\MeasurementFactory.h" />
     <ClInclude Include="src\opendnp3\IINHelpers.h" />
     <ClInclude Include="src\opendnp3\EventMetadata.h" />
@@ -330,7 +333,7 @@
     <ClInclude Include="src\opendnp3\SecLinkLayerStates.h" />
     <ClInclude Include="src\opendnp3\SelectionCriteria.h" />
     <ClInclude Include="src\opendnp3\SequenceInfo.h" />
-    <ClInclude Include="src\opendnp3\SettableOnce.h" />
+    <ClInclude Include="src\opendnp3\Settable.h" />
     <ClInclude Include="src\opendnp3\ShiftableBuffer.h" />
     <ClInclude Include="src\opendnp3\Slave.h" />
     <ClInclude Include="src\opendnp3\SlaveResponseTypes.h" />
@@ -358,6 +361,7 @@
     <ClCompile Include="src\opendnp3\APDUHeaderParser.cpp" />
     <ClCompile Include="src\opendnp3\APDUParser.cpp" />
     <ClCompile Include="src\opendnp3\APDUOut.cpp" />
+    <ClCompile Include="src\opendnp3\APDUWriter.cpp" />
     <ClCompile Include="src\opendnp3\AppChannelStates.cpp" />
     <ClCompile Include="src\opendnp3\AppControlField.cpp" />
     <ClCompile Include="src\opendnp3\AppLayer.cpp" />
@@ -427,6 +431,7 @@
     <ClCompile Include="src\opendnp3\objects\Group50.cpp" />
     <ClCompile Include="src\opendnp3\objects\Group51.cpp" />
     <ClCompile Include="src\opendnp3\objects\Group52.cpp" />
+    <ClCompile Include="src\opendnp3\objects\Group60.cpp" />
     <ClCompile Include="src\opendnp3\OutstationEventBuffer.cpp" />
     <ClCompile Include="src\opendnp3\PostingMeasurementHandler.cpp" />
     <ClCompile Include="src\opendnp3\ReadHandler.cpp" />

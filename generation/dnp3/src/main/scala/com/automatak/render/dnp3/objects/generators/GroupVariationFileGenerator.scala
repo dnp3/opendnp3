@@ -69,6 +69,7 @@ object GroupVariationFileGenerator {
       commented(LicenseHeader()) ++ space ++
       includeGuards(group.name.toUpperCase) {
         Iterator("#include <openpal/BufferWrapper.h>") ++
+          Iterator("#include \"GroupVariationID.h\"") ++
         optionalIncludes(group) ++ space ++
         namespace("opendnp3") {
           definitions(GroupVariationHeaderRenderer)(group)
@@ -89,12 +90,10 @@ object GroupVariationFileGenerator {
         }
     }
 
-    ObjectGroup.all.foreach(g =>
-      if(g.hasSizedObjects) {
+    ObjectGroup.all.foreach { g =>
         writeTo(headerPath(g))(headerFile(g))
-        writeTo(implPath(g))(implFile(g))
-      }
-    )
+        (writeTo(implPath(g))(implFile(g)))
+    }
   }
 
 }

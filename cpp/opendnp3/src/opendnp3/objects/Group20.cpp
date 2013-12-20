@@ -24,6 +24,8 @@ using namespace openpal;
 
 namespace opendnp3 {
 
+const GroupVariationID  Group20Var1::ID(20,1);
+
 Group20Var1 Group20Var1::Read(ReadOnlyBuffer& buffer)
 {
   Group20Var1 obj;
@@ -48,6 +50,8 @@ Counter Group20Var1::Convert(ReadOnlyBuffer& buff)
   return CounterFactory::From(gv.flags, gv.count);
 }
 
+
+const GroupVariationID  Group20Var2::ID(20,2);
 
 Group20Var2 Group20Var2::Read(ReadOnlyBuffer& buffer)
 {
@@ -74,6 +78,8 @@ Counter Group20Var2::Convert(ReadOnlyBuffer& buff)
 }
 
 
+const GroupVariationID  Group20Var3::ID(20,3);
+
 Group20Var3 Group20Var3::Read(ReadOnlyBuffer& buffer)
 {
   Group20Var3 obj;
@@ -98,6 +104,8 @@ Counter Group20Var3::Convert(ReadOnlyBuffer& buff)
   return CounterFactory::From(gv.flags, gv.count);
 }
 
+
+const GroupVariationID  Group20Var4::ID(20,4);
 
 Group20Var4 Group20Var4::Read(ReadOnlyBuffer& buffer)
 {
@@ -124,6 +132,8 @@ Counter Group20Var4::Convert(ReadOnlyBuffer& buff)
 }
 
 
+const GroupVariationID  Group20Var5::ID(20,5);
+
 Group20Var5 Group20Var5::Read(ReadOnlyBuffer& buffer)
 {
   Group20Var5 obj;
@@ -144,6 +154,8 @@ Counter Group20Var5::Convert(ReadOnlyBuffer& buff)
   return CounterFactory::From(gv.count);
 }
 
+
+const GroupVariationID  Group20Var6::ID(20,6);
 
 Group20Var6 Group20Var6::Read(ReadOnlyBuffer& buffer)
 {
@@ -166,6 +178,8 @@ Counter Group20Var6::Convert(ReadOnlyBuffer& buff)
 }
 
 
+const GroupVariationID  Group20Var7::ID(20,7);
+
 Group20Var7 Group20Var7::Read(ReadOnlyBuffer& buffer)
 {
   Group20Var7 obj;
@@ -186,6 +200,8 @@ Counter Group20Var7::Convert(ReadOnlyBuffer& buff)
   return CounterFactory::From(gv.count);
 }
 
+
+const GroupVariationID  Group20Var8::ID(20,8);
 
 Group20Var8 Group20Var8::Read(ReadOnlyBuffer& buffer)
 {

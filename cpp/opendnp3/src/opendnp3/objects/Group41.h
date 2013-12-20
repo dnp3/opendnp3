@@ -19,6 +19,7 @@
 #define __OPENDNP3_GENERATED_GROUP41_H_
 
 #include <openpal/BufferWrapper.h>
+#include "GroupVariationID.h"
 #include <opendnp3/gen/CommandStatus.h>
 #include <opendnp3/AnalogOutput.h>
 
@@ -26,6 +27,7 @@ namespace opendnp3 {
 
 struct Group41Var1
 {
+  static const GroupVariationID ID;
   static const size_t SIZE = 5;
 
   typedef AnalogOutputInt32 Target;
@@ -40,6 +42,7 @@ struct Group41Var1
 
 struct Group41Var2
 {
+  static const GroupVariationID ID;
   static const size_t SIZE = 3;
 
   typedef AnalogOutputInt16 Target;
@@ -54,6 +57,7 @@ struct Group41Var2
 
 struct Group41Var3
 {
+  static const GroupVariationID ID;
   static const size_t SIZE = 5;
 
   typedef AnalogOutputFloat32 Target;
@@ -68,6 +72,7 @@ struct Group41Var3
 
 struct Group41Var4
 {
+  static const GroupVariationID ID;
   static const size_t SIZE = 9;
 
   typedef AnalogOutputDouble64 Target;

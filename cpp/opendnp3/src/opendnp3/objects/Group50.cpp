@@ -23,6 +23,8 @@ using namespace openpal;
 
 namespace opendnp3 {
 
+const GroupVariationID  Group50Var1::ID(50,1);
+
 Group50Var1 Group50Var1::Read(ReadOnlyBuffer& buffer)
 {
   Group50Var1 obj;

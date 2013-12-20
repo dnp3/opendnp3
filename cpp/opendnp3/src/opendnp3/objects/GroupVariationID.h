@@ -18,45 +18,27 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __SETTABLE_ONCE_
-#define __SETTABLE_ONCE_
+#ifndef __GROUP_VARIATION_ID_H_
+#define __GROUP_VARIATION_ID_H_
 
-#include <opendnp3/Uncopyable.h>
+#include <cstdint>
 
 namespace opendnp3
 {
 
-template <class T>
-class SettableOnce : private Uncopyable
+struct GroupVariationID
 {
-	public:
-
-	SettableOnce() : valueIsSet(false)
-	{}
-	
-	SettableOnce(const T& aDefault) : valueIsSet(false), value(aDefault)
-	{}
-
-	bool IsSet() const { return valueIsSet; }
-
-	T Get() const { return value; }
-
-	void Set(const T& aValue)
+	GroupVariationID(uint8_t aGroup, uint8_t aVariation):
+		group(aGroup),
+		variation(aVariation)
 	{
-		if(!valueIsSet) {
-			value = aValue;
-			valueIsSet = true;
-		}
+	
 	}
 
-	private:
-
-	bool valueIsSet;
-	T value;
+	const uint8_t group;
+	const uint8_t variation;
 };
 
 }
 
-
 #endif
-

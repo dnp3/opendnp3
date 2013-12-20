@@ -43,6 +43,12 @@ public:
 		return ret;
 	}
 
+	static void WriteBuffer(WriteBuffer& buffer, uint8_t aValue) 
+	{
+		Write(buffer, aValue);
+		buffer.Advance(Size);
+	}
+
 	inline static void Write(uint8_t* apStart, uint8_t aValue) 
 	{
 		*(apStart) = aValue;
@@ -67,6 +73,12 @@ public:
 		auto ret = Read(arBuffer);
 		arBuffer.Advance(Size);
 		return ret;
+	}
+
+	static void WriteBuffer(WriteBuffer& buffer, int64_t aValue) 
+	{
+		Write(buffer, aValue);
+		buffer.Advance(Size);
 	}
 
 	const static int64_t MAX = 281474976710655ULL; // 2^48 -1

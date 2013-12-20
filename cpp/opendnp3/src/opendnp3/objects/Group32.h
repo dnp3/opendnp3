@@ -19,12 +19,14 @@
 #define __OPENDNP3_GENERATED_GROUP32_H_
 
 #include <openpal/BufferWrapper.h>
+#include "GroupVariationID.h"
 #include <opendnp3/DataTypes.h>
 
 namespace opendnp3 {
 
 struct Group32Var1
 {
+  static const GroupVariationID ID;
   static const size_t SIZE = 5;
 
   typedef Analog Target;
@@ -39,6 +41,7 @@ struct Group32Var1
 
 struct Group32Var2
 {
+  static const GroupVariationID ID;
   static const size_t SIZE = 3;
 
   typedef Analog Target;
@@ -53,6 +56,7 @@ struct Group32Var2
 
 struct Group32Var3
 {
+  static const GroupVariationID ID;
   static const size_t SIZE = 11;
 
   typedef Analog Target;
@@ -68,6 +72,7 @@ struct Group32Var3
 
 struct Group32Var4
 {
+  static const GroupVariationID ID;
   static const size_t SIZE = 9;
 
   typedef Analog Target;
@@ -83,6 +88,7 @@ struct Group32Var4
 
 struct Group32Var5
 {
+  static const GroupVariationID ID;
   static const size_t SIZE = 5;
 
   typedef Analog Target;
@@ -97,6 +103,7 @@ struct Group32Var5
 
 struct Group32Var6
 {
+  static const GroupVariationID ID;
   static const size_t SIZE = 9;
 
   typedef Analog Target;
@@ -111,6 +118,7 @@ struct Group32Var6
 
 struct Group32Var7
 {
+  static const GroupVariationID ID;
   static const size_t SIZE = 11;
 
   typedef Analog Target;
@@ -126,6 +134,7 @@ struct Group32Var7
 
 struct Group32Var8
 {
+  static const GroupVariationID ID;
   static const size_t SIZE = 15;
 
   typedef Analog Target;

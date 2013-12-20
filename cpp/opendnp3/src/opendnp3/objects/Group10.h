@@ -19,12 +19,24 @@
 #define __OPENDNP3_GENERATED_GROUP10_H_
 
 #include <openpal/BufferWrapper.h>
+#include "GroupVariationID.h"
 #include <opendnp3/DataTypes.h>
 
 namespace opendnp3 {
 
+struct Group10Var0
+{
+  static const GroupVariationID ID;
+};
+
+struct Group10Var1
+{
+  static const GroupVariationID ID;
+};
+
 struct Group10Var2
 {
+  static const GroupVariationID ID;
   static const size_t SIZE = 1;
 
   typedef ControlStatus Target;

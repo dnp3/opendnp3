@@ -7,18 +7,20 @@ import com.automatak.render.cpp._
 
 object GroupVariationHeaderRenderer extends ModelRenderer[GroupVariation]{
 
+  private def idDeclaration: Iterator[String] = Iterator("static const GroupVariationID ID;")
+
   def render(gv: GroupVariation)(implicit i: Indentation): Iterator[String] = gv match {
-    case x: AnyVariation => render(x)
-    case x: SingleBitfield => render(x)
-    case x: DoubleBitfield => render(x)
+    case x: AnyVariation => renderIdOnly(x)
+    case x: SingleBitfield => renderIdOnly(x)
+    case x: DoubleBitfield => renderIdOnly(x)
     case x: FixedSize => render(x)
   }
 
-  private def render(x: AnyVariation)(implicit i: Indentation): Iterator[String] = Iterator.empty
-
-  private def render(x: SingleBitfield)(implicit i: Indentation): Iterator[String] = Iterator.empty
-
-  private def render(x: DoubleBitfield)(implicit i: Indentation): Iterator[String] = Iterator.empty
+  private def renderIdOnly(gv: GroupVariation)(implicit i: Indentation): Iterator[String] = {
+    struct(gv.name) {
+      idDeclaration
+    }
+  }
 
   private def render(x: FixedSize)(implicit i: Indentation): Iterator[String] = {
 
@@ -50,6 +52,7 @@ object GroupVariationHeaderRenderer extends ModelRenderer[GroupVariation]{
     def writeSignature: Iterator[String] = Iterator("static void Write(const " + x.name + "&, openpal::WriteBuffer&);")
 
     struct(x.name) {
+      idDeclaration ++
       sizeSignature ++
       conversions ++
       readSignature ++
@@ -62,21 +65,20 @@ object GroupVariationHeaderRenderer extends ModelRenderer[GroupVariation]{
 
 object GroupVariationImplRenderer extends ModelRenderer[GroupVariation]{
 
+  private def idDefintion(gv: GroupVariation): Iterator[String] =
+    Iterator("const GroupVariationID  " + gv.name + "::ID(" + gv.group + "," + gv.variation + ");")
+
   def render(gv: GroupVariation)(implicit i: Indentation): Iterator[String] = gv match {
-    case x: AnyVariation => render(x)
-    case x: SingleBitfield => render(x)
-    case x: DoubleBitfield => render(x)
-    case x: FixedSize => render(x)
+    case x: FixedSize => renderFixedSize(x)
+    case _ => renderIdOnly(gv)
+  }
+
+  private def renderIdOnly(gv: GroupVariation)(implicit i: Indentation): Iterator[String] = {
+    idDefintion(gv)
   }
 
 
-  private def render(x: AnyVariation)(implicit i: Indentation): Iterator[String] = Iterator.empty
-
-  private def render(x: SingleBitfield)(implicit i: Indentation): Iterator[String] = Iterator.empty
-
-  private def render(x: DoubleBitfield)(implicit i: Indentation): Iterator[String] = Iterator.empty
-
-  private def render(x: FixedSize)(implicit i: Indentation): Iterator[String] = {
+  private def renderFixedSize(x: FixedSize)(implicit i: Indentation): Iterator[String] = {
 
     def getFieldTypeParser(x: FixedSizeFieldType): String = x match {
       case UInt8Field => "UInt8"
@@ -112,6 +114,8 @@ object GroupVariationImplRenderer extends ModelRenderer[GroupVariation]{
 
     def writeSignature: Iterator[String] = Iterator("void " + x.name + "::Write(const " + x.name + "& arg, openpal::WriteBuffer& buffer)")
 
+
+
     def convertFunction: Iterator[String] = x.conversion match {
       case Some(c) => space ++ c.impl(x) ++ space
       case None => Iterator.empty
@@ -129,7 +133,10 @@ object GroupVariationImplRenderer extends ModelRenderer[GroupVariation]{
 
     }
 
-    readFunction ++ space ++ writeFunction ++ convertFunction
+    idDefintion(x) ++ space ++
+    readFunction ++ space ++
+    writeFunction ++
+    convertFunction
   }
 
 }

@@ -55,6 +55,12 @@ public:
 		*(++apStart) = static_cast<uint8_t>((aValue >> 8) & 0xFF);
 	}
 
+	static void WriteBuffer(WriteBuffer& buffer, T aValue) 
+	{
+		Write(buffer, aValue);
+		buffer.Advance(Size);
+	}
+
 	inline static T ReadBuffer(ReadOnlyBuffer& arBuffer) 
 	{
 		auto ret = Read(arBuffer);
@@ -94,6 +100,12 @@ public:
 		*(++apStart) = static_cast<uint8_t>((aValue >> 24) & 0xFF);
 	}
 
+	static void WriteBuffer(WriteBuffer& buffer, T aValue) 
+	{
+		Write(buffer, aValue);
+		buffer.Advance(Size);
+	}
+
 	inline static T ReadBuffer(ReadOnlyBuffer& arBuffer) 
 	{
 		auto ret = Read(arBuffer);
@@ -129,6 +141,12 @@ public:
 		auto ret = Read(arBuffer);
 		arBuffer.Advance(Size);
 		return ret;
+	}
+
+	static void WriteBuffer(WriteBuffer& buffer, T aValue) 
+	{
+		Write(buffer, aValue);
+		buffer.Advance(Size);
 	}
 
 	// Some platforms like ARM have WORD alignment issue when using reinterpret cast. 

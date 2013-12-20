@@ -23,6 +23,8 @@ using namespace openpal;
 
 namespace opendnp3 {
 
+const GroupVariationID  Group42Var1::ID(42,1);
+
 Group42Var1 Group42Var1::Read(ReadOnlyBuffer& buffer)
 {
   Group42Var1 obj;
@@ -41,6 +43,8 @@ void Group42Var1::Write(const Group42Var1& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(4);
 }
 
+const GroupVariationID  Group42Var2::ID(42,2);
+
 Group42Var2 Group42Var2::Read(ReadOnlyBuffer& buffer)
 {
   Group42Var2 obj;
@@ -58,6 +62,8 @@ void Group42Var2::Write(const Group42Var2& arg, openpal::WriteBuffer& buffer)
   Int16::Write(buffer, arg.value);
   buffer.Advance(2);
 }
+
+const GroupVariationID  Group42Var3::ID(42,3);
 
 Group42Var3 Group42Var3::Read(ReadOnlyBuffer& buffer)
 {
@@ -81,6 +87,8 @@ void Group42Var3::Write(const Group42Var3& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(6);
 }
 
+const GroupVariationID  Group42Var4::ID(42,4);
+
 Group42Var4 Group42Var4::Read(ReadOnlyBuffer& buffer)
 {
   Group42Var4 obj;
@@ -103,6 +111,8 @@ void Group42Var4::Write(const Group42Var4& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(6);
 }
 
+const GroupVariationID  Group42Var5::ID(42,5);
+
 Group42Var5 Group42Var5::Read(ReadOnlyBuffer& buffer)
 {
   Group42Var5 obj;
@@ -121,6 +131,8 @@ void Group42Var5::Write(const Group42Var5& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(4);
 }
 
+const GroupVariationID  Group42Var6::ID(42,6);
+
 Group42Var6 Group42Var6::Read(ReadOnlyBuffer& buffer)
 {
   Group42Var6 obj;
@@ -138,6 +150,8 @@ void Group42Var6::Write(const Group42Var6& arg, openpal::WriteBuffer& buffer)
   DoubleFloat::Write(buffer, arg.value);
   buffer.Advance(8);
 }
+
+const GroupVariationID  Group42Var7::ID(42,7);
 
 Group42Var7 Group42Var7::Read(ReadOnlyBuffer& buffer)
 {
@@ -160,6 +174,8 @@ void Group42Var7::Write(const Group42Var7& arg, openpal::WriteBuffer& buffer)
   UInt48::Write(buffer, arg.time48);
   buffer.Advance(6);
 }
+
+const GroupVariationID  Group42Var8::ID(42,8);
 
 Group42Var8 Group42Var8::Read(ReadOnlyBuffer& buffer)
 {

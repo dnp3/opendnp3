@@ -15,41 +15,21 @@
 // http://www.apache.org/licenses/LICENSE-2.0.html
 //
 
-#include "Group10.h"
+#include "Group60.h"
 
-#include "MeasurementFactory.h"
 #include <openpal/Serialization.h>
 
 using namespace openpal;
 
 namespace opendnp3 {
 
-const GroupVariationID  Group10Var0::ID(10,0);
+const GroupVariationID  Group60Var1::ID(60,1);
 
-const GroupVariationID  Group10Var1::ID(10,1);
+const GroupVariationID  Group60Var2::ID(60,2);
 
-const GroupVariationID  Group10Var2::ID(10,2);
+const GroupVariationID  Group60Var3::ID(60,3);
 
-Group10Var2 Group10Var2::Read(ReadOnlyBuffer& buffer)
-{
-  Group10Var2 obj;
-  obj.flags = UInt8::Read(buffer);
-  buffer.Advance(1);
-  return obj;
-}
-
-void Group10Var2::Write(const Group10Var2& arg, openpal::WriteBuffer& buffer)
-{
-  UInt8::Write(buffer, arg.flags);
-  buffer.Advance(1);
-}
-
-ControlStatus Group10Var2::Convert(ReadOnlyBuffer& buff)
-{
-  auto gv = Read(buff);
-  return ControlStatusFactory::From(gv.flags);
-}
-
+const GroupVariationID  Group60Var4::ID(60,4);
 
 
 }

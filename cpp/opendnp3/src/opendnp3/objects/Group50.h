@@ -19,11 +19,13 @@
 #define __OPENDNP3_GENERATED_GROUP50_H_
 
 #include <openpal/BufferWrapper.h>
+#include "GroupVariationID.h"
 
 namespace opendnp3 {
 
 struct Group50Var1
 {
+  static const GroupVariationID ID;
   static const size_t SIZE = 6;
   static Group50Var1 Read(openpal::ReadOnlyBuffer&);
   static void Write(const Group50Var1&, openpal::WriteBuffer&);

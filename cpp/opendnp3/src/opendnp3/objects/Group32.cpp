@@ -24,6 +24,8 @@ using namespace openpal;
 
 namespace opendnp3 {
 
+const GroupVariationID  Group32Var1::ID(32,1);
+
 Group32Var1 Group32Var1::Read(ReadOnlyBuffer& buffer)
 {
   Group32Var1 obj;
@@ -49,6 +51,8 @@ Analog Group32Var1::Convert(ReadOnlyBuffer& buff)
 }
 
 
+const GroupVariationID  Group32Var2::ID(32,2);
+
 Group32Var2 Group32Var2::Read(ReadOnlyBuffer& buffer)
 {
   Group32Var2 obj;
@@ -73,6 +77,8 @@ Analog Group32Var2::Convert(ReadOnlyBuffer& buff)
   return AnalogFactory::From(gv.flags, gv.value);
 }
 
+
+const GroupVariationID  Group32Var3::ID(32,3);
 
 Group32Var3 Group32Var3::Read(ReadOnlyBuffer& buffer)
 {
@@ -103,6 +109,8 @@ Analog Group32Var3::Convert(ReadOnlyBuffer& buff)
 }
 
 
+const GroupVariationID  Group32Var4::ID(32,4);
+
 Group32Var4 Group32Var4::Read(ReadOnlyBuffer& buffer)
 {
   Group32Var4 obj;
@@ -132,6 +140,8 @@ Analog Group32Var4::Convert(ReadOnlyBuffer& buff)
 }
 
 
+const GroupVariationID  Group32Var5::ID(32,5);
+
 Group32Var5 Group32Var5::Read(ReadOnlyBuffer& buffer)
 {
   Group32Var5 obj;
@@ -157,6 +167,8 @@ Analog Group32Var5::Convert(ReadOnlyBuffer& buff)
 }
 
 
+const GroupVariationID  Group32Var6::ID(32,6);
+
 Group32Var6 Group32Var6::Read(ReadOnlyBuffer& buffer)
 {
   Group32Var6 obj;
@@ -181,6 +193,8 @@ Analog Group32Var6::Convert(ReadOnlyBuffer& buff)
   return AnalogFactory::From(gv.flags, gv.value);
 }
 
+
+const GroupVariationID  Group32Var7::ID(32,7);
 
 Group32Var7 Group32Var7::Read(ReadOnlyBuffer& buffer)
 {
@@ -210,6 +224,8 @@ Analog Group32Var7::Convert(ReadOnlyBuffer& buff)
   return AnalogFactory::From(gv.flags, gv.value, gv.time48);
 }
 
+
+const GroupVariationID  Group32Var8::ID(32,8);
 
 Group32Var8 Group32Var8::Read(ReadOnlyBuffer& buffer)
 {

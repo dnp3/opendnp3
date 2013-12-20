@@ -24,6 +24,8 @@ using namespace openpal;
 
 namespace opendnp3 {
 
+const GroupVariationID  Group30Var1::ID(30,1);
+
 Group30Var1 Group30Var1::Read(ReadOnlyBuffer& buffer)
 {
   Group30Var1 obj;
@@ -48,6 +50,8 @@ Analog Group30Var1::Convert(ReadOnlyBuffer& buff)
   return AnalogFactory::From(gv.flags, gv.value);
 }
 
+
+const GroupVariationID  Group30Var2::ID(30,2);
 
 Group30Var2 Group30Var2::Read(ReadOnlyBuffer& buffer)
 {
@@ -74,6 +78,8 @@ Analog Group30Var2::Convert(ReadOnlyBuffer& buff)
 }
 
 
+const GroupVariationID  Group30Var3::ID(30,3);
+
 Group30Var3 Group30Var3::Read(ReadOnlyBuffer& buffer)
 {
   Group30Var3 obj;
@@ -95,6 +101,8 @@ Analog Group30Var3::Convert(ReadOnlyBuffer& buff)
 }
 
 
+const GroupVariationID  Group30Var4::ID(30,4);
+
 Group30Var4 Group30Var4::Read(ReadOnlyBuffer& buffer)
 {
   Group30Var4 obj;
@@ -115,6 +123,8 @@ Analog Group30Var4::Convert(ReadOnlyBuffer& buff)
   return AnalogFactory::From(gv.value);
 }
 
+
+const GroupVariationID  Group30Var5::ID(30,5);
 
 Group30Var5 Group30Var5::Read(ReadOnlyBuffer& buffer)
 {
@@ -140,6 +150,8 @@ Analog Group30Var5::Convert(ReadOnlyBuffer& buff)
   return AnalogFactory::From(gv.flags, gv.value);
 }
 
+
+const GroupVariationID  Group30Var6::ID(30,6);
 
 Group30Var6 Group30Var6::Read(ReadOnlyBuffer& buffer)
 {

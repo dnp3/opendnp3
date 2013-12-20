@@ -24,6 +24,8 @@ using namespace openpal;
 
 namespace opendnp3 {
 
+const GroupVariationID  Group22Var1::ID(22,1);
+
 Group22Var1 Group22Var1::Read(ReadOnlyBuffer& buffer)
 {
   Group22Var1 obj;
@@ -48,6 +50,8 @@ Counter Group22Var1::Convert(ReadOnlyBuffer& buff)
   return CounterFactory::From(gv.flags, gv.count);
 }
 
+
+const GroupVariationID  Group22Var2::ID(22,2);
 
 Group22Var2 Group22Var2::Read(ReadOnlyBuffer& buffer)
 {
@@ -74,6 +78,8 @@ Counter Group22Var2::Convert(ReadOnlyBuffer& buff)
 }
 
 
+const GroupVariationID  Group22Var3::ID(22,3);
+
 Group22Var3 Group22Var3::Read(ReadOnlyBuffer& buffer)
 {
   Group22Var3 obj;
@@ -99,6 +105,8 @@ Counter Group22Var3::Convert(ReadOnlyBuffer& buff)
 }
 
 
+const GroupVariationID  Group22Var4::ID(22,4);
+
 Group22Var4 Group22Var4::Read(ReadOnlyBuffer& buffer)
 {
   Group22Var4 obj;
@@ -123,6 +131,8 @@ Counter Group22Var4::Convert(ReadOnlyBuffer& buff)
   return CounterFactory::From(gv.flags, gv.count);
 }
 
+
+const GroupVariationID  Group22Var5::ID(22,5);
 
 Group22Var5 Group22Var5::Read(ReadOnlyBuffer& buffer)
 {
@@ -153,6 +163,8 @@ Counter Group22Var5::Convert(ReadOnlyBuffer& buff)
 }
 
 
+const GroupVariationID  Group22Var6::ID(22,6);
+
 Group22Var6 Group22Var6::Read(ReadOnlyBuffer& buffer)
 {
   Group22Var6 obj;
@@ -182,6 +194,8 @@ Counter Group22Var6::Convert(ReadOnlyBuffer& buff)
 }
 
 
+const GroupVariationID  Group22Var7::ID(22,7);
+
 Group22Var7 Group22Var7::Read(ReadOnlyBuffer& buffer)
 {
   Group22Var7 obj;
@@ -210,6 +224,8 @@ Counter Group22Var7::Convert(ReadOnlyBuffer& buff)
   return CounterFactory::From(gv.flags, gv.count, gv.time48);
 }
 
+
+const GroupVariationID  Group22Var8::ID(22,8);
 
 Group22Var8 Group22Var8::Read(ReadOnlyBuffer& buffer)
 {

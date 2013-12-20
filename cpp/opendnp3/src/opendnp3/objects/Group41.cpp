@@ -24,6 +24,8 @@ using namespace openpal;
 
 namespace opendnp3 {
 
+const GroupVariationID  Group41Var1::ID(41,1);
+
 Group41Var1 Group41Var1::Read(ReadOnlyBuffer& buffer)
 {
   Group41Var1 obj;
@@ -48,6 +50,8 @@ AnalogOutputInt32 Group41Var1::Convert(ReadOnlyBuffer& buff)
   return AnalogOutputInt32Factory::From(gv.value, gv.status);
 }
 
+
+const GroupVariationID  Group41Var2::ID(41,2);
 
 Group41Var2 Group41Var2::Read(ReadOnlyBuffer& buffer)
 {
@@ -74,6 +78,8 @@ AnalogOutputInt16 Group41Var2::Convert(ReadOnlyBuffer& buff)
 }
 
 
+const GroupVariationID  Group41Var3::ID(41,3);
+
 Group41Var3 Group41Var3::Read(ReadOnlyBuffer& buffer)
 {
   Group41Var3 obj;
@@ -98,6 +104,8 @@ AnalogOutputFloat32 Group41Var3::Convert(ReadOnlyBuffer& buff)
   return AnalogOutputFloat32Factory::From(gv.value, gv.status);
 }
 
+
+const GroupVariationID  Group41Var4::ID(41,4);
 
 Group41Var4 Group41Var4::Read(ReadOnlyBuffer& buffer)
 {

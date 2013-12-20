@@ -23,7 +23,7 @@
 
 #include "HeaderHandlerBase.h"
 #include "IINField.h"
-#include "SettableOnce.h"
+#include "Settable.h"
 
 #include <opendnp3/ITimeWriteHandler.h>
 
@@ -50,7 +50,7 @@ class WriteHandler : public HeaderHandlerBase, private openpal::Loggable
 
 	private:
 	
-	SettableOnce<Group50Var1> timeWrite;
+	Settable<Group50Var1> timeWrite;
 	IINField clearMask;
 };
 

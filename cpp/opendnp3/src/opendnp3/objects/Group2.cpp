@@ -24,6 +24,10 @@ using namespace openpal;
 
 namespace opendnp3 {
 
+const GroupVariationID  Group2Var0::ID(2,0);
+
+const GroupVariationID  Group2Var1::ID(2,1);
+
 Group2Var1 Group2Var1::Read(ReadOnlyBuffer& buffer)
 {
   Group2Var1 obj;
@@ -44,6 +48,8 @@ Binary Group2Var1::Convert(ReadOnlyBuffer& buff)
   return BinaryFactory::From(gv.flags);
 }
 
+
+const GroupVariationID  Group2Var2::ID(2,2);
 
 Group2Var2 Group2Var2::Read(ReadOnlyBuffer& buffer)
 {
@@ -69,6 +75,8 @@ Binary Group2Var2::Convert(ReadOnlyBuffer& buff)
   return BinaryFactory::From(gv.flags, gv.time48);
 }
 
+
+const GroupVariationID  Group2Var3::ID(2,3);
 
 Group2Var3 Group2Var3::Read(ReadOnlyBuffer& buffer)
 {

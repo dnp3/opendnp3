@@ -19,6 +19,7 @@
 #define __OPENDNP3_GENERATED_GROUP12_H_
 
 #include <openpal/BufferWrapper.h>
+#include "GroupVariationID.h"
 #include <opendnp3/gen/ControlCode.h>
 #include <opendnp3/gen/CommandStatus.h>
 #include <opendnp3/ControlRelayOutputBlock.h>
@@ -27,6 +28,7 @@ namespace opendnp3 {
 
 struct Group12Var1
 {
+  static const GroupVariationID ID;
   static const size_t SIZE = 11;
 
   typedef ControlRelayOutputBlock Target;
