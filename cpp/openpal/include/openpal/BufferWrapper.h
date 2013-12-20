@@ -53,7 +53,9 @@ class WriteBuffer : public HasSize
 {
 	public:
 
-    	WriteBuffer();
+	static WriteBuffer Empty();
+
+    WriteBuffer();
 	WriteBuffer(uint8_t* apBuffer, uint32_t aSize);
 
 	void Clear();

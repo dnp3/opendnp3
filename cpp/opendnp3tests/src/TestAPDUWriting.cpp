@@ -23,17 +23,20 @@
 #include <opendnp3/APDUWriter.h>
 
 #include <openpal/ToHex.h>
+#include <openpal/Serialization.h>
+
+#include <opendnp3/objects/Group20.h>
 #include <opendnp3/objects/Group60.h>
 
 using namespace openpal;
 using namespace opendnp3;
 
-
 BOOST_AUTO_TEST_SUITE(APDUWritingTestSuite)
 
+uint8_t buffer[2048];
+
 BOOST_AUTO_TEST_CASE(AllObjectsAndRollback)
-{
-	uint8_t buffer[50];
+{	
 	APDURequestWriter writer(WriteBuffer(buffer, 50));
 	writer.SetControl(AppControlField(true, true, false, false, 0));
 	writer.SetFunction(FunctionCode::READ);
@@ -51,8 +54,7 @@ BOOST_AUTO_TEST_CASE(AllObjectsAndRollback)
 }
 
 BOOST_AUTO_TEST_CASE(AllObjectsReturnsFalseWhenFull)
-{
-	uint8_t buffer[6];
+{	
 	APDURequestWriter writer(WriteBuffer(buffer, 6));
 	writer.SetControl(AppControlField(true, true, false, false, 0));
 	writer.SetFunction(FunctionCode::READ);
@@ -61,6 +63,23 @@ BOOST_AUTO_TEST_CASE(AllObjectsReturnsFalseWhenFull)
 	BOOST_REQUIRE(!writer.WriteHeader(Group60Var1::ID, QualifierCode::ALL_OBJECTS));
 
 	BOOST_REQUIRE_EQUAL("C0 01 3C 01 06", toHex(writer.ToReadOnly()));
+}
+
+BOOST_AUTO_TEST_CASE(RangeWriteIteratorStartStop)
+{	
+	APDURequestWriter writer(WriteBuffer(buffer, 50));
+	writer.SetControl(AppControlField(true, true, false, false, 0));
+	writer.SetFunction(FunctionCode::READ);
+	
+	auto iterator = writer.IterateOverRange<UInt8,Group20Var6>(QualifierCode::UINT8_START_STOP, 2);
+
+	Group20Var6 value = { 9 };
+	BOOST_REQUIRE(iterator.Write(value));
+	value.count = 7;
+	BOOST_REQUIRE(iterator.Write(value));
+	BOOST_REQUIRE(iterator.Complete());
+
+	BOOST_REQUIRE_EQUAL("C0 01 14 06 00 02 03 09 00 07 00", toHex(writer.ToReadOnly()));	
 }
 
 BOOST_AUTO_TEST_SUITE_END()

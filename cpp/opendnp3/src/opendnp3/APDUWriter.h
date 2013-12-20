@@ -26,6 +26,7 @@
 #include "GroupVariation.h"
 #include "gen/QualifierCode.h"
 #include "Settable.h"
+#include "RangeWriteIterator.h"
 
 #include "objects/GroupVariationID.h"
 
@@ -48,11 +49,13 @@ class APDUWriter : private Uncopyable
 
 	bool WriteHeader(GroupVariationID id, QualifierCode qc);
 
-	// record the current position in case we need to rollback
-	// discards any previously existing mark
+	template <class IndexType, class WriteType>
+	RangeWriteIterator<IndexType, WriteType> IterateOverRange(QualifierCode qc, typename IndexType::Type start);
+
+	// record the current position in case we need to rollback	
 	void Mark();
 
-	// Roll back to the last mark & discard the mark
+	// roll back to the last mark
 	void Rollback();
 
 	private:
@@ -64,9 +67,20 @@ class APDUWriter : private Uncopyable
 	protected:
 
 	APDUWriter(openpal::WriteBuffer aBuffer, uint32_t aStartSize);	
-	openpal::WriteBuffer buffer;
-	
+	openpal::WriteBuffer buffer;	
 };
+
+template <class IndexType, class WriteType>
+RangeWriteIterator<IndexType, WriteType> APDUWriter::IterateOverRange(QualifierCode qc, typename IndexType::Type start)
+{
+
+	if(this->WriteHeader(WriteType::ID, qc))
+	{
+		return RangeWriteIterator<IndexType, WriteType>(start, position);
+	}
+	else return RangeWriteIterator<IndexType, WriteType>::Null();
+
+}
 
 class APDURequestWriter : public APDUWriter
 {

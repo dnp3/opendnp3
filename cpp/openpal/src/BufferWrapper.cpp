@@ -51,6 +51,11 @@ namespace openpal
 		size -= aNum;
 	}
 
+	WriteBuffer WriteBuffer::Empty()
+	{
+		return WriteBuffer();
+	}
+
 	WriteBuffer::WriteBuffer(): HasSize(0), mpBuffer(nullptr)
 	{
 		

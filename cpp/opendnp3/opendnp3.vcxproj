@@ -327,6 +327,7 @@
     <ClInclude Include="src\opendnp3\ProtocolUtil.h" />
     <ClInclude Include="src\opendnp3\QueuedCommandProcessor.h" />
     <ClInclude Include="src\opendnp3\Range.h" />
+    <ClInclude Include="src\opendnp3\RangeWriteIterator.h" />
     <ClInclude Include="src\opendnp3\ReadHandler.h" />
     <ClInclude Include="src\opendnp3\ResponseContext.h" />
     <ClInclude Include="src\opendnp3\MeasurementHandler.h" />
