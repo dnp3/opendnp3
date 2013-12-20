@@ -44,6 +44,8 @@ class APDUWriter : private Uncopyable
 
 	openpal::WriteBuffer GetWritten() const;
 
+	openpal::ReadOnlyBuffer ToReadOnly() const;
+
 	bool WriteHeader(GroupVariationID id, QualifierCode qc);
 
 	// record the current position in case we need to rollback

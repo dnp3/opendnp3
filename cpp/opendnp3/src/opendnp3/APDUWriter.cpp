@@ -76,6 +76,12 @@ WriteBuffer APDUWriter::GetWritten() const
 	return buffer.Truncate(size);
 }
 
+ReadOnlyBuffer APDUWriter::ToReadOnly() const
+{
+	auto size = buffer.Size() - position.Size();
+	return ReadOnlyBuffer(buffer, size);
+}
+
 APDURequestWriter::APDURequestWriter(openpal::WriteBuffer aBuffer) : APDUWriter(aBuffer, 2)
 {}
 
