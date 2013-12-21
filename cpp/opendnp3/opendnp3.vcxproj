@@ -324,6 +324,7 @@
     <ClInclude Include="src\opendnp3\PhysicalLayerMonitor.h" />
     <ClInclude Include="src\opendnp3\PhysicalLayerMonitorStates.h" />
     <ClInclude Include="src\opendnp3\PostingMeasurementHandler.h" />
+    <ClInclude Include="src\opendnp3\PrefixedWriteIterator.h" />
     <ClInclude Include="src\opendnp3\PriLinkLayerStates.h" />
     <ClInclude Include="src\opendnp3\ProtocolUtil.h" />
     <ClInclude Include="src\opendnp3\QueuedCommandProcessor.h" />

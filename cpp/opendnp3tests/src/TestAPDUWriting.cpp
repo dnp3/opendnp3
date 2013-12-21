@@ -25,6 +25,7 @@
 #include <openpal/ToHex.h>
 #include <openpal/Serialization.h>
 
+#include <opendnp3/objects/Group12.h>
 #include <opendnp3/objects/Group20.h>
 #include <opendnp3/objects/Group30.h>
 #include <opendnp3/objects/Group60.h>
@@ -114,5 +115,28 @@ BOOST_AUTO_TEST_CASE(CountWriteIteratorFillsUpCorrectly)
 
 	BOOST_REQUIRE_EQUAL("C0 01 1E 02 07 02 FF 09 00 FF 07 00", toHex(writer.ToReadOnly()));	
 }
+
+BOOST_AUTO_TEST_CASE(PrefixWriteIteratorWithSingleCROB)
+{
+	APDURequestWriter writer(WriteBuffer(buffer, 50));
+	writer.SetControl(AppControlField(true, true, false, false, 0));
+	writer.SetFunction(FunctionCode::OPERATE);
+
+	auto iter = writer.IterateOverCountWithPrefix<UInt8, Group12Var1>(QualifierCode::UINT8_CNT_UINT8_INDEX);
+	BOOST_ASSERT(!iter.IsNull());
+
+	Group12Var1 obj;
+	obj.code = ControlCode::LATCH_ON;
+	obj.count = 0x1F;
+	obj.onTime = 0x10;
+	obj.offTime = 0xAA;
+	obj.status = CommandStatus::LOCAL;
+	
+	BOOST_REQUIRE(iter.Write(obj, 0x21));
+	BOOST_REQUIRE(iter.Complete());
+
+	BOOST_REQUIRE_EQUAL("C0 04 0C 01 17 01 21 03 1F 10 00 00 00 AA 00 00 00 07", toHex(writer.ToReadOnly()));	
+}
+
 
 BOOST_AUTO_TEST_SUITE_END()
