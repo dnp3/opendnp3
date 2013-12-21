@@ -221,6 +221,7 @@
     <ClInclude Include="src\opendnp3\APDUWriter.h" />
     <ClInclude Include="src\opendnp3\AppChannelStates.h" />
     <ClInclude Include="src\opendnp3\AppControlField.h" />
+    <ClInclude Include="src\opendnp3\CountWriteIterator.h" />
     <ClInclude Include="src\opendnp3\IAppLayer.h" />
     <ClInclude Include="src\opendnp3\AppLayer.h" />
     <ClInclude Include="src\opendnp3\AppLayerChannel.h" />

@@ -26,6 +26,7 @@
 #include <openpal/Serialization.h>
 
 #include <opendnp3/objects/Group20.h>
+#include <opendnp3/objects/Group30.h>
 #include <opendnp3/objects/Group60.h>
 
 using namespace openpal;
@@ -80,6 +81,38 @@ BOOST_AUTO_TEST_CASE(RangeWriteIteratorStartStop)
 	BOOST_REQUIRE(iterator.Complete());
 
 	BOOST_REQUIRE_EQUAL("C0 01 14 06 00 02 03 09 00 07 00", toHex(writer.ToReadOnly()));	
+}
+
+BOOST_AUTO_TEST_CASE(CountWriteIteratorAllowsCountOfZero)
+{
+	APDURequestWriter writer(WriteBuffer(buffer, 50));
+	writer.SetControl(AppControlField(true, true, false, false, 0));
+	writer.SetFunction(FunctionCode::READ);
+
+	auto iter = writer.IterateOverCount<UInt16, Group30Var1>(QualifierCode::UINT16_CNT);
+	BOOST_ASSERT(!iter.IsNull());
+	BOOST_ASSERT(iter.Complete());
+
+	BOOST_REQUIRE_EQUAL("C0 01 1E 01 08 00 00", toHex(writer.ToReadOnly()));	
+
+}
+
+BOOST_AUTO_TEST_CASE(CountWriteIteratorFillsUpCorrectly)
+{
+	APDURequestWriter writer(WriteBuffer(buffer, 13)); //limit size to 13
+	writer.SetControl(AppControlField(true, true, false, false, 0));
+	writer.SetFunction(FunctionCode::READ);
+
+	auto iter = writer.IterateOverCount<UInt8, Group30Var2>(QualifierCode::UINT8_CNT);
+
+	Group30Var2 obj = { 0xFF, 9 };
+	BOOST_REQUIRE(iter.Write(obj));
+	obj.value = 7;
+	BOOST_REQUIRE(iter.Write(obj));
+	BOOST_REQUIRE(!iter.Write(obj)); //we're full
+	BOOST_REQUIRE(iter.Complete());
+
+	BOOST_REQUIRE_EQUAL("C0 01 1E 02 07 02 FF 09 00 FF 07 00", toHex(writer.ToReadOnly()));	
 }
 
 BOOST_AUTO_TEST_SUITE_END()
