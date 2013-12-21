@@ -20,7 +20,7 @@
  */
 #include <boost/test/unit_test.hpp>
 
-#include <opendnp3/APDUHeaderWriter.h>
+#include <opendnp3/ObjectWriter.h>
 
 #include <openpal/ToHex.h>
 #include <openpal/Serialization.h>
@@ -33,14 +33,14 @@
 using namespace openpal;
 using namespace opendnp3;
 
-BOOST_AUTO_TEST_SUITE(APDUWritingTestSuite)
+BOOST_AUTO_TEST_SUITE(ObjectWriterTestSuite)
 
 uint8_t fixedBuffer[2048];
 const WriteBuffer buffer(fixedBuffer, 2048);
 
 BOOST_AUTO_TEST_CASE(AllObjectsAndRollback)
 {	
-	APDUHeaderWriter writer(buffer);
+	ObjectWriter writer(buffer);
 	writer.WriteHeader(Group60Var1::ID, QualifierCode::ALL_OBJECTS);
 	writer.WriteHeader(Group60Var2::ID, QualifierCode::ALL_OBJECTS);
 	writer.Mark();
@@ -56,7 +56,7 @@ BOOST_AUTO_TEST_CASE(AllObjectsAndRollback)
 
 BOOST_AUTO_TEST_CASE(AllObjectsReturnsFalseWhenFull)
 {	
-	APDUHeaderWriter writer(buffer.Truncate(4));
+	ObjectWriter writer(buffer.Truncate(4));
 
 	BOOST_REQUIRE(writer.WriteHeader(Group60Var1::ID, QualifierCode::ALL_OBJECTS));
 	BOOST_REQUIRE(!writer.WriteHeader(Group60Var1::ID, QualifierCode::ALL_OBJECTS));
@@ -66,7 +66,7 @@ BOOST_AUTO_TEST_CASE(AllObjectsReturnsFalseWhenFull)
 
 BOOST_AUTO_TEST_CASE(RangeWriteIteratorStartStop)
 {	
-	APDUHeaderWriter writer(buffer);
+	ObjectWriter writer(buffer);
 	
 	auto iterator = writer.IterateOverRange<UInt8,Group20Var6>(QualifierCode::UINT8_START_STOP, 2);
 
@@ -81,7 +81,7 @@ BOOST_AUTO_TEST_CASE(RangeWriteIteratorStartStop)
 
 BOOST_AUTO_TEST_CASE(CountWriteIteratorAllowsCountOfZero)
 {
-	APDUHeaderWriter writer(buffer);
+	ObjectWriter writer(buffer);
 
 	auto iter = writer.IterateOverCount<UInt16, Group30Var1>(QualifierCode::UINT16_CNT);
 	BOOST_ASSERT(!iter.IsNull());
@@ -93,7 +93,7 @@ BOOST_AUTO_TEST_CASE(CountWriteIteratorAllowsCountOfZero)
 
 BOOST_AUTO_TEST_CASE(CountWriteIteratorFillsUpCorrectly)
 {
-	APDUHeaderWriter writer(buffer.Truncate(11));
+	ObjectWriter writer(buffer.Truncate(11));
 
 	auto iter = writer.IterateOverCount<UInt8, Group30Var2>(QualifierCode::UINT8_CNT);
 
@@ -109,7 +109,7 @@ BOOST_AUTO_TEST_CASE(CountWriteIteratorFillsUpCorrectly)
 
 BOOST_AUTO_TEST_CASE(PrefixWriteIteratorWithSingleCROB)
 {
-	APDUHeaderWriter writer(buffer);
+	ObjectWriter writer(buffer);
 
 	auto iter = writer.IterateOverCountWithPrefix<UInt8, Group12Var1>(QualifierCode::UINT8_CNT_UINT8_INDEX);
 	BOOST_ASSERT(!iter.IsNull());

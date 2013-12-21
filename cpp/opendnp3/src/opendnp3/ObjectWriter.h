@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __APDU_HEADER_WRITER_H_
-#define __APDU_HEADER_WRITER_H_
+#ifndef __OBJECT_WRITER_H_
+#define __OBJECT_WRITER_H_
 
 #include "Settable.h"
 #include "GroupVariation.h"
@@ -37,11 +37,11 @@ namespace opendnp3
 {
 
 // A facade for writing APDUs to an external buffer
-class APDUHeaderWriter : private Uncopyable
+class ObjectWriter : private Uncopyable
 {
 	public:
 
-	APDUHeaderWriter(openpal::WriteBuffer aHeaderBuffer);	
+	ObjectWriter(openpal::WriteBuffer aHeaderBuffer);	
 	
 	uint32_t Size() const; // The number of bytes written to the buffer
 
@@ -73,7 +73,7 @@ class APDUHeaderWriter : private Uncopyable
 };
 
 template <class IndexType, class WriteType>
-RangeWriteIterator<IndexType, WriteType> APDUHeaderWriter::IterateOverRange(QualifierCode qc, typename IndexType::Type start)
+RangeWriteIterator<IndexType, WriteType> ObjectWriter::IterateOverRange(QualifierCode qc, typename IndexType::Type start)
 {
 	if(this->WriteHeader(WriteType::ID, qc))
 	{
@@ -83,7 +83,7 @@ RangeWriteIterator<IndexType, WriteType> APDUHeaderWriter::IterateOverRange(Qual
 }
 
 template <class CountType, class WriteType>
-CountWriteIterator<CountType, WriteType> APDUHeaderWriter::IterateOverCount(QualifierCode qc)
+CountWriteIterator<CountType, WriteType> ObjectWriter::IterateOverCount(QualifierCode qc)
 {
 	if(this->WriteHeader(WriteType::ID, qc))
 	{
@@ -93,7 +93,7 @@ CountWriteIterator<CountType, WriteType> APDUHeaderWriter::IterateOverCount(Qual
 }
 
 template <class PrefixType, class WriteType>
-PrefixedWriteIterator<PrefixType, WriteType> APDUHeaderWriter::IterateOverCountWithPrefix(QualifierCode qc)
+PrefixedWriteIterator<PrefixType, WriteType> ObjectWriter::IterateOverCountWithPrefix(QualifierCode qc)
 {
 	if(this->WriteHeader(WriteType::ID, qc))
 	{

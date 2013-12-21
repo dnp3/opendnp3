@@ -654,7 +654,7 @@
     <ClInclude Include="src\opendnp3\PrefixedWriteIterator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\APDUHeaderWriter.h">
+    <ClInclude Include="src\opendnp3\ObjectWriter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -1058,7 +1058,7 @@
     <ClCompile Include="src\opendnp3\objects\Group60.cpp">
       <Filter>Source Files\objects</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\APDUHeaderWriter.cpp">
+    <ClCompile Include="src\opendnp3\ObjectWriter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -19,7 +19,7 @@
  * to you under the terms of the License.
  */
 
-#include "APDUHeaderWriter.h"
+#include "ObjectWriter.h"
 
 #include <openpal/Serialization.h>
 
@@ -30,24 +30,24 @@ using namespace openpal;
 namespace opendnp3
 {
 
-APDUHeaderWriter::APDUHeaderWriter(openpal::WriteBuffer aBuffer) : 
+ObjectWriter::ObjectWriter(openpal::WriteBuffer aBuffer) : 
 	buffer(aBuffer),
 	position(aBuffer)	
 {
 		
 }
 
-void APDUHeaderWriter::Mark()
+void ObjectWriter::Mark()
 {
 	mark.Set(position);
 }
 
-void APDUHeaderWriter::Rollback()
+void ObjectWriter::Rollback()
 {
 	if(mark.IsSet()) position = mark.Get();		
 }
 
-bool APDUHeaderWriter::WriteHeader(GroupVariationID id, QualifierCode qc)
+bool ObjectWriter::WriteHeader(GroupVariationID id, QualifierCode qc)
 {
 	if(position.Size() >= 3)
 	{
@@ -59,12 +59,12 @@ bool APDUHeaderWriter::WriteHeader(GroupVariationID id, QualifierCode qc)
 	else return false;
 }
 
-uint32_t APDUHeaderWriter::Size() const
+uint32_t ObjectWriter::Size() const
 {
 	return buffer.Size() - position.Size();	
 }
 
-ReadOnlyBuffer APDUHeaderWriter::ToReadOnly() const
+ReadOnlyBuffer ObjectWriter::ToReadOnly() const
 {
 	auto size = buffer.Size() - position.Size();
 	return ReadOnlyBuffer(buffer, size);

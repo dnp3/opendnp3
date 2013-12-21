@@ -415,7 +415,7 @@
     <ClCompile Include="src\TestOutstationEventBufferViaFuzz.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\TestAPDUWriting.cpp">
+    <ClCompile Include="src\TestObjectWriter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
