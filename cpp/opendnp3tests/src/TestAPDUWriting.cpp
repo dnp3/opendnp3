@@ -20,7 +20,7 @@
  */
 #include <boost/test/unit_test.hpp>
 
-#include <opendnp3/APDUWriter.h>
+#include <opendnp3/APDUHeaderWriter.h>
 
 #include <openpal/ToHex.h>
 #include <openpal/Serialization.h>
@@ -35,43 +35,38 @@ using namespace opendnp3;
 
 BOOST_AUTO_TEST_SUITE(APDUWritingTestSuite)
 
-uint8_t buffer[2048];
+uint8_t fixedBuffer[2048];
+const WriteBuffer buffer(fixedBuffer, 2048);
 
 BOOST_AUTO_TEST_CASE(AllObjectsAndRollback)
 {	
-	APDURequestWriter writer(WriteBuffer(buffer, 50));
-	writer.SetControl(AppControlField(true, true, false, false, 0));
-	writer.SetFunction(FunctionCode::READ);
+	APDUHeaderWriter writer(buffer);
 	writer.WriteHeader(Group60Var1::ID, QualifierCode::ALL_OBJECTS);
 	writer.WriteHeader(Group60Var2::ID, QualifierCode::ALL_OBJECTS);
 	writer.Mark();
 	writer.WriteHeader(Group60Var3::ID, QualifierCode::ALL_OBJECTS);
 	writer.WriteHeader(Group60Var4::ID, QualifierCode::ALL_OBJECTS);
 
-	BOOST_REQUIRE_EQUAL("C0 01 3C 01 06 3C 02 06 3C 03 06 3C 04 06", toHex(writer.ToReadOnly()));
+	BOOST_REQUIRE_EQUAL("3C 01 06 3C 02 06 3C 03 06 3C 04 06", toHex(writer.ToReadOnly()));
 	
 	writer.Rollback();
 	
-	BOOST_REQUIRE_EQUAL("C0 01 3C 01 06 3C 02 06", toHex(writer.ToReadOnly()));	
+	BOOST_REQUIRE_EQUAL("3C 01 06 3C 02 06", toHex(writer.ToReadOnly()));	
 }
 
 BOOST_AUTO_TEST_CASE(AllObjectsReturnsFalseWhenFull)
 {	
-	APDURequestWriter writer(WriteBuffer(buffer, 6));
-	writer.SetControl(AppControlField(true, true, false, false, 0));
-	writer.SetFunction(FunctionCode::READ);
+	APDUHeaderWriter writer(buffer.Truncate(4));
 
 	BOOST_REQUIRE(writer.WriteHeader(Group60Var1::ID, QualifierCode::ALL_OBJECTS));
 	BOOST_REQUIRE(!writer.WriteHeader(Group60Var1::ID, QualifierCode::ALL_OBJECTS));
 
-	BOOST_REQUIRE_EQUAL("C0 01 3C 01 06", toHex(writer.ToReadOnly()));
+	BOOST_REQUIRE_EQUAL("3C 01 06", toHex(writer.ToReadOnly()));
 }
 
 BOOST_AUTO_TEST_CASE(RangeWriteIteratorStartStop)
 {	
-	APDURequestWriter writer(WriteBuffer(buffer, 50));
-	writer.SetControl(AppControlField(true, true, false, false, 0));
-	writer.SetFunction(FunctionCode::READ);
+	APDUHeaderWriter writer(buffer);
 	
 	auto iterator = writer.IterateOverRange<UInt8,Group20Var6>(QualifierCode::UINT8_START_STOP, 2);
 
@@ -81,28 +76,24 @@ BOOST_AUTO_TEST_CASE(RangeWriteIteratorStartStop)
 	BOOST_REQUIRE(iterator.Write(value));
 	BOOST_REQUIRE(iterator.Complete());
 
-	BOOST_REQUIRE_EQUAL("C0 01 14 06 00 02 03 09 00 07 00", toHex(writer.ToReadOnly()));	
+	BOOST_REQUIRE_EQUAL("14 06 00 02 03 09 00 07 00", toHex(writer.ToReadOnly()));	
 }
 
 BOOST_AUTO_TEST_CASE(CountWriteIteratorAllowsCountOfZero)
 {
-	APDURequestWriter writer(WriteBuffer(buffer, 50));
-	writer.SetControl(AppControlField(true, true, false, false, 0));
-	writer.SetFunction(FunctionCode::READ);
+	APDUHeaderWriter writer(buffer);
 
 	auto iter = writer.IterateOverCount<UInt16, Group30Var1>(QualifierCode::UINT16_CNT);
 	BOOST_ASSERT(!iter.IsNull());
 	BOOST_ASSERT(iter.Complete());
 
-	BOOST_REQUIRE_EQUAL("C0 01 1E 01 08 00 00", toHex(writer.ToReadOnly()));	
+	BOOST_REQUIRE_EQUAL("1E 01 08 00 00", toHex(writer.ToReadOnly()));	
 
 }
 
 BOOST_AUTO_TEST_CASE(CountWriteIteratorFillsUpCorrectly)
 {
-	APDURequestWriter writer(WriteBuffer(buffer, 13)); //limit size to 13
-	writer.SetControl(AppControlField(true, true, false, false, 0));
-	writer.SetFunction(FunctionCode::READ);
+	APDUHeaderWriter writer(buffer.Truncate(11));
 
 	auto iter = writer.IterateOverCount<UInt8, Group30Var2>(QualifierCode::UINT8_CNT);
 
@@ -113,14 +104,12 @@ BOOST_AUTO_TEST_CASE(CountWriteIteratorFillsUpCorrectly)
 	BOOST_REQUIRE(!iter.Write(obj)); //we're full
 	BOOST_REQUIRE(iter.Complete());
 
-	BOOST_REQUIRE_EQUAL("C0 01 1E 02 07 02 FF 09 00 FF 07 00", toHex(writer.ToReadOnly()));	
+	BOOST_REQUIRE_EQUAL("1E 02 07 02 FF 09 00 FF 07 00", toHex(writer.ToReadOnly()));	
 }
 
 BOOST_AUTO_TEST_CASE(PrefixWriteIteratorWithSingleCROB)
 {
-	APDURequestWriter writer(WriteBuffer(buffer, 50));
-	writer.SetControl(AppControlField(true, true, false, false, 0));
-	writer.SetFunction(FunctionCode::OPERATE);
+	APDUHeaderWriter writer(buffer);
 
 	auto iter = writer.IterateOverCountWithPrefix<UInt8, Group12Var1>(QualifierCode::UINT8_CNT_UINT8_INDEX);
 	BOOST_ASSERT(!iter.IsNull());
@@ -135,7 +124,7 @@ BOOST_AUTO_TEST_CASE(PrefixWriteIteratorWithSingleCROB)
 	BOOST_REQUIRE(iter.Write(obj, 0x21));
 	BOOST_REQUIRE(iter.Complete());
 
-	BOOST_REQUIRE_EQUAL("C0 04 0C 01 17 01 21 03 1F 10 00 00 00 AA 00 00 00 07", toHex(writer.ToReadOnly()));	
+	BOOST_REQUIRE_EQUAL("0C 01 17 01 21 03 1F 10 00 00 00 AA 00 00 00 07", toHex(writer.ToReadOnly()));	
 }
 
 

@@ -18,14 +18,12 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __APDU_WRITER_H_
-#define __APDU_WRITER_H_
+#ifndef __APDU_HEADER_WRITER_H_
+#define __APDU_HEADER_WRITER_H_
 
-#include "APDUOut.h"
-#include "IINField.h"
+#include "Settable.h"
 #include "GroupVariation.h"
 #include "gen/QualifierCode.h"
-#include "Settable.h"
 
 #include "RangeWriteIterator.h"
 #include "CountWriteIterator.h"
@@ -39,14 +37,13 @@ namespace opendnp3
 {
 
 // A facade for writing APDUs to an external buffer
-class APDUWriter : private Uncopyable
+class APDUHeaderWriter : private Uncopyable
 {
 	public:
-	
-	void SetFunction(FunctionCode code);		
-	void SetControl(const AppControlField& control);
 
-	openpal::WriteBuffer GetWritten() const;
+	APDUHeaderWriter(openpal::WriteBuffer aHeaderBuffer);	
+	
+	uint32_t Size() const; // The number of bytes written to the buffer
 
 	openpal::ReadOnlyBuffer ToReadOnly() const;
 
@@ -65,22 +62,18 @@ class APDUWriter : private Uncopyable
 	void Mark();
 
 	// roll back to the last mark
-	void Rollback();
-
-	private:
-	APDUWriter();
+	void Rollback();	
 	
-	Settable<openpal::WriteBuffer> mark;
+	private:
+	
+	openpal::WriteBuffer buffer;	
 	openpal::WriteBuffer position;
 
-	protected:
-
-	APDUWriter(openpal::WriteBuffer aBuffer, uint32_t aStartSize);	
-	openpal::WriteBuffer buffer;	
+	Settable<openpal::WriteBuffer> mark;	
 };
 
 template <class IndexType, class WriteType>
-RangeWriteIterator<IndexType, WriteType> APDUWriter::IterateOverRange(QualifierCode qc, typename IndexType::Type start)
+RangeWriteIterator<IndexType, WriteType> APDUHeaderWriter::IterateOverRange(QualifierCode qc, typename IndexType::Type start)
 {
 	if(this->WriteHeader(WriteType::ID, qc))
 	{
@@ -90,7 +83,7 @@ RangeWriteIterator<IndexType, WriteType> APDUWriter::IterateOverRange(QualifierC
 }
 
 template <class CountType, class WriteType>
-CountWriteIterator<CountType, WriteType> APDUWriter::IterateOverCount(QualifierCode qc)
+CountWriteIterator<CountType, WriteType> APDUHeaderWriter::IterateOverCount(QualifierCode qc)
 {
 	if(this->WriteHeader(WriteType::ID, qc))
 	{
@@ -100,7 +93,7 @@ CountWriteIterator<CountType, WriteType> APDUWriter::IterateOverCount(QualifierC
 }
 
 template <class PrefixType, class WriteType>
-PrefixedWriteIterator<PrefixType, WriteType> APDUWriter::IterateOverCountWithPrefix(QualifierCode qc)
+PrefixedWriteIterator<PrefixType, WriteType> APDUHeaderWriter::IterateOverCountWithPrefix(QualifierCode qc)
 {
 	if(this->WriteHeader(WriteType::ID, qc))
 	{
@@ -108,20 +101,6 @@ PrefixedWriteIterator<PrefixType, WriteType> APDUWriter::IterateOverCountWithPre
 	}
 	else return PrefixedWriteIterator<PrefixType, WriteType>::Null();
 }
-
-class APDURequestWriter : public APDUWriter
-{
-	public:
-	APDURequestWriter(openpal::WriteBuffer aBuffer);	
-};
-
-class APDUResponseWriter : public APDUWriter
-{
-	public:
-	APDUResponseWriter(openpal::WriteBuffer aBuffer);
-
-	void SetIIN(const IINField& indications);
-};
 
 }
 

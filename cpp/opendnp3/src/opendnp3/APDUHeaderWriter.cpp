@@ -19,7 +19,7 @@
  * to you under the terms of the License.
  */
 
-#include "APDUWriter.h"
+#include "APDUHeaderWriter.h"
 
 #include <openpal/Serialization.h>
 
@@ -30,35 +30,24 @@ using namespace openpal;
 namespace opendnp3
 {
 
-APDUWriter::APDUWriter(openpal::WriteBuffer aBuffer, uint32_t aStartSize) : 
-	position(aBuffer),
-	buffer(aBuffer)	
+APDUHeaderWriter::APDUHeaderWriter(openpal::WriteBuffer aBuffer) : 
+	buffer(aBuffer),
+	position(aBuffer)	
 {
-	assert(aStartSize <= aBuffer.Size());
-	position.Advance(aStartSize);
+		
 }
 
-void APDUWriter::SetFunction(FunctionCode code)
-{
-	buffer[1] = FunctionCodeToType(code);
-}
-
-void APDUWriter::SetControl(const AppControlField& control)
-{
-	buffer[0] = control.ToByte();
-}
-
-void APDUWriter::Mark()
+void APDUHeaderWriter::Mark()
 {
 	mark.Set(position);
 }
 
-void APDUWriter::Rollback()
+void APDUHeaderWriter::Rollback()
 {
 	if(mark.IsSet()) position = mark.Get();		
 }
 
-bool APDUWriter::WriteHeader(GroupVariationID id, QualifierCode qc)
+bool APDUHeaderWriter::WriteHeader(GroupVariationID id, QualifierCode qc)
 {
 	if(position.Size() >= 3)
 	{
@@ -70,28 +59,15 @@ bool APDUWriter::WriteHeader(GroupVariationID id, QualifierCode qc)
 	else return false;
 }
 
-WriteBuffer APDUWriter::GetWritten() const
+uint32_t APDUHeaderWriter::Size() const
 {
-	auto size = buffer.Size() - position.Size();
-	return buffer.Truncate(size);
+	return buffer.Size() - position.Size();	
 }
 
-ReadOnlyBuffer APDUWriter::ToReadOnly() const
+ReadOnlyBuffer APDUHeaderWriter::ToReadOnly() const
 {
 	auto size = buffer.Size() - position.Size();
 	return ReadOnlyBuffer(buffer, size);
-}
-
-APDURequestWriter::APDURequestWriter(openpal::WriteBuffer aBuffer) : APDUWriter(aBuffer, 2)
-{}
-
-APDUResponseWriter::APDUResponseWriter(openpal::WriteBuffer aBuffer) : APDUWriter(aBuffer, 4)
-{}
-
-void APDUResponseWriter::SetIIN(const IINField& indications)
-{
-	buffer[2] = indications.LSB;
-	buffer[3] = indications.MSB;
 }
 
 }

@@ -21,7 +21,7 @@
 #ifndef __RANGE_WRITE_ITERATOR_H_
 #define __RANGE_WRITE_ITERATOR_H_
 
-#include <limits>
+#include <openpal/BufferWrapper.h>
 
 namespace opendnp3
 {

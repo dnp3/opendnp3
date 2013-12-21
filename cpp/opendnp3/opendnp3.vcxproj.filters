@@ -636,9 +636,6 @@
     <ClInclude Include="src\opendnp3\IAppLayer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\APDUWriter.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\objects\GroupVariationID.h">
       <Filter>Header Files\objects</Filter>
     </ClInclude>
@@ -655,6 +652,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\PrefixedWriteIterator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\APDUHeaderWriter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -1055,11 +1055,11 @@
     <ClCompile Include="src\opendnp3\APDUOut.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\APDUWriter.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\opendnp3\objects\Group60.cpp">
       <Filter>Source Files\objects</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\APDUHeaderWriter.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
