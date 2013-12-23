@@ -19,16 +19,22 @@
  * to you under the terms of the License.
  */
 
+#include "APDURequest.h"
 
-#include "TimeSyncHandler.h"
+using namespace openpal;
 
 namespace opendnp3
 {
 
-TimeSyncHandler::TimeSyncHandler(openpal::Logger& aLogger) : HeaderHandlerBase(aLogger)
-{
+APDURequest::APDURequest(const openpal::WriteBuffer& aBuffer) : APDU(aBuffer)
+{}
+
+openpal::WriteBuffer APDURequest::HeaderPosition() const
+{	
+	WriteBuffer copy(buffer);
+	copy.Advance(2);
+	return copy;
+}
 
 }
 
-		
-}

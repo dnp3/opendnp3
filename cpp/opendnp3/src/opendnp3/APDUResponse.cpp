@@ -18,39 +18,32 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __APDU_H_
-#define __APDU_H_
 
-#include <openpal/BufferWrapper.h>
+#include "APDUResponse.h"
 
-#include "gen/FunctionCode.h"
-#include "AppControlField.h"
+#include <assert.h>
+
+using namespace openpal;
 
 namespace opendnp3
 {
 
-// this is what the application layer sees from the master / outstation for transmission
-class APDU
+APDUResponse::APDUResponse(const openpal::WriteBuffer& aBuffer) : APDU(aBuffer)
 {
-	public:
-
-	APDU();
-
-	APDU(const openpal::WriteBuffer& aBuffer);
-	
-	void SetFunction(FunctionCode code);
-	FunctionCode GetFunction() const;
-
-	AppControlField GetControl() const;	
-	void SetControl(const AppControlField& control);
-
-	openpal::ReadOnlyBuffer ToReadOnly() const;
-
-	protected:
-	
-	openpal::WriteBuffer buffer;
-};
-
+	assert(aBuffer.Size() >= 4);
 }
 
-#endif
+void APDUResponse::WriteIIN(const IINField& indications)
+{
+	buffer[2] = indications.LSB;
+	buffer[3] = indications.MSB;
+}
+
+openpal::WriteBuffer APDUResponse::HeaderPosition() const
+{
+	WriteBuffer copy(buffer);
+	copy.Advance(4);
+	return copy;
+}
+
+}

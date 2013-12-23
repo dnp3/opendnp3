@@ -18,66 +18,31 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __TIME_SYNC_HANDLER_H_
-#define __TIME_SYNC_HANDLER_H_
+#ifndef __APDU_RESPONSE_H_
+#define __APDU_RESPONSE_H_
 
-#include "HeaderHandlerBase.h"
-
-#include <openpal/Loggable.h>
-#include <openpal/LoggableMacros.h>
+#include "APDU.h"
+#include "IINField.h"
 
 namespace opendnp3
 {
 
-/**
- * Dedicated class for processing response data in the master.
- */
-class TimeSyncHandler : public HeaderHandlerBase, private openpal::Loggable
+// this is what the application layer sees from the master / outstation for transmission
+class APDUResponse : public APDU
 {
+	public:	
 
-public:
+	APDUResponse(const openpal::WriteBuffer& aBuffer);
+
+	void WriteIIN(const IINField& indications);
+
+	openpal::WriteBuffer HeaderPosition() const;
 	
-	/**
-	* @param arLogger the Logger that the loader should use for message reporting
-	*/
-	TimeSyncHandler(openpal::Logger& aLogger) : 
-		Loggable(aLogger), 
-		valid(false), 
-		timeOut(0)
-	{}		
-
-	virtual void _OnCountOf(const IterableBuffer<Group52Var2>& times) final
-	{
-		if(times.Count() == 1)
-		{
-			valid = true;
-			times.foreach([this](const Group52Var2& obj) { timeOut = obj.time16; });
-		}
-		else
-		{
-			LOG_BLOCK(openpal::LogLevel::Warning, "Ignoring unexpected time delay count of " << times.Count());
-		}
-	}
-
-	bool GetTimeDelay(uint16_t& time) 
-	{
-		if(this->errors.Any()) return false;
-		else 
-		{
-			if(valid) time = timeOut;
-			return valid;					
-		}
-	}
-
-private:
-	bool valid;
-	uint16_t timeOut;
-
+	private:
+	
+	APDUResponse();	
 };
 
 }
 
-/* vim: set ts=4 sw=4: */
-
 #endif
-
