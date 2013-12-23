@@ -18,12 +18,17 @@
 namespace DNP3.Interface
 {
   /// <summary>
+  /// Enumeration for the asynchronous result of a scan (poll)
   /// </summary>
-  public enum StaticSetpointStatusResponse : int
+  public enum ScanStatus : int
   {
-    Group40Var1 = 0,
-    Group40Var2 = 1,
-    Group40Var3 = 2,
-    Group40Var4 = 3
+    /// <summary>
+    /// Valid response was received
+    /// </summary>
+    SUCCESS = 0,
+    /// <summary>
+    /// The operation timed out or explicitly failed
+    /// </summary>
+    FAILURE = 1
   }
 }

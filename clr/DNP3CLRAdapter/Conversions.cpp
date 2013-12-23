@@ -210,14 +210,14 @@ asiopal::SerialSettings Conversions::convertSerialSettings(SerialSettings ^ sett
 	return s;
 }
 
-openpal::TimeDuration Conversions::convertTimeSpan(System::TimeSpan ts)
+openpal::TimeDuration Conversions::convertTimeDuration(System::TimeSpan ts)
 {
-	return TimeDuration::Milliseconds(static_cast<int64_t>(ts.TotalMilliseconds));
+	return TimeDuration::Milliseconds(ts.Ticks/System::TimeSpan::TicksPerMillisecond);
 }
 
 opendnp3::LinkConfig Conversions::convertConfig(LinkConfig ^ config)
 {
-	return opendnp3::LinkConfig(config->isMaster, config->useConfirms, config->numRetry, config->localAddr, config->remoteAddr, convertTimeSpan(config->timeout));
+	return opendnp3::LinkConfig(config->isMaster, config->useConfirms, config->numRetry, config->localAddr, config->remoteAddr, convertTimeDuration(config->timeout));
 }
 
 opendnp3::AppConfig Conversions::convertConfig(AppConfig ^ config)
@@ -278,10 +278,10 @@ opendnp3::SlaveConfig Conversions::convertConfig(SlaveConfig ^ config)
 	sc.mMaxControls = config->maxControls;
 	sc.mUnsolMask = convertClassMask(config->unsolMask);
 	sc.mAllowTimeSync = config->allowTimeSync;
-	sc.mTimeSyncPeriod = convertTimeSpan(config->timeSyncPeriod);
-	sc.mUnsolPackDelay = convertTimeSpan(config->unsolPackDelay);
-	sc.mUnsolRetryDelay = convertTimeSpan(config->unsolRetryDelay);
-	sc.mSelectTimeout = convertTimeSpan(config->selectTimeout);
+	sc.mTimeSyncPeriod = convertTimeDuration(config->timeSyncPeriod);
+	sc.mUnsolPackDelay = convertTimeDuration(config->unsolPackDelay);
+	sc.mUnsolRetryDelay = convertTimeDuration(config->unsolRetryDelay);
+	sc.mSelectTimeout = convertTimeDuration(config->selectTimeout);
 	sc.mMaxFragSize = config->maxFragSize;
 	sc.mEventMaxConfig = convertEventMaxConfig(config->eventMaxConfig);
 	sc.mStaticBinary = convert(config->staticBinary);
@@ -335,9 +335,8 @@ opendnp3::MasterConfig Conversions::convertConfig(MasterConfig ^ config)
 	mc.DoUnsolOnStartup = config->doUnsolOnStartup;
 	mc.EnableUnsol = config->enableUnsol;
 	mc.UnsolClassMask = config->unsolClassMask;
-	mc.IntegrityRate = convertTimeSpan(config->integrityPeriod);
-	mc.TaskRetryRate = convertTimeSpan(config->taskRetryPeriod);
-
+	mc.IntegrityRate = convertTimeDuration(config->integrityPeriod);
+	mc.TaskRetryRate = convertTimeDuration(config->taskRetryPeriod);
 	return mc;
 }
 

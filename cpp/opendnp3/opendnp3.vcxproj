@@ -166,12 +166,14 @@
     <ClInclude Include="include\opendnp3\gen\EventAnalogResponse.h" />
     <ClInclude Include="include\opendnp3\gen\EventBinaryResponse.h" />
     <ClInclude Include="include\opendnp3\gen\EventCounterResponse.h" />
+    <ClInclude Include="include\opendnp3\gen\ScanStatus.h" />
     <ClInclude Include="include\opendnp3\gen\StackState.h" />
     <ClInclude Include="include\opendnp3\gen\StaticAnalogResponse.h" />
     <ClInclude Include="include\opendnp3\gen\StaticBinaryResponse.h" />
     <ClInclude Include="include\opendnp3\gen\StaticCounterResponse.h" />
     <ClInclude Include="include\opendnp3\gen\StaticSetpointStatusResponse.h" />
     <ClInclude Include="include\opendnp3\IndexedValue.h" />
+    <ClInclude Include="include\opendnp3\IScanListener.h" />
     <ClInclude Include="include\opendnp3\MasterScan.h" />
     <ClInclude Include="include\opendnp3\IMeasurementHandler.h" />
     <ClInclude Include="include\opendnp3\IMeasurementUpdate.h" />
@@ -180,6 +182,8 @@
     <ClInclude Include="include\opendnp3\MeasurementUpdate.h" />
     <ClInclude Include="include\opendnp3\OctetData.h" />
     <ClInclude Include="include\opendnp3\OctetString.h" />
+    <ClInclude Include="include\opendnp3\ScanResult.h" />
+    <ClInclude Include="include\opendnp3\TaskStatus.h" />
     <ClInclude Include="include\opendnp3\TimeTransaction.h" />
     <ClInclude Include="include\opendnp3\DataTypes.h" />
     <ClInclude Include="include\opendnp3\DestructorHook.h" />

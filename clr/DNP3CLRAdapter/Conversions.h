@@ -41,6 +41,8 @@ public:
 	static openpal::LogLevel convertLogLevel(DNP3::Interface::LogLevel level);
 	static DNP3::Interface::LogLevel convertLogLevel(openpal::LogLevel level);
 
+	static openpal::TimeDuration convertTimeDuration(System::TimeSpan);
+
 	// Converting channel state enumeration
 	static ChannelState convertChannelState(opendnp3::ChannelState aState);
 

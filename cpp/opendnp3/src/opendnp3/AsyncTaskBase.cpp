@@ -128,7 +128,14 @@ void AsyncTaskBase::OnComplete(bool aSuccess)
 
 	this->_OnComplete(aSuccess);
 
+	for(auto& callback: mCallbacks) callback(aSuccess);
+
 	mpGroup->OnCompletion();
+}
+
+void AsyncTaskBase::AddStatusCallback(const std::function<void (bool)>& callback)
+{
+	mCallbacks.push_back(callback);
 }
 
 void AsyncTaskBase::Reset()

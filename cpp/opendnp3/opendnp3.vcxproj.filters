@@ -534,6 +534,7 @@
     <ClInclude Include="src\opendnp3\IINField.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+<<<<<<< HEAD
     <ClInclude Include="src\opendnp3\APDUHeaderParser.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -656,6 +657,19 @@
     </ClInclude>
     <ClInclude Include="src\opendnp3\ObjectWriter.h">
       <Filter>Header Files</Filter>
+=======
+    <ClInclude Include="include\opendnp3\IScanListener.h">
+      <Filter>Include Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\opendnp3\TaskStatus.h">
+      <Filter>Include Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\opendnp3\gen\ScanStatus.h">
+      <Filter>Include Files\gen</Filter>
+    </ClInclude>
+    <ClInclude Include="include\opendnp3\ScanResult.h">
+      <Filter>Include Files</Filter>
+>>>>>>> 2.0.x
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

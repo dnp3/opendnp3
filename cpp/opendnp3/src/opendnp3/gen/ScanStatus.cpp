@@ -15,15 +15,20 @@
 // http://www.apache.org/licenses/LICENSE-2.0.html
 //
 
-namespace DNP3.Interface
+#include <opendnp3/gen/ScanStatus.h>
+
+namespace opendnp3 {
+
+std::string ScanStatusToString(ScanStatus arg)
 {
-  /// <summary>
-  /// </summary>
-  public enum StaticSetpointStatusResponse : int
+  switch(arg)
   {
-    Group40Var1 = 0,
-    Group40Var2 = 1,
-    Group40Var3 = 2,
-    Group40Var4 = 3
+    case(ScanStatus::SUCCESS):
+      return "SUCCESS";
+    case(ScanStatus::FAILURE):
+      return "FAILURE";
   }
+  return "FAILURE";
+}
+
 }

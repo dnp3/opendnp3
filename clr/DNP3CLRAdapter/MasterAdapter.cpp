@@ -3,6 +3,7 @@
 #include "StackStateCallback.h"
 #include "DeleteAnything.h"
 #include "MasterScanAdapter.h"
+#include "Conversions.h"
 
 namespace DNP3
 {
@@ -48,7 +49,7 @@ IMasterScan^ MasterAdapter::GetIntegrityScan()
 
 IMasterScan^ MasterAdapter::AddClassScan(int aClassMask, System::TimeSpan period, System::TimeSpan taskRetryPeriod)
 {
-	auto scan = mpMaster->AddClassScan(aClassMask, openpal::TimeDuration::Milliseconds(period.Milliseconds), openpal::TimeDuration::Milliseconds(taskRetryPeriod.Milliseconds));
+	auto scan = mpMaster->AddClassScan(aClassMask, Conversions::convertTimeDuration(period),  Conversions::convertTimeDuration(taskRetryPeriod));
 	return gcnew MasterScanAdapter(scan);
 }
 

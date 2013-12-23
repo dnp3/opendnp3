@@ -131,12 +131,11 @@ namespace DNP3.Interface
 			this.numRetry = numRetry;
 			this.fragSize = fragSize;
         }
-
+        
         /// <summary>
-        /// True if the layer is for a master, false for outstation
+        /// Configures the app layer for master or outstation operation
         /// </summary>
         public bool isMaster;
-		
 
 		/// <summary>
 		/// The response/confirm timeout in millisec

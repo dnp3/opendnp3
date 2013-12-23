@@ -18,32 +18,20 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include <opendnp3/MasterScan.h>
+#ifndef __TASK_STATUS_H_
+#define __TASK_STATUS_H_
 
-#include <openpal/IExecutor.h>
-#include "AsyncTaskBase.h"
+namespace opendnp3 {
 
-namespace opendnp3
+/// Enumeration for the asynchronous result of a task
+enum class ScanResult : int
 {
-	MasterScan::MasterScan(openpal::IExecutor* apExecutor, AsyncTaskBase* apTask) : 
-		mpExecutor(apExecutor),
-		mpTask(apTask)
-	{
-	
-	}
-
-	void MasterScan::Demand()
-	{
-		mpExecutor->Post([this]() { mpTask->Demand(); });
-	}
-
-	void MasterScan::AddScanCallback(IScanListener* apListener)
-	{
-		mpTask->AddStatusCallback([apListener](bool success) {
-			auto status = success ? ScanStatus::SUCCESS : ScanStatus::FAILURE;
-			ScanResult result = { status };
-			apListener->OnScanUpdate(result);
-		});
-	}
+  /// Valid response was received
+  SUCCESS = 0,
+  /// The operation timed out without a response
+  FAILURE = 1  
+};
 
 }
+
+#endif
