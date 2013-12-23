@@ -55,6 +55,9 @@ class ObjectWriter : private Uncopyable
 	template <class CountType, class WriteType>
 	CountWriteIterator<CountType, WriteType> IterateOverCount(QualifierCode qc);
 
+	template <class CountType, class ValueType>
+	bool WriteSingleValue(QualifierCode qc, const ValueType&);
+
 	template <class PrefixType, class WriteType>
 	PrefixedWriteIterator<PrefixType, WriteType> IterateOverCountWithPrefix(QualifierCode qc);
 
@@ -65,6 +68,8 @@ class ObjectWriter : private Uncopyable
 	void Rollback();	
 	
 	private:
+
+	bool WriteHeaderWithReserve(GroupVariationID id, QualifierCode qc, uint32_t reserve);
 	
 	openpal::WriteBuffer buffer;	
 	openpal::WriteBuffer position;
@@ -72,10 +77,24 @@ class ObjectWriter : private Uncopyable
 	Settable<openpal::WriteBuffer> mark;	
 };
 
+template <class CountType, class ValueType>
+bool ObjectWriter::WriteSingleValue(QualifierCode qc, const ValueType& value)
+{
+	auto reserveSize = CountType::Size + ValueType::SIZE;
+	if(this->WriteHeaderWithReserve(ValueType::ID, qc, reserveSize))
+	{
+		CountType::WriteBuffer(position, 1); //write the count
+		ValueType::Write(value, position); // write the value
+		return true;
+	}
+	else return false;
+}
+
 template <class IndexType, class WriteType>
 RangeWriteIterator<IndexType, WriteType> ObjectWriter::IterateOverRange(QualifierCode qc, typename IndexType::Type start)
 {
-	if(this->WriteHeader(WriteType::ID, qc))
+	auto reserveSize = 2*IndexType::Size + WriteType::SIZE;
+	if(this->WriteHeaderWithReserve(WriteType::ID, qc, reserveSize))
 	{
 		return RangeWriteIterator<IndexType, WriteType>(start, position);
 	}
@@ -85,7 +104,8 @@ RangeWriteIterator<IndexType, WriteType> ObjectWriter::IterateOverRange(Qualifie
 template <class CountType, class WriteType>
 CountWriteIterator<CountType, WriteType> ObjectWriter::IterateOverCount(QualifierCode qc)
 {
-	if(this->WriteHeader(WriteType::ID, qc))
+	auto reserveSize = CountType::Size + WriteType::SIZE;
+	if(this->WriteHeaderWithReserve(WriteType::ID, qc, reserveSize))
 	{
 		return CountWriteIterator<CountType, WriteType>(position);
 	}
@@ -95,7 +115,8 @@ CountWriteIterator<CountType, WriteType> ObjectWriter::IterateOverCount(Qualifie
 template <class PrefixType, class WriteType>
 PrefixedWriteIterator<PrefixType, WriteType> ObjectWriter::IterateOverCountWithPrefix(QualifierCode qc)
 {
-	if(this->WriteHeader(WriteType::ID, qc))
+	auto reserveSize = 2*PrefixType::Size + WriteType::SIZE;  //enough space for the count, 1 prefix + object
+	if(this->WriteHeaderWithReserve(WriteType::ID, qc, reserveSize))
 	{
 		return PrefixedWriteIterator<PrefixType, WriteType>(position);
 	}

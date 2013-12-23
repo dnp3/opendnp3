@@ -49,14 +49,20 @@ void ObjectWriter::Rollback()
 
 bool ObjectWriter::WriteHeader(GroupVariationID id, QualifierCode qc)
 {
-	if(position.Size() >= 3)
+	if(position.Size() < 3) return false;
+	else
 	{
 		UInt8::WriteBuffer(position, id.group);
 		UInt8::WriteBuffer(position, id.variation);
 		UInt8::WriteBuffer(position, QualifierCodeToType(qc));
 		return true;
-	}
-	else return false;
+	}	
+}
+
+bool ObjectWriter::WriteHeaderWithReserve(GroupVariationID id, QualifierCode qc, uint32_t reserve)
+{
+	if(position.Size() < (3 + reserve)) return false;
+	else return WriteHeader(id, qc);
 }
 
 uint32_t ObjectWriter::Size() const

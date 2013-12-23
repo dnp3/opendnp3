@@ -28,6 +28,7 @@
 #include <opendnp3/objects/Group12.h>
 #include <opendnp3/objects/Group20.h>
 #include <opendnp3/objects/Group30.h>
+#include <opendnp3/objects/Group50.h>
 #include <opendnp3/objects/Group60.h>
 
 using namespace openpal;
@@ -79,6 +80,17 @@ BOOST_AUTO_TEST_CASE(RangeWriteIteratorStartStop)
 	BOOST_REQUIRE_EQUAL("14 06 00 02 03 09 00 07 00", toHex(writer.ToReadOnly()));	
 }
 
+BOOST_AUTO_TEST_CASE(EmptyHeadersWhenNotEnoughSpaceForSingleValue)
+{	
+	ObjectWriter writer(buffer.Truncate(6));  //requires 7
+	
+	auto iterator = writer.IterateOverRange<UInt8,Group20Var6>(QualifierCode::UINT8_START_STOP, 2);
+
+	BOOST_REQUIRE(iterator.IsNull());
+
+	BOOST_REQUIRE_EQUAL("", toHex(writer.ToReadOnly()));	
+}
+
 BOOST_AUTO_TEST_CASE(CountWriteIteratorAllowsCountOfZero)
 {
 	ObjectWriter writer(buffer);
@@ -125,6 +137,15 @@ BOOST_AUTO_TEST_CASE(PrefixWriteIteratorWithSingleCROB)
 	BOOST_REQUIRE(iter.Complete());
 
 	BOOST_REQUIRE_EQUAL("0C 01 17 01 21 03 1F 10 00 00 00 AA 00 00 00 07", toHex(writer.ToReadOnly()));	
+}
+
+BOOST_AUTO_TEST_CASE(WriteSingleValue)
+{
+	ObjectWriter writer(buffer);
+	Group50Var1 obj = { 0x1234 };
+	BOOST_REQUIRE(writer.WriteSingleValue<UInt8>(QualifierCode::UINT8_CNT, obj));
+
+	BOOST_REQUIRE_EQUAL("32 01 07 01 34 12 00 00 00 00", toHex(writer.ToReadOnly()));
 }
 
 
