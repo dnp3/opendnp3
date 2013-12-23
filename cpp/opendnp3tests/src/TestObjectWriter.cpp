@@ -139,6 +139,23 @@ BOOST_AUTO_TEST_CASE(PrefixWriteIteratorWithSingleCROB)
 	BOOST_REQUIRE_EQUAL("0C 01 17 01 21 03 1F 10 00 00 00 AA 00 00 00 07", toHex(writer.ToReadOnly()));	
 }
 
+BOOST_AUTO_TEST_CASE(SingleValueWithIndexCROB)
+{
+	ObjectWriter writer(buffer);	
+
+	Group12Var1 obj;
+	obj.code = ControlCode::LATCH_ON;
+	obj.count = 0x1F;
+	obj.onTime = 0x10;
+	obj.offTime = 0xAA;
+	obj.status = CommandStatus::LOCAL;
+	
+	BOOST_REQUIRE(writer.WriteSingleIndexedValue<UInt16>(QualifierCode::UINT16_CNT, obj, 0x21));	
+
+	BOOST_REQUIRE_EQUAL("0C 01 08 01 00 21 00 03 1F 10 00 00 00 AA 00 00 00 07", toHex(writer.ToReadOnly()));	
+}
+
+
 BOOST_AUTO_TEST_CASE(WriteSingleValue)
 {
 	ObjectWriter writer(buffer);

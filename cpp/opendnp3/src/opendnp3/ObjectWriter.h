@@ -58,6 +58,9 @@ class ObjectWriter : private Uncopyable
 	template <class CountType, class ValueType>
 	bool WriteSingleValue(QualifierCode qc, const ValueType&);
 
+	template <class CountType, class ValueType>
+	bool WriteSingleIndexedValue(QualifierCode qc, const ValueType&, typename CountType::Type index);
+
 	template <class PrefixType, class WriteType>
 	PrefixedWriteIterator<PrefixType, WriteType> IterateOverCountWithPrefix(QualifierCode qc);
 
@@ -84,6 +87,20 @@ bool ObjectWriter::WriteSingleValue(QualifierCode qc, const ValueType& value)
 	if(this->WriteHeaderWithReserve(ValueType::ID, qc, reserveSize))
 	{
 		CountType::WriteBuffer(position, 1); //write the count
+		ValueType::Write(value, position); // write the value
+		return true;
+	}
+	else return false;
+}
+
+template <class CountType, class ValueType>
+bool ObjectWriter::WriteSingleIndexedValue(QualifierCode qc, const ValueType& value, typename CountType::Type index)
+{
+	auto reserveSize = 2*CountType::Size + ValueType::SIZE;
+	if(this->WriteHeaderWithReserve(ValueType::ID, qc, reserveSize))
+	{
+		CountType::WriteBuffer(position, 1); //write the count
+		CountType::WriteBuffer(position, index); // write the index
 		ValueType::Write(value, position); // write the value
 		return true;
 	}
