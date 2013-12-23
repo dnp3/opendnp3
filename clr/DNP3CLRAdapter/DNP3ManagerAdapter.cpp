@@ -43,8 +43,8 @@ IChannel ^ DNP3ManagerAdapter::AddTCPClient(System::String ^ name, DNP3::Interfa
 	auto lev = Conversions::convertLogLevel(level);
 
 	try {
-		Logger logger(mpMgr->GetLog(), lev, stdName);
-		auto pChannel = mpMgr->AddTCPClient(logger, TimeDuration::Milliseconds(retryDelay.Milliseconds), stdAddress, stdPort);
+		Logger logger(mpMgr->GetLog(), lev, stdName);		
+		auto pChannel = mpMgr->AddTCPClient(logger, Conversions::convertTimeDuration(retryDelay), stdAddress, stdPort);
 		return gcnew ChannelAdapter(pChannel);
 	}
 	catch(openpal::Exception ex) {
@@ -61,7 +61,7 @@ IChannel ^ DNP3ManagerAdapter::AddTCPServer(System::String ^ name, DNP3::Interfa
 
 	try {
 		Logger logger(mpMgr->GetLog(), lev, stdName);
-		auto pChannel = mpMgr->AddTCPServer(logger, TimeDuration::Milliseconds(retryDelay.Milliseconds), stdEndpoint, stdPort);
+		auto pChannel = mpMgr->AddTCPServer(logger, Conversions::convertTimeDuration(retryDelay), stdEndpoint, stdPort);
 		return gcnew ChannelAdapter(pChannel);
 	}
 	catch(openpal::Exception ex) {
@@ -77,7 +77,7 @@ IChannel ^ DNP3ManagerAdapter::AddSerial(System::String ^ name, DNP3::Interface:
 
 	try {
 		Logger logger(mpMgr->GetLog(), lev, stdName);
-		auto pChannel = mpMgr->AddSerial(logger, TimeDuration::Milliseconds(retryDelay.Milliseconds), s);
+		auto pChannel = mpMgr->AddSerial(logger, Conversions::convertTimeDuration(retryDelay), s);
 		return gcnew ChannelAdapter(pChannel);
 	}
 	catch(openpal::Exception ex) {

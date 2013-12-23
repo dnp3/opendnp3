@@ -211,7 +211,7 @@ asiopal::SerialSettings Conversions::convertSerialSettings(SerialSettings ^ sett
 
 openpal::TimeDuration Conversions::convertTimeDuration(System::TimeSpan ts)
 {
-	return TimeDuration::Milliseconds(static_cast<int64_t>(ts.TotalMilliseconds));
+	return TimeDuration::Milliseconds(ts.Ticks/System::TimeSpan::TicksPerMillisecond);
 }
 
 opendnp3::LinkConfig Conversions::convertConfig(LinkConfig ^ config)
