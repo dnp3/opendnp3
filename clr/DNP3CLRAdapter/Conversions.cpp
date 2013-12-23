@@ -209,14 +209,19 @@ asiopal::SerialSettings Conversions::convertSerialSettings(SerialSettings ^ sett
 	return s;
 }
 
+openpal::TimeDuration Conversions::convertTimeDuration(System::TimeSpan ts)
+{
+	return TimeDuration::Milliseconds(static_cast<int64_t>(ts.TotalMilliseconds));
+}
+
 opendnp3::LinkConfig Conversions::convertConfig(LinkConfig ^ config)
 {
-	return opendnp3::LinkConfig(config->isMaster, config->useConfirms, config->numRetry, config->localAddr, config->remoteAddr, TimeDuration::Milliseconds(config->timeout.TotalMilliseconds));
+	return opendnp3::LinkConfig(config->isMaster, config->useConfirms, config->numRetry, config->localAddr, config->remoteAddr, convertTimeDuration(config->timeout));
 }
 
 opendnp3::AppConfig Conversions::convertConfig(AppConfig ^ config)
 {
-	return opendnp3::AppConfig(TimeDuration::Milliseconds(config->rspTimeout.TotalMilliseconds), config->numRetry, config->fragSize);
+	return opendnp3::AppConfig(config->isMaster, convertTimeDuration(config->rspTimeout), config->numRetry, config->fragSize);
 }
 
 opendnp3::ClassMask Conversions::convertClassMask(ClassMask ^ cm)
@@ -272,10 +277,10 @@ opendnp3::SlaveConfig Conversions::convertConfig(SlaveConfig ^ config)
 	sc.mMaxControls = config->maxControls;
 	sc.mUnsolMask = convertClassMask(config->unsolMask);
 	sc.mAllowTimeSync = config->allowTimeSync;
-	sc.mTimeSyncPeriod = TimeDuration::Milliseconds(config->timeSyncPeriod.TotalMilliseconds);
-	sc.mUnsolPackDelay = TimeDuration::Milliseconds(config->unsolPackDelay.TotalMilliseconds);
-	sc.mUnsolRetryDelay = TimeDuration::Milliseconds(config->unsolRetryDelay.TotalMilliseconds);
-	sc.mSelectTimeout = TimeDuration::Milliseconds(config->selectTimeout.TotalMilliseconds);
+	sc.mTimeSyncPeriod = convertTimeDuration(config->timeSyncPeriod);
+	sc.mUnsolPackDelay = convertTimeDuration(config->unsolPackDelay);
+	sc.mUnsolRetryDelay = convertTimeDuration(config->unsolRetryDelay);
+	sc.mSelectTimeout = convertTimeDuration(config->selectTimeout);
 	sc.mMaxFragSize = config->maxFragSize;
 	sc.mEventMaxConfig = convertEventMaxConfig(config->eventMaxConfig);
 	sc.mStaticBinary = convert(config->staticBinary);
@@ -329,8 +334,8 @@ opendnp3::MasterConfig Conversions::convertConfig(MasterConfig ^ config)
 	mc.DoUnsolOnStartup = config->doUnsolOnStartup;
 	mc.EnableUnsol = config->enableUnsol;
 	mc.UnsolClassMask = config->unsolClassMask;
-	mc.IntegrityRate = TimeDuration::Milliseconds(config->integrityPeriod.TotalMilliseconds);
-	mc.TaskRetryRate = TimeDuration::Milliseconds(config->taskRetryPeriod.TotalMilliseconds);
+	mc.IntegrityRate = convertTimeDuration(config->integrityPeriod);
+	mc.TaskRetryRate = convertTimeDuration(config->taskRetryPeriod);
 
 	return mc;
 }

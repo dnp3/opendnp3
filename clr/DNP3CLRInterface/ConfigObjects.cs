@@ -110,8 +110,9 @@ namespace DNP3.Interface
 	    /// <summary>
 	    /// Constructor with reasonable defaults
 	    /// </summary>
-		public AppConfig()
+		public AppConfig(bool isMaster)
         {
+            this.isMaster = isMaster;
             this.rspTimeout = TimeSpan.FromSeconds(5);
             this.numRetry = 0;
             this.fragSize = 2048;
@@ -129,7 +130,11 @@ namespace DNP3.Interface
 			this.numRetry = numRetry;
 			this.fragSize = fragSize;
         }
-		
+
+        /// <summary>
+        /// Configures the app layer for master or outstation operation
+        /// </summary>
+        public bool isMaster;
 
 		/// <summary>
 		/// The response/confirm timeout in millisec
@@ -536,7 +541,7 @@ namespace DNP3.Interface
         {
             this.link = new LinkConfig(true, false);
             this.master = new MasterConfig();
-            this.app = new AppConfig();
+            this.app = new AppConfig(true);
 		}        
 
         /// <summary>
@@ -566,7 +571,7 @@ namespace DNP3.Interface
             this.slave = new SlaveConfig();
             this.device = new DeviceTemplate(10, 10, 10, 10, 10);
             this.link = new LinkConfig(false, false);
-            this.app = new AppConfig();            
+            this.app = new AppConfig(false);            
         }
 
         /// <summary>
