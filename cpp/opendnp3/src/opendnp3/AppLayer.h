@@ -67,9 +67,9 @@ public:
 	/////////////////////////////////
 	// Implement IAppLayer
 	/////////////////////////////////
-	void SendUnsolicited(APDUOut&);
-	void SendResponse(APDUOut&);
-	void SendRequest(APDUOut&);
+	void SendUnsolicited(APDU&);
+	void SendResponse(APDU&);
+	void SendRequest(APDU&);
 	void CancelResponse();
 
 private:
@@ -104,7 +104,7 @@ private:
 	// State
 	////////////////////
 
-	typedef std::deque<APDUOut> SendQueue;	
+	typedef std::deque<APDU> SendQueue;	
 
 	bool mSending;						// State of send operation to the lower layer
 	bool mConfirmSending;
@@ -120,7 +120,7 @@ private:
 
 	// a 2 byter buffer and wrapper for the confirms
 	uint8_t confirmBuffer[2];
-	APDUOut confirmAPDU;
+	APDU confirmAPDU;
 
 
 	////////////////////
@@ -129,7 +129,7 @@ private:
 
 	size_t GetRetries(FunctionCode aCode);
 	void QueueConfirm(bool aUns, int aSeq);
-	void QueueFrame(const APDUOut& apdu);
+	void QueueFrame(const APDU& apdu);
 	void CheckForSend();
 	
 };

@@ -18,39 +18,53 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __APDU_OUT_H_
-#define __APDU_OUT_H_
 
-#include <openpal/BufferWrapper.h>
+#include "APDU.h"
 
-#include "gen/FunctionCode.h"
+#include <assert.h>
+
 #include "AppControlField.h"
 
 namespace opendnp3
 {
 
-// this is what the application layer sees from the master / outstation for transmission
-class APDUOut
+APDU::APDU() : buffer()
 {
-	public:
-
-	APDUOut();
-
-	APDUOut(const openpal::WriteBuffer& aBuffer);
-	
-	void SetFunction(FunctionCode code);
-	FunctionCode GetFunction() const;
-
-	AppControlField GetControl() const;	
-	void SetControl(const AppControlField& control);
-
-	openpal::ReadOnlyBuffer ToReadOnly() const;
-
-	private:
-	
-	openpal::WriteBuffer buffer;
-};
 
 }
 
-#endif
+APDU::APDU(const openpal::WriteBuffer& aBuffer) : buffer(aBuffer)
+{
+	assert(aBuffer.Size() >= 2); // need a control & function at a minimum
+}
+
+void APDU::SetFunction(FunctionCode code)
+{
+	assert(buffer.IsNotEmpty());
+	buffer[1] = FunctionCodeToType(code);
+}
+
+FunctionCode APDU::GetFunction() const
+{
+	assert(buffer.IsNotEmpty());
+	return FunctionCodeFromType(buffer[1]);
+}
+
+AppControlField APDU::GetControl() const
+{
+	assert(buffer.IsNotEmpty());
+	return AppControlField(buffer[0]);
+}
+
+void APDU::SetControl(const AppControlField& control)
+{
+	buffer[0] = control.ToByte();
+}
+
+openpal::ReadOnlyBuffer APDU::ToReadOnly() const
+{
+	return buffer.ToReadOnly();
+}
+
+}
+

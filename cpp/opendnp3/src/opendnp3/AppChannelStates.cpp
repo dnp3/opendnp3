@@ -40,7 +40,7 @@ namespace opendnp3
 
 // ---- Default behaviors for the states ----
 
-void ACS_Base::Send(AppLayerChannel*, APDUOut&, size_t)
+void ACS_Base::Send(AppLayerChannel*, APDU&, size_t)
 {
 	this->ThrowInvalidState(LOCATION);
 }
@@ -116,7 +116,7 @@ void ACS_Base::ProcessResponse(AppLayerChannel* c, const APDUResponseRecord& rec
 
 ACS_Idle ACS_Idle::mInstance;
 
-void ACS_Idle::Send(AppLayerChannel* c, APDUOut& apdu, size_t aNumRetry)
+void ACS_Idle::Send(AppLayerChannel* c, APDU& apdu, size_t aNumRetry)
 {
 	AppControlField acf = apdu.GetControl();
 	FunctionCode func = apdu.GetFunction();

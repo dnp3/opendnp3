@@ -75,27 +75,24 @@ void MockAppLayer::DoSendSol()
 	}
 }
 
-void MockAppLayer::SendResponse(APDUOut& apdu)
+void MockAppLayer::SendResponse(APDU& apdu)
 {
-	//LOG_BLOCK(LogLevel::Comm, "=> " << toHex(arAPDU.ToReadOnly(), true));
-	//LOG_BLOCK(LogLevel::Interpret, "=> " << arAPDU.ToString());
+	LOG_BLOCK(LogLevel::Comm, "=> " << toHex(apdu.ToReadOnly(), true));	
 	mFragments.push_back(apdu);
 	this->DoSendSol();
 
 }
 
-void MockAppLayer::SendUnsolicited(APDUOut& apdu)
+void MockAppLayer::SendUnsolicited(APDU& apdu)
 {
-	//LOG_BLOCK(LogLevel::Comm, "=> " << toHex(arAPDU.ToReadOnly(), true));
-	//LOG_BLOCK(LogLevel::Interpret, "=> " << arAPDU.ToString());
+	LOG_BLOCK(LogLevel::Comm, "=> " << toHex(apdu.ToReadOnly(), true));	
 	mFragments.push_back(apdu);
 	this->DoSendUnsol();
 }
 
-void MockAppLayer::SendRequest(APDUOut& apdu)
+void MockAppLayer::SendRequest(APDU& apdu)
 {
-	//LOG_BLOCK(LogLevel::Comm, "=> " << toHex(arAPDU.ToReadOnly(), true));
-	//LOG_BLOCK(LogLevel::Interpret, "=> " << arAPDU.ToString());
+	LOG_BLOCK(LogLevel::Comm, "=> " << toHex(apdu.ToReadOnly(), true));	
 	mFragments.push_back(apdu);
 }
 
@@ -104,10 +101,10 @@ bool MockAppLayer::NothingToRead()
 	return mFragments.size() == 0;
 }
 
-APDUOut MockAppLayer::Read()
+APDU MockAppLayer::Read()
 {
 	if(mFragments.size() == 0) throw InvalidStateException(LOCATION, "no more fragments");
-	APDUOut frag = mFragments.front();	
+	auto frag = mFragments.front();	
 	mFragments.pop_front();
 	return frag;
 }

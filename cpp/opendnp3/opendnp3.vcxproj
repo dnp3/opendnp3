@@ -221,7 +221,7 @@
     <ClInclude Include="src\opendnp3\APDUHeader.h" />
     <ClInclude Include="src\opendnp3\APDUHeaderParser.h" />
     <ClInclude Include="src\opendnp3\APDUParser.h" />
-    <ClInclude Include="src\opendnp3\APDUOut.h" />
+    <ClInclude Include="src\opendnp3\APDU.h" />
     <ClInclude Include="src\opendnp3\ObjectWriter.h" />
     <ClInclude Include="src\opendnp3\AppChannelStates.h" />
     <ClInclude Include="src\opendnp3\AppControlField.h" />
@@ -367,7 +367,7 @@
     <ClCompile Include="src\opendnp3\AnalogOutput.cpp" />
     <ClCompile Include="src\opendnp3\APDUHeaderParser.cpp" />
     <ClCompile Include="src\opendnp3\APDUParser.cpp" />
-    <ClCompile Include="src\opendnp3\APDUOut.cpp" />
+    <ClCompile Include="src\opendnp3\APDU.cpp" />
     <ClCompile Include="src\opendnp3\ObjectWriter.cpp" />
     <ClCompile Include="src\opendnp3\AppChannelStates.cpp" />
     <ClCompile Include="src\opendnp3\AppControlField.cpp" />

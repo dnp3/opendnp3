@@ -60,7 +60,7 @@ void AppLayerChannel::Reset()
 
 // ---- Events ----
 
-void AppLayerChannel::Send(APDUOut& apdu, size_t aNumRetry)
+void AppLayerChannel::Send(APDU& apdu, size_t aNumRetry)
 {
 	mpState->Send(this, apdu, aNumRetry);
 	mSendAPDU = apdu; // assign this record so we can retry
@@ -89,7 +89,7 @@ void AppLayerChannel::Cancel()
 
 // ---- State Actions ----
 
-void AppLayerChannel::QueueSend(APDUOut& apdu)
+void AppLayerChannel::QueueSend(APDU& apdu)
 {
 	mpAppLayer->QueueFrame(apdu);
 }

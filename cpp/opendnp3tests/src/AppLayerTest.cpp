@@ -59,7 +59,7 @@ void AppLayerTest::SendUp(AppControlField control, FunctionCode aCode, IINField 
 
 void AppLayerTest::SendRequest(FunctionCode aCode, bool aFIR, bool aFIN, bool aCON, bool aUNS)
 {
-	APDUOut out(writeBuffer.Truncate(2));
+	APDU out(writeBuffer.Truncate(2));
 	out.SetFunction(aCode);
 	out.SetControl(AppControlField(aFIR, aFIN, aCON, aUNS));
 	app.SendRequest(out);
@@ -68,7 +68,7 @@ void AppLayerTest::SendRequest(FunctionCode aCode, bool aFIR, bool aFIN, bool aC
 
 void AppLayerTest::SendResponse(FunctionCode aCode, bool aFIR, bool aFIN, bool aCON, bool aUNS)
 {
-	APDUOut out(writeBuffer);
+	APDU out(writeBuffer);
 	out.SetFunction(aCode);
 	out.SetControl(AppControlField(aFIR, aFIN, aCON, aUNS));
 	app.SendResponse(out);	
@@ -76,7 +76,7 @@ void AppLayerTest::SendResponse(FunctionCode aCode, bool aFIR, bool aFIN, bool a
 
 void AppLayerTest::SendUnsolicited(FunctionCode aCode, bool aFIR, bool aFIN, bool aCON, bool aUNS)
 {
-	APDUOut out(writeBuffer);
+	APDU out(writeBuffer);
 	out.SetFunction(aCode);
 	out.SetControl(AppControlField(aFIR, aFIN, aCON, aUNS));
 	app.SendUnsolicited(out);	
@@ -100,7 +100,7 @@ bool AppLayerTest::CheckSentAPDUWithSize(FunctionCode aCode, const AppControlFie
 	uint8_t buffer[4];
 	assert(size == 2 || size == 4);
 	openpal::WriteBuffer wb(buffer, size);
-	APDUOut apdu(wb);
+	APDU apdu(wb);
 	apdu.SetFunction(aCode);
 	apdu.SetControl(acf);	
 	bool ret = lower.BufferEquals(apdu.ToReadOnly());

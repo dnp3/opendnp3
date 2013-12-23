@@ -59,17 +59,17 @@ void AppLayer::SetUser(IAppUser* apUser)
 // IAppLayer
 ////////////////////
 
-void AppLayer::SendResponse(APDUOut& apdu)
+void AppLayer::SendResponse(APDU& apdu)
 {
 	mSolicited.Send(apdu, this->GetRetries(FunctionCode::RESPONSE));
 }
 
-void AppLayer::SendUnsolicited(APDUOut& apdu)
+void AppLayer::SendUnsolicited(APDU& apdu)
 {
 	mUnsolicited.Send(apdu, this->GetRetries(FunctionCode::UNSOLICITED_RESPONSE));
 }
 
-void AppLayer::SendRequest(APDUOut& apdu)
+void AppLayer::SendRequest(APDU& apdu)
 {
 	mSolicited.Send(apdu, this->GetRetries(apdu.GetFunction()));
 }
@@ -293,7 +293,7 @@ void AppLayer::QueueConfirm(bool aUnsol, int aSeq)
 }
 	
 
-void AppLayer::QueueFrame(const APDUOut& apdu)
+void AppLayer::QueueFrame(const APDU& apdu)
 {
 	mSendQueue.push_back(apdu);
 	this->CheckForSend();
