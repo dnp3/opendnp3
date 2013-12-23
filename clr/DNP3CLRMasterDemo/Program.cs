@@ -59,6 +59,8 @@ namespace DotNetMasterDemo
             var classScan = master.AddClassScan(classMask, TimeSpan.FromSeconds(5), TimeSpan.FromSeconds(5));
             var integrityScan = master.GetIntegrityScan();
 
+            classScan.AddScanCallback((ScanResult result) => Console.WriteLine("class scan result: " + result.Status));
+
             master.Enable(); // enable communications
 
             Console.WriteLine("Enter an index to send a command");

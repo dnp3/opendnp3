@@ -52,6 +52,8 @@ public:
 	// Implements ITaskCompletion
 	void OnComplete(bool aSuccess);
 
+	void AddStatusCallback(const std::function<void (bool)>& callback);
+
 	// Modify this task's depth to make it dependent on the argument
 	void AddDependency(const AsyncTaskBase* apTask);
 	bool IsDependency(const AsyncTaskBase*) const;
@@ -152,6 +154,8 @@ protected:
 	openpal::MonotonicTimestamp mNextRunTime;		// next execution time for the task
 	const openpal::MonotonicTimestamp M_INITIAL_TIME;
 	int mFlags;
+
+	std::vector<std::function<void (bool)>> mCallbacks;
 };
 
 }

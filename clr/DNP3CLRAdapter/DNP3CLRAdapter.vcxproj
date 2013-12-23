@@ -181,6 +181,7 @@
     <ClInclude Include="MasterScanAdapter.h" />
     <ClInclude Include="OutstationAdapter.h" />
     <ClInclude Include="OutstationTimeWriteAdapter.h" />
+    <ClInclude Include="ScanListenerAdapter.h" />
     <ClInclude Include="SlaveCommandHandlerAdapter.h" />
     <ClInclude Include="SlaveDataObserverAdapter.h" />
     <ClInclude Include="StackStateCallback.h" />

@@ -15,15 +15,27 @@
 // http://www.apache.org/licenses/LICENSE-2.0.html
 //
 
-namespace DNP3.Interface
+#ifndef __OPENDNP3_GENERATED_SCANSTATUS_H_
+#define __OPENDNP3_GENERATED_SCANSTATUS_H_
+
+#include <string>
+#include <cstdint>
+
+namespace opendnp3 {
+
+/**
+  Enumeration for the asynchronous result of a scan (poll)
+*/
+enum class ScanStatus : int
 {
-  /// <summary>
-  /// </summary>
-  public enum StaticSetpointStatusResponse : int
-  {
-    Group40Var1 = 0,
-    Group40Var2 = 1,
-    Group40Var3 = 2,
-    Group40Var4 = 3
-  }
+  /// Valid response was received
+  SUCCESS = 0,
+  /// The operation timed out or explicitly failed
+  FAILURE = 1
+};
+
+std::string ScanStatusToString(ScanStatus arg);
+
 }
+
+#endif
