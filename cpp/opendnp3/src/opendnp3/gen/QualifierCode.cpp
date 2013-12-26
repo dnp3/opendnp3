@@ -26,23 +26,17 @@ std::string QualifierCodeToString(QualifierCode arg)
     case(QualifierCode::UINT8_START_STOP):
       return "UINT8_START_STOP";
     case(QualifierCode::UINT16_START_STOP):
-      return "UINT16_START_STOP";
-    case(QualifierCode::UINT32_START_STOP):
-      return "UINT32_START_STOP";
+      return "UINT16_START_STOP";  
     case(QualifierCode::ALL_OBJECTS):
       return "ALL_OBJECTS";
     case(QualifierCode::UINT8_CNT):
       return "UINT8_CNT";
     case(QualifierCode::UINT16_CNT):
-      return "UINT16_CNT";
-    case(QualifierCode::UINT32_CNT):
-      return "UINT32_CNT";
+      return "UINT16_CNT";    
     case(QualifierCode::UINT8_CNT_UINT8_INDEX):
       return "UINT8_CNT_UINT8_INDEX";
     case(QualifierCode::UINT16_CNT_UINT16_INDEX):
-      return "UINT16_CNT_UINT16_INDEX";
-    case(QualifierCode::UINT32_CNT_UINT32_INDEX):
-      return "UINT32_CNT_UINT32_INDEX";
+      return "UINT16_CNT_UINT16_INDEX";    
     case(QualifierCode::UNDEFINED):
       return "UNDEFINED";
   }
@@ -59,23 +53,17 @@ QualifierCode QualifierCodeFromType(uint8_t arg)
     case(0x0):
       return QualifierCode::UINT8_START_STOP;
     case(0x1):
-      return QualifierCode::UINT16_START_STOP;
-    case(0x2):
-      return QualifierCode::UINT32_START_STOP;
+      return QualifierCode::UINT16_START_STOP;    
     case(0x6):
       return QualifierCode::ALL_OBJECTS;
     case(0x7):
       return QualifierCode::UINT8_CNT;
     case(0x8):
-      return QualifierCode::UINT16_CNT;
-    case(0x9):
-      return QualifierCode::UINT32_CNT;
+      return QualifierCode::UINT16_CNT;    
     case(0x17):
       return QualifierCode::UINT8_CNT_UINT8_INDEX;
     case(0x28):
-      return QualifierCode::UINT16_CNT_UINT16_INDEX;
-    case(0x39):
-      return QualifierCode::UINT32_CNT_UINT32_INDEX;
+      return QualifierCode::UINT16_CNT_UINT16_INDEX;    
     case(0xFF):
       return QualifierCode::UNDEFINED;
   }

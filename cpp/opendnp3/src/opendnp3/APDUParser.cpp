@@ -46,18 +46,23 @@ using namespace openpal;
 namespace opendnp3
 {
 
-APDUParser::Result APDUParser::ParseHeaders(ReadOnlyBuffer aBuffer, IAPDUHeaderHandler& arHandler)
+APDUParser::Result APDUParser::ParseHeaders(openpal::ReadOnlyBuffer buffer, IAPDUHeaderHandler& output)
 {
+	return ParseHeaders(buffer, Context::Default(), output);
+}
+
+APDUParser::Result APDUParser::ParseHeaders(ReadOnlyBuffer aBuffer, Context context, IAPDUHeaderHandler& arHandler)
+{	
 	while(aBuffer.Size() > 0)
 	{
-		auto result = ParseHeader(aBuffer, arHandler);
+		auto result = ParseHeader(aBuffer, context, arHandler);
 		if(result != Result::OK) return result;
 	}
 
 	return Result::OK;
 }
 
-APDUParser::Result APDUParser::ParseHeader(ReadOnlyBuffer& buffer, IAPDUHeaderHandler& handler)
+APDUParser::Result APDUParser::ParseHeader(ReadOnlyBuffer& buffer, Context& context, IAPDUHeaderHandler& handler)
 {
 	if(buffer.Size() < 3) return Result::NOT_ENOUGH_DATA_FOR_HEADER; 
 	else {	
@@ -79,57 +84,39 @@ APDUParser::Result APDUParser::ParseHeader(ReadOnlyBuffer& buffer, IAPDUHeaderHa
 			case(QualifierCode::UINT8_CNT):
 			{
 				uint32_t count;
-				auto res = ParseCount<UInt8>(buffer, count);				
+				auto res = ParseCount<UInt8>(buffer, context, count);				
 				return (res == Result::OK) ? ParseObjectsWithRange(record.Add(UInt8::Size), buffer, gvRecord, Range(0, count), handler) : res;				
 			}
 			case(QualifierCode::UINT16_CNT):
 			{
 				uint32_t count;
-				auto res = ParseCount<UInt16>(buffer, count);
+				auto res = ParseCount<UInt16>(buffer, context, count);
 				return (res == Result::OK) ? ParseObjectsWithRange(record.Add(UInt16::Size), buffer, gvRecord, Range(0, count), handler) : res;				
-			}
-			case(QualifierCode::UINT32_CNT):
-			{
-				uint32_t count;
-				auto res = ParseCount<UInt32>(buffer, count);
-				return (res == Result::OK) ? ParseObjectsWithRange(record.Add(UInt32::Size), buffer, gvRecord, Range(0, count), handler) : res;				
-			}
+			}			
 			case(QualifierCode::UINT8_START_STOP):
 			{
 				Range range;				
-				auto res = ParseRange<UInt8, uint16_t>(buffer, range);
+				auto res = ParseRange<UInt8, uint16_t>(buffer, context, range);
 				return (res == Result::OK) ? ParseObjectsWithRange(record.Add(2*UInt8::Size), buffer, gvRecord, range, handler) : res;
 			}
 			case(QualifierCode::UINT16_START_STOP):
 			{
 				Range range;
-				auto res = ParseRange<UInt16, uint32_t>(buffer, range);
+				auto res = ParseRange<UInt16, uint32_t>(buffer, context, range);
 				return (res == Result::OK) ? ParseObjectsWithRange(record.Add(2*UInt16::Size), buffer, gvRecord, range, handler) : res;
-			}
-			case(QualifierCode::UINT32_START_STOP):
-			{
-				Range range;
-				auto res = ParseRange<UInt32, uint64_t>(buffer, range);
-				return (res == Result::OK) ? ParseObjectsWithRange(record.Add(2*UInt32::Size), buffer, gvRecord, range, handler) : res;			
-			}
+			}			
 			case(QualifierCode::UINT8_CNT_UINT8_INDEX):
 			{
 				uint32_t count;
-				auto res = ParseCount<UInt8>(buffer, count);
+				auto res = ParseCount<UInt8>(buffer, context, count);
 				return (res == Result::OK) ? ParseObjectsWithIndexPrefix(record.Add(UInt8::Size), buffer, gvRecord, count, TypedIndexParser<UInt8>::Inst(), handler) : res;				
 			}
 			case(QualifierCode::UINT16_CNT_UINT16_INDEX):
 			{
 				uint32_t count;
-				auto res = ParseCount<UInt16>(buffer, count);
+				auto res = ParseCount<UInt16>(buffer, context, count);
 				return (res == Result::OK) ? ParseObjectsWithIndexPrefix(record.Add(UInt16::Size),buffer, gvRecord, count, TypedIndexParser<UInt16>::Inst(), handler) : res;				
-			}
-			case(QualifierCode::UINT32_CNT_UINT32_INDEX):
-			{
-				uint32_t count;
-				auto res = ParseCount<UInt32>(buffer, count);
-				return (res == Result::OK) ? ParseObjectsWithIndexPrefix(record.Add(UInt32::Size),buffer, gvRecord, count, TypedIndexParser<UInt32>::Inst(), handler) : res;				
-			}
+			}			
 			default:
 				return Result::UNKNOWN_QUALIFIER;
 		}

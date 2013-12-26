@@ -190,7 +190,7 @@ BOOST_AUTO_TEST_CASE(Group1Var2AllCountQualifiers)
 	
 	TestComplex("01 02 07 02 81 01", APDUParser::Result::OK, 1, validator);
 	TestComplex("01 02 08 02 00 81 01", APDUParser::Result::OK, 1, validator);
-	TestComplex("01 02 09 02 00 00 00 81 01", APDUParser::Result::OK, 1, validator);	
+	TestSimple("01 02 09 02 00 00 00 81 01", APDUParser::Result::UNKNOWN_QUALIFIER, 0);
 }
 
 BOOST_AUTO_TEST_CASE(FlippedRange)
@@ -202,14 +202,20 @@ BOOST_AUTO_TEST_CASE(FlippedRange)
 
 BOOST_AUTO_TEST_CASE(TestUnreasonableRanges)
 {
-	// 2 byte start/stop 0->65535, no data
-	TestSimple("01 02 01 00 00 FF FF", APDUParser::Result::UNREASONABLE_OBJECT_COUNT, 0);
+	// 2 byte start/stop 0->65535, no data - the default max objects is very low (32768)
+	TestSimple("01 02 01 00 00 FF FF", APDUParser::Result::UNREASONABLE_OBJECT_COUNT, 0);	
+}
 
-	// 4 byte start/stop 0->(2^32-1), no data
-	TestSimple("01 02 02 00 00 00 00 FF FF FF FF", APDUParser::Result::UNREASONABLE_OBJECT_COUNT, 0);
+BOOST_AUTO_TEST_CASE(MaxCountAccumlatesOverHeaders)
+{
+	HexSequence buffer("01 02 00 01 02 81 81 01 02 00 01 02 81 81"); // total of four objects
+	MockApduHeaderHandler mock;
 
-	// 4 byte start/stop 0->65535, no data
-	TestSimple("01 02 02 00 00 00 00 FF FF 00 00", APDUParser::Result::UNREASONABLE_OBJECT_COUNT, 0);
+	APDUParser::Context ctx(3); //maximum of the 3 objects	
+	auto result = APDUParser::ParseHeaders(buffer.ToReadOnly(), ctx, mock);
+
+	BOOST_REQUIRE(result == APDUParser::Result::UNREASONABLE_OBJECT_COUNT);
+	BOOST_REQUIRE_EQUAL(1 , mock.groupVariations.size()); // 1 call for the first header
 }
 
 BOOST_AUTO_TEST_CASE(Group1Var2CountWithIndexUInt8)
@@ -227,8 +233,7 @@ BOOST_AUTO_TEST_CASE(Group2Var1CountWithAllIndexSizes)
 
 	// 1 byte count, 1 byte index, index == 09, value = 0x81
 	TestComplex("02 01 17 01 09 81", APDUParser::Result::OK, 1, validator);
-	TestComplex("02 01 28 01 00 09 00 81", APDUParser::Result::OK, 1, validator);
-	TestComplex("02 01 39 01 00 00 00 09 00 00 00 81", APDUParser::Result::OK, 1, validator);
+	TestComplex("02 01 28 01 00 09 00 81", APDUParser::Result::OK, 1, validator);	
 }
 
 BOOST_AUTO_TEST_CASE(Group1Var1ByRange)

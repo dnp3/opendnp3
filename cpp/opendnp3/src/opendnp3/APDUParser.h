@@ -40,7 +40,28 @@ namespace opendnp3
 
 class APDUParser : private PureStatic
 {
-	public:	
+	public:
+
+	class Context
+	{
+		public:
+
+		static Context Default() { return Context(32768); }
+
+		Context(uint32_t aMaxObjects) : count(0), MAX_OBJECTS(aMaxObjects) {}
+
+		//return true if the count exceeds the max count
+		bool AddObjectCount(uint32_t aCount)
+		{
+			count += aCount;
+			return count > MAX_OBJECTS;
+		}
+		
+		private:
+
+		uint32_t count;
+		const uint32_t MAX_OBJECTS;
+	};
 
 	enum class Result
 	{
@@ -57,6 +78,7 @@ class APDUParser : private PureStatic
 	};	
 
 	static Result ParseHeaders(openpal::ReadOnlyBuffer buffer, IAPDUHeaderHandler& output);
+	static Result ParseHeaders(openpal::ReadOnlyBuffer buffer, Context context, IAPDUHeaderHandler& output);
 
 	private:
 
@@ -89,13 +111,13 @@ class APDUParser : private PureStatic
 
 	// return true if it's an error, false otherwise	
 
-	static Result ParseHeader(openpal::ReadOnlyBuffer& buffer, IAPDUHeaderHandler& output);
+	static Result ParseHeader(openpal::ReadOnlyBuffer& buffer, Context& context, IAPDUHeaderHandler& output);
 
 	template <class ParserType, class CountType>
-	static Result ParseRange(openpal::ReadOnlyBuffer& buffer, Range& range);
+	static Result ParseRange(openpal::ReadOnlyBuffer& buffer, Context& context, Range& range);
 
 	template <class ParserType>
-	static Result ParseCount(openpal::ReadOnlyBuffer& buffer, uint32_t& count);	
+	static Result ParseCount(openpal::ReadOnlyBuffer& buffer, Context& context, uint32_t& count);	
 
 	static Result ParseObjectsWithRange(const HeaderRecord& record, openpal::ReadOnlyBuffer& buffer, const GroupVariationRecord&, const Range& range, IAPDUHeaderHandler&  output);	
 	
@@ -164,7 +186,7 @@ APDUParser::Result APDUParser::ParseRangeAsBitField(
 }
 
 template <class ParserType, class RangeType>
-APDUParser::Result APDUParser::ParseRange(openpal::ReadOnlyBuffer& buffer, Range& range)
+APDUParser::Result APDUParser::ParseRange(openpal::ReadOnlyBuffer& buffer, Context& context, Range& range)
 {
 	if(buffer.Size() < (2*ParserType::Size)) return Result::NOT_ENOUGH_DATA_FOR_RANGE;
 	else {
@@ -173,29 +195,29 @@ APDUParser::Result APDUParser::ParseRange(openpal::ReadOnlyBuffer& buffer, Range
 		if(start > stop) return Result::BAD_START_STOP;
 		else {
 			RangeType count = static_cast<RangeType>(stop) - static_cast<RangeType>(start) + 1;
-			// 65535 is a reasonable upper bound for object counts. This
-			// will ensure that size calculations never overflow with 2^32 sizes
-			if(count > std::numeric_limits<uint16_t>::max()) return Result::UNREASONABLE_OBJECT_COUNT;
-			else {				
+			if(context.AddObjectCount(count)) return Result::UNREASONABLE_OBJECT_COUNT;
+			else
+			{
 				range.start = start;
 				range.count = static_cast<size_t>(count);
 				return Result::OK;
-			}
+			}			
 		}
 	}
 }
 
 template <class ParserType>
-APDUParser::Result APDUParser::ParseCount(openpal::ReadOnlyBuffer& buffer, uint32_t& count)
+APDUParser::Result APDUParser::ParseCount(openpal::ReadOnlyBuffer& buffer, Context& context, uint32_t& count)
 {
 	if(buffer.Size() < ParserType::Size) return Result::NOT_ENOUGH_DATA_FOR_RANGE;
 	else {
 		count = ParserType::ReadBuffer(buffer);
 		if(count == 0) return Result::COUNT_OF_ZERO;
-		else {
-			if(count > std::numeric_limits<uint16_t>::max()) return Result::UNREASONABLE_OBJECT_COUNT;
-			else return Result::OK;
-		}
+		else 
+		{
+			bool overflow = context.AddObjectCount(count);
+			return context.AddObjectCount(count) ? Result::UNREASONABLE_OBJECT_COUNT : Result::OK;
+		}		
 	}
 }
 
