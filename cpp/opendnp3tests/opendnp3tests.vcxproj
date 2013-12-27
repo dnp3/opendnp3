@@ -295,7 +295,6 @@
     <ClCompile Include="src\TestMaster.cpp" />
     <ClCompile Include="src\TestMeasurementUpdate.cpp" />
     <ClCompile Include="src\TestMisc.cpp" />
-    <ClCompile Include="src\TestObjects.cpp" />
     <ClCompile Include="src\TestOutstationEventBuffer.cpp" />
     <ClCompile Include="src\TestOutstationEventBufferViaFuzz.cpp" />
     <ClCompile Include="src\TestSerialization.cpp" />

@@ -114,8 +114,6 @@
     <ClInclude Include="src\opendnp3\DataPoll.h" />
     <ClInclude Include="src\opendnp3\DNP3Channel.h" />
     <ClInclude Include="src\opendnp3\DNPCrc.h" />
-    <ClInclude Include="src\opendnp3\DNPFromStream.h" />
-    <ClInclude Include="src\opendnp3\DNPToStream.h" />
     <ClInclude Include="src\opendnp3\DynamicallyAllocatedDatabase.h" />
     <ClInclude Include="src\opendnp3\DynamicallyAllocatedEventBuffer.h" />
     <ClInclude Include="src\opendnp3\DynamicBuffer.h" />
@@ -163,8 +161,6 @@
     <ClInclude Include="src\opendnp3\MeasurementHandler.h" />
     <ClInclude Include="src\opendnp3\MeasurementHelpers.h" />
     <ClInclude Include="src\opendnp3\MultiplexingDataObserver.h" />
-    <ClInclude Include="src\opendnp3\ObjectHeader.h" />
-    <ClInclude Include="src\opendnp3\Objects.h" />
     <ClInclude Include="src\opendnp3\objects\Group1.h" />
     <ClInclude Include="src\opendnp3\objects\Group10.h" />
     <ClInclude Include="src\opendnp3\objects\Group11.h" />
@@ -185,12 +181,10 @@
     <ClInclude Include="src\opendnp3\objects\Group60.h" />
     <ClInclude Include="src\opendnp3\objects\GroupVariationID.h" />
     <ClInclude Include="src\opendnp3\objects\MeasurementFactory.h" />
-    <ClInclude Include="src\opendnp3\ObjectWriteIterator.h" />
     <ClInclude Include="src\opendnp3\ObjectWriter.h" />
     <ClInclude Include="src\opendnp3\OutstationEventBuffer.h" />
     <ClInclude Include="src\opendnp3\OutstationSBOHandler.h" />
     <ClInclude Include="src\opendnp3\OutstationStackImpl.h" />
-    <ClInclude Include="src\opendnp3\PackingTemplates.h" />
     <ClInclude Include="src\opendnp3\PhysicalLayerMonitor.h" />
     <ClInclude Include="src\opendnp3\PhysicalLayerMonitorStates.h" />
     <ClInclude Include="src\opendnp3\PostingMeasurementHandler.h" />
@@ -307,9 +301,6 @@
     <ClCompile Include="src\opendnp3\MeasurementHandler.cpp" />
     <ClCompile Include="src\opendnp3\MeasurementUpdate.cpp" />
     <ClCompile Include="src\opendnp3\MultiplexingDataObserver.cpp" />
-    <ClCompile Include="src\opendnp3\ObjectHeader.cpp" />
-    <ClCompile Include="src\opendnp3\ObjectInterfaces.cpp" />
-    <ClCompile Include="src\opendnp3\Objects.cpp" />
     <ClCompile Include="src\opendnp3\objects\Group1.cpp" />
     <ClCompile Include="src\opendnp3\objects\Group10.cpp" />
     <ClCompile Include="src\opendnp3\objects\Group11.cpp" />
@@ -328,7 +319,6 @@
     <ClCompile Include="src\opendnp3\objects\Group51.cpp" />
     <ClCompile Include="src\opendnp3\objects\Group52.cpp" />
     <ClCompile Include="src\opendnp3\objects\Group60.cpp" />
-    <ClCompile Include="src\opendnp3\ObjectWriteIterator.cpp" />
     <ClCompile Include="src\opendnp3\ObjectWriter.cpp" />
     <ClCompile Include="src\opendnp3\OctetData.cpp" />
     <ClCompile Include="src\opendnp3\OutstationEventBuffer.cpp" />

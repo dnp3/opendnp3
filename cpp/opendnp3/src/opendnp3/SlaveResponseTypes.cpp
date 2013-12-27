@@ -24,8 +24,6 @@
 #include <openpal/Exception.h>
 #include <openpal/Location.h>
 
-#include "Objects.h"
-
 using namespace openpal;
 
 namespace opendnp3
@@ -33,6 +31,7 @@ namespace opendnp3
 
 SlaveResponseTypes::SlaveResponseTypes(const SlaveConfig& arCfg)
 {
+	/*
 	mpStaticBinary = GetStaticBinary(arCfg.mStaticBinary);
 	mpStaticAnalog = GetStaticAnalog(arCfg.mStaticAnalog);
 	mpStaticCounter = GetStaticCounter(arCfg.mStaticCounter);
@@ -43,10 +42,10 @@ SlaveResponseTypes::SlaveResponseTypes(const SlaveConfig& arCfg)
 	mpEventAnalog = GetEventAnalog(arCfg.mEventAnalog);
 	mpEventCounter = GetEventCounter(arCfg.mEventCounter);
 
-	/* This is the only valid Slave VTO response, therefore it doesn't need to be configurable */
-	mpEventVto = Group113Var0::Inst();
+	*/
 }
 
+/*
 StreamObject<Binary>* SlaveResponseTypes::GetStaticBinary(StaticBinaryResponse rsp)
 {
 	switch(rsp) {
@@ -133,6 +132,7 @@ StreamObject<Counter>* SlaveResponseTypes::GetEventCounter(EventCounterResponse 
 		MACRO_THROW_EXCEPTION(ArgumentException, "Invalid event counter");
 	}
 }
+*/
 
 }
 

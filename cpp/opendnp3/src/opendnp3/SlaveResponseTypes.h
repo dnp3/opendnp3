@@ -25,8 +25,6 @@
 #include <opendnp3/DataTypes.h>
 #include <opendnp3/SlaveConfig.h>
 
-
-
 namespace opendnp3
 {
 
@@ -39,7 +37,7 @@ class SlaveResponseTypes
 public:
 
 	SlaveResponseTypes(const SlaveConfig& arCfg);
-
+/*
 	StreamObject<Binary>* mpStaticBinary;
 	StreamObject<Analog>* mpStaticAnalog;
 	StreamObject<Counter>* mpStaticCounter;
@@ -51,9 +49,11 @@ public:
 	StreamObject<Counter>* mpEventCounter;
 
 	SizeByVariationObject* mpEventVto;
+*/
 
 private:
 
+/*
 	static StreamObject<Binary>* GetStaticBinary(StaticBinaryResponse);
 	static StreamObject<Analog>* GetStaticAnalog(StaticAnalogResponse);
 	static StreamObject<Counter>* GetStaticCounter(StaticCounterResponse);
@@ -62,6 +62,7 @@ private:
 	static StreamObject<Binary>* GetEventBinary(EventBinaryResponse);
 	static StreamObject<Analog>* GetEventAnalog(EventAnalogResponse);
 	static StreamObject<Counter>* GetEventCounter(EventCounterResponse);
+*/
 
 };
 

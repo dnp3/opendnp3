@@ -378,12 +378,6 @@
     <ClInclude Include="src\opendnp3\DNPCrc.h">
       <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\DNPFromStream.h">
-      <Filter>Header</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\DNPToStream.h">
-      <Filter>Header</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\DynamicallyAllocatedDatabase.h">
       <Filter>Header</Filter>
     </ClInclude>
@@ -516,15 +510,6 @@
     <ClInclude Include="src\opendnp3\MultiplexingDataObserver.h">
       <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\ObjectHeader.h">
-      <Filter>Header</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\Objects.h">
-      <Filter>Header</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\ObjectWriteIterator.h">
-      <Filter>Header</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\ObjectWriter.h">
       <Filter>Header</Filter>
     </ClInclude>
@@ -535,9 +520,6 @@
       <Filter>Header</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\OutstationStackImpl.h">
-      <Filter>Header</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\PackingTemplates.h">
       <Filter>Header</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\PhysicalLayerMonitor.h">
@@ -831,18 +813,6 @@
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\MultiplexingDataObserver.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\ObjectHeader.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\ObjectInterfaces.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\Objects.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\ObjectWriteIterator.cpp">
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\ObjectWriter.cpp">

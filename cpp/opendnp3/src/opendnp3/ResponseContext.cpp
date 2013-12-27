@@ -25,8 +25,6 @@
 
 #include <openpal/LoggableMacros.h>
 
-
-#include "Objects.h"
 #include "SlaveResponseTypes.h"
 
 using namespace openpal;

@@ -325,9 +325,6 @@
     <ClCompile Include="src\TestMisc.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\TestObjects.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\TestPhysicalLayerAsyncBase.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
