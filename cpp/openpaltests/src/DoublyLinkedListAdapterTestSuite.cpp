@@ -31,8 +31,8 @@ BOOST_AUTO_TEST_SUITE(DoublyLinkListAdapterTestSuite)
 
 BOOST_AUTO_TEST_CASE(CorrectInitialState)
 {
-	DynamicArray<DoubleListNode<int>> arr(3);
-	DoublyLinkedListAdapter<int> list(arr.ToIndexable());
+	DynamicArray<DoubleListNode<int>, uint16_t> arr(3);
+	DoublyLinkedListAdapter<int, uint16_t> list(arr.ToIndexable());
 	
 	BOOST_REQUIRE(list.IsEmpty());
 	BOOST_REQUIRE(!list.IsFull());
@@ -41,8 +41,8 @@ BOOST_AUTO_TEST_CASE(CorrectInitialState)
 
 BOOST_AUTO_TEST_CASE(AddsUntilFull)
 {
-	DynamicArray<DoubleListNode<int>> arr(3);
-	DoublyLinkedListAdapter<int> list(arr.ToIndexable());
+	DynamicArray<DoubleListNode<int>, uint16_t> arr(3);
+	DoublyLinkedListAdapter<int, uint16_t> list(arr.ToIndexable());
 	
 	auto one = list.Add(1);
 	auto two = list.Add(2);
@@ -59,8 +59,8 @@ BOOST_AUTO_TEST_CASE(AddsUntilFull)
 
 BOOST_AUTO_TEST_CASE(CanRemoveHead)
 {
-	DynamicArray<DoubleListNode<int>> arr(3);
-	DoublyLinkedListAdapter<int> list(arr.ToIndexable());
+	DynamicArray<DoubleListNode<int>, uint16_t> arr(3);
+	DoublyLinkedListAdapter<int, uint16_t> list(arr.ToIndexable());
 	
 	auto one = list.Add(1);
 	auto two = list.Add(2);
@@ -77,8 +77,8 @@ BOOST_AUTO_TEST_CASE(CanRemoveHead)
 
 BOOST_AUTO_TEST_CASE(CanRemoveTail)
 {
-	DynamicArray<DoubleListNode<int>> arr(3);
-	DoublyLinkedListAdapter<int> list(arr.ToIndexable());
+	DynamicArray<DoubleListNode<int>, uint16_t> arr(3);
+	DoublyLinkedListAdapter<int, uint16_t> list(arr.ToIndexable());
 	
 	auto one = list.Add(1);
 	auto two = list.Add(2);
@@ -95,8 +95,8 @@ BOOST_AUTO_TEST_CASE(CanRemoveTail)
 
 BOOST_AUTO_TEST_CASE(CanRemoveMiddle)
 {
-	DynamicArray<DoubleListNode<int>> arr(3);
-	DoublyLinkedListAdapter<int> list(arr.ToIndexable());
+	DynamicArray<DoubleListNode<int>, uint16_t> arr(3);
+	DoublyLinkedListAdapter<int, uint16_t> list(arr.ToIndexable());
 	
 	auto one = list.Add(1);
 	auto two = list.Add(2);
@@ -113,8 +113,8 @@ BOOST_AUTO_TEST_CASE(CanRemoveMiddle)
 
 BOOST_AUTO_TEST_CASE(CanIterateOverValues)
 {
-	DynamicArray<DoubleListNode<int>> arr(3);
-	DoublyLinkedListAdapter<int> list(arr.ToIndexable());
+	DynamicArray<DoubleListNode<int>, uint16_t> arr(3);
+	DoublyLinkedListAdapter<int, uint16_t> list(arr.ToIndexable());
 	
 	list.Add(1);
 	list.Add(2);

@@ -40,9 +40,9 @@ struct DatabaseConfiguration
 
 	DatabaseTemplate databaseTemplate;
 	
-	openpal::DynamicArray<EventPointRecord> binaryMetadata;	
-	openpal::DynamicArray<DeadbandPointRecord<uint32_t>> counterMetadata;	
-	openpal::DynamicArray<DeadbandPointRecord<double>> analogMetadata;
+	openpal::DynamicArray<EventPointRecord, uint16_t> binaryMetadata;	
+	openpal::DynamicArray<DeadbandPointRecord<uint32_t>, uint16_t> counterMetadata;	
+	openpal::DynamicArray<DeadbandPointRecord<double>, uint16_t> analogMetadata;
 
 	private:
 	DatabaseConfiguration();

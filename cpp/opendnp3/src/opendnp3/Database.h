@@ -50,17 +50,17 @@ public:
 	bool AddEventBuffer(IEventBuffer* apEventBuffer);	
 
 	// IDataObserver functions
-	void Update(const Binary& arPoint, uint32_t) final;
-	void Update(const Analog& arPoint, uint32_t) final;
-	void Update(const Counter& arPoint, uint32_t) final;
-	void Update(const ControlStatus& arPoint, uint32_t) final;
-	void Update(const SetpointStatus& arPoint, uint32_t) final;
+	void Update(const Binary& arPoint, uint16_t) final;
+	void Update(const Analog& arPoint, uint16_t) final;
+	void Update(const Counter& arPoint, uint16_t) final;
+	void Update(const ControlStatus& arPoint, uint16_t) final;
+	void Update(const SetpointStatus& arPoint, uint16_t) final;
 
-	openpal::Indexable<Binary> Binaries();
-	openpal::Indexable<Analog> Analogs();
-	openpal::Indexable<Counter> Counters();
-	openpal::Indexable<ControlStatus> ControlStatii();
-	openpal::Indexable<SetpointStatus> SetpointStatii();
+	openpal::Indexable<Binary, uint16_t> Binaries();
+	openpal::Indexable<Analog, uint16_t> Analogs();
+	openpal::Indexable<Counter, uint16_t> Counters();
+	openpal::Indexable<ControlStatus, uint16_t> ControlStatii();
+	openpal::Indexable<SetpointStatus, uint16_t> SetpointStatii();
 
 	StaticDataFacade staticData;
 
@@ -90,7 +90,7 @@ private:
 		}	
 	}
 
-	openpal::StaticList<IEventBuffer*, MACRO_MAX_EVENT_BUFFERS> eventBuffers;
+	openpal::StaticList<IEventBuffer*, uint16_t, MACRO_MAX_EVENT_BUFFERS> eventBuffers;
 
 	// ITransactable  functions, no lock on this structure.
 	void Start() final {}

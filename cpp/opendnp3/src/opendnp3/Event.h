@@ -27,21 +27,32 @@
 namespace opendnp3
 {
 
+struct Evented : public Indexed<uint16_t>
+{
+	Evented(uint16_t index_, EventClass clazz_) : Indexed<uint16_t>(index_), clazz(clazz_)
+	{}
+
+	Evented() : clazz(EventClass::EC1)
+	{}
+
+	EventClass clazz;	// class of the event (CLASS<1-3>)	
+};
+
 /**
  * Record of an event that includes value, index, and class
  */
-template <typename T>
-struct Event : public IndexedValue<T>
+template <typename ValueType>
+struct Event : public Evented
 {	
-	Event(const T& arValue, uint32_t aIndex, EventClass aClass) :
-		IndexedValue<T>(arValue, aIndex),		
-		clazz(aClass)
-	{}
-
-	Event() : clazz(EventClass::EC1)
+	Event(const ValueType& value_, uint16_t index_, EventClass clazz_) :
+		Evented(index_, clazz_),		
+		value(value_)
 	{}	
+
+	Event() : Evented(), value()
+	{}
 	
-	EventClass clazz;	// class of the event (PC_CLASS<1-3>)	
+	ValueType value;	
 };
 
 } //end namespace

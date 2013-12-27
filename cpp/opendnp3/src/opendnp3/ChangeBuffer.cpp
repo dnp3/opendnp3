@@ -54,31 +54,31 @@ void ChangeBuffer::End()
 	if(notify) this->NotifyObservers();
 }
 
-void ChangeBuffer::Update(const Binary& arPoint, size_t aIndex)
+void ChangeBuffer::Update(const Binary& arPoint, uint16_t aIndex)
 {
 	mChangeQueue.push_back(std::bind(&ChangeBuffer::Dispatch<Binary>, std::placeholders::_1, arPoint, aIndex));
 	mNotify = true;
 }
 
-void ChangeBuffer::Update(const Analog& arPoint, size_t aIndex)
+void ChangeBuffer::Update(const Analog& arPoint, uint16_t aIndex)
 {
 	mChangeQueue.push_back(std::bind(&ChangeBuffer::Dispatch<Analog>, std::placeholders::_1, arPoint, aIndex));
 	mNotify = true;
 }
 
-void ChangeBuffer::Update(const Counter& arPoint, size_t aIndex)
+void ChangeBuffer::Update(const Counter& arPoint, uint16_t aIndex)
 {
 	mChangeQueue.push_back(std::bind(&ChangeBuffer::Dispatch<Counter>, std::placeholders::_1, arPoint, aIndex));
 	mNotify = true;
 }
 
-void ChangeBuffer::Update(const ControlStatus& arPoint, size_t aIndex)
+void ChangeBuffer::Update(const ControlStatus& arPoint, uint16_t aIndex)
 {
 	mChangeQueue.push_back(std::bind(&ChangeBuffer::Dispatch<ControlStatus>, std::placeholders::_1, arPoint, aIndex));
 	mNotify = true;
 }
 
-void ChangeBuffer::Update(const SetpointStatus& arPoint, size_t aIndex)
+void ChangeBuffer::Update(const SetpointStatus& arPoint, uint16_t aIndex)
 {
 	mChangeQueue.push_back(std::bind(&ChangeBuffer::Dispatch<SetpointStatus>, std::placeholders::_1, arPoint, aIndex));
 	mNotify = true;

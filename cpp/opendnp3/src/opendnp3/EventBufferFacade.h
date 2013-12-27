@@ -38,7 +38,7 @@ namespace opendnp3
 struct SequenceRecord
 {
 	EventType type;
-	int32_t index;
+	int16_t index;
 	EventClass clazz;
 	bool selected;
 };
@@ -47,11 +47,11 @@ struct EventBufferFacade
 {
 	public:
 
-	EventBufferFacade(	openpal::RandomInsertAdapter<Event<Binary>> aBinaryEvents,
-						openpal::RandomInsertAdapter<Event<Analog>> aAnalogEvents,
-						openpal::RandomInsertAdapter<Event<Counter>> aCounterEvents,						
-						openpal::DoublyLinkedListAdapter<SequenceRecord> aSequenceOfEvents,
-						openpal::StackAdapter<openpal::DoubleListNode<SequenceRecord>*> aSelectedEvents) :
+	EventBufferFacade(	openpal::RandomInsertAdapter<Event<Binary>, uint16_t> aBinaryEvents,
+						openpal::RandomInsertAdapter<Event<Analog>, uint16_t> aAnalogEvents,
+						openpal::RandomInsertAdapter<Event<Counter>, uint16_t> aCounterEvents,						
+						openpal::DoublyLinkedListAdapter<SequenceRecord, uint16_t> aSequenceOfEvents,
+						openpal::StackAdapter<openpal::DoubleListNode<SequenceRecord>*, uint16_t> aSelectedEvents) :
 
 		binaryEvents(aBinaryEvents),
 		analogEvents(aAnalogEvents),
@@ -62,11 +62,11 @@ struct EventBufferFacade
 		
 	}
 
-	openpal::RandomInsertAdapter<Event<Binary>> binaryEvents;
-	openpal::RandomInsertAdapter<Event<Analog>> analogEvents;
-	openpal::RandomInsertAdapter<Event<Counter>> counterEvents;	
-	openpal::DoublyLinkedListAdapter<SequenceRecord> sequenceOfEvents;
-	openpal::StackAdapter<openpal::DoubleListNode<SequenceRecord>*> selectedEvents;
+	openpal::RandomInsertAdapter<Event<Binary>, uint16_t> binaryEvents;
+	openpal::RandomInsertAdapter<Event<Analog>, uint16_t> analogEvents;
+	openpal::RandomInsertAdapter<Event<Counter>, uint16_t> counterEvents;	
+	openpal::DoublyLinkedListAdapter<SequenceRecord, uint16_t> sequenceOfEvents;
+	openpal::StackAdapter<openpal::DoubleListNode<SequenceRecord>*, uint16_t> selectedEvents;
 };
 
 

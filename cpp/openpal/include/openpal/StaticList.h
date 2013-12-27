@@ -29,19 +29,19 @@ namespace openpal
 
 // References a fixed-size buffer somewhere, providing a list-like interface
 // Gives the appearance of a list that can grow, but not shrink
-template <class T, uint32_t N>
-class StaticList : public ListAdapter<T>
+template <class ValueType, class IndexType, IndexType N>
+class StaticList : public ListAdapter<ValueType, IndexType>
 {
 
 	public:
-		StaticList() : underlying(), ListAdapter<T>(underlying.ToIndexable())
+		StaticList() : underlying(), ListAdapter<ValueType, IndexType>(underlying.ToIndexable())
 		{}
 
 	private:
 
 		StaticList(const StaticList&);
 		StaticList& operator= (const StaticList&);
-		StaticArray<T,N> underlying;
+		StaticArray<ValueType, IndexType, N> underlying;
 };
 
 }

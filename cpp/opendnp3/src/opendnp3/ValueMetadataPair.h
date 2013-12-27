@@ -30,15 +30,15 @@ namespace opendnp3
 template <class T, class U>
 struct ValueMetadataPair
 {	
-	ValueMetadataPair(openpal::Indexable<T> aValues, openpal::Indexable<U> aMetadata) :
+	ValueMetadataPair(openpal::Indexable<T, uint16_t> aValues, openpal::Indexable<U, uint16_t> aMetadata) :
 		values(aValues),
 		metadata(aMetadata)
 	{
 		assert(aValues.Size() == aMetadata.Size());
 	}
 			
-	openpal::Indexable<T> values;
-	openpal::Indexable<U> metadata;
+	openpal::Indexable<T, uint16_t> values;
+	openpal::Indexable<U, uint16_t> metadata;
 
 };
 

@@ -26,20 +26,20 @@
 namespace openpal
 {
 
-template <class T>
+template <class ValueType>
 class DoubleListNode
 {		
 	public:
 		DoubleListNode(): prev(nullptr), next(nullptr)
 		{}
 
-		T value;
+		ValueType value;
 
 	private:
 		DoubleListNode* prev;
 		DoubleListNode* next;
 
-	template <class T>
+	template <class T, class U>
 	friend class DoublyLinkedListAdapter;
 
 	template <class T>
@@ -47,11 +47,11 @@ class DoubleListNode
 };
 
 
-template <class T>
+template <class ValueType>
 class DoublyLinkedListIterator
 {
 	public:
-		DoublyLinkedListIterator(DoubleListNode<T>* pStart) : pCurrent(pStart)
+		DoublyLinkedListIterator(DoubleListNode< ValueType>* pStart) : pCurrent(pStart)
 		{}
 
 		bool HasNext()
@@ -59,7 +59,7 @@ class DoublyLinkedListIterator
 			return (pCurrent != nullptr);
 		}
 
-		DoubleListNode<T>* Next()
+		DoubleListNode< ValueType>* Next()
 		{
 			assert(pCurrent != nullptr);
 			auto pRet = pCurrent;
@@ -68,19 +68,19 @@ class DoublyLinkedListIterator
 		}
 
 	private:
-		DoubleListNode<T>* pCurrent;
+		DoubleListNode<ValueType>* pCurrent;
 };
 
 
 // A container adapter for a doubly-linked list
-template <class T>
-class DoublyLinkedListAdapter : public HasSize
+template <class ValueType, class IndexType>
+class DoublyLinkedListAdapter : public HasSize<IndexType>
 {
 	public:
 
-		typedef DoublyLinkedListIterator<T> Iterator;
+		typedef DoublyLinkedListIterator<ValueType> Iterator;
 
-		DoublyLinkedListAdapter(Indexable<DoubleListNode<T>> aUnderlying) : 
+		DoublyLinkedListAdapter(Indexable<DoubleListNode<ValueType>, IndexType> aUnderlying) : 
 			HasSize(0),
 			pHead(nullptr),
 			pTail(nullptr),
@@ -92,25 +92,25 @@ class DoublyLinkedListAdapter : public HasSize
 
 		Iterator Iterate() { return Iterator(pHead); }
 		
-		inline DoubleListNode<T>* Add(const T& value);
+		inline DoubleListNode<ValueType>* Add(const ValueType& value);
 
-		inline void Remove(DoubleListNode<T>* apNode);
+		inline void Remove(DoubleListNode<ValueType>* apNode);
 		
 		inline bool IsFull() const;
 	
 	private:
-		DoubleListNode<T>* pHead;
-		DoubleListNode<T>* pTail;
-		DoubleListNode<T>* pFree;
-		Indexable<DoubleListNode<T>> underlying;
+		DoubleListNode<ValueType>* pHead;
+		DoubleListNode<ValueType>* pTail;
+		DoubleListNode<ValueType>* pFree;
+		Indexable<DoubleListNode<ValueType>, IndexType> underlying;
 
-		inline static void Link(DoubleListNode<T>* prev, DoubleListNode<T>* next);
+		inline static void Link(DoubleListNode<ValueType>* prev, DoubleListNode<ValueType>* next);
 		
 		void Initialize();
 };
 
-template <class T>
-DoubleListNode<T>* DoublyLinkedListAdapter<T>::Add(const T& value)
+template <class ValueType, class IndexType>
+DoubleListNode<ValueType>* DoublyLinkedListAdapter<ValueType, IndexType>::Add(const ValueType& value)
 {
 	if(pFree == nullptr) return nullptr;
 	else
@@ -127,8 +127,8 @@ DoubleListNode<T>* DoublyLinkedListAdapter<T>::Add(const T& value)
 	}
 }
 
-template <class T>
-void DoublyLinkedListAdapter<T>::Remove(DoubleListNode<T>* apNode)
+template <class ValueType, class IndexType>
+void DoublyLinkedListAdapter<ValueType, IndexType>::Remove(DoubleListNode<ValueType>* apNode)
 {
 	if(apNode->prev == nullptr) // it's the head
 	{
@@ -151,27 +151,27 @@ void DoublyLinkedListAdapter<T>::Remove(DoubleListNode<T>* apNode)
 	--size;
 }
 
-template <class T>
-bool DoublyLinkedListAdapter<T>::IsFull() const
+template <class ValueType, class IndexType>
+bool DoublyLinkedListAdapter<ValueType, IndexType>::IsFull() const
 {
 	return (pFree == nullptr);
 }
 
 
-template <class T>
-void DoublyLinkedListAdapter<T>::Link(DoubleListNode<T>* first, DoubleListNode<T>* second)
+template <class ValueType, class IndexType>
+void DoublyLinkedListAdapter<ValueType, IndexType>::Link(DoubleListNode<ValueType>* first, DoubleListNode<ValueType>* second)
 {
 	if(first) first->next = second;
 	if(second) second->prev = first;
 }
 
-template <class T>
-void DoublyLinkedListAdapter<T>::Initialize()
+template <class ValueType, class IndexType>
+void DoublyLinkedListAdapter<ValueType, IndexType>::Initialize()
 {
 	if(underlying.IsNotEmpty()) 
 	{
 		pFree = &underlying[0];		
-		for(uint32_t i = 1; i < underlying.Size(); ++i)
+		for(IndexType i = 1; i < underlying.Size(); ++i)
 		{	
 			Link(&underlying[i-1], &underlying[i]);
 		}

@@ -43,11 +43,11 @@ public:
 	*/
 	SimpleDataObserver(std::function<void (const std::string&)> aOutputFunc);
 
-	void Update(const Binary& arPoint, uint32_t) final;
-	void Update(const Analog& arPoint, uint32_t) final;
-	void Update(const Counter& arPoint, uint32_t) final;
-	void Update(const ControlStatus& arPoint, uint32_t) final;
-	void Update(const SetpointStatus& arPoint, uint32_t) final;
+	void Update(const Binary& arPoint, uint16_t) final;
+	void Update(const Analog& arPoint, uint16_t) final;
+	void Update(const Counter& arPoint, uint16_t) final;
+	void Update(const ControlStatus& arPoint, uint16_t) final;
+	void Update(const SetpointStatus& arPoint, uint16_t) final;
 
 protected:
 

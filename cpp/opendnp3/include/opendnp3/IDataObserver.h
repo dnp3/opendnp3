@@ -58,35 +58,35 @@ public:
 	* @param arMeas measurement to be processed
 	* @param aIndex index of the measurement
 	*/
-	virtual void Update(const Binary& arMeas, uint32_t aIndex) = 0;
+	virtual void Update(const Binary& arMeas, uint16_t aIndex) = 0;
 
 	/**
 	* Update or receive an Analog measurement, must have transaction started
 	* @param arMeas measurement to be processed
 	* @param aIndex index of the measurement
 	*/
-	virtual void Update(const Analog& arMeas, uint32_t aIndex) = 0;
+	virtual void Update(const Analog& arMeas, uint16_t aIndex) = 0;
 
 	/**
 	* Update or receive a Counter measurement, must have transaction started
 	* @param arMeas measurement to be processed
 	* @param aIndex index of the measurement
 	*/
-	virtual void Update(const Counter& arMeas, uint32_t aIndex) = 0;
+	virtual void Update(const Counter& arMeas, uint16_t aIndex) = 0;
 
 	/**
 	* Update or receive a ControlStatus measurement, must have transaction started
 	* @param arMeas measurement to be processed
 	* @param aIndex index of the measurement
 	*/
-	virtual void Update(const ControlStatus& arMeas, uint32_t aIndex) = 0;
+	virtual void Update(const ControlStatus& arMeas, uint16_t aIndex) = 0;
 
 	/**
 	* Update or receive a SetpointStatus measurement, must have transaction started
 	* @param arMeas measurement to be processed
 	* @param aIndex index of the measurement
 	*/
-	virtual void Update(const SetpointStatus& arMeas, uint32_t aIndex) = 0;
+	virtual void Update(const SetpointStatus& arMeas, uint16_t aIndex) = 0;
 
 };
 

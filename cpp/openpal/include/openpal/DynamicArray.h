@@ -26,34 +26,34 @@
 namespace openpal
 {
 
-template <class T>
-class DynamicArray : public HasSize
+template <class ValueType, class IndexType>
+class DynamicArray : public HasSize<IndexType>
 {
 
 	public:
 
-		DynamicArray(uint32_t aSize) : 
-			HasSize(aSize),
-			buffer(new T[aSize])
+		DynamicArray(IndexType aSize) : 
+			HasSize<IndexType>(aSize),
+			buffer(new ValueType[aSize])
 		{}
 		
-		Indexable<T> ToIndexable()
+		Indexable<ValueType, IndexType> ToIndexable()
 		{
-			return Indexable<T>(buffer, size);
+			return Indexable<ValueType, IndexType>(buffer, size);
 		}
 
-		inline const bool Contains(uint32_t index) const 
+		inline const bool Contains(IndexType index) const 
 		{
 			return index < size;
 		}
 
-		inline T& operator[](uint32_t index) 
+		inline ValueType& operator[](IndexType index) 
 		{
 			assert(index < size);
 			return buffer[index];
 		}
 
-		const T& operator[](uint32_t index) const
+		const ValueType& operator[](IndexType index) const
 		{ 
 			assert(index < size);
 			return buffer[index];
@@ -62,19 +62,19 @@ class DynamicArray : public HasSize
 		template <class Action>
 		void foreach(const Action& action) const
 		{
-			for(uint32_t i = 0; i < size; ++i) action(buffer[i]);
+			for(IndexType i = 0; i < size; ++i) action(buffer[i]);
 		}
 
 		template <class Action>
 		void foreach(const Action& action)
 		{
-			for(uint32_t i = 0; i < size; ++i) action(buffer[i]);
+			for(IndexType i = 0; i < size; ++i) action(buffer[i]);
 		}
 
 		template <class Action>
 		void foreachIndex(const Action& action)
 		{
-			for(uint32_t i = 0; i < size; ++i) action(buffer[i], i);
+			for(IndexType i = 0; i < size; ++i) action(buffer[i], i);
 		}	
 
 		
@@ -90,7 +90,7 @@ class DynamicArray : public HasSize
 		}					
 	
 	private:
-		T* buffer;
+		ValueType* buffer;
 
 		DynamicArray();
 		DynamicArray(const DynamicArray&);

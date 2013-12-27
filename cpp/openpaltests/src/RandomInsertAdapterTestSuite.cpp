@@ -29,17 +29,17 @@ BOOST_AUTO_TEST_SUITE(RandomInsertAdapterTestSuite)
 
 BOOST_AUTO_TEST_CASE(CorrectInitialState)
 {
-	DynamicArray<uint32_t> indices(3);
-	DynamicArray<std::string> values(3);
-	RandomInsertAdapter<std::string> ria(values.ToIndexable(), indices.ToIndexable());
+	DynamicArray<uint32_t, uint32_t> indices(3);
+	DynamicArray<std::string, uint32_t> values(3);
+	RandomInsertAdapter<std::string, uint32_t> ria(values.ToIndexable(), indices.ToIndexable());
 	BOOST_REQUIRE(!ria.IsFull());
 }
 
 BOOST_AUTO_TEST_CASE(ReleasesValuesCorrectly)
 {
-	DynamicArray<uint32_t> indices(3);
-	DynamicArray<std::string> values(3);	
-	RandomInsertAdapter<std::string> ria(values.ToIndexable(), indices.ToIndexable());	
+	DynamicArray<uint32_t, uint32_t> indices(3);
+	DynamicArray<std::string, uint32_t> values(3);	
+	RandomInsertAdapter<std::string, uint32_t> ria(values.ToIndexable(), indices.ToIndexable());	
 
 	auto index1 = ria.Add("hello");
 	auto index2 = ria.Add("world");

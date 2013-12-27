@@ -29,12 +29,12 @@ namespace opendnp3 {
 enum class QualifierCode : uint8_t
 {
   UINT8_START_STOP = 0x0,
-  UINT16_START_STOP = 0x1,  
+  UINT16_START_STOP = 0x1,
   ALL_OBJECTS = 0x6,
   UINT8_CNT = 0x7,
-  UINT16_CNT = 0x8,  
+  UINT16_CNT = 0x8,
   UINT8_CNT_UINT8_INDEX = 0x17,
-  UINT16_CNT_UINT16_INDEX = 0x28,  
+  UINT16_CNT_UINT16_INDEX = 0x28,
   UNDEFINED = 0xFF
 };
 

@@ -418,22 +418,14 @@ namespace DNP3.Interface
         /// The default group/variation to use for counter event responses
 	    /// </summary>
 	    public EventCounterResponse eventCounter;	   	    
-    }
-
-    /// <summary>
-    /// Base class from which all PointRecords are inherited
-    /// </summary>
-    public class PointRecord
-    {
-    
-    };
+    }  
 
     /// <summary>
     /// Point record type that is assigned an event class 
     /// </summary>
-    public class EventPointRecord : PointRecord
+    public class EventPointRecord
     {
-        public EventPointRecord(PointClass pointClass) : base()
+        public EventPointRecord(PointClass pointClass)
         {            
             this.pointClass = pointClass;
         }
@@ -450,14 +442,14 @@ namespace DNP3.Interface
     /// <summary>
     /// Point record type that is assigned an event class and deadband tolerance
     /// </summary>
-    public class DeadbandEventPointRecord : EventPointRecord
+    public class DeadbandEventPointRecord<T> : EventPointRecord
     {
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="pointClass">Class that will be evented when the value changes</param>
         /// <param name="deadband">Value can change within this tolerance without producing an event</param>
-        public DeadbandEventPointRecord(PointClass pointClass, double deadband) : base(pointClass)
+        public DeadbandEventPointRecord(PointClass pointClass, T deadband) : base(pointClass)
         {
             this.deadband = deadband;
         }
@@ -465,14 +457,15 @@ namespace DNP3.Interface
         /// <summary>
         /// Default constructor with Class 0 and 0.1 tolerance
         /// </summary>
-        public DeadbandEventPointRecord()
-            : this(PointClass.PC_CLASS_0, 0.1)
-        { }
+        public DeadbandEventPointRecord(): base(PointClass.PC_CLASS_0)
+        {
+            this.deadband = default(T);
+        }
 
         /// <summary>
         /// Value can change within this tolerance without producing an event
         /// </summary>
-        public double deadband;
+        public T deadband;
     };    
 
     /// <summary>
@@ -488,17 +481,17 @@ namespace DNP3.Interface
         /// <param name="numCounter">numer of counter values starting at index 0</param>
         /// <param name="numControlStatus">numer of control status values starting at index 0</param>
         /// <param name="numSetpointStatus">numer of setpoint status values starting at index 0</param>
-        public DeviceTemplate(  System.UInt32 numBinary,
-                                System.UInt32 numAnalog,
-                                System.UInt32 numCounter,
-                                System.UInt32 numControlStatus,
-                                System.UInt32 numSetpointStatus)
+        public DeviceTemplate(  System.UInt16 numBinary,
+                                System.UInt16 numAnalog,
+                                System.UInt16 numCounter,
+                                System.UInt16 numControlStatus,
+                                System.UInt16 numSetpointStatus)
         {
-            binaries = Enumerable.Range(0, (int) numBinary).Select(i => new EventPointRecord(PointClass.PC_CLASS_1)).ToList();
-            counters = Enumerable.Range(0, (int) numCounter).Select(i => new EventPointRecord(PointClass.PC_CLASS_1)).ToList();
-            analogs = Enumerable.Range(0, (int) numAnalog).Select(i => new DeadbandEventPointRecord(PointClass.PC_CLASS_1, 0.0)).ToList();
-            controlStatii = Enumerable.Range(0, (int) numControlStatus).Select(i => new PointRecord()).ToList();
-            setpointStatii = Enumerable.Range(0, (int) numSetpointStatus).Select(i => new PointRecord()).ToList();            
+            binaries = Enumerable.Range(0, numBinary).Select(i => new EventPointRecord(PointClass.PC_CLASS_1)).ToList();
+            counters = Enumerable.Range(0, numCounter).Select(i => new DeadbandEventPointRecord<System.UInt32>(PointClass.PC_CLASS_1, 0)).ToList();
+            analogs = Enumerable.Range(0, numAnalog).Select(i => new DeadbandEventPointRecord<double>(PointClass.PC_CLASS_1, 0.0)).ToList();
+            numControlStatii = numControlStatus;
+            numSetpointStatii = numSetpointStatus;
         }
 
         /// <summary>
@@ -515,19 +508,19 @@ namespace DNP3.Interface
         /// <summary>
         /// Modify individual analog configuration here
         /// </summary>
-        public List<EventPointRecord> counters;
+        public List<DeadbandEventPointRecord<System.UInt32>> counters;
         /// <summary>
         /// Modify individual counter configuration here
         /// </summary>
-        public List<DeadbandEventPointRecord> analogs;
+        public List<DeadbandEventPointRecord<double>> analogs;
         /// <summary>
         /// Modify individual control status configuration here
         /// </summary>
-        public List<PointRecord> controlStatii;
+        public UInt16 numControlStatii;
         /// <summary>
         /// Modify individual setpoint status configuration here
         /// </summary>
-        public List<PointRecord> setpointStatii;
+        public UInt16 numSetpointStatii;
     };
 
     /// <summary>

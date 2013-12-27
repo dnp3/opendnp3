@@ -77,7 +77,7 @@ class OutstationEventBuffer : public IEventBuffer
 		EventTracker selectedTracker;
 
 		template <class T, class EnumType>
-		bool InsertEvent(const T& aEvent, EnumType eventType, openpal::RandomInsertAdapter<T>& buffer);
+		bool InsertEvent(const T& aEvent, EnumType eventType, openpal::RandomInsertAdapter<T, uint16_t>& buffer);
 
 		bool ApplyEvent(IEventWriter& writer, SequenceRecord& record);
 
@@ -87,7 +87,7 @@ class OutstationEventBuffer : public IEventBuffer
 };
 
 template <class T, class EnumType>
-bool OutstationEventBuffer::InsertEvent(const T& aEvent, EnumType eventType, openpal::RandomInsertAdapter<T>& buffer)
+bool OutstationEventBuffer::InsertEvent(const T& aEvent, EnumType eventType, openpal::RandomInsertAdapter<T, uint16_t>& buffer)
 {
 	if(buffer.IsFull() || facade.sequenceOfEvents.IsFull()) return false;	
 	else 

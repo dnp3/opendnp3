@@ -30,8 +30,8 @@ BOOST_AUTO_TEST_SUITE(StackAdapterTestSuite)
 
 BOOST_AUTO_TEST_CASE(CorrectInitialState)
 {
-	StaticArray<int, 3> array;
-	StackAdapter<int> stack(array.ToIndexable());
+	StaticArray<int, uint8_t, 3> array;
+	StackAdapter<int, uint8_t> stack(array.ToIndexable());
 
 	BOOST_REQUIRE(stack.IsEmpty());
 	BOOST_REQUIRE(!stack.IsFull());
@@ -41,8 +41,8 @@ BOOST_AUTO_TEST_CASE(CorrectInitialState)
 
 BOOST_AUTO_TEST_CASE(PushesAndPopsCorrectly)
 {
-	StaticArray<int, 3> array;
-	StackAdapter<int> stack(array.ToIndexable());
+	StaticArray<int, int, 3> array;
+	StackAdapter<int, int> stack(array.ToIndexable());
 
 	stack.Push(1);
 	stack.Push(2);

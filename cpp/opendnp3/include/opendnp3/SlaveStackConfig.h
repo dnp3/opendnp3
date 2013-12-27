@@ -52,8 +52,7 @@ struct SlaveStackConfig {
 	LinkConfig link;
 
 	private:	
-	SlaveStackConfig();
-	SlaveStackConfig(const SlaveStackConfig&);
+	SlaveStackConfig();	
 };
 
 }

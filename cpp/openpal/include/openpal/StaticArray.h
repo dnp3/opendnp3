@@ -29,36 +29,36 @@ namespace openpal
 {
 
 // A statically sized buffer of a certain type
-template <class T, uint32_t N>
-class StaticArray : public HasSize
+template <class ValueType, class IndexType, IndexType N>
+class StaticArray : public HasSize<IndexType>
 {
 
 	public:
 
 		static_assert(N > 0, "StaticArray must have size  > 0");
 
-		StaticArray() : HasSize(N)			
+		StaticArray() : HasSize<IndexType>(N)			
 		{}
 		
-		inline Indexable<T> ToIndexable()
+		inline Indexable<ValueType, IndexType> ToIndexable()
 		{
-			return Indexable<T>(buffer, N);
+			return Indexable<ValueType, IndexType>(buffer, N);
 		}		
 
-		inline T& operator[](uint32_t index) 
+		inline ValueType& operator[](IndexType index) 
 		{
 			assert(index < N);
 			return buffer[index];
 		}
 
-		inline const T& operator[](uint32_t index) const
+		inline const ValueType& operator[](IndexType index) const
 		{ 
 			assert(index < N);
 			return buffer[index];
 		}
 		
 	protected:
-		T buffer[N];
+		ValueType buffer[N];
 
 	private:		
 		StaticArray(const StaticArray&);

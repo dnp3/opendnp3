@@ -30,8 +30,8 @@ BOOST_AUTO_TEST_SUITE(ListAdapterTestSuite)
 
 BOOST_AUTO_TEST_CASE(CorrectInitialState)
 {
-	StaticArray<int, 3> array;
-	ListAdapter<int> list(array.ToIndexable());
+	StaticArray<int, int, 3> array;
+	ListAdapter<int, int> list(array.ToIndexable());
 
 	BOOST_REQUIRE_EQUAL(0, list.Size());
 	BOOST_REQUIRE_EQUAL(3, list.Capacity());
@@ -39,8 +39,8 @@ BOOST_AUTO_TEST_CASE(CorrectInitialState)
 
 BOOST_AUTO_TEST_CASE(CanAddUntilFull)
 {
-	StaticArray<uint32_t, 3> array;
-	ListAdapter<uint32_t> list(array.ToIndexable());
+	StaticArray<uint32_t, uint16_t, 3> array;
+	ListAdapter<uint32_t, uint16_t> list(array.ToIndexable());
 
 	BOOST_REQUIRE(list.Add(2));
 	BOOST_REQUIRE(list.Add(4));
@@ -54,7 +54,7 @@ BOOST_AUTO_TEST_CASE(CanAddUntilFull)
 }
 BOOST_AUTO_TEST_CASE(StaticListHasSameBehavior)
 {
-	StaticList<uint32_t, 3> list;
+	StaticList<uint32_t, uint8_t, 3> list;
 
 	BOOST_REQUIRE_EQUAL(list.Size(), 0);
 	BOOST_REQUIRE_EQUAL(list.Capacity(), 3);

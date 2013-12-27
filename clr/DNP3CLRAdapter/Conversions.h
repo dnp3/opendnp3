@@ -108,16 +108,16 @@ public:
 	static opendnp3::EventBinaryResponse convert(EventBinaryResponse rsp);
 	static opendnp3::EventAnalogResponse convert(EventAnalogResponse rsp);
 	static opendnp3::EventCounterResponse convert(EventCounterResponse rsp);
-
-	static opendnp3::PointRecord convertRecord(PointRecord ^ epr);
+	
 	static opendnp3::EventPointRecord convertRecord(EventPointRecord ^ epr);
-	static opendnp3::DeadbandPointRecord convertRecord(DeadbandEventPointRecord ^ epr);
+	static opendnp3::DeadbandPointRecord<double> convertRecord(DeadbandEventPointRecord<double> ^ epr);
+	static opendnp3::DeadbandPointRecord<uint32_t> convertRecord(DeadbandEventPointRecord<System::UInt32> ^ epr);
 
 	static opendnp3::LinkConfig convertConfig(LinkConfig ^ config);
 	static opendnp3::AppConfig convertConfig(AppConfig ^ config);
 	static opendnp3::MasterConfig convertConfig(MasterConfig ^ config);
 	static opendnp3::SlaveConfig convertConfig(SlaveConfig ^ config);
-	static opendnp3::DeviceTemplate convertConfig(DeviceTemplate ^ config);
+	static opendnp3::DatabaseConfiguration convertConfig(DeviceTemplate ^ config);
 	static opendnp3::MasterStackConfig convertConfig(MasterStackConfig ^ config);
 	static opendnp3::SlaveStackConfig convertConfig(SlaveStackConfig ^ config);
 };

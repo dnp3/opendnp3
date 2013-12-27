@@ -27,10 +27,7 @@
 namespace opendnp3
 {
 
-FlexibleDataObserver::FlexibleDataObserver() :
-	mCommsLostCount(0),
-	mLastCommsLostCheck(0),
-	mNewData(false)
+FlexibleDataObserver::FlexibleDataObserver() : mNewData(false)
 {}
 
 void FlexibleDataObserver::Clear()

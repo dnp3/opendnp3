@@ -27,20 +27,20 @@
 namespace openpal
 {
 
-template <class ValueType>
+template <class ValueType, class IndexType>
 class RandomInsertAdapter
 {
 	public:
 
-		RandomInsertAdapter(Indexable<ValueType> aValues, Indexable<uint32_t> aIndices) : 
+		RandomInsertAdapter(Indexable<ValueType, IndexType> aValues, Indexable<IndexType, IndexType> aIndices) : 
 			values(aValues),
 			availableIndices(aIndices)
 		{
 			assert(aValues.Size() == aIndices.Size());
-			for(uint32_t i = 0; i < aValues.Size(); ++i) availableIndices.Push(i);
+			for(IndexType i = 0; i < aValues.Size(); ++i) availableIndices.Push(i);
 		}				
 
-		inline ValueType& operator[](uint32_t index) 
+		inline ValueType& operator[](IndexType index) 
 		{
 			assert(index < values.Size());
 			return values[index];
@@ -53,7 +53,7 @@ class RandomInsertAdapter
 
 		// put in a value and it tells you what index it was assigned
 		// the value will never be overwritten
-		uint32_t Add(const ValueType& value)
+		IndexType Add(const ValueType& value)
 		{
 			assert(!availableIndices.IsEmpty());
 			auto index = availableIndices.Pop();
@@ -62,7 +62,7 @@ class RandomInsertAdapter
 		}
 
 		// This is really based on trust the index is actually being used		
-		void Release(uint32_t index)
+		void Release(IndexType index)
 		{
 			assert(index < values.Size());
 			assert(!availableIndices.IsFull());
@@ -70,8 +70,8 @@ class RandomInsertAdapter
 		}
 	
 	private:
-		Indexable<ValueType> values;
-		StackAdapter<uint32_t> availableIndices;
+		Indexable<ValueType, IndexType> values;
+		StackAdapter<IndexType, IndexType> availableIndices;
 		RandomInsertAdapter();
 };
 

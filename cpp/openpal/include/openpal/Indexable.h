@@ -30,48 +30,48 @@ namespace openpal
 /**
 * Acts as a functional facade around a buffer of a certain type
 */
-template <class T>
-class Indexable : public HasSize 
+template <class ValueType, class IndexType>
+class Indexable : public HasSize<IndexType>
 {
 	
 	public:
 
-		static Indexable Empty()
+		static Indexable<ValueType, IndexType> Empty()
 		{
 			return Indexable(nullptr, 0);
 		}
 
-		Indexable(T* start, uint32_t aSize) : HasSize(aSize), buffer(start)
+		Indexable(ValueType* start, IndexType aSize) : HasSize<IndexType>(aSize), buffer(start)
 		{}		
 
-		inline const bool Contains(uint32_t index) const 
+		inline const bool Contains(IndexType index) const 
 		{
 			return index < size;
 		}
 
-		inline const bool Contains(uint32_t start, uint32_t stop) const 
+		inline const bool Contains(IndexType start, IndexType stop) const 
 		{ 
 			return (start < stop) && Contains(stop);
 		}
 
-		IndexableIterator<T> Range(uint32_t start, uint32_t stop) const 
+		IndexableIterator<ValueType, IndexType> Range(IndexType start, IndexType stop) const 
 		{
 			if(Contain(start, stop)) return IndexableIterator<T>(this, start, stop);
 			else return IndexableIterator<T>(Empty());			 		
 		}
 
-		IndexableIterator<T> FullRange() const 
+		IndexableIterator<ValueType, IndexType> FullRange() const 
 		{			
 			return IndexableIterator<T>(*this); 
 		}
 
-		inline T& operator[](uint32_t index) 
+		inline ValueType& operator[](IndexType index) 
 		{
 			assert(index < size);
 			return buffer[index];
 		}
 
-		const T& operator[](uint32_t index) const
+		const ValueType& operator[](IndexType index) const
 		{ 
 			assert(index < size);
 			return buffer[index];
@@ -80,17 +80,17 @@ class Indexable : public HasSize
 		template <class Action>
 		void foreach(const Action& action)
 		{
-			for(uint32_t i = 0; i < size; ++i) action(buffer[i]);
+			for(IndexType i = 0; i < size; ++i) action(buffer[i]);
 		}
 
 		template <class Action>
 		void foreachIndex(const Action& action)
 		{
-			for(uint32_t i = 0; i < size; ++i) action(buffer[i], i);
+			for(IndexType i = 0; i < size; ++i) action(buffer[i], i);
 		}	
 
 		private:
-		T* buffer;
+		ValueType* buffer;
 };
 
 

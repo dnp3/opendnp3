@@ -158,27 +158,27 @@ public:
 
 	void Load(const IMeasurementUpdate& arUpdate) override;
 
-	virtual void Update(const Binary& arPoint, size_t aIndex) final
+	void Update(const Binary& arPoint, uint16_t aIndex) final
 	{
 		Load(arPoint, mBinaryMap, aIndex);
 	}
 	
-	virtual void Update(const Analog& arPoint, size_t aIndex) final
+	void Update(const Analog& arPoint, uint16_t aIndex) final
 	{
 		Load(arPoint, mAnalogMap, aIndex);
 	}
 	
-	virtual void Update(const Counter& arPoint, size_t aIndex)  final
+	void Update(const Counter& arPoint, uint16_t aIndex)  final
 	{
 		Load(arPoint, mCounterMap, aIndex);
 	}
 	
-	virtual void Update(const ControlStatus& arPoint, size_t aIndex) final
+	void Update(const ControlStatus& arPoint, uint16_t aIndex) final
 	{
 		Load(arPoint, mControlStatusMap, aIndex);
 	}
 
-	virtual void Update(const SetpointStatus& arPoint, size_t aIndex) final
+	void Update(const SetpointStatus& arPoint, uint16_t aIndex) final
 	{
 		Load(arPoint, mSetpointStatusMap, aIndex);
 	}
@@ -186,12 +186,10 @@ public:
 protected:
 
 	template <class T>
-	void Load(const T& arPoint, typename PointMap<T>::Type& arMap, size_t aIndex);
+	void Load(const T& arPoint, typename PointMap<T>::Type& arMap, uint16_t aIndex);
 
 private:
-
-	size_t mCommsLostCount;
-	size_t mLastCommsLostCheck;
+	
 	bool mNewData;
 	std::mutex mMutex;
 
@@ -263,7 +261,7 @@ for(auto pair: arMap) pair->second.SetQuality(aQuality);
 }
 
 template <class T>
-void FlexibleDataObserver::Load(const T& arPoint, typename PointMap<T>::Type& arMap, size_t aIndex)
+void FlexibleDataObserver::Load(const T& arPoint, typename PointMap<T>::Type& arMap, uint16_t aIndex)
 {
 	mNewData = true; arMap[aIndex] = arPoint;
 }

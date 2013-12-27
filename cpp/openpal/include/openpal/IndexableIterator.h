@@ -26,41 +26,41 @@
 namespace openpal
 {
 
-template <class T>
+template <class ValueType, class IndexType>
 class Indexable;
 
-template <class T>
+template <class ValueType, class IndexType>
 class IndexableIterator
 {
 	public:
 		
-		IndexableIterator(const Indexable<T>& aIndexable, uint32_t aPosition, uint32_t aStop) :
+		IndexableIterator(const Indexable<ValueType,IndexType>& aIndexable, IndexType aPosition, IndexType aStop) :
 			empty(false)
 			indexable(aIndexable),
 			position(aPosition),
 			stop(aStop)
 		{}
 
-		IndexableIterator(const Indexable<T>& aIndexable) :
+		IndexableIterator(const Indexable<ValueType,IndexType>& aIndexable) :
 			empty(aIndexable.IsEmpty()),
 			indexable(aIndexable),
 			position(0),
 			stop(aIndexable.IsEmpty() ? 0 : aIndexable.Size() - 1)			
 		{}
 
-		inline const uint32_t Index() const 
+		inline const IndexType Index() const 
 		{ 
 			assert(!empty);
 			return position; 
 		}
 		
-		inline const T& Value() const 
+		inline const ValueType& Value() const 
 		{
 			assert(!empty);
 			return indexable[position];
 		}
 
-		inline const uint32_t Stop() const
+		inline const IndexType Stop() const
 		{
 			return stop;
 		}
@@ -85,9 +85,9 @@ class IndexableIterator
 	private:
 
 		bool empty;
-		Indexable<T> indexable;
-		uint32_t position;
-		uint32_t stop;
+		Indexable<ValueType, IndexType> indexable;
+		IndexType position;
+		IndexType stop;
 };
 
 }

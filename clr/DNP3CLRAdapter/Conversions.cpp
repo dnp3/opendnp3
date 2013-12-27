@@ -295,34 +295,34 @@ opendnp3::SlaveConfig Conversions::convertConfig(SlaveConfig ^ config)
 	return sc;
 }
 
-opendnp3::PointRecord Conversions::convertRecord(PointRecord ^ epr)
-{
-	return opendnp3::PointRecord();
-}
-
 opendnp3::EventPointRecord Conversions::convertRecord(EventPointRecord ^ epr)
 {
 	return opendnp3::EventPointRecord(static_cast<opendnp3::PointClass>(epr->pointClass));
 }
 
-opendnp3::DeadbandPointRecord Conversions::convertRecord(DeadbandEventPointRecord ^ epr)
+opendnp3::DeadbandPointRecord<double> Conversions::convertRecord(DeadbandEventPointRecord<double> ^ epr)
 {
-	return opendnp3::DeadbandPointRecord(static_cast<opendnp3::PointClass>(epr->pointClass), epr->deadband);
+	return opendnp3::DeadbandPointRecord<double>(static_cast<opendnp3::PointClass>(epr->pointClass), epr->deadband);
 }
 
-opendnp3::DeviceTemplate Conversions::convertConfig(DeviceTemplate ^ config)
+opendnp3::DeadbandPointRecord<uint32_t> Conversions::convertRecord(DeadbandEventPointRecord<System::UInt32> ^ epr)
 {
-	opendnp3::DeviceTemplate dev(	config->binaries->Count,
-	                                config->analogs->Count,
-	                                config->counters->Count,
-	                                config->controlStatii->Count,
-	                                config->setpointStatii->Count);
+	return opendnp3::DeadbandPointRecord<uint32_t>(static_cast<opendnp3::PointClass>(epr->pointClass), epr->deadband);
+}
 
-	for(int i = 0; i < config->binaries->Count; ++i) dev.mBinary[i] = convertRecord(config->binaries[i]);
-	for(int i = 0; i < config->analogs->Count; ++i) dev.mAnalog[i] = convertRecord(config->analogs[i]);
-	for(int i = 0; i < config->counters->Count; ++i) dev.mCounter[i] = convertRecord(config->counters[i]);
-	for(int i = 0; i < config->controlStatii->Count; ++i) dev.mControlStatus[i] = convertRecord(config->controlStatii[i]);
-	for(int i = 0; i < config->setpointStatii->Count; ++i) dev.mSetpointStatus[i] = convertRecord(config->setpointStatii[i]);
+opendnp3::DatabaseConfiguration Conversions::convertConfig(DeviceTemplate ^ config)
+{
+	opendnp3::DatabaseTemplate tmp(config->binaries->Count,
+											config->analogs->Count,
+											config->counters->Count,
+											config->numControlStatii,
+											config->numSetpointStatii);										
+
+	opendnp3::DatabaseConfiguration dev(tmp);
+
+	for(int i = 0; i < config->binaries->Count; ++i) dev.binaryMetadata[i] = convertRecord(config->binaries[i]);
+	for(int i = 0; i < config->analogs->Count; ++i) dev.analogMetadata[i] = convertRecord(config->analogs[i]);
+	for(int i = 0; i < config->counters->Count; ++i) dev.counterMetadata[i] = convertRecord(config->counters[i]);
 
 	return dev;
 }

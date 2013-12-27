@@ -47,37 +47,37 @@ bool Database::AddEventBuffer(IEventBuffer* apEventBuffer)
 	return eventBuffers.Add(apEventBuffer);
 }
 
-openpal::Indexable<Binary> Database::Binaries() { return staticData.binaries.values; }
-openpal::Indexable<Analog> Database::Analogs() { return staticData.analogs.values; }
-openpal::Indexable<Counter> Database::Counters() { return staticData.counters.values; }
-openpal::Indexable<ControlStatus> Database::ControlStatii() { return staticData.controlStatii; }
-openpal::Indexable<SetpointStatus> Database::SetpointStatii() { return staticData.setpointStatii; }
+openpal::Indexable<Binary, uint16_t> Database::Binaries() { return staticData.binaries.values; }
+openpal::Indexable<Analog, uint16_t> Database::Analogs() { return staticData.analogs.values; }
+openpal::Indexable<Counter, uint16_t> Database::Counters() { return staticData.counters.values; }
+openpal::Indexable<ControlStatus, uint16_t> Database::ControlStatii() { return staticData.controlStatii; }
+openpal::Indexable<SetpointStatus, uint16_t> Database::SetpointStatii() { return staticData.setpointStatii; }
 
 ////////////////////////////////////////////////////
 // IDataObserver interface
 ////////////////////////////////////////////////////
 
-void Database::Update(const Binary& value, uint32_t index)
+void Database::Update(const Binary& value, uint16_t index)
 {
 	this->UpdateEvent(value, index, staticData.binaries);
 }
 
-void Database::Update(const Analog& value, uint32_t index)
+void Database::Update(const Analog& value, uint16_t index)
 {
 	this->UpdateEvent(value, index, staticData.analogs);	
 }
 
-void Database::Update(const Counter& value, uint32_t index)
+void Database::Update(const Counter& value, uint16_t index)
 {
 	this->UpdateEvent(value, index, staticData.counters);
 }
 
-void Database::Update(const ControlStatus& value, uint32_t index)
+void Database::Update(const ControlStatus& value, uint16_t index)
 {
 	if(staticData.controlStatii.Contains(index)) staticData.controlStatii[index] = value;
 }
 
-void Database::Update(const SetpointStatus& value, uint32_t index)
+void Database::Update(const SetpointStatus& value, uint16_t index)
 {
 	if(staticData.setpointStatii.Contains(index)) staticData.setpointStatii[index] = value;
 }

@@ -26,7 +26,7 @@ using namespace openpal;
 namespace opendnp3
 {
 
-DynamicallyAllocatedEventBuffer::DynamicallyAllocatedEventBuffer(uint32_t aMaxBinary, uint32_t aMaxAnalog, uint32_t aMaxCounter) :
+DynamicallyAllocatedEventBuffer::DynamicallyAllocatedEventBuffer(uint16_t aMaxBinary, uint16_t aMaxAnalog, uint16_t aMaxCounter) :
 	binaryStack(aMaxBinary),
 	binaryArray(aMaxBinary),
 	analogStack(aMaxAnalog),
@@ -39,11 +39,11 @@ DynamicallyAllocatedEventBuffer::DynamicallyAllocatedEventBuffer(uint32_t aMaxBi
 
 EventBufferFacade DynamicallyAllocatedEventBuffer::GetFacade()
 {
-	RandomInsertAdapter<Event<Binary>> binaryAdapter(binaryArray.ToIndexable(), binaryStack.ToIndexable());
-	RandomInsertAdapter<Event<Analog>> analogAdapter(analogArray.ToIndexable(), analogStack.ToIndexable());
-	RandomInsertAdapter<Event<Counter>> counterAdapter(counterArray.ToIndexable(), counterStack.ToIndexable());
-	DoublyLinkedListAdapter<SequenceRecord> soeAdapter(sequenceOfEvents.ToIndexable());
-	StackAdapter<DoubleListNode<SequenceRecord>*> selectionAdapter(selectedEvents.ToIndexable());
+	RandomInsertAdapter<Event<Binary>, uint16_t> binaryAdapter(binaryArray.ToIndexable(), binaryStack.ToIndexable());
+	RandomInsertAdapter<Event<Analog>, uint16_t> analogAdapter(analogArray.ToIndexable(), analogStack.ToIndexable());
+	RandomInsertAdapter<Event<Counter>, uint16_t> counterAdapter(counterArray.ToIndexable(), counterStack.ToIndexable());
+	DoublyLinkedListAdapter<SequenceRecord, uint16_t> soeAdapter(sequenceOfEvents.ToIndexable());
+	StackAdapter<DoubleListNode<SequenceRecord>*, uint16_t> selectionAdapter(selectedEvents.ToIndexable());
 
 	return EventBufferFacade(binaryAdapter, analogAdapter, counterAdapter, soeAdapter, selectionAdapter);
 }

@@ -38,8 +38,8 @@ typedef DeadbandMetadata<Counter> CounterMetadata;
 typedef ValueMetadataPair<Binary, BinaryMetadata> BinaryCollection;
 typedef ValueMetadataPair<Analog, AnalogMetadata> AnalogCollection;
 typedef ValueMetadataPair<Counter, CounterMetadata> CounterCollection;
-typedef openpal::Indexable<ControlStatus> ControlStatusCollection;
-typedef openpal::Indexable<SetpointStatus> SetpointStatusCollection;
+typedef openpal::Indexable<ControlStatus, uint16_t> ControlStatusCollection;
+typedef openpal::Indexable<SetpointStatus, uint16_t> SetpointStatusCollection;
 
 // Doesn't contain the real buffers, just a facade that allows use to easily switch 
 // between static and dynamic allocation

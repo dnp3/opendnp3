@@ -31,22 +31,22 @@ namespace opendnp3
 class DynamicallyAllocatedEventBuffer
 {
 	public:
-		DynamicallyAllocatedEventBuffer(uint32_t aMaxBinary, uint32_t aMaxAnalog, uint32_t aMaxCounter);
+		DynamicallyAllocatedEventBuffer(uint16_t aMaxBinary, uint16_t aMaxAnalog, uint16_t aMaxCounter);
 
 		EventBufferFacade GetFacade();
 
 	private:
-		openpal::DynamicArray<uint32_t> binaryStack;
-		openpal::DynamicArray<Event<Binary>> binaryArray;
+		openpal::DynamicArray<uint16_t, uint16_t> binaryStack;
+		openpal::DynamicArray<Event<Binary>, uint16_t> binaryArray;
 
-		openpal::DynamicArray<uint32_t> analogStack;
-		openpal::DynamicArray<Event<Analog>> analogArray;
+		openpal::DynamicArray<uint16_t, uint16_t> analogStack;
+		openpal::DynamicArray<Event<Analog>, uint16_t> analogArray;
 
-		openpal::DynamicArray<uint32_t> counterStack;
-		openpal::DynamicArray<Event<Counter>> counterArray;
+		openpal::DynamicArray<uint16_t, uint16_t> counterStack;
+		openpal::DynamicArray<Event<Counter>, uint16_t> counterArray;
 
-		openpal::DynamicArray<openpal::DoubleListNode<SequenceRecord>> sequenceOfEvents;
-		openpal::DynamicArray<openpal::DoubleListNode<SequenceRecord>*> selectedEvents;		
+		openpal::DynamicArray<openpal::DoubleListNode<SequenceRecord>, uint16_t> sequenceOfEvents;
+		openpal::DynamicArray<openpal::DoubleListNode<SequenceRecord>*, uint16_t> selectedEvents;		
 };
 
 }

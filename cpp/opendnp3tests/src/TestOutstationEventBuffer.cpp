@@ -52,7 +52,7 @@ BOOST_AUTO_TEST_CASE(StaticAllocation)
 {
 	//StaticallyAllocatedEventBuffer<100, 100, 100> underlying;
 
-	openpal::StaticArray<uint16_t, 100> underlying;
+	openpal::StaticArray<uint16_t, uint16_t, 100> underlying;
 
 	std::cout << sizeof(underlying) << std::endl;
 

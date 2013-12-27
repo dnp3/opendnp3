@@ -28,24 +28,24 @@ namespace openpal
 
 // References a fixed-size buffer somewhere, providing a list-like interface
 // Gives the appearance of a list that can grow, but not shrink
-template <class T>
-class ListAdapter : public HasSize
+template <class ValueType, class IndexType>
+class ListAdapter : public HasSize<IndexType>
 {
 
 	public:
 
-		ListAdapter(Indexable<T> indexable) : 
-			HasSize(0),
+		ListAdapter(Indexable<ValueType, IndexType> indexable) : 
+			HasSize<IndexType>(0),
 			indexable(indexable)
 		{}				
 
-		inline T& operator[](uint32_t index) 
+		inline ValueType& operator[](IndexType index) 
 		{
 			assert(index < size);
 			return indexable[index];
 		}
 
-		inline uint32_t Capacity() const
+		inline IndexType Capacity() const
 		{
 			return indexable.Size();
 		}
@@ -60,13 +60,13 @@ class ListAdapter : public HasSize
 			size = 0;
 		}
 
-		const T& operator[](uint32_t index) const
+		const ValueType& operator[](IndexType index) const
 		{ 
 			assert(index < size);
 			return indexable[i];
 		}
 
-		bool Add(const T& value)
+		bool Add(const ValueType& value)
 		{
 			if(this->Size() < indexable.Size())
 			{
@@ -80,17 +80,17 @@ class ListAdapter : public HasSize
 		template <class Action>
 		void foreach(const Action& action)
 		{
-			for(uint32_t i = 0; i < size; ++i) action(indexable[i]);
+			for(IndexType i = 0; i < size; ++i) action(indexable[i]);
 		}		
 
 		template <class Action>
 		void foreachIndex(const Action& action)
 		{
-			for(uint32_t i = 0; i < size; ++i) action(indexable[i], i);
+			for(IndexType i = 0; i < size; ++i) action(indexable[i], i);
 		}									
 	
 	private:
-		Indexable<T> indexable;
+		Indexable<ValueType, IndexType> indexable;
 		ListAdapter();
 };
 

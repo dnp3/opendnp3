@@ -37,21 +37,21 @@ void SimpleDataObserver::Start()
 void SimpleDataObserver::End()
 {}
 
-void SimpleDataObserver::Update(const Binary& arPoint, size_t aIndex)
+void SimpleDataObserver::Update(const Binary& arPoint, uint16_t aIndex)
 {
 	std::ostringstream oss;
 	oss << ToString(arPoint) << " : " << aIndex;
 	mOutputFunc(oss.str());
 }
 
-void SimpleDataObserver::Update(const Analog& arPoint, size_t aIndex)
+void SimpleDataObserver::Update(const Analog& arPoint, uint16_t aIndex)
 {
 	std::ostringstream oss;
 	oss << ToString(arPoint) << " : " << aIndex;
 	mOutputFunc(oss.str());
 }
 
-void SimpleDataObserver::Update(const Counter& arPoint, size_t aIndex)
+void SimpleDataObserver::Update(const Counter& arPoint, uint16_t aIndex)
 {
 	std::ostringstream oss;
 	oss << ToString(arPoint) << " : " << aIndex;
@@ -59,14 +59,14 @@ void SimpleDataObserver::Update(const Counter& arPoint, size_t aIndex)
 }
 
 
-void SimpleDataObserver::Update(const ControlStatus& arPoint, size_t aIndex)
+void SimpleDataObserver::Update(const ControlStatus& arPoint, uint16_t aIndex)
 {
 	std::ostringstream oss;
 	oss << ToString(arPoint) << " : " << aIndex;
 	mOutputFunc(oss.str());
 }
 
-void SimpleDataObserver::Update(const SetpointStatus& arPoint, size_t aIndex)
+void SimpleDataObserver::Update(const SetpointStatus& arPoint, uint16_t aIndex)
 {
 	std::ostringstream oss;
 	oss << ToString(arPoint) << " : " << aIndex;

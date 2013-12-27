@@ -28,18 +28,18 @@ namespace openpal
 
 // References a fixed-size buffer somewhere, providing a list-like interface
 // Gives the appearance of a list that can grow, but not shrink
-template <class T>
-class StackAdapter : public HasSize
+template <class ValueType, class IndexType>
+class StackAdapter : public HasSize<IndexType>
 {
 
 	public:
 
-		StackAdapter(Indexable<T> indexable) : 
-			HasSize(0),
+		StackAdapter(Indexable<ValueType, IndexType> indexable) : 
+			HasSize<IndexType>(0),
 			indexable(indexable)
 		{}						
 
-		inline uint32_t Capacity() const
+		inline IndexType Capacity() const
 		{
 			return indexable.Size();
 		}
@@ -54,7 +54,7 @@ class StackAdapter : public HasSize
 			size = 0;
 		}
 
-		bool Push(const T& value)
+		bool Push(const ValueType& value)
 		{
 			if(!IsFull())
 			{
@@ -65,7 +65,7 @@ class StackAdapter : public HasSize
 			else return false;
 		}	
 
-		T Pop()
+		ValueType Pop()
 		{
 			assert(IsNotEmpty());
 			--size;
@@ -73,7 +73,7 @@ class StackAdapter : public HasSize
 		}
 	
 	private:
-		Indexable<T> indexable;
+		Indexable<ValueType, IndexType> indexable;
 		StackAdapter();
 };
 

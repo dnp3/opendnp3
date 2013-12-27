@@ -21,20 +21,19 @@
 #ifndef __HAS_SIZE_H_
 #define __HAS_SIZE_H_
 
-#include <cstdint>
-
 namespace openpal
 {
 
+template <class SizeType>
 class HasSize 
 {
 
 	public:
 
-		HasSize(uint32_t aSize) : size(aSize)
+		HasSize(SizeType aSize) : size(aSize)
 		{}
 
-		uint32_t Size() const { return size; }
+		SizeType Size() const { return size; }
 
 		bool IsEmpty() const { return size == 0; }
 
@@ -42,7 +41,7 @@ class HasSize
 
 	protected:
 
-		uint32_t size;
+		SizeType size;
 
 };
 

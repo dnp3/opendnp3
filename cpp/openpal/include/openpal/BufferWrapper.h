@@ -24,11 +24,12 @@
 #include "HasSize.h"
 
 #include <cstddef>
+#include <cstdint>
 
 namespace openpal
 {
 	
-class ReadOnlyBuffer : public HasSize
+class ReadOnlyBuffer : public HasSize<uint32_t>
 {
 
 public:
@@ -49,7 +50,7 @@ private:
 	
 };
 
-class WriteBuffer : public HasSize
+class WriteBuffer : public HasSize<uint32_t>
 {
 	public:
 

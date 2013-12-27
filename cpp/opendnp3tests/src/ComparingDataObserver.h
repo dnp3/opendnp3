@@ -52,11 +52,11 @@ public:
 
 	void Load(const IMeasurementUpdate& arUpdate);
 
-	void Update(const Binary& arPoint, size_t aIndex);
-	void Update(const Analog& arPoint, size_t aIndex);
-	void Update(const Counter& arPoint, size_t aIndex);
-	void Update(const ControlStatus& arPoint, size_t aIndex);
-	void Update(const SetpointStatus& arPoint, size_t aIndex);
+	void Update(const Binary& arPoint, uint16_t aIndex) final;
+	void Update(const Analog& arPoint, uint16_t aIndex) final;
+	void Update(const Counter& arPoint, uint16_t aIndex) final;
+	void Update(const ControlStatus& arPoint, uint16_t aIndex) final;
+	void Update(const SetpointStatus& arPoint, uint16_t aIndex) final;
 
 private:
 

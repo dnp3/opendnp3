@@ -41,11 +41,11 @@ public:
 
 	ChangeBuffer() : mNotify(false) {}
 	
-	void Update(const Binary& arPoint, size_t aIndex)  final;
-	void Update(const Analog& arPoint, size_t aIndex) final;
-	void Update(const Counter& arPoint, size_t aIndex) final;
-	void Update(const ControlStatus& arPoint, size_t aIndex) final;
-	void Update(const SetpointStatus& arPoint, size_t aIndex) final;
+	void Update(const Binary& arPoint, uint16_t aIndex)  final;
+	void Update(const Analog& arPoint, uint16_t aIndex) final;
+	void Update(const Counter& arPoint, uint16_t aIndex) final;
+	void Update(const ControlStatus& arPoint, uint16_t aIndex) final;
+	void Update(const SetpointStatus& arPoint, uint16_t aIndex) final;
 
 	size_t FlushUpdates(IDataObserver* apObserver);
 
@@ -59,7 +59,7 @@ private:
 	void Clear();
 
 	template <class T>
-	static void Dispatch(IDataObserver* apObs, T& arMeas, size_t aIndex) {
+	static void Dispatch(IDataObserver* apObs, T& arMeas, uint16_t aIndex) {
 		apObs->Update(arMeas, aIndex);
 	}
 
