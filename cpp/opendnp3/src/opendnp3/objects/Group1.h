@@ -35,7 +35,8 @@ struct Group1Var2
   static const size_t SIZE = 1;
 
   typedef Binary Target;
-  static Binary Convert(openpal::ReadOnlyBuffer&);
+  static Binary ReadAndConvert(openpal::ReadOnlyBuffer&);
+  static void ConvertAndWrite(const Binary&, openpal::WriteBuffer&);
 
   static Group1Var2 Read(openpal::ReadOnlyBuffer&);
   static void Write(const Group1Var2&, openpal::WriteBuffer&);

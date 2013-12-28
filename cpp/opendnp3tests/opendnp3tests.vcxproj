@@ -313,6 +313,7 @@
     <ClCompile Include="src\TestTransportScalability.cpp" />
     <ClCompile Include="src\TestTypes.cpp" />
     <ClCompile Include="src\TestUtil.cpp" />
+    <ClCompile Include="src\TestWriteConversions.cpp" />
     <ClCompile Include="src\Timeout.cpp" />
     <ClCompile Include="src\TransportIntegrationStack.cpp" />
     <ClCompile Include="src\TransportLoopbackTestObject.cpp" />

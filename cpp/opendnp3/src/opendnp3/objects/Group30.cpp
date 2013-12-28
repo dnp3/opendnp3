@@ -18,6 +18,7 @@
 #include "Group30.h"
 
 #include "MeasurementFactory.h"
+#include "../WriteConversions.h"
 #include <openpal/Serialization.h>
 
 using namespace openpal;
@@ -44,10 +45,15 @@ void Group30Var1::Write(const Group30Var1& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(4);
 }
 
-Analog Group30Var1::Convert(ReadOnlyBuffer& buff)
+Analog Group30Var1::ReadAndConvert(ReadOnlyBuffer& buff)
 {
   auto gv = Read(buff);
   return AnalogFactory::From(gv.flags, gv.value);
+}
+
+void Group30Var1::ConvertAndWrite(const Analog& value, openpal::WriteBuffer& buff)
+{
+  Write(ConvertGroup30Var1::Apply(value), buff);
 }
 
 
@@ -71,10 +77,15 @@ void Group30Var2::Write(const Group30Var2& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(2);
 }
 
-Analog Group30Var2::Convert(ReadOnlyBuffer& buff)
+Analog Group30Var2::ReadAndConvert(ReadOnlyBuffer& buff)
 {
   auto gv = Read(buff);
   return AnalogFactory::From(gv.flags, gv.value);
+}
+
+void Group30Var2::ConvertAndWrite(const Analog& value, openpal::WriteBuffer& buff)
+{
+  Write(ConvertGroup30Var2::Apply(value), buff);
 }
 
 
@@ -94,10 +105,15 @@ void Group30Var3::Write(const Group30Var3& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(4);
 }
 
-Analog Group30Var3::Convert(ReadOnlyBuffer& buff)
+Analog Group30Var3::ReadAndConvert(ReadOnlyBuffer& buff)
 {
   auto gv = Read(buff);
   return AnalogFactory::From(gv.value);
+}
+
+void Group30Var3::ConvertAndWrite(const Analog& value, openpal::WriteBuffer& buff)
+{
+  Write(ConvertGroup30Var3::Apply(value), buff);
 }
 
 
@@ -117,10 +133,15 @@ void Group30Var4::Write(const Group30Var4& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(2);
 }
 
-Analog Group30Var4::Convert(ReadOnlyBuffer& buff)
+Analog Group30Var4::ReadAndConvert(ReadOnlyBuffer& buff)
 {
   auto gv = Read(buff);
   return AnalogFactory::From(gv.value);
+}
+
+void Group30Var4::ConvertAndWrite(const Analog& value, openpal::WriteBuffer& buff)
+{
+  Write(ConvertGroup30Var4::Apply(value), buff);
 }
 
 
@@ -144,10 +165,15 @@ void Group30Var5::Write(const Group30Var5& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(4);
 }
 
-Analog Group30Var5::Convert(ReadOnlyBuffer& buff)
+Analog Group30Var5::ReadAndConvert(ReadOnlyBuffer& buff)
 {
   auto gv = Read(buff);
   return AnalogFactory::From(gv.flags, gv.value);
+}
+
+void Group30Var5::ConvertAndWrite(const Analog& value, openpal::WriteBuffer& buff)
+{
+  Write(ConvertGroup30Var5::Apply(value), buff);
 }
 
 
@@ -171,10 +197,15 @@ void Group30Var6::Write(const Group30Var6& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(8);
 }
 
-Analog Group30Var6::Convert(ReadOnlyBuffer& buff)
+Analog Group30Var6::ReadAndConvert(ReadOnlyBuffer& buff)
 {
   auto gv = Read(buff);
   return AnalogFactory::From(gv.flags, gv.value);
+}
+
+void Group30Var6::ConvertAndWrite(const Analog& value, openpal::WriteBuffer& buff)
+{
+  Write(ConvertGroup30Var6::Apply(value), buff);
 }
 
 

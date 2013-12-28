@@ -114,6 +114,7 @@
     <ClInclude Include="src\opendnp3\DataPoll.h" />
     <ClInclude Include="src\opendnp3\DNP3Channel.h" />
     <ClInclude Include="src\opendnp3\DNPCrc.h" />
+    <ClInclude Include="src\opendnp3\DownSampling.h" />
     <ClInclude Include="src\opendnp3\DynamicallyAllocatedDatabase.h" />
     <ClInclude Include="src\opendnp3\DynamicallyAllocatedEventBuffer.h" />
     <ClInclude Include="src\opendnp3\DynamicBuffer.h" />
@@ -219,6 +220,8 @@
     <ClInclude Include="src\opendnp3\TransportTx.h" />
     <ClInclude Include="src\opendnp3\UnsolicitedChannel.h" />
     <ClInclude Include="src\opendnp3\ValueMetadataPair.h" />
+    <ClInclude Include="src\opendnp3\WriteConversions.h" />
+    <ClInclude Include="src\opendnp3\WriteConversionTemplates.h" />
     <ClInclude Include="src\opendnp3\WriteHandler.h" />
   </ItemGroup>
   <ItemGroup>

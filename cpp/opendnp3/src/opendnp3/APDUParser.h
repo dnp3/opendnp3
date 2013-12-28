@@ -231,7 +231,7 @@ APDUParser::Result APDUParser::ParseRangeFixedSize(GroupVariation gv, const Head
 	else {
 	
 		auto collection = Iterable<IndexedValue<typename Descriptor::Target>>::From(buffer, range.count, [range](openpal::ReadOnlyBuffer& buffer, uint32_t pos) {
-			return IndexedValue<typename Descriptor::Target>(Descriptor::Convert(buffer), range.start + pos);
+			return IndexedValue<typename Descriptor::Target>(Descriptor::ReadAndConvert(buffer), range.start + pos);
 		});
 
 		output.OnRange(gv, record.Complete(size), collection);
@@ -270,7 +270,7 @@ APDUParser::Result APDUParser::ParseCountFixedSizeWithIndex(
 	else {
 		
 		auto collection = Iterable<IndexedValue<typename Descriptor::Target>>::From(buffer, count, [pParser](openpal::ReadOnlyBuffer& buffer, uint32_t) {			
-			return IndexedValue<typename Descriptor::Target>(Descriptor::Convert(buffer), pParser->ReadIndex(buffer));
+			return IndexedValue<typename Descriptor::Target>(Descriptor::ReadAndConvert(buffer), pParser->ReadIndex(buffer));
 		});
 		
 		handler.OnIndexPrefix(gv, record.Complete(size), collection);

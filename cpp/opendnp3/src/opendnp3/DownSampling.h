@@ -18,66 +18,49 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __TIME_SYNC_HANDLER_H_
-#define __TIME_SYNC_HANDLER_H_
+#ifndef __DOWN_SAMPLING_H_
+#define __DOWN_SAMPLING_H_
 
-#include "HeaderHandlerBase.h"
+#include <opendnp3/Uncopyable.h>
 
-#include <openpal/Loggable.h>
-#include <openpal/LoggableMacros.h>
+#include <cstdint>
 
 namespace opendnp3
 {
+	// A safe down sampling class
+	template <class Source, class Target>
+	class DownSampling : private Uncopyable
+	{
+		static const Target TARGET_MAX;
+		static const Target TARGET_MIN;
 
-/**
- * Dedicated class for processing response data in the master.
- */
-class TimeSyncHandler : public HeaderHandlerBase, private openpal::Loggable
-{
+		public:
 
-public:
+		static bool Apply(Source src, Target& target)
+		{
+			if(src > TARGET_MAX)
+			{
+				target = TARGET_MAX;
+				return true;
+			}
+			else if( src < TARGET_MIN)
+			{
+				target = TARGET_MIN;
+				return true;
+			}
+			else
+			{
+				target = static_cast<Target>(src);
+				return false;
+			}
+		}
+	};
+
+	template <class Source, class Target>
+	const Target DownSampling<Source,Target>::TARGET_MAX(std::numeric_limits<Target>::max());
 	
-	/**
-	* @param arLogger the Logger that the loader should use for message reporting
-	*/
-	TimeSyncHandler(openpal::Logger& aLogger) : 
-		Loggable(aLogger), 
-		valid(false), 
-		timeOut(0)
-	{}		
-
-	virtual void _OnCountOf(const IterableBuffer<Group52Var2>& times) final
-	{
-		if(times.Count() == 1)
-		{
-			valid = true;			
-			times.foreach([this](const Group52Var2& obj) { timeOut = obj.time; });
-		}
-		else
-		{
-			LOG_BLOCK(openpal::LogLevel::Warning, "Ignoring unexpected time delay count of " << times.Count());
-		}
-	}
-
-	bool GetTimeDelay(uint16_t& time) 
-	{
-		if(this->errors.Any()) return false;
-		else 
-		{
-			if(valid) time = timeOut;
-			return valid;					
-		}
-	}
-
-private:
-	bool valid;
-	uint16_t timeOut;
-
-};
-
+	template <class Source, class Target>
+	const Target DownSampling<Source,Target>::TARGET_MIN(std::numeric_limits<Target>::min());
 }
 
-/* vim: set ts=4 sw=4: */
-
 #endif
-

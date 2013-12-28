@@ -35,7 +35,8 @@ struct Group2Var1
   static const size_t SIZE = 1;
 
   typedef Binary Target;
-  static Binary Convert(openpal::ReadOnlyBuffer&);
+  static Binary ReadAndConvert(openpal::ReadOnlyBuffer&);
+  static void ConvertAndWrite(const Binary&, openpal::WriteBuffer&);
 
   static Group2Var1 Read(openpal::ReadOnlyBuffer&);
   static void Write(const Group2Var1&, openpal::WriteBuffer&);
@@ -49,13 +50,14 @@ struct Group2Var2
   static const size_t SIZE = 7;
 
   typedef Binary Target;
-  static Binary Convert(openpal::ReadOnlyBuffer&);
+  static Binary ReadAndConvert(openpal::ReadOnlyBuffer&);
+  static void ConvertAndWrite(const Binary&, openpal::WriteBuffer&);
 
   static Group2Var2 Read(openpal::ReadOnlyBuffer&);
   static void Write(const Group2Var2&, openpal::WriteBuffer&);
 
   uint8_t flags;
-  uint64_t time48;
+  uint64_t time;
 };
 
 struct Group2Var3
@@ -64,13 +66,14 @@ struct Group2Var3
   static const size_t SIZE = 3;
 
   typedef Binary Target;
-  static Binary Convert(openpal::ReadOnlyBuffer&);
+  static Binary ReadAndConvert(openpal::ReadOnlyBuffer&);
+  static void ConvertAndWrite(const Binary&, openpal::WriteBuffer&);
 
   static Group2Var3 Read(openpal::ReadOnlyBuffer&);
   static void Write(const Group2Var3&, openpal::WriteBuffer&);
 
   uint8_t flags;
-  uint16_t time16;
+  uint16_t time;
 };
 
 

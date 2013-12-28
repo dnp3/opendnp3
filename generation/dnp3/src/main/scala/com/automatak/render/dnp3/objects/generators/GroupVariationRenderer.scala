@@ -38,7 +38,12 @@ object GroupVariationHeaderRenderer extends ModelRenderer[GroupVariation]{
 
     def getFieldString(x: FixedSizeField): String = getFieldTypeString(x.typ) + " " + x.name + ";"
 
-    def members: Iterator[String] = x.fields.map(f => getFieldString(f)).iterator
+    def typedefs(x: FixedSizeField): Iterator[String] = {
+      if(x.name == "value") Iterator("typedef " + getFieldTypeString(x.typ) + " ValueType;")
+      else Iterator.empty
+    }
+
+    def members: Iterator[String] =  x.fields.map(f => typedefs(f)).iterator.flatten ++ x.fields.map(f => getFieldString(f)).iterator
 
     def conversions: Iterator[String] = x.conversion match {
       case Some(c) => space ++ c.signatures ++ space

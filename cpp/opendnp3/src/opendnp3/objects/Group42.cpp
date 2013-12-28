@@ -72,7 +72,7 @@ Group42Var3 Group42Var3::Read(ReadOnlyBuffer& buffer)
   buffer.Advance(1);
   obj.value = Int32::Read(buffer);
   buffer.Advance(4);
-  obj.time48 = UInt48::Read(buffer);
+  obj.time = UInt48::Read(buffer);
   buffer.Advance(6);
   return obj;
 }
@@ -83,7 +83,7 @@ void Group42Var3::Write(const Group42Var3& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(1);
   Int32::Write(buffer, arg.value);
   buffer.Advance(4);
-  UInt48::Write(buffer, arg.time48);
+  UInt48::Write(buffer, arg.time);
   buffer.Advance(6);
 }
 
@@ -96,7 +96,7 @@ Group42Var4 Group42Var4::Read(ReadOnlyBuffer& buffer)
   buffer.Advance(1);
   obj.value = Int16::Read(buffer);
   buffer.Advance(2);
-  obj.time48 = UInt48::Read(buffer);
+  obj.time = UInt48::Read(buffer);
   buffer.Advance(6);
   return obj;
 }
@@ -107,7 +107,7 @@ void Group42Var4::Write(const Group42Var4& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(1);
   Int16::Write(buffer, arg.value);
   buffer.Advance(2);
-  UInt48::Write(buffer, arg.time48);
+  UInt48::Write(buffer, arg.time);
   buffer.Advance(6);
 }
 
@@ -160,7 +160,7 @@ Group42Var7 Group42Var7::Read(ReadOnlyBuffer& buffer)
   buffer.Advance(1);
   obj.value = SingleFloat::Read(buffer);
   buffer.Advance(4);
-  obj.time48 = UInt48::Read(buffer);
+  obj.time = UInt48::Read(buffer);
   buffer.Advance(6);
   return obj;
 }
@@ -171,7 +171,7 @@ void Group42Var7::Write(const Group42Var7& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(1);
   SingleFloat::Write(buffer, arg.value);
   buffer.Advance(4);
-  UInt48::Write(buffer, arg.time48);
+  UInt48::Write(buffer, arg.time);
   buffer.Advance(6);
 }
 
@@ -184,7 +184,7 @@ Group42Var8 Group42Var8::Read(ReadOnlyBuffer& buffer)
   buffer.Advance(1);
   obj.value = DoubleFloat::Read(buffer);
   buffer.Advance(8);
-  obj.time48 = UInt48::Read(buffer);
+  obj.time = UInt48::Read(buffer);
   buffer.Advance(6);
   return obj;
 }
@@ -195,7 +195,7 @@ void Group42Var8::Write(const Group42Var8& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(1);
   DoubleFloat::Write(buffer, arg.value);
   buffer.Advance(8);
-  UInt48::Write(buffer, arg.time48);
+  UInt48::Write(buffer, arg.time);
   buffer.Advance(6);
 }
 

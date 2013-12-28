@@ -630,6 +630,15 @@
     <ClInclude Include="src\opendnp3\APDUResponse.h">
       <Filter>Header</Filter>
     </ClInclude>
+    <ClInclude Include="src\opendnp3\DownSampling.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\WriteConversionTemplates.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\WriteConversions.h">
+      <Filter>Header</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\opendnp3\AnalogOutput.cpp">

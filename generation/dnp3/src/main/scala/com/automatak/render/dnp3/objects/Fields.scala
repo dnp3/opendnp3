@@ -23,12 +23,12 @@ object FixedSizeField {
   val flags = FixedSizeField("flags", UInt8Field)
 
   // timestamps
-  val time16 = FixedSizeField("time16", UInt16Field)
-  val time48 = FixedSizeField("time48", UInt48Field)
+  val time16 = FixedSizeField("time", UInt16Field)
+  val time48 = FixedSizeField("time", UInt48Field)
 
   // counter values
-  val count16 = FixedSizeField("count", UInt16Field)
-  val count32 = FixedSizeField("count", UInt32Field)
+  val count16 = FixedSizeField("value", UInt16Field)
+  val count32 = FixedSizeField("value", UInt32Field)
 
   // analog values
   val value16 = FixedSizeField("value", SInt16Field)

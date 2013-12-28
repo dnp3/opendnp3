@@ -28,14 +28,14 @@ const GroupVariationID  Group50Var1::ID(50,1);
 Group50Var1 Group50Var1::Read(ReadOnlyBuffer& buffer)
 {
   Group50Var1 obj;
-  obj.time48 = UInt48::Read(buffer);
+  obj.time = UInt48::Read(buffer);
   buffer.Advance(6);
   return obj;
 }
 
 void Group50Var1::Write(const Group50Var1& arg, openpal::WriteBuffer& buffer)
 {
-  UInt48::Write(buffer, arg.time48);
+  UInt48::Write(buffer, arg.time);
   buffer.Advance(6);
 }
 

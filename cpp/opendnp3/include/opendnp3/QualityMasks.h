@@ -61,7 +61,7 @@ enum CounterQuality {
 	CQ_COMM_LOST = 0x04,
 	CQ_REMOTE_FORCED_DATA = 0x08,
 	CQ_LOCAL_FORCED_DATA = 0x10,
-	CQ_ROLLOVER = 0x20,				//!< used to indicate that the counter filled up and rolledover, cleared automatically after reading
+	CQ_ROLLOVER = 0x20,				//!< deprecated
 	CQ_DISCONTINUITY = 0x40,		//!< indicates an unusual change in value
 	CQ_RESERVED = 0x80
 };
@@ -93,23 +93,6 @@ enum SetpointQuality {
 	PQ_RESERVED_3 = 0x40,
 	PQ_RESERVED_4 = 0x80,
 };
-
-/**
-	Bitmasks that make make up the quality field for vto data. See BinaryQuality for common (unlabeled) bitmasks.
- */
-enum VtoQuality {
-	VQ_ONLINE = 0x01,
-	VQ_RESTART = 0x02,
-	VQ_COMM_LOST = 0x04,
-	VQ_REMOTE_FORCED_DATA = 0x08,
-	VQ_RESERVED_1 = 0x10,
-	VQ_RESERVED_2 = 0x20,
-	VQ_RESERVED_3 = 0x40,
-	VQ_RESERVED_4 = 0x80,
-};
-
-
-
 
 }
 

@@ -30,8 +30,9 @@ struct Group21Var1
   static Group21Var1 Read(openpal::ReadOnlyBuffer&);
   static void Write(const Group21Var1&, openpal::WriteBuffer&);
 
+  typedef uint32_t ValueType;
   uint8_t flags;
-  uint32_t count;
+  uint32_t value;
 };
 
 struct Group21Var2
@@ -41,8 +42,9 @@ struct Group21Var2
   static Group21Var2 Read(openpal::ReadOnlyBuffer&);
   static void Write(const Group21Var2&, openpal::WriteBuffer&);
 
+  typedef uint16_t ValueType;
   uint8_t flags;
-  uint16_t count;
+  uint16_t value;
 };
 
 struct Group21Var3
@@ -52,8 +54,9 @@ struct Group21Var3
   static Group21Var3 Read(openpal::ReadOnlyBuffer&);
   static void Write(const Group21Var3&, openpal::WriteBuffer&);
 
+  typedef uint32_t ValueType;
   uint8_t flags;
-  uint32_t count;
+  uint32_t value;
 };
 
 struct Group21Var4
@@ -63,8 +66,9 @@ struct Group21Var4
   static Group21Var4 Read(openpal::ReadOnlyBuffer&);
   static void Write(const Group21Var4&, openpal::WriteBuffer&);
 
+  typedef uint16_t ValueType;
   uint8_t flags;
-  uint16_t count;
+  uint16_t value;
 };
 
 struct Group21Var5
@@ -74,9 +78,10 @@ struct Group21Var5
   static Group21Var5 Read(openpal::ReadOnlyBuffer&);
   static void Write(const Group21Var5&, openpal::WriteBuffer&);
 
+  typedef uint32_t ValueType;
   uint8_t flags;
-  uint32_t count;
-  uint64_t time48;
+  uint32_t value;
+  uint64_t time;
 };
 
 struct Group21Var6
@@ -86,9 +91,10 @@ struct Group21Var6
   static Group21Var6 Read(openpal::ReadOnlyBuffer&);
   static void Write(const Group21Var6&, openpal::WriteBuffer&);
 
+  typedef uint16_t ValueType;
   uint8_t flags;
-  uint16_t count;
-  uint64_t time48;
+  uint16_t value;
+  uint64_t time;
 };
 
 struct Group21Var7
@@ -98,9 +104,10 @@ struct Group21Var7
   static Group21Var7 Read(openpal::ReadOnlyBuffer&);
   static void Write(const Group21Var7&, openpal::WriteBuffer&);
 
+  typedef uint32_t ValueType;
   uint8_t flags;
-  uint32_t count;
-  uint64_t time48;
+  uint32_t value;
+  uint64_t time;
 };
 
 struct Group21Var8
@@ -110,9 +117,10 @@ struct Group21Var8
   static Group21Var8 Read(openpal::ReadOnlyBuffer&);
   static void Write(const Group21Var8&, openpal::WriteBuffer&);
 
+  typedef uint16_t ValueType;
   uint8_t flags;
-  uint16_t count;
-  uint64_t time48;
+  uint16_t value;
+  uint64_t time;
 };
 
 struct Group21Var9
@@ -122,7 +130,8 @@ struct Group21Var9
   static Group21Var9 Read(openpal::ReadOnlyBuffer&);
   static void Write(const Group21Var9&, openpal::WriteBuffer&);
 
-  uint16_t count;
+  typedef uint16_t ValueType;
+  uint16_t value;
 };
 
 struct Group21Var10
@@ -132,7 +141,8 @@ struct Group21Var10
   static Group21Var10 Read(openpal::ReadOnlyBuffer&);
   static void Write(const Group21Var10&, openpal::WriteBuffer&);
 
-  uint32_t count;
+  typedef uint32_t ValueType;
+  uint32_t value;
 };
 
 struct Group21Var11
@@ -142,7 +152,8 @@ struct Group21Var11
   static Group21Var11 Read(openpal::ReadOnlyBuffer&);
   static void Write(const Group21Var11&, openpal::WriteBuffer&);
 
-  uint16_t count;
+  typedef uint16_t ValueType;
+  uint16_t value;
 };
 
 struct Group21Var12
@@ -152,7 +163,8 @@ struct Group21Var12
   static Group21Var12 Read(openpal::ReadOnlyBuffer&);
   static void Write(const Group21Var12&, openpal::WriteBuffer&);
 
-  uint32_t count;
+  typedef uint32_t ValueType;
+  uint32_t value;
 };
 
 

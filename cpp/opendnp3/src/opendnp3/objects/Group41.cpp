@@ -18,6 +18,7 @@
 #include "Group41.h"
 
 #include "MeasurementFactory.h"
+#include "../WriteConversions.h"
 #include <openpal/Serialization.h>
 
 using namespace openpal;
@@ -44,10 +45,15 @@ void Group41Var1::Write(const Group41Var1& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(1);
 }
 
-AnalogOutputInt32 Group41Var1::Convert(ReadOnlyBuffer& buff)
+AnalogOutputInt32 Group41Var1::ReadAndConvert(ReadOnlyBuffer& buff)
 {
   auto gv = Read(buff);
   return AnalogOutputInt32Factory::From(gv.value, gv.status);
+}
+
+void Group41Var1::ConvertAndWrite(const AnalogOutputInt32& value, openpal::WriteBuffer& buff)
+{
+  Write(ConvertGroup41Var1::Apply(value), buff);
 }
 
 
@@ -71,10 +77,15 @@ void Group41Var2::Write(const Group41Var2& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(1);
 }
 
-AnalogOutputInt16 Group41Var2::Convert(ReadOnlyBuffer& buff)
+AnalogOutputInt16 Group41Var2::ReadAndConvert(ReadOnlyBuffer& buff)
 {
   auto gv = Read(buff);
   return AnalogOutputInt16Factory::From(gv.value, gv.status);
+}
+
+void Group41Var2::ConvertAndWrite(const AnalogOutputInt16& value, openpal::WriteBuffer& buff)
+{
+  Write(ConvertGroup41Var2::Apply(value), buff);
 }
 
 
@@ -98,10 +109,15 @@ void Group41Var3::Write(const Group41Var3& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(1);
 }
 
-AnalogOutputFloat32 Group41Var3::Convert(ReadOnlyBuffer& buff)
+AnalogOutputFloat32 Group41Var3::ReadAndConvert(ReadOnlyBuffer& buff)
 {
   auto gv = Read(buff);
   return AnalogOutputFloat32Factory::From(gv.value, gv.status);
+}
+
+void Group41Var3::ConvertAndWrite(const AnalogOutputFloat32& value, openpal::WriteBuffer& buff)
+{
+  Write(ConvertGroup41Var3::Apply(value), buff);
 }
 
 
@@ -125,10 +141,15 @@ void Group41Var4::Write(const Group41Var4& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(1);
 }
 
-AnalogOutputDouble64 Group41Var4::Convert(ReadOnlyBuffer& buff)
+AnalogOutputDouble64 Group41Var4::ReadAndConvert(ReadOnlyBuffer& buff)
 {
   auto gv = Read(buff);
   return AnalogOutputDouble64Factory::From(gv.value, gv.status);
+}
+
+void Group41Var4::ConvertAndWrite(const AnalogOutputDouble64& value, openpal::WriteBuffer& buff)
+{
+  Write(ConvertGroup41Var4::Apply(value), buff);
 }
 
 

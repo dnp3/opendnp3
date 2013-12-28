@@ -18,6 +18,7 @@
 #include "Group10.h"
 
 #include "MeasurementFactory.h"
+#include "../WriteConversions.h"
 #include <openpal/Serialization.h>
 
 using namespace openpal;
@@ -44,10 +45,15 @@ void Group10Var2::Write(const Group10Var2& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(1);
 }
 
-ControlStatus Group10Var2::Convert(ReadOnlyBuffer& buff)
+ControlStatus Group10Var2::ReadAndConvert(ReadOnlyBuffer& buff)
 {
   auto gv = Read(buff);
   return ControlStatusFactory::From(gv.flags);
+}
+
+void Group10Var2::ConvertAndWrite(const ControlStatus& value, openpal::WriteBuffer& buff)
+{
+  Write(ConvertGroup10Var2::Apply(value), buff);
 }
 
 

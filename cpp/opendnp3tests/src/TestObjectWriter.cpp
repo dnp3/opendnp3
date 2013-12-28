@@ -73,7 +73,7 @@ BOOST_AUTO_TEST_CASE(RangeWriteIteratorStartStop)
 
 	Group20Var6 value = { 9 };
 	BOOST_REQUIRE(iterator.Write(value));
-	value.count = 7;
+	value.value = 7;
 	BOOST_REQUIRE(iterator.Write(value));
 	BOOST_REQUIRE(iterator.Complete());
 

@@ -18,6 +18,7 @@
 #include "Group2.h"
 
 #include "MeasurementFactory.h"
+#include "../WriteConversions.h"
 #include <openpal/Serialization.h>
 
 using namespace openpal;
@@ -42,10 +43,15 @@ void Group2Var1::Write(const Group2Var1& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(1);
 }
 
-Binary Group2Var1::Convert(ReadOnlyBuffer& buff)
+Binary Group2Var1::ReadAndConvert(ReadOnlyBuffer& buff)
 {
   auto gv = Read(buff);
   return BinaryFactory::From(gv.flags);
+}
+
+void Group2Var1::ConvertAndWrite(const Binary& value, openpal::WriteBuffer& buff)
+{
+  Write(ConvertGroup2Var1::Apply(value), buff);
 }
 
 
@@ -56,7 +62,7 @@ Group2Var2 Group2Var2::Read(ReadOnlyBuffer& buffer)
   Group2Var2 obj;
   obj.flags = UInt8::Read(buffer);
   buffer.Advance(1);
-  obj.time48 = UInt48::Read(buffer);
+  obj.time = UInt48::Read(buffer);
   buffer.Advance(6);
   return obj;
 }
@@ -65,14 +71,19 @@ void Group2Var2::Write(const Group2Var2& arg, openpal::WriteBuffer& buffer)
 {
   UInt8::Write(buffer, arg.flags);
   buffer.Advance(1);
-  UInt48::Write(buffer, arg.time48);
+  UInt48::Write(buffer, arg.time);
   buffer.Advance(6);
 }
 
-Binary Group2Var2::Convert(ReadOnlyBuffer& buff)
+Binary Group2Var2::ReadAndConvert(ReadOnlyBuffer& buff)
 {
   auto gv = Read(buff);
-  return BinaryFactory::From(gv.flags, gv.time48);
+  return BinaryFactory::From(gv.flags, gv.time);
+}
+
+void Group2Var2::ConvertAndWrite(const Binary& value, openpal::WriteBuffer& buff)
+{
+  Write(ConvertGroup2Var2::Apply(value), buff);
 }
 
 
@@ -83,7 +94,7 @@ Group2Var3 Group2Var3::Read(ReadOnlyBuffer& buffer)
   Group2Var3 obj;
   obj.flags = UInt8::Read(buffer);
   buffer.Advance(1);
-  obj.time16 = UInt16::Read(buffer);
+  obj.time = UInt16::Read(buffer);
   buffer.Advance(2);
   return obj;
 }
@@ -92,14 +103,19 @@ void Group2Var3::Write(const Group2Var3& arg, openpal::WriteBuffer& buffer)
 {
   UInt8::Write(buffer, arg.flags);
   buffer.Advance(1);
-  UInt16::Write(buffer, arg.time16);
+  UInt16::Write(buffer, arg.time);
   buffer.Advance(2);
 }
 
-Binary Group2Var3::Convert(ReadOnlyBuffer& buff)
+Binary Group2Var3::ReadAndConvert(ReadOnlyBuffer& buff)
 {
   auto gv = Read(buff);
-  return BinaryFactory::From(gv.flags, gv.time16);
+  return BinaryFactory::From(gv.flags, gv.time);
+}
+
+void Group2Var3::ConvertAndWrite(const Binary& value, openpal::WriteBuffer& buff)
+{
+  Write(ConvertGroup2Var3::Apply(value), buff);
 }
 
 

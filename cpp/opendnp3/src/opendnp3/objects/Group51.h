@@ -30,7 +30,7 @@ struct Group51Var1
   static Group51Var1 Read(openpal::ReadOnlyBuffer&);
   static void Write(const Group51Var1&, openpal::WriteBuffer&);
 
-  uint64_t time48;
+  uint64_t time;
 };
 
 struct Group51Var2
@@ -40,7 +40,7 @@ struct Group51Var2
   static Group51Var2 Read(openpal::ReadOnlyBuffer&);
   static void Write(const Group51Var2&, openpal::WriteBuffer&);
 
-  uint64_t time48;
+  uint64_t time;
 };
 
 

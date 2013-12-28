@@ -18,6 +18,7 @@
 #include "Group40.h"
 
 #include "MeasurementFactory.h"
+#include "../WriteConversions.h"
 #include <openpal/Serialization.h>
 
 using namespace openpal;
@@ -44,10 +45,15 @@ void Group40Var1::Write(const Group40Var1& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(4);
 }
 
-SetpointStatus Group40Var1::Convert(ReadOnlyBuffer& buff)
+SetpointStatus Group40Var1::ReadAndConvert(ReadOnlyBuffer& buff)
 {
   auto gv = Read(buff);
   return SetpointStatusFactory::From(gv.flags, gv.value);
+}
+
+void Group40Var1::ConvertAndWrite(const SetpointStatus& value, openpal::WriteBuffer& buff)
+{
+  Write(ConvertGroup40Var1::Apply(value), buff);
 }
 
 
@@ -71,10 +77,15 @@ void Group40Var2::Write(const Group40Var2& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(2);
 }
 
-SetpointStatus Group40Var2::Convert(ReadOnlyBuffer& buff)
+SetpointStatus Group40Var2::ReadAndConvert(ReadOnlyBuffer& buff)
 {
   auto gv = Read(buff);
   return SetpointStatusFactory::From(gv.flags, gv.value);
+}
+
+void Group40Var2::ConvertAndWrite(const SetpointStatus& value, openpal::WriteBuffer& buff)
+{
+  Write(ConvertGroup40Var2::Apply(value), buff);
 }
 
 
@@ -98,10 +109,15 @@ void Group40Var3::Write(const Group40Var3& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(4);
 }
 
-SetpointStatus Group40Var3::Convert(ReadOnlyBuffer& buff)
+SetpointStatus Group40Var3::ReadAndConvert(ReadOnlyBuffer& buff)
 {
   auto gv = Read(buff);
   return SetpointStatusFactory::From(gv.flags, gv.value);
+}
+
+void Group40Var3::ConvertAndWrite(const SetpointStatus& value, openpal::WriteBuffer& buff)
+{
+  Write(ConvertGroup40Var3::Apply(value), buff);
 }
 
 
@@ -125,10 +141,15 @@ void Group40Var4::Write(const Group40Var4& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(8);
 }
 
-SetpointStatus Group40Var4::Convert(ReadOnlyBuffer& buff)
+SetpointStatus Group40Var4::ReadAndConvert(ReadOnlyBuffer& buff)
 {
   auto gv = Read(buff);
   return SetpointStatusFactory::From(gv.flags, gv.value);
+}
+
+void Group40Var4::ConvertAndWrite(const SetpointStatus& value, openpal::WriteBuffer& buff)
+{
+  Write(ConvertGroup40Var4::Apply(value), buff);
 }
 
 

@@ -30,11 +30,13 @@ struct Group40Var1
   static const size_t SIZE = 5;
 
   typedef SetpointStatus Target;
-  static SetpointStatus Convert(openpal::ReadOnlyBuffer&);
+  static SetpointStatus ReadAndConvert(openpal::ReadOnlyBuffer&);
+  static void ConvertAndWrite(const SetpointStatus&, openpal::WriteBuffer&);
 
   static Group40Var1 Read(openpal::ReadOnlyBuffer&);
   static void Write(const Group40Var1&, openpal::WriteBuffer&);
 
+  typedef int32_t ValueType;
   uint8_t flags;
   int32_t value;
 };
@@ -45,11 +47,13 @@ struct Group40Var2
   static const size_t SIZE = 3;
 
   typedef SetpointStatus Target;
-  static SetpointStatus Convert(openpal::ReadOnlyBuffer&);
+  static SetpointStatus ReadAndConvert(openpal::ReadOnlyBuffer&);
+  static void ConvertAndWrite(const SetpointStatus&, openpal::WriteBuffer&);
 
   static Group40Var2 Read(openpal::ReadOnlyBuffer&);
   static void Write(const Group40Var2&, openpal::WriteBuffer&);
 
+  typedef int16_t ValueType;
   uint8_t flags;
   int16_t value;
 };
@@ -60,11 +64,13 @@ struct Group40Var3
   static const size_t SIZE = 5;
 
   typedef SetpointStatus Target;
-  static SetpointStatus Convert(openpal::ReadOnlyBuffer&);
+  static SetpointStatus ReadAndConvert(openpal::ReadOnlyBuffer&);
+  static void ConvertAndWrite(const SetpointStatus&, openpal::WriteBuffer&);
 
   static Group40Var3 Read(openpal::ReadOnlyBuffer&);
   static void Write(const Group40Var3&, openpal::WriteBuffer&);
 
+  typedef float ValueType;
   uint8_t flags;
   float value;
 };
@@ -75,11 +81,13 @@ struct Group40Var4
   static const size_t SIZE = 9;
 
   typedef SetpointStatus Target;
-  static SetpointStatus Convert(openpal::ReadOnlyBuffer&);
+  static SetpointStatus ReadAndConvert(openpal::ReadOnlyBuffer&);
+  static void ConvertAndWrite(const SetpointStatus&, openpal::WriteBuffer&);
 
   static Group40Var4 Read(openpal::ReadOnlyBuffer&);
   static void Write(const Group40Var4&, openpal::WriteBuffer&);
 
+  typedef double ValueType;
   uint8_t flags;
   double value;
 };

@@ -32,7 +32,8 @@ struct Group12Var1
   static const size_t SIZE = 11;
 
   typedef ControlRelayOutputBlock Target;
-  static ControlRelayOutputBlock Convert(openpal::ReadOnlyBuffer&);
+  static ControlRelayOutputBlock ReadAndConvert(openpal::ReadOnlyBuffer&);
+  static void ConvertAndWrite(const ControlRelayOutputBlock&, openpal::WriteBuffer&);
 
   static Group12Var1 Read(openpal::ReadOnlyBuffer&);
   static void Write(const Group12Var1&, openpal::WriteBuffer&);

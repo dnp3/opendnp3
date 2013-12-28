@@ -41,7 +41,7 @@ struct Group11Var2
   static void Write(const Group11Var2&, openpal::WriteBuffer&);
 
   uint8_t flags;
-  uint64_t time48;
+  uint64_t time;
 };
 
 

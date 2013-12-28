@@ -30,13 +30,15 @@ struct Group22Var1
   static const size_t SIZE = 5;
 
   typedef Counter Target;
-  static Counter Convert(openpal::ReadOnlyBuffer&);
+  static Counter ReadAndConvert(openpal::ReadOnlyBuffer&);
+  static void ConvertAndWrite(const Counter&, openpal::WriteBuffer&);
 
   static Group22Var1 Read(openpal::ReadOnlyBuffer&);
   static void Write(const Group22Var1&, openpal::WriteBuffer&);
 
+  typedef uint32_t ValueType;
   uint8_t flags;
-  uint32_t count;
+  uint32_t value;
 };
 
 struct Group22Var2
@@ -45,43 +47,15 @@ struct Group22Var2
   static const size_t SIZE = 3;
 
   typedef Counter Target;
-  static Counter Convert(openpal::ReadOnlyBuffer&);
+  static Counter ReadAndConvert(openpal::ReadOnlyBuffer&);
+  static void ConvertAndWrite(const Counter&, openpal::WriteBuffer&);
 
   static Group22Var2 Read(openpal::ReadOnlyBuffer&);
   static void Write(const Group22Var2&, openpal::WriteBuffer&);
 
+  typedef uint16_t ValueType;
   uint8_t flags;
-  uint16_t count;
-};
-
-struct Group22Var3
-{
-  static const GroupVariationID ID;
-  static const size_t SIZE = 5;
-
-  typedef Counter Target;
-  static Counter Convert(openpal::ReadOnlyBuffer&);
-
-  static Group22Var3 Read(openpal::ReadOnlyBuffer&);
-  static void Write(const Group22Var3&, openpal::WriteBuffer&);
-
-  uint8_t flags;
-  uint32_t count;
-};
-
-struct Group22Var4
-{
-  static const GroupVariationID ID;
-  static const size_t SIZE = 3;
-
-  typedef Counter Target;
-  static Counter Convert(openpal::ReadOnlyBuffer&);
-
-  static Group22Var4 Read(openpal::ReadOnlyBuffer&);
-  static void Write(const Group22Var4&, openpal::WriteBuffer&);
-
-  uint8_t flags;
-  uint16_t count;
+  uint16_t value;
 };
 
 struct Group22Var5
@@ -90,14 +64,16 @@ struct Group22Var5
   static const size_t SIZE = 11;
 
   typedef Counter Target;
-  static Counter Convert(openpal::ReadOnlyBuffer&);
+  static Counter ReadAndConvert(openpal::ReadOnlyBuffer&);
+  static void ConvertAndWrite(const Counter&, openpal::WriteBuffer&);
 
   static Group22Var5 Read(openpal::ReadOnlyBuffer&);
   static void Write(const Group22Var5&, openpal::WriteBuffer&);
 
+  typedef uint32_t ValueType;
   uint8_t flags;
-  uint32_t count;
-  uint64_t time48;
+  uint32_t value;
+  uint64_t time;
 };
 
 struct Group22Var6
@@ -106,46 +82,16 @@ struct Group22Var6
   static const size_t SIZE = 9;
 
   typedef Counter Target;
-  static Counter Convert(openpal::ReadOnlyBuffer&);
+  static Counter ReadAndConvert(openpal::ReadOnlyBuffer&);
+  static void ConvertAndWrite(const Counter&, openpal::WriteBuffer&);
 
   static Group22Var6 Read(openpal::ReadOnlyBuffer&);
   static void Write(const Group22Var6&, openpal::WriteBuffer&);
 
+  typedef uint16_t ValueType;
   uint8_t flags;
-  uint16_t count;
-  uint64_t time48;
-};
-
-struct Group22Var7
-{
-  static const GroupVariationID ID;
-  static const size_t SIZE = 11;
-
-  typedef Counter Target;
-  static Counter Convert(openpal::ReadOnlyBuffer&);
-
-  static Group22Var7 Read(openpal::ReadOnlyBuffer&);
-  static void Write(const Group22Var7&, openpal::WriteBuffer&);
-
-  uint8_t flags;
-  uint32_t count;
-  uint64_t time48;
-};
-
-struct Group22Var8
-{
-  static const GroupVariationID ID;
-  static const size_t SIZE = 9;
-
-  typedef Counter Target;
-  static Counter Convert(openpal::ReadOnlyBuffer&);
-
-  static Group22Var8 Read(openpal::ReadOnlyBuffer&);
-  static void Write(const Group22Var8&, openpal::WriteBuffer&);
-
-  uint8_t flags;
-  uint16_t count;
-  uint64_t time48;
+  uint16_t value;
+  uint64_t time;
 };
 
 

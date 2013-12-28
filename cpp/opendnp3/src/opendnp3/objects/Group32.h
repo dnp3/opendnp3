@@ -30,11 +30,13 @@ struct Group32Var1
   static const size_t SIZE = 5;
 
   typedef Analog Target;
-  static Analog Convert(openpal::ReadOnlyBuffer&);
+  static Analog ReadAndConvert(openpal::ReadOnlyBuffer&);
+  static void ConvertAndWrite(const Analog&, openpal::WriteBuffer&);
 
   static Group32Var1 Read(openpal::ReadOnlyBuffer&);
   static void Write(const Group32Var1&, openpal::WriteBuffer&);
 
+  typedef int32_t ValueType;
   uint8_t flags;
   int32_t value;
 };
@@ -45,11 +47,13 @@ struct Group32Var2
   static const size_t SIZE = 3;
 
   typedef Analog Target;
-  static Analog Convert(openpal::ReadOnlyBuffer&);
+  static Analog ReadAndConvert(openpal::ReadOnlyBuffer&);
+  static void ConvertAndWrite(const Analog&, openpal::WriteBuffer&);
 
   static Group32Var2 Read(openpal::ReadOnlyBuffer&);
   static void Write(const Group32Var2&, openpal::WriteBuffer&);
 
+  typedef int16_t ValueType;
   uint8_t flags;
   int16_t value;
 };
@@ -60,14 +64,16 @@ struct Group32Var3
   static const size_t SIZE = 11;
 
   typedef Analog Target;
-  static Analog Convert(openpal::ReadOnlyBuffer&);
+  static Analog ReadAndConvert(openpal::ReadOnlyBuffer&);
+  static void ConvertAndWrite(const Analog&, openpal::WriteBuffer&);
 
   static Group32Var3 Read(openpal::ReadOnlyBuffer&);
   static void Write(const Group32Var3&, openpal::WriteBuffer&);
 
+  typedef int32_t ValueType;
   uint8_t flags;
   int32_t value;
-  uint64_t time48;
+  uint64_t time;
 };
 
 struct Group32Var4
@@ -76,14 +82,16 @@ struct Group32Var4
   static const size_t SIZE = 9;
 
   typedef Analog Target;
-  static Analog Convert(openpal::ReadOnlyBuffer&);
+  static Analog ReadAndConvert(openpal::ReadOnlyBuffer&);
+  static void ConvertAndWrite(const Analog&, openpal::WriteBuffer&);
 
   static Group32Var4 Read(openpal::ReadOnlyBuffer&);
   static void Write(const Group32Var4&, openpal::WriteBuffer&);
 
+  typedef int16_t ValueType;
   uint8_t flags;
   int16_t value;
-  uint64_t time48;
+  uint64_t time;
 };
 
 struct Group32Var5
@@ -92,11 +100,13 @@ struct Group32Var5
   static const size_t SIZE = 5;
 
   typedef Analog Target;
-  static Analog Convert(openpal::ReadOnlyBuffer&);
+  static Analog ReadAndConvert(openpal::ReadOnlyBuffer&);
+  static void ConvertAndWrite(const Analog&, openpal::WriteBuffer&);
 
   static Group32Var5 Read(openpal::ReadOnlyBuffer&);
   static void Write(const Group32Var5&, openpal::WriteBuffer&);
 
+  typedef float ValueType;
   uint8_t flags;
   float value;
 };
@@ -107,11 +117,13 @@ struct Group32Var6
   static const size_t SIZE = 9;
 
   typedef Analog Target;
-  static Analog Convert(openpal::ReadOnlyBuffer&);
+  static Analog ReadAndConvert(openpal::ReadOnlyBuffer&);
+  static void ConvertAndWrite(const Analog&, openpal::WriteBuffer&);
 
   static Group32Var6 Read(openpal::ReadOnlyBuffer&);
   static void Write(const Group32Var6&, openpal::WriteBuffer&);
 
+  typedef double ValueType;
   uint8_t flags;
   double value;
 };
@@ -122,14 +134,16 @@ struct Group32Var7
   static const size_t SIZE = 11;
 
   typedef Analog Target;
-  static Analog Convert(openpal::ReadOnlyBuffer&);
+  static Analog ReadAndConvert(openpal::ReadOnlyBuffer&);
+  static void ConvertAndWrite(const Analog&, openpal::WriteBuffer&);
 
   static Group32Var7 Read(openpal::ReadOnlyBuffer&);
   static void Write(const Group32Var7&, openpal::WriteBuffer&);
 
+  typedef float ValueType;
   uint8_t flags;
   float value;
-  uint64_t time48;
+  uint64_t time;
 };
 
 struct Group32Var8
@@ -138,14 +152,16 @@ struct Group32Var8
   static const size_t SIZE = 15;
 
   typedef Analog Target;
-  static Analog Convert(openpal::ReadOnlyBuffer&);
+  static Analog ReadAndConvert(openpal::ReadOnlyBuffer&);
+  static void ConvertAndWrite(const Analog&, openpal::WriteBuffer&);
 
   static Group32Var8 Read(openpal::ReadOnlyBuffer&);
   static void Write(const Group32Var8&, openpal::WriteBuffer&);
 
+  typedef double ValueType;
   uint8_t flags;
   double value;
-  uint64_t time48;
+  uint64_t time;
 };
 
 
