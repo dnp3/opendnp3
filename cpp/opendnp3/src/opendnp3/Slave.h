@@ -41,6 +41,7 @@
 namespace opendnp3
 {
 
+class Database;
 class AS_Base;
 
 /**

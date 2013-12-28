@@ -53,7 +53,7 @@ Slave::Slave(openpal::Logger aLogger, IAppLayer* apAppLayer, IExecutor* apExecut
 	mRspTypes(arCfg),
 	mpUnsolTimer(nullptr),	
 	mCachedRequest(arCfg.mMaxControls),	
-	mRspContext(aLogger, apDatabase, &mRspTypes),
+	mRspContext(aLogger),
 	mSBOHandler(arCfg.mSelectTimeout, apCmdHandler, apExecutor),	
 	mDeferredUpdateCount(0),	
 	mDeferredUnsol(false),	

@@ -83,7 +83,7 @@ void SlaveStateBase::OnUnsolExpiration(Slave* slave)
 void SlaveStateBase::DoUnsolSuccess(Slave* slave)
 {
 	if (!slave->mStartupNullUnsol) slave->mStartupNullUnsol = true; //it was a null unsol packet
-	slave->mRspContext.ClearAndReset();
+	//slave->mRspContext.ClearAndReset(); TODO
 
 	// this will cause us to immediately re-evaluate if we need to send another unsol rsp
 	// we use the Deferred mechanism to give the slave an opportunity to respond to any Deferred request instead
@@ -165,7 +165,7 @@ void AS_Idle::OnDataUpdate(Slave* slave)
 	slave->FlushUpdates();	
 
 	// start the unsol timer or act immediately if there's no pack timer
-	if (!slave->mConfig.mDisableUnsol && slave->mStartupNullUnsol && slave->mRspContext.HasEvents(slave->mConfig.mUnsolMask)) 
+	if (!slave->mConfig.mDisableUnsol && slave->mStartupNullUnsol) // TODO && slave->mRspContext.HasEvents(slave->mConfig.mUnsolMask)) 
 	{
 		if (slave->mConfig.mUnsolPackDelay.GetMilliseconds() <= 0) 
 		{	
@@ -186,14 +186,15 @@ void AS_Idle::OnUnsolExpiration(Slave* slave)
 {
 	if (slave->mStartupNullUnsol) 
 	{
+		/* TODO
 		if (slave->mRspContext.HasEvents(slave->mConfig.mUnsolMask))
 		{
-			/*
+			
 			slave->ChangeState(AS_WaitForUnsolSuccess::Inst());
 			slave->mRspContext.LoadUnsol(slave->mUnsol,  slave->mIIN,  slave->mConfig.mUnsolMask);
-			slave->SendUnsolicited(slave->mUnsol);
-			*/ //TODO
+			slave->SendUnsolicited(slave->mUnsol);			
 		}
+		*/
 	}
 	else 
 	{
@@ -212,12 +213,15 @@ AS_WaitForRspSuccess AS_WaitForRspSuccess::mInstance;
 
 void AS_WaitForRspSuccess::OnSolFailure(Slave* slave)
 {
-	slave->mRspContext.Reset();
+	//slave->mRspContext.Reset(); TODO
 	slave->ChangeState(AS_Idle::Inst());	
 }
 
 void AS_WaitForRspSuccess::OnSolSendSuccess(Slave* slave)
 {
+
+	/* TODO 
+	
 	slave->mRspContext.ClearWritten();
 
 	if (slave->mRspContext.IsComplete())
@@ -225,12 +229,12 @@ void AS_WaitForRspSuccess::OnSolSendSuccess(Slave* slave)
 		slave->ChangeState(AS_Idle::Inst());
 	}
 	else 
-	{
-		/* TODO
+	{		
 		slave->mRspContext.LoadResponse(slave->mResponse);
-		slave->SendResponse(slave->mResponse);
-		*/
+		slave->SendResponse(slave->mResponse);	
 	}
+
+	*/
 }
 
 // When we get a request we should no longer wait for confirmation, but we should
@@ -250,7 +254,7 @@ AS_WaitForUnsolSuccess AS_WaitForUnsolSuccess::mInstance;
 void AS_WaitForUnsolSuccess::OnUnsolFailure(Slave* slave)
 {
 	// if any unsol transaction fails, we re-enable the timer with the unsol retry delay
-	slave->mRspContext.Reset();
+	// slave->mRspContext.Reset(); TODO
 	slave->StartUnsolTimer(slave->mConfig.mUnsolRetryDelay);
 	slave->ChangeState(AS_Idle::Inst());	
 }
@@ -300,7 +304,7 @@ void AS_WaitForSolUnsolSuccess::OnSolSendSuccess(Slave* slave)
 
 void AS_WaitForSolUnsolSuccess::OnUnsolFailure(Slave* slave)
 {	
-	slave->mRspContext.Reset();
+	//slave->mRspContext.Reset(); TODO
 	slave->ChangeState(AS_WaitForRspSuccess::Inst());
 	if (slave->mConfig.mUnsolRetryDelay.GetMilliseconds() > 0)
 	{

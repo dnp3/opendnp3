@@ -27,6 +27,7 @@
 
 #include <openpal/Location.h>
 
+#include "Database.h"
 #include "Slave.h"
 #include "ApplicationStack.h"
 #include "DynamicallyAllocatedDatabase.h"
