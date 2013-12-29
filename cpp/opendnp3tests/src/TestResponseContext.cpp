@@ -87,4 +87,48 @@ BOOST_AUTO_TEST_CASE(WritesMixedValues)
 	BOOST_REQUIRE_EQUAL("1E 02 00 01 02 02 00 00 02 00 00 01 02 00 03 04 02 02", toHex(writer.ToReadOnly()));	
 }
 
+BOOST_AUTO_TEST_CASE(ReturnsFullWhen2ndHeaderCantBeWritten)
+{	
+	DynamicallyAllocatedDatabase dadb(tmp);
+	Database db(dadb.GetFacade());
+	ResponseContext context(&db);
+
+	BOOST_REQUIRE(QueueResult::SUCCESS == context.QueueRead(GroupVariation::Group30Var2, StaticRange(1,2)));
+	BOOST_REQUIRE(QueueResult::SUCCESS == context.QueueRead(GroupVariation::Group1Var2, StaticRange(3,4)));
+
+	{
+		ObjectWriter writer(buffer.Truncate(12)); //enough for first header, but not the 2nd
+		BOOST_REQUIRE(LoadResult::FULL == context.Load(writer));
+		BOOST_REQUIRE_EQUAL("1E 02 00 01 02 02 00 00 02 00 00", toHex(writer.ToReadOnly()));
+	}
+
+	{
+		ObjectWriter writer(buffer.Truncate(12));
+		BOOST_REQUIRE(LoadResult::COMPLETED == context.Load(writer));
+		BOOST_REQUIRE_EQUAL("01 02 00 03 04 02 02", toHex(writer.ToReadOnly()));
+	}
+}
+
+BOOST_AUTO_TEST_CASE(ReturnsFullWhenOnlyPartof2ndHeaderCanBeWritten)
+{	
+	DynamicallyAllocatedDatabase dadb(tmp);
+	Database db(dadb.GetFacade());
+	ResponseContext context(&db);
+
+	BOOST_REQUIRE(QueueResult::SUCCESS == context.QueueRead(GroupVariation::Group30Var2, StaticRange(1,2)));
+	BOOST_REQUIRE(QueueResult::SUCCESS == context.QueueRead(GroupVariation::Group1Var2, StaticRange(3,4)));
+
+	{
+		ObjectWriter writer(buffer.Truncate(17)); //enough for first header, but not the full 2nd header
+		BOOST_REQUIRE(LoadResult::FULL == context.Load(writer));
+		BOOST_REQUIRE_EQUAL("1E 02 00 01 02 02 00 00 02 00 00 01 02 00 03 03 02", toHex(writer.ToReadOnly()));
+	}
+
+	{
+		ObjectWriter writer(buffer.Truncate(12));
+		BOOST_REQUIRE(LoadResult::COMPLETED == context.Load(writer));
+		BOOST_REQUIRE_EQUAL("01 02 00 04 04 02", toHex(writer.ToReadOnly()));
+	}
+}
+
 BOOST_AUTO_TEST_SUITE_END()
