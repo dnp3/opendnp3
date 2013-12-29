@@ -598,4 +598,4 @@ BOOST_AUTO_TEST_CASE(ParsesOctetStringResponseWithNoCharacters)
 
 BOOST_AUTO_TEST_SUITE_END() //end suite
 
-/* vim: set ts=4 sw=4: */
+

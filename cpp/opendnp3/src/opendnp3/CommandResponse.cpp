@@ -58,5 +58,5 @@ std::string CommandResponse::ToString() const
 
 }
 
-/* vim: set ts=4 sw=4: */
+
 

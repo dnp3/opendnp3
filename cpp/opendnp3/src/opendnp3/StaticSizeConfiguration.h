@@ -21,12 +21,25 @@
 #ifndef __STATIC_SIZE_CONFIGURATION_H_
 #define __STATIC_SIZE_CONFIGURATION_H_
 
+#include <opendnp3/Uncopyable.h>
+
+#include <cstdint>
+
 // Default configurations for statically allocated buffers int the stack
 // They are liberally set by default, but can be reduced for embedded systems
 
+namespace opendnp3 
+{
 
-// the maximum number of event buffers that can be bound to a database
-#define MACRO_MAX_EVENT_BUFFERS 10
+struct SizeConfiguration : private PureStatic
+{
+	// the maximum number of event buffers that can be bound to a database
+	static const uint16_t MAX_EVENT_BUFFERS = 10;
 
+	// the maximum number of static read object/variation records that can be in any READ request
+	static const uint16_t MAX_READ_REQUESTS = 16;
+};
+
+}
 
 #endif

@@ -62,6 +62,9 @@ public:
 	openpal::Indexable<ControlStatus, uint16_t> ControlStatii();
 	openpal::Indexable<SetpointStatus, uint16_t> SetpointStatii();
 
+	template <class T> 
+	openpal::Indexable<T, uint16_t> Values();
+
 	StaticDataFacade staticData;
 
 private:
@@ -90,14 +93,12 @@ private:
 		}	
 	}
 
-	openpal::StaticList<IEventBuffer*, uint16_t, MACRO_MAX_EVENT_BUFFERS> eventBuffers;
+	openpal::StaticList<IEventBuffer*, uint16_t, SizeConfiguration::MAX_EVENT_BUFFERS> eventBuffers;
 
 	// ITransactable  functions, no lock on this structure.
 	void Start() final {}
 	void End() final {}	
 };
-
-
 
 }
 

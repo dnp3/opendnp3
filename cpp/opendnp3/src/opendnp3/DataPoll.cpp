@@ -95,4 +95,4 @@ void ClassPoll::ConfigureRequest(APDU& arAPDU)
 
 } //end ns
 
-/* vim: set ts=4 sw=4: */
+

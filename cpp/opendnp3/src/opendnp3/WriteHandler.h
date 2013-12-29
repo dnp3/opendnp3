@@ -81,7 +81,7 @@ IINField WriteHandler::Process(IINField& indications, const TimeFun& fun)
 
 }
 
-/* vim: set ts=4 sw=4: */
+
 
 #endif
 

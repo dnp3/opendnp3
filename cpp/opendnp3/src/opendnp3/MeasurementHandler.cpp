@@ -99,4 +99,4 @@ void MeasurementHandler::_OnIndexPrefixOfOctets(GroupVariation gv, const Iterabl
 
 }
 
-/* vim: set ts=4 sw=4: */
+

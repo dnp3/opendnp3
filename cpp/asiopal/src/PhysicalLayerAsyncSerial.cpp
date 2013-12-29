@@ -100,5 +100,5 @@ void PhysicalLayerAsyncSerial::DoAsyncWrite(const ReadOnlyBuffer& arBuffer)
 
 }
 
-/* vim: set ts=4 sw=4: */
+
 

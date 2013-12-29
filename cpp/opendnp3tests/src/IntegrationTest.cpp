@@ -181,5 +181,5 @@ void IntegrationTest::AddStackPair(LogLevel aLevel, size_t aNumPoints)
 
 }
 
-/* vim: set ts=4 sw=4: */
+
 

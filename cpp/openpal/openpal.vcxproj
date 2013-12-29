@@ -165,6 +165,7 @@
     <ClInclude Include="include\openpal\MonotonicTimestamp.h" />
     <ClInclude Include="include\openpal\MoveOnCopy.h" />
     <ClInclude Include="include\openpal\IndexableIterator.h" />
+    <ClInclude Include="include\openpal\QueueAdapter.h" />
     <ClInclude Include="include\openpal\RandomInsertAdapter.h" />
     <ClInclude Include="include\openpal\ReverseEndian.h" />
     <ClInclude Include="include\openpal\Sequence.h" />

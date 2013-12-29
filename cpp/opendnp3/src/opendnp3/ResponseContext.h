@@ -21,7 +21,16 @@
 #ifndef __RESPONSE_CONTEXT_H_
 #define __RESPONSE_CONTEXT_H_
 
-#include <openpal/Loggable.h>
+#include <opendnp3/Uncopyable.h>
+
+#include <openpal/QueueAdapter.h>
+
+#include "StaticSizeConfiguration.h"
+#include "StaticRange.h"
+#include "APDUResponse.h"
+#include "ObjectWriter.h"
+#include "Database.h"
+#include "ResponseHelpers.h"
 
 namespace opendnp3
 {
@@ -30,21 +39,58 @@ namespace opendnp3
  * Builds and tracks the state of multi-fragmented responses to READ requests,
  * coordinating the static database and event buffer
  */
-class ResponseContext : public openpal::Loggable
-{		
+class ResponseContext : private Uncopyable
+{			
+	typedef LoadResult (*LoadFun)(ObjectWriter& writer, StaticRange& range, Database& db, APDUResponse& rsp);
+
+	class FunctionalStaticRange: public StaticRange
+	{
+		public:
+
+		FunctionalStaticRange(const StaticRange& sr) : StaticRange(sr), pLoadFun(nullptr) {}
+		FunctionalStaticRange() : StaticRange(), pLoadFun(nullptr) {}
+		FunctionalStaticRange(LoadFun pLoadFun_): StaticRange(), pLoadFun(pLoadFun_) {}
+		LoadFun pLoadFun;
+	};
+
 	public:
 
-	ResponseContext(openpal::Logger& arLogger);	
+	ResponseContext();
+
+	void Reset();
+
+	bool QueueRead(GroupVariation gv, const StaticRange& range);
+	
+	LoadResult Load(Database& db, APDUResponse& response);
 	
 	private:
+
+	LoadResult LoadStaticData(ObjectWriter& writer, Database& db, APDUResponse& response);
 	
-	bool mFIR;
-	bool mFIN;	
+	bool first;
+	openpal::StaticArray<FunctionalStaticRange, uint8_t, SizeConfiguration::MAX_READ_REQUESTS> staticRangeArray;
+	openpal::QueueAdapter<FunctionalStaticRange, uint8_t> staticResponseQueue;	
+
+	template <class T, class U>
+	bool QueueRange(const StaticRange& rng);
 };
 
+template <class T, class U>
+bool ResponseContext::QueueRange(const StaticRange& rng)
+{
+	FunctionalStaticRange range(rng);
+	if(range.IsContainedByUInt8())
+	{
+		range.pLoadFun = &LoadFixedSizeStartStop<T, U, UInt8, QualifierCode::UINT8_START_STOP>;
+		return staticResponseQueue.Push(range);				
+	}
+	else
+	{			
+		range.pLoadFun = &LoadFixedSizeStartStop<T, U, UInt16, QualifierCode::UINT16_START_STOP>;
+		return staticResponseQueue.Push(range);
+	}
 }
 
-
-/* vim: set ts=4 sw=4: */
+}
 
 #endif

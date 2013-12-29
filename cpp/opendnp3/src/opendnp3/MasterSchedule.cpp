@@ -144,5 +144,5 @@ AsyncTaskBase* MasterSchedule::AddClassScan(int aClassMask, TimeDuration aScanRa
 }
 
 
-/* vim: set ts=4 sw=4: */
+
 

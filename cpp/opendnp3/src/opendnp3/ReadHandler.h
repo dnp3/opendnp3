@@ -51,7 +51,7 @@ class ReadHandler : public HeaderHandlerBase, private openpal::Loggable
 
 }
 
-/* vim: set ts=4 sw=4: */
+
 
 #endif
 

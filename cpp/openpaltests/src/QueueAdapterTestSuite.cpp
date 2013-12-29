@@ -18,47 +18,43 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __COMMAND_RESPONSE_H_
-#define __COMMAND_RESPONSE_H_
+#include <boost/test/unit_test.hpp>
 
-#include "gen/CommandStatus.h"
-#include "gen/CommandResult.h"
+#include <openpal/StaticArray.h>
+#include <openpal/QueueAdapter.h>
 
-namespace opendnp3
+using namespace openpal;
+
+BOOST_AUTO_TEST_SUITE(QueueAdapterTestSuite)
+
+BOOST_AUTO_TEST_CASE(CorrectInitialState)
 {
+	StaticArray<int, uint8_t, 3> array;
+	QueueAdapter<int, uint8_t> stack(array.ToIndexable());
 
-/**
-* Represents the result of a command request
-*/
-class CommandResponse
-{
-public:
-
-	static const CommandResponse Success;
-	
-	CommandResponse(CommandResult aResult = CommandResult::NO_COMMS, CommandStatus aStatus = CommandStatus::UNDEFINED);
-
-	static CommandResponse OK(CommandStatus aStatus);
-	
-	
-	///  The result of the operation, should be examined before looking at the status code
-	CommandResult GetResult();
-
-	/// The command status enumeration received from the outstation, if applicable
-	CommandStatus GetStatus();
-
-	bool operator==(const CommandResponse& arRHS) const;
-
-	std::string ToString() const;
-
-private:
-	
-	CommandResult mResult;	
-	CommandStatus mStatus;
-};
-
+	BOOST_REQUIRE(stack.IsEmpty());
+	BOOST_REQUIRE(!stack.IsFull());
+	BOOST_REQUIRE_EQUAL(0, stack.Size());
+	BOOST_REQUIRE_EQUAL(3, stack.Capacity());
 }
 
+BOOST_AUTO_TEST_CASE(PushesAndPopsCorrectly)
+{
+	StaticArray<int, int, 3> array;
+	QueueAdapter<int, int> stack(array.ToIndexable());
 
+	stack.Push(1);
+	stack.Push(2);
+	stack.Push(3);
+	BOOST_REQUIRE(stack.IsFull());
+	BOOST_REQUIRE_EQUAL(1, stack.Pop());
+	BOOST_REQUIRE_EQUAL(2, stack.Pop());
+	BOOST_REQUIRE_EQUAL(3, stack.Pop());
+	BOOST_REQUIRE(stack.IsFull()); //both full and empty!
+	BOOST_REQUIRE(stack.IsEmpty());
+	stack.Clear();	
+	BOOST_REQUIRE(stack.IsEmpty());
+	BOOST_REQUIRE(!stack.IsFull());
+}
 
-#endif
+BOOST_AUTO_TEST_SUITE_END()

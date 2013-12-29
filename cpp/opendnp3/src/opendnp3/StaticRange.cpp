@@ -18,47 +18,40 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __COMMAND_RESPONSE_H_
-#define __COMMAND_RESPONSE_H_
 
-#include "gen/CommandStatus.h"
-#include "gen/CommandResult.h"
+#include "StaticRange.h"
+
+#include <limits>
 
 namespace opendnp3
 {
 
-/**
-* Represents the result of a command request
-*/
-class CommandResponse
+const uint16_t MIN(std::numeric_limits<uint16_t>::min());
+const uint16_t MAX(std::numeric_limits<uint16_t>::max());
+
+StaticRange::StaticRange() : start(MAX), stop(MIN) {}
+
+StaticRange::StaticRange(uint16_t start_, uint16_t stop_) : 
+start(start_),
+stop(stop_)
+{}
+
+bool StaticRange::IsContainedByUInt8() const
 {
-public:
-
-	static const CommandResponse Success;
-	
-	CommandResponse(CommandResult aResult = CommandResult::NO_COMMS, CommandStatus aStatus = CommandStatus::UNDEFINED);
-
-	static CommandResponse OK(CommandStatus aStatus);
-	
-	
-	///  The result of the operation, should be examined before looking at the status code
-	CommandResult GetResult();
-
-	/// The command status enumeration received from the outstation, if applicable
-	CommandStatus GetStatus();
-
-	bool operator==(const CommandResponse& arRHS) const;
-
-	std::string ToString() const;
-
-private:
-	
-	CommandResult mResult;	
-	CommandStatus mStatus;
-};
-
+	return (stop <= 255) && (start <= 255);
 }
 
+void StaticRange::Advance()
+{
+	if(start < stop) 
+	{
+		++start;
+	}
+	else
+	{
+		start = MAX;
+		stop = MIN;
+	}
+}
 
-
-#endif
+}

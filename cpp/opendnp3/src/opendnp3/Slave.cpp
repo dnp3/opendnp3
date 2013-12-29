@@ -53,7 +53,7 @@ Slave::Slave(openpal::Logger aLogger, IAppLayer* apAppLayer, IExecutor* apExecut
 	mRspTypes(arCfg),
 	mpUnsolTimer(nullptr),	
 	mCachedRequest(arCfg.mMaxControls),	
-	mRspContext(aLogger),
+	mRspContext(),
 	mSBOHandler(arCfg.mSelectTimeout, apCmdHandler, apExecutor),	
 	mDeferredUpdateCount(0),	
 	mDeferredUnsol(false),	
@@ -605,4 +605,4 @@ void Slave::ResetTimeIIN()
 
 } //end ns
 
-/* vim: set ts=4 sw=4: */
+

@@ -18,47 +18,45 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __COMMAND_RESPONSE_H_
-#define __COMMAND_RESPONSE_H_
+#ifndef __RESPONSE_HELPERS_
+#define __RESPONSE_HELPERS_
 
-#include "gen/CommandStatus.h"
-#include "gen/CommandResult.h"
+#include "Database.h"
+#include "StaticRange.h"
+#include "APDUResponse.h"
+#include "ObjectWriter.h"
 
 namespace opendnp3
 {
 
-/**
-* Represents the result of a command request
-*/
-class CommandResponse
+enum class LoadResult
 {
-public:
-
-	static const CommandResponse Success;
-	
-	CommandResponse(CommandResult aResult = CommandResult::NO_COMMS, CommandStatus aStatus = CommandStatus::UNDEFINED);
-
-	static CommandResponse OK(CommandStatus aStatus);
-	
-	
-	///  The result of the operation, should be examined before looking at the status code
-	CommandResult GetResult();
-
-	/// The command status enumeration received from the outstation, if applicable
-	CommandStatus GetStatus();
-
-	bool operator==(const CommandResponse& arRHS) const;
-
-	std::string ToString() const;
-
-private:
-	
-	CommandResult mResult;	
-	CommandStatus mStatus;
+	EMPTY,		// nothing was loaded because the response context is empty
+	COMPLETED,	// at least 1 event was loaded and the response context is empty
+	FULL		// events were loaded and the APDU is full, context is not empty
 };
 
+template <class T, class Converter, class IndexType, QualifierCode Qualifier>
+LoadResult LoadFixedSizeStartStop(ObjectWriter& writer, StaticRange& range, Database& db, APDUResponse& rsp)
+{
+	auto values = db.Values<typename T::Target>();			
+	auto iter = writer.IterateOverRange<IndexType, T>(Qualifier, static_cast<typename IndexType::Type>(range.start));			
+	while(range.IsDefined())
+	{
+		if(iter.Write(Converter::Apply(values[range.start])))
+		{
+			range.Advance();
+		}
+		else 
+		{
+			iter.Complete();
+			return LoadResult::FULL;	
+		}
+	}
+	iter.Complete();	
+	return LoadResult::COMPLETED;
 }
 
-
+}
 
 #endif

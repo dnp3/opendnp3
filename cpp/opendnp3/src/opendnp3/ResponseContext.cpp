@@ -20,17 +20,81 @@
  */
 #include "ResponseContext.h"
 
+#include <openpal/Serialization.h>
+
+#include "WriteConversions.h"
+
 using namespace openpal;
 
 namespace opendnp3
 {
 
-ResponseContext::ResponseContext(openpal::Logger& arLogger) :
-	Loggable(arLogger),		
-	mFIR(true),
-	mFIN(false)	
+ResponseContext::ResponseContext() : first(true), staticResponseQueue(staticRangeArray.ToIndexable())
 {}
+
+#define MACRO_QUEUE_RANGE(GV) \
+	case(GroupVariation::GV): \
+	return QueueRange<GV, Convert##GV>(range);
+
+bool ResponseContext::QueueRead(GroupVariation gv, const StaticRange& range)
+{	
+	switch(gv)
+	{		
+		MACRO_QUEUE_RANGE(Group1Var2);
+
+		MACRO_QUEUE_RANGE(Group10Var2);
+
+		MACRO_QUEUE_RANGE(Group20Var1);
+		MACRO_QUEUE_RANGE(Group20Var2);
+		MACRO_QUEUE_RANGE(Group20Var5);
+		MACRO_QUEUE_RANGE(Group20Var6);
+
+		MACRO_QUEUE_RANGE(Group30Var1);
+		MACRO_QUEUE_RANGE(Group30Var2);
+		MACRO_QUEUE_RANGE(Group30Var3);
+		MACRO_QUEUE_RANGE(Group30Var4);
+		MACRO_QUEUE_RANGE(Group30Var5);
+		MACRO_QUEUE_RANGE(Group30Var6);
+
+		MACRO_QUEUE_RANGE(Group40Var1);
+		MACRO_QUEUE_RANGE(Group40Var2);
+		MACRO_QUEUE_RANGE(Group40Var3);
+		MACRO_QUEUE_RANGE(Group40Var4);
+		
+		default:
+			return false;
+	}	
+}
+
+LoadResult ResponseContext::Load(Database& db, APDUResponse& response)
+{
+	ObjectWriter writer(response.HeaderPosition());
+	return LoadStaticData(writer, db, response);
+}
+
+LoadResult ResponseContext::LoadStaticData(ObjectWriter& writer, Database& db, APDUResponse& response)
+{		
+	while(!staticResponseQueue.IsEmpty())
+	{				
+		auto& front = staticResponseQueue.Front();
+		auto result = (*front.pLoadFun)(writer, front, db, response);
+		if(result == LoadResult::COMPLETED)
+		{
+			staticResponseQueue.Pop();
+			if(staticResponseQueue.IsEmpty()) return LoadResult::COMPLETED;
+			else continue;
+		}
+		else return result;
+	}
+
+	return LoadResult::EMPTY;
+}
+
+void ResponseContext::Reset()
+{
+	staticResponseQueue.Clear();
+}
 
 }
 
-/* vim: set ts=4 sw=4: */
+

@@ -18,47 +18,38 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __COMMAND_RESPONSE_H_
-#define __COMMAND_RESPONSE_H_
 
-#include "gen/CommandStatus.h"
-#include "gen/CommandResult.h"
+#ifndef __STATIC_RANGE_H_
+#define __STATIC_RANGE_H_
+
+#include <cstdint>
+#include "GroupVariation.h"
 
 namespace opendnp3
 {
 
-/**
-* Represents the result of a command request
-*/
-class CommandResponse
+class StaticRange
 {
-public:
+	public:
 
-	static const CommandResponse Success;
+	StaticRange();
+	StaticRange(uint16_t start_, uint16_t stop_);
+
+	bool IsContainedByUInt8() const;
 	
-	CommandResponse(CommandResult aResult = CommandResult::NO_COMMS, CommandStatus aStatus = CommandStatus::UNDEFINED);
+	inline bool IsDefined() const { return start <= stop; }	
 
-	static CommandResponse OK(CommandStatus aStatus);
+	void Advance();
+
+	uint16_t start;
+	uint16_t stop;
 	
-	
-	///  The result of the operation, should be examined before looking at the status code
-	CommandResult GetResult();
+	private:
 
-	/// The command status enumeration received from the outstation, if applicable
-	CommandStatus GetStatus();
-
-	bool operator==(const CommandResponse& arRHS) const;
-
-	std::string ToString() const;
-
-private:
-	
-	CommandResult mResult;	
-	CommandStatus mStatus;
+	static const uint16_t MIN;
+	static const uint16_t MAX;	
 };
 
 }
-
-
 
 #endif

@@ -82,5 +82,20 @@ void Database::Update(const SetpointStatus& value, uint16_t index)
 	if(staticData.setpointStatii.Contains(index)) staticData.setpointStatii[index] = value;
 }
 
+template <> 
+openpal::Indexable<Binary, uint16_t> Database::Values<Binary>() { return Binaries(); }
+
+template <> 
+openpal::Indexable<Analog, uint16_t> Database::Values<Analog>() { return Analogs(); }
+
+template <> 
+openpal::Indexable<Counter, uint16_t> Database::Values<Counter>() { return Counters(); }
+
+template <> 
+openpal::Indexable<ControlStatus, uint16_t> Database::Values<ControlStatus>() { return ControlStatii(); }
+
+template <> 
+openpal::Indexable<SetpointStatus, uint16_t> Database::Values<SetpointStatus> () { return SetpointStatii(); }
+
 }
 

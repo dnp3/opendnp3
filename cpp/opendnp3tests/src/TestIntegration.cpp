@@ -89,4 +89,4 @@ BOOST_AUTO_TEST_CASE(MasterToSlaveThroughput)
 
 BOOST_AUTO_TEST_SUITE_END()
 
-/* vim: set ts=4 sw=4: */
+

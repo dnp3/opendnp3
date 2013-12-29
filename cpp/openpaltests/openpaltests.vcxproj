@@ -158,6 +158,7 @@
     <ClCompile Include="src\BoostTestStart.cpp" />
     <ClCompile Include="src\DoublyLinkedListAdapterTestSuite.cpp" />
     <ClCompile Include="src\ListAdapterTestSuite.cpp" />
+    <ClCompile Include="src\QueueAdapterTestSuite.cpp" />
     <ClCompile Include="src\RandomInsertAdapterTestSuite.cpp" />
     <ClCompile Include="src\StackAdapterTestSuite.cpp" />
   </ItemGroup>

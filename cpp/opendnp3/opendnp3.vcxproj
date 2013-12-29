@@ -197,6 +197,7 @@
     <ClInclude Include="src\opendnp3\RangeWriteIterator.h" />
     <ClInclude Include="src\opendnp3\ReadHandler.h" />
     <ClInclude Include="src\opendnp3\ResponseContext.h" />
+    <ClInclude Include="src\opendnp3\ResponseHelpers.h" />
     <ClInclude Include="src\opendnp3\SecLinkLayerStates.h" />
     <ClInclude Include="src\opendnp3\SelectionCriteria.h" />
     <ClInclude Include="src\opendnp3\SequenceInfo.h" />
@@ -210,6 +211,7 @@
     <ClInclude Include="src\opendnp3\StartupTasks.h" />
     <ClInclude Include="src\opendnp3\StaticallyAllocatedEventBuffer.h" />
     <ClInclude Include="src\opendnp3\StaticDataFacade.h" />
+    <ClInclude Include="src\opendnp3\StaticRange.h" />
     <ClInclude Include="src\opendnp3\StaticSizeConfiguration.h" />
     <ClInclude Include="src\opendnp3\TimeSyncHandler.h" />
     <ClInclude Include="src\opendnp3\TLS_Base.h" />
@@ -347,6 +349,7 @@
     <ClCompile Include="src\opendnp3\SolicitedChannel.cpp" />
     <ClCompile Include="src\opendnp3\StackBase.cpp" />
     <ClCompile Include="src\opendnp3\StartupTasks.cpp" />
+    <ClCompile Include="src\opendnp3\StaticRange.cpp" />
     <ClCompile Include="src\opendnp3\SubjectBase.cpp" />
     <ClCompile Include="src\opendnp3\TimeTransaction.cpp" />
     <ClCompile Include="src\opendnp3\TLS_Base.cpp" />

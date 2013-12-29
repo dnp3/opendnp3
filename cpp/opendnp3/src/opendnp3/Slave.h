@@ -224,7 +224,7 @@ void Slave::RespondToCommands(const StreamObject<T>* apObj, ObjectReadIterator& 
 
 }
 
-/* vim: set ts=4 sw=4: */
+
 
 #endif
 

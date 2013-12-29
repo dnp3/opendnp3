@@ -324,4 +324,4 @@ void AS_WaitForSolUnsolSuccess::OnUnsolSendSuccess(Slave* slave)
 
 } //ens ns
 
-/* vim: set ts=4 sw=4: */
+
