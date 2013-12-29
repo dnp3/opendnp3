@@ -34,9 +34,7 @@ using namespace openpal;
 namespace opendnp3
 {
 
-Database::Database(openpal::Logger aLogger, const StaticDataFacade& aStaticData) :
-	Loggable(aLogger),	
-	staticData(aStaticData)
+Database::Database(const StaticDataFacade& aStaticData) : staticData(aStaticData)
 {
 
 }
@@ -96,6 +94,21 @@ openpal::Indexable<ControlStatus, uint16_t> Database::Values<ControlStatus>() { 
 
 template <> 
 openpal::Indexable<SetpointStatus, uint16_t> Database::Values<SetpointStatus> () { return SetpointStatii(); }
+
+template <> 
+uint16_t Database::NumValues<Binary>() const { return staticData.binaries.values.Size(); }
+
+template <> 
+uint16_t Database::NumValues<Analog>() const { return staticData.analogs.values.Size(); }
+
+template <> 
+uint16_t Database::NumValues<Counter>() const { return staticData.counters.values.Size(); }
+
+template <> 
+uint16_t Database::NumValues<ControlStatus>() const { return staticData.controlStatii.Size(); }
+
+template <> 
+uint16_t Database::NumValues<SetpointStatus>() const { return staticData.setpointStatii.Size(); }
 
 }
 

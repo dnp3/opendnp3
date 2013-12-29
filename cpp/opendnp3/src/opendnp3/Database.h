@@ -21,7 +21,6 @@
 #ifndef __DATABASE_H_
 #define __DATABASE_H_
 
-#include <openpal/Loggable.h>
 #include <openpal/StaticList.h>
 #include <opendnp3/IDataObserver.h>
 
@@ -39,11 +38,11 @@ Manages the static data model of a DNP3 slave. Dual-interface to update data poi
 
 Passes data updates to an associated event buffer for event generation/management.
 */
-class Database : public openpal::Loggable, public IDataObserver
+class Database : public IDataObserver
 {
 public:
 
-	Database(openpal::Logger, const StaticDataFacade&);	
+	Database(const StaticDataFacade&);	
 	
 	/* Functions for obtaining iterators */
 
@@ -64,6 +63,9 @@ public:
 
 	template <class T> 
 	openpal::Indexable<T, uint16_t> Values();
+
+	template <class T> 
+	uint16_t NumValues() const;
 
 	StaticDataFacade staticData;
 

@@ -59,9 +59,9 @@ public:
 class DatabaseTestObject
 {
 public:
-	DatabaseTestObject(const DatabaseTemplate& dbTemplate, openpal::LogLevel aLevel = openpal::LogLevel::Info) :
+	DatabaseTestObject(const DatabaseTemplate& dbTemplate) :
 		buffers(dbTemplate),
-		db(openpal::Logger(&log, aLevel, "test"), buffers.GetFacade()) 
+		db(buffers.GetFacade()) 
 	{
 		db.AddEventBuffer(&buffer);
 	}
@@ -69,8 +69,7 @@ public:
 private:
 	DynamicallyAllocatedDatabase buffers;
 
-public:
-	asiopal::EventLog log;
+public:	
 	MockEventBuffer buffer;
 	Database db;
 };

@@ -41,7 +41,7 @@ SlaveTestObject::SlaveTestObject(const SlaveConfig& arCfg, const DatabaseTemplat
 	mts(),
 	app(Logger(&log, aLevel, "app")),
 	dbBuffers(dbTemplate),
-	db(Logger(&log, aLevel, "db"), dbBuffers.GetFacade()),
+	db(dbBuffers.GetFacade()),
 	slave(Logger(&log, aLevel, "slave"), &app, &mts, &mMockTimeWriteHandler, &db, &cmdHandler, arCfg),
 	mLogger(Logger(&log, aLevel, "test"))
 {

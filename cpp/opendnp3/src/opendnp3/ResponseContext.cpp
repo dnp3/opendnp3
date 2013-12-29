@@ -29,14 +29,17 @@ using namespace openpal;
 namespace opendnp3
 {
 
-ResponseContext::ResponseContext() : first(true), staticResponseQueue(staticRangeArray.ToIndexable())
+ResponseContext::ResponseContext(Database* pDatabase_) : 
+	first(true),
+	pDatabase(pDatabase_),
+	staticResponseQueue(staticRangeArray.ToIndexable())
 {}
 
 #define MACRO_QUEUE_RANGE(GV) \
 	case(GroupVariation::GV): \
 	return QueueRange<GV, Convert##GV>(range);
 
-bool ResponseContext::QueueRead(GroupVariation gv, const StaticRange& range)
+QueueResult ResponseContext::QueueRead(GroupVariation gv, const StaticRange& range)
 {	
 	switch(gv)
 	{		
@@ -62,22 +65,21 @@ bool ResponseContext::QueueRead(GroupVariation gv, const StaticRange& range)
 		MACRO_QUEUE_RANGE(Group40Var4);
 		
 		default:
-			return false;
+			return QueueResult::OBJECT_UNDEFINED;
 	}	
 }
 
-LoadResult ResponseContext::Load(Database& db, APDUResponse& response)
-{
-	ObjectWriter writer(response.HeaderPosition());
-	return LoadStaticData(writer, db, response);
+LoadResult ResponseContext::Load(ObjectWriter& writer)
+{	
+	return LoadStaticData(writer);
 }
 
-LoadResult ResponseContext::LoadStaticData(ObjectWriter& writer, Database& db, APDUResponse& response)
+LoadResult ResponseContext::LoadStaticData(ObjectWriter& writer)
 {		
 	while(!staticResponseQueue.IsEmpty())
 	{				
 		auto& front = staticResponseQueue.Front();
-		auto result = (*front.pLoadFun)(writer, front, db, response);
+		auto result = (*front.pLoadFun)(writer, front, *pDatabase);
 		if(result == LoadResult::COMPLETED)
 		{
 			staticResponseQueue.Pop();

@@ -37,7 +37,7 @@ enum class LoadResult
 };
 
 template <class T, class Converter, class IndexType, QualifierCode Qualifier>
-LoadResult LoadFixedSizeStartStop(ObjectWriter& writer, StaticRange& range, Database& db, APDUResponse& rsp)
+LoadResult LoadFixedSizeStartStop(ObjectWriter& writer, StaticRange& range, Database& db)
 {
 	auto values = db.Values<typename T::Target>();			
 	auto iter = writer.IterateOverRange<IndexType, T>(Qualifier, static_cast<typename IndexType::Type>(range.start));			

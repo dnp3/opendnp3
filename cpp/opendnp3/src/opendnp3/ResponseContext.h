@@ -35,13 +35,21 @@
 namespace opendnp3
 {
 
+enum class QueueResult
+{
+	SUCCESS,
+	FULL,
+	OBJECT_UNDEFINED,
+	OUT_OF_RANGE
+};
+
 /**
  * Builds and tracks the state of multi-fragmented responses to READ requests,
  * coordinating the static database and event buffer
  */
 class ResponseContext : private Uncopyable
 {			
-	typedef LoadResult (*LoadFun)(ObjectWriter& writer, StaticRange& range, Database& db, APDUResponse& rsp);
+	typedef LoadResult (*LoadFun)(ObjectWriter& writer, StaticRange& range, Database& db);
 
 	class FunctionalStaticRange: public StaticRange
 	{
@@ -55,39 +63,48 @@ class ResponseContext : private Uncopyable
 
 	public:
 
-	ResponseContext();
+	ResponseContext(Database*);
 
 	void Reset();
 
-	bool QueueRead(GroupVariation gv, const StaticRange& range);
+	QueueResult QueueRead(GroupVariation gv, const StaticRange& range);
 	
-	LoadResult Load(Database& db, APDUResponse& response);
+	LoadResult Load(ObjectWriter& writer);
 	
 	private:
 
-	LoadResult LoadStaticData(ObjectWriter& writer, Database& db, APDUResponse& response);
+	LoadResult LoadStaticData(ObjectWriter& writer);
 	
 	bool first;
+	Database* pDatabase;
+
 	openpal::StaticArray<FunctionalStaticRange, uint8_t, SizeConfiguration::MAX_READ_REQUESTS> staticRangeArray;
 	openpal::QueueAdapter<FunctionalStaticRange, uint8_t> staticResponseQueue;	
 
 	template <class T, class U>
-	bool QueueRange(const StaticRange& rng);
+	QueueResult QueueRange(const StaticRange& rng);
 };
 
 template <class T, class U>
-bool ResponseContext::QueueRange(const StaticRange& rng)
-{
-	FunctionalStaticRange range(rng);
-	if(range.IsContainedByUInt8())
+QueueResult ResponseContext::QueueRange(const StaticRange& rng)
+{	
+	if(rng.IsContainedBy(pDatabase->NumValues<typename T::Target>()))
 	{
-		range.pLoadFun = &LoadFixedSizeStartStop<T, U, UInt8, QualifierCode::UINT8_START_STOP>;
-		return staticResponseQueue.Push(range);				
+		FunctionalStaticRange range(rng);
+		if(range.IsContainedByUInt8())
+		{
+			range.pLoadFun = &LoadFixedSizeStartStop<T, U, UInt8, QualifierCode::UINT8_START_STOP>;
+			return staticResponseQueue.Push(range) ? QueueResult::SUCCESS : QueueResult::FULL;
+		}
+		else
+		{			
+			range.pLoadFun = &LoadFixedSizeStartStop<T, U, UInt16, QualifierCode::UINT16_START_STOP>;
+			return staticResponseQueue.Push(range) ? QueueResult::SUCCESS : QueueResult::FULL;
+		}
 	}
 	else
-	{			
-		range.pLoadFun = &LoadFixedSizeStartStop<T, U, UInt16, QualifierCode::UINT16_START_STOP>;
-		return staticResponseQueue.Push(range);
+	{
+		return QueueResult::OUT_OF_RANGE;		
 	}
 }
 

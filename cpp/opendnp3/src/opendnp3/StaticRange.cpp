@@ -26,8 +26,8 @@
 namespace opendnp3
 {
 
-const uint16_t MIN(std::numeric_limits<uint16_t>::min());
-const uint16_t MAX(std::numeric_limits<uint16_t>::max());
+const uint16_t StaticRange::MIN(std::numeric_limits<uint16_t>::min());
+const uint16_t StaticRange::MAX(std::numeric_limits<uint16_t>::max());
 
 StaticRange::StaticRange() : start(MAX), stop(MIN) {}
 
@@ -39,6 +39,11 @@ stop(stop_)
 bool StaticRange::IsContainedByUInt8() const
 {
 	return (stop <= 255) && (start <= 255);
+}
+
+bool StaticRange::IsContainedBy(uint16_t size) const
+{
+	return IsDefined() && (start < size) && (stop < size);
 }
 
 void StaticRange::Advance()

@@ -35,6 +35,8 @@ class StaticRange
 	StaticRange();
 	StaticRange(uint16_t start_, uint16_t stop_);
 
+	bool IsContainedBy(uint16_t size) const;
+
 	bool IsContainedByUInt8() const;
 	
 	inline bool IsDefined() const { return start <= stop; }	
