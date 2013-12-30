@@ -110,5 +110,7 @@ uint16_t Database::NumValues<ControlStatus>() const { return staticData.controlS
 template <> 
 uint16_t Database::NumValues<SetpointStatus>() const { return staticData.setpointStatii.Size(); }
 
+
+
 }
 

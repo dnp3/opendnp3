@@ -67,7 +67,9 @@ class ResponseContext : private Uncopyable
 
 	void Reset();
 
-	QueueResult QueueRead(GroupVariation gv, const StaticRange& range);
+	QueueResult QueueReadAllObjects(GroupVariation gv);
+	QueueResult QueueReadRange(GroupVariation gv, const StaticRange& range);
+	
 	
 	LoadResult Load(ObjectWriter& writer);
 	

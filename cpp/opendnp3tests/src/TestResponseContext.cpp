@@ -42,8 +42,8 @@ BOOST_AUTO_TEST_CASE(RejectsUnknownVariation)
 	DynamicallyAllocatedDatabase dadb(tmp);
 	Database db(dadb.GetFacade());
 	ResponseContext context(&db);
-	BOOST_REQUIRE(QueueResult::OBJECT_UNDEFINED == context.QueueRead(GroupVariation::Group2Var2, StaticRange(0,1)));
-	BOOST_REQUIRE(QueueResult::SUCCESS == context.QueueRead(GroupVariation::Group1Var2, StaticRange(0,1)));
+	BOOST_REQUIRE(QueueResult::OBJECT_UNDEFINED == context.QueueReadRange(GroupVariation::Group2Var2, StaticRange(0,1)));
+	BOOST_REQUIRE(QueueResult::SUCCESS == context.QueueReadRange(GroupVariation::Group1Var2, StaticRange(0,1)));
 }
 
 BOOST_AUTO_TEST_CASE(RespondsWithValues)
@@ -52,7 +52,7 @@ BOOST_AUTO_TEST_CASE(RespondsWithValues)
 	Database db(dadb.GetFacade());
 	ResponseContext context(&db);
 
-	BOOST_REQUIRE(QueueResult::SUCCESS == context.QueueRead(GroupVariation::Group1Var2, StaticRange(0,3)));
+	BOOST_REQUIRE(QueueResult::SUCCESS == context.QueueReadRange(GroupVariation::Group1Var2, StaticRange(0,3)));
 		
 	ObjectWriter writer(buffer.Truncate(40));
 	BOOST_REQUIRE(LoadResult::COMPLETED == context.Load(writer));
@@ -66,11 +66,11 @@ BOOST_AUTO_TEST_CASE(DetectsOutOfRange)
 	Database db(dadb.GetFacade());
 	ResponseContext context(&db);
 
-	BOOST_REQUIRE(QueueResult::OUT_OF_RANGE == context.QueueRead(GroupVariation::Group1Var2, StaticRange(0,6)));
-	BOOST_REQUIRE(QueueResult::OUT_OF_RANGE == context.QueueRead(GroupVariation::Group1Var2, StaticRange(4,6)));
-	BOOST_REQUIRE(QueueResult::OUT_OF_RANGE == context.QueueRead(GroupVariation::Group1Var2, StaticRange(4,5)));
-	BOOST_REQUIRE(QueueResult::OUT_OF_RANGE == context.QueueRead(GroupVariation::Group1Var2, StaticRange(4,3)));
-	BOOST_REQUIRE(QueueResult::OUT_OF_RANGE == context.QueueRead(GroupVariation::Group1Var2, StaticRange(10,11)));	
+	BOOST_REQUIRE(QueueResult::OUT_OF_RANGE == context.QueueReadRange(GroupVariation::Group1Var2, StaticRange(0,6)));
+	BOOST_REQUIRE(QueueResult::OUT_OF_RANGE == context.QueueReadRange(GroupVariation::Group1Var2, StaticRange(4,6)));
+	BOOST_REQUIRE(QueueResult::OUT_OF_RANGE == context.QueueReadRange(GroupVariation::Group1Var2, StaticRange(4,5)));
+	BOOST_REQUIRE(QueueResult::OUT_OF_RANGE == context.QueueReadRange(GroupVariation::Group1Var2, StaticRange(4,3)));
+	BOOST_REQUIRE(QueueResult::OUT_OF_RANGE == context.QueueReadRange(GroupVariation::Group1Var2, StaticRange(10,11)));	
 }
 
 BOOST_AUTO_TEST_CASE(WritesMixedValues)
@@ -79,8 +79,8 @@ BOOST_AUTO_TEST_CASE(WritesMixedValues)
 	Database db(dadb.GetFacade());
 	ResponseContext context(&db);
 
-	BOOST_REQUIRE(QueueResult::SUCCESS == context.QueueRead(GroupVariation::Group30Var2, StaticRange(1,2)));
-	BOOST_REQUIRE(QueueResult::SUCCESS == context.QueueRead(GroupVariation::Group1Var2, StaticRange(3,4)));
+	BOOST_REQUIRE(QueueResult::SUCCESS == context.QueueReadRange(GroupVariation::Group30Var2, StaticRange(1,2)));
+	BOOST_REQUIRE(QueueResult::SUCCESS == context.QueueReadRange(GroupVariation::Group1Var2, StaticRange(3,4)));
 
 	ObjectWriter writer(buffer.Truncate(40));
 	BOOST_REQUIRE(LoadResult::COMPLETED == context.Load(writer));
@@ -93,8 +93,8 @@ BOOST_AUTO_TEST_CASE(ReturnsFullWhen2ndHeaderCantBeWritten)
 	Database db(dadb.GetFacade());
 	ResponseContext context(&db);
 
-	BOOST_REQUIRE(QueueResult::SUCCESS == context.QueueRead(GroupVariation::Group30Var2, StaticRange(1,2)));
-	BOOST_REQUIRE(QueueResult::SUCCESS == context.QueueRead(GroupVariation::Group1Var2, StaticRange(3,4)));
+	BOOST_REQUIRE(QueueResult::SUCCESS == context.QueueReadRange(GroupVariation::Group30Var2, StaticRange(1,2)));
+	BOOST_REQUIRE(QueueResult::SUCCESS == context.QueueReadRange(GroupVariation::Group1Var2, StaticRange(3,4)));
 
 	{
 		ObjectWriter writer(buffer.Truncate(12)); //enough for first header, but not the 2nd
@@ -115,8 +115,8 @@ BOOST_AUTO_TEST_CASE(ReturnsFullWhenOnlyPartof2ndHeaderCanBeWritten)
 	Database db(dadb.GetFacade());
 	ResponseContext context(&db);
 
-	BOOST_REQUIRE(QueueResult::SUCCESS == context.QueueRead(GroupVariation::Group30Var2, StaticRange(1,2)));
-	BOOST_REQUIRE(QueueResult::SUCCESS == context.QueueRead(GroupVariation::Group1Var2, StaticRange(3,4)));
+	BOOST_REQUIRE(QueueResult::SUCCESS == context.QueueReadRange(GroupVariation::Group30Var2, StaticRange(1,2)));
+	BOOST_REQUIRE(QueueResult::SUCCESS == context.QueueReadRange(GroupVariation::Group1Var2, StaticRange(3,4)));
 
 	{
 		ObjectWriter writer(buffer.Truncate(17)); //enough for first header, but not the full 2nd header
@@ -128,6 +128,22 @@ BOOST_AUTO_TEST_CASE(ReturnsFullWhenOnlyPartof2ndHeaderCanBeWritten)
 		ObjectWriter writer(buffer.Truncate(12));
 		BOOST_REQUIRE(LoadResult::COMPLETED == context.Load(writer));
 		BOOST_REQUIRE_EQUAL("01 02 00 04 04 02", toHex(writer.ToReadOnly()));
+	}
+}
+
+BOOST_AUTO_TEST_CASE(HandlesIntegrityPoll)
+{	
+	DatabaseTemplate tmp2(1, 0, 1, 1, 0); // 1 Binary, 1 Counter, 1 Control Status
+	DynamicallyAllocatedDatabase dadb(tmp2);
+	Database db(dadb.GetFacade());
+	ResponseContext context(&db);
+
+	BOOST_REQUIRE(QueueResult::SUCCESS == context.QueueReadAllObjects(GroupVariation::Group60Var1));
+
+	{
+		ObjectWriter writer(buffer); 
+		BOOST_REQUIRE(LoadResult::COMPLETED == context.Load(writer));
+		BOOST_REQUIRE_EQUAL("01 02 00 00 00 02 14 02 00 00 00 02 00 00 0A 02 00 00 00 02", toHex(writer.ToReadOnly()));
 	}
 }
 

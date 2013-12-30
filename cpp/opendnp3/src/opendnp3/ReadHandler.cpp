@@ -33,7 +33,18 @@ ReadHandler::ReadHandler(openpal::Logger& aLogger, ResponseContext* aContext) :
 
 void ReadHandler::_AllObjects(GroupVariation gv)
 {
-	//errors |= pContext->RecordAllObjects(gv); TODO
+	switch(pContext->QueueReadAllObjects(gv))
+	{
+		case(QueueResult::FULL):
+		case(QueueResult::SUCCESS):
+			break;
+		case(QueueResult::OBJECT_UNDEFINED):
+			errors |= IINField(IINBit::FUNC_NOT_SUPPORTED);
+			break;
+		case(QueueResult::OUT_OF_RANGE):
+			errors |= IINField(IINBit::PARAM_ERROR);
+			break;
+	}	
 }
 
 

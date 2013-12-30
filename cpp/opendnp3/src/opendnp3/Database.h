@@ -27,6 +27,7 @@
 #include "IEventBuffer.h"
 #include "StaticDataFacade.h"
 #include "StaticSizeConfiguration.h"
+#include "StaticRange.h"
 
 namespace opendnp3
 {
@@ -66,6 +67,14 @@ public:
 
 	template <class T> 
 	uint16_t NumValues() const;
+
+	template <class T> 
+	StaticRange FullRange() const
+	{
+		uint16_t num = NumValues<T>();
+		if(num > 0) return StaticRange(0, num-1);
+		else return StaticRange();
+	}
 
 	StaticDataFacade staticData;
 

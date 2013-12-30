@@ -35,11 +35,37 @@ ResponseContext::ResponseContext(Database* pDatabase_) :
 	staticResponseQueue(staticRangeArray.ToIndexable())
 {}
 
+#define MACRO_QUEUE_FULL_RANGE(GV, TYPE) { \
+	auto range = pDatabase->FullRange<TYPE>(); \
+	if(range.IsDefined()) { \
+		auto result = QueueReadRange(GV, range); \
+		if(result != QueueResult::SUCCESS) return result; \
+	} \
+}
+
+QueueResult ResponseContext::QueueReadAllObjects(GroupVariation gv)
+{
+	switch(gv)
+	{
+		case(GroupVariation::Group60Var1):
+		{			
+			MACRO_QUEUE_FULL_RANGE(GroupVariation::Group1Var2, Binary);
+			MACRO_QUEUE_FULL_RANGE(GroupVariation::Group30Var1, Analog);
+			MACRO_QUEUE_FULL_RANGE(GroupVariation::Group20Var2, Counter);			
+			MACRO_QUEUE_FULL_RANGE(GroupVariation::Group10Var2, ControlStatus);
+			MACRO_QUEUE_FULL_RANGE(GroupVariation::Group40Var1, SetpointStatus);			
+			return QueueResult::SUCCESS;
+		}
+		default:
+			return QueueResult::OBJECT_UNDEFINED;
+	}
+}
+
 #define MACRO_QUEUE_RANGE(GV) \
 	case(GroupVariation::GV): \
 	return QueueRange<GV, Convert##GV>(range);
 
-QueueResult ResponseContext::QueueRead(GroupVariation gv, const StaticRange& range)
+QueueResult ResponseContext::QueueReadRange(GroupVariation gv, const StaticRange& range)
 {	
 	switch(gv)
 	{		
