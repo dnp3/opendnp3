@@ -1,9 +1,11 @@
 package com.automatak.render.dnp3.objects
 
 import com.automatak.render._
-import com.automatak.render.cpp.quoted
+import com.automatak.render.cpp._
 
 class ArbitraryConversion(name: String, incHeaders: List[String], cppHeaders: List[String]) extends Conversion {
+
+  def target: String = name
 
   def includeHeaders: List[String] = incHeaders
   def implHeaders: List[String] = cppHeaders
@@ -11,8 +13,8 @@ class ArbitraryConversion(name: String, incHeaders: List[String], cppHeaders: Li
   def signatures : Iterator[String] = {
     Iterator(
       "typedef " + name + " Target;",
-      "static " + name + " ReadAndConvert(openpal::ReadOnlyBuffer&);",
-      "static void ConvertAndWrite(const " + name + "&, openpal::WriteBuffer&);"
+      name + " Read(openpal::ReadOnlyBuffer&) const;",
+      "void Write(const " + name + "&, openpal::WriteBuffer&) const;"
     )
   }
 
@@ -21,16 +23,24 @@ class ArbitraryConversion(name: String, incHeaders: List[String], cppHeaders: Li
 
     def args : String = fs.fields.map(f => "gv."+f.name).mkString(", ")
 
-    def func1 = Iterator(name + " " + fs.name + "::ReadAndConvert(ReadOnlyBuffer& buff)") ++ bracket {
-      Iterator("auto gv = Read(buff);",
-               "return " + name + "Factory::From(" + args + ");")
+    val serializer = fs.name + "Serializer"
+
+    def singleton = Iterator(serializer + " " + serializer + "::mInstance;")
+
+    def func1 = {
+      Iterator(name + " " + serializer + "::Read(ReadOnlyBuffer& buff) const") ++ bracket {
+        Iterator("auto gv = "+ fs.name + "::Read(buff);",
+          "return " + name + "Factory::From(" + args + ");")
+      }
     }
 
-    def func2 = Iterator("void " + fs.name + "::ConvertAndWrite(const " + name + "& value, openpal::WriteBuffer& buff)") ++ bracket {
-      Iterator("Write(Convert" + fs.name + "::Apply(value), buff);")
+    def func2 = {
+      Iterator("void " + serializer + "::Write(const " + name + "& value, openpal::WriteBuffer& buff) const") ++ bracket {
+        Iterator(fs.name+"::Write(Convert" + fs.name + "::Apply(value), buff);")
+      }
     }
 
-    func1 ++ space ++ func2
+    singleton ++ space ++ func1 ++ space ++ func2
   }
 
 }
@@ -41,6 +51,7 @@ object ConversionHeaders {
   val crob = "<opendnp3/ControlRelayOutputBlock.h>"
   val ao = "<opendnp3/AnalogOutput.h>"
   val factory = quoted("MeasurementFactory.h")
+  val serializer = quoted("IDNP3Serializer.h")
   val conversions = quoted("../WriteConversions.h")
 
   val cppIncldues = List(factory, conversions)
@@ -48,16 +59,16 @@ object ConversionHeaders {
 
 import ConversionHeaders._
 
-object BinaryConversion extends ArbitraryConversion("Binary", List(dataTypes), cppIncldues)
-object AnalogConversion extends ArbitraryConversion("Analog", List(dataTypes), cppIncldues)
-object CounterConversion extends ArbitraryConversion("Counter", List(dataTypes), cppIncldues)
-object ControlStatusConversion extends ArbitraryConversion("ControlStatus", List(dataTypes), cppIncldues)
-object SetpointStatusConversion extends ArbitraryConversion("SetpointStatus", List(dataTypes), cppIncldues)
-object CrobConversion extends ArbitraryConversion("ControlRelayOutputBlock", List(crob), cppIncldues)
-object AnalogOutputInt16Conversion extends ArbitraryConversion("AnalogOutputInt16", List(ao), cppIncldues)
-object AnalogOutputInt32Conversion extends ArbitraryConversion("AnalogOutputInt32", List(ao), cppIncldues)
-object AnalogOutputFloat32Conversion extends ArbitraryConversion("AnalogOutputFloat32", List(ao), cppIncldues)
-object AnalogOutputDouble64Conversion extends ArbitraryConversion("AnalogOutputDouble64", List(ao), cppIncldues)
+object BinaryConversion extends ArbitraryConversion("Binary", List(serializer, dataTypes), cppIncldues)
+object AnalogConversion extends ArbitraryConversion("Analog", List(serializer, dataTypes), cppIncldues)
+object CounterConversion extends ArbitraryConversion("Counter", List(serializer, dataTypes), cppIncldues)
+object ControlStatusConversion extends ArbitraryConversion("ControlStatus", List(serializer, dataTypes), cppIncldues)
+object SetpointStatusConversion extends ArbitraryConversion("SetpointStatus", List(serializer, dataTypes), cppIncldues)
+object CrobConversion extends ArbitraryConversion("ControlRelayOutputBlock", List(serializer, crob), cppIncldues)
+object AnalogOutputInt16Conversion extends ArbitraryConversion("AnalogOutputInt16", List(serializer, ao), cppIncldues)
+object AnalogOutputInt32Conversion extends ArbitraryConversion("AnalogOutputInt32", List(serializer, ao), cppIncldues)
+object AnalogOutputFloat32Conversion extends ArbitraryConversion("AnalogOutputFloat32", List(serializer, ao), cppIncldues)
+object AnalogOutputDouble64Conversion extends ArbitraryConversion("AnalogOutputDouble64", List(serializer, ao), cppIncldues)
 
 trait ConversionToBinary {
   self : FixedSize =>

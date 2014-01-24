@@ -125,7 +125,7 @@ APDUParser::Result APDUParser::ParseHeader(ReadOnlyBuffer& buffer, Context& cont
 
 #define MACRO_PARSE_COUNT_FIXED_SIZE_WITH_INDEX(descriptor) \
 case(GroupVariation::descriptor): \
-return ParseCountFixedSizeWithIndex<descriptor>(gvRecord.enumeration, record, buffer, count, pParser, output);
+	return ParseCountFixedSizeWithIndex(gvRecord.enumeration, record, buffer, count, pParser, descriptor##Serializer::Inst(), output);
 
 APDUParser::Result APDUParser::ParseObjectsWithIndexPrefix(const HeaderRecord& record, openpal::ReadOnlyBuffer& buffer, const GroupVariationRecord& gvRecord, uint32_t count, IndexParser* pParser, IAPDUHeaderHandler&  output)
 {
@@ -203,7 +203,7 @@ IndexedValue<ControlStatus> APDUParser::BoolToControlStatus(const IndexedValue<b
 
 #define MACRO_PARSE_OBJECTS_WITH_RANGE(descriptor) \
 	case(GroupVariation::descriptor): \
-			return ParseRangeFixedSize<descriptor>(gvRecord.enumeration, record, buffer, range, output);
+	return ParseRangeFixedSize(gvRecord.enumeration, record, descriptor##Serializer::Inst(), buffer, range, output);
 
 APDUParser::Result APDUParser::ParseObjectsWithRange(const APDUParser::HeaderRecord& record, openpal::ReadOnlyBuffer& buffer, const GroupVariationRecord& gvRecord, const Range& range, IAPDUHeaderHandler& output)
 {
@@ -223,7 +223,7 @@ APDUParser::Result APDUParser::ParseObjectsWithRange(const APDUParser::HeaderRec
 				output.OnRange(gvRecord.enumeration, header, mapped);								
 			});
 
-		MACRO_PARSE_OBJECTS_WITH_RANGE(Group10Var2);
+			MACRO_PARSE_OBJECTS_WITH_RANGE(Group10Var2);
 
 		MACRO_PARSE_OBJECTS_WITH_RANGE(Group20Var1);
 		MACRO_PARSE_OBJECTS_WITH_RANGE(Group20Var2);		

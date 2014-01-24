@@ -69,12 +69,10 @@ BOOST_AUTO_TEST_CASE(RangeWriteIteratorStartStop)
 {	
 	ObjectWriter writer(buffer);
 	
-	auto iterator = writer.IterateOverRange<UInt8,Group20Var6>(QualifierCode::UINT8_START_STOP, 2);
-
-	Group20Var6 value = { 9 };
-	BOOST_REQUIRE(iterator.Write(value));
-	value.value = 7;
-	BOOST_REQUIRE(iterator.Write(value));
+	auto iterator = writer.IterateOverRange<UInt8, Counter>(QualifierCode::UINT8_START_STOP, Group20Var6Serializer::Inst(), 2);
+	
+	BOOST_REQUIRE(iterator.Write(Counter(9)));	
+	BOOST_REQUIRE(iterator.Write(Counter(7)));
 	BOOST_REQUIRE(iterator.Complete());
 
 	BOOST_REQUIRE_EQUAL("14 06 00 02 03 09 00 07 00", toHex(writer.ToReadOnly()));	
@@ -84,7 +82,7 @@ BOOST_AUTO_TEST_CASE(EmptyHeadersWhenNotEnoughSpaceForSingleValue)
 {	
 	ObjectWriter writer(buffer.Truncate(6));  //requires 7
 	
-	auto iterator = writer.IterateOverRange<UInt8,Group20Var6>(QualifierCode::UINT8_START_STOP, 2);
+	auto iterator = writer.IterateOverRange<UInt8, Counter>(QualifierCode::UINT8_START_STOP, Group20Var6Serializer::Inst(), 2);
 
 	BOOST_REQUIRE(iterator.IsNull());
 
@@ -95,7 +93,7 @@ BOOST_AUTO_TEST_CASE(CountWriteIteratorAllowsCountOfZero)
 {
 	ObjectWriter writer(buffer);
 
-	auto iter = writer.IterateOverCount<UInt16, Group30Var1>(QualifierCode::UINT16_CNT);
+	auto iter = writer.IterateOverCount<UInt16, Analog>(QualifierCode::UINT16_CNT, Group30Var1Serializer::Inst());
 	BOOST_ASSERT(!iter.IsNull());
 	BOOST_ASSERT(iter.Complete());
 
@@ -107,13 +105,12 @@ BOOST_AUTO_TEST_CASE(CountWriteIteratorFillsUpCorrectly)
 {
 	ObjectWriter writer(buffer.Truncate(11));
 
-	auto iter = writer.IterateOverCount<UInt8, Group30Var2>(QualifierCode::UINT8_CNT);
+	auto iter = writer.IterateOverCount<UInt8, Analog>(QualifierCode::UINT8_CNT, Group30Var2Serializer::Inst());
 
-	Group30Var2 obj = { 0xFF, 9 };
-	BOOST_REQUIRE(iter.Write(obj));
-	obj.value = 7;
-	BOOST_REQUIRE(iter.Write(obj));
-	BOOST_REQUIRE(!iter.Write(obj)); //we're full
+	
+	BOOST_REQUIRE(iter.Write(Analog(9, 0xFF)));	
+	BOOST_REQUIRE(iter.Write(Analog(7, 0xFF)));
+	BOOST_REQUIRE(!iter.Write(Analog(7, 0xFF))); //we're full
 	BOOST_REQUIRE(iter.Complete());
 
 	BOOST_REQUIRE_EQUAL("1E 02 07 02 FF 09 00 FF 07 00", toHex(writer.ToReadOnly()));	
@@ -123,17 +120,12 @@ BOOST_AUTO_TEST_CASE(PrefixWriteIteratorWithSingleCROB)
 {
 	ObjectWriter writer(buffer);
 
-	auto iter = writer.IterateOverCountWithPrefix<UInt8, Group12Var1>(QualifierCode::UINT8_CNT_UINT8_INDEX);
+	auto iter = writer.IterateOverCountWithPrefix<UInt8, ControlRelayOutputBlock>(QualifierCode::UINT8_CNT_UINT8_INDEX, Group12Var1Serializer::Inst());
 	BOOST_ASSERT(!iter.IsNull());
 
-	Group12Var1 obj;
-	obj.code = ControlCode::LATCH_ON;
-	obj.count = 0x1F;
-	obj.onTime = 0x10;
-	obj.offTime = 0xAA;
-	obj.status = CommandStatus::LOCAL;
+	ControlRelayOutputBlock crob(ControlCode::LATCH_ON, 0x1F, 0x10, 0xAA, CommandStatus::LOCAL);
 	
-	BOOST_REQUIRE(iter.Write(obj, 0x21));
+	BOOST_REQUIRE(iter.Write(crob, 0x21));
 	BOOST_REQUIRE(iter.Complete());
 
 	BOOST_REQUIRE_EQUAL("0C 01 17 01 21 03 1F 10 00 00 00 AA 00 00 00 07", toHex(writer.ToReadOnly()));	
@@ -143,14 +135,9 @@ BOOST_AUTO_TEST_CASE(SingleValueWithIndexCROB)
 {
 	ObjectWriter writer(buffer);	
 
-	Group12Var1 obj;
-	obj.code = ControlCode::LATCH_ON;
-	obj.count = 0x1F;
-	obj.onTime = 0x10;
-	obj.offTime = 0xAA;
-	obj.status = CommandStatus::LOCAL;
+	ControlRelayOutputBlock crob(ControlCode::LATCH_ON, 0x1F, 0x10, 0xAA, CommandStatus::LOCAL);	
 	
-	BOOST_REQUIRE(writer.WriteSingleIndexedValue<UInt16>(QualifierCode::UINT16_CNT, obj, 0x21));	
+	BOOST_REQUIRE(writer.WriteSingleIndexedValue<UInt16>(QualifierCode::UINT16_CNT, Group12Var1Serializer::Inst(), crob, 0x21));	
 
 	BOOST_REQUIRE_EQUAL("0C 01 08 01 00 21 00 03 1F 10 00 00 00 AA 00 00 00 07", toHex(writer.ToReadOnly()));	
 }

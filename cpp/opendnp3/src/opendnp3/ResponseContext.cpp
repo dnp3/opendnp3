@@ -29,10 +29,12 @@ using namespace openpal;
 namespace opendnp3
 {
 
-ResponseContext::ResponseContext(Database* pDatabase_) : 
+ResponseContext::ResponseContext(Database* pDatabase_, OutstationEventBuffer* pBuffer_) : 
 	first(true),
 	pDatabase(pDatabase_),
-	staticResponseQueue(staticRangeArray.ToIndexable())
+	pBuffer(pBuffer_),
+	staticResponseQueue(staticRangeArray.ToIndexable()),
+	eventCountQueue(eventCountArray.ToIndexable())
 {}
 
 #define MACRO_QUEUE_FULL_RANGE(GV, TYPE) { \
@@ -56,6 +58,27 @@ QueueResult ResponseContext::QueueReadAllObjects(GroupVariation gv)
 			MACRO_QUEUE_FULL_RANGE(GroupVariation::Group40Var1, SetpointStatus);			
 			return QueueResult::SUCCESS;
 		}
+		case(GroupVariation::Group60Var2):
+		{
+			SelectionCriteria criteria(EventTypeMasks::ALL_TYPES, 0, 0);
+			if(eventCountQueue.Push(CountOf<SelectionCriteria>::Max(criteria))) return QueueResult::SUCCESS;
+			else return QueueResult::FULL;
+
+		}
+		case(GroupVariation::Group60Var3):
+		{
+			SelectionCriteria criteria(0, EventTypeMasks::ALL_TYPES, 0);
+			if(eventCountQueue.Push(CountOf<SelectionCriteria>::Max(criteria))) return QueueResult::SUCCESS;
+			else return QueueResult::FULL;
+
+		}
+		case(GroupVariation::Group60Var4):
+		{
+			SelectionCriteria criteria(0, 0, EventTypeMasks::ALL_TYPES);
+			if(eventCountQueue.Push(CountOf<SelectionCriteria>::Max(criteria))) return QueueResult::SUCCESS;
+			else return QueueResult::FULL;
+
+		}
 		default:
 			return QueueResult::OBJECT_UNDEFINED;
 	}
@@ -63,7 +86,7 @@ QueueResult ResponseContext::QueueReadAllObjects(GroupVariation gv)
 
 #define MACRO_QUEUE_RANGE(GV) \
 	case(GroupVariation::GV): \
-	return QueueRange<GV, Convert##GV>(range);
+	return QueueRange<GV::Target, GV##Serializer>(GV::ID, range);
 
 QueueResult ResponseContext::QueueReadRange(GroupVariation gv, const StaticRange& range)
 {	
@@ -105,7 +128,7 @@ LoadResult ResponseContext::LoadStaticData(ObjectWriter& writer)
 	while(!staticResponseQueue.IsEmpty())
 	{				
 		auto& front = staticResponseQueue.Front();
-		auto result = (*front.pLoadFun)(writer, front, *pDatabase);
+		auto result = (*front.pLoadFun)(front.groupVar, writer, front, *pDatabase);
 		if(result == LoadResult::COMPLETED)
 		{
 			staticResponseQueue.Pop();

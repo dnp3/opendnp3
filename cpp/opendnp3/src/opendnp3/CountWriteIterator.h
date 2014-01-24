@@ -23,6 +23,9 @@
 
 #include <limits>
 
+#include <openpal/BufferWrapper.h>
+#include <openpal/ISerializer.h>
+
 namespace opendnp3
 {
 
@@ -34,14 +37,15 @@ class CountWriteIterator
 
 	static CountWriteIterator Null()
 	{
-		return CountWriteIterator(WriteBuffer::Empty());
+		return CountWriteIterator(nullptr, openpal::WriteBuffer::Empty());
 	}
 	
-	CountWriteIterator(openpal::WriteBuffer& aPosition) :				
+	CountWriteIterator(openpal::ISerializer<WriteType>* pSerializer_, openpal::WriteBuffer& aPosition) :				
 		count(0),
+		pSerializer(pSerializer_),
 		countPosition(aPosition),
 		position(aPosition),
-		isNull(aPosition.Size() < CountType::Size)
+		isNull(aPosition.Size() < CountType::Size || pSerializer == nullptr)
 	{
 		if(!isNull) 
 		{			
@@ -61,10 +65,10 @@ class CountWriteIterator
 
 	bool Write(WriteType& value)
 	{
-		if(isNull || position.Size() < WriteType::SIZE) return false;
+		if(isNull || position.Size() < pSerializer->Size()) return false;
 		else
 		{
-			WriteType::Write(value, position);
+			pSerializer->Write(value, position);
 			++count;
 			return true;
 		}
@@ -75,6 +79,7 @@ class CountWriteIterator
 	private:	
 	
 	typename CountType::Type count;
+	openpal::ISerializer<WriteType>* pSerializer;
 
 	bool isNull;
 

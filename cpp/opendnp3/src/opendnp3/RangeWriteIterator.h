@@ -22,6 +22,7 @@
 #define __RANGE_WRITE_ITERATOR_H_
 
 #include <openpal/BufferWrapper.h>
+#include <openpal/ISerializer.h>
 
 namespace opendnp3
 {
@@ -34,15 +35,16 @@ class RangeWriteIterator
 
 	static RangeWriteIterator Null()
 	{
-		return RangeWriteIterator(0, WriteBuffer::Empty());
+		return RangeWriteIterator(0, nullptr, WriteBuffer::Empty());
 	}
 	
-	RangeWriteIterator(typename IndexType::Type aStart, openpal::WriteBuffer& aPosition) :		
+	RangeWriteIterator(typename IndexType::Type aStart, openpal::ISerializer<WriteType>* pSerializer_, openpal::WriteBuffer& aPosition) :		
 		start(aStart),
+		pSerializer(pSerializer_),
 		count(0),
 		range(aPosition),
 		position(aPosition),
-		isNull(aPosition.Size() < 2*IndexType::Size)
+		isNull(aPosition.Size() < 2*IndexType::Size || pSerializer == nullptr)
 	{
 		if(!isNull) 
 		{
@@ -64,10 +66,10 @@ class RangeWriteIterator
 
 	bool Write(WriteType& value)
 	{
-		if(isNull || position.Size() < WriteType::SIZE) return false;
+		if(isNull || position.Size() < pSerializer->Size()) return false;
 		else
 		{
-			WriteType::Write(value, position);
+			pSerializer->Write(value, position);			
 			++count;
 			return true;
 		}
@@ -78,6 +80,7 @@ class RangeWriteIterator
 	private:	
 
 	typename IndexType::Type start;
+	openpal::ISerializer<WriteType>* pSerializer;
 	typename IndexType::Type count;
 
 	bool isNull;

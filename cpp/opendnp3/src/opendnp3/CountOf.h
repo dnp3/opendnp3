@@ -18,28 +18,41 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __GROUP_VARIATION_ID_H_
-#define __GROUP_VARIATION_ID_H_
+
+#ifndef __COUNT_OF_H_
+#define __COUNT_OF_H_
 
 #include <cstdint>
+#include <assert.h>
+#include <limits>
 
 namespace opendnp3
 {
 
-struct GroupVariationID
+template <class T>
+class CountOf
 {
-	GroupVariationID() : group(0xFF), variation(0xFF)
+	public:
+
+	static CountOf Max(const T& value) { return CountOf(value, std::numeric_limits<uint32_t>::max()); }
+
+	CountOf() : count(0)
 	{}
 
-	GroupVariationID(uint8_t aGroup, uint8_t aVariation):
-		group(aGroup),
-		variation(aVariation)
+	CountOf(const T& value_, uint32_t count_) : value(value_), count(count_)
+	{}
+
+	bool HasRemaining() const { return count > 0; }
+
+	void Decrement()
 	{
-	
+		assert(count > 0);
+		--count;
 	}
 
-	uint8_t group;
-	uint8_t variation;
+	private:
+	T value;
+	uint32_t count;
 };
 
 }

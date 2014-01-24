@@ -36,14 +36,14 @@ enum class LoadResult
 	FULL		// events were loaded and the APDU is full, context is not empty
 };
 
-template <class T, class Converter, class IndexType, QualifierCode Qualifier>
-LoadResult LoadFixedSizeStartStop(ObjectWriter& writer, StaticRange& range, Database& db)
+template <class Target, class Serializer, class IndexType, QualifierCode Qualifier>
+LoadResult LoadFixedSizeStartStop(GroupVariationID gv, ObjectWriter& writer, StaticRange& range, Database& db)
 {
-	auto values = db.Values<typename T::Target>();			
-	auto iter = writer.IterateOverRange<IndexType, T>(Qualifier, static_cast<typename IndexType::Type>(range.start));			
+	auto values = db.Values<Target>();	
+	auto iter = writer.IterateOverRange<IndexType, Target>(Qualifier, Serializer::Inst(), static_cast<typename IndexType::Type>(range.start));			
 	while(range.IsDefined())
 	{
-		if(iter.Write(Converter::Apply(values[range.start])))
+		if(iter.Write(values[range.start]))
 		{
 			range.Advance();
 		}

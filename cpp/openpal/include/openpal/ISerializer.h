@@ -18,28 +18,35 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __GROUP_VARIATION_ID_H_
-#define __GROUP_VARIATION_ID_H_
+#ifndef __I_SERIALIZER_H_
+#define __I_SERIALIZER_H_
 
 #include <cstdint>
+#include "BufferWrapper.h"
 
-namespace opendnp3
+namespace openpal
 {
 
-struct GroupVariationID
+template <class T>
+class ISerializer
 {
-	GroupVariationID() : group(0xFF), variation(0xFF)
-	{}
+	public:
 
-	GroupVariationID(uint8_t aGroup, uint8_t aVariation):
-		group(aGroup),
-		variation(aVariation)
-	{
+	/**
+	* @return The size (in bytes) required for every call to read/write
+	*/
+	virtual uint32_t Size() const = 0;
+
+	/**
+	* reads the value and advances the read buffer
+	*/
+	virtual T Read(ReadOnlyBuffer& buffer) const = 0;
 	
-	}
-
-	uint8_t group;
-	uint8_t variation;
+	/**
+	* writes the value and advances the write buffer
+	*/
+	virtual void Write(const T& value, WriteBuffer& buffer) const = 0;
+	
 };
 
 }

@@ -20,6 +20,7 @@
 
 #include <openpal/BufferWrapper.h>
 #include "GroupVariationID.h"
+#include "IDNP3Serializer.h"
 #include <opendnp3/DataTypes.h>
 
 namespace opendnp3 {
@@ -27,12 +28,8 @@ namespace opendnp3 {
 struct Group40Var1
 {
   static const GroupVariationID ID;
-  static const size_t SIZE = 5;
-
   typedef SetpointStatus Target;
-  static SetpointStatus ReadAndConvert(openpal::ReadOnlyBuffer&);
-  static void ConvertAndWrite(const SetpointStatus&, openpal::WriteBuffer&);
-
+  static const uint32_t SIZE = 5;
   static Group40Var1 Read(openpal::ReadOnlyBuffer&);
   static void Write(const Group40Var1&, openpal::WriteBuffer&);
 
@@ -41,15 +38,29 @@ struct Group40Var1
   int32_t value;
 };
 
+struct Group40Var1Serializer : public IDNP3Serializer<SetpointStatus>
+{
+
+  static IDNP3Serializer<SetpointStatus>* Inst() { return &mInstance; }
+
+  GroupVariationID ID() const { return Group40Var1::ID; }
+
+  uint32_t Size() const { return Group40Var1::SIZE; }
+
+  typedef SetpointStatus Target;
+  SetpointStatus Read(openpal::ReadOnlyBuffer&) const;
+  void Write(const SetpointStatus&, openpal::WriteBuffer&) const;
+
+  private:
+
+  static Group40Var1Serializer mInstance;
+};
+
 struct Group40Var2
 {
   static const GroupVariationID ID;
-  static const size_t SIZE = 3;
-
   typedef SetpointStatus Target;
-  static SetpointStatus ReadAndConvert(openpal::ReadOnlyBuffer&);
-  static void ConvertAndWrite(const SetpointStatus&, openpal::WriteBuffer&);
-
+  static const uint32_t SIZE = 3;
   static Group40Var2 Read(openpal::ReadOnlyBuffer&);
   static void Write(const Group40Var2&, openpal::WriteBuffer&);
 
@@ -58,15 +69,29 @@ struct Group40Var2
   int16_t value;
 };
 
+struct Group40Var2Serializer : public IDNP3Serializer<SetpointStatus>
+{
+
+  static IDNP3Serializer<SetpointStatus>* Inst() { return &mInstance; }
+
+  GroupVariationID ID() const { return Group40Var2::ID; }
+
+  uint32_t Size() const { return Group40Var2::SIZE; }
+
+  typedef SetpointStatus Target;
+  SetpointStatus Read(openpal::ReadOnlyBuffer&) const;
+  void Write(const SetpointStatus&, openpal::WriteBuffer&) const;
+
+  private:
+
+  static Group40Var2Serializer mInstance;
+};
+
 struct Group40Var3
 {
   static const GroupVariationID ID;
-  static const size_t SIZE = 5;
-
   typedef SetpointStatus Target;
-  static SetpointStatus ReadAndConvert(openpal::ReadOnlyBuffer&);
-  static void ConvertAndWrite(const SetpointStatus&, openpal::WriteBuffer&);
-
+  static const uint32_t SIZE = 5;
   static Group40Var3 Read(openpal::ReadOnlyBuffer&);
   static void Write(const Group40Var3&, openpal::WriteBuffer&);
 
@@ -75,21 +100,53 @@ struct Group40Var3
   float value;
 };
 
+struct Group40Var3Serializer : public IDNP3Serializer<SetpointStatus>
+{
+
+  static IDNP3Serializer<SetpointStatus>* Inst() { return &mInstance; }
+
+  GroupVariationID ID() const { return Group40Var3::ID; }
+
+  uint32_t Size() const { return Group40Var3::SIZE; }
+
+  typedef SetpointStatus Target;
+  SetpointStatus Read(openpal::ReadOnlyBuffer&) const;
+  void Write(const SetpointStatus&, openpal::WriteBuffer&) const;
+
+  private:
+
+  static Group40Var3Serializer mInstance;
+};
+
 struct Group40Var4
 {
   static const GroupVariationID ID;
-  static const size_t SIZE = 9;
-
   typedef SetpointStatus Target;
-  static SetpointStatus ReadAndConvert(openpal::ReadOnlyBuffer&);
-  static void ConvertAndWrite(const SetpointStatus&, openpal::WriteBuffer&);
-
+  static const uint32_t SIZE = 9;
   static Group40Var4 Read(openpal::ReadOnlyBuffer&);
   static void Write(const Group40Var4&, openpal::WriteBuffer&);
 
   typedef double ValueType;
   uint8_t flags;
   double value;
+};
+
+struct Group40Var4Serializer : public IDNP3Serializer<SetpointStatus>
+{
+
+  static IDNP3Serializer<SetpointStatus>* Inst() { return &mInstance; }
+
+  GroupVariationID ID() const { return Group40Var4::ID; }
+
+  uint32_t Size() const { return Group40Var4::SIZE; }
+
+  typedef SetpointStatus Target;
+  SetpointStatus Read(openpal::ReadOnlyBuffer&) const;
+  void Write(const SetpointStatus&, openpal::WriteBuffer&) const;
+
+  private:
+
+  static Group40Var4Serializer mInstance;
 };
 
 

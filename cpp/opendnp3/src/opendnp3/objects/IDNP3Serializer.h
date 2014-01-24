@@ -18,28 +18,23 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __GROUP_VARIATION_ID_H_
-#define __GROUP_VARIATION_ID_H_
+#ifndef __I_DNP3_SERIALIZER_H_
+#define __I_DNP3_SERIALIZER_H_
 
-#include <cstdint>
+#include <openpal/ISerializer.h>
+
+#include "GroupVariationID.h"
 
 namespace opendnp3
 {
 
-struct GroupVariationID
+template <class T>
+class IDNP3Serializer : public openpal::ISerializer<T>
 {
-	GroupVariationID() : group(0xFF), variation(0xFF)
-	{}
+	public:
 
-	GroupVariationID(uint8_t aGroup, uint8_t aVariation):
-		group(aGroup),
-		variation(aVariation)
-	{
+	virtual GroupVariationID ID() const = 0;
 	
-	}
-
-	uint8_t group;
-	uint8_t variation;
 };
 
 }

@@ -45,15 +45,17 @@ void Group32Var1::Write(const Group32Var1& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(4);
 }
 
-Analog Group32Var1::ReadAndConvert(ReadOnlyBuffer& buff)
+Group32Var1Serializer Group32Var1Serializer::mInstance;
+
+Analog Group32Var1Serializer::Read(ReadOnlyBuffer& buff) const
 {
-  auto gv = Read(buff);
+  auto gv = Group32Var1::Read(buff);
   return AnalogFactory::From(gv.flags, gv.value);
 }
 
-void Group32Var1::ConvertAndWrite(const Analog& value, openpal::WriteBuffer& buff)
+void Group32Var1Serializer::Write(const Analog& value, openpal::WriteBuffer& buff) const
 {
-  Write(ConvertGroup32Var1::Apply(value), buff);
+  Group32Var1::Write(ConvertGroup32Var1::Apply(value), buff);
 }
 
 
@@ -77,15 +79,17 @@ void Group32Var2::Write(const Group32Var2& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(2);
 }
 
-Analog Group32Var2::ReadAndConvert(ReadOnlyBuffer& buff)
+Group32Var2Serializer Group32Var2Serializer::mInstance;
+
+Analog Group32Var2Serializer::Read(ReadOnlyBuffer& buff) const
 {
-  auto gv = Read(buff);
+  auto gv = Group32Var2::Read(buff);
   return AnalogFactory::From(gv.flags, gv.value);
 }
 
-void Group32Var2::ConvertAndWrite(const Analog& value, openpal::WriteBuffer& buff)
+void Group32Var2Serializer::Write(const Analog& value, openpal::WriteBuffer& buff) const
 {
-  Write(ConvertGroup32Var2::Apply(value), buff);
+  Group32Var2::Write(ConvertGroup32Var2::Apply(value), buff);
 }
 
 
@@ -113,15 +117,17 @@ void Group32Var3::Write(const Group32Var3& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(6);
 }
 
-Analog Group32Var3::ReadAndConvert(ReadOnlyBuffer& buff)
+Group32Var3Serializer Group32Var3Serializer::mInstance;
+
+Analog Group32Var3Serializer::Read(ReadOnlyBuffer& buff) const
 {
-  auto gv = Read(buff);
+  auto gv = Group32Var3::Read(buff);
   return AnalogFactory::From(gv.flags, gv.value, gv.time);
 }
 
-void Group32Var3::ConvertAndWrite(const Analog& value, openpal::WriteBuffer& buff)
+void Group32Var3Serializer::Write(const Analog& value, openpal::WriteBuffer& buff) const
 {
-  Write(ConvertGroup32Var3::Apply(value), buff);
+  Group32Var3::Write(ConvertGroup32Var3::Apply(value), buff);
 }
 
 
@@ -149,15 +155,17 @@ void Group32Var4::Write(const Group32Var4& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(6);
 }
 
-Analog Group32Var4::ReadAndConvert(ReadOnlyBuffer& buff)
+Group32Var4Serializer Group32Var4Serializer::mInstance;
+
+Analog Group32Var4Serializer::Read(ReadOnlyBuffer& buff) const
 {
-  auto gv = Read(buff);
+  auto gv = Group32Var4::Read(buff);
   return AnalogFactory::From(gv.flags, gv.value, gv.time);
 }
 
-void Group32Var4::ConvertAndWrite(const Analog& value, openpal::WriteBuffer& buff)
+void Group32Var4Serializer::Write(const Analog& value, openpal::WriteBuffer& buff) const
 {
-  Write(ConvertGroup32Var4::Apply(value), buff);
+  Group32Var4::Write(ConvertGroup32Var4::Apply(value), buff);
 }
 
 
@@ -181,15 +189,17 @@ void Group32Var5::Write(const Group32Var5& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(4);
 }
 
-Analog Group32Var5::ReadAndConvert(ReadOnlyBuffer& buff)
+Group32Var5Serializer Group32Var5Serializer::mInstance;
+
+Analog Group32Var5Serializer::Read(ReadOnlyBuffer& buff) const
 {
-  auto gv = Read(buff);
+  auto gv = Group32Var5::Read(buff);
   return AnalogFactory::From(gv.flags, gv.value);
 }
 
-void Group32Var5::ConvertAndWrite(const Analog& value, openpal::WriteBuffer& buff)
+void Group32Var5Serializer::Write(const Analog& value, openpal::WriteBuffer& buff) const
 {
-  Write(ConvertGroup32Var5::Apply(value), buff);
+  Group32Var5::Write(ConvertGroup32Var5::Apply(value), buff);
 }
 
 
@@ -213,15 +223,17 @@ void Group32Var6::Write(const Group32Var6& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(8);
 }
 
-Analog Group32Var6::ReadAndConvert(ReadOnlyBuffer& buff)
+Group32Var6Serializer Group32Var6Serializer::mInstance;
+
+Analog Group32Var6Serializer::Read(ReadOnlyBuffer& buff) const
 {
-  auto gv = Read(buff);
+  auto gv = Group32Var6::Read(buff);
   return AnalogFactory::From(gv.flags, gv.value);
 }
 
-void Group32Var6::ConvertAndWrite(const Analog& value, openpal::WriteBuffer& buff)
+void Group32Var6Serializer::Write(const Analog& value, openpal::WriteBuffer& buff) const
 {
-  Write(ConvertGroup32Var6::Apply(value), buff);
+  Group32Var6::Write(ConvertGroup32Var6::Apply(value), buff);
 }
 
 
@@ -249,15 +261,17 @@ void Group32Var7::Write(const Group32Var7& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(6);
 }
 
-Analog Group32Var7::ReadAndConvert(ReadOnlyBuffer& buff)
+Group32Var7Serializer Group32Var7Serializer::mInstance;
+
+Analog Group32Var7Serializer::Read(ReadOnlyBuffer& buff) const
 {
-  auto gv = Read(buff);
+  auto gv = Group32Var7::Read(buff);
   return AnalogFactory::From(gv.flags, gv.value, gv.time);
 }
 
-void Group32Var7::ConvertAndWrite(const Analog& value, openpal::WriteBuffer& buff)
+void Group32Var7Serializer::Write(const Analog& value, openpal::WriteBuffer& buff) const
 {
-  Write(ConvertGroup32Var7::Apply(value), buff);
+  Group32Var7::Write(ConvertGroup32Var7::Apply(value), buff);
 }
 
 
@@ -285,15 +299,17 @@ void Group32Var8::Write(const Group32Var8& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(6);
 }
 
-Analog Group32Var8::ReadAndConvert(ReadOnlyBuffer& buff)
+Group32Var8Serializer Group32Var8Serializer::mInstance;
+
+Analog Group32Var8Serializer::Read(ReadOnlyBuffer& buff) const
 {
-  auto gv = Read(buff);
+  auto gv = Group32Var8::Read(buff);
   return AnalogFactory::From(gv.flags, gv.value, gv.time);
 }
 
-void Group32Var8::ConvertAndWrite(const Analog& value, openpal::WriteBuffer& buff)
+void Group32Var8Serializer::Write(const Analog& value, openpal::WriteBuffer& buff) const
 {
-  Write(ConvertGroup32Var8::Apply(value), buff);
+  Group32Var8::Write(ConvertGroup32Var8::Apply(value), buff);
 }
 
 

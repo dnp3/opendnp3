@@ -26,7 +26,7 @@ namespace opendnp3 {
 struct Group23Var1
 {
   static const GroupVariationID ID;
-  static const size_t SIZE = 5;
+  static const uint32_t SIZE = 5;
   static Group23Var1 Read(openpal::ReadOnlyBuffer&);
   static void Write(const Group23Var1&, openpal::WriteBuffer&);
 
@@ -38,7 +38,7 @@ struct Group23Var1
 struct Group23Var2
 {
   static const GroupVariationID ID;
-  static const size_t SIZE = 3;
+  static const uint32_t SIZE = 3;
   static Group23Var2 Read(openpal::ReadOnlyBuffer&);
   static void Write(const Group23Var2&, openpal::WriteBuffer&);
 
@@ -50,7 +50,7 @@ struct Group23Var2
 struct Group23Var3
 {
   static const GroupVariationID ID;
-  static const size_t SIZE = 5;
+  static const uint32_t SIZE = 5;
   static Group23Var3 Read(openpal::ReadOnlyBuffer&);
   static void Write(const Group23Var3&, openpal::WriteBuffer&);
 
@@ -62,7 +62,7 @@ struct Group23Var3
 struct Group23Var4
 {
   static const GroupVariationID ID;
-  static const size_t SIZE = 3;
+  static const uint32_t SIZE = 3;
   static Group23Var4 Read(openpal::ReadOnlyBuffer&);
   static void Write(const Group23Var4&, openpal::WriteBuffer&);
 
@@ -74,7 +74,7 @@ struct Group23Var4
 struct Group23Var5
 {
   static const GroupVariationID ID;
-  static const size_t SIZE = 11;
+  static const uint32_t SIZE = 11;
   static Group23Var5 Read(openpal::ReadOnlyBuffer&);
   static void Write(const Group23Var5&, openpal::WriteBuffer&);
 
@@ -87,7 +87,7 @@ struct Group23Var5
 struct Group23Var6
 {
   static const GroupVariationID ID;
-  static const size_t SIZE = 9;
+  static const uint32_t SIZE = 9;
   static Group23Var6 Read(openpal::ReadOnlyBuffer&);
   static void Write(const Group23Var6&, openpal::WriteBuffer&);
 
@@ -100,7 +100,7 @@ struct Group23Var6
 struct Group23Var7
 {
   static const GroupVariationID ID;
-  static const size_t SIZE = 11;
+  static const uint32_t SIZE = 11;
   static Group23Var7 Read(openpal::ReadOnlyBuffer&);
   static void Write(const Group23Var7&, openpal::WriteBuffer&);
 
@@ -113,7 +113,7 @@ struct Group23Var7
 struct Group23Var8
 {
   static const GroupVariationID ID;
-  static const size_t SIZE = 9;
+  static const uint32_t SIZE = 9;
   static Group23Var8 Read(openpal::ReadOnlyBuffer&);
   static void Write(const Group23Var8&, openpal::WriteBuffer&);
 

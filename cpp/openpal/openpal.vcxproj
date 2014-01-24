@@ -149,6 +149,7 @@
     <ClInclude Include="include\openpal\gen\LogLevel.h" />
     <ClInclude Include="include\openpal\HasSize.h" />
     <ClInclude Include="include\openpal\Indexable.h" />
+    <ClInclude Include="include\openpal\ISerializer.h" />
     <ClInclude Include="include\openpal\IUTCTimeSource.h" />
     <ClInclude Include="include\openpal\IExecutor.h" />
     <ClInclude Include="include\openpal\IHandlerAsync.h" />

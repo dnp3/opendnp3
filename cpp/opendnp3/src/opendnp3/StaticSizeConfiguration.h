@@ -38,6 +38,9 @@ struct SizeConfiguration : private PureStatic
 
 	// the maximum number of static read object/variation records that can be in any READ request
 	static const uint16_t MAX_READ_REQUESTS = 16;
+
+	// the maximum number of event read object/variation records that can be in any READ request
+	static const uint16_t MAX_EVENT_READ_REQUESTS = 16;
 };
 
 }

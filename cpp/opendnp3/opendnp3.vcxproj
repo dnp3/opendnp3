@@ -84,6 +84,7 @@
     <ClInclude Include="include\opendnp3\Util.h" />
     <ClInclude Include="include\opendnp3\VTOData.h" />
     <ClInclude Include="src\opendnp3\APDU.h" />
+    <ClInclude Include="src\opendnp3\APDUEventWriter.h" />
     <ClInclude Include="src\opendnp3\APDUHeader.h" />
     <ClInclude Include="src\opendnp3\APDUHeaderParser.h" />
     <ClInclude Include="src\opendnp3\APDUParser.h" />
@@ -100,6 +101,7 @@
     <ClInclude Include="src\opendnp3\AsyncTaskInterfaces.h" />
     <ClInclude Include="src\opendnp3\AsyncTaskNonPeriodic.h" />
     <ClInclude Include="src\opendnp3\AsyncTaskPeriodic.h" />
+    <ClInclude Include="src\opendnp3\BinaryWriteState.h" />
     <ClInclude Include="src\opendnp3\BitReader.h" />
     <ClInclude Include="src\opendnp3\CachedRequest.h" />
     <ClInclude Include="src\opendnp3\ChangeBuffer.h" />
@@ -107,6 +109,7 @@
     <ClInclude Include="src\opendnp3\CommandTask.h" />
     <ClInclude Include="src\opendnp3\ConstantCommandProcessor.h" />
     <ClInclude Include="src\opendnp3\CopyableBuffer.h" />
+    <ClInclude Include="src\opendnp3\CountOf.h" />
     <ClInclude Include="src\opendnp3\CountWriteIterator.h" />
     <ClInclude Include="src\opendnp3\CRC.h" />
     <ClInclude Include="src\opendnp3\CTOHistory.h" />
@@ -137,6 +140,7 @@
     <ClInclude Include="src\opendnp3\IAppUser.h" />
     <ClInclude Include="src\opendnp3\IEventBuffer.h" />
     <ClInclude Include="src\opendnp3\IEventWriter.h" />
+    <ClInclude Include="src\opendnp3\IEventWriterState.h" />
     <ClInclude Include="src\opendnp3\IFrameSink.h" />
     <ClInclude Include="src\opendnp3\IINField.h" />
     <ClInclude Include="src\opendnp3\IINHelpers.h" />
@@ -181,6 +185,7 @@
     <ClInclude Include="src\opendnp3\objects\Group52.h" />
     <ClInclude Include="src\opendnp3\objects\Group60.h" />
     <ClInclude Include="src\opendnp3\objects\GroupVariationID.h" />
+    <ClInclude Include="src\opendnp3\objects\IDNP3Serializer.h" />
     <ClInclude Include="src\opendnp3\objects\MeasurementFactory.h" />
     <ClInclude Include="src\opendnp3\ObjectWriter.h" />
     <ClInclude Include="src\opendnp3\OutstationEventBuffer.h" />
@@ -229,6 +234,7 @@
   <ItemGroup>
     <ClCompile Include="src\opendnp3\AnalogOutput.cpp" />
     <ClCompile Include="src\opendnp3\APDU.cpp" />
+    <ClCompile Include="src\opendnp3\APDUEventWriter.cpp" />
     <ClCompile Include="src\opendnp3\APDUHeaderParser.cpp" />
     <ClCompile Include="src\opendnp3\APDUParser.cpp" />
     <ClCompile Include="src\opendnp3\APDURequest.cpp" />
@@ -285,6 +291,7 @@
     <ClCompile Include="src\opendnp3\GroupVariation.cpp" />
     <ClCompile Include="src\opendnp3\HeaderHandlerBase.cpp" />
     <ClCompile Include="src\opendnp3\IAppUser.cpp" />
+    <ClCompile Include="src\opendnp3\IEventWriterState.cpp" />
     <ClCompile Include="src\opendnp3\IINField.cpp" />
     <ClCompile Include="src\opendnp3\IINHelpers.cpp" />
     <ClCompile Include="src\opendnp3\IMeasurementHandler.cpp" />

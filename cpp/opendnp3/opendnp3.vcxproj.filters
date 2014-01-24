@@ -645,6 +645,21 @@
     <ClInclude Include="src\opendnp3\ResponseHelpers.h">
       <Filter>Header</Filter>
     </ClInclude>
+    <ClInclude Include="src\opendnp3\APDUEventWriter.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\IEventWriterState.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\BinaryWriteState.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\CountOf.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\objects\IDNP3Serializer.h">
+      <Filter>Header\objects</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\opendnp3\AnalogOutput.cpp">
@@ -1047,6 +1062,12 @@
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\StaticRange.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\APDUEventWriter.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\IEventWriterState.cpp">
       <Filter>Source</Filter>
     </ClCompile>
   </ItemGroup>

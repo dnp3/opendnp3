@@ -22,6 +22,7 @@
 #define __PREFIXED_WRITE_ITERATOR_H_
 
 #include <limits>
+#include "objects/IDNP3Serializer.h"
 
 namespace opendnp3
 {
@@ -34,15 +35,16 @@ class PrefixedWriteIterator
 
 	static PrefixedWriteIterator Null()
 	{
-		return PrefixedWriteIterator(WriteBuffer::Empty());
+		return PrefixedWriteIterator(nullptr, WriteBuffer::Empty());
 	}
 	
-	PrefixedWriteIterator(openpal::WriteBuffer& aPosition) :		
-		sizeOfTypePlusIndex(WriteType::SIZE + PrefixType::Size),
+	PrefixedWriteIterator(IDNP3Serializer<WriteType>* pSerializer_, openpal::WriteBuffer& aPosition) :	
+		pSerializer(pSerializer_),
+		sizeOfTypePlusIndex(pSerializer->Size() + PrefixType::Size),
 		count(0),
 		countPosition(aPosition),
 		position(aPosition),
-		isNull(aPosition.Size() < PrefixType::Size)
+		isNull(aPosition.Size() < PrefixType::Size || pSerializer == nullptr)
 	{
 		if(!isNull) 
 		{			
@@ -66,7 +68,7 @@ class PrefixedWriteIterator
 		else
 		{
 			PrefixType::WriteBuffer(position, index);
-			WriteType::Write(value, position);
+			pSerializer->Write(value, position);			
 			++count;
 			return true;
 		}
@@ -76,6 +78,7 @@ class PrefixedWriteIterator
 
 	private:	
 	
+	IDNP3Serializer<WriteType>* pSerializer;
 	uint32_t sizeOfTypePlusIndex;
 
 	typename PrefixType::Type count;

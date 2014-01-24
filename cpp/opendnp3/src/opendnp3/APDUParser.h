@@ -25,7 +25,7 @@
 #include <limits>
 
 #include <openpal/BufferWrapper.h>
-
+#include <openpal/ISerializer.h>
 #include <opendnp3/Uncopyable.h>
 
 #include "Range.h"
@@ -145,19 +145,20 @@ class APDUParser : private PureStatic
 		IndexParser* pParser, 
 		IAPDUHeaderHandler& handler);
 		
-	template <class Descriptor>
-	static Result ParseRangeFixedSize(GroupVariation gv, const HeaderRecord& record, openpal::ReadOnlyBuffer& buffer, const Range& range, IAPDUHeaderHandler& output);
+	template <class Target>
+	static Result ParseRangeFixedSize(GroupVariation gv, const HeaderRecord& record, openpal::ISerializer<Target>* pSerializer, openpal::ReadOnlyBuffer& buffer, const Range& range, IAPDUHeaderHandler& output);
 
 	template <class Descriptor>
 	static Result ParseCountOf(openpal::ReadOnlyBuffer& buffer, uint32_t count, IAPDUHeaderHandler& output);
 
-	template <class Descriptor>
+	template <class Target>
 	static Result ParseCountFixedSizeWithIndex(
 		GroupVariation gv,
-		const HeaderRecord& record, 
+		const HeaderRecord& record,
 		openpal::ReadOnlyBuffer& buffer, 
 		uint32_t count, 
 		IndexParser* pParser, 
+		openpal::ISerializer<Target>* pSerializer,
 		IAPDUHeaderHandler& handler);	
 
 	static IndexedValue<Binary> BoolToBinary(const IndexedValue<bool>& v);
@@ -223,15 +224,15 @@ APDUParser::Result APDUParser::ParseCount(openpal::ReadOnlyBuffer& buffer, Conte
 
 
 
-template <class Descriptor>
-APDUParser::Result APDUParser::ParseRangeFixedSize(GroupVariation gv, const HeaderRecord& record, openpal::ReadOnlyBuffer& buffer, const Range& range, IAPDUHeaderHandler& output)
-{
-	uint32_t size = range.count * Descriptor::SIZE;
+template <class Target>
+APDUParser::Result APDUParser::ParseRangeFixedSize(GroupVariation gv, const HeaderRecord& record, openpal::ISerializer<Target>* pSerializer, openpal::ReadOnlyBuffer& buffer, const Range& range, IAPDUHeaderHandler& output)
+{	
+	uint32_t size = range.count * pSerializer->Size();
 	if(buffer.Size() < size) return APDUParser::Result::NOT_ENOUGH_DATA_FOR_OBJECTS;
 	else {
 	
-		auto collection = Iterable<IndexedValue<typename Descriptor::Target>>::From(buffer, range.count, [range](openpal::ReadOnlyBuffer& buffer, uint32_t pos) {
-			return IndexedValue<typename Descriptor::Target>(Descriptor::ReadAndConvert(buffer), range.start + pos);
+		auto collection = Iterable<IndexedValue<Target>>::From(buffer, range.count, [range, pSerializer](openpal::ReadOnlyBuffer& buffer, uint32_t pos) {
+			return IndexedValue<Target>(pSerializer->Read(buffer), range.start + pos);
 		});
 
 		output.OnRange(gv, record.Complete(size), collection);
@@ -256,21 +257,24 @@ APDUParser::Result APDUParser::ParseCountOf(openpal::ReadOnlyBuffer& buffer, uin
 	}
 }
 
-template <class Descriptor>
+template <class Target>
 APDUParser::Result APDUParser::ParseCountFixedSizeWithIndex(
 	GroupVariation gv,
 	const HeaderRecord& record,	
 	openpal::ReadOnlyBuffer& buffer, 
 	uint32_t count, 
 	IndexParser* pParser, 
+	openpal::ISerializer<Target>* pSerializer,
 	IAPDUHeaderHandler& handler)
 {
-	uint32_t size = count * (pParser->IndexSize() + Descriptor::SIZE);
+	uint32_t size = count * (pParser->IndexSize() + pSerializer->Size());
 	if(buffer.Size() < size) return APDUParser::Result::NOT_ENOUGH_DATA_FOR_OBJECTS;
 	else {
 		
-		auto collection = Iterable<IndexedValue<typename Descriptor::Target>>::From(buffer, count, [pParser](openpal::ReadOnlyBuffer& buffer, uint32_t) {			
-			return IndexedValue<typename Descriptor::Target>(Descriptor::ReadAndConvert(buffer), pParser->ReadIndex(buffer));
+		auto collection = Iterable<IndexedValue<Target>>::From(buffer, count, [pParser, pSerializer](openpal::ReadOnlyBuffer& buffer, uint32_t) {
+			auto index = pParser->ReadIndex(buffer);
+			auto value = pSerializer->Read(buffer);
+			return IndexedValue<Target>(value, index);
 		});
 		
 		handler.OnIndexPrefix(gv, record.Complete(size), collection);

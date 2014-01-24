@@ -45,26 +45,39 @@ object GroupVariationHeaderRenderer extends ModelRenderer[GroupVariation]{
 
     def members: Iterator[String] =  x.fields.map(f => typedefs(f)).iterator.flatten ++ x.fields.map(f => getFieldString(f)).iterator
 
-    def conversions: Iterator[String] = x.conversion match {
-      case Some(c) => space ++ c.signatures ++ space
-      case None => Iterator.empty
-    }
-
-    def sizeSignature: Iterator[String] = Iterator("static const size_t SIZE = " + x.size + ";")
+    def sizeSignature: Iterator[String] = Iterator("static const uint32_t SIZE = " + x.size + ";")
 
     def readSignature: Iterator[String] = Iterator("static " + x.name + " Read(openpal::ReadOnlyBuffer&);")
 
     def writeSignature: Iterator[String] = Iterator("static void Write(const " + x.name + "&, openpal::WriteBuffer&);")
 
-    struct(x.name) {
+    def definition : Iterator[String] = struct(x.name) {
       idDeclaration ++
+      x.conversion.map(c => Iterator("typedef " + c.target + " Target;")).getOrElse(Iterator.empty) ++
       sizeSignature ++
-      conversions ++
       readSignature ++
       writeSignature ++
       space ++
       members
     }
+
+    def serializer: Iterator[String] = x.conversion match {
+      case None => Iterator.empty
+      case Some(conv) =>
+        val structName = x.name+"Serializer"
+        val baseClass = "IDNP3Serializer<"+conv.target+">"
+        space ++ struct(structName, Some(baseClass)) {
+          space ++ Iterator("static " + baseClass + "* Inst() { return &mInstance; }") ++
+          space ++ Iterator("GroupVariationID ID() const { return " + x.name + "::ID; }") ++
+          space ++ Iterator("uint32_t Size() const { return " + x.name + "::SIZE; }") ++
+          space ++ conv.signatures ++ space ++
+          privateSection {
+            Iterator("static " + structName + " mInstance;")
+          }
+        }
+    }
+
+    definition ++ serializer
   }
 }
 

@@ -18,30 +18,27 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __GROUP_VARIATION_ID_H_
-#define __GROUP_VARIATION_ID_H_
 
-#include <cstdint>
+#include "IEventWriterState.h"
 
 namespace opendnp3
 {
 
-struct GroupVariationID
-{
-	GroupVariationID() : group(0xFF), variation(0xFF)
-	{}
-
-	GroupVariationID(uint8_t aGroup, uint8_t aVariation):
-		group(aGroup),
-		variation(aVariation)
+	bool InitialEventWriterState::Write(const Event<Binary>& evt, APDUEventWriter& ctx)
 	{
-	
+		return false;
 	}
 
-	uint8_t group;
-	uint8_t variation;
-};
+	bool InitialEventWriterStateWrite(const Event<Analog>& evt, APDUEventWriter& ctx)
+	{
+		return false;
+	}
+
+	bool InitialEventWriterStateWrite(const Event<Counter>& evt, APDUEventWriter& ctx)
+	{
+		return false;
+	}
 
 }
 
-#endif
+

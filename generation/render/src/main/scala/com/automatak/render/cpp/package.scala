@@ -58,12 +58,17 @@ package object cpp {
 
   }
 
+  def privateSection(inner: => Iterator[String]): Iterator[String] = Iterator("private:") ++ space ++ inner
+
   def classPublic(inner: => Iterator[String])(implicit i: Indentation): Iterator[String] = Iterator("public:","") ++ inner
 
   def classPrivate(inner: => Iterator[String])(implicit i: Indentation): Iterator[String] = Iterator("private:","") ++ inner
 
-  def struct(name: String)(inner: => Iterator[String])(implicit i: Indentation): Iterator[String] = {
-    def header = Iterator("struct " + name)
+  def struct(name: String, base: Option[String] = None)(inner: => Iterator[String])(implicit i: Indentation): Iterator[String] = {
+    def header = base match {
+      case Some(b) => Iterator("struct " + name + " : public " + b)
+      case None => Iterator("struct " + name)
+    }
     header ++
       bracketSemiColon {
         inner

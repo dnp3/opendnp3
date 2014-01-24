@@ -18,29 +18,44 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __GROUP_VARIATION_ID_H_
-#define __GROUP_VARIATION_ID_H_
 
-#include <cstdint>
+#ifndef __APDU_EVENT_WRITER_H_
+#define __APDU_EVENT_WRITER_H_
+
+#include "IEventWriter.h"
+#include "IEventWriterState.h"
+#include "BinaryWriteState.h"
+
+#include "objects/Group2.h"
+
+#include <openpal/Serialization.h>
 
 namespace opendnp3
 {
 
-struct GroupVariationID
+class APDUEventWriter : public IEventWriter
 {
-	GroupVariationID() : group(0xFF), variation(0xFF)
-	{}
+	public:
 
-	GroupVariationID(uint8_t aGroup, uint8_t aVariation):
-		group(aGroup),
-		variation(aVariation)
-	{
-	
-	}
+	APDUEventWriter();
+				
+	bool Write(const Event<Binary>& evt) final;
+	bool Write(const Event<Analog>& evt) final;
+	bool Write(const Event<Counter>& evt) final;
 
-	uint8_t group;
-	uint8_t variation;
+	private:
+
+	// current state
+	IEventWriterState* pState;
+
+	// states
+	InitialEventWriterState initial;
+
+	BinaryWriteState<openpal::UInt16, Group2Var1> stateGroup2Var1;
+	BinaryWriteState<openpal::UInt16, Group2Var2> stateGroup2Var2;
+
 };
+
 
 }
 

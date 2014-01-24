@@ -31,6 +31,9 @@
 #include "ObjectWriter.h"
 #include "Database.h"
 #include "ResponseHelpers.h"
+#include "OutstationEventBuffer.h"
+#include "CountOf.h"
+#include "SelectionCriteria.h"
 
 namespace opendnp3
 {
@@ -49,28 +52,28 @@ enum class QueueResult
  */
 class ResponseContext : private Uncopyable
 {			
-	typedef LoadResult (*LoadFun)(ObjectWriter& writer, StaticRange& range, Database& db);
+	typedef LoadResult (*LoadFun)(GroupVariationID gv, ObjectWriter& writer, StaticRange& range, Database& db);
 
 	class FunctionalStaticRange: public StaticRange
 	{
 		public:
+		
+		FunctionalStaticRange() : pLoadFun(nullptr) {}
+		FunctionalStaticRange(GroupVariationID groupVar_, const StaticRange& rng): StaticRange(rng), groupVar(groupVar_), pLoadFun(nullptr) {}
 
-		FunctionalStaticRange(const StaticRange& sr) : StaticRange(sr), pLoadFun(nullptr) {}
-		FunctionalStaticRange() : StaticRange(), pLoadFun(nullptr) {}
-		FunctionalStaticRange(LoadFun pLoadFun_): StaticRange(), pLoadFun(pLoadFun_) {}
+		GroupVariationID groupVar;
 		LoadFun pLoadFun;
 	};
 
 	public:
 
-	ResponseContext(Database*);
+	ResponseContext(Database*, OutstationEventBuffer*);
 
 	void Reset();
 
 	QueueResult QueueReadAllObjects(GroupVariation gv);
 	QueueResult QueueReadRange(GroupVariation gv, const StaticRange& range);
-	
-	
+		
 	LoadResult Load(ObjectWriter& writer);
 	
 	private:
@@ -79,28 +82,32 @@ class ResponseContext : private Uncopyable
 	
 	bool first;
 	Database* pDatabase;
+	OutstationEventBuffer* pBuffer;
 
 	openpal::StaticArray<FunctionalStaticRange, uint8_t, SizeConfiguration::MAX_READ_REQUESTS> staticRangeArray;
-	openpal::QueueAdapter<FunctionalStaticRange, uint8_t> staticResponseQueue;	
+	openpal::QueueAdapter<FunctionalStaticRange, uint8_t> staticResponseQueue;
+
+	openpal::StaticArray<CountOf<SelectionCriteria>, uint8_t, SizeConfiguration::MAX_EVENT_READ_REQUESTS> eventCountArray; 
+	openpal::QueueAdapter<CountOf<SelectionCriteria>, uint8_t> eventCountQueue;
 
 	template <class T, class U>
-	QueueResult QueueRange(const StaticRange& rng);
+	QueueResult QueueRange(GroupVariationID gv, const StaticRange& rng);
 };
 
-template <class T, class U>
-QueueResult ResponseContext::QueueRange(const StaticRange& rng)
+template <class Target, class Serializer>
+QueueResult ResponseContext::QueueRange(GroupVariationID gv, const StaticRange& rng)
 {	
-	if(rng.IsContainedBy(pDatabase->NumValues<typename T::Target>()))
+	if(rng.IsContainedBy(pDatabase->NumValues<Target>()))
 	{
-		FunctionalStaticRange range(rng);
+		FunctionalStaticRange range(gv, rng);
 		if(range.IsContainedByUInt8())
 		{
-			range.pLoadFun = &LoadFixedSizeStartStop<T, U, UInt8, QualifierCode::UINT8_START_STOP>;
+			range.pLoadFun = &LoadFixedSizeStartStop<Target, Serializer, UInt8, QualifierCode::UINT8_START_STOP>;
 			return staticResponseQueue.Push(range) ? QueueResult::SUCCESS : QueueResult::FULL;
 		}
 		else
 		{			
-			range.pLoadFun = &LoadFixedSizeStartStop<T, U, UInt16, QualifierCode::UINT16_START_STOP>;
+			range.pLoadFun = &LoadFixedSizeStartStop<Target, Serializer, UInt16, QualifierCode::UINT16_START_STOP>;
 			return staticResponseQueue.Push(range) ? QueueResult::SUCCESS : QueueResult::FULL;
 		}
 	}

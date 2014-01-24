@@ -20,6 +20,7 @@
 
 #include <openpal/BufferWrapper.h>
 #include "GroupVariationID.h"
+#include "IDNP3Serializer.h"
 #include <opendnp3/DataTypes.h>
 
 namespace opendnp3 {
@@ -37,16 +38,30 @@ struct Group10Var1
 struct Group10Var2
 {
   static const GroupVariationID ID;
-  static const size_t SIZE = 1;
-
   typedef ControlStatus Target;
-  static ControlStatus ReadAndConvert(openpal::ReadOnlyBuffer&);
-  static void ConvertAndWrite(const ControlStatus&, openpal::WriteBuffer&);
-
+  static const uint32_t SIZE = 1;
   static Group10Var2 Read(openpal::ReadOnlyBuffer&);
   static void Write(const Group10Var2&, openpal::WriteBuffer&);
 
   uint8_t flags;
+};
+
+struct Group10Var2Serializer : public IDNP3Serializer<ControlStatus>
+{
+
+  static IDNP3Serializer<ControlStatus>* Inst() { return &mInstance; }
+
+  GroupVariationID ID() const { return Group10Var2::ID; }
+
+  uint32_t Size() const { return Group10Var2::SIZE; }
+
+  typedef ControlStatus Target;
+  ControlStatus Read(openpal::ReadOnlyBuffer&) const;
+  void Write(const ControlStatus&, openpal::WriteBuffer&) const;
+
+  private:
+
+  static Group10Var2Serializer mInstance;
 };
 
 
