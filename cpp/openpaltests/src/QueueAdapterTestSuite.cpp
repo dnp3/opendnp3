@@ -20,8 +20,7 @@
  */
 #include <boost/test/unit_test.hpp>
 
-#include <openpal/StaticArray.h>
-#include <openpal/QueueAdapter.h>
+#include <openpal/StaticQueue.h>
 
 using namespace openpal;
 
@@ -55,6 +54,11 @@ BOOST_AUTO_TEST_CASE(PushesAndPopsCorrectly)
 	stack.Clear();	
 	BOOST_REQUIRE(stack.IsEmpty());
 	BOOST_REQUIRE(!stack.IsFull());
+}
+
+BOOST_AUTO_TEST_CASE(StaticQueueCompiles)
+{
+	StaticQueue<char*, int, 4> queue;	
 }
 
 BOOST_AUTO_TEST_SUITE_END()
