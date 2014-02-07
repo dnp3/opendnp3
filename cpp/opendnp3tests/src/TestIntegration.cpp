@@ -67,6 +67,8 @@ const LogLevel FILTER_LEVEL = LogLevel::Info;
 
 BOOST_AUTO_TEST_CASE(MasterToSlaveThroughput)
 {
+cout << "Skipping througput tests" << endl;
+/*
 	IntegrationTest t(FILTER_LEVEL, START_PORT, NUM_PAIRS, NUM_POINTS);
 
 	size_t num_points_per_pair = 0;
@@ -84,7 +86,7 @@ BOOST_AUTO_TEST_CASE(MasterToSlaveThroughput)
 		cout << "elapsed seconds: " << elapsed_sec << endl;
 		cout << "points/sec: " << points / elapsed_sec << endl;
 	}
-
+*/
 }
 
 BOOST_AUTO_TEST_SUITE_END()

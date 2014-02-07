@@ -46,7 +46,6 @@ BOOST_AUTO_TEST_CASE(ChangeBufferMarshallsUpdates)
 	FlexibleDataObserver fdo;
 
 	{
-		Transaction t(&cb);
 		size_t num = cb.FlushUpdates(&fdo);
 		BOOST_REQUIRE_EQUAL(num, 3);
 		BOOST_REQUIRE(fdo.mBinaryMap[0] == b);
