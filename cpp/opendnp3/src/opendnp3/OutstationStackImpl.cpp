@@ -34,7 +34,7 @@ OutstationStackImpl::OutstationStackImpl(
 	IOutstation(arLogger, aEnableDisableFunc),
 	mpExecutor(apExecutor),
 	mAppStack(arLogger, apExecutor, arCfg.app, arCfg.link),
-	mDynamicDatabaseBuffer(arCfg.database.databaseTemplate),
+	mDynamicDatabaseBuffer(arCfg.database.GetTemplate()),
 	mDB(mDynamicDatabaseBuffer.GetFacade()),
 	mSlave(arLogger.GetSubLogger("outstation"), &mAppStack.mApplication, apExecutor, apTimeWriteHandler, &mDB, apCmdHandler, arCfg.slave),
 	mOnShutdown(aOnShutdown)

@@ -71,15 +71,12 @@ int main(int argc, char* argv[])
 		std::cout << "Server state: " << ChannelStateToString(state) << std::endl;
 	});
 
+	
+
 	// The master config object for a slave. The default are
 	// useable, but understanding the options are important.
-	SlaveStackConfig stackConfig;
-
-	// The DeviceTemplate struct specifies the structure of the
-	// slave's database
-	DeviceTemplate device(5, 5, 5, 5, 5);
-	stackConfig.device = device;
-	stackConfig.device.mStartOnline = true;
+	SlaveStackConfig stackConfig;	
+	stackConfig.database = DatabaseConfiguration(DatabaseTemplate(5, 5, 5, 5, 5));	
 	stackConfig.slave.mDisableUnsol = true;
 
 	// Create a new slave with a log level, command handler, and

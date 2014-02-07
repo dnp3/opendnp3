@@ -44,7 +44,7 @@ SlaveStackConfig ConfigReader::ConvertSlaveStackConfig(JNIEnv* apEnv, jobject jC
 	cfg.link = ConvertLinkConfig(apEnv, JNIHelpers::GetObjectField(apEnv, jCfg, "linkConfig", "Lcom/automatak/dnp3/LinkLayerConfig;"));
 	cfg.app = ConvertAppConfig(apEnv, JNIHelpers::GetObjectField(apEnv, jCfg, "appConfig", "Lcom/automatak/dnp3/AppLayerConfig;"));
 	cfg.slave = ConvertOutstationConfig(apEnv, JNIHelpers::GetObjectField(apEnv, jCfg, "outstationConfig", "Lcom/automatak/dnp3/OutstationConfig;"));
-	cfg.device = ConvertDatabaseConfig(apEnv, JNIHelpers::GetObjectField(apEnv, jCfg, "databaseConfig", "Lcom/automatak/dnp3/DatabaseConfig;"));
+	cfg.database = ConvertDatabaseConfig(apEnv, JNIHelpers::GetObjectField(apEnv, jCfg, "databaseConfig", "Lcom/automatak/dnp3/DatabaseConfig;"));
 
 	return cfg;
 }
@@ -116,15 +116,15 @@ jint ConfigReader::GetEnumId(JNIEnv* apEnv, jobject jenum)
 	return apEnv->CallIntMethod(jenum, mid);
 }
 
-DeviceTemplate ConfigReader::ConvertDatabaseConfig(JNIEnv* apEnv, jobject jCfg)
+DatabaseConfiguration ConfigReader::ConvertDatabaseConfig(JNIEnv* apEnv, jobject jCfg)
 {
-	DeviceTemplate cfg;
+	DatabaseConfiguration cfg;
 
 	{
 		jobject list = JNIHelpers::GetObjectField(apEnv, jCfg, "binaryInputs", "Ljava/util/List;");
 		JNIHelpers::IterateOverListOfObjects(apEnv, list, [&](jobject record) {
 			int mask = JNIHelpers::GetIntField(apEnv, record, "pointClass");
-			cfg.mBinary.push_back(EventPointRecord(IntToPointClass(mask)));
+			cfg.binaryMetadata.push_back(EventPointRecord(IntToPointClass(mask)));
 		});
 	}
 	{
@@ -132,27 +132,35 @@ DeviceTemplate ConfigReader::ConvertDatabaseConfig(JNIEnv* apEnv, jobject jCfg)
 		JNIHelpers::IterateOverListOfObjects(apEnv, list, [&](jobject record) {
 			int mask = JNIHelpers::GetIntField(apEnv, record, "pointClass");
 			double db = JNIHelpers::GetDoubleField(apEnv, record, "deadband");
-			cfg.mAnalog.push_back(DeadbandPointRecord(IntToPointClass(mask), db));
+			cfg.analogMetadata.push_back(DeadbandPointRecord<double>(IntToPointClass(mask), db));
 		});
 	}
 	{
 		jobject list = JNIHelpers::GetObjectField(apEnv, jCfg, "counterInputs", "Ljava/util/List;");
 		JNIHelpers::IterateOverListOfObjects(apEnv, list, [&](jobject record) {
 			int mask = JNIHelpers::GetIntField(apEnv, record, "pointClass");
-			cfg.mCounter.push_back(EventPointRecord(IntToPointClass(mask)));
+			cfg.counterMetadata.push_back(DeadbandPointRecord<uint32_t>(IntToPointClass(mask), 0));
 		});
 	}
+	
+	// TODO - make all types exposed with events
+
 	{
 		jobject list = JNIHelpers::GetObjectField(apEnv, jCfg, "binaryOutputStatii", "Ljava/util/List;");
+		uint32_t numBOStatus = 0;
 		JNIHelpers::IterateOverListOfObjects(apEnv, list, [&](jobject record) {
-			cfg.mControlStatus.push_back(PointRecord());
+			++numBOStatus;
 		});
+		cfg.numControlStatus = numBOStatus;
 	}
+
 	{
 		jobject list = JNIHelpers::GetObjectField(apEnv, jCfg, "analogOutputStatii", "Ljava/util/List;");
+		uint32_t numSStatus = 0;
 		JNIHelpers::IterateOverListOfObjects(apEnv, list, [&](jobject record) {
-			cfg.mSetpointStatus.push_back(PointRecord());
+			++numSStatus;
 		});
+		cfg.numSetpointStatus = numSStatus;
 	}
 
 	return cfg;

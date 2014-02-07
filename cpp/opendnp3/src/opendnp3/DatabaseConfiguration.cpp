@@ -24,11 +24,26 @@
 namespace opendnp3
 {
 
-DatabaseConfiguration::DatabaseConfiguration(const DatabaseTemplate& aSizeInformation) :
-	databaseTemplate(aSizeInformation),
+DatabaseConfiguration::DatabaseConfiguration(const DatabaseTemplate& aSizeInformation) :	
 	binaryMetadata(aSizeInformation.numBinary),
 	analogMetadata(aSizeInformation.numAnalog),
-	counterMetadata(aSizeInformation.numCounter)	
+	counterMetadata(aSizeInformation.numCounter),
+	numControlStatus(aSizeInformation.numControlStatus),
+	numSetpointStatus(aSizeInformation.numSetpointStatus)
 {}
+
+DatabaseConfiguration::DatabaseConfiguration() :
+	binaryMetadata(0),
+	analogMetadata(0),
+	counterMetadata(0),
+	numControlStatus(0),
+	numSetpointStatus(0)
+{}
+
+DatabaseTemplate DatabaseConfiguration::GetTemplate() const
+{
+	DatabaseTemplate tmp(binaryMetadata.size(), analogMetadata.size(), counterMetadata.size(), numControlStatus, numSetpointStatus);
+	return tmp;
+}
 
 }

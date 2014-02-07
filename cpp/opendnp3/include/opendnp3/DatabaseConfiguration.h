@@ -23,7 +23,8 @@
 
 #include "DatabaseTemplate.h"
 #include "DeviceTemplateTypes.h"
-#include <openpal/DynamicArray.h>
+
+#include <vector>
 
 namespace opendnp3
 {
@@ -33,20 +34,22 @@ namespace opendnp3
 	The indices of the points are implicit based on their
 	position within the vectors below.
 */
-struct DatabaseConfiguration 
+class DatabaseConfiguration 
 {
-	
-	DatabaseConfiguration(const DatabaseTemplate& aSizes);
+	public:
 
-	DatabaseTemplate databaseTemplate;
-	
-	openpal::DynamicArray<EventPointRecord, uint16_t> binaryMetadata;	
-	openpal::DynamicArray<DeadbandPointRecord<uint32_t>, uint16_t> counterMetadata;	
-	openpal::DynamicArray<DeadbandPointRecord<double>, uint16_t> analogMetadata;
-
-	private:
 	DatabaseConfiguration();
-	DatabaseConfiguration(const DatabaseConfiguration&);
+
+	DatabaseConfiguration(const DatabaseTemplate& aSizes);	
+
+	DatabaseTemplate GetTemplate() const;
+	
+	std::vector<EventPointRecord> binaryMetadata;	
+	std::vector<DeadbandPointRecord<uint32_t>> counterMetadata;	
+	std::vector<DeadbandPointRecord<double>> analogMetadata;	
+
+	uint32_t numControlStatus;
+	uint32_t numSetpointStatus;
 };
 
 }

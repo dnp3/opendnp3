@@ -30,7 +30,7 @@
 
 #include <openpal/ToHex.h>
 
-#include "TrackingHandler.h"
+//#include "TrackingHandler.h"
 #include "ResultSet.h"
 
 using namespace std;
@@ -54,17 +54,19 @@ class Fuzzer
 			size_t count  = size(gen);
 			for(size_t j = 0; j < count; ++j) buffer[j] = value(gen);
 			ReadOnlyBuffer rb(buffer, count);
+			/*
 			APDUParser::Result result = APDUParser::ParseHeaders(rb, handler);
 			results.Update(result);
 			if(result == APDUParser::Result::OK) {
 				auto percent = static_cast<double>(i)/static_cast<double>(iter)*100.0;
 				cout << "iter<" << i << "> - " << percent << "% - " << openpal::toHex(rb) << endl;
 			}
+			*/
 		}
 		delete[] buffer;
 	}
 
-	TrackingHandler handler;
+	// TrackingHandler handler; TODO -reenabled this when API is stable.
 	ResultSet results;
 };
 
@@ -103,7 +105,7 @@ int main(int argc, char* argv[])
 	uint64_t calls = 0;
 	for(auto& f: fuzzers) {
 		rs.Merge(f.results);
-		calls += f.handler.count;
+		//calls += f.handler.count;
 	}
 	
 	uint64_t sum = rs.Sum();

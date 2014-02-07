@@ -34,13 +34,19 @@ namespace opendnp3
 */
 struct SlaveStackConfig {
 	
-	SlaveStackConfig(const DatabaseTemplate& dbTemplate) :
-		database(dbTemplate),
+	SlaveStackConfig(const DatabaseConfiguration& dbConfig) :
+		database(dbConfig),
 		link(false, false),		
 		app(false)
 	{
 	
 	}
+
+	SlaveStackConfig() :
+		database(),
+		link(false, false),		
+		app(false)
+	{}
 
 	//Configuration of the database
 	DatabaseConfiguration database;
@@ -50,9 +56,7 @@ struct SlaveStackConfig {
 	AppConfig app;
 	/// Link layer config
 	LinkConfig link;
-
-	private:	
-	SlaveStackConfig();	
+		
 };
 
 }

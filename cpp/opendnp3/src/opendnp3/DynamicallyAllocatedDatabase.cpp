@@ -39,15 +39,17 @@ DynamicallyAllocatedDatabase::DynamicallyAllocatedDatabase(const DatabaseTemplat
 
 void DynamicallyAllocatedDatabase::Configure(const DatabaseConfiguration& config)
 {
-	config.binaryMetadata.foreachIndex([this](const EventPointRecord& r, uint32_t i) { binaryMetadata[i].clazz = r.EventClass; });
-	config.analogMetadata.foreachIndex([this](const DeadbandPointRecord<double>& r, uint32_t i) { 
-		analogMetadata[i].clazz = r.EventClass;
-		analogMetadata[i].deadband = r.Deadband;
-	});
-	config.counterMetadata.foreachIndex([this](const DeadbandPointRecord<uint32_t>& r, uint32_t i) { 
-		counterMetadata[i].clazz = r.EventClass; 
-		counterMetadata[i].deadband;
-	});
+	for(size_t i=0; i< config.binaryMetadata.size(); ++i) binaryMetadata[i].clazz = config.binaryMetadata[i].EventClass;
+
+	for(size_t i=0; i< config.analogMetadata.size(); ++i) {
+		analogMetadata[i].clazz = config.analogMetadata[i].EventClass;
+		analogMetadata[i].deadband = config.analogMetadata[i].Deadband;
+	}
+
+	for(size_t i=0; i< config.counterMetadata.size(); ++i) {
+		counterMetadata[i].clazz = config.counterMetadata[i].EventClass;
+		counterMetadata[i].deadband = config.counterMetadata[i].Deadband;
+	}	
 }
 
 StaticDataFacade DynamicallyAllocatedDatabase::GetFacade()
