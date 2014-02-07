@@ -184,10 +184,40 @@ public:
 		if(mQuality != newValue.mQuality) return true;
 		else 
 		{
-			auto val1 = this->GetValue();
-			auto val2 = newValue.GetValue();
-			auto diff = (val1 > val2) ? (val1 - val2) : (val2 - val1);
-			return diff > aDeadband;
+			return ExceedsDeadband<uint32_t, uint64_t>(this->GetValue(), newValue.GetValue(), aDeadband);
+		}
+	}
+	
+	typedef uint32_t DeadbandType;
+	typedef CounterQuality QualityType;
+	static const int ONLINE = CQ_ONLINE;
+	static const MeasurementType MeasEnum = MeasurementType::COUNTER;	
+};
+
+/**
+	Frozen counters are used to report the value of a counter point captured at the instant when the count is frozen. 
+*/
+class FrozenCounter : public TypedMeasurement<uint32_t>
+{
+public:
+
+	FrozenCounter() : TypedMeasurement(0, CQ_RESTART) {}
+
+	FrozenCounter(uint32_t aValue) : TypedMeasurement<uint32_t>(aValue, CQ_ONLINE) 
+	{}
+
+	FrozenCounter(uint32_t aValue, uint8_t aQuality) : TypedMeasurement<uint32_t>(aValue, aQuality) 
+	{}
+
+	FrozenCounter(uint32_t aValue, uint8_t aQuality, int64_t aTime) : TypedMeasurement<uint32_t>(aValue, aQuality, aTime) 
+	{}
+
+	bool IsEvent(const FrozenCounter& newValue, uint32_t aDeadband) const
+	{
+		if(mQuality != newValue.mQuality) return true;
+		else 
+		{
+			return ExceedsDeadband<uint32_t, uint64_t>(this->GetValue(), newValue.GetValue(), aDeadband);
 		}
 	}
 	

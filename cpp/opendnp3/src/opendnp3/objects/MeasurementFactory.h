@@ -49,6 +49,13 @@ struct CounterFactory: private PureStatic
 	inline static Counter From(uint8_t aFlags, uint32_t aCount, int64_t aTime) { return Counter(aCount, aFlags, aTime); }
 };
 
+struct FrozenCounterFactory: private PureStatic
+{
+	inline static FrozenCounter From(uint32_t aCount) { return FrozenCounter(aCount); }
+	inline static FrozenCounter From(uint8_t aFlags, uint32_t aCount) { return FrozenCounter(aCount, aFlags); }
+	inline static FrozenCounter From(uint8_t aFlags, uint32_t aCount, int64_t aTime) { return FrozenCounter(aCount, aFlags, aTime); }
+};
+
 struct ControlRelayOutputBlockFactory: private PureStatic
 {
 	inline static ControlRelayOutputBlock From(

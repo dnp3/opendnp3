@@ -28,6 +28,7 @@
 #include "objects/Group10.h"
 #include "objects/Group12.h"
 #include "objects/Group20.h"
+#include "objects/Group21.h"
 #include "objects/Group22.h"
 #include "objects/Group30.h"
 #include "objects/Group32.h"
@@ -71,6 +72,16 @@ typedef ConvertQVRangeCheck<Group20Var2, Counter, 0> ConvertGroup20Var2; // TODO
 
 typedef ConvertV<Group20Var5, Counter> ConvertGroup20Var5;
 typedef ConvertVRangeCheck<Group20Var6, Counter> ConvertGroup20Var6;
+
+// Group 21
+typedef ConvertQV<Group21Var1, FrozenCounter> ConvertGroup21Var1;
+typedef ConvertQVRangeCheck<Group21Var2, FrozenCounter, 0> ConvertGroup21Var2; // TODO - No quality change?!!
+
+typedef ConvertQVT<Group21Var5, FrozenCounter> ConvertGroup21Var5;
+typedef ConvertQVTRangeCheck<Group21Var6, FrozenCounter, 0> ConvertGroup21Var6; // TODO - No quality change?!!
+
+typedef ConvertV<Group21Var9, FrozenCounter> ConvertGroup21Var9;
+typedef ConvertVRangeCheck<Group21Var10, FrozenCounter> ConvertGroup21Var10; // TODO - No quality change?!!
 
 // Group 22
 typedef ConvertQV<Group22Var1, Counter> ConvertGroup22Var1;

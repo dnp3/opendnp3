@@ -62,6 +62,7 @@ import ConversionHeaders._
 object BinaryConversion extends ArbitraryConversion("Binary", List(serializer, dataTypes), cppIncldues)
 object AnalogConversion extends ArbitraryConversion("Analog", List(serializer, dataTypes), cppIncldues)
 object CounterConversion extends ArbitraryConversion("Counter", List(serializer, dataTypes), cppIncldues)
+object FrozenCounterConversion extends ArbitraryConversion("FrozenCounter", List(serializer, dataTypes), cppIncldues)
 object ControlStatusConversion extends ArbitraryConversion("ControlStatus", List(serializer, dataTypes), cppIncldues)
 object SetpointStatusConversion extends ArbitraryConversion("SetpointStatus", List(serializer, dataTypes), cppIncldues)
 object CrobConversion extends ArbitraryConversion("ControlRelayOutputBlock", List(serializer, crob), cppIncldues)
@@ -84,6 +85,12 @@ trait ConversionToCounter {
   self : FixedSize =>
   override def conversion: Option[Conversion] = Some(CounterConversion)
 }
+
+trait ConversionToFrozenCounter {
+  self : FixedSize =>
+  override def conversion: Option[Conversion] = Some(FrozenCounterConversion)
+}
+
 
 trait ConversionToControlStatus {
   self : FixedSize =>
