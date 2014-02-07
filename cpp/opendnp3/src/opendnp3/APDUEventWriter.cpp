@@ -24,22 +24,22 @@
 namespace opendnp3
 {
 
-	APDUEventWriter::APDUEventWriter() : pState(&initial)
+	APDUEventWriter::APDUEventWriter() : pState(nullptr)
 	{}
 	
 	bool APDUEventWriter::Write(const Event<Binary>& evt)
 	{
-		return pState->Write(evt, *this);
+		return false;
 	}
 	
 	bool APDUEventWriter::Write(const Event<Analog>& evt)
 	{
-		return pState->Write(evt, *this);
+		return false;
 	}
 	
 	bool APDUEventWriter::Write(const Event<Counter>& evt)
 	{
-		return pState->Write(evt, *this);
+		return false;
 	}
 
 }

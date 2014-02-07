@@ -24,6 +24,8 @@
 #include "ITransactable.h"
 #include "IDataObserver.h"
 
+#include <cstddef>
+
 #include <openpal/UTCTimestamp.h>
 
 namespace opendnp3

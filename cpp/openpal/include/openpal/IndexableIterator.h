@@ -35,7 +35,7 @@ class IndexableIterator
 	public:
 		
 		IndexableIterator(const Indexable<ValueType,IndexType>& aIndexable, IndexType aPosition, IndexType aStop) :
-			empty(false)
+			empty(false),
 			indexable(aIndexable),
 			position(aPosition),
 			stop(aStop)

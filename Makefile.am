@@ -88,13 +88,16 @@ cpp/opendnp3/src/opendnp3/objects/Group42.cpp \
 cpp/opendnp3/src/opendnp3/objects/Group50.cpp \
 cpp/opendnp3/src/opendnp3/objects/Group51.cpp \
 cpp/opendnp3/src/opendnp3/objects/Group52.cpp \
+cpp/opendnp3/src/opendnp3/objects/Group60.cpp \
 cpp/opendnp3/src/opendnp3/AnalogOutput.cpp \
 cpp/opendnp3/src/opendnp3/APDU.cpp \
-cpp/opendnp3/src/opendnp3/APDUParser.cpp \
+cpp/opendnp3/src/opendnp3/APDUEventWriter.cpp \
 cpp/opendnp3/src/opendnp3/APDUHeaderParser.cpp \
+cpp/opendnp3/src/opendnp3/APDUParser.cpp \
+cpp/opendnp3/src/opendnp3/APDURequest.cpp \
+cpp/opendnp3/src/opendnp3/APDUResponse.cpp \
 cpp/opendnp3/src/opendnp3/AppChannelStates.cpp \
 cpp/opendnp3/src/opendnp3/AppControlField.cpp \
-cpp/opendnp3/src/opendnp3/AppHeader.cpp \
 cpp/opendnp3/src/opendnp3/AppLayerChannel.cpp \
 cpp/opendnp3/src/opendnp3/AppLayer.cpp \
 cpp/opendnp3/src/opendnp3/ApplicationStack.cpp \
@@ -105,31 +108,34 @@ cpp/opendnp3/src/opendnp3/AsyncTaskNonPeriodic.cpp \
 cpp/opendnp3/src/opendnp3/AsyncTaskPeriodic.cpp \
 cpp/opendnp3/src/opendnp3/BaseDataTypes.cpp \
 cpp/opendnp3/src/opendnp3/BitReader.cpp \
-cpp/opendnp3/src/opendnp3/BufferType.cpp \
+cpp/opendnp3/src/opendnp3/CachedRequest.cpp \
 cpp/opendnp3/src/opendnp3/ChangeBuffer.cpp \
-cpp/opendnp3/src/opendnp3/ClassCounter.cpp \
 cpp/opendnp3/src/opendnp3/CommandResponse.cpp \
 cpp/opendnp3/src/opendnp3/CommandTask.cpp \
 cpp/opendnp3/src/opendnp3/ConstantCommandProcessor.cpp \
 cpp/opendnp3/src/opendnp3/ControlRelayOutputBlock.cpp \
 cpp/opendnp3/src/opendnp3/CopyableBuffer.cpp \
 cpp/opendnp3/src/opendnp3/CRC.cpp \
+cpp/opendnp3/src/opendnp3/DatabaseConfiguration.cpp \
 cpp/opendnp3/src/opendnp3/Database.cpp \
 cpp/opendnp3/src/opendnp3/DataPoll.cpp \
 cpp/opendnp3/src/opendnp3/DestructorHook.cpp \
-cpp/opendnp3/src/opendnp3/DeviceTemplate.cpp \
 cpp/opendnp3/src/opendnp3/DNP3Channel.cpp \
 cpp/opendnp3/src/opendnp3/DNP3Manager.cpp \
 cpp/opendnp3/src/opendnp3/DNPCrc.cpp \
+cpp/opendnp3/src/opendnp3/DynamicallyAllocatedDatabase.cpp \
+cpp/opendnp3/src/opendnp3/DynamicallyAllocatedEventBuffer.cpp \
+cpp/opendnp3/src/opendnp3/DynamicBuffer.cpp \
+cpp/opendnp3/src/opendnp3/EventCount.cpp \
 cpp/opendnp3/src/opendnp3/ExecutorPause.cpp \
 cpp/opendnp3/src/opendnp3/FunctionCodeHelpers.cpp \
 cpp/opendnp3/src/opendnp3/GroupVariation.cpp \
 cpp/opendnp3/src/opendnp3/HeaderHandlerBase.cpp \
-cpp/opendnp3/src/opendnp3/HeaderReadIterator.cpp \
 cpp/opendnp3/src/opendnp3/IAppUser.cpp \
+cpp/opendnp3/src/opendnp3/IEventWriterState.cpp \
 cpp/opendnp3/src/opendnp3/IINField.cpp \
+cpp/opendnp3/src/opendnp3/IINHelpers.cpp \
 cpp/opendnp3/src/opendnp3/IMeasurementHandler.cpp \
-cpp/opendnp3/src/opendnp3/IndexedWriteIterator.cpp \
 cpp/opendnp3/src/opendnp3/IStack.cpp \
 cpp/opendnp3/src/opendnp3/ITimeWriteHandler.cpp \
 cpp/opendnp3/src/opendnp3/LinkFrame.cpp \
@@ -146,15 +152,11 @@ cpp/opendnp3/src/opendnp3/MasterStackImpl.cpp \
 cpp/opendnp3/src/opendnp3/MasterStates.cpp \
 cpp/opendnp3/src/opendnp3/MasterTaskBase.cpp \
 cpp/opendnp3/src/opendnp3/MeasurementHandler.cpp \
-cpp/opendnp3/src/opendnp3/MeasurementHelpers.cpp \
 cpp/opendnp3/src/opendnp3/MeasurementUpdate.cpp \
 cpp/opendnp3/src/opendnp3/MultiplexingDataObserver.cpp \
-cpp/opendnp3/src/opendnp3/ObjectHeader.cpp \
-cpp/opendnp3/src/opendnp3/ObjectInterfaces.cpp \
-cpp/opendnp3/src/opendnp3/ObjectReadIterator.cpp \
-cpp/opendnp3/src/opendnp3/Objects.cpp \
-cpp/opendnp3/src/opendnp3/ObjectWriteIterator.cpp \
+cpp/opendnp3/src/opendnp3/ObjectWriter.cpp \
 cpp/opendnp3/src/opendnp3/OctetData.cpp \
+cpp/opendnp3/src/opendnp3/OutstationEventBuffer.cpp \
 cpp/opendnp3/src/opendnp3/OutstationSBOHandler.cpp \
 cpp/opendnp3/src/opendnp3/OutstationStackImpl.cpp \
 cpp/opendnp3/src/opendnp3/PhysicalLayerMonitor.cpp \
@@ -164,6 +166,7 @@ cpp/opendnp3/src/opendnp3/PostingMeasurementHandler.cpp \
 cpp/opendnp3/src/opendnp3/PriLinkLayerStates.cpp \
 cpp/opendnp3/src/opendnp3/ProtocolUtil.cpp \
 cpp/opendnp3/src/opendnp3/QueuedCommandProcessor.cpp \
+cpp/opendnp3/src/opendnp3/ReadHandler.cpp \
 cpp/opendnp3/src/opendnp3/ResponseContext.cpp \
 cpp/opendnp3/src/opendnp3/SecLinkLayerStates.cpp \
 cpp/opendnp3/src/opendnp3/ShiftableBuffer.cpp \
@@ -171,12 +174,12 @@ cpp/opendnp3/src/opendnp3/SimpleCommandHandler.cpp \
 cpp/opendnp3/src/opendnp3/SimpleDataObserver.cpp \
 cpp/opendnp3/src/opendnp3/SlaveConfig.cpp \
 cpp/opendnp3/src/opendnp3/Slave.cpp \
-cpp/opendnp3/src/opendnp3/SlaveEventBuffer.cpp \
 cpp/opendnp3/src/opendnp3/SlaveResponseTypes.cpp \
 cpp/opendnp3/src/opendnp3/SlaveStates.cpp \
 cpp/opendnp3/src/opendnp3/SolicitedChannel.cpp \
 cpp/opendnp3/src/opendnp3/StackBase.cpp \
 cpp/opendnp3/src/opendnp3/StartupTasks.cpp \
+cpp/opendnp3/src/opendnp3/StaticRange.cpp \
 cpp/opendnp3/src/opendnp3/SubjectBase.cpp \
 cpp/opendnp3/src/opendnp3/TimeTransaction.cpp \
 cpp/opendnp3/src/opendnp3/TLS_Base.cpp \
@@ -186,7 +189,8 @@ cpp/opendnp3/src/opendnp3/TransportRx.cpp \
 cpp/opendnp3/src/opendnp3/TransportStates.cpp \
 cpp/opendnp3/src/opendnp3/TransportTx.cpp \
 cpp/opendnp3/src/opendnp3/UnsolicitedChannel.cpp \
-cpp/opendnp3/src/opendnp3/Util.cpp
+cpp/opendnp3/src/opendnp3/Util.cpp \
+cpp/opendnp3/src/opendnp3/WriteHandler.cpp
 
 #ls cpp/opendnp3tests/src/*.cpp -1 | awk '{print $0" \\"}'
 check_PROGRAMS = dnp3test
@@ -226,22 +230,18 @@ cpp/opendnp3tests/src/PhysLoopback.cpp \
 cpp/opendnp3tests/src/RandomizedBuffer.cpp \
 cpp/opendnp3tests/src/SlaveTestObject.cpp \
 cpp/opendnp3tests/src/StopWatch.cpp \
-cpp/opendnp3tests/src/TestAPDU.cpp \
 cpp/opendnp3tests/src/TestAPDUParsing.cpp \
-cpp/opendnp3tests/src/TestAPDUWriting.cpp \
 cpp/opendnp3tests/src/TestAppLayer.cpp \
 cpp/opendnp3tests/src/TestASIO.cpp \
 cpp/opendnp3tests/src/TestASIOThreadPool.cpp \
 cpp/opendnp3tests/src/TestAsyncTask.cpp \
+cpp/opendnp3tests/src/TestCachedRequest.cpp \
 cpp/opendnp3tests/src/TestCastLongLongDouble.cpp \
 cpp/opendnp3tests/src/TestChangeBuffer.cpp \
-cpp/opendnp3tests/src/TestCommandHelpers.cpp \
 cpp/opendnp3tests/src/TestCommandTask.cpp \
 cpp/opendnp3tests/src/TestCRC.cpp \
 cpp/opendnp3tests/src/TestDatabase.cpp \
 cpp/opendnp3tests/src/TestDNP3Manager.cpp \
-cpp/opendnp3tests/src/TestEventBufferBase.cpp \
-cpp/opendnp3tests/src/TestEventBuffers.cpp \
 cpp/opendnp3tests/src/TestIntegration.cpp \
 cpp/opendnp3tests/src/TestLazyCollection.cpp \
 cpp/opendnp3tests/src/TestLinkFrameDNP.cpp \
@@ -253,16 +253,18 @@ cpp/opendnp3tests/src/TestLog.cpp \
 cpp/opendnp3tests/src/TestMaster.cpp \
 cpp/opendnp3tests/src/TestMeasurementUpdate.cpp \
 cpp/opendnp3tests/src/TestMisc.cpp \
-cpp/opendnp3tests/src/TestObjects.cpp \
+cpp/opendnp3tests/src/TestObjectWriter.cpp \
+cpp/opendnp3tests/src/TestOutstationEventBuffer.cpp \
+cpp/opendnp3tests/src/TestOutstationEventBufferViaFuzz.cpp \
 cpp/opendnp3tests/src/TestPhysicalLayerAsyncBase.cpp \
 cpp/opendnp3tests/src/TestPhysicalLayerAsyncSerial.cpp \
 cpp/opendnp3tests/src/TestPhysicalLayerAsyncTCP.cpp \
 cpp/opendnp3tests/src/TestPhysicalLayerLoopback.cpp \
 cpp/opendnp3tests/src/TestPhysicalLayerMonitor.cpp \
+cpp/opendnp3tests/src/TestResponseContext.cpp \
 cpp/opendnp3tests/src/TestSerialization.cpp \
 cpp/opendnp3tests/src/TestShiftableBuffer.cpp \
 cpp/opendnp3tests/src/TestSlave.cpp \
-cpp/opendnp3tests/src/TestSlaveEventBuffer.cpp \
 cpp/opendnp3tests/src/TestStartBoostUTF.cpp \
 cpp/opendnp3tests/src/TestTime.cpp \
 cpp/opendnp3tests/src/TestTimers.cpp \
@@ -271,6 +273,7 @@ cpp/opendnp3tests/src/TestTransportLoopback.cpp \
 cpp/opendnp3tests/src/TestTransportScalability.cpp \
 cpp/opendnp3tests/src/TestTypes.cpp \
 cpp/opendnp3tests/src/TestUtil.cpp \
+cpp/opendnp3tests/src/TestWriteConversions.cpp \
 cpp/opendnp3tests/src/Timeout.cpp \
 cpp/opendnp3tests/src/TransportIntegrationStack.cpp \
 cpp/opendnp3tests/src/TransportLoopbackTestObject.cpp \
@@ -278,6 +281,7 @@ cpp/opendnp3tests/src/TransportScalabilityTestObject.cpp \
 cpp/opendnp3tests/src/TransportStackPair.cpp \
 cpp/opendnp3tests/src/TransportTestObject.cpp \
 cpp/opendnp3tests/src/WrappedTcpPipe.cpp
+
 
 
 masterdemo_CXXFLAGS = -I$(OPENPAL_INCLUDE) -I$(ASIOPAL_INCLUDE) -I $(OPENDNP3_INCLUDE) $(BOOST_DEFINES)

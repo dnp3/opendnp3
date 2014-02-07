@@ -37,7 +37,8 @@ class CountWriteIterator
 
 	static CountWriteIterator Null()
 	{
-		return CountWriteIterator(nullptr, openpal::WriteBuffer::Empty());
+		auto buffer = openpal::WriteBuffer::Empty();
+		return CountWriteIterator(nullptr, buffer); // TODO - this should be a pointer
 	}
 	
 	CountWriteIterator(openpal::ISerializer<WriteType>* pSerializer_, openpal::WriteBuffer& aPosition) :				
@@ -63,7 +64,7 @@ class CountWriteIterator
 		}
 	}
 
-	bool Write(WriteType& value)
+	bool Write(const WriteType& value)
 	{
 		if(isNull || position.Size() < pSerializer->Size()) return false;
 		else

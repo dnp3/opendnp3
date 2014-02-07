@@ -35,7 +35,8 @@ class PrefixedWriteIterator
 
 	static PrefixedWriteIterator Null()
 	{
-		return PrefixedWriteIterator(nullptr, WriteBuffer::Empty());
+		auto buffer = openpal::WriteBuffer::Empty(); 
+		return PrefixedWriteIterator(nullptr, buffer); // TODO make this a poiter
 	}
 	
 	PrefixedWriteIterator(IDNP3Serializer<WriteType>* pSerializer_, openpal::WriteBuffer& aPosition) :	

@@ -31,6 +31,7 @@
 #include "CommandSequence.h"
 
 #include <functional>
+#include <assert.h>
 
 namespace opendnp3
 {

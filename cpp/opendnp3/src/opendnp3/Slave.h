@@ -41,8 +41,8 @@
 namespace opendnp3
 {
 
+class SlaveStateBase;
 class Database;
-class AS_Base;
 
 /**
  * @section desc DNP3 outstation.

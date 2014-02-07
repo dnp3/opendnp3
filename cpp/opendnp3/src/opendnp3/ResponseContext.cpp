@@ -29,12 +29,10 @@ using namespace openpal;
 namespace opendnp3
 {
 
-ResponseContext::ResponseContext(Database* pDatabase_, OutstationEventBuffer* pBuffer_) : 
+ResponseContext::ResponseContext(Database* pDatabase_) : 
 	first(true),
 	pDatabase(pDatabase_),
-	pBuffer(pBuffer_),
-	staticResponseQueue(staticRangeArray.ToIndexable()),
-	eventCountQueue(eventCountArray.ToIndexable())
+	staticResponseQueue(staticRangeArray.ToIndexable())
 {}
 
 #define MACRO_QUEUE_FULL_RANGE(GV, TYPE) { \
@@ -58,6 +56,7 @@ QueueResult ResponseContext::QueueReadAllObjects(GroupVariation gv)
 			MACRO_QUEUE_FULL_RANGE(GroupVariation::Group40Var1, SetpointStatus);			
 			return QueueResult::SUCCESS;
 		}
+/*
 		case(GroupVariation::Group60Var2):
 		{
 			SelectionCriteria criteria(EventTypeMasks::ALL_TYPES, 0, 0);
@@ -79,6 +78,7 @@ QueueResult ResponseContext::QueueReadAllObjects(GroupVariation gv)
 			else return QueueResult::FULL;
 
 		}
+*/
 		default:
 			return QueueResult::OBJECT_UNDEFINED;
 	}

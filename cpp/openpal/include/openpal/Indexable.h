@@ -46,7 +46,7 @@ class Indexable : public HasSize<IndexType>
 
 		inline const bool Contains(IndexType index) const 
 		{
-			return index < size;
+			return index < this->size;
 		}
 
 		inline const bool Contains(IndexType start, IndexType stop) const 
@@ -56,37 +56,37 @@ class Indexable : public HasSize<IndexType>
 
 		IndexableIterator<ValueType, IndexType> Range(IndexType start, IndexType stop) const 
 		{
-			if(Contain(start, stop)) return IndexableIterator<T>(this, start, stop);
-			else return IndexableIterator<T>(Empty());			 		
+			if(Contain(start, stop)) return IndexableIterator<ValueType, IndexType>(this, start, stop);
+			else return IndexableIterator<ValueType, IndexType>(Empty());			 		
 		}
 
 		IndexableIterator<ValueType, IndexType> FullRange() const 
 		{			
-			return IndexableIterator<T>(*this); 
+			return IndexableIterator<ValueType, IndexType>(*this); 
 		}
 
 		inline ValueType& operator[](IndexType index) 
 		{
-			assert(index < size);
+			assert(index < this->size);
 			return buffer[index];
 		}
 
 		const ValueType& operator[](IndexType index) const
 		{ 
-			assert(index < size);
+			assert(index < this->size);
 			return buffer[index];
 		}
 
 		template <class Action>
 		void foreach(const Action& action)
 		{
-			for(IndexType i = 0; i < size; ++i) action(buffer[i]);
+			for(IndexType i = 0; i < this->size; ++i) action(buffer[i]);
 		}
 
 		template <class Action>
 		void foreachIndex(const Action& action)
 		{
-			for(IndexType i = 0; i < size; ++i) action(buffer[i], i);
+			for(IndexType i = 0; i < this->size; ++i) action(buffer[i], i);
 		}	
 
 		private:

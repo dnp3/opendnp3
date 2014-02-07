@@ -35,7 +35,8 @@ class RangeWriteIterator
 
 	static RangeWriteIterator Null()
 	{
-		return RangeWriteIterator(0, nullptr, WriteBuffer::Empty());
+		auto buffer = openpal::WriteBuffer::Empty();
+		return RangeWriteIterator(0, nullptr, buffer);
 	}
 	
 	RangeWriteIterator(typename IndexType::Type aStart, openpal::ISerializer<WriteType>* pSerializer_, openpal::WriteBuffer& aPosition) :		
@@ -64,7 +65,7 @@ class RangeWriteIterator
 		}
 	}
 
-	bool Write(WriteType& value)
+	bool Write(const WriteType& value)
 	{
 		if(isNull || position.Size() < pSerializer->Size()) return false;
 		else

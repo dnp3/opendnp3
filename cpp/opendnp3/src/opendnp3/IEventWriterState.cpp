@@ -23,7 +23,7 @@
 
 namespace opendnp3
 {
-
+/*
 	bool InitialEventWriterState::Write(const Event<Binary>& evt, APDUEventWriter& ctx)
 	{
 		return false;
@@ -38,7 +38,7 @@ namespace opendnp3
 	{
 		return false;
 	}
-
+*/
 }
 
 

@@ -41,7 +41,7 @@ class ListAdapter : public HasSize<IndexType>
 
 		inline ValueType& operator[](IndexType index) 
 		{
-			assert(index < size);
+			assert(index < this->size);
 			return indexable[index];
 		}
 
@@ -52,26 +52,26 @@ class ListAdapter : public HasSize<IndexType>
 
 		inline bool IsFull() const
 		{
-			return size == indexable.Size();
+			return this->size == indexable.Size();
 		}
 
 		inline void Clear()
 		{
-			size = 0;
+			this->size = 0;
 		}
 
 		const ValueType& operator[](IndexType index) const
 		{ 
-			assert(index < size);
-			return indexable[i];
+			assert(index < this->size);
+			return indexable[index];
 		}
 
 		bool Add(const ValueType& value)
 		{
 			if(this->Size() < indexable.Size())
 			{
-				indexable[size] = value;
-				++size;
+				indexable[this->size] = value;
+				++(this->size);
 				return true;
 			}
 			else return false;
@@ -80,13 +80,13 @@ class ListAdapter : public HasSize<IndexType>
 		template <class Action>
 		void foreach(const Action& action)
 		{
-			for(IndexType i = 0; i < size; ++i) action(indexable[i]);
+			for(IndexType i = 0; i < this->size; ++i) action(indexable[i]);
 		}		
 
 		template <class Action>
 		void foreachIndex(const Action& action)
 		{
-			for(IndexType i = 0; i < size; ++i) action(indexable[i], i);
+			for(IndexType i = 0; i < this->size; ++i) action(indexable[i], i);
 		}									
 	
 	private:

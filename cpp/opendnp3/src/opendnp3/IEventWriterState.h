@@ -40,6 +40,7 @@ class IEventWriterState
 	virtual bool Write(const Event<Counter>& evt, APDUEventWriter& ctx) = 0;
 };
 
+/*
 class InitialEventWriterState : public IEventWriterState
 {
 	public:
@@ -48,6 +49,7 @@ class InitialEventWriterState : public IEventWriterState
 	bool Write(const Event<Analog>& evt, APDUEventWriter& ctx) final;
 	bool Write(const Event<Counter>& evt, APDUEventWriter& ctx) final;
 };
+*/
 
 }
 

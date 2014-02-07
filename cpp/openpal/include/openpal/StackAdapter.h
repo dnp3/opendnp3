@@ -46,20 +46,20 @@ class StackAdapter : public HasSize<IndexType>
 
 		inline bool IsFull() const
 		{
-			return size == indexable.Size();
+			return this->size == indexable.Size();
 		}
 
 		inline void Clear()
 		{
-			size = 0;
+			this->size = 0;
 		}
 
 		bool Push(const ValueType& value)
 		{
 			if(!IsFull())
 			{
-				indexable[size] = value;
-				++size;
+				indexable[this->size] = value;
+				++(this->size);
 				return true;
 			}
 			else return false;
@@ -67,9 +67,9 @@ class StackAdapter : public HasSize<IndexType>
 
 		ValueType Pop()
 		{
-			assert(IsNotEmpty());
-			--size;
-			return indexable[size];			
+			assert(this->IsNotEmpty());
+			--(this->size);
+			return indexable[this->size];			
 		}
 	
 	private:

@@ -24,6 +24,7 @@
 #include <opendnp3/Uncopyable.h>
 
 #include <openpal/QueueAdapter.h>
+#include <openpal/Serialization.h>
 
 #include "StaticSizeConfiguration.h"
 #include "StaticRange.h"
@@ -31,7 +32,6 @@
 #include "ObjectWriter.h"
 #include "Database.h"
 #include "ResponseHelpers.h"
-#include "OutstationEventBuffer.h"
 #include "CountOf.h"
 #include "SelectionCriteria.h"
 
@@ -67,7 +67,7 @@ class ResponseContext : private Uncopyable
 
 	public:
 
-	ResponseContext(Database*, OutstationEventBuffer*);
+	ResponseContext(Database*);
 
 	void Reset();
 
@@ -82,13 +82,14 @@ class ResponseContext : private Uncopyable
 	
 	bool first;
 	Database* pDatabase;
-	OutstationEventBuffer* pBuffer;
 
 	openpal::StaticArray<FunctionalStaticRange, uint8_t, SizeConfiguration::MAX_READ_REQUESTS> staticRangeArray;
 	openpal::QueueAdapter<FunctionalStaticRange, uint8_t> staticResponseQueue;
 
+/*
 	openpal::StaticArray<CountOf<SelectionCriteria>, uint8_t, SizeConfiguration::MAX_EVENT_READ_REQUESTS> eventCountArray; 
 	openpal::QueueAdapter<CountOf<SelectionCriteria>, uint8_t> eventCountQueue;
+*/
 
 	template <class T, class U>
 	QueueResult QueueRange(GroupVariationID gv, const StaticRange& rng);
@@ -102,12 +103,12 @@ QueueResult ResponseContext::QueueRange(GroupVariationID gv, const StaticRange& 
 		FunctionalStaticRange range(gv, rng);
 		if(range.IsContainedByUInt8())
 		{
-			range.pLoadFun = &LoadFixedSizeStartStop<Target, Serializer, UInt8, QualifierCode::UINT8_START_STOP>;
+			range.pLoadFun = &LoadFixedSizeStartStop<Target, Serializer, openpal::UInt8, QualifierCode::UINT8_START_STOP>;
 			return staticResponseQueue.Push(range) ? QueueResult::SUCCESS : QueueResult::FULL;
 		}
 		else
 		{			
-			range.pLoadFun = &LoadFixedSizeStartStop<Target, Serializer, UInt16, QualifierCode::UINT16_START_STOP>;
+			range.pLoadFun = &LoadFixedSizeStartStop<Target, Serializer, openpal::UInt16, QualifierCode::UINT16_START_STOP>;
 			return staticResponseQueue.Push(range) ? QueueResult::SUCCESS : QueueResult::FULL;
 		}
 	}

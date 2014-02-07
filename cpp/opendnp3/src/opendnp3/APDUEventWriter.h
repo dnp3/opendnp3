@@ -24,7 +24,7 @@
 
 #include "IEventWriter.h"
 #include "IEventWriterState.h"
-#include "BinaryWriteState.h"
+//#include "BinaryWriteState.h"
 
 #include "objects/Group2.h"
 
@@ -49,10 +49,10 @@ class APDUEventWriter : public IEventWriter
 	IEventWriterState* pState;
 
 	// states
-	InitialEventWriterState initial;
+	//InitialEventWriterState initial;
 
-	BinaryWriteState<openpal::UInt16, Group2Var1> stateGroup2Var1;
-	BinaryWriteState<openpal::UInt16, Group2Var2> stateGroup2Var2;
+	//BinaryWriteState<openpal::UInt16, Group2Var1> stateGroup2Var1;
+	//BinaryWriteState<openpal::UInt16, Group2Var2> stateGroup2Var2;
 
 };
 

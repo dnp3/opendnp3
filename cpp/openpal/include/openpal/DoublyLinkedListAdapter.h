@@ -81,7 +81,7 @@ class DoublyLinkedListAdapter : public HasSize<IndexType>
 		typedef DoublyLinkedListIterator<ValueType> Iterator;
 
 		DoublyLinkedListAdapter(Indexable<DoubleListNode<ValueType>, IndexType> aUnderlying) : 
-			HasSize(0),
+			HasSize<IndexType>(0),
 			pHead(nullptr),
 			pTail(nullptr),
 			pFree(nullptr),
@@ -122,7 +122,7 @@ DoubleListNode<ValueType>* DoublyLinkedListAdapter<ValueType, IndexType>::Add(co
 		Link(pTail, pNode);		
 		pTail = pNode;
 		if(pHead == nullptr) pHead = pTail;
-		++size;		
+		++(this->size);		
 		return pTail;
 	}
 }
@@ -148,7 +148,7 @@ void DoublyLinkedListAdapter<ValueType, IndexType>::Remove(DoubleListNode<ValueT
 	if(pFree != nullptr) pFree->prev = apNode;
 	apNode->prev = nullptr; // it's the head now
 	pFree = apNode;
-	--size;
+	--(this->size);
 }
 
 template <class ValueType, class IndexType>
