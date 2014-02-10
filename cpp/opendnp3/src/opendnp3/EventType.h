@@ -33,7 +33,8 @@ enum class EventType: uint8_t
 {
 	Binary = 0x01,
 	Analog = 0x02,
-	Counter = 0x04
+	Counter = 0x04,
+	FrozenCounter = 0x05
 };
 
 enum class EventClass: uint8_t
@@ -48,8 +49,9 @@ struct EventTypeMasks : private PureStatic
 	static const uint8_t BINARY = static_cast<uint8_t>(EventType::Binary);
 	static const uint8_t ANALOG = static_cast<uint8_t>(EventType::Analog);
 	static const uint8_t COUNTER = static_cast<uint8_t>(EventType::Counter);
+	static const uint8_t FROZEN_COUNTER = static_cast<uint8_t>(EventType::FrozenCounter);
 
-	static const uint8_t ALL_TYPES = BINARY | ANALOG | COUNTER;
+	static const uint8_t ALL_TYPES = BINARY | ANALOG | COUNTER | FROZEN_COUNTER;
 };
 
 }

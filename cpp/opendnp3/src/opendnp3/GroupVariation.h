@@ -52,6 +52,8 @@ enum class GroupVariation : int
 	Group20Var7,
 	Group20Var8,
 
+	Group21Var1,
+
 	Group22Var1,
 	Group22Var2,
 	Group22Var3,

@@ -222,7 +222,7 @@ public:
 	}
 	
 	typedef uint32_t DeadbandType;
-	typedef CounterQuality QualityType;
+	typedef FrozenCounterQuality QualityType;
 	static const int ONLINE = CQ_ONLINE;
 	static const MeasurementType MeasEnum = MeasurementType::COUNTER;	
 };

@@ -56,6 +56,7 @@ class OutstationEventBuffer : public IEventBuffer
 		void Update(const Event<Binary>& aEvent) final;
 		void Update(const Event<Analog>& aEvent) final;
 		void Update(const Event<Counter>& aEvent) final;
+		void Update(const Event<FrozenCounter>& aEvent) final;
 		
 		void Reset(); // called when a transmission fails
 		void Clear(); // called when a transmission succeeds

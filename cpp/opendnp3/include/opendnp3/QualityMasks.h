@@ -67,6 +67,20 @@ enum CounterQuality {
 };
 
 /**
+        Bitmasks that make make up the quality field for frozen counters. See BinaryQuality for common (unlabeled) bitmasks.
+ */
+enum FrozenCounterQuality {
+        FCQ_ONLINE = 0x01,
+        FCQ_RESTART = 0x02,
+        FCQ_COMM_LOST = 0x04,
+        FCQ_REMOTE_FORCED_DATA = 0x08,
+        FCQ_LOCAL_FORCED_DATA = 0x10,
+        FCQ_ROLLOVER = 0x20,                             //!< deprecated
+        FCQ_DISCONTINUITY = 0x40,                //!< indicates an unusual change in value
+        FCQ_RESERVED = 0x80
+};
+
+/**
 	Bitmasks that make make up the quality field for control statuses. See BinaryQuality for common (unlabeled) bitmasks.
  */
 enum ControlQuality {

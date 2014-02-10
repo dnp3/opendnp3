@@ -40,7 +40,7 @@ BOOST_AUTO_TEST_CASE(FuzzTests)
 {
 	const size_t iterations = 100*1000;
 
-	DynamicallyAllocatedEventBuffer underlying(200, 100, 50);
+	DynamicallyAllocatedEventBuffer underlying(200, 100, 50, 50);
 	OutstationEventBuffer buffer(underlying.GetFacade());
 
 	EventBufferFuzzer fuzzer;

@@ -93,6 +93,14 @@ GroupVariation GroupVariationRecord::GetEnum(uint8_t group, uint8_t variation)
 				default:
 					return GroupVariation::UNKNOWN;
 			}
+		case(21):
+			switch(variation)
+			{
+				case(1):
+					return GroupVariation::Group21Var1;
+				default:
+					return GroupVariation::UNKNOWN;
+			}
 		case(22):
 			switch(variation)
 			{

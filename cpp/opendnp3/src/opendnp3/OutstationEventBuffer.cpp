@@ -96,6 +96,11 @@ void OutstationEventBuffer::Update(const Event<Counter>& aEvent)
 	overflow |= !InsertEvent(aEvent, EventType::Counter,  facade.counterEvents);
 }
 
+void OutstationEventBuffer::Update(const Event<FrozenCounter>& aEvent)
+{
+        overflow |= !InsertEvent(aEvent, EventType::FrozenCounter,  facade.frozenCounterEvents);
+}
+
 uint32_t OutstationEventBuffer::NumUnselectedMatching(const SelectionCriteria& criteria) const
 {
 	uint32_t count = 0;

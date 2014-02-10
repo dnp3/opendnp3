@@ -72,6 +72,12 @@ void ChangeBuffer::Update(const Counter& arPoint, uint16_t aIndex)
 	mNotify = true;
 }
 
+void ChangeBuffer::Update(const FrozenCounter& arPoint, uint16_t aIndex)
+{
+        mChangeQueue.push_back(std::bind(&ChangeBuffer::Dispatch<FrozenCounter>, std::placeholders::_1, arPoint, aIndex));
+        mNotify = true;
+}
+
 void ChangeBuffer::Update(const ControlStatus& arPoint, uint16_t aIndex)
 {
 	mChangeQueue.push_back(std::bind(&ChangeBuffer::Dispatch<ControlStatus>, std::placeholders::_1, arPoint, aIndex));
