@@ -16,40 +16,50 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.automatak;
-
-import com.automatak.dnp3.CommandResult;
-import com.automatak.dnp3.CommandStatus;
+package com.automatak.dnp3;
 
 /**
- * Aggregate command response type.
- *
- * Check the result before checking the status.
- * Status is only valid if response is RESPONSE_OK
+ * Created by jstone on 2/11/14.
  */
-public class CommandResponse {
+public enum StaticFrozenCounterResponse {
+    Group21Var1(0),
+    Group21Var2(1),
+    Group21Var5(2),
+    Group21Var6(3),
+    Group21Var9(4),
+    Group21Var10(5);
 
-    public CommandResponse(CommandResult result, CommandStatus status)
+    private final int id;
+
+    private StaticFrozenCounterResponse(int id)
     {
-        this.result = result;
-        this.status = status;
+        this.id = id;
     }
 
-    public CommandResult getResult() {
-        return result;
-    }
-
-    public CommandStatus getStatus() {
-        return status;
-    }
-
-    private final CommandResult result;
-    private final CommandStatus status;
-
-    @Override
-    public String toString()
+    public int toType()
     {
-        if(result == CommandResult.RESPONSE_OK) return "Response: " + status.toString();
-        else return "Failure: " + result.toString();
+        return id;
     }
+
+    public static StaticFrozenCounterResponse fromType(int arg)
+    {
+        switch(arg)
+        {
+            case(0):
+                return Group21Var1;
+            case(1):
+                return Group21Var2;
+            case(2):
+                return Group21Var5;
+            case(3):
+                return Group21Var6;
+            case(4):
+                return Group21Var9;
+            case(5):
+                return Group21Var10;
+        }
+
+        return Group21Var1;
+    }
+
 }

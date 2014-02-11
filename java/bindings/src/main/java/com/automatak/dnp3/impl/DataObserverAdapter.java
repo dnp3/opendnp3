@@ -48,6 +48,11 @@ class DataObserverAdapter {
         proxy.update(new Counter(value, quality, time), index);
     }
 
+    public void updateFc(long value, byte quality, long time, long index)
+    {
+        proxy.update(new FrozenCounter(value, quality, time), index);
+    }
+
     public void updateBOS(boolean value, byte quality, long time, long index)
     {
         proxy.update(new BinaryOutputStatus(value, quality, time), index);
