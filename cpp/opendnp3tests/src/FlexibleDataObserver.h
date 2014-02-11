@@ -53,6 +53,7 @@ public:
 	PointMap<Binary>::Type mBinaryMap;
 	PointMap<Analog>::Type mAnalogMap;
 	PointMap<Counter>::Type mCounterMap;
+	PointMap<FrozenCounter>::Type mFrozenCounterMap;
 	PointMap<ControlStatus>::Type mControlStatusMap;
 	PointMap<SetpointStatus>::Type mSetpointStatusMap;
 
@@ -81,6 +82,14 @@ public:
 		return Check<Counter, uint8_t>(mCounterMap, aValue, aQuality, aIndex);
 	}
 
+        /*
+         * Frozen Counter
+         */
+        bool Check(uint32_t aValue, FrozenCounterQuality aQuality, size_t aIndex) {
+                return Check<FrozenCounter, uint8_t>(mFrozenCounterMap, aValue, aQuality, aIndex);
+        }
+
+
 	bool Check(bool aValue, ControlQuality aQuality, size_t aIndex) {
 		uint8_t qual = aQuality;
 		if(aValue) qual |= TQ_STATE;
@@ -90,6 +99,10 @@ public:
 	bool Check(uint32_t aValue, CounterQuality aQuality, size_t aIndex, int64_t aTime) {
 		return Check<Counter, uint8_t>(mCounterMap, aValue, aQuality,  aTime, aIndex);
 	}
+
+      	bool Check(uint32_t aValue, FrozenCounterQuality aQuality, size_t aIndex, int64_t aTime) {
+                return Check<FrozenCounter, uint8_t>(mFrozenCounterMap, aValue, aQuality,  aTime, aIndex);
+        }
 
 	bool Check(bool aValue, ControlQuality aQuality, size_t aIndex, int64_t aTime) {
 		uint8_t qual = aQuality;
@@ -132,6 +145,9 @@ public:
 	bool CheckQual(CounterQuality aQuality, size_t aIndex) {
 		return CheckQual<Counter>(mCounterMap, aQuality, aIndex);
 	}
+	bool CheckQual(FrozenCounterQuality aQuality, size_t aIndex) {
+                return CheckQual<FrozenCounter>(mFrozenCounterMap, aQuality, aIndex);
+        }
 	bool CheckQual(ControlQuality aQuality, size_t aIndex) {
 		return CheckQual<ControlStatus>(mControlStatusMap, aQuality, aIndex);
 	}
@@ -146,6 +162,7 @@ public:
 		return mBinaryMap.size() +
 		       mAnalogMap.size() +
 		       mCounterMap.size() +
+		       mFrozenCounterMap.size() +
 		       mControlStatusMap.size() +
 		       mSetpointStatusMap.size();
 	}
@@ -172,6 +189,11 @@ public:
 	{
 		Load(arPoint, mCounterMap, aIndex);
 	}
+
+        void Update(const FrozenCounter& arPoint, uint16_t aIndex)  final
+        {
+                Load(arPoint, mFrozenCounterMap, aIndex);
+        }
 	
 	void Update(const ControlStatus& arPoint, uint16_t aIndex) final
 	{

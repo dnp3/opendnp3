@@ -38,6 +38,7 @@ void ComparingDataObserver::Reset()
 	mBinaryMap.clear();
 	mAnalogMap.clear();
 	mCounterMap.clear();
+	mFrozenCounterMap.clear();
 	mControlStatusMap.clear();
 	mSetpointStatusMap.clear();
 	mSameData = false;
@@ -47,11 +48,13 @@ bool ComparingDataObserver::IsSameData()
 {
 	size_t required = mpObserver->mBinaryMap.size() +
 	                  mpObserver->mAnalogMap.size() +
-	                  mpObserver->mCounterMap.size();
+	                  mpObserver->mCounterMap.size() +
+			  mpObserver->mFrozenCounterMap.size();
 
 	size_t actual = mBinaryMap.size() +
 	                mAnalogMap.size() +
-	                mCounterMap.size();
+	                mCounterMap.size() +
+			mFrozenCounterMap.size();
 
 	return (required == actual);
 
@@ -69,6 +72,7 @@ void ComparingDataObserver::DescribeMissingData()
 	this->DescribeAny<Binary>(mpObserver->mBinaryMap, mBinaryMap);
 	this->DescribeAny<Analog>(mpObserver->mAnalogMap, mAnalogMap);
 	this->DescribeAny<Counter>(mpObserver->mCounterMap, mCounterMap);
+	this->DescribeAny<FrozenCounter>(mpObserver->mFrozenCounterMap, mFrozenCounterMap);
 }
 
 void ComparingDataObserver::Load(const IMeasurementUpdate& arUpdate)
@@ -104,6 +108,11 @@ void ComparingDataObserver::Update(const Analog& arPoint, uint16_t aIndex)
 void ComparingDataObserver::Update(const Counter& arPoint, uint16_t aIndex)
 {
 	this->UpdateAny<Counter>(arPoint, aIndex, mpObserver->mCounterMap, mCounterMap);
+}
+
+void ComparingDataObserver::Update(const FrozenCounter& arPoint, uint16_t aIndex)
+{
+        this->UpdateAny<FrozenCounter>(arPoint, aIndex, mpObserver->mFrozenCounterMap, mFrozenCounterMap);
 }
 
 void ComparingDataObserver::Update(const ControlStatus& arPoint, uint16_t aIndex)

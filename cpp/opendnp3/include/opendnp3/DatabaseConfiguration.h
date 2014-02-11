@@ -46,6 +46,7 @@ class DatabaseConfiguration
 	
 	std::vector<EventPointRecord> binaryMetadata;	
 	std::vector<DeadbandPointRecord<uint32_t>> counterMetadata;	
+	std::vector<DeadbandPointRecord<uint32_t>> frozenCounterMetadata;
 	std::vector<DeadbandPointRecord<double>> analogMetadata;	
 
 	uint32_t numControlStatus;

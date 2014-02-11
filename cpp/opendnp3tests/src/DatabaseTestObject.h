@@ -49,11 +49,16 @@ public:
 
 	void Update(const Event<Counter>& aEvent) {		
 		mCounterEvents.push_back(aEvent);
-	}	
+	}
+
+        void Update(const Event<FrozenCounter>& aEvent) {
+                mFrozenCounterEvents.push_back(aEvent);
+        }	
 
 	std::deque<Event<Binary>> mBinaryEvents;
 	std::deque<Event<Analog>> mAnalogEvents;
 	std::deque<Event<Counter>> mCounterEvents;
+	std::deque<Event<FrozenCounter>> mFrozenCounterEvents;
 };
 
 class DatabaseTestObject

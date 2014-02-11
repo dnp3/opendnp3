@@ -29,6 +29,7 @@ public class DatabaseConfig {
     public final List<EventPointRecord> binaryInputs;
     public final List<DeadbandPointRecord> analogInputs;
     public final List<EventPointRecord> counterInputs;
+    public final List<EventPointRecord> frozenCounterInputs;
     public final List<PointRecord> binaryOutputStatii;
     public final List<PointRecord> analogOutputStatii;
 
@@ -40,7 +41,7 @@ public class DatabaseConfig {
      * @param numBinaryOutputStatus number of binary output status points
      * @param numAnalogOutputStatus number of analog output status points
      */
-    public DatabaseConfig(int numBinary, int numAnalog, int numCounter, int numBinaryOutputStatus, int numAnalogOutputStatus)
+    public DatabaseConfig(int numBinary, int numAnalog, int numCounter, int numFrozenCounter, int numBinaryOutputStatus, int numAnalogOutputStatus)
     {
         this.binaryInputs = new ArrayList<EventPointRecord>(numBinary);
         for(int i=0; i<numBinary; ++i) this.binaryInputs.add(new EventPointRecord());
@@ -50,6 +51,9 @@ public class DatabaseConfig {
 
         this.counterInputs = new ArrayList<EventPointRecord>(numCounter);
         for(int i=0; i<numCounter; ++i) this.counterInputs.add(new EventPointRecord());
+
+        this.frozenCounterInputs = new ArrayList<EventPointRecord>(numFrozenCounter);
+        for(int i=0; i<numFrozenCounter; ++i) this.frozenCounterInputs.add(new EventPointRecord());
 
         this.binaryOutputStatii = new ArrayList<PointRecord>(numBinaryOutputStatus);
         for(int i=0; i<numBinaryOutputStatus; ++i) this.binaryOutputStatii.add(new PointRecord());

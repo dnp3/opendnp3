@@ -56,6 +56,16 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_DataObserverImpl_native_1upd
 	pObs->Update(meas, index);
 }
 
+JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_DataObserverImpl_native_1update_1fc
+  (JNIEnv *, jobject, jlong observer, jlong val, jbyte qual, jlong time, jlong index)
+{
+	auto pObs = (IDataObserver*) observer;
+	FrozenCounter meas(val, qual);
+	meas.SetTime(time);
+	pObs->Update(meas, index);
+}
+
+
 JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_DataObserverImpl_native_1update_1bos
 (JNIEnv*, jobject, jlong observer, jboolean val, jbyte qual, jlong time, jlong index)
 {

@@ -53,7 +53,7 @@ public class OutstationDemo {
         });
 
         // Outstation will have 5 of every measurement type
-        DatabaseConfig db = new DatabaseConfig(5,5,5,5,5);
+        DatabaseConfig db = new DatabaseConfig(5,5,5,5,5,5);
 
         // Create the default outstation configuration
         OutstationStackConfig config = new OutstationStackConfig(db);

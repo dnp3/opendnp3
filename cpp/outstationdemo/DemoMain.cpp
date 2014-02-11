@@ -41,6 +41,7 @@ using namespace asiopal;
 
 int main(int argc, char* argv[])
 {
+
 	// Specify a LogLevel for the stack/physical layer to use.
 	// Log statements with a lower priority will not be logged.
 	const LogLevel LOG_LEVEL = LogLevel::Info;
@@ -76,7 +77,7 @@ int main(int argc, char* argv[])
 	// The master config object for a slave. The default are
 	// useable, but understanding the options are important.
 	SlaveStackConfig stackConfig;	
-	stackConfig.database = DatabaseConfiguration(DatabaseTemplate(5, 5, 5, 5, 5));	
+	stackConfig.database = DatabaseConfiguration(DatabaseTemplate(5, 5, 5, 5, 5, 5));	
 	stackConfig.slave.mDisableUnsol = true;
 
 	// Create a new slave with a log level, command handler, and
@@ -103,7 +104,7 @@ int main(int argc, char* argv[])
 		if(input == "exit") break;
 		else {
 			TimeTransaction tx(pDataObserver, UTCTimeSource::Inst()->Now()); //automatically calls Start()/End() and sets time for each measurement
-			tx.Update(Counter(count, CQ_ONLINE), 0);
+			tx.Update(FrozenCounter(count, FCQ_ONLINE), 0);
 			++count;
 		}
 	}

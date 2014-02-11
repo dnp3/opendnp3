@@ -49,6 +49,11 @@ class DataObserverImpl implements DataObserver {
         this.native_update_c(nativeptr, meas.getValue(), meas.getQuality(), meas.getMsSinceEpoch(), index);
     }
 
+    public void update(FrozenCounter meas, long index)
+    {
+        this.native_update_fc(nativeptr, meas.getValue(), meas.getQuality(), meas.getMsSinceEpoch(), index);
+    }
+
     public void update(BinaryOutputStatus meas, long index)
     {
         this.native_update_bos(nativeptr, meas.getValue(), meas.getQuality(), meas.getMsSinceEpoch(), index);
@@ -68,6 +73,7 @@ class DataObserverImpl implements DataObserver {
     private native void native_update_bi(long nativeptr, boolean value, byte quality, long time, long index);
     private native void native_update_ai(long nativeptr, double value, byte quality, long time, long index);
     private native void native_update_c(long nativeptr, long value, byte quality, long time, long index);
+    private native void native_update_fc(long nativeptr, long value, byte quality, long time, long index);
     private native void native_update_bos(long nativeptr, boolean value, byte quality, long time, long index);
     private native void native_update_aos(long nativeptr, double value, byte quality, long time, long index);
     private native void native_end(long nativeptr);

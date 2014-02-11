@@ -53,12 +53,14 @@ public:
 	void Update(const Binary& arPoint, uint16_t) final;
 	void Update(const Analog& arPoint, uint16_t) final;
 	void Update(const Counter& arPoint, uint16_t) final;
+	void Update(const FrozenCounter& arPoint, uint16_t) final;
 	void Update(const ControlStatus& arPoint, uint16_t) final;
 	void Update(const SetpointStatus& arPoint, uint16_t) final;
 
 	openpal::Indexable<Binary, uint16_t> Binaries();
 	openpal::Indexable<Analog, uint16_t> Analogs();
 	openpal::Indexable<Counter, uint16_t> Counters();
+	openpal::Indexable<FrozenCounter, uint16_t> FrozenCounters();
 	openpal::Indexable<ControlStatus, uint16_t> ControlStatii();
 	openpal::Indexable<SetpointStatus, uint16_t> SetpointStatii();
 

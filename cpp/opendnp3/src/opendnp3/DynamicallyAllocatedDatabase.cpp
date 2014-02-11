@@ -30,11 +30,13 @@ DynamicallyAllocatedDatabase::DynamicallyAllocatedDatabase(const DatabaseTemplat
 	binaryValues(databaseTemplate.numBinary),
 	analogValues(databaseTemplate.numAnalog),
 	counterValues(databaseTemplate.numCounter),
+	frozenCounterValues(databaseTemplate.numFrozenCounter),
 	controlStatusValues(databaseTemplate.numControlStatus),
 	setpointStatusValues(databaseTemplate.numSetpointStatus),
 	binaryMetadata(databaseTemplate.numBinary),
 	analogMetadata(databaseTemplate.numAnalog),
-	counterMetadata(databaseTemplate.numCounter)
+	counterMetadata(databaseTemplate.numCounter),
+	frozenCounterMetadata(databaseTemplate.numFrozenCounter)
 {
 
 }
@@ -51,6 +53,11 @@ void DynamicallyAllocatedDatabase::Configure(const DatabaseConfiguration& config
 	for(size_t i=0; i< config.counterMetadata.size(); ++i) {
 		counterMetadata[i].clazz = config.counterMetadata[i].EventClass;
 		counterMetadata[i].deadband = config.counterMetadata[i].Deadband;
+	}
+
+	for(size_t i=0; i< config.frozenCounterMetadata.size(); ++i) {
+		frozenCounterMetadata[i].clazz = config.frozenCounterMetadata[i].EventClass;
+		frozenCounterMetadata[i].deadband = config.frozenCounterMetadata[i].Deadband;
 	}	
 }
 
@@ -59,11 +66,13 @@ StaticDataFacade DynamicallyAllocatedDatabase::GetFacade()
 	BinaryCollection binaries(binaryValues.ToIndexable(), binaryMetadata.ToIndexable());
 	AnalogCollection analogs(analogValues.ToIndexable(), analogMetadata.ToIndexable());
 	CounterCollection counters(counterValues.ToIndexable(), counterMetadata.ToIndexable());
+	FrozenCounterCollection frozenCounters(frozenCounterValues.ToIndexable(), frozenCounterMetadata.ToIndexable());
 
 	return StaticDataFacade(
 		binaries, 
 		analogs, 
 		counters, 
+		frozenCounters,
 		controlStatusValues.ToIndexable(),
 		setpointStatusValues.ToIndexable()
 	);

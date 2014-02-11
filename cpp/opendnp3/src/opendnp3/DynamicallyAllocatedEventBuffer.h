@@ -31,7 +31,7 @@ namespace opendnp3
 class DynamicallyAllocatedEventBuffer
 {
 	public:
-		DynamicallyAllocatedEventBuffer(uint16_t aMaxBinary, uint16_t aMaxAnalog, uint16_t aMaxCounter);
+		DynamicallyAllocatedEventBuffer(uint16_t aMaxBinary, uint16_t aMaxAnalog, uint16_t aMaxCounter, uint16_t aMaxFrozenCounter);
 
 		EventBufferFacade GetFacade();
 
@@ -44,6 +44,9 @@ class DynamicallyAllocatedEventBuffer
 
 		openpal::DynamicArray<uint16_t, uint16_t> counterStack;
 		openpal::DynamicArray<Event<Counter>, uint16_t> counterArray;
+
+		openpal::DynamicArray<uint16_t, uint16_t> frozenCounterStack;
+		openpal::DynamicArray<Event<FrozenCounter>, uint16_t> frozenCounterArray;
 
 		openpal::DynamicArray<openpal::DoubleListNode<SequenceRecord>, uint16_t> sequenceOfEvents;
 		openpal::DynamicArray<openpal::DoubleListNode<SequenceRecord>*, uint16_t> selectedEvents;		

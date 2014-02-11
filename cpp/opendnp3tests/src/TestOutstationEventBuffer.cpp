@@ -37,7 +37,7 @@ BOOST_AUTO_TEST_SUITE(OutstationEventBufferTestSuite)
 
 BOOST_AUTO_TEST_CASE(InitialState)
 {
-	DynamicallyAllocatedEventBuffer underlying(3,3,3);
+	DynamicallyAllocatedEventBuffer underlying(3,3,3,3);
 	OutstationEventBuffer buffer(underlying.GetFacade());
 
 	MockEventWriter writer;
@@ -70,7 +70,7 @@ BOOST_AUTO_TEST_CASE(StaticAllocation)
 
 BOOST_AUTO_TEST_CASE(SingleValueIsWrittenAndCleared)
 {
-	DynamicallyAllocatedEventBuffer underlying(3,3,3);
+	DynamicallyAllocatedEventBuffer underlying(3,3,3,3);
 	OutstationEventBuffer buffer(underlying.GetFacade());
 
 	buffer.Update(Event<Binary>(Binary(true), 3, EventClass::EC1));
@@ -109,7 +109,7 @@ BOOST_AUTO_TEST_CASE(SingleValueIsWrittenAndCleared)
 
 BOOST_AUTO_TEST_CASE(MixedTypesAndClassesOfEvents)
 {
-	DynamicallyAllocatedEventBuffer underlying(3,3,3);
+	DynamicallyAllocatedEventBuffer underlying(3,3,3, 3);
 	OutstationEventBuffer buffer(underlying.GetFacade());
 	
 	buffer.Update(Event<Binary>(Binary(true), 3, EventClass::EC1));

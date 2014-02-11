@@ -52,6 +52,13 @@ public interface DataObserver {
     void update(Counter meas, long index);
 
     /**
+     * Update a frozen counter measurement
+     * @param meas measurement object
+     * @param index index of measurement
+     */
+    void update(FrozenCounter meas, long index);
+
+    /**
      * Update a BinaryOutputStatus measurement
      * @param meas measurement object
      * @param index index of measurement

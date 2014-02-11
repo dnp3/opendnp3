@@ -120,6 +120,11 @@ public class OutstationConfig {
     public StaticCounterResponse staticCounter = StaticCounterResponse.Group20Var1;
 
     /**
+     * The default group/variation to use for frozen counter responses (default 21:1)
+     */
+    public StaticFrozenCounterResponse staticFrozenCounter = StaticFrozenCounterResponse.Group21Var1;
+
+    /**
      * The default group/variation to use for static AnalogOutput status responses (default 40:1)
      */
     public StaticSetpointStatusResponse staticSetpointStatus =  StaticSetpointStatusResponse.Group40Var1;

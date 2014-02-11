@@ -55,6 +55,7 @@ public:
 	void Update(const Binary& arPoint, uint16_t aIndex) final;
 	void Update(const Analog& arPoint, uint16_t aIndex) final;
 	void Update(const Counter& arPoint, uint16_t aIndex) final;
+	void Update(const FrozenCounter& arPoint, uint16_t aIndex) final;
 	void Update(const ControlStatus& arPoint, uint16_t aIndex) final;
 	void Update(const SetpointStatus& arPoint, uint16_t aIndex) final;
 
@@ -73,6 +74,7 @@ private:
 	CompareMap mBinaryMap;
 	CompareMap mAnalogMap;
 	CompareMap mCounterMap;
+	CompareMap mFrozenCounterMap;
 	CompareMap mControlStatusMap;
 	CompareMap mSetpointStatusMap;
 
