@@ -103,6 +103,11 @@ QueueResult ResponseContext::QueueReadRange(GroupVariation gv, const StaticRange
 		MACRO_QUEUE_RANGE(Group20Var6);
 
 		MACRO_QUEUE_RANGE(Group21Var1);
+		MACRO_QUEUE_RANGE(Group21Var2);
+		MACRO_QUEUE_RANGE(Group21Var5);
+		MACRO_QUEUE_RANGE(Group21Var6);
+		MACRO_QUEUE_RANGE(Group21Var9);
+		MACRO_QUEUE_RANGE(Group21Var10);
 
 		MACRO_QUEUE_RANGE(Group30Var1);
 		MACRO_QUEUE_RANGE(Group30Var2);
