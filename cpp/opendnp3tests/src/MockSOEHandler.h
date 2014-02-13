@@ -18,10 +18,10 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __MOCK_MEASUREMENT_HANDLER_H_
-#define __MOCK_MEASUREMENT_HANDLER_H_
+#ifndef __MOCK_SOE_HANDLER_H_
+#define __MOCK_SOE_HANDLER_H_
 
-#include <opendnp3/IMeasurementHandler.h>
+#include <opendnp3/ISOEHandler.h>
 #include <opendnp3/OctetString.h>
 
 #include <openpal/Location.h>
@@ -33,25 +33,21 @@
 namespace opendnp3
 {
 
-
-
 // simple measurement handler for testing purposes
-class MockMeasurementHandler : public IMeasurementHandler
+class MockSOEHandler : public ISOEHandler
 {
 public:
 
-	MockMeasurementHandler()
+	MockSOEHandler()
 	{}
 			
-	void Load(const IMeasurementUpdate& arUpdate) override
-	{
-		for(auto v: arUpdate.BinaryUpdates()) mBinaryMap[v.index] = v.value;
-		for(auto v: arUpdate.AnalogUpdates()) mAnalogMap[v.index] = v.value;
-		for(auto v: arUpdate.CounterUpdates()) mCounterMap[v.index] = v.value;
-		for(auto v: arUpdate.ControlStatusUpdates()) mControlStatusMap[v.index] = v.value;
-		for(auto v: arUpdate.SetpointStatusUpdates()) mSetpointStatusMap[v.index] = v.value;
-		for(auto v: arUpdate.OctetStringUpdates()) mOctetStringMap[v.index] = v.value;
-	}
+	void Load(const IterableBuffer<IndexedValue<Binary>>& meas) final {}
+	void Load(const IterableBuffer<IndexedValue<Analog>>& meas) final {}
+	void Load(const IterableBuffer<IndexedValue<Counter>>& meas) final {}
+	void Load(const IterableBuffer<IndexedValue<FrozenCounter>>& meas) final {}
+	void Load(const IterableBuffer<IndexedValue<ControlStatus>>& meas) final {}
+	void Load(const IterableBuffer<IndexedValue<SetpointStatus>>& meas)  final {}
+	void Load(const IterableBuffer<IndexedValue<OctetString>>& meas) final {}
 
 	void Clear()
 	{
@@ -70,6 +66,10 @@ public:
 	SetpointStatus GetSetpointStatus(uint32_t aIndex) { return GetAny<SetpointStatus>(aIndex, mSetpointStatusMap); }
 	OctetString GetOctetString(uint32_t aIndex) { return GetAny<OctetString>(aIndex, mOctetStringMap); }
 
+protected:
+
+	void Start() {}
+	void End() {}
 	
 
 private:

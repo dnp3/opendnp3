@@ -50,12 +50,12 @@
     <ClInclude Include="include\opendnp3\ICommandProcessor.h" />
     <ClInclude Include="include\opendnp3\IDataObserver.h" />
     <ClInclude Include="include\opendnp3\IMaster.h" />
-    <ClInclude Include="include\opendnp3\IMeasurementHandler.h" />
-    <ClInclude Include="include\opendnp3\IMeasurementUpdate.h" />
+    <ClInclude Include="include\opendnp3\ISOEHandler.h" />
     <ClInclude Include="include\opendnp3\IndexedValue.h" />
     <ClInclude Include="include\opendnp3\IOutstation.h" />
     <ClInclude Include="include\opendnp3\IScanListener.h" />
     <ClInclude Include="include\opendnp3\IStack.h" />
+    <ClInclude Include="include\opendnp3\IterableBuffer.h" />
     <ClInclude Include="include\opendnp3\ITimeWriteHandler.h" />
     <ClInclude Include="include\opendnp3\ITransactable.h" />
     <ClInclude Include="include\opendnp3\LinkConfig.h" />
@@ -64,7 +64,6 @@
     <ClInclude Include="include\opendnp3\MasterScan.h" />
     <ClInclude Include="include\opendnp3\MasterStackConfig.h" />
     <ClInclude Include="include\opendnp3\MeasurementType.h" />
-    <ClInclude Include="include\opendnp3\MeasurementUpdate.h" />
     <ClInclude Include="include\opendnp3\ObjectInterfaces.h" />
     <ClInclude Include="include\opendnp3\OctetData.h" />
     <ClInclude Include="include\opendnp3\OctetString.h" />
@@ -147,8 +146,7 @@
     <ClInclude Include="src\opendnp3\ILinkContext.h" />
     <ClInclude Include="src\opendnp3\ILinkRouter.h" />
     <ClInclude Include="src\opendnp3\IndexParser.h" />
-    <ClInclude Include="src\opendnp3\Iterable.h" />
-    <ClInclude Include="src\opendnp3\IterableBuffer.h" />
+    <ClInclude Include="src\opendnp3\IterableTransforms.h" />
     <ClInclude Include="src\opendnp3\LazyIterable.h" />
     <ClInclude Include="src\opendnp3\LinkFrame.h" />
     <ClInclude Include="src\opendnp3\LinkHeader.h" />
@@ -193,7 +191,6 @@
     <ClInclude Include="src\opendnp3\OutstationStackImpl.h" />
     <ClInclude Include="src\opendnp3\PhysicalLayerMonitor.h" />
     <ClInclude Include="src\opendnp3\PhysicalLayerMonitorStates.h" />
-    <ClInclude Include="src\opendnp3\PostingMeasurementHandler.h" />
     <ClInclude Include="src\opendnp3\PrefixedWriteIterator.h" />
     <ClInclude Include="src\opendnp3\PriLinkLayerStates.h" />
     <ClInclude Include="src\opendnp3\ProtocolUtil.h" />
@@ -294,7 +291,7 @@
     <ClCompile Include="src\opendnp3\IEventWriterState.cpp" />
     <ClCompile Include="src\opendnp3\IINField.cpp" />
     <ClCompile Include="src\opendnp3\IINHelpers.cpp" />
-    <ClCompile Include="src\opendnp3\IMeasurementHandler.cpp" />
+    <ClCompile Include="src\opendnp3\ISOEHandler.cpp" />
     <ClCompile Include="src\opendnp3\IStack.cpp" />
     <ClCompile Include="src\opendnp3\ITimeWriteHandler.cpp" />
     <ClCompile Include="src\opendnp3\LinkFrame.cpp" />
@@ -311,7 +308,6 @@
     <ClCompile Include="src\opendnp3\MasterStates.cpp" />
     <ClCompile Include="src\opendnp3\MasterTaskBase.cpp" />
     <ClCompile Include="src\opendnp3\MeasurementHandler.cpp" />
-    <ClCompile Include="src\opendnp3\MeasurementUpdate.cpp" />
     <ClCompile Include="src\opendnp3\MultiplexingDataObserver.cpp" />
     <ClCompile Include="src\opendnp3\objects\Group1.cpp" />
     <ClCompile Include="src\opendnp3\objects\Group10.cpp" />
@@ -339,7 +335,6 @@
     <ClCompile Include="src\opendnp3\PhysicalLayerMonitor.cpp" />
     <ClCompile Include="src\opendnp3\PhysicalLayerMonitorStates.cpp" />
     <ClCompile Include="src\opendnp3\PointClass.cpp" />
-    <ClCompile Include="src\opendnp3\PostingMeasurementHandler.cpp" />
     <ClCompile Include="src\opendnp3\PriLinkLayerStates.cpp" />
     <ClCompile Include="src\opendnp3\ProtocolUtil.cpp" />
     <ClCompile Include="src\opendnp3\QueuedCommandProcessor.cpp" />

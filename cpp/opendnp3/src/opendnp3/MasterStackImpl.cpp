@@ -31,7 +31,7 @@ namespace opendnp3
 
 MasterStackImpl::MasterStackImpl(	Logger aLogger,
                                         IExecutor* apExecutor,
-                                        IMeasurementHandler* apPublisher,
+                                        ISOEHandler* apPublisher,
                                         IUTCTimeSource* apTimeSource,
                                         AsyncTaskGroup* apTaskGroup,
                                         const MasterStackConfig& arCfg,

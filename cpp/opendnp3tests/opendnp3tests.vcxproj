@@ -215,7 +215,7 @@
     <ClInclude Include="src\MockFrameSink.h" />
     <ClInclude Include="src\MockLogSubscriber.h" />
     <ClInclude Include="src\MockLowerLayer.h" />
-    <ClInclude Include="src\MockMeasurementHandler.h" />
+    <ClInclude Include="src\MockSOEHandler.h" />
     <ClInclude Include="src\MockPhysicalLayerAsync.h" />
     <ClInclude Include="src\MockPhysicalLayerMonitor.h" />
     <ClInclude Include="src\MockTimeWriteHandler.h" />

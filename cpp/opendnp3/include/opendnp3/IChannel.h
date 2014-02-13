@@ -35,7 +35,7 @@
 namespace opendnp3
 {
 
-class IMeasurementHandler;
+class ISOEHandler;
 class IMaster;
 class IOutstation;
 class ICommandHandler;
@@ -102,7 +102,7 @@ public:
 	*/
 	virtual IMaster* AddMaster(	const std::string& arLoggerId,
 	                                openpal::LogLevel aLevel,
-	                                IMeasurementHandler* apPublisher,
+	                                ISOEHandler* apPublisher,
 	                                openpal::IUTCTimeSource* apTimeSource,
 	                                const MasterStackConfig& arCfg) = 0;
 

@@ -158,9 +158,6 @@
     <ClInclude Include="src\WrappedTcpPipe.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\MockMeasurementHandler.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\MockAPDUHeaderHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -171,6 +168,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\OutstationEventBufferFuzzer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MockSOEHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

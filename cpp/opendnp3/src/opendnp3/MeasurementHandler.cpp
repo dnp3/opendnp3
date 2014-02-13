@@ -27,74 +27,57 @@ using namespace openpal;
 namespace opendnp3
 {
 
-MeasurementHandler::MeasurementHandler(openpal::Logger& aLogger) : Loggable(aLogger)	
+MeasurementHandler::MeasurementHandler(openpal::Logger& aLogger, ISOEHandler* pSOEHandler_) : Loggable(aLogger), pSOEHandler(pSOEHandler_)
 {}
 
 void MeasurementHandler::_OnRange(GroupVariation gv, const IterableBuffer<IndexedValue<Binary>>& meas)
 {
-	meas.foreach([this](const IndexedValue<Binary>& v) {updates.Add(v.value, v.index); });
+	pSOEHandler->Load(meas);
 }
 
 void MeasurementHandler::_OnIndexPrefix(GroupVariation gv, const IterableBuffer<IndexedValue<Binary>>& meas)
 {
-	// todo - handle CTO
-	meas.foreach([this](const IndexedValue<Binary>& v) { updates.Add(v.value, v.index); });
+	pSOEHandler->Load(meas);
 }
 
 void MeasurementHandler::_OnRange(GroupVariation gv, const IterableBuffer<IndexedValue<ControlStatus>>& meas)
 {
-	meas.foreach([this](const IndexedValue<ControlStatus>& v) { updates.Add(v.value, v.index); });
+	pSOEHandler->Load(meas);
 }
 		
 void MeasurementHandler::_OnRange(GroupVariation gv, const IterableBuffer<IndexedValue<Counter>>& meas)
 {
-	meas.foreach([this](const IndexedValue<Counter>& v) { updates.Add(v.value, v.index); });
+	pSOEHandler->Load(meas);
 }
 
 void MeasurementHandler::_OnIndexPrefix(GroupVariation gv, const IterableBuffer<IndexedValue<Counter>>& meas)
 {
-	meas.foreach([this](const IndexedValue<Counter>& v) { updates.Add(v.value, v.index); });
+	pSOEHandler->Load(meas);
 }
 
 void MeasurementHandler::_OnRange(GroupVariation gv, const IterableBuffer<IndexedValue<Analog>>& meas)
 {
-	meas.foreach([this](const IndexedValue<Analog>& v) { updates.Add(v.value, v.index); });
+	pSOEHandler->Load(meas);
 }
 
 void MeasurementHandler::_OnIndexPrefix(GroupVariation gv, const IterableBuffer<IndexedValue<Analog>>& meas)
 {
-	meas.foreach([this](const IndexedValue<Analog>& v) { updates.Add(v.value, v.index); });
+	pSOEHandler->Load(meas);
 }
 
 void MeasurementHandler::_OnRange(GroupVariation gv, const IterableBuffer<IndexedValue<SetpointStatus>>& meas) 
 {
-	meas.foreach([this](const IndexedValue<SetpointStatus>& v) { updates.Add(v.value, v.index); });
+	pSOEHandler->Load(meas);
 }
 
-void MeasurementHandler::_OnRangeOfOctets(GroupVariation gv, const IterableBuffer<IndexedValue<openpal::ReadOnlyBuffer>>& meas)
+void MeasurementHandler::_OnRange(GroupVariation gv, const IterableBuffer<IndexedValue<OctetString>>& meas)
 {
-	switch(gv)
-	{
-		case(GroupVariation::Group110AnyVar):
-			meas.foreach([this](const IndexedValue<ReadOnlyBuffer>& v) { updates.Add(OctetString(v.value), v.index); });
-			break;
-		default:
-			LOG_BLOCK(LogLevel::Warning, "Ignoring unknown octet data"); // TODO - add better logging
-			break;
-	}
+	pSOEHandler->Load(meas);
 }
 
-void MeasurementHandler::_OnIndexPrefixOfOctets(GroupVariation gv, const IterableBuffer<IndexedValue<openpal::ReadOnlyBuffer>>& meas)
+void MeasurementHandler::_OnIndexPrefix(GroupVariation gv, const IterableBuffer<IndexedValue<OctetString>>& meas)
 {
-	switch(gv)
-	{
-		case(GroupVariation::Group111AnyVar):			
-			meas.foreach([this](const IndexedValue<ReadOnlyBuffer>& v) { updates.Add(OctetString(v.value), v.index); });			
-			break;
-		default:
-			LOG_BLOCK(LogLevel::Warning, "Ignoring unknown octet data"); // TODO - add better logging
-			break;
-	}
+	pSOEHandler->Load(meas);
 }
 
 }

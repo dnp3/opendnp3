@@ -82,7 +82,7 @@ void DNP3Channel::Cleanup()
 }
 
 #ifndef OPENDNP3_NO_MASTER
-IMaster* DNP3Channel::AddMaster(const std::string& arLoggerId, LogLevel aLevel, IMeasurementHandler* apPublisher, IUTCTimeSource* apTimeSource, const MasterStackConfig& arCfg)
+IMaster* DNP3Channel::AddMaster(const std::string& arLoggerId, LogLevel aLevel, ISOEHandler* apPublisher, IUTCTimeSource* apTimeSource, const MasterStackConfig& arCfg)
 {
 	LinkRoute route(arCfg.link.RemoteAddr, arCfg.link.LocalAddr);
 	ExecutorPause p(mpPhys->GetExecutor());

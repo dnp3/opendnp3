@@ -23,7 +23,7 @@
 
 #include <opendnp3/MasterConfig.h>
 #include <opendnp3/ObjectInterfaces.h>
-#include <opendnp3/IMeasurementHandler.h>
+#include <opendnp3/ISOEHandler.h>
 #include <opendnp3/MasterScan.h>
 
 
@@ -34,7 +34,6 @@
 #include "IAppUser.h"
 #include "MasterSchedule.h"
 #include "QueuedCommandProcessor.h"
-#include "PostingMeasurementHandler.h"
 
 // includes for tasks
 #include "StartupTasks.h"
@@ -77,7 +76,7 @@ class Master : public IAppUser, public StackBase, private ICommandProcessor
 
 public:
 
-	Master(openpal::Logger, MasterConfig aCfg, IAppLayer*, IMeasurementHandler*, AsyncTaskGroup*, openpal::IExecutor*, openpal::IUTCTimeSource* apTimeSrc);
+	Master(openpal::Logger, MasterConfig aCfg, IAppLayer*, ISOEHandler*, AsyncTaskGroup*, openpal::IExecutor*, openpal::IUTCTimeSource* apTimeSrc);
 	virtual ~Master() {}
 
 	ICommandProcessor* GetCommandProcessor() {
@@ -143,7 +142,7 @@ private:
 	QueuedCommandProcessor mCommandQueue;	// Threadsafe queue for buffering command requests	
 
 	IAppLayer* mpAppLayer;					// lower application layer
-	PostingMeasurementHandler mHandler;     // marshalls measurement callbacks via the executor
+	ISOEHandler* mpSOEHandler;
 	AsyncTaskGroup* mpTaskGroup;			// How task execution is controlled
 	openpal::IUTCTimeSource* mpTimeSrc;		// Access to UTC, normally system time but can be a mock for testing
 

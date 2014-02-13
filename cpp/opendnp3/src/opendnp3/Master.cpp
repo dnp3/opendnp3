@@ -45,11 +45,11 @@ using namespace openpal;
 namespace opendnp3
 {
 
-Master::Master(Logger aLogger, MasterConfig aCfg, IAppLayer* apAppLayer, IMeasurementHandler* apPublisher, AsyncTaskGroup* apTaskGroup, openpal::IExecutor* apExecutor, IUTCTimeSource* apTimeSrc) :
+Master::Master(Logger aLogger, MasterConfig aCfg, IAppLayer* apAppLayer, ISOEHandler* apSOEHandler, AsyncTaskGroup* apTaskGroup, openpal::IExecutor* apExecutor, IUTCTimeSource* apTimeSrc) :
 	IAppUser(aLogger),
 	StackBase(apExecutor),	
-	mpAppLayer(apAppLayer),
-	mHandler(apPublisher, apExecutor),
+	mpAppLayer(apAppLayer),	
+	mpSOEHandler(apSOEHandler),
 	mpTaskGroup(apTaskGroup),
 	mpTimeSrc(apTimeSrc),
 	mpState(AMS_Closed::Inst()),
@@ -57,7 +57,7 @@ Master::Master(Logger aLogger, MasterConfig aCfg, IAppLayer* apAppLayer, IMeasur
 	mpScheduledTask(nullptr),
 	mState(StackState::COMMS_DOWN),
 	mSchedule(apTaskGroup, this, aCfg),
-	mClassPoll(aLogger, mHandler.Load),
+	mClassPoll(aLogger, apSOEHandler),
 	mClearRestart(aLogger),
 	mConfigureUnsol(aLogger),
 	mTimeSync(aLogger, apTimeSrc),
@@ -293,13 +293,9 @@ void Master::OnUnsolResponse(const APDUResponseRecord& aRecord)
 
 void Master::ProcessDataResponse(const APDUResponseRecord& record)
 {
-	MeasurementHandler handler(mLogger);
+	MeasurementHandler handler(mLogger, this->mpSOEHandler);
 	auto res = APDUParser::ParseHeaders(record.objects, handler);
-	if(res == APDUParser::Result::OK)
-	{
-		if(handler.updates.HasUpdates()) mHandler.Load(handler.updates);
-	}
-	else {
+	if(res != APDUParser::Result::OK) {	
 		LOG_BLOCK(LogLevel::Warning, "Error parsing response headers: " << static_cast<int>(res)); // TODO - turn these into strings
 	}	
 }

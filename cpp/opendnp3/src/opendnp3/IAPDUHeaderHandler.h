@@ -21,13 +21,14 @@
 #ifndef __I_APDU_HANDLER_H_
 #define __I_APDU_HANDLER_H_
 
-#include "IterableBuffer.h"
 #include "GroupVariation.h"
 
+#include <opendnp3/IterableBuffer.h>
 #include <opendnp3/DataTypes.h>
 #include <opendnp3/ControlRelayOutputBlock.h>
 #include <opendnp3/AnalogOutput.h>
 #include <opendnp3/IndexedValue.h>
+#include <opendnp3/OctetString.h>
 
 #include "objects/Group50.h"
 #include "objects/Group52.h"
@@ -68,8 +69,8 @@ class IAPDUHeaderHandler
 		virtual void OnIndexPrefix(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const IterableBuffer<IndexedValue<AnalogOutputDouble64>>& meas) = 0;
 
 
-		virtual void OnRangeOfOctets(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const IterableBuffer<IndexedValue<openpal::ReadOnlyBuffer>>& meas) = 0;
-		virtual void OnIndexPrefixOfOctets(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const IterableBuffer<IndexedValue<openpal::ReadOnlyBuffer>>& meas) = 0;
+		virtual void OnRange(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const IterableBuffer<IndexedValue<OctetString>>& meas) = 0;
+		virtual void OnIndexPrefix(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const IterableBuffer<IndexedValue<OctetString>>& meas) = 0;
 						
 };
 

@@ -143,15 +143,15 @@ void HeaderHandlerBase::OnIndexPrefix(GroupVariation gv, const openpal::ReadOnly
 	++currentHeader;
 }
 
-void HeaderHandlerBase::OnRangeOfOctets(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const IterableBuffer<IndexedValue<openpal::ReadOnlyBuffer>>& meas)
+void HeaderHandlerBase::OnRange(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const IterableBuffer<IndexedValue<OctetString>>& meas)
 {	
-	this->_OnRangeOfOctets(gv, meas);
+	this->_OnRange(gv, meas);
 	++currentHeader;
 }
 
-void HeaderHandlerBase::OnIndexPrefixOfOctets(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const IterableBuffer<IndexedValue<openpal::ReadOnlyBuffer>>& meas)
+void HeaderHandlerBase::OnIndexPrefix(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const IterableBuffer<IndexedValue<OctetString>>& meas)
 {	
-	this->_OnIndexPrefixOfOctets(gv, meas);
+	this->_OnIndexPrefix(gv, meas);
 	++currentHeader;
 }
 
@@ -240,12 +240,12 @@ void HeaderHandlerBase::_OnIndexPrefix(const openpal::ReadOnlyBuffer& header, co
 	errors.Set(IINBit::FUNC_NOT_SUPPORTED);
 }
 
-void HeaderHandlerBase::_OnRangeOfOctets(GroupVariation gv, const IterableBuffer<IndexedValue<openpal::ReadOnlyBuffer>>& meas)
+void HeaderHandlerBase::_OnRange(GroupVariation gv, const IterableBuffer<IndexedValue<OctetString>>& meas)
 {	
 	errors.Set(IINBit::FUNC_NOT_SUPPORTED);
 }
 
-void HeaderHandlerBase::_OnIndexPrefixOfOctets(GroupVariation gv, const IterableBuffer<IndexedValue<openpal::ReadOnlyBuffer>>& meas)
+void HeaderHandlerBase::_OnIndexPrefix(GroupVariation gv, const IterableBuffer<IndexedValue<OctetString>>& meas)
 {
 	errors.Set(IINBit::FUNC_NOT_SUPPORTED);
 }

@@ -42,7 +42,7 @@ public:
 	MasterStackImpl(
 	        openpal::Logger,
 	        openpal::IExecutor* apExecutor,
-	        IMeasurementHandler* apPublisher,
+	        ISOEHandler* apPublisher,
 	        IUTCTimeSource* apTimeSource,
 	        AsyncTaskGroup* apTaskGroup,
 	        const MasterStackConfig& arCfg,

@@ -38,8 +38,7 @@ public:
 	OctetData();		
 	OctetData(const openpal::ReadOnlyBuffer& buffer);
 	OctetData(const OctetData&);
-	OctetData& operator=( const OctetData& rhs );
-	~OctetData();
+	OctetData& operator=( const OctetData& rhs );	
 
 	openpal::ReadOnlyBuffer ToReadOnly() const;
 
@@ -49,7 +48,7 @@ private:
 
 	void Initialize(const openpal::ReadOnlyBuffer& buffer);
 
-	uint8_t* mpData;
+	uint8_t mpData[MAX_SIZE];
 	size_t mSize;	
 };
 

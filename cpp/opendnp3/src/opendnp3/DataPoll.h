@@ -21,16 +21,15 @@
 #ifndef __DATA_POLL_H_
 #define __DATA_POLL_H_
 
-#include <opendnp3/MeasurementUpdate.h>
 #include "MasterTaskBase.h"
+
+#include <opendnp3/ISOEHandler.h>
 
 #include <functional>
 
 
 namespace opendnp3
 {
-
-class IMeasurementHandler;
 
 /**
  * Base class for all data acquistion polls
@@ -39,7 +38,7 @@ class DataPoll : public MasterTaskBase
 {
 public:
 
-	DataPoll(openpal::Logger&, const std::function<void (MeasurementUpdate&)>& aUpdate);
+	DataPoll(openpal::Logger&, ISOEHandler* pHandler_);
 
 private:
 
@@ -49,7 +48,7 @@ private:
 	TaskResult _OnPartialResponse(const APDUResponseRecord& record) override;
 	TaskResult _OnFinalResponse(const APDUResponseRecord& record) override;
 
-	std::function<void (MeasurementUpdate&)> mUpdateCallback;
+	ISOEHandler* pHandler;
 
 };
 
@@ -59,7 +58,7 @@ class ClassPoll : public DataPoll
 {
 public:
 
-	ClassPoll(openpal::Logger&, const std::function<void (MeasurementUpdate&)>& aUpdate);
+	ClassPoll(openpal::Logger&, ISOEHandler* pHandler_);
 
 	void Set(int aClassMask);
 

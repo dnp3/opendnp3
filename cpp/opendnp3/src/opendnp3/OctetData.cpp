@@ -28,7 +28,7 @@ using namespace openpal;
 namespace opendnp3
 {
 
-OctetData::OctetData() :  mpData(nullptr), mSize(0)
+OctetData::OctetData() :  mSize(0)
 {
 
 }
@@ -40,8 +40,7 @@ OctetData::OctetData(const openpal::ReadOnlyBuffer& buffer)
 
 void OctetData::Initialize(const openpal::ReadOnlyBuffer& buffer)
 {
-	assert(buffer.Size() <= MAX_SIZE);
-	mpData = new uint8_t[buffer.Size()];
+	assert(buffer.Size() <= MAX_SIZE);	
 	buffer.CopyTo(mpData);
 	mSize = buffer.Size();
 }
@@ -51,9 +50,7 @@ OctetData& OctetData::operator=( const OctetData& rhs )
 	if(&rhs != this) {		
 		assert(rhs.mSize <= MAX_SIZE);
 		if(mpData != nullptr)
-		{
-			delete[] mpData;
-			mpData = nullptr;
+		{			
 			mSize = 0;
 		}
 		this->Initialize(rhs.ToReadOnly());
@@ -61,18 +58,9 @@ OctetData& OctetData::operator=( const OctetData& rhs )
 	return *this;
 }
 
-
-OctetData::OctetData(const OctetData& aCopy) : mpData(nullptr), mSize(0)
+OctetData::OctetData(const OctetData& aCopy) : mSize(0)
 {	
 	this->Initialize(aCopy.ToReadOnly());
-}
-
-OctetData::~OctetData()
-{
-	if(mpData != nullptr) {
-		delete[] mpData;
-		mpData = nullptr;
-	}
 }
 
 openpal::ReadOnlyBuffer OctetData::ToReadOnly() const
@@ -82,7 +70,7 @@ openpal::ReadOnlyBuffer OctetData::ToReadOnly() const
 
 std::string OctetData::AsString() const
 {
-	return std::string(reinterpret_cast<char*>(mpData), mSize);
+	return std::string(reinterpret_cast<const char*>(mpData), mSize);
 }
 
 }

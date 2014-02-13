@@ -176,16 +176,16 @@ APDUParser::Result APDUParser::ParseIndexPrefixedOctetData(
 	if(buffer.Size() < size) return APDUParser::Result::NOT_ENOUGH_DATA_FOR_OBJECTS;
 	else {
 		
-		auto iterable = Iterable<IndexedValue<ReadOnlyBuffer>>::From(buffer, count,
+		auto iterable = IterableTransforms<IndexedValue<OctetString>>::From(buffer, count,
 			[&](ReadOnlyBuffer& buffer, uint32_t position) {	
-				auto index = pParser->ReadIndex(buffer);
-				auto buff = buffer.Truncate(gvRecord.variation);
+				auto index = pParser->ReadIndex(buffer);				
+				OctetString octets(buffer.Truncate(gvRecord.variation));
 				buffer.Advance(gvRecord.variation);
-				return IndexedValue<ReadOnlyBuffer>(buff, index);
+				return IndexedValue<OctetString>(octets, index);
 			}	
 		);		
 
-		handler.OnIndexPrefixOfOctets(gvRecord.enumeration, record.Complete(size), iterable);
+		handler.OnIndexPrefix(gvRecord.enumeration, record.Complete(size), iterable);
 		buffer.Advance(size);
 		return APDUParser::Result::OK;
 	}
@@ -211,7 +211,7 @@ APDUParser::Result APDUParser::ParseObjectsWithRange(const APDUParser::HeaderRec
 	{	
 		case(GroupVariation::Group1Var1):				
 			return ParseRangeAsBitField(buffer, record, range, [&](const ReadOnlyBuffer& header, const IterableBuffer<IndexedValue<bool>>& values) {
-				auto mapped = Iterable<IndexedValue<bool>>::Map<IndexedValue<Binary>>(values, [](const IndexedValue<bool>& v) { return IndexedValue<Binary>(Binary(v.value), v.index); });
+				auto mapped = IterableTransforms<IndexedValue<bool>>::Map<IndexedValue<Binary>>(values, [](const IndexedValue<bool>& v) { return IndexedValue<Binary>(Binary(v.value), v.index); });
 				output.OnRange(gvRecord.enumeration, header, mapped);
 			});		
 		
@@ -219,7 +219,7 @@ APDUParser::Result APDUParser::ParseObjectsWithRange(const APDUParser::HeaderRec
 
 		case(GroupVariation::Group10Var1):				
 			return ParseRangeAsBitField(buffer, record, range, [&](const ReadOnlyBuffer& header, IterableBuffer<IndexedValue<bool>>& values) {
-				auto mapped = Iterable<IndexedValue<bool>>::Map<IndexedValue<ControlStatus>>(values, [](const IndexedValue<bool>& v) { return IndexedValue<ControlStatus>(ControlStatus(v.value), v.index); });
+				auto mapped = IterableTransforms<IndexedValue<bool>>::Map<IndexedValue<ControlStatus>>(values, [](const IndexedValue<bool>& v) { return IndexedValue<ControlStatus>(ControlStatus(v.value), v.index); });
 				output.OnRange(gvRecord.enumeration, header, mapped);								
 			});
 
@@ -271,12 +271,13 @@ APDUParser::Result APDUParser::ParseRangeOfOctetData(
 	size_t size = gvRecord.variation*range.count;
 	if(buffer.Size() < size) return Result::NOT_ENOUGH_DATA_FOR_OBJECTS;
 	{
-		auto collection = Iterable<IndexedValue<openpal::ReadOnlyBuffer>>::From(buffer, range.count, [&](ReadOnlyBuffer& buffer, uint32_t pos) {			
-			IndexedValue<ReadOnlyBuffer> value(buffer.Truncate(gvRecord.variation), range.start + pos);
+		auto collection = IterableTransforms<IndexedValue<OctetString>>::From(buffer, range.count, [&](ReadOnlyBuffer& buffer, uint32_t pos) {
+			OctetString octets(buffer.Truncate(gvRecord.variation));
+			IndexedValue<OctetString> value(octets, range.start + pos);
 			buffer.Advance(gvRecord.variation);
 			return value;
 		});
-		handler.OnRangeOfOctets(gvRecord.enumeration, record.Complete(size), collection);
+		handler.OnRange(gvRecord.enumeration, record.Complete(size), collection);
 		buffer.Advance(size);
 		return Result::OK;
 	}

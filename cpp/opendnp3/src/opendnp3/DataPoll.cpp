@@ -35,9 +35,9 @@ namespace opendnp3
 
 /* DataPoll - base class */
 
-DataPoll::DataPoll(Logger& arLogger, const std::function<void (MeasurementUpdate&)>& aUpdate) :
+DataPoll::DataPoll(Logger& arLogger, ISOEHandler* pHandler_) :
 	MasterTaskBase(arLogger),
-	mUpdateCallback(aUpdate)
+	pHandler(pHandler_)
 {}
 
 TaskResult DataPoll::_OnPartialResponse(const APDUResponseRecord& record)
@@ -54,21 +54,18 @@ TaskResult DataPoll::_OnFinalResponse(const APDUResponseRecord& record)
 
 void DataPoll::ReadData(const APDUResponseRecord& record)
 {
-	MeasurementHandler handler(mLogger);
+	MeasurementHandler handler(this->mLogger, this->pHandler);
 	auto res = APDUParser::ParseHeaders(record.objects, handler);
-	if(res == APDUParser::Result::OK)
-	{
-		if(handler.updates.HasUpdates()) mUpdateCallback(handler.updates);
-	}
-	else {
+	if(res != APDUParser::Result::OK)
+	{				
 		LOG_BLOCK(LogLevel::Warning, "Error parsing response headers: " << static_cast<int>(res)); // TODO - turn these into strings
 	}
 }
 
 /* Class Poll */
 
-ClassPoll::ClassPoll(Logger& arLogger, const std::function<void (MeasurementUpdate&)>& aUpdate) :
-	DataPoll(arLogger, aUpdate),
+ClassPoll::ClassPoll(Logger& arLogger, ISOEHandler* pHandler_) :
+	DataPoll(arLogger, pHandler_),
 	mClassMask(PC_INVALID)
 {}
 

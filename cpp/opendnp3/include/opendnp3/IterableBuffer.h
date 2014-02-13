@@ -30,7 +30,7 @@ namespace opendnp3
 
 class BufferWithCount
 {
-	template <class T> friend class Iterable;
+	template <class T> friend class IterableTransforms;
 
 	protected:
 
@@ -56,7 +56,7 @@ class IterableBuffer : public BufferWithCount
 {
 	public:
 
-		template <class U> friend class Iterable;
+		template <class U> friend class IterableTransforms;
 
 		IterableBuffer(const openpal::ReadOnlyBuffer& aBuffer, uint32_t aSize) : BufferWithCount(aBuffer, aSize)
 		{}

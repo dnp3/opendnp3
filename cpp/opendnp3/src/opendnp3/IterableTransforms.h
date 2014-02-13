@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __ITERABLE_H_
-#define __ITERABLE_H_
+#ifndef __ITERABLE_TRANSFORMS_H_
+#define __ITERABLE_TRANSFORMS_H_
 
 #include "LazyIterable.h"
 
@@ -29,7 +29,7 @@ namespace opendnp3
 {
 
 template <class T>
-class Iterable : private PureStatic
+class IterableTransforms : private PureStatic
 {
 	public:
 

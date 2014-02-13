@@ -33,7 +33,7 @@
 #include "LazyIterable.h"
 #include "IndexParser.h"
 #include "BitReader.h"
-#include "Iterable.h"
+#include "IterableTransforms.h"
 
 namespace opendnp3
 {
@@ -175,7 +175,7 @@ APDUParser::Result APDUParser::ParseRangeAsBitField(
 	size_t numBytes = NumBytesInBits(range.count);
 	if(buffer.Size() < numBytes) return Result::NOT_ENOUGH_DATA_FOR_OBJECTS;
 	else {	
-		auto collection = Iterable<IndexedValue<bool>>::From(buffer, range.count, 
+		auto collection = IterableTransforms<IndexedValue<bool>>::From(buffer, range.count, 
 			[&](openpal::ReadOnlyBuffer& buffer, uint32_t pos) {
 				return IndexedValue<bool>(GetBit(buffer, pos), pos + range.start);
 			}
@@ -231,7 +231,7 @@ APDUParser::Result APDUParser::ParseRangeFixedSize(GroupVariation gv, const Head
 	if(buffer.Size() < size) return APDUParser::Result::NOT_ENOUGH_DATA_FOR_OBJECTS;
 	else {
 	
-		auto collection = Iterable<IndexedValue<Target>>::From(buffer, range.count, [range, pSerializer](openpal::ReadOnlyBuffer& buffer, uint32_t pos) {
+		auto collection = IterableTransforms<IndexedValue<Target>>::From(buffer, range.count, [range, pSerializer](openpal::ReadOnlyBuffer& buffer, uint32_t pos) {
 			return IndexedValue<Target>(pSerializer->Read(buffer), range.start + pos);
 		});
 
@@ -248,7 +248,7 @@ APDUParser::Result APDUParser::ParseCountOf(openpal::ReadOnlyBuffer& buffer, uin
 	if(buffer.Size() < size) return APDUParser::Result::NOT_ENOUGH_DATA_FOR_OBJECTS;
 	else {				
 		
-		auto collection = Iterable<Descriptor>::From(buffer, count, [](openpal::ReadOnlyBuffer& buffer, uint32_t) {
+		auto collection = IterableTransforms<Descriptor>::From(buffer, count, [](openpal::ReadOnlyBuffer& buffer, uint32_t) {
 			return Descriptor::Read(buffer);
 		});
 		output.OnCountOf(collection);
@@ -271,7 +271,7 @@ APDUParser::Result APDUParser::ParseCountFixedSizeWithIndex(
 	if(buffer.Size() < size) return APDUParser::Result::NOT_ENOUGH_DATA_FOR_OBJECTS;
 	else {
 		
-		auto collection = Iterable<IndexedValue<Target>>::From(buffer, count, [pParser, pSerializer](openpal::ReadOnlyBuffer& buffer, uint32_t) {
+		auto collection = IterableTransforms<IndexedValue<Target>>::From(buffer, count, [pParser, pSerializer](openpal::ReadOnlyBuffer& buffer, uint32_t) {
 			auto index = pParser->ReadIndex(buffer);
 			auto value = pSerializer->Read(buffer);
 			return IndexedValue<Target>(value, index);

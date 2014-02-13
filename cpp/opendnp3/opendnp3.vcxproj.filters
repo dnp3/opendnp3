@@ -120,12 +120,6 @@
     <ClInclude Include="include\opendnp3\IMaster.h">
       <Filter>Include</Filter>
     </ClInclude>
-    <ClInclude Include="include\opendnp3\IMeasurementHandler.h">
-      <Filter>Include</Filter>
-    </ClInclude>
-    <ClInclude Include="include\opendnp3\IMeasurementUpdate.h">
-      <Filter>Include</Filter>
-    </ClInclude>
     <ClInclude Include="include\opendnp3\IndexedValue.h">
       <Filter>Include</Filter>
     </ClInclude>
@@ -160,9 +154,6 @@
       <Filter>Include</Filter>
     </ClInclude>
     <ClInclude Include="include\opendnp3\MeasurementType.h">
-      <Filter>Include</Filter>
-    </ClInclude>
-    <ClInclude Include="include\opendnp3\MeasurementUpdate.h">
       <Filter>Include</Filter>
     </ClInclude>
     <ClInclude Include="include\opendnp3\ObjectInterfaces.h">
@@ -453,12 +444,6 @@
     <ClInclude Include="src\opendnp3\IndexParser.h">
       <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\Iterable.h">
-      <Filter>Header</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\IterableBuffer.h">
-      <Filter>Header</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\LazyIterable.h">
       <Filter>Header</Filter>
     </ClInclude>
@@ -526,9 +511,6 @@
       <Filter>Header</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\PhysicalLayerMonitorStates.h">
-      <Filter>Header</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\PostingMeasurementHandler.h">
       <Filter>Header</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\PrefixedWriteIterator.h">
@@ -660,6 +642,15 @@
     <ClInclude Include="src\opendnp3\objects\IDNP3Serializer.h">
       <Filter>Header\objects</Filter>
     </ClInclude>
+    <ClInclude Include="include\opendnp3\ISOEHandler.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\IterableTransforms.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="include\opendnp3\IterableBuffer.h">
+      <Filter>Include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\opendnp3\AnalogOutput.cpp">
@@ -788,9 +779,6 @@
     <ClCompile Include="src\opendnp3\IINHelpers.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\IMeasurementHandler.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
     <ClCompile Include="src\opendnp3\IStack.cpp">
       <Filter>Source</Filter>
     </ClCompile>
@@ -839,9 +827,6 @@
     <ClCompile Include="src\opendnp3\MeasurementHandler.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\MeasurementUpdate.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
     <ClCompile Include="src\opendnp3\MultiplexingDataObserver.cpp">
       <Filter>Source</Filter>
     </ClCompile>
@@ -867,9 +852,6 @@
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\PointClass.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\PostingMeasurementHandler.cpp">
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\PriLinkLayerStates.cpp">
@@ -1068,6 +1050,9 @@
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\IEventWriterState.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\ISOEHandler.cpp">
       <Filter>Source</Filter>
     </ClCompile>
   </ItemGroup>

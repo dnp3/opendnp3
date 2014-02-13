@@ -21,8 +21,7 @@
 #ifndef __MEASUREMENT_HANDLER_H_
 #define __MEASUREMENT_HANDLER_H_
 
-#include <opendnp3/IMeasurementHandler.h>
-#include <opendnp3/MeasurementUpdate.h>
+#include <opendnp3/ISOEHandler.h>
 
 #include <openpal/Loggable.h>
 
@@ -35,15 +34,15 @@ namespace opendnp3
  * Dedicated class for processing response data in the master.
  */
 class MeasurementHandler : public HeaderHandlerBase, private openpal::Loggable
-
 {
+
 public:
-/**
+	/**
 	* Creates a new ResponseLoader instance.
 	*
 	* @param arLogger	the Logger that the loader should use for message reporting
 	*/
-	MeasurementHandler(openpal::Logger& arLogger);	
+	MeasurementHandler(openpal::Logger& arLogger, ISOEHandler* pSOEHandler);	
 
 	void _OnRange(GroupVariation gv, const IterableBuffer<IndexedValue<Binary>>& meas) final;
 	void _OnIndexPrefix(GroupVariation gv, const IterableBuffer<IndexedValue<Binary>>& meas) final;
@@ -58,10 +57,12 @@ public:
 
 	void _OnRange(GroupVariation gv, const IterableBuffer<IndexedValue<SetpointStatus>>& meas)  final;
 
-	void _OnRangeOfOctets(GroupVariation gv, const IterableBuffer<IndexedValue<openpal::ReadOnlyBuffer>>& meas) final;
-	void _OnIndexPrefixOfOctets(GroupVariation gv, const IterableBuffer<IndexedValue<openpal::ReadOnlyBuffer>>& meas) final;
-		
-	MeasurementUpdate updates;	
+	void _OnRange(GroupVariation gv, const IterableBuffer<IndexedValue<OctetString>>& meas) final;
+	void _OnIndexPrefix(GroupVariation gv, const IterableBuffer<IndexedValue<OctetString>>& meas) final;
+
+private:
+	ISOEHandler* pSOEHandler;
+	
 };
 
 }

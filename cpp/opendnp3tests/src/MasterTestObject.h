@@ -29,7 +29,7 @@
 
 #include <deque>
 
-#include "MockMeasurementHandler.h"
+#include "MockSOEHandler.h"
 #include "MockAppLayer.h"
 
 namespace opendnp3
@@ -53,7 +53,7 @@ public:
 	openpal::FixedUTCTimeSource fixedUTC;
 	MockExecutor mts;
 	AsyncTaskGroup group;
-	MockMeasurementHandler meas;
+	MockSOEHandler meas;
 	MockAppLayer app;
 	Master master;
 	//APDU mAPDU;
