@@ -61,6 +61,20 @@ BOOST_AUTO_TEST_CASE(RespondsWithValues)
 	BOOST_REQUIRE_EQUAL("01 02 00 00 03 02 02 02 02", toHex(writer.ToReadOnly()));
 }
 
+BOOST_AUTO_TEST_CASE(RespondsWithValuesFrozen)
+{	
+	DynamicallyAllocatedDatabase dadb(tmp);
+	Database db(dadb.GetFacade());
+	ResponseContext context(&db);
+
+	BOOST_REQUIRE(QueueResult::SUCCESS == context.QueueReadRange(GroupVariation::Group21Var1, StaticRange(0,3)));
+
+	ObjectWriter writer(buffer.Truncate(40));
+	BOOST_REQUIRE(LoadResult::COMPLETED == context.Load(writer));
+
+	BOOST_REQUIRE_EQUAL("15 01 00 00 03 02 00 00 00 00 02 00 00 00 00 02 00 00 00 00 02 00 00 00 00", toHex(writer.ToReadOnly()));
+}
+
 BOOST_AUTO_TEST_CASE(DetectsOutOfRange)
 {	
 	DynamicallyAllocatedDatabase dadb(tmp);
@@ -134,7 +148,7 @@ BOOST_AUTO_TEST_CASE(ReturnsFullWhenOnlyPartof2ndHeaderCanBeWritten)
 
 BOOST_AUTO_TEST_CASE(HandlesIntegrityPoll)
 {	
-	DatabaseTemplate tmp2(1, 0, 1, 1, 0); // 1 Binary, 1 Counter, 1 Control Status
+	DatabaseTemplate tmp2(1, 0, 1, 0, 1, 0); // 1 Binary, 1 Counter, 1 Control Status
 	DynamicallyAllocatedDatabase dadb(tmp2);
 	Database db(dadb.GetFacade());
 	ResponseContext context(&db);

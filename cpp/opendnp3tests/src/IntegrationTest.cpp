@@ -170,7 +170,7 @@ void IntegrationTest::AddStackPair(LogLevel aLevel, size_t aNumPoints)
 	 * re-use the 'cfg' variable name.
 	 */
 	{
-		SlaveStackConfig cfg(DatabaseTemplate(aNumPoints, aNumPoints, aNumPoints));
+		SlaveStackConfig cfg(DatabaseTemplate(aNumPoints, aNumPoints, aNumPoints, aNumPoints));
 		cfg.app.RspTimeout = TimeDuration::Seconds(10);
 		cfg.slave.mDisableUnsol = false;
 		cfg.slave.mUnsolPackDelay = TimeDuration::Zero();		

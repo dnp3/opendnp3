@@ -51,7 +51,8 @@ QueueResult ResponseContext::QueueReadAllObjects(GroupVariation gv)
 		{			
 			MACRO_QUEUE_FULL_RANGE(GroupVariation::Group1Var2, Binary);
 			MACRO_QUEUE_FULL_RANGE(GroupVariation::Group30Var1, Analog);
-			MACRO_QUEUE_FULL_RANGE(GroupVariation::Group20Var2, Counter);			
+			MACRO_QUEUE_FULL_RANGE(GroupVariation::Group20Var2, Counter);
+			MACRO_QUEUE_FULL_RANGE(GroupVariation::Group21Var1, FrozenCounter);			
 			MACRO_QUEUE_FULL_RANGE(GroupVariation::Group10Var2, ControlStatus);
 			MACRO_QUEUE_FULL_RANGE(GroupVariation::Group40Var1, SetpointStatus);			
 			return QueueResult::SUCCESS;
@@ -100,6 +101,13 @@ QueueResult ResponseContext::QueueReadRange(GroupVariation gv, const StaticRange
 		MACRO_QUEUE_RANGE(Group20Var2);
 		MACRO_QUEUE_RANGE(Group20Var5);
 		MACRO_QUEUE_RANGE(Group20Var6);
+
+		MACRO_QUEUE_RANGE(Group21Var1);
+		MACRO_QUEUE_RANGE(Group21Var2);
+		MACRO_QUEUE_RANGE(Group21Var5);
+		MACRO_QUEUE_RANGE(Group21Var6);
+		MACRO_QUEUE_RANGE(Group21Var9);
+		MACRO_QUEUE_RANGE(Group21Var10);
 
 		MACRO_QUEUE_RANGE(Group30Var1);
 		MACRO_QUEUE_RANGE(Group30Var2);

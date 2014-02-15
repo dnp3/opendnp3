@@ -34,10 +34,12 @@ namespace opendnp3
 typedef SimpleEventMetadata<Binary> BinaryMetadata;
 typedef DeadbandMetadata<Analog> AnalogMetadata;
 typedef DeadbandMetadata<Counter> CounterMetadata;
+typedef DeadbandMetadata<FrozenCounter> FrozenCounterMetadata;
 
 typedef ValueMetadataPair<Binary, BinaryMetadata> BinaryCollection;
 typedef ValueMetadataPair<Analog, AnalogMetadata> AnalogCollection;
 typedef ValueMetadataPair<Counter, CounterMetadata> CounterCollection;
+typedef ValueMetadataPair<FrozenCounter, FrozenCounterMetadata> FrozenCounterCollection;
 typedef openpal::Indexable<ControlStatus, uint16_t> ControlStatusCollection;
 typedef openpal::Indexable<SetpointStatus, uint16_t> SetpointStatusCollection;
 
@@ -49,12 +51,14 @@ struct StaticDataFacade
 			BinaryCollection aBinaries,
 			AnalogCollection aAnalogs,
 			CounterCollection aCounters,
+			FrozenCounterCollection aFrozenCounters,
 			ControlStatusCollection aControlStatii,
 			SetpointStatusCollection aSetpointStatii
 			):
 		binaries(aBinaries),
 		analogs(aAnalogs),
 		counters(aCounters),
+		frozenCounters(aFrozenCounters),
 		controlStatii(aControlStatii),
 		setpointStatii(aSetpointStatii)
 	{}
@@ -62,6 +66,7 @@ struct StaticDataFacade
 	BinaryCollection binaries;
 	AnalogCollection analogs;
 	CounterCollection counters;
+	FrozenCounterCollection frozenCounters;
 	ControlStatusCollection controlStatii;
 	SetpointStatusCollection setpointStatii;	
 };

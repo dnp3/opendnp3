@@ -36,6 +36,7 @@ void FlexibleDataObserver::Clear()
 	mBinaryMap.clear();
 	mAnalogMap.clear();
 	mCounterMap.clear();
+	mFrozenCounterMap.clear();
 	mControlStatusMap.clear();
 	mSetpointStatusMap.clear();
 }
@@ -46,6 +47,7 @@ bool FlexibleDataObserver::StrictEquality(const FlexibleDataObserver& arLHS, con
 	if(! StrictEquality(arLHS.mBinaryMap, arRHS.mBinaryMap) ) return false;
 	if(! StrictEquality(arLHS.mAnalogMap, arRHS.mAnalogMap) ) return false;
 	if(! StrictEquality(arLHS.mCounterMap, arRHS.mCounterMap) ) return false;
+	if(! StrictEquality(arLHS.mFrozenCounterMap, arRHS.mFrozenCounterMap) ) return false;
 	if(! StrictEquality(arLHS.mControlStatusMap, arRHS.mControlStatusMap) ) return false;
 	if(! StrictEquality(arLHS.mSetpointStatusMap, arRHS.mSetpointStatusMap) ) return false;
 
@@ -58,6 +60,7 @@ bool FlexibleDataObserver::IsSubsetOf(const FlexibleDataObserver& arLHS, const F
 	if(! IsSubsetOf(arLHS.mBinaryMap, arRHS.mBinaryMap) ) return false;
 	if(! IsSubsetOf(arLHS.mAnalogMap, arRHS.mAnalogMap) ) return false;
 	if(! IsSubsetOf(arLHS.mCounterMap, arRHS.mCounterMap) ) return false;
+	if(! IsSubsetOf(arLHS.mFrozenCounterMap, arRHS.mFrozenCounterMap) ) return false;
 	if(! IsSubsetOf(arLHS.mControlStatusMap, arRHS.mControlStatusMap) ) return false;
 	if(! IsSubsetOf(arLHS.mSetpointStatusMap, arRHS.mSetpointStatusMap) ) return false;
 
@@ -76,6 +79,9 @@ void FlexibleDataObserver::Print()
 
 	std::cout << "--- Counter ---" << std::endl;
 	this->Print<Counter>(mCounterMap);
+
+	std::cout << "--- Frozen Counter ---" << std::endl;
+	this->Print<FrozenCounter>(mFrozenCounterMap);
 
 	std::cout << "--- Control Status ---" << std::endl;
 	this->Print<ControlStatus>(mControlStatusMap);

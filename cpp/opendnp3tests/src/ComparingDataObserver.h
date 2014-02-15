@@ -65,6 +65,7 @@ private:
 	CompareMap mBinaryMap;
 	CompareMap mAnalogMap;
 	CompareMap mCounterMap;
+	CompareMap mFrozenCounterMap;
 	CompareMap mControlStatusMap;
 	CompareMap mSetpointStatusMap;
 

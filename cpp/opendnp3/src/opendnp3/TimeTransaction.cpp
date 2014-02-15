@@ -50,6 +50,12 @@ void TimeTransaction::Update(Counter aMeas, size_t aIndex)
 	mpObserver->Update(aMeas, aIndex);
 }
 
+void TimeTransaction::Update(FrozenCounter aMeas, size_t aIndex)
+{
+        aMeas.SetTime(mTimestamp.msSinceEpoch);
+        mpObserver->Update(aMeas, aIndex);
+}
+
 void TimeTransaction::Update(ControlStatus aMeas, size_t aIndex)
 {
 	aMeas.SetTime(mTimestamp.msSinceEpoch);

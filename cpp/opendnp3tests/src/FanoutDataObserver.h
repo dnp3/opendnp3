@@ -60,6 +60,11 @@ public:
 		for(auto pObs: mObservers) pObs->Update(arPoint, aIndex);
 	}
 
+        void Update(const FrozenCounter& arPoint, uint16_t aIndex) final
+        {
+                for(auto pObs: mObservers) pObs->Update(arPoint, aIndex);
+        }
+
 	void Update(const ControlStatus& arPoint, uint16_t aIndex) final
 	{
 		for(auto pObs: mObservers) pObs->Update(arPoint, aIndex);

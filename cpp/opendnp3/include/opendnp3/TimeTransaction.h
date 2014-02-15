@@ -38,6 +38,7 @@ public:
 	void Update(Binary aMeas, size_t aIndex);
 	void Update(Analog aMeas, size_t aIndex);
 	void Update(Counter aMeas, size_t aIndex);
+	void Update(FrozenCounter aMeas, size_t aIndex);
 	void Update(ControlStatus aMeas, size_t aIndex);
 	void Update(SetpointStatus aMeas, size_t aIndex);
 

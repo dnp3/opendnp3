@@ -49,6 +49,11 @@ public class FormattingDataObserver implements DataObserver {
         handler.handleOutput("Counter: " + meas.getValue() + " Index: " + index + " Timestamp: " + meas.getMsSinceEpoch());
     }
 
+    public void update(FrozenCounter meas, long index)
+    {
+        handler.handleOutput("FrozenCounter: " + meas.getValue() + " Index: " + index + " Timestamp: " + meas.getMsSinceEpoch());
+    }
+
     public void update(BinaryOutputStatus meas, long index)
     {
         handler.handleOutput("BinaryOutputStatus: " + meas.getValue() + " Index: " + index + " Timestamp: " + meas.getMsSinceEpoch());

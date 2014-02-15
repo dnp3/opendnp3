@@ -16,40 +16,49 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.automatak;
+package com.automatak.dnp3;
 
-import com.automatak.dnp3.CommandResult;
-import com.automatak.dnp3.CommandStatus;
+import java.util.List;
 
 /**
- * Aggregate command response type.
+ * A counter that can be frozen at a particular value.
  *
- * Check the result before checking the status.
- * Status is only valid if response is RESPONSE_OK
+ * Created by jstone on 2/11/14.
  */
-public class CommandResponse {
+public class FrozenCounter extends BaseMeasurement {
+    private final long value;
 
-    public CommandResponse(CommandResult result, CommandStatus status)
+    public FrozenCounter(long value, byte quality, long timestamp)
     {
-        this.result = result;
-        this.status = status;
+        super(quality, timestamp);
+        this.value = value;
     }
 
-    public CommandResult getResult() {
-        return result;
+    /**
+     * @return Value type of the measurement
+     */
+    public long getValue()
+    {
+        return value;
     }
 
-    public CommandStatus getStatus() {
-        return status;
+    /**
+     * @return Quality flags as a set of enumerations
+     */
+    public List<FrozenCounterQuality> getQualitySet()
+    {
+        return FrozenCounterQuality.getValuesInBitField(this.getQuality());
     }
-
-    private final CommandResult result;
-    private final CommandStatus status;
 
     @Override
-    public String toString()
+    public String getQualityAsString()
     {
-        if(result == CommandResult.RESPONSE_OK) return "Response: " + status.toString();
-        else return "Failure: " + result.toString();
+        return Formatting.collectionToSetString(getQualitySet());
+    }
+
+    @Override
+    public String getValueAsString()
+    {
+        return Long.toString(value);
     }
 }

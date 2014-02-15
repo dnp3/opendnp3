@@ -48,6 +48,7 @@ bool Database::AddEventBuffer(IEventBuffer* apEventBuffer)
 openpal::Indexable<Binary, uint16_t> Database::Binaries() { return staticData.binaries.values; }
 openpal::Indexable<Analog, uint16_t> Database::Analogs() { return staticData.analogs.values; }
 openpal::Indexable<Counter, uint16_t> Database::Counters() { return staticData.counters.values; }
+openpal::Indexable<FrozenCounter, uint16_t> Database::FrozenCounters() { return staticData.frozenCounters.values; }
 openpal::Indexable<ControlStatus, uint16_t> Database::ControlStatii() { return staticData.controlStatii; }
 openpal::Indexable<SetpointStatus, uint16_t> Database::SetpointStatii() { return staticData.setpointStatii; }
 
@@ -70,6 +71,11 @@ void Database::Update(const Counter& value, uint16_t index)
 	this->UpdateEvent(value, index, staticData.counters);
 }
 
+void Database::Update(const FrozenCounter& value, uint16_t index)
+{
+        this->UpdateEvent(value, index, staticData.frozenCounters);
+}
+
 void Database::Update(const ControlStatus& value, uint16_t index)
 {
 	if(staticData.controlStatii.Contains(index)) staticData.controlStatii[index] = value;
@@ -89,6 +95,9 @@ openpal::Indexable<Analog, uint16_t> Database::Values<Analog>() { return Analogs
 template <> 
 openpal::Indexable<Counter, uint16_t> Database::Values<Counter>() { return Counters(); }
 
+template <>
+openpal::Indexable<FrozenCounter, uint16_t> Database::Values<FrozenCounter>() { return FrozenCounters(); }
+
 template <> 
 openpal::Indexable<ControlStatus, uint16_t> Database::Values<ControlStatus>() { return ControlStatii(); }
 
@@ -103,6 +112,9 @@ uint16_t Database::NumValues<Analog>() const { return staticData.analogs.values.
 
 template <> 
 uint16_t Database::NumValues<Counter>() const { return staticData.counters.values.Size(); }
+
+template <>
+uint16_t Database::NumValues<FrozenCounter>() const { return staticData.frozenCounters.values.Size(); }
 
 template <> 
 uint16_t Database::NumValues<ControlStatus>() const { return staticData.controlStatii.Size(); }
