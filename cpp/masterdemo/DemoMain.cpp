@@ -23,7 +23,7 @@
 #include <opendnp3/IMaster.h>
 #include <opendnp3/MasterStackConfig.h>
 #include <opendnp3/ICommandProcessor.h>
-#include <opendnp3/IMeasurementHandler.h>
+#include <opendnp3/ISOEHandler.h>
 
 #include <asiopal/Log.h>
 #include <asiopal/LogToStdio.h>
@@ -85,7 +85,7 @@ int main(int argc, char* argv[])
 	auto pMaster = pClient->AddMaster(
 	                       "master",						// stack name
 	                       LOG_LEVEL,						// log filter level
-						   PrintingMeasurementHandler::Inst(),	// callback for data processing
+						   PrintingSOEHandler::Inst(),	// callback for data processing
 	                       asiopal::UTCTimeSource::Inst(),	// system clock for time syncing
 	                       stackConfig						// stack configuration
 	               );

@@ -24,7 +24,8 @@
 #include "BufferHelpers.h"
 #include "MeasurementComparisons.h"
 
-#include <opendnp3/Iterable.h>
+#include <opendnp3/IterableTransforms.h>
+
 #include <opendnp3/DataTypes.h>
 #include <opendnp3/BitReader.h>
 #include <opendnp3/objects/Group30.h>
@@ -41,7 +42,7 @@ BOOST_AUTO_TEST_CASE(ReadSimpleTypes)
 {
 	HexSequence hex("AB 01 01 CD 02 00");	
 		
-	auto collection = Iterable<Group30Var2>::From(hex.ToReadOnly(), 2, 
+	auto collection = IterableTransforms<Group30Var2>::From(hex.ToReadOnly(), 2, 
 		[](ReadOnlyBuffer& b, uint32_t) { return Group30Var2::Read(b); }
 	);
 	
@@ -64,7 +65,7 @@ BOOST_AUTO_TEST_CASE(ReadSimpleTypes)
 BOOST_AUTO_TEST_CASE(SingleBitValue)
 {
 	HexSequence hex("01");
-	auto collection = Iterable<Binary>::From(hex.ToReadOnly(), 1, 
+	auto collection = IterableTransforms<Binary>::From(hex.ToReadOnly(), 1, 
 		[](ReadOnlyBuffer& buff, uint32_t pos) { return Binary(GetBit(buff, pos)); }
 	);
 	BOOST_REQUIRE_EQUAL(1, collection.Count());
@@ -76,7 +77,7 @@ BOOST_AUTO_TEST_CASE(SingleBitValue)
 BOOST_AUTO_TEST_CASE(ComplexBitCount)
 {
 	HexSequence hex("FF 00 00");
-	auto collection = Iterable<bool>::From(hex.ToReadOnly(), 17, 
+	auto collection = IterableTransforms<bool>::From(hex.ToReadOnly(), 17, 
 		[](ReadOnlyBuffer& buff, uint32_t pos) { return GetBit(buff, pos); }
 	);
 	std::vector<bool> values;
@@ -91,11 +92,11 @@ BOOST_AUTO_TEST_CASE(HighestBitSet)
 {
 	HexSequence hex("80");
 
-	auto collection = Iterable<bool>::From(hex.ToReadOnly(), 8, 
+	auto collection = IterableTransforms<bool>::From(hex.ToReadOnly(), 8, 
 		[](ReadOnlyBuffer& buffer, uint32_t pos) { return GetBit(buffer, pos); }
 	);
 
-	auto collection2 = Iterable<bool>::Map<Binary>(collection, 
+	auto collection2 = IterableTransforms<bool>::Map<Binary>(collection, 
 		[](const bool& bit) { return Binary(bit); }
 	);
 

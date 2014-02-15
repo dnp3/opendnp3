@@ -25,8 +25,8 @@
 #include <opendnp3/IMaster.h>
 #include <opendnp3/IOutstation.h>
 #include <opendnp3/SimpleCommandHandler.h>
-#include <opendnp3/IMeasurementHandler.h>
 #include <opendnp3/ITimeWriteHandler.h>
+#include <opendnp3/ISOEHandler.h>
 
 #include <asiopal/Log.h>
 #include <asiopal/LogToStdio.h>
@@ -64,7 +64,7 @@ BOOST_AUTO_TEST_CASE(ConstructionDestruction)
 		auto pServerPhys = new PhysicalLayerAsyncTCPServer(Logger(&log, LogLevel::Info, "server"), pool.GetIOService(), "127.0.0.1", 20000);
 		auto pServer = mgr.CreateChannel(Logger(&log, LogLevel::Info, "serverChannel"), TimeDuration::Seconds(5), pServerPhys);
 
-		pClient->AddMaster("master", LogLevel::Info, NullMeasurementHandler::Inst(), UTCTimeSource::Inst(), MasterStackConfig());
+		pClient->AddMaster("master", LogLevel::Info, NullSOEHandler::Inst(), UTCTimeSource::Inst(), MasterStackConfig());
 		pServer->AddOutstation("outstation", LogLevel::Info, SuccessCommandHandler::Inst(), NullTimeWriteHandler::Inst(), SlaveStackConfig(DatabaseTemplate()));
 	}
 }
@@ -84,7 +84,7 @@ BOOST_AUTO_TEST_CASE(ManualStackShutdown)
 		auto pServer = mgr.CreateChannel(Logger(&log, LogLevel::Info, "serverChannel"), TimeDuration::Seconds(5), pServerPhys);
 
 		auto pOutstation = pServer->AddOutstation("outstation", LogLevel::Info, SuccessCommandHandler::Inst(), NullTimeWriteHandler::Inst(), SlaveStackConfig(DatabaseTemplate()));
-		auto pMaster = pClient->AddMaster("master", LogLevel::Info, NullMeasurementHandler::Inst(), UTCTimeSource::Inst(), MasterStackConfig());
+		auto pMaster = pClient->AddMaster("master", LogLevel::Info, NullSOEHandler::Inst(), UTCTimeSource::Inst(), MasterStackConfig());
 
 		pOutstation->Shutdown();
 		pMaster->Shutdown();
@@ -103,7 +103,7 @@ BOOST_AUTO_TEST_CASE(ManualChannelShutdownWithStack)
 		auto pClientPhys = new PhysicalLayerAsyncTCPClient(Logger(&log, LogLevel::Info, "client"), pool.GetIOService(), "127.0.0.1", 20000);
 		auto pChannel = mgr.CreateChannel(Logger(&log, LogLevel::Info, "clientChannel"), TimeDuration::Seconds(5), pClientPhys);
 
-		pChannel->AddMaster("master", LogLevel::Info, NullMeasurementHandler::Inst(), UTCTimeSource::Inst(), MasterStackConfig());
+		pChannel->AddMaster("master", LogLevel::Info, NullSOEHandler::Inst(), UTCTimeSource::Inst(), MasterStackConfig());
 		pChannel->Shutdown();
 	}
 }

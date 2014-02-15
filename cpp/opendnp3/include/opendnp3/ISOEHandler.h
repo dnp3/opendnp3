@@ -39,7 +39,7 @@ namespace opendnp3
 * A call is made to the appropriate member method for every header in a APDU 
 *
 */
-class ISOEHandler : ITransactable
+class ISOEHandler : public ITransactable
 {
 public:
 	

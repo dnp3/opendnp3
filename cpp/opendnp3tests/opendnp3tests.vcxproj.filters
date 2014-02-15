@@ -283,9 +283,6 @@
     <ClCompile Include="src\TestCastLongLongDouble.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\TestChangeBuffer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\TestCommandTask.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -389,9 +386,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\WrappedTcpPipe.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\TestMeasurementUpdate.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\TestSerialization.cpp">

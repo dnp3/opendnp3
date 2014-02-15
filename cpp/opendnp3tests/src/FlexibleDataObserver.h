@@ -24,7 +24,7 @@
 #include <opendnp3/IDataObserver.h>
 #include <opendnp3/Util.h>
 #include <opendnp3/SubjectBase.h>
-#include <opendnp3/IMeasurementHandler.h>
+#include <opendnp3/ISOEHandler.h>
 
 #include <iostream>
 #include <map>
@@ -43,7 +43,7 @@ notifies observers of any updates.
 
 Check functionality allows it to be used for testing.
 */
-class FlexibleDataObserver : public IDataObserver, public IMeasurementHandler, public SubjectBase
+class FlexibleDataObserver : public ISOEHandler, public SubjectBase
 {
 public:
 
@@ -155,33 +155,6 @@ public:
 
 	// The RHS is a strict subset of the LHS... i.e. everything in the RHS can be found in the LHS
 	static bool IsSubsetOf(const FlexibleDataObserver& arLHS, const FlexibleDataObserver& arRHS);
-
-	void Load(const IMeasurementUpdate& arUpdate) override;
-
-	void Update(const Binary& arPoint, uint16_t aIndex) final
-	{
-		Load(arPoint, mBinaryMap, aIndex);
-	}
-	
-	void Update(const Analog& arPoint, uint16_t aIndex) final
-	{
-		Load(arPoint, mAnalogMap, aIndex);
-	}
-	
-	void Update(const Counter& arPoint, uint16_t aIndex)  final
-	{
-		Load(arPoint, mCounterMap, aIndex);
-	}
-	
-	void Update(const ControlStatus& arPoint, uint16_t aIndex) final
-	{
-		Load(arPoint, mControlStatusMap, aIndex);
-	}
-
-	void Update(const SetpointStatus& arPoint, uint16_t aIndex) final
-	{
-		Load(arPoint, mSetpointStatusMap, aIndex);
-	}
 
 protected:
 

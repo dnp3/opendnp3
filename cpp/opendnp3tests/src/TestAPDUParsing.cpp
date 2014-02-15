@@ -293,18 +293,18 @@ BOOST_AUTO_TEST_CASE(OctetStrings)
 	TestComplex("6F 05 17 02 04 68 65 6C 6C 6F FF 77 6F 72 6C 64", APDUParser::Result::OK, 1, [&](MockApduHeaderHandler& mock) {
 		BOOST_REQUIRE_EQUAL(2, mock.indexPrefixedOctets.size());		
 		BOOST_REQUIRE_EQUAL(4, mock.indexPrefixedOctets[0].index);
-		BOOST_REQUIRE_EQUAL("hello", BufferToString(mock.indexPrefixedOctets[0].value));
+		BOOST_REQUIRE_EQUAL("hello", BufferToString(mock.indexPrefixedOctets[0].value.ToReadOnly()));
 		BOOST_REQUIRE_EQUAL(255, mock.indexPrefixedOctets[1].index);
-		BOOST_REQUIRE_EQUAL("world", BufferToString(mock.indexPrefixedOctets[1].value));
+		BOOST_REQUIRE_EQUAL("world", BufferToString(mock.indexPrefixedOctets[1].value.ToReadOnly()));
 	});
 
 	// Group 110 (0x6E) Variation (length == 5), 1 byte start/stop (7), count of 1, "hello" == [0x68, 0x65, 0x6C, 0x6C, 0x6F]
 	TestComplex("6E 05 00 07 08 68 65 6C 6C 6F 77 6F 72 6C 64", APDUParser::Result::OK, 1, [&](MockApduHeaderHandler& mock) {
 		BOOST_REQUIRE_EQUAL(2, mock.rangedOctets.size());		
 		BOOST_REQUIRE_EQUAL(7, mock.rangedOctets[0].index);
-		BOOST_REQUIRE_EQUAL("hello", BufferToString(mock.rangedOctets[0].value));
+		BOOST_REQUIRE_EQUAL("hello", BufferToString(mock.rangedOctets[0].value.ToReadOnly()));
 		BOOST_REQUIRE_EQUAL(8, mock.rangedOctets[1].index);
-		BOOST_REQUIRE_EQUAL("world", BufferToString(mock.rangedOctets[1].value));		
+		BOOST_REQUIRE_EQUAL("world", BufferToString(mock.rangedOctets[1].value.ToReadOnly()));		
 	});
 }
 

@@ -64,11 +64,6 @@ bool FlexibleDataObserver::IsSubsetOf(const FlexibleDataObserver& arLHS, const F
 	return true;
 }
 
-void FlexibleDataObserver::Load(const IMeasurementUpdate& arUpdate)
-{
-	arUpdate.Apply(this);
-}
-
 void FlexibleDataObserver::Print()
 {
 	Transaction tr(this);

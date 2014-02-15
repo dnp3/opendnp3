@@ -71,11 +71,6 @@ void ComparingDataObserver::DescribeMissingData()
 	this->DescribeAny<Counter>(mpObserver->mCounterMap, mCounterMap);
 }
 
-void ComparingDataObserver::Load(const IMeasurementUpdate& arUpdate)
-{
-	arUpdate.Apply(this);
-}
-
 void ComparingDataObserver::Start()
 {
 	mMutex.lock();
@@ -89,31 +84,6 @@ void ComparingDataObserver::End()
 	}
 	mMutex.unlock();
 
-}
-
-void ComparingDataObserver::Update(const Binary& arPoint, uint16_t aIndex)
-{
-	this->UpdateAny<Binary>(arPoint, aIndex, mpObserver->mBinaryMap, mBinaryMap);
-}
-
-void ComparingDataObserver::Update(const Analog& arPoint, uint16_t aIndex)
-{
-	this->UpdateAny<Analog>(arPoint, aIndex, mpObserver->mAnalogMap, mAnalogMap);
-}
-
-void ComparingDataObserver::Update(const Counter& arPoint, uint16_t aIndex)
-{
-	this->UpdateAny<Counter>(arPoint, aIndex, mpObserver->mCounterMap, mCounterMap);
-}
-
-void ComparingDataObserver::Update(const ControlStatus& arPoint, uint16_t aIndex)
-{
-	this->UpdateAny<ControlStatus>(arPoint, aIndex, mpObserver->mControlStatusMap, mControlStatusMap);
-}
-
-void ComparingDataObserver::Update(const SetpointStatus& arPoint, uint16_t aIndex)
-{
-	this->UpdateAny<SetpointStatus>(arPoint, aIndex, mpObserver->mSetpointStatusMap, mSetpointStatusMap);
 }
 
 }

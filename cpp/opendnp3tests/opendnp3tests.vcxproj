@@ -279,7 +279,6 @@
     <ClCompile Include="src\TestAsyncTask.cpp" />
     <ClCompile Include="src\TestCachedRequest.cpp" />
     <ClCompile Include="src\TestCastLongLongDouble.cpp" />
-    <ClCompile Include="src\TestChangeBuffer.cpp" />
     <ClCompile Include="src\TestCommandTask.cpp" />
     <ClCompile Include="src\TestCRC.cpp" />
     <ClCompile Include="src\TestDatabase.cpp" />
@@ -293,7 +292,6 @@
     <ClCompile Include="src\TestLinkRoute.cpp" />
     <ClCompile Include="src\TestLog.cpp" />
     <ClCompile Include="src\TestMaster.cpp" />
-    <ClCompile Include="src\TestMeasurementUpdate.cpp" />
     <ClCompile Include="src\TestMisc.cpp" />
     <ClCompile Include="src\TestOutstationEventBuffer.cpp" />
     <ClCompile Include="src\TestOutstationEventBufferViaFuzz.cpp" />

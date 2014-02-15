@@ -38,7 +38,7 @@
 namespace opendnp3
 {
 
-class ComparingDataObserver : public IDataObserver, public IMeasurementHandler
+class ComparingDataObserver : public ISOEHandler
 {
 public:
 
@@ -48,15 +48,7 @@ public:
 
 	bool WaitForSameData(openpal::TimeDuration aTimeout);
 
-	void DescribeMissingData();
-
-	void Load(const IMeasurementUpdate& arUpdate);
-
-	void Update(const Binary& arPoint, uint16_t aIndex) final;
-	void Update(const Analog& arPoint, uint16_t aIndex) final;
-	void Update(const Counter& arPoint, uint16_t aIndex) final;
-	void Update(const ControlStatus& arPoint, uint16_t aIndex) final;
-	void Update(const SetpointStatus& arPoint, uint16_t aIndex) final;
+	void DescribeMissingData();	
 
 private:
 

@@ -56,7 +56,7 @@ IntegrationTest::IntegrationTest(LogLevel aLevel, boost::uint16_t aStartPort, si
 {
 	this->InitLocalObserver();
 
-	mFanout.AddObserver(&mLocalFDO);
+	//mFanout.AddObserver(&mLocalFDO); TODO - redesign integration test
 	for (size_t i = 0; i < aNumPairs; ++i) {
 		AddStackPair(aLevel, aNumPoints);
 	}
@@ -67,9 +67,9 @@ void IntegrationTest::InitLocalObserver()
 {
 	Transaction tr(&mLocalFDO);
 	for (size_t i = 0; i < NUM_POINTS; ++i) {
-		mLocalFDO.Update(Binary(false), i);
-		mLocalFDO.Update(Analog(0.0), i);
-		mLocalFDO.Update(Counter(0), i);
+		//mLocalFDO.Update(Binary(false), i); TODO - redesign integration test
+		//mLocalFDO.Update(Analog(0.0), i);
+		//mLocalFDO.Update(Counter(0), i);
 	}
 }
 
