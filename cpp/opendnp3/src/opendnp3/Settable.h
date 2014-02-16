@@ -21,14 +21,12 @@
 #ifndef __SETTABLE_H_
 #define __SETTABLE_H_
 
-#include <opendnp3/Uncopyable.h>
-
 namespace opendnp3
 {
 
 // utility class for representing a value that may or may not be set
 template <class T>
-class Settable : private Uncopyable
+class Settable
 {
 	public:
 

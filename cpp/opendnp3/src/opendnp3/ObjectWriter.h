@@ -32,13 +32,11 @@
 
 #include "objects/GroupVariationID.h"
 
-#include <opendnp3/Uncopyable.h>
-
 namespace opendnp3
 {
 
 // A facade for writing APDUs to an external buffer
-class ObjectWriter : private Uncopyable
+class ObjectWriter
 {
 	friend class APDURequest;
 	friend class APDUResponse;
@@ -73,7 +71,7 @@ class ObjectWriter : private Uncopyable
 	
 	private:
 
-	ObjectWriter(openpal::WriteBuffer* aPosition);			
+	ObjectWriter(openpal::WriteBuffer* position_);			
 
 	bool WriteHeaderWithReserve(GroupVariationID id, QualifierCode qc, uint32_t reserve);
 		

@@ -90,7 +90,7 @@ cpp/opendnp3/src/opendnp3/objects/Group51.cpp \
 cpp/opendnp3/src/opendnp3/objects/Group52.cpp \
 cpp/opendnp3/src/opendnp3/objects/Group60.cpp \
 cpp/opendnp3/src/opendnp3/AnalogOutput.cpp \
-cpp/opendnp3/src/opendnp3/APDU.cpp \
+cpp/opendnp3/src/opendnp3/APDUWrapper.cpp \
 cpp/opendnp3/src/opendnp3/APDUEventWriter.cpp \
 cpp/opendnp3/src/opendnp3/APDUHeaderParser.cpp \
 cpp/opendnp3/src/opendnp3/APDUParser.cpp \

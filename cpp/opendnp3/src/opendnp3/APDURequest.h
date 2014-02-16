@@ -34,7 +34,7 @@ class APDURequest : public APDUWrapper
 
 	APDURequest(const openpal::WriteBuffer& aBuffer);
 
-	ObjectWriter GetWriter() const;
+	ObjectWriter GetWriter();
 	
 	private:
 	

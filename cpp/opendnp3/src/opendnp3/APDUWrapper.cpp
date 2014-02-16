@@ -28,12 +28,12 @@
 namespace opendnp3
 {
 
-APDUWrapper::APDUWrapper() : buffer(), position()
+APDUWrapper::APDUWrapper() : buffer(), remaining()
 {
 
 }
 
-APDUWrapper::APDUWrapper(const openpal::WriteBuffer& aBuffer) : buffer(aBuffer), position(aBuffer)
+APDUWrapper::APDUWrapper(const openpal::WriteBuffer& aBuffer) : buffer(aBuffer), remaining(aBuffer)
 {
 	assert(aBuffer.Size() >= 2); // need a control & function at a minimum
 }
@@ -63,7 +63,7 @@ void APDUWrapper::SetControl(const AppControlField& control)
 
 openpal::ReadOnlyBuffer APDUWrapper::ToReadOnly() const
 {
-	uint32_t count = buffer.Size() - position.Size();
+	uint32_t count = buffer.Size() - remaining.Size();
 	return buffer.Truncate(count).ToReadOnly();
 }
 

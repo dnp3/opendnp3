@@ -46,10 +46,10 @@ class APDUWrapper
 
 	openpal::ReadOnlyBuffer ToReadOnly() const;	
 
-	protected:
+	protected:	
 		
 	openpal::WriteBuffer buffer;
-	openpal::WriteBuffer position;	
+	openpal::WriteBuffer remaining;	
 };
 
 }

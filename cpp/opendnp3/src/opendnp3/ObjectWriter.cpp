@@ -30,7 +30,7 @@ using namespace openpal;
 namespace opendnp3
 {
 
-ObjectWriter::ObjectWriter(openpal::WriteBuffer* aPosition) : position(aPosition)	
+ObjectWriter::ObjectWriter(openpal::WriteBuffer* position_) : position(position_)	
 {}
 
 void ObjectWriter::Mark()

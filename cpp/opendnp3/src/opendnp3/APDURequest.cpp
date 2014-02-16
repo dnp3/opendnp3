@@ -28,12 +28,12 @@ namespace opendnp3
 
 APDURequest::APDURequest(const openpal::WriteBuffer& aBuffer) : APDUWrapper(aBuffer)
 {
-	this->position.Advance(2);
+	this->remaining.Advance(2);
 }
 
-ObjectWriter APDURequest::GetWriter() const
-{		
-	return ObjectWriter(&position);
+ObjectWriter APDURequest::GetWriter()
+{	
+	return ObjectWriter(&remaining);
 }
 
 }
