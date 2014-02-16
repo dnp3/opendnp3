@@ -56,6 +56,11 @@ namespace openpal
 		return WriteBuffer();
 	}
 
+	WriteBuffer::WriteBuffer(const WriteBuffer& copy) : HasSize(copy) , mpBuffer(copy.mpBuffer)
+	{
+		
+	}
+
 	WriteBuffer::WriteBuffer(): HasSize(0), mpBuffer(nullptr)
 	{
 		

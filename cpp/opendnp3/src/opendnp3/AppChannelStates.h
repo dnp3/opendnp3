@@ -28,11 +28,10 @@
 #include "AppLayerChannel.h"
 #include "gen/FunctionCode.h"
 #include "APDUHeader.h"
+#include "APDUWrapper.h"
 
 namespace opendnp3
 {
-
-class APDU;
 
 
 /** Defines interface that
@@ -42,7 +41,7 @@ class ACS_Base
 {
 public:
 
-	virtual void Send(AppLayerChannel*, APDU&, size_t aNumRetry);
+	virtual void Send(AppLayerChannel*, APDUWrapper&, size_t aNumRetry);
 	virtual void Cancel(AppLayerChannel*); //cancel the outbound transaction
 
 	// external events
@@ -71,7 +70,7 @@ protected:
 class ACS_Idle : public ACS_Base
 {
 	MACRO_NAME_SINGLETON_INSTANCE(ACS_Idle)
-	void Send(AppLayerChannel*, APDU&, size_t aNumRetry);
+	void Send(AppLayerChannel*, APDUWrapper&, size_t aNumRetry);
 
 private:
 	ACS_Base* NextState(AppLayerChannel* c, FunctionCode, bool aConfirm);

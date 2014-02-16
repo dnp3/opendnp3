@@ -279,9 +279,6 @@
     <ClInclude Include="src\opendnp3\gen\QualifierCode.h">
       <Filter>Header\gen</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\APDU.h">
-      <Filter>Header</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\APDUHeader.h">
       <Filter>Header</Filter>
     </ClInclude>
@@ -651,12 +648,12 @@
     <ClInclude Include="include\opendnp3\IterableBuffer.h">
       <Filter>Include</Filter>
     </ClInclude>
+    <ClInclude Include="src\opendnp3\APDUWrapper.h">
+      <Filter>Header</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\opendnp3\AnalogOutput.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\APDU.cpp">
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\APDUHeaderParser.cpp">
@@ -1053,6 +1050,9 @@
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\ISOEHandler.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\APDUWrapper.cpp">
       <Filter>Source</Filter>
     </ClCompile>
   </ItemGroup>

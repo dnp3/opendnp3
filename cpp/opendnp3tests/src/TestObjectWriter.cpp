@@ -24,6 +24,7 @@
 
 #include <openpal/ToHex.h>
 #include <openpal/Serialization.h>
+#include <openpal/StaticArray.h>
 
 #include <opendnp3/objects/Group12.h>
 #include <opendnp3/objects/Group20.h>
@@ -36,12 +37,13 @@ using namespace opendnp3;
 
 BOOST_AUTO_TEST_SUITE(ObjectWriterTestSuite)
 
-uint8_t fixedBuffer[2048];
-const WriteBuffer buffer(fixedBuffer, 2048);
+const uint32_t SIZE = 2048;
+uint8_t fixedBuffer[SIZE];
 
 BOOST_AUTO_TEST_CASE(AllObjectsAndRollback)
 {	
-	ObjectWriter writer(buffer);
+	WriteBuffer buffer(fixedBuffer, SIZE);
+	ObjectWriter writer(&buffer);
 	writer.WriteHeader(Group60Var1::ID, QualifierCode::ALL_OBJECTS);
 	writer.WriteHeader(Group60Var2::ID, QualifierCode::ALL_OBJECTS);
 	writer.Mark();

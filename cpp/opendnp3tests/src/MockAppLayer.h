@@ -22,7 +22,7 @@
 #define __MOCK_APP_LAYER_H_
 
 #include <opendnp3/IAppLayer.h>
-#include <opendnp3/APDU.h>
+#include <opendnp3/APDUWrapper.h>
 
 #include <opendnp3/IAppUser.h>
 #include <opendnp3/IAppLayer.h>
@@ -44,9 +44,9 @@ public:
 
 	void SetUser(IAppUser*);
 
-	void SendResponse(APDU&);
-	void SendUnsolicited(APDU&);
-	void SendRequest(APDU&);
+	void SendResponse(APDUWrapper&);
+	void SendUnsolicited(APDUWrapper&);
+	void SendRequest(APDUWrapper&);
 	void CancelResponse();
 
 	bool NothingToRead();
@@ -56,7 +56,7 @@ public:
 	void EnableAutoSendCallback(bool aIsSuccess);
 	void DisableAutoSendCallback();
 
-	APDU Read();
+	APDUWrapper Read();
 
 	size_t Count() {
 		return mFragments.size();
@@ -74,7 +74,7 @@ private:
 	IAppUser* mpUser;
 	bool mAutoSendCallback;
 	bool mIsSuccess;
-	std::deque<APDU> mFragments;
+	std::deque<APDUWrapper> mFragments;
 };
 
 }

@@ -21,14 +21,14 @@
 #ifndef __APDU_RESPONSE_H_
 #define __APDU_RESPONSE_H_
 
-#include "APDU.h"
+#include "APDUWrapper.h"
 #include "IINField.h"
 
 namespace opendnp3
 {
 
 // this is what the application layer sees from the master / outstation for transmission
-class APDUResponse : public APDU
+class APDUResponse : public APDUWrapper
 {
 	public:	
 

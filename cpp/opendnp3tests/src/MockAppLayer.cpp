@@ -75,7 +75,7 @@ void MockAppLayer::DoSendSol()
 	}
 }
 
-void MockAppLayer::SendResponse(APDU& apdu)
+void MockAppLayer::SendResponse(APDUWrapper& apdu)
 {
 	LOG_BLOCK(LogLevel::Comm, "=> " << toHex(apdu.ToReadOnly(), true));	
 	mFragments.push_back(apdu);
@@ -83,14 +83,14 @@ void MockAppLayer::SendResponse(APDU& apdu)
 
 }
 
-void MockAppLayer::SendUnsolicited(APDU& apdu)
+void MockAppLayer::SendUnsolicited(APDUWrapper& apdu)
 {
 	LOG_BLOCK(LogLevel::Comm, "=> " << toHex(apdu.ToReadOnly(), true));	
 	mFragments.push_back(apdu);
 	this->DoSendUnsol();
 }
 
-void MockAppLayer::SendRequest(APDU& apdu)
+void MockAppLayer::SendRequest(APDUWrapper& apdu)
 {
 	LOG_BLOCK(LogLevel::Comm, "=> " << toHex(apdu.ToReadOnly(), true));	
 	mFragments.push_back(apdu);
@@ -101,7 +101,7 @@ bool MockAppLayer::NothingToRead()
 	return mFragments.size() == 0;
 }
 
-APDU MockAppLayer::Read()
+APDUWrapper MockAppLayer::Read()
 {
 	if(mFragments.size() == 0) throw InvalidStateException(LOCATION, "no more fragments");
 	auto frag = mFragments.front();	

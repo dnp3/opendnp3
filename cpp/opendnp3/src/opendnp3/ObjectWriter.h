@@ -40,13 +40,10 @@ namespace opendnp3
 // A facade for writing APDUs to an external buffer
 class ObjectWriter : private Uncopyable
 {
-	public:
-
-	ObjectWriter(openpal::WriteBuffer aHeaderBuffer);	
+	friend class APDURequest;
+	friend class APDUResponse;
 	
-	uint32_t Size() const; // The number of bytes written to the buffer
-
-	openpal::ReadOnlyBuffer ToReadOnly() const;
+	public:
 
 	bool WriteHeader(GroupVariationID id, QualifierCode qc);
 
@@ -76,10 +73,11 @@ class ObjectWriter : private Uncopyable
 	
 	private:
 
+	ObjectWriter(openpal::WriteBuffer* aPosition);			
+
 	bool WriteHeaderWithReserve(GroupVariationID id, QualifierCode qc, uint32_t reserve);
-	
-	openpal::WriteBuffer buffer;	
-	openpal::WriteBuffer position;
+		
+	openpal::WriteBuffer* position;
 
 	Settable<openpal::WriteBuffer> mark;	
 };
@@ -90,8 +88,8 @@ bool ObjectWriter::WriteSingleValue(QualifierCode qc, IDNP3Serializer<ValueType>
 	auto reserveSize = CountType::Size + pSerializer->Size();
 	if(this->WriteHeaderWithReserve(ValueType::ID, qc, reserveSize))
 	{
-		CountType::WriteBuffer(position, 1); //write the count
-		pSerializer->Write(value, position);
+		CountType::WriteBuffer(*position, 1); //write the count
+		pSerializer->Write(value, *position);
 		return true;
 	}
 	else return false;
@@ -103,8 +101,8 @@ bool ObjectWriter::WriteSingleValue(QualifierCode qc, const WriteType& value)
 	auto reserveSize = CountType::Size + WriteType::SIZE;
 	if(this->WriteHeaderWithReserve(WriteType::ID, qc, reserveSize))
 	{
-		CountType::WriteBuffer(position, 1); //write the count
-		WriteType::Write(value, position);
+		CountType::WriteBuffer(*position, 1); //write the count
+		WriteType::Write(value, *position);
 		return true;
 	}
 	else return false;
@@ -116,9 +114,9 @@ bool ObjectWriter::WriteSingleIndexedValue(QualifierCode qc, IDNP3Serializer<Val
 	auto reserveSize = 2*CountType::Size + pSerializer->Size();
 	if(this->WriteHeaderWithReserve(pSerializer->ID(), qc, reserveSize))
 	{
-		CountType::WriteBuffer(position, 1); //write the count
-		CountType::WriteBuffer(position, index); // write the index
-		pSerializer->Write(value, position);
+		CountType::WriteBuffer(*position, 1); //write the count
+		CountType::WriteBuffer(*position, index); // write the index
+		pSerializer->Write(value, *position);
 		return true;
 	}
 	else return false;
@@ -130,7 +128,7 @@ RangeWriteIterator<IndexType, WriteType> ObjectWriter::IterateOverRange(Qualifie
 	auto reserveSize = 2*IndexType::Size + pSerializer->Size();
 	if(this->WriteHeaderWithReserve(pSerializer->ID(), qc, reserveSize))
 	{
-		return RangeWriteIterator<IndexType, WriteType>(start, pSerializer, position);
+		return RangeWriteIterator<IndexType, WriteType>(start, pSerializer, *position);
 	}
 	else return RangeWriteIterator<IndexType, WriteType>::Null();
 }
@@ -141,7 +139,7 @@ CountWriteIterator<CountType, WriteType> ObjectWriter::IterateOverCount(Qualifie
 	auto reserveSize = CountType::Size + pSerializer->Size();
 	if(this->WriteHeaderWithReserve(pSerializer->ID(), qc, reserveSize))
 	{
-		return CountWriteIterator<CountType, WriteType>(pSerializer, position);
+		return CountWriteIterator<CountType, WriteType>(pSerializer, *position);
 	}
 	else return CountWriteIterator<CountType, WriteType>::Null();
 }
@@ -152,7 +150,7 @@ PrefixedWriteIterator<PrefixType, WriteType> ObjectWriter::IterateOverCountWithP
 	auto reserveSize = 2*PrefixType::Size + pSerializer->Size();  //enough space for the count, 1 prefix + object
 	if(this->WriteHeaderWithReserve(pSerializer->ID(), qc, reserveSize))
 	{
-		return PrefixedWriteIterator<PrefixType, WriteType>(pSerializer, position);
+		return PrefixedWriteIterator<PrefixType, WriteType>(pSerializer, *position);
 	}
 	else return PrefixedWriteIterator<PrefixType, WriteType>::Null();
 }

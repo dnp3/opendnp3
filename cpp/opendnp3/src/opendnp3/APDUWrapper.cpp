@@ -19,7 +19,7 @@
  * to you under the terms of the License.
  */
 
-#include "APDU.h"
+#include "APDUWrapper.h"
 
 #include <assert.h>
 
@@ -28,42 +28,43 @@
 namespace opendnp3
 {
 
-APDU::APDU() : buffer()
+APDUWrapper::APDUWrapper() : buffer(), position()
 {
 
 }
 
-APDU::APDU(const openpal::WriteBuffer& aBuffer) : buffer(aBuffer)
+APDUWrapper::APDUWrapper(const openpal::WriteBuffer& aBuffer) : buffer(aBuffer), position(aBuffer)
 {
 	assert(aBuffer.Size() >= 2); // need a control & function at a minimum
 }
 
-void APDU::SetFunction(FunctionCode code)
+void APDUWrapper::SetFunction(FunctionCode code)
 {
 	assert(buffer.IsNotEmpty());
 	buffer[1] = FunctionCodeToType(code);
 }
 
-FunctionCode APDU::GetFunction() const
+FunctionCode APDUWrapper::GetFunction() const
 {
 	assert(buffer.IsNotEmpty());
 	return FunctionCodeFromType(buffer[1]);
 }
 
-AppControlField APDU::GetControl() const
+AppControlField APDUWrapper::GetControl() const
 {
 	assert(buffer.IsNotEmpty());
 	return AppControlField(buffer[0]);
 }
 
-void APDU::SetControl(const AppControlField& control)
+void APDUWrapper::SetControl(const AppControlField& control)
 {
 	buffer[0] = control.ToByte();
 }
 
-openpal::ReadOnlyBuffer APDU::ToReadOnly() const
+openpal::ReadOnlyBuffer APDUWrapper::ToReadOnly() const
 {
-	return buffer.ToReadOnly();
+	uint32_t count = buffer.Size() - position.Size();
+	return buffer.Truncate(count).ToReadOnly();
 }
 
 }

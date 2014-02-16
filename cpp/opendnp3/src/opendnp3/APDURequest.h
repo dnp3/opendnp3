@@ -21,19 +21,20 @@
 #ifndef __APDU_REQUEST_H_
 #define __APDU_REQUEST_H_
 
-#include "APDU.h"
+#include "APDUWrapper.h"
+#include "ObjectWriter.h"
 
 namespace opendnp3
 {
 
 // this is what the application layer sees from the master / outstation for transmission
-class APDURequest : public APDU
+class APDURequest : public APDUWrapper
 {
 	public:	
 
 	APDURequest(const openpal::WriteBuffer& aBuffer);
 
-	openpal::WriteBuffer HeaderPosition() const;
+	ObjectWriter GetWriter() const;
 	
 	private:
 	

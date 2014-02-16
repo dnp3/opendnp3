@@ -26,14 +26,14 @@ using namespace openpal;
 namespace opendnp3
 {
 
-APDURequest::APDURequest(const openpal::WriteBuffer& aBuffer) : APDU(aBuffer)
-{}
+APDURequest::APDURequest(const openpal::WriteBuffer& aBuffer) : APDUWrapper(aBuffer)
+{
+	this->position.Advance(2);
+}
 
-openpal::WriteBuffer APDURequest::HeaderPosition() const
-{	
-	WriteBuffer copy(buffer);
-	copy.Advance(2);
-	return copy;
+ObjectWriter APDURequest::GetWriter() const
+{		
+	return ObjectWriter(&position);
 }
 
 }

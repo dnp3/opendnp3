@@ -30,50 +30,35 @@ using namespace openpal;
 namespace opendnp3
 {
 
-ObjectWriter::ObjectWriter(openpal::WriteBuffer aBuffer) : 
-	buffer(aBuffer),
-	position(aBuffer)	
-{
-		
-}
+ObjectWriter::ObjectWriter(openpal::WriteBuffer* aPosition) : position(aPosition)	
+{}
 
 void ObjectWriter::Mark()
 {
-	mark.Set(position);
+	mark.Set(*position);
 }
 
 void ObjectWriter::Rollback()
 {
-	if(mark.IsSet()) position = mark.Get();		
+	if(mark.IsSet()) *position = mark.Get();		
 }
 
 bool ObjectWriter::WriteHeader(GroupVariationID id, QualifierCode qc)
 {
-	if(position.Size() < 3) return false;
+	if(position->Size() < 3) return false;
 	else
 	{
-		UInt8::WriteBuffer(position, id.group);
-		UInt8::WriteBuffer(position, id.variation);
-		UInt8::WriteBuffer(position, QualifierCodeToType(qc));
+		UInt8::WriteBuffer(*position, id.group);
+		UInt8::WriteBuffer(*position, id.variation);
+		UInt8::WriteBuffer(*position, QualifierCodeToType(qc));
 		return true;
 	}	
 }
 
 bool ObjectWriter::WriteHeaderWithReserve(GroupVariationID id, QualifierCode qc, uint32_t reserve)
 {
-	if(position.Size() < (3 + reserve)) return false;
+	if(position->Size() < (3 + reserve)) return false;
 	else return WriteHeader(id, qc);
-}
-
-uint32_t ObjectWriter::Size() const
-{
-	return buffer.Size() - position.Size();	
-}
-
-ReadOnlyBuffer ObjectWriter::ToReadOnly() const
-{
-	auto size = buffer.Size() - position.Size();
-	return ReadOnlyBuffer(buffer, size);
 }
 
 }

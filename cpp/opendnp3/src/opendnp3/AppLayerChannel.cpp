@@ -36,8 +36,7 @@ namespace opendnp3
 
 AppLayerChannel::AppLayerChannel(const std::string& arName, openpal::Logger& arLogger, AppLayer* apAppLayer, IExecutor* apExecutor, TimeDuration aTimeout) :
 	Loggable(arLogger),
-	mpAppLayer(apAppLayer),
-	//mpSendAPDU(nullptr),
+	mpAppLayer(apAppLayer),	
 	mNumRetry(0),
 	mpExecutor(apExecutor),
 	mpTimer(nullptr),
@@ -60,7 +59,7 @@ void AppLayerChannel::Reset()
 
 // ---- Events ----
 
-void AppLayerChannel::Send(APDU& apdu, size_t aNumRetry)
+void AppLayerChannel::Send(APDUWrapper& apdu, size_t aNumRetry)
 {
 	mpState->Send(this, apdu, aNumRetry);
 	mSendAPDU = apdu; // assign this record so we can retry
@@ -89,7 +88,7 @@ void AppLayerChannel::Cancel()
 
 // ---- State Actions ----
 
-void AppLayerChannel::QueueSend(APDU& apdu)
+void AppLayerChannel::QueueSend(APDUWrapper& apdu)
 {
 	mpAppLayer->QueueFrame(apdu);
 }

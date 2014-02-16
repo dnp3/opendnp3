@@ -25,7 +25,7 @@
 #include <openpal/TimeDuration.h>
 
 #include "APDUHeader.h"
-#include "APDU.h"
+#include "APDUWrapper.h"
 
 namespace openpal
 {
@@ -67,7 +67,7 @@ public:
 	void Reset();
 
 	// send, wether a response is expected is implicit based on func code
-	void Send(APDU&, size_t aNumRetry);
+	void Send(APDUWrapper&, size_t aNumRetry);
 	void Cancel();
 
 	// Events
@@ -84,7 +84,7 @@ protected:
 	int IncrSequence() {
 		return mSequence = NextSeq(mSequence);
 	}
-	void QueueSend(APDU&);
+	void QueueSend(APDUWrapper&);
 	void ChangeState(ACS_Base*);
 	void SetRetry(size_t aNumRetry) {
 		mNumRetry = aNumRetry;
@@ -117,7 +117,7 @@ private:
 
 	void Timeout();
 
-	APDU mSendAPDU;
+	APDUWrapper mSendAPDU;
 	size_t mNumRetry;
 	openpal::IExecutor* mpExecutor;
 	openpal::ITimer* mpTimer;

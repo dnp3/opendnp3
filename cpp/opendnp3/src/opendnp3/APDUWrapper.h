@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __APDU_H_
-#define __APDU_H_
+#ifndef __APDU_WRAPPER__H_
+#define __APDU_WRAPPER__H_
 
 #include <openpal/BufferWrapper.h>
 
@@ -29,26 +29,27 @@
 namespace opendnp3
 {
 
-// this is what the application layer sees from the master / outstation for transmission
-class APDU
+// This class is used to write to an underlying buffer
+class APDUWrapper
 {
 	public:
 
-	APDU();
+	APDUWrapper();
 
-	APDU(const openpal::WriteBuffer& aBuffer);
-	
+	APDUWrapper(const openpal::WriteBuffer& aBuffer);
+			
 	void SetFunction(FunctionCode code);
 	FunctionCode GetFunction() const;
 
 	AppControlField GetControl() const;	
 	void SetControl(const AppControlField& control);
 
-	openpal::ReadOnlyBuffer ToReadOnly() const;
+	openpal::ReadOnlyBuffer ToReadOnly() const;	
 
 	protected:
-	
+		
 	openpal::WriteBuffer buffer;
+	openpal::WriteBuffer position;	
 };
 
 }

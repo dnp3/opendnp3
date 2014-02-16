@@ -82,7 +82,7 @@
     <ClInclude Include="include\opendnp3\Uncopyable.h" />
     <ClInclude Include="include\opendnp3\Util.h" />
     <ClInclude Include="include\opendnp3\VTOData.h" />
-    <ClInclude Include="src\opendnp3\APDU.h" />
+    <ClInclude Include="src\opendnp3\APDUWrapper.h" />
     <ClInclude Include="src\opendnp3\APDUEventWriter.h" />
     <ClInclude Include="src\opendnp3\APDUHeader.h" />
     <ClInclude Include="src\opendnp3\APDUHeaderParser.h" />
@@ -230,7 +230,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\opendnp3\AnalogOutput.cpp" />
-    <ClCompile Include="src\opendnp3\APDU.cpp" />
+    <ClCompile Include="src\opendnp3\APDUWrapper.cpp" />
     <ClCompile Include="src\opendnp3\APDUEventWriter.cpp" />
     <ClCompile Include="src\opendnp3\APDUHeaderParser.cpp" />
     <ClCompile Include="src\opendnp3\APDUParser.cpp" />
