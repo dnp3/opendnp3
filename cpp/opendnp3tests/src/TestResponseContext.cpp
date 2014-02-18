@@ -24,20 +24,42 @@
 
 #include <opendnp3/DynamicallyAllocatedDatabase.h>
 #include <opendnp3/ResponseContext.h>
+#include <opendnp3/APDURequest.h>
+#include <opendnp3/APDUResponse.h>
 
 #include <openpal/ToHex.h>
-
 
 using namespace openpal;
 using namespace opendnp3;
 
 BOOST_AUTO_TEST_SUITE(ResponseContextTestSuite)
 
-DatabaseTemplate tmp(5,5,5,5,5);
-uint8_t bytes[2048];
-const WriteBuffer buffer(bytes, 2048);
+DatabaseTemplate tmp(5,5,5,5,5,5);
 
-/*
+const uint32_t SIZE = 2048;
+uint8_t fixedBuffer[SIZE];
+
+APDURequest Request(FunctionCode code, uint32_t size = SIZE)
+{
+	assert(size <= SIZE);
+	WriteBuffer buffer(fixedBuffer, size);
+	APDURequest request(buffer);
+	request.SetFunction(code);
+	request.SetControl(AppControlField(true, true, false, false, 0));
+	return request;
+}
+
+APDUResponse Response(uint32_t size = SIZE)
+{
+	assert(size <= SIZE);
+	WriteBuffer buffer(fixedBuffer, size);
+	APDUResponse response(buffer);
+	response.SetFunction(FunctionCode::RESPONSE);
+	response.SetControl(AppControlField(true, true, false, false, 0));
+	response.SetIIN(IINField::Empty);
+	return response;
+}
+
 BOOST_AUTO_TEST_CASE(RejectsUnknownVariation)
 {	
 	DynamicallyAllocatedDatabase dadb(tmp);
@@ -48,6 +70,7 @@ BOOST_AUTO_TEST_CASE(RejectsUnknownVariation)
 	BOOST_REQUIRE(QueueResult::SUCCESS == context.QueueReadRange(GroupVariation::Group1Var2, StaticRange(0,1)));
 }
 
+
 BOOST_AUTO_TEST_CASE(RespondsWithValues)
 {	
 	DynamicallyAllocatedDatabase dadb(tmp);
@@ -55,14 +78,15 @@ BOOST_AUTO_TEST_CASE(RespondsWithValues)
 	ResponseContext context(&db);
 
 	BOOST_REQUIRE(QueueResult::SUCCESS == context.QueueReadRange(GroupVariation::Group1Var2, StaticRange(0,3)));
-		
-	ObjectWriter writer(buffer.Truncate(40));
+	
+	APDUResponse rsp(Response());
+	auto writer = rsp.GetWriter();
 	BOOST_REQUIRE(LoadResult::COMPLETED == context.Load(writer));
 
-	BOOST_REQUIRE_EQUAL("01 02 00 00 03 02 02 02 02", toHex(writer.ToReadOnly()));
+	BOOST_REQUIRE_EQUAL("C0 81 00 00 01 02 00 00 03 02 02 02 02", toHex(rsp.ToReadOnly()));
 }
 
-BOOST_AUTO_TEST_CASE(RespondsWithValuesFrozen)
+BOOST_AUTO_TEST_CASE(RespondsWithFrozenCounters)
 {	
 	DynamicallyAllocatedDatabase dadb(tmp);
 	Database db(dadb.GetFacade());
@@ -70,10 +94,11 @@ BOOST_AUTO_TEST_CASE(RespondsWithValuesFrozen)
 
 	BOOST_REQUIRE(QueueResult::SUCCESS == context.QueueReadRange(GroupVariation::Group21Var1, StaticRange(0,3)));
 
-	ObjectWriter writer(buffer.Truncate(40));
+	APDUResponse rsp(Response());
+	auto writer = rsp.GetWriter();
 	BOOST_REQUIRE(LoadResult::COMPLETED == context.Load(writer));
 
-	BOOST_REQUIRE_EQUAL("15 01 00 00 03 02 00 00 00 00 02 00 00 00 00 02 00 00 00 00 02 00 00 00 00", toHex(writer.ToReadOnly()));
+	BOOST_REQUIRE_EQUAL("C0 81 00 00 15 01 00 00 03 02 00 00 00 00 02 00 00 00 00 02 00 00 00 00 02 00 00 00 00", toHex(rsp.ToReadOnly()));
 }
 
 BOOST_AUTO_TEST_CASE(DetectsOutOfRange)
@@ -98,9 +123,10 @@ BOOST_AUTO_TEST_CASE(WritesMixedValues)
 	BOOST_REQUIRE(QueueResult::SUCCESS == context.QueueReadRange(GroupVariation::Group30Var2, StaticRange(1,2)));
 	BOOST_REQUIRE(QueueResult::SUCCESS == context.QueueReadRange(GroupVariation::Group1Var2, StaticRange(3,4)));
 
-	ObjectWriter writer(buffer.Truncate(40));
+	APDUResponse rsp(Response());
+	auto writer = rsp.GetWriter();
 	BOOST_REQUIRE(LoadResult::COMPLETED == context.Load(writer));
-	BOOST_REQUIRE_EQUAL("1E 02 00 01 02 02 00 00 02 00 00 01 02 00 03 04 02 02", toHex(writer.ToReadOnly()));	
+	BOOST_REQUIRE_EQUAL("C0 81 00 00 1E 02 00 01 02 02 00 00 02 00 00 01 02 00 03 04 02 02", toHex(rsp.ToReadOnly()));	
 }
 
 BOOST_AUTO_TEST_CASE(ReturnsFullWhen2ndHeaderCantBeWritten)
@@ -113,15 +139,17 @@ BOOST_AUTO_TEST_CASE(ReturnsFullWhen2ndHeaderCantBeWritten)
 	BOOST_REQUIRE(QueueResult::SUCCESS == context.QueueReadRange(GroupVariation::Group1Var2, StaticRange(3,4)));
 
 	{
-		ObjectWriter writer(buffer.Truncate(12)); //enough for first header, but not the 2nd
+		APDUResponse rsp(Response(16)); //enough for first header, but not the 2nd
+		auto writer = rsp.GetWriter();		
 		BOOST_REQUIRE(LoadResult::FULL == context.Load(writer));
-		BOOST_REQUIRE_EQUAL("1E 02 00 01 02 02 00 00 02 00 00", toHex(writer.ToReadOnly()));
+		BOOST_REQUIRE_EQUAL("C0 81 00 00 1E 02 00 01 02 02 00 00 02 00 00", toHex(rsp.ToReadOnly()));
 	}
 
 	{
-		ObjectWriter writer(buffer.Truncate(12));
+		APDUResponse rsp(Response());
+		auto writer = rsp.GetWriter();
 		BOOST_REQUIRE(LoadResult::COMPLETED == context.Load(writer));
-		BOOST_REQUIRE_EQUAL("01 02 00 03 04 02 02", toHex(writer.ToReadOnly()));
+		BOOST_REQUIRE_EQUAL("C0 81 00 00 01 02 00 03 04 02 02", toHex(rsp.ToReadOnly()));
 	}
 }
 
@@ -135,15 +163,17 @@ BOOST_AUTO_TEST_CASE(ReturnsFullWhenOnlyPartof2ndHeaderCanBeWritten)
 	BOOST_REQUIRE(QueueResult::SUCCESS == context.QueueReadRange(GroupVariation::Group1Var2, StaticRange(3,4)));
 
 	{
-		ObjectWriter writer(buffer.Truncate(17)); //enough for first header, but not the full 2nd header
+		APDUResponse rsp(Response(21)); //enough for first header, but not the full 2nd header
+		auto writer = rsp.GetWriter();		
 		BOOST_REQUIRE(LoadResult::FULL == context.Load(writer));
-		BOOST_REQUIRE_EQUAL("1E 02 00 01 02 02 00 00 02 00 00 01 02 00 03 03 02", toHex(writer.ToReadOnly()));
+		BOOST_REQUIRE_EQUAL("C0 81 00 00 1E 02 00 01 02 02 00 00 02 00 00 01 02 00 03 03 02", toHex(rsp.ToReadOnly()));
 	}
 
 	{
-		ObjectWriter writer(buffer.Truncate(12));
+		APDUResponse rsp(Response());
+		auto writer = rsp.GetWriter();
 		BOOST_REQUIRE(LoadResult::COMPLETED == context.Load(writer));
-		BOOST_REQUIRE_EQUAL("01 02 00 04 04 02", toHex(writer.ToReadOnly()));
+		BOOST_REQUIRE_EQUAL("C0 81 00 00 01 02 00 04 04 02", toHex(rsp.ToReadOnly()));
 	}
 }
 
@@ -157,11 +187,11 @@ BOOST_AUTO_TEST_CASE(HandlesIntegrityPoll)
 	BOOST_REQUIRE(QueueResult::SUCCESS == context.QueueReadAllObjects(GroupVariation::Group60Var1));
 
 	{
-		ObjectWriter writer(buffer); 
+		APDUResponse rsp(Response());
+		auto writer = rsp.GetWriter();
 		BOOST_REQUIRE(LoadResult::COMPLETED == context.Load(writer));
-		BOOST_REQUIRE_EQUAL("01 02 00 00 00 02 14 02 00 00 00 02 00 00 0A 02 00 00 00 02", toHex(writer.ToReadOnly()));
+		BOOST_REQUIRE_EQUAL("C0 81 00 00 01 02 00 00 00 02 14 02 00 00 00 02 00 00 0A 02 00 00 00 02", toHex(rsp.ToReadOnly()));
 	}
 }
-*/
 
 BOOST_AUTO_TEST_SUITE_END()
