@@ -37,6 +37,7 @@ DatabaseTemplate tmp(5,5,5,5,5);
 uint8_t bytes[2048];
 const WriteBuffer buffer(bytes, 2048);
 
+/*
 BOOST_AUTO_TEST_CASE(RejectsUnknownVariation)
 {	
 	DynamicallyAllocatedDatabase dadb(tmp);
@@ -161,5 +162,6 @@ BOOST_AUTO_TEST_CASE(HandlesIntegrityPoll)
 		BOOST_REQUIRE_EQUAL("01 02 00 00 00 02 14 02 00 00 00 02 00 00 0A 02 00 00 00 02", toHex(writer.ToReadOnly()));
 	}
 }
+*/
 
 BOOST_AUTO_TEST_SUITE_END()

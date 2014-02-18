@@ -34,9 +34,8 @@ class APDUResponse : public APDUWrapper
 
 	APDUResponse(const openpal::WriteBuffer& aBuffer);
 
-	void WriteIIN(const IINField& indications);
-
-	openpal::WriteBuffer HeaderPosition() const;
+	void SetIIN(const IINField& indications);
+	
 	
 	private:
 	

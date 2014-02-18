@@ -32,9 +32,7 @@ class APDURequest : public APDUWrapper
 {
 	public:	
 
-	APDURequest(const openpal::WriteBuffer& aBuffer);
-
-	ObjectWriter GetWriter();
+	APDURequest(const openpal::WriteBuffer& aBuffer);	
 	
 	private:
 	

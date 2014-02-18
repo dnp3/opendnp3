@@ -31,10 +31,5 @@ APDURequest::APDURequest(const openpal::WriteBuffer& aBuffer) : APDUWrapper(aBuf
 	this->remaining.Advance(2);
 }
 
-ObjectWriter APDURequest::GetWriter()
-{	
-	return ObjectWriter(&remaining);
-}
-
 }
 

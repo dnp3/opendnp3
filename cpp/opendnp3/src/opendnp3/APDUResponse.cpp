@@ -31,19 +31,13 @@ namespace opendnp3
 APDUResponse::APDUResponse(const openpal::WriteBuffer& aBuffer) : APDUWrapper(aBuffer)
 {
 	assert(aBuffer.Size() >= 4);
+	remaining.Advance(4);
 }
 
-void APDUResponse::WriteIIN(const IINField& indications)
+void APDUResponse::SetIIN(const IINField& indications)
 {
 	buffer[2] = indications.LSB;
 	buffer[3] = indications.MSB;
-}
-
-openpal::WriteBuffer APDUResponse::HeaderPosition() const
-{
-	WriteBuffer copy(buffer);
-	copy.Advance(4);
-	return copy;
 }
 
 }

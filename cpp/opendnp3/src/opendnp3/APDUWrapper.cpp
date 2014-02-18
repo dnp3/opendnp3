@@ -38,6 +38,11 @@ APDUWrapper::APDUWrapper(const openpal::WriteBuffer& aBuffer) : buffer(aBuffer),
 	assert(aBuffer.Size() >= 2); // need a control & function at a minimum
 }
 
+ObjectWriter APDUWrapper::GetWriter()
+{	
+	return ObjectWriter(&remaining);
+}
+
 void APDUWrapper::SetFunction(FunctionCode code)
 {
 	assert(buffer.IsNotEmpty());

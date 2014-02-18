@@ -25,6 +25,7 @@
 
 #include "gen/FunctionCode.h"
 #include "AppControlField.h"
+#include "ObjectWriter.h"
 
 namespace opendnp3
 {
@@ -44,7 +45,9 @@ class APDUWrapper
 	AppControlField GetControl() const;	
 	void SetControl(const AppControlField& control);
 
-	openpal::ReadOnlyBuffer ToReadOnly() const;	
+	openpal::ReadOnlyBuffer ToReadOnly() const;
+
+	ObjectWriter GetWriter();
 
 	protected:	
 		

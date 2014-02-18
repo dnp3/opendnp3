@@ -38,8 +38,7 @@ namespace opendnp3
 // A facade for writing APDUs to an external buffer
 class ObjectWriter
 {
-	friend class APDURequest;
-	friend class APDUResponse;
+	friend class APDUWrapper;
 	
 	public:
 
