@@ -26,6 +26,7 @@
 #include <opendnp3/SlaveConfig.h>
 
 #include <openpal/IExecutor.h>
+#include <openpal/StaticBuffer.h>
 
 #include "StackBase.h"
 #include "ChangeBuffer.h"
@@ -36,7 +37,7 @@
 #include "SlaveResponseTypes.h"
 #include "OutstationSBOHandler.h"
 #include "CachedRequest.h"
-
+#include "StaticSizeConfiguration.h"
 
 namespace opendnp3
 {
@@ -115,8 +116,10 @@ private:
 
 	void ChangeState(SlaveStateBase* apState);
 
-	//void RespondToRequest(const APDURecord& record, SequenceInfo sequence);
-	//IINField ConfigureResponse(const APDURecord& record, SequenceInfo sequence, APDU& apduOut);
+	void RespondToRequest(const APDURecord& record, SequenceInfo sequence);
+	IINField ConfigureResponse(const APDURecord& request, SequenceInfo sequence, APDUResponse& response);
+
+	openpal::StaticBuffer<SizeConfiguration::MAX_APDU_BUFFER_SIZE> responseBuffer;
 
 	ChangeBuffer mChangeBuffer;				// how client code gives us updates
 	IAppLayer* mpAppLayer;					// lower application layer
@@ -156,7 +159,7 @@ private:
 	void OnDataUpdate();					// internal event dispatched when user code commits an update to mChangeBuffer
 	void OnUnsolTimerExpiration();			// internal event dispatched when the unsolicted pack/retry timer expires
 	
-	//void SendResponse(APDU& apdu, const IINField& indications = IINField::Empty);
+	void SendResponse(APDUResponse& apdu, const IINField& indications = IINField::Empty);
 	//void SendUnsolicited(APDU& apdu, const IINField& indications = IINField::Empty);
 
 	IINField HandleWrite(const APDURecord& record, SequenceInfo sequence);

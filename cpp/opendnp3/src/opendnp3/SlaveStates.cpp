@@ -130,11 +130,9 @@ void AS_OpenBase::OnLowerLayerDown(Slave* slave)
 AS_Idle AS_Idle::mInstance;
 
 void AS_Idle::OnRequest(Slave* slave, const APDURecord& record, SequenceInfo sequence)
-{
-	/* TODO
+{	
 	slave->ChangeState(AS_WaitForRspSuccess::Inst());
 	slave->RespondToRequest(record, sequence);
-	*/
 }
 
 void AS_Idle::Enter(Slave* slave)

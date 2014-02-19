@@ -55,7 +55,7 @@ class StaticArray : public HasSize<IndexType>
 		{ 
 			assert(index < N);
 			return buffer[index];
-		}
+		}		
 		
 	protected:
 		ValueType buffer[N];

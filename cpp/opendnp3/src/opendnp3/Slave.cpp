@@ -22,6 +22,7 @@
 
 #include <opendnp3/AnalogOutput.h>
 #include <opendnp3/ControlRelayOutputBlock.h>
+#include <opendnp3/DNPConstants.h>
 
 #include <openpal/LoggableMacros.h>
 #include <openpal/IExecutor.h>
@@ -175,30 +176,33 @@ size_t Slave::FlushUpdates()
 	return num;		
 }
 
-/*
 void Slave::RespondToRequest(const APDURecord& record, SequenceInfo sequence)
 {
-	mResponse.Set(FunctionCode::RESPONSE);
-	auto indications = ConfigureResponse(record, sequence, mResponse);
-	this->SendResponse(mResponse, indications);	
+	APDUResponse response(responseBuffer.GetWriteBuffer()); // TODO - size this based on configuration?
+	response.SetFunction(FunctionCode::RESPONSE);
+	auto indications = ConfigureResponse(record, sequence, response);
+	this->SendResponse(response, indications);	
 }
 
-IINField Slave::ConfigureResponse(const APDURecord& record, SequenceInfo sequence, APDU& apduOut)
+IINField Slave::ConfigureResponse(const APDURecord& request, SequenceInfo sequence, APDUResponse& response)
 {	
-	switch(record.function)
+	switch(request.function)
 	{
+		/*
 		case(FunctionCode::WRITE):			
 			return HandleWrite(record, sequence);
 		case(FunctionCode::READ):			
 			return HandleRead(record, sequence, apduOut);
 		case(FunctionCode::DELAY_MEASURE):			
 			return HandleDelayMeasure(record, sequence, apduOut);
+		*/
 		default:	
-			ERROR_BLOCK(LogLevel::Warning, "Function not supported: " << FunctionCodeToString(record.function), SERR_FUNC_NOT_SUPPORTED);
+			ERROR_BLOCK(LogLevel::Warning, "Function not supported: " << FunctionCodeToString(request.function), SERR_FUNC_NOT_SUPPORTED);
 			return IINField(IINBit::FUNC_NOT_SUPPORTED);			
 	}
 }
 
+/*
 IINField Slave::HandleWrite(const APDURecord& record, SequenceInfo sequence)
 {
 	WriteHandler handler(mLogger);
@@ -245,13 +249,14 @@ IINField Slave::HandleDelayMeasure(const APDURecord& record, SequenceInfo sequen
 	}	
 	else return IINField(IINBit::FUNC_NOT_SUPPORTED);
 }
-
-void Slave::SendResponse(APDU& apdu, const IINField& indications)
-{
-	apdu.SetIIN(mIIN | indications);
-	//mpAppLayer->SendResponse(apdu); // TODO
-}	
 */
+
+void Slave::SendResponse(APDUResponse& response, const IINField& indications)
+{
+	response.SetIIN(mIIN | indications);
+	mpAppLayer->SendResponse(response);
+}	
+
 
 /*
 switch (record.function) 

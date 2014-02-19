@@ -173,6 +173,7 @@
     <ClInclude Include="include\openpal\Serialization.h" />
     <ClInclude Include="include\openpal\StackAdapter.h" />
     <ClInclude Include="include\openpal\StaticArray.h" />
+    <ClInclude Include="include\openpal\StaticBuffer.h" />
     <ClInclude Include="include\openpal\StaticList.h" />
     <ClInclude Include="include\openpal\StaticQueue.h" />
     <ClInclude Include="include\openpal\TimeDuration.h" />

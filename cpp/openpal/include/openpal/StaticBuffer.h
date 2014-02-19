@@ -18,31 +18,35 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __STATIC_SIZE_CONFIGURATION_H_
-#define __STATIC_SIZE_CONFIGURATION_H_
+#ifndef __STATIC_BUFFER_H_
+#define __STATIC_BUFFER_H_
 
-#include <opendnp3/Uncopyable.h>
-
+#include "StaticArray.h"
+#include "BufferWrapper.h"
 #include <cstdint>
 
-// Default configurations for statically allocated buffers int the stack
-// They are liberally set by default, but can be reduced for embedded systems
-
-namespace opendnp3 
+namespace openpal
 {
 
-struct SizeConfiguration : private PureStatic
+template <uint32_t N>
+class StaticBuffer : public StaticArray<uint8_t, uint32_t, N>
 {
-	// the maximum number of event buffers that can be bound to a database
-	static const uint16_t MAX_EVENT_BUFFERS = 10;
 
-	// the maximum number of static read object/variation records that can be in any READ request
-	static const uint16_t MAX_READ_REQUESTS = 16;
+	public:
+		
+		StaticBuffer() : StaticArray<uint8_t, uint32_t, N>()			
+		{}
+		
+		WriteBuffer GetWriteBuffer()
+		{			
+			return WriteBuffer(buffer, Size());
+		}
 
-	// the maximum number of event read object/variation records that can be in any READ request
-	static const uint16_t MAX_EVENT_READ_REQUESTS = 16;
-
-	static const uint32_t MAX_APDU_BUFFER_SIZE = 2048;
+		WriteBuffer GetWriteBuffer(uint32_t size)
+		{
+			assert(size <= Size());
+			return WriteBuffer(buffer, size);
+		}
 };
 
 }
