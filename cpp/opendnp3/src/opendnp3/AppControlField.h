@@ -29,6 +29,8 @@ namespace opendnp3
 /** Represents the first byte in every APDU
 */
 struct AppControlField {
+
+	const static AppControlField DEFAULT;// = AppControlField(true, true, false, false, 0);
 		
 	AppControlField();
 

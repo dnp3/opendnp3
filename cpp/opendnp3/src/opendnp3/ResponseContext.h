@@ -73,14 +73,18 @@ class ResponseContext : private Uncopyable
 
 	QueueResult QueueReadAllObjects(GroupVariation gv);
 	QueueResult QueueReadRange(GroupVariation gv, const StaticRange& range);
+
+	bool IsComplete() const;
 		
-	LoadResult Load(ObjectWriter& writer);
+	LoadResult Load(APDUResponse& response);
 	
 	private:
 
+	static AppControlField GetAppControl(uint32_t headerCount, LoadResult result);
+
 	LoadResult LoadStaticData(ObjectWriter& writer);
 	
-	bool first;
+	uint32_t fragmentCount;
 	Database* pDatabase;
 
 	openpal::StaticArray<FunctionalStaticRange, uint8_t, SizeConfiguration::MAX_READ_REQUESTS> staticRangeArray;

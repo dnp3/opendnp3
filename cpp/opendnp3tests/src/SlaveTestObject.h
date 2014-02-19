@@ -58,8 +58,7 @@ public:
 	DynamicallyAllocatedDatabase dbBuffers;
 	Database db;
 	MockCommandHandler cmdHandler;
-	Slave slave;
-	//APDU mAPDU; TODO
+	Slave slave;	
 	openpal::Logger mLogger;
 
 	std::queue<openpal::UTCTimestamp> mTimeWrites;

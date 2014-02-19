@@ -24,6 +24,8 @@
 namespace opendnp3
 {
 
+const AppControlField AppControlField::DEFAULT(true, true, false, false, 0);
+
 AppControlField::AppControlField(uint8_t byte) :
 	FIR((byte & FIR_MASK) != 0),
 	FIN((byte & FIN_MASK) != 0),

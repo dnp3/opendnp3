@@ -78,7 +78,7 @@ void MockAppLayer::DoSendSol()
 void MockAppLayer::SendResponse(APDUWrapper& apdu)
 {
 	LOG_BLOCK(LogLevel::Comm, "=> " << toHex(apdu.ToReadOnly(), true));	
-	mFragments.push_back(apdu);
+	mFragments.push_back(toHex(apdu.ToReadOnly()));
 	this->DoSendSol();
 
 }
@@ -86,14 +86,14 @@ void MockAppLayer::SendResponse(APDUWrapper& apdu)
 void MockAppLayer::SendUnsolicited(APDUWrapper& apdu)
 {
 	LOG_BLOCK(LogLevel::Comm, "=> " << toHex(apdu.ToReadOnly(), true));	
-	mFragments.push_back(apdu);
+	mFragments.push_back(toHex(apdu.ToReadOnly()));
 	this->DoSendUnsol();
 }
 
 void MockAppLayer::SendRequest(APDUWrapper& apdu)
 {
 	LOG_BLOCK(LogLevel::Comm, "=> " << toHex(apdu.ToReadOnly(), true));	
-	mFragments.push_back(apdu);
+	mFragments.push_back(toHex(apdu.ToReadOnly()));
 }
 
 bool MockAppLayer::NothingToRead()
@@ -101,7 +101,7 @@ bool MockAppLayer::NothingToRead()
 	return mFragments.size() == 0;
 }
 
-APDUWrapper MockAppLayer::Read()
+std::string MockAppLayer::Read()
 {
 	if(mFragments.size() == 0) throw InvalidStateException(LOCATION, "no more fragments");
 	auto frag = mFragments.front();	
@@ -109,15 +109,17 @@ APDUWrapper MockAppLayer::Read()
 	return frag;
 }
 
+/*
 FunctionCode MockAppLayer::ReadFunction()
 {
 	if(mFragments.size() == 0) throw InvalidStateException(LOCATION, "No more fragments");
 	else {
 		FunctionCode func = mFragments.front().GetFunction();
 		mFragments.pop_front();
-		return func;
+		return func;	
 	}
 }
+*/
 
 void MockAppLayer::CancelResponse()
 {

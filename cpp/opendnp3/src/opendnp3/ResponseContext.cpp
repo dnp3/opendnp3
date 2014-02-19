@@ -30,10 +30,22 @@ namespace opendnp3
 {
 
 ResponseContext::ResponseContext(Database* pDatabase_) : 
-	first(true),
+	fragmentCount(0),
 	pDatabase(pDatabase_),
 	staticResponseQueue(staticRangeArray.ToIndexable())
 {}
+
+bool ResponseContext::IsComplete() const
+{
+	return staticResponseQueue.IsEmpty();
+}
+
+void ResponseContext::Reset()
+{
+	fragmentCount = 0;
+	staticResponseQueue.Clear();
+}
+
 
 #define MACRO_QUEUE_FULL_RANGE(GV, TYPE) { \
 	auto range = pDatabase->FullRange<TYPE>(); \
@@ -126,9 +138,21 @@ QueueResult ResponseContext::QueueReadRange(GroupVariation gv, const StaticRange
 	}	
 }
 
-LoadResult ResponseContext::Load(ObjectWriter& writer)
+LoadResult ResponseContext::Load(APDUResponse& response)
 {	
-	return LoadStaticData(writer);
+	auto writer = response.GetWriter();
+	auto result = LoadStaticData(writer);
+	auto control = GetAppControl(fragmentCount, result);
+	response.SetControl(control);
+	++fragmentCount;
+	return result;
+}
+
+AppControlField ResponseContext::GetAppControl(uint32_t headerCount, LoadResult result)
+{
+	bool fir = (headerCount == 0);
+	bool fin = (result != LoadResult::FULL);
+	return AppControlField(fir, fin, !fin, false, 0);
 }
 
 LoadResult ResponseContext::LoadStaticData(ObjectWriter& writer)
@@ -149,10 +173,6 @@ LoadResult ResponseContext::LoadStaticData(ObjectWriter& writer)
 	return LoadResult::EMPTY;
 }
 
-void ResponseContext::Reset()
-{
-	staticResponseQueue.Clear();
-}
 
 }
 

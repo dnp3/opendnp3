@@ -162,9 +162,10 @@ private:
 	void SendResponse(APDUResponse& apdu, const IINField& indications = IINField::Empty);
 	//void SendUnsolicited(APDU& apdu, const IINField& indications = IINField::Empty);
 
-	IINField HandleWrite(const APDURecord& record, SequenceInfo sequence);
-	//IINField HandleRead(const APDURecord& record, SequenceInfo sequence, APDU& apdu);
-	//IINField HandleDelayMeasure(const APDURecord& record, SequenceInfo sequence, APDU& apdu);
+	IINField HandleWrite(const APDURecord& request, SequenceInfo sequence);
+	IINField HandleRead(const APDURecord& request, SequenceInfo sequence, APDUResponse& response);
+	void ContinueResponse();
+	IINField HandleDelayMeasure(const APDURecord& request, SequenceInfo sequence, APDUResponse& response);
 
 	// Helpers
 

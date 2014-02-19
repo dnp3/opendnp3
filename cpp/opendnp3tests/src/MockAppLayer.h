@@ -56,15 +56,15 @@ public:
 	void EnableAutoSendCallback(bool aIsSuccess);
 	void DisableAutoSendCallback();
 
-	APDUWrapper Read();
-
+	std::string Read();
+		
 	size_t Count() {
 		return mFragments.size();
 	}
-	FunctionCode ReadFunction();
+		
 	size_t NumAPDU() {
 		return mFragments.size();
-	}
+	}	
 
 private:
 
@@ -74,7 +74,7 @@ private:
 	IAppUser* mpUser;
 	bool mAutoSendCallback;
 	bool mIsSuccess;
-	std::deque<APDUWrapper> mFragments;
+	std::deque<std::string> mFragments;
 };
 
 }

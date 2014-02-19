@@ -116,7 +116,7 @@ void Slave::OnLowerLayerDown()
 
 void Slave::OnSolSendSuccess()
 {
-	mpState->OnSolSendSuccess(this);	
+	mpState->OnSolSendSuccess(this);
 	this->UpdateState(StackState::COMMS_UP);
 }
 
@@ -178,8 +178,9 @@ size_t Slave::FlushUpdates()
 
 void Slave::RespondToRequest(const APDURecord& record, SequenceInfo sequence)
 {
-	APDUResponse response(responseBuffer.GetWriteBuffer()); // TODO - size this based on configuration?
+	APDUResponse response(responseBuffer.GetWriteBuffer(mConfig.mMaxFragSize));
 	response.SetFunction(FunctionCode::RESPONSE);
+	response.SetControl(AppControlField::DEFAULT);
 	auto indications = ConfigureResponse(record, sequence, response);
 	this->SendResponse(response, indications);	
 }
@@ -188,45 +189,43 @@ IINField Slave::ConfigureResponse(const APDURecord& request, SequenceInfo sequen
 {	
 	switch(request.function)
 	{
-		/*
+		
 		case(FunctionCode::WRITE):			
-			return HandleWrite(record, sequence);
+			return HandleWrite(request, sequence);		
 		case(FunctionCode::READ):			
-			return HandleRead(record, sequence, apduOut);
-		case(FunctionCode::DELAY_MEASURE):			
-			return HandleDelayMeasure(record, sequence, apduOut);
-		*/
+			return HandleRead(request, sequence, response);		
+		case(FunctionCode::DELAY_MEASURE):		
+			return HandleDelayMeasure(request, sequence, response);		
 		default:	
 			ERROR_BLOCK(LogLevel::Warning, "Function not supported: " << FunctionCodeToString(request.function), SERR_FUNC_NOT_SUPPORTED);
 			return IINField(IINBit::FUNC_NOT_SUPPORTED);			
 	}
 }
 
-/*
-IINField Slave::HandleWrite(const APDURecord& record, SequenceInfo sequence)
+IINField Slave::HandleWrite(const APDURecord& request, SequenceInfo sequence)
 {
 	WriteHandler handler(mLogger);
-	auto result = APDUParser::ParseHeaders(record.objects, handler);
+	auto result = APDUParser::ParseHeaders(request.objects, handler);
 	if(result == APDUParser::Result::OK) return handler.Process(mIIN, 
 		[this](const Group50Var1& absTime) { 
-			mpExecutor->Post([this, absTime]() { mpTimeWriteHandler->WriteAbsoluteTime(absTime.time48); });			
+			mpExecutor->Post([this, absTime]() { mpTimeWriteHandler->WriteAbsoluteTime(absTime.time); });			
 		}
 	);
 	else return IINFromParseResult(result);
 }
 
-IINField Slave::HandleRead(const APDURecord& record, SequenceInfo sequence, APDU& apdu)
+IINField Slave::HandleRead(const APDURecord& request, SequenceInfo sequence, APDUResponse& response)
 {
 	mRspContext.Reset();
 	ReadHandler handler(mLogger, &mRspContext);
-	auto result = APDUParser::ParseHeaders(record.objects, handler);
+	auto result = APDUParser::ParseHeaders(request.objects, handler);
 	if(result == APDUParser::Result::OK)
 	{
 		auto errors = handler.Errors();
 		if(errors.Any()) return errors;		
 		else 
-		{			
-			this->mRspContext.LoadResponse(apdu); // todo get the overflow bits out of here & return them
+		{						
+			auto result = this->mRspContext.Load(response); // todo get the overflow bits out of here & return them
 			return IINField::Empty;
 		}
 	}
@@ -237,19 +236,31 @@ IINField Slave::HandleRead(const APDURecord& record, SequenceInfo sequence, APDU
 	}
 }
 
-IINField Slave::HandleDelayMeasure(const APDURecord& record, SequenceInfo sequence, APDU& apdu)
-{		
-	if(record.objects.IsEmpty())
-	{
-		Group52Var2Temp* pObj = Group52Var2Temp::Inst();
-		IndexedWriteIterator i = apdu.WriteIndexed(pObj, 1, QualifierCode::UINT8_CNT);
-		i.SetIndex(0);
-		pObj->mTime.Set(*i, 0);
-		return IINField::Empty;
-	}	
-	else return IINField(IINBit::FUNC_NOT_SUPPORTED);
+void Slave::ContinueResponse()
+{
+	APDUResponse response(responseBuffer.GetWriteBuffer(mConfig.mMaxFragSize));
+	response.SetFunction(FunctionCode::RESPONSE);
+	response.SetControl(AppControlField::DEFAULT);
+	this->mRspContext.Load(response);
+	this->SendResponse(response);
 }
-*/
+
+IINField Slave::HandleDelayMeasure(const APDURecord& request, SequenceInfo sequence, APDUResponse& response)
+{		
+	if(request.objects.IsEmpty()) 
+	{	
+		auto writer = response.GetWriter();
+		Group52Var2 value = { 0 }; 	// respond with 0 time delay
+		writer.WriteSingleValue<UInt8, Group52Var2>(QualifierCode::UINT8_CNT, value);		
+		return IINField::Empty;
+	}
+	else
+	{
+		// there shouldn't be any trailing headers in delay measure request, no need to even parse
+		return IINField(IINBit::FUNC_NOT_SUPPORTED);
+	}	
+}
+
 
 void Slave::SendResponse(APDUResponse& response, const IINField& indications)
 {

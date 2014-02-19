@@ -211,28 +211,21 @@ AS_WaitForRspSuccess AS_WaitForRspSuccess::mInstance;
 
 void AS_WaitForRspSuccess::OnSolFailure(Slave* slave)
 {
-	//slave->mRspContext.Reset(); TODO
+	slave->mRspContext.Reset();
 	slave->ChangeState(AS_Idle::Inst());	
 }
 
 void AS_WaitForRspSuccess::OnSolSendSuccess(Slave* slave)
-{
-
-	/* TODO 
-	
-	slave->mRspContext.ClearWritten();
-
+{		
 	if (slave->mRspContext.IsComplete())
 	{
+		slave->mRspContext.Reset();
 		slave->ChangeState(AS_Idle::Inst());
 	}
 	else 
-	{		
-		slave->mRspContext.LoadResponse(slave->mResponse);
-		slave->SendResponse(slave->mResponse);	
+	{				
+		slave->ContinueResponse();
 	}
-
-	*/
 }
 
 // When we get a request we should no longer wait for confirmation, but we should
