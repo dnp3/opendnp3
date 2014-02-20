@@ -46,23 +46,32 @@ using namespace openpal;
 namespace opendnp3
 {
 
-APDUParser::Result APDUParser::ParseHeaders(openpal::ReadOnlyBuffer buffer, IAPDUHeaderHandler& output)
+APDUParser::Result APDUParser::ParseTwoPass(const openpal::ReadOnlyBuffer& buffer, IAPDUHandler* pHandler, Context context)
 {
-	return ParseHeaders(buffer, Context::Default(), output);
+	if(pHandler)
+	{
+		// do a single pass without the callbacks to validate that the message is well formed
+		auto result = ParseSinglePass(buffer, nullptr, context); 
+		return (result == Result::OK) ? ParseSinglePass(buffer, pHandler, context) : result;		
+	}
+	else
+	{
+		return ParseSinglePass(buffer, pHandler, context);
+	}	
 }
 
-APDUParser::Result APDUParser::ParseHeaders(ReadOnlyBuffer aBuffer, Context context, IAPDUHeaderHandler& arHandler)
-{	
-	while(aBuffer.Size() > 0)
+APDUParser::Result APDUParser::ParseSinglePass(const openpal::ReadOnlyBuffer& buffer, IAPDUHandler* pHandler, Context context)
+{
+	ReadOnlyBuffer copy(buffer);
+	while(copy.Size() > 0)
 	{
-		auto result = ParseHeader(aBuffer, context, arHandler);
+		auto result = ParseHeader(copy, context, pHandler);
 		if(result != Result::OK) return result;
 	}
-
 	return Result::OK;
 }
 
-APDUParser::Result APDUParser::ParseHeader(ReadOnlyBuffer& buffer, Context& context, IAPDUHeaderHandler& handler)
+APDUParser::Result APDUParser::ParseHeader(ReadOnlyBuffer& buffer, Context& context, IAPDUHandler* pHandler)
 {
 	if(buffer.Size() < 3) return Result::NOT_ENOUGH_DATA_FOR_HEADER; 
 	else {	
@@ -78,44 +87,44 @@ APDUParser::Result APDUParser::ParseHeader(ReadOnlyBuffer& buffer, Context& cont
 		{
 			case(QualifierCode::ALL_OBJECTS):
 			{
-				handler.AllObjects(gvRecord.enumeration, record.Complete(0));
+				if(pHandler) pHandler->AllObjects(gvRecord.enumeration, record.Complete(0));				
 				return Result::OK;
 			}
 			case(QualifierCode::UINT8_CNT):
 			{
 				uint32_t count;
 				auto res = ParseCount<UInt8>(buffer, context, count);				
-				return (res == Result::OK) ? ParseObjectsWithRange(record.Add(UInt8::Size), buffer, gvRecord, Range(0, count), handler) : res;				
+				return (res == Result::OK) ? ParseObjectsWithRange(record.Add(UInt8::Size), buffer, gvRecord, Range(0, count), pHandler) : res;				
 			}
 			case(QualifierCode::UINT16_CNT):
 			{
 				uint32_t count;
 				auto res = ParseCount<UInt16>(buffer, context, count);
-				return (res == Result::OK) ? ParseObjectsWithRange(record.Add(UInt16::Size), buffer, gvRecord, Range(0, count), handler) : res;				
+				return (res == Result::OK) ? ParseObjectsWithRange(record.Add(UInt16::Size), buffer, gvRecord, Range(0, count), pHandler) : res;				
 			}			
 			case(QualifierCode::UINT8_START_STOP):
 			{
 				Range range;				
 				auto res = ParseRange<UInt8, uint16_t>(buffer, context, range);
-				return (res == Result::OK) ? ParseObjectsWithRange(record.Add(2*UInt8::Size), buffer, gvRecord, range, handler) : res;
+				return (res == Result::OK) ? ParseObjectsWithRange(record.Add(2*UInt8::Size), buffer, gvRecord, range, pHandler) : res;
 			}
 			case(QualifierCode::UINT16_START_STOP):
 			{
 				Range range;
 				auto res = ParseRange<UInt16, uint32_t>(buffer, context, range);
-				return (res == Result::OK) ? ParseObjectsWithRange(record.Add(2*UInt16::Size), buffer, gvRecord, range, handler) : res;
+				return (res == Result::OK) ? ParseObjectsWithRange(record.Add(2*UInt16::Size), buffer, gvRecord, range, pHandler) : res;
 			}			
 			case(QualifierCode::UINT8_CNT_UINT8_INDEX):
 			{
 				uint32_t count;
 				auto res = ParseCount<UInt8>(buffer, context, count);
-				return (res == Result::OK) ? ParseObjectsWithIndexPrefix(record.Add(UInt8::Size), buffer, gvRecord, count, TypedIndexParser<UInt8>::Inst(), handler) : res;				
+				return (res == Result::OK) ? ParseObjectsWithIndexPrefix(record.Add(UInt8::Size), buffer, gvRecord, count, TypedIndexParser<UInt8>::Inst(), pHandler) : res;				
 			}
 			case(QualifierCode::UINT16_CNT_UINT16_INDEX):
 			{
 				uint32_t count;
 				auto res = ParseCount<UInt16>(buffer, context, count);
-				return (res == Result::OK) ? ParseObjectsWithIndexPrefix(record.Add(UInt16::Size),buffer, gvRecord, count, TypedIndexParser<UInt16>::Inst(), handler) : res;				
+				return (res == Result::OK) ? ParseObjectsWithIndexPrefix(record.Add(UInt16::Size),buffer, gvRecord, count, TypedIndexParser<UInt16>::Inst(), pHandler) : res;				
 			}			
 			default:
 				return Result::UNKNOWN_QUALIFIER;
@@ -125,9 +134,9 @@ APDUParser::Result APDUParser::ParseHeader(ReadOnlyBuffer& buffer, Context& cont
 
 #define MACRO_PARSE_COUNT_FIXED_SIZE_WITH_INDEX(descriptor) \
 case(GroupVariation::descriptor): \
-	return ParseCountFixedSizeWithIndex(gvRecord.enumeration, record, buffer, count, pParser, descriptor##Serializer::Inst(), output);
+	return ParseCountFixedSizeWithIndex(gvRecord.enumeration, record, buffer, count, pParser, descriptor##Serializer::Inst(), pHandler);
 
-APDUParser::Result APDUParser::ParseObjectsWithIndexPrefix(const HeaderRecord& record, openpal::ReadOnlyBuffer& buffer, const GroupVariationRecord& gvRecord, uint32_t count, IndexParser* pParser, IAPDUHeaderHandler&  output)
+APDUParser::Result APDUParser::ParseObjectsWithIndexPrefix(const HeaderRecord& record, openpal::ReadOnlyBuffer& buffer, const GroupVariationRecord& gvRecord, uint32_t count, IndexParser* pParser, IAPDUHandler* pHandler)
 {
 	switch(gvRecord.enumeration)
 	{
@@ -157,7 +166,7 @@ APDUParser::Result APDUParser::ParseObjectsWithIndexPrefix(const HeaderRecord& r
 		MACRO_PARSE_COUNT_FIXED_SIZE_WITH_INDEX(Group41Var4);
 
 		case(GroupVariation::Group111AnyVar):
-			return ParseIndexPrefixedOctetData(gvRecord, buffer, record, count, pParser, output);
+			return ParseIndexPrefixedOctetData(gvRecord, buffer, record, count, pParser, pHandler);
 
 		default:
 			return Result::ILLEGAL_OBJECT_QUALIFIER;
@@ -170,22 +179,24 @@ APDUParser::Result APDUParser::ParseIndexPrefixedOctetData(
 		const HeaderRecord& record,
 		uint32_t count, 
 		IndexParser* pParser, 
-		IAPDUHeaderHandler& handler)
+		IAPDUHandler* pHandler)
 {
 	size_t size = count * (pParser->IndexSize() + gvRecord.variation);
 	if(buffer.Size() < size) return APDUParser::Result::NOT_ENOUGH_DATA_FOR_OBJECTS;
 	else {
 		
-		auto iterable = IterableTransforms<IndexedValue<OctetString>>::From(buffer, count,
-			[&](ReadOnlyBuffer& buffer, uint32_t position) {	
-				auto index = pParser->ReadIndex(buffer);				
-				OctetString octets(buffer.Truncate(gvRecord.variation));
-				buffer.Advance(gvRecord.variation);
-				return IndexedValue<OctetString>(octets, index);
-			}	
-		);		
+		if(pHandler) {
+			auto iterable = IterableTransforms<IndexedValue<OctetString>>::From(buffer, count,
+				[&](ReadOnlyBuffer& buffer, uint32_t position) {	
+					auto index = pParser->ReadIndex(buffer);				
+					OctetString octets(buffer.Truncate(gvRecord.variation));
+					buffer.Advance(gvRecord.variation);
+					return IndexedValue<OctetString>(octets, index);
+				}	
+			);
+			pHandler->OnIndexPrefix(gvRecord.enumeration, record.Complete(size), iterable);
+		}
 
-		handler.OnIndexPrefix(gvRecord.enumeration, record.Complete(size), iterable);
 		buffer.Advance(size);
 		return APDUParser::Result::OK;
 	}
@@ -203,27 +214,31 @@ IndexedValue<ControlStatus> APDUParser::BoolToControlStatus(const IndexedValue<b
 
 #define MACRO_PARSE_OBJECTS_WITH_RANGE(descriptor) \
 	case(GroupVariation::descriptor): \
-	return ParseRangeFixedSize(gvRecord.enumeration, record, descriptor##Serializer::Inst(), buffer, range, output);
+	return ParseRangeFixedSize(gvRecord.enumeration, record, descriptor##Serializer::Inst(), buffer, range, pHandler);
 
-APDUParser::Result APDUParser::ParseObjectsWithRange(const APDUParser::HeaderRecord& record, openpal::ReadOnlyBuffer& buffer, const GroupVariationRecord& gvRecord, const Range& range, IAPDUHeaderHandler& output)
+APDUParser::Result APDUParser::ParseObjectsWithRange(const APDUParser::HeaderRecord& record, openpal::ReadOnlyBuffer& buffer, const GroupVariationRecord& gvRecord, const Range& range, IAPDUHandler* pHandler)
 {
 	switch(gvRecord.enumeration)
 	{	
 		case(GroupVariation::Group1Var1):				
 			return ParseRangeAsBitField(buffer, record, range, [&](const ReadOnlyBuffer& header, const IterableBuffer<IndexedValue<bool>>& values) {
-				auto mapped = IterableTransforms<IndexedValue<bool>>::Map<IndexedValue<Binary>>(values, [](const IndexedValue<bool>& v) { return IndexedValue<Binary>(Binary(v.value), v.index); });
-				output.OnRange(gvRecord.enumeration, header, mapped);
+				if(pHandler) {
+					auto mapped = IterableTransforms<IndexedValue<bool>>::Map<IndexedValue<Binary>>(values, [](const IndexedValue<bool>& v) { return IndexedValue<Binary>(Binary(v.value), v.index); });
+					pHandler->OnRange(gvRecord.enumeration, header, mapped);
+				}
 			});		
 		
 		MACRO_PARSE_OBJECTS_WITH_RANGE(Group1Var2);
 
 		case(GroupVariation::Group10Var1):				
 			return ParseRangeAsBitField(buffer, record, range, [&](const ReadOnlyBuffer& header, IterableBuffer<IndexedValue<bool>>& values) {
-				auto mapped = IterableTransforms<IndexedValue<bool>>::Map<IndexedValue<ControlStatus>>(values, [](const IndexedValue<bool>& v) { return IndexedValue<ControlStatus>(ControlStatus(v.value), v.index); });
-				output.OnRange(gvRecord.enumeration, header, mapped);								
+				if(pHandler) {
+					auto mapped = IterableTransforms<IndexedValue<bool>>::Map<IndexedValue<ControlStatus>>(values, [](const IndexedValue<bool>& v) { return IndexedValue<ControlStatus>(ControlStatus(v.value), v.index); });
+					pHandler->OnRange(gvRecord.enumeration, header, mapped);
+				}
 			});
 
-			MACRO_PARSE_OBJECTS_WITH_RANGE(Group10Var2);
+		MACRO_PARSE_OBJECTS_WITH_RANGE(Group10Var2);
 
 		MACRO_PARSE_OBJECTS_WITH_RANGE(Group20Var1);
 		MACRO_PARSE_OBJECTS_WITH_RANGE(Group20Var2);		
@@ -243,18 +258,20 @@ APDUParser::Result APDUParser::ParseObjectsWithRange(const APDUParser::HeaderRec
 		MACRO_PARSE_OBJECTS_WITH_RANGE(Group40Var4);
 
 		case(GroupVariation::Group50Var1):
-			return ParseCountOf<Group50Var1>(buffer, range.count, output); 
+			return ParseCountOf<Group50Var1>(buffer, range.count, pHandler); 
 		
 		case(GroupVariation::Group52Var2):
-			return ParseCountOf<Group52Var2>(buffer, range.count, output); 
+			return ParseCountOf<Group52Var2>(buffer, range.count, pHandler); 
 
 		case(GroupVariation::Group80Var1):		
 			return ParseRangeAsBitField(buffer, record, range, [&](const ReadOnlyBuffer& header, const IterableBuffer<IndexedValue<bool>>& values) { 
-				output.OnIIN(gvRecord.enumeration, header, values); 
+				if(pHandler) {
+					pHandler->OnIIN(gvRecord.enumeration, header, values); 
+				}
 			});
 
 		case(GroupVariation::Group110AnyVar):
-			return ParseRangeOfOctetData(gvRecord, buffer, record, range, output);
+			return ParseRangeOfOctetData(gvRecord, buffer, record, range, pHandler);
 		
 		default:
 			return Result::ILLEGAL_OBJECT_QUALIFIER;
@@ -266,18 +283,20 @@ APDUParser::Result APDUParser::ParseRangeOfOctetData(
 		openpal::ReadOnlyBuffer& buffer, 
 		const HeaderRecord& record,
 		const Range& range, 
-		IAPDUHeaderHandler& handler)
+		IAPDUHandler* pHandler)
 {
 	size_t size = gvRecord.variation*range.count;
 	if(buffer.Size() < size) return Result::NOT_ENOUGH_DATA_FOR_OBJECTS;
 	{
-		auto collection = IterableTransforms<IndexedValue<OctetString>>::From(buffer, range.count, [&](ReadOnlyBuffer& buffer, uint32_t pos) {
-			OctetString octets(buffer.Truncate(gvRecord.variation));
-			IndexedValue<OctetString> value(octets, range.start + pos);
-			buffer.Advance(gvRecord.variation);
-			return value;
-		});
-		handler.OnRange(gvRecord.enumeration, record.Complete(size), collection);
+		if(pHandler) {
+			auto collection = IterableTransforms<IndexedValue<OctetString>>::From(buffer, range.count, [&](ReadOnlyBuffer& buffer, uint32_t pos) {
+				OctetString octets(buffer.Truncate(gvRecord.variation));
+				IndexedValue<OctetString> value(octets, range.start + pos);
+				buffer.Advance(gvRecord.variation);
+				return value;
+			});
+			pHandler->OnRange(gvRecord.enumeration, record.Complete(size), collection);
+		}
 		buffer.Advance(size);
 		return Result::OK;
 	}

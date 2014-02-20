@@ -21,7 +21,7 @@
 #ifndef __READ_HANDLER_H_
 #define __READ_HANDLER_H_
 
-#include "HeaderHandlerBase.h"
+#include "APDUHandlerBase.h"
 
 #include <openpal/Loggable.h>
 #include <opendnp3/ITimeWriteHandler.h>
@@ -34,7 +34,7 @@ namespace opendnp3
 /**
  * Dedicated class for processing response data in the master.
  */
-class ReadHandler : public HeaderHandlerBase, private openpal::Loggable
+class ReadHandler : public APDUHandlerBase, private openpal::Loggable
 {
 	public:
 	

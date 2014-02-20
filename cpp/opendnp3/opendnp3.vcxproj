@@ -133,8 +133,9 @@
     <ClInclude Include="src\opendnp3\gen\QualifierCode.h" />
     <ClInclude Include="src\opendnp3\GetKeys.h" />
     <ClInclude Include="src\opendnp3\GroupVariation.h" />
-    <ClInclude Include="src\opendnp3\HeaderHandlerBase.h" />
-    <ClInclude Include="src\opendnp3\IAPDUHeaderHandler.h" />
+    <ClInclude Include="src\opendnp3\APDUHandlerBase.h" />
+    <ClInclude Include="src\opendnp3\IAPDUHandler.h" />
+    <ClInclude Include="src\opendnp3\APDUValidator.h" />
     <ClInclude Include="src\opendnp3\IAppLayer.h" />
     <ClInclude Include="src\opendnp3\IAppUser.h" />
     <ClInclude Include="src\opendnp3\IEventBuffer.h" />
@@ -230,6 +231,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\opendnp3\AnalogOutput.cpp" />
+    <ClCompile Include="src\opendnp3\APDUValidator.cpp" />
     <ClCompile Include="src\opendnp3\APDUWrapper.cpp" />
     <ClCompile Include="src\opendnp3\APDUEventWriter.cpp" />
     <ClCompile Include="src\opendnp3\APDUHeaderParser.cpp" />

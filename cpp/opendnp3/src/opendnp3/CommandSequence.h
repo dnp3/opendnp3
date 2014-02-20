@@ -21,7 +21,7 @@
 #ifndef __COMMAND_SEQUENCE_H_
 #define __COMMAND_SEQUENCE_H_
 
-#include "HeaderHandlerBase.h"
+#include "APDUHandlerBase.h"
 
 namespace opendnp3
 {
@@ -29,7 +29,7 @@ namespace opendnp3
 /**
 *  Abstracts information for 
 */
-class ICommandSequence : public HeaderHandlerBase, private openpal::Loggable
+class ICommandSequence : public APDUHandlerBase, private openpal::Loggable
 {
 	public:
 

@@ -205,7 +205,7 @@ IINField Slave::ConfigureResponse(const APDURecord& request, SequenceInfo sequen
 IINField Slave::HandleWrite(const APDURecord& request, SequenceInfo sequence)
 {
 	WriteHandler handler(mLogger);
-	auto result = APDUParser::ParseHeaders(request.objects, handler);
+	auto result = APDUParser::ParseTwoPass(request.objects, &handler);
 	if(result == APDUParser::Result::OK) return handler.Process(mIIN, 
 		[this](const Group50Var1& absTime) { 
 			mpExecutor->Post([this, absTime]() { mpTimeWriteHandler->WriteAbsoluteTime(absTime.time); });			
@@ -218,7 +218,7 @@ IINField Slave::HandleRead(const APDURecord& request, SequenceInfo sequence, APD
 {
 	mRspContext.Reset();
 	ReadHandler handler(mLogger, &mRspContext);
-	auto result = APDUParser::ParseHeaders(request.objects, handler);
+	auto result = APDUParser::ParseTwoPass(request.objects, &handler);
 	if(result == APDUParser::Result::OK)
 	{
 		auto errors = handler.Errors();

@@ -25,7 +25,7 @@
 
 #include <openpal/Loggable.h>
 
-#include "HeaderHandlerBase.h"
+#include "APDUHandlerBase.h"
 
 namespace opendnp3
 {
@@ -33,7 +33,7 @@ namespace opendnp3
 /**
  * Dedicated class for processing response data in the master.
  */
-class MeasurementHandler : public HeaderHandlerBase, private openpal::Loggable
+class MeasurementHandler : public APDUHandlerBase, private openpal::Loggable
 {
 
 public:

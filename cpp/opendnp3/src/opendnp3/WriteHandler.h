@@ -21,7 +21,7 @@
 #ifndef __WRITE_HANDLER_H_
 #define __WRITE_HANDLER_H_
 
-#include "HeaderHandlerBase.h"
+#include "APDUHandlerBase.h"
 #include "IINField.h"
 #include "Settable.h"
 
@@ -35,7 +35,7 @@ namespace opendnp3
 /**
  * Dedicated class for processing response data in the master.
  */
-class WriteHandler : public HeaderHandlerBase, private openpal::Loggable
+class WriteHandler : public APDUHandlerBase, private openpal::Loggable
 {
 	public:
 	

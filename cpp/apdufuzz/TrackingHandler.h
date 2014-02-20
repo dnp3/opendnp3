@@ -22,11 +22,11 @@
 #ifndef __TRACKING_HANDLER_H_
 #define __TRACKING_HANDLER_H_
 
-#include <opendnp3/IAPDUHeaderHandler.h>
+#include <opendnp3/IAPDUHandler.h>
 
 namespace opendnp3 {
 
-class TrackingHandler : public IAPDUHeaderHandler
+class TrackingHandler : public IAPDUHandler
 {
 	public:
 

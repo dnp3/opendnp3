@@ -18,11 +18,11 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __HEADER_HANDLER_BASE_H_
-#define __HEADER_HANDLER_BASE_H_
+#ifndef __APDU_HANDLER_BASE_H_
+#define __APDU_HANDLER_BASE_H_
 
 #include "IINField.h"
-#include "IAPDUHeaderHandler.h"
+#include "IAPDUHandler.h"
 
 namespace opendnp3
 {
@@ -30,14 +30,14 @@ namespace opendnp3
 /**
  * Base class used to handle APDU object headers
  */
-class HeaderHandlerBase : public IAPDUHeaderHandler
+class APDUHandlerBase : public IAPDUHandler
 {
 public:
 
 	/**	 	 
 	 * @param arLogger	the Logger that the loader should use for message reporting
 	 */
-	HeaderHandlerBase();	
+	APDUHandlerBase();	
 
 	virtual void AllObjects(GroupVariation gv, const openpal::ReadOnlyBuffer& header) final;
 	virtual void OnIIN(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const IterableBuffer<IndexedValue<bool>>& meas) final;

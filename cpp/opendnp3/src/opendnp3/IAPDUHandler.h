@@ -36,7 +36,10 @@
 namespace opendnp3
 {
 
-class IAPDUHeaderHandler 
+/**
+* Second stage of dealing with 
+*/
+class IAPDUHandler 
 {
 	public:
 

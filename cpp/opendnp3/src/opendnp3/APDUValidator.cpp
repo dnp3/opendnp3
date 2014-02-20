@@ -18,66 +18,15 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __TIME_SYNC_HANDLER_H_
-#define __TIME_SYNC_HANDLER_H_
 
-#include "APDUHandlerBase.h"
-
-#include <openpal/Loggable.h>
-#include <openpal/LoggableMacros.h>
+#include "APDUValidator.h"
 
 namespace opendnp3
 {
 
-/**
- * Dedicated class for processing response data in the master.
- */
-class TimeSyncHandler : public APDUHandlerBase, private openpal::Loggable
+bool AllowAll(GroupVariation gv, QualifierCode code)
 {
-
-public:
-	
-	/**
-	* @param arLogger the Logger that the loader should use for message reporting
-	*/
-	TimeSyncHandler(openpal::Logger& aLogger) : 
-		Loggable(aLogger), 
-		valid(false), 
-		timeOut(0)
-	{}		
-
-	virtual void _OnCountOf(const IterableBuffer<Group52Var2>& times) final
-	{
-		if(times.Count() == 1)
-		{
-			valid = true;			
-			times.foreach([this](const Group52Var2& obj) { timeOut = obj.time; });
-		}
-		else
-		{
-			LOG_BLOCK(openpal::LogLevel::Warning, "Ignoring unexpected time delay count of " << times.Count());
-		}
-	}
-
-	bool GetTimeDelay(uint16_t& time) 
-	{
-		if(this->errors.Any()) return false;
-		else 
-		{
-			if(valid) time = timeOut;
-			return valid;					
-		}
-	}
-
-private:
-	bool valid;
-	uint16_t timeOut;
-
-};
-
+	return true;
 }
 
-
-
-#endif
-
+}
