@@ -64,6 +64,15 @@ class ResponseContext : private Uncopyable
 		GroupVariationID groupVar;
 		LoadFun pLoadFun;
 	};
+	
+	struct RangeGroupVariation
+	{
+		RangeGroupVariation(StaticRange range_, GroupVariation groupVariation_) : range(range_), groupVariation(groupVariation_)
+		{}
+
+		StaticRange range;
+		GroupVariation groupVariation;
+	};
 
 	public:
 

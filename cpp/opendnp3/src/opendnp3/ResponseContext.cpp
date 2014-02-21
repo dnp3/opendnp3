@@ -61,6 +61,11 @@ QueueResult ResponseContext::QueueReadAllObjects(GroupVariation gv)
 	{
 		case(GroupVariation::Group60Var1):
 		{			
+			StaticArray<RangeGroupVariation, uint32_t, 6> values;
+			values[0] = RangeGroupVariation(pDatabase->FullRange<Binary>(), GroupVariation::Group1Var2);
+			values[1] = RangeGroupVariation(pDatabase->FullRange<Analog>(), GroupVariation::Group30Var1);
+
+				
 			MACRO_QUEUE_FULL_RANGE(GroupVariation::Group1Var2, Binary);
 			MACRO_QUEUE_FULL_RANGE(GroupVariation::Group30Var1, Analog);
 			MACRO_QUEUE_FULL_RANGE(GroupVariation::Group20Var2, Counter);
@@ -69,33 +74,11 @@ QueueResult ResponseContext::QueueReadAllObjects(GroupVariation gv)
 			MACRO_QUEUE_FULL_RANGE(GroupVariation::Group40Var1, SetpointStatus);			
 			return QueueResult::SUCCESS;
 		}
-/*
-		case(GroupVariation::Group60Var2):
-		{
-			SelectionCriteria criteria(EventTypeMasks::ALL_TYPES, 0, 0);
-			if(eventCountQueue.Push(CountOf<SelectionCriteria>::Max(criteria))) return QueueResult::SUCCESS;
-			else return QueueResult::FULL;
-
-		}
-		case(GroupVariation::Group60Var3):
-		{
-			SelectionCriteria criteria(0, EventTypeMasks::ALL_TYPES, 0);
-			if(eventCountQueue.Push(CountOf<SelectionCriteria>::Max(criteria))) return QueueResult::SUCCESS;
-			else return QueueResult::FULL;
-
-		}
-		case(GroupVariation::Group60Var4):
-		{
-			SelectionCriteria criteria(0, 0, EventTypeMasks::ALL_TYPES);
-			if(eventCountQueue.Push(CountOf<SelectionCriteria>::Max(criteria))) return QueueResult::SUCCESS;
-			else return QueueResult::FULL;
-
-		}
-*/
 		default:
 			return QueueResult::OBJECT_UNDEFINED;
 	}
 }
+
 
 #define MACRO_QUEUE_RANGE(GV) \
 	case(GroupVariation::GV): \

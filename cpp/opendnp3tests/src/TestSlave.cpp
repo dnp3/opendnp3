@@ -907,18 +907,12 @@ BOOST_AUTO_TEST_CASE(ReadFuncNotSupported)
 	t.SendToSlave("C0 01 0C 01 06"); //try to read 12/1 (control block)
 	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 01"); //restart/func not supported
 }
-
-
+*/
 
 void TestStaticRead(const std::string& arRequest, const std::string& arResponse)
 {
 	SlaveConfig cfg; cfg.mDisableUnsol = true;
-	SlaveTestObject t(cfg);
-	t.db.Configure(MeasurementType::BINARY, 1);
-	t.db.Configure(MeasurementType::ANALOG, 1);
-	t.db.Configure(MeasurementType::COUNTER, 1);
-	t.db.Configure(MeasurementType::CONTROL_STATUS, 1);
-	t.db.Configure(MeasurementType::SETPOINT_STATUS, 1);
+	SlaveTestObject t(cfg, DatabaseTemplate(1,1,1,1,1,1));	
 	t.slave.OnLowerLayerUp();
 
 	t.SendToSlave(arRequest);
@@ -977,6 +971,8 @@ BOOST_AUTO_TEST_CASE(ReadGrp40Var0ViaIntegrity)
 	TestStaticRead("C0 01 28 00 06", "C0 81 80 00 28 01 00 00 00 02 00 00 00 00"); // 1 byte start/stop, RESTART quality
 }
 
+
+/*
 
 
 // test that asking for a specific data type returns the requested type

@@ -35,7 +35,6 @@
 #include "IndexParser.h"
 #include "BitReader.h"
 #include "IterableTransforms.h"
-#include "APDUValidator.h"
 
 namespace opendnp3
 {

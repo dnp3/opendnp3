@@ -651,9 +651,6 @@
     <ClInclude Include="src\opendnp3\APDUHandlerBase.h">
       <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\APDUValidator.h">
-      <Filter>Header</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\opendnp3\AnalogOutput.cpp">
@@ -1056,9 +1053,6 @@
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\APDUWrapper.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\APDUValidator.cpp">
       <Filter>Source</Filter>
     </ClCompile>
   </ItemGroup>
