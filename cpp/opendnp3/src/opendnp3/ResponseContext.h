@@ -70,6 +70,9 @@ class ResponseContext : private Uncopyable
 		RangeGroupVariation(StaticRange range_, GroupVariation groupVariation_) : range(range_), groupVariation(groupVariation_)
 		{}
 
+		RangeGroupVariation() : range(), groupVariation(GroupVariation::UNKNOWN)
+		{}
+
 		StaticRange range;
 		GroupVariation groupVariation;
 	};
@@ -81,6 +84,7 @@ class ResponseContext : private Uncopyable
 	void Reset();
 
 	QueueResult QueueReadAllObjects(GroupVariation gv);
+	QueueResult QueueStaticIntegrity();
 	QueueResult QueueReadRange(GroupVariation gv, const StaticRange& range);
 
 	bool IsComplete() const;

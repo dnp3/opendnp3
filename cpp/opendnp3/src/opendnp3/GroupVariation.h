@@ -30,6 +30,7 @@ namespace opendnp3
 
 enum class GroupVariation : int
 {	
+	Group1Var0,
 	Group1Var1,
 	Group1Var2,
 

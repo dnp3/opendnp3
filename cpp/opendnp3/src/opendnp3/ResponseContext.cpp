@@ -59,26 +59,33 @@ QueueResult ResponseContext::QueueReadAllObjects(GroupVariation gv)
 {
 	switch(gv)
 	{
-		case(GroupVariation::Group60Var1):
-		{			
-			StaticArray<RangeGroupVariation, uint32_t, 6> values;
-			values[0] = RangeGroupVariation(pDatabase->FullRange<Binary>(), GroupVariation::Group1Var2);
-			values[1] = RangeGroupVariation(pDatabase->FullRange<Analog>(), GroupVariation::Group30Var1);
-
-				
-			MACRO_QUEUE_FULL_RANGE(GroupVariation::Group1Var2, Binary);
-			MACRO_QUEUE_FULL_RANGE(GroupVariation::Group30Var1, Analog);
-			MACRO_QUEUE_FULL_RANGE(GroupVariation::Group20Var2, Counter);
-			MACRO_QUEUE_FULL_RANGE(GroupVariation::Group21Var1, FrozenCounter);			
-			MACRO_QUEUE_FULL_RANGE(GroupVariation::Group10Var2, ControlStatus);
-			MACRO_QUEUE_FULL_RANGE(GroupVariation::Group40Var1, SetpointStatus);			
-			return QueueResult::SUCCESS;
-		}
+		case(GroupVariation::Group60Var1):		
+			return QueueStaticIntegrity();
+		case(GroupVariation::Group1Var0):
+			return QueueReadRange(GroupVariation::Group1Var2, pDatabase->FullRange<Binary>());		
 		default:
 			return QueueResult::OBJECT_UNDEFINED;
 	}
 }
 
+QueueResult ResponseContext::QueueStaticIntegrity()
+{
+	StaticArray<RangeGroupVariation, uint32_t, 6> values;
+	values[0] = RangeGroupVariation(pDatabase->FullRange<Binary>(), GroupVariation::Group1Var2);
+	values[1] = RangeGroupVariation(pDatabase->FullRange<Analog>(), GroupVariation::Group30Var1);
+	values[2] = RangeGroupVariation(pDatabase->FullRange<Counter>(), GroupVariation::Group20Var2);
+	values[3] = RangeGroupVariation(pDatabase->FullRange<FrozenCounter>(), GroupVariation::Group21Var1);
+	values[4] = RangeGroupVariation(pDatabase->FullRange<ControlStatus>(), GroupVariation::Group10Var2);
+	values[5] = RangeGroupVariation(pDatabase->FullRange<SetpointStatus>(), GroupVariation::Group40Var1);
+
+	for(uint32_t i=0; i< values.Size(); ++i)
+	{		
+		auto result = QueueReadRange(values[i].groupVariation, values[i].range);
+		if(result != QueueResult::SUCCESS) return result;		
+	}
+
+	return QueueResult::SUCCESS;
+}
 
 #define MACRO_QUEUE_RANGE(GV) \
 	case(GroupVariation::GV): \
@@ -86,39 +93,43 @@ QueueResult ResponseContext::QueueReadAllObjects(GroupVariation gv)
 
 QueueResult ResponseContext::QueueReadRange(GroupVariation gv, const StaticRange& range)
 {	
-	switch(gv)
-	{		
-		MACRO_QUEUE_RANGE(Group1Var2);
+	if(range.IsDefined()) 
+	{
+		switch(gv)
+		{		
+			MACRO_QUEUE_RANGE(Group1Var2);
 
-		MACRO_QUEUE_RANGE(Group10Var2);
+			MACRO_QUEUE_RANGE(Group10Var2);
 
-		MACRO_QUEUE_RANGE(Group20Var1);
-		MACRO_QUEUE_RANGE(Group20Var2);
-		MACRO_QUEUE_RANGE(Group20Var5);
-		MACRO_QUEUE_RANGE(Group20Var6);
+			MACRO_QUEUE_RANGE(Group20Var1);
+			MACRO_QUEUE_RANGE(Group20Var2);
+			MACRO_QUEUE_RANGE(Group20Var5);
+			MACRO_QUEUE_RANGE(Group20Var6);
 
-		MACRO_QUEUE_RANGE(Group21Var1);
-		MACRO_QUEUE_RANGE(Group21Var2);
-		MACRO_QUEUE_RANGE(Group21Var5);
-		MACRO_QUEUE_RANGE(Group21Var6);
-		MACRO_QUEUE_RANGE(Group21Var9);
-		MACRO_QUEUE_RANGE(Group21Var10);
+			MACRO_QUEUE_RANGE(Group21Var1);
+			MACRO_QUEUE_RANGE(Group21Var2);
+			MACRO_QUEUE_RANGE(Group21Var5);
+			MACRO_QUEUE_RANGE(Group21Var6);
+			MACRO_QUEUE_RANGE(Group21Var9);
+			MACRO_QUEUE_RANGE(Group21Var10);
 
-		MACRO_QUEUE_RANGE(Group30Var1);
-		MACRO_QUEUE_RANGE(Group30Var2);
-		MACRO_QUEUE_RANGE(Group30Var3);
-		MACRO_QUEUE_RANGE(Group30Var4);
-		MACRO_QUEUE_RANGE(Group30Var5);
-		MACRO_QUEUE_RANGE(Group30Var6);
+			MACRO_QUEUE_RANGE(Group30Var1);
+			MACRO_QUEUE_RANGE(Group30Var2);
+			MACRO_QUEUE_RANGE(Group30Var3);
+			MACRO_QUEUE_RANGE(Group30Var4);
+			MACRO_QUEUE_RANGE(Group30Var5);
+			MACRO_QUEUE_RANGE(Group30Var6);
 
-		MACRO_QUEUE_RANGE(Group40Var1);
-		MACRO_QUEUE_RANGE(Group40Var2);
-		MACRO_QUEUE_RANGE(Group40Var3);
-		MACRO_QUEUE_RANGE(Group40Var4);
+			MACRO_QUEUE_RANGE(Group40Var1);
+			MACRO_QUEUE_RANGE(Group40Var2);
+			MACRO_QUEUE_RANGE(Group40Var3);
+			MACRO_QUEUE_RANGE(Group40Var4);
 		
-		default:
-			return QueueResult::OBJECT_UNDEFINED;
-	}	
+			default:
+				return QueueResult::OBJECT_UNDEFINED;
+		}	
+	}
+	else return QueueResult::SUCCESS;
 }
 
 LoadResult ResponseContext::Load(APDUResponse& response)
