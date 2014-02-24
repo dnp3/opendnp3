@@ -44,6 +44,7 @@
     <ClInclude Include="include\opendnp3\gen\StaticAnalogResponse.h" />
     <ClInclude Include="include\opendnp3\gen\StaticBinaryResponse.h" />
     <ClInclude Include="include\opendnp3\gen\StaticCounterResponse.h" />
+    <ClInclude Include="include\opendnp3\gen\StaticFrozenCounterResponse.h" />
     <ClInclude Include="include\opendnp3\gen\StaticSetpointStatusResponse.h" />
     <ClInclude Include="include\opendnp3\IChannel.h" />
     <ClInclude Include="include\opendnp3\ICommandHandler.h" />

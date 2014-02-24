@@ -13,6 +13,7 @@ object EventTypes {
     create("StaticBinaryResponse", group(1)(2)),
     create("StaticAnalogResponse", group(30)(1,2,3,4,5,6)),
     create("StaticCounterResponse", group(20)(1,2,5,6)),
+    create("StaticFrozenCounterResponse", group(21)(1,2,5,6,7,8,9,10)),
     create("StaticSetpointStatusResponse",group(40)(1,2,3,4)),
     create("EventBinaryResponse", group(2)(1,2)),
     create("EventAnalogResponse", group(32)(1,2,3,4,5,6,7,8)),
