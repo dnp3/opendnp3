@@ -18,44 +18,37 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __RESPONSE_HELPERS_
-#define __RESPONSE_HELPERS_
-
-#include "Database.h"
-#include "StaticRange.h"
-#include "APDUResponse.h"
-#include "ObjectWriter.h"
+#ifndef __DUAL_VALUE_H_
+#define __DUAL_VALUE_H_
 
 namespace opendnp3
 {
 
-enum class LoadResult
+template <class T>
+class DualValue
 {
-	EMPTY,		// nothing was loaded because the response context is empty
-	COMPLETED,	// at least 1 event was loaded and the response context is empty
-	FULL		// events were loaded and the APDU is full, context is not empty
-};
 
-template <class Target, class Serializer, class IndexType, QualifierCode Qualifier>
-LoadResult LoadFixedSizeStartStop(GroupVariationID gv, ObjectWriter& writer, StaticRange& range, Database& db)
-{
-	auto values = db.Values<Target>();	
-	auto iter = writer.IterateOverRange<IndexType, Target>(Qualifier, Serializer::Inst(), static_cast<typename IndexType::Type>(range.start));			
-	while(range.IsDefined())
+public:
+	DualValue(const T& value) : current(value), frozen(value)
+	{}
+
+	DualValue() : current(), frozen()
+	{}
+
+	void Update(const T& value)
 	{
-		if(iter.Write(values[range.start].frozen))
-		{
-			range.Advance();
-		}
-		else 
-		{
-			iter.Complete();
-			return LoadResult::FULL;	
-		}
+		current = value;
 	}
-	iter.Complete();	
-	return LoadResult::COMPLETED;
-}
+
+	void Freeze()
+	{
+		frozen = current;
+	}
+
+	T current;
+	T frozen;		
+
+};
 
 }
 

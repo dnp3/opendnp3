@@ -188,8 +188,7 @@ void Slave::RespondToRequest(const APDURecord& record, SequenceInfo sequence)
 IINField Slave::ConfigureResponse(const APDURecord& request, SequenceInfo sequence, APDUResponse& response)
 {	
 	switch(request.function)
-	{
-		
+	{		
 		case(FunctionCode::WRITE):			
 			return HandleWrite(request, sequence);		
 		case(FunctionCode::READ):			
@@ -224,7 +223,10 @@ IINField Slave::HandleRead(const APDURecord& request, SequenceInfo sequence, APD
 		auto errors = handler.Errors();
 		if(errors.Any()) return errors;		
 		else 
-		{						
+		{	
+			// if the request contained static variations, we freeze the entire static database (double buffered)
+			// this ensures that an multi-fragmented responses see a consistent snapshot
+			if(mRspContext.IsStaticRequest()) mpDatabase->FreezeValues();
 			auto result = this->mRspContext.Load(response); // todo get the overflow bits out of here & return them
 			return IINField::Empty;
 		}

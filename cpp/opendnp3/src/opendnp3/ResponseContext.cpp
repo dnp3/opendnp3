@@ -31,8 +31,8 @@ namespace opendnp3
 
 ResponseContext::ResponseContext(Database* pDatabase_) : 
 	fragmentCount(0),
-	pDatabase(pDatabase_),
-	staticResponseQueue(staticRangeArray.ToIndexable())
+	isStaticRequest(false),
+	pDatabase(pDatabase_)	
 {}
 
 bool ResponseContext::IsComplete() const
@@ -40,9 +40,15 @@ bool ResponseContext::IsComplete() const
 	return staticResponseQueue.IsEmpty();
 }
 
+bool ResponseContext::IsStaticRequest() const
+{
+	return isStaticRequest;
+}
+
 void ResponseContext::Reset()
 {
 	fragmentCount = 0;
+	isStaticRequest = false;
 	staticResponseQueue.Clear();
 }
 
@@ -62,7 +68,15 @@ QueueResult ResponseContext::QueueReadAllObjects(GroupVariation gv)
 		case(GroupVariation::Group60Var1):		
 			return QueueStaticIntegrity();
 		case(GroupVariation::Group1Var0):
-			return QueueReadRange(GroupVariation::Group1Var2, pDatabase->FullRange<Binary>());		
+			return QueueReadRange(GroupVariation::Group1Var2, pDatabase->FullRange<Binary>());
+		case(GroupVariation::Group1Var2):
+			return QueueReadRange(GroupVariation::Group1Var2, pDatabase->FullRange<Binary>());
+		case(GroupVariation::Group10Var0):
+			return QueueReadRange(GroupVariation::Group10Var2, pDatabase->FullRange<ControlStatus>());
+		case(GroupVariation::Group10Var2):
+			return QueueReadRange(GroupVariation::Group10Var2, pDatabase->FullRange<ControlStatus>());
+		case(GroupVariation::Group20Var0):
+			return QueueReadRange(GroupVariation::Group20Var2, pDatabase->FullRange<Counter>());
 		default:
 			return QueueResult::OBJECT_UNDEFINED;
 	}

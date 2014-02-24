@@ -47,7 +47,9 @@ public:
 	
 	/* Functions for obtaining iterators */
 
-	bool AddEventBuffer(IEventBuffer* apEventBuffer);	
+	bool AddEventBuffer(IEventBuffer* apEventBuffer);
+
+	void FreezeValues();
 
 	// IDataObserver functions
 	void Update(const Binary& arPoint, uint16_t) final;
@@ -57,15 +59,15 @@ public:
 	void Update(const ControlStatus& arPoint, uint16_t) final;
 	void Update(const SetpointStatus& arPoint, uint16_t) final;
 
-	openpal::Indexable<Binary, uint16_t> Binaries();
-	openpal::Indexable<Analog, uint16_t> Analogs();
-	openpal::Indexable<Counter, uint16_t> Counters();
-	openpal::Indexable<FrozenCounter, uint16_t> FrozenCounters();
-	openpal::Indexable<ControlStatus, uint16_t> ControlStatii();
-	openpal::Indexable<SetpointStatus, uint16_t> SetpointStatii();
+	openpal::Indexable<DualValue<Binary>, uint16_t> Binaries();
+	openpal::Indexable<DualValue<Analog>, uint16_t> Analogs();
+	openpal::Indexable<DualValue<Counter>, uint16_t> Counters();
+	openpal::Indexable<DualValue<FrozenCounter>, uint16_t> FrozenCounters();
+	openpal::Indexable<DualValue<ControlStatus>, uint16_t> ControlStatii();
+	openpal::Indexable<DualValue<SetpointStatus>, uint16_t> SetpointStatii();
 
 	template <class T> 
-	openpal::Indexable<T, uint16_t> Values();
+	openpal::Indexable<DualValue<T>, uint16_t> Values();
 
 	template <class T> 
 	uint16_t NumValues() const;
@@ -81,6 +83,12 @@ public:
 	StaticDataFacade staticData;
 
 private:
+
+	template <class T>
+	static void FreezeCollection(openpal::Indexable<DualValue<T>, uint16_t>& collection)
+	{
+		collection.foreach([](DualValue<T>& value) { value.Freeze(); });
+	}
 
 	Database();
 	Database(const Database&);
@@ -102,7 +110,7 @@ private:
 			{			
 				this->UpdateEventBuffer(value, index, eventClass);
 			}
-			collection.values[index] = value;
+			collection.values[index].Update(value);
 		}	
 	}
 

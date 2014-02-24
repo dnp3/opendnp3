@@ -23,7 +23,7 @@
 
 #include <opendnp3/Uncopyable.h>
 
-#include <openpal/QueueAdapter.h>
+#include <openpal/StaticQueue.h>
 #include <openpal/Serialization.h>
 
 #include "StaticSizeConfiguration.h"
@@ -54,12 +54,12 @@ class ResponseContext : private Uncopyable
 {			
 	typedef LoadResult (*LoadFun)(GroupVariationID gv, ObjectWriter& writer, StaticRange& range, Database& db);
 
-	class FunctionalStaticRange: public StaticRange
+	class StaticRangeLoader: public StaticRange
 	{
 		public:
 		
-		FunctionalStaticRange() : pLoadFun(nullptr) {}
-		FunctionalStaticRange(GroupVariationID groupVar_, const StaticRange& rng): StaticRange(rng), groupVar(groupVar_), pLoadFun(nullptr) {}
+		StaticRangeLoader() : pLoadFun(nullptr) {}
+		StaticRangeLoader(LoadFun pLoadFun_, GroupVariationID groupVar_, const StaticRange& rng): StaticRange(rng), groupVar(groupVar_), pLoadFun(pLoadFun_) {}
 
 		GroupVariationID groupVar;
 		LoadFun pLoadFun;
@@ -88,6 +88,8 @@ class ResponseContext : private Uncopyable
 	QueueResult QueueReadRange(GroupVariation gv, const StaticRange& range);
 
 	bool IsComplete() const;
+
+	bool IsStaticRequest() const;
 		
 	LoadResult Load(APDUResponse& response);
 	
@@ -98,15 +100,10 @@ class ResponseContext : private Uncopyable
 	LoadResult LoadStaticData(ObjectWriter& writer);
 	
 	uint32_t fragmentCount;
+	bool isStaticRequest;
 	Database* pDatabase;
-
-	openpal::StaticArray<FunctionalStaticRange, uint8_t, SizeConfiguration::MAX_READ_REQUESTS> staticRangeArray;
-	openpal::QueueAdapter<FunctionalStaticRange, uint8_t> staticResponseQueue;
-
-/*
-	openpal::StaticArray<CountOf<SelectionCriteria>, uint8_t, SizeConfiguration::MAX_EVENT_READ_REQUESTS> eventCountArray; 
-	openpal::QueueAdapter<CountOf<SelectionCriteria>, uint8_t> eventCountQueue;
-*/
+	
+	openpal::StaticQueue<StaticRangeLoader, uint8_t, SizeConfiguration::MAX_READ_REQUESTS> staticResponseQueue;
 
 	template <class T, class U>
 	QueueResult QueueRange(GroupVariationID gv, const StaticRange& rng);
@@ -114,19 +111,22 @@ class ResponseContext : private Uncopyable
 
 template <class Target, class Serializer>
 QueueResult ResponseContext::QueueRange(GroupVariationID gv, const StaticRange& rng)
-{	
+{		
 	if(rng.IsContainedBy(pDatabase->NumValues<Target>()))
 	{
-		FunctionalStaticRange range(gv, rng);
-		if(range.IsContainedByUInt8())
+		this->isStaticRequest = true;
+		
+		if(rng.IsContainedByUInt8())
 		{
-			range.pLoadFun = &LoadFixedSizeStartStop<Target, Serializer, openpal::UInt8, QualifierCode::UINT8_START_STOP>;
-			return staticResponseQueue.Push(range) ? QueueResult::SUCCESS : QueueResult::FULL;
+			auto fun = &LoadFixedSizeStartStop<Target, Serializer, openpal::UInt8, QualifierCode::UINT8_START_STOP>;
+			StaticRangeLoader loader(fun, gv, rng);
+			return staticResponseQueue.Push(loader) ? QueueResult::SUCCESS : QueueResult::FULL;
 		}
 		else
 		{			
-			range.pLoadFun = &LoadFixedSizeStartStop<Target, Serializer, openpal::UInt16, QualifierCode::UINT16_START_STOP>;
-			return staticResponseQueue.Push(range) ? QueueResult::SUCCESS : QueueResult::FULL;
+			auto fun = &LoadFixedSizeStartStop<Target, Serializer, openpal::UInt16, QualifierCode::UINT16_START_STOP>;
+			StaticRangeLoader loader(fun, gv, rng);
+			return staticResponseQueue.Push(loader) ? QueueResult::SUCCESS : QueueResult::FULL;
 		}
 	}
 	else

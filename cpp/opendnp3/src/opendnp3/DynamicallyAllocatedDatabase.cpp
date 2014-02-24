@@ -43,7 +43,10 @@ DynamicallyAllocatedDatabase::DynamicallyAllocatedDatabase(const DatabaseTemplat
 
 void DynamicallyAllocatedDatabase::Configure(const DatabaseConfiguration& config)
 {
-	for(size_t i=0; i< config.binaryMetadata.size(); ++i) binaryMetadata[i].clazz = config.binaryMetadata[i].EventClass;
+	for(size_t i=0; i< config.binaryMetadata.size(); ++i) 
+	{
+		binaryMetadata[i].clazz = config.binaryMetadata[i].EventClass;
+	}
 
 	for(size_t i=0; i< config.analogMetadata.size(); ++i) {
 		analogMetadata[i].clazz = config.analogMetadata[i].EventClass;

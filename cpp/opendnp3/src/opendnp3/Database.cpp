@@ -45,12 +45,22 @@ bool Database::AddEventBuffer(IEventBuffer* apEventBuffer)
 	return eventBuffers.Add(apEventBuffer);
 }
 
-openpal::Indexable<Binary, uint16_t> Database::Binaries() { return staticData.binaries.values; }
-openpal::Indexable<Analog, uint16_t> Database::Analogs() { return staticData.analogs.values; }
-openpal::Indexable<Counter, uint16_t> Database::Counters() { return staticData.counters.values; }
-openpal::Indexable<FrozenCounter, uint16_t> Database::FrozenCounters() { return staticData.frozenCounters.values; }
-openpal::Indexable<ControlStatus, uint16_t> Database::ControlStatii() { return staticData.controlStatii; }
-openpal::Indexable<SetpointStatus, uint16_t> Database::SetpointStatii() { return staticData.setpointStatii; }
+void Database::FreezeValues()
+{
+	FreezeCollection(staticData.binaries.values);
+	FreezeCollection(staticData.analogs.values);
+	FreezeCollection(staticData.counters.values);
+	FreezeCollection(staticData.frozenCounters.values);
+	FreezeCollection(staticData.controlStatii);
+	FreezeCollection(staticData.setpointStatii);	
+}
+
+openpal::Indexable<DualValue<Binary>, uint16_t> Database::Binaries() { return staticData.binaries.values; }
+openpal::Indexable<DualValue<Analog>, uint16_t> Database::Analogs() { return staticData.analogs.values; }
+openpal::Indexable<DualValue<Counter>, uint16_t> Database::Counters() { return staticData.counters.values; }
+openpal::Indexable<DualValue<FrozenCounter>, uint16_t> Database::FrozenCounters() { return staticData.frozenCounters.values; }
+openpal::Indexable<DualValue<ControlStatus>, uint16_t> Database::ControlStatii() { return staticData.controlStatii; }
+openpal::Indexable<DualValue<SetpointStatus>, uint16_t> Database::SetpointStatii() { return staticData.setpointStatii; }
 
 ////////////////////////////////////////////////////
 // IDataObserver interface
@@ -87,22 +97,22 @@ void Database::Update(const SetpointStatus& value, uint16_t index)
 }
 
 template <> 
-openpal::Indexable<Binary, uint16_t> Database::Values<Binary>() { return Binaries(); }
+openpal::Indexable<DualValue<Binary>, uint16_t> Database::Values<Binary>() { return Binaries(); }
 
 template <> 
-openpal::Indexable<Analog, uint16_t> Database::Values<Analog>() { return Analogs(); }
+openpal::Indexable<DualValue<Analog>, uint16_t> Database::Values<Analog>() { return Analogs(); }
 
 template <> 
-openpal::Indexable<Counter, uint16_t> Database::Values<Counter>() { return Counters(); }
+openpal::Indexable<DualValue<Counter>, uint16_t> Database::Values<Counter>() { return Counters(); }
 
 template <>
-openpal::Indexable<FrozenCounter, uint16_t> Database::Values<FrozenCounter>() { return FrozenCounters(); }
+openpal::Indexable<DualValue<FrozenCounter>, uint16_t> Database::Values<FrozenCounter>() { return FrozenCounters(); }
 
 template <> 
-openpal::Indexable<ControlStatus, uint16_t> Database::Values<ControlStatus>() { return ControlStatii(); }
+openpal::Indexable<DualValue<ControlStatus>, uint16_t> Database::Values<ControlStatus>() { return ControlStatii(); }
 
 template <> 
-openpal::Indexable<SetpointStatus, uint16_t> Database::Values<SetpointStatus> () { return SetpointStatii(); }
+openpal::Indexable<DualValue<SetpointStatus>, uint16_t> Database::Values<SetpointStatus> () { return SetpointStatii(); }
 
 template <> 
 uint16_t Database::NumValues<Binary>() const { return staticData.binaries.values.Size(); }

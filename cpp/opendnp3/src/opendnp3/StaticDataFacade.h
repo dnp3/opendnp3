@@ -27,6 +27,7 @@
 
 #include "EventMetadata.h"
 #include "ValueMetadataPair.h"
+#include "DualValue.h"
 
 namespace opendnp3
 {
@@ -36,12 +37,12 @@ typedef DeadbandMetadata<Analog> AnalogMetadata;
 typedef DeadbandMetadata<Counter> CounterMetadata;
 typedef DeadbandMetadata<FrozenCounter> FrozenCounterMetadata;
 
-typedef ValueMetadataPair<Binary, BinaryMetadata> BinaryCollection;
-typedef ValueMetadataPair<Analog, AnalogMetadata> AnalogCollection;
-typedef ValueMetadataPair<Counter, CounterMetadata> CounterCollection;
-typedef ValueMetadataPair<FrozenCounter, FrozenCounterMetadata> FrozenCounterCollection;
-typedef openpal::Indexable<ControlStatus, uint16_t> ControlStatusCollection;
-typedef openpal::Indexable<SetpointStatus, uint16_t> SetpointStatusCollection;
+typedef ValueMetadataPair<DualValue<Binary>, BinaryMetadata> BinaryCollection;
+typedef ValueMetadataPair<DualValue<Analog>, AnalogMetadata> AnalogCollection;
+typedef ValueMetadataPair<DualValue<Counter>, CounterMetadata> CounterCollection;
+typedef ValueMetadataPair<DualValue<FrozenCounter>, FrozenCounterMetadata> FrozenCounterCollection;
+typedef openpal::Indexable<DualValue<ControlStatus>, uint16_t> ControlStatusCollection;
+typedef openpal::Indexable<DualValue<SetpointStatus>, uint16_t> SetpointStatusCollection;
 
 // Doesn't contain the real buffers, just a facade that allows use to easily switch 
 // between static and dynamic allocation

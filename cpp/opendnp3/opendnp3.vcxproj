@@ -117,6 +117,7 @@
     <ClInclude Include="src\opendnp3\DNP3Channel.h" />
     <ClInclude Include="src\opendnp3\DNPCrc.h" />
     <ClInclude Include="src\opendnp3\DownSampling.h" />
+    <ClInclude Include="src\opendnp3\DualValue.h" />
     <ClInclude Include="src\opendnp3\DynamicallyAllocatedDatabase.h" />
     <ClInclude Include="src\opendnp3\DynamicallyAllocatedEventBuffer.h" />
     <ClInclude Include="src\opendnp3\DynamicBuffer.h" />

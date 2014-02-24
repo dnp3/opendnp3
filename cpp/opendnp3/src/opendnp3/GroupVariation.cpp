@@ -58,6 +58,8 @@ GroupVariation GroupVariationRecord::GetEnum(uint8_t group, uint8_t variation)
 		case(10):
 			switch(variation)
 			{
+				case(0):
+					return GroupVariation::Group10Var0;
 				case(1):
 					return GroupVariation::Group10Var1;
 				case(2):
@@ -76,6 +78,8 @@ GroupVariation GroupVariationRecord::GetEnum(uint8_t group, uint8_t variation)
 		case(20):
 			switch(variation)
 			{
+				case(0):
+					return GroupVariation::Group20Var0;
 				case(1):
 					return GroupVariation::Group20Var1;
 				case(2):
@@ -98,6 +102,8 @@ GroupVariation GroupVariationRecord::GetEnum(uint8_t group, uint8_t variation)
 		case(21):
 			switch(variation)
 			{
+				case(0):
+					return GroupVariation::Group21Var0;
 				case(1):
 					return GroupVariation::Group21Var1;
 				case(2):
@@ -116,6 +122,8 @@ GroupVariation GroupVariationRecord::GetEnum(uint8_t group, uint8_t variation)
 		case(22):
 			switch(variation)
 			{
+				case(0):
+					return GroupVariation::Group22Var0;
 				case(1):
 					return GroupVariation::Group22Var1;
 				case(2):
@@ -138,6 +146,8 @@ GroupVariation GroupVariationRecord::GetEnum(uint8_t group, uint8_t variation)
 		case(30):
 			switch(variation)
 			{
+				case(0):
+					return GroupVariation::Group30Var0;
 				case(1):
 					return GroupVariation::Group30Var1;
 				case(2):
@@ -156,6 +166,8 @@ GroupVariation GroupVariationRecord::GetEnum(uint8_t group, uint8_t variation)
 		case(32):
 			switch(variation)
 			{
+				case(0):
+					return GroupVariation::Group32Var0;
 				case(1):
 					return GroupVariation::Group32Var1;
 				case(2):
@@ -178,6 +190,8 @@ GroupVariation GroupVariationRecord::GetEnum(uint8_t group, uint8_t variation)
 		case(40):
 			switch(variation)
 			{
+				case(0):
+					return GroupVariation::Group40Var0;
 				case(1):
 					return GroupVariation::Group40Var1;
 				case(2):
@@ -192,6 +206,8 @@ GroupVariation GroupVariationRecord::GetEnum(uint8_t group, uint8_t variation)
 		case(41):
 			switch(variation)
 			{
+				case(0):
+					return GroupVariation::Group41Var0;
 				case(1):
 					return GroupVariation::Group41Var1;
 				case(2):

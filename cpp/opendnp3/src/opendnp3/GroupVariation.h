@@ -39,11 +39,13 @@ enum class GroupVariation : int
 	Group2Var2,
 	Group2Var3,
 
+	Group10Var0,
 	Group10Var1,
 	Group10Var2,
 
 	Group12Var1,
 
+	Group20Var0,
 	Group20Var1,
 	Group20Var2,
 	Group20Var3,
@@ -53,6 +55,7 @@ enum class GroupVariation : int
 	Group20Var7,
 	Group20Var8,
 
+	Group21Var0,
 	Group21Var1,
 	Group21Var2,
 	Group21Var5,
@@ -60,6 +63,7 @@ enum class GroupVariation : int
 	Group21Var9,
 	Group21Var10,
 
+	Group22Var0,
 	Group22Var1,
 	Group22Var2,
 	Group22Var3,
@@ -69,6 +73,7 @@ enum class GroupVariation : int
 	Group22Var7,
 	Group22Var8,
 
+	Group30Var0,
 	Group30Var1,
 	Group30Var2,
 	Group30Var3,
@@ -76,6 +81,7 @@ enum class GroupVariation : int
 	Group30Var5,
 	Group30Var6,
 
+	Group32Var0,
 	Group32Var1,
 	Group32Var2,
 	Group32Var3,
@@ -85,11 +91,13 @@ enum class GroupVariation : int
 	Group32Var7,
 	Group32Var8,
 
+	Group40Var0,
 	Group40Var1,
 	Group40Var2,
 	Group40Var3,
 	Group40Var4,
 
+	Group41Var0,
 	Group41Var1,
 	Group41Var2,
 	Group41Var3,
