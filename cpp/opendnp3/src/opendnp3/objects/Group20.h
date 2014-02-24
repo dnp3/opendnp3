@@ -41,7 +41,7 @@ struct Group20Var1
 struct Group20Var1Serializer : public IDNP3Serializer<Counter>
 {
 
-  static IDNP3Serializer<Counter>* Inst() { return &mInstance; }  
+  static IDNP3Serializer<Counter>* Inst() { return &mInstance; }
 
   GroupVariationID ID() const { return Group20Var1::ID; }
 

@@ -23,12 +23,9 @@ object Generate {
 
     // generate all enumerations
 
-    /*
     CppEnumGenerator(opendnp3Paths, openpalPaths)
     CSharpEnumGenerator("DNP3.Interface", csharpPath)
     JavaEnumGenerator("com.automatak.dnp3", javaPath)
-    */
-
 
     val objectsPath = FileSystems.getDefault.getPath("../cpp/opendnp3/src/opendnp3/objects")
     GroupVariationFileGenerator(objectsPath)
