@@ -200,14 +200,14 @@
     <ClInclude Include="src\opendnp3\RangeWriteIterator.h" />
     <ClInclude Include="src\opendnp3\ReadHandler.h" />
     <ClInclude Include="src\opendnp3\ResponseContext.h" />
-    <ClInclude Include="src\opendnp3\ResponseHelpers.h" />
+    <ClInclude Include="src\opendnp3\StaticLoader.h" />
     <ClInclude Include="src\opendnp3\SecLinkLayerStates.h" />
     <ClInclude Include="src\opendnp3\SelectionCriteria.h" />
     <ClInclude Include="src\opendnp3\SequenceInfo.h" />
     <ClInclude Include="src\opendnp3\Settable.h" />
     <ClInclude Include="src\opendnp3\ShiftableBuffer.h" />
     <ClInclude Include="src\opendnp3\Slave.h" />
-    <ClInclude Include="src\opendnp3\SlaveResponseTypes.h" />
+    <ClInclude Include="src\opendnp3\StaticResponseTypes.h" />
     <ClInclude Include="src\opendnp3\SlaveStates.h" />
     <ClInclude Include="src\opendnp3\SolicitedChannel.h" />
     <ClInclude Include="src\opendnp3\StackBase.h" />
@@ -347,7 +347,7 @@
     <ClCompile Include="src\opendnp3\SimpleDataObserver.cpp" />
     <ClCompile Include="src\opendnp3\Slave.cpp" />
     <ClCompile Include="src\opendnp3\SlaveConfig.cpp" />
-    <ClCompile Include="src\opendnp3\SlaveResponseTypes.cpp" />
+    <ClCompile Include="src\opendnp3\StaticResponseTypes.cpp" />
     <ClCompile Include="src\opendnp3\SlaveStates.cpp" />
     <ClCompile Include="src\opendnp3\SolicitedChannel.cpp" />
     <ClCompile Include="src\opendnp3\StackBase.cpp" />

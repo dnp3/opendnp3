@@ -80,7 +80,7 @@ BOOST_AUTO_TEST_CASE(RespondsWithValues)
 	BOOST_REQUIRE(QueueResult::SUCCESS == context.QueueReadRange(GroupVariation::Group1Var2, StaticRange(0,3)));
 	
 	APDUResponse rsp(Response());	
-	BOOST_REQUIRE(LoadResult::COMPLETED == context.Load(rsp));
+	BOOST_REQUIRE(StaticLoadResult::COMPLETED == context.Load(rsp));
 
 	BOOST_REQUIRE_EQUAL("C0 81 00 00 01 02 00 00 03 02 02 02 02", toHex(rsp.ToReadOnly()));
 }
@@ -94,7 +94,7 @@ BOOST_AUTO_TEST_CASE(RespondsWithFrozenCounters)
 	BOOST_REQUIRE(QueueResult::SUCCESS == context.QueueReadRange(GroupVariation::Group21Var1, StaticRange(0,3)));
 
 	APDUResponse rsp(Response());	
-	BOOST_REQUIRE(LoadResult::COMPLETED == context.Load(rsp));
+	BOOST_REQUIRE(StaticLoadResult::COMPLETED == context.Load(rsp));
 
 	BOOST_REQUIRE_EQUAL("C0 81 00 00 15 01 00 00 03 02 00 00 00 00 02 00 00 00 00 02 00 00 00 00 02 00 00 00 00", toHex(rsp.ToReadOnly()));
 }
@@ -122,7 +122,7 @@ BOOST_AUTO_TEST_CASE(WritesMixedValues)
 	BOOST_REQUIRE(QueueResult::SUCCESS == context.QueueReadRange(GroupVariation::Group1Var2, StaticRange(3,4)));
 
 	APDUResponse rsp(Response());	
-	BOOST_REQUIRE(LoadResult::COMPLETED == context.Load(rsp));
+	BOOST_REQUIRE(StaticLoadResult::COMPLETED == context.Load(rsp));
 	BOOST_REQUIRE_EQUAL("C0 81 00 00 1E 02 00 01 02 02 00 00 02 00 00 01 02 00 03 04 02 02", toHex(rsp.ToReadOnly()));	
 }
 
@@ -138,13 +138,13 @@ BOOST_AUTO_TEST_CASE(ReturnsFullWhen2ndHeaderCantBeWritten)
 	{
 		APDUResponse rsp(Response(16)); //enough for first header, but not the 2nd
 		
-		BOOST_REQUIRE(LoadResult::FULL == context.Load(rsp));
+		BOOST_REQUIRE(StaticLoadResult::FULL == context.Load(rsp));
 		BOOST_REQUIRE_EQUAL("C0 81 00 00 1E 02 00 01 02 02 00 00 02 00 00", toHex(rsp.ToReadOnly()));
 	}
 
 	{
 		APDUResponse rsp(Response());		
-		BOOST_REQUIRE(LoadResult::COMPLETED == context.Load(rsp));
+		BOOST_REQUIRE(StaticLoadResult::COMPLETED == context.Load(rsp));
 		BOOST_REQUIRE_EQUAL("C0 81 00 00 01 02 00 03 04 02 02", toHex(rsp.ToReadOnly()));
 	}
 }
@@ -160,13 +160,13 @@ BOOST_AUTO_TEST_CASE(ReturnsFullWhenOnlyPartof2ndHeaderCanBeWritten)
 
 	{
 		APDUResponse rsp(Response(21)); //enough for first header, but not the full 2nd header		
-		BOOST_REQUIRE(LoadResult::FULL == context.Load(rsp));
+		BOOST_REQUIRE(StaticLoadResult::FULL == context.Load(rsp));
 		BOOST_REQUIRE_EQUAL("C0 81 00 00 1E 02 00 01 02 02 00 00 02 00 00 01 02 00 03 03 02", toHex(rsp.ToReadOnly()));
 	}
 
 	{
 		APDUResponse rsp(Response());		
-		BOOST_REQUIRE(LoadResult::COMPLETED == context.Load(rsp));
+		BOOST_REQUIRE(StaticLoadResult::COMPLETED == context.Load(rsp));
 		BOOST_REQUIRE_EQUAL("C0 81 00 00 01 02 00 04 04 02", toHex(rsp.ToReadOnly()));
 	}
 }
@@ -182,7 +182,7 @@ BOOST_AUTO_TEST_CASE(HandlesIntegrityPoll)
 
 	{
 		APDUResponse rsp(Response());		
-		BOOST_REQUIRE(LoadResult::COMPLETED == context.Load(rsp));
+		BOOST_REQUIRE(StaticLoadResult::COMPLETED == context.Load(rsp));
 		BOOST_REQUIRE_EQUAL("C0 81 00 00 01 02 00 00 00 02 14 02 00 00 00 02 00 00 0A 02 00 00 00 02", toHex(rsp.ToReadOnly()));
 	}
 }

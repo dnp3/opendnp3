@@ -50,11 +50,10 @@ Slave::Slave(openpal::Logger aLogger, IAppLayer* apAppLayer, IExecutor* apExecut
 	mpDatabase(apDatabase),
 	mpCmdHandler(apCmdHandler),
 	mpState(AS_Closed::Inst()),
-	mConfig(arCfg),
-	mRspTypes(arCfg),
+	mConfig(arCfg),	
 	mpUnsolTimer(nullptr),	
 	mCachedRequest(arCfg.mMaxControls),	
-	mRspContext(apDatabase),
+	mRspContext(apDatabase, StaticResponseTypes(arCfg)),
 	mSBOHandler(arCfg.mSelectTimeout, apCmdHandler, apExecutor),	
 	mDeferredUpdateCount(0),	
 	mDeferredUnsol(false),	
@@ -226,7 +225,7 @@ IINField Slave::HandleRead(const APDURecord& request, SequenceInfo sequence, APD
 		{	
 			// if the request contained static variations, we freeze the entire static database (double buffered)
 			// this ensures that an multi-fragmented responses see a consistent snapshot
-			if(mRspContext.IsStaticRequest()) mpDatabase->FreezeValues();
+			if(!mRspContext.IsComplete()) mpDatabase->FreezeValues();
 			auto result = this->mRspContext.Load(response); // todo get the overflow bits out of here & return them
 			return IINField::Empty;
 		}

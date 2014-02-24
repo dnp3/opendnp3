@@ -18,12 +18,14 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __SLAVE_RESPONSE_TYPES_H_
-#define __SLAVE_RESPONSE_TYPES_H_
+#ifndef __STATIC_RESPONSE_TYPES_H_
+#define __STATIC_RESPONSE_TYPES_H_
 
 #include <opendnp3/ObjectInterfaces.h>
 #include <opendnp3/DataTypes.h>
 #include <opendnp3/SlaveConfig.h>
+
+#include "StaticLoader.h"
 
 namespace opendnp3
 {
@@ -32,38 +34,31 @@ namespace opendnp3
  * Reads a slave config object and and translates the configuration to
  * singletons.
  */
-class SlaveResponseTypes
+class StaticResponseTypes
 {
 public:
 
-	SlaveResponseTypes(const SlaveConfig& arCfg);
-/*
-	StreamObject<Binary>* mpStaticBinary;
-	StreamObject<Analog>* mpStaticAnalog;
-	StreamObject<Counter>* mpStaticCounter;
-	StreamObject<ControlStatus>* mpStaticControlStatus;
-	StreamObject<SetpointStatus>* mpStaticSetpointStatus;
+	StaticResponseTypes();
 
-	StreamObject<Binary>* mpEventBinary;
-	StreamObject<Analog>* mpEventAnalog;
-	StreamObject<Counter>* mpEventCounter;
-
-	SizeByVariationObject* mpEventVto;
-*/
+	StaticResponseTypes(const SlaveConfig& arCfg);
+			
+	template <class T>
+	StaticLoadFun GetLoader();
 
 private:
 
-/*
-	static StreamObject<Binary>* GetStaticBinary(StaticBinaryResponse);
-	static StreamObject<Analog>* GetStaticAnalog(StaticAnalogResponse);
-	static StreamObject<Counter>* GetStaticCounter(StaticCounterResponse);
-	static StreamObject<SetpointStatus>* GetStaticSetpointStatus(StaticSetpointStatusResponse);
+	const StaticLoadFun pStaticBinaryLoader;
+	const StaticLoadFun pStaticAnalogLoader;
+	const StaticLoadFun pStaticCounterLoader;
+	const StaticLoadFun pStaticFrozenCounterLoader;
+	const StaticLoadFun pStaticControlStatusLoader;
+	const StaticLoadFun pStaticSetpointStatusLoader;
 
-	static StreamObject<Binary>* GetEventBinary(EventBinaryResponse);
-	static StreamObject<Analog>* GetEventAnalog(EventAnalogResponse);
-	static StreamObject<Counter>* GetEventCounter(EventCounterResponse);
-*/
-
+	static StaticLoadFun GetStaticBinary(StaticBinaryResponse rsp);
+	static StaticLoadFun GetStaticCounter(StaticCounterResponse rsp);	
+	//static StaticLoadFun GetStaticFrozenCounter(StaticFrozenCounterResponse rsp);
+	static StaticLoadFun GetStaticAnalog(StaticAnalogResponse rsp);	
+	static StaticLoadFun GetStaticSetpointStatus(StaticSetpointStatusResponse rsp);	
 };
 
 }

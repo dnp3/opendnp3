@@ -34,7 +34,7 @@
 #include "IAppUser.h"
 
 #include "ResponseContext.h"
-#include "SlaveResponseTypes.h"
+#include "StaticResponseTypes.h"
 #include "OutstationSBOHandler.h"
 #include "CachedRequest.h"
 #include "StaticSizeConfiguration.h"
@@ -127,8 +127,7 @@ private:
 	ICommandHandler* mpCmdHandler;			// how commands are selected/operated on application code
 	int mSequence;							// control sequence
 	SlaveStateBase* mpState;				// current state for the state pattern
-	SlaveConfig mConfig;					// houses the configurable paramters of the outstation
-	SlaveResponseTypes mRspTypes;			// converts the group/var in the config to dnp singletons
+	SlaveConfig mConfig;					// houses the configurable paramters of the outstation	
 
 	openpal::ITimer* mpUnsolTimer;			// timer for sending unsol responsess
 	ITimeWriteHandler* mpTimeWriteHandler;	

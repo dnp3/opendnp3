@@ -546,9 +546,6 @@
     <ClInclude Include="src\opendnp3\Slave.h">
       <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\SlaveResponseTypes.h">
-      <Filter>Header</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\SlaveStates.h">
       <Filter>Header</Filter>
     </ClInclude>
@@ -615,9 +612,6 @@
     <ClInclude Include="src\opendnp3\StaticRange.h">
       <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\ResponseHelpers.h">
-      <Filter>Header</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\APDUEventWriter.h">
       <Filter>Header</Filter>
     </ClInclude>
@@ -652,6 +646,12 @@
       <Filter>Header</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\DualValue.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\StaticLoader.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\StaticResponseTypes.h">
       <Filter>Header</Filter>
     </ClInclude>
   </ItemGroup>
@@ -887,9 +887,6 @@
     <ClCompile Include="src\opendnp3\SlaveConfig.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\SlaveResponseTypes.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
     <ClCompile Include="src\opendnp3\SlaveStates.cpp">
       <Filter>Source</Filter>
     </ClCompile>
@@ -1056,6 +1053,9 @@
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\APDUWrapper.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\StaticResponseTypes.cpp">
       <Filter>Source</Filter>
     </ClCompile>
   </ItemGroup>

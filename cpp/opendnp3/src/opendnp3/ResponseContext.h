@@ -31,9 +31,10 @@
 #include "APDUResponse.h"
 #include "ObjectWriter.h"
 #include "Database.h"
-#include "ResponseHelpers.h"
+#include "StaticLoader.h"
 #include "CountOf.h"
 #include "SelectionCriteria.h"
+#include "StaticResponseTypes.h"
 
 namespace opendnp3
 {
@@ -51,88 +52,65 @@ enum class QueueResult
  * coordinating the static database and event buffer
  */
 class ResponseContext : private Uncopyable
-{			
-	typedef LoadResult (*LoadFun)(GroupVariationID gv, ObjectWriter& writer, StaticRange& range, Database& db);
-
+{				
 	class StaticRangeLoader: public StaticRange
 	{
 		public:
 		
 		StaticRangeLoader() : pLoadFun(nullptr) {}
-		StaticRangeLoader(LoadFun pLoadFun_, GroupVariationID groupVar_, const StaticRange& rng): StaticRange(rng), groupVar(groupVar_), pLoadFun(pLoadFun_) {}
-
-		GroupVariationID groupVar;
-		LoadFun pLoadFun;
+		StaticRangeLoader(StaticLoadFun pLoadFun_, const StaticRange& rng): StaticRange(rng), pLoadFun(pLoadFun_) {}
+		
+		StaticLoadFun pLoadFun;
 	};
 	
-	struct RangeGroupVariation
-	{
-		RangeGroupVariation(StaticRange range_, GroupVariation groupVariation_) : range(range_), groupVariation(groupVariation_)
-		{}
-
-		RangeGroupVariation() : range(), groupVariation(GroupVariation::UNKNOWN)
-		{}
-
-		StaticRange range;
-		GroupVariation groupVariation;
-	};
 
 	public:
 
-	ResponseContext(Database*);
+	ResponseContext(Database*, const StaticResponseTypes& rspTypes = StaticResponseTypes());
 
 	void Reset();
 
 	QueueResult QueueReadAllObjects(GroupVariation gv);
-	QueueResult QueueStaticIntegrity();
 	QueueResult QueueReadRange(GroupVariation gv, const StaticRange& range);
 
-	bool IsComplete() const;
-
-	bool IsStaticRequest() const;
+	bool IsComplete() const;	
 		
-	LoadResult Load(APDUResponse& response);
+	StaticLoadResult Load(APDUResponse& response);
 	
 	private:
 
-	static AppControlField GetAppControl(uint32_t headerCount, LoadResult result);
+	QueueResult QueueReadRange(const StaticRangeLoader& loader);
 
-	LoadResult LoadStaticData(ObjectWriter& writer);
+	QueueResult QueueStaticIntegrity();
+
+	static AppControlField GetAppControl(uint32_t headerCount, StaticLoadResult result);
+	
+	template <class T>
+	StaticRangeLoader GetFullRangeWithDefaultLoader();
+
+	template <class Serializer>
+	StaticRangeLoader GetFullRange();
+
+	StaticLoadResult LoadStaticData(ObjectWriter& writer);
 	
 	uint32_t fragmentCount;
-	bool isStaticRequest;
 	Database* pDatabase;
+	StaticResponseTypes rspTypes;
 	
 	openpal::StaticQueue<StaticRangeLoader, uint8_t, SizeConfiguration::MAX_READ_REQUESTS> staticResponseQueue;
 
-	template <class T, class U>
-	QueueResult QueueRange(GroupVariationID gv, const StaticRange& rng);
 };
 
-template <class Target, class Serializer>
-QueueResult ResponseContext::QueueRange(GroupVariationID gv, const StaticRange& rng)
-{		
-	if(rng.IsContainedBy(pDatabase->NumValues<Target>()))
-	{
-		this->isStaticRequest = true;
-		
-		if(rng.IsContainedByUInt8())
-		{
-			auto fun = &LoadFixedSizeStartStop<Target, Serializer, openpal::UInt8, QualifierCode::UINT8_START_STOP>;
-			StaticRangeLoader loader(fun, gv, rng);
-			return staticResponseQueue.Push(loader) ? QueueResult::SUCCESS : QueueResult::FULL;
-		}
-		else
-		{			
-			auto fun = &LoadFixedSizeStartStop<Target, Serializer, openpal::UInt16, QualifierCode::UINT16_START_STOP>;
-			StaticRangeLoader loader(fun, gv, rng);
-			return staticResponseQueue.Push(loader) ? QueueResult::SUCCESS : QueueResult::FULL;
-		}
-	}
-	else
-	{
-		return QueueResult::OUT_OF_RANGE;		
-	}
+template <class T>
+ResponseContext::StaticRangeLoader ResponseContext::GetFullRangeWithDefaultLoader()
+{
+	return StaticRangeLoader(rspTypes.GetLoader<T>(), pDatabase->FullRange<T>());
+}
+
+template <class Serializer>
+ResponseContext::StaticRangeLoader ResponseContext::GetFullRange()
+{
+	return StaticRangeLoader(StaticLoader::GetLoadFunction<Serializer>(), pDatabase->FullRange<typename Serializer::Target>());
 }
 
 }
