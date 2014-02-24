@@ -38,8 +38,8 @@ StaticResponseTypes::StaticResponseTypes(const SlaveConfig& arCfg) :
 	pStaticBinaryLoader(GetStaticBinary(arCfg.mStaticBinary)),
 	pStaticAnalogLoader(GetStaticAnalog(arCfg.mStaticAnalog)),
 	pStaticCounterLoader(GetStaticCounter(arCfg.mStaticCounter)),
-	pStaticFrozenCounterLoader(StaticLoader::GetLoadFunction<Group21Var1Serializer>()), // TODO, make the default frozen counter configurable
-	pStaticControlStatusLoader(StaticLoader::GetLoadFunction<Group10Var2Serializer>()),
+	pStaticFrozenCounterLoader(GetStaticFrozenCounter(arCfg.mStaticFrozenCounter)),
+	pStaticControlStatusLoader(GetStaticControlStatus(arCfg.mStaticControlStatus)),
 	pStaticSetpointStatusLoader(GetStaticSetpointStatus(arCfg.mStaticSetpointStatus))
 {
 		
@@ -110,6 +110,24 @@ StaticLoadFun StaticResponseTypes::GetStaticCounter(StaticCounterResponse rsp)
 	}
 }
 
+StaticLoadFun StaticResponseTypes::GetStaticFrozenCounter(StaticFrozenCounterResponse rsp)
+{
+	switch(rsp) {
+		case(StaticFrozenCounterResponse::Group21Var1): return StaticLoader::GetLoadFunction<Group21Var1Serializer>();
+	default:
+		return StaticLoader::GetLoadFunction<Group21Var1Serializer>();
+	}
+}
+
+StaticLoadFun StaticResponseTypes::GetStaticControlStatus(StaticControlStatusResponse rsp)
+{
+	switch(rsp) {
+	case(StaticControlStatusResponse::Group10Var2): return StaticLoader::GetLoadFunction<Group10Var2Serializer>();		
+	default:
+		return StaticLoader::GetLoadFunction<Group10Var2Serializer>();
+	}
+}
+
 StaticLoadFun StaticResponseTypes::GetStaticSetpointStatus(StaticSetpointStatusResponse rsp)
 {
 	switch(rsp) {
@@ -121,6 +139,8 @@ StaticLoadFun StaticResponseTypes::GetStaticSetpointStatus(StaticSetpointStatusR
 		return StaticLoader::GetLoadFunction<Group40Var1Serializer>();
 	}
 }
+
+
 
 
 

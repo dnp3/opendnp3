@@ -56,9 +56,10 @@ private:
 
 	static StaticLoadFun GetStaticBinary(StaticBinaryResponse rsp);
 	static StaticLoadFun GetStaticCounter(StaticCounterResponse rsp);	
-	//static StaticLoadFun GetStaticFrozenCounter(StaticFrozenCounterResponse rsp);
+	static StaticLoadFun GetStaticFrozenCounter(StaticFrozenCounterResponse rsp);
 	static StaticLoadFun GetStaticAnalog(StaticAnalogResponse rsp);	
 	static StaticLoadFun GetStaticSetpointStatus(StaticSetpointStatusResponse rsp);	
+	static StaticLoadFun GetStaticControlStatus(StaticControlStatusResponse rsp);	
 };
 
 }

@@ -43,6 +43,7 @@
     <ClInclude Include="include\opendnp3\gen\StackState.h" />
     <ClInclude Include="include\opendnp3\gen\StaticAnalogResponse.h" />
     <ClInclude Include="include\opendnp3\gen\StaticBinaryResponse.h" />
+    <ClInclude Include="include\opendnp3\gen\StaticControlStatusResponse.h" />
     <ClInclude Include="include\opendnp3\gen\StaticCounterResponse.h" />
     <ClInclude Include="include\opendnp3\gen\StaticFrozenCounterResponse.h" />
     <ClInclude Include="include\opendnp3\gen\StaticSetpointStatusResponse.h" />
