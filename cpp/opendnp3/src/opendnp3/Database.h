@@ -49,7 +49,7 @@ public:
 
 	bool AddEventBuffer(IEventBuffer* apEventBuffer);
 
-	void FreezeValues();
+	void DoubleBuffer();
 
 	// IDataObserver functions
 	void Update(const Binary& arPoint, uint16_t) final;

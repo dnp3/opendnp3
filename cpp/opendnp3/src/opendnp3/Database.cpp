@@ -45,7 +45,7 @@ bool Database::AddEventBuffer(IEventBuffer* apEventBuffer)
 	return eventBuffers.Add(apEventBuffer);
 }
 
-void Database::FreezeValues()
+void Database::DoubleBuffer()
 {
 	FreezeCollection(staticData.binaries.values);
 	FreezeCollection(staticData.analogs.values);
