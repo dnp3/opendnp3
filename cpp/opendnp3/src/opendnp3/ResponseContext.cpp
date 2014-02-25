@@ -51,19 +51,76 @@ QueueResult ResponseContext::QueueReadAllObjects(GroupVariation gv)
 	switch(gv)
 	{
 		case(GroupVariation::Group60Var1):		
-			return QueueStaticIntegrity();		
+			return QueueStaticIntegrity();	
+		
+		// Group 1
 		case(GroupVariation::Group1Var0):
 			return QueueReadRange(GetFullRangeWithDefaultLoader<Binary>());		
 		case(GroupVariation::Group1Var2):
-			return QueueReadRange(GetFullRange<Group2Var1Serializer>());
-		/*
+			return QueueReadRange(GetFullRange<Group1Var2Serializer>());		
+
+		// Group 10
 		case(GroupVariation::Group10Var0):
-			return QueueReadRange(GroupVariation::Group10Var2, pDatabase->FullRange<ControlStatus>());
+			return QueueReadRange(GetFullRangeWithDefaultLoader<ControlStatus>());
 		case(GroupVariation::Group10Var2):
-			return QueueReadRange(GroupVariation::Group10Var2, pDatabase->FullRange<ControlStatus>());
+			return QueueReadRange(GetFullRange<Group10Var2Serializer>());
+		
+		// Group 20
 		case(GroupVariation::Group20Var0):
-			return QueueReadRange(GroupVariation::Group20Var2, pDatabase->FullRange<Counter>());
-		*/
+			return QueueReadRange(GetFullRangeWithDefaultLoader<Counter>());
+		case(GroupVariation::Group20Var1):
+			return QueueReadRange(GetFullRange<Group20Var1Serializer>());
+		case(GroupVariation::Group20Var2):
+			return QueueReadRange(GetFullRange<Group20Var2Serializer>());
+		case(GroupVariation::Group20Var5):
+			return QueueReadRange(GetFullRange<Group20Var5Serializer>());
+		case(GroupVariation::Group20Var6):
+			return QueueReadRange(GetFullRange<Group20Var6Serializer>());
+
+		// Group 21
+		case(GroupVariation::Group21Var0):
+			return QueueReadRange(GetFullRangeWithDefaultLoader<FrozenCounter>());
+		case(GroupVariation::Group21Var1):
+			return QueueReadRange(GetFullRange<Group21Var1Serializer>());
+		case(GroupVariation::Group21Var2):
+			return QueueReadRange(GetFullRange<Group21Var2Serializer>());
+		case(GroupVariation::Group21Var5):
+			return QueueReadRange(GetFullRange<Group21Var5Serializer>());
+		case(GroupVariation::Group21Var6):
+			return QueueReadRange(GetFullRange<Group21Var6Serializer>());
+		case(GroupVariation::Group21Var9):
+			return QueueReadRange(GetFullRange<Group21Var9Serializer>());
+		case(GroupVariation::Group21Var10):
+			return QueueReadRange(GetFullRange<Group21Var10Serializer>());
+
+		// Group 30
+		case(GroupVariation::Group30Var0):
+			return QueueReadRange(GetFullRangeWithDefaultLoader<Analog>());
+		case(GroupVariation::Group30Var1):
+			return QueueReadRange(GetFullRange<Group30Var1Serializer>());
+		case(GroupVariation::Group30Var2):
+			return QueueReadRange(GetFullRange<Group30Var2Serializer>());
+		case(GroupVariation::Group30Var3):
+			return QueueReadRange(GetFullRange<Group30Var3Serializer>());
+		case(GroupVariation::Group30Var4):
+			return QueueReadRange(GetFullRange<Group30Var4Serializer>());
+		case(GroupVariation::Group30Var5):
+			return QueueReadRange(GetFullRange<Group30Var5Serializer>());
+		case(GroupVariation::Group30Var6):
+			return QueueReadRange(GetFullRange<Group30Var6Serializer>());
+
+		// Group 40
+		case(GroupVariation::Group40Var0):
+			return QueueReadRange(GetFullRangeWithDefaultLoader<SetpointStatus>());
+		case(GroupVariation::Group40Var1):
+			return QueueReadRange(GetFullRange<Group40Var1Serializer>());
+		case(GroupVariation::Group40Var2):
+			return QueueReadRange(GetFullRange<Group40Var2Serializer>());
+		case(GroupVariation::Group40Var3):
+			return QueueReadRange(GetFullRange<Group40Var3Serializer>());
+		case(GroupVariation::Group40Var4):
+			return QueueReadRange(GetFullRange<Group40Var4Serializer>());
+
 		default:
 			return QueueResult::OBJECT_UNDEFINED;
 	}

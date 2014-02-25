@@ -83,19 +83,11 @@ GroupVariation GroupVariationRecord::GetEnum(uint8_t group, uint8_t variation)
 				case(1):
 					return GroupVariation::Group20Var1;
 				case(2):
-					return GroupVariation::Group20Var2;
-				case(3):
-					return GroupVariation::Group20Var3;
-				case(4):
-					return GroupVariation::Group20Var4;
+					return GroupVariation::Group20Var2;				
 				case(5):
 					return GroupVariation::Group20Var5;
 				case(6):
-					return GroupVariation::Group20Var6;
-				case(7):
-					return GroupVariation::Group20Var7;
-				case(8):
-					return GroupVariation::Group20Var8;
+					return GroupVariation::Group20Var6;				
 				default:
 					return GroupVariation::UNKNOWN;
 			}
