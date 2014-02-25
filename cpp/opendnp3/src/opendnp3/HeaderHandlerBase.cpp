@@ -47,6 +47,18 @@ void APDUHandlerBase::AllObjects(GroupVariation gv, const openpal::ReadOnlyBuffe
 	++currentHeader;
 }
 
+void APDUHandlerBase::OnRangeRequest(GroupVariation gv, const Range& range)
+{
+	this->_OnRangeRequest(gv, range);
+	++currentHeader;
+}
+
+void APDUHandlerBase::OnCountRequest(GroupVariation gv, uint32_t count)
+{
+	this->_OnCountRequest(gv, count);
+	++currentHeader;
+}
+
 void APDUHandlerBase::OnIIN(GroupVariation, const openpal::ReadOnlyBuffer&, const IterableBuffer<IndexedValue<bool>>& meas)
 {	
 	this->_OnIIN(meas);
@@ -157,6 +169,16 @@ void APDUHandlerBase::OnIndexPrefix(GroupVariation gv, const openpal::ReadOnlyBu
 
 void APDUHandlerBase::_AllObjects(GroupVariation gv)
 {	
+	errors.Set(IINBit::FUNC_NOT_SUPPORTED);
+}
+
+void APDUHandlerBase::_OnRangeRequest(GroupVariation gv, const Range& range)
+{
+	errors.Set(IINBit::FUNC_NOT_SUPPORTED);
+}
+
+void APDUHandlerBase::_OnCountRequest(GroupVariation gv, uint32_t count)
+{
 	errors.Set(IINBit::FUNC_NOT_SUPPORTED);
 }
 

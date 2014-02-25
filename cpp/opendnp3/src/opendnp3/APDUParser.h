@@ -35,6 +35,7 @@
 #include "IndexParser.h"
 #include "BitReader.h"
 #include "IterableTransforms.h"
+#include "StaticSizeConfiguration.h"
 
 namespace opendnp3
 {
@@ -45,13 +46,22 @@ class APDUParser : private PureStatic
 
 	class Context
 	{
-		public:
+		public:		
 
-		static Context Default() { return Context(32768); }
+		static Context Default() { return Context(); }
 
-		Context(uint32_t aMaxObjects) : count(0), MAX_OBJECTS(aMaxObjects) {}
+		Context(bool expectContents_ = true, uint32_t aMaxObjects = SizeConfiguration::MAX_OBJECTS_PER_APDU) : 
+			expectContents(expectContents_),
+			count(0), 
+			MAX_OBJECTS(aMaxObjects) 
+		{}
 
-		//return true if the count exceeds the max count
+		bool ExpectsContents() const
+		{
+			return expectContents;
+		}
+
+		// return true if the count exceeds the max count
 		bool AddObjectCount(uint32_t aCount)
 		{
 			count += aCount;
@@ -60,6 +70,8 @@ class APDUParser : private PureStatic
 		
 		private:
 
+
+		const bool expectContents;
 		uint32_t count;
 		const uint32_t MAX_OBJECTS;
 	};
@@ -117,6 +129,12 @@ class APDUParser : private PureStatic
 
 	static Result ParseHeader(openpal::ReadOnlyBuffer& buffer, Context& context, IAPDUHandler* pHandler);
 
+	template <class IndexType>
+	static Result ParseCountHeader(openpal::ReadOnlyBuffer& buffer, Context& context, const HeaderRecord& record, const GroupVariationRecord& gvRecord, IAPDUHandler* pHandler);
+
+	template <class ParserType, class CountType>
+	static Result ParseRangeHeader(openpal::ReadOnlyBuffer& buffer, Context& context, const HeaderRecord& record, const GroupVariationRecord& gvRecord, IAPDUHandler* pHandler);
+
 	template <class ParserType, class CountType>
 	static Result ParseRange(openpal::ReadOnlyBuffer& buffer, Context& context, Range& range);
 
@@ -168,6 +186,55 @@ class APDUParser : private PureStatic
 	static IndexedValue<Binary> BoolToBinary(const IndexedValue<bool>& v);
 	static IndexedValue<ControlStatus> BoolToControlStatus(const IndexedValue<bool>& v);
 };
+
+template <class IndexType>
+APDUParser::Result APDUParser::ParseCountHeader(openpal::ReadOnlyBuffer& buffer, Context& context, const HeaderRecord& record, const GroupVariationRecord& gvRecord, IAPDUHandler* pHandler)
+{
+	uint32_t count;
+	auto res = ParseCount<IndexType>(buffer, context, count);
+	if(res == Result::OK)
+	{					
+		if(context.ExpectsContents()) 
+		{						
+			return ParseObjectsWithRange(record.Add(IndexType::Size), buffer, gvRecord, Range(0, count), pHandler);
+		}
+		else 
+		{
+			if(pHandler) 
+			{
+				pHandler->OnCountRequest(gvRecord.enumeration, count);
+			}
+			return Result::OK;
+		}
+	}
+	else return res;		
+}
+
+template <class ParserType, class CountType>
+APDUParser::Result APDUParser::ParseRangeHeader(openpal::ReadOnlyBuffer& buffer, Context& context, const HeaderRecord& record, const GroupVariationRecord& gvRecord, IAPDUHandler* pHandler)
+{
+	Range range;				
+	auto res = ParseRange<ParserType, CountType>(buffer, context, range);
+	if(res == Result::OK)
+	{
+		if(context.ExpectsContents()) 
+		{
+			return ParseObjectsWithRange(record.Add(2*ParserType::Size), buffer, gvRecord, range, pHandler);
+		}
+		else
+		{
+			if(pHandler) 
+			{
+				pHandler->OnRangeRequest(gvRecord.enumeration, range);
+			}
+			return Result::OK;
+		}
+	}
+	else 
+	{
+		return res;
+	}
+}
 
 template <class Callback>
 APDUParser::Result APDUParser::ParseRangeAsBitField(	

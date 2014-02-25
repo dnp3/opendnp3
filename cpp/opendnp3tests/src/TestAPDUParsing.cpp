@@ -140,6 +140,18 @@ BOOST_AUTO_TEST_CASE(Group1Var2Range)
 	});	
 }
 
+BOOST_AUTO_TEST_CASE(Group1Var2RangeAsReadRange)
+{
+	HexSequence buffer("01 02 00 03 05");
+	MockApduHeaderHandler mock;
+	auto result = APDUParser::ParseTwoPass(buffer.ToReadOnly(), &mock, APDUParser::Context(false)); // don't expect contents 
+	BOOST_REQUIRE(result == APDUParser::Result::OK);
+	//BOOST_REQUIRE_EQUAL(numCalls, mock.groupVariations.size());
+
+	
+}
+
+
 BOOST_AUTO_TEST_CASE(Group1Var2CountOfZero)
 {
 	// 1 byte count == 0, 0 octets data
@@ -211,7 +223,7 @@ BOOST_AUTO_TEST_CASE(MaxCountAccumlatesOverHeaders)
 	HexSequence buffer("01 02 00 01 02 81 81 01 02 00 01 02 81 81"); // total of four objects
 	MockApduHeaderHandler mock;
 
-	APDUParser::Context ctx(3); //maximum of the 3 objects	
+	APDUParser::Context ctx(true, 3); //maximum of the 3 objects
 	auto result = APDUParser::ParseTwoPass(buffer.ToReadOnly(), &mock, ctx);
 
 	BOOST_REQUIRE(result == APDUParser::Result::UNREASONABLE_OBJECT_COUNT);

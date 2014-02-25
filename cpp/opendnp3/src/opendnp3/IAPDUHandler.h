@@ -30,6 +30,8 @@
 #include <opendnp3/IndexedValue.h>
 #include <opendnp3/OctetString.h>
 
+#include "Range.h"
+
 #include "objects/Group50.h"
 #include "objects/Group52.h"
 
@@ -44,6 +46,10 @@ class IAPDUHandler
 	public:
 
 		virtual void AllObjects(GroupVariation gv, const openpal::ReadOnlyBuffer& header) = 0;
+
+		virtual void OnRangeRequest(GroupVariation gv, const Range& range) = 0;
+
+		virtual void OnCountRequest(GroupVariation gv, uint32_t count) = 0;
 
 		virtual void OnCountOf(const IterableBuffer<Group50Var1>& times) = 0;
 

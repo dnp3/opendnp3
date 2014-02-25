@@ -42,7 +42,12 @@ struct SizeConfiguration : private PureStatic
 	// the maximum number of event read object/variation records that can be in any READ request
 	static const uint16_t MAX_EVENT_READ_REQUESTS = 16;
 
+	// the maximum size of a transmitted or received APDU
 	static const uint32_t MAX_APDU_BUFFER_SIZE = 2048;
+
+	// a safeguard parameter to project from DoS attacks
+	// this really only applies to "empty strings"
+	static const uint32_t MAX_OBJECTS_PER_APDU = 32768;
 };
 
 }

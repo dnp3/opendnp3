@@ -90,30 +90,19 @@ APDUParser::Result APDUParser::ParseHeader(ReadOnlyBuffer& buffer, Context& cont
 				if(pHandler) pHandler->AllObjects(gvRecord.enumeration, record.Complete(0));				
 				return Result::OK;
 			}
+
 			case(QualifierCode::UINT8_CNT):
-			{
-				uint32_t count;
-				auto res = ParseCount<UInt8>(buffer, context, count);				
-				return (res == Result::OK) ? ParseObjectsWithRange(record.Add(UInt8::Size), buffer, gvRecord, Range(0, count), pHandler) : res;				
-			}
+				return ParseCountHeader<UInt8>(buffer, context, record, gvRecord, pHandler);
+
 			case(QualifierCode::UINT16_CNT):
-			{
-				uint32_t count;
-				auto res = ParseCount<UInt16>(buffer, context, count);
-				return (res == Result::OK) ? ParseObjectsWithRange(record.Add(UInt16::Size), buffer, gvRecord, Range(0, count), pHandler) : res;				
-			}			
+				return ParseCountHeader<UInt16>(buffer, context, record, gvRecord, pHandler);
+			
 			case(QualifierCode::UINT8_START_STOP):
-			{
-				Range range;				
-				auto res = ParseRange<UInt8, uint16_t>(buffer, context, range);
-				return (res == Result::OK) ? ParseObjectsWithRange(record.Add(2*UInt8::Size), buffer, gvRecord, range, pHandler) : res;
-			}
+				return ParseRangeHeader<UInt8, uint16_t>(buffer, context, record, gvRecord, pHandler);
+
 			case(QualifierCode::UINT16_START_STOP):
-			{
-				Range range;
-				auto res = ParseRange<UInt16, uint32_t>(buffer, context, range);
-				return (res == Result::OK) ? ParseObjectsWithRange(record.Add(2*UInt16::Size), buffer, gvRecord, range, pHandler) : res;
-			}			
+				return ParseRangeHeader<UInt16, uint32_t>(buffer, context, record, gvRecord, pHandler);
+					
 			case(QualifierCode::UINT8_CNT_UINT8_INDEX):
 			{
 				uint32_t count;

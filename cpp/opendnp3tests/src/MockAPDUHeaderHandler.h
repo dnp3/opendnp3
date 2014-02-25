@@ -41,6 +41,16 @@ class MockApduHeaderHandler : public IAPDUHandler
 			headers.push_back(header);
 		}
 
+		virtual void OnRangeRequest(GroupVariation gv, const Range& range) override
+		{
+			groupVariations.push_back(gv);			
+		}
+
+		virtual void OnCountRequest(GroupVariation gv, uint32_t count) override
+		{
+			groupVariations.push_back(gv);			
+		}
+
 		virtual void OnIIN(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const IterableBuffer<IndexedValue<bool>>& bits) override
 		{
 			groupVariations.push_back(gv);
