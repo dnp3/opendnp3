@@ -525,9 +525,6 @@
     <ClInclude Include="src\opendnp3\ReadHandler.h">
       <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\ResponseContext.h">
-      <Filter>Header</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\SecLinkLayerStates.h">
       <Filter>Header</Filter>
     </ClInclude>
@@ -659,6 +656,9 @@
     </ClInclude>
     <ClInclude Include="include\opendnp3\gen\StaticControlStatusResponse.h">
       <Filter>Include\gen</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\StaticResponseContext.h">
+      <Filter>Header</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -872,9 +872,6 @@
     <ClCompile Include="src\opendnp3\ReadHandler.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\ResponseContext.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
     <ClCompile Include="src\opendnp3\SecLinkLayerStates.cpp">
       <Filter>Source</Filter>
     </ClCompile>
@@ -1062,6 +1059,9 @@
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\StaticResponseTypes.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\StaticResponseContext.cpp">
       <Filter>Source</Filter>
     </ClCompile>
   </ItemGroup>

@@ -34,6 +34,10 @@ class StaticRange
 
 	StaticRange();
 	StaticRange(uint16_t start_, uint16_t stop_);
+	
+	void ClipTo(const StaticRange& borders);
+
+	bool IsClipped() const { return clipped; }
 
 	bool IsContainedBy(uint16_t size) const;
 
@@ -47,6 +51,8 @@ class StaticRange
 	uint16_t stop;
 	
 	private:
+
+	bool clipped;
 
 	static const uint16_t MIN;
 	static const uint16_t MAX;	

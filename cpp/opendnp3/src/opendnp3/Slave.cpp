@@ -53,7 +53,7 @@ Slave::Slave(openpal::Logger aLogger, IAppLayer* apAppLayer, IExecutor* apExecut
 	mConfig(arCfg),	
 	mpUnsolTimer(nullptr),	
 	mCachedRequest(arCfg.mMaxControls),	
-	mRspContext(apDatabase, StaticResponseTypes(arCfg)),
+	mStaticRspContext(apDatabase, StaticResponseTypes(arCfg)),
 	mSBOHandler(arCfg.mSelectTimeout, apCmdHandler, apExecutor),	
 	mDeferredUpdateCount(0),	
 	mDeferredUnsol(false),	
@@ -214,8 +214,8 @@ IINField Slave::HandleWrite(const APDURecord& request, SequenceInfo sequence)
 
 IINField Slave::HandleRead(const APDURecord& request, SequenceInfo sequence, APDUResponse& response)
 {
-	mRspContext.Reset();
-	ReadHandler handler(mLogger, &mRspContext);
+	mStaticRspContext.Reset();
+	ReadHandler handler(mLogger, &mStaticRspContext);
 	auto result = APDUParser::ParseTwoPass(request.objects, &handler, APDUParser::Context(false)); // don't expect range/count context on a READ
 	if(result == APDUParser::Result::OK)
 	{
@@ -225,14 +225,14 @@ IINField Slave::HandleRead(const APDURecord& request, SequenceInfo sequence, APD
 		{	
 			// if the request contained static variations, we double buffer (copy) the entire static database.
 			// this ensures that an multi-fragmented responses see a consistent snapshot
-			if(!mRspContext.IsComplete()) mpDatabase->DoubleBuffer();
-			auto result = this->mRspContext.Load(response); // todo get the overflow bits out of here & return them
+			if(!mStaticRspContext.IsComplete()) mpDatabase->DoubleBuffer();
+			this->mStaticRspContext.Load(response); // todo get the overflow bits out of here & return them
 			return IINField::Empty;
 		}
 	}
 	else 
 	{
-		mRspContext.Reset();
+		mStaticRspContext.Reset();
 		return IINFromParseResult(result);
 	}
 }
@@ -242,7 +242,7 @@ void Slave::ContinueResponse()
 	APDUResponse response(responseBuffer.GetWriteBuffer(mConfig.mMaxFragSize));
 	response.SetFunction(FunctionCode::RESPONSE);
 	response.SetControl(AppControlField::DEFAULT);
-	this->mRspContext.Load(response);
+	this->mStaticRspContext.Load(response);
 	this->SendResponse(response);
 }
 

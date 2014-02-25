@@ -18,7 +18,7 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include "ResponseContext.h"
+#include "StaticResponseContext.h"
 
 #include <openpal/Serialization.h>
 
@@ -29,24 +29,24 @@ using namespace openpal;
 namespace opendnp3
 {
 
-ResponseContext::ResponseContext(Database* pDatabase_, const StaticResponseTypes& rspTypes_) : 
+StaticResponseContext::StaticResponseContext(Database* pDatabase_, const StaticResponseTypes& rspTypes_) : 
 	fragmentCount(0),	
 	pDatabase(pDatabase_),
 	rspTypes(rspTypes_)
 {}
 
-bool ResponseContext::IsComplete() const
+bool StaticResponseContext::IsComplete() const
 {
 	return staticResponseQueue.IsEmpty();
 }
 
-void ResponseContext::Reset()
+void StaticResponseContext::Reset()
 {
 	fragmentCount = 0;	
 	staticResponseQueue.Clear();
 }
 
-QueueResult ResponseContext::QueueReadAllObjects(GroupVariation gv)
+QueueResult StaticResponseContext::QueueReadAllObjects(GroupVariation gv)
 {
 	switch(gv)
 	{
@@ -126,12 +126,87 @@ QueueResult ResponseContext::QueueReadAllObjects(GroupVariation gv)
 	}
 }
 
-QueueResult ResponseContext::QueueReadRange(GroupVariation gv, const StaticRange& range)
+QueueResult StaticResponseContext::QueueReadRange(GroupVariation gv, const StaticRange& range)
 {
-	return QueueResult::OUT_OF_RANGE;
+	switch(gv)
+	{				
+		// Group 1
+		case(GroupVariation::Group1Var0):
+			return QueueReadRange(GetClippedRangeWithDefaultLoader<Binary>(range));				
+		case(GroupVariation::Group1Var2):
+			return QueueReadRange(GetClippedRange<Group1Var2Serializer>(range));		
+		
+		// Group 10
+		case(GroupVariation::Group10Var0):
+			return QueueReadRange(GetClippedRangeWithDefaultLoader<ControlStatus>(range));			
+		case(GroupVariation::Group10Var2):
+			return QueueReadRange(GetClippedRange<Group10Var2Serializer>(range));
+		
+		// Group 20
+		case(GroupVariation::Group20Var0):
+			return QueueReadRange(GetClippedRangeWithDefaultLoader<Counter>(range));			
+		case(GroupVariation::Group20Var1):
+			return QueueReadRange(GetClippedRange<Group20Var1Serializer>(range));
+		case(GroupVariation::Group20Var2):
+			return QueueReadRange(GetClippedRange<Group20Var2Serializer>(range));
+		case(GroupVariation::Group20Var5):
+			return QueueReadRange(GetClippedRange<Group20Var5Serializer>(range));
+		case(GroupVariation::Group20Var6):
+			return QueueReadRange(GetClippedRange<Group20Var6Serializer>(range));
+
+		
+		// Group 21
+		case(GroupVariation::Group21Var0):
+			return QueueReadRange(GetClippedRangeWithDefaultLoader<FrozenCounter>(range));
+		case(GroupVariation::Group21Var1):
+			return QueueReadRange(GetClippedRange<Group21Var1Serializer>(range));
+		case(GroupVariation::Group21Var2):
+			return QueueReadRange(GetClippedRange<Group21Var2Serializer>(range));
+		case(GroupVariation::Group21Var5):
+			return QueueReadRange(GetClippedRange<Group21Var5Serializer>(range));
+		case(GroupVariation::Group21Var6):
+			return QueueReadRange(GetClippedRange<Group21Var6Serializer>(range));
+		case(GroupVariation::Group21Var9):
+			return QueueReadRange(GetClippedRange<Group21Var9Serializer>(range));
+		case(GroupVariation::Group21Var10):
+			return QueueReadRange(GetClippedRange<Group21Var10Serializer>(range));
+
+		
+		// Group 30
+		case(GroupVariation::Group30Var0):
+			return QueueReadRange(GetClippedRangeWithDefaultLoader<Analog>(range));
+		case(GroupVariation::Group30Var1):
+			return QueueReadRange(GetClippedRange<Group30Var1Serializer>(range));
+		case(GroupVariation::Group30Var2):
+			return QueueReadRange(GetClippedRange<Group30Var2Serializer>(range));
+		case(GroupVariation::Group30Var3):
+			return QueueReadRange(GetClippedRange<Group30Var3Serializer>(range));
+		case(GroupVariation::Group30Var4):
+			return QueueReadRange(GetClippedRange<Group30Var4Serializer>(range));
+		case(GroupVariation::Group30Var5):
+			return QueueReadRange(GetClippedRange<Group30Var5Serializer>(range));
+		case(GroupVariation::Group30Var6):
+			return QueueReadRange(GetClippedRange<Group30Var6Serializer>(range));
+		
+		// Group 40
+		case(GroupVariation::Group40Var0):
+			return QueueReadRange(GetClippedRangeWithDefaultLoader<SetpointStatus>(range));
+		case(GroupVariation::Group40Var1):
+			return QueueReadRange(GetClippedRange<Group40Var1Serializer>(range));
+		case(GroupVariation::Group40Var2):
+			return QueueReadRange(GetClippedRange<Group40Var2Serializer>(range));
+		case(GroupVariation::Group40Var3):
+			return QueueReadRange(GetClippedRange<Group40Var3Serializer>(range));
+		case(GroupVariation::Group40Var4):
+			return QueueReadRange(GetClippedRange<Group40Var4Serializer>(range));
+		
+
+		default:
+			return QueueResult::OBJECT_UNDEFINED;
+	}
 }
 
-QueueResult ResponseContext::QueueStaticIntegrity()
+QueueResult StaticResponseContext::QueueStaticIntegrity()
 {
 	StaticQueue<StaticRangeLoader, uint32_t, 6> values;		
 	values.Push(GetFullRangeWithDefaultLoader<Binary>());
@@ -154,16 +229,23 @@ QueueResult ResponseContext::QueueStaticIntegrity()
 	return QueueResult::SUCCESS;
 }
 
-QueueResult ResponseContext::QueueReadRange(const StaticRangeLoader& loader)
+QueueResult StaticResponseContext::QueueReadRange(const StaticRangeLoader& loader)
 {	
 	if(loader.IsDefined())
 	{
-		return staticResponseQueue.Push(loader) ? QueueResult::SUCCESS : QueueResult::FULL;	
+		if(staticResponseQueue.Push(loader))
+		{
+			return loader.IsClipped() ? QueueResult::OUT_OF_RANGE : QueueResult::SUCCESS;
+		}
+		else 
+		{
+			return QueueResult::FULL;	
+		}		
 	}
 	else return QueueResult::OUT_OF_RANGE;
 }
 
-StaticLoadResult ResponseContext::Load(APDUResponse& response)
+StaticLoadResult StaticResponseContext::Load(APDUResponse& response)
 {	
 	auto writer = response.GetWriter();
 	auto result = LoadStaticData(writer);
@@ -173,14 +255,14 @@ StaticLoadResult ResponseContext::Load(APDUResponse& response)
 	return result;
 }
 
-AppControlField ResponseContext::GetAppControl(uint32_t headerCount, StaticLoadResult result)
+AppControlField StaticResponseContext::GetAppControl(uint32_t headerCount, StaticLoadResult result)
 {
 	bool fir = (headerCount == 0);
 	bool fin = (result != StaticLoadResult::FULL);
 	return AppControlField(fir, fin, !fin, false, 0);
 }
 
-StaticLoadResult ResponseContext::LoadStaticData(ObjectWriter& writer)
+StaticLoadResult StaticResponseContext::LoadStaticData(ObjectWriter& writer)
 {		
 	while(!staticResponseQueue.IsEmpty())
 	{				

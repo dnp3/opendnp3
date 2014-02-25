@@ -210,16 +210,14 @@ void AS_Idle::OnUnsolExpiration(Slave* slave)
 AS_WaitForRspSuccess AS_WaitForRspSuccess::mInstance;
 
 void AS_WaitForRspSuccess::OnSolFailure(Slave* slave)
-{
-	slave->mRspContext.Reset();
+{	
 	slave->ChangeState(AS_Idle::Inst());	
 }
 
 void AS_WaitForRspSuccess::OnSolSendSuccess(Slave* slave)
 {		
-	if (slave->mRspContext.IsComplete())
-	{
-		slave->mRspContext.Reset();
+	if (slave->mStaticRspContext.IsComplete())
+	{		
 		slave->ChangeState(AS_Idle::Inst());
 	}
 	else 

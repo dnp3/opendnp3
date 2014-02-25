@@ -409,10 +409,10 @@
     <ClCompile Include="src\TestWriteConversions.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\TestResponseContext.cpp">
+    <ClCompile Include="src\TestAPDUWriting.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\TestAPDUWriting.cpp">
+    <ClCompile Include="src\TestStaticResponseContext.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

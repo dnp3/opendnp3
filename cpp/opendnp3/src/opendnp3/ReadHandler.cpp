@@ -24,7 +24,7 @@
 namespace opendnp3
 {
 	
-ReadHandler::ReadHandler(openpal::Logger& aLogger, ResponseContext* aContext) :
+ReadHandler::ReadHandler(openpal::Logger& aLogger, StaticResponseContext* aContext) :
 	Loggable(aLogger),
 	pContext(aContext)
 {

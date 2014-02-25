@@ -33,12 +33,27 @@ StaticRange::StaticRange() : start(MAX), stop(MIN) {}
 
 StaticRange::StaticRange(uint16_t start_, uint16_t stop_) : 
 start(start_),
-stop(stop_)
+stop(stop_),
+clipped(false)
 {}
 
 bool StaticRange::IsContainedByUInt8() const
 {
 	return (stop <= 255) && (start <= 255);
+}
+
+void StaticRange::ClipTo(const StaticRange& borders)
+{
+	auto maxStart = (start < borders.start) ? borders.start : start;
+	auto minStop = (stop < borders.stop) ? stop : borders.stop;
+	
+	if(!clipped) 
+	{
+		clipped = !((maxStart == start) && (minStop == stop));
+	}
+	
+	start = maxStart;
+	stop = minStop;	
 }
 
 bool StaticRange::IsContainedBy(uint16_t size) const

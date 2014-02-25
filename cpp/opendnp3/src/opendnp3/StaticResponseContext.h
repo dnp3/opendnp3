@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __RESPONSE_CONTEXT_H_
-#define __RESPONSE_CONTEXT_H_
+#ifndef __STATIC_RESPONSE_CONTEXT_H_
+#define __STATIC_RESPONSE_CONTEXT_H_
 
 #include <opendnp3/Uncopyable.h>
 
@@ -29,11 +29,8 @@
 #include "StaticSizeConfiguration.h"
 #include "StaticRange.h"
 #include "APDUResponse.h"
-#include "ObjectWriter.h"
 #include "Database.h"
 #include "StaticLoader.h"
-#include "CountOf.h"
-#include "SelectionCriteria.h"
 #include "StaticResponseTypes.h"
 
 namespace opendnp3
@@ -48,10 +45,10 @@ enum class QueueResult
 };
 
 /**
- * Builds and tracks the state of multi-fragmented responses to READ requests,
- * coordinating the static database and event buffer
+ * Builds and tracks the state of multi-fragmented static responses to READ requests,
+ * coordinating with the database.
  */
-class ResponseContext : private Uncopyable
+class StaticResponseContext : private Uncopyable
 {				
 	class StaticRangeLoader: public StaticRange
 	{
@@ -66,7 +63,7 @@ class ResponseContext : private Uncopyable
 
 	public:
 
-	ResponseContext(Database*, const StaticResponseTypes& rspTypes = StaticResponseTypes());
+	StaticResponseContext(Database*, const StaticResponseTypes& rspTypes = StaticResponseTypes());
 
 	void Reset();
 
@@ -88,8 +85,14 @@ class ResponseContext : private Uncopyable
 	template <class T>
 	StaticRangeLoader GetFullRangeWithDefaultLoader();
 
+	template <class T>
+	StaticRangeLoader GetClippedRangeWithDefaultLoader(const StaticRange& range);
+
 	template <class Serializer>
 	StaticRangeLoader GetFullRange();
+
+	template <class Serializer>
+	StaticRangeLoader GetClippedRange(const StaticRange& range);
 
 	StaticLoadResult LoadStaticData(ObjectWriter& writer);
 	
@@ -102,15 +105,32 @@ class ResponseContext : private Uncopyable
 };
 
 template <class T>
-ResponseContext::StaticRangeLoader ResponseContext::GetFullRangeWithDefaultLoader()
+StaticResponseContext::StaticRangeLoader StaticResponseContext::GetClippedRangeWithDefaultLoader(const StaticRange& range)
+{		
+	StaticRange copy(range);
+	copy.ClipTo(pDatabase->FullRange<T>());
+	return StaticRangeLoader(rspTypes.GetLoader<T>(), copy);
+}
+
+
+template <class T>
+StaticResponseContext::StaticRangeLoader StaticResponseContext::GetFullRangeWithDefaultLoader()
 {
 	return StaticRangeLoader(rspTypes.GetLoader<T>(), pDatabase->FullRange<T>());
 }
 
 template <class Serializer>
-ResponseContext::StaticRangeLoader ResponseContext::GetFullRange()
+StaticResponseContext::StaticRangeLoader StaticResponseContext::GetFullRange()
 {
 	return StaticRangeLoader(StaticLoader::GetLoadFunction<Serializer>(), pDatabase->FullRange<typename Serializer::Target>());
+}
+
+template <class Serializer>
+StaticResponseContext::StaticRangeLoader StaticResponseContext::GetClippedRange(const StaticRange& range)
+{
+	StaticRange copy(range);
+	copy.ClipTo(pDatabase->FullRange<typename Serializer::Target>());
+	return StaticRangeLoader(StaticLoader::GetLoadFunction<Serializer>(), copy);
 }
 
 }

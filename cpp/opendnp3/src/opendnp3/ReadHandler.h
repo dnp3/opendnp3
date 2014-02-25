@@ -26,7 +26,7 @@
 #include <openpal/Loggable.h>
 #include <opendnp3/ITimeWriteHandler.h>
 
-#include "ResponseContext.h"
+#include "StaticResponseContext.h"
 
 namespace opendnp3
 {
@@ -38,7 +38,7 @@ class ReadHandler : public APDUHandlerBase, private openpal::Loggable
 {
 	public:
 	
-	ReadHandler(openpal::Logger& aLogger, ResponseContext* aContext);
+	ReadHandler(openpal::Logger& aLogger, StaticResponseContext* aContext);
 
 	virtual void _AllObjects(GroupVariation gv) final;
 
@@ -46,7 +46,7 @@ class ReadHandler : public APDUHandlerBase, private openpal::Loggable
 
 	private:
 	
-	ResponseContext* pContext;
+	StaticResponseContext* pContext;
 };
 
 }

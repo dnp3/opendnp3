@@ -23,7 +23,7 @@
 #include "TestHelpers.h"
 
 #include <opendnp3/DynamicallyAllocatedDatabase.h>
-#include <opendnp3/ResponseContext.h>
+#include <opendnp3/StaticResponseContext.h>
 #include <opendnp3/APDURequest.h>
 #include <opendnp3/APDUResponse.h>
 
@@ -32,7 +32,7 @@
 using namespace openpal;
 using namespace opendnp3;
 
-BOOST_AUTO_TEST_SUITE(ResponseContextTestSuite)
+BOOST_AUTO_TEST_SUITE(StaticResponseContextTestSuite)
 
 DatabaseTemplate tmp(5,5,5,5,5,5);
 
@@ -65,7 +65,7 @@ BOOST_AUTO_TEST_CASE(RejectsUnknownVariation)
 	DynamicallyAllocatedDatabase dadb(tmp);
 	Database db(dadb.GetFacade());
 
-	ResponseContext context(&db);
+	StaticResponseContext context(&db);
 	BOOST_REQUIRE(QueueResult::OBJECT_UNDEFINED == context.QueueReadRange(GroupVariation::Group2Var2, StaticRange(0,1)));
 	BOOST_REQUIRE(QueueResult::SUCCESS == context.QueueReadRange(GroupVariation::Group1Var2, StaticRange(0,1)));
 }
@@ -75,7 +75,7 @@ BOOST_AUTO_TEST_CASE(RespondsWithValues)
 {	
 	DynamicallyAllocatedDatabase dadb(tmp);
 	Database db(dadb.GetFacade());
-	ResponseContext context(&db);
+	StaticResponseContext context(&db);
 
 	BOOST_REQUIRE(QueueResult::SUCCESS == context.QueueReadRange(GroupVariation::Group1Var2, StaticRange(0,3)));
 	
@@ -89,7 +89,7 @@ BOOST_AUTO_TEST_CASE(RespondsWithFrozenCounters)
 {	
 	DynamicallyAllocatedDatabase dadb(tmp);
 	Database db(dadb.GetFacade());
-	ResponseContext context(&db);
+	StaticResponseContext context(&db);
 
 	BOOST_REQUIRE(QueueResult::SUCCESS == context.QueueReadRange(GroupVariation::Group21Var1, StaticRange(0,3)));
 
@@ -103,7 +103,7 @@ BOOST_AUTO_TEST_CASE(DetectsOutOfRange)
 {	
 	DynamicallyAllocatedDatabase dadb(tmp);
 	Database db(dadb.GetFacade());
-	ResponseContext context(&db);
+	StaticResponseContext context(&db);
 
 	BOOST_REQUIRE(QueueResult::OUT_OF_RANGE == context.QueueReadRange(GroupVariation::Group1Var2, StaticRange(0,6)));
 	BOOST_REQUIRE(QueueResult::OUT_OF_RANGE == context.QueueReadRange(GroupVariation::Group1Var2, StaticRange(4,6)));
@@ -116,7 +116,7 @@ BOOST_AUTO_TEST_CASE(WritesMixedValues)
 {	
 	DynamicallyAllocatedDatabase dadb(tmp);
 	Database db(dadb.GetFacade());
-	ResponseContext context(&db);
+	StaticResponseContext context(&db);
 
 	BOOST_REQUIRE(QueueResult::SUCCESS == context.QueueReadRange(GroupVariation::Group30Var2, StaticRange(1,2)));
 	BOOST_REQUIRE(QueueResult::SUCCESS == context.QueueReadRange(GroupVariation::Group1Var2, StaticRange(3,4)));
@@ -130,7 +130,7 @@ BOOST_AUTO_TEST_CASE(ReturnsFullWhen2ndHeaderCantBeWritten)
 {	
 	DynamicallyAllocatedDatabase dadb(tmp);
 	Database db(dadb.GetFacade());
-	ResponseContext context(&db);
+	StaticResponseContext context(&db);
 
 	BOOST_REQUIRE(QueueResult::SUCCESS == context.QueueReadRange(GroupVariation::Group30Var2, StaticRange(1,2)));
 	BOOST_REQUIRE(QueueResult::SUCCESS == context.QueueReadRange(GroupVariation::Group1Var2, StaticRange(3,4)));
@@ -139,13 +139,13 @@ BOOST_AUTO_TEST_CASE(ReturnsFullWhen2ndHeaderCantBeWritten)
 		APDUResponse rsp(Response(16)); //enough for first header, but not the 2nd
 		
 		BOOST_REQUIRE(StaticLoadResult::FULL == context.Load(rsp));
-		BOOST_REQUIRE_EQUAL("C0 81 00 00 1E 02 00 01 02 02 00 00 02 00 00", toHex(rsp.ToReadOnly()));
+		BOOST_REQUIRE_EQUAL("A0 81 00 00 1E 02 00 01 02 02 00 00 02 00 00", toHex(rsp.ToReadOnly()));
 	}
 
 	{
 		APDUResponse rsp(Response());		
 		BOOST_REQUIRE(StaticLoadResult::COMPLETED == context.Load(rsp));
-		BOOST_REQUIRE_EQUAL("C0 81 00 00 01 02 00 03 04 02 02", toHex(rsp.ToReadOnly()));
+		BOOST_REQUIRE_EQUAL("40 81 00 00 01 02 00 03 04 02 02", toHex(rsp.ToReadOnly()));
 	}
 }
 
@@ -153,7 +153,7 @@ BOOST_AUTO_TEST_CASE(ReturnsFullWhenOnlyPartof2ndHeaderCanBeWritten)
 {	
 	DynamicallyAllocatedDatabase dadb(tmp);
 	Database db(dadb.GetFacade());
-	ResponseContext context(&db);
+	StaticResponseContext context(&db);
 
 	BOOST_REQUIRE(QueueResult::SUCCESS == context.QueueReadRange(GroupVariation::Group30Var2, StaticRange(1,2)));
 	BOOST_REQUIRE(QueueResult::SUCCESS == context.QueueReadRange(GroupVariation::Group1Var2, StaticRange(3,4)));
@@ -161,13 +161,13 @@ BOOST_AUTO_TEST_CASE(ReturnsFullWhenOnlyPartof2ndHeaderCanBeWritten)
 	{
 		APDUResponse rsp(Response(21)); //enough for first header, but not the full 2nd header		
 		BOOST_REQUIRE(StaticLoadResult::FULL == context.Load(rsp));
-		BOOST_REQUIRE_EQUAL("C0 81 00 00 1E 02 00 01 02 02 00 00 02 00 00 01 02 00 03 03 02", toHex(rsp.ToReadOnly()));
+		BOOST_REQUIRE_EQUAL("A0 81 00 00 1E 02 00 01 02 02 00 00 02 00 00 01 02 00 03 03 02", toHex(rsp.ToReadOnly()));
 	}
 
 	{
 		APDUResponse rsp(Response());		
 		BOOST_REQUIRE(StaticLoadResult::COMPLETED == context.Load(rsp));
-		BOOST_REQUIRE_EQUAL("C0 81 00 00 01 02 00 04 04 02", toHex(rsp.ToReadOnly()));
+		BOOST_REQUIRE_EQUAL("40 81 00 00 01 02 00 04 04 02", toHex(rsp.ToReadOnly()));
 	}
 }
 
@@ -176,14 +176,14 @@ BOOST_AUTO_TEST_CASE(HandlesIntegrityPoll)
 	DatabaseTemplate tmp2(1, 0, 1, 0, 1, 0); // 1 Binary, 1 Counter, 1 Control Status
 	DynamicallyAllocatedDatabase dadb(tmp2);
 	Database db(dadb.GetFacade());
-	ResponseContext context(&db);
+	StaticResponseContext context(&db);
 
 	BOOST_REQUIRE(QueueResult::SUCCESS == context.QueueReadAllObjects(GroupVariation::Group60Var1));
 
 	{
-		APDUResponse rsp(Response());		
+		APDUResponse rsp(Response());
 		BOOST_REQUIRE(StaticLoadResult::COMPLETED == context.Load(rsp));
-		BOOST_REQUIRE_EQUAL("C0 81 00 00 01 02 00 00 00 02 14 02 00 00 00 02 00 00 0A 02 00 00 00 02", toHex(rsp.ToReadOnly()));
+		BOOST_REQUIRE_EQUAL("C0 81 00 00 01 02 00 00 00 02 14 01 00 00 00 02 00 00 00 00 0A 02 00 00 00 02", toHex(rsp.ToReadOnly()));
 	}
 }
 
