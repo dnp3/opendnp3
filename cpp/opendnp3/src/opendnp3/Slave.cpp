@@ -216,16 +216,16 @@ IINField Slave::HandleRead(const APDURecord& request, SequenceInfo sequence, APD
 {
 	mRspContext.Reset();
 	ReadHandler handler(mLogger, &mRspContext);
-	auto result = APDUParser::ParseTwoPass(request.objects, &handler);
+	auto result = APDUParser::ParseTwoPass(request.objects, &handler, APDUParser::Context(false)); // don't expect range/count context on a READ
 	if(result == APDUParser::Result::OK)
 	{
 		auto errors = handler.Errors();
 		if(errors.Any()) return errors;		
 		else 
 		{	
-			// if the request contained static variations, we freeze the entire static database (double buffered)
+			// if the request contained static variations, we double buffer (copy) the entire static database.
 			// this ensures that an multi-fragmented responses see a consistent snapshot
-			if(!mRspContext.IsComplete()) mpDatabase->FreezeValues();
+			if(!mRspContext.IsComplete()) mpDatabase->DoubleBuffer();
 			auto result = this->mRspContext.Load(response); // todo get the overflow bits out of here & return them
 			return IINField::Empty;
 		}
