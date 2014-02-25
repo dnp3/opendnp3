@@ -47,7 +47,7 @@ void APDUHandlerBase::AllObjects(GroupVariation gv, const openpal::ReadOnlyBuffe
 	++currentHeader;
 }
 
-void APDUHandlerBase::OnRangeRequest(GroupVariation gv, const Range& range)
+void APDUHandlerBase::OnRangeRequest(GroupVariation gv, const StaticRange& range)
 {
 	this->_OnRangeRequest(gv, range);
 	++currentHeader;
@@ -172,7 +172,7 @@ void APDUHandlerBase::_AllObjects(GroupVariation gv)
 	errors.Set(IINBit::FUNC_NOT_SUPPORTED);
 }
 
-void APDUHandlerBase::_OnRangeRequest(GroupVariation gv, const Range& range)
+void APDUHandlerBase::_OnRangeRequest(GroupVariation gv, const StaticRange& range)
 {
 	errors.Set(IINBit::FUNC_NOT_SUPPORTED);
 }

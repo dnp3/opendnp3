@@ -142,7 +142,7 @@ class APDUParser : private PureStatic
 	static Result ParseRange(openpal::ReadOnlyBuffer& buffer, Context& context, Range& range);
 
 	template <class ParserType>
-	static Result ParseCount(openpal::ReadOnlyBuffer& buffer, Context& context, uint32_t& count);	
+	static Result ParseCount(openpal::ReadOnlyBuffer& buffer, Context& context, typename ParserType::Type& count);	
 
 	static Result ParseObjectsWithRange(const HeaderRecord& record, openpal::ReadOnlyBuffer& buffer, const GroupVariationRecord&, const Range& range, IAPDUHandler* pHandler);	
 	
@@ -193,13 +193,13 @@ class APDUParser : private PureStatic
 template <class IndexType>
 APDUParser::Result APDUParser::ParseCountHeader(openpal::ReadOnlyBuffer& buffer, Context& context, const HeaderRecord& record, const GroupVariationRecord& gvRecord, IAPDUHandler* pHandler)
 {
-	uint32_t count;
+	typename IndexType::Type count;
 	auto res = ParseCount<IndexType>(buffer, context, count);
 	if(res == Result::OK)
-	{					
+	{			
 		if(context.ExpectsContents()) 
 		{						
-			return ParseObjectsWithRange(record.Add(IndexType::Size), buffer, gvRecord, Range(0, count), pHandler);
+			return ParseObjectsWithRange(record.Add(IndexType::Size), buffer, gvRecord, Range::FromCount(count), pHandler);
 		}
 		else 
 		{
@@ -208,7 +208,7 @@ APDUParser::Result APDUParser::ParseCountHeader(openpal::ReadOnlyBuffer& buffer,
 				pHandler->OnCountRequest(gvRecord.enumeration, count);
 			}
 			return Result::OK;
-		}
+		}		
 	}
 	else return res;		
 }
@@ -227,8 +227,8 @@ APDUParser::Result APDUParser::ParseRangeHeader(openpal::ReadOnlyBuffer& buffer,
 		else
 		{
 			if(pHandler) 
-			{
-				pHandler->OnRangeRequest(gvRecord.enumeration, range);
+			{				
+				pHandler->OnRangeRequest(gvRecord.enumeration, StaticRange(range.start, range.stop));
 			}
 			return Result::OK;
 		}
@@ -242,7 +242,7 @@ APDUParser::Result APDUParser::ParseRangeHeader(openpal::ReadOnlyBuffer& buffer,
 template <class IndexType>
 APDUParser::Result APDUParser::ParseIndexPrefixHeader(openpal::ReadOnlyBuffer& buffer, Context& context, const HeaderRecord& record, const GroupVariationRecord& gvRecord, IAPDUHandler* pHandler)
 {
-	uint32_t count;
+	typename IndexType::Type count;
 	auto res = ParseCount<IndexType>(buffer, context, count);
 	if(res == Result::OK)
 	{
@@ -261,10 +261,10 @@ APDUParser::Result APDUParser::ParseRangeAsBitField(
 	const Range& range, 
 	const Callback& callback)
 {
-	size_t numBytes = NumBytesInBits(range.count);
+	size_t numBytes = NumBytesInBits(range.Count());
 	if(buffer.Size() < numBytes) return Result::NOT_ENOUGH_DATA_FOR_OBJECTS;
 	else {	
-		auto collection = IterableTransforms<IndexedValue<bool>>::From(buffer, range.count, 
+		auto collection = IterableTransforms<IndexedValue<bool>>::From(buffer, range.Count(), 
 			[&](openpal::ReadOnlyBuffer& buffer, uint32_t pos) {
 				return IndexedValue<bool>(GetBit(buffer, pos), pos + range.start);
 			}
@@ -289,7 +289,7 @@ APDUParser::Result APDUParser::ParseRange(openpal::ReadOnlyBuffer& buffer, Conte
 			else
 			{
 				range.start = start;
-				range.count = static_cast<size_t>(count);
+				range.stop = stop;
 				return Result::OK;
 			}			
 		}
@@ -297,7 +297,7 @@ APDUParser::Result APDUParser::ParseRange(openpal::ReadOnlyBuffer& buffer, Conte
 }
 
 template <class ParserType>
-APDUParser::Result APDUParser::ParseCount(openpal::ReadOnlyBuffer& buffer, Context& context, uint32_t& count)
+APDUParser::Result APDUParser::ParseCount(openpal::ReadOnlyBuffer& buffer, Context& context, typename ParserType::Type& count)
 {
 	if(buffer.Size() < ParserType::Size) return Result::NOT_ENOUGH_DATA_FOR_RANGE;
 	else {
@@ -316,12 +316,12 @@ APDUParser::Result APDUParser::ParseCount(openpal::ReadOnlyBuffer& buffer, Conte
 template <class Target>
 APDUParser::Result APDUParser::ParseRangeFixedSize(GroupVariation gv, const HeaderRecord& record, openpal::ISerializer<Target>* pSerializer, openpal::ReadOnlyBuffer& buffer, const Range& range, IAPDUHandler* pHandler)
 {	
-	uint32_t size = range.count * pSerializer->Size();
+	uint32_t size = range.Count() * pSerializer->Size();
 	if(buffer.Size() < size) return APDUParser::Result::NOT_ENOUGH_DATA_FOR_OBJECTS;
 	else {
 	
 		if(pHandler) {
-			auto collection = IterableTransforms<IndexedValue<Target>>::From(buffer, range.count, [range, pSerializer](openpal::ReadOnlyBuffer& buffer, uint32_t pos) {
+			auto collection = IterableTransforms<IndexedValue<Target>>::From(buffer, range.Count(), [range, pSerializer](openpal::ReadOnlyBuffer& buffer, uint32_t pos) {
 				return IndexedValue<Target>(pSerializer->Read(buffer), range.start + pos);
 			});
 			pHandler->OnRange(gv, record.Complete(size), collection);

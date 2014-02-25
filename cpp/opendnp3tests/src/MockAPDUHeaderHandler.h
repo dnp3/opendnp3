@@ -41,7 +41,7 @@ class MockApduHeaderHandler : public IAPDUHandler
 			headers.push_back(header);
 		}
 
-		virtual void OnRangeRequest(GroupVariation gv, const Range& range) override
+		virtual void OnRangeRequest(GroupVariation gv, const StaticRange& range) override
 		{
 			groupVariations.push_back(gv);			
 		}

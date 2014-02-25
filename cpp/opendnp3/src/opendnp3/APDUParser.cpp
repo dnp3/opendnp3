@@ -241,10 +241,10 @@ APDUParser::Result APDUParser::ParseObjectsWithRange(const APDUParser::HeaderRec
 		MACRO_PARSE_OBJECTS_WITH_RANGE(Group40Var4);
 
 		case(GroupVariation::Group50Var1):
-			return ParseCountOf<Group50Var1>(buffer, range.count, pHandler); 
+			return ParseCountOf<Group50Var1>(buffer, range.Count(), pHandler); 
 		
 		case(GroupVariation::Group52Var2):
-			return ParseCountOf<Group52Var2>(buffer, range.count, pHandler); 
+			return ParseCountOf<Group52Var2>(buffer, range.Count(), pHandler); 
 
 		case(GroupVariation::Group80Var1):		
 			return ParseRangeAsBitField(buffer, record, range, [&](const ReadOnlyBuffer& header, const IterableBuffer<IndexedValue<bool>>& values) { 
@@ -268,11 +268,11 @@ APDUParser::Result APDUParser::ParseRangeOfOctetData(
 		const Range& range, 
 		IAPDUHandler* pHandler)
 {
-	size_t size = gvRecord.variation*range.count;
+	uint32_t size = gvRecord.variation*range.Count();
 	if(buffer.Size() < size) return Result::NOT_ENOUGH_DATA_FOR_OBJECTS;
 	{
 		if(pHandler) {
-			auto collection = IterableTransforms<IndexedValue<OctetString>>::From(buffer, range.count, [&](ReadOnlyBuffer& buffer, uint32_t pos) {
+			auto collection = IterableTransforms<IndexedValue<OctetString>>::From(buffer, range.Count(), [&](ReadOnlyBuffer& buffer, uint32_t pos) {
 				OctetString octets(buffer.Truncate(gvRecord.variation));
 				IndexedValue<OctetString> value(octets, range.start + pos);
 				buffer.Advance(gvRecord.variation);

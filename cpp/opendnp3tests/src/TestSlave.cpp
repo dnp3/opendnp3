@@ -1069,13 +1069,13 @@ BOOST_AUTO_TEST_CASE(ComplexReadSequence)
 	t.SendToSlave(request);
 	BOOST_REQUIRE_EQUAL(t.Read(), rsp);
 }
+*/
 
 BOOST_AUTO_TEST_CASE(ReadByRangeHeader)
 {
 	SlaveConfig cfg;
 	cfg.mDisableUnsol = true;
-	SlaveTestObject t(cfg);
-	t.db.Configure(MeasurementType::ANALOG, 10);
+	SlaveTestObject t(cfg, DatabaseTemplate::AnalogOnly(10));	
 	t.slave.OnLowerLayerUp();
 
 	{
@@ -1088,17 +1088,16 @@ BOOST_AUTO_TEST_CASE(ReadByRangeHeader)
 	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 00 1E 02 00 05 06 01 2A 00 01 29 00");
 }
 
-template <class PointType, class T>
-void TestStaticType(SlaveConfig& aCfg, T aVal, const std::string& aRsp)
+template <class PointType>
+void TestStaticType(const SlaveConfig& aCfg, const DatabaseTemplate& tmp, PointType aVal, const std::string& aRsp)
 {
-	SlaveTestObject t(aCfg);
-	t.db.Configure(PointType::MeasEnum, 1);
-	t.db.SetClass(PointType::MeasEnum, PC_CLASS_1);
+	SlaveTestObject t(aCfg, tmp);
+	
 	t.slave.OnLowerLayerUp();
 
 	{
 		Transaction tr(&t.db);
-		t.db.Update(PointType(aVal, PointType::ONLINE), 0);
+		t.db.Update(PointType(aVal), 0);
 	}
 
 	t.SendToSlave("C0 01 3C 01 06"); // Read class 0
@@ -1109,7 +1108,7 @@ template <class T>
 void TestStaticCounter(StaticCounterResponse aRsp, T aValue, const std::string& arRsp)
 {
 	SlaveConfig cfg; cfg.mDisableUnsol = true; cfg.mStaticCounter = aRsp;
-	TestStaticType<Counter>(cfg, aValue, arRsp);
+	TestStaticType<Counter>(cfg, DatabaseTemplate::CounterOnly(1), aValue, arRsp);
 }
 
 BOOST_AUTO_TEST_CASE(ReadGrp20Var1)
@@ -1136,7 +1135,7 @@ template <class T>
 void TestStaticAnalog(StaticAnalogResponse aRsp, T aVal, const std::string& arRsp)
 {
 	SlaveConfig cfg; cfg.mDisableUnsol = true; cfg.mStaticAnalog = aRsp;
-	TestStaticType<Analog>(cfg, aVal, arRsp);
+	TestStaticType<Analog>(cfg, DatabaseTemplate::AnalogOnly(1), aVal, arRsp);
 }
 
 BOOST_AUTO_TEST_CASE(ReadGrp30Var2)
@@ -1168,9 +1167,7 @@ template <class T>
 void TestStaticControlStatus(T aVal, const std::string& aRsp)
 {
 	SlaveConfig cfg; cfg.mDisableUnsol = true;
-	SlaveTestObject t(cfg);
-	t.db.Configure(MeasurementType::CONTROL_STATUS, 1);
-	t.db.SetClass(MeasurementType::CONTROL_STATUS, PC_CLASS_1);
+	SlaveTestObject t(cfg, DatabaseTemplate(0, 0, 0, 0, 1, 0));
 	t.slave.OnLowerLayerUp();
 
 	{
@@ -1187,12 +1184,11 @@ BOOST_AUTO_TEST_CASE(ReadGrp10Var2)
 	TestStaticControlStatus<bool>(true, "C0 81 80 00 0A 02 00 00 00 81");
 }
 
-
 template <class T>
 void TestStaticSetpointStatus(StaticSetpointStatusResponse aRsp, T aVal, const string& arRsp)
 {
 	SlaveConfig cfg; cfg.mDisableUnsol = true; cfg.mStaticSetpointStatus = aRsp;
-	TestStaticType<SetpointStatus>(cfg, aVal, arRsp);
+	TestStaticType<SetpointStatus>(cfg, DatabaseTemplate::SetpointStatusOnly(1), aVal, arRsp);
 }
 
 BOOST_AUTO_TEST_CASE(ReadGrp40Var1)
@@ -1214,8 +1210,6 @@ BOOST_AUTO_TEST_CASE(ReadGrp40Var4)
 {
 	TestStaticSetpointStatus(StaticSetpointStatusResponse::Group40Var4, -20.0, "C0 81 80 00 28 04 00 00 00 01 00 00 00 00 00 00 34 C0");
 }
-
-*/
 
 BOOST_AUTO_TEST_SUITE_END()
 

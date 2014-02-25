@@ -22,6 +22,7 @@
 #define __RANGE_H_
 
 #include <cstdint>
+#include <assert.h>
 
 namespace opendnp3
 {
@@ -30,16 +31,24 @@ class Range
 {
 	public:
 
-	Range(uint32_t aStart, size_t aCount) :
-		start(aStart),		
-		count(aCount)
+	static Range FromCount(uint16_t count)
+	{
+		assert(count > 0);
+		return Range(0, count - 1);
+	}
+
+	Range(uint16_t start_, uint16_t stop_) :
+		start(start_),		
+		stop(stop_)
 	{}
 
-	Range() : start(0), count(0)
+	uint32_t Count() const { return (stop - start) + 1; }
+
+	Range() : start(0), stop(0)
 	{}
 
-	uint32_t start;	
-	size_t count;
+	uint16_t start;	
+	uint16_t stop;
 };
 
 }

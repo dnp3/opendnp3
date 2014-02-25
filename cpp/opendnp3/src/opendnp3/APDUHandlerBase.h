@@ -41,7 +41,7 @@ public:
 
 	virtual void AllObjects(GroupVariation gv, const openpal::ReadOnlyBuffer& header) final;
 
-	virtual void OnRangeRequest(GroupVariation gv, const Range& range) final;
+	virtual void OnRangeRequest(GroupVariation gv, const StaticRange& range) final;
 
 	virtual void OnCountRequest(GroupVariation gv, uint32_t count) final;
 
@@ -86,7 +86,7 @@ public:
 	
 	virtual void _AllObjects(GroupVariation gv);
 	
-	virtual void _OnRangeRequest(GroupVariation gv, const Range& range);
+	virtual void _OnRangeRequest(GroupVariation gv, const StaticRange& range);
 
 	virtual void _OnCountRequest(GroupVariation gv, uint32_t count);
 
