@@ -104,17 +104,11 @@ APDUParser::Result APDUParser::ParseHeader(ReadOnlyBuffer& buffer, Context& cont
 				return ParseRangeHeader<UInt16, uint32_t>(buffer, context, record, gvRecord, pHandler);
 					
 			case(QualifierCode::UINT8_CNT_UINT8_INDEX):
-			{
-				uint32_t count;
-				auto res = ParseCount<UInt8>(buffer, context, count);
-				return (res == Result::OK) ? ParseObjectsWithIndexPrefix(record.Add(UInt8::Size), buffer, gvRecord, count, TypedIndexParser<UInt8>::Inst(), pHandler) : res;				
-			}
+				return ParseIndexPrefixHeader<UInt8>(buffer, context, record, gvRecord, pHandler);
+			
 			case(QualifierCode::UINT16_CNT_UINT16_INDEX):
-			{
-				uint32_t count;
-				auto res = ParseCount<UInt16>(buffer, context, count);
-				return (res == Result::OK) ? ParseObjectsWithIndexPrefix(record.Add(UInt16::Size),buffer, gvRecord, count, TypedIndexParser<UInt16>::Inst(), pHandler) : res;				
-			}			
+				return ParseIndexPrefixHeader<UInt16>(buffer, context, record, gvRecord, pHandler);
+				
 			default:
 				return Result::UNKNOWN_QUALIFIER;
 		}

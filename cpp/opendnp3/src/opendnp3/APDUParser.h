@@ -135,6 +135,9 @@ class APDUParser : private PureStatic
 	template <class ParserType, class CountType>
 	static Result ParseRangeHeader(openpal::ReadOnlyBuffer& buffer, Context& context, const HeaderRecord& record, const GroupVariationRecord& gvRecord, IAPDUHandler* pHandler);
 
+	template <class IndexType>
+	static Result ParseIndexPrefixHeader(openpal::ReadOnlyBuffer& buffer, Context& context, const HeaderRecord& record, const GroupVariationRecord& gvRecord, IAPDUHandler* pHandler);
+
 	template <class ParserType, class CountType>
 	static Result ParseRange(openpal::ReadOnlyBuffer& buffer, Context& context, Range& range);
 
@@ -234,6 +237,21 @@ APDUParser::Result APDUParser::ParseRangeHeader(openpal::ReadOnlyBuffer& buffer,
 	{
 		return res;
 	}
+}
+
+template <class IndexType>
+APDUParser::Result APDUParser::ParseIndexPrefixHeader(openpal::ReadOnlyBuffer& buffer, Context& context, const HeaderRecord& record, const GroupVariationRecord& gvRecord, IAPDUHandler* pHandler)
+{
+	uint32_t count;
+	auto res = ParseCount<IndexType>(buffer, context, count);
+	if(res == Result::OK)
+	{
+		return ParseObjectsWithIndexPrefix(record.Add(IndexType::Size), buffer, gvRecord, count, TypedIndexParser<IndexType>::Inst(), pHandler);
+	}
+	else 
+	{
+		return res;
+	}	
 }
 
 template <class Callback>
