@@ -66,7 +66,7 @@ bool LinkFrame::operator==(const LinkFrame& arRHS) const
 	return true;
 }
 
-void LinkFrame::ReadUserData(const uint8_t* apSrc, uint8_t* apDest, size_t aLength)
+void LinkFrame::ReadUserData(const uint8_t* apSrc, uint8_t* apDest, uint32_t aLength)
 {
 	if(aLength == 0) return;	//base case of recursion
 	size_t max = LS_DATA_BLOCK_SIZE;
@@ -86,7 +86,7 @@ bool LinkFrame::ValidateBodyCRC() const
 	return ValidateBodyCRC(mpBuffer + LS_HEADER_SIZE, mHeader.GetLength() - LS_MIN_LENGTH);
 }
 
-bool LinkFrame::ValidateBodyCRC(const uint8_t* apBody, size_t aLength)
+bool LinkFrame::ValidateBodyCRC(const uint8_t* apBody, uint32_t aLength)
 {
 	if(aLength == 0) return true;	//base case of recursion
 	size_t max = LS_DATA_BLOCK_SIZE ;
@@ -157,7 +157,7 @@ void LinkFrame::FormatTestLinkStatus(bool aIsMaster, bool aFcb, uint16_t aDest, 
 	this->FormatHeader(0, aIsMaster, aFcb, true, LinkFunction::PRI_TEST_LINK_STATES, aDest, aSrc);
 }
 
-void LinkFrame::FormatConfirmedUserData(bool aIsMaster, bool aFcb, uint16_t aDest, uint16_t aSrc, const uint8_t* apData, size_t aDataLength)
+void LinkFrame::FormatConfirmedUserData(bool aIsMaster, bool aFcb, uint16_t aDest, uint16_t aSrc, const uint8_t* apData, uint32_t aDataLength)
 {
 	assert(aDataLength > 0);
 	assert(aDataLength <= 250);
@@ -165,7 +165,7 @@ void LinkFrame::FormatConfirmedUserData(bool aIsMaster, bool aFcb, uint16_t aDes
 	WriteUserData(apData, mpBuffer + LS_HEADER_SIZE, aDataLength);
 }
 
-void LinkFrame::FormatUnconfirmedUserData(bool aIsMaster, uint16_t aDest, uint16_t aSrc, const uint8_t* apData, size_t aDataLength)
+void LinkFrame::FormatUnconfirmedUserData(bool aIsMaster, uint16_t aDest, uint16_t aSrc, const uint8_t* apData, uint32_t aDataLength)
 {
 	assert(aDataLength > 0);
 	assert(aDataLength <= 250);

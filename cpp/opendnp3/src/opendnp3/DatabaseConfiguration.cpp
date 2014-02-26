@@ -44,7 +44,13 @@ DatabaseConfiguration::DatabaseConfiguration() :
 
 DatabaseTemplate DatabaseConfiguration::GetTemplate() const
 {
-	DatabaseTemplate tmp(binaryMetadata.size(), analogMetadata.size(), counterMetadata.size(), frozenCounterMetadata.size(),  numBinaryOutputStatus, numAnalogOutputStatus);
+	DatabaseTemplate tmp(
+		static_cast<uint32_t>(binaryMetadata.size()), 
+		static_cast<uint32_t>(analogMetadata.size()), 
+		static_cast<uint32_t>(counterMetadata.size()), 
+		static_cast<uint32_t>(frozenCounterMetadata.size()), 
+		numBinaryOutputStatus, 
+		numAnalogOutputStatus);
 	return tmp;
 }
 

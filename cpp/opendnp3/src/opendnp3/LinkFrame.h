@@ -109,8 +109,8 @@ public:
 	void FormatTestLinkStatus(bool aIsMaster, bool aFcb, uint16_t aDest, uint16_t aSrc);
 	void FormatResetLinkStates(bool aIsMaster, uint16_t aDest, uint16_t aSrc);
 	void FormatRequestLinkStatus(bool aIsMaster, uint16_t aDest, uint16_t aSrc);
-	void FormatConfirmedUserData(bool aIsMaster, bool aFcb, uint16_t aDest, uint16_t aSrc, const uint8_t* apData, size_t aDataLength);
-	void FormatUnconfirmedUserData(bool aIsMaster, uint16_t aDest, uint16_t aSrc, const uint8_t* apData, size_t aDataLength);
+	void FormatConfirmedUserData(bool aIsMaster, bool aFcb, uint16_t aDest, uint16_t aSrc, const uint8_t* apData, uint32_t aDataLength);
+	void FormatUnconfirmedUserData(bool aIsMaster, uint16_t aDest, uint16_t aSrc, const uint8_t* apData, uint32_t aDataLength);
 
 	void ChangeFCB(bool aFCB);
 
@@ -130,14 +130,14 @@ public:
 		@param apBody Beginning of the FT3 user data
 		@param aLength Number of user bytes to verify, not user + crc.
 		@return True if the body CRC is correct */
-	static bool ValidateBodyCRC(const uint8_t* apBody, size_t aLength);
+	static bool ValidateBodyCRC(const uint8_t* apBody, uint32_t aLength);
 
 	/** Reads data from src to dest removing 2 byte CRC checks every 16 data bytes
 		@param apSrc Source buffer with crc checks. Must begin at data, not header
 		@param apDest Destination buffer to which the data is extracted
 		@param aLength Length of user data to read to the dest buffer. The source buffer must be larger b/c of crc bytes.
 	*/
-	static void ReadUserData(const uint8_t* apSrc, uint8_t* apDest, size_t aLength);
+	static void ReadUserData(const uint8_t* apSrc, uint8_t* apDest, uint32_t aLength);
 
 private:
 

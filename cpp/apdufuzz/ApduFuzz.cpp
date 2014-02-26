@@ -41,17 +41,17 @@ class Fuzzer
 {
 	public:
 
-	void Run(uint64_t iter, size_t maxSize, size_t seed)
+	void Run(uint64_t iter, uint32_t maxSize, uint32_t seed)
 	{
 		uint8_t* buffer = new uint8_t[maxSize];
 		std::mt19937 gen;
 		gen.seed(seed);
-		std::uniform_int_distribution<size_t> size(1, maxSize);
+		std::uniform_int_distribution<uint32_t> size(1, maxSize);
 		std::uniform_int_distribution<uint16_t> value(0x00, 0xFF);
 
 		for(uint64_t i = 0; i<iter; ++i)
 		{
-			size_t count  = size(gen);
+			uint32_t count = size(gen);
 			for (size_t j = 0; j < count; ++j) buffer[j] = static_cast<uint8_t>(value(gen));
 			ReadOnlyBuffer rb(buffer, count);
 			/*
@@ -79,7 +79,7 @@ int main(int argc, char* argv[])
 
 	uint64_t iterations = std::stoull(argv[1]);
 	uint32_t maxApduSize = std::stoul(argv[2]);
-	size_t concurrency = std::thread::hardware_concurrency();
+	uint32_t concurrency = std::thread::hardware_concurrency();
 	uint64_t totalCases = iterations*static_cast<uint64_t>(concurrency);
 
 	std::cout << "Running " << iterations << " iterations with a concurrency of " << concurrency << std::endl;
@@ -88,7 +88,7 @@ int main(int argc, char* argv[])
 
 	auto start = std::chrono::high_resolution_clock::now();
 	std::vector<std::unique_ptr<std::thread>> threads;
-	size_t seed = 1;	
+	uint32_t seed = 1;
 	for(auto& f: fuzzers) {
 		std::unique_ptr<std::thread> pThread(new std::thread([&]() { f.Run(iterations, maxApduSize, seed); }));
 		threads.push_back(std::move(pThread));

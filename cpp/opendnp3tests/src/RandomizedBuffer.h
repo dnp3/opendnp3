@@ -32,7 +32,7 @@ class RandomizedBuffer : public CopyableBuffer
 
 public:
 
-	RandomizedBuffer(size_t aSize);
+	RandomizedBuffer(uint32_t aSize);
 
 	void Randomize();
 

@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio Express 2013 for Windows Desktop
+VisualStudioVersion = 12.0.30110.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "cpp", "cpp", "{E52D8660-095E-45AD-AF11-9B43E53DDBF5}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "java", "java", "{8CEA48C2-C785-47A6-9BF2-A25C6778ACB3}"
@@ -161,6 +163,7 @@ Global
 		{3807677B-061A-4D15-AA03-65E944864384}.Debug|Win32.ActiveCfg = Debug|Win32
 		{3807677B-061A-4D15-AA03-65E944864384}.Debug|Win32.Build.0 = Debug|Win32
 		{3807677B-061A-4D15-AA03-65E944864384}.Debug|x64.ActiveCfg = Debug|x64
+		{3807677B-061A-4D15-AA03-65E944864384}.Debug|x64.Build.0 = Debug|x64
 		{3807677B-061A-4D15-AA03-65E944864384}.Release|Any CPU.ActiveCfg = Release|Win32
 		{3807677B-061A-4D15-AA03-65E944864384}.Release|Mixed Platforms.ActiveCfg = Release|Win32
 		{3807677B-061A-4D15-AA03-65E944864384}.Release|Mixed Platforms.Build.0 = Release|Win32
@@ -173,6 +176,7 @@ Global
 		{65495BE1-485C-4A8C-8C58-06C9A532D9CE}.Debug|Win32.ActiveCfg = Debug|Win32
 		{65495BE1-485C-4A8C-8C58-06C9A532D9CE}.Debug|Win32.Build.0 = Debug|Win32
 		{65495BE1-485C-4A8C-8C58-06C9A532D9CE}.Debug|x64.ActiveCfg = Debug|x64
+		{65495BE1-485C-4A8C-8C58-06C9A532D9CE}.Debug|x64.Build.0 = Debug|x64
 		{65495BE1-485C-4A8C-8C58-06C9A532D9CE}.Release|Any CPU.ActiveCfg = Release|Win32
 		{65495BE1-485C-4A8C-8C58-06C9A532D9CE}.Release|Mixed Platforms.ActiveCfg = Release|Win32
 		{65495BE1-485C-4A8C-8C58-06C9A532D9CE}.Release|Mixed Platforms.Build.0 = Release|Win32
@@ -227,6 +231,7 @@ Global
 		{8A27E03D-8D08-441A-92E4-6FC614FDA5D0}.Debug|Win32.ActiveCfg = Debug|Win32
 		{8A27E03D-8D08-441A-92E4-6FC614FDA5D0}.Debug|Win32.Build.0 = Debug|Win32
 		{8A27E03D-8D08-441A-92E4-6FC614FDA5D0}.Debug|x64.ActiveCfg = Debug|x64
+		{8A27E03D-8D08-441A-92E4-6FC614FDA5D0}.Debug|x64.Build.0 = Debug|x64
 		{8A27E03D-8D08-441A-92E4-6FC614FDA5D0}.Release|Any CPU.ActiveCfg = Release|Win32
 		{8A27E03D-8D08-441A-92E4-6FC614FDA5D0}.Release|Mixed Platforms.ActiveCfg = Release|Win32
 		{8A27E03D-8D08-441A-92E4-6FC614FDA5D0}.Release|Mixed Platforms.Build.0 = Release|Win32

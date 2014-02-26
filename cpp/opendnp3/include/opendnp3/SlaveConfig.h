@@ -75,7 +75,7 @@ struct SlaveConfig {
 
 
 	/// The maximum number of controls the slave will attempt to process from a single APDU
-	size_t mMaxControls;
+	uint32_t mMaxControls;
 
 	/// if true, fully disables unsolicited mode as if the slave didn't support it
 	bool mDisableUnsol;
@@ -100,7 +100,7 @@ struct SlaveConfig {
 	openpal::TimeDuration mSelectTimeout;
 
 	/// The maximum fragment size the slave will use for data it sends
-	size_t mMaxFragSize;
+	uint32_t mMaxFragSize;
 
 	/// Structure that defines the maximum number of events to buffer
 	EventMaxConfig mEventMaxConfig;

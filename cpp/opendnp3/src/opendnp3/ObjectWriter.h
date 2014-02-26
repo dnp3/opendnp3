@@ -95,7 +95,7 @@ bool ObjectWriter::WriteSingleValue(QualifierCode qc, IDNP3Serializer<ValueType>
 template <class CountType, class WriteType>
 bool ObjectWriter::WriteSingleValue(QualifierCode qc, const WriteType& value)
 {
-	auto reserveSize = CountType::Size + WriteType::SIZE;
+	uint32_t reserveSize = CountType::Size + WriteType::SIZE;
 	if(this->WriteHeaderWithReserve(WriteType::ID, qc, reserveSize))
 	{
 		CountType::WriteBuffer(*position, 1); //write the count
@@ -108,7 +108,7 @@ bool ObjectWriter::WriteSingleValue(QualifierCode qc, const WriteType& value)
 template <class CountType, class ValueType>
 bool ObjectWriter::WriteSingleIndexedValue(QualifierCode qc, IDNP3Serializer<ValueType>* pSerializer, const ValueType& value, typename CountType::Type index)
 {
-	auto reserveSize = 2*CountType::Size + pSerializer->Size();
+	uint32_t reserveSize = 2 * CountType::Size + pSerializer->Size();
 	if(this->WriteHeaderWithReserve(pSerializer->ID(), qc, reserveSize))
 	{
 		CountType::WriteBuffer(*position, 1); //write the count
@@ -122,7 +122,7 @@ bool ObjectWriter::WriteSingleIndexedValue(QualifierCode qc, IDNP3Serializer<Val
 template <class IndexType, class WriteType>
 RangeWriteIterator<IndexType, WriteType> ObjectWriter::IterateOverRange(QualifierCode qc, IDNP3Serializer<WriteType>* pSerializer, typename IndexType::Type start)
 {
-	auto reserveSize = 2*IndexType::Size + pSerializer->Size();
+	uint32_t reserveSize = 2*IndexType::Size + pSerializer->Size();
 	if(this->WriteHeaderWithReserve(pSerializer->ID(), qc, reserveSize))
 	{
 		return RangeWriteIterator<IndexType, WriteType>(start, pSerializer, *position);
@@ -133,7 +133,7 @@ RangeWriteIterator<IndexType, WriteType> ObjectWriter::IterateOverRange(Qualifie
 template <class CountType, class WriteType>
 CountWriteIterator<CountType, WriteType> ObjectWriter::IterateOverCount(QualifierCode qc, IDNP3Serializer<WriteType>* pSerializer)
 {
-	auto reserveSize = CountType::Size + pSerializer->Size();
+	uint32_t reserveSize = CountType::Size + pSerializer->Size();
 	if(this->WriteHeaderWithReserve(pSerializer->ID(), qc, reserveSize))
 	{
 		return CountWriteIterator<CountType, WriteType>(pSerializer, *position);
@@ -144,7 +144,7 @@ CountWriteIterator<CountType, WriteType> ObjectWriter::IterateOverCount(Qualifie
 template <class PrefixType, class WriteType>
 PrefixedWriteIterator<PrefixType, WriteType> ObjectWriter::IterateOverCountWithPrefix(QualifierCode qc, IDNP3Serializer<WriteType>* pSerializer)
 {
-	auto reserveSize = 2*PrefixType::Size + pSerializer->Size();  //enough space for the count, 1 prefix + object
+	uint32_t reserveSize = 2*PrefixType::Size + pSerializer->Size();  //enough space for the count, 1 prefix + object
 	if(this->WriteHeaderWithReserve(pSerializer->ID(), qc, reserveSize))
 	{
 		return PrefixedWriteIterator<PrefixType, WriteType>(pSerializer, *position);

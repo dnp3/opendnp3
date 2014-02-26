@@ -23,7 +23,7 @@
 namespace opendnp3
 {
 
-RandomizedBuffer::RandomizedBuffer(size_t aSize) :
+	RandomizedBuffer::RandomizedBuffer(uint32_t aSize) :
 	CopyableBuffer(aSize),
 	rand()
 {
@@ -32,7 +32,7 @@ RandomizedBuffer::RandomizedBuffer(size_t aSize) :
 
 void RandomizedBuffer::Randomize()
 {
-	for(size_t i = 0; i < this->Size(); ++i) mpBuff[i] = rand.Next();
+	for (uint32_t i = 0; i < this->Size(); ++i) mpBuff[i] = rand.Next();
 }
 
 }
