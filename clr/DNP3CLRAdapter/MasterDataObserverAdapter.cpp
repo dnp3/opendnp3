@@ -28,6 +28,11 @@ void MasterDataObserverAdapter::Update(const opendnp3::Counter& arPoint, uint16_
 	proxy->Update(Conversions::convertMeas(arPoint), aIndex);
 }
 
+void MasterDataObserverAdapter::Update(const opendnp3::FrozenCounter& arPoint, uint16_t aIndex)
+{
+	// TODO
+}
+
 void MasterDataObserverAdapter::Update(const opendnp3::ControlStatus& arPoint, uint16_t aIndex)
 {
 	proxy->Update(Conversions::convertMeas(arPoint), aIndex);

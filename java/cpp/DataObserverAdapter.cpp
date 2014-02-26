@@ -60,17 +60,6 @@ JNIEnv* DataObserverAdapter::GetEnv()
 	return pEnv;
 }
 
-void DataObserverAdapter::Load(const opendnp3::IMeasurementUpdate& arUpdate)
-{	
-	this->_Start();
-	for(auto v: arUpdate.BinaryUpdates()) this->_Update(v.value, v.index);
-	for(auto v: arUpdate.AnalogUpdates()) this->_Update(v.value, v.index);
-	for(auto v: arUpdate.CounterUpdates()) this->_Update(v.value, v.index);
-	for(auto v: arUpdate.ControlStatusUpdates()) this->_Update(v.value, v.index);
-	for(auto v: arUpdate.SetpointStatusUpdates()) this->_Update(v.value, v.index);
-	this->_End();
-}
-
 void DataObserverAdapter::_Start()
 {
 	GetEnv()->CallVoidMethod(mProxy, mStartId);

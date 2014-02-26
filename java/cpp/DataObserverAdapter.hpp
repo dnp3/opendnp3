@@ -21,15 +21,23 @@
 
 #include <jni.h>
 #include <opendnp3/IDataObserver.h>
-#include <opendnp3/IMeasurementHandler.h>
+#include <opendnp3/ISOEHandler.h>
 
-class DataObserverAdapter : public opendnp3::IMeasurementHandler
+class DataObserverAdapter : public opendnp3::ISOEHandler
 {
 
 public:
 	DataObserverAdapter(JavaVM* apJVM, jobject aProxy);
-
-	void Load(const opendnp3::IMeasurementUpdate& arUpdate);
+	
+	virtual void Start() final {}
+	virtual void End() final {}
+	virtual void Load(const opendnp3::IterableBuffer<opendnp3::IndexedValue<opendnp3::Binary>>& meas) {}
+	virtual void Load(const opendnp3::IterableBuffer<opendnp3::IndexedValue<opendnp3::Analog>>& meas) {}
+	virtual void Load(const opendnp3::IterableBuffer<opendnp3::IndexedValue<opendnp3::Counter>>& meas) {}
+	virtual void Load(const opendnp3::IterableBuffer<opendnp3::IndexedValue<opendnp3::FrozenCounter>>& meas) {}
+	virtual void Load(const opendnp3::IterableBuffer<opendnp3::IndexedValue<opendnp3::ControlStatus>>& meas) {}
+	virtual void Load(const opendnp3::IterableBuffer<opendnp3::IndexedValue<opendnp3::SetpointStatus>>& meas) {}
+	virtual void Load(const opendnp3::IterableBuffer<opendnp3::IndexedValue<opendnp3::OctetString>>& meas) {}
 	
 
 private:

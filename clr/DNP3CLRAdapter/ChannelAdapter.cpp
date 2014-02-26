@@ -1,6 +1,6 @@
 #include "ChannelAdapter.h"
 #include "Conversions.h"
-#include "MasterMeasurementHandlerAdapter.h"
+#include "SOEHandlerAdapter.h"
 #include "SlaveCommandHandlerAdapter.h"
 #include "OutstationTimeWriteAdapter.h"
 #include "MasterAdapter.h"

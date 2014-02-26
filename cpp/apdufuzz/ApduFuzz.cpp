@@ -47,12 +47,12 @@ class Fuzzer
 		std::mt19937 gen;
 		gen.seed(seed);
 		std::uniform_int_distribution<size_t> size(1, maxSize);
-		std::uniform_int_distribution<uint8_t> value(0x00, 0xFF);
+		std::uniform_int_distribution<uint16_t> value(0x00, 0xFF);
 
 		for(uint64_t i = 0; i<iter; ++i)
 		{
 			size_t count  = size(gen);
-			for(size_t j = 0; j < count; ++j) buffer[j] = value(gen);
+			for (size_t j = 0; j < count; ++j) buffer[j] = static_cast<uint8_t>(value(gen));
 			ReadOnlyBuffer rb(buffer, count);
 			/*
 			APDUParser::Result result = APDUParser::ParseHeaders(rb, handler);

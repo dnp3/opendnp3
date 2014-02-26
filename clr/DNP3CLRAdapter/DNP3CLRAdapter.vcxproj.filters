@@ -54,13 +54,13 @@
     <ClInclude Include="OutstationTimeWriteAdapter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MasterMeasurementHandlerAdapter.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="MasterScanAdapter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ScanListenerAdapter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SOEHandlerAdapter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

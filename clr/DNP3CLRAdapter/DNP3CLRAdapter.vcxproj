@@ -177,7 +177,7 @@
     <ClInclude Include="LogAdapter.h" />
     <ClInclude Include="MasterAdapter.h" />
     <ClInclude Include="MasterDataObserverAdapter.h" />
-    <ClInclude Include="MasterMeasurementHandlerAdapter.h" />
+    <ClInclude Include="SOEHandlerAdapter.h" />
     <ClInclude Include="MasterScanAdapter.h" />
     <ClInclude Include="OutstationAdapter.h" />
     <ClInclude Include="OutstationTimeWriteAdapter.h" />
