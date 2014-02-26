@@ -123,7 +123,7 @@ bool LinkLayerReceiver::ReadHeader()
 
 bool LinkLayerReceiver::ValidateBody()
 {
-	size_t len = mHeader.GetLength() - LS_MIN_LENGTH;
+	uint32_t len = mHeader.GetLength() - LS_MIN_LENGTH;
 	if(LinkFrame::ValidateBodyCRC(mBuffer.ReadBuff() + LS_HEADER_SIZE, len)) return true;
 	else {
 		ERROR_BLOCK(LogLevel::Error, "CRC failure in body", DLERR_CRC);

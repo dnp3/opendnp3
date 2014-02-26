@@ -38,13 +38,13 @@ public:
 	        openpal::TimeDuration aMaxOpenRetry
 	);
 
-	size_t mOpens;
-	size_t mCloses;
+	uint32_t mOpens;
+	uint32_t mCloses;
 
-	size_t mNumReads;
-	size_t mBytesRead;
-	size_t mBytesWritten;
-	size_t mLastWriteSize;
+	uint32_t mNumReads;
+	uint32_t mBytesRead;
+	uint32_t mBytesWritten;
+	uint32_t mLastWriteSize;
 
 	CopyableBuffer mReadBuffer;
 	CopyableBuffer mWriteBuffer;
