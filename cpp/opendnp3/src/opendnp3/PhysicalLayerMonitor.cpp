@@ -26,6 +26,7 @@
 #include <openpal/LoggableMacros.h>
 
 #include <functional>
+#include <algorithm>
 
 #include <assert.h>
 
