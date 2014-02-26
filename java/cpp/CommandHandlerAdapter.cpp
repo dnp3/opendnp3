@@ -52,7 +52,7 @@ CommandHandlerAdapter::CommandHandlerAdapter(JavaVM* apJVM, jobject aProxy) : mp
 
 }
 
-CommandStatus CommandHandlerAdapter::Select(const ControlRelayOutputBlock& arCommand, size_t aIndex)
+CommandStatus CommandHandlerAdapter::Select(const ControlRelayOutputBlock& arCommand, uint16_t aIndex)
 {
 	jint func = ControlCodeToType(arCommand.functionCode);
 	jshort count = arCommand.count;
@@ -65,7 +65,7 @@ CommandStatus CommandHandlerAdapter::Select(const ControlRelayOutputBlock& arCom
 	return CommandStatusFromType(ret);
 }
 
-CommandStatus CommandHandlerAdapter::Operate(const ControlRelayOutputBlock& arCommand, size_t aIndex)
+CommandStatus CommandHandlerAdapter::Operate(const ControlRelayOutputBlock& arCommand, uint16_t aIndex)
 {
 	jint func = ControlCodeToType(arCommand.functionCode);
 	jshort count = arCommand.count;
@@ -78,7 +78,7 @@ CommandStatus CommandHandlerAdapter::Operate(const ControlRelayOutputBlock& arCo
 	return CommandStatusFromType(ret);
 }
 
-CommandStatus CommandHandlerAdapter::DirectOperate(const ControlRelayOutputBlock& arCommand, size_t aIndex)
+CommandStatus CommandHandlerAdapter::DirectOperate(const ControlRelayOutputBlock& arCommand, uint16_t aIndex)
 {
 	jint func = ControlCodeToType(arCommand.functionCode);
 	jshort count = arCommand.count;
@@ -91,7 +91,7 @@ CommandStatus CommandHandlerAdapter::DirectOperate(const ControlRelayOutputBlock
 	return CommandStatusFromType(ret);
 }
 
-CommandStatus CommandHandlerAdapter::Select(const AnalogOutputInt16& arCommand, size_t aIndex)
+CommandStatus CommandHandlerAdapter::Select(const AnalogOutputInt16& arCommand, uint16_t aIndex)
 {
 	jshort value = arCommand.value;
 	jlong index = aIndex;
@@ -100,7 +100,7 @@ CommandStatus CommandHandlerAdapter::Select(const AnalogOutputInt16& arCommand, 
 	return CommandStatusFromType(status);
 }
 
-CommandStatus CommandHandlerAdapter::Operate(const AnalogOutputInt16& arCommand, size_t aIndex)
+CommandStatus CommandHandlerAdapter::Operate(const AnalogOutputInt16& arCommand, uint16_t aIndex)
 {
 	jshort value = arCommand.value;
 	jlong index = aIndex;
@@ -108,7 +108,7 @@ CommandStatus CommandHandlerAdapter::Operate(const AnalogOutputInt16& arCommand,
 	jint status = this->GetEnv()->CallIntMethod(mProxy, mOperateAnalogInt16, value, index);
 	return CommandStatusFromType(status);
 }
-CommandStatus CommandHandlerAdapter::DirectOperate(const AnalogOutputInt16& arCommand, size_t aIndex)
+CommandStatus CommandHandlerAdapter::DirectOperate(const AnalogOutputInt16& arCommand, uint16_t aIndex)
 {
 	jshort value = arCommand.value;
 	jlong index = aIndex;
@@ -117,7 +117,7 @@ CommandStatus CommandHandlerAdapter::DirectOperate(const AnalogOutputInt16& arCo
 	return CommandStatusFromType(status);
 }
 
-CommandStatus CommandHandlerAdapter::Select(const AnalogOutputInt32& arCommand, size_t aIndex)
+CommandStatus CommandHandlerAdapter::Select(const AnalogOutputInt32& arCommand, uint16_t aIndex)
 {
 	jshort value = arCommand.value;
 	jlong index = aIndex;
@@ -125,7 +125,7 @@ CommandStatus CommandHandlerAdapter::Select(const AnalogOutputInt32& arCommand, 
 	jint status = this->GetEnv()->CallIntMethod(mProxy, mSelectAnalogInt32, value, index);
 	return CommandStatusFromType(status);
 }
-CommandStatus CommandHandlerAdapter::Operate(const AnalogOutputInt32& arCommand, size_t aIndex)
+CommandStatus CommandHandlerAdapter::Operate(const AnalogOutputInt32& arCommand, uint16_t aIndex)
 {
 	jint value = arCommand.value;
 	jlong index = aIndex;
@@ -133,7 +133,7 @@ CommandStatus CommandHandlerAdapter::Operate(const AnalogOutputInt32& arCommand,
 	jint status = this->GetEnv()->CallIntMethod(mProxy, mOperateAnalogInt32, value, index);
 	return CommandStatusFromType(status);
 }
-CommandStatus CommandHandlerAdapter::DirectOperate(const AnalogOutputInt32& arCommand, size_t aIndex)
+CommandStatus CommandHandlerAdapter::DirectOperate(const AnalogOutputInt32& arCommand, uint16_t aIndex)
 {
 	jint value = arCommand.value;
 	jlong index = aIndex;
@@ -142,7 +142,7 @@ CommandStatus CommandHandlerAdapter::DirectOperate(const AnalogOutputInt32& arCo
 	return CommandStatusFromType(status);
 }
 
-CommandStatus CommandHandlerAdapter::Select(const AnalogOutputFloat32& arCommand, size_t aIndex)
+CommandStatus CommandHandlerAdapter::Select(const AnalogOutputFloat32& arCommand, uint16_t aIndex)
 {
 	jfloat value = arCommand.value;
 	jlong index = aIndex;
@@ -150,7 +150,7 @@ CommandStatus CommandHandlerAdapter::Select(const AnalogOutputFloat32& arCommand
 	jint status = this->GetEnv()->CallIntMethod(mProxy, mSelectAnalogFloat32, value, index);
 	return CommandStatusFromType(status);
 }
-CommandStatus CommandHandlerAdapter::Operate(const AnalogOutputFloat32& arCommand, size_t aIndex)
+CommandStatus CommandHandlerAdapter::Operate(const AnalogOutputFloat32& arCommand, uint16_t aIndex)
 {
 	jfloat value = arCommand.value;
 	jlong index = aIndex;
@@ -158,7 +158,7 @@ CommandStatus CommandHandlerAdapter::Operate(const AnalogOutputFloat32& arComman
 	jint status = this->GetEnv()->CallIntMethod(mProxy, mOperateAnalogFloat32, value, index);
 	return CommandStatusFromType(status);
 }
-CommandStatus CommandHandlerAdapter::DirectOperate(const AnalogOutputFloat32& arCommand, size_t aIndex)
+CommandStatus CommandHandlerAdapter::DirectOperate(const AnalogOutputFloat32& arCommand, uint16_t aIndex)
 {
 	jfloat value = arCommand.value;
 	jlong index = aIndex;
@@ -167,7 +167,7 @@ CommandStatus CommandHandlerAdapter::DirectOperate(const AnalogOutputFloat32& ar
 	return CommandStatusFromType(status);
 }
 
-CommandStatus CommandHandlerAdapter::Select(const AnalogOutputDouble64& arCommand, size_t aIndex)
+CommandStatus CommandHandlerAdapter::Select(const AnalogOutputDouble64& arCommand, uint16_t aIndex)
 {
 	jdouble value = arCommand.value;
 	jlong index = aIndex;
@@ -175,7 +175,7 @@ CommandStatus CommandHandlerAdapter::Select(const AnalogOutputDouble64& arComman
 	jint status = this->GetEnv()->CallIntMethod(mProxy, mSelectAnalogDouble64, value, index);
 	return CommandStatusFromType(status);
 }
-CommandStatus CommandHandlerAdapter::Operate(const AnalogOutputDouble64& arCommand, size_t aIndex)
+CommandStatus CommandHandlerAdapter::Operate(const AnalogOutputDouble64& arCommand, uint16_t aIndex)
 {
 	jdouble value = arCommand.value;
 	jlong index = aIndex;
@@ -183,7 +183,7 @@ CommandStatus CommandHandlerAdapter::Operate(const AnalogOutputDouble64& arComma
 	jint status = this->GetEnv()->CallIntMethod(mProxy, mOperateAnalogDouble64, value, index);
 	return CommandStatusFromType(status);
 }
-CommandStatus CommandHandlerAdapter::DirectOperate(const AnalogOutputDouble64& arCommand, size_t aIndex)
+CommandStatus CommandHandlerAdapter::DirectOperate(const AnalogOutputDouble64& arCommand, uint16_t aIndex)
 {
 	jdouble value = arCommand.value;
 	jlong index = aIndex;

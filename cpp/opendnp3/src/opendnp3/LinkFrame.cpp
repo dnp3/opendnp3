@@ -95,14 +95,14 @@ bool LinkFrame::ValidateBodyCRC(const uint8_t* apBody, size_t aLength)
 	else return ValidateBodyCRC(apBody + num + 2, aLength - num); //tail recursive
 }
 
-size_t LinkFrame::CalcFrameSize(size_t aDataLength)
+uint32_t LinkFrame::CalcFrameSize(uint32_t aDataLength)
 {
 	assert(aDataLength <= LS_MAX_USER_DATA_SIZE);
 
-	size_t ret = LS_HEADER_SIZE;
+	uint32_t ret = LS_HEADER_SIZE;
 
 	if(aDataLength > 0) {
-		size_t mod16 = aDataLength % LS_DATA_BLOCK_SIZE;
+		uint32_t mod16 = aDataLength % LS_DATA_BLOCK_SIZE;
 		ret += (aDataLength / LS_DATA_BLOCK_SIZE) * LS_DATA_PLUS_CRC_SIZE; //complete blocks
 		if(mod16) ret += mod16 + LS_CRC_SIZE; //possible partial block
 	}
@@ -182,7 +182,7 @@ void LinkFrame::ChangeFCB(bool aFCB)
 
 }
 
-void LinkFrame::FormatHeader(size_t aDataLength, bool aIsMaster, bool aFcb, bool aFcvDfc, LinkFunction aFuncCode, uint16_t aDest, uint16_t aSrc)
+void LinkFrame::FormatHeader(uint32_t aDataLength, bool aIsMaster, bool aFcb, bool aFcvDfc, LinkFunction aFuncCode, uint16_t aDest, uint16_t aSrc)
 {
 	mSize = this->CalcFrameSize(aDataLength);
 

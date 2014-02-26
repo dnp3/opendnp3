@@ -36,7 +36,7 @@ class ShiftableBuffer
 {
 public:
 	/** @param aSize Size of the buffer in bytes */
-	ShiftableBuffer( size_t aSize);
+	ShiftableBuffer(uint32_t aSize);
 
 	/**
 	 * Construct a buffer with the specified content and size.
@@ -44,7 +44,7 @@ public:
 	 * @param aBuffer    The content to initialize this ShiftableBuffer to.
 	 * @param aSize      The size of aBuffer and the max size of this ShiftableBuffer.
 	 */
-	ShiftableBuffer( const uint8_t* aBuffer, size_t aSize);
+	ShiftableBuffer(const uint8_t* aBuffer, uint32_t aSize);
 	~ShiftableBuffer();
 
 	////////////////////////////////////////////
@@ -52,7 +52,7 @@ public:
 	////////////////////////////////////////////
 
 	/** @return Bytes available to be read */
-	size_t NumReadBytes() const;
+	uint32_t NumReadBytes() const;
 
 	/** @return the value of the ith byte in read subsequence of the buffer */
 	const uint8_t& operator[](size_t index) const;
@@ -75,7 +75,7 @@ public:
 	void Reset();
 
 	/** @return Bytes of available for writing */
-	size_t NumWriteBytes() const;
+	uint32_t NumWriteBytes() const;
 	/** @return Pointer to the position in the buffer available for writing */
 	uint8_t* WriteBuff() const;
 	/** Signal to the buffer bytes were written to the current write position */
@@ -109,9 +109,9 @@ private:
 
 
 	uint8_t* mpBuffer;
-	const size_t M_SIZE;
-	size_t mWritePos;
-	size_t mReadPos;
+	const uint32_t M_SIZE;
+	uint32_t mWritePos;
+	uint32_t mReadPos;
 };
 
 inline const uint8_t& ShiftableBuffer::operator[](size_t i) const
@@ -122,12 +122,12 @@ inline const uint8_t* ShiftableBuffer::ReadBuff() const
 {
 	return mpBuffer + mReadPos;
 }
-inline size_t ShiftableBuffer::NumReadBytes() const
+inline uint32_t ShiftableBuffer::NumReadBytes() const
 {
 	return mWritePos - mReadPos;
 }
 
-inline size_t ShiftableBuffer::NumWriteBytes() const
+inline uint32_t ShiftableBuffer::NumWriteBytes() const
 {
 	return M_SIZE - mWritePos;
 }

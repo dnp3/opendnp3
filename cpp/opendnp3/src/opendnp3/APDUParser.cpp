@@ -164,7 +164,7 @@ APDUParser::Result APDUParser::ParseIndexPrefixedOctetData(
 		IndexParser* pParser, 
 		IAPDUHandler* pHandler)
 {
-	size_t size = count * (pParser->IndexSize() + gvRecord.variation);
+	uint32_t size = count * (pParser->IndexSize() + gvRecord.variation);
 	if(buffer.Size() < size) return APDUParser::Result::NOT_ENOUGH_DATA_FOR_OBJECTS;
 	else {
 		

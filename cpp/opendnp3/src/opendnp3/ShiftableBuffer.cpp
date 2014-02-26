@@ -30,7 +30,7 @@ using namespace openpal;
 namespace opendnp3
 {
 
-ShiftableBuffer::ShiftableBuffer(size_t aSize) :
+ShiftableBuffer::ShiftableBuffer(uint32_t aSize) :
 	mpBuffer(new uint8_t[aSize]),
 	M_SIZE(aSize),
 	mWritePos(0),
@@ -39,7 +39,7 @@ ShiftableBuffer::ShiftableBuffer(size_t aSize) :
 }
 
 
-ShiftableBuffer::ShiftableBuffer( const uint8_t* aBuffer, size_t aSize) :
+ShiftableBuffer::ShiftableBuffer(const uint8_t* aBuffer, uint32_t aSize) :
 	mpBuffer(new uint8_t[aSize]),
 	M_SIZE(aSize),
 	mWritePos(0),

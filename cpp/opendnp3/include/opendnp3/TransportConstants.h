@@ -21,8 +21,9 @@
 #ifndef __TRANSPORT_CONSTANTS_H_
 #define __TRANSPORT_CONSTANTS_H_
 
-
 #include "DNPConstants.h"
+
+#include <cstdint>
 
 namespace opendnp3
 {
@@ -35,9 +36,9 @@ enum TransportHeader {
 };
 
 /// Maximum TPDU length
-const size_t TL_MAX_TPDU_LENGTH = 250;
+const uint8_t TL_MAX_TPDU_LENGTH = 250;
 /// Maximum TPDU payload size
-const size_t TL_MAX_TPDU_PAYLOAD = 249;
+const uint8_t TL_MAX_TPDU_PAYLOAD = 249;
 
 }
 

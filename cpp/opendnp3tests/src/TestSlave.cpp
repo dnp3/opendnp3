@@ -285,7 +285,7 @@ BOOST_AUTO_TEST_CASE(ReadClass0MultiFrag)
 
 	{
 		Transaction tr(&t.db);
-		for(size_t i = 0; i < 8; i++) t.db.Update(Analog(0, AQ_ONLINE), i);
+		for (uint16_t i = 0; i < 8; i++) t.db.Update(Analog(0, AQ_ONLINE), i);
 	}
 
 	t.SendToSlave("C0 01 3C 01 06"); // Read class 0

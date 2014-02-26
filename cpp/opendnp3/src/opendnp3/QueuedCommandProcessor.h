@@ -39,20 +39,20 @@ public:
 
 	// Implement the ICommandProcessor interface
 
-	void SelectAndOperate(const ControlRelayOutputBlock& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback);
-	void DirectOperate(const ControlRelayOutputBlock& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback);
+	void SelectAndOperate(const ControlRelayOutputBlock& arCommand, uint16_t aIndex, std::function<void(CommandResponse)> aCallback);
+	void DirectOperate(const ControlRelayOutputBlock& arCommand, uint16_t aIndex, std::function<void (CommandResponse)> aCallback);
 
-	void SelectAndOperate(const AnalogOutputInt16& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback);
-	void DirectOperate(const AnalogOutputInt16& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback);
+	void SelectAndOperate(const AnalogOutputInt16& arCommand, uint16_t aIndex, std::function<void (CommandResponse)> aCallback);
+	void DirectOperate(const AnalogOutputInt16& arCommand, uint16_t aIndex, std::function<void (CommandResponse)> aCallback);
 
-	void SelectAndOperate(const AnalogOutputInt32& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback);
-	void DirectOperate(const AnalogOutputInt32& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback);
+	void SelectAndOperate(const AnalogOutputInt32& arCommand, uint16_t aIndex, std::function<void (CommandResponse)> aCallback);
+	void DirectOperate(const AnalogOutputInt32& arCommand, uint16_t aIndex, std::function<void (CommandResponse)> aCallback);
 
-	void SelectAndOperate(const AnalogOutputFloat32& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback);
-	void DirectOperate(const AnalogOutputFloat32& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback);
+	void SelectAndOperate(const AnalogOutputFloat32& arCommand, uint16_t aIndex, std::function<void (CommandResponse)> aCallback);
+	void DirectOperate(const AnalogOutputFloat32& arCommand, uint16_t aIndex, std::function<void (CommandResponse)> aCallback);
 
-	void SelectAndOperate(const AnalogOutputDouble64& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback);
-	void DirectOperate(const AnalogOutputDouble64& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback);
+	void SelectAndOperate(const AnalogOutputDouble64& arCommand, uint16_t aIndex, std::function<void (CommandResponse)> aCallback);
+	void DirectOperate(const AnalogOutputDouble64& arCommand, uint16_t aIndex, std::function<void (CommandResponse)> aCallback);
 
 	// Function used to marshall calls another ICommandProcessor
 
@@ -63,7 +63,7 @@ private:
 	std::queue<std::function<void (ICommandProcessor*)>> mRequestQueue;
 
 	template <class T>
-	void SelectAndOperateT(const T& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback) {
+	void SelectAndOperateT(const T& arCommand, uint16_t aIndex, std::function<void (CommandResponse)> aCallback) {
 		{
 			std::lock_guard<std::mutex> lock(mMutex);
 			mRequestQueue.push([arCommand, aIndex, aCallback](ICommandProcessor * pProcessor) {
@@ -74,7 +74,7 @@ private:
 	}
 
 	template <class T>
-	void DirectOperateT(const T& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback) {
+	void DirectOperateT(const T& arCommand, uint16_t aIndex, std::function<void (CommandResponse)> aCallback) {
 		{
 			std::lock_guard<std::mutex> lock(mMutex);
 			mRequestQueue.push([arCommand, aIndex, aCallback](ICommandProcessor * pProcessor) {

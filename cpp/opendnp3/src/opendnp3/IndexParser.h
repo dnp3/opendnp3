@@ -43,7 +43,7 @@ class IndexParser
 	/**
 	* @return The size of the index prefix in bytes (e.g. 1,2,4)
 	*/
-	virtual size_t IndexSize() = 0;
+	virtual uint32_t IndexSize() = 0;
 
 };
 
@@ -59,7 +59,7 @@ class TypedIndexParser : public IndexParser
 		return ParserType::ReadBuffer(buffer); 
 	}
 	
-	virtual size_t IndexSize() override 
+	virtual uint32_t IndexSize() override
 	{ 
 		return ParserType::Size; 
 	}

@@ -41,10 +41,10 @@ public:
 
 	// Generate a complete packet sequence inside the vector and
 	// return the corresponding reassembled APDU
-	std::string GeneratePacketSequence(std::vector<std::string>&, size_t aNumPackets, size_t aLastPacketLength);
+	std::string GeneratePacketSequence(std::vector<std::string>&, uint32_t aNumPackets, uint32_t aLastPacketLength);
 
 	// Get a Sequence of data w/ optional header
-	std::string GetData(const std::string& arHdr, uint8_t aSeed = 0, size_t aLength = TL_MAX_TPDU_PAYLOAD);
+	std::string GetData(const std::string& arHdr, uint8_t aSeed = 0, uint32_t aLength = TL_MAX_TPDU_PAYLOAD);
 
 	LogTester log;
 

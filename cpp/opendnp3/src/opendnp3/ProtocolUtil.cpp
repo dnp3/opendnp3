@@ -25,16 +25,16 @@ namespace opendnp3
 
 // Given a buffer and max packet size, calculcate the
 // maximum number of packets the buffer can hold
-size_t CalcMaxPackets(size_t aBuffer, size_t aPayload)
+uint32_t CalcMaxPackets(uint32_t aBuffer, uint32_t aPayload)
 {
-	size_t remain = aBuffer % aPayload;
-	size_t num = aBuffer / aPayload;
+	uint32_t remain = aBuffer % aPayload;
+	uint32_t num = aBuffer / aPayload;
 	return (remain == 0) ? num : num + 1;
 }
 
-size_t CalcLastPacketSize(size_t aBuffer, size_t aPayload)
+uint32_t CalcLastPacketSize(uint32_t aBuffer, uint32_t aPayload)
 {
-	size_t remain = aBuffer % aPayload;
+	uint32_t remain = aBuffer % aPayload;
 	return (remain == 0) ? aPayload : remain;
 }
 

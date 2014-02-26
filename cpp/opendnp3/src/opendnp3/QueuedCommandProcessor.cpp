@@ -29,52 +29,52 @@ QueuedCommandProcessor::QueuedCommandProcessor() :
 
 }
 
-void QueuedCommandProcessor::SelectAndOperate(const ControlRelayOutputBlock& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback)
+void QueuedCommandProcessor::SelectAndOperate(const ControlRelayOutputBlock& arCommand, uint16_t aIndex, std::function<void (CommandResponse)> aCallback)
 {
 	this->SelectAndOperateT(arCommand, aIndex, aCallback);
 }
 
-void QueuedCommandProcessor::DirectOperate(const ControlRelayOutputBlock& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback)
+void QueuedCommandProcessor::DirectOperate(const ControlRelayOutputBlock& arCommand, uint16_t aIndex, std::function<void (CommandResponse)> aCallback)
 {
 	this->DirectOperateT(arCommand, aIndex, aCallback);
 }
 
-void QueuedCommandProcessor::SelectAndOperate(const AnalogOutputInt16& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback)
+void QueuedCommandProcessor::SelectAndOperate(const AnalogOutputInt16& arCommand, uint16_t aIndex, std::function<void (CommandResponse)> aCallback)
 {
 	this->SelectAndOperateT(arCommand, aIndex, aCallback);
 }
 
-void QueuedCommandProcessor::DirectOperate(const AnalogOutputInt16& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback)
+void QueuedCommandProcessor::DirectOperate(const AnalogOutputInt16& arCommand, uint16_t aIndex, std::function<void (CommandResponse)> aCallback)
 {
 	this->DirectOperateT(arCommand, aIndex, aCallback);
 }
 
-void QueuedCommandProcessor::SelectAndOperate(const AnalogOutputInt32& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback)
+void QueuedCommandProcessor::SelectAndOperate(const AnalogOutputInt32& arCommand, uint16_t aIndex, std::function<void (CommandResponse)> aCallback)
 {
 	this->SelectAndOperateT(arCommand, aIndex, aCallback);
 }
 
-void QueuedCommandProcessor::DirectOperate(const AnalogOutputInt32& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback)
+void QueuedCommandProcessor::DirectOperate(const AnalogOutputInt32& arCommand, uint16_t aIndex, std::function<void (CommandResponse)> aCallback)
 {
 	this->DirectOperateT(arCommand, aIndex, aCallback);
 }
 
-void QueuedCommandProcessor::SelectAndOperate(const AnalogOutputFloat32& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback)
+void QueuedCommandProcessor::SelectAndOperate(const AnalogOutputFloat32& arCommand, uint16_t aIndex, std::function<void (CommandResponse)> aCallback)
 {
 	this->SelectAndOperateT(arCommand, aIndex, aCallback);
 }
 
-void QueuedCommandProcessor::DirectOperate(const AnalogOutputFloat32& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback)
+void QueuedCommandProcessor::DirectOperate(const AnalogOutputFloat32& arCommand, uint16_t aIndex, std::function<void (CommandResponse)> aCallback)
 {
 	this->DirectOperateT(arCommand, aIndex, aCallback);
 }
 
-void QueuedCommandProcessor::SelectAndOperate(const AnalogOutputDouble64& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback)
+void QueuedCommandProcessor::SelectAndOperate(const AnalogOutputDouble64& arCommand, uint16_t aIndex, std::function<void (CommandResponse)> aCallback)
 {
 	this->SelectAndOperateT(arCommand, aIndex, aCallback);
 }
 
-void QueuedCommandProcessor::DirectOperate(const AnalogOutputDouble64& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback)
+void QueuedCommandProcessor::DirectOperate(const AnalogOutputDouble64& arCommand, uint16_t aIndex, std::function<void (CommandResponse)> aCallback)
 {
 	this->DirectOperateT(arCommand, aIndex, aCallback);
 }

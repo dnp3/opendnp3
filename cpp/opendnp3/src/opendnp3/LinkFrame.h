@@ -50,7 +50,7 @@ public:
 	const uint8_t* GetBuffer() const {
 		return mpBuffer;
 	}
-	size_t  GetSize() const {
+	uint32_t  GetSize() const {
 		return mSize;
 	}
 
@@ -119,7 +119,7 @@ public:
 	////////////////////////////////////////////////
 
 	// @return Total frame size based on user data length
-	static size_t CalcFrameSize(size_t aDataLength);
+	static uint32_t CalcFrameSize(uint32_t aDataLength);
 
 #ifndef OPENDNP3_STRIP_LOG_MESSAGES
 	/** @return String representation of the frame */
@@ -149,10 +149,10 @@ private:
 	static void WriteUserData(const uint8_t* apSrc, uint8_t* apDest, size_t aLength);
 
 	/** Write 10 header bytes to to buffer including 0x0564, all fields, and CRC */
-	void FormatHeader(size_t aDataLength, bool aIsMaster, bool aFcb, bool aFcvDfc, LinkFunction aCode, uint16_t aDest, uint16_t aSrc);
+	void FormatHeader(uint32_t aDataLength, bool aIsMaster, bool aFcb, bool aFcvDfc, LinkFunction aCode, uint16_t aDest, uint16_t aSrc);
 
 	bool mIsComplete;
-	size_t mSize;
+	uint32_t mSize;
 	LinkHeader mHeader;
 	uint8_t mpBuffer[LS_MAX_FRAME_SIZE];
 

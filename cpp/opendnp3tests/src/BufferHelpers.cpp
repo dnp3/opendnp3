@@ -33,20 +33,20 @@ namespace opendnp3
 {
 
 
-ByteStr::ByteStr(size_t aLength) : CopyableBuffer(aLength)
+ByteStr::ByteStr(uint32_t aLength) : CopyableBuffer(aLength)
 {}
 
-ByteStr::ByteStr(size_t aLength, uint8_t aSeed) : CopyableBuffer(aLength)
+ByteStr::ByteStr(uint32_t aLength, uint8_t aSeed) : CopyableBuffer(aLength)
 {
 	for(size_t i = 0; i < aLength; ++i) mpBuff[i] = static_cast<uint8_t>((i + aSeed) % 256);
 }
 
-ByteStr::ByteStr(const uint8_t* apData, size_t aLength) : CopyableBuffer(aLength)
+ByteStr::ByteStr(const uint8_t* apData, uint32_t aLength) : CopyableBuffer(aLength)
 {
 	memcpy(mpBuff, apData, aLength);
 }
 
-ByteStr::ByteStr(const std::string& aChars) : CopyableBuffer(aChars.size())
+ByteStr::ByteStr(const std::string& aChars) : CopyableBuffer(static_cast<uint32_t>(aChars.size()))
 {
 	memcpy(mpBuff, aChars.c_str(), aChars.size());
 }
@@ -94,14 +94,14 @@ void HexSequence::RemoveSpacesInPlace(std::string& s)
 	}
 }
 
-size_t HexSequence::Validate(const std::string& s)
+uint32_t HexSequence::Validate(const std::string& s)
 {
 	//annoying when you accidentally put an 'O' instead of zero '0'
 	if(s.find_first_of( "oO") != string::npos)
 		throw ArgumentException(LOCATION, "Sequence contains 'o' or 'O'");
 
 	if(s.size() % 2 != 0) throw ArgumentException(LOCATION, s);
-	return s.size() / 2;
+	return static_cast<uint32_t>(s.size() / 2);
 }
 
 }

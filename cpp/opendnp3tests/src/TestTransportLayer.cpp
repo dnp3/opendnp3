@@ -126,8 +126,8 @@ BOOST_AUTO_TEST_CASE(ReceiveLargestPossibleAPDU)
 {
 	TransportTestObject test(true);
 
-	size_t num_packets = CalcMaxPackets(DEFAULT_FRAG_SIZE, TL_MAX_TPDU_PAYLOAD);
-	size_t last_packet_length = CalcLastPacketSize(DEFAULT_FRAG_SIZE, TL_MAX_TPDU_PAYLOAD);
+	uint32_t num_packets = CalcMaxPackets(DEFAULT_FRAG_SIZE, TL_MAX_TPDU_PAYLOAD);
+	uint32_t last_packet_length = CalcLastPacketSize(DEFAULT_FRAG_SIZE, TL_MAX_TPDU_PAYLOAD);
 
 	vector<string> packets;
 	string apdu = test.GeneratePacketSequence(packets, num_packets, last_packet_length);
@@ -143,8 +143,8 @@ BOOST_AUTO_TEST_CASE(ReceiveBufferOverflow)
 {
 	TransportTestObject test(true);
 
-	size_t num_packets = CalcMaxPackets(DEFAULT_FRAG_SIZE, TL_MAX_TPDU_PAYLOAD);
-	size_t last_packet_length = CalcLastPacketSize(DEFAULT_FRAG_SIZE, TL_MAX_TPDU_PAYLOAD);
+	uint32_t num_packets = CalcMaxPackets(DEFAULT_FRAG_SIZE, TL_MAX_TPDU_PAYLOAD);
+	uint32_t last_packet_length = CalcLastPacketSize(DEFAULT_FRAG_SIZE, TL_MAX_TPDU_PAYLOAD);
 
 	//send 1 more packet than possible
 	vector<string> packets;
@@ -253,8 +253,8 @@ BOOST_AUTO_TEST_CASE(SendFullAPDU)
 {
 	TransportTestObject test(true);
 
-	size_t num_packets = CalcMaxPackets(DEFAULT_FRAG_SIZE, TL_MAX_TPDU_PAYLOAD);
-	size_t last_packet_length = CalcLastPacketSize(DEFAULT_FRAG_SIZE, TL_MAX_TPDU_PAYLOAD);
+	uint32_t num_packets = CalcMaxPackets(DEFAULT_FRAG_SIZE, TL_MAX_TPDU_PAYLOAD);
+	uint32_t last_packet_length = CalcLastPacketSize(DEFAULT_FRAG_SIZE, TL_MAX_TPDU_PAYLOAD);
 
 	vector<string> packets;
 	std::string apdu = test.GeneratePacketSequence(packets, num_packets, last_packet_length);

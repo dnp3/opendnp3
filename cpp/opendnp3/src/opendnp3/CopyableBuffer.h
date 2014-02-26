@@ -45,9 +45,9 @@ public:
 	// Construct null buffer
 	CopyableBuffer();
 	// Construct based on starting size of buffer
-	CopyableBuffer(size_t aSize);
+	CopyableBuffer(uint32_t aSize);
 	CopyableBuffer(const openpal::ReadOnlyBuffer&);
-	CopyableBuffer(const uint8_t* apBuff, size_t aSize);
+	CopyableBuffer(const uint8_t* apBuff, uint32_t aSize);
 	CopyableBuffer(const CopyableBuffer&);
 	CopyableBuffer& operator=(const CopyableBuffer&);
 	~CopyableBuffer();
@@ -70,7 +70,7 @@ public:
 		return mpBuff;
 	}
 
-	size_t Size() const {
+	uint32_t Size() const {
 		return mSize;
 	}
 
@@ -80,7 +80,7 @@ protected:
 	uint8_t* mpBuff;
 
 private:
-	size_t mSize;
+	uint32_t mSize;
 };
 
 

@@ -22,13 +22,12 @@
 #define __DNP_CONSTANTS_H_
 
 #include <string>
-
-#define MACRO_DNP_RADIX(obj,var) (obj<<4) | var
+#include <cstdint>
 
 namespace opendnp3
 {
 
-const size_t DEFAULT_FRAG_SIZE = 2048;
+const uint32_t DEFAULT_FRAG_SIZE = 2048;
 
 /// Error codes returned in log messages
 enum DNPErrorCodes {

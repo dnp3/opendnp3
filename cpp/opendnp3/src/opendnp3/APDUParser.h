@@ -261,7 +261,7 @@ APDUParser::Result APDUParser::ParseRangeAsBitField(
 	const Range& range, 
 	const Callback& callback)
 {
-	size_t numBytes = NumBytesInBits(range.Count());
+	uint32_t numBytes = NumBytesInBits(range.Count());
 	if(buffer.Size() < numBytes) return Result::NOT_ENOUGH_DATA_FOR_OBJECTS;
 	else {	
 		auto collection = IterableTransforms<IndexedValue<bool>>::From(buffer, range.Count(), 

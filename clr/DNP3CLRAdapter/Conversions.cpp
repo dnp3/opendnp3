@@ -159,7 +159,7 @@ OctetString^ Conversions::convertMeas(const opendnp3::OctetString& arMeas)
 {
 	auto buffer = arMeas.ToReadOnly();
 	array<System::Byte>^ bytes = gcnew array<System::Byte>(buffer.Size());
-	for(size_t i = 0; i< buffer.Size(); ++i) bytes[i] = buffer[i];
+	for (uint32_t i = 0; i< buffer.Size(); ++i) bytes[i] = buffer[i];
 	return gcnew OctetString(bytes);	
 }
 

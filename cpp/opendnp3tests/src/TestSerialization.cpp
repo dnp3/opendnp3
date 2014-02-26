@@ -68,7 +68,7 @@ bool TestFloatParsing(std::string aHex, typename T::Type aValue)
 	size_t type_size = sizeof(typename T::Type);
 	BOOST_REQUIRE_EQUAL(hs.Size(), type_size);
 
-	ByteStr buff(2 * type_size);
+	ByteStr buff(static_cast<uint32_t>(2 * type_size));
 
 	for(size_t i = 0; i < type_size; ++i) {
 		memcpy(buff + i, hs, type_size);

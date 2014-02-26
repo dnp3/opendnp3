@@ -35,7 +35,7 @@ ConstantCommandProcessor::ConstantCommandProcessor(IExecutor* apExecutor, const 
 }
 
 
-void ConstantCommandProcessor::SelectAndOperate(const ControlRelayOutputBlock& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback)
+void ConstantCommandProcessor::SelectAndOperate(const ControlRelayOutputBlock& arCommand, uint16_t aIndex, std::function<void (CommandResponse)> aCallback)
 {
 	CommandResponse cr(mResponse);
 	mpExecutor->Post([ = ]() {
@@ -43,7 +43,7 @@ void ConstantCommandProcessor::SelectAndOperate(const ControlRelayOutputBlock& a
 	});
 }
 
-void ConstantCommandProcessor::DirectOperate(const ControlRelayOutputBlock& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback)
+void ConstantCommandProcessor::DirectOperate(const ControlRelayOutputBlock& arCommand, uint16_t aIndex, std::function<void (CommandResponse)> aCallback)
 {
 	CommandResponse cr(mResponse);
 	mpExecutor->Post([ = ]() {
@@ -51,7 +51,7 @@ void ConstantCommandProcessor::DirectOperate(const ControlRelayOutputBlock& arCo
 	});
 }
 
-void ConstantCommandProcessor::SelectAndOperate(const AnalogOutputInt16& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback)
+void ConstantCommandProcessor::SelectAndOperate(const AnalogOutputInt16& arCommand, uint16_t aIndex, std::function<void (CommandResponse)> aCallback)
 {
 	CommandResponse cr(mResponse);
 	mpExecutor->Post([ = ]() {
@@ -59,7 +59,7 @@ void ConstantCommandProcessor::SelectAndOperate(const AnalogOutputInt16& arComma
 	});
 }
 
-void ConstantCommandProcessor::DirectOperate(const AnalogOutputInt16& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback)
+void ConstantCommandProcessor::DirectOperate(const AnalogOutputInt16& arCommand, uint16_t aIndex, std::function<void (CommandResponse)> aCallback)
 {
 	CommandResponse cr(mResponse);
 	mpExecutor->Post([ = ]() {
@@ -67,7 +67,7 @@ void ConstantCommandProcessor::DirectOperate(const AnalogOutputInt16& arCommand,
 	});
 }
 
-void ConstantCommandProcessor::SelectAndOperate(const AnalogOutputInt32& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback)
+void ConstantCommandProcessor::SelectAndOperate(const AnalogOutputInt32& arCommand, uint16_t aIndex, std::function<void (CommandResponse)> aCallback)
 {
 	CommandResponse cr(mResponse);
 	mpExecutor->Post([ = ]() {
@@ -75,7 +75,7 @@ void ConstantCommandProcessor::SelectAndOperate(const AnalogOutputInt32& arComma
 	});
 }
 
-void ConstantCommandProcessor::DirectOperate(const AnalogOutputInt32& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback)
+void ConstantCommandProcessor::DirectOperate(const AnalogOutputInt32& arCommand, uint16_t aIndex, std::function<void (CommandResponse)> aCallback)
 {
 	CommandResponse cr(mResponse);
 	mpExecutor->Post([ = ]() {
@@ -83,7 +83,7 @@ void ConstantCommandProcessor::DirectOperate(const AnalogOutputInt32& arCommand,
 	});
 }
 
-void ConstantCommandProcessor::SelectAndOperate(const AnalogOutputFloat32& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback)
+void ConstantCommandProcessor::SelectAndOperate(const AnalogOutputFloat32& arCommand, uint16_t aIndex, std::function<void (CommandResponse)> aCallback)
 {
 	CommandResponse cr(mResponse);
 	mpExecutor->Post([ = ]() {
@@ -91,7 +91,7 @@ void ConstantCommandProcessor::SelectAndOperate(const AnalogOutputFloat32& arCom
 	});
 }
 
-void ConstantCommandProcessor::DirectOperate(const AnalogOutputFloat32& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback)
+void ConstantCommandProcessor::DirectOperate(const AnalogOutputFloat32& arCommand, uint16_t aIndex, std::function<void (CommandResponse)> aCallback)
 {
 	CommandResponse cr(mResponse);
 	mpExecutor->Post([ = ]() {
@@ -99,7 +99,7 @@ void ConstantCommandProcessor::DirectOperate(const AnalogOutputFloat32& arComman
 	});
 }
 
-void ConstantCommandProcessor::SelectAndOperate(const AnalogOutputDouble64& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback)
+void ConstantCommandProcessor::SelectAndOperate(const AnalogOutputDouble64& arCommand, uint16_t aIndex, std::function<void (CommandResponse)> aCallback)
 {
 	CommandResponse cr(mResponse);
 	mpExecutor->Post([ = ]() {
@@ -107,7 +107,7 @@ void ConstantCommandProcessor::SelectAndOperate(const AnalogOutputDouble64& arCo
 	});
 }
 
-void ConstantCommandProcessor::DirectOperate(const AnalogOutputDouble64& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback)
+void ConstantCommandProcessor::DirectOperate(const AnalogOutputDouble64& arCommand, uint16_t aIndex, std::function<void (CommandResponse)> aCallback)
 {
 	CommandResponse cr(mResponse);
 	mpExecutor->Post([ = ]() {

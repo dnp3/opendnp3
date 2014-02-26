@@ -13,77 +13,77 @@ SlaveCommandHandlerAdapter::SlaveCommandHandlerAdapter(DNP3::Interface::ICommand
 
 }
 
-opendnp3::CommandStatus SlaveCommandHandlerAdapter::Select(const opendnp3::ControlRelayOutputBlock& arCommand, size_t aIndex)
+opendnp3::CommandStatus SlaveCommandHandlerAdapter::Select(const opendnp3::ControlRelayOutputBlock& arCommand, uint16_t aIndex)
 {
 	return Conversions::convertCommandStatus(proxy->Select(Conversions::convertCommand(arCommand), aIndex));
 }
 
-opendnp3::CommandStatus SlaveCommandHandlerAdapter::Select(const opendnp3::AnalogOutputInt32& arCommand, size_t aIndex)
+opendnp3::CommandStatus SlaveCommandHandlerAdapter::Select(const opendnp3::AnalogOutputInt32& arCommand, uint16_t aIndex)
 {
 	return Conversions::convertCommandStatus(proxy->Select(Conversions::convertCommand(arCommand), aIndex));
 }
 
-opendnp3::CommandStatus SlaveCommandHandlerAdapter::Select(const opendnp3::AnalogOutputInt16& arCommand, size_t aIndex)
+opendnp3::CommandStatus SlaveCommandHandlerAdapter::Select(const opendnp3::AnalogOutputInt16& arCommand, uint16_t aIndex)
 {
 	return Conversions::convertCommandStatus(proxy->Select(Conversions::convertCommand(arCommand), aIndex));
 }
 
-opendnp3::CommandStatus SlaveCommandHandlerAdapter::Select(const opendnp3::AnalogOutputFloat32& arCommand, size_t aIndex)
+opendnp3::CommandStatus SlaveCommandHandlerAdapter::Select(const opendnp3::AnalogOutputFloat32& arCommand, uint16_t aIndex)
 {
 	return Conversions::convertCommandStatus(proxy->Select(Conversions::convertCommand(arCommand), aIndex));
 }
 
-opendnp3::CommandStatus SlaveCommandHandlerAdapter::Select(const opendnp3::AnalogOutputDouble64& arCommand, size_t aIndex)
+opendnp3::CommandStatus SlaveCommandHandlerAdapter::Select(const opendnp3::AnalogOutputDouble64& arCommand, uint16_t aIndex)
 {
 	return Conversions::convertCommandStatus(proxy->Select(Conversions::convertCommand(arCommand), aIndex));
 }
 
-opendnp3::CommandStatus SlaveCommandHandlerAdapter::Operate(const opendnp3::ControlRelayOutputBlock& arCommand, size_t aIndex)
+opendnp3::CommandStatus SlaveCommandHandlerAdapter::Operate(const opendnp3::ControlRelayOutputBlock& arCommand, uint16_t aIndex)
 {
 	return Conversions::convertCommandStatus(proxy->Operate(Conversions::convertCommand(arCommand), aIndex));
 }
 
-opendnp3::CommandStatus SlaveCommandHandlerAdapter::Operate(const opendnp3::AnalogOutputInt32& arCommand, size_t aIndex)
+opendnp3::CommandStatus SlaveCommandHandlerAdapter::Operate(const opendnp3::AnalogOutputInt32& arCommand, uint16_t aIndex)
 {
 	return Conversions::convertCommandStatus(proxy->Operate(Conversions::convertCommand(arCommand), aIndex));
 }
 
-opendnp3::CommandStatus SlaveCommandHandlerAdapter::Operate(const opendnp3::AnalogOutputInt16& arCommand, size_t aIndex)
+opendnp3::CommandStatus SlaveCommandHandlerAdapter::Operate(const opendnp3::AnalogOutputInt16& arCommand, uint16_t aIndex)
 {
 	return Conversions::convertCommandStatus(proxy->Operate(Conversions::convertCommand(arCommand), aIndex));
 }
 
-opendnp3::CommandStatus SlaveCommandHandlerAdapter::Operate(const opendnp3::AnalogOutputFloat32& arCommand, size_t aIndex)
+opendnp3::CommandStatus SlaveCommandHandlerAdapter::Operate(const opendnp3::AnalogOutputFloat32& arCommand, uint16_t aIndex)
 {
 	return Conversions::convertCommandStatus(proxy->Operate(Conversions::convertCommand(arCommand), aIndex));
 }
 
-opendnp3::CommandStatus SlaveCommandHandlerAdapter::Operate(const opendnp3::AnalogOutputDouble64& arCommand, size_t aIndex)
+opendnp3::CommandStatus SlaveCommandHandlerAdapter::Operate(const opendnp3::AnalogOutputDouble64& arCommand, uint16_t aIndex)
 {
 	return Conversions::convertCommandStatus(proxy->Operate(Conversions::convertCommand(arCommand), aIndex));
 }
 
-opendnp3::CommandStatus SlaveCommandHandlerAdapter::DirectOperate(const opendnp3::ControlRelayOutputBlock& arCommand, size_t aIndex)
+opendnp3::CommandStatus SlaveCommandHandlerAdapter::DirectOperate(const opendnp3::ControlRelayOutputBlock& arCommand, uint16_t aIndex)
 {
 	return Conversions::convertCommandStatus(proxy->DirectOperate(Conversions::convertCommand(arCommand), aIndex));
 }
 
-opendnp3::CommandStatus SlaveCommandHandlerAdapter::DirectOperate(const opendnp3::AnalogOutputInt32& arCommand, size_t aIndex)
+opendnp3::CommandStatus SlaveCommandHandlerAdapter::DirectOperate(const opendnp3::AnalogOutputInt32& arCommand, uint16_t aIndex)
 {
 	return Conversions::convertCommandStatus(proxy->DirectOperate(Conversions::convertCommand(arCommand), aIndex));
 }
 
-opendnp3::CommandStatus SlaveCommandHandlerAdapter::DirectOperate(const opendnp3::AnalogOutputInt16& arCommand, size_t aIndex)
+opendnp3::CommandStatus SlaveCommandHandlerAdapter::DirectOperate(const opendnp3::AnalogOutputInt16& arCommand, uint16_t aIndex)
 {
 	return Conversions::convertCommandStatus(proxy->DirectOperate(Conversions::convertCommand(arCommand), aIndex));
 }
 
-opendnp3::CommandStatus SlaveCommandHandlerAdapter::DirectOperate(const opendnp3::AnalogOutputFloat32& arCommand, size_t aIndex)
+opendnp3::CommandStatus SlaveCommandHandlerAdapter::DirectOperate(const opendnp3::AnalogOutputFloat32& arCommand, uint16_t aIndex)
 {
 	return Conversions::convertCommandStatus(proxy->DirectOperate(Conversions::convertCommand(arCommand), aIndex));
 }
 
-opendnp3::CommandStatus SlaveCommandHandlerAdapter::DirectOperate(const opendnp3::AnalogOutputDouble64& arCommand, size_t aIndex)
+opendnp3::CommandStatus SlaveCommandHandlerAdapter::DirectOperate(const opendnp3::AnalogOutputDouble64& arCommand, uint16_t aIndex)
 {
 	return Conversions::convertCommandStatus(proxy->DirectOperate(Conversions::convertCommand(arCommand), aIndex));
 }

@@ -44,7 +44,7 @@ class IntegrationTest
 {
 public:
 
-	IntegrationTest(openpal::LogLevel aLevel, boost::uint16_t aStartPort, size_t aNumPairs, size_t aNumPoints);
+	IntegrationTest(openpal::LogLevel aLevel, boost::uint16_t aStartPort, size_t aNumPairs, uint16_t aNumPoints);
 
 	size_t IncrementData();
 
@@ -66,7 +66,7 @@ private:
 
 
 	void RegisterChange();
-	void AddStackPair(openpal::LogLevel aLevel, size_t aNumPoints);
+	void AddStackPair(openpal::LogLevel aLevel, uint16_t aNumPoints);
 
 	std::vector< std::shared_ptr<ComparingDataObserver> > mMasterObservers;
 	FanoutDataObserver mFanout;
@@ -79,7 +79,7 @@ private:
 	asiopal::EventLog mLog;
 	asiopal::IOServiceThreadPool mPool;
 	DNP3Manager mMgr;
-	size_t NUM_POINTS;
+	uint16_t NUM_POINTS;
 };
 
 }

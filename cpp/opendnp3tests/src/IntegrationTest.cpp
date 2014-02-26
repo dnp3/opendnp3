@@ -47,7 +47,7 @@ using namespace std;
 using namespace asiopal;
 using namespace opendnp3;
 
-IntegrationTest::IntegrationTest(LogLevel aLevel, boost::uint16_t aStartPort, size_t aNumPairs, size_t aNumPoints) :
+IntegrationTest::IntegrationTest(LogLevel aLevel, boost::uint16_t aStartPort, size_t aNumPairs, uint16_t aNumPoints) :
 	M_START_PORT(aStartPort),
 	mLog(),
 	mPool(Logger(&mLog, aLevel, "pool"), std::thread::hardware_concurrency()),
@@ -105,7 +105,7 @@ size_t IntegrationTest::IncrementData()
 	 * the {} block forces destruction of the Transaction at the right time.
 	*/
 	Transaction tr(&mFanout);
-	for (size_t i = 0; i < NUM_POINTS; ++i) {
+	for (uint16_t i = 0; i < NUM_POINTS; ++i) {
 		mFanout.Update(this->Next(mLocalFDO.mBinaryMap[i]), i);
 		mFanout.Update(this->Next(mLocalFDO.mAnalogMap[i]), i);
 		mFanout.Update(this->Next(mLocalFDO.mCounterMap[i]), i);
@@ -132,7 +132,7 @@ Counter IntegrationTest::Next(const Counter& arPoint)
 	return point;
 }
 
-void IntegrationTest::AddStackPair(LogLevel aLevel, size_t aNumPoints)
+void IntegrationTest::AddStackPair(LogLevel aLevel, uint16_t aNumPoints)
 {
 	boost::uint16_t port = M_START_PORT + static_cast<boost::uint16_t>(this->mMasterObservers.size());
 

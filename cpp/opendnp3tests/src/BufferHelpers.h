@@ -32,9 +32,9 @@ class ByteStr : public CopyableBuffer
 {
 
 public:
-	ByteStr(size_t aLength);
-	ByteStr(size_t aLength, uint8_t aSeed);
-	ByteStr(const uint8_t* apData, size_t aLength);
+	ByteStr(uint32_t aLength);
+	ByteStr(uint32_t aLength, uint8_t aSeed);
+	ByteStr(const uint8_t* apData, uint32_t aLength);
 	ByteStr(const std::string& aChars);
 	bool operator==(const ByteStr& arRHS) const;
 };
@@ -54,7 +54,7 @@ public:
 private:
 	std::string RemoveSpaces(const std::string& aSequence);
 	void RemoveSpacesInPlace(std::string& aSequence);
-	static size_t Validate(const std::string& aSequence);
+	static uint32_t Validate(const std::string& aSequence);
 };
 
 

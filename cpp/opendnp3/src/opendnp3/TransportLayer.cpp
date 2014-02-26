@@ -36,7 +36,7 @@ using namespace openpal;
 namespace opendnp3
 {
 
-TransportLayer::TransportLayer(Logger aLogger, size_t aFragSize) :
+TransportLayer::TransportLayer(Logger aLogger, uint32_t aFragSize) :
 	Loggable(aLogger),
 	IUpperLayer(aLogger),
 	ILowerLayer(aLogger),
