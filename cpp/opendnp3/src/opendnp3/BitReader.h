@@ -28,9 +28,9 @@
 namespace opendnp3
 {
 
-size_t NumBytesInBits(size_t numBits);
+	uint32_t NumBytesInBits(uint32_t numBits);
 
-bool GetBit(const openpal::ReadOnlyBuffer& buffer, size_t position);
+	bool GetBit(const openpal::ReadOnlyBuffer& buffer, uint32_t position);
 
 }
 

@@ -24,16 +24,16 @@
 namespace opendnp3
 {
 
-size_t NumBytesInBits(size_t numBits)
+uint32_t NumBytesInBits(uint32_t numBits)
 {
-	size_t numBytes = numBits / 8;
+	uint32_t numBytes = numBits / 8;
 	return ((numBits % 8) == 0) ? numBytes : numBytes + 1;	
 }
 
-bool GetBit(const openpal::ReadOnlyBuffer& buffer, size_t position)
+bool GetBit(const openpal::ReadOnlyBuffer& buffer, uint32_t position)
 {
-	size_t byte = position / 8;
-	size_t bit = position % 8;
+	uint32_t byte = position / 8;
+	uint32_t bit = position % 8;
 	assert(byte < buffer.Size());
 	return (buffer[byte] & (1 << bit)) != 0;	
 }
