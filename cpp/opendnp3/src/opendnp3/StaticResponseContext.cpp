@@ -61,7 +61,7 @@ QueueResult StaticResponseContext::QueueReadAllObjects(GroupVariation gv)
 
 		// Group 10
 		case(GroupVariation::Group10Var0):
-			return QueueReadRange(GetFullRangeWithDefaultLoader<ControlStatus>());
+			return QueueReadRange(GetFullRangeWithDefaultLoader<BinaryOutputStatus>());
 		case(GroupVariation::Group10Var2):
 			return QueueReadRange(GetFullRange<Group10Var2Serializer>());
 		
@@ -111,7 +111,7 @@ QueueResult StaticResponseContext::QueueReadAllObjects(GroupVariation gv)
 
 		// Group 40
 		case(GroupVariation::Group40Var0):
-			return QueueReadRange(GetFullRangeWithDefaultLoader<SetpointStatus>());
+			return QueueReadRange(GetFullRangeWithDefaultLoader<AnalogOutputStatus>());
 		case(GroupVariation::Group40Var1):
 			return QueueReadRange(GetFullRange<Group40Var1Serializer>());
 		case(GroupVariation::Group40Var2):
@@ -138,7 +138,7 @@ QueueResult StaticResponseContext::QueueReadRange(GroupVariation gv, const Stati
 		
 		// Group 10
 		case(GroupVariation::Group10Var0):
-			return QueueReadRange(GetClippedRangeWithDefaultLoader<ControlStatus>(range));			
+			return QueueReadRange(GetClippedRangeWithDefaultLoader<BinaryOutputStatus>(range));			
 		case(GroupVariation::Group10Var2):
 			return QueueReadRange(GetClippedRange<Group10Var2Serializer>(range));
 		
@@ -190,7 +190,7 @@ QueueResult StaticResponseContext::QueueReadRange(GroupVariation gv, const Stati
 		
 		// Group 40
 		case(GroupVariation::Group40Var0):
-			return QueueReadRange(GetClippedRangeWithDefaultLoader<SetpointStatus>(range));
+			return QueueReadRange(GetClippedRangeWithDefaultLoader<AnalogOutputStatus>(range));
 		case(GroupVariation::Group40Var1):
 			return QueueReadRange(GetClippedRange<Group40Var1Serializer>(range));
 		case(GroupVariation::Group40Var2):
@@ -213,8 +213,8 @@ QueueResult StaticResponseContext::QueueStaticIntegrity()
 	values.Push(GetFullRangeWithDefaultLoader<Counter>());
 	values.Push(GetFullRangeWithDefaultLoader<FrozenCounter>());
 	values.Push(GetFullRangeWithDefaultLoader<Analog>());
-	values.Push(GetFullRangeWithDefaultLoader<ControlStatus>());
-	values.Push(GetFullRangeWithDefaultLoader<SetpointStatus>());
+	values.Push(GetFullRangeWithDefaultLoader<BinaryOutputStatus>());
+	values.Push(GetFullRangeWithDefaultLoader<AnalogOutputStatus>());
 
 	while(values.IsNotEmpty())
 	{		

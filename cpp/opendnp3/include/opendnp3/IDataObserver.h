@@ -82,18 +82,18 @@ public:
         virtual void Update(const FrozenCounter& arMeas, uint16_t aIndex) = 0;
 
 	/**
-	* Update or receive a ControlStatus measurement, must have transaction started
+	* Update or receive a BinaryOutputStatus measurement, must have transaction started
 	* @param arMeas measurement to be processed
 	* @param aIndex index of the measurement
 	*/
-	virtual void Update(const ControlStatus& arMeas, uint16_t aIndex) = 0;
+	virtual void Update(const BinaryOutputStatus& arMeas, uint16_t aIndex) = 0;
 
 	/**
-	* Update or receive a SetpointStatus measurement, must have transaction started
+	* Update or receive a AnalogOutputStatus measurement, must have transaction started
 	* @param arMeas measurement to be processed
 	* @param aIndex index of the measurement
 	*/
-	virtual void Update(const SetpointStatus& arMeas, uint16_t aIndex) = 0;
+	virtual void Update(const AnalogOutputStatus& arMeas, uint16_t aIndex) = 0;
 
 };
 

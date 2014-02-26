@@ -63,8 +63,8 @@ object BinaryConversion extends ArbitraryConversion("Binary", List(serializer, d
 object AnalogConversion extends ArbitraryConversion("Analog", List(serializer, dataTypes), cppIncldues)
 object CounterConversion extends ArbitraryConversion("Counter", List(serializer, dataTypes), cppIncldues)
 object FrozenCounterConversion extends ArbitraryConversion("FrozenCounter", List(serializer, dataTypes), cppIncldues)
-object ControlStatusConversion extends ArbitraryConversion("ControlStatus", List(serializer, dataTypes), cppIncldues)
-object SetpointStatusConversion extends ArbitraryConversion("SetpointStatus", List(serializer, dataTypes), cppIncldues)
+object BinaryOutputStatusConversion extends ArbitraryConversion("BinaryOutputStatus", List(serializer, dataTypes), cppIncldues)
+object AnalogOutputStatusConversion extends ArbitraryConversion("AnalogOutputStatus", List(serializer, dataTypes), cppIncldues)
 object CrobConversion extends ArbitraryConversion("ControlRelayOutputBlock", List(serializer, crob), cppIncldues)
 object AnalogOutputInt16Conversion extends ArbitraryConversion("AnalogOutputInt16", List(serializer, ao), cppIncldues)
 object AnalogOutputInt32Conversion extends ArbitraryConversion("AnalogOutputInt32", List(serializer, ao), cppIncldues)
@@ -92,14 +92,14 @@ trait ConversionToFrozenCounter {
 }
 
 
-trait ConversionToControlStatus {
+trait ConversionToBinaryOutputStatus {
   self : FixedSize =>
-  override def conversion: Option[Conversion] = Some(ControlStatusConversion)
+  override def conversion: Option[Conversion] = Some(BinaryOutputStatusConversion)
 }
 
-trait ConversionToSetpointStatus {
+trait ConversionToAnalogOutputStatus {
   self : FixedSize =>
-  override def conversion: Option[Conversion] = Some(SetpointStatusConversion)
+  override def conversion: Option[Conversion] = Some(AnalogOutputStatusConversion)
 }
 
 trait ConversionToCROB {

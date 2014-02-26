@@ -190,9 +190,9 @@ IndexedValue<Binary> APDUParser::BoolToBinary(const IndexedValue<bool>& v)
 	return IndexedValue<Binary>(Binary(v.value), v.index);
 }
 
-IndexedValue<ControlStatus> APDUParser::BoolToControlStatus(const IndexedValue<bool>& v)
+IndexedValue<BinaryOutputStatus> APDUParser::BoolToBinaryOutputStatus(const IndexedValue<bool>& v)
 {
-	return IndexedValue<ControlStatus>(ControlStatus(v.value), v.index);
+	return IndexedValue<BinaryOutputStatus>(BinaryOutputStatus(v.value), v.index);
 }
 
 #define MACRO_PARSE_OBJECTS_WITH_RANGE(descriptor) \
@@ -216,7 +216,7 @@ APDUParser::Result APDUParser::ParseObjectsWithRange(const APDUParser::HeaderRec
 		case(GroupVariation::Group10Var1):				
 			return ParseRangeAsBitField(buffer, record, range, [&](const ReadOnlyBuffer& header, IterableBuffer<IndexedValue<bool>>& values) {
 				if(pHandler) {
-					auto mapped = IterableTransforms<IndexedValue<bool>>::Map<IndexedValue<ControlStatus>>(values, [](const IndexedValue<bool>& v) { return IndexedValue<ControlStatus>(ControlStatus(v.value), v.index); });
+					auto mapped = IterableTransforms<IndexedValue<bool>>::Map<IndexedValue<BinaryOutputStatus>>(values, [](const IndexedValue<bool>& v) { return IndexedValue<BinaryOutputStatus>(BinaryOutputStatus(v.value), v.index); });
 					pHandler->OnRange(gvRecord.enumeration, header, mapped);
 				}
 			});

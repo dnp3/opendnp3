@@ -14,32 +14,33 @@
 // 
 // http://www.apache.org/licenses/LICENSE-2.0.html
 //
+package com.automatak.dnp3;
 
-#include <opendnp3/gen/StaticControlStatusResponse.h>
-
-namespace opendnp3 {
-
-std::string StaticControlStatusResponseToString(StaticControlStatusResponse arg)
+/**
+*/
+public enum StaticBinaryOutputStatusResponse
 {
-  switch(arg)
+  Group10Var2(0);
+
+  private final int id;
+
+  private StaticBinaryOutputStatusResponse(int id)
   {
-    case(StaticControlStatusResponse::Group10Var2):
-      return "Group10Var2";
+    this.id = id;
   }
-  return "Group10Var2";
-}
-int StaticControlStatusResponseToType(StaticControlStatusResponse arg)
-{
-  return static_cast<int>(arg);
-}
-StaticControlStatusResponse StaticControlStatusResponseFromType(int arg)
-{
-  switch(arg)
-  {
-    case(0):
-      return StaticControlStatusResponse::Group10Var2;
-  }
-  return StaticControlStatusResponse::Group10Var2;
-}
 
+  public int toType()
+  {
+    return id;
+  }
+
+  public static StaticBinaryOutputStatusResponse fromType(int arg)
+  {
+    switch(arg)
+    {
+      case(0):
+        return Group10Var2;
+    }
+    return Group10Var2;
+  }
 }

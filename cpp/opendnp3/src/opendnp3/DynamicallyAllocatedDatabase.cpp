@@ -31,8 +31,8 @@ DynamicallyAllocatedDatabase::DynamicallyAllocatedDatabase(const DatabaseTemplat
 	analogValues(databaseTemplate.numAnalog),
 	counterValues(databaseTemplate.numCounter),
 	frozenCounterValues(databaseTemplate.numFrozenCounter),
-	controlStatusValues(databaseTemplate.numControlStatus),
-	setpointStatusValues(databaseTemplate.numSetpointStatus),
+	BinaryOutputStatusValues(databaseTemplate.numBinaryOutputStatus),
+	AnalogOutputStatusValues(databaseTemplate.numAnalogOutputStatus),
 	binaryMetadata(databaseTemplate.numBinary),
 	analogMetadata(databaseTemplate.numAnalog),
 	counterMetadata(databaseTemplate.numCounter),
@@ -76,8 +76,8 @@ StaticDataFacade DynamicallyAllocatedDatabase::GetFacade()
 		analogs, 
 		counters, 
 		frozenCounters,
-		controlStatusValues.ToIndexable(),
-		setpointStatusValues.ToIndexable()
+		BinaryOutputStatusValues.ToIndexable(),
+		AnalogOutputStatusValues.ToIndexable()
 	);
 }
 	

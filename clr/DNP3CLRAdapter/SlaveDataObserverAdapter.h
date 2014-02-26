@@ -18,8 +18,8 @@ public:
 	virtual void Update(Binary ^ meas, System::UInt32 index);
 	virtual void Update(Analog ^ meas, System::UInt32 index);
 	virtual void Update(Counter ^ meas, System::UInt32 index);
-	virtual void Update(ControlStatus ^ meas, System::UInt32 index);
-	virtual void Update(SetpointStatus ^ meas, System::UInt32 index);
+	virtual void Update(BinaryOutputStatus ^ meas, System::UInt32 index);
+	virtual void Update(AnalogOutputStatus ^ meas, System::UInt32 index);
 	virtual void End();
 
 private:

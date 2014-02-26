@@ -41,12 +41,12 @@
     <ClInclude Include="include\opendnp3\gen\EventCounterResponse.h" />
     <ClInclude Include="include\opendnp3\gen\ScanStatus.h" />
     <ClInclude Include="include\opendnp3\gen\StackState.h" />
+    <ClInclude Include="include\opendnp3\gen\StaticAnalogOutputStatusResponse.h" />
     <ClInclude Include="include\opendnp3\gen\StaticAnalogResponse.h" />
+    <ClInclude Include="include\opendnp3\gen\StaticBinaryOutputStatusResponse.h" />
     <ClInclude Include="include\opendnp3\gen\StaticBinaryResponse.h" />
-    <ClInclude Include="include\opendnp3\gen\StaticControlStatusResponse.h" />
     <ClInclude Include="include\opendnp3\gen\StaticCounterResponse.h" />
     <ClInclude Include="include\opendnp3\gen\StaticFrozenCounterResponse.h" />
-    <ClInclude Include="include\opendnp3\gen\StaticSetpointStatusResponse.h" />
     <ClInclude Include="include\opendnp3\IChannel.h" />
     <ClInclude Include="include\opendnp3\ICommandHandler.h" />
     <ClInclude Include="include\opendnp3\ICommandProcessor.h" />
@@ -284,10 +284,11 @@
     <ClCompile Include="src\opendnp3\gen\QualifierCode.cpp" />
     <ClCompile Include="src\opendnp3\gen\ScanStatus.cpp" />
     <ClCompile Include="src\opendnp3\gen\StackState.cpp" />
+    <ClCompile Include="src\opendnp3\gen\StaticAnalogOutputStatusResponse.cpp" />
     <ClCompile Include="src\opendnp3\gen\StaticAnalogResponse.cpp" />
+    <ClCompile Include="src\opendnp3\gen\StaticBinaryOutputStatusResponse.cpp" />
     <ClCompile Include="src\opendnp3\gen\StaticBinaryResponse.cpp" />
     <ClCompile Include="src\opendnp3\gen\StaticCounterResponse.cpp" />
-    <ClCompile Include="src\opendnp3\gen\StaticSetpointStatusResponse.cpp" />
     <ClCompile Include="src\opendnp3\GroupVariation.cpp" />
     <ClCompile Include="src\opendnp3\HeaderHandlerBase.cpp" />
     <ClCompile Include="src\opendnp3\IAppUser.cpp" />

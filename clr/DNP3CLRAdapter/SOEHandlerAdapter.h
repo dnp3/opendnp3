@@ -25,8 +25,8 @@ public:
 	virtual void Load(const opendnp3::IterableBuffer<opendnp3::IndexedValue<opendnp3::Analog>>& meas) {}
 	virtual void Load(const opendnp3::IterableBuffer<opendnp3::IndexedValue<opendnp3::Counter>>& meas) {}
 	virtual void Load(const opendnp3::IterableBuffer<opendnp3::IndexedValue<opendnp3::FrozenCounter>>& meas) {}
-	virtual void Load(const opendnp3::IterableBuffer<opendnp3::IndexedValue<opendnp3::ControlStatus>>& meas) {}
-	virtual void Load(const opendnp3::IterableBuffer<opendnp3::IndexedValue<opendnp3::SetpointStatus>>& meas) {}
+	virtual void Load(const opendnp3::IterableBuffer<opendnp3::IndexedValue<opendnp3::BinaryOutputStatus>>& meas) {}
+	virtual void Load(const opendnp3::IterableBuffer<opendnp3::IndexedValue<opendnp3::AnalogOutputStatus>>& meas) {}
 	virtual void Load(const opendnp3::IterableBuffer<opendnp3::IndexedValue<opendnp3::OctetString>>& meas) {}
 
 private:

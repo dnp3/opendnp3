@@ -89,7 +89,7 @@ void APDUHandlerBase::OnIndexPrefix(GroupVariation gv, const openpal::ReadOnlyBu
 	++currentHeader;
 }
 
-void APDUHandlerBase::OnRange(GroupVariation gv, const openpal::ReadOnlyBuffer&, const IterableBuffer<IndexedValue<ControlStatus>>& meas)
+void APDUHandlerBase::OnRange(GroupVariation gv, const openpal::ReadOnlyBuffer&, const IterableBuffer<IndexedValue<BinaryOutputStatus>>& meas)
 {	
 	this->_OnRange(gv, meas);
 	++currentHeader;
@@ -119,7 +119,7 @@ void APDUHandlerBase::OnIndexPrefix(GroupVariation gv, const openpal::ReadOnlyBu
 	++currentHeader;
 }
 
-void APDUHandlerBase::OnRange(GroupVariation gv, const openpal::ReadOnlyBuffer&, const IterableBuffer<IndexedValue<SetpointStatus>>& meas)
+void APDUHandlerBase::OnRange(GroupVariation gv, const openpal::ReadOnlyBuffer&, const IterableBuffer<IndexedValue<AnalogOutputStatus>>& meas)
 {	
 	this->_OnRange(gv, meas);
 	++currentHeader;
@@ -207,7 +207,7 @@ void APDUHandlerBase::_OnIndexPrefix(GroupVariation gv, const IterableBuffer<Ind
 	errors.Set(IINBit::FUNC_NOT_SUPPORTED);
 }
 
-void APDUHandlerBase::_OnRange(GroupVariation gv, const IterableBuffer<IndexedValue<ControlStatus>>& meas)
+void APDUHandlerBase::_OnRange(GroupVariation gv, const IterableBuffer<IndexedValue<BinaryOutputStatus>>& meas)
 {
 	errors.Set(IINBit::FUNC_NOT_SUPPORTED);
 }
@@ -232,7 +232,7 @@ void APDUHandlerBase::_OnIndexPrefix(GroupVariation gv, const IterableBuffer<Ind
 	errors.Set(IINBit::FUNC_NOT_SUPPORTED);
 }
 
-void APDUHandlerBase::_OnRange(GroupVariation gv, const IterableBuffer<IndexedValue<SetpointStatus>>& meas) 
+void APDUHandlerBase::_OnRange(GroupVariation gv, const IterableBuffer<IndexedValue<AnalogOutputStatus>>& meas) 
 {
 	errors.Set(IINBit::FUNC_NOT_SUPPORTED);
 }

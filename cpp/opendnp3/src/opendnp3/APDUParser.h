@@ -187,7 +187,7 @@ class APDUParser : private PureStatic
 		IAPDUHandler* pHandler);	
 
 	static IndexedValue<Binary> BoolToBinary(const IndexedValue<bool>& v);
-	static IndexedValue<ControlStatus> BoolToControlStatus(const IndexedValue<bool>& v);
+	static IndexedValue<BinaryOutputStatus> BoolToBinaryOutputStatus(const IndexedValue<bool>& v);
 };
 
 template <class IndexType>

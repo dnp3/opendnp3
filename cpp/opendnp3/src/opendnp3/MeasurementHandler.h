@@ -47,7 +47,7 @@ public:
 	void _OnRange(GroupVariation gv, const IterableBuffer<IndexedValue<Binary>>& meas) final;
 	void _OnIndexPrefix(GroupVariation gv, const IterableBuffer<IndexedValue<Binary>>& meas) final;
 
-	void _OnRange(GroupVariation gv, const IterableBuffer<IndexedValue<ControlStatus>>& meas) final;
+	void _OnRange(GroupVariation gv, const IterableBuffer<IndexedValue<BinaryOutputStatus>>& meas) final;
 		
 	void _OnRange(GroupVariation gv, const IterableBuffer<IndexedValue<Counter>>& meas) final;
 	void _OnIndexPrefix(GroupVariation gv, const IterableBuffer<IndexedValue<Counter>>& meas) final;
@@ -55,7 +55,7 @@ public:
 	void _OnRange(GroupVariation gv, const IterableBuffer<IndexedValue<Analog>>& meas) final;
 	void _OnIndexPrefix(GroupVariation gv, const IterableBuffer<IndexedValue<Analog>>& meas) final;
 
-	void _OnRange(GroupVariation gv, const IterableBuffer<IndexedValue<SetpointStatus>>& meas)  final;
+	void _OnRange(GroupVariation gv, const IterableBuffer<IndexedValue<AnalogOutputStatus>>& meas)  final;
 
 	void _OnRange(GroupVariation gv, const IterableBuffer<IndexedValue<OctetString>>& meas) final;
 	void _OnIndexPrefix(GroupVariation gv, const IterableBuffer<IndexedValue<OctetString>>& meas) final;

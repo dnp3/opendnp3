@@ -29,8 +29,8 @@ DatabaseConfiguration::DatabaseConfiguration(const DatabaseTemplate& aSizeInform
 	analogMetadata(aSizeInformation.numAnalog),
 	counterMetadata(aSizeInformation.numCounter),
 	frozenCounterMetadata(aSizeInformation.numFrozenCounter),
-	numControlStatus(aSizeInformation.numControlStatus),
-	numSetpointStatus(aSizeInformation.numSetpointStatus)
+	numBinaryOutputStatus(aSizeInformation.numBinaryOutputStatus),
+	numAnalogOutputStatus(aSizeInformation.numAnalogOutputStatus)
 {}
 
 DatabaseConfiguration::DatabaseConfiguration() :
@@ -38,13 +38,13 @@ DatabaseConfiguration::DatabaseConfiguration() :
 	analogMetadata(0),
 	counterMetadata(0),
 	frozenCounterMetadata(0),
-	numControlStatus(0),
-	numSetpointStatus(0)
+	numBinaryOutputStatus(0),
+	numAnalogOutputStatus(0)
 {}
 
 DatabaseTemplate DatabaseConfiguration::GetTemplate() const
 {
-	DatabaseTemplate tmp(binaryMetadata.size(), analogMetadata.size(), counterMetadata.size(), frozenCounterMetadata.size(),  numControlStatus, numSetpointStatus);
+	DatabaseTemplate tmp(binaryMetadata.size(), analogMetadata.size(), counterMetadata.size(), frozenCounterMetadata.size(),  numBinaryOutputStatus, numAnalogOutputStatus);
 	return tmp;
 }
 

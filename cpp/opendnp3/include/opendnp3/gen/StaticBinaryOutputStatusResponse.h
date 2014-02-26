@@ -15,25 +15,22 @@
 // http://www.apache.org/licenses/LICENSE-2.0.html
 //
 
-#ifndef __OPENDNP3_GENERATED_STATICSETPOINTSTATUSRESPONSE_H_
-#define __OPENDNP3_GENERATED_STATICSETPOINTSTATUSRESPONSE_H_
+#ifndef __OPENDNP3_GENERATED_STATICBINARYOUTPUTSTATUSRESPONSE_H_
+#define __OPENDNP3_GENERATED_STATICBINARYOUTPUTSTATUSRESPONSE_H_
 
 #include <string>
 #include <cstdint>
 
 namespace opendnp3 {
 
-enum class StaticSetpointStatusResponse : int
+enum class StaticBinaryOutputStatusResponse : int
 {
-  Group40Var1 = 0,
-  Group40Var2 = 1,
-  Group40Var3 = 2,
-  Group40Var4 = 3
+  Group10Var2 = 0
 };
 
-std::string StaticSetpointStatusResponseToString(StaticSetpointStatusResponse arg);
-int StaticSetpointStatusResponseToType(StaticSetpointStatusResponse arg);
-StaticSetpointStatusResponse StaticSetpointStatusResponseFromType(int arg);
+std::string StaticBinaryOutputStatusResponseToString(StaticBinaryOutputStatusResponse arg);
+int StaticBinaryOutputStatusResponseToType(StaticBinaryOutputStatusResponse arg);
+StaticBinaryOutputStatusResponse StaticBinaryOutputStatusResponseFromType(int arg);
 
 }
 

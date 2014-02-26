@@ -63,9 +63,6 @@
     <ClInclude Include="include\opendnp3\gen\StaticCounterResponse.h">
       <Filter>Include\gen</Filter>
     </ClInclude>
-    <ClInclude Include="include\opendnp3\gen\StaticSetpointStatusResponse.h">
-      <Filter>Include\gen</Filter>
-    </ClInclude>
     <ClInclude Include="include\opendnp3\AnalogOutput.h">
       <Filter>Include</Filter>
     </ClInclude>
@@ -654,11 +651,14 @@
     <ClInclude Include="include\opendnp3\gen\StaticFrozenCounterResponse.h">
       <Filter>Include\gen</Filter>
     </ClInclude>
-    <ClInclude Include="include\opendnp3\gen\StaticControlStatusResponse.h">
-      <Filter>Include\gen</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\StaticResponseContext.h">
       <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="include\opendnp3\gen\StaticAnalogOutputStatusResponse.h">
+      <Filter>Include\gen</Filter>
+    </ClInclude>
+    <ClInclude Include="include\opendnp3\gen\StaticBinaryOutputStatusResponse.h">
+      <Filter>Include\gen</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1034,9 +1034,6 @@
     <ClCompile Include="src\opendnp3\gen\StaticCounterResponse.cpp">
       <Filter>Source\gen</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\gen\StaticSetpointStatusResponse.cpp">
-      <Filter>Source\gen</Filter>
-    </ClCompile>
     <ClCompile Include="src\opendnp3\APDURequest.cpp">
       <Filter>Source</Filter>
     </ClCompile>
@@ -1063,6 +1060,12 @@
     </ClCompile>
     <ClCompile Include="src\opendnp3\StaticResponseContext.cpp">
       <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\gen\StaticAnalogOutputStatusResponse.cpp">
+      <Filter>Source\gen</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\gen\StaticBinaryOutputStatusResponse.cpp">
+      <Filter>Source\gen</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

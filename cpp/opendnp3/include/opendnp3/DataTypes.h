@@ -88,26 +88,26 @@ private:
 };
 
 /**
-	ControlStatus is used for describing the current state of a control. It is very infrequently
+	BinaryOutputStatus is used for describing the current state of a control. It is very infrequently
 	used and many masters don't provide any mechanisms for reading these values so their use is
 	strongly discouraged, a Binary should be used instead.
 */
-class ControlStatus : public TypedMeasurement<bool>
+class BinaryOutputStatus : public TypedMeasurement<bool>
 {
 public:
-	ControlStatus() : TypedMeasurement(false, TQ_RESTART) 
+	BinaryOutputStatus() : TypedMeasurement(false, TQ_RESTART) 
 	{}
 
-	ControlStatus(bool aValue) : TypedMeasurement(aValue, GetQual(TQ_ONLINE, aValue))
+	BinaryOutputStatus(bool aValue) : TypedMeasurement(aValue, GetQual(TQ_ONLINE, aValue))
 	{}
 
-	ControlStatus(uint8_t aQuality) : TypedMeasurement((aQuality & TQ_STATE) != 0, aQuality)
+	BinaryOutputStatus(uint8_t aQuality) : TypedMeasurement((aQuality & TQ_STATE) != 0, aQuality)
 	{}
 
-	ControlStatus(bool aValue, uint8_t aQuality) : TypedMeasurement(aValue, GetQual(aQuality, aValue))
+	BinaryOutputStatus(bool aValue, uint8_t aQuality) : TypedMeasurement(aValue, GetQual(aQuality, aValue))
 	{}
 
-	ControlStatus(bool aValue, uint8_t aQuality, int64_t aTime) : TypedMeasurement(aValue, GetQual(aQuality, aValue), aTime) 
+	BinaryOutputStatus(bool aValue, uint8_t aQuality, int64_t aTime) : TypedMeasurement(aValue, GetQual(aQuality, aValue), aTime) 
 	{}
 	
 	typedef ControlQuality QualityType;
@@ -228,22 +228,22 @@ public:
 };
 
 /**
-	Describes the last set value of the setpoint. Like the ControlStatus data type it is not
+	Describes the last set value of the setpoint. Like the BinaryOutputStatus data type it is not
 	well supportted and its generally better practice to use an explict analog.
 */
-class SetpointStatus : public TypedMeasurement<double>
+class AnalogOutputStatus : public TypedMeasurement<double>
 {
 public:
 	
-	SetpointStatus() : TypedMeasurement<double>(PQ_RESTART) {}
+	AnalogOutputStatus() : TypedMeasurement<double>(PQ_RESTART) {}
 
-	SetpointStatus(double aValue) : TypedMeasurement<double>(aValue, PQ_ONLINE) 
+	AnalogOutputStatus(double aValue) : TypedMeasurement<double>(aValue, PQ_ONLINE) 
 	{}
 	
-	SetpointStatus(double aValue, uint8_t aQuality) : TypedMeasurement<double>(aValue, aQuality) 
+	AnalogOutputStatus(double aValue, uint8_t aQuality) : TypedMeasurement<double>(aValue, aQuality) 
 	{}
 
-	SetpointStatus(double aValue, uint8_t aQuality, int64_t aTime) : TypedMeasurement<double>(aValue, aQuality, aTime) 
+	AnalogOutputStatus(double aValue, uint8_t aQuality, int64_t aTime) : TypedMeasurement<double>(aValue, aQuality, aTime) 
 	{}
 	
 	typedef SetpointQuality QualityType;

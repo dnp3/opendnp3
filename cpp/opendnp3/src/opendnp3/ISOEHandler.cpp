@@ -51,14 +51,14 @@ void PrintingSOEHandler::Load(const IterableBuffer<IndexedValue<FrozenCounter>>&
 	Print(meas, "FrozenCounter");
 }
 
-void PrintingSOEHandler::Load(const IterableBuffer<IndexedValue<ControlStatus>>& meas)
+void PrintingSOEHandler::Load(const IterableBuffer<IndexedValue<BinaryOutputStatus>>& meas)
 {
-	Print(meas, "ControlStatus");
+	Print(meas, "BinaryOutputStatus");
 }
 
-void PrintingSOEHandler::Load(const IterableBuffer<IndexedValue<SetpointStatus>>& meas)
+void PrintingSOEHandler::Load(const IterableBuffer<IndexedValue<AnalogOutputStatus>>& meas)
 {
-	Print(meas, "SetpointStatus");
+	Print(meas, "AnalogOutputStatus");
 }
 
 void PrintingSOEHandler::Load(const IterableBuffer<IndexedValue<OctetString>>& meas)

@@ -39,8 +39,8 @@ void ComparingDataObserver::Reset()
 	mAnalogMap.clear();
 	mCounterMap.clear();
 	mFrozenCounterMap.clear();
-	mControlStatusMap.clear();
-	mSetpointStatusMap.clear();
+	mBinaryOutputStatusMap.clear();
+	mAnalogOutputStatusMap.clear();
 	mSameData = false;
 }
 

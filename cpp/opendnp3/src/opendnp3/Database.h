@@ -56,15 +56,15 @@ public:
 	void Update(const Analog& arPoint, uint16_t) final;
 	void Update(const Counter& arPoint, uint16_t) final;
 	void Update(const FrozenCounter& arPoint, uint16_t) final;
-	void Update(const ControlStatus& arPoint, uint16_t) final;
-	void Update(const SetpointStatus& arPoint, uint16_t) final;
+	void Update(const BinaryOutputStatus& arPoint, uint16_t) final;
+	void Update(const AnalogOutputStatus& arPoint, uint16_t) final;
 
 	openpal::Indexable<DualValue<Binary>, uint16_t> Binaries();
 	openpal::Indexable<DualValue<Analog>, uint16_t> Analogs();
 	openpal::Indexable<DualValue<Counter>, uint16_t> Counters();
 	openpal::Indexable<DualValue<FrozenCounter>, uint16_t> FrozenCounters();
-	openpal::Indexable<DualValue<ControlStatus>, uint16_t> ControlStatii();
-	openpal::Indexable<DualValue<SetpointStatus>, uint16_t> SetpointStatii();
+	openpal::Indexable<DualValue<BinaryOutputStatus>, uint16_t> ControlStatii();
+	openpal::Indexable<DualValue<AnalogOutputStatus>, uint16_t> SetpointStatii();
 
 	template <class T> 
 	openpal::Indexable<DualValue<T>, uint16_t> Values();

@@ -328,7 +328,7 @@ namespace DNP3.Interface
             this.staticBinary = StaticBinaryResponse.Group1Var2;
             this.staticAnalog = StaticAnalogResponse.Group30Var1;
             this.staticCounter = StaticCounterResponse.Group20Var1;
-            this.staticSetpointStatus = StaticSetpointStatusResponse.Group40Var1;
+            this.staticAnalogOutputStatus = StaticAnalogOutputStatusResponse.Group40Var1;
             this.eventBinary = EventBinaryResponse.Group2Var1;
             this.eventAnalog = EventAnalogResponse.Group32Var1;
             this.eventCounter = EventCounterResponse.Group22Var1;
@@ -402,7 +402,7 @@ namespace DNP3.Interface
 	    /// <summary>
         /// The default group/variation to use for static setpoint status responses
 	    /// </summary>
-        public StaticSetpointStatusResponse staticSetpointStatus;
+        public StaticAnalogOutputStatusResponse staticAnalogOutputStatus;
 
 	    /// <summary>
         /// The default group/variation to use for binary event responses
@@ -479,19 +479,19 @@ namespace DNP3.Interface
         /// <param name="numBinary">numer of binary values starting at index 0</param>
         /// <param name="numAnalog">numer of analog values starting at index 0</param>
         /// <param name="numCounter">numer of counter values starting at index 0</param>
-        /// <param name="numControlStatus">numer of control status values starting at index 0</param>
-        /// <param name="numSetpointStatus">numer of setpoint status values starting at index 0</param>
+        /// <param name="numBinaryOutputStatus">numer of control status values starting at index 0</param>
+        /// <param name="numAnalogOutputStatus">numer of setpoint status values starting at index 0</param>
         public DeviceTemplate(  System.UInt16 numBinary,
                                 System.UInt16 numAnalog,
                                 System.UInt16 numCounter,
-                                System.UInt16 numControlStatus,
-                                System.UInt16 numSetpointStatus)
+                                System.UInt16 numBinaryOutputStatus,
+                                System.UInt16 numAnalogOutputStatus)
         {
             binaries = Enumerable.Range(0, numBinary).Select(i => new EventPointRecord(PointClass.PC_CLASS_1)).ToList();
             counters = Enumerable.Range(0, numCounter).Select(i => new DeadbandEventPointRecord<System.UInt32>(PointClass.PC_CLASS_1, 0)).ToList();
             analogs = Enumerable.Range(0, numAnalog).Select(i => new DeadbandEventPointRecord<double>(PointClass.PC_CLASS_1, 0.0)).ToList();
-            numControlStatii = numControlStatus;
-            numSetpointStatii = numSetpointStatus;
+            numControlStatii = numBinaryOutputStatus;
+            numSetpointStatii = numAnalogOutputStatus;
         }
 
         /// <summary>

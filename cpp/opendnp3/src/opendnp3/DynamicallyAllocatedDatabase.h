@@ -45,8 +45,8 @@ class DynamicallyAllocatedDatabase
 	openpal::DynamicArray<DualValue<Analog>, uint16_t> analogValues;
 	openpal::DynamicArray<DualValue<Counter>, uint16_t> counterValues;
 	openpal::DynamicArray<DualValue<FrozenCounter>, uint16_t> frozenCounterValues;
-	openpal::DynamicArray<DualValue<ControlStatus>, uint16_t> controlStatusValues;
-	openpal::DynamicArray<DualValue<SetpointStatus>, uint16_t> setpointStatusValues;
+	openpal::DynamicArray<DualValue<BinaryOutputStatus>, uint16_t> BinaryOutputStatusValues;
+	openpal::DynamicArray<DualValue<AnalogOutputStatus>, uint16_t> AnalogOutputStatusValues;
 
 	openpal::DynamicArray<BinaryMetadata, uint16_t> binaryMetadata;
 	openpal::DynamicArray<AnalogMetadata, uint16_t> analogMetadata;

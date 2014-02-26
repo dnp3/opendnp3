@@ -51,8 +51,8 @@ namespace DNP3.Interface
             foreach (var v in update.BinaryUpdates) Console.WriteLine("value: " + v.value.value + " index: " + v.index);
             foreach (var v in update.AnalogUpdates) Console.WriteLine("value: " + v.value.value + " index: " + v.index);
             foreach (var v in update.CounterUpdates) Console.WriteLine("value: " + v.value.value + " index: " + v.index);
-            foreach (var v in update.ControlStatusUpdates) Console.WriteLine("value: " + v.value.value + " index: " + v.index);
-            foreach (var v in update.SetpointStatusUpdates) Console.WriteLine("value: " + v.value.value + " index: " + v.index);
+            foreach (var v in update.BinaryOutputStatusUpdates) Console.WriteLine("value: " + v.value.value + " index: " + v.index);
+            foreach (var v in update.AnalogOutputStatusUpdates) Console.WriteLine("value: " + v.value.value + " index: " + v.index);
             foreach (var v in update.OctetStringUpdates) Console.WriteLine("value: " + v.value.AsString() + " index: " + v.index);
         }
     }    

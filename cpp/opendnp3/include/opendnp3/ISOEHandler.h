@@ -47,8 +47,8 @@ public:
 	virtual void Load(const IterableBuffer<IndexedValue<Analog>>& meas) {}
 	virtual void Load(const IterableBuffer<IndexedValue<Counter>>& meas) {}
 	virtual void Load(const IterableBuffer<IndexedValue<FrozenCounter>>& meas) {}
-	virtual void Load(const IterableBuffer<IndexedValue<ControlStatus>>& meas) {}
-	virtual void Load(const IterableBuffer<IndexedValue<SetpointStatus>>& meas) {}
+	virtual void Load(const IterableBuffer<IndexedValue<BinaryOutputStatus>>& meas) {}
+	virtual void Load(const IterableBuffer<IndexedValue<AnalogOutputStatus>>& meas) {}
 	virtual void Load(const IterableBuffer<IndexedValue<OctetString>>& meas) {}
 
 	virtual ~ISOEHandler() {}	
@@ -84,8 +84,8 @@ public:
 	void Load(const IterableBuffer<IndexedValue<Analog>>& meas) final;
 	void Load(const IterableBuffer<IndexedValue<Counter>>& meas) final;
 	void Load(const IterableBuffer<IndexedValue<FrozenCounter>>& meas) final;
-	void Load(const IterableBuffer<IndexedValue<ControlStatus>>& meas) final;
-	void Load(const IterableBuffer<IndexedValue<SetpointStatus>>& meas) final;
+	void Load(const IterableBuffer<IndexedValue<BinaryOutputStatus>>& meas) final;
+	void Load(const IterableBuffer<IndexedValue<AnalogOutputStatus>>& meas) final;
 	void Load(const IterableBuffer<IndexedValue<OctetString>>& meas) final;
 
 protected:

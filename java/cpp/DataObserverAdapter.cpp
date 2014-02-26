@@ -101,7 +101,7 @@ void DataObserverAdapter::_Update(const Counter& arMeas, size_t aIndex)
 	pEnv->CallVoidMethod(mProxy, mUpdateCounter, value, quality, timestamp, index);
 }
 
-void DataObserverAdapter::_Update(const SetpointStatus& arMeas, size_t aIndex)
+void DataObserverAdapter::_Update(const AnalogOutputStatus& arMeas, size_t aIndex)
 {
 	JNIEnv* pEnv = GetEnv();
 
@@ -113,7 +113,7 @@ void DataObserverAdapter::_Update(const SetpointStatus& arMeas, size_t aIndex)
 	pEnv->CallVoidMethod(mProxy, mUpdateAnalogOutputStatus, value, quality, timestamp, index);
 }
 
-void DataObserverAdapter::_Update(const ControlStatus& arMeas, size_t aIndex)
+void DataObserverAdapter::_Update(const BinaryOutputStatus& arMeas, size_t aIndex)
 {
 	JNIEnv* pEnv = GetEnv();
 

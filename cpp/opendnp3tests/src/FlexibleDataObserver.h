@@ -54,8 +54,8 @@ public:
 	PointMap<Analog>::Type mAnalogMap;
 	PointMap<Counter>::Type mCounterMap;
 	PointMap<FrozenCounter>::Type mFrozenCounterMap;
-	PointMap<ControlStatus>::Type mControlStatusMap;
-	PointMap<SetpointStatus>::Type mSetpointStatusMap;
+	PointMap<BinaryOutputStatus>::Type mBinaryOutputStatusMap;
+	PointMap<AnalogOutputStatus>::Type mAnalogOutputStatusMap;
 
 	/*
 	 * Analog
@@ -93,7 +93,7 @@ public:
 	bool Check(bool aValue, ControlQuality aQuality, size_t aIndex) {
 		uint8_t qual = aQuality;
 		if(aValue) qual |= TQ_STATE;
-		return Check<ControlStatus, bool>(mControlStatusMap, aValue, qual, aIndex);
+		return Check<BinaryOutputStatus, bool>(mBinaryOutputStatusMap, aValue, qual, aIndex);
 	}
 
 	bool Check(uint32_t aValue, CounterQuality aQuality, size_t aIndex, int64_t aTime) {
@@ -107,18 +107,18 @@ public:
 	bool Check(bool aValue, ControlQuality aQuality, size_t aIndex, int64_t aTime) {
 		uint8_t qual = aQuality;
 		if(aValue) qual |= TQ_STATE;
-		return Check<ControlStatus, bool>(mControlStatusMap, aValue, qual,  aTime, aIndex);
+		return Check<BinaryOutputStatus, bool>(mBinaryOutputStatusMap, aValue, qual,  aTime, aIndex);
 	}
 
 	/*
 	 * Setpoint
 	 */
 	bool Check(int32_t aValue, SetpointQuality aQuality, size_t aIndex) {
-		return Check<SetpointStatus, int32_t>(mSetpointStatusMap, aValue, aQuality, aIndex);
+		return Check<AnalogOutputStatus, int32_t>(mAnalogOutputStatusMap, aValue, aQuality, aIndex);
 	}
 
 	bool Check(int32_t aValue, SetpointQuality aQuality, size_t aIndex, int64_t aTime) {
-		return Check<SetpointStatus, int32_t>(mSetpointStatusMap, aValue, aQuality, aTime, aIndex);
+		return Check<AnalogOutputStatus, int32_t>(mAnalogOutputStatusMap, aValue, aQuality, aTime, aIndex);
 	}
 
 	/*
@@ -149,10 +149,10 @@ public:
                 return CheckQual<FrozenCounter>(mFrozenCounterMap, aQuality, aIndex);
         }
 	bool CheckQual(ControlQuality aQuality, size_t aIndex) {
-		return CheckQual<ControlStatus>(mControlStatusMap, aQuality, aIndex);
+		return CheckQual<BinaryOutputStatus>(mBinaryOutputStatusMap, aQuality, aIndex);
 	}
 	bool CheckQual(SetpointQuality aQuality, size_t aIndex) {
-		return CheckQual<SetpointStatus>(mSetpointStatusMap, aQuality, aIndex);
+		return CheckQual<AnalogOutputStatus>(mAnalogOutputStatusMap, aQuality, aIndex);
 	}
 
 	void Print();
@@ -163,8 +163,8 @@ public:
 		       mAnalogMap.size() +
 		       mCounterMap.size() +
 		       mFrozenCounterMap.size() +
-		       mControlStatusMap.size() +
-		       mSetpointStatusMap.size();
+		       mBinaryOutputStatusMap.size() +
+		       mAnalogOutputStatusMap.size();
 	}
 
 	// The two data observers have the exact same contents

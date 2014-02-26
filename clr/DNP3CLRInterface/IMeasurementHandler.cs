@@ -47,8 +47,8 @@ namespace DNP3.Interface
         IReadOnlyCollection<IndexedValue<Binary>> BinaryUpdates { get; }
         IReadOnlyCollection<IndexedValue<Analog>> AnalogUpdates { get; }
         IReadOnlyCollection<IndexedValue<Counter>> CounterUpdates { get; }
-        IReadOnlyCollection<IndexedValue<ControlStatus>> ControlStatusUpdates { get; }
-        IReadOnlyCollection<IndexedValue<SetpointStatus>> SetpointStatusUpdates { get; }
+        IReadOnlyCollection<IndexedValue<BinaryOutputStatus>> BinaryOutputStatusUpdates { get; }
+        IReadOnlyCollection<IndexedValue<AnalogOutputStatus>> AnalogOutputStatusUpdates { get; }
         IReadOnlyCollection<IndexedValue<OctetString>> OctetStringUpdates { get; }
     }
 
@@ -57,8 +57,8 @@ namespace DNP3.Interface
         public void Load(Binary v, UInt32 index) { this.binaryUpdates.Add(new IndexedValue<Binary>(v, index)); }
         public void Load(Analog v, UInt32 index) { this.analogUpdates.Add(new IndexedValue<Analog>(v, index)); }
         public void Load(Counter v, UInt32 index) { this.counterUpdates.Add(new IndexedValue<Counter>(v, index)); }
-        public void Load(ControlStatus v, UInt32 index) { this.controlStatusUpdates.Add(new IndexedValue<ControlStatus>(v, index)); }
-        public void Load(SetpointStatus v, UInt32 index) { this.setpointStatusUpdates.Add(new IndexedValue<SetpointStatus>(v, index)); }
+        public void Load(BinaryOutputStatus v, UInt32 index) { this.binaryOutputStatusUpdates.Add(new IndexedValue<BinaryOutputStatus>(v, index)); }
+        public void Load(AnalogOutputStatus v, UInt32 index) { this.analogOutputStatusUpdates.Add(new IndexedValue<AnalogOutputStatus>(v, index)); }
         public void Load(OctetString v, UInt32 index) { this.octetStringUpdates.Add(new IndexedValue<OctetString>(v, index)); }
 
 
@@ -77,14 +77,14 @@ namespace DNP3.Interface
             get { return counterUpdates; }
         }
 
-        public IReadOnlyCollection<IndexedValue<ControlStatus>> ControlStatusUpdates
+        public IReadOnlyCollection<IndexedValue<BinaryOutputStatus>> BinaryOutputStatusUpdates
         {
-            get { return controlStatusUpdates; }
+            get { return BinaryOutputStatusUpdates; }
         }
 
-        public IReadOnlyCollection<IndexedValue<SetpointStatus>> SetpointStatusUpdates
+        public IReadOnlyCollection<IndexedValue<AnalogOutputStatus>> AnalogOutputStatusUpdates
         {
-            get { return setpointStatusUpdates; }
+            get { return AnalogOutputStatusUpdates; }
         }
 
         public IReadOnlyCollection<IndexedValue<OctetString>> OctetStringUpdates
@@ -95,8 +95,8 @@ namespace DNP3.Interface
         private readonly List<IndexedValue<Binary>> binaryUpdates = new List<IndexedValue<Binary>>();
         private readonly List<IndexedValue<Analog>> analogUpdates = new List<IndexedValue<Analog>>();
         private readonly List<IndexedValue<Counter>> counterUpdates = new List<IndexedValue<Counter>>();
-        private readonly List<IndexedValue<ControlStatus>> controlStatusUpdates = new List<IndexedValue<ControlStatus>>();
-        private readonly List<IndexedValue<SetpointStatus>> setpointStatusUpdates = new List<IndexedValue<SetpointStatus>>();
+        private readonly List<IndexedValue<BinaryOutputStatus>> binaryOutputStatusUpdates = new List<IndexedValue<BinaryOutputStatus>>();
+        private readonly List<IndexedValue<AnalogOutputStatus>> analogOutputStatusUpdates = new List<IndexedValue<AnalogOutputStatus>>();
         private readonly List<IndexedValue<OctetString>> octetStringUpdates = new List<IndexedValue<OctetString>>();
     }
 

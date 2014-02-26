@@ -78,15 +78,15 @@ void ChangeBuffer::Update(const FrozenCounter& arPoint, uint16_t aIndex)
         mNotify = true;
 }
 
-void ChangeBuffer::Update(const ControlStatus& arPoint, uint16_t aIndex)
+void ChangeBuffer::Update(const BinaryOutputStatus& arPoint, uint16_t aIndex)
 {
-	mChangeQueue.push_back(std::bind(&ChangeBuffer::Dispatch<ControlStatus>, std::placeholders::_1, arPoint, aIndex));
+	mChangeQueue.push_back(std::bind(&ChangeBuffer::Dispatch<BinaryOutputStatus>, std::placeholders::_1, arPoint, aIndex));
 	mNotify = true;
 }
 
-void ChangeBuffer::Update(const SetpointStatus& arPoint, uint16_t aIndex)
+void ChangeBuffer::Update(const AnalogOutputStatus& arPoint, uint16_t aIndex)
 {
-	mChangeQueue.push_back(std::bind(&ChangeBuffer::Dispatch<SetpointStatus>, std::placeholders::_1, arPoint, aIndex));
+	mChangeQueue.push_back(std::bind(&ChangeBuffer::Dispatch<AnalogOutputStatus>, std::placeholders::_1, arPoint, aIndex));
 	mNotify = true;
 }
 

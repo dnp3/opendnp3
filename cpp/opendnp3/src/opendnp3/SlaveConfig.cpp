@@ -56,8 +56,8 @@ SlaveConfig::SlaveConfig() :
 	mStaticAnalog(StaticAnalogResponse::Group30Var1),
 	mStaticCounter(StaticCounterResponse::Group20Var1),
 	mStaticFrozenCounter(StaticFrozenCounterResponse::Group21Var1),
-	mStaticControlStatus(StaticControlStatusResponse::Group10Var2),
-	mStaticSetpointStatus(StaticSetpointStatusResponse::Group40Var1),
+	mStaticBinaryOutputStatus(StaticBinaryOutputStatusResponse::Group10Var2),
+	mStaticAnalogOutputStatus(StaticAnalogOutputStatusResponse::Group40Var1),
 	mEventBinary(EventBinaryResponse::Group2Var1),
 	mEventAnalog(EventAnalogResponse::Group32Var1),
 	mEventCounter(EventCounterResponse::Group22Var1)

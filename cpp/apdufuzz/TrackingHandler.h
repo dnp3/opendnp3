@@ -59,9 +59,9 @@ class TrackingHandler : public IAPDUHandler
 		meas.foreach([this](const IndexedValue<Binary>& v){ ++count; });
 	}
 
-	virtual void OnRange(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const IterableBuffer<IndexedValue<ControlStatus>>& meas) override
+	virtual void OnRange(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const IterableBuffer<IndexedValue<BinaryOutputStatus>>& meas) override
 	{
-		meas.foreach([this](const IndexedValue<ControlStatus>& v) { ++count; });
+		meas.foreach([this](const IndexedValue<BinaryOutputStatus>& v) { ++count; });
 	}
 
 	virtual void OnRange(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const IterableBuffer<IndexedValue<Counter>>& meas) override
@@ -84,9 +84,9 @@ class TrackingHandler : public IAPDUHandler
 		meas.foreach([this](const IndexedValue<Analog>& v) { ++count; });
 	}
 
-	virtual void OnRange(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const IterableBuffer<IndexedValue<SetpointStatus>>& meas) override
+	virtual void OnRange(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const IterableBuffer<IndexedValue<AnalogOutputStatus>>& meas) override
 	{
-		meas.foreach([this](const IndexedValue<SetpointStatus>& v) { ++count; });
+		meas.foreach([this](const IndexedValue<AnalogOutputStatus>& v) { ++count; });
 	}
 
 	virtual void OnIndexPrefix(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const IterableBuffer<IndexedValue<ControlRelayOutputBlock>>& meas) override

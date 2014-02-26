@@ -39,8 +39,8 @@ public:
 	void Update(Analog aMeas, size_t aIndex);
 	void Update(Counter aMeas, size_t aIndex);
 	void Update(FrozenCounter aMeas, size_t aIndex);
-	void Update(ControlStatus aMeas, size_t aIndex);
-	void Update(SetpointStatus aMeas, size_t aIndex);
+	void Update(BinaryOutputStatus aMeas, size_t aIndex);
+	void Update(AnalogOutputStatus aMeas, size_t aIndex);
 
 private:
 	IDataObserver* mpObserver;

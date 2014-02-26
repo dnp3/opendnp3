@@ -37,8 +37,8 @@ void FlexibleDataObserver::Clear()
 	mAnalogMap.clear();
 	mCounterMap.clear();
 	mFrozenCounterMap.clear();
-	mControlStatusMap.clear();
-	mSetpointStatusMap.clear();
+	mBinaryOutputStatusMap.clear();
+	mAnalogOutputStatusMap.clear();
 }
 
 // The RHS is a strict subset of the LHS... i.e. everything in the RHS can be found in the LHS
@@ -48,8 +48,8 @@ bool FlexibleDataObserver::StrictEquality(const FlexibleDataObserver& arLHS, con
 	if(! StrictEquality(arLHS.mAnalogMap, arRHS.mAnalogMap) ) return false;
 	if(! StrictEquality(arLHS.mCounterMap, arRHS.mCounterMap) ) return false;
 	if(! StrictEquality(arLHS.mFrozenCounterMap, arRHS.mFrozenCounterMap) ) return false;
-	if(! StrictEquality(arLHS.mControlStatusMap, arRHS.mControlStatusMap) ) return false;
-	if(! StrictEquality(arLHS.mSetpointStatusMap, arRHS.mSetpointStatusMap) ) return false;
+	if(! StrictEquality(arLHS.mBinaryOutputStatusMap, arRHS.mBinaryOutputStatusMap) ) return false;
+	if(! StrictEquality(arLHS.mAnalogOutputStatusMap, arRHS.mAnalogOutputStatusMap) ) return false;
 
 	return true;
 }
@@ -61,8 +61,8 @@ bool FlexibleDataObserver::IsSubsetOf(const FlexibleDataObserver& arLHS, const F
 	if(! IsSubsetOf(arLHS.mAnalogMap, arRHS.mAnalogMap) ) return false;
 	if(! IsSubsetOf(arLHS.mCounterMap, arRHS.mCounterMap) ) return false;
 	if(! IsSubsetOf(arLHS.mFrozenCounterMap, arRHS.mFrozenCounterMap) ) return false;
-	if(! IsSubsetOf(arLHS.mControlStatusMap, arRHS.mControlStatusMap) ) return false;
-	if(! IsSubsetOf(arLHS.mSetpointStatusMap, arRHS.mSetpointStatusMap) ) return false;
+	if(! IsSubsetOf(arLHS.mBinaryOutputStatusMap, arRHS.mBinaryOutputStatusMap) ) return false;
+	if(! IsSubsetOf(arLHS.mAnalogOutputStatusMap, arRHS.mAnalogOutputStatusMap) ) return false;
 
 	return true;
 }
@@ -84,10 +84,10 @@ void FlexibleDataObserver::Print()
 	this->Print<FrozenCounter>(mFrozenCounterMap);
 
 	std::cout << "--- Control Status ---" << std::endl;
-	this->Print<ControlStatus>(mControlStatusMap);
+	this->Print<BinaryOutputStatus>(mBinaryOutputStatusMap);
 
 	std::cout << "--- Setpoint Status ---" << std::endl;
-	this->Print<SetpointStatus>(mSetpointStatusMap);
+	this->Print<AnalogOutputStatus>(mAnalogOutputStatusMap);
 
 }
 

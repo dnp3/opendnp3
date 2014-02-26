@@ -66,8 +66,8 @@ private:
 	CompareMap mAnalogMap;
 	CompareMap mCounterMap;
 	CompareMap mFrozenCounterMap;
-	CompareMap mControlStatusMap;
-	CompareMap mSetpointStatusMap;
+	CompareMap mBinaryOutputStatusMap;
+	CompareMap mAnalogOutputStatusMap;
 
 	void Start();
 	void End();	

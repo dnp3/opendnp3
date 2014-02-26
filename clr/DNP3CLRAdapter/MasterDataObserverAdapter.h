@@ -22,8 +22,8 @@ public:
 	void Update(const opendnp3::Analog& arPoint, uint16_t aIndex);
 	void Update(const opendnp3::Counter& arPoint, uint16_t aIndex);
 	void Update(const opendnp3::FrozenCounter& arPoint, uint16_t aIndex);
-	void Update(const opendnp3::ControlStatus& arPoint, uint16_t aIndex);
-	void Update(const opendnp3::SetpointStatus& arPoint, uint16_t aIndex);
+	void Update(const opendnp3::BinaryOutputStatus& arPoint, uint16_t aIndex);
+	void Update(const opendnp3::AnalogOutputStatus& arPoint, uint16_t aIndex);
 
 private:
 

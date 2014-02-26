@@ -145,14 +145,14 @@ Counter ^ Conversions::convertMeas(opendnp3::Counter meas)
 	return gcnew Counter(meas.GetValue(), meas.GetQuality(), TimeStamp::Convert(meas.GetTime()));
 }
 
-SetpointStatus ^ Conversions::convertMeas(opendnp3::SetpointStatus meas)
+AnalogOutputStatus ^ Conversions::convertMeas(opendnp3::AnalogOutputStatus meas)
 {
-	return gcnew SetpointStatus(meas.GetValue(), meas.GetQuality(), TimeStamp::Convert(meas.GetTime()));
+	return gcnew AnalogOutputStatus(meas.GetValue(), meas.GetQuality(), TimeStamp::Convert(meas.GetTime()));
 }
 
-ControlStatus ^ Conversions::convertMeas(opendnp3::ControlStatus meas)
+BinaryOutputStatus ^ Conversions::convertMeas(opendnp3::BinaryOutputStatus meas)
 {
-	return gcnew ControlStatus(meas.GetValue(), meas.GetQuality(), TimeStamp::Convert(meas.GetTime()));
+	return gcnew BinaryOutputStatus(meas.GetValue(), meas.GetQuality(), TimeStamp::Convert(meas.GetTime()));
 }
 
 OctetString^ Conversions::convertMeas(const opendnp3::OctetString& arMeas)
@@ -184,16 +184,16 @@ opendnp3::Counter Conversions::convertMeas(Counter ^ meas)
 	return m;
 }
 
-opendnp3::SetpointStatus Conversions::convertMeas(SetpointStatus ^ meas)
+opendnp3::AnalogOutputStatus Conversions::convertMeas(AnalogOutputStatus ^ meas)
 {
-	opendnp3::SetpointStatus m(meas->value, meas->quality);
+	opendnp3::AnalogOutputStatus m(meas->value, meas->quality);
 	m.SetTime(TimeStamp::Convert(meas->time));
 	return m;
 }
 
-opendnp3::ControlStatus Conversions::convertMeas(ControlStatus ^ meas)
+opendnp3::BinaryOutputStatus Conversions::convertMeas(BinaryOutputStatus ^ meas)
 {
-	opendnp3::ControlStatus m(meas->value, meas->quality);
+	opendnp3::BinaryOutputStatus m(meas->value, meas->quality);
 	m.SetTime(TimeStamp::Convert(meas->time));
 	return m;
 }
@@ -250,9 +250,9 @@ opendnp3::StaticCounterResponse Conversions::convert(StaticCounterResponse rsp)
 	return (opendnp3::StaticCounterResponse) rsp;
 }
 
-opendnp3::StaticSetpointStatusResponse Conversions::convert(StaticSetpointStatusResponse rsp)
+opendnp3::StaticAnalogOutputStatusResponse Conversions::convert(StaticAnalogOutputStatusResponse rsp)
 {
-	return (opendnp3::StaticSetpointStatusResponse) rsp;
+	return (opendnp3::StaticAnalogOutputStatusResponse) rsp;
 }
 
 opendnp3::EventBinaryResponse Conversions::convert(EventBinaryResponse rsp)
@@ -287,7 +287,7 @@ opendnp3::SlaveConfig Conversions::convertConfig(SlaveConfig ^ config)
 	sc.mStaticBinary = convert(config->staticBinary);
 	sc.mStaticAnalog = convert(config->staticAnalog);
 	sc.mStaticCounter = convert(config->staticCounter);
-	sc.mStaticSetpointStatus = convert(config->staticSetpointStatus);
+	sc.mStaticAnalogOutputStatus = convert(config->staticAnalogOutputStatus);
 	sc.mEventBinary = convert(config->eventBinary);
 	sc.mEventAnalog = convert(config->eventAnalog);
 	sc.mEventCounter = convert(config->eventCounter);

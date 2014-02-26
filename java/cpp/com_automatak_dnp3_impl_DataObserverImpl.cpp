@@ -70,7 +70,7 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_DataObserverImpl_native_1upd
 (JNIEnv*, jobject, jlong observer, jboolean val, jbyte qual, jlong time, jlong index)
 {
 	auto pObs = (IDataObserver*) observer;
-	ControlStatus meas(val, qual);
+	BinaryOutputStatus meas(val, qual);
 	meas.SetTime(time);
 	pObs->Update(meas, index);
 }
@@ -79,7 +79,7 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_DataObserverImpl_native_1upd
 (JNIEnv*, jobject, jlong observer, jdouble val, jbyte qual, jlong time, jlong index)
 {
 	auto pObs = (IDataObserver*) observer;
-	SetpointStatus meas(val, qual);
+	AnalogOutputStatus meas(val, qual);
 	meas.SetTime(time);
 	pObs->Update(meas, index);
 }

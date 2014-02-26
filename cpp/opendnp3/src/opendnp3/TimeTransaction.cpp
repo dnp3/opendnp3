@@ -56,13 +56,13 @@ void TimeTransaction::Update(FrozenCounter aMeas, size_t aIndex)
         mpObserver->Update(aMeas, aIndex);
 }
 
-void TimeTransaction::Update(ControlStatus aMeas, size_t aIndex)
+void TimeTransaction::Update(BinaryOutputStatus aMeas, size_t aIndex)
 {
 	aMeas.SetTime(mTimestamp.msSinceEpoch);
 	mpObserver->Update(aMeas, aIndex);
 }
 
-void TimeTransaction::Update(SetpointStatus aMeas, size_t aIndex)
+void TimeTransaction::Update(AnalogOutputStatus aMeas, size_t aIndex)
 {
 	aMeas.SetTime(mTimestamp.msSinceEpoch);
 	mpObserver->Update(aMeas, aIndex);

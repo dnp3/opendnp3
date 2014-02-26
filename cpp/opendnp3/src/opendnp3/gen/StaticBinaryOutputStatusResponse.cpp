@@ -15,23 +15,31 @@
 // http://www.apache.org/licenses/LICENSE-2.0.html
 //
 
-#ifndef __OPENDNP3_GENERATED_STATICCONTROLSTATUSRESPONSE_H_
-#define __OPENDNP3_GENERATED_STATICCONTROLSTATUSRESPONSE_H_
-
-#include <string>
-#include <cstdint>
+#include <opendnp3/gen/StaticBinaryOutputStatusResponse.h>
 
 namespace opendnp3 {
 
-enum class StaticControlStatusResponse : int
+std::string StaticBinaryOutputStatusResponseToString(StaticBinaryOutputStatusResponse arg)
 {
-  Group10Var2 = 0
-};
-
-std::string StaticControlStatusResponseToString(StaticControlStatusResponse arg);
-int StaticControlStatusResponseToType(StaticControlStatusResponse arg);
-StaticControlStatusResponse StaticControlStatusResponseFromType(int arg);
-
+  switch(arg)
+  {
+    case(StaticBinaryOutputStatusResponse::Group10Var2):
+      return "Group10Var2";
+  }
+  return "Group10Var2";
+}
+int StaticBinaryOutputStatusResponseToType(StaticBinaryOutputStatusResponse arg)
+{
+  return static_cast<int>(arg);
+}
+StaticBinaryOutputStatusResponse StaticBinaryOutputStatusResponseFromType(int arg)
+{
+  switch(arg)
+  {
+    case(0):
+      return StaticBinaryOutputStatusResponse::Group10Var2;
+  }
+  return StaticBinaryOutputStatusResponse::Group10Var2;
 }
 
-#endif
+}

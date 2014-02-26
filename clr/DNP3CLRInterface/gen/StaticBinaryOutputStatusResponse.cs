@@ -19,11 +19,8 @@ namespace DNP3.Interface
 {
   /// <summary>
   /// </summary>
-  public enum StaticSetpointStatusResponse : int
+  public enum StaticBinaryOutputStatusResponse : int
   {
-    Group40Var1 = 0,
-    Group40Var2 = 1,
-    Group40Var3 = 2,
-    Group40Var4 = 3
+    Group10Var2 = 0
   }
 }

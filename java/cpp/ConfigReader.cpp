@@ -88,8 +88,8 @@ SlaveConfig ConfigReader::ConvertOutstationConfig(JNIEnv* apEnv, jobject jCfg)
 	}
 
 	{
-		jobject jenum = JNIHelpers::GetObjectField(apEnv, jCfg, "staticSetpointStatus", "Lcom/automatak/dnp3/StaticSetpointStatusResponse;");
-		cfg.mStaticSetpointStatus = StaticSetpointStatusResponseFromType(GetEnumId(apEnv, jenum));
+		jobject jenum = JNIHelpers::GetObjectField(apEnv, jCfg, "staticAnalogOutputStatus", "Lcom/automatak/dnp3/StaticAnalogOutputStatusResponse;");
+		cfg.mStaticAnalogOutputStatus = StaticAnalogOutputStatusResponseFromType(GetEnumId(apEnv, jenum));
 	}
 
 	{
@@ -151,7 +151,7 @@ DatabaseConfiguration ConfigReader::ConvertDatabaseConfig(JNIEnv* apEnv, jobject
 		JNIHelpers::IterateOverListOfObjects(apEnv, list, [&](jobject record) {
 			++numBOStatus;
 		});
-		cfg.numControlStatus = numBOStatus;
+		cfg.numBinaryOutputStatus = numBOStatus;
 	}
 
 	{
@@ -160,7 +160,7 @@ DatabaseConfiguration ConfigReader::ConvertDatabaseConfig(JNIEnv* apEnv, jobject
 		JNIHelpers::IterateOverListOfObjects(apEnv, list, [&](jobject record) {
 			++numSStatus;
 		});
-		cfg.numSetpointStatus = numSStatus;
+		cfg.numAnalogOutputStatus = numSStatus;
 	}
 
 	return cfg;

@@ -14,33 +14,27 @@
 // 
 // http://www.apache.org/licenses/LICENSE-2.0.html
 //
-package com.automatak.dnp3;
 
-/**
-*/
-public enum StaticControlStatusResponse
+#ifndef __OPENDNP3_GENERATED_STATICANALOGOUTPUTSTATUSRESPONSE_H_
+#define __OPENDNP3_GENERATED_STATICANALOGOUTPUTSTATUSRESPONSE_H_
+
+#include <string>
+#include <cstdint>
+
+namespace opendnp3 {
+
+enum class StaticAnalogOutputStatusResponse : int
 {
-  Group10Var2(0);
+  Group40Var1 = 0,
+  Group40Var2 = 1,
+  Group40Var3 = 2,
+  Group40Var4 = 3
+};
 
-  private final int id;
+std::string StaticAnalogOutputStatusResponseToString(StaticAnalogOutputStatusResponse arg);
+int StaticAnalogOutputStatusResponseToType(StaticAnalogOutputStatusResponse arg);
+StaticAnalogOutputStatusResponse StaticAnalogOutputStatusResponseFromType(int arg);
 
-  private StaticControlStatusResponse(int id)
-  {
-    this.id = id;
-  }
-
-  public int toType()
-  {
-    return id;
-  }
-
-  public static StaticControlStatusResponse fromType(int arg)
-  {
-    switch(arg)
-    {
-      case(0):
-        return Group10Var2;
-    }
-    return Group10Var2;
-  }
 }
+
+#endif

@@ -65,11 +65,11 @@ public:
                 for(auto pObs: mObservers) pObs->Update(arPoint, aIndex);
         }
 
-	void Update(const ControlStatus& arPoint, uint16_t aIndex) final
+	void Update(const BinaryOutputStatus& arPoint, uint16_t aIndex) final
 	{
 		for(auto pObs: mObservers) pObs->Update(arPoint, aIndex);
 	}
-	void Update(const SetpointStatus& arPoint, uint16_t aIndex) final
+	void Update(const AnalogOutputStatus& arPoint, uint16_t aIndex) final
 	{
 		for(auto pObs: mObservers) pObs->Update(arPoint, aIndex);
 	}

@@ -37,8 +37,8 @@
 #include <opendnp3/gen/StaticBinaryResponse.h>
 #include <opendnp3/gen/StaticCounterResponse.h>
 #include <opendnp3/gen/StaticFrozenCounterResponse.h>
-#include <opendnp3/gen/StaticControlStatusResponse.h>
-#include <opendnp3/gen/StaticSetpointStatusResponse.h>
+#include <opendnp3/gen/StaticBinaryOutputStatusResponse.h>
+#include <opendnp3/gen/StaticAnalogOutputStatusResponse.h>
 
 namespace opendnp3
 {
@@ -120,10 +120,10 @@ struct SlaveConfig {
 	StaticFrozenCounterResponse mStaticFrozenCounter;
 
 	/// The default group/variation to use for static control status responses
-	StaticControlStatusResponse mStaticControlStatus;
+	StaticBinaryOutputStatusResponse mStaticBinaryOutputStatus;
 
 	/// The default group/variation to use for static setpoint status responses
-	StaticSetpointStatusResponse mStaticSetpointStatus;
+	StaticAnalogOutputStatusResponse mStaticAnalogOutputStatus;
 
 	// default event response types
 

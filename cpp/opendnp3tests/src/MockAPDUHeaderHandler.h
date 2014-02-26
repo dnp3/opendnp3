@@ -82,11 +82,11 @@ class MockApduHeaderHandler : public IAPDUHandler
 			meas.foreach([&](const IndexedValue<Binary>& v) { eventBinaries.push_back(v); });			
 		}
 
-		virtual void OnRange(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const IterableBuffer<IndexedValue<ControlStatus>>& meas) override
+		virtual void OnRange(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const IterableBuffer<IndexedValue<BinaryOutputStatus>>& meas) override
 		{
 			groupVariations.push_back(gv);
 			headers.push_back(header);
-			meas.foreach([&](const IndexedValue<ControlStatus>& v) { staticControlStatii.push_back(v); });	
+			meas.foreach([&](const IndexedValue<BinaryOutputStatus>& v) { staticControlStatii.push_back(v); });	
 		}
 
 		virtual void OnRange(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const IterableBuffer<IndexedValue<Counter>>& meas) override
@@ -117,11 +117,11 @@ class MockApduHeaderHandler : public IAPDUHandler
 			meas.foreach([&](const IndexedValue<Analog>& v) { eventAnalogs.push_back(v); });	
 		}
 
-		virtual void OnRange(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const IterableBuffer<IndexedValue<SetpointStatus>>& meas) override
+		virtual void OnRange(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const IterableBuffer<IndexedValue<AnalogOutputStatus>>& meas) override
 		{
 			groupVariations.push_back(gv);
 			headers.push_back(header);
-			meas.foreach([&](const IndexedValue<SetpointStatus>& v) { staticSetpointStatii.push_back(v); });	
+			meas.foreach([&](const IndexedValue<AnalogOutputStatus>& v) { staticSetpointStatii.push_back(v); });	
 		}
 
 		void OnIndexPrefix(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const IterableBuffer<IndexedValue<ControlRelayOutputBlock>>& meas) override
@@ -181,7 +181,7 @@ class MockApduHeaderHandler : public IAPDUHandler
 		std::vector<IndexedValue<Binary>> eventBinaries;
 		std::vector<IndexedValue<Binary>> staticBinaries;
 
-		std::vector<IndexedValue<ControlStatus>> staticControlStatii;
+		std::vector<IndexedValue<BinaryOutputStatus>> staticControlStatii;
 
 		std::vector<IndexedValue<Counter>> eventCounters;
 		std::vector<IndexedValue<Counter>> staticCounters;
@@ -189,7 +189,7 @@ class MockApduHeaderHandler : public IAPDUHandler
 		std::vector<IndexedValue<Analog>> eventAnalogs;
 		std::vector<IndexedValue<Analog>> staticAnalogs;
 
-		std::vector<IndexedValue<SetpointStatus>> staticSetpointStatii;
+		std::vector<IndexedValue<AnalogOutputStatus>> staticSetpointStatii;
 
 		std::vector<IndexedValue<ControlRelayOutputBlock>> crobRequests;
 

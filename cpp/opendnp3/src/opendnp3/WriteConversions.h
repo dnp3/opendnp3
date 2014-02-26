@@ -49,7 +49,7 @@ typedef ConvertQT<Group2Var2, Binary> ConvertGroup2Var2;
 typedef ConvertQTDowncast<Group2Var3, Binary, uint16_t> ConvertGroup2Var3;
 
 // Group 10
-typedef ConvertQ<Group10Var2, ControlStatus> ConvertGroup10Var2;
+typedef ConvertQ<Group10Var2, BinaryOutputStatus> ConvertGroup10Var2;
 
 // Group 12
 struct ConvertGroup12Var1 : private Uncopyable
@@ -109,10 +109,10 @@ typedef ConvertQVTRangeCheck<Group32Var7, Analog, AnalogQuality::AQ_OVERRANGE> C
 typedef ConvertQVT<Group32Var8, Analog> ConvertGroup32Var8;
 
 // Group 40
-typedef ConvertQVRangeCheck<Group40Var1, SetpointStatus, 0> ConvertGroup40Var1; // TODO - strange to have no flag
-typedef ConvertQVRangeCheck<Group40Var2, SetpointStatus, 0> ConvertGroup40Var2; // TODO - strange to have no flag
-typedef ConvertQVRangeCheck<Group40Var3, SetpointStatus, 0> ConvertGroup40Var3; // TODO - strange to have no flag
-typedef ConvertQV<Group40Var4, SetpointStatus> ConvertGroup40Var4;
+typedef ConvertQVRangeCheck<Group40Var1, AnalogOutputStatus, 0> ConvertGroup40Var1; // TODO - strange to have no flag
+typedef ConvertQVRangeCheck<Group40Var2, AnalogOutputStatus, 0> ConvertGroup40Var2; // TODO - strange to have no flag
+typedef ConvertQVRangeCheck<Group40Var3, AnalogOutputStatus, 0> ConvertGroup40Var3; // TODO - strange to have no flag
+typedef ConvertQV<Group40Var4, AnalogOutputStatus> ConvertGroup40Var4;
 
 // Group 41
 typedef ConvertQS<Group41Var1, AnalogOutputInt32> ConvertGroup41Var1;

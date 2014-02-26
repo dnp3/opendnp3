@@ -51,15 +51,15 @@ private:
 	const StaticLoadFun pStaticAnalogLoader;
 	const StaticLoadFun pStaticCounterLoader;
 	const StaticLoadFun pStaticFrozenCounterLoader;
-	const StaticLoadFun pStaticControlStatusLoader;
-	const StaticLoadFun pStaticSetpointStatusLoader;
+	const StaticLoadFun pStaticBinaryOutputStatusLoader;
+	const StaticLoadFun pStaticAnalogOutputStatusLoader;
 
 	static StaticLoadFun GetStaticBinary(StaticBinaryResponse rsp);
 	static StaticLoadFun GetStaticCounter(StaticCounterResponse rsp);	
 	static StaticLoadFun GetStaticFrozenCounter(StaticFrozenCounterResponse rsp);
 	static StaticLoadFun GetStaticAnalog(StaticAnalogResponse rsp);	
-	static StaticLoadFun GetStaticSetpointStatus(StaticSetpointStatusResponse rsp);	
-	static StaticLoadFun GetStaticControlStatus(StaticControlStatusResponse rsp);	
+	static StaticLoadFun GetStaticAnalogOutputStatus(StaticAnalogOutputStatusResponse rsp);	
+	static StaticLoadFun GetStaticBinaryOutputStatus(StaticBinaryOutputStatusResponse rsp);	
 };
 
 }

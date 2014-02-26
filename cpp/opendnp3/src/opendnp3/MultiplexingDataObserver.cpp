@@ -66,11 +66,11 @@ void MultiplexingDataObserver :: Update(const Counter& arPoint, size_t aIndex)
 {
 for(auto pObs: mObservers) pObs->Update(arPoint, aIndex);
 }
-void MultiplexingDataObserver :: Update(const ControlStatus& arPoint, size_t aIndex)
+void MultiplexingDataObserver :: Update(const BinaryOutputStatus& arPoint, size_t aIndex)
 {
 for(auto pObs: mObservers) pObs->Update(arPoint, aIndex);
 }
-void MultiplexingDataObserver :: Update(const SetpointStatus& arPoint, size_t aIndex)
+void MultiplexingDataObserver :: Update(const AnalogOutputStatus& arPoint, size_t aIndex)
 {
 for(auto pObs: mObservers) pObs->Update(arPoint, aIndex);
 }

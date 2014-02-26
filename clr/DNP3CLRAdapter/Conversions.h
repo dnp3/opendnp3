@@ -82,16 +82,16 @@ public:
 	static Binary ^ convertMeas(opendnp3::Binary meas);
 	static Analog ^ convertMeas(opendnp3::Analog meas);
 	static Counter ^ convertMeas(opendnp3::Counter meas);
-	static SetpointStatus ^ convertMeas(opendnp3::SetpointStatus meas);
-	static ControlStatus ^ convertMeas(opendnp3::ControlStatus meas);
+	static AnalogOutputStatus ^ convertMeas(opendnp3::AnalogOutputStatus meas);
+	static BinaryOutputStatus ^ convertMeas(opendnp3::BinaryOutputStatus meas);
 	static OctetString^ Conversions::convertMeas(const opendnp3::OctetString& arMeas);
 
 
 	static opendnp3::Binary convertMeas(Binary ^ meas);
 	static opendnp3::Analog convertMeas(Analog ^ meas);
 	static opendnp3::Counter convertMeas(Counter ^ meas);
-	static opendnp3::SetpointStatus convertMeas(SetpointStatus ^ meas);
-	static opendnp3::ControlStatus convertMeas(ControlStatus ^ meas);
+	static opendnp3::AnalogOutputStatus convertMeas(AnalogOutputStatus ^ meas);
+	static opendnp3::BinaryOutputStatus convertMeas(BinaryOutputStatus ^ meas);
 
 	//Convert the configuration types
 	static asiopal::SerialSettings convertSerialSettings(SerialSettings ^ settings);
@@ -101,7 +101,7 @@ public:
 	static opendnp3::StaticBinaryResponse convert(StaticBinaryResponse rsp);
 	static opendnp3::StaticAnalogResponse convert(StaticAnalogResponse rsp);
 	static opendnp3::StaticCounterResponse convert(StaticCounterResponse rsp);
-	static opendnp3::StaticSetpointStatusResponse convert(StaticSetpointStatusResponse rsp);
+	static opendnp3::StaticAnalogOutputStatusResponse convert(StaticAnalogOutputStatusResponse rsp);
 
 	static opendnp3::EventBinaryResponse convert(EventBinaryResponse rsp);
 	static opendnp3::EventAnalogResponse convert(EventAnalogResponse rsp);

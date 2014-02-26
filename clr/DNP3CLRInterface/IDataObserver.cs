@@ -64,14 +64,14 @@ namespace DNP3.Interface
         /// </summary>
         /// <param name="update">measurement to update</param>
         /// <param name="index">index of measurement</param>
-		void Update(ControlStatus update, System.UInt32 index);
+		void Update(BinaryOutputStatus update, System.UInt32 index);
 
         /// <summary>
         /// Update an AnalogOutputStatus
         /// </summary>
         /// <param name="update">measurement to update</param>
         /// <param name="index">index of measurement</param>
-		void Update(SetpointStatus update, System.UInt32 index);
+		void Update(AnalogOutputStatus update, System.UInt32 index);
 
         /// <summary>
         /// End a transaction

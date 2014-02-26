@@ -40,7 +40,7 @@ void MeasurementHandler::_OnIndexPrefix(GroupVariation gv, const IterableBuffer<
 	pSOEHandler->Load(meas);
 }
 
-void MeasurementHandler::_OnRange(GroupVariation gv, const IterableBuffer<IndexedValue<ControlStatus>>& meas)
+void MeasurementHandler::_OnRange(GroupVariation gv, const IterableBuffer<IndexedValue<BinaryOutputStatus>>& meas)
 {
 	pSOEHandler->Load(meas);
 }
@@ -65,7 +65,7 @@ void MeasurementHandler::_OnIndexPrefix(GroupVariation gv, const IterableBuffer<
 	pSOEHandler->Load(meas);
 }
 
-void MeasurementHandler::_OnRange(GroupVariation gv, const IterableBuffer<IndexedValue<SetpointStatus>>& meas) 
+void MeasurementHandler::_OnRange(GroupVariation gv, const IterableBuffer<IndexedValue<AnalogOutputStatus>>& meas) 
 {
 	pSOEHandler->Load(meas);
 }

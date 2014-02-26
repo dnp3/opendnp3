@@ -33,12 +33,12 @@ void MasterDataObserverAdapter::Update(const opendnp3::FrozenCounter& arPoint, u
 	// TODO
 }
 
-void MasterDataObserverAdapter::Update(const opendnp3::ControlStatus& arPoint, uint16_t aIndex)
+void MasterDataObserverAdapter::Update(const opendnp3::BinaryOutputStatus& arPoint, uint16_t aIndex)
 {
 	proxy->Update(Conversions::convertMeas(arPoint), aIndex);
 }
 
-void MasterDataObserverAdapter::Update(const opendnp3::SetpointStatus& arPoint, uint16_t aIndex)
+void MasterDataObserverAdapter::Update(const opendnp3::AnalogOutputStatus& arPoint, uint16_t aIndex)
 {
 	proxy->Update(Conversions::convertMeas(arPoint), aIndex);
 }

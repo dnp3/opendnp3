@@ -127,7 +127,7 @@ public class OutstationConfig {
     /**
      * The default group/variation to use for static AnalogOutput status responses (default 40:1)
      */
-    public StaticSetpointStatusResponse staticSetpointStatus =  StaticSetpointStatusResponse.Group40Var1;
+    public StaticAnalogOutputStatusResponse staticAnalogOutputStatus =  StaticAnalogOutputStatusResponse.Group40Var1;
 
     /**
      * The default group/variation to use for binary event responses (default 2:1)

@@ -41,8 +41,8 @@ typedef ValueMetadataPair<DualValue<Binary>, BinaryMetadata> BinaryCollection;
 typedef ValueMetadataPair<DualValue<Analog>, AnalogMetadata> AnalogCollection;
 typedef ValueMetadataPair<DualValue<Counter>, CounterMetadata> CounterCollection;
 typedef ValueMetadataPair<DualValue<FrozenCounter>, FrozenCounterMetadata> FrozenCounterCollection;
-typedef openpal::Indexable<DualValue<ControlStatus>, uint16_t> ControlStatusCollection;
-typedef openpal::Indexable<DualValue<SetpointStatus>, uint16_t> SetpointStatusCollection;
+typedef openpal::Indexable<DualValue<BinaryOutputStatus>, uint16_t> BinaryOutputStatusCollection;
+typedef openpal::Indexable<DualValue<AnalogOutputStatus>, uint16_t> AnalogOutputStatusCollection;
 
 // Doesn't contain the real buffers, just a facade that allows use to easily switch 
 // between static and dynamic allocation
@@ -53,8 +53,8 @@ struct StaticDataFacade
 			AnalogCollection aAnalogs,
 			CounterCollection aCounters,
 			FrozenCounterCollection aFrozenCounters,
-			ControlStatusCollection aControlStatii,
-			SetpointStatusCollection aSetpointStatii
+			BinaryOutputStatusCollection aControlStatii,
+			AnalogOutputStatusCollection aSetpointStatii
 			):
 		binaries(aBinaries),
 		analogs(aAnalogs),
@@ -68,8 +68,8 @@ struct StaticDataFacade
 	AnalogCollection analogs;
 	CounterCollection counters;
 	FrozenCounterCollection frozenCounters;
-	ControlStatusCollection controlStatii;
-	SetpointStatusCollection setpointStatii;	
+	BinaryOutputStatusCollection controlStatii;
+	AnalogOutputStatusCollection setpointStatii;	
 };
 
 }

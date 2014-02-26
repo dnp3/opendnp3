@@ -47,8 +47,8 @@ public:
 	void Update(const Analog& arPoint, uint16_t) final;
 	void Update(const Counter& arPoint, uint16_t) final;
 	void Update(const FrozenCounter& arPoint, uint16_t) final;
-	void Update(const ControlStatus& arPoint, uint16_t) final;
-	void Update(const SetpointStatus& arPoint, uint16_t) final;
+	void Update(const BinaryOutputStatus& arPoint, uint16_t) final;
+	void Update(const AnalogOutputStatus& arPoint, uint16_t) final;
 
 protected:
 

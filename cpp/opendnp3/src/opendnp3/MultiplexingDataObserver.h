@@ -45,8 +45,8 @@ public:
 	void Update(const Binary& arPoint, size_t aIndex);
 	void Update(const Analog& arPoint, size_t aIndex);
 	void Update(const Counter& arPoint, size_t aIndex);
-	void Update(const ControlStatus& arPoint, size_t aIndex);
-	void Update(const SetpointStatus& arPoint, size_t aIndex);
+	void Update(const BinaryOutputStatus& arPoint, size_t aIndex);
+	void Update(const AnalogOutputStatus& arPoint, size_t aIndex);
 
 private:
 

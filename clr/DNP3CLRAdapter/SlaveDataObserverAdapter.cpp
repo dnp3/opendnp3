@@ -31,12 +31,12 @@ void SlaveDataObserverAdapter::Update(Counter ^ meas, System::UInt32 index)
 	proxy->Update(Conversions::convertMeas(meas), index);
 }
 
-void SlaveDataObserverAdapter::Update(ControlStatus ^ meas, System::UInt32 index)
+void SlaveDataObserverAdapter::Update(BinaryOutputStatus ^ meas, System::UInt32 index)
 {
 	proxy->Update(Conversions::convertMeas(meas), index);
 }
 
-void SlaveDataObserverAdapter::Update(SetpointStatus ^ meas, System::UInt32 index)
+void SlaveDataObserverAdapter::Update(AnalogOutputStatus ^ meas, System::UInt32 index)
 {
 	proxy->Update(Conversions::convertMeas(meas), index);
 }

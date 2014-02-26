@@ -69,15 +69,15 @@ struct ControlRelayOutputBlockFactory: private PureStatic
 	}
 };
 
-struct ControlStatusFactory: private PureStatic
+struct BinaryOutputStatusFactory: private PureStatic
 {
-	inline static ControlStatus From(uint8_t flags) { return ControlStatus(flags); }
+	inline static BinaryOutputStatus From(uint8_t flags) { return BinaryOutputStatus(flags); }
 };
 
 
-struct SetpointStatusFactory: private PureStatic
+struct AnalogOutputStatusFactory: private PureStatic
 {
-	inline static SetpointStatus From(uint8_t flags, double value) { return SetpointStatus(value, flags); }
+	inline static AnalogOutputStatus From(uint8_t flags, double value) { return AnalogOutputStatus(value, flags); }
 };
 
 template <class Target, class ValueType>

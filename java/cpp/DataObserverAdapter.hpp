@@ -35,8 +35,8 @@ public:
 	virtual void Load(const opendnp3::IterableBuffer<opendnp3::IndexedValue<opendnp3::Analog>>& meas) {}
 	virtual void Load(const opendnp3::IterableBuffer<opendnp3::IndexedValue<opendnp3::Counter>>& meas) {}
 	virtual void Load(const opendnp3::IterableBuffer<opendnp3::IndexedValue<opendnp3::FrozenCounter>>& meas) {}
-	virtual void Load(const opendnp3::IterableBuffer<opendnp3::IndexedValue<opendnp3::ControlStatus>>& meas) {}
-	virtual void Load(const opendnp3::IterableBuffer<opendnp3::IndexedValue<opendnp3::SetpointStatus>>& meas) {}
+	virtual void Load(const opendnp3::IterableBuffer<opendnp3::IndexedValue<opendnp3::BinaryOutputStatus>>& meas) {}
+	virtual void Load(const opendnp3::IterableBuffer<opendnp3::IndexedValue<opendnp3::AnalogOutputStatus>>& meas) {}
 	virtual void Load(const opendnp3::IterableBuffer<opendnp3::IndexedValue<opendnp3::OctetString>>& meas) {}
 	
 
@@ -46,8 +46,8 @@ private:
 	void _Update(const opendnp3::Binary& arMeas, size_t aIndex);
 	void _Update(const opendnp3::Analog& arMeas, size_t aIndex);
 	void _Update(const opendnp3::Counter& arMeas, size_t aIndex);
-	void _Update(const opendnp3::SetpointStatus& arMeas, size_t aIndex);
-	void _Update(const opendnp3::ControlStatus& arMeas, size_t aIndex);
+	void _Update(const opendnp3::AnalogOutputStatus& arMeas, size_t aIndex);
+	void _Update(const opendnp3::BinaryOutputStatus& arMeas, size_t aIndex);
 	void _End();
 	
 	JNIEnv* GetEnv();

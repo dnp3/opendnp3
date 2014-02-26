@@ -65,14 +65,14 @@ void SimpleDataObserver::Update(const FrozenCounter& arPoint, uint16_t aIndex)
         mOutputFunc(oss.str());
 }
 
-void SimpleDataObserver::Update(const ControlStatus& arPoint, uint16_t aIndex)
+void SimpleDataObserver::Update(const BinaryOutputStatus& arPoint, uint16_t aIndex)
 {
 	std::ostringstream oss;
 	oss << ToString(arPoint) << " : " << aIndex;
 	mOutputFunc(oss.str());
 }
 
-void SimpleDataObserver::Update(const SetpointStatus& arPoint, uint16_t aIndex)
+void SimpleDataObserver::Update(const AnalogOutputStatus& arPoint, uint16_t aIndex)
 {
 	std::ostringstream oss;
 	oss << ToString(arPoint) << " : " << aIndex;

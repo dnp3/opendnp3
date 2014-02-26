@@ -49,12 +49,12 @@ struct DatabaseTemplate
 		return DatabaseTemplate(0, 0, 0, count);
 	}
 
-	static DatabaseTemplate ControlStatusOnly(uint32_t count)
+	static DatabaseTemplate BinaryOutputStatusOnly(uint32_t count)
 	{
 		return DatabaseTemplate(0, 0, 0, 0, count);
 	}
 
-	static DatabaseTemplate SetpointStatusOnly(uint32_t count)
+	static DatabaseTemplate AnalogOutputStatusOnly(uint32_t count)
 	{
 		return DatabaseTemplate(0, 0, 0, 0, 0, count);
 	}
@@ -63,22 +63,22 @@ struct DatabaseTemplate
 	              uint32_t aNumAnalog = 0,
 	              uint32_t aNumCounter = 0,
 		      uint32_t aNumFrozenCounter = 0,
-	              uint32_t aNumControlStatus = 0,
-	              uint32_t aNumSetpointStatus = 0) :
+	              uint32_t aNumBinaryOutputStatus = 0,
+	              uint32_t aNumAnalogOutputStatus = 0) :
 		numBinary(aNumBinary),			
 		numAnalog(aNumAnalog),
 		numCounter(aNumCounter),
 		numFrozenCounter(aNumFrozenCounter),
-		numControlStatus(aNumControlStatus),
-		numSetpointStatus(aNumSetpointStatus)
+		numBinaryOutputStatus(aNumBinaryOutputStatus),
+		numAnalogOutputStatus(aNumAnalogOutputStatus)
 	{}
 
 	uint32_t numBinary;
 	uint32_t numAnalog;
 	uint32_t numCounter;
 	uint32_t numFrozenCounter;
-	uint32_t numControlStatus;
-	uint32_t numSetpointStatus;
+	uint32_t numBinaryOutputStatus;
+	uint32_t numAnalogOutputStatus;
 };
 
 }

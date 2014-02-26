@@ -45,8 +45,8 @@ public:
 	void Load(const IterableBuffer<IndexedValue<Analog>>& meas) final {}
 	void Load(const IterableBuffer<IndexedValue<Counter>>& meas) final {}
 	void Load(const IterableBuffer<IndexedValue<FrozenCounter>>& meas) final {}
-	void Load(const IterableBuffer<IndexedValue<ControlStatus>>& meas) final {}
-	void Load(const IterableBuffer<IndexedValue<SetpointStatus>>& meas)  final {}
+	void Load(const IterableBuffer<IndexedValue<BinaryOutputStatus>>& meas) final {}
+	void Load(const IterableBuffer<IndexedValue<AnalogOutputStatus>>& meas)  final {}
 	void Load(const IterableBuffer<IndexedValue<OctetString>>& meas) final {}
 
 	void Clear()
@@ -54,16 +54,16 @@ public:
 		mBinaryMap.clear();
 		mAnalogMap.clear();
 		mCounterMap.clear();
-		mControlStatusMap.clear();
-		mSetpointStatusMap.clear();
+		mBinaryOutputStatusMap.clear();
+		mAnalogOutputStatusMap.clear();
 		mOctetStringMap.clear();
 	}
 
 	Binary GetBinary(uint32_t aIndex) { return GetAny<Binary>(aIndex, mBinaryMap); }
 	Analog GetAnalog(uint32_t aIndex) { return GetAny<Analog>(aIndex, mAnalogMap); }
 	Counter GetCounter(uint32_t aIndex) { return GetAny<Counter>(aIndex, mCounterMap); }
-	ControlStatus GetControlStatus(uint32_t aIndex) { return GetAny<ControlStatus>(aIndex, mControlStatusMap); }
-	SetpointStatus GetSetpointStatus(uint32_t aIndex) { return GetAny<SetpointStatus>(aIndex, mSetpointStatusMap); }
+	BinaryOutputStatus GetBinaryOutputStatus(uint32_t aIndex) { return GetAny<BinaryOutputStatus>(aIndex, mBinaryOutputStatusMap); }
+	AnalogOutputStatus GetAnalogOutputStatus(uint32_t aIndex) { return GetAny<AnalogOutputStatus>(aIndex, mAnalogOutputStatusMap); }
 	OctetString GetOctetString(uint32_t aIndex) { return GetAny<OctetString>(aIndex, mOctetStringMap); }
 
 protected:
@@ -90,8 +90,8 @@ private:
 	PointMap<Binary>::Type mBinaryMap;
 	PointMap<Analog>::Type mAnalogMap;
 	PointMap<Counter>::Type mCounterMap;
-	PointMap<ControlStatus>::Type mControlStatusMap;
-	PointMap<SetpointStatus>::Type mSetpointStatusMap;
+	PointMap<BinaryOutputStatus>::Type mBinaryOutputStatusMap;
+	PointMap<AnalogOutputStatus>::Type mAnalogOutputStatusMap;
 	PointMap<OctetString>::Type mOctetStringMap;
 
 };

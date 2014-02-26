@@ -996,8 +996,8 @@ void TestEventRead(const std::string& arRequest, const std::string& arResponse)
 		t.db.Update(Binary(false, BQ_ONLINE), 0);
 		t.db.Update(Counter(0, CQ_ONLINE), 0);
 		t.db.Update(Analog(0.0, AQ_ONLINE), 0);
-		t.db.Update(ControlStatus(false, TQ_ONLINE), 0);
-		t.db.Update(SetpointStatus(0.0, PQ_ONLINE), 0);
+		t.db.Update(BinaryOutputStatus(false, TQ_ONLINE), 0);
+		t.db.Update(AnalogOutputStatus(0.0, PQ_ONLINE), 0);
 	}
 
 	t.SendToSlave(arRequest);
@@ -1164,7 +1164,7 @@ BOOST_AUTO_TEST_CASE(ReadGrp30Var6)
 }
 
 template <class T>
-void TestStaticControlStatus(T aVal, const std::string& aRsp)
+void TestStaticBinaryOutputStatus(T aVal, const std::string& aRsp)
 {
 	SlaveConfig cfg; cfg.mDisableUnsol = true;
 	SlaveTestObject t(cfg, DatabaseTemplate(0, 0, 0, 0, 1, 0));
@@ -1172,7 +1172,7 @@ void TestStaticControlStatus(T aVal, const std::string& aRsp)
 
 	{
 		Transaction tr(&t.db);
-		t.db.Update(ControlStatus(aVal, TQ_ONLINE), 0);
+		t.db.Update(BinaryOutputStatus(aVal, TQ_ONLINE), 0);
 	}
 
 	t.SendToSlave("C0 01 3C 01 06"); // Read class 0
@@ -1181,34 +1181,34 @@ void TestStaticControlStatus(T aVal, const std::string& aRsp)
 
 BOOST_AUTO_TEST_CASE(ReadGrp10Var2)
 {
-	TestStaticControlStatus<bool>(true, "C0 81 80 00 0A 02 00 00 00 81");
+	TestStaticBinaryOutputStatus<bool>(true, "C0 81 80 00 0A 02 00 00 00 81");
 }
 
 template <class T>
-void TestStaticSetpointStatus(StaticSetpointStatusResponse aRsp, T aVal, const string& arRsp)
+void TestStaticAnalogOutputStatus(StaticAnalogOutputStatusResponse aRsp, T aVal, const string& arRsp)
 {
-	SlaveConfig cfg; cfg.mDisableUnsol = true; cfg.mStaticSetpointStatus = aRsp;
-	TestStaticType<SetpointStatus>(cfg, DatabaseTemplate::SetpointStatusOnly(1), aVal, arRsp);
+	SlaveConfig cfg; cfg.mDisableUnsol = true; cfg.mStaticAnalogOutputStatus = aRsp;
+	TestStaticType<AnalogOutputStatus>(cfg, DatabaseTemplate::AnalogOutputStatusOnly(1), aVal, arRsp);
 }
 
 BOOST_AUTO_TEST_CASE(ReadGrp40Var1)
 {
-	TestStaticSetpointStatus(StaticSetpointStatusResponse::Group40Var1, 100, "C0 81 80 00 28 01 00 00 00 01 64 00 00 00");
+	TestStaticAnalogOutputStatus(StaticAnalogOutputStatusResponse::Group40Var1, 100, "C0 81 80 00 28 01 00 00 00 01 64 00 00 00");
 }
 
 BOOST_AUTO_TEST_CASE(ReadGrp40Var2)
 {
-	TestStaticSetpointStatus(StaticSetpointStatusResponse::Group40Var2, 100, "C0 81 80 00 28 02 00 00 00 01 64 00");
+	TestStaticAnalogOutputStatus(StaticAnalogOutputStatusResponse::Group40Var2, 100, "C0 81 80 00 28 02 00 00 00 01 64 00");
 }
 
 BOOST_AUTO_TEST_CASE(ReadGrp40Var3)
 {
-	TestStaticSetpointStatus(StaticSetpointStatusResponse::Group40Var3, 95.6, "C0 81 80 00 28 03 00 00 00 01 33 33 BF 42");
+	TestStaticAnalogOutputStatus(StaticAnalogOutputStatusResponse::Group40Var3, 95.6, "C0 81 80 00 28 03 00 00 00 01 33 33 BF 42");
 }
 
 BOOST_AUTO_TEST_CASE(ReadGrp40Var4)
 {
-	TestStaticSetpointStatus(StaticSetpointStatusResponse::Group40Var4, -20.0, "C0 81 80 00 28 04 00 00 00 01 00 00 00 00 00 00 34 C0");
+	TestStaticAnalogOutputStatus(StaticAnalogOutputStatusResponse::Group40Var4, -20.0, "C0 81 80 00 28 04 00 00 00 01 00 00 00 00 00 00 34 C0");
 }
 
 BOOST_AUTO_TEST_SUITE_END()

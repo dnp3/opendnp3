@@ -190,7 +190,7 @@ public enum ControlQuality {
 /// <summary>
 /// Represents the state of a digital output
 /// </summary>
-public class ControlStatus {
+public class BinaryOutputStatus {
 
     /// <summary>
     /// Constructor
@@ -198,7 +198,7 @@ public class ControlStatus {
     /// <param name="value">value of the measurement</param>
     /// <param name="quality">quality enumeration as a bitfield</param>
     /// <param name="time">timestamp</param>
-    public ControlStatus(bool value, byte quality, DateTime time)
+    public BinaryOutputStatus(bool value, byte quality, DateTime time)
 	{
         this.value = value;
         this.quality = quality;
@@ -227,7 +227,7 @@ public enum SetpointQuality {
 /// <summary>
 /// Represents the status of analog output on an outstation.
 /// </summary>    
-public class SetpointStatus {
+public class AnalogOutputStatus {
 
     /// <summary>
     /// Constructor
@@ -235,7 +235,7 @@ public class SetpointStatus {
     /// <param name="value">value of the measurement</param>
     /// <param name="quality">quality enumeration as a bitfield</param>
     /// <param name="time">timestamp</param>
-    public SetpointStatus(double value, byte quality, DateTime time)
+    public AnalogOutputStatus(double value, byte quality, DateTime time)
 	{
         this.value = value;
         this.quality = quality;

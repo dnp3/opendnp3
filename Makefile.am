@@ -70,7 +70,7 @@ cpp/opendnp3/src/opendnp3/gen/StackState.cpp \
 cpp/opendnp3/src/opendnp3/gen/StaticAnalogResponse.cpp \
 cpp/opendnp3/src/opendnp3/gen/StaticBinaryResponse.cpp \
 cpp/opendnp3/src/opendnp3/gen/StaticCounterResponse.cpp \
-cpp/opendnp3/src/opendnp3/gen/StaticSetpointStatusResponse.cpp \
+cpp/opendnp3/src/opendnp3/gen/StaticAnalogOutputStatusResponse.cpp \
 cpp/opendnp3/src/opendnp3/objects/Group10.cpp \
 cpp/opendnp3/src/opendnp3/objects/Group11.cpp \
 cpp/opendnp3/src/opendnp3/objects/Group12.cpp \
