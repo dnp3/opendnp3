@@ -28,6 +28,8 @@ namespace opendnp3
 {	
 
 APDUHandlerBase::APDUHandlerBase() : 	
+	ignoredHeaders(0),
+	errors(),
 	cto(0),
 	ctoHeader(-1),
 	currentHeader(0)	
@@ -35,10 +37,18 @@ APDUHandlerBase::APDUHandlerBase() :
 
 void APDUHandlerBase::Reset()
 {
+	ignoredHeaders = 0;
+	errors.Clear();
 	cto = 0;
 	ctoHeader = -1;
-	currentHeader = 0;	
-	errors.Clear();	
+	currentHeader = 0;		
+}
+
+IINField APDUHandlerBase::Errors() const
+{
+	IINField copy(errors);
+	if(ignoredHeaders > 0) copy.Set(IINBit::FUNC_NOT_SUPPORTED);
+	return copy;
 }
 
 void APDUHandlerBase::AllObjects(GroupVariation gv)
@@ -169,107 +179,107 @@ void APDUHandlerBase::OnIndexPrefix(GroupVariation gv, QualifierCode qualifier, 
 
 void APDUHandlerBase::_AllObjects(GroupVariation gv)
 {	
-	errors.Set(IINBit::FUNC_NOT_SUPPORTED);
+	++ignoredHeaders;
 }
 
 void APDUHandlerBase::_OnRangeRequest(GroupVariation gv, const StaticRange& range)
 {
-	errors.Set(IINBit::FUNC_NOT_SUPPORTED);
+	++ignoredHeaders;
 }
 
 void APDUHandlerBase::_OnCountRequest(GroupVariation gv, uint32_t count)
 {
-	errors.Set(IINBit::FUNC_NOT_SUPPORTED);
+	++ignoredHeaders;
 }
 
 void APDUHandlerBase::_OnIIN(const IterableBuffer<IndexedValue<bool>>& meas)
 {
-	errors.Set(IINBit::FUNC_NOT_SUPPORTED);
+	++ignoredHeaders;
 }
 
 void APDUHandlerBase::_OnCountOf(const IterableBuffer<Group50Var1>& objects)
 {
-	errors.Set(IINBit::FUNC_NOT_SUPPORTED);
+	++ignoredHeaders;
 }
 
 void APDUHandlerBase::_OnCountOf(const IterableBuffer<Group52Var2> &)
 {
-	errors.Set(IINBit::FUNC_NOT_SUPPORTED);
+	++ignoredHeaders;
 }
 
 void APDUHandlerBase::_OnRange(GroupVariation gv, const IterableBuffer<IndexedValue<Binary>>& meas)
 {
-	errors.Set(IINBit::FUNC_NOT_SUPPORTED);
+	++ignoredHeaders;
 }
 
 void APDUHandlerBase::_OnIndexPrefix(GroupVariation gv, const IterableBuffer<IndexedValue<Binary>>& meas)
 {
-	errors.Set(IINBit::FUNC_NOT_SUPPORTED);
+	++ignoredHeaders;
 }
 
 void APDUHandlerBase::_OnRange(GroupVariation gv, const IterableBuffer<IndexedValue<BinaryOutputStatus>>& meas)
 {
-	errors.Set(IINBit::FUNC_NOT_SUPPORTED);
+	++ignoredHeaders;
 }
 		
 void APDUHandlerBase::_OnRange(GroupVariation gv, const IterableBuffer<IndexedValue<Counter>>& meas)
 {
-	errors.Set(IINBit::FUNC_NOT_SUPPORTED);
+	++ignoredHeaders;
 }
 
 void APDUHandlerBase::_OnIndexPrefix(GroupVariation gv, const IterableBuffer<IndexedValue<Counter>>& meas)
 {
-	errors.Set(IINBit::FUNC_NOT_SUPPORTED);
+	++ignoredHeaders;
 }
 
 void APDUHandlerBase::_OnRange(GroupVariation gv, const IterableBuffer<IndexedValue<Analog>>& meas)
 {
-	errors.Set(IINBit::FUNC_NOT_SUPPORTED);
+	++ignoredHeaders;
 }
 
 void APDUHandlerBase::_OnIndexPrefix(GroupVariation gv, const IterableBuffer<IndexedValue<Analog>>& meas)
 {
-	errors.Set(IINBit::FUNC_NOT_SUPPORTED);
+	++ignoredHeaders;
 }
 
 void APDUHandlerBase::_OnRange(GroupVariation gv, const IterableBuffer<IndexedValue<AnalogOutputStatus>>& meas) 
 {
-	errors.Set(IINBit::FUNC_NOT_SUPPORTED);
+	++ignoredHeaders;
 }
 
 void APDUHandlerBase::_OnIndexPrefix(QualifierCode qualifier, const IterableBuffer<IndexedValue<ControlRelayOutputBlock>>& meas)
 {
-	errors.Set(IINBit::FUNC_NOT_SUPPORTED);
+	++ignoredHeaders;
 }
 
 void APDUHandlerBase::_OnIndexPrefix(QualifierCode qualifier, const IterableBuffer<IndexedValue<AnalogOutputInt16>>& meas)
 {
-	errors.Set(IINBit::FUNC_NOT_SUPPORTED);
+	++ignoredHeaders;
 }
 
 void APDUHandlerBase::_OnIndexPrefix(QualifierCode qualifier, const IterableBuffer<IndexedValue<AnalogOutputInt32>>& meas)
 {
-	errors.Set(IINBit::FUNC_NOT_SUPPORTED);
+	++ignoredHeaders;
 }
 
 void APDUHandlerBase::_OnIndexPrefix(QualifierCode qualifier, const IterableBuffer<IndexedValue<AnalogOutputFloat32>>& meas)
 {
-	errors.Set(IINBit::FUNC_NOT_SUPPORTED);
+	++ignoredHeaders;
 }
 
 void APDUHandlerBase::_OnIndexPrefix(QualifierCode qualifier, const IterableBuffer<IndexedValue<AnalogOutputDouble64>>& meas)
 {
-	errors.Set(IINBit::FUNC_NOT_SUPPORTED);
+	++ignoredHeaders;
 }
 
 void APDUHandlerBase::_OnRange(GroupVariation gv, const IterableBuffer<IndexedValue<OctetString>>& meas)
 {	
-	errors.Set(IINBit::FUNC_NOT_SUPPORTED);
+	++ignoredHeaders;
 }
 
 void APDUHandlerBase::_OnIndexPrefix(GroupVariation gv, const IterableBuffer<IndexedValue<OctetString>>& meas)
 {
-	errors.Set(IINBit::FUNC_NOT_SUPPORTED);
+	++ignoredHeaders;
 }
 
 bool APDUHandlerBase::GetCTO(int64_t& aCTO)

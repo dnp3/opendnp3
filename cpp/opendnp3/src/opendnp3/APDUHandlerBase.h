@@ -39,6 +39,10 @@ public:
 	 */
 	APDUHandlerBase();	
 
+	uint32_t NumIgnoredHeaders() const { return ignoredHeaders; }
+
+	IINField Errors() const;
+
 	virtual void AllObjects(GroupVariation gv) final;
 
 	virtual void OnRangeRequest(GroupVariation gv, const StaticRange& range) final;
@@ -73,6 +77,8 @@ public:
 
 	virtual void OnRange(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<OctetString>>& meas) final;
 	virtual void OnIndexPrefix(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<OctetString>>& meas) final;
+
+
 
 	protected:
 
@@ -120,6 +126,7 @@ public:
 
 	protected:
 
+	uint32_t ignoredHeaders;
 	IINField errors;
 
 	private:

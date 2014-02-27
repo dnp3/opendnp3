@@ -39,9 +39,7 @@ class ReadHandler : public APDUHandlerBase, private openpal::Loggable
 
 	virtual void _AllObjects(GroupVariation gv) final;
 
-	virtual void _OnRangeRequest(GroupVariation gv, const StaticRange& range) final;
-
-	IINField Errors() const { return errors; }
+	virtual void _OnRangeRequest(GroupVariation gv, const StaticRange& range) final;	
 
 	private:
 	
