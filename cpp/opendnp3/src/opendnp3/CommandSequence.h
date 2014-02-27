@@ -55,7 +55,7 @@ class CommandSequence : public ICommandSequence
 		command = IndexedValue<CommandType>(value, index); 
 	}
 
-	virtual void _OnIndexPrefix(const openpal::ReadOnlyBuffer& header, const IterableBuffer<IndexedValue<CommandType>>& meas)
+	virtual void _OnIndexPrefix(QualifierCode qualifier, const IterableBuffer<IndexedValue<CommandType>>& meas)
 	{		
 		if(this->IsFirstHeader())
 		{						

@@ -18,42 +18,38 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __WRITE_HANDLER_H_
-#define __WRITE_HANDLER_H_
+#ifndef __SELECT_HANDLER_H_
+#define __SELECT_HANDLER_H_
 
 #include "APDUHandlerBase.h"
-#include "IINField.h"
-#include "Settable.h"
-
-#include <opendnp3/ITimeWriteHandler.h>
 
 #include <openpal/Loggable.h>
+#include <openpal/StaticBuffer.h>
+#include <opendnp3/ICommandHandler.h>
+
+#include "StaticSizeConfiguration.h"
+
 
 namespace opendnp3
 {
 
-class WriteHandler : public APDUHandlerBase, private openpal::Loggable
+class SelectHandler : public APDUHandlerBase, private openpal::Loggable
 {
 	public:
 	
-	WriteHandler(openpal::Logger& aLogger, ITimeWriteHandler* pTimeWriteHandler_, IINField* pWriteIIN_);		
+	SelectHandler(ICommandHandler* pCommandHandler_);
 
-	virtual void _OnIIN(const IterableBuffer<IndexedValue<bool>>& meas) final;
-
-	virtual void _OnCountOf(const IterableBuffer<Group50Var1>& times) final;
-
+	virtual void _OnIndexPrefix(QualifierCode qualifier, const IterableBuffer<IndexedValue<ControlRelayOutputBlock>>& meas);
+	virtual void _OnIndexPrefix(QualifierCode qualifier, const IterableBuffer<IndexedValue<AnalogOutputInt16>>& meas);
+	virtual void _OnIndexPrefix(QualifierCode qualifier, const IterableBuffer<IndexedValue<AnalogOutputInt32>>& meas);
+	virtual void _OnIndexPrefix(QualifierCode qualifier, const IterableBuffer<IndexedValue<AnalogOutputFloat32>>& meas);
+	virtual void _OnIndexPrefix(QualifierCode qualifier, const IterableBuffer<IndexedValue<AnalogOutputDouble64>>& meas);
+	
 	private:
-
-	ITimeWriteHandler* pTimeWriteHandler;
-	IINField* pWriteIIN;
-
-	bool wroteTime;
-	bool wroteIIN;
+	
+	openpal::StaticBuffer<SizeConfiguration::MAX_APDU_BUFFER_SIZE> selectBuffer;
+	ICommandHandler* pCommandHandler;
 };
-
-}
-
 
 
 #endif
-

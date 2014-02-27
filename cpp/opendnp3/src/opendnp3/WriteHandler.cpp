@@ -30,7 +30,12 @@ using namespace openpal;
 namespace opendnp3
 {
 
-WriteHandler::WriteHandler(openpal::Logger& aLogger) : Loggable(aLogger)	
+WriteHandler::WriteHandler(openpal::Logger& aLogger, ITimeWriteHandler* pTimeWriteHandler_, IINField* pWriteIIN_) : 
+	Loggable(aLogger),
+	pTimeWriteHandler(pTimeWriteHandler_),
+	pWriteIIN(pWriteIIN_),
+	wroteTime(false),
+	wroteIIN(false)	
 {}
 	
 void WriteHandler::_OnIIN(const IterableBuffer<IndexedValue<bool>>& meas)
@@ -38,25 +43,34 @@ void WriteHandler::_OnIIN(const IterableBuffer<IndexedValue<bool>>& meas)
 	IndexedValue<bool> v;
 	if(meas.ReadOnlyValue(v)) 
 	{
-		if(v.index == static_cast<int>(IINBit::DEVICE_RESTART))
+		if (wroteIIN) errors.Set(IINBit::PARAM_ERROR);
+		else
 		{
-			if(v.value) errors.Set(IINBit::PARAM_ERROR);			
-			else clearMask.Set(IINBit::DEVICE_RESTART);			
-		}
-		else errors.Set(IINBit::PARAM_ERROR);				
+			wroteIIN = true;
+			if (v.index == static_cast<int>(IINBit::DEVICE_RESTART))
+			{
+				if (v.value) errors.Set(IINBit::PARAM_ERROR);
+				else pWriteIIN->Clear(IINBit::DEVICE_RESTART);
+			}
+			else errors.Set(IINBit::PARAM_ERROR);
+		}		
 	}
 	else errors.Set(IINBit::PARAM_ERROR);	
 }
 
 void WriteHandler::_OnCountOf(const IterableBuffer<Group50Var1>& times)
 {
-	Group50Var1 time;
-	if(times.ReadOnlyValue(time))
-	{
-		if(timeWrite.IsSet()) errors.Set(IINBit::PARAM_ERROR);		
-		else timeWrite.Set(time);
+	if (wroteTime) errors.Set(IINBit::PARAM_ERROR);
+	else
+	{		
+		Group50Var1 time;
+		if (times.ReadOnlyValue(time))
+		{
+			wroteTime = true;
+			pTimeWriteHandler->WriteAbsoluteTime(UTCTimestamp(time.time));
+		}
+		else errors.Set(IINBit::PARAM_ERROR);
 	}
-	else errors.Set(IINBit::PARAM_ERROR);	
 }
 
 }

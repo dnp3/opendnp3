@@ -190,7 +190,6 @@
     <ClInclude Include="src\opendnp3\objects\MeasurementFactory.h" />
     <ClInclude Include="src\opendnp3\ObjectWriter.h" />
     <ClInclude Include="src\opendnp3\OutstationEventBuffer.h" />
-    <ClInclude Include="src\opendnp3\OutstationSBOHandler.h" />
     <ClInclude Include="src\opendnp3\OutstationStackImpl.h" />
     <ClInclude Include="src\opendnp3\PhysicalLayerMonitor.h" />
     <ClInclude Include="src\opendnp3\PhysicalLayerMonitorStates.h" />
@@ -201,6 +200,7 @@
     <ClInclude Include="src\opendnp3\Range.h" />
     <ClInclude Include="src\opendnp3\RangeWriteIterator.h" />
     <ClInclude Include="src\opendnp3\ReadHandler.h" />
+    <ClInclude Include="src\opendnp3\SelectHandler.h" />
     <ClInclude Include="src\opendnp3\StaticResponseContext.h" />
     <ClInclude Include="src\opendnp3\StaticLoader.h" />
     <ClInclude Include="src\opendnp3\SecLinkLayerStates.h" />
@@ -334,7 +334,6 @@
     <ClCompile Include="src\opendnp3\ObjectWriter.cpp" />
     <ClCompile Include="src\opendnp3\OctetData.cpp" />
     <ClCompile Include="src\opendnp3\OutstationEventBuffer.cpp" />
-    <ClCompile Include="src\opendnp3\OutstationSBOHandler.cpp" />
     <ClCompile Include="src\opendnp3\OutstationStackImpl.cpp" />
     <ClCompile Include="src\opendnp3\PhysicalLayerMonitor.cpp" />
     <ClCompile Include="src\opendnp3\PhysicalLayerMonitorStates.cpp" />

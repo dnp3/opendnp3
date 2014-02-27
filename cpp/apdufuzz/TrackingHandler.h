@@ -34,7 +34,7 @@ class TrackingHandler : public IAPDUHandler
 
 	TrackingHandler() : count(0) {}
 
-	virtual void AllObjects(GroupVariation gv, const openpal::ReadOnlyBuffer& header) override
+	virtual void AllObjects(GroupVariation gv, QualifierCode qualifier) override
 	{
 		++count;
 	}
@@ -44,82 +44,82 @@ class TrackingHandler : public IAPDUHandler
 		times.foreach([this](const Group52Var2& v) { ++count; });
 	}
 
-	virtual void OnIIN(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const IterableBuffer<IndexedValue<bool>>& bits) override
+	virtual void OnIIN(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<bool>>& bits) override
 	{
 		bits.foreach([this](const IndexedValue<bool>& v) { ++count; });
 	}
 
-	virtual void OnRange(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const IterableBuffer<IndexedValue<Binary>>& meas) override
+	virtual void OnRange(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<Binary>>& meas) override
 	{
 		meas.foreach([this](const IndexedValue<Binary>& v) { ++count; });
 	}
 
-	virtual void OnIndexPrefix(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const IterableBuffer<IndexedValue<Binary>>& meas) override
+	virtual void OnIndexPrefix(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<Binary>>& meas) override
 	{
 		meas.foreach([this](const IndexedValue<Binary>& v){ ++count; });
 	}
 
-	virtual void OnRange(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const IterableBuffer<IndexedValue<BinaryOutputStatus>>& meas) override
+	virtual void OnRange(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<BinaryOutputStatus>>& meas) override
 	{
 		meas.foreach([this](const IndexedValue<BinaryOutputStatus>& v) { ++count; });
 	}
 
-	virtual void OnRange(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const IterableBuffer<IndexedValue<Counter>>& meas) override
+	virtual void OnRange(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<Counter>>& meas) override
 	{
 		meas.foreach([this](const IndexedValue<Counter>& v) { ++count; });
 	}
 
-	virtual void OnIndexPrefix(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const IterableBuffer<IndexedValue<Counter>>& meas) override
+	virtual void OnIndexPrefix(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<Counter>>& meas) override
 	{
 		meas.foreach([this](const IndexedValue<Counter>& v) { ++count; });
 	}
 
-	virtual void OnRange(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const IterableBuffer<IndexedValue<Analog>>& meas) override
+	virtual void OnRange(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<Analog>>& meas) override
 	{
 		meas.foreach([this](const IndexedValue<Analog>& v) { ++count; });
 	}
 
-	virtual void OnIndexPrefix(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const IterableBuffer<IndexedValue<Analog>>& meas) override
+	virtual void OnIndexPrefix(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<Analog>>& meas) override
 	{
 		meas.foreach([this](const IndexedValue<Analog>& v) { ++count; });
 	}
 
-	virtual void OnRange(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const IterableBuffer<IndexedValue<AnalogOutputStatus>>& meas) override
+	virtual void OnRange(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<AnalogOutputStatus>>& meas) override
 	{
 		meas.foreach([this](const IndexedValue<AnalogOutputStatus>& v) { ++count; });
 	}
 
-	virtual void OnIndexPrefix(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const IterableBuffer<IndexedValue<ControlRelayOutputBlock>>& meas) override
+	virtual void OnIndexPrefix(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<ControlRelayOutputBlock>>& meas) override
 	{
 		meas.foreach([this](const IndexedValue<ControlRelayOutputBlock>& v) { ++count; });
 	}
 
-	virtual void OnIndexPrefix(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const IterableBuffer<IndexedValue<AnalogOutputInt16>>& meas) override
+	virtual void OnIndexPrefix(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<AnalogOutputInt16>>& meas) override
 	{
 		meas.foreach([this](const IndexedValue<AnalogOutputInt16>& v) { ++count;} );
 	}
 
-	virtual void OnIndexPrefix(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const IterableBuffer<IndexedValue<AnalogOutputInt32>>& meas) override
+	virtual void OnIndexPrefix(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<AnalogOutputInt32>>& meas) override
 	{
 		meas.foreach([this](const IndexedValue<AnalogOutputInt32>& v) { ++count; });
 	}
 
-	virtual void OnIndexPrefix(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const IterableBuffer<IndexedValue<AnalogOutputFloat32>>& meas) override
+	virtual void OnIndexPrefix(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<AnalogOutputFloat32>>& meas) override
 	{
 		meas.foreach([this](const IndexedValue<AnalogOutputFloat32>& v) { ++count; });
 	}
 
-	virtual void OnIndexPrefix(GroupVariation gv, const openpal::ReadOnlyBuffer& header, const IterableBuffer<IndexedValue<AnalogOutputDouble64>>& meas) override
+	virtual void OnIndexPrefix(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<AnalogOutputDouble64>>& meas) override
 	{
 		meas.foreach([this](const IndexedValue<AnalogOutputDouble64>& v) {++count;} );
 	}
 
-	virtual void OnIndexPrefixOfOctets(GroupVariation, const openpal::ReadOnlyBuffer& header, const IterableBuffer<IndexedValue<openpal::ReadOnlyBuffer>>& meas) override
+	virtual void OnIndexPrefixOfOctets(GroupVariation, QualifierCode qualifier, const IterableBuffer<IndexedValue<openpal::ReadOnlyBuffer>>& meas) override
 	{
 		meas.foreach([this](const IndexedValue<openpal::ReadOnlyBuffer>& v) {++count; });
 	}
 
-	virtual void OnRangeOfOctets(GroupVariation, const openpal::ReadOnlyBuffer& header, const IterableBuffer<IndexedValue<openpal::ReadOnlyBuffer>>& meas) override
+	virtual void OnRangeOfOctets(GroupVariation, QualifierCode qualifier, const IterableBuffer<IndexedValue<openpal::ReadOnlyBuffer>>& meas) override
 	{
 		meas.foreach([this](const IndexedValue<openpal::ReadOnlyBuffer>& v) { ++count; });
 	}

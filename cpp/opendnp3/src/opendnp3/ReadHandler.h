@@ -31,9 +31,6 @@
 namespace opendnp3
 {
 
-/**
- * Dedicated class for processing response data in the master.
- */
 class ReadHandler : public APDUHandlerBase, private openpal::Loggable
 {
 	public:

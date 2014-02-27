@@ -158,16 +158,11 @@ BOOST_AUTO_TEST_CASE(Group1Var2CountOfZero)
 	TestSimple("01 02 07 00", APDUParser::Result::COUNT_OF_ZERO, 0);
 }
 
-BOOST_AUTO_TEST_CASE(Group1Var2HeaderWrappers)
+BOOST_AUTO_TEST_CASE(Group1Var2With2Headers)
 {
 	
 	TestComplex("01 02 07 01 81 01 02 07 02 81 81", APDUParser::Result::OK, 2, [](MockApduHeaderHandler& mock) {		
-		BOOST_REQUIRE_EQUAL(2, mock.headers.size());
-		auto hex1 = toHex(mock.headers[0]);
-		auto hex2 = toHex(mock.headers[1]);
-
-		BOOST_REQUIRE_EQUAL("01 02 07 01 81", hex1);
-		BOOST_REQUIRE_EQUAL("01 02 07 02 81 81", hex2);
+		BOOST_REQUIRE_EQUAL(2, mock.groupVariations.size());
 	});
 }
 
@@ -291,8 +286,7 @@ BOOST_AUTO_TEST_CASE(Group12Var1WithIndexSizes)
 		ControlRelayOutputBlock crob(ControlCode::LATCH_ON, 1, 100, 200);
 		BOOST_REQUIRE(IndexedValue<ControlRelayOutputBlock>(crob, 9) == mock.crobRequests[0]);
 
-		BOOST_REQUIRE_EQUAL(1, mock.headers.size());		
-		BOOST_REQUIRE_EQUAL(hex, toHex(mock.headers[0]));
+		BOOST_REQUIRE_EQUAL(1, mock.groupVariations.size());
 	};
 
 	

@@ -35,7 +35,6 @@
 
 #include "StaticResponseContext.h"
 #include "StaticResponseTypes.h"
-#include "OutstationSBOHandler.h"
 #include "CachedRequest.h"
 #include "StaticSizeConfiguration.h"
 
@@ -135,8 +134,7 @@ private:
 	IINField mIIN;							// IIN bits that persist between requests (i.e. NeedsTime/Restart/Etc)		
 	CachedRequest mCachedRequest;			// Request cache for when outstation needs to defer a request
 		
-	StaticResponseContext mStaticRspContext;	// Used to track and construct static response fragments
-	OutstationSBOHandler mSBOHandler;			// Tracks SBO requests, forwarding valid sequences to the application	
+	StaticResponseContext mStaticRspContext;	// Used to track and construct static response fragments	
 
 
 	// Flags that tell us that some action has been Deferred

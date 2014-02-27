@@ -53,8 +53,7 @@ Slave::Slave(openpal::Logger aLogger, IAppLayer* apAppLayer, IExecutor* apExecut
 	mConfig(arCfg),	
 	mpUnsolTimer(nullptr),	
 	mCachedRequest(arCfg.mMaxControls),	
-	mStaticRspContext(apDatabase, StaticResponseTypes(arCfg)),
-	mSBOHandler(arCfg.mSelectTimeout, apCmdHandler, apExecutor),	
+	mStaticRspContext(apDatabase, StaticResponseTypes(arCfg)),	
 	mDeferredUpdateCount(0),	
 	mDeferredUnsol(false),	
 	mStartupNullUnsol(false),
@@ -187,13 +186,13 @@ void Slave::RespondToRequest(const APDURecord& record, SequenceInfo sequence)
 IINField Slave::ConfigureResponse(const APDURecord& request, SequenceInfo sequence, APDUResponse& response)
 {	
 	switch(request.function)
-	{		
+	{	
+		case(FunctionCode::READ) :
+			return HandleRead(request, sequence, response);
 		case(FunctionCode::WRITE):			
-			return HandleWrite(request, sequence);		
-		case(FunctionCode::READ):			
-			return HandleRead(request, sequence, response);		
+			return HandleWrite(request, sequence);				
 		case(FunctionCode::DELAY_MEASURE):		
-			return HandleDelayMeasure(request, sequence, response);		
+			return HandleDelayMeasure(request, sequence, response);	
 		default:	
 			ERROR_BLOCK(LogLevel::Warning, "Function not supported: " << FunctionCodeToString(request.function), SERR_FUNC_NOT_SUPPORTED);
 			return IINField(IINBit::FUNC_NOT_SUPPORTED);			
@@ -202,14 +201,9 @@ IINField Slave::ConfigureResponse(const APDURecord& request, SequenceInfo sequen
 
 IINField Slave::HandleWrite(const APDURecord& request, SequenceInfo sequence)
 {
-	WriteHandler handler(mLogger);
+	WriteHandler handler(mLogger, mpTimeWriteHandler, &mIIN);
 	auto result = APDUParser::ParseTwoPass(request.objects, &handler);
-	if(result == APDUParser::Result::OK) return handler.Process(mIIN, 
-		[this](const Group50Var1& absTime) { 
-			mpExecutor->Post([this, absTime]() { mpTimeWriteHandler->WriteAbsoluteTime(absTime.time); });			
-		}
-	);
-	else return IINFromParseResult(result);
+	return IINFromParseResult(result);
 }
 
 IINField Slave::HandleRead(const APDURecord& request, SequenceInfo sequence, APDUResponse& response)

@@ -76,7 +76,7 @@ APDUParser::Result APDUParser::ParseHeader(ReadOnlyBuffer& buffer, Context& cont
 	if(buffer.Size() < 3) return Result::NOT_ENOUGH_DATA_FOR_HEADER; 
 	else {	
 		// record an immutable start position with 3 bytes for group, variation, qualifier
-		const HeaderRecord record(buffer, 3); 
+		//const HeaderRecord record(buffer, 3); 
 		uint8_t group = UInt8::ReadBuffer(buffer);		
 		uint8_t variation = UInt8::ReadBuffer(buffer);		
 		auto enumeration = GroupVariationRecord::GetEnum(group, variation);
@@ -87,27 +87,27 @@ APDUParser::Result APDUParser::ParseHeader(ReadOnlyBuffer& buffer, Context& cont
 		{
 			case(QualifierCode::ALL_OBJECTS):
 			{
-				if(pHandler) pHandler->AllObjects(gvRecord.enumeration, record.Complete(0));				
+				if(pHandler) pHandler->AllObjects(gvRecord.enumeration);				
 				return Result::OK;
 			}
 
 			case(QualifierCode::UINT8_CNT):
-				return ParseCountHeader<UInt8>(buffer, context, record, gvRecord, pHandler);
+				return ParseCountHeader<UInt8>(buffer, context, qualifier, gvRecord, pHandler);
 
 			case(QualifierCode::UINT16_CNT):
-				return ParseCountHeader<UInt16>(buffer, context, record, gvRecord, pHandler);
+				return ParseCountHeader<UInt16>(buffer, context, qualifier, gvRecord, pHandler);
 			
 			case(QualifierCode::UINT8_START_STOP):
-				return ParseRangeHeader<UInt8, uint16_t>(buffer, context, record, gvRecord, pHandler);
+				return ParseRangeHeader<UInt8, uint16_t>(buffer, context, qualifier, gvRecord, pHandler);
 
 			case(QualifierCode::UINT16_START_STOP):
-				return ParseRangeHeader<UInt16, uint32_t>(buffer, context, record, gvRecord, pHandler);
+				return ParseRangeHeader<UInt16, uint32_t>(buffer, context, qualifier, gvRecord, pHandler);
 					
 			case(QualifierCode::UINT8_CNT_UINT8_INDEX):
-				return ParseIndexPrefixHeader<UInt8>(buffer, context, record, gvRecord, pHandler);
+				return ParseIndexPrefixHeader<UInt8>(buffer, context, qualifier, gvRecord, pHandler);
 			
 			case(QualifierCode::UINT16_CNT_UINT16_INDEX):
-				return ParseIndexPrefixHeader<UInt16>(buffer, context, record, gvRecord, pHandler);
+				return ParseIndexPrefixHeader<UInt16>(buffer, context, qualifier, gvRecord, pHandler);
 				
 			default:
 				return Result::UNKNOWN_QUALIFIER;
@@ -117,9 +117,9 @@ APDUParser::Result APDUParser::ParseHeader(ReadOnlyBuffer& buffer, Context& cont
 
 #define MACRO_PARSE_COUNT_FIXED_SIZE_WITH_INDEX(descriptor) \
 case(GroupVariation::descriptor): \
-	return ParseCountFixedSizeWithIndex(gvRecord.enumeration, record, buffer, count, pParser, descriptor##Serializer::Inst(), pHandler);
+	return ParseCountFixedSizeWithIndex(gvRecord.enumeration, qualifier, buffer, count, pParser, descriptor##Serializer::Inst(), pHandler);
 
-APDUParser::Result APDUParser::ParseObjectsWithIndexPrefix(const HeaderRecord& record, openpal::ReadOnlyBuffer& buffer, const GroupVariationRecord& gvRecord, uint32_t count, IndexParser* pParser, IAPDUHandler* pHandler)
+APDUParser::Result APDUParser::ParseObjectsWithIndexPrefix(QualifierCode qualifier, openpal::ReadOnlyBuffer& buffer, const GroupVariationRecord& gvRecord, uint32_t count, IndexParser* pParser, IAPDUHandler* pHandler)
 {
 	switch(gvRecord.enumeration)
 	{
@@ -149,7 +149,7 @@ APDUParser::Result APDUParser::ParseObjectsWithIndexPrefix(const HeaderRecord& r
 		MACRO_PARSE_COUNT_FIXED_SIZE_WITH_INDEX(Group41Var4);
 
 		case(GroupVariation::Group111AnyVar):
-			return ParseIndexPrefixedOctetData(gvRecord, buffer, record, count, pParser, pHandler);
+			return ParseIndexPrefixedOctetData(gvRecord, buffer, qualifier, count, pParser, pHandler);
 
 		default:
 			return Result::ILLEGAL_OBJECT_QUALIFIER;
@@ -159,7 +159,7 @@ APDUParser::Result APDUParser::ParseObjectsWithIndexPrefix(const HeaderRecord& r
 APDUParser::Result APDUParser::ParseIndexPrefixedOctetData(
 		const GroupVariationRecord& gvRecord,
 		openpal::ReadOnlyBuffer& buffer, 
-		const HeaderRecord& record,
+		QualifierCode qualifier,
 		uint32_t count, 
 		IndexParser* pParser, 
 		IAPDUHandler* pHandler)
@@ -177,7 +177,7 @@ APDUParser::Result APDUParser::ParseIndexPrefixedOctetData(
 					return IndexedValue<OctetString>(octets, index);
 				}	
 			);
-			pHandler->OnIndexPrefix(gvRecord.enumeration, record.Complete(size), iterable);
+			pHandler->OnIndexPrefix(gvRecord.enumeration, qualifier, iterable);
 		}
 
 		buffer.Advance(size);
@@ -197,27 +197,27 @@ IndexedValue<BinaryOutputStatus> APDUParser::BoolToBinaryOutputStatus(const Inde
 
 #define MACRO_PARSE_OBJECTS_WITH_RANGE(descriptor) \
 	case(GroupVariation::descriptor): \
-	return ParseRangeFixedSize(gvRecord.enumeration, record, descriptor##Serializer::Inst(), buffer, range, pHandler);
+	return ParseRangeFixedSize(gvRecord.enumeration, qualifier, descriptor##Serializer::Inst(), buffer, range, pHandler);
 
-APDUParser::Result APDUParser::ParseObjectsWithRange(const APDUParser::HeaderRecord& record, openpal::ReadOnlyBuffer& buffer, const GroupVariationRecord& gvRecord, const Range& range, IAPDUHandler* pHandler)
+APDUParser::Result APDUParser::ParseObjectsWithRange(QualifierCode qualifier, openpal::ReadOnlyBuffer& buffer, const GroupVariationRecord& gvRecord, const Range& range, IAPDUHandler* pHandler)
 {
 	switch(gvRecord.enumeration)
 	{	
 		case(GroupVariation::Group1Var1):				
-			return ParseRangeAsBitField(buffer, record, range, [&](const ReadOnlyBuffer& header, const IterableBuffer<IndexedValue<bool>>& values) {
+			return ParseRangeAsBitField(buffer, qualifier, range, [&](QualifierCode qualifier, const IterableBuffer<IndexedValue<bool>>& values) {
 				if(pHandler) {
 					auto mapped = IterableTransforms<IndexedValue<bool>>::Map<IndexedValue<Binary>>(values, [](const IndexedValue<bool>& v) { return IndexedValue<Binary>(Binary(v.value), v.index); });
-					pHandler->OnRange(gvRecord.enumeration, header, mapped);
+					pHandler->OnRange(gvRecord.enumeration, qualifier, mapped);
 				}
 			});		
 		
 		MACRO_PARSE_OBJECTS_WITH_RANGE(Group1Var2);
 
 		case(GroupVariation::Group10Var1):				
-			return ParseRangeAsBitField(buffer, record, range, [&](const ReadOnlyBuffer& header, IterableBuffer<IndexedValue<bool>>& values) {
+			return ParseRangeAsBitField(buffer, qualifier, range, [&](QualifierCode qualifier, IterableBuffer<IndexedValue<bool>>& values) {
 				if(pHandler) {
 					auto mapped = IterableTransforms<IndexedValue<bool>>::Map<IndexedValue<BinaryOutputStatus>>(values, [](const IndexedValue<bool>& v) { return IndexedValue<BinaryOutputStatus>(BinaryOutputStatus(v.value), v.index); });
-					pHandler->OnRange(gvRecord.enumeration, header, mapped);
+					pHandler->OnRange(gvRecord.enumeration, qualifier, mapped);
 				}
 			});
 
@@ -247,14 +247,14 @@ APDUParser::Result APDUParser::ParseObjectsWithRange(const APDUParser::HeaderRec
 			return ParseCountOf<Group52Var2>(buffer, range.Count(), pHandler); 
 
 		case(GroupVariation::Group80Var1):		
-			return ParseRangeAsBitField(buffer, record, range, [&](const ReadOnlyBuffer& header, const IterableBuffer<IndexedValue<bool>>& values) { 
+			return ParseRangeAsBitField(buffer, qualifier, range, [&](QualifierCode qualifier, const IterableBuffer<IndexedValue<bool>>& values) {
 				if(pHandler) {
-					pHandler->OnIIN(gvRecord.enumeration, header, values); 
+					pHandler->OnIIN(gvRecord.enumeration, qualifier, values);
 				}
 			});
 
 		case(GroupVariation::Group110AnyVar):
-			return ParseRangeOfOctetData(gvRecord, buffer, record, range, pHandler);
+			return ParseRangeOfOctetData(gvRecord, buffer, qualifier, range, pHandler);
 		
 		default:
 			return Result::ILLEGAL_OBJECT_QUALIFIER;
@@ -264,7 +264,7 @@ APDUParser::Result APDUParser::ParseObjectsWithRange(const APDUParser::HeaderRec
 APDUParser::Result APDUParser::ParseRangeOfOctetData(
 		const GroupVariationRecord& gvRecord,
 		openpal::ReadOnlyBuffer& buffer, 
-		const HeaderRecord& record,
+		QualifierCode qualifier,
 		const Range& range, 
 		IAPDUHandler* pHandler)
 {
@@ -278,7 +278,7 @@ APDUParser::Result APDUParser::ParseRangeOfOctetData(
 				buffer.Advance(gvRecord.variation);
 				return value;
 			});
-			pHandler->OnRange(gvRecord.enumeration, record.Complete(size), collection);
+			pHandler->OnRange(gvRecord.enumeration, qualifier, collection);
 		}
 		buffer.Advance(size);
 		return Result::OK;
