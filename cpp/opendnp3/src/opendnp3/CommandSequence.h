@@ -55,7 +55,7 @@ class CommandSequence : public ICommandSequence
 		command = IndexedValue<CommandType>(value, index); 
 	}
 
-	virtual void _OnIndexPrefix(QualifierCode qualifier, const IterableBuffer<IndexedValue<CommandType>>& meas)
+	virtual void _OnIndexPrefix(QualifierCode qualifier, const IterableBuffer<IndexedValue<CommandType, uint16_t>>& meas)
 	{		
 		if(this->IsFirstHeader())
 		{						
@@ -91,7 +91,7 @@ class CommandSequence : public ICommandSequence
 
 	private:
 	CommandResponse response;
-	IndexedValue<CommandType> command;
+	IndexedValue<CommandType, uint16_t> command;
 };
 
 

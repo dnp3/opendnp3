@@ -30,52 +30,52 @@ namespace opendnp3
 MeasurementHandler::MeasurementHandler(openpal::Logger& aLogger, ISOEHandler* pSOEHandler_) : Loggable(aLogger), pSOEHandler(pSOEHandler_)
 {}
 
-void MeasurementHandler::_OnRange(GroupVariation gv, const IterableBuffer<IndexedValue<Binary>>& meas)
+void MeasurementHandler::_OnRange(GroupVariation gv, const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas)
 {
 	pSOEHandler->Load(meas);
 }
 
-void MeasurementHandler::_OnIndexPrefix(GroupVariation gv, const IterableBuffer<IndexedValue<Binary>>& meas)
+void MeasurementHandler::_OnIndexPrefix(GroupVariation gv, const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas)
 {
 	pSOEHandler->Load(meas);
 }
 
-void MeasurementHandler::_OnRange(GroupVariation gv, const IterableBuffer<IndexedValue<BinaryOutputStatus>>& meas)
+void MeasurementHandler::_OnRange(GroupVariation gv, const IterableBuffer<IndexedValue<BinaryOutputStatus, uint16_t>>& meas)
 {
 	pSOEHandler->Load(meas);
 }
 		
-void MeasurementHandler::_OnRange(GroupVariation gv, const IterableBuffer<IndexedValue<Counter>>& meas)
+void MeasurementHandler::_OnRange(GroupVariation gv, const IterableBuffer<IndexedValue<Counter, uint16_t>>& meas)
 {
 	pSOEHandler->Load(meas);
 }
 
-void MeasurementHandler::_OnIndexPrefix(GroupVariation gv, const IterableBuffer<IndexedValue<Counter>>& meas)
+void MeasurementHandler::_OnIndexPrefix(GroupVariation gv, const IterableBuffer<IndexedValue<Counter, uint16_t>>& meas)
 {
 	pSOEHandler->Load(meas);
 }
 
-void MeasurementHandler::_OnRange(GroupVariation gv, const IterableBuffer<IndexedValue<Analog>>& meas)
+void MeasurementHandler::_OnRange(GroupVariation gv, const IterableBuffer<IndexedValue<Analog, uint16_t>>& meas)
 {
 	pSOEHandler->Load(meas);
 }
 
-void MeasurementHandler::_OnIndexPrefix(GroupVariation gv, const IterableBuffer<IndexedValue<Analog>>& meas)
+void MeasurementHandler::_OnIndexPrefix(GroupVariation gv, const IterableBuffer<IndexedValue<Analog, uint16_t>>& meas)
 {
 	pSOEHandler->Load(meas);
 }
 
-void MeasurementHandler::_OnRange(GroupVariation gv, const IterableBuffer<IndexedValue<AnalogOutputStatus>>& meas) 
+void MeasurementHandler::_OnRange(GroupVariation gv, const IterableBuffer<IndexedValue<AnalogOutputStatus, uint16_t>>& meas)
 {
 	pSOEHandler->Load(meas);
 }
 
-void MeasurementHandler::_OnRange(GroupVariation gv, const IterableBuffer<IndexedValue<OctetString>>& meas)
+void MeasurementHandler::_OnRange(GroupVariation gv, const IterableBuffer<IndexedValue<OctetString, uint16_t>>& meas)
 {
 	pSOEHandler->Load(meas);
 }
 
-void MeasurementHandler::_OnIndexPrefix(GroupVariation gv, const IterableBuffer<IndexedValue<OctetString>>& meas)
+void MeasurementHandler::_OnIndexPrefix(GroupVariation gv, const IterableBuffer<IndexedValue<OctetString, uint16_t>>& meas)
 {
 	pSOEHandler->Load(meas);
 }

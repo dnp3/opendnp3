@@ -41,13 +41,13 @@ public:
 	MockSOEHandler()
 	{}
 			
-	void Load(const IterableBuffer<IndexedValue<Binary>>& meas) final {}
-	void Load(const IterableBuffer<IndexedValue<Analog>>& meas) final {}
-	void Load(const IterableBuffer<IndexedValue<Counter>>& meas) final {}
-	void Load(const IterableBuffer<IndexedValue<FrozenCounter>>& meas) final {}
-	void Load(const IterableBuffer<IndexedValue<BinaryOutputStatus>>& meas) final {}
-	void Load(const IterableBuffer<IndexedValue<AnalogOutputStatus>>& meas)  final {}
-	void Load(const IterableBuffer<IndexedValue<OctetString>>& meas) final {}
+	void Load(const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas) final {}
+	void Load(const IterableBuffer<IndexedValue<Analog, uint16_t>>& meas) final {}
+	void Load(const IterableBuffer<IndexedValue<Counter, uint16_t>>& meas) final {}
+	void Load(const IterableBuffer<IndexedValue<FrozenCounter, uint16_t>>& meas) final {}
+	void Load(const IterableBuffer<IndexedValue<BinaryOutputStatus, uint16_t>>& meas) final {}
+	void Load(const IterableBuffer<IndexedValue<AnalogOutputStatus, uint16_t>>& meas)  final {}
+	void Load(const IterableBuffer<IndexedValue<OctetString, uint16_t>>& meas) final {}
 
 	void Clear()
 	{

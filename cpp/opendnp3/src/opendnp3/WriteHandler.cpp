@@ -38,9 +38,9 @@ WriteHandler::WriteHandler(openpal::Logger& aLogger, ITimeWriteHandler* pTimeWri
 	wroteIIN(false)	
 {}
 	
-void WriteHandler::_OnIIN(const IterableBuffer<IndexedValue<bool>>& meas)
+void WriteHandler::_OnIIN(const IterableBuffer<IndexedValue<bool, uint16_t>>& meas)
 {	
-	IndexedValue<bool> v;
+	IndexedValue<bool, uint16_t> v;
 	if(meas.ReadOnlyValue(v)) 
 	{
 		if (wroteIIN) errors.Set(IINBit::PARAM_ERROR);

@@ -23,33 +23,38 @@
 
 #include "APDUHandlerBase.h"
 
-#include <openpal/Loggable.h>
 #include <openpal/StaticBuffer.h>
 #include <opendnp3/ICommandHandler.h>
 
+#include "APDUResponse.h"
 #include "StaticSizeConfiguration.h"
 
 
 namespace opendnp3
 {
 
-class SelectHandler : public APDUHandlerBase, private openpal::Loggable
-{
+	class SelectHandler : public APDUHandlerBase
+	{
 	public:
-	
-	SelectHandler(ICommandHandler* pCommandHandler_);
 
-	virtual void _OnIndexPrefix(QualifierCode qualifier, const IterableBuffer<IndexedValue<ControlRelayOutputBlock>>& meas);
-	virtual void _OnIndexPrefix(QualifierCode qualifier, const IterableBuffer<IndexedValue<AnalogOutputInt16>>& meas);
-	virtual void _OnIndexPrefix(QualifierCode qualifier, const IterableBuffer<IndexedValue<AnalogOutputInt32>>& meas);
-	virtual void _OnIndexPrefix(QualifierCode qualifier, const IterableBuffer<IndexedValue<AnalogOutputFloat32>>& meas);
-	virtual void _OnIndexPrefix(QualifierCode qualifier, const IterableBuffer<IndexedValue<AnalogOutputDouble64>>& meas);
-	
+		SelectHandler(ICommandHandler* pCommandHandler_, uint16_t maxCommands_, APDUResponse& response_);
+
+		virtual void _OnIndexPrefix(QualifierCode qualifier, const IterableBuffer<IndexedValue<ControlRelayOutputBlock, uint16_t>>& meas);
+		virtual void _OnIndexPrefix(QualifierCode qualifier, const IterableBuffer<IndexedValue<AnalogOutputInt16, uint16_t>>& meas);
+		virtual void _OnIndexPrefix(QualifierCode qualifier, const IterableBuffer<IndexedValue<AnalogOutputInt32, uint16_t>>& meas);
+		virtual void _OnIndexPrefix(QualifierCode qualifier, const IterableBuffer<IndexedValue<AnalogOutputFloat32, uint16_t>>& meas);
+		virtual void _OnIndexPrefix(QualifierCode qualifier, const IterableBuffer<IndexedValue<AnalogOutputDouble64, uint16_t>>& meas);
+
 	private:
-	
-	openpal::StaticBuffer<SizeConfiguration::MAX_APDU_BUFFER_SIZE> selectBuffer;
-	ICommandHandler* pCommandHandler;
-};
+
+		bool failure;
+		ICommandHandler* pCommandHandler;
+		uint32_t numCommands;
+		uint16_t maxCommands;
+		ObjectWriter writer;
+	};
+
+}
 
 
 #endif

@@ -43,13 +43,13 @@ class ISOEHandler : public ITransactable
 {
 public:
 	
-	virtual void Load(const IterableBuffer<IndexedValue<Binary>>& meas) {}
-	virtual void Load(const IterableBuffer<IndexedValue<Analog>>& meas) {}
-	virtual void Load(const IterableBuffer<IndexedValue<Counter>>& meas) {}
-	virtual void Load(const IterableBuffer<IndexedValue<FrozenCounter>>& meas) {}
-	virtual void Load(const IterableBuffer<IndexedValue<BinaryOutputStatus>>& meas) {}
-	virtual void Load(const IterableBuffer<IndexedValue<AnalogOutputStatus>>& meas) {}
-	virtual void Load(const IterableBuffer<IndexedValue<OctetString>>& meas) {}
+	virtual void Load(const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas) {}
+	virtual void Load(const IterableBuffer<IndexedValue<Analog, uint16_t>>& meas) {}
+	virtual void Load(const IterableBuffer<IndexedValue<Counter, uint16_t>>& meas) {}
+	virtual void Load(const IterableBuffer<IndexedValue<FrozenCounter, uint16_t>>& meas) {}
+	virtual void Load(const IterableBuffer<IndexedValue<BinaryOutputStatus, uint16_t>>& meas) {}
+	virtual void Load(const IterableBuffer<IndexedValue<AnalogOutputStatus, uint16_t>>& meas) {}
+	virtual void Load(const IterableBuffer<IndexedValue<OctetString, uint16_t>>& meas) {}
 
 	virtual ~ISOEHandler() {}	
 };
@@ -80,13 +80,13 @@ class PrintingSOEHandler : public ISOEHandler
 public:
 	static ISOEHandler* Inst() { return &msInstance; }
 
-	void Load(const IterableBuffer<IndexedValue<Binary>>& meas) final;
-	void Load(const IterableBuffer<IndexedValue<Analog>>& meas) final;
-	void Load(const IterableBuffer<IndexedValue<Counter>>& meas) final;
-	void Load(const IterableBuffer<IndexedValue<FrozenCounter>>& meas) final;
-	void Load(const IterableBuffer<IndexedValue<BinaryOutputStatus>>& meas) final;
-	void Load(const IterableBuffer<IndexedValue<AnalogOutputStatus>>& meas) final;
-	void Load(const IterableBuffer<IndexedValue<OctetString>>& meas) final;
+	void Load(const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas) final;
+	void Load(const IterableBuffer<IndexedValue<Analog, uint16_t>>& meas) final;
+	void Load(const IterableBuffer<IndexedValue<Counter, uint16_t>>& meas) final;
+	void Load(const IterableBuffer<IndexedValue<FrozenCounter, uint16_t>>& meas) final;
+	void Load(const IterableBuffer<IndexedValue<BinaryOutputStatus, uint16_t>>& meas) final;
+	void Load(const IterableBuffer<IndexedValue<AnalogOutputStatus, uint16_t>>& meas) final;
+	void Load(const IterableBuffer<IndexedValue<OctetString, uint16_t>>& meas) final;
 
 protected:
 
@@ -96,9 +96,9 @@ protected:
 private:
 
 	template <class T>
-	static void Print(const IterableBuffer<IndexedValue<T>>& buffer, const std::string& name)
+	static void Print(const IterableBuffer<IndexedValue<T, uint16_t>>& buffer, const std::string& name)
 	{
-		buffer.foreach([&](const IndexedValue<T>& pair) {
+		buffer.foreach([&](const IndexedValue<T, uint16_t>& pair) {
 			std::cout << name << " [" << pair.index << "] : " << pair.value.GetValue() << " : " << static_cast<int>(pair.value.GetQuality()) << std::endl;
 		});
 	}

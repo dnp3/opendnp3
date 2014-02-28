@@ -44,12 +44,12 @@ namespace opendnp3
 	/** 
 	* A simple tuple for pairing Values with an index
 	*/
-	template <class ValueType>
-	class IndexedValue : public Indexed<uint16_t>
+	template <class ValueType, class IndexType>
+	class IndexedValue : public Indexed<IndexType>
 	{
 	public:
-		IndexedValue(const ValueType& value_, uint16_t index_) : 
-			Indexed(index_),
+		IndexedValue(const ValueType& value_, IndexType index_) :
+			Indexed<IndexType>(index_),
 			value(value_)
 		{}		
 

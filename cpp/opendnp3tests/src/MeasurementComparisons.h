@@ -44,8 +44,8 @@ bool operator!=(const opendnp3::TypedMeasurement<T>& lhs, const opendnp3::TypedM
 	return !Equals(lhs, rhs);
 }
 
-template<class T>
-bool operator==(const opendnp3::IndexedValue<T>& lhs, const opendnp3::IndexedValue<T>& rhs)
+template<class T, class U>
+bool operator==(const opendnp3::IndexedValue<T,U>& lhs, const opendnp3::IndexedValue<T,U>& rhs)
 {
 	return (lhs.value == rhs.value) && (lhs.index == rhs.index);
 }

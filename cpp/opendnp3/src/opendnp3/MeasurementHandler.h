@@ -44,21 +44,21 @@ public:
 	*/
 	MeasurementHandler(openpal::Logger& arLogger, ISOEHandler* pSOEHandler);	
 
-	void _OnRange(GroupVariation gv, const IterableBuffer<IndexedValue<Binary>>& meas) final;
-	void _OnIndexPrefix(GroupVariation gv, const IterableBuffer<IndexedValue<Binary>>& meas) final;
+	void _OnRange(GroupVariation gv, const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas) final;
+	void _OnIndexPrefix(GroupVariation gv, const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas) final;
 
-	void _OnRange(GroupVariation gv, const IterableBuffer<IndexedValue<BinaryOutputStatus>>& meas) final;
+	void _OnRange(GroupVariation gv, const IterableBuffer<IndexedValue<BinaryOutputStatus, uint16_t>>& meas) final;
 		
-	void _OnRange(GroupVariation gv, const IterableBuffer<IndexedValue<Counter>>& meas) final;
-	void _OnIndexPrefix(GroupVariation gv, const IterableBuffer<IndexedValue<Counter>>& meas) final;
+	void _OnRange(GroupVariation gv, const IterableBuffer<IndexedValue<Counter, uint16_t>>& meas) final;
+	void _OnIndexPrefix(GroupVariation gv, const IterableBuffer<IndexedValue<Counter, uint16_t>>& meas) final;
 
-	void _OnRange(GroupVariation gv, const IterableBuffer<IndexedValue<Analog>>& meas) final;
-	void _OnIndexPrefix(GroupVariation gv, const IterableBuffer<IndexedValue<Analog>>& meas) final;
+	void _OnRange(GroupVariation gv, const IterableBuffer<IndexedValue<Analog, uint16_t>>& meas) final;
+	void _OnIndexPrefix(GroupVariation gv, const IterableBuffer<IndexedValue<Analog, uint16_t>>& meas) final;
 
-	void _OnRange(GroupVariation gv, const IterableBuffer<IndexedValue<AnalogOutputStatus>>& meas)  final;
+	void _OnRange(GroupVariation gv, const IterableBuffer<IndexedValue<AnalogOutputStatus, uint16_t>>& meas)  final;
 
-	void _OnRange(GroupVariation gv, const IterableBuffer<IndexedValue<OctetString>>& meas) final;
-	void _OnIndexPrefix(GroupVariation gv, const IterableBuffer<IndexedValue<OctetString>>& meas) final;
+	void _OnRange(GroupVariation gv, const IterableBuffer<IndexedValue<OctetString, uint16_t>>& meas) final;
+	void _OnIndexPrefix(GroupVariation gv, const IterableBuffer<IndexedValue<OctetString, uint16_t>>& meas) final;
 
 private:
 	ISOEHandler* pSOEHandler;

@@ -342,6 +342,7 @@
     <ClCompile Include="src\opendnp3\ProtocolUtil.cpp" />
     <ClCompile Include="src\opendnp3\QueuedCommandProcessor.cpp" />
     <ClCompile Include="src\opendnp3\ReadHandler.cpp" />
+    <ClCompile Include="src\opendnp3\SelectHandler.cpp" />
     <ClCompile Include="src\opendnp3\StaticResponseContext.cpp" />
     <ClCompile Include="src\opendnp3\SecLinkLayerStates.cpp" />
     <ClCompile Include="src\opendnp3\ShiftableBuffer.cpp" />

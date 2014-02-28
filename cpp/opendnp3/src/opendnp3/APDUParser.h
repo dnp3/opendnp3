@@ -159,8 +159,8 @@ class APDUParser : private PureStatic
 		openpal::ISerializer<Target>* pSerializer,
 		IAPDUHandler* pHandler);	
 
-	static IndexedValue<Binary> BoolToBinary(const IndexedValue<bool>& v);
-	static IndexedValue<BinaryOutputStatus> BoolToBinaryOutputStatus(const IndexedValue<bool>& v);
+	static IndexedValue<Binary, uint16_t> BoolToBinary(const IndexedValue<bool, uint16_t>& v);
+	static IndexedValue<BinaryOutputStatus, uint16_t> BoolToBinaryOutputStatus(const IndexedValue<bool, uint16_t>& v);
 };
 
 template <class IndexType>
@@ -237,9 +237,9 @@ APDUParser::Result APDUParser::ParseRangeAsBitField(
 	uint32_t numBytes = NumBytesInBits(range.Count());
 	if(buffer.Size() < numBytes) return Result::NOT_ENOUGH_DATA_FOR_OBJECTS;
 	else {	
-		auto collection = IterableTransforms<IndexedValue<bool>>::From(buffer, range.Count(), 
+		auto collection = IterableTransforms<IndexedValue<bool, uint16_t>>::From(buffer, range.Count(),
 			[&](openpal::ReadOnlyBuffer& buffer, uint32_t pos) {
-				return IndexedValue<bool>(GetBit(buffer, pos), pos + range.start);
+			return IndexedValue<bool, uint16_t>(GetBit(buffer, pos), pos + range.start);
 			}
 		);
 		callback(qualifier, collection);
@@ -294,8 +294,8 @@ APDUParser::Result APDUParser::ParseRangeFixedSize(GroupVariation gv, QualifierC
 	else {
 	
 		if(pHandler) {
-			auto collection = IterableTransforms<IndexedValue<Target>>::From(buffer, range.Count(), [range, pSerializer](openpal::ReadOnlyBuffer& buffer, uint32_t pos) {
-				return IndexedValue<Target>(pSerializer->Read(buffer), range.start + pos);
+			auto collection = IterableTransforms<IndexedValue<Target, uint16_t>>::From(buffer, range.Count(), [range, pSerializer](openpal::ReadOnlyBuffer& buffer, uint32_t pos) {
+				return IndexedValue<Target, uint16_t>(pSerializer->Read(buffer), range.start + pos);
 			});
 			pHandler->OnRange(gv, qualifier, collection);
 		}
@@ -335,10 +335,10 @@ APDUParser::Result APDUParser::ParseCountFixedSizeWithIndex(
 	if(buffer.Size() < size) return APDUParser::Result::NOT_ENOUGH_DATA_FOR_OBJECTS;
 	else {
 		if(pHandler) {
-			auto collection = IterableTransforms<IndexedValue<Target>>::From(buffer, count, [pParser, pSerializer](openpal::ReadOnlyBuffer& buffer, uint32_t) {
+			auto collection = IterableTransforms<IndexedValue<Target, uint16_t>>::From(buffer, count, [pParser, pSerializer](openpal::ReadOnlyBuffer& buffer, uint32_t) {
 				auto index = pParser->ReadIndex(buffer);
 				auto value = pSerializer->Read(buffer);
-				return IndexedValue<Target>(value, index);
+				return IndexedValue<Target, uint16_t>(value, index);
 			});
 			pHandler->OnIndexPrefix(gv, qualifier, collection);
 		}

@@ -30,6 +30,7 @@
 #include <opendnp3/APDUParser.h>
 #include <opendnp3/APDUHeaderParser.h>
 #include <opendnp3/ControlRelayOutputBlock.h>
+#include <opendnp3/IndexedValue.h>
 
 #include <functional>
 
@@ -134,9 +135,18 @@ BOOST_AUTO_TEST_CASE(Group1Var2Range)
 	// 1 byte start/stop  3->5, 3 octests data
 	TestComplex("01 02 00 03 05 81 01 81", APDUParser::Result::OK, 1, [](MockApduHeaderHandler& mock) {		
 		BOOST_REQUIRE_EQUAL(3, mock.staticBinaries.size());
-		BOOST_REQUIRE(IndexedValue<Binary>(Binary(true), 3) == mock.staticBinaries[0]);
-		BOOST_REQUIRE(IndexedValue<Binary>(Binary(false), 4) == mock.staticBinaries[1]);
-		BOOST_REQUIRE(IndexedValue<Binary>(Binary(true), 5) == mock.staticBinaries[2]);
+		{
+			IndexedValue<Binary, uint16_t> value(Binary(true), 3);
+			BOOST_REQUIRE(value == mock.staticBinaries[0]);
+		}
+		{
+			IndexedValue<Binary, uint16_t> value(Binary(false), 4);
+			BOOST_REQUIRE(value == mock.staticBinaries[1]);
+		}
+		{
+			IndexedValue<Binary, uint16_t> value(Binary(true), 5);
+			BOOST_REQUIRE(value == mock.staticBinaries[2]);
+		}
 	});	
 }
 
@@ -172,9 +182,18 @@ BOOST_AUTO_TEST_CASE(Group1Var2Count8)
 	// 1 byte count == 3, 3 octets data
 	TestComplex("01 02 07 03 81 01 81", APDUParser::Result::OK, 1, [](MockApduHeaderHandler& mock) {		
 		BOOST_REQUIRE_EQUAL(3, mock.staticBinaries.size());
-		BOOST_REQUIRE(IndexedValue<Binary>(Binary(true), 0) == mock.staticBinaries[0]);
-		BOOST_REQUIRE(IndexedValue<Binary>(Binary(false), 1) == mock.staticBinaries[1]);
-		BOOST_REQUIRE(IndexedValue<Binary>(Binary(true), 2) == mock.staticBinaries[2]);
+		{
+			IndexedValue<Binary, uint16_t> value(Binary(true), 0);
+			BOOST_REQUIRE(value == mock.staticBinaries[0]);
+		}
+		{
+			IndexedValue<Binary, uint16_t> value(Binary(false), 1);
+			BOOST_REQUIRE(value == mock.staticBinaries[1]);
+		}
+		{
+			IndexedValue<Binary, uint16_t> value(Binary(true), 2);
+			BOOST_REQUIRE(value == mock.staticBinaries[2]);
+		}
 	});	
 }
 
@@ -183,7 +202,8 @@ BOOST_AUTO_TEST_CASE(Group1Var2Count16)
 	// 2 byte count == 1, 1 octet data 
 	TestComplex("01 02 08 01 00 81", APDUParser::Result::OK, 1, [](MockApduHeaderHandler& mock) {		
 		BOOST_REQUIRE_EQUAL(1, mock.staticBinaries.size());
-		BOOST_REQUIRE(IndexedValue<Binary>(Binary(true), 0) == mock.staticBinaries[0]);
+		IndexedValue<Binary, uint16_t> value(Binary(true), 0);
+		BOOST_REQUIRE(value == mock.staticBinaries[0]);
 	});
 }
 
@@ -191,8 +211,14 @@ BOOST_AUTO_TEST_CASE(Group1Var2AllCountQualifiers)
 {
 	auto validator = [](MockApduHeaderHandler& mock) {		
 		BOOST_REQUIRE_EQUAL(2, mock.staticBinaries.size());
-		BOOST_REQUIRE(IndexedValue<Binary>(Binary(true), 0) == mock.staticBinaries[0]);
-		BOOST_REQUIRE(IndexedValue<Binary>(Binary(false), 1) == mock.staticBinaries[1]);
+		{
+			IndexedValue<Binary, uint16_t> value(Binary(true), 0);
+			BOOST_REQUIRE(value == mock.staticBinaries[0]);
+		}
+		{
+			IndexedValue<Binary, uint16_t> value(Binary(false), 1);
+			BOOST_REQUIRE(value == mock.staticBinaries[1]);
+		}
 	};
 	
 	TestComplex("01 02 07 02 81 01", APDUParser::Result::OK, 1, validator);
@@ -257,7 +283,8 @@ BOOST_AUTO_TEST_CASE(Group2Var1CountWithAllIndexSizes)
 {	
 	auto validator = [](MockApduHeaderHandler& mock) {		
 		BOOST_REQUIRE_EQUAL(1, mock.eventBinaries.size());
-		BOOST_REQUIRE(IndexedValue<Binary>(Binary(true), 9) == mock.eventBinaries[0]);		
+		IndexedValue<Binary, uint16_t> value(Binary(true), 9);
+		BOOST_REQUIRE(value == mock.eventBinaries[0]);		
 	};
 
 	// 1 byte count, 1 byte index, index == 09, value = 0x81
@@ -270,10 +297,22 @@ BOOST_AUTO_TEST_CASE(Group1Var1ByRange)
 	// 1 byte start/stop 3 -> 6
 	TestComplex("01 01 00 03 06 09", APDUParser::Result::OK, 1, [](MockApduHeaderHandler& mock) {		
 		BOOST_REQUIRE_EQUAL(4, mock.staticBinaries.size());
-		BOOST_REQUIRE(IndexedValue<Binary>(Binary(true), 3) == mock.staticBinaries[0]);		
-		BOOST_REQUIRE(IndexedValue<Binary>(Binary(false), 4) == mock.staticBinaries[1]);	
-		BOOST_REQUIRE(IndexedValue<Binary>(Binary(false), 5) == mock.staticBinaries[2]);	
-		BOOST_REQUIRE(IndexedValue<Binary>(Binary(true), 6) == mock.staticBinaries[3]);
+		{
+			IndexedValue<Binary, uint16_t> value(Binary(true), 3);
+			BOOST_REQUIRE(value == mock.staticBinaries[0]);
+		}
+		{
+			IndexedValue<Binary, uint16_t> value(Binary(false), 4);
+			BOOST_REQUIRE(value == mock.staticBinaries[1]);
+		}
+		{
+			IndexedValue<Binary, uint16_t> value(Binary(false), 5);
+			BOOST_REQUIRE(value == mock.staticBinaries[2]);
+		}
+		{
+			IndexedValue<Binary, uint16_t> value(Binary(true), 6);
+			BOOST_REQUIRE(value == mock.staticBinaries[3]);
+		}
 	});
 }
 
@@ -284,7 +323,8 @@ BOOST_AUTO_TEST_CASE(Group12Var1WithIndexSizes)
 	auto validator = [&](MockApduHeaderHandler& mock) {		
 		BOOST_REQUIRE_EQUAL(1, mock.crobRequests.size());
 		ControlRelayOutputBlock crob(ControlCode::LATCH_ON, 1, 100, 200);
-		BOOST_REQUIRE(IndexedValue<ControlRelayOutputBlock>(crob, 9) == mock.crobRequests[0]);
+		IndexedValue<ControlRelayOutputBlock, uint16_t> value(crob, 9);
+		BOOST_REQUIRE(value == mock.crobRequests[0]);
 
 		BOOST_REQUIRE_EQUAL(1, mock.groupVariations.size());
 	};
@@ -296,8 +336,9 @@ BOOST_AUTO_TEST_CASE(Group12Var1WithIndexSizes)
 BOOST_AUTO_TEST_CASE(TestIINValue)
 {
 	TestComplex("50 01 00 07 07 00", APDUParser::Result::OK, 1, [&](MockApduHeaderHandler& mock) {
-		BOOST_REQUIRE_EQUAL(1, mock.iinBits.size());		
-		BOOST_REQUIRE(IndexedValue<bool>(false, 7) == mock.iinBits[0]);	
+		BOOST_REQUIRE_EQUAL(1, mock.iinBits.size());
+		IndexedValue<bool, uint16_t> value(false, 7);
+		BOOST_REQUIRE(value == mock.iinBits[0]);	
 	});
 }
 

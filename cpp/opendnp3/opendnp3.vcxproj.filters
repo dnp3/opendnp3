@@ -1064,5 +1064,8 @@
     <ClCompile Include="src\opendnp3\gen\StaticBinaryOutputStatusResponse.cpp">
       <Filter>Source\gen</Filter>
     </ClCompile>
+    <ClCompile Include="src\opendnp3\SelectHandler.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

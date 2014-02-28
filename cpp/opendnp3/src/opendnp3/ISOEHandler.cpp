@@ -31,39 +31,39 @@ NullSOEHandler NullSOEHandler::msInstance;
 
 PrintingSOEHandler PrintingSOEHandler::msInstance;
 
-void PrintingSOEHandler::Load(const IterableBuffer<IndexedValue<Binary>>& meas)
+void PrintingSOEHandler::Load(const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas)
 {
 	Print(meas, "Binary");
 }
 
-void PrintingSOEHandler::Load(const IterableBuffer<IndexedValue<Analog>>& meas)
+void PrintingSOEHandler::Load(const IterableBuffer<IndexedValue<Analog, uint16_t>>& meas)
 {
 	Print(meas, "Analog");
 }
 
-void PrintingSOEHandler::Load(const IterableBuffer<IndexedValue<Counter>>& meas)
+void PrintingSOEHandler::Load(const IterableBuffer<IndexedValue<Counter, uint16_t>>& meas)
 {
 	Print(meas, "Counter");
 }
 
-void PrintingSOEHandler::Load(const IterableBuffer<IndexedValue<FrozenCounter>>& meas)
+void PrintingSOEHandler::Load(const IterableBuffer<IndexedValue<FrozenCounter, uint16_t>>& meas)
 {
 	Print(meas, "FrozenCounter");
 }
 
-void PrintingSOEHandler::Load(const IterableBuffer<IndexedValue<BinaryOutputStatus>>& meas)
+void PrintingSOEHandler::Load(const IterableBuffer<IndexedValue<BinaryOutputStatus, uint16_t>>& meas)
 {
 	Print(meas, "BinaryOutputStatus");
 }
 
-void PrintingSOEHandler::Load(const IterableBuffer<IndexedValue<AnalogOutputStatus>>& meas)
+void PrintingSOEHandler::Load(const IterableBuffer<IndexedValue<AnalogOutputStatus, uint16_t>>& meas)
 {
 	Print(meas, "AnalogOutputStatus");
 }
 
-void PrintingSOEHandler::Load(const IterableBuffer<IndexedValue<OctetString>>& meas)
+void PrintingSOEHandler::Load(const IterableBuffer<IndexedValue<OctetString, uint16_t>>& meas)
 {
-	meas.foreach([&](const IndexedValue<OctetString>& pair) {
+	meas.foreach([&](const IndexedValue<OctetString, uint16_t>& pair) {
 		std::cout << "OctetString " <<  " [" << pair.index << "] : Size : " << pair.value.ToReadOnly().Size() << std::endl;
 	});
 }
