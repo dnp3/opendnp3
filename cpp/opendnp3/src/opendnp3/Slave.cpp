@@ -34,6 +34,7 @@
 
 #include "WriteHandler.h"
 #include "ReadHandler.h"
+#include "SelectHandler.h"
 
 #include <functional>
 
@@ -190,7 +191,9 @@ IINField Slave::ConfigureResponse(const APDURecord& request, SequenceInfo sequen
 		case(FunctionCode::READ) :
 			return HandleRead(request, sequence, response);
 		case(FunctionCode::WRITE):			
-			return HandleWrite(request, sequence);				
+			return HandleWrite(request, sequence);
+		case(FunctionCode::SELECT) :
+			return HandleSelect(request, sequence, response);
 		case(FunctionCode::DELAY_MEASURE):		
 			return HandleDelayMeasure(request, sequence, response);	
 		default:	
@@ -229,6 +232,32 @@ IINField Slave::HandleRead(const APDURecord& request, SequenceInfo sequence, APD
 		mStaticRspContext.Reset();
 		return IINFromParseResult(result);
 	}
+}
+
+IINField Slave::HandleSelect(const APDURecord& request, SequenceInfo sequence, APDUResponse& response)
+{
+	// Outstations require 2 extra bytes for IIN bits. Therefore it's possible
+	// there are some requests you cannot possible answer since responses are
+	// an exact echo the requests with status fields changed.
+	if(request.objects.Size() > response.Remaining())
+	{
+		LOG_BLOCK(LogLevel::Warning, "Igonring command request due to payload size of " << request.objects.Size());
+		return IINField(IINBit::PARAM_ERROR);		
+	}
+	else
+	{
+		SelectHandler handler(mLogger, mConfig.mMaxControls, this->mpCmdHandler, response); // TODO make max commands configurable
+		auto result = APDUParser::ParseTwoPass(request.objects, &handler); 
+		if (result == APDUParser::Result::OK)
+		{
+			if(handler.AllCommandsSuccessful())
+			{
+				// record the Select
+			}
+			return IINField::Empty;
+		}
+		else return IINFromParseResult(result);
+	}	
 }
 
 void Slave::ContinueResponse()

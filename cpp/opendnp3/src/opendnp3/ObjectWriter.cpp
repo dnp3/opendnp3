@@ -38,9 +38,18 @@ void ObjectWriter::Mark()
 	mark.Set(*position);
 }
 
-void ObjectWriter::Rollback()
+bool ObjectWriter::Rollback()
 {
-	if(mark.IsSet()) *position = mark.Get();		
+	if (mark.IsSet()) 
+	{		
+		*position = mark.Get();
+		mark.Clear();
+		return true;
+	}
+	else
+	{
+		return false;
+	}
 }
 
 bool ObjectWriter::WriteHeader(GroupVariationID id, QualifierCode qc)

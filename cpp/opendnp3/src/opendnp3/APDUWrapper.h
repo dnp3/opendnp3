@@ -49,6 +49,8 @@ class APDUWrapper
 
 	ObjectWriter GetWriter();
 
+	uint32_t Remaining() const;
+
 	protected:	
 		
 	openpal::WriteBuffer buffer;

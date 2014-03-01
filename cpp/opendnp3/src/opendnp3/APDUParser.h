@@ -275,10 +275,6 @@ APDUParser::Result APDUParser::ParseIndexPrefixedOctetData(
 	}
 }
 
-#define MACRO_PARSE_COUNT_FIXED_SIZE_WITH_INDEX(descriptor) \
-case(GroupVariation::descriptor): \
-	return ParseCountFixedSizeWithIndex(gvRecord.enumeration, qualifier, buffer, count, descriptor##Serializer::Inst(), pHandler);
-
 template <class IndexType>
 APDUParser::Result APDUParser::ParseObjectsWithIndexPrefix(QualifierCode qualifier, openpal::ReadOnlyBuffer& buffer, const GroupVariationRecord& gvRecord, uint32_t count, IAPDUHandler* pHandler)
 {
@@ -286,38 +282,54 @@ APDUParser::Result APDUParser::ParseObjectsWithIndexPrefix(QualifierCode qualifi
 	{
 		case(GroupVariation::Group2Var1):
 			return ParseCountFixedSizeWithIndex<Binary, IndexType>(gvRecord.enumeration, qualifier, buffer, count, Group2Var1Serializer::Inst(), pHandler);
-			/*
-		MACRO_PARSE_COUNT_FIXED_SIZE_WITH_INDEX(Group2Var1);
-		MACRO_PARSE_COUNT_FIXED_SIZE_WITH_INDEX(Group2Var2);
-		MACRO_PARSE_COUNT_FIXED_SIZE_WITH_INDEX(Group2Var3);
+		case(GroupVariation::Group2Var2) :
+			return ParseCountFixedSizeWithIndex<Binary, IndexType>(gvRecord.enumeration, qualifier, buffer, count, Group2Var2Serializer::Inst(), pHandler);
+		case(GroupVariation::Group2Var3) :
+			return ParseCountFixedSizeWithIndex<Binary, IndexType>(gvRecord.enumeration, qualifier, buffer, count, Group2Var3Serializer::Inst(), pHandler);
 
-		MACRO_PARSE_COUNT_FIXED_SIZE_WITH_INDEX(Group12Var1);
+		case(GroupVariation::Group12Var1) :
+			return ParseCountFixedSizeWithIndex<ControlRelayOutputBlock, IndexType>(gvRecord.enumeration, qualifier, buffer, count, Group12Var1Serializer::Inst(), pHandler);
 
-		MACRO_PARSE_COUNT_FIXED_SIZE_WITH_INDEX(Group22Var1);
-		MACRO_PARSE_COUNT_FIXED_SIZE_WITH_INDEX(Group22Var2);
-		MACRO_PARSE_COUNT_FIXED_SIZE_WITH_INDEX(Group22Var5);
-		MACRO_PARSE_COUNT_FIXED_SIZE_WITH_INDEX(Group22Var6);
+		case(GroupVariation::Group22Var1) :
+			return ParseCountFixedSizeWithIndex<Counter, IndexType>(gvRecord.enumeration, qualifier, buffer, count, Group22Var1Serializer::Inst(), pHandler);
+		case(GroupVariation::Group22Var2) :
+			return ParseCountFixedSizeWithIndex<Counter, IndexType>(gvRecord.enumeration, qualifier, buffer, count, Group22Var2Serializer::Inst(), pHandler);
+		case(GroupVariation::Group22Var5) :
+			return ParseCountFixedSizeWithIndex<Counter, IndexType>(gvRecord.enumeration, qualifier, buffer, count, Group22Var5Serializer::Inst(), pHandler);
+		case(GroupVariation::Group22Var6) :
+			return ParseCountFixedSizeWithIndex<Counter, IndexType>(gvRecord.enumeration, qualifier, buffer, count, Group22Var6Serializer::Inst(), pHandler);
+		
+		case(GroupVariation::Group32Var1) :
+			return ParseCountFixedSizeWithIndex<Analog, IndexType>(gvRecord.enumeration, qualifier, buffer, count, Group32Var1Serializer::Inst(), pHandler);
+		case(GroupVariation::Group32Var2) :
+			return ParseCountFixedSizeWithIndex<Analog, IndexType>(gvRecord.enumeration, qualifier, buffer, count, Group32Var2Serializer::Inst(), pHandler);
+		case(GroupVariation::Group32Var3) :
+			return ParseCountFixedSizeWithIndex<Analog, IndexType>(gvRecord.enumeration, qualifier, buffer, count, Group32Var3Serializer::Inst(), pHandler);
+		case(GroupVariation::Group32Var4) :
+			return ParseCountFixedSizeWithIndex<Analog, IndexType>(gvRecord.enumeration, qualifier, buffer, count, Group32Var4Serializer::Inst(), pHandler);
+		case(GroupVariation::Group32Var5) :
+			return ParseCountFixedSizeWithIndex<Analog, IndexType>(gvRecord.enumeration, qualifier, buffer, count, Group32Var5Serializer::Inst(), pHandler);
+		case(GroupVariation::Group32Var6) :
+			return ParseCountFixedSizeWithIndex<Analog, IndexType>(gvRecord.enumeration, qualifier, buffer, count, Group32Var6Serializer::Inst(), pHandler);
+		case(GroupVariation::Group32Var7) :
+			return ParseCountFixedSizeWithIndex<Analog, IndexType>(gvRecord.enumeration, qualifier, buffer, count, Group32Var7Serializer::Inst(), pHandler);
+		case(GroupVariation::Group32Var8) :
+			return ParseCountFixedSizeWithIndex<Analog, IndexType>(gvRecord.enumeration, qualifier, buffer, count, Group32Var8Serializer::Inst(), pHandler);
 
-		MACRO_PARSE_COUNT_FIXED_SIZE_WITH_INDEX(Group32Var1);
-		MACRO_PARSE_COUNT_FIXED_SIZE_WITH_INDEX(Group32Var2);
-		MACRO_PARSE_COUNT_FIXED_SIZE_WITH_INDEX(Group32Var3);
-		MACRO_PARSE_COUNT_FIXED_SIZE_WITH_INDEX(Group32Var4);
-		MACRO_PARSE_COUNT_FIXED_SIZE_WITH_INDEX(Group32Var5);
-		MACRO_PARSE_COUNT_FIXED_SIZE_WITH_INDEX(Group32Var6);
-		MACRO_PARSE_COUNT_FIXED_SIZE_WITH_INDEX(Group32Var7);
-		MACRO_PARSE_COUNT_FIXED_SIZE_WITH_INDEX(Group32Var8);
+		case(GroupVariation::Group41Var1) :
+			return ParseCountFixedSizeWithIndex<AnalogOutputInt32, IndexType>(gvRecord.enumeration, qualifier, buffer, count, Group41Var1Serializer::Inst(), pHandler);
+		case(GroupVariation::Group41Var2) :
+			return ParseCountFixedSizeWithIndex<AnalogOutputInt16, IndexType>(gvRecord.enumeration, qualifier, buffer, count, Group41Var2Serializer::Inst(), pHandler);
+		case(GroupVariation::Group41Var3) :
+			return ParseCountFixedSizeWithIndex<AnalogOutputFloat32, IndexType>(gvRecord.enumeration, qualifier, buffer, count, Group41Var3Serializer::Inst(), pHandler);
+		case(GroupVariation::Group41Var4) :
+			return ParseCountFixedSizeWithIndex<AnalogOutputDouble64, IndexType>(gvRecord.enumeration, qualifier, buffer, count, Group41Var4Serializer::Inst(), pHandler);
+		
+		case(GroupVariation::Group111AnyVar) :
+			return ParseIndexPrefixedOctetData<IndexType>(gvRecord, buffer, qualifier, count, pHandler);
 
-		MACRO_PARSE_COUNT_FIXED_SIZE_WITH_INDEX(Group41Var1);
-		MACRO_PARSE_COUNT_FIXED_SIZE_WITH_INDEX(Group41Var2);
-		MACRO_PARSE_COUNT_FIXED_SIZE_WITH_INDEX(Group41Var3);
-		MACRO_PARSE_COUNT_FIXED_SIZE_WITH_INDEX(Group41Var4);
-		*/
-
-	case(GroupVariation::Group111AnyVar) :
-		return ParseIndexPrefixedOctetData<IndexType>(gvRecord, buffer, qualifier, count, pHandler);
-
-	default:
-		return Result::ILLEGAL_OBJECT_QUALIFIER;
+		default:
+			return Result::ILLEGAL_OBJECT_QUALIFIER;
 	}
 }
 
@@ -350,8 +362,7 @@ APDUParser::Result APDUParser::ParseCount(openpal::ReadOnlyBuffer& buffer, Conte
 		count = ParserType::ReadBuffer(buffer);
 		if(count == 0) return Result::COUNT_OF_ZERO;
 		else 
-		{
-			bool overflow = context.AddObjectCount(count);
+		{			
 			return context.AddObjectCount(count) ? Result::UNREASONABLE_OBJECT_COUNT : Result::OK;
 		}		
 	}

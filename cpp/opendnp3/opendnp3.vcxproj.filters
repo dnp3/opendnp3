@@ -1,17 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Include">
-      <UniqueIdentifier>{5bec995a-6b68-460a-ab9f-e5cff9f77e13}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source">
       <UniqueIdentifier>{f1ddd634-12b5-4b1c-9269-6db548db8416}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header">
       <UniqueIdentifier>{f3f71f8d-05b5-4943-972f-dd4988b84258}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Include\gen">
-      <UniqueIdentifier>{58d5a8b4-830b-4280-866e-f93a4fa4a612}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header\objects">
       <UniqueIdentifier>{a2d0b05f-c2ea-41ca-8c0d-265325250623}</UniqueIdentifier>
@@ -25,187 +19,193 @@
     <Filter Include="Source\objects">
       <UniqueIdentifier>{4c8215d6-6413-40ce-b292-18c762ee8a0f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\gen\Include">
+      <UniqueIdentifier>{5bec995a-6b68-460a-ab9f-e5cff9f77e13}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\gen\Include\gen">
+      <UniqueIdentifier>{58d5a8b4-830b-4280-866e-f93a4fa4a612}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\opendnp3\gen\ChannelState.h">
-      <Filter>Include\gen</Filter>
+      <Filter>Source\gen\Include\gen</Filter>
     </ClInclude>
     <ClInclude Include="include\opendnp3\gen\CommandResult.h">
-      <Filter>Include\gen</Filter>
+      <Filter>Source\gen\Include\gen</Filter>
     </ClInclude>
     <ClInclude Include="include\opendnp3\gen\CommandStatus.h">
-      <Filter>Include\gen</Filter>
+      <Filter>Source\gen\Include\gen</Filter>
     </ClInclude>
     <ClInclude Include="include\opendnp3\gen\ControlCode.h">
-      <Filter>Include\gen</Filter>
+      <Filter>Source\gen\Include\gen</Filter>
     </ClInclude>
     <ClInclude Include="include\opendnp3\gen\EventAnalogResponse.h">
-      <Filter>Include\gen</Filter>
+      <Filter>Source\gen\Include\gen</Filter>
     </ClInclude>
     <ClInclude Include="include\opendnp3\gen\EventBinaryResponse.h">
-      <Filter>Include\gen</Filter>
+      <Filter>Source\gen\Include\gen</Filter>
     </ClInclude>
     <ClInclude Include="include\opendnp3\gen\EventCounterResponse.h">
-      <Filter>Include\gen</Filter>
+      <Filter>Source\gen\Include\gen</Filter>
     </ClInclude>
     <ClInclude Include="include\opendnp3\gen\ScanStatus.h">
-      <Filter>Include\gen</Filter>
+      <Filter>Source\gen\Include\gen</Filter>
     </ClInclude>
     <ClInclude Include="include\opendnp3\gen\StackState.h">
-      <Filter>Include\gen</Filter>
+      <Filter>Source\gen\Include\gen</Filter>
     </ClInclude>
     <ClInclude Include="include\opendnp3\gen\StaticAnalogResponse.h">
-      <Filter>Include\gen</Filter>
+      <Filter>Source\gen\Include\gen</Filter>
     </ClInclude>
     <ClInclude Include="include\opendnp3\gen\StaticBinaryResponse.h">
-      <Filter>Include\gen</Filter>
+      <Filter>Source\gen\Include\gen</Filter>
     </ClInclude>
     <ClInclude Include="include\opendnp3\gen\StaticCounterResponse.h">
-      <Filter>Include\gen</Filter>
+      <Filter>Source\gen\Include\gen</Filter>
     </ClInclude>
     <ClInclude Include="include\opendnp3\AnalogOutput.h">
-      <Filter>Include</Filter>
+      <Filter>Source\gen\Include</Filter>
     </ClInclude>
     <ClInclude Include="include\opendnp3\AppConfig.h">
-      <Filter>Include</Filter>
+      <Filter>Source\gen\Include</Filter>
     </ClInclude>
     <ClInclude Include="include\opendnp3\BaseDataTypes.h">
-      <Filter>Include</Filter>
+      <Filter>Source\gen\Include</Filter>
     </ClInclude>
     <ClInclude Include="include\opendnp3\ClassMask.h">
-      <Filter>Include</Filter>
+      <Filter>Source\gen\Include</Filter>
     </ClInclude>
     <ClInclude Include="include\opendnp3\CommandResponse.h">
-      <Filter>Include</Filter>
+      <Filter>Source\gen\Include</Filter>
     </ClInclude>
     <ClInclude Include="include\opendnp3\ControlRelayOutputBlock.h">
-      <Filter>Include</Filter>
+      <Filter>Source\gen\Include</Filter>
     </ClInclude>
     <ClInclude Include="include\opendnp3\DatabaseConfiguration.h">
-      <Filter>Include</Filter>
+      <Filter>Source\gen\Include</Filter>
     </ClInclude>
     <ClInclude Include="include\opendnp3\DatabaseTemplate.h">
-      <Filter>Include</Filter>
+      <Filter>Source\gen\Include</Filter>
     </ClInclude>
     <ClInclude Include="include\opendnp3\DataTypes.h">
-      <Filter>Include</Filter>
+      <Filter>Source\gen\Include</Filter>
     </ClInclude>
     <ClInclude Include="include\opendnp3\DestructorHook.h">
-      <Filter>Include</Filter>
+      <Filter>Source\gen\Include</Filter>
     </ClInclude>
     <ClInclude Include="include\opendnp3\DeviceTemplateTypes.h">
-      <Filter>Include</Filter>
+      <Filter>Source\gen\Include</Filter>
     </ClInclude>
     <ClInclude Include="include\opendnp3\DNP3Manager.h">
-      <Filter>Include</Filter>
+      <Filter>Source\gen\Include</Filter>
     </ClInclude>
     <ClInclude Include="include\opendnp3\DNPConstants.h">
-      <Filter>Include</Filter>
+      <Filter>Source\gen\Include</Filter>
     </ClInclude>
     <ClInclude Include="include\opendnp3\IChannel.h">
-      <Filter>Include</Filter>
+      <Filter>Source\gen\Include</Filter>
     </ClInclude>
     <ClInclude Include="include\opendnp3\ICommandHandler.h">
-      <Filter>Include</Filter>
+      <Filter>Source\gen\Include</Filter>
     </ClInclude>
     <ClInclude Include="include\opendnp3\ICommandProcessor.h">
-      <Filter>Include</Filter>
+      <Filter>Source\gen\Include</Filter>
     </ClInclude>
     <ClInclude Include="include\opendnp3\IDataObserver.h">
-      <Filter>Include</Filter>
+      <Filter>Source\gen\Include</Filter>
     </ClInclude>
     <ClInclude Include="include\opendnp3\IMaster.h">
-      <Filter>Include</Filter>
+      <Filter>Source\gen\Include</Filter>
     </ClInclude>
     <ClInclude Include="include\opendnp3\IndexedValue.h">
-      <Filter>Include</Filter>
+      <Filter>Source\gen\Include</Filter>
     </ClInclude>
     <ClInclude Include="include\opendnp3\IOutstation.h">
-      <Filter>Include</Filter>
+      <Filter>Source\gen\Include</Filter>
     </ClInclude>
     <ClInclude Include="include\opendnp3\IScanListener.h">
-      <Filter>Include</Filter>
+      <Filter>Source\gen\Include</Filter>
     </ClInclude>
     <ClInclude Include="include\opendnp3\IStack.h">
-      <Filter>Include</Filter>
+      <Filter>Source\gen\Include</Filter>
     </ClInclude>
     <ClInclude Include="include\opendnp3\ITimeWriteHandler.h">
-      <Filter>Include</Filter>
+      <Filter>Source\gen\Include</Filter>
     </ClInclude>
     <ClInclude Include="include\opendnp3\ITransactable.h">
-      <Filter>Include</Filter>
+      <Filter>Source\gen\Include</Filter>
     </ClInclude>
     <ClInclude Include="include\opendnp3\LinkConfig.h">
-      <Filter>Include</Filter>
+      <Filter>Source\gen\Include</Filter>
     </ClInclude>
     <ClInclude Include="include\opendnp3\MasterConfig.h">
-      <Filter>Include</Filter>
+      <Filter>Source\gen\Include</Filter>
     </ClInclude>
     <ClInclude Include="include\opendnp3\MasterConfigTypes.h">
-      <Filter>Include</Filter>
+      <Filter>Source\gen\Include</Filter>
     </ClInclude>
     <ClInclude Include="include\opendnp3\MasterScan.h">
-      <Filter>Include</Filter>
+      <Filter>Source\gen\Include</Filter>
     </ClInclude>
     <ClInclude Include="include\opendnp3\MasterStackConfig.h">
-      <Filter>Include</Filter>
+      <Filter>Source\gen\Include</Filter>
     </ClInclude>
     <ClInclude Include="include\opendnp3\MeasurementType.h">
-      <Filter>Include</Filter>
+      <Filter>Source\gen\Include</Filter>
     </ClInclude>
     <ClInclude Include="include\opendnp3\ObjectInterfaces.h">
-      <Filter>Include</Filter>
+      <Filter>Source\gen\Include</Filter>
     </ClInclude>
     <ClInclude Include="include\opendnp3\OctetData.h">
-      <Filter>Include</Filter>
+      <Filter>Source\gen\Include</Filter>
     </ClInclude>
     <ClInclude Include="include\opendnp3\OctetString.h">
-      <Filter>Include</Filter>
+      <Filter>Source\gen\Include</Filter>
     </ClInclude>
     <ClInclude Include="include\opendnp3\PointClass.h">
-      <Filter>Include</Filter>
+      <Filter>Source\gen\Include</Filter>
     </ClInclude>
     <ClInclude Include="include\opendnp3\QualityMasks.h">
-      <Filter>Include</Filter>
+      <Filter>Source\gen\Include</Filter>
     </ClInclude>
     <ClInclude Include="include\opendnp3\ScanResult.h">
-      <Filter>Include</Filter>
+      <Filter>Source\gen\Include</Filter>
     </ClInclude>
     <ClInclude Include="include\opendnp3\SimpleCommandHandler.h">
-      <Filter>Include</Filter>
+      <Filter>Source\gen\Include</Filter>
     </ClInclude>
     <ClInclude Include="include\opendnp3\SimpleDataObserver.h">
-      <Filter>Include</Filter>
+      <Filter>Source\gen\Include</Filter>
     </ClInclude>
     <ClInclude Include="include\opendnp3\Singleton.h">
-      <Filter>Include</Filter>
+      <Filter>Source\gen\Include</Filter>
     </ClInclude>
     <ClInclude Include="include\opendnp3\SlaveConfig.h">
-      <Filter>Include</Filter>
+      <Filter>Source\gen\Include</Filter>
     </ClInclude>
     <ClInclude Include="include\opendnp3\SlaveStackConfig.h">
-      <Filter>Include</Filter>
+      <Filter>Source\gen\Include</Filter>
     </ClInclude>
     <ClInclude Include="include\opendnp3\SubjectBase.h">
-      <Filter>Include</Filter>
+      <Filter>Source\gen\Include</Filter>
     </ClInclude>
     <ClInclude Include="include\opendnp3\TaskStatus.h">
-      <Filter>Include</Filter>
+      <Filter>Source\gen\Include</Filter>
     </ClInclude>
     <ClInclude Include="include\opendnp3\TimeTransaction.h">
-      <Filter>Include</Filter>
+      <Filter>Source\gen\Include</Filter>
     </ClInclude>
     <ClInclude Include="include\opendnp3\TransportConstants.h">
-      <Filter>Include</Filter>
+      <Filter>Source\gen\Include</Filter>
     </ClInclude>
     <ClInclude Include="include\opendnp3\Uncopyable.h">
-      <Filter>Include</Filter>
+      <Filter>Source\gen\Include</Filter>
     </ClInclude>
     <ClInclude Include="include\opendnp3\Util.h">
-      <Filter>Include</Filter>
+      <Filter>Source\gen\Include</Filter>
     </ClInclude>
     <ClInclude Include="include\opendnp3\VTOData.h">
-      <Filter>Include</Filter>
+      <Filter>Source\gen\Include</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\objects\Group1.h">
       <Filter>Header\objects</Filter>
@@ -619,13 +619,13 @@
       <Filter>Header\objects</Filter>
     </ClInclude>
     <ClInclude Include="include\opendnp3\ISOEHandler.h">
-      <Filter>Include</Filter>
+      <Filter>Source\gen\Include</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\IterableTransforms.h">
       <Filter>Header</Filter>
     </ClInclude>
     <ClInclude Include="include\opendnp3\IterableBuffer.h">
-      <Filter>Include</Filter>
+      <Filter>Source\gen\Include</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\APDUWrapper.h">
       <Filter>Header</Filter>
@@ -646,16 +646,16 @@
       <Filter>Header</Filter>
     </ClInclude>
     <ClInclude Include="include\opendnp3\gen\StaticFrozenCounterResponse.h">
-      <Filter>Include\gen</Filter>
+      <Filter>Source\gen\Include\gen</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\StaticResponseContext.h">
       <Filter>Header</Filter>
     </ClInclude>
     <ClInclude Include="include\opendnp3\gen\StaticAnalogOutputStatusResponse.h">
-      <Filter>Include\gen</Filter>
+      <Filter>Source\gen\Include\gen</Filter>
     </ClInclude>
     <ClInclude Include="include\opendnp3\gen\StaticBinaryOutputStatusResponse.h">
-      <Filter>Include\gen</Filter>
+      <Filter>Source\gen\Include\gen</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\SelectHandler.h">
       <Filter>Header</Filter>

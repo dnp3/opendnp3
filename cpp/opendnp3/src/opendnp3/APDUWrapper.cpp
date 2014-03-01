@@ -43,6 +43,11 @@ ObjectWriter APDUWrapper::GetWriter()
 	return ObjectWriter(&remaining);
 }
 
+uint32_t APDUWrapper::Remaining() const
+{
+	return remaining.Size();
+}
+
 void APDUWrapper::SetFunction(FunctionCode code)
 {
 	assert(buffer.IsNotEmpty());

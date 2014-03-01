@@ -66,7 +66,7 @@ class ObjectWriter
 	void Mark();
 
 	// roll back to the last mark
-	void Rollback();	
+	bool Rollback();	
 	
 	private:
 

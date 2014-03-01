@@ -24,14 +24,16 @@
 #include <openpal/Serialization.h>
 
 #include "objects/Group12.h"
+#include "objects/Group41.h"
 
 namespace opendnp3
 {
 	
-SelectHandler::SelectHandler(ICommandHandler* pCommandHandler_, uint16_t maxCommands_, APDUResponse& response_) :
-	failure(false),
+SelectHandler::SelectHandler(openpal::Logger logger, uint8_t maxCommands_, ICommandHandler* pCommandHandler_, APDUResponse& response_) :
+	openpal::Loggable(logger),			
 	pCommandHandler(pCommandHandler_),
-	numCommands(0),
+	numRequests(0),	
+	numSuccess(0),
 	maxCommands(maxCommands_),
 	writer(response_.GetWriter())
 {
@@ -39,28 +41,53 @@ SelectHandler::SelectHandler(ICommandHandler* pCommandHandler_, uint16_t maxComm
 }
 
 void SelectHandler::_OnIndexPrefix(QualifierCode qualifier, const IterableBuffer<IndexedValue<ControlRelayOutputBlock, uint16_t>>& meas)
-{
-	
+{	
+	this->Select<ControlRelayOutputBlock, openpal::UInt16>(QualifierCode::UINT16_CNT_UINT16_INDEX, Group12Var1Serializer::Inst(), meas);
 }
 	
 void SelectHandler::_OnIndexPrefix(QualifierCode qualifier, const IterableBuffer<IndexedValue<AnalogOutputInt16, uint16_t>>& meas)
 {
-	
+	this->Select<AnalogOutputInt16, openpal::UInt16>(QualifierCode::UINT16_CNT_UINT16_INDEX, Group41Var2Serializer::Inst(), meas);
 }
 	
 void SelectHandler::_OnIndexPrefix(QualifierCode qualifier, const IterableBuffer<IndexedValue<AnalogOutputInt32, uint16_t>>& meas)
 {
-	
+	this->Select<AnalogOutputInt32, openpal::UInt16>(QualifierCode::UINT16_CNT_UINT16_INDEX, Group41Var1Serializer::Inst(), meas);
 }
 	
 void SelectHandler::_OnIndexPrefix(QualifierCode qualifier, const IterableBuffer<IndexedValue<AnalogOutputFloat32, uint16_t>>& meas)
 {
-	
+	this->Select<AnalogOutputFloat32, openpal::UInt16>(QualifierCode::UINT16_CNT_UINT16_INDEX, Group41Var3Serializer::Inst(), meas);
 }
 	
 void SelectHandler::_OnIndexPrefix(QualifierCode qualifier, const IterableBuffer<IndexedValue<AnalogOutputDouble64, uint16_t>>& meas)
 {
-	
+	this->Select<AnalogOutputDouble64, openpal::UInt16>(QualifierCode::UINT16_CNT_UINT16_INDEX, Group41Var4Serializer::Inst(), meas);
+}
+
+void SelectHandler::_OnIndexPrefix(QualifierCode qualifier, const IterableBuffer<IndexedValue<ControlRelayOutputBlock, uint8_t>>& meas)
+{
+	this->Select<ControlRelayOutputBlock, openpal::UInt8>(QualifierCode::UINT8_CNT_UINT8_INDEX, Group12Var1Serializer::Inst(), meas);
+}
+
+void SelectHandler::_OnIndexPrefix(QualifierCode qualifier, const IterableBuffer<IndexedValue<AnalogOutputInt16, uint8_t>>& meas)
+{
+	this->Select<AnalogOutputInt16, openpal::UInt8>(QualifierCode::UINT8_CNT_UINT8_INDEX, Group41Var2Serializer::Inst(), meas);
+}
+
+void SelectHandler::_OnIndexPrefix(QualifierCode qualifier, const IterableBuffer<IndexedValue<AnalogOutputInt32, uint8_t>>& meas)
+{
+	this->Select<AnalogOutputInt32, openpal::UInt8>(QualifierCode::UINT8_CNT_UINT8_INDEX, Group41Var1Serializer::Inst(), meas);
+}
+
+void SelectHandler::_OnIndexPrefix(QualifierCode qualifier, const IterableBuffer<IndexedValue<AnalogOutputFloat32, uint8_t>>& meas)
+{
+	this->Select<AnalogOutputFloat32, openpal::UInt8>(QualifierCode::UINT8_CNT_UINT8_INDEX, Group41Var3Serializer::Inst(), meas);
+}
+
+void SelectHandler::_OnIndexPrefix(QualifierCode qualifier, const IterableBuffer<IndexedValue<AnalogOutputDouble64, uint8_t>>& meas)
+{
+	this->Select<AnalogOutputDouble64, openpal::UInt8>(QualifierCode::UINT8_CNT_UINT8_INDEX, Group41Var4Serializer::Inst(), meas);
 }
 
 }

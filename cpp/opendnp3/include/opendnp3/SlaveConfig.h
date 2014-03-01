@@ -75,7 +75,7 @@ struct SlaveConfig {
 
 
 	/// The maximum number of controls the slave will attempt to process from a single APDU
-	uint32_t mMaxControls;
+	uint8_t mMaxControls;
 
 	/// if true, fully disables unsolicited mode as if the slave didn't support it
 	bool mDisableUnsol;

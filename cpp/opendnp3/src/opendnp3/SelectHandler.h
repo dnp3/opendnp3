@@ -24,6 +24,8 @@
 #include "APDUHandlerBase.h"
 
 #include <openpal/StaticBuffer.h>
+#include <openpal/Loggable.h>
+#include <openpal/LoggableMacros.h>
 #include <opendnp3/ICommandHandler.h>
 
 #include "APDUResponse.h"
@@ -33,26 +35,57 @@
 namespace opendnp3
 {
 
-	class SelectHandler : public APDUHandlerBase
-	{
-	public:
+class SelectHandler : private openpal::Loggable, public APDUHandlerBase
+{
+public:
 
-		SelectHandler(ICommandHandler* pCommandHandler_, uint16_t maxCommands_, APDUResponse& response_);
+	SelectHandler(openpal::Logger logger, uint8_t maxCommands_, ICommandHandler* pCommandHandler_, APDUResponse& response_);
 
-		virtual void _OnIndexPrefix(QualifierCode qualifier, const IterableBuffer<IndexedValue<ControlRelayOutputBlock, uint16_t>>& meas);
-		virtual void _OnIndexPrefix(QualifierCode qualifier, const IterableBuffer<IndexedValue<AnalogOutputInt16, uint16_t>>& meas);
-		virtual void _OnIndexPrefix(QualifierCode qualifier, const IterableBuffer<IndexedValue<AnalogOutputInt32, uint16_t>>& meas);
-		virtual void _OnIndexPrefix(QualifierCode qualifier, const IterableBuffer<IndexedValue<AnalogOutputFloat32, uint16_t>>& meas);
-		virtual void _OnIndexPrefix(QualifierCode qualifier, const IterableBuffer<IndexedValue<AnalogOutputDouble64, uint16_t>>& meas);
+	virtual void _OnIndexPrefix(QualifierCode qualifier, const IterableBuffer<IndexedValue<ControlRelayOutputBlock, uint16_t>>& meas) final;
+	virtual void _OnIndexPrefix(QualifierCode qualifier, const IterableBuffer<IndexedValue<AnalogOutputInt16, uint16_t>>& meas) final;
+	virtual void _OnIndexPrefix(QualifierCode qualifier, const IterableBuffer<IndexedValue<AnalogOutputInt32, uint16_t>>& meas) final;
+	virtual void _OnIndexPrefix(QualifierCode qualifier, const IterableBuffer<IndexedValue<AnalogOutputFloat32, uint16_t>>& meas) final;
+	virtual void _OnIndexPrefix(QualifierCode qualifier, const IterableBuffer<IndexedValue<AnalogOutputDouble64, uint16_t>>& meas) final;
 
-	private:
+	virtual void _OnIndexPrefix(QualifierCode qualifier, const IterableBuffer<IndexedValue<ControlRelayOutputBlock, uint8_t>>& meas) final;
+	virtual void _OnIndexPrefix(QualifierCode qualifier, const IterableBuffer<IndexedValue<AnalogOutputInt16, uint8_t>>& meas) final;
+	virtual void _OnIndexPrefix(QualifierCode qualifier, const IterableBuffer<IndexedValue<AnalogOutputInt32, uint8_t>>& meas) final;
+	virtual void _OnIndexPrefix(QualifierCode qualifier, const IterableBuffer<IndexedValue<AnalogOutputFloat32, uint8_t>>& meas) final;
+	virtual void _OnIndexPrefix(QualifierCode qualifier, const IterableBuffer<IndexedValue<AnalogOutputDouble64, uint8_t>>& meas) final;
 
-		bool failure;
-		ICommandHandler* pCommandHandler;
-		uint32_t numCommands;
-		uint16_t maxCommands;
-		ObjectWriter writer;
-	};
+	bool AllCommandsSuccessful() const { return numRequests == numSuccess; }
+
+private:
+			
+	ICommandHandler* pCommandHandler;
+	uint32_t numRequests;
+	uint32_t numSuccess;
+	const uint8_t maxCommands;
+	ObjectWriter writer;
+
+	template <class Target, class IndexType>
+	void Select(QualifierCode qualifier, IDNP3Serializer<Target>* pSerializer, const IterableBuffer<IndexedValue<Target, typename IndexType::Type>>& meas);
+
+};
+
+template <class Target, class IndexType>
+void SelectHandler::Select(QualifierCode qualifier, IDNP3Serializer<Target>* pSerializer, const IterableBuffer<IndexedValue<Target, typename IndexType::Type>>& meas)
+{		
+	auto iter = writer.IterateOverCountWithPrefix<IndexType, Target>(qualifier, pSerializer);
+	meas.foreach([this, &iter](const IndexedValue<Target, typename IndexType::Type>& command) {				
+		auto result = CommandStatus::TOO_MANY_OPS;
+		if (numRequests < maxCommands) 
+		{
+			result = pCommandHandler->Select(command.value, command.index);						
+		}		
+		if (result == CommandStatus::SUCCESS) ++numSuccess;
+		Target response(command.value);
+		response.status = result;
+		iter.Write(response, command.index);
+		++numRequests;
+	});
+	iter.Complete();	
+}
 
 }
 
