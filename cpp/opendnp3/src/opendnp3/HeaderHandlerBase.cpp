@@ -22,6 +22,8 @@
 
 #include <openpal/LoggableMacros.h>
 
+#include "IterableTransforms.h"
+
 using namespace openpal;
 
 namespace opendnp3
@@ -165,6 +167,36 @@ void APDUHandlerBase::OnIndexPrefix(GroupVariation gv, QualifierCode qualifier, 
 	++currentHeader;
 }
 
+void APDUHandlerBase::OnIndexPrefix(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<ControlRelayOutputBlock, uint8_t>>& meas)
+{
+	this->_OnIndexPrefix(qualifier, meas);
+	++currentHeader;
+}
+
+void APDUHandlerBase::OnIndexPrefix(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<AnalogOutputInt16, uint8_t>>& meas)
+{
+	this->_OnIndexPrefix(qualifier, meas);
+	++currentHeader;
+}
+
+void APDUHandlerBase::OnIndexPrefix(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<AnalogOutputInt32, uint8_t>>& meas)
+{
+	this->_OnIndexPrefix(qualifier, meas);
+	++currentHeader;
+}
+
+void APDUHandlerBase::OnIndexPrefix(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<AnalogOutputFloat32, uint8_t>>& meas)
+{
+	this->_OnIndexPrefix(qualifier, meas);
+	++currentHeader;
+}
+
+void APDUHandlerBase::OnIndexPrefix(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<AnalogOutputDouble64, uint8_t>>& meas)
+{
+	this->_OnIndexPrefix(qualifier, meas);
+	++currentHeader;
+}
+
 void APDUHandlerBase::OnRange(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<OctetString, uint16_t>>& meas)
 {	
 	this->_OnRange(gv, meas);
@@ -177,6 +209,33 @@ void APDUHandlerBase::OnIndexPrefix(GroupVariation gv, QualifierCode qualifier, 
 	++currentHeader;
 }
 
+void APDUHandlerBase::OnIndexPrefix(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<Binary, uint8_t>>& meas)
+{
+	auto transform = IterableTransforms<IndexedValue<Binary, uint8_t>>::Map<IndexedValue<Binary, uint16_t>>(meas, [](const IndexedValue<Binary, uint8_t>& value) { return value.Widen<uint16_t>(); });
+	this->_OnIndexPrefix(gv, transform);
+	++currentHeader;
+}
+
+void APDUHandlerBase::OnIndexPrefix(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<Counter, uint8_t>>& meas)
+{
+	auto transform = IterableTransforms<IndexedValue<Counter, uint8_t>>::Map<IndexedValue<Counter, uint16_t>>(meas, [](const IndexedValue<Counter, uint8_t>& value) { return value.Widen<uint16_t>(); });
+	this->_OnIndexPrefix(gv, transform);
+	++currentHeader;
+}
+
+void APDUHandlerBase::OnIndexPrefix(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<Analog, uint8_t>>& meas)
+{
+	auto transform = IterableTransforms<IndexedValue<Analog, uint8_t>>::Map<IndexedValue<Analog, uint16_t>>(meas, [](const IndexedValue<Analog, uint8_t>& value) { return value.Widen<uint16_t>(); });
+	this->_OnIndexPrefix(gv, transform);
+	++currentHeader;
+}
+
+void APDUHandlerBase::OnIndexPrefix(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<OctetString, uint8_t>>& meas)
+{
+	auto transform = IterableTransforms<IndexedValue<OctetString, uint8_t>>::Map<IndexedValue<OctetString, uint16_t>>(meas, [](const IndexedValue<OctetString, uint8_t>& value) { return value.Widen<uint16_t>(); });
+	this->_OnIndexPrefix(gv, transform);
+	++currentHeader;
+}
 void APDUHandlerBase::_AllObjects(GroupVariation gv)
 {	
 	++ignoredHeaders;
@@ -268,6 +327,31 @@ void APDUHandlerBase::_OnIndexPrefix(QualifierCode qualifier, const IterableBuff
 }
 
 void APDUHandlerBase::_OnIndexPrefix(QualifierCode qualifier, const IterableBuffer<IndexedValue<AnalogOutputDouble64, uint16_t>>& meas)
+{
+	++ignoredHeaders;
+}
+
+void APDUHandlerBase::_OnIndexPrefix(QualifierCode qualifier, const IterableBuffer<IndexedValue<ControlRelayOutputBlock, uint8_t>>& meas)
+{
+	++ignoredHeaders;
+}
+
+void APDUHandlerBase::_OnIndexPrefix(QualifierCode qualifier, const IterableBuffer<IndexedValue<AnalogOutputInt16, uint8_t>>& meas)
+{
+	++ignoredHeaders;
+}
+
+void APDUHandlerBase::_OnIndexPrefix(QualifierCode qualifier, const IterableBuffer<IndexedValue<AnalogOutputInt32, uint8_t>>& meas)
+{
+	++ignoredHeaders;
+}
+
+void APDUHandlerBase::_OnIndexPrefix(QualifierCode qualifier, const IterableBuffer<IndexedValue<AnalogOutputFloat32, uint8_t>>& meas)
+{
+	++ignoredHeaders;
+}
+
+void APDUHandlerBase::_OnIndexPrefix(QualifierCode qualifier, const IterableBuffer<IndexedValue<AnalogOutputDouble64, uint8_t>>& meas)
 {
 	++ignoredHeaders;
 }

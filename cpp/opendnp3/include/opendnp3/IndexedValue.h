@@ -51,7 +51,14 @@ namespace opendnp3
 		IndexedValue(const ValueType& value_, IndexType index_) :
 			Indexed<IndexType>(index_),
 			value(value_)
-		{}		
+		{}
+
+		template <class T>
+		IndexedValue<ValueType, T> Widen() const
+		{
+			T widerIndex = this->index;
+			return IndexedValue<ValueType, T>(this->value, widerIndex);
+		}
 
 		IndexedValue(): Indexed(), value()
 		{}

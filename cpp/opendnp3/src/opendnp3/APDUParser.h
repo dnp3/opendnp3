@@ -96,9 +96,7 @@ class APDUParser : private PureStatic
 
 	static Result ParseSinglePass(const openpal::ReadOnlyBuffer& buffer, IAPDUHandler* pHandler, Context context);
 
-	static Result ParseHeaders(const openpal::ReadOnlyBuffer& buffer, Context context, IAPDUHandler* pHandler);	
-
-	// return true if it's an error, false otherwise	
+	static Result ParseHeaders(const openpal::ReadOnlyBuffer& buffer, Context context, IAPDUHandler* pHandler);		
 
 	static Result ParseHeader(openpal::ReadOnlyBuffer& buffer, Context& context, IAPDUHandler* pHandler);
 
@@ -119,7 +117,8 @@ class APDUParser : private PureStatic
 
 	static Result ParseObjectsWithRange(QualifierCode qualifier, openpal::ReadOnlyBuffer& buffer, const GroupVariationRecord&, const Range& range, IAPDUHandler* pHandler);
 	
-	static Result ParseObjectsWithIndexPrefix(QualifierCode qualifier, openpal::ReadOnlyBuffer& buffer, const GroupVariationRecord& gvRecord, uint32_t count, IndexParser* pParser, IAPDUHandler* pHandler);
+	template <class IndexType>
+	static Result ParseObjectsWithIndexPrefix(QualifierCode qualifier, openpal::ReadOnlyBuffer& buffer, const GroupVariationRecord& gvRecord, uint32_t count, IAPDUHandler* pHandler);
 	
 	template <class Fun>
 	static Result ParseRangeAsBitField(		
@@ -135,12 +134,12 @@ class APDUParser : private PureStatic
 		const Range& range, 
 		IAPDUHandler* pHandler);
 
+	template <class IndexType>
 	static Result ParseIndexPrefixedOctetData(
 		const GroupVariationRecord& gvRecord,
 		openpal::ReadOnlyBuffer& buffer, 
 		QualifierCode qualifier,
-		uint32_t count, 
-		IndexParser* pParser, 
+		uint32_t count, 		
 		IAPDUHandler* pHandler);
 		
 	template <class Target>
@@ -149,13 +148,12 @@ class APDUParser : private PureStatic
 	template <class Descriptor>
 	static Result ParseCountOf(openpal::ReadOnlyBuffer& buffer, uint32_t count, IAPDUHandler* pHandler);
 
-	template <class Target>
+	template <class Target, class IndexType>
 	static Result ParseCountFixedSizeWithIndex(
 		GroupVariation gv,
 		QualifierCode qualifier,
 		openpal::ReadOnlyBuffer& buffer, 
-		uint32_t count, 
-		IndexParser* pParser, 
+		uint32_t count, 		
 		openpal::ISerializer<Target>* pSerializer,
 		IAPDUHandler* pHandler);	
 
@@ -219,7 +217,7 @@ APDUParser::Result APDUParser::ParseIndexPrefixHeader(openpal::ReadOnlyBuffer& b
 	auto res = ParseCount<IndexType>(buffer, context, count);
 	if(res == Result::OK)
 	{
-		return ParseObjectsWithIndexPrefix(qualifier, buffer, gvRecord, count, TypedIndexParser<IndexType>::Inst(), pHandler);
+		return ParseObjectsWithIndexPrefix<IndexType>(qualifier, buffer, gvRecord, count, pHandler);
 	}
 	else 
 	{
@@ -245,6 +243,81 @@ APDUParser::Result APDUParser::ParseRangeAsBitField(
 		callback(qualifier, collection);
 		buffer.Advance(numBytes);
 		return Result::OK;
+	}
+}
+
+template <class IndexType>
+APDUParser::Result APDUParser::ParseIndexPrefixedOctetData(
+	const GroupVariationRecord& gvRecord,
+	openpal::ReadOnlyBuffer& buffer,
+	QualifierCode qualifier,
+	uint32_t count,
+	IAPDUHandler* pHandler)
+{
+	uint32_t size = count * (IndexType::Size + gvRecord.variation);
+	if (buffer.Size() < size) return APDUParser::Result::NOT_ENOUGH_DATA_FOR_OBJECTS;
+	else {
+
+		if (pHandler) {
+			auto iterable = IterableTransforms<IndexedValue<OctetString, uint16_t>>::From(buffer, count,
+				[&](ReadOnlyBuffer& buffer, uint32_t position) {
+				auto index = IndexType::ReadBuffer(buffer);
+				OctetString octets(buffer.Truncate(gvRecord.variation));
+				buffer.Advance(gvRecord.variation);
+				return IndexedValue<OctetString, uint16_t>(octets, index);
+			}
+			);
+			pHandler->OnIndexPrefix(gvRecord.enumeration, qualifier, iterable);
+		}
+
+		buffer.Advance(size);
+		return APDUParser::Result::OK;
+	}
+}
+
+#define MACRO_PARSE_COUNT_FIXED_SIZE_WITH_INDEX(descriptor) \
+case(GroupVariation::descriptor): \
+	return ParseCountFixedSizeWithIndex(gvRecord.enumeration, qualifier, buffer, count, descriptor##Serializer::Inst(), pHandler);
+
+template <class IndexType>
+APDUParser::Result APDUParser::ParseObjectsWithIndexPrefix(QualifierCode qualifier, openpal::ReadOnlyBuffer& buffer, const GroupVariationRecord& gvRecord, uint32_t count, IAPDUHandler* pHandler)
+{
+	switch (gvRecord.enumeration)
+	{
+		case(GroupVariation::Group2Var1):
+			return ParseCountFixedSizeWithIndex<Binary, IndexType>(gvRecord.enumeration, qualifier, buffer, count, Group2Var1Serializer::Inst(), pHandler);
+			/*
+		MACRO_PARSE_COUNT_FIXED_SIZE_WITH_INDEX(Group2Var1);
+		MACRO_PARSE_COUNT_FIXED_SIZE_WITH_INDEX(Group2Var2);
+		MACRO_PARSE_COUNT_FIXED_SIZE_WITH_INDEX(Group2Var3);
+
+		MACRO_PARSE_COUNT_FIXED_SIZE_WITH_INDEX(Group12Var1);
+
+		MACRO_PARSE_COUNT_FIXED_SIZE_WITH_INDEX(Group22Var1);
+		MACRO_PARSE_COUNT_FIXED_SIZE_WITH_INDEX(Group22Var2);
+		MACRO_PARSE_COUNT_FIXED_SIZE_WITH_INDEX(Group22Var5);
+		MACRO_PARSE_COUNT_FIXED_SIZE_WITH_INDEX(Group22Var6);
+
+		MACRO_PARSE_COUNT_FIXED_SIZE_WITH_INDEX(Group32Var1);
+		MACRO_PARSE_COUNT_FIXED_SIZE_WITH_INDEX(Group32Var2);
+		MACRO_PARSE_COUNT_FIXED_SIZE_WITH_INDEX(Group32Var3);
+		MACRO_PARSE_COUNT_FIXED_SIZE_WITH_INDEX(Group32Var4);
+		MACRO_PARSE_COUNT_FIXED_SIZE_WITH_INDEX(Group32Var5);
+		MACRO_PARSE_COUNT_FIXED_SIZE_WITH_INDEX(Group32Var6);
+		MACRO_PARSE_COUNT_FIXED_SIZE_WITH_INDEX(Group32Var7);
+		MACRO_PARSE_COUNT_FIXED_SIZE_WITH_INDEX(Group32Var8);
+
+		MACRO_PARSE_COUNT_FIXED_SIZE_WITH_INDEX(Group41Var1);
+		MACRO_PARSE_COUNT_FIXED_SIZE_WITH_INDEX(Group41Var2);
+		MACRO_PARSE_COUNT_FIXED_SIZE_WITH_INDEX(Group41Var3);
+		MACRO_PARSE_COUNT_FIXED_SIZE_WITH_INDEX(Group41Var4);
+		*/
+
+	case(GroupVariation::Group111AnyVar) :
+		return ParseIndexPrefixedOctetData<IndexType>(gvRecord, buffer, qualifier, count, pHandler);
+
+	default:
+		return Result::ILLEGAL_OBJECT_QUALIFIER;
 	}
 }
 
@@ -321,24 +394,23 @@ APDUParser::Result APDUParser::ParseCountOf(openpal::ReadOnlyBuffer& buffer, uin
 	}
 }
 
-template <class Target>
+template <class Target, class IndexType>
 APDUParser::Result APDUParser::ParseCountFixedSizeWithIndex(
 	GroupVariation gv,
 	QualifierCode qualifier,
 	openpal::ReadOnlyBuffer& buffer, 
-	uint32_t count, 
-	IndexParser* pParser, 
+	uint32_t count, 	
 	openpal::ISerializer<Target>* pSerializer,
 	IAPDUHandler* pHandler)
 {
-	uint32_t size = count * (pParser->IndexSize() + pSerializer->Size());
+	uint32_t size = count * (IndexType::Size + pSerializer->Size());
 	if(buffer.Size() < size) return APDUParser::Result::NOT_ENOUGH_DATA_FOR_OBJECTS;
 	else {
 		if(pHandler) {
-			auto collection = IterableTransforms<IndexedValue<Target, uint16_t>>::From(buffer, count, [pParser, pSerializer](openpal::ReadOnlyBuffer& buffer, uint32_t) {
-				auto index = pParser->ReadIndex(buffer);
+			auto collection = IterableTransforms<IndexedValue<Target, typename IndexType::Type>>::From(buffer, count, [pSerializer](openpal::ReadOnlyBuffer& buffer, uint32_t) {
+				auto index = IndexType::ReadBuffer(buffer);
 				auto value = pSerializer->Read(buffer);
-				return IndexedValue<Target, uint16_t>(value, index);
+				return IndexedValue<Target, typename IndexType::Type>(value, index);
 			});
 			pHandler->OnIndexPrefix(gv, qualifier, collection);
 		}
