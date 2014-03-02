@@ -47,6 +47,7 @@ Slave::Slave(openpal::Logger aLogger, IAppLayer* apAppLayer, IExecutor* apExecut
 	IAppUser(aLogger),
 	StackBase(apExecutor),
 	mpTimeWriteHandler(apTimeWriteHandler),
+	selectBuffer(apExecutor, mConfig.mSelectTimeout),
 	mpAppLayer(apAppLayer),
 	mpDatabase(apDatabase),
 	mpCmdHandler(apCmdHandler),
@@ -252,7 +253,7 @@ IINField Slave::HandleSelect(const APDURecord& request, SequenceInfo sequence, A
 		{
 			if(handler.AllCommandsSuccessful())
 			{
-				// record the Select
+				selectBuffer.Select(request.objects);
 			}
 			return IINField::Empty;
 		}

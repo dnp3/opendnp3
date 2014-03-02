@@ -44,6 +44,23 @@ namespace openpal
 		return ReadOnlyBuffer(mpBuffer, aSize);
 	}
 
+	bool ReadOnlyBuffer::Equals(const ReadOnlyBuffer& rhs) const
+	{
+		if (this->Size() == rhs.Size())
+		{
+			for (uint32_t i = 0; i < this->Size(); ++i)
+			{
+				if (mpBuffer[i] != rhs.mpBuffer[i]) return false;				
+			}
+
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+
 	void ReadOnlyBuffer::Advance(uint32_t aNum)
 	{
 		assert(aNum <= size);

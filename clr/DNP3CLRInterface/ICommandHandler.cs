@@ -33,12 +33,12 @@ namespace DNP3.Interface
     public interface ICommandHandler
     {
         /// <summary>
-        /// Select a ControlRelayOutputBlock (Group12Var1)
+        /// Query application if it supports a ControlRelayOutputBlock (Group12Var1)
         /// </summary>
         /// <param name="command">Command to operate</param>
         /// <param name="index">index of the command</param>        
         /// <returns>result of the operation as a CommandStatus enumeration</returns>
-        CommandStatus Select(ControlRelayOutputBlock command, System.UInt32 index);
+        CommandStatus Supports(ControlRelayOutputBlock command, System.UInt32 index);
 
         /// <summary>
         /// Select a 32-bit analog output (Group 41 Var1)
@@ -46,7 +46,7 @@ namespace DNP3.Interface
         /// <param name="command">Command to operate</param>
         /// <param name="index">index of the command</param>        
         /// <returns>result of the operation as a CommandStatus enumeration</returns>
-        CommandStatus Select(AnalogOutputInt32 command, System.UInt32 index);
+        CommandStatus Supports(AnalogOutputInt32 command, System.UInt32 index);
         
         /// <summary>
         /// Select a 16-bit analog output (Group 41 Var2)
@@ -54,7 +54,7 @@ namespace DNP3.Interface
         /// <param name="command">Command to operate</param>
         /// <param name="index">index of the command</param>        
         /// <returns>result of the operation as a CommandStatus enumeration</returns>
-        CommandStatus Select(AnalogOutputInt16 command, System.UInt32 index);
+        CommandStatus Supports(AnalogOutputInt16 command, System.UInt32 index);
 
         /// <summary>
         /// Select a single precision analog output (Group 41 Var3)
@@ -62,7 +62,7 @@ namespace DNP3.Interface
         /// <param name="command">Command to operate</param>
         /// <param name="index">index of the command</param>        
         /// <returns>result of the operation as a CommandStatus enumeration</returns>
-        CommandStatus Select(AnalogOutputFloat32 command, System.UInt32 index);
+        CommandStatus Supports(AnalogOutputFloat32 command, System.UInt32 index);
 
         /// <summary>
         /// Select a double precision analog output (Group 41 Var4)
@@ -70,7 +70,7 @@ namespace DNP3.Interface
         /// <param name="command">Command to operate</param>
         /// <param name="index">index of the command</param>        
         /// <returns>result of the operation as a CommandStatus enumeration</returns>
-        CommandStatus Select(AnalogOutputDouble64 command, System.UInt32 index);
+        CommandStatus Supports(AnalogOutputDouble64 command, System.UInt32 index);
 
         /// <summary>
         /// Operate a ControlRelayOutputBlock (Group12Var1)
@@ -78,14 +78,14 @@ namespace DNP3.Interface
         /// <param name="command">Command to operate</param>
         /// <param name="index">index of the command</param>        
         /// <returns>result of the operation as a CommandStatus enumeration</returns>
-        CommandStatus Operate(ControlRelayOutputBlock command, System.UInt32 index);
+        CommandStatus Perform(ControlRelayOutputBlock command, System.UInt32 index);
         /// <summary>
         /// Operate a 32-bit analog output (Group 41 Var1)
         /// </summary>
         /// <param name="command">Command to operate</param>
         /// <param name="index">index of the command</param>        
         /// <returns>result of the operation as a CommandStatus enumeration</returns>
-        CommandStatus Operate(AnalogOutputInt32 command, System.UInt32 index);
+        CommandStatus Perform(AnalogOutputInt32 command, System.UInt32 index);
         
         /// <summary>
         /// Operate a 16-bit analog output (Group 41 Var2)
@@ -93,7 +93,7 @@ namespace DNP3.Interface
         /// <param name="command">Command to operate</param>
         /// <param name="index">index of the command</param>        
         /// <returns>result of the operation as a CommandStatus enumeration</returns>
-        CommandStatus Operate(AnalogOutputInt16 command, System.UInt32 index);
+        CommandStatus Perform(AnalogOutputInt16 command, System.UInt32 index);
 
         /// <summary>
         /// Operate a single precision analog output (Group 41 Var3)
@@ -101,7 +101,7 @@ namespace DNP3.Interface
         /// <param name="command">Command to operate</param>
         /// <param name="index">index of the command</param>        
         /// <returns>result of the operation as a CommandStatus enumeration</returns>
-        CommandStatus Operate(AnalogOutputFloat32 command, System.UInt32 index);
+        CommandStatus Perform(AnalogOutputFloat32 command, System.UInt32 index);
 
         /// <summary>
         /// Operate a double precision analog output (Group 41 Var4)
@@ -109,47 +109,7 @@ namespace DNP3.Interface
         /// <param name="command">Command to operate</param>
         /// <param name="index">index of the command</param>        
         /// <returns>result of the operation as a CommandStatus enumeration</returns>
-        CommandStatus Operate(AnalogOutputDouble64 command, System.UInt32 index);
-
-        /// <summary>
-        /// DirectOperate a ControlRelayOutputBlock (Group12Var1)
-        /// </summary>
-        /// <param name="command">Command to operate</param>
-        /// <param name="index">index of the command</param>        
-        /// <returns>result of the operation as a CommandStatus enumeration</returns>
-        CommandStatus DirectOperate(ControlRelayOutputBlock command, System.UInt32 index);
-        
-        /// <summary>
-        /// DirectOperate a 32-bit analog output (Group 41 Var1)
-        /// </summary>
-        /// <param name="command">Command to operate</param>
-        /// <param name="index">index of the command</param>        
-        /// <returns>result of the operation as a CommandStatus enumeration</returns>
-        CommandStatus DirectOperate(AnalogOutputInt32 command, System.UInt32 index);
-        
-        /// <summary>
-        /// DirectOperate a 16-bit analog output (Group 41 Var2)
-        /// </summary>
-        /// <param name="command">Command to operate</param>
-        /// <param name="index">index of the command</param>        
-        /// <returns>result of the operation as a CommandStatus enumeration</returns>
-        CommandStatus DirectOperate(AnalogOutputInt16 command, System.UInt32 index);
-
-        /// <summary>
-        /// DirectOperate a single precision analog output (Group 41 Var3)
-        /// </summary>
-        /// <param name="command">Command to operate</param>
-        /// <param name="index">index of the command</param>        
-        /// <returns>result of the operation as a CommandStatus enumeration</returns>
-        CommandStatus DirectOperate(AnalogOutputFloat32 command, System.UInt32 index);
-
-        /// <summary>
-        /// DirectOperate a double precision analog output (Group 41 Var4)
-        /// </summary>
-        /// <param name="command">Command to operate</param>
-        /// <param name="index">index of the command</param>        
-        /// <returns>result of the operation as a CommandStatus enumeration</returns>
-        CommandStatus DirectOperate(AnalogOutputDouble64 command, System.UInt32 index);
-
+        CommandStatus Perform(AnalogOutputDouble64 command, System.UInt32 index);
+     
     }
 }

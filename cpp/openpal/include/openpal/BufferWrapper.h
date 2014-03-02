@@ -41,6 +41,8 @@ public:
 
 	ReadOnlyBuffer Truncate(uint32_t aSize) const;
 
+	bool Equals(const ReadOnlyBuffer& rhs) const;
+
 	void Advance(uint32_t aNum);
 
 	operator uint8_t const *() const { return mpBuffer; };

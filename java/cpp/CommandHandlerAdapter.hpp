@@ -27,47 +27,47 @@ class CommandHandlerAdapter : public opendnp3::ICommandHandler
 public:
 	CommandHandlerAdapter(JavaVM* apJVM, jobject aProxy);
 
-	opendnp3::CommandStatus Select(const opendnp3::ControlRelayOutputBlock& arCommand, uint16_t aIndex);
-	opendnp3::CommandStatus Operate(const opendnp3::ControlRelayOutputBlock& arCommand, uint16_t aIndex);
-	opendnp3::CommandStatus DirectOperate(const opendnp3::ControlRelayOutputBlock& arCommand, uint16_t aIndex);
+	opendnp3::CommandStatus Supports(const opendnp3::ControlRelayOutputBlock& arCommand, uint16_t aIndex);
+	opendnp3::CommandStatus Perform(const opendnp3::ControlRelayOutputBlock& arCommand, uint16_t aIndex);
+	
 
-	opendnp3::CommandStatus Select(const opendnp3::AnalogOutputInt16& arCommand, uint16_t aIndex);
-	opendnp3::CommandStatus Operate(const opendnp3::AnalogOutputInt16& arCommand, uint16_t aIndex);
-	opendnp3::CommandStatus DirectOperate(const opendnp3::AnalogOutputInt16& arCommand, uint16_t aIndex);
+	opendnp3::CommandStatus Supports(const opendnp3::AnalogOutputInt16& arCommand, uint16_t aIndex);
+	opendnp3::CommandStatus Perform(const opendnp3::AnalogOutputInt16& arCommand, uint16_t aIndex);
+	
 
-	opendnp3::CommandStatus Select(const opendnp3::AnalogOutputInt32& arCommand, uint16_t aIndex);
-	opendnp3::CommandStatus Operate(const opendnp3::AnalogOutputInt32& arCommand, uint16_t aIndex);
-	opendnp3::CommandStatus DirectOperate(const opendnp3::AnalogOutputInt32& arCommand, uint16_t aIndex);
+	opendnp3::CommandStatus Supports(const opendnp3::AnalogOutputInt32& arCommand, uint16_t aIndex);
+	opendnp3::CommandStatus Perform(const opendnp3::AnalogOutputInt32& arCommand, uint16_t aIndex);
+	
 
-	opendnp3::CommandStatus Select(const opendnp3::AnalogOutputFloat32& arCommand, uint16_t aIndex);
-	opendnp3::CommandStatus Operate(const opendnp3::AnalogOutputFloat32& arCommand, uint16_t aIndex);
-	opendnp3::CommandStatus DirectOperate(const opendnp3::AnalogOutputFloat32& arCommand, uint16_t aIndex);
+	opendnp3::CommandStatus Supports(const opendnp3::AnalogOutputFloat32& arCommand, uint16_t aIndex);
+	opendnp3::CommandStatus Perform(const opendnp3::AnalogOutputFloat32& arCommand, uint16_t aIndex);
+	
 
-	opendnp3::CommandStatus Select(const opendnp3::AnalogOutputDouble64& arCommand, uint16_t aIndex);
-	opendnp3::CommandStatus Operate(const opendnp3::AnalogOutputDouble64& arCommand, uint16_t aIndex);
-	opendnp3::CommandStatus DirectOperate(const opendnp3::AnalogOutputDouble64& arCommand, uint16_t aIndex);
+	opendnp3::CommandStatus Supports(const opendnp3::AnalogOutputDouble64& arCommand, uint16_t aIndex);
+	opendnp3::CommandStatus Perform(const opendnp3::AnalogOutputDouble64& arCommand, uint16_t aIndex);
+	
 
 private:
 
-	jmethodID mSelectCROB;
-	jmethodID mOperateCROB;
-	jmethodID mDirectOperateCROB;
+	jmethodID mSupportsCROB;
+	jmethodID mPerformCROB;
+	
 
-	jmethodID mSelectAnalogInt16;
-	jmethodID mOperateAnalogInt16;
-	jmethodID mDirectOperateAnalogInt16;
+	jmethodID mSupportsAnalogInt16;
+	jmethodID mPerformAnalogInt16;
+	
 
-	jmethodID mSelectAnalogInt32;
-	jmethodID mOperateAnalogInt32;
-	jmethodID mDirectOperateAnalogInt32;
+	jmethodID mSupportsAnalogInt32;
+	jmethodID mPerformAnalogInt32;
+	
 
-	jmethodID mSelectAnalogFloat32;
-	jmethodID mOperateAnalogFloat32;
-	jmethodID mDirectOperateAnalogFloat32;
+	jmethodID mSupportsAnalogFloat32;
+	jmethodID mPerformAnalogFloat32;
+	
 
-	jmethodID mSelectAnalogDouble64;
-	jmethodID mOperateAnalogDouble64;
-	jmethodID mDirectOperateAnalogDouble64;
+	jmethodID mSupportsAnalogDouble64;
+	jmethodID mPerformAnalogDouble64;
+	
 
 	JNIEnv* GetEnv();
 

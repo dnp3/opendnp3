@@ -25,6 +25,9 @@
     <Filter Include="Source\gen\Include\gen">
       <UniqueIdentifier>{58d5a8b4-830b-4280-866e-f93a4fa4a612}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Include">
+      <UniqueIdentifier>{643a2a4c-7850-44e3-aaa6-867446af1efc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\opendnp3\gen\ChannelState.h">
@@ -660,6 +663,9 @@
     <ClInclude Include="src\opendnp3\SelectHandler.h">
       <Filter>Header</Filter>
     </ClInclude>
+    <ClInclude Include="src\opendnp3\SelectBuffer.h">
+      <Filter>Header</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\opendnp3\AnalogOutput.cpp">
@@ -1065,6 +1071,9 @@
       <Filter>Source\gen</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\SelectHandler.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\SelectBuffer.cpp">
       <Filter>Source</Filter>
     </ClCompile>
   </ItemGroup>

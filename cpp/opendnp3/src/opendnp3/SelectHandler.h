@@ -76,7 +76,7 @@ void SelectHandler::Select(QualifierCode qualifier, IDNP3Serializer<Target>* pSe
 		auto result = CommandStatus::TOO_MANY_OPS;
 		if (numRequests < maxCommands) 
 		{
-			result = pCommandHandler->Select(command.value, command.index);						
+			result = pCommandHandler->Supports(command.value, command.index);						
 		}		
 		if (result == CommandStatus::SUCCESS) ++numSuccess;
 		Target response(command.value);

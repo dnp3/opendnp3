@@ -40,25 +40,25 @@ public:
 	*/
 	SimpleCommandHandler(std::function<CommandStatus ()> aStatusFunc);
 
-	CommandStatus Select(const ControlRelayOutputBlock& arCommand, uint16_t aIndex);
-	CommandStatus Operate(const ControlRelayOutputBlock& arCommand, uint16_t aIndex);
-	CommandStatus DirectOperate(const ControlRelayOutputBlock& arCommand, uint16_t aIndex);
+	CommandStatus Supports(const ControlRelayOutputBlock& arCommand, uint16_t aIndex) final;
+	CommandStatus Perform(const ControlRelayOutputBlock& arCommand, uint16_t aIndex) final;
+	
 
-	CommandStatus Select(const AnalogOutputInt16& arCommand, uint16_t aIndex);
-	CommandStatus Operate(const AnalogOutputInt16& arCommand, uint16_t aIndex);
-	CommandStatus DirectOperate(const AnalogOutputInt16& arCommand, uint16_t aIndex);
+	CommandStatus Supports(const AnalogOutputInt16& arCommand, uint16_t aIndex) final;
+	CommandStatus Perform(const AnalogOutputInt16& arCommand, uint16_t aIndex) final;
+	
 
-	CommandStatus Select(const AnalogOutputInt32& arCommand, uint16_t aIndex);
-	CommandStatus Operate(const AnalogOutputInt32& arCommand, uint16_t aIndex);
-	CommandStatus DirectOperate(const AnalogOutputInt32& arCommand, uint16_t aIndex);
+	CommandStatus Supports(const AnalogOutputInt32& arCommand, uint16_t aIndex) final;
+	CommandStatus Perform(const AnalogOutputInt32& arCommand, uint16_t aIndex) final;
+	
 
-	CommandStatus Select(const AnalogOutputFloat32& arCommand, uint16_t aIndex);
-	CommandStatus Operate(const AnalogOutputFloat32& arCommand, uint16_t aIndex);
-	CommandStatus DirectOperate(const AnalogOutputFloat32& arCommand, uint16_t aIndex);
+	CommandStatus Supports(const AnalogOutputFloat32& arCommand, uint16_t aIndex) final;
+	CommandStatus Perform(const AnalogOutputFloat32& arCommand, uint16_t aIndex) final;
+	
 
-	CommandStatus Select(const AnalogOutputDouble64& arCommand, uint16_t aIndex);
-	CommandStatus Operate(const AnalogOutputDouble64& arCommand, uint16_t aIndex);
-	CommandStatus DirectOperate(const AnalogOutputDouble64& arCommand, uint16_t aIndex);
+	CommandStatus Supports(const AnalogOutputDouble64& arCommand, uint16_t aIndex) final;
+	CommandStatus Perform(const AnalogOutputDouble64& arCommand, uint16_t aIndex) final;
+	
 
 private:
 	std::function<CommandStatus ()> mStatusFunc;

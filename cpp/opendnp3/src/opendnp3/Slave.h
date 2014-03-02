@@ -37,6 +37,7 @@
 #include "StaticResponseTypes.h"
 #include "CachedRequest.h"
 #include "StaticSizeConfiguration.h"
+#include "SelectBuffer.h"
 
 namespace opendnp3
 {
@@ -116,9 +117,10 @@ private:
 	void ChangeState(SlaveStateBase* apState);
 
 	void RespondToRequest(const APDURecord& record, SequenceInfo sequence);
-	IINField ConfigureResponse(const APDURecord& request, SequenceInfo sequence, APDUResponse& response);
+	IINField ConfigureResponse(const APDURecord& request, SequenceInfo sequence, APDUResponse& response);	
 
 	openpal::StaticBuffer<SizeConfiguration::MAX_APDU_BUFFER_SIZE> responseBuffer;
+	SelectBuffer selectBuffer;
 
 	ChangeBuffer mChangeBuffer;				// how client code gives us updates
 	IAppLayer* mpAppLayer;					// lower application layer

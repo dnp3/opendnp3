@@ -36,6 +36,11 @@ class StaticBuffer : public StaticArray<uint8_t, uint32_t, N>
 		
 		StaticBuffer() : StaticArray<uint8_t, uint32_t, N>()			
 		{}
+
+		ReadOnlyBuffer ToReadOnly() const
+		{
+			return ReadOnlyBuffer(this->buffer, this->size);
+		}
 		
 		WriteBuffer GetWriteBuffer()
 		{			

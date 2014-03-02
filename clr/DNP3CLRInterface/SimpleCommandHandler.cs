@@ -62,79 +62,54 @@ namespace DNP3.Interface
             this.status = status;
         }
 
-        CommandStatus ICommandHandler.Select(ControlRelayOutputBlock command, uint index)
+        CommandStatus ICommandHandler.Supports(ControlRelayOutputBlock command, uint index)
         {
             return status();
         }
 
-        CommandStatus ICommandHandler.Select(AnalogOutputInt32 command, uint index)
+        CommandStatus ICommandHandler.Supports(AnalogOutputInt32 command, uint index)
         {
             return status();
         }
 
-        CommandStatus ICommandHandler.Select(AnalogOutputInt16 command, uint index)
+        CommandStatus ICommandHandler.Supports(AnalogOutputInt16 command, uint index)
         {
             return status();
         }
 
-        CommandStatus ICommandHandler.Select(AnalogOutputFloat32 command, uint index)
+        CommandStatus ICommandHandler.Supports(AnalogOutputFloat32 command, uint index)
         {
             return status();
         }
 
-        CommandStatus ICommandHandler.Select(AnalogOutputDouble64 command, uint index)
+        CommandStatus ICommandHandler.Supports(AnalogOutputDouble64 command, uint index)
         {
             return status();
         }
 
-        CommandStatus ICommandHandler.Operate(ControlRelayOutputBlock command, uint index)
+        CommandStatus ICommandHandler.Perform(ControlRelayOutputBlock command, uint index)
         {
             return status();
         }
 
-        CommandStatus ICommandHandler.Operate(AnalogOutputInt32 command, uint index)
+        CommandStatus ICommandHandler.Perform(AnalogOutputInt32 command, uint index)
         {
             return status();
         }
 
-        CommandStatus ICommandHandler.Operate(AnalogOutputInt16 command, uint index)
+        CommandStatus ICommandHandler.Perform(AnalogOutputInt16 command, uint index)
         {
             return status();
         }
 
-        CommandStatus ICommandHandler.Operate(AnalogOutputFloat32 command, uint index)
+        CommandStatus ICommandHandler.Perform(AnalogOutputFloat32 command, uint index)
         {
             return status();
         }
 
-        CommandStatus ICommandHandler.Operate(AnalogOutputDouble64 command, uint index)
+        CommandStatus ICommandHandler.Perform(AnalogOutputDouble64 command, uint index)
         {
             return status();
-        }
-
-        CommandStatus ICommandHandler.DirectOperate(ControlRelayOutputBlock command, uint index)
-        {
-            return status();
-        }
-
-        CommandStatus ICommandHandler.DirectOperate(AnalogOutputInt32 command, uint index)
-        {
-            return status();
-        }
-
-        CommandStatus ICommandHandler.DirectOperate(AnalogOutputInt16 command, uint index)
-        {
-            return status();
-        }
-
-        CommandStatus ICommandHandler.DirectOperate(AnalogOutputFloat32 command, uint index)
-        {
-            return status();
-        }
-
-        CommandStatus ICommandHandler.DirectOperate(AnalogOutputDouble64 command, uint index)
-        {
-            return status();
-        }
+        }      
     }
 }
