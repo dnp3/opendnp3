@@ -51,7 +51,13 @@ QueueResult StaticResponseContext::QueueReadAllObjects(GroupVariation gv)
 	switch(gv)
 	{
 		case(GroupVariation::Group60Var1):		
-			return QueueStaticIntegrity();	
+			return QueueStaticIntegrity();
+
+			//TODO - place holder for this for now
+		case(GroupVariation::Group60Var2) :			
+		case(GroupVariation::Group60Var3) :			
+		case(GroupVariation::Group60Var4) :
+			return QueueResult::SUCCESS;
 		
 		// Group 1
 		case(GroupVariation::Group1Var0):

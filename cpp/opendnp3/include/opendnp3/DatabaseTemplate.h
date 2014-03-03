@@ -59,6 +59,11 @@ struct DatabaseTemplate
 		return DatabaseTemplate(0, 0, 0, 0, 0, count);
 	}
 
+	static DatabaseTemplate AllTypes(uint32_t count)
+	{
+		return DatabaseTemplate(count, count, count, count, count, count);
+	}
+
 	DatabaseTemplate(uint32_t aNumBinary = 0,
 	              uint32_t aNumAnalog = 0,
 	              uint32_t aNumCounter = 0,
