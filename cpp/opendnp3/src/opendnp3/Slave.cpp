@@ -69,7 +69,7 @@ Slave::Slave(openpal::Logger aLogger, IAppLayer* apAppLayer, IExecutor* apExecut
 	/* Link the event buffer to the database */
 	//mpDatabase->AddEventBuffer(mRspContext.GetBuffer());
 
-	mIIN.Set(IINBit::DEVICE_RESTART);	// Always set on restart
+	mIIN.Set(IINBit::DEVICE_RESTART);	// Always set on restart	
 
 	/*
 	 * Incoming data will trigger a POST on the timer source to call
@@ -221,7 +221,14 @@ IINField Slave::HandleWrite(const APDURecord& request, SequenceInfo sequence)
 {
 	WriteHandler handler(mLogger, mpTimeWriteHandler, &mIIN);
 	auto result = APDUParser::ParseTwoPass(request.objects, &handler);
-	return IINFromParseResult(result);
+	if (result == APDUParser::Result::OK)
+	{
+		return handler.Errors();
+	}
+	else
+	{
+		return IINFromParseResult(result);
+	}	
 }
 
 IINField Slave::HandleRead(const APDURecord& request, SequenceInfo sequence, APDUResponse& response)

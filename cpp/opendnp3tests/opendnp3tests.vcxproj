@@ -300,6 +300,7 @@
     <ClCompile Include="src\TestOutstationCommandResponses.cpp" />
     <ClCompile Include="src\TestOutstationEventBuffer.cpp" />
     <ClCompile Include="src\TestOutstationEventBufferViaFuzz.cpp" />
+    <ClCompile Include="src\TestOutstationEventResponses.cpp" />
     <ClCompile Include="src\TestStaticResponseContext.cpp" />
     <ClCompile Include="src\TestSerialization.cpp" />
     <ClCompile Include="src\TestPhysicalLayerAsyncBase.cpp" />
@@ -308,7 +309,7 @@
     <ClCompile Include="src\TestPhysicalLayerLoopback.cpp" />
     <ClCompile Include="src\TestPhysicalLayerMonitor.cpp" />
     <ClCompile Include="src\TestShiftableBuffer.cpp" />
-    <ClCompile Include="src\TestSlave.cpp" />
+    <ClCompile Include="src\TestOutstation.cpp" />
     <ClCompile Include="src\TestStartBoostUTF.cpp" />
     <ClCompile Include="src\TestTime.cpp" />
     <ClCompile Include="src\TestTimers.cpp" />

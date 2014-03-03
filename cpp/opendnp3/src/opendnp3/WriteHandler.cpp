@@ -45,12 +45,15 @@ void WriteHandler::_OnIIN(const IterableBuffer<IndexedValue<bool, uint16_t>>& me
 	{
 		if (wroteIIN) errors.Set(IINBit::PARAM_ERROR);
 		else
-		{
-			wroteIIN = true;
+		{			
 			if (v.index == static_cast<int>(IINBit::DEVICE_RESTART))
 			{
 				if (v.value) errors.Set(IINBit::PARAM_ERROR);
-				else pWriteIIN->Clear(IINBit::DEVICE_RESTART);
+				else 
+				{
+					wroteIIN = true;
+					pWriteIIN->Clear(IINBit::DEVICE_RESTART);
+				}
 			}
 			else errors.Set(IINBit::PARAM_ERROR);
 		}		
@@ -63,13 +66,21 @@ void WriteHandler::_OnCountOf(const IterableBuffer<Group50Var1>& times)
 	if (wroteTime) errors.Set(IINBit::PARAM_ERROR);
 	else
 	{		
-		Group50Var1 time;
-		if (times.ReadOnlyValue(time))
+		if (pWriteIIN->IsSet(IINBit::NEED_TIME))
 		{
-			wroteTime = true;
-			pTimeWriteHandler->WriteAbsoluteTime(UTCTimestamp(time.time));
+			Group50Var1 time;
+			if (times.ReadOnlyValue(time))
+			{
+				wroteTime = true;
+				pWriteIIN->Clear(IINBit::NEED_TIME);
+				pTimeWriteHandler->WriteAbsoluteTime(UTCTimestamp(time.time));
+			}
+			else errors.Set(IINBit::PARAM_ERROR);
 		}
-		else errors.Set(IINBit::PARAM_ERROR);
+		else
+		{
+			errors.Set(IINBit::PARAM_ERROR);		
+		}
 	}
 }
 
