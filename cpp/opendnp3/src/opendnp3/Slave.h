@@ -167,6 +167,7 @@ private:
 	IINField HandleRead(const APDURecord& request, SequenceInfo sequence, APDUResponse& response);
 	IINField HandleSelect(const APDURecord& request, SequenceInfo sequence, APDUResponse& response);
 	IINField HandleOperate(const APDURecord& request, SequenceInfo sequence, APDUResponse& response);
+	IINField HandleDirectOperate(const APDURecord& request, SequenceInfo sequence, APDUResponse& response);
 	IINField HandleDelayMeasure(const APDURecord& request, SequenceInfo sequence, APDUResponse& response);
 
 

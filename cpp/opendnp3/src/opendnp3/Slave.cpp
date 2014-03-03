@@ -182,6 +182,11 @@ size_t Slave::FlushUpdates()
 
 void Slave::RespondToRequest(const APDURecord& record, SequenceInfo sequence)
 {
+	if (!(record.function == FunctionCode::SELECT || record.function == FunctionCode::OPERATE))
+	{
+		selectBuffer.Clear();
+	}
+
 	APDUResponse response(responseBuffer.GetWriteBuffer(mConfig.mMaxFragSize));
 	response.SetFunction(FunctionCode::RESPONSE);
 	response.SetControl(AppControlField::DEFAULT);
@@ -202,6 +207,8 @@ IINField Slave::ConfigureResponse(const APDURecord& request, SequenceInfo sequen
 			return HandleSelect(request, sequence, response);
 		case(FunctionCode::OPERATE) :
 			return HandleOperate(request, sequence, response);
+		case(FunctionCode::DIRECT_OPERATE) :
+			return HandleDirectOperate(request, sequence, response);
 		case(FunctionCode::DELAY_MEASURE):		
 			return HandleDelayMeasure(request, sequence, response);	
 		default:	
@@ -250,6 +257,7 @@ IINField Slave::HandleSelect(const APDURecord& request, SequenceInfo sequence, A
 	if(request.objects.Size() > response.Remaining())
 	{
 		LOG_BLOCK(LogLevel::Warning, "Igonring command request due to payload size of " << request.objects.Size());
+		selectBuffer.Clear();
 		return IINField(IINBit::PARAM_ERROR);		
 	}
 	else
@@ -284,7 +292,8 @@ IINField Slave::HandleOperate(const APDURecord& request, SequenceInfo sequence, 
 {	
 	if (request.objects.Size() > response.Remaining())
 	{
-		LOG_BLOCK(LogLevel::Warning, "Igonring command request due to payload size of " << request.objects.Size());
+		LOG_BLOCK(LogLevel::Warning, "Igonring operate request due to payload size of " << request.objects.Size());
+		selectBuffer.Clear();
 		return IINField(IINBit::PARAM_ERROR);
 	}
 	else
@@ -312,6 +321,22 @@ IINField Slave::HandleOperate(const APDURecord& request, SequenceInfo sequence, 
 				return HandleCommandWithConstant(request, response, CommandStatus::NO_SELECT);
 			
 		}			
+	}
+}
+
+IINField Slave::HandleDirectOperate(const APDURecord& request, SequenceInfo sequence, APDUResponse& response)
+{
+	if (request.objects.Size() > response.Remaining())
+	{
+		LOG_BLOCK(LogLevel::Warning, "Igonring direct operate request due to payload size of " << request.objects.Size());
+		return IINField(IINBit::PARAM_ERROR);
+	}
+	else
+	{
+		CommandActionAdapter adapter(this->mpCmdHandler, false); // do the operation
+		CommandResponseHandler handler(mLogger, mConfig.mMaxControls, &adapter, response);
+		auto result = APDUParser::ParseTwoPass(request.objects, &handler);
+		return IINFromParseResult(result);		
 	}
 }
 
