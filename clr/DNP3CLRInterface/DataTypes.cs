@@ -174,6 +174,51 @@ public class Counter {
 }
 
 /// <summary>
+/// Quality enumeration for FrozenCounters
+/// </summary>
+public enum FrozenCounterQuality
+{
+    CQ_ONLINE = 0x01,
+    CQ_RESTART = 0x02,
+    CQ_COMM_LOST = 0x04,
+    CQ_REMOTE_FORCED_DATA = 0x08,
+    CQ_LOCAL_FORCED_DATA = 0x10,
+    /// <summary>
+    /// used to indicate that the counter filled up and rolledover, cleared automatically after reading
+    /// </summary>
+    CQ_ROLLOVER = 0x20,
+    /// <summary>
+    /// indicates an unusual change in value
+    /// </summary>
+    CQ_DISCONTINUITY = 0x40,
+    CQ_RESERVED = 0x80
+}
+
+/// <summary>
+/// An increasing count of some event frozen in time
+/// </summary>
+public class FrozenCounter
+{
+
+    /// <summary>
+    /// Constructor
+    /// </summary>
+    /// <param name="value">value of the measurement</param>
+    /// <param name="quality">quality enumeration as a bitfield</param>
+    /// <param name="time">timestamp</param>
+    public FrozenCounter(System.UInt32 value, byte quality, DateTime time)
+    {
+        this.value = value;
+        this.quality = quality;
+        this.time = time;
+    }
+
+    public readonly System.UInt32 value;
+    public readonly byte quality;
+    public readonly DateTime time;
+}
+
+/// <summary>
 /// Quality enumeration for Control Status measurements
 /// </summary>
 public enum ControlQuality {

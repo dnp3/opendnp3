@@ -60,6 +60,13 @@ namespace DNP3.Interface
 		void Update(Counter update, System.UInt32 index);
 
         /// <summary>
+        /// Update a FrozenCounter
+        /// </summary>
+        /// <param name="update">measurement to update</param>
+        /// <param name="index">index of measurement</param>
+        void Update(FrozenCounter update, System.UInt32 index);
+
+        /// <summary>
         /// Update a BinaryOutputStatus
         /// </summary>
         /// <param name="update">measurement to update</param>

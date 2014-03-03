@@ -165,36 +165,37 @@ OctetString^ Conversions::convertMeas(const opendnp3::OctetString& arMeas)
 
 opendnp3::Binary Conversions::convertMeas(Binary ^ meas)
 {
-	opendnp3::Binary m(meas->value, meas->quality);
-	m.SetTime(TimeStamp::Convert(meas->time));
+	opendnp3::Binary m(meas->value, meas->quality, TimeStamp::Convert(meas->time));	
 	return m;
 }
 
 opendnp3::Analog Conversions::convertMeas(Analog ^ meas)
 {
-	opendnp3::Analog m(meas->value, meas->quality);
-	m.SetTime(TimeStamp::Convert(meas->time));
+	opendnp3::Analog m(meas->value, meas->quality, TimeStamp::Convert(meas->time));	
 	return m;
 }
 
 opendnp3::Counter Conversions::convertMeas(Counter ^ meas)
 {
-	opendnp3::Counter m(meas->value, meas->quality);
-	m.SetTime(TimeStamp::Convert(meas->time));
+	opendnp3::Counter m(meas->value, meas->quality, TimeStamp::Convert(meas->time));	
+	return m;
+}
+
+opendnp3::FrozenCounter Conversions::convertMeas(FrozenCounter ^ meas)
+{
+	opendnp3::FrozenCounter m(meas->value, meas->quality, TimeStamp::Convert(meas->time));	
 	return m;
 }
 
 opendnp3::AnalogOutputStatus Conversions::convertMeas(AnalogOutputStatus ^ meas)
 {
-	opendnp3::AnalogOutputStatus m(meas->value, meas->quality);
-	m.SetTime(TimeStamp::Convert(meas->time));
+	opendnp3::AnalogOutputStatus m(meas->value, meas->quality, TimeStamp::Convert(meas->time));	
 	return m;
 }
 
 opendnp3::BinaryOutputStatus Conversions::convertMeas(BinaryOutputStatus ^ meas)
 {
-	opendnp3::BinaryOutputStatus m(meas->value, meas->quality);
-	m.SetTime(TimeStamp::Convert(meas->time));
+	opendnp3::BinaryOutputStatus m(meas->value, meas->quality, TimeStamp::Convert(meas->time));
 	return m;
 }
 

@@ -90,6 +90,7 @@ public:
 	static opendnp3::Binary convertMeas(Binary ^ meas);
 	static opendnp3::Analog convertMeas(Analog ^ meas);
 	static opendnp3::Counter convertMeas(Counter ^ meas);
+	static opendnp3::FrozenCounter convertMeas(FrozenCounter ^ meas);
 	static opendnp3::AnalogOutputStatus convertMeas(AnalogOutputStatus ^ meas);
 	static opendnp3::BinaryOutputStatus convertMeas(BinaryOutputStatus ^ meas);
 
