@@ -40,4 +40,9 @@ void APDUResponse::SetIIN(const IINField& indications)
 	buffer[3] = indications.MSB;
 }
 
+IINField APDUResponse::GetIIN() const
+{
+	return IINField(buffer[2], buffer[3]);
+}
+
 }

@@ -660,10 +660,19 @@
     <ClInclude Include="include\opendnp3\gen\StaticBinaryOutputStatusResponse.h">
       <Filter>Source\gen\Include\gen</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\SelectHandler.h">
+    <ClInclude Include="src\opendnp3\SelectBuffer.h">
       <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\SelectBuffer.h">
+    <ClInclude Include="src\opendnp3\ICommandAction.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\CommandActionAdapter.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\ConstantCommandAction.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\CommandResponseHandler.h">
       <Filter>Header</Filter>
     </ClInclude>
   </ItemGroup>
@@ -1070,10 +1079,13 @@
     <ClCompile Include="src\opendnp3\gen\StaticBinaryOutputStatusResponse.cpp">
       <Filter>Source\gen</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\SelectHandler.cpp">
+    <ClCompile Include="src\opendnp3\SelectBuffer.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\SelectBuffer.cpp">
+    <ClCompile Include="src\opendnp3\CommandActionAdapter.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\CommandResponseHandler.cpp">
       <Filter>Source</Filter>
     </ClCompile>
   </ItemGroup>

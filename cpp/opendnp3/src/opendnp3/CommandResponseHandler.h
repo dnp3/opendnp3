@@ -18,16 +18,16 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __SELECT_HANDLER_H_
-#define __SELECT_HANDLER_H_
+#ifndef __COMMAND_RESPONSE_HANDLER_H_
+#define __COMMAND_RESPONSE_HANDLER_H_
 
 #include "APDUHandlerBase.h"
 
 #include <openpal/StaticBuffer.h>
 #include <openpal/Loggable.h>
 #include <openpal/LoggableMacros.h>
-#include <opendnp3/ICommandHandler.h>
 
+#include "ICommandAction.h"
 #include "APDUResponse.h"
 #include "StaticSizeConfiguration.h"
 
@@ -35,11 +35,11 @@
 namespace opendnp3
 {
 
-class SelectHandler : private openpal::Loggable, public APDUHandlerBase
+class CommandResponseHandler : private openpal::Loggable, public APDUHandlerBase
 {
 public:
 
-	SelectHandler(openpal::Logger logger, uint8_t maxCommands_, ICommandHandler* pCommandHandler_, APDUResponse& response_);
+	CommandResponseHandler(openpal::Logger logger, uint8_t maxCommands_, ICommandAction* pCommandAction_, APDUResponse& response_);
 
 	virtual void _OnIndexPrefix(QualifierCode qualifier, const IterableBuffer<IndexedValue<ControlRelayOutputBlock, uint16_t>>& meas) final;
 	virtual void _OnIndexPrefix(QualifierCode qualifier, const IterableBuffer<IndexedValue<AnalogOutputInt16, uint16_t>>& meas) final;
@@ -57,26 +57,26 @@ public:
 
 private:
 			
-	ICommandHandler* pCommandHandler;
+	ICommandAction* pCommandAction;
 	uint32_t numRequests;
 	uint32_t numSuccess;
 	const uint8_t maxCommands;
 	ObjectWriter writer;
 
 	template <class Target, class IndexType>
-	void Select(QualifierCode qualifier, IDNP3Serializer<Target>* pSerializer, const IterableBuffer<IndexedValue<Target, typename IndexType::Type>>& meas);
+	void RespondToHeader(QualifierCode qualifier, IDNP3Serializer<Target>* pSerializer, const IterableBuffer<IndexedValue<Target, typename IndexType::Type>>& meas);
 
 };
 
 template <class Target, class IndexType>
-void SelectHandler::Select(QualifierCode qualifier, IDNP3Serializer<Target>* pSerializer, const IterableBuffer<IndexedValue<Target, typename IndexType::Type>>& meas)
+void CommandResponseHandler::RespondToHeader(QualifierCode qualifier, IDNP3Serializer<Target>* pSerializer, const IterableBuffer<IndexedValue<Target, typename IndexType::Type>>& meas)
 {		
 	auto iter = writer.IterateOverCountWithPrefix<IndexType, Target>(qualifier, pSerializer);
 	meas.foreach([this, &iter](const IndexedValue<Target, typename IndexType::Type>& command) {				
 		auto result = CommandStatus::TOO_MANY_OPS;
 		if (numRequests < maxCommands) 
 		{
-			result = pCommandHandler->Supports(command.value, command.index);						
+			result = pCommandAction->Action(command.value, command.index);
 		}		
 		if (result == CommandStatus::SUCCESS) ++numSuccess;
 		Target response(command.value);

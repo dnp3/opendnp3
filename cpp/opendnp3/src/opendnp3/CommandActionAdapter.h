@@ -18,70 +18,44 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __BUFFER_WRAPPER_H_
-#define __BUFFER_WRAPPER_H_
+#ifndef __COMMAND_ACTION_ADAPTER_H_
+#define __COMMAND_ACTION_ADAPTER_H_
 
-#include "HasSize.h"
+#include "ICommandAction.h"
 
-#include <cstddef>
-#include <cstdint>
+#include <opendnp3/ICommandHandler.h>
 
-namespace openpal
+namespace opendnp3
 {
-	
-class ReadOnlyBuffer : public HasSize<uint32_t>
+
+/**
+* Interface used to dispatch an abstract action using a command
+*/
+class CommandActionAdapter : public ICommandAction
 {
 
 public:
 
-	ReadOnlyBuffer();
-	ReadOnlyBuffer(uint8_t const* apBuffer, uint32_t aSize);
+	CommandActionAdapter(ICommandHandler* pHandler_, bool supports_);
+	
+	virtual CommandStatus Action(const ControlRelayOutputBlock& command, uint16_t aIndex) final;
+	
+	virtual CommandStatus Action(const AnalogOutputInt16& command, uint16_t aIndex) final;
 
-	void CopyTo(uint8_t* apDest) const;
+	virtual CommandStatus Action(const AnalogOutputInt32& command, uint16_t aIndex) final;
+	
+	virtual CommandStatus Action(const AnalogOutputFloat32& command, uint16_t aIndex) final;
 
-	ReadOnlyBuffer Truncate(uint32_t aSize) const;
-
-	void ZeroSize();
-
-	bool Equals(const ReadOnlyBuffer& rhs) const;
-
-	void Advance(uint32_t aNum);
-
-	operator uint8_t const *() const { return mpBuffer; };
+	virtual CommandStatus Action(const AnalogOutputDouble64& command, uint16_t aIndex) final;
 
 private:
-	uint8_t const* mpBuffer;
-	
+
+	ICommandHandler* pHandler;
+	bool supports;
+
 };
-
-class WriteBuffer : public HasSize<uint32_t>
-{
-	public:
-
-	static WriteBuffer Empty();
-
-    WriteBuffer();
-	WriteBuffer(const WriteBuffer& copy);
-	WriteBuffer(uint8_t* apBuffer, uint32_t aSize);
-
-	void Clear();
-
-	void Advance(uint32_t aNum);
-
-	WriteBuffer Truncate(uint32_t aNum) const;
-
-	ReadOnlyBuffer ToReadOnly() const;
-
-	operator uint8_t *() { return mpBuffer; };
-
-	operator uint8_t const *() const { return mpBuffer; };
-
-	private:
-
-	uint8_t* mpBuffer;
-};
-
 
 }
 
 #endif
+

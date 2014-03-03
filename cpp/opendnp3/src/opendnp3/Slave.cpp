@@ -34,7 +34,10 @@
 
 #include "WriteHandler.h"
 #include "ReadHandler.h"
-#include "SelectHandler.h"
+#include "CommandResponseHandler.h"
+
+#include "CommandActionAdapter.h"
+#include "ConstantCommandAction.h"
 
 #include <functional>
 
@@ -47,7 +50,8 @@ Slave::Slave(openpal::Logger aLogger, IAppLayer* apAppLayer, IExecutor* apExecut
 	IAppUser(aLogger),
 	StackBase(apExecutor),
 	mpTimeWriteHandler(apTimeWriteHandler),
-	selectBuffer(apExecutor, mConfig.mSelectTimeout),
+	selectBuffer(apExecutor, arCfg.mSelectTimeout),	
+	lastResponse(responseBuffer.GetWriteBuffer()),
 	mpAppLayer(apAppLayer),
 	mpDatabase(apDatabase),
 	mpCmdHandler(apCmdHandler),
@@ -182,6 +186,7 @@ void Slave::RespondToRequest(const APDURecord& record, SequenceInfo sequence)
 	response.SetFunction(FunctionCode::RESPONSE);
 	response.SetControl(AppControlField::DEFAULT);
 	auto indications = ConfigureResponse(record, sequence, response);
+	lastResponse = response;
 	this->SendResponse(response, indications);	
 }
 
@@ -195,6 +200,8 @@ IINField Slave::ConfigureResponse(const APDURecord& request, SequenceInfo sequen
 			return HandleWrite(request, sequence);
 		case(FunctionCode::SELECT) :
 			return HandleSelect(request, sequence, response);
+		case(FunctionCode::OPERATE) :
+			return HandleOperate(request, sequence, response);
 		case(FunctionCode::DELAY_MEASURE):		
 			return HandleDelayMeasure(request, sequence, response);	
 		default:	
@@ -247,18 +254,65 @@ IINField Slave::HandleSelect(const APDURecord& request, SequenceInfo sequence, A
 	}
 	else
 	{
-		SelectHandler handler(mLogger, mConfig.mMaxControls, this->mpCmdHandler, response); // TODO make max commands configurable
+		CommandActionAdapter adapter(this->mpCmdHandler, true);
+		CommandResponseHandler handler(mLogger, mConfig.mMaxControls, &adapter, response);
 		auto result = APDUParser::ParseTwoPass(request.objects, &handler); 
 		if (result == APDUParser::Result::OK)
 		{
 			if(handler.AllCommandsSuccessful())
 			{
-				selectBuffer.Select(request.objects);
+				auto result = selectBuffer.Select(request.control.SEQ, request.objects);
+				switch (result)
+				{
+					case(SelectBuffer::SelectResult::OK) :
+					case(SelectBuffer::SelectResult::REPEAT):
+						return IINField::Empty;
+					default:
+						return IINField(IINBit::PARAM_ERROR);
+				}
 			}
-			return IINField::Empty;
+			else
+			{
+				return IINField::Empty;
+			}			
 		}
 		else return IINFromParseResult(result);
 	}	
+}
+
+IINField Slave::HandleOperate(const APDURecord& request, SequenceInfo sequence, APDUResponse& response)
+{	
+	if (request.objects.Size() > response.Remaining())
+	{
+		LOG_BLOCK(LogLevel::Warning, "Igonring command request due to payload size of " << request.objects.Size());
+		return IINField(IINBit::PARAM_ERROR);
+	}
+	else
+	{
+		auto result = selectBuffer.Operate(request.control.SEQ, request.objects);
+		switch (result)
+		{
+			
+			case(SelectBuffer::OperateResult::TIMEOUT):
+				return HandleCommandWithConstant(request, response, CommandStatus::TIMEOUT);
+			case(SelectBuffer::OperateResult::REPEAT):
+			{
+				// respond with the last response
+				response = lastResponse;
+				return lastResponse.GetIIN();
+			}			
+			case(SelectBuffer::OperateResult::OK) :
+			{
+				CommandActionAdapter adapter(this->mpCmdHandler, false);
+				CommandResponseHandler handler(mLogger, mConfig.mMaxControls, &adapter, response);
+				auto result = APDUParser::ParseTwoPass(request.objects, &handler);
+				return IINFromParseResult(result);
+			}
+			default:
+				return HandleCommandWithConstant(request, response, CommandStatus::NO_SELECT);
+			
+		}			
+	}
 }
 
 void Slave::ContinueResponse()
@@ -286,6 +340,13 @@ IINField Slave::HandleDelayMeasure(const APDURecord& request, SequenceInfo seque
 	}	
 }
 
+IINField Slave::HandleCommandWithConstant(const APDURecord& request, APDUResponse& response, CommandStatus status)
+{
+	ConstantCommandAction constant(status);
+	CommandResponseHandler handler(mLogger, mConfig.mMaxControls, &constant, response);
+	auto result = APDUParser::ParseTwoPass(request.objects, &handler);
+	return IINFromParseResult(result);
+}
 
 void Slave::SendResponse(APDUResponse& response, const IINField& indications)
 {

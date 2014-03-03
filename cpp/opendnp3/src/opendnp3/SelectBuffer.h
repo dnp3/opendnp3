@@ -23,11 +23,6 @@
 
 #include <openpal/StaticBuffer.h>
 #include <openpal/IExecutor.h>
-
-#include <opendnp3/gen/CommandStatus.h>
-
-
-
 #include "StaticSizeConfiguration.h"
 
 namespace opendnp3
@@ -37,19 +32,49 @@ class SelectBuffer
 {
 
 public:
+
+	enum class SelectResult
+	{
+		REPEAT,				
+		PARAM_ERROR,
+		OK
+	};
+
+	enum class OperateResult
+	{
+		REPEAT,	
+		NO_SELECT,
+		TIMEOUT,
+		OK
+	};
+
 	SelectBuffer(openpal::IExecutor* pExecutor_, const openpal::TimeDuration& selectTimeout_);
 
-	bool Select(const openpal::ReadOnlyBuffer& headers);
+	SelectResult Select(uint8_t sequence, const openpal::ReadOnlyBuffer& headers);
 	
-	CommandStatus Compare(const openpal::ReadOnlyBuffer& headers);
-	
+	OperateResult Operate(uint8_t sequence, const openpal::ReadOnlyBuffer& headers);
 
-private:
+	void Clear();	
+	
+private:	
+
+	enum class State
+	{
+		NoSelect,
+		Selected,
+		Operated
+	};
+
+	SelectResult RecordSelect(uint8_t sequence, const openpal::ReadOnlyBuffer& headers);
+
+	State state;
 	openpal::IExecutor* pExecutor;
 	const openpal::TimeDuration selectTimeout;
 	openpal::MonotonicTimestamp timestamp;
-	uint32_t selectedSize;
-	openpal::StaticBuffer<SizeConfiguration::MAX_APDU_BUFFER_SIZE> selectBuffer;
+	uint8_t selectedSequence;
+	
+	openpal::StaticBuffer<SizeConfiguration::MAX_APDU_BUFFER_SIZE> buffer;
+	openpal::ReadOnlyBuffer selectedBuffer;
 };
 
 }

@@ -122,6 +122,8 @@ private:
 	openpal::StaticBuffer<SizeConfiguration::MAX_APDU_BUFFER_SIZE> responseBuffer;
 	SelectBuffer selectBuffer;
 
+	APDUResponse lastResponse;				// wrapper that points to the last response made
+
 	ChangeBuffer mChangeBuffer;				// how client code gives us updates
 	IAppLayer* mpAppLayer;					// lower application layer
 	Database* mpDatabase;					// holds static data
@@ -164,7 +166,11 @@ private:
 	IINField HandleWrite(const APDURecord& request, SequenceInfo sequence);
 	IINField HandleRead(const APDURecord& request, SequenceInfo sequence, APDUResponse& response);
 	IINField HandleSelect(const APDURecord& request, SequenceInfo sequence, APDUResponse& response);
+	IINField HandleOperate(const APDURecord& request, SequenceInfo sequence, APDUResponse& response);
 	IINField HandleDelayMeasure(const APDURecord& request, SequenceInfo sequence, APDUResponse& response);
+
+
+	IINField HandleCommandWithConstant(const APDURecord& request, APDUResponse& response, CommandStatus status);
 
 	void ContinueResponse();	
 

@@ -72,7 +72,6 @@ BOOST_AUTO_TEST_CASE(SelectOperateCROB)
 	t.SendToSlave("C0 03 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00", SequenceInfo::OTHER);
 	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 00 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00"); // 0x00 status == CommandStatus::SUCCESS
 
-
 	// operate
 	t.SendToSlave("C1 04 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00", SequenceInfo::CORRECT);
 	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 00 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00");
@@ -97,12 +96,12 @@ BOOST_AUTO_TEST_CASE(SelectOperateCROBSameSequenceNumber)
 	t.SendToSlave("C1 04 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00", SequenceInfo::CORRECT);
 	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 00 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00");
 	BOOST_REQUIRE_EQUAL(2, t.cmdHandler.mNumInvocations);
-
-
+	
+	// TODO - Find this requirement in the docs
 	// operate again with same sequence number, should respond success but not really do an operation
 	t.SendToSlave("C1 04 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00", SequenceInfo::PREVIOUS);
 	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 00 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00");
-	BOOST_REQUIRE_EQUAL(2, t.cmdHandler.mNumInvocations);
+	BOOST_REQUIRE_EQUAL(2, t.cmdHandler.mNumInvocations);	
 }
 
 BOOST_AUTO_TEST_CASE(SelectGroup41Var1)

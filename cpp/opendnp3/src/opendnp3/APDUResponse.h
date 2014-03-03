@@ -35,8 +35,9 @@ class APDUResponse : public APDUWrapper
 	APDUResponse(const openpal::WriteBuffer& aBuffer);
 
 	void SetIIN(const IINField& indications);
-	
-	
+
+	IINField GetIIN() const;
+		
 	private:
 	
 	APDUResponse();	

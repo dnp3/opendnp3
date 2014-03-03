@@ -106,8 +106,10 @@
     <ClInclude Include="src\opendnp3\BitReader.h" />
     <ClInclude Include="src\opendnp3\CachedRequest.h" />
     <ClInclude Include="src\opendnp3\ChangeBuffer.h" />
+    <ClInclude Include="src\opendnp3\CommandActionAdapter.h" />
     <ClInclude Include="src\opendnp3\CommandSequence.h" />
     <ClInclude Include="src\opendnp3\CommandTask.h" />
+    <ClInclude Include="src\opendnp3\ConstantCommandAction.h" />
     <ClInclude Include="src\opendnp3\ConstantCommandProcessor.h" />
     <ClInclude Include="src\opendnp3\CopyableBuffer.h" />
     <ClInclude Include="src\opendnp3\CountOf.h" />
@@ -140,6 +142,7 @@
     <ClInclude Include="src\opendnp3\IAPDUHandler.h" />
     <ClInclude Include="src\opendnp3\IAppLayer.h" />
     <ClInclude Include="src\opendnp3\IAppUser.h" />
+    <ClInclude Include="src\opendnp3\ICommandAction.h" />
     <ClInclude Include="src\opendnp3\IEventBuffer.h" />
     <ClInclude Include="src\opendnp3\IEventWriter.h" />
     <ClInclude Include="src\opendnp3\IEventWriterState.h" />
@@ -201,7 +204,7 @@
     <ClInclude Include="src\opendnp3\RangeWriteIterator.h" />
     <ClInclude Include="src\opendnp3\ReadHandler.h" />
     <ClInclude Include="src\opendnp3\SelectBuffer.h" />
-    <ClInclude Include="src\opendnp3\SelectHandler.h" />
+    <ClInclude Include="src\opendnp3\CommandResponseHandler.h" />
     <ClInclude Include="src\opendnp3\StaticResponseContext.h" />
     <ClInclude Include="src\opendnp3\StaticLoader.h" />
     <ClInclude Include="src\opendnp3\SecLinkLayerStates.h" />
@@ -254,6 +257,7 @@
     <ClCompile Include="src\opendnp3\BitReader.cpp" />
     <ClCompile Include="src\opendnp3\CachedRequest.cpp" />
     <ClCompile Include="src\opendnp3\ChangeBuffer.cpp" />
+    <ClCompile Include="src\opendnp3\CommandActionAdapter.cpp" />
     <ClCompile Include="src\opendnp3\CommandResponse.cpp" />
     <ClCompile Include="src\opendnp3\CommandTask.cpp" />
     <ClCompile Include="src\opendnp3\ConstantCommandProcessor.cpp" />
@@ -344,7 +348,7 @@
     <ClCompile Include="src\opendnp3\QueuedCommandProcessor.cpp" />
     <ClCompile Include="src\opendnp3\ReadHandler.cpp" />
     <ClCompile Include="src\opendnp3\SelectBuffer.cpp" />
-    <ClCompile Include="src\opendnp3\SelectHandler.cpp" />
+    <ClCompile Include="src\opendnp3\CommandResponseHandler.cpp" />
     <ClCompile Include="src\opendnp3\StaticResponseContext.cpp" />
     <ClCompile Include="src\opendnp3\SecLinkLayerStates.cpp" />
     <ClCompile Include="src\opendnp3\ShiftableBuffer.cpp" />

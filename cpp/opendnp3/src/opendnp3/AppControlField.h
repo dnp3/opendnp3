@@ -30,7 +30,7 @@ namespace opendnp3
 */
 struct AppControlField {
 
-	const static AppControlField DEFAULT;// = AppControlField(true, true, false, false, 0);
+	const static AppControlField DEFAULT;
 		
 	AppControlField();
 
