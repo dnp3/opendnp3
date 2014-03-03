@@ -18,8 +18,6 @@
  */
 package com.automatak.dnp3;
 
-import com.automatak.CommandResponse;
-
 /**
  * Interface for dispatching command requests from a master to an outstation
  */

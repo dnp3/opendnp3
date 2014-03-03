@@ -18,7 +18,7 @@
  */
 package com.automatak.dnp3.impl;
 
-import com.automatak.CommandResponse;
+import com.automatak.dnp3.CommandResponse;
 import com.automatak.dnp3.*;
 
 

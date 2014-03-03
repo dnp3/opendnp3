@@ -16,7 +16,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.automatak;
+package com.automatak.dnp3;
 
 import com.automatak.dnp3.CommandResult;
 import com.automatak.dnp3.CommandStatus;

@@ -74,8 +74,8 @@ void ChangeBuffer::Update(const Counter& arPoint, uint16_t aIndex)
 
 void ChangeBuffer::Update(const FrozenCounter& arPoint, uint16_t aIndex)
 {
-        mChangeQueue.push_back(std::bind(&ChangeBuffer::Dispatch<FrozenCounter>, std::placeholders::_1, arPoint, aIndex));
-        mNotify = true;
+    mChangeQueue.push_back(std::bind(&ChangeBuffer::Dispatch<FrozenCounter>, std::placeholders::_1, arPoint, aIndex));
+    mNotify = true;
 }
 
 void ChangeBuffer::Update(const BinaryOutputStatus& arPoint, uint16_t aIndex)

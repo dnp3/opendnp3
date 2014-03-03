@@ -33,8 +33,7 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_DataObserverImpl_native_1upd
 (JNIEnv*, jobject, jlong observer, jboolean val, jbyte qual, jlong time, jlong index)
 {
 	auto pObs = (IDataObserver*) observer;
-	Binary meas(val, qual);
-	meas.SetTime(time);
+	Binary meas(val, qual, time);	
 	pObs->Update(meas, index);
 }
 
@@ -42,8 +41,7 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_DataObserverImpl_native_1upd
 (JNIEnv*, jobject, jlong observer, jdouble val, jbyte qual, jlong time, jlong index)
 {
 	auto pObs = (IDataObserver*) observer;
-	Analog meas(val, qual);
-	meas.SetTime(time);
+	Analog meas(val, qual, time);	
 	pObs->Update(meas, index);
 }
 
@@ -51,8 +49,7 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_DataObserverImpl_native_1upd
 (JNIEnv*, jobject, jlong observer, jlong val, jbyte qual, jlong time, jlong index)
 {
 	auto pObs = (IDataObserver*) observer;
-	Counter meas(val, qual);
-	meas.SetTime(time);
+	Counter meas(val, qual, time);	
 	pObs->Update(meas, index);
 }
 
@@ -60,8 +57,7 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_DataObserverImpl_native_1upd
   (JNIEnv *, jobject, jlong observer, jlong val, jbyte qual, jlong time, jlong index)
 {
 	auto pObs = (IDataObserver*) observer;
-	FrozenCounter meas(val, qual);
-	meas.SetTime(time);
+	FrozenCounter meas(val, qual, time);	
 	pObs->Update(meas, index);
 }
 
@@ -70,8 +66,7 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_DataObserverImpl_native_1upd
 (JNIEnv*, jobject, jlong observer, jboolean val, jbyte qual, jlong time, jlong index)
 {
 	auto pObs = (IDataObserver*) observer;
-	BinaryOutputStatus meas(val, qual);
-	meas.SetTime(time);
+	BinaryOutputStatus meas(val, qual, time);	
 	pObs->Update(meas, index);
 }
 
@@ -79,8 +74,7 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_DataObserverImpl_native_1upd
 (JNIEnv*, jobject, jlong observer, jdouble val, jbyte qual, jlong time, jlong index)
 {
 	auto pObs = (IDataObserver*) observer;
-	AnalogOutputStatus meas(val, qual);
-	meas.SetTime(time);
+	AnalogOutputStatus meas(val, qual, time);	
 	pObs->Update(meas, index);
 }
 

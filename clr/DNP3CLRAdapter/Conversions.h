@@ -101,6 +101,7 @@ public:
 	static opendnp3::StaticBinaryResponse convert(StaticBinaryResponse rsp);
 	static opendnp3::StaticAnalogResponse convert(StaticAnalogResponse rsp);
 	static opendnp3::StaticCounterResponse convert(StaticCounterResponse rsp);
+	static opendnp3::StaticFrozenCounterResponse convert(StaticFrozenCounterResponse rsp);
 	static opendnp3::StaticAnalogOutputStatusResponse convert(StaticAnalogOutputStatusResponse rsp);
 
 	static opendnp3::EventBinaryResponse convert(EventBinaryResponse rsp);

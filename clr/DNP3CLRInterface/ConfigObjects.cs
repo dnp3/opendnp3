@@ -399,6 +399,11 @@ namespace DNP3.Interface
 	    /// </summary>
         public StaticCounterResponse staticCounter;
 
+        /// <summary>
+        /// The default group/variation to use for static analog responses
+        /// </summary>
+        public StaticFrozenCounterResponse staticFrozenCounter;
+
 	    /// <summary>
         /// The default group/variation to use for static setpoint status responses
 	    /// </summary>
@@ -479,16 +484,19 @@ namespace DNP3.Interface
         /// <param name="numBinary">numer of binary values starting at index 0</param>
         /// <param name="numAnalog">numer of analog values starting at index 0</param>
         /// <param name="numCounter">numer of counter values starting at index 0</param>
+        /// <param name="numCounter">numer of frozen counter values starting at index 0</param>
         /// <param name="numBinaryOutputStatus">numer of control status values starting at index 0</param>
         /// <param name="numAnalogOutputStatus">numer of setpoint status values starting at index 0</param>
         public DeviceTemplate(  System.UInt16 numBinary,
                                 System.UInt16 numAnalog,
                                 System.UInt16 numCounter,
+                                System.UInt16 numFrozenCounter,
                                 System.UInt16 numBinaryOutputStatus,
                                 System.UInt16 numAnalogOutputStatus)
         {
             binaries = Enumerable.Range(0, numBinary).Select(i => new EventPointRecord(PointClass.PC_CLASS_1)).ToList();
             counters = Enumerable.Range(0, numCounter).Select(i => new DeadbandEventPointRecord<System.UInt32>(PointClass.PC_CLASS_1, 0)).ToList();
+            frozenCounters = Enumerable.Range(0, numFrozenCounter).Select(i => new DeadbandEventPointRecord<System.UInt32>(PointClass.PC_CLASS_1, 0)).ToList();
             analogs = Enumerable.Range(0, numAnalog).Select(i => new DeadbandEventPointRecord<double>(PointClass.PC_CLASS_1, 0.0)).ToList();
             numControlStatii = numBinaryOutputStatus;
             numSetpointStatii = numAnalogOutputStatus;
@@ -498,7 +506,7 @@ namespace DNP3.Interface
         /// Default constructor that sets up 10 of every type
         /// </summary>
         public DeviceTemplate()
-            : this(10, 10, 10, 10, 10)
+            : this(10, 10, 10, 10, 10, 10)
         { }
 
         /// <summary>
@@ -509,6 +517,10 @@ namespace DNP3.Interface
         /// Modify individual analog configuration here
         /// </summary>
         public List<DeadbandEventPointRecord<System.UInt32>> counters;
+        /// <summary>
+        /// Modify individual analog configuration here
+        /// </summary>
+        public List<DeadbandEventPointRecord<System.UInt32>> frozenCounters;
         /// <summary>
         /// Modify individual counter configuration here
         /// </summary>
@@ -563,7 +575,7 @@ namespace DNP3.Interface
         public SlaveStackConfig()
         {
             this.slave = new SlaveConfig();
-            this.device = new DeviceTemplate(10, 10, 10, 10, 10);
+            this.device = new DeviceTemplate(10, 10, 10, 10, 10, 10);
             this.link = new LinkConfig(false, false);
             this.app = new AppConfig(false);            
         }

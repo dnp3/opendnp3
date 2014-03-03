@@ -250,6 +250,11 @@ opendnp3::StaticCounterResponse Conversions::convert(StaticCounterResponse rsp)
 	return (opendnp3::StaticCounterResponse) rsp;
 }
 
+opendnp3::StaticFrozenCounterResponse Conversions::convert(StaticFrozenCounterResponse rsp)
+{
+	return (opendnp3::StaticFrozenCounterResponse) rsp;
+}
+
 opendnp3::StaticAnalogOutputStatusResponse Conversions::convert(StaticAnalogOutputStatusResponse rsp)
 {
 	return (opendnp3::StaticAnalogOutputStatusResponse) rsp;
@@ -287,6 +292,7 @@ opendnp3::SlaveConfig Conversions::convertConfig(SlaveConfig ^ config)
 	sc.mStaticBinary = convert(config->staticBinary);
 	sc.mStaticAnalog = convert(config->staticAnalog);
 	sc.mStaticCounter = convert(config->staticCounter);
+	sc.mStaticFrozenCounter = convert(config->staticFrozenCounter);
 	sc.mStaticAnalogOutputStatus = convert(config->staticAnalogOutputStatus);
 	sc.mEventBinary = convert(config->eventBinary);
 	sc.mEventAnalog = convert(config->eventAnalog);
@@ -315,14 +321,16 @@ opendnp3::DatabaseConfiguration Conversions::convertConfig(DeviceTemplate ^ conf
 	opendnp3::DatabaseTemplate tmp(config->binaries->Count,
 											config->analogs->Count,
 											config->counters->Count,
+											config->frozenCounters->Count,
 											config->numControlStatii,
-											config->numSetpointStatii);										
+											config->numSetpointStatii);
 
 	opendnp3::DatabaseConfiguration dev(tmp);
 
 	for(int i = 0; i < config->binaries->Count; ++i) dev.binaryMetadata[i] = convertRecord(config->binaries[i]);
 	for(int i = 0; i < config->analogs->Count; ++i) dev.analogMetadata[i] = convertRecord(config->analogs[i]);
 	for(int i = 0; i < config->counters->Count; ++i) dev.counterMetadata[i] = convertRecord(config->counters[i]);
+	for (int i = 0; i < config->counters->Count; ++i) dev.frozenCounterMetadata[i] = convertRecord(config->frozenCounters[i]);	
 
 	return dev;
 }

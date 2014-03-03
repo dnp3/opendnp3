@@ -62,6 +62,7 @@
     <Compile Include="gen\StaticBinaryResponse.cs" />
     <Compile Include="gen\StaticCounterResponse.cs" />
     <Compile Include="gen\StaticAnalogOutputStatusResponse.cs" />
+    <Compile Include="gen\StaticFrozenCounterResponse.cs" />
     <Compile Include="ICommandHandler.cs">
       <SubType>Code</SubType>
     </Compile>
