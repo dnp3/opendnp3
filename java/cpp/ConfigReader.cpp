@@ -31,7 +31,7 @@ MasterStackConfig ConfigReader::ConvertMasterStackConfig(JNIEnv* apEnv, jobject 
 	MasterStackConfig cfg;
 
 	cfg.link = ConvertLinkConfig(apEnv, JNIHelpers::GetObjectField(apEnv, jCfg, "linkConfig", "Lcom/automatak/dnp3/LinkLayerConfig;"));
-	cfg.app = ConvertAppConfig(apEnv, JNIHelpers::GetObjectField(apEnv, jCfg, "appConfig", "Lcom/automatak/dnp3/AppLayerConfig;"));
+	cfg.app = ConvertAppConfig(apEnv, JNIHelpers::GetObjectField(apEnv, jCfg, "appConfig", "Lcom/automatak/dnp3/AppLayerConfig;"), true);
 	cfg.master = ConvertMasterConfig(apEnv, JNIHelpers::GetObjectField(apEnv, jCfg, "masterConfig", "Lcom/automatak/dnp3/MasterConfig;"));
 
 	return cfg;
@@ -42,7 +42,7 @@ SlaveStackConfig ConfigReader::ConvertSlaveStackConfig(JNIEnv* apEnv, jobject jC
 	SlaveStackConfig cfg;
 
 	cfg.link = ConvertLinkConfig(apEnv, JNIHelpers::GetObjectField(apEnv, jCfg, "linkConfig", "Lcom/automatak/dnp3/LinkLayerConfig;"));
-	cfg.app = ConvertAppConfig(apEnv, JNIHelpers::GetObjectField(apEnv, jCfg, "appConfig", "Lcom/automatak/dnp3/AppLayerConfig;"));
+	cfg.app = ConvertAppConfig(apEnv, JNIHelpers::GetObjectField(apEnv, jCfg, "appConfig", "Lcom/automatak/dnp3/AppLayerConfig;"), false);
 	cfg.slave = ConvertOutstationConfig(apEnv, JNIHelpers::GetObjectField(apEnv, jCfg, "outstationConfig", "Lcom/automatak/dnp3/OutstationConfig;"));
 	cfg.database = ConvertDatabaseConfig(apEnv, JNIHelpers::GetObjectField(apEnv, jCfg, "databaseConfig", "Lcom/automatak/dnp3/DatabaseConfig;"));
 
@@ -51,7 +51,7 @@ SlaveStackConfig ConfigReader::ConvertSlaveStackConfig(JNIEnv* apEnv, jobject jC
 
 SlaveConfig ConfigReader::ConvertOutstationConfig(JNIEnv* apEnv, jobject jCfg)
 {
-	SlaveConfig cfg;
+	SlaveConfig cfg;	
 
 	cfg.mMaxControls  = JNIHelpers::GetIntField(apEnv, jCfg, "maxControls");
 	cfg.mDisableUnsol = JNIHelpers::GetBoolField(apEnv, jCfg, "disableUnsol");
@@ -183,9 +183,9 @@ MasterConfig ConfigReader::ConvertMasterConfig(JNIEnv* apEnv, jobject jCfg)
 	return cfg;
 }
 
-AppConfig ConfigReader::ConvertAppConfig(JNIEnv* apEnv, jobject jCfg)
+AppConfig ConfigReader::ConvertAppConfig(JNIEnv* apEnv, jobject jCfg, bool isMaster)
 {
-	AppConfig cfg;
+	AppConfig cfg(isMaster);
 	jclass clazz = apEnv->GetObjectClass(jCfg);
 
 	cfg.RspTimeout = TimeDuration::Milliseconds(JNIHelpers::GetLongField(apEnv, jCfg, "rspTimeoutMs"));

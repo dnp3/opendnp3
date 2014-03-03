@@ -29,64 +29,44 @@ public class ConstantCommandHandler implements CommandHandler {
     {
         this.status = status;
     }
-    public CommandStatus select(ControlRelayOutputBlock command, long index)
+    public CommandStatus supports(ControlRelayOutputBlock command, long index)
     {
         return status;
     }
-    public CommandStatus select(AnalogOutputInt32 command, long index)
+    public CommandStatus supports(AnalogOutputInt32 command, long index)
     {
         return status;
     }
-    public CommandStatus select(AnalogOutputInt16 command, long index)
+    public CommandStatus supports(AnalogOutputInt16 command, long index)
     {
         return status;
     }
-    public CommandStatus select(AnalogOutputFloat32 command, long index)
+    public CommandStatus supports(AnalogOutputFloat32 command, long index)
     {
         return status;
     }
-    public CommandStatus select(AnalogOutputDouble64 command, long index)
+    public CommandStatus supports(AnalogOutputDouble64 command, long index)
     {
         return status;
     }
 
-    public CommandStatus operate(ControlRelayOutputBlock command, long index)
+    public CommandStatus perform(ControlRelayOutputBlock command, long index)
     {
         return status;
     }
-    public CommandStatus operate(AnalogOutputInt32 command, long index)
+    public CommandStatus perform(AnalogOutputInt32 command, long index)
     {
         return status;
     }
-    public CommandStatus operate(AnalogOutputInt16 command, long index)
+    public CommandStatus perform(AnalogOutputInt16 command, long index)
     {
         return status;
     }
-    public CommandStatus operate(AnalogOutputFloat32 command, long index)
+    public CommandStatus perform(AnalogOutputFloat32 command, long index)
     {
         return status;
     }
-    public CommandStatus operate(AnalogOutputDouble64 command, long index)
-    {
-        return status;
-    }
-    public CommandStatus directOperate(ControlRelayOutputBlock command, long index)
-    {
-        return status;
-    }
-    public CommandStatus directOperate(AnalogOutputInt32 command, long index)
-    {
-        return status;
-    }
-    public CommandStatus directOperate(AnalogOutputInt16 command, long index)
-    {
-        return status;
-    }
-    public CommandStatus directOperate(AnalogOutputFloat32 command, long index)
-    {
-        return status;
-    }
-    public CommandStatus directOperate(AnalogOutputDouble64 command, long index)
+    public CommandStatus perform(AnalogOutputDouble64 command, long index)
     {
         return status;
     }

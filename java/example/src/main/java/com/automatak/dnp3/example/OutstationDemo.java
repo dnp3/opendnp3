@@ -83,12 +83,19 @@ public class OutstationDemo {
         while (true) {
             System.out.println("Enter something to update a counter or type <quit> to exit");
             line = in.readLine();
-            if(line.equals("quit")) break;
-            else {
-                data.start();
-                data.update(new Counter(i, CounterQuality.ONLINE.toByte(), 0), 0);
-                data.end();
-                ++i;
+            if(line == null)
+            {
+                break;
+            }
+            else
+            {
+                if(line.equals("quit")) break;
+                else {
+                    data.start();
+                    data.update(new Counter(i, CounterQuality.ONLINE.toByte(), 0), 0);
+                    data.end();
+                    ++i;
+                }
             }
         }
 

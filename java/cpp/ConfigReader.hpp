@@ -33,7 +33,7 @@ public:
 
 private:
 	static opendnp3::LinkConfig ConvertLinkConfig(JNIEnv* apEnv, jobject jCfg);
-	static opendnp3::AppConfig ConvertAppConfig(JNIEnv* apEnv, jobject jCfg);
+	static opendnp3::AppConfig ConvertAppConfig(JNIEnv* apEnv, jobject jCfg, bool isMaster);
 	static opendnp3::MasterConfig ConvertMasterConfig(JNIEnv* apEnv, jobject jCfg);
 	static opendnp3::SlaveConfig ConvertOutstationConfig(JNIEnv* apEnv, jobject jCfg);
 	static opendnp3::DatabaseConfiguration ConvertDatabaseConfig(JNIEnv* apEnv, jobject jCfg);
