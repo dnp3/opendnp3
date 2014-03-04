@@ -18,6 +18,60 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\openpal\AsyncLayerInterfaces.h" />
+    <ClInclude Include="src\openpal\BufferWrapper.h" />
+    <ClInclude Include="src\openpal\DoublyLinkedListAdapter.h" />
+    <ClInclude Include="src\openpal\DynamicArray.h" />
+    <ClInclude Include="src\openpal\Exception.h" />
+    <ClInclude Include="src\openpal\gen\LogLevel.h" />
+    <ClInclude Include="src\openpal\HasSize.h" />
+    <ClInclude Include="src\openpal\IExecutor.h" />
+    <ClInclude Include="src\openpal\IHandlerAsync.h" />
+    <ClInclude Include="src\openpal\Indexable.h" />
+    <ClInclude Include="src\openpal\IndexableIterator.h" />
+    <ClInclude Include="src\openpal\IPhysicalLayerAsync.h" />
+    <ClInclude Include="src\openpal\ISerializer.h" />
+    <ClInclude Include="src\openpal\ITimer.h" />
+    <ClInclude Include="src\openpal\IUTCTimeSource.h" />
+    <ClInclude Include="src\openpal\ListAdapter.h" />
+    <ClInclude Include="src\openpal\Location.h" />
+    <ClInclude Include="src\openpal\LogBase.h" />
+    <ClInclude Include="src\openpal\LogEntry.h" />
+    <ClInclude Include="src\openpal\Loggable.h" />
+    <ClInclude Include="src\openpal\LoggableMacros.h" />
+    <ClInclude Include="src\openpal\Logger.h" />
+    <ClInclude Include="src\openpal\MonotonicTimestamp.h" />
+    <ClInclude Include="src\openpal\MoveOnCopy.h" />
+    <ClInclude Include="src\openpal\QueueAdapter.h" />
+    <ClInclude Include="src\openpal\RandomInsertAdapter.h" />
+    <ClInclude Include="src\openpal\ReverseEndian.h" />
+    <ClInclude Include="src\openpal\Sequence.h" />
+    <ClInclude Include="src\openpal\Serialization.h" />
+    <ClInclude Include="src\openpal\SerializationTemplates.h" />
+    <ClInclude Include="src\openpal\StackAdapter.h" />
+    <ClInclude Include="src\openpal\StaticArray.h" />
+    <ClInclude Include="src\openpal\StaticBuffer.h" />
+    <ClInclude Include="src\openpal\StaticList.h" />
+    <ClInclude Include="src\openpal\StaticQueue.h" />
+    <ClInclude Include="src\openpal\TimeDuration.h" />
+    <ClInclude Include="src\openpal\ToHex.h" />
+    <ClInclude Include="src\openpal\UTCTimestamp.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\openpal\AsyncLayerInterfaces.cpp" />
+    <ClCompile Include="src\openpal\BufferWrapper.cpp" />
+    <ClCompile Include="src\openpal\Exception.cpp" />
+    <ClCompile Include="src\openpal\gen\LogLevel.cpp" />
+    <ClCompile Include="src\openpal\IHandlerAsync.cpp" />
+    <ClCompile Include="src\openpal\LogEntry.cpp" />
+    <ClCompile Include="src\openpal\Loggable.cpp" />
+    <ClCompile Include="src\openpal\Logger.cpp" />
+    <ClCompile Include="src\openpal\MonotonicTimestamp.cpp" />
+    <ClCompile Include="src\openpal\ReverseEndian.cpp" />
+    <ClCompile Include="src\openpal\TimeDuration.cpp" />
+    <ClCompile Include="src\openpal\ToHex.cpp" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{ABF09BDA-75A5-47D7-9F15-D7B7EC69F1E7}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
@@ -139,59 +193,6 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClInclude Include="include\openpal\AsyncLayerInterfaces.h" />
-    <ClInclude Include="include\openpal\BufferWrapper.h" />
-    <ClInclude Include="include\openpal\DynamicArray.h" />
-    <ClInclude Include="include\openpal\Exception.h" />
-    <ClInclude Include="include\openpal\gen\LogLevel.h" />
-    <ClInclude Include="include\openpal\HasSize.h" />
-    <ClInclude Include="include\openpal\Indexable.h" />
-    <ClInclude Include="include\openpal\ISerializer.h" />
-    <ClInclude Include="include\openpal\IUTCTimeSource.h" />
-    <ClInclude Include="include\openpal\IExecutor.h" />
-    <ClInclude Include="include\openpal\IHandlerAsync.h" />
-    <ClInclude Include="include\openpal\IPhysicalLayerAsync.h" />
-    <ClInclude Include="include\openpal\ITimer.h" />
-    <ClInclude Include="include\openpal\DoublyLinkedListAdapter.h" />
-    <ClInclude Include="include\openpal\ListAdapter.h" />
-    <ClInclude Include="include\openpal\Location.h" />
-    <ClInclude Include="include\openpal\LogBase.h" />
-    <ClInclude Include="include\openpal\LogEntry.h" />
-    <ClInclude Include="include\openpal\Loggable.h" />
-    <ClInclude Include="include\openpal\LoggableMacros.h" />
-    <ClInclude Include="include\openpal\Logger.h" />
-    <ClInclude Include="include\openpal\MonotonicTimestamp.h" />
-    <ClInclude Include="include\openpal\MoveOnCopy.h" />
-    <ClInclude Include="include\openpal\IndexableIterator.h" />
-    <ClInclude Include="include\openpal\QueueAdapter.h" />
-    <ClInclude Include="include\openpal\RandomInsertAdapter.h" />
-    <ClInclude Include="include\openpal\ReverseEndian.h" />
-    <ClInclude Include="include\openpal\Sequence.h" />
-    <ClInclude Include="include\openpal\Serialization.h" />
-    <ClInclude Include="include\openpal\StackAdapter.h" />
-    <ClInclude Include="include\openpal\StaticArray.h" />
-    <ClInclude Include="include\openpal\StaticBuffer.h" />
-    <ClInclude Include="include\openpal\StaticList.h" />
-    <ClInclude Include="include\openpal\StaticQueue.h" />
-    <ClInclude Include="include\openpal\TimeDuration.h" />
-    <ClInclude Include="include\openpal\ToHex.h" />
-    <ClInclude Include="include\openpal\UTCTimestamp.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="src\AsyncLayerInterfaces.cpp" />
-    <ClCompile Include="src\BufferWrapper.cpp" />
-    <ClCompile Include="src\Exception.cpp" />
-    <ClCompile Include="src\gen\LogLevel.cpp" />
-    <ClCompile Include="src\IHandlerAsync.cpp" />
-    <ClCompile Include="src\LogEntry.cpp" />
-    <ClCompile Include="src\Loggable.cpp" />
-    <ClCompile Include="src\Logger.cpp" />
-    <ClCompile Include="src\MonotonicTimestamp.cpp" />
-    <ClCompile Include="src\ReverseEndian.cpp" />
-    <ClCompile Include="src\TimeDuration.cpp" />
-    <ClCompile Include="src\ToHex.cpp" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

@@ -25,7 +25,7 @@
 #include <openpal/ToHex.h>
 #include <openpal/LoggableMacros.h>
 
-#include <opendnp3/APDUHeaderParser.h>
+#include <opendnp3/app/APDUHeaderParser.h>
 
 #include <sstream>
 

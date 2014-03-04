@@ -11,7 +11,7 @@ object CppEnumGenerator {
 
   def apply(opendnp3: DualPath, openpal: DualPath): Unit = {
 
-    case class EnumConfig(model: EnumModel, ns: String, paths: DualPath, conversions: Boolean = true, localInclude: Boolean = true) {
+    case class EnumConfig(model: EnumModel, ns: String, paths: DualPath, conversions: Boolean = true) {
       def headerName = model.name + ".h"
       def implName = model.name + ".cpp"
       def headerPath = paths.include.resolve(headerName)
@@ -19,14 +19,14 @@ object CppEnumGenerator {
     }
 
     def includeEnums = List(
-      EnumConfig(ScanStatus(), "opendnp3", opendnp3, false, true),
-      EnumConfig(CommandStatus(), "opendnp3", opendnp3, true, true),
-      EnumConfig(CommandResult(), "opendnp3", opendnp3, false, true),
-      EnumConfig(ControlCode(), "opendnp3", opendnp3, true, true),
-      EnumConfig(ChannelState(), "opendnp3", opendnp3, false, true),
-      EnumConfig(StackState(), "opendnp3", opendnp3, false, true),
-      EnumConfig(LogLevel(), "openpal", openpal, true, false)
-    ) ::: EventTypes.enums.map(m => EnumConfig(m, "opendnp3", opendnp3, true, true))
+      EnumConfig(ScanStatus(), "opendnp3", opendnp3, false),
+      EnumConfig(CommandStatus(), "opendnp3", opendnp3, true),
+      EnumConfig(CommandResult(), "opendnp3", opendnp3, false),
+      EnumConfig(ControlCode(), "opendnp3", opendnp3, true),
+      EnumConfig(ChannelState(), "opendnp3", opendnp3, false),
+      EnumConfig(StackState(), "opendnp3", opendnp3, false),
+      EnumConfig(LogLevel(), "openpal", openpal, true)
+    ) ::: EventTypes.enums.map(m => EnumConfig(m, "opendnp3", opendnp3, true))
 
     // list of all enumerations that we want to generate
     def sourceEnums = List(FunctionCode(), QualifierCode(), LinkFunction()).map { em =>
@@ -53,7 +53,7 @@ object CppEnumGenerator {
       def writeImpl() {
         def license = commented(LicenseHeader())
         def funcs = renders.map(r => r.impl.render(cfg.model)).flatten.toIterator
-        def inc = if(cfg.localInclude) quoted(cfg.headerName) else bracketed(List(cfg.ns,"/gen/",cfg.headerName).mkString)
+        def inc = quoted(cfg.headerName)
         def lines = license ++ space ++ Iterator(include(inc)) ++ space ++ namespace(cfg.ns)(funcs)
         writeTo(cfg.implPath)(lines)
         println("Wrote: " + cfg.implPath)

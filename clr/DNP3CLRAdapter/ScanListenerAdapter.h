@@ -3,7 +3,7 @@
 
 using namespace System::Collections::ObjectModel;
 
-#include <opendnp3/IScanListener.h>
+#include <opendnp3/master/IScanListener.h>
 #include <vcclr.h>
 
 using namespace DNP3::Interface;

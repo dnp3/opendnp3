@@ -19,10 +19,10 @@
 #define __OPENDNP3_GENERATED_GROUP41_H_
 
 #include <openpal/BufferWrapper.h>
-#include "GroupVariationID.h"
-#include "../gen/CommandStatus.h"
-#include "IDNP3Serializer.h"
-#include "../AnalogOutput.h"
+#include "opendnp3/app/GroupVariationID.h"
+#include "opendnp3/gen/CommandStatus.h"
+#include "opendnp3/app/IDNP3Serializer.h"
+#include "opendnp3/app/AnalogOutput.h"
 
 namespace opendnp3 {
 

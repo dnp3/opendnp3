@@ -27,7 +27,7 @@
 
 #include "opendnp3/DNPConstants.h"
 
-#include "opendnp3/ShiftableBuffer.h"
+#include "opendnp3/link/ShiftableBuffer.h"
 #include "opendnp3/link/LinkFrame.h"
 #include "opendnp3/link/LinkHeader.h"
 

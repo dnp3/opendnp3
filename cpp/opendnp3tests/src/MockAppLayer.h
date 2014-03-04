@@ -21,11 +21,10 @@
 #ifndef __MOCK_APP_LAYER_H_
 #define __MOCK_APP_LAYER_H_
 
-#include <opendnp3/IAppLayer.h>
-#include <opendnp3/APDUWrapper.h>
-
-#include <opendnp3/IAppUser.h>
-#include <opendnp3/IAppLayer.h>
+#include <opendnp3/app/IAppLayer.h>
+#include <opendnp3/app/APDUWrapper.h>
+#include <opendnp3/app/IAppUser.h>
+#include <opendnp3/app/IAppLayer.h>
 
 #include <openpal/Loggable.h>
 

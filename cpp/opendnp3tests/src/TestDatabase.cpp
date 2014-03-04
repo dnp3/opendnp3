@@ -24,7 +24,7 @@
 #include "MeasurementComparisons.h"
 #include "DatabaseTestObject.h"
 
-#include <opendnp3/MeasurementHelpers.h>
+#include <opendnp3/app/MeasurementHelpers.h>
 
 #include <limits>
 

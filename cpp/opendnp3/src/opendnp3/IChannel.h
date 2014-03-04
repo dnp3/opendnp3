@@ -21,11 +21,11 @@
 #ifndef __I_CHANNEL_H_
 #define __I_CHANNEL_H_
 
-#include "gen/ChannelState.h"
+#include "opendnp3/gen/ChannelState.h"
 
-#include "MasterStackConfig.h"
-#include "SlaveStackConfig.h"
-#include "DestructorHook.h"
+#include "opendnp3/master/MasterStackConfig.h"
+#include "opendnp3/outstation/SlaveStackConfig.h"
+#include "opendnp3/DestructorHook.h"
 
 #include <openpal/gen/LogLevel.h>
 #include <openpal/IUTCTimeSource.h>

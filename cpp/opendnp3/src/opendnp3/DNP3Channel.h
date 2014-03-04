@@ -24,8 +24,8 @@
 #include <openpal/Loggable.h>
 
 #include "opendnp3/IChannel.h"
-#include "opendnp3/SlaveStackConfig.h"
-#include "opendnp3/AsyncTaskGroup.h"
+#include "opendnp3/outstation/SlaveStackConfig.h"
+#include "opendnp3/master/AsyncTaskGroup.h"
 
 #include "opendnp3/link/LinkLayerRouter.h"
 

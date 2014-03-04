@@ -20,8 +20,8 @@
  */
 #include <boost/test/unit_test.hpp>
 
-#include <opendnp3/APDURequest.h>
-#include <opendnp3/APDUResponse.h>
+#include <opendnp3/app/APDURequest.h>
+#include <opendnp3/app/APDUResponse.h>
 
 #include <openpal/ToHex.h>
 #include <openpal/Serialization.h>

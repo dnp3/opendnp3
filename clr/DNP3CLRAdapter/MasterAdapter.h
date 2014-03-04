@@ -3,7 +3,7 @@
 
 using namespace System::Collections::ObjectModel;
 
-#include <opendnp3/IMaster.h>
+#include <opendnp3/master/IMaster.h>
 
 using namespace DNP3::Interface;
 

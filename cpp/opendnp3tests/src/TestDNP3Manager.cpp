@@ -22,11 +22,13 @@
 
 #include <opendnp3/DNP3Manager.h>
 #include <opendnp3/IChannel.h>
-#include <opendnp3/IMaster.h>
-#include <opendnp3/IOutstation.h>
-#include <opendnp3/SimpleCommandHandler.h>
-#include <opendnp3/ITimeWriteHandler.h>
-#include <opendnp3/ISOEHandler.h>
+
+#include <opendnp3/outstation/IOutstation.h>
+#include <opendnp3/outstation/SimpleCommandHandler.h>
+#include <opendnp3/outstation/ITimeWriteHandler.h>
+
+#include <opendnp3/master/IMaster.h>
+#include <opendnp3/master/ISOEHandler.h>
 
 #include <asiopal/Log.h>
 #include <asiopal/LogToStdio.h>

@@ -24,8 +24,8 @@
 
 #include <asiopal/Log.h>
 
-#include <opendnp3/PhysicalLayerMonitor.h>
-#include <opendnp3/PhysicalLayerMonitorStates.h>
+#include <opendnp3/link/PhysicalLayerMonitor.h>
+#include <opendnp3/link/PhysicalLayerMonitorStates.h>
 
 #include "MockExecutor.h"
 #include "MockPhysicalLayerAsync.h"

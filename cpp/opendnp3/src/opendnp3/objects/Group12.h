@@ -19,11 +19,11 @@
 #define __OPENDNP3_GENERATED_GROUP12_H_
 
 #include <openpal/BufferWrapper.h>
-#include "GroupVariationID.h"
-#include "../gen/ControlCode.h"
-#include "../gen/CommandStatus.h"
-#include "IDNP3Serializer.h"
-#include "../ControlRelayOutputBlock.h"
+#include "opendnp3/app/GroupVariationID.h"
+#include "opendnp3/gen/ControlCode.h"
+#include "opendnp3/gen/CommandStatus.h"
+#include "opendnp3/app/IDNP3Serializer.h"
+#include "opendnp3/app/ControlRelayOutputBlock.h"
 
 namespace opendnp3 {
 

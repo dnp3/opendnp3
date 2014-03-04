@@ -3,7 +3,7 @@
 
 using namespace System::Collections::ObjectModel;
 
-#include <opendnp3/IOutstation.h>
+#include <opendnp3/outstation/IOutstation.h>
 
 using namespace DNP3::Interface;
 

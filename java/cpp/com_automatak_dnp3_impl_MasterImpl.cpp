@@ -18,7 +18,7 @@
  */
 #include "com_automatak_dnp3_impl_MasterImpl.h"
 
-#include <opendnp3/IMaster.h>
+#include <opendnp3/master/IMaster.h>
 
 using namespace opendnp3;
 

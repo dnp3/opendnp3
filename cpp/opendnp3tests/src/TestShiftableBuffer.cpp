@@ -21,7 +21,7 @@
 #include <boost/test/unit_test.hpp>
 #include "TestHelpers.h"
 
-#include <opendnp3/ShiftableBuffer.h>
+#include <opendnp3/link/ShiftableBuffer.h>
 
 #include <openpal/Exception.h>
 

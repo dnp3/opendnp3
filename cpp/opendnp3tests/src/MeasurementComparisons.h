@@ -21,10 +21,11 @@
 #ifndef __MEASUREMENT_COMPARISONS_H_
 #define __MEASUREMENT_COMPARISONS_H_
 
-#include <opendnp3/Event.h>
-#include <opendnp3/IndexedValue.h>
-#include <opendnp3/BaseDataTypes.h>
-#include <opendnp3/MeasurementHelpers.h>
+#include <opendnp3/outstation/Event.h>
+#include <opendnp3/app/IndexedValue.h>
+
+#include <opendnp3/app/BaseDataTypes.h>
+#include <opendnp3/app/MeasurementHelpers.h>
 
 template<class T>
 bool Equals(const opendnp3::TypedMeasurement<T>& lhs, const opendnp3::TypedMeasurement<T>& rhs)

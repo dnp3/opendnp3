@@ -23,7 +23,7 @@
 #include "TestHelpers.h"
 #include "BufferHelpers.h"
 
-#include <opendnp3/CommandTask.h>
+#include <opendnp3/master/CommandTask.h>
 #include <asiopal/Log.h>
 
 using namespace opendnp3;

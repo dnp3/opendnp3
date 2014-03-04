@@ -22,10 +22,11 @@
 
 #include "TestHelpers.h"
 
-#include <opendnp3/DynamicallyAllocatedDatabase.h>
-#include <opendnp3/StaticResponseContext.h>
-#include <opendnp3/APDURequest.h>
-#include <opendnp3/APDUResponse.h>
+#include <opendnp3/outstation/DynamicallyAllocatedDatabase.h>
+#include <opendnp3/outstation/StaticResponseContext.h>
+
+#include <opendnp3/app/APDURequest.h>
+#include <opendnp3/app/APDUResponse.h>
 
 #include <openpal/ToHex.h>
 

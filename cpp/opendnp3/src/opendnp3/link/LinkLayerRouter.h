@@ -26,8 +26,7 @@
 #include <queue>
 #include <vector>
 
-#include "opendnp3/PhysicalLayerMonitor.h"
-
+#include "opendnp3/link/PhysicalLayerMonitor.h"
 #include "opendnp3/link/LinkLayerReceiver.h"
 #include "opendnp3/link/LinkRoute.h"
 #include "opendnp3/link/IFrameSink.h"

@@ -21,7 +21,7 @@
 #ifndef __MOCK_APDU_HEADER_HANDLER_H_
 #define __MOCK_APDU_HEADER_HANDLER_H_
 
-#include <opendnp3/IAPDUHandler.h>
+#include <opendnp3/app/IAPDUHandler.h>
 
 #include <vector>
 

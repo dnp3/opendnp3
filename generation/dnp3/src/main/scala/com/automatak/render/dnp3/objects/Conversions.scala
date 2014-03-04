@@ -47,12 +47,12 @@ class ArbitraryConversion(name: String, incHeaders: List[String], cppHeaders: Li
 
 object ConversionHeaders {
 
-  val dataTypes = quoted("../DataTypes.h")
-  val crob = quoted("../ControlRelayOutputBlock.h")
-  val ao = quoted("../AnalogOutput.h")
-  val factory = quoted("MeasurementFactory.h")
-  val serializer = quoted("IDNP3Serializer.h")
-  val conversions = quoted("../WriteConversions.h")
+  val dataTypes = quoted("opendnp3/app/DataTypes.h")
+  val crob = quoted("opendnp3/app/ControlRelayOutputBlock.h")
+  val ao = quoted("opendnp3/app/AnalogOutput.h")
+  val factory = quoted("opendnp3/app/MeasurementFactory.h")
+  val serializer = quoted("opendnp3/app/IDNP3Serializer.h")
+  val conversions = quoted("opendnp3/app/WriteConversions.h")
 
   val cppIncldues = List(factory, conversions)
 }

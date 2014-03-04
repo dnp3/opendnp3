@@ -19,9 +19,11 @@
 #include "com_automatak_dnp3_impl_ChannelImpl.h"
 
 #include <opendnp3/IChannel.h>
-#include <opendnp3/IMaster.h>
-#include <opendnp3/IOutstation.h>
-#include <opendnp3/ITimeWriteHandler.h>
+
+#include <opendnp3/master/IMaster.h>
+
+#include <opendnp3/outstation/IOutstation.h>
+#include <opendnp3/outstation/ITimeWriteHandler.h>
 
 #include <openpal/Exception.h>
 #include <openpal/IExecutor.h>

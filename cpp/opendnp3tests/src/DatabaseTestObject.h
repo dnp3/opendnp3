@@ -23,9 +23,9 @@
 
 #include <queue>
 
-#include <opendnp3/Event.h>
-#include <opendnp3/Database.h>
-#include <opendnp3/DynamicallyAllocatedDatabase.h>
+#include <opendnp3/outstation/Event.h>
+#include <opendnp3/outstation/Database.h>
+#include <opendnp3/outstation/DynamicallyAllocatedDatabase.h>
 
 #include <asiopal/Log.h>
 

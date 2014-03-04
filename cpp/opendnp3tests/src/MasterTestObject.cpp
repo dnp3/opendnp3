@@ -24,7 +24,8 @@
 #include "BufferHelpers.h"
 
 #include <openpal/ToHex.h>
-#include <opendnp3/APDUHeaderParser.h>
+
+#include <opendnp3/app/APDUHeaderParser.h>
 
 using namespace std;
 using namespace openpal;

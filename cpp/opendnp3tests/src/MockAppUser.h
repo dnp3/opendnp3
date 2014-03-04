@@ -23,7 +23,7 @@
 
 #include <sstream>
 
-#include <opendnp3/IAppUser.h>
+#include <opendnp3/app/IAppUser.h>
 
 namespace opendnp3
 {

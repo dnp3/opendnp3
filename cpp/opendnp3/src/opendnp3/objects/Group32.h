@@ -19,9 +19,9 @@
 #define __OPENDNP3_GENERATED_GROUP32_H_
 
 #include <openpal/BufferWrapper.h>
-#include "GroupVariationID.h"
-#include "IDNP3Serializer.h"
-#include "../DataTypes.h"
+#include "opendnp3/app/GroupVariationID.h"
+#include "opendnp3/app/IDNP3Serializer.h"
+#include "opendnp3/app/DataTypes.h"
 
 namespace opendnp3 {
 

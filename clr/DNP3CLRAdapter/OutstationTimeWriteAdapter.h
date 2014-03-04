@@ -5,7 +5,7 @@ using namespace System::Collections::ObjectModel;
 
 #include <vcclr.h>
 
-#include <opendnp3/ITimeWriteHandler.h>
+#include <opendnp3/outstation/ITimeWriteHandler.h>
 
 using namespace DNP3::Interface;
 

@@ -20,8 +20,8 @@
  */
 #include <boost/test/unit_test.hpp>
 
-#include <opendnp3/OutstationEventBuffer.h>
-#include <opendnp3/DynamicallyAllocatedEventBuffer.h>
+#include <opendnp3/outstation/OutstationEventBuffer.h>
+#include <opendnp3/outstation/DynamicallyAllocatedEventBuffer.h>
 
 #include "MockEventWriter.h"
 #include "OutstationEventBufferFuzzer.h"

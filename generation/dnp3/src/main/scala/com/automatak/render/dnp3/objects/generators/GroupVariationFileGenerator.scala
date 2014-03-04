@@ -22,7 +22,7 @@ object GroupVariationFileGenerator {
       def getEnums(gv: GroupVariation):  List[String] = {
 
         def extract(typ: FixedSizeFieldType): Option[String] = typ match {
-          case EnumField(model) => Some(quoted("../gen/"+model.name+".h"))
+          case EnumField(model) => Some(quoted("opendnp3/gen/"+model.name+".h"))
           case _ => None
         }
 
@@ -69,7 +69,7 @@ object GroupVariationFileGenerator {
       commented(LicenseHeader()) ++ space ++
       includeGuards(group.name.toUpperCase) {
         Iterator("#include <openpal/BufferWrapper.h>") ++
-          Iterator("#include \"GroupVariationID.h\"") ++
+          Iterator("#include \"opendnp3/app/GroupVariationID.h\"") ++
         optionalIncludes(group) ++ space ++
         namespace("opendnp3") {
           definitions(GroupVariationHeaderRenderer)(group)

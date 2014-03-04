@@ -1,173 +1,172 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    <Filter Include="Source">
+      <UniqueIdentifier>{f8078a03-c562-4ff3-a95a-e6f51ec9ef8e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files">
+    <Filter Include="Header">
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
-    <Filter Include="Include Files">
-      <UniqueIdentifier>{f67995ab-9876-4dfb-bc83-7110ad7e3e3b}</UniqueIdentifier>
+    <Filter Include="Header\gen">
+      <UniqueIdentifier>{e5f33ccb-0fa6-4e73-b365-aaf09994e768}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Include Files\gen">
-      <UniqueIdentifier>{d0c7bb34-4b80-426a-901f-c830aae888e0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\gen">
-      <UniqueIdentifier>{aea3b78c-f415-4a34-98fa-2172b96ffda1}</UniqueIdentifier>
+    <Filter Include="Source\gen">
+      <UniqueIdentifier>{c272c1f5-bc57-4d16-a331-f8c1b8719909}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\openpal\ITimer.h">
-      <Filter>Include Files</Filter>
+    <ClInclude Include="src\openpal\AsyncLayerInterfaces.h">
+      <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="include\openpal\IExecutor.h">
-      <Filter>Include Files</Filter>
+    <ClInclude Include="src\openpal\BufferWrapper.h">
+      <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="include\openpal\LogBase.h">
-      <Filter>Include Files</Filter>
+    <ClInclude Include="src\openpal\DoublyLinkedListAdapter.h">
+      <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="include\openpal\LogEntry.h">
-      <Filter>Include Files</Filter>
+    <ClInclude Include="src\openpal\DynamicArray.h">
+      <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="include\openpal\Loggable.h">
-      <Filter>Include Files</Filter>
+    <ClInclude Include="src\openpal\Exception.h">
+      <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="include\openpal\Logger.h">
-      <Filter>Include Files</Filter>
+    <ClInclude Include="src\openpal\HasSize.h">
+      <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="include\openpal\LoggableMacros.h">
-      <Filter>Include Files</Filter>
+    <ClInclude Include="src\openpal\IExecutor.h">
+      <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="include\openpal\IPhysicalLayerAsync.h">
-      <Filter>Include Files</Filter>
+    <ClInclude Include="src\openpal\IHandlerAsync.h">
+      <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="include\openpal\AsyncLayerInterfaces.h">
-      <Filter>Include Files</Filter>
+    <ClInclude Include="src\openpal\Indexable.h">
+      <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="include\openpal\Exception.h">
-      <Filter>Include Files</Filter>
+    <ClInclude Include="src\openpal\IndexableIterator.h">
+      <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="include\openpal\ToHex.h">
-      <Filter>Include Files</Filter>
+    <ClInclude Include="src\openpal\IPhysicalLayerAsync.h">
+      <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="include\openpal\Location.h">
-      <Filter>Include Files</Filter>
+    <ClInclude Include="src\openpal\ISerializer.h">
+      <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="include\openpal\IHandlerAsync.h">
-      <Filter>Include Files</Filter>
+    <ClInclude Include="src\openpal\ITimer.h">
+      <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="include\openpal\UTCTimestamp.h">
-      <Filter>Include Files</Filter>
+    <ClInclude Include="src\openpal\IUTCTimeSource.h">
+      <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="include\openpal\IUTCTimeSource.h">
-      <Filter>Include Files</Filter>
+    <ClInclude Include="src\openpal\ListAdapter.h">
+      <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="include\openpal\TimeDuration.h">
-      <Filter>Include Files</Filter>
+    <ClInclude Include="src\openpal\Location.h">
+      <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="include\openpal\MonotonicTimestamp.h">
-      <Filter>Include Files</Filter>
+    <ClInclude Include="src\openpal\LogBase.h">
+      <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="include\openpal\MoveOnCopy.h">
-      <Filter>Include Files</Filter>
+    <ClInclude Include="src\openpal\LogEntry.h">
+      <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="include\openpal\BufferWrapper.h">
-      <Filter>Include Files</Filter>
+    <ClInclude Include="src\openpal\Loggable.h">
+      <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="include\openpal\gen\LogLevel.h">
-      <Filter>Include Files\gen</Filter>
+    <ClInclude Include="src\openpal\LoggableMacros.h">
+      <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="include\openpal\Serialization.h">
-      <Filter>Include Files</Filter>
+    <ClInclude Include="src\openpal\Logger.h">
+      <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="include\openpal\ReverseEndian.h">
-      <Filter>Include Files</Filter>
+    <ClInclude Include="src\openpal\MonotonicTimestamp.h">
+      <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="include\openpal\HasSize.h">
-      <Filter>Include Files</Filter>
+    <ClInclude Include="src\openpal\MoveOnCopy.h">
+      <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="include\openpal\Sequence.h">
-      <Filter>Include Files</Filter>
+    <ClInclude Include="src\openpal\QueueAdapter.h">
+      <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="include\openpal\Indexable.h">
-      <Filter>Include Files</Filter>
+    <ClInclude Include="src\openpal\RandomInsertAdapter.h">
+      <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="include\openpal\IndexableIterator.h">
-      <Filter>Include Files</Filter>
+    <ClInclude Include="src\openpal\ReverseEndian.h">
+      <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="include\openpal\StaticArray.h">
-      <Filter>Include Files</Filter>
+    <ClInclude Include="src\openpal\Sequence.h">
+      <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="include\openpal\DynamicArray.h">
-      <Filter>Include Files</Filter>
+    <ClInclude Include="src\openpal\Serialization.h">
+      <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="include\openpal\ListAdapter.h">
-      <Filter>Include Files</Filter>
+    <ClInclude Include="src\openpal\SerializationTemplates.h">
+      <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="include\openpal\StaticList.h">
-      <Filter>Include Files</Filter>
+    <ClInclude Include="src\openpal\StackAdapter.h">
+      <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="include\openpal\StackAdapter.h">
-      <Filter>Include Files</Filter>
+    <ClInclude Include="src\openpal\StaticArray.h">
+      <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="include\openpal\RandomInsertAdapter.h">
-      <Filter>Include Files</Filter>
+    <ClInclude Include="src\openpal\StaticBuffer.h">
+      <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="include\openpal\DoublyLinkedListAdapter.h">
-      <Filter>Include Files</Filter>
+    <ClInclude Include="src\openpal\StaticList.h">
+      <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="include\openpal\QueueAdapter.h">
-      <Filter>Include Files</Filter>
+    <ClInclude Include="src\openpal\StaticQueue.h">
+      <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="include\openpal\ISerializer.h">
-      <Filter>Include Files</Filter>
+    <ClInclude Include="src\openpal\TimeDuration.h">
+      <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="include\openpal\StaticQueue.h">
-      <Filter>Include Files</Filter>
+    <ClInclude Include="src\openpal\ToHex.h">
+      <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="include\openpal\StaticBuffer.h">
-      <Filter>Include Files</Filter>
+    <ClInclude Include="src\openpal\UTCTimestamp.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="src\openpal\gen\LogLevel.h">
+      <Filter>Header\gen</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\LogEntry.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="src\openpal\AsyncLayerInterfaces.cpp">
+      <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="src\Loggable.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="src\openpal\BufferWrapper.cpp">
+      <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="src\Logger.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="src\openpal\Exception.cpp">
+      <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="src\AsyncLayerInterfaces.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="src\openpal\IHandlerAsync.cpp">
+      <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="src\Exception.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="src\openpal\LogEntry.cpp">
+      <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="src\ToHex.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="src\openpal\Loggable.cpp">
+      <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="src\IHandlerAsync.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="src\openpal\Logger.cpp">
+      <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="src\MonotonicTimestamp.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="src\openpal\MonotonicTimestamp.cpp">
+      <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="src\TimeDuration.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="src\openpal\ReverseEndian.cpp">
+      <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="src\BufferWrapper.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="src\openpal\TimeDuration.cpp">
+      <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="src\gen\LogLevel.cpp">
-      <Filter>Source Files\gen</Filter>
+    <ClCompile Include="src\openpal\ToHex.cpp">
+      <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="src\ReverseEndian.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="src\openpal\gen\LogLevel.cpp">
+      <Filter>Source\gen</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

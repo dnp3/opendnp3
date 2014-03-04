@@ -15,8 +15,8 @@ object Generate {
   )
 
   val openpalPaths = CppEnumGenerator.DualPath(
-    FileSystems.getDefault.getPath("../cpp/openpal/include/openpal/gen/"),
-    FileSystems.getDefault.getPath("../cpp/openpal/src/gen/")
+    FileSystems.getDefault.getPath("../cpp/openpal/src/openpal/gen/"),
+    FileSystems.getDefault.getPath("../cpp/openpal/src/openpal/gen/")
   )
 
   def main(args: Array[String]): Unit = {

@@ -21,10 +21,10 @@
 #include <boost/test/unit_test.hpp>
 
 
-#include <opendnp3/AsyncTaskPeriodic.h>
-#include <opendnp3/AsyncTaskNonPeriodic.h>
-#include <opendnp3/AsyncTaskContinuous.h>
-#include <opendnp3/AsyncTaskGroup.h>
+#include <opendnp3/master/AsyncTaskPeriodic.h>
+#include <opendnp3/master/AsyncTaskNonPeriodic.h>
+#include <opendnp3/master/AsyncTaskContinuous.h>
+#include <opendnp3/master/AsyncTaskGroup.h>
 
 #include <openpal/Exception.h>
 

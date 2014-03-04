@@ -6,7 +6,7 @@ using namespace System::Collections::ObjectModel;
 #include <vcclr.h>
 #include <map>
 
-#include <opendnp3/ICommandProcessor.h>
+#include <opendnp3/master/ICommandProcessor.h>
 
 using namespace DNP3::Interface;
 

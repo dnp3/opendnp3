@@ -8,13 +8,17 @@
 #include <opendnp3/gen/ChannelState.h>
 #include <opendnp3/gen/StackState.h>
 
-#include <opendnp3/DataTypes.h>
-#include <opendnp3/CommandResponse.h>
-#include <opendnp3/SlaveStackConfig.h>
-#include <opendnp3/MasterStackConfig.h>
-#include <opendnp3/ControlRelayOutputBlock.h>
-#include <opendnp3/AnalogOutput.h>
-#include <opendnp3/OctetString.h>
+#include <opendnp3/app/DataTypes.h>
+#include <opendnp3/app/ControlRelayOutputBlock.h>
+#include <opendnp3/app/AnalogOutput.h>
+#include <opendnp3/app/OctetString.h>
+
+#include <opendnp3/master/CommandResponse.h>
+#include <opendnp3/master/MasterStackConfig.h>
+
+#include <opendnp3/outstation/SlaveStackConfig.h>
+
+
 
 #include <asiopal/SerialTypes.h>
 

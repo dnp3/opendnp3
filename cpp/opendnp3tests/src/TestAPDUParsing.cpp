@@ -27,10 +27,10 @@
 
 #include <openpal/ToHex.h>
 
-#include <opendnp3/APDUParser.h>
-#include <opendnp3/APDUHeaderParser.h>
-#include <opendnp3/ControlRelayOutputBlock.h>
-#include <opendnp3/IndexedValue.h>
+#include <opendnp3/app/APDUParser.h>
+#include <opendnp3/app/APDUHeaderParser.h>
+#include <opendnp3/app/ControlRelayOutputBlock.h>
+#include <opendnp3/app/IndexedValue.h>
 
 #include <functional>
 

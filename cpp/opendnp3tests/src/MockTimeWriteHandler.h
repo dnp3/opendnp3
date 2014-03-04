@@ -21,7 +21,7 @@
 #ifndef __MOCK_TIME_WRITE_HANDLER_H_
 #define __MOCK_TIME_WRITE_HANDLER_H_
 
-#include <opendnp3/ITimeWriteHandler.h>
+#include <opendnp3/outstation/ITimeWriteHandler.h>
 
 #include <functional>
 

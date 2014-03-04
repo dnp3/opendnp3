@@ -17,8 +17,8 @@
 
 #include "Group21.h"
 
-#include "MeasurementFactory.h"
-#include "../WriteConversions.h"
+#include "opendnp3/app/MeasurementFactory.h"
+#include "opendnp3/app/WriteConversions.h"
 #include <openpal/Serialization.h>
 
 using namespace openpal;

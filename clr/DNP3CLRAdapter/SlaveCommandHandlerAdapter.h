@@ -5,7 +5,7 @@ using namespace System::Collections::ObjectModel;
 
 #include <vcclr.h>
 
-#include <opendnp3/ICommandHandler.h>
+#include <opendnp3/outstation/ICommandHandler.h>
 
 using namespace DNP3::Interface;
 

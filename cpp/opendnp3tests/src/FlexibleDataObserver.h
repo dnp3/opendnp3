@@ -21,10 +21,10 @@
 #ifndef __FLEXIBLE_DATA_OBSERVER_H_
 #define __FLEXIBLE_DATA_OBSERVER_H_
 
-#include <opendnp3/IDataObserver.h>
+#include <opendnp3/outstation/IDataObserver.h>
 #include <opendnp3/Util.h>
 #include <opendnp3/SubjectBase.h>
-#include <opendnp3/ISOEHandler.h>
+#include <opendnp3/master/ISOEHandler.h>
 
 #include <iostream>
 #include <map>

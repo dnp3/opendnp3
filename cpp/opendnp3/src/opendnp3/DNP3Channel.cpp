@@ -20,13 +20,10 @@
  */
 #include "DNP3Channel.h"
 
-#ifndef OPENDNP3_NO_MASTER
-#include "MasterStackImpl.h"
-#endif
-
 #include <openpal/IPhysicalLayerAsync.h>
 
-#include "OutstationStackImpl.h"
+#include "opendnp3/master/MasterStackImpl.h"
+#include "opendnp3/outstation/OutstationStackImpl.h"
 #include "ExecutorPause.h"
 
 using namespace openpal;

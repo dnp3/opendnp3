@@ -21,7 +21,7 @@
 #ifndef __MOCK_COMMAND_HANDLER_H_
 #define __MOCK_COMMAND_HANDLER_H_
 
-#include <opendnp3/SimpleCommandHandler.h>
+#include <opendnp3/outstation/SimpleCommandHandler.h>
 
 namespace opendnp3
 {

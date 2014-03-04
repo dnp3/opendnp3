@@ -22,7 +22,7 @@
 #ifndef __OUTSTATION_EVENT_BUFFER_FUZZER_H_
 #define __OUTSTATION_EVENT_BUFFER_FUZZER_H_
 
-#include <opendnp3/OutstationEventBuffer.h>
+#include <opendnp3/outstation/OutstationEventBuffer.h>
 
 #include <iostream>
 #include <random>

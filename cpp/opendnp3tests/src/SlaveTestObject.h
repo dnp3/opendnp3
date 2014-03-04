@@ -21,10 +21,10 @@
 #ifndef __SLAVE_TEST_OBJECT_H_
 #define __SLAVE_TEST_OBJECT_H_
 
-#include <opendnp3/Slave.h>
-#include <opendnp3/Database.h>
-#include <opendnp3/SlaveConfig.h>
-#include <opendnp3/DynamicallyAllocatedDatabase.h>
+#include <opendnp3/outstation/Slave.h>
+#include <opendnp3/outstation/Database.h>
+#include <opendnp3/outstation/SlaveConfig.h>
+#include <opendnp3/outstation/DynamicallyAllocatedDatabase.h>
 
 #include "MockExecutor.h"
 #include "LogTester.h"

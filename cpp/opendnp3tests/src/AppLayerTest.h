@@ -21,7 +21,7 @@
 #ifndef __APP_LAYER_TEST_H_
 #define __APP_LAYER_TEST_H_
 
-#include <opendnp3/AppLayer.h>
+#include <opendnp3/app/AppLayer.h>
 
 #include "LogTester.h"
 #include "MockLowerLayer.h"

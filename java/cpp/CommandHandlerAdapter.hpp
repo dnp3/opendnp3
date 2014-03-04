@@ -20,7 +20,7 @@
 #define __COMMAND_HANDLER_ADAPTER_H_
 
 #include <jni.h>
-#include <opendnp3/ICommandHandler.h>
+#include <opendnp3/outstation/ICommandHandler.h>
 
 class CommandHandlerAdapter : public opendnp3::ICommandHandler
 {

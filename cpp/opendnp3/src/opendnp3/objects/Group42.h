@@ -19,7 +19,7 @@
 #define __OPENDNP3_GENERATED_GROUP42_H_
 
 #include <openpal/BufferWrapper.h>
-#include "GroupVariationID.h"
+#include "opendnp3/app/GroupVariationID.h"
 
 namespace opendnp3 {
 

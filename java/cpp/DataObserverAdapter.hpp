@@ -20,8 +20,8 @@
 #define __DATA_OBSERVER_ADAPTER_H_
 
 #include <jni.h>
-#include <opendnp3/IDataObserver.h>
-#include <opendnp3/ISOEHandler.h>
+#include <opendnp3/outstation/IDataObserver.h>
+#include <opendnp3/master/ISOEHandler.h>
 
 class DataObserverAdapter : public opendnp3::ISOEHandler
 {

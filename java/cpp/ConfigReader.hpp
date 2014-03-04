@@ -22,8 +22,8 @@
 #include <jni.h>
 #include <string>
 
-#include <opendnp3/MasterStackConfig.h>
-#include <opendnp3/SlaveStackConfig.h>
+#include <opendnp3/master/MasterStackConfig.h>
+#include <opendnp3/outstation/SlaveStackConfig.h>
 
 class ConfigReader
 {

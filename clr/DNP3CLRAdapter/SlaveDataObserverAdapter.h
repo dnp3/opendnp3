@@ -1,7 +1,8 @@
 #ifndef __SLAVE_DATA_OBSERVER_ADAPTER_H_
 #define __SLAVE_DATA_OBSERVER_ADAPTER_H_
 
-#include <opendnp3/IDataObserver.h>
+#include <opendnp3/outstation/IDataObserver.h>
+
 using namespace DNP3::Interface;
 
 namespace DNP3

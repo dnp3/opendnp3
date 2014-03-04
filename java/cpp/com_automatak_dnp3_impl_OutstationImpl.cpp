@@ -18,7 +18,7 @@
  */
 #include "com_automatak_dnp3_impl_OutstationImpl.h"
 
-#include <opendnp3/IOutstation.h>
+#include <opendnp3/outstation/IOutstation.h>
 
 #include <iostream>
 

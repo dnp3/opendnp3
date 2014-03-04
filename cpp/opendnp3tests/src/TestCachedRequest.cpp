@@ -21,9 +21,9 @@
 #include <boost/test/unit_test.hpp>
 #include "TestHelpers.h"
 
-#include <opendnp3/APDUParser.h>
-#include <opendnp3/APDUHeaderParser.h>
-#include <opendnp3/CachedRequest.h>
+#include <opendnp3/app/APDUParser.h>
+#include <opendnp3/app/APDUHeaderParser.h>
+#include <opendnp3/app/CachedRequest.h>
 
 #include "MockAPDUHeaderHandler.h"
 #include "BufferHelpers.h"

@@ -20,10 +20,11 @@
  */
 #include <opendnp3/DNP3Manager.h>
 #include <opendnp3/IChannel.h>
-#include <opendnp3/IMaster.h>
-#include <opendnp3/MasterStackConfig.h>
-#include <opendnp3/ICommandProcessor.h>
-#include <opendnp3/ISOEHandler.h>
+
+#include <opendnp3/master/IMaster.h>
+#include <opendnp3/master/MasterStackConfig.h>
+#include <opendnp3/master/ICommandProcessor.h>
+#include <opendnp3/master/ISOEHandler.h>
 
 #include <asiopal/Log.h>
 #include <asiopal/LogToStdio.h>

@@ -21,8 +21,8 @@
 #ifndef __MOCK_SOE_HANDLER_H_
 #define __MOCK_SOE_HANDLER_H_
 
-#include <opendnp3/ISOEHandler.h>
-#include <opendnp3/OctetString.h>
+#include <opendnp3/master/ISOEHandler.h>
+#include <opendnp3/app/OctetString.h>
 
 #include <openpal/Location.h>
 #include <openpal/Exception.h>

@@ -3,7 +3,7 @@
 
 using namespace System::Collections::ObjectModel;
 
-#include <opendnp3/ISOEHandler.h>
+#include <opendnp3/master/ISOEHandler.h>
 #include <vcclr.h>
 
 using namespace DNP3::Interface;

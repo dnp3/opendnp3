@@ -24,8 +24,8 @@
 #include "MockExecutor.h"
 #include "LogTester.h"
 
-#include <opendnp3/Master.h>
-#include <opendnp3/AsyncTaskGroup.h>
+#include <opendnp3/master/Master.h>
+#include <opendnp3/master/AsyncTaskGroup.h>
 
 #include <deque>
 

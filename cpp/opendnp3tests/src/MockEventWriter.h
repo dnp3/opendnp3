@@ -21,7 +21,7 @@
 #ifndef __MOCK_EVENT_WRITER_H_
 #define __MOCK_EVENT_WRITER_H_
 
-#include <opendnp3/OutstationEventBuffer.h>
+#include <opendnp3/outstation/OutstationEventBuffer.h>
 
 #include <vector>
 
