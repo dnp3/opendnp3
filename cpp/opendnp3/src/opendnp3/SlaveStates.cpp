@@ -20,7 +20,7 @@
  */
 #include "SlaveStates.h"
 
-#include <opendnp3/DNPConstants.h>
+#include "DNPConstants.h"
 #include <openpal/LoggableMacros.h>
 
 #include "Slave.h"

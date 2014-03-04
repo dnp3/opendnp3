@@ -21,7 +21,7 @@
 #ifndef __STATIC_SIZE_CONFIGURATION_H_
 #define __STATIC_SIZE_CONFIGURATION_H_
 
-#include <opendnp3/Uncopyable.h>
+#include "Uncopyable.h"
 
 #include <cstdint>
 

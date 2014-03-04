@@ -20,9 +20,9 @@
 
 #include <openpal/BufferWrapper.h>
 #include "GroupVariationID.h"
-#include <opendnp3/gen/CommandStatus.h>
+#include "../gen/CommandStatus.h"
 #include "IDNP3Serializer.h"
-#include <opendnp3/AnalogOutput.h>
+#include "../AnalogOutput.h"
 
 namespace opendnp3 {
 

@@ -25,7 +25,7 @@
 #include <openpal/Loggable.h>
 #include <openpal/BufferWrapper.h>
 
-#include <opendnp3/DNPConstants.h>
+#include "DNPConstants.h"
 
 #include "ShiftableBuffer.h"
 #include "LinkFrame.h"

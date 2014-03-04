@@ -23,7 +23,7 @@
 
 #include "MasterTaskBase.h"
 
-#include <opendnp3/ISOEHandler.h>
+#include "ISOEHandler.h"
 
 #include <functional>
 

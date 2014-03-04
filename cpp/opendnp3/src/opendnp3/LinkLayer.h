@@ -30,7 +30,7 @@
 #include "ILinkContext.h"
 #include "LinkFrame.h"
 
-#include <opendnp3/LinkConfig.h>
+#include "LinkConfig.h"
 
 namespace opendnp3
 {

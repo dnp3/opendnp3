@@ -21,10 +21,10 @@
 #ifndef __MEASUREMENT_FACTORY_H_
 #define __MEASUREMENT_FACTORY_H_
 
-#include <opendnp3/Uncopyable.h>
-#include <opendnp3/DataTypes.h>
-#include <opendnp3/ControlRelayOutputBlock.h>
-#include <opendnp3/AnalogOutput.h>
+#include "../Uncopyable.h"
+#include "../DataTypes.h"
+#include "../ControlRelayOutputBlock.h"
+#include "../AnalogOutput.h"
 
 namespace opendnp3
 {

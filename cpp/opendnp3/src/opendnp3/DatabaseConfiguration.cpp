@@ -19,7 +19,7 @@
  * to you under the terms of the License.
  */
 
-#include <opendnp3/DatabaseConfiguration.h>
+#include "DatabaseConfiguration.h"
 
 namespace opendnp3
 {

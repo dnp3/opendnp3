@@ -22,7 +22,7 @@
 
 
 #include <openpal/Exception.h>
-#include <opendnp3/PointClass.h>
+#include "PointClass.h"
 #include <openpal/LoggableMacros.h>
 
 #include "APDUParser.h"

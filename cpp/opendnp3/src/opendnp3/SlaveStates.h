@@ -22,7 +22,7 @@
 #define __SLAVE_STATES_H_
 
 #include <string>
-#include <opendnp3/Singleton.h>
+#include "Singleton.h"
 
 #include "APDUHeader.h"
 #include "SequenceInfo.h"

@@ -23,7 +23,7 @@
 
 #include <openpal/Indexable.h>
 
-#include <opendnp3/DataTypes.h>
+#include "DataTypes.h"
 
 #include "EventMetadata.h"
 #include "ValueMetadataPair.h"

@@ -21,8 +21,8 @@
 #ifndef __MASTER_STACK_IMPL_H_
 #define __MASTER_STACK_IMPL_H_
 
-#include <opendnp3/IMaster.h>
-#include <opendnp3/MasterStackConfig.h>
+#include "IMaster.h"
+#include "MasterStackConfig.h"
 
 
 #include "Master.h"

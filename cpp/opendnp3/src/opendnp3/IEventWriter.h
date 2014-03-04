@@ -23,7 +23,7 @@
 #define __I_EVENT_WRITER_H_
 
 #include "Event.h"
-#include <opendnp3/DataTypes.h>
+#include "DataTypes.h"
 
 namespace opendnp3
 {

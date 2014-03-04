@@ -23,7 +23,7 @@
 
 #include <string>
 
-#include <opendnp3/Singleton.h>
+#include "Singleton.h"
 
 
 #include "LinkLayer.h"

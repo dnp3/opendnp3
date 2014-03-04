@@ -21,7 +21,7 @@
 #ifndef __LAZY_ITERABLE_H_
 #define __LAZY_ITERABLE_H_
 
-#include <opendnp3/IterableBuffer.h>
+#include "IterableBuffer.h"
 
 namespace opendnp3
 {

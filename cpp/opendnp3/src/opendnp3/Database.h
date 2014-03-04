@@ -22,7 +22,7 @@
 #define __DATABASE_H_
 
 #include <openpal/StaticList.h>
-#include <opendnp3/IDataObserver.h>
+#include "IDataObserver.h"
 
 #include "IEventBuffer.h"
 #include "StaticDataFacade.h"

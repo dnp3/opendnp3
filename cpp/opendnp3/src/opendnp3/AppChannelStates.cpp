@@ -20,8 +20,8 @@
  */
 #include "AppChannelStates.h"
 
-#include <opendnp3/Singleton.h>
-#include <opendnp3/DNPConstants.h>
+#include "Singleton.h"
+#include "DNPConstants.h"
 
 #include <openpal/Exception.h>
 

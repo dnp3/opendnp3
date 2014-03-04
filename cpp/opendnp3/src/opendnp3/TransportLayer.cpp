@@ -21,7 +21,7 @@
 #include "TransportLayer.h"
 
 #include <openpal/Exception.h>
-#include <opendnp3/TransportConstants.h>
+#include "TransportConstants.h"
 
 #include <openpal/LoggableMacros.h>
 

@@ -21,7 +21,7 @@
 #include <openpal/BufferWrapper.h>
 #include "GroupVariationID.h"
 #include "IDNP3Serializer.h"
-#include <opendnp3/DataTypes.h>
+#include "../DataTypes.h"
 
 namespace opendnp3 {
 

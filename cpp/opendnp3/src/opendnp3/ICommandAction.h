@@ -21,8 +21,8 @@
 #ifndef __I_COMMAND_ACTION_H_
 #define __I_COMMAND_ACTION_H_
 
-#include <opendnp3/ControlRelayOutputBlock.h>
-#include <opendnp3/AnalogOutput.h>
+#include "ControlRelayOutputBlock.h"
+#include "AnalogOutput.h"
 
 namespace opendnp3
 {

@@ -22,7 +22,7 @@ object GroupVariationFileGenerator {
       def getEnums(gv: GroupVariation):  List[String] = {
 
         def extract(typ: FixedSizeFieldType): Option[String] = typ match {
-          case EnumField(model) => Some("<opendnp3/gen/"+model.name+".h>")
+          case EnumField(model) => Some(quoted("../gen/"+model.name+".h"))
           case _ => None
         }
 

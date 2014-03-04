@@ -21,8 +21,8 @@
 #ifndef __DNP3_CHANNEL_H_
 #define __DNP3_CHANNEL_H_
 
-#include <opendnp3/IChannel.h>
-#include <opendnp3/SlaveStackConfig.h>
+#include "IChannel.h"
+#include "SlaveStackConfig.h"
 
 
 #include <openpal/Loggable.h>

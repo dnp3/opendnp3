@@ -23,8 +23,8 @@
 
 #include <string>
 
-#include <opendnp3/Singleton.h>
-#include <opendnp3/ObjectInterfaces.h>
+#include "Singleton.h"
+#include "ObjectInterfaces.h"
 
 #include "APDUHeader.h"
 

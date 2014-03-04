@@ -20,7 +20,7 @@
  */
 #include "StaticResponseTypes.h"
 
-#include <opendnp3/SlaveConfig.h>
+#include "SlaveConfig.h"
 
 #include "objects/Group1.h"
 #include "objects/Group10.h"

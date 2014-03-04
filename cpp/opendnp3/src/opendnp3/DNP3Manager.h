@@ -44,7 +44,7 @@ Companion documentation that describes theory of operation is located on the <a 
 A simple application can be written as follows:
 
 \code
-#include <opendnp3/DNP3Manger.h>
+#include "DNP3Manger.h"
 
 using namespace opendnp3;
 

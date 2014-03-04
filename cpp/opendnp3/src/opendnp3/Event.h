@@ -21,7 +21,7 @@
 #ifndef __OPENDNP3_EVENT_H_
 #define __OPENDNP3_EVENT_H_
 
-#include <opendnp3/IndexedValue.h>
+#include "IndexedValue.h"
 #include "EventType.h"
 
 namespace opendnp3

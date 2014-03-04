@@ -18,7 +18,7 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include <opendnp3/OctetData.h>
+#include "OctetData.h"
 
 #include <assert.h>
 #include <memory.h>

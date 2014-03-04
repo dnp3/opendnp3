@@ -21,7 +21,7 @@
 #include "TransportRx.h"
 
 
-#include <opendnp3/TransportConstants.h>
+#include "TransportConstants.h"
 #include <openpal/Exception.h>
 
 #include <openpal/LoggableMacros.h>

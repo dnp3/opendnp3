@@ -19,14 +19,14 @@ object CppEnumGenerator {
     }
 
     def includeEnums = List(
-      EnumConfig(ScanStatus(), "opendnp3", opendnp3, false, false),
-      EnumConfig(CommandStatus(), "opendnp3", opendnp3, true, false),
-      EnumConfig(CommandResult(), "opendnp3", opendnp3, false, false),
-      EnumConfig(ControlCode(), "opendnp3", opendnp3, true, false),
-      EnumConfig(ChannelState(), "opendnp3", opendnp3, false, false),
-      EnumConfig(StackState(), "opendnp3", opendnp3, false, false),
+      EnumConfig(ScanStatus(), "opendnp3", opendnp3, false, true),
+      EnumConfig(CommandStatus(), "opendnp3", opendnp3, true, true),
+      EnumConfig(CommandResult(), "opendnp3", opendnp3, false, true),
+      EnumConfig(ControlCode(), "opendnp3", opendnp3, true, true),
+      EnumConfig(ChannelState(), "opendnp3", opendnp3, false, true),
+      EnumConfig(StackState(), "opendnp3", opendnp3, false, true),
       EnumConfig(LogLevel(), "openpal", openpal, true, false)
-    ) ::: EventTypes.enums.map(m => EnumConfig(m, "opendnp3", opendnp3, true, false))
+    ) ::: EventTypes.enums.map(m => EnumConfig(m, "opendnp3", opendnp3, true, true))
 
     // list of all enumerations that we want to generate
     def sourceEnums = List(FunctionCode(), QualifierCode(), LinkFunction()).map { em =>

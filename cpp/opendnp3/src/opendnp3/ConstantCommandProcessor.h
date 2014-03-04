@@ -22,7 +22,7 @@
 #define __CONSTANT_COMMAND_PROCESSOR_H_
 
 
-#include <opendnp3/ICommandProcessor.h>
+#include "ICommandProcessor.h"
 
 
 namespace openpal

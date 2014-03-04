@@ -15,7 +15,7 @@
 // http://www.apache.org/licenses/LICENSE-2.0.html
 //
 
-#include <opendnp3/gen/CommandResult.h>
+#include "CommandResult.h"
 
 namespace opendnp3 {
 

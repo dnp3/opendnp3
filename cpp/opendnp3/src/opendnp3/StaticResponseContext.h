@@ -21,7 +21,7 @@
 #ifndef __STATIC_RESPONSE_CONTEXT_H_
 #define __STATIC_RESPONSE_CONTEXT_H_
 
-#include <opendnp3/Uncopyable.h>
+#include "Uncopyable.h"
 
 #include <openpal/StaticQueue.h>
 #include <openpal/Serialization.h>

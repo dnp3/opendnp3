@@ -20,9 +20,9 @@
  */
 #include "Slave.h"
 
-#include <opendnp3/AnalogOutput.h>
-#include <opendnp3/ControlRelayOutputBlock.h>
-#include <opendnp3/DNPConstants.h>
+#include "AnalogOutput.h"
+#include "ControlRelayOutputBlock.h"
+#include "DNPConstants.h"
 
 #include <openpal/LoggableMacros.h>
 #include <openpal/IExecutor.h>

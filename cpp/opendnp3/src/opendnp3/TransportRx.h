@@ -21,7 +21,7 @@
 #ifndef __TRANSPORT_RX_H_
 #define __TRANSPORT_RX_H_
 
-#include <opendnp3/TransportConstants.h>
+#include "TransportConstants.h"
 
 
 #include <openpal/Loggable.h>

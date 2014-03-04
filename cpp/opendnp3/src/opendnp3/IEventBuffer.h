@@ -21,8 +21,8 @@
 #ifndef __I_EVENT_BUFFER_H_
 #define __I_EVENT_BUFFER_H_
 
-#include <opendnp3/DataTypes.h>
-#include <opendnp3/PointClass.h>
+#include "DataTypes.h"
+#include "PointClass.h"
 
 #include "Event.h"
 

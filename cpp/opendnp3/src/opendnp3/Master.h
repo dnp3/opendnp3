@@ -21,10 +21,10 @@
 #ifndef __MASTER_H_
 #define __MASTER_H_
 
-#include <opendnp3/MasterConfig.h>
-#include <opendnp3/ObjectInterfaces.h>
-#include <opendnp3/ISOEHandler.h>
-#include <opendnp3/MasterScan.h>
+#include "MasterConfig.h"
+#include "ObjectInterfaces.h"
+#include "ISOEHandler.h"
+#include "MasterScan.h"
 
 #include <openpal/IExecutor.h>
 #include <openpal/IUTCTimeSource.h>

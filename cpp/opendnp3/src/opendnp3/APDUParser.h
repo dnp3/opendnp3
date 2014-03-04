@@ -27,7 +27,7 @@
 #include <openpal/BufferWrapper.h>
 #include <openpal/ISerializer.h>
 
-#include <opendnp3/Uncopyable.h>
+#include "Uncopyable.h"
 
 #include "Range.h"
 #include "IAPDUHandler.h"

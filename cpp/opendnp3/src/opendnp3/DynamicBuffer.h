@@ -22,7 +22,7 @@
 #ifndef __DYNAMIC_BUFFER_H_
 #define __DYNAMIC_BUFFER_H_
 
-#include <opendnp3/Uncopyable.h>
+#include "Uncopyable.h"
 #include <openpal/BufferWrapper.h>
 #include <cstdint>
 

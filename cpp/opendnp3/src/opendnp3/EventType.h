@@ -22,7 +22,7 @@
 #ifndef __EVENT_TYPE_H_
 #define __EVENT_TYPE_H_
 
-#include <opendnp3/Uncopyable.h>
+#include "Uncopyable.h"
 
 #include <cstdint>
 

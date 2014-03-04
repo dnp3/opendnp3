@@ -21,9 +21,9 @@
 #ifndef __SLAVE_H_
 #define __SLAVE_H_
 
-#include <opendnp3/ICommandHandler.h>
-#include <opendnp3/ITimeWriteHandler.h>
-#include <opendnp3/SlaveConfig.h>
+#include "ICommandHandler.h"
+#include "ITimeWriteHandler.h"
+#include "SlaveConfig.h"
 
 #include <openpal/IExecutor.h>
 #include <openpal/StaticBuffer.h>

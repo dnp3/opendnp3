@@ -26,7 +26,7 @@
 
 #include <openpal/RandomInsertAdapter.h>
 #include <openpal/DoublyLinkedListAdapter.h>
-#include <opendnp3/DataTypes.h>
+#include "DataTypes.h"
 
 #include "EventType.h"
 

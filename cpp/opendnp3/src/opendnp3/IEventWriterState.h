@@ -23,7 +23,7 @@
 #define __I_EVENT_WRITER_STATE_H_
 
 #include "Event.h"
-#include <opendnp3/DataTypes.h>
+#include "DataTypes.h"
 #include "CountWriteIterator.h"
 
 namespace opendnp3

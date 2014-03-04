@@ -24,7 +24,7 @@
 #include "APDUHandlerBase.h"
 
 #include <openpal/Loggable.h>
-#include <opendnp3/ITimeWriteHandler.h>
+#include "ITimeWriteHandler.h"
 
 #include "StaticResponseContext.h"
 

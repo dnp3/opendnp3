@@ -25,7 +25,7 @@
 #include <openpal/IExecutor.h>
 #include <openpal/TimeDuration.h>
 
-#include <opendnp3/gen/ChannelState.h>
+#include "gen/ChannelState.h"
 
 #include <set>
 #include <mutex>

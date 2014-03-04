@@ -21,8 +21,8 @@
 #ifndef __QUEUED_COMMAND_PROCESSOR_H_
 #define __QUEUED_COMMAND_PROCESSOR_H_
 
-#include <opendnp3/ICommandProcessor.h>
-#include <opendnp3/SubjectBase.h>
+#include "ICommandProcessor.h"
+#include "SubjectBase.h"
 
 
 #include <queue>

@@ -23,7 +23,7 @@
 #include <assert.h>
 
 #include <openpal/Exception.h>
-#include <opendnp3/DNPConstants.h>
+#include "DNPConstants.h"
 
 #include <openpal/LoggableMacros.h>
 

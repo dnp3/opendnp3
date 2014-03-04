@@ -26,7 +26,7 @@
 
 #include <openpal/AsyncLayerInterfaces.h>
 
-#include <opendnp3/DNPConstants.h>
+#include "DNPConstants.h"
 
 
 namespace opendnp3

@@ -22,7 +22,7 @@
 #define __STACK_BASE_H_
 
 
-#include <opendnp3/gen/StackState.h>
+#include "gen/StackState.h"
 
 #include <functional>
 #include <vector>

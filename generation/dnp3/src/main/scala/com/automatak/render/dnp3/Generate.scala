@@ -10,7 +10,7 @@ object Generate {
   val javaPath = FileSystems.getDefault.getPath("../java/api/src/main/java/com/automatak/dnp3")
 
   val opendnp3Paths = CppEnumGenerator.DualPath(
-    FileSystems.getDefault.getPath("../cpp/opendnp3/include/opendnp3/gen/"),
+    FileSystems.getDefault.getPath("../cpp/opendnp3/src/opendnp3/gen/"),
     FileSystems.getDefault.getPath("../cpp/opendnp3/src/opendnp3/gen/")
   )
 

@@ -23,12 +23,12 @@
 
 #include "GroupVariation.h"
 
-#include <opendnp3/IterableBuffer.h>
-#include <opendnp3/DataTypes.h>
-#include <opendnp3/ControlRelayOutputBlock.h>
-#include <opendnp3/AnalogOutput.h>
-#include <opendnp3/IndexedValue.h>
-#include <opendnp3/OctetString.h>
+#include "IterableBuffer.h"
+#include "DataTypes.h"
+#include "ControlRelayOutputBlock.h"
+#include "AnalogOutput.h"
+#include "IndexedValue.h"
+#include "OctetString.h"
 
 #include "StaticRange.h"
 

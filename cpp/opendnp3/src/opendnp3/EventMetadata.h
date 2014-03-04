@@ -21,7 +21,7 @@
 #ifndef __EVENT_METADATA_H_
 #define __EVENT_METADATA_H_
 
-#include <opendnp3/PointClass.h>
+#include "PointClass.h"
 
 #include "EventType.h"
 

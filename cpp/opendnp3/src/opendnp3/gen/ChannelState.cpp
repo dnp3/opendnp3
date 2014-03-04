@@ -15,7 +15,7 @@
 // http://www.apache.org/licenses/LICENSE-2.0.html
 //
 
-#include <opendnp3/gen/ChannelState.h>
+#include "ChannelState.h"
 
 namespace opendnp3 {
 

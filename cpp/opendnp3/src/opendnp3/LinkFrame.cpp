@@ -22,7 +22,7 @@
 
 #include "DNPCrc.h"
 
-#include <opendnp3/Util.h>
+#include "Util.h"
 
 #include <openpal/Serialization.h>
 

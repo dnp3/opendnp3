@@ -18,7 +18,7 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include <opendnp3/DestructorHook.h>
+#include "DestructorHook.h"
 
 #include <openpal/IExecutor.h>
 

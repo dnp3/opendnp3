@@ -21,9 +21,9 @@
 #ifndef __OUTSTATION_STACK_IMPL_H_
 #define __OUTSTATION_STACK_IMPL_H_
 
-#include <opendnp3/IOutstation.h>
-#include <opendnp3/SlaveStackConfig.h>
-#include <opendnp3/DatabaseConfiguration.h>
+#include "IOutstation.h"
+#include "SlaveStackConfig.h"
+#include "DatabaseConfiguration.h"
 
 #include <openpal/Location.h>
 

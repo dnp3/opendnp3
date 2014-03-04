@@ -25,7 +25,7 @@
 #include <openpal/Loggable.h>
 #include <openpal/BufferWrapper.h>
 
-#include <opendnp3/TransportConstants.h>
+#include "TransportConstants.h"
 #include "CopyableBuffer.h"
 
 namespace opendnp3

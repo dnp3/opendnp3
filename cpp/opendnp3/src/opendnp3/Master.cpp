@@ -20,7 +20,7 @@
  */
 #include "Master.h"
 
-#include <opendnp3/IDataObserver.h>
+#include "IDataObserver.h"
 
 #include "MasterStates.h"
 #include "MeasurementHandler.h"

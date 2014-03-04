@@ -21,7 +21,7 @@
 #ifndef __MULTIPLEXING_DATA_OBSERVER_H_
 #define __MULTIPLEXING_DATA_OBSERVER_H_
 
-#include <opendnp3/IDataObserver.h>
+#include "IDataObserver.h"
 
 
 #include <vector>

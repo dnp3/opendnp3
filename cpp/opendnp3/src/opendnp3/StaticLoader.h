@@ -26,7 +26,7 @@
 #include "ObjectWriter.h"
 
 #include <openpal/Serialization.h>
-#include <opendnp3/Uncopyable.h>
+#include "Uncopyable.h"
 
 namespace opendnp3
 {

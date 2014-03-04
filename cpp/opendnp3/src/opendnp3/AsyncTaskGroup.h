@@ -21,7 +21,7 @@
 #ifndef __ASYNC_TASK_GROUP_H_
 #define __ASYNC_TASK_GROUP_H_
 
-#include <opendnp3/Uncopyable.h>
+#include "Uncopyable.h"
 #include <openpal/MonotonicTimestamp.h>
 
 #include "AsyncTaskInterfaces.h"

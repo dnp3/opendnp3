@@ -21,7 +21,7 @@
 #ifndef __MEASUREMENT_HANDLER_H_
 #define __MEASUREMENT_HANDLER_H_
 
-#include <opendnp3/ISOEHandler.h>
+#include "ISOEHandler.h"
 
 #include <openpal/Loggable.h>
 

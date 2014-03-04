@@ -23,7 +23,7 @@
 #include "TimeSyncHandler.h"
 #include "APDUParser.h"
 
-#include <opendnp3/PointClass.h>
+#include "PointClass.h"
 #include <openpal/LoggableMacros.h>
 
 using namespace openpal;

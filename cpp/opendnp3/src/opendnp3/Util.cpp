@@ -26,7 +26,7 @@
 #include <assert.h>
 #include <vector>
 
-#include <opendnp3/Util.h>
+#include "Util.h"
 #include <openpal/Exception.h>
 
 #ifdef WIN32

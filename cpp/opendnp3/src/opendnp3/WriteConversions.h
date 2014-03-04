@@ -35,7 +35,7 @@
 #include "objects/Group40.h"
 #include "objects/Group41.h"
 
-#include <opendnp3/DataTypes.h>
+#include "DataTypes.h"
 
 namespace opendnp3
 {

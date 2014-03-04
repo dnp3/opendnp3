@@ -23,7 +23,7 @@
 
 #include "TLS_Base.h"
 
-#include <opendnp3/Singleton.h>
+#include "Singleton.h"
 
 
 namespace opendnp3

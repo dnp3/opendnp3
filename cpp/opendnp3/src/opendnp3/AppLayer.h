@@ -32,7 +32,7 @@
 #include "UnsolicitedChannel.h"
 #include "APDUHeaderParser.h"
 
-#include <opendnp3/AppConfig.h>
+#include "AppConfig.h"
 #include <openpal/StaticArray.h>
 
 namespace openpal

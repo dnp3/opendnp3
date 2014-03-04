@@ -22,7 +22,7 @@
 #define __DYNAMICICALLY_ALLOCATED_DATABASE_H_
 
 #include "StaticDataFacade.h"
-#include <opendnp3/DatabaseConfiguration.h>
+#include "DatabaseConfiguration.h"
 
 #include <openpal/DynamicArray.h>
 

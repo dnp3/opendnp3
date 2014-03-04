@@ -15,7 +15,7 @@
 // http://www.apache.org/licenses/LICENSE-2.0.html
 //
 
-#include <opendnp3/gen/StackState.h>
+#include "StackState.h"
 
 namespace opendnp3 {
 

@@ -18,9 +18,9 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include <opendnp3/SlaveConfig.h>
+#include "SlaveConfig.h"
 
-#include <opendnp3/DNPConstants.h>
+#include "DNPConstants.h"
 
 using namespace openpal;
 

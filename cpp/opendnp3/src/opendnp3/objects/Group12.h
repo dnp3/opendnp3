@@ -20,10 +20,10 @@
 
 #include <openpal/BufferWrapper.h>
 #include "GroupVariationID.h"
-#include <opendnp3/gen/ControlCode.h>
-#include <opendnp3/gen/CommandStatus.h>
+#include "../gen/ControlCode.h"
+#include "../gen/CommandStatus.h"
 #include "IDNP3Serializer.h"
-#include <opendnp3/ControlRelayOutputBlock.h>
+#include "../ControlRelayOutputBlock.h"
 
 namespace opendnp3 {
 

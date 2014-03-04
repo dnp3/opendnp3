@@ -23,7 +23,7 @@
 
 #include "MasterTaskBase.h"
 
-#include <opendnp3/CommandResponse.h>
+#include "CommandResponse.h"
 #include <openpal/Logger.h>
 #include <openpal/Sequence.h>
 

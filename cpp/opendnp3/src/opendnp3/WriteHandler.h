@@ -25,7 +25,7 @@
 #include "IINField.h"
 #include "Settable.h"
 
-#include <opendnp3/ITimeWriteHandler.h>
+#include "ITimeWriteHandler.h"
 
 #include <openpal/Loggable.h>
 

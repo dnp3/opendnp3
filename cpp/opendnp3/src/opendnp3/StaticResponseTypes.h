@@ -21,9 +21,9 @@
 #ifndef __STATIC_RESPONSE_TYPES_H_
 #define __STATIC_RESPONSE_TYPES_H_
 
-#include <opendnp3/ObjectInterfaces.h>
-#include <opendnp3/DataTypes.h>
-#include <opendnp3/SlaveConfig.h>
+#include "ObjectInterfaces.h"
+#include "DataTypes.h"
+#include "SlaveConfig.h"
 
 #include "StaticLoader.h"
 
