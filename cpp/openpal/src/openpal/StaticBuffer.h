@@ -44,13 +44,13 @@ class StaticBuffer : public StaticArray<uint8_t, uint32_t, N>
 		
 		WriteBuffer GetWriteBuffer()
 		{			
-			return WriteBuffer(buffer, Size());
+			return WriteBuffer(this->buffer, this->Size());
 		}
 
 		WriteBuffer GetWriteBuffer(uint32_t size)
 		{
-			assert(size <= Size());
-			return WriteBuffer(buffer, size);
+			assert(size <= this->Size());
+			return WriteBuffer(this->buffer, size);
 		}
 };
 

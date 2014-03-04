@@ -21,26 +21,9 @@
 
 #include "APDUParser.h"
 
-#include <openpal/Serialization.h>
-
 #include "opendnp3/gen/QualifierCode.h"
 #include "opendnp3/app/GroupVariation.h"
 #include "opendnp3/app/MeasurementFactory.h"
-
-#include "opendnp3/objects/Group1.h"
-#include "opendnp3/objects/Group2.h"
-#include "opendnp3/objects/Group10.h"
-#include "opendnp3/objects/Group12.h"
-#include "opendnp3/objects/Group20.h"
-#include "opendnp3/objects/Group22.h"
-#include "opendnp3/objects/Group30.h"
-#include "opendnp3/objects/Group32.h"
-#include "opendnp3/objects/Group40.h"
-#include "opendnp3/objects/Group41.h"
-#include "opendnp3/objects/Group50.h"
-#include "opendnp3/objects/Group52.h"
-
-
 
 using namespace openpal;
 

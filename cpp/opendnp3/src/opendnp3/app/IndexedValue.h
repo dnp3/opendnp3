@@ -60,7 +60,7 @@ namespace opendnp3
 			return IndexedValue<ValueType, T>(this->value, widerIndex);
 		}
 
-		IndexedValue(): Indexed(), value()
+		IndexedValue(): Indexed<IndexType>(), value()
 		{}
 
 		ValueType value;		

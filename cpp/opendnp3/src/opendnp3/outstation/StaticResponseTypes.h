@@ -24,7 +24,7 @@
 #include "opendnp3/app/DataTypes.h"
 
 #include "opendnp3/outstation/SlaveConfig.h"
-#include "opendnp3/outstation./StaticLoader.h"
+#include "opendnp3/outstation/StaticLoader.h"
 
 namespace opendnp3
 {

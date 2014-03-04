@@ -79,6 +79,7 @@ class IterableBuffer : public BufferWithCount
 			for(uint32_t pos = 0; pos < count; ++pos) fun(ValueAt(copy, pos));			
 		}
 
+/*
 		template <class T, class IterFunc>
 		T foldLeft(T seed, const IterFunc& fun) const
 		{
@@ -89,6 +90,7 @@ class IterableBuffer : public BufferWithCount
 			}
 			return seed;
 		}
+*/
 		
 	protected:
 

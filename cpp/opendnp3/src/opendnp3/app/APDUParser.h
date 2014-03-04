@@ -26,6 +26,7 @@
 
 #include <openpal/BufferWrapper.h>
 #include <openpal/ISerializer.h>
+#include <openpal/Serialization.h>
 
 #include "opendnp3/Uncopyable.h"
 
@@ -35,6 +36,19 @@
 #include "opendnp3/app/IndexParser.h"
 #include "opendnp3/app/BitReader.h"
 #include "opendnp3/app/IterableTransforms.h"
+
+#include "opendnp3/objects/Group1.h"
+#include "opendnp3/objects/Group2.h"
+#include "opendnp3/objects/Group10.h"
+#include "opendnp3/objects/Group12.h"
+#include "opendnp3/objects/Group20.h"
+#include "opendnp3/objects/Group22.h"
+#include "opendnp3/objects/Group30.h"
+#include "opendnp3/objects/Group32.h"
+#include "opendnp3/objects/Group40.h"
+#include "opendnp3/objects/Group41.h"
+#include "opendnp3/objects/Group50.h"
+#include "opendnp3/objects/Group52.h"
 
 #include "opendnp3/StaticSizeConfiguration.h"
 
@@ -238,7 +252,7 @@ APDUParser::Result APDUParser::ParseRangeAsBitField(
 	else {	
 		auto collection = IterableTransforms<IndexedValue<bool, uint16_t>>::From(buffer, range.Count(),
 			[&](openpal::ReadOnlyBuffer& buffer, uint32_t pos) {
-			return IndexedValue<bool, uint16_t>(GetBit(buffer, pos), pos + range.start);
+				return IndexedValue<bool, uint16_t>(GetBit(buffer, pos), pos + range.start);
 			}
 		);
 		callback(qualifier, collection);
@@ -261,12 +275,12 @@ APDUParser::Result APDUParser::ParseIndexPrefixedOctetData(
 
 		if (pHandler) {
 			auto iterable = IterableTransforms<IndexedValue<OctetString, uint16_t>>::From(buffer, count,
-				[&](ReadOnlyBuffer& buffer, uint32_t position) {
-				auto index = IndexType::ReadBuffer(buffer);
-				OctetString octets(buffer.Truncate(gvRecord.variation));
-				buffer.Advance(gvRecord.variation);
-				return IndexedValue<OctetString, uint16_t>(octets, index);
-			}
+				[gvRecord](openpal::ReadOnlyBuffer& buff, uint32_t position) {
+					auto index = IndexType::ReadBuffer(buff);
+					OctetString octets(buff.Truncate(gvRecord.variation));
+					buff.Advance(gvRecord.variation);
+					return IndexedValue<OctetString, uint16_t>(octets, index);
+				}
 			);
 			pHandler->OnIndexPrefix(gvRecord.enumeration, qualifier, iterable);
 		}

@@ -33,7 +33,7 @@ class StaticQueue : public QueueAdapter<ValueType, IndexType>
 {
 	public:
 
-		StaticQueue() : underlying(), QueueAdapter(underlying.ToIndexable())
+		StaticQueue() : underlying(), QueueAdapter<ValueType, IndexType>(underlying.ToIndexable())
 		{}
 	
 	private:
