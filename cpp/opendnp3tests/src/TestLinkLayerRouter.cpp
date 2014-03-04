@@ -25,7 +25,7 @@
 #include <openpal/Exception.h>
 #include <openpal/ToHex.h>
 
-#include <opendnp3/LinkRoute.h>
+#include <opendnp3/link/LinkRoute.h>
 
 #include "TestHelpers.h"
 #include "LinkLayerRouterTest.h"

@@ -21,9 +21,7 @@
 #ifndef __LINK_FRAME_H_
 #define __LINK_FRAME_H_
 
-
-
-#include "gen/FunctionCode.h"
+#include "../gen/FunctionCode.h"
 #include "LinkHeader.h"
 
 #include <string>

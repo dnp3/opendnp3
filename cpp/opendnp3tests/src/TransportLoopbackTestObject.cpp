@@ -20,7 +20,7 @@
  */
 #include "TransportLoopbackTestObject.h"
 
-#include <opendnp3/LinkRoute.h>
+#include <opendnp3/link/LinkRoute.h>
 
 #include <openpal/IPhysicalLayerAsync.h>
 

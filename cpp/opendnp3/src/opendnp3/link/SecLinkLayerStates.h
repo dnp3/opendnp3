@@ -23,10 +23,8 @@
 
 #include <string>
 
-#include "Singleton.h"
-
-
-#include "LinkLayer.h"
+#include "opendnp3/Singleton.h"
+#include "opendnp3/link/LinkLayer.h"
 
 namespace opendnp3
 {

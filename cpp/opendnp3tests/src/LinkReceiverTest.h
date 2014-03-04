@@ -21,7 +21,7 @@
 #ifndef __LINK_RECEIVER_TEST_H_
 #define __LINK_RECEIVER_TEST_H_
 
-#include <opendnp3/LinkLayerReceiver.h>
+#include <opendnp3/link/LinkLayerReceiver.h>
 
 #include "LogTester.h"
 #include "BufferHelpers.h"

@@ -25,8 +25,8 @@
 #include "MockUpperLayer.h"
 #include "MockExecutor.h"
 
-#include <opendnp3/LinkLayer.h>
-#include <opendnp3/ILinkRouter.h>
+#include <opendnp3/link/LinkLayer.h>
+#include <opendnp3/link/ILinkRouter.h>
 
 namespace opendnp3
 {

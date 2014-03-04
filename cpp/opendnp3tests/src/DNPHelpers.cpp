@@ -22,8 +22,8 @@
 
 #include <boost/test/unit_test.hpp>
 
-#include <opendnp3/DNPCrc.h>
-#include <opendnp3/LinkFrame.h>
+#include <opendnp3/link/DNPCrc.h>
+#include <opendnp3/link/LinkFrame.h>
 
 #include <openpal/ToHex.h>
 

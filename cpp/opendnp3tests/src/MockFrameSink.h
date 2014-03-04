@@ -21,8 +21,8 @@
 #ifndef __MOCK_FRAME_SINK_H_
 #define __MOCK_FRAME_SINK_H_
 
-#include <opendnp3/ILinkContext.h>
-#include <opendnp3/LinkLayerConstants.h>
+#include <opendnp3/link/ILinkContext.h>
+#include <opendnp3/link/LinkLayerConstants.h>
 
 #include "BufferTestObject.h"
 

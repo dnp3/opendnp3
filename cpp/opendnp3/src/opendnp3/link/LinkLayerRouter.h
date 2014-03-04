@@ -26,12 +26,12 @@
 #include <queue>
 #include <vector>
 
-#include "PhysicalLayerMonitor.h"
-#include "LinkLayerReceiver.h"
-#include "IFrameSink.h"
-#include "ILinkRouter.h"
-#include "LinkRoute.h"
+#include "opendnp3/PhysicalLayerMonitor.h"
 
+#include "opendnp3/link/LinkLayerReceiver.h"
+#include "opendnp3/link/LinkRoute.h"
+#include "opendnp3/link/IFrameSink.h"
+#include "opendnp3/link/ILinkRouter.h"
 
 
 namespace openpal

@@ -25,7 +25,7 @@
 #include "MockExecutor.h"
 #include "MockPhysicalLayerAsync.h"
 
-#include <opendnp3/LinkLayerRouter.h>
+#include <opendnp3/link/LinkLayerRouter.h>
 
 
 namespace opendnp3

@@ -21,17 +21,13 @@
 #ifndef __DNP3_CHANNEL_H_
 #define __DNP3_CHANNEL_H_
 
-#include "IChannel.h"
-#include "SlaveStackConfig.h"
-
-
 #include <openpal/Loggable.h>
 
-#include "LinkLayerRouter.h"
+#include "opendnp3/IChannel.h"
+#include "opendnp3/SlaveStackConfig.h"
+#include "opendnp3/AsyncTaskGroup.h"
 
-#ifndef OPENDNP3_NO_MASTER
-#include "AsyncTaskGroup.h"
-#endif
+#include "opendnp3/link/LinkLayerRouter.h"
 
 #include <memory>
 #include <functional>
@@ -64,15 +60,11 @@ public:
 
 	openpal::IExecutor* GetExecutor();
 
-#ifndef OPENDNP3_NO_MASTER
-
 	IMaster* AddMaster(		const std::string& arLoggerId,
 	                                LogLevel aLevel,
 	                                ISOEHandler* apPublisher,
 	                                openpal::IUTCTimeSource* apTimeSource,
 	                                const MasterStackConfig& arCfg);
-
-#endif
 
 	IOutstation* AddOutstation(	const std::string& arLoggerId,
 	                                LogLevel aLevel,

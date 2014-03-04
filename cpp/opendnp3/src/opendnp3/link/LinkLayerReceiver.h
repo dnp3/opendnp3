@@ -25,11 +25,11 @@
 #include <openpal/Loggable.h>
 #include <openpal/BufferWrapper.h>
 
-#include "DNPConstants.h"
+#include "opendnp3/DNPConstants.h"
 
-#include "ShiftableBuffer.h"
-#include "LinkFrame.h"
-#include "LinkHeader.h"
+#include "opendnp3/ShiftableBuffer.h"
+#include "opendnp3/link/LinkFrame.h"
+#include "opendnp3/link/LinkHeader.h"
 
 
 namespace opendnp3

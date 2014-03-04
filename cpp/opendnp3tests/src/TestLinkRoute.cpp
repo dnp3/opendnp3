@@ -20,7 +20,7 @@
  */
 #include <boost/test/unit_test.hpp>
 
-#include <opendnp3/LinkRoute.h>
+#include <opendnp3/link/LinkRoute.h>
 
 #include "TestHelpers.h"
 

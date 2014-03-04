@@ -21,11 +21,10 @@
 #include "PriLinkLayerStates.h"
 
 #include <openpal/Exception.h>
-#include "DNPConstants.h"
-
 #include <openpal/LoggableMacros.h>
 
-#include "LinkLayer.h"
+#include "opendnp3/DNPConstants.h"
+#include "opendnp3/link/LinkLayer.h"
 
 using namespace openpal;
 

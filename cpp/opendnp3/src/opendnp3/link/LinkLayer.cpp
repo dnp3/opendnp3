@@ -23,11 +23,11 @@
 #include <assert.h>
 
 #include <openpal/Exception.h>
-#include "DNPConstants.h"
-
 #include <openpal/LoggableMacros.h>
 
-#include "ILinkRouter.h"
+#include "opendnp3/DNPConstants.h"
+#include "opendnp3/link/ILinkRouter.h"
+
 #include "PriLinkLayerStates.h"
 #include "SecLinkLayerStates.h"
 

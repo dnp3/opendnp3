@@ -23,7 +23,7 @@
 #include "TestHelpers.h"
 #include "BufferHelpers.h"
 
-#include <opendnp3/DNPCrc.h>
+#include <opendnp3/link/DNPCrc.h>
 
 #include <iostream>
 #include <vector>

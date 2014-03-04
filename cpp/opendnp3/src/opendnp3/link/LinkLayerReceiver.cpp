@@ -20,9 +20,9 @@
  */
 #include <assert.h>
 
-#include "DNPCrc.h"
-#include "LinkReceiverStates.h"
-#include "IFrameSink.h"
+#include "opendnp3/link/DNPCrc.h"
+#include "opendnp3/link/LinkReceiverStates.h"
+#include "opendnp3/link/IFrameSink.h"
 
 #include <openpal/LoggableMacros.h>
 

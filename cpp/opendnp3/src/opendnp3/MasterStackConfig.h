@@ -23,7 +23,7 @@
 
 #include "MasterConfig.h"
 #include "AppConfig.h"
-#include "LinkConfig.h"
+#include "link/LinkConfig.h"
 
 namespace opendnp3
 {

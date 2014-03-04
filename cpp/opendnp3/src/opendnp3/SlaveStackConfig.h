@@ -21,10 +21,10 @@
 #ifndef __SLAVE_STACK_CONFIG_H_
 #define __SLAVE_STACK_CONFIG_H_
 
-#include "SlaveConfig.h"
-#include "AppConfig.h"
-#include "LinkConfig.h"
-#include "DatabaseConfiguration.h"
+#include "opendnp3/SlaveConfig.h"
+#include "opendnp3/AppConfig.h"
+#include "opendnp3/link/LinkConfig.h"
+#include "opendnp3/DatabaseConfiguration.h"
 
 namespace opendnp3
 {

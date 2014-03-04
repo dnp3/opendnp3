@@ -19,6 +19,12 @@
     <Filter Include="Source\objects">
       <UniqueIdentifier>{4c8215d6-6413-40ce-b292-18c762ee8a0f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header\link">
+      <UniqueIdentifier>{6f9655aa-b714-4837-9b14-1946de963611}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\link">
+      <UniqueIdentifier>{ff51764b-2902-42d2-9ba0-6f538dbc3c9a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\opendnp3\objects\Group1.h">
@@ -159,12 +165,6 @@
     <ClInclude Include="src\opendnp3\CountWriteIterator.h">
       <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\CRC.h">
-      <Filter>Header</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\CTOHistory.h">
-      <Filter>Header</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\Database.h">
       <Filter>Header</Filter>
     </ClInclude>
@@ -172,9 +172,6 @@
       <Filter>Header</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\DNP3Channel.h">
-      <Filter>Header</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\DNPCrc.h">
       <Filter>Header</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\DynamicallyAllocatedDatabase.h">
@@ -228,49 +225,16 @@
     <ClInclude Include="src\opendnp3\IEventWriter.h">
       <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\IFrameSink.h">
-      <Filter>Header</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\IINField.h">
       <Filter>Header</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\IINHelpers.h">
       <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\ILinkContext.h">
-      <Filter>Header</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\ILinkRouter.h">
-      <Filter>Header</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\IndexParser.h">
       <Filter>Header</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\LazyIterable.h">
-      <Filter>Header</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\LinkFrame.h">
-      <Filter>Header</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\LinkHeader.h">
-      <Filter>Header</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\LinkLayer.h">
-      <Filter>Header</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\LinkLayerConstants.h">
-      <Filter>Header</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\LinkLayerReceiver.h">
-      <Filter>Header</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\LinkLayerRouter.h">
-      <Filter>Header</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\LinkReceiverStates.h">
-      <Filter>Header</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\LinkRoute.h">
       <Filter>Header</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\Master.h">
@@ -315,9 +279,6 @@
     <ClInclude Include="src\opendnp3\PrefixedWriteIterator.h">
       <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\PriLinkLayerStates.h">
-      <Filter>Header</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\ProtocolUtil.h">
       <Filter>Header</Filter>
     </ClInclude>
@@ -331,9 +292,6 @@
       <Filter>Header</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\ReadHandler.h">
-      <Filter>Header</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\SecLinkLayerStates.h">
       <Filter>Header</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\SelectionCriteria.h">
@@ -543,9 +501,6 @@
     <ClInclude Include="src\opendnp3\MasterConfig.h">
       <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\LinkConfig.h">
-      <Filter>Header</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\ITransactable.h">
       <Filter>Header</Filter>
     </ClInclude>
@@ -669,6 +624,54 @@
     <ClInclude Include="src\opendnp3\gen\ChannelState.h">
       <Filter>Header\gen</Filter>
     </ClInclude>
+    <ClInclude Include="src\opendnp3\link\LinkConfig.h">
+      <Filter>Header\link</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\link\LinkFrame.h">
+      <Filter>Header\link</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\link\LinkHeader.h">
+      <Filter>Header\link</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\link\LinkLayer.h">
+      <Filter>Header\link</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\link\LinkLayerConstants.h">
+      <Filter>Header\link</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\link\LinkLayerReceiver.h">
+      <Filter>Header\link</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\link\LinkLayerRouter.h">
+      <Filter>Header\link</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\link\LinkReceiverStates.h">
+      <Filter>Header\link</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\link\LinkRoute.h">
+      <Filter>Header\link</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\link\CRC.h">
+      <Filter>Header\link</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\link\DNPCrc.h">
+      <Filter>Header\link</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\link\IFrameSink.h">
+      <Filter>Header\link</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\link\ILinkContext.h">
+      <Filter>Header\link</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\link\ILinkRouter.h">
+      <Filter>Header\link</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\link\PriLinkLayerStates.h">
+      <Filter>Header\link</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\link\SecLinkLayerStates.h">
+      <Filter>Header\link</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\opendnp3\AnalogOutput.cpp">
@@ -737,9 +740,6 @@
     <ClCompile Include="src\opendnp3\CopyableBuffer.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\CRC.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
     <ClCompile Include="src\opendnp3\Database.cpp">
       <Filter>Source</Filter>
     </ClCompile>
@@ -756,9 +756,6 @@
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\DNP3Manager.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\DNPCrc.cpp">
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\DynamicallyAllocatedDatabase.cpp">
@@ -798,27 +795,6 @@
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\ITimeWriteHandler.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\LinkFrame.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\LinkHeader.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\LinkLayer.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\LinkLayerReceiver.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\LinkLayerRouter.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\LinkReceiverStates.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\LinkRoute.cpp">
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\Master.cpp">
@@ -866,9 +842,6 @@
     <ClCompile Include="src\opendnp3\PointClass.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\PriLinkLayerStates.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
     <ClCompile Include="src\opendnp3\ProtocolUtil.cpp">
       <Filter>Source</Filter>
     </ClCompile>
@@ -876,9 +849,6 @@
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\ReadHandler.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\SecLinkLayerStates.cpp">
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\ShiftableBuffer.cpp">
@@ -1081,6 +1051,39 @@
     </ClCompile>
     <ClCompile Include="src\opendnp3\CommandResponseHandler.cpp">
       <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\link\LinkFrame.cpp">
+      <Filter>Source\link</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\link\LinkHeader.cpp">
+      <Filter>Source\link</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\link\LinkLayer.cpp">
+      <Filter>Source\link</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\link\LinkLayerReceiver.cpp">
+      <Filter>Source\link</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\link\LinkLayerRouter.cpp">
+      <Filter>Source\link</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\link\LinkReceiverStates.cpp">
+      <Filter>Source\link</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\link\LinkRoute.cpp">
+      <Filter>Source\link</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\link\CRC.cpp">
+      <Filter>Source\link</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\link\DNPCrc.cpp">
+      <Filter>Source\link</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\link\PriLinkLayerStates.cpp">
+      <Filter>Source\link</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\link\SecLinkLayerStates.cpp">
+      <Filter>Source\link</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

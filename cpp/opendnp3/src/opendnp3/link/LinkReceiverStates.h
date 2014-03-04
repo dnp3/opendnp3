@@ -24,8 +24,8 @@
 
 #include <string>
 
-#include "Uncopyable.h"
-#include "Singleton.h"
+#include "opendnp3/Uncopyable.h"
+#include "opendnp3/Singleton.h"
 
 
 #include "LinkLayerReceiver.h"

@@ -20,9 +20,9 @@
  */
 #include "LinkFrame.h"
 
-#include "DNPCrc.h"
+#include "opendnp3/link/DNPCrc.h"
 
-#include "Util.h"
+#include "opendnp3/Util.h"
 
 #include <openpal/Serialization.h>
 

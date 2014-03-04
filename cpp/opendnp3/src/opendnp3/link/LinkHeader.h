@@ -22,7 +22,7 @@
 #define __LINK_HEADER_H_
 
 #include "LinkLayerConstants.h"
-#include "gen/LinkFunction.h"
+#include "../gen/LinkFunction.h"
 
 namespace opendnp3
 {
