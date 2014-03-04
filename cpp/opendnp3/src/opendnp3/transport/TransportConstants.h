@@ -18,53 +18,27 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __TRANSPORT_TX_H_
-#define __TRANSPORT_TX_H_
+#ifndef __TRANSPORT_CONSTANTS_H_
+#define __TRANSPORT_CONSTANTS_H_
 
+#include "opendnp3/DNPConstants.h"
 
-#include <openpal/Loggable.h>
-#include <openpal/BufferWrapper.h>
-
-#include "TransportConstants.h"
-#include "CopyableBuffer.h"
+#include <cstdint>
 
 namespace opendnp3
 {
 
-class TransportLayer;
-
-/**
-State/validation for the DNP3 transport layer's send channel.
-*/
-class TransportTx : public openpal::Loggable
-{
-public:
-	TransportTx(openpal::Logger&, TransportLayer*, size_t aFragSize);
-
-
-	void Send(const openpal::ReadOnlyBuffer &arBuffer); // A fresh call to Send() will reset the state
-	bool SendSuccess();
-
-
-	static uint8_t GetHeader(bool aFir, bool aFin, int aSeq);
-
-private:
-
-	bool CheckForSend();
-
-	TransportLayer* mpContext;
-
-	CopyableBuffer mBufferAPDU;
-	CopyableBuffer mBufferTPDU;
-
-	size_t mNumBytesSent;
-	size_t mNumBytesToSend;
-	int mSeq;
-
-	size_t BytesRemaining() {
-		return mNumBytesToSend - mNumBytesSent;
-	}
+/// Transport header bitmasks
+enum TransportHeader {
+	TL_HDR_FIN = 0x80,
+	TL_HDR_FIR = 0x40,
+	TL_HDR_SEQ = 0x3F
 };
+
+/// Maximum TPDU length
+const uint8_t TL_MAX_TPDU_LENGTH = 250;
+/// Maximum TPDU payload size
+const uint8_t TL_MAX_TPDU_PAYLOAD = 249;
 
 }
 

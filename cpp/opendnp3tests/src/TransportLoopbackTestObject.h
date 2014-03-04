@@ -27,7 +27,7 @@
 
 #include <opendnp3/link/LinkLayerRouter.h>
 #include <opendnp3/link/LinkLayer.h>
-#include <opendnp3/TransportLayer.h>
+#include <opendnp3/transport/TransportLayer.h>
 
 namespace opendnp3
 {

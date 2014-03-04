@@ -18,40 +18,52 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __TLS_BASE_H_
-#define __TLS_BASE_H_
+#ifndef __TRANSPORT_TX_H_
+#define __TRANSPORT_TX_H_
 
-#include "Uncopyable.h"
 
+#include <openpal/Loggable.h>
 #include <openpal/BufferWrapper.h>
 
-#include <string>
-#include <cstdint>
+#include "opendnp3/transport/TransportConstants.h"
+#include "opendnp3/CopyableBuffer.h"
 
 namespace opendnp3
 {
 
 class TransportLayer;
 
-
 /**
-Base class for all TransportLayerStates (TLS)
+State/validation for the DNP3 transport layer's send channel.
 */
-class TLS_Base
+class TransportTx : public openpal::Loggable
 {
 public:
-	virtual void Send(const openpal::ReadOnlyBuffer& arBuffer, TransportLayer*);
-	virtual void HandleReceive(const openpal::ReadOnlyBuffer& arBuffer, TransportLayer*);
+	TransportTx(openpal::Logger&, TransportLayer*, size_t aFragSize);
 
-	// TPDU failure/success handlers
-	virtual void HandleSendSuccess(TransportLayer*);
-	virtual void HandleSendFailure(TransportLayer*);
 
-	virtual void LowerLayerUp(TransportLayer*);
-	virtual void LowerLayerDown(TransportLayer*);
-#ifndef OPENDNP3_STRIP_LOG_MESSAGES
-	virtual std::string Name() const = 0;
-#endif
+	void Send(const openpal::ReadOnlyBuffer &arBuffer); // A fresh call to Send() will reset the state
+	bool SendSuccess();
+
+
+	static uint8_t GetHeader(bool aFir, bool aFin, int aSeq);
+
+private:
+
+	bool CheckForSend();
+
+	TransportLayer* mpContext;
+
+	CopyableBuffer mBufferAPDU;
+	CopyableBuffer mBufferTPDU;
+
+	size_t mNumBytesSent;
+	size_t mNumBytesToSend;
+	int mSeq;
+
+	size_t BytesRemaining() {
+		return mNumBytesToSend - mNumBytesSent;
+	}
 };
 
 }

@@ -21,8 +21,9 @@
 #ifndef __APPLICATION_STACK_H_
 #define __APPLICATION_STACK_H_
 
-#include "link/LinkLayer.h"
-#include "TransportLayer.h"
+#include "opendnp3/link/LinkLayer.h"
+#include "opendnp3/transport/TransportLayer.h"
+
 #include "AppLayer.h"
 
 namespace openpal

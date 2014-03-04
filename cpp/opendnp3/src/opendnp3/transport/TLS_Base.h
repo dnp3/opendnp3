@@ -18,27 +18,41 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __TRANSPORT_CONSTANTS_H_
-#define __TRANSPORT_CONSTANTS_H_
+#ifndef __TLS_BASE_H_
+#define __TLS_BASE_H_
 
-#include "DNPConstants.h"
+#include "opendnp3/Uncopyable.h"
 
+#include <openpal/BufferWrapper.h>
+
+#include <string>
 #include <cstdint>
 
 namespace opendnp3
 {
 
-/// Transport header bitmasks
-enum TransportHeader {
-	TL_HDR_FIN = 0x80,
-	TL_HDR_FIR = 0x40,
-	TL_HDR_SEQ = 0x3F
-};
+class TransportLayer;
 
-/// Maximum TPDU length
-const uint8_t TL_MAX_TPDU_LENGTH = 250;
-/// Maximum TPDU payload size
-const uint8_t TL_MAX_TPDU_PAYLOAD = 249;
+
+/**
+Base class for all TransportLayerStates (TLS)
+*/
+class TLS_Base
+{
+public:
+	virtual void Send(const openpal::ReadOnlyBuffer& arBuffer, TransportLayer*);
+	virtual void HandleReceive(const openpal::ReadOnlyBuffer& arBuffer, TransportLayer*);
+
+	// TPDU failure/success handlers
+	virtual void HandleSendSuccess(TransportLayer*);
+	virtual void HandleSendFailure(TransportLayer*);
+
+	virtual void LowerLayerUp(TransportLayer*);
+	virtual void LowerLayerDown(TransportLayer*);
+#ifndef OPENDNP3_STRIP_LOG_MESSAGES
+	virtual std::string Name() const = 0;
+#endif
+};
 
 }
 

@@ -18,50 +18,52 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __TRANSPORT_STATES_H_
-#define __TRANSPORT_STATES_H_
+#ifndef __TRANSPORT_RX_H_
+#define __TRANSPORT_RX_H_
 
-#include "TLS_Base.h"
+#include "TransportConstants.h"
 
-#include "Singleton.h"
 
+#include <openpal/Loggable.h>
+#include <openpal/BufferWrapper.h>
+
+#include "opendnp3/CopyableBuffer.h"
 
 namespace opendnp3
 {
 
-/** Represents the closed state, only come online
-*/
-class TLS_Closed : public TLS_Base
-{
-	MACRO_STATE_SINGLETON_INSTANCE(TLS_Closed);
+class TransportLayer;
 
-	void LowerLayerUp(TransportLayer*);
+/**
+State/validation for the DNP3 transport layer's receive channel.
+*/
+class TransportRx : public openpal::Loggable
+{
+public:
+	TransportRx(openpal::Logger&, TransportLayer*, uint32_t aFragSize);
+
+	void HandleReceive(const openpal::ReadOnlyBuffer& arBuffer);
+
+	void Reset();
+
+private:
+
+	bool ValidateHeader(bool aFir, bool aFin, int aSeq, size_t aPayloadSize);
+
+	TransportLayer* mpContext;
+
+	CopyableBuffer mBuffer;
+	uint32_t mNumBytesRead;
+	int mSeq;
+
+
+
+	size_t BufferRemaining() {
+		return mBuffer.Size() - mNumBytesRead;
+	}
 };
 
-/** Represents the ready state
-*/
-class TLS_Ready : public TLS_Base
-{
-	MACRO_STATE_SINGLETON_INSTANCE(TLS_Ready);
-
-	void Send(const openpal::ReadOnlyBuffer&, TransportLayer*);
-	void HandleReceive(const openpal::ReadOnlyBuffer&, TransportLayer*);
-	void LowerLayerDown(TransportLayer*);
-};
-
-/** Represents the sending state
-*/
-class TLS_Sending : public TLS_Base
-{
-	MACRO_STATE_SINGLETON_INSTANCE(TLS_Sending);
-
-	void HandleReceive(const openpal::ReadOnlyBuffer&, TransportLayer*);
-	void HandleSendSuccess(TransportLayer*);
-	void HandleSendFailure(TransportLayer*);
-	void LowerLayerDown(TransportLayer*);
-};
-
-} //end namepsace
+}
 
 #endif
 

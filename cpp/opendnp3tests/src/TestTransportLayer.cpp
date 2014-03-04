@@ -23,7 +23,8 @@
 #include "TestHelpers.h"
 #include "TransportTestObject.h"
 
-#include <opendnp3/TransportConstants.h>
+#include <opendnp3/transport/TransportConstants.h>
+
 #include <opendnp3/Util.h>
 #include <opendnp3/ProtocolUtil.h>
 
