@@ -93,7 +93,7 @@ void TimeSync::ConfigureRequest(APDURequest& request)
 	}
 	else {
 		auto now = mpTimeSrc->Now().msSinceEpoch;
-		Group50Var1 time = { now };
+		Group50Var1 time = { now + mDelay };
 		request.SetFunction(FunctionCode::WRITE);
 		auto writer = request.GetWriter();
 		writer.WriteSingleValue<UInt8, Group50Var1>(QualifierCode::UINT8_CNT, time);

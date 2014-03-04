@@ -50,7 +50,7 @@ void DoControlSelectAndOperate(MasterTestObject& t, std::function<void (CommandR
 	BOOST_REQUIRE(t.mts.DispatchOne());
 
 	// Group 12 Var1, 1 byte count/index, index = 1, time on/off = 1000, CommandStatus::SUCCESS
-	std::string crob = "0C 01 17 01 01 01 01 64 00 00 00 64 00 00 00 00";
+	std::string crob = "0C 01 28 01 00 01 00 01 01 64 00 00 00 64 00 00 00 00";
 
 	BOOST_REQUIRE_EQUAL(t.Read(), "C0 03 " + crob);
 }
@@ -335,7 +335,7 @@ BOOST_AUTO_TEST_CASE(SelectAndOperate)
 	t.mts.Dispatch();
 
 	// Group 12 Var1, 1 byte count/index, index = 1, time on/off = 1000, CommandStatus::SUCCESS
-	std::string crob = "0C 01 17 01 01 01 01 64 00 00 00 64 00 00 00 00";
+	std::string crob = "0C 01 28 01 00 01 00 01 01 64 00 00 00 64 00 00 00 00";
 
 	BOOST_REQUIRE_EQUAL(t.Read(), "C0 03 " + crob); // SELECT
 	t.RespondToMaster("C0 81 00 00 " + crob);
@@ -400,7 +400,7 @@ BOOST_AUTO_TEST_CASE(ControlExecutionSelectErrorResponse)
 	DoControlSelectAndOperate(t, [&](CommandResponse cr) {
 		rsps.push_back(cr);
 	});
-	t.RespondToMaster("C0 81 00 00 0C 01 17 01 01 01 01 64 00 00 00 64 00 00 00 04"); // not supported
+	t.RespondToMaster("C0 81 00 00 0C 01 28 01 00 01 00 01 01 64 00 00 00 64 00 00 00 04"); // not supported
 
 	t.mts.DispatchOne();
 
@@ -418,11 +418,11 @@ BOOST_AUTO_TEST_CASE(ControlExecutionSelectPartialResponse)
 	DoControlSelectAndOperate(t, [&](CommandResponse cr) {
 		rsps.push_back(cr);
 	});
-	t.RespondToMaster("80 81 00 00 0C 01 17 01 01 01 01 64 00 00 00 64 00 00 00 00", false);
+	t.RespondToMaster("80 81 00 00 0C 01 28 01 00 01 00 01 01 64 00 00 00 64 00 00 00 00", false);
 
 	BOOST_REQUIRE_EQUAL(0, rsps.size());
 
-	t.RespondToMaster("C0 81 00 00 0C 01 17 01 01 01 01 64 00 00 00 64 00 00 00 04"); // not supported
+	t.RespondToMaster("C0 81 00 00 0C 01 28 01 00 01 00 01 01 64 00 00 00 64 00 00 00 04"); // not supported
 
 	t.mts.DispatchOne();
 
@@ -445,34 +445,34 @@ BOOST_AUTO_TEST_CASE(DeferredControlExecution)
 	BOOST_REQUIRE(t.mts.DispatchOne());
 
 	t.RespondToMaster("C0 81 00 00"); //now master gets response to integrity
-	std::string crob = "0C 01 17 01 01 01 01 64 00 00 00 64 00 00 00 00";
+	std::string crob = "0C 01 28 01 00 01 00 01 01 64 00 00 00 64 00 00 00 00";
 	BOOST_REQUIRE_EQUAL(t.Read(), "C0 03 " + crob); //select
 }
 
 BOOST_AUTO_TEST_CASE(SingleSetpointExecution)// Group 41 Var4
 {
 	// 100.0
-	TestAnalogOutputExecution("29 03 17 01 01 00 00 C8 42 00", AnalogOutputFloat32(100.0f));
+	TestAnalogOutputExecution("29 03 28 01 00 01 00 00 00 C8 42 00", AnalogOutputFloat32(100.0f));
 
 	// 95.6
-	TestAnalogOutputExecution("29 03 17 01 01 33 33 BF 42 00", AnalogOutputFloat32(95.6f));
+	TestAnalogOutputExecution("29 03 28 01 00 01 00 33 33 BF 42 00", AnalogOutputFloat32(95.6f));
 }
 
 BOOST_AUTO_TEST_CASE(DoubleSetpointExecution)
 {
-	TestAnalogOutputExecution("29 04 17 01 01 00 00 00 E7 FF FF 58 48 00", AnalogOutputDouble64(SingleFloat::Max * 100.0));
+	TestAnalogOutputExecution("29 04 28 01 00 01 00 00 00 00 E7 FF FF 58 48 00", AnalogOutputDouble64(SingleFloat::Max * 100.0));
 }
 
 BOOST_AUTO_TEST_CASE(Int32SetpointExecution)
 {
 	// Group 41 Var1, Int32, 65536
-	TestAnalogOutputExecution("29 01 17 01 01 00 00 01 00 00", AnalogOutputInt32(65536));
+	TestAnalogOutputExecution("29 01 28 01 00 01 00 00 00 01 00 00", AnalogOutputInt32(65536));
 }
 
 BOOST_AUTO_TEST_CASE(Int16SetpointExecution)
 {
 	// Group 41 Var2, Int16, 100
-	TestAnalogOutputExecution("29 02 17 01 01 64 00 00", AnalogOutputInt16(100));
+	TestAnalogOutputExecution("29 02 28 01 00 01 00 64 00 00", AnalogOutputInt16(100));
 }
 
 BOOST_AUTO_TEST_CASE(SolicitedResponseWithData)
@@ -522,16 +522,13 @@ BOOST_AUTO_TEST_CASE(SolicitedMultiFragResponse)
 
 	BOOST_REQUIRE_EQUAL(t.Read(), "C0 01 3C 01 06");
 
-	t.RespondToMaster("C0 81 00 00 01 02 00 02 02 81", false); //trigger partial response
-
-	BOOST_REQUIRE(t.mts.DispatchOne()); //dispatch measurement callback
+	t.RespondToMaster("C0 81 00 00 01 02 00 02 02 81", false); //trigger partial response	
 
 	BOOST_REQUIRE(Binary(true, BQ_ONLINE) == t.meas.GetBinary(2));
 
 	BOOST_REQUIRE_EQUAL(0, t.app.NumAPDU());
 
-	t.RespondToMaster("C0 81 00 00 01 02 00 03 03 02");
-	BOOST_REQUIRE(t.mts.DispatchOne()); //disptch measurement callback
+	t.RespondToMaster("C0 81 00 00 01 02 00 03 03 02");	
 	BOOST_REQUIRE(Binary(false, BQ_RESTART) ==  t.meas.GetBinary(3));
 }
 
@@ -546,19 +543,13 @@ BOOST_AUTO_TEST_CASE(EventPoll)
 	t.master.OnLowerLayerUp();
 
 	BOOST_REQUIRE_EQUAL(t.Read(), "C0 01 3C 01 06");
-	t.RespondToMaster("C0 81 00 00 01 02 00 02 02 81"); //group 2 var 1, index = 2, 0x81 = Online, true
-
-	BOOST_REQUIRE(t.mts.DispatchOne());
+	t.RespondToMaster("C0 81 00 00 01 02 00 02 02 81"); //group 2 var 1, index = 2, 0x81 = Online, true	
 
 	BOOST_REQUIRE_EQUAL(t.Read(), "C0 01 3C 02 06 3C 03 06");
-	t.RespondToMaster("C0 81 00 00 01 02 00 02 02 81"); //group 2 var 1, index = 2, 0x81 = Online, true
-
-	BOOST_REQUIRE(t.mts.DispatchOne());
+	t.RespondToMaster("C0 81 00 00 01 02 00 02 02 81"); //group 2 var 1, index = 2, 0x81 = Online, true	
 
 	BOOST_REQUIRE_EQUAL(t.Read(), "C0 01 3C 04 06");
-	t.RespondToMaster("C0 81 00 00 01 02 00 02 02 81"); //group 2 var 1, index = 2, 0x81 = Online, true
-
-	BOOST_REQUIRE(t.mts.DispatchOne());
+	t.RespondToMaster("C0 81 00 00 01 02 00 02 02 81"); //group 2 var 1, index = 2, 0x81 = Online, true	
 
 	BOOST_REQUIRE(Binary(true, BQ_ONLINE) == t.meas.GetBinary(2));
 }
