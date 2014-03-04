@@ -112,13 +112,11 @@ void AMS_OpenBase::OnLowerLayerDown(Master* c)
 AMS_Idle AMS_Idle::mInstance;
 
 void AMS_Idle::StartTask(Master* c, ITask* apScheTask, MasterTaskBase* apMasterTask)
-{
-	/* TODDO
+{	
 	this->ChangeState(c, AMS_Waiting::Inst());
 	this->ChangeTask(c, apMasterTask);
 	c->mpScheduledTask = apScheTask;
 	c->StartTask(apMasterTask, true);
-	*/
 }
 
 
@@ -161,7 +159,7 @@ void AMS_Waiting::OnFinalResponse(Master* c, const APDUResponseRecord& aRecord)
 		c->mpScheduledTask->OnComplete(false);
 		break;
 	case(TR_CONTINUE):	//multi request task!
-		//c->StartTask(c->mpTask, false); TODO
+		c->StartTask(c->mpTask, false);
 		break;
 	case(TR_SUCCESS):
 		this->ChangeState(c, AMS_Idle::Inst());

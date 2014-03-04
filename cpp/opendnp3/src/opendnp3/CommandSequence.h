@@ -23,6 +23,8 @@
 
 #include "APDUHandlerBase.h"
 
+#include <openpal/Serialization.h>
+
 namespace opendnp3
 {
 
@@ -36,30 +38,33 @@ class ICommandSequence : public APDUHandlerBase, private openpal::Loggable
 	ICommandSequence(openpal::Logger logger): Loggable(logger) {}
 
 	// Given an APDU and function code, configure the request
-	// virtual void FormatAPDU(APDU& apdu, FunctionCode aCode) = 0;  TODO
+	virtual void FormatRequest(APDURequest& request, FunctionCode aCode) = 0;
 
 	// Given the response, what's the result of the command?
 	virtual CommandResponse Validate() = 0;
 };
 
-template <class CommandType, class GroupVariation>
+template <class CommandType>
 class CommandSequence : public ICommandSequence
 {
 	public:
-	CommandSequence(openpal::Logger logger) : ICommandSequence(logger) {}	
+	CommandSequence(openpal::Logger logger, IDNP3Serializer<CommandType>* pSerializer_) : 
+		ICommandSequence(logger),
+		pSerializer(pSerializer_)
+	{}	
 
-	void Configure(const CommandType& value, uint32_t index) 
+	void Configure(const CommandType& value, uint16_t index) 
 	{ 
 		this->Reset(); // resets all state inside the base class
 		response = CommandResponse(CommandResult::TIMEOUT); // todo change this to some other result like "malformed"
-		command = IndexedValue<CommandType>(value, index); 
+		command = IndexedValue<CommandType, uint16_t>(value, index); 
 	}
 
 	virtual void _OnIndexPrefix(QualifierCode qualifier, const IterableBuffer<IndexedValue<CommandType, uint16_t>>& meas)
 	{		
 		if(this->IsFirstHeader())
 		{						
-			IndexedValue<CommandType> received;
+			IndexedValue<CommandType, uint16_t> received;
 			if(meas.ReadOnlyValue(received))
 			{
 				if(received.index == command.index && received.value.ValuesEqual(command.value))
@@ -70,15 +75,14 @@ class CommandSequence : public ICommandSequence
 		}				
 	}
 
-	/* TODO
-	virtual void FormatAPDU(APDU& apdu, FunctionCode aCode) final 
+	
+	virtual void FormatRequest(APDURequest& request, FunctionCode code) final
 	{		
-		apdu.Set(aCode, true, true, false, false);
-		IndexedWriteIterator i = apdu.WriteIndexed(GroupVariation::Inst(), 1, command.index);
-		i.SetIndex(command.index);
-		GroupVariation::Inst()->Write(*i, command.value);
+		request.SetFunction(code);
+		auto writer = request.GetWriter();
+		writer.WriteSingleIndexedValue<openpal::UInt16, CommandType>(QualifierCode::UINT16_CNT_UINT16_INDEX, pSerializer, command.value, command.index);
 	}
-	*/
+
 
 	virtual CommandResponse Validate() final
 	{
@@ -92,6 +96,7 @@ class CommandSequence : public ICommandSequence
 	private:
 	CommandResponse response;
 	IndexedValue<CommandType, uint16_t> command;
+	IDNP3Serializer<CommandType>* pSerializer;
 };
 
 

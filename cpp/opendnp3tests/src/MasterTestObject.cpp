@@ -76,10 +76,7 @@ void MasterTestObject::SendUnsolToMaster(const std::string& arData)
 
 std::string MasterTestObject::Read()
 {
-	//mAPDU = app.Read(); TODO
-	//std::string hex = toHex(mAPDU.ToReadOnly(), true);
-	//return hex;
-	return "TODO";
+	return app.Read();
 }
 
 } //end ns

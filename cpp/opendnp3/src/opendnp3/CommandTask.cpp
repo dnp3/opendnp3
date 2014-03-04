@@ -25,6 +25,9 @@
 
 #include "APDUParser.h"
 
+#include "objects/Group12.h"
+#include "objects/Group41.h"
+
 using namespace openpal;
 
 namespace opendnp3
@@ -39,76 +42,76 @@ const Sequence<FunctionCode> CommandTask::SelectAndOperate(FunctionCode::SELECT,
 CommandTask::CommandTask(Logger aLogger) : 
 	MasterTaskBase(aLogger), 
 	mpActiveSequence(nullptr),
-	mpFunctionSequence(nullptr)
-	//crobSeq(aLogger),
-	//analogInt32Seq(aLogger),
-	//analogInt16Seq(aLogger),
-	//analogFloat32Seq(aLogger),
-	//analogDouble64Seq(aLogger)
+	mpFunctionSequence(nullptr),
+	crobSeq(aLogger, Group12Var1Serializer::Inst()),
+	analogInt32Seq(aLogger, Group41Var1Serializer::Inst()),
+	analogInt16Seq(aLogger, Group41Var2Serializer::Inst()),
+	analogFloat32Seq(aLogger, Group41Var3Serializer::Inst()),
+	analogDouble64Seq(aLogger, Group41Var4Serializer::Inst())
 {
 
 }
 
 void CommandTask::ConfigureSBO(const ControlRelayOutputBlock& command, uint32_t index, std::function<void (CommandResponse)> aCallback)
 {
-	//this->Configure(crobSeq, command, index, &SelectAndOperate, aCallback);
+	this->Configure(crobSeq, command, index, &SelectAndOperate, aCallback);
 }
 
 void CommandTask::ConfigureSBO(const AnalogOutputInt16& command, uint32_t index,  std::function<void (CommandResponse)> aCallback)
 {
-	//this->Configure(analogInt16Seq, command, index, &SelectAndOperate, aCallback);
+	this->Configure(analogInt16Seq, command, index, &SelectAndOperate, aCallback);
 }
 
 void CommandTask::ConfigureSBO(const AnalogOutputInt32& command, uint32_t index,  std::function<void (CommandResponse)> aCallback)
 {
-	//this->Configure(analogInt32Seq, command, index, &SelectAndOperate, aCallback);
+	this->Configure(analogInt32Seq, command, index, &SelectAndOperate, aCallback);
 }
 
 void CommandTask::ConfigureSBO(const AnalogOutputFloat32& command, uint32_t index,  std::function<void (CommandResponse)> aCallback)
 {
-	//this->Configure(analogFloat32Seq, command, index, &SelectAndOperate, aCallback);
+	this->Configure(analogFloat32Seq, command, index, &SelectAndOperate, aCallback);
 }
 
 void CommandTask::ConfigureSBO(const AnalogOutputDouble64& command, uint32_t index,  std::function<void (CommandResponse)> aCallback)
 {
-	//this->Configure(analogDouble64Seq, command, index, &SelectAndOperate, aCallback);
+	this->Configure(analogDouble64Seq, command, index, &SelectAndOperate, aCallback);
 }
 
 void CommandTask::ConfigureDO(const ControlRelayOutputBlock& command, uint32_t index,  std::function<void (CommandResponse)> aCallback)
 {
-	//this->Configure(crobSeq, command, index, &DirectOperate, aCallback);
+	this->Configure(crobSeq, command, index, &DirectOperate, aCallback);
 }
 
 void CommandTask::ConfigureDO(const AnalogOutputInt16& command, uint32_t index,  std::function<void (CommandResponse)> aCallback)
 {
-	//this->Configure(analogInt16Seq, command, index, &DirectOperate, aCallback);
+	this->Configure(analogInt16Seq, command, index, &DirectOperate, aCallback);
 }
 
 void CommandTask::ConfigureDO(const AnalogOutputInt32& command, uint32_t index,  std::function<void (CommandResponse)> aCallback)
 {
-	//this->Configure(analogInt32Seq, command, index, &DirectOperate, aCallback);
+	this->Configure(analogInt32Seq, command, index, &DirectOperate, aCallback);
 }
 
 void CommandTask::ConfigureDO(const AnalogOutputFloat32& command, uint32_t index,  std::function<void (CommandResponse)> aCallback)
 {
-	//this->Configure(analogFloat32Seq, command, index, &DirectOperate, aCallback);
+	this->Configure(analogFloat32Seq, command, index, &DirectOperate, aCallback);
 }
 
 void CommandTask::ConfigureDO(const AnalogOutputDouble64& command, uint32_t index,  std::function<void (CommandResponse)> aCallback)
 {
-	//this->Configure(analogDouble64Seq, command, index, &DirectOperate, aCallback);
+	this->Configure(analogDouble64Seq, command, index, &DirectOperate, aCallback);
 }
 
-/*
-void CommandTask::ConfigureRequest(APDU& aAPDU)
+void CommandTask::ConfigureRequest(APDURequest& request)
 {
+	
 	assert(mpFunctionSequence != nullptr);
 	assert(mpActiveSequence != nullptr);
 	auto code = mpFunctionSequence->Value();
 	mpFunctionSequence = mpFunctionSequence->Next();
-	mpActiveSequence->FormatAPDU(aAPDU, code); 	
+	mpActiveSequence->FormatRequest(request, code); 	
+	
 }
-*/
 
 void CommandTask::OnFailure()
 {

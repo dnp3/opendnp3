@@ -138,7 +138,6 @@ BOOST_AUTO_TEST_CASE(CountWriteIteratorFillsUpCorrectly)
 	auto writer = response.GetWriter();	
 
 	auto iter = writer.IterateOverCount<UInt8, Analog>(QualifierCode::UINT8_CNT, Group30Var2Serializer::Inst());
-
 	
 	BOOST_REQUIRE(iter.Write(Analog(9, 0xFF)));	
 	BOOST_REQUIRE(iter.Write(Analog(7, 0xFF)));
@@ -177,7 +176,6 @@ BOOST_AUTO_TEST_CASE(SingleValueWithIndexCROB)
 	BOOST_REQUIRE_EQUAL("C0 03 0C 01 08 01 00 21 00 03 1F 10 00 00 00 AA 00 00 00 07", toHex(request.ToReadOnly()));	
 }
 
-
 BOOST_AUTO_TEST_CASE(WriteSingleValue)
 {
 	APDURequest request(Request(FunctionCode::WRITE));
@@ -189,5 +187,17 @@ BOOST_AUTO_TEST_CASE(WriteSingleValue)
 	BOOST_REQUIRE_EQUAL("C0 02 32 01 07 01 34 12 00 00 00 00", toHex(request.ToReadOnly()));
 }
 
+BOOST_AUTO_TEST_CASE(WriteIINRestart)
+{
+	APDURequest request(Request(FunctionCode::WRITE));
+	auto writer = request.GetWriter();
+
+	auto iter = writer.IterateOverSingleBitfield<UInt8>(GroupVariationID(80, 1), QualifierCode::UINT8_START_STOP, 7);
+	iter.Write(true);
+	iter.Write(true);
+	iter.Complete();
+
+	BOOST_REQUIRE_EQUAL("C0 02 50 01 00 07 08 03", toHex(request.ToReadOnly()));
+}
 
 BOOST_AUTO_TEST_SUITE_END()

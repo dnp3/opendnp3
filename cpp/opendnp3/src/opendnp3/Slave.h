@@ -99,7 +99,6 @@ public:
 	// Only have to override OnRequest since we're a slave
 	void OnRequest(const APDURecord&, SequenceInfo);
 	
-
 	/**
 	 * Returns the buffer that is used for data updates by the user
 	 * application.  Writing new entries to this buffer will result in the

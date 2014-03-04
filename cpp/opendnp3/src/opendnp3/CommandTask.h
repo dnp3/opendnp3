@@ -60,7 +60,7 @@ public:
 	void ConfigureDO(const AnalogOutputFloat32& command, uint32_t index,  std::function<void (CommandResponse)> aCallback);
 	void ConfigureDO(const AnalogOutputDouble64& command, uint32_t index,  std::function<void (CommandResponse)> aCallback);
 
-	//void ConfigureRequest(APDU& arAPDU); TODO
+	void ConfigureRequest(APDURequest& request);
 
 	std::string Name() const;
 
@@ -72,8 +72,8 @@ protected:
 private:
 
 
-	template <class T, class U>
-	void Configure(CommandSequence<T, U>& sequence, const T& value, uint32_t index, const openpal::Sequence<FunctionCode>* apSequence, std::function<void (CommandResponse)> aCallback)
+	template <class T>
+	void Configure(CommandSequence<T>& sequence, const T& value, uint32_t index, const openpal::Sequence<FunctionCode>* apSequence, std::function<void (CommandResponse)> aCallback)
 	{
 		assert(apSequence != nullptr);
 		mpFunctionSequence = apSequence;
@@ -86,11 +86,11 @@ private:
 
 	ICommandSequence* mpActiveSequence;
 
-	//CommandSequence<ControlRelayOutputBlock, Group12Var1> crobSeq;
-	//CommandSequence<AnalogOutputInt32, Group41Var1> analogInt32Seq;
-	//CommandSequence<AnalogOutputInt16, Group41Var2> analogInt16Seq;
-	//CommandSequence<AnalogOutputFloat32, Group41Var3> analogFloat32Seq;
-	//CommandSequence<AnalogOutputDouble64, Group41Var4> analogDouble64Seq;
+	CommandSequence<ControlRelayOutputBlock> crobSeq;
+	CommandSequence<AnalogOutputInt32> analogInt32Seq;
+	CommandSequence<AnalogOutputInt16> analogInt16Seq;
+	CommandSequence<AnalogOutputFloat32> analogFloat32Seq;
+	CommandSequence<AnalogOutputDouble64> analogDouble64Seq;
 
 	std::function<void (CommandResponse)> callback;	
 

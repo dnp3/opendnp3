@@ -37,15 +37,15 @@ ClearRestartIIN::ClearRestartIIN(openpal::Logger& arLogger) :
 	SimpleRspBase(arLogger)
 {}
 
-/*
-void ClearRestartIIN::ConfigureRequest(APDU& arAPDU)
+
+void ClearRestartIIN::ConfigureRequest(APDURequest& request)
 {
-	arAPDU.Set(FunctionCode::WRITE);
-	Group80Var1* pObj = Group80Var1::Inst(); // Internal indications object
-	ObjectWriteIterator i = arAPDU.WriteContiguous(pObj, 7, 7); // index 7 == device restart
-	pObj->Write(*i, 7, 7, false);
+	request.SetFunction(FunctionCode::WRITE);
+	auto writer = request.GetWriter();
+	auto iter = writer.IterateOverSingleBitfield<UInt8>(GroupVariationID(80, 1), QualifierCode::UINT8_START_STOP, 7);
+	iter.Write(false);
+	iter.Complete();	
 }
-*/
 
 /* ------ Configure Unsol ------- */
 
@@ -61,16 +61,16 @@ void ConfigureUnsol::Set(bool aIsEnable, int aClassMask)
 	mClassMask = aClassMask;
 }
 
-/*
-void ConfigureUnsol::ConfigureRequest(APDU& arAPDU)
-{
-	arAPDU.Set(mIsEnable ? FunctionCode::ENABLE_UNSOLICITED : FunctionCode::DISABLE_UNSOLICITED);
-	if(mClassMask & PC_CLASS_1) arAPDU.DoPlaceholderWrite(Group60Var2::Inst());
-	if(mClassMask & PC_CLASS_2) arAPDU.DoPlaceholderWrite(Group60Var3::Inst());
-	if(mClassMask & PC_CLASS_3) arAPDU.DoPlaceholderWrite(Group60Var4::Inst());
-}
-*/
 
+void ConfigureUnsol::ConfigureRequest(APDURequest& request)
+{	
+	request.SetFunction(mIsEnable ? FunctionCode::ENABLE_UNSOLICITED : FunctionCode::DISABLE_UNSOLICITED);
+	auto writer = request.GetWriter();
+	if (mClassMask & PC_CLASS_1) writer.WriteHeader(GroupVariationID(60, 2), QualifierCode::ALL_OBJECTS);
+	if (mClassMask & PC_CLASS_2) writer.WriteHeader(GroupVariationID(60, 3), QualifierCode::ALL_OBJECTS);
+	if (mClassMask & PC_CLASS_3) writer.WriteHeader(GroupVariationID(60, 4), QualifierCode::ALL_OBJECTS);
+
+}
 
 /* ------ Time Sync ------- */
 
@@ -85,20 +85,22 @@ void TimeSync::Init()
 	mDelay = -1;
 }
 
-/*
-void TimeSync::ConfigureRequest(APDU& arAPDU)
-{
+void TimeSync::ConfigureRequest(APDURequest& request)
+{	
 	if(mDelay < 0) {
-		arAPDU.Set(FunctionCode::DELAY_MEASURE);
+		request.SetFunction(FunctionCode::DELAY_MEASURE);		
 		mStart = mpTimeSrc->Now();
 	}
 	else {
-		arAPDU.Set(FunctionCode::WRITE);
-		ObjectWriteIterator owi = arAPDU.WriteContiguous(Group50Var1Temp::Inst(), 0, 0, QualifierCode::UINT8_CNT);
-		Group50Var1Temp::Inst()->mTime.Set(*owi, mpTimeSrc->Now().msSinceEpoch + mDelay);
+		auto now = mpTimeSrc->Now().msSinceEpoch;
+		Group50Var1 time = { now };
+		request.SetFunction(FunctionCode::WRITE);
+		auto writer = request.GetWriter();
+		writer.WriteSingleValue<UInt8, Group50Var1>(QualifierCode::UINT8_CNT, time);
 	}
+
 }
-*/
+
 
 TaskResult TimeSync::_OnFinalResponse(const APDUResponseRecord& record)
 {

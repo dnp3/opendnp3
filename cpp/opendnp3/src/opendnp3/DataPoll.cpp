@@ -74,20 +74,17 @@ void ClassPoll::Set(int aClassMask)
 	mClassMask = aClassMask;
 }
 
-/*
-void ClassPoll::ConfigureRequest(APDU& arAPDU)
-{
-	if (mClassMask == PC_INVALID) {
-		MACRO_THROW_EXCEPTION(InvalidStateException, "Class mask has not been set");
-	}
 
-	arAPDU.Set(FunctionCode::READ);
-	if (mClassMask & PC_CLASS_0) arAPDU.DoPlaceholderWrite(Group60Var1::Inst());
-	if (mClassMask & PC_CLASS_1) arAPDU.DoPlaceholderWrite(Group60Var2::Inst());
-	if (mClassMask & PC_CLASS_2) arAPDU.DoPlaceholderWrite(Group60Var3::Inst());
-	if (mClassMask & PC_CLASS_3) arAPDU.DoPlaceholderWrite(Group60Var4::Inst());
+void ClassPoll::ConfigureRequest(APDURequest& request)
+{
+	request.SetFunction(FunctionCode::READ);
+	auto writer = request.GetWriter();
+	if (mClassMask & PC_CLASS_0) writer.WriteHeader(GroupVariationID(60, 1), QualifierCode::ALL_OBJECTS);
+	if (mClassMask & PC_CLASS_1) writer.WriteHeader(GroupVariationID(60, 2), QualifierCode::ALL_OBJECTS);
+	if (mClassMask & PC_CLASS_2) writer.WriteHeader(GroupVariationID(60, 3), QualifierCode::ALL_OBJECTS);
+	if (mClassMask & PC_CLASS_3) writer.WriteHeader(GroupVariationID(60, 4), QualifierCode::ALL_OBJECTS);
 }
-*/
+
 
 
 } //end ns

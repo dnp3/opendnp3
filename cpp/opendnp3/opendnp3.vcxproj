@@ -103,6 +103,7 @@
     <ClInclude Include="src\opendnp3\AsyncTaskNonPeriodic.h" />
     <ClInclude Include="src\opendnp3\AsyncTaskPeriodic.h" />
     <ClInclude Include="src\opendnp3\BinaryWriteState.h" />
+    <ClInclude Include="src\opendnp3\BitfieldRangeWriteIterator.h" />
     <ClInclude Include="src\opendnp3\BitReader.h" />
     <ClInclude Include="src\opendnp3\CachedRequest.h" />
     <ClInclude Include="src\opendnp3\ChangeBuffer.h" />

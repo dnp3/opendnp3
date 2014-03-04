@@ -64,7 +64,7 @@ public:
 
 	//Implement MasterTaskBase
 
-	//void ConfigureRequest(APDU& arAPDU);
+	void ConfigureRequest(APDURequest& request);
 
 	virtual std::string Name() const {
 		return "Class Poll";

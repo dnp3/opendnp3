@@ -26,14 +26,15 @@
 #include <opendnp3/ISOEHandler.h>
 #include <opendnp3/MasterScan.h>
 
-
 #include <openpal/IExecutor.h>
 #include <openpal/IUTCTimeSource.h>
+#include <openpal/StaticBuffer.h>
 
 #include "IAppLayer.h"
 #include "IAppUser.h"
 #include "MasterSchedule.h"
 #include "QueuedCommandProcessor.h"
+#include "StaticSizeConfiguration.h"
 
 // includes for tasks
 #include "StartupTasks.h"
@@ -131,13 +132,14 @@ private:
 	void ChangeUnsol(ITask* apTask, bool aEnable, int aClassMask);
 	void SyncTime(ITask* apTask);
 	void ProcessCommand(ITask* apTask);
-	//void TransmitVtoData(ITask* apTask);
+
+	openpal::StaticBuffer<SizeConfiguration::MAX_APDU_BUFFER_SIZE> requestBuffer;
 
 	IINField mLastIIN;						// last IIN received from the outstation
 
 	void ProcessIIN(const IINField& arIIN);	// Analyze IIN bits and react accordingly
 	void ProcessDataResponse(const APDUResponseRecord& aRecord);	// Read data output of solicited or unsolicited response and publish
-	//void StartTask(MasterTaskBase*, bool aInit);	// Starts a task running
+	void StartTask(MasterTaskBase*, bool aInit);	// Starts a task running
 
 	QueuedCommandProcessor mCommandQueue;	// Threadsafe queue for buffering command requests	
 

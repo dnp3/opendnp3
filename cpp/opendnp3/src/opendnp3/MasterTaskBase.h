@@ -24,6 +24,7 @@
 #include <string>
 
 #include "APDUHeader.h"
+#include "APDURequest.h"
 
 #include <openpal/Loggable.h>
 
@@ -66,7 +67,7 @@ public:
 	 *
 	 * @param arAPDU	the DNP3 message as an APDU instance
 	 */
-	//virtual void ConfigureRequest(APDU& arAPDU) = 0;
+	virtual void ConfigureRequest(APDURequest& request) = 0;
 
 	/**
 	 * Handler for non-FIN responses, performs common validation and

@@ -34,6 +34,7 @@
 #include "AsyncTaskContinuous.h"
 #include "CopyableBuffer.h"
 #include "APDUParser.h"
+#include "APDURequest.h"
 
 #include <openpal/Exception.h>
 #include <openpal/LoggableMacros.h>
@@ -176,14 +177,15 @@ void Master::DirectOperate(const AnalogOutputDouble64& arCommand, uint16_t aInde
 	this->mCommandTask.ConfigureDO(arCommand, aIndex, aCallback);
 }
 
-/* TODO
 void Master::StartTask(MasterTaskBase* apMasterTask, bool aInit)
 {
 	if(aInit) apMasterTask->Init();
-	apMasterTask->ConfigureRequest(mRequest);
-	//mpAppLayer->SendRequest(mRequest); // TODO restore transmission
+	APDURequest request(this->requestBuffer.GetWriteBuffer());
+	request.SetControl(AppControlField(true, true, false, false));
+	apMasterTask->ConfigureRequest(request);
+	mpAppLayer->SendRequest(request);
 }
-*/
+
 
 /* Tasks */
 

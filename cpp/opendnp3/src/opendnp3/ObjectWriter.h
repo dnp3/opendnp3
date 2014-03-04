@@ -28,8 +28,9 @@
 #include "RangeWriteIterator.h"
 #include "CountWriteIterator.h"
 #include "PrefixedWriteIterator.h"
-#include "objects/IDNP3Serializer.h"
+#include "BitfieldRangeWriteIterator.h"
 
+#include "objects/IDNP3Serializer.h"
 #include "objects/GroupVariationID.h"
 
 namespace opendnp3
@@ -49,6 +50,9 @@ class ObjectWriter
 
 	template <class CountType, class WriteType>
 	CountWriteIterator<CountType, WriteType> IterateOverCount(QualifierCode qc, IDNP3Serializer<WriteType>* pSerializer);
+	
+	template <class IndexType>
+	BitfieldRangeWriteIterator<IndexType> IterateOverSingleBitfield(GroupVariationID id, QualifierCode qc, typename IndexType::Type start);
 
 	template <class CountType, class ValueType>
 	bool WriteSingleValue(QualifierCode qc, IDNP3Serializer<ValueType>* pSerializer, const ValueType&);
@@ -139,6 +143,17 @@ CountWriteIterator<CountType, WriteType> ObjectWriter::IterateOverCount(Qualifie
 		return CountWriteIterator<CountType, WriteType>(pSerializer, *position);
 	}
 	else return CountWriteIterator<CountType, WriteType>::Null();
+}
+
+template <class IndexType>
+BitfieldRangeWriteIterator<IndexType> ObjectWriter::IterateOverSingleBitfield(GroupVariationID id, QualifierCode qc, typename IndexType::Type start)
+{
+	uint32_t reserveSize = 2 * IndexType::Size + 1; //need at least 1 byte
+	if (this->WriteHeaderWithReserve(id, qc, reserveSize))
+	{
+		return BitfieldRangeWriteIterator<IndexType>(start, *position);
+	}
+	else return BitfieldRangeWriteIterator<IndexType>::Null();
 }
 
 template <class PrefixType, class WriteType>
