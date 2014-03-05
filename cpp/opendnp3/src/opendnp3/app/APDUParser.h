@@ -48,6 +48,7 @@
 #include "opendnp3/objects/Group20.h"
 #include "opendnp3/objects/Group21.h"
 #include "opendnp3/objects/Group22.h"
+#include "opendnp3/objects/Group23.h"
 #include "opendnp3/objects/Group30.h"
 #include "opendnp3/objects/Group32.h"
 #include "opendnp3/objects/Group40.h"
@@ -372,6 +373,15 @@ APDUParser::Result APDUParser::ParseObjectsWithIndexPrefix(QualifierCode qualifi
 		case(GroupVariation::Group22Var5) :
 			return ParseCountFixedSizeWithIndex<Counter, IndexType>(gvRecord.enumeration, qualifier, buffer, pLogger, count, Group22Var5Serializer::Inst(), pHandler);
 		case(GroupVariation::Group22Var6) :
+			return ParseCountFixedSizeWithIndex<Counter, IndexType>(gvRecord.enumeration, qualifier, buffer, pLogger, count, Group22Var6Serializer::Inst(), pHandler);
+
+		case(GroupVariation::Group23Var1) :
+			return ParseCountFixedSizeWithIndex<Counter, IndexType>(gvRecord.enumeration, qualifier, buffer, pLogger, count, Group22Var1Serializer::Inst(), pHandler);
+		case(GroupVariation::Group23Var2) :
+			return ParseCountFixedSizeWithIndex<Counter, IndexType>(gvRecord.enumeration, qualifier, buffer, pLogger, count, Group22Var2Serializer::Inst(), pHandler);
+		case(GroupVariation::Group23Var5) :
+			return ParseCountFixedSizeWithIndex<Counter, IndexType>(gvRecord.enumeration, qualifier, buffer, pLogger, count, Group22Var5Serializer::Inst(), pHandler);
+		case(GroupVariation::Group23Var6) :
 			return ParseCountFixedSizeWithIndex<Counter, IndexType>(gvRecord.enumeration, qualifier, buffer, pLogger, count, Group22Var6Serializer::Inst(), pHandler);
 		
 		case(GroupVariation::Group32Var1) :

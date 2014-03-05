@@ -35,7 +35,7 @@ void MeasurementHandler::_OnRange(GroupVariation gv, const IterableBuffer<Indexe
 	pSOEHandler->Load(meas);
 }
 
-void MeasurementHandler::_OnIndexPrefix(GroupVariation gv, const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas)
+void MeasurementHandler::_OnRange(GroupVariation gv, const IterableBuffer<IndexedValue<DoubleBitBinary, uint16_t>>& meas)
 {
 	pSOEHandler->Load(meas);
 }
@@ -50,17 +50,12 @@ void MeasurementHandler::_OnRange(GroupVariation gv, const IterableBuffer<Indexe
 	pSOEHandler->Load(meas);
 }
 
-void MeasurementHandler::_OnIndexPrefix(GroupVariation gv, const IterableBuffer<IndexedValue<Counter, uint16_t>>& meas)
+void MeasurementHandler::_OnRange(GroupVariation gv, const IterableBuffer<IndexedValue<FrozenCounter, uint16_t>>& meas)
 {
 	pSOEHandler->Load(meas);
 }
 
 void MeasurementHandler::_OnRange(GroupVariation gv, const IterableBuffer<IndexedValue<Analog, uint16_t>>& meas)
-{
-	pSOEHandler->Load(meas);
-}
-
-void MeasurementHandler::_OnIndexPrefix(GroupVariation gv, const IterableBuffer<IndexedValue<Analog, uint16_t>>& meas)
 {
 	pSOEHandler->Load(meas);
 }
@@ -71,6 +66,31 @@ void MeasurementHandler::_OnRange(GroupVariation gv, const IterableBuffer<Indexe
 }
 
 void MeasurementHandler::_OnRange(GroupVariation gv, const IterableBuffer<IndexedValue<OctetString, uint16_t>>& meas)
+{
+	pSOEHandler->Load(meas);
+}
+
+void MeasurementHandler::_OnIndexPrefix(GroupVariation gv, const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas)
+{
+	pSOEHandler->Load(meas);
+}
+
+void MeasurementHandler::_OnIndexPrefix(GroupVariation gv, const IterableBuffer<IndexedValue<DoubleBitBinary, uint16_t>>& meas)
+{
+	pSOEHandler->Load(meas);
+}
+
+void MeasurementHandler::_OnIndexPrefix(GroupVariation gv, const IterableBuffer<IndexedValue<Counter, uint16_t>>& meas)
+{
+	pSOEHandler->Load(meas);
+}
+
+void MeasurementHandler::_OnIndexPrefix(GroupVariation gv, const IterableBuffer<IndexedValue<FrozenCounter, uint16_t>>& meas)
+{
+	pSOEHandler->Load(meas);
+}
+
+void MeasurementHandler::_OnIndexPrefix(GroupVariation gv, const IterableBuffer<IndexedValue<Analog, uint16_t>>& meas)
 {
 	pSOEHandler->Load(meas);
 }

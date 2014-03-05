@@ -90,6 +90,12 @@ class MockApduHeaderHandler : public IAPDUHandler
 			meas.foreach([&](const IndexedValue<Counter, uint16_t>& v) { staticCounters.push_back(v); });
 		}
 
+		virtual void OnRange(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<FrozenCounter, uint16_t>>& meas) override
+		{
+			groupVariations.push_back(gv);
+			meas.foreach([&](const IndexedValue<FrozenCounter, uint16_t>& v) { staticFrozenCounters.push_back(v); });
+		}
+
 		virtual void OnRange(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<Analog, uint16_t>>& meas)  override
 		{
 			groupVariations.push_back(gv);			
@@ -126,6 +132,12 @@ class MockApduHeaderHandler : public IAPDUHandler
 			meas.foreach([&](const IndexedValue<Counter, uint16_t>& v) { eventCounters.push_back(v); });
 		}
 
+		virtual void OnIndexPrefix(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<FrozenCounter, uint16_t>>& meas)  override
+		{
+			groupVariations.push_back(gv);
+			meas.foreach([&](const IndexedValue<FrozenCounter, uint16_t>& v) { eventFrozenCounters.push_back(v); });
+		}
+
 		virtual void OnIndexPrefix(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<Analog, uint16_t>>& meas)  override
 		{
 			groupVariations.push_back(gv);
@@ -154,6 +166,12 @@ class MockApduHeaderHandler : public IAPDUHandler
 		{
 			groupVariations.push_back(gv);
 			meas.foreach([&](const IndexedValue<Counter, uint8_t>& v) { eventCounters.push_back(v.Widen<uint16_t>()); });
+		}
+
+		virtual void OnIndexPrefix(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<FrozenCounter, uint8_t>>& meas)  override
+		{
+			groupVariations.push_back(gv);
+			meas.foreach([&](const IndexedValue<FrozenCounter, uint8_t>& v) { eventFrozenCounters.push_back(v.Widen<uint16_t>()); });
 		}
 
 		virtual void OnIndexPrefix(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<Analog, uint8_t>>& meas)  override
@@ -242,6 +260,9 @@ class MockApduHeaderHandler : public IAPDUHandler
 
 		std::vector<IndexedValue<Counter, uint16_t>> eventCounters;
 		std::vector<IndexedValue<Counter, uint16_t>> staticCounters;
+
+		std::vector<IndexedValue<FrozenCounter, uint16_t>> eventFrozenCounters;
+		std::vector<IndexedValue<FrozenCounter, uint16_t>> staticFrozenCounters;
 
 		std::vector<IndexedValue<Analog, uint16_t>> eventAnalogs;
 		std::vector<IndexedValue<Analog, uint16_t>> staticAnalogs;

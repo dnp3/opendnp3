@@ -90,7 +90,7 @@ void APDUHandlerBase::OnCountOf(const IterableBuffer<Group52Var2>& objects)
 }
 
 void APDUHandlerBase::OnRange(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas)
-{	
+{
 	this->_OnRange(gv, meas);
 	++currentHeader;
 }
@@ -98,18 +98,6 @@ void APDUHandlerBase::OnRange(GroupVariation gv, QualifierCode qualifier, const 
 void APDUHandlerBase::OnRange(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<DoubleBitBinary, uint16_t>>& meas)
 {
 	this->_OnRange(gv, meas);
-	++currentHeader;
-}
-
-void APDUHandlerBase::OnIndexPrefix(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas)
-{
-	this->_OnIndexPrefix(gv, meas);
-	++currentHeader;
-}
-
-void APDUHandlerBase::OnIndexPrefix(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<DoubleBitBinary, uint16_t>>& meas)
-{
-	this->_OnIndexPrefix(gv, meas);
 	++currentHeader;
 }
 
@@ -131,27 +119,45 @@ void APDUHandlerBase::OnRange(GroupVariation gv, QualifierCode qualifier, const 
 	++currentHeader;
 }
 
-void APDUHandlerBase::OnIndexPrefix(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<Counter, uint16_t>>& meas)
-{	
-	this->_OnIndexPrefix(gv, meas);
-	++currentHeader;
-}
-
 void APDUHandlerBase::OnRange(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<Analog, uint16_t>>& meas)
 {	
 	this->_OnRange(gv, meas);
 	++currentHeader;
 }
 
-void APDUHandlerBase::OnIndexPrefix(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<Analog, uint16_t>>& meas)
+void APDUHandlerBase::OnRange(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<AnalogOutputStatus, uint16_t>>& meas)
 {	
+	this->_OnRange(gv, meas);
+	++currentHeader;
+}
+
+void APDUHandlerBase::OnIndexPrefix(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas)
+{
 	this->_OnIndexPrefix(gv, meas);
 	++currentHeader;
 }
 
-void APDUHandlerBase::OnRange(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<AnalogOutputStatus, uint16_t>>& meas)
-{	
-	this->_OnRange(gv, meas);
+void APDUHandlerBase::OnIndexPrefix(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<DoubleBitBinary, uint16_t>>& meas)
+{
+	this->_OnIndexPrefix(gv, meas);
+	++currentHeader;
+}
+
+void APDUHandlerBase::OnIndexPrefix(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<Counter, uint16_t>>& meas)
+{
+	this->_OnIndexPrefix(gv, meas);
+	++currentHeader;
+}
+
+void APDUHandlerBase::OnIndexPrefix(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<FrozenCounter, uint16_t>>& meas)
+{
+	this->_OnIndexPrefix(gv, meas);
+	++currentHeader;
+}
+
+void APDUHandlerBase::OnIndexPrefix(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<Analog, uint16_t>>& meas)
+{
+	this->_OnIndexPrefix(gv, meas);
 	++currentHeader;
 }
 
@@ -248,6 +254,13 @@ void APDUHandlerBase::OnIndexPrefix(GroupVariation gv, QualifierCode qualifier, 
 	++currentHeader;
 }
 
+void APDUHandlerBase::OnIndexPrefix(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<FrozenCounter, uint8_t>>& meas)
+{
+	auto transform = IterableTransforms<IndexedValue<FrozenCounter, uint8_t>>::Map<IndexedValue<FrozenCounter, uint16_t>>(meas, [](const IndexedValue<FrozenCounter, uint8_t>& value) { return value.Widen<uint16_t>(); });
+	this->_OnIndexPrefix(gv, transform);
+	++currentHeader;
+}
+
 void APDUHandlerBase::OnIndexPrefix(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<Analog, uint8_t>>& meas)
 {
 	auto transform = IterableTransforms<IndexedValue<Analog, uint8_t>>::Map<IndexedValue<Analog, uint16_t>>(meas, [](const IndexedValue<Analog, uint8_t>& value) { return value.Widen<uint16_t>(); });
@@ -333,6 +346,11 @@ void APDUHandlerBase::_OnRange(GroupVariation gv, const IterableBuffer<IndexedVa
 }
 
 void APDUHandlerBase::_OnIndexPrefix(GroupVariation gv, const IterableBuffer<IndexedValue<Counter, uint16_t>>& meas)
+{
+	++ignoredHeaders;
+}
+
+void APDUHandlerBase::_OnIndexPrefix(GroupVariation gv, const IterableBuffer<IndexedValue<FrozenCounter, uint16_t>>& meas)
 {
 	++ignoredHeaders;
 }
