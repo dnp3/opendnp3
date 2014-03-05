@@ -23,7 +23,7 @@
 
 #include <openpal/Indexable.h>
 
-#include "opendnp3/app/DataTypes.h"
+#include "opendnp3/app/MeasurementTypes.h"
 
 #include "opendnp3/outstation/EventMetadata.h"
 #include "opendnp3/outstation/ValueMetadataPair.h"

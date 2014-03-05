@@ -21,7 +21,7 @@
 #ifndef __CHANGE_BUFFER_H_
 #define __CHANGE_BUFFER_H_
 
-#include "opendnp3/app/DataTypes.h"
+#include "opendnp3/app/MeasurementTypes.h"
 #include "opendnp3/outstation/IDataObserver.h"
 
 #include "opendnp3/SubjectBase.h"

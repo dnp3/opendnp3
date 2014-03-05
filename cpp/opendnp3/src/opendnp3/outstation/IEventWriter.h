@@ -23,7 +23,7 @@
 #define __I_EVENT_WRITER_H_
 
 #include "opendnp3/outstation/Event.h"
-#include "opendnp3/app/DataTypes.h"
+#include "opendnp3/app/MeasurementTypes.h"
 
 namespace opendnp3
 {

@@ -41,6 +41,7 @@ public:
 	void SetTime(int64_t aTime) { mTime = aTime; }	
 	
 protected:	
+
 	Measurement() : mQuality(0), mTime(0)
 	{}
 	

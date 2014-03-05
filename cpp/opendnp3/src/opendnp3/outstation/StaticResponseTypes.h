@@ -21,7 +21,7 @@
 #ifndef __STATIC_RESPONSE_TYPES_H_
 #define __STATIC_RESPONSE_TYPES_H_
 
-#include "opendnp3/app/DataTypes.h"
+#include "opendnp3/app/MeasurementTypes.h"
 
 #include "opendnp3/outstation/SlaveConfig.h"
 #include "opendnp3/outstation/StaticLoader.h"

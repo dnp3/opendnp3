@@ -8,7 +8,7 @@
 #include <opendnp3/gen/ChannelState.h>
 #include <opendnp3/gen/StackState.h>
 
-#include <opendnp3/app/DataTypes.h>
+#include <opendnp3/app/MeasurementTypes.h>
 #include <opendnp3/app/ControlRelayOutputBlock.h>
 #include <opendnp3/app/AnalogOutput.h>
 #include <opendnp3/app/OctetString.h>

@@ -21,7 +21,7 @@
 #ifndef __WRITE_CONVERSIONS_H_
 #define __WRITE_CONVERSIONS_H_
 
-#include "opendnp3/app/DataTypes.h"
+#include "opendnp3/app/MeasurementTypes.h"
 #include "opendnp3/app/WriteConversionTemplates.h"
 
 #include "opendnp3/objects/Group1.h"

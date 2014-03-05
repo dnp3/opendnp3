@@ -24,7 +24,7 @@
 #include "opendnp3/ITransactable.h"
 #include "opendnp3/app/IterableBuffer.h"
 #include "opendnp3/app/IndexedValue.h"
-#include "opendnp3/app/DataTypes.h"
+#include "opendnp3/app/MeasurementTypes.h"
 #include "opendnp3/app/OctetString.h"
 
 #include <iostream>

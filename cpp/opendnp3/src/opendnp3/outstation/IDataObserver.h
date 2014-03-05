@@ -23,7 +23,7 @@
 
 #include "opendnp3/ITransactable.h"
 
-#include "opendnp3/app/DataTypes.h"
+#include "opendnp3/app/MeasurementTypes.h"
 
 
 namespace opendnp3

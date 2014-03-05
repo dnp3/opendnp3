@@ -24,7 +24,7 @@
 #include <opendnp3/outstation/Event.h>
 #include <opendnp3/app/IndexedValue.h>
 
-#include <opendnp3/app/BaseDataTypes.h>
+#include <opendnp3/app/MeasurementTypes.h>
 #include <opendnp3/app/MeasurementHelpers.h>
 
 template<class T>

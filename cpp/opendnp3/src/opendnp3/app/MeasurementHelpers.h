@@ -21,7 +21,7 @@
 #ifndef __MEASUREMENT_HELPERS_H_
 #define	__MEASUREMENT_HELPERS_H_
 
-#include "opendnp3/app/BaseDataTypes.h"
+#include "opendnp3/app/BaseMeasurementTypes.h"
 #include <openpal/ToHex.h>
 
 #include <sstream>

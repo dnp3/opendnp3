@@ -26,7 +26,7 @@
 
 #include <opendnp3/app/IterableTransforms.h>
 
-#include <opendnp3/app/DataTypes.h>
+#include <opendnp3/app/MeasurementTypes.h>
 #include <opendnp3/app/BitReader.h>
 #include <opendnp3/objects/Group30.h>
 

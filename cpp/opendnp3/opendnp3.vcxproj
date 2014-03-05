@@ -34,7 +34,7 @@
     <ClInclude Include="src\opendnp3\app\AppLayer.h" />
     <ClInclude Include="src\opendnp3\app\AppLayerChannel.h" />
     <ClInclude Include="src\opendnp3\app\ApplicationStack.h" />
-    <ClInclude Include="src\opendnp3\app\BaseDataTypes.h" />
+    <ClInclude Include="src\opendnp3\app\BaseMeasurementTypes.h" />
     <ClInclude Include="src\opendnp3\app\BinaryWriteState.h" />
     <ClInclude Include="src\opendnp3\app\BitfieldRangeWriteIterator.h" />
     <ClInclude Include="src\opendnp3\app\BitReader.h" />
@@ -42,7 +42,7 @@
     <ClInclude Include="src\opendnp3\app\ClassMask.h" />
     <ClInclude Include="src\opendnp3\app\ControlRelayOutputBlock.h" />
     <ClInclude Include="src\opendnp3\app\CountWriteIterator.h" />
-    <ClInclude Include="src\opendnp3\app\DataTypes.h" />
+    <ClInclude Include="src\opendnp3\app\MeasurementTypes.h" />
     <ClInclude Include="src\opendnp3\app\DownSampling.h" />
     <ClInclude Include="src\opendnp3\app\FunctionCodeHelpers.h" />
     <ClInclude Include="src\opendnp3\app\GroupVariation.h" />
@@ -248,7 +248,6 @@
     <ClCompile Include="src\opendnp3\app\AppLayer.cpp" />
     <ClCompile Include="src\opendnp3\app\AppLayerChannel.cpp" />
     <ClCompile Include="src\opendnp3\app\ApplicationStack.cpp" />
-    <ClCompile Include="src\opendnp3\app\BaseDataTypes.cpp" />
     <ClCompile Include="src\opendnp3\app\BitReader.cpp" />
     <ClCompile Include="src\opendnp3\app\CachedRequest.cpp" />
     <ClCompile Include="src\opendnp3\app\ControlRelayOutputBlock.cpp" />

@@ -24,7 +24,7 @@
 
 #include "opendnp3/outstation/Event.h"
 
-#include "opendnp3/app/DataTypes.h"
+#include "opendnp3/app/MeasurementTypes.h"
 #include "opendnp3/app/CountWriteIterator.h"
 
 namespace opendnp3

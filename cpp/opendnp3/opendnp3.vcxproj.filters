@@ -156,9 +156,6 @@
     <ClInclude Include="src\opendnp3\app\ApplicationStack.h">
       <Filter>Header\app</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\app\BaseDataTypes.h">
-      <Filter>Header\app</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\app\BinaryWriteState.h">
       <Filter>Header\app</Filter>
     </ClInclude>
@@ -178,9 +175,6 @@
       <Filter>Header\app</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\app\CountWriteIterator.h">
-      <Filter>Header\app</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\app\DataTypes.h">
       <Filter>Header\app</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\app\DownSampling.h">
@@ -696,6 +690,12 @@
     <ClInclude Include="src\opendnp3\objects\Group4.h">
       <Filter>Header\objects</Filter>
     </ClInclude>
+    <ClInclude Include="src\opendnp3\app\MeasurementTypes.h">
+      <Filter>Header\app</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\app\BaseMeasurementTypes.h">
+      <Filter>Header\app</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\opendnp3\app\AnalogOutput.cpp">
@@ -732,9 +732,6 @@
       <Filter>Source\app</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\app\ApplicationStack.cpp">
-      <Filter>Source\app</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\app\BaseDataTypes.cpp">
       <Filter>Source\app</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\app\BitReader.cpp">

@@ -22,7 +22,7 @@
 #define __MEASUREMENT_FACTORY_H_
 
 #include "opendnp3/Uncopyable.h"
-#include "opendnp3/app/DataTypes.h"
+#include "opendnp3/app/MeasurementTypes.h"
 #include "opendnp3/app/ControlRelayOutputBlock.h"
 #include "opendnp3/app/AnalogOutput.h"
 

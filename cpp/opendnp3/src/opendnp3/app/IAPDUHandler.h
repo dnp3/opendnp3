@@ -24,7 +24,7 @@
 #include "opendnp3/app/GroupVariation.h"
 
 #include "opendnp3/app/IterableBuffer.h"
-#include "opendnp3/app/DataTypes.h"
+#include "opendnp3/app/MeasurementTypes.h"
 #include "opendnp3/app/ControlRelayOutputBlock.h"
 #include "opendnp3/app/AnalogOutput.h"
 #include "opendnp3/app/IndexedValue.h"
