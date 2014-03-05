@@ -25,12 +25,16 @@
 
 #include <openpal/BufferWrapper.h>
 
+#include "opendnp3/app/MeasurementTypes.h"
+
 namespace opendnp3
 {
 
 	uint32_t NumBytesInBits(uint32_t numBits);
-
 	bool GetBit(const openpal::ReadOnlyBuffer& buffer, uint32_t position);
+
+	uint32_t NumBytesInDoubleBits(uint32_t numBits);
+	TwoBitState GetDoubleBit(const openpal::ReadOnlyBuffer& buffer, uint32_t position);
 
 }
 

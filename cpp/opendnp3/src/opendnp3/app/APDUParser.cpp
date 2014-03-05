@@ -31,7 +31,7 @@ using namespace openpal;
 namespace opendnp3
 {
 
-	APDUParser::Result APDUParser::ParseTwoPass(const openpal::ReadOnlyBuffer& buffer, IAPDUHandler* pHandler, openpal::Logger* pLogger, Context context)
+APDUParser::Result APDUParser::ParseTwoPass(const openpal::ReadOnlyBuffer& buffer, IAPDUHandler* pHandler, openpal::Logger* pLogger, Context context)
 {
 	if(pHandler)
 	{
@@ -53,38 +53,7 @@ APDUParser::Result APDUParser::ParseSinglePass(const openpal::ReadOnlyBuffer& bu
 		auto result = ParseHeader(copy, pLogger, context, pHandler);
 		if (result != Result::OK)
 		{
-			return result;
-			/*
-			switch(result)
-			{				
-				case(Result::BAD_START_STOP) :
-					ERROR_PLOGGER_BLOCK(pLogger, LogLevel::Warning, ALERR_START_STOP_MISMATCH, "start > stop");
-					break;
-				case(Result::NOT_ENOUGH_DATA_FOR_HEADER) :
-					ERROR_PLOGGER_BLOCK(pLogger, LogLevel::Warning, ALERR_INSUFFICIENT_DATA_FOR_HEADER, "Not enough data for header");
-					break;
-				case(Result::NOT_ENOUGH_DATA_FOR_RANGE) :
-					ERROR_PLOGGER_BLOCK(pLogger, LogLevel::Warning, ALERR_INSUFFICIENT_DATA_FOR_HEADER, "Not enough data for range");
-					break;
-				case(Result::NOT_ENOUGH_DATA_FOR_OBJECTS) :
-					ERROR_PLOGGER_BLOCK(pLogger, LogLevel::Warning, ALERR_INSUFFICIENT_DATA_FOR_OBJECTS, "insufficient data for specified objects");
-					break;
-				case(Result::UNREASONABLE_OBJECT_COUNT) :
-					ERROR_PLOGGER_BLOCK(pLogger, LogLevel::Warning, ALERR_TOO_MANY_OBJECTS_IN_APDU, "too many objects in APDU");
-					break;
-				case(Result::ILLEGAL_OBJECT_QUALIFIER) :
-					ERROR_PLOGGER_BLOCK(pLogger, LogLevel::Warning, ALERR_ILLEGAL_QUALIFIER_AND_OBJECT, "Unsupported qualifier and object");
-					break;				
-				case(Result::COUNT_OF_ZERO) :
-					ERROR_PLOGGER_BLOCK(pLogger, LogLevel::Warning, ALERR_COUNT_OF_ZERO, "count of 0");
-					break;
-				case(Result::UNKNOWN_QUALIFIER) :					
-				case(Result::UNKNOWN_OBJECT) :					
-				default:
-					break;
-			}			
-			return result;
-			*/
+			return result;			
 		}
 	}
 	return Result::OK;
@@ -92,10 +61,13 @@ APDUParser::Result APDUParser::ParseSinglePass(const openpal::ReadOnlyBuffer& bu
 
 APDUParser::Result APDUParser::ParseHeader(ReadOnlyBuffer& buffer, openpal::Logger* pLogger, Context& context, IAPDUHandler* pHandler)
 {
-	if(buffer.Size() < 3) return Result::NOT_ENOUGH_DATA_FOR_HEADER; 
-	else {
-		// record an immutable start position with 3 bytes for group, variation, qualifier
-		//const HeaderRecord record(buffer, 3); 
+	if (buffer.Size() < 3) 
+	{
+		ERROR_PLOGGER_BLOCK(pLogger, LogLevel::Warning, ALERR_INSUFFICIENT_DATA_FOR_HEADER, "Not enough data for header");
+		return Result::NOT_ENOUGH_DATA_FOR_HEADER;
+	}
+	else 
+	{		
 		uint8_t group = UInt8::ReadBuffer(buffer);
 		uint8_t variation = UInt8::ReadBuffer(buffer);
 		auto enumeration = GroupVariationRecord::GetEnum(group, variation);
@@ -164,12 +136,28 @@ APDUParser::Result APDUParser::ParseObjectsWithRange(QualifierCode qualifier, op
 		case(GroupVariation::Group1Var1):				
 			return ParseRangeAsBitField(buffer, pLogger, qualifier, range, [&](QualifierCode qualifier, const IterableBuffer<IndexedValue<bool, uint16_t>>& values) {
 				if(pHandler) {
-					auto mapped = IterableTransforms<IndexedValue<bool, uint16_t>>::Map<IndexedValue<Binary, uint16_t>>(values, [](const IndexedValue<bool, uint16_t>& v) { return IndexedValue<Binary, uint16_t>(Binary(v.value), v.index); });
+					auto mapped = IterableTransforms<IndexedValue<bool, uint16_t>>::Map<IndexedValue<Binary, uint16_t>>(values, 
+						[](const IndexedValue<bool, uint16_t>& v) { 
+							return IndexedValue<Binary, uint16_t>(Binary(v.value), v.index); 
+						}
+					);
 					pHandler->OnRange(gvRecord.enumeration, qualifier, mapped);
 				}
 			});		
 		
 		MACRO_PARSE_OBJECTS_WITH_RANGE(Group1Var2);
+
+		case(GroupVariation::Group3Var1) :
+			return ParseRangeAsDoubleBitField(buffer, pLogger, qualifier, range, [&](QualifierCode qualifier, const IterableBuffer<IndexedValue<TwoBitState, uint16_t>>& values) {
+			if (pHandler) {
+				auto mapped = IterableTransforms<IndexedValue<TwoBitState, uint16_t>>::Map<IndexedValue<DoubleBitBinary, uint16_t>>(values, 
+					[](const IndexedValue<TwoBitState, uint16_t>& v) {
+						return IndexedValue<DoubleBitBinary, uint16_t>(DoubleBitBinary(v.value), v.index);
+					}	
+				);
+				pHandler->OnRange(gvRecord.enumeration, qualifier, mapped);
+			}
+		});
 
 		case(GroupVariation::Group10Var1):				
 			return ParseRangeAsBitField(buffer, pLogger, qualifier, range, [&](QualifierCode qualifier, IterableBuffer<IndexedValue<bool, uint16_t>>& values) {

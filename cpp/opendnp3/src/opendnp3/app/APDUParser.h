@@ -147,6 +147,14 @@ class APDUParser : private PureStatic
 		const Range& range, 
 		const Fun& action);
 
+	template <class Fun>
+	static Result ParseRangeAsDoubleBitField(
+		openpal::ReadOnlyBuffer& buffer,
+		openpal::Logger* pLogger,
+		QualifierCode qualifier,
+		const Range& range,
+		const Fun& action);
+
 	static Result ParseRangeOfOctetData(
 		const GroupVariationRecord& gvRecord,
 		openpal::ReadOnlyBuffer& buffer,
@@ -267,6 +275,32 @@ APDUParser::Result APDUParser::ParseRangeAsBitField(
 			[&](openpal::ReadOnlyBuffer& buffer, uint32_t pos) {
 				return IndexedValue<bool, uint16_t>(GetBit(buffer, pos), pos + range.start);
 			}
+		);
+		callback(qualifier, collection);
+		buffer.Advance(numBytes);
+		return Result::OK;
+	}
+}
+
+template <class Callback>
+APDUParser::Result APDUParser::ParseRangeAsDoubleBitField(
+	openpal::ReadOnlyBuffer& buffer,
+	openpal::Logger* pLogger,
+	QualifierCode qualifier,
+	const Range& range,
+	const Callback& callback)
+{
+	uint32_t numBytes = NumBytesInDoubleBits(range.Count());
+	if (buffer.Size() < numBytes)
+	{
+		ERROR_PLOGGER_BLOCK(pLogger, LogLevel::Warning, ALERR_INSUFFICIENT_DATA_FOR_OBJECTS, "Not enough data for specified double bitfield objects");
+		return Result::NOT_ENOUGH_DATA_FOR_OBJECTS;
+	}
+	else {
+		auto collection = IterableTransforms<IndexedValue<TwoBitState, uint16_t>>::From(buffer, range.Count(),
+			[&](openpal::ReadOnlyBuffer& buffer, uint32_t pos) {
+			return IndexedValue<TwoBitState, uint16_t>(GetDoubleBit(buffer, pos), pos + range.start);
+		}
 		);
 		callback(qualifier, collection);
 		buffer.Advance(numBytes);
