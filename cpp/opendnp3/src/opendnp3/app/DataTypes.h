@@ -142,9 +142,7 @@ public:
 			if(diff == std::numeric_limits<double>::infinity()) return true;
 			else return diff > aDeadband;
 		}		
-	}
-	
-	typedef double DeadbandType;		
+	}		
 };
 
 /**
@@ -173,9 +171,7 @@ public:
 		{
 			return ExceedsDeadband<uint32_t, uint64_t>(this->GetValue(), newValue.GetValue(), aDeadband);
 		}
-	}
-	
-	typedef uint32_t DeadbandType;	
+	}	
 };
 
 /**
@@ -203,9 +199,7 @@ public:
 		{
 			return ExceedsDeadband<uint32_t, uint64_t>(this->GetValue(), newValue.GetValue(), aDeadband);
 		}
-	}
-	
-	typedef uint32_t DeadbandType;
+	}	
 };
 
 /**

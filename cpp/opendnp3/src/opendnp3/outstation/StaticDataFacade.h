@@ -33,9 +33,9 @@ namespace opendnp3
 {
 
 typedef SimpleEventMetadata<Binary> BinaryMetadata;
-typedef DeadbandMetadata<Analog> AnalogMetadata;
-typedef DeadbandMetadata<Counter> CounterMetadata;
-typedef DeadbandMetadata<FrozenCounter> FrozenCounterMetadata;
+typedef DeadbandMetadata<Analog, double> AnalogMetadata;
+typedef DeadbandMetadata<Counter, uint32_t> CounterMetadata;
+typedef DeadbandMetadata<FrozenCounter, uint32_t> FrozenCounterMetadata;
 
 typedef ValueMetadataPair<DualValue<Binary>, BinaryMetadata> BinaryCollection;
 typedef ValueMetadataPair<DualValue<Analog>, AnalogMetadata> AnalogCollection;

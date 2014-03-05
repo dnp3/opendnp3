@@ -78,7 +78,7 @@ struct SimpleEventMetadata : EventMetadata<T>
 /**
  * Structure for holding metadata information on points that have support deadbanding
  */
-template <typename T>
+template <class T, class U>
 struct DeadbandMetadata : EventMetadata<T>
 {	
 	DeadbandMetadata() : deadband(0) 
@@ -94,7 +94,7 @@ struct DeadbandMetadata : EventMetadata<T>
 		return false;
 	}
 		
-	typename T::DeadbandType deadband;			// deadband associated with measurement (optional)
+	typename U deadband;
 };
 
 } //end namespace
