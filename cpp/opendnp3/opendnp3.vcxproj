@@ -164,8 +164,10 @@
     <ClInclude Include="src\opendnp3\objects\Group21.h" />
     <ClInclude Include="src\opendnp3\objects\Group22.h" />
     <ClInclude Include="src\opendnp3\objects\Group23.h" />
+    <ClInclude Include="src\opendnp3\objects\Group3.h" />
     <ClInclude Include="src\opendnp3\objects\Group30.h" />
     <ClInclude Include="src\opendnp3\objects\Group32.h" />
+    <ClInclude Include="src\opendnp3\objects\Group4.h" />
     <ClInclude Include="src\opendnp3\objects\Group40.h" />
     <ClInclude Include="src\opendnp3\objects\Group41.h" />
     <ClInclude Include="src\opendnp3\objects\Group42.h" />
@@ -330,8 +332,10 @@
     <ClCompile Include="src\opendnp3\objects\Group21.cpp" />
     <ClCompile Include="src\opendnp3\objects\Group22.cpp" />
     <ClCompile Include="src\opendnp3\objects\Group23.cpp" />
+    <ClCompile Include="src\opendnp3\objects\Group3.cpp" />
     <ClCompile Include="src\opendnp3\objects\Group30.cpp" />
     <ClCompile Include="src\opendnp3\objects\Group32.cpp" />
+    <ClCompile Include="src\opendnp3\objects\Group4.cpp" />
     <ClCompile Include="src\opendnp3\objects\Group40.cpp" />
     <ClCompile Include="src\opendnp3\objects\Group41.cpp" />
     <ClCompile Include="src\opendnp3\objects\Group42.cpp" />

@@ -83,7 +83,7 @@ enum FrozenCounterQuality {
 /**
 	Bitmasks that make make up the quality field for control statuses. See BinaryQuality for common (unlabeled) bitmasks.
  */
-enum ControlQuality {
+enum BinaryOutputStatusQuality {
 	TQ_ONLINE = 0x01,
 	TQ_RESTART = 0x02,
 	TQ_COMM_LOST = 0x04,
@@ -97,7 +97,7 @@ enum ControlQuality {
 /**
 	Bitmasks that make make up the quality field for setpoint statuses. See BinaryQuality for common (unlabeled) bitmasks.
  */
-enum SetpointQuality {
+enum AnalogOutputStatusQuality {
 	PQ_ONLINE = 0x01,
 	PQ_RESTART = 0x02,
 	PQ_COMM_LOST = 0x04,

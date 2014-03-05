@@ -63,46 +63,6 @@ void Group23Var2::Write(const Group23Var2& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(2);
 }
 
-const GroupVariationID  Group23Var3::ID(23,3);
-
-Group23Var3 Group23Var3::Read(ReadOnlyBuffer& buffer)
-{
-  Group23Var3 obj;
-  obj.flags = UInt8::Read(buffer);
-  buffer.Advance(1);
-  obj.value = UInt32::Read(buffer);
-  buffer.Advance(4);
-  return obj;
-}
-
-void Group23Var3::Write(const Group23Var3& arg, openpal::WriteBuffer& buffer)
-{
-  UInt8::Write(buffer, arg.flags);
-  buffer.Advance(1);
-  UInt32::Write(buffer, arg.value);
-  buffer.Advance(4);
-}
-
-const GroupVariationID  Group23Var4::ID(23,4);
-
-Group23Var4 Group23Var4::Read(ReadOnlyBuffer& buffer)
-{
-  Group23Var4 obj;
-  obj.flags = UInt8::Read(buffer);
-  buffer.Advance(1);
-  obj.value = UInt16::Read(buffer);
-  buffer.Advance(2);
-  return obj;
-}
-
-void Group23Var4::Write(const Group23Var4& arg, openpal::WriteBuffer& buffer)
-{
-  UInt8::Write(buffer, arg.flags);
-  buffer.Advance(1);
-  UInt16::Write(buffer, arg.value);
-  buffer.Advance(2);
-}
-
 const GroupVariationID  Group23Var5::ID(23,5);
 
 Group23Var5 Group23Var5::Read(ReadOnlyBuffer& buffer)
@@ -142,54 +102,6 @@ Group23Var6 Group23Var6::Read(ReadOnlyBuffer& buffer)
 }
 
 void Group23Var6::Write(const Group23Var6& arg, openpal::WriteBuffer& buffer)
-{
-  UInt8::Write(buffer, arg.flags);
-  buffer.Advance(1);
-  UInt16::Write(buffer, arg.value);
-  buffer.Advance(2);
-  UInt48::Write(buffer, arg.time);
-  buffer.Advance(6);
-}
-
-const GroupVariationID  Group23Var7::ID(23,7);
-
-Group23Var7 Group23Var7::Read(ReadOnlyBuffer& buffer)
-{
-  Group23Var7 obj;
-  obj.flags = UInt8::Read(buffer);
-  buffer.Advance(1);
-  obj.value = UInt32::Read(buffer);
-  buffer.Advance(4);
-  obj.time = UInt48::Read(buffer);
-  buffer.Advance(6);
-  return obj;
-}
-
-void Group23Var7::Write(const Group23Var7& arg, openpal::WriteBuffer& buffer)
-{
-  UInt8::Write(buffer, arg.flags);
-  buffer.Advance(1);
-  UInt32::Write(buffer, arg.value);
-  buffer.Advance(4);
-  UInt48::Write(buffer, arg.time);
-  buffer.Advance(6);
-}
-
-const GroupVariationID  Group23Var8::ID(23,8);
-
-Group23Var8 Group23Var8::Read(ReadOnlyBuffer& buffer)
-{
-  Group23Var8 obj;
-  obj.flags = UInt8::Read(buffer);
-  buffer.Advance(1);
-  obj.value = UInt16::Read(buffer);
-  buffer.Advance(2);
-  obj.time = UInt48::Read(buffer);
-  buffer.Advance(6);
-  return obj;
-}
-
-void Group23Var8::Write(const Group23Var8& arg, openpal::WriteBuffer& buffer)
 {
   UInt8::Write(buffer, arg.flags);
   buffer.Advance(1);

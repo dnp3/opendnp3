@@ -90,7 +90,7 @@ public:
         }
 
 
-	bool Check(bool aValue, ControlQuality aQuality, size_t aIndex) {
+	bool Check(bool aValue, BinaryOutputStatusQuality aQuality, size_t aIndex) {
 		uint8_t qual = aQuality;
 		if(aValue) qual |= TQ_STATE;
 		return Check<BinaryOutputStatus, bool>(mBinaryOutputStatusMap, aValue, qual, aIndex);
@@ -104,7 +104,7 @@ public:
                 return Check<FrozenCounter, uint8_t>(mFrozenCounterMap, aValue, aQuality,  aTime, aIndex);
         }
 
-	bool Check(bool aValue, ControlQuality aQuality, size_t aIndex, int64_t aTime) {
+		bool Check(bool aValue, BinaryOutputStatusQuality aQuality, size_t aIndex, int64_t aTime) {
 		uint8_t qual = aQuality;
 		if(aValue) qual |= TQ_STATE;
 		return Check<BinaryOutputStatus, bool>(mBinaryOutputStatusMap, aValue, qual,  aTime, aIndex);
@@ -113,11 +113,11 @@ public:
 	/*
 	 * Setpoint
 	 */
-	bool Check(int32_t aValue, SetpointQuality aQuality, size_t aIndex) {
+		bool Check(int32_t aValue, AnalogOutputStatusQuality aQuality, size_t aIndex) {
 		return Check<AnalogOutputStatus, int32_t>(mAnalogOutputStatusMap, aValue, aQuality, aIndex);
 	}
 
-	bool Check(int32_t aValue, SetpointQuality aQuality, size_t aIndex, int64_t aTime) {
+		bool Check(int32_t aValue, AnalogOutputStatusQuality aQuality, size_t aIndex, int64_t aTime) {
 		return Check<AnalogOutputStatus, int32_t>(mAnalogOutputStatusMap, aValue, aQuality, aTime, aIndex);
 	}
 
@@ -148,10 +148,10 @@ public:
 	bool CheckQual(FrozenCounterQuality aQuality, size_t aIndex) {
                 return CheckQual<FrozenCounter>(mFrozenCounterMap, aQuality, aIndex);
         }
-	bool CheckQual(ControlQuality aQuality, size_t aIndex) {
+	bool CheckQual(BinaryOutputStatusQuality aQuality, size_t aIndex) {
 		return CheckQual<BinaryOutputStatus>(mBinaryOutputStatusMap, aQuality, aIndex);
 	}
-	bool CheckQual(SetpointQuality aQuality, size_t aIndex) {
+	bool CheckQual(AnalogOutputStatusQuality aQuality, size_t aIndex) {
 		return CheckQual<AnalogOutputStatus>(mAnalogOutputStatusMap, aQuality, aIndex);
 	}
 

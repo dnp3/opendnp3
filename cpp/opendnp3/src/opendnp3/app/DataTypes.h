@@ -77,7 +77,6 @@ public:
 
 
 	typedef BinaryQuality QualityType;	
-	static const MeasurementType MeasEnum = MeasurementType ::BINARY;
 	static const int ONLINE = BQ_ONLINE;		
 
 private:
@@ -110,8 +109,7 @@ public:
 	BinaryOutputStatus(bool aValue, uint8_t aQuality, int64_t aTime) : TypedMeasurement(aValue, GetQual(aQuality, aValue), aTime) 
 	{}
 	
-	typedef ControlQuality QualityType;
-	static const MeasurementType MeasEnum = MeasurementType::CONTROL_STATUS;
+	typedef BinaryOutputStatusQuality QualityType;	
 	static const int ONLINE = TQ_ONLINE;		
 
 private:
@@ -156,7 +154,6 @@ public:
 	
 	typedef double DeadbandType;
 	typedef AnalogQuality QualityType;
-	static const MeasurementType MeasEnum = MeasurementType::ANALOG;
 	static const int ONLINE = AQ_ONLINE;	
 };
 
@@ -190,8 +187,7 @@ public:
 	
 	typedef uint32_t DeadbandType;
 	typedef CounterQuality QualityType;
-	static const int ONLINE = CQ_ONLINE;
-	static const MeasurementType MeasEnum = MeasurementType::COUNTER;	
+	static const int ONLINE = CQ_ONLINE;	
 };
 
 /**
@@ -223,8 +219,7 @@ public:
 	
 	typedef uint32_t DeadbandType;
 	typedef FrozenCounterQuality QualityType;
-	static const int ONLINE = CQ_ONLINE;
-	static const MeasurementType MeasEnum = MeasurementType::COUNTER;	
+	static const int ONLINE = CQ_ONLINE;	
 };
 
 /**
@@ -246,9 +241,8 @@ public:
 	AnalogOutputStatus(double aValue, uint8_t aQuality, int64_t aTime) : TypedMeasurement<double>(aValue, aQuality, aTime) 
 	{}
 	
-	typedef SetpointQuality QualityType;
-	static const int ONLINE = PQ_ONLINE;
-	static const MeasurementType MeasEnum = MeasurementType::SETPOINT_STATUS;	
+	typedef AnalogOutputStatusQuality QualityType;
+	static const int ONLINE = PQ_ONLINE;	
 };
 
 }

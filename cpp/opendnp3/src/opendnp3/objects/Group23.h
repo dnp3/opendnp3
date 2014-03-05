@@ -47,30 +47,6 @@ struct Group23Var2
   uint16_t value;
 };
 
-struct Group23Var3
-{
-  static const GroupVariationID ID;
-  static const uint32_t SIZE = 5;
-  static Group23Var3 Read(openpal::ReadOnlyBuffer&);
-  static void Write(const Group23Var3&, openpal::WriteBuffer&);
-
-  typedef uint32_t ValueType;
-  uint8_t flags;
-  uint32_t value;
-};
-
-struct Group23Var4
-{
-  static const GroupVariationID ID;
-  static const uint32_t SIZE = 3;
-  static Group23Var4 Read(openpal::ReadOnlyBuffer&);
-  static void Write(const Group23Var4&, openpal::WriteBuffer&);
-
-  typedef uint16_t ValueType;
-  uint8_t flags;
-  uint16_t value;
-};
-
 struct Group23Var5
 {
   static const GroupVariationID ID;
@@ -90,32 +66,6 @@ struct Group23Var6
   static const uint32_t SIZE = 9;
   static Group23Var6 Read(openpal::ReadOnlyBuffer&);
   static void Write(const Group23Var6&, openpal::WriteBuffer&);
-
-  typedef uint16_t ValueType;
-  uint8_t flags;
-  uint16_t value;
-  uint64_t time;
-};
-
-struct Group23Var7
-{
-  static const GroupVariationID ID;
-  static const uint32_t SIZE = 11;
-  static Group23Var7 Read(openpal::ReadOnlyBuffer&);
-  static void Write(const Group23Var7&, openpal::WriteBuffer&);
-
-  typedef uint32_t ValueType;
-  uint8_t flags;
-  uint32_t value;
-  uint64_t time;
-};
-
-struct Group23Var8
-{
-  static const GroupVariationID ID;
-  static const uint32_t SIZE = 9;
-  static Group23Var8 Read(openpal::ReadOnlyBuffer&);
-  static void Write(const Group23Var8&, openpal::WriteBuffer&);
 
   typedef uint16_t ValueType;
   uint8_t flags;

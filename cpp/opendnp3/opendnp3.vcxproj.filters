@@ -693,6 +693,12 @@
     <ClInclude Include="src\opendnp3\outstation\CommandResponseHandler.h">
       <Filter>Header\outstation</Filter>
     </ClInclude>
+    <ClInclude Include="src\opendnp3\objects\Group3.h">
+      <Filter>Header\objects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\objects\Group4.h">
+      <Filter>Header\objects</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\opendnp3\app\AnalogOutput.cpp">
@@ -1108,6 +1114,12 @@
     </ClCompile>
     <ClCompile Include="src\opendnp3\link\ShiftableBuffer.cpp">
       <Filter>Source\link</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\objects\Group3.cpp">
+      <Filter>Source\objects</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\objects\Group4.cpp">
+      <Filter>Source\objects</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

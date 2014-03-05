@@ -7,8 +7,8 @@ object ObjectGroup {
  val all = List(
     Group1,
     Group2,
-    //Group3,
-    //Group4,
+    Group3,
+    Group4,
     Group10,
     Group11,
     Group12,
