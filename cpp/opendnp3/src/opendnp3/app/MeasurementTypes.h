@@ -71,7 +71,7 @@ public:
 
 	bool IsEvent(const Binary& newValue) const
 	{
-		return mQuality != newValue.mQuality;
+		return quality != newValue.quality;
 	}	
 
 private:
@@ -135,7 +135,7 @@ public:
 
 	bool IsEvent(const Analog& newValue, double aDeadband) const
 	{
-		if(mQuality != newValue.mQuality) return true;
+		if(quality != newValue.quality) return true;
 		else 
 		{
 			double diff = fabs(GetValue() - newValue.GetValue());
@@ -166,7 +166,7 @@ public:
 
 	bool IsEvent(const Counter& newValue, uint32_t aDeadband) const
 	{
-		if(mQuality != newValue.mQuality) return true;
+		if(quality != newValue.quality) return true;
 		else 
 		{
 			return ExceedsDeadband<uint32_t, uint64_t>(this->GetValue(), newValue.GetValue(), aDeadband);
@@ -194,7 +194,7 @@ public:
 
 	bool IsEvent(const FrozenCounter& newValue, uint32_t aDeadband) const
 	{
-		if(mQuality != newValue.mQuality) return true;
+		if(quality != newValue.quality) return true;
 		else 
 		{
 			return ExceedsDeadband<uint32_t, uint64_t>(this->GetValue(), newValue.GetValue(), aDeadband);

@@ -35,24 +35,30 @@ public:
 
 	virtual ~Measurement() {}
 
-	int64_t GetTime() const { return mTime; }
-	uint8_t GetQuality() const { return mQuality; }	
+	int64_t GetTime() const { return time; }
+	bool IsTimeValid() const { return isTimeValid; }
+	uint8_t GetQuality() const { return quality; }	
 
-	void SetTime(int64_t aTime) { mTime = aTime; }	
+	void SetTime(int64_t time_) 
+	{ 
+		time = time_;
+		isTimeValid = true;
+	}	
 	
 protected:	
 
-	Measurement() : mQuality(0), mTime(0)
+	Measurement() : quality(0), time(0), isTimeValid(false)
 	{}
 	
-	Measurement(uint8_t aQuality) : mQuality(aQuality), mTime(0) 
+	Measurement(uint8_t quality_) : quality(quality_), time(0), isTimeValid(false)
 	{}
 
-	Measurement(uint8_t aQuality, int64_t aTime) : mQuality(aQuality), mTime(aTime) 
+	Measurement(uint8_t quality_, int64_t time_) : quality(quality_), time(time_), isTimeValid(true)
 	{}
 
-	uint8_t mQuality;					//	bitfield that stores type specific quality information
-	int64_t mTime;						//	timestamp associated with the measurement, -1 if it was never timestamped	
+	uint8_t quality;					//	bitfield that stores type specific quality information
+	int64_t time;						//	timestamp associated with the measurement
+	bool isTimeValid;					//  records if the time field was set or not
 };
 
 
