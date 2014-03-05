@@ -74,9 +74,7 @@ public:
 	{
 		return mQuality != newValue.mQuality;
 	}
-
-
-	typedef BinaryQuality QualityType;	
+	
 	static const int ONLINE = BQ_ONLINE;		
 
 private:
@@ -108,8 +106,7 @@ public:
 
 	BinaryOutputStatus(bool aValue, uint8_t aQuality, int64_t aTime) : TypedMeasurement(aValue, GetQual(aQuality, aValue), aTime) 
 	{}
-	
-	typedef BinaryOutputStatusQuality QualityType;	
+		
 	static const int ONLINE = TQ_ONLINE;		
 
 private:
@@ -152,8 +149,7 @@ public:
 		}		
 	}
 	
-	typedef double DeadbandType;
-	typedef AnalogQuality QualityType;
+	typedef double DeadbandType;	
 	static const int ONLINE = AQ_ONLINE;	
 };
 
@@ -185,8 +181,7 @@ public:
 		}
 	}
 	
-	typedef uint32_t DeadbandType;
-	typedef CounterQuality QualityType;
+	typedef uint32_t DeadbandType;	
 	static const int ONLINE = CQ_ONLINE;	
 };
 
@@ -217,8 +212,7 @@ public:
 		}
 	}
 	
-	typedef uint32_t DeadbandType;
-	typedef FrozenCounterQuality QualityType;
+	typedef uint32_t DeadbandType;	
 	static const int ONLINE = CQ_ONLINE;	
 };
 
@@ -241,7 +235,6 @@ public:
 	AnalogOutputStatus(double aValue, uint8_t aQuality, int64_t aTime) : TypedMeasurement<double>(aValue, aQuality, aTime) 
 	{}
 	
-	typedef AnalogOutputStatusQuality QualityType;
 	static const int ONLINE = PQ_ONLINE;	
 };
 
