@@ -21,8 +21,17 @@
 
 #include "GroupVariation.h"
 
+#include <sstream>
+
 namespace opendnp3
 {
+
+std::string GroupVariationRecord::ToString() const
+{
+	std::ostringstream oss;
+	oss << "Group" << static_cast<int>(group) << "Variation" << static_cast<int>(variation);
+	return oss.str();
+}
 
 GroupVariation GroupVariationRecord::GetEnum(uint8_t group, uint8_t variation)
 {

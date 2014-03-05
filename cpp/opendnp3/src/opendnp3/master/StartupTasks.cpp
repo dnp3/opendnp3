@@ -108,7 +108,7 @@ TaskResult TimeSync::_OnFinalResponse(const APDUResponseRecord& record)
 	if(mDelay < 0) {
 
 		TimeSyncHandler handler(mLogger);
-		auto result = APDUParser::ParseTwoPass(record.objects, &handler);
+		auto result = APDUParser::ParseTwoPass(record.objects, &handler, &mLogger);
 		if(result == APDUParser::Result::OK) {
 			uint16_t rtuTurnAroundTime;
 			if(handler.GetTimeDelay(rtuTurnAroundTime)) 

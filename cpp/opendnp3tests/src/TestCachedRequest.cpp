@@ -54,7 +54,7 @@ BOOST_AUTO_TEST_CASE(Correctly)
 	cache.Apply([&](const APDURecord& record, SequenceInfo seq){ 
 		
 		BOOST_REQUIRE(SequenceInfo::PREVIOUS == seq);
-		BOOST_REQUIRE(APDUParser::Result::OK == APDUParser::ParseTwoPass(record.objects, &handler));
+		BOOST_REQUIRE(APDUParser::Result::OK == APDUParser::ParseTwoPass(record.objects, &handler, nullptr));
 
 	});
 

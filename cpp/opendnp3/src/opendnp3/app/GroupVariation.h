@@ -22,6 +22,7 @@
 #define __GROUP_VARIATION_H_
 
 #include <cstdint>
+#include <string>
 
 #include "opendnp3/Uncopyable.h"
 
@@ -132,6 +133,8 @@ class GroupVariationRecord
 	public:
 
 	static GroupVariation GetEnum(uint8_t group, uint8_t variation);
+
+	std::string ToString() const;
 
 	GroupVariation enumeration;
 	uint8_t group;

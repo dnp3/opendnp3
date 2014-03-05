@@ -21,6 +21,7 @@
 
 #include "APDUParser.h"
 
+#include "opendnp3/DNPConstants.h"
 #include "opendnp3/gen/QualifierCode.h"
 #include "opendnp3/app/GroupVariation.h"
 #include "opendnp3/app/MeasurementFactory.h"
@@ -30,71 +31,114 @@ using namespace openpal;
 namespace opendnp3
 {
 
-APDUParser::Result APDUParser::ParseTwoPass(const openpal::ReadOnlyBuffer& buffer, IAPDUHandler* pHandler, Context context)
+	APDUParser::Result APDUParser::ParseTwoPass(const openpal::ReadOnlyBuffer& buffer, IAPDUHandler* pHandler, openpal::Logger* pLogger, Context context)
 {
 	if(pHandler)
 	{
 		// do a single pass without the callbacks to validate that the message is well formed
-		auto result = ParseSinglePass(buffer, nullptr, context); 
-		return (result == Result::OK) ? ParseSinglePass(buffer, pHandler, context) : result;		
+		auto result = ParseSinglePass(buffer, pLogger, nullptr, context); 
+		return (result == Result::OK) ? ParseSinglePass(buffer, nullptr, pHandler, context) : result;		
 	}
 	else
 	{
-		return ParseSinglePass(buffer, pHandler, context);
+		return ParseSinglePass(buffer, pLogger, pHandler, context);
 	}	
 }
 
-APDUParser::Result APDUParser::ParseSinglePass(const openpal::ReadOnlyBuffer& buffer, IAPDUHandler* pHandler, Context context)
+APDUParser::Result APDUParser::ParseSinglePass(const openpal::ReadOnlyBuffer& buffer, openpal::Logger* pLogger, IAPDUHandler* pHandler, Context context)
 {
 	ReadOnlyBuffer copy(buffer);
 	while(copy.Size() > 0)
 	{
-		auto result = ParseHeader(copy, context, pHandler);
-		if(result != Result::OK) return result;
+		auto result = ParseHeader(copy, pLogger, context, pHandler);
+		if (result != Result::OK)
+		{
+			return result;
+			/*
+			switch(result)
+			{				
+				case(Result::BAD_START_STOP) :
+					ERROR_PLOGGER_BLOCK(pLogger, LogLevel::Warning, ALERR_START_STOP_MISMATCH, "start > stop");
+					break;
+				case(Result::NOT_ENOUGH_DATA_FOR_HEADER) :
+					ERROR_PLOGGER_BLOCK(pLogger, LogLevel::Warning, ALERR_INSUFFICIENT_DATA_FOR_HEADER, "Not enough data for header");
+					break;
+				case(Result::NOT_ENOUGH_DATA_FOR_RANGE) :
+					ERROR_PLOGGER_BLOCK(pLogger, LogLevel::Warning, ALERR_INSUFFICIENT_DATA_FOR_HEADER, "Not enough data for range");
+					break;
+				case(Result::NOT_ENOUGH_DATA_FOR_OBJECTS) :
+					ERROR_PLOGGER_BLOCK(pLogger, LogLevel::Warning, ALERR_INSUFFICIENT_DATA_FOR_OBJECTS, "insufficient data for specified objects");
+					break;
+				case(Result::UNREASONABLE_OBJECT_COUNT) :
+					ERROR_PLOGGER_BLOCK(pLogger, LogLevel::Warning, ALERR_TOO_MANY_OBJECTS_IN_APDU, "too many objects in APDU");
+					break;
+				case(Result::ILLEGAL_OBJECT_QUALIFIER) :
+					ERROR_PLOGGER_BLOCK(pLogger, LogLevel::Warning, ALERR_ILLEGAL_QUALIFIER_AND_OBJECT, "Unsupported qualifier and object");
+					break;				
+				case(Result::COUNT_OF_ZERO) :
+					ERROR_PLOGGER_BLOCK(pLogger, LogLevel::Warning, ALERR_COUNT_OF_ZERO, "count of 0");
+					break;
+				case(Result::UNKNOWN_QUALIFIER) :					
+				case(Result::UNKNOWN_OBJECT) :					
+				default:
+					break;
+			}			
+			return result;
+			*/
+		}
 	}
 	return Result::OK;
 }
 
-APDUParser::Result APDUParser::ParseHeader(ReadOnlyBuffer& buffer, Context& context, IAPDUHandler* pHandler)
+APDUParser::Result APDUParser::ParseHeader(ReadOnlyBuffer& buffer, openpal::Logger* pLogger, Context& context, IAPDUHandler* pHandler)
 {
 	if(buffer.Size() < 3) return Result::NOT_ENOUGH_DATA_FOR_HEADER; 
-	else {	
+	else {
 		// record an immutable start position with 3 bytes for group, variation, qualifier
 		//const HeaderRecord record(buffer, 3); 
-		uint8_t group = UInt8::ReadBuffer(buffer);		
-		uint8_t variation = UInt8::ReadBuffer(buffer);		
+		uint8_t group = UInt8::ReadBuffer(buffer);
+		uint8_t variation = UInt8::ReadBuffer(buffer);
 		auto enumeration = GroupVariationRecord::GetEnum(group, variation);
-		GroupVariationRecord gvRecord = {enumeration, group, variation};
-		if(gvRecord.enumeration == GroupVariation::UNKNOWN) return Result::UNKNOWN_OBJECT;
-		QualifierCode qualifier = QualifierCodeFromType(UInt8::ReadBuffer(buffer));
-		switch(qualifier)
+		GroupVariationRecord gvRecord = { enumeration, group, variation };
+		if (gvRecord.enumeration == GroupVariation::UNKNOWN)
 		{
-			case(QualifierCode::ALL_OBJECTS):
+			ERROR_PLOGGER_BLOCK(pLogger, LogLevel::Warning, ALERR_UNKNOWN_GROUP_VAR, "Unknown object: " << gvRecord.ToString());
+			return Result::UNKNOWN_OBJECT;
+		}
+		else
+		{
+			uint8_t rawQualifier = UInt8::ReadBuffer(buffer);
+			QualifierCode qualifier = QualifierCodeFromType(rawQualifier);
+			switch (qualifier)
 			{
-				if(pHandler) pHandler->AllObjects(gvRecord.enumeration);				
-				return Result::OK;
+				case(QualifierCode::ALL_OBJECTS) :
+				{
+					if (pHandler) pHandler->AllObjects(gvRecord.enumeration);
+					return Result::OK;
+				}
+
+				case(QualifierCode::UINT8_CNT) :
+					return ParseCountHeader<UInt8>(buffer, pLogger, context, qualifier, gvRecord, pHandler);
+
+				case(QualifierCode::UINT16_CNT) :
+					return ParseCountHeader<UInt16>(buffer, pLogger, context, qualifier, gvRecord, pHandler);
+
+				case(QualifierCode::UINT8_START_STOP) :
+					return ParseRangeHeader<UInt8, uint16_t>(buffer, pLogger, context, qualifier, gvRecord, pHandler);
+
+				case(QualifierCode::UINT16_START_STOP) :
+					return ParseRangeHeader<UInt16, uint32_t>(buffer, pLogger, context, qualifier, gvRecord, pHandler);
+
+				case(QualifierCode::UINT8_CNT_UINT8_INDEX) :
+					return ParseIndexPrefixHeader<UInt8>(buffer, pLogger, context, qualifier, gvRecord, pHandler);
+
+				case(QualifierCode::UINT16_CNT_UINT16_INDEX) :
+					return ParseIndexPrefixHeader<UInt16>(buffer, pLogger, context, qualifier, gvRecord, pHandler);
+
+				default:
+					ERROR_PLOGGER_BLOCK(pLogger, LogLevel::Warning, ALERR_UNKNOWN_GROUP_VAR, "Unknown qualifier: " << static_cast<int>(rawQualifier));
+					return Result::UNKNOWN_QUALIFIER;
 			}
-
-			case(QualifierCode::UINT8_CNT):
-				return ParseCountHeader<UInt8>(buffer, context, qualifier, gvRecord, pHandler);
-
-			case(QualifierCode::UINT16_CNT):
-				return ParseCountHeader<UInt16>(buffer, context, qualifier, gvRecord, pHandler);
-			
-			case(QualifierCode::UINT8_START_STOP):
-				return ParseRangeHeader<UInt8, uint16_t>(buffer, context, qualifier, gvRecord, pHandler);
-
-			case(QualifierCode::UINT16_START_STOP):
-				return ParseRangeHeader<UInt16, uint32_t>(buffer, context, qualifier, gvRecord, pHandler);
-					
-			case(QualifierCode::UINT8_CNT_UINT8_INDEX):
-				return ParseIndexPrefixHeader<UInt8>(buffer, context, qualifier, gvRecord, pHandler);
-			
-			case(QualifierCode::UINT16_CNT_UINT16_INDEX):
-				return ParseIndexPrefixHeader<UInt16>(buffer, context, qualifier, gvRecord, pHandler);
-				
-			default:
-				return Result::UNKNOWN_QUALIFIER;
 		}
 	}
 }
@@ -111,14 +155,14 @@ IndexedValue<BinaryOutputStatus, uint16_t> APDUParser::BoolToBinaryOutputStatus(
 
 #define MACRO_PARSE_OBJECTS_WITH_RANGE(descriptor) \
 	case(GroupVariation::descriptor): \
-	return ParseRangeFixedSize(gvRecord.enumeration, qualifier, descriptor##Serializer::Inst(), buffer, range, pHandler);
+	return ParseRangeFixedSize(gvRecord.enumeration, qualifier, descriptor##Serializer::Inst(), buffer, pLogger, range, pHandler);
 
-APDUParser::Result APDUParser::ParseObjectsWithRange(QualifierCode qualifier, openpal::ReadOnlyBuffer& buffer, const GroupVariationRecord& gvRecord, const Range& range, IAPDUHandler* pHandler)
+APDUParser::Result APDUParser::ParseObjectsWithRange(QualifierCode qualifier, openpal::ReadOnlyBuffer& buffer, openpal::Logger* pLogger, const GroupVariationRecord& gvRecord, const Range& range, IAPDUHandler* pHandler)
 {
 	switch(gvRecord.enumeration)
 	{	
 		case(GroupVariation::Group1Var1):				
-			return ParseRangeAsBitField(buffer, qualifier, range, [&](QualifierCode qualifier, const IterableBuffer<IndexedValue<bool, uint16_t>>& values) {
+			return ParseRangeAsBitField(buffer, pLogger, qualifier, range, [&](QualifierCode qualifier, const IterableBuffer<IndexedValue<bool, uint16_t>>& values) {
 				if(pHandler) {
 					auto mapped = IterableTransforms<IndexedValue<bool, uint16_t>>::Map<IndexedValue<Binary, uint16_t>>(values, [](const IndexedValue<bool, uint16_t>& v) { return IndexedValue<Binary, uint16_t>(Binary(v.value), v.index); });
 					pHandler->OnRange(gvRecord.enumeration, qualifier, mapped);
@@ -128,7 +172,7 @@ APDUParser::Result APDUParser::ParseObjectsWithRange(QualifierCode qualifier, op
 		MACRO_PARSE_OBJECTS_WITH_RANGE(Group1Var2);
 
 		case(GroupVariation::Group10Var1):				
-			return ParseRangeAsBitField(buffer, qualifier, range, [&](QualifierCode qualifier, IterableBuffer<IndexedValue<bool, uint16_t>>& values) {
+			return ParseRangeAsBitField(buffer, pLogger, qualifier, range, [&](QualifierCode qualifier, IterableBuffer<IndexedValue<bool, uint16_t>>& values) {
 				if(pHandler) {
 					auto mapped = IterableTransforms<IndexedValue<bool, uint16_t>>::Map<IndexedValue<BinaryOutputStatus, uint16_t>>(values, [](const IndexedValue<bool, uint16_t>& v) { return IndexedValue<BinaryOutputStatus, uint16_t>(BinaryOutputStatus(v.value), v.index); });
 					pHandler->OnRange(gvRecord.enumeration, qualifier, mapped);
@@ -157,35 +201,44 @@ APDUParser::Result APDUParser::ParseObjectsWithRange(QualifierCode qualifier, op
 		MACRO_PARSE_OBJECTS_WITH_RANGE(Group40Var4);
 
 		case(GroupVariation::Group50Var1):
-			return ParseCountOf<Group50Var1>(buffer, range.Count(), pHandler); 
+			return ParseCountOf<Group50Var1>(buffer, pLogger, range.Count(), pHandler); 
 		
 		case(GroupVariation::Group52Var2):
-			return ParseCountOf<Group52Var2>(buffer, range.Count(), pHandler); 
+			return ParseCountOf<Group52Var2>(buffer, pLogger, range.Count(), pHandler);
 
 		case(GroupVariation::Group80Var1):		
-			return ParseRangeAsBitField(buffer, qualifier, range, [&](QualifierCode qualifier, const IterableBuffer<IndexedValue<bool, uint16_t>>& values) {
+			return ParseRangeAsBitField(buffer, pLogger, qualifier, range, [&](QualifierCode qualifier, const IterableBuffer<IndexedValue<bool, uint16_t>>& values) {
 				if(pHandler) {
 					pHandler->OnIIN(gvRecord.enumeration, qualifier, values);
 				}
 			});
 
 		case(GroupVariation::Group110AnyVar):
-			return ParseRangeOfOctetData(gvRecord, buffer, qualifier, range, pHandler);
+			return ParseRangeOfOctetData(gvRecord, buffer, pLogger, qualifier, range, pHandler);
 		
 		default:
+			ERROR_PLOGGER_BLOCK(pLogger, LogLevel::Warning, ALERR_ILLEGAL_QUALIFIER_AND_OBJECT, 
+				"Unsupported qualifier/object - " << QualifierCodeToString(qualifier) << "/" << gvRecord.ToString()
+			);
 			return Result::ILLEGAL_OBJECT_QUALIFIER;
 	}	
 }
 
 APDUParser::Result APDUParser::ParseRangeOfOctetData(
 		const GroupVariationRecord& gvRecord,
-		openpal::ReadOnlyBuffer& buffer, 
+		openpal::ReadOnlyBuffer& buffer,
+		openpal::Logger* pLogger,
 		QualifierCode qualifier,
 		const Range& range, 
 		IAPDUHandler* pHandler)
 {
 	uint32_t size = gvRecord.variation*range.Count();
-	if(buffer.Size() < size) return Result::NOT_ENOUGH_DATA_FOR_OBJECTS;
+	if (buffer.Size() < size) 
+	{
+		ERROR_PLOGGER_BLOCK(pLogger, LogLevel::Warning, ALERR_INSUFFICIENT_DATA_FOR_OBJECTS, "Not enough data for specified octet objects");
+		return Result::NOT_ENOUGH_DATA_FOR_OBJECTS;
+	}
+	else
 	{
 		if(pHandler) {
 			auto collection = IterableTransforms<IndexedValue<OctetString, uint16_t>>::From(buffer, range.Count(), [&](ReadOnlyBuffer& buffer, uint32_t pos) {

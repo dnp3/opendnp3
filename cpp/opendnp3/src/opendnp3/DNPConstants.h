@@ -68,6 +68,8 @@ enum DNPErrorCodes {
 	ALERR_INSUFFICIENT_DATA_FOR_RESPONSE,		// response indicated but < 4 bytes of data
 	ALERR_INSUFFICIENT_DATA_FOR_HEADER,			// not enough to read object header
 	ALERR_INSUFFICIENT_DATA_FOR_OBJECTS,		// not enough to read the indicated objects
+	ALERR_COUNT_OF_ZERO,						// count header with ZERO
+	ALERR_TOO_MANY_OBJECTS_IN_APDU,				
 	ALERR_UNKNOWN_GROUP_VAR,					// encounter an unknown group var while parsing
 	ALERR_START_STOP_MISMATCH,					// Start > Stop in a ranged header
 	ALERR_ILLEGAL_QUALIFIER_AND_OBJECT,			// The qualifier/object combination is invalid

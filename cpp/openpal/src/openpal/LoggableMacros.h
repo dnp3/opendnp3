@@ -35,6 +35,11 @@
 
 #define LOGGER_BLOCK(logger, severity, string) ERROR_LOGGER_BLOCK(logger, severity, string, -1)
 
+#define PLOGGER_BLOCK(pLogger, severity, string) ERROR_LOGGER_BLOCK(logger, severity, string, -1) \
+	if(pLogger){ \
+		PLOGGER_BLOCK(*pLogger, severity, string, code) \
+	}
+
 #ifndef OPENDNP3_STRIP_LOG_MESSAGES
 #define ERROR_LOGGER_BLOCK(logger, severity, string, code)\
 	if(logger.IsEnabled(severity)){\
@@ -48,5 +53,10 @@
 		logger->Log(severity, LOCATION, "", code); \
 	}
 #endif
+
+#define ERROR_PLOGGER_BLOCK(pLogger, severity, code, string)\
+	if(pLogger){ \
+		ERROR_LOGGER_BLOCK((*pLogger), severity, string, code)\
+	}
 
 #endif

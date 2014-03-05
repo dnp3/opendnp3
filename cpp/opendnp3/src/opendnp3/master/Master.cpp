@@ -295,7 +295,7 @@ void Master::OnUnsolResponse(const APDUResponseRecord& aRecord)
 void Master::ProcessDataResponse(const APDUResponseRecord& record)
 {
 	MeasurementHandler handler(mLogger, this->mpSOEHandler);
-	auto res = APDUParser::ParseTwoPass(record.objects, &handler);
+	auto res = APDUParser::ParseTwoPass(record.objects, &handler, &mLogger);
 	if(res != APDUParser::Result::OK) {	
 		LOG_BLOCK(LogLevel::Warning, "Error parsing response headers: " << static_cast<int>(res)); // TODO - turn these into strings
 	}	

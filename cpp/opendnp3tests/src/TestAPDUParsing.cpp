@@ -41,8 +41,8 @@ using namespace opendnp3;
 void TestComplex(const std::string& hex, APDUParser::Result expected, size_t numCalls, std::function<void (MockApduHeaderHandler&)> validate)
 {
 	HexSequence buffer(hex);
-	MockApduHeaderHandler mock;
-	auto result = APDUParser::ParseTwoPass(buffer.ToReadOnly(), &mock);
+	MockApduHeaderHandler mock;	
+	auto result = APDUParser::ParseTwoPass(buffer.ToReadOnly(), &mock, nullptr);
 
 	BOOST_REQUIRE(result == expected);
 	BOOST_REQUIRE_EQUAL(numCalls, mock.groupVariations.size());
@@ -154,11 +154,8 @@ BOOST_AUTO_TEST_CASE(Group1Var2RangeAsReadRange)
 {
 	HexSequence buffer("01 02 00 03 05");
 	MockApduHeaderHandler mock;
-	auto result = APDUParser::ParseTwoPass(buffer.ToReadOnly(), &mock, APDUParser::Context(false)); // don't expect contents 
-	BOOST_REQUIRE(result == APDUParser::Result::OK);
-	//BOOST_REQUIRE_EQUAL(numCalls, mock.groupVariations.size());
-
-	
+	auto result = APDUParser::ParseTwoPass(buffer.ToReadOnly(), &mock, nullptr, APDUParser::Context(false)); // don't expect contents 
+	BOOST_REQUIRE(result == APDUParser::Result::OK);		
 }
 
 
@@ -245,7 +242,7 @@ BOOST_AUTO_TEST_CASE(MaxCountAccumlatesOverHeaders)
 	MockApduHeaderHandler mock;
 
 	APDUParser::Context ctx(true, 3); //maximum of the 3 objects
-	auto result = APDUParser::ParseTwoPass(buffer.ToReadOnly(), &mock, ctx);
+	auto result = APDUParser::ParseTwoPass(buffer.ToReadOnly(), &mock, nullptr, ctx);
 
 	BOOST_REQUIRE(result == APDUParser::Result::UNREASONABLE_OBJECT_COUNT);
 	BOOST_REQUIRE_EQUAL(0, mock.groupVariations.size()); // 0 calls because parser rejects bad count on first pass
@@ -256,7 +253,7 @@ BOOST_AUTO_TEST_CASE(ParserHandlesSmallNumberOfEmptyOctetStringsWithDefaultSetti
 	HexSequence buffer("6E 00 08 FF 01"); // 255 + 256
 	MockApduHeaderHandler mock;
 
-	auto result = APDUParser::ParseTwoPass(buffer.ToReadOnly(), &mock);
+	auto result = APDUParser::ParseTwoPass(buffer.ToReadOnly(), &mock, nullptr);
 
 	BOOST_REQUIRE(result == APDUParser::Result::OK);
 	BOOST_REQUIRE_EQUAL(1, mock.groupVariations.size());
@@ -267,7 +264,7 @@ BOOST_AUTO_TEST_CASE(ParserRejectsLargeEmptyOctetStringsWithDefaultSettings)
 	HexSequence buffer("6E 00 08 FF FF"); // count of 65535 empty strings
 	MockApduHeaderHandler mock;
 
-	auto result = APDUParser::ParseTwoPass(buffer.ToReadOnly(), &mock);
+	auto result = APDUParser::ParseTwoPass(buffer.ToReadOnly(), &mock, nullptr);
 
 	BOOST_REQUIRE(result == APDUParser::Result::UNREASONABLE_OBJECT_COUNT);
 	BOOST_REQUIRE_EQUAL(0, mock.groupVariations.size());

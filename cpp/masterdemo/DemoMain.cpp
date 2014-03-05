@@ -44,7 +44,7 @@ int main(int argc, char* argv[])
 
 	// Specify a LogLevel for the stack/physical layer to use.
 	// Log statements with a lower priority will not be logged.
-	const LogLevel LOG_LEVEL = LogLevel::Interpret;
+	const LogLevel LOG_LEVEL = LogLevel::Comm;
 
 	EventLog log;
 	// You can optionally subcribe to log messages
