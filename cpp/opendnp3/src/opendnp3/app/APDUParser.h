@@ -46,6 +46,7 @@
 #include "opendnp3/objects/Group10.h"
 #include "opendnp3/objects/Group12.h"
 #include "opendnp3/objects/Group20.h"
+#include "opendnp3/objects/Group21.h"
 #include "opendnp3/objects/Group22.h"
 #include "opendnp3/objects/Group30.h"
 #include "opendnp3/objects/Group32.h"
@@ -299,8 +300,8 @@ APDUParser::Result APDUParser::ParseRangeAsDoubleBitField(
 	else {
 		auto collection = IterableTransforms<IndexedValue<TwoBitState, uint16_t>>::From(buffer, range.Count(),
 			[&](openpal::ReadOnlyBuffer& buffer, uint32_t pos) {
-			return IndexedValue<TwoBitState, uint16_t>(GetDoubleBit(buffer, pos), pos + range.start);
-		}
+				return IndexedValue<TwoBitState, uint16_t>(GetDoubleBit(buffer, pos), pos + range.start);
+			}
 		);
 		callback(qualifier, collection);
 		buffer.Advance(numBytes);

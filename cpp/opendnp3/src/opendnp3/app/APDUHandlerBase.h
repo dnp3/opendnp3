@@ -58,6 +58,7 @@ namespace opendnp3
 		virtual void OnRange(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<DoubleBitBinary, uint16_t>>& meas) final;
 		virtual void OnRange(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<BinaryOutputStatus, uint16_t>>& meas) final;
 		virtual void OnRange(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<Counter, uint16_t>>& meas) final;
+		virtual void OnRange(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<FrozenCounter, uint16_t>>& meas) final;
 		virtual void OnRange(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<Analog, uint16_t>>& meas) final;
 		virtual void OnRange(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<AnalogOutputStatus, uint16_t>>& meas) final;
 		virtual void OnRange(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<OctetString, uint16_t>>& meas) final;
@@ -119,7 +120,8 @@ namespace opendnp3
 		virtual void _OnRange(GroupVariation gv, const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas);		
 		virtual void _OnRange(GroupVariation gv, const IterableBuffer<IndexedValue<DoubleBitBinary, uint16_t>>& meas);
 		virtual void _OnRange(GroupVariation gv, const IterableBuffer<IndexedValue<BinaryOutputStatus, uint16_t>>& meas);
-		virtual void _OnRange(GroupVariation gv, const IterableBuffer<IndexedValue<Counter, uint16_t>>& meas);		
+		virtual void _OnRange(GroupVariation gv, const IterableBuffer<IndexedValue<Counter, uint16_t>>& meas);
+		virtual void _OnRange(GroupVariation gv, const IterableBuffer<IndexedValue<FrozenCounter, uint16_t>>& meas);
 		virtual void _OnRange(GroupVariation gv, const IterableBuffer<IndexedValue<Analog, uint16_t>>& meas);		
 		virtual void _OnRange(GroupVariation gv, const IterableBuffer<IndexedValue<AnalogOutputStatus, uint16_t>>& meas);
 
