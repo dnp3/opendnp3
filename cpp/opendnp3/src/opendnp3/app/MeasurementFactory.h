@@ -32,7 +32,13 @@ namespace opendnp3
 struct BinaryFactory: private PureStatic
 {
 	inline static Binary From(uint8_t aFlags) { return Binary(aFlags); }
-	inline static Binary From(uint8_t aFlags, int64_t aTime) { return Binary((aFlags & BQ_STATE) != 0, aFlags, aTime); }
+	inline static Binary From(uint8_t aFlags, int64_t aTime) { return Binary(aFlags, aTime); }
+};
+
+struct DoubleBitBinaryFactory : private PureStatic
+{
+	inline static DoubleBitBinary From(uint8_t aFlags) { return DoubleBitBinary(aFlags); }
+	inline static DoubleBitBinary From(uint8_t aFlags, int64_t aTime) { return DoubleBitBinary(aFlags, aTime); }
 };
 
 struct AnalogFactory: private PureStatic

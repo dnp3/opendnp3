@@ -17,6 +17,8 @@
 
 #include "Group3.h"
 
+#include "opendnp3/app/MeasurementFactory.h"
+#include "opendnp3/app/WriteConversions.h"
 #include <openpal/Serialization.h>
 
 using namespace openpal;
@@ -42,6 +44,20 @@ void Group3Var2::Write(const Group3Var2& arg, openpal::WriteBuffer& buffer)
   UInt8::Write(buffer, arg.flags);
   buffer.Advance(1);
 }
+
+Group3Var2Serializer Group3Var2Serializer::mInstance;
+
+DoubleBitBinary Group3Var2Serializer::Read(ReadOnlyBuffer& buff) const
+{
+  auto gv = Group3Var2::Read(buff);
+  return DoubleBitBinaryFactory::From(gv.flags);
+}
+
+void Group3Var2Serializer::Write(const DoubleBitBinary& value, openpal::WriteBuffer& buff) const
+{
+  Group3Var2::Write(ConvertGroup3Var2::Apply(value), buff);
+}
+
 
 
 }

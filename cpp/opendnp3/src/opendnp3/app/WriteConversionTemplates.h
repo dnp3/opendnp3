@@ -30,10 +30,8 @@
 namespace opendnp3
 {
 	template <class Target, class Source>
-	class ConvertQ : private Uncopyable
+	struct ConvertQ : private PureStatic
 	{
-		public:
-
 		static Target Apply(const Source& src)
 		{
 			Target t;					
@@ -43,10 +41,8 @@ namespace opendnp3
 	};
 
 	template <class Target, class Source>
-	class ConvertQV : private Uncopyable
+	struct ConvertQV : private PureStatic
 	{
-		public:
-
 		static Target Apply(const Source& src)
 		{
 			Target t;
@@ -57,10 +53,8 @@ namespace opendnp3
 	};
 
 	template <class Target, class Source>
-	class ConvertV : private Uncopyable
+	struct ConvertV : private PureStatic
 	{
-		public:
-
 		static Target Apply(const Source& src)
 		{
 			Target t;
@@ -70,10 +64,8 @@ namespace opendnp3
 	};
 
 	template <class Target, class Source>
-	class ConvertVRangeCheck : private Uncopyable
+	struct ConvertVRangeCheck : private PureStatic
 	{
-		public:
-
 		static Target Apply(const Source& src)
 		{
 			Target t;
@@ -83,10 +75,8 @@ namespace opendnp3
 	};
 
 	template <class Target, class Source, uint8_t Overrange>
-	class ConvertQVRangeCheck : private Uncopyable
+	struct ConvertQVRangeCheck : private PureStatic
 	{
-		public:
-
 		static Target Apply(const Source& src)
 		{
 			Target t;
@@ -98,10 +88,8 @@ namespace opendnp3
 	};
 
 	template <class Target, class Source>
-	class ConvertQVT : private Uncopyable
+	struct ConvertQVT : private PureStatic
 	{
-		public:
-
 		static Target Apply(const Source& src)
 		{
 			Target t;			
@@ -113,10 +101,8 @@ namespace opendnp3
 	};
 
 	template <class Target, class Source, uint8_t Overrange>
-	class ConvertQVTRangeCheck : private Uncopyable
+	struct ConvertQVTRangeCheck : private PureStatic
 	{
-		public:
-
 		static Target Apply(const Source& src)
 		{
 			Target t;
@@ -129,10 +115,8 @@ namespace opendnp3
 	};
 
 	template <class Target, class Source>
-	class ConvertQT : private Uncopyable
+	struct ConvertQT : private PureStatic
 	{
-		public:
-
 		static Target Apply(const Source& src)
 		{
 			Target t;					
@@ -143,10 +127,8 @@ namespace opendnp3
 	};
 
 	template <class Target, class Source, class Downcast>
-	class ConvertQTDowncast : private Uncopyable
-	{
-		public:
-
+	struct ConvertQTDowncast : private PureStatic
+	{		
 		static Target Apply(const Source& src)
 		{
 			Target t;					
@@ -157,10 +139,8 @@ namespace opendnp3
 	};
 
 	template <class Target, class Source>
-	class ConvertQS : private Uncopyable
+	struct ConvertQS : private PureStatic
 	{
-		public:
-
 		static Target Apply(const Source& src)
 		{
 			Target t;

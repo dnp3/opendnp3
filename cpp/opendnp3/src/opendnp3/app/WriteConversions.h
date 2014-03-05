@@ -26,6 +26,8 @@
 
 #include "opendnp3/objects/Group1.h"
 #include "opendnp3/objects/Group2.h"
+#include "opendnp3/objects/Group3.h"
+#include "opendnp3/objects/Group4.h"
 #include "opendnp3/objects/Group10.h"
 #include "opendnp3/objects/Group12.h"
 #include "opendnp3/objects/Group20.h"
@@ -46,6 +48,14 @@ typedef ConvertQ<Group1Var2, Binary> ConvertGroup1Var2;
 typedef ConvertQ<Group2Var1, Binary> ConvertGroup2Var1;
 typedef ConvertQT<Group2Var2, Binary> ConvertGroup2Var2;
 typedef ConvertQTDowncast<Group2Var3, Binary, uint16_t> ConvertGroup2Var3;
+
+// Group 3
+typedef ConvertQ<Group3Var2, DoubleBitBinary> ConvertGroup3Var2;
+
+// Group 3
+typedef ConvertQ<Group4Var1, DoubleBitBinary> ConvertGroup4Var1;
+typedef ConvertQT<Group4Var2, DoubleBitBinary> ConvertGroup4Var2;
+typedef ConvertQTDowncast<Group4Var3, DoubleBitBinary, uint16_t> ConvertGroup4Var3;
 
 // Group 10
 typedef ConvertQ<Group10Var2, BinaryOutputStatus> ConvertGroup10Var2;

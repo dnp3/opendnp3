@@ -39,6 +39,20 @@ enum BinaryQuality {
 };
 
 /**
+Bitmasks that make make up the quality field for double bit binaries binaries. The first 5 field are common across all of the data types.
+*/
+enum DoubleBitBinaryQuality {
+	DBQ_ONLINE = 0x01,				//!< set when the data is "good", meaning that rest of the system can trust the value
+	DBQ_RESTART = 0x02,				//!< the quality all points get before we have established communication (or populated) the point
+	DBQ_COMM_LOST = 0x04,			//!< this means the communication has been lost with the source of the data (after establishing contact)
+	DBQ_REMOTE_FORCED_DATA = 0x08,	//!< the value is being forced to a "fake" value somewhere in the system
+	DBQ_LOCAL_FORCED_DATA = 0x10,	//!< the value is being forced to a "fake" value on the original device
+	DBQ_CHATTER_FILTER = 0x20,		//!< set when the value is osciallating very quickly and some events are being suppressed
+	DBQ_STATE_1 = 0x40,				//!<
+	DBQ_STATE_2 = 0x80,				//!<
+};
+
+/**
 	Bitmasks that make make up the quality field for analogs. See BinaryQuality for common (unlabeled) bitmasks.
  */
 enum AnalogQuality {
@@ -67,17 +81,17 @@ enum CounterQuality {
 };
 
 /**
-        Bitmasks that make make up the quality field for frozen counters. See BinaryQuality for common (unlabeled) bitmasks.
+	Bitmasks that make make up the quality field for frozen counters. See BinaryQuality for common (unlabeled) bitmasks.
  */
 enum FrozenCounterQuality {
-        FCQ_ONLINE = 0x01,
-        FCQ_RESTART = 0x02,
-        FCQ_COMM_LOST = 0x04,
-        FCQ_REMOTE_FORCED_DATA = 0x08,
-        FCQ_LOCAL_FORCED_DATA = 0x10,
-        FCQ_ROLLOVER = 0x20,                             //!< deprecated
-        FCQ_DISCONTINUITY = 0x40,                //!< indicates an unusual change in value
-        FCQ_RESERVED = 0x80
+    FCQ_ONLINE = 0x01,
+    FCQ_RESTART = 0x02,
+    FCQ_COMM_LOST = 0x04,
+    FCQ_REMOTE_FORCED_DATA = 0x08,
+    FCQ_LOCAL_FORCED_DATA = 0x10,
+    FCQ_ROLLOVER = 0x20,                     //!< deprecated
+    FCQ_DISCONTINUITY = 0x40,                //!< indicates an unusual change in value
+    FCQ_RESERVED = 0x80
 };
 
 /**

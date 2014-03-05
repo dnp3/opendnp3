@@ -47,7 +47,7 @@ class ArbitraryConversion(name: String, incHeaders: List[String], cppHeaders: Li
 
 object ConversionHeaders {
 
-  val dataTypes = quoted("opendnp3/app/DataTypes.h")
+  val dataTypes = quoted("opendnp3/app/MeasurementTypes.h")
   val crob = quoted("opendnp3/app/ControlRelayOutputBlock.h")
   val ao = quoted("opendnp3/app/AnalogOutput.h")
   val factory = quoted("opendnp3/app/MeasurementFactory.h")
@@ -60,6 +60,7 @@ object ConversionHeaders {
 import ConversionHeaders._
 
 object BinaryConversion extends ArbitraryConversion("Binary", List(serializer, dataTypes), cppIncldues)
+object DoubleBitBinaryConversion extends ArbitraryConversion("DoubleBitBinary", List(serializer, dataTypes), cppIncldues)
 object AnalogConversion extends ArbitraryConversion("Analog", List(serializer, dataTypes), cppIncldues)
 object CounterConversion extends ArbitraryConversion("Counter", List(serializer, dataTypes), cppIncldues)
 object FrozenCounterConversion extends ArbitraryConversion("FrozenCounter", List(serializer, dataTypes), cppIncldues)
@@ -75,6 +76,12 @@ trait ConversionToBinary {
   self : FixedSize =>
   override def conversion: Option[Conversion] = Some(BinaryConversion)
 }
+
+trait ConversionToDoubleBitBinary {
+  self : FixedSize =>
+  override def conversion: Option[Conversion] = Some(DoubleBitBinaryConversion)
+}
+
 
 trait ConversionToAnalog {
   self : FixedSize =>

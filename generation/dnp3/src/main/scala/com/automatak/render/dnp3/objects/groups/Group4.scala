@@ -1,6 +1,6 @@
 package com.automatak.render.dnp3.objects.groups
 
-import com.automatak.render.dnp3.objects.{FixedSize, ObjectGroup}
+import com.automatak.render.dnp3.objects.{ConversionToDoubleBitBinary, FixedSize, ObjectGroup}
 
 import com.automatak.render.dnp3.objects.FixedSizeField._
 
@@ -9,6 +9,6 @@ object Group4 extends ObjectGroup {
   def group: Byte = 4
 }
 
-object Group4Var1 extends FixedSize(Group4, 1)(flags)
-object Group4Var2 extends FixedSize(Group4, 2)(flags, time48)
-object Group4Var3 extends FixedSize(Group4, 3)(flags, time16)
+object Group4Var1 extends FixedSize(Group4, 1)(flags) with ConversionToDoubleBitBinary
+object Group4Var2 extends FixedSize(Group4, 2)(flags, time48) with ConversionToDoubleBitBinary
+object Group4Var3 extends FixedSize(Group4, 3)(flags, time16) with ConversionToDoubleBitBinary

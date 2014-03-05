@@ -51,7 +51,7 @@ class Binary : public TypedMeasurement<bool>
 {
 public:
 
-	Binary() : TypedMeasurement(false, BQ_RESTART) 
+	Binary() : TypedMeasurement(false, BQ_RESTART)
 	{}
 
 	Binary(bool aValue) : TypedMeasurement(aValue, GetQual(BQ_ONLINE, aValue))
@@ -80,6 +80,73 @@ private:
 		return (aValue) ? (q | BQ_STATE) : (q & (~BQ_STATE));
 	}
 };
+
+enum class TwoBitState : uint8_t
+{
+	Intermediate = 0x00,
+	DeterminedOff = 0x40,
+	DeterminedOn = 0x80,
+	Indeterminate = 0xC0
+};
+
+/**
+The Double-bit Binary data type has two stable states, on and off, and an in transit state. Motor operated switches
+or binary valves are good examples.
+*/
+class DoubleBitBinary : public TypedMeasurement<TwoBitState>
+{
+public:
+
+	
+	DoubleBitBinary() : TypedMeasurement(TwoBitState::Indeterminate, DBQ_RESTART)
+	{}
+
+	DoubleBitBinary(TwoBitState value) : TypedMeasurement(value, GetQual(DBQ_ONLINE, value))
+	{}
+
+	DoubleBitBinary(uint8_t aQuality) : TypedMeasurement(GetValue(aQuality), aQuality)
+	{}
+
+	DoubleBitBinary(uint8_t aQuality, int64_t aTime) : TypedMeasurement(GetValue(aQuality), aQuality, aTime)
+	{}
+
+	DoubleBitBinary(TwoBitState aValue, uint8_t aQuality) : TypedMeasurement(aValue, GetQual(aQuality, aValue))
+	{}
+
+	DoubleBitBinary(TwoBitState aValue, uint8_t aQuality, int64_t aTime) : TypedMeasurement(aValue, GetQual(aQuality, aValue), aTime)
+	{}
+
+	bool IsEvent(const DoubleBitBinary& newValue) const
+	{
+		return quality != newValue.quality;
+	}
+
+private:
+
+	static const uint8_t ValueMask = 0xC0;
+	static const uint8_t QualityMask = 0x3F;
+
+	static TwoBitState GetValue(uint8_t quality)
+	{
+		switch (quality & ValueMask)
+		{
+			case(0x00) :
+				return TwoBitState::Intermediate;
+			case(0x40) :
+				return TwoBitState::DeterminedOff;
+			case(0x80) :
+				return TwoBitState::DeterminedOn;
+			default:
+				return TwoBitState::Indeterminate;
+		}
+	}
+
+	static uint8_t GetQual(uint8_t quality, TwoBitState state)
+	{
+		return (QualityMask & quality) | (static_cast<uint8_t>(state)& ValueMask);		
+	}
+};
+
 
 /**
 	BinaryOutputStatus is used for describing the current state of a control. It is very infrequently
