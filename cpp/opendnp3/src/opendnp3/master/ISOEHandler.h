@@ -44,6 +44,7 @@ class ISOEHandler : public ITransactable
 public:
 	
 	virtual void Load(const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas) {}
+	virtual void Load(const IterableBuffer<IndexedValue<DoubleBitBinary, uint16_t>>& meas) {}
 	virtual void Load(const IterableBuffer<IndexedValue<Analog, uint16_t>>& meas) {}
 	virtual void Load(const IterableBuffer<IndexedValue<Counter, uint16_t>>& meas) {}
 	virtual void Load(const IterableBuffer<IndexedValue<FrozenCounter, uint16_t>>& meas) {}
@@ -81,6 +82,7 @@ public:
 	static ISOEHandler* Inst() { return &msInstance; }
 
 	void Load(const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas) final;
+	void Load(const IterableBuffer<IndexedValue<DoubleBitBinary, uint16_t>>& meas) final;
 	void Load(const IterableBuffer<IndexedValue<Analog, uint16_t>>& meas) final;
 	void Load(const IterableBuffer<IndexedValue<Counter, uint16_t>>& meas) final;
 	void Load(const IterableBuffer<IndexedValue<FrozenCounter, uint16_t>>& meas) final;
@@ -102,6 +104,14 @@ private:
 			std::cout << name << " [" << pair.index << "] : " << pair.value.GetValue() << " : " << static_cast<int>(pair.value.GetQuality()) << std::endl;
 		});
 	}
+
+	template <>
+	static void Print(const IterableBuffer<IndexedValue<DoubleBitBinary, uint16_t>>& buffer, const std::string& name)
+	{
+		buffer.foreach([&](const IndexedValue<DoubleBitBinary, uint16_t>& pair) {
+			std::cout << name << " [" << pair.index << "] : " << static_cast<int>(pair.value.GetValue()) << " : " << static_cast<int>(pair.value.GetQuality()) << std::endl;
+		});
+	}	
 
 	PrintingSOEHandler()
 	{}

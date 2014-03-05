@@ -135,6 +135,8 @@ APDUParser::Result APDUParser::ParseObjectsWithRange(QualifierCode qualifier, op
 				}
 			});
 
+		MACRO_PARSE_OBJECTS_WITH_RANGE(Group3Var2);
+
 		MACRO_PARSE_OBJECTS_WITH_RANGE(Group10Var2);
 
 		MACRO_PARSE_OBJECTS_WITH_RANGE(Group20Var1);

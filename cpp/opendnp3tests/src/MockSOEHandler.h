@@ -36,7 +36,7 @@ namespace opendnp3
 // simple measurement handler for testing purposes
 class MockSOEHandler : public ISOEHandler
 {
-public:
+	public:
 
 	MockSOEHandler()
 	{}
@@ -44,6 +44,11 @@ public:
 	void Load(const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas) final 
 	{ 
 		meas.foreach([this](const IndexedValue<Binary, uint16_t>& value) { mBinaryMap[value.index] = value.value; });
+	}
+
+	void Load(const IterableBuffer<IndexedValue<DoubleBitBinary, uint16_t>>& meas) final
+	{
+		meas.foreach([this](const IndexedValue<DoubleBitBinary, uint16_t>& value) { mDoubleBinaryMap[value.index] = value.value; });
 	}
 
 	void Load(const IterableBuffer<IndexedValue<Analog, uint16_t>>& meas) final
@@ -79,14 +84,17 @@ public:
 	void Clear()
 	{
 		mBinaryMap.clear();
+		mDoubleBinaryMap.clear();
 		mAnalogMap.clear();
 		mCounterMap.clear();
+		mFrozenCounterMap.clear();
 		mBinaryOutputStatusMap.clear();
 		mAnalogOutputStatusMap.clear();
 		mOctetStringMap.clear();
 	}
 
 	Binary GetBinary(uint32_t aIndex) { return GetAny<Binary>(aIndex, mBinaryMap); }
+	DoubleBitBinary GetDoubleBinary(uint32_t aIndex) { return GetAny<DoubleBitBinary>(aIndex, mDoubleBinaryMap); }
 	Analog GetAnalog(uint32_t aIndex) { return GetAny<Analog>(aIndex, mAnalogMap); }
 	Counter GetCounter(uint32_t aIndex) { return GetAny<Counter>(aIndex, mCounterMap); }
 	FrozenCounter GetFrozenCounter(uint32_t aIndex) { return GetAny<FrozenCounter>(aIndex, mFrozenCounterMap); }
@@ -116,6 +124,7 @@ private:
 	}
 		
 	PointMap<Binary>::Type mBinaryMap;
+	PointMap<DoubleBitBinary>::Type mDoubleBinaryMap;
 	PointMap<Analog>::Type mAnalogMap;
 	PointMap<Counter>::Type mCounterMap;
 	PointMap<FrozenCounter>::Type mFrozenCounterMap;

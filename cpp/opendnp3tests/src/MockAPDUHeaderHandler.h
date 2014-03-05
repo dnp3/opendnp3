@@ -70,9 +70,13 @@ class MockApduHeaderHandler : public IAPDUHandler
 		{
 			groupVariations.push_back(gv);			
 			meas.foreach([&](const IndexedValue<Binary, uint16_t>& v) { staticBinaries.push_back(v); });
-		}		
+		}
 
-		
+		virtual void OnRange(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<DoubleBitBinary, uint16_t>>& meas) override
+		{
+			groupVariations.push_back(gv);
+			meas.foreach([&](const IndexedValue<DoubleBitBinary, uint16_t>& v) { staticDoubleBinaries.push_back(v); });
+		}
 
 		virtual void OnRange(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<BinaryOutputStatus, uint16_t>>& meas) override
 		{
@@ -104,11 +108,16 @@ class MockApduHeaderHandler : public IAPDUHandler
 			meas.foreach([&](const IndexedValue<OctetString, uint16_t>& v) { rangedOctets.push_back(v); });
 		}
 
-
 		virtual void OnIndexPrefix(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas) override
 		{
 			groupVariations.push_back(gv);
 			meas.foreach([&](const IndexedValue<Binary, uint16_t>& v) { eventBinaries.push_back(v); });
+		}
+
+		virtual void OnIndexPrefix(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<DoubleBitBinary, uint16_t>>& meas) override
+		{
+			groupVariations.push_back(gv);
+			meas.foreach([&](const IndexedValue<DoubleBitBinary, uint16_t>& v) { eventDoubleBinaries.push_back(v); });
 		}
 
 		virtual void OnIndexPrefix(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<Counter, uint16_t>>& meas)  override
@@ -133,6 +142,12 @@ class MockApduHeaderHandler : public IAPDUHandler
 		{
 			groupVariations.push_back(gv);
 			meas.foreach([&](const IndexedValue<Binary, uint8_t>& v) { eventBinaries.push_back(v.Widen<uint16_t>()); });
+		}
+
+		virtual void OnIndexPrefix(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<DoubleBitBinary, uint8_t>>& meas) override
+		{
+			groupVariations.push_back(gv);
+			meas.foreach([&](const IndexedValue<DoubleBitBinary, uint8_t>& v) { eventDoubleBinaries.push_back(v.Widen<uint16_t>()); });
 		}
 
 		virtual void OnIndexPrefix(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<Counter, uint8_t>>& meas)  override
@@ -219,6 +234,9 @@ class MockApduHeaderHandler : public IAPDUHandler
 
 		std::vector<IndexedValue<Binary, uint16_t>> eventBinaries;
 		std::vector<IndexedValue<Binary, uint16_t>> staticBinaries;
+
+		std::vector<IndexedValue<DoubleBitBinary, uint16_t>> eventDoubleBinaries;
+		std::vector<IndexedValue<DoubleBitBinary, uint16_t>> staticDoubleBinaries;
 
 		std::vector<IndexedValue<BinaryOutputStatus, uint16_t>> staticControlStatii;
 

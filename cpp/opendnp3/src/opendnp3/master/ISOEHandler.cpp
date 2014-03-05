@@ -36,6 +36,11 @@ void PrintingSOEHandler::Load(const IterableBuffer<IndexedValue<Binary, uint16_t
 	Print(meas, "Binary");
 }
 
+void PrintingSOEHandler::Load(const IterableBuffer<IndexedValue<DoubleBitBinary, uint16_t>>& meas)
+{
+	Print(meas, "DoubleBitBinary");
+}
+
 void PrintingSOEHandler::Load(const IterableBuffer<IndexedValue<Analog, uint16_t>>& meas)
 {
 	Print(meas, "Analog");

@@ -95,7 +95,19 @@ void APDUHandlerBase::OnRange(GroupVariation gv, QualifierCode qualifier, const 
 	++currentHeader;
 }
 
+void APDUHandlerBase::OnRange(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<DoubleBitBinary, uint16_t>>& meas)
+{
+	this->_OnRange(gv, meas);
+	++currentHeader;
+}
+
 void APDUHandlerBase::OnIndexPrefix(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas)
+{
+	this->_OnIndexPrefix(gv, meas);
+	++currentHeader;
+}
+
+void APDUHandlerBase::OnIndexPrefix(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<DoubleBitBinary, uint16_t>>& meas)
 {
 	this->_OnIndexPrefix(gv, meas);
 	++currentHeader;
@@ -216,6 +228,13 @@ void APDUHandlerBase::OnIndexPrefix(GroupVariation gv, QualifierCode qualifier, 
 	++currentHeader;
 }
 
+void APDUHandlerBase::OnIndexPrefix(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<DoubleBitBinary, uint8_t>>& meas)
+{
+	auto transform = IterableTransforms<IndexedValue<DoubleBitBinary, uint8_t>>::Map<IndexedValue<DoubleBitBinary, uint16_t>>(meas, [](const IndexedValue<DoubleBitBinary, uint8_t>& value) { return value.Widen<uint16_t>(); });
+	this->_OnIndexPrefix(gv, transform);
+	++currentHeader;
+}
+
 void APDUHandlerBase::OnIndexPrefix(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<Counter, uint8_t>>& meas)
 {
 	auto transform = IterableTransforms<IndexedValue<Counter, uint8_t>>::Map<IndexedValue<Counter, uint16_t>>(meas, [](const IndexedValue<Counter, uint8_t>& value) { return value.Widen<uint16_t>(); });
@@ -271,10 +290,11 @@ void APDUHandlerBase::_OnRange(GroupVariation gv, const IterableBuffer<IndexedVa
 	++ignoredHeaders;
 }
 
-void APDUHandlerBase::_OnIndexPrefix(GroupVariation gv, const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas)
+void APDUHandlerBase::_OnRange(GroupVariation gv, const IterableBuffer<IndexedValue<DoubleBitBinary, uint16_t>>& meas)
 {
 	++ignoredHeaders;
 }
+
 
 void APDUHandlerBase::_OnRange(GroupVariation gv, const IterableBuffer<IndexedValue<BinaryOutputStatus, uint16_t>>& meas)
 {
@@ -286,12 +306,32 @@ void APDUHandlerBase::_OnRange(GroupVariation gv, const IterableBuffer<IndexedVa
 	++ignoredHeaders;
 }
 
+void APDUHandlerBase::_OnRange(GroupVariation gv, const IterableBuffer<IndexedValue<Analog, uint16_t>>& meas)
+{
+	++ignoredHeaders;
+}
+
+void APDUHandlerBase::_OnRange(GroupVariation gv, const IterableBuffer<IndexedValue<AnalogOutputStatus, uint16_t>>& meas)
+{
+	++ignoredHeaders;
+}
+
+void APDUHandlerBase::_OnRange(GroupVariation gv, const IterableBuffer<IndexedValue<OctetString, uint16_t>>& meas)
+{
+	++ignoredHeaders;
+}
+
 void APDUHandlerBase::_OnIndexPrefix(GroupVariation gv, const IterableBuffer<IndexedValue<Counter, uint16_t>>& meas)
 {
 	++ignoredHeaders;
 }
 
-void APDUHandlerBase::_OnRange(GroupVariation gv, const IterableBuffer<IndexedValue<Analog, uint16_t>>& meas)
+void APDUHandlerBase::_OnIndexPrefix(GroupVariation gv, const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas)
+{
+	++ignoredHeaders;
+}
+
+void APDUHandlerBase::_OnIndexPrefix(GroupVariation gv, const IterableBuffer<IndexedValue<DoubleBitBinary, uint16_t>>& meas)
 {
 	++ignoredHeaders;
 }
@@ -301,10 +341,6 @@ void APDUHandlerBase::_OnIndexPrefix(GroupVariation gv, const IterableBuffer<Ind
 	++ignoredHeaders;
 }
 
-void APDUHandlerBase::_OnRange(GroupVariation gv, const IterableBuffer<IndexedValue<AnalogOutputStatus, uint16_t>>& meas)
-{
-	++ignoredHeaders;
-}
 
 void APDUHandlerBase::_OnIndexPrefix(QualifierCode qualifier, const IterableBuffer<IndexedValue<ControlRelayOutputBlock, uint16_t>>& meas)
 {
@@ -353,11 +389,6 @@ void APDUHandlerBase::_OnIndexPrefix(QualifierCode qualifier, const IterableBuff
 
 void APDUHandlerBase::_OnIndexPrefix(QualifierCode qualifier, const IterableBuffer<IndexedValue<AnalogOutputDouble64, uint8_t>>& meas)
 {
-	++ignoredHeaders;
-}
-
-void APDUHandlerBase::_OnRange(GroupVariation gv, const IterableBuffer<IndexedValue<OctetString, uint16_t>>& meas)
-{	
 	++ignoredHeaders;
 }
 

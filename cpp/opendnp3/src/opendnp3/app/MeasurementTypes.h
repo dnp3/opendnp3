@@ -104,10 +104,10 @@ public:
 	DoubleBitBinary(TwoBitState value) : TypedMeasurement(value, GetQual(DBQ_ONLINE, value))
 	{}
 
-	DoubleBitBinary(uint8_t aQuality) : TypedMeasurement(GetValue(aQuality), aQuality)
+	DoubleBitBinary(uint8_t aQuality) : TypedMeasurement(GetValueFromQuality(aQuality), aQuality)
 	{}
 
-	DoubleBitBinary(uint8_t aQuality, int64_t aTime) : TypedMeasurement(GetValue(aQuality), aQuality, aTime)
+	DoubleBitBinary(uint8_t aQuality, int64_t aTime) : TypedMeasurement(GetValueFromQuality(aQuality), aQuality, aTime)
 	{}
 
 	DoubleBitBinary(TwoBitState aValue, uint8_t aQuality) : TypedMeasurement(aValue, GetQual(aQuality, aValue))
@@ -126,7 +126,7 @@ private:
 	static const uint8_t ValueMask = 0xC0;
 	static const uint8_t QualityMask = 0x3F;
 
-	static TwoBitState GetValue(uint8_t quality)
+	static TwoBitState GetValueFromQuality(uint8_t quality)
 	{
 		switch (quality & ValueMask)
 		{

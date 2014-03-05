@@ -39,6 +39,8 @@
 
 #include "opendnp3/objects/Group1.h"
 #include "opendnp3/objects/Group2.h"
+#include "opendnp3/objects/Group3.h"
+#include "opendnp3/objects/Group4.h"
 #include "opendnp3/objects/Group10.h"
 #include "opendnp3/objects/Group12.h"
 #include "opendnp3/objects/Group20.h"
@@ -301,6 +303,13 @@ APDUParser::Result APDUParser::ParseObjectsWithIndexPrefix(QualifierCode qualifi
 			return ParseCountFixedSizeWithIndex<Binary, IndexType>(gvRecord.enumeration, qualifier, buffer, count, Group2Var2Serializer::Inst(), pHandler);
 		case(GroupVariation::Group2Var3) :
 			return ParseCountFixedSizeWithIndex<Binary, IndexType>(gvRecord.enumeration, qualifier, buffer, count, Group2Var3Serializer::Inst(), pHandler);
+
+		case(GroupVariation::Group4Var1) :
+			return ParseCountFixedSizeWithIndex<DoubleBitBinary, IndexType>(gvRecord.enumeration, qualifier, buffer, count, Group4Var1Serializer::Inst(), pHandler);
+		case(GroupVariation::Group4Var2) :
+			return ParseCountFixedSizeWithIndex<DoubleBitBinary, IndexType>(gvRecord.enumeration, qualifier, buffer, count, Group4Var2Serializer::Inst(), pHandler);
+		case(GroupVariation::Group4Var3) :
+			return ParseCountFixedSizeWithIndex<DoubleBitBinary, IndexType>(gvRecord.enumeration, qualifier, buffer, count, Group4Var3Serializer::Inst(), pHandler);
 
 		case(GroupVariation::Group12Var1) :
 			return ParseCountFixedSizeWithIndex<ControlRelayOutputBlock, IndexType>(gvRecord.enumeration, qualifier, buffer, count, Group12Var1Serializer::Inst(), pHandler);
