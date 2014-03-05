@@ -36,7 +36,7 @@ namespace opendnp3
 
 AppLayerChannel::AppLayerChannel(const std::string& arName, openpal::Logger& arLogger, AppLayer* apAppLayer, IExecutor* apExecutor, TimeDuration aTimeout) :
 	Loggable(arLogger),
-	mpAppLayer(apAppLayer),	
+	mpAppLayer(apAppLayer),
 	mNumRetry(0),
 	mpExecutor(apExecutor),
 	mpTimer(nullptr),
@@ -95,14 +95,16 @@ void AppLayerChannel::QueueSend(APDUWrapper& apdu)
 
 bool AppLayerChannel::Retry(ACS_Base* apState)
 {
-	if(mNumRetry > 0) {
+	if(mNumRetry > 0) 
+	{
 		--mNumRetry;
 		LOG_BLOCK(LogLevel::Info, "App layer retry, " << mNumRetry << " remaining");
 		this->ChangeState(apState);
 		mpAppLayer->QueueFrame(mSendAPDU);
 		return true;
 	}
-	else {
+	else 
+	{
 		return false;
 	}
 }

@@ -21,6 +21,8 @@
 #include <boost/test/unit_test.hpp>
 
 #include <openpal/Exception.h>
+#include <openpal/ToHex.h>
+#include <openpal/StaticBuffer.h>
 
 #include "TestHelpers.h"
 #include "BufferHelpers.h"
@@ -29,6 +31,26 @@
 using namespace openpal;
 using namespace opendnp3;
 using namespace boost;
+
+std::string RequestToHex(FunctionCode function, bool fir, bool fin, bool con, bool uns, uint8_t seq)
+{
+	StaticBuffer<2> buffer;
+	APDURequest request(buffer.GetWriteBuffer());
+	request.SetFunction(function);
+	request.SetControl(AppControlField(fir, fin, con, uns, seq));
+	return toHex(request.ToReadOnly());
+}
+
+std::string ResponseToHex(FunctionCode function, bool fir, bool fin, bool con, bool uns, uint8_t seq)
+{
+	StaticBuffer<4> buffer;
+	APDUResponse response(buffer.GetWriteBuffer());
+	response.SetFunction(function);
+	response.SetControl(AppControlField(fir, fin, con, uns, seq));
+	response.SetIIN(IINField::Empty);
+	return toHex(response.ToReadOnly());
+}
+
 
 BOOST_AUTO_TEST_SUITE(AppLayerSuite)
 
@@ -85,7 +107,7 @@ BOOST_AUTO_TEST_CASE(UnsolSuccess)
 	t.SendUp(AppControlField(true, true, true, true, 0), FunctionCode::UNSOLICITED_RESPONSE, IINField()); ++t.state.NumUnsol;
 	BOOST_REQUIRE(t.log.IsLogErrorFree());
 	BOOST_REQUIRE_EQUAL(t.state, t.user.mState);
-	BOOST_REQUIRE(t.CheckSentAPDU(FunctionCode::CONFIRM, true, true, false, true, 0));
+	BOOST_REQUIRE_EQUAL(RequestToHex(FunctionCode::CONFIRM, true, true, false, true, 0), t.lower.PopWriteAsHex());
 
 	// if frame requiring confirmation is sent before confirm send success
 	// it gets ignored and logged
@@ -131,7 +153,8 @@ BOOST_AUTO_TEST_CASE(SendExtraObjectData)
 	t.SendUp("C4 01 00 00 06"); ++t.state.NumRequest;
 	BOOST_REQUIRE_EQUAL(t.state, t.user.mState);
 	t.SendResponse(FunctionCode::RESPONSE, true, true, false, false); // no confirmation
-	BOOST_REQUIRE(t.CheckSentAPDU(FunctionCode::RESPONSE, true, true, false, false, 4)); //check correct seq
+
+	BOOST_REQUIRE_EQUAL(ResponseToHex(FunctionCode::RESPONSE, true, true, false, false, 4), t.lower.PopWriteAsHex()); //check correct seq
 }
 
 // Test a simple send without confirm transaction
@@ -144,7 +167,7 @@ BOOST_AUTO_TEST_CASE(SendResponseWithoutConfirm)
 	t.SendUp(AppControlField(true, true, false, false, 4), FunctionCode::READ); ++t.state.NumRequest;
 	BOOST_REQUIRE_EQUAL(t.state, t.user.mState);
 	t.SendResponse(FunctionCode::RESPONSE, true, true, false, false); // no confirmation
-	BOOST_REQUIRE(t.CheckSentAPDU(FunctionCode::RESPONSE, true, true, false, false, 4)); //check correct seq
+	BOOST_REQUIRE_EQUAL(ResponseToHex(FunctionCode::RESPONSE, true, true, false, false, 4), t.lower.PopWriteAsHex()); //check correct seq
 	++t.state.NumSolSendSuccess;
 	BOOST_REQUIRE_EQUAL(t.state, t.user.mState);
 
@@ -351,16 +374,16 @@ BOOST_AUTO_TEST_CASE(MasterUnsolictedDuringRequest)
 	t.lower.ThisLayerUp(); ++t.state.NumLayerUp;
 
 	t.SendRequest(FunctionCode::READ, true, true, false, false); // write a request
-	BOOST_REQUIRE(t.CheckSentAPDU(FunctionCode::READ, true, true, false, false, 0)); //verify and clear the buffer
+	BOOST_REQUIRE_EQUAL(RequestToHex(FunctionCode::READ, true, true, false, false, 0), t.lower.PopWriteAsHex());
 
 	// this should queue a confirm and pass the data up immediately
 	t.SendUp(AppControlField(true, true, true, true, 5), FunctionCode::UNSOLICITED_RESPONSE, IINField()); ++t.state.NumUnsol;
 	BOOST_REQUIRE_EQUAL(t.state, t.user.mState);
-	BOOST_REQUIRE(t.CheckSentAPDU(FunctionCode::CONFIRM, true, true, false, true, 5)); //verify and clear the buffer
+	BOOST_REQUIRE_EQUAL(RequestToHex(FunctionCode::CONFIRM, true, true, false, true, 5), t.lower.PopWriteAsHex()); //verify and clear the buffer
 
 	t.SendUp(AppControlField(true, true, true, false, 0), FunctionCode::RESPONSE, IINField()); ++t.state.NumFinalRsp;
 	BOOST_REQUIRE_EQUAL(t.state, t.user.mState);
-	BOOST_REQUIRE(t.CheckSentAPDU(FunctionCode::CONFIRM, true, true, false, false, 0)); // check that the response gets confirmed
+	BOOST_REQUIRE_EQUAL(RequestToHex(FunctionCode::CONFIRM, true, true, false, false, 0), t.lower.PopWriteAsHex()); // check that the response gets confirmed
 }
 
 /** The SendUnsolicited transaction needs to gracefully pass up

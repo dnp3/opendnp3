@@ -21,7 +21,8 @@
 #ifndef __I_APP_LAYER_H_
 #define __I_APP_LAYER_H_
 
-#include "APDUWrapper.h"
+#include "opendnp3/app/APDURequest.h"
+#include "opendnp3/app/APDUResponse.h"
 
 namespace opendnp3
 {
@@ -51,7 +52,7 @@ public:
 		OnSendSuccess() - The data was transmitted succesfully and valid confirmation
 		was received within the timeout (if requested)
 	*/
-	virtual void SendResponse(APDUWrapper&) = 0;
+	virtual void SendResponse(APDUResponse&) = 0;
 
 	/** Start an unsolicited transaction with optional confirmation and retries. This
 		sequence is almost identical to a response transaction.
@@ -69,7 +70,7 @@ public:
 		OnSendSucces() - The data was transmitted succesfully and valid confirmation
 		was received within the timeout (if requested)
 	*/
-	virtual void SendUnsolicited(APDUWrapper&) = 0;
+	virtual void SendUnsolicited(APDUResponse&) = 0;
 
 	/** Start a send transaction with optional confirmation and retries,
 		that should result in a resposne.
@@ -90,7 +91,7 @@ public:
 
 		OnFinalResponse(APDU) - A FIN response was received. The transaction is complete.
 	*/
-	virtual void SendRequest(APDUWrapper&) = 0;
+	virtual void SendRequest(APDURequest&) = 0;
 
 	/**
 		Cancel a running response transaction. The outstation must still wait for an OnFailure()

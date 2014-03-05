@@ -24,8 +24,8 @@
 #include <openpal/Loggable.h>
 #include <openpal/TimeDuration.h>
 
-#include "APDUHeader.h"
-#include "APDUWrapper.h"
+#include "opendnp3/app/APDUHeader.h"
+#include "opendnp3/app/APDUWrapper.h"
 
 namespace openpal
 {
@@ -105,9 +105,9 @@ protected:
 	}
 
 
-	AppLayer* mpAppLayer;
-	int mSequence;	// Rotating sequence number for the channel
+	AppLayer* mpAppLayer;	
 	ACS_Base* mpState;
+	int mSequence;	// Rotating sequence number for the channel
 
 	static int NextSeq(int s) {
 		return (s + 1) % 16;

@@ -21,6 +21,9 @@
 #include "MockLowerLayer.h"
 
 #include "BufferHelpers.h"
+
+#include <openpal/ToHex.h>
+
 #include <assert.h>
 
 using namespace openpal;
@@ -49,10 +52,30 @@ void MockLowerLayer::DisableAutoSendCallback()
 	mAutoSendCallback = false;
 }
 
+size_t MockLowerLayer::NumWrites() const
+{
+	return sendQueue.size();
+}
+
+openpal::ReadOnlyBuffer MockLowerLayer::PopWrite()
+{
+	auto ret = sendQueue.front();
+	sendQueue.pop();
+	return ret;
+}
+
+std::string MockLowerLayer::PopWriteAsHex()
+{
+	auto ret = sendQueue.front();
+	sendQueue.pop();
+	return toHex(ret);
+}
+
 void MockLowerLayer::_Send(const openpal::ReadOnlyBuffer& arBuffer)
 {
-	this->WriteToBuffer(arBuffer);
-	if(mAutoSendCallback && mpUpperLayer != nullptr) {
+	this->sendQueue.push(arBuffer);
+	if(mAutoSendCallback && mpUpperLayer != nullptr) 
+	{
 		if(mIsSuccess) mpUpperLayer->OnSendSuccess();
 		else mpUpperLayer->OnSendFailure();
 	}

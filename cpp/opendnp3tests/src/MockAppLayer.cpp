@@ -75,7 +75,7 @@ void MockAppLayer::DoSendSol()
 	}
 }
 
-void MockAppLayer::SendResponse(APDUWrapper& apdu)
+void MockAppLayer::SendResponse(APDUResponse& apdu)
 {
 	LOG_BLOCK(LogLevel::Comm, "=> " << toHex(apdu.ToReadOnly(), true));	
 	mFragments.push_back(toHex(apdu.ToReadOnly()));
@@ -83,14 +83,14 @@ void MockAppLayer::SendResponse(APDUWrapper& apdu)
 
 }
 
-void MockAppLayer::SendUnsolicited(APDUWrapper& apdu)
+void MockAppLayer::SendUnsolicited(APDUResponse& apdu)
 {
 	LOG_BLOCK(LogLevel::Comm, "=> " << toHex(apdu.ToReadOnly(), true));	
 	mFragments.push_back(toHex(apdu.ToReadOnly()));
 	this->DoSendUnsol();
 }
 
-void MockAppLayer::SendRequest(APDUWrapper& apdu)
+void MockAppLayer::SendRequest(APDURequest& apdu)
 {
 	LOG_BLOCK(LogLevel::Comm, "=> " << toHex(apdu.ToReadOnly(), true));	
 	mFragments.push_back(toHex(apdu.ToReadOnly()));

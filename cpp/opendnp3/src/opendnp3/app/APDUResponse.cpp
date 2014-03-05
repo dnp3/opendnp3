@@ -31,7 +31,7 @@ namespace opendnp3
 APDUResponse::APDUResponse(const openpal::WriteBuffer& aBuffer) : APDUWrapper(aBuffer)
 {
 	assert(aBuffer.Size() >= 4);
-	remaining.Advance(4);
+	remaining.Advance(2);
 }
 
 void APDUResponse::SetIIN(const IINField& indications)

@@ -25,14 +25,16 @@
 
 #include <openpal/AsyncLayerInterfaces.h>
 
-#include "IAppUser.h"
-#include "IAppLayer.h"
+#include "opendnp3/app/IAppUser.h"
+#include "opendnp3/app/IAppLayer.h"
 
-#include "SolicitedChannel.h"
-#include "UnsolicitedChannel.h"
-#include "APDUHeaderParser.h"
+#include "opendnp3/app/SolicitedChannel.h"
+#include "opendnp3/app/UnsolicitedChannel.h"
+#include "opendnp3/app/APDUHeaderParser.h"
+#include "opendnp3/app/APDURequest.h"
+#include "opendnp3/app/APDUResponse.h"
+#include "opendnp3/app/AppConfig.h"
 
-#include "AppConfig.h"
 #include <openpal/StaticArray.h>
 
 namespace openpal
@@ -67,9 +69,10 @@ public:
 	/////////////////////////////////
 	// Implement IAppLayer
 	/////////////////////////////////
-	void SendUnsolicited(APDUWrapper&);
-	void SendResponse(APDUWrapper&);
-	void SendRequest(APDUWrapper&);
+
+	void SendUnsolicited(APDUResponse &);
+	void SendResponse(APDUResponse &);
+	void SendRequest(APDURequest &);
 	void CancelResponse();
 
 private:

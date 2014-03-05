@@ -59,7 +59,7 @@ void AppLayerTest::SendUp(AppControlField control, FunctionCode aCode, IINField 
 
 void AppLayerTest::SendRequest(FunctionCode aCode, bool aFIR, bool aFIN, bool aCON, bool aUNS)
 {
-	APDUWrapper out(writeBuffer.Truncate(2));
+	APDURequest out(writeBuffer.Truncate(2));
 	out.SetFunction(aCode);
 	out.SetControl(AppControlField(aFIR, aFIN, aCON, aUNS));
 	app.SendRequest(out);
@@ -68,20 +68,23 @@ void AppLayerTest::SendRequest(FunctionCode aCode, bool aFIR, bool aFIN, bool aC
 
 void AppLayerTest::SendResponse(FunctionCode aCode, bool aFIR, bool aFIN, bool aCON, bool aUNS)
 {
-	APDUWrapper out(writeBuffer);
+	APDUResponse out(writeBuffer);
 	out.SetFunction(aCode);
 	out.SetControl(AppControlField(aFIR, aFIN, aCON, aUNS));
+	out.SetIIN(IINField::Empty);
 	app.SendResponse(out);	
 }
 
 void AppLayerTest::SendUnsolicited(FunctionCode aCode, bool aFIR, bool aFIN, bool aCON, bool aUNS)
 {
-	APDUWrapper out(writeBuffer);
+	APDUResponse out(writeBuffer);
 	out.SetFunction(aCode);
 	out.SetControl(AppControlField(aFIR, aFIN, aCON, aUNS));
+	out.SetIIN(IINField::Empty);
 	app.SendUnsolicited(out);	
 }
 
+/*
 bool AppLayerTest::CheckSentAPDU(FunctionCode aCode, bool aFIR, bool aFIN, bool aCON, bool aUNS, int aSEQ)
 {
 	AppControlField acf(aFIR, aFIN, aCON, aUNS, aSEQ);
@@ -94,7 +97,9 @@ bool AppLayerTest::CheckSentAPDU(FunctionCode aCode, bool aFIR, bool aFIN, bool 
 			return CheckSentAPDUWithSize(aCode, acf, 2);
 	}
 }
+*/
 
+/*
 bool AppLayerTest::CheckSentAPDUWithSize(FunctionCode aCode, const AppControlField& acf, uint32_t size)
 {
 	uint8_t buffer[4];
@@ -107,6 +112,7 @@ bool AppLayerTest::CheckSentAPDUWithSize(FunctionCode aCode, const AppControlFie
 	if(ret) lower.ClearBuffer();
 	return ret;
 }
+*/
 
 
 

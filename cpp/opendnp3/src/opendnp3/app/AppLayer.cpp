@@ -59,17 +59,17 @@ void AppLayer::SetUser(IAppUser* apUser)
 // IAppLayer
 ////////////////////
 
-void AppLayer::SendResponse(APDUWrapper& apdu)
+void AppLayer::SendResponse(APDUResponse& apdu)
 {
 	mSolicited.Send(apdu, this->GetRetries(FunctionCode::RESPONSE));
 }
 
-void AppLayer::SendUnsolicited(APDUWrapper& apdu)
+void AppLayer::SendUnsolicited(APDUResponse& apdu)
 {
 	mUnsolicited.Send(apdu, this->GetRetries(FunctionCode::UNSOLICITED_RESPONSE));
 }
 
-void AppLayer::SendRequest(APDUWrapper& apdu)
+void AppLayer::SendRequest(APDURequest& apdu)
 {
 	mSolicited.Send(apdu, this->GetRetries(apdu.GetFunction()));
 }

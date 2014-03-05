@@ -28,7 +28,7 @@ namespace opendnp3
 
 APDURequest::APDURequest(const openpal::WriteBuffer& aBuffer) : APDUWrapper(aBuffer)
 {
-	this->remaining.Advance(2);
+	
 }
 
 }

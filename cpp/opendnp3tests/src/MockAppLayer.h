@@ -43,9 +43,9 @@ public:
 
 	void SetUser(IAppUser*);
 
-	void SendResponse(APDUWrapper&);
-	void SendUnsolicited(APDUWrapper&);
-	void SendRequest(APDUWrapper&);
+	void SendResponse(APDUResponse&);
+	void SendUnsolicited(APDUResponse&);
+	void SendRequest(APDURequest&);
 	void CancelResponse();
 
 	bool NothingToRead();

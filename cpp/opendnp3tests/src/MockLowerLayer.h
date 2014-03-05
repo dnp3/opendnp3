@@ -21,14 +21,13 @@
 #ifndef __MOCK_LOWER_LAYER_H_
 #define __MOCK_LOWER_LAYER_H_
 
+#include <queue>
 #include <openpal/AsyncLayerInterfaces.h>
-
-#include "BufferTestObject.h"
 
 namespace opendnp3
 {
 
-class MockLowerLayer : public openpal::ILowerLayer, public BufferTestObject
+class MockLowerLayer : public openpal::ILowerLayer
 {
 public:
 	MockLowerLayer(openpal::Logger);
@@ -44,10 +43,15 @@ public:
 	void EnableAutoSendCallback(bool aIsSuccess);
 	void DisableAutoSendCallback();
 
+	size_t NumWrites() const;
+	openpal::ReadOnlyBuffer PopWrite();
+	std::string PopWriteAsHex();
+
 private:
 
 	bool mAutoSendCallback;
 	bool mIsSuccess;
+	std::queue<openpal::ReadOnlyBuffer> sendQueue;
 
 	virtual std::string SendString() const {
 		return " MockLowerLayer ->";

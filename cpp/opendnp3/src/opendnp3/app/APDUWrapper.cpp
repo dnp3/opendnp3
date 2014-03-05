@@ -28,14 +28,20 @@
 namespace opendnp3
 {
 
-APDUWrapper::APDUWrapper() : buffer(), remaining()
+APDUWrapper::APDUWrapper() : valid(false)
 {
 
 }
 
-APDUWrapper::APDUWrapper(const openpal::WriteBuffer& aBuffer) : buffer(aBuffer), remaining(aBuffer)
+APDUWrapper::APDUWrapper(const openpal::WriteBuffer& aBuffer) : valid(true), buffer(aBuffer), remaining(aBuffer)
 {
 	assert(aBuffer.Size() >= 2); // need a control & function at a minimum
+	remaining.Advance(2);
+}
+
+bool APDUWrapper::IsValid() const
+{
+	return valid;
 }
 
 ObjectWriter APDUWrapper::GetWriter()

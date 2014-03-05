@@ -38,6 +38,8 @@ class APDUWrapper
 	APDUWrapper();
 
 	APDUWrapper(const openpal::WriteBuffer& aBuffer);
+
+	bool IsValid() const;
 			
 	void SetFunction(FunctionCode code);
 	FunctionCode GetFunction() const;
@@ -49,10 +51,11 @@ class APDUWrapper
 
 	ObjectWriter GetWriter();
 
-	uint32_t Remaining() const;
+	uint32_t Remaining() const;	
 
-	protected:	
-		
+	protected:
+	
+	bool valid;
 	openpal::WriteBuffer buffer;
 	openpal::WriteBuffer remaining;	
 };
