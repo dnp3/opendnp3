@@ -26,7 +26,6 @@
 
 #include "BaseDataTypes.h"
 #include "QualityMasks.h"
-#include "MeasurementType.h"
 
 namespace opendnp3
 {
@@ -73,9 +72,7 @@ public:
 	bool IsEvent(const Binary& newValue) const
 	{
 		return mQuality != newValue.mQuality;
-	}
-	
-	static const int ONLINE = BQ_ONLINE;		
+	}	
 
 private:
 	static uint8_t GetQual(uint8_t q, bool aValue)
@@ -105,9 +102,7 @@ public:
 	{}
 
 	BinaryOutputStatus(bool aValue, uint8_t aQuality, int64_t aTime) : TypedMeasurement(aValue, GetQual(aQuality, aValue), aTime) 
-	{}
-		
-	static const int ONLINE = TQ_ONLINE;		
+	{}	
 
 private:
 
@@ -149,8 +144,7 @@ public:
 		}		
 	}
 	
-	typedef double DeadbandType;	
-	static const int ONLINE = AQ_ONLINE;	
+	typedef double DeadbandType;		
 };
 
 /**
@@ -182,7 +176,6 @@ public:
 	}
 	
 	typedef uint32_t DeadbandType;	
-	static const int ONLINE = CQ_ONLINE;	
 };
 
 /**
@@ -212,8 +205,7 @@ public:
 		}
 	}
 	
-	typedef uint32_t DeadbandType;	
-	static const int ONLINE = CQ_ONLINE;	
+	typedef uint32_t DeadbandType;
 };
 
 /**
@@ -233,9 +225,7 @@ public:
 	{}
 
 	AnalogOutputStatus(double aValue, uint8_t aQuality, int64_t aTime) : TypedMeasurement<double>(aValue, aQuality, aTime) 
-	{}
-	
-	static const int ONLINE = PQ_ONLINE;	
+	{}	
 };
 
 }

@@ -219,9 +219,6 @@
     <ClInclude Include="src\opendnp3\app\LazyIterable.h">
       <Filter>Header\app</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\app\MeasurementType.h">
-      <Filter>Header\app</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\app\OctetData.h">
       <Filter>Header\app</Filter>
     </ClInclude>
