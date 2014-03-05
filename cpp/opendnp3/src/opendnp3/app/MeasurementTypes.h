@@ -27,6 +27,8 @@
 #include "BaseMeasurementTypes.h"
 #include "QualityMasks.h"
 
+#include "opendnp3/gen/DoubleBit.h"
+
 namespace opendnp3
 {
 
@@ -81,27 +83,19 @@ private:
 	}
 };
 
-enum class TwoBitState : uint8_t
-{
-	Intermediate = 0x00,
-	DeterminedOff = 0x40,
-	DeterminedOn = 0x80,
-	Indeterminate = 0xC0
-};
-
 /**
 The Double-bit Binary data type has two stable states, on and off, and an in transit state. Motor operated switches
 or binary valves are good examples.
 */
-class DoubleBitBinary : public TypedMeasurement<TwoBitState>
+class DoubleBitBinary : public TypedMeasurement<DoubleBit>
 {
 public:
 
 	
-	DoubleBitBinary() : TypedMeasurement(TwoBitState::Indeterminate, DBQ_RESTART)
+	DoubleBitBinary() : TypedMeasurement(DoubleBit::INDETERMINATE, DBQ_RESTART)
 	{}
 
-	DoubleBitBinary(TwoBitState value) : TypedMeasurement(value, GetQual(DBQ_ONLINE, value))
+	DoubleBitBinary(DoubleBit value) : TypedMeasurement(value, GetQual(DBQ_ONLINE, value))
 	{}
 
 	DoubleBitBinary(uint8_t aQuality) : TypedMeasurement(GetValueFromQuality(aQuality), aQuality)
@@ -110,10 +104,10 @@ public:
 	DoubleBitBinary(uint8_t aQuality, int64_t aTime) : TypedMeasurement(GetValueFromQuality(aQuality), aQuality, aTime)
 	{}
 
-	DoubleBitBinary(TwoBitState aValue, uint8_t aQuality) : TypedMeasurement(aValue, GetQual(aQuality, aValue))
+	DoubleBitBinary(DoubleBit aValue, uint8_t aQuality) : TypedMeasurement(aValue, GetQual(aQuality, aValue))
 	{}
 
-	DoubleBitBinary(TwoBitState aValue, uint8_t aQuality, int64_t aTime) : TypedMeasurement(aValue, GetQual(aQuality, aValue), aTime)
+	DoubleBitBinary(DoubleBit aValue, uint8_t aQuality, int64_t aTime) : TypedMeasurement(aValue, GetQual(aQuality, aValue), aTime)
 	{}
 
 	bool IsEvent(const DoubleBitBinary& newValue) const
@@ -126,24 +120,17 @@ private:
 	static const uint8_t ValueMask = 0xC0;
 	static const uint8_t QualityMask = 0x3F;
 
-	static TwoBitState GetValueFromQuality(uint8_t quality)
+	static DoubleBit GetValueFromQuality(uint8_t quality)
 	{
-		switch (quality & ValueMask)
-		{
-			case(0x00) :
-				return TwoBitState::Intermediate;
-			case(0x40) :
-				return TwoBitState::DeterminedOff;
-			case(0x80) :
-				return TwoBitState::DeterminedOn;
-			default:
-				return TwoBitState::Indeterminate;
-		}
+		// the value is the top 2 bits, so downshift 6
+		uint8_t value = quality >> 6;
+		return DoubleBitFromType(value);
 	}
 
-	static uint8_t GetQual(uint8_t quality, TwoBitState state)
+	static uint8_t GetQual(uint8_t quality, DoubleBit state)
 	{
-		return (QualityMask & quality) | (static_cast<uint8_t>(state)& ValueMask);		
+		uint8_t value = DoubleBitToType(state) << 6;
+		return (QualityMask & quality) | value;		
 	}
 };
 

@@ -19,6 +19,7 @@ object CppEnumGenerator {
     }
 
     def includeEnums = List(
+      EnumConfig(DoubleBit(), "opendnp3", opendnp3, true),
       EnumConfig(ScanStatus(), "opendnp3", opendnp3, false),
       EnumConfig(CommandStatus(), "opendnp3", opendnp3, true),
       EnumConfig(CommandResult(), "opendnp3", opendnp3, false),

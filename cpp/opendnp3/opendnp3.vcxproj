@@ -86,6 +86,7 @@
     <ClInclude Include="src\opendnp3\gen\CommandResult.h" />
     <ClInclude Include="src\opendnp3\gen\CommandStatus.h" />
     <ClInclude Include="src\opendnp3\gen\ControlCode.h" />
+    <ClInclude Include="src\opendnp3\gen\DoubleBit.h" />
     <ClInclude Include="src\opendnp3\gen\EventAnalogResponse.h" />
     <ClInclude Include="src\opendnp3\gen\EventBinaryResponse.h" />
     <ClInclude Include="src\opendnp3\gen\EventCounterResponse.h" />
@@ -272,6 +273,7 @@
     <ClCompile Include="src\opendnp3\gen\CommandResult.cpp" />
     <ClCompile Include="src\opendnp3\gen\CommandStatus.cpp" />
     <ClCompile Include="src\opendnp3\gen\ControlCode.cpp" />
+    <ClCompile Include="src\opendnp3\gen\DoubleBit.cpp" />
     <ClCompile Include="src\opendnp3\gen\EventAnalogResponse.cpp" />
     <ClCompile Include="src\opendnp3\gen\EventBinaryResponse.cpp" />
     <ClCompile Include="src\opendnp3\gen\EventCounterResponse.cpp" />

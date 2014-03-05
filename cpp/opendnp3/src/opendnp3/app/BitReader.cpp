@@ -44,23 +44,13 @@ uint32_t NumBytesInDoubleBits(uint32_t numBits)
 	return ((numBits % 4) == 0) ? numBytes : numBytes + 1;
 }
 
-TwoBitState GetDoubleBit(const openpal::ReadOnlyBuffer& buffer, uint32_t position)
+DoubleBit GetDoubleBit(const openpal::ReadOnlyBuffer& buffer, uint32_t position)
 {
 	uint32_t byte = position / 4;
 	uint32_t bit = position % 4;
 	assert(byte < buffer.Size());
 	uint8_t selection = (buffer[byte] >> bit) && 0xFF;
-	switch (selection)
-	{
-		case(0x00) :
-			return TwoBitState::Intermediate;
-		case(0x01) :
-			return TwoBitState::DeterminedOff;
-		case(0x02) :
-			return TwoBitState::DeterminedOn;
-		default:
-			return TwoBitState::Indeterminate;
-	}
+	return DoubleBitFromType(selection);
 }
 
 }

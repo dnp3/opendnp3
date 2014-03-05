@@ -299,9 +299,9 @@ APDUParser::Result APDUParser::ParseRangeAsDoubleBitField(
 		return Result::NOT_ENOUGH_DATA_FOR_OBJECTS;
 	}
 	else {
-		auto collection = IterableTransforms<IndexedValue<TwoBitState, uint16_t>>::From(buffer, range.Count(),
+		auto collection = IterableTransforms<IndexedValue<DoubleBit, uint16_t>>::From(buffer, range.Count(),
 			[&](openpal::ReadOnlyBuffer& buffer, uint32_t pos) {
-				return IndexedValue<TwoBitState, uint16_t>(GetDoubleBit(buffer, pos), pos + range.start);
+				return IndexedValue<DoubleBit, uint16_t>(GetDoubleBit(buffer, pos), pos + range.start);
 			}
 		);
 		callback(qualifier, collection);

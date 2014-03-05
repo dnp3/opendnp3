@@ -148,10 +148,10 @@ APDUParser::Result APDUParser::ParseObjectsWithRange(QualifierCode qualifier, op
 		MACRO_PARSE_OBJECTS_WITH_RANGE(Group1Var2);
 
 		case(GroupVariation::Group3Var1) :
-			return ParseRangeAsDoubleBitField(buffer, pLogger, qualifier, range, [&](QualifierCode qualifier, const IterableBuffer<IndexedValue<TwoBitState, uint16_t>>& values) {
+			return ParseRangeAsDoubleBitField(buffer, pLogger, qualifier, range, [&](QualifierCode qualifier, const IterableBuffer<IndexedValue<DoubleBit, uint16_t>>& values) {
 			if (pHandler) {
-				auto mapped = IterableTransforms<IndexedValue<TwoBitState, uint16_t>>::Map<IndexedValue<DoubleBitBinary, uint16_t>>(values, 
-					[](const IndexedValue<TwoBitState, uint16_t>& v) {
+				auto mapped = IterableTransforms<IndexedValue<DoubleBit, uint16_t>>::Map<IndexedValue<DoubleBitBinary, uint16_t>>(values,
+					[](const IndexedValue<DoubleBit, uint16_t>& v) {
 						return IndexedValue<DoubleBitBinary, uint16_t>(DoubleBitBinary(v.value), v.index);
 					}	
 				);
