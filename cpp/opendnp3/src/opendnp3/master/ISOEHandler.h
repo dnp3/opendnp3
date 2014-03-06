@@ -109,7 +109,7 @@ private:
 	static void Print(const IterableBuffer<IndexedValue<DoubleBitBinary, uint16_t>>& buffer, const std::string& name)
 	{
 		buffer.foreach([&](const IndexedValue<DoubleBitBinary, uint16_t>& pair) {
-			std::cout << name << " [" << pair.index << "] : " << static_cast<int>(pair.value.GetValue()) << " : " << static_cast<int>(pair.value.GetQuality()) << std::endl;
+			std::cout << name << " [" << pair.index << "] : " << DoubleBitToString(pair.value.GetValue()) << " : " << static_cast<int>(pair.value.GetQuality()) << std::endl;
 		});
 	}	
 
