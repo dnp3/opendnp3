@@ -21,7 +21,6 @@
 
 #include "APDUParser.h"
 
-#include "opendnp3/DNPConstants.h"
 #include "opendnp3/gen/QualifierCode.h"
 #include "opendnp3/app/GroupVariation.h"
 #include "opendnp3/app/MeasurementFactory.h"

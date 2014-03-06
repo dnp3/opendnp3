@@ -31,6 +31,7 @@
 #include <openpal/LoggableMacros.h>
 
 #include "opendnp3/Uncopyable.h"
+#include "opendnp3/DNPConstants.h"
 
 #include "opendnp3/app/Range.h"
 #include "opendnp3/app/IAPDUHandler.h"
@@ -270,7 +271,7 @@ APDUParser::Result APDUParser::ParseRangeAsBitField(
 	uint32_t numBytes = NumBytesInBits(range.Count());
 	if (buffer.Size() < numBytes) 
 	{
-		ERROR_PLOGGER_BLOCK(pLogger, LogLevel::Warning, ALERR_INSUFFICIENT_DATA_FOR_OBJECTS, "Not enough data for specified bitfield objects");
+		ERROR_PLOGGER_BLOCK(pLogger, openpal::LogLevel::Warning, ALERR_INSUFFICIENT_DATA_FOR_OBJECTS, "Not enough data for specified bitfield objects");
 		return Result::NOT_ENOUGH_DATA_FOR_OBJECTS;
 	}
 	else {	
@@ -296,7 +297,7 @@ APDUParser::Result APDUParser::ParseRangeAsDoubleBitField(
 	uint32_t numBytes = NumBytesInDoubleBits(range.Count());
 	if (buffer.Size() < numBytes)
 	{
-		ERROR_PLOGGER_BLOCK(pLogger, LogLevel::Warning, ALERR_INSUFFICIENT_DATA_FOR_OBJECTS, "Not enough data for specified double bitfield objects");
+		ERROR_PLOGGER_BLOCK(pLogger, openpal::LogLevel::Warning, ALERR_INSUFFICIENT_DATA_FOR_OBJECTS, "Not enough data for specified double bitfield objects");
 		return Result::NOT_ENOUGH_DATA_FOR_OBJECTS;
 	}
 	else {
@@ -323,7 +324,7 @@ APDUParser::Result APDUParser::ParseIndexPrefixedOctetData(
 	uint32_t size = count * (IndexType::Size + gvRecord.variation);
 	if (buffer.Size() < size) 
 	{
-		ERROR_PLOGGER_BLOCK(pLogger, LogLevel::Warning, ALERR_INSUFFICIENT_DATA_FOR_OBJECTS, "Not enough data for specified bitfield objects");
+		ERROR_PLOGGER_BLOCK(pLogger, openpal::LogLevel::Warning, ALERR_INSUFFICIENT_DATA_FOR_OBJECTS, "Not enough data for specified bitfield objects");
 		return APDUParser::Result::NOT_ENOUGH_DATA_FOR_OBJECTS;
 	}
 	else {
@@ -415,7 +416,7 @@ APDUParser::Result APDUParser::ParseObjectsWithIndexPrefix(QualifierCode qualifi
 			return ParseIndexPrefixedOctetData<IndexType>(gvRecord, buffer, pLogger, qualifier, count, pHandler);
 
 		default:
-			ERROR_PLOGGER_BLOCK(pLogger, LogLevel::Warning, ALERR_ILLEGAL_QUALIFIER_AND_OBJECT,
+			ERROR_PLOGGER_BLOCK(pLogger, openpal::LogLevel::Warning, ALERR_ILLEGAL_QUALIFIER_AND_OBJECT,
 				"Unsupported qualifier/object - " << QualifierCodeToString(qualifier) << "/" << gvRecord.ToString()
 			);
 			return Result::ILLEGAL_OBJECT_QUALIFIER;
@@ -427,7 +428,7 @@ APDUParser::Result APDUParser::ParseRange(openpal::ReadOnlyBuffer& buffer, openp
 {
 	if (buffer.Size() < (2 * ParserType::Size))
 	{
-		ERROR_PLOGGER_BLOCK(pLogger, LogLevel::Warning, ALERR_INSUFFICIENT_DATA_FOR_HEADER, "Not enough data for start / stop");
+		ERROR_PLOGGER_BLOCK(pLogger, openpal::LogLevel::Warning, ALERR_INSUFFICIENT_DATA_FOR_HEADER, "Not enough data for start / stop");
 		return Result::NOT_ENOUGH_DATA_FOR_RANGE;
 	}
 	else 
@@ -436,14 +437,14 @@ APDUParser::Result APDUParser::ParseRange(openpal::ReadOnlyBuffer& buffer, openp
 		auto stop = ParserType::ReadBuffer(buffer);
 		if (start > stop) 
 		{
-			ERROR_PLOGGER_BLOCK(pLogger, LogLevel::Warning, ALERR_START_STOP_MISMATCH, "start > stop");
+			ERROR_PLOGGER_BLOCK(pLogger, openpal::LogLevel::Warning, ALERR_START_STOP_MISMATCH, "start > stop");
 			return Result::BAD_START_STOP;
 		}
 		else {
 			RangeType count = static_cast<RangeType>(stop) - static_cast<RangeType>(start) + 1;
 			if (context.AddObjectCount(count)) 
 			{
-				ERROR_PLOGGER_BLOCK(pLogger, LogLevel::Warning, ALERR_TOO_MANY_OBJECTS_IN_APDU, "too many objects in APDU");
+				ERROR_PLOGGER_BLOCK(pLogger, openpal::LogLevel::Warning, ALERR_TOO_MANY_OBJECTS_IN_APDU, "too many objects in APDU");
 				return Result::UNREASONABLE_OBJECT_COUNT;
 			}
 			else
@@ -461,7 +462,7 @@ APDUParser::Result APDUParser::ParseCount(openpal::ReadOnlyBuffer& buffer, openp
 {
 	if (buffer.Size() < ParserType::Size) 
 	{
-		ERROR_PLOGGER_BLOCK(pLogger, LogLevel::Warning, ALERR_INSUFFICIENT_DATA_FOR_HEADER, "Not enough data for count");
+		ERROR_PLOGGER_BLOCK(pLogger, openpal::LogLevel::Warning, ALERR_INSUFFICIENT_DATA_FOR_HEADER, "Not enough data for count");
 		return Result::NOT_ENOUGH_DATA_FOR_RANGE;
 	}
 	else 
@@ -469,14 +470,14 @@ APDUParser::Result APDUParser::ParseCount(openpal::ReadOnlyBuffer& buffer, openp
 		count = ParserType::ReadBuffer(buffer);
 		if (count == 0)
 		{
-			ERROR_PLOGGER_BLOCK(pLogger, LogLevel::Warning, ALERR_COUNT_OF_ZERO, "count of 0");
+			ERROR_PLOGGER_BLOCK(pLogger, openpal::LogLevel::Warning, ALERR_COUNT_OF_ZERO, "count of 0");
 			return Result::COUNT_OF_ZERO;
 		}
 		else 
 		{			
 			if (context.AddObjectCount(count))
 			{
-				ERROR_PLOGGER_BLOCK(pLogger, LogLevel::Warning, ALERR_TOO_MANY_OBJECTS_IN_APDU, "too many objects in APDU");
+				ERROR_PLOGGER_BLOCK(pLogger, openpal::LogLevel::Warning, ALERR_TOO_MANY_OBJECTS_IN_APDU, "too many objects in APDU");
 				return Result::UNREASONABLE_OBJECT_COUNT;
 			}
 			else
@@ -493,7 +494,7 @@ APDUParser::Result APDUParser::ParseRangeFixedSize(GroupVariation gv, QualifierC
 	uint32_t size = range.Count() * pSerializer->Size();
 	if (buffer.Size() < size) 
 	{
-		ERROR_PLOGGER_BLOCK(pLogger, LogLevel::Warning, ALERR_INSUFFICIENT_DATA_FOR_OBJECTS, "Not enough data for specified objects");
+		ERROR_PLOGGER_BLOCK(pLogger, openpal::LogLevel::Warning, ALERR_INSUFFICIENT_DATA_FOR_OBJECTS, "Not enough data for specified objects");
 		return APDUParser::Result::NOT_ENOUGH_DATA_FOR_OBJECTS;
 	}
 	else {
@@ -515,7 +516,7 @@ APDUParser::Result APDUParser::ParseCountOf(openpal::ReadOnlyBuffer& buffer, ope
 	uint32_t size = count * Descriptor::SIZE;
 	if (buffer.Size() < size)
 	{
-		ERROR_PLOGGER_BLOCK(pLogger, LogLevel::Warning, ALERR_INSUFFICIENT_DATA_FOR_OBJECTS, "Not enough data for specified objects");
+		ERROR_PLOGGER_BLOCK(pLogger, openpal::LogLevel::Warning, ALERR_INSUFFICIENT_DATA_FOR_OBJECTS, "Not enough data for specified objects");
 		return APDUParser::Result::NOT_ENOUGH_DATA_FOR_OBJECTS;
 	}
 	else {				
@@ -543,7 +544,7 @@ APDUParser::Result APDUParser::ParseCountFixedSizeWithIndex(
 	uint32_t size = count * (IndexType::Size + pSerializer->Size());
 	if (buffer.Size() < size) 
 	{
-		ERROR_PLOGGER_BLOCK(pLogger, LogLevel::Warning, ALERR_INSUFFICIENT_DATA_FOR_OBJECTS, "Not enough data for specified objects");
+		ERROR_PLOGGER_BLOCK(pLogger, openpal::LogLevel::Warning, ALERR_INSUFFICIENT_DATA_FOR_OBJECTS, "Not enough data for specified objects");
 		return APDUParser::Result::NOT_ENOUGH_DATA_FOR_OBJECTS;
 	}
 	else {

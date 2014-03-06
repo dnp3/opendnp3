@@ -20,8 +20,6 @@
  */
 #include "APDUHandlerBase.h"
 
-#include "IterableTransforms.h"
-
 using namespace openpal;
 
 namespace opendnp3

@@ -21,8 +21,9 @@
 #ifndef __APDU_HANDLER_BASE_H_
 #define __APDU_HANDLER_BASE_H_
 
-#include "IINField.h"
-#include "IAPDUHandler.h"
+#include "opendnp3/app/IINField.h"
+#include "opendnp3/app/IAPDUHandler.h"
+#include "opendnp3/app/IterableTransforms.h"
 
 #include <openpal/Loggable.h>
 #include <openpal/LoggableMacros.h>
@@ -182,17 +183,19 @@ void APDUHandlerBase::OnIndexPrefixCTO(GroupVariation gv, QualifierCode qualifie
 	if (GetCTO(commonTime))
 	{
 		auto transform = IterableTransforms<IndexedValue<T, uint16_t>>::Map<IndexedValue<T, uint16_t>>(meas,
+
 			[&commonTime](const IndexedValue<T, uint16_t>& value) {
 				T copy(value.value);
 				copy.SetTime(commonTime + copy.GetTime());
 				return IndexedValue<T, uint16_t>(copy, value.index);
 			}
+
 		);
-		this->_OnIndexPrefix(gv, transform);
+		this->_OnIndexPrefix(gv, transform);	
 	}
 	else
 	{
-		LOG_BLOCK(LogLevel::Warning, "Received CTO objects without preceding common time, using assumed time");
+		LOG_BLOCK(openpal::LogLevel::Warning, "Received CTO objects without preceding common time, using assumed time");
 		auto transform = IterableTransforms<IndexedValue<T, uint16_t>>::Map<IndexedValue<T, uint16_t>>(meas,
 			[](const IndexedValue<T, uint16_t>& value) {
 			T copy(value.value);

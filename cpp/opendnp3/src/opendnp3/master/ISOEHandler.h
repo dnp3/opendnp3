@@ -104,7 +104,7 @@ private:
 		buffer.foreach([&](const IndexedValue<T, uint16_t>& pair) {			
 
 			std::cout << name << " [" << pair.index << "] : " << 
-				ValueToString<T>(pair.value.GetValue()) << " : " << 
+				ValueToString(pair.value) << " : " << 
 				static_cast<int>(pair.value.GetQuality()) << " : " <<
 				GetTimeString(pair.value) <<
 				std::endl;
@@ -132,8 +132,7 @@ private:
 		}
 		return oss.str();
 	}
-
-	template <>
+	
 	static std::string ValueToString(const DoubleBitBinary& meas)
 	{
 		return DoubleBitToString(meas.GetValue());

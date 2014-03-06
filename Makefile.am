@@ -57,6 +57,7 @@ libopendnp3_la_CXXFLAGS = -I$(OPENPAL_INCLUDE) -I$(ASIOPAL_INCLUDE) -I $(OPENDNP
 libopendnp3_la_SOURCES = \
 cpp/opendnp3/src/opendnp3/app/AnalogOutput.cpp \
 cpp/opendnp3/src/opendnp3/app/APDUEventWriter.cpp \
+cpp/opendnp3/src/opendnp3/app/APDUHandlerBase.cpp \
 cpp/opendnp3/src/opendnp3/app/APDUHeaderParser.cpp \
 cpp/opendnp3/src/opendnp3/app/APDUParser.cpp \
 cpp/opendnp3/src/opendnp3/app/APDURequest.cpp \
@@ -67,13 +68,11 @@ cpp/opendnp3/src/opendnp3/app/AppControlField.cpp \
 cpp/opendnp3/src/opendnp3/app/AppLayerChannel.cpp \
 cpp/opendnp3/src/opendnp3/app/AppLayer.cpp \
 cpp/opendnp3/src/opendnp3/app/ApplicationStack.cpp \
-cpp/opendnp3/src/opendnp3/app/BaseDataTypes.cpp \
 cpp/opendnp3/src/opendnp3/app/BitReader.cpp \
 cpp/opendnp3/src/opendnp3/app/CachedRequest.cpp \
 cpp/opendnp3/src/opendnp3/app/ControlRelayOutputBlock.cpp \
 cpp/opendnp3/src/opendnp3/app/FunctionCodeHelpers.cpp \
 cpp/opendnp3/src/opendnp3/app/GroupVariation.cpp \
-cpp/opendnp3/src/opendnp3/app/HeaderHandlerBase.cpp \
 cpp/opendnp3/src/opendnp3/app/IAppUser.cpp \
 cpp/opendnp3/src/opendnp3/app/IINField.cpp \
 cpp/opendnp3/src/opendnp3/app/ObjectWriter.cpp \
@@ -86,6 +85,7 @@ cpp/opendnp3/src/opendnp3/gen/ChannelState.cpp \
 cpp/opendnp3/src/opendnp3/gen/CommandResult.cpp \
 cpp/opendnp3/src/opendnp3/gen/CommandStatus.cpp \
 cpp/opendnp3/src/opendnp3/gen/ControlCode.cpp \
+cpp/opendnp3/src/opendnp3/gen/DoubleBit.cpp \
 cpp/opendnp3/src/opendnp3/gen/EventAnalogResponse.cpp \
 cpp/opendnp3/src/opendnp3/gen/EventBinaryResponse.cpp \
 cpp/opendnp3/src/opendnp3/gen/EventCounterResponse.cpp \
@@ -143,8 +143,10 @@ cpp/opendnp3/src/opendnp3/objects/Group21.cpp \
 cpp/opendnp3/src/opendnp3/objects/Group22.cpp \
 cpp/opendnp3/src/opendnp3/objects/Group23.cpp \
 cpp/opendnp3/src/opendnp3/objects/Group2.cpp \
+cpp/opendnp3/src/opendnp3/objects/Group3.cpp \
 cpp/opendnp3/src/opendnp3/objects/Group30.cpp \
 cpp/opendnp3/src/opendnp3/objects/Group32.cpp \
+cpp/opendnp3/src/opendnp3/objects/Group4.cpp \
 cpp/opendnp3/src/opendnp3/objects/Group40.cpp \
 cpp/opendnp3/src/opendnp3/objects/Group41.cpp \
 cpp/opendnp3/src/opendnp3/objects/Group42.cpp \

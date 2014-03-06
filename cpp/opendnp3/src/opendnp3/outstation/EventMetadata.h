@@ -94,7 +94,7 @@ struct DeadbandMetadata : EventMetadata<T>
 		return false;
 	}
 		
-	typename U deadband;
+	U deadband;
 };
 
 } //end namespace
