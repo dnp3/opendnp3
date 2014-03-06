@@ -27,6 +27,7 @@
 #include "LoggableMacros.h"
 
 #include <functional>
+#include <algorithm>
 
 #include <assert.h>
 #include <opendnp3/Logger.h>
