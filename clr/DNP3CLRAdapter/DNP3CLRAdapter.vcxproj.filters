@@ -33,9 +33,6 @@
     <ClInclude Include="MasterAdapter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MasterDataObserverAdapter.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="OutstationAdapter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -78,9 +75,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="MasterAdapter.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="MasterDataObserverAdapter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="OutstationAdapter.cpp">
