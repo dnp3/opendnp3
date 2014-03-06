@@ -38,9 +38,9 @@ class LazyIterable : public IterableBuffer<T>
 
 	protected:	
 
-		virtual T ValueAt(openpal::ReadOnlyBuffer& buffer, uint32_t aPos) const final
+		virtual T ValueAt(openpal::ReadOnlyBuffer& buff, uint32_t aPos) const final
 		{
-			return readFunc(this->buffer, aPos);
+			return readFunc(buff, aPos);
 		}
 
 	private:

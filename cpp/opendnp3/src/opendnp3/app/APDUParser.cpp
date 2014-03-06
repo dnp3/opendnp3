@@ -245,10 +245,10 @@ APDUParser::Result APDUParser::ParseRangeOfOctetData(
 	else
 	{
 		if(pHandler) {
-			auto collection = CreateLazyIterable<IndexedValue<OctetString, uint16_t>>(buffer, range.Count(), [&](ReadOnlyBuffer& buffer, uint32_t pos) {
-				OctetString octets(buffer.Truncate(gvRecord.variation));
+			auto collection = CreateLazyIterable<IndexedValue<OctetString, uint16_t>>(buffer, range.Count(), [gvRecord, range](ReadOnlyBuffer& buff, uint32_t pos) {
+				OctetString octets(buff.Truncate(gvRecord.variation));
 				IndexedValue<OctetString, uint16_t> value(octets, range.start + pos);
-				buffer.Advance(gvRecord.variation);
+				buff.Advance(gvRecord.variation);
 				return value;
 			});
 			pHandler->OnRange(gvRecord.enumeration, qualifier, collection);
