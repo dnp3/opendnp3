@@ -752,9 +752,6 @@
     <ClCompile Include="src\opendnp3\app\GroupVariation.cpp">
       <Filter>Source\app</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\app\HeaderHandlerBase.cpp">
-      <Filter>Source\app</Filter>
-    </ClCompile>
     <ClCompile Include="src\opendnp3\app\IAppUser.cpp">
       <Filter>Source\app</Filter>
     </ClCompile>
@@ -1120,6 +1117,9 @@
     </ClCompile>
     <ClCompile Include="src\opendnp3\gen\DoubleBit.cpp">
       <Filter>Source\gen</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\app\APDUHandlerBase.cpp">
+      <Filter>Source\app</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

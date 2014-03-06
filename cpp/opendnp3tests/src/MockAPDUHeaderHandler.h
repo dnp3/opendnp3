@@ -23,16 +23,20 @@
 
 #include <opendnp3/app/APDUHandlerBase.h>
 
+#include "LogTester.h"
+
 #include <vector>
 
 namespace opendnp3
 {
 
-class MockApduHeaderHandler : public APDUHandlerBase
+class MockApduHeaderHandler : public LogTester, public APDUHandlerBase
 {
-	public:
+	public:		
 
-		MockApduHeaderHandler()
+		MockApduHeaderHandler() : 
+			LogTester(),
+			APDUHandlerBase(openpal::Logger(this, openpal::LogLevel::Debug, "test"))
 		{}
 
 		virtual void _AllObjects(GroupVariation gv) override

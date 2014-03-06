@@ -32,7 +32,7 @@
 namespace opendnp3
 {
 
-class WriteHandler : public APDUHandlerBase, private openpal::Loggable
+class WriteHandler : public APDUHandlerBase
 {
 	public:
 	

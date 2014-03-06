@@ -32,7 +32,7 @@ namespace opendnp3
 /**
  * Dedicated class for processing response data in the master.
  */
-class MeasurementHandler : public APDUHandlerBase, private openpal::Loggable
+class MeasurementHandler : public APDUHandlerBase
 {
 
 public:

@@ -21,7 +21,6 @@
 #ifndef __READ_HANDLER_H_
 #define __READ_HANDLER_H_
 
-#include <openpal/Loggable.h>
 
 #include "opendnp3/app/APDUHandlerBase.h"
 
@@ -31,7 +30,7 @@
 namespace opendnp3
 {
 
-class ReadHandler : public APDUHandlerBase, private openpal::Loggable
+class ReadHandler : public APDUHandlerBase
 {
 	public:
 	

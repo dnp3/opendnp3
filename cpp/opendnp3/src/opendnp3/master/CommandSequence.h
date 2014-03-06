@@ -31,11 +31,11 @@ namespace opendnp3
 /**
 *  Abstracts information for 
 */
-class ICommandSequence : public APDUHandlerBase, private openpal::Loggable
+class ICommandSequence : public APDUHandlerBase
 {
 	public:
 
-	ICommandSequence(openpal::Logger logger): Loggable(logger) {}
+	ICommandSequence(openpal::Logger logger) : APDUHandlerBase(logger) {}
 
 	// Given an APDU and function code, configure the request
 	virtual void FormatRequest(APDURequest& request, FunctionCode aCode) = 0;

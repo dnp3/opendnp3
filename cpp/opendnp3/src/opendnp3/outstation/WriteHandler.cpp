@@ -31,7 +31,7 @@ namespace opendnp3
 {
 
 WriteHandler::WriteHandler(openpal::Logger& aLogger, ITimeWriteHandler* pTimeWriteHandler_, IINField* pWriteIIN_) : 
-	Loggable(aLogger),
+	APDUHandlerBase(aLogger),
 	pTimeWriteHandler(pTimeWriteHandler_),
 	pWriteIIN(pWriteIIN_),
 	wroteTime(false),

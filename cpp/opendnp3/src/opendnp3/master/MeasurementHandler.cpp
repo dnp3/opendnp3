@@ -27,7 +27,7 @@ using namespace openpal;
 namespace opendnp3
 {
 
-MeasurementHandler::MeasurementHandler(openpal::Logger& aLogger, ISOEHandler* pSOEHandler_) : Loggable(aLogger), pSOEHandler(pSOEHandler_)
+MeasurementHandler::MeasurementHandler(openpal::Logger& aLogger, ISOEHandler* pSOEHandler_) : APDUHandlerBase(aLogger), pSOEHandler(pSOEHandler_)
 {}
 
 void MeasurementHandler::_OnRange(GroupVariation gv, const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas)

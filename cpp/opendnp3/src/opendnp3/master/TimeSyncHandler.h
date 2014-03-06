@@ -32,7 +32,7 @@ namespace opendnp3
 /**
  * Dedicated class for processing response data in the master.
  */
-class TimeSyncHandler : public APDUHandlerBase, private openpal::Loggable
+class TimeSyncHandler : public APDUHandlerBase
 {
 
 public:
@@ -41,7 +41,7 @@ public:
 	* @param arLogger the Logger that the loader should use for message reporting
 	*/
 	TimeSyncHandler(openpal::Logger& aLogger) : 
-		Loggable(aLogger), 
+		APDUHandlerBase(aLogger), 
 		valid(false), 
 		timeOut(0)
 	{}		

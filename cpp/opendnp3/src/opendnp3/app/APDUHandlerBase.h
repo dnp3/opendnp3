@@ -24,20 +24,23 @@
 #include "IINField.h"
 #include "IAPDUHandler.h"
 
+#include <openpal/Loggable.h>
+#include <openpal/LoggableMacros.h>
+
 namespace opendnp3
 {
 
 /**
  * Base class used to handle APDU object headers
  */
-	class APDUHandlerBase : public IAPDUHandler
+	class APDUHandlerBase : public IAPDUHandler, protected openpal::Loggable
 	{
 	public:
 
 		/**
 		 * @param arLogger	the Logger that the loader should use for message reporting
 		 */
-		APDUHandlerBase();
+		APDUHandlerBase(openpal::Logger logger);
 
 		uint32_t NumIgnoredHeaders() const { return ignoredHeaders; }
 
@@ -105,7 +108,7 @@ namespace opendnp3
 	protected:
 
 		void Reset();
-		bool GetCTO(int64_t& cto);
+		bool GetCTO(uint64_t& cto);
 
 		inline uint32_t GetCurrentHeader() { return currentHeader; }
 
@@ -158,7 +161,7 @@ namespace opendnp3
 
 	private:
 
-		int64_t cto;
+		uint64_t cto;
 		int32_t ctoHeader;
 		int32_t currentHeader;
 
@@ -167,7 +170,41 @@ namespace opendnp3
 		{
 			return value.Widen<uint16_t>();
 		}	
+
+		template <class T>
+		void OnIndexPrefixCTO(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<T, uint16_t>>& meas);
 };
+
+template <class T>
+void APDUHandlerBase::OnIndexPrefixCTO(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<T, uint16_t>>& meas)
+{
+	uint64_t commonTime;
+	if (GetCTO(commonTime))
+	{
+		auto transform = IterableTransforms<IndexedValue<T, uint16_t>>::Map<IndexedValue<T, uint16_t>>(meas,
+			[&commonTime](const IndexedValue<T, uint16_t>& value) {
+				T copy(value.value);
+				copy.SetTime(commonTime + copy.GetTime());
+				return IndexedValue<T, uint16_t>(copy, value.index);
+			}
+		);
+		this->_OnIndexPrefix(gv, transform);
+	}
+	else
+	{
+		LOG_BLOCK(LogLevel::Warning, "Received CTO objects without preceding common time, using assumed time");
+		auto transform = IterableTransforms<IndexedValue<T, uint16_t>>::Map<IndexedValue<T, uint16_t>>(meas,
+			[](const IndexedValue<T, uint16_t>& value) {
+			T copy(value.value);
+			copy.ClearTime();
+			return IndexedValue<T, uint16_t>(copy, value.index);
+		}
+		);
+		this->_OnIndexPrefix(gv, transform);
+	}
+}
+
+
 
 }
 

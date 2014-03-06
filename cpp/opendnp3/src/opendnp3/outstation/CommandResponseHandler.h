@@ -33,7 +33,7 @@
 namespace opendnp3
 {
 
-class CommandResponseHandler : private openpal::Loggable, public APDUHandlerBase
+class CommandResponseHandler : public APDUHandlerBase
 {
 public:
 

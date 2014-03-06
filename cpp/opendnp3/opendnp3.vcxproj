@@ -254,7 +254,7 @@
     <ClCompile Include="src\opendnp3\app\ControlRelayOutputBlock.cpp" />
     <ClCompile Include="src\opendnp3\app\FunctionCodeHelpers.cpp" />
     <ClCompile Include="src\opendnp3\app\GroupVariation.cpp" />
-    <ClCompile Include="src\opendnp3\app\HeaderHandlerBase.cpp" />
+    <ClCompile Include="src\opendnp3\app\APDUHandlerBase.cpp" />
     <ClCompile Include="src\opendnp3\app\IAppUser.cpp" />
     <ClCompile Include="src\opendnp3\app\IINField.cpp" />
     <ClCompile Include="src\opendnp3\app\ObjectWriter.cpp" />
