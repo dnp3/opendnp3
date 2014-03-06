@@ -60,7 +60,7 @@ class CommandSequence : public ICommandSequence
 		command = IndexedValue<CommandType, uint16_t>(value, index); 
 	}
 
-	virtual void _OnIndexPrefix(QualifierCode qualifier, const IterableBuffer<IndexedValue<CommandType, uint16_t>>& meas)
+	virtual void _OnIndexPrefix(const IterableBuffer<IndexedValue<CommandType, uint16_t>>& meas) override
 	{		
 		if(this->IsFirstHeader())
 		{						
