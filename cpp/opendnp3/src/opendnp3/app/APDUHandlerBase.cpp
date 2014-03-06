@@ -272,37 +272,49 @@ void APDUHandlerBase::OnIndexPrefix(GroupVariation gv, QualifierCode qualifier, 
 
 void APDUHandlerBase::OnIndexPrefix(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<Binary, uint8_t>>& meas)
 {
-	auto transform = IterableTransforms<IndexedValue<Binary, uint8_t>>::Map<IndexedValue<Binary, uint16_t>>(meas, [](const IndexedValue<Binary, uint8_t>& value) { return value.Widen<uint16_t>(); });
+	auto transform = MapIterableBuffer<IndexedValue<Binary, uint8_t>, IndexedValue<Binary, uint16_t>>(meas, 
+		[](const IndexedValue<Binary, uint8_t>& value) { return value.Widen<uint16_t>(); }
+	);
 	this->OnIndexPrefix(gv, qualifier, transform);	
 }
 
 void APDUHandlerBase::OnIndexPrefix(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<DoubleBitBinary, uint8_t>>& meas)
 {
-	auto transform = IterableTransforms<IndexedValue<DoubleBitBinary, uint8_t>>::Map<IndexedValue<DoubleBitBinary, uint16_t>>(meas, [](const IndexedValue<DoubleBitBinary, uint8_t>& value) { return value.Widen<uint16_t>(); });
+	auto transform = MapIterableBuffer<IndexedValue<DoubleBitBinary, uint8_t>, IndexedValue<DoubleBitBinary, uint16_t>>(meas, 
+		[](const IndexedValue<DoubleBitBinary, uint8_t>& value) { return value.Widen<uint16_t>(); }
+	);
 	this->OnIndexPrefix(gv, qualifier, transform);
 }
 
 void APDUHandlerBase::OnIndexPrefix(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<Counter, uint8_t>>& meas)
 {
-	auto transform = IterableTransforms<IndexedValue<Counter, uint8_t>>::Map<IndexedValue<Counter, uint16_t>>(meas, [](const IndexedValue<Counter, uint8_t>& value) { return value.Widen<uint16_t>(); });
+	auto transform = MapIterableBuffer<IndexedValue<Counter, uint8_t>, IndexedValue<Counter, uint16_t>>(meas, 
+		[](const IndexedValue<Counter, uint8_t>& value) { return value.Widen<uint16_t>(); }
+	);
 	this->OnIndexPrefix(gv, qualifier, transform);
 }
 
 void APDUHandlerBase::OnIndexPrefix(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<FrozenCounter, uint8_t>>& meas)
 {
-	auto transform = IterableTransforms<IndexedValue<FrozenCounter, uint8_t>>::Map<IndexedValue<FrozenCounter, uint16_t>>(meas, [](const IndexedValue<FrozenCounter, uint8_t>& value) { return value.Widen<uint16_t>(); });
+	auto transform = MapIterableBuffer<IndexedValue<FrozenCounter, uint8_t>, IndexedValue<FrozenCounter, uint16_t>>(meas, 
+		[](const IndexedValue<FrozenCounter, uint8_t>& value) { return value.Widen<uint16_t>(); }
+	);
 	this->OnIndexPrefix(gv, qualifier, transform);
 }
 
 void APDUHandlerBase::OnIndexPrefix(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<Analog, uint8_t>>& meas)
 {
-	auto transform = IterableTransforms<IndexedValue<Analog, uint8_t>>::Map<IndexedValue<Analog, uint16_t>>(meas, [](const IndexedValue<Analog, uint8_t>& value) { return value.Widen<uint16_t>(); });
+	auto transform = MapIterableBuffer<IndexedValue<Analog, uint8_t>, IndexedValue<Analog, uint16_t>>(meas, 
+		[](const IndexedValue<Analog, uint8_t>& value) { return value.Widen<uint16_t>(); }
+	);
 	this->OnIndexPrefix(gv, qualifier, transform);
 }
 
 void APDUHandlerBase::OnIndexPrefix(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<OctetString, uint8_t>>& meas)
 {
-	auto transform = IterableTransforms<IndexedValue<OctetString, uint8_t>>::Map<IndexedValue<OctetString, uint16_t>>(meas, [](const IndexedValue<OctetString, uint8_t>& value) { return value.Widen<uint16_t>(); });
+	auto transform = MapIterableBuffer<IndexedValue<OctetString, uint8_t>, IndexedValue<OctetString, uint16_t>>(meas,
+		[](const IndexedValue<OctetString, uint8_t>& value) { return value.Widen<uint16_t>(); }
+	);
 	this->OnIndexPrefix(gv, qualifier, transform);
 }
 void APDUHandlerBase::_AllObjects(GroupVariation gv)

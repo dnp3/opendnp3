@@ -40,13 +40,19 @@ class LazyIterable : public IterableBuffer<T>
 
 		virtual T ValueAt(openpal::ReadOnlyBuffer& buffer, uint32_t aPos) const final
 		{
-			return readFunc(buffer, aPos);
+			return readFunc(this->buffer, aPos);
 		}
 
 	private:
 		
 		ReadFunc readFunc;
 };
+
+template <class T, class ReadFunc>
+LazyIterable<T, ReadFunc> CreateLazyIterable(const openpal::ReadOnlyBuffer& buffer, uint32_t aSize, const ReadFunc& aReadFunc)
+{
+	return LazyIterable<T, ReadFunc>(buffer, aSize, aReadFunc);
+}
 
 }
 

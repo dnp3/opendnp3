@@ -182,7 +182,7 @@ void APDUHandlerBase::OnIndexPrefixCTO(GroupVariation gv, QualifierCode qualifie
 	uint64_t commonTime;
 	if (GetCTO(commonTime))
 	{
-		auto transform = IterableTransforms<IndexedValue<T, uint16_t>>::Map<IndexedValue<T, uint16_t>>(meas,
+		auto transform = MapIterableBuffer< IndexedValue<T, uint16_t>, IndexedValue<T, uint16_t> >(meas,
 
 			[&commonTime](const IndexedValue<T, uint16_t>& value) {
 				T copy(value.value);
@@ -196,7 +196,7 @@ void APDUHandlerBase::OnIndexPrefixCTO(GroupVariation gv, QualifierCode qualifie
 	else
 	{
 		LOG_BLOCK(openpal::LogLevel::Warning, "Received CTO objects without preceding common time, using assumed time");
-		auto transform = IterableTransforms<IndexedValue<T, uint16_t>>::Map<IndexedValue<T, uint16_t>>(meas,
+		auto transform = MapIterableBuffer< IndexedValue<T, uint16_t>, IndexedValue<T, uint16_t> >(meas,
 			[](const IndexedValue<T, uint16_t>& value) {
 			T copy(value.value);
 			copy.ClearTime();

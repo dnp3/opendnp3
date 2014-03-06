@@ -28,45 +28,32 @@
 namespace opendnp3
 {
 
-template <class T>
-class IterableTransforms : private PureStatic
+template <class T, class U, class MapToU>
+class MappedIterableBuffer : public IterableBuffer<U>
 {
 	public:
+		MappedIterableBuffer(const IterableBuffer<T>& aProxy, const MapToU& aMapFun) : 
+			IterableBuffer<U>(aProxy.buffer, aProxy.count),
+			proxy(aProxy),
+			mapFun(aMapFun)
+		{}
 
-	template <class ReadFunc>
-	static LazyIterable<T,ReadFunc> From(const openpal::ReadOnlyBuffer& buffer, uint32_t aSize, const ReadFunc& aReadFunc)
-	{
-		return LazyIterable<T, ReadFunc>(buffer, aSize, aReadFunc);
-	}	
+	protected:
+		virtual U ValueAt(openpal::ReadOnlyBuffer& buff, uint32_t pos) const final
+		{
+			return mapFun(proxy.ValueAt(buff, pos));
+		}
 
-	template <class U, class MapToU>
-	class MappedIterableBuffer : public IterableBuffer<U>
-	{
-		public:
-			MappedIterableBuffer(const IterableBuffer<T>& aProxy, const MapToU& aMapFun) : 
-				IterableBuffer<U>(aProxy.buffer, aProxy.count),
-				proxy(aProxy),
-				mapFun(aMapFun)
-			{}
-
-		protected:
-			virtual U ValueAt(openpal::ReadOnlyBuffer& buff, uint32_t pos) const final
-			{
-				return mapFun(proxy.ValueAt(buff, pos));
-			}
-
-		private:
-			const IterableBuffer<T>& proxy;
-			MapToU mapFun;
-	};
-
-	template<class U, class MapToU>
-	static MappedIterableBuffer<U, MapToU> Map(const IterableBuffer<T> &iter, const MapToU& fun)
-	{
-		return MappedIterableBuffer<U, MapToU>(iter, fun);
-	}
-
+	private:
+		const IterableBuffer<T>& proxy;
+		MapToU mapFun;
 };
+		
+template<class T, class U, class MapToU>
+MappedIterableBuffer<T, U, MapToU> MapIterableBuffer(const IterableBuffer<T> &iter, const MapToU& fun)
+{
+	return MappedIterableBuffer<T, U, MapToU>(iter, fun);
+}
 
 }
 

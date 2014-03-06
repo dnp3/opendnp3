@@ -275,7 +275,7 @@ APDUParser::Result APDUParser::ParseRangeAsBitField(
 		return Result::NOT_ENOUGH_DATA_FOR_OBJECTS;
 	}
 	else {	
-		auto collection = IterableTransforms<IndexedValue<bool, uint16_t>>::From(buffer, range.Count(),
+		auto collection = CreateLazyIterable<IndexedValue<bool, uint16_t>>(buffer, range.Count(),
 			[&](openpal::ReadOnlyBuffer& buffer, uint32_t pos) {
 				return IndexedValue<bool, uint16_t>(GetBit(buffer, pos), pos + range.start);
 			}
@@ -301,7 +301,7 @@ APDUParser::Result APDUParser::ParseRangeAsDoubleBitField(
 		return Result::NOT_ENOUGH_DATA_FOR_OBJECTS;
 	}
 	else {
-		auto collection = IterableTransforms<IndexedValue<DoubleBit, uint16_t>>::From(buffer, range.Count(),
+		auto collection = CreateLazyIterable<IndexedValue<DoubleBit, uint16_t>>(buffer, range.Count(),
 			[&](openpal::ReadOnlyBuffer& buffer, uint32_t pos) {
 				return IndexedValue<DoubleBit, uint16_t>(GetDoubleBit(buffer, pos), pos + range.start);
 			}
@@ -328,10 +328,9 @@ APDUParser::Result APDUParser::ParseIndexPrefixedOctetData(
 		return APDUParser::Result::NOT_ENOUGH_DATA_FOR_OBJECTS;
 	}
 	else {
-
 		if (pHandler) {
-			auto iterable = IterableTransforms<IndexedValue<OctetString, uint16_t>>::From(buffer, count,
-				[gvRecord](openpal::ReadOnlyBuffer& buff, uint32_t position) {
+			auto iterable = CreateLazyIterable<IndexedValue<OctetString, uint16_t>>(buffer, count,
+				[&](openpal::ReadOnlyBuffer& buff, uint32_t position) {
 					auto index = IndexType::ReadBuffer(buff);
 					OctetString octets(buff.Truncate(gvRecord.variation));
 					buff.Advance(gvRecord.variation);
@@ -500,7 +499,7 @@ APDUParser::Result APDUParser::ParseRangeFixedSize(GroupVariation gv, QualifierC
 	else {
 	
 		if(pHandler) {
-			auto collection = IterableTransforms<IndexedValue<Target, uint16_t>>::From(buffer, range.Count(), [range, pSerializer](openpal::ReadOnlyBuffer& buffer, uint32_t pos) {
+			auto collection = CreateLazyIterable<IndexedValue<Target, uint16_t>>(buffer, range.Count(), [range, pSerializer](openpal::ReadOnlyBuffer& buffer, uint32_t pos) {
 				return IndexedValue<Target, uint16_t>(pSerializer->Read(buffer), range.start + pos);
 			});
 			pHandler->OnRange(gv, qualifier, collection);
@@ -521,7 +520,7 @@ APDUParser::Result APDUParser::ParseCountOf(openpal::ReadOnlyBuffer& buffer, ope
 	}
 	else {				
 		if(pHandler) {
-			auto collection = IterableTransforms<Descriptor>::From(buffer, count, [](openpal::ReadOnlyBuffer& buffer, uint32_t) {
+			auto collection = CreateLazyIterable<Descriptor>(buffer, count, [](openpal::ReadOnlyBuffer& buffer, uint32_t) {
 				return Descriptor::Read(buffer);
 			});
 			pHandler->OnCountOf(collection);
@@ -549,11 +548,13 @@ APDUParser::Result APDUParser::ParseCountFixedSizeWithIndex(
 	}
 	else {
 		if(pHandler) {
-			auto collection = IterableTransforms<IndexedValue<Target, typename IndexType::Type>>::From(buffer, count, [pSerializer](openpal::ReadOnlyBuffer& buffer, uint32_t) {
-				auto index = IndexType::ReadBuffer(buffer);
-				auto value = pSerializer->Read(buffer);
-				return IndexedValue<Target, typename IndexType::Type>(value, index);
-			});
+			auto collection = CreateLazyIterable<IndexedValue<Target, typename IndexType::Type>>(buffer, count, 
+				[pSerializer](openpal::ReadOnlyBuffer& buffer, uint32_t) {
+					auto index = IndexType::ReadBuffer(buffer);
+					auto value = pSerializer->Read(buffer);
+					return IndexedValue<Target, typename IndexType::Type>(value, index);
+				}
+			);
 			pHandler->OnIndexPrefix(gv, qualifier, collection);
 		}
 		buffer.Advance(size);

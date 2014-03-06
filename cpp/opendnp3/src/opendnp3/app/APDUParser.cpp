@@ -135,7 +135,7 @@ APDUParser::Result APDUParser::ParseObjectsWithRange(QualifierCode qualifier, op
 		case(GroupVariation::Group1Var1):				
 			return ParseRangeAsBitField(buffer, pLogger, qualifier, range, [&](QualifierCode qualifier, const IterableBuffer<IndexedValue<bool, uint16_t>>& values) {
 				if(pHandler) {
-					auto mapped = IterableTransforms<IndexedValue<bool, uint16_t>>::Map<IndexedValue<Binary, uint16_t>>(values, 
+					auto mapped = MapIterableBuffer<IndexedValue<bool, uint16_t>, IndexedValue<Binary, uint16_t>>(values, 
 						[](const IndexedValue<bool, uint16_t>& v) { 
 							return IndexedValue<Binary, uint16_t>(Binary(v.value), v.index); 
 						}
@@ -149,7 +149,7 @@ APDUParser::Result APDUParser::ParseObjectsWithRange(QualifierCode qualifier, op
 		case(GroupVariation::Group3Var1) :
 			return ParseRangeAsDoubleBitField(buffer, pLogger, qualifier, range, [&](QualifierCode qualifier, const IterableBuffer<IndexedValue<DoubleBit, uint16_t>>& values) {
 			if (pHandler) {
-				auto mapped = IterableTransforms<IndexedValue<DoubleBit, uint16_t>>::Map<IndexedValue<DoubleBitBinary, uint16_t>>(values,
+				auto mapped = MapIterableBuffer<IndexedValue<DoubleBit, uint16_t>, IndexedValue<DoubleBitBinary, uint16_t>>(values,
 					[](const IndexedValue<DoubleBit, uint16_t>& v) {
 						return IndexedValue<DoubleBitBinary, uint16_t>(DoubleBitBinary(v.value), v.index);
 					}	
@@ -161,7 +161,11 @@ APDUParser::Result APDUParser::ParseObjectsWithRange(QualifierCode qualifier, op
 		case(GroupVariation::Group10Var1):				
 			return ParseRangeAsBitField(buffer, pLogger, qualifier, range, [&](QualifierCode qualifier, IterableBuffer<IndexedValue<bool, uint16_t>>& values) {
 				if(pHandler) {
-					auto mapped = IterableTransforms<IndexedValue<bool, uint16_t>>::Map<IndexedValue<BinaryOutputStatus, uint16_t>>(values, [](const IndexedValue<bool, uint16_t>& v) { return IndexedValue<BinaryOutputStatus, uint16_t>(BinaryOutputStatus(v.value), v.index); });
+					auto mapped = MapIterableBuffer<IndexedValue<bool, uint16_t>, IndexedValue<BinaryOutputStatus, uint16_t>>(values, 
+						[](const IndexedValue<bool, uint16_t>& v) { 
+							return IndexedValue<BinaryOutputStatus, uint16_t>(BinaryOutputStatus(v.value), v.index); 
+						}
+					);
 					pHandler->OnRange(gvRecord.enumeration, qualifier, mapped);
 				}
 			});
@@ -241,7 +245,7 @@ APDUParser::Result APDUParser::ParseRangeOfOctetData(
 	else
 	{
 		if(pHandler) {
-			auto collection = IterableTransforms<IndexedValue<OctetString, uint16_t>>::From(buffer, range.Count(), [&](ReadOnlyBuffer& buffer, uint32_t pos) {
+			auto collection = CreateLazyIterable<IndexedValue<OctetString, uint16_t>>(buffer, range.Count(), [&](ReadOnlyBuffer& buffer, uint32_t pos) {
 				OctetString octets(buffer.Truncate(gvRecord.variation));
 				IndexedValue<OctetString, uint16_t> value(octets, range.start + pos);
 				buffer.Advance(gvRecord.variation);
