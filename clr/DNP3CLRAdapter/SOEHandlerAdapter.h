@@ -17,28 +17,55 @@ private class SOEHandlerAdapter : public opendnp3::ISOEHandler
 {
 public:
 
-	SOEHandlerAdapter(DNP3::Interface::IMeasurementHandler^ proxy);
+	SOEHandlerAdapter(DNP3::Interface::ISOEHandler^ proxy);
 
-	virtual void Start() final {}
-	virtual void End() final {}
-	virtual void Load(const opendnp3::IterableBuffer<opendnp3::IndexedValue<opendnp3::Binary, uint16_t>>& meas) {}
-	virtual void Load(const opendnp3::IterableBuffer<opendnp3::IndexedValue<opendnp3::Analog, uint16_t>>& meas) {}
-	virtual void Load(const opendnp3::IterableBuffer<opendnp3::IndexedValue<opendnp3::Counter, uint16_t>>& meas) {}
-	virtual void Load(const opendnp3::IterableBuffer<opendnp3::IndexedValue<opendnp3::FrozenCounter, uint16_t>>& meas) {}
-	virtual void Load(const opendnp3::IterableBuffer<opendnp3::IndexedValue<opendnp3::BinaryOutputStatus, uint16_t>>& meas) {}
-	virtual void Load(const opendnp3::IterableBuffer<opendnp3::IndexedValue<opendnp3::AnalogOutputStatus, uint16_t>>& meas) {}
-	virtual void Load(const opendnp3::IterableBuffer<opendnp3::IndexedValue<opendnp3::OctetString, uint16_t>>& meas) {}
+	virtual void Start() override final;
+	virtual void End() override final;
+
+	virtual void LoadStatic(const opendnp3::IterableBuffer<opendnp3::IndexedValue<opendnp3::Binary, uint16_t>>& meas) override final;
+	virtual void LoadStatic(const opendnp3::IterableBuffer<opendnp3::IndexedValue<opendnp3::DoubleBitBinary, uint16_t>>& meas) override final;
+	virtual void LoadStatic(const opendnp3::IterableBuffer<opendnp3::IndexedValue<opendnp3::Analog, uint16_t>>& meas) override final;
+	virtual void LoadStatic(const opendnp3::IterableBuffer<opendnp3::IndexedValue<opendnp3::Counter, uint16_t>>& meas) override final;
+	virtual void LoadStatic(const opendnp3::IterableBuffer<opendnp3::IndexedValue<opendnp3::FrozenCounter, uint16_t>>& meas) override final;
+	virtual void LoadStatic(const opendnp3::IterableBuffer<opendnp3::IndexedValue<opendnp3::BinaryOutputStatus, uint16_t>>& meas) override final;
+	virtual void LoadStatic(const opendnp3::IterableBuffer<opendnp3::IndexedValue<opendnp3::AnalogOutputStatus, uint16_t>>& meas) override final;
+	virtual void LoadStatic(const opendnp3::IterableBuffer<opendnp3::IndexedValue<opendnp3::OctetString, uint16_t>>& meas) override final;
+
+	virtual void LoadEvent(const opendnp3::IterableBuffer<opendnp3::IndexedValue<opendnp3::Binary, uint16_t>>& meas) override final;
+	virtual void LoadEvent(const opendnp3::IterableBuffer<opendnp3::IndexedValue<opendnp3::DoubleBitBinary, uint16_t>>& meas) override final;
+	virtual void LoadEvent(const opendnp3::IterableBuffer<opendnp3::IndexedValue<opendnp3::Analog, uint16_t>>& meas) override final;
+	virtual void LoadEvent(const opendnp3::IterableBuffer<opendnp3::IndexedValue<opendnp3::Counter, uint16_t>>& meas) override final;
+	virtual void LoadEvent(const opendnp3::IterableBuffer<opendnp3::IndexedValue<opendnp3::FrozenCounter, uint16_t>>& meas) override final;
+	virtual void LoadEvent(const opendnp3::IterableBuffer<opendnp3::IndexedValue<opendnp3::BinaryOutputStatus, uint16_t>>& meas) override final;
+	virtual void LoadEvent(const opendnp3::IterableBuffer<opendnp3::IndexedValue<opendnp3::AnalogOutputStatus, uint16_t>>& meas) override final;
+	virtual void LoadEvent(const opendnp3::IterableBuffer<opendnp3::IndexedValue<opendnp3::OctetString, uint16_t>>& meas) override final;
 
 private:
 
-	gcroot < DNP3::Interface::IMeasurementHandler ^ > proxy;	
+	template <class T>
+	void DispatchStatic(const opendnp3::IterableBuffer<opendnp3::IndexedValue<T, uint16_t>>& meas)
+	{
+		meas.foreach([this](const opendnp3::IndexedValue<T, uint16_t>& pair){
+			proxy->LoadStatic(Conversions::convertMeas(pair.value), pair.index);
+		});
+	}
+
+	template <class T>
+	void DispatchEvent(const opendnp3::IterableBuffer<opendnp3::IndexedValue<T, uint16_t>>& meas)
+	{
+		meas.foreach([this](const opendnp3::IndexedValue<T, uint16_t>& pair){
+			proxy->LoadEvent(Conversions::convertMeas(pair.value), pair.index);
+		});
+	}
+
+	gcroot < DNP3::Interface::ISOEHandler^ > proxy;
 };
 
 private ref class MasterMeasurementHandlerWrapper
 {
 public:
 
-	MasterMeasurementHandlerWrapper(DNP3::Interface::IMeasurementHandler^ proxy) :
+	MasterMeasurementHandlerWrapper(DNP3::Interface::ISOEHandler^ proxy) :
 		mpAdapter(new SOEHandlerAdapter(proxy))
 	{}
 

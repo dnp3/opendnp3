@@ -84,8 +84,10 @@ public:
 
 	//functions for converting Measurement types
 	static Binary ^ convertMeas(opendnp3::Binary meas);
+	static DoubleBitBinary ^ convertMeas(opendnp3::DoubleBitBinary meas);
 	static Analog ^ convertMeas(opendnp3::Analog meas);
 	static Counter ^ convertMeas(opendnp3::Counter meas);
+	static FrozenCounter ^ convertMeas(opendnp3::FrozenCounter meas);
 	static AnalogOutputStatus ^ convertMeas(opendnp3::AnalogOutputStatus meas);
 	static BinaryOutputStatus ^ convertMeas(opendnp3::BinaryOutputStatus meas);
 	static OctetString^ Conversions::convertMeas(const opendnp3::OctetString& arMeas);

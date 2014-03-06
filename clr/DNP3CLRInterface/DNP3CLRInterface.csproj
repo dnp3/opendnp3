@@ -43,14 +43,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BaseMeasurementTypes.cs" />
     <Compile Include="CommandTypes.cs" />
     <Compile Include="ConfigObjects.cs" />
     <Compile Include="Conversions.cs" />
-    <Compile Include="DataTypes.cs" />
     <Compile Include="gen\ChannelState.cs" />
     <Compile Include="gen\CommandResult.cs" />
     <Compile Include="gen\CommandStatus.cs" />
     <Compile Include="gen\ControlCode.cs" />
+    <Compile Include="gen\DoubleBit.cs" />
     <Compile Include="gen\EventAnalogResponse.cs" />
     <Compile Include="gen\EventBinaryResponse.cs" />
     <Compile Include="gen\EventCounterResponse.cs" />
@@ -77,18 +78,23 @@
     <Compile Include="IMaster.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="IMeasurementHandler.cs" />
+    <Compile Include="IMeasurementCollection.cs" />
+    <Compile Include="ISOEHandler.cs" />
     <Compile Include="IOutstation.cs" />
     <Compile Include="IStack.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ITimeWriteHandler.cs" />
     <Compile Include="IMasterScan.cs" />
+    <Compile Include="MeasurementTypes.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="NamespaceDoc.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="PrintingMeasurementHandler.cs" />
+    <Compile Include="PrintingSOEHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="QualityMasks.cs" />
     <Compile Include="ScanResult.cs" />
     <Compile Include="SerialSettings.cs" />
     <Compile Include="SimpleCommandHandler.cs" />

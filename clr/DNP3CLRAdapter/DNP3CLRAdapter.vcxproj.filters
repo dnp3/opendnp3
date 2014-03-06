@@ -101,7 +101,7 @@
     <ClCompile Include="OutstationTimeWriteAdapter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MasterMeasurementHandlerAdapter.cpp">
+    <ClCompile Include="SOEHandlerAdapter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

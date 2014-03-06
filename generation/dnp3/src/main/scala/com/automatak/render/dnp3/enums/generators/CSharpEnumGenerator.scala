@@ -19,6 +19,7 @@ object CSharpEnumGenerator {
     def events = EventTypes.enums.map(m => EnumConfig(m, dir))
 
     def enums : List[EnumConfig] = List(
+      DoubleBit(),
       ScanStatus(),
       CommandStatus(),
       CommandResult(),

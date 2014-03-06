@@ -44,14 +44,23 @@ class ISOEHandler : public ITransactable
 {
 public:
 	
-	virtual void Load(const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas) {}
-	virtual void Load(const IterableBuffer<IndexedValue<DoubleBitBinary, uint16_t>>& meas) {}
-	virtual void Load(const IterableBuffer<IndexedValue<Analog, uint16_t>>& meas) {}
-	virtual void Load(const IterableBuffer<IndexedValue<Counter, uint16_t>>& meas) {}
-	virtual void Load(const IterableBuffer<IndexedValue<FrozenCounter, uint16_t>>& meas) {}
-	virtual void Load(const IterableBuffer<IndexedValue<BinaryOutputStatus, uint16_t>>& meas) {}
-	virtual void Load(const IterableBuffer<IndexedValue<AnalogOutputStatus, uint16_t>>& meas) {}
-	virtual void Load(const IterableBuffer<IndexedValue<OctetString, uint16_t>>& meas) {}
+	virtual void LoadStatic(const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas) = 0;
+	virtual void LoadStatic(const IterableBuffer<IndexedValue<DoubleBitBinary, uint16_t>>& meas) = 0;
+	virtual void LoadStatic(const IterableBuffer<IndexedValue<Analog, uint16_t>>& meas) = 0;
+	virtual void LoadStatic(const IterableBuffer<IndexedValue<Counter, uint16_t>>& meas) = 0;
+	virtual void LoadStatic(const IterableBuffer<IndexedValue<FrozenCounter, uint16_t>>& meas) = 0;
+	virtual void LoadStatic(const IterableBuffer<IndexedValue<BinaryOutputStatus, uint16_t>>& meas) = 0;
+	virtual void LoadStatic(const IterableBuffer<IndexedValue<AnalogOutputStatus, uint16_t>>& meas) = 0;
+	virtual void LoadStatic(const IterableBuffer<IndexedValue<OctetString, uint16_t>>& meas) = 0;
+
+	virtual void LoadEvent(const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas) = 0;
+	virtual void LoadEvent(const IterableBuffer<IndexedValue<DoubleBitBinary, uint16_t>>& meas) = 0;
+	virtual void LoadEvent(const IterableBuffer<IndexedValue<Analog, uint16_t>>& meas) = 0;
+	virtual void LoadEvent(const IterableBuffer<IndexedValue<Counter, uint16_t>>& meas) = 0;
+	virtual void LoadEvent(const IterableBuffer<IndexedValue<FrozenCounter, uint16_t>>& meas) = 0;
+	virtual void LoadEvent(const IterableBuffer<IndexedValue<BinaryOutputStatus, uint16_t>>& meas) = 0;
+	virtual void LoadEvent(const IterableBuffer<IndexedValue<AnalogOutputStatus, uint16_t>>& meas) = 0;
+	virtual void LoadEvent(const IterableBuffer<IndexedValue<OctetString, uint16_t>>& meas) = 0;
 
 	virtual ~ISOEHandler() {}	
 };
@@ -64,10 +73,28 @@ public:
 
 	static ISOEHandler* Inst() { return &msInstance; }
 
+	void LoadStatic(const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas) override final {}
+	void LoadStatic(const IterableBuffer<IndexedValue<DoubleBitBinary, uint16_t>>& meas) override final {}
+	void LoadStatic(const IterableBuffer<IndexedValue<Analog, uint16_t>>& meas) override final {}
+	void LoadStatic(const IterableBuffer<IndexedValue<Counter, uint16_t>>& meas) override final {}
+	void LoadStatic(const IterableBuffer<IndexedValue<FrozenCounter, uint16_t>>& meas) override final {}
+	void LoadStatic(const IterableBuffer<IndexedValue<BinaryOutputStatus, uint16_t>>& meas) override final {}
+	void LoadStatic(const IterableBuffer<IndexedValue<AnalogOutputStatus, uint16_t>>& meas) override final {}
+	void LoadStatic(const IterableBuffer<IndexedValue<OctetString, uint16_t>>& meas) override final {}
+
+	void LoadEvent(const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas) override final {}
+	void LoadEvent(const IterableBuffer<IndexedValue<DoubleBitBinary, uint16_t>>& meas) override final {}
+	void LoadEvent(const IterableBuffer<IndexedValue<Analog, uint16_t>>& meas) override final {}
+	void LoadEvent(const IterableBuffer<IndexedValue<Counter, uint16_t>>& meas) override final {}
+	void LoadEvent(const IterableBuffer<IndexedValue<FrozenCounter, uint16_t>>& meas) override final {}
+	void LoadEvent(const IterableBuffer<IndexedValue<BinaryOutputStatus, uint16_t>>& meas) override final {}
+	void LoadEvent(const IterableBuffer<IndexedValue<AnalogOutputStatus, uint16_t>>& meas) override final {}
+	void LoadEvent(const IterableBuffer<IndexedValue<OctetString, uint16_t>>& meas) override final {}
+
 protected:
 
-	void Start() final {}
-	void End() final {}
+	void Start() override final {}
+	void End() override final {}
 
 private:
 	NullSOEHandler()
@@ -82,14 +109,23 @@ class PrintingSOEHandler : public ISOEHandler
 public:
 	static ISOEHandler* Inst() { return &msInstance; }
 
-	void Load(const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas) final;
-	void Load(const IterableBuffer<IndexedValue<DoubleBitBinary, uint16_t>>& meas) final;
-	void Load(const IterableBuffer<IndexedValue<Analog, uint16_t>>& meas) final;
-	void Load(const IterableBuffer<IndexedValue<Counter, uint16_t>>& meas) final;
-	void Load(const IterableBuffer<IndexedValue<FrozenCounter, uint16_t>>& meas) final;
-	void Load(const IterableBuffer<IndexedValue<BinaryOutputStatus, uint16_t>>& meas) final;
-	void Load(const IterableBuffer<IndexedValue<AnalogOutputStatus, uint16_t>>& meas) final;
-	void Load(const IterableBuffer<IndexedValue<OctetString, uint16_t>>& meas) final;
+	void LoadStatic(const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas) override final;
+	void LoadStatic(const IterableBuffer<IndexedValue<DoubleBitBinary, uint16_t>>& meas) override final;
+	void LoadStatic(const IterableBuffer<IndexedValue<Analog, uint16_t>>& meas) override final;
+	void LoadStatic(const IterableBuffer<IndexedValue<Counter, uint16_t>>& meas) override final;
+	void LoadStatic(const IterableBuffer<IndexedValue<FrozenCounter, uint16_t>>& meas) override final;
+	void LoadStatic(const IterableBuffer<IndexedValue<BinaryOutputStatus, uint16_t>>& meas) override final;
+	void LoadStatic(const IterableBuffer<IndexedValue<AnalogOutputStatus, uint16_t>>& meas) override final;
+	void LoadStatic(const IterableBuffer<IndexedValue<OctetString, uint16_t>>& meas) override final;
+
+	void LoadEvent(const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas) override final;
+	void LoadEvent(const IterableBuffer<IndexedValue<DoubleBitBinary, uint16_t>>& meas) override final;
+	void LoadEvent(const IterableBuffer<IndexedValue<Analog, uint16_t>>& meas) override final;
+	void LoadEvent(const IterableBuffer<IndexedValue<Counter, uint16_t>>& meas) override final;
+	void LoadEvent(const IterableBuffer<IndexedValue<FrozenCounter, uint16_t>>& meas) override final;
+	void LoadEvent(const IterableBuffer<IndexedValue<BinaryOutputStatus, uint16_t>>& meas) override final;
+	void LoadEvent(const IterableBuffer<IndexedValue<AnalogOutputStatus, uint16_t>>& meas) override final;
+	void LoadEvent(const IterableBuffer<IndexedValue<OctetString, uint16_t>>& meas) override final;
 
 protected:
 

@@ -116,7 +116,7 @@ opendnp3::AnalogOutputFloat32 Conversions::convertCommand(AnalogOutputFloat32 ^ 
 }
 
 AnalogOutputFloat32 ^ Conversions::convertCommand(const opendnp3::AnalogOutputFloat32& sp)
-{
+{	
 	return gcnew AnalogOutputFloat32(sp.value);
 }
 
@@ -132,27 +132,86 @@ AnalogOutputDouble64 ^ Conversions::convertCommand(const opendnp3::AnalogOutputD
 
 Binary ^ Conversions::convertMeas(opendnp3::Binary meas)
 {
-	return gcnew Binary(meas.GetValue(), meas.GetQuality(), TimeStamp::Convert(meas.GetTime()));
+	if (meas.IsTimeValid())
+	{
+		return gcnew Binary(meas.GetValue(), meas.GetQuality(), TimeStamp::Convert(meas.GetTime()));
+	}
+	else
+	{
+		return gcnew Binary(meas.GetValue(), meas.GetQuality());
+	}
+}
+
+DoubleBitBinary ^ Conversions::convertMeas(opendnp3::DoubleBitBinary meas)
+{
+	if (meas.IsTimeValid())
+	{
+		return gcnew DoubleBitBinary(static_cast<DoubleBit>(meas.GetValue()), meas.GetQuality(), TimeStamp::Convert(meas.GetTime()));
+	}
+	else
+	{
+		return gcnew DoubleBitBinary(static_cast<DoubleBit>(meas.GetValue()), meas.GetQuality());
+	}
 }
 
 Analog ^ Conversions::convertMeas(opendnp3::Analog meas)
 {
-	return gcnew Analog(meas.GetValue(), meas.GetQuality(), TimeStamp::Convert(meas.GetTime()));
+	if (meas.IsTimeValid())
+	{
+		return gcnew Analog(meas.GetValue(), meas.GetQuality(), TimeStamp::Convert(meas.GetTime()));
+	}
+	else
+	{
+		return gcnew Analog(meas.GetValue(), meas.GetQuality());
+	}
 }
 
 Counter ^ Conversions::convertMeas(opendnp3::Counter meas)
 {
-	return gcnew Counter(meas.GetValue(), meas.GetQuality(), TimeStamp::Convert(meas.GetTime()));
+	if (meas.IsTimeValid())
+	{
+		return gcnew Counter(meas.GetValue(), meas.GetQuality(), TimeStamp::Convert(meas.GetTime()));
+	}
+	else
+	{
+		return gcnew Counter(meas.GetValue(), meas.GetQuality());
+	}
+}
+
+FrozenCounter ^ Conversions::convertMeas(opendnp3::FrozenCounter meas)
+{
+	if (meas.IsTimeValid())
+	{
+		return gcnew FrozenCounter(meas.GetValue(), meas.GetQuality(), TimeStamp::Convert(meas.GetTime()));
+	}
+	else
+	{
+		return gcnew FrozenCounter(meas.GetValue(), meas.GetQuality());
+	}
 }
 
 AnalogOutputStatus ^ Conversions::convertMeas(opendnp3::AnalogOutputStatus meas)
 {
-	return gcnew AnalogOutputStatus(meas.GetValue(), meas.GetQuality(), TimeStamp::Convert(meas.GetTime()));
+	if (meas.IsTimeValid())
+	{
+		return gcnew AnalogOutputStatus(meas.GetValue(), meas.GetQuality(), TimeStamp::Convert(meas.GetTime()));
+	}
+	else
+	{
+		return gcnew AnalogOutputStatus(meas.GetValue(), meas.GetQuality());
+	}
 }
 
 BinaryOutputStatus ^ Conversions::convertMeas(opendnp3::BinaryOutputStatus meas)
 {
-	return gcnew BinaryOutputStatus(meas.GetValue(), meas.GetQuality(), TimeStamp::Convert(meas.GetTime()));
+	if (meas.IsTimeValid())
+	{
+		return gcnew BinaryOutputStatus(meas.GetValue(), meas.GetQuality(), TimeStamp::Convert(meas.GetTime()));
+	}
+	else
+	{
+		return gcnew BinaryOutputStatus(meas.GetValue(), meas.GetQuality());
+	}
 }
 
 OctetString^ Conversions::convertMeas(const opendnp3::OctetString& arMeas)
@@ -165,38 +224,32 @@ OctetString^ Conversions::convertMeas(const opendnp3::OctetString& arMeas)
 
 opendnp3::Binary Conversions::convertMeas(Binary ^ meas)
 {
-	opendnp3::Binary m(meas->value, meas->quality, TimeStamp::Convert(meas->time));	
-	return m;
+	return opendnp3::Binary(meas->Value, meas->Quality, TimeStamp::Convert(meas->Timestamp));		
 }
 
 opendnp3::Analog Conversions::convertMeas(Analog ^ meas)
 {
-	opendnp3::Analog m(meas->value, meas->quality, TimeStamp::Convert(meas->time));	
-	return m;
+	return opendnp3::Analog(meas->Value, meas->Quality, TimeStamp::Convert(meas->Timestamp));	
 }
 
 opendnp3::Counter Conversions::convertMeas(Counter ^ meas)
 {
-	opendnp3::Counter m(meas->value, meas->quality, TimeStamp::Convert(meas->time));	
-	return m;
+	return opendnp3::Counter(meas->Value, meas->Quality, TimeStamp::Convert(meas->Timestamp));		
 }
 
 opendnp3::FrozenCounter Conversions::convertMeas(FrozenCounter ^ meas)
 {
-	opendnp3::FrozenCounter m(meas->value, meas->quality, TimeStamp::Convert(meas->time));	
-	return m;
+	return opendnp3::FrozenCounter(meas->Value, meas->Quality, TimeStamp::Convert(meas->Timestamp));		
 }
 
 opendnp3::AnalogOutputStatus Conversions::convertMeas(AnalogOutputStatus ^ meas)
 {
-	opendnp3::AnalogOutputStatus m(meas->value, meas->quality, TimeStamp::Convert(meas->time));	
-	return m;
+	return opendnp3::AnalogOutputStatus(meas->Value, meas->Quality, TimeStamp::Convert(meas->Timestamp));		
 }
 
 opendnp3::BinaryOutputStatus Conversions::convertMeas(BinaryOutputStatus ^ meas)
 {
-	opendnp3::BinaryOutputStatus m(meas->value, meas->quality, TimeStamp::Convert(meas->time));
-	return m;
+	return opendnp3::BinaryOutputStatus(meas->Value, meas->Quality, TimeStamp::Convert(meas->Timestamp));	
 }
 
 asiopal::SerialSettings Conversions::convertSerialSettings(SerialSettings ^ settings)

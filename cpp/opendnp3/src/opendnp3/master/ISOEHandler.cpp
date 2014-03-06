@@ -31,47 +31,88 @@ NullSOEHandler NullSOEHandler::msInstance;
 
 PrintingSOEHandler PrintingSOEHandler::msInstance;
 
-void PrintingSOEHandler::Load(const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas)
+void PrintingSOEHandler::LoadStatic(const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas)
 {
-	Print(meas, "Binary");
+	Print(meas, "Static - Binary");
 }
 
-void PrintingSOEHandler::Load(const IterableBuffer<IndexedValue<DoubleBitBinary, uint16_t>>& meas)
+void PrintingSOEHandler::LoadStatic(const IterableBuffer<IndexedValue<DoubleBitBinary, uint16_t>>& meas)
 {
-	Print(meas, "DoubleBitBinary");
+	Print(meas, "Static - DoubleBitBinary");
 }
 
-void PrintingSOEHandler::Load(const IterableBuffer<IndexedValue<Analog, uint16_t>>& meas)
+void PrintingSOEHandler::LoadStatic(const IterableBuffer<IndexedValue<Analog, uint16_t>>& meas)
 {
-	Print(meas, "Analog");
+	Print(meas, "Static - Analog");
 }
 
-void PrintingSOEHandler::Load(const IterableBuffer<IndexedValue<Counter, uint16_t>>& meas)
+void PrintingSOEHandler::LoadStatic(const IterableBuffer<IndexedValue<Counter, uint16_t>>& meas)
 {
-	Print(meas, "Counter");
+	Print(meas, "Static - Counter");
 }
 
-void PrintingSOEHandler::Load(const IterableBuffer<IndexedValue<FrozenCounter, uint16_t>>& meas)
+void PrintingSOEHandler::LoadStatic(const IterableBuffer<IndexedValue<FrozenCounter, uint16_t>>& meas)
 {
-	Print(meas, "FrozenCounter");
+	Print(meas, "Static - FrozenCounter");
 }
 
-void PrintingSOEHandler::Load(const IterableBuffer<IndexedValue<BinaryOutputStatus, uint16_t>>& meas)
+void PrintingSOEHandler::LoadStatic(const IterableBuffer<IndexedValue<BinaryOutputStatus, uint16_t>>& meas)
 {
-	Print(meas, "BinaryOutputStatus");
+	Print(meas, "Static - BinaryOutputStatus");
 }
 
-void PrintingSOEHandler::Load(const IterableBuffer<IndexedValue<AnalogOutputStatus, uint16_t>>& meas)
+void PrintingSOEHandler::LoadStatic(const IterableBuffer<IndexedValue<AnalogOutputStatus, uint16_t>>& meas)
 {
-	Print(meas, "AnalogOutputStatus");
+	Print(meas, "Static - AnalogOutputStatus");
 }
 
-void PrintingSOEHandler::Load(const IterableBuffer<IndexedValue<OctetString, uint16_t>>& meas)
+void PrintingSOEHandler::LoadStatic(const IterableBuffer<IndexedValue<OctetString, uint16_t>>& meas)
 {
 	meas.foreach([&](const IndexedValue<OctetString, uint16_t>& pair) {
-		std::cout << "OctetString " <<  " [" << pair.index << "] : Size : " << pair.value.ToReadOnly().Size() << std::endl;
+		std::cout << "Static - OctetString " <<  " [" << pair.index << "] : Size : " << pair.value.ToReadOnly().Size() << std::endl;
 	});
 }
 
+void PrintingSOEHandler::LoadEvent(const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas)
+{
+	Print(meas, "Event - Binary");
+}
+
+void PrintingSOEHandler::LoadEvent(const IterableBuffer<IndexedValue<DoubleBitBinary, uint16_t>>& meas)
+{
+	Print(meas, "Event - DoubleBitBinary");
+}
+
+void PrintingSOEHandler::LoadEvent(const IterableBuffer<IndexedValue<Analog, uint16_t>>& meas)
+{
+	Print(meas, "Event - Analog");
+}
+
+void PrintingSOEHandler::LoadEvent(const IterableBuffer<IndexedValue<Counter, uint16_t>>& meas)
+{
+	Print(meas, "Event - Counter");
+}
+
+void PrintingSOEHandler::LoadEvent(const IterableBuffer<IndexedValue<FrozenCounter, uint16_t>>& meas)
+{
+	Print(meas, "Event - FrozenCounter");
+}
+
+void PrintingSOEHandler::LoadEvent(const IterableBuffer<IndexedValue<BinaryOutputStatus, uint16_t>>& meas)
+{
+	Print(meas, "Event - BinaryOutputStatus");
+}
+
+void PrintingSOEHandler::LoadEvent(const IterableBuffer<IndexedValue<AnalogOutputStatus, uint16_t>>& meas)
+{
+	Print(meas, "Event - AnalogOutputStatus");
+}
+
+void PrintingSOEHandler::LoadEvent(const IterableBuffer<IndexedValue<OctetString, uint16_t>>& meas)
+{	
+	meas.foreach([&](const IndexedValue<OctetString, uint16_t>& pair) {
+		std::cout << "Event - OctetString " << " [" << pair.index << "] : Size : " << pair.value.ToReadOnly().Size() << std::endl;
+	});
+}
 
 }

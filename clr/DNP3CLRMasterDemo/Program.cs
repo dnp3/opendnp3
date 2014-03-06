@@ -50,7 +50,7 @@ namespace DotNetMasterDemo
             var config = new MasterStackConfig();
             config.master.integrityPeriod = TimeSpan.FromSeconds(60);
             config.link.useConfirms = true; //setup your stack configuration here.
-            var master = channel.AddMaster("master", LogLevel.Interpret, PrintingMeasurementHandler.Instance, config);
+            var master = channel.AddMaster("master", LogLevel.Interpret, PrintingSOEHandler.Instance, config);
 
             //optionally, add a listener for the stack state
             master.AddStateListener(state => Console.WriteLine("Master state: " + state));

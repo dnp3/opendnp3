@@ -44,6 +44,24 @@ public:
 
 	ComparingDataObserver(FlexibleDataObserver* apObserver);
 
+	void LoadStatic(const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas) override final {}
+	void LoadStatic(const IterableBuffer<IndexedValue<DoubleBitBinary, uint16_t>>& meas) override final {}
+	void LoadStatic(const IterableBuffer<IndexedValue<Analog, uint16_t>>& meas) override final {}
+	void LoadStatic(const IterableBuffer<IndexedValue<Counter, uint16_t>>& meas) override final {}
+	void LoadStatic(const IterableBuffer<IndexedValue<FrozenCounter, uint16_t>>& meas) override final {}
+	void LoadStatic(const IterableBuffer<IndexedValue<BinaryOutputStatus, uint16_t>>& meas) override final {}
+	void LoadStatic(const IterableBuffer<IndexedValue<AnalogOutputStatus, uint16_t>>& meas) override final {}
+	void LoadStatic(const IterableBuffer<IndexedValue<OctetString, uint16_t>>& meas) override final {}
+
+	void LoadEvent(const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas) override final {}
+	void LoadEvent(const IterableBuffer<IndexedValue<DoubleBitBinary, uint16_t>>& meas) override final {}
+	void LoadEvent(const IterableBuffer<IndexedValue<Analog, uint16_t>>& meas) override final {}
+	void LoadEvent(const IterableBuffer<IndexedValue<Counter, uint16_t>>& meas) override final {}
+	void LoadEvent(const IterableBuffer<IndexedValue<FrozenCounter, uint16_t>>& meas) override final {}
+	void LoadEvent(const IterableBuffer<IndexedValue<BinaryOutputStatus, uint16_t>>& meas) override final {}
+	void LoadEvent(const IterableBuffer<IndexedValue<AnalogOutputStatus, uint16_t>>& meas) override final {}
+	void LoadEvent(const IterableBuffer<IndexedValue<OctetString, uint16_t>>& meas) override final {}
+
 	void Reset();
 
 	bool WaitForSameData(openpal::TimeDuration aTimeout);

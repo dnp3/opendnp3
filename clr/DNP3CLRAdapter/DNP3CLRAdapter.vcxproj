@@ -194,7 +194,7 @@
     <ClCompile Include="LogAdapter.cpp" />
     <ClCompile Include="MasterAdapter.cpp" />
     <ClCompile Include="MasterDataObserverAdapter.cpp" />
-    <ClCompile Include="MasterMeasurementHandlerAdapter.cpp" />
+    <ClCompile Include="SOEHandlerAdapter.cpp" />
     <ClCompile Include="OutstationAdapter.cpp" />
     <ClCompile Include="OutstationTimeWriteAdapter.cpp" />
     <ClCompile Include="SlaveCommandHandlerAdapter.cpp" />

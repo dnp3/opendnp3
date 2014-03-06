@@ -37,7 +37,7 @@ void CallbackListener(gcroot < System::Action<ChannelState> ^ > * listener, open
 	(*listener)->Invoke(state);
 }
 
-IMaster ^ ChannelAdapter::AddMaster(System::String ^ loggerId, DNP3::Interface::LogLevel level, IMeasurementHandler ^ publisher, MasterStackConfig ^ config)
+IMaster ^ ChannelAdapter::AddMaster(System::String ^ loggerId, DNP3::Interface::LogLevel level, ISOEHandler ^ publisher, MasterStackConfig ^ config)
 {
 	std::string stdLoggerId = Conversions::convertString(loggerId);
 	openpal::LogLevel stdLevel = Conversions::convertLogLevel(level);
