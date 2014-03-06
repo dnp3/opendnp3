@@ -28,6 +28,7 @@
 #include "opendnp3/app/OctetString.h"
 
 #include <iostream>
+#include <sstream>
 
 namespace opendnp3
 {
@@ -100,18 +101,43 @@ private:
 	template <class T>
 	static void Print(const IterableBuffer<IndexedValue<T, uint16_t>>& buffer, const std::string& name)
 	{
-		buffer.foreach([&](const IndexedValue<T, uint16_t>& pair) {
-			std::cout << name << " [" << pair.index << "] : " << pair.value.GetValue() << " : " << static_cast<int>(pair.value.GetQuality()) << std::endl;
+		buffer.foreach([&](const IndexedValue<T, uint16_t>& pair) {			
+
+			std::cout << name << " [" << pair.index << "] : " << 
+				ValueToString<T>(pair.value.GetValue()) << " : " << 
+				static_cast<int>(pair.value.GetQuality()) << " : " <<
+				GetTimeString(pair.value) <<
+				std::endl;
 		});
+	}	
+
+	template <class T>
+	static std::string ValueToString(const T& meas)
+	{
+		std::ostringstream oss;
+		oss << meas.GetValue();
+		return oss.str();
+	}
+	
+	static std::string GetTimeString(const Measurement& meas)
+	{
+		std::ostringstream oss;
+		if (meas.IsTimeValid())
+		{
+			oss << meas.GetTime();
+		}
+		else
+		{
+			oss << "no timestamp";
+		}
+		return oss.str();
 	}
 
 	template <>
-	static void Print(const IterableBuffer<IndexedValue<DoubleBitBinary, uint16_t>>& buffer, const std::string& name)
+	static std::string ValueToString(const DoubleBitBinary& meas)
 	{
-		buffer.foreach([&](const IndexedValue<DoubleBitBinary, uint16_t>& pair) {
-			std::cout << name << " [" << pair.index << "] : " << DoubleBitToString(pair.value.GetValue()) << " : " << static_cast<int>(pair.value.GetQuality()) << std::endl;
-		});
-	}	
+		return DoubleBitToString(meas.GetValue());
+	}
 
 	PrintingSOEHandler()
 	{}
