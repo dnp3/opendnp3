@@ -162,7 +162,7 @@ void APDUHandlerBase::OnIndexPrefix(GroupVariation gv, QualifierCode qualifier, 
 	}
 	else
 	{
-		this->_OnRange(gv, meas);
+		this->_OnIndexPrefix(gv, meas);
 	}
 		
 	++currentHeader;
@@ -176,7 +176,7 @@ void APDUHandlerBase::OnIndexPrefix(GroupVariation gv, QualifierCode qualifier, 
 	}
 	else
 	{
-		this->_OnRange(gv, meas);
+		this->_OnIndexPrefix(gv, meas);
 	}
 
 	++currentHeader;

@@ -75,6 +75,15 @@ bool LogTester::GetNextEntry(LogEntry& arEntry)
 	}
 }
 
+void LogTester::Pop(openpal::ILogBase* pLog)
+{
+	LogEntry entry;
+	while (GetNextEntry(entry))
+	{
+		pLog->Log(entry);
+	}
+}
+
 bool LogTester::IsLogErrorFree()
 {
 	return ClearLog() < 0;

@@ -62,13 +62,13 @@ public:
 	Binary(uint8_t aQuality) : TypedMeasurement((aQuality & BQ_STATE) != 0, aQuality)
 	{}
 
-	Binary(uint8_t aQuality, int64_t aTime) : TypedMeasurement((aQuality & BQ_STATE) != 0, aQuality, aTime)
+	Binary(uint8_t aQuality, uint64_t aTime) : TypedMeasurement((aQuality & BQ_STATE) != 0, aQuality, aTime)
 	{}
 	
 	Binary(bool aValue, uint8_t aQuality) : TypedMeasurement(aValue, GetQual(aQuality, aValue))
 	{}
 
-	Binary(bool aValue, uint8_t aQuality, int64_t aTime) : TypedMeasurement(aValue, GetQual(aQuality, aValue), aTime) 
+	Binary(bool aValue, uint8_t aQuality, uint64_t aTime) : TypedMeasurement(aValue, GetQual(aQuality, aValue), aTime) 
 	{}
 
 	bool IsEvent(const Binary& newValue) const
@@ -101,13 +101,13 @@ public:
 	DoubleBitBinary(uint8_t aQuality) : TypedMeasurement(GetValueFromQuality(aQuality), aQuality)
 	{}
 
-	DoubleBitBinary(uint8_t aQuality, int64_t aTime) : TypedMeasurement(GetValueFromQuality(aQuality), aQuality, aTime)
+	DoubleBitBinary(uint8_t aQuality, uint64_t aTime) : TypedMeasurement(GetValueFromQuality(aQuality), aQuality, aTime)
 	{}
 
 	DoubleBitBinary(DoubleBit aValue, uint8_t aQuality) : TypedMeasurement(aValue, GetQual(aQuality, aValue))
-	{}
+	{}	
 
-	DoubleBitBinary(DoubleBit aValue, uint8_t aQuality, int64_t aTime) : TypedMeasurement(aValue, GetQual(aQuality, aValue), aTime)
+	DoubleBitBinary(DoubleBit aValue, uint8_t aQuality, uint64_t aTime) : TypedMeasurement(aValue, GetQual(aQuality, aValue), aTime)
 	{}
 
 	bool IsEvent(const DoubleBitBinary& newValue) const
@@ -155,7 +155,7 @@ public:
 	BinaryOutputStatus(bool aValue, uint8_t aQuality) : TypedMeasurement(aValue, GetQual(aQuality, aValue))
 	{}
 
-	BinaryOutputStatus(bool aValue, uint8_t aQuality, int64_t aTime) : TypedMeasurement(aValue, GetQual(aQuality, aValue), aTime) 
+	BinaryOutputStatus(bool aValue, uint8_t aQuality, uint64_t aTime) : TypedMeasurement(aValue, GetQual(aQuality, aValue), aTime) 
 	{}	
 
 private:
@@ -184,7 +184,7 @@ public:
 	Analog(double aValue, uint8_t aQuality) : TypedMeasurement(aValue, aQuality) 
 	{}
 
-	Analog(double aValue, uint8_t aQuality, int64_t aTime) : TypedMeasurement<double>(aValue, aQuality, aTime) 
+	Analog(double aValue, uint8_t aQuality, uint64_t aTime) : TypedMeasurement<double>(aValue, aQuality, aTime) 
 	{}
 
 	bool IsEvent(const Analog& newValue, double aDeadband) const
@@ -215,7 +215,7 @@ public:
 	Counter(uint32_t aValue, uint8_t aQuality) : TypedMeasurement<uint32_t>(aValue, aQuality) 
 	{}
 
-	Counter(uint32_t aValue, uint8_t aQuality, int64_t aTime) : TypedMeasurement<uint32_t>(aValue, aQuality, aTime) 
+	Counter(uint32_t aValue, uint8_t aQuality, uint64_t aTime) : TypedMeasurement<uint32_t>(aValue, aQuality, aTime) 
 	{}
 
 	bool IsEvent(const Counter& newValue, uint32_t aDeadband) const
@@ -243,7 +243,7 @@ public:
 	FrozenCounter(uint32_t aValue, uint8_t aQuality) : TypedMeasurement<uint32_t>(aValue, aQuality) 
 	{}
 
-	FrozenCounter(uint32_t aValue, uint8_t aQuality, int64_t aTime) : TypedMeasurement<uint32_t>(aValue, aQuality, aTime) 
+	FrozenCounter(uint32_t aValue, uint8_t aQuality, uint64_t aTime) : TypedMeasurement<uint32_t>(aValue, aQuality, aTime) 
 	{}
 
 	bool IsEvent(const FrozenCounter& newValue, uint32_t aDeadband) const
@@ -272,7 +272,7 @@ public:
 	AnalogOutputStatus(double aValue, uint8_t aQuality) : TypedMeasurement<double>(aValue, aQuality) 
 	{}
 
-	AnalogOutputStatus(double aValue, uint8_t aQuality, int64_t aTime) : TypedMeasurement<double>(aValue, aQuality, aTime) 
+	AnalogOutputStatus(double aValue, uint8_t aQuality, uint64_t aTime) : TypedMeasurement<double>(aValue, aQuality, aTime) 
 	{}	
 };
 

@@ -32,17 +32,26 @@
 #include <opendnp3/app/ControlRelayOutputBlock.h>
 #include <opendnp3/app/IndexedValue.h>
 
+#include <asiopal/LogToStdio.h>
+
 #include <functional>
 
 using namespace std;
+using namespace asiopal;
 using namespace openpal;
 using namespace opendnp3;
 
 void TestComplex(const std::string& hex, APDUParser::Result expected, size_t numCalls, std::function<void (MockApduHeaderHandler&)> validate)
 {
 	HexSequence buffer(hex);
-	MockApduHeaderHandler mock;	
-	auto result = APDUParser::ParseTwoPass(buffer.ToReadOnly(), &mock, nullptr);
+	MockApduHeaderHandler mock;
+	Logger logger(&mock, LogLevel::Warning, "test");
+	auto result = APDUParser::ParseTwoPass(buffer.ToReadOnly(), &mock, &logger);
+
+	if (result != expected)
+	{		
+		mock.Pop(LogToStdio::Inst());
+	}
 
 	BOOST_REQUIRE(result == expected);
 	BOOST_REQUIRE_EQUAL(numCalls, mock.groupVariations.size());
@@ -347,6 +356,24 @@ BOOST_AUTO_TEST_CASE(Group60Var1Var2Var3Var4)
 		BOOST_REQUIRE(GroupVariation::Group60Var2 == mock.groupVariations[1]);
 		BOOST_REQUIRE(GroupVariation::Group60Var3 == mock.groupVariations[2]);
 		BOOST_REQUIRE(GroupVariation::Group60Var4 == mock.groupVariations[3]);
+	});
+}
+
+BOOST_AUTO_TEST_CASE(TestDoubleBitCommonTimeOccurence)
+{
+	// 123456789 in hex == 0x75BCD15 -> 0x15CD5B070000 little endian
+
+	// "33 01 07 01 15 CD 5B 07 00 00"
+
+	TestComplex("33 01 07 01 15 CD 5B 07 00 00 04 03 17 02 03 C1 07 00 05 41 09 00", APDUParser::Result::OK, 1, [&](MockApduHeaderHandler& mock) {
+		BOOST_REQUIRE_EQUAL(1, mock.groupVariations.size());
+		BOOST_REQUIRE_EQUAL(2, mock.eventDoubleBinaries.size());
+
+		IndexedValue<DoubleBitBinary, uint16_t> event1(DoubleBitBinary(DoubleBit::INDETERMINATE, DBQ_ONLINE, 123456789 + 7), 3);
+		IndexedValue<DoubleBitBinary, uint16_t> event2(DoubleBitBinary(DoubleBit::DETERMINED_OFF, DBQ_ONLINE, 123456789 + 9), 5);
+
+		BOOST_REQUIRE(event1 == mock.eventDoubleBinaries[0]);
+		BOOST_REQUIRE(event2 == mock.eventDoubleBinaries[1]);
 	});
 }
 

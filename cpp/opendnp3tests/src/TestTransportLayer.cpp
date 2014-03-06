@@ -218,7 +218,7 @@ BOOST_AUTO_TEST_CASE(SendFailure)
 	BOOST_REQUIRE_EQUAL(test.upper.GetState().mFailureCnt, 1);
 	
 	test.upper.SendDown("11");
-	BOOST_REQUIRE("C0 11", test.lower.PopWriteAsHex()); // should resend with the same sequence number FIR/FIN SEQ=0
+	BOOST_REQUIRE_EQUAL("C0 11", test.lower.PopWriteAsHex()); // should resend with the same sequence number FIR/FIN SEQ=0
 	test.lower.SendSuccess();
 	BOOST_REQUIRE_EQUAL(test.upper.GetState().mSuccessCnt, 1);
 	BOOST_REQUIRE_EQUAL(test.upper.GetState().mFailureCnt, 1);
@@ -230,11 +230,11 @@ BOOST_AUTO_TEST_CASE(SendSuccess)
 
 	// this puts the layer into the Sending state
 	test.upper.SendDown("11");
-	BOOST_REQUIRE("C0 11", test.lower.PopWriteAsHex()); //FIR/FIN SEQ=0
+	BOOST_REQUIRE_EQUAL("C0 11", test.lower.PopWriteAsHex()); //FIR/FIN SEQ=0
 	
 	// this puts the layer into the Sending state
 	test.upper.SendDown("11");
-	BOOST_REQUIRE("C1 11", test.lower.PopWriteAsHex()); //FIR/FIN SEQ=1
+	BOOST_REQUIRE_EQUAL("C1 11", test.lower.PopWriteAsHex()); //FIR/FIN SEQ=1
 	BOOST_REQUIRE_EQUAL(test.upper.GetState().mSuccessCnt, 2);
 }
 

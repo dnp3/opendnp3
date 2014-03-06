@@ -44,6 +44,8 @@ public:
 
 	openpal::Logger mTestLogger;
 
+	void Pop(openpal::ILogBase* pLog);
+
 protected:
 	std::queue<openpal::LogEntry> mBuffer;
 
