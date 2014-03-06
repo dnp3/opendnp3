@@ -32,7 +32,9 @@
 #include "opendnp3/app/StaticRange.h"
 
 #include "opendnp3/gen/QualifierCode.h"
+
 #include "opendnp3/objects/Group50.h"
+#include "opendnp3/objects/Group51.h"
 #include "opendnp3/objects/Group52.h"
 
 namespace opendnp3
@@ -52,6 +54,10 @@ class IAPDUHandler
 		virtual void OnCountRequest(GroupVariation gv, uint32_t count) = 0;
 
 		virtual void OnCountOf(const IterableBuffer<Group50Var1>& times) = 0;
+
+		virtual void OnCountOf(const IterableBuffer<Group51Var1>& times) = 0;
+
+		virtual void OnCountOf(const IterableBuffer<Group51Var2>& times) = 0;
 
 		virtual void OnCountOf(const IterableBuffer<Group52Var2>& times) = 0;
 

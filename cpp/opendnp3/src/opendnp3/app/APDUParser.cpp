@@ -196,7 +196,13 @@ APDUParser::Result APDUParser::ParseObjectsWithRange(QualifierCode qualifier, op
 		MACRO_PARSE_OBJECTS_WITH_RANGE(Group40Var4);
 
 		case(GroupVariation::Group50Var1):
-			return ParseCountOf<Group50Var1>(buffer, pLogger, range.Count(), pHandler); 
+			return ParseCountOf<Group50Var1>(buffer, pLogger, range.Count(), pHandler);
+
+		case(GroupVariation::Group51Var1) :
+			return ParseCountOf<Group51Var1>(buffer, pLogger, range.Count(), pHandler);
+
+		case(GroupVariation::Group51Var2) :
+			return ParseCountOf<Group51Var1>(buffer, pLogger, range.Count(), pHandler);
 		
 		case(GroupVariation::Group52Var2):
 			return ParseCountOf<Group52Var2>(buffer, pLogger, range.Count(), pHandler);

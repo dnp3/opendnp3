@@ -51,7 +51,11 @@ namespace opendnp3
 
 		virtual void OnIIN(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<bool, uint16_t>>& meas) final;
 
-		virtual void OnCountOf(const opendnp3::IterableBuffer<Group50Var1> &) final;
+		virtual void OnCountOf(const opendnp3::IterableBuffer<Group50Var1> &) final;		
+
+		virtual void OnCountOf(const opendnp3::IterableBuffer<Group51Var1> &) final;
+		virtual void OnCountOf(const opendnp3::IterableBuffer<Group51Var2> &) final;
+
 		virtual void OnCountOf(const opendnp3::IterableBuffer<Group52Var2> &) final;
 
 		virtual void OnRange(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas) final;
@@ -126,28 +130,26 @@ namespace opendnp3
 		virtual void _OnRange(GroupVariation gv, const IterableBuffer<IndexedValue<FrozenCounter, uint16_t>>& meas);
 		virtual void _OnRange(GroupVariation gv, const IterableBuffer<IndexedValue<Analog, uint16_t>>& meas);		
 		virtual void _OnRange(GroupVariation gv, const IterableBuffer<IndexedValue<AnalogOutputStatus, uint16_t>>& meas);
+		virtual void _OnRange(GroupVariation gv, const IterableBuffer<IndexedValue<OctetString, uint16_t>>& meas);
 
 		virtual void _OnIndexPrefix(GroupVariation gv, const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas);
 		virtual void _OnIndexPrefix(GroupVariation gv, const IterableBuffer<IndexedValue<DoubleBitBinary, uint16_t>>& meas);
 		virtual void _OnIndexPrefix(GroupVariation gv, const IterableBuffer<IndexedValue<Counter, uint16_t>>& meas);
 		virtual void _OnIndexPrefix(GroupVariation gv, const IterableBuffer<IndexedValue<FrozenCounter, uint16_t>>& meas);
 		virtual void _OnIndexPrefix(GroupVariation gv, const IterableBuffer<IndexedValue<Analog, uint16_t>>& meas);
-
-		virtual void _OnIndexPrefix(QualifierCode qualifier, const IterableBuffer<IndexedValue<ControlRelayOutputBlock, uint16_t>>& meas);
-		virtual void _OnIndexPrefix(QualifierCode qualifier, const IterableBuffer<IndexedValue<AnalogOutputInt16, uint16_t>>& meas);
-		virtual void _OnIndexPrefix(QualifierCode qualifier, const IterableBuffer<IndexedValue<AnalogOutputInt32, uint16_t>>& meas);
-		virtual void _OnIndexPrefix(QualifierCode qualifier, const IterableBuffer<IndexedValue<AnalogOutputFloat32, uint16_t>>& meas);
-		virtual void _OnIndexPrefix(QualifierCode qualifier, const IterableBuffer<IndexedValue<AnalogOutputDouble64, uint16_t>>& meas);
-
-		virtual void _OnIndexPrefix(QualifierCode qualifier, const IterableBuffer<IndexedValue<ControlRelayOutputBlock, uint8_t>>& meas);
-		virtual void _OnIndexPrefix(QualifierCode qualifier, const IterableBuffer<IndexedValue<AnalogOutputInt16, uint8_t>>& meas);
-		virtual void _OnIndexPrefix(QualifierCode qualifier, const IterableBuffer<IndexedValue<AnalogOutputInt32, uint8_t>>& meas);
-		virtual void _OnIndexPrefix(QualifierCode qualifier, const IterableBuffer<IndexedValue<AnalogOutputFloat32, uint8_t>>& meas);
-		virtual void _OnIndexPrefix(QualifierCode qualifier, const IterableBuffer<IndexedValue<AnalogOutputDouble64, uint8_t>>& meas);
-
-		virtual void _OnRange(GroupVariation gv, const IterableBuffer<IndexedValue<OctetString, uint16_t>>& meas);
 		virtual void _OnIndexPrefix(GroupVariation gv, const IterableBuffer<IndexedValue<OctetString, uint16_t>>& meas);
 
+		virtual void _OnIndexPrefix(const IterableBuffer<IndexedValue<ControlRelayOutputBlock, uint16_t>>& meas);
+		virtual void _OnIndexPrefix(const IterableBuffer<IndexedValue<AnalogOutputInt16, uint16_t>>& meas);
+		virtual void _OnIndexPrefix(const IterableBuffer<IndexedValue<AnalogOutputInt32, uint16_t>>& meas);
+		virtual void _OnIndexPrefix(const IterableBuffer<IndexedValue<AnalogOutputFloat32, uint16_t>>& meas);
+		virtual void _OnIndexPrefix(const IterableBuffer<IndexedValue<AnalogOutputDouble64, uint16_t>>& meas);
+		
+		virtual void _OnIndexPrefix(const IterableBuffer<IndexedValue<ControlRelayOutputBlock, uint8_t>>& meas);
+		virtual void _OnIndexPrefix(const IterableBuffer<IndexedValue<AnalogOutputInt16, uint8_t>>& meas);
+		virtual void _OnIndexPrefix(const IterableBuffer<IndexedValue<AnalogOutputInt32, uint8_t>>& meas);
+		virtual void _OnIndexPrefix(const IterableBuffer<IndexedValue<AnalogOutputFloat32, uint8_t>>& meas);
+		virtual void _OnIndexPrefix(const IterableBuffer<IndexedValue<AnalogOutputDouble64, uint8_t>>& meas);
 
 	protected:
 
