@@ -61,8 +61,7 @@ void AppLayerChannel::Reset()
 
 void AppLayerChannel::Send(APDUWrapper& apdu, size_t aNumRetry)
 {
-	mpState->Send(this, apdu, aNumRetry);
-	mSendAPDU = apdu; // assign this record so we can retry
+	mpState->Send(this, apdu, aNumRetry);	
 }
 
 void AppLayerChannel::OnSendSuccess()

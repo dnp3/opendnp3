@@ -25,6 +25,8 @@ std::string CommandResultToString(CommandResult arg)
   {
     case(CommandResult::RESPONSE_OK):
       return "RESPONSE_OK";
+    case(CommandResult::BAD_RESPONSE):
+      return "BAD_RESPONSE";
     case(CommandResult::TIMEOUT):
       return "TIMEOUT";
     case(CommandResult::NO_COMMS):

@@ -28,19 +28,27 @@ using namespace opendnp3;
 using namespace openpal;
 
 BOOST_AUTO_TEST_SUITE(PhysicalLayerAsyncBaseSuite)
+
 BOOST_AUTO_TEST_CASE(ClosedState)
 {
 	AsyncPhysBaseTest t;
 	uint8_t buff;
 	WriteBuffer wb(&buff, 1);
 
-	BOOST_REQUIRE_THROW(t.phys.AsyncClose(), InvalidStateException);
-	BOOST_REQUIRE_THROW(t.upper.SendDown("00"), InvalidStateException);
-	BOOST_REQUIRE_THROW(t.phys.AsyncRead(wb), InvalidStateException);
-	BOOST_REQUIRE_THROW(t.phys.SignalOpenFailure(), InvalidStateException);
-	BOOST_REQUIRE_THROW(t.phys.SignalOpenSuccess(), InvalidStateException);
-	BOOST_REQUIRE_THROW(t.phys.SignalSendSuccess(), InvalidStateException);
-	BOOST_REQUIRE_THROW(t.phys.SignalSendFailure(), InvalidStateException);
+	t.phys.AsyncClose();
+	BOOST_REQUIRE(t.log.PopOneEntry(LogLevel::Error));
+	t.upper.SendDown("00");
+	BOOST_REQUIRE(t.log.PopOneEntry(LogLevel::Error));
+	t.phys.AsyncRead(wb);
+	BOOST_REQUIRE(t.log.PopOneEntry(LogLevel::Error));
+	t.phys.SignalOpenFailure();
+	BOOST_REQUIRE(t.log.PopOneEntry(LogLevel::Error));
+	t.phys.SignalOpenSuccess();
+	BOOST_REQUIRE(t.log.PopOneEntry(LogLevel::Error));
+	t.phys.SignalSendSuccess();
+	BOOST_REQUIRE(t.log.PopOneEntry(LogLevel::Error));
+	t.phys.SignalSendFailure();
+	BOOST_REQUIRE(t.log.PopOneEntry(LogLevel::Error));
 
 }
 
@@ -55,10 +63,14 @@ BOOST_AUTO_TEST_CASE(OpenCloseNotification)
 		BOOST_REQUIRE_EQUAL(t.upper.GetState().mNumLayerUp, i);
 		t.phys.AsyncClose();
 
-		BOOST_REQUIRE_THROW(t.phys.SignalOpenFailure(), InvalidStateException);
-		BOOST_REQUIRE_THROW(t.phys.SignalOpenSuccess(), InvalidStateException);
-		BOOST_REQUIRE_THROW(t.phys.SignalSendSuccess(), InvalidStateException);
-		BOOST_REQUIRE_THROW(t.phys.SignalSendFailure(), InvalidStateException);
+		t.phys.SignalOpenFailure();
+		BOOST_REQUIRE(t.log.PopOneEntry(LogLevel::Error));
+		t.phys.SignalOpenSuccess();
+		BOOST_REQUIRE(t.log.PopOneEntry(LogLevel::Error));
+		t.phys.SignalSendSuccess();
+		BOOST_REQUIRE(t.log.PopOneEntry(LogLevel::Error));
+		t.phys.SignalSendFailure();
+		BOOST_REQUIRE(t.log.PopOneEntry(LogLevel::Error));
 
 		BOOST_REQUIRE_EQUAL(t.phys.NumClose(), i);
 		BOOST_REQUIRE_EQUAL(t.upper.GetState().mNumLayerDown, i);
@@ -72,10 +84,14 @@ BOOST_AUTO_TEST_CASE(ReadState)
 	t.phys.SignalOpenSuccess();
 	t.adapter.StartRead(); //start a read
 
-	BOOST_REQUIRE_THROW(t.phys.SignalOpenFailure(), InvalidStateException);
-	BOOST_REQUIRE_THROW(t.phys.SignalOpenSuccess(), InvalidStateException);
-	BOOST_REQUIRE_THROW(t.phys.SignalSendSuccess(), InvalidStateException);
-	BOOST_REQUIRE_THROW(t.phys.SignalSendFailure(), InvalidStateException);
+	t.phys.SignalOpenFailure();
+	BOOST_REQUIRE(t.log.PopOneEntry(LogLevel::Error));
+	t.phys.SignalOpenSuccess();
+	BOOST_REQUIRE(t.log.PopOneEntry(LogLevel::Error));
+	t.phys.SignalSendSuccess();
+	BOOST_REQUIRE(t.log.PopOneEntry(LogLevel::Error));
+	t.phys.SignalSendFailure();
+	BOOST_REQUIRE(t.log.PopOneEntry(LogLevel::Error));
 
 	t.phys.TriggerRead("00");
 	t.upper.BufferEqualsHex("00");
@@ -104,10 +120,14 @@ BOOST_AUTO_TEST_CASE(WriteState)
 	t.upper.SendDown("00");
 	BOOST_REQUIRE_EQUAL(t.phys.Size(), 1);
 
-	BOOST_REQUIRE_THROW(t.phys.SignalOpenFailure(), InvalidStateException);
-	BOOST_REQUIRE_THROW(t.phys.SignalOpenSuccess(), InvalidStateException);
-	BOOST_REQUIRE_THROW(t.phys.TriggerRead(""), InvalidStateException);
-	BOOST_REQUIRE_THROW(t.phys.SignalReadFailure(), InvalidStateException);
+	t.phys.SignalOpenFailure();
+	BOOST_REQUIRE(t.log.PopOneEntry(LogLevel::Error));
+	t.phys.SignalOpenSuccess();
+	BOOST_REQUIRE(t.log.PopOneEntry(LogLevel::Error));
+	t.phys.TriggerRead("");
+	BOOST_REQUIRE(t.log.PopOneEntry(LogLevel::Error));
+	t.phys.SignalReadFailure();
+	BOOST_REQUIRE(t.log.PopOneEntry(LogLevel::Error));
 }
 
 BOOST_AUTO_TEST_CASE(CloseWhileWriting)

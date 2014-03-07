@@ -92,13 +92,15 @@ void IOServiceThreadPool::Run()
 
 	mOnThreadStart();
 
-	do {
-		try {
+	do 
+	{
+		try 
+		{
 			num = mService.run();
 		}
-		catch(const std::exception& ex) {
-			num = 0;
-									
+		catch(const std::exception& ex) 
+		{
+			num = 1;									
 			LOG_BLOCK(LogLevel::Error, "Unhandled exception in thread pool: " << ex.what());			
 		}
 	}

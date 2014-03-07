@@ -118,6 +118,7 @@ void ACS_Idle::Send(AppLayerChannel* c, APDUWrapper& apdu, size_t aNumRetry)
 	}
 	else
 	{
+		c->mSendAPDU = apdu; // assign this record so we can retry
 		c->ChangeState(pNext);
 		c->SetRetry(aNumRetry);
 		c->QueueSend(apdu);
@@ -135,8 +136,13 @@ ACS_Base* ACS_Idle::NextState(AppLayerChannel* c, FunctionCode aFunc, bool aConf
 			if(c->Sequence() < 0) 
 			{
 				LOGGER_BLOCK(c->mLogger, LogLevel::Error, "Can't respond until we've received a request");
-			}	
-			return this;
+				return this;
+			}
+			else
+			{
+				if (aConfirm) return ACS_SendConfirmed::Inst();
+				else return ACS_Send::Inst();
+			}			
 		case(FunctionCode::UNSOLICITED_RESPONSE):
 			if(aConfirm) return ACS_SendConfirmed::Inst();
 			else return ACS_Send::Inst();

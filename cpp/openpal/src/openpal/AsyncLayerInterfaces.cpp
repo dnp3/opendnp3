@@ -35,7 +35,11 @@ namespace openpal
 
 void IUpDown::OnLowerLayerUp()
 {
-	if (!mIsLowerLayerUp)
+	if (mIsLowerLayerUp)
+	{
+		LOG_BLOCK(LogLevel::Error, "Layer already online");
+	}
+	else
 	{
 		mIsLowerLayerUp = true;
 		this->_OnLowerLayerUp();
@@ -44,10 +48,14 @@ void IUpDown::OnLowerLayerUp()
 
 void IUpDown::OnLowerLayerDown()
 {
-	if (mIsLowerLayerUp) 
+	if (mIsLowerLayerUp)
 	{
 		mIsLowerLayerUp = false;
 		this->_OnLowerLayerDown();
+	}
+	else
+	{
+		LOG_BLOCK(LogLevel::Error, "Layer not online");
 	}
 }
 
@@ -56,6 +64,7 @@ void IUpDown::OnLowerLayerDown()
 // IUpperLayer
 //////////////////////////////////
 IUpperLayer::IUpperLayer(openpal::Logger& arLogger) :
+	IUpDown(arLogger),
 	Loggable(arLogger),
 	mpLowerLayer(nullptr)
 {

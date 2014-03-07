@@ -27,12 +27,16 @@ namespace DNP3.Interface
     /// </summary>
     RESPONSE_OK = 0,
     /// <summary>
+    /// A response was received from the outstation, but it did not match or contained bad formatting
+    /// </summary>
+    BAD_RESPONSE = 1,
+    /// <summary>
     /// The operation timed out without a response
     /// </summary>
-    TIMEOUT = 1,
+    TIMEOUT = 2,
     /// <summary>
     /// There is no communication with the outstation, and the command was not attempted
     /// </summary>
-    NO_COMMS = 2
+    NO_COMMS = 3
   }
 }

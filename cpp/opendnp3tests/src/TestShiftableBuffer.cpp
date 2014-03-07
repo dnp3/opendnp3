@@ -43,10 +43,7 @@ BOOST_AUTO_TEST_CASE(InitialState)
 
 	BOOST_REQUIRE_EQUAL(b.NumReadBytes(), 0);
 	BOOST_REQUIRE_EQUAL(b.NumWriteBytes(), 100);
-	BOOST_REQUIRE_EQUAL(b.ReadBuff(), b.WriteBuff());
-
-	BOOST_REQUIRE_THROW(b.AdvanceWrite(101), ArgumentException);
-	BOOST_REQUIRE_THROW(b.AdvanceRead(1), ArgumentException);
+	BOOST_REQUIRE_EQUAL(b.ReadBuff(), b.WriteBuff());	
 }
 
 BOOST_AUTO_TEST_CASE(ReadingWriting)

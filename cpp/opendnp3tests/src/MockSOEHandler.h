@@ -154,6 +154,15 @@ class MockSOEHandler : public ISOEHandler
 	AnalogOutputStatus GetAnalogOutputStatus(uint32_t aIndex) { return GetAny<AnalogOutputStatus>(aIndex, mAnalogOutputStatusMap); }
 	OctetString GetOctetString(uint32_t aIndex) { return GetAny<OctetString>(aIndex, mOctetStringMap); }
 
+	Binary GetEventBinary(uint32_t aIndex) { return GetAny<Binary>(aIndex, mEventBinaryMap); }
+	DoubleBitBinary GetEventDoubleBinary(uint32_t aIndex) { return GetAny<DoubleBitBinary>(aIndex, mEventDoubleBinaryMap); }
+	Analog GetEventAnalog(uint32_t aIndex) { return GetAny<Analog>(aIndex, mEventAnalogMap); }
+	Counter GetEventCounter(uint32_t aIndex) { return GetAny<Counter>(aIndex, mEventCounterMap); }
+	FrozenCounter GetEventFrozenCounter(uint32_t aIndex) { return GetAny<FrozenCounter>(aIndex, mEventFrozenCounterMap); }
+	BinaryOutputStatus GetEventBinaryOutputStatus(uint32_t aIndex) { return GetAny<BinaryOutputStatus>(aIndex, mEventBinaryOutputStatusMap); }
+	AnalogOutputStatus GetEventAnalogOutputStatus(uint32_t aIndex) { return GetAny<AnalogOutputStatus>(aIndex, mEventAnalogOutputStatusMap); }
+	OctetString GetEventOctetString(uint32_t aIndex) { return GetAny<OctetString>(aIndex, mEventOctetStringMap); }
+
 protected:
 
 	void Start() {}

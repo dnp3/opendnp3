@@ -27,10 +27,10 @@
 namespace openpal
 {
 
-class IUpDown
+class IUpDown : protected virtual openpal::Loggable
 {
 public:
-	IUpDown() : mIsLowerLayerUp(false) {}
+	IUpDown(openpal::Logger& logger) : Loggable(logger), mIsLowerLayerUp(false) {}
 	virtual ~IUpDown() {}
 
 	// Called by a 'LowerLayer' when it can start performing send services
@@ -56,7 +56,7 @@ private:
 
 class ILowerLayer;
 
-class IUpperLayer : public IUpDown, protected virtual openpal::Loggable
+class IUpperLayer : public IUpDown
 {
 public:
 	IUpperLayer(openpal::Logger&);

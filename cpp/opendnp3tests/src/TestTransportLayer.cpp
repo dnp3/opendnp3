@@ -42,10 +42,14 @@ BOOST_AUTO_TEST_CASE(StateOffline)
 {
 	TransportTestObject test;
 
-	BOOST_REQUIRE_THROW(test.upper.SendDown("00"), InvalidStateException);
-	BOOST_REQUIRE_THROW(test.lower.SendUp(""), InvalidStateException);
-	BOOST_REQUIRE_THROW(test.lower.SendSuccess(), InvalidStateException);
-	BOOST_REQUIRE_THROW(test.lower.ThisLayerDown(), InvalidStateException);
+	test.upper.SendDown("00");
+	BOOST_REQUIRE(test.log.PopOneEntry(LogLevel::Error));
+	test.lower.SendUp("");
+	BOOST_REQUIRE(test.log.PopOneEntry(LogLevel::Error));
+	test.lower.SendSuccess();
+	BOOST_REQUIRE(test.log.PopOneEntry(LogLevel::Error));
+	test.lower.ThisLayerDown();
+	BOOST_REQUIRE(test.log.PopOneEntry(LogLevel::Error));
 }
 
 BOOST_AUTO_TEST_CASE(StateReady)
@@ -59,9 +63,11 @@ BOOST_AUTO_TEST_CASE(StateReady)
 	test.lower.ThisLayerUp();
 	BOOST_REQUIRE(test.upper.IsLowerLayerUp());
 
-	//check that these actions all throw InvalidStateException
-	BOOST_REQUIRE_THROW(test.lower.ThisLayerUp(), InvalidStateException);
-	BOOST_REQUIRE_THROW(test.lower.SendSuccess(), InvalidStateException);
+	// check that these actions all log errors
+	test.lower.ThisLayerUp();
+	BOOST_REQUIRE(test.log.PopOneEntry(LogLevel::Error));
+	test.lower.SendSuccess();
+	BOOST_REQUIRE(test.log.PopOneEntry(LogLevel::Error));
 }
 
 BOOST_AUTO_TEST_CASE(ReceiveBadArguments)
@@ -172,8 +178,8 @@ BOOST_AUTO_TEST_CASE(ReceiveNewFir)
 BOOST_AUTO_TEST_CASE(SendArguments)
 {
 	TransportTestObject test(true);
-	BOOST_REQUIRE_THROW(test.upper.SendDown(""), ArgumentException); // 0 Length
-	BOOST_REQUIRE_THROW(test.upper.SendDown(test.GetData("", 0, DEFAULT_FRAG_SIZE + 1)), ArgumentException); // Max Size + 1
+	test.upper.SendDown("");
+	BOOST_REQUIRE(test.log.PopOneEntry(LogLevel::Error));	
 }
 
 BOOST_AUTO_TEST_CASE(StateSending)
@@ -187,8 +193,10 @@ BOOST_AUTO_TEST_CASE(StateSending)
 	BOOST_REQUIRE_EQUAL("C0 11", test.lower.PopWriteAsHex()); //FIR/FIN SEQ=0
 
 	// Check that while we're sending, all other send requests are rejected
-	BOOST_REQUIRE_THROW(test.upper.SendDown("00"), InvalidStateException);
-	BOOST_REQUIRE_THROW(test.lower.ThisLayerUp(), InvalidStateException);
+	test.upper.SendDown("00");
+	BOOST_REQUIRE(test.log.PopOneEntry(LogLevel::Error));
+	test.lower.ThisLayerUp();
+	BOOST_REQUIRE(test.log.PopOneEntry(LogLevel::Error));
 
 	//while we are sending, we should still be able to receive data as normal
 	test.lower.SendUp("C0 77");
@@ -198,7 +206,8 @@ BOOST_AUTO_TEST_CASE(StateSending)
 	test.lower.SendSuccess();
 	BOOST_REQUIRE_EQUAL(test.upper.GetState().mSuccessCnt, 1);
 
-	BOOST_REQUIRE_THROW(test.lower.SendSuccess(), InvalidStateException);
+	test.lower.SendSuccess();
+	BOOST_REQUIRE(test.log.PopOneEntry(LogLevel::Error));
 }
 
 BOOST_AUTO_TEST_CASE(SendFailure)

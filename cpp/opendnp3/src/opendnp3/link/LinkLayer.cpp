@@ -70,6 +70,12 @@ void LinkLayer::ChangeState(SecStateBase* apState)
 
 bool LinkLayer::Validate(bool aIsMaster, uint16_t aSrc, uint16_t aDest)
 {
+	if (!mIsOnline)
+	{
+		LOG_BLOCK(LogLevel::Error, "Layer is not online");						
+		return false;
+	}
+
 	if(aIsMaster == mCONFIG.IsMaster) 
 	{
 		ERROR_BLOCK(LogLevel::Warning,
@@ -194,56 +200,74 @@ bool LinkLayer::Retry()
 
 void LinkLayer::Ack(bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc)
 {
-	if(this->Validate(aIsMaster, aSrc, aDest))
+	if (this->Validate(aIsMaster, aSrc, aDest))
+	{
 		mpPriState->Ack(this, aIsRcvBuffFull);
+	}
 }
 
 void LinkLayer::Nack(bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc)
 {
-	if(this->Validate(aIsMaster, aSrc, aDest))
+	if (this->Validate(aIsMaster, aSrc, aDest))
+	{
 		mpPriState->Nack(this, aIsRcvBuffFull);
+	}
 }
 
 void LinkLayer::LinkStatus(bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc)
 {
-	if(this->Validate(aIsMaster, aSrc, aDest))
+	if (this->Validate(aIsMaster, aSrc, aDest))
+	{
 		mpPriState->LinkStatus(this, aIsRcvBuffFull);
+	}
 }
 
 void LinkLayer::NotSupported (bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc)
 {
-	if(this->Validate(aIsMaster, aSrc, aDest))
+	if (this->Validate(aIsMaster, aSrc, aDest))
+	{
 		mpPriState->NotSupported(this, aIsRcvBuffFull);
+	}
 }
 
 void LinkLayer::TestLinkStatus(bool aIsMaster, bool aFcb, uint16_t aDest, uint16_t aSrc)
 {
-	if(this->Validate(aIsMaster, aSrc, aDest))
+	if (this->Validate(aIsMaster, aSrc, aDest))
+	{
 		mpSecState->TestLinkStatus(this, aFcb);
+	}
 }
 
 void LinkLayer::ResetLinkStates(bool aIsMaster, uint16_t aDest, uint16_t aSrc)
 {
-	if(this->Validate(aIsMaster, aSrc, aDest))
+	if (this->Validate(aIsMaster, aSrc, aDest))
+	{
 		mpSecState->ResetLinkStates(this);
+	}
 }
 
 void LinkLayer::RequestLinkStatus(bool aIsMaster, uint16_t aDest, uint16_t aSrc)
 {
-	if(this->Validate(aIsMaster, aSrc, aDest))
+	if (this->Validate(aIsMaster, aSrc, aDest))
+	{
 		mpSecState->RequestLinkStatus(this);
+	}
 }
 
 void LinkLayer::ConfirmedUserData(bool aIsMaster, bool aFcb, uint16_t aDest, uint16_t aSrc, const ReadOnlyBuffer& arBuffer)
 {
-	if(this->Validate(aIsMaster, aSrc, aDest))
+	if (this->Validate(aIsMaster, aSrc, aDest))
+	{
 		mpSecState->ConfirmedUserData(this, aFcb, arBuffer);
+	}
 }
 
 void LinkLayer::UnconfirmedUserData(bool aIsMaster, uint16_t aDest, uint16_t aSrc, const ReadOnlyBuffer& arBuffer)
 {
-	if(this->Validate(aIsMaster, aSrc, aDest))
+	if (this->Validate(aIsMaster, aSrc, aDest))
+	{
 		mpSecState->UnconfirmedUserData(this, arBuffer);
+	}
 }
 
 ////////////////////////////////

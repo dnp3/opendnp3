@@ -35,6 +35,20 @@ void LogTester::Log( const LogEntry& arEntry )
 	mBuffer.push(arEntry);
 }
 
+bool LogTester::PopOneEntry(LogLevel level)
+{
+	if (mBuffer.size() == 1)
+	{
+		if (mBuffer.front().GetLogLevel() == level)
+		{
+			mBuffer.pop();
+			return true;
+		}
+		else return false;
+	}
+	else return false;
+}
+
 int LogTester::ClearLog()
 {
 	int max = -1;

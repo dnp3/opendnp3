@@ -38,7 +38,9 @@ void UnsolicitedChannel::OnUnsol(const APDUResponseRecord& aRecord)
 	{
 		LOG_BLOCK(LogLevel::Info, "Ignoring repeat unsol seq: " << aRecord.control.SEQ)
 	}
-	else { // only process the data if the sequence number is new
+	else 
+	{ 
+		// only process the data if the sequence number is new
 		mSequence = aRecord.control.SEQ;
 		mpAppLayer->mpUser->OnUnsolResponse(aRecord);
 	}

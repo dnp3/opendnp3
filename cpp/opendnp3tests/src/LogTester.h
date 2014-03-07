@@ -37,6 +37,8 @@ public:
 
 	void Log( const openpal::LogEntry& arEntry );
 
+	bool PopOneEntry(openpal::LogLevel level);	
+
 	int ClearLog();
 	int NextErrorCode();
 	bool GetNextEntry(openpal::LogEntry& arEntry);

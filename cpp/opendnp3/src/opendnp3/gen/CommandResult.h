@@ -30,10 +30,12 @@ enum class CommandResult : int
 {
   /// A response was received from the outstation, check the CommandStatus enumeration
   RESPONSE_OK = 0,
+  /// A response was received from the outstation, but it did not match or contained bad formatting
+  BAD_RESPONSE = 1,
   /// The operation timed out without a response
-  TIMEOUT = 1,
+  TIMEOUT = 2,
   /// There is no communication with the outstation, and the command was not attempted
-  NO_COMMS = 2
+  NO_COMMS = 3
 };
 
 std::string CommandResultToString(CommandResult arg);

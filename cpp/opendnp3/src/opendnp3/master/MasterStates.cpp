@@ -99,7 +99,8 @@ void AMS_Closed::OnLowerLayerUp(Master* c)
 
 void AMS_OpenBase::OnUnsolResponse(Master* c, const APDUResponseRecord& aRecord)
 {
-	c->ProcessDataResponse(aRecord);
+	c->ProcessIIN(aRecord.IIN);
+	c->ProcessDataResponse(aRecord);	
 }
 
 void AMS_OpenBase::OnLowerLayerDown(Master* c)
@@ -139,27 +140,33 @@ void AMS_Waiting::OnFailure(Master* c)
 
 void AMS_Waiting::OnPartialResponse(Master* c, const APDUResponseRecord& aRecord)
 {
+	c->ProcessIIN(aRecord.IIN);
+
 	if(!c->mpTask->OnPartialResponse(aRecord))
 	{
 		this->ChangeState(c, AMS_Idle::Inst());
 		c->mpScheduledTask->OnComplete(false);		
-	}
+	}	
 }
 
 void AMS_Waiting::OnFinalResponse(Master* c, const APDUResponseRecord& aRecord)
 {
+	c->ProcessIIN(aRecord.IIN);
+
 	switch(c->mpTask->OnFinalResponse(aRecord)) {
-	case(TR_FAIL):
-		this->ChangeState(c, AMS_Idle::Inst());
-		c->mpScheduledTask->OnComplete(false);
-		break;
-	case(TR_CONTINUE):	//multi request task!
-		c->StartTask(c->mpTask, false);
-		break;
-	case(TR_SUCCESS):
-		this->ChangeState(c, AMS_Idle::Inst());
-		c->mpScheduledTask->OnComplete(true);
+		case(TR_FAIL):
+			this->ChangeState(c, AMS_Idle::Inst());
+			c->mpScheduledTask->OnComplete(false);
+			break;
+		case(TR_CONTINUE):	//multi request task!
+			c->StartTask(c->mpTask, false);
+			break;
+		case(TR_SUCCESS):
+			this->ChangeState(c, AMS_Idle::Inst());
+			c->mpScheduledTask->OnComplete(true);
 	}
+
+	
 }
 
 } //ens ns

@@ -28,6 +28,7 @@
 
 #include "MockExecutor.h"
 #include "Exception.h"
+#include "TestHelpers.h"
 
 #include <boost/bind.hpp>
 #include <queue>
@@ -88,7 +89,7 @@ BOOST_AUTO_TEST_CASE(DependencyAnalysis)
 	AsyncTaskBase* pT3 = group.Add(TimeDuration::Seconds(1), TimeDuration::Seconds(1), 0, mth.GetHandler());
 
 	// try self-assignemt
-	BOOST_REQUIRE_THROW(pT1->AddDependency(pT1), ArgumentException);
+	BOOST_REQUIRE_FALSE(pT1->AddDependency(pT1));
 
 	BOOST_REQUIRE(!pT2->IsDependency(pT1));
 	pT2->AddDependency(pT1);
@@ -102,8 +103,8 @@ BOOST_AUTO_TEST_CASE(DependencyAnalysis)
 	BOOST_REQUIRE(pT3->IsDependency(pT1));
 
 	//try to create some circular dependencies
-	BOOST_REQUIRE_THROW(pT1->AddDependency(pT2), ArgumentException);
-	BOOST_REQUIRE_THROW(pT1->AddDependency(pT3), ArgumentException);
+	BOOST_REQUIRE_FALSE(pT1->AddDependency(pT2));
+	BOOST_REQUIRE_FALSE(pT1->AddDependency(pT3));
 }
 
 BOOST_AUTO_TEST_CASE(ContinousTask)

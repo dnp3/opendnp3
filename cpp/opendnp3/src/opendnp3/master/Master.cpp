@@ -83,25 +83,35 @@ void Master::UpdateState(StackState aState)
 	}
 }
 
-void Master::ProcessIIN(const IINField& arIIN)
+void Master::ProcessIIN(const IINField& iin)
 {
+	mLastIIN = iin;
+
 	this->UpdateState(StackState::COMMS_UP);
 
 	bool check_state = false;
 
 	//The clear IIN task only happens in response to detecting an IIN bit.
-	if(mLastIIN.IsSet(IINBit::NEED_TIME)) {
+	if(mLastIIN.IsSet(IINBit::NEED_TIME)) 
+	{
 		LOG_BLOCK(LogLevel::Info, "Need time detected");
 		mSchedule.mpTimeTask->SilentEnable();
 		check_state = true;
 	}
 
-	if(mLastIIN.IsSet(IINBit::DEVICE_TROUBLE)) LOG_BLOCK(LogLevel::Warning, "IIN Device trouble detected");
+	if (mLastIIN.IsSet(IINBit::DEVICE_TROUBLE))
+	{
+		LOG_BLOCK(LogLevel::Warning, "IIN Device trouble detected");
+	}
 
-	if(mLastIIN.IsSet(IINBit::EVENT_BUFFER_OVERFLOW)) LOG_BLOCK(LogLevel::Warning, "Event buffer overflow detected");
+	if (mLastIIN.IsSet(IINBit::EVENT_BUFFER_OVERFLOW))
+	{
+		LOG_BLOCK(LogLevel::Warning, "Event buffer overflow detected");
+	}
 
 	// If this is detected, we need to reset the startup tasks
-	if(mLastIIN.IsSet(IINBit::DEVICE_RESTART)) {
+	if(mLastIIN.IsSet(IINBit::DEVICE_RESTART)) 
+	{
 		LOG_BLOCK(LogLevel::Warning, "Device restart detected");
 		mSchedule.ResetStartupTasks();
 		mSchedule.mpClearRestartTask->SilentEnable();
@@ -270,23 +280,17 @@ void Master::OnUnsolFailure()
 }
 
 void Master::OnPartialResponse(const APDUResponseRecord& aRecord)
-{
-	mLastIIN =  aRecord.IIN;
-	this->ProcessIIN(mLastIIN);
+{	
 	mpState->OnPartialResponse(this, aRecord);
 }
 
 void Master::OnFinalResponse(const APDUResponseRecord& aRecord)
 {
-	mLastIIN = aRecord.IIN;
-	this->ProcessIIN(mLastIIN);
 	mpState->OnFinalResponse(this, aRecord);
 }
 
 void Master::OnUnsolResponse(const APDUResponseRecord& aRecord)
 {
-	mLastIIN = aRecord.IIN;
-	this->ProcessIIN(mLastIIN);
 	mpState->OnUnsolResponse(this, aRecord);
 }
 
@@ -295,10 +299,7 @@ void Master::OnUnsolResponse(const APDUResponseRecord& aRecord)
 void Master::ProcessDataResponse(const APDUResponseRecord& record)
 {
 	MeasurementHandler handler(mLogger, this->mpSOEHandler);
-	auto res = APDUParser::ParseTwoPass(record.objects, &handler, &mLogger);
-	if(res != APDUParser::Result::OK) {	
-		LOG_BLOCK(LogLevel::Warning, "Error parsing response headers: " << static_cast<int>(res)); // TODO - turn these into strings
-	}	
+	APDUParser::ParseTwoPass(record.objects, &handler, &mLogger);		
 }
 
 } //end ns

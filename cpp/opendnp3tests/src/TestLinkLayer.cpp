@@ -39,9 +39,12 @@ BOOST_AUTO_TEST_SUITE(LinkLayerTestSuite)
 BOOST_AUTO_TEST_CASE(ClosedState)
 {
 	LinkLayerTest t;
-	BOOST_REQUIRE_THROW(t.upper.SendDown("00"), InvalidStateException);
-	BOOST_REQUIRE_THROW(t.link.OnLowerLayerDown(), InvalidStateException);
-	BOOST_REQUIRE_THROW(t.link.Ack(false, false, 1, 2), InvalidStateException);
+	t.upper.SendDown("00");
+	BOOST_REQUIRE(t.log.PopOneEntry(LogLevel::Error));
+	t.link.OnLowerLayerDown();
+	BOOST_REQUIRE(t.log.PopOneEntry(LogLevel::Error));
+	t.link.Ack(false, false, 1, 2);
+	BOOST_REQUIRE(t.log.PopOneEntry(LogLevel::Error));
 }
 
 // Prove that the upper layer is notified when the lower layer comes online
@@ -51,7 +54,8 @@ BOOST_AUTO_TEST_CASE(ForwardsOnLowerLayerUp)
 	BOOST_REQUIRE_FALSE(t.upper.IsLowerLayerUp());
 	t.link.OnLowerLayerUp();
 	BOOST_REQUIRE(t.upper.IsLowerLayerUp());
-	BOOST_REQUIRE_THROW(t.link.OnLowerLayerUp(), InvalidStateException);
+	t.link.OnLowerLayerUp();
+	BOOST_REQUIRE(t.log.PopOneEntry(LogLevel::Error));	
 }
 
 // Check that once the layer comes up, validation errors can occur

@@ -38,8 +38,9 @@ class AsyncPhysTestObject : public AsyncTestObjectASIO
 public:
 	AsyncPhysTestObject(openpal::LogLevel aLevel = openpal::LogLevel::Info, bool aImmediate = false, bool aAutoRead = true);
 
-private:
 	LogTester log;
+
+private:	
 	openpal::Logger logger;
 
 public:

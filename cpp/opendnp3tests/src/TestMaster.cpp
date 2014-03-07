@@ -79,14 +79,22 @@ BOOST_AUTO_TEST_CASE(InitialState)
 	MasterConfig master_cfg;
 	MasterTestObject t(master_cfg);	
 
-	BOOST_REQUIRE_THROW(t.master.OnLowerLayerDown(), InvalidStateException);
-	BOOST_REQUIRE_THROW(t.master.OnSolSendSuccess(), InvalidStateException);
-	BOOST_REQUIRE_THROW(t.master.OnUnsolSendSuccess(), InvalidStateException);
-	BOOST_REQUIRE_THROW(t.master.OnSolFailure(), InvalidStateException);
-	BOOST_REQUIRE_THROW(t.master.OnUnsolFailure(), InvalidStateException);
-	BOOST_REQUIRE_THROW(t.master.OnPartialResponse(APDUResponseRecord()), InvalidStateException);
-	BOOST_REQUIRE_THROW(t.master.OnFinalResponse(APDUResponseRecord()), InvalidStateException);
-	BOOST_REQUIRE_THROW(t.master.OnUnsolResponse(APDUResponseRecord()), InvalidStateException);
+	t.master.OnLowerLayerDown();
+	BOOST_REQUIRE(t.log.PopOneEntry(LogLevel::Error));
+	t.master.OnSolSendSuccess();
+	BOOST_REQUIRE(t.log.PopOneEntry(LogLevel::Error));
+	t.master.OnUnsolSendSuccess();
+	BOOST_REQUIRE(t.log.PopOneEntry(LogLevel::Error));
+	t.master.OnSolFailure();
+	BOOST_REQUIRE(t.log.PopOneEntry(LogLevel::Error));
+	t.master.OnUnsolFailure();
+	BOOST_REQUIRE(t.log.PopOneEntry(LogLevel::Error));
+	t.master.OnPartialResponse(APDUResponseRecord());
+	BOOST_REQUIRE(t.log.PopOneEntry(LogLevel::Error));
+	t.master.OnFinalResponse(APDUResponseRecord());
+	BOOST_REQUIRE(t.log.PopOneEntry(LogLevel::Error));
+	t.master.OnUnsolResponse(APDUResponseRecord());
+	BOOST_REQUIRE(t.log.PopOneEntry(LogLevel::Error));
 }
 
 BOOST_AUTO_TEST_CASE(IntegrityOnStartup)
@@ -418,16 +426,13 @@ BOOST_AUTO_TEST_CASE(ControlExecutionSelectPartialResponse)
 	DoControlSelectAndOperate(t, [&](CommandResponse cr) {
 		rsps.push_back(cr);
 	});
+	
 	t.RespondToMaster("80 81 00 00 0C 01 28 01 00 01 00 01 01 64 00 00 00 64 00 00 00 00", false);
 
-	BOOST_REQUIRE_EQUAL(0, rsps.size());
-
-	t.RespondToMaster("C0 81 00 00 0C 01 28 01 00 01 00 01 01 64 00 00 00 64 00 00 00 04"); // not supported
-
-	t.mts.DispatchOne();
+	BOOST_REQUIRE(t.mts.DispatchOne());
 
 	BOOST_REQUIRE_EQUAL(1, rsps.size());
-	BOOST_REQUIRE(CommandResponse::OK(CommandStatus::NOT_SUPPORTED) == rsps[0]);
+	BOOST_REQUIRE(CommandResponse(CommandResult::BAD_RESPONSE) == rsps[0]);
 }
 
 BOOST_AUTO_TEST_CASE(DeferredControlExecution)
@@ -567,7 +572,7 @@ BOOST_AUTO_TEST_CASE(ParsesOctetStringResponseWithFiveCharacters)
 
 	BOOST_REQUIRE(t.mts.DispatchOne());
 
-	BOOST_REQUIRE_EQUAL("hello", t.meas.GetOctetString(4).AsString());
+	BOOST_REQUIRE_EQUAL("hello", t.meas.GetEventOctetString(4).AsString());
 }
 
 BOOST_AUTO_TEST_CASE(ParsesOctetStringResponseWithNoCharacters)

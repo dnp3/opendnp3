@@ -20,8 +20,6 @@
  */
 #include <boost/test/unit_test.hpp>
 
-#include <asiopal/Log.h>
-
 #include <opendnp3/link/PhysicalLayerMonitor.h>
 #include <opendnp3/link/PhysicalLayerMonitorStates.h>
 
@@ -29,6 +27,7 @@
 #include "MockPhysicalLayerAsync.h"
 #include "TestHelpers.h"
 #include "Exception.h"
+#include "LogTester.h"
 
 using namespace opendnp3;
 using namespace std::chrono;
@@ -81,7 +80,7 @@ public:
 		monitor(Logger(&log, LogLevel::Info, "test"), &phys)
 	{}
 
-	EventLog log;
+	LogTester log;
 	MockExecutor exe;
 	MockPhysicalLayerAsync phys;
 	ConcretePhysicalLayerMonitor monitor;
@@ -93,9 +92,15 @@ BOOST_AUTO_TEST_CASE(StateClosedExceptions)
 {
 	TestObject test;
 	BOOST_REQUIRE(ChannelState::CLOSED == test.monitor.GetState());
-	BOOST_REQUIRE_THROW(test.monitor.OnLowerLayerUp(), InvalidStateException);
-	BOOST_REQUIRE_THROW(test.monitor.OnLowerLayerDown(), InvalidStateException);
-	BOOST_REQUIRE_THROW(test.monitor.OnOpenFailure(), InvalidStateException);
+
+	test.monitor.OnLowerLayerUp();
+	BOOST_REQUIRE(test.log.PopOneEntry(LogLevel::Error));
+	test.monitor.OnLowerLayerDown();
+	BOOST_REQUIRE(test.log.PopOneEntry(LogLevel::Error));
+	test.monitor.OnOpenFailure();
+	BOOST_REQUIRE(test.log.PopOneEntry(LogLevel::Error));
+	
+	
 	BOOST_REQUIRE(ChannelState::CLOSED == test.monitor.GetState());
 }
 
@@ -103,7 +108,8 @@ BOOST_AUTO_TEST_CASE(ThrowsIfEverNotExpectingOpenTimer)
 {
 	TestObject test;
 	test.monitor.ReachInAndStartOpenTimer();
-	BOOST_REQUIRE_THROW(test.exe.DispatchOne(), InvalidStateException);
+	BOOST_REQUIRE(test.exe.DispatchOne());
+	BOOST_REQUIRE(test.log.PopOneEntry(LogLevel::Error));
 	BOOST_REQUIRE(ChannelState::CLOSED == test.monitor.GetState());
 }
 
@@ -208,7 +214,8 @@ BOOST_AUTO_TEST_CASE(OpeningLayerExceptions)
 {
 	TestObject test;
 	test.monitor.Start();
-	BOOST_REQUIRE_THROW(test.monitor.OnLowerLayerDown(), InvalidStateException);
+	test.monitor.OnLowerLayerDown();
+	BOOST_REQUIRE(test.log.PopOneEntry(LogLevel::Error));	
 }
 
 BOOST_AUTO_TEST_CASE(OpeningStartOneGoesToOpeningOne)

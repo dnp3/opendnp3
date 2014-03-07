@@ -121,6 +121,7 @@ void CommandTask::OnFailure()
 bool CommandTask::_OnPartialResponse(const APDUResponseRecord&)
 {
 	LOG_BLOCK(LogLevel::Error, "Non fin responses not allowed for control tasks");
+	callback(CommandResponse(CommandResult::BAD_RESPONSE));
 	return false;
 }
 
@@ -147,21 +148,15 @@ TaskResult CommandTask::_OnFinalResponse(const APDUResponseRecord& record)
 		}
 	}
 	else
-	{
-		LOG_BLOCK(LogLevel::Error, "Error parsing apdu: " << static_cast<int>(result)); // TODO - improve logging
-		callback(CommandResponse(CommandResult::TIMEOUT));  // maybe another code for malformed response?
+	{		
+		callback(CommandResponse(CommandResult::BAD_RESPONSE));
 		return TaskResult::TR_FAIL;
 	}	
 }
 
-#ifndef OPENDNP3_STRIP_LOG_MESSAGES
 std::string CommandTask::Name() const
 {
 	return "CommandTask";
 }
-#endif
-
 
 } //ens ns
-
-

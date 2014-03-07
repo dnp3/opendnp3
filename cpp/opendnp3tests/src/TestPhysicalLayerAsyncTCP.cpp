@@ -52,15 +52,17 @@ BOOST_AUTO_TEST_CASE(TestStateClosed)
 	WriteBuffer buff(b, 100);		
 	WriteBuffer empty;
 	
-
-	// Test that reads/writes of length 0 throw ArgumentException
-	BOOST_REQUIRE_THROW(t.mTCPClient.AsyncWrite(empty.ToReadOnly()), ArgumentException);
-	BOOST_REQUIRE_THROW(t.mTCPClient.AsyncRead(empty), ArgumentException);
-
-	//Test that in the closed state we get the proper invalid state exceptions
-	BOOST_REQUIRE_THROW(t.mTCPClient.AsyncWrite(buff.ToReadOnly()), InvalidStateException);
-	BOOST_REQUIRE_THROW(t.mTCPClient.AsyncRead(buff), InvalidStateException);
-	BOOST_REQUIRE_THROW(t.mTCPClient.AsyncClose(), InvalidStateException);
+	t.mTCPClient.AsyncWrite(empty.ToReadOnly());
+	BOOST_REQUIRE(t.log.PopOneEntry(LogLevel::Error));
+	t.mTCPClient.AsyncRead(empty);
+	BOOST_REQUIRE(t.log.PopOneEntry(LogLevel::Error));
+	
+	t.mTCPClient.AsyncWrite(buff.ToReadOnly());
+	BOOST_REQUIRE(t.log.PopOneEntry(LogLevel::Error));
+	t.mTCPClient.AsyncRead(buff);
+	BOOST_REQUIRE(t.log.PopOneEntry(LogLevel::Error));
+	t.mTCPClient.AsyncClose();
+	BOOST_REQUIRE(t.log.PopOneEntry(LogLevel::Error));
 }
 
 BOOST_AUTO_TEST_CASE(ClientConnectionRejected)

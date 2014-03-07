@@ -58,10 +58,16 @@ BOOST_AUTO_TEST_SUITE(AppLayerSuite)
 BOOST_AUTO_TEST_CASE(InitialState)
 {
 	AppLayerTest t;
-	BOOST_REQUIRE_THROW(t.app.OnLowerLayerDown(), InvalidStateException);
-	BOOST_REQUIRE_THROW(t.app.OnSendSuccess(), InvalidStateException);
-	BOOST_REQUIRE_THROW(t.app.OnSendFailure(), InvalidStateException);
-	BOOST_REQUIRE_THROW(t.lower.SendUp(""), InvalidStateException);
+	t.app.OnLowerLayerDown();
+	BOOST_REQUIRE(t.log.PopOneEntry(LogLevel::Error));
+	t.app.OnLowerLayerDown();
+	BOOST_REQUIRE(t.log.PopOneEntry(LogLevel::Error));
+	t.app.OnSendSuccess();
+	BOOST_REQUIRE(t.log.PopOneEntry(LogLevel::Error));
+	t.app.OnSendFailure();
+	BOOST_REQUIRE(t.log.PopOneEntry(LogLevel::Error));
+	t.lower.SendUp("");
+	BOOST_REQUIRE(t.log.PopOneEntry(LogLevel::Error));
 }
 
 // Check that Up/Down are forwarded correctly
@@ -127,21 +133,11 @@ BOOST_AUTO_TEST_CASE(SendBadFuncCodeSlave)
 	t.lower.ThisLayerUp();
 
 	// can't send a response until at least 1 request has been received
-	// to set the sequence number
-	/* TODO - change these to log tests
-	BOOST_REQUIRE_THROW(
-	        t.SendResponse(FunctionCode::RESPONSE, true, true, false, false),
-	        InvalidStateException);
-
-	BOOST_REQUIRE_THROW(
-	        t.SendUnsolicited(FunctionCode::RESPONSE, true, true, false, false),
-	        ArgumentException);
-
-
-	BOOST_REQUIRE_THROW(
-	        t.SendRequest(FunctionCode::WRITE, true, true, false, false), // master only
-	        Exception);
-	*/
+	// to set the sequence number. Report this as a response failure
+	t.SendResponse(FunctionCode::RESPONSE, true, true, false, false);
+	BOOST_REQUIRE(t.mts.DispatchOne());
+	BOOST_REQUIRE_EQUAL(1, t.user.mState.NumSolFailure);
+	BOOST_REQUIRE(t.log.PopOneEntry(LogLevel::Error));
 }
 
 BOOST_AUTO_TEST_CASE(SendExtraObjectData)

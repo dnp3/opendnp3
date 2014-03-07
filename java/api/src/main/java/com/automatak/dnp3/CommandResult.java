@@ -26,13 +26,17 @@ public enum CommandResult
   */
   RESPONSE_OK(0),
   /**
+  * A response was received from the outstation, but it did not match or contained bad formatting
+  */
+  BAD_RESPONSE(1),
+  /**
   * The operation timed out without a response
   */
-  TIMEOUT(1),
+  TIMEOUT(2),
   /**
   * There is no communication with the outstation, and the command was not attempted
   */
-  NO_COMMS(2);
+  NO_COMMS(3);
 
   private final int id;
 
@@ -53,8 +57,10 @@ public enum CommandResult
       case(0):
         return RESPONSE_OK;
       case(1):
-        return TIMEOUT;
+        return BAD_RESPONSE;
       case(2):
+        return TIMEOUT;
+      case(3):
         return NO_COMMS;
     }
     return NO_COMMS;
