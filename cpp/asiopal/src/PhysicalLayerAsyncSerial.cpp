@@ -26,7 +26,6 @@
 #include <functional>
 #include <string>
 
-#include <openpal/Exception.h>
 #include <openpal/LoggableMacros.h>
 #include <openpal/IHandlerAsync.h>
 
@@ -58,11 +57,19 @@ PhysicalLayerAsyncSerial::PhysicalLayerAsyncSerial(
 void PhysicalLayerAsyncSerial::DoOpen()
 {
 	boost::system::error_code ec;
-	mPort.open(mSettings.mDevice, ec);
+	mPort.open(mSettings.mDevice, ec);	
+	
+	if (!ec) 
+	{
+		Configure(mSettings, mPort, ec);
+		if(ec)
+		{ 
+			boost::system::error_code ec2;
+			mPort.close(ec2);
+		}
+	}
 
 	//use post to simulate an async open operation
-	if(!ec) Configure(mSettings, mPort, ec);
-
 	mExecutor.Post(std::bind(&PhysicalLayerAsyncSerial::OnOpenCallback, this, ec));
 }
 

@@ -21,9 +21,7 @@
 #ifndef __ASIO_EXECUTOR_H_
 #define __ASIO_EXECUTOR_H_
 
-#include <openpal/Exception.h>
 #include <openpal/IExecutor.h>
-
 
 #include <queue>
 

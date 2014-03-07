@@ -25,7 +25,6 @@
 #include <functional>
 #include <string>
 
-#include <openpal/Exception.h>
 #include <openpal/LoggableMacros.h>
 #include <openpal/IHandlerAsync.h>
 
@@ -56,30 +55,51 @@ PhysicalLayerAsyncTCPServer::PhysicalLayerAsyncTCPServer(
 /* Implement the actions */
 void PhysicalLayerAsyncTCPServer::DoOpen()
 {
-	if(!mAcceptor.is_open()) {
+	if (!mAcceptor.is_open())
+	{
 		boost::system::error_code ec;
 		mAcceptor.open(mLocalEndpoint.protocol(), ec);
-		if(ec) {
-			MACRO_THROW_EXCEPTION(Exception, ec.message());
+		if (ec)
+		{
+			LOG_BLOCK(LogLevel::Error, ec.message());
+			this->GetExecutor()->Post([this, ec]() { this->OnOpenCallback(ec); });
 		}
-
-		mAcceptor.set_option(ip::tcp::acceptor::reuse_address(true));
-		mAcceptor.bind(mLocalEndpoint, ec);
-		if(ec) {
-			MACRO_THROW_EXCEPTION(Exception, ec.message());
-		}
-
-		mAcceptor.listen(socket_base::max_connections, ec);
-		if(ec) {
-			MACRO_THROW_EXCEPTION(Exception, ec.message());
+		else
+		{
+			mAcceptor.set_option(ip::tcp::acceptor::reuse_address(true));
+			mAcceptor.bind(mLocalEndpoint, ec);
+			if (ec)
+			{
+				LOG_BLOCK(LogLevel::Error, ec.message());
+				this->GetExecutor()->Post([this, ec]() { this->OnOpenCallback(ec); });
+			}
+			else
+			{
+				mAcceptor.listen(socket_base::max_connections, ec);
+				if (ec)
+				{
+					LOG_BLOCK(LogLevel::Error, ec.message());
+					this->GetExecutor()->Post([this, ec]() { this->OnOpenCallback(ec); });
+				}
+				else
+				{
+					mAcceptor.async_accept(mSocket,
+						mRemoteEndpoint,
+						mStrand.wrap([this](const boost::system::error_code& code){
+						this->OnOpenCallback(code);
+					}));
+				}
+			}			
 		}
 	}
-
-	mAcceptor.async_accept(mSocket,
-	                       mRemoteEndpoint,
-						   mStrand.wrap([this](const boost::system::error_code& code){
-								this->OnOpenCallback(code);
-						   }));						  
+	else
+	{
+		mAcceptor.async_accept(mSocket,
+			mRemoteEndpoint,
+			mStrand.wrap([this](const boost::system::error_code& code){
+			this->OnOpenCallback(code);
+		}));
+	}
 }
 
 void PhysicalLayerAsyncTCPServer::CloseAcceptor()

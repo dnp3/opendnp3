@@ -23,8 +23,6 @@
 
 #include <boost/asio.hpp>
 
-
-
 #include "SerialTypes.h"
 
 namespace boost
@@ -40,7 +38,6 @@ namespace asiopal
 
 // Serial port configuration functions "free" to keep the classes simple.
 void Configure(SerialSettings& arSettings, boost::asio::serial_port& arPort, boost::system::error_code& ec);
-void Configure(SerialSettings& arSettings, boost::asio::serial_port& arPort);
 
 }
 

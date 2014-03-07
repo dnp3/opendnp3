@@ -20,7 +20,6 @@
  */
 #include <asiopal/IOServiceThreadPool.h>
 
-#include <openpal/Exception.h>
 #include <openpal/LoggableMacros.h>
 
 #include <chrono>

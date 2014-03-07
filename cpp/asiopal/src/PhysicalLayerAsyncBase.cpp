@@ -22,7 +22,7 @@
 
 #include <openpal/IHandlerAsync.h>
 #include <openpal/LoggableMacros.h>
-#include <openpal/Exception.h>
+#include <openpal/IExecutor.h>
 
 #include <sstream>
 
@@ -137,12 +137,14 @@ PhysicalLayerAsyncBase::PhysicalLayerAsyncBase(openpal::Logger& arLogger) :
 
 void PhysicalLayerAsyncBase::AsyncOpen()
 {
-	if(mState.CanOpen()) {
+	if(mState.CanOpen()) 
+	{
 		mState.mOpening = true;
 		this->DoOpen();
 	}
-	else {
-		MACRO_THROW_EXCEPTION_COMPLEX(InvalidStateException, "AsyncOpen: " << this->ConvertStateToString());
+	else 
+	{
+		LOG_BLOCK(LogLevel::Error, "Invalid operation for state: " << this->ConvertStateToString());		
 	}
 }
 
@@ -165,39 +167,52 @@ void PhysicalLayerAsyncBase::StartClose()
 			if(mState.mOpening) this->DoOpeningClose();
 			else this->DoClose();
 		}
-		else {
-			MACRO_THROW_EXCEPTION_COMPLEX(InvalidStateException, "StartClose: " << this->ConvertStateToString());
+		else 
+		{
+			LOG_BLOCK(LogLevel::Error, "Invalid operation for state: " << this->ConvertStateToString());
 		}
 	}
 }
 
 void PhysicalLayerAsyncBase::AsyncWrite(const openpal::ReadOnlyBuffer& arBuffer)
-{
-	if(arBuffer.Size() < 1) {		
-		MACRO_THROW_EXCEPTION(ArgumentException, "aNumBytes must be > 0");
+{			
+	if (mState.CanWrite())
+	{
+		if (arBuffer.Size() > 0)
+		{
+			mState.mWriting = true;
+			this->DoAsyncWrite(arBuffer);
+		}
+		else
+		{
+			LOG_BLOCK(LogLevel::Error, "Client wrote a length of 0");
+			this->GetExecutor()->Post([this](){ this->DoWriteSuccess(); });
+		}
 	}
-
-	if(mState.CanWrite()) {
-		mState.mWriting = true;
-		this->DoAsyncWrite(arBuffer);
-	}
-	else {
-		MACRO_THROW_EXCEPTION_COMPLEX(InvalidStateException, "AsyncWrite: " << this->ConvertStateToString());
-	}
+	else
+	{
+		LOG_BLOCK(LogLevel::Error, "Invalid operation for state: " << this->ConvertStateToString());
+	}			
 }
 
 void PhysicalLayerAsyncBase::AsyncRead(WriteBuffer& arBuffer)
 {
-	if(arBuffer.Size() < 1) {
-		MACRO_THROW_EXCEPTION(ArgumentException, "Buffer size must be > 0");
+	if(mState.CanRead()) 
+	{
+		if (arBuffer.Size() > 0)
+		{
+			mState.mReading = true;
+			this->DoAsyncRead(arBuffer);
+		}
+		else
+		{
+			LOG_BLOCK(LogLevel::Error, "Client read a length of 0");
+			this->GetExecutor()->Post([this, arBuffer](){ this->DoReadCallback(ReadOnlyBuffer()); });
+		}		
 	}
-
-	if(mState.CanRead()) {
-		mState.mReading = true;
-		this->DoAsyncRead(arBuffer);
-	}
-	else {
-		MACRO_THROW_EXCEPTION_COMPLEX(InvalidStateException, "AsyncRead: " << this->ConvertStateToString());
+	else 
+	{
+		LOG_BLOCK(LogLevel::Error, "Invalid operation for state: " << this->ConvertStateToString());
 	}
 }
 
@@ -207,7 +222,8 @@ void PhysicalLayerAsyncBase::AsyncRead(WriteBuffer& arBuffer)
 
 void PhysicalLayerAsyncBase::OnOpenCallback(const boost::system::error_code& arErr)
 {
-	if(mState.mOpening) {
+	if(mState.mOpening) 
+	{
 		mState.mOpening = false;
 
 		this->DoOpenCallback();
@@ -231,14 +247,16 @@ void PhysicalLayerAsyncBase::OnOpenCallback(const boost::system::error_code& arE
 			}
 		}
 	}
-	else {
-		MACRO_THROW_EXCEPTION_COMPLEX(InvalidStateException, "OnOpenCallback: " << this->ConvertStateToString());
+	else 
+	{
+		LOG_BLOCK(LogLevel::Error, "Invalid operation for state: " << this->ConvertStateToString());
 	}
 }
 
 void PhysicalLayerAsyncBase::OnReadCallback(const boost::system::error_code& arErr, uint8_t* apBuffer, size_t aNumRead)
 {
-	if(mState.mReading) {
+	if(mState.mReading) 
+	{
 		mState.mReading = false;
 
 		if(arErr) {
@@ -257,8 +275,9 @@ void PhysicalLayerAsyncBase::OnReadCallback(const boost::system::error_code& arE
 
 		if(mState.CheckForClose()) this->DoThisLayerDown();
 	}
-	else {
-		MACRO_THROW_EXCEPTION_COMPLEX(InvalidStateException, "OnReadCallback: " << this->ConvertStateToString());
+	else 
+	{
+		LOG_BLOCK(LogLevel::Error, "Invalid operation for state: " << this->ConvertStateToString());
 	}
 }
 
@@ -282,8 +301,9 @@ void PhysicalLayerAsyncBase::OnWriteCallback(const boost::system::error_code& ar
 
 		if(mState.CheckForClose()) this->DoThisLayerDown();
 	}
-	else {
-		MACRO_THROW_EXCEPTION_COMPLEX(InvalidStateException, "OnWriteCallback: " << this->ConvertStateToString());
+	else 
+	{
+		LOG_BLOCK(LogLevel::Error, "Invalid operation for state: " << this->ConvertStateToString());
 	}
 }
 

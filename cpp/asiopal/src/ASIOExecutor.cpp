@@ -22,7 +22,6 @@
 
 #include "TimerASIO.h"
 
-#include <openpal/Exception.h>
 #include <openpal/Location.h>
 
 #include <boost/asio.hpp>
@@ -55,7 +54,7 @@ openpal::MonotonicTimestamp ASIOExecutor::GetTime()
 openpal::ITimer* ASIOExecutor::Start(const openpal::TimeDuration& arDelay, const function<void ()>& arCallback)
 {
 	std::lock_guard<std::mutex> lock(mMutex);
-	if(mIsShuttingDown) MACRO_THROW_EXCEPTION(openpal::InvalidStateException, "Can't start a timer while executor is shutting down");
+	assert(!mIsShuttingDown);	
 	TimerASIO* pTimer = GetTimer();
 	pTimer->mTimer.expires_from_now(std::chrono::milliseconds(arDelay.GetMilliseconds()));
 	this->StartTimer(pTimer, arCallback);
@@ -65,7 +64,7 @@ openpal::ITimer* ASIOExecutor::Start(const openpal::TimeDuration& arDelay, const
 openpal::ITimer* ASIOExecutor::Start(const openpal::MonotonicTimestamp& arTime, const function<void ()>& arCallback)
 {
 	std::lock_guard<std::mutex> lock(mMutex);
-	if(mIsShuttingDown) MACRO_THROW_EXCEPTION(openpal::InvalidStateException, "Can't start a timer while executor is shutting down");
+	assert(!mIsShuttingDown);
 	TimerASIO* pTimer = GetTimer();
 	pTimer->mTimer.expires_at(asiopal::timer_clock::time_point(std::chrono::milliseconds(arTime.milliseconds)));
 	this->StartTimer(pTimer, arCallback);

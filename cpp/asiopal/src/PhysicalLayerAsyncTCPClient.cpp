@@ -24,8 +24,6 @@
 #include <functional>
 #include <string>
 
-
-#include <openpal/Exception.h>
 #include <openpal/LoggableMacros.h>
 #include <openpal/IHandlerAsync.h>
 

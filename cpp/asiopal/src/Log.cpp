@@ -23,8 +23,6 @@
 
 #include <asiopal/Log.h>
 
-#include <openpal/Exception.h>
-
 using namespace std;
 using namespace openpal;
 
