@@ -86,6 +86,11 @@ void AppLayerChannel::Cancel()
 	mpState->Cancel(this);
 }
 
+void AppLayerChannel::CancelRetries()
+{
+	LOG_BLOCK(LEV_INFO, "Canceling channel retries");
+	mNumRetry = 0;
+}
 
 // ---- State Actions ----
 

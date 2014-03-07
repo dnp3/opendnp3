@@ -321,13 +321,16 @@ void AS_WaitForUnsolSuccess::OnUnsolSendSuccess(Slave* c)
 
 void AS_WaitForUnsolSuccess::OnRequest(Slave* c, const APDU& arAPDU, SequenceInfo aSeqInfo)
 {
-	if (arAPDU.GetFunction() == FC_READ) {
+	if (arAPDU.GetFunction() == FC_READ) 
+	{
 		//read requests should be defered until after the unsol
+		c->mpAppLayer->CancelUnsolicitedRetries();
 		c->mRequest = arAPDU;
 		c->mSeqInfo = aSeqInfo;
 		c->mDeferredRequest = true;
 	}
-	else {
+	else 
+	{
 		// all other requests should be handled immediately
 		c->mDeferredRequest = false;
 		this->DoRequest(c, AS_WaitForSolUnsolSuccess::Inst(), arAPDU, aSeqInfo);
