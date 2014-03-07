@@ -22,7 +22,6 @@
 #include "LogSubscriberAdapter.hpp"
 
 #include <asiodnp3/ASIODNP3Manager.h>
-#include <openpal/Exception.h>
 
 using namespace asiodnp3;
 using namespace openpal;
@@ -54,57 +53,39 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_destroy_1native_
 
 JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1channel_1tcp_1client
 (JNIEnv* pEnv, jobject, jlong ptrManager, jstring jloggerId, jint logLevel, jlong timeoutMs, jstring jhost, jint port)
-{
-	try {
-		auto pMgr = (ASIODNP3Manager*) ptrManager;
-		std::string loggerId = JNIHelpers::GetString(jloggerId, pEnv);
-		std::string host = JNIHelpers::GetString(jhost, pEnv);
-		LogLevel lev = LogLevelFromType(logLevel);
-		return (jlong) pMgr->AddTCPClient(Logger(pMgr->GetLog(), lev, loggerId), TimeDuration::Milliseconds(timeoutMs), host, port);
-	}
-	catch(Exception ex) {
-		MACRO_RETHROW_EXCEPTION(pEnv, ex);
-		return (jlong) nullptr;
-	}
+{	
+	auto pMgr = (ASIODNP3Manager*) ptrManager;
+	std::string loggerId = JNIHelpers::GetString(jloggerId, pEnv);
+	std::string host = JNIHelpers::GetString(jhost, pEnv);
+	LogLevel lev = LogLevelFromType(logLevel);
+	return (jlong) pMgr->AddTCPClient(Logger(pMgr->GetLog(), lev, loggerId), TimeDuration::Milliseconds(timeoutMs), host, port);		
 }
 
 JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1channel_1tcp_1server
 (JNIEnv* pEnv, jobject, jlong ptrManager, jstring jloggerId, jint logLevel, jlong timeoutMs, jstring jendpoint, jint port)
-{
-	try {
-		auto pMgr = (ASIODNP3Manager*) ptrManager;
-		std::string loggerId = JNIHelpers::GetString(jloggerId, pEnv);
-		std::string endpoint = JNIHelpers::GetString(jendpoint, pEnv);
-		LogLevel lev = LogLevelFromType(logLevel);
-		return (jlong) pMgr->AddTCPServer(Logger(pMgr->GetLog(), lev, loggerId), TimeDuration::Milliseconds(timeoutMs), endpoint, port);
-	}
-	catch(Exception ex) {
-		MACRO_RETHROW_EXCEPTION(pEnv, ex)
-		return (jlong) nullptr;
-	}
+{	
+	auto pMgr = (ASIODNP3Manager*) ptrManager;
+	std::string loggerId = JNIHelpers::GetString(jloggerId, pEnv);
+	std::string endpoint = JNIHelpers::GetString(jendpoint, pEnv);
+	LogLevel lev = LogLevelFromType(logLevel);
+	return (jlong) pMgr->AddTCPServer(Logger(pMgr->GetLog(), lev, loggerId), TimeDuration::Milliseconds(timeoutMs), endpoint, port);
 }
 
 JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1channel_1serial
 (JNIEnv* pEnv, jobject, jlong ptrManager, jstring jloggerId, jint logLevel, jlong timeoutMs, jstring jport, jint baudRate, jint dataBits, jint parity, jint stopBits, jint flowControl)
-{
-	try {
-		auto pMgr = (ASIODNP3Manager*) ptrManager;
-		std::string loggerId = JNIHelpers::GetString(jloggerId, pEnv);
-		std::string port = JNIHelpers::GetString(jport, pEnv);
-		asiopal::SerialSettings ss;
-		ss.mDevice = port;
-		ss.mBaud = baudRate;
-		ss.mDataBits = dataBits;
-		ss.mStopBits = stopBits;
-		ss.mParity = asiopal::GetParityFromInt(parity);
-		ss.mFlowType = asiopal::GetFlowTypeFromInt(flowControl);
-		LogLevel lev = LogLevelFromType(logLevel);
-		return (jlong) pMgr->AddSerial(Logger(pMgr->GetLog(), lev, loggerId), TimeDuration::Milliseconds(timeoutMs), ss);
-	}
-	catch(Exception ex) {
-		MACRO_RETHROW_EXCEPTION(pEnv, ex)
-		return (jlong) nullptr;
-	}
+{	
+	auto pMgr = (ASIODNP3Manager*) ptrManager;
+	std::string loggerId = JNIHelpers::GetString(jloggerId, pEnv);
+	std::string port = JNIHelpers::GetString(jport, pEnv);
+	asiopal::SerialSettings ss;
+	ss.mDevice = port;
+	ss.mBaud = baudRate;
+	ss.mDataBits = dataBits;
+	ss.mStopBits = stopBits;
+	ss.mParity = asiopal::GetParityFromInt(parity);
+	ss.mFlowType = asiopal::GetFlowTypeFromInt(flowControl);
+	LogLevel lev = LogLevelFromType(logLevel);
+	return (jlong) pMgr->AddSerial(Logger(pMgr->GetLog(), lev, loggerId), TimeDuration::Milliseconds(timeoutMs), ss);	
 }
 
 

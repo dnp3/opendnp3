@@ -25,7 +25,6 @@
 #include <opendnp3/outstation/IOutstation.h>
 #include <opendnp3/outstation/ITimeWriteHandler.h>
 
-#include <openpal/Exception.h>
 #include <openpal/IExecutor.h>
 
 #include <asiopal/UTCTimeSource.h>
@@ -69,58 +68,47 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_ChannelImpl_add_1native_1sta
 JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ChannelImpl_get_1native_1master
 (JNIEnv* pEnv, jobject, jlong ptr, jstring jloggerId, jint logLevel, jobject publisher, jobject jconfig)
 {
-	try {
-		auto pChannel = (IChannel*) ptr;
-		JavaVM* pJVM = JNIHelpers::GetJVMFromEnv(pEnv);
-		jobject global = pEnv->NewGlobalRef(publisher);
-		auto pPublisher = new DataObserverAdapter(pJVM, global);
-		std::string loggerId = JNIHelpers::GetString(jloggerId, pEnv);
-		MasterStackConfig config = ConfigReader::ConvertMasterStackConfig(pEnv, jconfig);
-		LogLevel lev = LogLevelFromType(logLevel);
-		auto pMaster = pChannel->AddMaster(loggerId, lev, pPublisher, asiopal::UTCTimeSource::Inst(), config);
-		auto pExecutor = pChannel->GetExecutor();
-		auto cleanup = [pJVM, global, pPublisher]() {
-			JNIHelpers::DeleteGlobalReference(pJVM, global);
-			delete pPublisher;
-		};
+	
+	auto pChannel = (IChannel*) ptr;
+	JavaVM* pJVM = JNIHelpers::GetJVMFromEnv(pEnv);
+	jobject global = pEnv->NewGlobalRef(publisher);
+	auto pPublisher = new DataObserverAdapter(pJVM, global);
+	std::string loggerId = JNIHelpers::GetString(jloggerId, pEnv);
+	MasterStackConfig config = ConfigReader::ConvertMasterStackConfig(pEnv, jconfig);
+	LogLevel lev = LogLevelFromType(logLevel);
+	auto pMaster = pChannel->AddMaster(loggerId, lev, pPublisher, asiopal::UTCTimeSource::Inst(), config);
+	auto pExecutor = pChannel->GetExecutor();
+	auto cleanup = [pJVM, global, pPublisher]() {
+		JNIHelpers::DeleteGlobalReference(pJVM, global);
+		delete pPublisher;
+	};
 		
-		pMaster->AddDestructorHook([pExecutor, cleanup](){ pExecutor->Post(cleanup); });
+	pMaster->AddDestructorHook([pExecutor, cleanup](){ pExecutor->Post(cleanup); });
 
-		pMaster->Enable(); // TODO - move this to bindings
-		return (jlong) pMaster;
-	}
-	catch(const openpal::Exception& ex) {
-		MACRO_RETHROW_EXCEPTION(pEnv, ex);
-		return (jlong) nullptr;
-	}
+	pMaster->Enable(); // TODO - move this to bindings
+	return (jlong) pMaster;	
 }
 
 JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ChannelImpl_get_1native_1slave
 (JNIEnv* pEnv, jobject, jlong ptr, jstring jloggerId, jint logLevel, jobject commandAdapter, jobject jconfig)
-{
-	try {
-		auto pChannel = (IChannel*) ptr;
-		std::string loggerId = JNIHelpers::GetString(jloggerId, pEnv);
-		SlaveStackConfig config = ConfigReader::ConvertSlaveStackConfig(pEnv, jconfig);
-		JavaVM* pJVM = JNIHelpers::GetJVMFromEnv(pEnv);
-		jobject global = pEnv->NewGlobalRef(commandAdapter);
-		auto pCmdHandler = new CommandHandlerAdapter(pJVM, global);
-		LogLevel lev = LogLevelFromType(logLevel);
-		auto pOutstation = pChannel->AddOutstation(loggerId, lev, pCmdHandler, NullTimeWriteHandler::Inst(), config);  //TODO wrap time callbacks
-		auto pExecutor = pChannel->GetExecutor();
-		auto cleanup = [pJVM, global, pCmdHandler]() {
-			JNIHelpers::DeleteGlobalReference(pJVM, global);
-			delete pCmdHandler;
-		};
+{	
+	auto pChannel = (IChannel*) ptr;
+	std::string loggerId = JNIHelpers::GetString(jloggerId, pEnv);
+	SlaveStackConfig config = ConfigReader::ConvertSlaveStackConfig(pEnv, jconfig);
+	JavaVM* pJVM = JNIHelpers::GetJVMFromEnv(pEnv);
+	jobject global = pEnv->NewGlobalRef(commandAdapter);
+	auto pCmdHandler = new CommandHandlerAdapter(pJVM, global);
+	LogLevel lev = LogLevelFromType(logLevel);
+	auto pOutstation = pChannel->AddOutstation(loggerId, lev, pCmdHandler, NullTimeWriteHandler::Inst(), config);  //TODO wrap time callbacks
+	auto pExecutor = pChannel->GetExecutor();
+	auto cleanup = [pJVM, global, pCmdHandler]() {
+		JNIHelpers::DeleteGlobalReference(pJVM, global);
+		delete pCmdHandler;
+	};
 
-		pOutstation->AddDestructorHook([pExecutor, cleanup](){ pExecutor->Post(cleanup); });
+	pOutstation->AddDestructorHook([pExecutor, cleanup](){ pExecutor->Post(cleanup); });
 		
-		pOutstation->Enable(); // TODO - move this to bindings
-		return (jlong) pOutstation;
-	}
-	catch(const openpal::Exception& ex) {
-		MACRO_RETHROW_EXCEPTION(pEnv, ex);
-		return (jlong) nullptr;
-	}
+	pOutstation->Enable(); // TODO - move this to bindings
+	return (jlong) pOutstation;	
 }
 

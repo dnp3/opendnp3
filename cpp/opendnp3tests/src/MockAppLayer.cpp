@@ -22,7 +22,8 @@
 
 #include <openpal/LoggableMacros.h>
 #include <openpal/ToHex.h>
-#include <openpal/Exception.h>
+
+#include "Exception.h"
 
 #include <assert.h>
 
@@ -108,18 +109,6 @@ std::string MockAppLayer::Read()
 	mFragments.pop_front();
 	return frag;
 }
-
-/*
-FunctionCode MockAppLayer::ReadFunction()
-{
-	if(mFragments.size() == 0) throw InvalidStateException(LOCATION, "No more fragments");
-	else {
-		FunctionCode func = mFragments.front().GetFunction();
-		mFragments.pop_front();
-		return func;	
-	}
-}
-*/
 
 void MockAppLayer::CancelResponse()
 {

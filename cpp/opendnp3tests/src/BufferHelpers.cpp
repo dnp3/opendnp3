@@ -21,7 +21,8 @@
 #include "BufferHelpers.h"
 
 #include <openpal/Location.h>
-#include <openpal/Exception.h>
+
+#include "Exception.h"
 
 #include <memory.h>
 #include <sstream>

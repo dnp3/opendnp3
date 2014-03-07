@@ -22,8 +22,7 @@
 
 #include "TestHelpers.h"
 #include "AsyncPhysBaseTest.h"
-
-#include <openpal/Exception.h>
+#include "Exception.h"
 
 using namespace opendnp3;
 using namespace openpal;

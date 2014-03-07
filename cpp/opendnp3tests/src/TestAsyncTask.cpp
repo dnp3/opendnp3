@@ -26,9 +26,8 @@
 #include <opendnp3/master/AsyncTaskContinuous.h>
 #include <opendnp3/master/AsyncTaskGroup.h>
 
-#include <openpal/Exception.h>
-
 #include "MockExecutor.h"
+#include "Exception.h"
 
 #include <boost/bind.hpp>
 #include <queue>

@@ -22,13 +22,12 @@
 
 #include "TestHelpers.h"
 #include "TransportTestObject.h"
+#include "Exception.h"
 
 #include <opendnp3/transport/TransportConstants.h>
 
 #include <opendnp3/Util.h>
 #include <opendnp3/ProtocolUtil.h>
-
-#include <openpal/Exception.h>
 
 using namespace std;
 using namespace openpal;

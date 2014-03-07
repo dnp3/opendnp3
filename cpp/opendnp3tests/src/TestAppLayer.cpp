@@ -20,10 +20,10 @@
  */
 #include <boost/test/unit_test.hpp>
 
-#include <openpal/Exception.h>
 #include <openpal/ToHex.h>
 #include <openpal/StaticBuffer.h>
 
+#include "Exception.h"
 #include "TestHelpers.h"
 #include "BufferHelpers.h"
 #include "AppLayerTest.h"

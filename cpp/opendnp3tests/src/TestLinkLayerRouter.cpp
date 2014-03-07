@@ -21,12 +21,11 @@
 #include <boost/test/unit_test.hpp>
 
 #include <functional>
-
-#include <openpal/Exception.h>
 #include <openpal/ToHex.h>
 
 #include <opendnp3/link/LinkRoute.h>
 
+#include "Exception.h"
 #include "TestHelpers.h"
 #include "LinkLayerRouterTest.h"
 #include "MockFrameSink.h"

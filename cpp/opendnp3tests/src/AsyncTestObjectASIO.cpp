@@ -19,10 +19,12 @@
  * to you under the terms of the License.
  */
 #include "AsyncTestObjectASIO.h"
+
 #include <boost/asio.hpp>
 
 #include <openpal/Location.h>
-#include <openpal/Exception.h>
+
+#include "Exception.h"
 
 #include <thread>
 #include <chrono>

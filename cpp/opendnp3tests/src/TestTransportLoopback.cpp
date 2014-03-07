@@ -24,13 +24,12 @@
 #include <boost/test/unit_test.hpp>
 #include <functional>
 
-#include <openpal/Exception.h>
-
 #include <opendnp3/ProtocolUtil.h>
 
 #include <asiopal/Log.h>
 #include <asiopal/PhysicalLayerAsyncSerial.h>
 
+#include "Exception.h"
 #include "TestHelpers.h"
 #include "BufferHelpers.h"
 #include "LoopbackPhysicalLayerAsync.h"

@@ -35,8 +35,9 @@ namespace opendnp3
 
 TransportTestObject::TransportTestObject(bool aOpenOnStart, LogLevel aLevel, bool aImmediate) :
 	log(),
+	exe(),
 	logger(Logger(&log, aLevel, "TransportTestObject")),
-	transport(logger),
+	transport(logger, &exe),
 	lower(logger),
 	upper(logger)
 {

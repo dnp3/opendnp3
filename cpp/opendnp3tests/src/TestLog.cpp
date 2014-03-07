@@ -19,13 +19,12 @@
  * to you under the terms of the License.
  */
 #include <boost/test/unit_test.hpp>
+
 #include "TestHelpers.h"
 #include "LogTester.h"
+#include "Exception.h"
 
 #include <asiopal/Log.h>
-
-#include <openpal/Exception.h>
-
 #include <boost/shared_ptr.hpp>
 #include <iostream>
 #include <vector>

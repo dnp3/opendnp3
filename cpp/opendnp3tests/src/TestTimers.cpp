@@ -21,8 +21,8 @@
 #include <boost/test/unit_test.hpp>
 
 #include "TestHelpers.h"
+#include "Exception.h"
 
-#include <openpal/Exception.h>
 #include <openpal/Location.h>
 
 #include <asiopal/ASIOExecutor.h>

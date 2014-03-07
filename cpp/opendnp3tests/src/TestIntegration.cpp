@@ -26,10 +26,9 @@
 #include <asiopal/Log.h>
 #include <asiopal/LogToStdio.h>
 
-#include <openpal/Exception.h>
-
 #include <boost/asio.hpp>
 
+#include "Exception.h"
 #include "IntegrationTest.h"
 
 #define OUTPUT_PERF_NUMBERS	(0)

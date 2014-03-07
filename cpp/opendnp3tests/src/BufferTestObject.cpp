@@ -24,7 +24,8 @@
 
 #include <memory>
 
-#include <openpal/Exception.h>
+#include "Exception.h"
+
 #include <openpal/Location.h>
 #include <openpal/ToHex.h>
 

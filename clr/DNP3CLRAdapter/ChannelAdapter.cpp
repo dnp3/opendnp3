@@ -7,7 +7,6 @@
 #include "OutstationAdapter.h"
 #include "DeleteAnything.h"
 
-
 #include <asiopal/UTCTimeSource.h>
 
 using namespace System::Collections::Generic;
@@ -44,14 +43,16 @@ IMaster ^ ChannelAdapter::AddMaster(System::String ^ loggerId, DNP3::Interface::
 
 	MasterMeasurementHandlerWrapper ^ wrapper = gcnew MasterMeasurementHandlerWrapper(publisher);
 	opendnp3::MasterStackConfig cfg = Conversions::convertConfig(config);
-
-	try {
-		auto pMaster = mpChannel->AddMaster(stdLoggerId, stdLevel, wrapper->Get(), asiopal::UTCTimeSource::Inst(), cfg); // TODO expose time source		
+	
+	auto pMaster = mpChannel->AddMaster(stdLoggerId, stdLevel, wrapper->Get(), asiopal::UTCTimeSource::Inst(), cfg); // TODO expose time source	
+	if (pMaster == nullptr)
+	{
+		return nullptr;
+	}
+	else
+	{
 		return gcnew MasterAdapter(pMaster);
-	}
-	catch(openpal::Exception ex) {
-		throw Conversions::convertException(ex);
-	}
+	}	
 }
 
 IOutstation ^ ChannelAdapter::AddOutstation(System::String ^ loggerId, DNP3::Interface::LogLevel level, ICommandHandler ^ cmdHandler, ITimeWriteHandler ^ timeHandler, SlaveStackConfig ^ config)
@@ -63,13 +64,15 @@ IOutstation ^ ChannelAdapter::AddOutstation(System::String ^ loggerId, DNP3::Int
 	OutstationTimeWriteWrapper ^ timeWrapper = gcnew OutstationTimeWriteWrapper(timeHandler);
 
 	opendnp3::SlaveStackConfig cfg = Conversions::convertConfig(config);
-
-	try {
-		auto pOutstation = mpChannel->AddOutstation(stdLoggerId, stdLevel, cmdWrapper->Get(), timeWrapper->Get(), Conversions::convertConfig(config));
-		return gcnew OutstationAdapter(pOutstation);
+	
+	auto pOutstation = mpChannel->AddOutstation(stdLoggerId, stdLevel, cmdWrapper->Get(), timeWrapper->Get(), Conversions::convertConfig(config));
+	if (pOutstation == nullptr)
+	{
+		return nullptr;
 	}
-	catch(openpal::Exception ex) {
-		throw Conversions::convertException(ex);
+	else
+	{
+		return gcnew OutstationAdapter(pOutstation);
 	}
 }
 

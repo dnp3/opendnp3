@@ -26,7 +26,7 @@
 #include <asiopal/IOServiceThreadPool.h>
 #include <asiopal/ASIOExecutor.h>
 
-#include <openpal/Exception.h>
+#include "Exception.h"
 
 #include <thread>
 

@@ -29,6 +29,7 @@
 
 #include "MockLowerLayer.h"
 #include "MockUpperLayer.h"
+#include "MockExecutor.h"
 #include "LogTester.h"
 
 namespace opendnp3
@@ -47,9 +48,10 @@ public:
 	std::string GetData(const std::string& arHdr, uint8_t aSeed = 0, uint32_t aLength = TL_MAX_TPDU_PAYLOAD);
 
 	LogTester log;
+	MockExecutor exe;
 
 private:
-	openpal::Logger logger;
+	openpal::Logger logger;	
 	TransportLayer transport;
 
 public:

@@ -25,10 +25,7 @@
 
 #include "TestHelpers.h"
 #include "BufferHelpers.h"
-
-#include <opendnp3/ProtocolUtil.h>
-
-#include <openpal/Exception.h>
+#include "Exception.h"
 
 #include <functional>
 

@@ -21,6 +21,7 @@
 #include "SlaveTestObject.h"
 
 #include "BufferHelpers.h"
+#include "Exception.h"
 
 #include <openpal/ToHex.h>
 #include <openpal/LoggableMacros.h>

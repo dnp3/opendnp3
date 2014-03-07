@@ -20,11 +20,11 @@
  */
 #include <boost/test/unit_test.hpp>
 
-#include <openpal/Exception.h>
 #include <openpal/Serialization.h>
 
 #include <queue>
 
+#include "Exception.h"
 #include "TestHelpers.h"
 #include "MasterTestObject.h"
 #include "MeasurementComparisons.h"

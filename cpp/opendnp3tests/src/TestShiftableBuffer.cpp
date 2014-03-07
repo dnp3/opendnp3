@@ -19,13 +19,12 @@
  * to you under the terms of the License.
  */
 #include <boost/test/unit_test.hpp>
+
 #include "TestHelpers.h"
+#include "Exception.h"
 
 #include <opendnp3/link/ShiftableBuffer.h>
 
-#include <openpal/Exception.h>
-
-using namespace openpal;
 using namespace opendnp3;
 
 

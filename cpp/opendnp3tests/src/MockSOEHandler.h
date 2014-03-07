@@ -25,7 +25,8 @@
 #include <opendnp3/app/OctetString.h>
 
 #include <openpal/Location.h>
-#include <openpal/Exception.h>
+
+#include "Exception.h"
 
 #include <map>
 
@@ -170,7 +171,7 @@ private:
 	T GetAny(uint32_t aIndex, const typename PointMap<T>::Type& arMap)
 	{
 		auto iter = arMap.find(aIndex);
-		if(iter == arMap.end()) throw openpal::Exception(LOCATION, "Index not found in map");
+		if(iter == arMap.end()) throw Exception(LOCATION, "Index not found in map");
 		else return iter->second;
 	}
 		

@@ -18,14 +18,12 @@
  */
 #include "JNIHelpers.hpp"
 
-#include <openpal/Exception.h>
 #include <openpal/Location.h>
 
 #include <assert.h>
 #include <sstream>
 #include <iostream>
 
-using namespace openpal;
 using namespace std;
 
 
@@ -76,16 +74,14 @@ JNIEnv* JNIHelpers::GetEnvFromJVM(JavaVM* apJVM)
 jmethodID JNIHelpers::GetMethodID(JNIEnv* apEnv, jclass clazz, const char* name, const char* sig)
 {
 	jmethodID mid = apEnv->GetMethodID(clazz, name, sig);
-	if(mid == nullptr) {
-		MACRO_THROW_EXCEPTION_COMPLEX(openpal::Exception, "Unable to get methodID with name/size: " << name << " / " << sig);
-	}
+	assert(mid != nullptr);
 	return mid;
 }
 
 jclass JNIHelpers::GetClassForObject(JNIEnv* apEnv, jobject obj)
 {
 	jclass clazz = apEnv->GetObjectClass(obj);
-	if(clazz == nullptr) throw Exception("Unable to get class for object");
+	assert(clazz != nullptr);	
 	return clazz;
 }
 
@@ -97,39 +93,39 @@ jmethodID JNIHelpers::GetMethodID(JNIEnv* apEnv, jobject obj, const char* name, 
 jint JNIHelpers::GetIntField(JNIEnv* apEnv, jobject obj, const char* fieldId)
 {
 	jfieldID field = apEnv->GetFieldID(GetClassForObject(apEnv, obj), fieldId, "I");
-	if(field == nullptr) MACRO_THROW_EXCEPTION_COMPLEX(openpal::Exception, "Unable to get int field: " << fieldId)
-		return apEnv->GetIntField(obj, field);
+	assert(field != nullptr);	
+	return apEnv->GetIntField(obj, field);
 }
 
 jlong JNIHelpers::GetLongField(JNIEnv* apEnv, jobject obj, const char* fieldId)
 {
 	jfieldID field = apEnv->GetFieldID(GetClassForObject(apEnv, obj), fieldId, "J");
-	if(field == nullptr) MACRO_THROW_EXCEPTION_COMPLEX(openpal::Exception, "Unable to get long field: " << fieldId)
-		return apEnv->GetLongField(obj, field);
+	assert(field != nullptr);	
+	return apEnv->GetLongField(obj, field);
 }
 
 bool JNIHelpers::GetBoolField(JNIEnv* apEnv, jobject obj, const char* fieldId)
 {
 	jfieldID field = apEnv->GetFieldID(GetClassForObject(apEnv, obj), fieldId, "Z");
-	if(field == nullptr) MACRO_THROW_EXCEPTION_COMPLEX(openpal::Exception, "Unable to get bool field: " << fieldId)
-		return apEnv->GetBooleanField(obj, field);
+	assert(field != nullptr);	
+	return apEnv->GetBooleanField(obj, field);
 }
 
 jdouble JNIHelpers::GetDoubleField(JNIEnv* apEnv, jobject obj, const char* fieldId)
 {
 	jfieldID field = apEnv->GetFieldID(GetClassForObject(apEnv, obj), fieldId, "D");
-	if(field == nullptr) MACRO_THROW_EXCEPTION_COMPLEX(openpal::Exception, "Unable to get double field: " << fieldId)
-		return apEnv->GetDoubleField(obj, field);
+	assert(field != nullptr);
+	return apEnv->GetDoubleField(obj, field);
 }
 
 jobject JNIHelpers::GetObjectField(JNIEnv* apEnv, jobject obj, const char* fieldId, const char* fqcn)
 {
 
 	jfieldID field = apEnv->GetFieldID(GetClassForObject(apEnv, obj), fieldId, fqcn);
-	if(field == nullptr) MACRO_THROW_EXCEPTION_COMPLEX(openpal::Exception, "Unable to get object field id: " << fieldId << " / " << fqcn)
-		jobject ret = apEnv->GetObjectField(obj, field);
-	if(ret == nullptr) MACRO_THROW_EXCEPTION(openpal::Exception, "Unable to get object field")
-		return ret;
+	assert(field != nullptr);	
+	jobject ret = apEnv->GetObjectField(obj, field);
+	assert(ret != nullptr);	
+	return ret;
 }
 
 void JNIHelpers::IterateOverListOfObjects(JNIEnv* apEnv, jobject list, std::function<void (jobject)> fun)
@@ -139,10 +135,11 @@ void JNIHelpers::IterateOverListOfObjects(JNIEnv* apEnv, jobject list, std::func
 
 	jmethodID getMID = JNIHelpers::GetMethodID(apEnv, list, "get", "(I)Ljava/lang/Object;");
 
-	for(jint i = 0; i < size; ++i) {
+	for(jint i = 0; i < size; ++i) 
+	{
 		jobject obj = apEnv->CallObjectMethod(list, getMID, i);
-		if(obj == nullptr) MACRO_THROW_EXCEPTION(openpal::Exception, "Unable to call object method")
-			fun(obj);
+		assert(obj != nullptr);		
+		fun(obj);
 	}
 }
 

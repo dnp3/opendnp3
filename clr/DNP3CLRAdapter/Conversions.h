@@ -31,9 +31,7 @@ namespace Adapter
 
 private class Conversions
 {
-public:
-
-	static System::Exception ^ convertException(const openpal::Exception& ex);
+public:	
 
 	static openpal::TimeDuration convertTimeSpan(System::TimeSpan ts);
 

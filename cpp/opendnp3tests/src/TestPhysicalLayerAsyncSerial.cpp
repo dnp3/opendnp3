@@ -22,12 +22,11 @@
 
 #include "TestHelpers.h"
 #include "BufferHelpers.h"
+#include "Exception.h"
 
 #include <boost/asio.hpp>
 #include <boost/test/unit_test.hpp>
 #include <boost/bind.hpp>
-
-#include <openpal/Exception.h>
 
 using namespace opendnp3;
 using namespace boost;

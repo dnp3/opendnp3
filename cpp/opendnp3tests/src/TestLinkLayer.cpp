@@ -20,10 +20,9 @@
  */
 #include <boost/test/unit_test.hpp>
 
-#include <openpal/Exception.h>
-
 #include <opendnp3/DNPConstants.h>
 
+#include "Exception.h"
 #include "TestHelpers.h"
 #include "BufferHelpers.h"
 #include "LinkLayerTest.h"

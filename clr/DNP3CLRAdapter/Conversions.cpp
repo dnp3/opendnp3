@@ -12,11 +12,6 @@ namespace DNP3
 namespace Adapter
 {
 
-System::Exception ^ Conversions::convertException(const openpal::Exception& ex)
-{
-	return gcnew System::Exception(convertString(ex.GetErrorString()));
-}
-
 std::string Conversions::convertString(System::String ^ s)
 {
 	return msclr::interop::marshal_as<std::string>(s);

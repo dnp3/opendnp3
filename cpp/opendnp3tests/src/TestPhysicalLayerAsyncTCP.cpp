@@ -26,8 +26,7 @@
 #include <asiopal/Log.h>
 #include <asiopal/ASIOExecutor.h>
 
-#include <openpal/Exception.h>
-
+#include "Exception.h"
 #include "RandomizedBuffer.h"
 #include "PhysLoopback.h"
 #include "TestHelpers.h"
