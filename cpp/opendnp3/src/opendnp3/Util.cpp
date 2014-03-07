@@ -27,7 +27,6 @@
 #include <vector>
 
 #include "Util.h"
-#include <openpal/Exception.h>
 
 #ifdef WIN32
 #define sscanf sscanf_s

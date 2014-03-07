@@ -20,7 +20,7 @@
  */
 #include "PriLinkLayerStates.h"
 
-#include <openpal/Exception.h>
+
 #include <openpal/LoggableMacros.h>
 
 #include "opendnp3/DNPConstants.h"
@@ -36,7 +36,7 @@ namespace opendnp3
 ////////////////////////////////////////
 
 void PriStateBase::Ack(LinkLayer* apLL, bool aIsRcvBuffFull)
-{
+{	
 	ERROR_LOGGER_BLOCK(apLL->GetLogger(), LogLevel::Warning, "Frame context not understood", DLERR_UNEXPECTED_FRAME);
 }
 void PriStateBase::Nack(LinkLayer* apLL, bool aIsRcvBuffFull)
@@ -54,17 +54,17 @@ void PriStateBase::NotSupported (LinkLayer* apLL, bool aIsRcvBuffFull)
 
 void PriStateBase::OnTimeout(LinkLayer* apLL)
 {
-	MACRO_THROW_EXCEPTION(InvalidStateException, this->Name());
+	LOGGER_BLOCK(apLL->GetLogger(), LogLevel::Error, "Invalid action for state: " << this->Name());	
 }
 
-void PriStateBase::SendConfirmed(LinkLayer*, const ReadOnlyBuffer&)
+void PriStateBase::SendConfirmed(LinkLayer* apLL, const ReadOnlyBuffer&)
 {
-	MACRO_THROW_EXCEPTION(InvalidStateException, this->Name());
+	LOGGER_BLOCK(apLL->GetLogger(), LogLevel::Error, "Invalid action for state: " << this->Name());
 }
 
-void PriStateBase::SendUnconfirmed(LinkLayer*, const ReadOnlyBuffer&)
+void PriStateBase::SendUnconfirmed(LinkLayer* apLL, const ReadOnlyBuffer&)
 {
-	MACRO_THROW_EXCEPTION(InvalidStateException, this->Name());
+	LOGGER_BLOCK(apLL->GetLogger(), LogLevel::Error, "Invalid action for state: " << this->Name());
 }
 
 ////////////////////////////////////////////////////////

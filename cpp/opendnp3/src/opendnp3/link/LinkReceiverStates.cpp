@@ -19,8 +19,6 @@
  * to you under the terms of the License.
  */
 #include "LinkReceiverStates.h"
-
-#include <openpal/Exception.h>
 #include <openpal/Location.h>
 
 #include "LinkLayerReceiver.h"
@@ -28,15 +26,6 @@
 
 namespace opendnp3
 {
-
-////////////////////////////////////
-// Base class
-////////////////////////////////////
-
-bool LRS_Base::Parse(LinkLayerReceiver*)
-{
-	MACRO_THROW_EXCEPTION(openpal::InvalidStateException, this->Name());
-}
 
 ////////////////////////////////////
 // Inherited States

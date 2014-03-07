@@ -20,7 +20,7 @@
  */
 #include "TransportLayer.h"
 
-#include <openpal/Exception.h>
+
 #include "TransportConstants.h"
 
 #include <openpal/LoggableMacros.h>
@@ -36,11 +36,12 @@ using namespace openpal;
 namespace opendnp3
 {
 
-TransportLayer::TransportLayer(Logger aLogger, uint32_t aFragSize) :
+TransportLayer::TransportLayer(Logger aLogger, IExecutor* pExecutor_, uint32_t aFragSize) :
 	Loggable(aLogger),
 	IUpperLayer(aLogger),
 	ILowerLayer(aLogger),
 	mpState(TLS_Closed::Inst()),
+	pExecutor(pExecutor_),
 	M_FRAG_SIZE(aFragSize),
 	mReceiver(aLogger, this, aFragSize),
 	mTransmitter(aLogger, this, aFragSize),
@@ -112,11 +113,15 @@ void TransportLayer::SignalSendFailure()
 ///////////////////////////////////////
 void TransportLayer::_Send(const ReadOnlyBuffer& arBuffer)
 {
-	if(arBuffer.IsEmpty() || arBuffer.Size() > M_FRAG_SIZE) {
-		MACRO_THROW_EXCEPTION_COMPLEX(ArgumentException, "Illegal arg: " << arBuffer.Size() << ", Array length must be in the range [1," << M_FRAG_SIZE << "]");
+	if(arBuffer.IsEmpty() || arBuffer.Size() > M_FRAG_SIZE) 
+	{
+		LOG_BLOCK(LogLevel::Error, "Illegal arg: " << arBuffer.Size() << ", Array length must be in the range [1," << M_FRAG_SIZE << "]");
+		pExecutor->Post([this]() { this->OnSendFailure(); });		
 	}
-
-	mpState->Send(arBuffer, this);
+	else
+	{
+		mpState->Send(arBuffer, this);
+	}	
 }
 
 ///////////////////////////////////////

@@ -42,7 +42,7 @@ public:
 
 	/** Perform a bit of work towards reading a frame.
 		@return True if the function can be called again to make further progress */
-	virtual bool Parse(LinkLayerReceiver*);
+	virtual bool Parse(LinkLayerReceiver*) = 0;
 
 	/** @return True if the receiver has a complete frame */
 	virtual bool HasFrame() {

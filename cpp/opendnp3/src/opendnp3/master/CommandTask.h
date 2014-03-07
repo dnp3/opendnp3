@@ -94,7 +94,7 @@ private:
 
 	std::function<void (CommandResponse)> callback;	
 
-	TaskResult _OnPartialResponse(const APDUResponseRecord&);
+	bool _OnPartialResponse(const APDUResponseRecord&);
 	TaskResult _OnFinalResponse(const APDUResponseRecord&);
 };
 

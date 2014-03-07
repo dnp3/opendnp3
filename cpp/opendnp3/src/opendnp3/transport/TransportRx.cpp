@@ -22,7 +22,7 @@
 
 
 #include "TransportConstants.h"
-#include <openpal/Exception.h>
+
 
 #include <openpal/LoggableMacros.h>
 

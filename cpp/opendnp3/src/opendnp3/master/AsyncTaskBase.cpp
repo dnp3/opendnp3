@@ -21,10 +21,12 @@
 #include "AsyncTaskBase.h"
 
 
-#include <openpal/Exception.h>
+
 #include <openpal/Location.h>
 
 #include "AsyncTaskGroup.h"
+
+#include <assert.h>
 
 using namespace openpal;
 
@@ -77,24 +79,33 @@ void AsyncTaskBase::SilentDisable()
 
 void AsyncTaskBase::Dispatch()
 {
-	if(mIsRunning) MACRO_THROW_EXCEPTION(InvalidStateException, "Running");
-	if(!mIsEnabled) MACRO_THROW_EXCEPTION(InvalidStateException, "Disabled");
+	assert(!mIsRunning);
+	assert(mIsEnabled);
 
 	mIsRunning = true;
 	mIsComplete = false;
 	mIsExpired = false;
-	mHandler(this);
+	mHandler(this);	
 }
 
-void AsyncTaskBase::AddDependency(const AsyncTaskBase* apTask)
+bool AsyncTaskBase::AddDependency(const AsyncTaskBase* apTask)
 {
-	if(apTask == this)
-		MACRO_THROW_EXCEPTION(ArgumentException, "Self-dependency not allowed");
-
-	if(apTask->IsDependency(this))
-		MACRO_THROW_EXCEPTION(ArgumentException, "Circular dependencies not allowed");
-
-	mDependencies.push_back(apTask);
+	if (apTask == this)
+	{
+		return false;
+	}
+	else
+	{
+		if (apTask->IsDependency(this))
+		{
+			return false;
+		}
+		else
+		{
+			mDependencies.push_back(apTask);
+			return true;
+		}
+	}	
 }
 
 bool AsyncTaskBase::IsDependency(const AsyncTaskBase* apTask) const
@@ -121,9 +132,7 @@ void AsyncTaskBase::Demand()
 
 void AsyncTaskBase::OnComplete(bool aSuccess)
 {
-	if(!mIsRunning) {
-		MACRO_THROW_EXCEPTION(InvalidStateException, "Not Running");
-	}
+	assert(mIsRunning);
 	mIsRunning = false;
 
 	this->_OnComplete(aSuccess);

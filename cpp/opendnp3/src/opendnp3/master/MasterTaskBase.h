@@ -75,9 +75,9 @@ public:
 	 *
 	 * @param aRecord	unparsed record
 	 *
-	 * @return			TaskResult enumeration
+	 * @return			True if we continue, false to fail
 	 */
-	TaskResult OnPartialResponse(const APDUResponseRecord& aRecord);
+	bool OnPartialResponse(const APDUResponseRecord& aRecord);
 
 	/**
 	 * Handler for FIN responses, performs common validation and delegates
@@ -113,9 +113,9 @@ protected:
 	 *
 	 * @param arAPDU	the DNP3 message as an APDU instance
 	 *
-	 * @return			a TaskResult value as a response
+	 * @return			true to continue, false to fail
 	 */
-	virtual TaskResult _OnPartialResponse(const APDUResponseRecord& record) = 0;
+	virtual bool _OnPartialResponse(const APDUResponseRecord& record) = 0;
 
 	/**
 	 * Handler for FIN responses.  Subclasses should override this
@@ -141,7 +141,7 @@ class SingleRspBase : public MasterTaskBase
 {
 public:
 	SingleRspBase(openpal::Logger&);
-	TaskResult _OnPartialResponse(const APDUResponseRecord& record) override;
+	bool _OnPartialResponse(const APDUResponseRecord& record) override;
 };
 
 class SimpleRspBase : public SingleRspBase

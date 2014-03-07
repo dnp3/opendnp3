@@ -22,7 +22,7 @@
 
 #include <openpal/LoggableMacros.h>
 #include <openpal/IExecutor.h>
-#include <openpal/Exception.h>
+
 
 #include "FunctionCodeHelpers.h"
 
@@ -85,47 +85,52 @@ void AppLayer::CancelResponse()
 
 void AppLayer::_OnReceive(const ReadOnlyBuffer& aBuffer)
 {
-	if(!this->IsLowerLayerUp()) {
-		MACRO_THROW_EXCEPTION(InvalidStateException, "LowerLaterDown");
-	}
-
-	if(this->mIsMaster) {
-		APDUResponseRecord record;
-		auto result = APDUHeaderParser::ParseResponse(aBuffer, record);
-		if(result == APDUHeaderParser::Result::OK)
-		{			
-			switch(record.function) {
-				case(FunctionCode::CONFIRM):
+	if(this->IsLowerLayerUp()) 
+	{
+		if (this->mIsMaster) 
+		{
+			APDUResponseRecord record;
+			auto result = APDUHeaderParser::ParseResponse(aBuffer, record);
+			if (result == APDUHeaderParser::Result::OK)
+			{
+				switch (record.function) {
+				case(FunctionCode::CONFIRM) :
 					this->OnConfirm(record.control, record.objects.Size());
 					break;
-				case(FunctionCode::RESPONSE):
+				case(FunctionCode::RESPONSE) :
 					this->OnResponse(record);
 					break;
-				case(FunctionCode::UNSOLICITED_RESPONSE):
+				case(FunctionCode::UNSOLICITED_RESPONSE) :
 					this->OnUnsolResponse(record);
 					break;
 				default:
 					LOG_BLOCK(LogLevel::Warning, "Unexpected function code for master: " << FunctionCodeToString(record.function));
 					break;
+				}
 			}
+			else LogParseError(result, true);
 		}
-		else LogParseError(result, true);
-	}
-	else {
-		APDURecord record;
-		auto result = APDUHeaderParser::ParseRequest(aBuffer, record);
-		if(result == APDUHeaderParser::Result::OK) {
-			switch(record.function) {
-				case(FunctionCode::CONFIRM):
+		else 
+		{
+			APDURecord record;
+			auto result = APDUHeaderParser::ParseRequest(aBuffer, record);
+			if (result == APDUHeaderParser::Result::OK) {
+				switch (record.function) {
+				case(FunctionCode::CONFIRM) :
 					this->OnConfirm(record.control, record.objects.Size());
-					break;			
+					break;
 				default: //otherwise, assume it's a request
 					this->OnRequest(record);
 					break;
+				}
 			}
+			else LogParseError(result, false);
 		}
-		else LogParseError(result, false);
-	}	
+	}
+	else
+	{
+		LOG_BLOCK(LogLevel::Error, "Layer is not up");
+	}
 }
 
 void AppLayer::LogParseError(APDUHeaderParser::Result error, bool aIsResponse)
@@ -162,32 +167,35 @@ void AppLayer::_OnLowerLayerDown()
 
 void AppLayer::OnSendResult(bool aSuccess)
 {
-	if(!mSending) {
-		MACRO_THROW_EXCEPTION(InvalidStateException, "No Active Send");
-	}
+	if(mSending) 
+	{
+		assert(mSendQueue.size() > 0);
+		mSending = false;
 
-	assert(mSendQueue.size() > 0);
-	mSending = false;
+		FunctionCode func = mSendQueue.front().GetFunction();
+		mSendQueue.pop_front();
 
-	FunctionCode func = mSendQueue.front().GetFunction();
-	mSendQueue.pop_front();
-
-	if(func == FunctionCode::CONFIRM) {
-		assert(mConfirmSending);
-		mConfirmSending = false;
-	}
-	else {
-		if(aSuccess) {
-			if(func == FunctionCode::UNSOLICITED_RESPONSE) mUnsolicited.OnSendSuccess();
-			else mSolicited.OnSendSuccess();
+		if (func == FunctionCode::CONFIRM) {
+			assert(mConfirmSending);
+			mConfirmSending = false;
 		}
 		else {
-			if(func == FunctionCode::UNSOLICITED_RESPONSE) mUnsolicited.OnSendFailure();
-			else mSolicited.OnSendFailure();
+			if (aSuccess) {
+				if (func == FunctionCode::UNSOLICITED_RESPONSE) mUnsolicited.OnSendSuccess();
+				else mSolicited.OnSendSuccess();
+			}
+			else {
+				if (func == FunctionCode::UNSOLICITED_RESPONSE) mUnsolicited.OnSendFailure();
+				else mSolicited.OnSendFailure();
+			}
 		}
-	}
 
-	this->CheckForSend();
+		this->CheckForSend();		
+	}
+	else
+	{
+		LOG_BLOCK(LogLevel::Error, "Layer is not sending");
+	}	
 }
 
 void AppLayer::_OnSendSuccess()
@@ -245,14 +253,16 @@ void AppLayer::OnConfirm(const AppControlField& aControl, size_t aDataSize)
 	{
 		LOG_BLOCK(LogLevel::Warning, "Unexpected payload in confirm of size: " << aDataSize);
 	}
-	else {
+	else 
+	{
 		if(aControl.UNS) // which channel?
 		{
 			if(mIsMaster) 
 			{
-				MACRO_THROW_EXCEPTION_WITH_CODE(Exception, "", ALERR_UNEXPECTED_CONFIRM);
+				ERROR_BLOCK(LogLevel::Error, "Unexpcted confirm for master", ALERR_UNEXPECTED_CONFIRM)				
 			}
-			else {
+			else 
+			{
 				mUnsolicited.OnConfirm(aControl.SEQ);
 			}		
 		}

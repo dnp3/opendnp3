@@ -22,42 +22,43 @@
 
 #include "TransportLayer.h"
 
-#include <openpal/Exception.h>
+
 #include <openpal/Location.h>
+#include <openpal/LoggableMacros.h>
 
 using namespace openpal;
 
 namespace opendnp3
 {
 
-void TLS_Base::Send(const ReadOnlyBuffer&, TransportLayer*)
+void TLS_Base::Send(const ReadOnlyBuffer&, TransportLayer* c)
 {
-	MACRO_THROW_EXCEPTION(InvalidStateException, this->Name() );
+	LOGGER_BLOCK(c->GetLogger(), LogLevel::Error, "Invalid action for state: " << this->Name());	
 }
 
-void TLS_Base::HandleReceive(const ReadOnlyBuffer&, TransportLayer*)
+void TLS_Base::HandleReceive(const ReadOnlyBuffer&, TransportLayer* c)
 {
-	MACRO_THROW_EXCEPTION(InvalidStateException, this->Name() );
+	LOGGER_BLOCK(c->GetLogger(), LogLevel::Error, "Invalid action for state: " << this->Name());
 }
 
-void TLS_Base::HandleSendSuccess(TransportLayer*)
+void TLS_Base::HandleSendSuccess(TransportLayer* c)
 {
-	MACRO_THROW_EXCEPTION(InvalidStateException, this->Name() );
+	LOGGER_BLOCK(c->GetLogger(), LogLevel::Error, "Invalid action for state: " << this->Name());
 }
 
-void TLS_Base::HandleSendFailure(TransportLayer*)
+void TLS_Base::HandleSendFailure(TransportLayer* c)
 {
-	MACRO_THROW_EXCEPTION(InvalidStateException, this->Name() );
+	LOGGER_BLOCK(c->GetLogger(), LogLevel::Error, "Invalid action for state: " << this->Name());
 }
 
-void TLS_Base::LowerLayerUp(TransportLayer*)
+void TLS_Base::LowerLayerUp(TransportLayer* c)
 {
-	MACRO_THROW_EXCEPTION(InvalidStateException, this->Name() );
+	LOGGER_BLOCK(c->GetLogger(), LogLevel::Error, "Invalid action for state: " << this->Name());
 }
 
-void TLS_Base::LowerLayerDown(TransportLayer*)
+void TLS_Base::LowerLayerDown(TransportLayer* c)
 {
-	MACRO_THROW_EXCEPTION(InvalidStateException, this->Name() );
+	LOGGER_BLOCK(c->GetLogger(), LogLevel::Error, "Invalid action for state: " << this->Name());
 }
 
 }

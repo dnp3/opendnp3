@@ -20,12 +20,11 @@
  */
 #include "ShiftableBuffer.h"
 
-#include <openpal/Exception.h>
+
 #include <openpal/Location.h>
-
+#include <assert.h>
 #include <memory.h>
-
-using namespace openpal;
+#include <cstring>
 
 namespace opendnp3
 {
@@ -74,27 +73,20 @@ ShiftableBuffer::~ShiftableBuffer()
 
 void ShiftableBuffer::AdvanceRead(size_t aNumBytes)
 {
-	if(aNumBytes > this->NumReadBytes()) {
-		MACRO_THROW_EXCEPTION(ArgumentException, "Cannot be greater than the number of currently available reader bytes");
-	}
+	assert(aNumBytes <= this->NumReadBytes());
 
 	mReadPos += aNumBytes;
 }
 
 void ShiftableBuffer::AdvanceWrite(size_t aNumBytes)
 {
-
-	if(aNumBytes > this->NumWriteBytes()) // This could indicate a buffer overflow
-		MACRO_THROW_EXCEPTION(ArgumentException, "Cannot be greater than the number of currently available writer bytes");
-
+	assert(aNumBytes <= this->NumWriteBytes());
 	mWritePos += aNumBytes;
 }
 
 bool ShiftableBuffer::Sync(const uint8_t* apPattern, size_t aNumBytes)
 {
-	if(aNumBytes < 1) {
-		MACRO_THROW_EXCEPTION(ArgumentException, "Pattern must be at least 1 byte");
-	}
+	assert(aNumBytes > 0);
 
 	size_t offset = SyncSubsequence(apPattern, aNumBytes, 0);
 	bool res = (this->NumReadBytes() - offset) >= aNumBytes;

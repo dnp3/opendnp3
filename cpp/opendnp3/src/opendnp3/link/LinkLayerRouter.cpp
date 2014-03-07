@@ -23,7 +23,7 @@
 #include <sstream>
 #include <assert.h>
 
-#include <openpal/Exception.h>
+
 #include <openpal/LoggableMacros.h>
 #include <openpal/IPhysicalLayerAsync.h>
 
@@ -96,10 +96,12 @@ bool LinkLayerRouter::DisableRoute(const LinkRoute& arRoute)
 void LinkLayerRouter::RemoveContext(const LinkRoute& arRoute)
 {
 	AddressMap::iterator i = mAddressMap.find(arRoute);
-	if(i == mAddressMap.end()) {
-		MACRO_THROW_EXCEPTION_COMPLEX(ArgumentException, "LinkRoute not bound: " << arRoute.ToString());
+	if(i == mAddressMap.end()) 
+	{
+		LOG_BLOCK(LogLevel::Error, "LinkRoute not bound: " << arRoute.ToString());		
 	}
-	else {
+	else 
+	{
 
 		auto record = i->second;
 		mAddressMap.erase(i);

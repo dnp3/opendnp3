@@ -51,17 +51,13 @@ public:
 	virtual void OnResponse(AppLayerChannel*, const APDUResponseRecord&);
 	virtual void OnTimeout(AppLayerChannel*);
 
-#ifndef OPENDNP3_STRIP_LOG_MESSAGES
 	virtual std::string Name() const = 0;
-#endif
 
 	virtual bool AcceptsResponse() {
 		return false;
 	}
 
 protected:
-
-	void ThrowInvalidState(const std::string& arLocation);
 
 	void ProcessResponse(AppLayerChannel*, const APDUResponseRecord&, bool aExpectFIR);
 

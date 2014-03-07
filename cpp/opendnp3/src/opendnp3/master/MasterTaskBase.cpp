@@ -33,10 +33,10 @@ MasterTaskBase::MasterTaskBase(openpal::Logger& arLogger) :
 	Loggable(arLogger)
 {}
 
-TaskResult MasterTaskBase::OnPartialResponse(const APDUResponseRecord& record)
+bool MasterTaskBase::OnPartialResponse(const APDUResponseRecord& record)
 {
 	if(this->ValidateIIN(record.IIN)) return this->_OnPartialResponse(record);
-	else return TR_FAIL;
+	else return false;
 }
 
 TaskResult MasterTaskBase::OnFinalResponse(const APDUResponseRecord& record)
@@ -53,10 +53,10 @@ bool MasterTaskBase::ValidateIIN(const IINField& GetIIN) const
 SingleRspBase::SingleRspBase(openpal::Logger& arLogger) : MasterTaskBase(arLogger)
 {}
 
-TaskResult SingleRspBase::_OnPartialResponse(const APDUResponseRecord& record)
+bool SingleRspBase::_OnPartialResponse(const APDUResponseRecord& record)
 {
 	LOG_BLOCK(LogLevel::Warning, "Ignoring non-FIN response to task: " << this->Name());
-	return TR_FAIL;
+	return false;
 }
 
 SimpleRspBase::SimpleRspBase(openpal::Logger& arLogger) : SingleRspBase(arLogger)

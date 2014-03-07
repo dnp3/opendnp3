@@ -78,13 +78,14 @@ void DNP3Channel::Cleanup()
 	mRouter.WaitForShutdown();
 }
 
-#ifndef OPENDNP3_NO_MASTER
 IMaster* DNP3Channel::AddMaster(const std::string& arLoggerId, LogLevel aLevel, ISOEHandler* apPublisher, IUTCTimeSource* apTimeSource, const MasterStackConfig& arCfg)
 {
 	LinkRoute route(arCfg.link.RemoteAddr, arCfg.link.LocalAddr);
 	ExecutorPause p(mpPhys->GetExecutor());
-	if(mRouter.IsRouteInUse(route)) {
-		MACRO_THROW_EXCEPTION_COMPLEX(ArgumentException, "Route already in use: " << route.ToString());
+	if(mRouter.IsRouteInUse(route)) 
+	{
+		LOG_BLOCK(LogLevel::Error, "Route already in use: " << route.ToString());
+		return nullptr;
 	}
 	else {
 		auto logger = mLogger.GetSubLogger(arLoggerId, aLevel);		
@@ -97,16 +98,18 @@ IMaster* DNP3Channel::AddMaster(const std::string& arLoggerId, LogLevel aLevel, 
 		return pMaster;
 	}
 }
-#endif
 
 IOutstation* DNP3Channel::AddOutstation(const std::string& arLoggerId, LogLevel aLevel, ICommandHandler* apCmdHandler, ITimeWriteHandler* apTimeWriteHandler, const SlaveStackConfig& arCfg)
 {
 	LinkRoute route(arCfg.link.RemoteAddr, arCfg.link.LocalAddr);
 	ExecutorPause p(mpPhys->GetExecutor());
-	if(mRouter.IsRouteInUse(route)) {
-		MACRO_THROW_EXCEPTION_COMPLEX(ArgumentException, "Route already in use: " << route.ToString());
+	if(mRouter.IsRouteInUse(route)) 
+	{
+		LOG_BLOCK(LogLevel::Error, "Route already in use: " << route.ToString());
+		return nullptr;
 	}
-	else {
+	else 
+	{
 		auto logger = mLogger.GetSubLogger(arLoggerId, aLevel);
 		auto routeFunc = GetEnableDisableRoute(mpPhys->GetExecutor(), &mRouter, route);
 		auto shutdownFunc = [this, route](IStack * apStack) { this->OnStackShutdown(apStack, route); };

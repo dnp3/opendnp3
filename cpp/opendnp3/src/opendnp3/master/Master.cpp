@@ -35,7 +35,7 @@
 #include "opendnp3/app/APDURequest.h"
 
 #include <openpal/IExecutor.h>
-#include <openpal/Exception.h>
+
 #include <openpal/LoggableMacros.h>
 
 #include <functional>
@@ -261,12 +261,12 @@ void Master::OnSolFailure()
 
 void Master::OnUnsolSendSuccess()
 {
-	MACRO_THROW_EXCEPTION(InvalidStateException, "Master can't send unsol");
+	LOG_BLOCK(LogLevel::Error, "Master can't send unsol");	
 }
 
 void Master::OnUnsolFailure()
 {
-	MACRO_THROW_EXCEPTION(InvalidStateException, "Master can't send unsol");
+	LOG_BLOCK(LogLevel::Error, "Master can't send unsol");	
 }
 
 void Master::OnPartialResponse(const APDUResponseRecord& aRecord)

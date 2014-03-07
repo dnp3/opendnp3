@@ -21,7 +21,7 @@
 #include "DataPoll.h"
 
 
-#include <openpal/Exception.h>
+
 #include "opendnp3/app/PointClass.h"
 #include <openpal/LoggableMacros.h>
 
@@ -40,10 +40,10 @@ DataPoll::DataPoll(Logger& arLogger, ISOEHandler* pHandler_) :
 	pHandler(pHandler_)
 {}
 
-TaskResult DataPoll::_OnPartialResponse(const APDUResponseRecord& record)
+bool DataPoll::_OnPartialResponse(const APDUResponseRecord& record)
 {
 	this->ReadData(record);
-	return TR_CONTINUE;
+	return true;
 }
 
 TaskResult DataPoll::_OnFinalResponse(const APDUResponseRecord& record)

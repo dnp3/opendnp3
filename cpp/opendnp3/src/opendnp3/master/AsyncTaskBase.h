@@ -54,7 +54,7 @@ public:
 	void AddStatusCallback(const std::function<void (bool)>& callback);
 
 	// Modify this task's depth to make it dependent on the argument
-	void AddDependency(const AsyncTaskBase* apTask);
+	bool AddDependency(const AsyncTaskBase* apTask);
 	bool IsDependency(const AsyncTaskBase*) const;
 
 	// Do the task now if it is enabled, regardless of periodicity

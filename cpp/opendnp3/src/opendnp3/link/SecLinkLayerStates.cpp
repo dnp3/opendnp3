@@ -20,7 +20,7 @@
  */
 #include "SecLinkLayerStates.h"
 
-#include <openpal/Exception.h>
+
 #include <openpal/LoggableMacros.h>
 
 #include "opendnp3/DNPConstants.h"

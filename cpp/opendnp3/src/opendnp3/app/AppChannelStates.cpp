@@ -20,8 +20,8 @@
  */
 #include "AppChannelStates.h"
 
-#include <openpal/Exception.h>
 #include <openpal/LoggableMacros.h>
+#include <openpal/IExecutor.h>
 
 #include "opendnp3/Singleton.h"
 #include "opendnp3/DNPConstants.h"
@@ -38,24 +38,24 @@ namespace opendnp3
 
 // ---- Default behaviors for the states ----
 
-void ACS_Base::Send(AppLayerChannel*, APDUWrapper&, size_t)
+void ACS_Base::Send(AppLayerChannel* c, APDUWrapper&, size_t)
 {
-	this->ThrowInvalidState(LOCATION);
+	LOGGER_BLOCK(c->mLogger, LogLevel::Error, "Invalid action for state: " << this->Name());
 }
 
-void ACS_Base::Cancel(AppLayerChannel*)
+void ACS_Base::Cancel(AppLayerChannel* c)
 {
-	this->ThrowInvalidState(LOCATION);
+	LOGGER_BLOCK(c->mLogger, LogLevel::Error, "Invalid action for state: " << this->Name());
 }
 
-void ACS_Base::OnSendSuccess(AppLayerChannel*)
+void ACS_Base::OnSendSuccess(AppLayerChannel* c)
 {
-	this->ThrowInvalidState(LOCATION);
+	LOGGER_BLOCK(c->mLogger, LogLevel::Error, "Invalid action for state: " << this->Name());
 }
 
-void ACS_Base::OnSendFailure(AppLayerChannel*)
+void ACS_Base::OnSendFailure(AppLayerChannel* c)
 {
-	this->ThrowInvalidState(LOCATION);
+	LOGGER_BLOCK(c->mLogger, LogLevel::Error, "Invalid action for state: " << this->Name());
 }
 
 void ACS_Base::OnConfirm(AppLayerChannel* c, int aSeq)
@@ -70,18 +70,9 @@ void ACS_Base::OnResponse(AppLayerChannel* c, const APDUResponseRecord& rsp)
 		"Unexpected response with sequence: " << static_cast<int>(rsp.control.SEQ));
 }
 
-void ACS_Base::OnTimeout(AppLayerChannel*)
+void ACS_Base::OnTimeout(AppLayerChannel* c)
 {
-	this->ThrowInvalidState(LOCATION);
-}
-
-void ACS_Base::ThrowInvalidState(const std::string& arLocation)
-{
-#ifndef OPENDNP3_STRIP_LOG_MESSAGES
-	MACRO_THROW_EXCEPTION_COMPLEX(InvalidStateException, "State: " << this->Name());
-#else
-	MACRO_THROW_EXCEPTION_COMPLEX(InvalidStateException, "");
-#endif
+	LOGGER_BLOCK(c->mLogger, LogLevel::Error, "Invalid action for state: " << this->Name());
 }
 
 void ACS_Base::ProcessResponse(AppLayerChannel* c, const APDUResponseRecord& record, bool aExpectFIR)
@@ -120,36 +111,48 @@ void ACS_Idle::Send(AppLayerChannel* c, APDUWrapper& apdu, size_t aNumRetry)
 	FunctionCode func = apdu.GetFunction();
 	acf.SEQ = (acf.FIR && func == FunctionCode::RESPONSE) ? c->Sequence() : c->IncrSequence();
 	apdu.SetControl(acf);
-	c->ChangeState(NextState(c, func, acf.CON));
-	c->SetRetry(aNumRetry);
-	c->QueueSend(apdu);
+	auto pNext = NextState(c, func, acf.CON);
+	if (pNext == this)
+	{
+		c->mpExecutor->Post([c]() { c->DoFailure(); });		
+	}
+	else
+	{
+		c->ChangeState(pNext);
+		c->SetRetry(aNumRetry);
+		c->QueueSend(apdu);
+	}	
 }
 
 ACS_Base* ACS_Idle::NextState(AppLayerChannel* c, FunctionCode aFunc, bool aConfirm)
 {
-	switch(aFunc) {
-	case(FunctionCode::CONFIRM):
-		MACRO_THROW_EXCEPTION(ArgumentException, "Confirms are automatic only");
-	case(FunctionCode::RESPONSE):
-		if(c->Sequence() < 0) {
-			MACRO_THROW_EXCEPTION(InvalidStateException, "Can't respond until we've received a request");
-		}
+	switch(aFunc) 
+	{
+		case(FunctionCode::CONFIRM) :
+			LOGGER_BLOCK(c->mLogger, LogLevel::Error, "Cannot send a confirm manually");
+			return this;
+		case(FunctionCode::RESPONSE):
+			if(c->Sequence() < 0) 
+			{
+				LOGGER_BLOCK(c->mLogger, LogLevel::Error, "Can't respond until we've received a request");
+			}	
+			return this;
+		case(FunctionCode::UNSOLICITED_RESPONSE):
+			if(aConfirm) return ACS_SendConfirmed::Inst();
+			else return ACS_Send::Inst();
 
-	case(FunctionCode::UNSOLICITED_RESPONSE):
-		if(aConfirm) return ACS_SendConfirmed::Inst();
-		else return ACS_Send::Inst();
+		case(FunctionCode::DIRECT_OPERATE_NO_ACK):
+			if(aConfirm) 
+			{
+				LOGGER_BLOCK(c->mLogger, LogLevel::Error, "DO no ACK can't be confirmed");
+			}
+			return ACS_Send::Inst();
 
-	case(FunctionCode::DIRECT_OPERATE_NO_ACK):
-		if(aConfirm) {
-			MACRO_THROW_EXCEPTION(ArgumentException, "DO no ACK can't be confirmed");
-		}
-		return ACS_Send::Inst();
-
-	default:	// it's a request with an expected response
-		if(aConfirm) {
-			MACRO_THROW_EXCEPTION(ArgumentException, "Confirmation not allowed for requests");
-		}
-		return ACS_SendExpectResponse::Inst();
+		default:	// it's a request with an expected response
+			if(aConfirm) {
+				LOGGER_BLOCK(c->mLogger, LogLevel::Error, "Confirmation not allowed for requests");
+			}
+			return ACS_SendExpectResponse::Inst();
 	}
 }
 

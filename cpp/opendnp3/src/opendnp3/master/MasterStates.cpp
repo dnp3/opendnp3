@@ -20,7 +20,7 @@
  */
 #include "MasterStates.h"
 
-#include <openpal/Exception.h>
+
 
 #include "AsyncTaskInterfaces.h"
 #include "AsyncTaskGroup.h"
@@ -35,44 +35,44 @@ namespace opendnp3
 
 /* AMS_Base */
 
-void AMS_Base::StartTask(Master*, ITask*, MasterTaskBase*)
+void AMS_Base::StartTask(Master* c, ITask*, MasterTaskBase*)
 {
-	MACRO_THROW_EXCEPTION(openpal::InvalidStateException, this->Name());
+	LOGGER_BLOCK(c->mLogger, LogLevel::Error, "Invalid action for state " << this->Name());	
 }
 
-void AMS_Base::OnLowerLayerUp(Master*)
+void AMS_Base::OnLowerLayerUp(Master* c)
 {
-	MACRO_THROW_EXCEPTION(openpal::InvalidStateException, this->Name());
+	LOGGER_BLOCK(c->mLogger, LogLevel::Error, "Invalid action for state " << this->Name());
 }
 
-void AMS_Base::OnLowerLayerDown(Master*)
+void AMS_Base::OnLowerLayerDown(Master* c)
 {
-	MACRO_THROW_EXCEPTION(openpal::InvalidStateException, this->Name());
+	LOGGER_BLOCK(c->mLogger, LogLevel::Error, "Invalid action for state " << this->Name());
 }
 
-void AMS_Base::OnSendSuccess(Master*)
+void AMS_Base::OnSendSuccess(Master* c)
 {
-	MACRO_THROW_EXCEPTION(openpal::InvalidStateException, this->Name());
+	LOGGER_BLOCK(c->mLogger, LogLevel::Error, "Invalid action for state " << this->Name());
 }
 
-void AMS_Base::OnFailure(Master*)
+void AMS_Base::OnFailure(Master* c)
 {
-	MACRO_THROW_EXCEPTION(openpal::InvalidStateException, this->Name());
+	LOGGER_BLOCK(c->mLogger, LogLevel::Error, "Invalid action for state " << this->Name());
 }
 
-void AMS_Base::OnPartialResponse(Master*, const APDUResponseRecord& aRecord)
+void AMS_Base::OnPartialResponse(Master* c, const APDUResponseRecord&)
 {
-	MACRO_THROW_EXCEPTION(openpal::InvalidStateException, this->Name());
+	LOGGER_BLOCK(c->mLogger, LogLevel::Error, "Invalid action for state " << this->Name());
 }
 
-void AMS_Base::OnFinalResponse(Master*, const APDUResponseRecord& aRecord)
+void AMS_Base::OnFinalResponse(Master* c, const APDUResponseRecord&)
 {
-	MACRO_THROW_EXCEPTION(openpal::InvalidStateException, this->Name());
+	LOGGER_BLOCK(c->mLogger, LogLevel::Error, "Invalid action for state " << this->Name());
 }
 
-void AMS_Base::OnUnsolResponse(Master*, const APDUResponseRecord& aRecord)
+void AMS_Base::OnUnsolResponse(Master* c, const APDUResponseRecord&)
 {
-	MACRO_THROW_EXCEPTION(openpal::InvalidStateException, this->Name());
+	LOGGER_BLOCK(c->mLogger, LogLevel::Error, "Invalid action for state " << this->Name());
 }
 
 
@@ -139,15 +139,10 @@ void AMS_Waiting::OnFailure(Master* c)
 
 void AMS_Waiting::OnPartialResponse(Master* c, const APDUResponseRecord& aRecord)
 {
-	switch(c->mpTask->OnPartialResponse(aRecord)) {
-	case(TR_FAIL):
+	if(!c->mpTask->OnPartialResponse(aRecord))
+	{
 		this->ChangeState(c, AMS_Idle::Inst());
-		c->mpScheduledTask->OnComplete(false);
-		break;
-	case(TR_CONTINUE):
-		break;
-	default:
-		MACRO_THROW_EXCEPTION(InvalidStateException, "Tasks must return FAIL or CONTINUE in on partial responses");
+		c->mpScheduledTask->OnComplete(false);		
 	}
 }
 

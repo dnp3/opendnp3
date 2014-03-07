@@ -60,7 +60,7 @@ public:
 
 	AsyncTaskBase* Add(openpal::TimeDuration aPeriod, openpal::TimeDuration aRetryDelay, int aPriority, const TaskHandler& arCallback, const std::string& arName = "");
 	AsyncTaskContinuous* AddContinuous(int aPriority, const TaskHandler& arCallback, const std::string& arName = "");
-	void Remove(AsyncTaskBase* apTask);
+	bool Remove(AsyncTaskBase* apTask);
 
 	void Shutdown();
 

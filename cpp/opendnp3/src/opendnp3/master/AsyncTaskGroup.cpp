@@ -26,10 +26,11 @@
 #include "AsyncTaskContinuous.h"
 
 #include <openpal/IExecutor.h>
-#include <openpal/Exception.h>
+
 #include <openpal/Location.h>
 
 #include <algorithm>
+#include <assert.h>
 
 using namespace openpal;
 
@@ -78,16 +79,16 @@ AsyncTaskContinuous* AsyncTaskGroup::AddContinuous(int aPriority, const TaskHand
 	return pTask;
 }
 
-void AsyncTaskGroup::Remove(AsyncTaskBase* apTask)
+bool AsyncTaskGroup::Remove(AsyncTaskBase* apTask)
 {
 	for(TaskVec::iterator i = mTaskVec.begin(); i != mTaskVec.end(); ++i) {
 		if(*i == apTask) {
 			delete *i;
 			mTaskVec.erase(i);
-			return;
+			return true;
 		}
 	}
-	MACRO_THROW_EXCEPTION(ArgumentException, "Task not found");
+	return false;
 }
 
 void AsyncTaskGroup::Shutdown()
@@ -166,8 +167,8 @@ void AsyncTaskGroup::CheckState()
 }
 
 void AsyncTaskGroup::OnCompletion()
-{
-	if(!mIsRunning) MACRO_THROW_EXCEPTION(InvalidStateException, "Not running");
+{	
+	assert(mIsRunning);	
 	mIsRunning = false;
 	this->CheckState();
 }

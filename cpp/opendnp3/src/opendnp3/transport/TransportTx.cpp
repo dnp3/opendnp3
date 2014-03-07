@@ -20,7 +20,7 @@
  */
 #include "TransportTx.h"
 
-#include <openpal/Exception.h>
+
 
 #include "TransportLayer.h"
 

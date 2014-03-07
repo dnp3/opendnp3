@@ -24,6 +24,7 @@
 #include "TransportRx.h"
 #include "TransportTx.h"
 
+#include <openpal/IExecutor.h>
 #include <openpal/AsyncLayerInterfaces.h>
 
 #include "opendnp3/DNPConstants.h"
@@ -41,7 +42,7 @@ class TransportLayer : public openpal::IUpperLayer, public openpal::ILowerLayer
 {
 public:
 
-	TransportLayer(openpal::Logger aLogger, uint32_t aFragSize = DEFAULT_FRAG_SIZE);
+	TransportLayer(openpal::Logger aLogger, openpal::IExecutor* pExecutor_, uint32_t aFragSize = DEFAULT_FRAG_SIZE);
 	virtual ~TransportLayer() {}
 
 	/* Actions - Taken by the states/transmitter/receiver in response to events */
@@ -58,10 +59,11 @@ public:
 	bool ContinueSend(); // return true if
 	void SignalSendSuccess();
 	void SignalSendFailure();
-#ifndef OPENDNP3_STRIP_LOG_MESSAGES
+
 	/* Events - NVII delegates from ILayerUp/ILayerDown and Events produced internally */
 	static std::string ToString(uint8_t aHeader);
-#endif
+
+	openpal::Logger& GetLogger() { return mLogger;  }
 
 private:
 
@@ -77,6 +79,7 @@ private:
 
 	/* Members and Helpers */
 	TLS_Base* mpState;
+	openpal::IExecutor* pExecutor;
 
 	const size_t M_FRAG_SIZE;
 

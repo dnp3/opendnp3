@@ -45,7 +45,7 @@ private:
 	void ReadData(const APDUResponseRecord& record);
 
 	//Implement MasterTaskBase
-	TaskResult _OnPartialResponse(const APDUResponseRecord& record) override;
+	bool _OnPartialResponse(const APDUResponseRecord& record) override;
 	TaskResult _OnFinalResponse(const APDUResponseRecord& record) override;
 
 	ISOEHandler* pHandler;

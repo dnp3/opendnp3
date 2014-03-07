@@ -21,7 +21,6 @@
 
 #include "AsyncLayerInterfaces.h"
 
-#include "openpal/Exception.h"
 #include "openpal/LoggableMacros.h"
 #include "openpal/ToHex.h"
 
@@ -36,16 +35,20 @@ namespace openpal
 
 void IUpDown::OnLowerLayerUp()
 {
-	if(mIsLowerLayerUp) MACRO_THROW_EXCEPTION(InvalidStateException, "LowerLayerUp");
-	mIsLowerLayerUp = true;
-	this->_OnLowerLayerUp();
+	if (!mIsLowerLayerUp)
+	{
+		mIsLowerLayerUp = true;
+		this->_OnLowerLayerUp();
+	}
 }
 
 void IUpDown::OnLowerLayerDown()
 {
-	if(!mIsLowerLayerUp) MACRO_THROW_EXCEPTION(InvalidStateException, "LowerLayerDown");
-	mIsLowerLayerUp = false;
-	this->_OnLowerLayerDown();
+	if (mIsLowerLayerUp) 
+	{
+		mIsLowerLayerUp = false;
+		this->_OnLowerLayerDown();
+	}
 }
 
 

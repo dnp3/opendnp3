@@ -20,7 +20,7 @@
  */
 #include "CommandTask.h"
 
-#include <openpal/Exception.h>
+
 #include <openpal/LoggableMacros.h>
 
 #include "opendnp3/app/APDUParser.h"
@@ -118,10 +118,10 @@ void CommandTask::OnFailure()
 	callback(CommandResponse(CommandResult::TIMEOUT));
 }
 
-TaskResult CommandTask::_OnPartialResponse(const APDUResponseRecord&)
+bool CommandTask::_OnPartialResponse(const APDUResponseRecord&)
 {
 	LOG_BLOCK(LogLevel::Error, "Non fin responses not allowed for control tasks");
-	return TR_CONTINUE;
+	return false;
 }
 
 TaskResult CommandTask::_OnFinalResponse(const APDUResponseRecord& record)

@@ -23,7 +23,7 @@
 
 #include <assert.h>
 
-#include <openpal/Exception.h>
+
 #include <openpal/TimeDuration.h>
 
 #include "opendnp3/app/ClassMask.h"

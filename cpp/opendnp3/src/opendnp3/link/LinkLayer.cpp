@@ -22,7 +22,7 @@
 
 #include <assert.h>
 
-#include <openpal/Exception.h>
+
 #include <openpal/LoggableMacros.h>
 
 #include "opendnp3/DNPConstants.h"
@@ -70,10 +70,8 @@ void LinkLayer::ChangeState(SecStateBase* apState)
 
 bool LinkLayer::Validate(bool aIsMaster, uint16_t aSrc, uint16_t aDest)
 {
-	if(!mIsOnline)
-		MACRO_THROW_EXCEPTION(InvalidStateException, "LowerLayerDown");
-
-	if(aIsMaster == mCONFIG.IsMaster) {
+	if(aIsMaster == mCONFIG.IsMaster) 
+	{
 		ERROR_BLOCK(LogLevel::Warning,
 		            (aIsMaster ? "Master frame received for master" : "Slave frame received for slave"),
 		            DLERR_MASTER_BIT_MATCH);
@@ -99,23 +97,32 @@ bool LinkLayer::Validate(bool aIsMaster, uint16_t aSrc, uint16_t aDest)
 
 void LinkLayer::OnLowerLayerUp()
 {
-	if(mIsOnline)
-		MACRO_THROW_EXCEPTION(InvalidStateException, "LowerLayerUp");
-	mIsOnline = true;
-	if(mpUpperLayer) mpUpperLayer->OnLowerLayerUp();
+	if (mIsOnline)
+	{	
+		LOG_BLOCK(LogLevel::Error, "Layer already online");		
+	}
+	else
+	{
+		mIsOnline = true;
+		if (mpUpperLayer) mpUpperLayer->OnLowerLayerUp();
+	}
 }
 
 void LinkLayer::OnLowerLayerDown()
 {
-	if(!mIsOnline)
-		MACRO_THROW_EXCEPTION(InvalidStateException, "LowerLayerDown");
+	if (mIsOnline)
+	{
+		if (mpTimer != nullptr) this->CancelTimer();
+		mIsOnline = false;
+		mpPriState = PLLS_SecNotReset::Inst();
+		mpSecState = SLLS_NotReset::Inst();
 
-	if(mpTimer != nullptr) this->CancelTimer();
-	mIsOnline = false;
-	mpPriState = PLLS_SecNotReset::Inst();
-	mpSecState = SLLS_NotReset::Inst();
-
-	if(mpUpperLayer) mpUpperLayer->OnLowerLayerDown();
+		if (mpUpperLayer) mpUpperLayer->OnLowerLayerDown();
+	}
+	else
+	{
+		LOG_BLOCK(LogLevel::Error, "Layer is not online");
+	}
 }
 
 void LinkLayer::Transmit(const LinkFrame& arFrame)
@@ -245,10 +252,15 @@ void LinkLayer::UnconfirmedUserData(bool aIsMaster, uint16_t aDest, uint16_t aSr
 
 void LinkLayer::_Send(const ReadOnlyBuffer& arBuffer)
 {
-	if(!mIsOnline)
-		MACRO_THROW_EXCEPTION(InvalidStateException, "LowerLayerDown");
-	if(mCONFIG.UseConfirms) mpPriState->SendConfirmed(this, arBuffer);
-	else mpPriState->SendUnconfirmed(this, arBuffer);
+	if (mIsOnline)
+	{		
+		if (mCONFIG.UseConfirms) mpPriState->SendConfirmed(this, arBuffer);
+		else mpPriState->SendUnconfirmed(this, arBuffer);
+	}
+	else
+	{
+		LOG_BLOCK(LogLevel::Error, "Layer is not online");
+	}
 }
 
 void LinkLayer::OnTimeout()

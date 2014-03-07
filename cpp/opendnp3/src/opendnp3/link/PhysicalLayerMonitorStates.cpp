@@ -20,7 +20,7 @@
  */
 #include "PhysicalLayerMonitorStates.h"
 
-#include <openpal/Exception.h>
+
 #include <openpal/Location.h>
 #include <openpal/IPhysicalLayerAsync.h>
 #include <openpal/LoggableMacros.h>
@@ -74,28 +74,28 @@ std::string IMonitorState::ConvertToString()
 
 void ExceptsOnLayerOpen::OnLayerOpen(PhysicalLayerMonitor* apContext)
 {
-	MACRO_THROW_EXCEPTION_COMPLEX(InvalidStateException, "Not opening: " << this->Name());
+	LOGGER_BLOCK(apContext->GetLogger(), LogLevel::Error, "Invalid action for state: " << this->Name());	
 }
 
 /* --- NotOpening --- */
 
 void NotOpening::OnOpenFailure(PhysicalLayerMonitor* apContext)
 {
-	MACRO_THROW_EXCEPTION_COMPLEX(InvalidStateException, "Not opening: " << this->Name());
+	LOGGER_BLOCK(apContext->GetLogger(), LogLevel::Error, "Invalid action for state: " << this->Name());
 }
 
 /* --- NotOpen --- */
 
 void NotOpen::OnLayerClose(PhysicalLayerMonitor* apContext)
 {
-	MACRO_THROW_EXCEPTION_COMPLEX(InvalidStateException, "Not open: " << this->Name());
+	LOGGER_BLOCK(apContext->GetLogger(), LogLevel::Error, "Invalid action for state: " << this->Name());
 }
 
 /* --- NotWaitingForTimer --- */
 
 void NotWaitingForTimer::OnOpenTimeout(PhysicalLayerMonitor* apContext)
 {
-	MACRO_THROW_EXCEPTION_COMPLEX(InvalidStateException, "Not waiting for timer: " << this->Name());
+	LOGGER_BLOCK(apContext->GetLogger(), LogLevel::Error, "Invalid action for state: " << this->Name());
 }
 
 /* --- IgnoresClose --- */
