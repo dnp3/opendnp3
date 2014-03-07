@@ -8,7 +8,7 @@ AC_PREFIX_DEFAULT([/usr]) #works best for Ubuntu
 AC_CONFIG_FILES([Makefile])
 
 AC_LANG([C++]) # tell autoconf that we're using C++
-AX_CXX_COMPILE_STDCXX_11([ext]) #require support for C++11
+AX_CXX_COMPILE_STDCXX_11([noext]) #require support for C++11
 
 AX_BOOST_BASE([1.45.0]  ,, [AC_MSG_ERROR(You must install boost >= 1.45.0)])
 AX_BOOST_SYSTEM

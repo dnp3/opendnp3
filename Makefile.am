@@ -286,20 +286,17 @@ cpp/opendnp3tests/src/TransportStackPair.cpp \
 cpp/opendnp3tests/src/TransportTestObject.cpp \
 cpp/opendnp3tests/src/WrappedTcpPipe.cpp
 
-
-
-
-masterdemo_CXXFLAGS = -I$(OPENPAL_INCLUDE) -I$(ASIOPAL_INCLUDE) -I $(OPENDNP3_INCLUDE) $(BOOST_DEFINES)
+masterdemo_CXXFLAGS = -I$(OPENPAL_INCLUDE) -I$(ASIOPAL_INCLUDE) -I $(OPENDNP3_INCLUDE) $(BOOST_DEFINES) -Wl,--no-as-needed
 masterdemo_LDFLAGS = $(BOOST_LDFLAGS) -pthread
 masterdemo_LDADD = libopenpal.la libasiopal.la libopendnp3.la $(CORE_BOOST_LIBS)
 masterdemo_SOURCES = cpp/masterdemo/DemoMain.cpp
 
-outstationdemo_CXXFLAGS = -I$(OPENPAL_INCLUDE) -I$(ASIOPAL_INCLUDE) -I $(OPENDNP3_INCLUDE) $(BOOST_DEFINES)
+outstationdemo_CXXFLAGS = -I$(OPENPAL_INCLUDE) -I$(ASIOPAL_INCLUDE) -I $(OPENDNP3_INCLUDE) $(BOOST_DEFINES) -Wl,--no-as-needed
 outstationdemo_LDFLAGS = $(BOOST_LDFLAGS) -pthread
 outstationdemo_LDADD = libopenpal.la libasiopal.la libopendnp3.la $(CORE_BOOST_LIBS)
 outstationdemo_SOURCES = cpp/outstationdemo/DemoMain.cpp
 
-apdufuzz_CXXFLAGS = -I$(OPENPAL_INCLUDE) -I$(OPENDNP3_INCLUDE) -I$(OPENDNP3_SRCS) 
+apdufuzz_CXXFLAGS = -I$(OPENPAL_INCLUDE) -I$(OPENDNP3_INCLUDE) -I$(OPENDNP3_SRCS)  -Wl,--no-as-needed
 apdufuzz_LDFLAGS = -pthread
 apdufuzz_LDADD = libopenpal.la libopendnp3.la
 apdufuzz_SOURCES = cpp/apdufuzz/ApduFuzz.cpp
