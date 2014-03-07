@@ -23,7 +23,6 @@ libopenpal_la_SOURCES = \
 cpp/openpal/src/openpal/gen/LogLevel.cpp \
 cpp/openpal/src/openpal/AsyncLayerInterfaces.cpp \
 cpp/openpal/src/openpal/BufferWrapper.cpp \
-cpp/openpal/src/openpal/Exception.cpp \
 cpp/openpal/src/openpal/IHandlerAsync.cpp \
 cpp/openpal/src/openpal/LogEntry.cpp \
 cpp/openpal/src/openpal/Loggable.cpp \
@@ -213,6 +212,7 @@ cpp/opendnp3tests/src/BufferHelpers.cpp \
 cpp/opendnp3tests/src/BufferTestObject.cpp \
 cpp/opendnp3tests/src/ComparingDataObserver.cpp \
 cpp/opendnp3tests/src/DNPHelpers.cpp \
+cpp/opendnp3tests/src/Exception.cpp \
 cpp/opendnp3tests/src/FlexibleDataObserver.cpp \
 cpp/opendnp3tests/src/IntegrationTest.cpp \
 cpp/opendnp3tests/src/LinkLayerRouterTest.cpp \
