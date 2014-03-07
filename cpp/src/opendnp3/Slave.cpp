@@ -121,6 +121,7 @@ void Slave::OnLowerLayerUp()
 void Slave::OnLowerLayerDown()
 {
 	mpState->OnLowerLayerDown(this);
+	mDeferredRequest = false;
 	this->FlushDeferredEvents();
 	this->UpdateState(SS_COMMS_DOWN);
 }
