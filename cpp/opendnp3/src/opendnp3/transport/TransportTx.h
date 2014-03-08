@@ -24,9 +24,10 @@
 
 #include <openpal/Loggable.h>
 #include <openpal/BufferWrapper.h>
+#include <openpal/StaticBuffer.h>
 
 #include "opendnp3/transport/TransportConstants.h"
-#include "opendnp3/CopyableBuffer.h"
+#include "opendnp3/StaticSizeConfiguration.h"
 
 namespace opendnp3
 {
@@ -39,14 +40,13 @@ State/validation for the DNP3 transport layer's send channel.
 class TransportTx : public openpal::Loggable
 {
 public:
-	TransportTx(openpal::Logger&, TransportLayer*, size_t aFragSize);
+	TransportTx(openpal::Logger&, TransportLayer*, uint32_t aFragSize);
 
 
-	void Send(const openpal::ReadOnlyBuffer &arBuffer); // A fresh call to Send() will reset the state
+	void Send(const openpal::ReadOnlyBuffer& output); // A fresh call to Send() will reset the state
 	bool SendSuccess();
 
-
-	static uint8_t GetHeader(bool aFir, bool aFin, int aSeq);
+	static uint8_t GetHeader(bool fir, bool fin, uint8_t sequence);
 
 private:
 
@@ -54,15 +54,17 @@ private:
 
 	TransportLayer* mpContext;
 
-	CopyableBuffer mBufferAPDU;
-	CopyableBuffer mBufferTPDU;
+	openpal::StaticBuffer<SizeConfiguration::MAX_APDU_BUFFER_SIZE> underlying;
+	openpal::WriteBuffer apduBuffer;
+	openpal::StaticBuffer<TL_MAX_TPDU_LENGTH> tpduBuffer;
 
-	size_t mNumBytesSent;
-	size_t mNumBytesToSend;
-	int mSeq;
+	uint32_t numBytesSent;
+	uint32_t numBytesToSend;
 
-	size_t BytesRemaining() {
-		return mNumBytesToSend - mNumBytesSent;
+	uint8_t sequence;
+
+	uint32_t BytesRemaining() const {
+		return numBytesToSend - numBytesSent;
 	}
 };
 

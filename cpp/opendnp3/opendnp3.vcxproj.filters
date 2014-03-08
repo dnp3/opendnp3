@@ -108,9 +108,6 @@
     <ClInclude Include="src\opendnp3\DestructorHook.h">
       <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\CopyableBuffer.h">
-      <Filter>Header</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\app\AnalogOutput.h">
       <Filter>Header\app</Filter>
     </ClInclude>
@@ -1024,9 +1021,6 @@
     </ClCompile>
     <ClCompile Include="src\opendnp3\objects\Group1.cpp">
       <Filter>Source\objects</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\CopyableBuffer.cpp">
-      <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\DestructorHook.cpp">
       <Filter>Source</Filter>

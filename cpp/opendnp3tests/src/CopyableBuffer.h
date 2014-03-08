@@ -81,7 +81,6 @@ private:
 	uint32_t mSize;
 };
 
-
 }
 
 #endif

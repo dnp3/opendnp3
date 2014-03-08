@@ -35,7 +35,7 @@ class StaticBuffer : public StaticArray<uint8_t, uint32_t, N>
 	public:
 		
 		StaticBuffer() : StaticArray<uint8_t, uint32_t, N>()			
-		{}
+		{}		
 
 		ReadOnlyBuffer ToReadOnly() const
 		{

@@ -45,6 +45,10 @@ class StaticArray : public HasSize<IndexType>
 			return Indexable<ValueType, IndexType>(buffer, N);
 		}		
 
+		inline ValueType const * Buffer() const { return buffer; };
+
+		inline ValueType* Buffer() { return buffer; };		
+
 		inline ValueType& operator[](IndexType index) 
 		{
 			assert(index < N);

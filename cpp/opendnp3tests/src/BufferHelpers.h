@@ -21,7 +21,7 @@
 #ifndef __BUFFER_HELPERS_H_
 #define __BUFFER_HELPERS_H_
 
-#include <opendnp3/CopyableBuffer.h>
+#include "CopyableBuffer.h"
 #include <string>
 
 namespace opendnp3

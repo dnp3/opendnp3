@@ -21,13 +21,12 @@
 #ifndef __TRANSPORT_RX_H_
 #define __TRANSPORT_RX_H_
 
-#include "TransportConstants.h"
-
+#include "opendnp3/transport/TransportConstants.h"
+#include "opendnp3/StaticSizeConfiguration.h"
 
 #include <openpal/Loggable.h>
 #include <openpal/BufferWrapper.h>
-
-#include "opendnp3/CopyableBuffer.h"
+#include <openpal/StaticBuffer.h>
 
 namespace opendnp3
 {
@@ -40,26 +39,25 @@ State/validation for the DNP3 transport layer's receive channel.
 class TransportRx : public openpal::Loggable
 {
 public:
-	TransportRx(openpal::Logger&, TransportLayer*, uint32_t aFragSize);
+	TransportRx(openpal::Logger&, TransportLayer*, uint32_t fragSize);
 
-	void HandleReceive(const openpal::ReadOnlyBuffer& arBuffer);
+	void HandleReceive(const openpal::ReadOnlyBuffer& input);
 
 	void Reset();
 
 private:
 
-	bool ValidateHeader(bool aFir, bool aFin, int aSeq, size_t aPayloadSize);
+	bool ValidateHeader(bool fir, bool fin, uint8_t sequence, uint32_t payloadSize);
 
 	TransportLayer* mpContext;
 
-	CopyableBuffer mBuffer;
-	uint32_t mNumBytesRead;
-	int mSeq;
-
-
+	openpal::StaticBuffer<SizeConfiguration::MAX_APDU_BUFFER_SIZE> underlying;
+	openpal::WriteBuffer buffer;
+	uint32_t numBytesRead;
+	uint8_t sequence;
 
 	size_t BufferRemaining() {
-		return mBuffer.Size() - mNumBytesRead;
+		return buffer.Size() - numBytesRead;
 	}
 };
 

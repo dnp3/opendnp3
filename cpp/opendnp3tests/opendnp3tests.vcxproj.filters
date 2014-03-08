@@ -176,6 +176,9 @@
     <ClInclude Include="src\Exception.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\CopyableBuffer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\AppLayerTest.cpp">
@@ -425,6 +428,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Exception.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CopyableBuffer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

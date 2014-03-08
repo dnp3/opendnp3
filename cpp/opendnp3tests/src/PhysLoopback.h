@@ -22,7 +22,7 @@
 #define __PHYS_LOOPBACK_H_
 
 #include <opendnp3/link/PhysicalLayerMonitor.h>
-#include <opendnp3/CopyableBuffer.h>
+#include "CopyableBuffer.h"
 
 namespace opendnp3
 {

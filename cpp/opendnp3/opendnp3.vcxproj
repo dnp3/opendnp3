@@ -74,7 +74,6 @@
     <ClInclude Include="src\opendnp3\app\VTOData.h" />
     <ClInclude Include="src\opendnp3\app\WriteConversions.h" />
     <ClInclude Include="src\opendnp3\app\WriteConversionTemplates.h" />
-    <ClInclude Include="src\opendnp3\CopyableBuffer.h" />
     <ClInclude Include="src\opendnp3\DestructorHook.h" />
     <ClInclude Include="src\opendnp3\DNP3Channel.h" />
     <ClInclude Include="src\opendnp3\DNP3Manager.h" />
@@ -264,7 +263,6 @@
     <ClCompile Include="src\opendnp3\app\SolicitedChannel.cpp" />
     <ClCompile Include="src\opendnp3\app\StaticRange.cpp" />
     <ClCompile Include="src\opendnp3\app\UnsolicitedChannel.cpp" />
-    <ClCompile Include="src\opendnp3\CopyableBuffer.cpp" />
     <ClCompile Include="src\opendnp3\DestructorHook.cpp" />
     <ClCompile Include="src\opendnp3\DNP3Channel.cpp" />
     <ClCompile Include="src\opendnp3\DNP3Manager.cpp" />

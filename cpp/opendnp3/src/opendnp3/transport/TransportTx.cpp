@@ -36,24 +36,24 @@ using namespace openpal;
 namespace opendnp3
 {
 
-TransportTx::TransportTx(Logger& arLogger, TransportLayer* apContext, size_t aFragSize) :
+TransportTx::TransportTx(Logger& arLogger, TransportLayer* apContext, uint32_t fragSize) :
 	Loggable(arLogger),
 	mpContext(apContext),
-	mBufferAPDU(aFragSize),
-	mBufferTPDU(TL_MAX_TPDU_LENGTH),
-	mNumBytesSent(0),
-	mNumBytesToSend(0),
-	mSeq(0)
+	underlying(),
+	apduBuffer(underlying.GetWriteBuffer().Truncate(fragSize)),
+	tpduBuffer(),
+	numBytesSent(0),
+	numBytesToSend(0),
+	sequence(0)
 {}
 
-void TransportTx::Send(const ReadOnlyBuffer &arBuffer)
+void TransportTx::Send(const ReadOnlyBuffer& output)
 {
-	assert(arBuffer.IsNotEmpty());
-	assert(arBuffer.Size() <= mBufferAPDU.Size());
-
-	arBuffer.CopyTo(mBufferAPDU);	
-	mNumBytesToSend = arBuffer.Size();
-	mNumBytesSent = 0;
+	assert(output.IsNotEmpty());
+	assert(output.Size() <= apduBuffer.Size());
+	output.CopyTo(apduBuffer);	
+	numBytesToSend = output.Size();
+	numBytesSent = 0;
 
 	this->CheckForSend();
 }
@@ -62,41 +62,42 @@ bool TransportTx::CheckForSend()
 {
 	size_t remainder = this->BytesRemaining();
 
-	if(remainder > 0) {
-		size_t numToSend = remainder < TL_MAX_TPDU_PAYLOAD ? remainder : TL_MAX_TPDU_PAYLOAD;
-		memcpy(mBufferTPDU + 1, mBufferAPDU + mNumBytesSent, numToSend);
+	if(remainder > 0) 
+	{
+		uint32_t numToSend = remainder < TL_MAX_TPDU_PAYLOAD ? remainder : TL_MAX_TPDU_PAYLOAD;
+		memcpy(tpduBuffer.Buffer() + 1, apduBuffer + numBytesSent, numToSend);
 
-		bool fir = (mNumBytesSent == 0);
-		mNumBytesSent += numToSend;
-		bool fin = (mNumBytesSent == mNumBytesToSend);
+		bool fir = (numBytesSent == 0);
+		numBytesSent += numToSend;
+		bool fin = (numBytesSent == numBytesToSend);
 
-		mBufferTPDU[0] = GetHeader(fir, fin, mSeq);
-		LOG_BLOCK(LogLevel::Interpret, "-> " << TransportLayer::ToString(mBufferTPDU[0]));
-		ReadOnlyBuffer buffer(mBufferTPDU, numToSend + 1);
+		tpduBuffer[0] = GetHeader(fir, fin, sequence);
+		LOG_BLOCK(LogLevel::Interpret, "-> " << TransportLayer::ToString(tpduBuffer[0]));
+		ReadOnlyBuffer buffer(tpduBuffer.Buffer(), numToSend + 1);
 		mpContext->TransmitTPDU(buffer);
 		return false;
 	}
 	else {
-		mNumBytesSent = mNumBytesToSend = 0;
+		numBytesSent = numBytesToSend = 0;
 		return true;
 	}
 }
 
 bool TransportTx::SendSuccess()
 {
-	mSeq = (mSeq + 1) % 64;
+	sequence = (sequence + 1) % 64;
 
 	return this->CheckForSend();
 }
 
-uint8_t TransportTx::GetHeader(bool aFir, bool aFin, int aSeq)
+uint8_t TransportTx::GetHeader(bool fir, bool fin, uint8_t sequence)
 {
 	uint8_t hdr = 0;
-	if(aFir) hdr |= TL_HDR_FIR;
-	if(aFin) hdr |= TL_HDR_FIN;
+	if(fir) hdr |= TL_HDR_FIR;
+	if(fin) hdr |= TL_HDR_FIN;
 
 	// Only the lower 6 bits of the sequence number
-	hdr |= TL_HDR_SEQ & aSeq;
+	hdr |= TL_HDR_SEQ & sequence;
 
 	return hdr;
 }

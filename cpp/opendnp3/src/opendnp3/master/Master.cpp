@@ -30,7 +30,6 @@
 #include "opendnp3/master/AsyncTaskNonPeriodic.h"
 #include "opendnp3/master/AsyncTaskContinuous.h"
 
-#include "opendnp3/CopyableBuffer.h"
 #include "opendnp3/app/APDUParser.h"
 #include "opendnp3/app/APDURequest.h"
 

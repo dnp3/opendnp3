@@ -193,6 +193,7 @@
     <ClInclude Include="src\BufferHelpers.h" />
     <ClInclude Include="src\BufferTestObject.h" />
     <ClInclude Include="src\ComparingDataObserver.h" />
+    <ClInclude Include="src\CopyableBuffer.h" />
     <ClInclude Include="src\DatabaseTestObject.h" />
     <ClInclude Include="src\DNPHelpers.h" />
     <ClInclude Include="src\Exception.h" />
@@ -250,6 +251,7 @@
     <ClCompile Include="src\BufferHelpers.cpp" />
     <ClCompile Include="src\BufferTestObject.cpp" />
     <ClCompile Include="src\ComparingDataObserver.cpp" />
+    <ClCompile Include="src\CopyableBuffer.cpp" />
     <ClCompile Include="src\DNPHelpers.cpp" />
     <ClCompile Include="src\Exception.cpp" />
     <ClCompile Include="src\FlexibleDataObserver.cpp" />

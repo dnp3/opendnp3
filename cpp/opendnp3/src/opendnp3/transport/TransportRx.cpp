@@ -37,54 +37,55 @@ using namespace openpal;
 namespace opendnp3
 {
 
-TransportRx::TransportRx(Logger& arLogger, TransportLayer* apContext, uint32_t aFragSize) :
+TransportRx::TransportRx(Logger& arLogger, TransportLayer* apContext, uint32_t fragSize) :
 	Loggable(arLogger),
 	mpContext(apContext),
-	mBuffer(aFragSize),
-	mNumBytesRead(0),
-	mSeq(0)
+	underlying(),
+	buffer(underlying.GetWriteBuffer().Truncate(fragSize)),
+	numBytesRead(0),
+	sequence(0)
 {
 
 }
 
 void TransportRx::Reset()
 {
-	mNumBytesRead = 0;
-	mSeq = 0;
+	numBytesRead = 0;
+	sequence = 0;
 }
 
-void TransportRx::HandleReceive(const openpal::ReadOnlyBuffer& arBuffer)
+void TransportRx::HandleReceive(const openpal::ReadOnlyBuffer& input)
 {
-	if(arBuffer.Size() < 2)
+	if (input.Size() < 2)
 	{
-		ERROR_BLOCK(LogLevel::Warning, "Received tpdu with no payload, size: " << arBuffer.Size(), TLERR_NO_PAYLOAD);
+		ERROR_BLOCK(LogLevel::Warning, "Received tpdu with no payload, size: " << input.Size(), TLERR_NO_PAYLOAD);
 	}
-	else if(arBuffer.Size() > TL_MAX_TPDU_LENGTH) 
+	else if (input.Size() > TL_MAX_TPDU_LENGTH)
 	{
-		ERROR_BLOCK(LogLevel::Warning, "Illegal arg: " << arBuffer.Size() << " exceeds max tpdu size of " << TL_MAX_TPDU_LENGTH, TLERR_TOO_MUCH_DATA);
+		ERROR_BLOCK(LogLevel::Warning, "Illegal arg: " << input.Size() << " exceeds max tpdu size of " << TL_MAX_TPDU_LENGTH, TLERR_TOO_MUCH_DATA);
 
 	} else {
 
-		uint8_t hdr = arBuffer[0];
+		uint8_t hdr = input[0];
 		LOG_BLOCK(LogLevel::Interpret, "<- " << TransportLayer::ToString(hdr));
 		bool first = (hdr & TL_HDR_FIR) != 0;
 		bool last = (hdr & TL_HDR_FIN) != 0;
 		int seq = hdr & TL_HDR_SEQ;
-		size_t payload_len = arBuffer.Size() - 1;
+		uint32_t payloadLength = input.Size() - 1;
 
-		if(this->ValidateHeader(first, last, seq, payload_len)) {
-			if(BufferRemaining() < payload_len) {
+		if (this->ValidateHeader(first, last, seq, payloadLength)) {
+			if (BufferRemaining() < payloadLength) {
 				ERROR_BLOCK(LogLevel::Warning, "Exceeded the buffer size before a complete fragment was read", TLERR_BUFFER_FULL);
-				mNumBytesRead = 0;
+				numBytesRead = 0;
 			}
-			else { //passed all validation
-				memcpy(mBuffer + mNumBytesRead, arBuffer + 1, payload_len);
-				mNumBytesRead += payload_len;
-				mSeq = (mSeq + 1) % 64;
+			else { //passed all validation				
+				memcpy(buffer + numBytesRead, input + 1, payloadLength);
+				numBytesRead += payloadLength;
+				sequence = (sequence + 1) % 64;
 
 				if(last) {
-					ReadOnlyBuffer buffer(mBuffer, mNumBytesRead);
-					mNumBytesRead = 0;					
+					ReadOnlyBuffer buffer(buffer, numBytesRead);
+					numBytesRead = 0;					
 					mpContext->ReceiveAPDU(buffer);
 				}
 			}
@@ -94,25 +95,27 @@ void TransportRx::HandleReceive(const openpal::ReadOnlyBuffer& arBuffer)
 	
 }
 
-bool TransportRx::ValidateHeader(bool aFir, bool aFin, int aSeq, size_t aPayloadSize)
+bool TransportRx::ValidateHeader(bool fir, bool fin, uint8_t sequence_, uint32_t payloadSize)
 {
 	//get the transport byte and parse it
 
-	if(aFir) {
-		mSeq = aSeq; //always accept the sequence on FIR
-		if(mNumBytesRead > 0) {
+	if(fir) 
+	{
+		sequence = sequence_; //always accept the sequence on FIR
+		if(numBytesRead > 0) {
 			// drop existing received bytes from segment
-			ERROR_BLOCK(LogLevel::Warning, "FIR received mid-fragment, discarding: " << mNumBytesRead << "bytes", TLERR_NEW_FIR);
-			mNumBytesRead = 0;
+			ERROR_BLOCK(LogLevel::Warning, "FIR received mid-fragment, discarding: " << numBytesRead << "bytes", TLERR_NEW_FIR);
+			numBytesRead = 0;
 		}
 	}
-	else if(mNumBytesRead == 0) { //non-first packet with 0 prior bytes
+	else if(numBytesRead == 0) { //non-first packet with 0 prior bytes
 		ERROR_BLOCK(LogLevel::Warning, "non-FIR packet with 0 prior bytes", TLERR_MESSAGE_WITHOUT_FIR);
 		return false;
 	}
 	
-	if(aSeq != mSeq) {
-		ERROR_BLOCK(LogLevel::Warning, "Ignoring bad sequence, got: " << aSeq << " expected: " << mSeq, TLERR_BAD_SEQUENCE);
+	if(sequence_ != sequence) 
+	{
+		ERROR_BLOCK(LogLevel::Warning, "Ignoring bad sequence, got: " << sequence_ << " expected: " << sequence, TLERR_BAD_SEQUENCE);
 		return false;
 	}
 
