@@ -49,7 +49,15 @@ class ITimeWriteHandler;
 class DNP3Channel: public IChannel, private openpal::Loggable
 {
 public:
-	DNP3Channel(openpal::Logger aLogger, openpal::TimeDuration aOpenRetry, IPhysicalLayerAsync* apPhys, std::function<void (DNP3Channel*)> aOnShutdown);
+	DNP3Channel(
+					openpal::Logger logger,
+					openpal::TimeDuration minOpenRetry,
+					openpal::TimeDuration maxOpenRetry,
+					IOpenDelayStrategy* pStrategy,
+					IPhysicalLayerAsync* pPhys,
+					std::function<void (DNP3Channel*)> onShutdown
+				);
+
 	~DNP3Channel();
 
 	// Implement IChannel - these are exposed to clients
@@ -85,10 +93,8 @@ private:
 	std::auto_ptr<IPhysicalLayerAsync> mpPhys;
 	std::function<void (DNP3Channel*)> mOnShutdown;
 	LinkLayerRouter mRouter;
-
-#ifndef OPENDNP3_NO_MASTER
+	
 	AsyncTaskGroup mGroup;
-#endif
 
 	std::set<IStack*> mStacks;
 

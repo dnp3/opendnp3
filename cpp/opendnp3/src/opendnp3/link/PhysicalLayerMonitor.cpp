@@ -26,7 +26,6 @@
 #include <openpal/LoggableMacros.h>
 
 #include <functional>
-#include <algorithm>
 
 #include <assert.h>
 
@@ -35,18 +34,24 @@ using namespace openpal;
 namespace opendnp3
 {
 
-PhysicalLayerMonitor::PhysicalLayerMonitor(Logger aLogger, IPhysicalLayerAsync* apPhys, TimeDuration aMinOpenRetry, TimeDuration aMaxOpenRetry) :
+PhysicalLayerMonitor::PhysicalLayerMonitor(
+											Logger aLogger, 
+											IPhysicalLayerAsync* pPhys_, 
+											TimeDuration minOpenRetry_, 
+											TimeDuration maxOpenRetry_,
+											IOpenDelayStrategy* pOpenStrategy_) :
 	Loggable(aLogger),
 	IHandlerAsync(aLogger),
-	mpPhys(apPhys),
+	mpPhys(pPhys_),
 	mpOpenTimer(nullptr),
 	mpState(MonitorStateInit::Inst()),
 	mFinalShutdown(false),
-	mMinOpenRetry(aMinOpenRetry),
-	mMaxOpenRetry(aMaxOpenRetry),
-	mCurrentRetry(aMinOpenRetry)
+	minOpenRetry(minOpenRetry_),
+	maxOpenRetry(maxOpenRetry_),
+	currentRetry(minOpenRetry_),
+	pOpenStrategy(pOpenStrategy_)
 {
-	assert(apPhys != nullptr);
+	assert(mpPhys != nullptr);
 	mpPhys->SetHandler(this);
 }
 
@@ -60,13 +65,13 @@ ChannelState PhysicalLayerMonitor::GetState()
 
 bool PhysicalLayerMonitor::WaitForShutdown(openpal::TimeDuration aTimeout)
 {
-	std::unique_lock<std::mutex> lock(mMutex);
+	std::unique_lock<std::mutex> lock(mutex);
 	while(!mFinalShutdown) {
 		if(aTimeout.GetMilliseconds() >= 0) {
-			mCondition.wait_for(lock, std::chrono::milliseconds(aTimeout.GetMilliseconds()));
+			condition.wait_for(lock, std::chrono::milliseconds(aTimeout.GetMilliseconds()));
 			break;
 		}
-		else mCondition.wait(lock);
+		else condition.wait(lock);
 	}
 	return mFinalShutdown;
 }
@@ -76,7 +81,7 @@ void PhysicalLayerMonitor::ChangeState(IMonitorState* apState)
 	LOG_BLOCK(LogLevel::Debug, mpState->ConvertToString() << " -> " << apState->ConvertToString() << " : " << mpPhys->ConvertStateToString());
 	IMonitorState* pLast = mpState;
 
-	std::unique_lock<std::mutex> lock(mMutex);
+	std::unique_lock<std::mutex> lock(mutex);
 	mpState = apState;
 	if(pLast->GetState() != apState->GetState()) {
 
@@ -92,9 +97,9 @@ void PhysicalLayerMonitor::ChangeState(IMonitorState* apState)
 
 void PhysicalLayerMonitor::DoFinalShutdown()
 {
-	std::unique_lock<std::mutex> lock(mMutex);
+	std::unique_lock<std::mutex> lock(mutex);
 	mFinalShutdown = true;
-	mCondition.notify_all();
+	condition.notify_all();
 }
 
 /* ------- User facing events that occurs ------- */
@@ -144,13 +149,13 @@ void PhysicalLayerMonitor::_OnOpenFailure()
 	LOG_BLOCK(LogLevel::Debug, "_OnOpenFailure()");
 	mpState->OnOpenFailure(this);
 	this->OnPhysicalLayerOpenFailureCallback();
-	this->mCurrentRetry = TimeDuration::Milliseconds(std::min(2 * mCurrentRetry.GetMilliseconds(), mMaxOpenRetry.GetMilliseconds()));
+	this->currentRetry = pOpenStrategy->GetNextDelay(currentRetry, maxOpenRetry);		
 }
 
 void PhysicalLayerMonitor::_OnLowerLayerUp()
 {
 	LOG_BLOCK(LogLevel::Debug, "_OnLowerLayerUp");
-	this->mCurrentRetry = mMinOpenRetry;
+	this->currentRetry = minOpenRetry;
 	mpState->OnLayerOpen(this);
 	this->OnPhysicalLayerOpenSuccessCallback();
 }
@@ -167,7 +172,7 @@ void PhysicalLayerMonitor::_OnLowerLayerDown()
 void PhysicalLayerMonitor::StartOpenTimer()
 {
 	assert(mpOpenTimer == nullptr);
-	mpOpenTimer = mpPhys->GetExecutor()->Start(mCurrentRetry, std::bind(&PhysicalLayerMonitor::OnOpenTimerExpiration, this));
+	mpOpenTimer = mpPhys->GetExecutor()->Start(currentRetry, std::bind(&PhysicalLayerMonitor::OnOpenTimerExpiration, this));
 }
 
 void PhysicalLayerMonitor::CancelOpenTimer()

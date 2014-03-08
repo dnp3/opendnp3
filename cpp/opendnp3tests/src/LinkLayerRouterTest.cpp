@@ -29,7 +29,7 @@ LinkLayerRouterTest::LinkLayerRouterTest(LogLevel aLevel, bool aImmediate) :
 	log(),
 	exe(),
 	phys(Logger(&log, aLevel, "Physical"), &exe),
-	router(Logger(&log, aLevel, "Router"), &phys, TimeDuration::Milliseconds(100))
+	router(Logger(&log, aLevel, "Router"), &phys, TimeDuration::Milliseconds(100), TimeDuration::Milliseconds(100))
 {
 
 }

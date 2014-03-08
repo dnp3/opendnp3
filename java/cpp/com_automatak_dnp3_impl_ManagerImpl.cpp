@@ -58,7 +58,7 @@ JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1ch
 	std::string loggerId = JNIHelpers::GetString(jloggerId, pEnv);
 	std::string host = JNIHelpers::GetString(jhost, pEnv);
 	LogLevel lev = LogLevelFromType(logLevel);
-	return (jlong) pMgr->AddTCPClient(Logger(pMgr->GetLog(), lev, loggerId), TimeDuration::Milliseconds(timeoutMs), host, port);		
+	return (jlong)pMgr->AddTCPClient(Logger(pMgr->GetLog(), lev, loggerId), TimeDuration::Milliseconds(timeoutMs), TimeDuration::Milliseconds(timeoutMs), host, port);
 }
 
 JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1channel_1tcp_1server
@@ -68,7 +68,7 @@ JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1ch
 	std::string loggerId = JNIHelpers::GetString(jloggerId, pEnv);
 	std::string endpoint = JNIHelpers::GetString(jendpoint, pEnv);
 	LogLevel lev = LogLevelFromType(logLevel);
-	return (jlong) pMgr->AddTCPServer(Logger(pMgr->GetLog(), lev, loggerId), TimeDuration::Milliseconds(timeoutMs), endpoint, port);
+	return (jlong)pMgr->AddTCPServer(Logger(pMgr->GetLog(), lev, loggerId), TimeDuration::Milliseconds(timeoutMs), TimeDuration::Milliseconds(timeoutMs), endpoint, port);
 }
 
 JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1channel_1serial
@@ -85,7 +85,7 @@ JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1ch
 	ss.mParity = asiopal::GetParityFromInt(parity);
 	ss.mFlowType = asiopal::GetFlowTypeFromInt(flowControl);
 	LogLevel lev = LogLevelFromType(logLevel);
-	return (jlong) pMgr->AddSerial(Logger(pMgr->GetLog(), lev, loggerId), TimeDuration::Milliseconds(timeoutMs), ss);	
+	return (jlong)pMgr->AddSerial(Logger(pMgr->GetLog(), lev, loggerId), TimeDuration::Milliseconds(timeoutMs), TimeDuration::Milliseconds(timeoutMs), ss);
 }
 
 

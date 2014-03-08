@@ -66,7 +66,7 @@ int main(int argc, char* argv[])
 	// Create the raw physical layer
 	auto pServerPhys = new PhysicalLayerAsyncTCPServer(Logger(&log, LOG_LEVEL, "tcpserver"), pool.GetIOService(), "127.0.0.1", 20000, configure);
 	// Wrap the physical layer in a DNP channel
-	auto pServer = mgr.CreateChannel(Logger(&log, LOG_LEVEL, "tcpserver"), TimeDuration::Seconds(5), pServerPhys);
+	auto pServer = mgr.CreateChannel(Logger(&log, LOG_LEVEL, "tcpserver"), TimeDuration::Seconds(5), TimeDuration::Seconds(5), pServerPhys);
 
 	// You can optionally add a listener to the channel. You can do this anytime and
 	// you will receive a stream of all state changes

@@ -50,7 +50,7 @@ TransportLoopbackTestObject::TransportLoopbackTestObject(
 	mLinkB(mLogger, apPhys->GetExecutor(), aCfgB),
 	mTransA(mLogger, apPhys->GetExecutor()),
 	mTransB(mLogger, apPhys->GetExecutor()),
-	mRouter(mLogger, apPhys, TimeDuration::Seconds(1)),
+	mRouter(mLogger, apPhys, TimeDuration::Seconds(1), TimeDuration::Seconds(1)),
 	mUpperA(mLogger),
 	mUpperB(mLogger)
 {

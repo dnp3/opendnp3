@@ -62,22 +62,39 @@ void ASIODNP3Manager::Shutdown()
 	mpManager->Shutdown();
 }
 
-opendnp3::IChannel* ASIODNP3Manager::AddTCPClient(openpal::Logger aLogger, openpal::TimeDuration aOpenRetry, const std::string& arHost, uint16_t aPort)
+opendnp3::IChannel* ASIODNP3Manager::AddTCPClient(
+	openpal::Logger aLogger, 
+	openpal::TimeDuration minOpenRetry, 
+	openpal::TimeDuration maxOpenRetry, 
+	const std::string& host, 
+	uint16_t port,
+	opendnp3::IOpenDelayStrategy* pStrategy)
 {
-	auto pPhys = new asiopal::PhysicalLayerAsyncTCPClient(aLogger, mpThreadPool->GetIOService(), arHost, aPort);
-	return mpManager->CreateChannel(aLogger, aOpenRetry, pPhys);
+	auto pPhys = new asiopal::PhysicalLayerAsyncTCPClient(aLogger, mpThreadPool->GetIOService(), host, port);
+	return mpManager->CreateChannel(aLogger, minOpenRetry, maxOpenRetry, pPhys, pStrategy);
 }
 
-opendnp3::IChannel* ASIODNP3Manager::AddTCPServer(openpal::Logger aLogger, openpal::TimeDuration aOpenRetry, const std::string& arEndpoint, uint16_t aPort)
+opendnp3::IChannel* ASIODNP3Manager::AddTCPServer(
+	openpal::Logger aLogger,
+	openpal::TimeDuration minOpenRetry,
+	openpal::TimeDuration maxOpenRetry,
+	const std::string& endpoint, 
+	uint16_t port,
+	opendnp3::IOpenDelayStrategy* pStrategy)
 {
-	auto pPhys = new asiopal::PhysicalLayerAsyncTCPServer(aLogger, mpThreadPool->GetIOService(), arEndpoint, aPort);
-	return mpManager->CreateChannel(aLogger, aOpenRetry, pPhys);
+	auto pPhys = new asiopal::PhysicalLayerAsyncTCPServer(aLogger, mpThreadPool->GetIOService(), endpoint, port);
+	return mpManager->CreateChannel(aLogger, minOpenRetry, maxOpenRetry, pPhys, pStrategy);
 }
 
-opendnp3::IChannel* ASIODNP3Manager::AddSerial(openpal::Logger aLogger, openpal::TimeDuration aOpenRetry, asiopal::SerialSettings aSettings)
+opendnp3::IChannel* ASIODNP3Manager::AddSerial(
+	openpal::Logger aLogger,
+	openpal::TimeDuration minOpenRetry,
+	openpal::TimeDuration maxOpenRetry,
+	asiopal::SerialSettings aSettings,
+	opendnp3::IOpenDelayStrategy* pStrategy)
 {
 	auto pPhys = new asiopal::PhysicalLayerAsyncSerial(aLogger, mpThreadPool->GetIOService(), aSettings);
-	return mpManager->CreateChannel(aLogger, aOpenRetry, pPhys);
+	return mpManager->CreateChannel(aLogger, minOpenRetry, maxOpenRetry, pPhys, pStrategy);
 }
 
 }

@@ -42,7 +42,7 @@ namespace DotNetSlaveDemo
         {
             IDNP3Manager mgr = DNP3ManagerFactory.CreateManager();
             mgr.AddLogHandler(PrintingLogAdapter.Instance); //this is optional
-            var channel = mgr.AddTCPServer("server", LogLevel.Interpret, TimeSpan.FromSeconds(5), "127.0.0.1", 20000);
+            var channel = mgr.AddTCPServer("server", LogLevel.Interpret, TimeSpan.FromSeconds(5), TimeSpan.FromSeconds(5), "127.0.0.1", 20000);
 
             //optionally, add a listener for the channel state
             channel.AddStateListener(state => Console.WriteLine("Server state: " + state));

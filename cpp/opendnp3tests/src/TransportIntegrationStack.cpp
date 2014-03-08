@@ -30,7 +30,7 @@ namespace opendnp3
 {
 
 TransportIntegrationStack::TransportIntegrationStack(Logger aLogger, IPhysicalLayerAsync* apPhys, LinkConfig aCfg) :
-	mRouter(aLogger, apPhys, TimeDuration::Seconds(1)),
+	mRouter(aLogger, apPhys, TimeDuration::Seconds(1), TimeDuration::Seconds(1)),
 	mLink(aLogger, apPhys->GetExecutor(), aCfg),
 	mTransport(aLogger, apPhys->GetExecutor()),
 	mUpper(aLogger)

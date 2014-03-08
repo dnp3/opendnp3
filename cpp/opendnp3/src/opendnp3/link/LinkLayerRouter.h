@@ -31,6 +31,7 @@
 #include "opendnp3/link/LinkRoute.h"
 #include "opendnp3/link/IFrameSink.h"
 #include "opendnp3/link/ILinkRouter.h"
+#include "opendnp3/link/IOpenDelayStrategy.h"
 
 
 namespace openpal
@@ -51,7 +52,11 @@ class LinkLayerRouter : public PhysicalLayerMonitor, public IFrameSink, public I
 {
 public:
 
-	LinkLayerRouter(openpal::Logger, openpal::IPhysicalLayerAsync*, openpal::TimeDuration aOpenRetry);
+	LinkLayerRouter(openpal::Logger, 
+					openpal::IPhysicalLayerAsync*, 
+					openpal::TimeDuration minOpenRetry, 
+					openpal::TimeDuration maxOpenRetry,
+					IOpenDelayStrategy* pStrategy = ExponentialBackoffStrategy::Inst());
 
 	bool IsRouteInUse(const LinkRoute& arRoute);
 

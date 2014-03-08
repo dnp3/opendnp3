@@ -18,48 +18,37 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include "DNP3Manager.h"
+#ifndef __I_OPEN_DELAY_STRATEGY_H_
+#define __I_OPEN_DELAY_STRATEGY_H_
 
-#include "DNP3Channel.h"
+#include <openpal/TimeDuration.h>
 
-using namespace openpal;
+#include "opendnp3/Uncopyable.h"
 
 namespace opendnp3
 {
 
-DNP3Manager::DNP3Manager()
+class IOpenDelayStrategy
 {
 
-}
+public:
+	
+	virtual ~IOpenDelayStrategy() {}
 
-DNP3Manager::~DNP3Manager()
+	virtual openpal::TimeDuration GetNextDelay(const openpal::TimeDuration& current, const openpal::TimeDuration& max) const = 0;
+};
+
+class ExponentialBackoffStrategy : public IOpenDelayStrategy, private Uncopyable
 {
-	this->Shutdown();
-}
+	static ExponentialBackoffStrategy mInstance;
 
-void DNP3Manager::Shutdown()
-{
-	std::set<DNP3Channel*> copy(mChannels);
-	for(auto pChannel: copy) pChannel->Shutdown();
-}
+public:
 
-IChannel* DNP3Manager::CreateChannel(
-	openpal::Logger aLogger,
-	openpal::TimeDuration minOpenRetry,
-	openpal::TimeDuration maxOpenRetry,
-	openpal::IPhysicalLayerAsync* apPhys,
-	IOpenDelayStrategy* pOpenStrategy)
-{
+	static IOpenDelayStrategy* Inst();	
 
-	auto pChannel = new DNP3Channel(aLogger, minOpenRetry, maxOpenRetry, pOpenStrategy, apPhys, [this](DNP3Channel * apChannel) {
-		mChannels.erase(apChannel);
-		delete apChannel;
-	});
-	mChannels.insert(pChannel);
-	return pChannel;
-}
-
+	virtual openpal::TimeDuration GetNextDelay(const openpal::TimeDuration& current, const openpal::TimeDuration& max) const override final;
+};
 
 }
 
-
+#endif

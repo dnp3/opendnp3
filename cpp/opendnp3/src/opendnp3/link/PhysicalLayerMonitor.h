@@ -26,6 +26,7 @@
 #include <openpal/TimeDuration.h>
 
 #include "opendnp3/gen/ChannelState.h"
+#include "opendnp3/link/IOpenDelayStrategy.h"
 
 #include <set>
 #include <mutex>
@@ -49,10 +50,12 @@ class PhysicalLayerMonitor : public openpal::IHandlerAsync
 	friend class MonitorStateActions;
 
 public:
+
 	PhysicalLayerMonitor(	openpal::Logger,
 	                        openpal::IPhysicalLayerAsync*,
-	                        openpal::TimeDuration aMinOpenRetry,
-	                        openpal::TimeDuration aMaxOpenRetry);
+	                        openpal::TimeDuration minOpenRetry_,
+	                        openpal::TimeDuration maxOpenRetry_,
+							opendnp3::IOpenDelayStrategy* pOpenStrategy_ = ExponentialBackoffStrategy::Inst());
 
 	~PhysicalLayerMonitor();
 
@@ -116,13 +119,15 @@ private:
 
 	void DoFinalShutdown();
 
-	std::mutex mMutex;
-	std::condition_variable mCondition;
+	std::mutex mutex;
+	std::condition_variable condition;
 
-	const openpal::TimeDuration mMinOpenRetry;
-	const openpal::TimeDuration mMaxOpenRetry;
+	const openpal::TimeDuration minOpenRetry;
+	const openpal::TimeDuration maxOpenRetry;
 
-	openpal::TimeDuration mCurrentRetry;
+	const IOpenDelayStrategy* pOpenStrategy;
+
+	openpal::TimeDuration currentRetry;
 
 	// Implement from IHandlerAsync - Try to reconnect using a timer
 	void _OnOpenFailure();

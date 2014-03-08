@@ -67,7 +67,7 @@ int main(int argc, char* argv[])
 	// Connect via a TCPClient socket to a slave
 	auto pClientPhys = new PhysicalLayerAsyncTCPClient(Logger(&log, LOG_LEVEL, "tcpclient"), pool.GetIOService(), "127.0.0.1", 20000, configure);
 	// wait 3000 ms in between failed connect calls.
-	auto pClient = mgr.CreateChannel(Logger(&log, LOG_LEVEL, "tcpclient"), TimeDuration::Seconds(3), pClientPhys);
+	auto pClient = mgr.CreateChannel(Logger(&log, LOG_LEVEL, "tcpclient"), TimeDuration::Seconds(2), TimeDuration::Minutes(1), pClientPhys);
 
 	// You can optionally add a listener to the channel. You can do this anytime and
 	// you will receive a stream of all state changes

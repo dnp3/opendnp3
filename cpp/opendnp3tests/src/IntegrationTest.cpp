@@ -147,10 +147,10 @@ void IntegrationTest::AddStackPair(LogLevel aLevel, uint16_t aNumPoints)
 	mMasterObservers.push_back(pMasterFDO);
 
 	auto pClientPhys = new PhysicalLayerAsyncTCPClient(clientLogger, mPool.GetIOService(), "127.0.0.1", port);
-	auto pClient = this->mMgr.CreateChannel(clientLogger, TimeDuration::Seconds(1), pClientPhys);
+	auto pClient = this->mMgr.CreateChannel(clientLogger, TimeDuration::Seconds(1), TimeDuration::Seconds(1), pClientPhys);
 
 	auto pServerPhys = new PhysicalLayerAsyncTCPServer(serverLogger, mPool.GetIOService(), "127.0.0.1", port);
-	auto pServer = this->mMgr.CreateChannel(serverLogger, TimeDuration::Seconds(1), pServerPhys);
+	auto pServer = this->mMgr.CreateChannel(serverLogger, TimeDuration::Seconds(1), TimeDuration::Seconds(1), pServerPhys);
 
 	/*
 	 * Add a Master instance.  The code is wrapped in braces so that we can

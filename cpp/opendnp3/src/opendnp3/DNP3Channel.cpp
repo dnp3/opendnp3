@@ -31,14 +31,19 @@ using namespace openpal;
 namespace opendnp3
 {
 
-DNP3Channel::DNP3Channel(openpal::Logger aLogger, openpal::TimeDuration aOpenRetry, IPhysicalLayerAsync* apPhys, std::function<void (DNP3Channel*)> aOnShutdown) :
-	Loggable(aLogger),
-	mpPhys(apPhys),
-	mOnShutdown(aOnShutdown),
-	mRouter(aLogger.GetSubLogger("Router"), mpPhys.get(), aOpenRetry)
-#ifndef OPENDNP3_NO_MASTER
-	, mGroup(apPhys->GetExecutor())
-#endif
+DNP3Channel::DNP3Channel(
+							openpal::Logger logger,
+							openpal::TimeDuration minOpenRetry,
+							openpal::TimeDuration maxOpenRetry,
+							IOpenDelayStrategy* pStrategy,
+							IPhysicalLayerAsync* pPhys,
+							std::function<void(DNP3Channel*)> onShutdown
+						) :
+	Loggable(logger),
+	mpPhys(pPhys),
+	mOnShutdown(onShutdown),
+	mRouter(logger.GetSubLogger("Router"), mpPhys.get(), minOpenRetry, maxOpenRetry, pStrategy),
+	mGroup(pPhys->GetExecutor())
 {
 
 }

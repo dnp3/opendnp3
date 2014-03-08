@@ -110,6 +110,7 @@
     <ClInclude Include="src\opendnp3\link\IFrameSink.h" />
     <ClInclude Include="src\opendnp3\link\ILinkContext.h" />
     <ClInclude Include="src\opendnp3\link\ILinkRouter.h" />
+    <ClInclude Include="src\opendnp3\link\IOpenDelayStrategy.h" />
     <ClInclude Include="src\opendnp3\link\LinkConfig.h" />
     <ClInclude Include="src\opendnp3\link\LinkFrame.h" />
     <ClInclude Include="src\opendnp3\link\LinkHeader.h" />
@@ -291,6 +292,7 @@
     <ClCompile Include="src\opendnp3\IStack.cpp" />
     <ClCompile Include="src\opendnp3\link\CRC.cpp" />
     <ClCompile Include="src\opendnp3\link\DNPCrc.cpp" />
+    <ClCompile Include="src\opendnp3\link\IOpenDelayStrategy.cpp" />
     <ClCompile Include="src\opendnp3\link\LinkFrame.cpp" />
     <ClCompile Include="src\opendnp3\link\LinkHeader.cpp" />
     <ClCompile Include="src\opendnp3\link\LinkLayer.cpp" />

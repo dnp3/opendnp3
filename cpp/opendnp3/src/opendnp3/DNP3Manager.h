@@ -32,6 +32,7 @@
 #include <openpal/TimeDuration.h>
 
 #include "DestructorHook.h"
+#include "opendnp3/link/IOpenDelayStrategy.h"
 
 
 
@@ -84,7 +85,11 @@ public:
 
 	~DNP3Manager();
 
-	IChannel* CreateChannel(openpal::Logger aLogger, openpal::TimeDuration aOpenRetry, openpal::IPhysicalLayerAsync* apPhys);
+	IChannel* CreateChannel(	openpal::Logger aLogger, 
+								openpal::TimeDuration minOpenRetry,
+								openpal::TimeDuration maxOpenRetry,
+								openpal::IPhysicalLayerAsync* apPhys,
+								IOpenDelayStrategy* pOpenStrategy = ExponentialBackoffStrategy::Inst());
 
 	/**
 	* Permanently shutdown the manager and all sub-objects that have been created. Stop

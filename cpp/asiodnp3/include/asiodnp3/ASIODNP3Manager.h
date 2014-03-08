@@ -29,6 +29,7 @@
 #include <openpal/TimeDuration.h>
 #include <asiopal/SerialTypes.h>
 #include <opendnp3/DestructorHook.h>
+#include <opendnp3/link/IOpenDelayStrategy.h>
 
 namespace opendnp3
 {
@@ -80,33 +81,54 @@ public:
 	/**
 	* Add a tcp client channel
 	*
-	* @param arLoggerId name that will be used in all log messages
-	* @param aLevel lowest log level of all messages
-	* @param aOpenRetry connection retry interval on failure in milliseconds
-	* @param arHost IP address of remote outstation (i.e. 127.0.0.1 or www.google.com)
-	* @param aPort Port of remote outstation is listening on
+	* @param logger Logger that will be used for all log messages	
+	* @param minOpenRetry minimum connection retry interval on failure in milliseconds
+	* @param maxOpenRetry minimum connection retry interval on failure in milliseconds
+	* @param host IP address of remote outstation (i.e. 127.0.0.1 or www.google.com)
+	* @param port Port of remote outstation is listening on
+	* @param pStrategy Reconnection delay strategy, default to exponential
 	*/
-	opendnp3::IChannel* AddTCPClient(openpal::Logger aLogger, openpal::TimeDuration aOpenRetry, const std::string& arHost, uint16_t aPort);
+	opendnp3::IChannel* AddTCPClient(
+		openpal::Logger logger, 
+		openpal::TimeDuration minOpenRetry, 
+		openpal::TimeDuration maxOpenRetry, 
+		const std::string& host, 
+		uint16_t port,
+		opendnp3::IOpenDelayStrategy* pStrategy = opendnp3::ExponentialBackoffStrategy::Inst());
 
 	/**
 	* Add a tcp server channel
 	*
-	* @param arLoggerId name that will be used in all log messages
-	* @param aLevel lowest log level of all messages
-	* @param aOpenRetry connection retry interval on bind failure in milliseconds
-	* @param arEndpoint Network adapter to listen on, i.e. 127.0.0.1 or 0.0.0.0
-	* @param aPort Port to listen on
+	* @param logger Logger that will be used for all log messages	
+	* @param minOpenRetry minimum connection retry interval on failure in milliseconds
+	* @param maxOpenRetry minimum connection retry interval on failure in milliseconds
+	* @param endpoint Network adapter to listen on, i.e. 127.0.0.1 or 0.0.0.0
+	* @param port Port to listen on
+	* @param pStrategy Reconnection delay strategy, default to exponential
 	*/
-	opendnp3::IChannel* AddTCPServer(openpal::Logger, openpal::TimeDuration aOpenRetry, const std::string& arEndpoint, uint16_t aPort);
+	opendnp3::IChannel* AddTCPServer(
+		openpal::Logger,
+		openpal::TimeDuration minOpenRetry,
+		openpal::TimeDuration maxOpenRetry,
+		const std::string& endpoint, 
+		uint16_t port,
+		opendnp3::IOpenDelayStrategy* pStrategy = opendnp3::ExponentialBackoffStrategy::Inst());
 
 	/**
 	* Add a serial channel
-	* @param arLoggerId name that will be used in all log messages
-	* @param aLevel lowest log level of all messages
-	* @param aOpenRetry connection retry interval on open failure in milliseconds
-	* @param aSettings settings object that fully parameterizes the serial port
+	*
+	* @param logger Logger that will be used for all log messages	
+	* @param minOpenRetry minimum connection retry interval on failure in milliseconds
+	* @param maxOpenRetry minimum connection retry interval on failure in milliseconds
+	* @param settings settings object that fully parameterizes the serial port
+	* @param pStrategy Reconnection delay strategy, default to exponential
 	*/
-	opendnp3::IChannel* AddSerial(openpal::Logger, openpal::TimeDuration aOpenRetry, asiopal::SerialSettings aSettings);
+	opendnp3::IChannel* AddSerial(
+		openpal::Logger,
+		openpal::TimeDuration minOpenRetry,
+		openpal::TimeDuration maxOpenRetry,
+		asiopal::SerialSettings settings,
+		opendnp3::IOpenDelayStrategy* pStrategy = opendnp3::ExponentialBackoffStrategy::Inst());
 
 private:
 
