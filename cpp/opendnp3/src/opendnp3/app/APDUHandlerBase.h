@@ -169,7 +169,7 @@ namespace opendnp3
 		template <class T>
 		static IndexedValue<T, uint16_t> Widen(const IndexedValue<T, uint8_t> value)
 		{
-			return value.Widen<uint16_t>();
+			return value.template Widen<uint16_t>();
 		}	
 
 		template <class T>

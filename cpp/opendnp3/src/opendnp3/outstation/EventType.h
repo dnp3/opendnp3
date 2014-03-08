@@ -34,7 +34,7 @@ enum class EventType: uint8_t
 	Binary = 0x01,
 	Analog = 0x02,
 	Counter = 0x04,
-	FrozenCounter = 0x05
+	FrozenCounter = 0x08
 };
 
 enum class EventClass: uint8_t

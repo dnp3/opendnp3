@@ -37,7 +37,7 @@ namespace opendnp3
 struct SequenceRecord
 {
 	EventType type;
-	int16_t index;
+	uint16_t index;
 	EventClass clazz;
 	bool selected;
 };

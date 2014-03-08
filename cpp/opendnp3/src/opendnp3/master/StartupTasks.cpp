@@ -88,13 +88,15 @@ void TimeSync::Init()
 
 void TimeSync::ConfigureRequest(APDURequest& request)
 {	
-	if(mDelay < 0) {
+	if(mDelay < 0) 
+	{
 		request.SetFunction(FunctionCode::DELAY_MEASURE);		
 		mStart = mpTimeSrc->Now();
 	}
 	else {
 		auto now = mpTimeSrc->Now().msSinceEpoch;
-		Group50Var1 time = { now + mDelay };
+		Group50Var1 time;
+		time.time = now + mDelay;
 		request.SetFunction(FunctionCode::WRITE);
 		auto writer = request.GetWriter();
 		writer.WriteSingleValue<UInt8, Group50Var1>(QualifierCode::UINT8_CNT, time);
