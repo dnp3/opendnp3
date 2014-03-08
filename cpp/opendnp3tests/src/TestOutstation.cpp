@@ -70,7 +70,7 @@ BOOST_AUTO_TEST_CASE(DataPost)
 	SlaveConfig cfg;
 	SlaveTestObject t(cfg, DatabaseTemplate::BinaryOnly(1));
 	
-	t.db.staticData.binaries.metadata[0].clazz = PC_CLASS_1;
+	t.db.staticData.binaries.metadata[0].clazz = CLASS_1;
 
 	IDataObserver* pObs = t.slave.GetDataObserver();
 	{
@@ -88,7 +88,7 @@ BOOST_AUTO_TEST_CASE(DataPostToNonExistent)
 {
 	SlaveConfig cfg;
 	SlaveTestObject t(cfg, DatabaseTemplate::BinaryOnly(1));	
-	t.db.staticData.binaries.metadata[0].clazz = PC_CLASS_1;
+	t.db.staticData.binaries.metadata[0].clazz = CLASS_1;
 
 	IDataObserver* pObs = t.slave.GetDataObserver();
 	{

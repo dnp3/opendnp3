@@ -66,12 +66,12 @@ void DataPoll::ReadData(const APDUResponseRecord& record)
 
 ClassPoll::ClassPoll(Logger& arLogger, ISOEHandler* pHandler_) :
 	DataPoll(arLogger, pHandler_),
-	mClassMask(PC_INVALID)
+	mClassMask(0)
 {}
 
-void ClassPoll::Set(int aClassMask)
+void ClassPoll::Set(uint8_t classMask)
 {
-	mClassMask = aClassMask;
+	mClassMask = classMask;
 }
 
 
@@ -79,10 +79,10 @@ void ClassPoll::ConfigureRequest(APDURequest& request)
 {
 	request.SetFunction(FunctionCode::READ);
 	auto writer = request.GetWriter();
-	if (mClassMask & PC_CLASS_0) writer.WriteHeader(GroupVariationID(60, 1), QualifierCode::ALL_OBJECTS);
-	if (mClassMask & PC_CLASS_1) writer.WriteHeader(GroupVariationID(60, 2), QualifierCode::ALL_OBJECTS);
-	if (mClassMask & PC_CLASS_2) writer.WriteHeader(GroupVariationID(60, 3), QualifierCode::ALL_OBJECTS);
-	if (mClassMask & PC_CLASS_3) writer.WriteHeader(GroupVariationID(60, 4), QualifierCode::ALL_OBJECTS);
+	if (mClassMask & CLASS_1) writer.WriteHeader(GroupVariationID(60, 2), QualifierCode::ALL_OBJECTS);
+	if (mClassMask & CLASS_2) writer.WriteHeader(GroupVariationID(60, 3), QualifierCode::ALL_OBJECTS);
+	if (mClassMask & CLASS_3) writer.WriteHeader(GroupVariationID(60, 4), QualifierCode::ALL_OBJECTS);
+	if (mClassMask & CLASS_0) writer.WriteHeader(GroupVariationID(60, 1), QualifierCode::ALL_OBJECTS);	
 }
 
 

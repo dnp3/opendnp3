@@ -34,9 +34,9 @@ struct EventPointRecord
 	EventPointRecord(PointClass aPointClass) : EventClass(aPointClass)
 	{}
 
-	EventPointRecord() : EventClass(PC_CLASS_1) {}
+	EventPointRecord() : EventClass(CLASS_1) {}
 
-	/// when the point changes, it will generate an event unless EventClass == PC_CLASS_0
+	/// when the point changes, it will generate an event unless EventClass == CLASS_0
 	PointClass EventClass;
 };
 

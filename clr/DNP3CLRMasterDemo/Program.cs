@@ -55,7 +55,7 @@ namespace DotNetMasterDemo
             //optionally, add a listener for the stack state
             master.AddStateListener(state => Console.WriteLine("Master state: " + state));
 
-            var classMask = PointClassHelpers.GetMask(PointClass.PC_CLASS_1, PointClass.PC_CLASS_2, PointClass.PC_CLASS_3);
+            var classMask = PointClassHelpers.GetMask(PointClass.CLASS_1, PointClass.CLASS_2, PointClass.CLASS_3);
             var classScan = master.AddClassScan(classMask, TimeSpan.FromSeconds(5), TimeSpan.FromSeconds(5));
             var integrityScan = master.GetIntegrityScan();
 

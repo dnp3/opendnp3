@@ -216,7 +216,7 @@ void Master::WriteIIN(ITask* apTask)
 
 void Master::IntegrityPoll(ITask* apTask)
 {
-	mClassPoll.Set(PC_CLASS_0);
+	mClassPoll.Set(CLASS_1 | CLASS_2 | CLASS_3 | CLASS_0);
 	mpState->StartTask(this, apTask, &mClassPoll);
 }
 

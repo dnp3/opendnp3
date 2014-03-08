@@ -43,9 +43,9 @@ struct ClassMask {
 	{}
 
 	ClassMask(int aMask) :
-		class1((aMask | PC_CLASS_1) == 0),
-		class2((aMask | PC_CLASS_2) == 0),
-		class3((aMask | PC_CLASS_3) == 0)
+		class1((aMask | CLASS_1) == 0),
+		class2((aMask | CLASS_2) == 0),
+		class3((aMask | CLASS_3) == 0)
 	{}
 
 	bool class1;
@@ -54,9 +54,9 @@ struct ClassMask {
 
 	static int GetMask(bool c1, bool c2, bool c3) {
 		int m = 0;
-		if(c1) m |= PC_CLASS_1;
-		if(c2) m |= PC_CLASS_2;
-		if(c3) m |= PC_CLASS_3;
+		if(c1) m |= CLASS_1;
+		if(c2) m |= CLASS_2;
+		if(c3) m |= CLASS_3;
 		return m;
 	}
 

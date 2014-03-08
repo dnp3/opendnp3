@@ -33,20 +33,20 @@ template <typename T>
 class EventMetadata 
 {
 	public:
-	EventMetadata(): clazz(PC_CLASS_0)
+	EventMetadata(): clazz(CLASS_0)
 	{}
 
 	inline bool GetEventClass(EventClass& eventClass) const 
 	{
 		switch(clazz)
 		{
-			case(PointClass::PC_CLASS_1):
+			case(PointClass::CLASS_1):
 				eventClass = EventClass::EC1;
 				return true;
-			case(PointClass::PC_CLASS_2):
+			case(PointClass::CLASS_2):
 				eventClass = EventClass::EC2;
 				return true;
-			case(PointClass::PC_CLASS_3):
+			case(PointClass::CLASS_3):
 				eventClass = EventClass::EC3;
 				return true;
 			default:

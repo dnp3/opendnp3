@@ -23,17 +23,18 @@
 namespace opendnp3
 {
 
-PointClass IntToPointClass(int aClass)
+PointClass IntToPointClass(uint8_t clazz)
 {
-	switch(aClass) {
-	case(PC_CLASS_1):
-		return PC_CLASS_1;
-	case(PC_CLASS_2):
-		return PC_CLASS_2;
-	case(PC_CLASS_3):
-		return PC_CLASS_3;
-	default:
-		return PC_CLASS_0;
+	switch(clazz) 
+	{
+		case(CLASS_1):
+			return CLASS_1;
+		case(CLASS_2):
+			return CLASS_2;
+		case(CLASS_3):
+			return CLASS_3;
+		default:
+			return CLASS_0;
 	}
 }
 

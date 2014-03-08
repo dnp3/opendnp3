@@ -60,7 +60,7 @@ public:
 
 	ClassPoll(openpal::Logger&, ISOEHandler* pHandler_);
 
-	void Set(int aClassMask);
+	void Set(uint8_t classMask);
 
 	//Implement MasterTaskBase
 

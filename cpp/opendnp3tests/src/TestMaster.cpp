@@ -33,11 +33,19 @@ using namespace opendnp3;
 using namespace std::chrono;
 using namespace openpal;
 
+const std::string INTEGRITY("C0 01 3C 02 06 3C 03 06 3C 04 06 3C 01 06");
+
 void TestForIntegrityPoll(MasterTestObject& t, bool aSucceed = true)
 {
-	BOOST_REQUIRE_EQUAL("C0 01 3C 01 06", t.Read());
+	BOOST_REQUIRE_EQUAL(INTEGRITY, t.Read());
 	if(aSucceed) t.RespondToMaster("C0 81 00 00");
 	else t.master.OnSolFailure();
+}
+
+void TestForIntegrityAndRespond(MasterTestObject& t, const std::string& response)
+{
+	BOOST_REQUIRE_EQUAL(INTEGRITY, t.Read());
+	t.RespondToMaster(response);	
 }
 
 void DoControlSelectAndOperate(MasterTestObject& t, std::function<void (CommandResponse)> callback)
@@ -183,8 +191,7 @@ BOOST_AUTO_TEST_CASE(RestartAndTimeBits)
 
 	t.fixedUTC.mTimeSinceEpoch = 100;
 
-	BOOST_REQUIRE_EQUAL("C0 01 3C 01 06", t.Read()); ; //integrity
-	t.RespondToMaster("C0 81 90 00"); // need time and device restart
+	TestForIntegrityAndRespond(t, "C0 81 90 00"); // need time and device restart	
 
 	// Device restart should happen before time task
 	BOOST_REQUIRE_EQUAL("C0 02 50 01 00 07 07 00", t.Read()); //write IIN
@@ -210,8 +217,7 @@ BOOST_AUTO_TEST_CASE(RestartFailure)
 
 	t.fixedUTC.mTimeSinceEpoch = 100; //100 ms since epoch
 
-	BOOST_REQUIRE_EQUAL("C0 01 3C 01 06", t.Read()); //integrity
-	t.RespondToMaster("C0 81 90 00"); // need time and device restart
+	TestForIntegrityAndRespond(t, "C0 81 90 00"); // need time and device restart
 
 	BOOST_REQUIRE_EQUAL("C0 02 50 01 00 07 07 00", t.Read()); //write IIN
 
@@ -225,8 +231,7 @@ BOOST_AUTO_TEST_CASE(RestartLayerDown)
 	MasterTestObject t(master_cfg);
 	t.master.OnLowerLayerUp();
 
-	BOOST_REQUIRE_EQUAL("C0 01 3C 01 06", t.Read()); //integrity
-	t.RespondToMaster("C0 81 90 00"); // need time and device restart
+	TestForIntegrityAndRespond(t, "C0 81 90 00"); // need time and device restart
 
 	// Device restart should happen before time task
 	BOOST_REQUIRE_EQUAL("C0 02 50 01 00 07 07 00", t.Read()); //write IIN
@@ -242,8 +247,7 @@ BOOST_AUTO_TEST_CASE(DelayMeasLayerDown)
 	MasterTestObject t(master_cfg);
 	t.master.OnLowerLayerUp();
 
-	BOOST_REQUIRE_EQUAL("C0 01 3C 01 06", t.Read()); //integrity
-	t.RespondToMaster("C0 81 90 00"); // need time and device restart
+	TestForIntegrityAndRespond(t, "C0 81 90 00"); // need time and device restart
 
 	// Device restart should happen before time task
 	BOOST_REQUIRE_EQUAL("C0 02 50 01 00 07 07 00", t.Read()); //write IIN
@@ -261,8 +265,7 @@ BOOST_AUTO_TEST_CASE(DelayMeasFailure)
 	MasterTestObject t(master_cfg);
 	t.master.OnLowerLayerUp();
 
-	BOOST_REQUIRE_EQUAL("C0 01 3C 01 06", t.Read()); //integrity
-	t.RespondToMaster("C0 81 90 00"); // need time and device restart
+	TestForIntegrityAndRespond(t, "C0 81 90 00"); // need time and device restart
 
 	// Device restart should happen before time task
 	BOOST_REQUIRE_EQUAL("C0 02 50 01 00 07 07 00", t.Read()); //write IIN
@@ -281,8 +284,7 @@ BOOST_AUTO_TEST_CASE(RestartBadResponses)
 
 	t.fixedUTC.mTimeSinceEpoch = 100; //100 ms since epoch
 
-	BOOST_REQUIRE_EQUAL("C0 01 3C 01 06", t.Read()); //integrity
-	t.RespondToMaster("C0 81 10 00"); // need time
+	TestForIntegrityAndRespond(t, "C0 81 10 00"); //need time
 
 	BOOST_REQUIRE_EQUAL("C0 17", t.Read()); // Delay measure
 	t.RespondToMaster("C0 81 10 00"); // no header
@@ -442,7 +444,7 @@ BOOST_AUTO_TEST_CASE(DeferredControlExecution)
 	t.master.OnLowerLayerUp();
 
 	// check that a read request was made on startup
-	BOOST_REQUIRE_EQUAL(t.Read(), "C0 01 3C 01 06"); ;
+	TestForIntegrityPoll(t);
 
 	//issue a command while the master is waiting for a response from the slave
 	ControlRelayOutputBlock bo(ControlCode::PULSE); bo.status = CommandStatus::SUCCESS;
@@ -485,11 +487,8 @@ BOOST_AUTO_TEST_CASE(SolicitedResponseWithData)
 	MasterConfig master_cfg;
 	MasterTestObject t(master_cfg);
 	t.master.OnLowerLayerUp();
-
-	BOOST_REQUIRE_EQUAL(t.Read(), "C0 01 3C 01 06"); ;
-	t.RespondToMaster("C0 81 00 00 01 02 00 02 02 81"); //group 2 var 1, index = 2, 0x81 = Online, true
-
-	BOOST_REQUIRE(t.mts.DispatchOne()); //disptach measurement callback
+	
+	TestForIntegrityAndRespond(t, "C0 81 00 00 01 02 00 02 02 81"); //group 2 var 1, index = 2, 0x81 = Online, true
 
 	BOOST_REQUIRE(Binary(true, BQ_ONLINE) == t.meas.GetBinary(2));
 }
@@ -500,11 +499,13 @@ BOOST_AUTO_TEST_CASE(SolicitedResponseFailure)
 	MasterTestObject t(master_cfg);
 	t.master.OnLowerLayerUp();
 
-	BOOST_REQUIRE_EQUAL(t.Read(), "C0 01 3C 01 06"); ;
-	t.master.OnSolFailure();
+	
+	TestForIntegrityPoll(t, false);
+
 	t.mts.AdvanceTime(TimeDuration(master_cfg.TaskRetryRate));
 	BOOST_REQUIRE(t.mts.DispatchOne());
-	BOOST_REQUIRE_EQUAL(t.Read(), "C0 01 3C 01 06"); ;
+
+	TestForIntegrityPoll(t);
 }
 
 BOOST_AUTO_TEST_CASE(SolicitedResponseLayerDown)
@@ -513,10 +514,10 @@ BOOST_AUTO_TEST_CASE(SolicitedResponseLayerDown)
 	MasterTestObject t(master_cfg);
 	t.master.OnLowerLayerUp();
 
-	BOOST_REQUIRE_EQUAL(t.Read(), "C0 01 3C 01 06"); ;
+	BOOST_REQUIRE_EQUAL(t.Read(), INTEGRITY);
 	t.master.OnLowerLayerDown();
 	t.master.OnLowerLayerUp();
-	BOOST_REQUIRE_EQUAL(t.Read(), "C0 01 3C 01 06"); ;
+	BOOST_REQUIRE_EQUAL(t.Read(), INTEGRITY);
 }
 
 BOOST_AUTO_TEST_CASE(SolicitedMultiFragResponse)
@@ -525,7 +526,7 @@ BOOST_AUTO_TEST_CASE(SolicitedMultiFragResponse)
 	MasterTestObject t(master_cfg);
 	t.master.OnLowerLayerUp();
 
-	BOOST_REQUIRE_EQUAL(t.Read(), "C0 01 3C 01 06");
+	BOOST_REQUIRE_EQUAL(t.Read(), INTEGRITY);
 
 	t.RespondToMaster("C0 81 00 00 01 02 00 02 02 81", false); //trigger partial response	
 
@@ -542,14 +543,13 @@ BOOST_AUTO_TEST_CASE(EventPoll)
 	MasterConfig master_cfg;
 	MasterTestObject t(master_cfg);
 
-	t.master.AddClassScan(PC_CLASS_1 | PC_CLASS_2, TimeDuration::Milliseconds(10), TimeDuration::Seconds(1));
-	t.master.AddClassScan(PC_CLASS_3, TimeDuration::Milliseconds(10), TimeDuration::Seconds(1));
+	t.master.AddClassScan(CLASS_1 | CLASS_2, TimeDuration::Milliseconds(10), TimeDuration::Seconds(1));
+	t.master.AddClassScan(CLASS_3, TimeDuration::Milliseconds(10), TimeDuration::Seconds(1));
 
 	t.master.OnLowerLayerUp();
-
-	BOOST_REQUIRE_EQUAL(t.Read(), "C0 01 3C 01 06");
-	t.RespondToMaster("C0 81 00 00 01 02 00 02 02 81"); //group 2 var 1, index = 2, 0x81 = Online, true	
-
+	
+	TestForIntegrityAndRespond(t, "C0 81 00 00 01 02 00 02 02 81"); //group 2 var 1, index = 2, 0x81 = Online, true	
+	
 	BOOST_REQUIRE_EQUAL(t.Read(), "C0 01 3C 02 06 3C 03 06");
 	t.RespondToMaster("C0 81 00 00 01 02 00 02 02 81"); //group 2 var 1, index = 2, 0x81 = Online, true	
 
@@ -582,12 +582,8 @@ BOOST_AUTO_TEST_CASE(ParsesOctetStringResponseWithNoCharacters)
 	t.master.OnLowerLayerUp();	
 
 	// octet strings shouldn't be found in class 0 polls, but we'll test that we can process them anyway
-	BOOST_REQUIRE_EQUAL("C0 01 3C 01 06", t.Read());
-
-	// Group 110 (0x6E) Variation (length), start = 3, stop = 3
-	t.RespondToMaster("C0 81 00 00 6E 00 00 03 03");
-
-	BOOST_REQUIRE(t.mts.DispatchOne());
+	// Group 110 (0x6E) Variation(length), start = 3, stop = 3
+	TestForIntegrityAndRespond(t, "C0 81 00 00 6E 00 00 03 03");
 
 	BOOST_REQUIRE_EQUAL("", t.meas.GetOctetString(3).AsString());
 }

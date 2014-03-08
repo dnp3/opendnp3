@@ -161,11 +161,11 @@ namespace DNP3.Interface
     /// CLASS 3 corresponds to Group 60 Variation 4
     /// </summary>
 	public enum PointClass {
-		PC_CLASS_0 = 0x01,
-		PC_CLASS_1 = 0x02,
-		PC_CLASS_2 = 0x04,
-		PC_CLASS_3 = 0x08,
-		PC_ALL_EVENTS = PC_CLASS_1 | PC_CLASS_2 | PC_CLASS_3,
+		CLASS_0 = 0x01,
+		CLASS_1 = 0x02,
+		CLASS_2 = 0x04,
+		CLASS_3 = 0x08,
+		PC_ALL_EVENTS = CLASS_1 | CLASS_2 | CLASS_3,
         PC_INVALID = 0x10       
 	}
 
@@ -436,7 +436,7 @@ namespace DNP3.Interface
         }
 
         public EventPointRecord()
-            : this(PointClass.PC_CLASS_0)
+            : this(PointClass.CLASS_0)
         { 
         
         }
@@ -462,7 +462,7 @@ namespace DNP3.Interface
         /// <summary>
         /// Default constructor with Class 0 and 0.1 tolerance
         /// </summary>
-        public DeadbandEventPointRecord(): base(PointClass.PC_CLASS_0)
+        public DeadbandEventPointRecord(): base(PointClass.CLASS_0)
         {
             this.deadband = default(T);
         }
@@ -494,10 +494,10 @@ namespace DNP3.Interface
                                 System.UInt16 numBinaryOutputStatus,
                                 System.UInt16 numAnalogOutputStatus)
         {
-            binaries = Enumerable.Range(0, numBinary).Select(i => new EventPointRecord(PointClass.PC_CLASS_1)).ToList();
-            counters = Enumerable.Range(0, numCounter).Select(i => new DeadbandEventPointRecord<System.UInt32>(PointClass.PC_CLASS_1, 0)).ToList();
-            frozenCounters = Enumerable.Range(0, numFrozenCounter).Select(i => new DeadbandEventPointRecord<System.UInt32>(PointClass.PC_CLASS_1, 0)).ToList();
-            analogs = Enumerable.Range(0, numAnalog).Select(i => new DeadbandEventPointRecord<double>(PointClass.PC_CLASS_1, 0.0)).ToList();
+            binaries = Enumerable.Range(0, numBinary).Select(i => new EventPointRecord(PointClass.CLASS_1)).ToList();
+            counters = Enumerable.Range(0, numCounter).Select(i => new DeadbandEventPointRecord<System.UInt32>(PointClass.CLASS_1, 0)).ToList();
+            frozenCounters = Enumerable.Range(0, numFrozenCounter).Select(i => new DeadbandEventPointRecord<System.UInt32>(PointClass.CLASS_1, 0)).ToList();
+            analogs = Enumerable.Range(0, numAnalog).Select(i => new DeadbandEventPointRecord<double>(PointClass.CLASS_1, 0.0)).ToList();
             numControlStatii = numBinaryOutputStatus;
             numSetpointStatii = numAnalogOutputStatus;
         }

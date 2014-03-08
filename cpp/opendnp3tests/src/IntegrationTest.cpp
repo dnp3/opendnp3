@@ -161,8 +161,7 @@ void IntegrationTest::AddStackPair(LogLevel aLevel, uint16_t aNumPoints)
 		cfg.app.RspTimeout = TimeDuration::Seconds(10);
 		cfg.master.IntegrityRate = TimeDuration::Min();
 		cfg.master.EnableUnsol = true;
-		cfg.master.DoUnsolOnStartup = true;
-		cfg.master.UnsolClassMask = PC_ALL_EVENTS;
+		cfg.master.DoUnsolOnStartup = true;		
 		auto pMaster = pClient->AddMaster(oss.str() + " master", aLevel, pMasterFDO.get(), asiopal::UTCTimeSource::Inst(), cfg);
 		pMaster->Enable();
 	}

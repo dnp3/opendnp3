@@ -104,21 +104,21 @@ BOOST_AUTO_TEST_CASE(AnalogNoEventNegative)
 BOOST_AUTO_TEST_CASE(BinaryNoChange)
 {	
 	DatabaseTestObject t(DatabaseTemplate::BinaryOnly(1));
-	t.db.staticData.binaries.metadata[0].clazz = PC_CLASS_1;	
+	t.db.staticData.binaries.metadata[0].clazz = CLASS_1;	
 	TestBufferForEvent(false, Binary(false, BQ_RESTART), t, t.buffer.mBinaryEvents);
 }
 
 BOOST_AUTO_TEST_CASE(AnalogNoChange)
 {
 	DatabaseTestObject t(DatabaseTemplate::AnalogOnly(1));	
-	t.db.staticData.analogs.metadata[0].clazz = PC_CLASS_1;
+	t.db.staticData.analogs.metadata[0].clazz = CLASS_1;
 	TestBufferForEvent(false, Analog(0, AQ_RESTART), t, t.buffer.mAnalogEvents);
 }
 
 BOOST_AUTO_TEST_CASE(CounterNoChange)
 {
 	DatabaseTestObject t(DatabaseTemplate::CounterOnly(1));	
-	t.db.staticData.counters.metadata[0].clazz = PC_CLASS_1;
+	t.db.staticData.counters.metadata[0].clazz = CLASS_1;
 	TestBufferForEvent(false, Counter(0, CQ_RESTART), t, t.buffer.mCounterEvents);
 }
 
@@ -126,21 +126,21 @@ BOOST_AUTO_TEST_CASE(CounterNoChange)
 BOOST_AUTO_TEST_CASE(BinaryChange)
 {
 	DatabaseTestObject t(DatabaseTemplate::BinaryOnly(1));
-	t.db.staticData.binaries.metadata[0].clazz = PC_CLASS_1;
+	t.db.staticData.binaries.metadata[0].clazz = CLASS_1;
 	TestBufferForEvent(true, Binary(false, BQ_ONLINE), t, t.buffer.mBinaryEvents);
 }
 
 BOOST_AUTO_TEST_CASE(AnalogChange)
 {
 	DatabaseTestObject t(DatabaseTemplate::AnalogOnly(1));	
-	t.db.staticData.analogs.metadata[0].clazz = PC_CLASS_1;
+	t.db.staticData.analogs.metadata[0].clazz = CLASS_1;
 	TestBufferForEvent(true, Analog(0, AQ_ONLINE), t, t.buffer.mAnalogEvents);
 }
 
 BOOST_AUTO_TEST_CASE(CounterChange)
 {
 	DatabaseTestObject t(DatabaseTemplate::CounterOnly(1));	
-	t.db.staticData.counters.metadata[0].clazz = PC_CLASS_1;
+	t.db.staticData.counters.metadata[0].clazz = CLASS_1;
 	TestBufferForEvent(true, Counter(0, CQ_ONLINE), t, t.buffer.mCounterEvents);
 }
 
@@ -148,7 +148,7 @@ BOOST_AUTO_TEST_CASE(CounterChange)
 BOOST_AUTO_TEST_CASE(AnalogLastReportedChange)
 {
 	DatabaseTestObject t(DatabaseTemplate::AnalogOnly(1));	
-	t.db.staticData.analogs.metadata[0].clazz = PC_CLASS_1;
+	t.db.staticData.analogs.metadata[0].clazz = CLASS_1;
 	t.db.staticData.analogs.metadata[0].deadband = 5; //value must change by more than 5 before being reported	
 	
 	TestBufferForEvent(false, Analog(-2, AQ_RESTART), t, t.buffer.mAnalogEvents);
@@ -161,7 +161,7 @@ BOOST_AUTO_TEST_CASE(AnalogLastReportedChange)
 BOOST_AUTO_TEST_CASE(CounterLastReportedChange)
 {
 	DatabaseTestObject t(DatabaseTemplate::CounterOnly(1));	
-	t.db.staticData.counters.metadata[0].clazz = PC_CLASS_1;
+	t.db.staticData.counters.metadata[0].clazz = CLASS_1;
 	t.db.staticData.counters.metadata[0].deadband = 5;	
 
 	TestBufferForEvent(false, Counter(1, CQ_RESTART), t, t.buffer.mCounterEvents);

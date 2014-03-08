@@ -50,9 +50,9 @@ BOOST_AUTO_TEST_CASE(ReadClass1)
 	SlaveConfig cfg; cfg.mDisableUnsol = true;
 	SlaveTestObject t(cfg, DatabaseTemplate::AnalogOnly(100));
 	
-	t.db.staticData.analogs.metadata[0x10].clazz = PC_CLASS_1;
-	t.db.staticData.analogs.metadata[0x17].clazz = PC_CLASS_1;
-	t.db.staticData.analogs.metadata[0x05].clazz = PC_CLASS_1;
+	t.db.staticData.analogs.metadata[0x10].clazz = CLASS_1;
+	t.db.staticData.analogs.metadata[0x17].clazz = CLASS_1;
+	t.db.staticData.analogs.metadata[0x05].clazz = CLASS_1;
 	
 	t.slave.OnLowerLayerUp();
 
@@ -81,7 +81,7 @@ BOOST_AUTO_TEST_CASE(ReadClass1TimeOrdered)
 	SlaveTestObject t(cfg);
 
 	t.db.Configure(MeasurementType::ANALOG, 100);
-	t.db.mAnalogs[0x10].clazz = PC_CLASS_1;	
+	t.db.mAnalogs[0x10].clazz = CLASS_1;	
 	t.slave.OnLowerLayerUp();
 
 	{
@@ -130,9 +130,9 @@ t.db.Configure(MeasurementType::ANALOG, 1);
 t.db.Configure(MeasurementType::COUNTER, 1);
 t.db.Configure(MeasurementType::CONTROL_STATUS, 1);
 t.db.Configure(MeasurementType::SETPOINT_STATUS, 1);
-t.db.SetClass(MeasurementType::BINARY, PC_CLASS_1);
-t.db.SetClass(MeasurementType::ANALOG, PC_CLASS_1);
-t.db.SetClass(MeasurementType::COUNTER, PC_CLASS_1);
+t.db.SetClass(MeasurementType::BINARY, CLASS_1);
+t.db.SetClass(MeasurementType::ANALOG, CLASS_1);
+t.db.SetClass(MeasurementType::COUNTER, CLASS_1);
 t.slave.OnLowerLayerUp();
 
 
@@ -185,7 +185,7 @@ const size_t NUM = 4;
 SlaveConfig cfg; cfg.mDisableUnsol = true;
 SlaveTestObject t(cfg);
 t.db.Configure(MeasurementType::BINARY, NUM);
-t.db.SetClass(MeasurementType::BINARY, PC_CLASS_1);
+t.db.SetClass(MeasurementType::BINARY, CLASS_1);
 t.slave.OnLowerLayerUp();
 
 {
@@ -245,7 +245,7 @@ BOOST_AUTO_TEST_CASE(UnsolData)
 	cfg.mUnsolMask.class1 = true; // this allows the EnableUnsol sequence to be skipped
 	SlaveTestObject t(cfg);
 	t.db.Configure(MeasurementType::BINARY, 1);
-	t.db.SetClass(MeasurementType::BINARY, PC_CLASS_1);
+	t.db.SetClass(MeasurementType::BINARY, CLASS_1);
 
 	// do a transaction before the layer comes online to prove that the null transaction
 	// is occuring before unsol data is sent
@@ -275,7 +275,7 @@ BOOST_AUTO_TEST_CASE(UnsolEventBufferOverflow)
 	cfg.mUnsolPackDelay = TimeDuration::Milliseconds(0);
 	SlaveTestObject t(cfg);
 	t.db.Configure(MeasurementType::BINARY, 1);
-	t.db.SetClass(MeasurementType::BINARY, PC_CLASS_1);
+	t.db.SetClass(MeasurementType::BINARY, CLASS_1);
 
 	// null unsol
 	t.slave.OnLowerLayerUp();
@@ -307,7 +307,7 @@ BOOST_AUTO_TEST_CASE(UnsolMultiFragments)
 	cfg.mUnsolMask.class1 = true; // this allows the EnableUnsol sequence to be skipped
 	SlaveTestObject t(cfg);
 	t.db.Configure(MeasurementType::BINARY, 2);
-	t.db.SetClass(MeasurementType::BINARY, PC_CLASS_1);
+	t.db.SetClass(MeasurementType::BINARY, CLASS_1);
 
 	t.slave.OnLowerLayerUp();
 	BOOST_REQUIRE_EQUAL(t.Read(), "F0 82 80 00");
@@ -340,7 +340,7 @@ BOOST_AUTO_TEST_CASE(WriteDuringUnsol)
 	cfg.mUnsolMask.class1 = true; //allows us to skip this step
 	SlaveTestObject t(cfg);
 	t.db.Configure(MeasurementType::BINARY, 1);
-	t.db.SetClass(MeasurementType::BINARY, PC_CLASS_1);
+	t.db.SetClass(MeasurementType::BINARY, CLASS_1);
 	t.slave.OnLowerLayerUp();
 
 	BOOST_REQUIRE_EQUAL(t.Read(), "F0 82 80 00");
@@ -368,7 +368,7 @@ BOOST_AUTO_TEST_CASE(ReadDuringUnsol)
 	cfg.mUnsolMask.class1 = true; //allows us to skip this step
 	SlaveTestObject t(cfg);
 	t.db.Configure(MeasurementType::BINARY, 1);
-	t.db.SetClass(MeasurementType::BINARY, PC_CLASS_1);
+	t.db.SetClass(MeasurementType::BINARY, CLASS_1);
 	t.slave.OnLowerLayerUp();
 
 	BOOST_REQUIRE_EQUAL(t.Read(), "F0 82 80 00");
@@ -394,7 +394,7 @@ BOOST_AUTO_TEST_CASE(ReadWriteDuringUnsol)
 	cfg.mUnsolMask.class1 = true; //allows us to skip this step
 	SlaveTestObject t(cfg);
 	t.db.Configure(MeasurementType::BINARY, 1);
-	t.db.SetClass(MeasurementType::BINARY, PC_CLASS_1);
+	t.db.SetClass(MeasurementType::BINARY, CLASS_1);
 	t.slave.OnLowerLayerUp();
 
 	BOOST_REQUIRE_EQUAL(t.Read(), "F0 82 80 00");
@@ -421,7 +421,7 @@ BOOST_AUTO_TEST_CASE(UnsolEnable)
 	SlaveConfig cfg; cfg.mUnsolPackDelay = TimeDuration::Zero(); cfg.mUnsolMask = ClassMask(false, false, false);
 	SlaveTestObject t(cfg);
 	t.db.Configure(MeasurementType::BINARY, 1);
-	t.db.SetClass(MeasurementType::BINARY, PC_CLASS_1);
+	t.db.SetClass(MeasurementType::BINARY, CLASS_1);
 	t.slave.OnLowerLayerUp();
 
 	BOOST_REQUIRE_EQUAL(t.Read(), "F0 82 80 00"); //Null UNSOL
@@ -447,7 +447,7 @@ BOOST_AUTO_TEST_CASE(UnsolEnableBadObject)
 	SlaveConfig cfg; cfg.mUnsolPackDelay = TimeDuration::Zero(); cfg.mUnsolMask = ClassMask(false, false, false);
 	SlaveTestObject t(cfg);
 	t.db.Configure(MeasurementType::BINARY, 1);
-	t.db.SetClass(MeasurementType::BINARY, PC_CLASS_1);
+	t.db.SetClass(MeasurementType::BINARY, CLASS_1);
 	t.slave.OnLowerLayerUp();
 
 	BOOST_REQUIRE_EQUAL(t.Read(), "F0 82 80 00"); //Null UNSOL
@@ -470,7 +470,7 @@ BOOST_AUTO_TEST_CASE(UnsolEnableDisableFailure)
 	SlaveConfig cfg; cfg.mDisableUnsol = true;
 	SlaveTestObject t(cfg);
 	t.db.Configure(MeasurementType::BINARY, 1);
-	t.db.SetClass(MeasurementType::BINARY, PC_CLASS_1);
+	t.db.SetClass(MeasurementType::BINARY, CLASS_1);
 	t.slave.OnLowerLayerUp();
 
 	t.SendToSlave("C0 14 3C 02 06");

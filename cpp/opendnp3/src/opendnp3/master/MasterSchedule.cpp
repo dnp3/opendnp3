@@ -77,7 +77,7 @@ void MasterSchedule::Init(const MasterConfig& arCfg)
 		                           mpMaster,
 		                           _1,
 		                           false,
-		                           PC_ALL_EVENTS);
+								   CLASS_1 | CLASS_2 | CLASS_3);
 		AsyncTaskBase* pUnsolDisable = mTracking.Add(
 		                                       TimeDuration::Min(),
 		                                       arCfg.TaskRetryRate,

@@ -98,7 +98,7 @@ int main(int argc, char* argv[])
 	});
 
 	auto integrityScan = pMaster->GetIntegrityScan();
-	auto exceptionScan = pMaster->AddClassScan(PC_CLASS_1 | PC_CLASS_2 | PC_CLASS_3, TimeDuration::Seconds(5), TimeDuration::Seconds(5));
+	auto exceptionScan = pMaster->AddClassScan(CLASS_1 | CLASS_2 | CLASS_3, TimeDuration::Seconds(5), TimeDuration::Seconds(5));
 
 	// Enable the master. This will start communications.
 	pMaster->Enable();

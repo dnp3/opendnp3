@@ -44,7 +44,7 @@ struct MasterConfig {
 		AllowTimeSync(true),
 		DoUnsolOnStartup(false),
 		EnableUnsol(true),
-		UnsolClassMask(PC_ALL_EVENTS),
+		UnsolClassMask(CLASS_1 | CLASS_2 | CLASS_3),
 		IntegrityRate(openpal::TimeDuration::Seconds(5)),
 		TaskRetryRate(openpal::TimeDuration::Seconds(5))
 	{}
