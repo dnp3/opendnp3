@@ -28,7 +28,7 @@ namespace opendnp3
 const CommandResponse CommandResponse::Success(CommandResult::RESPONSE_OK, CommandStatus::SUCCESS); 
 	
 CommandResponse::CommandResponse(CommandResult aResult, CommandStatus aStatus) : 
-	mResult(CommandResult::NO_COMMS), 
+	mResult(aResult),
 	mStatus(aStatus) 
 {}
 
