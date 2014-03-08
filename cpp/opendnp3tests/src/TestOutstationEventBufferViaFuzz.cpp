@@ -36,6 +36,7 @@ void AssertCountInvariant(const ClassCount& selected, const ClassCount& unselect
 
 BOOST_AUTO_TEST_SUITE(OutstationEventBufferFuzzTestSuite)
 
+/*
 BOOST_AUTO_TEST_CASE(FuzzTests)
 {
 	const size_t iterations = 100*1000;
@@ -65,7 +66,7 @@ BOOST_AUTO_TEST_CASE(FuzzTests)
 		writer.Clear(); //prepare writer for next iteration
 	}	
 }
-
+*/
 
 
 BOOST_AUTO_TEST_SUITE_END()

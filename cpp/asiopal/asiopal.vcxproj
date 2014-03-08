@@ -21,7 +21,6 @@
   <ItemGroup>
     <ClInclude Include="include\asiopal\ASIOExecutor.h" />
     <ClInclude Include="include\asiopal\ASIOSerialHelpers.h" />
-    <ClInclude Include="include\asiopal\DeadlineTimerSteadyClock.h" />
     <ClInclude Include="include\asiopal\IOServiceThreadPool.h" />
     <ClInclude Include="include\asiopal\Log.h" />
     <ClInclude Include="include\asiopal\LogToStdio.h" />
@@ -32,7 +31,6 @@
     <ClInclude Include="include\asiopal\PhysicalLayerAsyncTCPClient.h" />
     <ClInclude Include="include\asiopal\PhysicalLayerAsyncTCPServer.h" />
     <ClInclude Include="include\asiopal\SerialTypes.h" />
-    <ClInclude Include="include\asiopal\TimerClockType.h" />
     <ClInclude Include="include\asiopal\UTCTimeSource.h" />
     <ClInclude Include="include\UTCTimeSource.h" />
     <ClInclude Include="src\TimerASIO.h" />
@@ -92,32 +90,28 @@
     <Import Project="..\..\config\output_dirs.props" />
     <Import Project="..\..\config\openpal_include.props" />
     <Import Project="..\..\config\asiopal_include.props" />
-    <Import Project="..\..\config\boost_includes.props" />
-    <Import Project="..\..\config\common_boost_defines.props" />
+    <Import Project="..\..\config\asio_config.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="..\..\config\output_dirs.props" />
     <Import Project="..\..\config\openpal_include.props" />
     <Import Project="..\..\config\asiopal_include.props" />
-    <Import Project="..\..\config\boost_includes.props" />
-    <Import Project="..\..\config\common_boost_defines.props" />
+    <Import Project="..\..\config\asio_config.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="..\..\config\output_dirs.props" />
     <Import Project="..\..\config\openpal_include.props" />
     <Import Project="..\..\config\asiopal_include.props" />
-    <Import Project="..\..\config\boost_includes.props" />
-    <Import Project="..\..\config\common_boost_defines.props" />
+    <Import Project="..\..\config\asio_config.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="..\..\config\output_dirs.props" />
     <Import Project="..\..\config\openpal_include.props" />
     <Import Project="..\..\config\asiopal_include.props" />
-    <Import Project="..\..\config\boost_includes.props" />
-    <Import Project="..\..\config\common_boost_defines.props" />
+    <Import Project="..\..\config\asio_config.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup />

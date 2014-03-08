@@ -46,20 +46,20 @@ IOServiceThreadPool::IOServiceThreadPool(
 	mOnThreadExit(onThreadExit),
 	mIsShutdown(false),
 	mService(),
-	mInfiniteTimer(mService)
+	infiniteTimer(mService)
 {
 	if(aConcurrency == 0) {
 		aConcurrency = 1;
 		LOG_BLOCK(LogLevel::Warning, "Concurrency was set to 0, defaulting to 1 thread");
 	}
-	mInfiniteTimer.expires_at(timer_clock::time_point::max());
-	mInfiniteTimer.async_wait(bind(&IOServiceThreadPool::OnTimerExpiration, this, placeholders::_1));
+	infiniteTimer.expires_at(std::chrono::steady_clock::time_point::max());
+	infiniteTimer.async_wait(bind(&IOServiceThreadPool::OnTimerExpiration, this, placeholders::_1));
 	for(uint32_t i = 0; i < aConcurrency; ++i) {
 		mThreads.push_back(new thread(bind(&IOServiceThreadPool::Run, this)));
 	}
 }
 
-void IOServiceThreadPool::OnTimerExpiration(const boost::system::error_code& ec)
+void IOServiceThreadPool::OnTimerExpiration(const std::error_code& ec)
 {
 
 }
@@ -76,12 +76,12 @@ void IOServiceThreadPool::Shutdown()
 {
 	if(!mIsShutdown) {
 		mIsShutdown = true;
-		mInfiniteTimer.cancel();
-for(auto pThread: mThreads) pThread->join();
+		infiniteTimer.cancel();
+		for(auto pThread: mThreads) pThread->join();
 	}
 }
 
-boost::asio::io_service* IOServiceThreadPool::GetIOService()
+asio::io_service* IOServiceThreadPool::GetIOService()
 {
 	return &mService;
 }

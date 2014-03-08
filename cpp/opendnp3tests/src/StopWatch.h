@@ -22,7 +22,6 @@
 #define _STOP_WATCH_H__
 
 #include <chrono>
-#include <asiopal/TimerClockType.h>
 
 namespace opendnp3
 {
@@ -38,13 +37,13 @@ public:
 
 	//get the elapsed time since creation or the last restart
 	//by default each call to Elapsed restarts the timer.
-	asiopal::timer_clock::duration Elapsed(bool aReset = true);
+	std::chrono::steady_clock::duration Elapsed(bool aReset = true);
 
 	//restart or re-zero the StopWatch.
 	void Restart();
 
 private:
-	asiopal::timer_clock::time_point mStartTime;
+	std::chrono::steady_clock::time_point mStartTime;
 };
 
 

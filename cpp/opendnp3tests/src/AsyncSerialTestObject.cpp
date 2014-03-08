@@ -19,7 +19,7 @@
  * to you under the terms of the License.
  */
 #include "AsyncSerialTestObject.h"
-#include <boost/asio.hpp>
+#include <asio.hpp>
 
 using namespace openpal;
 using namespace asiopal;

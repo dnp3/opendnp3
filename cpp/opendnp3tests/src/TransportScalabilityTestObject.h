@@ -36,8 +36,8 @@ public:
 	TransportScalabilityTestObject(
 	        LinkConfig aClientCfg,
 	        LinkConfig aServerCfg,
-	        boost::uint16_t aPortStart,
-	        boost::uint16_t aNumPair,
+	        uint16_t aPortStart,
+	        uint16_t aNumPair,
 	        openpal::LogLevel aLevel = openpal::LogLevel::Info,
 	        bool aImmediate = false);
 

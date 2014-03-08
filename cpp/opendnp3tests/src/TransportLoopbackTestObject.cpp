@@ -24,7 +24,7 @@
 
 #include <openpal/IPhysicalLayerAsync.h>
 
-#include <boost/asio.hpp>
+#include <asio.hpp>
 #include <sstream>
 
 using namespace std;
@@ -34,7 +34,7 @@ namespace opendnp3
 {
 
 TransportLoopbackTestObject::TransportLoopbackTestObject(
-        boost::asio::io_service* apService,
+        asio::io_service* apService,
         IPhysicalLayerAsync* apPhys,
         LinkConfig aCfgA,
         LinkConfig aCfgB,

@@ -32,8 +32,8 @@
 
 using namespace std;
 using namespace boost;
-using namespace boost::asio;
-using namespace boost::system;
+using namespace asio;
+
 using namespace opendnp3;
 using namespace openpal;
 using namespace asiopal;
@@ -100,7 +100,7 @@ BOOST_AUTO_TEST_CASE(ExecutorPauseGuardsRaceConditions)
 	IOServiceThreadPool pool(Logger(&log, LogLevel::Info, "pool"), 8);
 	size_t iterations = 100000;
 
-	boost::asio::strand strand(*pool.GetIOService());
+	asio::strand strand(*pool.GetIOService());
 	ASIOExecutor exe(&strand);
 
 	int count = 0;

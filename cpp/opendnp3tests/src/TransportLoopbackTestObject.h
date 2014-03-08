@@ -37,7 +37,7 @@ class TransportLoopbackTestObject :  public AsyncTestObjectASIO
 {
 public:
 	TransportLoopbackTestObject(
-	        boost::asio::io_service*,
+	        asio::io_service*,
 	        openpal::IPhysicalLayerAsync*,
 	        LinkConfig,
 	        LinkConfig,

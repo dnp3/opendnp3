@@ -26,12 +26,9 @@
 
 #include <openpal/Location.h>
 
-namespace boost
-{
 namespace asio
 {
-class io_service;
-}
+	class io_service;
 }
 
 namespace asiopal
@@ -43,21 +40,21 @@ namespace asiopal
 class PhysicalLayerAsyncASIO : public PhysicalLayerAsyncBase
 {
 public:
-	PhysicalLayerAsyncASIO(openpal::Logger& arLogger, boost::asio::io_service* apService) :
+	PhysicalLayerAsyncASIO(openpal::Logger& arLogger, asio::io_service* apService) :
 		PhysicalLayerAsyncBase(arLogger),
-		mStrand(*apService),
-		mExecutor(&mStrand)
+		strand(*apService),
+		executor(&strand)
 	{}
 
 	virtual ~PhysicalLayerAsyncASIO() {}
 
 	openpal::IExecutor* GetExecutor() {
-		return &mExecutor;
+		return &executor;
 	}
 
 protected:
-	boost::asio::strand mStrand;
-	ASIOExecutor mExecutor;
+	asio::strand strand;
+	ASIOExecutor executor;
 };
 
 }

@@ -21,7 +21,7 @@
 #include "TransportScalabilityTestObject.h"
 #include <sstream>
 
-#include <boost/asio.hpp>
+#include <asio.hpp>
 
 using namespace std;
 using namespace openpal;
@@ -32,18 +32,18 @@ namespace opendnp3
 TransportScalabilityTestObject::TransportScalabilityTestObject(
         LinkConfig aClientCfg,
         LinkConfig aServerCfg,
-        boost::uint16_t aPortStart,
-        boost::uint16_t aNumPair,
+        uint16_t aPortStart,
+        uint16_t aNumPair,
         LogLevel aLevel,
         bool aImmediate) :
 
 	AsyncTestObjectASIO(),
 	log()
 {
-	const boost::uint16_t START = aPortStart;
-	const boost::uint16_t STOP = START + aNumPair;
+	const uint16_t START = aPortStart;
+	const uint16_t STOP = START + aNumPair;
 
-	for(boost::uint16_t port = START; port < STOP; ++port) {
+	for(uint16_t port = START; port < STOP; ++port) {
 		ostringstream oss;
 		oss << "pair" << port;
 		TransportStackPair* pPair = new TransportStackPair(aClientCfg, aServerCfg, log.mTestLogger, this->GetService(), port);

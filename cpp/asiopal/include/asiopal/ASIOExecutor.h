@@ -25,7 +25,7 @@
 
 #include <queue>
 
-#include <boost/asio.hpp>
+#include <asio.hpp>
 #include <mutex>
 #include <condition_variable>
 
@@ -39,7 +39,7 @@ class ASIOExecutor : public openpal::IExecutor
 {
 
 public:
-	ASIOExecutor(boost::asio::strand*);
+	ASIOExecutor(asio::strand*);
 	~ASIOExecutor();
 
 	openpal::MonotonicTimestamp GetTime();
@@ -55,7 +55,7 @@ private:
 	TimerASIO* GetTimer();
 	void StartTimer(TimerASIO*, const std::function<void ()>&);
 
-	boost::asio::strand* mpStrand;
+	asio::strand* mpStrand;
 
 	typedef std::deque<TimerASIO*> TimerQueue;
 
@@ -67,7 +67,7 @@ private:
 	std::condition_variable mCondition;
 	bool mIsShuttingDown;
 
-	void OnTimerCallback(const boost::system::error_code&, TimerASIO*, std::function<void ()>);
+	void OnTimerCallback(const std::error_code&, TimerASIO*, std::function<void ()>);
 };
 }
 

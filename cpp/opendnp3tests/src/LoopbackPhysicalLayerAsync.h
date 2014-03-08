@@ -27,12 +27,9 @@
 
 #include <queue>
 
-namespace boost
-{
 namespace asio
 {
-class io_service;
-}
+	class io_service;
 }
 
 namespace opendnp3
@@ -42,7 +39,7 @@ namespace opendnp3
 class LoopbackPhysicalLayerAsync : public asiopal::PhysicalLayerAsyncASIO
 {
 public:
-	LoopbackPhysicalLayerAsync(openpal::Logger, boost::asio::io_service* apSrv);
+	LoopbackPhysicalLayerAsync(openpal::Logger, asio::io_service* apSrv);
 
 
 private:

@@ -26,7 +26,7 @@
 #include <asiopal/Log.h>
 #include <asiopal/LogToStdio.h>
 
-#include <boost/asio.hpp>
+#include <asio.hpp>
 
 #include "Exception.h"
 #include "IntegrationTest.h"
@@ -58,7 +58,7 @@ using namespace std::chrono;
 
 BOOST_AUTO_TEST_SUITE(IntegrationSuite)
 
-const boost::uint16_t START_PORT = MACRO_PORT_START;
+const uint16_t START_PORT = MACRO_PORT_START;
 const size_t NUM_PAIRS = MACRO_NUM_PAIRS;
 const size_t NUM_POINTS = 500;
 const size_t NUM_CHANGE_SETS = 10;

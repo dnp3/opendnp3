@@ -61,9 +61,6 @@
     <ClInclude Include="include\asiopal\IOServiceThreadPool.h">
       <Filter>Include Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\asiopal\DeadlineTimerSteadyClock.h">
-      <Filter>Include Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\asiopal\ASIOExecutor.h">
       <Filter>Include Files</Filter>
     </ClInclude>
@@ -102,9 +99,6 @@
     </ClInclude>
     <ClInclude Include="include\asiopal\LogToStdio.h">
       <Filter>Include Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\asiopal\TimerClockType.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

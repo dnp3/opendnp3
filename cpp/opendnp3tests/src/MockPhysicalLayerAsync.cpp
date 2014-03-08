@@ -26,7 +26,6 @@
 #include <memory.h>
 #include <functional>
 
-using namespace boost::system;
 using namespace openpal;
 
 namespace opendnp3
@@ -67,34 +66,34 @@ void MockPhysicalLayerAsync::DoClose()
 
 void MockPhysicalLayerAsync::SignalOpenSuccess()
 {
-	error_code ec(errc::success, get_generic_category());
+	std::error_code ec;
 	this->OnOpenCallback(ec);
 }
 
 void MockPhysicalLayerAsync::SignalOpenFailure()
 {
-	error_code ec(errc::permission_denied, get_generic_category());
+	std::error_code ec(1, std::generic_category());
 	this->OnOpenCallback(ec);
 }
 
 void MockPhysicalLayerAsync::SignalSendSuccess()
 {
 	size_t num = mNumToWrite; mNumToWrite = 0;
-	error_code ec(errc::success, get_generic_category());
+	std::error_code ec;
 	this->OnWriteCallback(ec, num);
 }
 
 void MockPhysicalLayerAsync::SignalSendFailure()
 {
 	mNumToWrite = 0;
-	error_code ec(errc::permission_denied, get_generic_category());
+	std::error_code ec(1, std::generic_category());
 	this->OnWriteCallback(ec, 0);
 }
 
 void MockPhysicalLayerAsync::SignalReadFailure()
 {
 	mNumToRead = 0;
-	error_code ec(errc::permission_denied, get_generic_category());
+	std::error_code ec(1, std::generic_category());
 	this->OnReadCallback(ec, mpWriteBuff, 0);
 }
 
@@ -104,13 +103,13 @@ void MockPhysicalLayerAsync::TriggerRead(const std::string& arData)
 	assert(hs.Size() <= this->mNumToRead);
 	memcpy(mpWriteBuff, hs, hs.Size());
 	mNumToRead = 0;
-	error_code ec(errc::success, get_generic_category());
+	std::error_code ec;
 	this->OnReadCallback(ec, mpWriteBuff, hs.Size());
 }
 
 void MockPhysicalLayerAsync::TriggerClose()
 {
-	error_code ec(errc::connection_aborted, get_generic_category());
+	std::error_code ec(1, std::generic_category());
 	this->OnReadCallback(ec, mpWriteBuff, 0);
 }
 

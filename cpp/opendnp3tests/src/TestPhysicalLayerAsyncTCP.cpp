@@ -19,7 +19,7 @@
  * to you under the terms of the License.
  */
 #include <boost/test/unit_test.hpp>
-#include <boost/asio.hpp>
+#include <asio.hpp>
 
 #include <functional>
 

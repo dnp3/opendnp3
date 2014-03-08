@@ -21,22 +21,23 @@
 #include <boost/test/unit_test.hpp>
 
 #include <iostream>
-#include <boost/asio.hpp>
+#include <asio.hpp>
 #include <functional>
-
-#include <asiopal/DeadlineTimerSteadyClock.h>
+#include <chrono>
 
 using namespace std;
-using namespace boost;
-using namespace boost::asio;
-using namespace boost::system;
+using namespace asio;
 
-void AssertCanceled(bool* apFlag, const boost::system::error_code& ec)
+namespace asio {
+	typedef asio::basic_waitable_timer<std::chrono::steady_clock> steady_timer;
+}
+
+void AssertCanceled(bool* apFlag, const std::error_code& ec)
 {
 	if(ec) *apFlag = true;
 }
 
-void Cancel(monotonic_timer* aptimer)
+void Cancel(asio::basic_waitable_timer<std::chrono::steady_clock>* aptimer)
 {
 	aptimer->cancel();
 }
@@ -48,8 +49,8 @@ BOOST_AUTO_TEST_CASE(TimerCancel)
 	bool flag = false;
 
 	io_service io;
-	monotonic_timer t1(io, std::chrono::seconds(0));
-	monotonic_timer t2(io, std::chrono::seconds(1));
+	steady_timer t1(io, std::chrono::seconds(0));
+	steady_timer t2(io, std::chrono::seconds(1));
 
 	t1.async_wait(std::bind(Cancel, &t2));
 	t2.async_wait(std::bind(AssertCanceled, &flag, std::placeholders::_1));

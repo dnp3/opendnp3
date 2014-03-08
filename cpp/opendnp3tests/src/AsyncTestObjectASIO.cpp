@@ -20,7 +20,7 @@
  */
 #include "AsyncTestObjectASIO.h"
 
-#include <boost/asio.hpp>
+#include <asio.hpp>
 
 #include <openpal/Location.h>
 
@@ -35,11 +35,11 @@ namespace opendnp3
 {
 
 AsyncTestObjectASIO::AsyncTestObjectASIO() :
-	mpTestObjectService(new boost::asio::io_service()),
+	mpTestObjectService(new asio::io_service()),
 	mOwner(true)
 {}
 
-AsyncTestObjectASIO::AsyncTestObjectASIO(boost::asio::io_service* apService) :
+AsyncTestObjectASIO::AsyncTestObjectASIO(asio::io_service* apService) :
 	mpTestObjectService(apService),
 	mOwner(false)
 {
@@ -56,9 +56,9 @@ void AsyncTestObjectASIO::Next()
 	Next(this->GetService(), TimeDuration::Milliseconds(10));
 }
 
-void AsyncTestObjectASIO::Next(boost::asio::io_service* apSrv, openpal::TimeDuration aSleep)
+void AsyncTestObjectASIO::Next(asio::io_service* apSrv, openpal::TimeDuration aSleep)
 {
-	boost::system::error_code ec;
+	std::error_code ec;
 	size_t num = apSrv->poll_one(ec);
 	if(ec) throw Exception(LOCATION, ec.message());
 	if(num == 0) {

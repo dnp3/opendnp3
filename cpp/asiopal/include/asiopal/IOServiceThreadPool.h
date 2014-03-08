@@ -21,12 +21,10 @@
 #ifndef __IO_SERVICE_THREAD_POOL_
 #define __IO_SERVICE_THREAD_POOL_
 
-
 #include <openpal/Loggable.h>
 
-#include "DeadlineTimerSteadyClock.h"
+#include <asio.hpp>
 
-#include <boost/asio.hpp>
 #include <functional>
 #include <thread>
 
@@ -46,7 +44,7 @@ public:
 
 	~IOServiceThreadPool();
 
-	boost::asio::io_service* GetIOService();
+	asio::io_service* GetIOService();
 
 	void Shutdown();
 
@@ -57,12 +55,12 @@ private:
 
 	bool mIsShutdown;
 
-	void OnTimerExpiration(const boost::system::error_code& ec);
+	void OnTimerExpiration(const std::error_code& ec);
 
 	void Run();
 
-	boost::asio::io_service mService;
-	boost::asio::monotonic_timer mInfiniteTimer;
+	asio::io_service mService;
+	asio::basic_waitable_timer< std::chrono::steady_clock > infiniteTimer;
 	std::vector<std::thread*> mThreads;
 };
 

@@ -39,9 +39,9 @@ public:
 	static IPhysicalLayerAsyncFactory GetTCPServerAsync(std::string aEndpoint, uint16_t aPort);
 
 	//normal factory functions
-	static IPhysicalLayerWrapper* FGetSerialAsync(SerialSettings s, boost::asio::io_service* apSrv, openpal::Logger& arLogger);
-	static IPhysicalLayerAsync* FGetTCPClientAsync(std::string aAddress, uint16_t aPort, boost::asio::io_service* apSrv, openpal::Logger& arLogger);
-	static IPhysicalLayerAsync* FGetTCPServerAsync(std::string aEndpoint, uint16_t aPort, boost::asio::io_service* apSrv, openpal::Logger& arLogger);
+	static IPhysicalLayerWrapper* FGetSerialAsync(SerialSettings s, asio::io_service* apSrv, openpal::Logger& arLogger);
+	static IPhysicalLayerAsync* FGetTCPClientAsync(std::string aAddress, uint16_t aPort, asio::io_service* apSrv, openpal::Logger& arLogger);
+	static IPhysicalLayerAsync* FGetTCPServerAsync(std::string aEndpoint, uint16_t aPort, asio::io_service* apSrv, openpal::Logger& arLogger);
 };
 }
 

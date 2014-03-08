@@ -60,7 +60,7 @@ int main(int argc, char* argv[])
 
 	// you can optionally pass a function into the client constructor to configure your socket
 	// using platform specific options
-	auto configure = [](boost::asio::ip::tcp::socket& socket){
+	auto configure = [](asio::ip::tcp::socket& socket){
 		// platfrom specific socket configuration here
 	};
 

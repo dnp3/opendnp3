@@ -20,7 +20,7 @@
  */
 #include <asiopal/PhysicalLayerAsyncTCPServer.h>
 
-#include <boost/asio.hpp>
+#include <asio.hpp>
 
 #include <functional>
 #include <string>
@@ -28,9 +28,7 @@
 #include <openpal/LoggableMacros.h>
 #include <openpal/IHandlerAsync.h>
 
-using namespace boost;
-using namespace boost::system;
-using namespace boost::asio;
+using namespace asio;
 using namespace openpal;
 using namespace std;
 
@@ -39,17 +37,17 @@ namespace asiopal
 
 PhysicalLayerAsyncTCPServer::PhysicalLayerAsyncTCPServer(
 		Logger aLogger,
-		boost::asio::io_service* apIOService, 
+		asio::io_service* apIOService, 
 		const std::string& arEndpoint, 
 		uint16_t aPort,
-		std::function<void (boost::asio::ip::tcp::socket&)> aConfigure) :
+		std::function<void (asio::ip::tcp::socket&)> aConfigure) :
 
 	PhysicalLayerAsyncBaseTCP(aLogger, apIOService),
 	mLocalEndpoint(ip::tcp::v4(), aPort),
 	mAcceptor(*apIOService),
 	mConfigure(aConfigure)
 {
-	mLocalEndpoint.address( boost::asio::ip::address::from_string(arEndpoint) );
+	mLocalEndpoint.address( asio::ip::address::from_string(arEndpoint) );
 }
 
 /* Implement the actions */
@@ -57,7 +55,7 @@ void PhysicalLayerAsyncTCPServer::DoOpen()
 {
 	if (!mAcceptor.is_open())
 	{
-		boost::system::error_code ec;
+		std::error_code ec;
 		mAcceptor.open(mLocalEndpoint.protocol(), ec);
 		if (ec)
 		{
@@ -85,7 +83,7 @@ void PhysicalLayerAsyncTCPServer::DoOpen()
 				{
 					mAcceptor.async_accept(mSocket,
 						mRemoteEndpoint,
-						mStrand.wrap([this](const boost::system::error_code& code){
+						strand.wrap([this](const std::error_code& code){
 						this->OnOpenCallback(code);
 					}));
 				}
@@ -96,7 +94,7 @@ void PhysicalLayerAsyncTCPServer::DoOpen()
 	{
 		mAcceptor.async_accept(mSocket,
 			mRemoteEndpoint,
-			mStrand.wrap([this](const boost::system::error_code& code){
+			strand.wrap([this](const std::error_code& code){
 			this->OnOpenCallback(code);
 		}));
 	}
@@ -104,7 +102,7 @@ void PhysicalLayerAsyncTCPServer::DoOpen()
 
 void PhysicalLayerAsyncTCPServer::CloseAcceptor()
 {
-	boost::system::error_code ec;
+	std::error_code ec;
 	mAcceptor.close(ec);
 	if(ec) {
 		LOG_BLOCK(LogLevel::Warning, "Error while closing tcp acceptor: " << ec);

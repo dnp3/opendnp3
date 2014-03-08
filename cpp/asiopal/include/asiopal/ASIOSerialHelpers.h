@@ -21,23 +21,21 @@
 #ifndef _ASIO_SERIAL_HELPERS_H_
 #define _ASIO_SERIAL_HELPERS_H_
 
-#include <boost/asio.hpp>
+#include <asio.hpp>
+#include <asio/basic_serial_port.hpp>
 
 #include "SerialTypes.h"
 
-namespace boost
-{
 namespace asio
 {
-typedef basic_serial_port<> serial_port;
-}
+	typedef basic_serial_port<> serial_port;
 }
 
 namespace asiopal
 {
 
 // Serial port configuration functions "free" to keep the classes simple.
-void Configure(SerialSettings& arSettings, boost::asio::serial_port& arPort, boost::system::error_code& ec);
+void Configure(SerialSettings& arSettings, asio::serial_port& arPort, std::error_code& ec);
 
 }
 

@@ -23,23 +23,21 @@
 #include <string>
 #include <functional>
 
-#include <boost/asio.hpp>
-#include <boost/asio/ip/tcp.hpp>
+#include <asio.hpp>
+#include <asio/ip/tcp.hpp>
 
 #include <openpal/LoggableMacros.h>
 #include <openpal/IHandlerAsync.h>
 
+using namespace asio;
 
-using namespace boost;
-using namespace boost::asio;
-using namespace boost::system;
 using namespace std;
 using namespace openpal;
 
 namespace asiopal
 {
 
-PhysicalLayerAsyncBaseTCP::PhysicalLayerAsyncBaseTCP(Logger& arLogger, boost::asio::io_service* apIOService) :
+PhysicalLayerAsyncBaseTCP::PhysicalLayerAsyncBaseTCP(Logger& arLogger, asio::io_service* apIOService) :
 	PhysicalLayerAsyncASIO(arLogger, apIOService),
 	mSocket(*apIOService)
 {
@@ -58,7 +56,7 @@ void PhysicalLayerAsyncBaseTCP::DoAsyncRead(WriteBuffer& arBuffer)
 {
 	uint8_t* pBuff = arBuffer;
 	mSocket.async_read_some(buffer(arBuffer, arBuffer.Size()),
-							mStrand.wrap([this, pBuff](const boost::system::error_code& code, size_t numRead){
+							strand.wrap([this, pBuff](const std::error_code& code, size_t numRead){
 								this->OnReadCallback(code, pBuff, numRead);
 							}));
 }
@@ -66,7 +64,7 @@ void PhysicalLayerAsyncBaseTCP::DoAsyncRead(WriteBuffer& arBuffer)
 void PhysicalLayerAsyncBaseTCP::DoAsyncWrite(const ReadOnlyBuffer& arBuffer)
 {
 	async_write(mSocket, buffer(arBuffer, arBuffer.Size()),
-	            mStrand.wrap([this](const boost::system::error_code& code, size_t numWritten){
+				strand.wrap([this](const std::error_code& code, size_t numWritten){
 					this->OnWriteCallback(code, numWritten);
 				}));
 }
@@ -79,7 +77,7 @@ void PhysicalLayerAsyncBaseTCP::DoOpenFailure()
 
 void PhysicalLayerAsyncBaseTCP::CloseSocket()
 {
-	boost::system::error_code ec;
+	std::error_code ec;
 
 	mSocket.close(ec);
 	if(ec) LOG_BLOCK(LogLevel::Warning, "Error while closing socket: " << ec.message());
@@ -87,7 +85,7 @@ void PhysicalLayerAsyncBaseTCP::CloseSocket()
 
 void PhysicalLayerAsyncBaseTCP::ShutdownSocket()
 {
-	boost::system::error_code ec;
+	std::error_code ec;
 
 	mSocket.shutdown(ip::tcp::socket::shutdown_both, ec);
 	if(ec) LOG_BLOCK(LogLevel::Warning, "Error while shutting down socket: " << ec.message());

@@ -20,14 +20,16 @@
  */
 #include "TimerASIO.h"
 
+#include <assert.h>
+
 using namespace openpal;
 
 namespace asiopal
 {
 
-TimerASIO::TimerASIO(boost::asio::strand* apStrand) :
-	mCanceled(false),
-	mTimer(apStrand->get_io_service())
+TimerASIO::TimerASIO(asio::strand* apStrand) :
+	canceled(false),
+	timer(apStrand->get_io_service())
 {
 
 }
@@ -37,14 +39,14 @@ TimerASIO::TimerASIO(boost::asio::strand* apStrand) :
  */
 openpal::MonotonicTimestamp TimerASIO::ExpiresAt()
 {
-	return std::chrono::duration_cast<std::chrono::milliseconds>(mTimer.expires_at().time_since_epoch()).count();
+	return std::chrono::duration_cast<std::chrono::milliseconds>(timer.expires_at().time_since_epoch()).count();
 }
 
 void TimerASIO::Cancel()
 {
-	assert(!mCanceled);
-	mTimer.cancel();
-	mCanceled = true;
+	assert(!canceled);
+	timer.cancel();
+	canceled = true;
 }
 
 

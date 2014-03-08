@@ -23,8 +23,6 @@
 
 #include "PhysicalLayerAsyncBaseTCP.h"
 
-#include <boost/asio/ip/tcp.hpp>
-
 #include <openpal/Location.h>
 
 namespace asiopal
@@ -35,10 +33,10 @@ class PhysicalLayerAsyncTCPClient : public PhysicalLayerAsyncBaseTCP
 public:
 	PhysicalLayerAsyncTCPClient(
 		openpal::Logger aLogger, 
-		boost::asio::io_service* apIOService, 
+		asio::io_service* apIOService, 
 		const std::string& arAddress, 
 		uint16_t aPort, 
-		std::function<void (boost::asio::ip::tcp::socket&)> aConfigure = [](boost::asio::ip::tcp::socket&){});
+		std::function<void (asio::ip::tcp::socket&)> aConfigure = [](asio::ip::tcp::socket&){});
 
 	/* Implement the remaining actions */
 	void DoOpen();
@@ -46,8 +44,8 @@ public:
 	void DoOpenSuccess();
 
 private:
-	boost::asio::ip::tcp::endpoint mRemoteEndpoint;
-	std::function<void (boost::asio::ip::tcp::socket&)> mConfigure;
+	asio::ip::tcp::endpoint mRemoteEndpoint;
+	std::function<void (asio::ip::tcp::socket&)> mConfigure;
 };
 
 }

@@ -21,12 +21,13 @@
 #ifndef __PHYSICAL_LAYER_ASYNC_BASE_H_
 #define __PHYSICAL_LAYER_ASYNC_BASE_H_
 
-#include <boost/system/error_code.hpp>
-
-
 #include <openpal/IPhysicalLayerAsync.h>
 #include <openpal/Loggable.h>
 #include <openpal/Location.h>
+
+#include <assert.h>
+
+#include <asio.hpp>
 
 namespace asiopal
 {
@@ -147,9 +148,9 @@ public:
 protected:
 
 	//Internally produced events
-	void OnOpenCallback(const boost::system::error_code& arError);
-	void OnReadCallback(const boost::system::error_code& arError, uint8_t* apBuffer, size_t aNumRead);
-	void OnWriteCallback(const boost::system::error_code& arError, size_t aNumBytes);
+	void OnOpenCallback(const std::error_code& arError);
+	void OnReadCallback(const std::error_code& arError, uint8_t* apBuffer, size_t aNumRead);
+	void OnWriteCallback(const std::error_code& arError, size_t aNumBytes);
 
 	// "user" object that recieves the callbacks
 	openpal::IHandlerAsync* mpHandler;

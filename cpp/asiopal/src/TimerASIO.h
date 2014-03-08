@@ -21,12 +21,11 @@
 #ifndef __TIMER_ASIO_H_
 #define __TIMER_ASIO_H_
 
-#include <boost/asio.hpp>
+#include <asio.hpp>
 
+#include <chrono>
 
 #include <openpal/IExecutor.h>
-
-#include <asiopal/DeadlineTimerSteadyClock.h>
 
 namespace asiopal
 {
@@ -50,7 +49,7 @@ class TimerASIO : public openpal::ITimer
 	friend class ASIOExecutor;
 
 public:
-	TimerASIO(boost::asio::strand* apStrand);
+	TimerASIO(asio::strand* apStrand);
 
 	// Implement ITimer
 	void Cancel();
@@ -62,9 +61,9 @@ public:
 
 private:
 
-	bool mCanceled;
+	bool canceled;
 
-	boost::asio::monotonic_timer mTimer;
+	asio::basic_waitable_timer< std::chrono::steady_clock > timer;
 };
 
 }

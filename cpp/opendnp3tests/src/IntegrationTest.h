@@ -44,7 +44,7 @@ class IntegrationTest
 {
 public:
 
-	IntegrationTest(openpal::LogLevel aLevel, boost::uint16_t aStartPort, size_t aNumPairs, uint16_t aNumPoints);
+	IntegrationTest(openpal::LogLevel aLevel, uint16_t aStartPort, size_t aNumPairs, uint16_t aNumPoints);
 
 	size_t IncrementData();
 

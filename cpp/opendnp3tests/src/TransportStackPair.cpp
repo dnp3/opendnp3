@@ -20,7 +20,7 @@
  */
 #include "TransportStackPair.h"
 
-#include <boost/asio.hpp>
+#include <asio.hpp>
 
 namespace opendnp3
 {
@@ -29,8 +29,8 @@ TransportStackPair::TransportStackPair(
         LinkConfig aClientCfg,
         LinkConfig aServerCfg,
         openpal::Logger& arLogger,
-        boost::asio::io_service* apService,
-        boost::uint16_t aPort) :
+        asio::io_service* apService,
+        uint16_t aPort) :
 
 	mClient(arLogger.GetSubLogger("TCPClient"), apService, "127.0.0.1", aPort),
 	mServer(arLogger.GetSubLogger("TCPServer"), apService, "127.0.0.1", aPort),

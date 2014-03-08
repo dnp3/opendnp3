@@ -20,18 +20,18 @@
  */
 #include "LoopbackPhysicalLayerAsync.h"
 
-#include <boost/asio.hpp>
+#include <asio.hpp>
 
 #include <openpal/LoggableMacros.h>
 
 using namespace boost;
-using namespace boost::system;
+
 using namespace openpal;
 
 namespace opendnp3
 {
 
-LoopbackPhysicalLayerAsync::LoopbackPhysicalLayerAsync(openpal::Logger aLogger, boost::asio::io_service* apSrv) :
+LoopbackPhysicalLayerAsync::LoopbackPhysicalLayerAsync(openpal::Logger aLogger, asio::io_service* apSrv) :
 	PhysicalLayerAsyncASIO(aLogger, apSrv)	
 {
 
@@ -40,8 +40,8 @@ LoopbackPhysicalLayerAsync::LoopbackPhysicalLayerAsync(openpal::Logger aLogger, 
 void LoopbackPhysicalLayerAsync::DoOpen()
 {
 	//always open successfully	
-	mExecutor.Post([this](){ 
-		this->OnOpenCallback(error_code(errc::success, get_generic_category())); 
+	executor.Post([this](){ 
+		this->OnOpenCallback(std::error_code(0, std::generic_category())); 
 	});				
 }
 
@@ -58,8 +58,8 @@ void LoopbackPhysicalLayerAsync::DoClose()
 	// dispatch any pending reads with failures
 	if(mBytesForReading.IsNotEmpty()) {		
 		mBytesForReading.Clear();		
-		mExecutor.Post([this](){ 
-			this->OnReadCallback(error_code(errc::permission_denied, get_generic_category()), nullptr, 0);
+		executor.Post([this](){ 
+			this->OnReadCallback(std::error_code(1, std::generic_category()), nullptr, 0);
 		});						
 	}
 }
@@ -79,8 +79,8 @@ void LoopbackPhysicalLayerAsync::DoAsyncWrite(const openpal::ReadOnlyBuffer& arB
 
 	auto size = arBuffer.Size();
 	
-	mExecutor.Post([this, size](){
-		this->OnWriteCallback(error_code(errc::success, get_generic_category()), size);		
+	executor.Post([this, size](){
+		this->OnWriteCallback(std::error_code(0, std::generic_category()), size);
 	});
 
 	//now check to see if this write will dispatch a read
@@ -99,8 +99,8 @@ void LoopbackPhysicalLayerAsync::CheckForReadDispatch()
 
 		mBytesForReading.Clear();
 		
-		mExecutor.Post([this, num](){
-			this->OnReadCallback(error_code(errc::success, get_generic_category()), mBytesForReading, num);
+		executor.Post([this, num](){
+			this->OnReadCallback(std::error_code(0, std::generic_category()), mBytesForReading, num);
 		});
 	}
 

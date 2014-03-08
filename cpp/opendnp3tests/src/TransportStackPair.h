@@ -21,14 +21,10 @@
 #ifndef __TRANSPORT_STACK_PAIR_H_
 #define __TRANSPORT_STACK_PAIR_H_
 
-namespace boost
-{
 namespace asio
 {
-class io_service;
+	class io_service;
 }
-}
-
 
 #include <asiopal/PhysicalLayerAsyncTCPClient.h>
 #include <asiopal/PhysicalLayerAsyncTCPServer.h>
@@ -47,8 +43,8 @@ public:
 	        LinkConfig aClientCfg,
 	        LinkConfig aServerCfg,
 	        openpal::Logger& arLogger,
-	        boost::asio::io_service* apService,
-	        boost::uint16_t aPort);
+	        asio::io_service* apService,
+	        uint16_t aPort);
 
 	void Start();
 

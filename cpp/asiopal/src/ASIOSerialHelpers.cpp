@@ -26,10 +26,9 @@
 #include <openpal/Logger.h>
 #include <openpal/LoggableMacros.h>
 
-#include <boost/asio.hpp>
+#include <asio.hpp>
 
-using namespace boost::asio;
-using namespace boost::system;
+using namespace asio;
 
 namespace asiopal
 {
@@ -107,7 +106,7 @@ serial_port_base::parity ConvertParity(ParityType aParity)
 	return serial_port_base::parity(t);
 }
 
-void Configure(SerialSettings& arSettings, boost::asio::serial_port& arPort, error_code& ec)
+void Configure(SerialSettings& arSettings, asio::serial_port& arPort, error_code& ec)
 {
 	//Set all the various options
 	arPort.set_option(ConvertBaud(arSettings.mBaud), ec);
