@@ -101,6 +101,7 @@ cpp/opendnp3/src/opendnp3/gen/StaticCounterResponse.cpp \
 cpp/opendnp3/src/opendnp3/gen/StaticFrozenCounterResponse.cpp \
 cpp/opendnp3/src/opendnp3/link/CRC.cpp \
 cpp/opendnp3/src/opendnp3/link/DNPCrc.cpp \
+cpp/opendnp3/src/opendnp3/link/IOpenDelayStrategy.cpp \
 cpp/opendnp3/src/opendnp3/link/LinkFrame.cpp \
 cpp/opendnp3/src/opendnp3/link/LinkHeader.cpp \
 cpp/opendnp3/src/opendnp3/link/LinkLayer.cpp \
