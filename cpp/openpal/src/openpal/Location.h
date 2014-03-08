@@ -24,7 +24,7 @@
 #define STRINGIFY(x) #x
 #define TOSTRING(x) STRINGIFY(x)
 
-#ifndef OPENDNP3_SUPPRESS_LOG_LOCATION
+#ifndef OPENPAL_SUPPRESS_LOG_LOCATION
 #define LOCATION __FILE__ "(" TOSTRING(__LINE__) ")"
 #else
 #define LOCATION ""
