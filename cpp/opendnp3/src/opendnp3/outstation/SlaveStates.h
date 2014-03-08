@@ -58,7 +58,7 @@ public:
 	virtual void Enter(Slave*) = 0;
 		
 	// Called when a data update is received from the user layer
-	virtual void OnDataUpdate(Slave* slave);
+	virtual void OnDataUpdate(Slave* slave) {}
 
 	// Called when the unsolcited timer expires
 	virtual void OnUnsolExpiration(Slave*);

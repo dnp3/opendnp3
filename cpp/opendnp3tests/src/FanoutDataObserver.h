@@ -21,8 +21,6 @@
 #ifndef __FANOUT_DATA_OBSERVER_H_
 #define __FANOUT_DATA_OBSERVER_H_
 
-#include <opendnp3/outstation/ChangeBuffer.h>
-
 namespace opendnp3
 {
 

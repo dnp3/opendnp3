@@ -67,12 +67,6 @@ void SlaveStateBase::OnRequest(Slave* slave, const APDURecord&, SequenceInfo)
 	ERROR_LOGGER_BLOCK(slave->mLogger, LogLevel::Error, "invalid action for state: " << Name(), SERR_INVALID_STATE);
 }
 
-// by default, the data update is deferd until it can be handled
-void SlaveStateBase::OnDataUpdate(Slave* slave)
-{
-	++slave->mDeferredUpdateCount;
-}
-
 // by default, the unsol timer expiration is deferd until it can be handled
 void SlaveStateBase::OnUnsolExpiration(Slave* slave)
 {
@@ -106,14 +100,11 @@ void AS_Closed::Enter(Slave* slave)
 	 {
 		slave->mpTimeTimer->Cancel();
 		slave->mpTimeTimer = nullptr;
-	 }
-
-	 if(slave->mDeferredUpdateCount > 0) slave->FlushUpdates();
+	 }	 
 }
 
 void AS_Closed::OnDataUpdate(Slave* slave)
-{
-	slave->FlushUpdates();
+{	
 	if(!slave->mConfig.mDisableUnsol) slave->mDeferredUnsol = true;
 }
 
@@ -144,39 +135,36 @@ void AS_Idle::Enter(Slave* slave)
 			}
 		);			
 	}
-	
-	if(slave->mDeferredUpdateCount > 0 && slave->mpState == this) // TODO - remove ugly HACK
-	{	
-		this->OnDataUpdate(slave); //could cause a state change
-	}
-				
-	if(slave->mDeferredUnsol && slave->mpState == this) // TODO - remove ugly HACK
+	else
 	{
-		slave->mDeferredUnsol = false;
-		this->OnUnsolExpiration(slave);
-	}		
+		// check for unsolicited data to send
+		if (slave->mDeferredUnsol)
+		{
+			slave->mDeferredUnsol = false;
+			this->OnUnsolExpiration(slave);
+		}
+	}					
 }
 
 void AS_Idle::OnDataUpdate(Slave* slave)
 {
-	slave->FlushUpdates();	
-
+	/*
 	// start the unsol timer or act immediately if there's no pack timer
 	if (!slave->mConfig.mDisableUnsol && slave->mStartupNullUnsol) // TODO && slave->mRspContext.HasEvents(slave->mConfig.mUnsolMask)) 
 	{
 		if (slave->mConfig.mUnsolPackDelay.GetMilliseconds() <= 0) 
 		{	
-			/* TODO
-			slave->mRspContext.LoadUnsol(slave->mUnsol, slave->mIIN, slave->mConfig.mUnsolMask);
-			slave->SendUnsolicited(slave->mUnsol);
-			slave->ChangeState(AS_WaitForUnsolSuccess::Inst());
-			*/
+			// TODO
+			//slave->mRspContext.LoadUnsol(slave->mUnsol, slave->mIIN, slave->mConfig.mUnsolMask);
+			//slave->SendUnsolicited(slave->mUnsol);
+			//slave->ChangeState(AS_WaitForUnsolSuccess::Inst());			
 		}
 		else if (slave->mpUnsolTimer == nullptr) 
 		{
 			slave->StartUnsolTimer(slave->mConfig.mUnsolPackDelay);
 		}
 	}
+	*/
 }
 
 void AS_Idle::OnUnsolExpiration(Slave* slave)

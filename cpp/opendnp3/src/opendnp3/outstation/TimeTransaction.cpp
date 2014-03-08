@@ -32,40 +32,40 @@ TimeTransaction::TimeTransaction(IDataObserver* apObserver, UTCTimestamp aTimest
 
 }
 
-void TimeTransaction::Update(Binary aMeas, size_t aIndex)
+void TimeTransaction::Update(Binary meas, uint16_t index)
 {
-	aMeas.SetTime(mTimestamp.msSinceEpoch);
-	mpObserver->Update(aMeas, aIndex);
+	meas.SetTime(mTimestamp.msSinceEpoch);
+	mpObserver->Update(meas, index);
 }
 
-void TimeTransaction::Update(Analog aMeas, size_t aIndex)
+void TimeTransaction::Update(Analog meas, uint16_t index)
 {
-	aMeas.SetTime(mTimestamp.msSinceEpoch);
-	mpObserver->Update(aMeas, aIndex);
+	meas.SetTime(mTimestamp.msSinceEpoch);
+	mpObserver->Update(meas, index);
 }
 
-void TimeTransaction::Update(Counter aMeas, size_t aIndex)
+void TimeTransaction::Update(Counter meas, uint16_t index)
 {
-	aMeas.SetTime(mTimestamp.msSinceEpoch);
-	mpObserver->Update(aMeas, aIndex);
+	meas.SetTime(mTimestamp.msSinceEpoch);
+	mpObserver->Update(meas, index);
 }
 
-void TimeTransaction::Update(FrozenCounter aMeas, size_t aIndex)
+void TimeTransaction::Update(FrozenCounter meas, uint16_t index)
 {
-        aMeas.SetTime(mTimestamp.msSinceEpoch);
-        mpObserver->Update(aMeas, aIndex);
+	meas.SetTime(mTimestamp.msSinceEpoch);
+	mpObserver->Update(meas, index);
 }
 
-void TimeTransaction::Update(BinaryOutputStatus aMeas, size_t aIndex)
+void TimeTransaction::Update(BinaryOutputStatus meas, uint16_t index)
 {
-	aMeas.SetTime(mTimestamp.msSinceEpoch);
-	mpObserver->Update(aMeas, aIndex);
+	meas.SetTime(mTimestamp.msSinceEpoch);
+	mpObserver->Update(meas, index);
 }
 
-void TimeTransaction::Update(AnalogOutputStatus aMeas, size_t aIndex)
+void TimeTransaction::Update(AnalogOutputStatus meas, uint16_t index)
 {
-	aMeas.SetTime(mTimestamp.msSinceEpoch);
-	mpObserver->Update(aMeas, aIndex);
+	meas.SetTime(mTimestamp.msSinceEpoch);
+	mpObserver->Update(meas, index);
 }
 
 }

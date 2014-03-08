@@ -27,7 +27,7 @@
 #include "opendnp3/outstation/StaticResponseContext.h"
 #include "opendnp3/outstation/StaticResponseTypes.h"
 #include "opendnp3/outstation/SelectBuffer.h"
-#include "opendnp3/outstation/ChangeBuffer.h"
+#include "opendnp3/outstation/ProxyDataObserver.h"
 
 #include "opendnp3/app/CachedRequest.h"
 #include "opendnp3/app/IAppLayer.h"
@@ -108,7 +108,7 @@ public:
 	 */
 	IDataObserver* GetDataObserver() 
 	{
-		return &mChangeBuffer;
+		return &proxyObserver;
 	}
 
 private:
@@ -123,7 +123,7 @@ private:
 
 	APDUResponse lastResponse;				// wrapper that points to the last response made
 
-	ChangeBuffer mChangeBuffer;				// how client code gives us updates
+	ProxyDataObserver proxyObserver;		// how client code gives us updates
 	IAppLayer* mpAppLayer;					// lower application layer
 	Database* mpDatabase;					// holds static data
 	ICommandHandler* mpCmdHandler;			// how commands are selected/operated on application code
@@ -142,10 +142,8 @@ private:
 
 	// Flags that tell us that some action has been Deferred
 	// until the slave is in a state capable of handling it.
-
-	int	 mDeferredUpdateCount;				// > 0 Indicates that a data update has been deferred	
+	
 	bool mDeferredUnsol;					// Indicates that the unsol timer expired, but the event was Deferred	
-
 	bool mStartupNullUnsol;					// Tracks whether the device has completed the nullptr unsol startup message
 
 	StackState mState;
@@ -175,8 +173,7 @@ private:
 	void ContinueResponse();	
 
 	// Helpers
-
-	size_t FlushUpdates();	
+	
 	void StartUnsolTimer(openpal::TimeDuration aTimeout);
 
 	// Task handlers

@@ -18,37 +18,34 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __CHANGE_BUFFER_H_
-#define __CHANGE_BUFFER_H_
+#ifndef __PROXY_DATA_OBSERVER_H_
+#define __PROXY_DATA_OBSERVER__H_
 
 #include "opendnp3/app/MeasurementTypes.h"
 #include "opendnp3/outstation/IDataObserver.h"
 
-#include "opendnp3/SubjectBase.h"
-
-#include <queue>
-#include <mutex>
+namespace openpal {
+	class IExecutor;
+}
 
 namespace opendnp3
 {
 
 /** Moves measurement data across thread boundaries.
 */
-class ChangeBuffer : public IDataObserver, public SubjectBase
+class ProxyDataObserver : public IDataObserver
 {
 
 public:
 
-	ChangeBuffer() : mNotify(false) {}
+	ProxyDataObserver(IDataObserver* pProxy_, openpal::IExecutor* pExecutor_);
 	
-	void Update(const Binary& arPoint, uint16_t aIndex)  final;
-	void Update(const Analog& arPoint, uint16_t aIndex) final;
-	void Update(const Counter& arPoint, uint16_t aIndex) final;
-	void Update(const FrozenCounter& arPoint, uint16_t aIndex) final;
-	void Update(const BinaryOutputStatus& arPoint, uint16_t aIndex) final;
-	void Update(const AnalogOutputStatus& arPoint, uint16_t aIndex) final;
-
-	size_t FlushUpdates(IDataObserver* apObserver);
+	void Update(const Binary& meas, uint16_t index)  final;
+	void Update(const Analog& meas, uint16_t index) final;
+	void Update(const Counter& meas, uint16_t index) final;
+	void Update(const FrozenCounter& meas, uint16_t index) final;
+	void Update(const BinaryOutputStatus& meas, uint16_t index) final;
+	void Update(const AnalogOutputStatus& meas, uint16_t index) final;	
 
 protected:
 
@@ -57,20 +54,8 @@ protected:
 
 private:
 
-	void Clear();
-
-	template <class T>
-	static void Dispatch(IDataObserver* apObs, T& arMeas, uint16_t aIndex) {
-		apObs->Update(arMeas, aIndex);
-	}
-
-
-	void _Clear();
-
-	bool mNotify;
-
-	std::deque<std::function<void (IDataObserver*)>> mChangeQueue;
-	std::mutex mMutex;
+	openpal::IExecutor* pExecutor;
+	IDataObserver* pProxy;
 };
 
 }

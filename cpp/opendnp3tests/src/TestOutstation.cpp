@@ -79,9 +79,8 @@ BOOST_AUTO_TEST_CASE(DataPost)
 		pObs->Update(b, 0);
 	}
 
-	BOOST_REQUIRE_EQUAL(t.mts.NumActive(), 1);
-	BOOST_REQUIRE(t.mts.DispatchOne());
-	BOOST_REQUIRE_EQUAL(t.mts.NumActive(), 0);
+	// start, update, end
+	BOOST_REQUIRE_EQUAL(3, t.mts.Dispatch());	
 }
 
 BOOST_AUTO_TEST_CASE(DataPostToNonExistent)
@@ -96,19 +95,16 @@ BOOST_AUTO_TEST_CASE(DataPostToNonExistent)
 		Binary b(true, BQ_ONLINE);
 		pObs->Update(b, 5);
 	}
-
-	BOOST_REQUIRE_EQUAL(t.mts.NumActive(), 1);
-	BOOST_REQUIRE(t.mts.DispatchOne());
-	BOOST_REQUIRE_EQUAL(t.mts.NumActive(), 0);
+	
+	BOOST_REQUIRE_EQUAL(3, t.mts.Dispatch());
 
 	{
 		Transaction t(pObs);
 		Binary b(true, BQ_ONLINE);
 		pObs->Update(b, 0);
 	}
-	BOOST_REQUIRE_EQUAL(t.mts.NumActive(), 1);
-	BOOST_REQUIRE(t.mts.DispatchOne());
-	BOOST_REQUIRE_EQUAL(t.mts.NumActive(), 0);
+
+	BOOST_REQUIRE_EQUAL(3, t.mts.Dispatch());	
 }
 
 BOOST_AUTO_TEST_CASE(UnsolicitedStaysDisabledEvenIfDataAreLoadedPriorToOpen)

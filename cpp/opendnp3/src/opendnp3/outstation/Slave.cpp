@@ -52,6 +52,7 @@ Slave::Slave(openpal::Logger aLogger, IAppLayer* apAppLayer, IExecutor* apExecut
 	mpTimeWriteHandler(apTimeWriteHandler),
 	selectBuffer(apExecutor, arCfg.mSelectTimeout),	
 	lastResponse(responseBuffer.GetWriteBuffer()),
+	proxyObserver(apDatabase, apExecutor),
 	mpAppLayer(apAppLayer),
 	mpDatabase(apDatabase),
 	mpCmdHandler(apCmdHandler),
@@ -60,7 +61,6 @@ Slave::Slave(openpal::Logger aLogger, IAppLayer* apAppLayer, IExecutor* apExecut
 	mpUnsolTimer(nullptr),	
 	mCachedRequest(arCfg.mMaxControls),	
 	mStaticRspContext(apDatabase, StaticResponseTypes(arCfg)),	
-	mDeferredUpdateCount(0),	
 	mDeferredUnsol(false),	
 	mStartupNullUnsol(false),
 	mState(StackState::COMMS_DOWN),
@@ -69,15 +69,7 @@ Slave::Slave(openpal::Logger aLogger, IAppLayer* apAppLayer, IExecutor* apExecut
 	/* Link the event buffer to the database */
 	//mpDatabase->AddEventBuffer(mRspContext.GetBuffer());
 
-	mIIN.Set(IINBit::DEVICE_RESTART);	// Always set on restart	
-
-	/*
-	 * Incoming data will trigger a POST on the timer source to call
-	 * Slave::OnDataUpdate().
-	 */
-	mChangeBuffer.AddObserver(mpExecutor, [this]() {
-		this->OnDataUpdate();
-	});
+	mIIN.Set(IINBit::DEVICE_RESTART); // Always set on restart	
 
 	/* Cause the slave to go through the null-unsol startup sequence */
 	if (!mConfig.mDisableUnsol) {
@@ -168,16 +160,6 @@ void Slave::ChangeState(SlaveStateBase* apState)
 	LOG_BLOCK(LogLevel::Debug, "State changed from " << mpState->Name() << " to " << apState->Name());
 	mpState = apState;
 	mpState->Enter(this);
-}
-
-
-/* Private functions */
-size_t Slave::FlushUpdates()
-{	
-	mDeferredUpdateCount = 0;
-	size_t num	= mChangeBuffer.FlushUpdates(mpDatabase);
-	LOG_BLOCK(LogLevel::Debug, "Processed " << num << " updates");
-	return num;		
 }
 
 void Slave::RespondToRequest(const APDURecord& record, SequenceInfo sequence)

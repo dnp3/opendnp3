@@ -56,45 +56,45 @@ public:
 
 	/**
 	* Update or receive a Binary measurement, must have transaction started
-	* @param arMeas measurement to be processed
-	* @param aIndex index of the measurement
+	* @param meas measurement to be processed
+	* @param index index of the measurement
 	*/
-	virtual void Update(const Binary& arMeas, uint16_t aIndex) = 0;
+	virtual void Update(const Binary& meas, uint16_t index) = 0;
 
 	/**
 	* Update or receive an Analog measurement, must have transaction started
-	* @param arMeas measurement to be processed
-	* @param aIndex index of the measurement
+	* @param meas measurement to be processed
+	* @param index index of the measurement
 	*/
-	virtual void Update(const Analog& arMeas, uint16_t aIndex) = 0;
+	virtual void Update(const Analog& meas, uint16_t index) = 0;
 
 	/**
 	* Update or receive a Counter measurement, must have transaction started
-	* @param arMeas measurement to be processed
-	* @param aIndex index of the measurement
+	* @param meas measurement to be processed
+	* @param index index of the measurement
 	*/
-	virtual void Update(const Counter& arMeas, uint16_t aIndex) = 0;
+	virtual void Update(const Counter& meas, uint16_t index) = 0;
 
-        /**
-        * Update or receive a frozen Counter measurement, must have transaction started
-        * @param arMeas measurement to be processed
-        * @param aIndex index of the measurement
-        */
-        virtual void Update(const FrozenCounter& arMeas, uint16_t aIndex) = 0;
+    /**
+    * Update or receive a frozen Counter measurement, must have transaction started
+    * @param meas measurement to be processed
+    * @param index index of the measurement
+    */
+    virtual void Update(const FrozenCounter& meas, uint16_t index) = 0;
 
 	/**
 	* Update or receive a BinaryOutputStatus measurement, must have transaction started
-	* @param arMeas measurement to be processed
-	* @param aIndex index of the measurement
+	* @param meas measurement to be processed
+	* @param index index of the measurement
 	*/
-	virtual void Update(const BinaryOutputStatus& arMeas, uint16_t aIndex) = 0;
+	virtual void Update(const BinaryOutputStatus& meas, uint16_t index) = 0;
 
 	/**
 	* Update or receive a AnalogOutputStatus measurement, must have transaction started
-	* @param arMeas measurement to be processed
-	* @param aIndex index of the measurement
+	* @param meas measurement to be processed
+	* @param index index of the measurement
 	*/
-	virtual void Update(const AnalogOutputStatus& arMeas, uint16_t aIndex) = 0;
+	virtual void Update(const AnalogOutputStatus& meas, uint16_t index) = 0;
 
 };
 

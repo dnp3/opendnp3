@@ -106,7 +106,7 @@ int main(int argc, char* argv[])
 		if(input == "exit") break;
 		else {
 			TimeTransaction tx(pDataObserver, UTCTimeSource::Inst()->Now()); //automatically calls Start()/End() and sets time for each measurement
-			tx.Update(FrozenCounter(count, FCQ_ONLINE), 0);
+			tx.Update(Counter(count, CQ_ONLINE), 0);
 			++count;
 		}
 	}
