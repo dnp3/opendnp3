@@ -61,9 +61,8 @@ class PhysicalLayerAsyncBase : public openpal::IPhysicalLayerAsync, public openp
 		bool CanWrite() const;
 
 		bool CallbacksPending() const;
-#ifndef OPENDNP3_STRIP_LOG_MESSAGES
+
 		std::string ConvertStateToString() const;
-#endif
 
 		bool CheckForClose();
 	};
@@ -108,11 +107,9 @@ public:
 		return mState.CanWrite();
 	}
 
-#ifndef OPENDNP3_STRIP_LOG_MESSAGES
 	std::string ConvertStateToString() const {
 		return mState.ConvertStateToString();
 	}
-#endif
 
 	/* Implement IPhysicalLayerAsync - Events from the outside */
 	void AsyncOpen();

@@ -148,11 +148,10 @@ private:
 	void OnPhysicalLayerOpenFailureCallback() {}
 	void OnPhysicalLayerCloseCallback();
 
-#ifndef OPENDNP3_STRIP_LOG_MESSAGES
 	std::string RecvString() {
 		return "<~";
 	}
-#endif
+
 
 };
 

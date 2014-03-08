@@ -54,10 +54,7 @@ public:
 		bool operator()(const LinkRoute& a, const LinkRoute& b) const;
 	};
 
-#ifndef OPENDNP3_STRIP_LOG_MESSAGES
 	std::string ToString() const;
-#endif
-
 };
 
 

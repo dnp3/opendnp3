@@ -111,10 +111,8 @@ class IINField
 
 	uint8_t LSB;
 	uint8_t MSB;
-
-	#ifndef OPENDNP3_STRIP_LOG_MESSAGES
+	
 	std::string ToString() const;
-	#endif	
 
 	private:
 

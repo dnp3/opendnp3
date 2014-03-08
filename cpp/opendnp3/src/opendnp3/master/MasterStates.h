@@ -55,9 +55,7 @@ public:
 	virtual void OnFinalResponse(Master*, const APDUResponseRecord& aRecord);
 	virtual void OnUnsolResponse(Master*, const APDUResponseRecord& aRecord);
 
-#ifndef OPENDNP3_STRIP_LOG_MESSAGES
 	virtual std::string Name() const = 0;
-#endif
 
 protected:
 

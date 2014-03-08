@@ -42,10 +42,8 @@ public:
 	virtual void TestLinkStatus(LinkLayer*, bool aFcb) = 0;
 	virtual void ConfirmedUserData(LinkLayer*, bool aFcb, const openpal::ReadOnlyBuffer&) = 0;
 
-#ifndef OPENDNP3_STRIP_LOG_MESSAGES
 	//every concrete state implements this for logging purposes
 	virtual std::string Name() const = 0;
-#endif
 };
 
 ////////////////////////////////////////////////////////

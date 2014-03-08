@@ -88,13 +88,10 @@ protected:
 		return true;
 	}
 
-#ifndef OPENDNP3_STRIP_LOG_MESSAGES
 	// override this descriptor, it's use in the Hex log messages
 	virtual std::string RecvString() const {
 		return "<-";
 	}
-#endif
-
 };
 
 class ILowerLayer : protected virtual openpal::Loggable
@@ -115,13 +112,10 @@ private:
 
 	virtual void _Send(const ReadOnlyBuffer&) = 0;
 
-#ifndef OPENDNP3_STRIP_LOG_MESSAGES
 	// override this descriptor, it's use in the Hex log messages
 	virtual std::string SendString() const {
 		return "->";
 	}
-#endif
-
 };
 
 }

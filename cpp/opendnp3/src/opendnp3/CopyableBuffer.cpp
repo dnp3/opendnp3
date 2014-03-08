@@ -27,13 +27,11 @@
 namespace opendnp3
 {
 
-#ifndef OPENDNP3_STRIP_LOG_MESSAGES
 std::ostream& operator<<(std::ostream& output, const CopyableBuffer& arBuff)
 {
 	output << "[" << openpal::toHex(arBuff.ToReadOnly(), true) << "]";
 	return output;
 }
-#endif
 
 CopyableBuffer::CopyableBuffer() :
 	mpBuff(nullptr),

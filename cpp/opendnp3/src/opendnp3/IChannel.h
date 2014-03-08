@@ -89,8 +89,6 @@ public:
         */
 	virtual openpal::IExecutor* GetExecutor() = 0;
 
-#ifndef OPENDNP3_NO_MASTER
-
 	/**
 	* Add a master to the channel
 	*
@@ -105,8 +103,6 @@ public:
 	                                ISOEHandler* apPublisher,
 	                                openpal::IUTCTimeSource* apTimeSource,
 	                                const MasterStackConfig& arCfg) = 0;
-
-#endif
 
 	/**
 	* Add an outstation to the channel

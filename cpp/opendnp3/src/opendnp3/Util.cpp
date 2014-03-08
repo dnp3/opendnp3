@@ -41,7 +41,6 @@ using namespace std;
 namespace opendnp3
 {
 
-#ifndef OPENDNP3_STRIP_LOG_MESSAGES
 std::string Month(int aMonth)
 {
 	switch(aMonth) {
@@ -61,8 +60,6 @@ std::string Month(int aMonth)
 	}
 }
 
-#endif
-
 double SafeCastInt64ToDouble(int64_t aInput)
 {
 #if OPENDNP3_ARM_FLOAT_WORKAROUND
@@ -81,17 +78,16 @@ double SafeCastInt64ToDouble(int64_t aInput)
 #endif
 }
 
-#ifndef OPENDNP3_STRIP_LOG_MESSAGES
 void toUpperCase(std::string& apStr)
 {
 	//from http://gethelp.devx.com/techtips/cpp_pro/10min/2002/Oct/10min1002-2.asp
 	std::transform(apStr.begin(), apStr.end(), apStr.begin(), (int(*)(int)) toupper);
 }
+
 void toLowerCase(std::string& apStr)
 {
 	//from http://gethelp.devx.com/techtips/cpp_pro/10min/2002/Oct/10min1002-2.asp
 	std::transform(apStr.begin(), apStr.end(), apStr.begin(), (int(*)(int)) tolower);
 }
-#endif
 
 }

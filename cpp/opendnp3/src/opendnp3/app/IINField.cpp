@@ -190,14 +190,12 @@ bool IINField::operator==(const IINField& aRHS) const
 	return (LSB == aRHS.LSB) && (MSB == aRHS.MSB);
 }
 
-#ifndef OPENDNP3_STRIP_LOG_MESSAGES
 std::string IINField::ToString() const
 {
 	ostringstream oss;
 	oss << " IIN: (LSB: " << ByteToHex(LSB) << ") (MSB: " << ByteToHex(MSB);
 	return oss.str();	
 }
-#endif
 
 }
 

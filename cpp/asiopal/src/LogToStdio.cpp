@@ -44,7 +44,6 @@ void LogToStdio::SetPrintLocation(bool aPrintLocation)
 
 void LogToStdio::Log(const openpal::LogEntry& arEntry)
 {
-#ifndef OPENDNP3_STRIP_LOG_MESSAGES
 	auto time = std::chrono::high_resolution_clock::now();
 	ostringstream oss;
 	oss << ToNormalizedString(time) << openpal::LogLevelToString( arEntry.GetLogLevel()) << " - "
@@ -56,7 +55,6 @@ void LogToStdio::Log(const openpal::LogEntry& arEntry)
 
 	std::unique_lock<std::mutex> lock(mMutex);
 	std::cout << oss.str() << std::endl;
-#endif
 }
 
 std::string LogToStdio::ToNormalizedString(const std::chrono::high_resolution_clock::time_point& arTime)

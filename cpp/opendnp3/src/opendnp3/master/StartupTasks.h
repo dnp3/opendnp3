@@ -40,11 +40,9 @@ public:
 
 	void ConfigureRequest(APDURequest& request);
 
-#ifndef OPENDNP3_STRIP_LOG_MESSAGES
 	std::string Name() const {
 		return "ClearRestartIIN";
 	}
-#endif
 };
 
 // Enables or disables unsolicited reporting
@@ -57,11 +55,9 @@ public:
 
 	void ConfigureRequest(APDURequest& request);
 
-#ifndef OPENDNP3_STRIP_LOG_MESSAGES
 	std::string Name() const {
 		return "ConfigureUnsol";
 	}
-#endif
 
 private:
 	bool mIsEnable;
@@ -79,11 +75,9 @@ public:
 	void ConfigureRequest(APDURequest& request);
 	TaskResult _OnFinalResponse(const APDUResponseRecord&);
 
-#ifndef OPENDNP3_STRIP_LOG_MESSAGES
 	std::string Name() const {
 		return "TimeSync";
 	}
-#endif
 
 private:
 	openpal::IUTCTimeSource* mpTimeSrc;

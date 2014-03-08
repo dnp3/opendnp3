@@ -49,9 +49,8 @@ public:
 
 	virtual void LowerLayerUp(TransportLayer*);
 	virtual void LowerLayerDown(TransportLayer*);
-#ifndef OPENDNP3_STRIP_LOG_MESSAGES
+
 	virtual std::string Name() const = 0;
-#endif
 };
 
 }

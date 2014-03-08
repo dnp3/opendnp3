@@ -58,10 +58,9 @@ public:
 	CommandStatus status;
 
 	T value;
-
-	#ifndef OPENDNP3_STRIP_LOG_MESSAGES
-		virtual std::string ToString() const = 0;
-	#endif
+	
+	virtual std::string ToString() const = 0;
+	
 };
 
 /**
@@ -77,10 +76,7 @@ public:
 
 	bool operator==(const AnalogOutputInt16& arRHS) const;
 
-#ifndef OPENDNP3_STRIP_LOG_MESSAGES
 	std::string ToString() const;
-#endif
-
 };
 
 /**
@@ -96,10 +92,7 @@ public:
 
 	bool operator==(const AnalogOutputInt32& arRHS) const;
 
-#ifndef OPENDNP3_STRIP_LOG_MESSAGES
 	std::string ToString() const;
-#endif
-
 };
 
 /**
@@ -115,10 +108,7 @@ public:
 
 	bool operator==(const AnalogOutputFloat32& arRHS) const;
 
-#ifndef OPENDNP3_STRIP_LOG_MESSAGES
 	std::string ToString() const;
-#endif
-
 };
 
 /**
@@ -134,10 +124,7 @@ public:
 
 	bool operator==(const AnalogOutputDouble64& arRHS) const;
 
-#ifndef OPENDNP3_STRIP_LOG_MESSAGES
 	std::string ToString() const;
-#endif
-
 };
 
 

@@ -49,12 +49,9 @@ public:
 		return false;
 	}
 
-#ifndef OPENDNP3_STRIP_LOG_MESSAGES
 	/** Implemented by the inherited state
 		@return Name of the state */
 	virtual std::string Name() const = 0;
-#endif
-
 };
 
 #define MACRO_LRS_STATE(name, body) \

@@ -75,9 +75,7 @@ void DNP3Channel::Cleanup()
 	for(auto pStack: copy) pStack->Shutdown();
 	{
 		ExecutorPause p(mpPhys->GetExecutor());
-#ifndef OPENDNP3_NO_MASTER
 		this->mGroup.Shutdown();	// no more task callbacks
-#endif
 		this->mRouter.Shutdown();	// start shutting down the router
 	}
 	mRouter.WaitForShutdown();

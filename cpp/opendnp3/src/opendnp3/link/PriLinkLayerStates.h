@@ -49,11 +49,8 @@ public:
 	virtual void SendConfirmed(LinkLayer*, const openpal::ReadOnlyBuffer& arBuffer);
 	virtual void SendUnconfirmed(LinkLayer*, const openpal::ReadOnlyBuffer& arBuffer);
 
-#ifndef OPENDNP3_STRIP_LOG_MESSAGES
 	//every concrete state implements this for logging purposes
 	virtual std::string Name() const = 0;
-#endif
-
 };
 
 //	@section desc Entry state for primary station
