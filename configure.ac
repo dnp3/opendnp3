@@ -10,11 +10,6 @@ AC_CONFIG_FILES([Makefile])
 AC_LANG([C++]) # tell autoconf that we're using C++
 AX_CXX_COMPILE_STDCXX_11([noext]) #require support for C++11
 
-AX_BOOST_BASE([1.45.0]  ,, [AC_MSG_ERROR(You must install boost >= 1.45.0)])
-AX_BOOST_SYSTEM
-AX_BOOST_ASIO
-AX_BOOST_UNIT_TEST_FRAMEWORK
-
 LT_INIT #initialize libtools
 
 # optional support for building the java bindings

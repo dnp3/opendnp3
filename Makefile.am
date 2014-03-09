@@ -2,15 +2,17 @@
 
 ACLOCAL_AMFLAGS = -I m4
 
-CORE_BOOST_LIBS = $(BOOST_SYSTEM_LIB)
-TEST_BOOST_LIBS = $(CORE_BOOST_LIBS) $(BOOST_UNIT_TEST_FRAMEWORK_LIB)
+TEST_BOOST_LIBS = $(BOOST_UNIT_TEST_FRAMEWORK_LIB)
 
-BOOST_DEFINES = $(BOOST_CPPFLAGS) -DBOOST_TEST_DYN_LINK -DBOOST_ASIO_ENABLE_CANCELIO -DBOOST_REGEX_NO_LIB -D_GLIBCXX_USE_NANOSLEEP
+BOOST_TEST_DEFINES = -DBOOST_TEST_DYN_LINK # -DBOOST_ASIO_ENABLE_CANCELIO -DBOOST_REGEX_NO_LIB -D_GLIBCXX_USE_NANOSLEEP
+
+ASIO_INCLUDE = $(ASIO_HOME)/include
 
 OPENPAL_INCLUDE = $(top_srcdir)/cpp/openpal/src
 OPENDNP3_INCLUDE = $(top_srcdir)/cpp/opendnp3/src
 ASIOPAL_INCLUDE = $(top_srcdir)/cpp/asiopal/include
 ASIODNP3_INCLUDE = $(top_srcdir)/cpp/asiodnp3/include
+CATCH_INCLUDE = $(top_srcdir)/cpp/catch
 
 bin_PROGRAMS = masterdemo outstationdemo apdufuzz
 
@@ -34,7 +36,7 @@ cpp/openpal/src/openpal/ToHex.cpp
 
 #ls cpp/asiopal/src/*.cpp -1 | awk '{print $0" \\"}'
 libasiopal_la_LDFLAGS = -version-info 1:1:0
-libasiopal_la_CXXFLAGS = -I$(OPENPAL_INCLUDE) -I$(ASIOPAL_INCLUDE) $(BOOST_DEFINES)
+libasiopal_la_CXXFLAGS = -I$(ASIO_INCLUDE) -I$(OPENPAL_INCLUDE) -I$(ASIOPAL_INCLUDE)
 libasiopal_la_SOURCES = \
 cpp/asiopal/src/ASIOExecutor.cpp \
 cpp/asiopal/src/ASIOSerialHelpers.cpp \
@@ -51,8 +53,8 @@ cpp/asiopal/src/TimerASIO.cpp \
 cpp/asiopal/src/UTCTimeSource.cpp
 
 #ls cpp/opendnp3/src/opendnp3/*.cpp -1 | awk '{print $0" \\"}'
-libopendnp3_la_LDFLAGS = $(BOOST_LDFLAGS) -version-info 1:1:0
-libopendnp3_la_CXXFLAGS = -I$(OPENPAL_INCLUDE) -I$(ASIOPAL_INCLUDE) -I $(OPENDNP3_INCLUDE)
+libopendnp3_la_LDFLAGS = -version-info 2:0:0
+libopendnp3_la_CXXFLAGS = -I$(OPENPAL_INCLUDE) -I $(OPENDNP3_INCLUDE)
 libopendnp3_la_SOURCES = \
 cpp/opendnp3/src/opendnp3/app/AnalogOutput.cpp \
 cpp/opendnp3/src/opendnp3/app/APDUEventWriter.cpp \
@@ -154,7 +156,6 @@ cpp/opendnp3/src/opendnp3/objects/Group50.cpp \
 cpp/opendnp3/src/opendnp3/objects/Group51.cpp \
 cpp/opendnp3/src/opendnp3/objects/Group52.cpp \
 cpp/opendnp3/src/opendnp3/objects/Group60.cpp \
-cpp/opendnp3/src/opendnp3/outstation/ChangeBuffer.cpp \
 cpp/opendnp3/src/opendnp3/outstation/CommandActionAdapter.cpp \
 cpp/opendnp3/src/opendnp3/outstation/CommandResponseHandler.cpp \
 cpp/opendnp3/src/opendnp3/outstation/DatabaseConfiguration.cpp \
@@ -168,6 +169,7 @@ cpp/opendnp3/src/opendnp3/outstation/ITimeWriteHandler.cpp \
 cpp/opendnp3/src/opendnp3/outstation/MultiplexingDataObserver.cpp \
 cpp/opendnp3/src/opendnp3/outstation/OutstationEventBuffer.cpp \
 cpp/opendnp3/src/opendnp3/outstation/OutstationStackImpl.cpp \
+cpp/opendnp3/src/opendnp3/outstation/ProxyDataObserver.cpp \
 cpp/opendnp3/src/opendnp3/outstation/ReadHandler.cpp \
 cpp/opendnp3/src/opendnp3/outstation/SelectBuffer.cpp \
 cpp/opendnp3/src/opendnp3/outstation/SimpleCommandHandler.cpp \
@@ -184,7 +186,6 @@ cpp/opendnp3/src/opendnp3/transport/TransportLayer.cpp \
 cpp/opendnp3/src/opendnp3/transport/TransportRx.cpp \
 cpp/opendnp3/src/opendnp3/transport/TransportStates.cpp \
 cpp/opendnp3/src/opendnp3/transport/TransportTx.cpp \
-cpp/opendnp3/src/opendnp3/CopyableBuffer.cpp \
 cpp/opendnp3/src/opendnp3/DestructorHook.cpp \
 cpp/opendnp3/src/opendnp3/DNP3Channel.cpp \
 cpp/opendnp3/src/opendnp3/DNP3Manager.cpp \
@@ -196,108 +197,37 @@ cpp/opendnp3/src/opendnp3/StackBase.cpp \
 cpp/opendnp3/src/opendnp3/SubjectBase.cpp \
 cpp/opendnp3/src/opendnp3/Util.cpp
 
-#ls cpp/opendnp3tests/src/*.cpp -1 | awk '{print $0" \\"}'
-check_PROGRAMS = dnp3test
-TESTS = dnp3test
-dnp3test_CXXFLAGS = -I$(OPENPAL_INCLUDE) -I$(ASIOPAL_INCLUDE) -I $(OPENDNP3_INCLUDE) -I$(OPENDNP3_SRCS) $(BOOST_DEFINES)
-dnp3test_LDADD = libopenpal.la libasiopal.la libopendnp3.la $(TEST_BOOST_LIBS)
-dnp3test_LDFLAGS = $(BOOST_LDFLAGS)
-dnp3test_SOURCES = \
-cpp/opendnp3tests/src/AppLayerTest.cpp \
-cpp/opendnp3tests/src/AsyncPhysBaseTest.cpp \
-cpp/opendnp3tests/src/AsyncPhysTestObject.cpp \
-cpp/opendnp3tests/src/AsyncSerialTestObject.cpp \
-cpp/opendnp3tests/src/AsyncTestObjectASIO.cpp \
-cpp/opendnp3tests/src/AsyncTestObject.cpp \
-cpp/opendnp3tests/src/BufferHelpers.cpp \
-cpp/opendnp3tests/src/BufferTestObject.cpp \
-cpp/opendnp3tests/src/ComparingDataObserver.cpp \
-cpp/opendnp3tests/src/DNPHelpers.cpp \
-cpp/opendnp3tests/src/Exception.cpp \
-cpp/opendnp3tests/src/FlexibleDataObserver.cpp \
-cpp/opendnp3tests/src/IntegrationTest.cpp \
-cpp/opendnp3tests/src/LinkLayerRouterTest.cpp \
-cpp/opendnp3tests/src/LinkLayerTest.cpp \
-cpp/opendnp3tests/src/LogTester.cpp \
-cpp/opendnp3tests/src/LoopbackPhysicalLayerAsync.cpp \
-cpp/opendnp3tests/src/LowerLayerToPhysAdapter.cpp \
-cpp/opendnp3tests/src/MasterTestObject.cpp \
-cpp/opendnp3tests/src/MockAppLayer.cpp \
-cpp/opendnp3tests/src/MockAppUser.cpp \
-cpp/opendnp3tests/src/MockExecutor.cpp \
-cpp/opendnp3tests/src/MockFrameSink.cpp \
-cpp/opendnp3tests/src/MockLowerLayer.cpp \
-cpp/opendnp3tests/src/MockPhysicalLayerAsync.cpp \
-cpp/opendnp3tests/src/MockPhysicalLayerMonitor.cpp \
-cpp/opendnp3tests/src/MockUpperLayer.cpp \
-cpp/opendnp3tests/src/PhysicalLayerWrapper.cpp \
-cpp/opendnp3tests/src/PhysLoopback.cpp \
-cpp/opendnp3tests/src/RandomizedBuffer.cpp \
-cpp/opendnp3tests/src/SlaveTestObject.cpp \
-cpp/opendnp3tests/src/StopWatch.cpp \
-cpp/opendnp3tests/src/TestAPDUParsing.cpp \
-cpp/opendnp3tests/src/TestAPDUWriting.cpp \
-cpp/opendnp3tests/src/TestAppLayer.cpp \
-cpp/opendnp3tests/src/TestASIO.cpp \
-cpp/opendnp3tests/src/TestASIOThreadPool.cpp \
-cpp/opendnp3tests/src/TestAsyncTask.cpp \
-cpp/opendnp3tests/src/TestCachedRequest.cpp \
-cpp/opendnp3tests/src/TestCastLongLongDouble.cpp \
-cpp/opendnp3tests/src/TestCommandTask.cpp \
-cpp/opendnp3tests/src/TestCRC.cpp \
-cpp/opendnp3tests/src/TestDatabase.cpp \
-cpp/opendnp3tests/src/TestDNP3Manager.cpp \
-cpp/opendnp3tests/src/TestIntegration.cpp \
-cpp/opendnp3tests/src/TestLazyCollection.cpp \
-cpp/opendnp3tests/src/TestLinkFrameDNP.cpp \
-cpp/opendnp3tests/src/TestLinkLayer.cpp \
-cpp/opendnp3tests/src/TestLinkLayerRouter.cpp \
-cpp/opendnp3tests/src/TestLinkReceiver.cpp \
-cpp/opendnp3tests/src/TestLinkRoute.cpp \
-cpp/opendnp3tests/src/TestLog.cpp \
-cpp/opendnp3tests/src/TestMaster.cpp \
-cpp/opendnp3tests/src/TestMisc.cpp \
-cpp/opendnp3tests/src/TestOutstationCommandResponses.cpp \
-cpp/opendnp3tests/src/TestOutstation.cpp \
-cpp/opendnp3tests/src/TestOutstationEventBuffer.cpp \
-cpp/opendnp3tests/src/TestOutstationEventBufferViaFuzz.cpp \
-cpp/opendnp3tests/src/TestOutstationEventResponses.cpp \
-cpp/opendnp3tests/src/TestPhysicalLayerAsyncBase.cpp \
-cpp/opendnp3tests/src/TestPhysicalLayerAsyncSerial.cpp \
-cpp/opendnp3tests/src/TestPhysicalLayerAsyncTCP.cpp \
-cpp/opendnp3tests/src/TestPhysicalLayerLoopback.cpp \
-cpp/opendnp3tests/src/TestPhysicalLayerMonitor.cpp \
-cpp/opendnp3tests/src/TestSerialization.cpp \
-cpp/opendnp3tests/src/TestShiftableBuffer.cpp \
-cpp/opendnp3tests/src/TestStartBoostUTF.cpp \
-cpp/opendnp3tests/src/TestStaticResponseContext.cpp \
-cpp/opendnp3tests/src/TestTime.cpp \
-cpp/opendnp3tests/src/TestTimers.cpp \
-cpp/opendnp3tests/src/TestTransportLayer.cpp \
-cpp/opendnp3tests/src/TestTransportLoopback.cpp \
-cpp/opendnp3tests/src/TestTransportScalability.cpp \
-cpp/opendnp3tests/src/TestTypes.cpp \
-cpp/opendnp3tests/src/TestUtil.cpp \
-cpp/opendnp3tests/src/TestWriteConversions.cpp \
-cpp/opendnp3tests/src/Timeout.cpp \
-cpp/opendnp3tests/src/TransportIntegrationStack.cpp \
-cpp/opendnp3tests/src/TransportLoopbackTestObject.cpp \
-cpp/opendnp3tests/src/TransportScalabilityTestObject.cpp \
-cpp/opendnp3tests/src/TransportStackPair.cpp \
-cpp/opendnp3tests/src/TransportTestObject.cpp \
-cpp/opendnp3tests/src/WrappedTcpPipe.cpp
 
-masterdemo_CXXFLAGS = -I$(OPENPAL_INCLUDE) -I$(ASIOPAL_INCLUDE) -I $(OPENDNP3_INCLUDE) $(BOOST_DEFINES) -Wl,--no-as-needed
-masterdemo_LDFLAGS = $(BOOST_LDFLAGS) -pthread
-masterdemo_LDADD = libopenpal.la libasiopal.la libopendnp3.la $(CORE_BOOST_LIBS)
+check_PROGRAMS = openpaltest
+TESTS = openpaltest
+
+#ls cpp/opendnp3tests/src/*.cpp -1 | awk '{print $0" \\"}'
+#dnp3test_CXXFLAGS = -I$(ASIO_INCLUDE)  -I$(OPENPAL_INCLUDE) -I$(ASIOPAL_INCLUDE) -I $(OPENDNP3_INCLUDE)
+#dnp3test_LDADD = libopenpal.la libasiopal.la libopendnp3.la $(TEST_BOOST_LIBS)
+#dnp3test_SOURCES =
+
+#ls cpp/openpaltests/src/*.cpp -1 | awk '{print $0" \\"}'
+openpaltest_CXXFLAGS = -I$(OPENPAL_INCLUDE) -I$(CATCH_INCLUDE)
+openpaltest_LDADD = libopenpal.la
+openpaltest_SOURCES = \
+cpp/openpaltests/src/CatchTestStart.cpp \
+cpp/openpaltests/src/DoublyLinkedListAdapterTestSuite.cpp \
+cpp/openpaltests/src/ListAdapterTestSuite.cpp \
+cpp/openpaltests/src/QueueAdapterTestSuite.cpp \
+cpp/openpaltests/src/RandomInsertAdapterTestSuite.cpp \
+cpp/openpaltests/src/StackAdapterTestSuite.cpp
+
+masterdemo_CXXFLAGS = -I$(ASIO_INCLUDE) -I$(OPENPAL_INCLUDE) -I$(ASIOPAL_INCLUDE) -I $(OPENDNP3_INCLUDE) -Wl,--no-as-needed
+masterdemo_LDFLAGS = -pthread
+masterdemo_LDADD = libopenpal.la libasiopal.la libopendnp3.la
 masterdemo_SOURCES = cpp/masterdemo/DemoMain.cpp
 
-outstationdemo_CXXFLAGS = -I$(OPENPAL_INCLUDE) -I$(ASIOPAL_INCLUDE) -I $(OPENDNP3_INCLUDE) $(BOOST_DEFINES) -Wl,--no-as-needed
-outstationdemo_LDFLAGS = $(BOOST_LDFLAGS) -pthread
-outstationdemo_LDADD = libopenpal.la libasiopal.la libopendnp3.la $(CORE_BOOST_LIBS)
+outstationdemo_CXXFLAGS = -I$(ASIO_INCLUDE) -I$(OPENPAL_INCLUDE) -I$(ASIOPAL_INCLUDE) -I $(OPENDNP3_INCLUDE) -Wl,--no-as-needed
+outstationdemo_LDFLAGS = -pthread
+outstationdemo_LDADD = libopenpal.la libasiopal.la libopendnp3.la
 outstationdemo_SOURCES = cpp/outstationdemo/DemoMain.cpp
 
-apdufuzz_CXXFLAGS = -I$(OPENPAL_INCLUDE) -I$(OPENDNP3_INCLUDE) -I$(OPENDNP3_SRCS)  -Wl,--no-as-needed
+apdufuzz_CXXFLAGS = -I$(OPENPAL_INCLUDE) -I$(OPENDNP3_INCLUDE) -Wl,--no-as-needed
 apdufuzz_LDFLAGS = -pthread
 apdufuzz_LDADD = libopenpal.la libopendnp3.la
 apdufuzz_SOURCES = cpp/apdufuzz/ApduFuzz.cpp
@@ -306,16 +236,16 @@ if WANT_JAVA
 
 #ls cpp/asiodnp3/src/asiodnp3/*.cpp -1 | awk '{print $0" \\"}'
 lib_LTLIBRARIES += libasiodnp3.la
-libasiodnp3_la_CPPFLAGS = -I$(OPENPAL_INCLUDE) -I$(ASIOPAL_INCLUDE) -I $(OPENDNP3_INCLUDE) -I$(ASIODNP3_INCLUDE) $(BOOST_DEFINES)
+libasiodnp3_la_CPPFLAGS = -I$(ASIO_INCLUDE)  -I$(OPENPAL_INCLUDE) -I$(ASIOPAL_INCLUDE) -I $(OPENDNP3_INCLUDE) -I$(ASIODNP3_INCLUDE)
 libasiodnp3_la_LDFLAGS = -version-info 1:1:0
 libasiodnp3_la_SOURCES = \
 cpp/asiodnp3/src/asiodnp3/ASIODNP3Manager.cpp
 
 #ls java/cpp/*.cpp -1 | awk '{print $0" \\"}'	
 lib_LTLIBRARIES += libopendnp3java.la
-libopendnp3java_la_CPPFLAGS = -I$(OPENPAL_INCLUDE) -I$(ASIOPAL_INCLUDE) -I $(OPENDNP3_INCLUDE) -I$(ASIODNP3_INCLUDE) $(BOOST_DEFINES)
+libopendnp3java_la_CPPFLAGS = -I$(OPENPAL_INCLUDE) -I$(ASIOPAL_INCLUDE) -I $(OPENDNP3_INCLUDE) -I$(ASIODNP3_INCLUDE)
 libopendnp3java_la_LDFLAGS = -version-info 1:1:0
-libopendnp3java_la_LIBADD = libopenpal.la libasiopal.la libopendnp3.la libasiodnp3.la $(CORE_BOOST_LIBS)
+libopendnp3java_la_LIBADD = libopenpal.la libasiopal.la libopendnp3.la libasiodnp3.la
 libopendnp3java_la_SOURCES = \
 java/cpp/com_automatak_dnp3_impl_ChannelImpl.cpp \
 java/cpp/com_automatak_dnp3_impl_CommandProcessorImpl.cpp \

@@ -1,8 +1,5 @@
 #autotools generated files
 
-dnp3test.log
-dnp3test.trs
-test-suite.log
 autom4te.cache/
 configure
 aclocal.m4
@@ -35,6 +32,13 @@ outstationdemo
 masterdemo
 dnp3test
 apdufuzz
+openpaltest
+openpaltest.log
+openpaltest.trs
+dnp3test.log
+dnp3test.trs
+test-suite.log
+
 *~
 *.dirstamp
 
