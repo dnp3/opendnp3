@@ -6,7 +6,7 @@ TEST_BOOST_LIBS = $(BOOST_UNIT_TEST_FRAMEWORK_LIB)
 
 BOOST_TEST_DEFINES = -DBOOST_TEST_DYN_LINK # -DBOOST_ASIO_ENABLE_CANCELIO -DBOOST_REGEX_NO_LIB -D_GLIBCXX_USE_NANOSLEEP
 
-ASIO_INCLUDE = $(ASIO_HOME)/include
+ASIO_CONFIG = -I $(ASIO_HOME)/include -DASIO_STANDALONE
 
 OPENPAL_INCLUDE = $(top_srcdir)/cpp/openpal/src
 OPENDNP3_INCLUDE = $(top_srcdir)/cpp/opendnp3/src
@@ -36,7 +36,7 @@ cpp/openpal/src/openpal/ToHex.cpp
 
 #ls cpp/asiopal/src/*.cpp -1 | awk '{print $0" \\"}'
 libasiopal_la_LDFLAGS = -version-info 1:1:0
-libasiopal_la_CXXFLAGS = -I$(ASIO_INCLUDE) -I$(OPENPAL_INCLUDE) -I$(ASIOPAL_INCLUDE)
+libasiopal_la_CXXFLAGS = -I$(OPENPAL_INCLUDE) -I$(ASIOPAL_INCLUDE) $(ASIO_CONFIG)
 libasiopal_la_SOURCES = \
 cpp/asiopal/src/ASIOExecutor.cpp \
 cpp/asiopal/src/ASIOSerialHelpers.cpp \
@@ -202,7 +202,7 @@ check_PROGRAMS = openpaltest
 TESTS = openpaltest
 
 #ls cpp/opendnp3tests/src/*.cpp -1 | awk '{print $0" \\"}'
-#dnp3test_CXXFLAGS = -I$(ASIO_INCLUDE)  -I$(OPENPAL_INCLUDE) -I$(ASIOPAL_INCLUDE) -I $(OPENDNP3_INCLUDE)
+#dnp3test_CXXFLAGS = -I$(OPENPAL_INCLUDE) -I$(ASIOPAL_INCLUDE) -I $(OPENDNP3_INCLUDE) $(ASIO_CONFIG)
 #dnp3test_LDADD = libopenpal.la libasiopal.la libopendnp3.la $(TEST_BOOST_LIBS)
 #dnp3test_SOURCES =
 
@@ -217,12 +217,12 @@ cpp/openpaltests/src/QueueAdapterTestSuite.cpp \
 cpp/openpaltests/src/RandomInsertAdapterTestSuite.cpp \
 cpp/openpaltests/src/StackAdapterTestSuite.cpp
 
-masterdemo_CXXFLAGS = -I$(ASIO_INCLUDE) -I$(OPENPAL_INCLUDE) -I$(ASIOPAL_INCLUDE) -I $(OPENDNP3_INCLUDE) -Wl,--no-as-needed
+masterdemo_CXXFLAGS = -I$(OPENPAL_INCLUDE) -I$(ASIOPAL_INCLUDE) -I $(OPENDNP3_INCLUDE) $(ASIO_CONFIG) -Wl,--no-as-needed
 masterdemo_LDFLAGS = -pthread
 masterdemo_LDADD = libopenpal.la libasiopal.la libopendnp3.la
 masterdemo_SOURCES = cpp/masterdemo/DemoMain.cpp
 
-outstationdemo_CXXFLAGS = -I$(ASIO_INCLUDE) -I$(OPENPAL_INCLUDE) -I$(ASIOPAL_INCLUDE) -I $(OPENDNP3_INCLUDE) -Wl,--no-as-needed
+outstationdemo_CXXFLAGS = -I$(OPENPAL_INCLUDE) -I$(ASIOPAL_INCLUDE) -I $(OPENDNP3_INCLUDE) $(ASIO_CONFIG) -Wl,--no-as-needed
 outstationdemo_LDFLAGS = -pthread
 outstationdemo_LDADD = libopenpal.la libasiopal.la libopendnp3.la
 outstationdemo_SOURCES = cpp/outstationdemo/DemoMain.cpp
@@ -236,7 +236,7 @@ if WANT_JAVA
 
 #ls cpp/asiodnp3/src/asiodnp3/*.cpp -1 | awk '{print $0" \\"}'
 lib_LTLIBRARIES += libasiodnp3.la
-libasiodnp3_la_CPPFLAGS = -I$(ASIO_INCLUDE)  -I$(OPENPAL_INCLUDE) -I$(ASIOPAL_INCLUDE) -I $(OPENDNP3_INCLUDE) -I$(ASIODNP3_INCLUDE)
+libasiodnp3_la_CPPFLAGS = -I$(OPENPAL_INCLUDE) -I$(ASIOPAL_INCLUDE) -I $(OPENDNP3_INCLUDE) -I$(ASIODNP3_INCLUDE) $(ASIO_CONFIG)
 libasiodnp3_la_LDFLAGS = -version-info 1:1:0
 libasiodnp3_la_SOURCES = \
 cpp/asiodnp3/src/asiodnp3/ASIODNP3Manager.cpp
