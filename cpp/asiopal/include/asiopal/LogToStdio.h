@@ -47,7 +47,7 @@ protected:
 	LogToStdio();
 
 private:
-	std::string ToNormalizedString(const std::chrono::high_resolution_clock::time_point& arTime);
+
 	static LogToStdio mInstance;
 	bool mPrintLocation;
 	std::mutex mMutex;

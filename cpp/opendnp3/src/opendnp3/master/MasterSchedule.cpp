@@ -28,6 +28,8 @@
 #include <functional>
 
 using namespace openpal;
+
+using namespace std;
 using namespace std::placeholders;
 
 namespace opendnp3
