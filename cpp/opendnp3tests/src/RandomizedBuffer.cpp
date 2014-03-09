@@ -32,7 +32,7 @@ namespace opendnp3
 
 void RandomizedBuffer::Randomize()
 {
-	for (uint32_t i = 0; i < this->Size(); ++i) mpBuff[i] = rand.Next();
+	for (uint32_t i = 0; i < this->Size(); ++i) mpBuff[i] = static_cast<uint8_t>(rand.Next() % 256);
 }
 
 }

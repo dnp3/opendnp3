@@ -37,7 +37,7 @@ public:
 	void Randomize();
 
 private:
-	Random<uint8_t> rand;
+	Random<uint32_t> rand;
 };
 
 }
