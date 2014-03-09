@@ -30,13 +30,13 @@ namespace opendnp3
 // this is what the application layer sees from the master / outstation for transmission
 class APDURequest : public APDUWrapper
 {
-	public:	
+public:
 
-	APDURequest(const openpal::WriteBuffer& aBuffer);	
-	
-	private:
-	
-	APDURequest();	
+	APDURequest(const openpal::WriteBuffer& aBuffer);
+
+private:
+
+	APDURequest();
 };
 
 }

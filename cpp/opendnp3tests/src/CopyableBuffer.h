@@ -51,7 +51,8 @@ public:
 	~CopyableBuffer();
 
 	bool operator==( const CopyableBuffer& other) const;
-	bool operator!=( const CopyableBuffer& other) const {
+	bool operator!=( const CopyableBuffer& other) const
+	{
 		return ! (*this == other);
 	}
 
@@ -60,15 +61,18 @@ public:
 		return openpal::ReadOnlyBuffer(mpBuff, mSize);
 	}
 
-	operator const uint8_t* () const {
-		return mpBuff;
-	}
-	
-	operator uint8_t* () {
+	operator const uint8_t* () const
+	{
 		return mpBuff;
 	}
 
-	uint32_t Size() const {
+	operator uint8_t* ()
+	{
+		return mpBuff;
+	}
+
+	uint32_t Size() const
+	{
 		return mSize;
 	}
 

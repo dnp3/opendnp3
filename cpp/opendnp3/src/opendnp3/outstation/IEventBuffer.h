@@ -41,7 +41,7 @@ public:
 	virtual void Update(const Event<Analog>& aEvent) = 0;
 
 	virtual void Update(const Event<Counter>& aEvent) = 0;
-	
+
 	virtual void Update(const Event<FrozenCounter>& aEvent) = 0;
 
 };

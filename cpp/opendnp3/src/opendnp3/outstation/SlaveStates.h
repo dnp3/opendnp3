@@ -54,9 +54,9 @@ public:
 	virtual void OnUnsolFailure(Slave*);
 
 	virtual void OnRequest(Slave*, const APDURecord&, SequenceInfo);
-	
+
 	virtual void Enter(Slave*) = 0;
-		
+
 	// Called when a data update is received from the user layer
 	virtual void OnDataUpdate(Slave* slave) {}
 
@@ -65,7 +65,7 @@ public:
 
 
 protected:
-	
+
 	void DoUnsolSuccess(Slave*);
 };
 
@@ -82,7 +82,7 @@ public:
 	void Enter(Slave*) final;
 
 	void OnLowerLayerUp(Slave* slave) final;
-	void OnDataUpdate(Slave*) final;	
+	void OnDataUpdate(Slave*) final;
 };
 
 class AS_OpenBase : public SlaveStateBase
@@ -105,9 +105,9 @@ public:
 
 	void Enter(Slave*) final;
 	void OnDataUpdate(Slave*) final;
-	void OnUnsolExpiration(Slave*) final;	
+	void OnUnsolExpiration(Slave*) final;
 	void OnRequest(Slave*, const APDURecord&, SequenceInfo) final;
-	
+
 };
 
 
@@ -121,7 +121,7 @@ public:
 
 	MACRO_STATE_SINGLETON_INSTANCE(AS_WaitForRspSuccess);
 
-	void Enter(Slave*) final {}	
+	void Enter(Slave*) final {}
 	void OnRequest(Slave*, const APDURecord&, SequenceInfo) final;
 	void OnSolFailure(Slave*) final;
 	void OnSolSendSuccess(Slave*) final;
@@ -138,7 +138,7 @@ public:
 
 	MACRO_STATE_SINGLETON_INSTANCE(AS_WaitForUnsolSuccess);
 
-	void Enter(Slave*) final {}	
+	void Enter(Slave*) final {}
 	void OnRequest(Slave*, const APDURecord&, SequenceInfo) final;
 	void OnUnsolFailure(Slave*) final;
 	void OnUnsolSendSuccess(Slave*) final;

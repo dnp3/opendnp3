@@ -35,14 +35,14 @@ namespace opendnp3
 
 AppLayer::AppLayer(Logger aLogger, openpal::IExecutor* apExecutor, AppConfig aAppCfg) :
 	Loggable(aLogger),
-	IUpperLayer(aLogger),		
+	IUpperLayer(aLogger),
 	mSending(false),
 	mConfirmSending(false),
 	mIsMaster(aAppCfg.IsMaster),
 	mpUser(nullptr),
 	mSolicited(aLogger.GetSubLogger("sol"), this, apExecutor, aAppCfg.RspTimeout),
 	mUnsolicited(aLogger.GetSubLogger("unsol"), this, apExecutor, aAppCfg.RspTimeout),
-	mNumRetry(aAppCfg.NumRetry),	
+	mNumRetry(aAppCfg.NumRetry),
 	confirmAPDU(openpal::WriteBuffer(confirmBuffer, 2))
 {
 	confirmAPDU.SetFunction(FunctionCode::CONFIRM);
@@ -50,7 +50,7 @@ AppLayer::AppLayer(Logger aLogger, openpal::IExecutor* apExecutor, AppConfig aAp
 
 void AppLayer::SetUser(IAppUser* apUser)
 {
-	assert(mpUser == nullptr); 
+	assert(mpUser == nullptr);
 	assert(apUser != nullptr);
 	mpUser = apUser;
 }
@@ -85,15 +85,16 @@ void AppLayer::CancelResponse()
 
 void AppLayer::_OnReceive(const ReadOnlyBuffer& aBuffer)
 {
-	if(this->IsLowerLayerUp()) 
+	if(this->IsLowerLayerUp())
 	{
-		if (this->mIsMaster) 
+		if (this->mIsMaster)
 		{
 			APDUResponseRecord record;
 			auto result = APDUHeaderParser::ParseResponse(aBuffer, record);
 			if (result == APDUHeaderParser::Result::OK)
 			{
-				switch (record.function) {
+				switch (record.function)
+				{
 				case(FunctionCode::CONFIRM) :
 					this->OnConfirm(record.control, record.objects.Size());
 					break;
@@ -110,12 +111,14 @@ void AppLayer::_OnReceive(const ReadOnlyBuffer& aBuffer)
 			}
 			else LogParseError(result, true);
 		}
-		else 
+		else
 		{
 			APDURecord record;
 			auto result = APDUHeaderParser::ParseRequest(aBuffer, record);
-			if (result == APDUHeaderParser::Result::OK) {
-				switch (record.function) {
+			if (result == APDUHeaderParser::Result::OK)
+			{
+				switch (record.function)
+				{
 				case(FunctionCode::CONFIRM) :
 					this->OnConfirm(record.control, record.objects.Size());
 					break;
@@ -136,14 +139,14 @@ void AppLayer::_OnReceive(const ReadOnlyBuffer& aBuffer)
 void AppLayer::LogParseError(APDUHeaderParser::Result error, bool aIsResponse)
 {
 	switch(error)
-	{		
-		case(APDUHeaderParser::Result::NOT_ENOUGH_DATA_FOR_HEADER):
-			ERROR_BLOCK(LogLevel::Error, "Not enough data for header while parsing " << (aIsResponse ? "respose" : "request"), ALERR_INSUFFICIENT_DATA_FOR_FRAG); 
-			break;
-		default:
-			LOG_BLOCK(LogLevel::Error, "Unspecified parse error");
-			break;
-	}		
+	{
+	case(APDUHeaderParser::Result::NOT_ENOUGH_DATA_FOR_HEADER):
+		ERROR_BLOCK(LogLevel::Error, "Not enough data for header while parsing " << (aIsResponse ? "respose" : "request"), ALERR_INSUFFICIENT_DATA_FOR_FRAG);
+		break;
+	default:
+		LOG_BLOCK(LogLevel::Error, "Unspecified parse error");
+		break;
+	}
 }
 
 void AppLayer::_OnLowerLayerUp()
@@ -167,7 +170,7 @@ void AppLayer::_OnLowerLayerDown()
 
 void AppLayer::OnSendResult(bool aSuccess)
 {
-	if(mSending) 
+	if(mSending)
 	{
 		assert(mSendQueue.size() > 0);
 		mSending = false;
@@ -175,27 +178,31 @@ void AppLayer::OnSendResult(bool aSuccess)
 		FunctionCode func = mSendQueue.front().GetFunction();
 		mSendQueue.pop_front();
 
-		if (func == FunctionCode::CONFIRM) {
+		if (func == FunctionCode::CONFIRM)
+		{
 			assert(mConfirmSending);
 			mConfirmSending = false;
 		}
-		else {
-			if (aSuccess) {
+		else
+		{
+			if (aSuccess)
+			{
 				if (func == FunctionCode::UNSOLICITED_RESPONSE) mUnsolicited.OnSendSuccess();
 				else mSolicited.OnSendSuccess();
 			}
-			else {
+			else
+			{
 				if (func == FunctionCode::UNSOLICITED_RESPONSE) mUnsolicited.OnSendFailure();
 				else mSolicited.OnSendFailure();
 			}
 		}
 
-		this->CheckForSend();		
+		this->CheckForSend();
 	}
 	else
 	{
 		LOG_BLOCK(LogLevel::Error, "Layer is not sending");
-	}	
+	}
 }
 
 void AppLayer::_OnSendSuccess()
@@ -215,74 +222,82 @@ void AppLayer::_OnSendFailure()
 
 void AppLayer::OnResponse(const APDUResponseRecord& record)
 {
-	if(record.control.UNS) {
-		ERROR_BLOCK(LogLevel::Warning, "Bad unsol bit", ALERR_BAD_UNSOL_BIT);		 
+	if(record.control.UNS)
+	{
+		ERROR_BLOCK(LogLevel::Warning, "Bad unsol bit", ALERR_BAD_UNSOL_BIT);
 	}
-	else {
+	else
+	{
 		// If we get a response that requests confirmation, we shouldn't confirm
 		// if we're not going to handle the data. This is usually indicative of an
 		// early timeout. It will show up in the logs as a response without context.
-		if(record.control.CON && mSolicited.AcceptsResponse()) {
+		if(record.control.CON && mSolicited.AcceptsResponse())
+		{
 			this->QueueConfirm(false, record.control.SEQ);
 		}
 
 		mSolicited.OnResponse(record);
-	}	
+	}
 }
 
 void AppLayer::OnUnsolResponse(const APDUResponseRecord& record)
 {
-	if(!record.control.UNS) 
+	if(!record.control.UNS)
 	{
-		ERROR_BLOCK(LogLevel::Warning,"Unsolicited response code with uns bit not set", ALERR_BAD_UNSOL_BIT);
+		ERROR_BLOCK(LogLevel::Warning, "Unsolicited response code with uns bit not set", ALERR_BAD_UNSOL_BIT);
 	}
-	else {
-		
+	else
+	{
+
 		if(record.control.CON)
 			this->QueueConfirm(true, record.control.SEQ);
 
 		mUnsolicited.OnUnsol(record);
 	}
 
-	
+
 }
 
 void AppLayer::OnConfirm(const AppControlField& aControl, size_t aDataSize)
-{	
-	if(aDataSize > 0) 
+{
+	if(aDataSize > 0)
 	{
 		LOG_BLOCK(LogLevel::Warning, "Unexpected payload in confirm of size: " << aDataSize);
 	}
-	else 
+	else
 	{
 		if(aControl.UNS) // which channel?
 		{
-			if(mIsMaster) 
+			if(mIsMaster)
 			{
-				ERROR_BLOCK(LogLevel::Error, "Unexpcted confirm for master", ALERR_UNEXPECTED_CONFIRM)				
+				ERROR_BLOCK(LogLevel::Error, "Unexpcted confirm for master", ALERR_UNEXPECTED_CONFIRM)
 			}
-			else 
+			else
 			{
 				mUnsolicited.OnConfirm(aControl.SEQ);
-			}		
+			}
 		}
-		else {
+		else
+		{
 			mSolicited.OnConfirm(aControl.SEQ);
 		}
-	}	
+	}
 }
 
 void AppLayer::OnRequest(const APDURecord& record)
 {
-	if(record.control.UNS) {
-		ERROR_BLOCK(LogLevel::Warning, "Received request with UNS bit", ALERR_BAD_UNSOL_BIT);		
+	if(record.control.UNS)
+	{
+		ERROR_BLOCK(LogLevel::Warning, "Received request with UNS bit", ALERR_BAD_UNSOL_BIT);
 	}
-	else {
-		if(record.control.IsFirAndFin()) mSolicited.OnRequest(record);			
-		else {
+	else
+	{
+		if(record.control.IsFirAndFin()) mSolicited.OnRequest(record);
+		else
+		{
 			ERROR_BLOCK(LogLevel::Warning,  "Received non FIR/FIN request", ALERR_MULTI_FRAGEMENT_REQUEST);
-		}						
-	}	
+		}
+	}
 }
 
 ////////////////////
@@ -291,17 +306,19 @@ void AppLayer::OnRequest(const APDURecord& record)
 
 void AppLayer::QueueConfirm(bool aUnsol, int aSeq)
 {
-	if(mConfirmSending) {
-		ERROR_BLOCK(LogLevel::Warning, "Confirm request flood, ignoring confirm", aUnsol ? ALERR_UNSOL_FLOOD : ALERR_SOL_FLOOD);		
+	if(mConfirmSending)
+	{
+		ERROR_BLOCK(LogLevel::Warning, "Confirm request flood, ignoring confirm", aUnsol ? ALERR_UNSOL_FLOOD : ALERR_SOL_FLOOD);
 	}
-	else {
+	else
+	{
 		mConfirmSending = true;
 		AppControlField acf(true, true, false, aUnsol, aSeq);
-		confirmAPDU.SetControl(acf);		
+		confirmAPDU.SetControl(acf);
 		this->QueueFrame(confirmAPDU);
 	}
 }
-	
+
 
 void AppLayer::QueueFrame(const APDUWrapper& apdu)
 {
@@ -311,8 +328,9 @@ void AppLayer::QueueFrame(const APDUWrapper& apdu)
 
 void AppLayer::CheckForSend()
 {
-	if(!mSending && mSendQueue.size() > 0) {
-		mSending = true;		
+	if(!mSending && mSendQueue.size() > 0)
+	{
+		mSending = true;
 		//LOG_BLOCK(LogLevel::Interpret, "=> AL " << pAPDU->ToString()); TODO - replace outgoing logging
 		mpLowerLayer->Send(mSendQueue.front().ToReadOnly());
 	}
@@ -320,7 +338,8 @@ void AppLayer::CheckForSend()
 
 size_t AppLayer::GetRetries(FunctionCode aCode)
 {
-	switch(aCode) {
+	switch(aCode)
+	{
 	case(FunctionCode::DIRECT_OPERATE):
 	case(FunctionCode::DIRECT_OPERATE_NO_ACK):
 	case(FunctionCode::RESPONSE):

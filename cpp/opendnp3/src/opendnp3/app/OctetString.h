@@ -28,11 +28,11 @@ namespace opendnp3
 
 class OctetString : public OctetData
 {
-public:	
+public:
 
 	OctetString() : OctetData()
 	{}
-	
+
 	OctetString(const OctetString& arData) : OctetData(arData)
 	{}
 

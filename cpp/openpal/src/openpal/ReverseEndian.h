@@ -25,31 +25,32 @@
 
 #include "SerializationTemplates.h"
 
-namespace openpal {
+namespace openpal
+{
 
 class UInt8Simple
 {
 public:
 
-	inline static uint8_t Read(const uint8_t* apStart) 
+	inline static uint8_t Read(const uint8_t* apStart)
 	{
 		return (*apStart);
 	}
 
-	inline static uint8_t ReadBuffer(ReadOnlyBuffer& arBuffer) 
+	inline static uint8_t ReadBuffer(ReadOnlyBuffer& arBuffer)
 	{
 		auto ret = Read(arBuffer);
 		arBuffer.Advance(Size);
 		return ret;
 	}
 
-	static void WriteBuffer(WriteBuffer& buffer, uint8_t aValue) 
+	static void WriteBuffer(WriteBuffer& buffer, uint8_t aValue)
 	{
 		Write(buffer, aValue);
 		buffer.Advance(Size);
 	}
 
-	inline static void Write(uint8_t* apStart, uint8_t aValue) 
+	inline static void Write(uint8_t* apStart, uint8_t aValue)
 	{
 		*(apStart) = aValue;
 	}
@@ -65,17 +66,17 @@ class UInt48LE
 {
 public:
 
-	static int64_t Read(const uint8_t* apStart);	
+	static int64_t Read(const uint8_t* apStart);
 	static void Write(uint8_t* apStart, int64_t aValue);
 
-	inline static int64_t ReadBuffer(ReadOnlyBuffer& arBuffer) 
+	inline static int64_t ReadBuffer(ReadOnlyBuffer& arBuffer)
 	{
 		auto ret = Read(arBuffer);
 		arBuffer.Advance(Size);
 		return ret;
 	}
 
-	static void WriteBuffer(WriteBuffer& buffer, int64_t aValue) 
+	static void WriteBuffer(WriteBuffer& buffer, int64_t aValue)
 	{
 		Write(buffer, aValue);
 		buffer.Advance(Size);

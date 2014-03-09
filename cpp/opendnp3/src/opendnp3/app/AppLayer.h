@@ -70,9 +70,9 @@ public:
 	// Implement IAppLayer
 	/////////////////////////////////
 
-	void SendUnsolicited(APDUResponse &);
-	void SendResponse(APDUResponse &);
-	void SendRequest(APDURequest &);
+	void SendUnsolicited(APDUResponse&);
+	void SendResponse(APDUResponse&);
+	void SendRequest(APDURequest&);
 	void CancelResponse();
 
 private:
@@ -95,9 +95,9 @@ private:
 	////////////////////
 	// Internal Events
 	////////////////////
-	
+
 	void OnResponse(const APDUResponseRecord&);
-	void OnUnsolResponse(const APDUResponseRecord&);	
+	void OnUnsolResponse(const APDUResponseRecord&);
 	void OnRequest(const APDURecord&);
 	void OnConfirm(const AppControlField& aControl, size_t aDataSize);
 
@@ -107,7 +107,7 @@ private:
 	// State
 	////////////////////
 
-	typedef std::deque<APDUWrapper> SendQueue;	
+	typedef std::deque<APDUWrapper> SendQueue;
 
 	bool mSending;						// State of send operation to the lower layer
 	bool mConfirmSending;
@@ -134,7 +134,7 @@ private:
 	void QueueConfirm(bool aUns, int aSeq);
 	void QueueFrame(const APDUWrapper& apdu);
 	void CheckForSend();
-	
+
 };
 
 }

@@ -50,7 +50,7 @@ AsyncTaskGroup::~AsyncTaskGroup()
 {
 	this->Shutdown();
 
-for(AsyncTaskBase * p: mTaskVec) delete p;
+	for(AsyncTaskBase * p : mTaskVec) delete p;
 }
 
 AsyncTaskBase* AsyncTaskGroup::Add(openpal::TimeDuration aPeriod, openpal::TimeDuration aRetryDelay, int aPriority, const TaskHandler& arCallback, const std::string& arName)
@@ -67,7 +67,8 @@ AsyncTaskBase* AsyncTaskGroup::Add(openpal::TimeDuration aPeriod, openpal::TimeD
 
 void AsyncTaskGroup::ResetTasks(int aMask)
 {
-for(AsyncTaskBase * p: mTaskVec) {
+	for(AsyncTaskBase * p : mTaskVec)
+	{
 		if(!p->IsRunning() && (p->GetFlags() & aMask)) p->Reset();
 	}
 }
@@ -81,8 +82,10 @@ AsyncTaskContinuous* AsyncTaskGroup::AddContinuous(int aPriority, const TaskHand
 
 bool AsyncTaskGroup::Remove(AsyncTaskBase* apTask)
 {
-	for(TaskVec::iterator i = mTaskVec.begin(); i != mTaskVec.end(); ++i) {
-		if(*i == apTask) {
+	for(TaskVec::iterator i = mTaskVec.begin(); i != mTaskVec.end(); ++i)
+	{
+		if(*i == apTask)
+		{
 			delete *i;
 			mTaskVec.erase(i);
 			return true;
@@ -93,7 +96,8 @@ bool AsyncTaskGroup::Remove(AsyncTaskBase* apTask)
 
 void AsyncTaskGroup::Shutdown()
 {
-	if(mpTimer) {
+	if(mpTimer)
+	{
 		mpTimer->Cancel();
 		mpTimer = nullptr;
 	}
@@ -103,7 +107,8 @@ void AsyncTaskGroup::Shutdown()
 
 void AsyncTaskGroup::Enable()
 {
-for(AsyncTaskBase * p: mTaskVec) {
+	for(AsyncTaskBase * p : mTaskVec)
+	{
 		p->SilentEnable();
 	}
 	this->CheckState();
@@ -111,7 +116,8 @@ for(AsyncTaskBase * p: mTaskVec) {
 
 void AsyncTaskGroup::Disable()
 {
-for(AsyncTaskBase * p: mTaskVec) {
+	for(AsyncTaskBase * p : mTaskVec)
+	{
 		p->SilentDisable();
 	}
 	this->CheckState();
@@ -119,7 +125,8 @@ for(AsyncTaskBase * p: mTaskVec) {
 
 void AsyncTaskGroup::Enable(int aMask)
 {
-	for(AsyncTaskBase * p: mTaskVec) {
+	for(AsyncTaskBase * p : mTaskVec)
+	{
 		if((p->GetFlags() & aMask) != 0) p->SilentEnable();
 	}
 	this->CheckState();
@@ -127,7 +134,8 @@ void AsyncTaskGroup::Enable(int aMask)
 
 void AsyncTaskGroup::Disable(int aMask)
 {
-for(AsyncTaskBase * p: mTaskVec) {
+	for(AsyncTaskBase * p : mTaskVec)
+	{
 		if((p->GetFlags() & aMask) != 0) p->SilentDisable();
 	}
 	this->CheckState();
@@ -139,7 +147,8 @@ AsyncTaskBase* AsyncTaskGroup::GetNext(const MonotonicTimestamp& arTime)
 	TaskVec::iterator max = max_element(mTaskVec.begin(), mTaskVec.end(), AsyncTaskBase::LessThanGroupLevel);
 
 	AsyncTaskBase* pRet = nullptr;
-	if(max != mTaskVec.end()) {
+	if(max != mTaskVec.end())
+	{
 		AsyncTaskBase* p = *max;
 		if(!p->IsRunning() && p->IsEnabled()) pRet = p;
 	}
@@ -149,26 +158,29 @@ AsyncTaskBase* AsyncTaskGroup::GetNext(const MonotonicTimestamp& arTime)
 
 void AsyncTaskGroup::CheckState()
 {
-	if(!mShutdown) {
+	if(!mShutdown)
+	{
 		auto now = mpExecutor->GetTime();
 		AsyncTaskBase* pTask = GetNext(now);
 
 		if(pTask == nullptr) return;
 		if(pTask->NextRunTime().milliseconds == MonotonicTimestamp::Max().milliseconds) return;
 
-		if(pTask->NextRunTime().milliseconds <= now.milliseconds) {
+		if(pTask->NextRunTime().milliseconds <= now.milliseconds)
+		{
 			mIsRunning = true;
 			pTask->Dispatch();
 		}
-		else {
+		else
+		{
 			this->RestartTimer(pTask->NextRunTime());
 		}
 	}
 }
 
 void AsyncTaskGroup::OnCompletion()
-{	
-	assert(mIsRunning);	
+{
+	assert(mIsRunning);
 	mIsRunning = false;
 	this->CheckState();
 }
@@ -181,7 +193,8 @@ openpal::MonotonicTimestamp AsyncTaskGroup::GetCurrentTime() const
 
 void AsyncTaskGroup::Update(const MonotonicTimestamp& arTime)
 {
-for(AsyncTaskBase * p: mTaskVec) {
+	for(AsyncTaskBase * p : mTaskVec)
+	{
 		p->UpdateTime(arTime);
 	}
 }
@@ -189,8 +202,10 @@ for(AsyncTaskBase * p: mTaskVec) {
 
 void AsyncTaskGroup::RestartTimer(const openpal::MonotonicTimestamp& arTime)
 {
-	if(mpTimer != nullptr) {
-		if(mpTimer->ExpiresAt().milliseconds != arTime.milliseconds) {
+	if(mpTimer != nullptr)
+	{
+		if(mpTimer->ExpiresAt().milliseconds != arTime.milliseconds)
+		{
 			mpTimer->Cancel();
 			mpTimer = nullptr;
 		}

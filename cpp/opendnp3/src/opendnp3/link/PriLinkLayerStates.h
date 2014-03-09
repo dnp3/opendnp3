@@ -75,13 +75,16 @@ class PLLS_ResetLinkWait : public PriStateBase
 	MACRO_STATE_SINGLETON_INSTANCE(PLLS_ResetLinkWait);
 
 	void Ack(LinkLayer*, bool aIsRcvBuffFull);
-	void Nack(LinkLayer*  apLL, bool) {
+	void Nack(LinkLayer*  apLL, bool)
+	{
 		Failure(apLL);
 	}
-	void LinkStatus(LinkLayer* apLL, bool) {
+	void LinkStatus(LinkLayer* apLL, bool)
+	{
 		Failure(apLL);
 	}
-	void NotSupported (LinkLayer*  apLL, bool) {
+	void NotSupported (LinkLayer*  apLL, bool)
+	{
 		Failure(apLL);
 	}
 
@@ -98,10 +101,12 @@ class PLLS_ConfDataWait : public PriStateBase
 
 	void Ack(LinkLayer*, bool aIsRcvBuffFull);
 	void Nack(LinkLayer* apLL, bool);
-	void LinkStatus(LinkLayer* apLL, bool) {
+	void LinkStatus(LinkLayer* apLL, bool)
+	{
 		Failure(apLL);
 	}
-	void NotSupported (LinkLayer* apLL, bool) {
+	void NotSupported (LinkLayer* apLL, bool)
+	{
 		Failure(apLL);
 	}
 	void OnTimeout(LinkLayer*);

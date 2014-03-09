@@ -29,23 +29,23 @@ namespace opendnp3
 template <class T, class ReadFunc>
 class LazyIterable : public IterableBuffer<T>
 {
-	public:				
-		
-		LazyIterable(const openpal::ReadOnlyBuffer& buffer, uint32_t aSize, const ReadFunc& aReadFunc): 
-			IterableBuffer<T>(buffer, aSize), 
-			readFunc(aReadFunc)
-		{}
+public:
 
-	protected:	
+	LazyIterable(const openpal::ReadOnlyBuffer& buffer, uint32_t aSize, const ReadFunc& aReadFunc):
+		IterableBuffer<T>(buffer, aSize),
+		readFunc(aReadFunc)
+	{}
 
-		virtual T ValueAt(openpal::ReadOnlyBuffer& buff, uint32_t aPos) const final
-		{
-			return readFunc(buff, aPos);
-		}
+protected:
 
-	private:
-		
-		ReadFunc readFunc;
+	virtual T ValueAt(openpal::ReadOnlyBuffer& buff, uint32_t aPos) const final
+	{
+		return readFunc(buff, aPos);
+	}
+
+private:
+
+	ReadFunc readFunc;
 };
 
 template <class T, class ReadFunc>

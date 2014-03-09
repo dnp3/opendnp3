@@ -33,7 +33,7 @@ namespace opendnp3
 
 void TLS_Base::Send(const ReadOnlyBuffer&, TransportLayer* c)
 {
-	LOGGER_BLOCK(c->GetLogger(), LogLevel::Error, "Invalid action for state: " << this->Name());	
+	LOGGER_BLOCK(c->GetLogger(), LogLevel::Error, "Invalid action for state: " << this->Name());
 }
 
 void TLS_Base::HandleReceive(const ReadOnlyBuffer&, TransportLayer* c)

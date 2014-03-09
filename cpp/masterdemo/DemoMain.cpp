@@ -60,7 +60,8 @@ int main(int argc, char* argv[])
 
 	// you can optionally pass a function into the client constructor to configure your socket
 	// using platform specific options
-	auto configure = [](asio::ip::tcp::socket& socket){
+	auto configure = [](asio::ip::tcp::socket & socket)
+	{
 		// platfrom specific socket configuration here
 	};
 
@@ -71,7 +72,8 @@ int main(int argc, char* argv[])
 
 	// You can optionally add a listener to the channel. You can do this anytime and
 	// you will receive a stream of all state changes
-	pClient->AddStateListener([](ChannelState state) {
+	pClient->AddStateListener([](ChannelState state)
+	{
 		std::cout << "Client state: " << ChannelStateToString(state) << std::endl;
 	});
 
@@ -84,16 +86,17 @@ int main(int argc, char* argv[])
 	// name, log level, command acceptor, and config info. This
 	// returns a thread-safe interface used for sending commands.
 	auto pMaster = pClient->AddMaster(
-	                       "master",						// stack name
-	                       LOG_LEVEL,						// log filter level
-						   PrintingSOEHandler::Inst(),	// callback for data processing
-	                       asiopal::UTCTimeSource::Inst(),	// system clock for time syncing
-	                       stackConfig						// stack configuration
+	                   "master",						// stack name
+	                   LOG_LEVEL,						// log filter level
+	                   PrintingSOEHandler::Inst(),	// callback for data processing
+	                   asiopal::UTCTimeSource::Inst(),	// system clock for time syncing
+	                   stackConfig						// stack configuration
 	               );
 
 	// You can optionally add a listener to the stack to observer communicate health. You
 	// can do this anytime and you will receive a stream of all state changes.
-	pMaster->AddStateListener([](StackState state) {
+	pMaster->AddStateListener([](StackState state)
+	{
 		std::cout << "master state: " << StackStateToString(state) << std::endl;
 	});
 
@@ -104,33 +107,37 @@ int main(int argc, char* argv[])
 	pMaster->Enable();
 
 	auto pCmdProcessor = pMaster->GetCommandProcessor();
-	
-	do {
-		
+
+	do
+	{
+
 		std::cout << "Enter a command {x == exit, d == demand scan, c == control}" << std::endl;
 		char cmd;
 		std::cin >> cmd;
 		switch(cmd)
 		{
-			case('x'):
-				return 0;
-			case('i'):
-				integrityScan.Demand();
-				break;
-			case('e'):
-				exceptionScan.Demand();
-				break;
-			case('c'):
+		case('x'):
+			return 0;
+		case('i'):
+			integrityScan.Demand();
+			break;
+		case('e'):
+			exceptionScan.Demand();
+			break;
+		case('c'):
 			{
 				ControlRelayOutputBlock crob(ControlCode::LATCH_ON);
-				auto print = [](CommandResponse cr) { cout << "Select/Operate result: " << cr.ToString() << endl; };
+				auto print = [](CommandResponse cr)
+				{
+					cout << "Select/Operate result: " << cr.ToString() << endl;
+				};
 				// asynchronously call the 'print' function when complete/failed
 				pCmdProcessor->SelectAndOperate(crob, 0, print);
 				break;
 			}
-			default:
-				break;
-		}		
+		default:
+			break;
+		}
 	}
 	while(true);
 

@@ -24,13 +24,13 @@ public:
 	/// </summary>
 	/// <param name="concurrency">how many threads are allocated to the thread pool</param>
 	/// <returns>IDNP3Manager interface</returns>
-	static IDNP3Manager ^ CreateManager(System::Int32 concurrency);
+	static IDNP3Manager^ CreateManager(System::Int32 concurrency);
 
 	/// <summary>
 	/// Create a new IDNP3Manager using the default concurrency
 	/// </summary>
 	/// <returns>IDNP3Manager interface</returns>
-	static IDNP3Manager ^ CreateManager();
+	static IDNP3Manager^ CreateManager();
 
 private:
 	DNP3ManagerFactory() {}
@@ -43,11 +43,11 @@ public:
 	DNP3ManagerAdapter(System::Int32 aConcurrency);
 	~DNP3ManagerAdapter();
 
-	virtual IChannel ^ AddTCPClient(System::String ^ name, DNP3::Interface::LogLevel level, System::TimeSpan minRetryDelay, System::TimeSpan maxRetryDelay, System::String ^ address, System::UInt16 port);
-	virtual IChannel ^ AddTCPServer(System::String ^ name, DNP3::Interface::LogLevel level, System::TimeSpan minRetryDelay, System::TimeSpan maxRetryDelay, System::String ^ endpoint, System::UInt16 port);
-	virtual IChannel ^ AddSerial(System::String ^ name, DNP3::Interface::LogLevel level, System::TimeSpan minRetryDelay, System::TimeSpan maxRetryDelay, DNP3::Interface::SerialSettings ^ settings);
+	virtual IChannel^ AddTCPClient(System::String^ name, DNP3::Interface::LogLevel level, System::TimeSpan minRetryDelay, System::TimeSpan maxRetryDelay, System::String^ address, System::UInt16 port);
+	virtual IChannel^ AddTCPServer(System::String^ name, DNP3::Interface::LogLevel level, System::TimeSpan minRetryDelay, System::TimeSpan maxRetryDelay, System::String^ endpoint, System::UInt16 port);
+	virtual IChannel^ AddSerial(System::String^ name, DNP3::Interface::LogLevel level, System::TimeSpan minRetryDelay, System::TimeSpan maxRetryDelay, DNP3::Interface::SerialSettings^ settings);
 
-	virtual void AddLogHandler(ILogHandler ^ logHandler);
+	virtual void AddLogHandler(ILogHandler^ logHandler);
 
 private:
 	asiodnp3::ASIODNP3Manager* mpMgr;

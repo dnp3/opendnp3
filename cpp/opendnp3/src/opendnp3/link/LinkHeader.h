@@ -28,7 +28,8 @@ namespace opendnp3
 {
 
 // Class for dealing with all aspects of FT3 Frame headers
-struct LinkHeader {
+struct LinkHeader
+{
 	LinkHeader();
 
 	// Setter
@@ -37,40 +38,51 @@ struct LinkHeader {
 
 	void ChangeFCB(bool aFCB);
 
-	uint8_t GetControl() const {
+	uint8_t GetControl() const
+	{
 		return ctrl;
 	}
 
 	// Getters
-	uint8_t GetLength() const {
+	uint8_t GetLength() const
+	{
 		return length;
 	}
-	uint16_t GetDest() const {
+	uint16_t GetDest() const
+	{
 		return dest;
 	}
-	uint16_t GetSrc() const {
+	uint16_t GetSrc() const
+	{
 		return src;
 	}
-	bool IsFromMaster() const {
+	bool IsFromMaster() const
+	{
 		return (ctrl & MASK_DIR) != 0;
 	}
-	bool IsPriToSec() const {
+	bool IsPriToSec() const
+	{
 		return (ctrl & MASK_PRM) != 0;
 	}
-	bool IsFcbSet() const {
+	bool IsFcbSet() const
+	{
 		return (ctrl & MASK_FCB) != 0;
 	}
-	bool IsFcvDfcSet() const {
+	bool IsFcvDfcSet() const
+	{
 		return (ctrl & MASK_FCV) != 0;
 	}
-	uint8_t GetFuncByte() const {
+	uint8_t GetFuncByte() const
+	{
 		return ctrl & MASK_FUNC;
 	}
-	LinkFunction GetFuncEnum() const {
+	LinkFunction GetFuncEnum() const
+	{
 		return LinkFunctionFromType(ctrl & MASK_FUNC_OR_PRM);
 	}
 
-	bool ValidLength() {
+	bool ValidLength()
+	{
 		return length > 4;
 	}
 

@@ -49,15 +49,15 @@ void OutstationEventBuffer::Clear()
 		auto pNode = facade.selectedEvents.Pop();
 		switch(pNode->value.type)
 		{
-			case(EventType::Binary):
-				facade.binaryEvents.Release(pNode->value.index);
-				break;
-			case(EventType::Analog):
-				facade.analogEvents.Release(pNode->value.index);
-				break;
-			case(EventType::Counter):
-				facade.counterEvents.Release(pNode->value.index);
-				break;
+		case(EventType::Binary):
+			facade.binaryEvents.Release(pNode->value.index);
+			break;
+		case(EventType::Analog):
+			facade.analogEvents.Release(pNode->value.index);
+			break;
+		case(EventType::Counter):
+			facade.counterEvents.Release(pNode->value.index);
+			break;
 		}
 		facade.sequenceOfEvents.Remove(pNode); // O(1) from SOE
 	}
@@ -98,7 +98,7 @@ void OutstationEventBuffer::Update(const Event<Counter>& aEvent)
 
 void OutstationEventBuffer::Update(const Event<FrozenCounter>& aEvent)
 {
-        overflow |= !InsertEvent(aEvent, EventType::FrozenCounter,  facade.frozenCounterEvents);
+	overflow |= !InsertEvent(aEvent, EventType::FrozenCounter,  facade.frozenCounterEvents);
 }
 
 uint32_t OutstationEventBuffer::NumUnselectedMatching(const SelectionCriteria& criteria) const
@@ -112,7 +112,7 @@ uint32_t OutstationEventBuffer::NumUnselectedMatching(const SelectionCriteria& c
 }
 
 uint32_t OutstationEventBuffer::SelectEvents(const SelectionCriteria& criteria, IEventWriter& writer)
-{	
+{
 	uint32_t count = 0;
 	uint32_t max = this->NumUnselectedMatching(criteria);
 	auto iter = facade.sequenceOfEvents.Iterate();
@@ -127,10 +127,10 @@ uint32_t OutstationEventBuffer::SelectEvents(const SelectionCriteria& criteria, 
 				pNode->value.selected = true;
 				facade.selectedEvents.Push(pNode);
 				++count;
-			}				
+			}
 			else return count;
 		}
-	}	
+	}
 	return count;
 }
 
@@ -138,14 +138,14 @@ bool OutstationEventBuffer::ApplyEvent(IEventWriter& writer, SequenceRecord& rec
 {
 	switch(record.type)
 	{
-		case(EventType::Binary):
-			return writer.Write(facade.binaryEvents[record.index]);
-		case(EventType::Analog):			
-			return writer.Write(facade.analogEvents[record.index]);		
-		case(EventType::Counter):
-			return writer.Write(facade.counterEvents[record.index]);		
-		default:
-			return false;
+	case(EventType::Binary):
+		return writer.Write(facade.binaryEvents[record.index]);
+	case(EventType::Analog):
+		return writer.Write(facade.analogEvents[record.index]);
+	case(EventType::Counter):
+		return writer.Write(facade.counterEvents[record.index]);
+	default:
+		return false;
 	}
 }
 

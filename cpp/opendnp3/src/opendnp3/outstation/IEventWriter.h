@@ -30,12 +30,12 @@ namespace opendnp3
 
 class IEventWriter
 {
-	public:
-		
-		// returns true if the event was written
-		virtual bool Write(const Event<Binary>& evt) = 0;
-		virtual bool Write(const Event<Analog>& evt) = 0;
-		virtual bool Write(const Event<Counter>& evt) = 0;
+public:
+
+	// returns true if the event was written
+	virtual bool Write(const Event<Binary>& evt) = 0;
+	virtual bool Write(const Event<Analog>& evt) = 0;
+	virtual bool Write(const Event<Counter>& evt) = 0;
 };
 
 

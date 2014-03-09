@@ -23,7 +23,7 @@
 
 namespace opendnp3
 {
-	
+
 ReadHandler::ReadHandler(openpal::Logger& aLogger, StaticResponseContext* aContext) :
 	APDUHandlerBase(aLogger),
 	pContext(aContext)
@@ -35,32 +35,32 @@ void ReadHandler::_AllObjects(GroupVariation gv)
 {
 	switch(pContext->QueueReadAllObjects(gv))
 	{
-		case(QueueResult::FULL):
-		case(QueueResult::SUCCESS):
-			break;
-		case(QueueResult::OBJECT_UNDEFINED):
-			errors |= IINField(IINBit::FUNC_NOT_SUPPORTED);
-			break;
-		case(QueueResult::OUT_OF_RANGE):
-			errors |= IINField(IINBit::PARAM_ERROR);
-			break;
-	}	
+	case(QueueResult::FULL):
+	case(QueueResult::SUCCESS):
+		break;
+	case(QueueResult::OBJECT_UNDEFINED):
+		errors |= IINField(IINBit::FUNC_NOT_SUPPORTED);
+		break;
+	case(QueueResult::OUT_OF_RANGE):
+		errors |= IINField(IINBit::PARAM_ERROR);
+		break;
+	}
 }
 
 void ReadHandler::_OnRangeRequest(GroupVariation gv, const StaticRange& range)
 {
-	
+
 	switch(pContext->QueueReadRange(gv, range))
 	{
-		case(QueueResult::FULL):
-		case(QueueResult::SUCCESS):
-			break;
-		case(QueueResult::OBJECT_UNDEFINED):
-			errors |= IINField(IINBit::FUNC_NOT_SUPPORTED);
-			break;
-		case(QueueResult::OUT_OF_RANGE):
-			errors |= IINField(IINBit::PARAM_ERROR);
-			break;
+	case(QueueResult::FULL):
+	case(QueueResult::SUCCESS):
+		break;
+	case(QueueResult::OBJECT_UNDEFINED):
+		errors |= IINField(IINBit::FUNC_NOT_SUPPORTED);
+		break;
+	case(QueueResult::OUT_OF_RANGE):
+		errors |= IINField(IINBit::PARAM_ERROR);
+		break;
 	}
 }
 

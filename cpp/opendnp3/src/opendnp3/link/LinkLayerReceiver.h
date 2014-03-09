@@ -56,7 +56,7 @@ public:
 		@param aNumBytes Number of bytes written
 	*/
 	void OnRead(size_t aNumBytes);
-	
+
 	/**
 	* Buffer that can currently be used for writing
 	*/
@@ -74,10 +74,12 @@ private:
 	friend class LRS_Body;
 
 	//actions/helpers used by the states
-	void ChangeState(LRS_Base* apState) {
+	void ChangeState(LRS_Base* apState)
+	{
 		mpState = apState;
 	}
-	bool Sync0564() {
+	bool Sync0564()
+	{
 		return mBuffer.Sync(M_SYNC_PATTERN, 2);
 	}
 	bool ReadHeader();
@@ -87,7 +89,8 @@ private:
 	void FailFrame();
 	void PushFrame();
 	openpal::ReadOnlyBuffer TransferUserData();
-	size_t NumReadBytes() {
+	size_t NumReadBytes()
+	{
 		return mBuffer.NumReadBytes();
 	}
 

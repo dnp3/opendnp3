@@ -28,7 +28,7 @@
 
 namespace asio
 {
-	typedef basic_serial_port<> serial_port;
+typedef basic_serial_port<> serial_port;
 }
 
 namespace asiopal

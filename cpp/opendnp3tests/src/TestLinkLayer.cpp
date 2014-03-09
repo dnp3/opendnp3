@@ -55,7 +55,7 @@ TEST_CASE(SUITE("ForwardsOnLowerLayerUp"))
 	t.link.OnLowerLayerUp();
 	REQUIRE(t.upper.IsLowerLayerUp());
 	t.link.OnLowerLayerUp();
-	REQUIRE(t.log.PopOneEntry(LogLevel::Error));	
+	REQUIRE(t.log.PopOneEntry(LogLevel::Error));
 }
 
 // Check that once the layer comes up, validation errors can occur
@@ -391,7 +391,8 @@ TEST_CASE(SUITE("ResetLinkRetries"))
 
 	ByteStr bytes(250, 0);
 	t.link.Send(bytes.ToReadOnly());
-	for(int i = 1; i < 5; ++i) {
+	for(int i = 1; i < 5; ++i)
+	{
 		REQUIRE(t.mNumSend ==  i); // sends link retry
 		LinkFrame f;
 		f.FormatResetLinkStates(true, 1024, 1);

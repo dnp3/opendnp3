@@ -31,15 +31,15 @@ namespace opendnp3
 template <class PrefixType, class WriteType>
 class PrefixedWriteIterator
 {
-	public:	
+public:
 
 	static PrefixedWriteIterator Null()
 	{
-		auto buffer = openpal::WriteBuffer::Empty(); 
+		auto buffer = openpal::WriteBuffer::Empty();
 		return PrefixedWriteIterator(nullptr, buffer); // TODO make this a poiter
 	}
-	
-	PrefixedWriteIterator(IDNP3Serializer<WriteType>* pSerializer_, openpal::WriteBuffer& aPosition) :	
+
+	PrefixedWriteIterator(IDNP3Serializer<WriteType>* pSerializer_, openpal::WriteBuffer& aPosition) :
 		pSerializer(pSerializer_),
 		sizeOfTypePlusIndex(pSerializer->Size() + PrefixType::Size),
 		count(0),
@@ -47,8 +47,8 @@ class PrefixedWriteIterator
 		position(aPosition),
 		isNull(aPosition.Size() < PrefixType::Size || pSerializer == nullptr)
 	{
-		if(!isNull) 
-		{			
+		if(!isNull)
+		{
 			position.Advance(PrefixType::Size);
 		}
 	}
@@ -57,28 +57,31 @@ class PrefixedWriteIterator
 	{
 		if(isNull) return false;
 		else
-		{			
+		{
 			PrefixType::Write(countPosition, count);
 			return true;
 		}
 	}
 
 	bool Write(WriteType& value, typename PrefixType::Type index)
-	{	
+	{
 		if(isNull || position.Size() < sizeOfTypePlusIndex) return false;
 		else
 		{
 			PrefixType::WriteBuffer(position, index);
-			pSerializer->Write(value, position);			
+			pSerializer->Write(value, position);
 			++count;
 			return true;
 		}
 	}
 
-	bool IsNull() const { return isNull; }
+	bool IsNull() const
+	{
+		return isNull;
+	}
 
-	private:	
-	
+private:
+
 	IDNP3Serializer<WriteType>* pSerializer;
 	uint32_t sizeOfTypePlusIndex;
 
@@ -87,7 +90,7 @@ class PrefixedWriteIterator
 	bool isNull;
 
 	openpal::WriteBuffer countPosition;  // make a copy to record where we write the count
-	openpal::WriteBuffer& position;	
+	openpal::WriteBuffer& position;
 };
 
 }

@@ -31,8 +31,8 @@ AppLayerTest::AppLayerTest(bool aIsMaster, size_t aNumRetry, LogLevel aLevel, bo
 	lower(Logger(&log, aLevel, "lower")),
 	mts(),
 	app(Logger(&log, aLevel, "app"), &mts, AppConfig(aIsMaster, TimeDuration::Seconds(1), aNumRetry)),
-	writeBuffer(buffer, 4)	
-{	
+	writeBuffer(buffer, 4)
+{
 	lower.SetUpperLayer(&app);
 	app.SetUser(&user);
 }
@@ -44,12 +44,12 @@ void AppLayerTest::SendUp(const std::string& aBytes)
 }
 
 void AppLayerTest::SendUp(AppControlField control, FunctionCode aCode)
-{	
+{
 	uint8_t bytes[2] = { control.ToByte(),  FunctionCodeToType(aCode) };
 	ReadOnlyBuffer buff(bytes, 2);
 	lower.SendUp(buff);
 }
-	
+
 void AppLayerTest::SendUp(AppControlField control, FunctionCode aCode, IINField iin)
 {
 	uint8_t bytes[4] = { control.ToByte(),  FunctionCodeToType(aCode), iin.LSB, iin.MSB };
@@ -63,7 +63,7 @@ void AppLayerTest::SendRequest(FunctionCode aCode, bool aFIR, bool aFIN, bool aC
 	out.SetFunction(aCode);
 	out.SetControl(AppControlField(aFIR, aFIN, aCON, aUNS));
 	app.SendRequest(out);
-	
+
 }
 
 void AppLayerTest::SendResponse(FunctionCode aCode, bool aFIR, bool aFIN, bool aCON, bool aUNS)
@@ -72,7 +72,7 @@ void AppLayerTest::SendResponse(FunctionCode aCode, bool aFIR, bool aFIN, bool a
 	out.SetFunction(aCode);
 	out.SetControl(AppControlField(aFIR, aFIN, aCON, aUNS));
 	out.SetIIN(IINField::Empty);
-	app.SendResponse(out);	
+	app.SendResponse(out);
 }
 
 void AppLayerTest::SendUnsolicited(FunctionCode aCode, bool aFIR, bool aFIN, bool aCON, bool aUNS)
@@ -81,7 +81,7 @@ void AppLayerTest::SendUnsolicited(FunctionCode aCode, bool aFIR, bool aFIN, boo
 	out.SetFunction(aCode);
 	out.SetControl(AppControlField(aFIR, aFIN, aCON, aUNS));
 	out.SetIIN(IINField::Empty);
-	app.SendUnsolicited(out);	
+	app.SendUnsolicited(out);
 }
 
 /*
@@ -107,7 +107,7 @@ bool AppLayerTest::CheckSentAPDUWithSize(FunctionCode aCode, const AppControlFie
 	openpal::WriteBuffer wb(buffer, size);
 	APDUWrapper apdu(wb);
 	apdu.SetFunction(aCode);
-	apdu.SetControl(acf);	
+	apdu.SetControl(acf);
 	bool ret = lower.BufferEquals(apdu.ToReadOnly());
 	if(ret) lower.ClearBuffer();
 	return ret;

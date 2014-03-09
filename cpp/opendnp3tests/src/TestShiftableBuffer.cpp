@@ -44,7 +44,7 @@ TEST_CASE(SUITE("InitialState"))
 
 	REQUIRE(b.NumReadBytes() ==  0);
 	REQUIRE(b.NumWriteBytes() ==  100);
-	REQUIRE(b.ReadBuff() ==  b.WriteBuff());	
+	REQUIRE(b.ReadBuff() ==  b.WriteBuff());
 }
 
 TEST_CASE(SUITE("ReadingWriting"))

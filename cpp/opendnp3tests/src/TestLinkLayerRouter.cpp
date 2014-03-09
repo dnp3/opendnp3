@@ -154,14 +154,14 @@ TEST_CASE(SUITE("MultiAddressBindError"))
 	MockFrameSink mfs;
 	LinkRoute route(1, 1024);
 	REQUIRE(t.router.AddContext(&mfs, route));
-	REQUIRE_FALSE(t.router.AddContext(&mfs, route));	
+	REQUIRE_FALSE(t.router.AddContext(&mfs, route));
 }
 
 /// Test that the second bind fails when a non-unique context is added
 TEST_CASE(SUITE("MultiContextBindError"))
 {
 	LinkLayerRouterTest t;
-	MockFrameSink mfs;	
+	MockFrameSink mfs;
 	REQUIRE(t.router.AddContext(&mfs, LinkRoute(1, 1024)));
 	REQUIRE_FALSE(t.router.AddContext(&mfs, LinkRoute(1, 2048)));
 }

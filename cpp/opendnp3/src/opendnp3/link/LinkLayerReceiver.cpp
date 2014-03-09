@@ -50,7 +50,7 @@ void LinkLayerReceiver::Reset()
 	mBuffer.Reset();
 }
 
-WriteBuffer LinkLayerReceiver::WriteBuff() const 
+WriteBuffer LinkLayerReceiver::WriteBuff() const
 {
 	WriteBuffer b(mBuffer.WriteBuff(), mBuffer.NumWriteBytes());
 	return b;
@@ -73,7 +73,8 @@ void LinkLayerReceiver::OnRead(size_t aNumBytes)
 
 void LinkLayerReceiver::PushFrame()
 {
-	switch(mHeader.GetFuncEnum()) {
+	switch(mHeader.GetFuncEnum())
+	{
 	case(LinkFunction::PRI_RESET_LINK_STATES):
 		mpSink->ResetLinkStates(mHeader.IsFromMaster(), mHeader.GetDest(), mHeader.GetSrc());
 		break;
@@ -112,7 +113,7 @@ ReadOnlyBuffer LinkLayerReceiver::TransferUserData()
 {
 	uint32_t len = mHeader.GetLength() - LS_MIN_LENGTH;
 	LinkFrame::ReadUserData(mBuffer.ReadBuff() + LS_HEADER_SIZE, mpUserData, len);
-	return ReadOnlyBuffer(mpUserData, len);	
+	return ReadOnlyBuffer(mpUserData, len);
 }
 
 bool LinkLayerReceiver::ReadHeader()
@@ -125,7 +126,8 @@ bool LinkLayerReceiver::ValidateBody()
 {
 	uint32_t len = mHeader.GetLength() - LS_MIN_LENGTH;
 	if(LinkFrame::ValidateBodyCRC(mBuffer.ReadBuff() + LS_HEADER_SIZE, len)) return true;
-	else {
+	else
+	{
 		ERROR_BLOCK(LogLevel::Error, "CRC failure in body", DLERR_CRC);
 		return false;
 	}
@@ -134,12 +136,14 @@ bool LinkLayerReceiver::ValidateBody()
 bool LinkLayerReceiver::ValidateHeader()
 {
 	//first thing to do is check the CRC
-	if(!DNPCrc::IsCorrectCRC(mBuffer.ReadBuff(), LI_CRC)) {
+	if(!DNPCrc::IsCorrectCRC(mBuffer.ReadBuff(), LI_CRC))
+	{
 		ERROR_BLOCK(LogLevel::Error, "CRC failure in header", DLERR_CRC);
 		return false;
 	}
 
-	if(!mHeader.ValidLength()) {
+	if(!mHeader.ValidLength())
+	{
 		ERROR_BLOCK(LogLevel::Error, "LENGTH out of range [5,255]: " << static_cast<int>(mHeader.GetLength()), DLERR_INVALID_LENGTH);
 		return false;
 	}
@@ -158,34 +162,44 @@ bool LinkLayerReceiver::ValidateHeader()
 
 	// make sure that the presence/absence of user data
 	// matches the function code
-	if(func == LinkFunction::PRI_CONFIRMED_USER_DATA || func == LinkFunction::PRI_UNCONFIRMED_USER_DATA) {
-		if(user_data_length > 0) {
+	if(func == LinkFunction::PRI_CONFIRMED_USER_DATA || func == LinkFunction::PRI_UNCONFIRMED_USER_DATA)
+	{
+		if(user_data_length > 0)
+		{
 			//mFrameSize = LinkFrame::CalcFrameSize(user_data_length);
 		}
-		else {
+		else
+		{
 			ERROR_BLOCK(LogLevel::Error, "User data packet received with zero payload. FUNCTION: " << LinkFunctionToString(func), DLERR_NO_DATA);
 			return false;
 		}
 	}
-	else {
-		if(user_data_length > 0) {
+	else
+	{
+		if(user_data_length > 0)
+		{
 			ERROR_BLOCK(LogLevel::Error, "Unexpected LENGTH in frame: " << static_cast<int>(user_data_length) << " with FUNCTION: " << LinkFunctionToString(func), DLERR_UNEXPECTED_DATA);
 			return false;
 		}
 
 	}
 
-	if(user_data_length > 0) {
-		if(func == LinkFunction::PRI_CONFIRMED_USER_DATA || func == LinkFunction::PRI_UNCONFIRMED_USER_DATA) {
+	if(user_data_length > 0)
+	{
+		if(func == LinkFunction::PRI_CONFIRMED_USER_DATA || func == LinkFunction::PRI_UNCONFIRMED_USER_DATA)
+		{
 
 		}
-		else {
+		else
+		{
 			ERROR_BLOCK(LogLevel::Error, "Unexpected LENGTH in frame: " << static_cast<int>(user_data_length) << " with FUNCTION: " << LinkFunctionToString(func), DLERR_UNEXPECTED_DATA);
 			return false;
 		}
 	}
-	else {
-		if(func == LinkFunction::PRI_CONFIRMED_USER_DATA || func == LinkFunction::PRI_UNCONFIRMED_USER_DATA) {
+	else
+	{
+		if(func == LinkFunction::PRI_CONFIRMED_USER_DATA || func == LinkFunction::PRI_UNCONFIRMED_USER_DATA)
+		{
 			ERROR_BLOCK(LogLevel::Error, "User data packet received with zero payload. FUNCTION: " << LinkFunctionToString(func), DLERR_NO_DATA);
 			return false;
 		}
@@ -203,10 +217,12 @@ void LinkLayerReceiver::FailFrame()
 bool LinkLayerReceiver::ValidateFunctionCode()
 {
 	//Now make sure that the function code is known and that the FCV is appropriate
-	if(mHeader.IsPriToSec()) {
+	if(mHeader.IsPriToSec())
+	{
 		bool fcv_set = false;
 
-		switch(mHeader.GetFuncEnum()) {
+		switch(mHeader.GetFuncEnum())
+		{
 		case(LinkFunction::PRI_CONFIRMED_USER_DATA):
 		case(LinkFunction::PRI_TEST_LINK_STATES):
 			fcv_set = true;
@@ -215,14 +231,16 @@ bool LinkLayerReceiver::ValidateFunctionCode()
 		case(LinkFunction::PRI_RESET_LINK_STATES):
 		case(LinkFunction::PRI_UNCONFIRMED_USER_DATA):
 			break;
-		default: {
+		default:
+			{
 				ERROR_BLOCK(LogLevel::Warning, "Unknown PriToSec FUNCTION: " << LinkFunctionToString(mHeader.GetFuncEnum()), DLERR_UNKNOWN_FUNC);
 				return false;
 			}
 		}
 
 		//now check the fcv
-		if(fcv_set != mHeader.IsFcvDfcSet()) {
+		if(fcv_set != mHeader.IsFcvDfcSet())
+		{
 			ERROR_BLOCK(LogLevel::Warning, "Bad FCV for FUNCTION: " << LinkFunctionToString(mHeader.GetFuncEnum()), DLERR_UNEXPECTED_FCV);
 			return false;
 		}
@@ -230,21 +248,25 @@ bool LinkLayerReceiver::ValidateFunctionCode()
 		//if fcv isn't expected to be set, fcb can be either 1 or 0, doesn't matter
 
 	}
-	else { // SecToPri - just validate the function codes and that FCB is 0
-		switch(mHeader.GetFuncEnum()) {
+	else   // SecToPri - just validate the function codes and that FCB is 0
+	{
+		switch(mHeader.GetFuncEnum())
+		{
 		case(LinkFunction::SEC_ACK):
 		case(LinkFunction::SEC_NACK):
 		case(LinkFunction::SEC_LINK_STATUS):
 		case(LinkFunction::SEC_NOT_SUPPORTED):
 			break;
-		default: {
+		default:
+			{
 				ERROR_BLOCK(LogLevel::Error, "Unknown SecToPri FUNCTION: " << LinkFunctionToString(mHeader.GetFuncEnum()), DLERR_UNKNOWN_FUNC);
 				return false;
 			}
 		}
 
 		//now check the fcb, it should always be zero
-		if(mHeader.IsFcbSet()) {
+		if(mHeader.IsFcbSet())
+		{
 			ERROR_BLOCK(LogLevel::Error, "FCB set for SecToPri FUNCTION: " << LinkFunctionToString(mHeader.GetFuncEnum()), DLERR_UNEXPECTED_FCB);
 			return false;
 		}

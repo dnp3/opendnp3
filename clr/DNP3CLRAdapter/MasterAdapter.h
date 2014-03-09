@@ -17,23 +17,23 @@ public:
 
 	MasterAdapter(opendnp3::IMaster* apMaster);
 
-	virtual ICommandProcessor ^ GetCommandProcessor();
+	virtual ICommandProcessor^ GetCommandProcessor();
 
 	virtual void Enable();
 
 	virtual void Disable();
-        
+
 	virtual void Shutdown();
 
 	virtual IMasterScan^ GetIntegrityScan();
 
-	virtual void AddStateListener(System::Action<StackState> ^ aListener);
+	virtual void AddStateListener(System::Action<StackState>^ aListener);
 
 	virtual IMasterScan^ AddClassScan(int aClassMask, System::TimeSpan period, System::TimeSpan taskRetryPeriod);
 
 private:
 	opendnp3::IMaster* mpMaster;
-	ICommandProcessor ^ mCommandAdapter;
+	ICommandProcessor^ mCommandAdapter;
 };
 
 }

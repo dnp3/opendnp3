@@ -15,7 +15,7 @@ namespace DNP3
 namespace Adapter
 {
 
-void CallbackStackStateListener(opendnp3::StackState aState, gcroot < System::Action<StackState> ^ > * apCallback);
+void CallbackStackStateListener(opendnp3::StackState aState, gcroot < System::Action<StackState> ^ >* apCallback);
 
 }
 }

@@ -24,13 +24,13 @@ namespace opendnp3
 {
 
 OutstationStackImpl::OutstationStackImpl(
-        openpal::Logger& arLogger,
-        openpal::IExecutor* apExecutor,
-        ITimeWriteHandler* apTimeWriteHandler,
-        ICommandHandler* apCmdHandler,
-        const SlaveStackConfig& arCfg,		
-		std::function<void (bool)> aEnableDisableFunc,
-        std::function<void (IOutstation*)> aOnShutdown) :
+    openpal::Logger& arLogger,
+    openpal::IExecutor* apExecutor,
+    ITimeWriteHandler* apTimeWriteHandler,
+    ICommandHandler* apCmdHandler,
+    const SlaveStackConfig& arCfg,
+    std::function<void (bool)> aEnableDisableFunc,
+    std::function<void (IOutstation*)> aOnShutdown) :
 	IOutstation(arLogger, aEnableDisableFunc),
 	mpExecutor(apExecutor),
 	mAppStack(arLogger, apExecutor, arCfg.app, arCfg.link),
@@ -50,7 +50,10 @@ IDataObserver* OutstationStackImpl::GetDataObserver()
 
 void OutstationStackImpl::SetNeedTimeIIN()
 {
-	mpExecutor->Post([this](){ this->mSlave.SetNeedTimeIIN(); });
+	mpExecutor->Post([this]()
+	{
+		this->mSlave.SetNeedTimeIIN();
+	});
 }
 
 ILinkContext* OutstationStackImpl::GetLinkContext()

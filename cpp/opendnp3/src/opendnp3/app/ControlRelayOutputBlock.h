@@ -36,14 +36,14 @@ namespace opendnp3
  */
 class ControlRelayOutputBlock
 {
-public:	
+public:
 
 	ControlRelayOutputBlock(
-		ControlCode aCode = ControlCode::LATCH_ON, 
-		uint8_t aCount = 1, 
-		uint32_t aOnTime = 100, 
-		uint32_t aOffTime = 100, 
-		CommandStatus aStatus = CommandStatus::SUCCESS);
+	    ControlCode aCode = ControlCode::LATCH_ON,
+	    uint8_t aCount = 1,
+	    uint32_t aOnTime = 100,
+	    uint32_t aOffTime = 100,
+	    CommandStatus aStatus = CommandStatus::SUCCESS);
 
 	/// allows matching of exact code
 	ControlCode functionCode;
@@ -59,9 +59,9 @@ public:
 	bool ValuesEqual(const ControlRelayOutputBlock& aLHS) const
 	{
 		return (functionCode == aLHS.functionCode) &&
-			(count == aLHS.count) &&
-			(onTimeMS == aLHS.onTimeMS) &&
-			(offTimeMS == aLHS.offTimeMS);
+		       (count == aLHS.count) &&
+		       (onTimeMS == aLHS.onTimeMS) &&
+		       (offTimeMS == aLHS.offTimeMS);
 	}
 
 	bool operator==(const ControlRelayOutputBlock& aLHS) const

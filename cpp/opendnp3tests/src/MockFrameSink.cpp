@@ -123,7 +123,8 @@ void MockFrameSink::AddAction(std::function<void ()> aFunc)
 
 void MockFrameSink::ExecuteAction()
 {
-	if(mActions.size() > 0) {
+	if(mActions.size() > 0)
+	{
 		auto f = mActions.front();
 		mActions.pop_front();
 		f();

@@ -61,7 +61,8 @@ bool BufferTestObject::BufferEquals(const uint8_t* apData, size_t aNumBytes) con
 
 	if(aNumBytes != mBuffer.size()) return false;
 	for(size_t i = 0; i < aNumBytes; i++)
-		if(apData[i] != mBuffer[i]) {
+		if(apData[i] != mBuffer[i])
+		{
 			return false;
 		}
 	return true;
@@ -70,7 +71,8 @@ bool BufferTestObject::BufferEquals(const uint8_t* apData, size_t aNumBytes) con
 bool BufferTestObject::BufferContains(const std::string& arPattern) const
 {
 	std::string s;
-	for(size_t i = 0; i < mBuffer.size(); ++i) {
+	for(size_t i = 0; i < mBuffer.size(); ++i)
+	{
 		std::string c(1, static_cast<char>(mBuffer[i]));
 		s.append(c);
 	}
@@ -78,9 +80,9 @@ bool BufferTestObject::BufferContains(const std::string& arPattern) const
 }
 
 std::string BufferTestObject::GetBufferAsHexString(bool spaced) const
-{	
+{
 	CopyableBuffer buffer(static_cast<uint32_t>(mBuffer.size()));
-	for(size_t i=0; i<mBuffer.size(); ++i) buffer[i] = mBuffer[i];
+	for(size_t i = 0; i < mBuffer.size(); ++i) buffer[i] = mBuffer[i];
 	return toHex(buffer, buffer.Size(), spaced);
 }
 
@@ -95,7 +97,8 @@ bool BufferTestObject::BufferEqualsString(const std::string& arData) const
 {
 	if(arData.size() != mBuffer.size()) return false;
 	for(size_t i = 0; i < mBuffer.size(); i++)
-		if(arData[i] != mBuffer[i]) {
+		if(arData[i] != mBuffer[i])
+		{
 			return false;
 		}
 	return true;
@@ -103,15 +106,15 @@ bool BufferTestObject::BufferEqualsString(const std::string& arData) const
 
 void BufferTestObject::WriteToBuffer(const ReadOnlyBuffer& input)
 {
-	if((mBuffer.size() + input.Size()) > MAX_SIZE ) 
+	if((mBuffer.size() + input.Size()) > MAX_SIZE )
 	{
 		throw Exception(LOCATION, "Max size exceeded");
 	}
-	else 
+	else
 	{
 		++mNumWrites;
 
-		for(size_t i = 0; i < input.Size(); ++i) 
+		for(size_t i = 0; i < input.Size(); ++i)
 		{
 			mBuffer.push_back(input[i]);
 		}

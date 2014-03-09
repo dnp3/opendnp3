@@ -85,18 +85,20 @@ private:
 	Master* mpMaster;
 	TrackingTaskGroup mTracking;
 
-	enum MasterPriority {
-		AMP_VTO_TRANSMIT,
-		AMP_POLL,
-		AMP_TIME_SYNC,
-		AMP_UNSOL_CHANGE,
-		AMP_CLEAR_RESTART,
-		AMP_COMMAND
+	enum MasterPriority
+	{
+	    AMP_VTO_TRANSMIT,
+	    AMP_POLL,
+	    AMP_TIME_SYNC,
+	    AMP_UNSOL_CHANGE,
+	    AMP_CLEAR_RESTART,
+	    AMP_COMMAND
 	};
 
-	enum TaskTypes {
-		ONLINE_ONLY_TASKS = 1,
-		START_UP_TASKS = 2
+	enum TaskTypes
+	{
+	    ONLINE_ONLY_TASKS = 1,
+	    START_UP_TASKS = 2
 	};
 };
 

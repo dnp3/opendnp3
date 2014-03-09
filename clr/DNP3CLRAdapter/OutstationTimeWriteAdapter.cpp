@@ -6,7 +6,7 @@ namespace DNP3
 {
 namespace Adapter
 {
-OutstationTimeWriteAdapter::OutstationTimeWriteAdapter(DNP3::Interface::ITimeWriteHandler ^ proxy) :
+OutstationTimeWriteAdapter::OutstationTimeWriteAdapter(DNP3::Interface::ITimeWriteHandler^ proxy) :
 	mProxy(proxy)
 {
 

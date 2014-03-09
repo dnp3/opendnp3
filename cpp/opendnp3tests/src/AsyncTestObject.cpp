@@ -35,7 +35,8 @@ bool AsyncTestObject::ProceedUntil(const EvalFunc& arFunc, openpal::TimeDuration
 {
 	Timeout to(std::chrono::milliseconds(aTimeout.GetMilliseconds()));
 
-	do {
+	do
+	{
 		if(arFunc()) return true;
 		else this->Next();
 	}

@@ -71,7 +71,8 @@ protected:
 	NullDataObserver() : SimpleDataObserver([](const std::string&) {})
 	{}
 public:
-	static NullDataObserver* Inst() {
+	static NullDataObserver* Inst()
+	{
 		return &mInstance;
 	}
 };
@@ -82,12 +83,14 @@ class PrintingDataObserver : public SimpleDataObserver
 private:
 	static PrintingDataObserver mInstance;
 protected:
-	PrintingDataObserver() : SimpleDataObserver([](const std::string& arStr) {
+	PrintingDataObserver() : SimpleDataObserver([](const std::string& arStr)
+	{
 		std::cout << arStr << std::endl;
 	})
 	{}
 public:
-	static PrintingDataObserver* Inst() {
+	static PrintingDataObserver* Inst()
+	{
 		return &mInstance;
 	}
 };

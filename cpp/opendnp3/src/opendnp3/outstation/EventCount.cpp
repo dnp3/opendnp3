@@ -28,15 +28,15 @@ void ClassCount::Increment(EventType type)
 {
 	switch(type)
 	{
-		case(EventType::Binary):
-			++numBinary;
-			break;
-		case(EventType::Analog):
-			++numAnalog;
-			break;
-		case(EventType::Counter):
-			++numCounter;
-			break;
+	case(EventType::Binary):
+		++numBinary;
+		break;
+	case(EventType::Analog):
+		++numAnalog;
+		break;
+	case(EventType::Counter):
+		++numCounter;
+		break;
 	}
 }
 
@@ -45,7 +45,7 @@ ClassCount ClassCount::Subtract(const ClassCount& rhs) const
 	ClassCount ret;
 	ret.numBinary = this->numBinary - rhs.numBinary;
 	ret.numAnalog = this->numAnalog - rhs.numAnalog;
-	ret.numCounter = this->numCounter - rhs.numCounter;	
+	ret.numCounter = this->numCounter - rhs.numCounter;
 	return ret;
 }
 
@@ -71,7 +71,7 @@ uint32_t ClassCount::CountOf(uint8_t eventTypeMask) const
 	uint32_t count = 0;
 	if(eventTypeMask & EventTypeMasks::BINARY) count += numBinary;
 	if(eventTypeMask & EventTypeMasks::ANALOG) count += numAnalog;
-	if(eventTypeMask & EventTypeMasks::COUNTER) count += numCounter;	
+	if(eventTypeMask & EventTypeMasks::COUNTER) count += numCounter;
 	return count;
 }
 
@@ -87,7 +87,7 @@ EventTracker EventTracker::Subtract(const EventTracker& rhs) const
 	EventTracker ret;
 	ret.class1 = class1.Subtract(rhs.class1);
 	ret.class2 = class2.Subtract(rhs.class2);
-	ret.class3 = class3.Subtract(rhs.class3);	
+	ret.class3 = class3.Subtract(rhs.class3);
 	return ret;
 }
 
@@ -105,15 +105,15 @@ void EventTracker::Increment(EventType type, EventClass clazz)
 {
 	switch(clazz)
 	{
-		case(EventClass::EC1):
-			class1.Increment(type);
-			break;
-		case(EventClass::EC2):
-			class2.Increment(type);
-			break;
-		case(EventClass::EC3):
-			class3.Increment(type);
-			break;
+	case(EventClass::EC1):
+		class1.Increment(type);
+		break;
+	case(EventClass::EC2):
+		class2.Increment(type);
+		break;
+	case(EventClass::EC3):
+		class3.Increment(type);
+		break;
 	}
 }
 

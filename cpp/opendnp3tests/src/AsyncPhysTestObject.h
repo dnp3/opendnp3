@@ -40,7 +40,7 @@ public:
 
 	LogTester log;
 
-private:	
+private:
 	openpal::Logger logger;
 
 public:

@@ -57,7 +57,8 @@ IntegrationTest::IntegrationTest(LogLevel aLevel, uint16_t aStartPort, size_t aN
 	this->InitLocalObserver();
 
 	//mFanout.AddObserver(&mLocalFDO); TODO - redesign integration test
-	for (size_t i = 0; i < aNumPairs; ++i) {
+	for (size_t i = 0; i < aNumPairs; ++i)
+	{
 		AddStackPair(aLevel, aNumPoints);
 	}
 
@@ -66,7 +67,8 @@ IntegrationTest::IntegrationTest(LogLevel aLevel, uint16_t aStartPort, size_t aN
 void IntegrationTest::InitLocalObserver()
 {
 	Transaction tr(&mLocalFDO);
-	for (size_t i = 0; i < NUM_POINTS; ++i) {
+	for (size_t i = 0; i < NUM_POINTS; ++i)
+	{
 		//mLocalFDO.Update(Binary(false), i); TODO - redesign integration test
 		//mLocalFDO.Update(Analog(0.0), i);
 		//mLocalFDO.Update(Counter(0), i);
@@ -75,16 +77,19 @@ void IntegrationTest::InitLocalObserver()
 
 void IntegrationTest::ResetObservers()
 {
-	for (size_t i = 0; i < this->mMasterObservers.size(); ++i) {
+	for (size_t i = 0; i < this->mMasterObservers.size(); ++i)
+	{
 		mMasterObservers[i]->Reset();
 	}
 }
 
 bool IntegrationTest::WaitForSameData(TimeDuration aTimeout, bool aDescribeAnyMissingData)
 {
-	for (size_t i = 0; i < this->mMasterObservers.size(); ++i) {
+	for (size_t i = 0; i < this->mMasterObservers.size(); ++i)
+	{
 		ComparingDataObserver* pObs = mMasterObservers[i].get();
-		if(!pObs->WaitForSameData(aTimeout)) {
+		if(!pObs->WaitForSameData(aTimeout))
+		{
 			if(aDescribeAnyMissingData) pObs->DescribeMissingData();
 			return false;
 		}
@@ -105,7 +110,8 @@ size_t IntegrationTest::IncrementData()
 	 * the {} block forces destruction of the Transaction at the right time.
 	*/
 	Transaction tr(&mFanout);
-	for (uint16_t i = 0; i < NUM_POINTS; ++i) {
+	for (uint16_t i = 0; i < NUM_POINTS; ++i)
+	{
 		mFanout.Update(this->Next(mLocalFDO.mBinaryMap[i]), i);
 		mFanout.Update(this->Next(mLocalFDO.mAnalogMap[i]), i);
 		mFanout.Update(this->Next(mLocalFDO.mCounterMap[i]), i);
@@ -159,7 +165,7 @@ void IntegrationTest::AddStackPair(LogLevel aLevel, uint16_t aNumPoints)
 		cfg.app.RspTimeout = TimeDuration::Seconds(10);
 		cfg.master.IntegrityRate = TimeDuration::Min();
 		cfg.master.EnableUnsol = true;
-		cfg.master.DoUnsolOnStartup = true;		
+		cfg.master.DoUnsolOnStartup = true;
 		auto pMaster = pClient->AddMaster(oss.str() + " master", aLevel, pMasterFDO.get(), asiopal::UTCTimeSource::Inst(), cfg);
 		pMaster->Enable();
 	}
@@ -172,7 +178,7 @@ void IntegrationTest::AddStackPair(LogLevel aLevel, uint16_t aNumPoints)
 		SlaveStackConfig cfg(DatabaseTemplate(aNumPoints, aNumPoints, aNumPoints, aNumPoints));
 		cfg.app.RspTimeout = TimeDuration::Seconds(10);
 		cfg.slave.mDisableUnsol = false;
-		cfg.slave.mUnsolPackDelay = TimeDuration::Zero();		
+		cfg.slave.mUnsolPackDelay = TimeDuration::Zero();
 		auto pOutstation = pServer->AddOutstation(oss.str() + " outstation", aLevel, &mCmdHandler, NullTimeWriteHandler::Inst(), cfg);
 		this->mFanout.AddObserver(pOutstation->GetDataObserver());
 		pOutstation->Enable();

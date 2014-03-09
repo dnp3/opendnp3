@@ -52,7 +52,7 @@ class IDataObserver : public ITransactable
 {
 public:
 
-	virtual ~IDataObserver() {}	
+	virtual ~IDataObserver() {}
 
 	/**
 	* Update or receive a Binary measurement, must have transaction started
@@ -75,12 +75,12 @@ public:
 	*/
 	virtual void Update(const Counter& meas, uint16_t index) = 0;
 
-    /**
-    * Update or receive a frozen Counter measurement, must have transaction started
-    * @param meas measurement to be processed
-    * @param index index of the measurement
-    */
-    virtual void Update(const FrozenCounter& meas, uint16_t index) = 0;
+	/**
+	* Update or receive a frozen Counter measurement, must have transaction started
+	* @param meas measurement to be processed
+	* @param index index of the measurement
+	*/
+	virtual void Update(const FrozenCounter& meas, uint16_t index) = 0;
 
 	/**
 	* Update or receive a BinaryOutputStatus measurement, must have transaction started

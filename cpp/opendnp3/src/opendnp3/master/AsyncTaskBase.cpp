@@ -85,7 +85,7 @@ void AsyncTaskBase::Dispatch()
 	mIsRunning = true;
 	mIsComplete = false;
 	mIsExpired = false;
-	mHandler(this);	
+	mHandler(this);
 }
 
 bool AsyncTaskBase::AddDependency(const AsyncTaskBase* apTask)
@@ -105,12 +105,13 @@ bool AsyncTaskBase::AddDependency(const AsyncTaskBase* apTask)
 			mDependencies.push_back(apTask);
 			return true;
 		}
-	}	
+	}
 }
 
 bool AsyncTaskBase::IsDependency(const AsyncTaskBase* apTask) const
 {
-for(const AsyncTaskBase * p: mDependencies) {
+	for(const AsyncTaskBase * p : mDependencies)
+	{
 		if(p == apTask) return true;
 		if(p->IsDependency(apTask)) return true;
 	}
@@ -137,7 +138,7 @@ void AsyncTaskBase::OnComplete(bool aSuccess)
 
 	this->_OnComplete(aSuccess);
 
-	for(auto& callback: mCallbacks) callback(aSuccess);
+	for(auto & callback : mCallbacks) callback(aSuccess);
 
 	mpGroup->OnCompletion();
 }
@@ -150,16 +151,18 @@ void AsyncTaskBase::AddStatusCallback(const std::function<void (bool)>& callback
 void AsyncTaskBase::Reset()
 {
 	mIsComplete = mIsExpired = mIsRunning = false;
-	mNextRunTime = M_INITIAL_TIME;	
+	mNextRunTime = M_INITIAL_TIME;
 }
 
 void AsyncTaskBase::UpdateTime(const MonotonicTimestamp& arTime)
 {
-	if(arTime.milliseconds >= mNextRunTime.milliseconds) {
+	if(arTime.milliseconds >= mNextRunTime.milliseconds)
+	{
 		mIsComplete = false;
 		mIsExpired = true;
 	}
-	else {
+	else
+	{
 		mIsExpired = false;
 	}
 }
@@ -173,18 +176,23 @@ bool AsyncTaskBase::LessThan(const AsyncTaskBase* l, const AsyncTaskBase* r)
 	if(!l->IsEnabled() && r->IsEnabled()) return true;
 	if(!r->IsEnabled() && l->IsEnabled()) return false;
 
-	if(l->IsExpired()) {
-		if(r->IsExpired()) { //if they're both expired, resolve using priority
+	if(l->IsExpired())
+	{
+		if(r->IsExpired())   //if they're both expired, resolve using priority
+		{
 			return l->Priority() < r->Priority();
 		}
-		else {
+		else
+		{
 			return false; // left expired but right is not
 		}
 	}
-	else if(r->IsExpired()) {
+	else if(r->IsExpired())
+	{
 		return true; // right expired but left is not
 	}
-	else { // if they're both not expired, the one with the lowest run time is higher
+	else   // if they're both not expired, the one with the lowest run time is higher
+	{
 		return l->NextRunTime().milliseconds > r->NextRunTime().milliseconds;
 	}
 }

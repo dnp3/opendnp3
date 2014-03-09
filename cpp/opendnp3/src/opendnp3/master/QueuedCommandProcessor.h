@@ -63,10 +63,12 @@ private:
 	std::queue<std::function<void (ICommandProcessor*)>> mRequestQueue;
 
 	template <class T>
-	void SelectAndOperateT(const T& arCommand, uint16_t aIndex, std::function<void (CommandResponse)> aCallback) {
+	void SelectAndOperateT(const T& arCommand, uint16_t aIndex, std::function<void (CommandResponse)> aCallback)
+	{
 		{
 			std::lock_guard<std::mutex> lock(mMutex);
-			mRequestQueue.push([arCommand, aIndex, aCallback](ICommandProcessor * pProcessor) {
+			mRequestQueue.push([arCommand, aIndex, aCallback](ICommandProcessor * pProcessor)
+			{
 				pProcessor->SelectAndOperate(arCommand, aIndex, aCallback);
 			});
 		}
@@ -74,10 +76,12 @@ private:
 	}
 
 	template <class T>
-	void DirectOperateT(const T& arCommand, uint16_t aIndex, std::function<void (CommandResponse)> aCallback) {
+	void DirectOperateT(const T& arCommand, uint16_t aIndex, std::function<void (CommandResponse)> aCallback)
+	{
 		{
 			std::lock_guard<std::mutex> lock(mMutex);
-			mRequestQueue.push([arCommand, aIndex, aCallback](ICommandProcessor * pProcessor) {
+			mRequestQueue.push([arCommand, aIndex, aCallback](ICommandProcessor * pProcessor)
+			{
 				pProcessor->DirectOperate(arCommand, aIndex, aCallback);
 			});
 		}

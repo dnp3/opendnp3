@@ -286,7 +286,7 @@ TEST_CASE(SUITE("SendUnsolicitedWithConfirm"))
 
 	t.SendUnsolicited(FunctionCode::UNSOLICITED_RESPONSE, true, true, true, true);
 	REQUIRE(t.mts.NumActive() ==  1);
-	t.SendUp(AppControlField(true, true, false, false, 0),FunctionCode::CONFIRM); // solicited confirm, should do nothing
+	t.SendUp(AppControlField(true, true, false, false, 0), FunctionCode::CONFIRM); // solicited confirm, should do nothing
 	REQUIRE(t.log.NextErrorCode() ==  ALERR_UNEXPECTED_CONFIRM);
 	REQUIRE(t.state ==  t.user.mState);
 	t.SendUp(AppControlField(true, true, false, true, 0), FunctionCode::CONFIRM); ++t.state.NumUnsolSendSuccess; // unsol confirm
@@ -422,7 +422,8 @@ TEST_CASE(SUITE("TestUnsolRetries"))
 
 	t.SendUnsolicited(FunctionCode::UNSOLICITED_RESPONSE, true, true, true, true);
 
-	for(size_t i = 0; i < (RETRIES + 1); ++i) {
+	for(size_t i = 0; i < (RETRIES + 1); ++i)
+	{
 		REQUIRE(t.lower.NumWrites() ==  i + 1);
 		REQUIRE(t.mts.DispatchOne());				// timeout the confirm
 	}
@@ -441,7 +442,8 @@ TEST_CASE(SUITE("TestOperateRetries"))
 
 	t.SendRequest(FunctionCode::OPERATE, true, true, false, false);
 
-	for(size_t i = 0; i < (RETRIES + 1); ++i) {
+	for(size_t i = 0; i < (RETRIES + 1); ++i)
+	{
 		REQUIRE(t.lower.NumWrites() ==  i + 1);
 		REQUIRE(t.mts.DispatchOne());	 // timeout the response
 	}

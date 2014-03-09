@@ -33,7 +33,8 @@ ExecutorPause::ExecutorPause(IExecutor* apExecutor) :
 	mComplete(false),
 	mExit(false)
 {
-	mpExecutor->Post([this]() {
+	mpExecutor->Post([this]()
+	{
 		this->Pause();
 	});
 	std::unique_lock<std::mutex> lock(mMutex);

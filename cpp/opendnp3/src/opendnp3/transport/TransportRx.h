@@ -56,7 +56,8 @@ private:
 	uint8_t sequence;
 	uint32_t maxFragSize;
 
-	uint32_t BufferRemaining() const {
+	uint32_t BufferRemaining() const
+	{
 		return maxFragSize - numBytesRead;
 	}
 };

@@ -66,7 +66,7 @@ public:
 
 	bool WaitForSameData(openpal::TimeDuration aTimeout);
 
-	void DescribeMissingData();	
+	void DescribeMissingData();
 
 private:
 
@@ -88,7 +88,7 @@ private:
 	CompareMap mAnalogOutputStatusMap;
 
 	void Start();
-	void End();	
+	void End();
 
 	template <class T>
 	void UpdateAny(const T& arPoint, size_t aIndex, const typename PointMap<T>::Type& arMap, CompareMap& arCompareMap);
@@ -101,9 +101,11 @@ private:
 template <class T>
 void ComparingDataObserver::DescribeAny(const typename PointMap<T>::Type& arMap, const CompareMap& arCompareMap)
 {
-	for(auto pair: arMap) {
+	for(auto pair : arMap)
+	{
 		CompareMap::const_iterator j = arCompareMap.find(pair.first);
-		if(j == arCompareMap.end()) {
+		if(j == arCompareMap.end())
+		{
 			std::cout << "Missing: " << pair.first << " - " << ToString(pair.second) << std::endl;
 		}
 	}
@@ -113,14 +115,18 @@ template <class T>
 void ComparingDataObserver::UpdateAny(const T& arPoint, size_t aIndex, const typename PointMap<T>::Type& arMap, CompareMap& arCompareMap)
 {
 	typename PointMap<T>::Type::const_iterator i = arMap.find(aIndex);
-	if(i == arMap.end()) {
+	if(i == arMap.end())
+	{
 		std::cout << "Unexpected index: " << aIndex << " - " << ToString(arPoint) << std::endl;
 	}
-	else {
-		if(i->second == arPoint) {
+	else
+	{
+		if(i->second == arPoint)
+		{
 			arCompareMap[aIndex] = true;
 		}
-		else {
+		else
+		{
 			//std::cout << ToString(arPoint) << " not equal to " << ToString(i->second) << std::endl;
 			arCompareMap.erase(aIndex);
 		}

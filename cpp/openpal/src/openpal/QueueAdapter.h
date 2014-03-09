@@ -32,80 +32,80 @@ template <class ValueType, class IndexType>
 class QueueAdapter
 {
 
-	public:
+public:
 
-		QueueAdapter(Indexable<ValueType, IndexType> indexable) : 			
-			front(0),
-			back(0),
-			indexable(indexable)
-		{}
+	QueueAdapter(Indexable<ValueType, IndexType> indexable) :
+		front(0),
+		back(0),
+		indexable(indexable)
+	{}
 
-		inline IndexType Size() const
+	inline IndexType Size() const
+	{
+		return back - front;
+	}
+
+	inline IndexType Capacity() const
+	{
+		return indexable.Size();
+	}
+
+	inline bool IsNotEmpty() const
+	{
+		return front < back;
+	}
+
+	inline bool IsEmpty() const
+	{
+		return front == back;
+	}
+
+	inline bool IsFull() const
+	{
+		return back == Capacity();
+	}
+
+	inline void Clear()
+	{
+		front = back = 0;
+	}
+
+	bool Push(const ValueType& value)
+	{
+		if(!IsFull())
 		{
-			return back - front;
+			indexable[back] = value;
+			++back;
+			return true;
 		}
+		else return false;
+	}
 
-		inline IndexType Capacity() const
-		{
-			return indexable.Size();
-		}
+	ValueType& Front()
+	{
+		assert(IsNotEmpty());
+		return indexable[front];
+	}
 
-		inline bool IsNotEmpty() const
-		{
-			return front < back;
-		}
+	const ValueType& Front() const
+	{
+		assert(IsNotEmpty());
+		return indexable[front];
+	}
 
-		inline bool IsEmpty() const
-		{
-			return front == back;
-		}
+	ValueType Pop()
+	{
+		assert(IsNotEmpty());
+		auto index = front;
+		++front;
+		return indexable[index];
+	}
 
-		inline bool IsFull() const
-		{
-			return back == Capacity();
-		}
-
-		inline void Clear()
-		{
-			front = back = 0;			
-		}
-
-		bool Push(const ValueType& value)
-		{
-			if(!IsFull())
-			{				
-				indexable[back] = value;
-				++back;
-				return true;
-			}
-			else return false;
-		}	
-
-		ValueType& Front()
-		{
-			assert(IsNotEmpty());					
-			return indexable[front];			
-		}
-
-		const ValueType& Front() const
-		{
-			assert(IsNotEmpty());					
-			return indexable[front];			
-		}
-
-		ValueType Pop()
-		{
-			assert(IsNotEmpty());
-			auto index = front;
-			++front;
-			return indexable[index];			
-		}
-	
-	private:
-		IndexType front;
-		IndexType back;
-		Indexable<ValueType, IndexType> indexable;
-		QueueAdapter();
+private:
+	IndexType front;
+	IndexType back;
+	Indexable<ValueType, IndexType> indexable;
+	QueueAdapter();
 };
 
 }

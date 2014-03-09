@@ -33,64 +33,64 @@ namespace openpal
 template <class ValueType, class IndexType>
 class Indexable : public HasSize<IndexType>
 {
-	
-	public:
 
-		static Indexable<ValueType, IndexType> Empty()
-		{
-			return Indexable(nullptr, 0);
-		}
+public:
 
-		Indexable(ValueType* start, IndexType aSize) : HasSize<IndexType>(aSize), buffer(start)
-		{}		
+	static Indexable<ValueType, IndexType> Empty()
+	{
+		return Indexable(nullptr, 0);
+	}
 
-		inline const bool Contains(IndexType index) const 
-		{
-			return index < this->size;
-		}
+	Indexable(ValueType* start, IndexType aSize) : HasSize<IndexType>(aSize), buffer(start)
+	{}
 
-		inline const bool Contains(IndexType start, IndexType stop) const 
-		{ 
-			return (start < stop) && Contains(stop);
-		}
+	inline const bool Contains(IndexType index) const
+	{
+		return index < this->size;
+	}
 
-		IndexableIterator<ValueType, IndexType> Range(IndexType start, IndexType stop) const 
-		{
-			if(Contain(start, stop)) return IndexableIterator<ValueType, IndexType>(this, start, stop);
-			else return IndexableIterator<ValueType, IndexType>(Empty());			 		
-		}
+	inline const bool Contains(IndexType start, IndexType stop) const
+	{
+		return (start < stop) && Contains(stop);
+	}
 
-		IndexableIterator<ValueType, IndexType> FullRange() const 
-		{			
-			return IndexableIterator<ValueType, IndexType>(*this); 
-		}
+	IndexableIterator<ValueType, IndexType> Range(IndexType start, IndexType stop) const
+	{
+		if(Contain(start, stop)) return IndexableIterator<ValueType, IndexType>(this, start, stop);
+		else return IndexableIterator<ValueType, IndexType>(Empty());
+	}
 
-		inline ValueType& operator[](IndexType index) 
-		{
-			assert(index < this->size);
-			return buffer[index];
-		}
+	IndexableIterator<ValueType, IndexType> FullRange() const
+	{
+		return IndexableIterator<ValueType, IndexType>(*this);
+	}
 
-		const ValueType& operator[](IndexType index) const
-		{ 
-			assert(index < this->size);
-			return buffer[index];
-		}
+	inline ValueType& operator[](IndexType index)
+	{
+		assert(index < this->size);
+		return buffer[index];
+	}
 
-		template <class Action>
-		void foreach(const Action& action)
-		{
-			for(IndexType i = 0; i < this->size; ++i) action(buffer[i]);
-		}
+	const ValueType& operator[](IndexType index) const
+	{
+		assert(index < this->size);
+		return buffer[index];
+	}
 
-		template <class Action>
-		void foreachIndex(const Action& action)
-		{
-			for(IndexType i = 0; i < this->size; ++i) action(buffer[i], i);
-		}	
+	template <class Action>
+	void foreach(const Action& action)
+	{
+		for(IndexType i = 0; i < this->size; ++i) action(buffer[i]);
+	}
 
-		private:
-		ValueType* buffer;
+	template <class Action>
+	void foreachIndex(const Action& action)
+	{
+		for(IndexType i = 0; i < this->size; ++i) action(buffer[i], i);
+	}
+
+private:
+	ValueType* buffer;
 };
 
 

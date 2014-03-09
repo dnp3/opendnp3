@@ -40,7 +40,7 @@ bool ExceedsDeadband(const T& val1, const T& val2, T aDeadband)
 
 	U diff = (val2 > val1) ? (static_cast<U>(val2) - static_cast<U>(val1)) : (static_cast<U>(val1) - static_cast<U>(val2));
 
-	return diff > aDeadband;	
+	return diff > aDeadband;
 }
 
 
@@ -59,22 +59,22 @@ public:
 	Binary(bool aValue) : TypedMeasurement(aValue, GetQual(BQ_ONLINE, aValue))
 	{}
 
-	Binary(uint8_t aQuality) : TypedMeasurement((aQuality & BQ_STATE) != 0, aQuality)
+	Binary(uint8_t aQuality) : TypedMeasurement((aQuality& BQ_STATE) != 0, aQuality)
 	{}
 
-	Binary(uint8_t aQuality, uint64_t aTime) : TypedMeasurement((aQuality & BQ_STATE) != 0, aQuality, aTime)
+	Binary(uint8_t aQuality, uint64_t aTime) : TypedMeasurement((aQuality& BQ_STATE) != 0, aQuality, aTime)
 	{}
-	
+
 	Binary(bool aValue, uint8_t aQuality) : TypedMeasurement(aValue, GetQual(aQuality, aValue))
 	{}
 
-	Binary(bool aValue, uint8_t aQuality, uint64_t aTime) : TypedMeasurement(aValue, GetQual(aQuality, aValue), aTime) 
+	Binary(bool aValue, uint8_t aQuality, uint64_t aTime) : TypedMeasurement(aValue, GetQual(aQuality, aValue), aTime)
 	{}
 
 	bool IsEvent(const Binary& newValue) const
 	{
 		return quality != newValue.quality;
-	}	
+	}
 
 private:
 	static uint8_t GetQual(uint8_t q, bool aValue)
@@ -91,7 +91,7 @@ class DoubleBitBinary : public TypedMeasurement<DoubleBit>
 {
 public:
 
-	
+
 	DoubleBitBinary() : TypedMeasurement(DoubleBit::INDETERMINATE, DBQ_RESTART)
 	{}
 
@@ -105,7 +105,7 @@ public:
 	{}
 
 	DoubleBitBinary(DoubleBit aValue, uint8_t aQuality) : TypedMeasurement(aValue, GetQual(aQuality, aValue))
-	{}	
+	{}
 
 	DoubleBitBinary(DoubleBit aValue, uint8_t aQuality, uint64_t aTime) : TypedMeasurement(aValue, GetQual(aQuality, aValue), aTime)
 	{}
@@ -130,7 +130,7 @@ private:
 	static uint8_t GetQual(uint8_t quality, DoubleBit state)
 	{
 		uint8_t value = DoubleBitToType(state) << 6;
-		return (QualityMask & quality) | value;		
+		return (QualityMask & quality) | value;
 	}
 };
 
@@ -143,20 +143,20 @@ private:
 class BinaryOutputStatus : public TypedMeasurement<bool>
 {
 public:
-	BinaryOutputStatus() : TypedMeasurement(false, TQ_RESTART) 
+	BinaryOutputStatus() : TypedMeasurement(false, TQ_RESTART)
 	{}
 
 	BinaryOutputStatus(bool aValue) : TypedMeasurement(aValue, GetQual(TQ_ONLINE, aValue))
 	{}
 
-	BinaryOutputStatus(uint8_t aQuality) : TypedMeasurement((aQuality & TQ_STATE) != 0, aQuality)
+	BinaryOutputStatus(uint8_t aQuality) : TypedMeasurement((aQuality& TQ_STATE) != 0, aQuality)
 	{}
 
 	BinaryOutputStatus(bool aValue, uint8_t aQuality) : TypedMeasurement(aValue, GetQual(aQuality, aValue))
 	{}
 
-	BinaryOutputStatus(bool aValue, uint8_t aQuality, uint64_t aTime) : TypedMeasurement(aValue, GetQual(aQuality, aValue), aTime) 
-	{}	
+	BinaryOutputStatus(bool aValue, uint8_t aQuality, uint64_t aTime) : TypedMeasurement(aValue, GetQual(aQuality, aValue), aTime)
+	{}
 
 private:
 
@@ -175,28 +175,28 @@ class Analog : public TypedMeasurement<double>
 {
 public:
 
-	Analog() : TypedMeasurement(AQ_RESTART) 
+	Analog() : TypedMeasurement(AQ_RESTART)
 	{}
 
-	Analog(double aValue) : TypedMeasurement(aValue, AQ_ONLINE) 
+	Analog(double aValue) : TypedMeasurement(aValue, AQ_ONLINE)
 	{}
 
-	Analog(double aValue, uint8_t aQuality) : TypedMeasurement(aValue, aQuality) 
+	Analog(double aValue, uint8_t aQuality) : TypedMeasurement(aValue, aQuality)
 	{}
 
-	Analog(double aValue, uint8_t aQuality, uint64_t aTime) : TypedMeasurement<double>(aValue, aQuality, aTime) 
+	Analog(double aValue, uint8_t aQuality, uint64_t aTime) : TypedMeasurement<double>(aValue, aQuality, aTime)
 	{}
 
 	bool IsEvent(const Analog& newValue, double aDeadband) const
 	{
 		if(quality != newValue.quality) return true;
-		else 
+		else
 		{
 			double diff = fabs(GetValue() - newValue.GetValue());
 			if(diff == std::numeric_limits<double>::infinity()) return true;
 			else return diff > aDeadband;
-		}		
-	}		
+		}
+	}
 };
 
 /**
@@ -209,27 +209,27 @@ public:
 
 	Counter() : TypedMeasurement(0, CQ_RESTART) {}
 
-	Counter(uint32_t aValue) : TypedMeasurement<uint32_t>(aValue, CQ_ONLINE) 
+	Counter(uint32_t aValue) : TypedMeasurement<uint32_t>(aValue, CQ_ONLINE)
 	{}
 
-	Counter(uint32_t aValue, uint8_t aQuality) : TypedMeasurement<uint32_t>(aValue, aQuality) 
+	Counter(uint32_t aValue, uint8_t aQuality) : TypedMeasurement<uint32_t>(aValue, aQuality)
 	{}
 
-	Counter(uint32_t aValue, uint8_t aQuality, uint64_t aTime) : TypedMeasurement<uint32_t>(aValue, aQuality, aTime) 
+	Counter(uint32_t aValue, uint8_t aQuality, uint64_t aTime) : TypedMeasurement<uint32_t>(aValue, aQuality, aTime)
 	{}
 
 	bool IsEvent(const Counter& newValue, uint32_t aDeadband) const
 	{
 		if(quality != newValue.quality) return true;
-		else 
+		else
 		{
 			return ExceedsDeadband<uint32_t, uint64_t>(this->GetValue(), newValue.GetValue(), aDeadband);
 		}
-	}	
+	}
 };
 
 /**
-	Frozen counters are used to report the value of a counter point captured at the instant when the count is frozen. 
+	Frozen counters are used to report the value of a counter point captured at the instant when the count is frozen.
 */
 class FrozenCounter : public TypedMeasurement<uint32_t>
 {
@@ -237,23 +237,23 @@ public:
 
 	FrozenCounter() : TypedMeasurement(0, CQ_RESTART) {}
 
-	FrozenCounter(uint32_t aValue) : TypedMeasurement<uint32_t>(aValue, CQ_ONLINE) 
+	FrozenCounter(uint32_t aValue) : TypedMeasurement<uint32_t>(aValue, CQ_ONLINE)
 	{}
 
-	FrozenCounter(uint32_t aValue, uint8_t aQuality) : TypedMeasurement<uint32_t>(aValue, aQuality) 
+	FrozenCounter(uint32_t aValue, uint8_t aQuality) : TypedMeasurement<uint32_t>(aValue, aQuality)
 	{}
 
-	FrozenCounter(uint32_t aValue, uint8_t aQuality, uint64_t aTime) : TypedMeasurement<uint32_t>(aValue, aQuality, aTime) 
+	FrozenCounter(uint32_t aValue, uint8_t aQuality, uint64_t aTime) : TypedMeasurement<uint32_t>(aValue, aQuality, aTime)
 	{}
 
 	bool IsEvent(const FrozenCounter& newValue, uint32_t aDeadband) const
 	{
 		if(quality != newValue.quality) return true;
-		else 
+		else
 		{
 			return ExceedsDeadband<uint32_t, uint64_t>(this->GetValue(), newValue.GetValue(), aDeadband);
 		}
-	}	
+	}
 };
 
 /**
@@ -263,17 +263,17 @@ public:
 class AnalogOutputStatus : public TypedMeasurement<double>
 {
 public:
-	
+
 	AnalogOutputStatus() : TypedMeasurement<double>(PQ_RESTART) {}
 
-	AnalogOutputStatus(double aValue) : TypedMeasurement<double>(aValue, PQ_ONLINE) 
-	{}
-	
-	AnalogOutputStatus(double aValue, uint8_t aQuality) : TypedMeasurement<double>(aValue, aQuality) 
+	AnalogOutputStatus(double aValue) : TypedMeasurement<double>(aValue, PQ_ONLINE)
 	{}
 
-	AnalogOutputStatus(double aValue, uint8_t aQuality, uint64_t aTime) : TypedMeasurement<double>(aValue, aQuality, aTime) 
-	{}	
+	AnalogOutputStatus(double aValue, uint8_t aQuality) : TypedMeasurement<double>(aValue, aQuality)
+	{}
+
+	AnalogOutputStatus(double aValue, uint8_t aQuality, uint64_t aTime) : TypedMeasurement<double>(aValue, aQuality, aTime)
+	{}
 };
 
 }

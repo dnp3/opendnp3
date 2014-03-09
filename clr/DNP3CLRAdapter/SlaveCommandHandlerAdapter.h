@@ -17,7 +17,7 @@ namespace Adapter
 private class SlaveCommandHandlerAdapter : public opendnp3::ICommandHandler
 {
 public:
-	SlaveCommandHandlerAdapter(DNP3::Interface::ICommandHandler ^ proxy);
+	SlaveCommandHandlerAdapter(DNP3::Interface::ICommandHandler^ proxy);
 
 	opendnp3::CommandStatus Supports(const opendnp3::ControlRelayOutputBlock& arCommand, uint16_t aIndex);
 	opendnp3::CommandStatus Supports(const opendnp3::AnalogOutputInt32& arCommand, uint16_t aIndex);
@@ -33,22 +33,24 @@ public:
 
 
 private:
-	gcroot < DNP3::Interface::ICommandHandler ^ > proxy;
+	gcroot < DNP3::Interface::ICommandHandler^ > proxy;
 };
 
 private ref class SlaveCommandHandlerWrapper
 {
 public:
 
-	SlaveCommandHandlerWrapper(DNP3::Interface::ICommandHandler ^ proxy) :
+	SlaveCommandHandlerWrapper(DNP3::Interface::ICommandHandler^ proxy) :
 		mpAdapter(new SlaveCommandHandlerAdapter(proxy))
 	{}
 
-	~SlaveCommandHandlerWrapper() {
+	~SlaveCommandHandlerWrapper()
+	{
 		delete mpAdapter;
 	}
 
-	opendnp3::ICommandHandler* Get() {
+	opendnp3::ICommandHandler* Get()
+	{
 		return mpAdapter;
 	}
 

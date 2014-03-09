@@ -32,20 +32,29 @@ class BufferWithCount
 {
 	template <class T> friend class IterableTransforms;
 
-	protected:
+protected:
 
-	BufferWithCount(const openpal::ReadOnlyBuffer& aBuffer, uint32_t aCount) : 
+	BufferWithCount(const openpal::ReadOnlyBuffer& aBuffer, uint32_t aCount) :
 		count(aCount),
 		buffer(aBuffer)
 	{}
 
-	public:
+public:
 
-	uint32_t Count() const { return count; }
-	bool IsEmpty() const { return count == 0; }
-	bool NonEmpty() const { return count != 0; }
+	uint32_t Count() const
+	{
+		return count;
+	}
+	bool IsEmpty() const
+	{
+		return count == 0;
+	}
+	bool NonEmpty() const
+	{
+		return count != 0;
+	}
 
-	protected:
+protected:
 
 	uint32_t count;
 	openpal::ReadOnlyBuffer buffer;
@@ -54,34 +63,34 @@ class BufferWithCount
 template <class T>
 class IterableBuffer : public BufferWithCount
 {
-	public:
-		template <class A, class B, class MapToU> friend class MappedIterableBuffer;
+public:
+	template <class A, class B, class MapToU> friend class MappedIterableBuffer;
 
 
-		IterableBuffer(const openpal::ReadOnlyBuffer& aBuffer, uint32_t aSize) : BufferWithCount(aBuffer, aSize)
-		{}
-		
-		bool ReadOnlyValue(T& value) const
-		{			
-			if(count == 1) 
-			{
-				openpal::ReadOnlyBuffer copy(this->buffer);
-				value = ValueAt(copy, 0);
-				return true;
-			}
-			else return false;
-		}
+	IterableBuffer(const openpal::ReadOnlyBuffer& aBuffer, uint32_t aSize) : BufferWithCount(aBuffer, aSize)
+	{}
 
-		template <class IterFunc>
-		void foreach(const IterFunc& fun) const
+	bool ReadOnlyValue(T& value) const
+	{
+		if(count == 1)
 		{
-			openpal::ReadOnlyBuffer copy(this->buffer);  // iterate over a mutable copy of the buffer
-			for(uint32_t pos = 0; pos < count; ++pos) fun(ValueAt(copy, pos));			
+			openpal::ReadOnlyBuffer copy(this->buffer);
+			value = ValueAt(copy, 0);
+			return true;
 		}
-		
-	protected:
+		else return false;
+	}
 
-		virtual T ValueAt(openpal::ReadOnlyBuffer&, uint32_t pos) const = 0;		
+	template <class IterFunc>
+	void foreach(const IterFunc& fun) const
+	{
+		openpal::ReadOnlyBuffer copy(this->buffer);  // iterate over a mutable copy of the buffer
+		for(uint32_t pos = 0; pos < count; ++pos) fun(ValueAt(copy, pos));
+	}
+
+protected:
+
+	virtual T ValueAt(openpal::ReadOnlyBuffer&, uint32_t pos) const = 0;
 };
 
 

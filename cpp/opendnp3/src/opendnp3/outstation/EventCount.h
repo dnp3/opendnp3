@@ -30,17 +30,17 @@ namespace opendnp3
 
 class ClassCount
 {
-	public:
-	
-		ClassCount() : 
-		numAnalog(0), 
-		numBinary(0), 
+public:
+
+	ClassCount() :
+		numAnalog(0),
+		numBinary(0),
 		numCounter(0)
 	{}
 
 	ClassCount Subtract(const ClassCount& rhs) const;
 
-	void Increment(EventType type);		
+	void Increment(EventType type);
 
 	bool IsEmpty() const;
 	uint32_t Total() const;
@@ -57,7 +57,7 @@ class ClassCount
 
 class EventTracker
 {
-	public:	
+public:
 
 	void Increment(EventType type, EventClass clazz);
 	void Decrement(EventType type, EventClass clazz);

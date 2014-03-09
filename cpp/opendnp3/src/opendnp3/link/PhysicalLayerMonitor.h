@@ -55,7 +55,7 @@ public:
 	                        openpal::IPhysicalLayerAsync*,
 	                        openpal::TimeDuration minOpenRetry_,
 	                        openpal::TimeDuration maxOpenRetry_,
-							opendnp3::IOpenDelayStrategy* pOpenStrategy_ = ExponentialBackoffStrategy::Inst());
+	                        opendnp3::IOpenDelayStrategy* pOpenStrategy_ = ExponentialBackoffStrategy::Inst());
 
 	~PhysicalLayerMonitor();
 
@@ -81,7 +81,8 @@ public:
 	*/
 	bool WaitForShutdown(openpal::TimeDuration aTimeout = openpal::TimeDuration::Min());
 
-	openpal::Logger& GetLogger() {
+	openpal::Logger& GetLogger()
+	{
 		return mLogger;
 	}
 

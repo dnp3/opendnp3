@@ -29,19 +29,19 @@
 namespace opendnp3
 {
 
-enum class EventType: uint8_t
+enum class EventType : uint8_t
 {
-	Binary = 0x01,
-	Analog = 0x02,
-	Counter = 0x04,
-	FrozenCounter = 0x08
+    Binary = 0x01,
+    Analog = 0x02,
+    Counter = 0x04,
+    FrozenCounter = 0x08
 };
 
-enum class EventClass: uint8_t
+enum class EventClass : uint8_t
 {
-	EC1 = 0x01,
-	EC2 = 0x02,
-	EC3 = 0x04
+    EC1 = 0x01,
+    EC2 = 0x02,
+    EC3 = 0x04
 };
 
 struct EventTypeMasks : private PureStatic

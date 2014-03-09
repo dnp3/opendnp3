@@ -36,10 +36,12 @@ JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_create_1native_
 	apEnv->GetJavaVM(&pJVM);
 	assert(pJVM != nullptr);
 	auto pManager = new ASIODNP3Manager(concurrency,
-	[pJVM]() {
+	                                    [pJVM]()
+	{
 		JNIHelpers::AttachThread(pJVM);
 	},
-	[pJVM]() {
+	[pJVM]()
+	{
 		JNIHelpers::DetachThread(pJVM);
 	});
 	return (jlong) pManager;
@@ -53,7 +55,7 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_destroy_1native_
 
 JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1channel_1tcp_1client
 (JNIEnv* pEnv, jobject, jlong ptrManager, jstring jloggerId, jint logLevel, jlong timeoutMs, jstring jhost, jint port)
-{	
+{
 	auto pMgr = (ASIODNP3Manager*) ptrManager;
 	std::string loggerId = JNIHelpers::GetString(jloggerId, pEnv);
 	std::string host = JNIHelpers::GetString(jhost, pEnv);
@@ -63,7 +65,7 @@ JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1ch
 
 JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1channel_1tcp_1server
 (JNIEnv* pEnv, jobject, jlong ptrManager, jstring jloggerId, jint logLevel, jlong timeoutMs, jstring jendpoint, jint port)
-{	
+{
 	auto pMgr = (ASIODNP3Manager*) ptrManager;
 	std::string loggerId = JNIHelpers::GetString(jloggerId, pEnv);
 	std::string endpoint = JNIHelpers::GetString(jendpoint, pEnv);
@@ -73,7 +75,7 @@ JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1ch
 
 JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1channel_1serial
 (JNIEnv* pEnv, jobject, jlong ptrManager, jstring jloggerId, jint logLevel, jlong timeoutMs, jstring jport, jint baudRate, jint dataBits, jint parity, jint stopBits, jint flowControl)
-{	
+{
 	auto pMgr = (ASIODNP3Manager*) ptrManager;
 	std::string loggerId = JNIHelpers::GetString(jloggerId, pEnv);
 	std::string port = JNIHelpers::GetString(jport, pEnv);
@@ -97,11 +99,13 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_native_1add_1log
 	pEnv->GetJavaVM(&pJVM);
 	assert(pJVM != nullptr);
 	jobject global = pEnv->NewGlobalRef(jproxy);
-	pMgr->AddDestructorHook([pJVM, global]() {
+	pMgr->AddDestructorHook([pJVM, global]()
+	{
 		JNIHelpers::DeleteGlobalReference(pJVM, global);
 	});
 	auto pSub = new LogSubscriberAdapter(pJVM, global);
-	pMgr->AddDestructorHook([pSub]() {
+	pMgr->AddDestructorHook([pSub]()
+	{
 		delete pSub;
 	});
 	pMgr->AddLogSubscriber(pSub);

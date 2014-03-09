@@ -31,25 +31,25 @@ namespace opendnp3
 template <class IndexType>
 class BitfieldRangeWriteIterator
 {
-	public:	
+public:
 
 	static BitfieldRangeWriteIterator Null()
 	{
 		auto buffer = openpal::WriteBuffer::Empty();
 		return BitfieldRangeWriteIterator(0, buffer);
 	}
-	
+
 	BitfieldRangeWriteIterator(typename IndexType::Type start_, openpal::WriteBuffer& position_) :
-		start(start_),		
+		start(start_),
 		count(0),
 		range(position_),
 		position(position_),
-		isNull(position_.Size() < 2*IndexType::Size)
+		isNull(position_.Size() < 2 * IndexType::Size)
 	{
-		if(!isNull) 
+		if(!isNull)
 		{
 			IndexType::WriteBuffer(range, start_);
-			position.Advance(2*IndexType::Size);
+			position.Advance(2 * IndexType::Size);
 			maxCount = position.Size() * 8;
 		}
 	}
@@ -93,11 +93,14 @@ class BitfieldRangeWriteIterator
 		}
 	}
 
-	bool IsNull() const { return isNull; }
+	bool IsNull() const
+	{
+		return isNull;
+	}
 
-	private:	
+private:
 
-	typename IndexType::Type start;	
+	typename IndexType::Type start;
 	typename IndexType::Type count;
 
 	uint32_t maxCount;
@@ -105,7 +108,7 @@ class BitfieldRangeWriteIterator
 	bool isNull;
 
 	openpal::WriteBuffer range;  // make a copy to record where we write the range
-	openpal::WriteBuffer& position;	
+	openpal::WriteBuffer& position;
 };
 
 }

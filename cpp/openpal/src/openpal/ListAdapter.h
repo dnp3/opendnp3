@@ -32,66 +32,66 @@ template <class ValueType, class IndexType>
 class ListAdapter : public HasSize<IndexType>
 {
 
-	public:
+public:
 
-		ListAdapter(Indexable<ValueType, IndexType> indexable) : 
-			HasSize<IndexType>(0),
-			indexable(indexable)
-		{}				
+	ListAdapter(Indexable<ValueType, IndexType> indexable) :
+		HasSize<IndexType>(0),
+		indexable(indexable)
+	{}
 
-		inline ValueType& operator[](IndexType index) 
+	inline ValueType& operator[](IndexType index)
+	{
+		assert(index < this->size);
+		return indexable[index];
+	}
+
+	inline IndexType Capacity() const
+	{
+		return indexable.Size();
+	}
+
+	inline bool IsFull() const
+	{
+		return this->size == indexable.Size();
+	}
+
+	inline void Clear()
+	{
+		this->size = 0;
+	}
+
+	const ValueType& operator[](IndexType index) const
+	{
+		assert(index < this->size);
+		return indexable[index];
+	}
+
+	bool Add(const ValueType& value)
+	{
+		if(this->Size() < indexable.Size())
 		{
-			assert(index < this->size);
-			return indexable[index];
+			indexable[this->size] = value;
+			++(this->size);
+			return true;
 		}
+		else return false;
+	}
 
-		inline IndexType Capacity() const
-		{
-			return indexable.Size();
-		}
+	template <class Action>
+	void foreach(const Action& action)
+	{
+		for(IndexType i = 0; i < this->size; ++i) action(indexable[i]);
+	}
 
-		inline bool IsFull() const
-		{
-			return this->size == indexable.Size();
-		}
+	template <class Action>
+	void foreachIndex(const Action& action)
+	{
+		for(IndexType i = 0; i < this->size; ++i) action(indexable[i], i);
+	}
 
-		inline void Clear()
-		{
-			this->size = 0;
-		}
-
-		const ValueType& operator[](IndexType index) const
-		{ 
-			assert(index < this->size);
-			return indexable[index];
-		}
-
-		bool Add(const ValueType& value)
-		{
-			if(this->Size() < indexable.Size())
-			{
-				indexable[this->size] = value;
-				++(this->size);
-				return true;
-			}
-			else return false;
-		}
-
-		template <class Action>
-		void foreach(const Action& action)
-		{
-			for(IndexType i = 0; i < this->size; ++i) action(indexable[i]);
-		}		
-
-		template <class Action>
-		void foreachIndex(const Action& action)
-		{
-			for(IndexType i = 0; i < this->size; ++i) action(indexable[i], i);
-		}									
-	
-	private:
-		Indexable<ValueType, IndexType> indexable;
-		ListAdapter();
+private:
+	Indexable<ValueType, IndexType> indexable;
+	ListAdapter();
 };
 
 }

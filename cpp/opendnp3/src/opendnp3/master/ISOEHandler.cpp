@@ -68,7 +68,8 @@ void PrintingSOEHandler::LoadStatic(const IterableBuffer<IndexedValue<AnalogOutp
 
 void PrintingSOEHandler::LoadStatic(const IterableBuffer<IndexedValue<OctetString, uint16_t>>& meas)
 {
-	meas.foreach([&](const IndexedValue<OctetString, uint16_t>& pair) {
+	meas.foreach([&](const IndexedValue<OctetString, uint16_t>& pair)
+	{
 		std::cout << "Static - OctetString " <<  " [" << pair.index << "] : Size : " << pair.value.ToReadOnly().Size() << std::endl;
 	});
 }
@@ -109,8 +110,9 @@ void PrintingSOEHandler::LoadEvent(const IterableBuffer<IndexedValue<AnalogOutpu
 }
 
 void PrintingSOEHandler::LoadEvent(const IterableBuffer<IndexedValue<OctetString, uint16_t>>& meas)
-{	
-	meas.foreach([&](const IndexedValue<OctetString, uint16_t>& pair) {
+{
+	meas.foreach([&](const IndexedValue<OctetString, uint16_t>& pair)
+	{
 		std::cout << "Event - OctetString " << " [" << pair.index << "] : Size : " << pair.value.ToReadOnly().Size() << std::endl;
 	});
 }

@@ -38,9 +38,9 @@ namespace asiopal
 {
 
 PhysicalLayerAsyncSerial::PhysicalLayerAsyncSerial(
-        Logger aLogger,
-		asio::io_service* apIOService,
-        const SerialSettings& arSettings) :
+    Logger aLogger,
+    asio::io_service* apIOService,
+    const SerialSettings& arSettings) :
 
 	PhysicalLayerAsyncASIO(aLogger, apIOService),
 	mSettings(arSettings),
@@ -54,13 +54,13 @@ PhysicalLayerAsyncSerial::PhysicalLayerAsyncSerial(
 void PhysicalLayerAsyncSerial::DoOpen()
 {
 	std::error_code ec;
-	mPort.open(mSettings.mDevice, ec);	
-	
-	if (!ec) 
+	mPort.open(mSettings.mDevice, ec);
+
+	if (!ec)
 	{
 		Configure(mSettings, mPort, ec);
 		if(ec)
-		{ 
+		{
 			std::error_code ec2;
 			mPort.close(ec2);
 		}
@@ -86,19 +86,20 @@ void PhysicalLayerAsyncSerial::DoAsyncRead(openpal::WriteBuffer& arBuffer)
 {
 	uint8_t* pBuff = arBuffer;
 	mPort.async_read_some(buffer(arBuffer, arBuffer.Size()),
-	                      strand.wrap([this, pBuff](const std::error_code& error, size_t numRead) {
-							  this->OnReadCallback(error, pBuff, numRead);
-						  }));	
+	                      strand.wrap([this, pBuff](const std::error_code & error, size_t numRead)
+	{
+		this->OnReadCallback(error, pBuff, numRead);
+	}));
 }
 
 void PhysicalLayerAsyncSerial::DoAsyncWrite(const ReadOnlyBuffer& arBuffer)
 {
 	async_write(mPort, buffer(arBuffer, arBuffer.Size()),
 	            strand.wrap(
-	                    std::bind(&PhysicalLayerAsyncSerial::OnWriteCallback,
-	                              this,
-	                              std::placeholders::_1,
-								  arBuffer.Size())
+	                std::bind(&PhysicalLayerAsyncSerial::OnWriteCallback,
+	                          this,
+	                          std::placeholders::_1,
+	                          arBuffer.Size())
 	            ));
 }
 

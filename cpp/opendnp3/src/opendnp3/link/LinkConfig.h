@@ -29,14 +29,15 @@ namespace opendnp3
 /**
 	Configuration for the dnp3 link layer
 */
-struct LinkConfig {
+struct LinkConfig
+{
 	LinkConfig(
-	        bool aIsMaster,
-	        bool aUseConfirms,
-	        size_t aNumRetry,
-	        uint16_t aLocalAddr,
-	        uint16_t aRemoteAddr,
-	        openpal::TimeDuration aTimeout) :
+	    bool aIsMaster,
+	    bool aUseConfirms,
+	    size_t aNumRetry,
+	    uint16_t aLocalAddr,
+	    uint16_t aRemoteAddr,
+	    openpal::TimeDuration aTimeout) :
 
 		IsMaster(aIsMaster),
 		UseConfirms(aUseConfirms),
@@ -47,8 +48,8 @@ struct LinkConfig {
 	{}
 
 	LinkConfig(
-	        bool aIsMaster,
-	        bool aUseConfirms) :
+	    bool aIsMaster,
+	    bool aUseConfirms) :
 
 		IsMaster(aIsMaster),
 		UseConfirms(aUseConfirms),

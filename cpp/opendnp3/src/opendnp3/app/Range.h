@@ -29,7 +29,7 @@ namespace opendnp3
 
 class Range
 {
-	public:
+public:
 
 	static Range FromCount(uint16_t count)
 	{
@@ -38,16 +38,19 @@ class Range
 	}
 
 	Range(uint16_t start_, uint16_t stop_) :
-		start(start_),		
+		start(start_),
 		stop(stop_)
 	{}
 
-	uint32_t Count() const { return (stop - start) + 1; }
+	uint32_t Count() const
+	{
+		return (stop - start) + 1;
+	}
 
 	Range() : start(0), stop(0)
 	{}
 
-	uint16_t start;	
+	uint16_t start;
 	uint16_t stop;
 };
 

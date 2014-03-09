@@ -42,7 +42,7 @@ class PureStatic
 
 private:
 	// prevent these functions
-	PureStatic();	
+	PureStatic();
 	PureStatic(const PureStatic&);
 	PureStatic& operator=(const PureStatic&);
 };

@@ -53,7 +53,8 @@ int LogTester::ClearLog()
 {
 	int max = -1;
 	LogEntry le;
-	while(!mBuffer.empty()) {
+	while(!mBuffer.empty())
+	{
 		if(mBuffer.front().GetErrorCode() > max) max = le.GetErrorCode();
 		mBuffer.pop();
 	}
@@ -69,10 +70,12 @@ void LogTester::Log(const std::string& arLocation, const std::string& arMessage)
 int LogTester::NextErrorCode()
 {
 	LogEntry le;
-	while(!mBuffer.empty()) {
+	while(!mBuffer.empty())
+	{
 		le = mBuffer.front();
 		mBuffer.pop();
-		if(le.GetErrorCode() >= 0) {
+		if(le.GetErrorCode() >= 0)
+		{
 			return le.GetErrorCode();
 		}
 	}
@@ -82,7 +85,8 @@ int LogTester::NextErrorCode()
 bool LogTester::GetNextEntry(LogEntry& arEntry)
 {
 	if(mBuffer.empty()) return false;
-	else {
+	else
+	{
 		arEntry = mBuffer.front();
 		mBuffer.pop();
 		return true;

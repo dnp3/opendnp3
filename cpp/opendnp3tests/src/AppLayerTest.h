@@ -48,7 +48,7 @@ public:
 	void SendUnsolicited(FunctionCode aCode, bool aFIR, bool aFIN, bool aCON, bool aUNS);
 
 	// bool CheckSentAPDU(FunctionCode aCode, bool aFIR, bool aFIN, bool aCON, bool aUNS, int aSEQ);
-	
+
 	LogTester log;
 	MockAppUser user;
 	MockLowerLayer lower;
@@ -57,9 +57,9 @@ public:
 
 	MockAppUser::State state;
 
-	private:
+private:
 
-	//bool CheckSentAPDUWithSize(FunctionCode aCode, const AppControlField& acf, uint32_t size);	
+	//bool CheckSentAPDUWithSize(FunctionCode aCode, const AppControlField& acf, uint32_t size);
 
 	uint8_t buffer[4];
 	openpal::WriteBuffer writeBuffer;

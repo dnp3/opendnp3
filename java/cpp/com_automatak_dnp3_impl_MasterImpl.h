@@ -13,7 +13,7 @@ extern "C" {
  * Signature: (J)J
  */
 JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_MasterImpl_get_1native_1command_1processor
-  (JNIEnv *, jobject, jlong);
+(JNIEnv*, jobject, jlong);
 
 /*
  * Class:     com_automatak_dnp3_impl_MasterImpl
@@ -21,7 +21,7 @@ JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_MasterImpl_get_1native_1com
  * Signature: (J)V
  */
 JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_MasterImpl_shutdown_1native
-  (JNIEnv *, jobject, jlong);
+(JNIEnv*, jobject, jlong);
 
 #ifdef __cplusplus
 }

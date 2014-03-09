@@ -42,14 +42,16 @@ public:
 		mRx(openpal::Logger(&log, aLevel, "ReceiverTest"), &mSink)
 	{}
 
-	void WriteData(const LinkFrame& arFrame) {
+	void WriteData(const LinkFrame& arFrame)
+	{
 		auto buff = mRx.WriteBuff();
 		assert(arFrame.GetSize() <= buff.Size());
 		memcpy(buff, arFrame.GetBuffer(), arFrame.GetSize());
 		mRx.OnRead(arFrame.GetSize());
 	}
 
-	void WriteData(const std::string& arHex) {
+	void WriteData(const std::string& arHex)
+	{
 		HexSequence hs(arHex);
 		auto buff = mRx.WriteBuff();
 		assert(hs.Size() <= buff.Size());

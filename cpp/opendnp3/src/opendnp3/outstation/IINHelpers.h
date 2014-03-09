@@ -26,7 +26,7 @@
 
 namespace opendnp3
 {
-	IINField IINFromParseResult(APDUParser::Result result);
+IINField IINFromParseResult(APDUParser::Result result);
 
 }
 

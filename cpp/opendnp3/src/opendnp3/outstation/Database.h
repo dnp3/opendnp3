@@ -47,8 +47,8 @@ class Database : public IDataObserver
 {
 public:
 
-	Database(const StaticDataFacade&);	
-	
+	Database(const StaticDataFacade&);
+
 	/* Functions for obtaining iterators */
 
 	bool AddEventBuffer(IEventBuffer* apEventBuffer);
@@ -70,17 +70,17 @@ public:
 	openpal::Indexable<DualValue<BinaryOutputStatus>, uint16_t> ControlStatii();
 	openpal::Indexable<DualValue<AnalogOutputStatus>, uint16_t> SetpointStatii();
 
-	template <class T> 
+	template <class T>
 	openpal::Indexable<DualValue<T>, uint16_t> Values();
 
-	template <class T> 
+	template <class T>
 	uint16_t NumValues() const;
 
-	template <class T> 
+	template <class T>
 	StaticRange FullRange() const
 	{
 		uint16_t num = NumValues<T>();
-		if(num > 0) return StaticRange(0, num-1);
+		if(num > 0) return StaticRange(0, num - 1);
 		else return StaticRange();
 	}
 
@@ -91,7 +91,10 @@ private:
 	template <class T>
 	static void FreezeCollection(openpal::Indexable<DualValue<T>, uint16_t>& collection)
 	{
-		collection.foreach([](DualValue<T>& value) { value.Freeze(); });
+		collection.foreach([](DualValue<T>& value)
+		{
+			value.Freeze();
+		});
 	}
 
 	Database();
@@ -100,29 +103,32 @@ private:
 	template <class T>
 	void UpdateEventBuffer(const T& value, uint32_t index, EventClass clazz)
 	{
-		eventBuffers.foreach([&](IEventBuffer* pBuffer) { pBuffer->Update(Event<T>(value, index, clazz)); });
+		eventBuffers.foreach([&](IEventBuffer * pBuffer)
+		{
+			pBuffer->Update(Event<T>(value, index, clazz));
+		});
 	}
 
 	template <class T, class U>
 	inline void UpdateEvent(const T& value, uint32_t index, U& collection)
-	{		
+	{
 		if(collection.values.Contains(index))
-		{	
+		{
 			auto& metadata = collection.metadata[index];
 			EventClass eventClass;
 			if(metadata.CheckForEvent(value) && metadata.GetEventClass(eventClass))
-			{			
+			{
 				this->UpdateEventBuffer(value, index, eventClass);
 			}
 			collection.values[index].Update(value);
-		}	
+		}
 	}
 
 	openpal::StaticList<IEventBuffer*, uint16_t, SizeConfiguration::MAX_EVENT_BUFFERS> eventBuffers;
 
 	// ITransactable  functions, no lock on this structure.
 	void Start() final {}
-	void End() final {}	
+	void End() final {}
 };
 
 }

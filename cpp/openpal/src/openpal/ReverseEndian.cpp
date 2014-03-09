@@ -28,7 +28,8 @@ namespace openpal
 const uint8_t UInt8Simple::Max = std::numeric_limits<uint8_t>::max();
 const uint8_t UInt8Simple::Min = std::numeric_limits<uint8_t>::min();
 
-int64_t UInt48LE::Read(const uint8_t* apStart) {
+int64_t UInt48LE::Read(const uint8_t* apStart)
+{
 
 	int64_t  ret = *(apStart);
 	ret |= static_cast<int64_t>(*(++apStart)) << 8;
@@ -40,7 +41,7 @@ int64_t UInt48LE::Read(const uint8_t* apStart) {
 	return ret;
 }
 
-void UInt48LE::Write(uint8_t* apStart, int64_t aValue) 
+void UInt48LE::Write(uint8_t* apStart, int64_t aValue)
 {
 	if(aValue > MAX) aValue = MAX;
 

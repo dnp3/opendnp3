@@ -63,7 +63,8 @@ private:
 
 	uint8_t sequence;
 
-	uint32_t BytesRemaining() const {
+	uint32_t BytesRemaining() const
+	{
 		return numBytesToSend - numBytesSent;
 	}
 };

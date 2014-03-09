@@ -53,7 +53,8 @@ private:
 	bool mIsSuccess;
 	std::queue<openpal::ReadOnlyBuffer> sendQueue;
 
-	virtual std::string SendString() const {
+	virtual std::string SendString() const
+	{
 		return " MockLowerLayer ->";
 	}
 

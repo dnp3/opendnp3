@@ -33,15 +33,15 @@ template <class ValueType, class IndexType, IndexType N>
 class StaticList : public ListAdapter<ValueType, IndexType>
 {
 
-	public:
-		StaticList() : underlying(), ListAdapter<ValueType, IndexType>(underlying.ToIndexable())
-		{}
+public:
+	StaticList() : underlying(), ListAdapter<ValueType, IndexType>(underlying.ToIndexable())
+	{}
 
-	private:
+private:
 
-		StaticList(const StaticList&);
-		StaticList& operator= (const StaticList&);
-		StaticArray<ValueType, IndexType, N> underlying;
+	StaticList(const StaticList&);
+	StaticList& operator= (const StaticList&);
+	StaticArray<ValueType, IndexType, N> underlying;
 };
 
 }

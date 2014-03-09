@@ -37,16 +37,17 @@ class TransportLoopbackTestObject :  public AsyncTestObjectASIO
 {
 public:
 	TransportLoopbackTestObject(
-	        asio::io_service*,
-	        openpal::IPhysicalLayerAsync*,
-	        LinkConfig,
-	        LinkConfig,
-	        openpal::LogLevel aLevel = openpal::LogLevel::Info,
-	        bool aImmediate = false);
+	    asio::io_service*,
+	    openpal::IPhysicalLayerAsync*,
+	    LinkConfig,
+	    LinkConfig,
+	    openpal::LogLevel aLevel = openpal::LogLevel::Info,
+	    bool aImmediate = false);
 
 	~TransportLoopbackTestObject();
 
-	openpal::Logger& GetLogger() {
+	openpal::Logger& GetLogger()
+	{
 		return mLogger;
 	}
 

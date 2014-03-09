@@ -28,12 +28,12 @@ IINField IINFromParseResult(APDUParser::Result result)
 {
 	switch(result)
 	{
-		case(APDUParser::Result::OK):
-			return IINField::Empty;
-		case(APDUParser::Result::UNKNOWN_OBJECT):
-			return IINField(IINBit::OBJECT_UNKNOWN);
-		default:
-			return IINField(IINBit::PARAM_ERROR);	
+	case(APDUParser::Result::OK):
+		return IINField::Empty;
+	case(APDUParser::Result::UNKNOWN_OBJECT):
+		return IINField(IINBit::OBJECT_UNKNOWN);
+	default:
+		return IINField(IINBit::PARAM_ERROR);
 	}
 }
 

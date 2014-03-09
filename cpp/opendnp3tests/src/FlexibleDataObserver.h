@@ -34,7 +34,8 @@ namespace opendnp3
 {
 
 template <typename T>
-struct PointMap {
+struct PointMap
+{
 	typedef std::map<size_t, T> Type;
 };
 
@@ -78,51 +79,60 @@ public:
 	/*
 	 * Analog
 	 */
-	bool Check(int32_t aValue, AnalogQuality aQuality, size_t aIndex) {
+	bool Check(int32_t aValue, AnalogQuality aQuality, size_t aIndex)
+	{
 		return Check<Analog, int32_t>(mAnalogMap, aValue, aQuality, aIndex);
 	}
 
-	bool Check(double aValue, AnalogQuality aQuality, size_t aIndex) {
+	bool Check(double aValue, AnalogQuality aQuality, size_t aIndex)
+	{
 		PointMap<Analog>::Type::iterator i = mAnalogMap.find(aIndex);
 		if(i == mAnalogMap.end()) return false;
 		if(i->second.GetQuality() != aQuality) return false;
 		return FloatEqual(aValue, i->second.GetValue());
 	}
 
-	bool Check(int32_t aValue, AnalogQuality aQuality, size_t aIndex, int64_t aTime) {
+	bool Check(int32_t aValue, AnalogQuality aQuality, size_t aIndex, int64_t aTime)
+	{
 		return Check<Analog, int32_t>(mAnalogMap, aValue, aQuality,  aTime, aIndex);
 	}
 
 	/*
 	 * Counter
 	 */
-	bool Check(uint32_t aValue, CounterQuality aQuality, size_t aIndex) {
+	bool Check(uint32_t aValue, CounterQuality aQuality, size_t aIndex)
+	{
 		return Check<Counter, uint8_t>(mCounterMap, aValue, aQuality, aIndex);
 	}
 
-        /*
-         * Frozen Counter
-         */
-        bool Check(uint32_t aValue, FrozenCounterQuality aQuality, size_t aIndex) {
-                return Check<FrozenCounter, uint8_t>(mFrozenCounterMap, aValue, aQuality, aIndex);
-        }
+	/*
+	 * Frozen Counter
+	 */
+	bool Check(uint32_t aValue, FrozenCounterQuality aQuality, size_t aIndex)
+	{
+		return Check<FrozenCounter, uint8_t>(mFrozenCounterMap, aValue, aQuality, aIndex);
+	}
 
 
-	bool Check(bool aValue, BinaryOutputStatusQuality aQuality, size_t aIndex) {
+	bool Check(bool aValue, BinaryOutputStatusQuality aQuality, size_t aIndex)
+	{
 		uint8_t qual = aQuality;
 		if(aValue) qual |= TQ_STATE;
 		return Check<BinaryOutputStatus, bool>(mBinaryOutputStatusMap, aValue, qual, aIndex);
 	}
 
-	bool Check(uint32_t aValue, CounterQuality aQuality, size_t aIndex, int64_t aTime) {
+	bool Check(uint32_t aValue, CounterQuality aQuality, size_t aIndex, int64_t aTime)
+	{
 		return Check<Counter, uint8_t>(mCounterMap, aValue, aQuality,  aTime, aIndex);
 	}
 
-      	bool Check(uint32_t aValue, FrozenCounterQuality aQuality, size_t aIndex, int64_t aTime) {
-                return Check<FrozenCounter, uint8_t>(mFrozenCounterMap, aValue, aQuality,  aTime, aIndex);
-        }
+	bool Check(uint32_t aValue, FrozenCounterQuality aQuality, size_t aIndex, int64_t aTime)
+	{
+		return Check<FrozenCounter, uint8_t>(mFrozenCounterMap, aValue, aQuality,  aTime, aIndex);
+	}
 
-		bool Check(bool aValue, BinaryOutputStatusQuality aQuality, size_t aIndex, int64_t aTime) {
+	bool Check(bool aValue, BinaryOutputStatusQuality aQuality, size_t aIndex, int64_t aTime)
+	{
 		uint8_t qual = aQuality;
 		if(aValue) qual |= TQ_STATE;
 		return Check<BinaryOutputStatus, bool>(mBinaryOutputStatusMap, aValue, qual,  aTime, aIndex);
@@ -131,52 +141,63 @@ public:
 	/*
 	 * Setpoint
 	 */
-		bool Check(int32_t aValue, AnalogOutputStatusQuality aQuality, size_t aIndex) {
+	bool Check(int32_t aValue, AnalogOutputStatusQuality aQuality, size_t aIndex)
+	{
 		return Check<AnalogOutputStatus, int32_t>(mAnalogOutputStatusMap, aValue, aQuality, aIndex);
 	}
 
-		bool Check(int32_t aValue, AnalogOutputStatusQuality aQuality, size_t aIndex, int64_t aTime) {
+	bool Check(int32_t aValue, AnalogOutputStatusQuality aQuality, size_t aIndex, int64_t aTime)
+	{
 		return Check<AnalogOutputStatus, int32_t>(mAnalogOutputStatusMap, aValue, aQuality, aTime, aIndex);
 	}
 
 	/*
 	 * Binary
 	 */
-	bool Check(bool aValue, BinaryQuality aQuality, size_t aIndex) {
+	bool Check(bool aValue, BinaryQuality aQuality, size_t aIndex)
+	{
 		uint8_t qual = aQuality;
 		if(aValue) qual |= BQ_STATE;
 		return Check<Binary, bool>(mBinaryMap, aValue, qual, aIndex);
 	}
 
-	bool Check(bool aValue, BinaryQuality aQuality, size_t aIndex, int64_t aTime) {
+	bool Check(bool aValue, BinaryQuality aQuality, size_t aIndex, int64_t aTime)
+	{
 		uint8_t qual = aQuality;
 		if(aValue) qual |= BQ_STATE;
 		return Check<Binary, bool>(mBinaryMap, aValue, qual, aTime, aIndex);
 	}
 
-	bool CheckQual(BinaryQuality aQuality, size_t aIndex) {
+	bool CheckQual(BinaryQuality aQuality, size_t aIndex)
+	{
 		return CheckQual<Binary>(mBinaryMap, aQuality, aIndex);
 	}
-	bool CheckQual(AnalogQuality aQuality, size_t aIndex) {
+	bool CheckQual(AnalogQuality aQuality, size_t aIndex)
+	{
 		return CheckQual<Analog>(mAnalogMap, aQuality, aIndex);
 	}
-	bool CheckQual(CounterQuality aQuality, size_t aIndex) {
+	bool CheckQual(CounterQuality aQuality, size_t aIndex)
+	{
 		return CheckQual<Counter>(mCounterMap, aQuality, aIndex);
 	}
-	bool CheckQual(FrozenCounterQuality aQuality, size_t aIndex) {
-                return CheckQual<FrozenCounter>(mFrozenCounterMap, aQuality, aIndex);
-        }
-	bool CheckQual(BinaryOutputStatusQuality aQuality, size_t aIndex) {
+	bool CheckQual(FrozenCounterQuality aQuality, size_t aIndex)
+	{
+		return CheckQual<FrozenCounter>(mFrozenCounterMap, aQuality, aIndex);
+	}
+	bool CheckQual(BinaryOutputStatusQuality aQuality, size_t aIndex)
+	{
 		return CheckQual<BinaryOutputStatus>(mBinaryOutputStatusMap, aQuality, aIndex);
 	}
-	bool CheckQual(AnalogOutputStatusQuality aQuality, size_t aIndex) {
+	bool CheckQual(AnalogOutputStatusQuality aQuality, size_t aIndex)
+	{
 		return CheckQual<AnalogOutputStatus>(mAnalogOutputStatusMap, aQuality, aIndex);
 	}
 
 	void Print();
 	void Clear();
 
-	size_t GetTotalCount() {
+	size_t GetTotalCount()
+	{
 		return mBinaryMap.size() +
 		       mAnalogMap.size() +
 		       mCounterMap.size() +
@@ -197,22 +218,22 @@ protected:
 	void Load(const T& arPoint, typename PointMap<T>::Type& arMap, uint16_t aIndex);
 
 private:
-	
+
 	bool mNewData;
 	std::mutex mMutex;
 
-	void Start()	
+	void Start()
 	{
 		mMutex.lock();
 	}
 
-	void End() 
+	void End()
 	{
 		bool notify = mNewData;
 		mNewData = false;
 		mMutex.unlock();
 		if(notify) this->NotifyObservers();
-	}	
+	}
 
 	template <class T, class U>
 	bool Check(typename PointMap<T>::Type& arMap, U aValue, uint8_t aQual, size_t aIndex);
@@ -265,7 +286,7 @@ bool FlexibleDataObserver::CheckQual(typename PointMap<T>::Type& arMap, uint8_t 
 template <class T>
 void FlexibleDataObserver::SetQuality(uint8_t aQuality, typename PointMap<T>::Type& arMap)
 {
-for(auto pair: arMap) pair->second.SetQuality(aQuality);
+	for(auto pair : arMap) pair->second.SetQuality(aQuality);
 }
 
 template <class T>
@@ -278,7 +299,8 @@ template <class T>
 void FlexibleDataObserver::Print(typename PointMap<T>::Type& arMap)
 {
 	int j = 0;
-for(auto pair : arMap) {
+	for(auto pair : arMap)
+	{
 		std::cout << j << ", " << pair.second.GetValue() << ", " << static_cast<int>(pair.second.GetQuality()) << std::endl;
 		++j;
 	}

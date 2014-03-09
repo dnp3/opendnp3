@@ -28,48 +28,48 @@ class FanoutDataObserver : public IDataObserver
 {
 public:
 
-	void AddObserver(IDataObserver* apObserver) 
+	void AddObserver(IDataObserver* apObserver)
 	{
 		mObservers.push_back(apObserver);
 	}
 
-	void Start() 
-	{ 
-		for(auto pObs: mObservers) Transaction::Start(pObs);
+	void Start()
+	{
+		for(auto pObs : mObservers) Transaction::Start(pObs);
 	}
-	
+
 	void End()
 	{
-		for(auto pObs: mObservers) Transaction::End(pObs);
+		for(auto pObs : mObservers) Transaction::End(pObs);
 	}
 
 	void Update(const Binary& arPoint, uint16_t aIndex) final
 	{
-		for(auto pObs: mObservers) pObs->Update(arPoint, aIndex);
+		for(auto pObs : mObservers) pObs->Update(arPoint, aIndex);
 	}
 
 	void Update(const Analog& arPoint, uint16_t aIndex) final
 	{
-		for(auto pObs: mObservers) pObs->Update(arPoint, aIndex);
+		for(auto pObs : mObservers) pObs->Update(arPoint, aIndex);
 	}
 
 	void Update(const Counter& arPoint, uint16_t aIndex) final
 	{
-		for(auto pObs: mObservers) pObs->Update(arPoint, aIndex);
+		for(auto pObs : mObservers) pObs->Update(arPoint, aIndex);
 	}
 
-        void Update(const FrozenCounter& arPoint, uint16_t aIndex) final
-        {
-                for(auto pObs: mObservers) pObs->Update(arPoint, aIndex);
-        }
+	void Update(const FrozenCounter& arPoint, uint16_t aIndex) final
+	{
+		for(auto pObs : mObservers) pObs->Update(arPoint, aIndex);
+	}
 
 	void Update(const BinaryOutputStatus& arPoint, uint16_t aIndex) final
 	{
-		for(auto pObs: mObservers) pObs->Update(arPoint, aIndex);
+		for(auto pObs : mObservers) pObs->Update(arPoint, aIndex);
 	}
 	void Update(const AnalogOutputStatus& arPoint, uint16_t aIndex) final
 	{
-		for(auto pObs: mObservers) pObs->Update(arPoint, aIndex);
+		for(auto pObs : mObservers) pObs->Update(arPoint, aIndex);
 	}
 
 private:

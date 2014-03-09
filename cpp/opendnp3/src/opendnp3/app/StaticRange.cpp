@@ -31,10 +31,10 @@ const uint16_t StaticRange::MAX(std::numeric_limits<uint16_t>::max());
 
 StaticRange::StaticRange() : start(MAX), stop(MIN) {}
 
-StaticRange::StaticRange(uint16_t start_, uint16_t stop_) : 
-start(start_),
-stop(stop_),
-clipped(false)
+StaticRange::StaticRange(uint16_t start_, uint16_t stop_) :
+	start(start_),
+	stop(stop_),
+	clipped(false)
 {}
 
 bool StaticRange::IsContainedByUInt8() const
@@ -46,14 +46,14 @@ void StaticRange::ClipTo(const StaticRange& borders)
 {
 	auto maxStart = (start < borders.start) ? borders.start : start;
 	auto minStop = (stop < borders.stop) ? stop : borders.stop;
-	
-	if(!clipped) 
+
+	if(!clipped)
 	{
 		clipped = !((maxStart == start) && (minStop == stop));
 	}
-	
+
 	start = maxStart;
-	stop = minStop;	
+	stop = minStop;
 }
 
 bool StaticRange::IsContainedBy(uint16_t size) const
@@ -63,7 +63,7 @@ bool StaticRange::IsContainedBy(uint16_t size) const
 
 void StaticRange::Advance()
 {
-	if(start < stop) 
+	if(start < stop)
 	{
 		++start;
 	}

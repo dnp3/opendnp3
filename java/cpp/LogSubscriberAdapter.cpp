@@ -24,19 +24,19 @@ LogSubscriberAdapter::LogSubscriberAdapter(JavaVM* apJVM, jobject aProxy) :
 	mpJVM(apJVM),
 	mProxy(aProxy),
 	mOnLogEntryCallbackMID(nullptr)
-{	
+{
 	auto pEnv = JNIHelpers::GetEnvFromJVM(apJVM);
 	mOnLogEntryCallbackMID = JNIHelpers::GetMethodID(pEnv, aProxy, "onLogEntry", "(ILjava/lang/String;Ljava/lang/String;I)V");
 }
 
 void LogSubscriberAdapter::Log(const openpal::LogEntry& arEntry)
-{			
+{
 	JNIEnv* pEnv = JNIHelpers::GetEnvFromJVM(mpJVM);
-		
+
 	jint level = LogLevelToType(arEntry.GetLogLevel());
 	jstring name = pEnv->NewStringUTF(arEntry.GetDeviceName().c_str());
 	jstring msg = pEnv->NewStringUTF(arEntry.GetMessage().c_str());
 	jint error = arEntry.GetErrorCode();
-	
+
 	pEnv->CallVoidMethod(mProxy, mOnLogEntryCallbackMID, level, name, msg, error);
 }

@@ -60,7 +60,8 @@ void MockAppLayer::DisableAutoSendCallback()
 
 void MockAppLayer::DoSendUnsol()
 {
-	if(mAutoSendCallback) {
+	if(mAutoSendCallback)
+	{
 		assert(mpUser != nullptr);
 		if(mIsSuccess) mpUser->OnUnsolSendSuccess();
 		else mpUser->OnUnsolFailure();
@@ -69,7 +70,8 @@ void MockAppLayer::DoSendUnsol()
 
 void MockAppLayer::DoSendSol()
 {
-	if(mAutoSendCallback) {
+	if(mAutoSendCallback)
+	{
 		assert(mpUser != nullptr);
 		if(mIsSuccess) mpUser->OnSolSendSuccess();
 		else mpUser->OnSolFailure();
@@ -78,7 +80,7 @@ void MockAppLayer::DoSendSol()
 
 void MockAppLayer::SendResponse(APDUResponse& apdu)
 {
-	LOG_BLOCK(LogLevel::Comm, "=> " << toHex(apdu.ToReadOnly(), true));	
+	LOG_BLOCK(LogLevel::Comm, "=> " << toHex(apdu.ToReadOnly(), true));
 	mFragments.push_back(toHex(apdu.ToReadOnly()));
 	this->DoSendSol();
 
@@ -86,14 +88,14 @@ void MockAppLayer::SendResponse(APDUResponse& apdu)
 
 void MockAppLayer::SendUnsolicited(APDUResponse& apdu)
 {
-	LOG_BLOCK(LogLevel::Comm, "=> " << toHex(apdu.ToReadOnly(), true));	
+	LOG_BLOCK(LogLevel::Comm, "=> " << toHex(apdu.ToReadOnly(), true));
 	mFragments.push_back(toHex(apdu.ToReadOnly()));
 	this->DoSendUnsol();
 }
 
 void MockAppLayer::SendRequest(APDURequest& apdu)
 {
-	LOG_BLOCK(LogLevel::Comm, "=> " << toHex(apdu.ToReadOnly(), true));	
+	LOG_BLOCK(LogLevel::Comm, "=> " << toHex(apdu.ToReadOnly(), true));
 	mFragments.push_back(toHex(apdu.ToReadOnly()));
 }
 
@@ -105,7 +107,7 @@ bool MockAppLayer::NothingToRead()
 std::string MockAppLayer::Read()
 {
 	if(mFragments.size() == 0) throw InvalidStateException(LOCATION, "no more fragments");
-	auto frag = mFragments.front();	
+	auto frag = mFragments.front();
 	mFragments.pop_front();
 	return frag;
 }

@@ -52,21 +52,25 @@ public:
 		exe(&mStrand),
 		mLast(-1),
 		mNum(0),
-		mMonotonic(true) {
+		mMonotonic(true)
+	{
 
 	}
 
-	void Receive(int aVal) {
+	void Receive(int aVal)
+	{
 		if(aVal <= mLast) mMonotonic = false;
 		++mNum;
 		mLast = aVal;
 	}
 
-	bool IsMonotonic() {
+	bool IsMonotonic()
+	{
 		return mMonotonic;
 	}
 
-	int Num() {
+	int Num()
+	{
 		return mNum;
 	}
 
@@ -91,10 +95,12 @@ public:
 	MockTimerHandler() : mCount(0)
 	{}
 
-	void OnExpiration() {
+	void OnExpiration()
+	{
 		++mCount;
 	}
-	size_t GetCount() {
+	size_t GetCount()
+	{
 		return mCount;
 	}
 
@@ -111,8 +117,10 @@ TEST_CASE(SUITE("TestOrderedDispatch"))
 
 	TimerTestObject test;
 
-	for(int i = 0; i < NUM; ++i) {
-		test.exe.Post([&test, i]() {
+	for(int i = 0; i < NUM; ++i)
+	{
+		test.exe.Post([&test, i]()
+		{
 			test.Receive(i);
 		});
 	}

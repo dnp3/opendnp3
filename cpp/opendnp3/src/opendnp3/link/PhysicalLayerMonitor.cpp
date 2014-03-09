@@ -35,11 +35,11 @@ namespace opendnp3
 {
 
 PhysicalLayerMonitor::PhysicalLayerMonitor(
-											Logger aLogger, 
-											IPhysicalLayerAsync* pPhys_, 
-											TimeDuration minOpenRetry_, 
-											TimeDuration maxOpenRetry_,
-											IOpenDelayStrategy* pOpenStrategy_) :
+    Logger aLogger,
+    IPhysicalLayerAsync* pPhys_,
+    TimeDuration minOpenRetry_,
+    TimeDuration maxOpenRetry_,
+    IOpenDelayStrategy* pOpenStrategy_) :
 	Loggable(aLogger),
 	IHandlerAsync(aLogger),
 	mpPhys(pPhys_),
@@ -66,8 +66,10 @@ ChannelState PhysicalLayerMonitor::GetState()
 bool PhysicalLayerMonitor::WaitForShutdown(openpal::TimeDuration aTimeout)
 {
 	std::unique_lock<std::mutex> lock(mutex);
-	while(!mFinalShutdown) {
-		if(aTimeout.GetMilliseconds() >= 0) {
+	while(!mFinalShutdown)
+	{
+		if(aTimeout.GetMilliseconds() >= 0)
+		{
 			condition.wait_for(lock, std::chrono::milliseconds(aTimeout.GetMilliseconds()));
 			break;
 		}
@@ -83,14 +85,19 @@ void PhysicalLayerMonitor::ChangeState(IMonitorState* apState)
 
 	std::unique_lock<std::mutex> lock(mutex);
 	mpState = apState;
-	if(pLast->GetState() != apState->GetState()) {
+	if(pLast->GetState() != apState->GetState())
+	{
 
 		this->OnStateChange(mpState->GetState());
 
 		// signaling this way makes sure we're free and clear of the event that causes this
 		// before someone else and deletes
-		if(mpState->GetState() == ChannelState::SHUTDOWN) {
-			mpPhys->GetExecutor()->Post([this]() { this->DoFinalShutdown(); });
+		if(mpState->GetState() == ChannelState::SHUTDOWN)
+		{
+			mpPhys->GetExecutor()->Post([this]()
+			{
+				this->DoFinalShutdown();
+			});
 		}
 	}
 }
@@ -149,7 +156,7 @@ void PhysicalLayerMonitor::_OnOpenFailure()
 	LOG_BLOCK(LogLevel::Debug, "_OnOpenFailure()");
 	mpState->OnOpenFailure(this);
 	this->OnPhysicalLayerOpenFailureCallback();
-	this->currentRetry = pOpenStrategy->GetNextDelay(currentRetry, maxOpenRetry);		
+	this->currentRetry = pOpenStrategy->GetNextDelay(currentRetry, maxOpenRetry);
 }
 
 void PhysicalLayerMonitor::_OnLowerLayerUp()

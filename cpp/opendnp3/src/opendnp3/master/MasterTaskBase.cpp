@@ -64,7 +64,8 @@ SimpleRspBase::SimpleRspBase(openpal::Logger& arLogger) : SingleRspBase(arLogger
 
 TaskResult SimpleRspBase::_OnFinalResponse(const APDUResponseRecord& record)
 {
-	if(record.objects.Size() > 0) {
+	if(record.objects.Size() > 0)
+	{
 		LOG_BLOCK(LogLevel::Warning, "Unexpected object data in response to task: " << this->Name());
 	}
 

@@ -32,7 +32,7 @@ class IOpenDelayStrategy
 {
 
 public:
-	
+
 	virtual ~IOpenDelayStrategy() {}
 
 	virtual openpal::TimeDuration GetNextDelay(const openpal::TimeDuration& current, const openpal::TimeDuration& max) const = 0;
@@ -44,7 +44,7 @@ class ExponentialBackoffStrategy : public IOpenDelayStrategy, private Uncopyable
 
 public:
 
-	static IOpenDelayStrategy* Inst();	
+	static IOpenDelayStrategy* Inst();
 
 	virtual openpal::TimeDuration GetNextDelay(const openpal::TimeDuration& current, const openpal::TimeDuration& max) const override final;
 };

@@ -54,10 +54,14 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_ChannelImpl_add_1native_1sta
 	JavaVM* pJVM = JNIHelpers::GetJVMFromEnv(apEnv);
 	jobject global = apEnv->NewGlobalRef(stateChangeProxy);
 
-	auto cleanup = [pJVM, global]() { JNIHelpers::DeleteGlobalReference(pJVM, global); };	
+	auto cleanup = [pJVM, global]()
+	{
+		JNIHelpers::DeleteGlobalReference(pJVM, global);
+	};
 	pChannel->AddDestructorHook(cleanup);
 
-	pChannel->AddStateListener([pJVM, global](ChannelState state) {
+	pChannel->AddStateListener([pJVM, global](ChannelState state)
+	{
 		JNIEnv* pEnv = JNIHelpers::GetEnvFromJVM(pJVM);
 		jmethodID changeID = JNIHelpers::GetMethodID(pEnv, global, "onStateChange", "(I)V");
 		jint intstate = static_cast<jint>(state);
@@ -68,7 +72,7 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_ChannelImpl_add_1native_1sta
 JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ChannelImpl_get_1native_1master
 (JNIEnv* pEnv, jobject, jlong ptr, jstring jloggerId, jint logLevel, jobject publisher, jobject jconfig)
 {
-	
+
 	auto pChannel = (IChannel*) ptr;
 	JavaVM* pJVM = JNIHelpers::GetJVMFromEnv(pEnv);
 	jobject global = pEnv->NewGlobalRef(publisher);
@@ -78,20 +82,24 @@ JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ChannelImpl_get_1native_1ma
 	LogLevel lev = LogLevelFromType(logLevel);
 	auto pMaster = pChannel->AddMaster(loggerId, lev, pPublisher, asiopal::UTCTimeSource::Inst(), config);
 	auto pExecutor = pChannel->GetExecutor();
-	auto cleanup = [pJVM, global, pPublisher]() {
+	auto cleanup = [pJVM, global, pPublisher]()
+	{
 		JNIHelpers::DeleteGlobalReference(pJVM, global);
 		delete pPublisher;
 	};
-		
-	pMaster->AddDestructorHook([pExecutor, cleanup](){ pExecutor->Post(cleanup); });
+
+	pMaster->AddDestructorHook([pExecutor, cleanup]()
+	{
+		pExecutor->Post(cleanup);
+	});
 
 	pMaster->Enable(); // TODO - move this to bindings
-	return (jlong) pMaster;	
+	return (jlong) pMaster;
 }
 
 JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ChannelImpl_get_1native_1slave
 (JNIEnv* pEnv, jobject, jlong ptr, jstring jloggerId, jint logLevel, jobject commandAdapter, jobject jconfig)
-{	
+{
 	auto pChannel = (IChannel*) ptr;
 	std::string loggerId = JNIHelpers::GetString(jloggerId, pEnv);
 	SlaveStackConfig config = ConfigReader::ConvertSlaveStackConfig(pEnv, jconfig);
@@ -101,14 +109,18 @@ JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ChannelImpl_get_1native_1sl
 	LogLevel lev = LogLevelFromType(logLevel);
 	auto pOutstation = pChannel->AddOutstation(loggerId, lev, pCmdHandler, NullTimeWriteHandler::Inst(), config);  //TODO wrap time callbacks
 	auto pExecutor = pChannel->GetExecutor();
-	auto cleanup = [pJVM, global, pCmdHandler]() {
+	auto cleanup = [pJVM, global, pCmdHandler]()
+	{
 		JNIHelpers::DeleteGlobalReference(pJVM, global);
 		delete pCmdHandler;
 	};
 
-	pOutstation->AddDestructorHook([pExecutor, cleanup](){ pExecutor->Post(cleanup); });
-		
+	pOutstation->AddDestructorHook([pExecutor, cleanup]()
+	{
+		pExecutor->Post(cleanup);
+	});
+
 	pOutstation->Enable(); // TODO - move this to bindings
-	return (jlong) pOutstation;	
+	return (jlong) pOutstation;
 }
 

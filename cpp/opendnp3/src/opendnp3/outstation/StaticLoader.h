@@ -34,9 +34,9 @@ namespace opendnp3
 
 enum class StaticLoadResult
 {
-	EMPTY,		// nothing was loaded because the response context is empty
-	COMPLETED,	// at least 1 event was loaded and the response context is empty
-	FULL		// events were loaded and the APDU is full, context is not empty
+    EMPTY,		// nothing was loaded because the response context is empty
+    COMPLETED,	// at least 1 event was loaded and the response context is empty
+    FULL		// events were loaded and the APDU is full, context is not empty
 };
 
 // A function that takes a writer, range, and a database and writes some objects
@@ -44,7 +44,7 @@ typedef StaticLoadResult (*StaticLoadFun)(ObjectWriter& writer, StaticRange& ran
 
 class StaticLoader : private PureStatic
 {
-	public:
+public:
 
 	template <class Serializer>
 	static StaticLoadFun GetLoadFunction()
@@ -52,7 +52,7 @@ class StaticLoader : private PureStatic
 		return &LoadFixedSizeStartStop<Serializer>;
 	}
 
-	private:
+private:
 
 	template <class Serializer>
 	static StaticLoadResult LoadFixedSizeStartStop(ObjectWriter& writer, StaticRange& range, Database& db);
@@ -66,22 +66,22 @@ template <class Serializer>
 StaticLoadResult StaticLoader::LoadFixedSizeStartStop(ObjectWriter& writer, StaticRange& range, Database& db)
 {
 	auto values = db.Values<typename Serializer::Target>();
-	if(range.IsContainedByUInt8()) 
+	if(range.IsContainedByUInt8())
 	{
 		auto iter = writer.IterateOverRange<openpal::UInt8, typename Serializer::Target>(QualifierCode::UINT8_START_STOP, Serializer::Inst(), static_cast<uint8_t>(range.start));
 		return LoadFixedSizeStartStopWithIterator<typename Serializer::Target, openpal::UInt8>(values, iter, range);
 	}
-	else 
+	else
 	{
 		auto iter = writer.IterateOverRange<openpal::UInt16, typename Serializer::Target>(QualifierCode::UINT16_START_STOP, Serializer::Inst(), range.start);
 		return LoadFixedSizeStartStopWithIterator<typename Serializer::Target, openpal::UInt16>(values, iter, range);
-	}	
+	}
 }
 
 template <class Target, class IndexType>
 StaticLoadResult StaticLoader::LoadFixedSizeStartStopWithIterator(const openpal::Indexable<DualValue<Target>, uint16_t>& values, RangeWriteIterator<IndexType, Target>& iterator, StaticRange& range)
 {
-	if(range.IsDefined()) 
+	if(range.IsDefined())
 	{
 		while(range.IsDefined())
 		{
@@ -89,13 +89,13 @@ StaticLoadResult StaticLoader::LoadFixedSizeStartStopWithIterator(const openpal:
 			{
 				range.Advance();
 			}
-			else 
+			else
 			{
 				iterator.Complete();
-				return StaticLoadResult::FULL;	
+				return StaticLoadResult::FULL;
 			}
 		}
-		iterator.Complete();	
+		iterator.Complete();
 		return StaticLoadResult::COMPLETED;
 	}
 	else return StaticLoadResult::FULL;

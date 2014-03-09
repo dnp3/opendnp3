@@ -53,7 +53,8 @@ public:
 
 	virtual std::string Name() const = 0;
 
-	virtual bool AcceptsResponse() {
+	virtual bool AcceptsResponse()
+	{
 		return false;
 	}
 
@@ -125,7 +126,8 @@ class ACS_WaitForResponseBase : public ACS_Base
 {
 public:
 	void OnTimeout(AppLayerChannel*);
-	bool AcceptsResponse() {
+	bool AcceptsResponse()
+	{
 		return true;
 	}
 };

@@ -30,29 +30,29 @@ namespace opendnp3
 
 // Base class for different types of event metadata
 template <typename T>
-class EventMetadata 
+class EventMetadata
 {
-	public:
+public:
 	EventMetadata(): clazz(CLASS_0)
 	{}
 
-	inline bool GetEventClass(EventClass& eventClass) const 
+	inline bool GetEventClass(EventClass& eventClass) const
 	{
 		switch(clazz)
 		{
-			case(PointClass::CLASS_1):
-				eventClass = EventClass::EC1;
-				return true;
-			case(PointClass::CLASS_2):
-				eventClass = EventClass::EC2;
-				return true;
-			case(PointClass::CLASS_3):
-				eventClass = EventClass::EC3;
-				return true;
-			default:
-				return false;
+		case(PointClass::CLASS_1):
+			eventClass = EventClass::EC1;
+			return true;
+		case(PointClass::CLASS_2):
+			eventClass = EventClass::EC2;
+			return true;
+		case(PointClass::CLASS_3):
+			eventClass = EventClass::EC3;
+			return true;
+		default:
+			return false;
 		}
-	
+
 	}
 
 	PointClass clazz;
@@ -62,10 +62,10 @@ class EventMetadata
 template <typename T>
 struct SimpleEventMetadata : EventMetadata<T>
 {
-	public:	
-	
+public:
+
 	bool CheckForEvent(const T& aValue)
-	{		
+	{
 		if(aValue.IsEvent(this->lastEvent))
 		{
 			this->lastEvent = aValue;
@@ -80,12 +80,12 @@ struct SimpleEventMetadata : EventMetadata<T>
  */
 template <class T, class U>
 struct DeadbandMetadata : EventMetadata<T>
-{	
-	DeadbandMetadata() : deadband(0) 
+{
+	DeadbandMetadata() : deadband(0)
 	{}
 
 	bool CheckForEvent(const T& aValue)
-	{		
+	{
 		if(aValue.IsEvent(this->lastEvent, deadband))
 		{
 			this->lastEvent = aValue;
@@ -93,7 +93,7 @@ struct DeadbandMetadata : EventMetadata<T>
 		}
 		return false;
 	}
-		
+
 	U deadband;
 };
 

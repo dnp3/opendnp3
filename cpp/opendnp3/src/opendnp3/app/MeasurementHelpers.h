@@ -28,7 +28,7 @@
 
 namespace opendnp3
 {
-	
+
 template <class T>
 std::string ToString(const TypedMeasurement<T>& arMeas)
 {

@@ -32,31 +32,32 @@ namespace opendnp3
 /** A composite configuration struct that contains all the config
 	information for a dnp3 slave stack
 */
-struct SlaveStackConfig {
-	
+struct SlaveStackConfig
+{
+
 	SlaveStackConfig(const DatabaseConfiguration& dbConfig) :
 		database(dbConfig),
-		link(false, false),		
+		link(false, false),
 		app(false)
 	{
-	
+
 	}
 
 	SlaveStackConfig() :
 		database(),
-		link(false, false),		
+		link(false, false),
 		app(false)
 	{}
 
 	//Configuration of the database
 	DatabaseConfiguration database;
 	/// Slave config
-	SlaveConfig slave;	
+	SlaveConfig slave;
 	/// Application layer config
 	AppConfig app;
 	/// Link layer config
 	LinkConfig link;
-		
+
 };
 
 }

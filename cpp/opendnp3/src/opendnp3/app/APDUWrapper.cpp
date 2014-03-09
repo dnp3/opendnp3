@@ -45,7 +45,7 @@ bool APDUWrapper::IsValid() const
 }
 
 ObjectWriter APDUWrapper::GetWriter()
-{	
+{
 	return ObjectWriter(&remaining);
 }
 

@@ -33,7 +33,7 @@
 namespace opendnp3
 {
 
-/* 
+/*
 	The event buffer doesn't actually own the buffers, it just creates
     collection facades around the indexable buffers it's given.
 	This is done so that the buffers can either be statically or dynamically allocated.
@@ -50,49 +50,49 @@ namespace opendnp3
 class OutstationEventBuffer : public IEventBuffer
 {
 
-	public:
-		OutstationEventBuffer(const EventBufferFacade&);
+public:
+	OutstationEventBuffer(const EventBufferFacade&);
 
-		void Update(const Event<Binary>& aEvent) final;
-		void Update(const Event<Analog>& aEvent) final;
-		void Update(const Event<Counter>& aEvent) final;
-		void Update(const Event<FrozenCounter>& aEvent) final;
-		
-		void Reset(); // called when a transmission fails
-		void Clear(); // called when a transmission succeeds
+	void Update(const Event<Binary>& aEvent) final;
+	void Update(const Event<Analog>& aEvent) final;
+	void Update(const Event<Counter>& aEvent) final;
+	void Update(const Event<FrozenCounter>& aEvent) final;
 
-		// Calls the IEventWriter until it returns false or there are no more
-		// matching events
-		uint32_t SelectEvents(const SelectionCriteria&, IEventWriter& writer);
+	void Reset(); // called when a transmission fails
+	void Clear(); // called when a transmission succeeds
 
-		// returns how many events are *unselected* that match the criteria specified
-		uint32_t NumUnselectedMatching(const SelectionCriteria&) const;
-		
-		EventTracker TotalEvents() const;
-		EventTracker SelectedEvents() const;
-		EventTracker UnselectedEvents() const;
-		
-	private:
+	// Calls the IEventWriter until it returns false or there are no more
+	// matching events
+	uint32_t SelectEvents(const SelectionCriteria&, IEventWriter& writer);
 
-		EventTracker totalTracker;
-		EventTracker selectedTracker;
+	// returns how many events are *unselected* that match the criteria specified
+	uint32_t NumUnselectedMatching(const SelectionCriteria&) const;
 
-		template <class T, class EnumType>
-		bool InsertEvent(const T& aEvent, EnumType eventType, openpal::RandomInsertAdapter<T, uint16_t>& buffer);
+	EventTracker TotalEvents() const;
+	EventTracker SelectedEvents() const;
+	EventTracker UnselectedEvents() const;
 
-		bool ApplyEvent(IEventWriter& writer, SequenceRecord& record);
+private:
 
-		bool overflow;
+	EventTracker totalTracker;
+	EventTracker selectedTracker;
 
-		EventBufferFacade facade;
+	template <class T, class EnumType>
+	bool InsertEvent(const T& aEvent, EnumType eventType, openpal::RandomInsertAdapter<T, uint16_t>& buffer);
+
+	bool ApplyEvent(IEventWriter& writer, SequenceRecord& record);
+
+	bool overflow;
+
+	EventBufferFacade facade;
 };
 
 template <class T, class EnumType>
 bool OutstationEventBuffer::InsertEvent(const T& aEvent, EnumType eventType, openpal::RandomInsertAdapter<T, uint16_t>& buffer)
 {
-	if(buffer.IsFull() || facade.sequenceOfEvents.IsFull()) return false;	
-	else 
-	{		
+	if(buffer.IsFull() || facade.sequenceOfEvents.IsFull()) return false;
+	else
+	{
 		totalTracker.Increment(eventType, aEvent.clazz);
 		auto index = buffer.Add(aEvent);
 		SequenceRecord record = { eventType, index, aEvent.clazz, false};

@@ -33,18 +33,19 @@ class Random
 public:
 	Random(T min = std::numeric_limits<T>::min(), T max = std::numeric_limits<T>::max()) :
 		rng(),
-		dist(min, max)		
+		dist(min, max)
 	{
 
 	}
 
-	T Next() {
-		return dist(rng);		
+	T Next()
+	{
+		return dist(rng);
 	}
 
 private:
 	std::mt19937 rng;
-	std::uniform_int_distribution<T> dist;	
+	std::uniform_int_distribution<T> dist;
 };
 
 class RandomBool : private Random<uint32_t>
@@ -53,7 +54,8 @@ public:
 	RandomBool() : Random<uint32_t>(0, 1)
 	{}
 
-	bool NextBool() {
+	bool NextBool()
+	{
 		return Next() ? true : false;
 	}
 };

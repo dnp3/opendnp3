@@ -33,23 +33,23 @@ namespace opendnp3
 template <class CountType, class WriteType>
 class CountWriteIterator
 {
-	public:	
+public:
 
 	static CountWriteIterator Null()
 	{
 		auto buffer = openpal::WriteBuffer::Empty();
 		return CountWriteIterator(nullptr, buffer); // TODO - this should be a pointer
 	}
-	
-	CountWriteIterator(openpal::ISerializer<WriteType>* pSerializer_, openpal::WriteBuffer& aPosition) :				
+
+	CountWriteIterator(openpal::ISerializer<WriteType>* pSerializer_, openpal::WriteBuffer& aPosition) :
 		count(0),
 		pSerializer(pSerializer_),
 		countPosition(aPosition),
 		position(aPosition),
 		isNull(aPosition.Size() < CountType::Size || pSerializer == nullptr)
 	{
-		if(!isNull) 
-		{			
+		if(!isNull)
+		{
 			position.Advance(CountType::Size);
 		}
 	}
@@ -58,7 +58,7 @@ class CountWriteIterator
 	{
 		if(isNull) return false;
 		else
-		{			
+		{
 			CountType::Write(countPosition, count);
 			return true;
 		}
@@ -75,17 +75,20 @@ class CountWriteIterator
 		}
 	}
 
-	bool IsNull() const { return isNull; }
+	bool IsNull() const
+	{
+		return isNull;
+	}
 
-	private:	
-	
+private:
+
 	typename CountType::Type count;
 	openpal::ISerializer<WriteType>* pSerializer;
 
 	bool isNull;
 
 	openpal::WriteBuffer countPosition;  // make a copy to record where we write the count
-	openpal::WriteBuffer& position;	
+	openpal::WriteBuffer& position;
 };
 
 }

@@ -41,23 +41,31 @@ class MockTaskHandler
 {
 public:
 
-	TaskHandler GetHandler() {
-		return [this](ITask* pTask) { this->OnTask(pTask); };
+	TaskHandler GetHandler()
+	{
+		return [this](ITask * pTask)
+		{
+			this->OnTask(pTask);
+		};
 	}
 
-	size_t Size() {
+	size_t Size()
+	{
 		return mTasks.size();
 	}
 
-	ITask* Front() {
+	ITask* Front()
+	{
 		return (Size() > 0) ? mTasks.front() : nullptr;
 	}
 
-	void Pop() {
+	void Pop()
+	{
 		mTasks.pop_front();
 	}
 
-	void Complete(bool aSuccess) {
+	void Complete(bool aSuccess)
+	{
 		ITask* p = mTasks.front();
 		Pop();
 		p->OnComplete(aSuccess);
@@ -67,7 +75,8 @@ private:
 
 	std::deque<ITask*> mTasks;
 
-	void OnTask(ITask* apTask) {
+	void OnTask(ITask* apTask)
+	{
 		mTasks.push_back(apTask);
 	}
 };
@@ -124,7 +133,8 @@ TEST_CASE(SUITE("ContinousTask"))
 	REQUIRE(mth.Front() ==  pT2);
 	mth.Complete(true);
 
-	for(size_t i = 0; i < 5; ++i) {
+	for(size_t i = 0; i < 5; ++i)
+	{
 		REQUIRE(mth.Size() ==  1);
 		REQUIRE(mth.Front() ==  pT1);
 		mth.Complete(true);
@@ -196,11 +206,11 @@ TEST_CASE(SUITE("DemandPeriodicTaskWhileNotExecuting"))
 	MockExecutor exe;
 
 	AsyncTaskGroup group(&exe);
-	
+
 	AsyncTaskBase* pT1 = group.Add(TimeDuration::Milliseconds(2000), TimeDuration::Milliseconds(100), 0, mth.GetHandler());
 
 	group.Enable();
-	
+
 	//complete both the tasks
 	REQUIRE(mth.Size() ==  1);
 	REQUIRE(mth.Front() ==  pT1);
@@ -209,7 +219,7 @@ TEST_CASE(SUITE("DemandPeriodicTaskWhileNotExecuting"))
 
 	pT1->Demand();
 	REQUIRE(mth.Size() ==  1);
-	REQUIRE(mth.Front() ==  pT1);	
+	REQUIRE(mth.Front() ==  pT1);
 }
 
 TEST_CASE(SUITE("DemandPeriodicTaskWhileExecuting"))
@@ -219,11 +229,11 @@ TEST_CASE(SUITE("DemandPeriodicTaskWhileExecuting"))
 	MockExecutor exe;
 
 	AsyncTaskGroup group(&exe);
-	
+
 	AsyncTaskBase* pT1 = group.Add(TimeDuration::Milliseconds(2000), TimeDuration::Milliseconds(100), 0, mth.GetHandler());
 
 	group.Enable();
-	
+
 	//complete both the tasks
 	REQUIRE(mth.Size() ==  1);
 	REQUIRE(mth.Front() ==  pT1);

@@ -23,7 +23,7 @@
 namespace opendnp3
 {
 
-	RandomizedBuffer::RandomizedBuffer(uint32_t aSize) :
+RandomizedBuffer::RandomizedBuffer(uint32_t aSize) :
 	CopyableBuffer(aSize),
 	rand()
 {

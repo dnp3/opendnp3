@@ -29,7 +29,7 @@ namespace opendnp3
 {
 
 /// Configuration type that has a PointClass member
-struct EventPointRecord 
+struct EventPointRecord
 {
 	EventPointRecord(PointClass aPointClass) : EventClass(aPointClass)
 	{}
@@ -42,7 +42,8 @@ struct EventPointRecord
 
 /// DeadbandPointRecords have a parameter for controlling eventing tolerances
 template <class T>
-struct DeadbandPointRecord : public EventPointRecord {
+struct DeadbandPointRecord : public EventPointRecord
+{
 
 	DeadbandPointRecord(PointClass aPointClass, T aDeadband) :
 		EventPointRecord(aPointClass),

@@ -44,24 +44,26 @@ class Bit16LE
 {
 public:
 
-	static T Read(const uint8_t* apStart) {
+	static T Read(const uint8_t* apStart)
+	{
 		T ret = *(apStart);
 		ret |= *(++apStart) << 8;
 		return ret;
 	}
 
-	static void Write(uint8_t* apStart, T aValue) {
+	static void Write(uint8_t* apStart, T aValue)
+	{
 		*(apStart) = static_cast<uint8_t>(aValue & 0xFF);
 		*(++apStart) = static_cast<uint8_t>((aValue >> 8) & 0xFF);
 	}
 
-	static void WriteBuffer(WriteBuffer& buffer, T aValue) 
+	static void WriteBuffer(WriteBuffer& buffer, T aValue)
 	{
 		Write(buffer, aValue);
 		buffer.Advance(Size);
 	}
 
-	inline static T ReadBuffer(ReadOnlyBuffer& arBuffer) 
+	inline static T ReadBuffer(ReadOnlyBuffer& arBuffer)
 	{
 		auto ret = Read(arBuffer);
 		arBuffer.Advance(Size);
@@ -85,28 +87,30 @@ template <class T>
 class Bit32LE
 {
 public:
-	
-	static T Read(const uint8_t* apStart) {
+
+	static T Read(const uint8_t* apStart)
+	{
 		T  ret = *(apStart);
 		ret |= *(++apStart) << 8;
 		ret |= *(++apStart) << 16;
 		ret |= *(++apStart) << 24;
 		return ret;
 	}
-	static void Write(uint8_t* apStart, T aValue) {
+	static void Write(uint8_t* apStart, T aValue)
+	{
 		*(apStart) = static_cast<uint8_t>(aValue & 0xFF);
 		*(++apStart) = static_cast<uint8_t>((aValue >> 8) & 0xFF);
 		*(++apStart) = static_cast<uint8_t>((aValue >> 16) & 0xFF);
 		*(++apStart) = static_cast<uint8_t>((aValue >> 24) & 0xFF);
 	}
 
-	static void WriteBuffer(WriteBuffer& buffer, T aValue) 
+	static void WriteBuffer(WriteBuffer& buffer, T aValue)
 	{
 		Write(buffer, aValue);
 		buffer.Advance(Size);
 	}
 
-	inline static T ReadBuffer(ReadOnlyBuffer& arBuffer) 
+	inline static T ReadBuffer(ReadOnlyBuffer& arBuffer)
 	{
 		auto ret = Read(arBuffer);
 		arBuffer.Advance(Size);
@@ -136,28 +140,30 @@ public:
 	const static T Max;
 	const static T Min;
 
-	inline static T ReadBuffer(ReadOnlyBuffer& arBuffer) 
+	inline static T ReadBuffer(ReadOnlyBuffer& arBuffer)
 	{
 		auto ret = Read(arBuffer);
 		arBuffer.Advance(Size);
 		return ret;
 	}
 
-	static void WriteBuffer(WriteBuffer& buffer, T aValue) 
+	static void WriteBuffer(WriteBuffer& buffer, T aValue)
 	{
 		Write(buffer, aValue);
 		buffer.Advance(Size);
 	}
 
-	// Some platforms like ARM have WORD alignment issue when using reinterpret cast. 
+	// Some platforms like ARM have WORD alignment issue when using reinterpret cast.
 	// The float/double read routines use intermediate buffer that the compiler word aligns
-	inline static T Read(const uint8_t* apStart) {
+	inline static T Read(const uint8_t* apStart)
+	{
 		T d;
 		memcpy(&d, apStart, Size);
 		return d;
 	}
 
-	inline static void Write(uint8_t* apStart, T aValue) {
+	inline static void Write(uint8_t* apStart, T aValue)
+	{
 		memcpy(apStart, &aValue, Size);
 	}
 };

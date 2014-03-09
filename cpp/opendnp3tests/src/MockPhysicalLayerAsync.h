@@ -42,7 +42,8 @@ class MockPhysicalLayerAsync : public asiopal::PhysicalLayerAsyncBase, public Bu
 public:
 	MockPhysicalLayerAsync(openpal::Logger, openpal::IExecutor*);
 
-	openpal::IExecutor* GetExecutor() {
+	openpal::IExecutor* GetExecutor()
+	{
 		return mpExecutor;
 	}
 
@@ -55,19 +56,24 @@ public:
 	void TriggerRead(const std::string& arData);
 	void TriggerClose();
 
-	size_t NumWrites() {
+	size_t NumWrites()
+	{
 		return mNumWrites;
 	}
-	size_t NumOpen() {
+	size_t NumOpen()
+	{
 		return mNumOpen;
 	}
-	size_t NumOpenSuccess() {
+	size_t NumOpenSuccess()
+	{
 		return mNumOpenSuccess;
 	}
-	size_t NumOpenFailure() {
+	size_t NumOpenFailure()
+	{
 		return mNumOpenFailure;
 	}
-	size_t NumClose() {
+	size_t NumClose()
+	{
 		return mNumClose;
 	}
 
@@ -76,19 +82,23 @@ private:
 	void DoOpeningClose();
 	void DoOpen();
 	void DoClose();
-	void DoOpenSuccess() {
+	void DoOpenSuccess()
+	{
 		++mNumOpenSuccess;
 	}
-	void DoOpenFailure() {
+	void DoOpenFailure()
+	{
 		++mNumOpenFailure;
 	}
 
-	void DoAsyncRead(openpal::WriteBuffer& arBuffer) {
+	void DoAsyncRead(openpal::WriteBuffer& arBuffer)
+	{
 		mpWriteBuff = arBuffer;
 		mNumToRead = arBuffer.Size();
 	}
 
-	void DoAsyncWrite(const openpal::ReadOnlyBuffer& arBuffer) {
+	void DoAsyncWrite(const openpal::ReadOnlyBuffer& arBuffer)
+	{
 		mNumToWrite = arBuffer.Size();
 		++mNumWrites;
 		WriteToBuffer(arBuffer);

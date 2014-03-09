@@ -74,7 +74,8 @@ public:
 
 	void CheckState();
 
-	bool IsRunning() {
+	bool IsRunning()
+	{
 		return mIsRunning;
 	}
 

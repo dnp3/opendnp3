@@ -32,17 +32,18 @@ namespace opendnp3
 {
 
 LoopbackPhysicalLayerAsync::LoopbackPhysicalLayerAsync(openpal::Logger aLogger, asio::io_service* apSrv) :
-	PhysicalLayerAsyncASIO(aLogger, apSrv)	
+	PhysicalLayerAsyncASIO(aLogger, apSrv)
 {
 
 }
 
 void LoopbackPhysicalLayerAsync::DoOpen()
 {
-	//always open successfully	
-	executor.Post([this](){ 
-		this->OnOpenCallback(std::error_code(0, std::generic_category())); 
-	});				
+	//always open successfully
+	executor.Post([this]()
+	{
+		this->OnOpenCallback(std::error_code(0, std::generic_category()));
+	});
 }
 
 void LoopbackPhysicalLayerAsync::DoOpenSuccess()
@@ -56,18 +57,20 @@ void LoopbackPhysicalLayerAsync::DoClose()
 	mWritten.erase(mWritten.begin(), mWritten.end());
 
 	// dispatch any pending reads with failures
-	if(mBytesForReading.IsNotEmpty()) {		
-		mBytesForReading.Clear();		
-		executor.Post([this](){ 
+	if(mBytesForReading.IsNotEmpty())
+	{
+		mBytesForReading.Clear();
+		executor.Post([this]()
+		{
 			this->OnReadCallback(std::error_code(1, std::generic_category()), nullptr, 0);
-		});						
+		});
 	}
 }
 
 void LoopbackPhysicalLayerAsync::DoAsyncRead(openpal::WriteBuffer& arBuffer)
 {
 	assert(mBytesForReading.IsEmpty());
-	mBytesForReading = arBuffer;	
+	mBytesForReading = arBuffer;
 	this->CheckForReadDispatch();
 }
 
@@ -78,8 +81,9 @@ void LoopbackPhysicalLayerAsync::DoAsyncWrite(const openpal::ReadOnlyBuffer& arB
 	//always write successfully
 
 	auto size = arBuffer.Size();
-	
-	executor.Post([this, size](){
+
+	executor.Post([this, size]()
+	{
 		this->OnWriteCallback(std::error_code(0, std::generic_category()), size);
 	});
 
@@ -89,17 +93,20 @@ void LoopbackPhysicalLayerAsync::DoAsyncWrite(const openpal::ReadOnlyBuffer& arB
 
 void LoopbackPhysicalLayerAsync::CheckForReadDispatch()
 {
-	if(!mBytesForReading.IsEmpty() && mWritten.size() > 0) {
-		size_t num = (mBytesForReading.Size() < mWritten.size()) ?mBytesForReading.Size() : mWritten.size();
+	if(!mBytesForReading.IsEmpty() && mWritten.size() > 0)
+	{
+		size_t num = (mBytesForReading.Size() < mWritten.size()) ? mBytesForReading.Size() : mWritten.size();
 
-		for(size_t i = 0; i < num; ++i) {
+		for(size_t i = 0; i < num; ++i)
+		{
 			mBytesForReading[i] = mWritten.front();
 			mWritten.pop_front();
 		}
 
 		mBytesForReading.Clear();
-		
-		executor.Post([this, num](){
+
+		executor.Post([this, num]()
+		{
 			this->OnReadCallback(std::error_code(0, std::generic_category()), mBytesForReading, num);
 		});
 	}

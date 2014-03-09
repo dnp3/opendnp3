@@ -37,20 +37,26 @@ namespace opendnp3
 * Used to efficiently cache requests that the outstation can't process immediately
 */
 class CachedRequest : private Uncopyable
-{	
-	public:
+{
+public:
 
 	CachedRequest(uint32_t aMaxFragmentSize);
 
 	void Set(const APDURecord& aRecord, SequenceInfo aSequence);
-	void Clear() { isCached = false; }
+	void Clear()
+	{
+		isCached = false;
+	}
 
-	bool IsSet() const { return isCached; }
+	bool IsSet() const
+	{
+		return isCached;
+	}
 
 	template <class ApplyFun>
 	void Apply(const ApplyFun& fun);
 
-	private:
+private:
 
 	bool isCached;
 	APDURecord record;

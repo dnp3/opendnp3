@@ -25,7 +25,7 @@
 
 namespace asio
 {
-	class io_service;
+class io_service;
 }
 
 namespace opendnp3
@@ -38,7 +38,8 @@ public:
 	AsyncTestObjectASIO(asio::io_service*);
 	virtual ~AsyncTestObjectASIO();
 
-	asio::io_service* GetService() {
+	asio::io_service* GetService()
+	{
 		return mpTestObjectService;
 	}
 

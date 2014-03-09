@@ -42,10 +42,12 @@ public:
 		Loggable(aLogger),
 		PhysicalLayerMonitor(aLogger.GetSubLogger("monitor"), apPhys, TimeDuration::Seconds(1),  TimeDuration::Seconds(10)),
 		mOpenCallbackCount(0),
-		mCloseCallbackCount(0) {
+		mCloseCallbackCount(0)
+	{
 	}
 
-	void ReachInAndStartOpenTimer() {
+	void ReachInAndStartOpenTimer()
+	{
 		this->StartOpenTimer();
 	}
 
@@ -54,13 +56,16 @@ public:
 
 protected:
 
-	void OnPhysicalLayerOpenSuccessCallback() {
+	void OnPhysicalLayerOpenSuccessCallback()
+	{
 		++mOpenCallbackCount;
 	}
-	void OnPhysicalLayerOpenFailureCallback() {
+	void OnPhysicalLayerOpenFailureCallback()
+	{
 		++mOpenCallbackCount;
 	}
-	void OnPhysicalLayerCloseCallback() {
+	void OnPhysicalLayerCloseCallback()
+	{
 		++mCloseCallbackCount;
 	}
 
@@ -99,8 +104,8 @@ TEST_CASE(SUITE("StateClosedExceptions"))
 	REQUIRE(test.log.PopOneEntry(LogLevel::Error));
 	test.monitor.OnOpenFailure();
 	REQUIRE(test.log.PopOneEntry(LogLevel::Error));
-	
-	
+
+
 	REQUIRE((ChannelState::CLOSED == test.monitor.GetState()));
 }
 
@@ -215,7 +220,7 @@ TEST_CASE(SUITE("OpeningLayerExceptions"))
 	TestObject test;
 	test.monitor.Start();
 	test.monitor.OnLowerLayerDown();
-	REQUIRE(test.log.PopOneEntry(LogLevel::Error));	
+	REQUIRE(test.log.PopOneEntry(LogLevel::Error));
 }
 
 TEST_CASE(SUITE("OpeningStartOneGoesToOpeningOne"))
@@ -323,7 +328,8 @@ TEST_CASE(SUITE("LayerKeepsTryingToOpen"))
 	TestObject test;
 	test.monitor.Start();
 
-	for(size_t i = 0; i < 3; ++i) {
+	for(size_t i = 0; i < 3; ++i)
+	{
 		REQUIRE((ChannelState::OPENING == test.monitor.GetState()));
 		test.phys.SignalOpenFailure();
 		REQUIRE((ChannelState::WAITING == test.monitor.GetState()));

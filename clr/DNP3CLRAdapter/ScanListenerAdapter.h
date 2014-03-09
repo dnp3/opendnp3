@@ -18,11 +18,11 @@ private class ScanListenerAdapter : public opendnp3::IScanListener
 public:
 
 	ScanListenerAdapter(System::Action<ScanResult>^ callback) : myCallback(callback)
-	{}	
+	{}
 
 	virtual void OnScanUpdate(opendnp3::ScanResult result) final
 	{
-		ScanStatus status = (result.status == opendnp3::ScanStatus::SUCCESS) ? ScanStatus::SUCCESS : ScanStatus::FAILURE;		
+		ScanStatus status = (result.status == opendnp3::ScanStatus::SUCCESS) ? ScanStatus::SUCCESS : ScanStatus::FAILURE;
 		myCallback->Invoke(ScanResult(status));
 	}
 

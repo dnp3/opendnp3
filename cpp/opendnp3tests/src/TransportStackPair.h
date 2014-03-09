@@ -23,7 +23,7 @@
 
 namespace asio
 {
-	class io_service;
+class io_service;
 }
 
 #include <asiopal/PhysicalLayerAsyncTCPClient.h>
@@ -40,11 +40,11 @@ class TransportStackPair
 {
 public:
 	TransportStackPair(
-	        LinkConfig aClientCfg,
-	        LinkConfig aServerCfg,
-	        openpal::Logger& arLogger,
-	        asio::io_service* apService,
-	        uint16_t aPort);
+	    LinkConfig aClientCfg,
+	    LinkConfig aServerCfg,
+	    openpal::Logger& arLogger,
+	    asio::io_service* apService,
+	    uint16_t aPort);
 
 	void Start();
 

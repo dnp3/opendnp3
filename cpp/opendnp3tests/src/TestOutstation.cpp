@@ -39,7 +39,7 @@ TEST_CASE(SUITE("InitialState"))
 	SlaveTestObject t(cfg, DatabaseTemplate());
 
 	t.slave.OnLowerLayerDown();
-	
+
 	t.slave.OnSolSendSuccess();
 	REQUIRE(SERR_INVALID_STATE ==  t.log.NextErrorCode());
 	t.slave.OnUnsolSendSuccess();
@@ -68,7 +68,7 @@ TEST_CASE(SUITE("DataPost"))
 
 	SlaveConfig cfg;
 	SlaveTestObject t(cfg, DatabaseTemplate::BinaryOnly(1));
-	
+
 	t.db.staticData.binaries.metadata[0].clazz = CLASS_1;
 
 	IDataObserver* pObs = t.slave.GetDataObserver();
@@ -79,13 +79,13 @@ TEST_CASE(SUITE("DataPost"))
 	}
 
 	// start, update, end
-	REQUIRE(3 ==  t.mts.Dispatch());	
+	REQUIRE(3 ==  t.mts.Dispatch());
 }
 
 TEST_CASE(SUITE("DataPostToNonExistent"))
 {
 	SlaveConfig cfg;
-	SlaveTestObject t(cfg, DatabaseTemplate::BinaryOnly(1));	
+	SlaveTestObject t(cfg, DatabaseTemplate::BinaryOnly(1));
 	t.db.staticData.binaries.metadata[0].clazz = CLASS_1;
 
 	IDataObserver* pObs = t.slave.GetDataObserver();
@@ -94,7 +94,7 @@ TEST_CASE(SUITE("DataPostToNonExistent"))
 		Binary b(true, BQ_ONLINE);
 		pObs->Update(b, 5);
 	}
-	
+
 	REQUIRE(3 ==  t.mts.Dispatch());
 
 	{
@@ -103,7 +103,7 @@ TEST_CASE(SUITE("DataPostToNonExistent"))
 		pObs->Update(b, 0);
 	}
 
-	REQUIRE(3 ==  t.mts.Dispatch());	
+	REQUIRE(3 ==  t.mts.Dispatch());
 }
 
 TEST_CASE(SUITE("UnsolicitedStaysDisabledEvenIfDataAreLoadedPriorToOpen"))
@@ -221,7 +221,7 @@ TEST_CASE(SUITE("DelayMeasureExtraData"))
 
 TEST_CASE(SUITE("WriteTimeDate"))
 {
-	SlaveConfig cfg; 
+	SlaveConfig cfg;
 	cfg.mDisableUnsol = true;
 	cfg.mAllowTimeSync = true;
 	SlaveTestObject t(cfg, DatabaseTemplate());
@@ -229,9 +229,9 @@ TEST_CASE(SUITE("WriteTimeDate"))
 
 	t.SendToSlave("C0 02 32 01 07 01 D2 04 00 00 00 00"); // write Grp50Var1, value = 1234 ms after epoch
 	REQUIRE(t.Read() ==  "C0 81 80 00");
-	REQUIRE(t.mTimeWrites.size() ==  1);	
+	REQUIRE(t.mTimeWrites.size() ==  1);
 	REQUIRE(t.mTimeWrites.front().msSinceEpoch ==  1234);
-	
+
 }
 
 TEST_CASE(SUITE("WriteTimeDateNotAsking"))
@@ -244,7 +244,7 @@ TEST_CASE(SUITE("WriteTimeDateNotAsking"))
 	t.SendToSlave("C0 02 32 01 07 01 D2 04 00 00 00 00"); //write Grp50Var1, value = 1234 ms after epoch
 	REQUIRE(t.Read() ==  "C0 81 80 04"); // param error
 	t.mts.DispatchOne();
-	REQUIRE(t.mTimeWrites.size() ==  0);	
+	REQUIRE(t.mTimeWrites.size() ==  0);
 }
 
 TEST_CASE(SUITE("WriteTimeDateMultipleObjects"))
@@ -274,7 +274,7 @@ TEST_CASE(SUITE("ReadClass0MultiFrag"))
 {
 	SlaveConfig cfg; cfg.mDisableUnsol = true;
 	cfg.mMaxFragSize = 20; // override to use a fragment length of 20
-	SlaveTestObject t(cfg, DatabaseTemplate::AnalogOnly(8));	
+	SlaveTestObject t(cfg, DatabaseTemplate::AnalogOnly(8));
 	t.slave.OnLowerLayerUp();
 
 	{
@@ -305,7 +305,7 @@ TEST_CASE(SUITE("ReadFuncNotSupported"))
 void TestStaticRead(const std::string& arRequest, const std::string& arResponse)
 {
 	SlaveConfig cfg; cfg.mDisableUnsol = true;
-	SlaveTestObject t(cfg, DatabaseTemplate(1,1,1,1,1,1));	
+	SlaveTestObject t(cfg, DatabaseTemplate(1, 1, 1, 1, 1, 1));
 	t.slave.OnLowerLayerUp();
 
 	t.SendToSlave(arRequest);
@@ -368,7 +368,7 @@ TEST_CASE(SUITE("ReadByRangeHeader"))
 {
 	SlaveConfig cfg;
 	cfg.mDisableUnsol = true;
-	SlaveTestObject t(cfg, DatabaseTemplate::AnalogOnly(10));	
+	SlaveTestObject t(cfg, DatabaseTemplate::AnalogOnly(10));
 	t.slave.OnLowerLayerUp();
 
 	{
@@ -385,7 +385,7 @@ template <class PointType>
 void TestStaticType(const SlaveConfig& aCfg, const DatabaseTemplate& tmp, PointType aVal, const std::string& aRsp)
 {
 	SlaveTestObject t(aCfg, tmp);
-	
+
 	t.slave.OnLowerLayerUp();
 
 	{

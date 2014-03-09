@@ -33,8 +33,10 @@ namespace asiopal
 
 void EventLog::Log( const LogEntry& arEntry )
 {
-for(auto pair: mSubscribers) {
-		if(this->SetContains(pair.second, -1) || this->SetContains(pair.second, arEntry.GetErrorCode())) {
+	for(auto pair : mSubscribers)
+	{
+		if(this->SetContains(pair.second, -1) || this->SetContains(pair.second, arEntry.GetErrorCode()))
+		{
 			pair.first->Log(arEntry);
 		}
 	}
@@ -54,7 +56,8 @@ void EventLog :: AddLogSubscriber(ILogBase* apSubscriber)
 void EventLog :: AddLogSubscriber(ILogBase* apSubscriber, int aErrorCode)
 {
 	SubscriberMap::iterator i = mSubscribers.find(apSubscriber);
-	if(i == mSubscribers.end()) {
+	if(i == mSubscribers.end())
+	{
 		std::set<int> set;
 		mSubscribers.insert(SubscriberMap::value_type(apSubscriber, set));
 		this->AddLogSubscriber(apSubscriber, aErrorCode);

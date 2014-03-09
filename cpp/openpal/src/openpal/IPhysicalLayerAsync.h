@@ -106,8 +106,8 @@ public:
 	 * result in the layer closing.
 	 *
 	 * @param arBuffer		The buffer from which the write operation
-	 * 						will write data. The underlying buffer must 
-	 *						remain available until the write callback or 
+	 * 						will write data. The underlying buffer must
+	 *						remain available until the write callback or
 	 *                      close occurs.
 	 */
 	virtual void AsyncWrite(const ReadOnlyBuffer& arBuffer) = 0;

@@ -72,13 +72,13 @@ TEST_CASE(SUITE("StateReady"))
 
 TEST_CASE(SUITE("ReceiveBadArguments"))
 {
-	TransportTestObject test(true);	
+	TransportTestObject test(true);
 
 	//check that the wrong aruments throw argument exceptions, and it's doesn't go to the sending state
 	test.lower.SendUp("");
 	REQUIRE(TLERR_NO_PAYLOAD ==  test.log.NextErrorCode());
 	test.lower.SendUp("FF");
-	REQUIRE(TLERR_NO_PAYLOAD ==  test.log.NextErrorCode());	
+	REQUIRE(TLERR_NO_PAYLOAD ==  test.log.NextErrorCode());
 
 	test.lower.SendUp(test.GetData("C0", 0, 250)); // length 251
 
@@ -112,7 +112,7 @@ TEST_CASE(SUITE("ReceiveWrongSequence"))
 
 TEST_CASE(SUITE("PacketsCanBeOfVaryingSize"))
 {
-	TransportTestObject test(true);	
+	TransportTestObject test(true);
 	test.lower.SendUp("40 0A 0B 0C"); // FIR/_/0
 	REQUIRE(test.log.IsLogErrorFree());
 	test.lower.SendUp("81 0D 0E 0F"); // _/FIN/1
@@ -125,7 +125,7 @@ TEST_CASE(SUITE("ReceiveSinglePacket"))
 	TransportTestObject test(true);
 	//now try receiving 1 a single FIR/FIN with a magic value
 	test.lower.SendUp("C0 77");
-	REQUIRE("77" ==  test.upper.GetBufferAsHexString());	
+	REQUIRE("77" ==  test.upper.GetBufferAsHexString());
 }
 
 TEST_CASE(SUITE("ReceiveLargestPossibleAPDU"))
@@ -137,7 +137,8 @@ TEST_CASE(SUITE("ReceiveLargestPossibleAPDU"))
 
 	vector<string> packets;
 	string apdu = test.GeneratePacketSequence(packets, num_packets, last_packet_length);
-	for(string s: packets) {
+	for(string s : packets)
+	{
 		test.lower.SendUp(s);
 	}
 
@@ -155,7 +156,8 @@ TEST_CASE(SUITE("ReceiveBufferOverflow"))
 	//send 1 more packet than possible
 	vector<string> packets;
 	string apdu = test.GeneratePacketSequence(packets, num_packets + 1, last_packet_length);
-for(string s: packets) {
+	for(string s : packets)
+	{
 		test.lower.SendUp(s);
 	}
 
@@ -170,7 +172,7 @@ TEST_CASE(SUITE("ReceiveNewFir"))
 	test.lower.SendUp(test.GetData("40"));	// FIR/_/0
 	REQUIRE(test.upper.IsBufferEmpty());
 
-	test.lower.SendUp("C0 AB CD");	// FIR/FIN/0	
+	test.lower.SendUp("C0 AB CD");	// FIR/FIN/0
 	REQUIRE("AB CD" ==  test.upper.GetBufferAsHexString());
 	REQUIRE(test.log.NextErrorCode() ==  TLERR_NEW_FIR); //make sure it logs the dropped frames
 }
@@ -179,7 +181,7 @@ TEST_CASE(SUITE("SendArguments"))
 {
 	TransportTestObject test(true);
 	test.upper.SendDown("");
-	REQUIRE(test.log.PopOneEntry(LogLevel::Error));	
+	REQUIRE(test.log.PopOneEntry(LogLevel::Error));
 }
 
 TEST_CASE(SUITE("StateSending"))
@@ -224,7 +226,7 @@ TEST_CASE(SUITE("SendFailure"))
 	test.lower.SendFailure();
 	REQUIRE(test.upper.GetState().mSuccessCnt ==  0);
 	REQUIRE(test.upper.GetState().mFailureCnt ==  1);
-	
+
 	test.upper.SendDown("11");
 	REQUIRE("C0 11" ==  test.lower.PopWriteAsHex()); // should resend with the same sequence number FIR/FIN SEQ=0
 	test.lower.SendSuccess();
@@ -239,7 +241,7 @@ TEST_CASE(SUITE("SendSuccess"))
 	// this puts the layer into the Sending state
 	test.upper.SendDown("11");
 	REQUIRE("C0 11" ==  test.lower.PopWriteAsHex()); //FIR/FIN SEQ=0
-	
+
 	// this puts the layer into the Sending state
 	test.upper.SendDown("11");
 	REQUIRE("C1 11" ==  test.lower.PopWriteAsHex()); //FIR/FIN SEQ=1
@@ -269,8 +271,8 @@ TEST_CASE(SUITE("SendFullAPDU"))
 	test.upper.SendDown(apdu);
 
 	//verify that each packet is received correctly
-	for(string tpdu: packets) 
-	{ 
+	for(string tpdu : packets)
+	{
 		REQUIRE(1 ==  test.lower.NumWrites());
 		REQUIRE(tpdu ==  test.lower.PopWriteAsHex());
 		REQUIRE(0 ==  test.lower.NumWrites());

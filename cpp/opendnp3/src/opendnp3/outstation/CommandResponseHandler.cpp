@@ -28,11 +28,11 @@
 
 namespace opendnp3
 {
-	
+
 CommandResponseHandler::CommandResponseHandler(openpal::Logger logger, uint8_t maxCommands_, ICommandAction* pCommandAction_, APDUResponse& response_) :
-	APDUHandlerBase(logger),			
+	APDUHandlerBase(logger),
 	pCommandAction(pCommandAction_),
-	numRequests(0),	
+	numRequests(0),
 	numSuccess(0),
 	maxCommands(maxCommands_),
 	writer(response_.GetWriter())
@@ -41,25 +41,25 @@ CommandResponseHandler::CommandResponseHandler(openpal::Logger logger, uint8_t m
 }
 
 void CommandResponseHandler::_OnIndexPrefix(const IterableBuffer<IndexedValue<ControlRelayOutputBlock, uint16_t>>& meas)
-{	
+{
 	this->RespondToHeader<ControlRelayOutputBlock, openpal::UInt16>(QualifierCode::UINT16_CNT_UINT16_INDEX, Group12Var1Serializer::Inst(), meas);
 }
-	
+
 void CommandResponseHandler::_OnIndexPrefix(const IterableBuffer<IndexedValue<AnalogOutputInt16, uint16_t>>& meas)
 {
 	this->RespondToHeader<AnalogOutputInt16, openpal::UInt16>(QualifierCode::UINT16_CNT_UINT16_INDEX, Group41Var2Serializer::Inst(), meas);
 }
-	
+
 void CommandResponseHandler::_OnIndexPrefix(const IterableBuffer<IndexedValue<AnalogOutputInt32, uint16_t>>& meas)
 {
 	this->RespondToHeader<AnalogOutputInt32, openpal::UInt16>(QualifierCode::UINT16_CNT_UINT16_INDEX, Group41Var1Serializer::Inst(), meas);
 }
-	
+
 void CommandResponseHandler::_OnIndexPrefix(const IterableBuffer<IndexedValue<AnalogOutputFloat32, uint16_t>>& meas)
 {
 	this->RespondToHeader<AnalogOutputFloat32, openpal::UInt16>(QualifierCode::UINT16_CNT_UINT16_INDEX, Group41Var3Serializer::Inst(), meas);
 }
-	
+
 void CommandResponseHandler::_OnIndexPrefix(const IterableBuffer<IndexedValue<AnalogOutputDouble64, uint16_t>>& meas)
 {
 	this->RespondToHeader<AnalogOutputDouble64, openpal::UInt16>(QualifierCode::UINT16_CNT_UINT16_INDEX, Group41Var4Serializer::Inst(), meas);

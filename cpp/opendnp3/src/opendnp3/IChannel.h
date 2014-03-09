@@ -85,8 +85,8 @@ public:
 
 
 	/**
-        * @return The execution context associated with the channel
-        */
+	    * @return The execution context associated with the channel
+	    */
 	virtual openpal::IExecutor* GetExecutor() = 0;
 
 	/**
@@ -99,10 +99,10 @@ public:
 	* @return interface representing the running master
 	*/
 	virtual IMaster* AddMaster(	const std::string& arLoggerId,
-	                                openpal::LogLevel aLevel,
-	                                ISOEHandler* apPublisher,
-	                                openpal::IUTCTimeSource* apTimeSource,
-	                                const MasterStackConfig& arCfg) = 0;
+	                            openpal::LogLevel aLevel,
+	                            ISOEHandler* apPublisher,
+	                            openpal::IUTCTimeSource* apTimeSource,
+	                            const MasterStackConfig& arCfg) = 0;
 
 	/**
 	* Add an outstation to the channel
@@ -114,10 +114,10 @@ public:
 	* @return interface representing the running outstations
 	*/
 	virtual IOutstation* AddOutstation(	const std::string& arLoggerId,
-	                                        openpal::LogLevel aLevel,
-	                                        ICommandHandler* apCmdHandler,
-	                                        ITimeWriteHandler* apTimeWriteHandler,
-	                                        const SlaveStackConfig& arCfg) = 0;
+	                                    openpal::LogLevel aLevel,
+	                                    ICommandHandler* apCmdHandler,
+	                                    ITimeWriteHandler* apTimeWriteHandler,
+	                                    const SlaveStackConfig& arCfg) = 0;
 };
 
 }

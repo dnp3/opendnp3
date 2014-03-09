@@ -67,27 +67,27 @@ const LogLevel FILTER_LEVEL = LogLevel::Info;
 TEST_CASE(SUITE("MasterToSlaveThroughput"))
 {
 
-/*  TODO
+	/*  TODO
 
 
-	IntegrationTest t(FILTER_LEVEL, START_PORT, NUM_PAIRS, NUM_POINTS);
+		IntegrationTest t(FILTER_LEVEL, START_PORT, NUM_PAIRS, NUM_POINTS);
 
-	size_t num_points_per_pair = 0;
-	StopWatch sw;
-	for (size_t j = 0; j < NUM_CHANGE_SETS; ++j) {
-		num_points_per_pair += t.IncrementData();
-		REQUIRE(t.WaitForSameData(TimeDuration::Seconds(5), true));
-		//cout << "iteration: " << j << endl;
-	}
+		size_t num_points_per_pair = 0;
+		StopWatch sw;
+		for (size_t j = 0; j < NUM_CHANGE_SETS; ++j) {
+			num_points_per_pair += t.IncrementData();
+			REQUIRE(t.WaitForSameData(TimeDuration::Seconds(5), true));
+			//cout << "iteration: " << j << endl;
+		}
 
-	if (OUTPUT_PERF_NUMBERS) {
-		double elapsed_sec = duration_cast<milliseconds>(sw.Elapsed()).count() / 1000.0;
-		size_t points = num_points_per_pair * NUM_PAIRS * 2;
-		cout << "num points: " << points << endl;
-		cout << "elapsed seconds: " << elapsed_sec << endl;
-		cout << "points/sec: " << points / elapsed_sec << endl;
-	}
-*/
+		if (OUTPUT_PERF_NUMBERS) {
+			double elapsed_sec = duration_cast<milliseconds>(sw.Elapsed()).count() / 1000.0;
+			size_t points = num_points_per_pair * NUM_PAIRS * 2;
+			cout << "num points: " << points << endl;
+			cout << "elapsed seconds: " << elapsed_sec << endl;
+			cout << "points/sec: " << points / elapsed_sec << endl;
+		}
+	*/
 }
 
 

@@ -45,7 +45,7 @@ void TestForIntegrityPoll(MasterTestObject& t, bool aSucceed = true)
 void TestForIntegrityAndRespond(MasterTestObject& t, const std::string& response)
 {
 	REQUIRE(INTEGRITY ==  t.Read());
-	t.RespondToMaster(response);	
+	t.RespondToMaster(response);
 }
 
 void DoControlSelectAndOperate(MasterTestObject& t, std::function<void (CommandResponse)> callback)
@@ -85,7 +85,7 @@ void TestAnalogOutputExecution(const std::string& setpointhex, T ao)
 TEST_CASE(SUITE("InitialState"))
 {
 	MasterConfig master_cfg;
-	MasterTestObject t(master_cfg);	
+	MasterTestObject t(master_cfg);
 
 	t.master.OnLowerLayerDown();
 	REQUIRE(t.log.PopOneEntry(LogLevel::Error));
@@ -191,7 +191,7 @@ TEST_CASE(SUITE("RestartAndTimeBits"))
 
 	t.fixedUTC.mTimeSinceEpoch = 100;
 
-	TestForIntegrityAndRespond(t, "C0 81 90 00"); // need time and device restart	
+	TestForIntegrityAndRespond(t, "C0 81 90 00"); // need time and device restart
 
 	// Device restart should happen before time task
 	REQUIRE("C0 02 50 01 00 07 07 00" ==  t.Read()); //write IIN
@@ -316,9 +316,11 @@ TEST_CASE(SUITE("ControlExecutionClosedState"))
 
 	ControlRelayOutputBlock bo(ControlCode::PULSE);
 
-	for(int i = 0; i < 10; ++i) {
+	for(int i = 0; i < 10; ++i)
+	{
 		CommandResponse rsp;
-		pCmdProcessor->SelectAndOperate(bo, 1, [&](CommandResponse r) {
+		pCmdProcessor->SelectAndOperate(bo, 1, [&](CommandResponse r)
+		{
 			rsp = r;
 		});
 		t.mts.Dispatch();
@@ -339,7 +341,8 @@ TEST_CASE(SUITE("SelectAndOperate"))
 	ControlRelayOutputBlock bo(ControlCode::PULSE); bo.status = CommandStatus::SUCCESS;
 
 	std::vector<CommandResponse> rsps;
-	t.master.GetCommandProcessor()->SelectAndOperate(bo, 1, [&](CommandResponse rsp) {
+	t.master.GetCommandProcessor()->SelectAndOperate(bo, 1, [&](CommandResponse rsp)
+	{
 		rsps.push_back(rsp);
 	});
 	t.mts.Dispatch();
@@ -370,7 +373,8 @@ TEST_CASE(SUITE("ControlExecutionSelectFailure"))
 
 	std::vector<CommandResponse> rsps;
 
-	DoControlSelectAndOperate(t, [&](CommandResponse cr) {
+	DoControlSelectAndOperate(t, [&](CommandResponse cr)
+	{
 		rsps.push_back(cr);
 	});
 	t.master.OnSolFailure();
@@ -388,7 +392,8 @@ TEST_CASE(SUITE("ControlExecutionSelectLayerDown"))
 	t.master.OnLowerLayerUp();
 
 	std::vector<CommandResponse> rsps;
-	DoControlSelectAndOperate(t, [&](CommandResponse cr) {
+	DoControlSelectAndOperate(t, [&](CommandResponse cr)
+	{
 		rsps.push_back(cr);
 	});
 	t.master.OnLowerLayerDown();
@@ -407,7 +412,8 @@ TEST_CASE(SUITE("ControlExecutionSelectErrorResponse"))
 	t.master.OnLowerLayerUp();
 
 	std::vector<CommandResponse> rsps;
-	DoControlSelectAndOperate(t, [&](CommandResponse cr) {
+	DoControlSelectAndOperate(t, [&](CommandResponse cr)
+	{
 		rsps.push_back(cr);
 	});
 	t.RespondToMaster("C0 81 00 00 0C 01 28 01 00 01 00 01 01 64 00 00 00 64 00 00 00 04"); // not supported
@@ -425,10 +431,11 @@ TEST_CASE(SUITE("ControlExecutionSelectPartialResponse"))
 	t.master.OnLowerLayerUp();
 
 	std::vector<CommandResponse> rsps;
-	DoControlSelectAndOperate(t, [&](CommandResponse cr) {
+	DoControlSelectAndOperate(t, [&](CommandResponse cr)
+	{
 		rsps.push_back(cr);
 	});
-	
+
 	t.RespondToMaster("80 81 00 00 0C 01 28 01 00 01 00 01 01 64 00 00 00 64 00 00 00 00", false);
 
 	REQUIRE(t.mts.DispatchOne());
@@ -487,7 +494,7 @@ TEST_CASE(SUITE("SolicitedResponseWithData"))
 	MasterConfig master_cfg;
 	MasterTestObject t(master_cfg);
 	t.master.OnLowerLayerUp();
-	
+
 	TestForIntegrityAndRespond(t, "C0 81 00 00 01 02 00 02 02 81"); //group 2 var 1, index = 2, 0x81 = Online, true
 
 	REQUIRE((Binary(true, BQ_ONLINE) == t.meas.GetBinary(2)));
@@ -499,7 +506,7 @@ TEST_CASE(SUITE("SolicitedResponseFailure"))
 	MasterTestObject t(master_cfg);
 	t.master.OnLowerLayerUp();
 
-	
+
 	TestForIntegrityPoll(t, false);
 
 	t.mts.AdvanceTime(TimeDuration(master_cfg.TaskRetryRate));
@@ -528,13 +535,13 @@ TEST_CASE(SUITE("SolicitedMultiFragResponse"))
 
 	REQUIRE(t.Read() ==  INTEGRITY);
 
-	t.RespondToMaster("C0 81 00 00 01 02 00 02 02 81", false); //trigger partial response	
+	t.RespondToMaster("C0 81 00 00 01 02 00 02 02 81", false); //trigger partial response
 
 	REQUIRE((Binary(true, BQ_ONLINE) == t.meas.GetBinary(2)));
 
 	REQUIRE(0 ==  t.app.NumAPDU());
 
-	t.RespondToMaster("C0 81 00 00 01 02 00 03 03 02");	
+	t.RespondToMaster("C0 81 00 00 01 02 00 03 03 02");
 	REQUIRE((Binary(false, BQ_RESTART) ==  t.meas.GetBinary(3)));
 }
 
@@ -547,14 +554,14 @@ TEST_CASE(SUITE("EventPoll"))
 	t.master.AddClassScan(CLASS_3, TimeDuration::Milliseconds(10), TimeDuration::Seconds(1));
 
 	t.master.OnLowerLayerUp();
-	
-	TestForIntegrityAndRespond(t, "C0 81 00 00 01 02 00 02 02 81"); //group 2 var 1, index = 2, 0x81 = Online, true	
-	
+
+	TestForIntegrityAndRespond(t, "C0 81 00 00 01 02 00 02 02 81"); //group 2 var 1, index = 2, 0x81 = Online, true
+
 	REQUIRE(t.Read() ==  "C0 01 3C 02 06 3C 03 06");
-	t.RespondToMaster("C0 81 00 00 01 02 00 02 02 81"); //group 2 var 1, index = 2, 0x81 = Online, true	
+	t.RespondToMaster("C0 81 00 00 01 02 00 02 02 81"); //group 2 var 1, index = 2, 0x81 = Online, true
 
 	REQUIRE(t.Read() ==  "C0 01 3C 04 06");
-	t.RespondToMaster("C0 81 00 00 01 02 00 02 02 81"); //group 2 var 1, index = 2, 0x81 = Online, true	
+	t.RespondToMaster("C0 81 00 00 01 02 00 02 02 81"); //group 2 var 1, index = 2, 0x81 = Online, true
 
 	REQUIRE((Binary(true, BQ_ONLINE) == t.meas.GetBinary(2)));
 }
@@ -579,7 +586,7 @@ TEST_CASE(SUITE("ParsesOctetStringResponseWithNoCharacters"))
 {
 	MasterConfig master_cfg;
 	MasterTestObject t(master_cfg);
-	t.master.OnLowerLayerUp();	
+	t.master.OnLowerLayerUp();
 
 	// octet strings shouldn't be found in class 0 polls, but we'll test that we can process them anyway
 	// Group 110 (0x6E) Variation(length), start = 3, stop = 3

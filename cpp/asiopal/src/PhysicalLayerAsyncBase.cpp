@@ -101,7 +101,8 @@ bool PhysicalLayerAsyncBase::State::CallbacksPending() const
 
 bool PhysicalLayerAsyncBase::State::CheckForClose()
 {
-	if(mClosing && !this->CallbacksPending()) {
+	if(mClosing && !this->CallbacksPending())
+	{
 		mClosing = mOpen = false;
 		return true;
 	}
@@ -135,14 +136,14 @@ PhysicalLayerAsyncBase::PhysicalLayerAsyncBase(openpal::Logger& arLogger) :
 
 void PhysicalLayerAsyncBase::AsyncOpen()
 {
-	if(mState.CanOpen()) 
+	if(mState.CanOpen())
 	{
 		mState.mOpening = true;
 		this->DoOpen();
 	}
-	else 
+	else
 	{
-		LOG_BLOCK(LogLevel::Error, "Invalid operation for state: " << this->ConvertStateToString());		
+		LOG_BLOCK(LogLevel::Error, "Invalid operation for state: " << this->ConvertStateToString());
 	}
 }
 
@@ -158,14 +159,16 @@ void PhysicalLayerAsyncBase::AsyncClose()
 
 void PhysicalLayerAsyncBase::StartClose()
 {
-	if(!mState.IsClosing()) { //TODO - kind of hack as it deviates from the current model.
-		if(mState.CanClose()) {
+	if(!mState.IsClosing())   //TODO - kind of hack as it deviates from the current model.
+	{
+		if(mState.CanClose())
+		{
 			mState.mClosing = true;
 
 			if(mState.mOpening) this->DoOpeningClose();
 			else this->DoClose();
 		}
-		else 
+		else
 		{
 			LOG_BLOCK(LogLevel::Error, "Invalid operation for state: " << this->ConvertStateToString());
 		}
@@ -173,7 +176,7 @@ void PhysicalLayerAsyncBase::StartClose()
 }
 
 void PhysicalLayerAsyncBase::AsyncWrite(const openpal::ReadOnlyBuffer& arBuffer)
-{			
+{
 	if (mState.CanWrite())
 	{
 		if (arBuffer.Size() > 0)
@@ -184,18 +187,21 @@ void PhysicalLayerAsyncBase::AsyncWrite(const openpal::ReadOnlyBuffer& arBuffer)
 		else
 		{
 			LOG_BLOCK(LogLevel::Error, "Client wrote a length of 0");
-			this->GetExecutor()->Post([this](){ this->DoWriteSuccess(); });
+			this->GetExecutor()->Post([this]()
+			{
+				this->DoWriteSuccess();
+			});
 		}
 	}
 	else
 	{
 		LOG_BLOCK(LogLevel::Error, "Invalid operation for state: " << this->ConvertStateToString());
-	}			
+	}
 }
 
 void PhysicalLayerAsyncBase::AsyncRead(WriteBuffer& arBuffer)
 {
-	if(mState.CanRead()) 
+	if(mState.CanRead())
 	{
 		if (arBuffer.Size() > 0)
 		{
@@ -205,10 +211,13 @@ void PhysicalLayerAsyncBase::AsyncRead(WriteBuffer& arBuffer)
 		else
 		{
 			LOG_BLOCK(LogLevel::Error, "Client read a length of 0");
-			this->GetExecutor()->Post([this, arBuffer](){ this->DoReadCallback(ReadOnlyBuffer()); });
-		}		
+			this->GetExecutor()->Post([this, arBuffer]()
+			{
+				this->DoReadCallback(ReadOnlyBuffer());
+			});
+		}
 	}
-	else 
+	else
 	{
 		LOG_BLOCK(LogLevel::Error, "Invalid operation for state: " << this->ConvertStateToString());
 	}
@@ -220,32 +229,36 @@ void PhysicalLayerAsyncBase::AsyncRead(WriteBuffer& arBuffer)
 
 void PhysicalLayerAsyncBase::OnOpenCallback(const std::error_code& arErr)
 {
-	if(mState.mOpening) 
+	if(mState.mOpening)
 	{
 		mState.mOpening = false;
 
 		this->DoOpenCallback();
 
-		if(arErr) {
+		if(arErr)
+		{
 			LOG_BLOCK(LogLevel::Warning, arErr.message());
 			mState.CheckForClose();
 			this->DoOpenFailure();
 			if(mpHandler) mpHandler->OnOpenFailure();
 		}
-		else { // successful connection
-			if(this->IsClosing()) { // but the connection was closed
+		else   // successful connection
+		{
+			if(this->IsClosing())   // but the connection was closed
+			{
 				mState.CheckForClose();
 				this->DoClose();
 				if(mpHandler) mpHandler->OnOpenFailure();
 			}
-			else {
+			else
+			{
 				mState.mOpen = true;
 				this->DoOpenSuccess();
 				if(mpHandler) mpHandler->OnLowerLayerUp();
 			}
 		}
 	}
-	else 
+	else
 	{
 		LOG_BLOCK(LogLevel::Error, "Invalid operation for state: " << this->ConvertStateToString());
 	}
@@ -253,19 +266,23 @@ void PhysicalLayerAsyncBase::OnOpenCallback(const std::error_code& arErr)
 
 void PhysicalLayerAsyncBase::OnReadCallback(const std::error_code& arErr, uint8_t* apBuffer, size_t aNumRead)
 {
-	if(mState.mReading) 
+	if(mState.mReading)
 	{
 		mState.mReading = false;
 
-		if(arErr) {
+		if(arErr)
+		{
 			LOG_BLOCK(LogLevel::Warning, arErr.message());
 			if(mState.CanClose()) this->StartClose();
 		}
-		else {
-			if(mState.mClosing) {
+		else
+		{
+			if(mState.mClosing)
+			{
 				LOG_BLOCK(LogLevel::Debug, "Ignoring received bytes since layer is closing: " << aNumRead);
 			}
-			else {
+			else
+			{
 				ReadOnlyBuffer buffer(apBuffer, aNumRead);
 				this->DoReadCallback(buffer);
 			}
@@ -273,7 +290,7 @@ void PhysicalLayerAsyncBase::OnReadCallback(const std::error_code& arErr, uint8_
 
 		if(mState.CheckForClose()) this->DoThisLayerDown();
 	}
-	else 
+	else
 	{
 		LOG_BLOCK(LogLevel::Error, "Invalid operation for state: " << this->ConvertStateToString());
 	}
@@ -281,25 +298,30 @@ void PhysicalLayerAsyncBase::OnReadCallback(const std::error_code& arErr, uint8_
 
 void PhysicalLayerAsyncBase::OnWriteCallback(const std::error_code& arErr, size_t aNumBytes)
 {
-	if(mState.mWriting) {
+	if(mState.mWriting)
+	{
 		mState.mWriting = false;
 
-		if(arErr) {
+		if(arErr)
+		{
 			LOG_BLOCK(LogLevel::Warning, arErr.message());
 			if(mState.CanClose()) this->StartClose();
 		}
-		else {
-			if(mState.mClosing) {
+		else
+		{
+			if(mState.mClosing)
+			{
 				LOG_BLOCK(LogLevel::Debug, "Ignoring written bytes since layer is closing: " << aNumBytes);
 			}
-			else {
+			else
+			{
 				this->DoWriteSuccess();
 			}
 		}
 
 		if(mState.CheckForClose()) this->DoThisLayerDown();
 	}
-	else 
+	else
 	{
 		LOG_BLOCK(LogLevel::Error, "Invalid operation for state: " << this->ConvertStateToString());
 	}

@@ -35,12 +35,21 @@ public:
 
 	virtual ~Measurement() {}
 
-	uint64_t GetTime() const { return time; }
-	bool IsTimeValid() const { return isTimeValid; }
-	uint8_t GetQuality() const { return quality; }	
+	uint64_t GetTime() const
+	{
+		return time;
+	}
+	bool IsTimeValid() const
+	{
+		return isTimeValid;
+	}
+	uint8_t GetQuality() const
+	{
+		return quality;
+	}
 
-	void SetTime(uint64_t time_) 
-	{ 
+	void SetTime(uint64_t time_)
+	{
 		time = time_;
 		isTimeValid = true;
 	}
@@ -50,12 +59,12 @@ public:
 		isTimeValid = false;
 		time = 0;
 	}
-	
-protected:	
+
+protected:
 
 	Measurement() : quality(0), time(0), isTimeValid(false)
 	{}
-	
+
 	Measurement(uint8_t quality_) : quality(quality_), time(0), isTimeValid(false)
 	{}
 
@@ -74,19 +83,22 @@ class TypedMeasurement : public Measurement
 {
 public:
 
-	T GetValue() const { return mValue; }	
+	T GetValue() const
+	{
+		return mValue;
+	}
 
 	typedef T Type;
-	
+
 protected:
-	
+
 	TypedMeasurement(): Measurement(), mValue(0) {}
 	TypedMeasurement(uint8_t aQuality) : Measurement(aQuality), mValue(0) {}
 	TypedMeasurement(T value, uint8_t aQuality) : Measurement(aQuality), mValue(value) {}
 	TypedMeasurement(T value, uint8_t aQuality, int64_t aTime) : Measurement(aQuality, aTime), mValue(value) {}
 
 private:
-	T mValue;	
+	T mValue;
 };
 
 }

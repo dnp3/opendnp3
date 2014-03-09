@@ -43,7 +43,8 @@ namespace opendnp3
 {
 
 /// Configuration of max event counts
-struct EventMaxConfig {
+struct EventMaxConfig
+{
 	EventMaxConfig();
 
 	EventMaxConfig(size_t, size_t, size_t, size_t);
@@ -69,7 +70,8 @@ Major feature areas are unsolicited responses, time synchronization requests, ev
 when the master requests class data or variation 0.
 
 */
-struct SlaveConfig {
+struct SlaveConfig
+{
 	SlaveConfig();
 
 

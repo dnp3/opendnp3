@@ -30,42 +30,42 @@ using namespace openpal;
 namespace opendnp3
 {
 
-WriteHandler::WriteHandler(openpal::Logger& aLogger, ITimeWriteHandler* pTimeWriteHandler_, IINField* pWriteIIN_) : 
+WriteHandler::WriteHandler(openpal::Logger& aLogger, ITimeWriteHandler* pTimeWriteHandler_, IINField* pWriteIIN_) :
 	APDUHandlerBase(aLogger),
 	pTimeWriteHandler(pTimeWriteHandler_),
 	pWriteIIN(pWriteIIN_),
 	wroteTime(false),
-	wroteIIN(false)	
+	wroteIIN(false)
 {}
-	
+
 void WriteHandler::_OnIIN(const IterableBuffer<IndexedValue<bool, uint16_t>>& meas)
-{	
+{
 	IndexedValue<bool, uint16_t> v;
-	if(meas.ReadOnlyValue(v)) 
+	if(meas.ReadOnlyValue(v))
 	{
 		if (wroteIIN) errors.Set(IINBit::PARAM_ERROR);
 		else
-		{			
+		{
 			if (v.index == static_cast<int>(IINBit::DEVICE_RESTART))
 			{
 				if (v.value) errors.Set(IINBit::PARAM_ERROR);
-				else 
+				else
 				{
 					wroteIIN = true;
 					pWriteIIN->Clear(IINBit::DEVICE_RESTART);
 				}
 			}
 			else errors.Set(IINBit::PARAM_ERROR);
-		}		
+		}
 	}
-	else errors.Set(IINBit::PARAM_ERROR);	
+	else errors.Set(IINBit::PARAM_ERROR);
 }
 
 void WriteHandler::_OnCountOf(const IterableBuffer<Group50Var1>& times)
 {
 	if (wroteTime) errors.Set(IINBit::PARAM_ERROR);
 	else
-	{		
+	{
 		if (pWriteIIN->IsSet(IINBit::NEED_TIME))
 		{
 			Group50Var1 time;
@@ -79,7 +79,7 @@ void WriteHandler::_OnCountOf(const IterableBuffer<Group50Var1>& times)
 		}
 		else
 		{
-			errors.Set(IINBit::PARAM_ERROR);		
+			errors.Set(IINBit::PARAM_ERROR);
 		}
 	}
 }

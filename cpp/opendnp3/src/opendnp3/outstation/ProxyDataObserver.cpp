@@ -34,43 +34,67 @@ ProxyDataObserver::ProxyDataObserver(IDataObserver* pProxy_, openpal::IExecutor*
 {}
 
 void ProxyDataObserver::Start()
-{	
-	pExecutor->Post([this](){ Transaction::Start(pProxy); });
+{
+	pExecutor->Post([this]()
+	{
+		Transaction::Start(pProxy);
+	});
 }
 
 void ProxyDataObserver::End()
 {
-	pExecutor->Post([this](){ Transaction::End(pProxy); });
+	pExecutor->Post([this]()
+	{
+		Transaction::End(pProxy);
+	});
 }
 
 void ProxyDataObserver::Update(const Binary& meas, uint16_t index)
 {
-	pExecutor->Post([=](){ pProxy->Update(meas, index); });
+	pExecutor->Post([ = ]()
+	{
+		pProxy->Update(meas, index);
+	});
 }
 
 void ProxyDataObserver::Update(const Analog& meas, uint16_t index)
 {
-	pExecutor->Post([=](){ pProxy->Update(meas, index); });
+	pExecutor->Post([ = ]()
+	{
+		pProxy->Update(meas, index);
+	});
 }
 
 void ProxyDataObserver::Update(const Counter& meas, uint16_t index)
 {
-	pExecutor->Post([=](){ pProxy->Update(meas, index); });
+	pExecutor->Post([ = ]()
+	{
+		pProxy->Update(meas, index);
+	});
 }
 
 void ProxyDataObserver::Update(const FrozenCounter& meas, uint16_t index)
 {
-	pExecutor->Post([=](){ pProxy->Update(meas, index); });
+	pExecutor->Post([ = ]()
+	{
+		pProxy->Update(meas, index);
+	});
 }
 
 void ProxyDataObserver::Update(const BinaryOutputStatus& meas, uint16_t index)
 {
-	pExecutor->Post([=](){ pProxy->Update(meas, index); });
+	pExecutor->Post([ = ]()
+	{
+		pProxy->Update(meas, index);
+	});
 }
 
 void ProxyDataObserver::Update(const AnalogOutputStatus& meas, uint16_t index)
 {
-	pExecutor->Post([=](){ pProxy->Update(meas, index); });
+	pExecutor->Post([ = ]()
+	{
+		pProxy->Update(meas, index);
+	});
 }
 
 }

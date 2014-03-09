@@ -30,7 +30,8 @@ namespace opendnp3
 
 /** Configuration structure for the dnp3 application layer
 */
-struct AppConfig {
+struct AppConfig
+{
 
 	/// Default constructor
 	AppConfig(bool aIsMaster = true) : IsMaster(aIsMaster), RspTimeout(TimeDuration::Seconds(5)), NumRetry(0), FragSize(DEFAULT_FRAG_SIZE) {}

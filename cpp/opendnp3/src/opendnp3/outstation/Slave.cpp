@@ -50,18 +50,18 @@ Slave::Slave(openpal::Logger aLogger, IAppLayer* apAppLayer, IExecutor* apExecut
 	IAppUser(aLogger),
 	StackBase(apExecutor),
 	mpTimeWriteHandler(apTimeWriteHandler),
-	selectBuffer(apExecutor, arCfg.mSelectTimeout),	
+	selectBuffer(apExecutor, arCfg.mSelectTimeout),
 	lastResponse(responseBuffer.GetWriteBuffer()),
 	proxyObserver(apDatabase, apExecutor),
 	mpAppLayer(apAppLayer),
 	mpDatabase(apDatabase),
 	mpCmdHandler(apCmdHandler),
 	mpState(AS_Closed::Inst()),
-	mConfig(arCfg),	
-	mpUnsolTimer(nullptr),	
-	mCachedRequest(arCfg.mMaxControls),	
-	mStaticRspContext(apDatabase, StaticResponseTypes(arCfg)),	
-	mDeferredUnsol(false),	
+	mConfig(arCfg),
+	mpUnsolTimer(nullptr),
+	mCachedRequest(arCfg.mMaxControls),
+	mStaticRspContext(apDatabase, StaticResponseTypes(arCfg)),
+	mDeferredUnsol(false),
 	mStartupNullUnsol(false),
 	mState(StackState::COMMS_DOWN),
 	mpTimeTimer(nullptr)
@@ -69,10 +69,11 @@ Slave::Slave(openpal::Logger aLogger, IAppLayer* apAppLayer, IExecutor* apExecut
 	/* Link the event buffer to the database */
 	//mpDatabase->AddEventBuffer(mRspContext.GetBuffer());
 
-	mIIN.Set(IINBit::DEVICE_RESTART); // Always set on restart	
+	mIIN.Set(IINBit::DEVICE_RESTART); // Always set on restart
 
 	/* Cause the slave to go through the null-unsol startup sequence */
-	if (!mConfig.mDisableUnsol) {
+	if (!mConfig.mDisableUnsol)
+	{
 		mDeferredUnsol = true;
 	}
 }
@@ -90,7 +91,8 @@ void Slave::SetNeedTimeIIN()
 
 void Slave::UpdateState(StackState aState)
 {
-	if(mState != aState) {
+	if(mState != aState)
+	{
 		LOG_BLOCK(LogLevel::Info, "StackState: " << StackStateToString(aState));
 		mState = aState;
 		this->NotifyListeners(aState);
@@ -101,12 +103,12 @@ void Slave::UpdateState(StackState aState)
 
 void Slave::OnLowerLayerUp()
 {
-	mpState->OnLowerLayerUp(this);	
+	mpState->OnLowerLayerUp(this);
 }
 
 void Slave::OnLowerLayerDown()
 {
-	mpState->OnLowerLayerDown(this);	
+	mpState->OnLowerLayerDown(this);
 	this->UpdateState(StackState::COMMS_DOWN);
 }
 
@@ -118,25 +120,25 @@ void Slave::OnSolSendSuccess()
 
 void Slave::OnSolFailure()
 {
-	mpState->OnSolFailure(this);	
+	mpState->OnSolFailure(this);
 	LOG_BLOCK(LogLevel::Warning, "Response failure");
 }
 
 void Slave::OnUnsolSendSuccess()
 {
-	mpState->OnUnsolSendSuccess(this);	
+	mpState->OnUnsolSendSuccess(this);
 	this->UpdateState(StackState::COMMS_UP);
 }
 
 void Slave::OnUnsolFailure()
 {
 	mpState->OnUnsolFailure(this);
-	LOG_BLOCK(LogLevel::Warning, "Unsol response failure");	
+	LOG_BLOCK(LogLevel::Warning, "Unsol response failure");
 }
 
 void Slave::OnRequest(const APDURecord& record, SequenceInfo aSeqInfo)
-{	
-	mpState->OnRequest(this, record, aSeqInfo);	
+{
+	mpState->OnRequest(this, record, aSeqInfo);
 }
 
 /* Internally generated events */
@@ -144,19 +146,19 @@ void Slave::OnRequest(const APDURecord& record, SequenceInfo aSeqInfo)
 void Slave::OnDataUpdate()
 {
 	// let the current state decide how to handle the change buffer
-	mpState->OnDataUpdate(this);	
+	mpState->OnDataUpdate(this);
 }
 
 void Slave::OnUnsolTimerExpiration()
 {
 	// let the current state decide how to handle the timer expiration
 	mpUnsolTimer = nullptr;
-	mpState->OnUnsolExpiration(this);	
+	mpState->OnUnsolExpiration(this);
 }
 
 
 void Slave::ChangeState(SlaveStateBase* apState)
-{	
+{
 	LOG_BLOCK(LogLevel::Debug, "State changed from " << mpState->Name() << " to " << apState->Name());
 	mpState = apState;
 	mpState->Enter(this);
@@ -174,28 +176,28 @@ void Slave::RespondToRequest(const APDURecord& record, SequenceInfo sequence)
 	response.SetControl(AppControlField::DEFAULT);
 	auto indications = ConfigureResponse(record, sequence, response);
 	lastResponse = response;
-	this->SendResponse(response, indications);	
+	this->SendResponse(response, indications);
 }
 
 IINField Slave::ConfigureResponse(const APDURecord& request, SequenceInfo sequence, APDUResponse& response)
-{	
+{
 	switch(request.function)
-	{	
-		case(FunctionCode::READ) :
-			return HandleRead(request, sequence, response);
-		case(FunctionCode::WRITE):			
-			return HandleWrite(request, sequence);
-		case(FunctionCode::SELECT) :
-			return HandleSelect(request, sequence, response);
-		case(FunctionCode::OPERATE) :
-			return HandleOperate(request, sequence, response);
-		case(FunctionCode::DIRECT_OPERATE) :
-			return HandleDirectOperate(request, sequence, response);
-		case(FunctionCode::DELAY_MEASURE):		
-			return HandleDelayMeasure(request, sequence, response);	
-		default:	
-			ERROR_BLOCK(LogLevel::Warning, "Function not supported: " << FunctionCodeToString(request.function), SERR_FUNC_NOT_SUPPORTED);
-			return IINField(IINBit::FUNC_NOT_SUPPORTED);			
+	{
+	case(FunctionCode::READ) :
+		return HandleRead(request, sequence, response);
+	case(FunctionCode::WRITE):
+		return HandleWrite(request, sequence);
+	case(FunctionCode::SELECT) :
+		return HandleSelect(request, sequence, response);
+	case(FunctionCode::OPERATE) :
+		return HandleOperate(request, sequence, response);
+	case(FunctionCode::DIRECT_OPERATE) :
+		return HandleDirectOperate(request, sequence, response);
+	case(FunctionCode::DELAY_MEASURE):
+		return HandleDelayMeasure(request, sequence, response);
+	default:
+		ERROR_BLOCK(LogLevel::Warning, "Function not supported: " << FunctionCodeToString(request.function), SERR_FUNC_NOT_SUPPORTED);
+		return IINField(IINBit::FUNC_NOT_SUPPORTED);
 	}
 }
 
@@ -210,7 +212,7 @@ IINField Slave::HandleWrite(const APDURecord& request, SequenceInfo sequence)
 	else
 	{
 		return IINFromParseResult(result);
-	}	
+	}
 }
 
 IINField Slave::HandleRead(const APDURecord& request, SequenceInfo sequence, APDUResponse& response)
@@ -221,9 +223,9 @@ IINField Slave::HandleRead(const APDURecord& request, SequenceInfo sequence, APD
 	if(result == APDUParser::Result::OK)
 	{
 		auto errors = handler.Errors();
-		if(errors.Any()) return errors;		
-		else 
-		{	
+		if(errors.Any()) return errors;
+		else
+		{
 			// if the request contained static variations, we double buffer (copy) the entire static database.
 			// this ensures that an multi-fragmented responses see a consistent snapshot
 			if(!mStaticRspContext.IsComplete()) mpDatabase->DoubleBuffer();
@@ -231,7 +233,7 @@ IINField Slave::HandleRead(const APDURecord& request, SequenceInfo sequence, APD
 			return IINField::Empty;
 		}
 	}
-	else 
+	else
 	{
 		mStaticRspContext.Reset();
 		return IINFromParseResult(result);
@@ -247,7 +249,7 @@ IINField Slave::HandleSelect(const APDURecord& request, SequenceInfo sequence, A
 	{
 		LOG_BLOCK(LogLevel::Warning, "Igonring command request due to payload size of " << request.objects.Size());
 		selectBuffer.Clear();
-		return IINField(IINBit::PARAM_ERROR);		
+		return IINField(IINBit::PARAM_ERROR);
 	}
 	else
 	{
@@ -261,24 +263,24 @@ IINField Slave::HandleSelect(const APDURecord& request, SequenceInfo sequence, A
 				auto result = selectBuffer.Select(request.control.SEQ, request.objects);
 				switch (result)
 				{
-					case(SelectBuffer::SelectResult::OK) :
-					case(SelectBuffer::SelectResult::REPEAT):
-						return IINField::Empty;
-					default:
-						return IINField(IINBit::PARAM_ERROR);
+				case(SelectBuffer::SelectResult::OK) :
+				case(SelectBuffer::SelectResult::REPEAT):
+					return IINField::Empty;
+				default:
+					return IINField(IINBit::PARAM_ERROR);
 				}
 			}
 			else
 			{
 				return IINField::Empty;
-			}			
+			}
 		}
 		else return IINFromParseResult(result);
-	}	
+	}
 }
 
 IINField Slave::HandleOperate(const APDURecord& request, SequenceInfo sequence, APDUResponse& response)
-{	
+{
 	if (request.objects.Size() > response.Remaining())
 	{
 		LOG_BLOCK(LogLevel::Warning, "Igonring operate request due to payload size of " << request.objects.Size());
@@ -290,26 +292,26 @@ IINField Slave::HandleOperate(const APDURecord& request, SequenceInfo sequence, 
 		auto result = selectBuffer.Operate(request.control.SEQ, request.objects);
 		switch (result)
 		{
-			
-			case(SelectBuffer::OperateResult::TIMEOUT):
-				return HandleCommandWithConstant(request, response, CommandStatus::TIMEOUT);
-			case(SelectBuffer::OperateResult::REPEAT):
+
+		case(SelectBuffer::OperateResult::TIMEOUT):
+			return HandleCommandWithConstant(request, response, CommandStatus::TIMEOUT);
+		case(SelectBuffer::OperateResult::REPEAT):
 			{
 				// respond with the last response
 				response = lastResponse;
 				return lastResponse.GetIIN();
-			}			
-			case(SelectBuffer::OperateResult::OK) :
+			}
+		case(SelectBuffer::OperateResult::OK) :
 			{
 				CommandActionAdapter adapter(this->mpCmdHandler, false);
 				CommandResponseHandler handler(mLogger, mConfig.mMaxControls, &adapter, response);
 				auto result = APDUParser::ParseTwoPass(request.objects, &handler, &mLogger);
 				return IINFromParseResult(result);
 			}
-			default:
-				return HandleCommandWithConstant(request, response, CommandStatus::NO_SELECT);
-			
-		}			
+		default:
+			return HandleCommandWithConstant(request, response, CommandStatus::NO_SELECT);
+
+		}
 	}
 }
 
@@ -325,7 +327,7 @@ IINField Slave::HandleDirectOperate(const APDURecord& request, SequenceInfo sequ
 		CommandActionAdapter adapter(this->mpCmdHandler, false); // do the operation
 		CommandResponseHandler handler(mLogger, mConfig.mMaxControls, &adapter, response);
 		auto result = APDUParser::ParseTwoPass(request.objects, &handler, &mLogger);
-		return IINFromParseResult(result);		
+		return IINFromParseResult(result);
 	}
 }
 
@@ -339,19 +341,19 @@ void Slave::ContinueResponse()
 }
 
 IINField Slave::HandleDelayMeasure(const APDURecord& request, SequenceInfo sequence, APDUResponse& response)
-{		
-	if(request.objects.IsEmpty()) 
-	{	
+{
+	if(request.objects.IsEmpty())
+	{
 		auto writer = response.GetWriter();
 		Group52Var2 value = { 0 }; 	// respond with 0 time delay
-		writer.WriteSingleValue<UInt8, Group52Var2>(QualifierCode::UINT8_CNT, value);		
+		writer.WriteSingleValue<UInt8, Group52Var2>(QualifierCode::UINT8_CNT, value);
 		return IINField::Empty;
 	}
 	else
 	{
 		// there shouldn't be any trailing headers in delay measure request, no need to even parse
 		return IINField(IINBit::FUNC_NOT_SUPPORTED);
-	}	
+	}
 }
 
 IINField Slave::HandleCommandWithConstant(const APDURecord& request, APDUResponse& response, CommandStatus status)
@@ -366,13 +368,13 @@ void Slave::SendResponse(APDUResponse& response, const IINField& indications)
 {
 	response.SetIIN(mIIN | indications);
 	mpAppLayer->SendResponse(response);
-}	
+}
 
 
 /*
-switch (record.function) 
-{		
-	case (FunctionCode::READ): 
+switch (record.function)
+{
+	case (FunctionCode::READ):
 	{
 		ChangeState(slave, apNext);
 		slave->mRspContext.Reset();
@@ -423,10 +425,10 @@ switch (record.function)
 		c->ConfigureDelayMeasurement(arRequest);
 		c->Send(c->mResponse);
 		break;
-		
+
 	default:
 		ERROR_BLOCK(LogLevel::Warning, "Function not supported: " << FunctionCodeToString(record.function), SERR_FUNC_NOT_SUPPORTED);
-		break;		
+		break;
 }
 */
 
@@ -459,7 +461,7 @@ void Slave::HandleWriteIIN(HeaderReadIterator& arHdr)
 {
 	for (ObjectReadIterator obj = arHdr.BeginRead(); !obj.IsEnd(); ++obj) {
 		switch (obj->Index()) {
-			case(static_cast<int>(IINBit::DEVICE_RESTART)): 
+			case(static_cast<int>(IINBit::DEVICE_RESTART)):
 			{
 				bool value = Group80Var1::Inst()->Read(*obj, obj->Start(), obj->Index());
 				if (!value) {
@@ -491,7 +493,7 @@ void Slave::HandleWriteTimeDate(HeaderReadIterator& arHWI)
 	if (obj.Count() == 1) {
 
 		auto utc = UTCTimestamp(Group50Var1::Inst()->mTime.Get(*obj));
-		
+
 		//make the callback with the stack unwound
 		mpExecutor->Post([utc, this]() { mpTimeWriteHandler->WriteAbsoluteTime(utc); });
 
@@ -499,7 +501,7 @@ void Slave::HandleWriteTimeDate(HeaderReadIterator& arHWI)
 
 		ERROR_BLOCK(LogLevel::Event, "Time synchronized with master", TIME_SYNC_UPDATED);
 	}
-	else mRspIIN.Set(IINBit::PARAM_ERROR);	
+	else mRspIIN.Set(IINBit::PARAM_ERROR);
 }
 
 void Slave::HandleWrite(const APDU& arRequest)

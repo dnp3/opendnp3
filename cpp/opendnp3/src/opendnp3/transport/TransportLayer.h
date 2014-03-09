@@ -63,7 +63,10 @@ public:
 	/* Events - NVII delegates from ILayerUp/ILayerDown and Events produced internally */
 	static std::string ToString(uint8_t aHeader);
 
-	openpal::Logger& GetLogger() { return mLogger;  }
+	openpal::Logger& GetLogger()
+	{
+		return mLogger;
+	}
 
 private:
 

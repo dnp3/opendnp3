@@ -24,11 +24,12 @@
 
 #include <opendnp3/IAPDUHandler.h>
 
-namespace opendnp3 {
+namespace opendnp3
+{
 
 class TrackingHandler : public IAPDUHandler
 {
-	public:
+public:
 
 	uint64_t count;
 
@@ -41,87 +42,138 @@ class TrackingHandler : public IAPDUHandler
 
 	virtual void OnCountOf(const IterableBuffer<Group52Var2>& times) override
 	{
-		times.foreach([this](const Group52Var2& v) { ++count; });
+		times.foreach([this](const Group52Var2 & v)
+		{
+			++count;
+		});
 	}
 
 	virtual void OnIIN(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<bool>>& bits) override
 	{
-		bits.foreach([this](const IndexedValue<bool>& v) { ++count; });
+		bits.foreach([this](const IndexedValue<bool>& v)
+		{
+			++count;
+		});
 	}
 
 	virtual void OnRange(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<Binary>>& meas) override
 	{
-		meas.foreach([this](const IndexedValue<Binary>& v) { ++count; });
+		meas.foreach([this](const IndexedValue<Binary>& v)
+		{
+			++count;
+		});
 	}
 
 	virtual void OnIndexPrefix(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<Binary>>& meas) override
 	{
-		meas.foreach([this](const IndexedValue<Binary>& v){ ++count; });
+		meas.foreach([this](const IndexedValue<Binary>& v)
+		{
+			++count;
+		});
 	}
 
 	virtual void OnRange(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<BinaryOutputStatus>>& meas) override
 	{
-		meas.foreach([this](const IndexedValue<BinaryOutputStatus>& v) { ++count; });
+		meas.foreach([this](const IndexedValue<BinaryOutputStatus>& v)
+		{
+			++count;
+		});
 	}
 
 	virtual void OnRange(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<Counter>>& meas) override
 	{
-		meas.foreach([this](const IndexedValue<Counter>& v) { ++count; });
+		meas.foreach([this](const IndexedValue<Counter>& v)
+		{
+			++count;
+		});
 	}
 
 	virtual void OnIndexPrefix(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<Counter>>& meas) override
 	{
-		meas.foreach([this](const IndexedValue<Counter>& v) { ++count; });
+		meas.foreach([this](const IndexedValue<Counter>& v)
+		{
+			++count;
+		});
 	}
 
 	virtual void OnRange(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<Analog>>& meas) override
 	{
-		meas.foreach([this](const IndexedValue<Analog>& v) { ++count; });
+		meas.foreach([this](const IndexedValue<Analog>& v)
+		{
+			++count;
+		});
 	}
 
 	virtual void OnIndexPrefix(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<Analog>>& meas) override
 	{
-		meas.foreach([this](const IndexedValue<Analog>& v) { ++count; });
+		meas.foreach([this](const IndexedValue<Analog>& v)
+		{
+			++count;
+		});
 	}
 
 	virtual void OnRange(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<AnalogOutputStatus>>& meas) override
 	{
-		meas.foreach([this](const IndexedValue<AnalogOutputStatus>& v) { ++count; });
+		meas.foreach([this](const IndexedValue<AnalogOutputStatus>& v)
+		{
+			++count;
+		});
 	}
 
 	virtual void OnIndexPrefix(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<ControlRelayOutputBlock>>& meas) override
 	{
-		meas.foreach([this](const IndexedValue<ControlRelayOutputBlock>& v) { ++count; });
+		meas.foreach([this](const IndexedValue<ControlRelayOutputBlock>& v)
+		{
+			++count;
+		});
 	}
 
 	virtual void OnIndexPrefix(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<AnalogOutputInt16>>& meas) override
 	{
-		meas.foreach([this](const IndexedValue<AnalogOutputInt16>& v) { ++count;} );
+		meas.foreach([this](const IndexedValue<AnalogOutputInt16>& v)
+		{
+			++count;
+		} );
 	}
 
 	virtual void OnIndexPrefix(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<AnalogOutputInt32>>& meas) override
 	{
-		meas.foreach([this](const IndexedValue<AnalogOutputInt32>& v) { ++count; });
+		meas.foreach([this](const IndexedValue<AnalogOutputInt32>& v)
+		{
+			++count;
+		});
 	}
 
 	virtual void OnIndexPrefix(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<AnalogOutputFloat32>>& meas) override
 	{
-		meas.foreach([this](const IndexedValue<AnalogOutputFloat32>& v) { ++count; });
+		meas.foreach([this](const IndexedValue<AnalogOutputFloat32>& v)
+		{
+			++count;
+		});
 	}
 
 	virtual void OnIndexPrefix(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<AnalogOutputDouble64>>& meas) override
 	{
-		meas.foreach([this](const IndexedValue<AnalogOutputDouble64>& v) {++count;} );
+		meas.foreach([this](const IndexedValue<AnalogOutputDouble64>& v)
+		{
+			++count;
+		} );
 	}
 
 	virtual void OnIndexPrefixOfOctets(GroupVariation, QualifierCode qualifier, const IterableBuffer<IndexedValue<openpal::ReadOnlyBuffer>>& meas) override
 	{
-		meas.foreach([this](const IndexedValue<openpal::ReadOnlyBuffer>& v) {++count; });
+		meas.foreach([this](const IndexedValue<openpal::ReadOnlyBuffer>& v)
+		{
+			++count;
+		});
 	}
 
 	virtual void OnRangeOfOctets(GroupVariation, QualifierCode qualifier, const IterableBuffer<IndexedValue<openpal::ReadOnlyBuffer>>& meas) override
 	{
-		meas.foreach([this](const IndexedValue<openpal::ReadOnlyBuffer>& v) { ++count; });
+		meas.foreach([this](const IndexedValue<openpal::ReadOnlyBuffer>& v)
+		{
+			++count;
+		});
 	}
 
 };

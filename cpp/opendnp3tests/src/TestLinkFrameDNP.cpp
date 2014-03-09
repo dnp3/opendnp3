@@ -34,10 +34,12 @@ void FormatUserData(LinkFrame& f, bool aIsMaster, bool aIsConfirmed, int aDest, 
 	HexSequence hs(arData);
 	REQUIRE(hs.Size() < 250);
 
-	if(aIsConfirmed) {
+	if(aIsConfirmed)
+	{
 		f.FormatConfirmedUserData(aIsMaster, aFcb, aDest, aSrc, hs, hs.Size());
 	}
-	else {
+	else
+	{
 		f.FormatUnconfirmedUserData(aIsMaster, aDest, aSrc, hs, hs.Size());
 	}
 }
@@ -79,11 +81,13 @@ TEST_CASE(SUITE("CopyConstructor")) //make sure the default copies the buffer pr
 	LinkFrame b(a);
 
 	//verify that the buffers are equal
-	for(size_t i = 0; i < a.GetSize(); i++) {
+	for(size_t i = 0; i < a.GetSize(); i++)
+	{
 		REQUIRE(a.GetBuffer()[i] ==  b.GetBuffer()[i]);
 	}
 
-	for(size_t i = 0; i < a.GetSize(); i++) {
+	for(size_t i = 0; i < a.GetSize(); i++)
+	{
 		//verify that that buffers are different memory locations
 		REQUIRE((a.GetBuffer() + i) != (b.GetBuffer() + i));
 	}

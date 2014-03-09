@@ -38,7 +38,7 @@ ostream& operator<<(ostream& output, const MockAppUser::State& s)
 	       << " UnsolFailure: " << s.NumUnsolFailure
 	       << " PartialResponse: " << s.NumPartialRsp
 	       << " FinalRsp: " << s.NumFinalRsp
-	       << " Request: " << s.NumRequest;	       
+	       << " Request: " << s.NumRequest;
 
 	return output;
 }
@@ -54,7 +54,7 @@ MockAppUser::State::State() :
 	NumUnsolFailure(0),
 	NumPartialRsp(0),
 	NumFinalRsp(0),
-	NumRequest(0)	
+	NumRequest(0)
 {}
 
 bool MockAppUser::State::operator==(const State& arState) const
@@ -68,7 +68,7 @@ bool MockAppUser::State::operator==(const State& arState) const
 	        this->NumUnsolFailure == arState.NumUnsolFailure &&
 	        this->NumPartialRsp == arState.NumPartialRsp &&
 	        this->NumFinalRsp == arState.NumFinalRsp &&
-	        this->NumRequest == arState.NumRequest;	        
+	        this->NumRequest == arState.NumRequest;
 }
 
 // Implement IAppUser

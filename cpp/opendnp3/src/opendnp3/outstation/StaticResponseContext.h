@@ -39,10 +39,10 @@ namespace opendnp3
 
 enum class QueueResult
 {
-	SUCCESS,
-	FULL,
-	OBJECT_UNDEFINED,
-	OUT_OF_RANGE
+    SUCCESS,
+    FULL,
+    OBJECT_UNDEFINED,
+    OUT_OF_RANGE
 };
 
 /**
@@ -50,19 +50,19 @@ enum class QueueResult
  * coordinating with the database.
  */
 class StaticResponseContext : private Uncopyable
-{				
+{
 	class StaticRangeLoader: public StaticRange
 	{
-		public:
-		
+	public:
+
 		StaticRangeLoader() : pLoadFun(nullptr) {}
 		StaticRangeLoader(StaticLoadFun pLoadFun_, const StaticRange& rng): StaticRange(rng), pLoadFun(pLoadFun_) {}
-		
+
 		StaticLoadFun pLoadFun;
 	};
-	
 
-	public:
+
+public:
 
 	StaticResponseContext(Database*, const StaticResponseTypes& rspTypes = StaticResponseTypes());
 
@@ -71,18 +71,18 @@ class StaticResponseContext : private Uncopyable
 	QueueResult QueueReadAllObjects(GroupVariation gv);
 	QueueResult QueueReadRange(GroupVariation gv, const StaticRange& range);
 
-	bool IsComplete() const;	
-		
+	bool IsComplete() const;
+
 	StaticLoadResult Load(APDUResponse& response);
-	
-	private:
+
+private:
 
 	QueueResult QueueReadRange(const StaticRangeLoader& loader);
 
 	QueueResult QueueStaticIntegrity();
 
 	static AppControlField GetAppControl(uint32_t headerCount, StaticLoadResult result);
-	
+
 	template <class T>
 	StaticRangeLoader GetFullRangeWithDefaultLoader();
 
@@ -96,18 +96,18 @@ class StaticResponseContext : private Uncopyable
 	StaticRangeLoader GetClippedRange(const StaticRange& range);
 
 	StaticLoadResult LoadStaticData(ObjectWriter& writer);
-	
+
 	uint32_t fragmentCount;
 	Database* pDatabase;
 	StaticResponseTypes rspTypes;
-	
+
 	openpal::StaticQueue<StaticRangeLoader, uint8_t, SizeConfiguration::MAX_READ_REQUESTS> staticResponseQueue;
 
 };
 
 template <class T>
 StaticResponseContext::StaticRangeLoader StaticResponseContext::GetClippedRangeWithDefaultLoader(const StaticRange& range)
-{		
+{
 	StaticRange copy(range);
 	copy.ClipTo(pDatabase->FullRange<T>());
 	return StaticRangeLoader(rspTypes.GetLoader<T>(), copy);

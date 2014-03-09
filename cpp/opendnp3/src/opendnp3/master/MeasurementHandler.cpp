@@ -44,7 +44,7 @@ void MeasurementHandler::_OnRange(GroupVariation gv, const IterableBuffer<Indexe
 {
 	pSOEHandler->LoadStatic(meas);
 }
-		
+
 void MeasurementHandler::_OnRange(GroupVariation gv, const IterableBuffer<IndexedValue<Counter, uint16_t>>& meas)
 {
 	pSOEHandler->LoadStatic(meas);

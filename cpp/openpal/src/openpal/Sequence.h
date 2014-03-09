@@ -28,17 +28,23 @@ namespace openpal
 template <class T>
 class Sequence
 {
-	public:
+public:
 
 	Sequence(const T& aValue, const Sequence<T>* aNext = nullptr) : value(aValue), next(aNext)
-	{}	
+	{}
 
-	T Value() const { return value; }
-	const Sequence<T>* Next() const { return next; }
+	T Value() const
+	{
+		return value;
+	}
+	const Sequence<T>* Next() const
+	{
+		return next;
+	}
 
 private:
 	const T value;
-	const Sequence<T>* next;	
+	const Sequence<T>* next;
 	Sequence();
 };
 

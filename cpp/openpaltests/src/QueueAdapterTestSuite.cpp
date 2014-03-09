@@ -56,7 +56,7 @@ TEST_CASE(SUITE("PushesAndPopsCorrectly"))
 	REQUIRE(3 == stack.Pop());
 	REQUIRE(stack.IsFull()); //both full and empty!
 	REQUIRE(stack.IsEmpty());
-	stack.Clear();	
+	stack.Clear();
 	REQUIRE(stack.IsEmpty());
 	REQUIRE(!stack.IsFull());
 }

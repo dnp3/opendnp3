@@ -34,12 +34,12 @@ UnsolicitedChannel::UnsolicitedChannel(openpal::Logger aLogger, AppLayer* apApp,
 
 void UnsolicitedChannel::OnUnsol(const APDUResponseRecord& aRecord)
 {
-	if(aRecord.control.SEQ == mSequence) 
+	if(aRecord.control.SEQ == mSequence)
 	{
 		LOG_BLOCK(LogLevel::Info, "Ignoring repeat unsol seq: " << aRecord.control.SEQ)
 	}
-	else 
-	{ 
+	else
+	{
 		// only process the data if the sequence number is new
 		mSequence = aRecord.control.SEQ;
 		mpAppLayer->mpUser->OnUnsolResponse(aRecord);

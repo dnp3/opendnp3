@@ -34,12 +34,12 @@ namespace opendnp3
 
 class APDUHeaderParser : private PureStatic
 {
-	public:	
+public:
 
 	enum class Result
 	{
-		OK,		
-		NOT_ENOUGH_DATA_FOR_HEADER		
+	    OK,
+	    NOT_ENOUGH_DATA_FOR_HEADER
 	};
 
 	static Result ParseRequest(openpal::ReadOnlyBuffer buffer, APDURecord& header);

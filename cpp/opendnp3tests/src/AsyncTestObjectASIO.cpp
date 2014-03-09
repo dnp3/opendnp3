@@ -61,7 +61,8 @@ void AsyncTestObjectASIO::Next(asio::io_service* apSrv, openpal::TimeDuration aS
 	std::error_code ec;
 	size_t num = apSrv->poll_one(ec);
 	if(ec) throw Exception(LOCATION, ec.message());
-	if(num == 0) {
+	if(num == 0)
+	{
 		std::this_thread::sleep_for(std::chrono::milliseconds(aSleep.GetMilliseconds()));
 	}
 	apSrv->reset();

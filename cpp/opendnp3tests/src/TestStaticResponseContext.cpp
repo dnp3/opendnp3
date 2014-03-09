@@ -35,30 +35,30 @@ using namespace opendnp3;
 
 #define SUITE(name) "StaticResponseContextTestSuite - " name
 
-DatabaseTemplate tmp(5,5,5,5,5,5);
+DatabaseTemplate tmp(5, 5, 5, 5, 5, 5);
 
 const uint32_t SIZE = 2048;
 uint8_t fixedBuffer[SIZE];
 
 TEST_CASE(SUITE("RejectsUnknownVariation"))
-{	
+{
 	DynamicallyAllocatedDatabase dadb(tmp);
 	Database db(dadb.GetFacade());
 
 	StaticResponseContext context(&db);
-	REQUIRE((QueueResult::OBJECT_UNDEFINED == context.QueueReadRange(GroupVariation::Group2Var2, StaticRange(0,1))));
-	REQUIRE((QueueResult::SUCCESS == context.QueueReadRange(GroupVariation::Group1Var2, StaticRange(0,1))));
+	REQUIRE((QueueResult::OBJECT_UNDEFINED == context.QueueReadRange(GroupVariation::Group2Var2, StaticRange(0, 1))));
+	REQUIRE((QueueResult::SUCCESS == context.QueueReadRange(GroupVariation::Group1Var2, StaticRange(0, 1))));
 }
 
 
 TEST_CASE(SUITE("RespondsWithValues"))
-{	
+{
 	DynamicallyAllocatedDatabase dadb(tmp);
 	Database db(dadb.GetFacade());
 	StaticResponseContext context(&db);
 
-	REQUIRE((QueueResult::SUCCESS == context.QueueReadRange(GroupVariation::Group1Var2, StaticRange(0,3))));
-	
+	REQUIRE((QueueResult::SUCCESS == context.QueueReadRange(GroupVariation::Group1Var2, StaticRange(0, 3))));
+
 	APDUResponse rsp(APDUHelpers::Response());
 	REQUIRE((StaticLoadResult::COMPLETED == context.Load(rsp)));
 
@@ -66,12 +66,12 @@ TEST_CASE(SUITE("RespondsWithValues"))
 }
 
 TEST_CASE(SUITE("RespondsWithFrozenCounters"))
-{	
+{
 	DynamicallyAllocatedDatabase dadb(tmp);
 	Database db(dadb.GetFacade());
 	StaticResponseContext context(&db);
 
-	REQUIRE((QueueResult::SUCCESS == context.QueueReadRange(GroupVariation::Group21Var1, StaticRange(0,3))));
+	REQUIRE((QueueResult::SUCCESS == context.QueueReadRange(GroupVariation::Group21Var1, StaticRange(0, 3))));
 
 	APDUResponse rsp(APDUHelpers::Response());
 	REQUIRE((StaticLoadResult::COMPLETED == context.Load(rsp)));
@@ -80,44 +80,44 @@ TEST_CASE(SUITE("RespondsWithFrozenCounters"))
 }
 
 TEST_CASE(SUITE("DetectsOutOfRange"))
-{	
+{
 	DynamicallyAllocatedDatabase dadb(tmp);
 	Database db(dadb.GetFacade());
 	StaticResponseContext context(&db);
 
-	REQUIRE((QueueResult::OUT_OF_RANGE == context.QueueReadRange(GroupVariation::Group1Var2, StaticRange(0,6))));
-	REQUIRE((QueueResult::OUT_OF_RANGE == context.QueueReadRange(GroupVariation::Group1Var2, StaticRange(4,6))));
-	REQUIRE((QueueResult::OUT_OF_RANGE == context.QueueReadRange(GroupVariation::Group1Var2, StaticRange(4,5))));
-	REQUIRE((QueueResult::OUT_OF_RANGE == context.QueueReadRange(GroupVariation::Group1Var2, StaticRange(4,3))));
-	REQUIRE((QueueResult::OUT_OF_RANGE == context.QueueReadRange(GroupVariation::Group1Var2, StaticRange(10,11))));	
+	REQUIRE((QueueResult::OUT_OF_RANGE == context.QueueReadRange(GroupVariation::Group1Var2, StaticRange(0, 6))));
+	REQUIRE((QueueResult::OUT_OF_RANGE == context.QueueReadRange(GroupVariation::Group1Var2, StaticRange(4, 6))));
+	REQUIRE((QueueResult::OUT_OF_RANGE == context.QueueReadRange(GroupVariation::Group1Var2, StaticRange(4, 5))));
+	REQUIRE((QueueResult::OUT_OF_RANGE == context.QueueReadRange(GroupVariation::Group1Var2, StaticRange(4, 3))));
+	REQUIRE((QueueResult::OUT_OF_RANGE == context.QueueReadRange(GroupVariation::Group1Var2, StaticRange(10, 11))));
 }
 
 TEST_CASE(SUITE("WritesMixedValues"))
-{	
+{
 	DynamicallyAllocatedDatabase dadb(tmp);
 	Database db(dadb.GetFacade());
 	StaticResponseContext context(&db);
 
-	REQUIRE((QueueResult::SUCCESS == context.QueueReadRange(GroupVariation::Group30Var2, StaticRange(1,2))));
-	REQUIRE((QueueResult::SUCCESS == context.QueueReadRange(GroupVariation::Group1Var2, StaticRange(3,4))));
+	REQUIRE((QueueResult::SUCCESS == context.QueueReadRange(GroupVariation::Group30Var2, StaticRange(1, 2))));
+	REQUIRE((QueueResult::SUCCESS == context.QueueReadRange(GroupVariation::Group1Var2, StaticRange(3, 4))));
 
 	APDUResponse rsp(APDUHelpers::Response());
 	REQUIRE((StaticLoadResult::COMPLETED == context.Load(rsp)));
-	REQUIRE("C0 81 00 00 1E 02 00 01 02 02 00 00 02 00 00 01 02 00 03 04 02 02" ==  toHex(rsp.ToReadOnly()));	
+	REQUIRE("C0 81 00 00 1E 02 00 01 02 02 00 00 02 00 00 01 02 00 03 04 02 02" ==  toHex(rsp.ToReadOnly()));
 }
 
 TEST_CASE(SUITE("ReturnsFullWhen2ndHeaderCantBeWritten"))
-{	
+{
 	DynamicallyAllocatedDatabase dadb(tmp);
 	Database db(dadb.GetFacade());
 	StaticResponseContext context(&db);
 
-	REQUIRE((QueueResult::SUCCESS == context.QueueReadRange(GroupVariation::Group30Var2, StaticRange(1,2))));
-	REQUIRE((QueueResult::SUCCESS == context.QueueReadRange(GroupVariation::Group1Var2, StaticRange(3,4))));
+	REQUIRE((QueueResult::SUCCESS == context.QueueReadRange(GroupVariation::Group30Var2, StaticRange(1, 2))));
+	REQUIRE((QueueResult::SUCCESS == context.QueueReadRange(GroupVariation::Group1Var2, StaticRange(3, 4))));
 
 	{
 		APDUResponse rsp(APDUHelpers::Response(16)); //enough for first header, but not the 2nd
-		
+
 		REQUIRE((StaticLoadResult::FULL == context.Load(rsp)));
 		REQUIRE("A0 81 00 00 1E 02 00 01 02 02 00 00 02 00 00" ==  toHex(rsp.ToReadOnly()));
 	}
@@ -130,16 +130,16 @@ TEST_CASE(SUITE("ReturnsFullWhen2ndHeaderCantBeWritten"))
 }
 
 TEST_CASE(SUITE("ReturnsFullWhenOnlyPartof2ndHeaderCanBeWritten"))
-{	
+{
 	DynamicallyAllocatedDatabase dadb(tmp);
 	Database db(dadb.GetFacade());
 	StaticResponseContext context(&db);
 
-	REQUIRE((QueueResult::SUCCESS == context.QueueReadRange(GroupVariation::Group30Var2, StaticRange(1,2))));
-	REQUIRE((QueueResult::SUCCESS == context.QueueReadRange(GroupVariation::Group1Var2, StaticRange(3,4))));
+	REQUIRE((QueueResult::SUCCESS == context.QueueReadRange(GroupVariation::Group30Var2, StaticRange(1, 2))));
+	REQUIRE((QueueResult::SUCCESS == context.QueueReadRange(GroupVariation::Group1Var2, StaticRange(3, 4))));
 
 	{
-		APDUResponse rsp(APDUHelpers::Response(21)); //enough for first header, but not the full 2nd header		
+		APDUResponse rsp(APDUHelpers::Response(21)); //enough for first header, but not the full 2nd header
 		REQUIRE((StaticLoadResult::FULL == context.Load(rsp)));
 		REQUIRE("A0 81 00 00 1E 02 00 01 02 02 00 00 02 00 00 01 02 00 03 03 02" ==  toHex(rsp.ToReadOnly()));
 	}
@@ -152,7 +152,7 @@ TEST_CASE(SUITE("ReturnsFullWhenOnlyPartof2ndHeaderCanBeWritten"))
 }
 
 TEST_CASE(SUITE("HandlesIntegrityPoll"))
-{	
+{
 	DatabaseTemplate tmp2(1, 0, 1, 0, 1, 0); // 1 Binary, 1 Counter, 1 Control Status
 	DynamicallyAllocatedDatabase dadb(tmp2);
 	Database db(dadb.GetFacade());

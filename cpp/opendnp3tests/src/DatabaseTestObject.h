@@ -39,21 +39,25 @@ public:
 
 	virtual ~MockEventBuffer() {}
 
-	void Update(const Event<Binary>& aEvent) {		
+	void Update(const Event<Binary>& aEvent)
+	{
 		mBinaryEvents.push_back(aEvent);
 	}
 
-	void Update(const Event<Analog>& aEvent) {		
+	void Update(const Event<Analog>& aEvent)
+	{
 		mAnalogEvents.push_back(aEvent);
 	}
 
-	void Update(const Event<Counter>& aEvent) {		
+	void Update(const Event<Counter>& aEvent)
+	{
 		mCounterEvents.push_back(aEvent);
 	}
 
-        void Update(const Event<FrozenCounter>& aEvent) {
-                mFrozenCounterEvents.push_back(aEvent);
-        }	
+	void Update(const Event<FrozenCounter>& aEvent)
+	{
+		mFrozenCounterEvents.push_back(aEvent);
+	}
 
 	std::deque<Event<Binary>> mBinaryEvents;
 	std::deque<Event<Analog>> mAnalogEvents;
@@ -66,7 +70,7 @@ class DatabaseTestObject
 public:
 	DatabaseTestObject(const DatabaseTemplate& dbTemplate) :
 		buffers(dbTemplate),
-		db(buffers.GetFacade()) 
+		db(buffers.GetFacade())
 	{
 		db.AddEventBuffer(&buffer);
 	}
@@ -74,7 +78,7 @@ public:
 private:
 	DynamicallyAllocatedDatabase buffers;
 
-public:	
+public:
 	MockEventBuffer buffer;
 	Database db;
 };

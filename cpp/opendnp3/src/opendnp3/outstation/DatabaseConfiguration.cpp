@@ -24,7 +24,7 @@
 namespace opendnp3
 {
 
-DatabaseConfiguration::DatabaseConfiguration(const DatabaseTemplate& aSizeInformation) :	
+DatabaseConfiguration::DatabaseConfiguration(const DatabaseTemplate& aSizeInformation) :
 	binaryMetadata(aSizeInformation.numBinary),
 	analogMetadata(aSizeInformation.numAnalog),
 	counterMetadata(aSizeInformation.numCounter),
@@ -45,12 +45,12 @@ DatabaseConfiguration::DatabaseConfiguration() :
 DatabaseTemplate DatabaseConfiguration::GetTemplate() const
 {
 	DatabaseTemplate tmp(
-		static_cast<uint32_t>(binaryMetadata.size()), 
-		static_cast<uint32_t>(analogMetadata.size()), 
-		static_cast<uint32_t>(counterMetadata.size()), 
-		static_cast<uint32_t>(frozenCounterMetadata.size()), 
-		numBinaryOutputStatus, 
-		numAnalogOutputStatus);
+	    static_cast<uint32_t>(binaryMetadata.size()),
+	    static_cast<uint32_t>(analogMetadata.size()),
+	    static_cast<uint32_t>(counterMetadata.size()),
+	    static_cast<uint32_t>(frozenCounterMetadata.size()),
+	    numBinaryOutputStatus,
+	    numAnalogOutputStatus);
 	return tmp;
 }
 

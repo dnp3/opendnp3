@@ -28,8 +28,9 @@
 using namespace std;
 using namespace asio;
 
-namespace asio {
-	typedef asio::basic_waitable_timer<std::chrono::steady_clock> steady_timer;
+namespace asio
+{
+typedef asio::basic_waitable_timer<std::chrono::steady_clock> steady_timer;
 }
 
 void AssertCanceled(bool* apFlag, const std::error_code& ec)

@@ -39,7 +39,7 @@ using namespace opendnp3;
 
 class Fuzzer
 {
-	public:
+public:
 
 	void Run(uint64_t iter, uint32_t maxSize, uint32_t seed)
 	{
@@ -49,7 +49,7 @@ class Fuzzer
 		std::uniform_int_distribution<uint32_t> size(1, maxSize);
 		std::uniform_int_distribution<uint16_t> value(0x00, 0xFF);
 
-		for(uint64_t i = 0; i<iter; ++i)
+		for(uint64_t i = 0; i < iter; ++i)
 		{
 			uint32_t count = size(gen);
 			for (size_t j = 0; j < count; ++j) buffer[j] = static_cast<uint8_t>(value(gen));
@@ -72,7 +72,8 @@ class Fuzzer
 
 int main(int argc, char* argv[])
 {
-	if(argc < 3) {
+	if(argc < 3)
+	{
 		std::cout << "iteration & size arguments required" << std::endl;
 		return -1;
 	}
@@ -80,7 +81,7 @@ int main(int argc, char* argv[])
 	uint64_t iterations = std::stoull(argv[1]);
 	uint32_t maxApduSize = std::stoul(argv[2]);
 	uint32_t concurrency = std::thread::hardware_concurrency();
-	uint64_t totalCases = iterations*static_cast<uint64_t>(concurrency);
+	uint64_t totalCases = iterations * static_cast<uint64_t>(concurrency);
 
 	std::cout << "Running " << iterations << " iterations with a concurrency of " << concurrency << std::endl;
 
@@ -89,12 +90,16 @@ int main(int argc, char* argv[])
 	auto start = std::chrono::high_resolution_clock::now();
 	std::vector<std::unique_ptr<std::thread>> threads;
 	uint32_t seed = 1;
-	for(auto& f: fuzzers) {
-		std::unique_ptr<std::thread> pThread(new std::thread([&]() { f.Run(iterations, maxApduSize, seed); }));
+	for(auto & f : fuzzers)
+	{
+		std::unique_ptr<std::thread> pThread(new std::thread([&]()
+		{
+			f.Run(iterations, maxApduSize, seed);
+		}));
 		threads.push_back(std::move(pThread));
 		++seed;
 	}
-	for(auto& pThread: threads) pThread->join();
+	for(auto & pThread : threads) pThread->join();
 	auto stop = std::chrono::high_resolution_clock::now();
 
 	auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(stop - start).count();
@@ -103,13 +108,14 @@ int main(int argc, char* argv[])
 
 	ResultSet rs;
 	uint64_t calls = 0;
-	for(auto& f: fuzzers) {
+	for(auto & f : fuzzers)
+	{
 		rs.Merge(f.results);
 		//calls += f.handler.count;
 	}
-	
+
 	uint64_t sum = rs.Sum();
-	 
+
 	cout << "complete:  [ " << sum << " / " << totalCases << " ] - " << (totalCases == sum) << endl;
 	cout << "total calls: " << calls << endl;
 	cout << "fuzz tests per second: " << casesPerSec <<  " in " << ms << " milliseconds" << endl;

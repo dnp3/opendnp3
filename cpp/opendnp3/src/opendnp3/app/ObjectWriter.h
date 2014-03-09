@@ -40,8 +40,8 @@ namespace opendnp3
 class ObjectWriter
 {
 	friend class APDUWrapper;
-	
-	public:
+
+public:
 
 	bool WriteHeader(GroupVariationID id, QualifierCode qc);
 
@@ -50,7 +50,7 @@ class ObjectWriter
 
 	template <class CountType, class WriteType>
 	CountWriteIterator<CountType, WriteType> IterateOverCount(QualifierCode qc, IDNP3Serializer<WriteType>* pSerializer);
-	
+
 	template <class IndexType>
 	BitfieldRangeWriteIterator<IndexType> IterateOverSingleBitfield(GroupVariationID id, QualifierCode qc, typename IndexType::Type start);
 
@@ -66,21 +66,21 @@ class ObjectWriter
 	template <class PrefixType, class WriteType>
 	PrefixedWriteIterator<PrefixType, WriteType> IterateOverCountWithPrefix(QualifierCode qc, IDNP3Serializer<WriteType>* pSerializer);
 
-	// record the current position in case we need to rollback	
+	// record the current position in case we need to rollback
 	void Mark();
 
 	// roll back to the last mark
-	bool Rollback();	
-	
-	private:
+	bool Rollback();
 
-	ObjectWriter(openpal::WriteBuffer* position_);			
+private:
+
+	ObjectWriter(openpal::WriteBuffer* position_);
 
 	bool WriteHeaderWithReserve(GroupVariationID id, QualifierCode qc, uint32_t reserve);
-		
+
 	openpal::WriteBuffer* position;
 
-	Settable<openpal::WriteBuffer> mark;	
+	Settable<openpal::WriteBuffer> mark;
 };
 
 template <class CountType, class ValueType>
@@ -126,7 +126,7 @@ bool ObjectWriter::WriteSingleIndexedValue(QualifierCode qc, IDNP3Serializer<Val
 template <class IndexType, class WriteType>
 RangeWriteIterator<IndexType, WriteType> ObjectWriter::IterateOverRange(QualifierCode qc, IDNP3Serializer<WriteType>* pSerializer, typename IndexType::Type start)
 {
-	uint32_t reserveSize = 2*IndexType::Size + pSerializer->Size();
+	uint32_t reserveSize = 2 * IndexType::Size + pSerializer->Size();
 	if(this->WriteHeaderWithReserve(pSerializer->ID(), qc, reserveSize))
 	{
 		return RangeWriteIterator<IndexType, WriteType>(start, pSerializer, *position);
@@ -159,7 +159,7 @@ BitfieldRangeWriteIterator<IndexType> ObjectWriter::IterateOverSingleBitfield(Gr
 template <class PrefixType, class WriteType>
 PrefixedWriteIterator<PrefixType, WriteType> ObjectWriter::IterateOverCountWithPrefix(QualifierCode qc, IDNP3Serializer<WriteType>* pSerializer)
 {
-	uint32_t reserveSize = 2*PrefixType::Size + pSerializer->Size();  //enough space for the count, 1 prefix + object
+	uint32_t reserveSize = 2 * PrefixType::Size + pSerializer->Size(); //enough space for the count, 1 prefix + object
 	if(this->WriteHeaderWithReserve(pSerializer->ID(), qc, reserveSize))
 	{
 		return PrefixedWriteIterator<PrefixType, WriteType>(pSerializer, *position);

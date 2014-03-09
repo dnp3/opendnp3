@@ -37,7 +37,7 @@ public:
 
 private:
 
-	size_t mBytesReadWritten;	
+	size_t mBytesReadWritten;
 
 	CopyableBuffer mBuffer;
 

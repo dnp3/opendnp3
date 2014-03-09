@@ -51,7 +51,7 @@ public:
 	MockExecutor exe;
 
 private:
-	openpal::Logger logger;	
+	openpal::Logger logger;
 	TransportLayer transport;
 
 public:

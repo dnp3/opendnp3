@@ -46,7 +46,8 @@ public:
 
 	bool NothingToRead();
 
-	size_t Count() {
+	size_t Count()
+	{
 		return app.Count();
 	}
 
@@ -58,7 +59,7 @@ public:
 	DynamicallyAllocatedDatabase dbBuffers;
 	Database db;
 	MockCommandHandler cmdHandler;
-	Slave slave;	
+	Slave slave;
 	openpal::Logger mLogger;
 
 	std::queue<openpal::UTCTimestamp> mTimeWrites;

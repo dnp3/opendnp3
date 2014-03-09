@@ -41,7 +41,8 @@ public:
 		log(),
 		exe(),
 		phys(Logger(&log, LogLevel::Info, "phys"), &exe),
-		loopback(Logger(&log, LogLevel::Info, "loopback"), &phys) {
+		loopback(Logger(&log, LogLevel::Info, "loopback"), &phys)
+	{
 		loopback.Start();
 	}
 

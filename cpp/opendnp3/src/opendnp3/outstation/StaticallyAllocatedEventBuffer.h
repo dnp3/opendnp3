@@ -31,23 +31,23 @@ namespace opendnp3
 template <uint32_t B, uint32_t A, uint32_t C>
 class StaticallyAllocatedEventBuffer
 {
-	public:		
+public:
 
-		//EventBufferFacade GetFacade();
+	//EventBufferFacade GetFacade();
 
-	private:
+private:
 
-		openpal::StaticArray<uint16_t, uint16_t, B> binaryStack;
-		openpal::StaticArray<Event<Binary>, uint16_t, B> binaryArray;
+	openpal::StaticArray<uint16_t, uint16_t, B> binaryStack;
+	openpal::StaticArray<Event<Binary>, uint16_t, B> binaryArray;
 
-		openpal::StaticArray<uint16_t, uint16_t, A> analogStack;
-		openpal::StaticArray<Event<Analog>, uint16_t, A> analogArray;
+	openpal::StaticArray<uint16_t, uint16_t, A> analogStack;
+	openpal::StaticArray<Event<Analog>, uint16_t, A> analogArray;
 
-		openpal::StaticArray<uint16_t, uint16_t, C> counterStack;
-		openpal::StaticArray<Event<Counter>, uint16_t, C> counterArray;
+	openpal::StaticArray<uint16_t, uint16_t, C> counterStack;
+	openpal::StaticArray<Event<Counter>, uint16_t, C> counterArray;
 
-		openpal::StaticArray<openpal::DoubleListNode<SequenceRecord>, uint16_t, B+A+C> sequenceOfEvents;
-		openpal::StaticArray<openpal::DoubleListNode<SequenceRecord>*, uint16_t, B+A+C> selectedEvents;		
+	openpal::StaticArray < openpal::DoubleListNode<SequenceRecord>, uint16_t, B + A + C > sequenceOfEvents;
+	openpal::StaticArray < openpal::DoubleListNode<SequenceRecord>*, uint16_t, B + A + C > selectedEvents;
 };
 
 }

@@ -36,11 +36,12 @@ class LogToStdio : public openpal::ILogBase
 {
 
 public:
-	static LogToStdio* Inst() {
+	static LogToStdio* Inst()
+	{
 		return &mInstance;
 	}
 
-	void Log( const openpal::LogEntry& arEntry );	
+	void Log( const openpal::LogEntry& arEntry );
 	void SetPrintLocation(bool aPrintLocation);
 
 protected:

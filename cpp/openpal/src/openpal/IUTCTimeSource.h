@@ -48,7 +48,8 @@ public:
 	FixedUTCTimeSource(int64_t aTimeSinceEpoch): mTimeSinceEpoch(aTimeSinceEpoch)
 	{}
 
-	UTCTimestamp Now() {
+	UTCTimestamp Now()
+	{
 		return UTCTimestamp (mTimeSinceEpoch);
 	}
 

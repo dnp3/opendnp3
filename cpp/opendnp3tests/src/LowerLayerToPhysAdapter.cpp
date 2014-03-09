@@ -92,7 +92,7 @@ void LowerLayerToPhysAdapter::_OnLowerLayerShutdown()
 
 /* Implement ILowerLayer */
 void LowerLayerToPhysAdapter::_Send(const openpal::ReadOnlyBuffer& arBuffer)
-{	
+{
 	mpPhys->AsyncWrite(arBuffer);
 }
 

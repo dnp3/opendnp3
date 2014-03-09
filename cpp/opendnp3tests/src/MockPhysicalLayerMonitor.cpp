@@ -39,10 +39,10 @@ namespace opendnp3
 {
 
 MockPhysicalLayerMonitor::MockPhysicalLayerMonitor(
-        openpal::Logger& arLogger,
-        IPhysicalLayerAsync* apPhys,
-        TimeDuration aMinOpenRetry,
-        TimeDuration aMaxOpenRetry
+    openpal::Logger& arLogger,
+    IPhysicalLayerAsync* apPhys,
+    TimeDuration aMinOpenRetry,
+    TimeDuration aMaxOpenRetry
 ) :
 	Loggable(arLogger),
 	PhysicalLayerMonitor(arLogger, apPhys, aMinOpenRetry, aMaxOpenRetry),
@@ -76,16 +76,18 @@ void MockPhysicalLayerMonitor::_OnReceive(const uint8_t* apData, size_t aNumByte
 {
 	++mNumReads;
 	// we should never receive more than we're expecting
-	if(mExpectReadBuffer.Size() < mBytesRead + aNumBytes) {
-		throw Exception("Read more data than expected");		
+	if(mExpectReadBuffer.Size() < mBytesRead + aNumBytes)
+	{
+		throw Exception("Read more data than expected");
 	}
 	CopyableBuffer expecting(mExpectReadBuffer + mBytesRead, static_cast<uint32_t>(aNumBytes));
 	CopyableBuffer read(apData, static_cast<uint32_t>(aNumBytes));
 	// check that we're receiving what was written
-	if(expecting != read) {
+	if(expecting != read)
+	{
 		std::ostringstream oss;
 		oss << "Data corruption on receive, " << read << " != " << expecting;
-		throw Exception(oss.str());		
+		throw Exception(oss.str());
 	}
 	mBytesRead += static_cast<uint32_t>(aNumBytes);
 	LOG_BLOCK(LogLevel::Info, "Received " << mBytesRead << " of " << mExpectReadBuffer.Size());
@@ -127,7 +129,8 @@ void MockPhysicalLayerMonitor::OnStateChange(ChannelState aState)
 bool MockPhysicalLayerMonitor::NextStateIs(ChannelState aState)
 {
 	if(mState.empty()) return false;
-	else {
+	else
+	{
 		ChannelState state = mState.front();
 		LOG_BLOCK(LogLevel::Info, "Saw state: " + ChannelStateToString(state));
 		mState.pop();
@@ -142,7 +145,8 @@ bool MockPhysicalLayerMonitor::AllExpectedDataHasBeenReceived()
 
 void MockPhysicalLayerMonitor::TransmitNext()
 {
-	if(mWriteBuffer.Size() > this->mBytesWritten) {
+	if(mWriteBuffer.Size() > this->mBytesWritten)
+	{
 		uint32_t remaining = mWriteBuffer.Size() - mBytesWritten;
 		uint32_t toWrite = Min<uint32_t>(4096, remaining);
 		ReadOnlyBuffer buff(mWriteBuffer + mBytesWritten, toWrite);

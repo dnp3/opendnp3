@@ -32,17 +32,17 @@ using namespace opendnp3;
 
 enum class Action
 {
-	Update,
-	Select,
-	Clear,
-	Reset
-}; 
+    Update,
+    Select,
+    Clear,
+    Reset
+};
 
 class EventBufferFuzzer
 {
-	public:
+public:
 
-	EventBufferFuzzer() : gen(), actionDist(1, 100), classDist(0,2), boolDist(0,1)
+	EventBufferFuzzer() : gen(), actionDist(1, 100), classDist(0, 2), boolDist(0, 1)
 	{
 		gen.seed(1);
 	}
@@ -56,19 +56,19 @@ class EventBufferFuzzer
 	{
 		switch(GetAction())
 		{
-			case(Action::Clear):
-				this->Clear(buffer);
-				return 0;
-			case(Action::Reset):
-				this->Reset(buffer);
-				return 0;
-			case(Action::Select):
-				return this->Select(buffer, writer);				
-			case(Action::Update):
-				this->Update(buffer);
-				return 0;
-			default:
-				return 0;
+		case(Action::Clear):
+			this->Clear(buffer);
+			return 0;
+		case(Action::Reset):
+			this->Reset(buffer);
+			return 0;
+		case(Action::Select):
+			return this->Select(buffer, writer);
+		case(Action::Update):
+			this->Update(buffer);
+			return 0;
+		default:
+			return 0;
 		}
 	}
 
@@ -88,11 +88,11 @@ class EventBufferFuzzer
 	{
 		switch(classDist(gen))
 		{
-			case(0): return EventClass::EC1;
-			case(1): return EventClass::EC2;
-			case(2): return EventClass::EC3;
-			default:
-				return EventClass::EC1;
+		case(0): return EventClass::EC1;
+		case(1): return EventClass::EC2;
+		case(2): return EventClass::EC3;
+		default:
+			return EventClass::EC1;
 		}
 	}
 
@@ -128,24 +128,24 @@ class EventBufferFuzzer
 	{
 		switch(classDist(gen))
 		{
-			case(0): 
-				buffer.Update(Event<Binary>(false, 0, GetEventClass()));
-				break;
-			case(1):
-				buffer.Update(Event<Counter>(0, 0, GetEventClass()));
-				break;
-			case(2):
-				buffer.Update(Event<Analog>(0, 0, GetEventClass()));
-				break;
-		}	
+		case(0):
+			buffer.Update(Event<Binary>(false, 0, GetEventClass()));
+			break;
+		case(1):
+			buffer.Update(Event<Counter>(0, 0, GetEventClass()));
+			break;
+		case(2):
+			buffer.Update(Event<Analog>(0, 0, GetEventClass()));
+			break;
+		}
 	}
 
 	uint32_t Select(OutstationEventBuffer& buffer, IEventWriter& writer)
 	{
 		return buffer.SelectEvents(GetSelectionCriteria(), writer);
 	}
-	
-	std::mt19937 gen;	
+
+	std::mt19937 gen;
 	std::uniform_int_distribution<size_t> actionDist;
 	std::uniform_int_distribution<size_t> classDist;
 	std::uniform_int_distribution<size_t> boolDist;

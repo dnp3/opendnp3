@@ -45,7 +45,7 @@ void ClearRestartIIN::ConfigureRequest(APDURequest& request)
 	auto writer = request.GetWriter();
 	auto iter = writer.IterateOverSingleBitfield<UInt8>(GroupVariationID(80, 1), QualifierCode::UINT8_START_STOP, 7);
 	iter.Write(false);
-	iter.Complete();	
+	iter.Complete();
 }
 
 /* ------ Configure Unsol ------- */
@@ -64,7 +64,7 @@ void ConfigureUnsol::Set(bool aIsEnable, int aClassMask)
 
 
 void ConfigureUnsol::ConfigureRequest(APDURequest& request)
-{	
+{
 	request.SetFunction(mIsEnable ? FunctionCode::ENABLE_UNSOLICITED : FunctionCode::DISABLE_UNSOLICITED);
 	auto writer = request.GetWriter();
 	if (mClassMask & CLASS_1) writer.WriteHeader(GroupVariationID(60, 2), QualifierCode::ALL_OBJECTS);
@@ -87,13 +87,14 @@ void TimeSync::Init()
 }
 
 void TimeSync::ConfigureRequest(APDURequest& request)
-{	
-	if(mDelay < 0) 
+{
+	if(mDelay < 0)
 	{
-		request.SetFunction(FunctionCode::DELAY_MEASURE);		
+		request.SetFunction(FunctionCode::DELAY_MEASURE);
 		mStart = mpTimeSrc->Now();
 	}
-	else {
+	else
+	{
 		auto now = mpTimeSrc->Now().msSinceEpoch;
 		Group50Var1 time;
 		time.time = now + mDelay;
@@ -107,16 +108,18 @@ void TimeSync::ConfigureRequest(APDURequest& request)
 
 TaskResult TimeSync::_OnFinalResponse(const APDUResponseRecord& record)
 {
-	if(mDelay < 0) {
+	if(mDelay < 0)
+	{
 
 		TimeSyncHandler handler(mLogger);
 		auto result = APDUParser::ParseTwoPass(record.objects, &handler, &mLogger);
-		if(result == APDUParser::Result::OK) {
+		if(result == APDUParser::Result::OK)
+		{
 			uint16_t rtuTurnAroundTime;
-			if(handler.GetTimeDelay(rtuTurnAroundTime)) 
+			if(handler.GetTimeDelay(rtuTurnAroundTime))
 			{
 				auto now = mpTimeSrc->Now();
-				auto sendReceieveTime = now.msSinceEpoch - mStart.msSinceEpoch;				
+				auto sendReceieveTime = now.msSinceEpoch - mStart.msSinceEpoch;
 
 				// The later shouldn't happen, but could cause a negative delay which would
 				// result in a weird time setting
@@ -125,12 +128,14 @@ TaskResult TimeSync::_OnFinalResponse(const APDUResponseRecord& record)
 				return TR_CONTINUE;
 			}
 			else return TR_FAIL;
-		} else {
+		}
+		else
+		{
 			LOG_BLOCK(LogLevel::Warning, "Error parsing response headers: " << static_cast<int>(result)); // TODO - turn these into strings
 			return TR_FAIL;
 		}
 
-		
+
 		/*  TODO - move this logic to the TimeSyncHandler
 		HeaderReadIterator hri = arAPDU.BeginRead();
 		if(hri.Count() != 1) {
@@ -150,9 +155,10 @@ TaskResult TimeSync::_OnFinalResponse(const APDUResponseRecord& record)
 		}
 		*/
 
-		
+
 	}
-	else {
+	else
+	{
 		return TR_SUCCESS;
 	}
 }

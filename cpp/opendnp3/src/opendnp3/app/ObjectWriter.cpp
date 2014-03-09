@@ -30,7 +30,7 @@ using namespace openpal;
 namespace opendnp3
 {
 
-ObjectWriter::ObjectWriter(openpal::WriteBuffer* position_) : position(position_)	
+ObjectWriter::ObjectWriter(openpal::WriteBuffer* position_) : position(position_)
 {}
 
 void ObjectWriter::Mark()
@@ -40,8 +40,8 @@ void ObjectWriter::Mark()
 
 bool ObjectWriter::Rollback()
 {
-	if (mark.IsSet()) 
-	{		
+	if (mark.IsSet())
+	{
 		*position = mark.Get();
 		mark.Clear();
 		return true;
@@ -61,7 +61,7 @@ bool ObjectWriter::WriteHeader(GroupVariationID id, QualifierCode qc)
 		UInt8::WriteBuffer(*position, id.variation);
 		UInt8::WriteBuffer(*position, QualifierCodeToType(qc));
 		return true;
-	}	
+	}
 }
 
 bool ObjectWriter::WriteHeaderWithReserve(GroupVariationID id, QualifierCode qc, uint32_t reserve)

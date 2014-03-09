@@ -32,16 +32,16 @@ namespace opendnp3
 
 class ReadHandler : public APDUHandlerBase
 {
-	public:
-	
+public:
+
 	ReadHandler(openpal::Logger& aLogger, StaticResponseContext* aContext);
 
 	virtual void _AllObjects(GroupVariation gv) final;
 
-	virtual void _OnRangeRequest(GroupVariation gv, const StaticRange& range) final;	
+	virtual void _OnRangeRequest(GroupVariation gv, const StaticRange& range) final;
 
-	private:
-	
+private:
+
 	StaticResponseContext* pContext;
 };
 

@@ -79,7 +79,8 @@ public:
 	Master(openpal::Logger, MasterConfig aCfg, IAppLayer*, ISOEHandler*, AsyncTaskGroup*, openpal::IExecutor*, openpal::IUTCTimeSource* apTimeSrc);
 	virtual ~Master() {}
 
-	ICommandProcessor* GetCommandProcessor() {
+	ICommandProcessor* GetCommandProcessor()
+	{
 		return &mCommandQueue;
 	}
 
@@ -101,7 +102,7 @@ public:
 	// override the response functions
 	void OnPartialResponse(const APDUResponseRecord&);
 	void OnFinalResponse(const APDUResponseRecord&);
-	void OnUnsolResponse(const APDUResponseRecord&);		
+	void OnUnsolResponse(const APDUResponseRecord&);
 
 	// These methods are inherited privately
 	void SelectAndOperate(const ControlRelayOutputBlock& arCommand, uint16_t aIndex, std::function<void(CommandResponse)> aCallback);
@@ -140,7 +141,7 @@ private:
 	void ProcessDataResponse(const APDUResponseRecord& aRecord);	// Read data output of solicited or unsolicited response and publish
 	void StartTask(MasterTaskBase*, bool aInit);	// Starts a task running
 
-	QueuedCommandProcessor mCommandQueue;	// Threadsafe queue for buffering command requests	
+	QueuedCommandProcessor mCommandQueue;	// Threadsafe queue for buffering command requests
 
 	IAppLayer* mpAppLayer;					// lower application layer
 	ISOEHandler* mpSOEHandler;
@@ -152,7 +153,8 @@ private:
 	ITask* mpScheduledTask;					// The current scheduled task
 	StackState mState;						// Current state of the master
 
-	StackState GetState() {
+	StackState GetState()
+	{
 		return mState;
 	}
 

@@ -34,7 +34,7 @@ class APDUEventWriter;
 
 class IEventWriterState
 {
-	public:
+public:
 
 	virtual bool Write(const Event<Binary>& evt, APDUEventWriter& ctx) = 0;
 	virtual bool Write(const Event<Analog>& evt, APDUEventWriter& ctx) = 0;

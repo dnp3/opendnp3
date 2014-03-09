@@ -29,7 +29,8 @@ namespace  opendnp3
 /**
 * Represents an exception scan
 */
-struct ExceptionScan {
+struct ExceptionScan
+{
 
 	/// Defaults to all events every 5 seconds
 	ExceptionScan() :

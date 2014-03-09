@@ -40,16 +40,16 @@ serial_port_base::stop_bits ConvertStopBits(int aStopBits)
 {
 	serial_port_base::stop_bits::type t = serial_port_base::stop_bits::one;
 
-	switch(aStopBits) 
+	switch(aStopBits)
 	{
-		case(1): 
-			t = serial_port_base::stop_bits::one; 
-			break;
-		case(2): 
-			t = serial_port_base::stop_bits::two; 
-			break;
-		default:
-			break;
+	case(1):
+		t = serial_port_base::stop_bits::one;
+		break;
+	case(2):
+		t = serial_port_base::stop_bits::two;
+		break;
+	default:
+		break;
 	}
 
 	return serial_port_base::stop_bits(t);
@@ -59,19 +59,19 @@ serial_port_base::flow_control ConvertFlow(FlowType aFlowType)
 {
 	serial_port_base::flow_control::type t = serial_port_base::flow_control::none;
 
-	switch(aFlowType) 
+	switch(aFlowType)
 	{
-		case(FLOW_NONE):
-			t = serial_port_base::flow_control::none;
-			break;
-		case(FLOW_XONXOFF):
-			t = serial_port_base::flow_control::software;
-			break;
-		case(FLOW_HARDWARE):
-			t = serial_port_base::flow_control::hardware;
-			break;
-		default:
-			break;
+	case(FLOW_NONE):
+		t = serial_port_base::flow_control::none;
+		break;
+	case(FLOW_XONXOFF):
+		t = serial_port_base::flow_control::software;
+		break;
+	case(FLOW_HARDWARE):
+		t = serial_port_base::flow_control::hardware;
+		break;
+	default:
+		break;
 	}
 
 	return serial_port_base::flow_control(t);
@@ -91,16 +91,16 @@ serial_port_base::parity ConvertParity(ParityType aParity)
 {
 	serial_port_base::parity::type t = serial_port_base::parity::none;
 
-	switch(aParity) 
-	{		
-		case(PAR_EVEN): 
-			t = serial_port_base::parity::even;
-			break;
-		case(PAR_ODD):
-			t = serial_port_base::parity::odd;
-			break;
-		default:
-			break;	
+	switch(aParity)
+	{
+	case(PAR_EVEN):
+		t = serial_port_base::parity::even;
+		break;
+	case(PAR_ODD):
+		t = serial_port_base::parity::odd;
+		break;
+	default:
+		break;
 	}
 
 	return serial_port_base::parity(t);
@@ -112,7 +112,7 @@ void Configure(SerialSettings& arSettings, asio::serial_port& arPort, error_code
 	arPort.set_option(ConvertBaud(arSettings.mBaud), ec);
 	if (!ec)
 	{
-		if (!ec) 
+		if (!ec)
 		{
 			arPort.set_option(ConvertDataBits(arSettings.mDataBits), ec);
 			if (!ec)
@@ -128,7 +128,7 @@ void Configure(SerialSettings& arSettings, asio::serial_port& arPort, error_code
 				}
 			}
 		}
-	}	
+	}
 }
 
 }

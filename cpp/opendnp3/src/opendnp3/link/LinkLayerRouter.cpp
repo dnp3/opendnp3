@@ -36,11 +36,11 @@ using namespace openpal;
 namespace opendnp3
 {
 
-LinkLayerRouter::LinkLayerRouter(	Logger aLogger, 
-									IPhysicalLayerAsync* apPhys,
-									openpal::TimeDuration minOpenRetry,
-									openpal::TimeDuration maxOpenRetry,
-									IOpenDelayStrategy* pStrategy) : 
+LinkLayerRouter::LinkLayerRouter(	Logger aLogger,
+                                    IPhysicalLayerAsync* apPhys,
+                                    openpal::TimeDuration minOpenRetry,
+                                    openpal::TimeDuration maxOpenRetry,
+                                    IOpenDelayStrategy* pStrategy) :
 	Loggable(aLogger),
 	PhysicalLayerMonitor(aLogger, apPhys, minOpenRetry, maxOpenRetry, pStrategy),
 	mReceiver(aLogger, this),
@@ -57,13 +57,14 @@ bool LinkLayerRouter::AddContext(ILinkContext* apContext, const LinkRoute& arRou
 	assert(apContext != nullptr);
 
 	if(IsRouteInUse(arRoute)) return false;
-	
-	for(AddressMap::value_type v: mAddressMap) {
-		if(apContext == v.second.pContext) return false;		
+
+	for(AddressMap::value_type v : mAddressMap)
+	{
+		if(apContext == v.second.pContext) return false;
 	}
 
 	mAddressMap[arRoute] = ContextRecord(apContext); //context is always disabled by default
-	
+
 	return true;
 }
 
@@ -71,7 +72,8 @@ bool LinkLayerRouter::EnableRoute(const LinkRoute& arRoute)
 {
 	auto iter = mAddressMap.find(arRoute);
 	if(iter == mAddressMap.end()) return false;
-	else {
+	else
+	{
 		if(!iter->second.enabled)
 		{
 			iter->second.enabled = true;
@@ -86,7 +88,8 @@ bool LinkLayerRouter::DisableRoute(const LinkRoute& arRoute)
 {
 	auto iter = mAddressMap.find(arRoute);
 	if(iter == mAddressMap.end()) return false;
-	else {
+	else
+	{
 		if(iter->second.enabled)
 		{
 			iter->second.enabled = false;
@@ -100,11 +103,11 @@ bool LinkLayerRouter::DisableRoute(const LinkRoute& arRoute)
 void LinkLayerRouter::RemoveContext(const LinkRoute& arRoute)
 {
 	AddressMap::iterator i = mAddressMap.find(arRoute);
-	if(i == mAddressMap.end()) 
+	if(i == mAddressMap.end())
 	{
-		LOG_BLOCK(LogLevel::Error, "LinkRoute not bound: " << arRoute.ToString());		
+		LOG_BLOCK(LogLevel::Error, "LinkRoute not bound: " << arRoute.ToString());
 	}
-	else 
+	else
 	{
 
 		auto record = i->second;
@@ -113,7 +116,7 @@ void LinkLayerRouter::RemoveContext(const LinkRoute& arRoute)
 		if(this->GetState() == ChannelState::OPEN && record.enabled) record.pContext->OnLowerLayerDown();
 
 		// if no contexts are enabled, suspend the router
-		if(!HasEnabledContext()) this->Suspend();		
+		if(!HasEnabledContext()) this->Suspend();
 	}
 }
 
@@ -121,7 +124,7 @@ ILinkContext* LinkLayerRouter::GetEnabledContext(const LinkRoute& arRoute)
 {
 	AddressMap::iterator i = mAddressMap.find(arRoute);
 	if(i == mAddressMap.end()) return nullptr;
-	else return (i->second.enabled) ? i->second.pContext : nullptr;	
+	else return (i->second.enabled) ? i->second.pContext : nullptr;
 }
 
 
@@ -131,11 +134,12 @@ ILinkContext* LinkLayerRouter::GetDestination(uint16_t aDest, uint16_t aSrc)
 
 	ILinkContext* pDest = GetEnabledContext(route);
 
-	if(pDest == nullptr) {
+	if(pDest == nullptr)
+	{
 
 		ERROR_BLOCK(LogLevel::Warning, "Frame w/ unknown route: " << route.ToString(), DLERR_UNKNOWN_ROUTE);
 	}
-	
+
 	return pDest;
 }
 
@@ -194,7 +198,8 @@ void LinkLayerRouter::_OnReceive(const openpal::ReadOnlyBuffer& arBuffer)
 	// The order is important here. You must let the receiver process the byte or another read could write
 	// over the buffer before it is processed
 	mReceiver.OnRead(arBuffer.Size()); //this may trigger callbacks to the local ILinkContext interface
-	if(mpPhys->CanRead()) { // this is required because the call above could trigger the layer to be closed
+	if(mpPhys->CanRead())   // this is required because the call above could trigger the layer to be closed
+	{
 		auto buff = mReceiver.WriteBuff();
 		mpPhys->AsyncRead(buff); //start another read
 	}
@@ -204,20 +209,23 @@ bool LinkLayerRouter::Transmit(const LinkFrame& arFrame)
 {
 	LinkRoute lr(arFrame.GetDest(), arFrame.GetSrc());
 
-	if (this->GetEnabledContext(lr)) {				
+	if (this->GetEnabledContext(lr))
+	{
 		if(this->IsLowerLayerUp())
 		{
 			this->mTransmitQueue.push_back(arFrame);
 			this->CheckForSend();
 			return true;
 		}
-		else {
+		else
+		{
 			ERROR_BLOCK(LogLevel::Error, "Cannot queue a frame while router if offline", DLERR_ROUTER_OFFLINE);
 			return false;
 		}
 	}
-	else {
-		ERROR_BLOCK(LogLevel::Error, "Ignoring unassociated transmit w/ route: " << lr.ToString(), DLERR_UNKNOWN_ROUTE);		
+	else
+	{
+		ERROR_BLOCK(LogLevel::Error, "Ignoring unassociated transmit w/ route: " << lr.ToString(), DLERR_UNKNOWN_ROUTE);
 		return false;
 	}
 }
@@ -226,7 +234,8 @@ bool LinkLayerRouter::Transmit(const LinkFrame& arFrame)
 void LinkLayerRouter::AddStateListener(std::function<void (ChannelState)> aListener)
 {
 	//this call comes from an unknown thread so marshall it the router's executor
-	this->mpPhys->GetExecutor()->Post([this, aListener]() {
+	this->mpPhys->GetExecutor()->Post([this, aListener]()
+	{
 		mListeners.push_back(aListener);
 		this->NotifyListener(aListener, this->GetState()); // event the current state now
 	});
@@ -234,21 +243,23 @@ void LinkLayerRouter::AddStateListener(std::function<void (ChannelState)> aListe
 
 void LinkLayerRouter::OnStateChange(ChannelState aState)
 {
-for(auto listener: mListeners) NotifyListener(listener, aState);
+	for(auto listener : mListeners) NotifyListener(listener, aState);
 }
 
 bool LinkLayerRouter::HasEnabledContext()
 {
-	for(auto record: mAddressMap) {
+	for(auto record : mAddressMap)
+	{
 		if(record.second.enabled) return true;
 	}
-	
+
 	return false;
 }
 
 void LinkLayerRouter::NotifyListener(std::function<void (ChannelState)> aListener, ChannelState state)
 {
-	this->mpPhys->GetExecutor()->Post([ = ]() {
+	this->mpPhys->GetExecutor()->Post([ = ]()
+	{
 		aListener(state);
 	});
 }
@@ -277,7 +288,8 @@ void LinkLayerRouter::_OnSendFailure()
 
 void LinkLayerRouter::CheckForSend()
 {
-	if(mTransmitQueue.size() > 0 && !mTransmitting && mpPhys->CanWrite()) {
+	if(mTransmitQueue.size() > 0 && !mTransmitting && mpPhys->CanWrite())
+	{
 		mTransmitting = true;
 		const LinkFrame& f = mTransmitQueue.front();
 		LOG_BLOCK(LogLevel::Interpret, "~> " << f.ToString());
@@ -288,13 +300,15 @@ void LinkLayerRouter::CheckForSend()
 
 void LinkLayerRouter::OnPhysicalLayerOpenSuccessCallback()
 {
-	if(mpPhys->CanRead()) {		
+	if(mpPhys->CanRead())
+	{
 		auto buff = mReceiver.WriteBuff();
 		mpPhys->AsyncRead(buff);
 	}
 
-	for(AddressMap::value_type p: mAddressMap) {
-		if(p.second.enabled) p.second.pContext->OnLowerLayerUp();		
+	for(AddressMap::value_type p : mAddressMap)
+	{
+		if(p.second.enabled) p.second.pContext->OnLowerLayerUp();
 	}
 }
 
@@ -306,8 +320,9 @@ void LinkLayerRouter::OnPhysicalLayerCloseCallback()
 	// Drop frames queued for transmit and tell the contexts that the router has closed
 	mTransmitting = false;
 	mTransmitQueue.erase(mTransmitQueue.begin(), mTransmitQueue.end());
-	for(auto pair: mAddressMap) {
-		if(pair.second.enabled) pair.second.pContext->OnLowerLayerDown();		
+	for(auto pair : mAddressMap)
+	{
+		if(pair.second.enabled) pair.second.pContext->OnLowerLayerDown();
 	}
 }
 

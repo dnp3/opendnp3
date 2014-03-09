@@ -28,7 +28,7 @@
 
 namespace openpal
 {
-	
+
 class ReadOnlyBuffer : public HasSize<uint32_t>
 {
 
@@ -47,20 +47,23 @@ public:
 
 	void Advance(uint32_t aNum);
 
-	operator uint8_t const *() const { return mpBuffer; };
+	operator uint8_t const* () const
+	{
+		return mpBuffer;
+	};
 
 private:
 	uint8_t const* mpBuffer;
-	
+
 };
 
 class WriteBuffer : public HasSize<uint32_t>
 {
-	public:
+public:
 
 	static WriteBuffer Empty();
 
-    WriteBuffer();
+	WriteBuffer();
 	WriteBuffer(const WriteBuffer& copy);
 	WriteBuffer(uint8_t* apBuffer, uint32_t aSize);
 
@@ -72,11 +75,17 @@ class WriteBuffer : public HasSize<uint32_t>
 
 	ReadOnlyBuffer ToReadOnly() const;
 
-	operator uint8_t *() { return mpBuffer; };
+	operator uint8_t* ()
+	{
+		return mpBuffer;
+	};
 
-	operator uint8_t const *() const { return mpBuffer; };
+	operator uint8_t const* () const
+	{
+		return mpBuffer;
+	};
 
-	private:
+private:
 
 	uint8_t* mpBuffer;
 };

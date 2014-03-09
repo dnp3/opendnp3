@@ -31,13 +31,13 @@ namespace openpal
 template <class ValueType, class IndexType, IndexType N>
 class StaticQueue : public QueueAdapter<ValueType, IndexType>
 {
-	public:
+public:
 
-		StaticQueue() : underlying(), QueueAdapter<ValueType, IndexType>(underlying.ToIndexable())
-		{}
-	
-	private:
-		StaticArray<ValueType, IndexType, N> underlying;
+	StaticQueue() : underlying(), QueueAdapter<ValueType, IndexType>(underlying.ToIndexable())
+	{}
+
+private:
+	StaticArray<ValueType, IndexType, N> underlying;
 };
 
 }

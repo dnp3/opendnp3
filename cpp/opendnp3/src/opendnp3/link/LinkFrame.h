@@ -42,17 +42,21 @@ public:
 	~LinkFrame();
 
 	/* implement pure virtual functions from base class */
-	uint8_t* GetBuffer() {
+	uint8_t* GetBuffer()
+	{
 		return mpBuffer;
 	}
-	const uint8_t* GetBuffer() const {
+	const uint8_t* GetBuffer() const
+	{
 		return mpBuffer;
 	}
-	uint32_t  GetSize() const {
+	uint32_t  GetSize() const
+	{
 		return mSize;
 	}
 
-	bool IsComplete() const {
+	bool IsComplete() const
+	{
 		return mIsComplete;
 	}
 
@@ -60,34 +64,43 @@ public:
 	bool ValidateBodyCRC() const;
 
 	// Helpers for extracting data
-	inline bool Valid_0564() const {
+	inline bool Valid_0564() const
+	{
 		return mpBuffer[LI_START_05] == 0x05 && mpBuffer[LI_START_64] == 0x64;
 	}
 
-	inline uint8_t	GetLength() const {
+	inline uint8_t	GetLength() const
+	{
 		return mHeader.GetLength();
 	}
-	inline LinkFunction	GetFunc() const {
+	inline LinkFunction	GetFunc() const
+	{
 		return mHeader.GetFuncEnum();
 	}
 
-	inline uint16_t  GetDest() const {
+	inline uint16_t  GetDest() const
+	{
 		return mHeader.GetDest();
 	}
-	inline uint16_t GetSrc() const {
+	inline uint16_t GetSrc() const
+	{
 		return mHeader.GetSrc();
 	}
 
-	inline bool IsFromMaster() const {
+	inline bool IsFromMaster() const
+	{
 		return mHeader.IsFromMaster();
 	}
-	inline bool IsPriToSec() const {
+	inline bool IsPriToSec() const
+	{
 		return mHeader.IsPriToSec();
 	}
-	inline bool IsFcbSet() const {
+	inline bool IsFcbSet() const
+	{
 		return mHeader.IsFcbSet();
 	}
-	inline bool IsFcvDfcSet() const {
+	inline bool IsFcvDfcSet() const
+	{
 		return mHeader.IsFcvDfcSet();
 	}
 

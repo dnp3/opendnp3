@@ -24,7 +24,10 @@
 #include <vector>
 #include <functional>
 
-namespace openpal { class IExecutor; }
+namespace openpal
+{
+class IExecutor;
+}
 
 namespace opendnp3
 {

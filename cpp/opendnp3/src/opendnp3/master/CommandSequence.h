@@ -29,11 +29,11 @@ namespace opendnp3
 {
 
 /**
-*  Abstracts information for 
+*  Abstracts information for
 */
 class ICommandSequence : public APDUHandlerBase
 {
-	public:
+public:
 
 	ICommandSequence(openpal::Logger logger) : APDUHandlerBase(logger) {}
 
@@ -47,37 +47,37 @@ class ICommandSequence : public APDUHandlerBase
 template <class CommandType>
 class CommandSequence : public ICommandSequence
 {
-	public:
-	CommandSequence(openpal::Logger logger, IDNP3Serializer<CommandType>* pSerializer_) : 
+public:
+	CommandSequence(openpal::Logger logger, IDNP3Serializer<CommandType>* pSerializer_) :
 		ICommandSequence(logger),
 		pSerializer(pSerializer_)
-	{}	
+	{}
 
-	void Configure(const CommandType& value, uint16_t index) 
-	{ 
+	void Configure(const CommandType& value, uint16_t index)
+	{
 		this->Reset(); // resets all state inside the base class
 		response = CommandResponse(CommandResult::TIMEOUT); // todo change this to some other result like "malformed"
-		command = IndexedValue<CommandType, uint16_t>(value, index); 
+		command = IndexedValue<CommandType, uint16_t>(value, index);
 	}
 
 	virtual void _OnIndexPrefix(const IterableBuffer<IndexedValue<CommandType, uint16_t>>& meas) override
-	{		
+	{
 		if(this->IsFirstHeader())
-		{						
+		{
 			IndexedValue<CommandType, uint16_t> received;
 			if(meas.ReadOnlyValue(received))
 			{
 				if(received.index == command.index && received.value.ValuesEqual(command.value))
 				{
-					response = CommandResponse(CommandResult::RESPONSE_OK, received.value.status);				
+					response = CommandResponse(CommandResult::RESPONSE_OK, received.value.status);
 				}
-			}									
-		}				
+			}
+		}
 	}
 
-	
+
 	virtual void FormatRequest(APDURequest& request, FunctionCode code) final
-	{		
+	{
 		request.SetFunction(code);
 		auto writer = request.GetWriter();
 		writer.WriteSingleIndexedValue<openpal::UInt16, CommandType>(QualifierCode::UINT16_CNT_UINT16_INDEX, pSerializer, command.value, command.index);
@@ -93,7 +93,7 @@ class CommandSequence : public ICommandSequence
 		else return CommandResponse(CommandResult::TIMEOUT); // TODO - better error code
 	}
 
-	private:
+private:
 	CommandResponse response;
 	IndexedValue<CommandType, uint16_t> command;
 	IDNP3Serializer<CommandType>* pSerializer;

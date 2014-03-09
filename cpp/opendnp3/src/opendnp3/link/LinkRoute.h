@@ -49,7 +49,8 @@ public:
 	uint16_t local;
 
 	// comparison functor for use with stl map/set
-	struct LessThan {
+	struct LessThan
+	{
 		// Const to fix VS compilation bug
 		bool operator()(const LinkRoute& a, const LinkRoute& b) const;
 	};

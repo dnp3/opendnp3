@@ -32,23 +32,23 @@ CommandHandlerAdapter::CommandHandlerAdapter(JavaVM* apJVM, jobject aProxy) : mp
 
 	mSupportsCROB = JNIHelpers::GetMethodID(pEnv, clazz, "Supports",  "(ISJJIJ)I");
 	mPerformCROB = JNIHelpers::GetMethodID(pEnv, clazz, "Perform",  "(ISJJIJ)I");
-	
+
 
 	mSupportsAnalogInt16 = JNIHelpers::GetMethodID(pEnv, clazz, "Supports", "(SJ)I");
 	mPerformAnalogInt16 = JNIHelpers::GetMethodID(pEnv, clazz, "Perform", "(SJ)I");
-	
+
 
 	mSupportsAnalogInt32 = JNIHelpers::GetMethodID(pEnv, clazz, "Supports", "(IJ)I");
 	mPerformAnalogInt32 = JNIHelpers::GetMethodID(pEnv, clazz, "Perform", "(IJ)I");
-	
+
 
 	mSupportsAnalogFloat32 = JNIHelpers::GetMethodID(pEnv, clazz, "Supports", "(FJ)I");
 	mPerformAnalogFloat32 = JNIHelpers::GetMethodID(pEnv, clazz, "Perform", "(FJ)I");
-	
+
 
 	mSupportsAnalogDouble64 = JNIHelpers::GetMethodID(pEnv, clazz, "Supports", "(DJ)I");
 	mPerformAnalogDouble64 = JNIHelpers::GetMethodID(pEnv, clazz, "Perform", "(DJ)I");
-	
+
 
 }
 

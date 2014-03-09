@@ -29,7 +29,8 @@ namespace opendnp3
 /**
 * Structure that holds settings information for the Class1, Class2, Class3 events
 */
-struct ClassMask {
+struct ClassMask
+{
 	ClassMask(bool c1, bool c2, bool c3) :
 		class1(c1),
 		class2(c2),
@@ -52,7 +53,8 @@ struct ClassMask {
 	bool class2;
 	bool class3;
 
-	static int GetMask(bool c1, bool c2, bool c3) {
+	static int GetMask(bool c1, bool c2, bool c3)
+	{
 		int m = 0;
 		if(c1) m |= CLASS_1;
 		if(c2) m |= CLASS_2;
@@ -60,7 +62,8 @@ struct ClassMask {
 		return m;
 	}
 
-	bool IsEnabled() {
+	bool IsEnabled()
+	{
 		return class1 || class2 || class3;
 	}
 };

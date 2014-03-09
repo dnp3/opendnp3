@@ -47,7 +47,10 @@ TEST_CASE(SUITE("CanAddUntilFull"))
 	REQUIRE(list.Add(6));
 
 	REQUIRE(3 == list.Size());
-	list.foreachIndex([](const uint32_t& value, uint32_t i) { REQUIRE(((i+1)*2) == value); });
+	list.foreachIndex([](const uint32_t & value, uint32_t i)
+	{
+		REQUIRE(((i + 1) * 2) == value);
+	});
 
 	REQUIRE(!list.Add(8));
 	REQUIRE(3 == list.Size());
@@ -58,7 +61,7 @@ TEST_CASE(SUITE("StaticListHasSameBehavior"))
 
 	REQUIRE(list.Size() == 0);
 	REQUIRE(list.Capacity() == 3);
-	
+
 }
 
 

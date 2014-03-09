@@ -28,7 +28,7 @@
 
 namespace asio
 {
-	class io_service;
+class io_service;
 }
 
 namespace asiopal
@@ -48,7 +48,8 @@ public:
 
 	virtual ~PhysicalLayerAsyncASIO() {}
 
-	openpal::IExecutor* GetExecutor() {
+	openpal::IExecutor* GetExecutor()
+	{
 		return &executor;
 	}
 

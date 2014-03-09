@@ -34,15 +34,15 @@ namespace opendnp3
 
 class APDUEventWriter : public IEventWriter
 {
-	public:
+public:
 
 	APDUEventWriter();
-				
+
 	bool Write(const Event<Binary>& evt) final;
 	bool Write(const Event<Analog>& evt) final;
 	bool Write(const Event<Counter>& evt) final;
 
-	private:
+private:
 
 	// current state
 	IEventWriterState* pState;

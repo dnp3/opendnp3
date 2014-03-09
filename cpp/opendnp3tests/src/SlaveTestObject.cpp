@@ -38,15 +38,18 @@ namespace opendnp3
 
 SlaveTestObject::SlaveTestObject(const SlaveConfig& arCfg, const DatabaseTemplate& dbTemplate, LogLevel aLevel, bool aImmediate) :
 	log(),
-	mMockTimeWriteHandler([this](UTCTimestamp time){mTimeWrites.push(time);}),
-	mts(),
-	app(Logger(&log, aLevel, "app")),
-	dbBuffers(dbTemplate),
-	db(dbBuffers.GetFacade()),
-	slave(Logger(&log, aLevel, "slave"), &app, &mts, &mMockTimeWriteHandler, &db, &cmdHandler, arCfg),
-	mLogger(Logger(&log, aLevel, "test"))
+	mMockTimeWriteHandler([this](UTCTimestamp time)
 {
-	app.SetUser(&slave);	
+	mTimeWrites.push(time);
+}),
+mts(),
+app(Logger(&log, aLevel, "app")),
+dbBuffers(dbTemplate),
+db(dbBuffers.GetFacade()),
+slave(Logger(&log, aLevel, "slave"), &app, &mts, &mMockTimeWriteHandler, &db, &cmdHandler, arCfg),
+mLogger(Logger(&log, aLevel, "test"))
+{
+	app.SetUser(&slave);
 }
 
 void SlaveTestObject::SendToSlave(const std::string& arData, SequenceInfo aSeq)
@@ -56,14 +59,15 @@ void SlaveTestObject::SendToSlave(const std::string& arData, SequenceInfo aSeq)
 	if(APDUHeaderParser::ParseRequest(hs.ToReadOnly(), record) != APDUHeaderParser::Result::OK)
 	{
 		throw Exception("Why are you trying to send bad data?");
-	}	
+	}
 	slave.OnRequest(record, aSeq);
 }
 
 bool SlaveTestObject::NothingToRead()
 {
 	if(app.NothingToRead()) return true;
-	else {
+	else
+	{
 		ostringstream oss;
 		oss << "Expected nothing but outstation wrote: " << Read();
 		throw InvalidStateException(LOCATION, oss.str());

@@ -27,24 +27,27 @@ namespace asiopal
 {
 
 /// Enumeration for setting serial port parity
-enum ParityType {
-	PAR_NONE = 0,
-	PAR_EVEN = 1,
-	PAR_ODD = 2
+enum ParityType
+{
+    PAR_NONE = 0,
+    PAR_EVEN = 1,
+    PAR_ODD = 2
 };
 
 /// Enumeration for setting serial port flow control
-enum FlowType {
-	FLOW_NONE = 0,
-	FLOW_HARDWARE = 1,
-	FLOW_XONXOFF = 2
+enum FlowType
+{
+    FLOW_NONE = 0,
+    FLOW_HARDWARE = 1,
+    FLOW_XONXOFF = 2
 };
 
 ParityType GetParityFromInt(int parity);
 FlowType GetFlowTypeFromInt(int parity);
 
 /// Settings structure for the serial port
-struct SerialSettings {
+struct SerialSettings
+{
 
 	/// Defaults to the familiar 9600 8/N/1, no flow control
 	SerialSettings() :

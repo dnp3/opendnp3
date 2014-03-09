@@ -30,32 +30,38 @@ namespace opendnp3
 
 class StaticRange
 {
-	public:
+public:
 
 	StaticRange();
 	StaticRange(uint16_t start_, uint16_t stop_);
-	
+
 	void ClipTo(const StaticRange& borders);
 
-	bool IsClipped() const { return clipped; }
+	bool IsClipped() const
+	{
+		return clipped;
+	}
 
 	bool IsContainedBy(uint16_t size) const;
 
 	bool IsContainedByUInt8() const;
-	
-	inline bool IsDefined() const { return start <= stop; }	
+
+	inline bool IsDefined() const
+	{
+		return start <= stop;
+	}
 
 	void Advance();
 
 	uint16_t start;
 	uint16_t stop;
-	
-	private:
+
+private:
 
 	bool clipped;
 
 	static const uint16_t MIN;
-	static const uint16_t MAX;	
+	static const uint16_t MAX;
 };
 
 }

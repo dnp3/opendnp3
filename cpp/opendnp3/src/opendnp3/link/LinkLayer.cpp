@@ -72,11 +72,11 @@ bool LinkLayer::Validate(bool aIsMaster, uint16_t aSrc, uint16_t aDest)
 {
 	if (!mIsOnline)
 	{
-		LOG_BLOCK(LogLevel::Error, "Layer is not online");						
+		LOG_BLOCK(LogLevel::Error, "Layer is not online");
 		return false;
 	}
 
-	if(aIsMaster == mCONFIG.IsMaster) 
+	if(aIsMaster == mCONFIG.IsMaster)
 	{
 		ERROR_BLOCK(LogLevel::Warning,
 		            (aIsMaster ? "Master frame received for master" : "Slave frame received for slave"),
@@ -84,12 +84,14 @@ bool LinkLayer::Validate(bool aIsMaster, uint16_t aSrc, uint16_t aDest)
 		return false;
 	}
 
-	if(aDest != mCONFIG.LocalAddr) {
+	if(aDest != mCONFIG.LocalAddr)
+	{
 		ERROR_BLOCK(LogLevel::Warning, "Frame for unknown destintation", DLERR_UNKNOWN_DESTINATION);
 		return false;
 	}
 
-	if(aSrc != mCONFIG.RemoteAddr) {
+	if(aSrc != mCONFIG.RemoteAddr)
+	{
 		ERROR_BLOCK(LogLevel::Warning, "Frame from unknwon source", DLERR_UNKNOWN_SOURCE);
 		return false;
 	}
@@ -104,8 +106,8 @@ bool LinkLayer::Validate(bool aIsMaster, uint16_t aSrc, uint16_t aDest)
 void LinkLayer::OnLowerLayerUp()
 {
 	if (mIsOnline)
-	{	
-		LOG_BLOCK(LogLevel::Error, "Layer already online");		
+	{
+		LOG_BLOCK(LogLevel::Error, "Layer already online");
 	}
 	else
 	{
@@ -187,7 +189,8 @@ void LinkLayer::ResetRetry()
 
 bool LinkLayer::Retry()
 {
-	if(mRetryRemaining > 0) {
+	if(mRetryRemaining > 0)
+	{
 		--mRetryRemaining;
 		return true;
 	}
@@ -277,7 +280,7 @@ void LinkLayer::UnconfirmedUserData(bool aIsMaster, uint16_t aDest, uint16_t aSr
 void LinkLayer::_Send(const ReadOnlyBuffer& arBuffer)
 {
 	if (mIsOnline)
-	{		
+	{
 		if (mCONFIG.UseConfirms) mpPriState->SendConfirmed(this, arBuffer);
 		else mpPriState->SendUnconfirmed(this, arBuffer);
 	}

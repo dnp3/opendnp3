@@ -41,10 +41,10 @@ class CommandTask : public MasterTaskBase
 {
 	// immutable sequences of function codes
 	const static openpal::Sequence<FunctionCode> Operate;
-	const static openpal::Sequence<FunctionCode> DirectOperate;	
+	const static openpal::Sequence<FunctionCode> DirectOperate;
 	const static openpal::Sequence<FunctionCode> SelectAndOperate;
-	
-public:	
+
+public:
 
 	CommandTask(openpal::Logger);
 
@@ -52,7 +52,7 @@ public:
 	void ConfigureSBO(const AnalogOutputInt16& command, uint32_t index,  std::function<void (CommandResponse)> aCallback);
 	void ConfigureSBO(const AnalogOutputInt32& command, uint32_t index,  std::function<void (CommandResponse)> aCallback);
 	void ConfigureSBO(const AnalogOutputFloat32& command, uint32_t index,  std::function<void (CommandResponse)> aCallback);
-	void ConfigureSBO(const AnalogOutputDouble64& command, uint32_t index,  std::function<void (CommandResponse)> aCallback);	
+	void ConfigureSBO(const AnalogOutputDouble64& command, uint32_t index,  std::function<void (CommandResponse)> aCallback);
 
 	void ConfigureDO(const ControlRelayOutputBlock& command, uint32_t index,  std::function<void (CommandResponse)> aCallback);
 	void ConfigureDO(const AnalogOutputInt16& command, uint32_t index,  std::function<void (CommandResponse)> aCallback);
@@ -64,7 +64,7 @@ public:
 
 	std::string Name() const;
 
-protected:	
+protected:
 
 	// override from base class
 	void OnFailure();
@@ -79,7 +79,7 @@ private:
 		mpFunctionSequence = apSequence;
 		callback = aCallback;
 		sequence.Configure(value, index);
-		mpActiveSequence = &sequence;		
+		mpActiveSequence = &sequence;
 	}
 
 	const openpal::Sequence<FunctionCode>* mpFunctionSequence;
@@ -92,7 +92,7 @@ private:
 	CommandSequence<AnalogOutputFloat32> analogFloat32Seq;
 	CommandSequence<AnalogOutputDouble64> analogDouble64Seq;
 
-	std::function<void (CommandResponse)> callback;	
+	std::function<void (CommandResponse)> callback;
 
 	bool _OnPartialResponse(const APDUResponseRecord&);
 	TaskResult _OnFinalResponse(const APDUResponseRecord&);

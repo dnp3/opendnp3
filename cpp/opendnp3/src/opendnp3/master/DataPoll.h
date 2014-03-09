@@ -66,7 +66,8 @@ public:
 
 	void ConfigureRequest(APDURequest& request);
 
-	virtual std::string Name() const {
+	virtual std::string Name() const
+	{
 		return "Class Poll";
 	}
 

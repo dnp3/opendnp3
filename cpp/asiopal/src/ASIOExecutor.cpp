@@ -43,7 +43,7 @@ ASIOExecutor::ASIOExecutor(asio::strand* apStrand) :
 ASIOExecutor::~ASIOExecutor()
 {
 	this->Shutdown();
-for(auto pTimer: mAllTimers) delete pTimer;
+	for(auto pTimer : mAllTimers) delete pTimer;
 }
 
 openpal::MonotonicTimestamp ASIOExecutor::GetTime()
@@ -54,7 +54,7 @@ openpal::MonotonicTimestamp ASIOExecutor::GetTime()
 openpal::ITimer* ASIOExecutor::Start(const openpal::TimeDuration& arDelay, const function<void ()>& arCallback)
 {
 	std::lock_guard<std::mutex> lock(mMutex);
-	assert(!mIsShuttingDown);	
+	assert(!mIsShuttingDown);
 	TimerASIO* pTimer = GetTimer();
 	pTimer->timer.expires_from_now(std::chrono::milliseconds(arDelay.GetMilliseconds()));
 	this->StartTimer(pTimer, arCallback);
@@ -79,11 +79,13 @@ void ASIOExecutor::Post(const std::function<void ()>& arHandler)
 TimerASIO* ASIOExecutor::GetTimer()
 {
 	TimerASIO* pTimer;
-	if(mIdleTimers.size() == 0) {
+	if(mIdleTimers.size() == 0)
+	{
 		pTimer = new TimerASIO(mpStrand);
 		mAllTimers.push_back(pTimer);
 	}
-	else {
+	else
+	{
 		pTimer = mIdleTimers.front();
 		mIdleTimers.pop_front();
 	}
@@ -96,7 +98,8 @@ void ASIOExecutor::Shutdown()
 {
 	std::unique_lock<std::mutex> lock(mMutex);
 	mIsShuttingDown = true;
-	while(mNumActiveTimers) {
+	while(mNumActiveTimers)
+	{
 		mCondition.wait(lock);
 	}
 }
@@ -105,9 +108,9 @@ void ASIOExecutor::StartTimer(TimerASIO* apTimer, const std::function<void ()>& 
 {
 	++mNumActiveTimers;
 	apTimer->timer.async_wait(
-	        mpStrand->wrap(
-	                std::bind(&ASIOExecutor::OnTimerCallback, this, std::placeholders::_1, apTimer, arCallback)
-	        )
+	    mpStrand->wrap(
+	        std::bind(&ASIOExecutor::OnTimerCallback, this, std::placeholders::_1, apTimer, arCallback)
+	    )
 	);
 }
 

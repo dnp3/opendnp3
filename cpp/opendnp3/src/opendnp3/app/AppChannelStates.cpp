@@ -67,7 +67,7 @@ void ACS_Base::OnConfirm(AppLayerChannel* c, int aSeq)
 void ACS_Base::OnResponse(AppLayerChannel* c, const APDUResponseRecord& rsp)
 {
 	LOGGER_BLOCK(c->GetLogger(), LogLevel::Warning,
-		"Unexpected response with sequence: " << static_cast<int>(rsp.control.SEQ));
+	             "Unexpected response with sequence: " << static_cast<int>(rsp.control.SEQ));
 }
 
 void ACS_Base::OnTimeout(AppLayerChannel* c)
@@ -76,27 +76,33 @@ void ACS_Base::OnTimeout(AppLayerChannel* c)
 }
 
 void ACS_Base::ProcessResponse(AppLayerChannel* c, const APDUResponseRecord& record, bool aExpectFIR)
-{	
-	if(record.control.SEQ == c->Sequence()) {
-		if(record.control.FIR == aExpectFIR) {
+{
+	if(record.control.SEQ == c->Sequence())
+	{
+		if(record.control.FIR == aExpectFIR)
+		{
 			c->CancelTimer();
 
-			if(record.control.FIN) {
+			if(record.control.FIN)
+			{
 				c->ChangeState(ACS_Idle::Inst());
 				c->DoFinalResponse(record);
 			}
-			else {
+			else
+			{
 				c->IncrSequence();
 				c->ChangeState(ACS_WaitForFinalResponse::Inst());
 				c->StartTimer();
 				c->DoPartialResponse(record);
 			}
 		}
-		else {
+		else
+		{
 			ERROR_LOGGER_BLOCK(c->GetLogger(), LogLevel::Warning, "Unexpected fir bit " << record.control.FIR, ALERR_BAD_FIR_FIN);
 		}
 	}
-	else {
+	else
+	{
 		ERROR_LOGGER_BLOCK(c->GetLogger(), LogLevel::Warning, "Bad sequence number " << static_cast<int>(record.control.SEQ), ALERR_BAD_SEQUENCE);
 	}
 }
@@ -114,7 +120,10 @@ void ACS_Idle::Send(AppLayerChannel* c, APDUWrapper& apdu, size_t aNumRetry)
 	auto pNext = NextState(c, func, acf.CON);
 	if (pNext == this)
 	{
-		c->mpExecutor->Post([c]() { c->DoFailure(); });		
+		c->mpExecutor->Post([c]()
+		{
+			c->DoFailure();
+		});
 	}
 	else
 	{
@@ -122,43 +131,44 @@ void ACS_Idle::Send(AppLayerChannel* c, APDUWrapper& apdu, size_t aNumRetry)
 		c->ChangeState(pNext);
 		c->SetRetry(aNumRetry);
 		c->QueueSend(apdu);
-	}	
+	}
 }
 
 ACS_Base* ACS_Idle::NextState(AppLayerChannel* c, FunctionCode aFunc, bool aConfirm)
 {
-	switch(aFunc) 
+	switch(aFunc)
 	{
-		case(FunctionCode::CONFIRM) :
-			LOGGER_BLOCK(c->mLogger, LogLevel::Error, "Cannot send a confirm manually");
+	case(FunctionCode::CONFIRM) :
+		LOGGER_BLOCK(c->mLogger, LogLevel::Error, "Cannot send a confirm manually");
+		return this;
+	case(FunctionCode::RESPONSE):
+		if(c->Sequence() < 0)
+		{
+			LOGGER_BLOCK(c->mLogger, LogLevel::Error, "Can't respond until we've received a request");
 			return this;
-		case(FunctionCode::RESPONSE):
-			if(c->Sequence() < 0) 
-			{
-				LOGGER_BLOCK(c->mLogger, LogLevel::Error, "Can't respond until we've received a request");
-				return this;
-			}
-			else
-			{
-				if (aConfirm) return ACS_SendConfirmed::Inst();
-				else return ACS_Send::Inst();
-			}			
-		case(FunctionCode::UNSOLICITED_RESPONSE):
-			if(aConfirm) return ACS_SendConfirmed::Inst();
+		}
+		else
+		{
+			if (aConfirm) return ACS_SendConfirmed::Inst();
 			else return ACS_Send::Inst();
+		}
+	case(FunctionCode::UNSOLICITED_RESPONSE):
+		if(aConfirm) return ACS_SendConfirmed::Inst();
+		else return ACS_Send::Inst();
 
-		case(FunctionCode::DIRECT_OPERATE_NO_ACK):
-			if(aConfirm) 
-			{
-				LOGGER_BLOCK(c->mLogger, LogLevel::Error, "DO no ACK can't be confirmed");
-			}
-			return ACS_Send::Inst();
+	case(FunctionCode::DIRECT_OPERATE_NO_ACK):
+		if(aConfirm)
+		{
+			LOGGER_BLOCK(c->mLogger, LogLevel::Error, "DO no ACK can't be confirmed");
+		}
+		return ACS_Send::Inst();
 
-		default:	// it's a request with an expected response
-			if(aConfirm) {
-				LOGGER_BLOCK(c->mLogger, LogLevel::Error, "Confirmation not allowed for requests");
-			}
-			return ACS_SendExpectResponse::Inst();
+	default:	// it's a request with an expected response
+		if(aConfirm)
+		{
+			LOGGER_BLOCK(c->mLogger, LogLevel::Error, "Confirmation not allowed for requests");
+		}
+		return ACS_SendExpectResponse::Inst();
 	}
 }
 
@@ -166,7 +176,8 @@ ACS_Base* ACS_Idle::NextState(AppLayerChannel* c, FunctionCode aFunc, bool aConf
 
 void ACS_SendBase::OnSendFailure(AppLayerChannel* c)
 {
-	if(!c->Retry(this)) { //if we can't retry, then go back to idle
+	if(!c->Retry(this))   //if we can't retry, then go back to idle
+	{
 		c->ChangeState(ACS_Idle::Inst());
 		c->DoFailure();
 	}
@@ -237,12 +248,14 @@ void ACS_WaitForConfirm::Cancel(AppLayerChannel* c)
 void ACS_WaitForConfirm::OnConfirm(AppLayerChannel* c, int aSeq)
 {
 	// does the confirm sequence match what we expect?
-	if(c->Sequence() == aSeq) {
+	if(c->Sequence() == aSeq)
+	{
 		c->CancelTimer();
 		c->ChangeState(ACS_Idle::Inst());
 		c->DoSendSuccess();
 	}
-	else {
+	else
+	{
 		ERROR_LOGGER_BLOCK(c->GetLogger(), LogLevel::Warning,
 		                   "Unexpected confirm w/ sequence " << aSeq, ALERR_UNEXPECTED_CONFIRM);
 	}
@@ -252,7 +265,8 @@ void ACS_WaitForConfirm::OnConfirm(AppLayerChannel* c, int aSeq)
 void ACS_WaitForConfirm::OnTimeout(AppLayerChannel* c)
 {
 	LOGGER_BLOCK(c->GetLogger(), LogLevel::Warning, "Timeout while waiting for confirm");
-	if(!c->Retry(ACS_SendConfirmed::Inst())) {
+	if(!c->Retry(ACS_SendConfirmed::Inst()))
+	{
 		c->ChangeState(ACS_Idle::Inst());
 		c->DoFailure();
 	}
@@ -263,7 +277,8 @@ void ACS_WaitForConfirm::OnTimeout(AppLayerChannel* c)
 void ACS_WaitForResponseBase::OnTimeout(AppLayerChannel* c)
 {
 	LOGGER_BLOCK(c->GetLogger(), LogLevel::Warning, "Timeout while waiting for response");
-	if(!c->Retry(ACS_SendExpectResponse::Inst())) {
+	if(!c->Retry(ACS_SendExpectResponse::Inst()))
+	{
 		c->ChangeState(ACS_Idle::Inst());
 		c->DoFailure();
 	}

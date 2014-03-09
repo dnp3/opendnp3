@@ -99,7 +99,8 @@ uint32_t LinkFrame::CalcFrameSize(uint32_t aDataLength)
 
 	uint32_t ret = LS_HEADER_SIZE;
 
-	if(aDataLength > 0) {
+	if(aDataLength > 0)
+	{
 		uint32_t mod16 = aDataLength % LS_DATA_BLOCK_SIZE;
 		ret += (aDataLength / LS_DATA_BLOCK_SIZE) * LS_DATA_PLUS_CRC_SIZE; //complete blocks
 		if(mod16) ret += mod16 + LS_CRC_SIZE; //possible partial block
@@ -173,7 +174,8 @@ void LinkFrame::FormatUnconfirmedUserData(bool aIsMaster, uint16_t aDest, uint16
 
 void LinkFrame::ChangeFCB(bool aFCB)
 {
-	if(mHeader.IsFcbSet() != aFCB) {
+	if(mHeader.IsFcbSet() != aFCB)
+	{
 		mHeader.ChangeFCB(aFCB);
 		mHeader.Write(mpBuffer);
 	}

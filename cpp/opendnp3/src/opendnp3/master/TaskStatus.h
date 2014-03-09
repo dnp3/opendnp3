@@ -21,15 +21,16 @@
 #ifndef __TASK_STATUS_H_
 #define __TASK_STATUS_H_
 
-namespace opendnp3 {
+namespace opendnp3
+{
 
 /// Enumeration for the asynchronous result of a task
 enum class ScanResult : int
 {
-  /// Valid response was received
-  SUCCESS = 0,
-  /// The operation timed out without a response
-  FAILURE = 1  
+    /// Valid response was received
+    SUCCESS = 0,
+    /// The operation timed out without a response
+    FAILURE = 1
 };
 
 }

@@ -35,12 +35,12 @@ class CommandResponse
 public:
 
 	static const CommandResponse Success;
-	
+
 	CommandResponse(CommandResult aResult = CommandResult::NO_COMMS, CommandStatus aStatus = CommandStatus::UNDEFINED);
 
 	static CommandResponse OK(CommandStatus aStatus);
-	
-	
+
+
 	///  The result of the operation, should be examined before looking at the status code
 	CommandResult GetResult();
 
@@ -52,8 +52,8 @@ public:
 	std::string ToString() const;
 
 private:
-	
-	CommandResult mResult;	
+
+	CommandResult mResult;
 	CommandStatus mStatus;
 };
 

@@ -37,91 +37,139 @@ namespace opendnp3
 // simple measurement handler for testing purposes
 class MockSOEHandler : public ISOEHandler
 {
-	public:
+public:
 
 	MockSOEHandler()
 	{}
-			
-	void LoadStatic(const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas) override final 
-	{ 
-		meas.foreach([this](const IndexedValue<Binary, uint16_t>& value) { mBinaryMap[value.index] = value.value; });
+
+	void LoadStatic(const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas) override final
+	{
+		meas.foreach([this](const IndexedValue<Binary, uint16_t>& value)
+		{
+			mBinaryMap[value.index] = value.value;
+		});
 	}
 
 	void LoadStatic(const IterableBuffer<IndexedValue<DoubleBitBinary, uint16_t>>& meas) override final
 	{
-		meas.foreach([this](const IndexedValue<DoubleBitBinary, uint16_t>& value) { mDoubleBinaryMap[value.index] = value.value; });
+		meas.foreach([this](const IndexedValue<DoubleBitBinary, uint16_t>& value)
+		{
+			mDoubleBinaryMap[value.index] = value.value;
+		});
 	}
 
 	void LoadStatic(const IterableBuffer<IndexedValue<Analog, uint16_t>>& meas) override final
 	{
-		meas.foreach([this](const IndexedValue<Analog, uint16_t>& value) { mAnalogMap[value.index] = value.value; });
+		meas.foreach([this](const IndexedValue<Analog, uint16_t>& value)
+		{
+			mAnalogMap[value.index] = value.value;
+		});
 	}
 
 	void LoadStatic(const IterableBuffer<IndexedValue<Counter, uint16_t>>& meas) override final
 	{
-		meas.foreach([this](const IndexedValue<Counter, uint16_t>& value) { mCounterMap[value.index] = value.value; });
+		meas.foreach([this](const IndexedValue<Counter, uint16_t>& value)
+		{
+			mCounterMap[value.index] = value.value;
+		});
 	}
 
 	void LoadStatic(const IterableBuffer<IndexedValue<FrozenCounter, uint16_t>>& meas) override final
 	{
-		meas.foreach([this](const IndexedValue<FrozenCounter, uint16_t>& value) { mFrozenCounterMap[value.index] = value.value; });
+		meas.foreach([this](const IndexedValue<FrozenCounter, uint16_t>& value)
+		{
+			mFrozenCounterMap[value.index] = value.value;
+		});
 	}
 
 	void LoadStatic(const IterableBuffer<IndexedValue<BinaryOutputStatus, uint16_t>>& meas) override final
 	{
-		meas.foreach([this](const IndexedValue<BinaryOutputStatus, uint16_t>& value) { mBinaryOutputStatusMap[value.index] = value.value; });
+		meas.foreach([this](const IndexedValue<BinaryOutputStatus, uint16_t>& value)
+		{
+			mBinaryOutputStatusMap[value.index] = value.value;
+		});
 	}
 
 	void LoadStatic(const IterableBuffer<IndexedValue<AnalogOutputStatus, uint16_t>>& meas) override final
 	{
-		meas.foreach([this](const IndexedValue<AnalogOutputStatus, uint16_t>& value) { mAnalogOutputStatusMap[value.index] = value.value; });
+		meas.foreach([this](const IndexedValue<AnalogOutputStatus, uint16_t>& value)
+		{
+			mAnalogOutputStatusMap[value.index] = value.value;
+		});
 	}
 
 	void LoadStatic(const IterableBuffer<IndexedValue<OctetString, uint16_t>>& meas) override final
 	{
-		meas.foreach([this](const IndexedValue<OctetString, uint16_t>& value) { mOctetStringMap[value.index] = value.value; });
+		meas.foreach([this](const IndexedValue<OctetString, uint16_t>& value)
+		{
+			mOctetStringMap[value.index] = value.value;
+		});
 	}
 
 
 
 	void LoadEvent(const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas) override final
 	{
-		meas.foreach([this](const IndexedValue<Binary, uint16_t>& value) { mEventBinaryMap[value.index] = value.value; });
+		meas.foreach([this](const IndexedValue<Binary, uint16_t>& value)
+		{
+			mEventBinaryMap[value.index] = value.value;
+		});
 	}
 
 	void LoadEvent(const IterableBuffer<IndexedValue<DoubleBitBinary, uint16_t>>& meas) override final
 	{
-		meas.foreach([this](const IndexedValue<DoubleBitBinary, uint16_t>& value) { mEventDoubleBinaryMap[value.index] = value.value; });
+		meas.foreach([this](const IndexedValue<DoubleBitBinary, uint16_t>& value)
+		{
+			mEventDoubleBinaryMap[value.index] = value.value;
+		});
 	}
 
 	void LoadEvent(const IterableBuffer<IndexedValue<Analog, uint16_t>>& meas) override final
 	{
-		meas.foreach([this](const IndexedValue<Analog, uint16_t>& value) { mEventAnalogMap[value.index] = value.value; });
+		meas.foreach([this](const IndexedValue<Analog, uint16_t>& value)
+		{
+			mEventAnalogMap[value.index] = value.value;
+		});
 	}
 
 	void LoadEvent(const IterableBuffer<IndexedValue<Counter, uint16_t>>& meas) override final
 	{
-		meas.foreach([this](const IndexedValue<Counter, uint16_t>& value) { mCounterMap[value.index] = value.value; });
+		meas.foreach([this](const IndexedValue<Counter, uint16_t>& value)
+		{
+			mCounterMap[value.index] = value.value;
+		});
 	}
 
 	void LoadEvent(const IterableBuffer<IndexedValue<FrozenCounter, uint16_t>>& meas) override final
 	{
-		meas.foreach([this](const IndexedValue<FrozenCounter, uint16_t>& value) { mEventFrozenCounterMap[value.index] = value.value; });
+		meas.foreach([this](const IndexedValue<FrozenCounter, uint16_t>& value)
+		{
+			mEventFrozenCounterMap[value.index] = value.value;
+		});
 	}
 
 	void LoadEvent(const IterableBuffer<IndexedValue<BinaryOutputStatus, uint16_t>>& meas) override final
 	{
-		meas.foreach([this](const IndexedValue<BinaryOutputStatus, uint16_t>& value) { mEventBinaryOutputStatusMap[value.index] = value.value; });
+		meas.foreach([this](const IndexedValue<BinaryOutputStatus, uint16_t>& value)
+		{
+			mEventBinaryOutputStatusMap[value.index] = value.value;
+		});
 	}
 
 	void LoadEvent(const IterableBuffer<IndexedValue<AnalogOutputStatus, uint16_t>>& meas) override final
 	{
-		meas.foreach([this](const IndexedValue<AnalogOutputStatus, uint16_t>& value) { mAnalogOutputStatusMap[value.index] = value.value; });
+		meas.foreach([this](const IndexedValue<AnalogOutputStatus, uint16_t>& value)
+		{
+			mAnalogOutputStatusMap[value.index] = value.value;
+		});
 	}
 
 	void LoadEvent(const IterableBuffer<IndexedValue<OctetString, uint16_t>>& meas) override final
 	{
-		meas.foreach([this](const IndexedValue<OctetString, uint16_t>& value) { mEventOctetStringMap[value.index] = value.value; });
+		meas.foreach([this](const IndexedValue<OctetString, uint16_t>& value)
+		{
+			mEventOctetStringMap[value.index] = value.value;
+		});
 	}
 
 	void Clear()
@@ -145,34 +193,83 @@ class MockSOEHandler : public ISOEHandler
 		mEventOctetStringMap.clear();
 	}
 
-	Binary GetBinary(uint32_t aIndex) { return GetAny<Binary>(aIndex, mBinaryMap); }
-	DoubleBitBinary GetDoubleBinary(uint32_t aIndex) { return GetAny<DoubleBitBinary>(aIndex, mDoubleBinaryMap); }
-	Analog GetAnalog(uint32_t aIndex) { return GetAny<Analog>(aIndex, mAnalogMap); }
-	Counter GetCounter(uint32_t aIndex) { return GetAny<Counter>(aIndex, mCounterMap); }
-	FrozenCounter GetFrozenCounter(uint32_t aIndex) { return GetAny<FrozenCounter>(aIndex, mFrozenCounterMap); }
-	BinaryOutputStatus GetBinaryOutputStatus(uint32_t aIndex) { return GetAny<BinaryOutputStatus>(aIndex, mBinaryOutputStatusMap); }
-	AnalogOutputStatus GetAnalogOutputStatus(uint32_t aIndex) { return GetAny<AnalogOutputStatus>(aIndex, mAnalogOutputStatusMap); }
-	OctetString GetOctetString(uint32_t aIndex) { return GetAny<OctetString>(aIndex, mOctetStringMap); }
+	Binary GetBinary(uint32_t aIndex)
+	{
+		return GetAny<Binary>(aIndex, mBinaryMap);
+	}
+	DoubleBitBinary GetDoubleBinary(uint32_t aIndex)
+	{
+		return GetAny<DoubleBitBinary>(aIndex, mDoubleBinaryMap);
+	}
+	Analog GetAnalog(uint32_t aIndex)
+	{
+		return GetAny<Analog>(aIndex, mAnalogMap);
+	}
+	Counter GetCounter(uint32_t aIndex)
+	{
+		return GetAny<Counter>(aIndex, mCounterMap);
+	}
+	FrozenCounter GetFrozenCounter(uint32_t aIndex)
+	{
+		return GetAny<FrozenCounter>(aIndex, mFrozenCounterMap);
+	}
+	BinaryOutputStatus GetBinaryOutputStatus(uint32_t aIndex)
+	{
+		return GetAny<BinaryOutputStatus>(aIndex, mBinaryOutputStatusMap);
+	}
+	AnalogOutputStatus GetAnalogOutputStatus(uint32_t aIndex)
+	{
+		return GetAny<AnalogOutputStatus>(aIndex, mAnalogOutputStatusMap);
+	}
+	OctetString GetOctetString(uint32_t aIndex)
+	{
+		return GetAny<OctetString>(aIndex, mOctetStringMap);
+	}
 
-	Binary GetEventBinary(uint32_t aIndex) { return GetAny<Binary>(aIndex, mEventBinaryMap); }
-	DoubleBitBinary GetEventDoubleBinary(uint32_t aIndex) { return GetAny<DoubleBitBinary>(aIndex, mEventDoubleBinaryMap); }
-	Analog GetEventAnalog(uint32_t aIndex) { return GetAny<Analog>(aIndex, mEventAnalogMap); }
-	Counter GetEventCounter(uint32_t aIndex) { return GetAny<Counter>(aIndex, mEventCounterMap); }
-	FrozenCounter GetEventFrozenCounter(uint32_t aIndex) { return GetAny<FrozenCounter>(aIndex, mEventFrozenCounterMap); }
-	BinaryOutputStatus GetEventBinaryOutputStatus(uint32_t aIndex) { return GetAny<BinaryOutputStatus>(aIndex, mEventBinaryOutputStatusMap); }
-	AnalogOutputStatus GetEventAnalogOutputStatus(uint32_t aIndex) { return GetAny<AnalogOutputStatus>(aIndex, mEventAnalogOutputStatusMap); }
-	OctetString GetEventOctetString(uint32_t aIndex) { return GetAny<OctetString>(aIndex, mEventOctetStringMap); }
+	Binary GetEventBinary(uint32_t aIndex)
+	{
+		return GetAny<Binary>(aIndex, mEventBinaryMap);
+	}
+	DoubleBitBinary GetEventDoubleBinary(uint32_t aIndex)
+	{
+		return GetAny<DoubleBitBinary>(aIndex, mEventDoubleBinaryMap);
+	}
+	Analog GetEventAnalog(uint32_t aIndex)
+	{
+		return GetAny<Analog>(aIndex, mEventAnalogMap);
+	}
+	Counter GetEventCounter(uint32_t aIndex)
+	{
+		return GetAny<Counter>(aIndex, mEventCounterMap);
+	}
+	FrozenCounter GetEventFrozenCounter(uint32_t aIndex)
+	{
+		return GetAny<FrozenCounter>(aIndex, mEventFrozenCounterMap);
+	}
+	BinaryOutputStatus GetEventBinaryOutputStatus(uint32_t aIndex)
+	{
+		return GetAny<BinaryOutputStatus>(aIndex, mEventBinaryOutputStatusMap);
+	}
+	AnalogOutputStatus GetEventAnalogOutputStatus(uint32_t aIndex)
+	{
+		return GetAny<AnalogOutputStatus>(aIndex, mEventAnalogOutputStatusMap);
+	}
+	OctetString GetEventOctetString(uint32_t aIndex)
+	{
+		return GetAny<OctetString>(aIndex, mEventOctetStringMap);
+	}
 
 protected:
 
 	void Start() {}
 	void End() {}
-	
+
 
 private:
 
 	template <typename T>
-	struct PointMap {
+	struct PointMap
+	{
 		typedef std::map<uint32_t, T> Type;
 	};
 
@@ -183,7 +280,7 @@ private:
 		if(iter == arMap.end()) throw Exception(LOCATION, "Index not found in map");
 		else return iter->second;
 	}
-		
+
 	PointMap<Binary>::Type mBinaryMap;
 	PointMap<DoubleBitBinary>::Type mDoubleBinaryMap;
 	PointMap<Analog>::Type mAnalogMap;

@@ -74,7 +74,7 @@ void MockUpperLayer::SendDown(const openpal::ReadOnlyBuffer& arBuffer)
 
 void MockUpperLayer::SendDown(const std::string& arHexData)
 {
-	HexSequence hs(arHexData);	
+	HexSequence hs(arHexData);
 	this->SendDown(hs.ToReadOnly());
 }
 

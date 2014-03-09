@@ -35,7 +35,7 @@ using namespace asiopal;
 TEST_CASE(SUITE("FullSequence"))
 {
 	/* TODO - renable tests
-	
+
 	EventLog log;
 	CommandTask ct(Logger(&log, LogLevel::Info, "task"));
 	CommandResponse rsp;
@@ -46,8 +46,8 @@ TEST_CASE(SUITE("FullSequence"))
 		rsp = aRsp;
 	};
 
-	
-	ct.Configure(formatter, responder);	
+
+	ct.Configure(formatter, responder);
 	ct.AddCommandCode(FunctionCode::SELECT);
 
 	APDU frag;
@@ -55,7 +55,7 @@ TEST_CASE(SUITE("FullSequence"))
 	HexSequence hs("C0 81 00 00 0C 01 17 01 00 03 01 64 00 00 00 64 00 00 00 00");
 	frag.Reset();
 	frag.Write(hs);
-	frag.Interpret();	
+	frag.Interpret();
 	auto result = ct.OnFinalResponse(frag);
 	REQUIRE(TR_SUCCESS ==  result);
 	REQUIRE((CommandResponse::OK(CommandStatus::SUCCESS) == rsp));

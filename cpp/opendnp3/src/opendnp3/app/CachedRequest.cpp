@@ -24,7 +24,7 @@
 namespace opendnp3
 {
 
-CachedRequest::CachedRequest(uint32_t aMaxFragmentSize): 
+CachedRequest::CachedRequest(uint32_t aMaxFragmentSize):
 	isCached(false),
 	buffer(aMaxFragmentSize)
 {}
@@ -40,6 +40,6 @@ void CachedRequest::Set(const APDURecord& aRecord, SequenceInfo aSequence)
 	sequence = aSequence;
 	isCached = true;
 }
-	
+
 
 }

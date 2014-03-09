@@ -44,7 +44,7 @@ TEST_CASE(SUITE("SelectCROBNotSupported"))
 	// Select group 12 Var 1, count = 1, index = 3
 	t.SendToSlave("C0 03 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00");
 	std::string response = t.Read();
-	
+
 	// TODO - try to figure out where the IIN parameter error came from here and what conformance tests have to say
 	REQUIRE(response ==  "C0 81 80 00 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 04"); // 0x04 status == CommandStatus::NOT_SUPPORTED
 }
@@ -95,12 +95,12 @@ TEST_CASE(SUITE("SelectOperateCROBSameSequenceNumber"))
 	t.SendToSlave("C1 04 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00", SequenceInfo::CORRECT);
 	REQUIRE(t.Read() ==  "C0 81 80 00 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00");
 	REQUIRE(2 ==  t.cmdHandler.mNumInvocations);
-	
+
 	// TODO - Find this requirement in the docs
 	// operate again with same sequence number, should respond success but not really do an operation
 	t.SendToSlave("C1 04 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00", SequenceInfo::PREVIOUS);
 	REQUIRE(t.Read() ==  "C0 81 80 00 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00");
-	REQUIRE(2 ==  t.cmdHandler.mNumInvocations);	
+	REQUIRE(2 ==  t.cmdHandler.mNumInvocations);
 }
 
 TEST_CASE(SUITE("SelectGroup41Var1"))

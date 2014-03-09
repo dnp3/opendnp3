@@ -43,7 +43,7 @@ using namespace opendnp3;
 #define SUITE(name) "APDUWritingTestSuite - " name
 
 TEST_CASE(SUITE("AllObjectsAndRollback"))
-{	
+{
 	APDURequest request(APDUHelpers::Request(FunctionCode::READ));
 	auto writer = request.GetWriter();
 	writer.WriteHeader(Group60Var1::ID, QualifierCode::ALL_OBJECTS);
@@ -53,14 +53,14 @@ TEST_CASE(SUITE("AllObjectsAndRollback"))
 	writer.WriteHeader(Group60Var4::ID, QualifierCode::ALL_OBJECTS);
 
 	REQUIRE("C0 01 3C 01 06 3C 02 06 3C 03 06 3C 04 06" ==  toHex(request.ToReadOnly()));
-	
+
 	writer.Rollback();
-	
-	REQUIRE("C0 01 3C 01 06 3C 02 06" ==  toHex(request.ToReadOnly()));	
+
+	REQUIRE("C0 01 3C 01 06 3C 02 06" ==  toHex(request.ToReadOnly()));
 }
 
 TEST_CASE(SUITE("AllObjectsReturnsFalseWhenFull"))
-{	
+{
 	APDURequest request(APDUHelpers::Request(FunctionCode::READ, 6));
 	auto writer = request.GetWriter();
 
@@ -72,29 +72,29 @@ TEST_CASE(SUITE("AllObjectsReturnsFalseWhenFull"))
 
 
 TEST_CASE(SUITE("RangeWriteIteratorStartStop"))
-{	
+{
 	APDUResponse response(APDUHelpers::Response());
 	auto writer = response.GetWriter();
-	
+
 	auto iterator = writer.IterateOverRange<UInt8, Counter>(QualifierCode::UINT8_START_STOP, Group20Var6Serializer::Inst(), 2);
-	
-	REQUIRE(iterator.Write(Counter(9)));	
+
+	REQUIRE(iterator.Write(Counter(9)));
 	REQUIRE(iterator.Write(Counter(7)));
 	REQUIRE(iterator.Complete());
 
-	REQUIRE("C0 81 00 00 14 06 00 02 03 09 00 07 00" ==  toHex(response.ToReadOnly()));	
+	REQUIRE("C0 81 00 00 14 06 00 02 03 09 00 07 00" ==  toHex(response.ToReadOnly()));
 }
 
 TEST_CASE(SUITE("EmptyHeadersWhenNotEnoughSpaceForSingleValue"))
-{	
+{
 	APDUResponse response(APDUHelpers::Response(8));
 	auto writer = response.GetWriter();
-	
+
 	auto iterator = writer.IterateOverRange<UInt8, Counter>(QualifierCode::UINT8_START_STOP, Group20Var6Serializer::Inst(), 2);
 
 	REQUIRE(iterator.IsNull());
 
-	REQUIRE("C0 81 00 00" ==  toHex(response.ToReadOnly()));	
+	REQUIRE("C0 81 00 00" ==  toHex(response.ToReadOnly()));
 }
 
 TEST_CASE(SUITE("CountWriteIteratorAllowsCountOfZero"))
@@ -106,58 +106,58 @@ TEST_CASE(SUITE("CountWriteIteratorAllowsCountOfZero"))
 	REQUIRE(!iter.IsNull());
 	REQUIRE(iter.Complete());
 
-	REQUIRE("C0 81 00 00 1E 01 08 00 00" ==  toHex(response.ToReadOnly()));	
+	REQUIRE("C0 81 00 00 1E 01 08 00 00" ==  toHex(response.ToReadOnly()));
 
 }
 
 TEST_CASE(SUITE("CountWriteIteratorFillsUpCorrectly"))
 {
 	APDUResponse response(APDUHelpers::Response(15));
-	auto writer = response.GetWriter();	
+	auto writer = response.GetWriter();
 
 	auto iter = writer.IterateOverCount<UInt8, Analog>(QualifierCode::UINT8_CNT, Group30Var2Serializer::Inst());
-	
-	REQUIRE(iter.Write(Analog(9, 0xFF)));	
+
+	REQUIRE(iter.Write(Analog(9, 0xFF)));
 	REQUIRE(iter.Write(Analog(7, 0xFF)));
 	REQUIRE(!iter.Write(Analog(7, 0xFF))); //we're full
 	REQUIRE(iter.Complete());
 
-	REQUIRE("C0 81 00 00 1E 02 07 02 FF 09 00 FF 07 00" ==  toHex(response.ToReadOnly()));	
+	REQUIRE("C0 81 00 00 1E 02 07 02 FF 09 00 FF 07 00" ==  toHex(response.ToReadOnly()));
 }
 
 TEST_CASE(SUITE("PrefixWriteIteratorWithSingleCROB"))
 {
 	APDUResponse response(APDUHelpers::Response());
-	auto writer = response.GetWriter();	
+	auto writer = response.GetWriter();
 
 	auto iter = writer.IterateOverCountWithPrefix<UInt8, ControlRelayOutputBlock>(QualifierCode::UINT8_CNT_UINT8_INDEX, Group12Var1Serializer::Inst());
 	REQUIRE(!iter.IsNull());
 
 	ControlRelayOutputBlock crob(ControlCode::LATCH_ON, 0x1F, 0x10, 0xAA, CommandStatus::LOCAL);
-	
+
 	REQUIRE(iter.Write(crob, 0x21));
 	REQUIRE(iter.Complete());
 
-	REQUIRE("C0 81 00 00 0C 01 17 01 21 03 1F 10 00 00 00 AA 00 00 00 07" ==  toHex(response.ToReadOnly()));	
+	REQUIRE("C0 81 00 00 0C 01 17 01 21 03 1F 10 00 00 00 AA 00 00 00 07" ==  toHex(response.ToReadOnly()));
 }
 
 
 TEST_CASE(SUITE("SingleValueWithIndexCROB"))
 {
 	APDURequest request(APDUHelpers::Request(FunctionCode::SELECT));
-	auto writer = request.GetWriter();		
+	auto writer = request.GetWriter();
 
-	ControlRelayOutputBlock crob(ControlCode::LATCH_ON, 0x1F, 0x10, 0xAA, CommandStatus::LOCAL);	
-	
-	REQUIRE(writer.WriteSingleIndexedValue<UInt16>(QualifierCode::UINT16_CNT, Group12Var1Serializer::Inst(), crob, 0x21));	
+	ControlRelayOutputBlock crob(ControlCode::LATCH_ON, 0x1F, 0x10, 0xAA, CommandStatus::LOCAL);
 
-	REQUIRE("C0 03 0C 01 08 01 00 21 00 03 1F 10 00 00 00 AA 00 00 00 07" ==  toHex(request.ToReadOnly()));	
+	REQUIRE(writer.WriteSingleIndexedValue<UInt16>(QualifierCode::UINT16_CNT, Group12Var1Serializer::Inst(), crob, 0x21));
+
+	REQUIRE("C0 03 0C 01 08 01 00 21 00 03 1F 10 00 00 00 AA 00 00 00 07" ==  toHex(request.ToReadOnly()));
 }
 
 TEST_CASE(SUITE("WriteSingleValue"))
 {
 	APDURequest request(APDUHelpers::Request(FunctionCode::WRITE));
-	auto writer = request.GetWriter();	
+	auto writer = request.GetWriter();
 
 	Group50Var1 obj = { 0x1234 };
 	REQUIRE(writer.WriteSingleValue<UInt8>(QualifierCode::UINT8_CNT, obj));

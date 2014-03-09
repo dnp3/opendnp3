@@ -37,7 +37,7 @@ int Logger::LogLevelToMask(LogLevel aFilter)
 	//set the filter bit and all the bits below it
 	return LogLevelToType(aFilter) | (LogLevelToType(aFilter) - 1);
 }
-	
+
 Logger::Logger(ILogBase* apLog, int aLevel, const std::string& aName)
 	:
 	mLevel(aLevel),
@@ -82,7 +82,8 @@ void Logger::Log( const LogEntry& arEntry)
 
 void Logger::Log( LogLevel aLogLevel, const std::string& arLocation, const std::string& aMessage, int aErrorCode)
 {
-	if(this->IsEnabled(aLogLevel)) {
+	if(this->IsEnabled(aLogLevel))
+	{
 		LogEntry le(aLogLevel, mName, arLocation, aMessage, aErrorCode);
 		mpLog->Log(le);
 	}

@@ -44,7 +44,8 @@ ShiftableBuffer::ShiftableBuffer(const uint8_t* aBuffer, uint32_t aSize) :
 	mWritePos(0),
 	mReadPos(0)
 {
-	if( aBuffer) {
+	if( aBuffer)
+	{
 		memcpy( mpBuffer, aBuffer, aSize) ;
 		mWritePos += aSize ;
 	}
@@ -102,7 +103,8 @@ size_t ShiftableBuffer::SyncSubsequence(const uint8_t* apPattern, size_t aNumPat
 
 	const uint8_t* pRead = this->ReadBuff() + aOffset;
 
-	for(size_t i = 0; i < aNumPatternBytes; ++i) {
+	for(size_t i = 0; i < aNumPatternBytes; ++i)
+	{
 		if(apPattern[i] != pRead[i])
 			return SyncSubsequence(apPattern, aNumPatternBytes, aOffset + 1);
 	}

@@ -30,49 +30,49 @@ namespace openpal
 template <class ValueType, class IndexType>
 class RandomInsertAdapter
 {
-	public:
+public:
 
-		RandomInsertAdapter(Indexable<ValueType, IndexType> aValues, Indexable<IndexType, IndexType> aIndices) : 
-			values(aValues),
-			availableIndices(aIndices)
-		{
-			assert(aValues.Size() == aIndices.Size());
-			for(IndexType i = 0; i < aValues.Size(); ++i) availableIndices.Push(i);
-		}				
+	RandomInsertAdapter(Indexable<ValueType, IndexType> aValues, Indexable<IndexType, IndexType> aIndices) :
+		values(aValues),
+		availableIndices(aIndices)
+	{
+		assert(aValues.Size() == aIndices.Size());
+		for(IndexType i = 0; i < aValues.Size(); ++i) availableIndices.Push(i);
+	}
 
-		inline ValueType& operator[](IndexType index) 
-		{
-			assert(index < values.Size());
-			return values[index];
-		}		
+	inline ValueType& operator[](IndexType index)
+	{
+		assert(index < values.Size());
+		return values[index];
+	}
 
-		inline bool IsFull() const
-		{
-			return availableIndices.IsEmpty();
-		}
+	inline bool IsFull() const
+	{
+		return availableIndices.IsEmpty();
+	}
 
-		// put in a value and it tells you what index it was assigned
-		// the value will never be overwritten
-		IndexType Add(const ValueType& value)
-		{
-			assert(!availableIndices.IsEmpty());
-			auto index = availableIndices.Pop();
-			values[index] = value;
-			return index;
-		}
+	// put in a value and it tells you what index it was assigned
+	// the value will never be overwritten
+	IndexType Add(const ValueType& value)
+	{
+		assert(!availableIndices.IsEmpty());
+		auto index = availableIndices.Pop();
+		values[index] = value;
+		return index;
+	}
 
-		// This is really based on trust the index is actually being used		
-		void Release(IndexType index)
-		{
-			assert(index < values.Size());
-			assert(!availableIndices.IsFull());
-			availableIndices.Push(index);
-		}
-	
-	private:
-		Indexable<ValueType, IndexType> values;
-		StackAdapter<IndexType, IndexType> availableIndices;
-		RandomInsertAdapter();
+	// This is really based on trust the index is actually being used
+	void Release(IndexType index)
+	{
+		assert(index < values.Size());
+		assert(!availableIndices.IsFull());
+		availableIndices.Push(index);
+	}
+
+private:
+	Indexable<ValueType, IndexType> values;
+	StackAdapter<IndexType, IndexType> availableIndices;
+	RandomInsertAdapter();
 };
 
 }

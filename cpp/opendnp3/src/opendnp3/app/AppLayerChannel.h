@@ -78,15 +78,18 @@ public:
 protected:
 
 	// functions for the states to access
-	int Sequence() {
+	int Sequence()
+	{
 		return mSequence;
 	}
-	int IncrSequence() {
+	int IncrSequence()
+	{
 		return mSequence = NextSeq(mSequence);
 	}
 	void QueueSend(APDUWrapper&);
 	void ChangeState(ACS_Base*);
-	void SetRetry(size_t aNumRetry) {
+	void SetRetry(size_t aNumRetry)
+	{
 		mNumRetry = aNumRetry;
 	}
 	bool Retry(ACS_Base*);
@@ -100,16 +103,18 @@ protected:
 	void StartTimer();
 	void CancelTimer();
 
-	openpal::Logger& GetLogger() {
+	openpal::Logger& GetLogger()
+	{
 		return mLogger;
 	}
 
 
-	AppLayer* mpAppLayer;	
+	AppLayer* mpAppLayer;
 	ACS_Base* mpState;
 	int mSequence;	// Rotating sequence number for the channel
 
-	static int NextSeq(int s) {
+	static int NextSeq(int s)
+	{
 		return (s + 1) % 16;
 	}
 

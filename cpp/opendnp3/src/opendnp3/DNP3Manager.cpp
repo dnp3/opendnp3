@@ -40,18 +40,19 @@ DNP3Manager::~DNP3Manager()
 void DNP3Manager::Shutdown()
 {
 	std::set<DNP3Channel*> copy(mChannels);
-	for(auto pChannel: copy) pChannel->Shutdown();
+	for(auto pChannel : copy) pChannel->Shutdown();
 }
 
 IChannel* DNP3Manager::CreateChannel(
-	openpal::Logger aLogger,
-	openpal::TimeDuration minOpenRetry,
-	openpal::TimeDuration maxOpenRetry,
-	openpal::IPhysicalLayerAsync* apPhys,
-	IOpenDelayStrategy* pOpenStrategy)
+    openpal::Logger aLogger,
+    openpal::TimeDuration minOpenRetry,
+    openpal::TimeDuration maxOpenRetry,
+    openpal::IPhysicalLayerAsync* apPhys,
+    IOpenDelayStrategy* pOpenStrategy)
 {
 
-	auto pChannel = new DNP3Channel(aLogger, minOpenRetry, maxOpenRetry, pOpenStrategy, apPhys, [this](DNP3Channel * apChannel) {
+	auto pChannel = new DNP3Channel(aLogger, minOpenRetry, maxOpenRetry, pOpenStrategy, apPhys, [this](DNP3Channel * apChannel)
+	{
 		mChannels.erase(apChannel);
 		delete apChannel;
 	});

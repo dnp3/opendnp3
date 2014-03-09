@@ -50,7 +50,7 @@ SlaveConfig::SlaveConfig() :
 	mUnsolPackDelay(TimeDuration::Milliseconds(200)),
 	mUnsolRetryDelay(TimeDuration::Seconds(2)),
 	mSelectTimeout(TimeDuration::Seconds(5)),
-	mMaxFragSize(DEFAULT_FRAG_SIZE),	
+	mMaxFragSize(DEFAULT_FRAG_SIZE),
 	mEventMaxConfig(),
 	mStaticBinary(StaticBinaryResponse::Group1Var2),
 	mStaticAnalog(StaticAnalogResponse::Group30Var1),

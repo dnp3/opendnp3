@@ -35,13 +35,14 @@ public:
 		dist(0.0, 1.0)
 	{}
 
-	double Next() {
+	double Next()
+	{
 		return dist(rng);
 	}
 
 private:
 	std::mt19937 rng;
-	std::uniform_real_distribution<double> dist;	
+	std::uniform_real_distribution<double> dist;
 };
 
 }

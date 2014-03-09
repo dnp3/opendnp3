@@ -40,7 +40,8 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_CommandProcessorImpl_selectA
 	ControlRelayOutputBlock crob(ControlCodeFromType(code), count, onTime, offTime);
 	jobject gref = apEnv->NewGlobalRef(callback);
 	JavaVM* pJVM = JNIHelpers::GetJVMFromEnv(apEnv);
-	pCmdProcessor->SelectAndOperate(crob, index, [ = ](CommandResponse rsp) {
+	pCmdProcessor->SelectAndOperate(crob, index, [ = ](CommandResponse rsp)
+	{
 		DoCommandCallback(pJVM, gref, rsp);
 	});
 }
@@ -52,7 +53,8 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_CommandProcessorImpl_directO
 	ControlRelayOutputBlock crob(ControlCodeFromType(code), count, onTime, offTime);
 	jobject gref = apEnv->NewGlobalRef(callback);
 	JavaVM* pJVM = JNIHelpers::GetJVMFromEnv(apEnv);
-	pCmdProcessor->DirectOperate(crob, index, [ = ](CommandResponse rsp) {
+	pCmdProcessor->DirectOperate(crob, index, [ = ](CommandResponse rsp)
+	{
 		DoCommandCallback(pJVM, gref, rsp);
 	});
 }
@@ -64,7 +66,8 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_CommandProcessorImpl_selectA
 	AnalogOutputInt32 ao(value);
 	jobject gref = apEnv->NewGlobalRef(callback);
 	JavaVM* pJVM = JNIHelpers::GetJVMFromEnv(apEnv);
-	pCmdProcessor->SelectAndOperate(ao, index, [ = ](CommandResponse rsp) {
+	pCmdProcessor->SelectAndOperate(ao, index, [ = ](CommandResponse rsp)
+	{
 		DoCommandCallback(pJVM, gref, rsp);
 	});
 }
@@ -76,7 +79,8 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_CommandProcessorImpl_directO
 	AnalogOutputInt32 ao(value);
 	jobject gref = apEnv->NewGlobalRef(callback);
 	JavaVM* pJVM = JNIHelpers::GetJVMFromEnv(apEnv);
-	pCmdProcessor->DirectOperate(ao, index, [ = ](CommandResponse rsp) {
+	pCmdProcessor->DirectOperate(ao, index, [ = ](CommandResponse rsp)
+	{
 		DoCommandCallback(pJVM, gref, rsp);
 	});
 }
@@ -88,7 +92,8 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_CommandProcessorImpl_selectA
 	AnalogOutputInt16 ao(value);
 	jobject gref = apEnv->NewGlobalRef(callback);
 	JavaVM* pJVM = JNIHelpers::GetJVMFromEnv(apEnv);
-	pCmdProcessor->SelectAndOperate(ao, index, [ = ](CommandResponse rsp) {
+	pCmdProcessor->SelectAndOperate(ao, index, [ = ](CommandResponse rsp)
+	{
 		DoCommandCallback(pJVM, gref, rsp);
 	});
 }
@@ -100,7 +105,8 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_CommandProcessorImpl_directO
 	AnalogOutputInt16 ao(value);
 	jobject gref = apEnv->NewGlobalRef(callback);
 	JavaVM* pJVM = JNIHelpers::GetJVMFromEnv(apEnv);
-	pCmdProcessor->DirectOperate(ao, index, [ = ](CommandResponse rsp) {
+	pCmdProcessor->DirectOperate(ao, index, [ = ](CommandResponse rsp)
+	{
 		DoCommandCallback(pJVM, gref, rsp);
 	});
 }
@@ -112,7 +118,8 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_CommandProcessorImpl_selectA
 	AnalogOutputFloat32 ao(value);
 	jobject gref = apEnv->NewGlobalRef(callback);
 	JavaVM* pJVM = JNIHelpers::GetJVMFromEnv(apEnv);
-	pCmdProcessor->SelectAndOperate(ao, index, [ = ](CommandResponse rsp) {
+	pCmdProcessor->SelectAndOperate(ao, index, [ = ](CommandResponse rsp)
+	{
 		DoCommandCallback(pJVM, gref, rsp);
 	});
 }
@@ -124,7 +131,8 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_CommandProcessorImpl_directO
 	AnalogOutputFloat32 ao(value);
 	jobject gref = apEnv->NewGlobalRef(callback);
 	JavaVM* pJVM = JNIHelpers::GetJVMFromEnv(apEnv);
-	pCmdProcessor->DirectOperate(ao, index, [ = ](CommandResponse rsp) {
+	pCmdProcessor->DirectOperate(ao, index, [ = ](CommandResponse rsp)
+	{
 		DoCommandCallback(pJVM, gref, rsp);
 	});
 }
@@ -136,7 +144,8 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_CommandProcessorImpl_selectA
 	AnalogOutputDouble64 ao(value);
 	jobject gref = apEnv->NewGlobalRef(callback);
 	JavaVM* pJVM = JNIHelpers::GetJVMFromEnv(apEnv);
-	pCmdProcessor->SelectAndOperate(ao, index, [ = ](CommandResponse rsp) {
+	pCmdProcessor->SelectAndOperate(ao, index, [ = ](CommandResponse rsp)
+	{
 		DoCommandCallback(pJVM, gref, rsp);
 	});
 }
@@ -148,7 +157,8 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_CommandProcessorImpl_directO
 	AnalogOutputDouble64 ao(value);
 	jobject gref = apEnv->NewGlobalRef(callback);
 	JavaVM* pJVM = JNIHelpers::GetJVMFromEnv(apEnv);
-	pCmdProcessor->DirectOperate(ao, index, [ = ](CommandResponse rsp) {
+	pCmdProcessor->DirectOperate(ao, index, [ = ](CommandResponse rsp)
+	{
 		DoCommandCallback(pJVM, gref, rsp);
 	});
 }

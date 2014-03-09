@@ -32,49 +32,49 @@ template <class ValueType, class IndexType>
 class StackAdapter : public HasSize<IndexType>
 {
 
-	public:
+public:
 
-		StackAdapter(Indexable<ValueType, IndexType> indexable) : 
-			HasSize<IndexType>(0),
-			indexable(indexable)
-		{}						
+	StackAdapter(Indexable<ValueType, IndexType> indexable) :
+		HasSize<IndexType>(0),
+		indexable(indexable)
+	{}
 
-		inline IndexType Capacity() const
+	inline IndexType Capacity() const
+	{
+		return indexable.Size();
+	}
+
+	inline bool IsFull() const
+	{
+		return this->size == indexable.Size();
+	}
+
+	inline void Clear()
+	{
+		this->size = 0;
+	}
+
+	bool Push(const ValueType& value)
+	{
+		if(!IsFull())
 		{
-			return indexable.Size();
+			indexable[this->size] = value;
+			++(this->size);
+			return true;
 		}
+		else return false;
+	}
 
-		inline bool IsFull() const
-		{
-			return this->size == indexable.Size();
-		}
+	ValueType Pop()
+	{
+		assert(this->IsNotEmpty());
+		--(this->size);
+		return indexable[this->size];
+	}
 
-		inline void Clear()
-		{
-			this->size = 0;
-		}
-
-		bool Push(const ValueType& value)
-		{
-			if(!IsFull())
-			{
-				indexable[this->size] = value;
-				++(this->size);
-				return true;
-			}
-			else return false;
-		}	
-
-		ValueType Pop()
-		{
-			assert(this->IsNotEmpty());
-			--(this->size);
-			return indexable[this->size];			
-		}
-	
-	private:
-		Indexable<ValueType, IndexType> indexable;
-		StackAdapter();
+private:
+	Indexable<ValueType, IndexType> indexable;
+	StackAdapter();
 };
 
 }

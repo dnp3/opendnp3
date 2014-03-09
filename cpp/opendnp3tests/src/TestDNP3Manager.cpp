@@ -54,7 +54,8 @@ const size_t ITERATIONS = 100;
 
 TEST_CASE(SUITE("ConstructionDestruction"))
 {
-	for(int i = 0; i < ITERATIONS; ++i) {
+	for(int i = 0; i < ITERATIONS; ++i)
+	{
 
 		EventLog log;
 		IOServiceThreadPool pool(Logger(&log, LogLevel::Info, "pool"), std::thread::hardware_concurrency());
@@ -73,7 +74,8 @@ TEST_CASE(SUITE("ConstructionDestruction"))
 
 TEST_CASE(SUITE("ManualStackShutdown"))
 {
-	for(int i = 0; i < ITERATIONS; ++i) {
+	for(int i = 0; i < ITERATIONS; ++i)
+	{
 
 		EventLog log;
 		IOServiceThreadPool pool(Logger(&log, LogLevel::Info, "pool"), std::thread::hardware_concurrency());
@@ -96,7 +98,8 @@ TEST_CASE(SUITE("ManualStackShutdown"))
 
 TEST_CASE(SUITE("ManualChannelShutdownWithStack"))
 {
-	for(int i = 0; i < ITERATIONS; ++i) {
+	for(int i = 0; i < ITERATIONS; ++i)
+	{
 
 		EventLog log;
 		IOServiceThreadPool pool(Logger(&log, LogLevel::Info, "pool"), std::thread::hardware_concurrency());
@@ -112,7 +115,8 @@ TEST_CASE(SUITE("ManualChannelShutdownWithStack"))
 
 TEST_CASE(SUITE("ManualChannelShutdown"))
 {
-	for(int i = 0; i < ITERATIONS; ++i) {
+	for(int i = 0; i < ITERATIONS; ++i)
+	{
 
 		EventLog log;
 		IOServiceThreadPool pool(Logger(&log, LogLevel::Info, "pool"), std::thread::hardware_concurrency());

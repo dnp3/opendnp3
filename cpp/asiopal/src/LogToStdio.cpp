@@ -44,7 +44,7 @@ void LogToStdio::Log(const openpal::LogEntry& entry)
 {
 	auto time = std::chrono::high_resolution_clock::now();
 	auto num = duration_cast<milliseconds>(time.time_since_epoch()).count();
-	
+
 	ostringstream oss;
 
 	oss << num << openpal::LogLevelToString( entry.GetLogLevel() ) << " - " << entry.GetDeviceName();

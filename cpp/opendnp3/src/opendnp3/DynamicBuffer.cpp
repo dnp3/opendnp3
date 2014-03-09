@@ -24,7 +24,7 @@
 namespace opendnp3
 {
 
-DynamicBuffer::DynamicBuffer(uint32_t aSize) : 
+DynamicBuffer::DynamicBuffer(uint32_t aSize) :
 	bufferSize(aSize),
 	pBuffer(new uint8_t[aSize])
 {}

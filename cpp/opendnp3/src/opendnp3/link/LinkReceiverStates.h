@@ -45,7 +45,8 @@ public:
 	virtual bool Parse(LinkLayerReceiver*) = 0;
 
 	/** @return True if the receiver has a complete frame */
-	virtual bool HasFrame() {
+	virtual bool HasFrame()
+	{
 		return false;
 	}
 

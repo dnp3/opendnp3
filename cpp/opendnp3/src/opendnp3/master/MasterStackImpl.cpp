@@ -30,13 +30,13 @@ namespace opendnp3
 {
 
 MasterStackImpl::MasterStackImpl(	Logger aLogger,
-                                        IExecutor* apExecutor,
-                                        ISOEHandler* apPublisher,
-                                        IUTCTimeSource* apTimeSource,
-                                        AsyncTaskGroup* apTaskGroup,
-                                        const MasterStackConfig& arCfg,
-										std::function<void (bool)> aEnableDisableFunc,
-                                        std::function<void (IMaster*)> aOnShutdown) :
+                                    IExecutor* apExecutor,
+                                    ISOEHandler* apPublisher,
+                                    IUTCTimeSource* apTimeSource,
+                                    AsyncTaskGroup* apTaskGroup,
+                                    const MasterStackConfig& arCfg,
+                                    std::function<void (bool)> aEnableDisableFunc,
+                                    std::function<void (IMaster*)> aOnShutdown) :
 
 	IMaster(aLogger, aEnableDisableFunc),
 	mpExecutor(apExecutor),

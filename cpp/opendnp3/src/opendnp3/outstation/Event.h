@@ -35,7 +35,7 @@ struct Evented : public Indexed<uint16_t>
 	Evented() : clazz(EventClass::EC1)
 	{}
 
-	EventClass clazz;	// class of the event (CLASS<1-3>)	
+	EventClass clazz;	// class of the event (CLASS<1-3>)
 };
 
 /**
@@ -43,16 +43,16 @@ struct Evented : public Indexed<uint16_t>
  */
 template <typename ValueType>
 struct Event : public Evented
-{	
+{
 	Event(const ValueType& value_, uint16_t index_, EventClass clazz_) :
-		Evented(index_, clazz_),		
+		Evented(index_, clazz_),
 		value(value_)
-	{}	
+	{}
 
 	Event() : Evented(), value()
 	{}
-	
-	ValueType value;	
+
+	ValueType value;
 };
 
 } //end namespace

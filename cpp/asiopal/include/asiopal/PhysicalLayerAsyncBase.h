@@ -76,39 +76,50 @@ public:
 	virtual ~PhysicalLayerAsyncBase() {}
 
 	/* Implement IChannelState */
-	bool IsOpen() const {
+	bool IsOpen() const
+	{
 		return mState.IsOpen();
 	}
-	bool IsOpening() const {
+	bool IsOpening() const
+	{
 		return mState.IsOpening();
 	}
-	bool IsReading() const {
+	bool IsReading() const
+	{
 		return mState.IsReading();
 	}
-	bool IsWriting() const {
+	bool IsWriting() const
+	{
 		return mState.IsWriting();
 	}
-	bool IsClosing() const {
+	bool IsClosing() const
+	{
 		return mState.IsClosing();
 	}
-	bool IsClosed() const {
+	bool IsClosed() const
+	{
 		return mState.IsClosed();
 	}
 
-	bool CanOpen() const {
+	bool CanOpen() const
+	{
 		return mState.CanOpen();
 	}
-	bool CanClose() const {
+	bool CanClose() const
+	{
 		return mState.CanClose();
 	}
-	bool CanRead() const {
+	bool CanRead() const
+	{
 		return mState.CanRead();
 	}
-	bool CanWrite() const {
+	bool CanWrite() const
+	{
 		return mState.CanWrite();
 	}
 
-	std::string ConvertStateToString() const {
+	std::string ConvertStateToString() const
+	{
 		return mState.ConvertStateToString();
 	}
 
@@ -125,7 +136,8 @@ public:
 	classes inherited from this class */
 	virtual void DoOpen() = 0;
 	virtual void DoClose() = 0;
-	virtual void DoOpeningClose() {
+	virtual void DoOpeningClose()
+	{
 		DoClose();    //optionally override this action
 	}
 	virtual void DoAsyncRead(openpal::WriteBuffer&) = 0;
@@ -141,7 +153,8 @@ public:
 	void DoReadCallback(const openpal::ReadOnlyBuffer& arBuffer);
 
 	//Error reporting function(s)
-	openpal::Logger& GetLogger() {
+	openpal::Logger& GetLogger()
+	{
 		return mLogger;
 	}
 

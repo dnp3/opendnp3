@@ -51,7 +51,7 @@ SlaveStackConfig ConfigReader::ConvertSlaveStackConfig(JNIEnv* apEnv, jobject jC
 
 SlaveConfig ConfigReader::ConvertOutstationConfig(JNIEnv* apEnv, jobject jCfg)
 {
-	SlaveConfig cfg;	
+	SlaveConfig cfg;
 
 	cfg.mMaxControls  = JNIHelpers::GetIntField(apEnv, jCfg, "maxControls");
 	cfg.mDisableUnsol = JNIHelpers::GetBoolField(apEnv, jCfg, "disableUnsol");
@@ -61,7 +61,7 @@ SlaveConfig ConfigReader::ConvertOutstationConfig(JNIEnv* apEnv, jobject jCfg)
 	cfg.mUnsolPackDelay  = TimeDuration::Milliseconds(JNIHelpers::GetLongField(apEnv, jCfg, "unsolPackDelayMs"));
 	cfg.mUnsolRetryDelay  = TimeDuration::Milliseconds(JNIHelpers::GetLongField(apEnv, jCfg, "unsolRetryDelayMs"));
 	cfg.mSelectTimeout = TimeDuration::Milliseconds(JNIHelpers::GetLongField(apEnv, jCfg, "selectTimeoutMs"));
-	cfg.mMaxFragSize  = JNIHelpers::GetIntField(apEnv, jCfg, "maxFragSize");	
+	cfg.mMaxFragSize  = JNIHelpers::GetIntField(apEnv, jCfg, "maxFragSize");
 
 	jint maxBinaryEvents = JNIHelpers::GetIntField(apEnv, jCfg, "maxBinaryEvents");
 	jint maxAnalogEvents = JNIHelpers::GetIntField(apEnv, jCfg, "maxAnalogEvents");
@@ -122,14 +122,16 @@ DatabaseConfiguration ConfigReader::ConvertDatabaseConfig(JNIEnv* apEnv, jobject
 
 	{
 		jobject list = JNIHelpers::GetObjectField(apEnv, jCfg, "binaryInputs", "Ljava/util/List;");
-		JNIHelpers::IterateOverListOfObjects(apEnv, list, [&](jobject record) {
+		JNIHelpers::IterateOverListOfObjects(apEnv, list, [&](jobject record)
+		{
 			int mask = JNIHelpers::GetIntField(apEnv, record, "pointClass");
 			cfg.binaryMetadata.push_back(EventPointRecord(IntToPointClass(mask)));
 		});
 	}
 	{
 		jobject list = JNIHelpers::GetObjectField(apEnv, jCfg, "analogInputs", "Ljava/util/List;");
-		JNIHelpers::IterateOverListOfObjects(apEnv, list, [&](jobject record) {
+		JNIHelpers::IterateOverListOfObjects(apEnv, list, [&](jobject record)
+		{
 			int mask = JNIHelpers::GetIntField(apEnv, record, "pointClass");
 			double db = JNIHelpers::GetDoubleField(apEnv, record, "deadband");
 			cfg.analogMetadata.push_back(DeadbandPointRecord<double>(IntToPointClass(mask), db));
@@ -137,18 +139,20 @@ DatabaseConfiguration ConfigReader::ConvertDatabaseConfig(JNIEnv* apEnv, jobject
 	}
 	{
 		jobject list = JNIHelpers::GetObjectField(apEnv, jCfg, "counterInputs", "Ljava/util/List;");
-		JNIHelpers::IterateOverListOfObjects(apEnv, list, [&](jobject record) {
+		JNIHelpers::IterateOverListOfObjects(apEnv, list, [&](jobject record)
+		{
 			int mask = JNIHelpers::GetIntField(apEnv, record, "pointClass");
 			cfg.counterMetadata.push_back(DeadbandPointRecord<uint32_t>(IntToPointClass(mask), 0));
 		});
 	}
-	
+
 	// TODO - make all types exposed with events
 
 	{
 		jobject list = JNIHelpers::GetObjectField(apEnv, jCfg, "binaryOutputStatii", "Ljava/util/List;");
 		uint32_t numBOStatus = 0;
-		JNIHelpers::IterateOverListOfObjects(apEnv, list, [&](jobject record) {
+		JNIHelpers::IterateOverListOfObjects(apEnv, list, [&](jobject record)
+		{
 			++numBOStatus;
 		});
 		cfg.numBinaryOutputStatus = numBOStatus;
@@ -157,7 +161,8 @@ DatabaseConfiguration ConfigReader::ConvertDatabaseConfig(JNIEnv* apEnv, jobject
 	{
 		jobject list = JNIHelpers::GetObjectField(apEnv, jCfg, "analogOutputStatii", "Ljava/util/List;");
 		uint32_t numSStatus = 0;
-		JNIHelpers::IterateOverListOfObjects(apEnv, list, [&](jobject record) {
+		JNIHelpers::IterateOverListOfObjects(apEnv, list, [&](jobject record)
+		{
 			++numSStatus;
 		});
 		cfg.numAnalogOutputStatus = numSStatus;

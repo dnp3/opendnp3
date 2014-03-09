@@ -31,7 +31,8 @@ class MockCommandHandler : public SimpleCommandHandler
 public:
 
 	MockCommandHandler(CommandStatus aStatus = CommandStatus::SUCCESS) :
-		SimpleCommandHandler([&]() {
+		SimpleCommandHandler([&]()
+	{
 		++mNumInvocations;
 		return mStatus;
 	}),
@@ -39,7 +40,8 @@ public:
 	mStatus(aStatus)
 	{}
 
-	void SetResponse(CommandStatus aStatus) {
+	void SetResponse(CommandStatus aStatus)
+	{
 		mStatus = aStatus;
 	}
 

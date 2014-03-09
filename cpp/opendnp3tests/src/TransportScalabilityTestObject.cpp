@@ -30,12 +30,12 @@ namespace opendnp3
 {
 
 TransportScalabilityTestObject::TransportScalabilityTestObject(
-        LinkConfig aClientCfg,
-        LinkConfig aServerCfg,
-        uint16_t aPortStart,
-        uint16_t aNumPair,
-        LogLevel aLevel,
-        bool aImmediate) :
+    LinkConfig aClientCfg,
+    LinkConfig aServerCfg,
+    uint16_t aPortStart,
+    uint16_t aNumPair,
+    LogLevel aLevel,
+    bool aImmediate) :
 
 	AsyncTestObjectASIO(),
 	log()
@@ -43,7 +43,8 @@ TransportScalabilityTestObject::TransportScalabilityTestObject(
 	const uint16_t START = aPortStart;
 	const uint16_t STOP = START + aNumPair;
 
-	for(uint16_t port = START; port < STOP; ++port) {
+	for(uint16_t port = START; port < STOP; ++port)
+	{
 		ostringstream oss;
 		oss << "pair" << port;
 		TransportStackPair* pPair = new TransportStackPair(aClientCfg, aServerCfg, log.mTestLogger, this->GetService(), port);
@@ -53,17 +54,19 @@ TransportScalabilityTestObject::TransportScalabilityTestObject(
 
 TransportScalabilityTestObject::~TransportScalabilityTestObject()
 {
-for(auto pPair: mPairs) {
+	for(auto pPair : mPairs)
+	{
 		pPair->mClientStack.mRouter.Shutdown();
 		pPair->mServerStack.mRouter.Shutdown();
 	}
 	this->GetService()->run();
-for(auto pPair: mPairs) delete pPair;
+	for(auto pPair : mPairs) delete pPair;
 }
 
 bool TransportScalabilityTestObject::AllLayersUp()
 {
-for(TransportStackPair * pPair: mPairs) {
+	for(TransportStackPair * pPair : mPairs)
+	{
 		if(!pPair->BothLayersUp()) return false;
 	}
 
@@ -72,7 +75,8 @@ for(TransportStackPair * pPair: mPairs) {
 
 bool TransportScalabilityTestObject::AllLayerEqual(const openpal::ReadOnlyBuffer& arBuffer)
 {
-for(TransportStackPair * pPair: mPairs) {
+	for(TransportStackPair * pPair : mPairs)
+	{
 		if(! pPair->mServerStack.mUpper.BufferEquals(arBuffer)) return false;
 		if(! pPair->mClientStack.mUpper.BufferEquals(arBuffer)) return false;
 	}
@@ -82,7 +86,8 @@ for(TransportStackPair * pPair: mPairs) {
 
 bool TransportScalabilityTestObject::AllLayerReceived(size_t aNumBytes)
 {
-for(TransportStackPair * pPair: mPairs) {
+	for(TransportStackPair * pPair : mPairs)
+	{
 		if(pPair->mServerStack.mUpper.Size() != aNumBytes) return false;
 		if(pPair->mClientStack.mUpper.Size() != aNumBytes) return false;
 	}
@@ -92,7 +97,8 @@ for(TransportStackPair * pPair: mPairs) {
 
 void TransportScalabilityTestObject::SendToAll(const openpal::ReadOnlyBuffer& arBuffer)
 {
-for(TransportStackPair * pPair: mPairs) {
+	for(TransportStackPair * pPair : mPairs)
+	{
 		pPair->mClientStack.mUpper.SendDown(arBuffer);
 		pPair->mServerStack.mUpper.SendDown(arBuffer);
 	}
@@ -100,7 +106,8 @@ for(TransportStackPair * pPair: mPairs) {
 
 void TransportScalabilityTestObject::Start()
 {
-for(TransportStackPair * pPair: mPairs) {
+	for(TransportStackPair * pPair : mPairs)
+	{
 		pPair->Start();
 	}
 }

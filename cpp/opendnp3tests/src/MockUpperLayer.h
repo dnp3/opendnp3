@@ -36,9 +36,11 @@ public:
 
 	typedef std::function<void (const openpal::ReadOnlyBuffer&)> OnReceiveHandler;
 
-	struct State {
+	struct State
+	{
 
-		State() {
+		State()
+		{
 			Reset();
 		}
 
@@ -47,7 +49,8 @@ public:
 		size_t mNumLayerUp;
 		size_t mNumLayerDown;
 
-		void Reset() {
+		void Reset()
+		{
 			mSuccessCnt = mFailureCnt = mNumLayerUp = mNumLayerDown = 0;
 		}
 	};
@@ -58,31 +61,37 @@ public:
 	void SendDown(const std::string&);
 	void SendDown(const openpal::ReadOnlyBuffer& arBuffer);
 
-	bool CountersEqual(size_t success, size_t failure) {
+	bool CountersEqual(size_t success, size_t failure)
+	{
 		return mState.mSuccessCnt == success && mState.mFailureCnt == failure;
 	}
 
-	bool StateEquals(const State& s) {
+	bool StateEquals(const State& s)
+	{
 		return (mState.mSuccessCnt == s.mSuccessCnt)
 		       && (mState.mFailureCnt == s.mFailureCnt)
 		       && (mState.mNumLayerUp == s.mNumLayerUp)
 		       && (mState.mNumLayerDown == s.mNumLayerDown);
 	}
 
-	void Reset() {
+	void Reset()
+	{
 		mState.Reset();
 	}
-	State GetState() {
+	State GetState()
+	{
 		return mState;
 	}
 
-	void SetReceiveHandler(const OnReceiveHandler& arHandler) {
+	void SetReceiveHandler(const OnReceiveHandler& arHandler)
+	{
 		mOnReceiveHandler = arHandler;
 	}
 
 private:
 
-	virtual std::string RecvString() const {
+	virtual std::string RecvString() const
+	{
 		return "MockUpperLayer <-";
 	}
 

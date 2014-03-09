@@ -56,14 +56,16 @@ public:
 	void DisableAutoSendCallback();
 
 	std::string Read();
-		
-	size_t Count() {
+
+	size_t Count()
+	{
 		return mFragments.size();
 	}
-		
-	size_t NumAPDU() {
+
+	size_t NumAPDU()
+	{
 		return mFragments.size();
-	}	
+	}
 
 private:
 

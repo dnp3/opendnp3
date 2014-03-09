@@ -51,7 +51,7 @@ CopyableBuffer::CopyableBuffer(const openpal::ReadOnlyBuffer& arBuffer) :
 	mpBuff(new uint8_t[arBuffer.Size()]),
 	mSize(arBuffer.Size())
 {
-	arBuffer.CopyTo(mpBuff);	
+	arBuffer.CopyTo(mpBuff);
 }
 
 CopyableBuffer::CopyableBuffer(const uint8_t* apBuff, uint32_t aSize) :
@@ -78,7 +78,8 @@ CopyableBuffer& CopyableBuffer::operator=(const CopyableBuffer& arRHS)
 	//check for assignment to self
 	if(this == &arRHS) return *this;
 
-	if(arRHS.Size() != mSize) {
+	if(arRHS.Size() != mSize)
+	{
 		mSize = arRHS.Size();
 		delete mpBuff;
 		mpBuff = new uint8_t[mSize];
@@ -97,8 +98,10 @@ CopyableBuffer::~CopyableBuffer()
 bool CopyableBuffer::operator==( const CopyableBuffer& other) const
 {
 	if(other.Size() != this->Size()) return false;
-	else {
-		for(size_t i = 0; i < this->Size(); ++i) {
+	else
+	{
+		for(size_t i = 0; i < this->Size(); ++i)
+		{
 			if(this->mpBuff[i] != other.mpBuff[i]) return false;
 		}
 

@@ -31,7 +31,8 @@ class MockLogSubscriber : public openpal::ILogBase
 {
 public:
 
-	void Log( const openpal::LogEntry& arEntry ) {
+	void Log( const openpal::LogEntry& arEntry )
+	{
 		mEntries.push(arEntry);
 	}
 

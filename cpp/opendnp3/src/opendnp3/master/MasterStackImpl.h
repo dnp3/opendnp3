@@ -39,14 +39,14 @@ class MasterStackImpl : public IMaster
 public:
 
 	MasterStackImpl(
-	        openpal::Logger,
-	        openpal::IExecutor* apExecutor,
-	        ISOEHandler* apPublisher,
-	        IUTCTimeSource* apTimeSource,
-	        AsyncTaskGroup* apTaskGroup,
-	        const MasterStackConfig& arCfg,
-			std::function<void (bool)> aEnableDisableFunc,
-	        std::function<void (IMaster*)> aOnShutdown);
+	    openpal::Logger,
+	    openpal::IExecutor* apExecutor,
+	    ISOEHandler* apPublisher,
+	    IUTCTimeSource* apTimeSource,
+	    AsyncTaskGroup* apTaskGroup,
+	    const MasterStackConfig& arCfg,
+	    std::function<void (bool)> aEnableDisableFunc,
+	    std::function<void (IMaster*)> aOnShutdown);
 
 	ICommandProcessor* GetCommandProcessor();
 
@@ -58,7 +58,10 @@ public:
 
 	MasterScan GetIntegrityScan();
 
-	openpal::IExecutor* GetExecutor() { return mpExecutor; }
+	openpal::IExecutor* GetExecutor()
+	{
+		return mpExecutor;
+	}
 
 	MasterScan AddClassScan(int aClassMask, openpal::TimeDuration aScanRate, openpal::TimeDuration aRetryRate);
 

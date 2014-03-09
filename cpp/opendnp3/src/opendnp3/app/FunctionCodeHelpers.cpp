@@ -30,7 +30,8 @@ bool IsResponse(FunctionCode aCode)
 
 bool IsRequest(FunctionCode aCode)
 {
-	switch(aCode) {
+	switch(aCode)
+	{
 	case(FunctionCode::CONFIRM):
 	case(FunctionCode::RESPONSE):
 	case(FunctionCode::UNSOLICITED_RESPONSE):

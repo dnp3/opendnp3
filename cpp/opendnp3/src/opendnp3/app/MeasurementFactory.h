@@ -31,65 +31,113 @@ namespace opendnp3
 
 struct BinaryFactory: private PureStatic
 {
-	inline static Binary From(uint8_t aFlags) { return Binary(aFlags); }
-	inline static Binary From(uint8_t aFlags, int64_t aTime) { return Binary(aFlags, aTime); }
+	inline static Binary From(uint8_t aFlags)
+	{
+		return Binary(aFlags);
+	}
+	inline static Binary From(uint8_t aFlags, int64_t aTime)
+	{
+		return Binary(aFlags, aTime);
+	}
 };
 
 struct DoubleBitBinaryFactory : private PureStatic
 {
-	inline static DoubleBitBinary From(uint8_t aFlags) { return DoubleBitBinary(aFlags); }
-	inline static DoubleBitBinary From(uint8_t aFlags, int64_t aTime) { return DoubleBitBinary(aFlags, aTime); }
+	inline static DoubleBitBinary From(uint8_t aFlags)
+	{
+		return DoubleBitBinary(aFlags);
+	}
+	inline static DoubleBitBinary From(uint8_t aFlags, int64_t aTime)
+	{
+		return DoubleBitBinary(aFlags, aTime);
+	}
 };
 
 struct AnalogFactory: private PureStatic
 {
-	static Analog From(int32_t aCount) { return Analog(aCount); }
-	static Analog From(uint8_t aFlags, double aValue) { return Analog(aValue, aFlags); }
-	static Analog From(uint8_t aFlags, double aValue, int64_t aTime) { return Analog(aValue, aFlags, aTime); }
+	static Analog From(int32_t aCount)
+	{
+		return Analog(aCount);
+	}
+	static Analog From(uint8_t aFlags, double aValue)
+	{
+		return Analog(aValue, aFlags);
+	}
+	static Analog From(uint8_t aFlags, double aValue, int64_t aTime)
+	{
+		return Analog(aValue, aFlags, aTime);
+	}
 };
 
 struct CounterFactory: private PureStatic
 {
-	inline static Counter From(uint32_t aCount) { return Counter(aCount); }
-	inline static Counter From(uint8_t aFlags, uint32_t aCount) { return Counter(aCount, aFlags); }
-	inline static Counter From(uint8_t aFlags, uint32_t aCount, int64_t aTime) { return Counter(aCount, aFlags, aTime); }
+	inline static Counter From(uint32_t aCount)
+	{
+		return Counter(aCount);
+	}
+	inline static Counter From(uint8_t aFlags, uint32_t aCount)
+	{
+		return Counter(aCount, aFlags);
+	}
+	inline static Counter From(uint8_t aFlags, uint32_t aCount, int64_t aTime)
+	{
+		return Counter(aCount, aFlags, aTime);
+	}
 };
 
 struct FrozenCounterFactory: private PureStatic
 {
-	inline static FrozenCounter From(uint32_t aCount) { return FrozenCounter(aCount); }
-	inline static FrozenCounter From(uint8_t aFlags, uint32_t aCount) { return FrozenCounter(aCount, aFlags); }
-	inline static FrozenCounter From(uint8_t aFlags, uint32_t aCount, int64_t aTime) { return FrozenCounter(aCount, aFlags, aTime); }
+	inline static FrozenCounter From(uint32_t aCount)
+	{
+		return FrozenCounter(aCount);
+	}
+	inline static FrozenCounter From(uint8_t aFlags, uint32_t aCount)
+	{
+		return FrozenCounter(aCount, aFlags);
+	}
+	inline static FrozenCounter From(uint8_t aFlags, uint32_t aCount, int64_t aTime)
+	{
+		return FrozenCounter(aCount, aFlags, aTime);
+	}
 };
 
 struct ControlRelayOutputBlockFactory: private PureStatic
 {
 	inline static ControlRelayOutputBlock From(
-		ControlCode aCode, 
-		uint8_t aCount, 
-		uint32_t aOnTime, 
-		uint32_t aOffTime, 
-		CommandStatus aStatus)
-	{ 
+	    ControlCode aCode,
+	    uint8_t aCount,
+	    uint32_t aOnTime,
+	    uint32_t aOffTime,
+	    CommandStatus aStatus)
+	{
 		return ControlRelayOutputBlock(aCode, aCount, aOnTime, aOffTime, aStatus);
 	}
 };
 
 struct BinaryOutputStatusFactory: private PureStatic
 {
-	inline static BinaryOutputStatus From(uint8_t flags) { return BinaryOutputStatus(flags); }
+	inline static BinaryOutputStatus From(uint8_t flags)
+	{
+		return BinaryOutputStatus(flags);
+	}
 };
 
 
 struct AnalogOutputStatusFactory: private PureStatic
 {
-	inline static AnalogOutputStatus From(uint8_t flags, double value) { return AnalogOutputStatus(value, flags); }
+	inline static AnalogOutputStatus From(uint8_t flags, double value)
+	{
+		return AnalogOutputStatus(value, flags);
+	}
 };
 
 template <class Target, class ValueType>
 struct AnalogOutputFactory: private PureStatic
 {
-	inline static Target From(ValueType value, CommandStatus status) { return Target(value, status); }
+	inline static Target From(ValueType value, CommandStatus status)
+	{
+		return Target(value, status);
+	}
 };
 
 typedef AnalogOutputFactory<AnalogOutputInt32, int32_t> AnalogOutputInt32Factory;

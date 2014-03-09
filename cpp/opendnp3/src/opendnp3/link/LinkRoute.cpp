@@ -45,7 +45,7 @@ bool LinkRoute::LessThan::operator ()(const LinkRoute& a, const LinkRoute& b) co
 std::string LinkRoute::ToString() const
 {
 	std::ostringstream oss;
-	oss << " Local: " << this->local << " Remote: " << this->remote;	
+	oss << " Local: " << this->local << " Remote: " << this->remote;
 	return oss.str();
 }
 

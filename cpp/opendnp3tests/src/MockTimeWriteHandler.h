@@ -33,7 +33,8 @@ class MockTimeWriteHandler : public ITimeWriteHandler
 public:
 	MockTimeWriteHandler(std::function<void (openpal::UTCTimestamp)> aTimeWriteCallback) : mTimeWriteCallback(aTimeWriteCallback) {}
 
-	void WriteAbsoluteTime(openpal::UTCTimestamp aTimestamp) {
+	void WriteAbsoluteTime(openpal::UTCTimestamp aTimestamp)
+	{
 		mTimeWriteCallback(aTimestamp);
 	}
 

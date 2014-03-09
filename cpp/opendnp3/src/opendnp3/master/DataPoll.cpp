@@ -57,7 +57,7 @@ void DataPoll::ReadData(const APDUResponseRecord& record)
 	MeasurementHandler handler(this->mLogger, this->pHandler);
 	auto res = APDUParser::ParseTwoPass(record.objects, &handler, &mLogger);
 	if(res != APDUParser::Result::OK)
-	{				
+	{
 		LOG_BLOCK(LogLevel::Warning, "Error parsing response headers: " << static_cast<int>(res)); // TODO - turn these into strings
 	}
 }
@@ -82,7 +82,7 @@ void ClassPoll::ConfigureRequest(APDURequest& request)
 	if (mClassMask & CLASS_1) writer.WriteHeader(GroupVariationID(60, 2), QualifierCode::ALL_OBJECTS);
 	if (mClassMask & CLASS_2) writer.WriteHeader(GroupVariationID(60, 3), QualifierCode::ALL_OBJECTS);
 	if (mClassMask & CLASS_3) writer.WriteHeader(GroupVariationID(60, 4), QualifierCode::ALL_OBJECTS);
-	if (mClassMask & CLASS_0) writer.WriteHeader(GroupVariationID(60, 1), QualifierCode::ALL_OBJECTS);	
+	if (mClassMask & CLASS_0) writer.WriteHeader(GroupVariationID(60, 1), QualifierCode::ALL_OBJECTS);
 }
 
 

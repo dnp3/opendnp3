@@ -36,22 +36,25 @@ class TimeSyncHandler : public APDUHandlerBase
 {
 
 public:
-	
+
 	/**
 	* @param arLogger the Logger that the loader should use for message reporting
 	*/
-	TimeSyncHandler(openpal::Logger& aLogger) : 
-		APDUHandlerBase(aLogger), 
-		valid(false), 
+	TimeSyncHandler(openpal::Logger& aLogger) :
+		APDUHandlerBase(aLogger),
+		valid(false),
 		timeOut(0)
-	{}		
+	{}
 
 	virtual void _OnCountOf(const IterableBuffer<Group52Var2>& times) final
 	{
 		if(times.Count() == 1)
 		{
-			valid = true;			
-			times.foreach([this](const Group52Var2& obj) { timeOut = obj.time; });
+			valid = true;
+			times.foreach([this](const Group52Var2 & obj)
+			{
+				timeOut = obj.time;
+			});
 		}
 		else
 		{
@@ -59,13 +62,13 @@ public:
 		}
 	}
 
-	bool GetTimeDelay(uint16_t& time) 
+	bool GetTimeDelay(uint16_t& time)
 	{
 		if(this->errors.Any()) return false;
-		else 
+		else
 		{
 			if(valid) time = timeOut;
-			return valid;					
+			return valid;
 		}
 	}
 

@@ -31,10 +31,10 @@ namespace opendnp3
 template <class T>
 class IDNP3Serializer : public openpal::ISerializer<T>
 {
-	public:
+public:
 
 	virtual GroupVariationID ID() const = 0;
-	
+
 };
 
 }

@@ -17,28 +17,30 @@ namespace Adapter
 private class OutstationTimeWriteAdapter : public opendnp3::ITimeWriteHandler
 {
 public:
-	OutstationTimeWriteAdapter(DNP3::Interface::ITimeWriteHandler ^ proxy);
+	OutstationTimeWriteAdapter(DNP3::Interface::ITimeWriteHandler^ proxy);
 
 	void WriteAbsoluteTime(openpal::UTCTimestamp aTimestamp);
 
 
 private:
-	gcroot < DNP3::Interface::ITimeWriteHandler ^ > mProxy;
+	gcroot < DNP3::Interface::ITimeWriteHandler^ > mProxy;
 };
 
 private ref class OutstationTimeWriteWrapper
 {
 public:
 
-	OutstationTimeWriteWrapper(DNP3::Interface::ITimeWriteHandler ^ proxy) :
+	OutstationTimeWriteWrapper(DNP3::Interface::ITimeWriteHandler^ proxy) :
 		mpAdapter(new OutstationTimeWriteAdapter(proxy))
 	{}
 
-	~OutstationTimeWriteWrapper() {
+	~OutstationTimeWriteWrapper()
+	{
 		delete mpAdapter;
 	}
 
-	opendnp3::ITimeWriteHandler* Get() {
+	opendnp3::ITimeWriteHandler* Get()
+	{
 		return mpAdapter;
 	}
 

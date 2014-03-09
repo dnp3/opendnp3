@@ -34,16 +34,16 @@ namespace opendnp3
 {
 
 /**
-* An interface for Sequence-Of-Events (SOE) callbacks from a master stack to 
+* An interface for Sequence-Of-Events (SOE) callbacks from a master stack to
 * the application layer.
 *
-* A call is made to the appropriate member method for every header in a APDU 
+* A call is made to the appropriate member method for every header in a APDU
 *
 */
 class ISOEHandler : public ITransactable
 {
 public:
-	
+
 	virtual void LoadStatic(const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas) = 0;
 	virtual void LoadStatic(const IterableBuffer<IndexedValue<DoubleBitBinary, uint16_t>>& meas) = 0;
 	virtual void LoadStatic(const IterableBuffer<IndexedValue<Analog, uint16_t>>& meas) = 0;
@@ -62,7 +62,7 @@ public:
 	virtual void LoadEvent(const IterableBuffer<IndexedValue<AnalogOutputStatus, uint16_t>>& meas) = 0;
 	virtual void LoadEvent(const IterableBuffer<IndexedValue<OctetString, uint16_t>>& meas) = 0;
 
-	virtual ~ISOEHandler() {}	
+	virtual ~ISOEHandler() {}
 };
 
 
@@ -71,7 +71,10 @@ class NullSOEHandler : public ISOEHandler
 
 public:
 
-	static ISOEHandler* Inst() { return &msInstance; }
+	static ISOEHandler* Inst()
+	{
+		return &msInstance;
+	}
 
 	void LoadStatic(const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas) override final {}
 	void LoadStatic(const IterableBuffer<IndexedValue<DoubleBitBinary, uint16_t>>& meas) override final {}
@@ -99,7 +102,7 @@ protected:
 private:
 	NullSOEHandler()
 	{}
-	
+
 	static NullSOEHandler msInstance;
 };
 
@@ -107,7 +110,10 @@ class PrintingSOEHandler : public ISOEHandler
 {
 
 public:
-	static ISOEHandler* Inst() { return &msInstance; }
+	static ISOEHandler* Inst()
+	{
+		return &msInstance;
+	}
 
 	void LoadStatic(const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas) override final;
 	void LoadStatic(const IterableBuffer<IndexedValue<DoubleBitBinary, uint16_t>>& meas) override final;
@@ -137,15 +143,16 @@ private:
 	template <class T>
 	static void Print(const IterableBuffer<IndexedValue<T, uint16_t>>& buffer, const std::string& name)
 	{
-		buffer.foreach([&](const IndexedValue<T, uint16_t>& pair) {			
+		buffer.foreach([&](const IndexedValue<T, uint16_t>& pair)
+		{
 
-			std::cout << name << " [" << pair.index << "] : " << 
-				ValueToString(pair.value) << " : " << 
-				static_cast<int>(pair.value.GetQuality()) << " : " <<
-				GetTimeString(pair.value) <<
-				std::endl;
+			std::cout << name << " [" << pair.index << "] : " <<
+			          ValueToString(pair.value) << " : " <<
+			          static_cast<int>(pair.value.GetQuality()) << " : " <<
+			          GetTimeString(pair.value) <<
+			          std::endl;
 		});
-	}	
+	}
 
 	template <class T>
 	static std::string ValueToString(const T& meas)
@@ -154,7 +161,7 @@ private:
 		oss << meas.GetValue();
 		return oss.str();
 	}
-	
+
 	static std::string GetTimeString(const Measurement& meas)
 	{
 		std::ostringstream oss;
@@ -168,7 +175,7 @@ private:
 		}
 		return oss.str();
 	}
-	
+
 	static std::string ValueToString(const DoubleBitBinary& meas)
 	{
 		return DoubleBitToString(meas.GetValue());
@@ -176,7 +183,7 @@ private:
 
 	PrintingSOEHandler()
 	{}
-	
+
 	static PrintingSOEHandler msInstance;
 };
 

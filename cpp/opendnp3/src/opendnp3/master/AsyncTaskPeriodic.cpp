@@ -38,11 +38,13 @@ AsyncTaskPeriodic::AsyncTaskPeriodic(TimeDuration aPeriod, TimeDuration aRetryDe
 void AsyncTaskPeriodic::_OnComplete(bool aSuccess)
 {
 	const auto now = mpGroup->GetCurrentTime();
-	if(aSuccess) {
+	if(aSuccess)
+	{
 		mIsComplete = true;
 		mNextRunTime = now.Add(mPeriod);
 	}
-	else {
+	else
+	{
 		mNextRunTime = now.Add(mPeriod);
 	}
 }

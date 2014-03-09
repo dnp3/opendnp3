@@ -74,7 +74,7 @@ std::string MockLowerLayer::PopWriteAsHex()
 void MockLowerLayer::_Send(const openpal::ReadOnlyBuffer& arBuffer)
 {
 	this->sendQueue.push(arBuffer);
-	if(mAutoSendCallback && mpUpperLayer) 
+	if(mAutoSendCallback && mpUpperLayer)
 	{
 		if(mIsSuccess) mpUpperLayer->OnSendSuccess();
 		else mpUpperLayer->OnSendFailure();
@@ -83,7 +83,7 @@ void MockLowerLayer::_Send(const openpal::ReadOnlyBuffer& arBuffer)
 
 void MockLowerLayer::SendUp(const openpal::ReadOnlyBuffer& arBuffer)
 {
-	if(this->mpUpperLayer) 
+	if(this->mpUpperLayer)
 	{
 		mpUpperLayer->OnReceive(arBuffer);
 	}

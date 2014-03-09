@@ -23,48 +23,48 @@
 
 #include <cstdint>
 
-namespace opendnp3 
-{  
-	/** 
-	* A simple tuple for pairing Values with an index
-	*/
-	template <class IndexType>
-	class Indexed
+namespace opendnp3
+{
+/**
+* A simple tuple for pairing Values with an index
+*/
+template <class IndexType>
+class Indexed
+{
+public:
+	Indexed(IndexType index_) : index(index_)
+	{}
+
+	Indexed() : index(0)
+	{}
+
+	IndexType index;
+};
+
+/**
+* A simple tuple for pairing Values with an index
+*/
+template <class ValueType, class IndexType>
+class IndexedValue : public Indexed<IndexType>
+{
+public:
+	IndexedValue(const ValueType& value_, IndexType index_) :
+		Indexed<IndexType>(index_),
+		value(value_)
+	{}
+
+	template <class T>
+	IndexedValue<ValueType, T> Widen() const
 	{
-	public:
-		Indexed(IndexType index_) : index(index_)
-		{}
+		T widerIndex = this->index;
+		return IndexedValue<ValueType, T>(this->value, widerIndex);
+	}
 
-		Indexed() : index(0)
-		{}
-		
-		IndexType index;
-	};
+	IndexedValue(): Indexed<IndexType>(), value()
+	{}
 
-	/** 
-	* A simple tuple for pairing Values with an index
-	*/
-	template <class ValueType, class IndexType>
-	class IndexedValue : public Indexed<IndexType>
-	{
-	public:
-		IndexedValue(const ValueType& value_, IndexType index_) :
-			Indexed<IndexType>(index_),
-			value(value_)
-		{}
-
-		template <class T>
-		IndexedValue<ValueType, T> Widen() const
-		{
-			T widerIndex = this->index;
-			return IndexedValue<ValueType, T>(this->value, widerIndex);
-		}
-
-		IndexedValue(): Indexed<IndexType>(), value()
-		{}
-
-		ValueType value;		
-	};
+	ValueType value;
+};
 
 }
 

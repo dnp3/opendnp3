@@ -38,7 +38,7 @@ namespace opendnp3
 MasterSchedule::MasterSchedule(AsyncTaskGroup* apGroup, Master* apMaster, const MasterConfig& arCfg) :
 	mpGroup(apGroup),
 	mpMaster(apMaster),
-	mTracking(apGroup)	
+	mTracking(apGroup)
 {
 	this->Init(arCfg);
 }
@@ -61,15 +61,16 @@ void MasterSchedule::ResetStartupTasks()
 void MasterSchedule::Init(const MasterConfig& arCfg)
 {
 	mpIntegrityPoll = mTracking.Add(
-	                                    arCfg.IntegrityRate,
-	                                    arCfg.TaskRetryRate,
-	                                    AMP_POLL,
-	                                    bind(&Master::IntegrityPoll, mpMaster, _1),
-	                                    "Integrity Poll");	
+	                      arCfg.IntegrityRate,
+	                      arCfg.TaskRetryRate,
+	                      AMP_POLL,
+	                      bind(&Master::IntegrityPoll, mpMaster, _1),
+	                      "Integrity Poll");
 
 	mpIntegrityPoll->SetFlags(ONLINE_ONLY_TASKS | START_UP_TASKS);
 
-	if (arCfg.DoUnsolOnStartup) {
+	if (arCfg.DoUnsolOnStartup)
+	{
 		/*
 		 * DNP3Spec-V2-Part2-ApplicationLayer-_20090315.pdf, page 8
 		 * says that UNSOL should be disabled before an integrity scan
@@ -79,24 +80,25 @@ void MasterSchedule::Init(const MasterConfig& arCfg)
 		                           mpMaster,
 		                           _1,
 		                           false,
-								   CLASS_1 | CLASS_2 | CLASS_3);
+		                           CLASS_1 | CLASS_2 | CLASS_3);
 		AsyncTaskBase* pUnsolDisable = mTracking.Add(
-		                                       TimeDuration::Min(),
-		                                       arCfg.TaskRetryRate,
-		                                       AMP_UNSOL_CHANGE,
-		                                       handler,
-		                                       "Unsol Disable");
+		                                   TimeDuration::Min(),
+		                                   arCfg.TaskRetryRate,
+		                                   AMP_UNSOL_CHANGE,
+		                                   handler,
+		                                   "Unsol Disable");
 
 		pUnsolDisable->SetFlags(ONLINE_ONLY_TASKS | START_UP_TASKS);
 		mpIntegrityPoll->AddDependency(pUnsolDisable);
 
-		if (arCfg.EnableUnsol) {
+		if (arCfg.EnableUnsol)
+		{
 			TaskHandler handler = bind(
-			                              &Master::ChangeUnsol,
-			                              mpMaster,
-			                              _1,
-			                              true,
-			                              arCfg.UnsolClassMask);
+			                          &Master::ChangeUnsol,
+			                          mpMaster,
+			                          _1,
+			                          true,
+			                          arCfg.UnsolClassMask);
 
 			AsyncTaskBase* pUnsolEnable = mTracking.Add(TimeDuration::Min(),
 			                              arCfg.TaskRetryRate,
@@ -111,19 +113,19 @@ void MasterSchedule::Init(const MasterConfig& arCfg)
 
 	/* Tasks are executed when the master is is idle */
 	mpCommandTask = mTracking.AddContinuous(
-	                        AMP_COMMAND,
-	                        std::bind(&Master::ProcessCommand, mpMaster, _1),
-	                        "Command");
+	                    AMP_COMMAND,
+	                    std::bind(&Master::ProcessCommand, mpMaster, _1),
+	                    "Command");
 
 	mpTimeTask = mTracking.AddContinuous(
-	                     AMP_TIME_SYNC,
-	                     std::bind(&Master::SyncTime, mpMaster, _1),
-	                     "TimeSync");
+	                 AMP_TIME_SYNC,
+	                 std::bind(&Master::SyncTime, mpMaster, _1),
+	                 "TimeSync");
 
 	mpClearRestartTask = mTracking.AddContinuous(
-	                             AMP_CLEAR_RESTART,
-	                             std::bind(&Master::WriteIIN, mpMaster, _1),
-	                             "Clear IIN");
+	                         AMP_CLEAR_RESTART,
+	                         std::bind(&Master::WriteIIN, mpMaster, _1),
+	                         "Clear IIN");
 
 	mpTimeTask->SetFlags(ONLINE_ONLY_TASKS);
 	mpClearRestartTask->SetFlags(ONLINE_ONLY_TASKS);
@@ -133,10 +135,10 @@ void MasterSchedule::Init(const MasterConfig& arCfg)
 AsyncTaskBase* MasterSchedule::AddClassScan(int aClassMask, TimeDuration aScanRate, TimeDuration aRetryRate)
 {
 	auto pClassScan = mTracking.Add(		aScanRate,
-		                                    aRetryRate,
-		                                    AMP_POLL,
-											bind(&Master::EventPoll, mpMaster, _1, aClassMask),
-		                                    "Class Scan");
+	                                        aRetryRate,
+	                                        AMP_POLL,
+	                                        bind(&Master::EventPoll, mpMaster, _1, aClassMask),
+	                                        "Class Scan");
 
 	pClassScan->SetFlags(ONLINE_ONLY_TASKS);
 	pClassScan->AddDependency(mpIntegrityPoll);

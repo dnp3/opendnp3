@@ -26,12 +26,12 @@ using namespace openpal;
 namespace opendnp3
 {
 
-SelectBuffer::SelectBuffer(openpal::IExecutor* pExecutor_, const TimeDuration& selectTimeout_) : 
+SelectBuffer::SelectBuffer(openpal::IExecutor* pExecutor_, const TimeDuration& selectTimeout_) :
 	state(State::NoSelect),
 	pExecutor(pExecutor_),
 	selectTimeout(selectTimeout_),
 	selectedSequence(0xFF),
-	timestamp(MonotonicTimestamp::Min())	
+	timestamp(MonotonicTimestamp::Min())
 {
 
 }
@@ -45,7 +45,7 @@ SelectBuffer::SelectResult SelectBuffer::Select(uint8_t sequence, const openpal:
 {
 	switch (state)
 	{
-		case(State::Selected):
+	case(State::Selected):
 		{
 			if (sequence == selectedSequence)
 			{
@@ -64,11 +64,11 @@ SelectBuffer::SelectResult SelectBuffer::Select(uint8_t sequence, const openpal:
 			{
 				return RecordSelect(sequence, headers);
 			}
-		}	
-			
-		default:
-			return RecordSelect(sequence, headers);		
-	}	
+		}
+
+	default:
+		return RecordSelect(sequence, headers);
+	}
 }
 
 SelectBuffer::SelectResult SelectBuffer::RecordSelect(uint8_t sequence, const openpal::ReadOnlyBuffer& headers)
@@ -88,7 +88,7 @@ SelectBuffer::SelectResult SelectBuffer::RecordSelect(uint8_t sequence, const op
 		return SelectResult::PARAM_ERROR;
 	}
 }
-	
+
 SelectBuffer::OperateResult SelectBuffer::Operate(uint8_t sequence, const openpal::ReadOnlyBuffer& headers)
 {
 	auto elapsed = pExecutor->GetTime().milliseconds - timestamp.milliseconds;
@@ -97,7 +97,7 @@ SelectBuffer::OperateResult SelectBuffer::Operate(uint8_t sequence, const openpa
 
 	switch (state)
 	{
-		case(State::Selected):
+	case(State::Selected):
 		{
 			if (equal && correctSequence)
 			{
@@ -118,10 +118,10 @@ SelectBuffer::OperateResult SelectBuffer::Operate(uint8_t sequence, const openpa
 				return OperateResult::NO_SELECT;
 			}
 		}
-		case(State::Operated):		
-			return (equal && correctSequence) ? OperateResult::REPEAT : OperateResult::NO_SELECT;		
-		default:
-			return OperateResult::NO_SELECT;
+	case(State::Operated):
+		return (equal && correctSequence) ? OperateResult::REPEAT : OperateResult::NO_SELECT;
+	default:
+		return OperateResult::NO_SELECT;
 	}
 }
 

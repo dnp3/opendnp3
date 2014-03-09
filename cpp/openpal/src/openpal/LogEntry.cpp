@@ -33,7 +33,7 @@ LogEntry::LogEntry( LogLevel aLevel, const std::string& aDeviceName, const std::
 	mLogLevel(aLevel),
 	mDeviceName(aDeviceName),
 	mLocation(aLocation),
-	mMessage(aMessage),	
+	mMessage(aMessage),
 	mErrorCode(aErrorCode)
 {
 

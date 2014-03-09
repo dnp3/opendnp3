@@ -46,8 +46,8 @@ namespace opendnp3
 
 Master::Master(Logger aLogger, MasterConfig aCfg, IAppLayer* apAppLayer, ISOEHandler* apSOEHandler, AsyncTaskGroup* apTaskGroup, openpal::IExecutor* apExecutor, IUTCTimeSource* apTimeSrc) :
 	IAppUser(aLogger),
-	StackBase(apExecutor),	
-	mpAppLayer(apAppLayer),	
+	StackBase(apExecutor),
+	mpAppLayer(apAppLayer),
 	mpSOEHandler(apSOEHandler),
 	mpTaskGroup(apTaskGroup),
 	mpTimeSrc(apTimeSrc),
@@ -67,7 +67,8 @@ Master::Master(Logger aLogger, MasterConfig aCfg, IAppLayer* apAppLayer, ISOEHan
 	 * mSchedule.mpCommandTask.  When new data is written to mCommandQueue,
 	 * wake up mpCommandTask to process the data.
 	 */
-	mCommandQueue.AddObserver(mpExecutor, [this]() {
+	mCommandQueue.AddObserver(mpExecutor, [this]()
+	{
 		this->mSchedule.mpCommandTask->Enable();
 	});
 
@@ -75,7 +76,8 @@ Master::Master(Logger aLogger, MasterConfig aCfg, IAppLayer* apAppLayer, ISOEHan
 
 void Master::UpdateState(StackState aState)
 {
-	if(mState != aState) {
+	if(mState != aState)
+	{
 		LOG_BLOCK(LogLevel::Info, "StackState: " << StackStateToString(aState));
 		mState = aState;
 		this->NotifyListeners(aState);
@@ -91,7 +93,7 @@ void Master::ProcessIIN(const IINField& iin)
 	bool check_state = false;
 
 	//The clear IIN task only happens in response to detecting an IIN bit.
-	if(mLastIIN.IsSet(IINBit::NEED_TIME)) 
+	if(mLastIIN.IsSet(IINBit::NEED_TIME))
 	{
 		LOG_BLOCK(LogLevel::Info, "Need time detected");
 		mSchedule.mpTimeTask->SilentEnable();
@@ -109,7 +111,7 @@ void Master::ProcessIIN(const IINField& iin)
 	}
 
 	// If this is detected, we need to reset the startup tasks
-	if(mLastIIN.IsSet(IINBit::DEVICE_RESTART)) 
+	if(mLastIIN.IsSet(IINBit::DEVICE_RESTART))
 	{
 		LOG_BLOCK(LogLevel::Warning, "Device restart detected");
 		mSchedule.ResetStartupTasks();
@@ -122,13 +124,16 @@ void Master::ProcessIIN(const IINField& iin)
 
 void Master::ProcessCommand(ITask* apTask)
 {
-	if(mpState == AMS_Closed::Inst()) { //we're closed
+	if(mpState == AMS_Closed::Inst())   //we're closed
+	{
 		ConstantCommandProcessor ccp(mpExecutor, CommandResponse(CommandResult::NO_COMMS));
 		while(mCommandQueue.Dispatch(&ccp));
 		apTask->Disable();
 	}
-	else {
-		if(mCommandQueue.Dispatch(this)) {
+	else
+	{
+		if(mCommandQueue.Dispatch(this))
+		{
 			mpState->StartTask(this, apTask, &mCommandTask);
 		}
 		else apTask->Disable();
@@ -199,7 +204,8 @@ void Master::StartTask(MasterTaskBase* apMasterTask, bool aInit)
 
 void Master::SyncTime(ITask* apTask)
 {
-	if(mLastIIN.IsSet(IINBit::NEED_TIME)) {
+	if(mLastIIN.IsSet(IINBit::NEED_TIME))
+	{
 		mpState->StartTask(this, apTask, &mTimeSync);
 	}
 	else apTask->Disable();
@@ -207,7 +213,8 @@ void Master::SyncTime(ITask* apTask)
 
 void Master::WriteIIN(ITask* apTask)
 {
-	if(mLastIIN.IsSet(IINBit::DEVICE_RESTART)) {
+	if(mLastIIN.IsSet(IINBit::DEVICE_RESTART))
+	{
 		mpState->StartTask(this, apTask, &mClearRestart);
 	}
 	else apTask->Disable();
@@ -270,16 +277,16 @@ void Master::OnSolFailure()
 
 void Master::OnUnsolSendSuccess()
 {
-	LOG_BLOCK(LogLevel::Error, "Master can't send unsol");	
+	LOG_BLOCK(LogLevel::Error, "Master can't send unsol");
 }
 
 void Master::OnUnsolFailure()
 {
-	LOG_BLOCK(LogLevel::Error, "Master can't send unsol");	
+	LOG_BLOCK(LogLevel::Error, "Master can't send unsol");
 }
 
 void Master::OnPartialResponse(const APDUResponseRecord& aRecord)
-{	
+{
 	mpState->OnPartialResponse(this, aRecord);
 }
 
@@ -298,7 +305,7 @@ void Master::OnUnsolResponse(const APDUResponseRecord& aRecord)
 void Master::ProcessDataResponse(const APDUResponseRecord& record)
 {
 	MeasurementHandler handler(mLogger, this->mpSOEHandler);
-	APDUParser::ParseTwoPass(record.objects, &handler, &mLogger);		
+	APDUParser::ParseTwoPass(record.objects, &handler, &mLogger);
 }
 
 } //end ns

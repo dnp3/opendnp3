@@ -34,12 +34,12 @@ namespace opendnp3
 {
 
 TransportLoopbackTestObject::TransportLoopbackTestObject(
-        asio::io_service* apService,
-        IPhysicalLayerAsync* apPhys,
-        LinkConfig aCfgA,
-        LinkConfig aCfgB,
-        LogLevel aLevel,
-        bool aImmediate) :
+    asio::io_service* apService,
+    IPhysicalLayerAsync* apPhys,
+    LinkConfig aCfgA,
+    LinkConfig aCfgB,
+    LogLevel aLevel,
+    bool aImmediate) :
 
 	AsyncTestObjectASIO(apService),
 	log(),

@@ -16,26 +16,28 @@ private class LogAdapter : public openpal::ILogBase
 {
 public:
 
-	LogAdapter(ILogHandler ^ proxy);
+	LogAdapter(ILogHandler^ proxy);
 
 	// logging error messages, etc
 	void Log( const openpal::LogEntry& arEntry );
 
 private:
-	gcroot < ILogHandler ^ > proxy;
+	gcroot < ILogHandler^ > proxy;
 };
 
 private ref class LogAdapterWrapper
 {
 public:
-	LogAdapterWrapper(ILogHandler ^ proxy) : mpAdapter(new LogAdapter(proxy))
+	LogAdapterWrapper(ILogHandler^ proxy) : mpAdapter(new LogAdapter(proxy))
 	{}
 
-	openpal::ILogBase* GetLogAdapter() {
+	openpal::ILogBase* GetLogAdapter()
+	{
 		return mpAdapter;
 	}
 
-	~LogAdapterWrapper() {
+	~LogAdapterWrapper()
+	{
 		delete mpAdapter;
 	}
 

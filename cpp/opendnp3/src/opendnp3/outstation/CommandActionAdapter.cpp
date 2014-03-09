@@ -25,15 +25,15 @@ namespace opendnp3
 {
 
 CommandActionAdapter::CommandActionAdapter(ICommandHandler* pHandler_, bool supports_) :
-pHandler(pHandler_),
-supports(supports_)
+	pHandler(pHandler_),
+	supports(supports_)
 {}
-	
+
 CommandStatus CommandActionAdapter::Action(const ControlRelayOutputBlock& command, uint16_t index)
 {
 	return supports ? pHandler->Supports(command, index) : pHandler->Perform(command, index);
 }
-	
+
 CommandStatus CommandActionAdapter::Action(const AnalogOutputInt16& command, uint16_t index)
 {
 	return supports ? pHandler->Supports(command, index) : pHandler->Perform(command, index);
@@ -43,7 +43,7 @@ CommandStatus CommandActionAdapter::Action(const AnalogOutputInt32& command, uin
 {
 	return supports ? pHandler->Supports(command, index) : pHandler->Perform(command, index);
 }
-	
+
 CommandStatus CommandActionAdapter::Action(const AnalogOutputFloat32& command, uint16_t index)
 {
 	return supports ? pHandler->Supports(command, index) : pHandler->Perform(command, index);

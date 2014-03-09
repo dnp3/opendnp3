@@ -39,7 +39,7 @@ public:
 		value(0),
 		status(CommandStatus::SUCCESS)
 	{}
-	
+
 	AnalogOutput(T aValue) :
 		value(aValue),
 		status(CommandStatus::SUCCESS)
@@ -50,7 +50,10 @@ public:
 		status(aStatus)
 	{}
 
-	bool ValuesEqual(const AnalogOutput<T>& aLHS) const	{ return value == aLHS.value; }
+	bool ValuesEqual(const AnalogOutput<T>& aLHS) const
+	{
+		return value == aLHS.value;
+	}
 
 	/**
 	* The status value defaults to CS_SUCCESS for requests
@@ -58,9 +61,9 @@ public:
 	CommandStatus status;
 
 	T value;
-	
+
 	virtual std::string ToString() const = 0;
-	
+
 };
 
 /**
@@ -72,7 +75,7 @@ public:
 
 	AnalogOutputInt16();
 	AnalogOutputInt16(int16_t);
-	AnalogOutputInt16(int16_t, CommandStatus);	
+	AnalogOutputInt16(int16_t, CommandStatus);
 
 	bool operator==(const AnalogOutputInt16& arRHS) const;
 

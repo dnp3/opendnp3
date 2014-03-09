@@ -67,39 +67,49 @@ public:
 	void ChangeState(PriStateBase*);
 	void ChangeState(SecStateBase*);
 
-	openpal::Logger& GetLogger() {
+	openpal::Logger& GetLogger()
+	{
 		return mLogger;
 	}
 
-	void DoDataUp(const openpal::ReadOnlyBuffer& arBuffer) {
+	void DoDataUp(const openpal::ReadOnlyBuffer& arBuffer)
+	{
 		if(mpUpperLayer) mpUpperLayer->OnReceive(arBuffer);
 	}
 
-	void DoSendSuccess() {
+	void DoSendSuccess()
+	{
 		if(mpUpperLayer) mpUpperLayer->OnSendSuccess();
 	}
 
-	void DoSendFailure() {
+	void DoSendFailure()
+	{
 		if(mpUpperLayer) mpUpperLayer->OnSendFailure();
 	}
 
-	void ResetReadFCB() {
+	void ResetReadFCB()
+	{
 		mNextReadFCB = true;
 	}
-	void ToggleReadFCB() {
+	void ToggleReadFCB()
+	{
 		mNextReadFCB = !mNextReadFCB;
 	}
-	bool NextReadFCB() {
+	bool NextReadFCB()
+	{
 		return mNextReadFCB;
 	}
 
-	void ResetWriteFCB() {
+	void ResetWriteFCB()
+	{
 		mNextWriteFCB = true;
 	}
-	void ToggleWriteFCB() {
+	void ToggleWriteFCB()
+	{
 		mNextWriteFCB = !mNextWriteFCB;
 	}
-	bool NextWriteFCB() {
+	bool NextWriteFCB()
+	{
 		return mNextWriteFCB;
 	}
 
@@ -118,7 +128,8 @@ public:
 	//Retry Count
 	void ResetRetry();
 	bool Retry();
-	size_t RetryRemaining() {
+	size_t RetryRemaining()
+	{
 		return mRetryRemaining;
 	}
 
@@ -147,7 +158,8 @@ private:
 	/* Events - NVII delegates from ILayerDown and Events produced internally */
 	void _Send(const openpal::ReadOnlyBuffer& arBuffer);
 
-	std::string SendString() {
+	std::string SendString()
+	{
 		return "~>";
 	}
 

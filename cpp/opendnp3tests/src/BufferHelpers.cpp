@@ -68,11 +68,13 @@ HexSequence::HexSequence( const std::string& aSequence) :
 	std::string s = RemoveSpaces(aSequence);
 
 	size_t size = s.size();
-	for(size_t index = 0, pos = 0; pos < size; ++index, pos += 2) {
+	for(size_t index = 0, pos = 0; pos < size; ++index, pos += 2)
+	{
 		uint32_t val;
 		std::stringstream ss;
 		ss << std::hex << s.substr(pos, 2);
-		if((ss >> val).fail()) {
+		if((ss >> val).fail())
+		{
 			throw ArgumentException(LOCATION, aSequence);
 		}
 		mpBuff[index] = static_cast<uint8_t>(val);
@@ -89,7 +91,8 @@ std::string HexSequence::RemoveSpaces(const std::string& aSequence)
 void HexSequence::RemoveSpacesInPlace(std::string& s)
 {
 	size_t pos = s.find_first_of(' ');
-	if(pos != string::npos) {
+	if(pos != string::npos)
+	{
 		s.replace(pos, 1, "");
 		RemoveSpacesInPlace(s);
 	}

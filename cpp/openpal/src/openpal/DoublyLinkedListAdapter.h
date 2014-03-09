@@ -28,16 +28,16 @@ namespace openpal
 
 template <class ValueType>
 class DoubleListNode
-{		
-	public:
-		DoubleListNode(): prev(nullptr), next(nullptr)
-		{}
+{
+public:
+	DoubleListNode(): prev(nullptr), next(nullptr)
+	{}
 
-		ValueType value;
+	ValueType value;
 
-	private:
-		DoubleListNode* prev;
-		DoubleListNode* next;
+private:
+	DoubleListNode* prev;
+	DoubleListNode* next;
 
 	template <class T, class U>
 	friend class DoublyLinkedListAdapter;
@@ -50,25 +50,25 @@ class DoubleListNode
 template <class ValueType>
 class DoublyLinkedListIterator
 {
-	public:
-		DoublyLinkedListIterator(DoubleListNode< ValueType>* pStart) : pCurrent(pStart)
-		{}
+public:
+	DoublyLinkedListIterator(DoubleListNode< ValueType>* pStart) : pCurrent(pStart)
+	{}
 
-		bool HasNext()
-		{
-			return (pCurrent != nullptr);
-		}
+	bool HasNext()
+	{
+		return (pCurrent != nullptr);
+	}
 
-		DoubleListNode< ValueType>* Next()
-		{
-			assert(pCurrent != nullptr);
-			auto pRet = pCurrent;
-			pCurrent = pCurrent->next;
-			return pRet;
-		}
+	DoubleListNode< ValueType>* Next()
+	{
+		assert(pCurrent != nullptr);
+		auto pRet = pCurrent;
+		pCurrent = pCurrent->next;
+		return pRet;
+	}
 
-	private:
-		DoubleListNode<ValueType>* pCurrent;
+private:
+	DoubleListNode<ValueType>* pCurrent;
 };
 
 
@@ -76,37 +76,40 @@ class DoublyLinkedListIterator
 template <class ValueType, class IndexType>
 class DoublyLinkedListAdapter : public HasSize<IndexType>
 {
-	public:
+public:
 
-		typedef DoublyLinkedListIterator<ValueType> Iterator;
+	typedef DoublyLinkedListIterator<ValueType> Iterator;
 
-		DoublyLinkedListAdapter(Indexable<DoubleListNode<ValueType>, IndexType> aUnderlying) : 
-			HasSize<IndexType>(0),
-			pHead(nullptr),
-			pTail(nullptr),
-			pFree(nullptr),
-			underlying(aUnderlying)
-		{			
-			Initialize();
-		}
+	DoublyLinkedListAdapter(Indexable<DoubleListNode<ValueType>, IndexType> aUnderlying) :
+		HasSize<IndexType>(0),
+		pHead(nullptr),
+		pTail(nullptr),
+		pFree(nullptr),
+		underlying(aUnderlying)
+	{
+		Initialize();
+	}
 
-		Iterator Iterate() { return Iterator(pHead); }
-		
-		inline DoubleListNode<ValueType>* Add(const ValueType& value);
+	Iterator Iterate()
+	{
+		return Iterator(pHead);
+	}
 
-		inline void Remove(DoubleListNode<ValueType>* apNode);
-		
-		inline bool IsFull() const;
-	
-	private:
-		DoubleListNode<ValueType>* pHead;
-		DoubleListNode<ValueType>* pTail;
-		DoubleListNode<ValueType>* pFree;
-		Indexable<DoubleListNode<ValueType>, IndexType> underlying;
+	inline DoubleListNode<ValueType>* Add(const ValueType& value);
 
-		inline static void Link(DoubleListNode<ValueType>* prev, DoubleListNode<ValueType>* next);
-		
-		void Initialize();
+	inline void Remove(DoubleListNode<ValueType>* apNode);
+
+	inline bool IsFull() const;
+
+private:
+	DoubleListNode<ValueType>* pHead;
+	DoubleListNode<ValueType>* pTail;
+	DoubleListNode<ValueType>* pFree;
+	Indexable<DoubleListNode<ValueType>, IndexType> underlying;
+
+	inline static void Link(DoubleListNode<ValueType>* prev, DoubleListNode<ValueType>* next);
+
+	void Initialize();
 };
 
 template <class ValueType, class IndexType>
@@ -119,10 +122,10 @@ DoubleListNode<ValueType>* DoublyLinkedListAdapter<ValueType, IndexType>::Add(co
 		pNode->value = value;
 		pFree = pFree->next;
 		pNode->next = nullptr;
-		Link(pTail, pNode);		
+		Link(pTail, pNode);
 		pTail = pNode;
 		if(pHead == nullptr) pHead = pTail;
-		++(this->size);		
+		++(this->size);
 		return pTail;
 	}
 }
@@ -133,18 +136,18 @@ void DoublyLinkedListAdapter<ValueType, IndexType>::Remove(DoubleListNode<ValueT
 	if(apNode->prev == nullptr) // it's the head
 	{
 		if(apNode->next == nullptr) pHead = pTail = nullptr; // list is now empty
-		else pHead = apNode->next; // head but not tail		
+		else pHead = apNode->next; // head but not tail
 	}
 	else
 	{
-		if(apNode->next == nullptr) pTail = apNode->prev; // was only the tail		
+		if(apNode->next == nullptr) pTail = apNode->prev; // was only the tail
 	}
 
 	// attach the adjacent nodes to eachother if they exist
-	Link(apNode->prev, apNode->next);			
+	Link(apNode->prev, apNode->next);
 
 	// Now that the data list is complete, attach the freed node to the front of the free list
-	apNode->next = pFree;  
+	apNode->next = pFree;
 	if(pFree != nullptr) pFree->prev = apNode;
 	apNode->prev = nullptr; // it's the head now
 	pFree = apNode;
@@ -168,12 +171,12 @@ void DoublyLinkedListAdapter<ValueType, IndexType>::Link(DoubleListNode<ValueTyp
 template <class ValueType, class IndexType>
 void DoublyLinkedListAdapter<ValueType, IndexType>::Initialize()
 {
-	if(underlying.IsNotEmpty()) 
+	if(underlying.IsNotEmpty())
 	{
-		pFree = &underlying[0];		
+		pFree = &underlying[0];
 		for(IndexType i = 1; i < underlying.Size(); ++i)
-		{	
-			Link(&underlying[i-1], &underlying[i]);
+		{
+			Link(&underlying[i - 1], &underlying[i]);
 		}
 	}
 }

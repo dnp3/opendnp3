@@ -49,14 +49,14 @@ TEST_CASE(SUITE("TestStateClosed"))
 	AsyncPhysTestObject t(LogLevel::Info, false);
 
 	uint8_t b[100];
-	WriteBuffer buff(b, 100);		
+	WriteBuffer buff(b, 100);
 	WriteBuffer empty;
-	
+
 	t.mTCPClient.AsyncWrite(empty.ToReadOnly());
 	REQUIRE(t.log.PopOneEntry(LogLevel::Error));
 	t.mTCPClient.AsyncRead(empty);
 	REQUIRE(t.log.PopOneEntry(LogLevel::Error));
-	
+
 	t.mTCPClient.AsyncWrite(buff.ToReadOnly());
 	REQUIRE(t.log.PopOneEntry(LogLevel::Error));
 	t.mTCPClient.AsyncRead(buff);
@@ -71,7 +71,8 @@ TEST_CASE(SUITE("ClientConnectionRejected"))
 
 	REQUIRE(t.mClientAdapter.GetNumOpenFailure() ==  0);
 
-	for(size_t i = 0; i < 2; ++i) {
+	for(size_t i = 0; i < 2; ++i)
+	{
 		t.mTCPClient.AsyncOpen();
 		REQUIRE(t.ProceedUntil(std::bind(&LowerLayerToPhysAdapter::OpenFailureEquals, &t.mClientAdapter, i + 1)));
 	}
@@ -81,7 +82,8 @@ TEST_CASE(SUITE("ClientConnectionCanceled"))
 {
 	AsyncPhysTestObject t(LogLevel::Info, false);
 
-	for(size_t i = 0; i < 2; ++i) {
+	for(size_t i = 0; i < 2; ++i)
+	{
 		t.mTCPClient.AsyncOpen();
 		t.mTCPClient.AsyncClose();
 
@@ -93,7 +95,8 @@ TEST_CASE(SUITE("ServerAcceptCanceled"))
 {
 	AsyncPhysTestObject t(LogLevel::Info, false);
 
-	for(size_t i = 0; i < 2; ++i) {
+	for(size_t i = 0; i < 2; ++i)
+	{
 		t.mTCPServer.AsyncOpen();
 		t.mTCPServer.AsyncClose();
 
@@ -105,7 +108,8 @@ TEST_CASE(SUITE("ConnectDisconnect"))
 {
 	AsyncPhysTestObject t(LogLevel::Info, false);
 
-	for(size_t i = 0; i < 10; ++i) {
+	for(size_t i = 0; i < 10; ++i)
+	{
 
 		t.mTCPServer.AsyncOpen();
 		t.mTCPClient.AsyncOpen();
@@ -170,7 +174,8 @@ TEST_CASE(SUITE("ServerAsyncCloseWhileOpeningKillsAcceptor"))
 
 	REQUIRE(0 ==  t.mClientAdapter.GetNumOpenFailure());
 
-	for(size_t i = 0; i < 5; ++i) {
+	for(size_t i = 0; i < 5; ++i)
+	{
 		t.mTCPServer.AsyncOpen();
 		t.mTCPServer.AsyncClose();
 
@@ -189,7 +194,8 @@ TEST_CASE(SUITE("ServerAsyncCloseAfterOpeningKillsAcceptor"))
 
 	REQUIRE(t.mClientAdapter.GetNumOpenFailure() ==  0);
 
-	for(size_t i = 0; i < 5; ++i) {
+	for(size_t i = 0; i < 5; ++i)
+	{
 		t.mTCPServer.AsyncOpen();
 		t.mTCPClient.AsyncOpen();
 
@@ -239,11 +245,18 @@ TEST_CASE(SUITE("Loopback"))
 
 	RandomizedBuffer rb(SIZE);
 
-	for(size_t i = 0; i < ITERATIONS; ++i) {
+	for(size_t i = 0; i < ITERATIONS; ++i)
+	{
 		rb.Randomize();
 		upper.SendDown(rb.ToReadOnly());
-		REQUIRE(test.ProceedUntil([&](){  return upper.BufferEquals(rb.ToReadOnly()); }));
-		REQUIRE(test.ProceedUntil([&](){  return upper.CountersEqual(1, 0); }));
+		REQUIRE(test.ProceedUntil([&]()
+		{
+			return upper.BufferEquals(rb.ToReadOnly());
+		}));
+		REQUIRE(test.ProceedUntil([&]()
+		{
+			return upper.CountersEqual(1, 0);
+		}));
 		upper.ClearBuffer();
 		upper.Reset();
 	}

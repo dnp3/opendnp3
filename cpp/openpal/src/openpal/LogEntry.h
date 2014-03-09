@@ -31,47 +31,52 @@ namespace openpal
 */
 class LogEntry
 {
-	
+
 public:
 
-	LogEntry(): mErrorCode(-1)		
+	LogEntry(): mErrorCode(-1)
 	{}
 
 	LogEntry( LogLevel aLevel, const std::string& aDeviceName, const std::string& aLocation, const std::string& aMessage, int aErrorCode);
 
 	/// @return The name of the logger that recorded the message
-	const std::string&	GetDeviceName() const {
+	const std::string&	GetDeviceName() const
+	{
 		return mDeviceName;
 	}
 
 	/// @return The place in the source code where the message was recorded
-	const std::string&	GetLocation() const {
+	const std::string&	GetLocation() const
+	{
 		return mLocation;
 	}
 
 	/// @return body of the log message
-	const std::string&	GetMessage() const {
+	const std::string&	GetMessage() const
+	{
 		return mMessage;
 	}
 
 	/// @return the log level of the message
-	LogLevel GetLogLevel() const {
+	LogLevel GetLogLevel() const
+	{
 		return mLogLevel;
 	}
-	
+
 
 	/// @return the error code associated with the message
-	int	GetErrorCode() const {
+	int	GetErrorCode() const
+	{
 		return mErrorCode;
 	}
 
-private:	
+private:
 
 	LogLevel		mLogLevel;
 	std::string		mDeviceName;
 	std::string		mLocation;
-	std::string		mMessage;	
-	int				mErrorCode;	
+	std::string		mMessage;
+	int				mErrorCode;
 };
 
 }

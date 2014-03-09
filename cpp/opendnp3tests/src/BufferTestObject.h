@@ -47,17 +47,21 @@ public:
 
 	std::string GetBufferAsHexString(bool spaced = true) const;
 
-	bool IsBufferEmpty() {
+	bool IsBufferEmpty()
+	{
 		return mBuffer.size() == 0;
 	}
 	void ClearBuffer();
-	size_t Size() {
+	size_t Size()
+	{
 		return mBuffer.size();
 	}
-	bool SizeEquals(size_t aNum) {
+	bool SizeEquals(size_t aNum)
+	{
 		return aNum == Size();
 	}
-	size_t NumWrites() {
+	size_t NumWrites()
+	{
 		return mNumWrites;
 	}
 

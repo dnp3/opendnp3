@@ -59,7 +59,8 @@ int main(int argc, char* argv[])
 
 	// you can optionally pass a function into the client constructor to configure your socket
 	// using platform specific options
-	auto configure = [](asio::ip::tcp::socket& socket){
+	auto configure = [](asio::ip::tcp::socket & socket)
+	{
 		// platfrom specific socket configuration here
 	};
 
@@ -70,16 +71,17 @@ int main(int argc, char* argv[])
 
 	// You can optionally add a listener to the channel. You can do this anytime and
 	// you will receive a stream of all state changes
-	pServer->AddStateListener([](ChannelState state) {
+	pServer->AddStateListener([](ChannelState state)
+	{
 		std::cout << "Server state: " << ChannelStateToString(state) << std::endl;
 	});
 
-	
+
 
 	// The master config object for a slave. The default are
 	// useable, but understanding the options are important.
-	SlaveStackConfig stackConfig;	
-	stackConfig.database = DatabaseConfiguration(DatabaseTemplate(5, 5, 5, 5, 5, 5));	
+	SlaveStackConfig stackConfig;
+	stackConfig.database = DatabaseConfiguration(DatabaseTemplate(5, 5, 5, 5, 5, 5));
 	stackConfig.slave.mDisableUnsol = true;
 
 	// Create a new slave with a log level, command handler, and
@@ -89,7 +91,8 @@ int main(int argc, char* argv[])
 
 	// You can optionally add a listener to the stack to observer communicate health. You
 	// can do this anytime and you will receive a stream of all state changes.
-	pOutstation->AddStateListener([](StackState state) {
+	pOutstation->AddStateListener([](StackState state)
+	{
 		std::cout << "outstation state: " << StackStateToString(state) << std::endl;
 	});
 
@@ -100,11 +103,13 @@ int main(int argc, char* argv[])
 
 	std::string input;
 	uint32_t count = 0;
-	do {
+	do
+	{
 		std::cout << "Enter something to increment a counter or type exit" << std::endl;
 		std::cin >> input;
 		if(input == "exit") break;
-		else {
+		else
+		{
 			TimeTransaction tx(pDataObserver, UTCTimeSource::Inst()->Now()); //automatically calls Start()/End() and sets time for each measurement
 			tx.Update(Counter(count, CQ_ONLINE), 0);
 			++count;

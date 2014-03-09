@@ -27,40 +27,40 @@
 
 namespace opendnp3
 {
-	// A safe down sampling class
-	template <class Source, class Target>
-	class DownSampling : private Uncopyable
+// A safe down sampling class
+template <class Source, class Target>
+class DownSampling : private Uncopyable
+{
+	static const Target TARGET_MAX;
+	static const Target TARGET_MIN;
+
+public:
+
+	static bool Apply(Source src, Target& target)
 	{
-		static const Target TARGET_MAX;
-		static const Target TARGET_MIN;
-
-		public:
-
-		static bool Apply(Source src, Target& target)
+		if(src > TARGET_MAX)
 		{
-			if(src > TARGET_MAX)
-			{
-				target = TARGET_MAX;
-				return true;
-			}
-			else if( src < TARGET_MIN)
-			{
-				target = TARGET_MIN;
-				return true;
-			}
-			else
-			{
-				target = static_cast<Target>(src);
-				return false;
-			}
+			target = TARGET_MAX;
+			return true;
 		}
-	};
+		else if( src < TARGET_MIN)
+		{
+			target = TARGET_MIN;
+			return true;
+		}
+		else
+		{
+			target = static_cast<Target>(src);
+			return false;
+		}
+	}
+};
 
-	template <class Source, class Target>
-	const Target DownSampling<Source,Target>::TARGET_MAX(std::numeric_limits<Target>::max());
-	
-	template <class Source, class Target>
-	const Target DownSampling<Source,Target>::TARGET_MIN(std::numeric_limits<Target>::min());
+template <class Source, class Target>
+const Target DownSampling<Source, Target>::TARGET_MAX(std::numeric_limits<Target>::max());
+
+template <class Source, class Target>
+const Target DownSampling<Source, Target>::TARGET_MIN(std::numeric_limits<Target>::min());
 }
 
 #endif

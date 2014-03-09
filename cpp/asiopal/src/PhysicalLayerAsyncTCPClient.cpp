@@ -36,11 +36,11 @@ namespace asiopal
 {
 
 PhysicalLayerAsyncTCPClient::PhysicalLayerAsyncTCPClient(
-		Logger aLogger, 
-		asio::io_service* apIOService, 
-		const std::string& arAddress, 
-		uint16_t aPort, 
-		std::function<void (asio::ip::tcp::socket&)> aConfigure) :
+    Logger aLogger,
+    asio::io_service* apIOService,
+    const std::string& arAddress,
+    uint16_t aPort,
+    std::function<void (asio::ip::tcp::socket&)> aConfigure) :
 
 	PhysicalLayerAsyncBaseTCP(aLogger, apIOService),
 	mRemoteEndpoint(ip::tcp::v4(), aPort),
@@ -53,9 +53,10 @@ PhysicalLayerAsyncTCPClient::PhysicalLayerAsyncTCPClient(
 void PhysicalLayerAsyncTCPClient::DoOpen()
 {
 	mSocket.async_connect(mRemoteEndpoint,
-							strand.wrap([this](const std::error_code& code){
-								this->OnOpenCallback(code);
-							}));					   							
+	                      strand.wrap([this](const std::error_code & code)
+	{
+		this->OnOpenCallback(code);
+	}));
 }
 
 void PhysicalLayerAsyncTCPClient::DoOpeningClose()

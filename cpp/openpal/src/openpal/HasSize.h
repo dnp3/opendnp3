@@ -25,23 +25,32 @@ namespace openpal
 {
 
 template <class SizeType>
-class HasSize 
+class HasSize
 {
 
-	public:
+public:
 
-		HasSize(SizeType aSize) : size(aSize)
-		{}
+	HasSize(SizeType aSize) : size(aSize)
+	{}
 
-		SizeType Size() const { return size; }
+	SizeType Size() const
+	{
+		return size;
+	}
 
-		bool IsEmpty() const { return size == 0; }
+	bool IsEmpty() const
+	{
+		return size == 0;
+	}
 
-		bool IsNotEmpty() const { return size != 0; }
+	bool IsNotEmpty() const
+	{
+		return size != 0;
+	}
 
-	protected:
+protected:
 
-		SizeType size;
+	SizeType size;
 
 };
 

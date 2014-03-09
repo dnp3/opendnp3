@@ -25,16 +25,16 @@ namespace opendnp3
 
 PointClass IntToPointClass(uint8_t clazz)
 {
-	switch(clazz) 
+	switch(clazz)
 	{
-		case(CLASS_1):
-			return CLASS_1;
-		case(CLASS_2):
-			return CLASS_2;
-		case(CLASS_3):
-			return CLASS_3;
-		default:
-			return CLASS_0;
+	case(CLASS_1):
+		return CLASS_1;
+	case(CLASS_2):
+		return CLASS_2;
+	case(CLASS_3):
+		return CLASS_3;
+	default:
+		return CLASS_0;
 	}
 }
 

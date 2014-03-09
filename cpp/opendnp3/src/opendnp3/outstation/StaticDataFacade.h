@@ -44,18 +44,18 @@ typedef ValueMetadataPair<DualValue<FrozenCounter>, FrozenCounterMetadata> Froze
 typedef openpal::Indexable<DualValue<BinaryOutputStatus>, uint16_t> BinaryOutputStatusCollection;
 typedef openpal::Indexable<DualValue<AnalogOutputStatus>, uint16_t> AnalogOutputStatusCollection;
 
-// Doesn't contain the real buffers, just a facade that allows use to easily switch 
+// Doesn't contain the real buffers, just a facade that allows use to easily switch
 // between static and dynamic allocation
 struct StaticDataFacade
-{	
+{
 	StaticDataFacade(
-			BinaryCollection aBinaries,
-			AnalogCollection aAnalogs,
-			CounterCollection aCounters,
-			FrozenCounterCollection aFrozenCounters,
-			BinaryOutputStatusCollection aControlStatii,
-			AnalogOutputStatusCollection aSetpointStatii
-			):
+	    BinaryCollection aBinaries,
+	    AnalogCollection aAnalogs,
+	    CounterCollection aCounters,
+	    FrozenCounterCollection aFrozenCounters,
+	    BinaryOutputStatusCollection aControlStatii,
+	    AnalogOutputStatusCollection aSetpointStatii
+	):
 		binaries(aBinaries),
 		analogs(aAnalogs),
 		counters(aCounters),
@@ -69,7 +69,7 @@ struct StaticDataFacade
 	CounterCollection counters;
 	FrozenCounterCollection frozenCounters;
 	BinaryOutputStatusCollection controlStatii;
-	AnalogOutputStatusCollection setpointStatii;	
+	AnalogOutputStatusCollection setpointStatii;
 };
 
 }

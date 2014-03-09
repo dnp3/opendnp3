@@ -8,29 +8,30 @@
 //                                           __/ |
 //                                          |___/
 // Copyright 2013 Automatak LLC
-// 
+//
 // Automatak LLC (www.automatak.com) licenses this file
 // to you under the the Apache License Version 2.0 (the "License"):
-// 
+//
 // http://www.apache.org/licenses/LICENSE-2.0.html
 //
 
 #include "StackState.h"
 
-namespace opendnp3 {
+namespace opendnp3
+{
 
 std::string StackStateToString(StackState arg)
 {
-  switch(arg)
-  {
-    case(StackState::COMMS_UP):
-      return "COMMS_UP";
-    case(StackState::COMMS_DOWN):
-      return "COMMS_DOWN";
-    case(StackState::UNKNOWN):
-      return "UNKNOWN";
-  }
-  return "UNKNOWN";
+	switch(arg)
+	{
+	case(StackState::COMMS_UP):
+		return "COMMS_UP";
+	case(StackState::COMMS_DOWN):
+		return "COMMS_DOWN";
+	case(StackState::UNKNOWN):
+		return "UNKNOWN";
+	}
+	return "UNKNOWN";
 }
 
 }

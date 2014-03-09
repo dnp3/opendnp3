@@ -281,7 +281,8 @@ TEST_CASE(SUITE("ManyReceives"))
 	LinkFrame f;
 	f.FormatAck(true, false, 1, 2);
 
-	for(size_t i = 1; i < 100; ++i) {
+	for(size_t i = 1; i < 100; ++i)
+	{
 		t.WriteData(f);
 		REQUIRE(t.log.IsLogErrorFree());
 		REQUIRE(t.mSink.mNumFrames ==  i);

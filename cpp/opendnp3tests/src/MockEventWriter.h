@@ -30,35 +30,38 @@ namespace opendnp3
 
 class MockEventWriter : public IEventWriter
 {
-	public:
+public:
 
-	bool Write(const Event<Binary>& evt) final 
-	{ 
+	bool Write(const Event<Binary>& evt) final
+	{
 		binaries.push_back(evt);
 		return true;
-	}	
-	
+	}
+
 	bool Write(const Event<Analog>& evt) final
-	{ 
+	{
 		analogs.push_back(evt);
 		return true;
 	}
-	
+
 	bool Write(const Event<Counter>& evt) final
-	{ 
-		counters.push_back(evt); 
+	{
+		counters.push_back(evt);
 		return true;
 	}
 
-	size_t TotalEvents() { return binaries.size() + analogs.size() + counters.size(); }
+	size_t TotalEvents()
+	{
+		return binaries.size() + analogs.size() + counters.size();
+	}
 
-	void Clear() 
-	{ 
+	void Clear()
+	{
 		binaries.clear();
 		analogs.clear();
 		counters.clear();
 	}
-	
+
 	std::vector<Event<Binary>> binaries;
 	std::vector<Event<Analog>> analogs;
 	std::vector<Event<Counter>> counters;

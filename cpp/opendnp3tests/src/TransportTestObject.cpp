@@ -51,7 +51,8 @@ std::string TransportTestObject::GetData(const std::string& arHdr, uint8_t aSeed
 {
 	ByteStr buff(aLength);
 	uint8_t val = aSeed;
-	for(size_t i = 0; i < aLength; ++i) {
+	for(size_t i = 0; i < aLength; ++i)
+	{
 		buff[i] = val;
 		++val;
 	}
@@ -65,7 +66,8 @@ std::string TransportTestObject::GetData(const std::string& arHdr, uint8_t aSeed
 std::string TransportTestObject::GeneratePacketSequence(vector< std::string >& arVec, uint32_t aNumPackets, uint32_t aLastPacketLength)
 {
 	ostringstream oss;
-	for(size_t i = 0; i < aNumPackets; ++i) {
+	for(size_t i = 0; i < aNumPackets; ++i)
+	{
 		bool fir = i == 0;
 		bool fin = i == (aNumPackets - 1);
 		int seq = static_cast<int>(i % 64);

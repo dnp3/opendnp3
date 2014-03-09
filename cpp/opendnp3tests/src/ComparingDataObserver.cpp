@@ -49,12 +49,12 @@ bool ComparingDataObserver::IsSameData()
 	size_t required = mpObserver->mBinaryMap.size() +
 	                  mpObserver->mAnalogMap.size() +
 	                  mpObserver->mCounterMap.size() +
-			  mpObserver->mFrozenCounterMap.size();
+	                  mpObserver->mFrozenCounterMap.size();
 
 	size_t actual = mBinaryMap.size() +
 	                mAnalogMap.size() +
 	                mCounterMap.size() +
-			mFrozenCounterMap.size();
+	                mFrozenCounterMap.size();
 
 	return (required == actual);
 
@@ -82,7 +82,8 @@ void ComparingDataObserver::Start()
 
 void ComparingDataObserver::End()
 {
-	if(this->IsSameData()) {
+	if(this->IsSameData())
+	{
 		mSameData = true;
 		mCondition.notify_all();
 	}

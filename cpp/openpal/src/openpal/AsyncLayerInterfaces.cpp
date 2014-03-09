@@ -73,7 +73,8 @@ IUpperLayer::IUpperLayer(openpal::Logger& arLogger) :
 
 void IUpperLayer::OnReceive(const ReadOnlyBuffer& arBuffer)
 {
-	if(this->LogReceive()) {
+	if(this->LogReceive())
+	{
 		LOG_BLOCK(LogLevel::Comm, RecvString() << " " << toHex(arBuffer, true));
 	}
 	this->_OnReceive(arBuffer); //call the implementation

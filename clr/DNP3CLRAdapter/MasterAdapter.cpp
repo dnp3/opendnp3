@@ -15,14 +15,14 @@ MasterAdapter::MasterAdapter(opendnp3::IMaster* apMaster) :
 	mCommandAdapter(gcnew CommandProcessorAdapter(apMaster->GetCommandProcessor()))
 {}
 
-void MasterAdapter::AddStateListener(System::Action<StackState> ^ aListener)
+void MasterAdapter::AddStateListener(System::Action<StackState>^ aListener)
 {
 	auto pListener = new gcroot < System::Action<StackState> ^ > (aListener);
 	mpMaster->AddDestructorHook(std::bind(&DeleteAnything < gcroot < System::Action<StackState> ^ >> , pListener));
 	mpMaster->AddStateListener(std::bind(&CallbackStackStateListener, std::placeholders::_1, pListener));
 }
 
-ICommandProcessor ^ MasterAdapter::GetCommandProcessor()
+ICommandProcessor^ MasterAdapter::GetCommandProcessor()
 {
 	return mCommandAdapter;
 }

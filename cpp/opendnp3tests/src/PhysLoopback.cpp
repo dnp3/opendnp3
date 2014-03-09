@@ -31,7 +31,7 @@ namespace opendnp3
 PhysLoopback::PhysLoopback(openpal::Logger aLogger, openpal::IPhysicalLayerAsync* apPhys) :
 	Loggable(aLogger),
 	PhysicalLayerMonitor(aLogger, apPhys, openpal::TimeDuration::Seconds(5), openpal::TimeDuration::Seconds(5)),
-	mBytesReadWritten(0),	
+	mBytesReadWritten(0),
 	mBuffer(1024)
 {
 

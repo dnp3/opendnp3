@@ -36,8 +36,8 @@ class IOServiceThreadPool : private openpal::Loggable
 public:
 
 	IOServiceThreadPool(
-	        openpal::Logger aLogger,
-	        uint32_t aConcurrency,
+	    openpal::Logger aLogger,
+	    uint32_t aConcurrency,
 	std::function<void()> onThreadStart = []() {},
 	std::function<void()> onThreadExit = []() {}
 	);

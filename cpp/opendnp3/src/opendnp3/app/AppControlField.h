@@ -28,10 +28,11 @@ namespace opendnp3
 
 /** Represents the first byte in every APDU
 */
-struct AppControlField {
+struct AppControlField
+{
 
 	const static AppControlField DEFAULT;
-		
+
 	AppControlField();
 
 	AppControlField(uint8_t byte);
@@ -40,7 +41,10 @@ struct AppControlField {
 
 	uint8_t ToByte() const;
 
-	inline bool IsFirAndFin() const { return FIR && FIN; }
+	inline bool IsFirAndFin() const
+	{
+		return FIR && FIN;
+	}
 
 	bool FIR;
 	bool FIN;
@@ -48,7 +52,7 @@ struct AppControlField {
 	bool UNS;
 	uint8_t  SEQ;
 
-	private:
+private:
 
 	static const uint8_t FIR_MASK = 0x80;
 	static const uint8_t FIN_MASK = 0x40;

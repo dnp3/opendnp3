@@ -47,11 +47,11 @@ TEST_CASE(SUITE("FuzzTests"))
 
 	EventBufferFuzzer fuzzer;
 	MockEventWriter writer;
-	
+
 	for(size_t i = 0; i < iterations; ++i)
 	{
 		auto numSelected = fuzzer.PerformAction(buffer, writer); // do something
-		
+
 		//assert invariants
 
 		REQUIRE(numSelected ==  writer.TotalEvents());
@@ -63,9 +63,9 @@ TEST_CASE(SUITE("FuzzTests"))
 		REQUIRE(selected.class1.Total() + unselected.class1.Total() ==  total.class1.Total());
 		REQUIRE(selected.class2.Total() + unselected.class2.Total() ==  total.class2.Total());
 		REQUIRE(selected.class3.Total() + unselected.class3.Total() ==  total.class3.Total());
-		
+
 		writer.Clear(); //prepare writer for next iteration
-	}	
+	}
 }
 */
 

@@ -36,7 +36,8 @@ public:
 	MockAppUser(openpal::Logger aLogger) : IAppUser(aLogger)
 	{}
 
-	struct State {
+	struct State
+	{
 		friend std::ostream& operator<<(std::ostream& output, const State& s);
 
 		State();
@@ -52,7 +53,7 @@ public:
 		size_t NumUnsolFailure;
 		size_t NumPartialRsp;
 		size_t NumFinalRsp;
-		size_t NumRequest;		
+		size_t NumRequest;
 	};
 
 	// Implement IAppUser
@@ -64,7 +65,7 @@ public:
 
 	void OnUnsolSendSuccess();
 	void OnUnsolFailure();
-	
+
 	virtual void OnPartialResponse(const APDUResponseRecord&) override;
 	virtual void OnFinalResponse(const  APDUResponseRecord&) override;
 	virtual void OnUnsolResponse(const  APDUResponseRecord&) override;

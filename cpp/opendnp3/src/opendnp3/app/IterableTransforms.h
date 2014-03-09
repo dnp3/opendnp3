@@ -31,26 +31,26 @@ namespace opendnp3
 template <class T, class U, class MapToU>
 class MappedIterableBuffer : public IterableBuffer<U>
 {
-	public:
-		MappedIterableBuffer(const IterableBuffer<T>& aProxy, const MapToU& aMapFun) : 
-			IterableBuffer<U>(aProxy.buffer, aProxy.count),
-			proxy(aProxy),
-			mapFun(aMapFun)
-		{}
+public:
+	MappedIterableBuffer(const IterableBuffer<T>& aProxy, const MapToU& aMapFun) :
+		IterableBuffer<U>(aProxy.buffer, aProxy.count),
+		proxy(aProxy),
+		mapFun(aMapFun)
+	{}
 
-	protected:
-		virtual U ValueAt(openpal::ReadOnlyBuffer& buff, uint32_t pos) const final
-		{
-			return mapFun(proxy.ValueAt(buff, pos));
-		}
+protected:
+	virtual U ValueAt(openpal::ReadOnlyBuffer& buff, uint32_t pos) const final
+	{
+		return mapFun(proxy.ValueAt(buff, pos));
+	}
 
-	private:
-		const IterableBuffer<T>& proxy;
-		MapToU mapFun;
+private:
+	const IterableBuffer<T>& proxy;
+	MapToU mapFun;
 };
-		
+
 template<class T, class U, class MapToU>
-MappedIterableBuffer<T, U, MapToU> MapIterableBuffer(const IterableBuffer<T> &iter, const MapToU& fun)
+MappedIterableBuffer<T, U, MapToU> MapIterableBuffer(const IterableBuffer<T>& iter, const MapToU& fun)
 {
 	return MappedIterableBuffer<T, U, MapToU>(iter, fun);
 }

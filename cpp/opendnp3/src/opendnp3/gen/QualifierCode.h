@@ -8,10 +8,10 @@
 //                                           __/ |
 //                                          |___/
 // Copyright 2013 Automatak LLC
-// 
+//
 // Automatak LLC (www.automatak.com) licenses this file
 // to you under the the Apache License Version 2.0 (the "License"):
-// 
+//
 // http://www.apache.org/licenses/LICENSE-2.0.html
 //
 
@@ -21,21 +21,22 @@
 #include <string>
 #include <cstdint>
 
-namespace opendnp3 {
+namespace opendnp3
+{
 
 /**
   Object header range/prefix as a single enumeration
 */
 enum class QualifierCode : uint8_t
 {
-  UINT8_START_STOP = 0x0,
-  UINT16_START_STOP = 0x1,
-  ALL_OBJECTS = 0x6,
-  UINT8_CNT = 0x7,
-  UINT16_CNT = 0x8,
-  UINT8_CNT_UINT8_INDEX = 0x17,
-  UINT16_CNT_UINT16_INDEX = 0x28,
-  UNDEFINED = 0xFF
+    UINT8_START_STOP = 0x0,
+    UINT16_START_STOP = 0x1,
+    ALL_OBJECTS = 0x6,
+    UINT8_CNT = 0x7,
+    UINT16_CNT = 0x8,
+    UINT8_CNT_UINT8_INDEX = 0x17,
+    UINT16_CNT_UINT16_INDEX = 0x28,
+    UNDEFINED = 0xFF
 };
 
 std::string QualifierCodeToString(QualifierCode arg);

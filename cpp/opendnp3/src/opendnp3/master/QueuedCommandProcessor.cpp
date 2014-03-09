@@ -83,7 +83,8 @@ bool QueuedCommandProcessor::Dispatch(ICommandProcessor* apProcessor)
 {
 	std::lock_guard<std::mutex> lock(mMutex);
 	if(mRequestQueue.empty()) return false;
-	else {
+	else
+	{
 		mRequestQueue.front()(apProcessor);
 		mRequestQueue.pop();
 		return true;

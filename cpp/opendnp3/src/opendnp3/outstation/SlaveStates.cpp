@@ -96,15 +96,15 @@ void AS_Closed::OnLowerLayerUp(Slave* slave)
 
 void AS_Closed::Enter(Slave* slave)
 {
-	 if(slave->mpTimeTimer)
-	 {
+	if(slave->mpTimeTimer)
+	{
 		slave->mpTimeTimer->Cancel();
 		slave->mpTimeTimer = nullptr;
-	 }	 
+	}
 }
 
 void AS_Closed::OnDataUpdate(Slave* slave)
-{	
+{
 	if(!slave->mConfig.mDisableUnsol) slave->mDeferredUnsol = true;
 }
 
@@ -112,7 +112,7 @@ void AS_Closed::OnDataUpdate(Slave* slave)
 
 void AS_OpenBase::OnLowerLayerDown(Slave* slave)
 {
-	slave->ChangeState(AS_Closed::Inst());	
+	slave->ChangeState(AS_Closed::Inst());
 }
 
 /* AS_Idle */
@@ -120,20 +120,21 @@ void AS_OpenBase::OnLowerLayerDown(Slave* slave)
 AS_Idle AS_Idle::mInstance;
 
 void AS_Idle::OnRequest(Slave* slave, const APDURecord& record, SequenceInfo sequence)
-{	
+{
 	slave->ChangeState(AS_WaitForRspSuccess::Inst());
 	slave->RespondToRequest(record, sequence);
 }
 
 void AS_Idle::Enter(Slave* slave)
-{	
-	if(slave->mCachedRequest.IsSet()) 
-	{	
+{
+	if(slave->mCachedRequest.IsSet())
+	{
 		slave->mCachedRequest.Apply(
-			[this, slave](const APDURecord& record, SequenceInfo info) { 
-				this->OnRequest(slave, record, info); 
-			}
-		);			
+		    [this, slave](const APDURecord & record, SequenceInfo info)
+		{
+			this->OnRequest(slave, record, info);
+		}
+		);
 	}
 	else
 	{
@@ -143,23 +144,23 @@ void AS_Idle::Enter(Slave* slave)
 			slave->mDeferredUnsol = false;
 			this->OnUnsolExpiration(slave);
 		}
-	}					
+	}
 }
 
 void AS_Idle::OnDataUpdate(Slave* slave)
 {
 	/*
 	// start the unsol timer or act immediately if there's no pack timer
-	if (!slave->mConfig.mDisableUnsol && slave->mStartupNullUnsol) // TODO && slave->mRspContext.HasEvents(slave->mConfig.mUnsolMask)) 
+	if (!slave->mConfig.mDisableUnsol && slave->mStartupNullUnsol) // TODO && slave->mRspContext.HasEvents(slave->mConfig.mUnsolMask))
 	{
-		if (slave->mConfig.mUnsolPackDelay.GetMilliseconds() <= 0) 
-		{	
+		if (slave->mConfig.mUnsolPackDelay.GetMilliseconds() <= 0)
+		{
 			// TODO
 			//slave->mRspContext.LoadUnsol(slave->mUnsol, slave->mIIN, slave->mConfig.mUnsolMask);
 			//slave->SendUnsolicited(slave->mUnsol);
-			//slave->ChangeState(AS_WaitForUnsolSuccess::Inst());			
+			//slave->ChangeState(AS_WaitForUnsolSuccess::Inst());
 		}
-		else if (slave->mpUnsolTimer == nullptr) 
+		else if (slave->mpUnsolTimer == nullptr)
 		{
 			slave->StartUnsolTimer(slave->mConfig.mUnsolPackDelay);
 		}
@@ -169,19 +170,19 @@ void AS_Idle::OnDataUpdate(Slave* slave)
 
 void AS_Idle::OnUnsolExpiration(Slave* slave)
 {
-	if (slave->mStartupNullUnsol) 
+	if (slave->mStartupNullUnsol)
 	{
 		/* TODO
 		if (slave->mRspContext.HasEvents(slave->mConfig.mUnsolMask))
 		{
-			
+
 			slave->ChangeState(AS_WaitForUnsolSuccess::Inst());
 			slave->mRspContext.LoadUnsol(slave->mUnsol,  slave->mIIN,  slave->mConfig.mUnsolMask);
-			slave->SendUnsolicited(slave->mUnsol);			
+			slave->SendUnsolicited(slave->mUnsol);
 		}
 		*/
 	}
-	else 
+	else
 	{
 		/* TODO
 		// do the startup null unsol task
@@ -197,18 +198,18 @@ void AS_Idle::OnUnsolExpiration(Slave* slave)
 AS_WaitForRspSuccess AS_WaitForRspSuccess::mInstance;
 
 void AS_WaitForRspSuccess::OnSolFailure(Slave* slave)
-{	
-	slave->ChangeState(AS_Idle::Inst());	
+{
+	slave->ChangeState(AS_Idle::Inst());
 }
 
 void AS_WaitForRspSuccess::OnSolSendSuccess(Slave* slave)
-{		
+{
 	if (slave->mStaticRspContext.IsComplete())
-	{		
+	{
 		slave->ChangeState(AS_Idle::Inst());
 	}
-	else 
-	{				
+	else
+	{
 		slave->ContinueResponse();
 	}
 }
@@ -232,23 +233,23 @@ void AS_WaitForUnsolSuccess::OnUnsolFailure(Slave* slave)
 	// if any unsol transaction fails, we re-enable the timer with the unsol retry delay
 	// slave->mRspContext.Reset(); TODO
 	slave->StartUnsolTimer(slave->mConfig.mUnsolRetryDelay);
-	slave->ChangeState(AS_Idle::Inst());	
+	slave->ChangeState(AS_Idle::Inst());
 }
 
 void AS_WaitForUnsolSuccess::OnUnsolSendSuccess(Slave* slave)
 {
 	this->DoUnsolSuccess(slave);
-	slave->ChangeState(AS_Idle::Inst());	
+	slave->ChangeState(AS_Idle::Inst());
 }
 
 void AS_WaitForUnsolSuccess::OnRequest(Slave* slave, const APDURecord& record, SequenceInfo sequence)
 {
-	if (record.function == FunctionCode::READ) 
+	if (record.function == FunctionCode::READ)
 	{
 		//read requests should be defered until after the unsol
 		slave->mCachedRequest.Set(record, sequence);
 	}
-	else 
+	else
 	{
 		/* TODO
 		slave->mCachedRequest.Clear(); // idempotent
@@ -270,16 +271,16 @@ void AS_WaitForSolUnsolSuccess::OnRequest(Slave* slave, const APDURecord& record
 
 void AS_WaitForSolUnsolSuccess::OnSolFailure(Slave* slave)
 {
-	slave->ChangeState(AS_WaitForUnsolSuccess::Inst());	
+	slave->ChangeState(AS_WaitForUnsolSuccess::Inst());
 }
 
 void AS_WaitForSolUnsolSuccess::OnSolSendSuccess(Slave* slave)
 {
-	 slave->ChangeState(AS_WaitForUnsolSuccess::Inst());
+	slave->ChangeState(AS_WaitForUnsolSuccess::Inst());
 }
 
 void AS_WaitForSolUnsolSuccess::OnUnsolFailure(Slave* slave)
-{	
+{
 	//slave->mRspContext.Reset(); TODO
 	slave->ChangeState(AS_WaitForRspSuccess::Inst());
 	if (slave->mConfig.mUnsolRetryDelay.GetMilliseconds() > 0)
@@ -289,7 +290,7 @@ void AS_WaitForSolUnsolSuccess::OnUnsolFailure(Slave* slave)
 	else
 	{
 		slave->OnUnsolTimerExpiration();
-	}	
+	}
 }
 
 void AS_WaitForSolUnsolSuccess::OnUnsolSendSuccess(Slave* slave)

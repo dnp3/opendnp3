@@ -41,10 +41,12 @@ public:
 	LowerLayerToPhysAdapter(openpal::Logger, openpal::IPhysicalLayerAsync*, bool aAutoRead = true);
 	~LowerLayerToPhysAdapter();
 
-	size_t GetNumOpenFailure() {
+	size_t GetNumOpenFailure()
+	{
 		return mNumOpenFailure;
 	}
-	bool OpenFailureEquals(size_t aNum) {
+	bool OpenFailureEquals(size_t aNum)
+	{
 		return GetNumOpenFailure() == aNum;
 	}
 
@@ -54,10 +56,12 @@ public:
 
 private:
 
-	virtual std::string RecvString() const {
+	virtual std::string RecvString() const
+	{
 		return "Adapter <-";
 	}
-	virtual std::string SendString() const {
+	virtual std::string SendString() const
+	{
 		return "Adapter ->";
 	}
 

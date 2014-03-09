@@ -34,20 +34,20 @@ namespace opendnp3
 	The indices of the points are implicit based on their
 	position within the vectors below.
 */
-class DatabaseConfiguration 
+class DatabaseConfiguration
 {
-	public:
+public:
 
 	DatabaseConfiguration();
 
-	DatabaseConfiguration(const DatabaseTemplate& aSizes);	
+	DatabaseConfiguration(const DatabaseTemplate& aSizes);
 
 	DatabaseTemplate GetTemplate() const;
-	
-	std::vector<EventPointRecord> binaryMetadata;	
-	std::vector<DeadbandPointRecord<uint32_t>> counterMetadata;	
+
+	std::vector<EventPointRecord> binaryMetadata;
+	std::vector<DeadbandPointRecord<uint32_t>> counterMetadata;
 	std::vector<DeadbandPointRecord<uint32_t>> frozenCounterMetadata;
-	std::vector<DeadbandPointRecord<double>> analogMetadata;	
+	std::vector<DeadbandPointRecord<double>> analogMetadata;
 
 	uint32_t numBinaryOutputStatus;
 	uint32_t numAnalogOutputStatus;

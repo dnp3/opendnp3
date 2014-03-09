@@ -36,11 +36,11 @@ namespace asiopal
 {
 
 PhysicalLayerAsyncTCPServer::PhysicalLayerAsyncTCPServer(
-		Logger aLogger,
-		asio::io_service* apIOService, 
-		const std::string& arEndpoint, 
-		uint16_t aPort,
-		std::function<void (asio::ip::tcp::socket&)> aConfigure) :
+    Logger aLogger,
+    asio::io_service* apIOService,
+    const std::string& arEndpoint,
+    uint16_t aPort,
+    std::function<void (asio::ip::tcp::socket&)> aConfigure) :
 
 	PhysicalLayerAsyncBaseTCP(aLogger, apIOService),
 	mLocalEndpoint(ip::tcp::v4(), aPort),
@@ -60,7 +60,10 @@ void PhysicalLayerAsyncTCPServer::DoOpen()
 		if (ec)
 		{
 			LOG_BLOCK(LogLevel::Error, ec.message());
-			this->GetExecutor()->Post([this, ec]() { this->OnOpenCallback(ec); });
+			this->GetExecutor()->Post([this, ec]()
+			{
+				this->OnOpenCallback(ec);
+			});
 		}
 		else
 		{
@@ -69,7 +72,10 @@ void PhysicalLayerAsyncTCPServer::DoOpen()
 			if (ec)
 			{
 				LOG_BLOCK(LogLevel::Error, ec.message());
-				this->GetExecutor()->Post([this, ec]() { this->OnOpenCallback(ec); });
+				this->GetExecutor()->Post([this, ec]()
+				{
+					this->OnOpenCallback(ec);
+				});
 			}
 			else
 			{
@@ -77,24 +83,29 @@ void PhysicalLayerAsyncTCPServer::DoOpen()
 				if (ec)
 				{
 					LOG_BLOCK(LogLevel::Error, ec.message());
-					this->GetExecutor()->Post([this, ec]() { this->OnOpenCallback(ec); });
+					this->GetExecutor()->Post([this, ec]()
+					{
+						this->OnOpenCallback(ec);
+					});
 				}
 				else
 				{
 					mAcceptor.async_accept(mSocket,
-						mRemoteEndpoint,
-						strand.wrap([this](const std::error_code& code){
+					                       mRemoteEndpoint,
+					                       strand.wrap([this](const std::error_code & code)
+					{
 						this->OnOpenCallback(code);
 					}));
 				}
-			}			
+			}
 		}
 	}
 	else
 	{
 		mAcceptor.async_accept(mSocket,
-			mRemoteEndpoint,
-			strand.wrap([this](const std::error_code& code){
+		                       mRemoteEndpoint,
+		                       strand.wrap([this](const std::error_code & code)
+		{
 			this->OnOpenCallback(code);
 		}));
 	}
@@ -104,7 +115,8 @@ void PhysicalLayerAsyncTCPServer::CloseAcceptor()
 {
 	std::error_code ec;
 	mAcceptor.close(ec);
-	if(ec) {
+	if(ec)
+	{
 		LOG_BLOCK(LogLevel::Warning, "Error while closing tcp acceptor: " << ec);
 	}
 }

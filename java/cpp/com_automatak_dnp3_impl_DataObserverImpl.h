@@ -13,7 +13,7 @@ extern "C" {
  * Signature: (J)V
  */
 JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_DataObserverImpl_native_1start
-  (JNIEnv *, jobject, jlong);
+(JNIEnv*, jobject, jlong);
 
 /*
  * Class:     com_automatak_dnp3_impl_DataObserverImpl
@@ -21,7 +21,7 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_DataObserverImpl_native_1sta
  * Signature: (JZBJJ)V
  */
 JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_DataObserverImpl_native_1update_1bi
-  (JNIEnv *, jobject, jlong, jboolean, jbyte, jlong, jlong);
+(JNIEnv*, jobject, jlong, jboolean, jbyte, jlong, jlong);
 
 /*
  * Class:     com_automatak_dnp3_impl_DataObserverImpl
@@ -29,7 +29,7 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_DataObserverImpl_native_1upd
  * Signature: (JDBJJ)V
  */
 JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_DataObserverImpl_native_1update_1ai
-  (JNIEnv *, jobject, jlong, jdouble, jbyte, jlong, jlong);
+(JNIEnv*, jobject, jlong, jdouble, jbyte, jlong, jlong);
 
 /*
  * Class:     com_automatak_dnp3_impl_DataObserverImpl
@@ -37,7 +37,7 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_DataObserverImpl_native_1upd
  * Signature: (JJBJJ)V
  */
 JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_DataObserverImpl_native_1update_1c
-  (JNIEnv *, jobject, jlong, jlong, jbyte, jlong, jlong);
+(JNIEnv*, jobject, jlong, jlong, jbyte, jlong, jlong);
 
 /*
  * Class:     com_automatak_dnp3_impl_DataObserverImpl
@@ -45,7 +45,7 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_DataObserverImpl_native_1upd
  * Signature: (JJBJJ)V
  */
 JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_DataObserverImpl_native_1update_1fc
-  (JNIEnv *, jobject, jlong, jlong, jbyte, jlong, jlong);
+(JNIEnv*, jobject, jlong, jlong, jbyte, jlong, jlong);
 
 /*
  * Class:     com_automatak_dnp3_impl_DataObserverImpl
@@ -53,7 +53,7 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_DataObserverImpl_native_1upd
  * Signature: (JZBJJ)V
  */
 JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_DataObserverImpl_native_1update_1bos
-  (JNIEnv *, jobject, jlong, jboolean, jbyte, jlong, jlong);
+(JNIEnv*, jobject, jlong, jboolean, jbyte, jlong, jlong);
 
 /*
  * Class:     com_automatak_dnp3_impl_DataObserverImpl
@@ -61,7 +61,7 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_DataObserverImpl_native_1upd
  * Signature: (JDBJJ)V
  */
 JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_DataObserverImpl_native_1update_1aos
-  (JNIEnv *, jobject, jlong, jdouble, jbyte, jlong, jlong);
+(JNIEnv*, jobject, jlong, jdouble, jbyte, jlong, jlong);
 
 /*
  * Class:     com_automatak_dnp3_impl_DataObserverImpl
@@ -69,7 +69,7 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_DataObserverImpl_native_1upd
  * Signature: (J)V
  */
 JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_DataObserverImpl_native_1end
-  (JNIEnv *, jobject, jlong);
+(JNIEnv*, jobject, jlong);
 
 #ifdef __cplusplus
 }

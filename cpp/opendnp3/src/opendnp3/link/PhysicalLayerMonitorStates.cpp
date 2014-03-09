@@ -72,7 +72,7 @@ std::string IMonitorState::ConvertToString()
 
 void ExceptsOnLayerOpen::OnLayerOpen(PhysicalLayerMonitor* apContext)
 {
-	LOGGER_BLOCK(apContext->GetLogger(), LogLevel::Error, "Invalid action for state: " << this->Name());	
+	LOGGER_BLOCK(apContext->GetLogger(), LogLevel::Error, "Invalid action for state: " << this->Name());
 }
 
 /* --- NotOpening --- */

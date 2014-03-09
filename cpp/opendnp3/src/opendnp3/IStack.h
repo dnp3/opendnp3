@@ -67,9 +67,9 @@ public:
 	*/
 	void Disable();
 
-	/** 
+	/**
 	* Synchronously shutdown the endpoint
-    * No more calls are allowed after this call.
+	* No more calls are allowed after this call.
 	*/
 	virtual void Shutdown() = 0;
 

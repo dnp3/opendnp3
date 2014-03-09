@@ -33,15 +33,15 @@ namespace opendnp3
 * Used to efficiently cache requests that the outstation can't process immediately
 */
 class DynamicBuffer : private Uncopyable
-{	
-	public:
+{
+public:
 
 	DynamicBuffer(uint32_t aSize);
 	~DynamicBuffer();
 
 	openpal::WriteBuffer Get();
 
-	private:
+private:
 
 	uint32_t bufferSize;
 	uint8_t* pBuffer;

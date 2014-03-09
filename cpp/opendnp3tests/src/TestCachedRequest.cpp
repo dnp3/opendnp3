@@ -34,7 +34,7 @@ using namespace opendnp3;
 
 TEST_CASE(SUITE("DoesntApplyIfNotSet"))
 {
-	CachedRequest cache(100);	
+	CachedRequest cache(100);
 	REQUIRE_FALSE(cache.IsSet());
 }
 
@@ -42,17 +42,18 @@ TEST_CASE(SUITE("Correctly"))
 {
 	CachedRequest cache(100);
 	{
-		HexSequence temp("C0 02 01 02 06");		
+		HexSequence temp("C0 02 01 02 06");
 		APDURecord record;
-		REQUIRE((APDUHeaderParser::Result::OK == APDUHeaderParser::ParseRequest(temp.ToReadOnly(), record)));		
+		REQUIRE((APDUHeaderParser::Result::OK == APDUHeaderParser::ParseRequest(temp.ToReadOnly(), record)));
 		cache.Set(record, SequenceInfo::PREVIOUS);
 	} // source destructs
 
 	REQUIRE(cache.IsSet());
 
 	MockApduHeaderHandler handler;
-	cache.Apply([&](const APDURecord& record, SequenceInfo seq){ 
-		
+	cache.Apply([&](const APDURecord & record, SequenceInfo seq)
+	{
+
 		REQUIRE((SequenceInfo::PREVIOUS == seq));
 		REQUIRE((APDUParser::Result::OK == APDUParser::ParseTwoPass(record.objects, &handler, nullptr)));
 

@@ -43,7 +43,8 @@ namespace opendnp3
 
 std::string Month(int aMonth)
 {
-	switch(aMonth) {
+	switch(aMonth)
+	{
 	case(1): return	"Jan";
 	case(2): return "Feb";
 	case(3): return "Mar";

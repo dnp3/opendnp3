@@ -24,8 +24,9 @@
 #include "opendnp3/app/MeasurementTypes.h"
 #include "opendnp3/outstation/IDataObserver.h"
 
-namespace openpal {
-	class IExecutor;
+namespace openpal
+{
+class IExecutor;
 }
 
 namespace opendnp3
@@ -39,13 +40,13 @@ class ProxyDataObserver : public IDataObserver
 public:
 
 	ProxyDataObserver(IDataObserver* pProxy_, openpal::IExecutor* pExecutor_);
-	
+
 	void Update(const Binary& meas, uint16_t index)  final;
 	void Update(const Analog& meas, uint16_t index) final;
 	void Update(const Counter& meas, uint16_t index) final;
 	void Update(const FrozenCounter& meas, uint16_t index) final;
 	void Update(const BinaryOutputStatus& meas, uint16_t index) final;
-	void Update(const AnalogOutputStatus& meas, uint16_t index) final;	
+	void Update(const AnalogOutputStatus& meas, uint16_t index) final;
 
 protected:
 

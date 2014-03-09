@@ -33,31 +33,31 @@ namespace opendnp3
 // This class is used to write to an underlying buffer
 class APDUWrapper
 {
-	public:
+public:
 
 	APDUWrapper();
 
 	APDUWrapper(const openpal::WriteBuffer& aBuffer);
 
 	bool IsValid() const;
-			
+
 	void SetFunction(FunctionCode code);
 	FunctionCode GetFunction() const;
 
-	AppControlField GetControl() const;	
+	AppControlField GetControl() const;
 	void SetControl(const AppControlField& control);
 
 	openpal::ReadOnlyBuffer ToReadOnly() const;
 
 	ObjectWriter GetWriter();
 
-	uint32_t Remaining() const;	
+	uint32_t Remaining() const;
 
-	protected:
-	
+protected:
+
 	bool valid;
 	openpal::WriteBuffer buffer;
-	openpal::WriteBuffer remaining;	
+	openpal::WriteBuffer remaining;
 };
 
 }

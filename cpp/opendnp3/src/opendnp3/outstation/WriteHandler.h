@@ -34,15 +34,15 @@ namespace opendnp3
 
 class WriteHandler : public APDUHandlerBase
 {
-	public:
-	
-	WriteHandler(openpal::Logger& aLogger, ITimeWriteHandler* pTimeWriteHandler_, IINField* pWriteIIN_);		
+public:
+
+	WriteHandler(openpal::Logger& aLogger, ITimeWriteHandler* pTimeWriteHandler_, IINField* pWriteIIN_);
 
 	virtual void _OnIIN(const IterableBuffer<IndexedValue<bool, uint16_t>>& meas) final;
 
 	virtual void _OnCountOf(const IterableBuffer<Group50Var1>& times) final;
 
-	private:
+private:
 
 	ITimeWriteHandler* pTimeWriteHandler;
 	IINField* pWriteIIN;

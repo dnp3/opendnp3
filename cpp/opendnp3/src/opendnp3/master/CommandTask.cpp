@@ -39,8 +39,8 @@ const Sequence<FunctionCode> CommandTask::SelectAndOperate(FunctionCode::SELECT,
 
 //Sequence<FunctionCode> CommandTask::selectAndOperate;
 
-CommandTask::CommandTask(Logger aLogger) : 
-	MasterTaskBase(aLogger), 
+CommandTask::CommandTask(Logger aLogger) :
+	MasterTaskBase(aLogger),
 	mpActiveSequence(nullptr),
 	mpFunctionSequence(nullptr),
 	crobSeq(aLogger, Group12Var1Serializer::Inst()),
@@ -104,13 +104,13 @@ void CommandTask::ConfigureDO(const AnalogOutputDouble64& command, uint32_t inde
 
 void CommandTask::ConfigureRequest(APDURequest& request)
 {
-	
+
 	assert(mpFunctionSequence != nullptr);
 	assert(mpActiveSequence != nullptr);
 	auto code = mpFunctionSequence->Value();
 	mpFunctionSequence = mpFunctionSequence->Next();
-	mpActiveSequence->FormatRequest(request, code); 	
-	
+	mpActiveSequence->FormatRequest(request, code);
+
 }
 
 void CommandTask::OnFailure()
@@ -129,29 +129,29 @@ TaskResult CommandTask::_OnFinalResponse(const APDUResponseRecord& record)
 {
 	auto result = APDUParser::ParseTwoPass(record.objects, mpActiveSequence, &mLogger);
 	if(result == APDUParser::Result::OK)
-	{				
+	{
 		if(mpFunctionSequence == nullptr) // we're done
 		{
-			auto commandResponse = mpActiveSequence->Validate();		
+			auto commandResponse = mpActiveSequence->Validate();
 			callback(commandResponse);
 			return TaskResult::TR_SUCCESS;
 		}
 		else // we may have more depending on response
 		{
 			auto commandResponse = mpActiveSequence->Validate();
-			if(commandResponse == CommandResponse::Success) return TaskResult::TR_CONTINUE; // more function codes		
+			if(commandResponse == CommandResponse::Success) return TaskResult::TR_CONTINUE; // more function codes
 			else
 			{
 				callback(commandResponse);  // something failed, end the task early
 				return TaskResult::TR_SUCCESS;
-			}			
+			}
 		}
 	}
 	else
-	{		
+	{
 		callback(CommandResponse(CommandResult::BAD_RESPONSE));
 		return TaskResult::TR_FAIL;
-	}	
+	}
 }
 
 std::string CommandTask::Name() const

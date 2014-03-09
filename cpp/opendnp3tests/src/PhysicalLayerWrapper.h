@@ -34,43 +34,55 @@ class PhysicalLayerWrapper : public openpal::IPhysicalLayerAsync, public openpal
 public:
 	PhysicalLayerWrapper(openpal::Logger aLogger, openpal::IPhysicalLayerAsync* apProxy);
 
-	openpal::IExecutor* GetExecutor() {
+	openpal::IExecutor* GetExecutor()
+	{
 		return mpProxy->GetExecutor();
 	}
 
-	bool CanOpen() const {
+	bool CanOpen() const
+	{
 		return mpProxy->CanOpen();
 	}
-	bool CanClose() const {
+	bool CanClose() const
+	{
 		return mpProxy->CanClose();
 	}
-	bool CanRead() const {
+	bool CanRead() const
+	{
 		return mpProxy->CanRead();
 	}
-	bool CanWrite() const {
+	bool CanWrite() const
+	{
 		return mpProxy->CanWrite();
 	}
 
-	bool IsReading() const {
+	bool IsReading() const
+	{
 		return mpProxy->IsReading();
 	}
-	bool IsWriting() const {
+	bool IsWriting() const
+	{
 		return mpProxy->IsWriting();
 	}
-	bool IsClosing() const {
+	bool IsClosing() const
+	{
 		return mpProxy->IsClosing();
 	}
-	bool IsClosed() const {
+	bool IsClosed() const
+	{
 		return mpProxy->IsClosed();
 	}
-	bool IsOpening() const {
+	bool IsOpening() const
+	{
 		return mpProxy->IsOpening();
 	}
-	bool IsOpen() const {
+	bool IsOpen() const
+	{
 		return mpProxy->IsOpen();
 	}
 
-	std::string ConvertStateToString() const {
+	std::string ConvertStateToString() const
+	{
 		return mpProxy->ConvertStateToString();
 	}
 

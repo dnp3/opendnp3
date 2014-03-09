@@ -34,12 +34,12 @@ class TransportScalabilityTestObject : public AsyncTestObjectASIO
 {
 public:
 	TransportScalabilityTestObject(
-	        LinkConfig aClientCfg,
-	        LinkConfig aServerCfg,
-	        uint16_t aPortStart,
-	        uint16_t aNumPair,
-	        openpal::LogLevel aLevel = openpal::LogLevel::Info,
-	        bool aImmediate = false);
+	    LinkConfig aClientCfg,
+	    LinkConfig aServerCfg,
+	    uint16_t aPortStart,
+	    uint16_t aNumPair,
+	    openpal::LogLevel aLevel = openpal::LogLevel::Info,
+	    bool aImmediate = false);
 
 	~TransportScalabilityTestObject();
 

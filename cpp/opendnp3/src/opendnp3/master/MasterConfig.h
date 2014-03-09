@@ -35,7 +35,8 @@ namespace opendnp3
 /**
 Configuration information for the dnp3 master
 */
-struct MasterConfig {
+struct MasterConfig
+{
 
 	/// Default constructor
 	MasterConfig() :

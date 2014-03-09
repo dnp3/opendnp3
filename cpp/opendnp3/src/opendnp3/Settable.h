@@ -28,17 +28,23 @@ namespace opendnp3
 template <class T>
 class Settable
 {
-	public:
+public:
 
 	Settable() : valueIsSet(false)
 	{}
-	
+
 	Settable(const T& aDefault) : valueIsSet(false), value(aDefault)
 	{}
 
-	bool IsSet() const { return valueIsSet; }
+	bool IsSet() const
+	{
+		return valueIsSet;
+	}
 
-	T Get() const { return value; }
+	T Get() const
+	{
+		return value;
+	}
 
 	void Clear()
 	{
@@ -47,13 +53,14 @@ class Settable
 
 	void Set(const T& aValue)
 	{
-		if(!valueIsSet) {
+		if(!valueIsSet)
+		{
 			value = aValue;
 			valueIsSet = true;
 		}
 	}
 
-	private:
+private:
 
 	bool valueIsSet;
 	T value;

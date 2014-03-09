@@ -43,7 +43,8 @@ public:
 		mCallback(aCallback)
 	{}
 
-	void WriteAbsoluteTime(openpal::UTCTimestamp aTimestamp) {
+	void WriteAbsoluteTime(openpal::UTCTimestamp aTimestamp)
+	{
 		mCallback(aTimestamp);
 	}
 

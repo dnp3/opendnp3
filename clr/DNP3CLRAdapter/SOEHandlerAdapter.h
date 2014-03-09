@@ -45,7 +45,8 @@ private:
 	template <class T>
 	void DispatchStatic(const opendnp3::IterableBuffer<opendnp3::IndexedValue<T, uint16_t>>& meas)
 	{
-		meas.foreach([this](const opendnp3::IndexedValue<T, uint16_t>& pair){
+		meas.foreach([this](const opendnp3::IndexedValue<T, uint16_t>& pair)
+		{
 			proxy->LoadStatic(Conversions::convertMeas(pair.value), pair.index);
 		});
 	}
@@ -53,7 +54,8 @@ private:
 	template <class T>
 	void DispatchEvent(const opendnp3::IterableBuffer<opendnp3::IndexedValue<T, uint16_t>>& meas)
 	{
-		meas.foreach([this](const opendnp3::IndexedValue<T, uint16_t>& pair){
+		meas.foreach([this](const opendnp3::IndexedValue<T, uint16_t>& pair)
+		{
 			proxy->LoadEvent(Conversions::convertMeas(pair.value), pair.index);
 		});
 	}
@@ -69,11 +71,13 @@ public:
 		mpAdapter(new SOEHandlerAdapter(proxy))
 	{}
 
-	~MasterMeasurementHandlerWrapper() {
+	~MasterMeasurementHandlerWrapper()
+	{
 		delete mpAdapter;
 	}
 
-	opendnp3::ISOEHandler* Get() {
+	opendnp3::ISOEHandler* Get()
+	{
 		return mpAdapter;
 	}
 

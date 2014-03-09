@@ -44,7 +44,7 @@ TEST_CASE(SUITE("ReleasesValuesCorrectly"))
 
 	auto index1 = ria.Add("hello");
 	auto index2 = ria.Add("world");
-	auto index3 = ria.Add("!!!!");	
+	auto index3 = ria.Add("!!!!");
 
 	REQUIRE(2 == index1);
 	REQUIRE(1 == index2);

@@ -26,7 +26,8 @@ namespace asiopal
 
 ParityType GetParityFromInt(int parity)
 {
-	switch(parity) {
+	switch(parity)
+	{
 	case (1): return PAR_EVEN;
 	case (2): return PAR_ODD;
 	default: return PAR_NONE;
@@ -35,7 +36,8 @@ ParityType GetParityFromInt(int parity)
 
 FlowType GetFlowTypeFromInt(int flowControl)
 {
-	switch(flowControl) {
+	switch(flowControl)
+	{
 	case (1): return FLOW_HARDWARE;
 	case (2): return FLOW_XONXOFF;
 	default: return FLOW_NONE;

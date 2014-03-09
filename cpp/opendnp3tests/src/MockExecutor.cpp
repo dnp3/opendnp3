@@ -34,12 +34,13 @@ MockExecutor::MockExecutor() :
 
 MockExecutor::~MockExecutor()
 {
-for(auto pTimer: mAllTimers) delete pTimer;
+	for(auto pTimer : mAllTimers) delete pTimer;
 }
 
 openpal::MonotonicTimestamp MockExecutor::NextTimerExpiration()
 {
-	if(!mTimerExpirationQueue.empty()) {
+	if(!mTimerExpirationQueue.empty())
+	{
 		auto ret = mTimerExpirationQueue.front();
 		mTimerExpirationQueue.pop_front();
 		return ret;
@@ -54,16 +55,19 @@ void MockExecutor::AdvanceTime(TimeDuration aDuration)
 
 bool MockExecutor::DispatchOne()
 {
-	if(mPostQueue.size() > 0) {
+	if(mPostQueue.size() > 0)
+	{
 		auto callback = mPostQueue.front();
 		mPostQueue.pop_front();
 		callback();
 		return true;
 	}
-	else {
+	else
+	{
 		TimerMap::iterator front = mTimerMap.begin();
 
-		if(front != mTimerMap.end()) {
+		if(front != mTimerMap.end())
+		{
 
 			MockTimer* pTimer = front->second;
 			mIdle.push_back(pTimer);
@@ -114,12 +118,14 @@ ITimer* MockExecutor::Start(const openpal::TimeDuration& aDelay, const std::func
 ITimer* MockExecutor::Start(const openpal::MonotonicTimestamp& arTime, const std::function<void ()>& arCallback)
 {
 	MockTimer* pTimer;
-	if(mIdle.size() > 0) {
+	if(mIdle.size() > 0)
+	{
 		pTimer = mIdle.front();
 		mIdle.pop_front();
 		pTimer->mCallback = arCallback;
 	}
-	else {
+	else
+	{
 		pTimer = new MockTimer(this, arTime, arCallback);
 		mAllTimers.push_back(pTimer);
 	}
@@ -130,8 +136,10 @@ ITimer* MockExecutor::Start(const openpal::MonotonicTimestamp& arTime, const std
 
 void MockExecutor::Cancel(ITimer* apTimer)
 {
-	for(TimerMap::iterator i = mTimerMap.begin(); i != mTimerMap.end(); ++i) {
-		if(i->second == apTimer) {
+	for(TimerMap::iterator i = mTimerMap.begin(); i != mTimerMap.end(); ++i)
+	{
+		if(i->second == apTimer)
+		{
 			mIdle.push_back(i->second);
 			mTimerMap.erase(i);
 			return;

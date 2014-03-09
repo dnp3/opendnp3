@@ -33,7 +33,7 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_DataObserverImpl_native_1upd
 (JNIEnv*, jobject, jlong observer, jboolean val, jbyte qual, jlong time, jlong index)
 {
 	auto pObs = (IDataObserver*) observer;
-	Binary meas(val, qual, time);	
+	Binary meas(val, qual, time);
 	pObs->Update(meas, index);
 }
 
@@ -41,7 +41,7 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_DataObserverImpl_native_1upd
 (JNIEnv*, jobject, jlong observer, jdouble val, jbyte qual, jlong time, jlong index)
 {
 	auto pObs = (IDataObserver*) observer;
-	Analog meas(val, qual, time);	
+	Analog meas(val, qual, time);
 	pObs->Update(meas, index);
 }
 
@@ -49,15 +49,15 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_DataObserverImpl_native_1upd
 (JNIEnv*, jobject, jlong observer, jlong val, jbyte qual, jlong time, jlong index)
 {
 	auto pObs = (IDataObserver*) observer;
-	Counter meas(val, qual, time);	
+	Counter meas(val, qual, time);
 	pObs->Update(meas, index);
 }
 
 JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_DataObserverImpl_native_1update_1fc
-  (JNIEnv *, jobject, jlong observer, jlong val, jbyte qual, jlong time, jlong index)
+(JNIEnv*, jobject, jlong observer, jlong val, jbyte qual, jlong time, jlong index)
 {
 	auto pObs = (IDataObserver*) observer;
-	FrozenCounter meas(val, qual, time);	
+	FrozenCounter meas(val, qual, time);
 	pObs->Update(meas, index);
 }
 
@@ -66,7 +66,7 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_DataObserverImpl_native_1upd
 (JNIEnv*, jobject, jlong observer, jboolean val, jbyte qual, jlong time, jlong index)
 {
 	auto pObs = (IDataObserver*) observer;
-	BinaryOutputStatus meas(val, qual, time);	
+	BinaryOutputStatus meas(val, qual, time);
 	pObs->Update(meas, index);
 }
 
@@ -74,7 +74,7 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_DataObserverImpl_native_1upd
 (JNIEnv*, jobject, jlong observer, jdouble val, jbyte qual, jlong time, jlong index)
 {
 	auto pObs = (IDataObserver*) observer;
-	AnalogOutputStatus meas(val, qual, time);	
+	AnalogOutputStatus meas(val, qual, time);
 	pObs->Update(meas, index);
 }
 

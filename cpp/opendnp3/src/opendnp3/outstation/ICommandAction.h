@@ -34,13 +34,13 @@ class ICommandAction
 {
 public:
 	virtual ~ICommandAction() {}
-	
+
 	virtual CommandStatus Action(const ControlRelayOutputBlock& arCommand, uint16_t aIndex) = 0;
-	
+
 	virtual CommandStatus Action(const AnalogOutputInt16& arCommand, uint16_t aIndex) = 0;
 
 	virtual CommandStatus Action(const AnalogOutputInt32& arCommand, uint16_t aIndex) = 0;
-	
+
 	virtual CommandStatus Action(const AnalogOutputFloat32& arCommand, uint16_t aIndex) = 0;
 
 	virtual CommandStatus Action(const AnalogOutputDouble64& arCommand, uint16_t aIndex) = 0;

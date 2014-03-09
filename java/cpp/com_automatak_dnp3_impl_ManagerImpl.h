@@ -13,7 +13,7 @@ extern "C" {
  * Signature: (I)J
  */
 JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_create_1native_1manager
-  (JNIEnv *, jobject, jint);
+(JNIEnv*, jobject, jint);
 
 /*
  * Class:     com_automatak_dnp3_impl_ManagerImpl
@@ -21,7 +21,7 @@ JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_create_1native_
  * Signature: (J)V
  */
 JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_destroy_1native_1manager
-  (JNIEnv *, jobject, jlong);
+(JNIEnv*, jobject, jlong);
 
 /*
  * Class:     com_automatak_dnp3_impl_ManagerImpl
@@ -29,7 +29,7 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_destroy_1native_
  * Signature: (JLjava/lang/String;IJLjava/lang/String;I)J
  */
 JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1channel_1tcp_1client
-  (JNIEnv *, jobject, jlong, jstring, jint, jlong, jstring, jint);
+(JNIEnv*, jobject, jlong, jstring, jint, jlong, jstring, jint);
 
 /*
  * Class:     com_automatak_dnp3_impl_ManagerImpl
@@ -37,7 +37,7 @@ JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1ch
  * Signature: (JLjava/lang/String;IJLjava/lang/String;I)J
  */
 JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1channel_1tcp_1server
-  (JNIEnv *, jobject, jlong, jstring, jint, jlong, jstring, jint);
+(JNIEnv*, jobject, jlong, jstring, jint, jlong, jstring, jint);
 
 /*
  * Class:     com_automatak_dnp3_impl_ManagerImpl
@@ -45,7 +45,7 @@ JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1ch
  * Signature: (JLjava/lang/String;IJLjava/lang/String;IIIII)J
  */
 JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1channel_1serial
-  (JNIEnv *, jobject, jlong, jstring, jint, jlong, jstring, jint, jint, jint, jint, jint);
+(JNIEnv*, jobject, jlong, jstring, jint, jlong, jstring, jint, jint, jint, jint, jint);
 
 /*
  * Class:     com_automatak_dnp3_impl_ManagerImpl
@@ -53,7 +53,7 @@ JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_get_1native_1ch
  * Signature: (JLcom/automatak/dnp3/impl/LogSubscriberProxy;)V
  */
 JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_ManagerImpl_native_1add_1log_1subscriber
-  (JNIEnv *, jobject, jlong, jobject);
+(JNIEnv*, jobject, jlong, jobject);
 
 #ifdef __cplusplus
 }

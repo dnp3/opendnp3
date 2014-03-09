@@ -27,12 +27,12 @@ namespace opendnp3
 const AppControlField AppControlField::DEFAULT(true, true, false, false, 0);
 
 AppControlField::AppControlField(uint8_t byte) :
-	FIR((byte & FIR_MASK) != 0),
-	FIN((byte & FIN_MASK) != 0),
-	CON((byte & CON_MASK) != 0),
-	UNS((byte & UNS_MASK) != 0),
-	SEQ(byte & SEQ_MASK)
-{		
+	FIR((byte& FIR_MASK) != 0),
+	FIN((byte& FIN_MASK) != 0),
+	CON((byte& CON_MASK) != 0),
+	UNS((byte& UNS_MASK) != 0),
+	SEQ(byte& SEQ_MASK)
+{
 }
 
 AppControlField::AppControlField() :
@@ -48,7 +48,7 @@ AppControlField::AppControlField(bool aFIR, bool aFIN, bool aCON, bool aUNS, uin
 	FIN(aFIN),
 	CON(aCON),
 	UNS(aUNS),
-	SEQ(aSEQ) 
+	SEQ(aSEQ)
 {}
 
 uint8_t AppControlField::ToByte() const
@@ -58,7 +58,7 @@ uint8_t AppControlField::ToByte() const
 	if(FIN) ret |= FIN_MASK;
 	if(CON) ret |= CON_MASK;
 	if(UNS) ret |= UNS_MASK;
-	return ret | (SEQ % 16);	
+	return ret | (SEQ % 16);
 }
 
 }

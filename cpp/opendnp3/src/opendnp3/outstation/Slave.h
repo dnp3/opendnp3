@@ -73,7 +73,7 @@ class Slave : public IAppUser, public StackBase
 	friend class AS_Idle;
 	friend class AS_WaitForRspSuccess;
 	friend class AS_WaitForUnsolSuccess;
-	friend class AS_WaitForSolUnsolSuccess;	
+	friend class AS_WaitForSolUnsolSuccess;
 
 public:
 
@@ -98,7 +98,7 @@ public:
 
 	// Only have to override OnRequest since we're a slave
 	void OnRequest(const APDURecord&, SequenceInfo);
-	
+
 	/**
 	 * Returns the buffer that is used for data updates by the user
 	 * application.  Writing new entries to this buffer will result in the
@@ -106,7 +106,7 @@ public:
 	 *
 	 * @return			a pointer to the buffer
 	 */
-	IDataObserver* GetDataObserver() 
+	IDataObserver* GetDataObserver()
 	{
 		return &proxyObserver;
 	}
@@ -116,7 +116,7 @@ private:
 	void ChangeState(SlaveStateBase* apState);
 
 	void RespondToRequest(const APDURecord& record, SequenceInfo sequence);
-	IINField ConfigureResponse(const APDURecord& request, SequenceInfo sequence, APDUResponse& response);	
+	IINField ConfigureResponse(const APDURecord& request, SequenceInfo sequence, APDUResponse& response);
 
 	openpal::StaticBuffer<SizeConfiguration::MAX_APDU_BUFFER_SIZE> responseBuffer;
 	SelectBuffer selectBuffer;
@@ -129,34 +129,35 @@ private:
 	ICommandHandler* mpCmdHandler;			// how commands are selected/operated on application code
 	int mSequence;							// control sequence
 	SlaveStateBase* mpState;				// current state for the state pattern
-	SlaveConfig mConfig;					// houses the configurable paramters of the outstation	
+	SlaveConfig mConfig;					// houses the configurable paramters of the outstation
 
 	openpal::ITimer* mpUnsolTimer;			// timer for sending unsol responsess
-	ITimeWriteHandler* mpTimeWriteHandler;	
+	ITimeWriteHandler* mpTimeWriteHandler;
 
-	IINField mIIN;							// IIN bits that persist between requests (i.e. NeedsTime/Restart/Etc)		
+	IINField mIIN;							// IIN bits that persist between requests (i.e. NeedsTime/Restart/Etc)
 	CachedRequest mCachedRequest;			// Request cache for when outstation needs to defer a request
-		
-	StaticResponseContext mStaticRspContext;	// Used to track and construct static response fragments	
+
+	StaticResponseContext mStaticRspContext;	// Used to track and construct static response fragments
 
 
 	// Flags that tell us that some action has been Deferred
 	// until the slave is in a state capable of handling it.
-	
-	bool mDeferredUnsol;					// Indicates that the unsol timer expired, but the event was Deferred	
+
+	bool mDeferredUnsol;					// Indicates that the unsol timer expired, but the event was Deferred
 	bool mStartupNullUnsol;					// Tracks whether the device has completed the nullptr unsol startup message
 
 	StackState mState;
 
-	StackState GetState() {
+	StackState GetState()
+	{
 		return mState;
 	}
 
 	void UpdateState(StackState aState);
-	
+
 	void OnDataUpdate();					// internal event dispatched when user code commits an update to mChangeBuffer
 	void OnUnsolTimerExpiration();			// internal event dispatched when the unsolicted pack/retry timer expires
-	
+
 	void SendResponse(APDUResponse& apdu, const IINField& indications = IINField::Empty);
 	//void SendUnsolicited(APDU& apdu, const IINField& indications = IINField::Empty);
 
@@ -170,10 +171,10 @@ private:
 
 	IINField HandleCommandWithConstant(const APDURecord& request, APDUResponse& response, CommandStatus status);
 
-	void ContinueResponse();	
+	void ContinueResponse();
 
 	// Helpers
-	
+
 	void StartUnsolTimer(openpal::TimeDuration aTimeout);
 
 	// Task handlers
@@ -185,7 +186,8 @@ private:
 	 * A structure to provide the C++ equivalent of templated typedefs.
 	 */
 	template <class T>
-	struct CommandFunc {
+	struct CommandFunc
+	{
 		typedef std::function<CommandStatus (T&, size_t)> Type;
 	};
 

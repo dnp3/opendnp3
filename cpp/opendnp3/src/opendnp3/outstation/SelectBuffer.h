@@ -36,34 +36,34 @@ public:
 
 	enum class SelectResult
 	{
-		REPEAT,				
-		PARAM_ERROR,
-		OK
+	    REPEAT,
+	    PARAM_ERROR,
+	    OK
 	};
 
 	enum class OperateResult
 	{
-		REPEAT,	
-		NO_SELECT,
-		TIMEOUT,
-		OK
+	    REPEAT,
+	    NO_SELECT,
+	    TIMEOUT,
+	    OK
 	};
 
 	SelectBuffer(openpal::IExecutor* pExecutor_, const openpal::TimeDuration& selectTimeout_);
 
 	SelectResult Select(uint8_t sequence, const openpal::ReadOnlyBuffer& headers);
-	
+
 	OperateResult Operate(uint8_t sequence, const openpal::ReadOnlyBuffer& headers);
 
-	void Clear();	
-	
-private:	
+	void Clear();
+
+private:
 
 	enum class State
 	{
-		NoSelect,
-		Selected,
-		Operated
+	    NoSelect,
+	    Selected,
+	    Operated
 	};
 
 	SelectResult RecordSelect(uint8_t sequence, const openpal::ReadOnlyBuffer& headers);
@@ -73,7 +73,7 @@ private:
 	const openpal::TimeDuration selectTimeout;
 	openpal::MonotonicTimestamp timestamp;
 	uint8_t selectedSequence;
-	
+
 	openpal::StaticBuffer<SizeConfiguration::MAX_APDU_BUFFER_SIZE> buffer;
 	openpal::ReadOnlyBuffer selectedBuffer;
 };

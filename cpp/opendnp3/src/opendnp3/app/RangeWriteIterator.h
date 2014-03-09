@@ -31,26 +31,26 @@ namespace opendnp3
 template <class IndexType, class WriteType>
 class RangeWriteIterator
 {
-	public:	
+public:
 
 	static RangeWriteIterator Null()
 	{
 		auto buffer = openpal::WriteBuffer::Empty();
 		return RangeWriteIterator(0, nullptr, buffer);
 	}
-	
-	RangeWriteIterator(typename IndexType::Type aStart, openpal::ISerializer<WriteType>* pSerializer_, openpal::WriteBuffer& aPosition) :		
+
+	RangeWriteIterator(typename IndexType::Type aStart, openpal::ISerializer<WriteType>* pSerializer_, openpal::WriteBuffer& aPosition) :
 		start(aStart),
 		pSerializer(pSerializer_),
 		count(0),
 		range(aPosition),
 		position(aPosition),
-		isNull(aPosition.Size() < 2*IndexType::Size || pSerializer == nullptr)
+		isNull(aPosition.Size() < 2 * IndexType::Size || pSerializer == nullptr)
 	{
-		if(!isNull) 
+		if(!isNull)
 		{
 			IndexType::WriteBuffer(range, aStart);
-			position.Advance(2*IndexType::Size);
+			position.Advance(2 * IndexType::Size);
 		}
 	}
 
@@ -70,15 +70,18 @@ class RangeWriteIterator
 		if(isNull || position.Size() < pSerializer->Size()) return false;
 		else
 		{
-			pSerializer->Write(value, position);			
+			pSerializer->Write(value, position);
 			++count;
 			return true;
 		}
 	}
 
-	bool IsNull() const { return isNull; }
+	bool IsNull() const
+	{
+		return isNull;
+	}
 
-	private:	
+private:
 
 	typename IndexType::Type start;
 	openpal::ISerializer<WriteType>* pSerializer;
@@ -87,7 +90,7 @@ class RangeWriteIterator
 	bool isNull;
 
 	openpal::WriteBuffer range;  // make a copy to record where we write the range
-	openpal::WriteBuffer& position;	
+	openpal::WriteBuffer& position;
 };
 
 }

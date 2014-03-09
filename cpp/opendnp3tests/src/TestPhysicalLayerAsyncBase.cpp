@@ -57,7 +57,8 @@ TEST_CASE(SUITE("OpenCloseNotification"))
 	AsyncPhysBaseTest t;
 	const size_t NUM = 3;
 
-	for(size_t i = 1; i <= NUM; ++i) {
+	for(size_t i = 1; i <= NUM; ++i)
+	{
 		t.phys.AsyncOpen();
 		t.phys.SignalOpenSuccess();
 		REQUIRE(t.upper.GetState().mNumLayerUp ==  i);

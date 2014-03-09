@@ -51,7 +51,7 @@ void TransportTx::Send(const ReadOnlyBuffer& output)
 {
 	assert(output.IsNotEmpty());
 	assert(output.Size() <= apduBuffer.Size());
-	output.CopyTo(apduBuffer);	
+	output.CopyTo(apduBuffer);
 	numBytesToSend = output.Size();
 	numBytesSent = 0;
 
@@ -62,7 +62,7 @@ bool TransportTx::CheckForSend()
 {
 	size_t remainder = this->BytesRemaining();
 
-	if(remainder > 0) 
+	if(remainder > 0)
 	{
 		uint32_t numToSend = remainder < TL_MAX_TPDU_PAYLOAD ? remainder : TL_MAX_TPDU_PAYLOAD;
 		memcpy(tpduBuffer.Buffer() + 1, apduBuffer + numBytesSent, numToSend);
@@ -77,7 +77,8 @@ bool TransportTx::CheckForSend()
 		mpContext->TransmitTPDU(buffer);
 		return false;
 	}
-	else {
+	else
+	{
 		numBytesSent = numBytesToSend = 0;
 		return true;
 	}

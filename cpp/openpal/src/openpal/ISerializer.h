@@ -30,7 +30,7 @@ namespace openpal
 template <class T>
 class ISerializer
 {
-	public:
+public:
 
 	/**
 	* @return The size (in bytes) required for every call to read/write
@@ -41,12 +41,12 @@ class ISerializer
 	* reads the value and advances the read buffer
 	*/
 	virtual T Read(ReadOnlyBuffer& buffer) const = 0;
-	
+
 	/**
 	* writes the value and advances the write buffer
 	*/
 	virtual void Write(const T& value, WriteBuffer& buffer) const = 0;
-	
+
 };
 
 }

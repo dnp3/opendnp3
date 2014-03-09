@@ -40,7 +40,8 @@ public:
 	// Implies previous sends have failed.
 	void OnLowerLayerDown();
 
-	bool IsLowerLayerUp() {
+	bool IsLowerLayerUp()
+	{
 		return mIsLowerLayerUp;
 	}
 
@@ -84,12 +85,14 @@ protected:
 	virtual void _OnReceive(const ReadOnlyBuffer&) = 0;
 	virtual void _OnSendSuccess() = 0;
 	virtual void _OnSendFailure() = 0;
-	virtual bool LogReceive() {
+	virtual bool LogReceive()
+	{
 		return true;
 	}
 
 	// override this descriptor, it's use in the Hex log messages
-	virtual std::string RecvString() const {
+	virtual std::string RecvString() const
+	{
 		return "<-";
 	}
 };
@@ -113,7 +116,8 @@ private:
 	virtual void _Send(const ReadOnlyBuffer&) = 0;
 
 	// override this descriptor, it's use in the Hex log messages
-	virtual std::string SendString() const {
+	virtual std::string SendString() const
+	{
 		return "->";
 	}
 };

@@ -38,7 +38,7 @@ struct APDURecord
 };
 
 struct APDUResponseRecord
-{	
+{
 	AppControlField control;
 	FunctionCode function;
 	IINField IIN;

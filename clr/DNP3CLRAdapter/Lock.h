@@ -5,12 +5,14 @@ using namespace System::Threading;
 
 private ref class Lock
 {
-	Object ^ m_pObject;
+	Object^ m_pObject;
 public:
-	Lock( Object ^ pObject ) : m_pObject( pObject ) {
+	Lock( Object^ pObject ) : m_pObject( pObject )
+	{
 		Monitor::Enter( m_pObject );
 	}
-	~Lock() {
+	~Lock()
+	{
 		Monitor::Exit( m_pObject );
 	}
 };

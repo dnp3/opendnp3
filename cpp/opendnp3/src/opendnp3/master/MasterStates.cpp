@@ -37,7 +37,7 @@ namespace opendnp3
 
 void AMS_Base::StartTask(Master* c, ITask*, MasterTaskBase*)
 {
-	LOGGER_BLOCK(c->mLogger, LogLevel::Error, "Invalid action for state " << this->Name());	
+	LOGGER_BLOCK(c->mLogger, LogLevel::Error, "Invalid action for state " << this->Name());
 }
 
 void AMS_Base::OnLowerLayerUp(Master* c)
@@ -100,7 +100,7 @@ void AMS_Closed::OnLowerLayerUp(Master* c)
 void AMS_OpenBase::OnUnsolResponse(Master* c, const APDUResponseRecord& aRecord)
 {
 	c->ProcessIIN(aRecord.IIN);
-	c->ProcessDataResponse(aRecord);	
+	c->ProcessDataResponse(aRecord);
 }
 
 void AMS_OpenBase::OnLowerLayerDown(Master* c)
@@ -113,7 +113,7 @@ void AMS_OpenBase::OnLowerLayerDown(Master* c)
 AMS_Idle AMS_Idle::mInstance;
 
 void AMS_Idle::StartTask(Master* c, ITask* apScheTask, MasterTaskBase* apMasterTask)
-{	
+{
 	this->ChangeState(c, AMS_Waiting::Inst());
 	this->ChangeTask(c, apMasterTask);
 	c->mpScheduledTask = apScheTask;
@@ -145,28 +145,29 @@ void AMS_Waiting::OnPartialResponse(Master* c, const APDUResponseRecord& aRecord
 	if(!c->mpTask->OnPartialResponse(aRecord))
 	{
 		this->ChangeState(c, AMS_Idle::Inst());
-		c->mpScheduledTask->OnComplete(false);		
-	}	
+		c->mpScheduledTask->OnComplete(false);
+	}
 }
 
 void AMS_Waiting::OnFinalResponse(Master* c, const APDUResponseRecord& aRecord)
 {
 	c->ProcessIIN(aRecord.IIN);
 
-	switch(c->mpTask->OnFinalResponse(aRecord)) {
-		case(TR_FAIL):
-			this->ChangeState(c, AMS_Idle::Inst());
-			c->mpScheduledTask->OnComplete(false);
-			break;
-		case(TR_CONTINUE):	//multi request task!
-			c->StartTask(c->mpTask, false);
-			break;
-		case(TR_SUCCESS):
-			this->ChangeState(c, AMS_Idle::Inst());
-			c->mpScheduledTask->OnComplete(true);
+	switch(c->mpTask->OnFinalResponse(aRecord))
+	{
+	case(TR_FAIL):
+		this->ChangeState(c, AMS_Idle::Inst());
+		c->mpScheduledTask->OnComplete(false);
+		break;
+	case(TR_CONTINUE):	//multi request task!
+		c->StartTask(c->mpTask, false);
+		break;
+	case(TR_SUCCESS):
+		this->ChangeState(c, AMS_Idle::Inst());
+		c->mpScheduledTask->OnComplete(true);
 	}
 
-	
+
 }
 
 } //ens ns

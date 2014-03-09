@@ -38,11 +38,13 @@ AsyncTaskNonPeriodic::AsyncTaskNonPeriodic(openpal::TimeDuration aRetryDelay, in
 
 void AsyncTaskNonPeriodic::_OnComplete(bool aSuccess)
 {
-	if(aSuccess) {
+	if(aSuccess)
+	{
 		mIsComplete = true;
 		mNextRunTime = MonotonicTimestamp::Max();
 	}
-	else {
+	else
+	{
 		mNextRunTime = mpGroup->GetCurrentTime().Add(mRetryDelay);
 	}
 }

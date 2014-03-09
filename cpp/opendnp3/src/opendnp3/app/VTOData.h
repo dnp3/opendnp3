@@ -28,11 +28,11 @@ namespace opendnp3
 
 class VtoData : public OctetData
 {
-public:	
+public:
 
 	VtoData() : OctetData()
 	{}
-	
+
 	VtoData(const VtoData& arData) : OctetData(arData)
 	{}
 

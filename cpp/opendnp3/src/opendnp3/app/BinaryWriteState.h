@@ -31,7 +31,7 @@ namespace opendnp3
 template <class CountType, class WriteType>
 class BinaryWriteState : public IEventWriterState
 {
-	public:
+public:
 
 	BinaryWriteState();
 
@@ -39,7 +39,7 @@ class BinaryWriteState : public IEventWriterState
 	bool Write(const Event<Analog>& evt, APDUEventWriter& ctx) final;
 	bool Write(const Event<Counter>& evt, APDUEventWriter& ctx) final;
 
-	private:
+private:
 
 	CountWriteIterator<CountType, WriteType> iterator;
 };

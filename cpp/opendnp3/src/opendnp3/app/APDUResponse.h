@@ -30,17 +30,17 @@ namespace opendnp3
 // this is what the application layer sees from the master / outstation for transmission
 class APDUResponse : public APDUWrapper
 {
-	public:	
+public:
 
 	APDUResponse(const openpal::WriteBuffer& aBuffer);
 
 	void SetIIN(const IINField& indications);
 
 	IINField GetIIN() const;
-		
-	private:
-	
-	APDUResponse();	
+
+private:
+
+	APDUResponse();
 };
 
 }

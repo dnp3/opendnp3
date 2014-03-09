@@ -42,7 +42,7 @@ StaticResponseTypes::StaticResponseTypes(const SlaveConfig& arCfg) :
 	pStaticBinaryOutputStatusLoader(GetStaticBinaryOutputStatus(arCfg.mStaticBinaryOutputStatus)),
 	pStaticAnalogOutputStatusLoader(GetStaticAnalogOutputStatus(arCfg.mStaticAnalogOutputStatus))
 {
-		
+
 }
 
 StaticResponseTypes::StaticResponseTypes() :
@@ -53,46 +53,66 @@ StaticResponseTypes::StaticResponseTypes() :
 	pStaticBinaryOutputStatusLoader(StaticLoader::GetLoadFunction<Group10Var2Serializer>()),
 	pStaticAnalogOutputStatusLoader(StaticLoader::GetLoadFunction<Group40Var1Serializer>())
 {
-		
+
 }
 
 template <>
-StaticLoadFun StaticResponseTypes::GetLoader<Binary>() { return pStaticBinaryLoader; }
+StaticLoadFun StaticResponseTypes::GetLoader<Binary>()
+{
+	return pStaticBinaryLoader;
+}
 
 template <>
-StaticLoadFun StaticResponseTypes::GetLoader<Analog>() { return pStaticAnalogLoader; }
+StaticLoadFun StaticResponseTypes::GetLoader<Analog>()
+{
+	return pStaticAnalogLoader;
+}
 
 template <>
-StaticLoadFun StaticResponseTypes::GetLoader<Counter>() { return pStaticCounterLoader; }
+StaticLoadFun StaticResponseTypes::GetLoader<Counter>()
+{
+	return pStaticCounterLoader;
+}
 
 template <>
-StaticLoadFun StaticResponseTypes::GetLoader<FrozenCounter>() { return pStaticFrozenCounterLoader; }
+StaticLoadFun StaticResponseTypes::GetLoader<FrozenCounter>()
+{
+	return pStaticFrozenCounterLoader;
+}
 
 template <>
-StaticLoadFun StaticResponseTypes::GetLoader<BinaryOutputStatus>() { return pStaticBinaryOutputStatusLoader; }
+StaticLoadFun StaticResponseTypes::GetLoader<BinaryOutputStatus>()
+{
+	return pStaticBinaryOutputStatusLoader;
+}
 
 template <>
-StaticLoadFun StaticResponseTypes::GetLoader<AnalogOutputStatus>() { return pStaticAnalogOutputStatusLoader; }
+StaticLoadFun StaticResponseTypes::GetLoader<AnalogOutputStatus>()
+{
+	return pStaticAnalogOutputStatusLoader;
+}
 
 StaticLoadFun StaticResponseTypes::GetStaticBinary(StaticBinaryResponse rsp)
 {
-	switch(rsp) {
-		case(StaticBinaryResponse::Group1Var2):
-			return StaticLoader::GetLoadFunction<Group1Var2Serializer>();
-		default:
-			return StaticLoader::GetLoadFunction<Group1Var2Serializer>();
+	switch(rsp)
+	{
+	case(StaticBinaryResponse::Group1Var2):
+		return StaticLoader::GetLoadFunction<Group1Var2Serializer>();
+	default:
+		return StaticLoader::GetLoadFunction<Group1Var2Serializer>();
 	}
 }
 
 StaticLoadFun StaticResponseTypes::GetStaticAnalog(StaticAnalogResponse rsp)
 {
-	switch(rsp) {
-		case(StaticAnalogResponse::Group30Var1): return StaticLoader::GetLoadFunction<Group30Var1Serializer>();
-		case(StaticAnalogResponse::Group30Var2): return StaticLoader::GetLoadFunction<Group30Var2Serializer>();
-		case(StaticAnalogResponse::Group30Var3): return StaticLoader::GetLoadFunction<Group30Var3Serializer>();
-		case(StaticAnalogResponse::Group30Var4): return StaticLoader::GetLoadFunction<Group30Var4Serializer>();
-		case(StaticAnalogResponse::Group30Var5): return StaticLoader::GetLoadFunction<Group30Var5Serializer>();
-		case(StaticAnalogResponse::Group30Var6): return StaticLoader::GetLoadFunction<Group30Var6Serializer>();
+	switch(rsp)
+	{
+	case(StaticAnalogResponse::Group30Var1): return StaticLoader::GetLoadFunction<Group30Var1Serializer>();
+	case(StaticAnalogResponse::Group30Var2): return StaticLoader::GetLoadFunction<Group30Var2Serializer>();
+	case(StaticAnalogResponse::Group30Var3): return StaticLoader::GetLoadFunction<Group30Var3Serializer>();
+	case(StaticAnalogResponse::Group30Var4): return StaticLoader::GetLoadFunction<Group30Var4Serializer>();
+	case(StaticAnalogResponse::Group30Var5): return StaticLoader::GetLoadFunction<Group30Var5Serializer>();
+	case(StaticAnalogResponse::Group30Var6): return StaticLoader::GetLoadFunction<Group30Var6Serializer>();
 	default:
 		return StaticLoader::GetLoadFunction<Group30Var1Serializer>();
 	}
@@ -100,11 +120,12 @@ StaticLoadFun StaticResponseTypes::GetStaticAnalog(StaticAnalogResponse rsp)
 
 StaticLoadFun StaticResponseTypes::GetStaticCounter(StaticCounterResponse rsp)
 {
-	switch(rsp) {
-		case(StaticCounterResponse::Group20Var1): return StaticLoader::GetLoadFunction<Group20Var1Serializer>();
-		case(StaticCounterResponse::Group20Var2): return StaticLoader::GetLoadFunction<Group20Var2Serializer>();
-		case(StaticCounterResponse::Group20Var5): return StaticLoader::GetLoadFunction<Group20Var5Serializer>();
-		case(StaticCounterResponse::Group20Var6): return StaticLoader::GetLoadFunction<Group20Var6Serializer>();
+	switch(rsp)
+	{
+	case(StaticCounterResponse::Group20Var1): return StaticLoader::GetLoadFunction<Group20Var1Serializer>();
+	case(StaticCounterResponse::Group20Var2): return StaticLoader::GetLoadFunction<Group20Var2Serializer>();
+	case(StaticCounterResponse::Group20Var5): return StaticLoader::GetLoadFunction<Group20Var5Serializer>();
+	case(StaticCounterResponse::Group20Var6): return StaticLoader::GetLoadFunction<Group20Var6Serializer>();
 	default:
 		return StaticLoader::GetLoadFunction<Group20Var1Serializer>();
 	}
@@ -112,8 +133,9 @@ StaticLoadFun StaticResponseTypes::GetStaticCounter(StaticCounterResponse rsp)
 
 StaticLoadFun StaticResponseTypes::GetStaticFrozenCounter(StaticFrozenCounterResponse rsp)
 {
-	switch(rsp) {
-		case(StaticFrozenCounterResponse::Group21Var1): return StaticLoader::GetLoadFunction<Group21Var1Serializer>();
+	switch(rsp)
+	{
+	case(StaticFrozenCounterResponse::Group21Var1): return StaticLoader::GetLoadFunction<Group21Var1Serializer>();
 	default:
 		return StaticLoader::GetLoadFunction<Group21Var1Serializer>();
 	}
@@ -121,8 +143,9 @@ StaticLoadFun StaticResponseTypes::GetStaticFrozenCounter(StaticFrozenCounterRes
 
 StaticLoadFun StaticResponseTypes::GetStaticBinaryOutputStatus(StaticBinaryOutputStatusResponse rsp)
 {
-	switch(rsp) {
-	case(StaticBinaryOutputStatusResponse::Group10Var2): return StaticLoader::GetLoadFunction<Group10Var2Serializer>();		
+	switch(rsp)
+	{
+	case(StaticBinaryOutputStatusResponse::Group10Var2): return StaticLoader::GetLoadFunction<Group10Var2Serializer>();
 	default:
 		return StaticLoader::GetLoadFunction<Group10Var2Serializer>();
 	}
@@ -130,11 +153,12 @@ StaticLoadFun StaticResponseTypes::GetStaticBinaryOutputStatus(StaticBinaryOutpu
 
 StaticLoadFun StaticResponseTypes::GetStaticAnalogOutputStatus(StaticAnalogOutputStatusResponse rsp)
 {
-	switch(rsp) {
-		case(StaticAnalogOutputStatusResponse::Group40Var1): return StaticLoader::GetLoadFunction<Group40Var1Serializer>();
-		case(StaticAnalogOutputStatusResponse::Group40Var2): return StaticLoader::GetLoadFunction<Group40Var2Serializer>();
-		case(StaticAnalogOutputStatusResponse::Group40Var3): return StaticLoader::GetLoadFunction<Group40Var3Serializer>();
-		case(StaticAnalogOutputStatusResponse::Group40Var4): return StaticLoader::GetLoadFunction<Group40Var4Serializer>();
+	switch(rsp)
+	{
+	case(StaticAnalogOutputStatusResponse::Group40Var1): return StaticLoader::GetLoadFunction<Group40Var1Serializer>();
+	case(StaticAnalogOutputStatusResponse::Group40Var2): return StaticLoader::GetLoadFunction<Group40Var2Serializer>();
+	case(StaticAnalogOutputStatusResponse::Group40Var3): return StaticLoader::GetLoadFunction<Group40Var3Serializer>();
+	case(StaticAnalogOutputStatusResponse::Group40Var4): return StaticLoader::GetLoadFunction<Group40Var4Serializer>();
 	default:
 		return StaticLoader::GetLoadFunction<Group40Var1Serializer>();
 	}

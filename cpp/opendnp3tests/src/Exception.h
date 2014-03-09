@@ -50,10 +50,12 @@ public:
 
 	virtual const char* what() const throw();
 
-	int ErrorCode() const {
+	int ErrorCode() const
+	{
 		return this->mErrorCode;
 	}
-	int SubCode() const {
+	int SubCode() const
+	{
 		return this->mSubCode;
 	}
 
@@ -117,7 +119,7 @@ public:
 class IndexOutOfBoundsException : public Exception
 {
 
-static std::string GetMessage(int aIndex);
+	static std::string GetMessage(int aIndex);
 
 public:
 	IndexOutOfBoundsException(const std::string& aSource, int aIndex) throw() :

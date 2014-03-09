@@ -32,9 +32,12 @@ namespace opendnp3
 template <class T>
 class CountOf
 {
-	public:
+public:
 
-	static CountOf Max(const T& value) { return CountOf(value, std::numeric_limits<uint32_t>::max()); }
+	static CountOf Max(const T& value)
+	{
+		return CountOf(value, std::numeric_limits<uint32_t>::max());
+	}
 
 	CountOf() : count(0)
 	{}
@@ -42,7 +45,10 @@ class CountOf
 	CountOf(const T& value_, uint32_t count_) : value(value_), count(count_)
 	{}
 
-	bool HasRemaining() const { return count > 0; }
+	bool HasRemaining() const
+	{
+		return count > 0;
+	}
 
 	void Decrement()
 	{
@@ -50,7 +56,7 @@ class CountOf
 		--count;
 	}
 
-	private:
+private:
 	T value;
 	uint32_t count;
 };

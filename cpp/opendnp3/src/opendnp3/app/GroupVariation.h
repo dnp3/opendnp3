@@ -30,112 +30,112 @@ namespace opendnp3
 {
 
 enum class GroupVariation : int
-{	
-	Group1Var0,
-	Group1Var1,
-	Group1Var2,
+{
+    Group1Var0,
+    Group1Var1,
+    Group1Var2,
 
-	Group2Var0,
-	Group2Var1,
-	Group2Var2,
-	Group2Var3,
+    Group2Var0,
+    Group2Var1,
+    Group2Var2,
+    Group2Var3,
 
-	Group3Var0,
-	Group3Var1,
-	Group3Var2,
+    Group3Var0,
+    Group3Var1,
+    Group3Var2,
 
-	Group4Var0,
-	Group4Var1,
-	Group4Var2,
-	Group4Var3,
+    Group4Var0,
+    Group4Var1,
+    Group4Var2,
+    Group4Var3,
 
-	Group10Var0,
-	Group10Var1,
-	Group10Var2,
+    Group10Var0,
+    Group10Var1,
+    Group10Var2,
 
-	Group12Var1,
+    Group12Var1,
 
-	Group20Var0,
-	Group20Var1,
-	Group20Var2,	
-	Group20Var5,
-	Group20Var6,	
+    Group20Var0,
+    Group20Var1,
+    Group20Var2,
+    Group20Var5,
+    Group20Var6,
 
-	Group21Var0,
-	Group21Var1,
-	Group21Var2,
-	Group21Var5,
-	Group21Var6,
-	Group21Var9,
-	Group21Var10,
+    Group21Var0,
+    Group21Var1,
+    Group21Var2,
+    Group21Var5,
+    Group21Var6,
+    Group21Var9,
+    Group21Var10,
 
-	Group22Var0,
-	Group22Var1,
-	Group22Var2,
-	Group22Var5,
-	Group22Var6,
+    Group22Var0,
+    Group22Var1,
+    Group22Var2,
+    Group22Var5,
+    Group22Var6,
 
-	Group23Var0,
-	Group23Var1,
-	Group23Var2,
-	Group23Var5,
-	Group23Var6,
+    Group23Var0,
+    Group23Var1,
+    Group23Var2,
+    Group23Var5,
+    Group23Var6,
 
-	Group30Var0,
-	Group30Var1,
-	Group30Var2,
-	Group30Var3,
-	Group30Var4,
-	Group30Var5,
-	Group30Var6,
+    Group30Var0,
+    Group30Var1,
+    Group30Var2,
+    Group30Var3,
+    Group30Var4,
+    Group30Var5,
+    Group30Var6,
 
-	Group32Var0,
-	Group32Var1,
-	Group32Var2,
-	Group32Var3,
-	Group32Var4,
-	Group32Var5,
-	Group32Var6,
-	Group32Var7,
-	Group32Var8,
+    Group32Var0,
+    Group32Var1,
+    Group32Var2,
+    Group32Var3,
+    Group32Var4,
+    Group32Var5,
+    Group32Var6,
+    Group32Var7,
+    Group32Var8,
 
-	Group40Var0,
-	Group40Var1,
-	Group40Var2,
-	Group40Var3,
-	Group40Var4,
+    Group40Var0,
+    Group40Var1,
+    Group40Var2,
+    Group40Var3,
+    Group40Var4,
 
-	Group41Var0,
-	Group41Var1,
-	Group41Var2,
-	Group41Var3,
-	Group41Var4,
+    Group41Var0,
+    Group41Var1,
+    Group41Var2,
+    Group41Var3,
+    Group41Var4,
 
-	Group50Var1,
-	Group50Var2,
+    Group50Var1,
+    Group50Var2,
 
-	Group51Var1,
-	Group51Var2,
+    Group51Var1,
+    Group51Var2,
 
-	Group52Var1,
-	Group52Var2,
+    Group52Var1,
+    Group52Var2,
 
-	Group60Var1,
-	Group60Var2,
-	Group60Var3,
-	Group60Var4,
+    Group60Var1,
+    Group60Var2,
+    Group60Var3,
+    Group60Var4,
 
-	Group80Var1,
+    Group80Var1,
 
-	Group110AnyVar,
-	Group111AnyVar,
+    Group110AnyVar,
+    Group111AnyVar,
 
-	UNKNOWN
+    UNKNOWN
 };
 
 class GroupVariationRecord
 {
-	public:
+public:
 
 	static GroupVariation GetEnum(uint8_t group, uint8_t variation);
 
@@ -143,7 +143,7 @@ class GroupVariationRecord
 
 	GroupVariation enumeration;
 	uint8_t group;
-	uint8_t variation;		
+	uint8_t variation;
 };
 
 }

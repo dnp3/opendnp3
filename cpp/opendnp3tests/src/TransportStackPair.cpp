@@ -26,11 +26,11 @@ namespace opendnp3
 {
 
 TransportStackPair::TransportStackPair(
-        LinkConfig aClientCfg,
-        LinkConfig aServerCfg,
-        openpal::Logger& arLogger,
-        asio::io_service* apService,
-        uint16_t aPort) :
+    LinkConfig aClientCfg,
+    LinkConfig aServerCfg,
+    openpal::Logger& arLogger,
+    asio::io_service* apService,
+    uint16_t aPort) :
 
 	mClient(arLogger.GetSubLogger("TCPClient"), apService, "127.0.0.1", aPort),
 	mServer(arLogger.GetSubLogger("TCPServer"), apService, "127.0.0.1", aPort),

@@ -66,7 +66,8 @@ TEST_CASE(SUITE("StrandsSequenceCallbacksViaStrandPost"))
 
 	int count1 = 0;
 
-	for(size_t i = 0; i < iterations; ++i) s1.post([&count1]() {
+	for(size_t i = 0; i < iterations; ++i) s1.post([&count1]()
+	{
 		++count1;
 	});
 
@@ -86,7 +87,8 @@ TEST_CASE(SUITE("StrandsSequenceCallbacksViaStrandWrap"))
 
 	int count1 = 0;
 
-	for(size_t i = 0; i < iterations; ++i) pService->post(s1.wrap([&count1]() {
+	for(size_t i = 0; i < iterations; ++i) pService->post(s1.wrap([&count1]()
+	{
 		++count1;
 	}));
 
@@ -104,13 +106,15 @@ TEST_CASE(SUITE("ExecutorPauseGuardsRaceConditions"))
 	ASIOExecutor exe(&strand);
 
 	int count = 0;
-	auto increment = [&]() {
+	auto increment = [&]()
+	{
 		int i = count;
 		std::this_thread::sleep_for(std::chrono::milliseconds(1));
 		count = i + 1;
 	};
 
-	for(size_t i = 0; i < 100; ++i) { //try to cause a race condition between the Post and the Pause
+	for(size_t i = 0; i < 100; ++i)   //try to cause a race condition between the Post and the Pause
+	{
 		exe.Post(increment);
 		ExecutorPause p1(&exe);
 		increment();

@@ -42,7 +42,7 @@ public:
 		{
 			delete var.pointer;
 		}
-	}	
+	}
 
 	virtual void AddScanCallback(System::Action<ScanResult>^ callback)
 	{
@@ -58,7 +58,7 @@ public:
 	}
 
 private:
-	
+
 	List<Wrapper<ScanListenerAdapter>>^ listeners;
 	opendnp3::MasterScan* mpScan;
 };

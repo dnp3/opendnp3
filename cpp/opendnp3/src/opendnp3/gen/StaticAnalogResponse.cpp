@@ -8,58 +8,59 @@
 //                                           __/ |
 //                                          |___/
 // Copyright 2013 Automatak LLC
-// 
+//
 // Automatak LLC (www.automatak.com) licenses this file
 // to you under the the Apache License Version 2.0 (the "License"):
-// 
+//
 // http://www.apache.org/licenses/LICENSE-2.0.html
 //
 
 #include "StaticAnalogResponse.h"
 
-namespace opendnp3 {
+namespace opendnp3
+{
 
 std::string StaticAnalogResponseToString(StaticAnalogResponse arg)
 {
-  switch(arg)
-  {
-    case(StaticAnalogResponse::Group30Var1):
-      return "Group30Var1";
-    case(StaticAnalogResponse::Group30Var2):
-      return "Group30Var2";
-    case(StaticAnalogResponse::Group30Var3):
-      return "Group30Var3";
-    case(StaticAnalogResponse::Group30Var4):
-      return "Group30Var4";
-    case(StaticAnalogResponse::Group30Var5):
-      return "Group30Var5";
-    case(StaticAnalogResponse::Group30Var6):
-      return "Group30Var6";
-  }
-  return "Group30Var6";
+	switch(arg)
+	{
+	case(StaticAnalogResponse::Group30Var1):
+		return "Group30Var1";
+	case(StaticAnalogResponse::Group30Var2):
+		return "Group30Var2";
+	case(StaticAnalogResponse::Group30Var3):
+		return "Group30Var3";
+	case(StaticAnalogResponse::Group30Var4):
+		return "Group30Var4";
+	case(StaticAnalogResponse::Group30Var5):
+		return "Group30Var5";
+	case(StaticAnalogResponse::Group30Var6):
+		return "Group30Var6";
+	}
+	return "Group30Var6";
 }
 int StaticAnalogResponseToType(StaticAnalogResponse arg)
 {
-  return static_cast<int>(arg);
+	return static_cast<int>(arg);
 }
 StaticAnalogResponse StaticAnalogResponseFromType(int arg)
 {
-  switch(arg)
-  {
-    case(0):
-      return StaticAnalogResponse::Group30Var1;
-    case(1):
-      return StaticAnalogResponse::Group30Var2;
-    case(2):
-      return StaticAnalogResponse::Group30Var3;
-    case(3):
-      return StaticAnalogResponse::Group30Var4;
-    case(4):
-      return StaticAnalogResponse::Group30Var5;
-    case(5):
-      return StaticAnalogResponse::Group30Var6;
-  }
-  return StaticAnalogResponse::Group30Var6;
+	switch(arg)
+	{
+	case(0):
+		return StaticAnalogResponse::Group30Var1;
+	case(1):
+		return StaticAnalogResponse::Group30Var2;
+	case(2):
+		return StaticAnalogResponse::Group30Var3;
+	case(3):
+		return StaticAnalogResponse::Group30Var4;
+	case(4):
+		return StaticAnalogResponse::Group30Var5;
+	case(5):
+		return StaticAnalogResponse::Group30Var6;
+	}
+	return StaticAnalogResponse::Group30Var6;
 }
 
 }

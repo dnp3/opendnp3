@@ -40,7 +40,7 @@ public:
 	StaticResponseTypes();
 
 	StaticResponseTypes(const SlaveConfig& arCfg);
-			
+
 	template <class T>
 	StaticLoadFun GetLoader();
 
@@ -54,11 +54,11 @@ private:
 	const StaticLoadFun pStaticAnalogOutputStatusLoader;
 
 	static StaticLoadFun GetStaticBinary(StaticBinaryResponse rsp);
-	static StaticLoadFun GetStaticCounter(StaticCounterResponse rsp);	
+	static StaticLoadFun GetStaticCounter(StaticCounterResponse rsp);
 	static StaticLoadFun GetStaticFrozenCounter(StaticFrozenCounterResponse rsp);
-	static StaticLoadFun GetStaticAnalog(StaticAnalogResponse rsp);	
-	static StaticLoadFun GetStaticAnalogOutputStatus(StaticAnalogOutputStatusResponse rsp);	
-	static StaticLoadFun GetStaticBinaryOutputStatus(StaticBinaryOutputStatusResponse rsp);	
+	static StaticLoadFun GetStaticAnalog(StaticAnalogResponse rsp);
+	static StaticLoadFun GetStaticAnalogOutputStatus(StaticAnalogOutputStatusResponse rsp);
+	static StaticLoadFun GetStaticBinaryOutputStatus(StaticBinaryOutputStatusResponse rsp);
 };
 
 }

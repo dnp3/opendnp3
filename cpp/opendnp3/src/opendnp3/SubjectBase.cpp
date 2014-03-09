@@ -38,7 +38,8 @@ void SubjectBase::AddObserver(std::function<void ()> aCallback)
 
 void SubjectBase::AddObserver(openpal::IExecutor* apExecutor, std::function<void ()> aCallback)
 {
-	this->AddObserver([apExecutor, aCallback]() {
+	this->AddObserver([apExecutor, aCallback]()
+	{
 		apExecutor->Post(aCallback);
 	});
 }
@@ -46,7 +47,7 @@ void SubjectBase::AddObserver(openpal::IExecutor* apExecutor, std::function<void
 void SubjectBase::NotifyObservers()
 {
 	std::lock_guard<std::mutex> lock(mSubjectMutex);
-for(auto obs: mObservers) obs();
+	for(auto obs : mObservers) obs();
 }
 
 

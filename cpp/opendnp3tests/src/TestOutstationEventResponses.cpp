@@ -48,11 +48,11 @@ TEST_CASE(SUITE("ReadClass1"))
 {
 	SlaveConfig cfg; cfg.mDisableUnsol = true;
 	SlaveTestObject t(cfg, DatabaseTemplate::AnalogOnly(100));
-	
+
 	t.db.staticData.analogs.metadata[0x10].clazz = CLASS_1;
 	t.db.staticData.analogs.metadata[0x17].clazz = CLASS_1;
 	t.db.staticData.analogs.metadata[0x05].clazz = CLASS_1;
-	
+
 	t.slave.OnLowerLayerUp();
 
 	{
@@ -65,9 +65,9 @@ TEST_CASE(SUITE("ReadClass1"))
 	}
 
 	t.SendToSlave("C0 01 3C 02 06");
-	
+
 	// The indices should be in reverse-order from how they were
-	// added, but the values for a given index should be in the same order	
+	// added, but the values for a given index should be in the same order
 	REQUIRE(t.Read() ==  "E0 81 80 00 20 01 17 05 10 01 87 09 00 00 17 01 34 12 00 00 05 01 22 22 00 00 05 01 33 33 00 00 05 01 44 44 00 00");
 
 	t.SendToSlave("C0 01 3C 02 06");			// Repeat read class 1
@@ -80,7 +80,7 @@ TEST_CASE(SUITE("ReadClass1TimeOrdered"))
 	SlaveTestObject t(cfg);
 
 	t.db.Configure(MeasurementType::ANALOG, 100);
-	t.db.mAnalogs[0x10].clazz = CLASS_1;	
+	t.db.mAnalogs[0x10].clazz = CLASS_1;
 	t.slave.OnLowerLayerUp();
 
 	{
@@ -98,9 +98,9 @@ TEST_CASE(SUITE("ReadClass1TimeOrdered"))
 		Analog a3(0x3333, AQ_ONLINE);
 		a3.SetTime(15);
 
-		
+
 		// Expected order in packet should be:
-		// a2 -> a0 -> a3 -> a1		 
+		// a2 -> a0 -> a3 -> a1
 		t.db.Update(a0, 0x10);
 		t.db.Update(a1, 0x10);
 		t.db.Update(a2, 0x10);

@@ -38,7 +38,8 @@ template <class T>
 bool TestReadWrite(typename T::Type aValue)
 {
 	uint8_t data[2 * T::Size];
-	for(size_t i = 0; i < T::Size; ++i) {
+	for(size_t i = 0; i < T::Size; ++i)
+	{
 		uint8_t* pos = data + i;
 		T::Write(pos, aValue);
 		typename T::Type r = T::Read(pos);
@@ -52,7 +53,8 @@ bool TestReadWriteDouble(typename T::Type aValue)
 {
 	ByteStr data(2 * T::Size);
 
-	for(size_t i = 0; i < T::Size; ++i) {
+	for(size_t i = 0; i < T::Size; ++i)
+	{
 		uint8_t* pos = data + i;
 		T::Write(pos, aValue);
 		typename T::Type r = T::Read(pos);
@@ -70,7 +72,8 @@ bool TestFloatParsing(std::string aHex, typename T::Type aValue)
 
 	ByteStr buff(static_cast<uint32_t>(2 * type_size));
 
-	for(size_t i = 0; i < type_size; ++i) {
+	for(size_t i = 0; i < type_size; ++i)
+	{
 		memcpy(buff + i, hs, type_size);
 		typename T::Type val = T::Read(buff + i);
 		if(!FloatEqual(val, aValue)) return false;

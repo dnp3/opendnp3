@@ -24,7 +24,10 @@
 namespace opendnp3
 {
 
-enum class SequenceInfo { OTHER, PREVIOUS, CORRECT };
+enum class SequenceInfo
+{
+    OTHER, PREVIOUS, CORRECT
+};
 
 } //end ns
 

@@ -35,7 +35,7 @@ struct GroupVariationID
 		group(aGroup),
 		variation(aVariation)
 	{
-	
+
 	}
 
 	uint8_t group;

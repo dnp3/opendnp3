@@ -69,7 +69,9 @@ void TransportRx::HandleReceive(const openpal::ReadOnlyBuffer& input)
 	{
 		ERROR_BLOCK(LogLevel::Warning, "Illegal arg: " << input.Size() << " exceeds max tpdu size of " << TL_MAX_TPDU_LENGTH, TLERR_TOO_MUCH_DATA);
 
-	} else {
+	}
+	else
+	{
 
 		uint8_t hdr = input[0];
 		LOG_BLOCK(LogLevel::Interpret, "<- " << TransportLayer::ToString(hdr));
@@ -78,47 +80,53 @@ void TransportRx::HandleReceive(const openpal::ReadOnlyBuffer& input)
 		int seq = hdr & TL_HDR_SEQ;
 		uint32_t payloadLength = input.Size() - 1;
 
-		if (this->ValidateHeader(first, last, seq, payloadLength)) {
-			if (BufferRemaining() < payloadLength) {
+		if (this->ValidateHeader(first, last, seq, payloadLength))
+		{
+			if (BufferRemaining() < payloadLength)
+			{
 				ERROR_BLOCK(LogLevel::Warning, "Exceeded the buffer size before a complete fragment was read", TLERR_BUFFER_FULL);
 				numBytesRead = 0;
 			}
-			else { //passed all validation	
+			else   //passed all validation
+			{
 				memcpy(rxBuffer.Buffer() + numBytesRead, input + 1, payloadLength);
 				numBytesRead += payloadLength;
 				sequence = (sequence + 1) % 64;
 
-				if(last) {
+				if(last)
+				{
 					ReadOnlyBuffer buffer(rxBuffer.Buffer(), numBytesRead);
-					numBytesRead = 0;					
+					numBytesRead = 0;
 					mpContext->ReceiveAPDU(buffer);
 				}
 			}
 		}
 	}
-	
-	
+
+
 }
 
 bool TransportRx::ValidateHeader(bool fir, bool fin, uint8_t sequence_, uint32_t payloadSize)
 {
 	//get the transport byte and parse it
 
-	if(fir) 
+	if(fir)
 	{
 		sequence = sequence_; //always accept the sequence on FIR
-		if(numBytesRead > 0) {
+		if(numBytesRead > 0)
+		{
 			// drop existing received bytes from segment
 			ERROR_BLOCK(LogLevel::Warning, "FIR received mid-fragment, discarding: " << numBytesRead << "bytes", TLERR_NEW_FIR);
 			numBytesRead = 0;
 		}
 	}
-	else if(numBytesRead == 0) { //non-first packet with 0 prior bytes
+	else if(numBytesRead == 0)   //non-first packet with 0 prior bytes
+	{
 		ERROR_BLOCK(LogLevel::Warning, "non-FIR packet with 0 prior bytes", TLERR_MESSAGE_WITHOUT_FIR);
 		return false;
 	}
-	
-	if(sequence_ != sequence) 
+
+	if(sequence_ != sequence)
 	{
 		ERROR_BLOCK(LogLevel::Warning, "Ignoring bad sequence, got: " << sequence_ << " expected: " << sequence, TLERR_BAD_SEQUENCE);
 		return false;

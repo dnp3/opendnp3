@@ -32,62 +32,68 @@ class Indexable;
 template <class ValueType, class IndexType>
 class IndexableIterator
 {
-	public:
-		
-		IndexableIterator(const Indexable<ValueType,IndexType>& aIndexable, IndexType aPosition, IndexType aStop) :
-			empty(false),
-			indexable(aIndexable),
-			position(aPosition),
-			stop(aStop)
-		{}
+public:
 
-		IndexableIterator(const Indexable<ValueType,IndexType>& aIndexable) :
-			empty(aIndexable.IsEmpty()),
-			indexable(aIndexable),
-			position(0),
-			stop(aIndexable.IsEmpty() ? 0 : aIndexable.Size() - 1)			
-		{}
+	IndexableIterator(const Indexable<ValueType, IndexType>& aIndexable, IndexType aPosition, IndexType aStop) :
+		empty(false),
+		indexable(aIndexable),
+		position(aPosition),
+		stop(aStop)
+	{}
 
-		inline const IndexType Index() const 
-		{ 
-			assert(!empty);
-			return position; 
-		}
-		
-		inline const ValueType& Value() const 
+	IndexableIterator(const Indexable<ValueType, IndexType>& aIndexable) :
+		empty(aIndexable.IsEmpty()),
+		indexable(aIndexable),
+		position(0),
+		stop(aIndexable.IsEmpty() ? 0 : aIndexable.Size() - 1)
+	{}
+
+	inline const IndexType Index() const
+	{
+		assert(!empty);
+		return position;
+	}
+
+	inline const ValueType& Value() const
+	{
+		assert(!empty);
+		return indexable[position];
+	}
+
+	inline const IndexType Stop() const
+	{
+		return stop;
+	}
+
+	inline bool IsNotEmpty() const
+	{
+		return !empty;
+	}
+
+	inline bool IsEmpty() const
+	{
+		return empty;
+	}
+
+	inline void Next()
+	{
+		assert(!empty);
+		if(position == stop)
 		{
-			assert(!empty);
-			return indexable[position];
+			empty = true;
 		}
-
-		inline const IndexType Stop() const
+		else
 		{
-			return stop;
+			++position;
 		}
-		
-		inline bool IsNotEmpty() const { return !empty; }
+	}
 
-		inline bool IsEmpty() const { return empty; }
+private:
 
-		inline void Next()
-		{
-			assert(!empty);
-			if(position == stop)
-			{
-				empty = true;
-			}
-			else
-			{
-				++position;
-			}
-		}
-		
-	private:
-
-		bool empty;
-		Indexable<ValueType, IndexType> indexable;
-		IndexType position;
-		IndexType stop;
+	bool empty;
+	Indexable<ValueType, IndexType> indexable;
+	IndexType position;
+	IndexType stop;
 };
 
 }

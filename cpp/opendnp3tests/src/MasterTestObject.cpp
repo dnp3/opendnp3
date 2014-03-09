@@ -47,7 +47,8 @@ MasterTestObject::MasterTestObject(MasterConfig cfg, openpal::LogLevel aLevel, b
 
 void MasterTestObject::BindStateListener()
 {
-	master.AddStateListener([&](StackState state) {
+	master.AddStateListener([&](StackState state)
+	{
 		states.push_back(state);
 	});
 }
@@ -71,7 +72,7 @@ void MasterTestObject::SendUnsolToMaster(const std::string& arData)
 	if(APDUHeaderParser::ParseResponse(hs.ToReadOnly(), record) != APDUHeaderParser::Result::OK)
 	{
 		throw Exception("Why are you trying to send bad data?");
-	}	
+	}
 	master.OnUnsolResponse(record);
 }
 

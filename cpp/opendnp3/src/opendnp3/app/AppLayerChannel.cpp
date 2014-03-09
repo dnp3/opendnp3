@@ -51,7 +51,8 @@ void AppLayerChannel::Reset()
 	mpState = ACS_Idle::Inst();
 	mConfirming = false;
 	mSequence = -1;
-	if(mpTimer) {
+	if(mpTimer)
+	{
 		mpTimer->Cancel();
 		mpTimer = nullptr;
 	}
@@ -61,7 +62,7 @@ void AppLayerChannel::Reset()
 
 void AppLayerChannel::Send(APDUWrapper& apdu, size_t aNumRetry)
 {
-	mpState->Send(this, apdu, aNumRetry);	
+	mpState->Send(this, apdu, aNumRetry);
 }
 
 void AppLayerChannel::OnSendSuccess()
@@ -94,7 +95,7 @@ void AppLayerChannel::QueueSend(APDUWrapper& apdu)
 
 bool AppLayerChannel::Retry(ACS_Base* apState)
 {
-	if(mNumRetry > 0) 
+	if(mNumRetry > 0)
 	{
 		--mNumRetry;
 		LOG_BLOCK(LogLevel::Info, "App layer retry, " << mNumRetry << " remaining");
@@ -102,7 +103,7 @@ bool AppLayerChannel::Retry(ACS_Base* apState)
 		mpAppLayer->QueueFrame(mSendAPDU);
 		return true;
 	}
-	else 
+	else
 	{
 		return false;
 	}
@@ -133,7 +134,8 @@ void AppLayerChannel::CancelTimer()
 
 void AppLayerChannel::ChangeState(ACS_Base* apState)
 {
-	if(apState != mpState) {
+	if(apState != mpState)
+	{
 		LOG_BLOCK(LogLevel::Debug, "State changed from " << mpState->Name() << " to " << apState->Name());
 		mpState = apState;
 	}

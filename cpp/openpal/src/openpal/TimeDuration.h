@@ -35,7 +35,8 @@ public:
 	TimeDurationBase() : milliseconds(0)
 	{}
 
-	T GetMilliseconds() const {
+	T GetMilliseconds() const
+	{
 		return milliseconds;
 	}
 

@@ -80,7 +80,7 @@ void TransportLayer::TransmitAPDU(const openpal::ReadOnlyBuffer& arBuffer)
 
 void TransportLayer::TransmitTPDU(const openpal::ReadOnlyBuffer& arBuffer)
 {
-	if(mpLowerLayer) 
+	if(mpLowerLayer)
 	{
 		mpLowerLayer->Send(arBuffer);
 	}
@@ -93,7 +93,7 @@ void TransportLayer::ReceiveTPDU(const openpal::ReadOnlyBuffer& arBuffer)
 
 void TransportLayer::ReceiveAPDU(const openpal::ReadOnlyBuffer& arBuffer)
 {
-	if(mpUpperLayer) 
+	if(mpUpperLayer)
 	{
 		mpUpperLayer->OnReceive(arBuffer);
 	}
@@ -119,15 +119,18 @@ void TransportLayer::SignalSendFailure()
 ///////////////////////////////////////
 void TransportLayer::_Send(const ReadOnlyBuffer& arBuffer)
 {
-	if(arBuffer.IsEmpty() || arBuffer.Size() > M_FRAG_SIZE) 
+	if(arBuffer.IsEmpty() || arBuffer.Size() > M_FRAG_SIZE)
 	{
 		LOG_BLOCK(LogLevel::Error, "Illegal arg: " << arBuffer.Size() << ", Array length must be in the range [1," << M_FRAG_SIZE << "]");
-		pExecutor->Post([this]() { this->OnSendFailure(); });		
+		pExecutor->Post([this]()
+		{
+			this->OnSendFailure();
+		});
 	}
 	else
 	{
 		mpState->Send(arBuffer, this);
-	}	
+	}
 }
 
 ///////////////////////////////////////

@@ -43,7 +43,7 @@ TEST_CASE(SUITE("InitialState"))
 
 	MockEventWriter writer;
 
-	SelectionCriteria criteria;	
+	SelectionCriteria criteria;
 	REQUIRE(0, buffer.SelectEvents(criteria ==  writer));
 	REQUIRE(0, buffer.SelectEvents(criteria ==  writer));
 	REQUIRE(0 ==  writer.TotalEvents());
@@ -57,16 +57,16 @@ TEST_CASE(SUITE("StaticAllocation"))
 
 	std::cout << sizeof(underlying) << std::endl;
 
-	
+
 	//OutstationEventBuffer buffer(underlying.GetFacade());
 
 	//MockEventWriter writer;
 
-	//SelectionCriteria criteria;	
+	//SelectionCriteria criteria;
 	//REQUIRE(0, buffer.SelectEvents(criteria ==  writer));
 	//REQUIRE(0, buffer.SelectEvents(criteria ==  writer));
 	//REQUIRE(0 ==  writer.TotalEvents());
-	
+
 }
 
 TEST_CASE(SUITE("SingleValueIsWrittenAndCleared"))
@@ -80,7 +80,7 @@ TEST_CASE(SUITE("SingleValueIsWrittenAndCleared"))
 
 	SelectionCriteria criteria;
 	criteria.class1 = EventTypeMasks::BINARY;
-	
+
 	REQUIRE(1, buffer.SelectEvents(criteria ==  writer));
 	REQUIRE(1 ==  writer.TotalEvents());
 	REQUIRE(0, buffer.SelectEvents(criteria ==  writer)); //second select does nothing
@@ -112,7 +112,7 @@ TEST_CASE(SUITE("MixedTypesAndClassesOfEvents"))
 {
 	DynamicallyAllocatedEventBuffer underlying(3,3,3, 3);
 	OutstationEventBuffer buffer(underlying.GetFacade());
-	
+
 	buffer.Update(Event<Binary>(Binary(true), 3, EventClass::EC1));
 	buffer.Update(Event<Binary>(Binary(true), 5, EventClass::EC3));
 	buffer.Update(Event<Analog>(Analog(16), 1, EventClass::EC2));
@@ -120,18 +120,18 @@ TEST_CASE(SUITE("MixedTypesAndClassesOfEvents"))
 	buffer.Update(Event<Counter>(Counter(23), 3, EventClass::EC2));
 	buffer.Update(Event<Counter>(Counter(42), 4, EventClass::EC2));
 	buffer.Update(Event<Counter>(Counter(81), 9, EventClass::EC3));
-		
+
 	//construct a select query that designates much, but not all of the data in the buffer
 	SelectionCriteria criteria;
 	criteria.class1 = EventTypeMasks::BINARY;
 	criteria.class2 = EventTypeMasks::COUNTER;
 	criteria.class3 = EventTypeMasks::ANALOG | EventTypeMasks::COUNTER;
-	
+
 	REQUIRE(5 ==  buffer.NumUnselectedMatching(criteria));
 
 	MockEventWriter writer;
 	uint32_t selected = buffer.SelectEvents(criteria, writer);
-	
+
 	REQUIRE(5 ==  selected);
 	REQUIRE(5 ==  buffer.SelectedEvents().Total());
 	REQUIRE(5 ==  writer.TotalEvents());

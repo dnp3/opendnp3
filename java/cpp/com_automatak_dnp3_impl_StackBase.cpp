@@ -35,17 +35,20 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_StackBase_add_1native_1stack
 	JavaVM* pJVM = JNIHelpers::GetJVMFromEnv(apEnv);
 	jobject global = apEnv->NewGlobalRef(jproxy);
 	auto pExecutor = pStack->GetExecutor();
-	pStack->AddDestructorHook([pJVM, global, pExecutor]() {
-		pExecutor->Post([pJVM, global]() {
+	pStack->AddDestructorHook([pJVM, global, pExecutor]()
+	{
+		pExecutor->Post([pJVM, global]()
+		{
 			JNIHelpers::DeleteGlobalReference(pJVM, global);
 		});
 	});
-	
-	pStack->AddStateListener([pJVM, pExecutor, global](StackState state) {					
+
+	pStack->AddStateListener([pJVM, pExecutor, global](StackState state)
+	{
 		JNIEnv* pEnv = JNIHelpers::GetEnvFromJVM(pJVM);
 		jmethodID changeID = JNIHelpers::GetMethodID(pEnv, global, "onStackStateChange", "(I)V");
 		int intstate = (int) state;
-		pEnv->CallIntMethod(global, changeID, intstate);			
+		pEnv->CallIntMethod(global, changeID, intstate);
 	});
 }
 

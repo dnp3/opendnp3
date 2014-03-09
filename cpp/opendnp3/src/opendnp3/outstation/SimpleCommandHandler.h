@@ -42,23 +42,23 @@ public:
 
 	CommandStatus Supports(const ControlRelayOutputBlock& arCommand, uint16_t aIndex) final;
 	CommandStatus Perform(const ControlRelayOutputBlock& arCommand, uint16_t aIndex) final;
-	
+
 
 	CommandStatus Supports(const AnalogOutputInt16& arCommand, uint16_t aIndex) final;
 	CommandStatus Perform(const AnalogOutputInt16& arCommand, uint16_t aIndex) final;
-	
+
 
 	CommandStatus Supports(const AnalogOutputInt32& arCommand, uint16_t aIndex) final;
 	CommandStatus Perform(const AnalogOutputInt32& arCommand, uint16_t aIndex) final;
-	
+
 
 	CommandStatus Supports(const AnalogOutputFloat32& arCommand, uint16_t aIndex) final;
 	CommandStatus Perform(const AnalogOutputFloat32& arCommand, uint16_t aIndex) final;
-	
+
 
 	CommandStatus Supports(const AnalogOutputDouble64& arCommand, uint16_t aIndex) final;
 	CommandStatus Perform(const AnalogOutputDouble64& arCommand, uint16_t aIndex) final;
-	
+
 
 private:
 	std::function<CommandStatus ()> mStatusFunc;
@@ -67,7 +67,8 @@ private:
 class SuccessCommandHandler : public SimpleCommandHandler
 {
 public:
-	static SuccessCommandHandler* Inst() {
+	static SuccessCommandHandler* Inst()
+	{
 		return &mHandler;
 	}
 

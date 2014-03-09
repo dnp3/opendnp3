@@ -30,7 +30,7 @@ namespace opendnp3
 // an index parser is an abstraction for reading index prefixes
 class IndexParser
 {
-	public:
+public:
 
 	/**
 		* Reads the index and possibly widens the type to 32bit depending on the underlying implementation
@@ -50,24 +50,27 @@ class IndexParser
 template <class ParserType>
 class TypedIndexParser : public IndexParser
 {
-	public:
+public:
 
-	static IndexParser*	Inst() { return &mInstance; }
-		
-	virtual uint32_t ReadIndex(openpal::ReadOnlyBuffer& buffer) override 
-	{ 
-		return ParserType::ReadBuffer(buffer); 
+	static IndexParser*	Inst()
+	{
+		return &mInstance;
 	}
-	
+
+	virtual uint32_t ReadIndex(openpal::ReadOnlyBuffer& buffer) override
+	{
+		return ParserType::ReadBuffer(buffer);
+	}
+
 	virtual uint32_t IndexSize() override
-	{ 
-		return ParserType::Size; 
+	{
+		return ParserType::Size;
 	}
 
-	private:
+private:
 
 	static TypedIndexParser mInstance;
-			
+
 	TypedIndexParser() {}
 	TypedIndexParser(const TypedIndexParser&);
 };

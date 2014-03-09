@@ -86,11 +86,13 @@ std::string LinkHeader::ToString() const
 	oss << " : " << LinkFunctionToString(this->GetFuncEnum());
 	oss << " PayloadSize: " << (this->GetLength() - 5);
 	oss << ((this->IsFromMaster()) ? " From Master" : " From Outstation");
-	if(this->IsPriToSec()) {
+	if(this->IsPriToSec())
+	{
 		oss << " Pri->Sec";
 		oss << " FCB=" << this->IsFcbSet() << " FCV=" << this->IsFcvDfcSet();
 	}
-	else {
+	else
+	{
 		oss << " Sec->Pri";
 		if(this->IsFcbSet()) oss << " ERROR: FCB not Blank!!";
 		oss << " DFC=" << this->IsFcvDfcSet();

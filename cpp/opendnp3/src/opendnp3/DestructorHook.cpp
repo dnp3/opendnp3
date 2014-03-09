@@ -37,9 +37,13 @@ DestructorHook::DestructorHook() : mpExecutor(nullptr)
 
 DestructorHook::~DestructorHook()
 {
-	for(auto func: mHooks) {
+	for(auto func : mHooks)
+	{
 		if(mpExecutor == nullptr) func();
-		else mpExecutor->Post([func](){ func(); });
+		else mpExecutor->Post([func]()
+		{
+			func();
+		});
 	}
 }
 

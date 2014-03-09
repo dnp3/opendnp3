@@ -26,7 +26,7 @@ namespace opendnp3
 {
 
 Timeout::Timeout(std::chrono::steady_clock::duration aTimeout)
-: mExpireTime(std::chrono::steady_clock::now() + aTimeout)
+	: mExpireTime(std::chrono::steady_clock::now() + aTimeout)
 {
 
 }

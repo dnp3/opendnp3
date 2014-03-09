@@ -50,13 +50,13 @@ class DNP3Channel: public IChannel, private openpal::Loggable
 {
 public:
 	DNP3Channel(
-					openpal::Logger logger,
-					openpal::TimeDuration minOpenRetry,
-					openpal::TimeDuration maxOpenRetry,
-					IOpenDelayStrategy* pStrategy,
-					IPhysicalLayerAsync* pPhys,
-					std::function<void (DNP3Channel*)> onShutdown
-				);
+	    openpal::Logger logger,
+	    openpal::TimeDuration minOpenRetry,
+	    openpal::TimeDuration maxOpenRetry,
+	    IOpenDelayStrategy* pStrategy,
+	    IPhysicalLayerAsync* pPhys,
+	    std::function<void (DNP3Channel*)> onShutdown
+	);
 
 	~DNP3Channel();
 
@@ -69,23 +69,23 @@ public:
 	openpal::IExecutor* GetExecutor();
 
 	IMaster* AddMaster(		const std::string& arLoggerId,
-	                                LogLevel aLevel,
-	                                ISOEHandler* apPublisher,
-	                                openpal::IUTCTimeSource* apTimeSource,
-	                                const MasterStackConfig& arCfg);
+	                        LogLevel aLevel,
+	                        ISOEHandler* apPublisher,
+	                        openpal::IUTCTimeSource* apTimeSource,
+	                        const MasterStackConfig& arCfg);
 
 	IOutstation* AddOutstation(	const std::string& arLoggerId,
-	                                LogLevel aLevel,
-	                                ICommandHandler* apCmdHandler,
-	                                ITimeWriteHandler* apTimeWriteHandler,
-	                                const SlaveStackConfig&);
+	                            LogLevel aLevel,
+	                            ICommandHandler* apCmdHandler,
+	                            ITimeWriteHandler* apTimeWriteHandler,
+	                            const SlaveStackConfig&);
 
 	// Helper functions only available inside DNP3Manager
 
 private:
 
 	std::function<void (bool)> GetEnableDisableRoute(IExecutor*, LinkLayerRouter*, LinkRoute);
-	
+
 
 	void Cleanup();
 
@@ -93,7 +93,7 @@ private:
 	std::auto_ptr<IPhysicalLayerAsync> mpPhys;
 	std::function<void (DNP3Channel*)> mOnShutdown;
 	LinkLayerRouter mRouter;
-	
+
 	AsyncTaskGroup mGroup;
 
 	std::set<IStack*> mStacks;

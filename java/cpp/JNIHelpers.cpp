@@ -50,7 +50,7 @@ void JNIHelpers::DetachThread(JavaVM* apJVM)
 
 void JNIHelpers::DeleteGlobalReference(JavaVM* apJVM, jobject ref)
 {
-	 GetEnvFromJVM(apJVM)->DeleteGlobalRef(ref);	
+	GetEnvFromJVM(apJVM)->DeleteGlobalRef(ref);
 }
 
 
@@ -81,7 +81,7 @@ jmethodID JNIHelpers::GetMethodID(JNIEnv* apEnv, jclass clazz, const char* name,
 jclass JNIHelpers::GetClassForObject(JNIEnv* apEnv, jobject obj)
 {
 	jclass clazz = apEnv->GetObjectClass(obj);
-	assert(clazz != nullptr);	
+	assert(clazz != nullptr);
 	return clazz;
 }
 
@@ -93,21 +93,21 @@ jmethodID JNIHelpers::GetMethodID(JNIEnv* apEnv, jobject obj, const char* name, 
 jint JNIHelpers::GetIntField(JNIEnv* apEnv, jobject obj, const char* fieldId)
 {
 	jfieldID field = apEnv->GetFieldID(GetClassForObject(apEnv, obj), fieldId, "I");
-	assert(field != nullptr);	
+	assert(field != nullptr);
 	return apEnv->GetIntField(obj, field);
 }
 
 jlong JNIHelpers::GetLongField(JNIEnv* apEnv, jobject obj, const char* fieldId)
 {
 	jfieldID field = apEnv->GetFieldID(GetClassForObject(apEnv, obj), fieldId, "J");
-	assert(field != nullptr);	
+	assert(field != nullptr);
 	return apEnv->GetLongField(obj, field);
 }
 
 bool JNIHelpers::GetBoolField(JNIEnv* apEnv, jobject obj, const char* fieldId)
 {
 	jfieldID field = apEnv->GetFieldID(GetClassForObject(apEnv, obj), fieldId, "Z");
-	assert(field != nullptr);	
+	assert(field != nullptr);
 	return apEnv->GetBooleanField(obj, field);
 }
 
@@ -122,9 +122,9 @@ jobject JNIHelpers::GetObjectField(JNIEnv* apEnv, jobject obj, const char* field
 {
 
 	jfieldID field = apEnv->GetFieldID(GetClassForObject(apEnv, obj), fieldId, fqcn);
-	assert(field != nullptr);	
+	assert(field != nullptr);
 	jobject ret = apEnv->GetObjectField(obj, field);
-	assert(ret != nullptr);	
+	assert(ret != nullptr);
 	return ret;
 }
 
@@ -135,10 +135,10 @@ void JNIHelpers::IterateOverListOfObjects(JNIEnv* apEnv, jobject list, std::func
 
 	jmethodID getMID = JNIHelpers::GetMethodID(apEnv, list, "get", "(I)Ljava/lang/Object;");
 
-	for(jint i = 0; i < size; ++i) 
+	for(jint i = 0; i < size; ++i)
 	{
 		jobject obj = apEnv->CallObjectMethod(list, getMID, i);
-		assert(obj != nullptr);		
+		assert(obj != nullptr);
 		fun(obj);
 	}
 }

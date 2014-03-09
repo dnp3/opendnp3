@@ -52,11 +52,11 @@ class LinkLayerRouter : public PhysicalLayerMonitor, public IFrameSink, public I
 {
 public:
 
-	LinkLayerRouter(openpal::Logger, 
-					openpal::IPhysicalLayerAsync*, 
-					openpal::TimeDuration minOpenRetry, 
-					openpal::TimeDuration maxOpenRetry,
-					IOpenDelayStrategy* pStrategy = ExponentialBackoffStrategy::Inst());
+	LinkLayerRouter(openpal::Logger,
+	                openpal::IPhysicalLayerAsync*,
+	                openpal::TimeDuration minOpenRetry,
+	                openpal::TimeDuration maxOpenRetry,
+	                IOpenDelayStrategy* pStrategy = ExponentialBackoffStrategy::Inst());
 
 	bool IsRouteInUse(const LinkRoute& arRoute);
 
@@ -105,9 +105,9 @@ private:
 
 	class ContextRecord
 	{
-		public:
-			ContextRecord(ILinkContext* context) : pContext(context), enabled(false)
-			{}
+	public:
+		ContextRecord(ILinkContext* context) : pContext(context), enabled(false)
+		{}
 
 		ContextRecord() : pContext(nullptr), enabled(false)
 		{}
@@ -148,7 +148,8 @@ private:
 	void OnPhysicalLayerOpenFailureCallback() {}
 	void OnPhysicalLayerCloseCallback();
 
-	std::string RecvString() {
+	std::string RecvString()
+	{
 		return "<~";
 	}
 

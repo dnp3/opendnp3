@@ -17,11 +17,11 @@ public:
 
 	OutstationAdapter(opendnp3::IOutstation* apOutstation);
 
-	virtual IDataObserver ^ GetDataObserver();
+	virtual IDataObserver^ GetDataObserver();
 
 	virtual void SetNeedTimeIIN();
 
-	virtual void AddStateListener(System::Action<StackState> ^ aListener);
+	virtual void AddStateListener(System::Action<StackState>^ aListener);
 
 	virtual void Shutdown();
 
@@ -31,7 +31,7 @@ public:
 
 private:
 	opendnp3::IOutstation* mpOutstation;
-	IDataObserver ^ mDataObserverAdapter;
+	IDataObserver^ mDataObserverAdapter;
 };
 
 }

@@ -43,13 +43,13 @@ class OutstationStackImpl : public IOutstation
 public:
 
 	OutstationStackImpl(
-	        openpal::Logger&,
-	        openpal::IExecutor* apExecutor,
-	        ITimeWriteHandler* apTimeWriteHandler,
-	        ICommandHandler* apCmdHandler,
-	        const SlaveStackConfig& arCfg,			
-			std::function<void (bool)> aEnableDisableFunc,
-	        std::function<void (IOutstation*)> aOnShutdown);
+	    openpal::Logger&,
+	    openpal::IExecutor* apExecutor,
+	    ITimeWriteHandler* apTimeWriteHandler,
+	    ICommandHandler* apCmdHandler,
+	    const SlaveStackConfig& arCfg,
+	    std::function<void (bool)> aEnableDisableFunc,
+	    std::function<void (IOutstation*)> aOnShutdown);
 
 	IDataObserver* GetDataObserver();
 
@@ -59,7 +59,10 @@ public:
 
 	void SetLinkRouter(ILinkRouter* apRouter);
 
-	openpal::IExecutor* GetExecutor() { return mpExecutor; }
+	openpal::IExecutor* GetExecutor()
+	{
+		return mpExecutor;
+	}
 
 	void AddStateListener(std::function<void (StackState)> aListener);
 

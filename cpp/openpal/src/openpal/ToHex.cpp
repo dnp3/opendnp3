@@ -35,7 +35,8 @@ std::string toHex(const uint8_t* apBuff, size_t aLength, bool spaced)
 {
 	std::ostringstream oss;
 	size_t last = aLength - 1;
-	for(size_t i = 0; i < aLength; i++) {
+	for(size_t i = 0; i < aLength; i++)
+	{
 		char c = apBuff[i];
 		oss << toHex((c & 0xf0) >> 4) << toHex(c & 0xf);
 		if(spaced && i != last)oss << " ";

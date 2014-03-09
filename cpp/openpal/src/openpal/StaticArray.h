@@ -33,40 +33,46 @@ template <class ValueType, class IndexType, IndexType N>
 class StaticArray : public HasSize<IndexType>
 {
 
-	public:
+public:
 
-		static_assert(N > 0, "StaticArray must have size  > 0");
+	static_assert(N > 0, "StaticArray must have size  > 0");
 
-		StaticArray() : HasSize<IndexType>(N)			
-		{}
-		
-		inline Indexable<ValueType, IndexType> ToIndexable()
-		{
-			return Indexable<ValueType, IndexType>(buffer, N);
-		}		
+	StaticArray() : HasSize<IndexType>(N)
+	{}
 
-		inline ValueType const * Buffer() const { return buffer; };
+	inline Indexable<ValueType, IndexType> ToIndexable()
+	{
+		return Indexable<ValueType, IndexType>(buffer, N);
+	}
 
-		inline ValueType* Buffer() { return buffer; };		
+	inline ValueType const* Buffer() const
+	{
+		return buffer;
+	};
 
-		inline ValueType& operator[](IndexType index) 
-		{
-			assert(index < N);
-			return buffer[index];
-		}
+	inline ValueType* Buffer()
+	{
+		return buffer;
+	};
 
-		inline const ValueType& operator[](IndexType index) const
-		{ 
-			assert(index < N);
-			return buffer[index];
-		}		
-		
-	protected:
-		ValueType buffer[N];
+	inline ValueType& operator[](IndexType index)
+	{
+		assert(index < N);
+		return buffer[index];
+	}
 
-	private:		
-		StaticArray(const StaticArray&);
-		StaticArray& operator= (const StaticArray&);		
+	inline const ValueType& operator[](IndexType index) const
+	{
+		assert(index < N);
+		return buffer[index];
+	}
+
+protected:
+	ValueType buffer[N];
+
+private:
+	StaticArray(const StaticArray&);
+	StaticArray& operator= (const StaticArray&);
 };
 
 }

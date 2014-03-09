@@ -40,7 +40,8 @@ bool IsFrameEqual(LinkFrame& frame, const std::string& arData)
 	if(frame.GetSize() != hs.Size()) return false;
 	uint8_t* buff = frame.GetBuffer();
 
-	for(size_t i = 0; i < hs.Size(); i++) {
+	for(size_t i = 0; i < hs.Size(); i++)
+	{
 		if(buff[i] != hs[i]) return false;
 	}
 
@@ -60,7 +61,8 @@ std::string RepairCRC(const std::string& arData)
 	size_t partial_size = (hs.Size() - 10) % 18;
 
 	//can't have a partial size < 3 since even 1 byte requires 2 CRC bytes
-	if(partial_size > 0) {
+	if(partial_size > 0)
+	{
 		REQUIRE(partial_size >= 3);
 	}
 
@@ -70,7 +72,8 @@ std::string RepairCRC(const std::string& arData)
 	uint8_t* ptr = hs + 10;
 
 	// repair the full blocks
-	for(size_t i = 0; i < full_blocks; i++) {
+	for(size_t i = 0; i < full_blocks; i++)
+	{
 		DNPCrc::AddCrc(ptr, 16);
 		ptr += 18;
 	}

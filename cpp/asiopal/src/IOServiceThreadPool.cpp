@@ -37,10 +37,10 @@ namespace asiopal
 {
 
 IOServiceThreadPool::IOServiceThreadPool(
-        openpal::Logger aLogger,
-        uint32_t aConcurrency,
-        std::function<void()> onThreadStart,
-        std::function<void()> onThreadExit) :
+    openpal::Logger aLogger,
+    uint32_t aConcurrency,
+    std::function<void()> onThreadStart,
+    std::function<void()> onThreadExit) :
 	Loggable(aLogger),
 	mOnThreadStart(onThreadStart),
 	mOnThreadExit(onThreadExit),
@@ -48,13 +48,15 @@ IOServiceThreadPool::IOServiceThreadPool(
 	mService(),
 	infiniteTimer(mService)
 {
-	if(aConcurrency == 0) {
+	if(aConcurrency == 0)
+	{
 		aConcurrency = 1;
 		LOG_BLOCK(LogLevel::Warning, "Concurrency was set to 0, defaulting to 1 thread");
 	}
 	infiniteTimer.expires_at(std::chrono::steady_clock::time_point::max());
 	infiniteTimer.async_wait(bind(&IOServiceThreadPool::OnTimerExpiration, this, placeholders::_1));
-	for(uint32_t i = 0; i < aConcurrency; ++i) {
+	for(uint32_t i = 0; i < aConcurrency; ++i)
+	{
 		mThreads.push_back(new thread(bind(&IOServiceThreadPool::Run, this)));
 	}
 }
@@ -67,17 +69,19 @@ void IOServiceThreadPool::OnTimerExpiration(const std::error_code& ec)
 IOServiceThreadPool::~IOServiceThreadPool()
 {
 	this->Shutdown();
-for(auto pThread: mThreads) {
+	for(auto pThread : mThreads)
+	{
 		delete pThread;
 	}
 }
 
 void IOServiceThreadPool::Shutdown()
 {
-	if(!mIsShutdown) {
+	if(!mIsShutdown)
+	{
 		mIsShutdown = true;
 		infiniteTimer.cancel();
-		for(auto pThread: mThreads) pThread->join();
+		for(auto pThread : mThreads) pThread->join();
 	}
 }
 
@@ -92,16 +96,16 @@ void IOServiceThreadPool::Run()
 
 	mOnThreadStart();
 
-	do 
+	do
 	{
-		try 
+		try
 		{
 			num = mService.run();
 		}
-		catch(const std::exception& ex) 
+		catch(const std::exception& ex)
 		{
-			num = 1;									
-			LOG_BLOCK(LogLevel::Error, "Unhandled exception in thread pool: " << ex.what());			
+			num = 1;
+			LOG_BLOCK(LogLevel::Error, "Unhandled exception in thread pool: " << ex.what());
 		}
 	}
 	while(num > 0);

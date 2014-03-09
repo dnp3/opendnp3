@@ -50,7 +50,8 @@ public:
 	openpal::MonotonicTimestamp GetTime();
 
 	/** Turns the auto-post feature on/off. When Auto post is on, Post() is executed synchronously */
-	void SetAutoPost(bool aAutoPost) {
+	void SetAutoPost(bool aAutoPost)
+	{
 		this->mPostIsSynchronous = aAutoPost;
 	}
 
@@ -66,7 +67,8 @@ public:
 	size_t Dispatch(size_t aMaximum = std::numeric_limits<size_t>::max());
 
 	/** @returns The number of active, pending timers and post operations */
-	size_t NumActive() {
+	size_t NumActive()
+	{
 		return mTimerMap.size() + mPostQueue.size();
 	}
 

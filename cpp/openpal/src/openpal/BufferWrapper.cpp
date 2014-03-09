@@ -25,92 +25,92 @@
 
 namespace openpal
 {
-	ReadOnlyBuffer::ReadOnlyBuffer(): HasSize(0), mpBuffer(nullptr)
-	{}
+ReadOnlyBuffer::ReadOnlyBuffer(): HasSize(0), mpBuffer(nullptr)
+{}
 
-	ReadOnlyBuffer::ReadOnlyBuffer(uint8_t const* apBuffer, uint32_t aSize) :
-		HasSize(aSize),
-		mpBuffer(apBuffer)
-	{}
+ReadOnlyBuffer::ReadOnlyBuffer(uint8_t const* apBuffer, uint32_t aSize) :
+	HasSize(aSize),
+	mpBuffer(apBuffer)
+{}
 
-	void ReadOnlyBuffer::CopyTo(uint8_t* apDest) const
+void ReadOnlyBuffer::CopyTo(uint8_t* apDest) const
+{
+	memcpy(apDest, mpBuffer, size);
+}
+
+ReadOnlyBuffer ReadOnlyBuffer::Truncate(uint32_t aSize) const
+{
+	assert(aSize <= size);
+	return ReadOnlyBuffer(mpBuffer, aSize);
+}
+
+void ReadOnlyBuffer::ZeroSize()
+{
+	size = 0;
+}
+
+bool ReadOnlyBuffer::Equals(const ReadOnlyBuffer& rhs) const
+{
+	if (this->Size() == rhs.Size())
 	{
-		memcpy(apDest, mpBuffer, size);
+		return memcmp(mpBuffer, rhs.mpBuffer, Size()) == 0;
 	}
-
-	ReadOnlyBuffer ReadOnlyBuffer::Truncate(uint32_t aSize) const
+	else
 	{
-		assert(aSize <= size);
-		return ReadOnlyBuffer(mpBuffer, aSize);
+		return false;
 	}
+}
 
-	void ReadOnlyBuffer::ZeroSize()
-	{
-		size = 0;
-	}
+void ReadOnlyBuffer::Advance(uint32_t aNum)
+{
+	assert(aNum <= size);
+	mpBuffer += aNum;
+	size -= aNum;
+}
 
-	bool ReadOnlyBuffer::Equals(const ReadOnlyBuffer& rhs) const
-	{
-		if (this->Size() == rhs.Size())
-		{
-			return memcmp(mpBuffer, rhs.mpBuffer, Size()) == 0;
-		}
-		else
-		{
-			return false;
-		}
-	}
+WriteBuffer WriteBuffer::Empty()
+{
+	return WriteBuffer();
+}
 
-	void ReadOnlyBuffer::Advance(uint32_t aNum)
-	{
-		assert(aNum <= size);
-		mpBuffer += aNum;
-		size -= aNum;
-	}
+WriteBuffer::WriteBuffer(const WriteBuffer& copy) : HasSize(copy) , mpBuffer(copy.mpBuffer)
+{
 
-	WriteBuffer WriteBuffer::Empty()
-	{
-		return WriteBuffer();
-	}
+}
 
-	WriteBuffer::WriteBuffer(const WriteBuffer& copy) : HasSize(copy) , mpBuffer(copy.mpBuffer)
-	{
-		
-	}
+WriteBuffer::WriteBuffer(): HasSize(0), mpBuffer(nullptr)
+{
 
-	WriteBuffer::WriteBuffer(): HasSize(0), mpBuffer(nullptr)
-	{
-		
-	}
+}
 
-	WriteBuffer::WriteBuffer(uint8_t* apBuffer, uint32_t aSize) :
-		HasSize(aSize),
-		mpBuffer(apBuffer)
-	{}
+WriteBuffer::WriteBuffer(uint8_t* apBuffer, uint32_t aSize) :
+	HasSize(aSize),
+	mpBuffer(apBuffer)
+{}
 
-	void WriteBuffer::Clear()
-	{
-		mpBuffer = nullptr;
-		size = 0;
-	}
+void WriteBuffer::Clear()
+{
+	mpBuffer = nullptr;
+	size = 0;
+}
 
-	WriteBuffer WriteBuffer::Truncate(uint32_t aNum) const
-	{
-		assert(aNum <= size);
-		return WriteBuffer(mpBuffer, aNum);
-	}
+WriteBuffer WriteBuffer::Truncate(uint32_t aNum) const
+{
+	assert(aNum <= size);
+	return WriteBuffer(mpBuffer, aNum);
+}
 
-	void WriteBuffer::Advance(uint32_t aNum)
-	{
-		assert(aNum <= size);
-		mpBuffer += aNum;
-		size -= aNum;
-	}
+void WriteBuffer::Advance(uint32_t aNum)
+{
+	assert(aNum <= size);
+	mpBuffer += aNum;
+	size -= aNum;
+}
 
-	ReadOnlyBuffer WriteBuffer::ToReadOnly() const
-	{
-		return ReadOnlyBuffer(mpBuffer, size);
-	}
+ReadOnlyBuffer WriteBuffer::ToReadOnly() const
+{
+	return ReadOnlyBuffer(mpBuffer, size);
+}
 
 }
 

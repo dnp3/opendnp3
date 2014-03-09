@@ -30,17 +30,17 @@ namespace opendnp3
 {
 
 class DynamicallyAllocatedDatabase
-{	
-	public:
+{
+public:
 
 	DynamicallyAllocatedDatabase(const DatabaseTemplate& databaseTemplate);
 
-	StaticDataFacade GetFacade();	
+	StaticDataFacade GetFacade();
 
 	void Configure(const DatabaseConfiguration& dataTemplate);
 
-	private:
-	
+private:
+
 	openpal::DynamicArray<DualValue<Binary>, uint16_t> binaryValues;
 	openpal::DynamicArray<DualValue<Analog>, uint16_t> analogValues;
 	openpal::DynamicArray<DualValue<Counter>, uint16_t> counterValues;

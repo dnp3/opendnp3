@@ -31,7 +31,8 @@ namespace opendnp3
 /** A composite configuration struct that contains all the config
 	information for a dnp3 master stack
 */
-struct MasterStackConfig {
+struct MasterStackConfig
+{
 	MasterStackConfig() :
 		link(true, false),
 		app(true)

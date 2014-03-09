@@ -51,10 +51,13 @@ public:
 	virtual void _OnIndexPrefix(const IterableBuffer<IndexedValue<AnalogOutputFloat32, uint8_t>>& meas) override final;
 	virtual void _OnIndexPrefix(const IterableBuffer<IndexedValue<AnalogOutputDouble64, uint8_t>>& meas) override final;
 
-	bool AllCommandsSuccessful() const { return numRequests == numSuccess; }
+	bool AllCommandsSuccessful() const
+	{
+		return numRequests == numSuccess;
+	}
 
 private:
-			
+
 	ICommandAction* pCommandAction;
 	uint32_t numRequests;
 	uint32_t numSuccess;
@@ -68,21 +71,22 @@ private:
 
 template <class Target, class IndexType>
 void CommandResponseHandler::RespondToHeader(QualifierCode qualifier, IDNP3Serializer<Target>* pSerializer, const IterableBuffer<IndexedValue<Target, typename IndexType::Type>>& meas)
-{		
+{
 	auto iter = writer.IterateOverCountWithPrefix<IndexType, Target>(qualifier, pSerializer);
-	meas.foreach([this, &iter](const IndexedValue<Target, typename IndexType::Type>& command) {				
+	meas.foreach([this, &iter](const IndexedValue<Target, typename IndexType::Type>& command)
+	{
 		auto result = CommandStatus::TOO_MANY_OPS;
-		if (numRequests < maxCommands) 
+		if (numRequests < maxCommands)
 		{
 			result = pCommandAction->Action(command.value, command.index);
-		}		
+		}
 		if (result == CommandStatus::SUCCESS) ++numSuccess;
 		Target response(command.value);
 		response.status = result;
 		iter.Write(response, command.index);
 		++numRequests;
 	});
-	iter.Complete();	
+	iter.Complete();
 }
 
 }

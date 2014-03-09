@@ -8,10 +8,10 @@
 //                                           __/ |
 //                                          |___/
 // Copyright 2013 Automatak LLC
-// 
+//
 // Automatak LLC (www.automatak.com) licenses this file
 // to you under the the Apache License Version 2.0 (the "License"):
-// 
+//
 // http://www.apache.org/licenses/LICENSE-2.0.html
 //
 
@@ -23,128 +23,165 @@
 #include "opendnp3/app/IDNP3Serializer.h"
 #include "opendnp3/app/MeasurementTypes.h"
 
-namespace opendnp3 {
+namespace opendnp3
+{
 
 struct Group20Var1
 {
-  static const GroupVariationID ID;
-  typedef Counter Target;
-  static const uint32_t SIZE = 5;
-  static Group20Var1 Read(openpal::ReadOnlyBuffer&);
-  static void Write(const Group20Var1&, openpal::WriteBuffer&);
+	static const GroupVariationID ID;
+	typedef Counter Target;
+	static const uint32_t SIZE = 5;
+	static Group20Var1 Read(openpal::ReadOnlyBuffer&);
+	static void Write(const Group20Var1&, openpal::WriteBuffer&);
 
-  typedef uint32_t ValueType;
-  uint8_t flags;
-  uint32_t value;
+	typedef uint32_t ValueType;
+	uint8_t flags;
+	uint32_t value;
 };
 
 struct Group20Var1Serializer : public IDNP3Serializer<Counter>
 {
 
-  static IDNP3Serializer<Counter>* Inst() { return &mInstance; }
+	static IDNP3Serializer<Counter>* Inst()
+	{
+		return &mInstance;
+	}
 
-  GroupVariationID ID() const { return Group20Var1::ID; }
+	GroupVariationID ID() const
+	{
+		return Group20Var1::ID;
+	}
 
-  uint32_t Size() const { return Group20Var1::SIZE; }
+	uint32_t Size() const
+	{
+		return Group20Var1::SIZE;
+	}
 
-  typedef Counter Target;
-  Counter Read(openpal::ReadOnlyBuffer&) const;
-  void Write(const Counter&, openpal::WriteBuffer&) const;
+	typedef Counter Target;
+	Counter Read(openpal::ReadOnlyBuffer&) const;
+	void Write(const Counter&, openpal::WriteBuffer&) const;
 
-  private:
+private:
 
-  static Group20Var1Serializer mInstance;
+	static Group20Var1Serializer mInstance;
 };
 
 struct Group20Var2
 {
-  static const GroupVariationID ID;
-  typedef Counter Target;
-  static const uint32_t SIZE = 3;
-  static Group20Var2 Read(openpal::ReadOnlyBuffer&);
-  static void Write(const Group20Var2&, openpal::WriteBuffer&);
+	static const GroupVariationID ID;
+	typedef Counter Target;
+	static const uint32_t SIZE = 3;
+	static Group20Var2 Read(openpal::ReadOnlyBuffer&);
+	static void Write(const Group20Var2&, openpal::WriteBuffer&);
 
-  typedef uint16_t ValueType;
-  uint8_t flags;
-  uint16_t value;
+	typedef uint16_t ValueType;
+	uint8_t flags;
+	uint16_t value;
 };
 
 struct Group20Var2Serializer : public IDNP3Serializer<Counter>
 {
 
-  static IDNP3Serializer<Counter>* Inst() { return &mInstance; }
+	static IDNP3Serializer<Counter>* Inst()
+	{
+		return &mInstance;
+	}
 
-  GroupVariationID ID() const { return Group20Var2::ID; }
+	GroupVariationID ID() const
+	{
+		return Group20Var2::ID;
+	}
 
-  uint32_t Size() const { return Group20Var2::SIZE; }
+	uint32_t Size() const
+	{
+		return Group20Var2::SIZE;
+	}
 
-  typedef Counter Target;
-  Counter Read(openpal::ReadOnlyBuffer&) const;
-  void Write(const Counter&, openpal::WriteBuffer&) const;
+	typedef Counter Target;
+	Counter Read(openpal::ReadOnlyBuffer&) const;
+	void Write(const Counter&, openpal::WriteBuffer&) const;
 
-  private:
+private:
 
-  static Group20Var2Serializer mInstance;
+	static Group20Var2Serializer mInstance;
 };
 
 struct Group20Var5
 {
-  static const GroupVariationID ID;
-  typedef Counter Target;
-  static const uint32_t SIZE = 4;
-  static Group20Var5 Read(openpal::ReadOnlyBuffer&);
-  static void Write(const Group20Var5&, openpal::WriteBuffer&);
+	static const GroupVariationID ID;
+	typedef Counter Target;
+	static const uint32_t SIZE = 4;
+	static Group20Var5 Read(openpal::ReadOnlyBuffer&);
+	static void Write(const Group20Var5&, openpal::WriteBuffer&);
 
-  typedef uint32_t ValueType;
-  uint32_t value;
+	typedef uint32_t ValueType;
+	uint32_t value;
 };
 
 struct Group20Var5Serializer : public IDNP3Serializer<Counter>
 {
 
-  static IDNP3Serializer<Counter>* Inst() { return &mInstance; }
+	static IDNP3Serializer<Counter>* Inst()
+	{
+		return &mInstance;
+	}
 
-  GroupVariationID ID() const { return Group20Var5::ID; }
+	GroupVariationID ID() const
+	{
+		return Group20Var5::ID;
+	}
 
-  uint32_t Size() const { return Group20Var5::SIZE; }
+	uint32_t Size() const
+	{
+		return Group20Var5::SIZE;
+	}
 
-  typedef Counter Target;
-  Counter Read(openpal::ReadOnlyBuffer&) const;
-  void Write(const Counter&, openpal::WriteBuffer&) const;
+	typedef Counter Target;
+	Counter Read(openpal::ReadOnlyBuffer&) const;
+	void Write(const Counter&, openpal::WriteBuffer&) const;
 
-  private:
+private:
 
-  static Group20Var5Serializer mInstance;
+	static Group20Var5Serializer mInstance;
 };
 
 struct Group20Var6
 {
-  static const GroupVariationID ID;
-  typedef Counter Target;
-  static const uint32_t SIZE = 2;
-  static Group20Var6 Read(openpal::ReadOnlyBuffer&);
-  static void Write(const Group20Var6&, openpal::WriteBuffer&);
+	static const GroupVariationID ID;
+	typedef Counter Target;
+	static const uint32_t SIZE = 2;
+	static Group20Var6 Read(openpal::ReadOnlyBuffer&);
+	static void Write(const Group20Var6&, openpal::WriteBuffer&);
 
-  typedef uint16_t ValueType;
-  uint16_t value;
+	typedef uint16_t ValueType;
+	uint16_t value;
 };
 
 struct Group20Var6Serializer : public IDNP3Serializer<Counter>
 {
 
-  static IDNP3Serializer<Counter>* Inst() { return &mInstance; }
+	static IDNP3Serializer<Counter>* Inst()
+	{
+		return &mInstance;
+	}
 
-  GroupVariationID ID() const { return Group20Var6::ID; }
+	GroupVariationID ID() const
+	{
+		return Group20Var6::ID;
+	}
 
-  uint32_t Size() const { return Group20Var6::SIZE; }
+	uint32_t Size() const
+	{
+		return Group20Var6::SIZE;
+	}
 
-  typedef Counter Target;
-  Counter Read(openpal::ReadOnlyBuffer&) const;
-  void Write(const Counter&, openpal::WriteBuffer&) const;
+	typedef Counter Target;
+	Counter Read(openpal::ReadOnlyBuffer&) const;
+	void Write(const Counter&, openpal::WriteBuffer&) const;
 
-  private:
+private:
 
-  static Group20Var6Serializer mInstance;
+	static Group20Var6Serializer mInstance;
 };
 
 

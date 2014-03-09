@@ -30,80 +30,80 @@ template <class ValueType, class IndexType>
 class DynamicArray : public HasSize<IndexType>
 {
 
-	public:
-		
-		DynamicArray(IndexType aSize) : 
-			HasSize<IndexType>(aSize),
-			buffer(new ValueType[aSize])
-		{}
+public:
 
-		DynamicArray() : 
-			HasSize<IndexType>(0),
-			buffer(nullptr)
-		{}
+	DynamicArray(IndexType aSize) :
+		HasSize<IndexType>(aSize),
+		buffer(new ValueType[aSize])
+	{}
 
-		DynamicArray(const DynamicArray& copy) : 
-			HasSize<IndexType>(copy.Size()),
-			buffer(new ValueType[copy.Size()])
-		{
-			for(IndexType i=0; i<copy.Size(); ++i) buffer[i] = copy.buffer[i];
-		}
-		
-		Indexable<ValueType, IndexType> ToIndexable()
-		{
-			return Indexable<ValueType, IndexType>(buffer, this->size);
-		}
+	DynamicArray() :
+		HasSize<IndexType>(0),
+		buffer(nullptr)
+	{}
 
-		inline const bool Contains(IndexType index) const 
-		{
-			return index < this->size;
-		}
+	DynamicArray(const DynamicArray& copy) :
+		HasSize<IndexType>(copy.Size()),
+		buffer(new ValueType[copy.Size()])
+	{
+		for(IndexType i = 0; i < copy.Size(); ++i) buffer[i] = copy.buffer[i];
+	}
 
-		inline ValueType& operator[](IndexType index) 
-		{
-			assert(index < this->size);
-			return buffer[index];
-		}
+	Indexable<ValueType, IndexType> ToIndexable()
+	{
+		return Indexable<ValueType, IndexType>(buffer, this->size);
+	}
 
-		const ValueType& operator[](IndexType index) const
-		{ 
-			assert(index < this->size);
-			return buffer[index];
-		}
+	inline const bool Contains(IndexType index) const
+	{
+		return index < this->size;
+	}
 
-		template <class Action>
-		void foreach(const Action& action) const
-		{
-			for(IndexType i = 0; i < this->size; ++i) action(buffer[i]);
-		}
+	inline ValueType& operator[](IndexType index)
+	{
+		assert(index < this->size);
+		return buffer[index];
+	}
 
-		template <class Action>
-		void foreach(const Action& action)
-		{
-			for(IndexType i = 0; i < this->size; ++i) action(buffer[i]);
-		}
+	const ValueType& operator[](IndexType index) const
+	{
+		assert(index < this->size);
+		return buffer[index];
+	}
 
-		template <class Action>
-		void foreachIndex(const Action& action)
-		{
-			for(IndexType i = 0; i < this->size; ++i) action(buffer[i], i);
-		}	
+	template <class Action>
+	void foreach(const Action& action) const
+	{
+		for(IndexType i = 0; i < this->size; ++i) action(buffer[i]);
+	}
 
-		
-		template <class Action>
-		void foreachIndex(const Action& action) const
-		{
-			for(uint32_t i = 0; i < this->size; ++i) action(buffer[i], i);
-		}	
+	template <class Action>
+	void foreach(const Action& action)
+	{
+		for(IndexType i = 0; i < this->size; ++i) action(buffer[i]);
+	}
 
-		virtual ~DynamicArray()
-		{
-			delete[] buffer;
-		}					
-	
-	private:
-		ValueType* buffer;				
-		DynamicArray& operator=(const DynamicArray&);		
+	template <class Action>
+	void foreachIndex(const Action& action)
+	{
+		for(IndexType i = 0; i < this->size; ++i) action(buffer[i], i);
+	}
+
+
+	template <class Action>
+	void foreachIndex(const Action& action) const
+	{
+		for(uint32_t i = 0; i < this->size; ++i) action(buffer[i], i);
+	}
+
+	virtual ~DynamicArray()
+	{
+		delete[] buffer;
+	}
+
+private:
+	ValueType* buffer;
+	DynamicArray& operator=(const DynamicArray&);
 };
 
 }

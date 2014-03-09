@@ -46,7 +46,7 @@ public:
 	}
 
 	T current;
-	T frozen;		
+	T frozen;
 
 };
 

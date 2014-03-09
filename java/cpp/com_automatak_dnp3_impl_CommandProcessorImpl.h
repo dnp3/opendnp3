@@ -13,7 +13,7 @@ extern "C" {
  * Signature: (JISJJIJLcom/automatak/dnp3/impl/CommandResultCallback;)V
  */
 JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_CommandProcessorImpl_selectAndOperateCROB
-  (JNIEnv *, jobject, jlong, jint, jshort, jlong, jlong, jint, jlong, jobject);
+(JNIEnv*, jobject, jlong, jint, jshort, jlong, jlong, jint, jlong, jobject);
 
 /*
  * Class:     com_automatak_dnp3_impl_CommandProcessorImpl
@@ -21,7 +21,7 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_CommandProcessorImpl_selectA
  * Signature: (JISJJIJLcom/automatak/dnp3/impl/CommandResultCallback;)V
  */
 JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_CommandProcessorImpl_directOperateCROB
-  (JNIEnv *, jobject, jlong, jint, jshort, jlong, jlong, jint, jlong, jobject);
+(JNIEnv*, jobject, jlong, jint, jshort, jlong, jlong, jint, jlong, jobject);
 
 /*
  * Class:     com_automatak_dnp3_impl_CommandProcessorImpl
@@ -29,7 +29,7 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_CommandProcessorImpl_directO
  * Signature: (JIIJLcom/automatak/dnp3/impl/CommandResultCallback;)V
  */
 JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_CommandProcessorImpl_selectAndOperateAnalogInt32
-  (JNIEnv *, jobject, jlong, jint, jint, jlong, jobject);
+(JNIEnv*, jobject, jlong, jint, jint, jlong, jobject);
 
 /*
  * Class:     com_automatak_dnp3_impl_CommandProcessorImpl
@@ -37,7 +37,7 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_CommandProcessorImpl_selectA
  * Signature: (JIIJLcom/automatak/dnp3/impl/CommandResultCallback;)V
  */
 JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_CommandProcessorImpl_directOperateAnalogInt32
-  (JNIEnv *, jobject, jlong, jint, jint, jlong, jobject);
+(JNIEnv*, jobject, jlong, jint, jint, jlong, jobject);
 
 /*
  * Class:     com_automatak_dnp3_impl_CommandProcessorImpl
@@ -45,7 +45,7 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_CommandProcessorImpl_directO
  * Signature: (JSIJLcom/automatak/dnp3/impl/CommandResultCallback;)V
  */
 JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_CommandProcessorImpl_selectAndOperateAnalogInt16
-  (JNIEnv *, jobject, jlong, jshort, jint, jlong, jobject);
+(JNIEnv*, jobject, jlong, jshort, jint, jlong, jobject);
 
 /*
  * Class:     com_automatak_dnp3_impl_CommandProcessorImpl
@@ -53,7 +53,7 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_CommandProcessorImpl_selectA
  * Signature: (JSIJLcom/automatak/dnp3/impl/CommandResultCallback;)V
  */
 JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_CommandProcessorImpl_directOperateAnalogInt16
-  (JNIEnv *, jobject, jlong, jshort, jint, jlong, jobject);
+(JNIEnv*, jobject, jlong, jshort, jint, jlong, jobject);
 
 /*
  * Class:     com_automatak_dnp3_impl_CommandProcessorImpl
@@ -61,7 +61,7 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_CommandProcessorImpl_directO
  * Signature: (JFIJLcom/automatak/dnp3/impl/CommandResultCallback;)V
  */
 JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_CommandProcessorImpl_selectAndOperateAnalogFloat32
-  (JNIEnv *, jobject, jlong, jfloat, jint, jlong, jobject);
+(JNIEnv*, jobject, jlong, jfloat, jint, jlong, jobject);
 
 /*
  * Class:     com_automatak_dnp3_impl_CommandProcessorImpl
@@ -69,7 +69,7 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_CommandProcessorImpl_selectA
  * Signature: (JFIJLcom/automatak/dnp3/impl/CommandResultCallback;)V
  */
 JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_CommandProcessorImpl_directOperateAnalogFloat32
-  (JNIEnv *, jobject, jlong, jfloat, jint, jlong, jobject);
+(JNIEnv*, jobject, jlong, jfloat, jint, jlong, jobject);
 
 /*
  * Class:     com_automatak_dnp3_impl_CommandProcessorImpl
@@ -77,7 +77,7 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_CommandProcessorImpl_directO
  * Signature: (JDIJLcom/automatak/dnp3/impl/CommandResultCallback;)V
  */
 JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_CommandProcessorImpl_selectAndOperateAnalogDouble64
-  (JNIEnv *, jobject, jlong, jdouble, jint, jlong, jobject);
+(JNIEnv*, jobject, jlong, jdouble, jint, jlong, jobject);
 
 /*
  * Class:     com_automatak_dnp3_impl_CommandProcessorImpl
@@ -85,7 +85,7 @@ JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_CommandProcessorImpl_selectA
  * Signature: (JDIJLcom/automatak/dnp3/impl/CommandResultCallback;)V
  */
 JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_CommandProcessorImpl_directOperateAnalogDouble64
-  (JNIEnv *, jobject, jlong, jdouble, jint, jlong, jobject);
+(JNIEnv*, jobject, jlong, jdouble, jint, jlong, jobject);
 
 #ifdef __cplusplus
 }

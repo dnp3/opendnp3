@@ -74,11 +74,13 @@ SLLS_Reset SLLS_Reset::mInstance;
 
 void SLLS_Reset::TestLinkStatus(LinkLayer* apLL, bool aFcb)
 {
-	if(apLL->NextReadFCB() == aFcb) {
+	if(apLL->NextReadFCB() == aFcb)
+	{
 		apLL->ToggleReadFCB();
 		apLL->SendAck();
 	}
-	else {
+	else
+	{
 		// "Re-transmit most recent response that contained function code 0 (ACK) or 1 (NACK)."
 		// This is a pain in the pass to implement.
 		ERROR_LOGGER_BLOCK(apLL->GetLogger(), LogLevel::Warning, "TestLinkStatus with invalid FCB", DLERR_WRONG_FCB_ON_TEST);
@@ -89,11 +91,13 @@ void SLLS_Reset::ConfirmedUserData(LinkLayer* apLL, bool aFcb, const openpal::Re
 {
 	apLL->SendAck();
 
-	if(apLL->NextReadFCB() == aFcb) {
+	if(apLL->NextReadFCB() == aFcb)
+	{
 		apLL->ToggleReadFCB();
 		apLL->DoDataUp(arBuffer);
 	}
-	else {
+	else
+	{
 		ERROR_LOGGER_BLOCK(apLL->GetLogger(), LogLevel::Warning, "Confirmed data w/ wrong FCB", DLERR_WRONG_FCB_ON_RECEIVE_DATA);
 	}
 }

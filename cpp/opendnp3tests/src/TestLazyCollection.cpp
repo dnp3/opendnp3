@@ -39,16 +39,23 @@ using namespace opendnp3;
 
 TEST_CASE(SUITE("ReadSimpleTypes"))
 {
-	HexSequence hex("AB 01 01 CD 02 00");	
-		
-	auto collection = CreateLazyIterable<Group30Var2>(hex.ToReadOnly(), 2, 
-		[](ReadOnlyBuffer& b, uint32_t) { return Group30Var2::Read(b); }
-	);
-	
-	auto test = [&]() {
+	HexSequence hex("AB 01 01 CD 02 00");
+
+	auto collection = CreateLazyIterable<Group30Var2>(hex.ToReadOnly(), 2,
+	                  [](ReadOnlyBuffer & b, uint32_t)
+	{
+		return Group30Var2::Read(b);
+	}
+	                                                 );
+
+	auto test = [&]()
+	{
 		std::vector<Group30Var2> vec;
-		collection.foreach([&](const Group30Var2& gv) { vec.push_back(gv); });
-								
+		collection.foreach([&](const Group30Var2 & gv)
+		{
+			vec.push_back(gv);
+		});
+
 		REQUIRE(2 ==  vec.size());
 		REQUIRE(257 ==  vec[0].value);
 		REQUIRE(0xAB ==  vec[0].flags);
@@ -64,12 +71,18 @@ TEST_CASE(SUITE("ReadSimpleTypes"))
 TEST_CASE(SUITE("SingleBitValue"))
 {
 	HexSequence hex("01");
-	auto collection = CreateLazyIterable<Binary>(hex.ToReadOnly(), 1, 
-		[](ReadOnlyBuffer& buff, uint32_t pos) { return Binary(GetBit(buff, pos)); }
-	);
+	auto collection = CreateLazyIterable<Binary>(hex.ToReadOnly(), 1,
+	                  [](ReadOnlyBuffer & buff, uint32_t pos)
+	{
+		return Binary(GetBit(buff, pos));
+	}
+	                                            );
 	REQUIRE(1 ==  collection.Count());
-	std::vector<Binary> values;	
-	collection.foreach([&](const Binary& v) { values.push_back(v); });
+	std::vector<Binary> values;
+	collection.foreach([&](const Binary & v)
+	{
+		values.push_back(v);
+	});
 	REQUIRE(true ==  values[0].GetValue());
 }
 
@@ -77,11 +90,17 @@ TEST_CASE(SUITE("ComplexBitCount"))
 {
 	HexSequence hex("FF 00 00");
 	auto collection = CreateLazyIterable<bool>(hex.ToReadOnly(), 17,
-		[](ReadOnlyBuffer& buff, uint32_t pos) { return GetBit(buff, pos); }
-	);
+	                  [](ReadOnlyBuffer & buff, uint32_t pos)
+	{
+		return GetBit(buff, pos);
+	}
+	                                          );
 	std::vector<bool> values;
-	collection.foreach([&](const bool& v) { values.push_back(v); });
-	
+	collection.foreach([&](const bool & v)
+	{
+		values.push_back(v);
+	});
+
 	REQUIRE(17 ==  values.size());
 	REQUIRE(true ==  values[7]);
 	REQUIRE(false ==  values[8]);
@@ -92,15 +111,24 @@ TEST_CASE(SUITE("HighestBitSet"))
 	HexSequence hex("80");
 
 	auto collection = CreateLazyIterable<bool>(hex.ToReadOnly(), 8,
-		[](ReadOnlyBuffer& buffer, uint32_t pos) { return GetBit(buffer, pos); }
-	);
+	                  [](ReadOnlyBuffer & buffer, uint32_t pos)
+	{
+		return GetBit(buffer, pos);
+	}
+	                                          );
 
-	auto collection2 = MapIterableBuffer<bool, Binary>(collection, 
-		[](const bool& bit) { return Binary(bit); }
-	);
+	auto collection2 = MapIterableBuffer<bool, Binary>(collection,
+	                   [](const bool & bit)
+	{
+		return Binary(bit);
+	}
+	                                                  );
 
 	std::vector<Binary> values;
-	collection2.foreach([&](const Binary& v) { values.push_back(v); });	
+	collection2.foreach([&](const Binary & v)
+	{
+		values.push_back(v);
+	});
 	REQUIRE(8 ==  values.size());
 	REQUIRE((Binary(false) == values[6]));
 	REQUIRE((Binary(true) == values[7]));

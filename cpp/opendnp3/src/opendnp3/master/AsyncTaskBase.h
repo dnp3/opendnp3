@@ -60,12 +60,14 @@ public:
 	// Do the task now if it is enabled, regardless of periodicity
 	void Demand();
 
-	void SetFlags(int aFlags) {
+	void SetFlags(int aFlags)
+	{
 		mFlags = aFlags;
 	}
-	int GetFlags() {
+	int GetFlags()
+	{
 		return mFlags;
-	}	
+	}
 
 	void Enable();  // Enable the task and notify the task group which might execute another task
 	void Disable(); // Disable ''
@@ -73,7 +75,8 @@ public:
 	void SilentEnable(); // Enable without notifying the task group
 	void SilentDisable();
 
-	std::string Name() const {
+	std::string Name() const
+	{
 		return mName;
 	}
 
@@ -84,17 +87,17 @@ public:
 protected:
 
 	AsyncTaskBase(
-	        int aPriority,
-	        const TaskHandler& arCallback,
-	        AsyncTaskGroup* apGroup,
-	        const openpal::MonotonicTimestamp& arInitialTime,
-	        const std::string& arName);
+	    int aPriority,
+	    const TaskHandler& arCallback,
+	    AsyncTaskGroup* apGroup,
+	    const openpal::MonotonicTimestamp& arInitialTime,
+	    const std::string& arName);
 
 	// optional NVII function for special bookkeeping
 	virtual void _OnComplete(bool aSuccess) {}
 	//virtual void _Reset() {}
 
-	
+
 	// Reset the task to it's original state
 	void Reset();
 
@@ -108,32 +111,38 @@ protected:
 	// base upon the input time
 	void UpdateTime(const openpal::MonotonicTimestamp& arTime);
 
-	bool IsEnabled() const {
+	bool IsEnabled() const
+	{
 		return mIsEnabled;
 	}
 
 	// @returns priority used to resolve ties
-	int Priority() const {
+	int Priority() const
+	{
 		return mPriority;
 	}
 
 	// @returns the completion status of the task
-	bool IsComplete() const {
+	bool IsComplete() const
+	{
 		return mIsComplete;
 	}
 
 	// @return wether the task is expired
-	bool IsExpired() const {
+	bool IsExpired() const
+	{
 		return mIsExpired;
 	}
 
 	// @return wether the task is running
-	bool IsRunning() const {
+	bool IsRunning() const
+	{
 		return mIsRunning;
 	}
 
 	// @returns max_date_time if the task is currently running or will not run again
-	openpal::MonotonicTimestamp NextRunTime() const {
+	openpal::MonotonicTimestamp NextRunTime() const
+	{
 		return mNextRunTime;
 	}
 

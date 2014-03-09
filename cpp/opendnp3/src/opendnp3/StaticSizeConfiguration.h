@@ -28,7 +28,7 @@
 // Default configurations for statically allocated buffers int the stack
 // They are liberally set by default, but can be reduced for embedded systems
 
-namespace opendnp3 
+namespace opendnp3
 {
 
 struct SizeConfiguration : private PureStatic
