@@ -18,9 +18,9 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include <boost/test/unit_test.hpp>
+#include <catch.hpp>
 
-#include "TestHelpers.h"
+
 #include "TransportTestObject.h"
 #include "Exception.h"
 
@@ -33,102 +33,102 @@ using namespace std;
 using namespace openpal;
 using namespace opendnp3;
 
-BOOST_AUTO_TEST_SUITE(TransportLayerTestSuite)
+#define SUITE(name) "TransportLayerTestSuite - " name
 
 // make sure an invalid state exception gets thrown
 // for every event other than LowerLayerUp() since
 // the layer starts in the online state
-BOOST_AUTO_TEST_CASE(StateOffline)
+TEST_CASE(SUITE("StateOffline"))
 {
 	TransportTestObject test;
 
 	test.upper.SendDown("00");
-	BOOST_REQUIRE(test.log.PopOneEntry(LogLevel::Error));
+	REQUIRE(test.log.PopOneEntry(LogLevel::Error));
 	test.lower.SendUp("");
-	BOOST_REQUIRE(test.log.PopOneEntry(LogLevel::Error));
+	REQUIRE(test.log.PopOneEntry(LogLevel::Error));
 	test.lower.SendSuccess();
-	BOOST_REQUIRE(test.log.PopOneEntry(LogLevel::Error));
+	REQUIRE(test.log.PopOneEntry(LogLevel::Error));
 	test.lower.ThisLayerDown();
-	BOOST_REQUIRE(test.log.PopOneEntry(LogLevel::Error));
+	REQUIRE(test.log.PopOneEntry(LogLevel::Error));
 }
 
-BOOST_AUTO_TEST_CASE(StateReady)
+TEST_CASE(SUITE("StateReady"))
 {
 	TransportTestObject test(true); //makes an implicit call to 'test.lower.ThisLayerUp()'
 
 	//check that that the transport layer is correctly forwarding up/down
-	BOOST_REQUIRE(test.upper.IsLowerLayerUp());
+	REQUIRE(test.upper.IsLowerLayerUp());
 	test.lower.ThisLayerDown();
-	BOOST_REQUIRE_FALSE(test.upper.IsLowerLayerUp());
+	REQUIRE_FALSE(test.upper.IsLowerLayerUp());
 	test.lower.ThisLayerUp();
-	BOOST_REQUIRE(test.upper.IsLowerLayerUp());
+	REQUIRE(test.upper.IsLowerLayerUp());
 
 	// check that these actions all log errors
 	test.lower.ThisLayerUp();
-	BOOST_REQUIRE(test.log.PopOneEntry(LogLevel::Error));
+	REQUIRE(test.log.PopOneEntry(LogLevel::Error));
 	test.lower.SendSuccess();
-	BOOST_REQUIRE(test.log.PopOneEntry(LogLevel::Error));
+	REQUIRE(test.log.PopOneEntry(LogLevel::Error));
 }
 
-BOOST_AUTO_TEST_CASE(ReceiveBadArguments)
+TEST_CASE(SUITE("ReceiveBadArguments"))
 {
 	TransportTestObject test(true);	
 
 	//check that the wrong aruments throw argument exceptions, and it's doesn't go to the sending state
 	test.lower.SendUp("");
-	BOOST_REQUIRE_EQUAL(TLERR_NO_PAYLOAD, test.log.NextErrorCode());
+	REQUIRE(TLERR_NO_PAYLOAD ==  test.log.NextErrorCode());
 	test.lower.SendUp("FF");
-	BOOST_REQUIRE_EQUAL(TLERR_NO_PAYLOAD, test.log.NextErrorCode());	
+	REQUIRE(TLERR_NO_PAYLOAD ==  test.log.NextErrorCode());	
 
 	test.lower.SendUp(test.GetData("C0", 0, 250)); // length 251
 
-	BOOST_REQUIRE_EQUAL(TLERR_TOO_MUCH_DATA, test.log.NextErrorCode());
+	REQUIRE(TLERR_TOO_MUCH_DATA ==  test.log.NextErrorCode());
 }
 
-BOOST_AUTO_TEST_CASE(ReceiveNoPayload)
+TEST_CASE(SUITE("ReceiveNoPayload"))
 {
 	TransportTestObject test(true);
 	//try sending a FIR/FIN packet with no payload (1 byte)
 	test.lower.SendUp("C0"); // FIR/FIN
-	BOOST_REQUIRE_EQUAL(test.log.NextErrorCode(), TLERR_NO_PAYLOAD);
+	REQUIRE(test.log.NextErrorCode() ==  TLERR_NO_PAYLOAD);
 }
 
-BOOST_AUTO_TEST_CASE(ReceiveNoFIR)
+TEST_CASE(SUITE("ReceiveNoFIR"))
 {
 	TransportTestObject test(true);
 	//try sending a non-FIR w/ no prior packet
 	test.lower.SendUp("80 77"); // _/FIN
-	BOOST_REQUIRE_EQUAL(test.log.NextErrorCode(), TLERR_MESSAGE_WITHOUT_FIR);
+	REQUIRE(test.log.NextErrorCode() ==  TLERR_MESSAGE_WITHOUT_FIR);
 }
 
-BOOST_AUTO_TEST_CASE(ReceiveWrongSequence)
+TEST_CASE(SUITE("ReceiveWrongSequence"))
 {
 	TransportTestObject test(true);
 	//send a FIR, followed by a FIN w/ the wrong sequence
 	test.lower.SendUp(test.GetData("40")); // FIR/_/0
 	test.lower.SendUp(test.GetData("82")); // _/FIN/2
-	BOOST_REQUIRE_EQUAL(test.log.NextErrorCode(), TLERR_BAD_SEQUENCE);
+	REQUIRE(test.log.NextErrorCode() ==  TLERR_BAD_SEQUENCE);
 }
 
-BOOST_AUTO_TEST_CASE(PacketsCanBeOfVaryingSize)
+TEST_CASE(SUITE("PacketsCanBeOfVaryingSize"))
 {
 	TransportTestObject test(true);	
 	test.lower.SendUp("40 0A 0B 0C"); // FIR/_/0
-	BOOST_REQUIRE(test.log.IsLogErrorFree());
+	REQUIRE(test.log.IsLogErrorFree());
 	test.lower.SendUp("81 0D 0E 0F"); // _/FIN/1
-	BOOST_REQUIRE(test.log.IsLogErrorFree());
-	BOOST_REQUIRE_EQUAL("0A 0B 0C 0D 0E 0F", test.upper.GetBufferAsHexString());
+	REQUIRE(test.log.IsLogErrorFree());
+	REQUIRE("0A 0B 0C 0D 0E 0F" ==  test.upper.GetBufferAsHexString());
 }
 
-BOOST_AUTO_TEST_CASE(ReceiveSinglePacket)
+TEST_CASE(SUITE("ReceiveSinglePacket"))
 {
 	TransportTestObject test(true);
 	//now try receiving 1 a single FIR/FIN with a magic value
 	test.lower.SendUp("C0 77");
-	BOOST_REQUIRE_EQUAL("77", test.upper.GetBufferAsHexString());	
+	REQUIRE("77" ==  test.upper.GetBufferAsHexString());	
 }
 
-BOOST_AUTO_TEST_CASE(ReceiveLargestPossibleAPDU)
+TEST_CASE(SUITE("ReceiveLargestPossibleAPDU"))
 {
 	TransportTestObject test(true);
 
@@ -141,11 +141,11 @@ BOOST_AUTO_TEST_CASE(ReceiveLargestPossibleAPDU)
 		test.lower.SendUp(s);
 	}
 
-	BOOST_REQUIRE(test.log.IsLogErrorFree());
-	BOOST_REQUIRE(test.upper.BufferEqualsHex(apdu)); //check that the correct data was written
+	REQUIRE(test.log.IsLogErrorFree());
+	REQUIRE(test.upper.BufferEqualsHex(apdu)); //check that the correct data was written
 }
 
-BOOST_AUTO_TEST_CASE(ReceiveBufferOverflow)
+TEST_CASE(SUITE("ReceiveBufferOverflow"))
 {
 	TransportTestObject test(true);
 
@@ -159,30 +159,30 @@ for(string s: packets) {
 		test.lower.SendUp(s);
 	}
 
-	BOOST_REQUIRE(test.upper.IsBufferEmpty());
-	BOOST_REQUIRE_EQUAL(test.log.NextErrorCode(), TLERR_BUFFER_FULL);
+	REQUIRE(test.upper.IsBufferEmpty());
+	REQUIRE(test.log.NextErrorCode() ==  TLERR_BUFFER_FULL);
 }
 
-BOOST_AUTO_TEST_CASE(ReceiveNewFir)
+TEST_CASE(SUITE("ReceiveNewFir"))
 {
 	TransportTestObject test(true);
 
 	test.lower.SendUp(test.GetData("40"));	// FIR/_/0
-	BOOST_REQUIRE(test.upper.IsBufferEmpty());
+	REQUIRE(test.upper.IsBufferEmpty());
 
 	test.lower.SendUp("C0 AB CD");	// FIR/FIN/0	
-	BOOST_REQUIRE_EQUAL("AB CD", test.upper.GetBufferAsHexString());
-	BOOST_REQUIRE_EQUAL(test.log.NextErrorCode(), TLERR_NEW_FIR); //make sure it logs the dropped frames
+	REQUIRE("AB CD" ==  test.upper.GetBufferAsHexString());
+	REQUIRE(test.log.NextErrorCode() ==  TLERR_NEW_FIR); //make sure it logs the dropped frames
 }
 
-BOOST_AUTO_TEST_CASE(SendArguments)
+TEST_CASE(SUITE("SendArguments"))
 {
 	TransportTestObject test(true);
 	test.upper.SendDown("");
-	BOOST_REQUIRE(test.log.PopOneEntry(LogLevel::Error));	
+	REQUIRE(test.log.PopOneEntry(LogLevel::Error));	
 }
 
-BOOST_AUTO_TEST_CASE(StateSending)
+TEST_CASE(SUITE("StateSending"))
 {
 	TransportTestObject test(true);
 
@@ -190,13 +190,13 @@ BOOST_AUTO_TEST_CASE(StateSending)
 
 	// this puts the layer into the Sending state
 	test.upper.SendDown("11");
-	BOOST_REQUIRE_EQUAL("C0 11", test.lower.PopWriteAsHex()); //FIR/FIN SEQ=0
+	REQUIRE("C0 11" ==  test.lower.PopWriteAsHex()); //FIR/FIN SEQ=0
 
 	// Check that while we're sending, all other send requests are rejected
 	test.upper.SendDown("00");
-	BOOST_REQUIRE(test.log.PopOneEntry(LogLevel::Error));
+	REQUIRE(test.log.PopOneEntry(LogLevel::Error));
 	test.lower.ThisLayerUp();
-	BOOST_REQUIRE(test.log.PopOneEntry(LogLevel::Error));
+	REQUIRE(test.log.PopOneEntry(LogLevel::Error));
 
 	//while we are sending, we should still be able to receive data as normal
 	test.lower.SendUp("C0 77");
@@ -204,13 +204,13 @@ BOOST_AUTO_TEST_CASE(StateSending)
 
 	//this should put us back in the Ready state since it was a single tpdu send
 	test.lower.SendSuccess();
-	BOOST_REQUIRE_EQUAL(test.upper.GetState().mSuccessCnt, 1);
+	REQUIRE(test.upper.GetState().mSuccessCnt ==  1);
 
 	test.lower.SendSuccess();
-	BOOST_REQUIRE(test.log.PopOneEntry(LogLevel::Error));
+	REQUIRE(test.log.PopOneEntry(LogLevel::Error));
 }
 
-BOOST_AUTO_TEST_CASE(SendFailure)
+TEST_CASE(SUITE("SendFailure"))
 {
 	TransportTestObject test(true);
 
@@ -218,45 +218,45 @@ BOOST_AUTO_TEST_CASE(SendFailure)
 
 	// this puts the layer into the Sending state
 	test.upper.SendDown("11");
-	BOOST_REQUIRE_EQUAL("C0 11", test.lower.PopWriteAsHex()); //FIR/FIN SEQ=0
+	REQUIRE("C0 11" ==  test.lower.PopWriteAsHex()); //FIR/FIN SEQ=0
 
 	//this should put us back in the Ready state
 	test.lower.SendFailure();
-	BOOST_REQUIRE_EQUAL(test.upper.GetState().mSuccessCnt, 0);
-	BOOST_REQUIRE_EQUAL(test.upper.GetState().mFailureCnt, 1);
+	REQUIRE(test.upper.GetState().mSuccessCnt ==  0);
+	REQUIRE(test.upper.GetState().mFailureCnt ==  1);
 	
 	test.upper.SendDown("11");
-	BOOST_REQUIRE_EQUAL("C0 11", test.lower.PopWriteAsHex()); // should resend with the same sequence number FIR/FIN SEQ=0
+	REQUIRE("C0 11" ==  test.lower.PopWriteAsHex()); // should resend with the same sequence number FIR/FIN SEQ=0
 	test.lower.SendSuccess();
-	BOOST_REQUIRE_EQUAL(test.upper.GetState().mSuccessCnt, 1);
-	BOOST_REQUIRE_EQUAL(test.upper.GetState().mFailureCnt, 1);
+	REQUIRE(test.upper.GetState().mSuccessCnt ==  1);
+	REQUIRE(test.upper.GetState().mFailureCnt ==  1);
 }
 
-BOOST_AUTO_TEST_CASE(SendSuccess)
+TEST_CASE(SUITE("SendSuccess"))
 {
 	TransportTestObject test(true);
 
 	// this puts the layer into the Sending state
 	test.upper.SendDown("11");
-	BOOST_REQUIRE_EQUAL("C0 11", test.lower.PopWriteAsHex()); //FIR/FIN SEQ=0
+	REQUIRE("C0 11" ==  test.lower.PopWriteAsHex()); //FIR/FIN SEQ=0
 	
 	// this puts the layer into the Sending state
 	test.upper.SendDown("11");
-	BOOST_REQUIRE_EQUAL("C1 11", test.lower.PopWriteAsHex()); //FIR/FIN SEQ=1
-	BOOST_REQUIRE_EQUAL(test.upper.GetState().mSuccessCnt, 2);
+	REQUIRE("C1 11" ==  test.lower.PopWriteAsHex()); //FIR/FIN SEQ=1
+	REQUIRE(test.upper.GetState().mSuccessCnt ==  2);
 }
 
 //if we're in the middle of a send and the layer goes down
-BOOST_AUTO_TEST_CASE(ClosedWhileSending)
+TEST_CASE(SUITE("ClosedWhileSending"))
 {
 	TransportTestObject test(true);
 	test.upper.SendDown("11"); //get the layer into the sending state
 
 	test.lower.ThisLayerDown(); // go to the TS_ClosedAfterSend state
-	BOOST_REQUIRE_FALSE(test.upper.IsLowerLayerUp());
+	REQUIRE_FALSE(test.upper.IsLowerLayerUp());
 }
 
-BOOST_AUTO_TEST_CASE(SendFullAPDU)
+TEST_CASE(SUITE("SendFullAPDU"))
 {
 	TransportTestObject test(true);
 
@@ -271,12 +271,12 @@ BOOST_AUTO_TEST_CASE(SendFullAPDU)
 	//verify that each packet is received correctly
 	for(string tpdu: packets) 
 	{ 
-		BOOST_REQUIRE_EQUAL(1, test.lower.NumWrites());
-		BOOST_REQUIRE_EQUAL(tpdu, test.lower.PopWriteAsHex());
-		BOOST_REQUIRE_EQUAL(0, test.lower.NumWrites());
+		REQUIRE(1 ==  test.lower.NumWrites());
+		REQUIRE(tpdu ==  test.lower.PopWriteAsHex());
+		REQUIRE(0 ==  test.lower.NumWrites());
 		test.lower.SendSuccess();
 	}
 }
 
 
-BOOST_AUTO_TEST_SUITE_END()
+

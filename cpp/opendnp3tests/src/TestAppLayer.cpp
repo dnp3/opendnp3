@@ -18,19 +18,18 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include <boost/test/unit_test.hpp>
+#include <catch.hpp>
 
 #include <openpal/ToHex.h>
 #include <openpal/StaticBuffer.h>
 
 #include "Exception.h"
-#include "TestHelpers.h"
+
 #include "BufferHelpers.h"
 #include "AppLayerTest.h"
 
 using namespace openpal;
 using namespace opendnp3;
-using namespace boost;
 
 std::string RequestToHex(FunctionCode function, bool fir, bool fin, bool con, bool uns, uint8_t seq)
 {
@@ -52,74 +51,74 @@ std::string ResponseToHex(FunctionCode function, bool fir, bool fin, bool con, b
 }
 
 
-BOOST_AUTO_TEST_SUITE(AppLayerSuite)
+#define SUITE(name) "AppLayerSuite - " name
 
 // Test the accessible events to demonstrate do not work if the layer is offline
-BOOST_AUTO_TEST_CASE(InitialState)
+TEST_CASE(SUITE("InitialState"))
 {
 	AppLayerTest t;
 	t.app.OnLowerLayerDown();
-	BOOST_REQUIRE(t.log.PopOneEntry(LogLevel::Error));
+	REQUIRE(t.log.PopOneEntry(LogLevel::Error));
 	t.app.OnLowerLayerDown();
-	BOOST_REQUIRE(t.log.PopOneEntry(LogLevel::Error));
+	REQUIRE(t.log.PopOneEntry(LogLevel::Error));
 	t.app.OnSendSuccess();
-	BOOST_REQUIRE(t.log.PopOneEntry(LogLevel::Error));
+	REQUIRE(t.log.PopOneEntry(LogLevel::Error));
 	t.app.OnSendFailure();
-	BOOST_REQUIRE(t.log.PopOneEntry(LogLevel::Error));
+	REQUIRE(t.log.PopOneEntry(LogLevel::Error));
 	t.lower.SendUp("");
-	BOOST_REQUIRE(t.log.PopOneEntry(LogLevel::Error));
+	REQUIRE(t.log.PopOneEntry(LogLevel::Error));
 }
 
 // Check that Up/Down are forwarded correctly
 // and that the state gets reset correctly
-BOOST_AUTO_TEST_CASE(LayerUpDown)
+TEST_CASE(SUITE("LayerUpDown"))
 {
 	AppLayerTest t(true); // master
 	t.lower.ThisLayerUp(); ++t.state.NumLayerUp;
-	BOOST_REQUIRE_EQUAL(t.state, t.user.mState);
+	REQUIRE(t.state ==  t.user.mState);
 	t.SendRequest(FunctionCode::READ, true, true, false, false);
 	t.lower.ThisLayerDown(); ++t.state.NumLayerDown;
-	BOOST_REQUIRE_EQUAL(t.state, t.user.mState);
+	REQUIRE(t.state ==  t.user.mState);
 	t.lower.ThisLayerUp(); ++t.state.NumLayerUp;
-	BOOST_REQUIRE_EQUAL(t.state, t.user.mState);
+	REQUIRE(t.state ==  t.user.mState);
 	t.SendRequest(FunctionCode::READ, true, true, false, false);
 }
 
 
 // Malformed data should be getting logged
-BOOST_AUTO_TEST_CASE(ParsingErrorsCaptured)
+TEST_CASE(SUITE("ParsingErrorsCaptured"))
 {
 	AppLayerTest t; t.lower.ThisLayerUp();
 	t.lower.SendUp("");
-	BOOST_REQUIRE_EQUAL(t.log.NextErrorCode(), ALERR_INSUFFICIENT_DATA_FOR_FRAG);
+	REQUIRE(t.log.NextErrorCode() ==  ALERR_INSUFFICIENT_DATA_FOR_FRAG);
 }
 
 // Test that the correct header validation occurs before passing up Unsol datas
-BOOST_AUTO_TEST_CASE(UnsolErrors)
+TEST_CASE(SUITE("UnsolErrors"))
 {
 	AppLayerTest t(true); // master
 	t.lower.ThisLayerUp();
 	t.SendUp(AppControlField(true, true, true, false, 0), FunctionCode::UNSOLICITED_RESPONSE, IINField()); // UNS = false
-	BOOST_REQUIRE_EQUAL(t.log.NextErrorCode(), ALERR_BAD_UNSOL_BIT);
+	REQUIRE(t.log.NextErrorCode() ==  ALERR_BAD_UNSOL_BIT);
 }
 
 // Test that unsol data is correctly confirmed, passed up,
 // and that flooding is logged+ignored
-BOOST_AUTO_TEST_CASE(UnsolSuccess)
+TEST_CASE(SUITE("UnsolSuccess"))
 {
 	AppLayerTest t(true); // master
 	t.lower.ThisLayerUp(); ++t.state.NumLayerUp;
 	t.lower.DisableAutoSendCallback();
 	t.SendUp(AppControlField(true, true, true, true, 0), FunctionCode::UNSOLICITED_RESPONSE, IINField()); ++t.state.NumUnsol;
-	BOOST_REQUIRE(t.log.IsLogErrorFree());
-	BOOST_REQUIRE_EQUAL(t.state, t.user.mState);
-	BOOST_REQUIRE_EQUAL(RequestToHex(FunctionCode::CONFIRM, true, true, false, true, 0), t.lower.PopWriteAsHex());
+	REQUIRE(t.log.IsLogErrorFree());
+	REQUIRE(t.state ==  t.user.mState);
+	REQUIRE(RequestToHex(FunctionCode::CONFIRM, true, true, false, true, 0) ==  t.lower.PopWriteAsHex());
 
 	// if frame requiring confirmation is sent before confirm send success
 	// it gets ignored and logged
 	t.SendUp(AppControlField(true, true, true, true, 0), FunctionCode::UNSOLICITED_RESPONSE, IINField());
-	BOOST_REQUIRE_EQUAL(t.state, t.user.mState);
-	BOOST_REQUIRE_EQUAL(t.log.NextErrorCode(), ALERR_UNSOL_FLOOD);
+	REQUIRE(t.state ==  t.user.mState);
+	REQUIRE(t.log.NextErrorCode() ==  ALERR_UNSOL_FLOOD);
 
 	t.app.OnSendSuccess(); //doesn't throw exception
 }
@@ -127,7 +126,7 @@ BOOST_AUTO_TEST_CASE(UnsolSuccess)
 // Test that the various send methods reject
 // illegal function codes. Also check that the app layer
 // is slave/master aware with respect to send
-BOOST_AUTO_TEST_CASE(SendBadFuncCodeSlave)
+TEST_CASE(SUITE("SendBadFuncCodeSlave"))
 {
 	AppLayerTest t(false);	// slave
 	t.lower.ThisLayerUp();
@@ -135,42 +134,42 @@ BOOST_AUTO_TEST_CASE(SendBadFuncCodeSlave)
 	// can't send a response until at least 1 request has been received
 	// to set the sequence number. Report this as a response failure
 	t.SendResponse(FunctionCode::RESPONSE, true, true, false, false);
-	BOOST_REQUIRE(t.mts.DispatchOne());
-	BOOST_REQUIRE_EQUAL(1, t.user.mState.NumSolFailure);
-	BOOST_REQUIRE(t.log.PopOneEntry(LogLevel::Error));
+	REQUIRE(t.mts.DispatchOne());
+	REQUIRE(1 ==  t.user.mState.NumSolFailure);
+	REQUIRE(t.log.PopOneEntry(LogLevel::Error));
 }
 
-BOOST_AUTO_TEST_CASE(SendExtraObjectData)
+TEST_CASE(SUITE("SendExtraObjectData"))
 {
 	AppLayerTest t(false);	// slave
 	t.lower.ThisLayerUp(); ++t.state.NumLayerUp;
 
 	// doesn't matter what the sequence number is
 	t.SendUp("C4 01 00 00 06"); ++t.state.NumRequest;
-	BOOST_REQUIRE_EQUAL(t.state, t.user.mState);
+	REQUIRE(t.state ==  t.user.mState);
 	t.SendResponse(FunctionCode::RESPONSE, true, true, false, false); // no confirmation
 
-	BOOST_REQUIRE_EQUAL(ResponseToHex(FunctionCode::RESPONSE, true, true, false, false, 4), t.lower.PopWriteAsHex()); //check correct seq
+	REQUIRE(ResponseToHex(FunctionCode::RESPONSE, true, true, false, false, 4) ==  t.lower.PopWriteAsHex()); //check correct seq
 }
 
 // Test a simple send without confirm transaction
-BOOST_AUTO_TEST_CASE(SendResponseWithoutConfirm)
+TEST_CASE(SUITE("SendResponseWithoutConfirm"))
 {
 	AppLayerTest t(false);	// slave
 	t.lower.ThisLayerUp(); ++t.state.NumLayerUp;
 
 	// doesn't matter what the sequence number is
 	t.SendUp(AppControlField(true, true, false, false, 4), FunctionCode::READ); ++t.state.NumRequest;
-	BOOST_REQUIRE_EQUAL(t.state, t.user.mState);
+	REQUIRE(t.state ==  t.user.mState);
 	t.SendResponse(FunctionCode::RESPONSE, true, true, false, false); // no confirmation
-	BOOST_REQUIRE_EQUAL(ResponseToHex(FunctionCode::RESPONSE, true, true, false, false, 4), t.lower.PopWriteAsHex()); //check correct seq
+	REQUIRE(ResponseToHex(FunctionCode::RESPONSE, true, true, false, false, 4) ==  t.lower.PopWriteAsHex()); //check correct seq
 	++t.state.NumSolSendSuccess;
-	BOOST_REQUIRE_EQUAL(t.state, t.user.mState);
+	REQUIRE(t.state ==  t.user.mState);
 
 }
 
 // Test a simple send without confirm transaction
-BOOST_AUTO_TEST_CASE(SendResponseFailure)
+TEST_CASE(SUITE("SendResponseFailure"))
 {
 	AppLayerTest t(false);	// slave
 	t.lower.ThisLayerUp(); ++t.state.NumLayerUp;
@@ -178,94 +177,94 @@ BOOST_AUTO_TEST_CASE(SendResponseFailure)
 	t.SendUp(AppControlField(true, true, false, false, 4), FunctionCode::READ); ++t.state.NumRequest;
 	t.SendResponse(FunctionCode::RESPONSE, true, true, false, false); // no confirmation
 	++t.state.NumSolFailure;
-	BOOST_REQUIRE_EQUAL(t.state, t.user.mState);
+	REQUIRE(t.state ==  t.user.mState);
 }
 
 // Test a send with confirm
-BOOST_AUTO_TEST_CASE(SendResponseWithConfirm)
+TEST_CASE(SUITE("SendResponseWithConfirm"))
 {
 	AppLayerTest t(false);	// slave
 	t.lower.ThisLayerUp(); ++t.state.NumLayerUp;
 	t.SendUp(AppControlField(true, true, false, false, 4), FunctionCode::READ); ++t.state.NumRequest;
 	t.SendResponse(FunctionCode::RESPONSE, true, false, true, false); // with confirmation, should start on timer
-	BOOST_REQUIRE_EQUAL(t.state, t.user.mState);
-	BOOST_REQUIRE_EQUAL(t.mts.NumActive(), 1);
+	REQUIRE(t.state ==  t.user.mState);
+	REQUIRE(t.mts.NumActive() ==  1);
 	t.SendUp(AppControlField(true, true, false, false, 4), FunctionCode::CONFIRM); ++t.state.NumSolSendSuccess;
-	BOOST_REQUIRE_EQUAL(t.mts.NumActive(), 0);
-	BOOST_REQUIRE_EQUAL(t.state, t.user.mState);
+	REQUIRE(t.mts.NumActive() ==  0);
+	REQUIRE(t.state ==  t.user.mState);
 }
 
 // Test a send with confirm
-BOOST_AUTO_TEST_CASE(CancelResponseWhileSending)
+TEST_CASE(SUITE("CancelResponseWhileSending"))
 {
 	AppLayerTest t(false);	// slave
 	t.lower.ThisLayerUp(); ++t.state.NumLayerUp;
 	t.SendUp(AppControlField(true, true, false, false, 4), FunctionCode::READ); ++t.state.NumRequest;
 	t.lower.DisableAutoSendCallback();
 	t.SendResponse(FunctionCode::RESPONSE, true, false, true, false); // with confirmation
-	BOOST_REQUIRE_EQUAL(t.state, t.user.mState);
-	BOOST_REQUIRE_EQUAL(t.mts.NumActive(), 0);
+	REQUIRE(t.state ==  t.user.mState);
+	REQUIRE(t.mts.NumActive() ==  0);
 
 	// before any send success or failure comes back, cancel the operation
 	t.app.CancelResponse();
-	BOOST_REQUIRE_EQUAL(t.state, t.user.mState);
+	REQUIRE(t.state ==  t.user.mState);
 
 	// now report that that the send has completed successfully, but this should cause the
 	// the app layer to inform the user that the send has failed
 
 	t.app.OnSendSuccess(); ++t.state.NumSolFailure;
-	BOOST_REQUIRE_EQUAL(t.state, t.user.mState);
+	REQUIRE(t.state ==  t.user.mState);
 }
 
 // Test a send with confirm
-BOOST_AUTO_TEST_CASE(CancelResponseWhileAwaitingConfirm)
+TEST_CASE(SUITE("CancelResponseWhileAwaitingConfirm"))
 {
 	AppLayerTest t(false);	// slave
 	t.lower.ThisLayerUp(); ++t.state.NumLayerUp;
 	t.SendUp(AppControlField(true, true, false, false, 4), FunctionCode::READ); ++t.state.NumRequest;
 	t.SendResponse(FunctionCode::RESPONSE, true, false, true, false); // with confirmation
-	BOOST_REQUIRE_EQUAL(t.state, t.user.mState);
-	BOOST_REQUIRE_EQUAL(t.mts.NumActive(), 1);
+	REQUIRE(t.state ==  t.user.mState);
+	REQUIRE(t.mts.NumActive() ==  1);
 
 	t.app.CancelResponse(); ++t.state.NumSolFailure;
-	BOOST_REQUIRE_EQUAL(t.state, t.user.mState);
-	BOOST_REQUIRE_EQUAL(t.mts.NumActive(), 0); //the timer should get canceled
+	REQUIRE(t.state ==  t.user.mState);
+	REQUIRE(t.mts.NumActive() ==  0); //the timer should get canceled
 }
 
 
-BOOST_AUTO_TEST_CASE(NewRequestWhileAwaitingConfirm)
+TEST_CASE(SUITE("NewRequestWhileAwaitingConfirm"))
 {
 	AppLayerTest t(false);	// slave
 	t.lower.ThisLayerUp(); ++t.state.NumLayerUp;
 	t.SendUp(AppControlField(true, true, false, false, 4), FunctionCode::READ); ++t.state.NumRequest;
 	t.SendResponse(FunctionCode::RESPONSE, true, false, true, false); // with confirmation
-	BOOST_REQUIRE_EQUAL(t.state, t.user.mState);
-	BOOST_REQUIRE_EQUAL(t.mts.NumActive(), 1);
+	REQUIRE(t.state ==  t.user.mState);
+	REQUIRE(t.mts.NumActive() ==  1);
 
 	t.SendUp(AppControlField(true, true, false, false, 4), FunctionCode::READ); ++t.state.NumRequest;
 	t.app.CancelResponse(); ++t.state.NumSolFailure;
-	BOOST_REQUIRE_EQUAL(t.state, t.user.mState);
-	BOOST_REQUIRE_EQUAL(t.mts.NumActive(), 0); //the timer should get canceled
+	REQUIRE(t.state ==  t.user.mState);
+	REQUIRE(t.mts.NumActive() ==  0); //the timer should get canceled
 	t.SendResponse(FunctionCode::RESPONSE, true, false, true, false); // with confirmation
-	BOOST_REQUIRE_EQUAL(t.state, t.user.mState);
-	BOOST_REQUIRE_EQUAL(t.mts.NumActive(), 1);
+	REQUIRE(t.state ==  t.user.mState);
+	REQUIRE(t.mts.NumActive() ==  1);
 }
 
 // Test a send with confirm timeout
-BOOST_AUTO_TEST_CASE(SendResponseWithConfirmTimeout)
+TEST_CASE(SUITE("SendResponseWithConfirmTimeout"))
 {
 	AppLayerTest t(false);	// slave
 	t.lower.ThisLayerUp(); ++t.state.NumLayerUp;
 	t.SendUp(AppControlField(true, true, false, false, 4), FunctionCode::READ); ++t.state.NumRequest;
 	t.SendResponse(FunctionCode::RESPONSE, true, false, true, false); // with confirmation
-	BOOST_REQUIRE_EQUAL(t.state, t.user.mState);
-	BOOST_REQUIRE(t.mts.DispatchOne()); ++t.state.NumSolFailure;
-	BOOST_REQUIRE_EQUAL(t.state, t.user.mState);
+	REQUIRE(t.state ==  t.user.mState);
+	REQUIRE(t.mts.DispatchOne()); ++t.state.NumSolFailure;
+	REQUIRE(t.state ==  t.user.mState);
 }
 
 // Test a non-fir send, this should
 // increment the sequence number
-BOOST_AUTO_TEST_CASE(SendResponseNonFIR)
+TEST_CASE(SUITE("SendResponseNonFIR"))
 {
 	AppLayerTest t(false);	// slave
 	t.lower.ThisLayerUp(); ++t.state.NumLayerUp;
@@ -273,120 +272,120 @@ BOOST_AUTO_TEST_CASE(SendResponseNonFIR)
 	t.SendResponse(FunctionCode::RESPONSE, false, false, true, false); //non-FIR, will increment seq number
 
 	t.SendUp(AppControlField(true, true, false, false, 2), FunctionCode::CONFIRM); //wrong seq number
-	BOOST_REQUIRE_EQUAL(t.state, t.user.mState);
-	BOOST_REQUIRE_EQUAL(t.log.NextErrorCode(), ALERR_UNEXPECTED_CONFIRM);
+	REQUIRE(t.state ==  t.user.mState);
+	REQUIRE(t.log.NextErrorCode() ==  ALERR_UNEXPECTED_CONFIRM);
 	t.SendUp(AppControlField(true, true, false, false, 5), FunctionCode::CONFIRM); ++t.state.NumSolSendSuccess; // correct seq
-	BOOST_REQUIRE_EQUAL(t.state, t.user.mState);
+	REQUIRE(t.state ==  t.user.mState);
 }
 
 // Test an unsol send with confirm transaction
-BOOST_AUTO_TEST_CASE(SendUnsolicitedWithConfirm)
+TEST_CASE(SUITE("SendUnsolicitedWithConfirm"))
 {
 	AppLayerTest t(false);	// slave
 	t.lower.ThisLayerUp(); ++t.state.NumLayerUp;
 
 	t.SendUnsolicited(FunctionCode::UNSOLICITED_RESPONSE, true, true, true, true);
-	BOOST_REQUIRE_EQUAL(t.mts.NumActive(), 1);
+	REQUIRE(t.mts.NumActive() ==  1);
 	t.SendUp(AppControlField(true, true, false, false, 0),FunctionCode::CONFIRM); // solicited confirm, should do nothing
-	BOOST_REQUIRE_EQUAL(t.log.NextErrorCode(), ALERR_UNEXPECTED_CONFIRM);
-	BOOST_REQUIRE_EQUAL(t.state, t.user.mState);
+	REQUIRE(t.log.NextErrorCode() ==  ALERR_UNEXPECTED_CONFIRM);
+	REQUIRE(t.state ==  t.user.mState);
 	t.SendUp(AppControlField(true, true, false, true, 0), FunctionCode::CONFIRM); ++t.state.NumUnsolSendSuccess; // unsol confirm
-	BOOST_REQUIRE_EQUAL(t.state, t.user.mState);
+	REQUIRE(t.state ==  t.user.mState);
 }
 
 // Test an unsol send with confirm timeout
-BOOST_AUTO_TEST_CASE(SendUnsolicitedWithConfirmTimeout)
+TEST_CASE(SUITE("SendUnsolicitedWithConfirmTimeout"))
 {
 	AppLayerTest t(false);	// slave
 	t.lower.ThisLayerUp(); ++t.state.NumLayerUp;
 	t.SendUnsolicited(FunctionCode::UNSOLICITED_RESPONSE, true, true, true, true);
-	BOOST_REQUIRE(t.mts.DispatchOne()); ++t.state.NumUnsolFailure;
-	BOOST_REQUIRE_EQUAL(t.state, t.user.mState);
+	REQUIRE(t.mts.DispatchOne()); ++t.state.NumUnsolFailure;
+	REQUIRE(t.state ==  t.user.mState);
 }
 
 // Test a single response transaction
-BOOST_AUTO_TEST_CASE(SendRequestSingleResponse)
+TEST_CASE(SUITE("SendRequestSingleResponse"))
 {
 	AppLayerTest t(true);	// master
 	t.lower.ThisLayerUp(); ++t.state.NumLayerUp;
 	t.SendRequest(FunctionCode::READ, true, true, false, false);
-	BOOST_REQUIRE_EQUAL(t.mts.NumActive(), 1); //check that we're waiting for a response
+	REQUIRE(t.mts.NumActive() ==  1); //check that we're waiting for a response
 	t.SendUp(AppControlField(true, true, false, false, 0), FunctionCode::RESPONSE, IINField()); ++t.state.NumFinalRsp; // final response
-	BOOST_REQUIRE_EQUAL(t.mts.NumActive(), 0);
-	BOOST_REQUIRE_EQUAL(t.state, t.user.mState);
+	REQUIRE(t.mts.NumActive() ==  0);
+	REQUIRE(t.state ==  t.user.mState);
 }
 
 // Test a response timeout
-BOOST_AUTO_TEST_CASE(SendRequestResponseTimeout)
+TEST_CASE(SUITE("SendRequestResponseTimeout"))
 {
 	AppLayerTest t(true);	// master
 	t.lower.ThisLayerUp(); ++t.state.NumLayerUp;
 	t.SendRequest(FunctionCode::READ, true, true, false, false);
-	BOOST_REQUIRE(t.mts.DispatchOne()); ++t.state.NumSolFailure;
-	BOOST_REQUIRE_EQUAL(t.state, t.user.mState);
+	REQUIRE(t.mts.DispatchOne()); ++t.state.NumSolFailure;
+	REQUIRE(t.state ==  t.user.mState);
 }
 
 // Test a multi-fragmented response transaction
-BOOST_AUTO_TEST_CASE(SendRequestMultiResponse)
+TEST_CASE(SUITE("SendRequestMultiResponse"))
 {
 	AppLayerTest t(true);	// master
 	t.lower.ThisLayerUp(); ++t.state.NumLayerUp;
 
 	t.SendRequest(FunctionCode::READ, true, true, false, false);
-	BOOST_REQUIRE_EQUAL(t.mts.NumActive(), 1); //check that we're waiting for a response
+	REQUIRE(t.mts.NumActive() ==  1); //check that we're waiting for a response
 
 	t.SendUp(AppControlField(false, true, false, false, 0), FunctionCode::RESPONSE, IINField()); // check that bad FIR is rejected
-	BOOST_REQUIRE_EQUAL(t.log.NextErrorCode(), ALERR_BAD_FIR_FIN);
-	BOOST_REQUIRE_EQUAL(t.mts.NumActive(), 1);
-	BOOST_REQUIRE_EQUAL(t.state, t.user.mState);
+	REQUIRE(t.log.NextErrorCode() ==  ALERR_BAD_FIR_FIN);
+	REQUIRE(t.mts.NumActive() ==  1);
+	REQUIRE(t.state ==  t.user.mState);
 
 	t.SendUp(AppControlField(true, false, false, false, 0), FunctionCode::RESPONSE, IINField()); ++t.state.NumPartialRsp; // partial response
-	BOOST_REQUIRE_EQUAL(t.mts.NumActive(), 1);
-	BOOST_REQUIRE_EQUAL(t.state, t.user.mState);
+	REQUIRE(t.mts.NumActive() ==  1);
+	REQUIRE(t.state ==  t.user.mState);
 
 	t.SendUp(AppControlField(false, false, false, false, 0), FunctionCode::RESPONSE, IINField()); // check that a bad sequence number is rejected
-	BOOST_REQUIRE_EQUAL(t.state, t.user.mState);
-	BOOST_REQUIRE_EQUAL(t.log.NextErrorCode(), ALERR_BAD_SEQUENCE);
+	REQUIRE(t.state ==  t.user.mState);
+	REQUIRE(t.log.NextErrorCode() ==  ALERR_BAD_SEQUENCE);
 
 	t.SendUp(AppControlField(false, false, false, false, 1), FunctionCode::RESPONSE, IINField()); ++t.state.NumPartialRsp;
-	BOOST_REQUIRE_EQUAL(t.mts.NumActive(), 1);
-	BOOST_REQUIRE_EQUAL(t.state, t.user.mState);
+	REQUIRE(t.mts.NumActive() ==  1);
+	REQUIRE(t.state ==  t.user.mState);
 
 	t.SendUp(AppControlField(true, true, false, false, 2), FunctionCode::RESPONSE, IINField()); // check that a bad FIR bit is rejected
-	BOOST_REQUIRE_EQUAL(t.log.NextErrorCode(), ALERR_BAD_FIR_FIN);
-	BOOST_REQUIRE_EQUAL(t.mts.NumActive(), 1);
-	BOOST_REQUIRE_EQUAL(t.state, t.user.mState);
+	REQUIRE(t.log.NextErrorCode() ==  ALERR_BAD_FIR_FIN);
+	REQUIRE(t.mts.NumActive() ==  1);
+	REQUIRE(t.state ==  t.user.mState);
 
 	t.SendUp(AppControlField(false, true, false, false, 2), FunctionCode::RESPONSE, IINField()); ++t.state.NumFinalRsp;
-	BOOST_REQUIRE_EQUAL(t.mts.NumActive(), 0);
-	BOOST_REQUIRE_EQUAL(t.state, t.user.mState);
+	REQUIRE(t.mts.NumActive() ==  0);
+	REQUIRE(t.state ==  t.user.mState);
 }
 
 // The SendRequest transaction needs to gracefully confirm and handle
 // incoming unsolicited data before receiving it's response
-BOOST_AUTO_TEST_CASE(MasterUnsolictedDuringRequest)
+TEST_CASE(SUITE("MasterUnsolictedDuringRequest"))
 {
 	AppLayerTest t(true);	// master
 	t.lower.ThisLayerUp(); ++t.state.NumLayerUp;
 
 	t.SendRequest(FunctionCode::READ, true, true, false, false); // write a request
-	BOOST_REQUIRE_EQUAL(RequestToHex(FunctionCode::READ, true, true, false, false, 0), t.lower.PopWriteAsHex());
+	REQUIRE(RequestToHex(FunctionCode::READ, true, true, false, false, 0) ==  t.lower.PopWriteAsHex());
 
 	// this should queue a confirm and pass the data up immediately
 	t.SendUp(AppControlField(true, true, true, true, 5), FunctionCode::UNSOLICITED_RESPONSE, IINField()); ++t.state.NumUnsol;
-	BOOST_REQUIRE_EQUAL(t.state, t.user.mState);
-	BOOST_REQUIRE_EQUAL(RequestToHex(FunctionCode::CONFIRM, true, true, false, true, 5), t.lower.PopWriteAsHex()); //verify and clear the buffer
+	REQUIRE(t.state ==  t.user.mState);
+	REQUIRE(RequestToHex(FunctionCode::CONFIRM, true, true, false, true, 5) ==  t.lower.PopWriteAsHex()); //verify and clear the buffer
 
 	t.SendUp(AppControlField(true, true, true, false, 0), FunctionCode::RESPONSE, IINField()); ++t.state.NumFinalRsp;
-	BOOST_REQUIRE_EQUAL(t.state, t.user.mState);
-	BOOST_REQUIRE_EQUAL(RequestToHex(FunctionCode::CONFIRM, true, true, false, false, 0), t.lower.PopWriteAsHex()); // check that the response gets confirmed
+	REQUIRE(t.state ==  t.user.mState);
+	REQUIRE(RequestToHex(FunctionCode::CONFIRM, true, true, false, false, 0) ==  t.lower.PopWriteAsHex()); // check that the response gets confirmed
 }
 
 /** The SendUnsolicited transaction needs to gracefully pass up
 	requests while doing an unsolicited transaction. It's up to the
 	slave itself to buffer the last such request and process it
 	after the unsol transaction is complete. */
-BOOST_AUTO_TEST_CASE(SlaveRequestDuringUnsolicited)
+TEST_CASE(SUITE("SlaveRequestDuringUnsolicited"))
 {
 	AppLayerTest t(false);	// slave
 	t.lower.ThisLayerUp(); ++t.state.NumLayerUp;
@@ -395,26 +394,26 @@ BOOST_AUTO_TEST_CASE(SlaveRequestDuringUnsolicited)
 
 	// this should queue a confirm and pass the data up immediately
 	t.SendUp(AppControlField(true, true, false, false, 0), FunctionCode::READ); ++t.state.NumRequest;
-	BOOST_REQUIRE_EQUAL(t.state, t.user.mState);
+	REQUIRE(t.state ==  t.user.mState);
 	t.SendUp(AppControlField(true, true, false, true, 0), FunctionCode::CONFIRM); ++t.state.NumUnsolSendSuccess; //confirm the unsolicited
-	BOOST_REQUIRE_EQUAL(t.state, t.user.mState);
+	REQUIRE(t.state ==  t.user.mState);
 }
 
 /** Test that no retries are performed by default */
-BOOST_AUTO_TEST_CASE(TestNoRetries)
+TEST_CASE(SUITE("TestNoRetries"))
 {
 	AppLayerTest t(false);	// slave
 	t.lower.ThisLayerUp(); ++t.state.NumLayerUp;
 
 	t.SendUnsolicited(FunctionCode::UNSOLICITED_RESPONSE, true, true, true, true);
-	BOOST_REQUIRE_EQUAL(t.lower.NumWrites(), 1);
-	BOOST_REQUIRE(t.mts.DispatchOne()); ++t.state.NumUnsolFailure;// timeout the unsol confirm
-	BOOST_REQUIRE_EQUAL(t.lower.NumWrites(), 1);
-	BOOST_REQUIRE_EQUAL(t.state, t.user.mState);
+	REQUIRE(t.lower.NumWrites() ==  1);
+	REQUIRE(t.mts.DispatchOne()); ++t.state.NumUnsolFailure;// timeout the unsol confirm
+	REQUIRE(t.lower.NumWrites() ==  1);
+	REQUIRE(t.state ==  t.user.mState);
 }
 
 /** Test that retries are performed for unsol */
-BOOST_AUTO_TEST_CASE(TestUnsolRetries)
+TEST_CASE(SUITE("TestUnsolRetries"))
 {
 	const size_t RETRIES = 3;
 
@@ -424,16 +423,16 @@ BOOST_AUTO_TEST_CASE(TestUnsolRetries)
 	t.SendUnsolicited(FunctionCode::UNSOLICITED_RESPONSE, true, true, true, true);
 
 	for(size_t i = 0; i < (RETRIES + 1); ++i) {
-		BOOST_REQUIRE_EQUAL(t.lower.NumWrites(), i + 1);
-		BOOST_REQUIRE(t.mts.DispatchOne());				// timeout the confirm
+		REQUIRE(t.lower.NumWrites() ==  i + 1);
+		REQUIRE(t.mts.DispatchOne());				// timeout the confirm
 	}
 
 	++t.state.NumUnsolFailure;
-	BOOST_REQUIRE_EQUAL(t.state, t.user.mState);
+	REQUIRE(t.state ==  t.user.mState);
 }
 
 /** Test that retries are performed for a solicited request */
-BOOST_AUTO_TEST_CASE(TestOperateRetries)
+TEST_CASE(SUITE("TestOperateRetries"))
 {
 	const size_t RETRIES = 3;
 
@@ -443,16 +442,16 @@ BOOST_AUTO_TEST_CASE(TestOperateRetries)
 	t.SendRequest(FunctionCode::OPERATE, true, true, false, false);
 
 	for(size_t i = 0; i < (RETRIES + 1); ++i) {
-		BOOST_REQUIRE_EQUAL(t.lower.NumWrites(), i + 1);
-		BOOST_REQUIRE(t.mts.DispatchOne());	 // timeout the response
+		REQUIRE(t.lower.NumWrites() ==  i + 1);
+		REQUIRE(t.mts.DispatchOne());	 // timeout the response
 	}
 
 	++t.state.NumSolFailure;
-	BOOST_REQUIRE_EQUAL(t.state, t.user.mState);
+	REQUIRE(t.state ==  t.user.mState);
 }
 
 /** Test that retries are performed for a solicited request */
-BOOST_AUTO_TEST_CASE(TestRetrieReentrancy)
+TEST_CASE(SUITE("TestRetrieReentrancy"))
 {
 	const size_t RETRIES = 1;
 
@@ -460,12 +459,12 @@ BOOST_AUTO_TEST_CASE(TestRetrieReentrancy)
 	t.lower.ThisLayerUp(); ++t.state.NumLayerUp;
 
 	t.SendRequest(FunctionCode::OPERATE, true, true, false, false);
-	BOOST_REQUIRE_EQUAL(t.lower.NumWrites(), 1);
-	BOOST_REQUIRE(t.mts.DispatchOne()); // timeout the response
-	BOOST_REQUIRE_EQUAL(t.lower.NumWrites(), 2);
+	REQUIRE(t.lower.NumWrites() ==  1);
+	REQUIRE(t.mts.DispatchOne()); // timeout the response
+	REQUIRE(t.lower.NumWrites() ==  2);
 }
 
-BOOST_AUTO_TEST_CASE(LargeFrame)
+TEST_CASE(SUITE("LargeFrame"))
 {
 	AppLayerTest t(true, 1);
 	t.lower.ThisLayerUp();
@@ -475,5 +474,5 @@ BOOST_AUTO_TEST_CASE(LargeFrame)
 	t.app.OnReceive(hex.ToReadOnly());
 }
 
-BOOST_AUTO_TEST_SUITE_END() //end suite
+
 

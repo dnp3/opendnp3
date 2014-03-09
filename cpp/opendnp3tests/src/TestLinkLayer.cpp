@@ -18,12 +18,12 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include <boost/test/unit_test.hpp>
+#include <catch.hpp>
 
 #include <opendnp3/DNPConstants.h>
 
 #include "Exception.h"
-#include "TestHelpers.h"
+
 #include "BufferHelpers.h"
 #include "LinkLayerTest.h"
 
@@ -32,114 +32,114 @@
 using namespace openpal;
 using namespace opendnp3;
 
-BOOST_AUTO_TEST_SUITE(LinkLayerTestSuite)
+#define SUITE(name) "LinkLayerTestSuite - " name
 
 // All operations should fail except for OnLowerLayerUp, just a representative
 // number of them
-BOOST_AUTO_TEST_CASE(ClosedState)
+TEST_CASE(SUITE("ClosedState"))
 {
 	LinkLayerTest t;
 	t.upper.SendDown("00");
-	BOOST_REQUIRE(t.log.PopOneEntry(LogLevel::Error));
+	REQUIRE(t.log.PopOneEntry(LogLevel::Error));
 	t.link.OnLowerLayerDown();
-	BOOST_REQUIRE(t.log.PopOneEntry(LogLevel::Error));
+	REQUIRE(t.log.PopOneEntry(LogLevel::Error));
 	t.link.Ack(false, false, 1, 2);
-	BOOST_REQUIRE(t.log.PopOneEntry(LogLevel::Error));
+	REQUIRE(t.log.PopOneEntry(LogLevel::Error));
 }
 
 // Prove that the upper layer is notified when the lower layer comes online
-BOOST_AUTO_TEST_CASE(ForwardsOnLowerLayerUp)
+TEST_CASE(SUITE("ForwardsOnLowerLayerUp"))
 {
 	LinkLayerTest t;
-	BOOST_REQUIRE_FALSE(t.upper.IsLowerLayerUp());
+	REQUIRE_FALSE(t.upper.IsLowerLayerUp());
 	t.link.OnLowerLayerUp();
-	BOOST_REQUIRE(t.upper.IsLowerLayerUp());
+	REQUIRE(t.upper.IsLowerLayerUp());
 	t.link.OnLowerLayerUp();
-	BOOST_REQUIRE(t.log.PopOneEntry(LogLevel::Error));	
+	REQUIRE(t.log.PopOneEntry(LogLevel::Error));	
 }
 
 // Check that once the layer comes up, validation errors can occur
-BOOST_AUTO_TEST_CASE(ValidatesMasterSlaveBit)
+TEST_CASE(SUITE("ValidatesMasterSlaveBit"))
 {
 	LinkLayerTest t; t.link.OnLowerLayerUp();
 	t.link.Ack(true, false, 1, 1024);
-	BOOST_REQUIRE_EQUAL(t.log.NextErrorCode(), DLERR_MASTER_BIT_MATCH);
+	REQUIRE(t.log.NextErrorCode() ==  DLERR_MASTER_BIT_MATCH);
 }
 
 // Only process frames from your designated remote address
-BOOST_AUTO_TEST_CASE(ValidatesSourceAddress)
+TEST_CASE(SUITE("ValidatesSourceAddress"))
 {
 	LinkLayerTest t; t.link.OnLowerLayerUp();
 	t.link.Ack(false, false, 1, 1023);
-	BOOST_REQUIRE_EQUAL(t.log.NextErrorCode(), DLERR_UNKNOWN_SOURCE);
+	REQUIRE(t.log.NextErrorCode() ==  DLERR_UNKNOWN_SOURCE);
 }
 
 // This should actually never happen when using the LinkLayerRouter
 // Only process frame addressed to you
-BOOST_AUTO_TEST_CASE(ValidatesDestinationAddress)
+TEST_CASE(SUITE("ValidatesDestinationAddress"))
 {
 	LinkLayerTest t;  t.link.OnLowerLayerUp();
 	t.link.Ack(false, false, 2, 1024);
-	BOOST_REQUIRE_EQUAL(t.log.NextErrorCode(), DLERR_UNKNOWN_DESTINATION);
+	REQUIRE(t.log.NextErrorCode() ==  DLERR_UNKNOWN_DESTINATION);
 }
 
 // Show that the base state of idle logs SecToPri frames as errors
-BOOST_AUTO_TEST_CASE(SecToPriNoContext)
+TEST_CASE(SUITE("SecToPriNoContext"))
 {
 	LinkLayerTest t; t.link.OnLowerLayerUp();
 
-	BOOST_REQUIRE(t.log.IsLogErrorFree());
+	REQUIRE(t.log.IsLogErrorFree());
 	t.link.Ack(false, false, 1, 1024);
-	BOOST_REQUIRE_EQUAL(t.log.NextErrorCode(), DLERR_UNEXPECTED_FRAME);
+	REQUIRE(t.log.NextErrorCode() ==  DLERR_UNEXPECTED_FRAME);
 
 
-	BOOST_REQUIRE(t.log.IsLogErrorFree());
+	REQUIRE(t.log.IsLogErrorFree());
 	t.link.Nack(false, false, 1, 1024);
-	BOOST_REQUIRE_EQUAL(t.log.NextErrorCode(), DLERR_UNEXPECTED_FRAME);
+	REQUIRE(t.log.NextErrorCode() ==  DLERR_UNEXPECTED_FRAME);
 
 
-	BOOST_REQUIRE(t.log.IsLogErrorFree());
+	REQUIRE(t.log.IsLogErrorFree());
 	t.link.LinkStatus(false, false, 1, 1024);
-	BOOST_REQUIRE_EQUAL(t.log.NextErrorCode(), DLERR_UNEXPECTED_FRAME);
+	REQUIRE(t.log.NextErrorCode() ==  DLERR_UNEXPECTED_FRAME);
 
 
-	BOOST_REQUIRE(t.log.IsLogErrorFree());
+	REQUIRE(t.log.IsLogErrorFree());
 	t.link.NotSupported(false, false, 1, 1024);
-	BOOST_REQUIRE_EQUAL(t.log.NextErrorCode(), DLERR_UNEXPECTED_FRAME);
+	REQUIRE(t.log.NextErrorCode() ==  DLERR_UNEXPECTED_FRAME);
 }
 
 // Show that the base state of idle forwards unconfirmed user data
-BOOST_AUTO_TEST_CASE(UnconfirmedDataPassedUpFromIdleUnreset)
+TEST_CASE(SUITE("UnconfirmedDataPassedUpFromIdleUnreset"))
 {
 	LinkLayerTest t; t.link.OnLowerLayerUp();
 	ByteStr bs(250, 0);
 	t.link.UnconfirmedUserData(false, 1, 1024, bs.ToReadOnly());
-	BOOST_REQUIRE(t.log.IsLogErrorFree());
-	BOOST_REQUIRE(t.upper.BufferEquals(bs, bs.Size()));
+	REQUIRE(t.log.IsLogErrorFree());
+	REQUIRE(t.upper.BufferEquals(bs, bs.Size()));
 }
 
 // Show that the base state of idle forwards unconfirmed user data
-BOOST_AUTO_TEST_CASE(ConfirmedDataIgnoredFromIdleUnreset)
+TEST_CASE(SUITE("ConfirmedDataIgnoredFromIdleUnreset"))
 {
 	LinkLayerTest t; t.link.OnLowerLayerUp();
 	ByteStr bs(250, 0);
 	t.link.ConfirmedUserData(false, false, 1, 1024, bs.ToReadOnly());
-	BOOST_REQUIRE(t.upper.IsBufferEmpty());
-	BOOST_REQUIRE_EQUAL(t.log.NextErrorCode(), DLERR_UNEXPECTED_FRAME);
+	REQUIRE(t.upper.IsBufferEmpty());
+	REQUIRE(t.log.NextErrorCode() ==  DLERR_UNEXPECTED_FRAME);
 }
 
 // Secondary Reset Links
-BOOST_AUTO_TEST_CASE(SecondaryResetLink)
+TEST_CASE(SUITE("SecondaryResetLink"))
 {
 	LinkLayerTest t(LinkLayerTest::DefaultConfig(), LogLevel::Interpret, true);
 	t.link.OnLowerLayerUp();
 	t.link.ResetLinkStates(false, 1, 1024);
 	LinkFrame f; f.FormatAck(true, false, 1024, 1);
-	BOOST_REQUIRE_EQUAL(t.mNumSend, 1);
-	BOOST_REQUIRE_EQUAL(t.mLastSend, f);
+	REQUIRE(t.mNumSend ==  1);
+	REQUIRE(t.mLastSend ==  f);
 }
 
-BOOST_AUTO_TEST_CASE(SecAckWrongFCB)
+TEST_CASE(SUITE("SecAckWrongFCB"))
 {
 	LinkConfig cfg = LinkLayerTest::DefaultConfig();
 	cfg.UseConfirms = true;
@@ -148,20 +148,20 @@ BOOST_AUTO_TEST_CASE(SecAckWrongFCB)
 	t.link.OnLowerLayerUp();
 	t.link.ResetLinkStates(false, 1, 1024);
 
-	BOOST_REQUIRE_EQUAL(t.mNumSend, 1);
+	REQUIRE(t.mNumSend ==  1);
 
 	ByteStr b(250, 0);
 	t.link.ConfirmedUserData(false, false, 1, 1024, b.ToReadOnly());
-	BOOST_REQUIRE_EQUAL(t.mNumSend, 2);
+	REQUIRE(t.mNumSend ==  2);
 	LinkFrame f; f.FormatAck(true, false, 1024, 1);
-	BOOST_REQUIRE_EQUAL(t.mLastSend, f);
-	BOOST_REQUIRE(t.upper.IsBufferEmpty()); //data should not be passed up!
-	BOOST_REQUIRE_EQUAL(t.log.NextErrorCode(), DLERR_WRONG_FCB_ON_RECEIVE_DATA);
+	REQUIRE(t.mLastSend ==  f);
+	REQUIRE(t.upper.IsBufferEmpty()); //data should not be passed up!
+	REQUIRE(t.log.NextErrorCode() ==  DLERR_WRONG_FCB_ON_RECEIVE_DATA);
 }
 
 // When we get another reset links when we're already reset,
 // ACK it and reset the link state
-BOOST_AUTO_TEST_CASE(SecondaryResetResetLinkStates)
+TEST_CASE(SUITE("SecondaryResetResetLinkStates"))
 {
 	LinkLayerTest t;
 	t.link.OnLowerLayerUp();
@@ -169,11 +169,11 @@ BOOST_AUTO_TEST_CASE(SecondaryResetResetLinkStates)
 
 	t.link.ResetLinkStates(false, 1, 1024);
 	LinkFrame f; f.FormatAck(true, false, 1024, 1);
-	BOOST_REQUIRE_EQUAL(t.mNumSend, 2);
-	BOOST_REQUIRE_EQUAL(t.mLastSend, f);
+	REQUIRE(t.mNumSend ==  2);
+	REQUIRE(t.mLastSend ==  f);
 }
 
-BOOST_AUTO_TEST_CASE(SecondaryResetConfirmedUserData)
+TEST_CASE(SUITE("SecondaryResetConfirmedUserData"))
 {
 	LinkLayerTest t;
 	t.link.OnLowerLayerUp();
@@ -181,50 +181,50 @@ BOOST_AUTO_TEST_CASE(SecondaryResetConfirmedUserData)
 
 	ByteStr bytes(250, 0);
 	t.link.ConfirmedUserData(false, true, 1, 1024, bytes.ToReadOnly());
-	BOOST_REQUIRE_EQUAL(t.mNumSend, 2);
-	BOOST_REQUIRE(t.upper.BufferEquals(bytes, bytes.Size()));
-	BOOST_REQUIRE(t.log.IsLogErrorFree());
+	REQUIRE(t.mNumSend ==  2);
+	REQUIRE(t.upper.BufferEquals(bytes, bytes.Size()));
+	REQUIRE(t.log.IsLogErrorFree());
 	t.upper.ClearBuffer();
 
 	t.link.ConfirmedUserData(false, true, 1, 1024, bytes.ToReadOnly()); //send with wrong FCB
-	BOOST_REQUIRE_EQUAL(t.mNumSend, 3); //should still get an ACK
-	BOOST_REQUIRE(t.upper.IsBufferEmpty()); //but no data
-	BOOST_REQUIRE_EQUAL(t.log.NextErrorCode(), DLERR_WRONG_FCB_ON_RECEIVE_DATA);
+	REQUIRE(t.mNumSend ==  3); //should still get an ACK
+	REQUIRE(t.upper.IsBufferEmpty()); //but no data
+	REQUIRE(t.log.NextErrorCode() ==  DLERR_WRONG_FCB_ON_RECEIVE_DATA);
 }
 
-BOOST_AUTO_TEST_CASE(RequestStatusOfLink)
+TEST_CASE(SUITE("RequestStatusOfLink"))
 {
 	LinkLayerTest t;
 	t.link.OnLowerLayerUp();
 	t.link.RequestLinkStatus(false, 1, 1024); //should be able to request this before the link is reset
-	BOOST_REQUIRE_EQUAL(t.mNumSend, 1);
+	REQUIRE(t.mNumSend ==  1);
 	LinkFrame f; f.FormatLinkStatus(true, false, 1024, 1);
-	BOOST_REQUIRE_EQUAL(t.mLastSend, f);
+	REQUIRE(t.mLastSend ==  f);
 	t.link.ResetLinkStates(false, 1, 1024);
 
 
 	t.link.RequestLinkStatus(false, 1, 1024); //should be able to request this before the link is reset
-	BOOST_REQUIRE_EQUAL(t.mNumSend, 3);
-	BOOST_REQUIRE_EQUAL(t.mLastSend, f);
+	REQUIRE(t.mNumSend ==  3);
+	REQUIRE(t.mLastSend ==  f);
 }
 
-BOOST_AUTO_TEST_CASE(TestLinkStates)
+TEST_CASE(SUITE("TestLinkStates"))
 {
 	LinkLayerTest t;
 	t.link.OnLowerLayerUp();
 	t.link.TestLinkStatus(false, false, 1, 1024);
-	BOOST_REQUIRE_EQUAL(t.log.NextErrorCode(), DLERR_UNEXPECTED_FRAME);
+	REQUIRE(t.log.NextErrorCode() ==  DLERR_UNEXPECTED_FRAME);
 
 	t.link.ResetLinkStates(false, 1, 1024);
-	BOOST_REQUIRE_EQUAL(t.mNumSend, 1);
+	REQUIRE(t.mNumSend ==  1);
 
 	t.link.TestLinkStatus(false, true, 1, 1024);
 	LinkFrame f; f.FormatAck(true, false, 1024, 1);
-	BOOST_REQUIRE_EQUAL(t.mNumSend, 2);
-	BOOST_REQUIRE_EQUAL(t.mLastSend, f);
+	REQUIRE(t.mNumSend ==  2);
+	REQUIRE(t.mLastSend ==  f);
 }
 
-BOOST_AUTO_TEST_CASE(SendUnconfirmed)
+TEST_CASE(SUITE("SendUnconfirmed"))
 {
 	LinkLayerTest t;
 	t.link.OnLowerLayerUp();
@@ -232,33 +232,33 @@ BOOST_AUTO_TEST_CASE(SendUnconfirmed)
 	ByteStr bytes(250, 0);
 
 	t.link.Send(bytes.ToReadOnly());
-	BOOST_REQUIRE_EQUAL(t.mNumSend, 1);
+	REQUIRE(t.mNumSend ==  1);
 	LinkFrame f; f.FormatUnconfirmedUserData(true, 1024, 1, bytes, bytes.Size());
-	BOOST_REQUIRE_EQUAL(t.mLastSend, f);
-	BOOST_REQUIRE_EQUAL(t.upper.GetState().mSuccessCnt, 1);
-	BOOST_REQUIRE_EQUAL(t.mNumSend, 1);
+	REQUIRE(t.mLastSend ==  f);
+	REQUIRE(t.upper.GetState().mSuccessCnt ==  1);
+	REQUIRE(t.mNumSend ==  1);
 }
 
-BOOST_AUTO_TEST_CASE(CloseBehavior)
+TEST_CASE(SUITE("CloseBehavior"))
 {
 	LinkLayerTest t;
 	t.link.OnLowerLayerUp();
 
 	ByteStr bytes(250, 0);
 	t.link.Send(bytes.ToReadOnly());
-	BOOST_REQUIRE(t.upper.CountersEqual(1, 0));
+	REQUIRE(t.upper.CountersEqual(1, 0));
 	t.link.OnLowerLayerDown(); //take it down during the middle of a send
-	BOOST_REQUIRE_FALSE(t.upper.IsLowerLayerUp());
+	REQUIRE_FALSE(t.upper.IsLowerLayerUp());
 
 
 	t.link.OnLowerLayerUp();
-	BOOST_REQUIRE(t.upper.IsLowerLayerUp());
+	REQUIRE(t.upper.IsLowerLayerUp());
 	t.link.Send(bytes.ToReadOnly());
-	BOOST_REQUIRE_EQUAL(t.mNumSend, 2);
+	REQUIRE(t.mNumSend ==  2);
 
 }
 
-BOOST_AUTO_TEST_CASE(ResetLinkTimerExpiration)
+TEST_CASE(SUITE("ResetLinkTimerExpiration"))
 {
 	LinkConfig cfg = LinkLayerTest::DefaultConfig();
 	cfg.UseConfirms = true;
@@ -268,18 +268,18 @@ BOOST_AUTO_TEST_CASE(ResetLinkTimerExpiration)
 
 	ByteStr bytes(250, 0);
 	t.link.Send(bytes.ToReadOnly());
-	BOOST_REQUIRE_EQUAL(t.mNumSend, 1);
+	REQUIRE(t.mNumSend ==  1);
 	LinkFrame f; f.FormatResetLinkStates(true, 1024, 1);
-	BOOST_REQUIRE_EQUAL(t.mLastSend, f);
-	BOOST_REQUIRE(t.upper.CountersEqual(0, 0));
+	REQUIRE(t.mLastSend ==  f);
+	REQUIRE(t.upper.CountersEqual(0, 0));
 
-	BOOST_REQUIRE(t.log.IsLogErrorFree());
-	BOOST_REQUIRE(t.mts.DispatchOne()); //trigger the timeout callback
-	BOOST_REQUIRE(t.upper.CountersEqual(0, 1));
-	BOOST_REQUIRE_EQUAL(t.log.NextErrorCode(), DLERR_TIMEOUT_NO_RETRY);
+	REQUIRE(t.log.IsLogErrorFree());
+	REQUIRE(t.mts.DispatchOne()); //trigger the timeout callback
+	REQUIRE(t.upper.CountersEqual(0, 1));
+	REQUIRE(t.log.NextErrorCode() ==  DLERR_TIMEOUT_NO_RETRY);
 }
 
-BOOST_AUTO_TEST_CASE(ResetLinkTimerExpirationWithRetry)
+TEST_CASE(SUITE("ResetLinkTimerExpirationWithRetry"))
 {
 	LinkConfig cfg = LinkLayerTest::DefaultConfig();
 	cfg.NumRetry = 1;
@@ -290,35 +290,35 @@ BOOST_AUTO_TEST_CASE(ResetLinkTimerExpirationWithRetry)
 
 	ByteStr bytes(250, 0);
 	t.link.Send(bytes.ToReadOnly());
-	BOOST_REQUIRE_EQUAL(t.mNumSend, 1);
+	REQUIRE(t.mNumSend ==  1);
 
-	BOOST_REQUIRE(t.log.IsLogErrorFree());
-	BOOST_REQUIRE(t.mts.DispatchOne());
-	BOOST_REQUIRE_EQUAL(t.log.NextErrorCode(), DLERR_TIMEOUT_RETRY);
-	BOOST_REQUIRE(t.upper.CountersEqual(0, 0)); //check that the send is still occuring
-	BOOST_REQUIRE_EQUAL(t.mNumSend, 2);
+	REQUIRE(t.log.IsLogErrorFree());
+	REQUIRE(t.mts.DispatchOne());
+	REQUIRE(t.log.NextErrorCode() ==  DLERR_TIMEOUT_RETRY);
+	REQUIRE(t.upper.CountersEqual(0, 0)); //check that the send is still occuring
+	REQUIRE(t.mNumSend ==  2);
 	LinkFrame f; f.FormatResetLinkStates(true, 1024, 1);
-	BOOST_REQUIRE_EQUAL(t.mLastSend, f); // check that reset links got sent again
+	REQUIRE(t.mLastSend ==  f); // check that reset links got sent again
 
 	t.link.Ack(false, false, 1, 1024);
-	BOOST_REQUIRE_EQUAL(t.mNumSend, 3);
+	REQUIRE(t.mNumSend ==  3);
 	f.FormatConfirmedUserData(true, true, 1024, 1, bytes, bytes.Size());
-	BOOST_REQUIRE_EQUAL(t.mLastSend, f); // check that reset links got sent again
+	REQUIRE(t.mLastSend ==  f); // check that reset links got sent again
 
-	BOOST_REQUIRE(t.mts.DispatchOne()); //timeout the ACK
-	BOOST_REQUIRE_EQUAL(t.log.NextErrorCode(), DLERR_TIMEOUT_NO_RETRY);
-	BOOST_REQUIRE(t.upper.CountersEqual(0, 1));
+	REQUIRE(t.mts.DispatchOne()); //timeout the ACK
+	REQUIRE(t.log.NextErrorCode() ==  DLERR_TIMEOUT_NO_RETRY);
+	REQUIRE(t.upper.CountersEqual(0, 1));
 
 	// Test retry reset
 	t.link.Send(bytes.ToReadOnly());
-	BOOST_REQUIRE_EQUAL(t.mNumSend, 4);
+	REQUIRE(t.mNumSend ==  4);
 
-	BOOST_REQUIRE(t.log.IsLogErrorFree());
-	BOOST_REQUIRE(t.mts.DispatchOne());
-	BOOST_REQUIRE_EQUAL(t.log.NextErrorCode(), DLERR_TIMEOUT_RETRY);
-	BOOST_REQUIRE(t.upper.CountersEqual(0, 1)); //check that the send is still occuring
+	REQUIRE(t.log.IsLogErrorFree());
+	REQUIRE(t.mts.DispatchOne());
+	REQUIRE(t.log.NextErrorCode() ==  DLERR_TIMEOUT_RETRY);
+	REQUIRE(t.upper.CountersEqual(0, 1)); //check that the send is still occuring
 }
-BOOST_AUTO_TEST_CASE(ResetLinkTimerExpirationWithRetryResetState)
+TEST_CASE(SUITE("ResetLinkTimerExpirationWithRetryResetState"))
 {
 	LinkConfig cfg = LinkLayerTest::DefaultConfig();
 	cfg.NumRetry = 1;
@@ -331,31 +331,31 @@ BOOST_AUTO_TEST_CASE(ResetLinkTimerExpirationWithRetryResetState)
 	t.link.Send(bytes.ToReadOnly());
 	t.link.Ack(false, false, 1, 1024);
 	t.link.Ack(false, false, 1, 1024);
-	BOOST_REQUIRE(t.upper.CountersEqual(1, 0));
+	REQUIRE(t.upper.CountersEqual(1, 0));
 
 	t.link.Send(bytes.ToReadOnly());
-	BOOST_REQUIRE_EQUAL(t.mNumSend, 3);
+	REQUIRE(t.mNumSend ==  3);
 
-	BOOST_REQUIRE(t.log.IsLogErrorFree());
-	BOOST_REQUIRE(t.mts.DispatchOne());
-	BOOST_REQUIRE_EQUAL(t.log.NextErrorCode(), DLERR_TIMEOUT_RETRY);
-	BOOST_REQUIRE(t.upper.CountersEqual(1, 0)); //check that the send is still occuring
-	BOOST_REQUIRE_EQUAL(t.mNumSend, 4);
+	REQUIRE(t.log.IsLogErrorFree());
+	REQUIRE(t.mts.DispatchOne());
+	REQUIRE(t.log.NextErrorCode() ==  DLERR_TIMEOUT_RETRY);
+	REQUIRE(t.upper.CountersEqual(1, 0)); //check that the send is still occuring
+	REQUIRE(t.mNumSend ==  4);
 
 	t.link.Ack(false, false, 1, 1024);
-	BOOST_REQUIRE(t.upper.CountersEqual(2, 0));
+	REQUIRE(t.upper.CountersEqual(2, 0));
 
 	// Test retry reset
 	t.link.Send(bytes.ToReadOnly());
-	BOOST_REQUIRE_EQUAL(t.mNumSend, 5);	// Should now be waiting for an ACK with active timer
+	REQUIRE(t.mNumSend ==  5);	// Should now be waiting for an ACK with active timer
 
-	BOOST_REQUIRE(t.log.IsLogErrorFree());
-	BOOST_REQUIRE(t.mts.DispatchOne());
-	BOOST_REQUIRE_EQUAL(t.log.NextErrorCode(), DLERR_TIMEOUT_RETRY);
-	BOOST_REQUIRE(t.upper.CountersEqual(2, 0)); //check that the send is still occuring
+	REQUIRE(t.log.IsLogErrorFree());
+	REQUIRE(t.mts.DispatchOne());
+	REQUIRE(t.log.NextErrorCode() ==  DLERR_TIMEOUT_RETRY);
+	REQUIRE(t.upper.CountersEqual(2, 0)); //check that the send is still occuring
 }
 
-BOOST_AUTO_TEST_CASE(ConfirmedDataRetry)
+TEST_CASE(SUITE("ConfirmedDataRetry"))
 {
 	LinkConfig cfg = LinkLayerTest::DefaultConfig();
 	cfg.NumRetry = 1;
@@ -365,23 +365,23 @@ BOOST_AUTO_TEST_CASE(ConfirmedDataRetry)
 
 	ByteStr bytes(250, 0);
 	t.link.Send(bytes.ToReadOnly());
-	BOOST_REQUIRE_EQUAL(t.mNumSend, 1); // Should now be waiting for an ACK with active timer
+	REQUIRE(t.mNumSend ==  1); // Should now be waiting for an ACK with active timer
 
 	t.link.Ack(false, false, 1, 1024);
-	BOOST_REQUIRE_EQUAL(t.mNumSend, 2);
+	REQUIRE(t.mNumSend ==  2);
 
-	BOOST_REQUIRE(t.mts.DispatchOne()); //timeout the ConfData, check that it retransmits
-	BOOST_REQUIRE_EQUAL(t.log.NextErrorCode(), DLERR_TIMEOUT_RETRY);
-	BOOST_REQUIRE_EQUAL(t.mNumSend, 3);
+	REQUIRE(t.mts.DispatchOne()); //timeout the ConfData, check that it retransmits
+	REQUIRE(t.log.NextErrorCode() ==  DLERR_TIMEOUT_RETRY);
+	REQUIRE(t.mNumSend ==  3);
 	LinkFrame f; f.FormatConfirmedUserData(true, true, 1024, 1, bytes, bytes.Size());
-	BOOST_REQUIRE_EQUAL(t.mLastSend, f);
+	REQUIRE(t.mLastSend ==  f);
 
 	t.link.Ack(false, false, 1, 1024);
-	BOOST_REQUIRE_EQUAL(t.mNumSend, 3);
-	BOOST_REQUIRE(t.upper.CountersEqual(1, 0));
+	REQUIRE(t.mNumSend ==  3);
+	REQUIRE(t.upper.CountersEqual(1, 0));
 }
 
-BOOST_AUTO_TEST_CASE(ResetLinkRetries)
+TEST_CASE(SUITE("ResetLinkRetries"))
 {
 	LinkConfig cfg = LinkLayerTest::DefaultConfig();
 	cfg.NumRetry = 3;
@@ -392,16 +392,16 @@ BOOST_AUTO_TEST_CASE(ResetLinkRetries)
 	ByteStr bytes(250, 0);
 	t.link.Send(bytes.ToReadOnly());
 	for(int i = 1; i < 5; ++i) {
-		BOOST_REQUIRE_EQUAL(t.mNumSend, i); // sends link retry
+		REQUIRE(t.mNumSend ==  i); // sends link retry
 		LinkFrame f;
 		f.FormatResetLinkStates(true, 1024, 1);
-		BOOST_REQUIRE_EQUAL(f, t.mLastSend);
-		BOOST_REQUIRE(t.mts.DispatchOne()); //timeout
+		REQUIRE(f ==  t.mLastSend);
+		REQUIRE(t.mts.DispatchOne()); //timeout
 	}
-	BOOST_REQUIRE_EQUAL(t.mNumSend, 4);
+	REQUIRE(t.mNumSend ==  4);
 }
 
-BOOST_AUTO_TEST_CASE(ConfirmedDataNackDFCClear)
+TEST_CASE(SUITE("ConfirmedDataNackDFCClear"))
 {
 	LinkConfig cfg = LinkLayerTest::DefaultConfig();
 	cfg.NumRetry = 1;
@@ -411,20 +411,20 @@ BOOST_AUTO_TEST_CASE(ConfirmedDataNackDFCClear)
 
 	ByteStr bytes(250, 0);
 	t.link.Send(bytes.ToReadOnly());
-	BOOST_REQUIRE_EQUAL(t.mNumSend, 1); // Should now be waiting for an ACK with active timer
+	REQUIRE(t.mNumSend ==  1); // Should now be waiting for an ACK with active timer
 
 	t.link.Ack(false, false, 1, 1024);
-	BOOST_REQUIRE_EQUAL(t.mNumSend, 2);  // num transmitting confirmed data
+	REQUIRE(t.mNumSend ==  2);  // num transmitting confirmed data
 
 	t.link.Nack(false, false, 1, 1024);  // test that we try to reset the link again
-	BOOST_REQUIRE_EQUAL(t.mNumSend, 3);
-	BOOST_REQUIRE(t.mLastSend.GetFunc() == LinkFunction::PRI_RESET_LINK_STATES);
+	REQUIRE(t.mNumSend ==  3);
+	REQUIRE((t.mLastSend.GetFunc() == LinkFunction::PRI_RESET_LINK_STATES));
 	t.link.Ack(false, false, 1, 1024); // ACK the link reset
-	BOOST_REQUIRE_EQUAL(t.mNumSend, 4);
-	BOOST_REQUIRE(t.mLastSend.GetFunc() == LinkFunction::PRI_CONFIRMED_USER_DATA);
+	REQUIRE(t.mNumSend ==  4);
+	REQUIRE((t.mLastSend.GetFunc() == LinkFunction::PRI_CONFIRMED_USER_DATA));
 }
 
-BOOST_AUTO_TEST_CASE(SendDataTimerExpiration)
+TEST_CASE(SUITE("SendDataTimerExpiration"))
 {
 	LinkConfig cfg = LinkLayerTest::DefaultConfig();
 	cfg.UseConfirms = true;
@@ -434,17 +434,17 @@ BOOST_AUTO_TEST_CASE(SendDataTimerExpiration)
 
 	ByteStr bytes(250, 0);
 	t.link.Send(bytes.ToReadOnly());
-	BOOST_REQUIRE_EQUAL(t.mNumSend, 1);
+	REQUIRE(t.mNumSend ==  1);
 	t.link.Ack(false, false, 1, 1024); // ACK the reset links
-	BOOST_REQUIRE_EQUAL(t.mNumSend, 2);
+	REQUIRE(t.mNumSend ==  2);
 	LinkFrame f; f.FormatConfirmedUserData(true, true, 1024, 1, bytes, bytes.Size());
-	BOOST_REQUIRE_EQUAL(t.mNumSend, 2);
-	BOOST_REQUIRE_EQUAL(t.mLastSend, f); // check that data was sent
-	BOOST_REQUIRE(t.mts.DispatchOne()); //trigger the timeout callback
-	BOOST_REQUIRE(t.upper.CountersEqual(0, 1));
+	REQUIRE(t.mNumSend ==  2);
+	REQUIRE(t.mLastSend ==  f); // check that data was sent
+	REQUIRE(t.mts.DispatchOne()); //trigger the timeout callback
+	REQUIRE(t.upper.CountersEqual(0, 1));
 }
 
-BOOST_AUTO_TEST_CASE(SendDataSuccess)
+TEST_CASE(SUITE("SendDataSuccess"))
 {
 	LinkConfig cfg = LinkLayerTest::DefaultConfig();
 	cfg.UseConfirms = true;
@@ -457,12 +457,12 @@ BOOST_AUTO_TEST_CASE(SendDataSuccess)
 	t.link.Ack(false, false, 1, 1024); //this
 
 	t.link.Ack(false, false, 1, 1024);
-	BOOST_REQUIRE(t.upper.CountersEqual(1, 0));
+	REQUIRE(t.upper.CountersEqual(1, 0));
 
 	t.link.Send(bytes.ToReadOnly()); // now we should be directly sending w/o having to reset, and the FCB should flip
 	LinkFrame f; f.FormatConfirmedUserData(true, false, 1024, 1, bytes, bytes.Size());
-	BOOST_REQUIRE_EQUAL(t.mNumSend, 3);
-	BOOST_REQUIRE_EQUAL(t.mLastSend, f);
+	REQUIRE(t.mNumSend ==  3);
+	REQUIRE(t.mLastSend ==  f);
 }
 
-BOOST_AUTO_TEST_SUITE_END()
+

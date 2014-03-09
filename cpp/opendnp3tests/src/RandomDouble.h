@@ -21,18 +21,7 @@
 #ifndef __RANDOM_DOUBLE_H_
 #define __RANDOM_DOUBLE_H_
 
-#ifdef WIN32
-#pragma warning(push)
-#pragma warning(disable:4244)
-#endif
-
-#include <boost/random/mersenne_twister.hpp>
-#include <boost/random/uniform_real.hpp>
-#include <boost/random/variate_generator.hpp>
-
-#ifdef WIN32
-#pragma warning(pop)
-#endif
+#include <random>
 
 namespace opendnp3
 {
@@ -43,19 +32,16 @@ class RandomDouble
 public:
 	RandomDouble() :
 		rng(),
-		dist(0.0, 1.0),
-		nextRand(rng, dist) {
-
-	}
+		dist(0.0, 1.0)
+	{}
 
 	double Next() {
-		return nextRand();
+		return dist(rng);
 	}
 
 private:
-	boost::mt19937 rng;
-	boost::uniform_real<double> dist;
-	boost::variate_generator<boost::mt19937&, boost::uniform_real<double> > nextRand;
+	std::mt19937 rng;
+	std::uniform_real<double> dist;	
 };
 
 }

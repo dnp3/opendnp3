@@ -18,9 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include <boost/test/unit_test.hpp>
+#include <catch.hpp>
 
-#include "TestHelpers.h"
 #include "BufferHelpers.h"
 #include "MeasurementComparisons.h"
 
@@ -36,9 +35,9 @@ using namespace std;
 using namespace openpal;
 using namespace opendnp3;
 
-BOOST_AUTO_TEST_SUITE(LazyCollectionTestSuite)
+#define SUITE(name) "LazyCollectionTestSuite - " name
 
-BOOST_AUTO_TEST_CASE(ReadSimpleTypes)
+TEST_CASE(SUITE("ReadSimpleTypes"))
 {
 	HexSequence hex("AB 01 01 CD 02 00");	
 		
@@ -50,11 +49,11 @@ BOOST_AUTO_TEST_CASE(ReadSimpleTypes)
 		std::vector<Group30Var2> vec;
 		collection.foreach([&](const Group30Var2& gv) { vec.push_back(gv); });
 								
-		BOOST_REQUIRE_EQUAL(2, vec.size());
-		BOOST_REQUIRE_EQUAL(257, vec[0].value);
-		BOOST_REQUIRE_EQUAL(0xAB, vec[0].flags);
-		BOOST_REQUIRE_EQUAL(2, vec[1].value);
-		BOOST_REQUIRE_EQUAL(0xCD, vec[1].flags);
+		REQUIRE(2 ==  vec.size());
+		REQUIRE(257 ==  vec[0].value);
+		REQUIRE(0xAB ==  vec[0].flags);
+		REQUIRE(2 ==  vec[1].value);
+		REQUIRE(0xCD ==  vec[1].flags);
 	};
 
 	// calling the function 2x proves that the buffer can be read again.
@@ -62,19 +61,19 @@ BOOST_AUTO_TEST_CASE(ReadSimpleTypes)
 	test();
 }
 
-BOOST_AUTO_TEST_CASE(SingleBitValue)
+TEST_CASE(SUITE("SingleBitValue"))
 {
 	HexSequence hex("01");
 	auto collection = CreateLazyIterable<Binary>(hex.ToReadOnly(), 1, 
 		[](ReadOnlyBuffer& buff, uint32_t pos) { return Binary(GetBit(buff, pos)); }
 	);
-	BOOST_REQUIRE_EQUAL(1, collection.Count());
+	REQUIRE(1 ==  collection.Count());
 	std::vector<Binary> values;	
 	collection.foreach([&](const Binary& v) { values.push_back(v); });
-	BOOST_REQUIRE_EQUAL(true, values[0].GetValue());
+	REQUIRE(true ==  values[0].GetValue());
 }
 
-BOOST_AUTO_TEST_CASE(ComplexBitCount)
+TEST_CASE(SUITE("ComplexBitCount"))
 {
 	HexSequence hex("FF 00 00");
 	auto collection = CreateLazyIterable<bool>(hex.ToReadOnly(), 17,
@@ -83,12 +82,12 @@ BOOST_AUTO_TEST_CASE(ComplexBitCount)
 	std::vector<bool> values;
 	collection.foreach([&](const bool& v) { values.push_back(v); });
 	
-	BOOST_REQUIRE_EQUAL(17, values.size());
-	BOOST_REQUIRE_EQUAL(true, values[7]);
-	BOOST_REQUIRE_EQUAL(false, values[8]);
+	REQUIRE(17 ==  values.size());
+	REQUIRE(true ==  values[7]);
+	REQUIRE(false ==  values[8]);
 }
 
-BOOST_AUTO_TEST_CASE(HighestBitSet)
+TEST_CASE(SUITE("HighestBitSet"))
 {
 	HexSequence hex("80");
 
@@ -102,9 +101,7 @@ BOOST_AUTO_TEST_CASE(HighestBitSet)
 
 	std::vector<Binary> values;
 	collection2.foreach([&](const Binary& v) { values.push_back(v); });	
-	BOOST_REQUIRE_EQUAL(8, values.size());
-	BOOST_REQUIRE(Binary(false) == values[6]);
-	BOOST_REQUIRE(Binary(true) == values[7]);
+	REQUIRE(8 ==  values.size());
+	REQUIRE((Binary(false) == values[6]));
+	REQUIRE((Binary(true) == values[7]));
 }
-
-BOOST_AUTO_TEST_SUITE_END()

@@ -18,41 +18,41 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include <boost/test/unit_test.hpp>
+#include <catch.hpp>
 
-#include "TestHelpers.h"
+
 #include "AsyncPhysBaseTest.h"
 #include "Exception.h"
 
 using namespace opendnp3;
 using namespace openpal;
 
-BOOST_AUTO_TEST_SUITE(PhysicalLayerAsyncBaseSuite)
+#define SUITE(name) "PhysicalLayerAsyncBaseSuite - " name
 
-BOOST_AUTO_TEST_CASE(ClosedState)
+TEST_CASE(SUITE("ClosedState"))
 {
 	AsyncPhysBaseTest t;
 	uint8_t buff;
 	WriteBuffer wb(&buff, 1);
 
 	t.phys.AsyncClose();
-	BOOST_REQUIRE(t.log.PopOneEntry(LogLevel::Error));
+	REQUIRE(t.log.PopOneEntry(LogLevel::Error));
 	t.upper.SendDown("00");
-	BOOST_REQUIRE(t.log.PopOneEntry(LogLevel::Error));
+	REQUIRE(t.log.PopOneEntry(LogLevel::Error));
 	t.phys.AsyncRead(wb);
-	BOOST_REQUIRE(t.log.PopOneEntry(LogLevel::Error));
+	REQUIRE(t.log.PopOneEntry(LogLevel::Error));
 	t.phys.SignalOpenFailure();
-	BOOST_REQUIRE(t.log.PopOneEntry(LogLevel::Error));
+	REQUIRE(t.log.PopOneEntry(LogLevel::Error));
 	t.phys.SignalOpenSuccess();
-	BOOST_REQUIRE(t.log.PopOneEntry(LogLevel::Error));
+	REQUIRE(t.log.PopOneEntry(LogLevel::Error));
 	t.phys.SignalSendSuccess();
-	BOOST_REQUIRE(t.log.PopOneEntry(LogLevel::Error));
+	REQUIRE(t.log.PopOneEntry(LogLevel::Error));
 	t.phys.SignalSendFailure();
-	BOOST_REQUIRE(t.log.PopOneEntry(LogLevel::Error));
+	REQUIRE(t.log.PopOneEntry(LogLevel::Error));
 
 }
 
-BOOST_AUTO_TEST_CASE(OpenCloseNotification)
+TEST_CASE(SUITE("OpenCloseNotification"))
 {
 	AsyncPhysBaseTest t;
 	const size_t NUM = 3;
@@ -60,24 +60,24 @@ BOOST_AUTO_TEST_CASE(OpenCloseNotification)
 	for(size_t i = 1; i <= NUM; ++i) {
 		t.phys.AsyncOpen();
 		t.phys.SignalOpenSuccess();
-		BOOST_REQUIRE_EQUAL(t.upper.GetState().mNumLayerUp, i);
+		REQUIRE(t.upper.GetState().mNumLayerUp ==  i);
 		t.phys.AsyncClose();
 
 		t.phys.SignalOpenFailure();
-		BOOST_REQUIRE(t.log.PopOneEntry(LogLevel::Error));
+		REQUIRE(t.log.PopOneEntry(LogLevel::Error));
 		t.phys.SignalOpenSuccess();
-		BOOST_REQUIRE(t.log.PopOneEntry(LogLevel::Error));
+		REQUIRE(t.log.PopOneEntry(LogLevel::Error));
 		t.phys.SignalSendSuccess();
-		BOOST_REQUIRE(t.log.PopOneEntry(LogLevel::Error));
+		REQUIRE(t.log.PopOneEntry(LogLevel::Error));
 		t.phys.SignalSendFailure();
-		BOOST_REQUIRE(t.log.PopOneEntry(LogLevel::Error));
+		REQUIRE(t.log.PopOneEntry(LogLevel::Error));
 
-		BOOST_REQUIRE_EQUAL(t.phys.NumClose(), i);
-		BOOST_REQUIRE_EQUAL(t.upper.GetState().mNumLayerDown, i);
+		REQUIRE(t.phys.NumClose() ==  i);
+		REQUIRE(t.upper.GetState().mNumLayerDown ==  i);
 	}
 }
 
-BOOST_AUTO_TEST_CASE(ReadState)
+TEST_CASE(SUITE("ReadState"))
 {
 	AsyncPhysBaseTest t;
 	t.phys.AsyncOpen();
@@ -85,19 +85,19 @@ BOOST_AUTO_TEST_CASE(ReadState)
 	t.adapter.StartRead(); //start a read
 
 	t.phys.SignalOpenFailure();
-	BOOST_REQUIRE(t.log.PopOneEntry(LogLevel::Error));
+	REQUIRE(t.log.PopOneEntry(LogLevel::Error));
 	t.phys.SignalOpenSuccess();
-	BOOST_REQUIRE(t.log.PopOneEntry(LogLevel::Error));
+	REQUIRE(t.log.PopOneEntry(LogLevel::Error));
 	t.phys.SignalSendSuccess();
-	BOOST_REQUIRE(t.log.PopOneEntry(LogLevel::Error));
+	REQUIRE(t.log.PopOneEntry(LogLevel::Error));
 	t.phys.SignalSendFailure();
-	BOOST_REQUIRE(t.log.PopOneEntry(LogLevel::Error));
+	REQUIRE(t.log.PopOneEntry(LogLevel::Error));
 
 	t.phys.TriggerRead("00");
 	t.upper.BufferEqualsHex("00");
 }
 
-BOOST_AUTO_TEST_CASE(CloseWhileReading)
+TEST_CASE(SUITE("CloseWhileReading"))
 {
 	AsyncPhysBaseTest t;
 	t.phys.AsyncOpen();
@@ -105,32 +105,32 @@ BOOST_AUTO_TEST_CASE(CloseWhileReading)
 	t.adapter.StartRead();
 
 	t.phys.AsyncClose();
-	BOOST_REQUIRE_EQUAL(t.phys.NumClose(), 1);
-	BOOST_REQUIRE_EQUAL(t.upper.GetState().mNumLayerDown, 0); //layer shouldn't go down until the outstanding read comes back
+	REQUIRE(t.phys.NumClose() ==  1);
+	REQUIRE(t.upper.GetState().mNumLayerDown ==  0); //layer shouldn't go down until the outstanding read comes back
 	t.phys.SignalReadFailure();
-	BOOST_REQUIRE_EQUAL(t.upper.GetState().mNumLayerDown, 1);
+	REQUIRE(t.upper.GetState().mNumLayerDown ==  1);
 }
 
-BOOST_AUTO_TEST_CASE(WriteState)
+TEST_CASE(SUITE("WriteState"))
 {
 	AsyncPhysBaseTest t;
 	t.phys.AsyncOpen();
 	t.phys.SignalOpenSuccess();
 
 	t.upper.SendDown("00");
-	BOOST_REQUIRE_EQUAL(t.phys.Size(), 1);
+	REQUIRE(t.phys.Size() ==  1);
 
 	t.phys.SignalOpenFailure();
-	BOOST_REQUIRE(t.log.PopOneEntry(LogLevel::Error));
+	REQUIRE(t.log.PopOneEntry(LogLevel::Error));
 	t.phys.SignalOpenSuccess();
-	BOOST_REQUIRE(t.log.PopOneEntry(LogLevel::Error));
+	REQUIRE(t.log.PopOneEntry(LogLevel::Error));
 	t.phys.TriggerRead("");
-	BOOST_REQUIRE(t.log.PopOneEntry(LogLevel::Error));
+	REQUIRE(t.log.PopOneEntry(LogLevel::Error));
 	t.phys.SignalReadFailure();
-	BOOST_REQUIRE(t.log.PopOneEntry(LogLevel::Error));
+	REQUIRE(t.log.PopOneEntry(LogLevel::Error));
 }
 
-BOOST_AUTO_TEST_CASE(CloseWhileWriting)
+TEST_CASE(SUITE("CloseWhileWriting"))
 {
 	AsyncPhysBaseTest t;
 	t.phys.AsyncOpen();
@@ -138,30 +138,13 @@ BOOST_AUTO_TEST_CASE(CloseWhileWriting)
 
 	t.upper.SendDown("00");
 	t.phys.AsyncClose();
-	BOOST_REQUIRE_EQUAL(t.phys.NumClose(), 1);
-	BOOST_REQUIRE_EQUAL(t.upper.GetState().mNumLayerDown, 0); //layer shouldn't go down until the outstanding write comes back
+	REQUIRE(t.phys.NumClose() ==  1);
+	REQUIRE(t.upper.GetState().mNumLayerDown ==  0); //layer shouldn't go down until the outstanding write comes back
 	t.phys.SignalSendFailure();
-	BOOST_REQUIRE_EQUAL(t.upper.GetState().mNumLayerDown, 1);
+	REQUIRE(t.upper.GetState().mNumLayerDown ==  1);
 }
 
-BOOST_AUTO_TEST_CASE(CloseWhileReadingWriting)
-{
-	AsyncPhysBaseTest t;
-	t.phys.AsyncOpen();
-	t.phys.SignalOpenSuccess();
-
-	t.upper.SendDown("00");
-	t.adapter.StartRead();
-	t.phys.AsyncClose();
-	BOOST_REQUIRE_EQUAL(t.phys.NumClose(), 1);
-	BOOST_REQUIRE_EQUAL(t.upper.GetState().mNumLayerDown, 0);
-	t.phys.SignalSendFailure();
-	BOOST_REQUIRE_EQUAL(t.upper.GetState().mNumLayerDown, 0);
-	t.phys.SignalReadFailure();
-	BOOST_REQUIRE_EQUAL(t.upper.GetState().mNumLayerDown, 1);
-}
-
-BOOST_AUTO_TEST_CASE(CloseWhileWritingReading)
+TEST_CASE(SUITE("CloseWhileReadingWriting"))
 {
 	AsyncPhysBaseTest t;
 	t.phys.AsyncOpen();
@@ -170,30 +153,47 @@ BOOST_AUTO_TEST_CASE(CloseWhileWritingReading)
 	t.upper.SendDown("00");
 	t.adapter.StartRead();
 	t.phys.AsyncClose();
-	BOOST_REQUIRE_EQUAL(t.phys.NumClose(), 1);
-	BOOST_REQUIRE_EQUAL(t.upper.GetState().mNumLayerDown, 0);
-	t.phys.SignalReadFailure();
-	BOOST_REQUIRE_EQUAL(t.upper.GetState().mNumLayerDown, 0);
+	REQUIRE(t.phys.NumClose() ==  1);
+	REQUIRE(t.upper.GetState().mNumLayerDown ==  0);
 	t.phys.SignalSendFailure();
-	BOOST_REQUIRE_EQUAL(t.upper.GetState().mNumLayerDown, 1);
+	REQUIRE(t.upper.GetState().mNumLayerDown ==  0);
+	t.phys.SignalReadFailure();
+	REQUIRE(t.upper.GetState().mNumLayerDown ==  1);
 }
 
-BOOST_AUTO_TEST_CASE(CloseWhileOpening)
+TEST_CASE(SUITE("CloseWhileWritingReading"))
+{
+	AsyncPhysBaseTest t;
+	t.phys.AsyncOpen();
+	t.phys.SignalOpenSuccess();
+
+	t.upper.SendDown("00");
+	t.adapter.StartRead();
+	t.phys.AsyncClose();
+	REQUIRE(t.phys.NumClose() ==  1);
+	REQUIRE(t.upper.GetState().mNumLayerDown ==  0);
+	t.phys.SignalReadFailure();
+	REQUIRE(t.upper.GetState().mNumLayerDown ==  0);
+	t.phys.SignalSendFailure();
+	REQUIRE(t.upper.GetState().mNumLayerDown ==  1);
+}
+
+TEST_CASE(SUITE("CloseWhileOpening"))
 {
 	AsyncPhysBaseTest t;
 
 	t.phys.AsyncOpen();
 	t.phys.AsyncClose();
-	BOOST_REQUIRE(t.phys.IsOpening());
-	BOOST_REQUIRE(t.phys.IsClosing());
+	REQUIRE(t.phys.IsOpening());
+	REQUIRE(t.phys.IsClosing());
 
 	/* this could happen for some layers, but we
 	   still need to return an open failure to the handler */
 	t.phys.SignalOpenSuccess();
 
-	BOOST_REQUIRE_EQUAL(0, t.upper.GetState().mNumLayerUp);
-	BOOST_REQUIRE_EQUAL(1, t.adapter.GetNumOpenFailure());
+	REQUIRE(0 ==  t.upper.GetState().mNumLayerUp);
+	REQUIRE(1 ==  t.adapter.GetNumOpenFailure());
 }
 
-BOOST_AUTO_TEST_SUITE_END()
+
 

@@ -18,9 +18,9 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include <boost/test/unit_test.hpp>
+#include <catch.hpp>
 
-#include "TestHelpers.h"
+
 #include "Exception.h"
 
 #include <opendnp3/link/ShiftableBuffer.h>
@@ -28,46 +28,46 @@
 using namespace opendnp3;
 
 
-BOOST_AUTO_TEST_SUITE(ShiftableBufferSuite)
+#define SUITE(name) "ShiftableBufferSuite - " name
 
 const static uint8_t SYNC[] = {0x05, 0x64};
 
-BOOST_AUTO_TEST_CASE(ConstructDestruct)
+TEST_CASE(SUITE("ConstructDestruct"))
 {
 	ShiftableBuffer b(100);
 }
 
-BOOST_AUTO_TEST_CASE(InitialState)
+TEST_CASE(SUITE("InitialState"))
 {
 	ShiftableBuffer b(100);
 
-	BOOST_REQUIRE_EQUAL(b.NumReadBytes(), 0);
-	BOOST_REQUIRE_EQUAL(b.NumWriteBytes(), 100);
-	BOOST_REQUIRE_EQUAL(b.ReadBuff(), b.WriteBuff());	
+	REQUIRE(b.NumReadBytes() ==  0);
+	REQUIRE(b.NumWriteBytes() ==  100);
+	REQUIRE(b.ReadBuff() ==  b.WriteBuff());	
 }
 
-BOOST_AUTO_TEST_CASE(ReadingWriting)
+TEST_CASE(SUITE("ReadingWriting"))
 {
 	ShiftableBuffer b(100);
 
 	b.AdvanceWrite(40);
-	BOOST_REQUIRE_EQUAL(b.NumWriteBytes(), 60);
-	BOOST_REQUIRE_EQUAL(b.NumReadBytes(), 40);
+	REQUIRE(b.NumWriteBytes() ==  60);
+	REQUIRE(b.NumReadBytes() ==  40);
 
 	b.AdvanceWrite(60);
-	BOOST_REQUIRE_EQUAL(b.NumWriteBytes(), 0);
-	BOOST_REQUIRE_EQUAL(b.NumReadBytes(), 100);
+	REQUIRE(b.NumWriteBytes() ==  0);
+	REQUIRE(b.NumReadBytes() ==  100);
 
 	b.AdvanceRead(30);
-	BOOST_REQUIRE_EQUAL(b.NumWriteBytes(), 0);
-	BOOST_REQUIRE_EQUAL(b.NumReadBytes(), 70);
+	REQUIRE(b.NumWriteBytes() ==  0);
+	REQUIRE(b.NumReadBytes() ==  70);
 
 	b.AdvanceRead(70);
-	BOOST_REQUIRE_EQUAL(b.NumWriteBytes(), 0);
-	BOOST_REQUIRE_EQUAL(b.NumReadBytes(), 0);
+	REQUIRE(b.NumWriteBytes() ==  0);
+	REQUIRE(b.NumReadBytes() ==  0);
 }
 
-BOOST_AUTO_TEST_CASE(Shifting)
+TEST_CASE(SUITE("Shifting"))
 {
 	ShiftableBuffer b(100);
 
@@ -82,24 +82,24 @@ BOOST_AUTO_TEST_CASE(Shifting)
 	b.AdvanceRead(97);
 	b.Shift();
 
-	BOOST_REQUIRE_EQUAL(b[0], 1);
-	BOOST_REQUIRE_EQUAL(b[1], 2);
-	BOOST_REQUIRE_EQUAL(b[2], 3);
+	REQUIRE(b[0] ==  1);
+	REQUIRE(b[1] ==  2);
+	REQUIRE(b[2] ==  3);
 }
 
-BOOST_AUTO_TEST_CASE(SyncNoPattern)
+TEST_CASE(SUITE("SyncNoPattern"))
 {
 	ShiftableBuffer b(100);
 	for(size_t i = 0; i < b.NumWriteBytes(); ++i) b.WriteBuff()[i] = 0;
 
 	b.AdvanceWrite(100);
 
-	BOOST_REQUIRE_FALSE(b.Sync(SYNC, 2));
-	BOOST_REQUIRE_EQUAL(b.NumReadBytes(), 0);
-	BOOST_REQUIRE_EQUAL(b.NumWriteBytes(), 0);
+	REQUIRE_FALSE(b.Sync(SYNC, 2));
+	REQUIRE(b.NumReadBytes() ==  0);
+	REQUIRE(b.NumWriteBytes() ==  0);
 }
 
-BOOST_AUTO_TEST_CASE(SyncBeginning)
+TEST_CASE(SUITE("SyncBeginning"))
 {
 	ShiftableBuffer b(100);
 	for(size_t i = 0; i < b.NumWriteBytes(); ++i) b.WriteBuff()[i] = 0;
@@ -107,13 +107,13 @@ BOOST_AUTO_TEST_CASE(SyncBeginning)
 	memcpy(b.WriteBuff(), SYNC, 2);
 	b.AdvanceWrite(100);
 
-	BOOST_REQUIRE(b.Sync(SYNC, 2));
-	BOOST_REQUIRE_EQUAL(b.NumReadBytes(), 100);
-	BOOST_REQUIRE_EQUAL(b.NumWriteBytes(), 0);
+	REQUIRE(b.Sync(SYNC, 2));
+	REQUIRE(b.NumReadBytes() ==  100);
+	REQUIRE(b.NumWriteBytes() ==  0);
 
 }
 
-BOOST_AUTO_TEST_CASE(SyncFullPattern)
+TEST_CASE(SUITE("SyncFullPattern"))
 {
 	ShiftableBuffer b(100);
 
@@ -123,16 +123,16 @@ BOOST_AUTO_TEST_CASE(SyncFullPattern)
 	memcpy(b.WriteBuff() + 50, pattern, 2); //copy the pattern into the buffer
 	b.AdvanceWrite(100);
 
-	BOOST_REQUIRE(b.Sync(SYNC, 2));
-	BOOST_REQUIRE_EQUAL(b.NumReadBytes(), 50);
-	BOOST_REQUIRE_EQUAL(b.NumWriteBytes(), 0);
+	REQUIRE(b.Sync(SYNC, 2));
+	REQUIRE(b.NumReadBytes() ==  50);
+	REQUIRE(b.NumWriteBytes() ==  0);
 
 	// Check that the sync operation correctly advanced the reader
-	BOOST_REQUIRE_EQUAL(b[0], SYNC[0]);
-	BOOST_REQUIRE_EQUAL(b[1], SYNC[1]);
+	REQUIRE(b[0] ==  SYNC[0]);
+	REQUIRE(b[1] ==  SYNC[1]);
 }
 
-BOOST_AUTO_TEST_CASE(SyncPartialPattern)
+TEST_CASE(SUITE("SyncPartialPattern"))
 {
 	ShiftableBuffer b(100);
 
@@ -142,12 +142,12 @@ BOOST_AUTO_TEST_CASE(SyncPartialPattern)
 	b.WriteBuff()[97] = 0x05;
 	b.AdvanceWrite(98);
 
-	BOOST_REQUIRE_FALSE(b.Sync(SYNC, 2));
-	BOOST_REQUIRE_EQUAL(b.NumReadBytes(), 1);
-	BOOST_REQUIRE_EQUAL(b.NumWriteBytes(), 2);
+	REQUIRE_FALSE(b.Sync(SYNC, 2));
+	REQUIRE(b.NumReadBytes() ==  1);
+	REQUIRE(b.NumWriteBytes() ==  2);
 
 	// Check that the sync operation correctly advanced the reader
-	BOOST_REQUIRE_EQUAL(b[0], SYNC[0]);
+	REQUIRE(b[0] ==  SYNC[0]);
 }
 
-BOOST_AUTO_TEST_SUITE_END()
+

@@ -18,7 +18,7 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include <boost/test/unit_test.hpp>
+#include <catch.hpp>
 
 #include <opendnp3/outstation/OutstationEventBuffer.h>
 #include <opendnp3/outstation/DynamicallyAllocatedEventBuffer.h>
@@ -33,10 +33,10 @@
 using namespace std;
 using namespace opendnp3;
 
-BOOST_AUTO_TEST_SUITE(OutstationEventBufferTestSuite)
+#define SUITE(name) "OutstationEventBufferTestSuite - " name
 
 /* TODO
-BOOST_AUTO_TEST_CASE(InitialState)
+TEST_CASE(SUITE("InitialState"))
 {
 	DynamicallyAllocatedEventBuffer underlying(3,3,3,3);
 	OutstationEventBuffer buffer(underlying.GetFacade());
@@ -44,12 +44,12 @@ BOOST_AUTO_TEST_CASE(InitialState)
 	MockEventWriter writer;
 
 	SelectionCriteria criteria;	
-	BOOST_REQUIRE_EQUAL(0, buffer.SelectEvents(criteria, writer));
-	BOOST_REQUIRE_EQUAL(0, buffer.SelectEvents(criteria, writer));
-	BOOST_REQUIRE_EQUAL(0, writer.TotalEvents());
+	REQUIRE(0, buffer.SelectEvents(criteria ==  writer));
+	REQUIRE(0, buffer.SelectEvents(criteria ==  writer));
+	REQUIRE(0 ==  writer.TotalEvents());
 }
 
-BOOST_AUTO_TEST_CASE(StaticAllocation)
+TEST_CASE(SUITE("StaticAllocation"))
 {
 	//StaticallyAllocatedEventBuffer<100, 100, 100> underlying;
 
@@ -63,13 +63,13 @@ BOOST_AUTO_TEST_CASE(StaticAllocation)
 	//MockEventWriter writer;
 
 	//SelectionCriteria criteria;	
-	//BOOST_REQUIRE_EQUAL(0, buffer.SelectEvents(criteria, writer));
-	//BOOST_REQUIRE_EQUAL(0, buffer.SelectEvents(criteria, writer));
-	//BOOST_REQUIRE_EQUAL(0, writer.TotalEvents());
+	//REQUIRE(0, buffer.SelectEvents(criteria ==  writer));
+	//REQUIRE(0, buffer.SelectEvents(criteria ==  writer));
+	//REQUIRE(0 ==  writer.TotalEvents());
 	
 }
 
-BOOST_AUTO_TEST_CASE(SingleValueIsWrittenAndCleared)
+TEST_CASE(SUITE("SingleValueIsWrittenAndCleared"))
 {
 	DynamicallyAllocatedEventBuffer underlying(3,3,3,3);
 	OutstationEventBuffer buffer(underlying.GetFacade());
@@ -81,34 +81,34 @@ BOOST_AUTO_TEST_CASE(SingleValueIsWrittenAndCleared)
 	SelectionCriteria criteria;
 	criteria.class1 = EventTypeMasks::BINARY;
 	
-	BOOST_REQUIRE_EQUAL(1, buffer.SelectEvents(criteria, writer));
-	BOOST_REQUIRE_EQUAL(1, writer.TotalEvents());
-	BOOST_REQUIRE_EQUAL(0, buffer.SelectEvents(criteria, writer)); //second select does nothing
-	BOOST_REQUIRE_EQUAL(1, writer.TotalEvents());
+	REQUIRE(1, buffer.SelectEvents(criteria ==  writer));
+	REQUIRE(1 ==  writer.TotalEvents());
+	REQUIRE(0, buffer.SelectEvents(criteria ==  writer)); //second select does nothing
+	REQUIRE(1 ==  writer.TotalEvents());
 
-	BOOST_REQUIRE_EQUAL(1, buffer.SelectedEvents().class1.numBinary);
-	BOOST_REQUIRE_EQUAL(0, buffer.SelectedEvents().class2.numBinary);
-	BOOST_REQUIRE_EQUAL(0, buffer.SelectedEvents().class3.numBinary);
-	BOOST_REQUIRE_EQUAL(0, buffer.SelectedEvents().class1.numAnalog);
+	REQUIRE(1 ==  buffer.SelectedEvents().class1.numBinary);
+	REQUIRE(0 ==  buffer.SelectedEvents().class2.numBinary);
+	REQUIRE(0 ==  buffer.SelectedEvents().class3.numBinary);
+	REQUIRE(0 ==  buffer.SelectedEvents().class1.numAnalog);
 
-	BOOST_REQUIRE_EQUAL(0, buffer.UnselectedEvents().class1.numBinary);
+	REQUIRE(0 ==  buffer.UnselectedEvents().class1.numBinary);
 
 	buffer.Reset();
 
-	BOOST_REQUIRE_EQUAL(1, buffer.SelectEvents(criteria, writer)); //event goes right back into buffer
-	BOOST_REQUIRE_EQUAL(2, writer.TotalEvents());
-	BOOST_REQUIRE(writer.binaries[0] == writer.binaries[1]); // same event
+	REQUIRE(1, buffer.SelectEvents(criteria ==  writer)); //event goes right back into buffer
+	REQUIRE(2 ==  writer.TotalEvents());
+	REQUIRE((writer.binaries[0] == writer.binaries[1])); // same event
 
 	buffer.Clear();
 
-	BOOST_REQUIRE(buffer.TotalEvents().IsEmpty());
-	BOOST_REQUIRE(buffer.SelectedEvents().IsEmpty());
-	BOOST_REQUIRE(buffer.UnselectedEvents().IsEmpty());
+	REQUIRE(buffer.TotalEvents().IsEmpty());
+	REQUIRE(buffer.SelectedEvents().IsEmpty());
+	REQUIRE(buffer.UnselectedEvents().IsEmpty());
 
 
 }
 
-BOOST_AUTO_TEST_CASE(MixedTypesAndClassesOfEvents)
+TEST_CASE(SUITE("MixedTypesAndClassesOfEvents"))
 {
 	DynamicallyAllocatedEventBuffer underlying(3,3,3, 3);
 	OutstationEventBuffer buffer(underlying.GetFacade());
@@ -127,23 +127,23 @@ BOOST_AUTO_TEST_CASE(MixedTypesAndClassesOfEvents)
 	criteria.class2 = EventTypeMasks::COUNTER;
 	criteria.class3 = EventTypeMasks::ANALOG | EventTypeMasks::COUNTER;
 	
-	BOOST_REQUIRE_EQUAL(5, buffer.NumUnselectedMatching(criteria));
+	REQUIRE(5 ==  buffer.NumUnselectedMatching(criteria));
 
 	MockEventWriter writer;
 	uint32_t selected = buffer.SelectEvents(criteria, writer);
 	
-	BOOST_REQUIRE_EQUAL(5, selected);
-	BOOST_REQUIRE_EQUAL(5, buffer.SelectedEvents().Total());
-	BOOST_REQUIRE_EQUAL(5, writer.TotalEvents());
+	REQUIRE(5 ==  selected);
+	REQUIRE(5 ==  buffer.SelectedEvents().Total());
+	REQUIRE(5 ==  writer.TotalEvents());
 
 	auto unselected = buffer.UnselectedEvents();
-	BOOST_REQUIRE_EQUAL(0, unselected.class1.Total());
-	BOOST_REQUIRE_EQUAL(2, unselected.class2.Total());
-	BOOST_REQUIRE_EQUAL(0, unselected.class3.Total());
-	BOOST_REQUIRE_EQUAL(2, unselected.Total());
+	REQUIRE(0 ==  unselected.class1.Total());
+	REQUIRE(2 ==  unselected.class2.Total());
+	REQUIRE(0 ==  unselected.class3.Total());
+	REQUIRE(2 ==  unselected.Total());
 
-	BOOST_REQUIRE(buffer.UnselectedEvents().IsEmpty());
+	REQUIRE(buffer.UnselectedEvents().IsEmpty());
 }
 */
 
-BOOST_AUTO_TEST_SUITE_END()
+

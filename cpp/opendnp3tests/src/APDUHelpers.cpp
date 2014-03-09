@@ -18,40 +18,29 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include <catch.hpp>
 
-#include <opendnp3/app/WriteConversions.h>
+#include "APDUHelpers.h"
 
-using namespace opendnp3;
+uint8_t APDUHelpers::fixedBuffer[SIZE];
 
-#define SUITE(name) "WriteConversionTestSuite - " name
-
-TEST_CASE(SUITE("Group30Var2ConvertsWithinRange"))
+opendnp3::APDURequest APDUHelpers::Request(opendnp3::FunctionCode code, uint32_t size)
 {
-	Analog a(12);
-	auto gv = ConvertGroup30Var2::Apply(a);
-	
-	REQUIRE(gv.value ==  12);
-	REQUIRE(gv.flags ==  AnalogQuality::AQ_ONLINE);
+	assert(size <= SIZE);
+	openpal::WriteBuffer buffer(fixedBuffer, size);
+	opendnp3::APDURequest request(buffer);
+	request.SetFunction(code);
+	request.SetControl(opendnp3::AppControlField(true, true, false, false, 0));
+	return request;
 }
 
-TEST_CASE(SUITE("Group30Var2ConvertsOverrange"))
+opendnp3::APDUResponse APDUHelpers::Response(uint32_t size)
 {
-	Analog a(32768);
-	auto gv = ConvertGroup30Var2::Apply(a);
-	
-	REQUIRE(gv.value ==  32767);
-	REQUIRE(gv.flags ==  (AnalogQuality::AQ_ONLINE | AnalogQuality::AQ_OVERRANGE));
+	assert(size <= SIZE);
+	openpal::WriteBuffer buffer(fixedBuffer, size);
+	opendnp3::APDUResponse response(buffer);
+	response.SetFunction(opendnp3::FunctionCode::RESPONSE);
+	response.SetControl(opendnp3::AppControlField(true, true, false, false, 0));
+	response.SetIIN(opendnp3::IINField::Empty);
+	return response;
 }
-
-TEST_CASE(SUITE("Group30Var2ConvertsUnderrange"))
-{
-	Analog a(-32769);
-	auto gv = ConvertGroup30Var2::Apply(a);
-	
-	REQUIRE(gv.value ==  -32768);
-	REQUIRE(gv.flags ==  (AnalogQuality::AQ_ONLINE | AnalogQuality::AQ_OVERRANGE));
-}
-
-
 

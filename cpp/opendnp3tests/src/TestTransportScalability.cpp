@@ -21,9 +21,9 @@
 #include "TransportScalabilityTestObject.h"
 
 #include <asio.hpp>
-#include <boost/test/unit_test.hpp>
+#include <catch.hpp>
 
-#include "TestHelpers.h"
+
 #include "BufferHelpers.h"
 #include "Exception.h"
 
@@ -32,10 +32,10 @@
 using namespace std;
 using namespace opendnp3;
 
-BOOST_AUTO_TEST_SUITE(AsyncTransportScalability)
+#define SUITE(name) "AsyncTransportScalability - " name
 
 
-BOOST_AUTO_TEST_CASE(TestSimpleSend)
+TEST_CASE(SUITE("TestSimpleSend"))
 {
 	LinkConfig client(true, true);
 	LinkConfig server(false, true);
@@ -59,17 +59,17 @@ BOOST_AUTO_TEST_CASE(TestSimpleSend)
 
 	t.Start();
 
-	BOOST_REQUIRE(t.ProceedUntil(std::bind(&TransportScalabilityTestObject::AllLayersUp, &t)));
+	REQUIRE(t.ProceedUntil(std::bind(&TransportScalabilityTestObject::AllLayersUp, &t)));
 
 	ByteStr b(2048, 0);
 
 	t.SendToAll(b.ToReadOnly());
 
-	BOOST_REQUIRE(t.ProceedUntil(std::bind(&TransportScalabilityTestObject::AllLayerReceived, &t, b.Size())));
-	BOOST_REQUIRE(t.AllLayerEqual(b.ToReadOnly()));
+	REQUIRE(t.ProceedUntil(std::bind(&TransportScalabilityTestObject::AllLayerReceived, &t, b.Size())));
+	REQUIRE(t.AllLayerEqual(b.ToReadOnly()));
 }
 
 
 
 
-BOOST_AUTO_TEST_SUITE_END()
+

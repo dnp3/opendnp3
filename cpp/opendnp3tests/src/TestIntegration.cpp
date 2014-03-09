@@ -18,9 +18,9 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include <boost/test/unit_test.hpp>
+#include <catch.hpp>
 
-#include "TestHelpers.h"
+
 #include "StopWatch.h"
 
 #include <asiopal/Log.h>
@@ -56,7 +56,7 @@ using namespace std::chrono;
 #define MACRO_NUM_PAIRS		(100)
 #endif
 
-BOOST_AUTO_TEST_SUITE(IntegrationSuite)
+#define SUITE(name) "IntegrationSuite - " name
 
 const uint16_t START_PORT = MACRO_PORT_START;
 const size_t NUM_PAIRS = MACRO_NUM_PAIRS;
@@ -64,7 +64,7 @@ const size_t NUM_POINTS = 500;
 const size_t NUM_CHANGE_SETS = 10;
 const LogLevel FILTER_LEVEL = LogLevel::Info;
 
-BOOST_AUTO_TEST_CASE(MasterToSlaveThroughput)
+TEST_CASE(SUITE("MasterToSlaveThroughput"))
 {
 
 /*  TODO
@@ -76,7 +76,7 @@ BOOST_AUTO_TEST_CASE(MasterToSlaveThroughput)
 	StopWatch sw;
 	for (size_t j = 0; j < NUM_CHANGE_SETS; ++j) {
 		num_points_per_pair += t.IncrementData();
-		BOOST_REQUIRE(t.WaitForSameData(TimeDuration::Seconds(5), true));
+		REQUIRE(t.WaitForSameData(TimeDuration::Seconds(5), true));
 		//cout << "iteration: " << j << endl;
 	}
 
@@ -90,6 +90,6 @@ BOOST_AUTO_TEST_CASE(MasterToSlaveThroughput)
 */
 }
 
-BOOST_AUTO_TEST_SUITE_END()
+
 
 

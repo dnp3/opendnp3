@@ -18,7 +18,7 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include <boost/test/unit_test.hpp>
+#include <catch.hpp>
 
 #include <opendnp3/ExecutorPause.h>
 #include <asiopal/Log.h>
@@ -39,15 +39,15 @@ using namespace openpal;
 using namespace asiopal;
 
 
-BOOST_AUTO_TEST_SUITE(ASIOThreadPoolTestSuite)
+#define SUITE(name) "ASIOThreadPoolTestSuite - " name
 
-BOOST_AUTO_TEST_CASE(CleanConstructionDestruction)
+TEST_CASE(SUITE("CleanConstructionDestruction"))
 {
 	EventLog log;
 	IOServiceThreadPool pool(Logger(&log, LogLevel::Info, "pool"), 4);
 }
 
-BOOST_AUTO_TEST_CASE(ThreadPoolShutsdownCleanlyEvenIfALotOfWorkIsSubmitted)
+TEST_CASE(SUITE("ThreadPoolShutsdownCleanlyEvenIfALotOfWorkIsSubmitted"))
 {
 	EventLog log;
 	IOServiceThreadPool pool(Logger(&log, LogLevel::Info, "pool"), 4);
@@ -55,7 +55,7 @@ BOOST_AUTO_TEST_CASE(ThreadPoolShutsdownCleanlyEvenIfALotOfWorkIsSubmitted)
 }
 
 
-BOOST_AUTO_TEST_CASE(StrandsSequenceCallbacksViaStrandPost)
+TEST_CASE(SUITE("StrandsSequenceCallbacksViaStrandPost"))
 {
 	EventLog log;
 	IOServiceThreadPool pool(Logger(&log, LogLevel::Info, "pool"), 8);
@@ -71,10 +71,10 @@ BOOST_AUTO_TEST_CASE(StrandsSequenceCallbacksViaStrandPost)
 	});
 
 	pool.Shutdown();
-	BOOST_REQUIRE_EQUAL(iterations, count1);
+	REQUIRE(iterations ==  count1);
 }
 
-BOOST_AUTO_TEST_CASE(StrandsSequenceCallbacksViaStrandWrap)
+TEST_CASE(SUITE("StrandsSequenceCallbacksViaStrandWrap"))
 {
 	EventLog log;
 	IOServiceThreadPool pool(Logger(&log, LogLevel::Info, "pool"), 8);
@@ -91,10 +91,10 @@ BOOST_AUTO_TEST_CASE(StrandsSequenceCallbacksViaStrandWrap)
 	}));
 
 	pool.Shutdown();
-	BOOST_REQUIRE_EQUAL(iterations, count1);
+	REQUIRE(iterations ==  count1);
 }
 
-BOOST_AUTO_TEST_CASE(ExecutorPauseGuardsRaceConditions)
+TEST_CASE(SUITE("ExecutorPauseGuardsRaceConditions"))
 {
 	EventLog log;
 	IOServiceThreadPool pool(Logger(&log, LogLevel::Info, "pool"), 8);
@@ -118,8 +118,8 @@ BOOST_AUTO_TEST_CASE(ExecutorPauseGuardsRaceConditions)
 
 	pool.Shutdown();
 
-	BOOST_REQUIRE_EQUAL(200, count);
+	REQUIRE(200 ==  count);
 }
 
-BOOST_AUTO_TEST_SUITE_END()
+
 

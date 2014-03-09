@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include <boost/test/unit_test.hpp>
-#include "TestHelpers.h"
+#include <catch.hpp>
+
 
 #include <iostream>
 #include <map>
@@ -37,21 +37,21 @@ using namespace std;
 using namespace opendnp3;
 
 
-BOOST_AUTO_TEST_SUITE(MiscTest)
+#define SUITE(name) "MiscTest - " name
 
-BOOST_AUTO_TEST_CASE(ToUpperCase)
+TEST_CASE(SUITE("ToUpperCase"))
 {
 	string test("lower case");
 	toUpperCase(test);
-	BOOST_REQUIRE_EQUAL(test, "LOWER CASE");
+	REQUIRE(test ==  "LOWER CASE");
 
 	string test2("UPPPER case");
 	toUpperCase(test2);
-	BOOST_REQUIRE_EQUAL(test2, "UPPPER CASE");
+	REQUIRE(test2 ==  "UPPPER CASE");
 
 	string test3("123456789abcDEF");
 	toUpperCase(test3);
-	BOOST_REQUIRE_EQUAL(test3, "123456789ABCDEF");
+	REQUIRE(test3 ==  "123456789ABCDEF");
 }
 
-BOOST_AUTO_TEST_SUITE_END()
+

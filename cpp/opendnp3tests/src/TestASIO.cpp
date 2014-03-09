@@ -18,7 +18,7 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include <boost/test/unit_test.hpp>
+#include <catch.hpp>
 
 #include <iostream>
 #include <asio.hpp>
@@ -42,9 +42,9 @@ void Cancel(asio::basic_waitable_timer<std::chrono::steady_clock>* aptimer)
 	aptimer->cancel();
 }
 
-BOOST_AUTO_TEST_SUITE(TestBoostASIO)
+#define SUITE(name) "TestBoostASIO - " name
 
-BOOST_AUTO_TEST_CASE(TimerCancel)
+TEST_CASE(SUITE("TimerCancel"))
 {
 	bool flag = false;
 
@@ -57,8 +57,8 @@ BOOST_AUTO_TEST_CASE(TimerCancel)
 
 	io.run();
 
-	BOOST_REQUIRE(flag);
+	REQUIRE(flag);
 }
 
-BOOST_AUTO_TEST_SUITE_END()
+
 

@@ -18,20 +18,20 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include <boost/test/unit_test.hpp>
+#include <catch.hpp>
 
 #include <opendnp3/link/LinkRoute.h>
 
-#include "TestHelpers.h"
+
 
 #include <map>
 
 using namespace std;
 using namespace opendnp3;
 
-BOOST_AUTO_TEST_SUITE(LinkRouteSuite)
+#define SUITE(name) "LinkRouteSuite - " name
 
-BOOST_AUTO_TEST_CASE(ComparisonFunctor)
+TEST_CASE(SUITE("ComparisonFunctor"))
 {
 	LinkRoute lr1(1, 2);
 	LinkRoute lr2(1, 3);
@@ -39,34 +39,34 @@ BOOST_AUTO_TEST_CASE(ComparisonFunctor)
 
 	LinkRoute::LessThan lt;
 
-	BOOST_REQUIRE(lt(lr1, lr3));
-	BOOST_REQUIRE_FALSE(lt(lr3, lr1));
+	REQUIRE(lt(lr1, lr3));
+	REQUIRE_FALSE(lt(lr3, lr1));
 
-	BOOST_REQUIRE(lt(lr1, lr2));
-	BOOST_REQUIRE_FALSE(lt(lr2, lr1));
+	REQUIRE(lt(lr1, lr2));
+	REQUIRE_FALSE(lt(lr2, lr1));
 
-	BOOST_REQUIRE_FALSE(lt(lr1, lr1));
+	REQUIRE_FALSE(lt(lr1, lr1));
 }
 
-BOOST_AUTO_TEST_CASE(UseWithStlMap)
+TEST_CASE(SUITE("UseWithStlMap"))
 {
 	typedef map<LinkRoute, int, LinkRoute::LessThan> RouteMap;
 
 	RouteMap rm;
 	rm[LinkRoute(4, 1)] = 13;
 	rm[LinkRoute(4, 1)] = 12;
-	BOOST_CHECK_EQUAL(12, rm[LinkRoute(4, 1)]);
+	REQUIRE(12 == rm[LinkRoute(4, 1)]);
 
 	{
 		RouteMap::iterator i = rm.find(LinkRoute(1, 4));
-		BOOST_CHECK(rm.end() == i);
+		REQUIRE(rm.end() == i);
 	}
 	{
 		RouteMap::iterator i = rm.find(LinkRoute(4, 1));
-		BOOST_REQUIRE_EQUAL(4, i->first.remote);
-		BOOST_REQUIRE_EQUAL(1, i->first.local);
-		BOOST_REQUIRE_EQUAL(12, i->second);
+		REQUIRE(4 ==  i->first.remote);
+		REQUIRE(1 ==  i->first.local);
+		REQUIRE(12 ==  i->second);
 	}
 }
 
-BOOST_AUTO_TEST_SUITE_END()
+

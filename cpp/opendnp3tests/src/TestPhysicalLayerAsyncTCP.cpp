@@ -18,7 +18,7 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include <boost/test/unit_test.hpp>
+#include <catch.hpp>
 #include <asio.hpp>
 
 #include <functional>
@@ -29,7 +29,7 @@
 #include "Exception.h"
 #include "RandomizedBuffer.h"
 #include "PhysLoopback.h"
-#include "TestHelpers.h"
+
 #include "BufferHelpers.h"
 #include "AsyncTestObjectASIO.h"
 #include "AsyncPhysTestObject.h"
@@ -42,9 +42,9 @@ using namespace openpal;
 using namespace asiopal;
 
 
-BOOST_AUTO_TEST_SUITE(PhysicalLayerAsyncTCPSuite)
+#define SUITE(name) "PhysicalLayerAsyncTCPSuite - " name
 
-BOOST_AUTO_TEST_CASE(TestStateClosed)
+TEST_CASE(SUITE("TestStateClosed"))
 {
 	AsyncPhysTestObject t(LogLevel::Info, false);
 
@@ -53,31 +53,31 @@ BOOST_AUTO_TEST_CASE(TestStateClosed)
 	WriteBuffer empty;
 	
 	t.mTCPClient.AsyncWrite(empty.ToReadOnly());
-	BOOST_REQUIRE(t.log.PopOneEntry(LogLevel::Error));
+	REQUIRE(t.log.PopOneEntry(LogLevel::Error));
 	t.mTCPClient.AsyncRead(empty);
-	BOOST_REQUIRE(t.log.PopOneEntry(LogLevel::Error));
+	REQUIRE(t.log.PopOneEntry(LogLevel::Error));
 	
 	t.mTCPClient.AsyncWrite(buff.ToReadOnly());
-	BOOST_REQUIRE(t.log.PopOneEntry(LogLevel::Error));
+	REQUIRE(t.log.PopOneEntry(LogLevel::Error));
 	t.mTCPClient.AsyncRead(buff);
-	BOOST_REQUIRE(t.log.PopOneEntry(LogLevel::Error));
+	REQUIRE(t.log.PopOneEntry(LogLevel::Error));
 	t.mTCPClient.AsyncClose();
-	BOOST_REQUIRE(t.log.PopOneEntry(LogLevel::Error));
+	REQUIRE(t.log.PopOneEntry(LogLevel::Error));
 }
 
-BOOST_AUTO_TEST_CASE(ClientConnectionRejected)
+TEST_CASE(SUITE("ClientConnectionRejected"))
 {
 	AsyncPhysTestObject t(LogLevel::Info, false);
 
-	BOOST_REQUIRE_EQUAL(t.mClientAdapter.GetNumOpenFailure(), 0);
+	REQUIRE(t.mClientAdapter.GetNumOpenFailure() ==  0);
 
 	for(size_t i = 0; i < 2; ++i) {
 		t.mTCPClient.AsyncOpen();
-		BOOST_REQUIRE(t.ProceedUntil(std::bind(&LowerLayerToPhysAdapter::OpenFailureEquals, &t.mClientAdapter, i + 1)));
+		REQUIRE(t.ProceedUntil(std::bind(&LowerLayerToPhysAdapter::OpenFailureEquals, &t.mClientAdapter, i + 1)));
 	}
 }
 
-BOOST_AUTO_TEST_CASE(ClientConnectionCanceled)
+TEST_CASE(SUITE("ClientConnectionCanceled"))
 {
 	AsyncPhysTestObject t(LogLevel::Info, false);
 
@@ -85,11 +85,11 @@ BOOST_AUTO_TEST_CASE(ClientConnectionCanceled)
 		t.mTCPClient.AsyncOpen();
 		t.mTCPClient.AsyncClose();
 
-		BOOST_REQUIRE(t.ProceedUntil(std::bind(&LowerLayerToPhysAdapter::OpenFailureEquals, &t.mClientAdapter, i + 1)));
+		REQUIRE(t.ProceedUntil(std::bind(&LowerLayerToPhysAdapter::OpenFailureEquals, &t.mClientAdapter, i + 1)));
 	}
 }
 
-BOOST_AUTO_TEST_CASE(ServerAcceptCanceled)
+TEST_CASE(SUITE("ServerAcceptCanceled"))
 {
 	AsyncPhysTestObject t(LogLevel::Info, false);
 
@@ -97,11 +97,11 @@ BOOST_AUTO_TEST_CASE(ServerAcceptCanceled)
 		t.mTCPServer.AsyncOpen();
 		t.mTCPServer.AsyncClose();
 
-		BOOST_REQUIRE(t.ProceedUntil(std::bind(&LowerLayerToPhysAdapter::OpenFailureEquals, &t.mServerAdapter, i + 1)));
+		REQUIRE(t.ProceedUntil(std::bind(&LowerLayerToPhysAdapter::OpenFailureEquals, &t.mServerAdapter, i + 1)));
 	}
 }
 
-BOOST_AUTO_TEST_CASE(ConnectDisconnect)
+TEST_CASE(SUITE("ConnectDisconnect"))
 {
 	AsyncPhysTestObject t(LogLevel::Info, false);
 
@@ -109,35 +109,35 @@ BOOST_AUTO_TEST_CASE(ConnectDisconnect)
 
 		t.mTCPServer.AsyncOpen();
 		t.mTCPClient.AsyncOpen();
-		BOOST_REQUIRE(t.ProceedUntil(std::bind(&MockUpperLayer::IsLowerLayerUp, &t.mServerUpper)));
-		BOOST_REQUIRE(t.ProceedUntil(std::bind(&MockUpperLayer::IsLowerLayerUp, &t.mClientUpper)));
+		REQUIRE(t.ProceedUntil(std::bind(&MockUpperLayer::IsLowerLayerUp, &t.mServerUpper)));
+		REQUIRE(t.ProceedUntil(std::bind(&MockUpperLayer::IsLowerLayerUp, &t.mClientUpper)));
 
 		//Check that since reads are outstanding, you only have to stop 1/2 of the connection
 		if( (i % 2) == 0 ) t.mTCPServer.AsyncClose();
 		else t.mTCPClient.AsyncClose();
-		BOOST_REQUIRE(t.ProceedUntilFalse(std::bind(&MockUpperLayer::IsLowerLayerUp, &t.mServerUpper)));
-		BOOST_REQUIRE(t.ProceedUntilFalse(std::bind(&MockUpperLayer::IsLowerLayerUp, &t.mClientUpper)));
+		REQUIRE(t.ProceedUntilFalse(std::bind(&MockUpperLayer::IsLowerLayerUp, &t.mServerUpper)));
+		REQUIRE(t.ProceedUntilFalse(std::bind(&MockUpperLayer::IsLowerLayerUp, &t.mClientUpper)));
 	}
 }
 
-BOOST_AUTO_TEST_CASE(TestSendShutdown)
+TEST_CASE(SUITE("TestSendShutdown"))
 {
 	AsyncPhysTestObject t(LogLevel::Info, false);
 
 	t.mTCPServer.AsyncOpen();
 	t.mTCPClient.AsyncOpen();
-	BOOST_REQUIRE(t.ProceedUntil(std::bind(&MockUpperLayer::IsLowerLayerUp, &t.mServerUpper)));
-	BOOST_REQUIRE(t.ProceedUntil(std::bind(&MockUpperLayer::IsLowerLayerUp, &t.mClientUpper)));
+	REQUIRE(t.ProceedUntil(std::bind(&MockUpperLayer::IsLowerLayerUp, &t.mServerUpper)));
+	REQUIRE(t.ProceedUntil(std::bind(&MockUpperLayer::IsLowerLayerUp, &t.mClientUpper)));
 
 	ByteStr bs(1024, 77); //give some interesting seed value to make sure bytes are correctly written
 	t.mClientUpper.SendDown(bs.ToReadOnly());
 
 	t.mTCPClient.AsyncClose();
-	BOOST_REQUIRE(t.ProceedUntilFalse(std::bind(&MockUpperLayer::IsLowerLayerUp, &t.mServerUpper)));
-	BOOST_REQUIRE(t.ProceedUntilFalse(std::bind(&MockUpperLayer::IsLowerLayerUp, &t.mClientUpper)));
+	REQUIRE(t.ProceedUntilFalse(std::bind(&MockUpperLayer::IsLowerLayerUp, &t.mServerUpper)));
+	REQUIRE(t.ProceedUntilFalse(std::bind(&MockUpperLayer::IsLowerLayerUp, &t.mClientUpper)));
 }
 
-BOOST_AUTO_TEST_CASE(TwoWaySend)
+TEST_CASE(SUITE("TwoWaySend"))
 {
 	const size_t SEND_SIZE = 1 << 20; // 1 MB
 
@@ -145,66 +145,66 @@ BOOST_AUTO_TEST_CASE(TwoWaySend)
 
 	t.mTCPServer.AsyncOpen();
 	t.mTCPClient.AsyncOpen();
-	BOOST_REQUIRE(t.ProceedUntil(std::bind(&MockUpperLayer::IsLowerLayerUp, &t.mServerUpper)));
-	BOOST_REQUIRE(t.ProceedUntil(std::bind(&MockUpperLayer::IsLowerLayerUp, &t.mClientUpper)));
+	REQUIRE(t.ProceedUntil(std::bind(&MockUpperLayer::IsLowerLayerUp, &t.mServerUpper)));
+	REQUIRE(t.ProceedUntil(std::bind(&MockUpperLayer::IsLowerLayerUp, &t.mClientUpper)));
 
 	//both layers are now up and reading, start them both writing
 	ByteStr bs(SEND_SIZE, 77); //give some interesting seed value to make sure bytes are correctly written
 	t.mClientUpper.SendDown(bs.ToReadOnly());
 	t.mServerUpper.SendDown(bs.ToReadOnly());
 
-	BOOST_REQUIRE(t.ProceedUntil(std::bind(&MockUpperLayer::SizeEquals, &t.mServerUpper, SEND_SIZE)));
-	BOOST_REQUIRE(t.ProceedUntil(std::bind(&MockUpperLayer::SizeEquals, &t.mClientUpper, SEND_SIZE)));
+	REQUIRE(t.ProceedUntil(std::bind(&MockUpperLayer::SizeEquals, &t.mServerUpper, SEND_SIZE)));
+	REQUIRE(t.ProceedUntil(std::bind(&MockUpperLayer::SizeEquals, &t.mClientUpper, SEND_SIZE)));
 
-	BOOST_REQUIRE(t.mClientUpper.BufferEquals(bs.ToReadOnly()));
-	BOOST_REQUIRE(t.mServerUpper.BufferEquals(bs.ToReadOnly()));
+	REQUIRE(t.mClientUpper.BufferEquals(bs.ToReadOnly()));
+	REQUIRE(t.mServerUpper.BufferEquals(bs.ToReadOnly()));
 
 	t.mTCPServer.AsyncClose(); //stop one side
-	BOOST_REQUIRE(t.ProceedUntilFalse(std::bind(&MockUpperLayer::IsLowerLayerUp, &t.mServerUpper)));
-	BOOST_REQUIRE(t.ProceedUntilFalse(std::bind(&MockUpperLayer::IsLowerLayerUp, &t.mClientUpper)));
+	REQUIRE(t.ProceedUntilFalse(std::bind(&MockUpperLayer::IsLowerLayerUp, &t.mServerUpper)));
+	REQUIRE(t.ProceedUntilFalse(std::bind(&MockUpperLayer::IsLowerLayerUp, &t.mClientUpper)));
 }
 
-BOOST_AUTO_TEST_CASE(ServerAsyncCloseWhileOpeningKillsAcceptor)
+TEST_CASE(SUITE("ServerAsyncCloseWhileOpeningKillsAcceptor"))
 {
 	AsyncPhysTestObject t(LogLevel::Info, false);
 
-	BOOST_REQUIRE_EQUAL(0, t.mClientAdapter.GetNumOpenFailure());
+	REQUIRE(0 ==  t.mClientAdapter.GetNumOpenFailure());
 
 	for(size_t i = 0; i < 5; ++i) {
 		t.mTCPServer.AsyncOpen();
 		t.mTCPServer.AsyncClose();
 
-		BOOST_REQUIRE(t.ProceedUntil(std::bind(&LowerLayerToPhysAdapter::OpenFailureEquals, &t.mServerAdapter, i + 1)));
+		REQUIRE(t.ProceedUntil(std::bind(&LowerLayerToPhysAdapter::OpenFailureEquals, &t.mServerAdapter, i + 1)));
 
 		// since we closed the server socket we shouldn't be able to connect now
 		t.mTCPClient.AsyncOpen();
 
-		BOOST_REQUIRE(t.ProceedUntil(std::bind(&LowerLayerToPhysAdapter::OpenFailureEquals, &t.mClientAdapter, i + 1)));
+		REQUIRE(t.ProceedUntil(std::bind(&LowerLayerToPhysAdapter::OpenFailureEquals, &t.mClientAdapter, i + 1)));
 	}
 }
 
-BOOST_AUTO_TEST_CASE(ServerAsyncCloseAfterOpeningKillsAcceptor)
+TEST_CASE(SUITE("ServerAsyncCloseAfterOpeningKillsAcceptor"))
 {
 	AsyncPhysTestObject t(LogLevel::Info, false);
 
-	BOOST_REQUIRE_EQUAL(t.mClientAdapter.GetNumOpenFailure(), 0);
+	REQUIRE(t.mClientAdapter.GetNumOpenFailure() ==  0);
 
 	for(size_t i = 0; i < 5; ++i) {
 		t.mTCPServer.AsyncOpen();
 		t.mTCPClient.AsyncOpen();
 
-		BOOST_REQUIRE(t.ProceedUntil(std::bind(&MockUpperLayer::IsLowerLayerUp, &t.mServerUpper)));
-		BOOST_REQUIRE(t.ProceedUntil(std::bind(&MockUpperLayer::IsLowerLayerUp, &t.mClientUpper)));
+		REQUIRE(t.ProceedUntil(std::bind(&MockUpperLayer::IsLowerLayerUp, &t.mServerUpper)));
+		REQUIRE(t.ProceedUntil(std::bind(&MockUpperLayer::IsLowerLayerUp, &t.mClientUpper)));
 
 		t.mTCPServer.AsyncClose();
 
-		BOOST_REQUIRE(t.ProceedUntilFalse(std::bind(&MockUpperLayer::IsLowerLayerUp, &t.mServerUpper)));
-		BOOST_REQUIRE(t.ProceedUntilFalse(std::bind(&MockUpperLayer::IsLowerLayerUp, &t.mClientUpper)));
+		REQUIRE(t.ProceedUntilFalse(std::bind(&MockUpperLayer::IsLowerLayerUp, &t.mServerUpper)));
+		REQUIRE(t.ProceedUntilFalse(std::bind(&MockUpperLayer::IsLowerLayerUp, &t.mClientUpper)));
 
 		// since we closed the server socket we shouldn't be able to connect now
 		t.mTCPClient.AsyncOpen();
 
-		BOOST_REQUIRE(t.ProceedUntil(std::bind(&LowerLayerToPhysAdapter::OpenFailureEquals, &t.mClientAdapter, i + 1)));
+		REQUIRE(t.ProceedUntil(std::bind(&LowerLayerToPhysAdapter::OpenFailureEquals, &t.mClientAdapter, i + 1)));
 	}
 }
 
@@ -216,7 +216,7 @@ BOOST_AUTO_TEST_CASE(ServerAsyncCloseAfterOpeningKillsAcceptor)
 #define MACRO_LOOPBACK_ITERATIONS 10
 #endif
 
-BOOST_AUTO_TEST_CASE(Loopback)
+TEST_CASE(SUITE("Loopback"))
 {
 	const size_t SIZE = MACRO_LOOPBACK_SIZE;
 	const size_t ITERATIONS = MACRO_LOOPBACK_ITERATIONS;
@@ -235,15 +235,15 @@ BOOST_AUTO_TEST_CASE(Loopback)
 	adapter.SetUpperLayer(&upper);
 
 	client.AsyncOpen();
-	BOOST_REQUIRE(test.ProceedUntil(std::bind(&MockUpperLayer::IsLowerLayerUp, &upper)));
+	REQUIRE(test.ProceedUntil(std::bind(&MockUpperLayer::IsLowerLayerUp, &upper)));
 
 	RandomizedBuffer rb(SIZE);
 
 	for(size_t i = 0; i < ITERATIONS; ++i) {
 		rb.Randomize();
 		upper.SendDown(rb.ToReadOnly());
-		BOOST_REQUIRE(test.ProceedUntil([&](){  return upper.BufferEquals(rb.ToReadOnly()); }));
-		BOOST_REQUIRE(test.ProceedUntil([&](){  return upper.CountersEqual(1, 0); }));
+		REQUIRE(test.ProceedUntil([&](){  return upper.BufferEquals(rb.ToReadOnly()); }));
+		REQUIRE(test.ProceedUntil([&](){  return upper.CountersEqual(1, 0); }));
 		upper.ClearBuffer();
 		upper.Reset();
 	}
@@ -252,5 +252,5 @@ BOOST_AUTO_TEST_CASE(Loopback)
 
 
 
-BOOST_AUTO_TEST_SUITE_END()
+
 

@@ -20,13 +20,15 @@
  */
 #include "MockPhysicalLayerMonitor.h"
 
-#include <boost/test/unit_test.hpp>
+#include <catch.hpp>
 
 #include <openpal/LoggableMacros.h>
 #include <openpal/IPhysicalLayerAsync.h>
 #include <openpal/ToHex.h>
 
 #include <opendnp3/Util.h>
+
+#include "Exception.h"
 
 #include <sstream>
 
@@ -75,7 +77,7 @@ void MockPhysicalLayerMonitor::_OnReceive(const uint8_t* apData, size_t aNumByte
 	++mNumReads;
 	// we should never receive more than we're expecting
 	if(mExpectReadBuffer.Size() < mBytesRead + aNumBytes) {
-		BOOST_FAIL("Read more data than expected");
+		throw Exception("Read more data than expected");		
 	}
 	CopyableBuffer expecting(mExpectReadBuffer + mBytesRead, static_cast<uint32_t>(aNumBytes));
 	CopyableBuffer read(apData, static_cast<uint32_t>(aNumBytes));
@@ -83,7 +85,7 @@ void MockPhysicalLayerMonitor::_OnReceive(const uint8_t* apData, size_t aNumByte
 	if(expecting != read) {
 		std::ostringstream oss;
 		oss << "Data corruption on receive, " << read << " != " << expecting;
-		BOOST_FAIL(oss.str());
+		throw Exception(oss.str());		
 	}
 	mBytesRead += static_cast<uint32_t>(aNumBytes);
 	LOG_BLOCK(LogLevel::Info, "Received " << mBytesRead << " of " << mExpectReadBuffer.Size());
@@ -100,7 +102,7 @@ void MockPhysicalLayerMonitor::ExpectData(const CopyableBuffer& arData)
 
 void MockPhysicalLayerMonitor::WriteData(const CopyableBuffer& arData)
 {
-	BOOST_REQUIRE(mpPhys->CanWrite());
+	REQUIRE(mpPhys->CanWrite());
 	mBytesWritten = 0;
 	mWriteBuffer = arData;
 	this->TransmitNext();
@@ -114,7 +116,7 @@ void MockPhysicalLayerMonitor::_OnSendSuccess(void)
 
 void MockPhysicalLayerMonitor::_OnSendFailure(void)
 {
-	BOOST_REQUIRE(false);
+	REQUIRE(false);
 }
 
 void MockPhysicalLayerMonitor::OnStateChange(ChannelState aState)

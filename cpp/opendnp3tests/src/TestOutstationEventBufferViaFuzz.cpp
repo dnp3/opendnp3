@@ -18,7 +18,7 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include <boost/test/unit_test.hpp>
+#include <catch.hpp>
 
 #include <opendnp3/outstation/OutstationEventBuffer.h>
 #include <opendnp3/outstation/DynamicallyAllocatedEventBuffer.h>
@@ -31,13 +31,14 @@ using namespace opendnp3;
 
 void AssertCountInvariant(const ClassCount& selected, const ClassCount& unselected, const ClassCount& total)
 {
-	BOOST_REQUIRE_EQUAL(selected.Total() + unselected.Total(), total.Total());
+	auto sum = selected.Total() + unselected.Total();
+	REQUIRE(sum ==  total.Total());
 }
 
-BOOST_AUTO_TEST_SUITE(OutstationEventBufferFuzzTestSuite)
+#define SUITE(name) "OutstationEventBufferFuzzTestSuite - " name
 
 /*
-BOOST_AUTO_TEST_CASE(FuzzTests)
+TEST_CASE(SUITE("FuzzTests"))
 {
 	const size_t iterations = 100*1000;
 
@@ -53,15 +54,15 @@ BOOST_AUTO_TEST_CASE(FuzzTests)
 		
 		//assert invariants
 
-		BOOST_REQUIRE_EQUAL(numSelected, writer.TotalEvents());
+		REQUIRE(numSelected ==  writer.TotalEvents());
 
 		auto selected = buffer.SelectedEvents();
 		auto unselected = buffer.UnselectedEvents();
 		auto total = buffer.TotalEvents();
 
-		BOOST_REQUIRE_EQUAL(selected.class1.Total() + unselected.class1.Total(), total.class1.Total());
-		BOOST_REQUIRE_EQUAL(selected.class2.Total() + unselected.class2.Total(), total.class2.Total());
-		BOOST_REQUIRE_EQUAL(selected.class3.Total() + unselected.class3.Total(), total.class3.Total());
+		REQUIRE(selected.class1.Total() + unselected.class1.Total() ==  total.class1.Total());
+		REQUIRE(selected.class2.Total() + unselected.class2.Total() ==  total.class2.Total());
+		REQUIRE(selected.class3.Total() + unselected.class3.Total() ==  total.class3.Total());
 		
 		writer.Clear(); //prepare writer for next iteration
 	}	
@@ -69,4 +70,4 @@ BOOST_AUTO_TEST_CASE(FuzzTests)
 */
 
 
-BOOST_AUTO_TEST_SUITE_END()
+

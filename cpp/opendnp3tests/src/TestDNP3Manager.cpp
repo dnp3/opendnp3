@@ -18,7 +18,7 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include <boost/test/unit_test.hpp>
+#include <catch.hpp>
 
 #include <opendnp3/DNP3Manager.h>
 #include <opendnp3/IChannel.h>
@@ -40,7 +40,7 @@
 #include <asiopal/UTCTimeSource.h>
 
 
-#include "TestHelpers.h"
+
 
 
 #include <thread>
@@ -48,11 +48,11 @@
 using namespace opendnp3;
 using namespace asiopal;
 
-BOOST_AUTO_TEST_SUITE(DNP3ManagerTestSuite)
+#define SUITE(name) "DNP3ManagerTestSuite - " name
 
 const size_t ITERATIONS = 100;
 
-BOOST_AUTO_TEST_CASE(ConstructionDestruction)
+TEST_CASE(SUITE("ConstructionDestruction"))
 {
 	for(int i = 0; i < ITERATIONS; ++i) {
 
@@ -71,7 +71,7 @@ BOOST_AUTO_TEST_CASE(ConstructionDestruction)
 	}
 }
 
-BOOST_AUTO_TEST_CASE(ManualStackShutdown)
+TEST_CASE(SUITE("ManualStackShutdown"))
 {
 	for(int i = 0; i < ITERATIONS; ++i) {
 
@@ -94,7 +94,7 @@ BOOST_AUTO_TEST_CASE(ManualStackShutdown)
 
 }
 
-BOOST_AUTO_TEST_CASE(ManualChannelShutdownWithStack)
+TEST_CASE(SUITE("ManualChannelShutdownWithStack"))
 {
 	for(int i = 0; i < ITERATIONS; ++i) {
 
@@ -110,7 +110,7 @@ BOOST_AUTO_TEST_CASE(ManualChannelShutdownWithStack)
 	}
 }
 
-BOOST_AUTO_TEST_CASE(ManualChannelShutdown)
+TEST_CASE(SUITE("ManualChannelShutdown"))
 {
 	for(int i = 0; i < ITERATIONS; ++i) {
 
@@ -124,6 +124,6 @@ BOOST_AUTO_TEST_CASE(ManualChannelShutdown)
 	}
 }
 
-BOOST_AUTO_TEST_SUITE_END()
+
 
 

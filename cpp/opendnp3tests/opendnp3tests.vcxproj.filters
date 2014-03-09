@@ -433,5 +433,11 @@
     <ClCompile Include="src\CatchTestStart.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\APDUHelpers.h">
+      <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\APDUHelpers.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

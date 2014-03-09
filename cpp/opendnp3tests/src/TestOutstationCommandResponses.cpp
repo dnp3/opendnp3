@@ -18,9 +18,9 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include <boost/test/unit_test.hpp>
+#include <catch.hpp>
 
-#include "TestHelpers.h"
+
 #include "MockLogSubscriber.h"
 #include "SlaveTestObject.h"
 
@@ -30,11 +30,10 @@
 using namespace std;
 using namespace opendnp3;
 using namespace openpal;
-using namespace boost;
 
-BOOST_AUTO_TEST_SUITE(OutstationCommandResponsesTestSuite)
+#define SUITE(name) "OutstationCommandResponsesTestSuite - " name
 
-BOOST_AUTO_TEST_CASE(SelectCROBNotSupported)
+TEST_CASE(SUITE("SelectCROBNotSupported"))
 {
 	SlaveConfig cfg; cfg.mDisableUnsol = true;
 	SlaveTestObject t(cfg, DatabaseTemplate());
@@ -47,10 +46,10 @@ BOOST_AUTO_TEST_CASE(SelectCROBNotSupported)
 	std::string response = t.Read();
 	
 	// TODO - try to figure out where the IIN parameter error came from here and what conformance tests have to say
-	BOOST_REQUIRE_EQUAL(response, "C0 81 80 00 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 04"); // 0x04 status == CommandStatus::NOT_SUPPORTED
+	REQUIRE(response ==  "C0 81 80 00 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 04"); // 0x04 status == CommandStatus::NOT_SUPPORTED
 }
 
-BOOST_AUTO_TEST_CASE(SelectCROBTooMany)
+TEST_CASE(SUITE("SelectCROBTooMany"))
 {
 	SlaveConfig cfg; cfg.mDisableUnsol = true;
 	cfg.mMaxControls = 1;
@@ -59,10 +58,10 @@ BOOST_AUTO_TEST_CASE(SelectCROBTooMany)
 
 	// Select group 12 Var 1, count = 2, index = 3->4
 	t.SendToSlave("C0 03 0C 01 17 02 03 01 01 01 00 00 00 01 00 00 00 00 04 01 01 01 00 00 00 01 00 00 00 00");
-	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 00 0C 01 17 02 03 01 01 01 00 00 00 01 00 00 00 00 04 01 01 01 00 00 00 01 00 00 00 08"); // 0x08 status == CommandStatus::TOO_MANY_OBJS
+	REQUIRE(t.Read() ==  "C0 81 80 00 0C 01 17 02 03 01 01 01 00 00 00 01 00 00 00 00 04 01 01 01 00 00 00 01 00 00 00 08"); // 0x08 status == CommandStatus::TOO_MANY_OBJS
 }
 
-BOOST_AUTO_TEST_CASE(SelectOperateCROB)
+TEST_CASE(SUITE("SelectOperateCROB"))
 {
 	SlaveConfig cfg; cfg.mDisableUnsol = true;
 	SlaveTestObject t(cfg, DatabaseTemplate());
@@ -70,41 +69,41 @@ BOOST_AUTO_TEST_CASE(SelectOperateCROB)
 
 	// Select group 12 Var 1, count = 1, index = 3
 	t.SendToSlave("C0 03 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00", SequenceInfo::OTHER);
-	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 00 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00"); // 0x00 status == CommandStatus::SUCCESS
+	REQUIRE(t.Read() ==  "C0 81 80 00 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00"); // 0x00 status == CommandStatus::SUCCESS
 
 	// operate
 	t.SendToSlave("C1 04 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00", SequenceInfo::CORRECT);
-	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 00 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00");
+	REQUIRE(t.Read() ==  "C0 81 80 00 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00");
 
 }
 
-BOOST_AUTO_TEST_CASE(SelectOperateCROBSameSequenceNumber)
+TEST_CASE(SUITE("SelectOperateCROBSameSequenceNumber"))
 {
 	SlaveConfig cfg; cfg.mDisableUnsol = true;
 	SlaveTestObject t(cfg, DatabaseTemplate());
 	t.slave.OnLowerLayerUp();
 
-	BOOST_REQUIRE_EQUAL(0, t.cmdHandler.mNumInvocations);
+	REQUIRE(0 ==  t.cmdHandler.mNumInvocations);
 
 	// Select group 12 Var 1, count = 1, index = 3
 	t.SendToSlave("C0 03 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00", SequenceInfo::OTHER);
-	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 00 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00"); // 0x00 status == CommandStatus::SUCCESS
-	BOOST_REQUIRE_EQUAL(1, t.cmdHandler.mNumInvocations);
+	REQUIRE(t.Read() ==  "C0 81 80 00 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00"); // 0x00 status == CommandStatus::SUCCESS
+	REQUIRE(1 ==  t.cmdHandler.mNumInvocations);
 
 
 	// operate the first time with correct sequence #
 	t.SendToSlave("C1 04 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00", SequenceInfo::CORRECT);
-	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 00 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00");
-	BOOST_REQUIRE_EQUAL(2, t.cmdHandler.mNumInvocations);
+	REQUIRE(t.Read() ==  "C0 81 80 00 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00");
+	REQUIRE(2 ==  t.cmdHandler.mNumInvocations);
 	
 	// TODO - Find this requirement in the docs
 	// operate again with same sequence number, should respond success but not really do an operation
 	t.SendToSlave("C1 04 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00", SequenceInfo::PREVIOUS);
-	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 00 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00");
-	BOOST_REQUIRE_EQUAL(2, t.cmdHandler.mNumInvocations);	
+	REQUIRE(t.Read() ==  "C0 81 80 00 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00");
+	REQUIRE(2 ==  t.cmdHandler.mNumInvocations);	
 }
 
-BOOST_AUTO_TEST_CASE(SelectGroup41Var1)
+TEST_CASE(SUITE("SelectGroup41Var1"))
 {
 	SlaveConfig cfg; cfg.mDisableUnsol = true;
 	SlaveTestObject t(cfg, DatabaseTemplate());
@@ -112,10 +111,10 @@ BOOST_AUTO_TEST_CASE(SelectGroup41Var1)
 
 	// Select group 41 Var 1, count = 1, index = 3
 	t.SendToSlave("C0 03 29 01 17 01 03 00 00 00 00 00");
-	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 00 29 01 17 01 03 00 00 00 00 00");
+	REQUIRE(t.Read() ==  "C0 81 80 00 29 01 17 01 03 00 00 00 00 00");
 }
 
-BOOST_AUTO_TEST_CASE(SelectGroup41Var2)
+TEST_CASE(SUITE("SelectGroup41Var2"))
 {
 	SlaveConfig cfg; cfg.mDisableUnsol = true;
 	SlaveTestObject t(cfg, DatabaseTemplate());
@@ -123,10 +122,10 @@ BOOST_AUTO_TEST_CASE(SelectGroup41Var2)
 
 	// Select group 41 Var 2, count = 1, index = 3
 	t.SendToSlave("C0 03 29 02 17 01 03 00 00 00");
-	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 00 29 02 17 01 03 00 00 00");
+	REQUIRE(t.Read() ==  "C0 81 80 00 29 02 17 01 03 00 00 00");
 }
 
-BOOST_AUTO_TEST_CASE(SelectGroup41Var3)
+TEST_CASE(SUITE("SelectGroup41Var3"))
 {
 	SlaveConfig cfg; cfg.mDisableUnsol = true;
 	SlaveTestObject t(cfg, DatabaseTemplate());
@@ -134,10 +133,10 @@ BOOST_AUTO_TEST_CASE(SelectGroup41Var3)
 
 	// Select group 41 Var 3, count = 1, index = 1, value = 100.0
 	t.SendToSlave("C0 03 29 03 17 01 01 00 00 C8 42 00");
-	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 00 29 03 17 01 01 00 00 C8 42 00");
+	REQUIRE(t.Read() ==  "C0 81 80 00 29 03 17 01 01 00 00 C8 42 00");
 }
 
-BOOST_AUTO_TEST_CASE(SelectGroup41Var4)
+TEST_CASE(SUITE("SelectGroup41Var4"))
 {
 	SlaveConfig cfg; cfg.mDisableUnsol = true;
 	SlaveTestObject t(cfg, DatabaseTemplate());
@@ -145,12 +144,12 @@ BOOST_AUTO_TEST_CASE(SelectGroup41Var4)
 
 	// Select group 41 Var 4, count = 1, index = 1, value = 100.0
 	t.SendToSlave("C0 03 29 04 17 01 01 00 00 00 00 00 00 59 40 00");
-	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 00 29 04 17 01 01 00 00 00 00 00 00 59 40 00");
+	REQUIRE(t.Read() ==  "C0 81 80 00 29 04 17 01 01 00 00 00 00 00 00 59 40 00");
 }
 
 
 
-BOOST_AUTO_TEST_CASE(SelectOperateGroup41Var1)
+TEST_CASE(SUITE("SelectOperateGroup41Var1"))
 {
 	SlaveConfig cfg;  cfg.mDisableUnsol = true;
 	SlaveTestObject t(cfg, DatabaseTemplate());
@@ -158,15 +157,15 @@ BOOST_AUTO_TEST_CASE(SelectOperateGroup41Var1)
 
 	// Select group 41 Var 1, count = 1, index = 3
 	t.SendToSlave("C0 03 29 01 17 01 03 00 00 00 00 00");
-	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 00 29 01 17 01 03 00 00 00 00 00"); // 0x00 status == CommandStatus::SUCCESS
+	REQUIRE(t.Read() ==  "C0 81 80 00 29 01 17 01 03 00 00 00 00 00"); // 0x00 status == CommandStatus::SUCCESS
 
 	// Select group 41 Var 1, count = 1, index = 3
 	t.SendToSlave("C1 04 29 01 17 01 03 00 00 00 00 00");
-	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 00 29 01 17 01 03 00 00 00 00 00"); // 0x00 status == CommandStatus::SUCCESS
+	REQUIRE(t.Read() ==  "C0 81 80 00 29 01 17 01 03 00 00 00 00 00"); // 0x00 status == CommandStatus::SUCCESS
 
 }
 
-BOOST_AUTO_TEST_CASE(SelectOperateGroup41Var2)
+TEST_CASE(SUITE("SelectOperateGroup41Var2"))
 {
 	SlaveConfig cfg; cfg.mDisableUnsol = true;
 	SlaveTestObject t(cfg, DatabaseTemplate());
@@ -174,16 +173,16 @@ BOOST_AUTO_TEST_CASE(SelectOperateGroup41Var2)
 
 	// Select group 41 Var 2, count = 1, index = 3
 	t.SendToSlave("C0 03 29 02 17 01 03 00 00 00");
-	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 00 29 02 17 01 03 00 00 00"); // 0x00 status == CommandStatus::SUCCESS
+	REQUIRE(t.Read() ==  "C0 81 80 00 29 02 17 01 03 00 00 00"); // 0x00 status == CommandStatus::SUCCESS
 
 
 	// Select group 41 Var 1, count = 1, index = 3
 	t.SendToSlave("C1 04 29 02 17 01 03 00 00 00");
-	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 00 29 02 17 01 03 00 00 00"); // 0x00 status == CommandStatus::SUCCESS
+	REQUIRE(t.Read() ==  "C0 81 80 00 29 02 17 01 03 00 00 00"); // 0x00 status == CommandStatus::SUCCESS
 
 }
 
-BOOST_AUTO_TEST_CASE(SelectOperateGroup41Var3)
+TEST_CASE(SUITE("SelectOperateGroup41Var3"))
 {
 	SlaveConfig cfg; cfg.mDisableUnsol = true;
 	SlaveTestObject t(cfg, DatabaseTemplate());
@@ -191,14 +190,14 @@ BOOST_AUTO_TEST_CASE(SelectOperateGroup41Var3)
 
 	// Select group 41 Var 3, count = 1, index = 1
 	t.SendToSlave("C0 03 29 03 17 01 01 00 00 C8 42 00");
-	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 00 29 03 17 01 01 00 00 C8 42 00"); // 0x00 status == CommandStatus::SUCCESS
+	REQUIRE(t.Read() ==  "C0 81 80 00 29 03 17 01 01 00 00 C8 42 00"); // 0x00 status == CommandStatus::SUCCESS
 
 	// operate group 41 Var 3, count = 1, index = 1
 	t.SendToSlave("C1 04 29 03 17 01 01 00 00 C8 42 00");
-	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 00 29 03 17 01 01 00 00 C8 42 00"); // 0x00 status == CommandStatus::SUCCESS
+	REQUIRE(t.Read() ==  "C0 81 80 00 29 03 17 01 01 00 00 C8 42 00"); // 0x00 status == CommandStatus::SUCCESS
 }
 
-BOOST_AUTO_TEST_CASE(SelectOperateGroup41Var4)
+TEST_CASE(SUITE("SelectOperateGroup41Var4"))
 {
 	SlaveConfig cfg; cfg.mDisableUnsol = true;
 	SlaveTestObject t(cfg, DatabaseTemplate());
@@ -206,15 +205,15 @@ BOOST_AUTO_TEST_CASE(SelectOperateGroup41Var4)
 
 	// Select group 41 Var 4, count = 1, index = 1
 	t.SendToSlave("C0 03 29 04 17 01 01 00 00 00 00 00 00 59 40 00");
-	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 00 29 04 17 01 01 00 00 00 00 00 00 59 40 00"); // 0x00 status == CommandStatus::SUCCESS
+	REQUIRE(t.Read() ==  "C0 81 80 00 29 04 17 01 01 00 00 00 00 00 00 59 40 00"); // 0x00 status == CommandStatus::SUCCESS
 
 
 	// operate group 41 Var 4, count = 1, index = 1
 	t.SendToSlave("C1 04 29 04 17 01 01 00 00 00 00 00 00 59 40 00");
-	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 00 29 04 17 01 01 00 00 00 00 00 00 59 40 00"); // 0x00 status == CommandStatus::SUCCESS
+	REQUIRE(t.Read() ==  "C0 81 80 00 29 04 17 01 01 00 00 00 00 00 00 59 40 00"); // 0x00 status == CommandStatus::SUCCESS
 }
 
-BOOST_AUTO_TEST_CASE(DirectOperateGroup41Var1)
+TEST_CASE(SUITE("DirectOperateGroup41Var1"))
 {
 	SlaveConfig cfg; cfg.mDisableUnsol = true;
 	SlaveTestObject t(cfg, DatabaseTemplate());
@@ -222,9 +221,9 @@ BOOST_AUTO_TEST_CASE(DirectOperateGroup41Var1)
 
 	// Select group 41 Var 1, count = 1, index = 3
 	t.SendToSlave("C1 05 29 01 17 01 03 00 00 00 00 00");
-	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 00 29 01 17 01 03 00 00 00 00 00"); // 0x00 status == CommandStatus::SUCCESS
+	REQUIRE(t.Read() ==  "C0 81 80 00 29 01 17 01 03 00 00 00 00 00"); // 0x00 status == CommandStatus::SUCCESS
 }
-BOOST_AUTO_TEST_CASE(DirectOperateGroup41Var2)
+TEST_CASE(SUITE("DirectOperateGroup41Var2"))
 {
 	SlaveConfig cfg; cfg.mDisableUnsol = true;
 	SlaveTestObject t(cfg, DatabaseTemplate());
@@ -232,10 +231,10 @@ BOOST_AUTO_TEST_CASE(DirectOperateGroup41Var2)
 
 	// Select group 41 Var 1, count = 1, index = 3
 	t.SendToSlave("C1 05 29 02 17 01 03 00 00 00");
-	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 00 29 02 17 01 03 00 00 00"); // 0x00 status == CommandStatus::SUCCESS
+	REQUIRE(t.Read() ==  "C0 81 80 00 29 02 17 01 03 00 00 00"); // 0x00 status == CommandStatus::SUCCESS
 
 }
-BOOST_AUTO_TEST_CASE(DirectOperateGroup41Var3)
+TEST_CASE(SUITE("DirectOperateGroup41Var3"))
 {
 	SlaveConfig cfg; cfg.mDisableUnsol = true;
 	SlaveTestObject t(cfg, DatabaseTemplate());
@@ -243,10 +242,10 @@ BOOST_AUTO_TEST_CASE(DirectOperateGroup41Var3)
 
 	// operate group 41 Var 3, count = 1, index = 1
 	t.SendToSlave("C1 05 29 03 17 01 01 00 00 C8 42 00");
-	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 00 29 03 17 01 01 00 00 C8 42 00"); // 0x00 status == CommandStatus::SUCCESS
+	REQUIRE(t.Read() ==  "C0 81 80 00 29 03 17 01 01 00 00 C8 42 00"); // 0x00 status == CommandStatus::SUCCESS
 
 }
-BOOST_AUTO_TEST_CASE(DirectOperateGroup41Var4)
+TEST_CASE(SUITE("DirectOperateGroup41Var4"))
 {
 	SlaveConfig cfg; cfg.mDisableUnsol = true;
 	SlaveTestObject t(cfg, DatabaseTemplate());
@@ -254,8 +253,8 @@ BOOST_AUTO_TEST_CASE(DirectOperateGroup41Var4)
 
 	// operate group 41 Var 4, count = 1, index = 1
 	t.SendToSlave("C1 05 29 04 17 01 01 00 00 00 00 00 00 59 40 00");
-	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 00 29 04 17 01 01 00 00 00 00 00 00 59 40 00"); // 0x00 status == CommandStatus::SUCCESS
+	REQUIRE(t.Read() ==  "C0 81 80 00 29 04 17 01 01 00 00 00 00 00 00 59 40 00"); // 0x00 status == CommandStatus::SUCCESS
 }
 
-BOOST_AUTO_TEST_SUITE_END()
+
 

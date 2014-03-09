@@ -20,7 +20,7 @@
  */
 #include "DNPHelpers.h"
 
-#include <boost/test/unit_test.hpp>
+#include <catch.hpp>
 
 #include <opendnp3/link/DNPCrc.h>
 #include <opendnp3/link/LinkFrame.h>
@@ -52,8 +52,8 @@ std::string RepairCRC(const std::string& arData)
 	HexSequence hs(arData);
 
 	//validate the size of the data
-	BOOST_REQUIRE(hs.Size() >= 10);
-	BOOST_REQUIRE(hs.Size() <= 292);
+	REQUIRE(hs.Size() >= 10);
+	REQUIRE(hs.Size() <= 292);
 
 	//first determine how much user data is present
 	size_t full_blocks = (hs.Size() - 10) / 18;
@@ -61,7 +61,7 @@ std::string RepairCRC(const std::string& arData)
 
 	//can't have a partial size < 3 since even 1 byte requires 2 CRC bytes
 	if(partial_size > 0) {
-		BOOST_REQUIRE(partial_size >= 3);
+		REQUIRE(partial_size >= 3);
 	}
 
 	//repair the header crc

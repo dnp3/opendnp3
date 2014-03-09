@@ -238,6 +238,8 @@
     <ClInclude Include="src\WrappedTcpPipe.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\APDUHelpers.cpp" />
+    <ClCompile Include="src\APDUHelpers.h" />
     <ClCompile Include="src\AppLayerTest.cpp" />
     <ClCompile Include="src\AsyncPhysBaseTest.cpp" />
     <ClCompile Include="src\AsyncPhysTestObject.cpp" />

@@ -18,20 +18,20 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include <boost/test/unit_test.hpp>
-#include "TestHelpers.h"
+#include <catch.hpp>
+
 
 #include <opendnp3/Util.h>
 
 #include <math.h>
-#include <boost/numeric/conversion/converter.hpp>
+
 #include <iostream>
 
 using namespace opendnp3;
 
 
 
-BOOST_AUTO_TEST_SUITE(Casting)
+#define SUITE(name) "Casting - " name
 template <typename T1, typename T2>
 T2 TestCast(T1 input)
 {
@@ -69,7 +69,7 @@ bool IsEqual(float a, float b)
 	}}
 
 
-BOOST_AUTO_TEST_CASE(Casting)
+TEST_CASE(SUITE("Casting"))
 {
 	CHECK_CAST(double, int, 1000.0, 1000);
 	CHECK_CAST(double, float, 1001.0, 1001.0f);
@@ -100,11 +100,11 @@ BOOST_AUTO_TEST_CASE(Casting)
 
 }
 
-BOOST_AUTO_TEST_CASE(ManualConversion)
+TEST_CASE(SUITE("ManualConversion"))
 {
 
-	BOOST_REQUIRE_FLOAT_EQUAL(4294967296.0, SafeCastInt64ToDouble(4294967296LL));
-	BOOST_REQUIRE_FLOAT_EQUAL(4398046511104.00, SafeCastInt64ToDouble(4398046511104LL));
+	REQUIRE(fabs(4294967296.0 -  SafeCastInt64ToDouble(4294967296LL)) < 1e-6);
+	REQUIRE(fabs(4398046511104.00 -  SafeCastInt64ToDouble(4398046511104LL)) < 1e-6);
 
 }
-BOOST_AUTO_TEST_SUITE_END()
+

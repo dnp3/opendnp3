@@ -18,9 +18,9 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include <boost/test/unit_test.hpp>
+#include <catch.hpp>
 
-#include "TestHelpers.h"
+
 #include "BufferHelpers.h"
 #include "MockAPDUHeaderHandler.h"
 #include "MeasurementComparisons.h"
@@ -53,8 +53,8 @@ void TestComplex(const std::string& hex, APDUParser::Result expected, size_t num
 		mock.Pop(LogToStdio::Inst());
 	}
 
-	BOOST_REQUIRE(result == expected);
-	BOOST_REQUIRE_EQUAL(numCalls, mock.groupVariations.size());
+	REQUIRE((result == expected));
+	REQUIRE(numCalls ==  mock.groupVariations.size());
 
 	validate(mock);
 }
@@ -70,160 +70,160 @@ std::string BufferToString(const ReadOnlyBuffer& buff)
 	return std::string(reinterpret_cast<const char*>(pBuffer), buff.Size());
 }
 
-BOOST_AUTO_TEST_SUITE(APDUParsingTestSuite)
+#define SUITE(name) "APDUParsingTestSuite - " name
 
-BOOST_AUTO_TEST_CASE(HeaderParsingEmptySring)
+TEST_CASE(SUITE("HeaderParsingEmptySring"))
 {
 	HexSequence buffer("");
 	APDURecord rec;
-	BOOST_REQUIRE(APDUHeaderParser::Result::NOT_ENOUGH_DATA_FOR_HEADER == APDUHeaderParser::ParseRequest(buffer.ToReadOnly(), rec));
+	REQUIRE((APDUHeaderParser::Result::NOT_ENOUGH_DATA_FOR_HEADER == APDUHeaderParser::ParseRequest(buffer.ToReadOnly(), rec)));
 }
 
-BOOST_AUTO_TEST_CASE(HeaderParsesReqeust)
+TEST_CASE(SUITE("HeaderParsesReqeust"))
 {
 	HexSequence buffer("C0 02 AB CD");
 	APDURecord rec;
-	BOOST_REQUIRE(APDUHeaderParser::Result::OK == APDUHeaderParser::ParseRequest(buffer.ToReadOnly(), rec));
-	BOOST_REQUIRE_EQUAL(rec.control.ToByte(), AppControlField(true, true, false, false, 0).ToByte());
-	BOOST_REQUIRE(rec.function == FunctionCode::WRITE);
-	BOOST_REQUIRE_EQUAL("AB CD", toHex(rec.objects));
+	REQUIRE((APDUHeaderParser::Result::OK == APDUHeaderParser::ParseRequest(buffer.ToReadOnly(), rec)));
+	REQUIRE(rec.control.ToByte() == AppControlField(true, true, false, false, 0).ToByte());
+	REQUIRE((rec.function == FunctionCode::WRITE));
+	REQUIRE("AB CD" ==  toHex(rec.objects));
 }
 
-BOOST_AUTO_TEST_CASE(ResponseLessThanFour)
+TEST_CASE(SUITE("ResponseLessThanFour"))
 {
 	HexSequence buffer("C0 02 01");
 	APDUResponseRecord rec;
-	BOOST_REQUIRE(APDUHeaderParser::Result::NOT_ENOUGH_DATA_FOR_HEADER == APDUHeaderParser::ParseResponse(buffer.ToReadOnly(), rec));	
+	REQUIRE((APDUHeaderParser::Result::NOT_ENOUGH_DATA_FOR_HEADER == APDUHeaderParser::ParseResponse(buffer.ToReadOnly(), rec)));	
 }
 
-BOOST_AUTO_TEST_CASE(HeaderParsesResponse)
+TEST_CASE(SUITE("HeaderParsesResponse"))
 {
 	HexSequence buffer("C0 02 01 02 BE EF");
 	APDUResponseRecord rec;
-	BOOST_REQUIRE(APDUHeaderParser::Result::OK == APDUHeaderParser::ParseResponse(buffer.ToReadOnly(), rec));
-	BOOST_REQUIRE_EQUAL(rec.control.ToByte(), AppControlField(true, true, false, false, 0).ToByte());
-	BOOST_REQUIRE(rec.function == FunctionCode::WRITE);
-	BOOST_REQUIRE(rec.IIN == IINField(01, 02));
-	BOOST_REQUIRE_EQUAL("BE EF", toHex(rec.objects));
+	REQUIRE((APDUHeaderParser::Result::OK == APDUHeaderParser::ParseResponse(buffer.ToReadOnly(), rec)));
+	REQUIRE(rec.control.ToByte() == AppControlField(true, true, false, false, 0).ToByte());
+	REQUIRE((rec.function == FunctionCode::WRITE));
+	REQUIRE((rec.IIN == IINField(01, 02)));
+	REQUIRE("BE EF" ==  toHex(rec.objects));
 }
 
 
-BOOST_AUTO_TEST_CASE(EmptyStringParsesOK)
+TEST_CASE(SUITE("EmptyStringParsesOK"))
 {
 	TestSimple("", APDUParser::Result::OK, 0);
 }
 
-BOOST_AUTO_TEST_CASE(NotEnoughData)
+TEST_CASE(SUITE("NotEnoughData"))
 {
 	TestSimple("AB CD", APDUParser::Result::NOT_ENOUGH_DATA_FOR_HEADER, 0);
 }
 
-BOOST_AUTO_TEST_CASE(AllObjects)
+TEST_CASE(SUITE("AllObjects"))
 {
 	// (2,2) all, (2,0) all
 	TestComplex("02 02 06 02 00 06", APDUParser::Result::OK, 2, [](MockApduHeaderHandler& mock) {				
-		BOOST_REQUIRE(GroupVariation::Group2Var2 == mock.groupVariations[0]);
-		BOOST_REQUIRE(GroupVariation::Group2Var0 == mock.groupVariations[1]);
+		REQUIRE((GroupVariation::Group2Var2 == mock.groupVariations[0]));
+		REQUIRE((GroupVariation::Group2Var0 == mock.groupVariations[1]));
 	});	
 }
 
-BOOST_AUTO_TEST_CASE(TestUnknownQualifier)
+TEST_CASE(SUITE("TestUnknownQualifier"))
 {
 	// (2,2) unknown qualifier 0xAB
 	TestSimple("02 02 AB", APDUParser::Result::UNKNOWN_QUALIFIER, 0);	
 }
 
-BOOST_AUTO_TEST_CASE(NotEnoughDataForObjects)
+TEST_CASE(SUITE("NotEnoughDataForObjects"))
 {
 	// 1 byte start/stop  1->4, 3 octests data
 	TestSimple("01 02 00 01 04 FF FF FF", APDUParser::Result::NOT_ENOUGH_DATA_FOR_OBJECTS, 0);
 }
 
-BOOST_AUTO_TEST_CASE(Group1Var2Range)
+TEST_CASE(SUITE("Group1Var2Range"))
 {
 	// 1 byte start/stop  3->5, 3 octests data
 	TestComplex("01 02 00 03 05 81 01 81", APDUParser::Result::OK, 1, [](MockApduHeaderHandler& mock) {		
-		BOOST_REQUIRE_EQUAL(3, mock.staticBinaries.size());
+		REQUIRE(3 ==  mock.staticBinaries.size());
 		{
 			IndexedValue<Binary, uint16_t> value(Binary(true), 3);
-			BOOST_REQUIRE(value == mock.staticBinaries[0]);
+			REQUIRE((value == mock.staticBinaries[0]));
 		}
 		{
 			IndexedValue<Binary, uint16_t> value(Binary(false), 4);
-			BOOST_REQUIRE(value == mock.staticBinaries[1]);
+			REQUIRE((value == mock.staticBinaries[1]));
 		}
 		{
 			IndexedValue<Binary, uint16_t> value(Binary(true), 5);
-			BOOST_REQUIRE(value == mock.staticBinaries[2]);
+			REQUIRE((value == mock.staticBinaries[2]));
 		}
 	});	
 }
 
-BOOST_AUTO_TEST_CASE(Group1Var2RangeAsReadRange)
+TEST_CASE(SUITE("Group1Var2RangeAsReadRange"))
 {
 	HexSequence buffer("01 02 00 03 05");
 	MockApduHeaderHandler mock;
 	auto result = APDUParser::ParseTwoPass(buffer.ToReadOnly(), &mock, nullptr, APDUParser::Context(false)); // don't expect contents 
-	BOOST_REQUIRE(result == APDUParser::Result::OK);		
+	REQUIRE((result == APDUParser::Result::OK));		
 }
 
 
-BOOST_AUTO_TEST_CASE(Group1Var2CountOfZero)
+TEST_CASE(SUITE("Group1Var2CountOfZero"))
 {
 	// 1 byte count == 0, 0 octets data
 	TestSimple("01 02 07 00", APDUParser::Result::COUNT_OF_ZERO, 0);
 }
 
-BOOST_AUTO_TEST_CASE(Group1Var2With2Headers)
+TEST_CASE(SUITE("Group1Var2With2Headers"))
 {
 	
 	TestComplex("01 02 07 01 81 01 02 07 02 81 81", APDUParser::Result::OK, 2, [](MockApduHeaderHandler& mock) {		
-		BOOST_REQUIRE_EQUAL(2, mock.groupVariations.size());
+		REQUIRE(2 ==  mock.groupVariations.size());
 	});
 }
 
 
-BOOST_AUTO_TEST_CASE(Group1Var2Count8)
+TEST_CASE(SUITE("Group1Var2Count8"))
 {
 	// 1 byte count == 3, 3 octets data
 	TestComplex("01 02 07 03 81 01 81", APDUParser::Result::OK, 1, [](MockApduHeaderHandler& mock) {		
-		BOOST_REQUIRE_EQUAL(3, mock.staticBinaries.size());
+		REQUIRE(3 ==  mock.staticBinaries.size());
 		{
 			IndexedValue<Binary, uint16_t> value(Binary(true), 0);
-			BOOST_REQUIRE(value == mock.staticBinaries[0]);
+			REQUIRE((value == mock.staticBinaries[0]));
 		}
 		{
 			IndexedValue<Binary, uint16_t> value(Binary(false), 1);
-			BOOST_REQUIRE(value == mock.staticBinaries[1]);
+			REQUIRE((value == mock.staticBinaries[1]));
 		}
 		{
 			IndexedValue<Binary, uint16_t> value(Binary(true), 2);
-			BOOST_REQUIRE(value == mock.staticBinaries[2]);
+			REQUIRE((value == mock.staticBinaries[2]));
 		}
 	});	
 }
 
-BOOST_AUTO_TEST_CASE(Group1Var2Count16)
+TEST_CASE(SUITE("Group1Var2Count16"))
 {
 	// 2 byte count == 1, 1 octet data 
 	TestComplex("01 02 08 01 00 81", APDUParser::Result::OK, 1, [](MockApduHeaderHandler& mock) {		
-		BOOST_REQUIRE_EQUAL(1, mock.staticBinaries.size());
+		REQUIRE(1 ==  mock.staticBinaries.size());
 		IndexedValue<Binary, uint16_t> value(Binary(true), 0);
-		BOOST_REQUIRE(value == mock.staticBinaries[0]);
+		REQUIRE((value == mock.staticBinaries[0]));
 	});
 }
 
-BOOST_AUTO_TEST_CASE(Group1Var2AllCountQualifiers)
+TEST_CASE(SUITE("Group1Var2AllCountQualifiers"))
 {
 	auto validator = [](MockApduHeaderHandler& mock) {		
-		BOOST_REQUIRE_EQUAL(2, mock.staticBinaries.size());
+		REQUIRE(2 ==  mock.staticBinaries.size());
 		{
 			IndexedValue<Binary, uint16_t> value(Binary(true), 0);
-			BOOST_REQUIRE(value == mock.staticBinaries[0]);
+			REQUIRE((value == mock.staticBinaries[0]));
 		}
 		{
 			IndexedValue<Binary, uint16_t> value(Binary(false), 1);
-			BOOST_REQUIRE(value == mock.staticBinaries[1]);
+			REQUIRE((value == mock.staticBinaries[1]));
 		}
 	};
 	
@@ -232,20 +232,20 @@ BOOST_AUTO_TEST_CASE(Group1Var2AllCountQualifiers)
 	TestSimple("01 02 09 02 00 00 00 81 01", APDUParser::Result::UNKNOWN_QUALIFIER, 0);
 }
 
-BOOST_AUTO_TEST_CASE(FlippedRange)
+TEST_CASE(SUITE("FlippedRange"))
 {
 	// 1 byte start/stop w/ start > stop
 	TestSimple("01 02 00 05 03", APDUParser::Result::BAD_START_STOP, 0);
 	TestSimple("01 02 00 FF 00", APDUParser::Result::BAD_START_STOP, 0);
 }
 
-BOOST_AUTO_TEST_CASE(TestUnreasonableRanges)
+TEST_CASE(SUITE("TestUnreasonableRanges"))
 {
 	// 2 byte start/stop 0->65535, no data - the default max objects is very low (32768)
 	TestSimple("01 02 01 00 00 FF FF", APDUParser::Result::UNREASONABLE_OBJECT_COUNT, 0);	
 }
 
-BOOST_AUTO_TEST_CASE(MaxCountAccumlatesOverHeaders)
+TEST_CASE(SUITE("MaxCountAccumlatesOverHeaders"))
 {
 	HexSequence buffer("01 02 00 01 02 81 81 01 02 00 01 02 81 81"); // total of four objects
 	MockApduHeaderHandler mock;
@@ -253,44 +253,44 @@ BOOST_AUTO_TEST_CASE(MaxCountAccumlatesOverHeaders)
 	APDUParser::Context ctx(true, 3); //maximum of the 3 objects
 	auto result = APDUParser::ParseTwoPass(buffer.ToReadOnly(), &mock, nullptr, ctx);
 
-	BOOST_REQUIRE(result == APDUParser::Result::UNREASONABLE_OBJECT_COUNT);
-	BOOST_REQUIRE_EQUAL(0, mock.groupVariations.size()); // 0 calls because parser rejects bad count on first pass
+	REQUIRE((result == APDUParser::Result::UNREASONABLE_OBJECT_COUNT));
+	REQUIRE(0 ==  mock.groupVariations.size()); // 0 calls because parser rejects bad count on first pass
 }
 
-BOOST_AUTO_TEST_CASE(ParserHandlesSmallNumberOfEmptyOctetStringsWithDefaultSettings)
+TEST_CASE(SUITE("ParserHandlesSmallNumberOfEmptyOctetStringsWithDefaultSettings"))
 {
 	HexSequence buffer("6E 00 08 FF 01"); // 255 + 256
 	MockApduHeaderHandler mock;
 
 	auto result = APDUParser::ParseTwoPass(buffer.ToReadOnly(), &mock, nullptr);
 
-	BOOST_REQUIRE(result == APDUParser::Result::OK);
-	BOOST_REQUIRE_EQUAL(1, mock.groupVariations.size());
+	REQUIRE((result == APDUParser::Result::OK));
+	REQUIRE(1 ==  mock.groupVariations.size());
 }
 
-BOOST_AUTO_TEST_CASE(ParserRejectsLargeEmptyOctetStringsWithDefaultSettings)
+TEST_CASE(SUITE("ParserRejectsLargeEmptyOctetStringsWithDefaultSettings"))
 {
 	HexSequence buffer("6E 00 08 FF FF"); // count of 65535 empty strings
 	MockApduHeaderHandler mock;
 
 	auto result = APDUParser::ParseTwoPass(buffer.ToReadOnly(), &mock, nullptr);
 
-	BOOST_REQUIRE(result == APDUParser::Result::UNREASONABLE_OBJECT_COUNT);
-	BOOST_REQUIRE_EQUAL(0, mock.groupVariations.size());
+	REQUIRE((result == APDUParser::Result::UNREASONABLE_OBJECT_COUNT));
+	REQUIRE(0 ==  mock.groupVariations.size());
 }
 
-BOOST_AUTO_TEST_CASE(Group1Var2CountWithIndexUInt8)
+TEST_CASE(SUITE("Group1Var2CountWithIndexUInt8"))
 {
 	// 1 byte count, 1 byte index, index == 09, value = 0x81
 	TestSimple("01 02 17 01 09 81", APDUParser::Result::ILLEGAL_OBJECT_QUALIFIER, 0);	
 }
 
-BOOST_AUTO_TEST_CASE(Group2Var1CountWithAllIndexSizes)
+TEST_CASE(SUITE("Group2Var1CountWithAllIndexSizes"))
 {	
 	auto validator = [](MockApduHeaderHandler& mock) {		
-		BOOST_REQUIRE_EQUAL(1, mock.eventBinaries.size());
+		REQUIRE(1 ==  mock.eventBinaries.size());
 		IndexedValue<Binary, uint16_t> value(Binary(true), 9);
-		BOOST_REQUIRE(value == mock.eventBinaries[0]);		
+		REQUIRE((value == mock.eventBinaries[0]));		
 	};
 
 	// 1 byte count, 1 byte index, index == 09, value = 0x81
@@ -298,107 +298,107 @@ BOOST_AUTO_TEST_CASE(Group2Var1CountWithAllIndexSizes)
 	TestComplex("02 01 28 01 00 09 00 81", APDUParser::Result::OK, 1, validator);	
 }
 
-BOOST_AUTO_TEST_CASE(Group1Var1ByRange)
+TEST_CASE(SUITE("Group1Var1ByRange"))
 {
 	// 1 byte start/stop 3 -> 6
 	TestComplex("01 01 00 03 06 09", APDUParser::Result::OK, 1, [](MockApduHeaderHandler& mock) {		
-		BOOST_REQUIRE_EQUAL(4, mock.staticBinaries.size());
+		REQUIRE(4 ==  mock.staticBinaries.size());
 		{
 			IndexedValue<Binary, uint16_t> value(Binary(true), 3);
-			BOOST_REQUIRE(value == mock.staticBinaries[0]);
+			REQUIRE((value == mock.staticBinaries[0]));
 		}
 		{
 			IndexedValue<Binary, uint16_t> value(Binary(false), 4);
-			BOOST_REQUIRE(value == mock.staticBinaries[1]);
+			REQUIRE((value == mock.staticBinaries[1]));
 		}
 		{
 			IndexedValue<Binary, uint16_t> value(Binary(false), 5);
-			BOOST_REQUIRE(value == mock.staticBinaries[2]);
+			REQUIRE((value == mock.staticBinaries[2]));
 		}
 		{
 			IndexedValue<Binary, uint16_t> value(Binary(true), 6);
-			BOOST_REQUIRE(value == mock.staticBinaries[3]);
+			REQUIRE((value == mock.staticBinaries[3]));
 		}
 	});
 }
 
-BOOST_AUTO_TEST_CASE(Group12Var1WithIndexSizes)
+TEST_CASE(SUITE("Group12Var1WithIndexSizes"))
 {	
 	auto hex = "0C 01 17 01 09 03 01 64 00 00 00 C8 00 00 00 00";
 
 	auto validator = [&](MockApduHeaderHandler& mock) {		
-		BOOST_REQUIRE_EQUAL(1, mock.crobRequests.size());
+		REQUIRE(1 ==  mock.crobRequests.size());
 		ControlRelayOutputBlock crob(ControlCode::LATCH_ON, 1, 100, 200);
 		IndexedValue<ControlRelayOutputBlock, uint16_t> value(crob, 9);
-		BOOST_REQUIRE(value == mock.crobRequests[0]);
+		REQUIRE((value == mock.crobRequests[0]));
 
-		BOOST_REQUIRE_EQUAL(1, mock.groupVariations.size());
+		REQUIRE(1 ==  mock.groupVariations.size());
 	};
 
 	
 	TestComplex(hex, APDUParser::Result::OK, 1, validator);
 }
 
-BOOST_AUTO_TEST_CASE(TestIINValue)
+TEST_CASE(SUITE("TestIINValue"))
 {
 	TestComplex("50 01 00 07 07 00", APDUParser::Result::OK, 1, [&](MockApduHeaderHandler& mock) {
-		BOOST_REQUIRE_EQUAL(1, mock.iinBits.size());
+		REQUIRE(1 ==  mock.iinBits.size());
 		IndexedValue<bool, uint16_t> value(false, 7);
-		BOOST_REQUIRE(value == mock.iinBits[0]);	
+		REQUIRE((value == mock.iinBits[0]));	
 	});
 }
 
-BOOST_AUTO_TEST_CASE(Group60Var1Var2Var3Var4)
+TEST_CASE(SUITE("Group60Var1Var2Var3Var4"))
 {
 	TestComplex("3C 01 06 3C 02 06 3C 03 06 3C 04 06", APDUParser::Result::OK, 4, [&](MockApduHeaderHandler& mock) {
-		BOOST_REQUIRE_EQUAL(4, mock.groupVariations.size());		
-		BOOST_REQUIRE(GroupVariation::Group60Var1 == mock.groupVariations[0]);
-		BOOST_REQUIRE(GroupVariation::Group60Var2 == mock.groupVariations[1]);
-		BOOST_REQUIRE(GroupVariation::Group60Var3 == mock.groupVariations[2]);
-		BOOST_REQUIRE(GroupVariation::Group60Var4 == mock.groupVariations[3]);
+		REQUIRE(4 ==  mock.groupVariations.size());		
+		REQUIRE((GroupVariation::Group60Var1 == mock.groupVariations[0]));
+		REQUIRE((GroupVariation::Group60Var2 == mock.groupVariations[1]));
+		REQUIRE((GroupVariation::Group60Var3 == mock.groupVariations[2]));
+		REQUIRE((GroupVariation::Group60Var4 == mock.groupVariations[3]));
 	});
 }
 
-BOOST_AUTO_TEST_CASE(TestDoubleBitCommonTimeOccurence)
+TEST_CASE(SUITE("TestDoubleBitCommonTimeOccurence"))
 {
 	// 123456789 in hex == 0x75BCD15 -> 0x15CD5B070000 little endian
 
 	// "33 01 07 01 15 CD 5B 07 00 00"
 
 	TestComplex("33 01 07 01 15 CD 5B 07 00 00 04 03 17 02 03 C1 07 00 05 41 09 00", APDUParser::Result::OK, 1, [&](MockApduHeaderHandler& mock) {
-		BOOST_REQUIRE_EQUAL(1, mock.groupVariations.size());
-		BOOST_REQUIRE_EQUAL(2, mock.eventDoubleBinaries.size());
+		REQUIRE(1 ==  mock.groupVariations.size());
+		REQUIRE(2 ==  mock.eventDoubleBinaries.size());
 
 		IndexedValue<DoubleBitBinary, uint16_t> event1(DoubleBitBinary(DoubleBit::INDETERMINATE, DBQ_ONLINE, 123456789 + 7), 3);
 		IndexedValue<DoubleBitBinary, uint16_t> event2(DoubleBitBinary(DoubleBit::DETERMINED_OFF, DBQ_ONLINE, 123456789 + 9), 5);
 
-		BOOST_REQUIRE(event1 == mock.eventDoubleBinaries[0]);
-		BOOST_REQUIRE(event2 == mock.eventDoubleBinaries[1]);
+		REQUIRE((event1 == mock.eventDoubleBinaries[0]));
+		REQUIRE((event2 == mock.eventDoubleBinaries[1]));
 	});
 }
 
-BOOST_AUTO_TEST_CASE(OctetStrings)
+TEST_CASE(SUITE("OctetStrings"))
 {
 	// "hello" == [0x68, 0x65, 0x6C, 0x6C, 0x6F]
 	// "world" == [0x77, 0x6F, 0x72, 0x6C, 0x64]
 
 	// Group 111 (0x6F) Variation (length == 5), 1 byte count / 1 byte index (4), count of 1, "hello" == [0x68, 0x65, 0x6C, 0x6C, 0x6F]
 	TestComplex("6F 05 17 02 04 68 65 6C 6C 6F FF 77 6F 72 6C 64", APDUParser::Result::OK, 1, [&](MockApduHeaderHandler& mock) {
-		BOOST_REQUIRE_EQUAL(2, mock.indexPrefixedOctets.size());		
-		BOOST_REQUIRE_EQUAL(4, mock.indexPrefixedOctets[0].index);
-		BOOST_REQUIRE_EQUAL("hello", BufferToString(mock.indexPrefixedOctets[0].value.ToReadOnly()));
-		BOOST_REQUIRE_EQUAL(255, mock.indexPrefixedOctets[1].index);
-		BOOST_REQUIRE_EQUAL("world", BufferToString(mock.indexPrefixedOctets[1].value.ToReadOnly()));
+		REQUIRE(2 ==  mock.indexPrefixedOctets.size());		
+		REQUIRE(4 ==  mock.indexPrefixedOctets[0].index);
+		REQUIRE("hello" ==  BufferToString(mock.indexPrefixedOctets[0].value.ToReadOnly()));
+		REQUIRE(255 ==  mock.indexPrefixedOctets[1].index);
+		REQUIRE("world" ==  BufferToString(mock.indexPrefixedOctets[1].value.ToReadOnly()));
 	});
 
 	// Group 110 (0x6E) Variation (length == 5), 1 byte start/stop (7), count of 1, "hello" == [0x68, 0x65, 0x6C, 0x6C, 0x6F]
 	TestComplex("6E 05 00 07 08 68 65 6C 6C 6F 77 6F 72 6C 64", APDUParser::Result::OK, 1, [&](MockApduHeaderHandler& mock) {
-		BOOST_REQUIRE_EQUAL(2, mock.rangedOctets.size());		
-		BOOST_REQUIRE_EQUAL(7, mock.rangedOctets[0].index);
-		BOOST_REQUIRE_EQUAL("hello", BufferToString(mock.rangedOctets[0].value.ToReadOnly()));
-		BOOST_REQUIRE_EQUAL(8, mock.rangedOctets[1].index);
-		BOOST_REQUIRE_EQUAL("world", BufferToString(mock.rangedOctets[1].value.ToReadOnly()));		
+		REQUIRE(2 ==  mock.rangedOctets.size());		
+		REQUIRE(7 ==  mock.rangedOctets[0].index);
+		REQUIRE("hello" ==  BufferToString(mock.rangedOctets[0].value.ToReadOnly()));
+		REQUIRE(8 ==  mock.rangedOctets[1].index);
+		REQUIRE("world" ==  BufferToString(mock.rangedOctets[1].value.ToReadOnly()));		
 	});
 }
 
-BOOST_AUTO_TEST_SUITE_END()
+

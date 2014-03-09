@@ -18,7 +18,7 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include <boost/test/unit_test.hpp>
+#include <catch.hpp>
 
 #include <opendnp3/app/APDURequest.h>
 #include <opendnp3/app/APDUResponse.h>
@@ -38,35 +38,13 @@
 using namespace openpal;
 using namespace opendnp3;
 
-BOOST_AUTO_TEST_SUITE(APDUWritingTestSuite)
+#include "APDUHelpers.h"
 
-const uint32_t SIZE = 2048;
-uint8_t fixedBuffer[SIZE];
+#define SUITE(name) "APDUWritingTestSuite - " name
 
-APDURequest Request(FunctionCode code, uint32_t size = SIZE)
-{
-	assert(size <= SIZE);
-	WriteBuffer buffer(fixedBuffer, size);
-	APDURequest request(buffer);
-	request.SetFunction(code);
-	request.SetControl(AppControlField(true, true, false, false, 0));
-	return request;
-}
-
-APDUResponse Response(uint32_t size = SIZE)
-{
-	assert(size <= SIZE);
-	WriteBuffer buffer(fixedBuffer, size);
-	APDUResponse response(buffer);
-	response.SetFunction(FunctionCode::RESPONSE);
-	response.SetControl(AppControlField(true, true, false, false, 0));
-	response.SetIIN(IINField::Empty);
-	return response;
-}
-
-BOOST_AUTO_TEST_CASE(AllObjectsAndRollback)
+TEST_CASE(SUITE("AllObjectsAndRollback"))
 {	
-	APDURequest request(Request(FunctionCode::READ));
+	APDURequest request(APDUHelpers::Request(FunctionCode::READ));
 	auto writer = request.GetWriter();
 	writer.WriteHeader(Group60Var1::ID, QualifierCode::ALL_OBJECTS);
 	writer.WriteHeader(Group60Var2::ID, QualifierCode::ALL_OBJECTS);
@@ -74,122 +52,122 @@ BOOST_AUTO_TEST_CASE(AllObjectsAndRollback)
 	writer.WriteHeader(Group60Var3::ID, QualifierCode::ALL_OBJECTS);
 	writer.WriteHeader(Group60Var4::ID, QualifierCode::ALL_OBJECTS);
 
-	BOOST_REQUIRE_EQUAL("C0 01 3C 01 06 3C 02 06 3C 03 06 3C 04 06", toHex(request.ToReadOnly()));
+	REQUIRE("C0 01 3C 01 06 3C 02 06 3C 03 06 3C 04 06" ==  toHex(request.ToReadOnly()));
 	
 	writer.Rollback();
 	
-	BOOST_REQUIRE_EQUAL("C0 01 3C 01 06 3C 02 06", toHex(request.ToReadOnly()));	
+	REQUIRE("C0 01 3C 01 06 3C 02 06" ==  toHex(request.ToReadOnly()));	
 }
 
-BOOST_AUTO_TEST_CASE(AllObjectsReturnsFalseWhenFull)
+TEST_CASE(SUITE("AllObjectsReturnsFalseWhenFull"))
 {	
-	APDURequest request(Request(FunctionCode::READ, 6));
+	APDURequest request(APDUHelpers::Request(FunctionCode::READ, 6));
 	auto writer = request.GetWriter();
 
-	BOOST_REQUIRE(writer.WriteHeader(Group60Var1::ID, QualifierCode::ALL_OBJECTS));
-	BOOST_REQUIRE(!writer.WriteHeader(Group60Var1::ID, QualifierCode::ALL_OBJECTS));
+	REQUIRE(writer.WriteHeader(Group60Var1::ID, QualifierCode::ALL_OBJECTS));
+	REQUIRE(!writer.WriteHeader(Group60Var1::ID, QualifierCode::ALL_OBJECTS));
 
-	BOOST_REQUIRE_EQUAL("C0 01 3C 01 06", toHex(request.ToReadOnly()));
+	REQUIRE("C0 01 3C 01 06" ==  toHex(request.ToReadOnly()));
 }
 
 
-BOOST_AUTO_TEST_CASE(RangeWriteIteratorStartStop)
+TEST_CASE(SUITE("RangeWriteIteratorStartStop"))
 {	
-	APDUResponse response(Response());
+	APDUResponse response(APDUHelpers::Response());
 	auto writer = response.GetWriter();
 	
 	auto iterator = writer.IterateOverRange<UInt8, Counter>(QualifierCode::UINT8_START_STOP, Group20Var6Serializer::Inst(), 2);
 	
-	BOOST_REQUIRE(iterator.Write(Counter(9)));	
-	BOOST_REQUIRE(iterator.Write(Counter(7)));
-	BOOST_REQUIRE(iterator.Complete());
+	REQUIRE(iterator.Write(Counter(9)));	
+	REQUIRE(iterator.Write(Counter(7)));
+	REQUIRE(iterator.Complete());
 
-	BOOST_REQUIRE_EQUAL("C0 81 00 00 14 06 00 02 03 09 00 07 00", toHex(response.ToReadOnly()));	
+	REQUIRE("C0 81 00 00 14 06 00 02 03 09 00 07 00" ==  toHex(response.ToReadOnly()));	
 }
 
-BOOST_AUTO_TEST_CASE(EmptyHeadersWhenNotEnoughSpaceForSingleValue)
+TEST_CASE(SUITE("EmptyHeadersWhenNotEnoughSpaceForSingleValue"))
 {	
-	APDUResponse response(Response(8));
+	APDUResponse response(APDUHelpers::Response(8));
 	auto writer = response.GetWriter();
 	
 	auto iterator = writer.IterateOverRange<UInt8, Counter>(QualifierCode::UINT8_START_STOP, Group20Var6Serializer::Inst(), 2);
 
-	BOOST_REQUIRE(iterator.IsNull());
+	REQUIRE(iterator.IsNull());
 
-	BOOST_REQUIRE_EQUAL("C0 81 00 00", toHex(response.ToReadOnly()));	
+	REQUIRE("C0 81 00 00" ==  toHex(response.ToReadOnly()));	
 }
 
-BOOST_AUTO_TEST_CASE(CountWriteIteratorAllowsCountOfZero)
+TEST_CASE(SUITE("CountWriteIteratorAllowsCountOfZero"))
 {
-	APDUResponse response(Response());
+	APDUResponse response(APDUHelpers::Response());
 	auto writer = response.GetWriter();
 
 	auto iter = writer.IterateOverCount<UInt16, Analog>(QualifierCode::UINT16_CNT, Group30Var1Serializer::Inst());
-	BOOST_ASSERT(!iter.IsNull());
-	BOOST_ASSERT(iter.Complete());
+	REQUIRE(!iter.IsNull());
+	REQUIRE(iter.Complete());
 
-	BOOST_REQUIRE_EQUAL("C0 81 00 00 1E 01 08 00 00", toHex(response.ToReadOnly()));	
+	REQUIRE("C0 81 00 00 1E 01 08 00 00" ==  toHex(response.ToReadOnly()));	
 
 }
 
-BOOST_AUTO_TEST_CASE(CountWriteIteratorFillsUpCorrectly)
+TEST_CASE(SUITE("CountWriteIteratorFillsUpCorrectly"))
 {
-	APDUResponse response(Response(15));
+	APDUResponse response(APDUHelpers::Response(15));
 	auto writer = response.GetWriter();	
 
 	auto iter = writer.IterateOverCount<UInt8, Analog>(QualifierCode::UINT8_CNT, Group30Var2Serializer::Inst());
 	
-	BOOST_REQUIRE(iter.Write(Analog(9, 0xFF)));	
-	BOOST_REQUIRE(iter.Write(Analog(7, 0xFF)));
-	BOOST_REQUIRE(!iter.Write(Analog(7, 0xFF))); //we're full
-	BOOST_REQUIRE(iter.Complete());
+	REQUIRE(iter.Write(Analog(9, 0xFF)));	
+	REQUIRE(iter.Write(Analog(7, 0xFF)));
+	REQUIRE(!iter.Write(Analog(7, 0xFF))); //we're full
+	REQUIRE(iter.Complete());
 
-	BOOST_REQUIRE_EQUAL("C0 81 00 00 1E 02 07 02 FF 09 00 FF 07 00", toHex(response.ToReadOnly()));	
+	REQUIRE("C0 81 00 00 1E 02 07 02 FF 09 00 FF 07 00" ==  toHex(response.ToReadOnly()));	
 }
 
-BOOST_AUTO_TEST_CASE(PrefixWriteIteratorWithSingleCROB)
+TEST_CASE(SUITE("PrefixWriteIteratorWithSingleCROB"))
 {
-	APDUResponse response(Response());
+	APDUResponse response(APDUHelpers::Response());
 	auto writer = response.GetWriter();	
 
 	auto iter = writer.IterateOverCountWithPrefix<UInt8, ControlRelayOutputBlock>(QualifierCode::UINT8_CNT_UINT8_INDEX, Group12Var1Serializer::Inst());
-	BOOST_ASSERT(!iter.IsNull());
+	REQUIRE(!iter.IsNull());
 
 	ControlRelayOutputBlock crob(ControlCode::LATCH_ON, 0x1F, 0x10, 0xAA, CommandStatus::LOCAL);
 	
-	BOOST_REQUIRE(iter.Write(crob, 0x21));
-	BOOST_REQUIRE(iter.Complete());
+	REQUIRE(iter.Write(crob, 0x21));
+	REQUIRE(iter.Complete());
 
-	BOOST_REQUIRE_EQUAL("C0 81 00 00 0C 01 17 01 21 03 1F 10 00 00 00 AA 00 00 00 07", toHex(response.ToReadOnly()));	
+	REQUIRE("C0 81 00 00 0C 01 17 01 21 03 1F 10 00 00 00 AA 00 00 00 07" ==  toHex(response.ToReadOnly()));	
 }
 
 
-BOOST_AUTO_TEST_CASE(SingleValueWithIndexCROB)
+TEST_CASE(SUITE("SingleValueWithIndexCROB"))
 {
-	APDURequest request(Request(FunctionCode::SELECT));
+	APDURequest request(APDUHelpers::Request(FunctionCode::SELECT));
 	auto writer = request.GetWriter();		
 
 	ControlRelayOutputBlock crob(ControlCode::LATCH_ON, 0x1F, 0x10, 0xAA, CommandStatus::LOCAL);	
 	
-	BOOST_REQUIRE(writer.WriteSingleIndexedValue<UInt16>(QualifierCode::UINT16_CNT, Group12Var1Serializer::Inst(), crob, 0x21));	
+	REQUIRE(writer.WriteSingleIndexedValue<UInt16>(QualifierCode::UINT16_CNT, Group12Var1Serializer::Inst(), crob, 0x21));	
 
-	BOOST_REQUIRE_EQUAL("C0 03 0C 01 08 01 00 21 00 03 1F 10 00 00 00 AA 00 00 00 07", toHex(request.ToReadOnly()));	
+	REQUIRE("C0 03 0C 01 08 01 00 21 00 03 1F 10 00 00 00 AA 00 00 00 07" ==  toHex(request.ToReadOnly()));	
 }
 
-BOOST_AUTO_TEST_CASE(WriteSingleValue)
+TEST_CASE(SUITE("WriteSingleValue"))
 {
-	APDURequest request(Request(FunctionCode::WRITE));
+	APDURequest request(APDUHelpers::Request(FunctionCode::WRITE));
 	auto writer = request.GetWriter();	
 
 	Group50Var1 obj = { 0x1234 };
-	BOOST_REQUIRE(writer.WriteSingleValue<UInt8>(QualifierCode::UINT8_CNT, obj));
+	REQUIRE(writer.WriteSingleValue<UInt8>(QualifierCode::UINT8_CNT, obj));
 
-	BOOST_REQUIRE_EQUAL("C0 02 32 01 07 01 34 12 00 00 00 00", toHex(request.ToReadOnly()));
+	REQUIRE("C0 02 32 01 07 01 34 12 00 00 00 00" ==  toHex(request.ToReadOnly()));
 }
 
-BOOST_AUTO_TEST_CASE(WriteIINRestart)
+TEST_CASE(SUITE("WriteIINRestart"))
 {
-	APDURequest request(Request(FunctionCode::WRITE));
+	APDURequest request(APDUHelpers::Request(FunctionCode::WRITE));
 	auto writer = request.GetWriter();
 
 	auto iter = writer.IterateOverSingleBitfield<UInt8>(GroupVariationID(80, 1), QualifierCode::UINT8_START_STOP, 7);
@@ -197,7 +175,7 @@ BOOST_AUTO_TEST_CASE(WriteIINRestart)
 	iter.Write(true);
 	iter.Complete();
 
-	BOOST_REQUIRE_EQUAL("C0 02 50 01 00 07 08 03", toHex(request.ToReadOnly()));
+	REQUIRE("C0 02 50 01 00 07 08 03" ==  toHex(request.ToReadOnly()));
 }
 
-BOOST_AUTO_TEST_SUITE_END()
+

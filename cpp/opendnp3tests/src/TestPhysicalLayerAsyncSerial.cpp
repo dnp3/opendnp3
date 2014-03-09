@@ -20,24 +20,22 @@
  */
 #include "AsyncSerialTestObject.h"
 
-#include "TestHelpers.h"
+
 #include "BufferHelpers.h"
 #include "Exception.h"
 
 #include <asio.hpp>
-#include <boost/test/unit_test.hpp>
-#include <boost/bind.hpp>
+#include <catch.hpp>
 
 using namespace opendnp3;
-using namespace boost;
 using namespace openpal;
 
 
 //run the tests on arm to give us some protection
-BOOST_AUTO_TEST_SUITE(PhysicalLayerSerialSuite)
+#define SUITE(name) "PhysicalLayerSerialSuite - " name
 #ifdef SERIAL_PORT
 
-BOOST_AUTO_TEST_CASE(TestSendReceiveLoopback)
+TEST_CASE(SUITE("TestSendReceiveLoopback"))
 {
 	SerialSettings s;
 	s.mDevice = TOSTRING(SERIAL_PORT);
@@ -50,15 +48,15 @@ BOOST_AUTO_TEST_CASE(TestSendReceiveLoopback)
 	AsyncSerialTestObject t(s);
 
 	t.mPort.AsyncOpen();
-	BOOST_REQUIRE(t.ProceedUntil(bind(&MockUpperLayer::IsLowerLayerUp, &t.mUpper)));
+	REQUIRE(t.ProceedUntil(bind(&MockUpperLayer::IsLowerLayerUp, &t.mUpper)));
 
 	ByteStr b(4096, 0);
 	t.mUpper.SendDown(b, b.Size());
 
-	BOOST_REQUIRE(t.ProceedUntil(bind(&MockUpperLayer::SizeEquals, &t.mUpper, b.Size())));
+	REQUIRE(t.ProceedUntil(bind(&MockUpperLayer::SizeEquals, &t.mUpper, b.Size())));
 }
 
 #endif
 
-BOOST_AUTO_TEST_SUITE_END()
+
 

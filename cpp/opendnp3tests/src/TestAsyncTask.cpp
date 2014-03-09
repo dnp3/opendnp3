@@ -18,7 +18,7 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include <boost/test/unit_test.hpp>
+#include <catch.hpp>
 
 
 #include <opendnp3/master/AsyncTaskPeriodic.h>
@@ -28,16 +28,13 @@
 
 #include "MockExecutor.h"
 #include "Exception.h"
-#include "TestHelpers.h"
 
-#include <boost/bind.hpp>
 #include <queue>
 #include <chrono>
 
 
 using namespace openpal;
 using namespace opendnp3;
-using namespace boost;
 using namespace std::chrono;
 
 class MockTaskHandler
@@ -45,7 +42,7 @@ class MockTaskHandler
 public:
 
 	TaskHandler GetHandler() {
-		return bind(&MockTaskHandler::OnTask, this, _1);
+		return [this](ITask* pTask) { this->OnTask(pTask); };
 	}
 
 	size_t Size() {
@@ -75,9 +72,9 @@ private:
 	}
 };
 
-BOOST_AUTO_TEST_SUITE(AsyncTaskSuite)
+#define SUITE(name) "AsyncTaskSuite - " name
 
-BOOST_AUTO_TEST_CASE(DependencyAnalysis)
+TEST_CASE(SUITE("DependencyAnalysis"))
 {
 	MockTaskHandler mth;
 	MockExecutor exe;
@@ -89,25 +86,25 @@ BOOST_AUTO_TEST_CASE(DependencyAnalysis)
 	AsyncTaskBase* pT3 = group.Add(TimeDuration::Seconds(1), TimeDuration::Seconds(1), 0, mth.GetHandler());
 
 	// try self-assignemt
-	BOOST_REQUIRE_FALSE(pT1->AddDependency(pT1));
+	REQUIRE_FALSE(pT1->AddDependency(pT1));
 
-	BOOST_REQUIRE(!pT2->IsDependency(pT1));
+	REQUIRE(!pT2->IsDependency(pT1));
 	pT2->AddDependency(pT1);
-	BOOST_REQUIRE(pT2->IsDependency(pT1));
+	REQUIRE(pT2->IsDependency(pT1));
 
-	BOOST_REQUIRE(!pT3->IsDependency(pT2));
+	REQUIRE(!pT3->IsDependency(pT2));
 	pT3->AddDependency(pT2);
-	BOOST_REQUIRE(pT3->IsDependency(pT2));
+	REQUIRE(pT3->IsDependency(pT2));
 
 	//check that dependencies are transitive
-	BOOST_REQUIRE(pT3->IsDependency(pT1));
+	REQUIRE(pT3->IsDependency(pT1));
 
 	//try to create some circular dependencies
-	BOOST_REQUIRE_FALSE(pT1->AddDependency(pT2));
-	BOOST_REQUIRE_FALSE(pT1->AddDependency(pT3));
+	REQUIRE_FALSE(pT1->AddDependency(pT2));
+	REQUIRE_FALSE(pT1->AddDependency(pT3));
 }
 
-BOOST_AUTO_TEST_CASE(ContinousTask)
+TEST_CASE(SUITE("ContinousTask"))
 {
 	MockTaskHandler mth;
 	MockExecutor exe;
@@ -118,29 +115,29 @@ BOOST_AUTO_TEST_CASE(ContinousTask)
 	AsyncTaskBase* pT2 = group.Add(TimeDuration::Seconds(1), TimeDuration::Seconds(1), 1, mth.GetHandler());
 
 	pT1->Enable();
-	BOOST_REQUIRE_EQUAL(mth.Size(), 1);
-	BOOST_REQUIRE_EQUAL(mth.Front(), pT1);
+	REQUIRE(mth.Size() ==  1);
+	REQUIRE(mth.Front() ==  pT1);
 	group.Enable();
 	mth.Complete(true);
 
-	BOOST_REQUIRE_EQUAL(mth.Size(), 1);
-	BOOST_REQUIRE_EQUAL(mth.Front(), pT2);
+	REQUIRE(mth.Size() ==  1);
+	REQUIRE(mth.Front() ==  pT2);
 	mth.Complete(true);
 
 	for(size_t i = 0; i < 5; ++i) {
-		BOOST_REQUIRE_EQUAL(mth.Size(), 1);
-		BOOST_REQUIRE_EQUAL(mth.Front(), pT1);
+		REQUIRE(mth.Size() ==  1);
+		REQUIRE(mth.Front() ==  pT1);
 		mth.Complete(true);
 	}
 
-	BOOST_REQUIRE_EQUAL(mth.Size(), 1);
-	BOOST_REQUIRE_EQUAL(mth.Front(), pT1);
+	REQUIRE(mth.Size() ==  1);
+	REQUIRE(mth.Front() ==  pT1);
 	pT1->Disable();
 
 }
 
 // Two groups that execute independently of one another
-BOOST_AUTO_TEST_CASE(DecoupledGroupsMode)
+TEST_CASE(SUITE("DecoupledGroupsMode"))
 {
 	MockTaskHandler mth;
 	MockExecutor exe;
@@ -152,16 +149,16 @@ BOOST_AUTO_TEST_CASE(DecoupledGroupsMode)
 	AsyncTaskBase* pT2 = group2.Add(TimeDuration::Seconds(1), TimeDuration::Seconds(1), 0, mth.GetHandler());
 
 	group1.Enable();
-	BOOST_REQUIRE_EQUAL(mth.Size(), 1);
+	REQUIRE(mth.Size() ==  1);
 	group2.Enable();
 
-	BOOST_REQUIRE_EQUAL(mth.Size(), 2);
-	BOOST_REQUIRE_EQUAL(mth.Front(), pT1);
+	REQUIRE(mth.Size() ==  2);
+	REQUIRE(mth.Front() ==  pT1);
 	mth.Pop();
-	BOOST_REQUIRE_EQUAL(mth.Front(), pT2);
+	REQUIRE(mth.Front() ==  pT2);
 }
 
-BOOST_AUTO_TEST_CASE(NonPeriodic)
+TEST_CASE(SUITE("NonPeriodic"))
 {
 	MockTaskHandler mth;
 
@@ -176,23 +173,23 @@ BOOST_AUTO_TEST_CASE(NonPeriodic)
 	group.Enable();
 
 	//complete both the tasks
-	BOOST_REQUIRE_EQUAL(mth.Size(), 1);
-	BOOST_REQUIRE_EQUAL(mth.Front(), pT1);
+	REQUIRE(mth.Size() ==  1);
+	REQUIRE(mth.Front() ==  pT1);
 	mth.Complete(true);
-	BOOST_REQUIRE_EQUAL(mth.Size(), 1);
-	BOOST_REQUIRE_EQUAL(mth.Front(), pT2);
+	REQUIRE(mth.Size() ==  1);
+	REQUIRE(mth.Front() ==  pT2);
 	mth.Complete(true);
 
 	// a timer should be registered for the next periodic task execution
-	BOOST_REQUIRE_EQUAL(exe.NumActive(), 1);
-	BOOST_REQUIRE_EQUAL(mth.Size(), 0);
+	REQUIRE(exe.NumActive() ==  1);
+	REQUIRE(mth.Size() ==  0);
 	exe.AdvanceTime(TimeDuration::Seconds(2));
-	BOOST_REQUIRE(exe.DispatchOne());
-	BOOST_REQUIRE_EQUAL(mth.Size(), 1);
-	BOOST_REQUIRE_EQUAL(mth.Front(), pT2);
+	REQUIRE(exe.DispatchOne());
+	REQUIRE(mth.Size() ==  1);
+	REQUIRE(mth.Front() ==  pT2);
 }
 
-BOOST_AUTO_TEST_CASE(DemandPeriodicTaskWhileNotExecuting)
+TEST_CASE(SUITE("DemandPeriodicTaskWhileNotExecuting"))
 {
 	MockTaskHandler mth;
 
@@ -205,17 +202,17 @@ BOOST_AUTO_TEST_CASE(DemandPeriodicTaskWhileNotExecuting)
 	group.Enable();
 	
 	//complete both the tasks
-	BOOST_REQUIRE_EQUAL(mth.Size(), 1);
-	BOOST_REQUIRE_EQUAL(mth.Front(), pT1);
+	REQUIRE(mth.Size() ==  1);
+	REQUIRE(mth.Front() ==  pT1);
 	mth.Complete(true);
-	BOOST_REQUIRE_EQUAL(mth.Size(), 0);
+	REQUIRE(mth.Size() ==  0);
 
 	pT1->Demand();
-	BOOST_REQUIRE_EQUAL(mth.Size(), 1);
-	BOOST_REQUIRE_EQUAL(mth.Front(), pT1);	
+	REQUIRE(mth.Size() ==  1);
+	REQUIRE(mth.Front() ==  pT1);	
 }
 
-BOOST_AUTO_TEST_CASE(DemandPeriodicTaskWhileExecuting)
+TEST_CASE(SUITE("DemandPeriodicTaskWhileExecuting"))
 {
 	MockTaskHandler mth;
 
@@ -228,15 +225,15 @@ BOOST_AUTO_TEST_CASE(DemandPeriodicTaskWhileExecuting)
 	group.Enable();
 	
 	//complete both the tasks
-	BOOST_REQUIRE_EQUAL(mth.Size(), 1);
-	BOOST_REQUIRE_EQUAL(mth.Front(), pT1);
+	REQUIRE(mth.Size() ==  1);
+	REQUIRE(mth.Front() ==  pT1);
 	pT1->Demand();
 	mth.Complete(true);
-	BOOST_REQUIRE_EQUAL(mth.Size(), 0);
+	REQUIRE(mth.Size() ==  0);
 }
 
 
-BOOST_AUTO_TEST_CASE(PriorityBreaksTies)
+TEST_CASE(SUITE("PriorityBreaksTies"))
 {
 	MockTaskHandler mth;
 	MockExecutor exe;
@@ -248,11 +245,11 @@ BOOST_AUTO_TEST_CASE(PriorityBreaksTies)
 
 	group.Enable();
 
-	BOOST_REQUIRE_EQUAL(mth.Size(), 1);
-	BOOST_REQUIRE_EQUAL(mth.Front(), pT2);
+	REQUIRE(mth.Size() ==  1);
+	REQUIRE(mth.Front() ==  pT2);
 }
 
-BOOST_AUTO_TEST_CASE(DependenciesEnforced)
+TEST_CASE(SUITE("DependenciesEnforced"))
 {
 	MockTaskHandler mth;
 	MockExecutor exe;
@@ -265,11 +262,11 @@ BOOST_AUTO_TEST_CASE(DependenciesEnforced)
 
 	group.Enable();
 
-	BOOST_REQUIRE_EQUAL(mth.Size(), 1);
-	BOOST_REQUIRE_EQUAL(mth.Front(), pT2);
+	REQUIRE(mth.Size() ==  1);
+	REQUIRE(mth.Front() ==  pT2);
 }
 
-BOOST_AUTO_TEST_CASE(TimerUsage)
+TEST_CASE(SUITE("TimerUsage"))
 {
 	MockTaskHandler mth;
 	MockExecutor exe;
@@ -282,19 +279,19 @@ BOOST_AUTO_TEST_CASE(TimerUsage)
 	group.Enable();
 
 	// complete the two periodic tasks
-	BOOST_REQUIRE_EQUAL(mth.Front(), pT1); mth.Complete(true);
-	BOOST_REQUIRE_EQUAL(mth.Front(), pT2); mth.Complete(true);
+	REQUIRE(mth.Front() ==  pT1); mth.Complete(true);
+	REQUIRE(mth.Front() ==  pT2); mth.Complete(true);
 
 	//if you disptach the call back early, nothing should happen except a new timer
-	BOOST_REQUIRE(exe.DispatchOne());
+	REQUIRE(exe.DispatchOne());
 
 	exe.AdvanceTime(TimeDuration::Milliseconds(1001));
-	BOOST_REQUIRE(exe.DispatchOne());
-	BOOST_REQUIRE_EQUAL(mth.Front(), pT1); mth.Complete(true);
+	REQUIRE(exe.DispatchOne());
+	REQUIRE(mth.Front() ==  pT1); mth.Complete(true);
 
 	exe.AdvanceTime(TimeDuration::Milliseconds(500));
-	BOOST_REQUIRE(exe.DispatchOne());
-	BOOST_REQUIRE_EQUAL(mth.Front(), pT2); mth.Complete(true);
+	REQUIRE(exe.DispatchOne());
+	REQUIRE(mth.Front() ==  pT2); mth.Complete(true);
 }
 
-BOOST_AUTO_TEST_SUITE_END()
+

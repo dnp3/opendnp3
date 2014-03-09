@@ -21,7 +21,7 @@
 #include "TransportLoopbackTestObject.h"
 
 #include <asio.hpp>
-#include <boost/test/unit_test.hpp>
+#include <catch.hpp>
 #include <functional>
 
 #include <opendnp3/ProtocolUtil.h>
@@ -30,7 +30,7 @@
 #include <asiopal/PhysicalLayerAsyncSerial.h>
 
 #include "Exception.h"
-#include "TestHelpers.h"
+
 #include "BufferHelpers.h"
 #include "LoopbackPhysicalLayerAsync.h"
 
@@ -40,7 +40,7 @@ using namespace openpal;
 using namespace asiopal;
 using namespace boost;
 
-BOOST_AUTO_TEST_SUITE(TransportLoopbackTestSuite)
+#define SUITE(name) "TransportLoopbackTestSuite - " name
 
 // Do a bidirectional send operation and proceed until both sides have correctly
 // received all the data
@@ -48,20 +48,20 @@ void TestLoopback(TransportLoopbackTestObject* apTest, uint32_t aNumBytes)
 {
 	apTest->Start();
 
-	BOOST_REQUIRE(apTest->ProceedUntil(std::bind(&TransportLoopbackTestObject::LayersUp, apTest)));
+	REQUIRE(apTest->ProceedUntil(std::bind(&TransportLoopbackTestObject::LayersUp, apTest)));
 
 	ByteStr b(aNumBytes, 0);
 
 	apTest->mUpperA.SendDown(b.ToReadOnly());
 	apTest->mUpperB.SendDown(b.ToReadOnly());
 
-	BOOST_REQUIRE(apTest->ProceedUntil(std::bind(&MockUpperLayer::SizeEquals, &(apTest->mUpperA), b.Size())));
-	BOOST_REQUIRE(apTest->ProceedUntil(std::bind(&MockUpperLayer::SizeEquals, &(apTest->mUpperB), b.Size())));
-	BOOST_REQUIRE(apTest->mUpperA.BufferEquals(b, b.Size()));
-	BOOST_REQUIRE(apTest->mUpperB.BufferEquals(b, b.Size()));
+	REQUIRE(apTest->ProceedUntil(std::bind(&MockUpperLayer::SizeEquals, &(apTest->mUpperA), b.Size())));
+	REQUIRE(apTest->ProceedUntil(std::bind(&MockUpperLayer::SizeEquals, &(apTest->mUpperB), b.Size())));
+	REQUIRE(apTest->mUpperA.BufferEquals(b, b.Size()));
+	REQUIRE(apTest->mUpperB.BufferEquals(b, b.Size()));
 }
 
-BOOST_AUTO_TEST_CASE(TestTransportWithMockLoopback)
+TEST_CASE(SUITE("TestTransportWithMockLoopback"))
 {
 	LinkConfig cfgA(true, true);
 	LinkConfig cfgB(false, true);
@@ -76,7 +76,7 @@ BOOST_AUTO_TEST_CASE(TestTransportWithMockLoopback)
 
 // Run this test on ARM to give us some regression protection for serial
 #ifdef SERIAL_PORT
-BOOST_AUTO_TEST_CASE(TestTransportWithSerialLoopback)
+TEST_CASE(SUITE("TestTransportWithSerialLoopback"))
 {
 	LinkConfig cfgA(true, true);
 	LinkConfig cfgB(false, true);
@@ -100,4 +100,4 @@ BOOST_AUTO_TEST_CASE(TestTransportWithSerialLoopback)
 }
 #endif
 
-BOOST_AUTO_TEST_SUITE_END()
+

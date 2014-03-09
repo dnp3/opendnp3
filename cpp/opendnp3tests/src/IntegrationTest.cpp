@@ -42,8 +42,6 @@
 #include <asiopal/UTCTimeSource.h>
 
 #include <asio.hpp>
-#include <boost/random/variate_generator.hpp>
-#include <boost/random/uniform_int.hpp>
 
 using namespace std;
 using namespace asiopal;

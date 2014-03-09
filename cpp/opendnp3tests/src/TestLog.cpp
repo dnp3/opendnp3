@@ -18,32 +18,32 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include <boost/test/unit_test.hpp>
+#include <catch.hpp>
 
-#include "TestHelpers.h"
+
 #include "LogTester.h"
 #include "Exception.h"
 
 #include <asiopal/Log.h>
-#include <boost/shared_ptr.hpp>
+
 #include <iostream>
 #include <vector>
 
-using namespace boost;
+
 using namespace std;
 using namespace opendnp3;
 using namespace openpal;
 
-BOOST_AUTO_TEST_SUITE(LogTest)
+#define SUITE(name) "LogTest - " name
 
-BOOST_AUTO_TEST_CASE( LogErrorCounting)
+TEST_CASE(SUITE(" LogErrorCounting"))
 {
 	LogTester log;
 	Logger logger(&log, LogLevel::Debug, "test1");
 	logger.Log( LogLevel::Debug, "LogEntryParamsTest", "MessageMessage", 5 );
 
-	BOOST_REQUIRE_EQUAL(log.NextErrorCode(), 5);
-	BOOST_REQUIRE_EQUAL(log.NextErrorCode(), -1);
+	REQUIRE(log.NextErrorCode() ==  5);
+	REQUIRE(log.NextErrorCode() ==  -1);
 }
 
-BOOST_AUTO_TEST_SUITE_END()
+

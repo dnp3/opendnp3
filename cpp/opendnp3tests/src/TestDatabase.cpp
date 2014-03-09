@@ -18,9 +18,9 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include <boost/test/unit_test.hpp>
+#include <catch.hpp>
 
-#include "TestHelpers.h"
+
 #include "MeasurementComparisons.h"
 #include "DatabaseTestObject.h"
 
@@ -39,13 +39,13 @@ void TestBufferForEvent(bool aIsEvent, const T& arNewVal, DatabaseTestObject& te
 	test.db.Update(arNewVal, 0);
 
 	if(aIsEvent) {
-		BOOST_REQUIRE_EQUAL(arQueue.size(), 1);
-		BOOST_REQUIRE(arNewVal == arQueue.front().value);
-		BOOST_REQUIRE_EQUAL(0, arQueue.front().index);
+		REQUIRE(arQueue.size() ==  1);
+		REQUIRE((arNewVal == arQueue.front().value));
+		REQUIRE(0 ==  arQueue.front().index);
 		arQueue.pop_front();
 	}
 	else {
-		BOOST_REQUIRE_EQUAL(arQueue.size(), 0);
+		REQUIRE(arQueue.size() ==  0);
 	}
 }
 
@@ -63,59 +63,59 @@ bool IsCounterEvent(uint32_t val1, uint32_t val2, uint32_t deadband)
 	return c1.IsEvent(c2, deadband);
 }
 
-BOOST_AUTO_TEST_SUITE(DatabaseTestSuite)
+#define SUITE(name) "DatabaseTestSuite - " name
 
 // tests for the various analog event conditions
-BOOST_AUTO_TEST_CASE(AnalogEventZeroDeadband)
+TEST_CASE(SUITE("AnalogEventZeroDeadband"))
 {	
-	BOOST_REQUIRE_FALSE(IsAnalogEvent(0, 0, 0));
+	REQUIRE_FALSE(IsAnalogEvent(0, 0, 0));
 }
 
-BOOST_AUTO_TEST_CASE(AnalogEventOnDeadband)
+TEST_CASE(SUITE("AnalogEventOnDeadband"))
 {	
-	BOOST_REQUIRE_FALSE(IsAnalogEvent(0, 1, 1));	
+	REQUIRE_FALSE(IsAnalogEvent(0, 1, 1));	
 }
 
-BOOST_AUTO_TEST_CASE(AnalogEventNegative)
+TEST_CASE(SUITE("AnalogEventNegative"))
 {
-	BOOST_REQUIRE(IsAnalogEvent(-34, -36, 1));	
+	REQUIRE(IsAnalogEvent(-34, -36, 1));	
 }
 
-BOOST_AUTO_TEST_CASE(AnalogInfiniteChange)
+TEST_CASE(SUITE("AnalogInfiniteChange"))
 {
 	auto maxAnalog = std::numeric_limits<double>::max();
 	auto minAnalog = -maxAnalog;
 
-	BOOST_REQUIRE(IsAnalogEvent(minAnalog, maxAnalog, 1));	
+	REQUIRE(IsAnalogEvent(minAnalog, maxAnalog, 1));	
 }
 
-BOOST_AUTO_TEST_CASE(CounterMaxChange)
+TEST_CASE(SUITE("CounterMaxChange"))
 {
 	auto max = std::numeric_limits<uint32_t>::max();	
-	BOOST_REQUIRE(IsCounterEvent(0, max, max -1));	
+	REQUIRE(IsCounterEvent(0, max, max -1));	
 }
 
-BOOST_AUTO_TEST_CASE(AnalogNoEventNegative)
+TEST_CASE(SUITE("AnalogNoEventNegative"))
 {
-	BOOST_REQUIRE_FALSE(IsAnalogEvent(-34, -36, 2));	
+	REQUIRE_FALSE(IsAnalogEvent(-34, -36, 2));	
 }
 
 // Next 3 tests prove that "no change" doesn't get forwared to IEventBuffer
-BOOST_AUTO_TEST_CASE(BinaryNoChange)
+TEST_CASE(SUITE("BinaryNoChange"))
 {	
 	DatabaseTestObject t(DatabaseTemplate::BinaryOnly(1));
 	t.db.staticData.binaries.metadata[0].clazz = CLASS_1;	
 	TestBufferForEvent(false, Binary(false, BQ_RESTART), t, t.buffer.mBinaryEvents);
 }
 
-BOOST_AUTO_TEST_CASE(AnalogNoChange)
+TEST_CASE(SUITE("AnalogNoChange"))
 {
 	DatabaseTestObject t(DatabaseTemplate::AnalogOnly(1));	
 	t.db.staticData.analogs.metadata[0].clazz = CLASS_1;
 	TestBufferForEvent(false, Analog(0, AQ_RESTART), t, t.buffer.mAnalogEvents);
 }
 
-BOOST_AUTO_TEST_CASE(CounterNoChange)
+TEST_CASE(SUITE("CounterNoChange"))
 {
 	DatabaseTestObject t(DatabaseTemplate::CounterOnly(1));	
 	t.db.staticData.counters.metadata[0].clazz = CLASS_1;
@@ -123,21 +123,21 @@ BOOST_AUTO_TEST_CASE(CounterNoChange)
 }
 
 // Next 3 tests prove that a change detection will forward to the buffer
-BOOST_AUTO_TEST_CASE(BinaryChange)
+TEST_CASE(SUITE("BinaryChange"))
 {
 	DatabaseTestObject t(DatabaseTemplate::BinaryOnly(1));
 	t.db.staticData.binaries.metadata[0].clazz = CLASS_1;
 	TestBufferForEvent(true, Binary(false, BQ_ONLINE), t, t.buffer.mBinaryEvents);
 }
 
-BOOST_AUTO_TEST_CASE(AnalogChange)
+TEST_CASE(SUITE("AnalogChange"))
 {
 	DatabaseTestObject t(DatabaseTemplate::AnalogOnly(1));	
 	t.db.staticData.analogs.metadata[0].clazz = CLASS_1;
 	TestBufferForEvent(true, Analog(0, AQ_ONLINE), t, t.buffer.mAnalogEvents);
 }
 
-BOOST_AUTO_TEST_CASE(CounterChange)
+TEST_CASE(SUITE("CounterChange"))
 {
 	DatabaseTestObject t(DatabaseTemplate::CounterOnly(1));	
 	t.db.staticData.counters.metadata[0].clazz = CLASS_1;
@@ -145,7 +145,7 @@ BOOST_AUTO_TEST_CASE(CounterChange)
 }
 
 //show that the last reported change gets recorded correctly and applied correctly for each type
-BOOST_AUTO_TEST_CASE(AnalogLastReportedChange)
+TEST_CASE(SUITE("AnalogLastReportedChange"))
 {
 	DatabaseTestObject t(DatabaseTemplate::AnalogOnly(1));	
 	t.db.staticData.analogs.metadata[0].clazz = CLASS_1;
@@ -158,7 +158,7 @@ BOOST_AUTO_TEST_CASE(AnalogLastReportedChange)
 	TestBufferForEvent(true, Analog(-1, AQ_RESTART), t, t.buffer.mAnalogEvents);
 }
 
-BOOST_AUTO_TEST_CASE(CounterLastReportedChange)
+TEST_CASE(SUITE("CounterLastReportedChange"))
 {
 	DatabaseTestObject t(DatabaseTemplate::CounterOnly(1));	
 	t.db.staticData.counters.metadata[0].clazz = CLASS_1;
@@ -171,4 +171,4 @@ BOOST_AUTO_TEST_CASE(CounterLastReportedChange)
 	TestBufferForEvent(true, Counter(0, CQ_RESTART), t, t.buffer.mCounterEvents);
 }
 
-BOOST_AUTO_TEST_SUITE_END()
+

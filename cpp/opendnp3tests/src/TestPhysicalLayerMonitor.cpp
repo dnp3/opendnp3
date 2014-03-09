@@ -18,14 +18,14 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include <boost/test/unit_test.hpp>
+#include <catch.hpp>
 
 #include <opendnp3/link/PhysicalLayerMonitor.h>
 #include <opendnp3/link/PhysicalLayerMonitorStates.h>
 
 #include "MockExecutor.h"
 #include "MockPhysicalLayerAsync.h"
-#include "TestHelpers.h"
+
 #include "Exception.h"
 #include "LogTester.h"
 
@@ -86,305 +86,305 @@ public:
 	ConcretePhysicalLayerMonitor monitor;
 };
 
-BOOST_AUTO_TEST_SUITE(PhysicalLayerMonitorTestSuite)
+#define SUITE(name) "PhysicalLayerMonitorTestSuite - " name
 
-BOOST_AUTO_TEST_CASE(StateClosedExceptions)
+TEST_CASE(SUITE("StateClosedExceptions"))
 {
 	TestObject test;
-	BOOST_REQUIRE(ChannelState::CLOSED == test.monitor.GetState());
+	REQUIRE((ChannelState::CLOSED == test.monitor.GetState()));
 
 	test.monitor.OnLowerLayerUp();
-	BOOST_REQUIRE(test.log.PopOneEntry(LogLevel::Error));
+	REQUIRE(test.log.PopOneEntry(LogLevel::Error));
 	test.monitor.OnLowerLayerDown();
-	BOOST_REQUIRE(test.log.PopOneEntry(LogLevel::Error));
+	REQUIRE(test.log.PopOneEntry(LogLevel::Error));
 	test.monitor.OnOpenFailure();
-	BOOST_REQUIRE(test.log.PopOneEntry(LogLevel::Error));
+	REQUIRE(test.log.PopOneEntry(LogLevel::Error));
 	
 	
-	BOOST_REQUIRE(ChannelState::CLOSED == test.monitor.GetState());
+	REQUIRE((ChannelState::CLOSED == test.monitor.GetState()));
 }
 
-BOOST_AUTO_TEST_CASE(ThrowsIfEverNotExpectingOpenTimer)
+TEST_CASE(SUITE("ThrowsIfEverNotExpectingOpenTimer"))
 {
 	TestObject test;
 	test.monitor.ReachInAndStartOpenTimer();
-	BOOST_REQUIRE(test.exe.DispatchOne());
-	BOOST_REQUIRE(test.log.PopOneEntry(LogLevel::Error));
-	BOOST_REQUIRE(ChannelState::CLOSED == test.monitor.GetState());
+	REQUIRE(test.exe.DispatchOne());
+	REQUIRE(test.log.PopOneEntry(LogLevel::Error));
+	REQUIRE((ChannelState::CLOSED == test.monitor.GetState()));
 }
 
-BOOST_AUTO_TEST_CASE(StateClosedCanBeStopped)
+TEST_CASE(SUITE("StateClosedCanBeStopped"))
 {
 	TestObject test;
 	test.monitor.Shutdown();
-	BOOST_REQUIRE(ChannelState::SHUTDOWN == test.monitor.GetState());
+	REQUIRE((ChannelState::SHUTDOWN == test.monitor.GetState()));
 }
 
-BOOST_AUTO_TEST_CASE(StateClosedIgnoresSuspend)
+TEST_CASE(SUITE("StateClosedIgnoresSuspend"))
 {
 	TestObject test;
 	test.monitor.Suspend();
-	BOOST_REQUIRE(ChannelState::CLOSED == test.monitor.GetState());
+	REQUIRE((ChannelState::CLOSED == test.monitor.GetState()));
 }
 
-BOOST_AUTO_TEST_CASE(StartOneBeginsOpening)
+TEST_CASE(SUITE("StartOneBeginsOpening"))
 {
 	TestObject test;
 	test.monitor.StartOne();
-	BOOST_REQUIRE(ChannelState::OPENING == test.monitor.GetState());
+	REQUIRE((ChannelState::OPENING == test.monitor.GetState()));
 }
 
-BOOST_AUTO_TEST_CASE(StartOneFailureDoesNotRetry)
+TEST_CASE(SUITE("StartOneFailureDoesNotRetry"))
 {
 	TestObject test;
 	test.monitor.StartOne();
 	test.phys.SignalOpenFailure();
-	BOOST_REQUIRE(ChannelState::CLOSED == test.monitor.GetState());
+	REQUIRE((ChannelState::CLOSED == test.monitor.GetState()));
 }
 
-BOOST_AUTO_TEST_CASE(StartingWhileOpeningOneWillRetry)
+TEST_CASE(SUITE("StartingWhileOpeningOneWillRetry"))
 {
 	TestObject test;
 	test.monitor.StartOne();
 	test.monitor.Start();
 	test.phys.SignalOpenFailure();
-	BOOST_REQUIRE(ChannelState::WAITING == test.monitor.GetState());
+	REQUIRE((ChannelState::WAITING == test.monitor.GetState()));
 }
 
-BOOST_AUTO_TEST_CASE(ClosingWhileOpeningOneWillNotRetry)
+TEST_CASE(SUITE("ClosingWhileOpeningOneWillNotRetry"))
 {
 	TestObject test;
 	test.monitor.StartOne();
 	test.monitor.Close();
 	test.phys.SignalOpenFailure();
-	BOOST_REQUIRE(ChannelState::CLOSED == test.monitor.GetState());
+	REQUIRE((ChannelState::CLOSED == test.monitor.GetState()));
 }
 
-BOOST_AUTO_TEST_CASE(SuspendWhileOpeningClosingWillNotRetry)
+TEST_CASE(SUITE("SuspendWhileOpeningClosingWillNotRetry"))
 {
 	TestObject test;
 	test.monitor.Start();
 	test.monitor.Close();
 	test.monitor.Suspend();
 	test.phys.SignalOpenFailure();
-	BOOST_REQUIRE(ChannelState::CLOSED == test.monitor.GetState());
+	REQUIRE((ChannelState::CLOSED == test.monitor.GetState()));
 }
 
-BOOST_AUTO_TEST_CASE(LayerCloseAfterStartOneDoesNotRetry)
+TEST_CASE(SUITE("LayerCloseAfterStartOneDoesNotRetry"))
 {
 	TestObject test;
 	test.monitor.StartOne();
 	test.phys.SignalOpenSuccess();
-	BOOST_REQUIRE(ChannelState::OPEN == test.monitor.GetState());
+	REQUIRE((ChannelState::OPEN == test.monitor.GetState()));
 	test.phys.AsyncClose();
-	BOOST_REQUIRE(ChannelState::CLOSED == test.monitor.GetState());
+	REQUIRE((ChannelState::CLOSED == test.monitor.GetState()));
 }
 
-BOOST_AUTO_TEST_CASE(StopAndCloseDoNothingWhileStopped)
+TEST_CASE(SUITE("StopAndCloseDoNothingWhileStopped"))
 {
 	TestObject test;
 	test.monitor.Shutdown();
-	BOOST_REQUIRE(ChannelState::SHUTDOWN == test.monitor.GetState());
+	REQUIRE((ChannelState::SHUTDOWN == test.monitor.GetState()));
 
 	test.monitor.Shutdown();
-	BOOST_REQUIRE(ChannelState::SHUTDOWN == test.monitor.GetState());
+	REQUIRE((ChannelState::SHUTDOWN == test.monitor.GetState()));
 	test.monitor.Close();
-	BOOST_REQUIRE(ChannelState::SHUTDOWN == test.monitor.GetState());
+	REQUIRE((ChannelState::SHUTDOWN == test.monitor.GetState()));
 }
 
-BOOST_AUTO_TEST_CASE(StoppedLayerCannotBeStarted)
+TEST_CASE(SUITE("StoppedLayerCannotBeStarted"))
 {
 	TestObject test;
 	test.monitor.Shutdown();
 	test.monitor.Start();
 	test.monitor.StartOne();
-	BOOST_REQUIRE(ChannelState::SHUTDOWN == test.monitor.GetState());
-	BOOST_REQUIRE(test.phys.IsClosed());
+	REQUIRE((ChannelState::SHUTDOWN == test.monitor.GetState()));
+	REQUIRE(test.phys.IsClosed());
 }
 
-BOOST_AUTO_TEST_CASE(ClosedLayerCanBeStarted)
+TEST_CASE(SUITE("ClosedLayerCanBeStarted"))
 {
 	TestObject test;
 	test.monitor.Start();
-	BOOST_REQUIRE(ChannelState::OPENING == test.monitor.GetState());
-	BOOST_REQUIRE(test.phys.IsOpening());
+	REQUIRE((ChannelState::OPENING == test.monitor.GetState()));
+	REQUIRE(test.phys.IsOpening());
 }
 
-BOOST_AUTO_TEST_CASE(OpeningLayerExceptions)
+TEST_CASE(SUITE("OpeningLayerExceptions"))
 {
 	TestObject test;
 	test.monitor.Start();
 	test.monitor.OnLowerLayerDown();
-	BOOST_REQUIRE(test.log.PopOneEntry(LogLevel::Error));	
+	REQUIRE(test.log.PopOneEntry(LogLevel::Error));	
 }
 
-BOOST_AUTO_TEST_CASE(OpeningStartOneGoesToOpeningOne)
+TEST_CASE(SUITE("OpeningStartOneGoesToOpeningOne"))
 {
 	TestObject test;
 	test.monitor.Start();
 	test.monitor.StartOne();
 	test.phys.SignalOpenFailure();
-	BOOST_REQUIRE(ChannelState::CLOSED == test.monitor.GetState());
+	REQUIRE((ChannelState::CLOSED == test.monitor.GetState()));
 }
 
-BOOST_AUTO_TEST_CASE(OpeningStateOpenSuccessGoesToOpenState)
+TEST_CASE(SUITE("OpeningStateOpenSuccessGoesToOpenState"))
 {
 	TestObject test;
 	test.monitor.Start();
 	test.phys.SignalOpenSuccess();
-	BOOST_REQUIRE(ChannelState::OPEN == test.monitor.GetState());
-	BOOST_REQUIRE_EQUAL(1, test.monitor.mOpenCallbackCount); //check that the callback fired
+	REQUIRE((ChannelState::OPEN == test.monitor.GetState()));
+	REQUIRE(1 ==  test.monitor.mOpenCallbackCount); //check that the callback fired
 }
 
-BOOST_AUTO_TEST_CASE(StopWhileOpeningWaitsForOpenFailure)
+TEST_CASE(SUITE("StopWhileOpeningWaitsForOpenFailure"))
 {
 	TestObject test;
 	test.monitor.Start();
 	test.monitor.Shutdown();
-	BOOST_REQUIRE(ChannelState::OPENING == test.monitor.GetState());
+	REQUIRE((ChannelState::OPENING == test.monitor.GetState()));
 	test.phys.SignalOpenFailure();
-	BOOST_REQUIRE(ChannelState::SHUTDOWN == test.monitor.GetState());
+	REQUIRE((ChannelState::SHUTDOWN == test.monitor.GetState()));
 }
 
-BOOST_AUTO_TEST_CASE(CloseWhileOpeningWaitsForOpenFailureThenWaits)
+TEST_CASE(SUITE("CloseWhileOpeningWaitsForOpenFailureThenWaits"))
 {
 	TestObject test;
 	test.monitor.Start();
 	test.monitor.Close();
-	BOOST_REQUIRE(ChannelState::OPENING == test.monitor.GetState());
+	REQUIRE((ChannelState::OPENING == test.monitor.GetState()));
 	test.phys.SignalOpenFailure();
-	BOOST_REQUIRE(ChannelState::WAITING == test.monitor.GetState());
+	REQUIRE((ChannelState::WAITING == test.monitor.GetState()));
 }
 
-BOOST_AUTO_TEST_CASE(CloseWhileOpeningAndThenStop)
+TEST_CASE(SUITE("CloseWhileOpeningAndThenStop"))
 {
 	TestObject test;
 	test.monitor.Start();
 	test.monitor.Close();
 	test.monitor.Shutdown();
-	BOOST_REQUIRE(ChannelState::OPENING == test.monitor.GetState());
+	REQUIRE((ChannelState::OPENING == test.monitor.GetState()));
 	test.phys.SignalOpenFailure();
-	BOOST_REQUIRE(ChannelState::SHUTDOWN == test.monitor.GetState());
+	REQUIRE((ChannelState::SHUTDOWN == test.monitor.GetState()));
 }
 
-BOOST_AUTO_TEST_CASE(OpenFailureGoesToWaitingAndExponentialBackoff)
+TEST_CASE(SUITE("OpenFailureGoesToWaitingAndExponentialBackoff"))
 {
 	TestObject test;
 	test.monitor.Start();
-	BOOST_REQUIRE(ChannelState::OPENING == test.monitor.GetState());
+	REQUIRE((ChannelState::OPENING == test.monitor.GetState()));
 	test.phys.SignalOpenFailure();
-	BOOST_REQUIRE(ChannelState::WAITING == test.monitor.GetState());
-	BOOST_REQUIRE_EQUAL(1, test.exe.NumActive());
-	BOOST_REQUIRE_EQUAL(1000, test.exe.NextTimerExpiration().milliseconds);
-	BOOST_REQUIRE(test.exe.DispatchOne());
-	BOOST_REQUIRE(ChannelState::OPENING == test.monitor.GetState());
+	REQUIRE((ChannelState::WAITING == test.monitor.GetState()));
+	REQUIRE(1 ==  test.exe.NumActive());
+	REQUIRE(1000 ==  test.exe.NextTimerExpiration().milliseconds);
+	REQUIRE(test.exe.DispatchOne());
+	REQUIRE((ChannelState::OPENING == test.monitor.GetState()));
 	test.phys.SignalOpenFailure();
-	BOOST_REQUIRE(ChannelState::WAITING == test.monitor.GetState());
-	BOOST_REQUIRE_EQUAL(1, test.exe.NumActive());
-	BOOST_REQUIRE_EQUAL(2000, test.exe.NextTimerExpiration().milliseconds);
+	REQUIRE((ChannelState::WAITING == test.monitor.GetState()));
+	REQUIRE(1 ==  test.exe.NumActive());
+	REQUIRE(2000 ==  test.exe.NextTimerExpiration().milliseconds);
 }
 
-BOOST_AUTO_TEST_CASE(OpenFailureGoesToClosedIfSuspended)
+TEST_CASE(SUITE("OpenFailureGoesToClosedIfSuspended"))
 {
 	TestObject test;
 	test.monitor.Start();
 	test.monitor.Suspend();
 	test.phys.SignalOpenFailure();
-	BOOST_REQUIRE(ChannelState::CLOSED == test.monitor.GetState());
-	BOOST_REQUIRE_EQUAL(0, test.exe.NumActive());
+	REQUIRE((ChannelState::CLOSED == test.monitor.GetState()));
+	REQUIRE(0 ==  test.exe.NumActive());
 }
 
-BOOST_AUTO_TEST_CASE(ShutdownPostsToTimer)
+TEST_CASE(SUITE("ShutdownPostsToTimer"))
 {
 	TestObject test;
-	BOOST_REQUIRE_EQUAL(0, test.exe.NumActive());
-	BOOST_REQUIRE_FALSE(test.monitor.WaitForShutdown(TimeDuration::Seconds(0)));
+	REQUIRE(0 ==  test.exe.NumActive());
+	REQUIRE_FALSE(test.monitor.WaitForShutdown(TimeDuration::Seconds(0)));
 	test.monitor.Shutdown();
-	BOOST_REQUIRE(ChannelState::SHUTDOWN == test.monitor.GetState());
-	BOOST_REQUIRE_EQUAL(1, test.exe.NumActive());
-	BOOST_REQUIRE_FALSE(test.monitor.WaitForShutdown(TimeDuration::Seconds(0)));
-	BOOST_REQUIRE(test.exe.DispatchOne());
-	BOOST_REQUIRE(test.monitor.WaitForShutdown()); //wait indefinitely, but it's already shutdown
+	REQUIRE((ChannelState::SHUTDOWN == test.monitor.GetState()));
+	REQUIRE(1 ==  test.exe.NumActive());
+	REQUIRE_FALSE(test.monitor.WaitForShutdown(TimeDuration::Seconds(0)));
+	REQUIRE(test.exe.DispatchOne());
+	REQUIRE(test.monitor.WaitForShutdown()); //wait indefinitely, but it's already shutdown
 }
 
-BOOST_AUTO_TEST_CASE(ShutdownWhileWaitingCancelsTimer)
+TEST_CASE(SUITE("ShutdownWhileWaitingCancelsTimer"))
 {
 	TestObject test;
 	test.monitor.Start();
 	test.phys.SignalOpenFailure();
 	test.monitor.Shutdown();
-	BOOST_REQUIRE(test.exe.DispatchOne()); //disptach the shutdown post
-	BOOST_REQUIRE(ChannelState::SHUTDOWN == test.monitor.GetState());
-	BOOST_REQUIRE_EQUAL(0, test.exe.NumActive());
+	REQUIRE(test.exe.DispatchOne()); //disptach the shutdown post
+	REQUIRE((ChannelState::SHUTDOWN == test.monitor.GetState()));
+	REQUIRE(0 ==  test.exe.NumActive());
 }
 
-BOOST_AUTO_TEST_CASE(LayerKeepsTryingToOpen)
+TEST_CASE(SUITE("LayerKeepsTryingToOpen"))
 {
 	TestObject test;
 	test.monitor.Start();
 
 	for(size_t i = 0; i < 3; ++i) {
-		BOOST_REQUIRE(ChannelState::OPENING == test.monitor.GetState());
+		REQUIRE((ChannelState::OPENING == test.monitor.GetState()));
 		test.phys.SignalOpenFailure();
-		BOOST_REQUIRE(ChannelState::WAITING == test.monitor.GetState());
-		BOOST_REQUIRE(test.exe.DispatchOne());
+		REQUIRE((ChannelState::WAITING == test.monitor.GetState()));
+		REQUIRE(test.exe.DispatchOne());
 	}
 }
 
-BOOST_AUTO_TEST_CASE(CloseWhileWaitingDoesNothing)
+TEST_CASE(SUITE("CloseWhileWaitingDoesNothing"))
 {
 	TestObject test;
 	test.monitor.Start();
 	test.phys.SignalOpenFailure();
 	test.monitor.Close();
-	BOOST_REQUIRE(ChannelState::WAITING == test.monitor.GetState());
-	BOOST_REQUIRE_EQUAL(1, test.exe.NumActive());
+	REQUIRE((ChannelState::WAITING == test.monitor.GetState()));
+	REQUIRE(1 ==  test.exe.NumActive());
 }
 
-BOOST_AUTO_TEST_CASE(LayerCloseWhileOpen)
+TEST_CASE(SUITE("LayerCloseWhileOpen"))
 {
 	TestObject test;
 	test.monitor.Start();
 	test.phys.SignalOpenSuccess();
 	test.phys.AsyncClose();
-	BOOST_REQUIRE(ChannelState::OPENING == test.monitor.GetState());
+	REQUIRE((ChannelState::OPENING == test.monitor.GetState()));
 }
 
-BOOST_AUTO_TEST_CASE(RequestCloseWhileOpen)
+TEST_CASE(SUITE("RequestCloseWhileOpen"))
 {
 	TestObject test;
 	test.monitor.Start();
 	test.phys.SignalOpenSuccess();
 	test.monitor.Close();
-	BOOST_REQUIRE(ChannelState::OPENING == test.monitor.GetState());
+	REQUIRE((ChannelState::OPENING == test.monitor.GetState()));
 }
 
-BOOST_AUTO_TEST_CASE(RequestStopWhileOpen)
+TEST_CASE(SUITE("RequestStopWhileOpen"))
 {
 	TestObject test;
 	test.monitor.Start();
 	test.phys.SignalOpenSuccess();
 	test.monitor.Shutdown();
-	BOOST_REQUIRE(ChannelState::SHUTDOWN == test.monitor.GetState());
+	REQUIRE((ChannelState::SHUTDOWN == test.monitor.GetState()));
 }
 
-BOOST_AUTO_TEST_CASE(LayerSuspendWhileOpenDontRetry)
+TEST_CASE(SUITE("LayerSuspendWhileOpenDontRetry"))
 {
 	TestObject test;
 	test.monitor.Start();
 	test.phys.SignalOpenSuccess();
 	test.monitor.Suspend();
-	BOOST_REQUIRE(ChannelState::CLOSED == test.monitor.GetState());
+	REQUIRE((ChannelState::CLOSED == test.monitor.GetState()));
 }
 
-BOOST_AUTO_TEST_CASE(SuspendWhileWaitingCancelsTimer)
+TEST_CASE(SUITE("SuspendWhileWaitingCancelsTimer"))
 {
 	TestObject test;
 	test.monitor.Start();
 	test.phys.SignalOpenFailure();
 	test.monitor.Suspend();
-	BOOST_REQUIRE(ChannelState::CLOSED == test.monitor.GetState());
-	BOOST_REQUIRE_EQUAL(0, test.exe.NumActive());
+	REQUIRE((ChannelState::CLOSED == test.monitor.GetState()));
+	REQUIRE(0 ==  test.exe.NumActive());
 }
 
-BOOST_AUTO_TEST_SUITE_END()
+

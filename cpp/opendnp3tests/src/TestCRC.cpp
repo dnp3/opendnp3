@@ -18,9 +18,9 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include <boost/test/unit_test.hpp>
+#include <catch.hpp>
 
-#include "TestHelpers.h"
+
 #include "BufferHelpers.h"
 
 #include <opendnp3/link/DNPCrc.h>
@@ -33,13 +33,13 @@
 using namespace std;
 using namespace opendnp3;
 
-BOOST_AUTO_TEST_SUITE(CRC)
+#define SUITE(name) "CRC - " name
 
-BOOST_AUTO_TEST_CASE(CrcTest)
+TEST_CASE(SUITE("CrcTest"))
 {
 	HexSequence hs("05 64 05 C0 01 00 00 04 E9 21");
-	BOOST_REQUIRE_EQUAL(hs.Size(), 10);
-	BOOST_REQUIRE_EQUAL(DNPCrc::CalcCrc(hs, 8), 0x21E9);
+	REQUIRE(hs.Size() ==  10);
+	REQUIRE(DNPCrc::CalcCrc(hs, 8) ==  0x21E9);
 }
 
-BOOST_AUTO_TEST_SUITE_END()
+

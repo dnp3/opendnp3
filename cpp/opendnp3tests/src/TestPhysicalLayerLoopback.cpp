@@ -18,20 +18,20 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include <boost/test/unit_test.hpp>
+#include <catch.hpp>
 
 #include <asiopal/Log.h>
 
 #include "PhysLoopback.h"
 #include "MockExecutor.h"
 #include "MockPhysicalLayerAsync.h"
-#include "TestHelpers.h"
+
 
 using namespace opendnp3;
 using namespace openpal;
 using namespace boost;
 
-BOOST_AUTO_TEST_SUITE(PhysicalLayerLoopbackSuite)
+#define SUITE(name) "PhysicalLayerLoopbackSuite - " name
 
 class LoopbackTest
 {
@@ -51,39 +51,39 @@ public:
 	PhysLoopback loopback;
 };
 
-BOOST_AUTO_TEST_CASE(StartsReadingWhenOpened)
+TEST_CASE(SUITE("StartsReadingWhenOpened"))
 {
 	LoopbackTest test;
 
-	BOOST_REQUIRE(test.phys.IsOpening());
+	REQUIRE(test.phys.IsOpening());
 	test.phys.SignalOpenSuccess();
 
-	BOOST_REQUIRE(test.phys.IsReading());
-	BOOST_REQUIRE_FALSE(test.phys.IsWriting());
+	REQUIRE(test.phys.IsReading());
+	REQUIRE_FALSE(test.phys.IsWriting());
 }
 
-BOOST_AUTO_TEST_CASE(EchosDataOnRead)
+TEST_CASE(SUITE("EchosDataOnRead"))
 {
 	LoopbackTest test;
 	test.phys.SignalOpenSuccess();
 
 	test.phys.TriggerRead("0A 0B 0C");
-	BOOST_REQUIRE(test.phys.IsWriting());
-	BOOST_REQUIRE_FALSE(test.phys.IsReading());
-	BOOST_REQUIRE(test.phys.BufferEqualsHex("0A 0B 0C"));
+	REQUIRE(test.phys.IsWriting());
+	REQUIRE_FALSE(test.phys.IsReading());
+	REQUIRE(test.phys.BufferEqualsHex("0A 0B 0C"));
 }
 
-BOOST_AUTO_TEST_CASE(ReadsAgainAfterDataIsWritten)
+TEST_CASE(SUITE("ReadsAgainAfterDataIsWritten"))
 {
 	LoopbackTest test;
 	test.phys.SignalOpenSuccess();
 
 	test.phys.TriggerRead("0A 0B 0C");
 	test.phys.SignalSendSuccess();
-	BOOST_REQUIRE(test.phys.IsReading());
-	BOOST_REQUIRE_FALSE(test.phys.IsWriting());
+	REQUIRE(test.phys.IsReading());
+	REQUIRE_FALSE(test.phys.IsWriting());
 	test.phys.TriggerRead("0D 0E 0F");
-	BOOST_REQUIRE(test.phys.BufferEqualsHex("0A 0B 0C 0D 0E 0F"));
+	REQUIRE(test.phys.BufferEqualsHex("0A 0B 0C 0D 0E 0F"));
 }
 
-BOOST_AUTO_TEST_SUITE_END()
+

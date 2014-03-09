@@ -18,9 +18,9 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include <boost/test/unit_test.hpp>
+#include <catch.hpp>
 
-#include "TestHelpers.h"
+
 #include "BufferHelpers.h"
 
 #include <opendnp3/master/CommandTask.h>
@@ -30,9 +30,9 @@ using namespace opendnp3;
 using namespace openpal;
 using namespace asiopal;
 
-BOOST_AUTO_TEST_SUITE(CommandTaskTestSuite)
+#define SUITE(name) "CommandTaskTestSuite - " name
 
-BOOST_AUTO_TEST_CASE(FullSequence)
+TEST_CASE(SUITE("FullSequence"))
 {
 	/* TODO - renable tests
 	
@@ -57,9 +57,9 @@ BOOST_AUTO_TEST_CASE(FullSequence)
 	frag.Write(hs);
 	frag.Interpret();	
 	auto result = ct.OnFinalResponse(frag);
-	BOOST_REQUIRE_EQUAL(TR_SUCCESS, result);
-	BOOST_REQUIRE(CommandResponse::OK(CommandStatus::SUCCESS) == rsp);
+	REQUIRE(TR_SUCCESS ==  result);
+	REQUIRE((CommandResponse::OK(CommandStatus::SUCCESS) == rsp));
 	*/
 }
 
-BOOST_AUTO_TEST_SUITE_END()
+

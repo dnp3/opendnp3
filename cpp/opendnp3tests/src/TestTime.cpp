@@ -18,11 +18,11 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include <boost/test/unit_test.hpp>
+#include <catch.hpp>
 
 #include <opendnp3/Util.h>
 
-#include "TestHelpers.h"
+
 #include "Timeout.h"
 #include "StopWatch.h"
 
@@ -34,19 +34,19 @@ using namespace std;
 using namespace std::chrono;
 using namespace opendnp3;
 
-BOOST_AUTO_TEST_SUITE(TimeoutTests)
+#define SUITE(name) "TimeoutStopWatchTests - " name
 
-BOOST_AUTO_TEST_CASE(TimeoutCorrectlyNotExpired)
+TEST_CASE(SUITE("TimeoutCorrectlyNotExpired"))
 {
 	//create a timeout of 1 millisecond
 	Timeout to(milliseconds(1000));
 
 	//check that the timeout starts out unexpired
-	BOOST_REQUIRE_EQUAL(to.IsExpired(), false);
-	BOOST_REQUIRE(to.Remaining() > milliseconds(1));
+	REQUIRE(to.IsExpired() ==  false);
+	REQUIRE(to.Remaining() > milliseconds(1));
 }
 
-BOOST_AUTO_TEST_CASE(TimeoutCorrectlyExpires)
+TEST_CASE(SUITE("TimeoutCorrectlyExpires"))
 {
 	//create a timeout of 1 millisecond
 	Timeout to(milliseconds(1));
@@ -54,19 +54,15 @@ BOOST_AUTO_TEST_CASE(TimeoutCorrectlyExpires)
 	std::this_thread::sleep_for(milliseconds(10));
 
 	//check that the timeout starts out unexpired
-	BOOST_REQUIRE(to.IsExpired());
+	REQUIRE(to.IsExpired());
 }
 
-BOOST_AUTO_TEST_SUITE_END()
-
-BOOST_AUTO_TEST_SUITE(StopWatchTests)
-
-BOOST_AUTO_TEST_CASE(BasicTest)
+TEST_CASE(SUITE("StopWatchBasicTest"))
 {
 	StopWatch sw;
 
-	BOOST_REQUIRE(sw.Elapsed(false) <= milliseconds(100));
+	REQUIRE(sw.Elapsed(false) <= milliseconds(100));
 }
 
-BOOST_AUTO_TEST_SUITE_END()
+
 

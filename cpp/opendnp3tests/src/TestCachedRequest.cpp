@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include <boost/test/unit_test.hpp>
-#include "TestHelpers.h"
+#include <catch.hpp>
+
 
 #include <opendnp3/app/APDUParser.h>
 #include <opendnp3/app/APDUHeaderParser.h>
@@ -30,38 +30,38 @@
 
 using namespace opendnp3;
 
-BOOST_AUTO_TEST_SUITE(CachedRequestTestSuite)
+#define SUITE(name) "CachedRequestTestSuite - " name
 
-BOOST_AUTO_TEST_CASE(DoesntApplyIfNotSet)
+TEST_CASE(SUITE("DoesntApplyIfNotSet"))
 {
 	CachedRequest cache(100);	
-	BOOST_REQUIRE_FALSE(cache.IsSet());
+	REQUIRE_FALSE(cache.IsSet());
 }
 
-BOOST_AUTO_TEST_CASE(Correctly)
+TEST_CASE(SUITE("Correctly"))
 {
 	CachedRequest cache(100);
 	{
 		HexSequence temp("C0 02 01 02 06");		
 		APDURecord record;
-		BOOST_REQUIRE(APDUHeaderParser::Result::OK == APDUHeaderParser::ParseRequest(temp.ToReadOnly(), record));		
+		REQUIRE((APDUHeaderParser::Result::OK == APDUHeaderParser::ParseRequest(temp.ToReadOnly(), record)));		
 		cache.Set(record, SequenceInfo::PREVIOUS);
 	} // source destructs
 
-	BOOST_REQUIRE(cache.IsSet());
+	REQUIRE(cache.IsSet());
 
 	MockApduHeaderHandler handler;
 	cache.Apply([&](const APDURecord& record, SequenceInfo seq){ 
 		
-		BOOST_REQUIRE(SequenceInfo::PREVIOUS == seq);
-		BOOST_REQUIRE(APDUParser::Result::OK == APDUParser::ParseTwoPass(record.objects, &handler, nullptr));
+		REQUIRE((SequenceInfo::PREVIOUS == seq));
+		REQUIRE((APDUParser::Result::OK == APDUParser::ParseTwoPass(record.objects, &handler, nullptr)));
 
 	});
 
-	BOOST_REQUIRE_FALSE(cache.IsSet());
+	REQUIRE_FALSE(cache.IsSet());
 
-	BOOST_REQUIRE_EQUAL(1, handler.groupVariations.size());
-	BOOST_REQUIRE(GroupVariation::Group1Var2 == handler.groupVariations[0]);
+	REQUIRE(1 ==  handler.groupVariations.size());
+	REQUIRE((GroupVariation::Group1Var2 == handler.groupVariations[0]));
 }
 
-BOOST_AUTO_TEST_SUITE_END()
+

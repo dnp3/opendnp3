@@ -18,9 +18,9 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include <boost/test/unit_test.hpp>
+#include <catch.hpp>
 
-#include "TestHelpers.h"
+
 #include "Exception.h"
 
 #include <openpal/Location.h>
@@ -102,10 +102,10 @@ private:
 	size_t mCount;
 };
 
-BOOST_AUTO_TEST_SUITE(TimersTestSuite)
+#define SUITE(name) "TimersTestSuite - " name
 
 
-BOOST_AUTO_TEST_CASE(TestOrderedDispatch)
+TEST_CASE(SUITE("TestOrderedDispatch"))
 {
 	const int NUM = 10000;
 
@@ -121,12 +121,12 @@ BOOST_AUTO_TEST_CASE(TestOrderedDispatch)
 		ExecutorPause p(&test.exe);
 	}
 
-	BOOST_REQUIRE_EQUAL(NUM, test.Num());
-	BOOST_REQUIRE(test.IsMonotonic());
+	REQUIRE(NUM ==  test.Num());
+	REQUIRE(test.IsMonotonic());
 }
 
 
-BOOST_AUTO_TEST_CASE(ExpirationAndReuse)
+TEST_CASE(SUITE("ExpirationAndReuse"))
 {
 	MockTimerHandler mth;
 	asio::io_service srv;
@@ -134,15 +134,15 @@ BOOST_AUTO_TEST_CASE(ExpirationAndReuse)
 	ASIOExecutor exe(&strand);
 
 	ITimer* pT1 = exe.Start(TimeDuration::Milliseconds(1), std::bind(&MockTimerHandler::OnExpiration, &mth));
-	BOOST_REQUIRE_EQUAL(1, srv.run_one());
-	BOOST_REQUIRE_EQUAL(1, mth.GetCount());
+	REQUIRE(1 ==  srv.run_one());
+	REQUIRE(1 ==  mth.GetCount());
 	ITimer* pT2 = exe.Start(TimeDuration::Milliseconds(1), std::bind(&MockTimerHandler::OnExpiration, &mth));
 	srv.reset();
-	BOOST_REQUIRE_EQUAL(1, srv.run_one());
-	BOOST_REQUIRE_EQUAL(pT1, pT2); //The ASIO implementation should reuse timers
+	REQUIRE(1 ==  srv.run_one());
+	REQUIRE(pT1 ==  pT2); //The ASIO implementation should reuse timers
 }
 
-BOOST_AUTO_TEST_CASE(Cancelation)
+TEST_CASE(SUITE("Cancelation"))
 {
 	MockTimerHandler mth;
 	asio::io_service srv;
@@ -150,16 +150,16 @@ BOOST_AUTO_TEST_CASE(Cancelation)
 	ASIOExecutor exe(&strand);
 	ITimer* pT1 = exe.Start(TimeDuration::Milliseconds(1), std::bind(&MockTimerHandler::OnExpiration, &mth));
 	pT1->Cancel();
-	BOOST_REQUIRE_EQUAL(1, srv.run_one());
-	BOOST_REQUIRE_EQUAL(0, mth.GetCount());
+	REQUIRE(1 ==  srv.run_one());
+	REQUIRE(0 ==  mth.GetCount());
 	ITimer* pT2 = exe.Start(TimeDuration::Milliseconds(1), std::bind(&MockTimerHandler::OnExpiration, &mth));
 	srv.reset();
-	BOOST_REQUIRE_EQUAL(1, srv.run_one());
-	BOOST_REQUIRE_EQUAL(pT1, pT2);
+	REQUIRE(1 ==  srv.run_one());
+	REQUIRE(pT1 ==  pT2);
 }
 
 
-BOOST_AUTO_TEST_CASE(MultipleOutstanding)
+TEST_CASE(SUITE("MultipleOutstanding"))
 {
 	MockTimerHandler mth1;
 	MockTimerHandler mth2;
@@ -169,15 +169,15 @@ BOOST_AUTO_TEST_CASE(MultipleOutstanding)
 	ITimer* pT1 = ts.Start(TimeDuration::Milliseconds(0), std::bind(&MockTimerHandler::OnExpiration, &mth1));
 	ITimer* pT2 = ts.Start(TimeDuration::Milliseconds(100), std::bind(&MockTimerHandler::OnExpiration, &mth2));
 
-	BOOST_REQUIRE_NOT_EQUAL(pT1, pT2);
+	REQUIRE(pT1 != pT2);
 
-	BOOST_REQUIRE_EQUAL(1, srv.run_one());
-	BOOST_REQUIRE_EQUAL(1, mth1.GetCount());
-	BOOST_REQUIRE_EQUAL(0, mth2.GetCount());
+	REQUIRE(1 ==  srv.run_one());
+	REQUIRE(1 ==  mth1.GetCount());
+	REQUIRE(0 ==  mth2.GetCount());
 
-	BOOST_REQUIRE_EQUAL(1, srv.run_one());
-	BOOST_REQUIRE_EQUAL(1, mth1.GetCount());
-	BOOST_REQUIRE_EQUAL(1, mth2.GetCount());
+	REQUIRE(1 ==  srv.run_one());
+	REQUIRE(1 ==  mth1.GetCount());
+	REQUIRE(1 ==  mth2.GetCount());
 }
 
-BOOST_AUTO_TEST_SUITE_END()
+
