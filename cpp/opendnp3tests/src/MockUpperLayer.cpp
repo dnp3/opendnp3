@@ -37,10 +37,10 @@ MockUpperLayer::MockUpperLayer(openpal::Logger aLogger) :
 	IUpperLayer(aLogger)
 {}
 
-void MockUpperLayer::_OnReceive(const openpal::ReadOnlyBuffer& arBuffer)
+void MockUpperLayer::_OnReceive(const openpal::ReadOnlyBuffer& input)
 {
-	this->WriteToBuffer(arBuffer);
-	if(mOnReceiveHandler) mOnReceiveHandler(arBuffer);
+	this->WriteToBuffer(input);
+	if(mOnReceiveHandler) mOnReceiveHandler(input);
 }
 
 void MockUpperLayer::_OnSendSuccess()

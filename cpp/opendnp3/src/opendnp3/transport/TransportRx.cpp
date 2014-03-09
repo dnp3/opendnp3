@@ -28,6 +28,8 @@
 
 #include "TransportLayer.h"
 
+#include <openpal/ToHex.h>
+
 #include <sstream>
 #include <memory.h>
 
@@ -40,12 +42,15 @@ namespace opendnp3
 TransportRx::TransportRx(Logger& arLogger, TransportLayer* apContext, uint32_t fragSize) :
 	Loggable(arLogger),
 	mpContext(apContext),
-	underlying(),
-	buffer(underlying.GetWriteBuffer().Truncate(fragSize)),
+	maxFragSize(fragSize),
 	numBytesRead(0),
 	sequence(0)
 {
-
+	if(fragSize > rxBuffer.Size())
+	{
+		maxFragSize = rxBuffer.Size();
+		LOG_BLOCK(LogLevel::Error, "specified fragment size exceeds underling buffer size");
+	}
 }
 
 void TransportRx::Reset()
@@ -78,13 +83,13 @@ void TransportRx::HandleReceive(const openpal::ReadOnlyBuffer& input)
 				ERROR_BLOCK(LogLevel::Warning, "Exceeded the buffer size before a complete fragment was read", TLERR_BUFFER_FULL);
 				numBytesRead = 0;
 			}
-			else { //passed all validation				
-				memcpy(buffer + numBytesRead, input + 1, payloadLength);
+			else { //passed all validation	
+				memcpy(rxBuffer.Buffer() + numBytesRead, input + 1, payloadLength);
 				numBytesRead += payloadLength;
 				sequence = (sequence + 1) % 64;
 
 				if(last) {
-					ReadOnlyBuffer buffer(buffer, numBytesRead);
+					ReadOnlyBuffer buffer(rxBuffer.Buffer(), numBytesRead);
 					numBytesRead = 0;					
 					mpContext->ReceiveAPDU(buffer);
 				}

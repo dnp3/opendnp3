@@ -23,12 +23,6 @@
 
 #include <random>
 
-/*
-#include <boost/random/mersenne_twister.hpp>
-#include <boost/random/uniform_int.hpp>
-#include <boost/random/variate_generator.hpp>
-*/
-
 namespace opendnp3
 {
 
@@ -50,7 +44,7 @@ public:
 
 private:
 	std::mt19937 rng;
-	std::uniform_int<T> dist;	
+	std::uniform_int_distribution<T> dist;	
 };
 
 class RandomBool : private Random<uint32_t>

@@ -2,10 +2,6 @@
 
 ACLOCAL_AMFLAGS = -I m4
 
-TEST_BOOST_LIBS = $(BOOST_UNIT_TEST_FRAMEWORK_LIB)
-
-BOOST_TEST_DEFINES = -DBOOST_TEST_DYN_LINK # -DBOOST_ASIO_ENABLE_CANCELIO -DBOOST_REGEX_NO_LIB -D_GLIBCXX_USE_NANOSLEEP
-
 ASIO_CONFIG = -I $(ASIO_HOME)/include -DASIO_STANDALONE
 
 OPENPAL_INCLUDE = $(top_srcdir)/cpp/openpal/src
@@ -198,13 +194,99 @@ cpp/opendnp3/src/opendnp3/SubjectBase.cpp \
 cpp/opendnp3/src/opendnp3/Util.cpp
 
 
-check_PROGRAMS = openpaltest
-TESTS = openpaltest
+check_PROGRAMS = openpaltest dnp3test
+#TESTS = openpaltest dnp3test
 
 #ls cpp/opendnp3tests/src/*.cpp -1 | awk '{print $0" \\"}'
-#dnp3test_CXXFLAGS = -I$(OPENPAL_INCLUDE) -I$(ASIOPAL_INCLUDE) -I $(OPENDNP3_INCLUDE) $(ASIO_CONFIG)
-#dnp3test_LDADD = libopenpal.la libasiopal.la libopendnp3.la $(TEST_BOOST_LIBS)
-#dnp3test_SOURCES =
+dnp3test_CXXFLAGS = -I$(OPENPAL_INCLUDE) -I$(ASIOPAL_INCLUDE) -I $(OPENDNP3_INCLUDE) -I$(CATCH_INCLUDE) $(ASIO_CONFIG)
+dnp3test_LDFLAGS = -pthread
+dnp3test_LDADD = libopenpal.la libasiopal.la libopendnp3.la
+dnp3test_SOURCES = \
+cpp/opendnp3tests/src/APDUHelpers.cpp \
+cpp/opendnp3tests/src/AppLayerTest.cpp \
+cpp/opendnp3tests/src/AsyncPhysBaseTest.cpp \
+cpp/opendnp3tests/src/AsyncPhysTestObject.cpp \
+cpp/opendnp3tests/src/AsyncSerialTestObject.cpp \
+cpp/opendnp3tests/src/AsyncTestObjectASIO.cpp \
+cpp/opendnp3tests/src/AsyncTestObject.cpp \
+cpp/opendnp3tests/src/BufferHelpers.cpp \
+cpp/opendnp3tests/src/BufferTestObject.cpp \
+cpp/opendnp3tests/src/CatchTestStart.cpp \
+cpp/opendnp3tests/src/ComparingDataObserver.cpp \
+cpp/opendnp3tests/src/CopyableBuffer.cpp \
+cpp/opendnp3tests/src/DNPHelpers.cpp \
+cpp/opendnp3tests/src/Exception.cpp \
+cpp/opendnp3tests/src/FlexibleDataObserver.cpp \
+cpp/opendnp3tests/src/IntegrationTest.cpp \
+cpp/opendnp3tests/src/LinkLayerRouterTest.cpp \
+cpp/opendnp3tests/src/LinkLayerTest.cpp \
+cpp/opendnp3tests/src/LogTester.cpp \
+cpp/opendnp3tests/src/LoopbackPhysicalLayerAsync.cpp \
+cpp/opendnp3tests/src/LowerLayerToPhysAdapter.cpp \
+cpp/opendnp3tests/src/MasterTestObject.cpp \
+cpp/opendnp3tests/src/MockAppLayer.cpp \
+cpp/opendnp3tests/src/MockAppUser.cpp \
+cpp/opendnp3tests/src/MockExecutor.cpp \
+cpp/opendnp3tests/src/MockFrameSink.cpp \
+cpp/opendnp3tests/src/MockLowerLayer.cpp \
+cpp/opendnp3tests/src/MockPhysicalLayerAsync.cpp \
+cpp/opendnp3tests/src/MockPhysicalLayerMonitor.cpp \
+cpp/opendnp3tests/src/MockUpperLayer.cpp \
+cpp/opendnp3tests/src/PhysicalLayerWrapper.cpp \
+cpp/opendnp3tests/src/PhysLoopback.cpp \
+cpp/opendnp3tests/src/RandomizedBuffer.cpp \
+cpp/opendnp3tests/src/SlaveTestObject.cpp \
+cpp/opendnp3tests/src/StopWatch.cpp \
+cpp/opendnp3tests/src/TestAPDUParsing.cpp \
+cpp/opendnp3tests/src/TestAPDUWriting.cpp \
+cpp/opendnp3tests/src/TestAppLayer.cpp \
+cpp/opendnp3tests/src/TestASIO.cpp \
+cpp/opendnp3tests/src/TestASIOThreadPool.cpp \
+cpp/opendnp3tests/src/TestAsyncTask.cpp \
+cpp/opendnp3tests/src/TestCachedRequest.cpp \
+cpp/opendnp3tests/src/TestCastLongLongDouble.cpp \
+cpp/opendnp3tests/src/TestCommandTask.cpp \
+cpp/opendnp3tests/src/TestCRC.cpp \
+cpp/opendnp3tests/src/TestDatabase.cpp \
+cpp/opendnp3tests/src/TestDNP3Manager.cpp \
+cpp/opendnp3tests/src/TestIntegration.cpp \
+cpp/opendnp3tests/src/TestLazyCollection.cpp \
+cpp/opendnp3tests/src/TestLinkFrameDNP.cpp \
+cpp/opendnp3tests/src/TestLinkLayer.cpp \
+cpp/opendnp3tests/src/TestLinkLayerRouter.cpp \
+cpp/opendnp3tests/src/TestLinkReceiver.cpp \
+cpp/opendnp3tests/src/TestLinkRoute.cpp \
+cpp/opendnp3tests/src/TestLog.cpp \
+cpp/opendnp3tests/src/TestMaster.cpp \
+cpp/opendnp3tests/src/TestMisc.cpp \
+cpp/opendnp3tests/src/TestOutstationCommandResponses.cpp \
+cpp/opendnp3tests/src/TestOutstation.cpp \
+cpp/opendnp3tests/src/TestOutstationEventBuffer.cpp \
+cpp/opendnp3tests/src/TestOutstationEventBufferViaFuzz.cpp \
+cpp/opendnp3tests/src/TestOutstationEventResponses.cpp \
+cpp/opendnp3tests/src/TestPhysicalLayerAsyncBase.cpp \
+cpp/opendnp3tests/src/TestPhysicalLayerAsyncSerial.cpp \
+cpp/opendnp3tests/src/TestPhysicalLayerAsyncTCP.cpp \
+cpp/opendnp3tests/src/TestPhysicalLayerLoopback.cpp \
+cpp/opendnp3tests/src/TestPhysicalLayerMonitor.cpp \
+cpp/opendnp3tests/src/TestSerialization.cpp \
+cpp/opendnp3tests/src/TestShiftableBuffer.cpp \
+cpp/opendnp3tests/src/TestStaticResponseContext.cpp \
+cpp/opendnp3tests/src/TestTime.cpp \
+cpp/opendnp3tests/src/TestTimers.cpp \
+cpp/opendnp3tests/src/TestTransportLayer.cpp \
+cpp/opendnp3tests/src/TestTransportLoopback.cpp \
+cpp/opendnp3tests/src/TestTransportScalability.cpp \
+cpp/opendnp3tests/src/TestTypes.cpp \
+cpp/opendnp3tests/src/TestUtil.cpp \
+cpp/opendnp3tests/src/TestWriteConversions.cpp \
+cpp/opendnp3tests/src/Timeout.cpp \
+cpp/opendnp3tests/src/TransportIntegrationStack.cpp \
+cpp/opendnp3tests/src/TransportLoopbackTestObject.cpp \
+cpp/opendnp3tests/src/TransportScalabilityTestObject.cpp \
+cpp/opendnp3tests/src/TransportStackPair.cpp \
+cpp/opendnp3tests/src/TransportTestObject.cpp \
+cpp/opendnp3tests/src/WrappedTcpPipe.cpp
 
 #ls cpp/openpaltests/src/*.cpp -1 | awk '{print $0" \\"}'
 openpaltest_CXXFLAGS = -I$(OPENPAL_INCLUDE) -I$(CATCH_INCLUDE)

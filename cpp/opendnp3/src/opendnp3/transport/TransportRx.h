@@ -51,13 +51,13 @@ private:
 
 	TransportLayer* mpContext;
 
-	openpal::StaticBuffer<SizeConfiguration::MAX_APDU_BUFFER_SIZE> underlying;
-	openpal::WriteBuffer buffer;
+	openpal::StaticBuffer<SizeConfiguration::MAX_APDU_BUFFER_SIZE> rxBuffer;
 	uint32_t numBytesRead;
 	uint8_t sequence;
+	uint32_t maxFragSize;
 
-	size_t BufferRemaining() {
-		return buffer.Size() - numBytesRead;
+	uint32_t BufferRemaining() const {
+		return maxFragSize - numBytesRead;
 	}
 };
 

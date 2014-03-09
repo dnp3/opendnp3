@@ -41,7 +41,7 @@ public:
 
 private:
 	std::mt19937 rng;
-	std::uniform_real<double> dist;	
+	std::uniform_real_distribution<double> dist;	
 };
 
 }

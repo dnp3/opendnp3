@@ -27,6 +27,7 @@
 #include "BufferHelpers.h"
 #include "MockFrameSink.h"
 
+#include <cstring>
 #include <assert.h>
 
 namespace opendnp3

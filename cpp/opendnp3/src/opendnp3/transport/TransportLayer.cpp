@@ -80,7 +80,10 @@ void TransportLayer::TransmitAPDU(const openpal::ReadOnlyBuffer& arBuffer)
 
 void TransportLayer::TransmitTPDU(const openpal::ReadOnlyBuffer& arBuffer)
 {
-	if(mpLowerLayer != nullptr) mpLowerLayer->Send(arBuffer);
+	if(mpLowerLayer) 
+	{
+		mpLowerLayer->Send(arBuffer);
+	}
 }
 
 void TransportLayer::ReceiveTPDU(const openpal::ReadOnlyBuffer& arBuffer)
@@ -90,7 +93,10 @@ void TransportLayer::ReceiveTPDU(const openpal::ReadOnlyBuffer& arBuffer)
 
 void TransportLayer::ReceiveAPDU(const openpal::ReadOnlyBuffer& arBuffer)
 {
-	if(mpUpperLayer != nullptr) mpUpperLayer->OnReceive(arBuffer);
+	if(mpUpperLayer) 
+	{
+		mpUpperLayer->OnReceive(arBuffer);
+	}
 }
 
 bool TransportLayer::ContinueSend()
