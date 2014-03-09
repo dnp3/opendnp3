@@ -18,17 +18,6 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#define BOOST_TEST_MODULE openpal
 
-/*
- * If we aren't using dynamic linking, make sure a main() function
- * is created anyway.
- */
-#ifndef BOOST_TEST_DYN_LINK
-#define BOOST_TEST_MAIN
-#endif
-
-/*
- * Include the Boost UTF subsystem.  The rest is automagic.
- */
-#include <boost/test/unit_test.hpp>
+#define CATCH_CONFIG_MAIN
+#include <catch.hpp>

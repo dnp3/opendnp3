@@ -18,47 +18,45 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include <boost/test/unit_test.hpp>
+
+#include <catch.hpp>
 
 #include <openpal/DynamicArray.h>
 #include <openpal/RandomInsertAdapter.h>
 
 using namespace openpal;
 
-BOOST_AUTO_TEST_SUITE(RandomInsertAdapterTestSuite)
+#define SUITE(name) "RandomInsertAdapter - " name
 
-BOOST_AUTO_TEST_CASE(CorrectInitialState)
+TEST_CASE(SUITE("CorrectInitialState"))
 {
 	DynamicArray<uint32_t, uint32_t> indices(3);
 	DynamicArray<std::string, uint32_t> values(3);
 	RandomInsertAdapter<std::string, uint32_t> ria(values.ToIndexable(), indices.ToIndexable());
-	BOOST_REQUIRE(!ria.IsFull());
+	REQUIRE(!ria.IsFull());
 }
 
-BOOST_AUTO_TEST_CASE(ReleasesValuesCorrectly)
+TEST_CASE(SUITE("ReleasesValuesCorrectly"))
 {
 	DynamicArray<uint32_t, uint32_t> indices(3);
-	DynamicArray<std::string, uint32_t> values(3);	
-	RandomInsertAdapter<std::string, uint32_t> ria(values.ToIndexable(), indices.ToIndexable());	
+	DynamicArray<std::string, uint32_t> values(3);
+	RandomInsertAdapter<std::string, uint32_t> ria(values.ToIndexable(), indices.ToIndexable());
 
 	auto index1 = ria.Add("hello");
 	auto index2 = ria.Add("world");
-	auto index3 = ria.Add("!!!!");
-	
-	BOOST_REQUIRE_EQUAL(2, index1);
-	BOOST_REQUIRE_EQUAL(1, index2);
-	BOOST_REQUIRE_EQUAL(0, index3);
+	auto index3 = ria.Add("!!!!");	
 
-	BOOST_REQUIRE(ria.IsFull());
+	REQUIRE(2 == index1);
+	REQUIRE(1 == index2);
+	REQUIRE(0 == index3);
+
+	REQUIRE(ria.IsFull());
 	ria.Release(index2);
-	BOOST_REQUIRE(!ria.IsFull());
+	REQUIRE(!ria.IsFull());
 
 	auto index4 = ria.Add("42");
-	BOOST_REQUIRE(ria.IsFull());
-	BOOST_REQUIRE_EQUAL(index2, index4);
-	
+	REQUIRE(ria.IsFull());
+	REQUIRE(index2 == index4);
 }
 
 
-
-BOOST_AUTO_TEST_SUITE_END()

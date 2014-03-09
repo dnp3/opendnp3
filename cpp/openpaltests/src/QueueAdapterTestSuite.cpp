@@ -18,26 +18,31 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include <boost/test/unit_test.hpp>
+#include <catch.hpp>
 
 #include <openpal/StaticQueue.h>
 
 using namespace openpal;
 
-BOOST_AUTO_TEST_SUITE(QueueAdapterTestSuite)
+#define SUITE(name) "QueueAdapter - " name
 
-BOOST_AUTO_TEST_CASE(CorrectInitialState)
+TEST_CASE(SUITE("StaticQueueCompiles"))
+{
+	StaticQueue<char*, int, 4> queue;
+}
+
+TEST_CASE(SUITE("CorrectInitialState"))
 {
 	StaticArray<int, uint8_t, 3> array;
 	QueueAdapter<int, uint8_t> stack(array.ToIndexable());
 
-	BOOST_REQUIRE(stack.IsEmpty());
-	BOOST_REQUIRE(!stack.IsFull());
-	BOOST_REQUIRE_EQUAL(0, stack.Size());
-	BOOST_REQUIRE_EQUAL(3, stack.Capacity());
+	REQUIRE(stack.IsEmpty());
+	REQUIRE(!stack.IsFull());
+	REQUIRE(0 == stack.Size());
+	REQUIRE(3 == stack.Capacity());
 }
 
-BOOST_AUTO_TEST_CASE(PushesAndPopsCorrectly)
+TEST_CASE(SUITE("PushesAndPopsCorrectly"))
 {
 	StaticArray<int, int, 3> array;
 	QueueAdapter<int, int> stack(array.ToIndexable());
@@ -45,20 +50,17 @@ BOOST_AUTO_TEST_CASE(PushesAndPopsCorrectly)
 	stack.Push(1);
 	stack.Push(2);
 	stack.Push(3);
-	BOOST_REQUIRE(stack.IsFull());
-	BOOST_REQUIRE_EQUAL(1, stack.Pop());
-	BOOST_REQUIRE_EQUAL(2, stack.Pop());
-	BOOST_REQUIRE_EQUAL(3, stack.Pop());
-	BOOST_REQUIRE(stack.IsFull()); //both full and empty!
-	BOOST_REQUIRE(stack.IsEmpty());
+	REQUIRE(stack.IsFull());
+	REQUIRE(1 == stack.Pop());
+	REQUIRE(2 == stack.Pop());
+	REQUIRE(3 == stack.Pop());
+	REQUIRE(stack.IsFull()); //both full and empty!
+	REQUIRE(stack.IsEmpty());
 	stack.Clear();	
-	BOOST_REQUIRE(stack.IsEmpty());
-	BOOST_REQUIRE(!stack.IsFull());
+	REQUIRE(stack.IsEmpty());
+	REQUIRE(!stack.IsFull());
 }
 
-BOOST_AUTO_TEST_CASE(StaticQueueCompiles)
-{
-	StaticQueue<char*, int, 4> queue;	
-}
 
-BOOST_AUTO_TEST_SUITE_END()
+
+

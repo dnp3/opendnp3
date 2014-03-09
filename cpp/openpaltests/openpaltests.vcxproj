@@ -55,31 +55,27 @@
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\..\config\boost_includes.props" />
-    <Import Project="..\..\config\boostlib32.props" />
     <Import Project="..\..\config\output_dirs.props" />
     <Import Project="..\..\config\openpal_include.props" />
+    <Import Project="..\..\config\catch.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\..\config\boost_includes.props" />
-    <Import Project="..\..\config\boostlib64.props" />
     <Import Project="..\..\config\output_dirs.props" />
     <Import Project="..\..\config\openpal_include.props" />
+    <Import Project="..\..\config\catch.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\..\config\boost_includes.props" />
-    <Import Project="..\..\config\boostlib32.props" />
     <Import Project="..\..\config\output_dirs.props" />
     <Import Project="..\..\config\openpal_include.props" />
+    <Import Project="..\..\config\catch.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\..\config\boost_includes.props" />
-    <Import Project="..\..\config\boostlib64.props" />
     <Import Project="..\..\config\output_dirs.props" />
     <Import Project="..\..\config\openpal_include.props" />
+    <Import Project="..\..\config\catch.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -155,7 +151,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\BoostTestStart.cpp" />
+    <ClCompile Include="src\CatchTestStart.cpp" />
     <ClCompile Include="src\DoublyLinkedListAdapterTestSuite.cpp" />
     <ClCompile Include="src\ListAdapterTestSuite.cpp" />
     <ClCompile Include="src\QueueAdapterTestSuite.cpp" />

@@ -18,28 +18,27 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include <boost/test/unit_test.hpp>
+#include <catch.hpp>
 
 #include <openpal/DynamicArray.h>
 #include <openpal/DoublyLinkedListAdapter.h>
 
-
 using namespace openpal;
 
-BOOST_AUTO_TEST_SUITE(DoublyLinkListAdapterTestSuite)
+#define SUITE(name) "DoublyLinkListAdapter - " name
 
 
-BOOST_AUTO_TEST_CASE(CorrectInitialState)
+TEST_CASE(SUITE("CorrectInitialState"))
 {
 	DynamicArray<DoubleListNode<int>, uint16_t> arr(3);
 	DoublyLinkedListAdapter<int, uint16_t> list(arr.ToIndexable());
 	
-	BOOST_REQUIRE(list.IsEmpty());
-	BOOST_REQUIRE(!list.IsFull());
-	BOOST_REQUIRE_EQUAL(0, list.Size());
+	REQUIRE(list.IsEmpty());
+	REQUIRE(!list.IsFull());
+	REQUIRE(0 == list.Size());
 }
 
-BOOST_AUTO_TEST_CASE(AddsUntilFull)
+TEST_CASE(SUITE("AddsUntilFull"))
 {
 	DynamicArray<DoubleListNode<int>, uint16_t> arr(3);
 	DoublyLinkedListAdapter<int, uint16_t> list(arr.ToIndexable());
@@ -48,16 +47,16 @@ BOOST_AUTO_TEST_CASE(AddsUntilFull)
 	auto two = list.Add(2);
 	auto three = list.Add(3);
 	
-	BOOST_REQUIRE_EQUAL(1, one->value);
-	BOOST_REQUIRE_EQUAL(2, two->value);
-	BOOST_REQUIRE_EQUAL(3, three->value);
-	BOOST_REQUIRE(list.IsFull());
+	REQUIRE(1 == one->value);
+	REQUIRE(2 == two->value);
+	REQUIRE(3 == three->value);
+	REQUIRE(list.IsFull());
 
 	// adding to a full list returns a nullptr
-	BOOST_REQUIRE(nullptr == list.Add(4));	
+	REQUIRE((nullptr == list.Add(4)));	
 }
 
-BOOST_AUTO_TEST_CASE(CanRemoveHead)
+TEST_CASE(SUITE("CanRemoveHead"))
 {
 	DynamicArray<DoubleListNode<int>, uint16_t> arr(3);
 	DoublyLinkedListAdapter<int, uint16_t> list(arr.ToIndexable());
@@ -68,14 +67,14 @@ BOOST_AUTO_TEST_CASE(CanRemoveHead)
 	
 	list.Remove(one);
 
-	BOOST_REQUIRE_EQUAL(2, list.Size());
+	REQUIRE(2 == list.Size());
 
 	auto four = list.Add(4); 
 
-	BOOST_REQUIRE_EQUAL(four, one); // these pointers should be the same
+	REQUIRE(four == one); // these pointers should be the same
 }
 
-BOOST_AUTO_TEST_CASE(CanRemoveTail)
+TEST_CASE(SUITE("CanRemoveTail"))
 {
 	DynamicArray<DoubleListNode<int>, uint16_t> arr(3);
 	DoublyLinkedListAdapter<int, uint16_t> list(arr.ToIndexable());
@@ -86,14 +85,14 @@ BOOST_AUTO_TEST_CASE(CanRemoveTail)
 	
 	list.Remove(three);
 
-	BOOST_REQUIRE_EQUAL(2, list.Size());
+	REQUIRE(2 == list.Size());
 
 	auto four = list.Add(4); 
 
-	BOOST_REQUIRE_EQUAL(four, three); // these pointers should be the same
+	REQUIRE(four == three); // these pointers should be the same
 }
 
-BOOST_AUTO_TEST_CASE(CanRemoveMiddle)
+TEST_CASE(SUITE("CanRemoveMiddle"))
 {
 	DynamicArray<DoubleListNode<int>, uint16_t> arr(3);
 	DoublyLinkedListAdapter<int, uint16_t> list(arr.ToIndexable());
@@ -104,14 +103,14 @@ BOOST_AUTO_TEST_CASE(CanRemoveMiddle)
 	
 	list.Remove(two);
 
-	BOOST_REQUIRE_EQUAL(2, list.Size());
+	REQUIRE(2 == list.Size());
 
 	auto four = list.Add(4); 
 
-	BOOST_REQUIRE_EQUAL(four, two); // these pointers should be the same
+	REQUIRE(four == two); // these pointers should be the same
 }
 
-BOOST_AUTO_TEST_CASE(CanIterateOverValues)
+TEST_CASE(SUITE("CanIterateOverValues"))
 {
 	DynamicArray<DoubleListNode<int>, uint16_t> arr(3);
 	DoublyLinkedListAdapter<int, uint16_t> list(arr.ToIndexable());
@@ -124,14 +123,9 @@ BOOST_AUTO_TEST_CASE(CanIterateOverValues)
 
 	for(int i=1; i < 4; ++i)
 	{
-		BOOST_REQUIRE(iter.HasNext());
-		BOOST_REQUIRE_EQUAL(i, iter.Next()->value);
+		REQUIRE(iter.HasNext());
+		REQUIRE(i == iter.Next()->value);
 	}
 
-	BOOST_REQUIRE(!iter.HasNext());
+	REQUIRE(!iter.HasNext());
 }
-
-
-
-
-BOOST_AUTO_TEST_SUITE_END()
