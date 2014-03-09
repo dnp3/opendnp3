@@ -6,33 +6,26 @@ Licensed under the terms of the [Apache 2.0 License](http://www.apache.org/licen
 Documentation
 =============
 
-Links to code documentation can be found on the sidebar of:
+Links to generated API documentation can be found on the [project homepage](http://www.automatak.com/opendnp3)
   
-http://dnp3.github.io 
-
-
-Companion documentation is hosted on the Wiki:
-
-https://github.com/automatak/dnp3/wiki
+Companion documentation is in PDF format.
 
 Overview
 ========
 
 OpenDNP3 is a portable, scalable, and rigorously tested implementation 
-of the DNP3 (www.dnp.org) protocol stack written in C++. The library 
+of the DNP3 (www.dnp.org) protocol stack written in C++11. The library 
 is optimized for the largest front end processor implementations
-and slave device simulations, although it performs very well on 
-embedded linux ARM in a single outstation configuration.
+and outstation device simulations, although it performs very well on 
+embedded linux ARM.
 
-Custom written, idiomatic bindings are available for the 
-Microsoft CLR family of languages (C#, VB.NET, F#, etc) and JVM-based
-languages (Java, Scala, Clojure, etc).
+Idiomatic bindings are available for the .NET and Java.
 
+Dependencies
+============
 
-History
-=======
+The core 'opendnp3' library has no external dependencies. It uses an abstract Platform Abstraction Layer (PAL) that could
+be implemented for other platforms. The project 'asiopal' implements the PAL using the stand-alone version of [ASIO](http://think-async.com/). This library is header-only.
 
-This is a fork of the project originally located here:
-
-www.github.com/gec/dnp3
+[Catch](https://github.com/philsquared/Catch) is the unit testing framework and is distributed with the project.
 
