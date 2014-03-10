@@ -21,7 +21,7 @@
 #ifndef __STATIC_SIZE_CONFIGURATION_H_
 #define __STATIC_SIZE_CONFIGURATION_H_
 
-#include "Uncopyable.h"
+#include <openpal/Uncopyable.h>
 
 #include <cstdint>
 
@@ -31,7 +31,7 @@
 namespace opendnp3
 {
 
-struct SizeConfiguration : private PureStatic
+struct SizeConfiguration : private openpal::PureStatic
 {
 	// the maximum number of event buffers that can be bound to a database
 	static const uint16_t MAX_EVENT_BUFFERS = 10;

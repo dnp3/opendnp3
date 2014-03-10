@@ -54,9 +54,6 @@
     <ClInclude Include="src\opendnp3\Util.h">
       <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\Uncopyable.h">
-      <Filter>Header</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\SubjectBase.h">
       <Filter>Header</Filter>
     </ClInclude>
@@ -73,9 +70,6 @@
       <Filter>Header</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\ProtocolUtil.h">
-      <Filter>Header</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\ITransactable.h">
       <Filter>Header</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\IStack.h">

@@ -24,7 +24,7 @@
 #include <openpal/StaticQueue.h>
 #include <openpal/Serialization.h>
 
-#include "opendnp3/Uncopyable.h"
+#include <openpal/Uncopyable.h>
 #include "opendnp3/StaticSizeConfiguration.h"
 
 #include "opendnp3/app/StaticRange.h"
@@ -49,7 +49,7 @@ enum class QueueResult
  * Builds and tracks the state of multi-fragmented static responses to READ requests,
  * coordinating with the database.
  */
-class StaticResponseContext : private Uncopyable
+class StaticResponseContext : private openpal::Uncopyable
 {
 	class StaticRangeLoader: public StaticRange
 	{

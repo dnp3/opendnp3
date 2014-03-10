@@ -21,7 +21,7 @@
 #ifndef __STATIC_LOADER_H_
 #define __STATIC_LOADER_H_
 
-#include "opendnp3/Uncopyable.h"
+#include <openpal/Uncopyable.h>
 #include "opendnp3/app/StaticRange.h"
 #include "opendnp3/app/ObjectWriter.h"
 #include "opendnp3/outstation/Database.h"
@@ -42,7 +42,7 @@ enum class StaticLoadResult
 // A function that takes a writer, range, and a database and writes some objects
 typedef StaticLoadResult (*StaticLoadFun)(ObjectWriter& writer, StaticRange& range, Database& db);
 
-class StaticLoader : private PureStatic
+class StaticLoader : private openpal::PureStatic
 {
 public:
 

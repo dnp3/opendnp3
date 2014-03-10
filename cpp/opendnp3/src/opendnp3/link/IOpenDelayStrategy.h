@@ -23,7 +23,7 @@
 
 #include <openpal/TimeDuration.h>
 
-#include "opendnp3/Uncopyable.h"
+#include <openpal/Uncopyable.h>
 
 namespace opendnp3
 {
@@ -38,7 +38,7 @@ public:
 	virtual openpal::TimeDuration GetNextDelay(const openpal::TimeDuration& current, const openpal::TimeDuration& max) const = 0;
 };
 
-class ExponentialBackoffStrategy : public IOpenDelayStrategy, private Uncopyable
+class ExponentialBackoffStrategy : public IOpenDelayStrategy, private openpal::Uncopyable
 {
 	static ExponentialBackoffStrategy mInstance;
 

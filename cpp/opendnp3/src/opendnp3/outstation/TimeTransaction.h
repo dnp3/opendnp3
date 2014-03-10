@@ -21,7 +21,7 @@
 #ifndef __TIME_TRANSACTION_H_
 #define	__TIME_TRANSACTION_H_
 
-#include "opendnp3/ITransactable.h"
+#include <openpal/ITransactable.h>
 #include "opendnp3/outstation/IDataObserver.h"
 
 #include <cstddef>
@@ -31,7 +31,7 @@
 namespace opendnp3
 {
 
-class TimeTransaction : private Transaction
+class TimeTransaction : private openpal::Transaction
 {
 public:
 	TimeTransaction(IDataObserver* apObserver, openpal::UTCTimestamp aTimestamp);

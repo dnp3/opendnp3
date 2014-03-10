@@ -21,7 +21,7 @@
 #ifndef __TLS_BASE_H_
 #define __TLS_BASE_H_
 
-#include "opendnp3/Uncopyable.h"
+#include <openpal/Uncopyable.h>
 
 #include <openpal/BufferWrapper.h>
 

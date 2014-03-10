@@ -21,7 +21,7 @@
 #ifndef __UNCOPYABLE_H_
 #define __UNCOPYABLE_H_
 
-namespace opendnp3
+namespace openpal
 {
 
 /** Inherited classes will not have default copy/assignment.

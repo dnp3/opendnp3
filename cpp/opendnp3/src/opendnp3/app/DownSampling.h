@@ -21,7 +21,7 @@
 #ifndef __DOWN_SAMPLING_H_
 #define __DOWN_SAMPLING_H_
 
-#include "opendnp3/Uncopyable.h"
+#include <openpal/Uncopyable.h>
 
 #include <cstdint>
 
@@ -29,7 +29,7 @@ namespace opendnp3
 {
 // A safe down sampling class
 template <class Source, class Target>
-class DownSampling : private Uncopyable
+class DownSampling : private openpal::Uncopyable
 {
 	static const Target TARGET_MAX;
 	static const Target TARGET_MIN;

@@ -24,7 +24,7 @@
 #include <cstdint>
 #include <string>
 
-#include "opendnp3/Uncopyable.h"
+#include <openpal/Uncopyable.h>
 
 namespace opendnp3
 {

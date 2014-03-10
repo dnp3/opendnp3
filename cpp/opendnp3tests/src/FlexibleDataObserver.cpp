@@ -32,7 +32,7 @@ FlexibleDataObserver::FlexibleDataObserver() : mNewData(false)
 
 void FlexibleDataObserver::Clear()
 {
-	Transaction t(this);
+	openpal::Transaction t(this);
 	mBinaryMap.clear();
 	mAnalogMap.clear();
 	mCounterMap.clear();
@@ -69,7 +69,7 @@ bool FlexibleDataObserver::IsSubsetOf(const FlexibleDataObserver& arLHS, const F
 
 void FlexibleDataObserver::Print()
 {
-	Transaction tr(this);
+	openpal::Transaction tr(this);
 
 	std::cout << "--- Binary ---" << std::endl;
 	this->Print<Binary>(mBinaryMap);

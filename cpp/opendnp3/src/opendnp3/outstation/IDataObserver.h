@@ -21,7 +21,7 @@
 #ifndef __I_DATA_OBSERVER_H_
 #define	__I_DATA_OBSERVER_H_
 
-#include "opendnp3/ITransactable.h"
+#include <openpal/ITransactable.h>
 
 #include "opendnp3/app/MeasurementTypes.h"
 
@@ -48,7 +48,7 @@ exception safe Transaction object.
 \endcode
 
 */
-class IDataObserver : public ITransactable
+class IDataObserver : public openpal::ITransactable
 {
 public:
 

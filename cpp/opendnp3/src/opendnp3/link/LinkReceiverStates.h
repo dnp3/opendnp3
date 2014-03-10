@@ -24,7 +24,7 @@
 
 #include <string>
 
-#include "opendnp3/Uncopyable.h"
+#include <openpal/Uncopyable.h>
 #include "opendnp3/Singleton.h"
 
 
@@ -34,7 +34,7 @@ namespace opendnp3
 {
 
 /** Base class for the receiver state */
-class LRS_Base : private Uncopyable
+class LRS_Base : private openpal::Uncopyable
 {
 public:
 

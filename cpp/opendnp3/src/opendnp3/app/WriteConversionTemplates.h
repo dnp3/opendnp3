@@ -21,7 +21,7 @@
 #ifndef __WRITE_CONVERSION_TEMPLATES_H_
 #define __WRITE_CONVERSION_TEMPLATES_H_
 
-#include "opendnp3/Uncopyable.h"
+#include <openpal/Uncopyable.h>
 
 #include "opendnp3/app/DownSampling.h"
 
@@ -30,7 +30,7 @@
 namespace opendnp3
 {
 template <class Target, class Source>
-struct ConvertQ : private PureStatic
+struct ConvertQ : private openpal::PureStatic
 {
 	static Target Apply(const Source& src)
 	{
@@ -41,7 +41,7 @@ struct ConvertQ : private PureStatic
 };
 
 template <class Target, class Source>
-struct ConvertQV : private PureStatic
+struct ConvertQV : private openpal::PureStatic
 {
 	static Target Apply(const Source& src)
 	{
@@ -53,7 +53,7 @@ struct ConvertQV : private PureStatic
 };
 
 template <class Target, class Source>
-struct ConvertV : private PureStatic
+struct ConvertV : private openpal::PureStatic
 {
 	static Target Apply(const Source& src)
 	{
@@ -64,7 +64,7 @@ struct ConvertV : private PureStatic
 };
 
 template <class Target, class Source>
-struct ConvertVRangeCheck : private PureStatic
+struct ConvertVRangeCheck : private openpal::PureStatic
 {
 	static Target Apply(const Source& src)
 	{
@@ -75,7 +75,7 @@ struct ConvertVRangeCheck : private PureStatic
 };
 
 template <class Target, class Source, uint8_t Overrange>
-struct ConvertQVRangeCheck : private PureStatic
+struct ConvertQVRangeCheck : private openpal::PureStatic
 {
 	static Target Apply(const Source& src)
 	{
@@ -88,7 +88,7 @@ struct ConvertQVRangeCheck : private PureStatic
 };
 
 template <class Target, class Source>
-struct ConvertQVT : private PureStatic
+struct ConvertQVT : private openpal::PureStatic
 {
 	static Target Apply(const Source& src)
 	{
@@ -101,7 +101,7 @@ struct ConvertQVT : private PureStatic
 };
 
 template <class Target, class Source, uint8_t Overrange>
-struct ConvertQVTRangeCheck : private PureStatic
+struct ConvertQVTRangeCheck : private openpal::PureStatic
 {
 	static Target Apply(const Source& src)
 	{
@@ -115,7 +115,7 @@ struct ConvertQVTRangeCheck : private PureStatic
 };
 
 template <class Target, class Source>
-struct ConvertQT : private PureStatic
+struct ConvertQT : private openpal::PureStatic
 {
 	static Target Apply(const Source& src)
 	{
@@ -127,7 +127,7 @@ struct ConvertQT : private PureStatic
 };
 
 template <class Target, class Source, class Downcast>
-struct ConvertQTDowncast : private PureStatic
+struct ConvertQTDowncast : private openpal::PureStatic
 {
 	static Target Apply(const Source& src)
 	{
@@ -139,7 +139,7 @@ struct ConvertQTDowncast : private PureStatic
 };
 
 template <class Target, class Source>
-struct ConvertQS : private PureStatic
+struct ConvertQS : private openpal::PureStatic
 {
 	static Target Apply(const Source& src)
 	{

@@ -124,6 +124,12 @@
     <ClInclude Include="src\openpal\gen\LogLevel.h">
       <Filter>Header\gen</Filter>
     </ClInclude>
+    <ClInclude Include="src\openpal\ITransactable.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="src\openpal\Uncopyable.h">
+      <Filter>Header</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\openpal\AsyncLayerInterfaces.cpp">

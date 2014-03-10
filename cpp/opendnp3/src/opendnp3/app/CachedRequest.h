@@ -22,7 +22,7 @@
 #ifndef __CACHED_REQUEST_H_
 #define __CACHED_REQUEST_H_
 
-#include "opendnp3/Uncopyable.h"
+#include <openpal/Uncopyable.h>
 #include "opendnp3/DynamicBuffer.h"
 
 #include "opendnp3/app/APDUHeader.h"
@@ -36,7 +36,7 @@ namespace opendnp3
 /**
 * Used to efficiently cache requests that the outstation can't process immediately
 */
-class CachedRequest : private Uncopyable
+class CachedRequest : private openpal::Uncopyable
 {
 public:
 

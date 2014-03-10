@@ -24,7 +24,7 @@
 #include "AsyncTaskInterfaces.h"
 #include "AsyncTaskBase.h"
 
-#include "opendnp3/Uncopyable.h"
+#include <openpal/Uncopyable.h>
 
 #include <vector>
 

@@ -30,7 +30,7 @@
 #include <openpal/Logger.h>
 #include <openpal/LoggableMacros.h>
 
-#include "opendnp3/Uncopyable.h"
+#include <openpal/Uncopyable.h>
 #include "opendnp3/DNPConstants.h"
 
 #include "opendnp3/app/Range.h"
@@ -63,7 +63,7 @@
 namespace opendnp3
 {
 
-class APDUParser : private PureStatic
+class APDUParser : private openpal::PureStatic
 {
 public:
 

@@ -22,7 +22,7 @@
 #ifndef __EVENT_TYPE_H_
 #define __EVENT_TYPE_H_
 
-#include "opendnp3/Uncopyable.h"
+#include <openpal/Uncopyable.h>
 
 #include <cstdint>
 
@@ -44,7 +44,7 @@ enum class EventClass : uint8_t
     EC3 = 0x04
 };
 
-struct EventTypeMasks : private PureStatic
+struct EventTypeMasks : private openpal::PureStatic
 {
 	static const uint8_t BINARY = static_cast<uint8_t>(EventType::Binary);
 	static const uint8_t ANALOG = static_cast<uint8_t>(EventType::Analog);

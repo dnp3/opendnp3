@@ -13,7 +13,7 @@ SlaveDataObserverAdapter::SlaveDataObserverAdapter(opendnp3::IDataObserver* prox
 
 void SlaveDataObserverAdapter::Start()
 {
-	opendnp3::Transaction::Start(proxy);
+	openpal::Transaction::Start(proxy);
 }
 
 void SlaveDataObserverAdapter::Update(Binary^ meas, System::UInt32 index)
@@ -48,7 +48,7 @@ void SlaveDataObserverAdapter::Update(AnalogOutputStatus^ meas, System::UInt32 i
 
 void SlaveDataObserverAdapter::End()
 {
-	opendnp3::Transaction::End(proxy);
+	openpal::Transaction::End(proxy);
 }
 
 

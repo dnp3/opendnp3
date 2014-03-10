@@ -24,7 +24,7 @@
 
 #include <openpal/TimeDuration.h>
 
-#include "opendnp3/Uncopyable.h"
+#include <openpal/Uncopyable.h>
 
 #include "AsyncTaskInterfaces.h"
 

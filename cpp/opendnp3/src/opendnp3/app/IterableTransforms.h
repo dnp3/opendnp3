@@ -23,7 +23,7 @@
 
 #include "opendnp3/app/LazyIterable.h"
 
-#include "opendnp3/Uncopyable.h"
+#include <openpal/Uncopyable.h>
 
 namespace opendnp3
 {

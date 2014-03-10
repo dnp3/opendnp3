@@ -24,7 +24,7 @@
 #include <functional>
 #include <limits>
 
-#include "opendnp3/Uncopyable.h"
+#include <openpal/Uncopyable.h>
 #include "opendnp3/app/APDUHeader.h"
 
 #include <openpal/BufferWrapper.h>

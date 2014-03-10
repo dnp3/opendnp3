@@ -45,12 +45,12 @@ void MultiplexingDataObserver :: AddObserver(IDataObserver* apObserver)
 void MultiplexingDataObserver::Start()
 {
 	mMutex.lock();
-	for(auto pObs : mObservers) Transaction::Start(pObs);
+	for (auto pObs : mObservers) openpal::Transaction::Start(pObs);
 }
 
 void MultiplexingDataObserver::End()
 {
-	for(auto pObs : mObservers) Transaction::End(pObs);
+	for (auto pObs : mObservers) openpal::Transaction::End(pObs);
 	mMutex.unlock();
 }
 

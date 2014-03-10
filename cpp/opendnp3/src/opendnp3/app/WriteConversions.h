@@ -61,7 +61,7 @@ typedef ConvertQTDowncast<Group4Var3, DoubleBitBinary, uint16_t> ConvertGroup4Va
 typedef ConvertQ<Group10Var2, BinaryOutputStatus> ConvertGroup10Var2;
 
 // Group 12
-struct ConvertGroup12Var1 : private Uncopyable
+struct ConvertGroup12Var1 : private openpal::Uncopyable
 {
 	static Group12Var1 Apply(const ControlRelayOutputBlock& crob)
 	{

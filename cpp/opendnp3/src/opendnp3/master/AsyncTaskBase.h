@@ -22,7 +22,7 @@
 #define __ASYNC_TASK_BASE_H_
 
 #include "opendnp3/master/AsyncTaskInterfaces.h"
-#include "opendnp3/Uncopyable.h"
+#include <openpal/Uncopyable.h>
 
 #include <openpal/MonotonicTimestamp.h>
 
@@ -39,7 +39,7 @@ class AsyncTaskGroup;
  * priority (for resolving ties) and task dependencies.
  *
  */
-class AsyncTaskBase : public ITask, private Uncopyable
+class AsyncTaskBase : public ITask, private openpal::Uncopyable
 {
 	friend class AsyncTaskGroup;
 	friend class TrackingTaskGroup;

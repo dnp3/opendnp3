@@ -27,12 +27,12 @@
 #include <openpal/BufferWrapper.h>
 
 #include "opendnp3/app/APDUHeader.h"
-#include "opendnp3/Uncopyable.h"
+#include <openpal/Uncopyable.h>
 
 namespace opendnp3
 {
 
-class APDUHeaderParser : private PureStatic
+class APDUHeaderParser : private openpal::PureStatic
 {
 public:
 

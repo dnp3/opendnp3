@@ -21,7 +21,7 @@
 #ifndef __MEASUREMENT_FACTORY_H_
 #define __MEASUREMENT_FACTORY_H_
 
-#include "opendnp3/Uncopyable.h"
+#include <openpal/Uncopyable.h>
 #include "opendnp3/app/MeasurementTypes.h"
 #include "opendnp3/app/ControlRelayOutputBlock.h"
 #include "opendnp3/app/AnalogOutput.h"
@@ -29,7 +29,7 @@
 namespace opendnp3
 {
 
-struct BinaryFactory: private PureStatic
+struct BinaryFactory: private openpal::PureStatic
 {
 	inline static Binary From(uint8_t aFlags)
 	{
@@ -41,7 +41,7 @@ struct BinaryFactory: private PureStatic
 	}
 };
 
-struct DoubleBitBinaryFactory : private PureStatic
+struct DoubleBitBinaryFactory : private openpal::PureStatic
 {
 	inline static DoubleBitBinary From(uint8_t aFlags)
 	{
@@ -53,7 +53,7 @@ struct DoubleBitBinaryFactory : private PureStatic
 	}
 };
 
-struct AnalogFactory: private PureStatic
+struct AnalogFactory: private openpal::PureStatic
 {
 	static Analog From(int32_t aCount)
 	{
@@ -69,7 +69,7 @@ struct AnalogFactory: private PureStatic
 	}
 };
 
-struct CounterFactory: private PureStatic
+struct CounterFactory: private openpal::PureStatic
 {
 	inline static Counter From(uint32_t aCount)
 	{
@@ -85,7 +85,7 @@ struct CounterFactory: private PureStatic
 	}
 };
 
-struct FrozenCounterFactory: private PureStatic
+struct FrozenCounterFactory: private openpal::PureStatic
 {
 	inline static FrozenCounter From(uint32_t aCount)
 	{
@@ -101,7 +101,7 @@ struct FrozenCounterFactory: private PureStatic
 	}
 };
 
-struct ControlRelayOutputBlockFactory: private PureStatic
+struct ControlRelayOutputBlockFactory: private openpal::PureStatic
 {
 	inline static ControlRelayOutputBlock From(
 	    ControlCode aCode,
@@ -114,7 +114,7 @@ struct ControlRelayOutputBlockFactory: private PureStatic
 	}
 };
 
-struct BinaryOutputStatusFactory: private PureStatic
+struct BinaryOutputStatusFactory: private openpal::PureStatic
 {
 	inline static BinaryOutputStatus From(uint8_t flags)
 	{
@@ -123,7 +123,7 @@ struct BinaryOutputStatusFactory: private PureStatic
 };
 
 
-struct AnalogOutputStatusFactory: private PureStatic
+struct AnalogOutputStatusFactory: private openpal::PureStatic
 {
 	inline static AnalogOutputStatus From(uint8_t flags, double value)
 	{
@@ -132,7 +132,7 @@ struct AnalogOutputStatusFactory: private PureStatic
 };
 
 template <class Target, class ValueType>
-struct AnalogOutputFactory: private PureStatic
+struct AnalogOutputFactory: private openpal::PureStatic
 {
 	inline static Target From(ValueType value, CommandStatus status)
 	{

@@ -37,7 +37,7 @@ void ProxyDataObserver::Start()
 {
 	pExecutor->Post([this]()
 	{
-		Transaction::Start(pProxy);
+		openpal::Transaction::Start(pProxy);
 	});
 }
 
@@ -45,7 +45,7 @@ void ProxyDataObserver::End()
 {
 	pExecutor->Post([this]()
 	{
-		Transaction::End(pProxy);
+		openpal::Transaction::End(pProxy);
 	});
 }
 

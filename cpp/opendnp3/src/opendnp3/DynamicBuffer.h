@@ -22,7 +22,7 @@
 #ifndef __DYNAMIC_BUFFER_H_
 #define __DYNAMIC_BUFFER_H_
 
-#include "Uncopyable.h"
+#include <openpal/Uncopyable.h>
 #include <openpal/BufferWrapper.h>
 #include <cstdint>
 
@@ -32,7 +32,7 @@ namespace opendnp3
 /**
 * Used to efficiently cache requests that the outstation can't process immediately
 */
-class DynamicBuffer : private Uncopyable
+class DynamicBuffer : private openpal::Uncopyable
 {
 public:
 

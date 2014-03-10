@@ -24,11 +24,11 @@
 
 #include <opendnp3/app/APDURequest.h>
 #include <opendnp3/app/APDUResponse.h>
-#include <opendnp3/Uncopyable.h>
+#include <openpal/Uncopyable.h>
 
 #include <assert.h>
 
-class APDUHelpers : opendnp3::PureStatic
+class APDUHelpers : private openpal::PureStatic
 {
 private:
 	static const uint32_t SIZE = 2048;
