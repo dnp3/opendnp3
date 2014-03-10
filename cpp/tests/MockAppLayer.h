@@ -49,10 +49,12 @@ public:
 	void SendUnsolicited(APDU&);
 	void SendRequest(APDU&);
 	void CancelResponse();
+	void CancelUnsolicitedRetries();
 
 	bool NothingToRead();
 
 	size_t mNumCancel;
+	size_t mNumCancelUnsolcited;
 
 	void EnableAutoSendCallback(bool aIsSuccess);
 	void DisableAutoSendCallback();

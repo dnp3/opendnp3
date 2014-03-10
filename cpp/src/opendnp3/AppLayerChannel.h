@@ -68,6 +68,7 @@ public:
 	// send, wether a response is expected is implicit based on func code
 	void Send(APDU&, size_t aNumRetry);
 	void Cancel();
+	void CancelRetries();
 
 	// Events
 	void OnSendSuccess();

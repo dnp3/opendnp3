@@ -595,6 +595,44 @@ BOOST_AUTO_TEST_CASE(WriteDuringUnsol)
 	BOOST_REQUIRE_EQUAL(t.Count(), 0);
 }
 
+BOOST_AUTO_TEST_CASE(ReadDuringNullUnsolWithFailure)
+{
+	SlaveConfig cfg; cfg.mUnsolPackDelay = 0;
+	cfg.mUnsolMask.class1 = true; //allows us to skip this step
+	SlaveTestObject t(cfg);
+	t.db.Configure(DT_BINARY, 1);
+	t.db.SetClass(DT_BINARY, PC_CLASS_1);
+	t.app.DisableAutoSendCallback();
+	t.slave.OnLowerLayerUp();
+	
+
+	BOOST_REQUIRE_EQUAL(t.Read(), "F0 82 80 00");
+
+	t.SendToSlave("C0 01 3C 02 06");
+	BOOST_REQUIRE(t.NothingToRead());
+	t.slave.OnUnsolSendSuccess();
+	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 00");	
+}
+
+BOOST_AUTO_TEST_CASE(ReadDuringNullUnsolWithSuccess)
+{
+	SlaveConfig cfg; cfg.mUnsolPackDelay = 0;
+	cfg.mUnsolMask.class1 = true; //allows us to skip this step
+	SlaveTestObject t(cfg);
+	t.db.Configure(DT_BINARY, 1);
+	t.db.SetClass(DT_BINARY, PC_CLASS_1);
+	t.app.DisableAutoSendCallback();
+	t.slave.OnLowerLayerUp();
+
+
+	BOOST_REQUIRE_EQUAL(t.Read(), "F0 82 80 00");
+
+	t.SendToSlave("C0 01 3C 02 06");
+	BOOST_REQUIRE(t.NothingToRead());
+	t.slave.OnUnsolFailure();
+	BOOST_REQUIRE_EQUAL(t.Read(), "C0 81 80 00");
+}
+
 BOOST_AUTO_TEST_CASE(ReadDuringUnsol)
 {
 	SlaveConfig cfg; cfg.mUnsolPackDelay = 0;

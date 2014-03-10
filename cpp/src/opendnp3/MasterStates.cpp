@@ -23,8 +23,10 @@
 #include "MasterStates.h"
 
 #include <opendnp3/Exception.h>
+#include <opendnp3/Location.h>
 #include <opendnp3/Logger.h>
 
+#include "LoggableMacros.h"
 #include "AsyncTaskInterfaces.h"
 #include "AsyncTaskGroup.h"
 #include "Master.h"
@@ -77,6 +79,7 @@ void AMS_Base::OnUnsolResponse(Master*, const APDU&)
 
 void AMS_Base::ChangeState(Master* c, AMS_Base* apState)
 {
+	LOGGER_BLOCK(c->mpLogger, LEV_EVENT, "State Change: " << c->mpState->Name() << " -> " << apState->Name());
 	c->mpState = apState;
 }
 

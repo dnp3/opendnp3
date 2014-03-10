@@ -32,6 +32,7 @@ namespace opendnp3
 MockAppLayer::MockAppLayer(Logger* apLogger) :
 	Loggable(apLogger),
 	mNumCancel(0),
+	mNumCancelUnsolcited(0),
 	mpUser(NULL),
 	mAutoSendCallback(true),
 	mIsSuccess(true)
@@ -124,6 +125,11 @@ FunctionCodes MockAppLayer::ReadFunction()
 void MockAppLayer::CancelResponse()
 {
 	++mNumCancel;
+}
+
+void MockAppLayer::CancelUnsolicitedRetries()
+{
+	++mNumCancelUnsolcited;
 }
 
 }
