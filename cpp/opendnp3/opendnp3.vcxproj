@@ -100,7 +100,6 @@
     <ClInclude Include="src\opendnp3\gen\StaticBinaryResponse.h" />
     <ClInclude Include="src\opendnp3\gen\StaticCounterResponse.h" />
     <ClInclude Include="src\opendnp3\gen\StaticFrozenCounterResponse.h" />
-    <ClInclude Include="src\opendnp3\GetKeys.h" />
     <ClInclude Include="src\opendnp3\IChannel.h" />
     <ClInclude Include="src\opendnp3\IStack.h" />
     <ClInclude Include="src\opendnp3\link\CRC.h" />
