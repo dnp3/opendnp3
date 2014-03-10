@@ -20,9 +20,6 @@
  */
 #include "ProtocolUtil.h"
 
-namespace opendnp3
-{
-
 // Given a buffer and max packet size, calculcate the
 // maximum number of packets the buffer can hold
 uint32_t CalcMaxPackets(uint32_t aBuffer, uint32_t aPayload)
@@ -37,5 +34,3 @@ uint32_t CalcLastPacketSize(uint32_t aBuffer, uint32_t aPayload)
 	uint32_t remain = aBuffer % aPayload;
 	return (remain == 0) ? aPayload : remain;
 }
-
-} //end namespace

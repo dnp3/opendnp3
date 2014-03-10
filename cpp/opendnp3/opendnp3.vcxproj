@@ -218,7 +218,6 @@
     <ClInclude Include="src\opendnp3\outstation\TimeTransaction.h" />
     <ClInclude Include="src\opendnp3\outstation\ValueMetadataPair.h" />
     <ClInclude Include="src\opendnp3\outstation\WriteHandler.h" />
-    <ClInclude Include="src\opendnp3\ProtocolUtil.h" />
     <ClInclude Include="src\opendnp3\Settable.h" />
     <ClInclude Include="src\opendnp3\Singleton.h" />
     <ClInclude Include="src\opendnp3\StackBase.h" />
@@ -362,7 +361,6 @@
     <ClCompile Include="src\opendnp3\outstation\StaticResponseTypes.cpp" />
     <ClCompile Include="src\opendnp3\outstation\TimeTransaction.cpp" />
     <ClCompile Include="src\opendnp3\outstation\WriteHandler.cpp" />
-    <ClCompile Include="src\opendnp3\ProtocolUtil.cpp" />
     <ClCompile Include="src\opendnp3\StackBase.cpp" />
     <ClCompile Include="src\opendnp3\SubjectBase.cpp" />
     <ClCompile Include="src\opendnp3\transport\TLS_Base.cpp" />

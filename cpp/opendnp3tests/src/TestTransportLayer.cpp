@@ -20,14 +20,11 @@
  */
 #include <catch.hpp>
 
-
-#include "TransportTestObject.h"
 #include "Exception.h"
+#include "ProtocolUtil.h"
+#include "TransportTestObject.h"
 
 #include <opendnp3/transport/TransportConstants.h>
-
-
-#include <opendnp3/ProtocolUtil.h>
 
 using namespace std;
 using namespace openpal;

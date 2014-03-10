@@ -179,6 +179,9 @@
     <ClInclude Include="src\WrappedTcpPipe.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\ProtocolUtil.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\AppLayerTest.cpp">
@@ -434,6 +437,9 @@
       <Filter>Header Files</Filter>
     </ClCompile>
     <ClCompile Include="src\APDUHelpers.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ProtocolUtil.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

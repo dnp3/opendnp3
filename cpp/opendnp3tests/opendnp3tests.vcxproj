@@ -222,6 +222,7 @@
     <ClInclude Include="src\PhysicalLayerWrapper.h" />
     <ClInclude Include="src\PhysicalLayerWrapperFactory.h" />
     <ClInclude Include="src\PhysLoopback.h" />
+    <ClInclude Include="src\ProtocolUtil.h" />
     <ClInclude Include="src\Random.h" />
     <ClInclude Include="src\RandomDouble.h" />
     <ClInclude Include="src\RandomizedBuffer.h" />
@@ -271,6 +272,7 @@
     <ClCompile Include="src\MockUpperLayer.cpp" />
     <ClCompile Include="src\PhysicalLayerWrapper.cpp" />
     <ClCompile Include="src\PhysLoopback.cpp" />
+    <ClCompile Include="src\ProtocolUtil.cpp" />
     <ClCompile Include="src\RandomizedBuffer.cpp" />
     <ClCompile Include="src\SlaveTestObject.cpp" />
     <ClCompile Include="src\StopWatch.cpp" />

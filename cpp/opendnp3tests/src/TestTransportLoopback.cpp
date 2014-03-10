@@ -24,13 +24,11 @@
 #include <catch.hpp>
 #include <functional>
 
-#include <opendnp3/ProtocolUtil.h>
-
 #include <asiopal/Log.h>
 #include <asiopal/PhysicalLayerAsyncSerial.h>
 
 #include "Exception.h"
-
+#include "ProtocolUtil.h"
 #include "BufferHelpers.h"
 #include "LoopbackPhysicalLayerAsync.h"
 
