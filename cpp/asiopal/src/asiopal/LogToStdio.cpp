@@ -18,60 +18,44 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include <sstream>
-#include <exception>
+#include "LogToStdio.h"
 
-#include <asiopal/Log.h>
+#include <chrono>
+#include <sstream>
+#include <iostream>
 
 using namespace std;
-using namespace openpal;
+using namespace std::chrono;
 
 namespace asiopal
 {
 
+LogToStdio LogToStdio::mInstance;
 
+LogToStdio::LogToStdio() : mPrintLocation(false)
+{}
 
-void EventLog::Log( const LogEntry& arEntry )
+void LogToStdio::SetPrintLocation(bool aPrintLocation)
 {
-	for(auto pair : mSubscribers)
-	{
-		if(this->SetContains(pair.second, -1) || this->SetContains(pair.second, arEntry.GetErrorCode()))
-		{
-			pair.first->Log(arEntry);
-		}
-	}
+	mPrintLocation = aPrintLocation;
 }
 
-bool EventLog::SetContains(const std::set<int>& arSet, int aValue)
+void LogToStdio::Log(const openpal::LogEntry& entry)
 {
-	return arSet.find(aValue) != arSet.end();
+	auto time = std::chrono::high_resolution_clock::now();
+	auto num = duration_cast<milliseconds>(time.time_since_epoch()).count();
+
+	ostringstream oss;
+
+	oss << num << openpal::LogLevelToString( entry.GetLogLevel() ) << " - " << entry.GetDeviceName();
+	if(mPrintLocation && !entry.GetLocation().empty()) oss << " - " << entry.GetMessage();
+	oss << " - " << entry.GetMessage();
+
+	if(entry.GetErrorCode() != -1) oss << " - " << entry.GetErrorCode();
+
+	std::unique_lock<std::mutex> lock(mMutex);
+	std::cout << oss.str() << std::endl;
 }
 
-
-void EventLog :: AddLogSubscriber(ILogBase* apSubscriber)
-{
-	this->AddLogSubscriber(apSubscriber, -1);
-}
-
-void EventLog :: AddLogSubscriber(ILogBase* apSubscriber, int aErrorCode)
-{
-	SubscriberMap::iterator i = mSubscribers.find(apSubscriber);
-	if(i == mSubscribers.end())
-	{
-		std::set<int> set;
-		mSubscribers.insert(SubscriberMap::value_type(apSubscriber, set));
-		this->AddLogSubscriber(apSubscriber, aErrorCode);
-	}
-	else i->second.insert(aErrorCode);
-}
-
-void EventLog :: RemoveLogSubscriber(ILogBase* apBase)
-{
-	SubscriberMap::iterator i = mSubscribers.find(apBase);
-	if(i != mSubscribers.end()) mSubscribers.erase(i);
-}
-
-}
-
-
+} //end ns
 

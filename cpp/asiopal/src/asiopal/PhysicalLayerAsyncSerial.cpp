@@ -18,7 +18,7 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include <asiopal/PhysicalLayerAsyncSerial.h>
+#include "PhysicalLayerAsyncSerial.h"
 
 #include <asio.hpp>
 
@@ -28,7 +28,7 @@
 #include <openpal/LoggableMacros.h>
 #include <openpal/IHandlerAsync.h>
 
-#include <asiopal/ASIOSerialHelpers.h>
+#include "ASIOSerialHelpers.h"
 
 using namespace asio;
 using namespace std;

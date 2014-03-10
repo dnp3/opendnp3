@@ -18,26 +18,58 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include <asiopal/UTCTimeSource.h>
 
-#include <chrono>
+#include"Log.h"
+
+using namespace std;
+using namespace openpal;
 
 namespace asiopal
 {
 
-UTCTimeSource UTCTimeSource::mInstance;
 
-openpal::IUTCTimeSource* UTCTimeSource::Inst()
+
+void EventLog::Log( const LogEntry& arEntry )
 {
-	return &mInstance;
+	for(auto pair : mSubscribers)
+	{
+		if(this->SetContains(pair.second, -1) || this->SetContains(pair.second, arEntry.GetErrorCode()))
+		{
+			pair.first->Log(arEntry);
+		}
+	}
 }
 
-openpal::UTCTimestamp UTCTimeSource::Now()
+bool EventLog::SetContains(const std::set<int>& arSet, int aValue)
 {
-	auto time = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
-	return openpal::UTCTimestamp(time);
+	return arSet.find(aValue) != arSet.end();
+}
+
+
+void EventLog :: AddLogSubscriber(ILogBase* apSubscriber)
+{
+	this->AddLogSubscriber(apSubscriber, -1);
+}
+
+void EventLog :: AddLogSubscriber(ILogBase* apSubscriber, int aErrorCode)
+{
+	SubscriberMap::iterator i = mSubscribers.find(apSubscriber);
+	if(i == mSubscribers.end())
+	{
+		std::set<int> set;
+		mSubscribers.insert(SubscriberMap::value_type(apSubscriber, set));
+		this->AddLogSubscriber(apSubscriber, aErrorCode);
+	}
+	else i->second.insert(aErrorCode);
+}
+
+void EventLog :: RemoveLogSubscriber(ILogBase* apBase)
+{
+	SubscriberMap::iterator i = mSubscribers.find(apBase);
+	if(i != mSubscribers.end()) mSubscribers.erase(i);
 }
 
 }
+
 
 

@@ -19,36 +19,35 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\asiopal\ASIOExecutor.h" />
-    <ClInclude Include="include\asiopal\ASIOSerialHelpers.h" />
-    <ClInclude Include="include\asiopal\IOServiceThreadPool.h" />
-    <ClInclude Include="include\asiopal\Log.h" />
-    <ClInclude Include="include\asiopal\LogToStdio.h" />
-    <ClInclude Include="include\asiopal\PhysicalLayerAsyncASIO.h" />
-    <ClInclude Include="include\asiopal\PhysicalLayerAsyncBase.h" />
-    <ClInclude Include="include\asiopal\PhysicalLayerAsyncBaseTCP.h" />
-    <ClInclude Include="include\asiopal\PhysicalLayerAsyncSerial.h" />
-    <ClInclude Include="include\asiopal\PhysicalLayerAsyncTCPClient.h" />
-    <ClInclude Include="include\asiopal\PhysicalLayerAsyncTCPServer.h" />
-    <ClInclude Include="include\asiopal\SerialTypes.h" />
-    <ClInclude Include="include\asiopal\UTCTimeSource.h" />
-    <ClInclude Include="include\UTCTimeSource.h" />
-    <ClInclude Include="src\TimerASIO.h" />
+    <ClInclude Include="src\asiopal\ASIOExecutor.h" />
+    <ClInclude Include="src\asiopal\ASIOSerialHelpers.h" />
+    <ClInclude Include="src\asiopal\IOServiceThreadPool.h" />
+    <ClInclude Include="src\asiopal\Log.h" />
+    <ClInclude Include="src\asiopal\LogToStdio.h" />
+    <ClInclude Include="src\asiopal\PhysicalLayerAsyncASIO.h" />
+    <ClInclude Include="src\asiopal\PhysicalLayerAsyncBase.h" />
+    <ClInclude Include="src\asiopal\PhysicalLayerAsyncBaseTCP.h" />
+    <ClInclude Include="src\asiopal\PhysicalLayerAsyncSerial.h" />
+    <ClInclude Include="src\asiopal\PhysicalLayerAsyncTCPClient.h" />
+    <ClInclude Include="src\asiopal\PhysicalLayerAsyncTCPServer.h" />
+    <ClInclude Include="src\asiopal\SerialTypes.h" />
+    <ClInclude Include="src\asiopal\TimerASIO.h" />
+    <ClInclude Include="src\asiopal\UTCTimeSource.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\ASIOExecutor.cpp" />
-    <ClCompile Include="src\ASIOSerialHelpers.cpp" />
-    <ClCompile Include="src\IOServiceThreadPool.cpp" />
-    <ClCompile Include="src\Log.cpp" />
-    <ClCompile Include="src\LogToStdio.cpp" />
-    <ClCompile Include="src\PhysicalLayerAsyncBase.cpp" />
-    <ClCompile Include="src\PhysicalLayerAsyncBaseTCP.cpp" />
-    <ClCompile Include="src\PhysicalLayerAsyncSerial.cpp" />
-    <ClCompile Include="src\PhysicalLayerAsyncTCPClient.cpp" />
-    <ClCompile Include="src\PhysicalLayerAsyncTCPServer.cpp" />
-    <ClCompile Include="src\SerialTypes.cpp" />
-    <ClCompile Include="src\TimerASIO.cpp" />
-    <ClCompile Include="src\UTCTimeSource.cpp" />
+    <ClCompile Include="src\asiopal\ASIOExecutor.cpp" />
+    <ClCompile Include="src\asiopal\ASIOSerialHelpers.cpp" />
+    <ClCompile Include="src\asiopal\IOServiceThreadPool.cpp" />
+    <ClCompile Include="src\asiopal\Log.cpp" />
+    <ClCompile Include="src\asiopal\LogToStdio.cpp" />
+    <ClCompile Include="src\asiopal\PhysicalLayerAsyncBase.cpp" />
+    <ClCompile Include="src\asiopal\PhysicalLayerAsyncBaseTCP.cpp" />
+    <ClCompile Include="src\asiopal\PhysicalLayerAsyncSerial.cpp" />
+    <ClCompile Include="src\asiopal\PhysicalLayerAsyncTCPClient.cpp" />
+    <ClCompile Include="src\asiopal\PhysicalLayerAsyncTCPServer.cpp" />
+    <ClCompile Include="src\asiopal\SerialTypes.cpp" />
+    <ClCompile Include="src\asiopal\TimerASIO.cpp" />
+    <ClCompile Include="src\asiopal\UTCTimeSource.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{3807677B-061A-4D15-AA03-65E944864384}</ProjectGuid>

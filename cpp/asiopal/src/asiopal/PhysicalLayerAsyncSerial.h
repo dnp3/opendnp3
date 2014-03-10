@@ -18,33 +18,41 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include <asiopal/SerialTypes.h>
+#ifndef __PHYSICAL_LAYER_ASYNC_SERIAL_H_
+#define __PHYSICAL_LAYER_ASYNC_SERIAL_H_
+
+#include "SerialTypes.h"
+#include "PhysicalLayerAsyncASIO.h"
+
+#include <openpal/Location.h>
+
+#include <asio/serial_port.hpp>
+
+#include <memory>
 
 namespace asiopal
 {
 
-
-ParityType GetParityFromInt(int parity)
+/** Serial implementation of PhysicalLayerAsyncASIO
+*/
+class PhysicalLayerAsyncSerial : public PhysicalLayerAsyncASIO
 {
-	switch(parity)
-	{
-	case (1): return PAR_EVEN;
-	case (2): return PAR_ODD;
-	default: return PAR_NONE;
-	}
+public:
+	PhysicalLayerAsyncSerial(openpal::Logger, asio::io_service* apIOService, const SerialSettings& arSettings);
+
+	/* Implement the shared client/server actions */
+	void DoClose();
+	void DoOpenSuccess();
+	void DoAsyncRead(openpal::WriteBuffer&);
+	void DoAsyncWrite(const openpal::ReadOnlyBuffer&);
+
+	void DoOpen();
+
+protected:
+
+	SerialSettings mSettings;
+	asio::serial_port mPort;
+};
 }
 
-FlowType GetFlowTypeFromInt(int flowControl)
-{
-	switch(flowControl)
-	{
-	case (1): return FLOW_HARDWARE;
-	case (2): return FLOW_XONXOFF;
-	default: return FLOW_NONE;
-	}
-}
-
-}
-
-
-
+#endif

@@ -25,9 +25,10 @@
 #include <functional>
 #include <memory>
 
+#include <asiopal/SerialTypes.h>
+
 #include <openpal/Logger.h>
 #include <openpal/TimeDuration.h>
-#include <asiopal/SerialTypes.h>
 #include <opendnp3/DestructorHook.h>
 #include <opendnp3/link/IOpenDelayStrategy.h>
 

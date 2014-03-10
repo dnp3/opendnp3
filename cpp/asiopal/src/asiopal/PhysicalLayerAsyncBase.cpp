@@ -18,7 +18,7 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include <asiopal/PhysicalLayerAsyncBase.h>
+#include "PhysicalLayerAsyncBase.h"
 
 #include <openpal/IHandlerAsync.h>
 #include <openpal/LoggableMacros.h>

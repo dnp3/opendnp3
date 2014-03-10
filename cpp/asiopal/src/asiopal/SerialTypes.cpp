@@ -18,44 +18,33 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include <asiopal/LogToStdio.h>
-
-#include <chrono>
-#include <sstream>
-#include <iostream>
-
-using namespace std;
-using namespace std::chrono;
+#include "SerialTypes.h"
 
 namespace asiopal
 {
 
-LogToStdio LogToStdio::mInstance;
 
-LogToStdio::LogToStdio() : mPrintLocation(false)
-{}
-
-void LogToStdio::SetPrintLocation(bool aPrintLocation)
+ParityType GetParityFromInt(int parity)
 {
-	mPrintLocation = aPrintLocation;
+	switch(parity)
+	{
+	case (1): return PAR_EVEN;
+	case (2): return PAR_ODD;
+	default: return PAR_NONE;
+	}
 }
 
-void LogToStdio::Log(const openpal::LogEntry& entry)
+FlowType GetFlowTypeFromInt(int flowControl)
 {
-	auto time = std::chrono::high_resolution_clock::now();
-	auto num = duration_cast<milliseconds>(time.time_since_epoch()).count();
-
-	ostringstream oss;
-
-	oss << num << openpal::LogLevelToString( entry.GetLogLevel() ) << " - " << entry.GetDeviceName();
-	if(mPrintLocation && !entry.GetLocation().empty()) oss << " - " << entry.GetMessage();
-	oss << " - " << entry.GetMessage();
-
-	if(entry.GetErrorCode() != -1) oss << " - " << entry.GetErrorCode();
-
-	std::unique_lock<std::mutex> lock(mMutex);
-	std::cout << oss.str() << std::endl;
+	switch(flowControl)
+	{
+	case (1): return FLOW_HARDWARE;
+	case (2): return FLOW_XONXOFF;
+	default: return FLOW_NONE;
+	}
 }
 
-} //end ns
+}
+
+
 

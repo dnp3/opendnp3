@@ -18,41 +18,26 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __PHYSICAL_LAYER_ASYNC_SERIAL_H_
-#define __PHYSICAL_LAYER_ASYNC_SERIAL_H_
+#include "UTCTimeSource.h"
 
-#include "PhysicalLayerAsyncASIO.h"
-
-#include <openpal/Location.h>
-#include <asiopal/SerialTypes.h>
-
-#include <asio/serial_port.hpp>
-
-#include <memory>
+#include <chrono>
 
 namespace asiopal
 {
 
-/** Serial implementation of PhysicalLayerAsyncASIO
-*/
-class PhysicalLayerAsyncSerial : public PhysicalLayerAsyncASIO
+UTCTimeSource UTCTimeSource::mInstance;
+
+openpal::IUTCTimeSource* UTCTimeSource::Inst()
 {
-public:
-	PhysicalLayerAsyncSerial(openpal::Logger, asio::io_service* apIOService, const SerialSettings& arSettings);
-
-	/* Implement the shared client/server actions */
-	void DoClose();
-	void DoOpenSuccess();
-	void DoAsyncRead(openpal::WriteBuffer&);
-	void DoAsyncWrite(const openpal::ReadOnlyBuffer&);
-
-	void DoOpen();
-
-protected:
-
-	SerialSettings mSettings;
-	asio::serial_port mPort;
-};
+	return &mInstance;
 }
 
-#endif
+openpal::UTCTimestamp UTCTimeSource::Now()
+{
+	auto time = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+	return openpal::UTCTimestamp(time);
+}
+
+}
+
+
