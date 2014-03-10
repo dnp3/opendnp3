@@ -165,7 +165,6 @@ cpp/opendnp3/src/opendnp3/outstation/ITimeWriteHandler.cpp \
 cpp/opendnp3/src/opendnp3/outstation/MultiplexingDataObserver.cpp \
 cpp/opendnp3/src/opendnp3/outstation/OutstationEventBuffer.cpp \
 cpp/opendnp3/src/opendnp3/outstation/OutstationStackImpl.cpp \
-cpp/opendnp3/src/opendnp3/outstation/ProxyDataObserver.cpp \
 cpp/opendnp3/src/opendnp3/outstation/ReadHandler.cpp \
 cpp/opendnp3/src/opendnp3/outstation/SelectBuffer.cpp \
 cpp/opendnp3/src/opendnp3/outstation/SimpleCommandHandler.cpp \
@@ -188,10 +187,7 @@ cpp/opendnp3/src/opendnp3/DNP3Manager.cpp \
 cpp/opendnp3/src/opendnp3/DynamicBuffer.cpp \
 cpp/opendnp3/src/opendnp3/ExecutorPause.cpp \
 cpp/opendnp3/src/opendnp3/IStack.cpp \
-cpp/opendnp3/src/opendnp3/ProtocolUtil.cpp \
-cpp/opendnp3/src/opendnp3/StackBase.cpp \
-cpp/opendnp3/src/opendnp3/SubjectBase.cpp \
-cpp/opendnp3/src/opendnp3/Util.cpp
+cpp/opendnp3/src/opendnp3/StackBase.cpp
 
 
 check_PROGRAMS = openpaltest dnp3test
@@ -234,6 +230,7 @@ cpp/opendnp3tests/src/MockPhysicalLayerMonitor.cpp \
 cpp/opendnp3tests/src/MockUpperLayer.cpp \
 cpp/opendnp3tests/src/PhysicalLayerWrapper.cpp \
 cpp/opendnp3tests/src/PhysLoopback.cpp \
+cpp/opendnp3tests/src/ProtocolUtil.cpp \
 cpp/opendnp3tests/src/RandomizedBuffer.cpp \
 cpp/opendnp3tests/src/SlaveTestObject.cpp \
 cpp/opendnp3tests/src/StopWatch.cpp \
@@ -258,7 +255,6 @@ cpp/opendnp3tests/src/TestLinkReceiver.cpp \
 cpp/opendnp3tests/src/TestLinkRoute.cpp \
 cpp/opendnp3tests/src/TestLog.cpp \
 cpp/opendnp3tests/src/TestMaster.cpp \
-cpp/opendnp3tests/src/TestMisc.cpp \
 cpp/opendnp3tests/src/TestOutstationCommandResponses.cpp \
 cpp/opendnp3tests/src/TestOutstation.cpp \
 cpp/opendnp3tests/src/TestOutstationEventBuffer.cpp \

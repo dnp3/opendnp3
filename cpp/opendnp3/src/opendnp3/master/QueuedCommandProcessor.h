@@ -68,7 +68,7 @@ private:
 	template <class T>
 	void SelectAndOperateT(const T& arCommand, uint16_t aIndex, std::function<void (CommandResponse)> aCallback)
 	{					
-		Transaction tx(pExecutor);
+		openpal::Transaction tx(pExecutor);
 		requestQueue.push([arCommand, aIndex, aCallback](ICommandProcessor * pProcessor)
 		{
 			pProcessor->SelectAndOperate(arCommand, aIndex, aCallback);
@@ -79,7 +79,7 @@ private:
 	template <class T>
 	void DirectOperateT(const T& arCommand, uint16_t aIndex, std::function<void (CommandResponse)> aCallback)
 	{
-		Transaction tx(pExecutor);
+		openpal::Transaction tx(pExecutor);
 		requestQueue.push([arCommand, aIndex, aCallback](ICommandProcessor * pProcessor)
 		{
 			pProcessor->DirectOperate(arCommand, aIndex, aCallback);
