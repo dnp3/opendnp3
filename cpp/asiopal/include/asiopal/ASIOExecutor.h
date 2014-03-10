@@ -42,11 +42,13 @@ public:
 	ASIOExecutor(asio::strand*);
 	~ASIOExecutor();
 
-	openpal::MonotonicTimestamp GetTime();
+	virtual openpal::MonotonicTimestamp GetTime() override final;
+	virtual openpal::ITimer* Start(const openpal::TimeDuration&, const std::function<void()>&)  override final;
+	virtual openpal::ITimer* Start(const openpal::MonotonicTimestamp&, const std::function<void()>&)  override final;
+	virtual void Post(const std::function<void()>&) override final;
 
-	openpal::ITimer* Start(const openpal::TimeDuration&, const std::function<void ()>&);
-	openpal::ITimer* Start(const openpal::MonotonicTimestamp&, const std::function<void ()>&);
-	void Post(const std::function<void ()>&);
+	virtual void Start() override final;
+	virtual void End() override final;
 
 private:
 
@@ -63,8 +65,8 @@ private:
 	TimerQueue mIdleTimers;
 
 	size_t mNumActiveTimers;
-	std::mutex mMutex;
-	std::condition_variable mCondition;
+	std::mutex mutex;
+	std::condition_variable condition;
 	bool mIsShuttingDown;
 
 	void OnTimerCallback(const std::error_code&, TimerASIO*, std::function<void ()>);

@@ -32,6 +32,16 @@ MockExecutor::MockExecutor() :
 
 }
 
+void MockExecutor::Start()
+{
+
+}
+
+void MockExecutor::End()
+{
+
+}
+
 MockExecutor::~MockExecutor()
 {
 	for(auto pTimer : mAllTimers) delete pTimer;

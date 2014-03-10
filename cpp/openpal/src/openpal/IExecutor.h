@@ -24,6 +24,8 @@
 #include <functional>
 
 #include "ITimer.h"
+#include "ITransactable.h"
+
 #include "TimeDuration.h"
 #include "MonotonicTimestamp.h"
 
@@ -32,11 +34,13 @@ namespace openpal
 
 /**
  * Interface for posting events to a queue.  Events can be posted for
- * immediate consumption or some time in the future.  Events can be consumbed
- * by the posting thread or another thread.
+ * immediate consumption or some time in the future.  Events are processed 
+ * in the order they are received.
+ *
+ * In the context of this interface, ITransactable::Start/End is a mutex
  *
  */
-class IExecutor
+class IExecutor : public ITransactable
 {
 public:
 

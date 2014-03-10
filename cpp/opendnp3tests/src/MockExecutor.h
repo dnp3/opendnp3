@@ -36,18 +36,23 @@ class MockTimer;
 /** @section desc Test class that doles out MockTimer* */
 class MockExecutor : public openpal::IExecutor
 {
-	friend class MockTimer;
+	friend class MockTimer;	
 
 public:
 	MockExecutor();
 	~MockExecutor();
 
+	virtual void Start() override;
+	virtual void End() override;
+
 	// Implement IExecutor
-	openpal::ITimer* Start(const openpal::MonotonicTimestamp&, const std::function<void ()>&);
-	openpal::ITimer* Start(const openpal::TimeDuration&, const std::function<void ()>&);
-	void Post(const std::function<void ()>&);
-	void PostSync(const std::function<void ()>&);
-	openpal::MonotonicTimestamp GetTime();
+	virtual openpal::ITimer* Start(const openpal::MonotonicTimestamp&, const std::function<void()>&) override;
+	virtual openpal::ITimer* Start(const openpal::TimeDuration&, const std::function<void()>&) override;
+	virtual void Post(const std::function<void()>&) override;
+	virtual openpal::MonotonicTimestamp GetTime() override;
+
+	void PostSync(const std::function<void()>& arHandler);
+
 
 	/** Turns the auto-post feature on/off. When Auto post is on, Post() is executed synchronously */
 	void SetAutoPost(bool aAutoPost)
