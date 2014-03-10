@@ -18,36 +18,51 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
+#ifndef __STATIC_LINKED_LIST_H_
+#define __STATIC_LINKED_LIST_H_
 
-#ifndef __STATICALLY_ALLOCATED_EVENT_BUFFER_
-#define __STATICALLY_ALLOCATED_EVENT_BUFFER_
+#include "Uncopyable.h"
+#include "LinkedListAdapter.h"
+#include "StaticArray.h"
 
-#include "EventBufferFacade.h"
-#include <openpal/StaticArray.h>
-
-namespace opendnp3
+namespace openpal
 {
 
-template <uint32_t B, uint32_t A, uint32_t C>
-class StaticallyAllocatedEventBuffer
+template <class ValueType, class IndexType, IndexType N>
+class StaticLinkedList : private Uncopyable
 {
 public:
+	StaticLinkedList() : underlying(), adapter(underlying.ToIndexable())
+	{}
 
-	//EventBufferFacade GetFacade();
+	IndexType Size() const
+	{
+		return size;
+	}
+
+	bool Remove(const ValueType& value)
+	{
+		auto iter = adapter.Iterate();
+		while (iter.HasNext())
+		{
+			auto pNode = iter.Next();
+			if (pNode->value == value)
+			{
+				adapter.Remove(pNode);
+				return true;
+			}
+		}
+		return false;
+	}
+
+	bool Add(const ValueType& value)
+	{
+		return (adapter.Add(value) != nullptr);
+	}
 
 private:
-
-	openpal::StaticArray<uint16_t, uint16_t, B> binaryStack;
-	openpal::StaticArray<Event<Binary>, uint16_t, B> binaryArray;
-
-	openpal::StaticArray<uint16_t, uint16_t, A> analogStack;
-	openpal::StaticArray<Event<Analog>, uint16_t, A> analogArray;
-
-	openpal::StaticArray<uint16_t, uint16_t, C> counterStack;
-	openpal::StaticArray<Event<Counter>, uint16_t, C> counterArray;
-
-	openpal::StaticArray < openpal::ListNode<SequenceRecord>, uint16_t, B + A + C > sequenceOfEvents;
-	openpal::StaticArray < openpal::ListNode<SequenceRecord>*, uint16_t, B + A + C > selectedEvents;
+	StaticArray<ListNode<ValueType>, IndexType, N> underlying;
+	LinkedListAdapter<ValueType, IndexType> adapter;
 };
 
 }

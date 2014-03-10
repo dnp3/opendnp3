@@ -27,31 +27,31 @@ namespace openpal
 {
 
 template <class ValueType>
-class DoubleListNode
+class ListNode
 {
 public:
-	DoubleListNode(): prev(nullptr), next(nullptr)
+	ListNode(): prev(nullptr), next(nullptr)
 	{}
 
 	ValueType value;
 
 private:
-	DoubleListNode* prev;
-	DoubleListNode* next;
+	ListNode* prev;
+	ListNode* next;
 
 	template <class T, class U>
-	friend class DoublyLinkedListAdapter;
+	friend class LinkedListAdapter;
 
 	template <class T>
-	friend class DoublyLinkedListIterator;
+	friend class LinkedListIterator;
 };
 
 
 template <class ValueType>
-class DoublyLinkedListIterator
+class LinkedListIterator
 {
 public:
-	DoublyLinkedListIterator(DoubleListNode< ValueType>* pStart) : pCurrent(pStart)
+	LinkedListIterator(ListNode< ValueType>* pStart) : pCurrent(pStart)
 	{}
 
 	bool HasNext()
@@ -59,7 +59,7 @@ public:
 		return (pCurrent != nullptr);
 	}
 
-	DoubleListNode< ValueType>* Next()
+	ListNode< ValueType>* Next()
 	{
 		assert(pCurrent != nullptr);
 		auto pRet = pCurrent;
@@ -68,19 +68,19 @@ public:
 	}
 
 private:
-	DoubleListNode<ValueType>* pCurrent;
+	ListNode<ValueType>* pCurrent;
 };
 
 
-// A container adapter for a doubly-linked list
+// A container adapter for a -linked list
 template <class ValueType, class IndexType>
-class DoublyLinkedListAdapter : public HasSize<IndexType>
+class LinkedListAdapter : public HasSize<IndexType>
 {
 public:
 
-	typedef DoublyLinkedListIterator<ValueType> Iterator;
+	typedef LinkedListIterator<ValueType> Iterator;
 
-	DoublyLinkedListAdapter(Indexable<DoubleListNode<ValueType>, IndexType> aUnderlying) :
+	LinkedListAdapter(Indexable<ListNode<ValueType>, IndexType> aUnderlying) :
 		HasSize<IndexType>(0),
 		pHead(nullptr),
 		pTail(nullptr),
@@ -95,25 +95,25 @@ public:
 		return Iterator(pHead);
 	}
 
-	inline DoubleListNode<ValueType>* Add(const ValueType& value);
+	inline ListNode<ValueType>* Add(const ValueType& value);
 
-	inline void Remove(DoubleListNode<ValueType>* apNode);
+	inline void Remove(ListNode<ValueType>* apNode);
 
 	inline bool IsFull() const;
 
 private:
-	DoubleListNode<ValueType>* pHead;
-	DoubleListNode<ValueType>* pTail;
-	DoubleListNode<ValueType>* pFree;
-	Indexable<DoubleListNode<ValueType>, IndexType> underlying;
+	ListNode<ValueType>* pHead;
+	ListNode<ValueType>* pTail;
+	ListNode<ValueType>* pFree;
+	Indexable<ListNode<ValueType>, IndexType> underlying;
 
-	inline static void Link(DoubleListNode<ValueType>* prev, DoubleListNode<ValueType>* next);
+	inline static void Link(ListNode<ValueType>* prev, ListNode<ValueType>* next);
 
 	void Initialize();
 };
 
 template <class ValueType, class IndexType>
-DoubleListNode<ValueType>* DoublyLinkedListAdapter<ValueType, IndexType>::Add(const ValueType& value)
+ListNode<ValueType>* LinkedListAdapter<ValueType, IndexType>::Add(const ValueType& value)
 {
 	if(pFree == nullptr) return nullptr;
 	else
@@ -131,7 +131,7 @@ DoubleListNode<ValueType>* DoublyLinkedListAdapter<ValueType, IndexType>::Add(co
 }
 
 template <class ValueType, class IndexType>
-void DoublyLinkedListAdapter<ValueType, IndexType>::Remove(DoubleListNode<ValueType>* apNode)
+void LinkedListAdapter<ValueType, IndexType>::Remove(ListNode<ValueType>* apNode)
 {
 	if(apNode->prev == nullptr) // it's the head
 	{
@@ -155,21 +155,21 @@ void DoublyLinkedListAdapter<ValueType, IndexType>::Remove(DoubleListNode<ValueT
 }
 
 template <class ValueType, class IndexType>
-bool DoublyLinkedListAdapter<ValueType, IndexType>::IsFull() const
+bool LinkedListAdapter<ValueType, IndexType>::IsFull() const
 {
 	return (pFree == nullptr);
 }
 
 
 template <class ValueType, class IndexType>
-void DoublyLinkedListAdapter<ValueType, IndexType>::Link(DoubleListNode<ValueType>* first, DoubleListNode<ValueType>* second)
+void LinkedListAdapter<ValueType, IndexType>::Link(ListNode<ValueType>* first, ListNode<ValueType>* second)
 {
 	if(first) first->next = second;
 	if(second) second->prev = first;
 }
 
 template <class ValueType, class IndexType>
-void DoublyLinkedListAdapter<ValueType, IndexType>::Initialize()
+void LinkedListAdapter<ValueType, IndexType>::Initialize()
 {
 	if(underlying.IsNotEmpty())
 	{

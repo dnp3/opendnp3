@@ -45,8 +45,8 @@ EventBufferFacade DynamicallyAllocatedEventBuffer::GetFacade()
 	RandomInsertAdapter<Event<Analog>, uint16_t> analogAdapter(analogArray.ToIndexable(), analogStack.ToIndexable());
 	RandomInsertAdapter<Event<Counter>, uint16_t> counterAdapter(counterArray.ToIndexable(), counterStack.ToIndexable());
 	RandomInsertAdapter<Event<FrozenCounter>, uint16_t> frozenCounterAdapter(frozenCounterArray.ToIndexable(), frozenCounterStack.ToIndexable());
-	DoublyLinkedListAdapter<SequenceRecord, uint16_t> soeAdapter(sequenceOfEvents.ToIndexable());
-	StackAdapter<DoubleListNode<SequenceRecord>*, uint16_t> selectionAdapter(selectedEvents.ToIndexable());
+	LinkedListAdapter<SequenceRecord, uint16_t> soeAdapter(sequenceOfEvents.ToIndexable());
+	StackAdapter<ListNode<SequenceRecord>*, uint16_t> selectionAdapter(selectedEvents.ToIndexable());
 
 	return EventBufferFacade(binaryAdapter, analogAdapter, counterAdapter, frozenCounterAdapter, soeAdapter, selectionAdapter);
 }

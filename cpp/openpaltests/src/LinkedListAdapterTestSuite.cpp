@@ -21,17 +21,17 @@
 #include <catch.hpp>
 
 #include <openpal/DynamicArray.h>
-#include <openpal/DoublyLinkedListAdapter.h>
+#include <openpal/LinkedListAdapter.h>
+#include <openpal/StaticLinkedList.h>
 
 using namespace openpal;
 
-#define SUITE(name) "DoublyLinkListAdapter - " name
-
+#define SUITE(name) "LinkedListAdapter - " name
 
 TEST_CASE(SUITE("CorrectInitialState"))
 {
-	DynamicArray<DoubleListNode<int>, uint16_t> arr(3);
-	DoublyLinkedListAdapter<int, uint16_t> list(arr.ToIndexable());
+	DynamicArray<ListNode<int>, uint16_t> arr(3);
+	LinkedListAdapter<int, uint16_t> list(arr.ToIndexable());
 
 	REQUIRE(list.IsEmpty());
 	REQUIRE(!list.IsFull());
@@ -40,8 +40,8 @@ TEST_CASE(SUITE("CorrectInitialState"))
 
 TEST_CASE(SUITE("AddsUntilFull"))
 {
-	DynamicArray<DoubleListNode<int>, uint16_t> arr(3);
-	DoublyLinkedListAdapter<int, uint16_t> list(arr.ToIndexable());
+	DynamicArray<ListNode<int>, uint16_t> arr(3);
+	LinkedListAdapter<int, uint16_t> list(arr.ToIndexable());
 
 	auto one = list.Add(1);
 	auto two = list.Add(2);
@@ -58,8 +58,8 @@ TEST_CASE(SUITE("AddsUntilFull"))
 
 TEST_CASE(SUITE("CanRemoveHead"))
 {
-	DynamicArray<DoubleListNode<int>, uint16_t> arr(3);
-	DoublyLinkedListAdapter<int, uint16_t> list(arr.ToIndexable());
+	DynamicArray<ListNode<int>, uint16_t> arr(3);
+	LinkedListAdapter<int, uint16_t> list(arr.ToIndexable());
 
 	auto one = list.Add(1);
 	auto two = list.Add(2);
@@ -76,8 +76,8 @@ TEST_CASE(SUITE("CanRemoveHead"))
 
 TEST_CASE(SUITE("CanRemoveTail"))
 {
-	DynamicArray<DoubleListNode<int>, uint16_t> arr(3);
-	DoublyLinkedListAdapter<int, uint16_t> list(arr.ToIndexable());
+	DynamicArray<ListNode<int>, uint16_t> arr(3);
+	LinkedListAdapter<int, uint16_t> list(arr.ToIndexable());
 
 	auto one = list.Add(1);
 	auto two = list.Add(2);
@@ -94,8 +94,8 @@ TEST_CASE(SUITE("CanRemoveTail"))
 
 TEST_CASE(SUITE("CanRemoveMiddle"))
 {
-	DynamicArray<DoubleListNode<int>, uint16_t> arr(3);
-	DoublyLinkedListAdapter<int, uint16_t> list(arr.ToIndexable());
+	DynamicArray<ListNode<int>, uint16_t> arr(3);
+	LinkedListAdapter<int, uint16_t> list(arr.ToIndexable());
 
 	auto one = list.Add(1);
 	auto two = list.Add(2);
@@ -112,8 +112,8 @@ TEST_CASE(SUITE("CanRemoveMiddle"))
 
 TEST_CASE(SUITE("CanIterateOverValues"))
 {
-	DynamicArray<DoubleListNode<int>, uint16_t> arr(3);
-	DoublyLinkedListAdapter<int, uint16_t> list(arr.ToIndexable());
+	DynamicArray<ListNode<int>, uint16_t> arr(3);
+	LinkedListAdapter<int, uint16_t> list(arr.ToIndexable());
 
 	list.Add(1);
 	list.Add(2);
@@ -128,4 +128,16 @@ TEST_CASE(SUITE("CanIterateOverValues"))
 	}
 
 	REQUIRE(!iter.HasNext());
+}
+
+TEST_CASE(SUITE("StaticLinkedList"))
+{	
+	StaticLinkedList<int, uint16_t, 3> list;
+
+	REQUIRE(list.Add(1));
+	REQUIRE(list.Add(2));
+	REQUIRE(list.Add(3));
+	REQUIRE_FALSE(list.Add(4));
+
+	REQUIRE(list.Remove(2));
 }

@@ -21,7 +21,7 @@
   <ItemGroup>
     <ClInclude Include="src\openpal\AsyncLayerInterfaces.h" />
     <ClInclude Include="src\openpal\BufferWrapper.h" />
-    <ClInclude Include="src\openpal\DoublyLinkedListAdapter.h" />
+    <ClInclude Include="src\openpal\LinkedListAdapter.h" />
     <ClInclude Include="src\openpal\DynamicArray.h" />
     <ClInclude Include="src\openpal\gen\LogLevel.h" />
     <ClInclude Include="src\openpal\HasSize.h" />
@@ -51,6 +51,7 @@
     <ClInclude Include="src\openpal\StackAdapter.h" />
     <ClInclude Include="src\openpal\StaticArray.h" />
     <ClInclude Include="src\openpal\StaticBuffer.h" />
+    <ClInclude Include="src\openpal\StaticLinkedList.h" />
     <ClInclude Include="src\openpal\StaticList.h" />
     <ClInclude Include="src\openpal\StaticQueue.h" />
     <ClInclude Include="src\openpal\TimeDuration.h" />

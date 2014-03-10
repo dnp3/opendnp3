@@ -22,9 +22,6 @@
     <ClInclude Include="src\openpal\BufferWrapper.h">
       <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="src\openpal\DoublyLinkedListAdapter.h">
-      <Filter>Header</Filter>
-    </ClInclude>
     <ClInclude Include="src\openpal\DynamicArray.h">
       <Filter>Header</Filter>
     </ClInclude>
@@ -131,6 +128,12 @@
       <Filter>Header</Filter>
     </ClInclude>
     <ClInclude Include="src\openpal\Comparisons.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="src\openpal\LinkedListAdapter.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="src\openpal\StaticLinkedList.h">
       <Filter>Header</Filter>
     </ClInclude>
   </ItemGroup>

@@ -48,8 +48,8 @@ private:
 	openpal::DynamicArray<uint16_t, uint16_t> frozenCounterStack;
 	openpal::DynamicArray<Event<FrozenCounter>, uint16_t> frozenCounterArray;
 
-	openpal::DynamicArray<openpal::DoubleListNode<SequenceRecord>, uint16_t> sequenceOfEvents;
-	openpal::DynamicArray<openpal::DoubleListNode<SequenceRecord>*, uint16_t> selectedEvents;
+	openpal::DynamicArray<openpal::ListNode<SequenceRecord>, uint16_t> sequenceOfEvents;
+	openpal::DynamicArray<openpal::ListNode<SequenceRecord>*, uint16_t> selectedEvents;
 };
 
 }

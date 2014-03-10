@@ -23,7 +23,7 @@
 #define __EVENT_BUFFER_FACADE_H_
 
 #include <openpal/RandomInsertAdapter.h>
-#include <openpal/DoublyLinkedListAdapter.h>
+#include <openpal/StaticLinkedList.h>
 
 #include "opendnp3/app/MeasurementTypes.h"
 
@@ -50,8 +50,8 @@ public:
 	                    openpal::RandomInsertAdapter<Event<Analog>, uint16_t> aAnalogEvents,
 	                    openpal::RandomInsertAdapter<Event<Counter>, uint16_t> aCounterEvents,
 	                    openpal::RandomInsertAdapter<Event<FrozenCounter>, uint16_t> aFrozenCounterEvents,
-	                    openpal::DoublyLinkedListAdapter<SequenceRecord, uint16_t> aSequenceOfEvents,
-	                    openpal::StackAdapter<openpal::DoubleListNode<SequenceRecord>*, uint16_t> aSelectedEvents) :
+	                    openpal::LinkedListAdapter<SequenceRecord, uint16_t> aSequenceOfEvents,
+	                    openpal::StackAdapter<openpal::ListNode<SequenceRecord>*, uint16_t> aSelectedEvents) :
 
 		binaryEvents(aBinaryEvents),
 		analogEvents(aAnalogEvents),
@@ -67,8 +67,8 @@ public:
 	openpal::RandomInsertAdapter<Event<Analog>, uint16_t> analogEvents;
 	openpal::RandomInsertAdapter<Event<Counter>, uint16_t> counterEvents;
 	openpal::RandomInsertAdapter<Event<FrozenCounter>, uint16_t> frozenCounterEvents;
-	openpal::DoublyLinkedListAdapter<SequenceRecord, uint16_t> sequenceOfEvents;
-	openpal::StackAdapter<openpal::DoubleListNode<SequenceRecord>*, uint16_t> selectedEvents;
+	openpal::LinkedListAdapter<SequenceRecord, uint16_t> sequenceOfEvents;
+	openpal::StackAdapter<openpal::ListNode<SequenceRecord>*, uint16_t> selectedEvents;
 };
 
 
