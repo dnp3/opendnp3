@@ -49,7 +49,9 @@ namespace opendnp3
 		// this really only applies to "empty strings"
 		static const uint32_t MAX_OBJECTS_PER_APDU = 32768;
 
-
+		static_assert(MAX_APDU_BUFFER_SIZE >= 100, "APDU buffer size must be at least 100");
+		static_assert(DEFAULT_APDU_BUFFER_SIZE <= MAX_APDU_BUFFER_SIZE, "default buffer size must be less than the maximum");
+		
 	}
 }
 
