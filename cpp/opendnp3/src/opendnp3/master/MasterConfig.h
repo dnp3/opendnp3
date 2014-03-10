@@ -23,6 +23,7 @@
 
 #include "opendnp3/DNPConstants.h"
 #include "opendnp3/app/PointClass.h"
+#include "opendnp3/StaticSizeConfiguration.h"
 
 #include <openpal/TimeDuration.h>
 
@@ -40,7 +41,7 @@ struct MasterConfig
 
 	/// Default constructor
 	MasterConfig() :
-		FragSize(DEFAULT_FRAG_SIZE),
+		FragSize(sizes::DEFAULT_APDU_BUFFER_SIZE),
 		UseNonStandardVtoFunction(false),
 		AllowTimeSync(true),
 		DoUnsolOnStartup(false),

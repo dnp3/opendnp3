@@ -76,7 +76,7 @@ public:
 			return Context();
 		}
 
-		Context(bool expectContents_ = true, uint32_t aMaxObjects = SizeConfiguration::MAX_OBJECTS_PER_APDU) :
+		Context(bool expectContents_ = true, uint32_t aMaxObjects = sizes::MAX_OBJECTS_PER_APDU) :
 			expectContents(expectContents_),
 			count(0),
 			MAX_OBJECTS(aMaxObjects)

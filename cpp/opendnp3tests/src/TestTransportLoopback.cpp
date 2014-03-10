@@ -69,7 +69,7 @@ TEST_CASE(SUITE("TestTransportWithMockLoopback"))
 	LoopbackPhysicalLayerAsync phys(Logger(&log, LogLevel::Warning, "loopback"), &service);
 	TransportLoopbackTestObject t(&service, &phys, cfgA, cfgB);
 
-	TestLoopback(&t, DEFAULT_FRAG_SIZE);
+	TestLoopback(&t, sizes::DEFAULT_APDU_BUFFER_SIZE);
 }
 
 // Run this test on ARM to give us some regression protection for serial

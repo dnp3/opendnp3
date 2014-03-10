@@ -124,7 +124,7 @@ private:
 		}
 	}
 
-	openpal::StaticList<IEventBuffer*, uint16_t, SizeConfiguration::MAX_EVENT_BUFFERS> eventBuffers;
+	openpal::StaticList<IEventBuffer*, uint16_t, sizes::MAX_EVENT_BUFFERS> eventBuffers;
 
 	openpal::ITransactable* pTransactable;
 

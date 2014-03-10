@@ -20,7 +20,7 @@
  */
 #include "SlaveConfig.h"
 
-#include "opendnp3/DNPConstants.h"
+#include "opendnp3/StaticSizeConfiguration.h"
 
 using namespace openpal;
 
@@ -50,7 +50,7 @@ SlaveConfig::SlaveConfig() :
 	mUnsolPackDelay(TimeDuration::Milliseconds(200)),
 	mUnsolRetryDelay(TimeDuration::Seconds(2)),
 	mSelectTimeout(TimeDuration::Seconds(5)),
-	mMaxFragSize(DEFAULT_FRAG_SIZE),
+	mMaxFragSize(sizes::DEFAULT_APDU_BUFFER_SIZE),
 	mEventMaxConfig(),
 	mStaticBinary(StaticBinaryResponse::Group1Var2),
 	mStaticAnalog(StaticAnalogResponse::Group30Var1),

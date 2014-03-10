@@ -32,7 +32,7 @@ class APDUHelpers : private openpal::PureStatic
 {
 private:
 	static const uint32_t SIZE = 2048;
-	static uint8_t fixedBuffer[];
+	static uint8_t fixedBuffer[2048];
 
 public:
 

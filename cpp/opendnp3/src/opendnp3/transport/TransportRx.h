@@ -51,7 +51,7 @@ private:
 
 	TransportLayer* mpContext;
 
-	openpal::StaticBuffer<SizeConfiguration::MAX_APDU_BUFFER_SIZE> rxBuffer;
+	openpal::StaticBuffer<sizes::MAX_APDU_BUFFER_SIZE> rxBuffer;
 	uint32_t numBytesRead;
 	uint8_t sequence;
 	uint32_t maxFragSize;

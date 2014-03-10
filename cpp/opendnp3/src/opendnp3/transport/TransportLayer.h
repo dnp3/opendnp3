@@ -27,7 +27,7 @@
 #include <openpal/IExecutor.h>
 #include <openpal/AsyncLayerInterfaces.h>
 
-#include "opendnp3/DNPConstants.h"
+#include "opendnp3/StaticSizeConfiguration.h"
 
 
 namespace opendnp3
@@ -42,7 +42,7 @@ class TransportLayer : public openpal::IUpperLayer, public openpal::ILowerLayer
 {
 public:
 
-	TransportLayer(openpal::Logger aLogger, openpal::IExecutor* pExecutor_, uint32_t aFragSize = DEFAULT_FRAG_SIZE);
+	TransportLayer(openpal::Logger aLogger, openpal::IExecutor* pExecutor_, uint32_t aFragSize = sizes::DEFAULT_APDU_BUFFER_SIZE);
 	virtual ~TransportLayer() {}
 
 	/* Actions - Taken by the states/transmitter/receiver in response to events */

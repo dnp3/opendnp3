@@ -21,35 +21,36 @@
 #ifndef __STATIC_SIZE_CONFIGURATION_H_
 #define __STATIC_SIZE_CONFIGURATION_H_
 
-#include <openpal/Uncopyable.h>
-
 #include <cstdint>
 
 // Default configurations for statically allocated buffers int the stack
 // They are liberally set by default, but can be reduced for embedded systems
 
-namespace opendnp3
+namespace opendnp3 
 {
+	namespace sizes
+	{
+		// the maximum number of event buffers that can be bound to a database
+		static const uint16_t MAX_EVENT_BUFFERS = 10;
 
-struct SizeConfiguration : private openpal::PureStatic
-{
-	// the maximum number of event buffers that can be bound to a database
-	static const uint16_t MAX_EVENT_BUFFERS = 10;
+		// the maximum number of static read object/variation records that can be in any READ request
+		static const uint16_t MAX_READ_REQUESTS = 16;
 
-	// the maximum number of static read object/variation records that can be in any READ request
-	static const uint16_t MAX_READ_REQUESTS = 16;
+		// the maximum number of event read object/variation records that can be in any READ request
+		static const uint16_t MAX_EVENT_READ_REQUESTS = 16;
 
-	// the maximum number of event read object/variation records that can be in any READ request
-	static const uint16_t MAX_EVENT_READ_REQUESTS = 16;
+		// the default APDU buffer size
+		static const uint32_t DEFAULT_APDU_BUFFER_SIZE = 2048;
 
-	// the maximum size of a transmitted or received APDU
-	static const uint32_t MAX_APDU_BUFFER_SIZE = 2048;
+		// the maximum size of a transmitted or received APDU
+		static const uint32_t MAX_APDU_BUFFER_SIZE = 2048;
 
-	// a safeguard parameter to project from DoS attacks
-	// this really only applies to "empty strings"
-	static const uint32_t MAX_OBJECTS_PER_APDU = 32768;
-};
+		// a safeguard parameter to project from DoS attacks
+		// this really only applies to "empty strings"
+		static const uint32_t MAX_OBJECTS_PER_APDU = 32768;
 
+
+	}
 }
 
 #endif

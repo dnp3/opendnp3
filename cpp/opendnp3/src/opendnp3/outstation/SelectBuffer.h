@@ -74,7 +74,7 @@ private:
 	openpal::MonotonicTimestamp timestamp;
 	uint8_t selectedSequence;
 
-	openpal::StaticBuffer<SizeConfiguration::MAX_APDU_BUFFER_SIZE> buffer;
+	openpal::StaticBuffer<sizes::MAX_APDU_BUFFER_SIZE> buffer;
 	openpal::ReadOnlyBuffer selectedBuffer;
 };
 

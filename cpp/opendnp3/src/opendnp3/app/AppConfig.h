@@ -21,7 +21,7 @@
 #ifndef __APP_CONFIG_H_
 #define __APP_CONFIG_H_
 
-#include "opendnp3/DNPConstants.h"
+#include "opendnp3/StaticSizeConfiguration.h"
 
 using namespace openpal;
 
@@ -34,9 +34,14 @@ struct AppConfig
 {
 
 	/// Default constructor
-	AppConfig(bool aIsMaster = true) : IsMaster(aIsMaster), RspTimeout(TimeDuration::Seconds(5)), NumRetry(0), FragSize(DEFAULT_FRAG_SIZE) {}
+	AppConfig(bool aIsMaster = true) : 
+		IsMaster(aIsMaster),
+		RspTimeout(TimeDuration::Seconds(5)),
+		NumRetry(0), 
+		FragSize(sizes::DEFAULT_APDU_BUFFER_SIZE)
+	{}
 
-	AppConfig(bool aIsMaster, TimeDuration aRspTimeout, size_t aNumRetry = 0, size_t aFragSize = DEFAULT_FRAG_SIZE) :
+	AppConfig(bool aIsMaster, TimeDuration aRspTimeout, size_t aNumRetry = 0, size_t aFragSize = sizes::DEFAULT_APDU_BUFFER_SIZE) :
 		IsMaster(aIsMaster),
 		RspTimeout(aRspTimeout),
 		NumRetry(aNumRetry),

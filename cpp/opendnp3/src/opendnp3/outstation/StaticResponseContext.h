@@ -101,7 +101,7 @@ private:
 	Database* pDatabase;
 	StaticResponseTypes rspTypes;
 
-	openpal::StaticQueue<StaticRangeLoader, uint8_t, SizeConfiguration::MAX_READ_REQUESTS> staticResponseQueue;
+	openpal::StaticQueue<StaticRangeLoader, uint8_t, sizes::MAX_READ_REQUESTS> staticResponseQueue;
 
 };
 

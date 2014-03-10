@@ -133,7 +133,7 @@ private:
 	void SyncTime(ITask* apTask);
 	void ProcessCommand(ITask* apTask);
 
-	openpal::StaticBuffer<SizeConfiguration::MAX_APDU_BUFFER_SIZE> requestBuffer;
+	openpal::StaticBuffer<sizes::MAX_APDU_BUFFER_SIZE> requestBuffer;
 
 	IINField mLastIIN;						// last IIN received from the outstation
 

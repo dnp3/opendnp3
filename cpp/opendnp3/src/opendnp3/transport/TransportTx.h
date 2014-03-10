@@ -54,7 +54,7 @@ private:
 
 	TransportLayer* mpContext;
 
-	openpal::StaticBuffer<SizeConfiguration::MAX_APDU_BUFFER_SIZE> underlying;
+	openpal::StaticBuffer<sizes::MAX_APDU_BUFFER_SIZE> underlying;
 	openpal::WriteBuffer apduBuffer;
 	openpal::StaticBuffer<TL_MAX_TPDU_LENGTH> tpduBuffer;
 

@@ -23,6 +23,7 @@
 #include <openpal/LoggableMacros.h>
 #include <openpal/IExecutor.h>
 
+#include "opendnp3/DNPConstants.h"
 
 #include "FunctionCodeHelpers.h"
 

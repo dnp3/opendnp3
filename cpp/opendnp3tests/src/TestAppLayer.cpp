@@ -23,8 +23,9 @@
 #include <openpal/ToHex.h>
 #include <openpal/StaticBuffer.h>
 
-#include "Exception.h"
+#include <opendnp3/DNPConstants.h>
 
+#include "Exception.h"
 #include "BufferHelpers.h"
 #include "AppLayerTest.h"
 
