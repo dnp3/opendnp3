@@ -46,6 +46,13 @@ public:
 		return value;
 	}
 
+	T GetAndClear()
+	{
+		auto ret = value;
+		Clear();
+		return ret;
+	}
+
 	void Clear()
 	{
 		valueIsSet = false;

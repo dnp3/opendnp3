@@ -27,8 +27,6 @@
 namespace opendnp3
 {
 
-//const uint32_t DEFAULT_FRAG_SIZE = 2048;
-
 /// Error codes returned in log messages
 enum DNPErrorCodes
 {
