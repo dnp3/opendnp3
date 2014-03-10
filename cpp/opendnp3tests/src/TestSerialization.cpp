@@ -20,12 +20,10 @@
  */
 #include <catch.hpp>
 
-
 #include "BufferHelpers.h"
 
-#include <opendnp3/Util.h>
-
 #include <openpal/Serialization.h>
+#include <openpal/Comparisons.h>
 
 #include <memory>
 
@@ -76,7 +74,7 @@ bool TestFloatParsing(std::string aHex, typename T::Type aValue)
 	{
 		memcpy(buff + i, hs, type_size);
 		typename T::Type val = T::Read(buff + i);
-		if(!FloatEqual(val, aValue)) return false;
+		if(!openpal::FloatEqual(val, aValue)) return false;
 	}
 
 	return true;

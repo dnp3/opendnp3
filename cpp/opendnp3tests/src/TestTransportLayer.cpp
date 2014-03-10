@@ -26,7 +26,7 @@
 
 #include <opendnp3/transport/TransportConstants.h>
 
-#include <opendnp3/Util.h>
+
 #include <opendnp3/ProtocolUtil.h>
 
 using namespace std;

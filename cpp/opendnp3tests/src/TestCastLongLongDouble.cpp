@@ -20,15 +20,9 @@
  */
 #include <catch.hpp>
 
-
-#include <opendnp3/Util.h>
-
 #include <math.h>
 
 #include <iostream>
-
-using namespace opendnp3;
-
 
 
 #define SUITE(name) "Casting - " name
@@ -42,22 +36,6 @@ template <typename T1>
 bool IsEqual(T1 a, T1 b)
 {
 	return a == b;
-}
-
-template <>
-bool IsEqual(double a, double b)
-{
-	double diff = a - b;
-	if(diff < 0) diff = -diff;
-	return diff <= 1e-5;
-}
-
-template <>
-bool IsEqual(float a, float b)
-{
-	float diff = a - b;
-	if(diff < 0) diff = -diff;
-	return diff <= 1e-5;
 }
 
 #define CHECK_CAST(t1, t2, a, b)\
@@ -100,11 +78,4 @@ TEST_CASE(SUITE("Casting"))
 
 }
 
-TEST_CASE(SUITE("ManualConversion"))
-{
-
-	REQUIRE(fabs(4294967296.0 -  SafeCastInt64ToDouble(4294967296LL)) < 1e-6);
-	REQUIRE(fabs(4398046511104.00 -  SafeCastInt64ToDouble(4398046511104LL)) < 1e-6);
-
-}
 

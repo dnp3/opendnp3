@@ -343,9 +343,6 @@
     <ClCompile Include="src\TestMaster.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\TestMisc.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\TestOutstation.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

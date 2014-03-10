@@ -25,7 +25,7 @@
 #include "SlaveTestObject.h"
 
 #include <opendnp3/DNPConstants.h>
-#include <opendnp3/Util.h>
+
 
 using namespace std;
 using namespace opendnp3;
@@ -70,16 +70,12 @@ TEST_CASE(SUITE("DataPost"))
 	SlaveTestObject t(cfg, DatabaseTemplate::BinaryOnly(1));
 
 	t.db.staticData.binaries.metadata[0].clazz = CLASS_1;
-
-	IDataObserver* pObs = t.slave.GetDataObserver();
+	
 	{
-		Transaction t(pObs);
+		Transaction tx(&t.db);
 		Binary b(true, BQ_ONLINE);
-		pObs->Update(b, 0);
+		t.db.Update(b, 0);
 	}
-
-	// start, update, end
-	REQUIRE(3 ==  t.mts.Dispatch());
 }
 
 TEST_CASE(SUITE("DataPostToNonExistent"))
@@ -88,64 +84,19 @@ TEST_CASE(SUITE("DataPostToNonExistent"))
 	SlaveTestObject t(cfg, DatabaseTemplate::BinaryOnly(1));
 	t.db.staticData.binaries.metadata[0].clazz = CLASS_1;
 
-	IDataObserver* pObs = t.slave.GetDataObserver();
+	
 	{
-		Transaction t(pObs);
+		Transaction tx(&t.db);
 		Binary b(true, BQ_ONLINE);
-		pObs->Update(b, 5);
-	}
-
-	REQUIRE(3 ==  t.mts.Dispatch());
+		t.db.Update(b, 5);
+	}	
 
 	{
-		Transaction t(pObs);
+		Transaction tx(&t.db);
 		Binary b(true, BQ_ONLINE);
-		pObs->Update(b, 0);
-	}
-
-	REQUIRE(3 ==  t.mts.Dispatch());
+		t.db.Update(b, 0);
+	}	
 }
-
-TEST_CASE(SUITE("UnsolicitedStaysDisabledEvenIfDataAreLoadedPriorToOpen"))
-{
-	SlaveConfig cfg; cfg.mDisableUnsol = true;
-	SlaveTestObject t(cfg, DatabaseTemplate::AnalogOnly(1));
-
-	auto pObs = t.slave.GetDataObserver();
-
-	{
-		Transaction t(pObs);
-		pObs->Update(Analog(0), 0);
-	}
-
-	REQUIRE(t.mts.Dispatch() > 0);
-
-	t.slave.OnLowerLayerUp();
-
-	// Outstation shouldn't send an unsolicited handshake b/c unsol it disabled
-	REQUIRE(t.NothingToRead());
-}
-
-TEST_CASE(SUITE("UnsolicitedStaysDisabledEvenIfDataAreLoadedAfterOpen"))
-{
-	SlaveConfig cfg; cfg.mDisableUnsol = true;
-	SlaveTestObject t(cfg, DatabaseTemplate::AnalogOnly(1));
-
-	auto pObs = t.slave.GetDataObserver();
-
-	t.slave.OnLowerLayerUp();
-
-	{
-		Transaction t(pObs);
-		pObs->Update(Analog(0), 0);
-	}
-
-	REQUIRE(t.mts.Dispatch() > 0);
-
-	// Outstation shouldn't send an unsolicited handshake b/c unsol it disabled
-	REQUIRE(t.NothingToRead());
-}
-
 
 TEST_CASE(SUITE("UnsupportedFunction"))
 {

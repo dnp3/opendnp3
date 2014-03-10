@@ -130,6 +130,9 @@
     <ClInclude Include="src\openpal\Uncopyable.h">
       <Filter>Header</Filter>
     </ClInclude>
+    <ClInclude Include="src\openpal\Comparisons.h">
+      <Filter>Header</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\openpal\AsyncLayerInterfaces.cpp">

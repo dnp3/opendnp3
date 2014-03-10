@@ -25,7 +25,7 @@
 #include "SlaveTestObject.h"
 
 #include <opendnp3/DNPConstants.h>
-#include <opendnp3/Util.h>
+
 
 using namespace std;
 using namespace opendnp3;
@@ -265,6 +265,42 @@ TEST_CASE(SUITE("UnsolData"))
 	REQUIRE(t.app.NumAPDU() ==  0); //check that no more frags are sent
 }
 
+
+TEST_CASE(SUITE("UnsolicitedStaysDisabledEvenIfDataAreLoadedPriorToOpen"))
+{
+SlaveConfig cfg; cfg.mDisableUnsol = true;
+SlaveTestObject t(cfg, DatabaseTemplate::AnalogOnly(1));
+
+{
+Transaction tx(&t.db);
+t.db.Update(Analog(0), 0);
+}
+
+t.slave.OnLowerLayerUp();
+
+// Outstation shouldn't send an unsolicited handshake b/c unsol it disabled
+REQUIRE(t.NothingToRead());
+}
+
+TEST_CASE(SUITE("UnsolicitedStaysDisabledEvenIfDataAreLoadedAfterOpen"))
+{
+SlaveConfig cfg; cfg.mDisableUnsol = true;
+SlaveTestObject t(cfg, DatabaseTemplate::AnalogOnly(1));
+
+auto pObs = t.slave.GetDataObserver();
+
+t.slave.OnLowerLayerUp();
+
+{
+Transaction t(pObs);
+pObs->Update(Analog(0), 0);
+}
+
+REQUIRE(t.mts.Dispatch() > 0);
+
+// Outstation shouldn't send an unsolicited handshake b/c unsol it disabled
+REQUIRE(t.NothingToRead());
+}
 
 TEST_CASE(SUITE("UnsolEventBufferOverflow"))
 {

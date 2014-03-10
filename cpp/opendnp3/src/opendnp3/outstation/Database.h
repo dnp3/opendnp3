@@ -47,7 +47,7 @@ class Database : public IDataObserver
 {
 public:
 
-	Database(const StaticDataFacade&);
+	Database(const StaticDataFacade&, openpal::ITransactable* pTransactable = nullptr);
 
 	/* Functions for obtaining iterators */
 
@@ -126,9 +126,12 @@ private:
 
 	openpal::StaticList<IEventBuffer*, uint16_t, SizeConfiguration::MAX_EVENT_BUFFERS> eventBuffers;
 
-	// ITransactable  functions, no lock on this structure.
-	void Start() final {}
-	void End() final {}
+	openpal::ITransactable* pTransactable;
+
+	// ITransactable  functions, proxies to the given transactable
+
+	virtual void Start() override final;
+	virtual void End() override final;
 };
 
 }

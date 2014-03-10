@@ -61,7 +61,7 @@ public:
 
 	openpal::IExecutor* GetExecutor()
 	{
-		return mpExecutor;
+		return pExecutor;
 	}
 
 	void AddStateListener(std::function<void (StackState)> aListener);
@@ -69,12 +69,12 @@ public:
 	void Shutdown();
 
 private:
-	openpal::IExecutor* mpExecutor;
-	ApplicationStack mAppStack;
-	DynamicallyAllocatedDatabase mDynamicDatabaseBuffer;
-	Database mDB;
-	Slave mSlave;
-	std::function<void (IOutstation*)> mOnShutdown;
+	openpal::IExecutor* pExecutor;
+	ApplicationStack appStack;
+	DynamicallyAllocatedDatabase dynamicDatabaseBuffer;
+	Database database;
+	Slave slave;
+	std::function<void (IOutstation*)> onShutdown;
 };
 
 }

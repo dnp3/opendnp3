@@ -20,7 +20,7 @@
  */
 #include <catch.hpp>
 
-#include <opendnp3/Util.h>
+
 
 
 #include "Timeout.h"

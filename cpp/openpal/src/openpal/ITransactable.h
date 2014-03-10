@@ -69,11 +69,17 @@ public:
 
 	static void Start(ITransactable* t)
 	{
-		t->Start();
+		if (t)
+		{
+			t->Start();
+		}
 	}
 	static void End(ITransactable* t)
 	{
-		t->End();
+		if (t)
+		{
+			t->End();
+		}
 	}
 
 	template <class ReturnType, class TransactionType, class Fun>

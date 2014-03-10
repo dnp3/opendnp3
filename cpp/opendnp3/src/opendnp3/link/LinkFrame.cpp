@@ -22,8 +22,6 @@
 
 #include "opendnp3/link/DNPCrc.h"
 
-#include "opendnp3/Util.h"
-
 #include <openpal/Serialization.h>
 
 #include <assert.h>

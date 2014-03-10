@@ -57,6 +57,7 @@
     <ClInclude Include="src\openpal\ToHex.h" />
     <ClInclude Include="src\openpal\Uncopyable.h" />
     <ClInclude Include="src\openpal\UTCTimestamp.h" />
+    <ClInclude Include="src\openpal\Comparisons.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\openpal\AsyncLayerInterfaces.cpp" />

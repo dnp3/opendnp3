@@ -51,9 +51,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\opendnp3\Util.h">
-      <Filter>Header</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\SubjectBase.h">
       <Filter>Header</Filter>
     </ClInclude>
@@ -690,9 +687,6 @@
     <ClInclude Include="src\opendnp3\link\IOpenDelayStrategy.h">
       <Filter>Header\link</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\outstation\ProxyDataObserver.h">
-      <Filter>Header\outstation</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\opendnp3\app\AnalogOutput.cpp">
@@ -1043,9 +1037,6 @@
     <ClCompile Include="src\opendnp3\SubjectBase.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\Util.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
     <ClCompile Include="src\opendnp3\app\ObjectWriter.cpp">
       <Filter>Source\app</Filter>
     </ClCompile>
@@ -1111,9 +1102,6 @@
     </ClCompile>
     <ClCompile Include="src\opendnp3\link\IOpenDelayStrategy.cpp">
       <Filter>Source\link</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\outstation\ProxyDataObserver.cpp">
-      <Filter>Source\outstation</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

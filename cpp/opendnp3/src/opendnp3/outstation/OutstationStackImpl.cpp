@@ -32,48 +32,48 @@ OutstationStackImpl::OutstationStackImpl(
     std::function<void (bool)> aEnableDisableFunc,
     std::function<void (IOutstation*)> aOnShutdown) :
 	IOutstation(arLogger, aEnableDisableFunc),
-	mpExecutor(apExecutor),
-	mAppStack(arLogger, apExecutor, arCfg.app, arCfg.link),
-	mDynamicDatabaseBuffer(arCfg.database.GetTemplate()),
-	mDB(mDynamicDatabaseBuffer.GetFacade()),
-	mSlave(arLogger.GetSubLogger("outstation"), &mAppStack.mApplication, apExecutor, apTimeWriteHandler, &mDB, apCmdHandler, arCfg.slave),
-	mOnShutdown(aOnShutdown)
+	pExecutor(apExecutor),
+	appStack(arLogger, apExecutor, arCfg.app, arCfg.link),
+	dynamicDatabaseBuffer(arCfg.database.GetTemplate()),
+	database(dynamicDatabaseBuffer.GetFacade()),
+	slave(arLogger.GetSubLogger("outstation"), &appStack.mApplication, apExecutor, apTimeWriteHandler, &database, apCmdHandler, arCfg.slave),
+	onShutdown(aOnShutdown)
 {
-	mAppStack.mApplication.SetUser(&mSlave);
-	mDynamicDatabaseBuffer.Configure(arCfg.database);
+	appStack.mApplication.SetUser(&slave);
+	dynamicDatabaseBuffer.Configure(arCfg.database);
 }
 
 IDataObserver* OutstationStackImpl::GetDataObserver()
 {
-	return mSlave.GetDataObserver();
+	return &database;
 }
 
 void OutstationStackImpl::SetNeedTimeIIN()
 {
-	mpExecutor->Post([this]()
+	pExecutor->Post([this]()
 	{
-		this->mSlave.SetNeedTimeIIN();
+		this->slave.SetNeedTimeIIN();
 	});
 }
 
 ILinkContext* OutstationStackImpl::GetLinkContext()
 {
-	return &mAppStack.mLink;
+	return &appStack.mLink;
 }
 
 void OutstationStackImpl::SetLinkRouter(ILinkRouter* apRouter)
 {
-	mAppStack.mLink.SetRouter(apRouter);
+	appStack.mLink.SetRouter(apRouter);
 }
 
 void OutstationStackImpl::AddStateListener(std::function<void (StackState)> aListener)
 {
-	mSlave.AddStateListener(aListener);
+	slave.AddStateListener(aListener);
 }
 
 void OutstationStackImpl::Shutdown()
 {
-	mOnShutdown(this);
+	onShutdown(this);
 }
 
 }

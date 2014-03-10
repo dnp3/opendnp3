@@ -22,9 +22,10 @@
 #define __FLEXIBLE_DATA_OBSERVER_H_
 
 #include <opendnp3/outstation/IDataObserver.h>
-#include <opendnp3/Util.h>
 #include <opendnp3/SubjectBase.h>
 #include <opendnp3/master/ISOEHandler.h>
+
+#include <openpal/Comparisons.h>
 
 #include <iostream>
 #include <map>
@@ -89,7 +90,7 @@ public:
 		PointMap<Analog>::Type::iterator i = mAnalogMap.find(aIndex);
 		if(i == mAnalogMap.end()) return false;
 		if(i->second.GetQuality() != aQuality) return false;
-		return FloatEqual(aValue, i->second.GetValue());
+		return openpal::FloatEqual(aValue, i->second.GetValue());
 	}
 
 	bool Check(int32_t aValue, AnalogQuality aQuality, size_t aIndex, int64_t aTime)

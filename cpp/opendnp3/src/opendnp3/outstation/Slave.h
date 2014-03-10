@@ -27,7 +27,6 @@
 #include "opendnp3/outstation/StaticResponseContext.h"
 #include "opendnp3/outstation/StaticResponseTypes.h"
 #include "opendnp3/outstation/SelectBuffer.h"
-#include "opendnp3/outstation/ProxyDataObserver.h"
 
 #include "opendnp3/app/CachedRequest.h"
 #include "opendnp3/app/IAppLayer.h"
@@ -97,19 +96,7 @@ public:
 	void OnSolFailure();
 
 	// Only have to override OnRequest since we're a slave
-	void OnRequest(const APDURecord&, SequenceInfo);
-
-	/**
-	 * Returns the buffer that is used for data updates by the user
-	 * application.  Writing new entries to this buffer will result in the
-	 * Slave doing things.
-	 *
-	 * @return			a pointer to the buffer
-	 */
-	IDataObserver* GetDataObserver()
-	{
-		return &proxyObserver;
-	}
+	void OnRequest(const APDURecord&, SequenceInfo);	
 
 private:
 
@@ -123,7 +110,6 @@ private:
 
 	APDUResponse lastResponse;				// wrapper that points to the last response made
 
-	ProxyDataObserver proxyObserver;		// how client code gives us updates
 	IAppLayer* mpAppLayer;					// lower application layer
 	Database* mpDatabase;					// holds static data
 	ICommandHandler* mpCmdHandler;			// how commands are selected/operated on application code

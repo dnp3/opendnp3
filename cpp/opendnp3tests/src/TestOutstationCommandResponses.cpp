@@ -25,7 +25,7 @@
 #include "SlaveTestObject.h"
 
 #include <opendnp3/DNPConstants.h>
-#include <opendnp3/Util.h>
+
 
 using namespace std;
 using namespace opendnp3;

@@ -25,8 +25,7 @@
 #include <openpal/LoggableMacros.h>
 #include <openpal/IPhysicalLayerAsync.h>
 #include <openpal/ToHex.h>
-
-#include <opendnp3/Util.h>
+#include <openpal/Comparisons.h>
 
 #include "Exception.h"
 

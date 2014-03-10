@@ -18,40 +18,32 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include <catch.hpp>
+#ifndef __COMPARISONS_H_
+#define __COMPARISONS_H_
 
-
-#include <iostream>
-#include <map>
-#include <vector>
-#include <stdarg.h>
-#include <math.h>
-#include <sstream>
-#include <bitset>
-#include <signal.h>
-#include <vector>
-
-#include <opendnp3/Util.h>
-
-using namespace std;
-using namespace opendnp3;
-
-
-#define SUITE(name) "MiscTest - " name
-
-TEST_CASE(SUITE("ToUpperCase"))
+namespace openpal
 {
-	string test("lower case");
-	toUpperCase(test);
-	REQUIRE(test ==  "LOWER CASE");
 
-	string test2("UPPPER case");
-	toUpperCase(test2);
-	REQUIRE(test2 ==  "UPPPER CASE");
-
-	string test3("123456789abcDEF");
-	toUpperCase(test3);
-	REQUIRE(test3 ==  "123456789ABCDEF");
+template <class T>
+inline T Min(T a, T b)
+{
+	return (a < b) ? a : b;
 }
 
+template <class T>
+inline T Max(T a, T b)
+{
+	return (a > b) ? a : b;
+}
 
+template <class T>
+bool FloatEqual(T a, T b, T eapllon = 1e-6)
+{
+	T diff = a - b;
+	if(diff < 0) diff = -diff;
+	return diff <= eapllon;
+}
+
+}
+
+#endif
