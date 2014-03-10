@@ -51,9 +51,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\opendnp3\SubjectBase.h">
-      <Filter>Header</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\StaticSizeConfiguration.h">
       <Filter>Header</Filter>
     </ClInclude>
@@ -1023,9 +1020,6 @@
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\StackBase.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\SubjectBase.cpp">
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\app\ObjectWriter.cpp">

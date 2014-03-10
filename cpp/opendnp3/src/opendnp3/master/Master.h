@@ -139,9 +139,7 @@ private:
 
 	void ProcessIIN(const IINField& arIIN);	// Analyze IIN bits and react accordingly
 	void ProcessDataResponse(const APDUResponseRecord& aRecord);	// Read data output of solicited or unsolicited response and publish
-	void StartTask(MasterTaskBase*, bool aInit);	// Starts a task running
-
-	QueuedCommandProcessor mCommandQueue;	// Threadsafe queue for buffering command requests
+	void StartTask(MasterTaskBase*, bool aInit);	// Starts a task running	
 
 	IAppLayer* mpAppLayer;					// lower application layer
 	ISOEHandler* mpSOEHandler;
@@ -168,6 +166,8 @@ private:
 	TimeSync mTimeSync;						// performs time sync on the outstation
 	CommandTask mCommandTask;				// performs command execution
 
+
+	QueuedCommandProcessor mCommandQueue;	// Threadsafe queue for buffering command requests
 };
 
 }

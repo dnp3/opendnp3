@@ -22,20 +22,21 @@
 #define __QUEUED_COMMAND_PROCESSOR_H_
 
 #include "ICommandProcessor.h"
-#include "opendnp3/SubjectBase.h"
 
+#include "opendnp3/master/AsyncTaskInterfaces.h"
+
+#include <openpal/IExecutor.h>
 
 #include <queue>
-#include <mutex>
 
 namespace opendnp3
 {
 
-class QueuedCommandProcessor : public ICommandProcessor, public SubjectBase
+class QueuedCommandProcessor : public ICommandProcessor
 {
 public:
 
-	QueuedCommandProcessor();
+	QueuedCommandProcessor(openpal::IExecutor* pExecutor_, ITask* pEnableTask_);
 
 	// Implement the ICommandProcessor interface
 
@@ -59,33 +60,31 @@ public:
 	bool Dispatch(ICommandProcessor* apProcessor);
 
 private:
-	std::mutex mMutex;
-	std::queue<std::function<void (ICommandProcessor*)>> mRequestQueue;
+	openpal::IExecutor* pExecutor;
+	ITask* pEnableTask;
+
+	std::queue<std::function<void (ICommandProcessor*)>> requestQueue;
 
 	template <class T>
 	void SelectAndOperateT(const T& arCommand, uint16_t aIndex, std::function<void (CommandResponse)> aCallback)
-	{
+	{					
+		Transaction tx(pExecutor);
+		requestQueue.push([arCommand, aIndex, aCallback](ICommandProcessor * pProcessor)
 		{
-			std::lock_guard<std::mutex> lock(mMutex);
-			mRequestQueue.push([arCommand, aIndex, aCallback](ICommandProcessor * pProcessor)
-			{
-				pProcessor->SelectAndOperate(arCommand, aIndex, aCallback);
-			});
-		}
-		this->NotifyObservers();
+			pProcessor->SelectAndOperate(arCommand, aIndex, aCallback);
+		});
+		pExecutor->Post([this]() { pEnableTask->Enable(); });
 	}
 
 	template <class T>
 	void DirectOperateT(const T& arCommand, uint16_t aIndex, std::function<void (CommandResponse)> aCallback)
 	{
+		Transaction tx(pExecutor);
+		requestQueue.push([arCommand, aIndex, aCallback](ICommandProcessor * pProcessor)
 		{
-			std::lock_guard<std::mutex> lock(mMutex);
-			mRequestQueue.push([arCommand, aIndex, aCallback](ICommandProcessor * pProcessor)
-			{
-				pProcessor->DirectOperate(arCommand, aIndex, aCallback);
-			});
-		}
-		this->NotifyObservers();
+			pProcessor->DirectOperate(arCommand, aIndex, aCallback);
+		});
+		pExecutor->Post([this]() { pEnableTask->Enable(); });
 	}
 };
 

@@ -22,7 +22,6 @@
 #define __FLEXIBLE_DATA_OBSERVER_H_
 
 #include <opendnp3/outstation/IDataObserver.h>
-#include <opendnp3/SubjectBase.h>
 #include <opendnp3/master/ISOEHandler.h>
 
 #include <openpal/Comparisons.h>
@@ -45,7 +44,7 @@ notifies observers of any updates.
 
 Check functionality allows it to be used for testing.
 */
-class FlexibleDataObserver : public ISOEHandler, public SubjectBase
+class FlexibleDataObserver : public ISOEHandler
 {
 public:
 
@@ -233,7 +232,7 @@ private:
 		bool notify = mNewData;
 		mNewData = false;
 		mMutex.unlock();
-		if(notify) this->NotifyObservers();
+		// if(notify) this->NotifyObservers(); TODO
 	}
 
 	template <class T, class U>

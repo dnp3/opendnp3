@@ -46,7 +46,7 @@ namespace opendnp3
 
 Master::Master(Logger aLogger, MasterConfig aCfg, IAppLayer* apAppLayer, ISOEHandler* apSOEHandler, AsyncTaskGroup* apTaskGroup, openpal::IExecutor* apExecutor, IUTCTimeSource* apTimeSrc) :
 	IAppUser(aLogger),
-	StackBase(apExecutor),
+	StackBase(apExecutor),	
 	mpAppLayer(apAppLayer),
 	mpSOEHandler(apSOEHandler),
 	mpTaskGroup(apTaskGroup),
@@ -55,23 +55,15 @@ Master::Master(Logger aLogger, MasterConfig aCfg, IAppLayer* apAppLayer, ISOEHan
 	mpTask(nullptr),
 	mpScheduledTask(nullptr),
 	mState(StackState::COMMS_DOWN),
-	mSchedule(apTaskGroup, this, aCfg),
+	mSchedule(apTaskGroup, this, aCfg),	
 	mClassPoll(aLogger, apSOEHandler),
 	mClearRestart(aLogger),
 	mConfigureUnsol(aLogger),
 	mTimeSync(aLogger, apTimeSrc),
-	mCommandTask(aLogger)
+	mCommandTask(aLogger),
+	mCommandQueue(apExecutor, mSchedule.mpCommandTask)
 {
-	/*
-	 * Establish a link between the mCommandQueue and the
-	 * mSchedule.mpCommandTask.  When new data is written to mCommandQueue,
-	 * wake up mpCommandTask to process the data.
-	 */
-	mCommandQueue.AddObserver(mpExecutor, [this]()
-	{
-		this->mSchedule.mpCommandTask->Enable();
-	});
-
+	
 }
 
 void Master::UpdateState(StackState aState)

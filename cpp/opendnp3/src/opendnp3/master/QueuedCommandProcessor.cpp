@@ -20,17 +20,20 @@
  */
 #include "QueuedCommandProcessor.h"
 
+using namespace openpal;
+
 namespace opendnp3
 {
 
-QueuedCommandProcessor::QueuedCommandProcessor() :
-	SubjectBase()
+QueuedCommandProcessor::QueuedCommandProcessor(openpal::IExecutor* pExecutor_, ITask* pEnableTask_) :
+	pExecutor(pExecutor_),
+	pEnableTask(pEnableTask_)
 {
 
 }
 
 void QueuedCommandProcessor::SelectAndOperate(const ControlRelayOutputBlock& arCommand, uint16_t aIndex, std::function<void (CommandResponse)> aCallback)
-{
+{	
 	this->SelectAndOperateT(arCommand, aIndex, aCallback);
 }
 
@@ -45,12 +48,12 @@ void QueuedCommandProcessor::SelectAndOperate(const AnalogOutputInt16& arCommand
 }
 
 void QueuedCommandProcessor::DirectOperate(const AnalogOutputInt16& arCommand, uint16_t aIndex, std::function<void (CommandResponse)> aCallback)
-{
+{	
 	this->DirectOperateT(arCommand, aIndex, aCallback);
 }
 
 void QueuedCommandProcessor::SelectAndOperate(const AnalogOutputInt32& arCommand, uint16_t aIndex, std::function<void (CommandResponse)> aCallback)
-{
+{	
 	this->SelectAndOperateT(arCommand, aIndex, aCallback);
 }
 
@@ -60,33 +63,37 @@ void QueuedCommandProcessor::DirectOperate(const AnalogOutputInt32& arCommand, u
 }
 
 void QueuedCommandProcessor::SelectAndOperate(const AnalogOutputFloat32& arCommand, uint16_t aIndex, std::function<void (CommandResponse)> aCallback)
-{
+{	
 	this->SelectAndOperateT(arCommand, aIndex, aCallback);
 }
 
 void QueuedCommandProcessor::DirectOperate(const AnalogOutputFloat32& arCommand, uint16_t aIndex, std::function<void (CommandResponse)> aCallback)
 {
+	
 	this->DirectOperateT(arCommand, aIndex, aCallback);
 }
 
 void QueuedCommandProcessor::SelectAndOperate(const AnalogOutputDouble64& arCommand, uint16_t aIndex, std::function<void (CommandResponse)> aCallback)
-{
+{	
 	this->SelectAndOperateT(arCommand, aIndex, aCallback);
 }
 
 void QueuedCommandProcessor::DirectOperate(const AnalogOutputDouble64& arCommand, uint16_t aIndex, std::function<void (CommandResponse)> aCallback)
-{
+{	
 	this->DirectOperateT(arCommand, aIndex, aCallback);
 }
 
 bool QueuedCommandProcessor::Dispatch(ICommandProcessor* apProcessor)
-{
-	std::lock_guard<std::mutex> lock(mMutex);
-	if(mRequestQueue.empty()) return false;
+{	
+	Transaction tx(pExecutor);
+	if (requestQueue.empty())
+	{
+		return false;
+	}
 	else
 	{
-		mRequestQueue.front()(apProcessor);
-		mRequestQueue.pop();
+		requestQueue.front()(apProcessor);
+		requestQueue.pop();
 		return true;
 	}
 }

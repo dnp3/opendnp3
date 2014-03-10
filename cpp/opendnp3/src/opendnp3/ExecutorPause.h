@@ -21,8 +21,6 @@
 #ifndef __EXECUTOR_PAUSE_H_
 #define __EXECUTOR_PAUSE_H_
 
-
-
 #include <mutex>
 #include <condition_variable>
 

@@ -30,7 +30,6 @@
 #include "MeasurementComparisons.h"
 
 using namespace opendnp3;
-using namespace std::chrono;
 using namespace openpal;
 
 const std::string INTEGRITY("C0 01 3C 02 06 3C 03 06 3C 04 06 3C 01 06");
