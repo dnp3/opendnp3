@@ -34,7 +34,7 @@
 
 namespace openpal
 {
-class IPhysicalLayerAsync;
+	class IPhysicalLayerAsync;
 }
 
 
@@ -68,17 +68,17 @@ public:
 
 	openpal::IExecutor* GetExecutor();
 
-	IMaster* AddMaster(		const std::string& arLoggerId,
-	                        LogLevel aLevel,
-	                        ISOEHandler* apPublisher,
-	                        openpal::IUTCTimeSource* apTimeSource,
-	                        const MasterStackConfig& arCfg);
+	IMaster* AddMaster(		const std::string& loggerId,
+	                        LogLevel level,
+	                        ISOEHandler* pPublisher,
+	                        openpal::IUTCTimeSource* pTimeSource,
+	                        const MasterStackConfig& cfg);
 
-	IOutstation* AddOutstation(	const std::string& arLoggerId,
-	                            LogLevel aLevel,
-	                            ICommandHandler* apCmdHandler,
-	                            ITimeWriteHandler* apTimeWriteHandler,
-	                            const SlaveStackConfig&);
+	IOutstation* AddOutstation(	const std::string& loggerId,
+	                            LogLevel level,
+	                            ICommandHandler* pCmdHandler,
+	                            ITimeWriteHandler* pTimeWriteHandler,
+	                            const SlaveStackConfig& cfg);
 
 	// Helper functions only available inside DNP3Manager
 
@@ -90,13 +90,14 @@ private:
 	void Cleanup();
 
 	void OnStackShutdown(IStack* apStack, LinkRoute aRoute);
-	std::auto_ptr<IPhysicalLayerAsync> mpPhys;
-	std::function<void (DNP3Channel*)> mOnShutdown;
-	LinkLayerRouter mRouter;
 
-	AsyncTaskGroup mGroup;
+	std::auto_ptr<IPhysicalLayerAsync> pPhys;
+	std::function<void (DNP3Channel*)> onShutdown;
+	LinkLayerRouter router;
 
-	std::set<IStack*> mStacks;
+	AsyncTaskGroup group;
+
+	std::set<IStack*> stacks;
 
 };
 
