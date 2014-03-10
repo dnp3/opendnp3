@@ -23,6 +23,7 @@
 
 #include "PhysicalLayerAsyncBaseTCP.h"
 
+#include <openpal/LoggableMacros.h>
 #include <openpal/Location.h>
 
 namespace asiopal
@@ -32,11 +33,11 @@ class PhysicalLayerAsyncTCPClient : public PhysicalLayerAsyncBaseTCP
 {
 public:
 	PhysicalLayerAsyncTCPClient(
-	    openpal::Logger aLogger,
-	    asio::io_service* apIOService,
-	    const std::string& arAddress,
-	    uint16_t aPort,
-	std::function<void (asio::ip::tcp::socket&)> aConfigure = [](asio::ip::tcp::socket&) {});
+	    openpal::Logger logger,
+	    asio::io_service* pIOService,
+	    const std::string& host_,
+	    uint16_t port,
+	std::function<void (asio::ip::tcp::socket&)> configure = [](asio::ip::tcp::socket&) {});
 
 	/* Implement the remaining actions */
 	void DoOpen();
@@ -44,8 +45,33 @@ public:
 	void DoOpenSuccess();
 
 private:
-	asio::ip::tcp::endpoint mRemoteEndpoint;
-	std::function<void (asio::ip::tcp::socket&)> mConfigure;
+
+	struct ConnectionCondition
+	{
+		ConnectionCondition(openpal::Logger logger_) : logger(logger_)
+		{}
+
+		template <typename Iterator>
+		Iterator operator()(const std::error_code& ec, Iterator next)
+		{
+			if (ec) 
+			{
+				LOGGER_BLOCK(logger, LogLevel::Warning, "Connect error: " << ec.message());
+			}			
+			LOGGER_BLOCK(logger, LogLevel::Info, "Trying: " << next->endpoint());
+			return next;
+		}
+
+		openpal::Logger logger;
+	};
+	
+	void HandleResolve(const std::error_code& code, asio::ip::tcp::resolver::iterator endpoint_iterator);
+
+	ConnectionCondition condition;
+	const std::string host;	
+	asio::ip::tcp::endpoint remoteEndpoint;
+	asio::ip::tcp::resolver resolver;
+	std::function<void (asio::ip::tcp::socket&)> configure;
 };
 
 }
