@@ -20,7 +20,7 @@
  */
 #include <catch.hpp>
 
-#include <opendnp3/DNPConstants.h>
+#include <opendnp3/DNPErrorCodes.h>
 
 #include "Exception.h"
 

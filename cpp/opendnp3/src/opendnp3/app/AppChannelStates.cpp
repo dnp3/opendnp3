@@ -24,7 +24,7 @@
 #include <openpal/IExecutor.h>
 
 #include "opendnp3/Singleton.h"
-#include "opendnp3/DNPConstants.h"
+#include "opendnp3/DNPErrorCodes.h"
 #include "opendnp3/app/AppLayerChannel.h"
 
 

@@ -21,7 +21,7 @@
 #ifndef __TRANSPORT_CONSTANTS_H_
 #define __TRANSPORT_CONSTANTS_H_
 
-#include "opendnp3/DNPConstants.h"
+#include "opendnp3/DNPErrorCodes.h"
 
 #include <cstdint>
 

@@ -23,7 +23,7 @@
 
 #include <openpal/LoggableMacros.h>
 
-#include "opendnp3/DNPConstants.h"
+#include "opendnp3/DNPErrorCodes.h"
 
 using namespace openpal;
 

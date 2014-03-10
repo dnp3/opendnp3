@@ -21,7 +21,7 @@
 #ifndef __MASTER_CONFIG_H_
 #define __MASTER_CONFIG_H_
 
-#include "opendnp3/DNPConstants.h"
+#include "opendnp3/DNPErrorCodes.h"
 #include "opendnp3/app/PointClass.h"
 #include "opendnp3/StaticSizeConfiguration.h"
 

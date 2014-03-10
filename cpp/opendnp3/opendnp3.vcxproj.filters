@@ -78,9 +78,6 @@
     <ClInclude Include="src\opendnp3\DynamicBuffer.h">
       <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\DNPConstants.h">
-      <Filter>Header</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\DNP3Manager.h">
       <Filter>Header</Filter>
     </ClInclude>
@@ -677,6 +674,9 @@
     </ClInclude>
     <ClInclude Include="src\opendnp3\link\IOpenDelayStrategy.h">
       <Filter>Header\link</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\DNPErrorCodes.h">
+      <Filter>Header</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

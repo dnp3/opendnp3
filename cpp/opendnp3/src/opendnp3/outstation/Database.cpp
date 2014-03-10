@@ -24,7 +24,7 @@
 #include <openpal/LoggableMacros.h>
 
 #include "opendnp3/app/MeasurementHelpers.h"
-#include "opendnp3/DNPConstants.h"
+#include "opendnp3/DNPErrorCodes.h"
 
 #include <assert.h>
 

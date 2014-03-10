@@ -18,11 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __DNP_CONSTANTS_H_
-#define __DNP_CONSTANTS_H_
-
-#include <string>
-#include <cstdint>
+#ifndef __DNP_ERROR_CODES_H_
+#define __DNP_ERROR_CODES_H_
 
 namespace opendnp3
 {
@@ -120,7 +117,7 @@ enum DNPErrorCodes
     ERR_INDEX_OUT_OF_BOUNDS,
 
     // Non-error Log Items
-    TIME_SYNC_UPDATED // carries MILLISEC_SINCE_EPOCH<boost::int64_t>
+    TIME_SYNC_UPDATED
 
 };
 

@@ -25,7 +25,7 @@
 
 #include <openpal/LoggableMacros.h>
 
-#include "opendnp3/DNPConstants.h"
+#include "opendnp3/DNPErrorCodes.h"
 #include "opendnp3/link/ILinkRouter.h"
 
 #include "PriLinkLayerStates.h"

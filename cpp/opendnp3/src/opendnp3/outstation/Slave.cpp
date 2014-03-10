@@ -24,7 +24,7 @@
 #include "opendnp3/app/ControlRelayOutputBlock.h"
 #include "opendnp3/app/APDUParser.h"
 
-#include "opendnp3/DNPConstants.h"
+#include "opendnp3/DNPErrorCodes.h"
 
 #include <openpal/LoggableMacros.h>
 #include <openpal/IExecutor.h>

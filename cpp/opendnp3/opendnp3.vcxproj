@@ -77,7 +77,7 @@
     <ClInclude Include="src\opendnp3\DestructorHook.h" />
     <ClInclude Include="src\opendnp3\DNP3Channel.h" />
     <ClInclude Include="src\opendnp3\DNP3Manager.h" />
-    <ClInclude Include="src\opendnp3\DNPConstants.h" />
+    <ClInclude Include="src\opendnp3\DNPErrorCodes.h" />
     <ClInclude Include="src\opendnp3\DynamicBuffer.h" />
     <ClInclude Include="src\opendnp3\ErrorCode.h" />
     <ClInclude Include="src\opendnp3\ExecutorPause.h" />

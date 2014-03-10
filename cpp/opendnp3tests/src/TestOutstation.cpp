@@ -24,7 +24,7 @@
 #include "MockLogSubscriber.h"
 #include "SlaveTestObject.h"
 
-#include <opendnp3/DNPConstants.h>
+#include <opendnp3/DNPErrorCodes.h>
 
 
 using namespace std;
