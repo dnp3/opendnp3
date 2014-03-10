@@ -353,7 +353,7 @@ TEST_CASE(SUITE("LayerCloseWhileOpen"))
 	test.monitor.Start();
 	test.phys.SignalOpenSuccess();
 	test.phys.AsyncClose();
-	REQUIRE((ChannelState::OPENING == test.monitor.GetState()));
+	REQUIRE((ChannelState::WAITING == test.monitor.GetState()));
 }
 
 TEST_CASE(SUITE("RequestCloseWhileOpen"))
@@ -362,7 +362,7 @@ TEST_CASE(SUITE("RequestCloseWhileOpen"))
 	test.monitor.Start();
 	test.phys.SignalOpenSuccess();
 	test.monitor.Close();
-	REQUIRE((ChannelState::OPENING == test.monitor.GetState()));
+	REQUIRE((ChannelState::WAITING == test.monitor.GetState()));
 }
 
 TEST_CASE(SUITE("RequestStopWhileOpen"))

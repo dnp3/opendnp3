@@ -119,8 +119,11 @@ TEST_CASE(SUITE("CloseBehavior"))
 	// the router should also try to restart
 	REQUIRE_FALSE(mfs.mLowerOnline);
 
-	t.phys.ClearBuffer();
+	REQUIRE(ChannelState::WAITING == t.router.GetState());
+	REQUIRE(t.exe.DispatchOne());
+	REQUIRE(ChannelState::OPENING == t.router.GetState());
 
+	t.phys.ClearBuffer();
 	t.phys.SignalOpenSuccess();
 
 	LinkFrame f2; f2.FormatAck(true, false, 1, 1024);
@@ -204,6 +207,8 @@ TEST_CASE(SUITE("LinkLayerRouterClearsBufferOnLowerLayerDown"))
 	t.phys.TriggerRead("05 64 D5 C4 00 04 01 00 F0 BC C0 C0 01 3C 01 06 FF 50");
 	REQUIRE(0 ==  mfs.mNumFrames);
 	t.phys.SignalReadFailure(); // closes the layer
+
+	REQUIRE(t.exe.Dispatch());
 
 	t.phys.ClearBuffer();
 	t.phys.SignalOpenSuccess();
