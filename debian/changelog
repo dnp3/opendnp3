@@ -1,3 +1,11 @@
+opendnp3 (1.1.1rc2-1) unstable; urgency=low
+
+  * Added debug statements for issue 62
+  * Fixed unsol conformance issue
+  * Fixed deferred request issue when layer is closed
+
+ -- Chris Verges <chris.verges@gmail.com>  Mon, 10 Mar 2014 03:27:00 -0800
+
 opendnp3 (1.1.1rc1-1) unstable; urgency=low
 
   * Fixed issue 39
