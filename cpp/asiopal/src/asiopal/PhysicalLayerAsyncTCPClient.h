@@ -56,9 +56,9 @@ private:
 		{
 			if (ec) 
 			{
-				LOGGER_BLOCK(logger, LogLevel::Warning, "Connect error: " << ec.message());
+				LOGGER_BLOCK(logger, openpal::LogLevel::Warning, "Connect error: " << ec.message());
 			}			
-			LOGGER_BLOCK(logger, LogLevel::Info, "Trying: " << next->endpoint());
+			LOGGER_BLOCK(logger, openpal::LogLevel::Info, "Trying: " << next->endpoint());
 			return next;
 		}
 

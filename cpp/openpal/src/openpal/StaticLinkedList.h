@@ -37,7 +37,7 @@ public:
 
 	IndexType Size() const
 	{
-		return size;
+		return adapter.size();
 	}
 
 	bool Remove(const ValueType& value)

@@ -23,7 +23,6 @@
 #include <openpal/IPhysicalLayerAsync.h>
 
 using namespace openpal;
-using namespace std::chrono;
 
 namespace opendnp3
 {

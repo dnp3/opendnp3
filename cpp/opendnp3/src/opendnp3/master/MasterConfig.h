@@ -27,8 +27,6 @@
 
 #include <openpal/TimeDuration.h>
 
-#include <vector>
-
 namespace opendnp3
 {
 
@@ -52,7 +50,7 @@ struct MasterConfig
 	{}
 
 	/// Maximum fragment size to use for requests
-	size_t FragSize;
+	uint32_t FragSize;
 
 	/// Using FunctionCode::WRITE is a problem with vto because the spec won't allow it to retry
 	bool UseNonStandardVtoFunction;

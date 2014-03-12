@@ -6,7 +6,7 @@ ASIO_CONFIG = -I $(ASIO_HOME)/include -DASIO_STANDALONE
 
 OPENPAL_INCLUDE = $(top_srcdir)/cpp/openpal/src
 OPENDNP3_INCLUDE = $(top_srcdir)/cpp/opendnp3/src
-ASIOPAL_INCLUDE = $(top_srcdir)/cpp/asiopal/include
+ASIOPAL_INCLUDE = $(top_srcdir)/cpp/asiopal/src
 ASIODNP3_INCLUDE = $(top_srcdir)/cpp/asiodnp3/include
 CATCH_INCLUDE = $(top_srcdir)/cpp/catch
 
@@ -34,19 +34,20 @@ cpp/openpal/src/openpal/ToHex.cpp
 libasiopal_la_LDFLAGS = -version-info 1:1:0
 libasiopal_la_CXXFLAGS = -I$(OPENPAL_INCLUDE) -I$(ASIOPAL_INCLUDE) $(ASIO_CONFIG)
 libasiopal_la_SOURCES = \
-cpp/asiopal/src/ASIOExecutor.cpp \
-cpp/asiopal/src/ASIOSerialHelpers.cpp \
-cpp/asiopal/src/IOServiceThreadPool.cpp \
-cpp/asiopal/src/Log.cpp \
-cpp/asiopal/src/LogToStdio.cpp \
-cpp/asiopal/src/PhysicalLayerAsyncBase.cpp \
-cpp/asiopal/src/PhysicalLayerAsyncBaseTCP.cpp \
-cpp/asiopal/src/PhysicalLayerAsyncSerial.cpp \
-cpp/asiopal/src/PhysicalLayerAsyncTCPClient.cpp \
-cpp/asiopal/src/PhysicalLayerAsyncTCPServer.cpp \
-cpp/asiopal/src/SerialTypes.cpp \
-cpp/asiopal/src/TimerASIO.cpp \
-cpp/asiopal/src/UTCTimeSource.cpp
+cpp/asiopal/src/asiopal/ASIOExecutor.cpp \
+cpp/asiopal/src/asiopal/ASIOSerialHelpers.cpp \
+cpp/asiopal/src/asiopal/IOServiceThreadPool.cpp \
+cpp/asiopal/src/asiopal/Log.cpp \
+cpp/asiopal/src/asiopal/LogToStdio.cpp \
+cpp/asiopal/src/asiopal/PhysicalLayerAsyncBase.cpp \
+cpp/asiopal/src/asiopal/PhysicalLayerAsyncBaseTCP.cpp \
+cpp/asiopal/src/asiopal/PhysicalLayerAsyncSerial.cpp \
+cpp/asiopal/src/asiopal/PhysicalLayerAsyncTCPClient.cpp \
+cpp/asiopal/src/asiopal/PhysicalLayerAsyncTCPServer.cpp \
+cpp/asiopal/src/asiopal/SerialTypes.cpp \
+cpp/asiopal/src/asiopal/TimerASIO.cpp \
+cpp/asiopal/src/asiopal/UTCTimeSource.cpp
+
 
 #ls cpp/opendnp3/src/opendnp3/*.cpp -1 | awk '{print $0" \\"}'
 libopendnp3_la_LDFLAGS = -version-info 2:0:0
@@ -184,9 +185,9 @@ cpp/opendnp3/src/opendnp3/transport/TransportTx.cpp \
 cpp/opendnp3/src/opendnp3/DestructorHook.cpp \
 cpp/opendnp3/src/opendnp3/DNP3Channel.cpp \
 cpp/opendnp3/src/opendnp3/DNP3Manager.cpp \
+cpp/opendnp3/src/opendnp3/DNP3Stack.cpp \
 cpp/opendnp3/src/opendnp3/DynamicBuffer.cpp \
-cpp/opendnp3/src/opendnp3/ExecutorPause.cpp \
-cpp/opendnp3/src/opendnp3/IStack.cpp \
+cpp/opendnp3/src/opendnp3/StackActionHandler.cpp \
 cpp/opendnp3/src/opendnp3/StackBase.cpp
 
 
@@ -289,7 +290,7 @@ openpaltest_CXXFLAGS = -I$(OPENPAL_INCLUDE) -I$(CATCH_INCLUDE)
 openpaltest_LDADD = libopenpal.la
 openpaltest_SOURCES = \
 cpp/openpaltests/src/CatchTestStart.cpp \
-cpp/openpaltests/src/DoublyLinkedListAdapterTestSuite.cpp \
+cpp/openpaltests/src/LinkedListAdapterTestSuite.cpp \
 cpp/openpaltests/src/ListAdapterTestSuite.cpp \
 cpp/openpaltests/src/QueueAdapterTestSuite.cpp \
 cpp/openpaltests/src/RandomInsertAdapterTestSuite.cpp \
