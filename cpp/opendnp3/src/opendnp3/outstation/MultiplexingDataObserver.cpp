@@ -43,15 +43,13 @@ void MultiplexingDataObserver :: AddObserver(IDataObserver* apObserver)
 }
 
 void MultiplexingDataObserver::Start()
-{
-	mMutex.lock();
+{	
 	for (auto pObs : mObservers) openpal::Transaction::Start(pObs);
 }
 
 void MultiplexingDataObserver::End()
 {
 	for (auto pObs : mObservers) openpal::Transaction::End(pObs);
-	mMutex.unlock();
 }
 
 void MultiplexingDataObserver :: Update(const Binary& arPoint, size_t aIndex)

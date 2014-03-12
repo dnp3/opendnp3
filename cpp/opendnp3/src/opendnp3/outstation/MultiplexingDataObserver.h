@@ -23,9 +23,7 @@
 
 #include "IDataObserver.h"
 
-
 #include <vector>
-#include <mutex>
 
 namespace opendnp3
 {
@@ -52,10 +50,7 @@ private:
 
 	std::vector<IDataObserver*> mObservers;
 
-	std::mutex mMutex;
-
 	void Start();
-
 	void End();
 };
 

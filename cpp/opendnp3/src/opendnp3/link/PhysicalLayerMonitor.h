@@ -29,8 +29,6 @@
 #include "opendnp3/link/IOpenDelayStrategy.h"
 
 #include <set>
-#include <mutex>
-#include <condition_variable>
 
 namespace openpal
 {
