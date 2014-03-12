@@ -80,7 +80,6 @@
     <ClInclude Include="src\opendnp3\DNPErrorCodes.h" />
     <ClInclude Include="src\opendnp3\DynamicBuffer.h" />
     <ClInclude Include="src\opendnp3\ErrorCode.h" />
-    <ClInclude Include="src\opendnp3\ExecutorPause.h" />
     <ClInclude Include="src\opendnp3\gen\ChannelState.h" />
     <ClInclude Include="src\opendnp3\gen\CommandResult.h" />
     <ClInclude Include="src\opendnp3\gen\CommandStatus.h" />
@@ -101,6 +100,7 @@
     <ClInclude Include="src\opendnp3\gen\StaticCounterResponse.h" />
     <ClInclude Include="src\opendnp3\gen\StaticFrozenCounterResponse.h" />
     <ClInclude Include="src\opendnp3\IChannel.h" />
+    <ClInclude Include="src\opendnp3\DNP3Stack.h" />
     <ClInclude Include="src\opendnp3\IStack.h" />
     <ClInclude Include="src\opendnp3\link\CRC.h" />
     <ClInclude Include="src\opendnp3\link\DNPCrc.h" />
@@ -220,6 +220,7 @@
     <ClInclude Include="src\opendnp3\outstation\WriteHandler.h" />
     <ClInclude Include="src\opendnp3\Settable.h" />
     <ClInclude Include="src\opendnp3\Singleton.h" />
+    <ClInclude Include="src\opendnp3\StackActionHandler.h" />
     <ClInclude Include="src\opendnp3\StackBase.h" />
     <ClInclude Include="src\opendnp3\StaticSizeConfiguration.h" />
     <ClInclude Include="src\opendnp3\transport\TLS_Base.h" />
@@ -259,8 +260,8 @@
     <ClCompile Include="src\opendnp3\DestructorHook.cpp" />
     <ClCompile Include="src\opendnp3\DNP3Channel.cpp" />
     <ClCompile Include="src\opendnp3\DNP3Manager.cpp" />
+    <ClCompile Include="src\opendnp3\DNP3Stack.cpp" />
     <ClCompile Include="src\opendnp3\DynamicBuffer.cpp" />
-    <ClCompile Include="src\opendnp3\ExecutorPause.cpp" />
     <ClCompile Include="src\opendnp3\gen\ChannelState.cpp" />
     <ClCompile Include="src\opendnp3\gen\CommandResult.cpp" />
     <ClCompile Include="src\opendnp3\gen\CommandStatus.cpp" />
@@ -280,7 +281,6 @@
     <ClCompile Include="src\opendnp3\gen\StaticBinaryResponse.cpp" />
     <ClCompile Include="src\opendnp3\gen\StaticCounterResponse.cpp" />
     <ClCompile Include="src\opendnp3\gen\StaticFrozenCounterResponse.cpp" />
-    <ClCompile Include="src\opendnp3\IStack.cpp" />
     <ClCompile Include="src\opendnp3\link\CRC.cpp" />
     <ClCompile Include="src\opendnp3\link\DNPCrc.cpp" />
     <ClCompile Include="src\opendnp3\link\IOpenDelayStrategy.cpp" />
@@ -360,6 +360,7 @@
     <ClCompile Include="src\opendnp3\outstation\StaticResponseTypes.cpp" />
     <ClCompile Include="src\opendnp3\outstation\TimeTransaction.cpp" />
     <ClCompile Include="src\opendnp3\outstation\WriteHandler.cpp" />
+    <ClCompile Include="src\opendnp3\StackActionHandler.cpp" />
     <ClCompile Include="src\opendnp3\StackBase.cpp" />
     <ClCompile Include="src\opendnp3\transport\TLS_Base.cpp" />
     <ClCompile Include="src\opendnp3\transport\TransportLayer.cpp" />

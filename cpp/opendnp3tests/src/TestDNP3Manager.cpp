@@ -36,12 +36,9 @@
 #include <asiopal/PhysicalLayerAsyncTCPClient.h>
 #include <asiopal/PhysicalLayerAsyncTCPServer.h>
 
-
 #include <asiopal/UTCTimeSource.h>
-
-
-
-
+#include <asiopal/Mutex.h>
+#include <asiopal/ShutdownHandler.h>
 
 #include <thread>
 
@@ -57,9 +54,11 @@ TEST_CASE(SUITE("ConstructionDestruction"))
 	for(int i = 0; i < ITERATIONS; ++i)
 	{
 
-		EventLog log;
+		EventLog log;			
+		asiopal::Mutex mutex;
+		DNP3Manager mgr(&mutex);
+		
 		IOServiceThreadPool pool(Logger(&log, LogLevel::Info, "pool"), std::thread::hardware_concurrency());
-		DNP3Manager mgr;
 
 		auto pClientPhys = new PhysicalLayerAsyncTCPClient(Logger(&log, LogLevel::Info, "client"), pool.GetIOService(), "127.0.0.1", 20000);
 		auto pClient = mgr.CreateChannel(Logger(&log, LogLevel::Info, "clientChannel"), TimeDuration::Seconds(5), TimeDuration::Seconds(5), pClientPhys);
@@ -67,8 +66,13 @@ TEST_CASE(SUITE("ConstructionDestruction"))
 		auto pServerPhys = new PhysicalLayerAsyncTCPServer(Logger(&log, LogLevel::Info, "server"), pool.GetIOService(), "127.0.0.1", 20000);
 		auto pServer = mgr.CreateChannel(Logger(&log, LogLevel::Info, "serverChannel"), TimeDuration::Seconds(5), TimeDuration::Seconds(5), pServerPhys);
 
-		pClient->AddMaster("master", LogLevel::Info, NullSOEHandler::Inst(), UTCTimeSource::Inst(), MasterStackConfig());
-		pServer->AddOutstation("outstation", LogLevel::Info, SuccessCommandHandler::Inst(), NullTimeWriteHandler::Inst(), SlaveStackConfig(DatabaseTemplate()));
+		auto pMaster = pClient->AddMaster("master", LogLevel::Info, NullSOEHandler::Inst(), UTCTimeSource::Inst(), MasterStackConfig());
+		auto pOutstation = pServer->AddOutstation("outstation", LogLevel::Info, SuccessCommandHandler::Inst(), NullTimeWriteHandler::Inst(), SlaveStackConfig(DatabaseTemplate()));
+
+		pMaster->Enable();
+		pOutstation->Enable();
+		
+		mgr.BeginShutdown();
 	}
 }
 
@@ -76,10 +80,11 @@ TEST_CASE(SUITE("ManualStackShutdown"))
 {
 	for(int i = 0; i < ITERATIONS; ++i)
 	{
+		EventLog log;		
+		asiopal::Mutex mutex;
+		DNP3Manager mgr(&mutex);
 
-		EventLog log;
 		IOServiceThreadPool pool(Logger(&log, LogLevel::Info, "pool"), std::thread::hardware_concurrency());
-		DNP3Manager mgr;
 
 		auto pClientPhys = new PhysicalLayerAsyncTCPClient(Logger(&log, LogLevel::Info, "client"), pool.GetIOService(), "127.0.0.1", 20000);
 		auto pClient = mgr.CreateChannel(Logger(&log, LogLevel::Info, "clientChannel"), TimeDuration::Seconds(5), TimeDuration::Seconds(5), pClientPhys);
@@ -90,26 +95,44 @@ TEST_CASE(SUITE("ManualStackShutdown"))
 		auto pOutstation = pServer->AddOutstation("outstation", LogLevel::Info, SuccessCommandHandler::Inst(), NullTimeWriteHandler::Inst(), SlaveStackConfig(DatabaseTemplate()));
 		auto pMaster = pClient->AddMaster("master", LogLevel::Info, NullSOEHandler::Inst(), UTCTimeSource::Inst(), MasterStackConfig());
 
+		pOutstation->Enable();
+		pMaster->Enable();
+
 		pOutstation->Shutdown();
 		pMaster->Shutdown();
+
+		mgr.BeginShutdown();
 	}
 
 }
 
-TEST_CASE(SUITE("ManualChannelShutdownWithStack"))
+TEST_CASE(SUITE("ManualChannelShutdownWithStacks"))
 {
 	for(int i = 0; i < ITERATIONS; ++i)
 	{
-
 		EventLog log;
+		
+		asiopal::Mutex mutex;
+		DNP3Manager mgr(&mutex);
+
 		IOServiceThreadPool pool(Logger(&log, LogLevel::Info, "pool"), std::thread::hardware_concurrency());
-		DNP3Manager mgr;
 
 		auto pClientPhys = new PhysicalLayerAsyncTCPClient(Logger(&log, LogLevel::Info, "client"), pool.GetIOService(), "127.0.0.1", 20000);
-		auto pChannel = mgr.CreateChannel(Logger(&log, LogLevel::Info, "clientChannel"), TimeDuration::Seconds(5), TimeDuration::Seconds(5), pClientPhys);
+		auto pClient = mgr.CreateChannel(Logger(&log, LogLevel::Info, "clientChannel"), TimeDuration::Seconds(5), TimeDuration::Seconds(5), pClientPhys);
 
-		pChannel->AddMaster("master", LogLevel::Info, NullSOEHandler::Inst(), UTCTimeSource::Inst(), MasterStackConfig());
-		pChannel->Shutdown();
+		auto pServerPhys = new PhysicalLayerAsyncTCPServer(Logger(&log, LogLevel::Info, "server"), pool.GetIOService(), "127.0.0.1", 20000);
+		auto pServer = mgr.CreateChannel(Logger(&log, LogLevel::Info, "serverChannel"), TimeDuration::Seconds(5), TimeDuration::Seconds(5), pServerPhys);
+
+		auto pOutstation = pServer->AddOutstation("outstation", LogLevel::Info, SuccessCommandHandler::Inst(), NullTimeWriteHandler::Inst(), SlaveStackConfig(DatabaseTemplate()));
+		auto pMaster = pClient->AddMaster("master", LogLevel::Info, NullSOEHandler::Inst(), UTCTimeSource::Inst(), MasterStackConfig());
+
+		pMaster->Enable();
+		pOutstation->Enable();		
+
+		pClient->BeginShutdown();
+		pServer->BeginShutdown();
+
+		mgr.BeginShutdown();
 	}
 }
 
@@ -119,11 +142,17 @@ TEST_CASE(SUITE("ManualChannelShutdown"))
 	{
 
 		EventLog log;
+		log.AddLogSubscriber(LogToStdio::Inst());
+		
+		asiopal::Mutex mutex;
+		DNP3Manager mgr(&mutex);
+
 		IOServiceThreadPool pool(Logger(&log, LogLevel::Info, "pool"), std::thread::hardware_concurrency());
-		DNP3Manager mgr;
 
 		auto pClientPhys = new PhysicalLayerAsyncTCPClient(Logger(&log, LogLevel::Info, "client"), pool.GetIOService(), "127.0.0.1", 20000);
-		mgr.CreateChannel(Logger(&log, LogLevel::Info, "clientChannel"), TimeDuration::Seconds(5), TimeDuration::Seconds(5), pClientPhys)->Shutdown();
+		auto pChannel = mgr.CreateChannel(Logger(&log, LogLevel::Info, "clientChannel"), TimeDuration::Seconds(5), TimeDuration::Seconds(5), pClientPhys);
+
+		pChannel->BeginShutdown();
 
 	}
 }

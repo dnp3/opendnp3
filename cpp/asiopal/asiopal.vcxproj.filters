@@ -53,6 +53,12 @@
     <ClInclude Include="src\asiopal\UTCTimeSource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\asiopal\Mutex.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\asiopal\ShutdownHandler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\asiopal\ASIOExecutor.cpp">

@@ -63,50 +63,22 @@ ChannelState PhysicalLayerMonitor::GetState()
 	return mpState->GetState();
 }
 
-bool PhysicalLayerMonitor::WaitForShutdown(openpal::TimeDuration aTimeout)
-{
-	std::unique_lock<std::mutex> lock(mutex);
-	while(!mFinalShutdown)
-	{
-		if(aTimeout.GetMilliseconds() >= 0)
-		{
-			condition.wait_for(lock, std::chrono::milliseconds(aTimeout.GetMilliseconds()));
-			break;
-		}
-		else condition.wait(lock);
-	}
-	return mFinalShutdown;
-}
-
 void PhysicalLayerMonitor::ChangeState(IMonitorState* apState)
 {
 	LOG_BLOCK(LogLevel::Debug, mpState->ConvertToString() << " -> " << apState->ConvertToString() << " : " << mpPhys->ConvertStateToString());
-	IMonitorState* pLast = mpState;
-
-	std::unique_lock<std::mutex> lock(mutex);
+	IMonitorState* pLast = mpState;	
 	mpState = apState;
+
 	if(pLast->GetState() != apState->GetState())
 	{
 
-		this->OnStateChange(mpState->GetState());
-
-		// signaling this way makes sure we're free and clear of the event that causes this
-		// before someone else and deletes
-		if(mpState->GetState() == ChannelState::SHUTDOWN)
-		{
-			mpPhys->GetExecutor()->Post([this]()
-			{
-				this->DoFinalShutdown();
-			});
-		}
+		this->OnStateChange(mpState->GetState());		
 	}
-}
 
-void PhysicalLayerMonitor::DoFinalShutdown()
-{
-	std::unique_lock<std::mutex> lock(mutex);
-	mFinalShutdown = true;
-	condition.notify_all();
+	if (mpState->GetState() == ChannelState::SHUTDOWN)
+	{
+		this->OnShutdown();
+	}
 }
 
 /* ------- User facing events that occurs ------- */

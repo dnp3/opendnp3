@@ -18,38 +18,51 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __EXECUTOR_PAUSE_H_
-#define __EXECUTOR_PAUSE_H_
 
-#include <mutex>
-#include <condition_variable>
+#include "StackActionHandler.h"
 
-namespace openpal
-{
-class IExecutor;
-}
+#include <openpal/IExecutor.h>
+
+#include "opendnp3/link/LinkLayerRouter.h"
 
 namespace opendnp3
 {
 
-class ExecutorPause
+StackActionHandler::StackActionHandler(LinkLayerRouter* pRouter_, const LinkRoute& route_, openpal::IExecutor* pExecutor_, openpal::ITypedShutdownHandler<DNP3Stack*>* pHandler_) :
+pRouter(pRouter_),
+route(route_),
+pExecutor(pExecutor_),
+pHandler(pHandler_)
 {
-public:
-	ExecutorPause(openpal::IExecutor* apExecutor);
-	~ExecutorPause();
+	
+}
 
-private:
+void StackActionHandler::EnableRoute()
+{
+	pExecutor->Post([this](){ pRouter->EnableRoute(route); });
+}
 
-	void Pause();
+void StackActionHandler::DisableRoute()
+{
+	pExecutor->Post([this](){ pRouter->DisableRoute(route); });
+}
 
-	std::mutex mMutex;
-	std::condition_variable mCondition;
-	openpal::IExecutor* mpExecutor;
-	bool mPaused;
-	bool mComplete;
-	bool mExit;
-};
+void StackActionHandler::ExternalShutdown(DNP3Stack* pStack)
+{
+	{
+		openpal::ExecutorPause pause(pExecutor);
+		pRouter->RemoveContext(route);
+	}	
+	pExecutor->Post([this, pStack](){ pHandler->OnShutdown(pStack); });
+}
+
+// already on the executor
+void StackActionHandler::InternalShutdown(DNP3Stack* pStack)
+{		
+	pRouter->RemoveContext(route);
+	pHandler->OnShutdown(pStack);
+}
 
 }
 
-#endif
+

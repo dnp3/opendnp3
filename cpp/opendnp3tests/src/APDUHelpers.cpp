@@ -21,7 +21,6 @@
 
 #include "APDUHelpers.h"
 
-
 uint8_t APDUHelpers::fixedBuffer[SIZE];
 
 opendnp3::APDURequest APDUHelpers::Request(opendnp3::FunctionCode code, uint32_t size)

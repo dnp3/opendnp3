@@ -18,60 +18,51 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __MASTER_STACK_IMPL_H_
-#define __MASTER_STACK_IMPL_H_
+#ifndef __DNP3_STACK_H_
+#define __DNP3_STACK_H_
 
-#include "opendnp3/master/IMaster.h"
-#include "opendnp3/master/MasterStackConfig.h"
-#include "opendnp3/master/Master.h"
-
-#include "opendnp3/app/ApplicationStack.h"
-
+#include "IStack.h"
+#include "StackActionHandler.h"
 
 namespace opendnp3
 {
 
-class ILinkContext;
-
-/** @section desc A stack object for a master */
-class MasterStackImpl : public IMaster
+/**
+* Base class for masters or outstations. Can be used to bind a vto endpoint or shutdown.
+*/
+class DNP3Stack : public IStack
 {
-public:
+public:	
 
-	MasterStackImpl(
-		openpal::Logger,
-		openpal::IExecutor* apExecutor,
-		ISOEHandler* apPublisher,
-		IUTCTimeSource* apTimeSource,
-		AsyncTaskGroup* apTaskGroup,
-		const MasterStackConfig& arCfg,
-		const StackActionHandler& handler);
+	DNP3Stack(const StackActionHandler& handler_);
 
-	ICommandProcessor* GetCommandProcessor();
+	virtual ~DNP3Stack() {}
 
-	ILinkContext* GetLinkContext();
+	/**
+	* Enable communications
+	*/
+	virtual void Enable() override final;
 
-	void SetLinkRouter(ILinkRouter* apRouter);
+	/**
+	* Enable communications
+	*/
+	virtual void Disable() override final;
 
-	void AddStateListener(std::function<void (StackState)> aListener);
+	/**
+	* External Shutdown function
+	*/
+	virtual void Shutdown() override final;
 
-	MasterScan GetIntegrityScan();
-
-	openpal::IExecutor* GetExecutor()
-	{
-		return mpExecutor;
-	}
-
-	MasterScan AddClassScan(int aClassMask, openpal::TimeDuration aScanRate, openpal::TimeDuration aRetryRate);	
+	/**
+	* Internal shutdown function
+	*/
+	void ShutdownInternal();
 
 private:
-	IExecutor* mpExecutor;
-	ApplicationStack mAppStack;
-	Master mMaster;	
 
+	StackActionHandler handler;
 };
 
 }
 
 #endif
-

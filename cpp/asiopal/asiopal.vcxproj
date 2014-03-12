@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClInclude Include="src\asiopal\ASIOExecutor.h" />
     <ClInclude Include="src\asiopal\ASIOSerialHelpers.h" />
+    <ClInclude Include="src\asiopal\Mutex.h" />
     <ClInclude Include="src\asiopal\IOServiceThreadPool.h" />
     <ClInclude Include="src\asiopal\Log.h" />
     <ClInclude Include="src\asiopal\LogToStdio.h" />
@@ -31,6 +32,7 @@
     <ClInclude Include="src\asiopal\PhysicalLayerAsyncTCPClient.h" />
     <ClInclude Include="src\asiopal\PhysicalLayerAsyncTCPServer.h" />
     <ClInclude Include="src\asiopal\SerialTypes.h" />
+    <ClInclude Include="src\asiopal\ShutdownHandler.h" />
     <ClInclude Include="src\asiopal\TimerASIO.h" />
     <ClInclude Include="src\asiopal\UTCTimeSource.h" />
   </ItemGroup>

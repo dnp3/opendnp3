@@ -32,12 +32,12 @@ MockExecutor::MockExecutor() :
 
 }
 
-void MockExecutor::Start()
+void MockExecutor::Pause()
 {
 
 }
 
-void MockExecutor::End()
+void MockExecutor::Resume()
 {
 
 }

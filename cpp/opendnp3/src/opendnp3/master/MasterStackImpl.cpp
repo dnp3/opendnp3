@@ -22,8 +22,6 @@
 
 #include <openpal/IExecutor.h>
 
-#include "opendnp3/ExecutorPause.h"
-
 using namespace openpal;
 
 namespace opendnp3
@@ -35,14 +33,12 @@ MasterStackImpl::MasterStackImpl(	Logger aLogger,
                                     IUTCTimeSource* apTimeSource,
                                     AsyncTaskGroup* apTaskGroup,
                                     const MasterStackConfig& arCfg,
-                                    std::function<void (bool)> aEnableDisableFunc,
-                                    std::function<void (IMaster*)> aOnShutdown) :
+									const StackActionHandler& handler) :
 
-	IMaster(aLogger, aEnableDisableFunc),
+	IMaster(handler),
 	mpExecutor(apExecutor),
 	mAppStack(aLogger, apExecutor, arCfg.app, arCfg.link),
-	mMaster(aLogger.GetSubLogger("master"), arCfg.master, &mAppStack.mApplication, apPublisher, apTaskGroup, apExecutor, apTimeSource),
-	mOnShutdown(aOnShutdown)
+	mMaster(aLogger.GetSubLogger("master"), arCfg.master, &mAppStack.mApplication, apPublisher, apTaskGroup, apExecutor, apTimeSource)	
 {
 	mAppStack.mApplication.SetUser(&mMaster);
 }
@@ -71,11 +67,6 @@ MasterScan MasterStackImpl::AddClassScan(int aClassMask, openpal::TimeDuration a
 MasterScan MasterStackImpl::GetIntegrityScan()
 {
 	return mMaster.GetIntegrityScan();
-}
-
-void MasterStackImpl::Shutdown()
-{
-	mOnShutdown(this);
 }
 
 void MasterStackImpl::AddStateListener(std::function<void (StackState)> aListener)

@@ -30,60 +30,22 @@
 #include <openpal/Logger.h>
 #include <openpal/IPhysicalLayerAsync.h>
 #include <openpal/TimeDuration.h>
+#include <openpal/IMutex.h>
+#include <openpal/IShutdownHandler.h>
 
-#include "DestructorHook.h"
 #include "opendnp3/link/IOpenDelayStrategy.h"
 
-
-
-/*! \mainpage opendnp3
-
-\section Introduction
-
-Companion documentation that describes theory of operation is located on the <a href="http://www.github.com/automatakllc/dnp3/wiki">project wiki</a>.
-
-A simple application can be written as follows:
-
-\code
-#include "DNP3Manger.h"
-
-using namespace opendnp3;
-
-int main(int argc, char* argv[])
-{
-	DNP3Manager manager(1); // instantiate the root object specifying how many threads to use in the pool
-
-	// start adding communication channels.... Check out the wiki.
-}
-\endcode
-
-*/
-
-// pre-declare EVERYTHING possible to minimize includes for CLR/Java wrappers
 namespace opendnp3
 {
 
 class IChannel;
 class DNP3Channel;
 
-/**
-The root class for all dnp3 applications. Used to retrieve communication channels on
-which masters / outstations can be bound. The stack is event-based and driven by a thread pool.
-All callbacks come from a thread in the pool.
-
-\code
-	// instantiate the root object specifying how many threads to use in the pool
-	DNP3Manager manager(std::thread::hardware_concurrency());
-\endcode
-
-*/
-class DNP3Manager : public DestructorHook
+class DNP3Manager : private openpal::ITypedShutdownHandler<DNP3Channel*>
 {
 public:
 
-	DNP3Manager();
-
-	~DNP3Manager();
+	DNP3Manager(openpal::IMutex* pMutex = nullptr);	
 
 	IChannel* CreateChannel(	openpal::Logger aLogger,
 	                            openpal::TimeDuration minOpenRetry,
@@ -91,17 +53,25 @@ public:
 	                            openpal::IPhysicalLayerAsync* apPhys,
 	                            IOpenDelayStrategy* pOpenStrategy = ExponentialBackoffStrategy::Inst());
 
-	/**
-	* Permanently shutdown the manager and all sub-objects that have been created. Stop
-	* the thead pool.
-	*/
-	void Shutdown();
+	/// Asynchronously shutdown all channels
+	void BeginShutdown(openpal::IShutdownHandler* pHandler = nullptr);
 
 private:
 
-	void OnChannelShutdownCallback(DNP3Channel* apChannel);
+	bool isShuttingDown;
+	openpal::IMutex* pMutex;
+	
+	openpal::IShutdownHandler* pShutdownHandler;
 
-	std::set<DNP3Channel*> mChannels;
+	std::set<DNP3Channel*> channels;
+
+	void OnShutdown(DNP3Channel* apChannel) override final;
+
+	// returns true if there are no more channels
+	bool InitiateShutdown(openpal::IShutdownHandler* pHandler);
+
+	// returns true if there are no more channels and we're shutting down
+	bool OnChannelShutdown(DNP3Channel* apChannel);
 };
 
 }

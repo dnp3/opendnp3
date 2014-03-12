@@ -18,60 +18,37 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __MASTER_STACK_IMPL_H_
-#define __MASTER_STACK_IMPL_H_
+#ifndef __MUTEX_H_
+#define __MUTEX_H_
 
-#include "opendnp3/master/IMaster.h"
-#include "opendnp3/master/MasterStackConfig.h"
-#include "opendnp3/master/Master.h"
+#include <mutex>
 
-#include "opendnp3/app/ApplicationStack.h"
+#include <openpal/IMutex.h>
 
-
-namespace opendnp3
+namespace asiopal
 {
 
-class ILinkContext;
-
-/** @section desc A stack object for a master */
-class MasterStackImpl : public IMaster
+class Mutex : public openpal::IMutex
 {
-public:
 
-	MasterStackImpl(
-		openpal::Logger,
-		openpal::IExecutor* apExecutor,
-		ISOEHandler* apPublisher,
-		IUTCTimeSource* apTimeSource,
-		AsyncTaskGroup* apTaskGroup,
-		const MasterStackConfig& arCfg,
-		const StackActionHandler& handler);
+protected:
 
-	ICommandProcessor* GetCommandProcessor();
 
-	ILinkContext* GetLinkContext();
-
-	void SetLinkRouter(ILinkRouter* apRouter);
-
-	void AddStateListener(std::function<void (StackState)> aListener);
-
-	MasterScan GetIntegrityScan();
-
-	openpal::IExecutor* GetExecutor()
+	virtual void Lock() override final
 	{
-		return mpExecutor;
+		mutex.lock();
+	}
+	
+	virtual void Unlock() override final
+	{
+		mutex.unlock();
 	}
 
-	MasterScan AddClassScan(int aClassMask, openpal::TimeDuration aScanRate, openpal::TimeDuration aRetryRate);	
-
 private:
-	IExecutor* mpExecutor;
-	ApplicationStack mAppStack;
-	Master mMaster;	
 
+	std::mutex mutex;
 };
 
 }
 
 #endif
-

@@ -18,49 +18,46 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include "ExecutorPause.h"
+#ifndef __STACK_ACTION_HANDLER_H_
+#define __STACK_ACTION_HANDLER_H_
 
-#include <openpal/IExecutor.h>
+#include "opendnp3/link/LinkRoute.h"
 
-using namespace openpal;
+#include <openpal/IShutdownHandler.h>
+
+namespace openpal
+{	
+	class IExecutor;
+}
 
 namespace opendnp3
 {
 
-ExecutorPause::ExecutorPause(IExecutor* apExecutor) :
-	mpExecutor(apExecutor),
-	mPaused(false),
-	mComplete(false),
-	mExit(false)
+class LinkLayerRouter;
+class DNP3Stack;
+
+class StackActionHandler
 {
-	mpExecutor->Post([this]()
-	{
-		this->Pause();
-	});
-	std::unique_lock<std::mutex> lock(mMutex);
-	while(!mPaused) mCondition.wait(lock);
-}
+	public:
 
-ExecutorPause::~ExecutorPause()
-{
-	std::unique_lock<std::mutex> lock(mMutex);
-	mComplete = true;
-	mCondition.notify_one();
-	while(!mExit) mCondition.wait(lock);
-}
+	StackActionHandler(LinkLayerRouter* pRouter_, const LinkRoute& route_, openpal::IExecutor* pExecutor_, openpal::ITypedShutdownHandler<DNP3Stack*>* pHandler_);
 
-void ExecutorPause::Pause()
-{
-	{
-		std::unique_lock<std::mutex> lock(mMutex);
-		mPaused = true;
-		mCondition.notify_one();
-		while(!mComplete) mCondition.wait(lock);
-	}
-	mExit = true; // make sure we're not going to touch from other thread after destruction
-	mCondition.notify_one();
-}
+	void EnableRoute();
+
+	void DisableRoute();
+
+	void InternalShutdown(DNP3Stack* pStack);
+
+	void ExternalShutdown(DNP3Stack* pStack);
+	
+	private:
+
+	LinkLayerRouter* pRouter;
+	LinkRoute route;
+	openpal::IExecutor* pExecutor;
+	openpal::ITypedShutdownHandler<DNP3Stack*>* pHandler;
+};
 
 }
 
-
+#endif

@@ -18,60 +18,61 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __MASTER_STACK_IMPL_H_
-#define __MASTER_STACK_IMPL_H_
+#ifndef __I_MUTEX_H_
+#define	__I_MUTEX_H_
 
-#include "opendnp3/master/IMaster.h"
-#include "opendnp3/master/MasterStackConfig.h"
-#include "opendnp3/master/Master.h"
+#include <assert.h>
 
-#include "opendnp3/app/ApplicationStack.h"
+#include "Uncopyable.h"
 
-
-namespace opendnp3
+namespace openpal
 {
 
-class ILinkContext;
-
-/** @section desc A stack object for a master */
-class MasterStackImpl : public IMaster
+/**
+    A non-reentrant Mutex. In C++11 this maps to std::mutex
+*/
+class IMutex : private Uncopyable
 {
 public:
 
-	MasterStackImpl(
-		openpal::Logger,
-		openpal::IExecutor* apExecutor,
-		ISOEHandler* apPublisher,
-		IUTCTimeSource* apTimeSource,
-		AsyncTaskGroup* apTaskGroup,
-		const MasterStackConfig& arCfg,
-		const StackActionHandler& handler);
+	friend class CriticalSection;
+	virtual ~IMutex() {}
 
-	ICommandProcessor* GetCommandProcessor();
+protected:
 
-	ILinkContext* GetLinkContext();
+	virtual void Lock() = 0;
+	virtual void Unlock() = 0;
+};
 
-	void SetLinkRouter(ILinkRouter* apRouter);
+/**
+  Uses RAII to safely perform a transaction
+*/
+class CriticalSection : private openpal::Uncopyable
+{
+public:	
 
-	void AddStateListener(std::function<void (StackState)> aListener);
-
-	MasterScan GetIntegrityScan();
-
-	openpal::IExecutor* GetExecutor()
+	/// Can be constructed with nullptr or an implementation
+	CriticalSection(IMutex* pMutex_) : pMutex(pMutex_)
 	{
-		return mpExecutor;
+		if (pMutex)
+		{
+			pMutex->Lock();
+		}
 	}
 
-	MasterScan AddClassScan(int aClassMask, openpal::TimeDuration aScanRate, openpal::TimeDuration aRetryRate);	
+	~CriticalSection()
+	{
+		if (pMutex)
+		{
+			pMutex->Unlock();
+		}
+	}	
 
 private:
-	IExecutor* mpExecutor;
-	ApplicationStack mAppStack;
-	Master mMaster;	
+	IMutex* pMutex;
 
 };
 
 }
 
 #endif
-

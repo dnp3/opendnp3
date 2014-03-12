@@ -71,9 +71,9 @@ public:
 	virtual ~IChannel() {}
 
 	/**
-	* Synchronously shutdown the channel.
+	* Asynchronously shutdown the channel.
 	*/
-	virtual void Shutdown() = 0;
+	virtual void BeginShutdown() = 0;
 
 	/**
 	* Add a listener for changes to the channel state. All callbacks come from the thread pool.

@@ -18,38 +18,36 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include "IStack.h"
 
-
-using namespace openpal;
+#include "DNP3Stack.h"
 
 namespace opendnp3
 {
 
-IStack::IStack(Logger& arLogger, std::function<void (bool)> aEnableDisableFunc) :
-	mLogger(arLogger),
-	mEnableDisableFunc(aEnableDisableFunc)
-{
 
-
-}
-
-IStack::~IStack()
+DNP3Stack::DNP3Stack(const StackActionHandler& handler_) : handler(handler_)
 {
 
 }
 
-
-void IStack::Enable()
+void DNP3Stack::Enable()
 {
-	mEnableDisableFunc(true);
+	handler.EnableRoute();
 }
 
-
-void IStack::Disable()
+void DNP3Stack::Disable()
 {
-	mEnableDisableFunc(false);
+	handler.DisableRoute();
+}
+
+void DNP3Stack::Shutdown()
+{
+	handler.ExternalShutdown(this);
+}
+
+void DNP3Stack::ShutdownInternal()
+{
+	handler.InternalShutdown(this);
 }
 
 }
-

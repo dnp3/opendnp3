@@ -27,20 +27,21 @@ using namespace openpal;
 namespace opendnp3
 {
 
-DNP3Manager::DNP3Manager()
+DNP3Manager::DNP3Manager(openpal::IMutex* pMutex_) : 
+	pMutex(pMutex_),
+	isShuttingDown(false),
+	pShutdownHandler(nullptr)
 {
 
 }
 
-DNP3Manager::~DNP3Manager()
-{
-	this->Shutdown();
-}
-
-void DNP3Manager::Shutdown()
-{
-	std::set<DNP3Channel*> copy(mChannels);
-	for(auto pChannel : copy) pChannel->Shutdown();
+void DNP3Manager::BeginShutdown(openpal::IShutdownHandler* pHandler)
+{	
+	if (InitiateShutdown(pHandler))
+	{
+		// no more channels, so call the handler ourselves
+		pHandler->OnShutdown();
+	}
 }
 
 IChannel* DNP3Manager::CreateChannel(
@@ -50,16 +51,40 @@ IChannel* DNP3Manager::CreateChannel(
     openpal::IPhysicalLayerAsync* apPhys,
     IOpenDelayStrategy* pOpenStrategy)
 {
-
-	auto pChannel = new DNP3Channel(aLogger, minOpenRetry, maxOpenRetry, pOpenStrategy, apPhys, [this](DNP3Channel * apChannel)
-	{
-		mChannels.erase(apChannel);
-		delete apChannel;
-	});
-	mChannels.insert(pChannel);
+	CriticalSection cs(pMutex);
+	auto pChannel = new DNP3Channel(aLogger, minOpenRetry, maxOpenRetry, pOpenStrategy, apPhys, pMutex, this);
+	channels.insert(pChannel);
 	return pChannel;
 }
 
+void DNP3Manager::OnShutdown(DNP3Channel* pChannel)
+{
+	if (OnChannelShutdown(pChannel) && pShutdownHandler)
+	{
+		pShutdownHandler->OnShutdown();
+	}
+}
+
+bool DNP3Manager::InitiateShutdown(openpal::IShutdownHandler* pHandler)
+{
+	CriticalSection cs(pMutex);
+	assert(!isShuttingDown);
+	isShuttingDown = true;
+	pShutdownHandler = pHandler;
+	for (auto pChannel : channels)
+	{
+		pChannel->Shutdown();
+	}
+	return channels.empty();
+}
+
+bool DNP3Manager::OnChannelShutdown(DNP3Channel* pChannel)
+{
+	CriticalSection cs(pMutex);
+	channels.erase(pChannel);
+	delete pChannel;
+	return (isShuttingDown && channels.empty());
+}
 
 }
 

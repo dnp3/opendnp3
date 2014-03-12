@@ -54,7 +54,7 @@ public:
 	PhysicalLayerMonitor(	openpal::Logger,
 	                        openpal::IPhysicalLayerAsync*,
 	                        openpal::TimeDuration minOpenRetry_,
-	                        openpal::TimeDuration maxOpenRetry_,
+	                        openpal::TimeDuration maxOpenRetry_,							
 	                        opendnp3::IOpenDelayStrategy* pOpenStrategy_ = ExponentialBackoffStrategy::Inst());
 
 	~PhysicalLayerMonitor();
@@ -77,10 +77,6 @@ public:
 	/// @return ChannelState enumeration
 	ChannelState GetState();
 
-	/** Posts a Shutdown() call and then waits for shutdown to complete.
-	*/
-	bool WaitForShutdown(openpal::TimeDuration aTimeout = openpal::TimeDuration::Min());
-
 	openpal::Logger& GetLogger()
 	{
 		return mLogger;
@@ -96,6 +92,9 @@ protected:
 
 	/// Begins the open timer
 	void StartOpenTimer();
+
+	// called when the router shuts down permanently
+	virtual void OnShutdown() {}
 
 	openpal::IPhysicalLayerAsync* mpPhys;
 
@@ -118,10 +117,7 @@ private:
 
 	/* --- Internal helper functions --- */
 
-	void DoFinalShutdown();
-
-	std::mutex mutex;
-	std::condition_variable condition;
+	void DoFinalShutdown();	
 
 	const openpal::TimeDuration minOpenRetry;
 	const openpal::TimeDuration maxOpenRetry;

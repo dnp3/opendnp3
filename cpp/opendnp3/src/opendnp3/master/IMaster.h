@@ -21,8 +21,9 @@
 #ifndef __I_MASTER_H_
 #define __I_MASTER_H_
 
-#include "opendnp3/IStack.h"
+#include "opendnp3/DNP3Stack.h"
 #include "opendnp3/master/MasterScan.h"
+#include "opendnp3/StackActionHandler.h"
 
 #include <openpal/TimeDuration.h>
 
@@ -37,11 +38,10 @@ class ICommandProcessor;
 	ICommandProcessor* pCmdProcessor = pMaster->GetCommandProcessor();
 \endcode
 */
-class IMaster : public IStack
+class IMaster : public DNP3Stack
 {
 public:
-	IMaster(openpal::Logger& arLogger, std::function<void (bool)> aEnableDisableFunc):
-		IStack(arLogger, aEnableDisableFunc)
+	IMaster(const StackActionHandler& handler) : DNP3Stack(handler)
 	{}
 
 	virtual ~IMaster() {}

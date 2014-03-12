@@ -182,6 +182,9 @@
     <ClInclude Include="src\ProtocolUtil.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\APDUHelpers.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\AppLayerTest.cpp">
@@ -433,13 +436,10 @@
     <ClCompile Include="src\CatchTestStart.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\APDUHelpers.h">
-      <Filter>Header Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\APDUHelpers.cpp">
+    <ClCompile Include="src\ProtocolUtil.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\ProtocolUtil.cpp">
+    <ClCompile Include="src\APDUHelpers.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -29,15 +29,13 @@ OutstationStackImpl::OutstationStackImpl(
     ITimeWriteHandler* apTimeWriteHandler,
     ICommandHandler* apCmdHandler,
     const SlaveStackConfig& arCfg,
-    std::function<void (bool)> aEnableDisableFunc,
-    std::function<void (IOutstation*)> aOnShutdown) :
-	IOutstation(arLogger, aEnableDisableFunc),
-	pExecutor(apExecutor),
-	appStack(arLogger, apExecutor, arCfg.app, arCfg.link),
-	dynamicDatabaseBuffer(arCfg.database.GetTemplate()),
-	database(dynamicDatabaseBuffer.GetFacade()),
-	slave(arLogger.GetSubLogger("outstation"), &appStack.mApplication, apExecutor, apTimeWriteHandler, &database, apCmdHandler, arCfg.slave),
-	onShutdown(aOnShutdown)
+	const StackActionHandler& handler) :
+		IOutstation(handler),
+		pExecutor(apExecutor),
+		appStack(arLogger, apExecutor, arCfg.app, arCfg.link),
+		dynamicDatabaseBuffer(arCfg.database.GetTemplate()),
+		database(dynamicDatabaseBuffer.GetFacade()),
+		slave(arLogger.GetSubLogger("outstation"), &appStack.mApplication, apExecutor, apTimeWriteHandler, &database, apCmdHandler, arCfg.slave)	
 {
 	appStack.mApplication.SetUser(&slave);
 	dynamicDatabaseBuffer.Configure(arCfg.database);
@@ -69,11 +67,6 @@ void OutstationStackImpl::SetLinkRouter(ILinkRouter* apRouter)
 void OutstationStackImpl::AddStateListener(std::function<void (StackState)> aListener)
 {
 	slave.AddStateListener(aListener);
-}
-
-void OutstationStackImpl::Shutdown()
-{
-	onShutdown(this);
 }
 
 }

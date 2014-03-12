@@ -40,9 +40,11 @@ LinkLayerRouter::LinkLayerRouter(	Logger aLogger,
                                     IPhysicalLayerAsync* apPhys,
                                     openpal::TimeDuration minOpenRetry,
                                     openpal::TimeDuration maxOpenRetry,
+									openpal::IShutdownHandler* pShutdownHandler_,
                                     IOpenDelayStrategy* pStrategy) :
 	Loggable(aLogger),
 	PhysicalLayerMonitor(aLogger, apPhys, minOpenRetry, maxOpenRetry, pStrategy),
+	pShutdownHandler(pShutdownHandler_),
 	mReceiver(aLogger, this),
 	mTransmitting(false)
 {}
@@ -244,6 +246,14 @@ void LinkLayerRouter::AddStateListener(std::function<void (ChannelState)> aListe
 void LinkLayerRouter::OnStateChange(ChannelState aState)
 {
 	for(auto listener : mListeners) NotifyListener(listener, aState);
+}
+
+void LinkLayerRouter::OnShutdown()
+{
+	if (pShutdownHandler)
+	{
+		pShutdownHandler->OnShutdown();
+	}
 }
 
 bool LinkLayerRouter::HasEnabledContext()

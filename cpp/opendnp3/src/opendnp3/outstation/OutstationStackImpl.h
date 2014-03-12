@@ -43,13 +43,12 @@ class OutstationStackImpl : public IOutstation
 public:
 
 	OutstationStackImpl(
-	    openpal::Logger&,
-	    openpal::IExecutor* apExecutor,
-	    ITimeWriteHandler* apTimeWriteHandler,
-	    ICommandHandler* apCmdHandler,
-	    const SlaveStackConfig& arCfg,
-	    std::function<void (bool)> aEnableDisableFunc,
-	    std::function<void (IOutstation*)> aOnShutdown);
+		openpal::Logger&,
+		openpal::IExecutor* apExecutor,
+		ITimeWriteHandler* apTimeWriteHandler,
+		ICommandHandler* apCmdHandler,
+		const SlaveStackConfig& arCfg,
+		const StackActionHandler& handler);
 
 	IDataObserver* GetDataObserver();
 
@@ -66,15 +65,12 @@ public:
 
 	void AddStateListener(std::function<void (StackState)> aListener);
 
-	void Shutdown();
-
 private:
 	openpal::IExecutor* pExecutor;
 	ApplicationStack appStack;
 	DynamicallyAllocatedDatabase dynamicDatabaseBuffer;
 	Database database;
 	Slave slave;
-	std::function<void (IOutstation*)> onShutdown;
 };
 
 }

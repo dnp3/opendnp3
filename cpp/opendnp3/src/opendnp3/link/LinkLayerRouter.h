@@ -33,6 +33,8 @@
 #include "opendnp3/link/ILinkRouter.h"
 #include "opendnp3/link/IOpenDelayStrategy.h"
 
+#include <openpal/IShutdownHandler.h>
+
 
 namespace openpal
 {
@@ -56,6 +58,7 @@ public:
 	                openpal::IPhysicalLayerAsync*,
 	                openpal::TimeDuration minOpenRetry,
 	                openpal::TimeDuration maxOpenRetry,
+					openpal::IShutdownHandler* pShutdownHandler = nullptr,
 	                IOpenDelayStrategy* pStrategy = ExponentialBackoffStrategy::Inst());
 
 	bool IsRouteInUse(const LinkRoute& arRoute);
@@ -99,6 +102,8 @@ protected:
 	// override this function so that we can notify listeners
 	void OnStateChange(ChannelState aState);
 
+	void OnShutdown() override final;
+
 private:
 
 	bool HasEnabledContext();
@@ -128,6 +133,8 @@ private:
 
 	typedef std::map<LinkRoute, ContextRecord, LinkRoute::LessThan> AddressMap;
 	typedef std::deque<LinkFrame> TransmitQueue;
+
+	openpal::IShutdownHandler* pShutdownHandler;
 
 	AddressMap mAddressMap;
 	TransmitQueue mTransmitQueue;

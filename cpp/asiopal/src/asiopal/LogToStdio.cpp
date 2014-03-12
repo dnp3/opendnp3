@@ -47,7 +47,7 @@ void LogToStdio::Log(const openpal::LogEntry& entry)
 
 	ostringstream oss;
 
-	oss << num << openpal::LogLevelToString( entry.GetLogLevel() ) << " - " << entry.GetDeviceName();
+	oss << num << " - " << openpal::LogLevelToString( entry.GetLogLevel() ) << " - " << entry.GetDeviceName();
 	if(mPrintLocation && !entry.GetLocation().empty()) oss << " - " << entry.GetMessage();
 	oss << " - " << entry.GetMessage();
 

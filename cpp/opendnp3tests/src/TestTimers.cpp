@@ -29,8 +29,6 @@
 #include <asiopal/IOServiceThreadPool.h>
 #include <asiopal/Log.h>
 
-#include <opendnp3/ExecutorPause.h>
-
 #include <map>
 #include <functional>
 #include <chrono>

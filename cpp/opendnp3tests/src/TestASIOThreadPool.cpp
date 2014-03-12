@@ -20,9 +20,7 @@
  */
 #include <catch.hpp>
 
-#include <opendnp3/ExecutorPause.h>
 #include <asiopal/Log.h>
-
 #include <asiopal/IOServiceThreadPool.h>
 #include <asiopal/ASIOExecutor.h>
 

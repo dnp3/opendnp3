@@ -42,8 +42,8 @@ public:
 	MockExecutor();
 	~MockExecutor();
 
-	virtual void Start() override;
-	virtual void End() override;
+	virtual void Pause() override;
+	virtual void Resume() override;
 
 	// Implement IExecutor
 	virtual openpal::ITimer* Start(const openpal::MonotonicTimestamp&, const std::function<void()>&) override;

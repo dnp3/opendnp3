@@ -69,9 +69,6 @@
     <ClInclude Include="src\opendnp3\IChannel.h">
       <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\ExecutorPause.h">
-      <Filter>Header</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\ErrorCode.h">
       <Filter>Header</Filter>
     </ClInclude>
@@ -678,6 +675,12 @@
     <ClInclude Include="src\opendnp3\DNPErrorCodes.h">
       <Filter>Header</Filter>
     </ClInclude>
+    <ClInclude Include="src\opendnp3\StackActionHandler.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\DNP3Stack.h">
+      <Filter>Header</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\opendnp3\app\AnalogOutput.cpp">
@@ -1013,12 +1016,6 @@
     <ClCompile Include="src\opendnp3\DynamicBuffer.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\ExecutorPause.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\IStack.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
     <ClCompile Include="src\opendnp3\StackBase.cpp">
       <Filter>Source</Filter>
     </ClCompile>
@@ -1087,6 +1084,12 @@
     </ClCompile>
     <ClCompile Include="src\opendnp3\link\IOpenDelayStrategy.cpp">
       <Filter>Source\link</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\StackActionHandler.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\DNP3Stack.cpp">
+      <Filter>Source</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

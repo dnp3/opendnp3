@@ -180,6 +180,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\APDUHelpers.h" />
     <ClInclude Include="src\AppLayerTest.h" />
     <ClInclude Include="src\AsyncPhysBaseTest.h" />
     <ClInclude Include="src\AsyncPhysTestObject.h" />
@@ -240,7 +241,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\APDUHelpers.cpp" />
-    <ClCompile Include="src\APDUHelpers.h" />
     <ClCompile Include="src\AppLayerTest.cpp" />
     <ClCompile Include="src\AsyncPhysBaseTest.cpp" />
     <ClCompile Include="src\AsyncPhysTestObject.cpp" />

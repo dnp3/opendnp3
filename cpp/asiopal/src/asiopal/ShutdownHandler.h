@@ -18,38 +18,35 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __I_OUTSTATION_H_
-#define __I_OUTSTATION_H_
+#ifndef __SHUTDOWN_HANDLER_H_
+#define __SHUTDOWN_HANDLER_H_
 
-#include "opendnp3/DNP3Stack.h"
+#include <openpal/IShutdownHandler.h>
 
-namespace opendnp3
+#include <future>
+
+namespace asiopal
 {
 
-class IDataObserver;
-
-/**
-* Interface representing a running outstation.
-* To get a data observer interface to load measurements on the outstation:-
-\code
-	IDataObserver* pDataObserver = pOutstation->GetDataObserver()
-\endcode
-*/
-class IOutstation : public DNP3Stack
+class ShutdownHandler : public openpal::IShutdownHandler
 {
-public:
-	IOutstation(const StackActionHandler& handler) : DNP3Stack(handler)
-	{}
 
-	virtual ~IOutstation() {}
+	public:
 
-	virtual void SetNeedTimeIIN() = 0;
+	~ShutdownHandler()
+	{
+		p.get_future().get();
+	}
 
-	/**
-	* Get a data observer interface to load measurements on the outstation
-	* @return Inteface used to load measurements into the outstation
-	*/
-	virtual IDataObserver* GetDataObserver() = 0;
+
+	virtual void OnShutdown() override final
+	{
+		p.set_value(true);
+	}
+
+	private:
+	
+	std::promise<bool> p;
 };
 
 }

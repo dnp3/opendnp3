@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClInclude Include="src\openpal\AsyncLayerInterfaces.h" />
     <ClInclude Include="src\openpal\BufferWrapper.h" />
+    <ClInclude Include="src\openpal\IMutex.h" />
     <ClInclude Include="src\openpal\LinkedListAdapter.h" />
     <ClInclude Include="src\openpal\DynamicArray.h" />
     <ClInclude Include="src\openpal\gen\LogLevel.h" />

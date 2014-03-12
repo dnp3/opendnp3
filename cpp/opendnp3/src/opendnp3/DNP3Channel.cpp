@@ -22,9 +22,10 @@
 
 #include <openpal/IPhysicalLayerAsync.h>
 
+
 #include "opendnp3/master/MasterStackImpl.h"
 #include "opendnp3/outstation/OutstationStackImpl.h"
-#include "ExecutorPause.h"
+
 
 using namespace openpal;
 
@@ -37,26 +38,64 @@ DNP3Channel::DNP3Channel(
     openpal::TimeDuration maxOpenRetry,
     IOpenDelayStrategy* pStrategy,
     IPhysicalLayerAsync* pPhys_,
-    std::function<void(DNP3Channel*)> onShutdown
-) :
-	Loggable(logger),
-	pPhys(pPhys_),
-	onShutdown(onShutdown),
-	router(logger.GetSubLogger("Router"), pPhys.get(), minOpenRetry, maxOpenRetry, pStrategy),
-	group(pPhys->GetExecutor())
+	IMutex* pMutex_,
+	openpal::ITypedShutdownHandler<DNP3Channel*>* pShutdownHandler_) :
+		Loggable(logger),
+		pPhys(pPhys_),
+		pMutex(pMutex_),
+		isShuttingDown(false),
+		pShutdownHandler(pShutdownHandler_),
+		router(logger.GetSubLogger("Router"), pPhys.get(), minOpenRetry, maxOpenRetry, this, pStrategy),
+		group(pPhys->GetExecutor())
 {
 
 }
 
-DNP3Channel::~DNP3Channel()
+// comes from the outside, so we need to synchronize
+void DNP3Channel::BeginShutdown()
 {
-	this->Cleanup();
+	CriticalSection cs(pMutex);
+	if (!isShuttingDown)
+	{
+		isShuttingDown = true;
+		pPhys->GetExecutor()->Post([this](){ this->InitiateShutdown(); });
+	}
 }
 
+// comes from the outside via the manager, but is already synchronzied
 void DNP3Channel::Shutdown()
 {
-	this->Cleanup();
-	onShutdown(this);
+	if (!isShuttingDown)
+	{
+		isShuttingDown = true;
+		pPhys->GetExecutor()->Post([this](){ this->InitiateShutdown(); });
+	}
+}
+
+// can only run on the executor itself
+void DNP3Channel::InitiateShutdown()
+{
+	this->group.Shutdown();  // no more task callbacks
+
+	std::set<DNP3Stack*> copy(stacks);
+	for (auto pStack : copy)
+	{
+		pStack->ShutdownInternal();
+	}
+	router.Shutdown();
+}
+
+// called by the router when it's shutdown is complete
+void DNP3Channel::OnShutdown()
+{
+	// The router is offline. The stacks are shutdown. The task group is closed
+	// Now we can post a final zero duration shutdown timer for the channel
+	pPhys->GetExecutor()->Start(TimeDuration::Zero(), 
+		[this]() 
+		{ 
+			this->pShutdownHandler->OnShutdown(this);  
+		}
+	);
 }
 
 void DNP3Channel::AddStateListener(std::function<void (ChannelState)> aListener)
@@ -69,21 +108,9 @@ openpal::IExecutor* DNP3Channel::GetExecutor()
 	return pPhys->GetExecutor();
 }
 
-void DNP3Channel::Cleanup()
+IMaster* DNP3Channel::AddMaster(const std::string& loggerId, LogLevel aLevel, ISOEHandler* apPublisher, IUTCTimeSource* apTimeSource, const MasterStackConfig& config)
 {
-	std::set<IStack*> copy(stacks);
-	for(auto pStack : copy) pStack->Shutdown();
-	{
-		ExecutorPause p(pPhys->GetExecutor());
-		this->group.Shutdown();	// no more task callbacks
-		this->router.Shutdown();	// start shutting down the router
-	}
-	router.WaitForShutdown();
-}
-
-IMaster* DNP3Channel::AddMaster(const std::string& loggerId, LogLevel aLevel, ISOEHandler* apPublisher, IUTCTimeSource* apTimeSource, const MasterStackConfig& arCfg)
-{
-	LinkRoute route(arCfg.link.RemoteAddr, arCfg.link.LocalAddr);
+	LinkRoute route(config.link.RemoteAddr, config.link.LocalAddr);
 	ExecutorPause p(pPhys->GetExecutor());
 	if(router.IsRouteInUse(route))
 	{
@@ -93,12 +120,8 @@ IMaster* DNP3Channel::AddMaster(const std::string& loggerId, LogLevel aLevel, IS
 	else
 	{
 		auto logger = mLogger.GetSubLogger(loggerId, aLevel);
-		auto routeFunc = GetEnableDisableRoute(pPhys->GetExecutor(), &router, route);
-		auto shutdownFunc = [this, route](IStack * apStack)
-		{
-			this->OnStackShutdown(apStack, route);
-		};
-		auto pMaster = new MasterStackImpl(logger, pPhys->GetExecutor(), apPublisher, apTimeSource, &group, arCfg, routeFunc, shutdownFunc);
+		StackActionHandler handler(&router, route, pPhys->GetExecutor(), this);
+		auto pMaster = new MasterStackImpl(logger, pPhys->GetExecutor(), apPublisher, apTimeSource, &group, config, handler);
 		pMaster->SetLinkRouter(&router);
 		stacks.insert(pMaster);
 		router.AddContext(pMaster->GetLinkContext(), route);
@@ -118,12 +141,8 @@ IOutstation* DNP3Channel::AddOutstation(const std::string& arLoggerId, LogLevel 
 	else
 	{
 		auto logger = mLogger.GetSubLogger(arLoggerId, aLevel);
-		auto routeFunc = GetEnableDisableRoute(pPhys->GetExecutor(), &router, route);
-		auto shutdownFunc = [this, route](IStack * apStack)
-		{
-			this->OnStackShutdown(apStack, route);
-		};
-		auto pOutstation = new OutstationStackImpl(logger, pPhys->GetExecutor(), apTimeWriteHandler, apCmdHandler, arCfg, routeFunc, shutdownFunc);
+		StackActionHandler handler(&router, route, pPhys->GetExecutor(), this);
+		auto pOutstation = new OutstationStackImpl(logger, pPhys->GetExecutor(), apTimeWriteHandler, apCmdHandler, arCfg, handler);
 		pOutstation->SetLinkRouter(&router);
 		stacks.insert(pOutstation);
 		router.AddContext(pOutstation->GetLinkContext(), route);
@@ -131,25 +150,9 @@ IOutstation* DNP3Channel::AddOutstation(const std::string& arLoggerId, LogLevel 
 	}
 }
 
-std::function<void (bool)> DNP3Channel::GetEnableDisableRoute(IExecutor* apExecutor,  LinkLayerRouter* apRouter, LinkRoute aRoute)
+void DNP3Channel::OnShutdown(DNP3Stack* apStack)
 {
-	return [apExecutor, apRouter, aRoute](bool enable)
-	{
-		apExecutor->Post([ = ]()
-		{
-			if(enable) apRouter->EnableRoute(aRoute);
-			else apRouter->DisableRoute(aRoute);
-		});
-	};
-}
-
-void DNP3Channel::OnStackShutdown(IStack* apStack, LinkRoute route)
-{
-	stacks.erase(apStack);
-	{
-		ExecutorPause p(pPhys->GetExecutor());
-		router.RemoveContext(route);
-	}
+	stacks.erase(apStack);	
 	delete apStack;
 }
 

@@ -22,11 +22,12 @@
 #define __DNP3_CHANNEL_H_
 
 #include <openpal/Loggable.h>
+#include <openpal/IShutdownHandler.h>
+#include <openpal/IMutex.h>
 
 #include "opendnp3/IChannel.h"
 #include "opendnp3/outstation/SlaveStackConfig.h"
 #include "opendnp3/master/AsyncTaskGroup.h"
-
 #include "opendnp3/link/LinkLayerRouter.h"
 
 #include <memory>
@@ -42,11 +43,12 @@ namespace opendnp3
 {
 
 class IStack;
+class DNP3Stack;
 class IOutstation;
 class ICommandHandler;
 class ITimeWriteHandler;
 
-class DNP3Channel: public IChannel, private openpal::Loggable
+class DNP3Channel: public IChannel, private openpal::IShutdownHandler, private openpal::ITypedShutdownHandler<DNP3Stack*>, private openpal::Loggable
 {
 public:
 	DNP3Channel(
@@ -55,13 +57,14 @@ public:
 	    openpal::TimeDuration maxOpenRetry,
 	    IOpenDelayStrategy* pStrategy,
 	    IPhysicalLayerAsync* pPhys,
-	    std::function<void (DNP3Channel*)> onShutdown
-	);
+	    openpal::IMutex* pMutex_,
+		openpal::ITypedShutdownHandler<DNP3Channel*>* pShutdownHandler_
+	);	
+	
+	// public interface, callable only from outside
+	void BeginShutdown() override final;
 
-	~DNP3Channel();
-
-	// Implement IChannel - these are exposed to clients
-
+	// called only by DNP3Manager
 	void Shutdown();
 
 	void AddStateListener(std::function<void (ChannelState)> aListener);
@@ -82,22 +85,27 @@ public:
 
 	// Helper functions only available inside DNP3Manager
 
-private:
+private:	
 
-	std::function<void (bool)> GetEnableDisableRoute(IExecutor*, LinkLayerRouter*, LinkRoute);
+	void InitiateShutdown();
 
+	// shutdown call for the router
+	void OnShutdown() override final;
 
-	void Cleanup();
-
-	void OnStackShutdown(IStack* apStack, LinkRoute aRoute);
+	// shutdown from the stack
+	void OnShutdown(DNP3Stack* apStack) override final;
 
 	std::auto_ptr<IPhysicalLayerAsync> pPhys;
-	std::function<void (DNP3Channel*)> onShutdown;
-	LinkLayerRouter router;
 
+	IMutex* pMutex;
+	bool isShuttingDown;
+	openpal::ITypedShutdownHandler<DNP3Channel*>* pShutdownHandler;
+
+	LinkLayerRouter router;
 	AsyncTaskGroup group;
 
-	std::set<IStack*> stacks;
+
+	std::set<DNP3Stack*> stacks;
 
 };
 

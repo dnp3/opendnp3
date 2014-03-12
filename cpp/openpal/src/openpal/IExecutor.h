@@ -24,8 +24,6 @@
 #include <functional>
 
 #include "ITimer.h"
-#include "ITransactable.h"
-
 #include "TimeDuration.h"
 #include "MonotonicTimestamp.h"
 
@@ -37,11 +35,11 @@ namespace openpal
  * immediate consumption or some time in the future.  Events are processed 
  * in the order they are received.
  *
- * In the context of this interface, ITransactable::Start/End is a mutex
- *
  */
-class IExecutor : public ITransactable
+class IExecutor
 {
+	friend class ExecutorPause;
+
 public:
 
 	virtual ~IExecutor() {}
@@ -58,7 +56,37 @@ public:
 	/** Thread-safe way to post an event to be handled asynchronously */
 	virtual void Post(const std::function<void ()>&) = 0;
 
+protected:
+
+	// Pause the executor in a state where it is not running any tasks
+	virtual void Pause() = 0;
+
+	// Resume execution after a pause
+	virtual void Resume() = 0;
 };
+
+
+class ExecutorPause
+{
+	public:
+
+	ExecutorPause(openpal::IExecutor* pExecutor_) : pExecutor(pExecutor_)
+	{
+		pExecutor->Pause();
+	}
+	
+	~ExecutorPause()
+	{
+		pExecutor->Resume();
+	}
+
+	private:
+
+	openpal::IExecutor* pExecutor;	
+};
+
+
+
 
 }
 

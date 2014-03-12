@@ -85,7 +85,7 @@ void QueuedCommandProcessor::DirectOperate(const AnalogOutputDouble64& arCommand
 
 bool QueuedCommandProcessor::Dispatch(ICommandProcessor* apProcessor)
 {	
-	Transaction tx(pExecutor);
+	//Transaction tx(pExecutor); TODO!!
 	if (requestQueue.empty())
 	{
 		return false;
