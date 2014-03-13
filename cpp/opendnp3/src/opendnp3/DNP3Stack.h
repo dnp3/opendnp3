@@ -51,7 +51,7 @@ public:
 	/**
 	* External Shutdown function
 	*/
-	virtual void Shutdown() override final;
+	virtual void BeginShutdown() override final;
 
 	/**
 	* Internal shutdown function

@@ -45,10 +45,9 @@ public:
 	virtual void Disable() = 0;
 
 	/**
-	* Synchronously shutdown the endpoint
-	* No more calls are allowed after this call.
+	* Asynchronously shutdown the endpoint. No more calls are allowed after this call.	
 	*/
-	virtual void Shutdown() = 0;
+	virtual void BeginShutdown() = 0;
 
 };
 

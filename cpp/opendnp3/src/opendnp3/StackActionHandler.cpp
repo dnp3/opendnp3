@@ -47,20 +47,14 @@ void StackActionHandler::DisableRoute()
 	pExecutor->Post([this](){ pRouter->DisableRoute(route); });
 }
 
-void StackActionHandler::ExternalShutdown(DNP3Stack* pStack)
+void StackActionHandler::BeginShutdown(DNP3Stack* pStack)
 {
-	{
+	{   // The pause has no affect if it's running on the executor
 		openpal::ExecutorPause pause(pExecutor);
 		pRouter->RemoveContext(route);
 	}	
-	pExecutor->Post([this, pStack](){ pHandler->OnShutdown(pStack); });
-}
 
-// already on the executor
-void StackActionHandler::InternalShutdown(DNP3Stack* pStack)
-{		
-	pRouter->RemoveContext(route);
-	pHandler->OnShutdown(pStack);
+	pExecutor->Post([this, pStack](){ pHandler->OnShutdown(pStack); });
 }
 
 }

@@ -54,11 +54,10 @@ TEST_CASE(SUITE("ConstructionDestruction"))
 	for(int i = 0; i < ITERATIONS; ++i)
 	{
 
-		EventLog log;			
-		asiopal::Mutex mutex;
-		DNP3Manager mgr(&mutex);
-		
+		EventLog log;
 		IOServiceThreadPool pool(Logger(&log, LogLevel::Info, "pool"), std::thread::hardware_concurrency());
+
+		DNP3Manager mgr;
 
 		auto pClientPhys = new PhysicalLayerAsyncTCPClient(Logger(&log, LogLevel::Info, "client"), pool.GetIOService(), "127.0.0.1", 20000);
 		auto pClient = mgr.CreateChannel(Logger(&log, LogLevel::Info, "clientChannel"), TimeDuration::Seconds(5), TimeDuration::Seconds(5), pClientPhys);
@@ -70,9 +69,7 @@ TEST_CASE(SUITE("ConstructionDestruction"))
 		auto pOutstation = pServer->AddOutstation("outstation", LogLevel::Info, SuccessCommandHandler::Inst(), NullTimeWriteHandler::Inst(), SlaveStackConfig(DatabaseTemplate()));
 
 		pMaster->Enable();
-		pOutstation->Enable();
-		
-		mgr.BeginShutdown();
+		pOutstation->Enable();		
 	}
 }
 
@@ -81,10 +78,10 @@ TEST_CASE(SUITE("ManualStackShutdown"))
 	for(int i = 0; i < ITERATIONS; ++i)
 	{
 		EventLog log;		
-		asiopal::Mutex mutex;
-		DNP3Manager mgr(&mutex);
 
 		IOServiceThreadPool pool(Logger(&log, LogLevel::Info, "pool"), std::thread::hardware_concurrency());
+
+		DNP3Manager mgr;
 
 		auto pClientPhys = new PhysicalLayerAsyncTCPClient(Logger(&log, LogLevel::Info, "client"), pool.GetIOService(), "127.0.0.1", 20000);
 		auto pClient = mgr.CreateChannel(Logger(&log, LogLevel::Info, "clientChannel"), TimeDuration::Seconds(5), TimeDuration::Seconds(5), pClientPhys);
@@ -98,10 +95,8 @@ TEST_CASE(SUITE("ManualStackShutdown"))
 		pOutstation->Enable();
 		pMaster->Enable();
 
-		pOutstation->Shutdown();
-		pMaster->Shutdown();
-
-		mgr.BeginShutdown();
+		pOutstation->BeginShutdown();
+		pMaster->BeginShutdown();		
 	}
 
 }
@@ -110,12 +105,10 @@ TEST_CASE(SUITE("ManualChannelShutdownWithStacks"))
 {
 	for(int i = 0; i < ITERATIONS; ++i)
 	{
-		EventLog log;
-		
-		asiopal::Mutex mutex;
-		DNP3Manager mgr(&mutex);
+		EventLog log;		
 
 		IOServiceThreadPool pool(Logger(&log, LogLevel::Info, "pool"), std::thread::hardware_concurrency());
+		DNP3Manager mgr;
 
 		auto pClientPhys = new PhysicalLayerAsyncTCPClient(Logger(&log, LogLevel::Info, "client"), pool.GetIOService(), "127.0.0.1", 20000);
 		auto pClient = mgr.CreateChannel(Logger(&log, LogLevel::Info, "clientChannel"), TimeDuration::Seconds(5), TimeDuration::Seconds(5), pClientPhys);
@@ -131,8 +124,6 @@ TEST_CASE(SUITE("ManualChannelShutdownWithStacks"))
 
 		pClient->BeginShutdown();
 		pServer->BeginShutdown();
-
-		mgr.BeginShutdown();
 	}
 }
 
@@ -140,14 +131,11 @@ TEST_CASE(SUITE("ManualChannelShutdown"))
 {
 	for(int i = 0; i < ITERATIONS; ++i)
 	{
-
 		EventLog log;
 		log.AddLogSubscriber(LogToStdio::Inst());
-		
-		asiopal::Mutex mutex;
-		DNP3Manager mgr(&mutex);
-
+				
 		IOServiceThreadPool pool(Logger(&log, LogLevel::Info, "pool"), std::thread::hardware_concurrency());
+		DNP3Manager mgr;
 
 		auto pClientPhys = new PhysicalLayerAsyncTCPClient(Logger(&log, LogLevel::Info, "client"), pool.GetIOService(), "127.0.0.1", 20000);
 		auto pChannel = mgr.CreateChannel(Logger(&log, LogLevel::Info, "clientChannel"), TimeDuration::Seconds(5), TimeDuration::Seconds(5), pClientPhys);

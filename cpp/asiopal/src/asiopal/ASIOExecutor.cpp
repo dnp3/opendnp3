@@ -78,10 +78,24 @@ void ASIOExecutor::Post(const std::function<void ()>& arHandler)
 
 void ASIOExecutor::Pause()
 {
-	assert(!mpStrand->running_in_this_thread());
-	std::unique_lock<std::mutex> lock(mutex);	
-	mpStrand->post([this](){ this->OnPause(); });
-	condition.wait(lock, [this](){ return this->paused; });
+	if (!mpStrand->running_in_this_thread())
+	{
+		assert(!mpStrand->running_in_this_thread());
+		std::unique_lock<std::mutex> lock(mutex);
+		mpStrand->post([this](){ this->OnPause(); });
+		condition.wait(lock, [this](){ return this->paused; });
+	}
+}
+
+void ASIOExecutor::Resume()
+{
+	if (!mpStrand->running_in_this_thread())
+	{
+		std::unique_lock<std::mutex> lock(mutex);
+		this->resumed = true;
+		condition.notify_one();
+		condition.wait(lock, [this](){ return !this->paused; });
+	}
 }
 
 void ASIOExecutor::OnPause()
@@ -96,15 +110,6 @@ void ASIOExecutor::OnPause()
 	this->paused = false;
 	this->resumed = false;
 	condition.notify_one();
-}
-
-void ASIOExecutor::Resume()
-{
-	assert(!mpStrand->running_in_this_thread());
-	std::unique_lock<std::mutex> lock(mutex);
-	this->resumed = true;
-	condition.notify_one();
-	condition.wait(lock, [this](){ return !this->paused; });
 }
 
 TimerASIO* ASIOExecutor::GetTimer()

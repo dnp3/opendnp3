@@ -50,23 +50,26 @@ class ITimeWriteHandler;
 
 class DNP3Channel: public IChannel, private openpal::IShutdownHandler, private openpal::ITypedShutdownHandler<DNP3Stack*>, private openpal::Loggable
 {
+	enum class State
+	{
+		READY,
+		SHUTTING_DOWN,
+		SHUTDOWN
+	};
+
 public:
 	DNP3Channel(
 	    openpal::Logger logger,
 	    openpal::TimeDuration minOpenRetry,
 	    openpal::TimeDuration maxOpenRetry,
 	    IOpenDelayStrategy* pStrategy,
-	    IPhysicalLayerAsync* pPhys,
-	    openpal::IMutex* pMutex_,		
+	    IPhysicalLayerAsync* pPhys,	    	
 		openpal::ITypedShutdownHandler<DNP3Channel*>* pShutdownHandler_,
 		openpal::IEventHandler<ChannelState>* pStateHandler_
 	);	
 	
 	// public interface, callable only from outside
 	void BeginShutdown() override final;
-
-	// called only by DNP3Manager
-	void Shutdown();	
 
 	openpal::IExecutor* GetExecutor();
 
@@ -94,10 +97,11 @@ private:
 	// shutdown from the stack
 	void OnShutdown(DNP3Stack* apStack) override final;
 
-	std::auto_ptr<IPhysicalLayerAsync> pPhys;
+	void CheckForFinalShutdown();
 
-	IMutex* pMutex;
-	bool isShuttingDown;
+	std::auto_ptr<IPhysicalLayerAsync> pPhys;
+	
+	State state;
 	openpal::ITypedShutdownHandler<DNP3Channel*>* pShutdownHandler;
 	openpal::IEventHandler<ChannelState>* pStateHandler;
 

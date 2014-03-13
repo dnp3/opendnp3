@@ -37,14 +37,12 @@ DNP3Channel::DNP3Channel(
     openpal::TimeDuration minOpenRetry,
     openpal::TimeDuration maxOpenRetry,
     IOpenDelayStrategy* pStrategy,
-    IPhysicalLayerAsync* pPhys_,
-	IMutex* pMutex_,
+    IPhysicalLayerAsync* pPhys_,	
 	openpal::ITypedShutdownHandler<DNP3Channel*>* pShutdownHandler_,
 	openpal::IEventHandler<ChannelState>* pStateHandler) :
 		Loggable(logger),
-		pPhys(pPhys_),
-		pMutex(pMutex_),
-		isShuttingDown(false),
+		pPhys(pPhys_),		
+		state(State::READY),
 		pShutdownHandler(pShutdownHandler_),
 		router(logger.GetSubLogger("Router"), pPhys.get(), minOpenRetry, maxOpenRetry, pStateHandler, this, pStrategy),
 		group(pPhys->GetExecutor())
@@ -54,49 +52,48 @@ DNP3Channel::DNP3Channel(
 
 // comes from the outside, so we need to synchronize
 void DNP3Channel::BeginShutdown()
-{
-	CriticalSection cs(pMutex);
-	if (!isShuttingDown)
-	{
-		isShuttingDown = true;
-		pPhys->GetExecutor()->Post([this](){ this->InitiateShutdown(); });
-	}
-}
-
-// comes from the outside via the manager, but is already synchronzied
-void DNP3Channel::Shutdown()
-{
-	if (!isShuttingDown)
-	{
-		isShuttingDown = true;
-		pPhys->GetExecutor()->Post([this](){ this->InitiateShutdown(); });
-	}
+{	
+	pPhys->GetExecutor()->Post([this](){ this->InitiateShutdown(); });
 }
 
 // can only run on the executor itself
 void DNP3Channel::InitiateShutdown()
 {
-	this->group.Shutdown();  // no more task callbacks
-
-	std::set<DNP3Stack*> copy(stacks);
-	for (auto pStack : copy)
+	if (state == State::READY)
 	{
-		pStack->ShutdownInternal();
-	}
-	router.Shutdown();
+		state = State::SHUTTING_DOWN;
+
+		this->group.Shutdown();  // no more task callbacks
+		
+		for (auto pStack : stacks)
+		{
+			pStack->BeginShutdown();
+		}
+
+		router.Shutdown();
+	}	
 }
 
 // called by the router when it's shutdown is complete
 void DNP3Channel::OnShutdown()
 {
-	// The router is offline. The stacks are shutdown. The task group is closed
-	// Now we can post a final zero duration shutdown timer for the channel
-	pPhys->GetExecutor()->Start(TimeDuration::Zero(), 
-		[this]() 
-		{ 
-			this->pShutdownHandler->OnShutdown(this);  
-		}
-	);
+	this->CheckForFinalShutdown();
+}
+
+void DNP3Channel::CheckForFinalShutdown()
+{
+	// The router is offline. The stacks are shutdown
+	if ((state == State::SHUTTING_DOWN) && (router.GetState() == ChannelState::SHUTDOWN) && stacks.empty())
+	{
+		state = State::SHUTDOWN;
+
+		pPhys->GetExecutor()->Start(TimeDuration::Zero(),
+			[this]()
+			{
+				this->pShutdownHandler->OnShutdown(this);
+			}
+		);
+	}	
 }
 
 openpal::IExecutor* DNP3Channel::GetExecutor()
@@ -144,10 +141,12 @@ IOutstation* DNP3Channel::AddOutstation(const std::string& arLoggerId, LogLevel 
 	}
 }
 
+// these always happen on the strand
 void DNP3Channel::OnShutdown(DNP3Stack* apStack)
 {
 	stacks.erase(apStack);	
 	delete apStack;
+	this->CheckForFinalShutdown();
 }
 
 }

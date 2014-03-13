@@ -40,14 +40,10 @@ void DNP3Stack::Disable()
 	handler.DisableRoute();
 }
 
-void DNP3Stack::Shutdown()
+void DNP3Stack::BeginShutdown()
 {
-	handler.ExternalShutdown(this);
+	handler.BeginShutdown(this);
 }
 
-void DNP3Stack::ShutdownInternal()
-{
-	handler.InternalShutdown(this);
-}
 
 }

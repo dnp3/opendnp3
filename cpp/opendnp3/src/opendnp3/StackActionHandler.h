@@ -46,9 +46,7 @@ class StackActionHandler
 
 	void DisableRoute();
 
-	void InternalShutdown(DNP3Stack* pStack);
-
-	void ExternalShutdown(DNP3Stack* pStack);
+	void BeginShutdown(DNP3Stack* pStack);	
 	
 	private:
 

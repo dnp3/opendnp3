@@ -27,6 +27,9 @@
 #include <memory>
 #include <functional>
 
+#include <mutex>
+#include <condition_variable>
+
 #include <openpal/Logger.h>
 #include <openpal/IPhysicalLayerAsync.h>
 #include <openpal/TimeDuration.h>
@@ -45,9 +48,11 @@ class DNP3Channel;
 
 class DNP3Manager : private openpal::ITypedShutdownHandler<DNP3Channel*>
 {
+
 public:
 
-	DNP3Manager(openpal::IMutex* pMutex = nullptr);	
+	DNP3Manager();
+	~DNP3Manager();
 
 	IChannel* CreateChannel(	openpal::Logger aLogger,
 	                            openpal::TimeDuration minOpenRetry,
@@ -56,25 +61,17 @@ public:
 								openpal::IEventHandler<ChannelState>* pStateHandler = nullptr,
 	                            IOpenDelayStrategy* pOpenStrategy = ExponentialBackoffStrategy::Inst());
 
-	/// Asynchronously shutdown all channels
-	void BeginShutdown(openpal::IShutdownHandler* pHandler = nullptr);
+	/// Synchronously shutdown all channels. Block until complete.
+	void Shutdown();
 
 private:
-
-	bool isShuttingDown;
-	openpal::IMutex* pMutex;
 	
-	openpal::IShutdownHandler* pShutdownHandler;
-
+	std::mutex mutex;
+	std::condition_variable condition;
+	
 	std::set<DNP3Channel*> channels;
 
-	void OnShutdown(DNP3Channel* apChannel) override final;
-
-	// returns true if there are no more channels
-	bool InitiateShutdown(openpal::IShutdownHandler* pHandler);
-
-	// returns true if there are no more channels and we're shutting down
-	bool OnChannelShutdown(DNP3Channel* apChannel);
+	void OnShutdown(DNP3Channel* apChannel) override final;	
 };
 
 }

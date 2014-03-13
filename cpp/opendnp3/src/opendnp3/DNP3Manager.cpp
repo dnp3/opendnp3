@@ -27,21 +27,24 @@ using namespace openpal;
 namespace opendnp3
 {
 
-DNP3Manager::DNP3Manager(openpal::IMutex* pMutex_) : 
-	pMutex(pMutex_),
-	isShuttingDown(false),
-	pShutdownHandler(nullptr)
+DNP3Manager::DNP3Manager()
 {
 
 }
 
-void DNP3Manager::BeginShutdown(openpal::IShutdownHandler* pHandler)
+DNP3Manager::~DNP3Manager()
+{
+	this->Shutdown();
+}
+
+void DNP3Manager::Shutdown()
 {	
-	if (InitiateShutdown(pHandler))
+	std::unique_lock<std::mutex> lock(mutex);
+	for (auto pChannel : channels)
 	{
-		// no more channels, so call the handler ourselves
-		pHandler->OnShutdown();
+		pChannel->BeginShutdown();
 	}
+	condition.wait(lock, [this]() { return this->channels.empty(); });
 }
 
 IChannel* DNP3Manager::CreateChannel(
@@ -51,41 +54,25 @@ IChannel* DNP3Manager::CreateChannel(
     openpal::IPhysicalLayerAsync* apPhys,
 	IEventHandler<ChannelState>* pStateHandler,
     IOpenDelayStrategy* pOpenStrategy)
-{
-	CriticalSection cs(pMutex);
-	auto pChannel = new DNP3Channel(aLogger, minOpenRetry, maxOpenRetry, pOpenStrategy, apPhys, pMutex, this, pStateHandler);
+{	
+	std::unique_lock<std::mutex> lock(mutex);
+	auto pChannel = new DNP3Channel(aLogger, minOpenRetry, maxOpenRetry, pOpenStrategy, apPhys, this, pStateHandler);
 	channels.insert(pChannel);
 	return pChannel;
 }
 
 void DNP3Manager::OnShutdown(DNP3Channel* pChannel)
 {
-	if (OnChannelShutdown(pChannel) && pShutdownHandler)
-	{
-		pShutdownHandler->OnShutdown();
-	}
-}
-
-bool DNP3Manager::InitiateShutdown(openpal::IShutdownHandler* pHandler)
-{
-	CriticalSection cs(pMutex);
-	assert(!isShuttingDown);
-	isShuttingDown = true;
-	pShutdownHandler = pHandler;
-	for (auto pChannel : channels)
-	{
-		pChannel->Shutdown();
-	}
-	return channels.empty();
-}
-
-bool DNP3Manager::OnChannelShutdown(DNP3Channel* pChannel)
-{
-	CriticalSection cs(pMutex);
-	channels.erase(pChannel);
+	std::unique_lock<std::mutex> lock(mutex);
 	delete pChannel;
-	return (isShuttingDown && channels.empty());
+	channels.erase(pChannel);
+	if (channels.empty())
+	{
+		condition.notify_one();
+	}	
 }
+
+
 
 }
 
