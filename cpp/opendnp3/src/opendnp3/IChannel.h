@@ -76,15 +76,6 @@ public:
 	virtual void BeginShutdown() = 0;
 
 	/**
-	* Add a listener for changes to the channel state. All callbacks come from the thread pool.
-	* An immediate callback will be made with the current state.
-	*
-	* @param aListener Functor to callback with the state enumeration
-	*/
-	virtual void AddStateListener(std::function<void (ChannelState)> aListener) = 0;
-
-
-	/**
 	    * @return The execution context associated with the channel
 	    */
 	virtual openpal::IExecutor* GetExecutor() = 0;

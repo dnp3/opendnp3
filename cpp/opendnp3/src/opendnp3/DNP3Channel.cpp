@@ -39,13 +39,14 @@ DNP3Channel::DNP3Channel(
     IOpenDelayStrategy* pStrategy,
     IPhysicalLayerAsync* pPhys_,
 	IMutex* pMutex_,
-	openpal::ITypedShutdownHandler<DNP3Channel*>* pShutdownHandler_) :
+	openpal::ITypedShutdownHandler<DNP3Channel*>* pShutdownHandler_,
+	openpal::IEventHandler<ChannelState>* pStateHandler) :
 		Loggable(logger),
 		pPhys(pPhys_),
 		pMutex(pMutex_),
 		isShuttingDown(false),
 		pShutdownHandler(pShutdownHandler_),
-		router(logger.GetSubLogger("Router"), pPhys.get(), minOpenRetry, maxOpenRetry, nullptr, this, pStrategy),
+		router(logger.GetSubLogger("Router"), pPhys.get(), minOpenRetry, maxOpenRetry, pStateHandler, this, pStrategy),
 		group(pPhys->GetExecutor())
 {
 

@@ -57,17 +57,16 @@ public:
 	    openpal::TimeDuration maxOpenRetry,
 	    IOpenDelayStrategy* pStrategy,
 	    IPhysicalLayerAsync* pPhys,
-	    openpal::IMutex* pMutex_,
-		openpal::ITypedShutdownHandler<DNP3Channel*>* pShutdownHandler_
+	    openpal::IMutex* pMutex_,		
+		openpal::ITypedShutdownHandler<DNP3Channel*>* pShutdownHandler_,
+		openpal::IEventHandler<ChannelState>* pStateHandler_
 	);	
 	
 	// public interface, callable only from outside
 	void BeginShutdown() override final;
 
 	// called only by DNP3Manager
-	void Shutdown();
-
-	void AddStateListener(std::function<void (ChannelState)> aListener);
+	void Shutdown();	
 
 	openpal::IExecutor* GetExecutor();
 
@@ -100,10 +99,10 @@ private:
 	IMutex* pMutex;
 	bool isShuttingDown;
 	openpal::ITypedShutdownHandler<DNP3Channel*>* pShutdownHandler;
+	openpal::IEventHandler<ChannelState>* pStateHandler;
 
 	LinkLayerRouter router;
 	AsyncTaskGroup group;
-
 
 	std::set<DNP3Stack*> stacks;
 

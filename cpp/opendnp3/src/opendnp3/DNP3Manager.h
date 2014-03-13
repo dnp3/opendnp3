@@ -32,7 +32,9 @@
 #include <openpal/TimeDuration.h>
 #include <openpal/IMutex.h>
 #include <openpal/IShutdownHandler.h>
+#include <openpal/IEventHandler.h>
 
+#include "opendnp3/gen/ChannelState.h"
 #include "opendnp3/link/IOpenDelayStrategy.h"
 
 namespace opendnp3
@@ -51,6 +53,7 @@ public:
 	                            openpal::TimeDuration minOpenRetry,
 	                            openpal::TimeDuration maxOpenRetry,
 	                            openpal::IPhysicalLayerAsync* apPhys,
+								openpal::IEventHandler<ChannelState>* pStateHandler = nullptr,
 	                            IOpenDelayStrategy* pOpenStrategy = ExponentialBackoffStrategy::Inst());
 
 	/// Asynchronously shutdown all channels

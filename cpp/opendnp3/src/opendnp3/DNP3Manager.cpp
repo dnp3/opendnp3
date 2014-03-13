@@ -49,10 +49,11 @@ IChannel* DNP3Manager::CreateChannel(
     openpal::TimeDuration minOpenRetry,
     openpal::TimeDuration maxOpenRetry,
     openpal::IPhysicalLayerAsync* apPhys,
+	IEventHandler<ChannelState>* pStateHandler,
     IOpenDelayStrategy* pOpenStrategy)
 {
 	CriticalSection cs(pMutex);
-	auto pChannel = new DNP3Channel(aLogger, minOpenRetry, maxOpenRetry, pOpenStrategy, apPhys, pMutex, this);
+	auto pChannel = new DNP3Channel(aLogger, minOpenRetry, maxOpenRetry, pOpenStrategy, apPhys, pMutex, this, pStateHandler);
 	channels.insert(pChannel);
 	return pChannel;
 }
