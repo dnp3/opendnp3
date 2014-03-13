@@ -32,7 +32,6 @@
 #include "opendnp3/app/IAppLayer.h"
 #include "opendnp3/app/IAppUser.h"
 
-#include "opendnp3/StackBase.h"
 #include "opendnp3/StaticSizeConfiguration.h"
 
 #include <openpal/IExecutor.h>
@@ -63,7 +62,7 @@ class Database;
  * The Slave is responsible for building all aspects of APDU packet responses
  * except for the application sequence number.
  */
-class Slave : public IAppUser, public StackBase
+class Slave : public IAppUser
 {
 	// states can operate back on the slave's private functions
 	friend class SlaveStateBase;
@@ -110,6 +109,7 @@ private:
 
 	APDUResponse lastResponse;				// wrapper that points to the last response made
 
+	openpal::IExecutor* pExecutor;
 	IAppLayer* mpAppLayer;					// lower application layer
 	Database* mpDatabase;					// holds static data
 	ICommandHandler* mpCmdHandler;			// how commands are selected/operated on application code
@@ -130,16 +130,7 @@ private:
 	// until the slave is in a state capable of handling it.
 
 	bool mDeferredUnsol;					// Indicates that the unsol timer expired, but the event was Deferred
-	bool mStartupNullUnsol;					// Tracks whether the device has completed the nullptr unsol startup message
-
-	StackState mState;
-
-	StackState GetState()
-	{
-		return mState;
-	}
-
-	void UpdateState(StackState aState);
+	bool mStartupNullUnsol;					// Tracks whether the device has completed the nullptr unsol startup message	
 
 	void OnDataUpdate();					// internal event dispatched when user code commits an update to mChangeBuffer
 	void OnUnsolTimerExpiration();			// internal event dispatched when the unsolicted pack/retry timer expires
@@ -167,56 +158,8 @@ private:
 
 	void ResetTimeIIN();
 	openpal::ITimer* mpTimeTimer;
-
-	/**
-	 * A structure to provide the C++ equivalent of templated typedefs.
-	 */
-	template <class T>
-	struct CommandFunc
-	{
-		typedef std::function<CommandStatus (T&, size_t)> Type;
-	};
-
-	/**
-	 * Forms a response message to a list of command objects.
-	 * Slave::mResponse is used as a destination buffer.
-	 *
-	 * @param apObj			DNP3 object capable of reading/writing its own
-	 * 						type from/to a byte stream
-	 * @param arIter		an ObjectReadIterator that provides access to the
-	 * 						DNP3 objects
-	 * @param aFunc			Function for issuing/selecting
-	 */
-	//template <class T>
-	//void RespondToCommands(const StreamObject<T>* apObj, ObjectReadIterator& arIter, std::function<CommandStatus (T, size_t)> CommandHandler);
 };
 
-/*
-template<class T>
-void Slave::RespondToCommands(const StreamObject<T>* apObj, ObjectReadIterator& arIter, std::function<CommandStatus (T, size_t)> CommandHandler)
-{
-	IndexedWriteIterator i = mResponse.WriteIndexed(apObj, arIter.Count(), arIter.Header().GetQualifier());
-	size_t count = 1;
-	while (!arIter.IsEnd()) {
-		T val = apObj->Read(*arIter);
-		size_t index = arIter->Index();
-		if (count > mConfig.mMaxControls) {
-			val.status = CommandStatus::TOO_MANY_OPS;
-		}
-		else {
-			val.status = CommandHandler(val, index);
-			if(val.status == CommandStatus::NOT_SUPPORTED) {
-				this->mRspIIN.Set(IINBit::PARAM_ERROR);
-			}
-		}
-		i.SetIndex(index);
-		apObj->Write(*i, val);
-		++i;
-		++arIter;
-		++count;
-	}
-}
-*/
 
 }
 

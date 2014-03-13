@@ -54,9 +54,6 @@
     <ClInclude Include="src\opendnp3\StaticSizeConfiguration.h">
       <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\StackBase.h">
-      <Filter>Header</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\Singleton.h">
       <Filter>Header</Filter>
     </ClInclude>
@@ -229,9 +226,6 @@
       <Filter>Header\gen</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\gen\StaticAnalogOutputStatusResponse.h">
-      <Filter>Header\gen</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\gen\StackState.h">
       <Filter>Header\gen</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\gen\ScanStatus.h">
@@ -761,9 +755,6 @@
     <ClCompile Include="src\opendnp3\gen\StaticAnalogOutputStatusResponse.cpp">
       <Filter>Source\gen</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\gen\StackState.cpp">
-      <Filter>Source\gen</Filter>
-    </ClCompile>
     <ClCompile Include="src\opendnp3\gen\ScanStatus.cpp">
       <Filter>Source\gen</Filter>
     </ClCompile>
@@ -1002,9 +993,6 @@
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\DNP3Manager.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\StackBase.cpp">
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\app\ObjectWriter.cpp">

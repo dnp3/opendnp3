@@ -114,50 +114,6 @@ TEST_CASE(SUITE("IntegrityOnStartup"))
 	REQUIRE(t.app.NumAPDU() ==  0);
 }
 
-TEST_CASE(SUITE("StateTransitionSuccessFailure"))
-{
-	MasterConfig cfg; cfg.IntegrityRate = TimeDuration::Seconds(1);
-	MasterTestObject t(cfg);
-	t.BindStateListener();
-	REQUIRE(t.mts.DispatchOne());
-	REQUIRE(t.states.size() ==  1);
-	REQUIRE((t.states.front() == StackState::COMMS_DOWN));
-	t.states.pop_front();
-	t.master.OnLowerLayerUp();
-	REQUIRE(t.states.size() ==  0);
-
-	TestForIntegrityPoll(t);
-	REQUIRE(t.mts.DispatchOne());
-	REQUIRE(t.states.size() ==  1);
-	REQUIRE((t.states.front() == StackState::COMMS_UP));
-	t.states.pop_front();
-
-	t.mts.AdvanceTime(TimeDuration::Seconds(2));
-	REQUIRE(t.mts.DispatchOne());
-	TestForIntegrityPoll(t, false);
-
-	REQUIRE(t.mts.DispatchOne());
-	REQUIRE(t.states.size() ==  1);
-	REQUIRE((t.states.front() == StackState::COMMS_DOWN));
-	t.states.pop_front();
-
-	t.mts.AdvanceTime(TimeDuration::Seconds(10));
-	REQUIRE(t.mts.DispatchOne());
-	TestForIntegrityPoll(t);
-
-	REQUIRE(t.mts.DispatchOne());
-	REQUIRE(t.states.size() ==  1);
-	REQUIRE((t.states.front() == StackState::COMMS_UP));
-	t.states.pop_front();
-
-	t.master.OnLowerLayerDown();
-
-	REQUIRE(t.mts.DispatchOne());
-	REQUIRE(t.states.size() ==  1);
-	REQUIRE((t.states.front() == StackState::COMMS_DOWN));
-	t.states.pop_front();
-}
-
 TEST_CASE(SUITE("UnsolDisableEnableOnStartup"))
 {
 	MasterConfig master_cfg;

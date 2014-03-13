@@ -89,7 +89,6 @@
     <ClInclude Include="src\opendnp3\gen\LinkFunction.h" />
     <ClInclude Include="src\opendnp3\gen\QualifierCode.h" />
     <ClInclude Include="src\opendnp3\gen\ScanStatus.h" />
-    <ClInclude Include="src\opendnp3\gen\StackState.h" />
     <ClInclude Include="src\opendnp3\gen\StaticAnalogOutputStatusResponse.h" />
     <ClInclude Include="src\opendnp3\gen\StaticAnalogResponse.h" />
     <ClInclude Include="src\opendnp3\gen\StaticBinaryOutputStatusResponse.h" />
@@ -219,7 +218,6 @@
     <ClInclude Include="src\opendnp3\Settable.h" />
     <ClInclude Include="src\opendnp3\Singleton.h" />
     <ClInclude Include="src\opendnp3\StackActionHandler.h" />
-    <ClInclude Include="src\opendnp3\StackBase.h" />
     <ClInclude Include="src\opendnp3\StaticSizeConfiguration.h" />
     <ClInclude Include="src\opendnp3\transport\TLS_Base.h" />
     <ClInclude Include="src\opendnp3\transport\TransportConstants.h" />
@@ -270,7 +268,6 @@
     <ClCompile Include="src\opendnp3\gen\LinkFunction.cpp" />
     <ClCompile Include="src\opendnp3\gen\QualifierCode.cpp" />
     <ClCompile Include="src\opendnp3\gen\ScanStatus.cpp" />
-    <ClCompile Include="src\opendnp3\gen\StackState.cpp" />
     <ClCompile Include="src\opendnp3\gen\StaticAnalogOutputStatusResponse.cpp" />
     <ClCompile Include="src\opendnp3\gen\StaticAnalogResponse.cpp" />
     <ClCompile Include="src\opendnp3\gen\StaticBinaryOutputStatusResponse.cpp" />
@@ -358,7 +355,6 @@
     <ClCompile Include="src\opendnp3\outstation\TimeTransaction.cpp" />
     <ClCompile Include="src\opendnp3\outstation\WriteHandler.cpp" />
     <ClCompile Include="src\opendnp3\StackActionHandler.cpp" />
-    <ClCompile Include="src\opendnp3\StackBase.cpp" />
     <ClCompile Include="src\opendnp3\transport\TLS_Base.cpp" />
     <ClCompile Include="src\opendnp3\transport\TransportLayer.cpp" />
     <ClCompile Include="src\opendnp3\transport\TransportRx.cpp" />

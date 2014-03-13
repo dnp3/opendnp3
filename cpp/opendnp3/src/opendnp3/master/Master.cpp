@@ -46,15 +46,14 @@ namespace opendnp3
 
 Master::Master(Logger aLogger, MasterConfig aCfg, IAppLayer* apAppLayer, ISOEHandler* apSOEHandler, AsyncTaskGroup* apTaskGroup, openpal::IExecutor* apExecutor, IUTCTimeSource* apTimeSrc) :
 	IAppUser(aLogger),
-	StackBase(apExecutor),	
+	pExecutor(apExecutor),
 	mpAppLayer(apAppLayer),
 	mpSOEHandler(apSOEHandler),
 	mpTaskGroup(apTaskGroup),
 	mpTimeSrc(apTimeSrc),
 	mpState(AMS_Closed::Inst()),
 	mpTask(nullptr),
-	mpScheduledTask(nullptr),
-	mState(StackState::COMMS_DOWN),
+	mpScheduledTask(nullptr),	
 	mSchedule(apTaskGroup, this, aCfg),	
 	mClassPoll(aLogger, apSOEHandler),
 	mClearRestart(aLogger),
@@ -66,21 +65,9 @@ Master::Master(Logger aLogger, MasterConfig aCfg, IAppLayer* apAppLayer, ISOEHan
 	
 }
 
-void Master::UpdateState(StackState aState)
-{
-	if(mState != aState)
-	{
-		LOG_BLOCK(LogLevel::Info, "StackState: " << StackStateToString(aState));
-		mState = aState;
-		this->NotifyListeners(aState);
-	}
-}
-
 void Master::ProcessIIN(const IINField& iin)
 {
-	mLastIIN = iin;
-
-	this->UpdateState(StackState::COMMS_UP);
+	mLastIIN = iin;	
 
 	bool check_state = false;
 
@@ -118,7 +105,7 @@ void Master::ProcessCommand(ITask* apTask)
 {
 	if(mpState == AMS_Closed::Inst())   //we're closed
 	{
-		ConstantCommandProcessor ccp(mpExecutor, CommandResponse(CommandResult::NO_COMMS));
+		ConstantCommandProcessor ccp(pExecutor, CommandResponse(CommandResult::NO_COMMS));
 		while(mCommandQueue.Dispatch(&ccp));
 		apTask->Disable();
 	}
@@ -232,13 +219,13 @@ void Master::ChangeUnsol(ITask* apTask, bool aEnable, int aClassMask)
 
 MasterScan Master::GetIntegrityScan()
 {
-	return MasterScan(mpExecutor, mSchedule.mpIntegrityPoll);
+	return MasterScan(pExecutor, mSchedule.mpIntegrityPoll);
 }
 
 MasterScan Master::AddClassScan(int aClassMask, openpal::TimeDuration aScanRate, openpal::TimeDuration aRetryRate)
 {
 	auto pTask = mSchedule.AddClassScan(aClassMask, aScanRate, aRetryRate);
-	return MasterScan(mpExecutor, pTask);
+	return MasterScan(pExecutor, pTask);
 }
 
 /* Implement IAppUser */
@@ -252,8 +239,7 @@ void Master::OnLowerLayerUp()
 void Master::OnLowerLayerDown()
 {
 	mpState->OnLowerLayerDown(this);
-	mSchedule.DisableOnlineTasks();
-	this->UpdateState(StackState::COMMS_DOWN);
+	mSchedule.DisableOnlineTasks();	
 }
 
 void Master::OnSolSendSuccess()
@@ -262,8 +248,7 @@ void Master::OnSolSendSuccess()
 }
 
 void Master::OnSolFailure()
-{
-	this->UpdateState(StackState::COMMS_DOWN);
+{	
 	mpState->OnFailure(this);
 }
 

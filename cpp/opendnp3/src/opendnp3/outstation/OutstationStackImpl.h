@@ -61,9 +61,7 @@ public:
 	openpal::IExecutor* GetExecutor()
 	{
 		return pExecutor;
-	}
-
-	void AddStateListener(std::function<void (StackState)> aListener);
+	}	
 
 private:
 	openpal::IExecutor* pExecutor;

@@ -45,14 +45,6 @@ MasterTestObject::MasterTestObject(MasterConfig cfg, openpal::LogLevel aLevel, b
 	app.SetUser(&master);
 }
 
-void MasterTestObject::BindStateListener()
-{
-	master.AddStateListener([&](StackState state)
-	{
-		states.push_back(state);
-	});
-}
-
 void MasterTestObject::RespondToMaster(const std::string& arData, bool aFinal)
 {
 	HexSequence hs(arData);

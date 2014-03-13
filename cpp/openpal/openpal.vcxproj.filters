@@ -139,6 +139,12 @@
     <ClInclude Include="src\openpal\IMutex.h">
       <Filter>Header</Filter>
     </ClInclude>
+    <ClInclude Include="src\openpal\IShutdownHandler.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="src\openpal\IEventHandler.h">
+      <Filter>Header</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\openpal\AsyncLayerInterfaces.cpp">

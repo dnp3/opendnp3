@@ -35,7 +35,6 @@
 #include "opendnp3/master/StartupTasks.h"
 #include "opendnp3/master/DataPoll.h"
 #include "opendnp3/master/CommandTask.h"
-#include "opendnp3/StackBase.h"
 
 #include <openpal/IExecutor.h>
 #include <openpal/IUTCTimeSource.h>
@@ -66,7 +65,7 @@ class AMS_Base;
  *
  * Coordination of tasks is handled by a higher level task scheduler.
  */
-class Master : public IAppUser, public StackBase, private ICommandProcessor
+class Master : public IAppUser, private ICommandProcessor
 {
 	friend class AMS_Base;
 	friend class AMS_Idle;
@@ -120,9 +119,7 @@ public:
 	void SelectAndOperate(const AnalogOutputDouble64& arCommand, uint16_t aIndex, std::function<void(CommandResponse)> aCallback);
 	void DirectOperate(const AnalogOutputDouble64& arCommand, uint16_t aIndex, std::function<void(CommandResponse)> aCallback);
 
-private:
-
-	void UpdateState(StackState aState);
+private:	
 
 	/* Task functions used for scheduling */
 
@@ -141,6 +138,7 @@ private:
 	void ProcessDataResponse(const APDUResponseRecord& aRecord);	// Read data output of solicited or unsolicited response and publish
 	void StartTask(MasterTaskBase*, bool aInit);	// Starts a task running	
 
+	openpal::IExecutor* pExecutor;
 	IAppLayer* mpAppLayer;					// lower application layer
 	ISOEHandler* mpSOEHandler;
 	AsyncTaskGroup* mpTaskGroup;			// How task execution is controlled
@@ -148,14 +146,8 @@ private:
 
 	AMS_Base* mpState;						// Pointer to active state, start in TLS_Closed
 	MasterTaskBase* mpTask;					// The current master task
-	ITask* mpScheduledTask;					// The current scheduled task
-	StackState mState;						// Current state of the master
-
-	StackState GetState()
-	{
-		return mState;
-	}
-
+	ITask* mpScheduledTask;					// The current scheduled task	
+	
 	/* --- Task plumbing --- */
 
 	MasterSchedule mSchedule;				// The machinery needed for scheduling

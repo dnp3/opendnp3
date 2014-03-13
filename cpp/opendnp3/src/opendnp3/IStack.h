@@ -21,30 +21,18 @@
 #ifndef __I_STACK_H_
 #define __I_STACK_H_
 
-#include "gen/StackState.h"
-
 #include <functional>
 
 namespace opendnp3
 {
 
 /**
-* Base class for masters or outstations. Can be used to bind a vto endpoint or shutdown.
+* Base class for masters or outstations
 */
 class IStack
 {
 public:	
 	virtual ~IStack() {}
-
-	/**
-	* Add a listener for changes to the stack state. All callbacks come from the thread pool.
-	* An immediate callback will be made with the current state.
-	*
-	* @param aListener Functor to call back with the state enumeration
-	*/
-	virtual void AddStateListener(std::function<void (StackState)> aListener) = 0;
-
-	//virtual openpal::IExecutor* GetExecutor() = 0;
 
 	/**
 	* Enable communications

@@ -64,10 +64,5 @@ void OutstationStackImpl::SetLinkRouter(ILinkRouter* apRouter)
 	appStack.link.SetRouter(apRouter);
 }
 
-void OutstationStackImpl::AddStateListener(std::function<void (StackState)> aListener)
-{
-	slave.AddStateListener(aListener);
-}
-
 }
 

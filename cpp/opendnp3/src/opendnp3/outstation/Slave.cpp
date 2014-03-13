@@ -47,11 +47,11 @@ namespace opendnp3
 {
 
 Slave::Slave(openpal::Logger aLogger, IAppLayer* apAppLayer, IExecutor* apExecutor, ITimeWriteHandler* apTimeWriteHandler, Database* apDatabase, ICommandHandler* apCmdHandler, const SlaveConfig& arCfg) :
-	IAppUser(aLogger),
-	StackBase(apExecutor),
+	IAppUser(aLogger),	
 	mpTimeWriteHandler(apTimeWriteHandler),
 	selectBuffer(apExecutor, arCfg.mSelectTimeout),
 	lastResponse(responseBuffer.GetWriteBuffer()),	
+	pExecutor(apExecutor),
 	mpAppLayer(apAppLayer),
 	mpDatabase(apDatabase),
 	mpCmdHandler(apCmdHandler),
@@ -61,7 +61,6 @@ Slave::Slave(openpal::Logger aLogger, IAppLayer* apAppLayer, IExecutor* apExecut
 	mStaticRspContext(apDatabase, StaticResponseTypes(arCfg)),
 	mDeferredUnsol(false),
 	mStartupNullUnsol(false),
-	mState(StackState::COMMS_DOWN),
 	mpTimeTimer(nullptr)
 {
 	/* Link the event buffer to the database */
@@ -87,16 +86,6 @@ void Slave::SetNeedTimeIIN()
 	mIIN.Set(IINBit::NEED_TIME);
 }
 
-void Slave::UpdateState(StackState aState)
-{
-	if(mState != aState)
-	{
-		LOG_BLOCK(LogLevel::Info, "StackState: " << StackStateToString(aState));
-		mState = aState;
-		this->NotifyListeners(aState);
-	}
-}
-
 /* Implement IAppUser - external callbacks from the app layer */
 
 void Slave::OnLowerLayerUp()
@@ -106,14 +95,12 @@ void Slave::OnLowerLayerUp()
 
 void Slave::OnLowerLayerDown()
 {
-	mpState->OnLowerLayerDown(this);
-	this->UpdateState(StackState::COMMS_DOWN);
+	mpState->OnLowerLayerDown(this);	
 }
 
 void Slave::OnSolSendSuccess()
 {
-	mpState->OnSolSendSuccess(this);
-	this->UpdateState(StackState::COMMS_UP);
+	mpState->OnSolSendSuccess(this);	
 }
 
 void Slave::OnSolFailure()
@@ -124,8 +111,7 @@ void Slave::OnSolFailure()
 
 void Slave::OnUnsolSendSuccess()
 {
-	mpState->OnUnsolSendSuccess(this);
-	this->UpdateState(StackState::COMMS_UP);
+	mpState->OnUnsolSendSuccess(this);	
 }
 
 void Slave::OnUnsolFailure()
@@ -378,14 +364,14 @@ void Slave::SendResponse(APDUResponse& response, const IINField& indications)
 void Slave::StartUnsolTimer(openpal::TimeDuration aTimeout)
 {
 	assert(mpUnsolTimer == nullptr);
-	mpUnsolTimer = mpExecutor->Start(aTimeout, std::bind(&Slave::OnUnsolTimerExpiration, this));
+	mpUnsolTimer = pExecutor->Start(aTimeout, std::bind(&Slave::OnUnsolTimerExpiration, this));
 }
 
 void Slave::ResetTimeIIN()
 {
 	mpTimeTimer = nullptr;
 	mIIN.Set(IINBit::NEED_TIME);
-	mpTimeTimer = mpExecutor->Start(mConfig.mTimeSyncPeriod, std::bind(&Slave::ResetTimeIIN, this));
+	mpTimeTimer = pExecutor->Start(mConfig.mTimeSyncPeriod, std::bind(&Slave::ResetTimeIIN, this));
 }
 
 } //end ns

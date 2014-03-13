@@ -18,43 +18,24 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __STACK_BASE_H_
-#define __STACK_BASE_H_
-
-
-#include "gen/StackState.h"
-
-#include <functional>
-#include <vector>
+#ifndef __I_EVENT_HANDLER_H_
+#define __I_EVENT_HANDLER_H_
 
 namespace openpal
 {
-class IExecutor;
-}
 
-namespace opendnp3
-{
-
-class StackBase
+template <class T>
+class IEventHandler
 {
 public:
-	StackBase(openpal::IExecutor* apExecutor);
 
-	void AddStateListener(std::function<void (StackState)> aCallback);
+	virtual ~IShutdownHandler() {}
 
-protected:
-	void NotifyListeners(StackState aState);
+	// called when the registered event fires
+	virtual void OnEvent(T value) = 0;
 
-	void Queue(const std::function<void (StackState)>& arFunc, StackState aState);
-
-	// implement in inherited class
-	virtual StackState GetState() = 0;
-
-	openpal::IExecutor* mpExecutor;
-
-private:
-	std::vector<std::function<void (StackState)>> mListeners;
 };
+
 }
 
 #endif

@@ -69,10 +69,5 @@ MasterScan MasterStackImpl::GetIntegrityScan()
 	return mMaster.GetIntegrityScan();
 }
 
-void MasterStackImpl::AddStateListener(std::function<void (StackState)> aListener)
-{
-	mMaster.AddStateListener(aListener);
-}
-
 }
 

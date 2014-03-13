@@ -55,9 +55,7 @@ public:
 	AsyncTaskGroup group;
 	MockSOEHandler meas;
 	MockAppLayer app;
-	Master master;
-	//APDU mAPDU;
-	std::deque<StackState> states;
+	Master master;	
 };
 
 }

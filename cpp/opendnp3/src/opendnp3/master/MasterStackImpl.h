@@ -53,8 +53,6 @@ public:
 
 	void SetLinkRouter(ILinkRouter* apRouter);
 
-	void AddStateListener(std::function<void (StackState)> aListener);
-
 	MasterScan GetIntegrityScan();
 
 	openpal::IExecutor* GetExecutor()
