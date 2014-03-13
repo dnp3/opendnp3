@@ -123,5 +123,33 @@ TEST_CASE(SUITE("ExecutorPauseGuardsRaceConditions"))
 	REQUIRE(200 ==  count);
 }
 
+TEST_CASE(SUITE("ExecutorPauseIsIgnoredIfOnStrand"))
+{
+	EventLog log;
+	IOServiceThreadPool pool(Logger(&log, LogLevel::Info, "pool"), 1);
+	size_t iterations = 10;
+
+	asio::strand strand(*pool.GetIOService());
+	ASIOExecutor exe(&strand);
+
+	int count = 0;
+	
+	auto pause = [&]()
+	{
+		ExecutorPause pause(&exe);
+		++count;		
+	};	
+
+	for (int i = 0; i < iterations; ++i)
+	{
+		exe.Post(pause);
+	}
+
+	pool.Shutdown();
+
+	REQUIRE(count == iterations);
+}
+
+
 
 
