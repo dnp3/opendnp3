@@ -69,9 +69,6 @@
     <ClInclude Include="src\opendnp3\IChannel.h">
       <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\DynamicBuffer.h">
-      <Filter>Header</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\DNP3Manager.h">
       <Filter>Header</Filter>
     </ClInclude>
@@ -133,9 +130,6 @@
       <Filter>Header\app</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\app\BitReader.h">
-      <Filter>Header\app</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\app\CachedRequest.h">
       <Filter>Header\app</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\app\ClassMask.h">
@@ -678,6 +672,9 @@
     <ClInclude Include="src\opendnp3\DNP3Stack.h">
       <Filter>Header</Filter>
     </ClInclude>
+    <ClInclude Include="src\opendnp3\outstation\CachedRequest.h">
+      <Filter>Header\outstation</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\opendnp3\app\AnalogOutput.cpp">
@@ -717,9 +714,6 @@
       <Filter>Source\app</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\app\BitReader.cpp">
-      <Filter>Source\app</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\app\CachedRequest.cpp">
       <Filter>Source\app</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\app\ControlRelayOutputBlock.cpp">
@@ -1010,9 +1004,6 @@
     <ClCompile Include="src\opendnp3\DNP3Manager.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\DynamicBuffer.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
     <ClCompile Include="src\opendnp3\StackBase.cpp">
       <Filter>Source</Filter>
     </ClCompile>
@@ -1087,6 +1078,9 @@
     </ClCompile>
     <ClCompile Include="src\opendnp3\DNP3Stack.cpp">
       <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\outstation\CachedRequest.cpp">
+      <Filter>Source\outstation</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -28,7 +28,7 @@
 #include "opendnp3/outstation/StaticResponseTypes.h"
 #include "opendnp3/outstation/SelectBuffer.h"
 
-#include "opendnp3/app/CachedRequest.h"
+#include "opendnp3/outstation/CachedRequest.h"
 #include "opendnp3/app/IAppLayer.h"
 #include "opendnp3/app/IAppUser.h"
 

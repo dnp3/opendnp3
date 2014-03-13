@@ -23,7 +23,7 @@
 
 #include <opendnp3/app/APDUParser.h>
 #include <opendnp3/app/APDUHeaderParser.h>
-#include <opendnp3/app/CachedRequest.h>
+#include <opendnp3/Outstation/CachedRequest.h>
 
 #include "MockAPDUHeaderHandler.h"
 #include "BufferHelpers.h"
@@ -34,13 +34,13 @@ using namespace opendnp3;
 
 TEST_CASE(SUITE("DoesntApplyIfNotSet"))
 {
-	CachedRequest cache(100);
+	CachedRequest cache;
 	REQUIRE_FALSE(cache.IsSet());
 }
 
 TEST_CASE(SUITE("Correctly"))
 {
-	CachedRequest cache(100);
+	CachedRequest cache;
 	{
 		HexSequence temp("C0 02 01 02 06");
 		APDURecord record;

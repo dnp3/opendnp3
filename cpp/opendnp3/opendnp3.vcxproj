@@ -38,7 +38,6 @@
     <ClInclude Include="src\opendnp3\app\BinaryWriteState.h" />
     <ClInclude Include="src\opendnp3\app\BitfieldRangeWriteIterator.h" />
     <ClInclude Include="src\opendnp3\app\BitReader.h" />
-    <ClInclude Include="src\opendnp3\app\CachedRequest.h" />
     <ClInclude Include="src\opendnp3\app\ClassMask.h" />
     <ClInclude Include="src\opendnp3\app\ControlRelayOutputBlock.h" />
     <ClInclude Include="src\opendnp3\app\CountWriteIterator.h" />
@@ -78,7 +77,6 @@
     <ClInclude Include="src\opendnp3\DNP3Channel.h" />
     <ClInclude Include="src\opendnp3\DNP3Manager.h" />
     <ClInclude Include="src\opendnp3\DNPErrorCodes.h" />
-    <ClInclude Include="src\opendnp3\DynamicBuffer.h" />
     <ClInclude Include="src\opendnp3\gen\ChannelState.h" />
     <ClInclude Include="src\opendnp3\gen\CommandResult.h" />
     <ClInclude Include="src\opendnp3\gen\CommandStatus.h" />
@@ -172,6 +170,7 @@
     <ClInclude Include="src\opendnp3\objects\Group51.h" />
     <ClInclude Include="src\opendnp3\objects\Group52.h" />
     <ClInclude Include="src\opendnp3\objects\Group60.h" />
+    <ClInclude Include="src\opendnp3\outstation\CachedRequest.h" />
     <ClInclude Include="src\opendnp3\outstation\CommandActionAdapter.h" />
     <ClInclude Include="src\opendnp3\outstation\CommandResponseHandler.h" />
     <ClInclude Include="src\opendnp3\outstation\ConstantCommandAction.h" />
@@ -243,7 +242,6 @@
     <ClCompile Include="src\opendnp3\app\AppLayerChannel.cpp" />
     <ClCompile Include="src\opendnp3\app\ApplicationStack.cpp" />
     <ClCompile Include="src\opendnp3\app\BitReader.cpp" />
-    <ClCompile Include="src\opendnp3\app\CachedRequest.cpp" />
     <ClCompile Include="src\opendnp3\app\ControlRelayOutputBlock.cpp" />
     <ClCompile Include="src\opendnp3\app\FunctionCodeHelpers.cpp" />
     <ClCompile Include="src\opendnp3\app\GroupVariation.cpp" />
@@ -260,7 +258,6 @@
     <ClCompile Include="src\opendnp3\DNP3Channel.cpp" />
     <ClCompile Include="src\opendnp3\DNP3Manager.cpp" />
     <ClCompile Include="src\opendnp3\DNP3Stack.cpp" />
-    <ClCompile Include="src\opendnp3\DynamicBuffer.cpp" />
     <ClCompile Include="src\opendnp3\gen\ChannelState.cpp" />
     <ClCompile Include="src\opendnp3\gen\CommandResult.cpp" />
     <ClCompile Include="src\opendnp3\gen\CommandStatus.cpp" />
@@ -335,6 +332,7 @@
     <ClCompile Include="src\opendnp3\objects\Group51.cpp" />
     <ClCompile Include="src\opendnp3\objects\Group52.cpp" />
     <ClCompile Include="src\opendnp3\objects\Group60.cpp" />
+    <ClCompile Include="src\opendnp3\outstation\CachedRequest.cpp" />
     <ClCompile Include="src\opendnp3\outstation\CommandActionAdapter.cpp" />
     <ClCompile Include="src\opendnp3\outstation\CommandResponseHandler.cpp" />
     <ClCompile Include="src\opendnp3\outstation\Database.cpp" />
