@@ -21,7 +21,6 @@
 #ifndef __LINK_LAYER_ROUTER_H_
 #define __LINK_LAYER_ROUTER_H_
 
-
 #include <map>
 #include <queue>
 #include <vector>
@@ -48,10 +47,10 @@ namespace opendnp3
 class ILinkContext;
 class LinkFrame;
 
-//	Implements the parsing and de-multiplexing portion of
-//	of DNP 3 Data Link Layer. PhysicalLayerMonitor inherits
+// Implements the parsing and de-multiplexing portion of
+// of DNP 3 Data Link Layer. PhysicalLayerMonitor inherits
 // from IHandlerAsync, which inherits from IUpperLayer
-class LinkLayerRouter : public PhysicalLayerMonitor, public IFrameSink, public ILinkRouter
+class LinkLayerRouter : public PhysicalLayerMonitor, public ILinkRouter, private IFrameSink
 {
 public:
 
@@ -63,6 +62,7 @@ public:
 					openpal::IShutdownHandler* pShutdownHandler = nullptr,
 	                IOpenDelayStrategy* pStrategy = ExponentialBackoffStrategy::Inst());
 
+	// Query to see if a route is in use
 	bool IsRouteInUse(const LinkRoute& arRoute);
 
 	// Ties the lower part of the link layer to the upper part
@@ -94,19 +94,15 @@ public:
 	void UnconfirmedUserData(bool aIsMaster, uint16_t aDest, uint16_t aSrc, const openpal::ReadOnlyBuffer& arBuffer);
 
 	// ILinkRouter interface
-	bool Transmit(const LinkFrame&);
-
-	// Notify the listener when the state changes
-	void AddStateListener(std::function<void (ChannelState)> aListener);
+	bool Transmit(const LinkFrame&);	
 
 protected:
-
-	// override this function so that we can notify listeners
-	void OnStateChange(ChannelState aState);
-
+	
 	void OnShutdown() override final;
 
 private:
+
+	void OnStateChange(ChannelState aState);
 
 	bool HasEnabledContext();
 
@@ -121,17 +117,12 @@ private:
 
 		ILinkContext* pContext;
 		bool enabled;
-	};
-
-	void NotifyListener(std::function<void (ChannelState)> aListener, ChannelState state);
-
-	std::vector<std::function<void (ChannelState)>> mListeners;
+	};		
 
 	ILinkContext* GetDestination(uint16_t aDest, uint16_t aSrc);
 	ILinkContext* GetEnabledContext(const LinkRoute&);
 
 	void CheckForSend();
-
 
 	typedef std::map<LinkRoute, ContextRecord, LinkRoute::LessThan> AddressMap;
 	typedef std::deque<LinkFrame> TransmitQueue;

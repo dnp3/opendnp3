@@ -98,11 +98,6 @@ void DNP3Channel::OnShutdown()
 	);
 }
 
-void DNP3Channel::AddStateListener(std::function<void (ChannelState)> aListener)
-{
-	router.AddStateListener(aListener);
-}
-
 openpal::IExecutor* DNP3Channel::GetExecutor()
 {
 	return pPhys->GetExecutor();

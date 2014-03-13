@@ -234,20 +234,12 @@ bool LinkLayerRouter::Transmit(const LinkFrame& arFrame)
 	}
 }
 
-
-void LinkLayerRouter::AddStateListener(std::function<void (ChannelState)> aListener)
+void LinkLayerRouter::OnStateChange(ChannelState state)
 {
-	//this call comes from an unknown thread so marshall it the router's executor
-	this->mpPhys->GetExecutor()->Post([this, aListener]()
+	if (this->pStateHandler)
 	{
-		mListeners.push_back(aListener);
-		this->NotifyListener(aListener, this->GetState()); // event the current state now
-	});
-}
-
-void LinkLayerRouter::OnStateChange(ChannelState aState)
-{
-	for(auto listener : mListeners) NotifyListener(listener, aState);
+		pStateHandler->OnEvent(state);		
+	}
 }
 
 void LinkLayerRouter::OnShutdown()
@@ -266,14 +258,6 @@ bool LinkLayerRouter::HasEnabledContext()
 	}
 
 	return false;
-}
-
-void LinkLayerRouter::NotifyListener(std::function<void (ChannelState)> aListener, ChannelState state)
-{
-	this->mpPhys->GetExecutor()->Post([ = ]()
-	{
-		aListener(state);
-	});
 }
 
 void LinkLayerRouter::_OnSendSuccess()

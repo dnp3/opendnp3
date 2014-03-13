@@ -18,10 +18,9 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
+
 #ifndef __I_LINK_ROUTER_H_
 #define __I_LINK_ROUTER_H_
-
-
 
 namespace opendnp3
 {
@@ -29,9 +28,10 @@ namespace opendnp3
 class LinkFrame;
 
 // @section DESCRIPTION Interface from the link layer to the link router
+
 class ILinkRouter
 {
-public:
+	public:
 
 	virtual ~ILinkRouter() {}
 
