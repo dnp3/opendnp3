@@ -29,10 +29,10 @@ namespace openpal
 class Loggable
 {
 public:
-	Loggable(Logger& arLogger);
+	Loggable(const Logger& logger_) : logger(logger_) {}
 
 protected:
-	Logger mLogger;
+	Logger logger;
 };
 
 }

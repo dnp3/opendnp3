@@ -34,6 +34,7 @@
 #include "opendnp3/link/IOpenDelayStrategy.h"
 
 #include <openpal/IShutdownHandler.h>
+#include <openpal/IEventHandler.h>
 
 
 namespace openpal
@@ -54,10 +55,11 @@ class LinkLayerRouter : public PhysicalLayerMonitor, public IFrameSink, public I
 {
 public:
 
-	LinkLayerRouter(openpal::Logger,
+	LinkLayerRouter(const openpal::Logger&,
 	                openpal::IPhysicalLayerAsync*,
 	                openpal::TimeDuration minOpenRetry,
 	                openpal::TimeDuration maxOpenRetry,
+					openpal::IEventHandler<ChannelState>* pStateHandler = nullptr,
 					openpal::IShutdownHandler* pShutdownHandler = nullptr,
 	                IOpenDelayStrategy* pStrategy = ExponentialBackoffStrategy::Inst());
 
@@ -134,6 +136,7 @@ private:
 	typedef std::map<LinkRoute, ContextRecord, LinkRoute::LessThan> AddressMap;
 	typedef std::deque<LinkFrame> TransmitQueue;
 
+	openpal::IEventHandler<ChannelState>* pStateHandler;
 	openpal::IShutdownHandler* pShutdownHandler;
 
 	AddressMap mAddressMap;

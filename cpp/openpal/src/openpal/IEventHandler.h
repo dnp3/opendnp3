@@ -29,7 +29,7 @@ class IEventHandler
 {
 public:
 
-	virtual ~IShutdownHandler() {}
+	virtual ~IEventHandler() {}
 
 	// called when the registered event fires
 	virtual void OnEvent(T value) = 0;

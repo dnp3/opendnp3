@@ -105,7 +105,7 @@ protected:
 
 	openpal::Logger& GetLogger()
 	{
-		return mLogger;
+		return logger;
 	}
 
 

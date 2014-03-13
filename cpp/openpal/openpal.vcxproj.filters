@@ -159,9 +159,6 @@
     <ClCompile Include="src\openpal\LogEntry.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="src\openpal\Loggable.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
     <ClCompile Include="src\openpal\Logger.cpp">
       <Filter>Source</Filter>
     </ClCompile>

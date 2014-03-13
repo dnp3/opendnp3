@@ -69,7 +69,6 @@
     <ClCompile Include="src\openpal\gen\LogLevel.cpp" />
     <ClCompile Include="src\openpal\IHandlerAsync.cpp" />
     <ClCompile Include="src\openpal\LogEntry.cpp" />
-    <ClCompile Include="src\openpal\Loggable.cpp" />
     <ClCompile Include="src\openpal\Logger.cpp" />
     <ClCompile Include="src\openpal\MonotonicTimestamp.cpp" />
     <ClCompile Include="src\openpal\ReverseEndian.cpp" />

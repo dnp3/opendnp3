@@ -281,8 +281,8 @@ void Master::OnUnsolResponse(const APDUResponseRecord& aRecord)
 
 void Master::ProcessDataResponse(const APDUResponseRecord& record)
 {
-	MeasurementHandler handler(mLogger, this->mpSOEHandler);
-	APDUParser::ParseTwoPass(record.objects, &handler, &mLogger);
+	MeasurementHandler handler(logger, this->mpSOEHandler);
+	APDUParser::ParseTwoPass(record.objects, &handler, &logger);
 }
 
 } //end ns

@@ -187,8 +187,8 @@ IINField Slave::ConfigureResponse(const APDURecord& request, SequenceInfo sequen
 
 IINField Slave::HandleWrite(const APDURecord& request, SequenceInfo sequence)
 {
-	WriteHandler handler(mLogger, mpTimeWriteHandler, &mIIN);
-	auto result = APDUParser::ParseTwoPass(request.objects, &handler, &mLogger);
+	WriteHandler handler(logger, mpTimeWriteHandler, &mIIN);
+	auto result = APDUParser::ParseTwoPass(request.objects, &handler, &logger);
 	if (result == APDUParser::Result::OK)
 	{
 		return handler.Errors();
@@ -202,8 +202,8 @@ IINField Slave::HandleWrite(const APDURecord& request, SequenceInfo sequence)
 IINField Slave::HandleRead(const APDURecord& request, SequenceInfo sequence, APDUResponse& response)
 {
 	mStaticRspContext.Reset();
-	ReadHandler handler(mLogger, &mStaticRspContext);
-	auto result = APDUParser::ParseTwoPass(request.objects, &handler, &mLogger, APDUParser::Context(false)); // don't expect range/count context on a READ
+	ReadHandler handler(logger, &mStaticRspContext);
+	auto result = APDUParser::ParseTwoPass(request.objects, &handler, &logger, APDUParser::Context(false)); // don't expect range/count context on a READ
 	if(result == APDUParser::Result::OK)
 	{
 		auto errors = handler.Errors();
@@ -240,8 +240,8 @@ IINField Slave::HandleSelect(const APDURecord& request, SequenceInfo sequence, A
 	else
 	{
 		CommandActionAdapter adapter(this->mpCmdHandler, true);
-		CommandResponseHandler handler(mLogger, mConfig.mMaxControls, &adapter, response);
-		auto result = APDUParser::ParseTwoPass(request.objects, &handler, &mLogger);
+		CommandResponseHandler handler(logger, mConfig.mMaxControls, &adapter, response);
+		auto result = APDUParser::ParseTwoPass(request.objects, &handler, &logger);
 		if (result == APDUParser::Result::OK)
 		{
 			if(handler.AllCommandsSuccessful())
@@ -290,8 +290,8 @@ IINField Slave::HandleOperate(const APDURecord& request, SequenceInfo sequence, 
 		case(SelectBuffer::OperateResult::OK) :
 			{
 				CommandActionAdapter adapter(this->mpCmdHandler, false);
-				CommandResponseHandler handler(mLogger, mConfig.mMaxControls, &adapter, response);
-				auto result = APDUParser::ParseTwoPass(request.objects, &handler, &mLogger);
+				CommandResponseHandler handler(logger, mConfig.mMaxControls, &adapter, response);
+				auto result = APDUParser::ParseTwoPass(request.objects, &handler, &logger);
 				return IINFromParseResult(result);
 			}
 		default:
@@ -311,8 +311,8 @@ IINField Slave::HandleDirectOperate(const APDURecord& request, SequenceInfo sequ
 	else
 	{
 		CommandActionAdapter adapter(this->mpCmdHandler, false); // do the operation
-		CommandResponseHandler handler(mLogger, mConfig.mMaxControls, &adapter, response);
-		auto result = APDUParser::ParseTwoPass(request.objects, &handler, &mLogger);
+		CommandResponseHandler handler(logger, mConfig.mMaxControls, &adapter, response);
+		auto result = APDUParser::ParseTwoPass(request.objects, &handler, &logger);
 		return IINFromParseResult(result);
 	}
 }
@@ -350,8 +350,8 @@ IINField Slave::HandleDelayMeasure(const APDURecord& request, SequenceInfo seque
 IINField Slave::HandleCommandWithConstant(const APDURecord& request, APDUResponse& response, CommandStatus status)
 {
 	ConstantCommandAction constant(status);
-	CommandResponseHandler handler(mLogger, mConfig.mMaxControls, &constant, response);
-	auto result = APDUParser::ParseTwoPass(request.objects, &handler, &mLogger);
+	CommandResponseHandler handler(logger, mConfig.mMaxControls, &constant, response);
+	auto result = APDUParser::ParseTwoPass(request.objects, &handler, &logger);
 	return IINFromParseResult(result);
 }
 

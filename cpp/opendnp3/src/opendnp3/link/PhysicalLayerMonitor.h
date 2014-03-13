@@ -77,7 +77,7 @@ public:
 
 	openpal::Logger& GetLogger()
 	{
-		return mLogger;
+		return logger;
 	}
 
 protected:

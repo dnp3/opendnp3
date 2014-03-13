@@ -155,7 +155,7 @@ public:
 	//Error reporting function(s)
 	openpal::Logger& GetLogger()
 	{
-		return mLogger;
+		return logger;
 	}
 
 protected:

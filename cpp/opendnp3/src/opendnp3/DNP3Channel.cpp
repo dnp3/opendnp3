@@ -45,7 +45,7 @@ DNP3Channel::DNP3Channel(
 		pMutex(pMutex_),
 		isShuttingDown(false),
 		pShutdownHandler(pShutdownHandler_),
-		router(logger.GetSubLogger("Router"), pPhys.get(), minOpenRetry, maxOpenRetry, this, pStrategy),
+		router(logger.GetSubLogger("Router"), pPhys.get(), minOpenRetry, maxOpenRetry, nullptr, this, pStrategy),
 		group(pPhys->GetExecutor())
 {
 
@@ -118,8 +118,7 @@ IMaster* DNP3Channel::AddMaster(const std::string& loggerId, LogLevel aLevel, IS
 		return nullptr;
 	}
 	else
-	{
-		auto logger = mLogger.GetSubLogger(loggerId, aLevel);
+	{		
 		StackActionHandler handler(&router, route, pPhys->GetExecutor(), this);
 		auto pMaster = new MasterStackImpl(logger, pPhys->GetExecutor(), apPublisher, apTimeSource, &group, config, handler);
 		pMaster->SetLinkRouter(&router);
@@ -140,7 +139,6 @@ IOutstation* DNP3Channel::AddOutstation(const std::string& arLoggerId, LogLevel 
 	}
 	else
 	{
-		auto logger = mLogger.GetSubLogger(arLoggerId, aLevel);
 		StackActionHandler handler(&router, route, pPhys->GetExecutor(), this);
 		auto pOutstation = new OutstationStackImpl(logger, pPhys->GetExecutor(), apTimeWriteHandler, apCmdHandler, arCfg, handler);
 		pOutstation->SetLinkRouter(&router);

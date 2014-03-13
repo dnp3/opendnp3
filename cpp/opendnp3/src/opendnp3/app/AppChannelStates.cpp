@@ -40,22 +40,22 @@ namespace opendnp3
 
 void ACS_Base::Send(AppLayerChannel* c, APDUWrapper&, size_t)
 {
-	LOGGER_BLOCK(c->mLogger, LogLevel::Error, "Invalid action for state: " << this->Name());
+	LOGGER_BLOCK(c->logger, LogLevel::Error, "Invalid action for state: " << this->Name());
 }
 
 void ACS_Base::Cancel(AppLayerChannel* c)
 {
-	LOGGER_BLOCK(c->mLogger, LogLevel::Error, "Invalid action for state: " << this->Name());
+	LOGGER_BLOCK(c->logger, LogLevel::Error, "Invalid action for state: " << this->Name());
 }
 
 void ACS_Base::OnSendSuccess(AppLayerChannel* c)
 {
-	LOGGER_BLOCK(c->mLogger, LogLevel::Error, "Invalid action for state: " << this->Name());
+	LOGGER_BLOCK(c->logger, LogLevel::Error, "Invalid action for state: " << this->Name());
 }
 
 void ACS_Base::OnSendFailure(AppLayerChannel* c)
 {
-	LOGGER_BLOCK(c->mLogger, LogLevel::Error, "Invalid action for state: " << this->Name());
+	LOGGER_BLOCK(c->logger, LogLevel::Error, "Invalid action for state: " << this->Name());
 }
 
 void ACS_Base::OnConfirm(AppLayerChannel* c, int aSeq)
@@ -72,7 +72,7 @@ void ACS_Base::OnResponse(AppLayerChannel* c, const APDUResponseRecord& rsp)
 
 void ACS_Base::OnTimeout(AppLayerChannel* c)
 {
-	LOGGER_BLOCK(c->mLogger, LogLevel::Error, "Invalid action for state: " << this->Name());
+	LOGGER_BLOCK(c->logger, LogLevel::Error, "Invalid action for state: " << this->Name());
 }
 
 void ACS_Base::ProcessResponse(AppLayerChannel* c, const APDUResponseRecord& record, bool aExpectFIR)
@@ -139,12 +139,12 @@ ACS_Base* ACS_Idle::NextState(AppLayerChannel* c, FunctionCode aFunc, bool aConf
 	switch(aFunc)
 	{
 	case(FunctionCode::CONFIRM) :
-		LOGGER_BLOCK(c->mLogger, LogLevel::Error, "Cannot send a confirm manually");
+		LOGGER_BLOCK(c->logger, LogLevel::Error, "Cannot send a confirm manually");
 		return this;
 	case(FunctionCode::RESPONSE):
 		if(c->Sequence() < 0)
 		{
-			LOGGER_BLOCK(c->mLogger, LogLevel::Error, "Can't respond until we've received a request");
+			LOGGER_BLOCK(c->logger, LogLevel::Error, "Can't respond until we've received a request");
 			return this;
 		}
 		else
@@ -159,14 +159,14 @@ ACS_Base* ACS_Idle::NextState(AppLayerChannel* c, FunctionCode aFunc, bool aConf
 	case(FunctionCode::DIRECT_OPERATE_NO_ACK):
 		if(aConfirm)
 		{
-			LOGGER_BLOCK(c->mLogger, LogLevel::Error, "DO no ACK can't be confirmed");
+			LOGGER_BLOCK(c->logger, LogLevel::Error, "DO no ACK can't be confirmed");
 		}
 		return ACS_Send::Inst();
 
 	default:	// it's a request with an expected response
 		if(aConfirm)
 		{
-			LOGGER_BLOCK(c->mLogger, LogLevel::Error, "Confirmation not allowed for requests");
+			LOGGER_BLOCK(c->logger, LogLevel::Error, "Confirmation not allowed for requests");
 		}
 		return ACS_SendExpectResponse::Inst();
 	}

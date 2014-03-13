@@ -127,7 +127,7 @@ bool CommandTask::_OnPartialResponse(const APDUResponseRecord&)
 
 TaskResult CommandTask::_OnFinalResponse(const APDUResponseRecord& record)
 {
-	auto result = APDUParser::ParseTwoPass(record.objects, mpActiveSequence, &mLogger);
+	auto result = APDUParser::ParseTwoPass(record.objects, mpActiveSequence, &logger);
 	if(result == APDUParser::Result::OK)
 	{
 		if(mpFunctionSequence == nullptr) // we're done

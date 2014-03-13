@@ -54,8 +54,8 @@ TaskResult DataPoll::_OnFinalResponse(const APDUResponseRecord& record)
 
 void DataPoll::ReadData(const APDUResponseRecord& record)
 {
-	MeasurementHandler handler(this->mLogger, this->pHandler);
-	auto res = APDUParser::ParseTwoPass(record.objects, &handler, &mLogger);
+	MeasurementHandler handler(this->logger, this->pHandler);
+	auto res = APDUParser::ParseTwoPass(record.objects, &handler, &logger);
 	if(res != APDUParser::Result::OK)
 	{
 		LOG_BLOCK(LogLevel::Warning, "Error parsing response headers: " << static_cast<int>(res)); // TODO - turn these into strings

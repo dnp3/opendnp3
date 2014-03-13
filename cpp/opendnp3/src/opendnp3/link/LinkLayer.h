@@ -69,7 +69,7 @@ public:
 
 	openpal::Logger& GetLogger()
 	{
-		return mLogger;
+		return logger;
 	}
 
 	void DoDataUp(const openpal::ReadOnlyBuffer& arBuffer)
