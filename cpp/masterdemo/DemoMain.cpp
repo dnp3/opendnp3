@@ -57,25 +57,17 @@ int main(int argc, char* argv[])
 	// This is the main point of interaction with the stack
 	DNP3Manager mgr;
 
-
 	// you can optionally pass a function into the client constructor to configure your socket
 	// using platform specific options
 	auto configure = [](asio::ip::tcp::socket & socket)
 	{
 		// platfrom specific socket configuration here
-	};
+	};	
 
 	// Connect via a TCPClient socket to a slave
 	auto pClientPhys = new PhysicalLayerAsyncTCPClient(Logger(&log, LOG_LEVEL, "tcpclient"), pool.GetIOService(), "127.0.0.1", 20000, configure);
 	// wait 3000 ms in between failed connect calls.
-	auto pClient = mgr.CreateChannel(Logger(&log, LOG_LEVEL, "tcpclient"), TimeDuration::Seconds(2), TimeDuration::Minutes(1), pClientPhys);
-
-	// You can optionally add a listener to the channel. You can do this anytime and
-	// you will receive a stream of all state changes
-	pClient->AddStateListener([](ChannelState state)
-	{
-		std::cout << "Client state: " << ChannelStateToString(state) << std::endl;
-	});
+	auto pClient = mgr.CreateChannel(Logger(&log, LOG_LEVEL, "tcpclient"), TimeDuration::Seconds(2), TimeDuration::Minutes(1), pClientPhys);	
 
 	// The master config object for a master. The default are
 	// useable, but understanding the options are important.
@@ -91,14 +83,7 @@ int main(int argc, char* argv[])
 	                   PrintingSOEHandler::Inst(),	// callback for data processing
 	                   asiopal::UTCTimeSource::Inst(),	// system clock for time syncing
 	                   stackConfig						// stack configuration
-	               );
-
-	// You can optionally add a listener to the stack to observer communicate health. You
-	// can do this anytime and you will receive a stream of all state changes.
-	pMaster->AddStateListener([](StackState state)
-	{
-		std::cout << "master state: " << StackStateToString(state) << std::endl;
-	});
+	               );	
 
 	auto integrityScan = pMaster->GetIntegrityScan();
 	auto exceptionScan = pMaster->AddClassScan(CLASS_1 | CLASS_2 | CLASS_3, TimeDuration::Seconds(5), TimeDuration::Seconds(5));

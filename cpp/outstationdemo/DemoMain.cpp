@@ -69,15 +69,6 @@ int main(int argc, char* argv[])
 	// Wrap the physical layer in a DNP channel
 	auto pServer = mgr.CreateChannel(Logger(&log, LOG_LEVEL, "tcpserver"), TimeDuration::Seconds(5), TimeDuration::Seconds(5), pServerPhys);
 
-	// You can optionally add a listener to the channel. You can do this anytime and
-	// you will receive a stream of all state changes
-	pServer->AddStateListener([](ChannelState state)
-	{
-		std::cout << "Server state: " << ChannelStateToString(state) << std::endl;
-	});
-
-
-
 	// The master config object for a slave. The default are
 	// useable, but understanding the options are important.
 	SlaveStackConfig stackConfig;
@@ -87,14 +78,7 @@ int main(int argc, char* argv[])
 	// Create a new slave with a log level, command handler, and
 	// config info this	returns a thread-safe interface used for
 	// updating the slave's database.
-	auto pOutstation = pServer->AddOutstation("outstation", LOG_LEVEL, SuccessCommandHandler::Inst(), NullTimeWriteHandler::Inst(), stackConfig);
-
-	// You can optionally add a listener to the stack to observer communicate health. You
-	// can do this anytime and you will receive a stream of all state changes.
-	pOutstation->AddStateListener([](StackState state)
-	{
-		std::cout << "outstation state: " << StackStateToString(state) << std::endl;
-	});
+	auto pOutstation = pServer->AddOutstation("outstation", LOG_LEVEL, SuccessCommandHandler::Inst(), NullTimeWriteHandler::Inst(), stackConfig);	
 
 	// Enable the outstation and start communications
 	pOutstation->Enable();
