@@ -39,9 +39,9 @@ class ApplicationStack
 public:
 	ApplicationStack(openpal::Logger aLogger, openpal::IExecutor* apExecutor, AppConfig aAppCfg, LinkConfig aCfg);
 
-	LinkLayer mLink;
-	TransportLayer mTransport;
-	AppLayer mApplication;
+	LinkLayer link;
+	TransportLayer transport;
+	AppLayer application;
 };
 
 }

@@ -71,7 +71,6 @@ void PhysicalLayerMonitor::ChangeState(IMonitorState* apState)
 
 	if(pLast->GetState() != apState->GetState())
 	{
-
 		this->OnStateChange(mpState->GetState());		
 	}
 

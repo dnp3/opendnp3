@@ -26,12 +26,12 @@ namespace opendnp3
 {
 
 ApplicationStack::ApplicationStack(openpal::Logger aLogger, openpal::IExecutor* apExecutor, AppConfig aAppCfg, LinkConfig aCfg) :
-	mLink(aLogger.GetSubLogger("link"), apExecutor, aCfg),
-	mTransport(aLogger.GetSubLogger("transport"), apExecutor),
-	mApplication(aLogger.GetSubLogger("app"), apExecutor, aAppCfg)
+	link(aLogger.GetSubLogger("link"), apExecutor, aCfg),
+	transport(aLogger.GetSubLogger("transport"), apExecutor),
+	application(aLogger.GetSubLogger("app"), apExecutor, aAppCfg)
 {
-	mLink.SetUpperLayer(&mTransport);
-	mTransport.SetUpperLayer(&mApplication);
+	link.SetUpperLayer(&transport);
+	transport.SetUpperLayer(&application);
 }
 
 }

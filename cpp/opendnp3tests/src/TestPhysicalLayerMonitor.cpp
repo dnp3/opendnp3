@@ -30,7 +30,6 @@
 #include "LogTester.h"
 
 using namespace opendnp3;
-using namespace std::chrono;
 using namespace openpal;
 using namespace asiopal;
 
@@ -42,8 +41,10 @@ public:
 		Loggable(aLogger),
 		PhysicalLayerMonitor(aLogger.GetSubLogger("monitor"), apPhys, TimeDuration::Seconds(1),  TimeDuration::Seconds(10)),
 		mOpenCallbackCount(0),
-		mCloseCallbackCount(0)
+		mCloseCallbackCount(0),
+		mShutdownCallbackCount(0)
 	{
+
 	}
 
 	void ReachInAndStartOpenTimer()
@@ -53,8 +54,14 @@ public:
 
 	size_t mOpenCallbackCount;
 	size_t mCloseCallbackCount;
+	size_t mShutdownCallbackCount;
 
 protected:
+
+	void OnShutdown() override final
+	{
+		++mShutdownCallbackCount;
+	}
 
 	void OnPhysicalLayerOpenSuccessCallback()
 	{
@@ -299,28 +306,24 @@ TEST_CASE(SUITE("OpenFailureGoesToClosedIfSuspended"))
 	REQUIRE(0 ==  test.exe.NumActive());
 }
 
-/* TODO
-TEST_CASE(SUITE("ShutdownPostsToTimer"))
+
+TEST_CASE(SUITE("ShutdownCallsInheritedMethod"))
 {
 	TestObject test;
-	REQUIRE(0 ==  test.exe.NumActive());
-	REQUIRE_FALSE(test.monitor.WaitForShutdown(TimeDuration::Seconds(0)));
+	REQUIRE(0 ==  test.exe.NumActive());	
 	test.monitor.Shutdown();
 	REQUIRE((ChannelState::SHUTDOWN == test.monitor.GetState()));
-	REQUIRE(1 ==  test.exe.NumActive());
-	REQUIRE_FALSE(test.monitor.WaitForShutdown(TimeDuration::Seconds(0)));
-	REQUIRE(test.exe.DispatchOne());
-	REQUIRE(test.monitor.WaitForShutdown()); //wait indefinitely, but it's already shutdown
+	REQUIRE(0 ==  test.exe.NumActive());
+	REQUIRE(1 == test.monitor.mShutdownCallbackCount);
 }
-*/
+
 
 TEST_CASE(SUITE("ShutdownWhileWaitingCancelsTimer"))
 {
 	TestObject test;
 	test.monitor.Start();
 	test.phys.SignalOpenFailure();
-	test.monitor.Shutdown();
-	REQUIRE(test.exe.DispatchOne()); //disptach the shutdown post
+	test.monitor.Shutdown();	
 	REQUIRE((ChannelState::SHUTDOWN == test.monitor.GetState()));
 	REQUIRE(0 ==  test.exe.NumActive());
 }

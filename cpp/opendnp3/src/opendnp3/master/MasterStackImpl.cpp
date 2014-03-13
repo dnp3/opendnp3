@@ -38,9 +38,9 @@ MasterStackImpl::MasterStackImpl(	Logger aLogger,
 	IMaster(handler),
 	mpExecutor(apExecutor),
 	mAppStack(aLogger, apExecutor, arCfg.app, arCfg.link),
-	mMaster(aLogger.GetSubLogger("master"), arCfg.master, &mAppStack.mApplication, apPublisher, apTaskGroup, apExecutor, apTimeSource)	
+	mMaster(aLogger.GetSubLogger("master"), arCfg.master, &mAppStack.application, apPublisher, apTaskGroup, apExecutor, apTimeSource)	
 {
-	mAppStack.mApplication.SetUser(&mMaster);
+	mAppStack.application.SetUser(&mMaster);
 }
 
 ICommandProcessor* MasterStackImpl::GetCommandProcessor()
@@ -50,12 +50,12 @@ ICommandProcessor* MasterStackImpl::GetCommandProcessor()
 
 ILinkContext* MasterStackImpl::GetLinkContext()
 {
-	return &mAppStack.mLink;
+	return &mAppStack.link;
 }
 
 void MasterStackImpl::SetLinkRouter(ILinkRouter* apRouter)
 {
-	mAppStack.mLink.SetRouter(apRouter);
+	mAppStack.link.SetRouter(apRouter);
 }
 
 MasterScan MasterStackImpl::AddClassScan(int aClassMask, openpal::TimeDuration aScanRate, openpal::TimeDuration aRetryRate)

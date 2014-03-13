@@ -35,9 +35,9 @@ OutstationStackImpl::OutstationStackImpl(
 		appStack(arLogger, apExecutor, arCfg.app, arCfg.link),
 		dynamicDatabaseBuffer(arCfg.database.GetTemplate()),
 		database(dynamicDatabaseBuffer.GetFacade()),
-		slave(arLogger.GetSubLogger("outstation"), &appStack.mApplication, apExecutor, apTimeWriteHandler, &database, apCmdHandler, arCfg.slave)	
+		slave(arLogger.GetSubLogger("outstation"), &appStack.application, apExecutor, apTimeWriteHandler, &database, apCmdHandler, arCfg.slave)	
 {
-	appStack.mApplication.SetUser(&slave);
+	appStack.application.SetUser(&slave);
 	dynamicDatabaseBuffer.Configure(arCfg.database);
 }
 
@@ -56,12 +56,12 @@ void OutstationStackImpl::SetNeedTimeIIN()
 
 ILinkContext* OutstationStackImpl::GetLinkContext()
 {
-	return &appStack.mLink;
+	return &appStack.link;
 }
 
 void OutstationStackImpl::SetLinkRouter(ILinkRouter* apRouter)
 {
-	appStack.mLink.SetRouter(apRouter);
+	appStack.link.SetRouter(apRouter);
 }
 
 void OutstationStackImpl::AddStateListener(std::function<void (StackState)> aListener)
