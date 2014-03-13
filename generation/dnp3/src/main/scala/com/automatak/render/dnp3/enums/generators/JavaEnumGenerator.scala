@@ -24,7 +24,6 @@ object JavaEnumGenerator {
       CommandResult(),
       ControlCode(),
       ChannelState(),
-      StackState(),
       LogLevel()
     ).map(e => EnumConfig.apply(e, path)) ::: events
 

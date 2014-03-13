@@ -25,7 +25,6 @@ object CppEnumGenerator {
       EnumConfig(CommandResult(), "opendnp3", opendnp3, false),
       EnumConfig(ControlCode(), "opendnp3", opendnp3, true),
       EnumConfig(ChannelState(), "opendnp3", opendnp3, false),
-      EnumConfig(StackState(), "opendnp3", opendnp3, false),
       EnumConfig(LogLevel(), "openpal", openpal, true)
     ) ::: EventTypes.enums.map(m => EnumConfig(m, "opendnp3", opendnp3, true))
 

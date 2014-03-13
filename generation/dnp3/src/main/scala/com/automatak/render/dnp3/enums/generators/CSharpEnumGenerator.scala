@@ -25,7 +25,6 @@ object CSharpEnumGenerator {
       CommandResult(),
       ControlCode(),
       ChannelState(),
-      StackState(),
       LogLevel()
     ).map(e => EnumConfig.apply(e, dir)) ::: events
 
