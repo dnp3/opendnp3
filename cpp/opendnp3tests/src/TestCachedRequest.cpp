@@ -23,7 +23,7 @@
 
 #include <opendnp3/app/APDUParser.h>
 #include <opendnp3/app/APDUHeaderParser.h>
-#include <opendnp3/Outstation/CachedRequest.h>
+#include <opendnp3/outstation/CachedRequest.h>
 
 #include "MockAPDUHeaderHandler.h"
 #include "BufferHelpers.h"
