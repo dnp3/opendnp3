@@ -69,9 +69,6 @@
     <ClInclude Include="src\opendnp3\IChannel.h">
       <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\ErrorCode.h">
-      <Filter>Header</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\DynamicBuffer.h">
       <Filter>Header</Filter>
     </ClInclude>

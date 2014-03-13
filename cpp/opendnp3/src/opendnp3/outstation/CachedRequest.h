@@ -18,63 +18,68 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include "OctetData.h"
+
+#ifndef __CACHED_REQUEST_H_
+#define __CACHED_REQUEST_H_
+
+#include <openpal/Uncopyable.h>
+#include <openpal/StaticBuffer.h>
+
+#include "opendnp3/StaticSizeConfiguration.h"
+#include "opendnp3/app/APDUHeader.h"
+#include "opendnp3/app/SequenceInfo.h"
+#include "opendnp3/Settable.h"
 
 #include <assert.h>
-#include <memory.h>
-
-using namespace openpal;
 
 namespace opendnp3
 {
 
-OctetData::OctetData() :  size(0)
+/**
+* Used to efficiently cache requests that the outstation can't process immediately
+*/
+class CachedRequest : private openpal::Uncopyable
 {
+public:
 
-}
+	CachedRequest();
 
-OctetData::OctetData(const openpal::ReadOnlyBuffer& buffer)
-{
-	Initialize(buffer);
-}
+	void Set(const APDURecord& aRecord, SequenceInfo aSequence);
 
-void OctetData::Initialize(const openpal::ReadOnlyBuffer& buffer)
-{
-	size = static_cast<uint8_t>((buffer.Size() > 255) ? 255 : buffer.Size());
-	buffer.Truncate(size).CopyTo(pData);	
-}
-
-OctetData& OctetData::operator=( const OctetData& rhs )
-{
-	if(&rhs != this)
+	void Clear()
 	{
-		assert(rhs.size <= MAX_SIZE);
-		if(pData != nullptr)
-		{
-			size = 0;
-		}
-		this->Initialize(rhs.ToReadOnly());
+		record.Clear();
 	}
-	return *this;
-}
 
-OctetData::OctetData(const OctetData& aCopy) : size(0)
+	bool IsSet() const
+	{
+		return record.IsSet();
+	}
+
+	template <class ApplyFun>
+	bool Apply(const ApplyFun& fun);
+
+private:
+	
+	Settable<APDURecord> record;
+	SequenceInfo sequence;
+	openpal::StaticBuffer<sizes::MAX_APDU_BUFFER_SIZE> buffer;
+};
+
+template <class ApplyFun>
+bool CachedRequest::Apply(const ApplyFun& fun)
 {
-	this->Initialize(aCopy.ToReadOnly());
+	if (record.IsSet())
+	{		
+		fun(record.GetAndClear(), sequence);		
+		return true;
+	}
+	else
+	{
+		return false;
+	}		
 }
 
-openpal::ReadOnlyBuffer OctetData::ToReadOnly() const
-{
-	return ReadOnlyBuffer(pData, size);
 }
 
-std::string OctetData::AsString() const
-{
-	return std::string(reinterpret_cast<const char*>(pData), size);
-}
-
-}
-
-
-
-
+#endif

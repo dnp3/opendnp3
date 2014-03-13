@@ -18,56 +18,25 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __ERROR_CODE_H_
-#define __ERROR_CODE_H_
+
+#include "CachedRequest.h"
 
 namespace opendnp3
 {
-template<class T>
-class ErrorCode
+
+CachedRequest::CachedRequest()
+{}
+
+void CachedRequest::Set(const APDURecord& record_, SequenceInfo sequence_)
 {
-public:
-
-	static ErrorCode Success(T aValue)
-	{
-		return ErrorCode(aValue, 0);
-	}
-
-	static ErrorCode Failure(int aCode)
-	{
-		assert(aCode != 0);
-		return ErrorCode(aCode);
-	}
-
-	bool IsError()
-	{
-		return code != 0;
-	}
-
-	int Code()
-	{
-		assert(code != 0);
-		return code;
-	}
-
-	T Result()
-	{
-		assert(code == 0);
-		return value;
-	}
-
-private:
-	ErrorCode(T aValue, int aCode): value(aValue), code(aCode)
-	{}
-
-	ErrorCode(int aCode): value(), code(aCode)
-	{}
-
-	T value;
-	int code;
-};
+	auto write = buffer.GetWriteBuffer();
+	assert(record_.objects.Size() <= write.Size());
+	record_.objects.CopyTo(write);	
+	APDURecord copy(record_);
+	copy.objects = buffer.ToReadOnly().Truncate(record_.objects.Size());
+	this->sequence = sequence_;
+	record.Set(copy);
+}
 
 
 }
-
-#endif

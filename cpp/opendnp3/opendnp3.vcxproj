@@ -79,7 +79,6 @@
     <ClInclude Include="src\opendnp3\DNP3Manager.h" />
     <ClInclude Include="src\opendnp3\DNPErrorCodes.h" />
     <ClInclude Include="src\opendnp3\DynamicBuffer.h" />
-    <ClInclude Include="src\opendnp3\ErrorCode.h" />
     <ClInclude Include="src\opendnp3\gen\ChannelState.h" />
     <ClInclude Include="src\opendnp3\gen\CommandResult.h" />
     <ClInclude Include="src\opendnp3\gen\CommandStatus.h" />

@@ -33,7 +33,7 @@ class OctetData
 {
 public:
 
-	const static size_t MAX_SIZE = 255;
+	const static uint8_t MAX_SIZE = 255;
 
 	OctetData();
 	OctetData(const openpal::ReadOnlyBuffer& buffer);
@@ -48,8 +48,8 @@ private:
 
 	void Initialize(const openpal::ReadOnlyBuffer& buffer);
 
-	uint8_t mpData[MAX_SIZE];
-	size_t mSize;
+	uint8_t pData[MAX_SIZE];
+	uint8_t size;
 };
 
 }
