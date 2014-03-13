@@ -52,9 +52,6 @@ namespace DotNetMasterDemo
             config.link.useConfirms = true; //setup your stack configuration here.
             var master = channel.AddMaster("master", LogLevel.Interpret, PrintingSOEHandler.Instance, config);
 
-            //optionally, add a listener for the stack state
-            master.AddStateListener(state => Console.WriteLine("Master state: " + state));
-
             var classMask = PointClassHelpers.GetMask(PointClass.CLASS_1, PointClass.CLASS_2, PointClass.CLASS_3);
             var classScan = master.AddClassScan(classMask, TimeSpan.FromSeconds(5), TimeSpan.FromSeconds(5));
             var integrityScan = master.GetIntegrityScan();

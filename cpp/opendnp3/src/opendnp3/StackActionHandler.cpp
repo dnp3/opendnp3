@@ -37,6 +37,11 @@ pHandler(pHandler_)
 	
 }
 
+openpal::IExecutor* StackActionHandler::GetExecutor()
+{
+	return pExecutor;
+}
+
 void StackActionHandler::EnableRoute()
 {
 	pExecutor->Post([this](){ pRouter->EnableRoute(route); });

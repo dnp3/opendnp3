@@ -37,12 +37,6 @@ ChannelState Conversions::convertChannelState(opendnp3::ChannelState aState)
 	return (ChannelState) aState;
 }
 
-
-StackState  Conversions::convertStackState(opendnp3::StackState aState)
-{
-	return (StackState) aState;
-}
-
 CommandResponse Conversions::convertCommandResponse(opendnp3::CommandResponse response)
 {
 	auto result = convertCommandResult(response.GetResult());

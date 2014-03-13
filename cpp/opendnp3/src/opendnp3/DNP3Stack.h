@@ -37,6 +37,8 @@ public:
 	DNP3Stack(const StackActionHandler& handler_);
 
 	virtual ~DNP3Stack() {}
+	
+	virtual openpal::IExecutor* GetExecutor() override final;
 
 	/**
 	* Enable communications
@@ -52,11 +54,6 @@ public:
 	* External Shutdown function
 	*/
 	virtual void BeginShutdown() override final;
-
-	/**
-	* Internal shutdown function
-	*/
-	void ShutdownInternal();
 
 private:
 

@@ -56,12 +56,7 @@ public:
 
 	ILinkContext* GetLinkContext();
 
-	void SetLinkRouter(ILinkRouter* apRouter);
-
-	openpal::IExecutor* GetExecutor()
-	{
-		return pExecutor;
-	}	
+	void SetLinkRouter(ILinkRouter* apRouter);	
 
 private:
 	openpal::IExecutor* pExecutor;

@@ -6,6 +6,10 @@ using namespace System::Collections::ObjectModel;
 #include <opendnp3/IChannel.h>
 #include <vcclr.h>
 
+#include <openpal/IEventHandler.h>
+
+#include "EventMultiplexer.h"
+
 using namespace DNP3::Interface;
 
 namespace DNP3
@@ -18,7 +22,10 @@ private ref class ChannelAdapter : IChannel
 {
 public:
 
-	ChannelAdapter(opendnp3::IChannel* apChannel);
+	ChannelAdapter();
+	~ChannelAdapter();
+
+	void SetChannel(opendnp3::IChannel* pChannel_);
 
 	virtual void AddStateListener(System::Action<ChannelState>^ listener);
 
@@ -28,9 +35,12 @@ public:
 
 	virtual void Shutdown();
 
+	openpal::IEventHandler<opendnp3::ChannelState>* GetEventHandler();
+
 private:
 
-	opendnp3::IChannel* mpChannel;
+	opendnp3::IChannel* pChannel;
+	EventMultiplexer<opendnp3::ChannelState, ChannelState>* pMultiplexer;
 };
 
 }

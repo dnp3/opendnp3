@@ -19,9 +19,7 @@ public:
 
 	virtual IDataObserver^ GetDataObserver();
 
-	virtual void SetNeedTimeIIN();
-
-	virtual void AddStateListener(System::Action<StackState>^ aListener);
+	virtual void SetNeedTimeIIN();	
 
 	virtual void Shutdown();
 

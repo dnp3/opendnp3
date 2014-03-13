@@ -53,12 +53,7 @@ public:
 
 	void SetLinkRouter(ILinkRouter* apRouter);
 
-	MasterScan GetIntegrityScan();
-
-	openpal::IExecutor* GetExecutor()
-	{
-		return mpExecutor;
-	}
+	MasterScan GetIntegrityScan();	
 
 	MasterScan AddClassScan(int aClassMask, openpal::TimeDuration aScanRate, openpal::TimeDuration aRetryRate);	
 

@@ -16,18 +16,24 @@ namespace DNP3
 namespace Adapter
 {
 
-
-ChannelAdapter::ChannelAdapter(opendnp3::IChannel* apChannel) :
-	mpChannel(apChannel)
+ChannelAdapter::ChannelAdapter()
 {
+	pMultiplexer = new EventMultiplexer<opendnp3::ChannelState, DNP3::Interface::ChannelState>(std::bind(&Conversions::convertChannelState, std::placeholders::_1));
+}
 
+ChannelAdapter::~ChannelAdapter()
+{
+	delete pMultiplexer;
+}
+
+void ChannelAdapter::SetChannel(opendnp3::IChannel* pChannel_)
+{
+	pChannel = pChannel_;
 }
 
 void ChannelAdapter::AddStateListener(System::Action<ChannelState>^ listener)
 {
-	auto pWrapper = new gcroot < System::Action<ChannelState> ^ > (listener);
-	mpChannel->AddDestructorHook(std::bind(&DeleteAnything < gcroot < System::Action<ChannelState> ^ >> , pWrapper));
-	mpChannel->AddStateListener(std::bind(&CallbackListener, pWrapper, std::placeholders::_1));
+	pMultiplexer->AddListener(listener);
 }
 
 void CallbackListener(gcroot < System::Action<ChannelState> ^ >* listener, opendnp3::ChannelState aState)
@@ -44,7 +50,7 @@ IMaster^ ChannelAdapter::AddMaster(System::String^ loggerId, DNP3::Interface::Lo
 	MasterMeasurementHandlerWrapper^ wrapper = gcnew MasterMeasurementHandlerWrapper(publisher);
 	opendnp3::MasterStackConfig cfg = Conversions::convertConfig(config);
 
-	auto pMaster = mpChannel->AddMaster(stdLoggerId, stdLevel, wrapper->Get(), asiopal::UTCTimeSource::Inst(), cfg); // TODO expose time source
+	auto pMaster = pChannel->AddMaster(stdLoggerId, stdLevel, wrapper->Get(), asiopal::UTCTimeSource::Inst(), cfg); // TODO expose time source
 	if (pMaster == nullptr)
 	{
 		return nullptr;
@@ -65,7 +71,7 @@ IOutstation^ ChannelAdapter::AddOutstation(System::String^ loggerId, DNP3::Inter
 
 	opendnp3::SlaveStackConfig cfg = Conversions::convertConfig(config);
 
-	auto pOutstation = mpChannel->AddOutstation(stdLoggerId, stdLevel, cmdWrapper->Get(), timeWrapper->Get(), Conversions::convertConfig(config));
+	auto pOutstation = pChannel->AddOutstation(stdLoggerId, stdLevel, cmdWrapper->Get(), timeWrapper->Get(), Conversions::convertConfig(config));
 	if (pOutstation == nullptr)
 	{
 		return nullptr;
@@ -78,7 +84,12 @@ IOutstation^ ChannelAdapter::AddOutstation(System::String^ loggerId, DNP3::Inter
 
 void ChannelAdapter::Shutdown()
 {
-	mpChannel->Shutdown();
+	pChannel->BeginShutdown();
+}
+
+openpal::IEventHandler<opendnp3::ChannelState>* ChannelAdapter::GetEventHandler()
+{
+	return this->pMultiplexer;
 }
 
 }

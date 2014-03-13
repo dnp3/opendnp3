@@ -172,7 +172,9 @@
     <ClInclude Include="ChannelAdapter.h" />
     <ClInclude Include="CommandProcessorAdapter.h" />
     <ClInclude Include="Conversions.h" />
+    <ClInclude Include="DeleteAnything.h" />
     <ClInclude Include="DNP3ManagerAdapter.h" />
+    <ClInclude Include="EventMultiplexer.h" />
     <ClInclude Include="Lock.h" />
     <ClInclude Include="LogAdapter.h" />
     <ClInclude Include="MasterAdapter.h" />
@@ -183,7 +185,6 @@
     <ClInclude Include="ScanListenerAdapter.h" />
     <ClInclude Include="SlaveCommandHandlerAdapter.h" />
     <ClInclude Include="SlaveDataObserverAdapter.h" />
-    <ClInclude Include="StackStateCallback.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ChannelAdapter.cpp" />
@@ -197,7 +198,6 @@
     <ClCompile Include="OutstationTimeWriteAdapter.cpp" />
     <ClCompile Include="SlaveCommandHandlerAdapter.cpp" />
     <ClCompile Include="SlaveDataObserverAdapter.cpp" />
-    <ClCompile Include="StackStateCallback.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\cpp\asiodnp3\asiodnp3.vcxproj">

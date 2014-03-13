@@ -30,6 +30,11 @@ DNP3Stack::DNP3Stack(const StackActionHandler& handler_) : handler(handler_)
 
 }
 
+openpal::IExecutor* DNP3Stack::GetExecutor()
+{
+	return handler.GetExecutor();
+}
+
 void DNP3Stack::Enable()
 {
 	handler.EnableRoute();

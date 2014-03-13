@@ -57,7 +57,6 @@
     <Compile Include="gen\EventCounterResponse.cs" />
     <Compile Include="gen\LogLevel.cs" />
     <Compile Include="gen\ScanStatus.cs" />
-    <Compile Include="gen\StackState.cs" />
     <Compile Include="gen\StaticAnalogResponse.cs" />
     <Compile Include="gen\StaticBinaryOutputStatusResponse.cs" />
     <Compile Include="gen\StaticBinaryResponse.cs" />

@@ -21,7 +21,7 @@
 #ifndef __I_STACK_H_
 #define __I_STACK_H_
 
-#include <functional>
+#include "opendnp3/DestructorHook.h"
 
 namespace opendnp3
 {
@@ -29,10 +29,16 @@ namespace opendnp3
 /**
 * Base class for masters or outstations
 */
-class IStack
+class IStack : public DestructorHook
 {
 public:	
+
 	virtual ~IStack() {}
+	
+	/**
+	* Returns the stack's executor
+	*/
+	virtual openpal::IExecutor* GetExecutor() = 0;
 
 	/**
 	* Enable communications

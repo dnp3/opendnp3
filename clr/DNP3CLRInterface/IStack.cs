@@ -47,11 +47,5 @@ namespace DNP3.Interface
         /// </summary>
         void Disable();
 
-        /// <summary>
-        /// Add a listener for changes to the stack state. All callbacks come from the thread pool.
-		/// An immediate callback will be made with the current state.		
-        /// </summary>
-        /// <param name="listener">Action to call back with the state enumeration </param>
-        void AddStateListener(Action<StackState> listener);
     }
 }

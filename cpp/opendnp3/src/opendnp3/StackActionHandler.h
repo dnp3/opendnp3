@@ -42,6 +42,8 @@ class StackActionHandler
 
 	StackActionHandler(LinkLayerRouter* pRouter_, const LinkRoute& route_, openpal::IExecutor* pExecutor_, openpal::ITypedShutdownHandler<DNP3Stack*>* pHandler_);
 
+	openpal::IExecutor* GetExecutor();
+
 	void EnableRoute();
 
 	void DisableRoute();

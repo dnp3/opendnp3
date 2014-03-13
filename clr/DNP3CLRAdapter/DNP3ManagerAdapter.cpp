@@ -3,6 +3,7 @@
 #include "Conversions.h"
 #include "LogAdapter.h"
 #include "ChannelAdapter.h"
+#include "DeleteAnything.h"
 
 #include <asiodnp3/ASIODNP3Manager.h>
 
@@ -12,6 +13,7 @@ namespace DNP3
 {
 namespace Adapter
 {
+
 IDNP3Manager^ DNP3ManagerFactory::CreateManager(System::Int32 aConcurrency)
 {
 	return gcnew DNP3ManagerAdapter(aConcurrency);
@@ -42,16 +44,19 @@ IChannel^ DNP3ManagerAdapter::AddTCPClient(System::String^ name, DNP3::Interface
 	uint16_t stdPort = port;
 	auto lev = Conversions::convertLogLevel(level);
 
-
+	auto adapter = gcnew ChannelAdapter();
 	Logger logger(mpMgr->GetLog(), lev, stdName);
-	auto pChannel = mpMgr->AddTCPClient(logger, Conversions::convertTimeSpan(minRetryDelay), Conversions::convertTimeSpan(maxRetryDelay), stdAddress, stdPort);
-	if (pChannel == nullptr)
+	auto pChannel = mpMgr->AddTCPClient(logger, Conversions::convertTimeSpan(minRetryDelay), Conversions::convertTimeSpan(maxRetryDelay), stdAddress, stdPort, adapter->GetEventHandler());
+	if (pChannel)
 	{
-		return nullptr;
+		auto pRoot = new gcroot<ChannelAdapter^>(adapter);
+		pChannel->AddDestructorHook(std::bind(&DeleteAnything<gcroot<ChannelAdapter^>>, pRoot));
+		adapter->SetChannel(pChannel);
+		return adapter;		
 	}
 	else
 	{
-		return gcnew ChannelAdapter(pChannel);
+		return nullptr;
 	}
 }
 
@@ -61,15 +66,20 @@ IChannel^ DNP3ManagerAdapter::AddTCPServer(System::String^ name, DNP3::Interface
 	std::string stdEndpoint = Conversions::convertString(endpoint);
 	uint16_t stdPort = port;
 	auto lev = Conversions::convertLogLevel(level);
+
+	auto adapter = gcnew ChannelAdapter();
 	Logger logger(mpMgr->GetLog(), lev, stdName);
-	auto pChannel = mpMgr->AddTCPServer(logger, Conversions::convertTimeSpan(minRetryDelay), Conversions::convertTimeSpan(maxRetryDelay), stdEndpoint, stdPort);
-	if (pChannel == nullptr)
+	auto pChannel = mpMgr->AddTCPServer(logger, Conversions::convertTimeSpan(minRetryDelay), Conversions::convertTimeSpan(maxRetryDelay), stdEndpoint, stdPort, adapter->GetEventHandler());
+	if (pChannel)
 	{
-		return nullptr;
+		auto pRoot = new gcroot<ChannelAdapter^>(adapter);
+		pChannel->AddDestructorHook(std::bind(&DeleteAnything<gcroot<ChannelAdapter^>>, pRoot));
+		adapter->SetChannel(pChannel);
+		return adapter;		
 	}
 	else
 	{
-		return gcnew ChannelAdapter(pChannel);
+		return nullptr;
 	}
 }
 
@@ -79,16 +89,19 @@ IChannel^ DNP3ManagerAdapter::AddSerial(System::String^ name, DNP3::Interface::L
 	auto lev = Conversions::convertLogLevel(level);
 	auto s = Conversions::convertSerialSettings(settings);
 
+	auto adapter = gcnew ChannelAdapter();
 	Logger logger(mpMgr->GetLog(), lev, stdName);
-	auto pChannel = mpMgr->AddSerial(logger, Conversions::convertTimeSpan(minRetryDelay), Conversions::convertTimeSpan(maxRetryDelay), s);
-	return gcnew ChannelAdapter(pChannel);
-	if (pChannel == nullptr)
+	auto pChannel = mpMgr->AddSerial(logger, Conversions::convertTimeSpan(minRetryDelay), Conversions::convertTimeSpan(maxRetryDelay), s, adapter->GetEventHandler());
+	if (pChannel)
 	{
-		return nullptr;
+		auto pRoot = new gcroot<ChannelAdapter^>(adapter);
+		pChannel->AddDestructorHook(std::bind(&DeleteAnything<gcroot<ChannelAdapter^>>, pRoot));
+		adapter->SetChannel(pChannel);
+		return adapter;		
 	}
 	else
 	{
-		return gcnew ChannelAdapter(pChannel);
+		return nullptr;
 	}
 }
 

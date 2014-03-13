@@ -6,7 +6,6 @@
 #include <openpal/gen/LogLevel.h>
 
 #include <opendnp3/gen/ChannelState.h>
-#include <opendnp3/gen/StackState.h>
 
 #include <opendnp3/app/MeasurementTypes.h>
 #include <opendnp3/app/ControlRelayOutputBlock.h>
@@ -45,9 +44,6 @@ public:
 
 	// Converting channel state enumeration
 	static ChannelState convertChannelState(opendnp3::ChannelState aState);
-
-	// Converting stack state enumeration
-	static StackState convertStackState(opendnp3::StackState aState);
 
 	// Convert the command status enumeration
 	static CommandStatus convertCommandStatus(opendnp3::CommandStatus status);

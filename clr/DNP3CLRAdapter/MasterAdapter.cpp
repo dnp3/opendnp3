@@ -1,6 +1,5 @@
 #include "MasterAdapter.h"
 #include "CommandProcessorAdapter.h"
-#include "StackStateCallback.h"
 #include "DeleteAnything.h"
 #include "MasterScanAdapter.h"
 #include "Conversions.h"
@@ -14,13 +13,6 @@ MasterAdapter::MasterAdapter(opendnp3::IMaster* apMaster) :
 	mpMaster(apMaster),
 	mCommandAdapter(gcnew CommandProcessorAdapter(apMaster->GetCommandProcessor()))
 {}
-
-void MasterAdapter::AddStateListener(System::Action<StackState>^ aListener)
-{
-	auto pListener = new gcroot < System::Action<StackState> ^ > (aListener);
-	mpMaster->AddDestructorHook(std::bind(&DeleteAnything < gcroot < System::Action<StackState> ^ >> , pListener));
-	mpMaster->AddStateListener(std::bind(&CallbackStackStateListener, std::placeholders::_1, pListener));
-}
 
 ICommandProcessor^ MasterAdapter::GetCommandProcessor()
 {
@@ -39,7 +31,7 @@ void MasterAdapter::Disable()
 
 void MasterAdapter::Shutdown()
 {
-	mpMaster->Shutdown();
+	mpMaster->BeginShutdown();
 }
 
 IMasterScan^ MasterAdapter::GetIntegrityScan()
