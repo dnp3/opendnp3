@@ -23,7 +23,6 @@ cpp/openpal/src/openpal/AsyncLayerInterfaces.cpp \
 cpp/openpal/src/openpal/BufferWrapper.cpp \
 cpp/openpal/src/openpal/IHandlerAsync.cpp \
 cpp/openpal/src/openpal/LogEntry.cpp \
-cpp/openpal/src/openpal/Loggable.cpp \
 cpp/openpal/src/openpal/Logger.cpp \
 cpp/openpal/src/openpal/MonotonicTimestamp.cpp \
 cpp/openpal/src/openpal/ReverseEndian.cpp \
@@ -67,7 +66,6 @@ cpp/opendnp3/src/opendnp3/app/AppLayerChannel.cpp \
 cpp/opendnp3/src/opendnp3/app/AppLayer.cpp \
 cpp/opendnp3/src/opendnp3/app/ApplicationStack.cpp \
 cpp/opendnp3/src/opendnp3/app/BitReader.cpp \
-cpp/opendnp3/src/opendnp3/app/CachedRequest.cpp \
 cpp/opendnp3/src/opendnp3/app/ControlRelayOutputBlock.cpp \
 cpp/opendnp3/src/opendnp3/app/FunctionCodeHelpers.cpp \
 cpp/opendnp3/src/opendnp3/app/GroupVariation.cpp \
@@ -91,7 +89,6 @@ cpp/opendnp3/src/opendnp3/gen/FunctionCode.cpp \
 cpp/opendnp3/src/opendnp3/gen/LinkFunction.cpp \
 cpp/opendnp3/src/opendnp3/gen/QualifierCode.cpp \
 cpp/opendnp3/src/opendnp3/gen/ScanStatus.cpp \
-cpp/opendnp3/src/opendnp3/gen/StackState.cpp \
 cpp/opendnp3/src/opendnp3/gen/StaticAnalogOutputStatusResponse.cpp \
 cpp/opendnp3/src/opendnp3/gen/StaticAnalogResponse.cpp \
 cpp/opendnp3/src/opendnp3/gen/StaticBinaryOutputStatusResponse.cpp \
@@ -153,6 +150,7 @@ cpp/opendnp3/src/opendnp3/objects/Group50.cpp \
 cpp/opendnp3/src/opendnp3/objects/Group51.cpp \
 cpp/opendnp3/src/opendnp3/objects/Group52.cpp \
 cpp/opendnp3/src/opendnp3/objects/Group60.cpp \
+cpp/opendnp3/src/opendnp3/outstation/CachedRequest.cpp \
 cpp/opendnp3/src/opendnp3/outstation/CommandActionAdapter.cpp \
 cpp/opendnp3/src/opendnp3/outstation/CommandResponseHandler.cpp \
 cpp/opendnp3/src/opendnp3/outstation/DatabaseConfiguration.cpp \
@@ -186,9 +184,7 @@ cpp/opendnp3/src/opendnp3/DestructorHook.cpp \
 cpp/opendnp3/src/opendnp3/DNP3Channel.cpp \
 cpp/opendnp3/src/opendnp3/DNP3Manager.cpp \
 cpp/opendnp3/src/opendnp3/DNP3Stack.cpp \
-cpp/opendnp3/src/opendnp3/DynamicBuffer.cpp \
-cpp/opendnp3/src/opendnp3/StackActionHandler.cpp \
-cpp/opendnp3/src/opendnp3/StackBase.cpp
+cpp/opendnp3/src/opendnp3/StackActionHandler.cpp
 
 
 check_PROGRAMS = openpaltest dnp3test
