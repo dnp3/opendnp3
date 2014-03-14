@@ -60,31 +60,43 @@ public:
 	bool Dispatch(ICommandProcessor* apProcessor);
 
 private:
+
 	openpal::IExecutor* pExecutor;
 	ITask* pEnableTask;
 
 	std::queue<std::function<void (ICommandProcessor*)>> requestQueue;
 
 	template <class T>
-	void SelectAndOperateT(const T& arCommand, uint16_t aIndex, std::function<void (CommandResponse)> aCallback)
-	{					
-		
-		requestQueue.push([arCommand, aIndex, aCallback](ICommandProcessor * pProcessor)
-		{
-			pProcessor->SelectAndOperate(arCommand, aIndex, aCallback);
-		});
-		pExecutor->Post([this]() { pEnableTask->Enable(); });
+	void SelectAndOperateT(const T& command, uint16_t index, std::function<void (CommandResponse)> callback)
+	{									
+		pExecutor->Post(
+			[this, command, index, callback]() { 
+				requestQueue.push(
+					[command, index, callback](ICommandProcessor * pProcessor)
+					{
+						pProcessor->SelectAndOperate(command, index, callback);
+					}
+				);
+				pEnableTask->Enable(); 
+			}
+		);
 	}
 
 	template <class T>
-	void DirectOperateT(const T& arCommand, uint16_t aIndex, std::function<void (CommandResponse)> aCallback)
+	void DirectOperateT(const T& command, uint16_t index, std::function<void (CommandResponse)> callback)
 	{
 		
-		requestQueue.push([arCommand, aIndex, aCallback](ICommandProcessor * pProcessor)
-		{
-			pProcessor->DirectOperate(arCommand, aIndex, aCallback);
-		});
-		pExecutor->Post([this]() { pEnableTask->Enable(); });
+		pExecutor->Post(
+			[this, command, index, callback]() {
+				requestQueue.push(
+					[command, index, callback](ICommandProcessor * pProcessor)
+					{
+						pProcessor->DirectOperate(command, index, callback);
+					}
+				);
+				pEnableTask->Enable(); 
+			}
+		);
 	}
 };
 
