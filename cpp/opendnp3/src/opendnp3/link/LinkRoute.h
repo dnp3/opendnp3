@@ -48,12 +48,10 @@ public:
 	uint16_t remote;
 	uint16_t local;
 
-	// comparison functor for use with stl map/set
-	struct LessThan
+	bool operator == (const LinkRoute& rhs) const
 	{
-		// Const to fix VS compilation bug
-		bool operator()(const LinkRoute& a, const LinkRoute& b) const;
-	};
+		return (this->remote == rhs.remote) && (this->local == rhs.local);
+	}
 
 	std::string ToString() const;
 };

@@ -24,6 +24,8 @@
 #include "IStack.h"
 #include "StackActionHandler.h"
 
+#include "opendnp3/app/ApplicationStack.h"
+
 namespace opendnp3
 {
 
@@ -34,11 +36,15 @@ class DNP3Stack : public IStack
 {
 public:	
 
-	DNP3Stack(const StackActionHandler& handler_);
+	DNP3Stack(openpal::Logger logger, openpal::IExecutor* pExecutor, AppConfig appConfig, LinkConfig linkConfig, const StackActionHandler& handler_);
 
 	virtual ~DNP3Stack() {}
 	
 	virtual openpal::IExecutor* GetExecutor() override final;
+
+	ILinkContext* GetLinkContext();	
+
+	void SetLinkRouter(ILinkRouter* apRouter);
 
 	/**
 	* Enable communications
@@ -55,8 +61,13 @@ public:
 	*/
 	virtual void BeginShutdown() override final;
 
+protected:
+
+	ApplicationStack appStack;
+
 private:
 
+	
 	StackActionHandler handler;
 };
 

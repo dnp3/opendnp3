@@ -21,7 +21,6 @@
 #ifndef __STACK_ACTION_HANDLER_H_
 #define __STACK_ACTION_HANDLER_H_
 
-#include "opendnp3/link/LinkRoute.h"
 
 #include <openpal/IShutdownHandler.h>
 
@@ -35,25 +34,25 @@ namespace opendnp3
 
 class LinkLayerRouter;
 class DNP3Stack;
+class ILinkContext;
 
 class StackActionHandler
 {
 	public:
 
-	StackActionHandler(LinkLayerRouter* pRouter_, const LinkRoute& route_, openpal::IExecutor* pExecutor_, openpal::ITypedShutdownHandler<DNP3Stack*>* pHandler_);
+	StackActionHandler(LinkLayerRouter* pRouter_,  openpal::IExecutor* pExecutor_, openpal::ITypedShutdownHandler<DNP3Stack*>* pHandler_);
 
 	openpal::IExecutor* GetExecutor();
 
-	void EnableRoute();
+	void EnableRoute(ILinkContext*);
 
-	void DisableRoute();
+	void DisableRoute(ILinkContext*);
 
-	void BeginShutdown(DNP3Stack* pStack);	
+	void BeginShutdown(ILinkContext* pContext, DNP3Stack* pStack);
 	
 	private:
 
-	LinkLayerRouter* pRouter;
-	LinkRoute route;
+	LinkLayerRouter* pRouter;	
 	openpal::IExecutor* pExecutor;
 	openpal::ITypedShutdownHandler<DNP3Stack*>* pHandler;
 };

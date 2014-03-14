@@ -25,7 +25,9 @@ namespace opendnp3
 {
 
 
-DNP3Stack::DNP3Stack(const StackActionHandler& handler_) : handler(handler_)
+DNP3Stack::DNP3Stack(openpal::Logger logger, openpal::IExecutor* pExecutor, AppConfig appConfig, LinkConfig linkConfig, const StackActionHandler& handler_) : 
+	appStack(logger, pExecutor, appConfig, linkConfig),
+	handler(handler_)
 {
 
 }
@@ -35,19 +37,29 @@ openpal::IExecutor* DNP3Stack::GetExecutor()
 	return handler.GetExecutor();
 }
 
+ILinkContext* DNP3Stack::GetLinkContext()
+{
+	return &appStack.link;
+}
+
+void DNP3Stack::SetLinkRouter(ILinkRouter* apRouter)
+{
+	appStack.link.SetRouter(apRouter);
+}
+
 void DNP3Stack::Enable()
 {
-	handler.EnableRoute();
+	handler.EnableRoute(&this->appStack.link);
 }
 
 void DNP3Stack::Disable()
 {
-	handler.DisableRoute();
+	handler.DisableRoute(&this->appStack.link);
 }
 
 void DNP3Stack::BeginShutdown()
 {
-	handler.BeginShutdown(this);
+	handler.BeginShutdown(&this->appStack.link, this);
 }
 
 

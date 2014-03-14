@@ -38,7 +38,8 @@ class IDataObserver;
 class IOutstation : public DNP3Stack
 {
 public:
-	IOutstation(const StackActionHandler& handler) : DNP3Stack(handler)
+	IOutstation(openpal::Logger logger, openpal::IExecutor* pExecutor, AppConfig appConfig, LinkConfig linkConfig, const StackActionHandler& handler) : 
+		DNP3Stack(logger, pExecutor, appConfig, linkConfig, handler)
 	{}
 
 	virtual ~IOutstation() {}

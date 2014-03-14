@@ -60,7 +60,44 @@ public:
 		return (adapter.Add(value) != nullptr);
 	}
 
+	template <class Selector>
+	ListNode<ValueType>* FindFirst(Selector select)
+	{
+		auto iter = adapter.Iterate();
+		while (iter.HasNext())
+		{
+			auto pNode = iter.Next();
+			if (select(pNode->value))
+			{				
+				return pNode;
+			}			
+		}
+		return nullptr;
+	}
+
+	template <class Selector>
+	void Foreach(Selector select)
+	{
+		auto iter = adapter.Iterate();
+		while (iter.HasNext())
+		{			
+			select(iter.Next()->value);
+		}		
+	}
+
+	template <class Selector>
+	ListNode<ValueType>* RemoveFirst(Selector select)
+	{
+		auto pNode = this->FindFirst(select);
+		if (pNode)
+		{
+			adapter.Remove(pNode);
+		}
+		return pNode;
+	}
+
 private:
+
 	StaticArray<ListNode<ValueType>, IndexType, N> underlying;
 	LinkedListAdapter<ValueType, IndexType> adapter;
 };

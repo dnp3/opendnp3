@@ -112,7 +112,7 @@ IMaster* DNP3Channel::AddMaster(const std::string& loggerId, LogLevel aLevel, IS
 	}
 	else
 	{		
-		StackActionHandler handler(&router, route, pPhys->GetExecutor(), this);
+		StackActionHandler handler(&router, pPhys->GetExecutor(), this);
 		auto pMaster = new MasterStackImpl(logger, pPhys->GetExecutor(), apPublisher, apTimeSource, &group, config, handler);
 		pMaster->SetLinkRouter(&router);
 		stacks.insert(pMaster);
@@ -132,7 +132,7 @@ IOutstation* DNP3Channel::AddOutstation(const std::string& arLoggerId, LogLevel 
 	}
 	else
 	{
-		StackActionHandler handler(&router, route, pPhys->GetExecutor(), this);
+		StackActionHandler handler(&router, pPhys->GetExecutor(), this);
 		auto pOutstation = new OutstationStackImpl(logger, pPhys->GetExecutor(), apTimeWriteHandler, apCmdHandler, arCfg, handler);
 		pOutstation->SetLinkRouter(&router);
 		stacks.insert(pOutstation);

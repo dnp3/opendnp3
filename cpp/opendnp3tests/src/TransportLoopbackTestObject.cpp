@@ -58,9 +58,9 @@ TransportLoopbackTestObject::TransportLoopbackTestObject(
 	LinkRoute routeB(mCfgB.RemoteAddr, mCfgB.LocalAddr);
 
 	mRouter.AddContext(&mLinkA, routeA);
-	mRouter.EnableRoute(routeA);
+	mRouter.Enable(&mLinkA);
 	mRouter.AddContext(&mLinkB, routeB);
-	mRouter.EnableRoute(routeB);
+	mRouter.Enable(&mLinkB);
 
 	mLinkA.SetUpperLayer(&mTransA);
 	mLinkB.SetUpperLayer(&mTransB);

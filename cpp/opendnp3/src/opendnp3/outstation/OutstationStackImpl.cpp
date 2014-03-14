@@ -23,22 +23,21 @@
 namespace opendnp3
 {
 
-OutstationStackImpl::OutstationStackImpl(
-    openpal::Logger& arLogger,
-    openpal::IExecutor* apExecutor,
-    ITimeWriteHandler* apTimeWriteHandler,
-    ICommandHandler* apCmdHandler,
-    const SlaveStackConfig& arCfg,
-	const StackActionHandler& handler) :
-		IOutstation(handler),
-		pExecutor(apExecutor),
-		appStack(arLogger, apExecutor, arCfg.app, arCfg.link),
-		dynamicDatabaseBuffer(arCfg.database.GetTemplate()),
-		database(dynamicDatabaseBuffer.GetFacade()),
-		slave(arLogger.GetSubLogger("outstation"), &appStack.application, apExecutor, apTimeWriteHandler, &database, apCmdHandler, arCfg.slave)	
+	OutstationStackImpl::OutstationStackImpl(
+		openpal::Logger& logger,
+		openpal::IExecutor* apExecutor,
+		ITimeWriteHandler* apTimeWriteHandler,
+		ICommandHandler* apCmdHandler,
+		const SlaveStackConfig& config,
+		const StackActionHandler& handler) :
+	IOutstation(logger, apExecutor, config.app, config.link, handler),
+	pExecutor(apExecutor),	
+	dynamicDatabaseBuffer(config.database.GetTemplate()),
+	database(dynamicDatabaseBuffer.GetFacade()),
+	slave(logger.GetSubLogger("outstation"), &appStack.application, apExecutor, apTimeWriteHandler, &database, apCmdHandler, config.slave)
 {
 	appStack.application.SetUser(&slave);
-	dynamicDatabaseBuffer.Configure(arCfg.database);
+	dynamicDatabaseBuffer.Configure(config.database);
 }
 
 IDataObserver* OutstationStackImpl::GetDataObserver()
@@ -52,16 +51,6 @@ void OutstationStackImpl::SetNeedTimeIIN()
 	{
 		this->slave.SetNeedTimeIIN();
 	});
-}
-
-ILinkContext* OutstationStackImpl::GetLinkContext()
-{
-	return &appStack.link;
-}
-
-void OutstationStackImpl::SetLinkRouter(ILinkRouter* apRouter)
-{
-	appStack.link.SetRouter(apRouter);
 }
 
 }

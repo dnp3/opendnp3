@@ -27,46 +27,34 @@ using namespace openpal;
 namespace opendnp3
 {
 
-MasterStackImpl::MasterStackImpl(	Logger aLogger,
+MasterStackImpl::MasterStackImpl(	Logger logger,
                                     IExecutor* apExecutor,
                                     ISOEHandler* apPublisher,
                                     IUTCTimeSource* apTimeSource,
                                     AsyncTaskGroup* apTaskGroup,
-                                    const MasterStackConfig& arCfg,
+                                    const MasterStackConfig& config,
 									const StackActionHandler& handler) :
 
-	IMaster(handler),
-	mpExecutor(apExecutor),
-	mAppStack(aLogger, apExecutor, arCfg.app, arCfg.link),
-	mMaster(aLogger.GetSubLogger("master"), arCfg.master, &mAppStack.application, apPublisher, apTaskGroup, apExecutor, apTimeSource)	
+	IMaster(logger, apExecutor, config.app, config.link, handler),	
+	master(logger.GetSubLogger("master"), config.master, &appStack.application, apPublisher, apTaskGroup, apExecutor, apTimeSource)	
 {
-	mAppStack.application.SetUser(&mMaster);
+	appStack.application.SetUser(&master);
 }
 
 ICommandProcessor* MasterStackImpl::GetCommandProcessor()
 {
-	return mMaster.GetCommandProcessor();
-}
-
-ILinkContext* MasterStackImpl::GetLinkContext()
-{
-	return &mAppStack.link;
-}
-
-void MasterStackImpl::SetLinkRouter(ILinkRouter* apRouter)
-{
-	mAppStack.link.SetRouter(apRouter);
+	return master.GetCommandProcessor();
 }
 
 MasterScan MasterStackImpl::AddClassScan(int aClassMask, openpal::TimeDuration aScanRate, openpal::TimeDuration aRetryRate)
 {
-	ExecutorPause pause(mpExecutor);
-	return mMaster.AddClassScan(aClassMask, aScanRate, aRetryRate);
+	ExecutorPause pause(this->GetExecutor());
+	return master.AddClassScan(aClassMask, aScanRate, aRetryRate);
 }
 
 MasterScan MasterStackImpl::GetIntegrityScan()
 {
-	return mMaster.GetIntegrityScan();
+	return master.GetIntegrityScan();
 }
 
 }

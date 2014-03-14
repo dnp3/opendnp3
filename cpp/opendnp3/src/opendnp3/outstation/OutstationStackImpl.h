@@ -52,15 +52,10 @@ public:
 
 	IDataObserver* GetDataObserver();
 
-	void SetNeedTimeIIN();
-
-	ILinkContext* GetLinkContext();
-
-	void SetLinkRouter(ILinkRouter* apRouter);	
+	void SetNeedTimeIIN();	
 
 private:
-	openpal::IExecutor* pExecutor;
-	ApplicationStack appStack;
+	openpal::IExecutor* pExecutor;	
 	DynamicallyAllocatedDatabase dynamicDatabaseBuffer;
 	Database database;
 	Slave slave;

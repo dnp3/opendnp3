@@ -44,24 +44,17 @@ public:
 		ISOEHandler* apPublisher,
 		IUTCTimeSource* apTimeSource,
 		AsyncTaskGroup* apTaskGroup,
-		const MasterStackConfig& arCfg,
+		const MasterStackConfig& config,
 		const StackActionHandler& handler);
 
-	ICommandProcessor* GetCommandProcessor();
-
-	ILinkContext* GetLinkContext();
-
-	void SetLinkRouter(ILinkRouter* apRouter);
+	ICommandProcessor* GetCommandProcessor();	
 
 	MasterScan GetIntegrityScan();	
 
 	MasterScan AddClassScan(int aClassMask, openpal::TimeDuration aScanRate, openpal::TimeDuration aRetryRate);	
 
-private:
-	IExecutor* mpExecutor;
-	ApplicationStack mAppStack;
-	Master mMaster;	
-
+private:		
+	Master master;	
 };
 
 }

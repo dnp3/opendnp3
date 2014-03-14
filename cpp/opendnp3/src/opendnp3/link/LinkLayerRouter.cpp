@@ -51,84 +51,122 @@ LinkLayerRouter::LinkLayerRouter(	const Logger& logger,
 	mTransmitting(false)
 {}
 
-bool LinkLayerRouter::IsRouteInUse(const LinkRoute& arRoute)
+bool LinkLayerRouter::IsRouteInUse(const LinkRoute& route)
 {
-	return mAddressMap.find(arRoute) != mAddressMap.end();
+	auto pNode = records.FindFirst([&](const Record& record){ return record.route == route; });
+	return (pNode != nullptr);
 }
 
-bool LinkLayerRouter::AddContext(ILinkContext* apContext, const LinkRoute& arRoute)
+bool LinkLayerRouter::AddContext(ILinkContext* pContext, const LinkRoute& route)
 {
-	assert(apContext != nullptr);
+	assert(pContext != nullptr);
 
-	if(IsRouteInUse(arRoute)) return false;
-
-	for(AddressMap::value_type v : mAddressMap)
+	if (IsRouteInUse(route))
 	{
-		if(apContext == v.second.pContext) return false;
+		return false;
 	}
-
-	mAddressMap[arRoute] = ContextRecord(apContext); //context is always disabled by default
-
-	return true;
-}
-
-bool LinkLayerRouter::EnableRoute(const LinkRoute& arRoute)
-{
-	auto iter = mAddressMap.find(arRoute);
-	if(iter == mAddressMap.end()) return false;
 	else
 	{
-		if(!iter->second.enabled)
+		auto pNode = records.FindFirst([&](const Record& record){ return record.pContext == pContext; });
+		if (pNode)
 		{
-			iter->second.enabled = true;
-			if(this->IsLowerLayerUp()) iter->second.pContext->OnLowerLayerUp();
+			LOG_BLOCK(LogLevel::Error, "Context cannot be bound 2x");
+			return false;
+		}
+		else
+		{
+			// record is always disabled by default
+			Record(pContext, route);
+			return records.Add(Record(pContext, route));
+		}		
+	}	
+}
+
+bool LinkLayerRouter::Enable(ILinkContext* pContext)
+{	
+	auto pNode = records.FindFirst([&](const Record& rec){ return rec.pContext == pContext;  });
+
+	if(pNode)	
+	{
+		if(!(pNode->value.enabled))
+		{
+			pNode->value.enabled = true;
+			if (this->IsLowerLayerUp())
+			{
+				pNode->value.pContext->OnLowerLayerUp();
+			}
 			this->Start(); // idempotent call to start router
 		}
-		return true;
+		return true; // already enabled
+	}
+	else
+	{
+		return false;
 	}
 }
 
-bool LinkLayerRouter::DisableRoute(const LinkRoute& arRoute)
+bool LinkLayerRouter::Disable(ILinkContext* pContext)
 {
-	auto iter = mAddressMap.find(arRoute);
-	if(iter == mAddressMap.end()) return false;
-	else
+	auto pNode = records.FindFirst([&](const Record& rec){ return rec.pContext == pContext;  });
+
+	if (pNode)
 	{
-		if(iter->second.enabled)
+		if (pNode->value.enabled)
 		{
-			iter->second.enabled = false;
-			if(this->IsLowerLayerUp()) iter->second.pContext->OnLowerLayerDown();
-			if(!this->HasEnabledContext()) this->Suspend();
-		}
-		return true;
-	}
-}
+			pNode->value.enabled = false;
+			if (this->IsLowerLayerUp())
+			{
+				pNode->value.pContext->OnLowerLayerDown();
+			}
 
-void LinkLayerRouter::RemoveContext(const LinkRoute& arRoute)
-{
-	AddressMap::iterator i = mAddressMap.find(arRoute);
-	if(i == mAddressMap.end())
-	{
-		LOG_BLOCK(LogLevel::Error, "LinkRoute not bound: " << arRoute.ToString());
+			if (!this->HasEnabledContext())
+			{
+				this->Suspend();
+			}
+		}
+		return true;		
 	}
 	else
 	{
+		return false;
+	}
+}
 
-		auto record = i->second;
-		mAddressMap.erase(i);
+bool LinkLayerRouter::Remove(ILinkContext* pContext)
+{
+	auto pNode = records.RemoveFirst([&](const Record& rec){ return rec.pContext == pContext; });
 
-		if(this->GetState() == ChannelState::OPEN && record.enabled) record.pContext->OnLowerLayerDown();
+	if(pNode)
+	{		
+		if (this->GetState() == ChannelState::OPEN && pNode->value.enabled)
+		{
+			pNode->value.pContext->OnLowerLayerDown();			
+		}
 
 		// if no contexts are enabled, suspend the router
-		if(!HasEnabledContext()) this->Suspend();
+		if (!HasEnabledContext())
+		{
+			this->Suspend();
+		}
+
+		return true;
+	}
+	else
+	{
+		return false;		
 	}
 }
 
-ILinkContext* LinkLayerRouter::GetEnabledContext(const LinkRoute& arRoute)
+ILinkContext* LinkLayerRouter::GetEnabledContext(const LinkRoute& route)
 {
-	AddressMap::iterator i = mAddressMap.find(arRoute);
-	if(i == mAddressMap.end()) return nullptr;
-	else return (i->second.enabled) ? i->second.pContext : nullptr;
+	auto pNode = records.FindFirst(
+		[&](const Record& rec)
+		{ 
+			return rec.enabled && (rec.route == route);
+		}
+	);
+
+	return pNode ? pNode->value.pContext : nullptr;	
 }
 
 
@@ -252,12 +290,8 @@ void LinkLayerRouter::OnShutdown()
 
 bool LinkLayerRouter::HasEnabledContext()
 {
-	for(auto record : mAddressMap)
-	{
-		if(record.second.enabled) return true;
-	}
-
-	return false;
+	auto pNode = records.FindFirst([](const Record& rec){ return rec.enabled; });
+	return (pNode != nullptr);
 }
 
 void LinkLayerRouter::_OnSendSuccess()
@@ -302,10 +336,16 @@ void LinkLayerRouter::OnPhysicalLayerOpenSuccessCallback()
 		mpPhys->AsyncRead(buff);
 	}
 
-	for(AddressMap::value_type p : mAddressMap)
-	{
-		if(p.second.enabled) p.second.pContext->OnLowerLayerUp();
-	}
+	records.Foreach(
+		[](const Record& rec)
+		{
+			if (rec.enabled)
+			{
+				rec.pContext->OnLowerLayerUp();
+			}
+		}
+	);
+	
 }
 
 void LinkLayerRouter::OnPhysicalLayerCloseCallback()
@@ -316,10 +356,16 @@ void LinkLayerRouter::OnPhysicalLayerCloseCallback()
 	// Drop frames queued for transmit and tell the contexts that the router has closed
 	mTransmitting = false;
 	mTransmitQueue.erase(mTransmitQueue.begin(), mTransmitQueue.end());
-	for(auto pair : mAddressMap)
-	{
-		if(pair.second.enabled) pair.second.pContext->OnLowerLayerDown();
-	}
+	
+	records.Foreach(
+		[](const Record& rec)
+		{
+			if (rec.enabled)
+			{
+				rec.pContext->OnLowerLayerDown();
+			}
+		}
+	);
 }
 
 }

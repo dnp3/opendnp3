@@ -28,9 +28,8 @@
 namespace opendnp3
 {
 
-StackActionHandler::StackActionHandler(LinkLayerRouter* pRouter_, const LinkRoute& route_, openpal::IExecutor* pExecutor_, openpal::ITypedShutdownHandler<DNP3Stack*>* pHandler_) :
+StackActionHandler::StackActionHandler(LinkLayerRouter* pRouter_, openpal::IExecutor* pExecutor_, openpal::ITypedShutdownHandler<DNP3Stack*>* pHandler_) :
 pRouter(pRouter_),
-route(route_),
 pExecutor(pExecutor_),
 pHandler(pHandler_)
 {
@@ -42,21 +41,21 @@ openpal::IExecutor* StackActionHandler::GetExecutor()
 	return pExecutor;
 }
 
-void StackActionHandler::EnableRoute()
+void StackActionHandler::EnableRoute(ILinkContext* pContext)
 {
-	pExecutor->Post([this](){ pRouter->EnableRoute(route); });
+	pExecutor->Post([=](){ pRouter->Enable(pContext); });
 }
 
-void StackActionHandler::DisableRoute()
+void StackActionHandler::DisableRoute(ILinkContext* pContext)
 {
-	pExecutor->Post([this](){ pRouter->DisableRoute(route); });
+	pExecutor->Post([=](){ pRouter->Disable(pContext); });
 }
 
-void StackActionHandler::BeginShutdown(DNP3Stack* pStack)
+void StackActionHandler::BeginShutdown(ILinkContext* pContext, DNP3Stack* pStack)
 {
 	{   // The pause has no affect if it's running on the executor
 		openpal::ExecutorPause pause(pExecutor);
-		pRouter->RemoveContext(route);
+		pRouter->Remove(pContext);
 	}	
 
 	pExecutor->Post([this, pStack](){ pHandler->OnShutdown(pStack); });

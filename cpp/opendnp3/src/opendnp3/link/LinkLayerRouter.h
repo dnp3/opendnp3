@@ -25,6 +25,10 @@
 #include <queue>
 #include <vector>
 
+#include <openpal/IShutdownHandler.h>
+#include <openpal/IEventHandler.h>
+#include <openpal/StaticLinkedList.h>
+
 #include "opendnp3/link/PhysicalLayerMonitor.h"
 #include "opendnp3/link/LinkLayerReceiver.h"
 #include "opendnp3/link/LinkRoute.h"
@@ -32,9 +36,7 @@
 #include "opendnp3/link/ILinkRouter.h"
 #include "opendnp3/link/IOpenDelayStrategy.h"
 
-#include <openpal/IShutdownHandler.h>
-#include <openpal/IEventHandler.h>
-
+#include "opendnp3/StaticSizeConfiguration.h"
 
 namespace openpal
 {
@@ -69,18 +71,20 @@ public:
 	bool AddContext(ILinkContext*, const LinkRoute& arRoute);
 
 	/**
-	*  Tells the router to begin sending messages to the context associated with this route
+	*  Tells the router to begin sending messages to the context
 	*/
-	bool EnableRoute(const LinkRoute& arRoute);
+	bool Enable(ILinkContext* pContext);
 
 	/**
 	*  Tells the router to stop sending messages to the context associated with this route
 	*  Does not remove the context entirely
 	*/
-	bool DisableRoute(const LinkRoute& arRoute);
+	bool Disable(ILinkContext* pContext);
 
-	// This is safe to do at runtime, so long as the request happens from the io_service thread.
-	void RemoveContext(const LinkRoute& arRoute);
+	/**
+	* This is safe to do at runtime, so long as the request happens from the executor
+	*/
+	bool Remove(ILinkContext* pContext);
 
 	// Implement the IFrameSink interface - This is how the receiver pushes data
 	void Ack(bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc);
@@ -106,16 +110,21 @@ private:
 
 	bool HasEnabledContext();
 
-	class ContextRecord
+	class Record
 	{
-	public:
-		ContextRecord(ILinkContext* context) : pContext(context), enabled(false)
+		public:
+
+		Record(ILinkContext* context, const LinkRoute& route_) : 
+			pContext(context), 
+			route(route_),
+			enabled(false)
 		{}
 
-		ContextRecord() : pContext(nullptr), enabled(false)
+		Record() : pContext(nullptr), enabled(false)
 		{}
 
 		ILinkContext* pContext;
+		LinkRoute route;
 		bool enabled;
 	};		
 
@@ -124,13 +133,12 @@ private:
 
 	void CheckForSend();
 
-	typedef std::map<LinkRoute, ContextRecord, LinkRoute::LessThan> AddressMap;
 	typedef std::deque<LinkFrame> TransmitQueue;
-
+	
 	openpal::IEventHandler<ChannelState>* pStateHandler;
 	openpal::IShutdownHandler* pShutdownHandler;
-
-	AddressMap mAddressMap;
+	
+	openpal::StaticLinkedList<Record, uint16_t, sizes::MAX_STACKS_PER_CHANNEL> records;
 	TransmitQueue mTransmitQueue;
 
 	// Handles the parsing of incoming frames
