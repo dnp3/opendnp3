@@ -247,29 +247,25 @@ void LinkLayerRouter::_OnReceive(const openpal::ReadOnlyBuffer& arBuffer)
 	}
 }
 
-bool LinkLayerRouter::Transmit(const LinkFrame& arFrame)
+void LinkLayerRouter::QueueTransmit(const openpal::ReadOnlyBuffer& buffer, ILinkContext* pContext, bool primary)
 {
-	LinkRoute lr(arFrame.GetDest(), arFrame.GetSrc());
-
-	if (this->GetEnabledContext(lr))
+	if (this->IsLowerLayerUp())
 	{
-		if(this->IsLowerLayerUp())
+		Transmission tx(buffer, pContext, primary);
+
+		if (this->transmitQueue.Enqueue(tx))
 		{
-			this->mTransmitQueue.push_back(arFrame);
 			this->CheckForSend();
-			return true;
 		}
 		else
 		{
-			ERROR_BLOCK(LogLevel::Error, "Cannot queue a frame while router if offline", DLERR_ROUTER_OFFLINE);
-			return false;
+			this->mpPhys->GetExecutor()->Post([pContext, primary](){ pContext->OnTransmitResult(primary, false); });
 		}
 	}
 	else
 	{
-		ERROR_BLOCK(LogLevel::Error, "Ignoring unassociated transmit w/ route: " << lr.ToString(), DLERR_UNKNOWN_ROUTE);
-		return false;
-	}
+		ERROR_BLOCK(LogLevel::Error, "Router received transmit request while offline", DLERR_ROUTER_OFFLINE);
+	}	
 }
 
 void LinkLayerRouter::OnStateChange(ChannelState state)
@@ -296,35 +292,32 @@ bool LinkLayerRouter::HasEnabledContext()
 
 void LinkLayerRouter::_OnSendSuccess()
 {
-	assert(mTransmitQueue.size() > 0);
-	assert(mTransmitting);
-	/* TODO - remove dead code
-	const LinkFrame& f = mTransmitQueue.front();
-	LinkRoute lr(f.GetDest(), f.GetSrc());
-	ILinkContext* pContext = this->GetContext(lr);
-	assert(pContext != nullptr);
-	*/
-	mTransmitting = false;
-	mTransmitQueue.pop_front();
-	this->CheckForSend();
+	this->OnSendResult(true);
 }
 
 void LinkLayerRouter::_OnSendFailure()
 {
-	LOG_BLOCK(LogLevel::Error, "Unexpected _OnSendFailure");
+	this->OnSendResult(false);
+}
+
+void LinkLayerRouter::OnSendResult(bool result)
+{
+	assert(transmitQueue.IsNotEmpty());
+	assert(mTransmitting);
 	mTransmitting = false;
+
+	auto& transmission = transmitQueue.Pop();
+	transmission.pContext->OnTransmitResult(transmission.primary, result);
 	this->CheckForSend();
 }
 
 void LinkLayerRouter::CheckForSend()
 {
-	if(mTransmitQueue.size() > 0 && !mTransmitting && mpPhys->CanWrite())
+	if(transmitQueue.IsNotEmpty() && !mTransmitting && mpPhys->CanWrite())
 	{
 		mTransmitting = true;
-		const LinkFrame& f = mTransmitQueue.front();
-		LOG_BLOCK(LogLevel::Interpret, "~> " << f.ToString());
-		ReadOnlyBuffer buff(f.GetBuffer(), f.GetSize());
-		mpPhys->AsyncWrite(buff);
+		auto& transmission = transmitQueue.Peek();
+		mpPhys->AsyncWrite(transmission.buffer);
 	}
 }
 
@@ -355,8 +348,8 @@ void LinkLayerRouter::OnPhysicalLayerCloseCallback()
 
 	// Drop frames queued for transmit and tell the contexts that the router has closed
 	mTransmitting = false;
-	mTransmitQueue.erase(mTransmitQueue.begin(), mTransmitQueue.end());
-	
+	transmitQueue.Clear();
+		
 	records.Foreach(
 		[](const Record& rec)
 		{

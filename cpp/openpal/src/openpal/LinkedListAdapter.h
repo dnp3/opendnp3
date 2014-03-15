@@ -90,14 +90,25 @@ public:
 		Initialize();
 	}
 
+	void Clear()
+	{
+		Initialize();
+		this->size = 0;
+	}
+
+	inline ListNode<ValueType>* Head()
+	{
+		return pHead;
+	}
+
 	Iterator Iterate()
 	{
 		return Iterator(pHead);
 	}
 
-	inline ListNode<ValueType>* Add(const ValueType& value);
+	ListNode<ValueType>* Add(const ValueType& value);
 
-	inline void Remove(ListNode<ValueType>* apNode);
+	void Remove(ListNode<ValueType>* apNode);
 
 	inline bool IsFull() const;
 

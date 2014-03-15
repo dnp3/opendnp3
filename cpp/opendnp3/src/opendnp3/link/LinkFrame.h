@@ -21,8 +21,10 @@
 #ifndef __LINK_FRAME_H_
 #define __LINK_FRAME_H_
 
-#include "../gen/FunctionCode.h"
+#include "opendnp3/gen/FunctionCode.h"
 #include "LinkHeader.h"
+
+#include <openpal/BufferWrapper.h>
 
 #include <string>
 
@@ -41,18 +43,26 @@ public:
 	LinkFrame();
 	~LinkFrame();
 
-	/* implement pure virtual functions from base class */
+	/*
 	uint8_t* GetBuffer()
 	{
 		return mpBuffer;
 	}
+
 	const uint8_t* GetBuffer() const
 	{
 		return mpBuffer;
 	}
+
 	uint32_t  GetSize() const
 	{
 		return mSize;
+	}
+	*/
+
+	openpal::ReadOnlyBuffer ToReadOnly() const
+	{
+		return openpal::ReadOnlyBuffer(mpBuffer, mSize);
 	}
 
 	bool IsComplete() const

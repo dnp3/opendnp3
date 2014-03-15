@@ -49,19 +49,20 @@ public:
 	void SetRouter(ILinkRouter*);
 
 	// ILinkContext interface
-	void OnLowerLayerUp();
-	void OnLowerLayerDown();
+	virtual void OnLowerLayerUp() override final;
+	virtual void OnLowerLayerDown() override final;
+	virtual void OnTransmitResult(bool primary, bool success) override final;
 
 	// IFrameSink interface
-	void Ack(bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc);
-	void Nack(bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc);
-	void LinkStatus(bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc);
-	void NotSupported (bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc);
-	void TestLinkStatus(bool aIsMaster, bool aFcb, uint16_t aDest, uint16_t aSrc);
-	void ResetLinkStates(bool aIsMaster, uint16_t aDest, uint16_t aSrc);
-	void RequestLinkStatus(bool aIsMaster, uint16_t aDest, uint16_t aSrc);
-	void ConfirmedUserData(bool aIsMaster, bool aFcb, uint16_t aDest, uint16_t aSrc, const openpal::ReadOnlyBuffer& arBuffer);
-	void UnconfirmedUserData(bool aIsMaster, uint16_t aDest, uint16_t aSrc, const openpal::ReadOnlyBuffer& arBuffer);
+	virtual void Ack(bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc);
+	virtual void Nack(bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc);
+	virtual void LinkStatus(bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc);
+	virtual void NotSupported(bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc);
+	virtual void TestLinkStatus(bool aIsMaster, bool aFcb, uint16_t aDest, uint16_t aSrc);
+	virtual void ResetLinkStates(bool aIsMaster, uint16_t aDest, uint16_t aSrc);
+	virtual void RequestLinkStatus(bool aIsMaster, uint16_t aDest, uint16_t aSrc);
+	virtual void ConfirmedUserData(bool aIsMaster, bool aFcb, uint16_t aDest, uint16_t aSrc, const openpal::ReadOnlyBuffer& arBuffer);
+	virtual void UnconfirmedUserData(bool aIsMaster, uint16_t aDest, uint16_t aSrc, const openpal::ReadOnlyBuffer& arBuffer);
 
 	// Functions called by the primary and secondary station states
 	void ChangeState(PriStateBase*);
@@ -114,11 +115,11 @@ public:
 	}
 
 	// Helpers for sending frames
-	void SendAck();
-	void SendLinkStatus();
-	void SendResetLinks();
-	void SendUnconfirmedUserData(const openpal::ReadOnlyBuffer&);
-	void SendDelayedUserData(bool aFCB);
+	void QueueAck();
+	void QueueLinkStatus();
+	void QueueResetLinks();
+	void QueueUnconfirmedUserData(const openpal::ReadOnlyBuffer&);
+	void QueueDelayedUserData(bool aFCB);
 
 	void StartTimer();
 	void CancelTimer();
@@ -139,7 +140,7 @@ public:
 
 private:
 
-	void Transmit(const LinkFrame&);
+	void QueueTransmit(const openpal::ReadOnlyBuffer& buffer, bool primary);
 
 	size_t mRetryRemaining;
 

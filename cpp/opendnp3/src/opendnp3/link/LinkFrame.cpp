@@ -50,16 +50,16 @@ ostream& operator<<(ostream& output, const LinkFrame& f)
 	return output;  // for multiple << operators.
 }
 
-bool LinkFrame::operator==(const LinkFrame& arRHS) const
+bool LinkFrame::operator==(const LinkFrame& rhs) const
 {
-	if(!this->IsComplete() || !arRHS.IsComplete()) return false;
-
-	if(this->GetSize() != arRHS.GetSize()) return false;
-
-	for(size_t i = 0; i < this->GetSize(); ++i)
-		if(this->GetBuffer()[i] != arRHS.GetBuffer()[i]) return false;
-
-	return true;
+	if (this->IsComplete() && rhs.IsComplete())
+	{
+		return rhs.ToReadOnly().Equals(this->ToReadOnly());
+	}	
+	else
+	{
+		return false;
+	}	
 }
 
 void LinkFrame::ReadUserData(const uint8_t* apSrc, uint8_t* apDest, uint32_t aLength)

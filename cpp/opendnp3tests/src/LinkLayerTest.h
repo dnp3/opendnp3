@@ -28,6 +28,8 @@
 #include <opendnp3/link/LinkLayer.h>
 #include <opendnp3/link/ILinkRouter.h>
 
+#include <queue>
+
 namespace opendnp3
 {
 
@@ -38,18 +40,17 @@ public:
 	LinkLayerTest(LinkConfig arCfg = DefaultConfig(), openpal::LogLevel aLevel = openpal::LogLevel::Warning, bool aImmediate = false);
 
 	//ILinkRouter interface
-	bool Transmit(const LinkFrame&);
+	virtual void QueueTransmit(const openpal::ReadOnlyBuffer& buffer, ILinkContext* pContext, bool primary) override;
 
 	static LinkConfig DefaultConfig();
 
 	LogTester log;
-
 	MockExecutor mts;
 	MockUpperLayer upper;
 	LinkLayer link;
 
-	LinkFrame mLastSend;
-	size_t mNumSend;
+	openpal::ReadOnlyBuffer lastWrite;
+	uint32_t numWrites;
 };
 
 }

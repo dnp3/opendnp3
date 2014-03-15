@@ -40,6 +40,26 @@ public:
 		return adapter.size();
 	}
 
+	void Clear()
+	{
+		adapter.Clear();
+	}
+
+	bool IsEmpty() const
+	{
+		return adapter.IsEmpty();
+	}
+
+	bool IsNotEmpty() const
+	{
+		return adapter.IsNotEmpty();
+	}
+
+	bool IsFull() const
+	{
+		return adapter.IsFull();
+	}
+
 	bool Remove(const ValueType& value)
 	{
 		auto iter = adapter.Iterate();
@@ -58,7 +78,7 @@ public:
 	bool Add(const ValueType& value)
 	{
 		return (adapter.Add(value) != nullptr);
-	}
+	}	
 
 	template <class Selector>
 	ListNode<ValueType>* FindFirst(Selector select)

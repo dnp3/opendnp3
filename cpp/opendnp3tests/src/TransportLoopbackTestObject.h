@@ -32,42 +32,34 @@
 namespace opendnp3
 {
 
-
 class TransportLoopbackTestObject :  public AsyncTestObjectASIO
 {
 public:
 	TransportLoopbackTestObject(
+		openpal::Logger logger,
 	    asio::io_service*,
 	    openpal::IPhysicalLayerAsync*,
 	    LinkConfig,
 	    LinkConfig,
-	    openpal::LogLevel aLevel = openpal::LogLevel::Info,
-	    bool aImmediate = false);
+	    openpal::LogLevel aLevel = openpal::LogLevel::Info);
 
 	~TransportLoopbackTestObject();
-
-	openpal::Logger& GetLogger()
-	{
-		return mLogger;
-	}
-
+	
 	bool LayersUp();
 
 	void Start();
 
-	LogTester log;
-
 private:
-	openpal::Logger mLogger;
-
 
 	LinkConfig mCfgA;
 	LinkConfig mCfgB;
 
 	LinkLayer mLinkA;
 	LinkLayer mLinkB;
+
 	TransportLayer mTransA;
 	TransportLayer mTransB;
+	
 	LinkLayerRouter mRouter;
 
 public:

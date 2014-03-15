@@ -28,6 +28,7 @@
 #include <openpal/IShutdownHandler.h>
 #include <openpal/IEventHandler.h>
 #include <openpal/StaticLinkedList.h>
+#include <openpal/StaticQueue.h>
 
 #include "opendnp3/link/PhysicalLayerMonitor.h"
 #include "opendnp3/link/LinkLayerReceiver.h"
@@ -98,7 +99,7 @@ public:
 	void UnconfirmedUserData(bool aIsMaster, uint16_t aDest, uint16_t aSrc, const openpal::ReadOnlyBuffer& arBuffer);
 
 	// ILinkRouter interface
-	bool Transmit(const LinkFrame&);	
+	virtual void QueueTransmit(const openpal::ReadOnlyBuffer& buffer, ILinkContext* pContext, bool primary) override final;
 
 protected:
 	
@@ -110,10 +111,8 @@ private:
 
 	bool HasEnabledContext();
 
-	class Record
+	struct Record
 	{
-		public:
-
 		Record(ILinkContext* context, const LinkRoute& route_) : 
 			pContext(context), 
 			route(route_),
@@ -126,20 +125,34 @@ private:
 		ILinkContext* pContext;
 		LinkRoute route;
 		bool enabled;
-	};		
+	};	
+
+	struct Transmission
+	{
+		Transmission(const openpal::ReadOnlyBuffer& buffer_, ILinkContext* pContext_, bool primary_) :
+			buffer(buffer_),
+			pContext(pContext_),
+			primary(primary_)
+		{}
+
+		Transmission() : buffer(), pContext(nullptr)
+		{}
+
+		openpal::ReadOnlyBuffer buffer;
+		ILinkContext* pContext;
+		bool primary;
+	};
 
 	ILinkContext* GetDestination(uint16_t aDest, uint16_t aSrc);
 	ILinkContext* GetEnabledContext(const LinkRoute&);
 
-	void CheckForSend();
-
-	typedef std::deque<LinkFrame> TransmitQueue;
+	void CheckForSend();	
 	
 	openpal::IEventHandler<ChannelState>* pStateHandler;
 	openpal::IShutdownHandler* pShutdownHandler;
 	
 	openpal::StaticLinkedList<Record, uint16_t, sizes::MAX_STACKS_PER_CHANNEL> records;
-	TransmitQueue mTransmitQueue;
+	openpal::StaticQueue<Transmission, uint16_t, sizes::MAX_STACKS_PER_CHANNEL> transmitQueue;	
 
 	// Handles the parsing of incoming frames
 	LinkLayerReceiver mReceiver;
@@ -151,6 +164,8 @@ private:
 	void _OnReceive(const openpal::ReadOnlyBuffer&);
 	void _OnSendSuccess();
 	void _OnSendFailure();
+
+	void OnSendResult(bool success);
 
 	// Implement virtual AsyncPhysLayerMonitor
 	void OnPhysicalLayerOpenSuccessCallback();

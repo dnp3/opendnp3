@@ -23,8 +23,6 @@
 
 #include "IFrameSink.h"
 
-
-
 namespace opendnp3
 {
 
@@ -33,7 +31,9 @@ class ILinkContext : public IFrameSink
 {
 public:
 
-	virtual ~ILinkContext() {}
+	virtual ~ILinkContext() {}	
+
+	virtual void OnTransmitResult(bool primary, bool success) = 0;
 
 	virtual void OnLowerLayerUp() = 0;
 	virtual void OnLowerLayerDown() = 0;
@@ -42,4 +42,3 @@ public:
 }
 
 #endif
-

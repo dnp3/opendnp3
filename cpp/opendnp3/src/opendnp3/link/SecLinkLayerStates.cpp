@@ -35,21 +35,9 @@ namespace opendnp3
 // SecStateBase
 ////////////////////////////////////////
 
-void SecStateBase::ResetLinkStates(LinkLayer* apLL)
+void SecStateBase::OnTransmitResult(LinkLayer* apLL, bool success)
 {
-	apLL->ResetReadFCB();
-	apLL->SendAck();
-	apLL->ChangeState(SLLS_Reset::Inst());
-}
-
-void SecStateBase::RequestLinkStatus(LinkLayer* apLL)
-{
-	apLL->SendLinkStatus();
-}
-
-void SecStateBase::UnconfirmedUserData(LinkLayer* apLL, const ReadOnlyBuffer& arBuffer)
-{
-	apLL->DoDataUp(arBuffer);
+	LOGGER_BLOCK(apLL->GetLogger(), LogLevel::Error, "Invalid event for state: " << this->Name());
 }
 
 ////////////////////////////////////////////////////////
@@ -67,6 +55,19 @@ void SLLS_NotReset::ConfirmedUserData(LinkLayer* apLL, bool aFcb, const openpal:
 	ERROR_LOGGER_BLOCK(apLL->GetLogger(), LogLevel::Warning, "ConfirmedUserData ignored", DLERR_UNEXPECTED_FRAME);
 }
 
+void SLLS_NotReset::ResetLinkStates(LinkLayer* apLL)
+{		
+	apLL->QueueAck();
+	apLL->ResetReadFCB();
+	apLL->ChangeState(SLLS_TransmitWaitReset::Inst());
+}
+
+void SLLS_NotReset::RequestLinkStatus(LinkLayer* apLL)
+{
+	apLL->QueueLinkStatus();
+	apLL->ChangeState(SLLS_TransmitWaitNotReset::Inst());
+}
+
 ////////////////////////////////////////////////////////
 //	Class SLLS_Reset
 ////////////////////////////////////////////////////////
@@ -75,23 +76,25 @@ SLLS_Reset SLLS_Reset::mInstance;
 void SLLS_Reset::TestLinkStatus(LinkLayer* apLL, bool aFcb)
 {
 	if(apLL->NextReadFCB() == aFcb)
-	{
+	{		
+		apLL->QueueAck();
 		apLL->ToggleReadFCB();
-		apLL->SendAck();
+		apLL->ChangeState(SLLS_TransmitWaitReset::Inst());
 	}
 	else
 	{
 		// "Re-transmit most recent response that contained function code 0 (ACK) or 1 (NACK)."
 		// This is a pain in the pass to implement.
+		// TODO - see if this function is deprecated or not
 		ERROR_LOGGER_BLOCK(apLL->GetLogger(), LogLevel::Warning, "TestLinkStatus with invalid FCB", DLERR_WRONG_FCB_ON_TEST);
 	}
 }
 
 void SLLS_Reset::ConfirmedUserData(LinkLayer* apLL, bool aFcb, const openpal::ReadOnlyBuffer& arBuffer)
 {
-	apLL->SendAck();
-
-	if(apLL->NextReadFCB() == aFcb)
+	apLL->QueueAck();
+	
+	if (apLL->NextReadFCB() == aFcb)
 	{
 		apLL->ToggleReadFCB();
 		apLL->DoDataUp(arBuffer);
@@ -100,7 +103,32 @@ void SLLS_Reset::ConfirmedUserData(LinkLayer* apLL, bool aFcb, const openpal::Re
 	{
 		ERROR_LOGGER_BLOCK(apLL->GetLogger(), LogLevel::Warning, "Confirmed data w/ wrong FCB", DLERR_WRONG_FCB_ON_RECEIVE_DATA);
 	}
+
+	apLL->ChangeState(SLLS_TransmitWaitReset::Inst());
 }
+
+void SLLS_Reset::ResetLinkStates(LinkLayer* apLL)
+{
+	apLL->QueueAck();
+	apLL->ResetReadFCB();
+	apLL->ChangeState(SLLS_TransmitWaitReset::Inst());
+}
+
+void SLLS_Reset::RequestLinkStatus(LinkLayer* apLL)
+{
+	apLL->QueueLinkStatus();
+	apLL->ChangeState(SLLS_TransmitWaitReset::Inst());
+}
+
+////////////////////////////////////////////////////////
+//	Class SLLS_TransmitWaitReset
+////////////////////////////////////////////////////////
+SLLS_TransmitWaitReset SLLS_TransmitWaitReset::mInstance;
+
+////////////////////////////////////////////////////////
+//	Class SLLS_TransmitWaitNotReset
+////////////////////////////////////////////////////////
+SLLS_TransmitWaitNotReset SLLS_TransmitWaitNotReset::mInstance;
 
 } //end namepsace
 

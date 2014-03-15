@@ -215,12 +215,12 @@ QueueResult StaticResponseContext::QueueReadRange(GroupVariation gv, const Stati
 QueueResult StaticResponseContext::QueueStaticIntegrity()
 {
 	StaticQueue<StaticRangeLoader, uint32_t, 6> values;
-	values.Push(GetFullRangeWithDefaultLoader<Binary>());
-	values.Push(GetFullRangeWithDefaultLoader<Counter>());
-	values.Push(GetFullRangeWithDefaultLoader<FrozenCounter>());
-	values.Push(GetFullRangeWithDefaultLoader<Analog>());
-	values.Push(GetFullRangeWithDefaultLoader<BinaryOutputStatus>());
-	values.Push(GetFullRangeWithDefaultLoader<AnalogOutputStatus>());
+	values.Enqueue(GetFullRangeWithDefaultLoader<Binary>());
+	values.Enqueue(GetFullRangeWithDefaultLoader<Counter>());
+	values.Enqueue(GetFullRangeWithDefaultLoader<FrozenCounter>());
+	values.Enqueue(GetFullRangeWithDefaultLoader<Analog>());
+	values.Enqueue(GetFullRangeWithDefaultLoader<BinaryOutputStatus>());
+	values.Enqueue(GetFullRangeWithDefaultLoader<AnalogOutputStatus>());
 
 	while(values.IsNotEmpty())
 	{
@@ -239,7 +239,7 @@ QueueResult StaticResponseContext::QueueReadRange(const StaticRangeLoader& loade
 {
 	if(loader.IsDefined())
 	{
-		if(staticResponseQueue.Push(loader))
+		if(staticResponseQueue.Enqueue(loader))
 		{
 			return loader.IsClipped() ? QueueResult::OUT_OF_RANGE : QueueResult::SUCCESS;
 		}
@@ -272,7 +272,7 @@ StaticLoadResult StaticResponseContext::LoadStaticData(ObjectWriter& writer)
 {
 	while(!staticResponseQueue.IsEmpty())
 	{
-		auto& front = staticResponseQueue.Front();
+		auto& front = staticResponseQueue.Peek();
 		auto result = (*front.pLoadFun)(writer, front, *pDatabase);
 		if(result == StaticLoadResult::COMPLETED)
 		{

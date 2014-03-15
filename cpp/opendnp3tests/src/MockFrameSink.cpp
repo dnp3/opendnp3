@@ -59,6 +59,11 @@ bool MockFrameSink::CheckLastWithDFC(LinkFunction aCode, bool aIsMaster, bool aI
 	return  (mIsRcvBuffFull == aIsRcvBuffFull) && CheckLast(aCode, aIsMaster, aDest, aSrc);
 }
 
+void MockFrameSink::OnTransmitResult(bool primary, bool success)
+{
+	
+}
+
 //	Sec to Pri
 
 void MockFrameSink::Ack(bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc)

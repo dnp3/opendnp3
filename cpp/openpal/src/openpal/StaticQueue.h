@@ -21,23 +21,62 @@
 #ifndef __STATIC_QUEUE_H_
 #define __STATIC_QUEUE_H_
 
-#include "QueueAdapter.h"
-#include "StaticArray.h"
+#include "StaticLinkedList.h"
 
 namespace openpal
 {
 
-// composes a StaticArray with a queue Adapter
 template <class ValueType, class IndexType, IndexType N>
-class StaticQueue : public QueueAdapter<ValueType, IndexType>
+class StaticQueue : private Uncopyable
 {
+
 public:
 
-	StaticQueue() : underlying(), QueueAdapter<ValueType, IndexType>(underlying.ToIndexable())
+	StaticQueue()
 	{}
 
+	bool IsEmpty() const
+	{
+		return list.IsEmpty();
+	}
+
+	bool IsNotEmpty() const
+	{
+		return list.IsNotEmpty();
+	}
+
+	bool IsFull() const
+	{
+		return list.IsEmpty();
+	}
+
+	void Clear()
+	{
+		list.Clear();
+	}
+
+	ValueType& Peek()
+	{		
+		auto pNode = list.FindFirst([](const ValueType&){ return true; });
+		assert(pNode);
+		return (pNode->value);
+	}
+
+	ValueType& Pop()
+	{
+		auto pNode = list.RemoveFirst([](const ValueType&){ return true; });
+		assert(pNode);
+		return (pNode->value);
+	}
+
+	bool Enqueue(const ValueType& value)
+	{
+		return list.Add(value);
+	}
+
 private:
-	StaticArray<ValueType, IndexType, N> underlying;
+
+	StaticLinkedList<ValueType, IndexType, N> list;	
 };
 
 }

@@ -26,6 +26,8 @@
 #include "opendnp3/Singleton.h"
 #include "opendnp3/link/LinkLayer.h"
 
+#include <openpal/LoggableMacros.h>
+
 namespace opendnp3
 {
 
@@ -35,16 +37,70 @@ public:
 
 	/* Incoming messages to secondary station */
 
-	void ResetLinkStates(LinkLayer*);
-	void RequestLinkStatus(LinkLayer*);
-	void UnconfirmedUserData(LinkLayer*, const openpal::ReadOnlyBuffer&);
+	virtual void ResetLinkStates(LinkLayer*) = 0;
+	virtual void RequestLinkStatus(LinkLayer*) = 0;	
 
 	virtual void TestLinkStatus(LinkLayer*, bool aFcb) = 0;
 	virtual void ConfirmedUserData(LinkLayer*, bool aFcb, const openpal::ReadOnlyBuffer&) = 0;
 
+	virtual void OnTransmitResult(LinkLayer* apLL, bool success);
+
 	//every concrete state implements this for logging purposes
 	virtual std::string Name() const = 0;
 };
+
+////////////////////////////////////////////////////////
+//	Class SLLS_TransmitWait
+////////////////////////////////////////////////////////
+template <class NextState>
+class SLLS_TransmitWaitBase : public SecStateBase
+{
+
+protected:
+	SLLS_TransmitWaitBase()
+	{}
+
+public:
+	
+	virtual void OnTransmitResult(LinkLayer* apLL, bool success) override final;
+
+	virtual void ResetLinkStates(LinkLayer*) override final;
+	virtual void RequestLinkStatus(LinkLayer*) override final;
+	virtual void TestLinkStatus(LinkLayer*, bool aFcb) override final;
+	virtual void ConfirmedUserData(LinkLayer*, bool aFcb, const openpal::ReadOnlyBuffer&) override final;
+};
+
+
+template <class NextState>
+void SLLS_TransmitWaitBase<NextState>::OnTransmitResult(LinkLayer* apLL, bool success)
+{	
+	// with secondary replies, we dont' really care about success
+	apLL->ChangeState(NextState::Inst());
+}
+
+template <class NextState>
+void SLLS_TransmitWaitBase<NextState>::ResetLinkStates(LinkLayer* apLL)
+{
+	LOGGER_BLOCK(apLL->GetLogger(), LogLevel::Warning, "Ignoring link frame, remote is flooding");
+}
+
+template <class NextState>
+void SLLS_TransmitWaitBase<NextState>::RequestLinkStatus(LinkLayer* apLL)
+{
+	LOGGER_BLOCK(apLL->GetLogger(), LogLevel::Warning, "Ignoring link frame, remote is flooding");
+}
+
+template <class NextState>
+void SLLS_TransmitWaitBase<NextState>::TestLinkStatus(LinkLayer* apLL, bool aFcb)
+{
+	LOGGER_BLOCK(apLL->GetLogger(), LogLevel::Warning, "Ignoring link frame, remote is flooding");
+}
+
+template <class NextState>
+void SLLS_TransmitWaitBase<NextState>::ConfirmedUserData(LinkLayer* apLL, bool aFcb, const openpal::ReadOnlyBuffer&)
+{
+	LOGGER_BLOCK(apLL->GetLogger(), LogLevel::Warning, "Ignoring link frame, remote is flooding");
+}
 
 ////////////////////////////////////////////////////////
 //	Class SLLS_UnReset
@@ -52,9 +108,12 @@ public:
 class SLLS_NotReset : public SecStateBase
 {
 	MACRO_STATE_SINGLETON_INSTANCE(SLLS_NotReset);
+	
+	virtual void ConfirmedUserData(LinkLayer*, bool aFcb, const openpal::ReadOnlyBuffer&) override final;
 
-	void TestLinkStatus(LinkLayer*, bool aFcb);
-	void ConfirmedUserData(LinkLayer*, bool aFcb, const openpal::ReadOnlyBuffer&);
+	virtual void ResetLinkStates(LinkLayer*) override final;
+	virtual void RequestLinkStatus(LinkLayer*) override final;
+	virtual void TestLinkStatus(LinkLayer*, bool aFcb) override final;
 };
 
 ////////////////////////////////////////////////////////
@@ -64,9 +123,24 @@ class SLLS_Reset : public SecStateBase
 {
 	MACRO_STATE_SINGLETON_INSTANCE(SLLS_Reset);
 
-	void TestLinkStatus(LinkLayer*, bool aFcb);
-	void ConfirmedUserData(LinkLayer*, bool aFcb, const openpal::ReadOnlyBuffer&);
+	virtual void ConfirmedUserData(LinkLayer*, bool aFcb, const openpal::ReadOnlyBuffer&) override final;
+	
+	virtual void ResetLinkStates(LinkLayer*) override final;
+	virtual void RequestLinkStatus(LinkLayer*) override final;
+	virtual void TestLinkStatus(LinkLayer*, bool aFcb) override final;
 };
+
+
+class SLLS_TransmitWaitReset : public SLLS_TransmitWaitBase<SLLS_Reset>
+{
+	MACRO_STATE_SINGLETON_INSTANCE(SLLS_TransmitWaitReset);
+};
+
+class SLLS_TransmitWaitNotReset : public SLLS_TransmitWaitBase<SLLS_NotReset>
+{
+	MACRO_STATE_SINGLETON_INSTANCE(SLLS_TransmitWaitNotReset);
+};
+
 
 } //end namepsace
 

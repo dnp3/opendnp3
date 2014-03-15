@@ -30,7 +30,8 @@ namespace opendnp3
 class LinkFrame;
 
 std::string RepairCRC(const std::string& arData);
-bool IsFrameEqual(LinkFrame& frame, const std::string& arData);
+
+std::string ToHex(LinkFrame& frame);
 
 }
 

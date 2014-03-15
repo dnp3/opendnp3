@@ -133,40 +133,51 @@ void LinkLayer::OnLowerLayerDown()
 	}
 }
 
-void LinkLayer::Transmit(const LinkFrame& arFrame)
+void LinkLayer::OnTransmitResult(bool primary, bool success)
 {
-	mpRouter->Transmit(arFrame);
+	if (primary)
+	{
+		mpPriState->OnTransmitResult(this, success);
+	}
+	else
+	{
+		mpSecState->OnTransmitResult(this, success);
+	}
 }
 
-void LinkLayer::SendAck()
+void LinkLayer::QueueTransmit(const ReadOnlyBuffer& buffer, bool primary)
+{
+	mpRouter->QueueTransmit(buffer, this, primary);
+}
+
+void LinkLayer::QueueAck()
 {
 	mSecFrame.FormatAck(mCONFIG.IsMaster, false, mCONFIG.RemoteAddr, mCONFIG.LocalAddr);
-	this->Transmit(mSecFrame);
+	this->QueueTransmit(mSecFrame.ToReadOnly(), false);
 }
 
-void LinkLayer::SendLinkStatus()
+void LinkLayer::QueueLinkStatus()
 {
 	mSecFrame.FormatLinkStatus(mCONFIG.IsMaster, false, mCONFIG.RemoteAddr, mCONFIG.LocalAddr);
-	this->Transmit(mSecFrame);
+	this->QueueTransmit(mSecFrame.ToReadOnly(), false);
 }
 
-void LinkLayer::SendResetLinks()
+void LinkLayer::QueueResetLinks()
 {
 	mPriFrame.FormatResetLinkStates(mCONFIG.IsMaster, mCONFIG.RemoteAddr, mCONFIG.LocalAddr);
-	this->Transmit(mPriFrame);
+	this->QueueTransmit(mPriFrame.ToReadOnly(), true);
 }
 
-void LinkLayer::SendUnconfirmedUserData(const ReadOnlyBuffer& arBuffer)
+void LinkLayer::QueueUnconfirmedUserData(const ReadOnlyBuffer& arBuffer)
 {
 	mPriFrame.FormatUnconfirmedUserData(mCONFIG.IsMaster, mCONFIG.RemoteAddr, mCONFIG.LocalAddr, arBuffer, arBuffer.Size());
-	this->Transmit(mPriFrame);
-	this->DoSendSuccess();
+	this->QueueTransmit(mPriFrame.ToReadOnly(), true);
 }
 
-void LinkLayer::SendDelayedUserData(bool aFCB)
+void LinkLayer::QueueDelayedUserData(bool aFCB)
 {
 	mDelayedPriFrame.ChangeFCB(aFCB);
-	this->Transmit(mDelayedPriFrame);
+	this->QueueTransmit(mDelayedPriFrame.ToReadOnly(), true);
 }
 
 void LinkLayer::StartTimer()
@@ -257,19 +268,19 @@ void LinkLayer::RequestLinkStatus(bool aIsMaster, uint16_t aDest, uint16_t aSrc)
 	}
 }
 
-void LinkLayer::ConfirmedUserData(bool aIsMaster, bool aFcb, uint16_t aDest, uint16_t aSrc, const ReadOnlyBuffer& arBuffer)
+void LinkLayer::ConfirmedUserData(bool aIsMaster, bool aFcb, uint16_t aDest, uint16_t aSrc, const ReadOnlyBuffer& input)
 {
 	if (this->Validate(aIsMaster, aSrc, aDest))
 	{
-		mpSecState->ConfirmedUserData(this, aFcb, arBuffer);
+		mpSecState->ConfirmedUserData(this, aFcb, input);
 	}
 }
 
-void LinkLayer::UnconfirmedUserData(bool aIsMaster, uint16_t aDest, uint16_t aSrc, const ReadOnlyBuffer& arBuffer)
+void LinkLayer::UnconfirmedUserData(bool aIsMaster, uint16_t aDest, uint16_t aSrc, const ReadOnlyBuffer& input)
 {
 	if (this->Validate(aIsMaster, aSrc, aDest))
 	{
-		mpSecState->UnconfirmedUserData(this, arBuffer);
+		this->DoDataUp(input);
 	}
 }
 

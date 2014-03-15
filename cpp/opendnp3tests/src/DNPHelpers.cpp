@@ -33,19 +33,9 @@
 namespace opendnp3
 {
 
-bool IsFrameEqual(LinkFrame& frame, const std::string& arData)
+std::string ToHex(LinkFrame& frame)
 {
-
-	HexSequence hs(arData);
-	if(frame.GetSize() != hs.Size()) return false;
-	uint8_t* buff = frame.GetBuffer();
-
-	for(size_t i = 0; i < hs.Size(); i++)
-	{
-		if(buff[i] != hs[i]) return false;
-	}
-
-	return true;
+	return toHex(frame.ToReadOnly());
 }
 
 std::string RepairCRC(const std::string& arData)

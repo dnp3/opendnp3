@@ -106,9 +106,6 @@
     <ClInclude Include="src\openpal\StaticList.h">
       <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="src\openpal\StaticQueue.h">
-      <Filter>Header</Filter>
-    </ClInclude>
     <ClInclude Include="src\openpal\TimeDuration.h">
       <Filter>Header</Filter>
     </ClInclude>
@@ -143,6 +140,9 @@
       <Filter>Header</Filter>
     </ClInclude>
     <ClInclude Include="src\openpal\IEventHandler.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="src\openpal\StaticQueue.h">
       <Filter>Header</Filter>
     </ClInclude>
   </ItemGroup>

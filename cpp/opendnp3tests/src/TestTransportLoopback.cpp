@@ -25,6 +25,7 @@
 #include <functional>
 
 #include <asiopal/Log.h>
+#include <asiopal/LogToStdio.h>
 #include <asiopal/PhysicalLayerAsyncSerial.h>
 
 #include "Exception.h"
@@ -42,32 +43,34 @@ using namespace boost;
 
 // Do a bidirectional send operation and proceed until both sides have correctly
 // received all the data
-void TestLoopback(TransportLoopbackTestObject* apTest, uint32_t aNumBytes)
+void TestLoopback(TransportLoopbackTestObject* pTest, uint32_t numBytes)
 {
-	apTest->Start();
+	pTest->Start();
 
-	REQUIRE(apTest->ProceedUntil(std::bind(&TransportLoopbackTestObject::LayersUp, apTest)));
+	REQUIRE(pTest->ProceedUntil([&]() { return pTest->LayersUp(); }));
 
-	ByteStr b(aNumBytes, 0);
+	ByteStr b(numBytes, 0);
 
-	apTest->mUpperA.SendDown(b.ToReadOnly());
-	apTest->mUpperB.SendDown(b.ToReadOnly());
+	pTest->mUpperA.SendDown(b.ToReadOnly());
+	pTest->mUpperB.SendDown(b.ToReadOnly());
 
-	REQUIRE(apTest->ProceedUntil(std::bind(&MockUpperLayer::SizeEquals, &(apTest->mUpperA), b.Size())));
-	REQUIRE(apTest->ProceedUntil(std::bind(&MockUpperLayer::SizeEquals, &(apTest->mUpperB), b.Size())));
-	REQUIRE(apTest->mUpperA.BufferEquals(b, b.Size()));
-	REQUIRE(apTest->mUpperB.BufferEquals(b, b.Size()));
+	REQUIRE(pTest->ProceedUntil(std::bind(&MockUpperLayer::SizeEquals, &(pTest->mUpperA), b.Size())));
+	REQUIRE(pTest->ProceedUntil(std::bind(&MockUpperLayer::SizeEquals, &(pTest->mUpperB), b.Size())));
+	REQUIRE(pTest->mUpperA.BufferEquals(b, b.Size()));
+	REQUIRE(pTest->mUpperB.BufferEquals(b, b.Size()));
 }
 
 TEST_CASE(SUITE("TestTransportWithMockLoopback"))
 {
+	auto level = LogLevel::Warning;
+
 	LinkConfig cfgA(true, true);
 	LinkConfig cfgB(false, true);
 
-	EventLog log;
+	EventLog log;	
 	asio::io_service service;
-	LoopbackPhysicalLayerAsync phys(Logger(&log, LogLevel::Warning, "loopback"), &service);
-	TransportLoopbackTestObject t(&service, &phys, cfgA, cfgB);
+	LoopbackPhysicalLayerAsync phys(Logger(&log, level, "loopback"), &service);
+	TransportLoopbackTestObject t(Logger(&log, level, "test"), &service, &phys, cfgA, cfgB);
 
 	TestLoopback(&t, sizes::DEFAULT_APDU_BUFFER_SIZE);
 }

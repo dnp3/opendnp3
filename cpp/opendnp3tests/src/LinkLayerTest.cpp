@@ -30,17 +30,16 @@ LinkLayerTest::LinkLayerTest(LinkConfig arCfg, LogLevel aLevel, bool aImmediate)
 	mts(),
 	upper(Logger(&log, aLevel, "MockUpperLayer")),
 	link(Logger(&log, aLevel, "LinkLayer"), &mts, arCfg),
-	mNumSend(0)
+	numWrites(0)
 {
 	link.SetUpperLayer(&upper);
 	link.SetRouter(this);
 }
 
-bool LinkLayerTest::Transmit(const LinkFrame& arFrame)
-{
-	mLastSend = arFrame;
-	++mNumSend;
-	return true;
+void LinkLayerTest::QueueTransmit(const openpal::ReadOnlyBuffer& buffer, ILinkContext* pContext, bool primary)
+{	
+	lastWrite = buffer;
+	++numWrites;
 }
 
 LinkConfig LinkLayerTest::DefaultConfig()

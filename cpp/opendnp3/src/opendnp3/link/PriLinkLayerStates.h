@@ -43,6 +43,8 @@ public:
 	virtual void LinkStatus(LinkLayer*, bool aIsRcvBuffFull);
 	virtual void NotSupported (LinkLayer*, bool aIsRcvBuffFull);
 
+	virtual void OnTransmitResult(LinkLayer* apLL, bool success);
+	
 	virtual void OnTimeout(LinkLayer*);
 
 	/*Upper layer events to handle */
@@ -60,6 +62,62 @@ class PLLS_SecNotReset : public PriStateBase
 	void SendUnconfirmed(LinkLayer*, const openpal::ReadOnlyBuffer& arBuffer);
 	void SendConfirmed(LinkLayer*, const openpal::ReadOnlyBuffer& arBuffer);
 };
+
+
+/////////////////////////////////////////////////////////////////////////////
+//  template wait state for send unconfirmed sata
+/////////////////////////////////////////////////////////////////////////////
+
+template <class ReturnToState>
+class PLLS_SendUnconfirmedTransmitWait : public PriStateBase
+{
+	MACRO_STATE_SINGLETON_INSTANCE(PLLS_SendUnconfirmedTransmitWait<ReturnToState>);
+
+	virtual void OnTransmitResult(LinkLayer* apLL, bool success);
+};
+
+template <class ReturnToState>
+PLLS_SendUnconfirmedTransmitWait<ReturnToState> PLLS_SendUnconfirmedTransmitWait<ReturnToState>::mInstance;
+
+template <class ReturnToState>
+void PLLS_SendUnconfirmedTransmitWait<ReturnToState>::OnTransmitResult(LinkLayer* apLL, bool success)
+{
+	apLL->ChangeState(ReturnToState::Inst());
+	if (success)
+	{
+		apLL->DoSendSuccess();
+	}
+	else
+	{
+		apLL->DoSendFailure();
+	}
+}
+
+/////////////////////////////////////////////////////////////////////////////
+//  Wait for the link layer to transmit the reset links
+/////////////////////////////////////////////////////////////////////////////
+
+class PLLS_LinkResetTransmitWait : public PriStateBase
+{
+	MACRO_STATE_SINGLETON_INSTANCE(PLLS_LinkResetTransmitWait);
+
+	virtual void OnTransmitResult(LinkLayer* apLL, bool success);
+};
+
+/////////////////////////////////////////////////////////////////////////////
+//  Wait for the link layer to transmit confirmed user data
+/////////////////////////////////////////////////////////////////////////////
+
+class PLLS_ConfUserDataTransmitWait : public PriStateBase
+{
+	MACRO_STATE_SINGLETON_INSTANCE(PLLS_ConfUserDataTransmitWait);
+
+	virtual void OnTransmitResult(LinkLayer* apLL, bool success);
+};
+
+/////////////////////////////////////////////////////////////////////////////
+//  idle state when the secondary is reset
+/////////////////////////////////////////////////////////////////////////////
 
 //	@section desc for reset state
 class PLLS_SecReset : public PriStateBase

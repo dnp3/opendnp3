@@ -22,12 +22,14 @@
 #ifndef __I_LINK_ROUTER_H_
 #define __I_LINK_ROUTER_H_
 
+#include <openpal/BufferWrapper.h>
+
+#include "opendnp3/link/ILinkContext.h"
+
 namespace opendnp3
 {
 
-class LinkFrame;
-
-// @section DESCRIPTION Interface from the link layer to the link router
+// @section DESCRIPTION Interface the link layer uses to transmit data
 
 class ILinkRouter
 {
@@ -35,7 +37,11 @@ class ILinkRouter
 
 	virtual ~ILinkRouter() {}
 
-	virtual bool Transmit(const LinkFrame&) = 0;
+	/**
+	* Queue a frame for transmission. Callback happens OFF the call stack (via executor)
+	*/
+	virtual void QueueTransmit(const openpal::ReadOnlyBuffer& buffer, ILinkContext* pContext, bool primary) = 0;
+
 };
 
 }
