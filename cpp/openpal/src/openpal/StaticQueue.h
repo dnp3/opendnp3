@@ -35,6 +35,16 @@ public:
 	StaticQueue()
 	{}
 
+	IndexType Size() const
+	{
+		return list.Size();
+	}
+
+	IndexType Capacity() const
+	{
+		return list.Capacity();
+	}
+
 	bool IsEmpty() const
 	{
 		return list.IsEmpty();
@@ -47,7 +57,7 @@ public:
 
 	bool IsFull() const
 	{
-		return list.IsEmpty();
+		return list.IsFull();
 	}
 
 	void Clear()

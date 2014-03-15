@@ -33,32 +33,70 @@ TEST_CASE(SUITE("StaticQueueCompiles"))
 
 TEST_CASE(SUITE("CorrectInitialState"))
 {
-	StaticArray<int, uint8_t, 3> array;
-	QueueAdapter<int, uint8_t> stack(array.ToIndexable());
+	StaticQueue<int, uint8_t, 3> queue;
 
-	REQUIRE(stack.IsEmpty());
-	REQUIRE(!stack.IsFull());
-	REQUIRE(0 == stack.Size());
-	REQUIRE(3 == stack.Capacity());
+	REQUIRE(queue.IsEmpty());
+	REQUIRE(!queue.IsFull());
+	REQUIRE(0 == queue.Size());
+	REQUIRE(3 == queue.Capacity());
 }
 
 TEST_CASE(SUITE("PushesAndPopsCorrectly"))
-{
-	StaticArray<int, int, 3> array;
-	QueueAdapter<int, int> stack(array.ToIndexable());
+{	
+	StaticQueue<int, uint16_t, 3> queue;
+	
+	REQUIRE(queue.Enqueue(1));
+	REQUIRE(queue.Enqueue(2));
+	REQUIRE(queue.Enqueue(3));
+	REQUIRE(queue.IsFull());
+	REQUIRE(1 == queue.Pop());
+	REQUIRE(2 == queue.Pop());
+	REQUIRE(3 == queue.Pop());
+	REQUIRE(0 == queue.Size());
+}
 
-	stack.Push(1);
-	stack.Push(2);
-	stack.Push(3);
-	REQUIRE(stack.IsFull());
-	REQUIRE(1 == stack.Pop());
-	REQUIRE(2 == stack.Pop());
-	REQUIRE(3 == stack.Pop());
-	REQUIRE(stack.IsFull()); //both full and empty!
-	REQUIRE(stack.IsEmpty());
-	stack.Clear();
-	REQUIRE(stack.IsEmpty());
-	REQUIRE(!stack.IsFull());
+TEST_CASE(SUITE("QueueCanBeClearedWhileNeitherFullNorEmpty"))
+{
+	StaticQueue<int, uint16_t, 3> queue;
+
+	REQUIRE(queue.Enqueue(1));
+	REQUIRE(queue.Enqueue(2));
+	queue.Clear();
+	REQUIRE(0 == queue.Size());
+	REQUIRE(queue.Enqueue(1));
+	REQUIRE(queue.Enqueue(2));
+	REQUIRE(queue.Enqueue(3));	
+	REQUIRE(3 == queue.Size());
+	REQUIRE_FALSE(queue.Enqueue(4));
+	REQUIRE(queue.IsFull());	
+}
+
+TEST_CASE(SUITE("QueueCanBeClearedWhileEmpty"))
+{
+	StaticQueue<int, uint16_t, 3> queue;
+	queue.Clear();	
+	REQUIRE(queue.Enqueue(1));
+	REQUIRE(queue.Enqueue(2));
+	REQUIRE(queue.Enqueue(3));
+	REQUIRE(3 == queue.Size());
+	REQUIRE_FALSE(queue.Enqueue(4));
+	REQUIRE(queue.IsFull());
+}
+
+TEST_CASE(SUITE("QueueCanBeClearedWhileFull"))
+{
+	StaticQueue<int, uint16_t, 3> queue;
+
+	REQUIRE(queue.Enqueue(1));
+	REQUIRE(queue.Enqueue(2));
+	REQUIRE(queue.Enqueue(3));
+	queue.Clear();
+	REQUIRE(queue.Enqueue(1));
+	REQUIRE(queue.Enqueue(2));
+	REQUIRE(queue.Enqueue(3));
+	REQUIRE(3 == queue.Size());
+	REQUIRE_FALSE(queue.Enqueue(4));
+	REQUIRE(queue.IsFull());
 }
 
 

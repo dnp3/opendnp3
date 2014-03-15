@@ -91,9 +91,16 @@ public:
 	}
 
 	void Clear()
-	{
-		Initialize();
-		this->size = 0;
+	{					
+		if (this->IsNotEmpty())
+		{
+			// link the remaining free list to the end of active list
+			this->Link(pTail, pFree);
+			// set the free pointer to the head
+			pFree = pHead;
+			pHead = pTail = nullptr;
+			this->size = 0;
+		}
 	}
 
 	inline ListNode<ValueType>* Head()

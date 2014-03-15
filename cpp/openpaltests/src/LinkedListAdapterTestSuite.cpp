@@ -30,8 +30,7 @@ using namespace openpal;
 
 TEST_CASE(SUITE("CorrectInitialState"))
 {
-	DynamicArray<ListNode<int>, uint16_t> arr(3);
-	LinkedListAdapter<int, uint16_t> list(arr.ToIndexable());
+	StaticLinkedList<int, uint16_t, 3> list;
 
 	REQUIRE(list.IsEmpty());
 	REQUIRE(!list.IsFull());
@@ -40,20 +39,16 @@ TEST_CASE(SUITE("CorrectInitialState"))
 
 TEST_CASE(SUITE("AddsUntilFull"))
 {
-	DynamicArray<ListNode<int>, uint16_t> arr(3);
-	LinkedListAdapter<int, uint16_t> list(arr.ToIndexable());
+	StaticLinkedList<int, uint16_t, 3> list;
 
-	auto one = list.Add(1);
-	auto two = list.Add(2);
-	auto three = list.Add(3);
-
-	REQUIRE(1 == one->value);
-	REQUIRE(2 == two->value);
-	REQUIRE(3 == three->value);
+	REQUIRE(list.Add(1));
+	REQUIRE(list.Add(2));
+	REQUIRE(list.Add(3));
+	
 	REQUIRE(list.IsFull());
 
 	// adding to a full list returns a nullptr
-	REQUIRE((nullptr == list.Add(4)));
+	REQUIRE_FALSE(list.Add(4));
 }
 
 TEST_CASE(SUITE("CanRemoveHead"))

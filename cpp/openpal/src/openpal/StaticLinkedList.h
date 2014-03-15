@@ -37,7 +37,12 @@ public:
 
 	IndexType Size() const
 	{
-		return adapter.size();
+		return adapter.Size();
+	}
+
+	IndexType Capacity() const
+	{
+		return underlying.Size();
 	}
 
 	void Clear()
