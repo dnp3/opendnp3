@@ -38,9 +38,14 @@ TransportIntegrationStack::TransportIntegrationStack(Logger aLogger, IPhysicalLa
 	LinkRoute route(aCfg.RemoteAddr, aCfg.LocalAddr);
 	mRouter.AddContext(&mLink, route);
 	mRouter.Enable(&mLink);
-	mLink.SetUpperLayer(&mTransport);
-	mTransport.SetUpperLayer(&mUpper);
 	mLink.SetRouter(&mRouter);
+	
+	mLink.SetUpperLayer(&mTransport);
+	mTransport.SetLowerLayer(&mLink);
+
+	mTransport.SetUpperLayer(&mUpper);
+	mUpper.SetLowerLayer(&mTransport);
+	
 }
 
 

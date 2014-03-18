@@ -23,6 +23,8 @@
 
 
 #include <openpal/IHandlerAsync.h>
+#include <openpal/Loggable.h>
+
 #include <openpal/AsyncLayerInterfaces.h>
 
 namespace openpal
@@ -35,8 +37,9 @@ namespace opendnp3
 
 /** Class for turning an async physical layer into an ILowerLayer
 */
-class LowerLayerToPhysAdapter : public openpal::IHandlerAsync, public openpal::ILowerLayer
+class LowerLayerToPhysAdapter : public openpal::IHandlerAsync, public openpal::ILowerLayer, private openpal::Loggable
 {
+
 public:
 	LowerLayerToPhysAdapter(openpal::Logger, openpal::IPhysicalLayerAsync*, bool aAutoRead = true);
 	~LowerLayerToPhysAdapter();
@@ -45,6 +48,7 @@ public:
 	{
 		return mNumOpenFailure;
 	}
+
 	bool OpenFailureEquals(size_t aNum)
 	{
 		return GetNumOpenFailure() == aNum;
@@ -52,6 +56,18 @@ public:
 
 	void StartRead();
 
+	// -------- IAsyncHandler --------
+	virtual void OnOpenFailure() override final;
+
+	// --------  IUpperLayer ---------
+	virtual void OnReceive(const openpal::ReadOnlyBuffer& arBuffer) override final;
+	virtual void OnSendResult(bool isSuccess) override final;
+	
+	virtual void OnLowerLayerUp() override final;
+	virtual void OnLowerLayerDown() override final;
+
+	// --------  ILowerLayer ---------
+	virtual void Send(const openpal::ReadOnlyBuffer& arBuffer)  override final;
 
 
 private:
@@ -72,21 +88,11 @@ private:
 
 	uint8_t mpBuff[BUFFER_SIZE]; // Temporary buffer since IPhysicalLayerAsync now directly supports a read operation
 
-	/* Implement IAsyncHandler */
-	void _OnOpenFailure();
-
-	/* Implement IUpperLayer */
-	void _OnReceive(const openpal::ReadOnlyBuffer& arBuffer);
-	void _OnSendSuccess();
-	void _OnSendFailure();
-	void _OnLowerLayerUp();
-	void _OnLowerLayerDown();
-	void _OnLowerLayerShutdown();
+	
 
 	openpal::IPhysicalLayerAsync* mpPhys;
 
-	/* Implement ILowerLayer */
-	void _Send(const openpal::ReadOnlyBuffer& arBuffer);
+	
 };
 
 }

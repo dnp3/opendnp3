@@ -153,9 +153,6 @@
     <ClCompile Include="src\openpal\BufferWrapper.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="src\openpal\IHandlerAsync.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
     <ClCompile Include="src\openpal\LogEntry.cpp">
       <Filter>Source</Filter>
     </ClCompile>

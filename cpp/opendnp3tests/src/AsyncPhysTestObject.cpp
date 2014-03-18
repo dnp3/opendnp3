@@ -37,7 +37,10 @@ AsyncPhysTestObject::AsyncPhysTestObject(LogLevel aLevel, bool aImmediate, bool 
 	mServerUpper(Logger(&log, aLevel, "MockUpperServer"))
 {
 	mClientAdapter.SetUpperLayer(&mClientUpper);
+	mClientUpper.SetLowerLayer(&mClientAdapter);
+
 	mServerAdapter.SetUpperLayer(&mServerUpper);
+	mServerUpper.SetLowerLayer(&mServerAdapter);
 }
 
 }

@@ -31,9 +31,8 @@ using namespace openpal;
 namespace opendnp3
 {
 
-MockLowerLayer::MockLowerLayer(Logger aLogger) :
-	Loggable(aLogger),
-	ILowerLayer(aLogger),
+MockLowerLayer::MockLowerLayer(Logger logger) :
+	Loggable(logger),	
 	mAutoSendCallback(true),
 	mIsSuccess(true)
 {
@@ -71,21 +70,21 @@ std::string MockLowerLayer::PopWriteAsHex()
 	return toHex(ret);
 }
 
-void MockLowerLayer::_Send(const openpal::ReadOnlyBuffer& arBuffer)
+void MockLowerLayer::Send(const openpal::ReadOnlyBuffer& output)
 {
-	this->sendQueue.push(arBuffer);
-	if(mAutoSendCallback && mpUpperLayer)
+	this->sendQueue.push(output);
+
+	if(mAutoSendCallback && pUpperLayer)
 	{
-		if(mIsSuccess) mpUpperLayer->OnSendSuccess();
-		else mpUpperLayer->OnSendFailure();
+		pUpperLayer->OnSendResult(mIsSuccess);
 	}
 }
 
 void MockLowerLayer::SendUp(const openpal::ReadOnlyBuffer& arBuffer)
 {
-	if(this->mpUpperLayer)
+	if(pUpperLayer)
 	{
-		mpUpperLayer->OnReceive(arBuffer);
+		pUpperLayer->OnReceive(arBuffer);
 	}
 }
 
@@ -97,21 +96,33 @@ void MockLowerLayer::SendUp(const std::string& arHexData)
 
 void MockLowerLayer::SendSuccess()
 {
-	if(mpUpperLayer != nullptr) mpUpperLayer->OnSendSuccess();
+	if (pUpperLayer)
+	{
+		pUpperLayer->OnSendResult(true);
+	}
 }
 
 void MockLowerLayer::SendFailure()
 {
-	if(mpUpperLayer != nullptr) mpUpperLayer->OnSendFailure();
+	if (pUpperLayer)
+	{
+		pUpperLayer->OnSendResult(false);
+	}
 }
 
 void MockLowerLayer::ThisLayerUp()
 {
-	if(mpUpperLayer != nullptr) mpUpperLayer->OnLowerLayerUp();
+	if (pUpperLayer)
+	{
+		pUpperLayer->OnLowerLayerUp();
+	}
 }
 void MockLowerLayer::ThisLayerDown()
 {
-	if(mpUpperLayer != nullptr) mpUpperLayer->OnLowerLayerDown();
+	if (pUpperLayer)
+	{
+		pUpperLayer->OnLowerLayerDown();
+	}
 }
 
 }

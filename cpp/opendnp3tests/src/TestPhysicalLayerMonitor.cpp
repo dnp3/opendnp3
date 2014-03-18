@@ -37,8 +37,7 @@ class ConcretePhysicalLayerMonitor : public PhysicalLayerMonitor
 {
 public:
 
-	ConcretePhysicalLayerMonitor(openpal::Logger aLogger, IPhysicalLayerAsync* apPhys) :
-		Loggable(aLogger),
+	ConcretePhysicalLayerMonitor(openpal::Logger aLogger, IPhysicalLayerAsync* apPhys) :		
 		PhysicalLayerMonitor(aLogger.GetSubLogger("monitor"), apPhys, TimeDuration::Seconds(1),  TimeDuration::Seconds(10)),
 		mOpenCallbackCount(0),
 		mCloseCallbackCount(0),
@@ -47,6 +46,9 @@ public:
 
 	}
 
+	virtual void OnReceive(const openpal::ReadOnlyBuffer&) override final {}
+	virtual void OnSendResult(bool isSuccess) override final {}
+	
 	void ReachInAndStartOpenTimer()
 	{
 		this->StartOpenTimer();
@@ -75,10 +77,7 @@ protected:
 	{
 		++mCloseCallbackCount;
 	}
-
-	void _OnReceive(const openpal::ReadOnlyBuffer&) {}
-	void _OnSendSuccess() {}
-	void _OnSendFailure() {}
+	
 };
 
 class TestObject

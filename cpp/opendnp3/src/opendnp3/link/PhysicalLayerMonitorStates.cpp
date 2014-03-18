@@ -51,12 +51,12 @@ void MonitorStateActions::CancelOpenTimer(PhysicalLayerMonitor* apContext)
 
 void MonitorStateActions::AsyncClose(PhysicalLayerMonitor* apContext)
 {
-	apContext->mpPhys->AsyncClose();
+	apContext->pPhys->AsyncClose();
 }
 
 void MonitorStateActions::AsyncOpen(PhysicalLayerMonitor* apContext)
 {
-	apContext->mpPhys->AsyncOpen();
+	apContext->pPhys->AsyncOpen();
 }
 
 /* --- IMonitorState --- */

@@ -33,6 +33,7 @@ LinkLayerTest::LinkLayerTest(LinkConfig arCfg, LogLevel aLevel, bool aImmediate)
 	numWrites(0)
 {
 	link.SetUpperLayer(&upper);
+	upper.SetLowerLayer(&link);
 	link.SetRouter(this);
 }
 
@@ -44,8 +45,7 @@ void LinkLayerTest::QueueTransmit(const openpal::ReadOnlyBuffer& buffer, ILinkCo
 
 LinkConfig LinkLayerTest::DefaultConfig()
 {
-	LinkConfig cfg(true, false);
-	return cfg;
+	return LinkConfig(true, false);	
 }
 
 }

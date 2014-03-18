@@ -24,6 +24,7 @@
 #include <queue>
 
 #include <openpal/AsyncLayerInterfaces.h>
+#include <openpal/Loggable.h>
 
 #include "opendnp3/app/IAppUser.h"
 #include "opendnp3/app/IAppLayer.h"
@@ -39,8 +40,8 @@
 
 namespace openpal
 {
-class IExecutor;
-class ITimer;
+	class IExecutor;
+	class ITimer;
 }
 
 
@@ -54,7 +55,7 @@ Implements the sequencing/confirm/response logic for the DNP3 application layer.
 
 Allows for canceling response transactions, as dictated by the spec.
 */
-class AppLayer : public IUpperLayer, public IAppLayer
+class AppLayer : public IUpperLayer, public IAppLayer, private openpal::Loggable
 {
 	friend class AppLayerChannel;
 	friend class SolicitedChannel;
@@ -62,35 +63,30 @@ class AppLayer : public IUpperLayer, public IAppLayer
 
 public:
 
-	AppLayer(openpal::Logger aLogger, openpal::IExecutor*, AppConfig aAppCfg);
+	AppLayer(const openpal::Logger& logger, openpal::IExecutor*,  const AppConfig&);
 
 	void SetUser(IAppUser*);
 
 	/////////////////////////////////
-	// Implement IAppLayer
+	// IAppLayer
 	/////////////////////////////////
 
-	void SendUnsolicited(APDUResponse&);
-	void SendResponse(APDUResponse&);
-	void SendRequest(APDURequest&);
-	void CancelResponse();
+	virtual void SendUnsolicited(APDUResponse&) override final;
+	virtual void SendResponse(APDUResponse&) override final;
+	virtual void SendRequest(APDURequest&) override final;
+	virtual void CancelResponse() override final;
+
+
+	////////////////////
+	// IUpperLayer
+	////////////////////
+
+	virtual void OnReceive(const openpal::ReadOnlyBuffer&) override final;
+	virtual void OnLowerLayerUp() override final;
+	virtual void OnLowerLayerDown() override final;
+	virtual void OnSendResult(bool isSuccess) override final;	
 
 private:
-
-	////////////////////
-	// External Events
-	////////////////////
-
-	// Parse the header of the incoming APDU and direct to the appropriate
-	// internal event handler
-	void _OnReceive(const openpal::ReadOnlyBuffer&);
-
-	void _OnLowerLayerUp();
-	void _OnLowerLayerDown();
-	void _OnSendSuccess();
-	void _OnSendFailure();
-
-	void OnSendResult(bool aSuccess);
 
 	////////////////////
 	// Internal Events
@@ -109,16 +105,17 @@ private:
 
 	typedef std::deque<APDUWrapper> SendQueue;
 
-	bool mSending;						// State of send operation to the lower layer
-	bool mConfirmSending;
-	bool mIsMaster;						// True, if the application user is a master
-	SendQueue mSendQueue;				// Buffer of send operations
+	bool isOnline;
+	bool isSending;						// State of send operation to the lower layer
+	bool isConfirmSending;
+	bool isMaster;						// True, if the application user is a master
+	SendQueue sendQueue;				// Buffer of send operations
 
 	IAppUser* mpUser;					// Interface for dispatching callbacks
 
 	SolicitedChannel mSolicited;			// Channel used for solicited communications
 	UnsolicitedChannel mUnsolicited;		// Channel used for unsolicited communications
-	size_t mNumRetry;
+	size_t numRetry;
 
 
 	// a 2 byter buffer and wrapper for the confirms

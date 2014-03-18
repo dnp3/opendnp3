@@ -21,6 +21,8 @@
 #ifndef __MOCK_UPPER_LAYER_H_
 #define __MOCK_UPPER_LAYER_H_
 
+#include <openpal/Loggable.h>
+
 #include <openpal/AsyncLayerInterfaces.h>
 
 #include <functional>
@@ -30,7 +32,7 @@
 namespace opendnp3
 {
 
-class MockUpperLayer : public openpal::IUpperLayer, public BufferTestObject
+class MockUpperLayer : public openpal::IUpperLayer, public BufferTestObject, private openpal::Loggable
 {
 public:
 
@@ -55,8 +57,9 @@ public:
 		}
 	};
 
-	MockUpperLayer(openpal::Logger);
-	virtual ~MockUpperLayer() {}
+	MockUpperLayer(openpal::Logger);	
+
+	bool IsOnline() const { return isOnline; }
 
 	void SendDown(const std::string&);
 	void SendDown(const openpal::ReadOnlyBuffer& arBuffer);
@@ -88,7 +91,15 @@ public:
 		mOnReceiveHandler = arHandler;
 	}
 
+	//these are the NVII delegates
+	virtual void OnReceive(const openpal::ReadOnlyBuffer& buffer) override final;
+	virtual void OnSendResult(bool isSuccess) override final;	
+	virtual void OnLowerLayerUp() override final;
+	virtual void OnLowerLayerDown() override final;
+
 private:
+
+	bool isOnline;
 
 	virtual std::string RecvString() const
 	{
@@ -98,12 +109,7 @@ private:
 	OnReceiveHandler mOnReceiveHandler;
 	State mState;
 
-	//these are the NVII delegates
-	void _OnReceive(const openpal::ReadOnlyBuffer& arBuffer);
-	void _OnSendSuccess();
-	void _OnSendFailure();
-	void _OnLowerLayerUp();
-	void _OnLowerLayerDown();
+	
 };
 
 

@@ -23,16 +23,18 @@
 
 #include <openpal/IPhysicalLayerAsync.h>
 #include <openpal/IHandlerAsync.h>
+#include <openpal/Loggable.h>
 
 #include "RandomDouble.h"
 
 namespace opendnp3
 {
 
-class PhysicalLayerWrapper : public openpal::IPhysicalLayerAsync, public openpal::IHandlerAsync
+class PhysicalLayerWrapper : public openpal::IPhysicalLayerAsync, public openpal::IHandlerAsync, private openpal::Loggable
 {
 public:
-	PhysicalLayerWrapper(openpal::Logger aLogger, openpal::IPhysicalLayerAsync* apProxy);
+
+	PhysicalLayerWrapper(openpal::Logger logger, openpal::IPhysicalLayerAsync* apProxy);
 
 	openpal::IExecutor* GetExecutor()
 	{
@@ -96,13 +98,14 @@ public:
 	// testing helpers
 	void SetCorruptionProbability(double aProbability);
 
+	virtual void OnLowerLayerUp() override final;
+	virtual void OnLowerLayerDown() override final;
+	virtual void OnReceive(const openpal::ReadOnlyBuffer& arBuffer) override final;
+	virtual void OnSendResult(bool isSuccess) override final;	
+	virtual void OnOpenFailure() override final;
+
 private:
-	void _OnLowerLayerUp();
-	void _OnLowerLayerDown();
-	void _OnReceive(const openpal::ReadOnlyBuffer& arBuffer);
-	void _OnSendSuccess();
-	void _OnSendFailure();
-	void _OnOpenFailure();
+	
 
 	double mCorruptionProbability;
 	RandomDouble mRandom;

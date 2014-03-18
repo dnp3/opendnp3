@@ -54,11 +54,11 @@ TEST_CASE(SUITE("StateReady"))
 	TransportTestObject test(true); //makes an implicit call to 'test.lower.ThisLayerUp()'
 
 	//check that that the transport layer is correctly forwarding up/down
-	REQUIRE(test.upper.IsLowerLayerUp());
+	REQUIRE(test.upper.IsOnline());
 	test.lower.ThisLayerDown();
-	REQUIRE_FALSE(test.upper.IsLowerLayerUp());
+	REQUIRE_FALSE(test.upper.IsOnline());
 	test.lower.ThisLayerUp();
-	REQUIRE(test.upper.IsLowerLayerUp());
+	REQUIRE(test.upper.IsOnline());
 
 	// check that these actions all log errors
 	test.lower.ThisLayerUp();
@@ -252,7 +252,7 @@ TEST_CASE(SUITE("ClosedWhileSending"))
 	test.upper.SendDown("11"); //get the layer into the sending state
 
 	test.lower.ThisLayerDown(); // go to the TS_ClosedAfterSend state
-	REQUIRE_FALSE(test.upper.IsLowerLayerUp());
+	REQUIRE_FALSE(test.upper.IsOnline());
 }
 
 TEST_CASE(SUITE("SendFullAPDU"))

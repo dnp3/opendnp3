@@ -27,9 +27,8 @@ using namespace openpal;
 namespace opendnp3
 {
 
-PhysLoopback::PhysLoopback(openpal::Logger aLogger, openpal::IPhysicalLayerAsync* apPhys) :
-	Loggable(aLogger),
-	PhysicalLayerMonitor(aLogger, apPhys, openpal::TimeDuration::Seconds(5), openpal::TimeDuration::Seconds(5)),
+PhysLoopback::PhysLoopback(openpal::Logger logger, openpal::IPhysicalLayerAsync* apPhys) :	
+	PhysicalLayerMonitor(logger, apPhys, openpal::TimeDuration::Seconds(5), openpal::TimeDuration::Seconds(5)),
 	mBytesReadWritten(0),
 	mBuffer(1024)
 {
@@ -39,26 +38,24 @@ PhysLoopback::PhysLoopback(openpal::Logger aLogger, openpal::IPhysicalLayerAsync
 void PhysLoopback::StartRead()
 {
 	WriteBuffer buffer(mBuffer, mBuffer.Size());
-	mpPhys->AsyncRead(buffer);
+	pPhys->AsyncRead(buffer);
 }
 
-void PhysLoopback::_OnReceive(const openpal::ReadOnlyBuffer& arBuffer)
+void PhysLoopback::OnReceive(const openpal::ReadOnlyBuffer& buffer)
 {
-	mBytesReadWritten += arBuffer.Size();
-	mpPhys->AsyncWrite(arBuffer);
+	mBytesReadWritten += buffer.Size();
+	pPhys->AsyncWrite(buffer);
 }
 
-void PhysLoopback::_OnSendSuccess(void)
+void PhysLoopback::OnSendResult(bool isSuccess)
 {
-	this->StartRead();
+	if (isSuccess)
+	{
+		this->StartRead();
+	}
 }
 
-void PhysLoopback::_OnSendFailure(void)
-{
-
-}
-
-void PhysLoopback::OnPhysicalLayerOpenSuccessCallback(void)
+void PhysLoopback::OnPhysicalLayerOpenSuccessCallback()
 {
 	this->StartRead();
 }

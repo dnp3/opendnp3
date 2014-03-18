@@ -25,6 +25,8 @@
 #include "TransportTx.h"
 
 #include <openpal/IExecutor.h>
+#include <openpal/Loggable.h>
+
 #include <openpal/AsyncLayerInterfaces.h>
 
 #include "opendnp3/StaticSizeConfiguration.h"
@@ -38,27 +40,26 @@ class TLS_Base;
 /** Implements the DNP3 transport layer as a generic
 asynchronous protocol stack layer
 */
-class TransportLayer : public openpal::IUpperLayer, public openpal::ILowerLayer
+class TransportLayer : public openpal::IUpperLayer, public openpal::ILowerLayer, private openpal::Loggable
 {
 public:
 
-	TransportLayer(openpal::Logger aLogger, openpal::IExecutor* pExecutor_, uint32_t aFragSize = sizes::DEFAULT_APDU_BUFFER_SIZE);
+	TransportLayer(const openpal::Logger& logger, openpal::IExecutor* pExecutor_, uint32_t maxFragSize = sizes::DEFAULT_APDU_BUFFER_SIZE);
 	virtual ~TransportLayer() {}
 
-	/* Actions - Taken by the states/transmitter/receiver in response to events */
+	// Actions - Taken by the states/transmitter/receiver in response to events
 
-	void ThisLayerUp();
-	void ThisLayerDown();
 	void ChangeState(TLS_Base* apNewState);
 
 	void TransmitAPDU(const openpal::ReadOnlyBuffer&);
 	void TransmitTPDU(const openpal::ReadOnlyBuffer&);
+
 	void ReceiveAPDU(const openpal::ReadOnlyBuffer&);
 	void ReceiveTPDU(const openpal::ReadOnlyBuffer&);
 
-	bool ContinueSend(); // return true if
-	void SignalSendSuccess();
-	void SignalSendFailure();
+	bool ContinueSend();
+
+	void SignalSendResult(bool isSuccess);	
 
 	/* Events - NVII delegates from ILayerUp/ILayerDown and Events produced internally */
 	static std::string ToString(uint8_t aHeader);
@@ -68,29 +69,29 @@ public:
 		return logger;
 	}
 
-private:
+	/// ILowerLayer
+	
+	virtual void Send(const openpal::ReadOnlyBuffer&) override final;
 
-	//delegated to the states
-	void _Send(const openpal::ReadOnlyBuffer&); //Implement ILowerLayer
-	void _OnReceive(const openpal::ReadOnlyBuffer&); //Implement IUpperLayer
+	/// IUpperLayer
 
-	void _OnLowerLayerUp();
-	void _OnLowerLayerDown();
-	void _OnSendSuccess();
-	void _OnSendFailure();
-	void _OnLowerLayerShutdown();
+	virtual void OnReceive(const openpal::ReadOnlyBuffer&) override final;
+	virtual void OnLowerLayerUp() override final;
+	virtual void OnLowerLayerDown() override final;
+	virtual void OnSendResult(bool isSuccess) override final;
+
+	private:
 
 	/* Members and Helpers */
-	TLS_Base* mpState;
+	bool isOnline;
+	TLS_Base* pState;
 	openpal::IExecutor* pExecutor;
 
 	const size_t M_FRAG_SIZE;
 
 	/* Transmitter and Receiver Classes */
-	TransportRx mReceiver;
-	TransportTx mTransmitter;
-
-	bool mThisLayerUp;
+	TransportRx receiver;
+	TransportTx transmitter;	
 };
 
 }

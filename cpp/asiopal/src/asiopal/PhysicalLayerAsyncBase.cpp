@@ -154,7 +154,10 @@ from the io_service.
 void PhysicalLayerAsyncBase::AsyncClose()
 {
 	this->StartClose();
-	if(mState.CheckForClose()) this->DoThisLayerDown();
+	if (mState.CheckForClose())
+	{
+		this->DoThisLayerDown();
+	}
 }
 
 void PhysicalLayerAsyncBase::StartClose()
@@ -333,17 +336,26 @@ void PhysicalLayerAsyncBase::OnWriteCallback(const std::error_code& arErr, size_
 
 void PhysicalLayerAsyncBase::DoWriteSuccess()
 {
-	if(mpHandler) mpHandler->OnSendSuccess();
+	if (mpHandler)
+	{
+		mpHandler->OnSendResult(true);
+	}
 }
 
 void PhysicalLayerAsyncBase::DoThisLayerDown()
 {
-	if(mpHandler) mpHandler->OnLowerLayerDown();
+	if (mpHandler)
+	{
+		mpHandler->OnLowerLayerDown();
+	}
 }
 
 void PhysicalLayerAsyncBase::DoReadCallback(const ReadOnlyBuffer& arBuffer)
 {
-	if(mpHandler) mpHandler->OnReceive(arBuffer);
+	if (mpHandler)
+	{
+		mpHandler->OnReceive(arBuffer);
+	}
 }
 
 } //end namespace

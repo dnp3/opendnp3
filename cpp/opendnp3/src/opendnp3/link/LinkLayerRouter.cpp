@@ -42,8 +42,7 @@ LinkLayerRouter::LinkLayerRouter(	const Logger& logger,
                                     openpal::TimeDuration maxOpenRetry,
 									openpal::IEventHandler<ChannelState>* pStateHandler_,
 									openpal::IShutdownHandler* pShutdownHandler_,
-                                    IOpenDelayStrategy* pStrategy) :
-	Loggable(logger),
+                                    IOpenDelayStrategy* pStrategy) :	
 	PhysicalLayerMonitor(logger, apPhys, minOpenRetry, maxOpenRetry, pStrategy),
 	pStateHandler(pStateHandler_),
 	pShutdownHandler(pShutdownHandler_),
@@ -91,7 +90,8 @@ bool LinkLayerRouter::Enable(ILinkContext* pContext)
 		if(!(pNode->value.enabled))
 		{
 			pNode->value.enabled = true;
-			if (this->IsLowerLayerUp())
+
+			if (this->IsOnline())
 			{
 				pNode->value.pContext->OnLowerLayerUp();
 			}
@@ -114,7 +114,8 @@ bool LinkLayerRouter::Disable(ILinkContext* pContext)
 		if (pNode->value.enabled)
 		{
 			pNode->value.enabled = false;
-			if (this->IsLowerLayerUp())
+
+			if (this->IsOnline())
 			{
 				pNode->value.pContext->OnLowerLayerDown();
 			}
@@ -235,21 +236,21 @@ void LinkLayerRouter::UnconfirmedUserData(bool aIsMaster, uint16_t aDest, uint16
 	if(pDest) pDest->UnconfirmedUserData(aIsMaster, aDest, aSrc, arBuffer);
 }
 
-void LinkLayerRouter::_OnReceive(const openpal::ReadOnlyBuffer& arBuffer)
+void LinkLayerRouter::OnReceive(const openpal::ReadOnlyBuffer& input)
 {
 	// The order is important here. You must let the receiver process the byte or another read could write
 	// over the buffer before it is processed
-	mReceiver.OnRead(arBuffer.Size()); //this may trigger callbacks to the local ILinkContext interface
-	if(mpPhys->CanRead())   // this is required because the call above could trigger the layer to be closed
+	mReceiver.OnRead(input.Size()); //this may trigger callbacks to the local ILinkContext interface
+	if(pPhys->CanRead())   // this is required because the call above could trigger the layer to be closed
 	{
 		auto buff = mReceiver.WriteBuff();
-		mpPhys->AsyncRead(buff); //start another read
+		pPhys->AsyncRead(buff); //start another read
 	}
 }
 
 void LinkLayerRouter::QueueTransmit(const openpal::ReadOnlyBuffer& buffer, ILinkContext* pContext, bool primary)
 {
-	if (this->IsLowerLayerUp())
+	if (this->IsOnline())
 	{
 		Transmission tx(buffer, pContext, primary);
 
@@ -259,7 +260,7 @@ void LinkLayerRouter::QueueTransmit(const openpal::ReadOnlyBuffer& buffer, ILink
 		}
 		else
 		{
-			this->mpPhys->GetExecutor()->Post([pContext, primary](){ pContext->OnTransmitResult(primary, false); });
+			this->pPhys->GetExecutor()->Post([pContext, primary](){ pContext->OnTransmitResult(primary, false); });
 		}
 	}
 	else
@@ -290,16 +291,6 @@ bool LinkLayerRouter::HasEnabledContext()
 	return (pNode != nullptr);
 }
 
-void LinkLayerRouter::_OnSendSuccess()
-{
-	this->OnSendResult(true);
-}
-
-void LinkLayerRouter::_OnSendFailure()
-{
-	this->OnSendResult(false);
-}
-
 void LinkLayerRouter::OnSendResult(bool result)
 {
 	assert(transmitQueue.IsNotEmpty());
@@ -313,20 +304,20 @@ void LinkLayerRouter::OnSendResult(bool result)
 
 void LinkLayerRouter::CheckForSend()
 {
-	if(transmitQueue.IsNotEmpty() && !mTransmitting && mpPhys->CanWrite())
+	if(transmitQueue.IsNotEmpty() && !mTransmitting && pPhys->CanWrite())
 	{
 		mTransmitting = true;
 		auto& transmission = transmitQueue.Peek();
-		mpPhys->AsyncWrite(transmission.buffer);
+		pPhys->AsyncWrite(transmission.buffer);
 	}
 }
 
 void LinkLayerRouter::OnPhysicalLayerOpenSuccessCallback()
 {
-	if(mpPhys->CanRead())
+	if(pPhys->CanRead())
 	{
 		auto buff = mReceiver.WriteBuff();
-		mpPhys->AsyncRead(buff);
+		pPhys->AsyncRead(buff);
 	}
 
 	records.Foreach(

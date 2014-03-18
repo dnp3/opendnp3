@@ -62,9 +62,9 @@ TEST_CASE(SUITE("InitialState"))
 	REQUIRE(t.log.PopOneEntry(LogLevel::Error));
 	t.app.OnLowerLayerDown();
 	REQUIRE(t.log.PopOneEntry(LogLevel::Error));
-	t.app.OnSendSuccess();
+	t.app.OnSendResult(true);
 	REQUIRE(t.log.PopOneEntry(LogLevel::Error));
-	t.app.OnSendFailure();
+	t.app.OnSendResult(false);
 	REQUIRE(t.log.PopOneEntry(LogLevel::Error));
 	t.lower.SendUp("");
 	REQUIRE(t.log.PopOneEntry(LogLevel::Error));
@@ -121,7 +121,7 @@ TEST_CASE(SUITE("UnsolSuccess"))
 	REQUIRE(t.state ==  t.user.mState);
 	REQUIRE(t.log.NextErrorCode() ==  ALERR_UNSOL_FLOOD);
 
-	t.app.OnSendSuccess(); //doesn't throw exception
+	t.app.OnSendResult(true);
 }
 
 // Test that the various send methods reject
@@ -213,7 +213,7 @@ TEST_CASE(SUITE("CancelResponseWhileSending"))
 	// now report that that the send has completed successfully, but this should cause the
 	// the app layer to inform the user that the send has failed
 
-	t.app.OnSendSuccess(); ++t.state.NumSolFailure;
+	t.app.OnSendResult(true); ++t.state.NumSolFailure;
 	REQUIRE(t.state ==  t.user.mState);
 }
 

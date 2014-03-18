@@ -113,14 +113,14 @@ TEST_CASE(SUITE("ConnectDisconnect"))
 
 		t.mTCPServer.AsyncOpen();
 		t.mTCPClient.AsyncOpen();
-		REQUIRE(t.ProceedUntil(std::bind(&MockUpperLayer::IsLowerLayerUp, &t.mServerUpper)));
-		REQUIRE(t.ProceedUntil(std::bind(&MockUpperLayer::IsLowerLayerUp, &t.mClientUpper)));
+		REQUIRE(t.ProceedUntil(std::bind(&MockUpperLayer::IsOnline, &t.mServerUpper)));
+		REQUIRE(t.ProceedUntil(std::bind(&MockUpperLayer::IsOnline, &t.mClientUpper)));
 
 		//Check that since reads are outstanding, you only have to stop 1/2 of the connection
 		if( (i % 2) == 0 ) t.mTCPServer.AsyncClose();
 		else t.mTCPClient.AsyncClose();
-		REQUIRE(t.ProceedUntilFalse(std::bind(&MockUpperLayer::IsLowerLayerUp, &t.mServerUpper)));
-		REQUIRE(t.ProceedUntilFalse(std::bind(&MockUpperLayer::IsLowerLayerUp, &t.mClientUpper)));
+		REQUIRE(t.ProceedUntilFalse(std::bind(&MockUpperLayer::IsOnline, &t.mServerUpper)));
+		REQUIRE(t.ProceedUntilFalse(std::bind(&MockUpperLayer::IsOnline, &t.mClientUpper)));
 	}
 }
 
@@ -130,15 +130,15 @@ TEST_CASE(SUITE("TestSendShutdown"))
 
 	t.mTCPServer.AsyncOpen();
 	t.mTCPClient.AsyncOpen();
-	REQUIRE(t.ProceedUntil(std::bind(&MockUpperLayer::IsLowerLayerUp, &t.mServerUpper)));
-	REQUIRE(t.ProceedUntil(std::bind(&MockUpperLayer::IsLowerLayerUp, &t.mClientUpper)));
+	REQUIRE(t.ProceedUntil(std::bind(&MockUpperLayer::IsOnline, &t.mServerUpper)));
+	REQUIRE(t.ProceedUntil(std::bind(&MockUpperLayer::IsOnline, &t.mClientUpper)));
 
 	ByteStr bs(1024, 77); //give some interesting seed value to make sure bytes are correctly written
 	t.mClientUpper.SendDown(bs.ToReadOnly());
 
 	t.mTCPClient.AsyncClose();
-	REQUIRE(t.ProceedUntilFalse(std::bind(&MockUpperLayer::IsLowerLayerUp, &t.mServerUpper)));
-	REQUIRE(t.ProceedUntilFalse(std::bind(&MockUpperLayer::IsLowerLayerUp, &t.mClientUpper)));
+	REQUIRE(t.ProceedUntilFalse(std::bind(&MockUpperLayer::IsOnline, &t.mServerUpper)));
+	REQUIRE(t.ProceedUntilFalse(std::bind(&MockUpperLayer::IsOnline, &t.mClientUpper)));
 }
 
 TEST_CASE(SUITE("TwoWaySend"))
@@ -149,8 +149,8 @@ TEST_CASE(SUITE("TwoWaySend"))
 
 	t.mTCPServer.AsyncOpen();
 	t.mTCPClient.AsyncOpen();
-	REQUIRE(t.ProceedUntil(std::bind(&MockUpperLayer::IsLowerLayerUp, &t.mServerUpper)));
-	REQUIRE(t.ProceedUntil(std::bind(&MockUpperLayer::IsLowerLayerUp, &t.mClientUpper)));
+	REQUIRE(t.ProceedUntil(std::bind(&MockUpperLayer::IsOnline, &t.mServerUpper)));
+	REQUIRE(t.ProceedUntil(std::bind(&MockUpperLayer::IsOnline, &t.mClientUpper)));
 
 	//both layers are now up and reading, start them both writing
 	ByteStr bs(SEND_SIZE, 77); //give some interesting seed value to make sure bytes are correctly written
@@ -164,8 +164,8 @@ TEST_CASE(SUITE("TwoWaySend"))
 	REQUIRE(t.mServerUpper.BufferEquals(bs.ToReadOnly()));
 
 	t.mTCPServer.AsyncClose(); //stop one side
-	REQUIRE(t.ProceedUntilFalse(std::bind(&MockUpperLayer::IsLowerLayerUp, &t.mServerUpper)));
-	REQUIRE(t.ProceedUntilFalse(std::bind(&MockUpperLayer::IsLowerLayerUp, &t.mClientUpper)));
+	REQUIRE(t.ProceedUntilFalse(std::bind(&MockUpperLayer::IsOnline, &t.mServerUpper)));
+	REQUIRE(t.ProceedUntilFalse(std::bind(&MockUpperLayer::IsOnline, &t.mClientUpper)));
 }
 
 TEST_CASE(SUITE("ServerAsyncCloseWhileOpeningKillsAcceptor"))
@@ -199,13 +199,13 @@ TEST_CASE(SUITE("ServerAsyncCloseAfterOpeningKillsAcceptor"))
 		t.mTCPServer.AsyncOpen();
 		t.mTCPClient.AsyncOpen();
 
-		REQUIRE(t.ProceedUntil(std::bind(&MockUpperLayer::IsLowerLayerUp, &t.mServerUpper)));
-		REQUIRE(t.ProceedUntil(std::bind(&MockUpperLayer::IsLowerLayerUp, &t.mClientUpper)));
+		REQUIRE(t.ProceedUntil(std::bind(&MockUpperLayer::IsOnline, &t.mServerUpper)));
+		REQUIRE(t.ProceedUntil(std::bind(&MockUpperLayer::IsOnline, &t.mClientUpper)));
 
 		t.mTCPServer.AsyncClose();
 
-		REQUIRE(t.ProceedUntilFalse(std::bind(&MockUpperLayer::IsLowerLayerUp, &t.mServerUpper)));
-		REQUIRE(t.ProceedUntilFalse(std::bind(&MockUpperLayer::IsLowerLayerUp, &t.mClientUpper)));
+		REQUIRE(t.ProceedUntilFalse(std::bind(&MockUpperLayer::IsOnline, &t.mServerUpper)));
+		REQUIRE(t.ProceedUntilFalse(std::bind(&MockUpperLayer::IsOnline, &t.mClientUpper)));
 
 		// since we closed the server socket we shouldn't be able to connect now
 		t.mTCPClient.AsyncOpen();
@@ -239,9 +239,10 @@ TEST_CASE(SUITE("Loopback"))
 	LowerLayerToPhysAdapter adapter(logger.GetSubLogger("adapter"), &client);
 	MockUpperLayer upper(logger.GetSubLogger("mock"));
 	adapter.SetUpperLayer(&upper);
+	upper.SetLowerLayer(&adapter);
 
 	client.AsyncOpen();
-	REQUIRE(test.ProceedUntil(std::bind(&MockUpperLayer::IsLowerLayerUp, &upper)));
+	REQUIRE(test.ProceedUntil(std::bind(&MockUpperLayer::IsOnline, &upper)));
 
 	RandomizedBuffer rb(SIZE);
 

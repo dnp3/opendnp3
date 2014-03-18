@@ -33,91 +33,20 @@ namespace openpal
 // IUpDown
 //////////////////////////////////
 
-void IUpDown::OnLowerLayerUp()
+void IUpperLayer::SetLowerLayer(ILowerLayer* pLowerLayer_)
 {
-	if (mIsLowerLayerUp)
-	{
-		LOG_BLOCK(LogLevel::Error, "Layer already online");
-	}
-	else
-	{
-		mIsLowerLayerUp = true;
-		this->_OnLowerLayerUp();
-	}
-}
-
-void IUpDown::OnLowerLayerDown()
-{
-	if (mIsLowerLayerUp)
-	{
-		mIsLowerLayerUp = false;
-		this->_OnLowerLayerDown();
-	}
-	else
-	{
-		LOG_BLOCK(LogLevel::Error, "Layer not online");
-	}
-}
-
-
-//////////////////////////////////
-// IUpperLayer
-//////////////////////////////////
-IUpperLayer::IUpperLayer(openpal::Logger& arLogger) :
-	IUpDown(arLogger),
-	Loggable(arLogger),
-	mpLowerLayer(nullptr)
-{
-
-}
-
-void IUpperLayer::OnReceive(const ReadOnlyBuffer& arBuffer)
-{
-	if(this->LogReceive())
-	{
-		LOG_BLOCK(LogLevel::Comm, RecvString() << " " << toHex(arBuffer, true));
-	}
-	this->_OnReceive(arBuffer); //call the implementation
-}
-
-void IUpperLayer::SetLowerLayer(ILowerLayer* apLowerLayer)
-{
-	assert(apLowerLayer != nullptr);
-	mpLowerLayer = apLowerLayer;
-}
-
-void IUpperLayer::OnSendSuccess()
-{
-	this->_OnSendSuccess();
-}
-
-void IUpperLayer::OnSendFailure()
-{
-	this->_OnSendFailure();
+	assert(pLowerLayer_ != nullptr);
+	pLowerLayer = pLowerLayer_;
 }
 
 //////////////////////////////////
 // ILowerLayer
 //////////////////////////////////
 
-ILowerLayer::ILowerLayer(openpal::Logger& arLogger) :
-	Loggable(arLogger),
-	mpUpperLayer(nullptr)
+void ILowerLayer::SetUpperLayer(IUpperLayer* pUpperLayer_)
 {
-
+	assert(pUpperLayer_ != nullptr);
+	pUpperLayer = pUpperLayer_;	
 }
 
-void ILowerLayer::Send(const ReadOnlyBuffer& arBuffer)
-{
-	LOG_BLOCK(LogLevel::Comm, SendString() << " " << toHex(arBuffer, true));
-	this->_Send(arBuffer);
 }
-
-void ILowerLayer::SetUpperLayer(IUpperLayer* apUpperLayer)
-{
-	assert(apUpperLayer != nullptr);
-	mpUpperLayer = apUpperLayer;
-	apUpperLayer->SetLowerLayer(this);
-}
-
-}//end namespace

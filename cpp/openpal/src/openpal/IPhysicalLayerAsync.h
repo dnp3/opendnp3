@@ -25,6 +25,8 @@
 
 #include <openpal/BufferWrapper.h>
 
+#include <string>
+
 namespace openpal
 {
 

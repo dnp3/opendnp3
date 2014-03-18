@@ -35,24 +35,24 @@ namespace opendnp3
 {
 
 PhysicalLayerMonitor::PhysicalLayerMonitor(
-    Logger aLogger,
+    const Logger& logger,
     IPhysicalLayerAsync* pPhys_,
     TimeDuration minOpenRetry_,
     TimeDuration maxOpenRetry_,
     IOpenDelayStrategy* pOpenStrategy_) :
-	Loggable(aLogger),
-	IHandlerAsync(aLogger),
-	mpPhys(pPhys_),
-	mpOpenTimer(nullptr),
-	mpState(MonitorStateInit::Inst()),
-	mFinalShutdown(false),
-	minOpenRetry(minOpenRetry_),
-	maxOpenRetry(maxOpenRetry_),
-	currentRetry(minOpenRetry_),
-	pOpenStrategy(pOpenStrategy_)
+		Loggable(logger),	
+		pPhys(pPhys_),
+		isOnline(false),
+		mpOpenTimer(nullptr),
+		mpState(MonitorStateInit::Inst()),
+		mFinalShutdown(false),
+		minOpenRetry(minOpenRetry_),
+		maxOpenRetry(maxOpenRetry_),
+		currentRetry(minOpenRetry_),
+		pOpenStrategy(pOpenStrategy_)
 {
-	assert(mpPhys != nullptr);
-	mpPhys->SetHandler(this);
+	assert(pPhys != nullptr);
+	pPhys->SetHandler(this);
 }
 
 PhysicalLayerMonitor::~PhysicalLayerMonitor()
@@ -65,7 +65,7 @@ ChannelState PhysicalLayerMonitor::GetState()
 
 void PhysicalLayerMonitor::ChangeState(IMonitorState* apState)
 {
-	LOG_BLOCK(LogLevel::Debug, mpState->ConvertToString() << " -> " << apState->ConvertToString() << " : " << mpPhys->ConvertStateToString());
+	LOG_BLOCK(LogLevel::Debug, mpState->ConvertToString() << " -> " << apState->ConvertToString() << " : " << pPhys->ConvertStateToString());
 	IMonitorState* pLast = mpState;	
 	mpState = apState;
 
@@ -77,6 +77,48 @@ void PhysicalLayerMonitor::ChangeState(IMonitorState* apState)
 	if (mpState->GetState() == ChannelState::SHUTDOWN)
 	{
 		this->OnShutdown();
+	}
+}
+
+
+/// ------- IHandlerAsync -------
+
+void PhysicalLayerMonitor::OnOpenFailure()
+{
+	LOG_BLOCK(LogLevel::Debug, "OnOpenFailure()");
+	mpState->OnOpenFailure(this);
+	this->OnPhysicalLayerOpenFailureCallback();
+	this->currentRetry = pOpenStrategy->GetNextDelay(currentRetry, maxOpenRetry);
+}
+
+void PhysicalLayerMonitor::OnLowerLayerUp()
+{
+	if (!isOnline)
+	{
+		isOnline = true;
+		LOG_BLOCK(LogLevel::Debug, "OnLowerLayerUp");
+		this->currentRetry = minOpenRetry;
+		mpState->OnLayerOpen(this);
+		this->OnPhysicalLayerOpenSuccessCallback();
+	}
+	else
+	{
+		LOG_BLOCK(LogLevel::Error, "Monitor is already online");
+	}
+}
+
+void PhysicalLayerMonitor::OnLowerLayerDown()
+{
+	if (isOnline)
+	{
+		isOnline = false;
+		LOG_BLOCK(LogLevel::Debug, "OnLowerLayerDown");
+		mpState->OnLayerClose(this);
+		this->OnPhysicalLayerCloseCallback();
+	}
+	else
+	{
+		LOG_BLOCK(LogLevel::Error, "Monitor is not online");
 	}
 }
 
@@ -122,35 +164,12 @@ void PhysicalLayerMonitor::OnOpenTimerExpiration()
 	mpState->OnOpenTimeout(this);
 }
 
-void PhysicalLayerMonitor::_OnOpenFailure()
-{
-	LOG_BLOCK(LogLevel::Debug, "_OnOpenFailure()");
-	mpState->OnOpenFailure(this);
-	this->OnPhysicalLayerOpenFailureCallback();
-	this->currentRetry = pOpenStrategy->GetNextDelay(currentRetry, maxOpenRetry);
-}
-
-void PhysicalLayerMonitor::_OnLowerLayerUp()
-{
-	LOG_BLOCK(LogLevel::Debug, "_OnLowerLayerUp");
-	this->currentRetry = minOpenRetry;
-	mpState->OnLayerOpen(this);
-	this->OnPhysicalLayerOpenSuccessCallback();
-}
-
-void PhysicalLayerMonitor::_OnLowerLayerDown()
-{
-	LOG_BLOCK(LogLevel::Debug, "_OnLowerLayerDown");
-	mpState->OnLayerClose(this);
-	this->OnPhysicalLayerCloseCallback();
-}
-
 /* ------- Actions for the states ------- */
 
 void PhysicalLayerMonitor::StartOpenTimer()
 {
 	assert(mpOpenTimer == nullptr);
-	mpOpenTimer = mpPhys->GetExecutor()->Start(currentRetry, std::bind(&PhysicalLayerMonitor::OnOpenTimerExpiration, this));
+	mpOpenTimer = pPhys->GetExecutor()->Start(currentRetry, std::bind(&PhysicalLayerMonitor::OnOpenTimerExpiration, this));
 }
 
 void PhysicalLayerMonitor::CancelOpenTimer()

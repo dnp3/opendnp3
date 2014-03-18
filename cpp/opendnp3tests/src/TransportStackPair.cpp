@@ -42,8 +42,7 @@ TransportStackPair::TransportStackPair(
 
 bool TransportStackPair::BothLayersUp()
 {
-	return mServerStack.mUpper.IsLowerLayerUp()
-	       && mClientStack.mUpper.IsLowerLayerUp();
+	return mServerStack.mUpper.IsOnline() && mClientStack.mUpper.IsOnline();
 }
 
 void TransportStackPair::Start()

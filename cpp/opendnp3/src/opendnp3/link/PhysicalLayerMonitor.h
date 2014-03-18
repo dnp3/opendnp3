@@ -24,6 +24,7 @@
 #include <openpal/IHandlerAsync.h>
 #include <openpal/IExecutor.h>
 #include <openpal/TimeDuration.h>
+#include <openpal/Loggable.h>
 
 #include "opendnp3/gen/ChannelState.h"
 #include "opendnp3/link/IOpenDelayStrategy.h"
@@ -43,13 +44,13 @@ class IMonitorState;
 
 /** Manages the lifecycle of a physical layer
   */
-class PhysicalLayerMonitor : public openpal::IHandlerAsync
+class PhysicalLayerMonitor : public openpal::IHandlerAsync, protected openpal::Loggable
 {
 	friend class MonitorStateActions;
 
 public:
 
-	PhysicalLayerMonitor(	openpal::Logger,
+	PhysicalLayerMonitor(	const openpal::Logger&,
 	                        openpal::IPhysicalLayerAsync*,
 	                        openpal::TimeDuration minOpenRetry_,
 	                        openpal::TimeDuration maxOpenRetry_,							
@@ -80,6 +81,12 @@ public:
 		return logger;
 	}
 
+	// Implement from IHandlerAsync - Try to reconnect using a timer
+
+	virtual void OnOpenFailure() override final;
+	virtual void OnLowerLayerUp() override final;
+	virtual void OnLowerLayerDown() override final;
+
 protected:
 
 
@@ -93,11 +100,14 @@ protected:
 
 	// called when the router shuts down permanently
 	virtual void OnShutdown() {}
+	
+	openpal::IPhysicalLayerAsync* pPhys;
 
-	openpal::IPhysicalLayerAsync* mpPhys;
+	bool IsOnline() const { return isOnline; }
 
 private:
 
+	bool isOnline;
 	openpal::ITimer* mpOpenTimer;
 	IMonitorState* mpState;
 	bool mFinalShutdown;
@@ -122,12 +132,7 @@ private:
 
 	const IOpenDelayStrategy* pOpenStrategy;
 
-	openpal::TimeDuration currentRetry;
-
-	// Implement from IHandlerAsync - Try to reconnect using a timer
-	void _OnOpenFailure();
-	void _OnLowerLayerUp();
-	void _OnLowerLayerDown();
+	openpal::TimeDuration currentRetry;	
 
 };
 }

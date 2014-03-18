@@ -37,7 +37,7 @@ namespace opendnp3
 class ApplicationStack
 {
 public:
-	ApplicationStack(openpal::Logger aLogger, openpal::IExecutor* apExecutor, AppConfig aAppCfg, LinkConfig aCfg);
+	ApplicationStack(const openpal::Logger& logger, openpal::IExecutor* pExecutor, AppConfig appConfig, LinkConfig linkConfig);
 
 	LinkLayer link;
 	TransportLayer transport;

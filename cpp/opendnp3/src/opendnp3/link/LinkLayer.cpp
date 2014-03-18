@@ -37,9 +37,8 @@ using namespace openpal;
 namespace opendnp3
 {
 
-LinkLayer::LinkLayer(Logger aLogger, openpal::IExecutor* apExecutor, const LinkConfig& arConfig) :
-	Loggable(aLogger),
-	ILowerLayer(aLogger),
+LinkLayer::LinkLayer(Logger logger, openpal::IExecutor* apExecutor, const LinkConfig& arConfig) :
+	Loggable(logger),	
 	mCONFIG(arConfig),
 	mRetryRemaining(0),
 	mpExecutor(apExecutor),
@@ -100,6 +99,29 @@ bool LinkLayer::Validate(bool aIsMaster, uint16_t aSrc, uint16_t aDest)
 }
 
 ////////////////////////////////
+// ILowerLayer
+////////////////////////////////
+
+void LinkLayer::Send(const ReadOnlyBuffer& arBuffer)
+{
+	if (mIsOnline)
+	{
+		if (mCONFIG.UseConfirms)
+		{
+			mpPriState->SendConfirmed(this, arBuffer);
+		}
+		else
+		{
+			mpPriState->SendUnconfirmed(this, arBuffer);
+		}
+	}
+	else
+	{
+		LOG_BLOCK(LogLevel::Error, "Layer is not online");
+	}
+}
+
+////////////////////////////////
 // ILinkContext
 ////////////////////////////////
 
@@ -112,7 +134,10 @@ void LinkLayer::OnLowerLayerUp()
 	else
 	{
 		mIsOnline = true;
-		if (mpUpperLayer) mpUpperLayer->OnLowerLayerUp();
+		if (pUpperLayer)
+		{
+			pUpperLayer->OnLowerLayerUp();
+		}
 	}
 }
 
@@ -125,7 +150,10 @@ void LinkLayer::OnLowerLayerDown()
 		mpPriState = PLLS_SecNotReset::Inst();
 		mpSecState = SLLS_NotReset::Inst();
 
-		if (mpUpperLayer) mpUpperLayer->OnLowerLayerDown();
+		if (pUpperLayer)
+		{
+			pUpperLayer->OnLowerLayerDown();
+		}
 	}
 	else
 	{
@@ -281,23 +309,6 @@ void LinkLayer::UnconfirmedUserData(bool aIsMaster, uint16_t aDest, uint16_t aSr
 	if (this->Validate(aIsMaster, aSrc, aDest))
 	{
 		this->DoDataUp(input);
-	}
-}
-
-////////////////////////////////
-// ILowerLayer
-////////////////////////////////
-
-void LinkLayer::_Send(const ReadOnlyBuffer& arBuffer)
-{
-	if (mIsOnline)
-	{
-		if (mCONFIG.UseConfirms) mpPriState->SendConfirmed(this, arBuffer);
-		else mpPriState->SendUnconfirmed(this, arBuffer);
-	}
-	else
-	{
-		LOG_BLOCK(LogLevel::Error, "Layer is not online");
 	}
 }
 

@@ -52,9 +52,9 @@ TEST_CASE(SUITE("ClosedState"))
 TEST_CASE(SUITE("ForwardsOnLowerLayerUp"))
 {
 	LinkLayerTest t;
-	REQUIRE_FALSE(t.upper.IsLowerLayerUp());
+	REQUIRE_FALSE(t.upper.IsOnline());
 	t.link.OnLowerLayerUp();
-	REQUIRE(t.upper.IsLowerLayerUp());
+	REQUIRE(t.upper.IsOnline());
 	t.link.OnLowerLayerUp();
 	REQUIRE(t.log.PopOneEntry(LogLevel::Error));
 }
@@ -272,11 +272,11 @@ TEST_CASE(SUITE("CloseBehavior"))
 
 	REQUIRE(t.upper.CountersEqual(1, 0));
 	t.link.OnLowerLayerDown(); //take it down during the middle of a send
-	REQUIRE_FALSE(t.upper.IsLowerLayerUp());
+	REQUIRE_FALSE(t.upper.IsOnline());
 
 
 	t.link.OnLowerLayerUp();
-	REQUIRE(t.upper.IsLowerLayerUp());
+	REQUIRE(t.upper.IsOnline());
 	t.link.Send(bytes.ToReadOnly());
 	REQUIRE(t.numWrites ==  2);
 

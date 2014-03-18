@@ -39,8 +39,8 @@ using namespace openpal;
 namespace opendnp3
 {
 
-TransportRx::TransportRx(Logger& arLogger, TransportLayer* apContext, uint32_t fragSize) :
-	Loggable(arLogger),
+TransportRx::TransportRx(const Logger& logger, TransportLayer* apContext, uint32_t fragSize) :
+	Loggable(logger),
 	mpContext(apContext),
 	maxFragSize(fragSize),
 	numBytesRead(0),

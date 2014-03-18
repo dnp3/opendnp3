@@ -87,19 +87,26 @@ public:
 	*/
 	bool Remove(ILinkContext* pContext);
 
-	// Implement the IFrameSink interface - This is how the receiver pushes data
-	void Ack(bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc);
-	void Nack(bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc);
-	void LinkStatus(bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc);
-	void NotSupported (bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc);
-	void TestLinkStatus(bool aIsMaster, bool aFcb, uint16_t aDest, uint16_t aSrc);
-	void ResetLinkStates(bool aIsMaster, uint16_t aDest, uint16_t aSrc);
-	void RequestLinkStatus(bool aIsMaster, uint16_t aDest, uint16_t aSrc);
-	void ConfirmedUserData(bool aIsMaster, bool aFcb, uint16_t aDest, uint16_t aSrc, const openpal::ReadOnlyBuffer& arBuffer);
-	void UnconfirmedUserData(bool aIsMaster, uint16_t aDest, uint16_t aSrc, const openpal::ReadOnlyBuffer& arBuffer);
+	// ------------ IFrameSink -----------------
 
-	// ILinkRouter interface
+	virtual void Ack(bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc) override final;
+	virtual void Nack(bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc) override final;
+	virtual void LinkStatus(bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc) override final;
+	virtual void NotSupported(bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc) override final;
+	virtual void TestLinkStatus(bool aIsMaster, bool aFcb, uint16_t aDest, uint16_t aSrc) override final;
+	virtual void ResetLinkStates(bool aIsMaster, uint16_t aDest, uint16_t aSrc) override final;
+	virtual void RequestLinkStatus(bool aIsMaster, uint16_t aDest, uint16_t aSrc) override final;
+	virtual void ConfirmedUserData(bool aIsMaster, bool aFcb, uint16_t aDest, uint16_t aSrc, const openpal::ReadOnlyBuffer& arBuffer) override final;
+	virtual void UnconfirmedUserData(bool aIsMaster, uint16_t aDest, uint16_t aSrc, const openpal::ReadOnlyBuffer& arBuffer) override final;
+
+	// ------------ ILinkRouter -----------------
+
 	virtual void QueueTransmit(const openpal::ReadOnlyBuffer& buffer, ILinkContext* pContext, bool primary) override final;
+
+	// ------------ IUpperLayer -----------------
+
+	virtual void OnReceive(const openpal::ReadOnlyBuffer&) override final;
+	virtual void OnSendResult(bool success) override final;
 
 protected:
 	
@@ -157,15 +164,6 @@ private:
 	// Handles the parsing of incoming frames
 	LinkLayerReceiver mReceiver;
 	bool mTransmitting;
-
-	/* Events - NVII delegates from IUpperLayer */
-
-	// Called when the physical layer has read data into to the requested buffer
-	void _OnReceive(const openpal::ReadOnlyBuffer&);
-	void _OnSendSuccess();
-	void _OnSendFailure();
-
-	void OnSendResult(bool success);
 
 	// Implement virtual AsyncPhysLayerMonitor
 	void OnPhysicalLayerOpenSuccessCallback();

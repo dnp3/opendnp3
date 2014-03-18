@@ -34,16 +34,16 @@ using namespace std;
 namespace opendnp3
 {
 
-AppLayer::AppLayer(Logger aLogger, openpal::IExecutor* apExecutor, AppConfig aAppCfg) :
-	Loggable(aLogger),
-	IUpperLayer(aLogger),
-	mSending(false),
-	mConfirmSending(false),
-	mIsMaster(aAppCfg.IsMaster),
+	AppLayer::AppLayer(const openpal::Logger& logger, openpal::IExecutor* pExecutor_, const AppConfig& appConfig) :
+	Loggable(logger),
+	isOnline(false),
+	isSending(false),
+	isConfirmSending(false),
+	isMaster(appConfig.IsMaster),
 	mpUser(nullptr),
-	mSolicited(aLogger.GetSubLogger("sol"), this, apExecutor, aAppCfg.RspTimeout),
-	mUnsolicited(aLogger.GetSubLogger("unsol"), this, apExecutor, aAppCfg.RspTimeout),
-	mNumRetry(aAppCfg.NumRetry),
+	mSolicited(logger.GetSubLogger("sol"), this, pExecutor_, appConfig.RspTimeout),
+	mUnsolicited(logger.GetSubLogger("unsol"), this, pExecutor_, appConfig.RspTimeout),
+	numRetry(appConfig.NumRetry),
 	confirmAPDU(openpal::WriteBuffer(confirmBuffer, 2))
 {
 	confirmAPDU.SetFunction(FunctionCode::CONFIRM);
@@ -84,14 +84,14 @@ void AppLayer::CancelResponse()
 // External events
 ////////////////////
 
-void AppLayer::_OnReceive(const ReadOnlyBuffer& aBuffer)
+void AppLayer::OnReceive(const ReadOnlyBuffer& apdu)
 {
-	if(this->IsLowerLayerUp())
+	if(isOnline)
 	{
-		if (this->mIsMaster)
+		if (this->isMaster)
 		{
 			APDUResponseRecord record;
-			auto result = APDUHeaderParser::ParseResponse(aBuffer, record);
+			auto result = APDUHeaderParser::ParseResponse(apdu, record);
 			if (result == APDUHeaderParser::Result::OK)
 			{
 				switch (record.function)
@@ -115,7 +115,7 @@ void AppLayer::_OnReceive(const ReadOnlyBuffer& aBuffer)
 		else
 		{
 			APDURecord record;
-			auto result = APDUHeaderParser::ParseRequest(aBuffer, record);
+			auto result = APDUHeaderParser::ParseRequest(apdu, record);
 			if (result == APDUHeaderParser::Result::OK)
 			{
 				switch (record.function)
@@ -150,43 +150,60 @@ void AppLayer::LogParseError(APDUHeaderParser::Result error, bool aIsResponse)
 	}
 }
 
-void AppLayer::_OnLowerLayerUp()
+void AppLayer::OnLowerLayerUp()
 {
-	mpUser->OnLowerLayerUp();
-}
-
-void AppLayer::_OnLowerLayerDown()
-{
-	//reset both the channels
-	mSolicited.Reset();
-	mUnsolicited.Reset();
-
-	//reset the transmitter state
-	mSendQueue.erase(mSendQueue.begin(), mSendQueue.end());
-	mSending = false;
-
-	//notify the user
-	mpUser->OnLowerLayerDown();
-}
-
-void AppLayer::OnSendResult(bool aSuccess)
-{
-	if(mSending)
+	if (isOnline)
 	{
-		assert(mSendQueue.size() > 0);
-		mSending = false;
+		LOG_BLOCK(LogLevel::Error, "Layer is already online");		
+	}
+	else
+	{
+		isOnline = true;
+		mpUser->OnLowerLayerUp();
+	}
+}
 
-		FunctionCode func = mSendQueue.front().GetFunction();
-		mSendQueue.pop_front();
+void AppLayer::OnLowerLayerDown()
+{
+	if (isOnline)
+	{
+		isOnline = false;
+
+		//reset both the channels
+		mSolicited.Reset();
+		mUnsolicited.Reset();
+
+		//reset the transmitter state
+		sendQueue.erase(sendQueue.begin(), sendQueue.end());
+		isSending = false;
+
+		//notify the user
+		mpUser->OnLowerLayerDown();
+	}
+	else
+	{
+		LOG_BLOCK(LogLevel::Error, "Layer is not online");
+	}
+}
+
+void AppLayer::OnSendResult(bool isSuccess)
+{
+	if(isSending)
+	{
+		assert(sendQueue.size() > 0);
+		isSending = false;
+
+		FunctionCode func = sendQueue.front().GetFunction();
+		sendQueue.pop_front();
 
 		if (func == FunctionCode::CONFIRM)
 		{
-			assert(mConfirmSending);
-			mConfirmSending = false;
+			assert(isConfirmSending);
+			isConfirmSending = false;
 		}
 		else
 		{
-			if (aSuccess)
+			if (isSuccess)
 			{
 				if (func == FunctionCode::UNSOLICITED_RESPONSE) mUnsolicited.OnSendSuccess();
 				else mSolicited.OnSendSuccess();
@@ -205,17 +222,6 @@ void AppLayer::OnSendResult(bool aSuccess)
 		LOG_BLOCK(LogLevel::Error, "Layer is not sending");
 	}
 }
-
-void AppLayer::_OnSendSuccess()
-{
-	this->OnSendResult(true);
-}
-
-void AppLayer::_OnSendFailure()
-{
-	this->OnSendResult(false);
-}
-
 
 ////////////////////
 // Internal Events
@@ -269,7 +275,7 @@ void AppLayer::OnConfirm(const AppControlField& aControl, size_t aDataSize)
 	{
 		if(aControl.UNS) // which channel?
 		{
-			if(mIsMaster)
+			if(isMaster)
 			{
 				ERROR_BLOCK(LogLevel::Error, "Unexpcted confirm for master", ALERR_UNEXPECTED_CONFIRM)
 			}
@@ -307,13 +313,13 @@ void AppLayer::OnRequest(const APDURecord& record)
 
 void AppLayer::QueueConfirm(bool aUnsol, int aSeq)
 {
-	if(mConfirmSending)
+	if(isConfirmSending)
 	{
 		ERROR_BLOCK(LogLevel::Warning, "Confirm request flood, ignoring confirm", aUnsol ? ALERR_UNSOL_FLOOD : ALERR_SOL_FLOOD);
 	}
 	else
 	{
-		mConfirmSending = true;
+		isConfirmSending = true;
 		AppControlField acf(true, true, false, aUnsol, aSeq);
 		confirmAPDU.SetControl(acf);
 		this->QueueFrame(confirmAPDU);
@@ -323,17 +329,17 @@ void AppLayer::QueueConfirm(bool aUnsol, int aSeq)
 
 void AppLayer::QueueFrame(const APDUWrapper& apdu)
 {
-	mSendQueue.push_back(apdu);
+	sendQueue.push_back(apdu);
 	this->CheckForSend();
 }
 
 void AppLayer::CheckForSend()
 {
-	if(!mSending && mSendQueue.size() > 0)
+	if(!isSending && sendQueue.size() > 0)
 	{
-		mSending = true;
+		isSending = true;
 		//LOG_BLOCK(LogLevel::Interpret, "=> AL " << pAPDU->ToString()); TODO - replace outgoing logging
-		mpLowerLayer->Send(mSendQueue.front().ToReadOnly());
+		pLowerLayer->Send(sendQueue.front().ToReadOnly());
 	}
 }
 
@@ -341,13 +347,13 @@ size_t AppLayer::GetRetries(FunctionCode aCode)
 {
 	switch(aCode)
 	{
-	case(FunctionCode::DIRECT_OPERATE):
-	case(FunctionCode::DIRECT_OPERATE_NO_ACK):
-	case(FunctionCode::RESPONSE):
-	case(FunctionCode::WRITE): // b/c these can contain time objects which are sensitive to retries
-		return 0;
-	default:
-		return mNumRetry; //use the configured
+		case(FunctionCode::DIRECT_OPERATE):
+		case(FunctionCode::DIRECT_OPERATE_NO_ACK):
+		case(FunctionCode::RESPONSE):
+		case(FunctionCode::WRITE): // b/c these can contain time objects which are sensitive to retries
+			return 0;
+		default:
+			return numRetry; //use the configured
 	}
 }
 

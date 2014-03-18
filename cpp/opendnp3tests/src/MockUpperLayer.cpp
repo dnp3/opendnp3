@@ -32,44 +32,55 @@ using namespace openpal;
 namespace opendnp3
 {
 
-MockUpperLayer::MockUpperLayer(openpal::Logger aLogger) :
-	Loggable(aLogger),
-	IUpperLayer(aLogger)
-{}
+MockUpperLayer::MockUpperLayer(openpal::Logger logger) : Loggable(logger), isOnline(false)
+{
 
-void MockUpperLayer::_OnReceive(const openpal::ReadOnlyBuffer& input)
+}
+
+void MockUpperLayer::OnReceive(const openpal::ReadOnlyBuffer& input)
 {
 	this->WriteToBuffer(input);
-	if(mOnReceiveHandler) mOnReceiveHandler(input);
+
+	if (mOnReceiveHandler)
+	{
+		mOnReceiveHandler(input);
+	}
 }
 
-void MockUpperLayer::_OnSendSuccess()
+void MockUpperLayer::OnSendResult(bool isSuccess)
 {
-	LOG_BLOCK(LogLevel::Debug, "OnSendSuccess");
-	++mState.mSuccessCnt;
+	if (isSuccess)
+	{
+		LOG_BLOCK(LogLevel::Debug, "OnSendSuccess");
+		++mState.mSuccessCnt;
+	}
+	else
+	{
+		LOG_BLOCK(LogLevel::Debug, "OnSendFailure");
+		++mState.mFailureCnt;
+	}
 }
 
-void MockUpperLayer::_OnSendFailure()
+void MockUpperLayer::OnLowerLayerUp()
 {
-	LOG_BLOCK(LogLevel::Debug, "OnSendFailure");
-	++mState.mFailureCnt;
-}
-
-void MockUpperLayer::_OnLowerLayerUp()
-{
+	isOnline = true;
 	LOG_BLOCK(LogLevel::Debug, "OnLowerLayerUp");
 	++mState.mNumLayerUp;
 }
 
-void MockUpperLayer::_OnLowerLayerDown()
+void MockUpperLayer::OnLowerLayerDown()
 {
+	isOnline = false;
 	LOG_BLOCK(LogLevel::Debug, "OnLowerLayerDown");
 	++mState.mNumLayerDown;
 }
 
-void MockUpperLayer::SendDown(const openpal::ReadOnlyBuffer& arBuffer)
+void MockUpperLayer::SendDown(const openpal::ReadOnlyBuffer& buffer)
 {
-	if(this->mpLowerLayer) mpLowerLayer->Send(arBuffer);
+	if (this->pLowerLayer)
+	{
+		pLowerLayer->Send(buffer);
+	}
 }
 
 void MockUpperLayer::SendDown(const std::string& arHexData)

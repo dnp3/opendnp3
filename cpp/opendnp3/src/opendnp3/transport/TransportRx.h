@@ -38,8 +38,9 @@ State/validation for the DNP3 transport layer's receive channel.
 */
 class TransportRx : public openpal::Loggable
 {
+
 public:
-	TransportRx(openpal::Logger&, TransportLayer*, uint32_t fragSize);
+	TransportRx(const openpal::Logger&, TransportLayer*, uint32_t fragSize);
 
 	void HandleReceive(const openpal::ReadOnlyBuffer& input);
 

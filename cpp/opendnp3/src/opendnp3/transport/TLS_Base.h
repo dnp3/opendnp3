@@ -40,15 +40,14 @@ Base class for all TransportLayerStates (TLS)
 class TLS_Base
 {
 public:
+	
 	virtual void Send(const openpal::ReadOnlyBuffer& arBuffer, TransportLayer*);
-	virtual void HandleReceive(const openpal::ReadOnlyBuffer& arBuffer, TransportLayer*);
+
+	virtual void HandleReceive(const openpal::ReadOnlyBuffer& arBuffer, TransportLayer*) = 0;
 
 	// TPDU failure/success handlers
 	virtual void HandleSendSuccess(TransportLayer*);
-	virtual void HandleSendFailure(TransportLayer*);
-
-	virtual void LowerLayerUp(TransportLayer*);
-	virtual void LowerLayerDown(TransportLayer*);
+	virtual void HandleSendFailure(TransportLayer*);	
 
 	virtual std::string Name() const = 0;
 };

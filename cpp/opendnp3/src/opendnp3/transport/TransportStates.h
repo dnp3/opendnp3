@@ -29,15 +29,6 @@
 namespace opendnp3
 {
 
-/** Represents the closed state, only come online
-*/
-class TLS_Closed : public TLS_Base
-{
-	MACRO_STATE_SINGLETON_INSTANCE(TLS_Closed);
-
-	void LowerLayerUp(TransportLayer*);
-};
-
 /** Represents the ready state
 */
 class TLS_Ready : public TLS_Base

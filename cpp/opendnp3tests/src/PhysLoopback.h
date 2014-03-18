@@ -35,19 +35,20 @@ class PhysLoopback : public PhysicalLayerMonitor
 public:
 	PhysLoopback(openpal::Logger, openpal::IPhysicalLayerAsync*);
 
+	virtual void OnReceive(const openpal::ReadOnlyBuffer&) override final;
+	virtual void OnSendResult(bool isSuccess) override final;
+
 private:
 
 	size_t mBytesReadWritten;
 
 	CopyableBuffer mBuffer;
 
-	void _OnReceive(const openpal::ReadOnlyBuffer&);
-	void _OnSendSuccess(void);
-	void _OnSendFailure(void);
+	
+	virtual void OnPhysicalLayerOpenSuccessCallback() override final;
 
-	void OnPhysicalLayerOpenSuccessCallback(void);
-	void OnPhysicalLayerOpenFailureCallback(void) {}
-	void OnPhysicalLayerCloseCallback(void) {}
+	virtual void OnPhysicalLayerOpenFailureCallback() override final {}
+	virtual void OnPhysicalLayerCloseCallback() override final {}
 
 	void StartRead();
 };

@@ -29,9 +29,8 @@ using namespace openpal;
 namespace opendnp3
 {
 
-PhysicalLayerWrapper::PhysicalLayerWrapper(openpal::Logger aLogger, IPhysicalLayerAsync* apProxy) :
-	Loggable(aLogger),
-	IHandlerAsync(aLogger),
+PhysicalLayerWrapper::PhysicalLayerWrapper(openpal::Logger logger, IPhysicalLayerAsync* apProxy) :
+	Loggable(logger),	
 	mCorruptionProbability(-1.0),
 	mpProxy(apProxy),
 	mpHandler(nullptr)
@@ -66,41 +65,51 @@ void PhysicalLayerWrapper::AsyncRead(WriteBuffer& arBuffer)
 	return mpProxy->AsyncRead(arBuffer);
 }
 
-void PhysicalLayerWrapper::_OnLowerLayerUp()
+void PhysicalLayerWrapper::OnLowerLayerUp()
 {
-	if(mpHandler) mpHandler->OnLowerLayerUp();
+	if (mpHandler)
+	{
+		mpHandler->OnLowerLayerUp();
+	}
 }
 
-void PhysicalLayerWrapper::_OnLowerLayerDown()
+void PhysicalLayerWrapper::OnLowerLayerDown()
 {
-	if(mpHandler) mpHandler->OnLowerLayerDown();
+	if (mpHandler)
+	{
+		mpHandler->OnLowerLayerDown();
+	}
 }
 
-void PhysicalLayerWrapper::_OnReceive(const openpal::ReadOnlyBuffer& arBuffer)
+void PhysicalLayerWrapper::OnReceive(const openpal::ReadOnlyBuffer& buffer)
 {
 	if(mCorruptionProbability > mRandom.Next())
 	{
 		LOG_BLOCK(LogLevel::Info, "Corrupting data");
-		uint8_t* pData = const_cast<uint8_t*>(arBuffer.operator const uint8_t * ());
-		for(size_t i = 0; i < arBuffer.Size(); ++i) pData[i] = 0;
+		uint8_t* pData = const_cast<uint8_t*>(buffer.operator const uint8_t * ());		
+		for(size_t i = 0; i < buffer.Size(); ++i) pData[i] = 0;
 	}
 
-	if(mpHandler) mpHandler->OnReceive(arBuffer);
+	if (mpHandler)
+	{
+		mpHandler->OnReceive(buffer);
+	}
 }
 
-void PhysicalLayerWrapper::_OnSendSuccess()
+void PhysicalLayerWrapper::OnSendResult(bool isSuccess)
 {
-	if(mpHandler) mpHandler->OnSendSuccess();
+	if (mpHandler)
+	{
+		mpHandler->OnSendResult(isSuccess);
+	}
 }
 
-void PhysicalLayerWrapper::_OnSendFailure()
+void PhysicalLayerWrapper::OnOpenFailure()
 {
-	if(mpHandler) mpHandler->OnSendFailure();
-}
-
-void PhysicalLayerWrapper::_OnOpenFailure()
-{
-	if(mpHandler) mpHandler->OnOpenFailure();
+	if (mpHandler)
+	{
+		mpHandler->OnOpenFailure();
+	}
 }
 
 void PhysicalLayerWrapper::SetCorruptionProbability(double aProbability)

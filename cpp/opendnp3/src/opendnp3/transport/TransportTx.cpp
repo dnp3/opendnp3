@@ -36,8 +36,8 @@ using namespace openpal;
 namespace opendnp3
 {
 
-TransportTx::TransportTx(Logger& arLogger, TransportLayer* apContext, uint32_t fragSize) :
-	Loggable(arLogger),
+TransportTx::TransportTx(const Logger& logger, TransportLayer* apContext, uint32_t fragSize) :
+	Loggable(logger),
 	mpContext(apContext),
 	underlying(),
 	apduBuffer(underlying.GetWriteBuffer().Truncate(fragSize)),
@@ -60,7 +60,7 @@ void TransportTx::Send(const ReadOnlyBuffer& output)
 
 bool TransportTx::CheckForSend()
 {
-	size_t remainder = this->BytesRemaining();
+	uint32_t remainder = this->BytesRemaining();
 
 	if(remainder > 0)
 	{

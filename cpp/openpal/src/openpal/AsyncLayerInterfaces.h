@@ -21,37 +21,23 @@
 #ifndef __ASYNC_LAYER_INTERFACES_H_
 #define __ASYNC_LAYER_INTERFACES_H_
 
-#include "openpal/Loggable.h"
 #include "openpal/BufferWrapper.h"
 
 namespace openpal
 {
 
-class IUpDown : protected virtual openpal::Loggable
+class IUpDown
 {
-public:
-	IUpDown(openpal::Logger& logger) : Loggable(logger), mIsLowerLayerUp(false) {}
+
+public:	
+	
 	virtual ~IUpDown() {}
 
-	// Called by a 'LowerLayer' when it can start performing send services
-	void OnLowerLayerUp();
+	// Called by a lower Layer when it is available to this layer
+	virtual void OnLowerLayerUp() = 0;
 
-	// Called by a 'LowerLayer' when it can no longer perform Tx services for this layer.
-	// Implies previous sends have failed.
-	void OnLowerLayerDown();
-
-	bool IsLowerLayerUp()
-	{
-		return mIsLowerLayerUp;
-	}
-
-private:
-
-private:
-	bool mIsLowerLayerUp;
-
-	virtual void _OnLowerLayerUp() = 0;
-	virtual void _OnLowerLayerDown() = 0;
+	// Called by a lower layer when it is no longer available to this layer
+	virtual void OnLowerLayerDown() = 0;	
 };
 
 
@@ -59,67 +45,46 @@ class ILowerLayer;
 
 class IUpperLayer : public IUpDown
 {
+
 public:
-	IUpperLayer(openpal::Logger&);
+
+	IUpperLayer() : pLowerLayer(nullptr) {}
+	
 	virtual ~IUpperLayer() {}
 
-	// Called by 'layer down' when data arrives
-	void OnReceive(const ReadOnlyBuffer&);
+	// Called by the lower layer when data arrives
 
-	// Called by 'layer down' when a previously requested send operation succeeds
+	virtual void OnReceive(const ReadOnlyBuffer&) = 0;
+
+	// Called by lower layer when a previously requested send operation succeeds or fails.
 	// Layers can only have 1 outstanding send operation. The callback is guaranteed
-	// unless the the OnLowerLayerDown() function is called before
-	void OnSendSuccess();
+	// unless the the OnLowerLayerDown() function is called beforehand
+	virtual void OnSendResult(bool isSucccess) = 0;	
 
-	// Called by 'layer down' when a previously requested send operation fails
-	void OnSendFailure();
-
+	// Used to set the pointer to the lower layer
 	void SetLowerLayer(ILowerLayer*);
-
 
 protected:
 
-	ILowerLayer* mpLowerLayer;
-
-	//these are the NVII delegates
-	virtual void _OnReceive(const ReadOnlyBuffer&) = 0;
-	virtual void _OnSendSuccess() = 0;
-	virtual void _OnSendFailure() = 0;
-	virtual bool LogReceive()
-	{
-		return true;
-	}
-
-	// override this descriptor, it's use in the Hex log messages
-	virtual std::string RecvString() const
-	{
-		return "<-";
-	}
+	ILowerLayer* pLowerLayer;	
 };
 
-class ILowerLayer : protected virtual openpal::Loggable
+class ILowerLayer
 {
+
 public:
-	ILowerLayer(openpal::Logger&);
+
+	ILowerLayer() : pUpperLayer(nullptr) {}
+	
 	virtual ~ILowerLayer() {}
 
-	void Send(const ReadOnlyBuffer&);
+	virtual void Send(const ReadOnlyBuffer&) = 0;
 
 	void SetUpperLayer(IUpperLayer*);
 
 protected:
 
-	IUpperLayer* mpUpperLayer;
-
-private:
-
-	virtual void _Send(const ReadOnlyBuffer&) = 0;
-
-	// override this descriptor, it's use in the Hex log messages
-	virtual std::string SendString() const
-	{
-		return "->";
-	}
+	IUpperLayer* pUpperLayer;	
 };
 
 }

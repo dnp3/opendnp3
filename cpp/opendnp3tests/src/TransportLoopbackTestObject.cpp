@@ -61,13 +61,18 @@ TransportLoopbackTestObject::TransportLoopbackTestObject(
 	mRouter.Enable(&mLinkB);
 
 	mLinkA.SetUpperLayer(&mTransA);
+	mTransA.SetLowerLayer(&mLinkA);
+
 	mLinkB.SetUpperLayer(&mTransB);
+	mTransB.SetLowerLayer(&mLinkB);
 
 	mLinkA.SetRouter(&mRouter);
 	mLinkB.SetRouter(&mRouter);
 
 	mTransA.SetUpperLayer(&mUpperA);
 	mTransB.SetUpperLayer(&mUpperB);
+	mUpperA.SetLowerLayer(&mTransA);
+	mUpperB.SetLowerLayer(&mTransB);
 }
 
 TransportLoopbackTestObject::~TransportLoopbackTestObject()
@@ -78,7 +83,7 @@ TransportLoopbackTestObject::~TransportLoopbackTestObject()
 
 bool TransportLoopbackTestObject::LayersUp()
 {
-	return mUpperA.IsLowerLayerUp() && mUpperB.IsLowerLayerUp();
+	return mUpperA.IsOnline() && mUpperB.IsOnline();
 }
 
 void TransportLoopbackTestObject::Start()

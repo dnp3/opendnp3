@@ -40,7 +40,7 @@ State/validation for the DNP3 transport layer's send channel.
 class TransportTx : public openpal::Loggable
 {
 public:
-	TransportTx(openpal::Logger&, TransportLayer*, uint32_t aFragSize);
+	TransportTx(const openpal::Logger&, TransportLayer*, uint32_t aFragSize);
 
 
 	void Send(const openpal::ReadOnlyBuffer& output); // A fresh call to Send() will reset the state
@@ -56,6 +56,7 @@ private:
 
 	openpal::StaticBuffer<sizes::MAX_APDU_BUFFER_SIZE> underlying;
 	openpal::WriteBuffer apduBuffer;
+
 	openpal::StaticBuffer<TL_MAX_TPDU_LENGTH> tpduBuffer;
 
 	uint32_t numBytesSent;

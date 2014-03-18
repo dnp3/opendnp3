@@ -26,6 +26,7 @@
 
 #include <openpal/AsyncLayerInterfaces.h>
 #include <openpal/IExecutor.h>
+#include <openpal/Loggable.h>
 
 #include "ILinkContext.h"
 #include "LinkFrame.h"
@@ -40,7 +41,7 @@ class PriStateBase;
 class SecStateBase;
 
 //	@section desc Implements the contextual state of DNP3 Data Link Layer
-class LinkLayer : public openpal::ILowerLayer, public ILinkContext
+class LinkLayer : public openpal::ILowerLayer, public ILinkContext, private openpal::Loggable
 {
 public:
 
@@ -54,15 +55,18 @@ public:
 	virtual void OnTransmitResult(bool primary, bool success) override final;
 
 	// IFrameSink interface
-	virtual void Ack(bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc);
-	virtual void Nack(bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc);
-	virtual void LinkStatus(bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc);
-	virtual void NotSupported(bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc);
-	virtual void TestLinkStatus(bool aIsMaster, bool aFcb, uint16_t aDest, uint16_t aSrc);
-	virtual void ResetLinkStates(bool aIsMaster, uint16_t aDest, uint16_t aSrc);
-	virtual void RequestLinkStatus(bool aIsMaster, uint16_t aDest, uint16_t aSrc);
-	virtual void ConfirmedUserData(bool aIsMaster, bool aFcb, uint16_t aDest, uint16_t aSrc, const openpal::ReadOnlyBuffer& arBuffer);
-	virtual void UnconfirmedUserData(bool aIsMaster, uint16_t aDest, uint16_t aSrc, const openpal::ReadOnlyBuffer& arBuffer);
+	virtual void Ack(bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc) override final;
+	virtual void Nack(bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc) override final;
+	virtual void LinkStatus(bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc) override final;
+	virtual void NotSupported(bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc) override final;
+	virtual void TestLinkStatus(bool aIsMaster, bool aFcb, uint16_t aDest, uint16_t aSrc) override final;
+	virtual void ResetLinkStates(bool aIsMaster, uint16_t aDest, uint16_t aSrc) override final;
+	virtual void RequestLinkStatus(bool aIsMaster, uint16_t aDest, uint16_t aSrc) override final;
+	virtual void ConfirmedUserData(bool aIsMaster, bool aFcb, uint16_t aDest, uint16_t aSrc, const openpal::ReadOnlyBuffer& arBuffer) override final;
+	virtual void UnconfirmedUserData(bool aIsMaster, uint16_t aDest, uint16_t aSrc, const openpal::ReadOnlyBuffer& arBuffer) override final;
+
+	// ------------- ILowerLayer --------------------
+	virtual void Send(const openpal::ReadOnlyBuffer& arBuffer) override final;
 
 	// Functions called by the primary and secondary station states
 	void ChangeState(PriStateBase*);
@@ -75,17 +79,17 @@ public:
 
 	void DoDataUp(const openpal::ReadOnlyBuffer& arBuffer)
 	{
-		if(mpUpperLayer) mpUpperLayer->OnReceive(arBuffer);
+		if(pUpperLayer) pUpperLayer->OnReceive(arBuffer);
 	}
 
 	void DoSendSuccess()
 	{
-		if(mpUpperLayer) mpUpperLayer->OnSendSuccess();
+		if (pUpperLayer) pUpperLayer->OnSendResult(true);
 	}
 
 	void DoSendFailure()
 	{
-		if(mpUpperLayer) mpUpperLayer->OnSendFailure();
+		if (pUpperLayer) pUpperLayer->OnSendResult(false);
 	}
 
 	void ResetReadFCB()
@@ -154,10 +158,7 @@ private:
 	bool mNextWriteFCB;
 	bool mIsOnline;
 
-	bool Validate(bool aIsMaster, uint16_t aSrc, uint16_t aDest);
-
-	/* Events - NVII delegates from ILayerDown and Events produced internally */
-	void _Send(const openpal::ReadOnlyBuffer& arBuffer);
+	bool Validate(bool aIsMaster, uint16_t aSrc, uint16_t aDest);	
 
 	std::string SendString()
 	{

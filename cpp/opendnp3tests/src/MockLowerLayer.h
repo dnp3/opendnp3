@@ -22,12 +22,15 @@
 #define __MOCK_LOWER_LAYER_H_
 
 #include <queue>
+
+#include <openpal/Loggable.h>
+
 #include <openpal/AsyncLayerInterfaces.h>
 
 namespace opendnp3
 {
 
-class MockLowerLayer : public openpal::ILowerLayer
+class MockLowerLayer : public openpal::ILowerLayer, private openpal::Loggable
 {
 public:
 	MockLowerLayer(openpal::Logger);
@@ -46,6 +49,8 @@ public:
 	size_t NumWrites() const;
 	openpal::ReadOnlyBuffer PopWrite();
 	std::string PopWriteAsHex();
+	
+	virtual void Send(const openpal::ReadOnlyBuffer& arBuffer) override final;
 
 private:
 
@@ -56,10 +61,7 @@ private:
 	virtual std::string SendString() const
 	{
 		return " MockLowerLayer ->";
-	}
-
-	//these are the NVII delegates
-	void _Send(const openpal::ReadOnlyBuffer& arBuffer);
+	}	
 };
 
 }

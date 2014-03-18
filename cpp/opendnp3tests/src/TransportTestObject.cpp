@@ -42,9 +42,15 @@ TransportTestObject::TransportTestObject(bool aOpenOnStart, LogLevel aLevel, boo
 	upper(logger)
 {
 	lower.SetUpperLayer(&transport);
+	transport.SetLowerLayer(&lower);
+
+	upper.SetLowerLayer(&transport);
 	transport.SetUpperLayer(&upper);
 
-	if(aOpenOnStart) lower.ThisLayerUp();
+	if (aOpenOnStart)
+	{
+		lower.ThisLayerUp();
+	}
 }
 
 std::string TransportTestObject::GetData(const std::string& arHdr, uint8_t aSeed, uint32_t aLength)

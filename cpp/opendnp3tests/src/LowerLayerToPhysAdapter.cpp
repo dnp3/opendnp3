@@ -27,10 +27,8 @@ using namespace openpal;
 namespace opendnp3
 {
 
-LowerLayerToPhysAdapter::LowerLayerToPhysAdapter(Logger aLogger, IPhysicalLayerAsync* apPhys, bool aAutoRead) :
-	Loggable(aLogger),
-	IHandlerAsync(aLogger),
-	ILowerLayer(aLogger),
+LowerLayerToPhysAdapter::LowerLayerToPhysAdapter(Logger logger, IPhysicalLayerAsync* apPhys, bool aAutoRead) :
+	Loggable(logger),	
 	mAutoRead(aAutoRead),
 	mNumOpenFailure(0),
 	mpPhys(apPhys)
@@ -50,50 +48,60 @@ void LowerLayerToPhysAdapter::StartRead()
 }
 
 /* Implement IAsyncHandler */
-void LowerLayerToPhysAdapter::_OnOpenFailure()
+void LowerLayerToPhysAdapter::OnOpenFailure()
 {
 	++mNumOpenFailure;
 }
 
 /* Implement IUpperLayer */
-void LowerLayerToPhysAdapter::_OnReceive(const openpal::ReadOnlyBuffer& arBuffer)
+void LowerLayerToPhysAdapter::OnReceive(const openpal::ReadOnlyBuffer& buffer)
 {
 	// process the data into another buffer *before* kicking off another call,
 	// otherwise you have a potential race condition
-	if(mpUpperLayer != nullptr) mpUpperLayer->OnReceive(arBuffer);
-	if(mAutoRead) this->StartRead();
+	if (pUpperLayer)
+	{
+		pUpperLayer->OnReceive(buffer);
+	}
+	
+	if (mAutoRead)
+	{
+		this->StartRead();
+	}
 }
 
-void LowerLayerToPhysAdapter::_OnSendSuccess()
+void LowerLayerToPhysAdapter::OnSendResult(bool isSuccess)
 {
-	if(mpUpperLayer != nullptr) mpUpperLayer->OnSendSuccess();
+	if (pUpperLayer)
+	{
+		pUpperLayer->OnSendResult(isSuccess);
+	}
 }
 
-void LowerLayerToPhysAdapter::_OnSendFailure()
+void LowerLayerToPhysAdapter::OnLowerLayerUp()
 {
-	if(mpUpperLayer != nullptr) mpUpperLayer->OnSendFailure();
+	if (mAutoRead)
+	{
+		this->StartRead();
+	}
+
+	if (pUpperLayer)
+	{
+		pUpperLayer->OnLowerLayerUp();
+	}
 }
 
-void LowerLayerToPhysAdapter::_OnLowerLayerUp()
+void LowerLayerToPhysAdapter::OnLowerLayerDown()
 {
-	if(mAutoRead) this->StartRead();
-	if(mpUpperLayer != nullptr) mpUpperLayer->OnLowerLayerUp();
+	if (pUpperLayer)
+	{
+		pUpperLayer->OnLowerLayerDown();
+	}
 }
 
-void LowerLayerToPhysAdapter::_OnLowerLayerDown()
-{
-	if(mpUpperLayer != nullptr) mpUpperLayer->OnLowerLayerDown();
-}
 
-void LowerLayerToPhysAdapter::_OnLowerLayerShutdown()
+void LowerLayerToPhysAdapter::Send(const openpal::ReadOnlyBuffer& buffer)
 {
-
-}
-
-/* Implement ILowerLayer */
-void LowerLayerToPhysAdapter::_Send(const openpal::ReadOnlyBuffer& arBuffer)
-{
-	mpPhys->AsyncWrite(arBuffer);
+	mpPhys->AsyncWrite(buffer);
 }
 
 }//end namespace
