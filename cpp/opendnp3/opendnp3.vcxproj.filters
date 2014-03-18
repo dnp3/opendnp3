@@ -597,9 +597,6 @@
     <ClInclude Include="src\opendnp3\outstation\WriteHandler.h">
       <Filter>Header\outstation</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\transport\TLS_Base.h">
-      <Filter>Header\transport</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\transport\TransportConstants.h">
       <Filter>Header\transport</Filter>
     </ClInclude>
@@ -847,9 +844,6 @@
     </ClCompile>
     <ClCompile Include="src\opendnp3\master\TrackingTaskGroup.cpp">
       <Filter>Source\master</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\transport\TLS_Base.cpp">
-      <Filter>Source\transport</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\transport\TransportLayer.cpp">
       <Filter>Source\transport</Filter>

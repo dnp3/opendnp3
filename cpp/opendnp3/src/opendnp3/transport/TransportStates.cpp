@@ -22,8 +22,31 @@
 
 #include "TransportLayer.h"
 
+#include <openpal/LoggableMacros.h>
+
+using namespace openpal;
+
 namespace opendnp3
 {
+
+//////////////////////////////////////////////////////
+//	TLS_Base
+//////////////////////////////////////////////////////
+
+void TLS_Base::Send(const ReadOnlyBuffer&, TransportLayer* c)
+{
+	LOGGER_BLOCK(c->GetLogger(), LogLevel::Error, "Invalid action for state: " << this->Name());
+}
+
+void TLS_Base::HandleSendSuccess(TransportLayer* c)
+{
+	LOGGER_BLOCK(c->GetLogger(), LogLevel::Error, "Invalid action for state: " << this->Name());
+}
+
+void TLS_Base::HandleSendFailure(TransportLayer* c)
+{
+	LOGGER_BLOCK(c->GetLogger(), LogLevel::Error, "Invalid action for state: " << this->Name());
+}
 
 //////////////////////////////////////////////////////
 //	TLS_Ready

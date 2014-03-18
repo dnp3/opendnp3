@@ -21,13 +21,34 @@
 #ifndef __TRANSPORT_STATES_H_
 #define __TRANSPORT_STATES_H_
 
-#include "TLS_Base.h"
-
 #include "opendnp3/Singleton.h"
 
+#include <openpal/BufferWrapper.h>
+
+#include <string>
 
 namespace opendnp3
 {
+
+class TransportLayer;
+
+/**
+Base class for all TransportLayerStates (TLS)
+*/
+class TLS_Base
+{
+public:
+
+	virtual void Send(const openpal::ReadOnlyBuffer& arBuffer, TransportLayer*);
+
+	virtual void HandleReceive(const openpal::ReadOnlyBuffer& arBuffer, TransportLayer*) = 0;
+
+	// TPDU failure/success handlers
+	virtual void HandleSendSuccess(TransportLayer*);
+	virtual void HandleSendFailure(TransportLayer*);
+
+	virtual std::string Name() const = 0;
+};
 
 /** Represents the ready state
 */
