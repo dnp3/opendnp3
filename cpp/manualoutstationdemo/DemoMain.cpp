@@ -73,7 +73,7 @@ int main(int argc, char* argv[])
 	Slave slave(Logger(&log, LOG_LEVEL, "slave"), &stack.application, &executor, NullTimeWriteHandler::Inst(), &database, SuccessCommandHandler::Inst(), SlaveConfig());
 	stack.application.SetUser(&slave);
 
-	router.EnableRoute(route);
+	router.Enable(&stack.link);
 
 	// Start dispatching events
 	service.run();
