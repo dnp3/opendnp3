@@ -127,12 +127,12 @@ TEST_CASE(SUITE("ExecutorPauseIsIgnoredIfOnStrand"))
 {
 	EventLog log;
 	IOServiceThreadPool pool(Logger(&log, LogLevel::Info, "pool"), 1);
-	size_t iterations = 10;
+	uint32_t iterations = 10;
 
 	asio::strand strand(*pool.GetIOService());
 	ASIOExecutor exe(&strand);
 
-	int count = 0;
+	uint32_t count = 0;
 	
 	auto pause = [&]()
 	{
@@ -140,7 +140,7 @@ TEST_CASE(SUITE("ExecutorPauseIsIgnoredIfOnStrand"))
 		++count;		
 	};	
 
-	for (int i = 0; i < iterations; ++i)
+	for (uint32_t i = 0; i < iterations; ++i)
 	{
 		exe.Post(pause);
 	}

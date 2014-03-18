@@ -20,39 +20,58 @@
  */
 #include "DNPCrc.h"
 
-#include "CRC.h"
-
 #include <openpal/Serialization.h>
 
 namespace opendnp3
 {
 
-unsigned int DNPCrc::mpCrcTable[256];
+uint16_t DNPCrc::crcTable[256];
 
-//initialize the table
-bool DNPCrc::mIsInitialized = DNPCrc::InitCrcTable();
+// initialize the static table
+bool DNPCrc::isInitialized = DNPCrc::InitCrcTable();
 
-unsigned int DNPCrc::CalcCrc(const uint8_t* aInput, size_t aLength)
+uint16_t DNPCrc::CalcCrc(const uint8_t* input, uint32_t length)
 {
-	return CRC::CalcCRC(aInput, aLength, mpCrcTable, 0x0000, true);
+	uint8_t index;
+
+	uint16_t CRC = 0x0000;
+
+	for (uint32_t i = 0; i < length; ++i)
+	{
+		index = (CRC ^ input[i]) & 0xFF;
+		CRC = crcTable[index] ^ (CRC >> 8);
+	}	
+
+	return ((~CRC) & 0xFFFF);
 }
 
-void DNPCrc::AddCrc(uint8_t* aInput, size_t aLength)
+void DNPCrc::AddCrc(uint8_t* input, uint32_t length)
 {
-	unsigned int crc = DNPCrc::CalcCrc(aInput, aLength);
+	unsigned int crc = DNPCrc::CalcCrc(input, length);
 
-	aInput[aLength] = crc & 0xFF; //set the LSB
-	aInput[aLength + 1] = (crc >> 8) & 0xFF; //set the MSB
+	input[length] = crc & 0xFF; //set the LSB
+	input[length + 1] = (crc >> 8) & 0xFF; //set the MSB
 }
 
-bool DNPCrc::IsCorrectCRC(const uint8_t* aInput, size_t aLength)
+bool DNPCrc::IsCorrectCRC(const uint8_t* input, uint32_t length)
 {
-	return CalcCrc(aInput, aLength) == openpal::UInt16::Read(aInput + aLength);
+	return CalcCrc(input, length) == openpal::UInt16::Read(input + length);
 }
 
 bool DNPCrc::InitCrcTable()
-{
-	CRC::PrecomputeCRC(mpCrcTable, 0xA6BC);
+{	
+	uint16_t i, j, CRC;
+
+	for (i = 0; i < 256; i++)
+	{
+		CRC = i;
+		for (j = 0; j < 8; ++j)
+		{
+			if (CRC & 0x0001) CRC = (CRC >> 1) ^ 0xA6BC;
+			else CRC >>= 1;
+		}
+		crcTable[i] = CRC;
+	}
 	return true;
 }
 

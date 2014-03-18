@@ -261,9 +261,6 @@
     <ClInclude Include="src\opendnp3\gen\ChannelState.h">
       <Filter>Header\gen</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\link\CRC.h">
-      <Filter>Header\link</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\link\DNPCrc.h">
       <Filter>Header\link</Filter>
     </ClInclude>
@@ -997,9 +994,6 @@
     </ClCompile>
     <ClCompile Include="src\opendnp3\outstation\CommandResponseHandler.cpp">
       <Filter>Source\outstation</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\link\CRC.cpp">
-      <Filter>Source\link</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\link\DNPCrc.cpp">
       <Filter>Source\link</Filter>

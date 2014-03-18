@@ -21,9 +21,6 @@
 #ifndef __DNP_CRC_H_
 #define __DNP_CRC_H_
 
-
-
-#include <stddef.h>
 #include <cstdint>
 
 namespace opendnp3
@@ -33,19 +30,19 @@ class DNPCrc
 {
 public:
 
-	static unsigned int CalcCrc(const uint8_t* aInput, size_t length);
+	static uint16_t CalcCrc(const uint8_t* input, uint32_t length);
 
-	static void AddCrc(uint8_t* aInput, size_t aLength);
+	static void AddCrc(uint8_t* input, uint32_t length);
 
-	static bool IsCorrectCRC(const uint8_t* aInput, size_t aLength);
+	static bool IsCorrectCRC(const uint8_t* input, uint32_t length);
 
-private:
+private:	
 
-	static bool mIsInitialized;
+	static bool isInitialized;
 
 	static bool InitCrcTable();
 
-	static unsigned int mpCrcTable[256]; //Precomputed CRC lookup table
+	static uint16_t crcTable[256]; //Precomputed CRC lookup table
 
 };
 
