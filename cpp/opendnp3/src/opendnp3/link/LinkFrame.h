@@ -40,25 +40,7 @@ public:
 
 	bool operator==(const LinkFrame& arRHS) const;
 
-	LinkFrame();
-	~LinkFrame();
-
-	/*
-	uint8_t* GetBuffer()
-	{
-		return mpBuffer;
-	}
-
-	const uint8_t* GetBuffer() const
-	{
-		return mpBuffer;
-	}
-
-	uint32_t  GetSize() const
-	{
-		return mSize;
-	}
-	*/
+	LinkFrame();	
 
 	openpal::ReadOnlyBuffer ToReadOnly() const
 	{

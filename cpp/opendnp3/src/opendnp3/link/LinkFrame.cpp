@@ -39,11 +39,6 @@ LinkFrame::LinkFrame() :
 
 }
 
-LinkFrame::~LinkFrame()
-{
-
-}
-
 ostream& operator<<(ostream& output, const LinkFrame& f)
 {
 	output << f.ToString();
@@ -62,14 +57,22 @@ bool LinkFrame::operator==(const LinkFrame& rhs) const
 	}	
 }
 
-void LinkFrame::ReadUserData(const uint8_t* apSrc, uint8_t* apDest, uint32_t aLength)
+void LinkFrame::ReadUserData(const uint8_t* pSrc, uint8_t* pDest, uint32_t length_)
 {
-	if(aLength == 0) return;	//base case of recursion
-	size_t max = LS_DATA_BLOCK_SIZE;
-	size_t num = (aLength <= max) ? aLength : max;
-	size_t num_with_crc = num + 2;
-	memcpy(apDest, apSrc, num);
-	ReadUserData(apSrc + num_with_crc, apDest + num, aLength - num); //tail recursive
+	uint32_t length = length_;
+	uint8_t const * pRead = pSrc;
+	uint8_t* pWrite = pDest;
+
+	while (length > 0)
+	{
+		uint32_t max = LS_DATA_BLOCK_SIZE;
+		uint32_t num = (length <= max) ? length : max;
+		uint32_t num_with_crc = num + 2;
+		memcpy(pWrite, pRead, num);
+		pRead += num_with_crc;
+		pWrite += num;
+		length -= num;
+	}	
 }
 
 bool LinkFrame::ValidateHeaderCRC() const
