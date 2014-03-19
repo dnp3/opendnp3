@@ -107,7 +107,7 @@ for(const AsyncTaskBase * p: mDependencies) {
 	return false;
 }
 
-void AsyncTaskBase::OnComplete(bool aSuccess)
+void AsyncTaskBase::OnComplete(bool aSuccess, bool silent)
 {
 	if(!mIsRunning) {
 		MACRO_THROW_EXCEPTION(InvalidStateException, "Not Running");
@@ -116,7 +116,10 @@ void AsyncTaskBase::OnComplete(bool aSuccess)
 
 	this->_OnComplete(aSuccess);
 
-	mpGroup->OnCompletion();
+	if (!silent)
+	{
+		mpGroup->OnCompletion();
+	}
 }
 
 void AsyncTaskBase::Reset()

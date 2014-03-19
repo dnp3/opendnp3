@@ -34,7 +34,7 @@ class DLL_LOCAL ITask
 {
 public:
 
-	virtual void OnComplete(bool aSuccess) = 0;
+	virtual void OnComplete(bool aSuccess, bool silentComplete = false) = 0;
 
 	// Enable the task and notify the task group which might execute another task
 	virtual void Enable() = 0;

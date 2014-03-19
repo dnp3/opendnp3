@@ -54,7 +54,7 @@ public:
 	virtual ~AsyncTaskBase() {}
 
 	// Implements ITaskCompletion
-	void OnComplete(bool aSuccess);
+	void OnComplete(bool aSuccess, bool silentComplete = false);
 
 	// Modify this task's depth to make it dependent on the argument
 	void AddDependency(const AsyncTaskBase* apTask);
