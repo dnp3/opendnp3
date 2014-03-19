@@ -418,6 +418,32 @@ TEST_CASE(SUITE("DeferredControlExecution"))
 	REQUIRE(t.Read() ==  "C0 03 " + crob); //select
 }
 
+TEST_CASE(SUITE("CloseWhileWaitingForCommandResponse"))
+{
+	MasterConfig master_cfg;
+	MasterTestObject t(master_cfg);
+	t.master.OnLowerLayerUp();
+
+	TestForIntegrityPoll(t);
+	REQUIRE(t.app.NumAPDU() == 0); // check that the master sends no more packets
+
+	AnalogOutputInt16 ao(100);
+	std::deque<CommandResponse> responses;
+
+	t.master.GetCommandProcessor()->DirectOperate(ao, 1, [&](CommandResponse cr) { responses.push_back(cr); });
+	REQUIRE(t.mts.DispatchOne());	
+
+	REQUIRE(t.Read() == "C0 05 29 02 28 01 00 01 00 64 00 00"); // DIRECT OPERATE
+	REQUIRE(t.app.NumAPDU() == 0); //nore more packets	
+	REQUIRE(responses.empty());
+
+	t.master.OnLowerLayerDown();
+	REQUIRE(1 == responses.size());
+	t.master.OnLowerLayerUp();
+
+	TestForIntegrityPoll(t);
+}
+
 TEST_CASE(SUITE("SingleSetpointExecution"))// Group 41 Var4
 {
 	// 100.0
