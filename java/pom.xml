@@ -60,8 +60,14 @@
             <name>Sonatype Snapshots</name>
             <url>https://oss.sonatype.org/content/repositories/snapshots</url>
         </snapshotRepository>
+        <!--
+        <repository>
+            <id>internal.repo</id>
+            <name>Internal Repository</name>
+            <url>file:///home/cverges/adnp3-mvn</url>
+        </repository>
+        -->
     </distributionManagement>
-
 
     <build>
         <plugins>
