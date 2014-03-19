@@ -21,13 +21,10 @@
 #ifndef __TRANSPORT_TX_H_
 #define __TRANSPORT_TX_H_
 
-
-#include <openpal/Loggable.h>
-#include <openpal/BufferWrapper.h>
 #include <openpal/StaticBuffer.h>
 
+#include "opendnp3/IBufferSegment.h"
 #include "opendnp3/transport/TransportConstants.h"
-#include "opendnp3/StaticSizeConfiguration.h"
 
 namespace opendnp3
 {
@@ -37,37 +34,32 @@ class TransportLayer;
 /**
 State/validation for the DNP3 transport layer's send channel.
 */
-class TransportTx : public openpal::Loggable
+class TransportTx : public IBufferSegment
 {
+
 public:
-	TransportTx(const openpal::Logger&, TransportLayer*, uint32_t aFragSize);
 
+	TransportTx();
 
-	void Send(const openpal::ReadOnlyBuffer& output); // A fresh call to Send() will reset the state
-	bool SendSuccess();
+	void Configure(const openpal::ReadOnlyBuffer& output);	
 
 	static uint8_t GetHeader(bool fir, bool fin, uint8_t sequence);
 
-private:
+	/// -------  IBufferSegment ------------
 
-	bool CheckForSend();
+	virtual bool HasNext() const override final;
 
-	TransportLayer* mpContext;
+	virtual openpal::ReadOnlyBuffer Next() override final;
 
-	openpal::StaticBuffer<sizes::MAX_APDU_BUFFER_SIZE> underlying;
-	openpal::WriteBuffer apduBuffer;
+private:	
 
-	openpal::StaticBuffer<TL_MAX_TPDU_LENGTH> tpduBuffer;
+	// A wrapper to the APDU buffer that we're segmenting
+	openpal::ReadOnlyBuffer apdu;
 
-	uint32_t numBytesSent;
-	uint32_t numBytesToSend;
+	openpal::StaticBuffer<TL_MAX_TPDU_LENGTH> tpduBuffer;	
 
 	uint8_t sequence;
-
-	uint32_t BytesRemaining() const
-	{
-		return numBytesToSend - numBytesSent;
-	}
+	uint32_t tpduCount;
 };
 
 }

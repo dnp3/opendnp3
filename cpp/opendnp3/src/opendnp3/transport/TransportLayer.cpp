@@ -42,8 +42,7 @@ TransportLayer::TransportLayer(const openpal::Logger& logger, openpal::IExecutor
 	pState(TLS_Ready::Inst()),
 	pExecutor(pExecutor_),
 	M_FRAG_SIZE(maxFragSize),
-	receiver(logger, this, maxFragSize),
-	transmitter(logger, this, maxFragSize)	
+	receiver(logger, this, maxFragSize)	
 {
 
 }
@@ -60,7 +59,11 @@ void TransportLayer::ChangeState(TLS_Base* pNewState)
 
 void TransportLayer::TransmitAPDU(const openpal::ReadOnlyBuffer& apdu)
 {
-	transmitter.Send(apdu);
+	transmitter.Configure(apdu);
+	if(pLowerLayer)
+	{
+		//pLowerLayer->Send()
+	}
 }
 
 void TransportLayer::TransmitTPDU(const openpal::ReadOnlyBuffer& tpdu)
@@ -82,11 +85,6 @@ void TransportLayer::ReceiveAPDU(const openpal::ReadOnlyBuffer& apdu)
 	{
 		pUpperLayer->OnReceive(apdu);
 	}
-}
-
-bool TransportLayer::ContinueSend()
-{
-	return !transmitter.SendSuccess();
 }
 
 void TransportLayer::SignalSendResult(bool isSuccess)

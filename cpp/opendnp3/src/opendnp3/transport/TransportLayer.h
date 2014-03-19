@@ -27,8 +27,7 @@
 #include <openpal/IExecutor.h>
 #include <openpal/Loggable.h>
 
-#include <openpal/AsyncLayerInterfaces.h>
-
+#include "opendnp3/LayerInterfaces.h"
 #include "opendnp3/StaticSizeConfiguration.h"
 
 
@@ -40,28 +39,18 @@ class TLS_Base;
 /** Implements the DNP3 transport layer as a generic
 asynchronous protocol stack layer
 */
-class TransportLayer : public openpal::IUpperLayer, public openpal::ILowerLayer, private openpal::Loggable
+class TransportLayer : public IUpperLayer, public ILowerLayer, private openpal::Loggable
 {
+	friend class TransportRx;
+	friend class TransportTx;
+
+	friend class TLS_Ready;
+	friend class TLS_Sending;
+
 public:
 
-	TransportLayer(const openpal::Logger& logger, openpal::IExecutor* pExecutor_, uint32_t maxFragSize = sizes::DEFAULT_APDU_BUFFER_SIZE);
-	virtual ~TransportLayer() {}
-
-	// Actions - Taken by the states/transmitter/receiver in response to events
-
-	void ChangeState(TLS_Base* apNewState);
-
-	void TransmitAPDU(const openpal::ReadOnlyBuffer&);
-	void TransmitTPDU(const openpal::ReadOnlyBuffer&);
-
-	void ReceiveAPDU(const openpal::ReadOnlyBuffer&);
-	void ReceiveTPDU(const openpal::ReadOnlyBuffer&);
-
-	bool ContinueSend();
-
-	void SignalSendResult(bool isSuccess);	
-
-	/* Events - NVII delegates from ILayerUp/ILayerDown and Events produced internally */
+	TransportLayer(const openpal::Logger& logger, openpal::IExecutor* pExecutor_, uint32_t maxFragSize = sizes::DEFAULT_APDU_BUFFER_SIZE);	
+	
 	static std::string ToString(uint8_t aHeader);
 
 	openpal::Logger& GetLogger()
@@ -81,6 +70,20 @@ public:
 	virtual void OnSendResult(bool isSuccess) override final;
 
 	private:
+
+	// Actions - Taken by the states/transmitter/receiver in response to events
+
+	void ChangeState(TLS_Base* apNewState);
+
+	void TransmitAPDU(const openpal::ReadOnlyBuffer&);
+	void TransmitTPDU(const openpal::ReadOnlyBuffer&);
+
+	void ReceiveAPDU(const openpal::ReadOnlyBuffer&);
+	void ReceiveTPDU(const openpal::ReadOnlyBuffer&);
+
+	bool ContinueSend();
+
+	void SignalSendResult(bool isSuccess);
 
 	/* Members and Helpers */
 	bool isOnline;

@@ -53,15 +53,15 @@ void TLS_Base::HandleSendFailure(TransportLayer* c)
 //////////////////////////////////////////////////////
 TLS_Ready TLS_Ready::mInstance;
 
-void TLS_Ready::Send(const openpal::ReadOnlyBuffer& arBuffer, TransportLayer* apContext)
+void TLS_Ready::Send(const openpal::ReadOnlyBuffer& buffer, TransportLayer* apContext)
 {
 	apContext->ChangeState(TLS_Sending::Inst());
-	apContext->TransmitAPDU(arBuffer);
+	apContext->TransmitAPDU(buffer);
 }
 
-void TLS_Ready::HandleReceive(const openpal::ReadOnlyBuffer& arBuffer, TransportLayer* apContext)
+void TLS_Ready::HandleReceive(const openpal::ReadOnlyBuffer& buffer, TransportLayer* apContext)
 {
-	apContext->ReceiveTPDU(arBuffer);
+	apContext->ReceiveTPDU(buffer);
 }
 
 //////////////////////////////////////////////////////

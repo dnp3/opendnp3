@@ -36,66 +36,52 @@ using namespace openpal;
 namespace opendnp3
 {
 
-TransportTx::TransportTx(const Logger& logger, TransportLayer* apContext, uint32_t fragSize) :
-	Loggable(logger),
-	mpContext(apContext),
-	underlying(),
-	apduBuffer(underlying.GetWriteBuffer().Truncate(fragSize)),
-	tpduBuffer(),
-	numBytesSent(0),
-	numBytesToSend(0),
-	sequence(0)
-{}
+TransportTx::TransportTx() : sequence(0), tpduCount(0)
+{
 
-void TransportTx::Send(const ReadOnlyBuffer& output)
+}
+
+void TransportTx::Configure(const openpal::ReadOnlyBuffer& output)
 {
 	assert(output.IsNotEmpty());
-	assert(output.Size() <= apduBuffer.Size());
-	output.CopyTo(apduBuffer);
-	numBytesToSend = output.Size();
-	numBytesSent = 0;
-
-	this->CheckForSend();
+	this->apdu = output;
+	this->tpduCount = 0;
 }
 
-bool TransportTx::CheckForSend()
+bool TransportTx::HasNext() const
 {
-	uint32_t remainder = this->BytesRemaining();
-
-	if(remainder > 0)
-	{
-		uint32_t numToSend = remainder < TL_MAX_TPDU_PAYLOAD ? remainder : TL_MAX_TPDU_PAYLOAD;
-		memcpy(tpduBuffer.Buffer() + 1, apduBuffer + numBytesSent, numToSend);
-
-		bool fir = (numBytesSent == 0);
-		numBytesSent += numToSend;
-		bool fin = (numBytesSent == numBytesToSend);
-
-		tpduBuffer[0] = GetHeader(fir, fin, sequence);
-		LOG_BLOCK(LogLevel::Interpret, "-> " << TransportLayer::ToString(tpduBuffer[0]));
-		ReadOnlyBuffer buffer(tpduBuffer.Buffer(), numToSend + 1);
-		mpContext->TransmitTPDU(buffer);
-		return false;
-	}
-	else
-	{
-		numBytesSent = numBytesToSend = 0;
-		return true;
-	}
+	return apdu.Size() > 0;
 }
 
-bool TransportTx::SendSuccess()
+openpal::ReadOnlyBuffer TransportTx::Next()
 {
+	assert(apdu.Size() > 0);
+	uint8_t numToSend = apdu.Size() < TL_MAX_TPDU_PAYLOAD ? static_cast<uint8_t>(apdu.Size()) : TL_MAX_TPDU_PAYLOAD;
+	memcpy(tpduBuffer.Buffer() + 1, apdu, numToSend);
+	apdu.Advance(numToSend);
+
+	bool fir = (tpduCount == 0);	
+	bool fin = apdu.IsEmpty();
+	++tpduCount;
+	tpduBuffer[0] = GetHeader(fir, fin, sequence);
 	sequence = (sequence + 1) % 64;
 
-	return this->CheckForSend();
-}
+	return ReadOnlyBuffer(tpduBuffer.Buffer(), numToSend + 1);
+}	
 
 uint8_t TransportTx::GetHeader(bool fir, bool fin, uint8_t sequence)
 {
 	uint8_t hdr = 0;
-	if(fir) hdr |= TL_HDR_FIR;
-	if(fin) hdr |= TL_HDR_FIN;
+	
+	if (fir)
+	{
+		hdr |= TL_HDR_FIR;
+	}
+
+	if (fin)
+	{
+		hdr |= TL_HDR_FIN;
+	}
 
 	// Only the lower 6 bits of the sequence number
 	hdr |= TL_HDR_SEQ & sequence;
