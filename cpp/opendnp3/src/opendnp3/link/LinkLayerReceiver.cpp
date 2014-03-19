@@ -38,7 +38,8 @@ LinkLayerReceiver::LinkLayerReceiver(Logger aLogger, IFrameSink* apSink) :
 	mFrameSize(0),
 	mpSink(apSink),
 	mpState(LRS_Sync::Inst()),
-	mBuffer(BUFFER_SIZE)
+	receiverBuffer(),
+	mBuffer(receiverBuffer.Buffer(), receiverBuffer.Size())
 {
 
 }
@@ -56,7 +57,7 @@ WriteBuffer LinkLayerReceiver::WriteBuff() const
 	return b;
 }
 
-void LinkLayerReceiver::OnRead(size_t aNumBytes)
+void LinkLayerReceiver::OnRead(uint32_t aNumBytes)
 {
 	// This is a serious condition if it occurs
 	// It indicates a possible buffer over run

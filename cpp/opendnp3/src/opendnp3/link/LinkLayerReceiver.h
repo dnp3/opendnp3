@@ -24,12 +24,14 @@
 
 #include <openpal/Loggable.h>
 #include <openpal/BufferWrapper.h>
+#include <openpal/StaticBuffer.h>
 
 #include "opendnp3/DNPErrorCodes.h"
 
 #include "opendnp3/link/ShiftableBuffer.h"
 #include "opendnp3/link/LinkFrame.h"
 #include "opendnp3/link/LinkHeader.h"
+#include "opendnp3/StaticSizeConfiguration.h"
 
 
 namespace opendnp3
@@ -41,8 +43,7 @@ class LRS_Base;
 /** Parses incoming ft3 frames for the link layer router.
 */
 class LinkLayerReceiver : public openpal::Loggable
-{
-	static const size_t BUFFER_SIZE = (4096 / 249 + 1) * 292;
+{	
 
 public:
 	/**
@@ -55,7 +56,7 @@ public:
 		Called when valid data has been written to the current buffer write position
 		@param aNumBytes Number of bytes written
 	*/
-	void OnRead(size_t aNumBytes);
+	void OnRead(uint32_t aNumBytes);
 
 	/**
 	* Buffer that can currently be used for writing
@@ -78,10 +79,12 @@ private:
 	{
 		mpState = apState;
 	}
-	bool Sync0564()
+
+	bool SyncStartOctets()
 	{
-		return mBuffer.Sync(M_SYNC_PATTERN, 2);
+		return mBuffer.Sync();
 	}
+
 	bool ReadHeader();
 	bool ValidateBody();
 	bool ValidateHeader();
@@ -89,13 +92,14 @@ private:
 	void FailFrame();
 	void PushFrame();
 	openpal::ReadOnlyBuffer TransferUserData();
-	size_t NumReadBytes()
+
+	uint32_t NumReadBytes() const
 	{
 		return mBuffer.NumReadBytes();
 	}
 
 	LinkHeader mHeader;
-	size_t mFrameSize;
+	uint32_t mFrameSize;
 	static const uint8_t M_SYNC_PATTERN[2];
 
 	IFrameSink* mpSink;  // pointer to interface to push complete frames
@@ -103,6 +107,7 @@ private:
 
 	// Buffer to which user data is extracted, this is necessary since CRC checks are interlaced
 	uint8_t mpUserData[LS_MAX_USER_DATA_SIZE];
+	openpal::StaticBuffer<sizes::LINK_RECEIVER_BUFFER_SIZE> receiverBuffer;
 	ShiftableBuffer mBuffer; //Buffer used to cache frames data as it arrives
 };
 

@@ -24,6 +24,8 @@
 
 #include <opendnp3/link/ShiftableBuffer.h>
 
+#include <openpal/StaticBuffer.h>
+
 #include <cstring>
 
 using namespace opendnp3;
@@ -33,14 +35,16 @@ using namespace opendnp3;
 
 const static uint8_t SYNC[] = {0x05, 0x64};
 
+openpal::StaticBuffer<100> staticBuffer;
+
 TEST_CASE(SUITE("ConstructDestruct"))
 {
-	ShiftableBuffer b(100);
+	ShiftableBuffer b(staticBuffer.Buffer(), staticBuffer.Size());
 }
 
 TEST_CASE(SUITE("InitialState"))
 {
-	ShiftableBuffer b(100);
+	ShiftableBuffer b(staticBuffer.Buffer(), staticBuffer.Size());
 
 	REQUIRE(b.NumReadBytes() ==  0);
 	REQUIRE(b.NumWriteBytes() ==  100);
@@ -49,7 +53,7 @@ TEST_CASE(SUITE("InitialState"))
 
 TEST_CASE(SUITE("ReadingWriting"))
 {
-	ShiftableBuffer b(100);
+	ShiftableBuffer b(staticBuffer.Buffer(), staticBuffer.Size());
 
 	b.AdvanceWrite(40);
 	REQUIRE(b.NumWriteBytes() ==  60);
@@ -70,7 +74,7 @@ TEST_CASE(SUITE("ReadingWriting"))
 
 TEST_CASE(SUITE("Shifting"))
 {
-	ShiftableBuffer b(100);
+	ShiftableBuffer b(staticBuffer.Buffer(), staticBuffer.Size());
 
 	//initialize buffer to all zeros
 	for(size_t i = 0; i < b.NumWriteBytes(); ++i) b.WriteBuff()[i] = 0;
@@ -90,25 +94,29 @@ TEST_CASE(SUITE("Shifting"))
 
 TEST_CASE(SUITE("SyncNoPattern"))
 {
-	ShiftableBuffer b(100);
-	for(size_t i = 0; i < b.NumWriteBytes(); ++i) b.WriteBuff()[i] = 0;
+	ShiftableBuffer b(staticBuffer.Buffer(), staticBuffer.Size());
+	
+	for (size_t i = 0; i < b.NumWriteBytes(); ++i)
+	{
+		b.WriteBuff()[i] = 0;
+	}
 
 	b.AdvanceWrite(100);
 
-	REQUIRE_FALSE(b.Sync(SYNC, 2));
-	REQUIRE(b.NumReadBytes() ==  0);
+	REQUIRE_FALSE(b.Sync());
+	REQUIRE(b.NumReadBytes() ==  1); // 1 byte left since need 2 bytes to sync
 	REQUIRE(b.NumWriteBytes() ==  0);
 }
 
 TEST_CASE(SUITE("SyncBeginning"))
 {
-	ShiftableBuffer b(100);
+	ShiftableBuffer b(staticBuffer.Buffer(), staticBuffer.Size());
 	for(size_t i = 0; i < b.NumWriteBytes(); ++i) b.WriteBuff()[i] = 0;
 
 	memcpy(b.WriteBuff(), SYNC, 2);
 	b.AdvanceWrite(100);
 
-	REQUIRE(b.Sync(SYNC, 2));
+	REQUIRE(b.Sync());
 	REQUIRE(b.NumReadBytes() ==  100);
 	REQUIRE(b.NumWriteBytes() ==  0);
 
@@ -116,7 +124,7 @@ TEST_CASE(SUITE("SyncBeginning"))
 
 TEST_CASE(SUITE("SyncFullPattern"))
 {
-	ShiftableBuffer b(100);
+	ShiftableBuffer b(staticBuffer.Buffer(), staticBuffer.Size());
 
 	//initialize buffer to all zeros
 	for(size_t i = 0; i < b.NumWriteBytes(); ++i) b.WriteBuff()[i] = 0;
@@ -124,7 +132,7 @@ TEST_CASE(SUITE("SyncFullPattern"))
 	memcpy(b.WriteBuff() + 50, pattern, 2); //copy the pattern into the buffer
 	b.AdvanceWrite(100);
 
-	REQUIRE(b.Sync(SYNC, 2));
+	REQUIRE(b.Sync());
 	REQUIRE(b.NumReadBytes() ==  50);
 	REQUIRE(b.NumWriteBytes() ==  0);
 
@@ -135,7 +143,7 @@ TEST_CASE(SUITE("SyncFullPattern"))
 
 TEST_CASE(SUITE("SyncPartialPattern"))
 {
-	ShiftableBuffer b(100);
+	ShiftableBuffer b(staticBuffer.Buffer(), staticBuffer.Size());
 
 	//initialize buffer to all zeros
 	for(size_t i = 0; i < b.NumWriteBytes(); ++i) b.WriteBuff()[i] = 0;
@@ -143,7 +151,7 @@ TEST_CASE(SUITE("SyncPartialPattern"))
 	b.WriteBuff()[97] = 0x05;
 	b.AdvanceWrite(98);
 
-	REQUIRE_FALSE(b.Sync(SYNC, 2));
+	REQUIRE_FALSE(b.Sync());
 	REQUIRE(b.NumReadBytes() ==  1);
 	REQUIRE(b.NumWriteBytes() ==  2);
 

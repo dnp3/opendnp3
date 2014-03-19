@@ -38,7 +38,10 @@ bool LRS_Sync::Parse(LinkLayerReceiver* c)
 	if(c->NumReadBytes() < 2) return false;
 	else
 	{
-		if(c->Sync0564()) c->ChangeState(LRS_Header::Inst());
+		if (c->SyncStartOctets())
+		{
+			c->ChangeState(LRS_Header::Inst());
+		}
 		return true;
 	}
 }

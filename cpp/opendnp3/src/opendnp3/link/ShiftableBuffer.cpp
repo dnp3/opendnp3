@@ -29,28 +29,15 @@
 namespace opendnp3
 {
 
-ShiftableBuffer::ShiftableBuffer(uint32_t aSize) :
-	mpBuffer(new uint8_t[aSize]),
+
+ShiftableBuffer::ShiftableBuffer(uint8_t* aBuffer, uint32_t aSize) :
+	mpBuffer(aBuffer),
 	M_SIZE(aSize),
 	mWritePos(0),
 	mReadPos(0)
 {
+	
 }
-
-
-ShiftableBuffer::ShiftableBuffer(const uint8_t* aBuffer, uint32_t aSize) :
-	mpBuffer(new uint8_t[aSize]),
-	M_SIZE(aSize),
-	mWritePos(0),
-	mReadPos(0)
-{
-	if( aBuffer)
-	{
-		memcpy( mpBuffer, aBuffer, aSize) ;
-		mWritePos += aSize ;
-	}
-}
-
 
 void ShiftableBuffer::Shift()
 {
@@ -66,50 +53,34 @@ void ShiftableBuffer::Reset()
 	mReadPos = 0;
 }
 
-ShiftableBuffer::~ShiftableBuffer()
-{
-	delete[] mpBuffer;
-}
-
-
-void ShiftableBuffer::AdvanceRead(size_t aNumBytes)
+void ShiftableBuffer::AdvanceRead(uint32_t aNumBytes)
 {
 	assert(aNumBytes <= this->NumReadBytes());
 
 	mReadPos += aNumBytes;
 }
 
-void ShiftableBuffer::AdvanceWrite(size_t aNumBytes)
+void ShiftableBuffer::AdvanceWrite(uint32_t aNumBytes)
 {
 	assert(aNumBytes <= this->NumWriteBytes());
 	mWritePos += aNumBytes;
 }
 
-bool ShiftableBuffer::Sync(const uint8_t* apPattern, size_t aNumBytes)
+bool ShiftableBuffer::Sync()
 {
-	assert(aNumBytes > 0);
-
-	size_t offset = SyncSubsequence(apPattern, aNumBytes, 0);
-	bool res = (this->NumReadBytes() - offset) >= aNumBytes;
-	if(offset > 0) this->AdvanceRead(offset);
-
-	return res;
-}
-
-size_t ShiftableBuffer::SyncSubsequence(const uint8_t* apPattern, size_t aNumPatternBytes, size_t aOffset)
-{
-	size_t read_bytes = this->NumReadBytes() - aOffset;
-	if(aNumPatternBytes > read_bytes) aNumPatternBytes = read_bytes;
-
-	const uint8_t* pRead = this->ReadBuff() + aOffset;
-
-	for(size_t i = 0; i < aNumPatternBytes; ++i)
+	while (this->NumReadBytes() > 1) // at least 2 bytes
 	{
-		if(apPattern[i] != pRead[i])
-			return SyncSubsequence(apPattern, aNumPatternBytes, aOffset + 1);
+		if (this->ReadBuff()[0] == 0x05 && this->ReadBuff()[1] == 0x64)
+		{ 
+			return true;
+		}
+		else
+		{
+			this->AdvanceRead(1); // skip the first byte
+		}
 	}
 
-	return aOffset;
+	return false;
 }
 
 }

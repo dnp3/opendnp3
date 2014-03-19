@@ -35,17 +35,11 @@ namespace opendnp3
 class ShiftableBuffer
 {
 public:
-	/** @param aSize Size of the buffer in bytes */
-	ShiftableBuffer(uint32_t aSize);
-
+	
 	/**
-	 * Construct a buffer with the specified content and size.
-	 *
-	 * @param aBuffer    The content to initialize this ShiftableBuffer to.
-	 * @param aSize      The size of aBuffer and the max size of this ShiftableBuffer.
+	 * Construct the facade over the specified underlying buffer
 	 */
-	ShiftableBuffer(const uint8_t* aBuffer, uint32_t aSize);
-	~ShiftableBuffer();
+	ShiftableBuffer(uint8_t* aBuffer, uint32_t aSize);	
 
 	////////////////////////////////////////////
 	// Functions related to reading
@@ -55,13 +49,13 @@ public:
 	uint32_t NumReadBytes() const;
 
 	/** @return the value of the ith byte in read subsequence of the buffer */
-	const uint8_t& operator[](size_t index) const;
+	const uint8_t& operator[](uint32_t index) const;
 
 	/** @return Pointer to the next byte to be read in the buffer */
 	const uint8_t* ReadBuff() const;
 
 	/** Signal that some bytes don't have to be stored any longer. They'll be recovered during the next shift operation. */
-	void AdvanceRead(size_t aNumBytes);
+	void AdvanceRead(uint32_t aNumBytes);
 
 	////////////////////////////////////////////
 	// Functions related to writing
@@ -79,34 +73,26 @@ public:
 	/** @return Pointer to the position in the buffer available for writing */
 	uint8_t* WriteBuff() const;
 	/** Signal to the buffer bytes were written to the current write position */
-	void AdvanceWrite(size_t aNumBytes);
+	void AdvanceWrite(uint32_t aNumBytes);
 
 	////////////////////////////////////////////
 	// Other functions
 	////////////////////////////////////////////
 
 	/**
-		Searches the read subsequence for a pattern. If a match is found, the reader is advanced to the beginning of the match.
+		Searches the read subsequence for 0x0564 sync bytes. If a match is found, the reader is advanced to the beginning of the match.
 		If a partial match is found at the end of the read subsequence, the partial match is perserved.
 
 		i.e. if the pattern is {CBC} and the unread buffer is {AACB}, the unread buffer after the sync
 		will be {CB}.
 
 		If no match is found, the reader position is advanced to the end of the read subsequence.
-
-		@param apPattern - Pointer to first byte in the input pattern buffer
-		@param aNumBytes - Number of bytes in the pattern
-		@return true if the full pattern was found in the buffer
-
+	
+		@return true if both sync bytes were found in the buffer.
 	*/
-	bool Sync(const uint8_t* apPattern, size_t aNumBytes);
+	bool Sync();
 
 private:
-
-	// Recursive function called by Sync
-	size_t SyncSubsequence(const uint8_t* apPattern, size_t aNumPatternBytes, size_t aOffset);
-
-
 
 	uint8_t* mpBuffer;
 	const uint32_t M_SIZE;
@@ -114,7 +100,7 @@ private:
 	uint32_t mReadPos;
 };
 
-inline const uint8_t& ShiftableBuffer::operator[](size_t i) const
+inline const uint8_t& ShiftableBuffer::operator[](uint32_t i) const
 {
 	return ReadBuff()[i];
 }
