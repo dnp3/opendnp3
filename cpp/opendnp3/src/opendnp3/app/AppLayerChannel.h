@@ -67,7 +67,7 @@ public:
 	void Reset();
 
 	// send, wether a response is expected is implicit based on func code
-	void Send(APDUWrapper&, size_t aNumRetry);
+	void Send(APDUWrapper&, uint32_t aNumRetry);
 	void Cancel();
 
 	// Events
@@ -88,7 +88,7 @@ protected:
 	}
 	void QueueSend(APDUWrapper&);
 	void ChangeState(ACS_Base*);
-	void SetRetry(size_t aNumRetry)
+	void SetRetry(uint32_t aNumRetry)
 	{
 		mNumRetry = aNumRetry;
 	}
@@ -123,7 +123,7 @@ private:
 	void Timeout();
 
 	APDUWrapper mSendAPDU;
-	size_t mNumRetry;
+	uint32_t mNumRetry;
 	openpal::IExecutor* mpExecutor;
 	openpal::ITimer* mpTimer;
 	bool mConfirming;

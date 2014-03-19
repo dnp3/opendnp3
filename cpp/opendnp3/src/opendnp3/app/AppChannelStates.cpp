@@ -38,7 +38,7 @@ namespace opendnp3
 
 // ---- Default behaviors for the states ----
 
-void ACS_Base::Send(AppLayerChannel* c, APDUWrapper&, size_t)
+void ACS_Base::Send(AppLayerChannel* c, APDUWrapper&, uint32_t)
 {
 	LOGGER_BLOCK(c->logger, LogLevel::Error, "Invalid action for state: " << this->Name());
 }
@@ -58,10 +58,10 @@ void ACS_Base::OnSendFailure(AppLayerChannel* c)
 	LOGGER_BLOCK(c->logger, LogLevel::Error, "Invalid action for state: " << this->Name());
 }
 
-void ACS_Base::OnConfirm(AppLayerChannel* c, int aSeq)
+void ACS_Base::OnConfirm(AppLayerChannel* c, uint8_t aSeq)
 {
 	ERROR_LOGGER_BLOCK(c->GetLogger(), LogLevel::Warning,
-	                   "Unexpected confirm with sequence: " << aSeq, ALERR_UNEXPECTED_CONFIRM);
+	                   "Unexpected confirm with sequence: " << static_cast<int>(aSeq), ALERR_UNEXPECTED_CONFIRM);
 }
 
 void ACS_Base::OnResponse(AppLayerChannel* c, const APDUResponseRecord& rsp)
@@ -111,7 +111,7 @@ void ACS_Base::ProcessResponse(AppLayerChannel* c, const APDUResponseRecord& rec
 
 ACS_Idle ACS_Idle::mInstance;
 
-void ACS_Idle::Send(AppLayerChannel* c, APDUWrapper& apdu, size_t aNumRetry)
+void ACS_Idle::Send(AppLayerChannel* c, APDUWrapper& apdu, uint32_t aNumRetry)
 {
 	AppControlField acf = apdu.GetControl();
 	FunctionCode func = apdu.GetFunction();

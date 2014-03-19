@@ -87,7 +87,7 @@ public:
 	TLS_Base* pState;
 	openpal::IExecutor* pExecutor;
 
-	const size_t M_FRAG_SIZE;
+	const uint32_t M_FRAG_SIZE;
 
 	/* Transmitter and Receiver Classes */
 	TransportRx receiver;

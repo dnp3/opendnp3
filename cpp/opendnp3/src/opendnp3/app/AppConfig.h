@@ -41,7 +41,7 @@ struct AppConfig
 		FragSize(sizes::DEFAULT_APDU_BUFFER_SIZE)
 	{}
 
-	AppConfig(bool aIsMaster, TimeDuration aRspTimeout, size_t aNumRetry = 0, size_t aFragSize = sizes::DEFAULT_APDU_BUFFER_SIZE) :
+	AppConfig(bool aIsMaster, TimeDuration aRspTimeout, uint32_t aNumRetry = 0, uint32_t aFragSize = sizes::DEFAULT_APDU_BUFFER_SIZE) :
 		IsMaster(aIsMaster),
 		RspTimeout(aRspTimeout),
 		NumRetry(aNumRetry),
@@ -55,10 +55,10 @@ struct AppConfig
 	TimeDuration RspTimeout;
 
 	/// Number of retries performed for applicable frames
-	size_t NumRetry;
+	uint32_t NumRetry;
 
 	/// The maximum size of received application layer fragments
-	size_t FragSize;
+	uint32_t FragSize;
 
 };
 

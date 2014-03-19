@@ -34,7 +34,7 @@ struct LinkConfig
 	LinkConfig(
 	    bool aIsMaster,
 	    bool aUseConfirms,
-	    size_t aNumRetry,
+		uint32_t aNumRetry,
 	    uint16_t aLocalAddr,
 	    uint16_t aRemoteAddr,
 	    openpal::TimeDuration aTimeout) :
@@ -66,7 +66,7 @@ struct LinkConfig
 	bool UseConfirms;
 
 	/// The number of retry attempts the link will attempt after the initial try
-	size_t NumRetry;
+	uint32_t NumRetry;
 
 	/// dnp3 address of the local device
 	uint16_t LocalAddr;

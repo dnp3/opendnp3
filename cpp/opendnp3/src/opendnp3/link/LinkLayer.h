@@ -133,7 +133,8 @@ public:
 	//Retry Count
 	void ResetRetry();
 	bool Retry();
-	size_t RetryRemaining()
+
+	uint32_t RetryRemaining()
 	{
 		return mRetryRemaining;
 	}
@@ -146,7 +147,7 @@ private:
 
 	void QueueTransmit(const openpal::ReadOnlyBuffer& buffer, bool primary);
 
-	size_t mRetryRemaining;
+	uint32_t mRetryRemaining;
 
 	openpal::IExecutor* mpExecutor;
 	openpal::ITimer* mpTimer;

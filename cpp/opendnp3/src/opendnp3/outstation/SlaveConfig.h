@@ -47,19 +47,19 @@ struct EventMaxConfig
 {
 	EventMaxConfig();
 
-	EventMaxConfig(size_t, size_t, size_t, size_t);
+	EventMaxConfig(uint32_t, uint32_t, uint32_t, uint32_t);
 
 	/// The number of binary events the slave will buffer before overflowing
-	size_t mMaxBinaryEvents;
+	uint32_t mMaxBinaryEvents;
 
 	/// The number of analog events the slave will buffer before overflowing
-	size_t mMaxAnalogEvents;
+	uint32_t mMaxAnalogEvents;
 
 	/// The number of counter events the slave will buffer before overflowing
-	size_t mMaxCounterEvents;
+	uint32_t mMaxCounterEvents;
 
 	/// The number of vto events the slave will buffer before overflowing
-	size_t mMaxVtoEvents;
+	uint32_t mMaxVtoEvents;
 };
 
 /** Configuration information for a dnp3 slave (outstation)
@@ -73,7 +73,6 @@ when the master requests class data or variation 0.
 struct SlaveConfig
 {
 	SlaveConfig();
-
 
 	/// The maximum number of controls the slave will attempt to process from a single APDU
 	uint8_t mMaxControls;

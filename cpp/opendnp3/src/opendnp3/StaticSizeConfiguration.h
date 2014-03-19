@@ -56,7 +56,7 @@ namespace opendnp3
 		static_assert(MAX_STACKS_PER_CHANNEL > 0, "At least 1 stack is required per router");
 
 		// default sizing is big enough to receive a full APDU
-		static const size_t LINK_RECEIVER_BUFFER_SIZE = (((MAX_APDU_BUFFER_SIZE / 249) + 1) * 292);
+		static const uint32_t LINK_RECEIVER_BUFFER_SIZE = (((MAX_APDU_BUFFER_SIZE / 249) + 1) * 292);
 		static_assert(LINK_RECEIVER_BUFFER_SIZE >= 292, "Receiver must buffer at least 292 bytes");		
 	}
 }

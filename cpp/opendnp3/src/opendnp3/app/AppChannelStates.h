@@ -41,13 +41,13 @@ class ACS_Base
 {
 public:
 
-	virtual void Send(AppLayerChannel*, APDUWrapper&, size_t aNumRetry);
+	virtual void Send(AppLayerChannel*, APDUWrapper&, uint32_t aNumRetry);
 	virtual void Cancel(AppLayerChannel*); //cancel the outbound transaction
 
 	// external events
 	virtual void OnSendSuccess(AppLayerChannel*);
 	virtual void OnSendFailure(AppLayerChannel*);
-	virtual void OnConfirm(AppLayerChannel*, int aSequence);
+	virtual void OnConfirm(AppLayerChannel*, uint8_t aSequence);
 	virtual void OnResponse(AppLayerChannel*, const APDUResponseRecord&);
 	virtual void OnTimeout(AppLayerChannel*);
 
@@ -67,7 +67,7 @@ protected:
 class ACS_Idle : public ACS_Base
 {
 	MACRO_NAME_SINGLETON_INSTANCE(ACS_Idle)
-	void Send(AppLayerChannel*, APDUWrapper&, size_t aNumRetry);
+	void Send(AppLayerChannel*, APDUWrapper&, uint32_t aNumRetry);
 
 private:
 	ACS_Base* NextState(AppLayerChannel* c, FunctionCode, bool aConfirm);

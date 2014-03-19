@@ -95,7 +95,7 @@ private:
 	void OnResponse(const APDUResponseRecord&);
 	void OnUnsolResponse(const APDUResponseRecord&);
 	void OnRequest(const APDURecord&);
-	void OnConfirm(const AppControlField& aControl, size_t aDataSize);
+	void OnConfirm(const AppControlField& aControl, uint32_t aDataSize);
 
 	void LogParseError(APDUHeaderParser::Result error, bool aIsResponse);
 
@@ -115,7 +115,7 @@ private:
 
 	SolicitedChannel mSolicited;			// Channel used for solicited communications
 	UnsolicitedChannel mUnsolicited;		// Channel used for unsolicited communications
-	size_t numRetry;
+	uint32_t numRetry;
 
 
 	// a 2 byter buffer and wrapper for the confirms
@@ -127,7 +127,7 @@ private:
 	// Helpers
 	////////////////////
 
-	size_t GetRetries(FunctionCode aCode);
+	uint32_t GetRetries(FunctionCode aCode);
 	void QueueConfirm(bool aUns, int aSeq);
 	void QueueFrame(const APDUWrapper& apdu);
 	void CheckForSend();

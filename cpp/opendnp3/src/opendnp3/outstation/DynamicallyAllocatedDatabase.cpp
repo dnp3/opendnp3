@@ -43,24 +43,24 @@ DynamicallyAllocatedDatabase::DynamicallyAllocatedDatabase(const DatabaseTemplat
 
 void DynamicallyAllocatedDatabase::Configure(const DatabaseConfiguration& config)
 {
-	for(size_t i = 0; i < config.binaryMetadata.size(); ++i)
+	for(auto i = 0; i < config.binaryMetadata.size(); ++i)
 	{
 		binaryMetadata[i].clazz = config.binaryMetadata[i].EventClass;
 	}
 
-	for(size_t i = 0; i < config.analogMetadata.size(); ++i)
+	for (auto i = 0; i < config.analogMetadata.size(); ++i)
 	{
 		analogMetadata[i].clazz = config.analogMetadata[i].EventClass;
 		analogMetadata[i].deadband = config.analogMetadata[i].Deadband;
 	}
 
-	for(size_t i = 0; i < config.counterMetadata.size(); ++i)
+	for(auto i = 0; i < config.counterMetadata.size(); ++i)
 	{
 		counterMetadata[i].clazz = config.counterMetadata[i].EventClass;
 		counterMetadata[i].deadband = config.counterMetadata[i].Deadband;
 	}
 
-	for(size_t i = 0; i < config.frozenCounterMetadata.size(); ++i)
+	for(auto i = 0; i < config.frozenCounterMetadata.size(); ++i)
 	{
 		frozenCounterMetadata[i].clazz = config.frozenCounterMetadata[i].EventClass;
 		frozenCounterMetadata[i].deadband = config.frozenCounterMetadata[i].Deadband;

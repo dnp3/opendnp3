@@ -265,7 +265,7 @@ void AppLayer::OnUnsolResponse(const APDUResponseRecord& record)
 
 }
 
-void AppLayer::OnConfirm(const AppControlField& aControl, size_t aDataSize)
+void AppLayer::OnConfirm(const AppControlField& aControl, uint32_t aDataSize)
 {
 	if(aDataSize > 0)
 	{
@@ -343,7 +343,7 @@ void AppLayer::CheckForSend()
 	}
 }
 
-size_t AppLayer::GetRetries(FunctionCode aCode)
+uint32_t AppLayer::GetRetries(FunctionCode aCode)
 {
 	switch(aCode)
 	{

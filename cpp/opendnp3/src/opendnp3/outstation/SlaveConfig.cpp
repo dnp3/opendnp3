@@ -34,7 +34,7 @@ EventMaxConfig::EventMaxConfig() :
 	mMaxVtoEvents(100)
 {}
 
-EventMaxConfig::EventMaxConfig(size_t aMaxBinaryEvents, size_t aMaxAnalogEvents, size_t aMaxCounterEvents, size_t aMaxVtoEvents) :
+EventMaxConfig::EventMaxConfig(uint32_t aMaxBinaryEvents, uint32_t aMaxAnalogEvents, uint32_t aMaxCounterEvents, uint32_t aMaxVtoEvents) :
 	mMaxBinaryEvents(aMaxBinaryEvents),
 	mMaxAnalogEvents(aMaxAnalogEvents),
 	mMaxCounterEvents(aMaxCounterEvents),

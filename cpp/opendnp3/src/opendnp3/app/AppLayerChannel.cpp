@@ -60,7 +60,7 @@ void AppLayerChannel::Reset()
 
 // ---- Events ----
 
-void AppLayerChannel::Send(APDUWrapper& apdu, size_t aNumRetry)
+void AppLayerChannel::Send(APDUWrapper& apdu, uint32_t aNumRetry)
 {
 	mpState->Send(this, apdu, aNumRetry);
 }
