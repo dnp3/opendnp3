@@ -185,6 +185,9 @@
     <ClInclude Include="src\APDUHelpers.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\MultiplexingDataObserver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\AppLayerTest.cpp">
@@ -440,6 +443,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\APDUHelpers.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MultiplexingDataObserver.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

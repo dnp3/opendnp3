@@ -534,9 +534,6 @@
     <ClInclude Include="src\opendnp3\outstation\ITimeWriteHandler.h">
       <Filter>Header\outstation</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\outstation\MultiplexingDataObserver.h">
-      <Filter>Header\outstation</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\outstation\OutstationEventBuffer.h">
       <Filter>Header\outstation</Filter>
     </ClInclude>
@@ -879,9 +876,6 @@
       <Filter>Source\outstation</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\outstation\ITimeWriteHandler.cpp">
-      <Filter>Source\outstation</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\outstation\MultiplexingDataObserver.cpp">
       <Filter>Source\outstation</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\outstation\OutstationEventBuffer.cpp">

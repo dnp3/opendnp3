@@ -21,7 +21,7 @@
 #ifndef __MULTIPLEXING_DATA_OBSERVER_H_
 #define __MULTIPLEXING_DATA_OBSERVER_H_
 
-#include "IDataObserver.h"
+#include <opendnp3/outstation/IDataObserver.h>
 
 #include <vector>
 
@@ -40,11 +40,11 @@ public:
 
 	void AddObserver(IDataObserver* apObserver1);
 
-	void Update(const Binary& arPoint, size_t aIndex);
-	void Update(const Analog& arPoint, size_t aIndex);
-	void Update(const Counter& arPoint, size_t aIndex);
-	void Update(const BinaryOutputStatus& arPoint, size_t aIndex);
-	void Update(const AnalogOutputStatus& arPoint, size_t aIndex);
+	void Update(const Binary& arPoint, uint16_t aIndex);
+	void Update(const Analog& arPoint, uint16_t aIndex);
+	void Update(const Counter& arPoint, uint16_t aIndex);
+	void Update(const BinaryOutputStatus& arPoint, uint16_t aIndex);
+	void Update(const AnalogOutputStatus& arPoint, uint16_t aIndex);
 
 private:
 

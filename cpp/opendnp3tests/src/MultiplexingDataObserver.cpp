@@ -52,23 +52,23 @@ void MultiplexingDataObserver::End()
 	for (auto pObs : mObservers) openpal::Transaction::End(pObs);
 }
 
-void MultiplexingDataObserver :: Update(const Binary& arPoint, size_t aIndex)
+void MultiplexingDataObserver :: Update(const Binary& arPoint, uint16_t aIndex)
 {
 	for(auto pObs : mObservers) pObs->Update(arPoint, aIndex);
 }
-void MultiplexingDataObserver :: Update(const Analog& arPoint, size_t aIndex)
+void MultiplexingDataObserver::Update(const Analog& arPoint, uint16_t aIndex)
 {
 	for(auto pObs : mObservers) pObs->Update(arPoint, aIndex);
 }
-void MultiplexingDataObserver :: Update(const Counter& arPoint, size_t aIndex)
+void MultiplexingDataObserver::Update(const Counter& arPoint, uint16_t aIndex)
 {
 	for(auto pObs : mObservers) pObs->Update(arPoint, aIndex);
 }
-void MultiplexingDataObserver :: Update(const BinaryOutputStatus& arPoint, size_t aIndex)
+void MultiplexingDataObserver::Update(const BinaryOutputStatus& arPoint, uint16_t aIndex)
 {
 	for(auto pObs : mObservers) pObs->Update(arPoint, aIndex);
 }
-void MultiplexingDataObserver :: Update(const AnalogOutputStatus& arPoint, size_t aIndex)
+void MultiplexingDataObserver::Update(const AnalogOutputStatus& arPoint, uint16_t aIndex)
 {
 	for(auto pObs : mObservers) pObs->Update(arPoint, aIndex);
 }
