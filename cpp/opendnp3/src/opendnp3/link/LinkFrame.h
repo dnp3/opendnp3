@@ -145,9 +145,9 @@ private:
 	/** Writes data from src to dest interlacing 2 byte CRC checks every 16 data bytes
 		@param apSrc Source buffer full of user data
 		@param apDest Destination buffer where the data + CRC is written
-		@param aLength Number of user data bytes
+		@param length Number of user data bytes
 	*/
-	static void WriteUserData(const uint8_t* apSrc, uint8_t* apDest, size_t aLength);
+	static void WriteUserData(const uint8_t* apSrc, uint8_t* apDest, uint32_t length);
 
 	/** Write 10 header bytes to to buffer including 0x0564, all fields, and CRC */
 	void FormatHeader(uint32_t aDataLength, bool aIsMaster, bool aFcb, bool aFcvDfc, LinkFunction aCode, uint16_t aDest, uint16_t aSrc);

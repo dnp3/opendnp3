@@ -85,13 +85,26 @@ bool LinkFrame::ValidateBodyCRC() const
 	return ValidateBodyCRC(mpBuffer + LS_HEADER_SIZE, mHeader.GetLength() - LS_MIN_LENGTH);
 }
 
-bool LinkFrame::ValidateBodyCRC(const uint8_t* apBody, uint32_t aLength)
+bool LinkFrame::ValidateBodyCRC(const uint8_t* pBody, uint32_t length)
 {
-	if(aLength == 0) return true;	//base case of recursion
-	size_t max = LS_DATA_BLOCK_SIZE ;
-	size_t num = (aLength <= max) ? aLength : max;
-	if(!DNPCrc::IsCorrectCRC(apBody, num)) return false;
-	else return ValidateBodyCRC(apBody + num + 2, aLength - num); //tail recursive
+	if(length == 0) return true;	//base case of recursion
+
+	while(length > 0)
+	{
+		uint32_t max = LS_DATA_BLOCK_SIZE;
+		uint32_t num = (length <= max) ? length : max;
+
+		if (DNPCrc::IsCorrectCRC(pBody, num))
+		{
+			pBody += (num + 2);
+			length -= num;			
+		}
+		else
+		{
+			return false;
+		}
+	}
+	return true;	
 }
 
 uint32_t LinkFrame::CalcFrameSize(uint32_t aDataLength)
@@ -193,14 +206,18 @@ void LinkFrame::FormatHeader(uint32_t aDataLength, bool aIsMaster, bool aFcb, bo
 	mIsComplete = true;
 }
 
-void LinkFrame::WriteUserData(const uint8_t* apSrc, uint8_t* apDest, size_t aLength)
+void LinkFrame::WriteUserData(const uint8_t* apSrc, uint8_t* apDest, uint32_t length)
 {
-	if(aLength == 0) return;
-	size_t max = LS_DATA_BLOCK_SIZE;
-	size_t num = aLength > max ? max : aLength;
-	memcpy(apDest, apSrc, num);
-	DNPCrc::AddCrc(apDest, num);
-	WriteUserData(apSrc + num, apDest + num + 2, aLength - num); //tail recursive
+	while (length > 0)
+	{
+		uint32_t max = LS_DATA_BLOCK_SIZE;
+		uint32_t num = length > max ? max : length;
+		memcpy(apDest, apSrc, num);
+		DNPCrc::AddCrc(apDest, num);
+		apSrc += num;
+		apDest += (num + 2);
+		length -= num;
+	}	
 }
 
 std::string LinkFrame::ToString() const
