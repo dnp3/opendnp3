@@ -72,7 +72,7 @@ int main(int argc, char* argv[])
 	// The master config object for a slave. The default are
 	// useable, but understanding the options are important.
 	SlaveStackConfig stackConfig;
-	stackConfig.database = DatabaseConfiguration(DatabaseTemplate(5, 5, 5, 5, 5, 5));
+	stackConfig.database = DatabaseConfiguration(DatabaseTemplate::AllTypes(100));
 	stackConfig.slave.mDisableUnsol = true;
 
 	// Create a new slave with a log level, command handler, and
