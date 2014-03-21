@@ -237,7 +237,7 @@ TEST_CASE(SUITE("Loopback"))
 
 	PhysicalLayerAsyncTCPClient client(logger.GetSubLogger("client"), test.GetService(), "127.0.0.1", 30000);
 	LowerLayerToPhysAdapter adapter(logger.GetSubLogger("adapter"), &client);
-	MockUpperLayer upper(logger.GetSubLogger("mock"));
+	MockUpperLayer upper;
 	adapter.SetUpperLayer(&upper);
 	upper.SetLowerLayer(&adapter);
 

@@ -27,7 +27,7 @@
 #include <vector>
 #include <string>
 
-#include "MockLowerLayer.h"
+#include "MockLinkLayer.h"
 #include "MockUpperLayer.h"
 #include "MockExecutor.h"
 #include "LogTester.h"
@@ -49,17 +49,9 @@ public:
 
 	LogTester log;
 	MockExecutor exe;
-
-private:
-	openpal::Logger logger;
 	TransportLayer transport;
-
-public:
-
-	MockLowerLayer lower;
+	MockLinkLayer link;
 	MockUpperLayer upper;
-
-
 };
 
 }

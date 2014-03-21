@@ -48,9 +48,7 @@ TransportLoopbackTestObject::TransportLoopbackTestObject(
 	mLinkB(logger, apPhys->GetExecutor(), aCfgB),
 	mTransA(logger, apPhys->GetExecutor()),
 	mTransB(logger, apPhys->GetExecutor()),
-	mRouter(logger, apPhys, TimeDuration::Seconds(1), TimeDuration::Seconds(1)),
-	mUpperA(logger),
-	mUpperB(logger)
+	mRouter(logger, apPhys, TimeDuration::Seconds(1), TimeDuration::Seconds(1))
 {
 	LinkRoute routeA(mCfgA.RemoteAddr, mCfgA.LocalAddr);
 	LinkRoute routeB(mCfgB.RemoteAddr, mCfgB.LocalAddr);

@@ -56,7 +56,7 @@ openpal::ReadOnlyBuffer TransportTx::GetSegment()
 	uint32_t numToSend = apdu.Size() < 249 ? apdu.Size() : 249;
 	memcpy(tpduBuffer.Buffer() + 1, apdu, numToSend);
 	bool fir = (tpduCount == 0);	
-	bool fin = apdu.IsEmpty();	
+	bool fin = (numToSend == apdu.Size());
 	tpduBuffer[0] = GetHeader(fir, fin, sequence);
 	return ReadOnlyBuffer(tpduBuffer.Buffer(), numToSend + 1);
 }	

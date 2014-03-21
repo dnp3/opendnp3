@@ -32,9 +32,7 @@ using namespace openpal;
 namespace opendnp3
 {
 
-MockUpperLayer::MockUpperLayer(openpal::Logger logger) : 
-	Loggable(logger),	
-	isOnline(false)
+MockUpperLayer::MockUpperLayer() : isOnline(false)
 {
 
 }
@@ -52,28 +50,24 @@ void MockUpperLayer::OnReceive(const openpal::ReadOnlyBuffer& input)
 void MockUpperLayer::OnSendResult(bool isSuccess)
 {
 	if (isSuccess)
-	{
-		LOG_BLOCK(LogLevel::Debug, "OnSendSuccess");
+	{		
 		++mState.mSuccessCnt;
 	}
 	else
-	{
-		LOG_BLOCK(LogLevel::Debug, "OnSendFailure");
+	{	
 		++mState.mFailureCnt;
 	}
 }
 
 void MockUpperLayer::OnLowerLayerUp()
 {
-	isOnline = true;
-	LOG_BLOCK(LogLevel::Debug, "OnLowerLayerUp");
+	isOnline = true;	
 	++mState.mNumLayerUp;
 }
 
 void MockUpperLayer::OnLowerLayerDown()
 {
-	isOnline = false;
-	LOG_BLOCK(LogLevel::Debug, "OnLowerLayerDown");
+	isOnline = false;	
 	++mState.mNumLayerDown;
 }
 

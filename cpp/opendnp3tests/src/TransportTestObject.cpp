@@ -35,21 +35,18 @@ namespace opendnp3
 
 TransportTestObject::TransportTestObject(bool aOpenOnStart, LogLevel aLevel, bool aImmediate) :
 	log(),
-	exe(),
-	logger(Logger(&log, aLevel, "TransportTestObject")),
-	transport(logger, &exe),
-	lower(logger),
-	upper(logger)
+	exe(),	
+	transport(Logger(&log, aLevel, "transport"), &exe)	
 {	
-	lower.SetUpperLayer(&transport);
-	transport.SetLinkLayer(nullptr); // TODO
+	link.SetUpperLayer(&transport);
+	transport.SetLinkLayer(&link);
 
 	upper.SetLowerLayer(&transport);
 	transport.SetAppLayer(&upper);
 	
 	if (aOpenOnStart)
 	{
-		lower.ThisLayerUp();
+		transport.OnLowerLayerUp();
 	}
 }
 

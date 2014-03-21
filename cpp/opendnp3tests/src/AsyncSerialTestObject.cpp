@@ -31,8 +31,7 @@ AsyncSerialTestObject::AsyncSerialTestObject(SerialSettings cfg, LogLevel aLevel
 	AsyncTestObjectASIO(),
 	log(),
 	mPort(Logger(&log, aLevel, "Serial"), this->GetService(), cfg),
-	mAdapter(Logger(&log, aLevel, "Adapter"), &mPort, true),
-	mUpper(Logger(&log, aLevel, "MockUpper"))
+	mAdapter(Logger(&log, aLevel, "Adapter"), &mPort, true)	
 {
 	mAdapter.SetUpperLayer(&mUpper);
 	mUpper.SetLowerLayer(&mAdapter);

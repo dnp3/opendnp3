@@ -35,24 +35,12 @@ class ILinkLayer
 {
 
 public:
-
-	ILinkLayer() : pUpperLayer(nullptr) {}
-	
+		
 	virtual ~ILinkLayer() {}
 
 	/// Transmit a buffer that can be iterated over in no greater than 250 byte segments
 	virtual void Send(IBufferSegment& segment) = 0;
 
-	void SetUpperLayer(openpal::IUpperLayer* pUpperLayer_)
-	{
-		assert(pUpperLayer_ != nullptr);
-		assert(pUpperLayer == nullptr);
-		pUpperLayer = pUpperLayer_;
-	}
-
-protected:
-
-	openpal::IUpperLayer* pUpperLayer;
 };
 
 }

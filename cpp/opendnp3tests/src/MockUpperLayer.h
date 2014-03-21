@@ -21,7 +21,6 @@
 #ifndef __MOCK_UPPER_LAYER_H_
 #define __MOCK_UPPER_LAYER_H_
 
-#include <openpal/Loggable.h>
 
 #include <openpal/AsyncLayerInterfaces.h>
 
@@ -32,7 +31,7 @@
 namespace opendnp3
 {
 
-class MockUpperLayer : public openpal::IUpperLayer, public openpal::HasLowerLayer, public BufferTestObject, private openpal::Loggable
+class MockUpperLayer : public openpal::IUpperLayer, public openpal::HasLowerLayer, public BufferTestObject
 {
 public:
 
@@ -57,7 +56,7 @@ public:
 		}
 	};
 
-	MockUpperLayer(openpal::Logger);
+	MockUpperLayer();
 
 	bool IsOnline() const { return isOnline; }
 

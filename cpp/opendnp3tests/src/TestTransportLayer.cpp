@@ -41,29 +41,29 @@ TEST_CASE(SUITE("StateOffline"))
 
 	test.upper.SendDown("00");
 	REQUIRE(test.log.PopOneEntry(LogLevel::Error));
-	test.lower.SendUp("");
+	test.link.SendUp("");
 	REQUIRE(test.log.PopOneEntry(LogLevel::Error));
-	test.lower.SendSuccess();
+	test.transport.OnSendResult(true);
 	REQUIRE(test.log.PopOneEntry(LogLevel::Error));
-	test.lower.ThisLayerDown();
+	test.transport.OnLowerLayerDown();
 	REQUIRE(test.log.PopOneEntry(LogLevel::Error));
 }
 
 TEST_CASE(SUITE("StateReady"))
 {
-	TransportTestObject test(true); //makes an implicit call to 'test.lower.ThisLayerUp()'
+	TransportTestObject test(true); //makes an implicit call to 'test.link.ThisLayerUp()'
 
 	//check that that the transport layer is correctly forwarding up/down
 	REQUIRE(test.upper.IsOnline());
-	test.lower.ThisLayerDown();
+	test.transport.OnLowerLayerDown();
 	REQUIRE_FALSE(test.upper.IsOnline());
-	test.lower.ThisLayerUp();
+	test.transport.OnLowerLayerUp();
 	REQUIRE(test.upper.IsOnline());
 
 	// check that these actions all log errors
-	test.lower.ThisLayerUp();
+	test.transport.OnLowerLayerUp();
 	REQUIRE(test.log.PopOneEntry(LogLevel::Error));
-	test.lower.SendSuccess();
+	test.transport.OnSendResult(true);
 	REQUIRE(test.log.PopOneEntry(LogLevel::Error));
 }
 
@@ -72,12 +72,12 @@ TEST_CASE(SUITE("ReceiveBadArguments"))
 	TransportTestObject test(true);
 
 	//check that the wrong aruments throw argument exceptions, and it's doesn't go to the sending state
-	test.lower.SendUp("");
+	test.link.SendUp("");
 	REQUIRE(TLERR_NO_PAYLOAD ==  test.log.NextErrorCode());
-	test.lower.SendUp("FF");
+	test.link.SendUp("FF");
 	REQUIRE(TLERR_NO_PAYLOAD ==  test.log.NextErrorCode());
 
-	test.lower.SendUp(test.GetData("C0", 0, 250)); // length 251
+	test.link.SendUp(test.GetData("C0", 0, 250)); // length 251
 
 	REQUIRE(TLERR_TOO_MUCH_DATA ==  test.log.NextErrorCode());
 }
@@ -86,7 +86,7 @@ TEST_CASE(SUITE("ReceiveNoPayload"))
 {
 	TransportTestObject test(true);
 	//try sending a FIR/FIN packet with no payload (1 byte)
-	test.lower.SendUp("C0"); // FIR/FIN
+	test.link.SendUp("C0"); // FIR/FIN
 	REQUIRE(test.log.NextErrorCode() ==  TLERR_NO_PAYLOAD);
 }
 
@@ -94,7 +94,7 @@ TEST_CASE(SUITE("ReceiveNoFIR"))
 {
 	TransportTestObject test(true);
 	//try sending a non-FIR w/ no prior packet
-	test.lower.SendUp("80 77"); // _/FIN
+	test.link.SendUp("80 77"); // _/FIN
 	REQUIRE(test.log.NextErrorCode() ==  TLERR_MESSAGE_WITHOUT_FIR);
 }
 
@@ -102,17 +102,17 @@ TEST_CASE(SUITE("ReceiveWrongSequence"))
 {
 	TransportTestObject test(true);
 	//send a FIR, followed by a FIN w/ the wrong sequence
-	test.lower.SendUp(test.GetData("40")); // FIR/_/0
-	test.lower.SendUp(test.GetData("82")); // _/FIN/2
+	test.link.SendUp(test.GetData("40")); // FIR/_/0
+	test.link.SendUp(test.GetData("82")); // _/FIN/2
 	REQUIRE(test.log.NextErrorCode() ==  TLERR_BAD_SEQUENCE);
 }
 
 TEST_CASE(SUITE("PacketsCanBeOfVaryingSize"))
 {
 	TransportTestObject test(true);
-	test.lower.SendUp("40 0A 0B 0C"); // FIR/_/0
+	test.link.SendUp("40 0A 0B 0C"); // FIR/_/0
 	REQUIRE(test.log.IsLogErrorFree());
-	test.lower.SendUp("81 0D 0E 0F"); // _/FIN/1
+	test.link.SendUp("81 0D 0E 0F"); // _/FIN/1
 	REQUIRE(test.log.IsLogErrorFree());
 	REQUIRE("0A 0B 0C 0D 0E 0F" ==  test.upper.GetBufferAsHexString());
 }
@@ -121,7 +121,7 @@ TEST_CASE(SUITE("ReceiveSinglePacket"))
 {
 	TransportTestObject test(true);
 	//now try receiving 1 a single FIR/FIN with a magic value
-	test.lower.SendUp("C0 77");
+	test.link.SendUp("C0 77");
 	REQUIRE("77" ==  test.upper.GetBufferAsHexString());
 }
 
@@ -136,7 +136,7 @@ TEST_CASE(SUITE("ReceiveLargestPossibleAPDU"))
 	string apdu = test.GeneratePacketSequence(packets, num_packets, last_packet_length);
 	for(string s : packets)
 	{
-		test.lower.SendUp(s);
+		test.link.SendUp(s);
 	}
 
 	REQUIRE(test.log.IsLogErrorFree());
@@ -155,7 +155,7 @@ TEST_CASE(SUITE("ReceiveBufferOverflow"))
 	string apdu = test.GeneratePacketSequence(packets, num_packets + 1, last_packet_length);
 	for(string s : packets)
 	{
-		test.lower.SendUp(s);
+		test.link.SendUp(s);
 	}
 
 	REQUIRE(test.upper.IsBufferEmpty());
@@ -166,10 +166,10 @@ TEST_CASE(SUITE("ReceiveNewFir"))
 {
 	TransportTestObject test(true);
 
-	test.lower.SendUp(test.GetData("40"));	// FIR/_/0
+	test.link.SendUp(test.GetData("40"));	// FIR/_/0
 	REQUIRE(test.upper.IsBufferEmpty());
 
-	test.lower.SendUp("C0 AB CD");	// FIR/FIN/0
+	test.link.SendUp("C0 AB CD");	// FIR/FIN/0
 	REQUIRE("AB CD" ==  test.upper.GetBufferAsHexString());
 	REQUIRE(test.log.NextErrorCode() ==  TLERR_NEW_FIR); //make sure it logs the dropped frames
 }
@@ -183,29 +183,27 @@ TEST_CASE(SUITE("SendArguments"))
 
 TEST_CASE(SUITE("StateSending"))
 {
-	TransportTestObject test(true);
-
-	test.lower.DisableAutoSendCallback();
+	TransportTestObject test(true);	
 
 	// this puts the layer into the Sending state
 	test.upper.SendDown("11");
-	REQUIRE("C0 11" ==  test.lower.PopWriteAsHex()); //FIR/FIN SEQ=0
+	REQUIRE("C0 11" ==  test.link.PopWriteAsHex()); //FIR/FIN SEQ=0
 
 	// Check that while we're sending, all other send requests are rejected
 	test.upper.SendDown("00");
 	REQUIRE(test.log.PopOneEntry(LogLevel::Error));
-	test.lower.ThisLayerUp();
+	test.transport.OnLowerLayerUp();
 	REQUIRE(test.log.PopOneEntry(LogLevel::Error));
 
 	//while we are sending, we should still be able to receive data as normal
-	test.lower.SendUp("C0 77");
+	test.link.SendUp("C0 77");
 	test.upper.BufferEqualsHex("77");
 
 	//this should put us back in the Ready state since it was a single tpdu send
-	test.lower.SendSuccess();
+	test.transport.OnSendResult(true);
 	REQUIRE(test.upper.GetState().mSuccessCnt ==  1);
 
-	test.lower.SendSuccess();
+	test.transport.OnSendResult(true);
 	REQUIRE(test.log.PopOneEntry(LogLevel::Error));
 }
 
@@ -213,20 +211,18 @@ TEST_CASE(SUITE("SendFailure"))
 {
 	TransportTestObject test(true);
 
-	test.lower.DisableAutoSendCallback();
-
 	// this puts the layer into the Sending state
 	test.upper.SendDown("11");
-	REQUIRE("C0 11" ==  test.lower.PopWriteAsHex()); //FIR/FIN SEQ=0
+	REQUIRE("C0 11" ==  test.link.PopWriteAsHex()); //FIR/FIN SEQ=0
 
 	//this should put us back in the Ready state
-	test.lower.SendFailure();
+	test.transport.OnSendResult(false);
 	REQUIRE(test.upper.GetState().mSuccessCnt ==  0);
 	REQUIRE(test.upper.GetState().mFailureCnt ==  1);
 
 	test.upper.SendDown("11");
-	REQUIRE("C0 11" ==  test.lower.PopWriteAsHex()); // should resend with the same sequence number FIR/FIN SEQ=0
-	test.lower.SendSuccess();
+	REQUIRE("C1 11" ==  test.link.PopWriteAsHex()); // use next sequence number FIR/FIN SEQ=1
+	test.transport.OnSendResult(true);
 	REQUIRE(test.upper.GetState().mSuccessCnt ==  1);
 	REQUIRE(test.upper.GetState().mFailureCnt ==  1);
 }
@@ -237,11 +233,13 @@ TEST_CASE(SUITE("SendSuccess"))
 
 	// this puts the layer into the Sending state
 	test.upper.SendDown("11");
-	REQUIRE("C0 11" ==  test.lower.PopWriteAsHex()); //FIR/FIN SEQ=0
+	REQUIRE("C0 11" ==  test.link.PopWriteAsHex()); //FIR/FIN SEQ=0
+	test.transport.OnSendResult(true);
 
 	// this puts the layer into the Sending state
 	test.upper.SendDown("11");
-	REQUIRE("C1 11" ==  test.lower.PopWriteAsHex()); //FIR/FIN SEQ=1
+	REQUIRE("C1 11" ==  test.link.PopWriteAsHex()); //FIR/FIN SEQ=1
+	test.transport.OnSendResult(true);
 	REQUIRE(test.upper.GetState().mSuccessCnt ==  2);
 }
 
@@ -251,7 +249,7 @@ TEST_CASE(SUITE("ClosedWhileSending"))
 	TransportTestObject test(true);
 	test.upper.SendDown("11"); //get the layer into the sending state
 
-	test.lower.ThisLayerDown(); // go to the TS_ClosedAfterSend state
+	test.transport.OnLowerLayerDown();
 	REQUIRE_FALSE(test.upper.IsOnline());
 }
 
@@ -259,22 +257,24 @@ TEST_CASE(SUITE("SendFullAPDU"))
 {
 	TransportTestObject test(true);
 
-	uint32_t num_packets = CalcMaxPackets(sizes::DEFAULT_APDU_BUFFER_SIZE, TL_MAX_TPDU_PAYLOAD);
-	uint32_t last_packet_length = CalcLastPacketSize(sizes::DEFAULT_APDU_BUFFER_SIZE, TL_MAX_TPDU_PAYLOAD);
-
+	uint32_t numPackets = CalcMaxPackets(sizes::DEFAULT_APDU_BUFFER_SIZE, TL_MAX_TPDU_PAYLOAD);
+	uint32_t lastPacketLength = CalcLastPacketSize(sizes::DEFAULT_APDU_BUFFER_SIZE, TL_MAX_TPDU_PAYLOAD);
+	
 	vector<string> packets;
-	std::string apdu = test.GeneratePacketSequence(packets, num_packets, last_packet_length);
-	test.lower.DisableAutoSendCallback();
+	std::string apdu = test.GeneratePacketSequence(packets, numPackets, lastPacketLength);
+
 	test.upper.SendDown(apdu);
 
-	//verify that each packet is received correctly
-	for(string tpdu : packets)
+	// 9 total packets
+	REQUIRE(numPackets ==  test.link.sends.size());
+	REQUIRE(packets.size() == test.link.sends.size());
+
+	for (auto i = 0; i < packets.size(); ++i)
 	{
-		REQUIRE(1 ==  test.lower.NumWrites());
-		REQUIRE(tpdu ==  test.lower.PopWriteAsHex());
-		REQUIRE(0 ==  test.lower.NumWrites());
-		test.lower.SendSuccess();
+		REQUIRE(packets[i] == test.link.PopWriteAsHex());
 	}
+	
+	test.transport.OnSendResult(true);	
 }
 
 

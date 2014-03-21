@@ -9,6 +9,9 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
+    <Filter Include="Header Files\Mocks">
+      <UniqueIdentifier>{827ec631-2ff6-4ce5-8d90-5a1fc891a042}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\AppLayerTest.h">
@@ -190,6 +193,9 @@
     </ClInclude>
     <ClInclude Include="src\MockTransportLayer.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\MockLinkLayer.h">
+      <Filter>Header Files\Mocks</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

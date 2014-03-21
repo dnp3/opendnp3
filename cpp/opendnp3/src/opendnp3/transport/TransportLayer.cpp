@@ -38,6 +38,8 @@ namespace opendnp3
 
 TransportLayer::TransportLayer(const openpal::Logger& logger, openpal::IExecutor* pExecutor_, uint32_t maxFragSize) :
 	Loggable(logger),
+	pUpperLayer(nullptr),
+	pLinkLayer(nullptr),
 	isOnline(false),
 	pState(TLS_Ready::Inst()),
 	pExecutor(pExecutor_),
@@ -62,7 +64,7 @@ void TransportLayer::TransmitAPDU(const openpal::ReadOnlyBuffer& apdu)
 	transmitter.Configure(apdu);
 	if(pLinkLayer)
 	{
-		//pLowerLayer->Send()
+		pLinkLayer->Send(transmitter);
 	}
 }
 

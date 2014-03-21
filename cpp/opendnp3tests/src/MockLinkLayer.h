@@ -18,24 +18,56 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include "AsyncPhysBaseTest.h"
+#ifndef __MOCK_LINK_LAYER_H_
+#define __MOCK_LINK_LAYER_H_
 
-using namespace openpal;
+#include <vector>
+
+#include <openpal/Loggable.h>
+#include <openpal/ToHex.h>
+
+#include <opendnp3/link/ILinkLayer.h>
+
+#include "BufferHelpers.h"
+
 
 namespace opendnp3
 {
 
-AsyncPhysBaseTest::AsyncPhysBaseTest(LogLevel aLevel, bool aImmediate) :
-	log(),
-	exe(),
-	phys(Logger(&log, aLevel, "phys"), &exe),
-	adapter(Logger(&log, aLevel, "adapter"), &phys, false)	
+class MockLinkLayer : public ILinkLayer, public openpal::HasUpperLayer
 {
-	adapter.SetUpperLayer(&upper);
-	upper.SetLowerLayer(&adapter);	
+
+public:	
+	
+	virtual void Send(IBufferSegment& segments) override final
+	{
+		while (segments.HasValue())
+		{			
+			sends.push_back(openpal::toHex(segments.GetSegment()));
+			segments.Advance();
+		}		
+	}
+
+	std::string PopWriteAsHex()
+	{
+		assert(!sends.empty());
+		auto ret = sends.front();
+		sends.erase(sends.begin());
+		return ret;
+	}
+
+	void SendUp(const std::string& hex)
+	{
+		HexSequence hs(hex);
+		if (pUpperLayer)
+		{
+			pUpperLayer->OnReceive(hs);
+		}
+	}	
+
+	std::vector<std::string> sends;
+};
+
 }
 
-
-}
-
-
+#endif
