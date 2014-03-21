@@ -32,10 +32,10 @@ AppLayerTest::AppLayerTest(bool aIsMaster, uint32_t aNumRetry, LogLevel aLevel, 
 	mts(),
 	app(Logger(&log, aLevel, "app"), &mts, AppConfig(aIsMaster, TimeDuration::Seconds(1), aNumRetry)),
 	writeBuffer(buffer, 4)
-{
+{	
 	lower.SetUpperLayer(&app);
 	app.SetTransportLayer(&lower);
-	app.SetUser(&user);
+	app.SetUser(&user);	
 }
 
 void AppLayerTest::SendUp(const std::string& aBytes)

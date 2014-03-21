@@ -78,29 +78,29 @@ class ACS_SendBase : public ACS_Base
 {
 public:
 
-	void OnSendFailure(AppLayerChannel*);
-	void Cancel(AppLayerChannel* c);
+	void OnSendFailure(AppLayerChannel*) override final;
+	void Cancel(AppLayerChannel* c) override final;
 };
 
 class ACS_Send : public ACS_SendBase
 {
 	MACRO_NAME_SINGLETON_INSTANCE(ACS_Send)
 
-	void OnSendSuccess(AppLayerChannel* c);
+	void OnSendSuccess(AppLayerChannel* c) override final;
 };
 
 class ACS_SendConfirmed : public ACS_SendBase
 {
 	MACRO_NAME_SINGLETON_INSTANCE(ACS_SendConfirmed)
 
-	void OnSendSuccess(AppLayerChannel*);
+	void OnSendSuccess(AppLayerChannel*) override final;
 };
 
 class ACS_SendExpectResponse : public ACS_SendBase
 {
 	MACRO_STATE_SINGLETON_INSTANCE(ACS_SendExpectResponse);
 
-	void OnSendSuccess(AppLayerChannel*);
+	void OnSendSuccess(AppLayerChannel*) override final;
 
 };
 
@@ -108,25 +108,25 @@ class ACS_SendCanceled : public ACS_Base
 {
 	MACRO_STATE_SINGLETON_INSTANCE(ACS_SendCanceled);
 
-	void Cancel(AppLayerChannel*) {} //do nothing if we're canceled and we cancel again
-	void OnSendSuccess(AppLayerChannel*);
-	void OnSendFailure(AppLayerChannel*);
+	void Cancel(AppLayerChannel*)  override final {} //do nothing if we're canceled and we cancel again
+	void OnSendSuccess(AppLayerChannel*) override final;
+	void OnSendFailure(AppLayerChannel*) override final;
 };
 
 class ACS_WaitForConfirm : public ACS_Base
 {
 	MACRO_NAME_SINGLETON_INSTANCE(ACS_WaitForConfirm)
 
-	void Cancel(AppLayerChannel*);
-	void OnConfirm(AppLayerChannel*, int aSequence);
-	void OnTimeout(AppLayerChannel*);
+	void Cancel(AppLayerChannel*) override final;
+	void OnConfirm(AppLayerChannel*, uint8_t sequence) override final;
+	void OnTimeout(AppLayerChannel*) override final;
 };
 
 class ACS_WaitForResponseBase : public ACS_Base
 {
 public:
-	void OnTimeout(AppLayerChannel*);
-	bool AcceptsResponse()
+	void OnTimeout(AppLayerChannel*) override final;
+	bool AcceptsResponse() override final
 	{
 		return true;
 	}

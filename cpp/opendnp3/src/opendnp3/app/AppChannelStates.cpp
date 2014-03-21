@@ -245,10 +245,10 @@ void ACS_WaitForConfirm::Cancel(AppLayerChannel* c)
 	c->DoFailure();
 }
 
-void ACS_WaitForConfirm::OnConfirm(AppLayerChannel* c, int aSeq)
+void ACS_WaitForConfirm::OnConfirm(AppLayerChannel* c, uint8_t seq)
 {
 	// does the confirm sequence match what we expect?
-	if(c->Sequence() == aSeq)
+	if(c->Sequence() == seq)
 	{
 		c->CancelTimer();
 		c->ChangeState(ACS_Idle::Inst());
@@ -257,7 +257,7 @@ void ACS_WaitForConfirm::OnConfirm(AppLayerChannel* c, int aSeq)
 	else
 	{
 		ERROR_LOGGER_BLOCK(c->GetLogger(), LogLevel::Warning,
-		                   "Unexpected confirm w/ sequence " << aSeq, ALERR_UNEXPECTED_CONFIRM);
+		                   "Unexpected confirm w/ sequence " << static_cast<int>(seq), ALERR_UNEXPECTED_CONFIRM);
 	}
 
 }

@@ -67,7 +67,8 @@ TEST_CASE(SUITE("TestTransportWithMockLoopback"))
 	LinkConfig cfgA(true, true);
 	LinkConfig cfgB(false, true);
 
-	EventLog log;	
+	EventLog log;
+	log.AddLogSubscriber(LogToStdio::Inst());
 	asio::io_service service;
 	LoopbackPhysicalLayerAsync phys(Logger(&log, level, "loopback"), &service);
 	TransportLoopbackTestObject t(Logger(&log, level, "test"), &service, &phys, cfgA, cfgB);

@@ -69,6 +69,9 @@ TransportLoopbackTestObject::TransportLoopbackTestObject(
 
 	mTransA.SetAppLayer(&mUpperA);
 	mTransB.SetAppLayer(&mUpperB);	
+
+	mUpperA.SetLowerLayer(&mTransA);
+	mUpperB.SetLowerLayer(&mTransB);
 }
 
 TransportLoopbackTestObject::~TransportLoopbackTestObject()

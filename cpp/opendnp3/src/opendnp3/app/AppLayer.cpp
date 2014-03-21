@@ -307,7 +307,10 @@ void AppLayer::OnRequest(const APDURecord& record)
 	}
 	else
 	{
-		if(record.control.IsFirAndFin()) mSolicited.OnRequest(record);
+		if (record.control.IsFirAndFin())
+		{
+			mSolicited.OnRequest(record);
+		}
 		else
 		{
 			ERROR_BLOCK(LogLevel::Warning,  "Received non FIR/FIN request", ALERR_MULTI_FRAGEMENT_REQUEST);
