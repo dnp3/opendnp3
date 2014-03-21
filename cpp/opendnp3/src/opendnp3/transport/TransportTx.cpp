@@ -37,9 +37,7 @@ namespace opendnp3
 {
 
 TransportTx::TransportTx() : sequence(0), tpduCount(0)
-{
-
-}
+{}
 
 void TransportTx::Configure(const openpal::ReadOnlyBuffer& output)
 {
@@ -48,26 +46,31 @@ void TransportTx::Configure(const openpal::ReadOnlyBuffer& output)
 	this->tpduCount = 0;
 }
 
-bool TransportTx::HasNext() const
+bool TransportTx::HasValue() const
 {
 	return apdu.Size() > 0;
 }
 
-openpal::ReadOnlyBuffer TransportTx::Next()
-{
-	assert(apdu.Size() > 0);
-	uint8_t numToSend = apdu.Size() < TL_MAX_TPDU_PAYLOAD ? static_cast<uint8_t>(apdu.Size()) : TL_MAX_TPDU_PAYLOAD;
+openpal::ReadOnlyBuffer TransportTx::GetSegment()
+{		
+	uint32_t numToSend = apdu.Size() < 249 ? apdu.Size() : 249;
 	memcpy(tpduBuffer.Buffer() + 1, apdu, numToSend);
-	apdu.Advance(numToSend);
-
 	bool fir = (tpduCount == 0);	
-	bool fin = apdu.IsEmpty();
-	++tpduCount;
+	bool fin = apdu.IsEmpty();	
 	tpduBuffer[0] = GetHeader(fir, fin, sequence);
-	sequence = (sequence + 1) % 64;
-
 	return ReadOnlyBuffer(tpduBuffer.Buffer(), numToSend + 1);
 }	
+
+bool TransportTx::Advance()
+{
+	uint32_t numToSend = apdu.Size() < 249 ? apdu.Size() : 249;
+	apdu.Advance(numToSend);
+	++tpduCount;
+	sequence = (sequence + 1) % 64;
+	return apdu.IsNotEmpty();
+}
+
+
 
 uint8_t TransportTx::GetHeader(bool fir, bool fin, uint8_t sequence)
 {

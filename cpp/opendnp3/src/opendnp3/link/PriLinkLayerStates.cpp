@@ -65,12 +65,12 @@ void PriStateBase::OnTimeout(LinkLayer* apLL)
 	LOGGER_BLOCK(apLL->GetLogger(), LogLevel::Error, "Invalid action for state: " << this->Name());
 }
 
-void PriStateBase::SendConfirmed(LinkLayer* apLL, const ReadOnlyBuffer&)
+void PriStateBase::SendConfirmed(LinkLayer* apLL, IBufferSegment&)
 {
 	LOGGER_BLOCK(apLL->GetLogger(), LogLevel::Error, "Invalid action for state: " << this->Name());
 }
 
-void PriStateBase::SendUnconfirmed(LinkLayer* apLL, const ReadOnlyBuffer&)
+void PriStateBase::SendUnconfirmed(LinkLayer* apLL, IBufferSegment&)
 {
 	LOGGER_BLOCK(apLL->GetLogger(), LogLevel::Error, "Invalid action for state: " << this->Name());
 }
@@ -81,19 +81,27 @@ void PriStateBase::SendUnconfirmed(LinkLayer* apLL, const ReadOnlyBuffer&)
 
 PLLS_SecNotReset PLLS_SecNotReset::mInstance;
 
-void PLLS_SecNotReset::SendUnconfirmed(LinkLayer* apLL, const ReadOnlyBuffer& output)
+void PLLS_SecNotReset::SendUnconfirmed(LinkLayer* apLL, IBufferSegment& segments)
 {
-	apLL->QueueUnconfirmedUserData(output);
-	apLL->ChangeState(PLLS_SendUnconfirmedTransmitWait<PLLS_SecNotReset>::Inst());	
+	auto output = apLL->FormatPrimaryBufferWithUnconfirmed(segments);
+	if (output.IsEmpty())
+	{
+		LOGGER_BLOCK(apLL->GetLogger(), LogLevel::Error, "upper layer provided more data than can be transmitted");
+		apLL->PostSendResult(false);
+	}
+	else
+	{
+		apLL->QueueTransmit(output, true);
+		apLL->ChangeState(PLLS_SendUnconfirmedTransmitWait<PLLS_SecNotReset>::Inst());
+	}	
 }
 
-void PLLS_SecNotReset::SendConfirmed(LinkLayer* apLL, const ReadOnlyBuffer& arBuffer)
+void PLLS_SecNotReset::SendConfirmed(LinkLayer* apLL, IBufferSegment& segments)
 {
-	// what we'll send if we successfully reset link state
 	apLL->ResetRetry();
-	apLL->mDelayedPriFrame.FormatConfirmedUserData(apLL->mCONFIG.IsMaster, true, apLL->mCONFIG.RemoteAddr, apLL->mCONFIG.LocalAddr, arBuffer, arBuffer.Size());
+	apLL->pConfirmedSegments = &segments;	
 	apLL->QueueResetLinks();
-	apLL->ChangeState(PLLS_LinkResetTransmitWait::Inst());
+	apLL->ChangeState(PLLS_LinkResetTransmitWait::Inst());	
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -113,7 +121,7 @@ void PLLS_LinkResetTransmitWait::OnTransmitResult(LinkLayer* apLL, bool success)
 	else
 	{
 		apLL->ChangeState(PLLS_SecNotReset::Inst());
-		apLL->DoSendFailure();
+		apLL->DoSendResult(success);
 	}
 }
 
@@ -134,7 +142,7 @@ void PLLS_ConfUserDataTransmitWait::OnTransmitResult(LinkLayer* apLL, bool succe
 	else
 	{
 		apLL->ChangeState(PLLS_SecReset::Inst());
-		apLL->DoSendFailure();
+		apLL->DoSendResult(false);
 	}
 }
 
@@ -145,18 +153,29 @@ void PLLS_ConfUserDataTransmitWait::OnTransmitResult(LinkLayer* apLL, bool succe
 
 PLLS_SecReset PLLS_SecReset::mInstance;
 
-void PLLS_SecReset::SendUnconfirmed(LinkLayer* apLL, const ReadOnlyBuffer& output)
-{
-	apLL->QueueUnconfirmedUserData(output);
-	apLL->ChangeState(PLLS_SendUnconfirmedTransmitWait<PLLS_SecNotReset>::Inst());
+void PLLS_SecReset::SendUnconfirmed(LinkLayer* apLL, IBufferSegment& segments)
+{	
+	auto output = apLL->FormatPrimaryBufferWithUnconfirmed(segments);
+	if (output.IsEmpty())
+	{
+		LOGGER_BLOCK(apLL->GetLogger(), LogLevel::Error, "upper layer provided more data than can be transmitted");
+		apLL->PostSendResult(false);
+	}
+	else
+	{
+		apLL->QueueTransmit(output, true);
+		apLL->ChangeState(PLLS_SendUnconfirmedTransmitWait<PLLS_SecReset>::Inst());
+	}	
 }
 
-void PLLS_SecReset::SendConfirmed(LinkLayer* apLL, const ReadOnlyBuffer& arBuffer)
-{
+void PLLS_SecReset::SendConfirmed(LinkLayer* apLL, IBufferSegment& segments)
+{	
 	apLL->ResetRetry();
-	apLL->mDelayedPriFrame.FormatConfirmedUserData(apLL->mCONFIG.IsMaster, apLL->NextWriteFCB(), apLL->mCONFIG.RemoteAddr, apLL->mCONFIG.LocalAddr, arBuffer, arBuffer.Size());
-	apLL->QueueDelayedUserData(apLL->NextWriteFCB());
+	apLL->pConfirmedSegments = &segments;
+	auto buffer = apLL->FormatPrimaryBufferWithConfirmed(segments, apLL->NextWriteFCB());
+	apLL->QueueTransmit(buffer, true);
 	apLL->ChangeState(PLLS_ConfUserDataTransmitWait::Inst());	
+	
 }
 
 ////////////////////////////////////////////////////////
@@ -166,11 +185,12 @@ void PLLS_SecReset::SendConfirmed(LinkLayer* apLL, const ReadOnlyBuffer& arBuffe
 PLLS_ResetLinkWait PLLS_ResetLinkWait::mInstance;
 
 void PLLS_ResetLinkWait::Ack(LinkLayer* apLL, bool aIsRcvBuffFull)
-{	
+{		
 	apLL->ResetWriteFCB();
-	apLL->CancelTimer();
-	apLL->QueueDelayedUserData(apLL->NextWriteFCB());	
-	apLL->ChangeState(PLLS_ConfUserDataTransmitWait::Inst());	
+	apLL->CancelTimer();	
+	auto buffer = apLL->FormatPrimaryBufferWithConfirmed(*apLL->pConfirmedSegments, apLL->NextWriteFCB());
+	apLL->QueueTransmit(buffer, true);
+	apLL->ChangeState(PLLS_ConfUserDataTransmitWait::Inst());				
 }
 
 void PLLS_ResetLinkWait::OnTimeout(LinkLayer* apLL)
@@ -185,7 +205,7 @@ void PLLS_ResetLinkWait::OnTimeout(LinkLayer* apLL)
 	{
 		ERROR_LOGGER_BLOCK(apLL->GetLogger(), LogLevel::Warning, "Confirmed data final timeout", DLERR_TIMEOUT_NO_RETRY);
 		apLL->ChangeState(PLLS_SecNotReset::Inst());
-		apLL->DoSendFailure();
+		apLL->DoSendResult(false);
 	}
 }
 
@@ -193,7 +213,7 @@ void PLLS_ResetLinkWait::Failure(LinkLayer* apLL)
 {
 	apLL->CancelTimer();
 	apLL->ChangeState(PLLS_SecNotReset::Inst());
-	apLL->DoSendFailure();
+	apLL->DoSendResult(false);
 }
 
 ////////////////////////////////////////////////////////
@@ -206,13 +226,26 @@ void PLLS_ConfDataWait::Ack(LinkLayer* apLL, bool aIsRcvBuffFull)
 {
 	apLL->ToggleWriteFCB();
 	apLL->CancelTimer();
-	apLL->ChangeState(PLLS_SecReset::Inst());
-	apLL->DoSendSuccess();
+
+	if (apLL->pConfirmedSegments->Advance())
+	{
+		auto buffer = apLL->FormatPrimaryBufferWithConfirmed(*apLL->pConfirmedSegments, apLL->NextWriteFCB());
+		apLL->QueueTransmit(buffer, true);
+		apLL->ChangeState(PLLS_ConfUserDataTransmitWait::Inst());
+	}
+	else //we're done!
+	{
+		apLL->ChangeState(PLLS_SecReset::Inst());
+		apLL->DoSendResult(true);
+	}	
 }
 
 void PLLS_ConfDataWait::Nack(LinkLayer* apLL, bool aIsRcvBuffFull)
 {
-	if(aIsRcvBuffFull) Failure(apLL);
+	if (aIsRcvBuffFull)
+	{
+		Failure(apLL);
+	}
 	else
 	{
 		apLL->ResetRetry();
@@ -226,23 +259,24 @@ void PLLS_ConfDataWait::Failure(LinkLayer* apLL)
 {
 	apLL->CancelTimer();
 	apLL->ChangeState(PLLS_SecNotReset::Inst());
-	apLL->DoSendFailure();
+	apLL->DoSendResult(false);
 }
 
 void PLLS_ConfDataWait::OnTimeout(LinkLayer* apLL)
-{
+{	
 	if(apLL->Retry())
 	{
-		ERROR_LOGGER_BLOCK(apLL->GetLogger(), LogLevel::Warning, "Retry confirmed data", DLERR_TIMEOUT_RETRY);		
-		apLL->QueueDelayedUserData(apLL->NextWriteFCB());
+		ERROR_LOGGER_BLOCK(apLL->GetLogger(), LogLevel::Warning, "Retry confirmed data", DLERR_TIMEOUT_RETRY);
+		auto buffer = apLL->FormatPrimaryBufferWithConfirmed(*apLL->pConfirmedSegments, apLL->NextWriteFCB());
+		apLL->QueueTransmit(buffer, true);		
 		apLL->ChangeState(PLLS_ConfUserDataTransmitWait::Inst());		
 	}
 	else
 	{
 		ERROR_LOGGER_BLOCK(apLL->GetLogger(), LogLevel::Warning, "Confirmed data timeout", DLERR_TIMEOUT_NO_RETRY);
 		apLL->ChangeState(PLLS_SecNotReset::Inst());
-		apLL->DoSendFailure();
-	}
+		apLL->DoSendResult(false);
+	}	
 }
 
 } //end namepsace

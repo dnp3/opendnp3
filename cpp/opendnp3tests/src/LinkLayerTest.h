@@ -22,7 +22,7 @@
 #define __LINK_LAYER_TEST_H_
 
 #include "LogTester.h"
-#include "MockUpperLayer.h"
+#include "MockTransportLayer.h"
 #include "MockExecutor.h"
 
 #include <opendnp3/link/LinkLayer.h>
@@ -46,9 +46,9 @@ public:
 
 	LogTester log;
 	MockExecutor mts;
-	MockUpperLayer upper;
 	LinkLayer link;
-
+	MockTransportLayer upper;
+	
 	openpal::ReadOnlyBuffer lastWrite;
 	uint32_t numWrites;
 };

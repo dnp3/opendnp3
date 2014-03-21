@@ -32,7 +32,9 @@ using namespace openpal;
 namespace opendnp3
 {
 
-MockUpperLayer::MockUpperLayer(openpal::Logger logger) : Loggable(logger), isOnline(false)
+MockUpperLayer::MockUpperLayer(openpal::Logger logger) : 
+	Loggable(logger),	
+	isOnline(false)
 {
 
 }
@@ -83,9 +85,9 @@ void MockUpperLayer::SendDown(const openpal::ReadOnlyBuffer& buffer)
 	}
 }
 
-void MockUpperLayer::SendDown(const std::string& arHexData)
+void MockUpperLayer::SendDown(const std::string& hex)
 {
-	HexSequence hs(arHexData);
+	HexSequence hs(hex);
 	this->SendDown(hs.ToReadOnly());
 }
 

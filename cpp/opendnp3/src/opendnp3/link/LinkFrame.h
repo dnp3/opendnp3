@@ -22,140 +22,73 @@
 #define __LINK_FRAME_H_
 
 #include "opendnp3/gen/FunctionCode.h"
-#include "LinkHeader.h"
+#include "opendnp3/gen/LinkFunction.h"
 
 #include <openpal/BufferWrapper.h>
+#include <openpal/Uncopyable.h>
 
-#include <string>
 
-namespace opendnp3
+namespace opendnp3 
 {
 
-class LinkFrame
-{
-	friend std::ostream& operator<<(std::ostream&, const LinkFrame&);
-	friend class FrameReaderDNP;
+class LinkFrame : private openpal::PureStatic
+{	
 
-public:
-
-	bool operator==(const LinkFrame& arRHS) const;
-
-	LinkFrame();	
-
-	openpal::ReadOnlyBuffer ToReadOnly() const
-	{
-		return openpal::ReadOnlyBuffer(mpBuffer, mSize);
-	}
-
-	bool IsComplete() const
-	{
-		return mIsComplete;
-	}
-
-	bool ValidateHeaderCRC() const;
-	bool ValidateBodyCRC() const;
-
-	// Helpers for extracting data
-	inline bool Valid_0564() const
-	{
-		return mpBuffer[LI_START_05] == 0x05 && mpBuffer[LI_START_64] == 0x64;
-	}
-
-	inline uint8_t	GetLength() const
-	{
-		return mHeader.GetLength();
-	}
-	inline LinkFunction	GetFunc() const
-	{
-		return mHeader.GetFuncEnum();
-	}
-
-	inline uint16_t  GetDest() const
-	{
-		return mHeader.GetDest();
-	}
-	inline uint16_t GetSrc() const
-	{
-		return mHeader.GetSrc();
-	}
-
-	inline bool IsFromMaster() const
-	{
-		return mHeader.IsFromMaster();
-	}
-	inline bool IsPriToSec() const
-	{
-		return mHeader.IsPriToSec();
-	}
-	inline bool IsFcbSet() const
-	{
-		return mHeader.IsFcbSet();
-	}
-	inline bool IsFcvDfcSet() const
-	{
-		return mHeader.IsFcvDfcSet();
-	}
+public:			
 
 	////////////////////////////////////////////////
 	//	Functions for formatting outgoing Sec to Pri frames
 	////////////////////////////////////////////////
 
-	void FormatAck(bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc);
-	void FormatNack(bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc);
-	void FormatLinkStatus(bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc);
-	void FormatNotSupported (bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc);
+	static openpal::ReadOnlyBuffer FormatAck(openpal::WriteBuffer& output, bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc);
+	static openpal::ReadOnlyBuffer FormatNack(openpal::WriteBuffer& output, bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc);
+	static openpal::ReadOnlyBuffer FormatLinkStatus(openpal::WriteBuffer& output, bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc);
+	static openpal::ReadOnlyBuffer FormatNotSupported(openpal::WriteBuffer& output, bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc);
 
 	////////////////////////////////////////////////
 	//	Functions for formatting outgoing Pri to Sec frames
 	////////////////////////////////////////////////
 
-	void FormatTestLinkStatus(bool aIsMaster, bool aFcb, uint16_t aDest, uint16_t aSrc);
-	void FormatResetLinkStates(bool aIsMaster, uint16_t aDest, uint16_t aSrc);
-	void FormatRequestLinkStatus(bool aIsMaster, uint16_t aDest, uint16_t aSrc);
-	void FormatConfirmedUserData(bool aIsMaster, bool aFcb, uint16_t aDest, uint16_t aSrc, const uint8_t* apData, uint32_t aDataLength);
-	void FormatUnconfirmedUserData(bool aIsMaster, uint16_t aDest, uint16_t aSrc, const uint8_t* apData, uint32_t aDataLength);
-
-	void ChangeFCB(bool aFCB);
+	static openpal::ReadOnlyBuffer FormatTestLinkStatus(openpal::WriteBuffer& output, bool aIsMaster, bool aFcb, uint16_t aDest, uint16_t aSrc);
+	static openpal::ReadOnlyBuffer FormatResetLinkStates(openpal::WriteBuffer& output, bool aIsMaster, uint16_t aDest, uint16_t aSrc);
+	static openpal::ReadOnlyBuffer FormatRequestLinkStatus(openpal::WriteBuffer& output, bool aIsMaster, uint16_t aDest, uint16_t aSrc);
+	static openpal::ReadOnlyBuffer FormatConfirmedUserData(openpal::WriteBuffer& output, bool aIsMaster, bool aFcb, uint16_t aDest, uint16_t aSrc, const uint8_t* apData, uint8_t aDataLength);
+	static openpal::ReadOnlyBuffer FormatUnconfirmedUserData(openpal::WriteBuffer& output, bool aIsMaster, uint16_t aDest, uint16_t aSrc, const uint8_t* apData, uint8_t aDataLength);
 
 	////////////////////////////////////////////////
 	//	Reusable static formatting functions to any buffer
 	////////////////////////////////////////////////
 
-	// @return Total frame size based on user data length
-	static uint32_t CalcFrameSize(uint32_t aDataLength);
-
-	/** @return String representation of the frame */
-	std::string ToString() const;
-
-	/** Validates FT3 user data integriry
-		@param apBody Beginning of the FT3 user data
-		@param aLength Number of user bytes to verify, not user + crc.
-		@return True if the body CRC is correct */
-	static bool ValidateBodyCRC(const uint8_t* apBody, uint32_t aLength);
-
 	/** Reads data from src to dest removing 2 byte CRC checks every 16 data bytes
-		@param apSrc Source buffer with crc checks. Must begin at data, not header
-		@param apDest Destination buffer to which the data is extracted
-		@param aLength Length of user data to read to the dest buffer. The source buffer must be larger b/c of crc bytes.
+	@param apSrc Source buffer with crc checks. Must begin at data, not header
+	@param apDest Destination buffer to which the data is extracted
+	@param aLength Length of user data to read to the dest buffer. The source buffer must be larger b/c of crc bytes.
 	*/
 	static void ReadUserData(const uint8_t* apSrc, uint8_t* apDest, uint32_t aLength);
 
+	/** Validates FT3 user data integriry
+	@param apBody Beginning of the FT3 user data
+	@param aLength Number of user bytes to verify, not user + crc.
+	@return True if the body CRC is correct */
+	static bool ValidateBodyCRC(const uint8_t* apBody, uint32_t aLength);
+
+	// @return Total frame size based on user data length
+	static uint32_t CalcFrameSize(uint8_t dataLength);
+
 private:
+
+	static uint32_t CalcUserDataSize(uint8_t dataLength);
+
 
 	/** Writes data from src to dest interlacing 2 byte CRC checks every 16 data bytes
 		@param apSrc Source buffer full of user data
 		@param apDest Destination buffer where the data + CRC is written
 		@param length Number of user data bytes
 	*/
-	static void WriteUserData(const uint8_t* apSrc, uint8_t* apDest, uint32_t length);
+	static void WriteUserData(const uint8_t* pSrc, uint8_t* pDest, uint8_t length);
 
 	/** Write 10 header bytes to to buffer including 0x0564, all fields, and CRC */
-	void FormatHeader(uint32_t aDataLength, bool aIsMaster, bool aFcb, bool aFcvDfc, LinkFunction aCode, uint16_t aDest, uint16_t aSrc);
-
-	bool mIsComplete;
-	uint32_t mSize;
-	LinkHeader mHeader;
-	uint8_t mpBuffer[LS_MAX_FRAME_SIZE];
+	static openpal::ReadOnlyBuffer FormatHeader(openpal::WriteBuffer& output, uint8_t aDataLength, bool aIsMaster, bool aFcb, bool aFcvDfc, LinkFunction aCode, uint16_t aDest, uint16_t aSrc);
 
 };
 

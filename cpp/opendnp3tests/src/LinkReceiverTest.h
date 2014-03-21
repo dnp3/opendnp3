@@ -41,19 +41,18 @@ public:
 		mSink(),
 		mRx(openpal::Logger(&log, aLevel, "ReceiverTest"), &mSink)
 	{}
-
-	void WriteData(const LinkFrame& frame)
+	
+	void WriteData(const openpal::ReadOnlyBuffer& input)
 	{
-		auto buff = mRx.WriteBuff();
-		auto write = frame.ToReadOnly();
-		assert(write.Size() <= buff.Size());
-		write.CopyTo(buff);		
-		mRx.OnRead(write.Size());
+		auto buff = mRx.WriteBuff();		
+		assert(input.Size() <= buff.Size());
+		input.CopyTo(buff);		
+		mRx.OnRead(input.Size());
 	}
 
-	void WriteData(const std::string& arHex)
+	void WriteData(const std::string& hex)
 	{
-		HexSequence hs(arHex);
+		HexSequence hs(hex);
 		auto buff = mRx.WriteBuff();
 		assert(hs.Size() <= buff.Size());
 		memcpy(buff, hs, hs.Size());

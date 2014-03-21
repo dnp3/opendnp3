@@ -21,11 +21,14 @@
 #include "BufferHelpers.h"
 
 #include <openpal/Location.h>
+#include <openpal/ToHex.h>
 
 #include "Exception.h"
 
 #include <memory.h>
 #include <sstream>
+#include <assert.h>
+#include <algorithm>
 
 using namespace std;
 using namespace openpal;
@@ -60,6 +63,11 @@ bool ByteStr::operator==(const ByteStr& arRHS) const
 		if(mpBuff[i] != arRHS[i]) return false;
 
 	return true;
+}
+
+std::string ByteStr::ToHex() const
+{
+	return toHex(ToReadOnly());
 }
 
 HexSequence::HexSequence( const std::string& aSequence) :
@@ -106,6 +114,38 @@ uint32_t HexSequence::Validate(const std::string& s)
 
 	if(s.size() % 2 != 0) throw ArgumentException(LOCATION, s);
 	return static_cast<uint32_t>(s.size() / 2);
+}
+
+BufferSegment::BufferSegment(uint32_t segmentSize_, const std::string& hex) : 
+	segmentSize(segmentSize_),
+	hs(hex),
+	remainder(hs.ToReadOnly())
+{
+	assert(segmentSize > 0);
+}
+
+void BufferSegment::Reset()
+{
+	remainder = hs.ToReadOnly();
+}
+
+bool BufferSegment::HasValue() const
+{
+	return remainder.Size() > 0;
+}
+
+openpal::ReadOnlyBuffer BufferSegment::GetSegment()
+{
+	auto size = std::min(segmentSize, remainder.Size());
+	auto chunk = remainder.Truncate(size);	
+	return chunk;
+}
+
+bool BufferSegment::Advance()
+{
+	auto size = std::min(segmentSize, remainder.Size());
+	remainder.Advance(size);
+	return remainder.IsNotEmpty();
 }
 
 }

@@ -33,7 +33,7 @@ AsyncPhysBaseTest::AsyncPhysBaseTest(LogLevel aLevel, bool aImmediate) :
 	upper(Logger(&log, aLevel, "upper"))
 {
 	adapter.SetUpperLayer(&upper);
-	upper.SetLowerLayer(&adapter);
+	upper.SetLowerLayer(&adapter);	
 }
 
 

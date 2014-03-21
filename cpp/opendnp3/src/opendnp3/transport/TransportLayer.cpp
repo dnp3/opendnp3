@@ -60,17 +60,9 @@ void TransportLayer::ChangeState(TLS_Base* pNewState)
 void TransportLayer::TransmitAPDU(const openpal::ReadOnlyBuffer& apdu)
 {
 	transmitter.Configure(apdu);
-	if(pLowerLayer)
+	if(pLinkLayer)
 	{
 		//pLowerLayer->Send()
-	}
-}
-
-void TransportLayer::TransmitTPDU(const openpal::ReadOnlyBuffer& tpdu)
-{
-	if(pLowerLayer)
-	{
-		pLowerLayer->Send(tpdu);
 	}
 }
 
@@ -151,6 +143,20 @@ void TransportLayer::OnSendResult(bool isSuccess)
 	{
 		LOG_BLOCK(LogLevel::Error, "Layer offline");
 	}
+}
+
+void TransportLayer::SetAppLayer(openpal::IUpperLayer* pUpperLayer_)
+{
+	assert(pUpperLayer_ != nullptr);
+	assert(pUpperLayer == nullptr);
+	pUpperLayer = pUpperLayer_;
+}
+
+void TransportLayer::SetLinkLayer(ILinkLayer* pLinkLayer_)
+{
+	assert(pLinkLayer_ != nullptr);
+	assert(pLinkLayer == nullptr);
+	pLinkLayer = pLinkLayer_;
 }
 
 void TransportLayer::OnLowerLayerUp()

@@ -30,12 +30,11 @@
 namespace opendnp3
 {
 
-class MockLowerLayer : public openpal::ILowerLayer, private openpal::Loggable
+class MockLowerLayer : public openpal::ILowerLayer, public openpal::HasUpperLayer, private openpal::Loggable
 {
 public:
 	MockLowerLayer(openpal::Logger);
-	virtual ~MockLowerLayer() {}
-
+	
 	void SendUp(const openpal::ReadOnlyBuffer& arBuffer);
 	void SendUp(const std::string&);
 	void SendSuccess();
@@ -56,12 +55,7 @@ private:
 
 	bool mAutoSendCallback;
 	bool mIsSuccess;
-	std::queue<openpal::ReadOnlyBuffer> sendQueue;
-
-	virtual std::string SendString() const
-	{
-		return " MockLowerLayer ->";
-	}	
+	std::queue<openpal::ReadOnlyBuffer> sendQueue;	
 };
 
 }

@@ -23,6 +23,8 @@
 
 #include "openpal/BufferWrapper.h"
 
+#include <assert.h>
+
 namespace openpal
 {
 
@@ -47,8 +49,6 @@ class IUpperLayer : public IUpDown
 {
 
 public:
-
-	IUpperLayer() : pLowerLayer(nullptr) {}
 	
 	virtual ~IUpperLayer() {}
 
@@ -61,30 +61,59 @@ public:
 	// unless the the OnLowerLayerDown() function is called beforehand
 	virtual void OnSendResult(bool isSucccess) = 0;	
 
-	// Used to set the pointer to the lower layer
-	void SetLowerLayer(ILowerLayer*);
-
-protected:
-
-	ILowerLayer* pLowerLayer;	
 };
 
 class ILowerLayer
 {
 
 public:
-
-	ILowerLayer() : pUpperLayer(nullptr) {}
 	
 	virtual ~ILowerLayer() {}
 
-	virtual void Send(const ReadOnlyBuffer&) = 0;
+	virtual void Send(const ReadOnlyBuffer&) = 0;	
 
-	void SetUpperLayer(IUpperLayer*);
+};
+
+class HasLowerLayer
+{
+
+public:
+
+	HasLowerLayer() : pLowerLayer(nullptr) {}
+
+	// Called by the lower layer when data arrives
+
+	void SetLowerLayer(ILowerLayer* pLowerLayer_)
+	{
+		assert(pLowerLayer_ != nullptr);
+		assert(pLowerLayer == nullptr);
+		pLowerLayer = pLowerLayer_;
+	}	
 
 protected:
 
-	IUpperLayer* pUpperLayer;	
+	ILowerLayer* pLowerLayer;
+};
+
+class HasUpperLayer
+{
+
+public:
+
+	HasUpperLayer() : pUpperLayer(nullptr) {}
+
+	// Called by the lower layer when data arrives
+
+	void SetUpperLayer(IUpperLayer* pUpperLayer_)
+	{
+		assert(pUpperLayer_ != nullptr);
+		assert(pUpperLayer == nullptr);
+		pUpperLayer = pUpperLayer_;
+	}
+
+protected:
+
+	IUpperLayer* pUpperLayer;
 };
 
 }

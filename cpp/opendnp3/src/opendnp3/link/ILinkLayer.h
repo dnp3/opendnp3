@@ -19,34 +19,42 @@
  * to you under the terms of the License.
  */
 
-#include "AsyncLayerInterfaces.h"
+#ifndef __I_LINK_LAYER_H_
+#define __I_LINK_LAYER_H_
 
-#include "openpal/LoggableMacros.h"
-#include "openpal/ToHex.h"
+#include "opendnp3/IBufferSegment.h"
+
+#include <openpal/AsyncLayerInterfaces.h>
 
 #include <assert.h>
 
-namespace openpal
+namespace opendnp3
 {
 
-//////////////////////////////////
-// IUpDown
-//////////////////////////////////
-
-void IUpperLayer::SetLowerLayer(ILowerLayer* pLowerLayer_)
+class ILinkLayer
 {
-	assert(pLowerLayer_ != nullptr);
-	pLowerLayer = pLowerLayer_;
+
+public:
+
+	ILinkLayer() : pUpperLayer(nullptr) {}
+	
+	virtual ~ILinkLayer() {}
+
+	/// Transmit a buffer that can be iterated over in no greater than 250 byte segments
+	virtual void Send(IBufferSegment& segment) = 0;
+
+	void SetUpperLayer(openpal::IUpperLayer* pUpperLayer_)
+	{
+		assert(pUpperLayer_ != nullptr);
+		assert(pUpperLayer == nullptr);
+		pUpperLayer = pUpperLayer_;
+	}
+
+protected:
+
+	openpal::IUpperLayer* pUpperLayer;
+};
+
 }
 
-//////////////////////////////////
-// ILowerLayer
-//////////////////////////////////
-
-void ILowerLayer::SetUpperLayer(IUpperLayer* pUpperLayer_)
-{
-	assert(pUpperLayer_ != nullptr);
-	pUpperLayer = pUpperLayer_;	
-}
-
-}
+#endif

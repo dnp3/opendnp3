@@ -35,6 +35,7 @@ AsyncSerialTestObject::AsyncSerialTestObject(SerialSettings cfg, LogLevel aLevel
 	mUpper(Logger(&log, aLevel, "MockUpper"))
 {
 	mAdapter.SetUpperLayer(&mUpper);
+	mUpper.SetLowerLayer(&mAdapter);
 }
 
 }

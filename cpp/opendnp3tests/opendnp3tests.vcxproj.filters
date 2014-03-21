@@ -188,6 +188,9 @@
     <ClInclude Include="src\MultiplexingDataObserver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\MockTransportLayer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\AppLayerTest.cpp">
@@ -331,9 +334,6 @@
     <ClCompile Include="src\TestLazyCollection.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\TestLinkFrameDNP.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\TestLinkLayer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -446,6 +446,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\MultiplexingDataObserver.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\TestLinkFrame.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MockTransportLayer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

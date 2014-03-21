@@ -33,6 +33,11 @@ namespace opendnp3
 
 LinkHeader::LinkHeader() {}
 
+LinkHeader::LinkHeader(uint8_t aLen, uint16_t aSrc, uint16_t aDest, bool aFromMaster, bool aFcvDfc, bool aFcb, LinkFunction aCode)
+{
+	this->Set(aLen, aSrc, aDest, aFromMaster, aFcvDfc, aFcb, aCode);
+}
+
 void LinkHeader::Set(uint8_t aLen, uint16_t aSrc, uint16_t aDest, bool aFromMaster, bool aFcvDfc, bool aFcb, LinkFunction aCode)
 {
 	length = aLen;

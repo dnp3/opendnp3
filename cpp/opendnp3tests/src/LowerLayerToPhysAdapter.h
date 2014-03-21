@@ -37,13 +37,12 @@ namespace opendnp3
 
 /** Class for turning an async physical layer into an ILowerLayer
 */
-class LowerLayerToPhysAdapter : public openpal::IHandlerAsync, public openpal::ILowerLayer, private openpal::Loggable
+class LowerLayerToPhysAdapter : public openpal::IHandlerAsync, public openpal::ILowerLayer, public openpal::HasUpperLayer, private openpal::Loggable
 {
 
 public:
 	LowerLayerToPhysAdapter(openpal::Logger, openpal::IPhysicalLayerAsync*, bool aAutoRead = true);
-	~LowerLayerToPhysAdapter();
-
+	
 	size_t GetNumOpenFailure()
 	{
 		return mNumOpenFailure;
@@ -71,28 +70,15 @@ public:
 
 
 private:
-
-	virtual std::string RecvString() const
-	{
-		return "Adapter <-";
-	}
-	virtual std::string SendString() const
-	{
-		return "Adapter ->";
-	}
-
+	
 	bool mAutoRead;
 	size_t mNumOpenFailure;
 
 	static const size_t BUFFER_SIZE = 1 << 16; // 65,536
 
 	uint8_t mpBuff[BUFFER_SIZE]; // Temporary buffer since IPhysicalLayerAsync now directly supports a read operation
-
 	
-
 	openpal::IPhysicalLayerAsync* mpPhys;
-
-	
 };
 
 }

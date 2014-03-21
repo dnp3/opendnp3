@@ -32,6 +32,8 @@ struct LinkHeader
 {
 	LinkHeader();
 
+	LinkHeader(uint8_t aLen, uint16_t aSrc, uint16_t aDest, bool aFromMaster, bool aFcvDfc, bool aFcb, LinkFunction aCode);
+
 	// Setter
 
 	void Set(uint8_t aLen, uint16_t aSrc, uint16_t aDest, bool aFromMaster, bool aFcvDfc, bool aFcb, LinkFunction aCode);

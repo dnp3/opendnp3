@@ -64,7 +64,6 @@
     <ClInclude Include="src\openpal\Comparisons.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\openpal\AsyncLayerInterfaces.cpp" />
     <ClCompile Include="src\openpal\BufferWrapper.cpp" />
     <ClCompile Include="src\openpal\gen\LogLevel.cpp" />
     <ClCompile Include="src\openpal\LogEntry.cpp" />

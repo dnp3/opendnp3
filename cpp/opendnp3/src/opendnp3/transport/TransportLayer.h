@@ -26,8 +26,9 @@
 
 #include <openpal/IExecutor.h>
 #include <openpal/Loggable.h>
+#include <openpal/AsyncLayerInterfaces.h>
 
-#include "opendnp3/LayerInterfaces.h"
+#include "opendnp3/link/ILinkLayer.h"
 #include "opendnp3/StaticSizeConfiguration.h"
 
 
@@ -39,7 +40,7 @@ class TLS_Base;
 /** Implements the DNP3 transport layer as a generic
 asynchronous protocol stack layer
 */
-class TransportLayer : public IUpperLayer, public ILowerLayer, private openpal::Loggable
+class TransportLayer : public openpal::IUpperLayer, public openpal::ILowerLayer, private openpal::Loggable
 {
 	friend class TransportRx;
 	friend class TransportTx;
@@ -69,19 +70,22 @@ public:
 	virtual void OnLowerLayerDown() override final;
 	virtual void OnSendResult(bool isSuccess) override final;
 
+	void SetAppLayer(openpal::IUpperLayer* pUpperLayer_);
+	void SetLinkLayer(ILinkLayer* pLinkLayer_);
+
 	private:
+
+	openpal::IUpperLayer* pUpperLayer;
+	ILinkLayer* pLinkLayer;
 
 	// Actions - Taken by the states/transmitter/receiver in response to events
 
 	void ChangeState(TLS_Base* apNewState);
 
 	void TransmitAPDU(const openpal::ReadOnlyBuffer&);
-	void TransmitTPDU(const openpal::ReadOnlyBuffer&);
-
+	
 	void ReceiveAPDU(const openpal::ReadOnlyBuffer&);
-	void ReceiveTPDU(const openpal::ReadOnlyBuffer&);
-
-	bool ContinueSend();
+	void ReceiveTPDU(const openpal::ReadOnlyBuffer&);	
 
 	void SignalSendResult(bool isSuccess);
 

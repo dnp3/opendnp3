@@ -27,13 +27,12 @@ namespace opendnp3
 
 LinkLayerTest::LinkLayerTest(LinkConfig arCfg, LogLevel aLevel, bool aImmediate) :
 	log(),
-	mts(),
-	upper(Logger(&log, aLevel, "MockUpperLayer")),
+	mts(),	
 	link(Logger(&log, aLevel, "LinkLayer"), &mts, arCfg),
+	upper(&link),
 	numWrites(0)
 {
-	link.SetUpperLayer(&upper);
-	upper.SetLowerLayer(&link);
+	link.SetUpperLayer(&upper);	
 	link.SetRouter(this);
 }
 

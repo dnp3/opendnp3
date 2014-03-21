@@ -31,10 +31,9 @@ ApplicationStack::ApplicationStack(const openpal::Logger& logger, openpal::IExec
 	application(logger.GetSubLogger("app"), pExecutor, appConfig)
 {
 	link.SetUpperLayer(&transport);
-	transport.SetLowerLayer(&link);
-
-	transport.SetUpperLayer(&application);
-	application.SetLowerLayer(&transport);
+	transport.SetLinkLayer(&link);
+	transport.SetAppLayer(&application);
+	application.SetTransportLayer(&transport);
 }
 
 }

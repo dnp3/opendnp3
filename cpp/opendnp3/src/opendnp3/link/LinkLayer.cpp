@@ -27,6 +27,7 @@
 
 #include "opendnp3/DNPErrorCodes.h"
 #include "opendnp3/link/ILinkRouter.h"
+#include "opendnp3/link/LinkFrame.h"
 
 #include "PriLinkLayerStates.h"
 #include "SecLinkLayerStates.h"
@@ -37,9 +38,10 @@ using namespace openpal;
 namespace opendnp3
 {
 
-LinkLayer::LinkLayer(Logger logger, openpal::IExecutor* apExecutor, const LinkConfig& arConfig) :
+LinkLayer::LinkLayer(Logger logger, openpal::IExecutor* apExecutor, const LinkConfig& config_) :
 	Loggable(logger),	
-	mCONFIG(arConfig),
+	config(config_),
+	pConfirmedSegments(nullptr),
 	mRetryRemaining(0),
 	mpExecutor(apExecutor),
 	mpTimer(nullptr),
@@ -49,7 +51,9 @@ LinkLayer::LinkLayer(Logger logger, openpal::IExecutor* apExecutor, const LinkCo
 	mpRouter(nullptr),
 	mpPriState(PLLS_SecNotReset::Inst()),
 	mpSecState(SLLS_NotReset::Inst())
-{}
+{
+
+}
 
 void LinkLayer::SetRouter(ILinkRouter* apRouter)
 {
@@ -69,50 +73,58 @@ void LinkLayer::ChangeState(SecStateBase* apState)
 
 bool LinkLayer::Validate(bool aIsMaster, uint16_t aSrc, uint16_t aDest)
 {
-	if (!mIsOnline)
+	if (mIsOnline)
+	{
+		if (aIsMaster == config.IsMaster)
+		{
+			ERROR_BLOCK(LogLevel::Warning,
+				(aIsMaster ? "Master frame received for master" : "Slave frame received for slave"),
+				DLERR_MASTER_BIT_MATCH);
+			return false;
+		}
+		else
+		{
+			if (aDest == config.LocalAddr)
+			{
+				if (aSrc == config.RemoteAddr)
+				{
+					return true;
+				}
+				else
+				{
+					ERROR_BLOCK(LogLevel::Warning, "Frame from unknwon source", DLERR_UNKNOWN_SOURCE);
+					return false;
+				}				
+			}
+			else
+			{
+				ERROR_BLOCK(LogLevel::Warning, "Frame for unknown destintation", DLERR_UNKNOWN_DESTINATION);
+				return false;			
+			}			
+		}		
+	}
+	else
 	{
 		LOG_BLOCK(LogLevel::Error, "Layer is not online");
 		return false;
-	}
-
-	if(aIsMaster == mCONFIG.IsMaster)
-	{
-		ERROR_BLOCK(LogLevel::Warning,
-		            (aIsMaster ? "Master frame received for master" : "Slave frame received for slave"),
-		            DLERR_MASTER_BIT_MATCH);
-		return false;
-	}
-
-	if(aDest != mCONFIG.LocalAddr)
-	{
-		ERROR_BLOCK(LogLevel::Warning, "Frame for unknown destintation", DLERR_UNKNOWN_DESTINATION);
-		return false;
-	}
-
-	if(aSrc != mCONFIG.RemoteAddr)
-	{
-		ERROR_BLOCK(LogLevel::Warning, "Frame from unknwon source", DLERR_UNKNOWN_SOURCE);
-		return false;
-	}
-
-	return true;
+	}	
 }
 
 ////////////////////////////////
 // ILowerLayer
 ////////////////////////////////
 
-void LinkLayer::Send(const ReadOnlyBuffer& arBuffer)
+void LinkLayer::Send(IBufferSegment& segments)
 {
 	if (mIsOnline)
 	{
-		if (mCONFIG.UseConfirms)
+		if (config.UseConfirms)
 		{
-			mpPriState->SendConfirmed(this, arBuffer);
+			mpPriState->SendConfirmed(this, segments);
 		}
 		else
 		{
-			mpPriState->SendUnconfirmed(this, arBuffer);
+			mpPriState->SendUnconfirmed(this, segments);
 		}
 	}
 	else
@@ -134,6 +146,7 @@ void LinkLayer::OnLowerLayerUp()
 	else
 	{
 		mIsOnline = true;
+
 		if (pUpperLayer)
 		{
 			pUpperLayer->OnLowerLayerUp();
@@ -145,8 +158,13 @@ void LinkLayer::OnLowerLayerDown()
 {
 	if (mIsOnline)
 	{
-		if (mpTimer != nullptr) this->CancelTimer();
 		mIsOnline = false;
+
+		if (mpTimer)
+		{
+			this->CancelTimer();
+		}
+		
 		mpPriState = PLLS_SecNotReset::Inst();
 		mpSecState = SLLS_NotReset::Inst();
 
@@ -173,6 +191,43 @@ void LinkLayer::OnTransmitResult(bool primary, bool success)
 	}
 }
 
+openpal::ReadOnlyBuffer LinkLayer::FormatPrimaryBufferWithConfirmed(IBufferSegment& segments, bool FCB)
+{
+	auto buffer = primaryBuffer.GetWriteBuffer();
+	if (segments.HasValue())
+	{
+		auto seg = segments.GetSegment();
+		return LinkFrame::FormatConfirmedUserData(buffer, config.IsMaster, FCB, config.RemoteAddr, config.LocalAddr, seg, seg.Size());
+	}
+	else
+	{
+		return ReadOnlyBuffer();
+	}
+}
+
+ReadOnlyBuffer LinkLayer::FormatPrimaryBufferWithUnconfirmed(IBufferSegment& segments)
+{
+	auto buffer = primaryBuffer.GetWriteBuffer();
+
+	uint32_t size = 0;
+
+	while (segments.HasValue())
+	{
+		auto seg = segments.GetSegment();
+		segments.Advance();
+		if(buffer.Size() >= LinkFrame::CalcFrameSize(seg.Size())) 
+		{			
+			size += LinkFrame::FormatUnconfirmedUserData(buffer, config.IsMaster, config.RemoteAddr, config.LocalAddr, seg, seg.Size()).Size();
+		}
+		else
+		{
+			return ReadOnlyBuffer(); //can't write the full amount
+		}
+	}
+
+	return primaryBuffer.ToReadOnly().Truncate(size);
+}
+
 void LinkLayer::QueueTransmit(const ReadOnlyBuffer& buffer, bool primary)
 {
 	mpRouter->QueueTransmit(buffer, this, primary);
@@ -180,38 +235,27 @@ void LinkLayer::QueueTransmit(const ReadOnlyBuffer& buffer, bool primary)
 
 void LinkLayer::QueueAck()
 {
-	mSecFrame.FormatAck(mCONFIG.IsMaster, false, mCONFIG.RemoteAddr, mCONFIG.LocalAddr);
-	this->QueueTransmit(mSecFrame.ToReadOnly(), false);
+	auto buffer = LinkFrame::FormatAck(primaryBuffer.GetWriteBuffer(), config.IsMaster, false, config.RemoteAddr, config.LocalAddr);
+	this->QueueTransmit(buffer, false);
 }
 
 void LinkLayer::QueueLinkStatus()
 {
-	mSecFrame.FormatLinkStatus(mCONFIG.IsMaster, false, mCONFIG.RemoteAddr, mCONFIG.LocalAddr);
-	this->QueueTransmit(mSecFrame.ToReadOnly(), false);
+	
+	auto buffer = LinkFrame::FormatLinkStatus(primaryBuffer.GetWriteBuffer(), config.IsMaster, false, config.RemoteAddr, config.LocalAddr);
+	this->QueueTransmit(buffer, false);	
 }
 
 void LinkLayer::QueueResetLinks()
-{
-	mPriFrame.FormatResetLinkStates(mCONFIG.IsMaster, mCONFIG.RemoteAddr, mCONFIG.LocalAddr);
-	this->QueueTransmit(mPriFrame.ToReadOnly(), true);
-}
-
-void LinkLayer::QueueUnconfirmedUserData(const ReadOnlyBuffer& arBuffer)
-{
-	mPriFrame.FormatUnconfirmedUserData(mCONFIG.IsMaster, mCONFIG.RemoteAddr, mCONFIG.LocalAddr, arBuffer, arBuffer.Size());
-	this->QueueTransmit(mPriFrame.ToReadOnly(), true);
-}
-
-void LinkLayer::QueueDelayedUserData(bool aFCB)
-{
-	mDelayedPriFrame.ChangeFCB(aFCB);
-	this->QueueTransmit(mDelayedPriFrame.ToReadOnly(), true);
+{	
+	auto buffer = LinkFrame::FormatResetLinkStates(primaryBuffer.GetWriteBuffer(), config.IsMaster, config.RemoteAddr, config.LocalAddr);
+	this->QueueTransmit(buffer, true);	
 }
 
 void LinkLayer::StartTimer()
 {
 	assert(mpTimer == nullptr);
-	mpTimer = this->mpExecutor->Start(TimeDuration(mCONFIG.Timeout), std::bind(&LinkLayer::OnTimeout, this));
+	mpTimer = this->mpExecutor->Start(TimeDuration(config.Timeout), std::bind(&LinkLayer::OnTimeout, this));
 }
 
 void LinkLayer::CancelTimer()
@@ -223,7 +267,7 @@ void LinkLayer::CancelTimer()
 
 void LinkLayer::ResetRetry()
 {
-	this->mRetryRemaining = mCONFIG.NumRetry;
+	this->mRetryRemaining = config.NumRetry;
 }
 
 bool LinkLayer::Retry()

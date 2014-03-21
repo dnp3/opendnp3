@@ -18,29 +18,56 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include "AsyncPhysTestObject.h"
+
+#include "MockTransportLayer.h"
+
+#include "BufferHelpers.h"
+
+#include <openpal/ToHex.h>
 
 using namespace openpal;
 
 namespace opendnp3
 {
 
-AsyncPhysTestObject::AsyncPhysTestObject(LogLevel aLevel, bool aImmediate, bool aAutoRead) :
-	AsyncTestObjectASIO(),
-	log(),
-	logger(&log, aLevel, "test"),
-	mTCPClient(Logger(&log, aLevel, "TCPClient"), this->GetService(), "127.0.0.1", 50000),
-	mTCPServer(Logger(&log, aLevel, "TCPSever"), this->GetService(), "127.0.0.1", 50000),
-	mClientAdapter(Logger(&log, aLevel, "ClientAdapter"), &mTCPClient, aAutoRead),
-	mServerAdapter(Logger(&log, aLevel, "ServerAdapter"), &mTCPServer, aAutoRead),
-	mClientUpper(Logger(&log, aLevel, "MockUpperClient")),
-	mServerUpper(Logger(&log, aLevel, "MockUpperServer"))
+	MockTransportLayer::MockTransportLayer(ILinkLayer* pLinkLayer_) : pLinkLayer(pLinkLayer_), isOnline(false)
+{}
+
+void MockTransportLayer::SendDown(IBufferSegment& segments)
 {
-	mClientAdapter.SetUpperLayer(&mClientUpper);
-	mServerAdapter.SetUpperLayer(&mServerUpper);
+	pLinkLayer->Send(segments);
+}
 
-	mClientUpper.SetLowerLayer(&mClientAdapter);
-	mServerUpper.SetLowerLayer(&mServerAdapter);	
+void MockTransportLayer::OnReceive(const openpal::ReadOnlyBuffer& buffer)
+{
+	receivedQueue.push_back(toHex(buffer));	
+}
+
+void MockTransportLayer::OnSendResult(bool isSuccess)
+{
+	if (isSuccess)
+	{
+		++state.successCnt; 
+	}
+	else
+	{
+		++state.failureCnt;
+	}
+}
+
+void MockTransportLayer::OnLowerLayerUp()
+{
+	assert(!isOnline);
+	isOnline = true;
+	++state.numLayerUp;
+}
+
+void MockTransportLayer::OnLowerLayerDown()
+{
+	assert(isOnline);
+	isOnline = false;
+	++state.numLayerDown;
 }
 
 }
+

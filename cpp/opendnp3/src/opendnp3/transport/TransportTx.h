@@ -47,9 +47,11 @@ public:
 
 	/// -------  IBufferSegment ------------
 
-	virtual bool HasNext() const override final;
+	virtual bool HasValue() const override final;
 
-	virtual openpal::ReadOnlyBuffer Next() override final;
+	virtual openpal::ReadOnlyBuffer GetSegment() override final;
+
+	virtual bool Advance() override final;
 
 private:	
 

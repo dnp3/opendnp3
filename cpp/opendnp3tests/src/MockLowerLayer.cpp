@@ -32,7 +32,7 @@ namespace opendnp3
 {
 
 MockLowerLayer::MockLowerLayer(Logger logger) :
-	Loggable(logger),	
+	Loggable(logger),		
 	mAutoSendCallback(true),
 	mIsSuccess(true)
 {

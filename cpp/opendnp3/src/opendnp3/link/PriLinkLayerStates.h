@@ -48,8 +48,8 @@ public:
 	virtual void OnTimeout(LinkLayer*);
 
 	/*Upper layer events to handle */
-	virtual void SendConfirmed(LinkLayer*, const openpal::ReadOnlyBuffer& arBuffer);
-	virtual void SendUnconfirmed(LinkLayer*, const openpal::ReadOnlyBuffer& arBuffer);
+	virtual void SendConfirmed(LinkLayer*, IBufferSegment& segments);
+	virtual void SendUnconfirmed(LinkLayer*, IBufferSegment& segments);
 
 	//every concrete state implements this for logging purposes
 	virtual std::string Name() const = 0;
@@ -59,8 +59,8 @@ public:
 class PLLS_SecNotReset : public PriStateBase
 {
 	MACRO_STATE_SINGLETON_INSTANCE(PLLS_SecNotReset);
-	void SendUnconfirmed(LinkLayer*, const openpal::ReadOnlyBuffer& arBuffer);
-	void SendConfirmed(LinkLayer*, const openpal::ReadOnlyBuffer& arBuffer);
+	virtual void SendUnconfirmed(LinkLayer*, IBufferSegment& segments) override final;
+	virtual void SendConfirmed(LinkLayer*, IBufferSegment& segments) override final;
 };
 
 
@@ -83,14 +83,7 @@ template <class ReturnToState>
 void PLLS_SendUnconfirmedTransmitWait<ReturnToState>::OnTransmitResult(LinkLayer* apLL, bool success)
 {
 	apLL->ChangeState(ReturnToState::Inst());
-	if (success)
-	{
-		apLL->DoSendSuccess();
-	}
-	else
-	{
-		apLL->DoSendFailure();
-	}
+	apLL->DoSendResult(success);	
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -123,8 +116,9 @@ class PLLS_ConfUserDataTransmitWait : public PriStateBase
 class PLLS_SecReset : public PriStateBase
 {
 	MACRO_STATE_SINGLETON_INSTANCE(PLLS_SecReset);
-	void SendUnconfirmed(LinkLayer*, const openpal::ReadOnlyBuffer& arBuffer);
-	void SendConfirmed(LinkLayer*, const openpal::ReadOnlyBuffer& arBuffer);
+
+	virtual void SendUnconfirmed(LinkLayer*, IBufferSegment& segments) override final;
+	virtual void SendConfirmed(LinkLayer*, IBufferSegment& segments) override final;
 };
 
 //	@section desc As soon as we get an ACK, send the delayed pri frame

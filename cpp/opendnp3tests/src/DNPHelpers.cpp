@@ -33,11 +33,6 @@
 namespace opendnp3
 {
 
-std::string ToHex(LinkFrame& frame)
-{
-	return toHex(frame.ToReadOnly());
-}
-
 std::string RepairCRC(const std::string& arData)
 {
 	HexSequence hs(arData);

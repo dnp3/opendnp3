@@ -67,6 +67,8 @@ public:
 
 	void SetUser(IAppUser*);
 
+	void SetTransportLayer(openpal::ILowerLayer* pTransportLayer_);
+
 	/////////////////////////////////
 	// IAppLayer
 	/////////////////////////////////
@@ -86,7 +88,7 @@ public:
 	virtual void OnLowerLayerDown() override final;
 	virtual void OnSendResult(bool isSuccess) override final;	
 
-private:
+private:	
 
 	////////////////////
 	// Internal Events
@@ -111,7 +113,8 @@ private:
 	bool isMaster;						// True, if the application user is a master
 	SendQueue sendQueue;				// Buffer of send operations
 
-	IAppUser* mpUser;					// Interface for dispatching callbacks
+	openpal::ILowerLayer* pTransportLayer; 
+	IAppUser* mpUser;						// Interface for dispatching callbacks
 
 	SolicitedChannel mSolicited;			// Channel used for solicited communications
 	UnsolicitedChannel mUnsolicited;		// Channel used for unsolicited communications

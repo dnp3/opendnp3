@@ -18,25 +18,24 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __MOCK_UPPER_LAYER_H_
-#define __MOCK_UPPER_LAYER_H_
+
+#ifndef __MOCK_LINK_LAYER_USER_H_
+#define __MOCK_LINK_LAYER_USER_H_
 
 #include <openpal/Loggable.h>
-
 #include <openpal/AsyncLayerInterfaces.h>
 
-#include <functional>
+#include <opendnp3/link/ILinkLayer.h>
 
-#include "BufferTestObject.h"
+#include <deque>
 
 namespace opendnp3
 {
 
-class MockUpperLayer : public openpal::IUpperLayer, public openpal::HasLowerLayer, public BufferTestObject, private openpal::Loggable
+class MockTransportLayer : public openpal::IUpperLayer
 {
-public:
 
-	typedef std::function<void (const openpal::ReadOnlyBuffer&)> OnReceiveHandler;
+public:
 
 	struct State
 	{
@@ -46,65 +45,58 @@ public:
 			Reset();
 		}
 
-		size_t mSuccessCnt;
-		size_t mFailureCnt;
-		size_t mNumLayerUp;
-		size_t mNumLayerDown;
+		uint32_t successCnt;
+		uint32_t failureCnt;
+		uint32_t numLayerUp;
+		uint32_t numLayerDown;
 
 		void Reset()
 		{
-			mSuccessCnt = mFailureCnt = mNumLayerUp = mNumLayerDown = 0;
+			successCnt = failureCnt = numLayerUp = numLayerDown = 0;
 		}
 	};
 
-	MockUpperLayer(openpal::Logger);
+	MockTransportLayer(ILinkLayer* pLinkLayer);
+
+	void SendDown(IBufferSegment& segments);	
 
 	bool IsOnline() const { return isOnline; }
 
-	void SendDown(const std::string&);
-	void SendDown(const openpal::ReadOnlyBuffer& arBuffer);
-
-	bool CountersEqual(size_t success, size_t failure)
+	bool CountersEqual(uint32_t success, uint32_t failure)
 	{
-		return mState.mSuccessCnt == success && mState.mFailureCnt == failure;
+		return state.successCnt == success && state.failureCnt == failure;
 	}
 
 	bool StateEquals(const State& s)
 	{
-		return (mState.mSuccessCnt == s.mSuccessCnt)
-		       && (mState.mFailureCnt == s.mFailureCnt)
-		       && (mState.mNumLayerUp == s.mNumLayerUp)
-		       && (mState.mNumLayerDown == s.mNumLayerDown);
+		return (state.successCnt == s.successCnt)
+		       && (state.failureCnt == s.failureCnt)
+		       && (state.numLayerUp == s.numLayerUp)
+		       && (state.numLayerDown == s.numLayerDown);
 	}
 
 	void Reset()
 	{
-		mState.Reset();
+		state.Reset();
 	}
+
 	State GetState()
 	{
-		return mState;
-	}
+		return state;
+	}	
 
-	void SetReceiveHandler(const OnReceiveHandler& arHandler)
-	{
-		mOnReceiveHandler = arHandler;
-	}
-
-	//these are the NVII delegates
+	// these are the NVII delegates
 	virtual void OnReceive(const openpal::ReadOnlyBuffer& buffer) override final;
 	virtual void OnSendResult(bool isSuccess) override final;	
 	virtual void OnLowerLayerUp() override final;
 	virtual void OnLowerLayerDown() override final;
 
+	std::deque<std::string> receivedQueue;
+
 private:	
-
-	bool isOnline;		
-
-	OnReceiveHandler mOnReceiveHandler;
-	State mState;
-
-	
+	ILinkLayer* pLinkLayer;
+	bool isOnline;			
+	State state;	
 };
 
 

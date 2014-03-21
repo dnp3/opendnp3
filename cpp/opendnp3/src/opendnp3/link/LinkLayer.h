@@ -21,17 +21,16 @@
 #ifndef __LINK_LAYER_H_
 #define __LINK_LAYER_H_
 
-#include <queue>
-
-
-#include <openpal/AsyncLayerInterfaces.h>
 #include <openpal/IExecutor.h>
 #include <openpal/Loggable.h>
+#include <openpal/StaticBuffer.h>
 
-#include "ILinkContext.h"
-#include "LinkFrame.h"
+#include "opendnp3/link/ILinkLayer.h"
+#include "opendnp3/link/ILinkContext.h"
+#include "opendnp3/link/LinkLayerConstants.h"
+#include "opendnp3/link/LinkConfig.h"
 
-#include "LinkConfig.h"
+#include "opendnp3/StaticSizeConfiguration.h"
 
 namespace opendnp3
 {
@@ -41,7 +40,7 @@ class PriStateBase;
 class SecStateBase;
 
 //	@section desc Implements the contextual state of DNP3 Data Link Layer
-class LinkLayer : public openpal::ILowerLayer, public ILinkContext, private openpal::Loggable
+class LinkLayer : public ILinkLayer, public ILinkContext, private openpal::Loggable
 {
 public:
 
@@ -65,8 +64,8 @@ public:
 	virtual void ConfirmedUserData(bool aIsMaster, bool aFcb, uint16_t aDest, uint16_t aSrc, const openpal::ReadOnlyBuffer& arBuffer) override final;
 	virtual void UnconfirmedUserData(bool aIsMaster, uint16_t aDest, uint16_t aSrc, const openpal::ReadOnlyBuffer& arBuffer) override final;
 
-	// ------------- ILowerLayer --------------------
-	virtual void Send(const openpal::ReadOnlyBuffer& arBuffer) override final;
+	// ------------- ILinkLayer --------------------
+	virtual void Send(IBufferSegment& segments) override final;
 
 	// Functions called by the primary and secondary station states
 	void ChangeState(PriStateBase*);
@@ -79,27 +78,35 @@ public:
 
 	void DoDataUp(const openpal::ReadOnlyBuffer& arBuffer)
 	{
-		if(pUpperLayer) pUpperLayer->OnReceive(arBuffer);
+		if (pUpperLayer)
+		{
+			pUpperLayer->OnReceive(arBuffer);
+		}
 	}
 
-	void DoSendSuccess()
+	void DoSendResult(bool isSuccess)
 	{
-		if (pUpperLayer) pUpperLayer->OnSendResult(true);
+		if (pUpperLayer)
+		{
+			pUpperLayer->OnSendResult(isSuccess);
+		}
 	}
 
-	void DoSendFailure()
+	void PostSendResult(bool isSuccess)
 	{
-		if (pUpperLayer) pUpperLayer->OnSendResult(false);
+		mpExecutor->Post([this, isSuccess](){ this->DoSendResult(isSuccess); });
 	}
 
 	void ResetReadFCB()
 	{
 		mNextReadFCB = true;
 	}
+
 	void ToggleReadFCB()
 	{
 		mNextReadFCB = !mNextReadFCB;
 	}
+	
 	bool NextReadFCB()
 	{
 		return mNextReadFCB;
@@ -109,10 +116,12 @@ public:
 	{
 		mNextWriteFCB = true;
 	}
+	
 	void ToggleWriteFCB()
 	{
 		mNextWriteFCB = !mNextWriteFCB;
 	}
+
 	bool NextWriteFCB()
 	{
 		return mNextWriteFCB;
@@ -122,13 +131,11 @@ public:
 	void QueueAck();
 	void QueueLinkStatus();
 	void QueueResetLinks();
-	void QueueUnconfirmedUserData(const openpal::ReadOnlyBuffer&);
-	void QueueDelayedUserData(bool aFCB);
 
 	void StartTimer();
 	void CancelTimer();
 
-	const LinkConfig mCONFIG;
+	const LinkConfig config;
 
 	//Retry Count
 	void ResetRetry();
@@ -139,13 +146,21 @@ public:
 		return mRetryRemaining;
 	}
 
-	LinkFrame mPriFrame;
-	LinkFrame mSecFrame;
-	LinkFrame mDelayedPriFrame;
+	void QueueTransmit(const openpal::ReadOnlyBuffer& buffer, bool primary);
+
+	// the buffer for secondary responses
+	openpal::StaticBuffer<LS_MAX_FRAME_SIZE> secondaryBuffer;
+
+	// the buffer for primary requests
+	openpal::StaticBuffer<sizes::APDU_LPDU_BUFFER_SIZE> primaryBuffer;
+
+	openpal::ReadOnlyBuffer FormatPrimaryBufferWithUnconfirmed(IBufferSegment& segments);
+
+	openpal::ReadOnlyBuffer FormatPrimaryBufferWithConfirmed(IBufferSegment& segments, bool FCB);
+	
+	IBufferSegment* pConfirmedSegments;
 
 private:
-
-	void QueueTransmit(const openpal::ReadOnlyBuffer& buffer, bool primary);
 
 	uint32_t mRetryRemaining;
 

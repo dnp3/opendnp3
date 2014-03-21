@@ -41,6 +41,7 @@ namespace opendnp3
 	isConfirmSending(false),
 	isMaster(appConfig.IsMaster),
 	mpUser(nullptr),
+	pTransportLayer(nullptr),
 	mSolicited(logger.GetSubLogger("sol"), this, pExecutor_, appConfig.RspTimeout),
 	mUnsolicited(logger.GetSubLogger("unsol"), this, pExecutor_, appConfig.RspTimeout),
 	numRetry(appConfig.NumRetry),
@@ -54,6 +55,13 @@ void AppLayer::SetUser(IAppUser* apUser)
 	assert(mpUser == nullptr);
 	assert(apUser != nullptr);
 	mpUser = apUser;
+}
+
+void AppLayer::SetTransportLayer(openpal::ILowerLayer* pTransportLayer_)
+{
+	assert(pTransportLayer == nullptr);
+	assert(pTransportLayer_ != nullptr);
+	pTransportLayer = pTransportLayer_;
 }
 
 ////////////////////
@@ -339,7 +347,7 @@ void AppLayer::CheckForSend()
 	{
 		isSending = true;
 		//LOG_BLOCK(LogLevel::Interpret, "=> AL " << pAPDU->ToString()); TODO - replace outgoing logging
-		pLowerLayer->Send(sendQueue.front().ToReadOnly());
+		pTransportLayer->Send(sendQueue.front().ToReadOnly());
 	}
 }
 

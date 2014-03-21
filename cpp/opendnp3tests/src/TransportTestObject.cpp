@@ -40,13 +40,13 @@ TransportTestObject::TransportTestObject(bool aOpenOnStart, LogLevel aLevel, boo
 	transport(logger, &exe),
 	lower(logger),
 	upper(logger)
-{
+{	
 	lower.SetUpperLayer(&transport);
-	transport.SetLowerLayer(&lower);
+	transport.SetLinkLayer(nullptr); // TODO
 
 	upper.SetLowerLayer(&transport);
-	transport.SetUpperLayer(&upper);
-
+	transport.SetAppLayer(&upper);
+	
 	if (aOpenOnStart)
 	{
 		lower.ThisLayerUp();

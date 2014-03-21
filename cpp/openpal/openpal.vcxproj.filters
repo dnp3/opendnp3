@@ -16,9 +16,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\openpal\AsyncLayerInterfaces.h">
-      <Filter>Header</Filter>
-    </ClInclude>
     <ClInclude Include="src\openpal\BufferWrapper.h">
       <Filter>Header</Filter>
     </ClInclude>
@@ -145,11 +142,11 @@
     <ClInclude Include="src\openpal\StaticQueue.h">
       <Filter>Header</Filter>
     </ClInclude>
+    <ClInclude Include="src\openpal\AsyncLayerInterfaces.h">
+      <Filter>Header</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\openpal\AsyncLayerInterfaces.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
     <ClCompile Include="src\openpal\BufferWrapper.cpp">
       <Filter>Source</Filter>
     </ClCompile>

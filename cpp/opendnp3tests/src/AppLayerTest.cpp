@@ -34,7 +34,7 @@ AppLayerTest::AppLayerTest(bool aIsMaster, uint32_t aNumRetry, LogLevel aLevel, 
 	writeBuffer(buffer, 4)
 {
 	lower.SetUpperLayer(&app);
-	app.SetLowerLayer(&lower);
+	app.SetTransportLayer(&lower);
 	app.SetUser(&user);
 }
 

@@ -40,12 +40,11 @@ TransportIntegrationStack::TransportIntegrationStack(Logger aLogger, IPhysicalLa
 	mRouter.Enable(&mLink);
 	mLink.SetRouter(&mRouter);
 	
-	mLink.SetUpperLayer(&mTransport);
-	mTransport.SetLowerLayer(&mLink);
+	mLink.SetUpperLayer(&mTransport);	
+	mTransport.SetLinkLayer(&mLink);
 
-	mTransport.SetUpperLayer(&mUpper);
-	mUpper.SetLowerLayer(&mTransport);
-	
+	mTransport.SetAppLayer(&mUpper);
+	mUpper.SetLowerLayer(&mTransport);	
 }
 
 

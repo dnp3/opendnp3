@@ -18,29 +18,30 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include "AsyncPhysTestObject.h"
+#ifndef __BUFFER_SEGMENT_H_
+#define __BUFFER_SEGMENT_H_
 
-using namespace openpal;
+#include <openpal/BufferWrapper.h>
 
 namespace opendnp3
 {
 
-AsyncPhysTestObject::AsyncPhysTestObject(LogLevel aLevel, bool aImmediate, bool aAutoRead) :
-	AsyncTestObjectASIO(),
-	log(),
-	logger(&log, aLevel, "test"),
-	mTCPClient(Logger(&log, aLevel, "TCPClient"), this->GetService(), "127.0.0.1", 50000),
-	mTCPServer(Logger(&log, aLevel, "TCPSever"), this->GetService(), "127.0.0.1", 50000),
-	mClientAdapter(Logger(&log, aLevel, "ClientAdapter"), &mTCPClient, aAutoRead),
-	mServerAdapter(Logger(&log, aLevel, "ServerAdapter"), &mTCPServer, aAutoRead),
-	mClientUpper(Logger(&log, aLevel, "MockUpperClient")),
-	mServerUpper(Logger(&log, aLevel, "MockUpperServer"))
+class IBufferSegment
 {
-	mClientAdapter.SetUpperLayer(&mClientUpper);
-	mServerAdapter.SetUpperLayer(&mServerUpper);
 
-	mClientUpper.SetLowerLayer(&mClientAdapter);
-	mServerUpper.SetLowerLayer(&mServerAdapter);	
+public:
+
+	virtual ~IBufferSegment() {}
+
+	virtual bool HasValue() const = 0;
+
+	// Read the current segment with a specified max size
+	virtual openpal::ReadOnlyBuffer GetSegment() = 0;
+
+	// move to the next segment, true if more segments available
+	virtual bool Advance() = 0;
+};
+
 }
 
-}
+#endif

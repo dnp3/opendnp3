@@ -221,6 +221,7 @@
     <ClInclude Include="src\MockPhysicalLayerMonitor.h" />
     <ClInclude Include="src\MockSOEHandler.h" />
     <ClInclude Include="src\MockTimeWriteHandler.h" />
+    <ClInclude Include="src\MockTransportLayer.h" />
     <ClInclude Include="src\MockUpperLayer.h" />
     <ClInclude Include="src\MultiplexingDataObserver.h" />
     <ClInclude Include="src\OutstationEventBufferFuzzer.h" />
@@ -273,6 +274,7 @@
     <ClCompile Include="src\MockLowerLayer.cpp" />
     <ClCompile Include="src\MockPhysicalLayerAsync.cpp" />
     <ClCompile Include="src\MockPhysicalLayerMonitor.cpp" />
+    <ClCompile Include="src\MockTransportLayer.cpp" />
     <ClCompile Include="src\MockUpperLayer.cpp" />
     <ClCompile Include="src\MultiplexingDataObserver.cpp" />
     <ClCompile Include="src\PhysicalLayerWrapper.cpp" />
@@ -295,7 +297,7 @@
     <ClCompile Include="src\TestDNP3Manager.cpp" />
     <ClCompile Include="src\TestIntegration.cpp" />
     <ClCompile Include="src\TestLazyCollection.cpp" />
-    <ClCompile Include="src\TestLinkFrameDNP.cpp" />
+    <ClCompile Include="src\TestLinkFrame.cpp" />
     <ClCompile Include="src\TestLinkLayer.cpp" />
     <ClCompile Include="src\TestLinkLayerRouter.cpp" />
     <ClCompile Include="src\TestLinkReceiver.cpp" />

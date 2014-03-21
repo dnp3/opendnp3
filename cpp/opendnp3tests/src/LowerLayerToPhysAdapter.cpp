@@ -30,15 +30,10 @@ namespace opendnp3
 LowerLayerToPhysAdapter::LowerLayerToPhysAdapter(Logger logger, IPhysicalLayerAsync* apPhys, bool aAutoRead) :
 	Loggable(logger),	
 	mAutoRead(aAutoRead),
-	mNumOpenFailure(0),
+	mNumOpenFailure(0),	
 	mpPhys(apPhys)
 {
 	mpPhys->SetHandler(this);
-}
-
-LowerLayerToPhysAdapter::~LowerLayerToPhysAdapter()
-{
-
 }
 
 void LowerLayerToPhysAdapter::StartRead()

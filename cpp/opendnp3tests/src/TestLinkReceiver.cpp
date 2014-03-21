@@ -20,10 +20,12 @@
  */
 #include <catch.hpp>
 
-
 #include "LinkReceiverTest.h"
 #include "DNPHelpers.h"
 
+#include <openpal/StaticBuffer.h>
+
+using namespace openpal;
 using namespace opendnp3;
 
 
@@ -136,32 +138,35 @@ TEST_CASE(SUITE("CombinedFailures"))
 
 TEST_CASE(SUITE("ReadACK"))
 {
-	LinkReceiverTest t;
-	LinkFrame f;
-	f.FormatAck(true, false, 1, 2);
-	t.WriteData(f);
+	StaticBuffer<292> buffer;
+	auto frame = LinkFrame::FormatAck(buffer.GetWriteBuffer(), true, false, 1, 2);
+
+	LinkReceiverTest t;		
+	t.WriteData(frame);
 	REQUIRE(t.log.IsLogErrorFree());
 	REQUIRE(t.mSink.mNumFrames ==  1);
 	REQUIRE(t.mSink.CheckLastWithDFC(LinkFunction::SEC_ACK, true, false, 1, 2));
 }
 
 TEST_CASE(SUITE("ReadNACK"))
-{
+{	
+	StaticBuffer<292> buffer;
+	auto frame = LinkFrame::FormatNack(buffer.GetWriteBuffer(), false, true, 1, 2);
+
 	LinkReceiverTest t;
-	LinkFrame f;
-	f.FormatNack(false, true, 1, 2);
-	t.WriteData(f);
+	t.WriteData(frame);
 	REQUIRE(t.log.IsLogErrorFree());
 	REQUIRE(t.mSink.mNumFrames ==  1);
 	REQUIRE(t.mSink.CheckLastWithDFC(LinkFunction::SEC_NACK, false, true, 1, 2));
 }
 
 TEST_CASE(SUITE("LinkStatus"))
-{
+{	
+	StaticBuffer<292> buffer;
+	auto frame = LinkFrame::FormatLinkStatus(buffer.GetWriteBuffer(), true, true, 1, 2);
+
 	LinkReceiverTest t;
-	LinkFrame f;
-	f.FormatLinkStatus(true, true, 1, 2);
-	t.WriteData(f);
+	t.WriteData(frame);
 	REQUIRE(t.log.IsLogErrorFree());
 	REQUIRE(t.mSink.mNumFrames ==  1);
 	REQUIRE(t.mSink.CheckLastWithDFC(LinkFunction::SEC_LINK_STATUS, true, true, 1, 2));
@@ -169,10 +174,11 @@ TEST_CASE(SUITE("LinkStatus"))
 
 TEST_CASE(SUITE("NotSupported"))
 {
-	LinkReceiverTest t;
-	LinkFrame f;
-	f.FormatNotSupported(true, false, 1, 2);
-	t.WriteData(f);
+	StaticBuffer<292> buffer;
+	auto frame = LinkFrame::FormatNotSupported(buffer.GetWriteBuffer(), true, false, 1, 2);
+
+	LinkReceiverTest t;	
+	t.WriteData(frame);
 	REQUIRE(t.log.IsLogErrorFree());
 	REQUIRE(t.mSink.mNumFrames ==  1);
 	REQUIRE(t.mSink.CheckLastWithDFC(LinkFunction::SEC_NOT_SUPPORTED, true, false, 1, 2));
@@ -183,45 +189,50 @@ TEST_CASE(SUITE("NotSupported"))
 //////////////////////////////////////////
 
 TEST_CASE(SUITE("TestLinkStates"))
-{
+{	
+	StaticBuffer<292> buffer;
+	auto frame = LinkFrame::FormatTestLinkStatus(buffer.GetWriteBuffer(), false, true, 1, 2);
+
 	LinkReceiverTest t;
-	LinkFrame f;
-	f.FormatTestLinkStatus(false, true, 1, 2);
-	t.WriteData(f);
+	t.WriteData(frame);
 	REQUIRE(t.log.IsLogErrorFree());
 	REQUIRE(t.mSink.mNumFrames ==  1);
 	REQUIRE(t.mSink.CheckLastWithFCB(LinkFunction::PRI_TEST_LINK_STATES, false, true, 1, 2));
 }
 
 TEST_CASE(SUITE("ResetLinkStates"))
-{
+{	
+	StaticBuffer<292> buffer;
+	auto frame = LinkFrame::FormatResetLinkStates(buffer.GetWriteBuffer(), false, 1, 2);
+
 	LinkReceiverTest t;
-	LinkFrame f;
-	f.FormatResetLinkStates(false, 1, 2);
-	t.WriteData(f);
+	t.WriteData(frame);
 	REQUIRE(t.log.IsLogErrorFree());
 	REQUIRE(t.mSink.mNumFrames ==  1);
 	REQUIRE(t.mSink.CheckLast(LinkFunction::PRI_RESET_LINK_STATES, false, 1, 2));
 }
 
 TEST_CASE(SUITE("RequestLinkStatus"))
-{
+{	
+	StaticBuffer<292> buffer;
+	auto frame = LinkFrame::FormatRequestLinkStatus(buffer.GetWriteBuffer(), true, 1, 2);
+	
 	LinkReceiverTest t;
-	LinkFrame f;
-	f.FormatRequestLinkStatus(true, 1, 2);
-	t.WriteData(f);
+	t.WriteData(frame);
 	REQUIRE(t.log.IsLogErrorFree());
 	REQUIRE(t.mSink.mNumFrames ==  1);
 	REQUIRE(t.mSink.CheckLast(LinkFunction::PRI_REQUEST_LINK_STATUS, true, 1, 2));
 }
 
 TEST_CASE(SUITE("UnconfirmedUserData"))
-{
-	LinkReceiverTest t;
-	LinkFrame f;
+{	
 	ByteStr data(250, 0); //initializes a buffer with increasing value
-	f.FormatUnconfirmedUserData(true, 1, 2, data, data.Size());
-	t.WriteData(f);
+
+	StaticBuffer<292> buffer;
+	auto frame = LinkFrame::FormatUnconfirmedUserData(buffer.GetWriteBuffer(), true, 1, 2, data, data.Size());
+
+	LinkReceiverTest t;
+	t.WriteData(frame);
 	REQUIRE(t.log.IsLogErrorFree());
 	REQUIRE(t.mSink.mNumFrames ==  1);
 	REQUIRE(t.mSink.CheckLast(LinkFunction::PRI_UNCONFIRMED_USER_DATA, true, 1, 2));
@@ -230,11 +241,13 @@ TEST_CASE(SUITE("UnconfirmedUserData"))
 
 TEST_CASE(SUITE("ConfirmedUserData"))
 {
-	LinkReceiverTest t;
-	LinkFrame f;
 	ByteStr data(250, 0); //initializes a buffer with increasing value
-	f.FormatConfirmedUserData(true, true, 1, 2, data, data.Size());
-	t.WriteData(f);
+	
+	StaticBuffer<292> buffer;
+	auto frame = LinkFrame::FormatConfirmedUserData(buffer.GetWriteBuffer(), true, true, 1, 2, data, data.Size());
+
+	LinkReceiverTest t;
+	t.WriteData(frame);
 	REQUIRE(t.log.IsLogErrorFree());
 	REQUIRE(t.mSink.mNumFrames ==  1);
 	REQUIRE(t.mSink.CheckLastWithFCB(LinkFunction::PRI_CONFIRMED_USER_DATA, true, true, 1, 2));
@@ -277,13 +290,15 @@ TEST_CASE(SUITE("Resync0564"))
 // doing something stupid like overflowing it's buffer
 TEST_CASE(SUITE("ManyReceives"))
 {
+	
+	StaticBuffer<292> buffer;
+	auto frame = LinkFrame::FormatAck(buffer.GetWriteBuffer(), true, false, 1, 2);
+
 	LinkReceiverTest t;
-	LinkFrame f;
-	f.FormatAck(true, false, 1, 2);
 
 	for(size_t i = 1; i < 100; ++i)
 	{
-		t.WriteData(f);
+		t.WriteData(frame);
 		REQUIRE(t.log.IsLogErrorFree());
 		REQUIRE(t.mSink.mNumFrames ==  i);
 		REQUIRE(t.mSink.CheckLastWithDFC(LinkFunction::SEC_ACK, true, false, 1, 2));

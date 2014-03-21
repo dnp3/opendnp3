@@ -54,9 +54,12 @@ namespace opendnp3
 		// The maximum number of stacks that can associate to a link layer router
 		static const uint16_t MAX_STACKS_PER_CHANNEL = 16;
 		static_assert(MAX_STACKS_PER_CHANNEL > 0, "At least 1 stack is required per router");
+		
+		// The number of bytes needed to hold an APDU fully encapsulated with TPDU/LPDU
+		static const uint32_t APDU_LPDU_BUFFER_SIZE = (((MAX_APDU_BUFFER_SIZE / 249) + 1) * 292);		
 
-		// default sizing is big enough to receive a full APDU
-		static const uint32_t LINK_RECEIVER_BUFFER_SIZE = (((MAX_APDU_BUFFER_SIZE / 249) + 1) * 292);
+		// default sizing is big enough to receive a full APDU with full LPDU's
+		static const uint32_t LINK_RECEIVER_BUFFER_SIZE = APDU_LPDU_BUFFER_SIZE;
 		static_assert(LINK_RECEIVER_BUFFER_SIZE >= 292, "Receiver must buffer at least 292 bytes");		
 	}
 }

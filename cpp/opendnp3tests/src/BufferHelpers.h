@@ -22,6 +22,9 @@
 #define __BUFFER_HELPERS_H_
 
 #include "CopyableBuffer.h"
+
+#include <opendnp3/IBufferSegment.h>
+
 #include <string>
 
 namespace opendnp3
@@ -37,12 +40,11 @@ public:
 	ByteStr(const uint8_t* apData, uint32_t aLength);
 	ByteStr(const std::string& aChars);
 	bool operator==(const ByteStr& arRHS) const;
+	std::string ToHex() const;
 };
 
 /**
- * A sequence of hex values in the form "01 02 03 04" that
- * are stored as a ByteStr.
- *
+ * A sequence of hex values in the form "01 02 03 04" that are stored as a ByteStr.
  */
 class HexSequence : public ByteStr
 {
@@ -58,6 +60,26 @@ private:
 	std::string RemoveSpaces(const std::string& aSequence);
 	void RemoveSpacesInPlace(std::string& aSequence);
 	static uint32_t Validate(const std::string& aSequence);
+};
+
+class BufferSegment : public IBufferSegment
+{
+	public:
+
+	BufferSegment(uint32_t segmentSize, const std::string& hex);
+
+	virtual bool HasValue() const override final;
+
+	virtual openpal::ReadOnlyBuffer GetSegment() override final;
+
+	virtual bool Advance() override final;
+
+	void Reset();
+
+	private:
+	uint32_t segmentSize;
+	HexSequence hs;
+	openpal::ReadOnlyBuffer remainder;
 };
 
 
