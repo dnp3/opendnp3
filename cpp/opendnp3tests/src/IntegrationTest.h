@@ -78,8 +78,7 @@ private:
 	FlexibleDataObserver mLocalFDO;
 	MockCommandHandler mCmdHandler;
 
-	asiopal::EventLog mLog;
-	openpal::LogRoot logRoot;
+	asiopal::EventLog mLog;	
 	asiopal::IOServiceThreadPool mPool;	
 	DNP3Manager mMgr;
 	uint16_t NUM_POINTS;

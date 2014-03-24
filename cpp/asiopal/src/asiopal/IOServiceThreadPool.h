@@ -21,7 +21,7 @@
 #ifndef __IO_SERVICE_THREAD_POOL_
 #define __IO_SERVICE_THREAD_POOL_
 
-#include <openpal/Loggable.h>
+#include <openpal/LogRoot.h>
 
 #include <asio.hpp>
 
@@ -31,12 +31,14 @@
 namespace asiopal
 {
 
-class IOServiceThreadPool : private openpal::Loggable
+class IOServiceThreadPool
 {
 public:
 
 	IOServiceThreadPool(
-	    openpal::Logger aLogger,
+	    openpal::ILogBase* pLog,
+		uint32_t levels,
+		const std::string& id,
 	    uint32_t aConcurrency,
 	std::function<void()> onThreadStart = []() {},
 	std::function<void()> onThreadExit = []() {}
@@ -50,18 +52,21 @@ public:
 
 private:
 
-	std::function<void ()> mOnThreadStart;
-	std::function<void ()> mOnThreadExit;
+	openpal::LogRoot root;
+	openpal::Logger logger;
 
-	bool mIsShutdown;
+	std::function<void ()> onThreadStart;
+	std::function<void ()> onThreadExit;
+
+	bool isShutdown;
 
 	void OnTimerExpiration(const std::error_code& ec);
 
 	void Run();
 
-	asio::io_service mService;
+	asio::io_service ioservice;
 	asio::basic_waitable_timer< std::chrono::steady_clock > infiniteTimer;
-	std::vector<std::thread*> mThreads;
+	std::vector<std::thread*> threads;
 };
 
 }

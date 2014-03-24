@@ -49,9 +49,8 @@ using namespace opendnp3;
 
 IntegrationTest::IntegrationTest(uint16_t aStartPort, size_t aNumPairs, uint16_t aNumPoints, uint32_t filters) :
 	M_START_PORT(aStartPort),
-	mLog(),
-	logRoot(&mLog, filters),
-	mPool(logRoot.GetLogger("pool"), std::thread::hardware_concurrency()),
+	mLog(),	
+	mPool(&mLog, filters, "pool", std::thread::hardware_concurrency()),
 	mMgr(),
 	NUM_POINTS(aNumPoints)
 {

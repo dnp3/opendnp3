@@ -38,16 +38,19 @@ namespace asiopal
 {
 
 IOServiceThreadPool::IOServiceThreadPool(
-    openpal::Logger aLogger,
+	ILogBase* pLog,
+	uint32_t levels,
+	const std::string& id,
     uint32_t aConcurrency,
-    std::function<void()> onThreadStart,
-    std::function<void()> onThreadExit) :
-	Loggable(aLogger),
-	mOnThreadStart(onThreadStart),
-	mOnThreadExit(onThreadExit),
-	mIsShutdown(false),
-	mService(),
-	infiniteTimer(mService)
+    std::function<void()> onThreadStart_,
+    std::function<void()> onThreadExit_) :
+	root(pLog, levels),
+	logger(root.GetLogger(id)),
+	onThreadStart(onThreadStart_),
+	onThreadExit(onThreadExit_),
+	isShutdown(false),
+	ioservice(),
+	infiniteTimer(ioservice)
 {
 	if(aConcurrency == 0)
 	{
@@ -58,7 +61,7 @@ IOServiceThreadPool::IOServiceThreadPool(
 	infiniteTimer.async_wait(bind(&IOServiceThreadPool::OnTimerExpiration, this, placeholders::_1));
 	for(uint32_t i = 0; i < aConcurrency; ++i)
 	{
-		mThreads.push_back(new thread(bind(&IOServiceThreadPool::Run, this)));
+		threads.push_back(new thread(bind(&IOServiceThreadPool::Run, this)));
 	}
 }
 
@@ -70,7 +73,7 @@ void IOServiceThreadPool::OnTimerExpiration(const std::error_code& ec)
 IOServiceThreadPool::~IOServiceThreadPool()
 {
 	this->Shutdown();
-	for(auto pThread : mThreads)
+	for(auto pThread : threads)
 	{
 		delete pThread;
 	}
@@ -78,30 +81,33 @@ IOServiceThreadPool::~IOServiceThreadPool()
 
 void IOServiceThreadPool::Shutdown()
 {
-	if(!mIsShutdown)
+	if(!isShutdown)
 	{
-		mIsShutdown = true;
+		isShutdown = true;
 		infiniteTimer.cancel();
-		for(auto pThread : mThreads) pThread->join();
+		for (auto pThread : threads)
+		{
+			pThread->join();
+		}
 	}
 }
 
 asio::io_service* IOServiceThreadPool::GetIOService()
 {
-	return &mService;
+	return &ioservice;
 }
 
 void IOServiceThreadPool::Run()
 {
 	size_t num = 0;
 
-	mOnThreadStart();
+	onThreadStart();
 
 	do
 	{
 		try
 		{
-			num = mService.run();
+			num = ioservice.run();
 		}
 		catch(const std::exception& ex)
 		{
@@ -111,7 +117,7 @@ void IOServiceThreadPool::Run()
 	}
 	while(num > 0);
 
-	mOnThreadExit();
+	onThreadExit();
 }
 
 }

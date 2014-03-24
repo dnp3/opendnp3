@@ -27,7 +27,6 @@
 
 #include <asiopal/SerialTypes.h>
 
-#include <openpal/LogRoot.h>
 #include <openpal/TimeDuration.h>
 #include <openpal/IEventHandler.h>
 
@@ -44,6 +43,7 @@ namespace opendnp3
 
 namespace openpal
 {
+	class ILogBase;
 	class IPhysicalLayerAsync;	
 }
 
@@ -144,8 +144,7 @@ class ASIODNP3Manager : public opendnp3::DestructorHook
 
 private:
 
-	std::unique_ptr<asiopal::EventLog> pLog;
-	openpal::LogRoot logRoot;
+	std::unique_ptr<asiopal::EventLog> pLog;	
 	std::unique_ptr<asiopal::IOServiceThreadPool> pThreadPool;
 	std::unique_ptr<opendnp3::DNP3Manager> pManager;
 };

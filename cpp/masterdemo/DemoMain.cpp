@@ -26,8 +26,6 @@
 #include <opendnp3/master/ICommandProcessor.h>
 #include <opendnp3/master/ISOEHandler.h>
 
-#include <openpal/LogRoot.h>
-
 #include <asiopal/Log.h>
 #include <asiopal/LogToStdio.h>
 #include <asiopal/UTCTimeSource.h>
@@ -46,16 +44,15 @@ int main(int argc, char* argv[])
 
 	// Specify a LogLevel for the stack/physical layer to use.
 	// Log statements with a lower priority will not be logged.
-	const uint32_t LOG_LEVEL = levels::ALL;
+	const uint32_t FILTERS = levels::ALL;
 
-	EventLog log;
-	LogRoot root(&log, levels::ALL);
+	EventLog log;	
 	// You can optionally subcribe to log messages
 	// This singleton logger just prints messages to the console
 	log.AddLogSubscriber(LogToStdio::Inst());
 
 	// asio thread pool that drives the stack
-	IOServiceThreadPool pool(root.GetLogger("pool"), 1); // 1 stack only needs 1 thread
+	IOServiceThreadPool pool(&log, FILTERS, "pool", 1); // 1 stack only needs 1 thread
 
 	// This is the main point of interaction with the stack
 	DNP3Manager mgr;
@@ -68,7 +65,7 @@ int main(int argc, char* argv[])
 	};	
 
 	// Connect via a TCPClient socket to a slave
-	auto pClientPhys = new PhysicalLayerAsyncTCPClient(LogConfig(&log, LOG_LEVEL, "tcpclient"), pool.GetIOService(), "127.0.0.1", 20000, configure);
+	auto pClientPhys = new PhysicalLayerAsyncTCPClient(LogConfig(&log, FILTERS, "tcpclient"), pool.GetIOService(), "127.0.0.1", 20000, configure);
 	// wait 3000 ms in between failed connect calls
 	auto pClient = mgr.CreateChannel("tcpclient", TimeDuration::Seconds(2), TimeDuration::Minutes(1), pClientPhys);	
 

@@ -47,14 +47,13 @@ int main(int argc, char* argv[])
 
 	// Specify a LogLevel for the stack/physical layer to use.
 	// Log statements with a lower priority will not be logged.
-	const uint32_t LOG_LEVEL = levels::ALL;
+	const uint32_t FILTERS = levels::ALL;
 
 	//A default logging backend that can proxy to multiple other backends
-	EventLog log;
-	LogRoot root(&log, LOG_LEVEL);
+	EventLog log;	
 	log.AddLogSubscriber(LogToStdio::Inst()); // This singleton logger just prints messages to the console
 
-	IOServiceThreadPool pool(root.GetLogger("pool"), 1); // only 1 thread is needed for a single stack
+	IOServiceThreadPool pool(&log, FILTERS, "pool", 1); // only 1 thread is needed for a single stack
 
 	// This is the main point of interaction with the stack
 	DNP3Manager mgr;
@@ -67,7 +66,7 @@ int main(int argc, char* argv[])
 	};
 
 	// Create the raw physical layer
-	auto pServerPhys = new PhysicalLayerAsyncTCPServer(LogConfig(&log, LOG_LEVEL, "tcpserver"), pool.GetIOService(), "127.0.0.1", 20000, configure);
+	auto pServerPhys = new PhysicalLayerAsyncTCPServer(LogConfig(&log, FILTERS, "tcpserver"), pool.GetIOService(), "127.0.0.1", 20000, configure);
 	// Wrap the physical layer in a DNP channel
 	auto pServer = mgr.CreateChannel("tcpserver", TimeDuration::Seconds(5), TimeDuration::Seconds(5), pServerPhys);
 

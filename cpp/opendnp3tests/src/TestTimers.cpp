@@ -47,9 +47,8 @@ class TimerTestObject
 {
 public:
 	TimerTestObject() :
-		log(),
-		root(&log, levels::ALL),
-		pool(root.GetLogger("thread-pool"), 1),
+		log(),		
+		pool(&log, levels::ALL, "thread-pool", 1),
 		strand(*pool.GetIOService()),
 		exe(&strand),
 		mLast(-1),
@@ -77,8 +76,7 @@ public:
 	}
 
 private:
-	EventLog log;
-	LogRoot root;
+	EventLog log;	
 	asiopal::IOServiceThreadPool pool;
 	asio::strand strand;
 

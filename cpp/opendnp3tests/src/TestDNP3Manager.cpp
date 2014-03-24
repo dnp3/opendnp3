@@ -57,9 +57,8 @@ TEST_CASE(SUITE("ConstructionDestruction"))
 	for(int i = 0; i < ITERATIONS; ++i)
 	{
 
-		EventLog log;
-		LogRoot root(&log, levels::ALL);
-		IOServiceThreadPool pool(root.GetLogger("pool"), std::thread::hardware_concurrency());
+		EventLog log;		
+		IOServiceThreadPool pool(&log, levels::ALL, "pool", std::thread::hardware_concurrency());
 
 		DNP3Manager mgr;
 
@@ -81,9 +80,8 @@ TEST_CASE(SUITE("ManualStackShutdown"))
 {
 	for(int i = 0; i < ITERATIONS; ++i)
 	{
-		EventLog log;		
-		LogRoot root(&log, levels::ALL);
-		IOServiceThreadPool pool(root.GetLogger("pool"), std::thread::hardware_concurrency());
+		EventLog log;				
+		IOServiceThreadPool pool(&log, levels::ALL, "pool", std::thread::hardware_concurrency());
 
 		DNP3Manager mgr;
 
@@ -110,8 +108,7 @@ TEST_CASE(SUITE("ManualChannelShutdownWithStacks"))
 	for(int i = 0; i < ITERATIONS; ++i)
 	{
 		EventLog log;		
-		LogRoot root(&log, levels::ALL);
-		IOServiceThreadPool pool(root.GetLogger("pool"), std::thread::hardware_concurrency());
+		IOServiceThreadPool pool(&log, levels::ALL, "pool", std::thread::hardware_concurrency());
 		DNP3Manager mgr;
 
 		auto pClientPhys = new PhysicalLayerAsyncTCPClient(LogConfig(&log, levels::ALL, "client"), pool.GetIOService(), "127.0.0.1", 20000);
@@ -135,9 +132,8 @@ TEST_CASE(SUITE("ManualChannelShutdown"))
 {
 	for(int i = 0; i < ITERATIONS; ++i)
 	{
-		EventLog log;
-		LogRoot root(&log, levels::ALL);				
-		IOServiceThreadPool pool(root.GetLogger("pool"), std::thread::hardware_concurrency());
+		EventLog log;		
+		IOServiceThreadPool pool(&log, levels::ALL, "pool", std::thread::hardware_concurrency());
 		DNP3Manager mgr;
 
 		auto pClientPhys = new PhysicalLayerAsyncTCPClient(LogConfig(&log, levels::ALL, "client"), pool.GetIOService(), "127.0.0.1", 20000);

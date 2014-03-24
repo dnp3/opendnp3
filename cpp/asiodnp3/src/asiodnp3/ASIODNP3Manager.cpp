@@ -37,9 +37,8 @@ namespace asiodnp3
 
 
 ASIODNP3Manager::ASIODNP3Manager(uint32_t concurrency, std::function<void()> onThreadStart, std::function<void()> onThreadExit) :
-	pLog(new asiopal::EventLog()),
-	logRoot(pLog.get(), opendnp3::levels::INFO),
-	pThreadPool(new asiopal::IOServiceThreadPool(logRoot.GetLogger("pool"), concurrency, onThreadStart, onThreadExit)),
+	pLog(new asiopal::EventLog()),	
+	pThreadPool(new asiopal::IOServiceThreadPool(pLog.get(), opendnp3::levels::INFO, "pool", concurrency, onThreadStart, onThreadExit)),
 	pManager(new opendnp3::DNP3Manager())
 {
 
