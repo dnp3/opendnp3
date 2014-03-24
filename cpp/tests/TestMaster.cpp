@@ -1,4 +1,3 @@
-
 //
 // Licensed to Green Energy Corp (www.greenenergycorp.com) under one or
 // more contributor license agreements. See the NOTICE file distributed
@@ -451,7 +450,7 @@ BOOST_AUTO_TEST_CASE(DeferredControlExecution)
 	t.master.OnLowerLayerUp();
 
 	// check that a read request was made on startup
-	BOOST_REQUIRE_EQUAL(t.Read(), "C0 01 3C 01 06"); ;
+	BOOST_REQUIRE_EQUAL(t.Read(), "C0 01 3C 01 06");
 
 	//issue a command while the master is waiting for a response from the slave
 	ControlRelayOutputBlock bo(CC_PULSE); bo.mStatus = CS_SUCCESS;
@@ -461,6 +460,35 @@ BOOST_AUTO_TEST_CASE(DeferredControlExecution)
 	t.RespondToMaster("C0 81 00 00"); //now master gets response to integrity
 	std::string crob = "0C 01 17 01 01 01 01 64 00 00 00 64 00 00 00 00";
 	BOOST_REQUIRE_EQUAL(t.Read(), "C0 03 " + crob); //select
+}
+
+BOOST_AUTO_TEST_CASE(CloseDuringCommandOperate)
+{
+	MasterConfig config;
+	MasterTestObject t(config);
+	t.master.OnLowerLayerUp();
+
+	TestForIntegrityPoll(t);
+	BOOST_REQUIRE_EQUAL(t.app.NumAPDU(), 0); // check that the master sends no more packets
+
+	AnalogOutputInt16 ao(100);
+	std::queue<CommandResponse> responses;
+
+	t.master.GetCommandProcessor()->DirectOperate(ao, 3, [&](CommandResponse cr) { responses.push(cr); });
+	BOOST_REQUIRE(t.mts.DispatchOne());
+
+	BOOST_REQUIRE_EQUAL(t.Read(), "C0 05 29 02 17 01 03 64 00 00"); // SELECT
+	BOOST_REQUIRE_EQUAL(t.app.NumAPDU(), 0); //nore more packets
+
+	t.master.OnLowerLayerDown();
+
+	BOOST_REQUIRE(t.mts.DispatchOne());
+
+	BOOST_REQUIRE_EQUAL(1, responses.size());
+
+	t.master.OnLowerLayerUp();
+
+	BOOST_REQUIRE_EQUAL(t.Read(), "C0 01 3C 01 06");
 }
 
 BOOST_AUTO_TEST_CASE(SingleSetpointExecution)// Group 41 Var4

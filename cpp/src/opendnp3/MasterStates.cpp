@@ -130,6 +130,7 @@ void AMS_Waiting::OnLowerLayerDown(Master* c)
 {
 	ChangeState(c, AMS_Closed::Inst());
 	c->mpTask->OnFailure();
+	c->mpScheduledTask->OnComplete(false, true);
 }
 
 void AMS_Waiting::OnFailure(Master* c)
