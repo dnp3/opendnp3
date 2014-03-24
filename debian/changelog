@@ -1,3 +1,9 @@
+opendnp3 (1.1.1rc3-1) unstable; urgency=low
+
+  * Fixed AMS_Waiting -> AMS_Closed transition bug
+
+ -- Chris Verges <chris.verges@gmail.com>  Mon, 24 Mar 2014 08:50:00 -0800
+
 opendnp3 (1.1.1rc2-1) unstable; urgency=low
 
   * Added debug statements for issue 62
