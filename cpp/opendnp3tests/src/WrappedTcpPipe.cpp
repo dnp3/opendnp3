@@ -20,14 +20,16 @@
  */
 #include "WrappedTcpPipe.h"
 
+using namespace openpal;
+
 namespace opendnp3
 {
 
-WrappedTcpPipe::WrappedTcpPipe(openpal::Logger& arLogger, asio::io_service* apService, uint16_t aPort) :
-	clientTcp(arLogger.GetSubLogger("clientTcp"), apService, "127.0.0.1", aPort),
-	serverTcp(arLogger.GetSubLogger("serverTcp"), apService, "127.0.0.1", aPort),
-	client(arLogger.GetSubLogger("clientWrapper"), &clientTcp),
-	server(arLogger.GetSubLogger("serverWrapper"), &serverTcp)
+WrappedTcpPipe::WrappedTcpPipe(openpal::ILogBase* pLog, uint32_t filters, asio::io_service* apService, uint16_t aPort) :
+	clientTcp(LogConfig(pLog, filters, "clientTcp"), apService, "127.0.0.1", aPort),
+	serverTcp(LogConfig(pLog, filters, "serverTcp"), apService, "127.0.0.1", aPort),
+	client(clientTcp.GetLogRoot().GetLogger("clientWrapper"), &clientTcp),
+	server(serverTcp.GetLogRoot().GetLogger("serverWrapper"), &serverTcp)
 {
 
 }

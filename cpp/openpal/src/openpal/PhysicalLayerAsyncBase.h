@@ -21,24 +21,21 @@
 #ifndef __PHYSICAL_LAYER_ASYNC_BASE_H_
 #define __PHYSICAL_LAYER_ASYNC_BASE_H_
 
-#include <openpal/IPhysicalLayerAsync.h>
-#include <openpal/Loggable.h>
-#include <openpal/Location.h>
+#include "Loggable.h"
+#include "IPhysicalLayerAsync.h"
+#include "LogConfig.h"
+#include "LogRoot.h"
 
-#include <assert.h>
-
-#include <asio.hpp>
-
-namespace asiopal
+namespace openpal
 {
 
 class PLAS_Base;
 
 // This is the base class for the new async physical layers. It assumes that all of the functions
 // are called from a single thread.
-class PhysicalLayerAsyncBase : public openpal::IPhysicalLayerAsync, public openpal::Loggable
+class PhysicalLayerAsyncBase : public IPhysicalLayerAsync, protected Loggable
 {
-	class State : public openpal::IChannelState
+	class State : public IChannelState
 	{
 	public:
 		State();
@@ -69,7 +66,7 @@ class PhysicalLayerAsyncBase : public openpal::IPhysicalLayerAsync, public openp
 	};
 
 public:
-	PhysicalLayerAsyncBase(openpal::Logger&);
+	PhysicalLayerAsyncBase(const LogConfig& config);
 
 	// destructor should only be called once the object is totally finished with all of its async operations
 	// to avoid segfaulting. There are a # of asserts that make sure the object has been shutdown properly.
@@ -78,59 +75,59 @@ public:
 	/* Implement IChannelState */
 	bool IsOpen() const
 	{
-		return mState.IsOpen();
+		return state.IsOpen();
 	}
 	bool IsOpening() const
 	{
-		return mState.IsOpening();
+		return state.IsOpening();
 	}
 	bool IsReading() const
 	{
-		return mState.IsReading();
+		return state.IsReading();
 	}
 	bool IsWriting() const
 	{
-		return mState.IsWriting();
+		return state.IsWriting();
 	}
 	bool IsClosing() const
 	{
-		return mState.IsClosing();
+		return state.IsClosing();
 	}
 	bool IsClosed() const
 	{
-		return mState.IsClosed();
+		return state.IsClosed();
 	}
 
 	bool CanOpen() const
 	{
-		return mState.CanOpen();
+		return state.CanOpen();
 	}
 	bool CanClose() const
 	{
-		return mState.CanClose();
+		return state.CanClose();
 	}
 	bool CanRead() const
 	{
-		return mState.CanRead();
+		return state.CanRead();
 	}
 	bool CanWrite() const
 	{
-		return mState.CanWrite();
+		return state.CanWrite();
 	}
 
 	std::string ConvertStateToString() const
 	{
-		return mState.ConvertStateToString();
+		return state.ConvertStateToString();
 	}
 
 	/* Implement IPhysicalLayerAsync - Events from the outside */
 	void AsyncOpen();
 	void AsyncClose();
-	void AsyncWrite(const openpal::ReadOnlyBuffer&);
-	void AsyncRead(openpal::WriteBuffer&);
+	void AsyncWrite(const ReadOnlyBuffer&);
+	void AsyncRead(WriteBuffer&);
 
 	// Not an event delegated to the states
-	void SetHandler(openpal::IHandlerAsync* apHandler);
+	void SetHandler(IHandlerAsync* apHandler);
 
 	/* Actions taken by the states - These must be implemented by the concrete
 	classes inherited from this class */
@@ -140,8 +137,8 @@ public:
 	{
 		DoClose();    //optionally override this action
 	}
-	virtual void DoAsyncRead(openpal::WriteBuffer&) = 0;
-	virtual void DoAsyncWrite(const openpal::ReadOnlyBuffer&) = 0;
+	virtual void DoAsyncRead(WriteBuffer&) = 0;
+	virtual void DoAsyncWrite(const ReadOnlyBuffer&) = 0;
 
 	// These can be optionally overriden to do something more interesting, i.e. specific logging
 	virtual void DoOpenCallback() {}
@@ -150,12 +147,17 @@ public:
 
 	void DoWriteSuccess();
 	void DoThisLayerDown();
-	void DoReadCallback(const openpal::ReadOnlyBuffer& arBuffer);
+	void DoReadCallback(const ReadOnlyBuffer& arBuffer);
 
 	//Error reporting function(s)
-	openpal::Logger& GetLogger()
+	Logger& GetLogger()
 	{
 		return logger;
+	}
+
+	openpal::LogRoot& GetLogRoot()
+	{
+		return logRoot;
 	}
 
 protected:
@@ -165,18 +167,20 @@ protected:
 	void OnReadCallback(const std::error_code& arError, uint8_t* apBuffer, uint32_t  aNumRead);
 	void OnWriteCallback(const std::error_code& arError, uint32_t  aNumBytes);
 
+	LogRoot logRoot;
+
 	// "user" object that recieves the callbacks
-	openpal::IHandlerAsync* mpHandler;
+	IHandlerAsync* mpHandler;
 
 	// State object that tracks the activities of the class, state pattern too heavy
-	PhysicalLayerAsyncBase::State mState;
+	PhysicalLayerAsyncBase::State state;
 
 private:
 
 	void StartClose();
 };
 
-inline void PhysicalLayerAsyncBase::SetHandler(openpal::IHandlerAsync* apHandler)
+inline void PhysicalLayerAsyncBase::SetHandler(IHandlerAsync* apHandler)
 {
 	assert(mpHandler == nullptr);
 	assert(apHandler != nullptr);

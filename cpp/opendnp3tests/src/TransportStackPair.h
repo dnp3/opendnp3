@@ -42,7 +42,8 @@ public:
 	TransportStackPair(
 	    LinkConfig aClientCfg,
 	    LinkConfig aServerCfg,
-	    openpal::Logger& arLogger,
+		openpal::ILogBase* pLog,
+		uint32_t filters,
 	    asio::io_service* apService,
 	    uint16_t aPort);
 

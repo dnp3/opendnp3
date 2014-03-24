@@ -33,8 +33,9 @@ protected:
 	~Uncopyable() {}
 
 private:
-	Uncopyable(const Uncopyable&); //prevent copy constructor
-	Uncopyable& operator=(const Uncopyable&); //prevent assignment
+	// prevent these functions
+	Uncopyable(const Uncopyable&) = delete;
+	Uncopyable& operator=(const Uncopyable&) = delete;
 };
 
 class PureStatic
@@ -42,9 +43,9 @@ class PureStatic
 
 private:
 	// prevent these functions
-	PureStatic();
-	PureStatic(const PureStatic&);
-	PureStatic& operator=(const PureStatic&);
+	PureStatic() = delete;
+	PureStatic(const PureStatic&) = delete;
+	PureStatic& operator=(const PureStatic&) = delete;
 };
 
 }

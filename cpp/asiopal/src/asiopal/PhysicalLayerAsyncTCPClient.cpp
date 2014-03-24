@@ -36,20 +36,20 @@ namespace asiopal
 {
 
 PhysicalLayerAsyncTCPClient::PhysicalLayerAsyncTCPClient(
-    Logger logger,
+	const openpal::LogConfig& config,
     asio::io_service* pIOService,
     const std::string& host_,
     uint16_t port,
     std::function<void (asio::ip::tcp::socket&)> aConfigure) :
 
-	PhysicalLayerAsyncBaseTCP(logger, pIOService),
+	PhysicalLayerAsyncBaseTCP(config, pIOService),
 	condition(logger),
 	host(host_),
 	remoteEndpoint(ip::tcp::v4(), port),
 	resolver(*pIOService),
 	configure(aConfigure)
 {
-	//	remoteEndpoint.address(  );
+	
 }
 
 /* Implement the actions */

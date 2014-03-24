@@ -39,6 +39,7 @@
 
 using namespace std;
 using namespace opendnp3;
+using namespace openpal;
 using namespace asiopal;
 
 int main(int argc, char* argv[])
@@ -50,9 +51,10 @@ int main(int argc, char* argv[])
 
 	//A default logging backend that can proxy to multiple other backends
 	EventLog log;
+	LogRoot root(&log, LOG_LEVEL);
 	log.AddLogSubscriber(LogToStdio::Inst()); // This singleton logger just prints messages to the console
 
-	IOServiceThreadPool pool(Logger(&log, LOG_LEVEL, "pool"), 1); // only 1 thread is needed for a single stack
+	IOServiceThreadPool pool(root.GetLogger("pool"), 1); // only 1 thread is needed for a single stack
 
 	// This is the main point of interaction with the stack
 	DNP3Manager mgr;
@@ -65,9 +67,9 @@ int main(int argc, char* argv[])
 	};
 
 	// Create the raw physical layer
-	auto pServerPhys = new PhysicalLayerAsyncTCPServer(Logger(&log, LOG_LEVEL, "tcpserver"), pool.GetIOService(), "127.0.0.1", 20000, configure);
+	auto pServerPhys = new PhysicalLayerAsyncTCPServer(LogConfig(&log, LOG_LEVEL, "tcpserver"), pool.GetIOService(), "127.0.0.1", 20000, configure);
 	// Wrap the physical layer in a DNP channel
-	auto pServer = mgr.CreateChannel(Logger(&log, LOG_LEVEL, "tcpserver"), TimeDuration::Seconds(5), TimeDuration::Seconds(5), pServerPhys);
+	auto pServer = mgr.CreateChannel("tcpserver", TimeDuration::Seconds(5), TimeDuration::Seconds(5), pServerPhys);
 
 	// The master config object for a slave. The default are
 	// useable, but understanding the options are important.

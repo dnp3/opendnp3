@@ -47,17 +47,16 @@ void DNP3Manager::Shutdown()
 	condition.wait(lock, [this]() { return this->channels.empty(); });
 }
 
-IChannel* DNP3Manager::CreateChannel(
-	LogRoot* pLogRoot,
+IChannel* DNP3Manager::CreateChannel(	
 	const std::string& id,
     openpal::TimeDuration minOpenRetry,
     openpal::TimeDuration maxOpenRetry,
-    openpal::IPhysicalLayerAsync* apPhys,
+    openpal::PhysicalLayerAsyncBase* apPhys,
 	IEventHandler<ChannelState>* pStateHandler,
     IOpenDelayStrategy* pOpenStrategy)
 {	
 	std::unique_lock<std::mutex> lock(mutex);
-	auto pChannel = new DNP3Channel(pLogRoot, id, minOpenRetry, maxOpenRetry, pOpenStrategy, apPhys, this, pStateHandler);
+	auto pChannel = new DNP3Channel(id, minOpenRetry, maxOpenRetry, pOpenStrategy, apPhys, this, pStateHandler);
 	channels.insert(pChannel);
 	return pChannel;
 }

@@ -27,7 +27,6 @@
 #include "LogBase.h"
 #include "Uncopyable.h"
 
-
 namespace openpal
 {
 

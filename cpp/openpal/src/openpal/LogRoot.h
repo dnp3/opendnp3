@@ -36,7 +36,7 @@ class ILogBase;
 class LogRoot : Uncopyable
 {
 
-public:
+public:	
 
 	LogRoot(ILogBase* apLog, uint32_t filters);
 

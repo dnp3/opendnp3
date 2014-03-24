@@ -33,7 +33,7 @@ class PhysicalLayerAsyncTCPClient : public PhysicalLayerAsyncBaseTCP
 {
 public:
 	PhysicalLayerAsyncTCPClient(
-	    openpal::Logger logger,
+		const openpal::LogConfig& config,
 	    asio::io_service* pIOService,
 	    const std::string& host_,
 	    uint16_t port,

@@ -151,11 +151,11 @@ void IntegrationTest::AddStackPair(uint32_t filters, uint16_t aNumPoints)
 	std::shared_ptr<ComparingDataObserver> pMasterFDO(new ComparingDataObserver(&mLocalFDO));
 	mMasterObservers.push_back(pMasterFDO);
 
-	auto pClientPhys = new PhysicalLayerAsyncTCPClient(logRoot.GetLogger(clientId), mPool.GetIOService(), "127.0.0.1", port);
-	auto pClient = this->mMgr.CreateChannel(&logRoot, clientId, TimeDuration::Seconds(1), TimeDuration::Seconds(1), pClientPhys);
+	auto pClientPhys = new PhysicalLayerAsyncTCPClient(LogConfig(&mLog, filters, clientId), mPool.GetIOService(), "127.0.0.1", port);
+	auto pClient = this->mMgr.CreateChannel(clientId, TimeDuration::Seconds(1), TimeDuration::Seconds(1), pClientPhys);
 
-	auto pServerPhys = new PhysicalLayerAsyncTCPServer(logRoot.GetLogger(serverId), mPool.GetIOService(), "127.0.0.1", port);
-	auto pServer = this->mMgr.CreateChannel(&logRoot, serverId, TimeDuration::Seconds(1), TimeDuration::Seconds(1), pServerPhys);
+	auto pServerPhys = new PhysicalLayerAsyncTCPServer(LogConfig(&mLog, filters, serverId), mPool.GetIOService(), "127.0.0.1", port);
+	auto pServer = this->mMgr.CreateChannel(serverId, TimeDuration::Seconds(1), TimeDuration::Seconds(1), pServerPhys);
 
 	/*
 	 * Add a Master instance.  The code is wrapped in braces so that we can

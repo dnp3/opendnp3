@@ -32,8 +32,8 @@ using namespace openpal;
 namespace opendnp3
 {
 
-LoopbackPhysicalLayerAsync::LoopbackPhysicalLayerAsync(openpal::Logger aLogger, asio::io_service* apSrv) :
-	PhysicalLayerAsyncASIO(aLogger, apSrv)
+LoopbackPhysicalLayerAsync::LoopbackPhysicalLayerAsync(const LogConfig& config, asio::io_service* apSrv) :
+	PhysicalLayerAsyncASIO(config, apSrv)
 {
 
 }

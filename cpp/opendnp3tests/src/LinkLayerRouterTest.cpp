@@ -25,10 +25,10 @@ using namespace openpal;
 namespace opendnp3
 {
 
-LinkLayerRouterTest::LinkLayerRouterTest() :
+LinkLayerRouterTest::LinkLayerRouterTest(uint32_t filters) :
 	log(),
 	exe(),
-	phys(log.GetLogger("Physical"), &exe),
+	phys(LogConfig(&log, filters, "Physical"), &exe),
 	router(log.GetLogger("Router"), &phys, TimeDuration::Milliseconds(100), TimeDuration::Milliseconds(100))
 {
 

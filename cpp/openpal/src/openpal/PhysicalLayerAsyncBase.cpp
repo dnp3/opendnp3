@@ -20,17 +20,16 @@
  */
 #include "PhysicalLayerAsyncBase.h"
 
-#include <openpal/IHandlerAsync.h>
-#include <openpal/LoggableMacros.h>
-#include <openpal/IExecutor.h>
-#include <openpal/LogLevels.h>
+#include "IHandlerAsync.h"
+#include "LoggableMacros.h"
+#include "IExecutor.h"
+#include "LogLevels.h"
 
 #include <sstream>
 
-using namespace openpal;
 using namespace std;
 
-namespace asiopal
+namespace openpal
 {
 
 ///////////////////////////////////
@@ -124,8 +123,9 @@ std::string PhysicalLayerAsyncBase::State::ConvertStateToString() const
 // PhysicalLayerAsyncBase
 ///////////////////////////////////
 
-PhysicalLayerAsyncBase::PhysicalLayerAsyncBase(openpal::Logger& arLogger) :
-	Loggable(arLogger),
+PhysicalLayerAsyncBase::PhysicalLayerAsyncBase(const LogConfig& config) :
+	logRoot(config.GetLog(), config.GetFilters()),
+	Loggable(logRoot.GetLogger(config.GetRootId())),
 	mpHandler(nullptr)
 {
 
@@ -137,9 +137,9 @@ PhysicalLayerAsyncBase::PhysicalLayerAsyncBase(openpal::Logger& arLogger) :
 
 void PhysicalLayerAsyncBase::AsyncOpen()
 {
-	if(mState.CanOpen())
+	if(state.CanOpen())
 	{
-		mState.mOpening = true;
+		state.mOpening = true;
 		this->DoOpen();
 	}
 	else
@@ -155,7 +155,7 @@ from the io_service.
 void PhysicalLayerAsyncBase::AsyncClose()
 {
 	this->StartClose();
-	if (mState.CheckForClose())
+	if (state.CheckForClose())
 	{
 		this->DoThisLayerDown();
 	}
@@ -163,13 +163,13 @@ void PhysicalLayerAsyncBase::AsyncClose()
 
 void PhysicalLayerAsyncBase::StartClose()
 {
-	if(!mState.IsClosing())   //TODO - kind of hack as it deviates from the current model.
+	if(!state.IsClosing())   //TODO - kind of hack as it deviates from the current model.
 	{
-		if(mState.CanClose())
+		if(state.CanClose())
 		{
-			mState.mClosing = true;
+			state.mClosing = true;
 
-			if(mState.mOpening) this->DoOpeningClose();
+			if(state.mOpening) this->DoOpeningClose();
 			else this->DoClose();
 		}
 		else
@@ -181,11 +181,11 @@ void PhysicalLayerAsyncBase::StartClose()
 
 void PhysicalLayerAsyncBase::AsyncWrite(const openpal::ReadOnlyBuffer& arBuffer)
 {
-	if (mState.CanWrite())
+	if (state.CanWrite())
 	{
 		if (arBuffer.Size() > 0)
 		{
-			mState.mWriting = true;
+			state.mWriting = true;
 			this->DoAsyncWrite(arBuffer);
 		}
 		else
@@ -205,11 +205,11 @@ void PhysicalLayerAsyncBase::AsyncWrite(const openpal::ReadOnlyBuffer& arBuffer)
 
 void PhysicalLayerAsyncBase::AsyncRead(WriteBuffer& arBuffer)
 {
-	if(mState.CanRead())
+	if(state.CanRead())
 	{
 		if (arBuffer.Size() > 0)
 		{
-			mState.mReading = true;
+			state.mReading = true;
 			this->DoAsyncRead(arBuffer);
 		}
 		else
@@ -233,16 +233,16 @@ void PhysicalLayerAsyncBase::AsyncRead(WriteBuffer& arBuffer)
 
 void PhysicalLayerAsyncBase::OnOpenCallback(const std::error_code& arErr)
 {
-	if(mState.mOpening)
+	if(state.mOpening)
 	{
-		mState.mOpening = false;
+		state.mOpening = false;
 
 		this->DoOpenCallback();
 
 		if(arErr)
 		{
 			LOG_BLOCK(log::WARN, arErr.message());
-			mState.CheckForClose();
+			state.CheckForClose();
 			this->DoOpenFailure();
 			if(mpHandler) mpHandler->OnOpenFailure();
 		}
@@ -250,13 +250,13 @@ void PhysicalLayerAsyncBase::OnOpenCallback(const std::error_code& arErr)
 		{
 			if(this->IsClosing())   // but the connection was closed
 			{
-				mState.CheckForClose();
+				state.CheckForClose();
 				this->DoClose();
 				if(mpHandler) mpHandler->OnOpenFailure();
 			}
 			else
 			{
-				mState.mOpen = true;
+				state.mOpen = true;
 				this->DoOpenSuccess();
 				if(mpHandler) mpHandler->OnLowerLayerUp();
 			}
@@ -270,18 +270,18 @@ void PhysicalLayerAsyncBase::OnOpenCallback(const std::error_code& arErr)
 
 void PhysicalLayerAsyncBase::OnReadCallback(const std::error_code& arErr, uint8_t* apBuffer, uint32_t aNumRead)
 {
-	if(mState.mReading)
+	if(state.mReading)
 	{
-		mState.mReading = false;
+		state.mReading = false;
 
 		if(arErr)
 		{
 			LOG_BLOCK(log::WARN, arErr.message());
-			if(mState.CanClose()) this->StartClose();
+			if(state.CanClose()) this->StartClose();
 		}
 		else
 		{
-			if(mState.mClosing)
+			if(state.mClosing)
 			{
 				LOG_BLOCK(log::DEBUG, "Ignoring received bytes since layer is closing: " << aNumRead);
 			}
@@ -292,7 +292,7 @@ void PhysicalLayerAsyncBase::OnReadCallback(const std::error_code& arErr, uint8_
 			}
 		}
 
-		if(mState.CheckForClose()) this->DoThisLayerDown();
+		if(state.CheckForClose()) this->DoThisLayerDown();
 	}
 	else
 	{
@@ -302,18 +302,18 @@ void PhysicalLayerAsyncBase::OnReadCallback(const std::error_code& arErr, uint8_
 
 void PhysicalLayerAsyncBase::OnWriteCallback(const std::error_code& arErr, uint32_t  aNumBytes)
 {
-	if(mState.mWriting)
+	if(state.mWriting)
 	{
-		mState.mWriting = false;
+		state.mWriting = false;
 
 		if(arErr)
 		{
 			LOG_BLOCK(log::WARN, arErr.message());
-			if(mState.CanClose()) this->StartClose();
+			if(state.CanClose()) this->StartClose();
 		}
 		else
 		{
-			if(mState.mClosing)
+			if(state.mClosing)
 			{
 				LOG_BLOCK(log::DEBUG, "Ignoring written bytes since layer is closing: " << aNumBytes);
 			}
@@ -323,7 +323,7 @@ void PhysicalLayerAsyncBase::OnWriteCallback(const std::error_code& arErr, uint3
 			}
 		}
 
-		if(mState.CheckForClose()) this->DoThisLayerDown();
+		if(state.CheckForClose()) this->DoThisLayerDown();
 	}
 	else
 	{

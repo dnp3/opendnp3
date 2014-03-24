@@ -32,7 +32,6 @@
 
 using namespace opendnp3;
 using namespace openpal;
-using namespace asiopal;
 
 class ConcretePhysicalLayerMonitor : public PhysicalLayerMonitor
 {
@@ -85,10 +84,10 @@ class TestObject
 {
 public:
 
-	TestObject() :
+	TestObject(uint32_t filters = levels::ALL) :
 		log(),
 		exe(),
-		phys(log.GetLogger("mock-phys"), &exe),
+		phys(LogConfig(&log, filters, "mock-phys"), &exe),
 		monitor(log.GetLogger("test"), &phys)
 	{}
 

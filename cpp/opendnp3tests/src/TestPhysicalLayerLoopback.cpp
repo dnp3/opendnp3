@@ -32,7 +32,6 @@
 
 using namespace opendnp3;
 using namespace openpal;
-using namespace boost;
 
 #define SUITE(name) "PhysicalLayerLoopbackSuite - " name
 
@@ -40,11 +39,11 @@ class LoopbackTest
 {
 public:
 
-	LoopbackTest() :
+	LoopbackTest(uint32_t filters = levels::ALL) :
 		log(),
-		root(&log, levels::ALL),
+		root(&log, filters),
 		exe(),
-		phys(root.GetLogger("phys"), &exe),
+		phys(LogConfig(&log, filters, "phys"), &exe),
 		loopback(root.GetLogger("loopback"), &phys)
 	{
 		loopback.Start();

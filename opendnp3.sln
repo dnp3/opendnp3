@@ -270,7 +270,7 @@ Global
 		{0CEC0BE3-FEDB-4B14-A099-402FCF68E5DC}.Debug|Mixed Platforms.Build.0 = Debug|Win32
 		{0CEC0BE3-FEDB-4B14-A099-402FCF68E5DC}.Debug|Win32.ActiveCfg = Debug|Win32
 		{0CEC0BE3-FEDB-4B14-A099-402FCF68E5DC}.Debug|Win32.Build.0 = Debug|Win32
-		{0CEC0BE3-FEDB-4B14-A099-402FCF68E5DC}.Debug|x64.ActiveCfg = Debug|Win32
+		{0CEC0BE3-FEDB-4B14-A099-402FCF68E5DC}.Debug|x64.ActiveCfg = Debug|x64
 		{0CEC0BE3-FEDB-4B14-A099-402FCF68E5DC}.Release|Any CPU.ActiveCfg = Release|Win32
 		{0CEC0BE3-FEDB-4B14-A099-402FCF68E5DC}.Release|Mixed Platforms.ActiveCfg = Release|Win32
 		{0CEC0BE3-FEDB-4B14-A099-402FCF68E5DC}.Release|Mixed Platforms.Build.0 = Release|Win32

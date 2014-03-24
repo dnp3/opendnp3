@@ -29,9 +29,6 @@
     <ClInclude Include="src\asiopal\PhysicalLayerAsyncASIO.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\asiopal\PhysicalLayerAsyncBase.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\asiopal\PhysicalLayerAsyncBaseTCP.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -74,9 +71,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\asiopal\LogToStdio.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\asiopal\PhysicalLayerAsyncBase.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\asiopal\PhysicalLayerAsyncBaseTCP.cpp">

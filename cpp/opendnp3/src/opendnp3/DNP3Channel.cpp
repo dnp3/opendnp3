@@ -20,8 +20,7 @@
  */
 #include "DNP3Channel.h"
 
-#include <openpal/IPhysicalLayerAsync.h>
-
+#include <openpal/PhysicalLayerAsyncBase.h>
 
 #include "opendnp3/master/MasterStackImpl.h"
 #include "opendnp3/outstation/OutstationStackImpl.h"
@@ -32,18 +31,16 @@ using namespace openpal;
 namespace opendnp3
 {
 
-DNP3Channel::DNP3Channel(
-	LogRoot* pLogRoot_,
+DNP3Channel::DNP3Channel(	
 	const std::string& id,
     openpal::TimeDuration minOpenRetry,
     openpal::TimeDuration maxOpenRetry,
     IOpenDelayStrategy* pStrategy,
-    IPhysicalLayerAsync* pPhys_,	
+	openpal::PhysicalLayerAsyncBase* pPhys_,
 	openpal::ITypedShutdownHandler<DNP3Channel*>* pShutdownHandler_,
-	openpal::IEventHandler<ChannelState>* pStateHandler) :		
-		pLogRoot(pLogRoot_),
-		logger(pLogRoot->GetLogger(id)),
-		pPhys(pPhys_),		
+	openpal::IEventHandler<ChannelState>* pStateHandler) :				
+		pPhys(pPhys_),
+		logger(pPhys->GetLogRoot().GetLogger(id)),			
 		state(State::READY),
 		pShutdownHandler(pShutdownHandler_),
 		router(logger.GetSubLogger("router"), pPhys.get(), minOpenRetry, maxOpenRetry, pStateHandler, this, pStrategy),

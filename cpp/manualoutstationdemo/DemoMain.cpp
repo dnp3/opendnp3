@@ -28,6 +28,7 @@
 #include <opendnp3/outstation/Slave.h>
 #include <opendnp3/app/ApplicationStack.h>
 #include <opendnp3/outstation/DynamicallyAllocatedDatabase.h>
+#include <opendnp3/LogLevels.h>
 
 #include <asiopal/Log.h>
 #include <asiopal/LogToStdio.h>
@@ -50,7 +51,7 @@ int main(int argc, char* argv[])
 
 	// Specify a LogLevel for the stack/physical layer to use.
 	// Log statements with a lower priority will not be logged.
-	const LogLevel LOG_LEVEL = levels::INTERPRET;
+	const uint32_t LOG_LEVEL = levels::ALL;
 
 	//A default logging backend that can proxy to multiple other backends
 	EventLog log;
@@ -62,15 +63,15 @@ int main(int argc, char* argv[])
 
 	LinkRoute route(1, 1024);
 
-	PhysicalLayerAsyncTCPServer server(Logger(&log, LOG_LEVEL, "tcpserver"), &service, "127.0.0.1", 20000);
-	LinkLayerRouter router(Logger(&log, LOG_LEVEL, "router"), &server, TimeDuration::Seconds(1), TimeDuration::Seconds(60));
-	ApplicationStack stack(Logger(&log, LOG_LEVEL, "root"), &executor, AppConfig(false), LinkConfig(false, false));
+	PhysicalLayerAsyncTCPServer server(LogConfig(&log, LOG_LEVEL, "tcpserver"), &service, "127.0.0.1", 20000);
+	LinkLayerRouter router(server.GetLogger().GetSubLogger("router"), &server, TimeDuration::Seconds(1), TimeDuration::Seconds(60));
+	ApplicationStack stack(server.GetLogger().GetSubLogger("root"), &executor, AppConfig(false), LinkConfig(false, false));
 	stack.link.SetRouter(&router);
 	router.AddContext(&stack.link, route);
 	
 	DynamicallyAllocatedDatabase dadb(DatabaseTemplate::AllTypes(5));
 	Database database(dadb.GetFacade());
-	Slave slave(Logger(&log, LOG_LEVEL, "slave"), &stack.application, &executor, NullTimeWriteHandler::Inst(), &database, SuccessCommandHandler::Inst(), SlaveConfig());
+	Slave slave(server.GetLogger().GetSubLogger("slave"), &stack.application, &executor, NullTimeWriteHandler::Inst(), &database, SuccessCommandHandler::Inst(), SlaveConfig());
 	stack.application.SetUser(&slave);
 
 	router.Enable(&stack.link);

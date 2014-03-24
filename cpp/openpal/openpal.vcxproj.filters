@@ -145,6 +145,9 @@
     <ClInclude Include="src\openpal\LogConfig.h">
       <Filter>Header</Filter>
     </ClInclude>
+    <ClInclude Include="src\openpal\PhysicalLayerAsyncBase.h">
+      <Filter>Header</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\openpal\BufferWrapper.cpp">
@@ -169,6 +172,9 @@
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="src\openpal\LogRoot.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="src\openpal\PhysicalLayerAsyncBase.cpp">
       <Filter>Source</Filter>
     </ClCompile>
   </ItemGroup>

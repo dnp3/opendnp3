@@ -47,6 +47,7 @@
     <ClInclude Include="src\openpal\LogLevels.h" />
     <ClInclude Include="src\openpal\LogRoot.h" />
     <ClInclude Include="src\openpal\MonotonicTimestamp.h" />
+    <ClInclude Include="src\openpal\PhysicalLayerAsyncBase.h" />
     <ClInclude Include="src\openpal\QueueAdapter.h" />
     <ClInclude Include="src\openpal\RandomInsertAdapter.h" />
     <ClInclude Include="src\openpal\ReverseEndian.h" />
@@ -71,6 +72,7 @@
     <ClCompile Include="src\openpal\Logger.cpp" />
     <ClCompile Include="src\openpal\LogRoot.cpp" />
     <ClCompile Include="src\openpal\MonotonicTimestamp.cpp" />
+    <ClCompile Include="src\openpal\PhysicalLayerAsyncBase.cpp" />
     <ClCompile Include="src\openpal\ReverseEndian.cpp" />
     <ClCompile Include="src\openpal\TimeDuration.cpp" />
     <ClCompile Include="src\openpal\ToHex.cpp" />

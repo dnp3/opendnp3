@@ -22,20 +22,23 @@
 
 #include <asio.hpp>
 
+using namespace openpal;
+
 namespace opendnp3
 {
 
 TransportStackPair::TransportStackPair(
     LinkConfig aClientCfg,
     LinkConfig aServerCfg,
-    openpal::Logger& arLogger,
+	openpal::ILogBase* pLog,
+	uint32_t filters,
     asio::io_service* apService,
     uint16_t aPort) :
 
-	mClient(arLogger.GetSubLogger("TCPClient"), apService, "127.0.0.1", aPort),
-	mServer(arLogger.GetSubLogger("TCPServer"), apService, "127.0.0.1", aPort),
-	mClientStack(arLogger.GetSubLogger("ClientStack"), &mClient, aClientCfg),
-	mServerStack(arLogger.GetSubLogger("ServerStack"), &mServer, aServerCfg)
+	mClient(LogConfig(pLog, filters, "TCPClient"), apService, "127.0.0.1", aPort),
+	mServer(LogConfig(pLog, filters, "TCPServer"), apService, "127.0.0.1", aPort),
+	mClientStack(mClient.GetLogRoot().GetLogger("ClientStack"), &mClient, aClientCfg),
+	mServerStack(mClient.GetLogRoot().GetLogger("ServerStack"), &mServer, aServerCfg)
 {
 
 }

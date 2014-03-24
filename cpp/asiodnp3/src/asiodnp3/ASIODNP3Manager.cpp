@@ -36,10 +36,11 @@ namespace asiodnp3
 {
 
 
-ASIODNP3Manager::ASIODNP3Manager(uint32_t aConcurrency, std::function<void()> aOnThreadStart, std::function<void()> aOnThreadExit) :
-	mpLog(new asiopal::EventLog()),
-	mpThreadPool(new asiopal::IOServiceThreadPool(Logger(mpLog.get(), log::INFO, "pool"), aConcurrency, aOnThreadStart, aOnThreadExit)),
-	mpManager(new opendnp3::DNP3Manager())
+ASIODNP3Manager::ASIODNP3Manager(uint32_t concurrency, std::function<void()> onThreadStart, std::function<void()> onThreadExit) :
+	pLog(new asiopal::EventLog()),
+	logRoot(pLog.get(), opendnp3::levels::INFO),
+	pThreadPool(new asiopal::IOServiceThreadPool(logRoot.GetLogger("pool"), concurrency, onThreadStart, onThreadExit)),
+	pManager(new opendnp3::DNP3Manager())
 {
 
 }
@@ -51,21 +52,17 @@ ASIODNP3Manager::~ASIODNP3Manager()
 
 void ASIODNP3Manager::AddLogSubscriber(openpal::ILogBase* apLog)
 {
-	mpLog->AddLogSubscriber(apLog);
-}
-
-openpal::ILogBase* ASIODNP3Manager::GetLog()
-{
-	return mpLog.get();
+	pLog->AddLogSubscriber(apLog);
 }
 
 void ASIODNP3Manager::Shutdown()
 {
-	mpManager->Shutdown();
+	pManager->Shutdown();
 }
 
 opendnp3::IChannel* ASIODNP3Manager::AddTCPClient(
-    openpal::Logger aLogger,
+	const std::string& id,
+	uint32_t levels,
     openpal::TimeDuration minOpenRetry,
     openpal::TimeDuration maxOpenRetry,
     const std::string& host,
@@ -73,12 +70,13 @@ opendnp3::IChannel* ASIODNP3Manager::AddTCPClient(
 	openpal::IEventHandler<opendnp3::ChannelState>* pStateHandler,
     opendnp3::IOpenDelayStrategy* pStrategy)
 {
-	auto pPhys = new asiopal::PhysicalLayerAsyncTCPClient(aLogger, mpThreadPool->GetIOService(), host, port);
-	return mpManager->CreateChannel(aLogger, minOpenRetry, maxOpenRetry, pPhys, pStateHandler, pStrategy);
+	auto pPhys = new asiopal::PhysicalLayerAsyncTCPClient(LogConfig(pLog.get(), levels, id), pThreadPool->GetIOService(), host, port);
+	return pManager->CreateChannel(id, minOpenRetry, maxOpenRetry, pPhys, pStateHandler, pStrategy);
 }
 
 opendnp3::IChannel* ASIODNP3Manager::AddTCPServer(
-    openpal::Logger aLogger,
+	const std::string& id,
+	uint32_t levels,
     openpal::TimeDuration minOpenRetry,
     openpal::TimeDuration maxOpenRetry,
     const std::string& endpoint,
@@ -86,20 +84,21 @@ opendnp3::IChannel* ASIODNP3Manager::AddTCPServer(
 	openpal::IEventHandler<opendnp3::ChannelState>* pStateHandler,
     opendnp3::IOpenDelayStrategy* pStrategy)
 {
-	auto pPhys = new asiopal::PhysicalLayerAsyncTCPServer(aLogger, mpThreadPool->GetIOService(), endpoint, port);
-	return mpManager->CreateChannel(aLogger, minOpenRetry, maxOpenRetry, pPhys, pStateHandler, pStrategy);
+	auto pPhys = new asiopal::PhysicalLayerAsyncTCPServer(LogConfig(pLog.get(), levels, id), pThreadPool->GetIOService(), endpoint, port);
+	return pManager->CreateChannel(id, minOpenRetry, maxOpenRetry, pPhys, pStateHandler, pStrategy);
 }
 
 opendnp3::IChannel* ASIODNP3Manager::AddSerial(
-    openpal::Logger aLogger,
+	const std::string& id,
+	uint32_t levels,
     openpal::TimeDuration minOpenRetry,
     openpal::TimeDuration maxOpenRetry,
     asiopal::SerialSettings aSettings,
 	openpal::IEventHandler<opendnp3::ChannelState>* pStateHandler,
     opendnp3::IOpenDelayStrategy* pStrategy)
 {
-	auto pPhys = new asiopal::PhysicalLayerAsyncSerial(aLogger, mpThreadPool->GetIOService(), aSettings);
-	return mpManager->CreateChannel(aLogger, minOpenRetry, maxOpenRetry, pPhys, pStateHandler, pStrategy);
+	auto pPhys = new asiopal::PhysicalLayerAsyncSerial(LogConfig(pLog.get(), levels, id), pThreadPool->GetIOService(), aSettings);
+	return pManager->CreateChannel(id, minOpenRetry, maxOpenRetry, pPhys, pStateHandler, pStrategy);
 }
 
 }

@@ -31,7 +31,7 @@
 #include <condition_variable>
 
 #include <openpal/Logger.h>
-#include <openpal/IPhysicalLayerAsync.h>
+#include <openpal/PhysicalLayerAsyncBase.h>
 #include <openpal/TimeDuration.h>
 #include <openpal/IMutex.h>
 #include <openpal/IShutdownHandler.h>
@@ -55,11 +55,10 @@ public:
 	DNP3Manager();
 	~DNP3Manager();
 
-	IChannel* CreateChannel(	openpal::LogRoot* pLogRoot,
-								const std::string& id,
+	IChannel* CreateChannel(	const std::string& id,
 	                            openpal::TimeDuration minOpenRetry,
 	                            openpal::TimeDuration maxOpenRetry,
-	                            openpal::IPhysicalLayerAsync* apPhys,
+								openpal::PhysicalLayerAsyncBase* apPhys,
 								openpal::IEventHandler<ChannelState>* pStateHandler = nullptr,
 	                            IOpenDelayStrategy* pOpenStrategy = ExponentialBackoffStrategy::Inst());
 

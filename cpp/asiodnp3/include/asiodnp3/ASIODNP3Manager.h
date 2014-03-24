@@ -27,7 +27,7 @@
 
 #include <asiopal/SerialTypes.h>
 
-#include <openpal/Logger.h>
+#include <openpal/LogRoot.h>
 #include <openpal/TimeDuration.h>
 #include <openpal/IEventHandler.h>
 
@@ -95,7 +95,8 @@ class ASIODNP3Manager : public opendnp3::DestructorHook
 	* @param pStrategy Reconnection delay strategy, default to exponential
 	*/
 	opendnp3::IChannel* AddTCPClient(
-	    openpal::Logger logger,
+	    const std::string& id,
+		uint32_t levels,
 	    openpal::TimeDuration minOpenRetry,
 	    openpal::TimeDuration maxOpenRetry,
 	    const std::string& host,
@@ -114,7 +115,8 @@ class ASIODNP3Manager : public opendnp3::DestructorHook
 	* @param pStrategy Reconnection delay strategy, default to exponential
 	*/
 	opendnp3::IChannel* AddTCPServer(
-	    openpal::Logger,
+		const std::string& id,
+		uint32_t levels,
 	    openpal::TimeDuration minOpenRetry,
 	    openpal::TimeDuration maxOpenRetry,
 	    const std::string& endpoint,
@@ -132,7 +134,8 @@ class ASIODNP3Manager : public opendnp3::DestructorHook
 	* @param pStrategy Reconnection delay strategy, default to exponential
 	*/
 	opendnp3::IChannel* AddSerial(
-	    openpal::Logger,
+		const std::string& id,
+		uint32_t levels,
 	    openpal::TimeDuration minOpenRetry,
 	    openpal::TimeDuration maxOpenRetry,
 	    asiopal::SerialSettings settings,
@@ -141,9 +144,10 @@ class ASIODNP3Manager : public opendnp3::DestructorHook
 
 private:
 
-	std::unique_ptr<asiopal::EventLog> mpLog;
-	std::unique_ptr<asiopal::IOServiceThreadPool> mpThreadPool;
-	std::unique_ptr<opendnp3::DNP3Manager> mpManager;
+	std::unique_ptr<asiopal::EventLog> pLog;
+	openpal::LogRoot logRoot;
+	std::unique_ptr<asiopal::IOServiceThreadPool> pThreadPool;
+	std::unique_ptr<opendnp3::DNP3Manager> pManager;
 };
 
 }

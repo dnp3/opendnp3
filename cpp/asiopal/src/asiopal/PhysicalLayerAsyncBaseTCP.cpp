@@ -38,8 +38,8 @@ using namespace openpal;
 namespace asiopal
 {
 
-PhysicalLayerAsyncBaseTCP::PhysicalLayerAsyncBaseTCP(Logger& arLogger, asio::io_service* apIOService) :
-	PhysicalLayerAsyncASIO(arLogger, apIOService),
+PhysicalLayerAsyncBaseTCP::PhysicalLayerAsyncBaseTCP(const openpal::LogConfig& config, asio::io_service* apIOService) :
+	PhysicalLayerAsyncASIO(config, apIOService),
 	mSocket(*apIOService)
 {
 	//mSocket.set_option(ip::tcp::no_delay(true));

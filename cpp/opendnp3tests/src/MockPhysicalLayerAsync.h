@@ -21,7 +21,7 @@
 #ifndef __MOCK_PHYSICAL_LAYER_ASYNC_H_
 #define __MOCK_PHYSICAL_LAYER_ASYNC_H_
 
-#include <asiopal/PhysicalLayerAsyncBase.h>
+#include <openpal/PhysicalLayerAsyncBase.h>
 
 #include <openpal/IHandlerAsync.h>
 
@@ -37,10 +37,10 @@ namespace opendnp3
 
 
 // Provides a backend for testing physical layers
-class MockPhysicalLayerAsync : public asiopal::PhysicalLayerAsyncBase, public BufferTestObject
+class MockPhysicalLayerAsync : public openpal::PhysicalLayerAsyncBase, public BufferTestObject
 {
 public:
-	MockPhysicalLayerAsync(openpal::Logger, openpal::IExecutor*);
+	MockPhysicalLayerAsync(const openpal::LogConfig& config, openpal::IExecutor*);
 
 	openpal::IExecutor* GetExecutor()
 	{

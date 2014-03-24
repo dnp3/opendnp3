@@ -45,8 +45,8 @@ IChannel^ DNP3ManagerAdapter::AddTCPClient(System::String^ name, DNP3::Interface
 	auto lev = Conversions::convertLogLevel(level);
 
 	auto adapter = gcnew ChannelAdapter();
-	Logger logger(mpMgr->GetLog(), lev, stdName);
-	auto pChannel = mpMgr->AddTCPClient(logger, Conversions::convertTimeSpan(minRetryDelay), Conversions::convertTimeSpan(maxRetryDelay), stdAddress, stdPort, adapter->GetEventHandler());
+	
+	auto pChannel = mpMgr->AddTCPClient(stdName, lev, Conversions::convertTimeSpan(minRetryDelay), Conversions::convertTimeSpan(maxRetryDelay), stdAddress, stdPort, adapter->GetEventHandler());
 	if (pChannel)
 	{
 		auto pRoot = new gcroot<ChannelAdapter^>(adapter);
@@ -67,9 +67,8 @@ IChannel^ DNP3ManagerAdapter::AddTCPServer(System::String^ name, DNP3::Interface
 	uint16_t stdPort = port;
 	auto lev = Conversions::convertLogLevel(level);
 
-	auto adapter = gcnew ChannelAdapter();
-	Logger logger(mpMgr->GetLog(), lev, stdName);
-	auto pChannel = mpMgr->AddTCPServer(logger, Conversions::convertTimeSpan(minRetryDelay), Conversions::convertTimeSpan(maxRetryDelay), stdEndpoint, stdPort, adapter->GetEventHandler());
+	auto adapter = gcnew ChannelAdapter();	
+	auto pChannel = mpMgr->AddTCPServer(stdName, lev, Conversions::convertTimeSpan(minRetryDelay), Conversions::convertTimeSpan(maxRetryDelay), stdEndpoint, stdPort, adapter->GetEventHandler());
 	if (pChannel)
 	{
 		auto pRoot = new gcroot<ChannelAdapter^>(adapter);
@@ -85,13 +84,12 @@ IChannel^ DNP3ManagerAdapter::AddTCPServer(System::String^ name, DNP3::Interface
 
 IChannel^ DNP3ManagerAdapter::AddSerial(System::String^ name, DNP3::Interface::LogLevel level, System::TimeSpan minRetryDelay, System::TimeSpan maxRetryDelay, DNP3::Interface::SerialSettings^ settings)
 {
-	std::string stdName = Conversions::convertString(name);
+	std::string id = Conversions::convertString(name);
 	auto lev = Conversions::convertLogLevel(level);
 	auto s = Conversions::convertSerialSettings(settings);
 
-	auto adapter = gcnew ChannelAdapter();
-	Logger logger(mpMgr->GetLog(), lev, stdName);
-	auto pChannel = mpMgr->AddSerial(logger, Conversions::convertTimeSpan(minRetryDelay), Conversions::convertTimeSpan(maxRetryDelay), s, adapter->GetEventHandler());
+	auto adapter = gcnew ChannelAdapter();	
+	auto pChannel = mpMgr->AddSerial(id, lev, Conversions::convertTimeSpan(minRetryDelay), Conversions::convertTimeSpan(maxRetryDelay), s, adapter->GetEventHandler());
 	if (pChannel)
 	{
 		auto pRoot = new gcroot<ChannelAdapter^>(adapter);
