@@ -20,12 +20,14 @@
  */
 #include "LogTester.h"
 
+#include <opendnp3/LogLevels.h>
+
 using namespace openpal;
 
 namespace opendnp3
 {
 
-LogTester::LogTester() : mTestLogger(this, LogLevel::Debug, "LogTester")
+LogTester::LogTester() : mTestLogger(this, levels::DEBUG, "LogTester")
 {
 
 }
@@ -35,11 +37,11 @@ void LogTester::Log( const LogEntry& arEntry )
 	mBuffer.push(arEntry);
 }
 
-bool LogTester::PopOneEntry(LogLevel level)
+bool LogTester::PopOneEntry(uint32_t filter)
 {
 	if (mBuffer.size() == 1)
 	{
-		if (mBuffer.front().GetLogLevel() == level)
+		if (mBuffer.front().GetFlags() & filter)
 		{
 			mBuffer.pop();
 			return true;
@@ -47,6 +49,21 @@ bool LogTester::PopOneEntry(LogLevel level)
 		else return false;
 	}
 	else return false;
+}
+
+bool LogTester::PopUntil(uint32_t filter)
+{
+	while (!mBuffer.empty())
+	{
+		bool match = (mBuffer.front().GetFlags() & filter) != 0;
+		mBuffer.pop();
+		if (match)
+		{
+			return true;
+		}
+	}
+
+	return false;
 }
 
 int LogTester::ClearLog()
@@ -64,7 +81,7 @@ int LogTester::ClearLog()
 
 void LogTester::Log(const std::string& arLocation, const std::string& arMessage)
 {
-	mTestLogger.Log(LogLevel::Event, arLocation, arMessage);
+	mTestLogger.Log(levels::EVENT, arLocation, arMessage);
 }
 
 int LogTester::NextErrorCode()

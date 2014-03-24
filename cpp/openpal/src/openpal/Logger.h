@@ -40,46 +40,41 @@ class Logger
 
 public:
 
-	static int LogLevelToMask(LogLevel);
+	Logger(ILogBase* apLog, uint32_t filters, const std::string& aName);
 
-	Logger(ILogBase* apLog, LogLevel aLevel, const std::string& aName);
-
-	void Log( LogLevel aLogLevel, const std::string& arLocation, const std::string& aMessage, int aErrorCode = -1);
+	void Log(uint32_t flags, const std::string& location, const std::string& message, int errorCode = -1);
 
 	void Log( const LogEntry& arEntry);
 
 	const std::string& GetName() const
 	{
-		return mName;
+		return name;
 	}
 
 	// functions for manipulating filter levels
-	inline bool IsEnabled(LogLevel aFilter)
+	inline bool IsEnabled(uint32_t flags)
 	{
-		return (mLevel & LogLevelToType(aFilter)) != 0;
+		return (filters & flags) != 0;
 	}
 
-	inline void SetFilters(int aLevel)
+	inline void SetFilters(uint32_t filters_)
 	{
-		mLevel = aLevel;
+		filters = filters_;
 	}
 
-	int GetFilters() const
+	uint32_t GetFilters() const
 	{
-		return mLevel;
+		return filters;
 	}
-
-	Logger GetSubLogger(std::string aSubName, LogLevel aLevel) const;
+	
 	Logger GetSubLogger(std::string aName) const;
+	Logger GetSubLogger(std::string subName, uint32_t aLevel) const;
 
 private:
 
-	Logger(ILogBase* apLog, int aLevel, const std::string& aName);
-	Logger GetSubLogger(std::string aSubName, int aLevel) const;
-
-	int					mLevel;   // bit field describing what is being logged
-	ILogBase*			mpLog;
-	std::string			mName;
+	uint32_t			filters;   // bit field describing what is being logged
+	ILogBase*			pLog;
+	std::string			name;
 };
 
 }

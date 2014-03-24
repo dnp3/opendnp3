@@ -26,6 +26,7 @@
 #include <string>
 
 #include <openpal/IHandlerAsync.h>
+#include <openpal/LogLevels.h>
 
 using namespace asio;
 using namespace std;
@@ -98,7 +99,7 @@ void PhysicalLayerAsyncTCPClient::DoOpeningClose()
 
 void PhysicalLayerAsyncTCPClient::DoOpenSuccess()
 {
-	LOG_BLOCK(LogLevel::Info, "Connected to host");
+	LOG_BLOCK(log::INFO, "Connected to host");
 	configure(mSocket);
 }
 

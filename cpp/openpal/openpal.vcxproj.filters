@@ -8,12 +8,6 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
-    <Filter Include="Header\gen">
-      <UniqueIdentifier>{e5f33ccb-0fa6-4e73-b365-aaf09994e768}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\gen">
-      <UniqueIdentifier>{c272c1f5-bc57-4d16-a331-f8c1b8719909}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\openpal\BufferWrapper.h">
@@ -112,9 +106,6 @@
     <ClInclude Include="src\openpal\UTCTimestamp.h">
       <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="src\openpal\gen\LogLevel.h">
-      <Filter>Header\gen</Filter>
-    </ClInclude>
     <ClInclude Include="src\openpal\ITransactable.h">
       <Filter>Header</Filter>
     </ClInclude>
@@ -145,6 +136,9 @@
     <ClInclude Include="src\openpal\AsyncLayerInterfaces.h">
       <Filter>Header</Filter>
     </ClInclude>
+    <ClInclude Include="src\openpal\LogLevels.h">
+      <Filter>Header</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\openpal\BufferWrapper.cpp">
@@ -167,9 +161,6 @@
     </ClCompile>
     <ClCompile Include="src\openpal\ToHex.cpp">
       <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="src\openpal\gen\LogLevel.cpp">
-      <Filter>Source\gen</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

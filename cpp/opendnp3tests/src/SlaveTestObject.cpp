@@ -36,18 +36,18 @@ using namespace openpal;
 namespace opendnp3
 {
 
-SlaveTestObject::SlaveTestObject(const SlaveConfig& arCfg, const DatabaseTemplate& dbTemplate, LogLevel aLevel, bool aImmediate) :
+SlaveTestObject::SlaveTestObject(const SlaveConfig& arCfg, const DatabaseTemplate& dbTemplate, uint32_t filters, bool aImmediate) :
 	log(),
 	mMockTimeWriteHandler([this](UTCTimestamp time)
 {
 	mTimeWrites.push(time);
 }),
 mts(),
-app(Logger(&log, aLevel, "app")),
+app(Logger(&log, filters, "app")),
 dbBuffers(dbTemplate),
 db(dbBuffers.GetFacade()),
-slave(Logger(&log, aLevel, "slave"), &app, &mts, &mMockTimeWriteHandler, &db, &cmdHandler, arCfg),
-mLogger(Logger(&log, aLevel, "test"))
+slave(Logger(&log, filters, "slave"), &app, &mts, &mMockTimeWriteHandler, &db, &cmdHandler, arCfg),
+mLogger(Logger(&log, filters, "test"))
 {
 	app.SetUser(&slave);
 }

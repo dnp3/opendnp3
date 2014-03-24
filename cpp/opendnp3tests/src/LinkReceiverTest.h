@@ -22,6 +22,7 @@
 #define __LINK_RECEIVER_TEST_H_
 
 #include <opendnp3/link/LinkLayerReceiver.h>
+#include <opendnp3/LogLevels.h>
 
 #include "LogTester.h"
 #include "BufferHelpers.h"
@@ -36,10 +37,10 @@ namespace opendnp3
 class LinkReceiverTest
 {
 public:
-	LinkReceiverTest(openpal::LogLevel aLevel = openpal::LogLevel::Warning, bool aImmediate = false) :
+	LinkReceiverTest(uint32_t filters = levels::ALL, bool aImmediate = false) :
 		log(),
 		mSink(),
-		mRx(openpal::Logger(&log, aLevel, "ReceiverTest"), &mSink)
+		mRx(openpal::Logger(&log, filters, "ReceiverTest"), &mSink)
 	{}
 	
 	void WriteData(const openpal::ReadOnlyBuffer& input)

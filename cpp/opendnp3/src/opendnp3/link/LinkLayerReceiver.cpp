@@ -24,6 +24,8 @@
 #include "opendnp3/link/LinkReceiverStates.h"
 #include "opendnp3/link/IFrameSink.h"
 
+#include "opendnp3/LogLevels.h"
+
 #include <openpal/LoggableMacros.h>
 
 using namespace openpal;
@@ -129,7 +131,7 @@ bool LinkLayerReceiver::ValidateBody()
 	if(LinkFrame::ValidateBodyCRC(mBuffer.ReadBuff() + LS_HEADER_SIZE, len)) return true;
 	else
 	{
-		ERROR_BLOCK(LogLevel::Error, "CRC failure in body", DLERR_CRC);
+		ERROR_BLOCK(levels::ERR, "CRC failure in body", DLERR_CRC);
 		return false;
 	}
 }
@@ -139,17 +141,17 @@ bool LinkLayerReceiver::ValidateHeader()
 	//first thing to do is check the CRC
 	if(!DNPCrc::IsCorrectCRC(mBuffer.ReadBuff(), LI_CRC))
 	{
-		ERROR_BLOCK(LogLevel::Error, "CRC failure in header", DLERR_CRC);
+		ERROR_BLOCK(levels::ERR, "CRC failure in header", DLERR_CRC);
 		return false;
 	}
 
 	if(!mHeader.ValidLength())
 	{
-		ERROR_BLOCK(LogLevel::Error, "LENGTH out of range [5,255]: " << static_cast<int>(mHeader.GetLength()), DLERR_INVALID_LENGTH);
+		ERROR_BLOCK(levels::ERR, "LENGTH out of range [5,255]: " << static_cast<int>(mHeader.GetLength()), DLERR_INVALID_LENGTH);
 		return false;
 	}
 
-	LOG_BLOCK(LogLevel::Interpret, "<~ " << mHeader.ToString());
+	LOG_BLOCK(levels::INTERPRET, "<~ " << mHeader.ToString());
 
 	// some combinations of these header parameters are invalid
 	// check for them here
@@ -171,7 +173,7 @@ bool LinkLayerReceiver::ValidateHeader()
 		}
 		else
 		{
-			ERROR_BLOCK(LogLevel::Error, "User data packet received with zero payload. FUNCTION: " << LinkFunctionToString(func), DLERR_NO_DATA);
+			ERROR_BLOCK(levels::ERR, "User data packet received with zero payload. FUNCTION: " << LinkFunctionToString(func), DLERR_NO_DATA);
 			return false;
 		}
 	}
@@ -179,7 +181,7 @@ bool LinkLayerReceiver::ValidateHeader()
 	{
 		if(user_data_length > 0)
 		{
-			ERROR_BLOCK(LogLevel::Error, "Unexpected LENGTH in frame: " << static_cast<int>(user_data_length) << " with FUNCTION: " << LinkFunctionToString(func), DLERR_UNEXPECTED_DATA);
+			ERROR_BLOCK(levels::ERR, "Unexpected LENGTH in frame: " << static_cast<int>(user_data_length) << " with FUNCTION: " << LinkFunctionToString(func), DLERR_UNEXPECTED_DATA);
 			return false;
 		}
 
@@ -193,7 +195,7 @@ bool LinkLayerReceiver::ValidateHeader()
 		}
 		else
 		{
-			ERROR_BLOCK(LogLevel::Error, "Unexpected LENGTH in frame: " << static_cast<int>(user_data_length) << " with FUNCTION: " << LinkFunctionToString(func), DLERR_UNEXPECTED_DATA);
+			ERROR_BLOCK(levels::ERR, "Unexpected LENGTH in frame: " << static_cast<int>(user_data_length) << " with FUNCTION: " << LinkFunctionToString(func), DLERR_UNEXPECTED_DATA);
 			return false;
 		}
 	}
@@ -201,7 +203,7 @@ bool LinkLayerReceiver::ValidateHeader()
 	{
 		if(func == LinkFunction::PRI_CONFIRMED_USER_DATA || func == LinkFunction::PRI_UNCONFIRMED_USER_DATA)
 		{
-			ERROR_BLOCK(LogLevel::Error, "User data packet received with zero payload. FUNCTION: " << LinkFunctionToString(func), DLERR_NO_DATA);
+			ERROR_BLOCK(levels::ERR, "User data packet received with zero payload. FUNCTION: " << LinkFunctionToString(func), DLERR_NO_DATA);
 			return false;
 		}
 	}
@@ -234,7 +236,7 @@ bool LinkLayerReceiver::ValidateFunctionCode()
 			break;
 		default:
 			{
-				ERROR_BLOCK(LogLevel::Warning, "Unknown PriToSec FUNCTION: " << LinkFunctionToString(mHeader.GetFuncEnum()), DLERR_UNKNOWN_FUNC);
+				ERROR_BLOCK(levels::WARN, "Unknown PriToSec FUNCTION: " << LinkFunctionToString(mHeader.GetFuncEnum()), DLERR_UNKNOWN_FUNC);
 				return false;
 			}
 		}
@@ -242,7 +244,7 @@ bool LinkLayerReceiver::ValidateFunctionCode()
 		//now check the fcv
 		if(fcv_set != mHeader.IsFcvDfcSet())
 		{
-			ERROR_BLOCK(LogLevel::Warning, "Bad FCV for FUNCTION: " << LinkFunctionToString(mHeader.GetFuncEnum()), DLERR_UNEXPECTED_FCV);
+			ERROR_BLOCK(levels::WARN, "Bad FCV for FUNCTION: " << LinkFunctionToString(mHeader.GetFuncEnum()), DLERR_UNEXPECTED_FCV);
 			return false;
 		}
 
@@ -260,7 +262,7 @@ bool LinkLayerReceiver::ValidateFunctionCode()
 			break;
 		default:
 			{
-				ERROR_BLOCK(LogLevel::Error, "Unknown SecToPri FUNCTION: " << LinkFunctionToString(mHeader.GetFuncEnum()), DLERR_UNKNOWN_FUNC);
+				ERROR_BLOCK(levels::ERR, "Unknown SecToPri FUNCTION: " << LinkFunctionToString(mHeader.GetFuncEnum()), DLERR_UNKNOWN_FUNC);
 				return false;
 			}
 		}
@@ -268,7 +270,7 @@ bool LinkLayerReceiver::ValidateFunctionCode()
 		//now check the fcb, it should always be zero
 		if(mHeader.IsFcbSet())
 		{
-			ERROR_BLOCK(LogLevel::Error, "FCB set for SecToPri FUNCTION: " << LinkFunctionToString(mHeader.GetFuncEnum()), DLERR_UNEXPECTED_FCB);
+			ERROR_BLOCK(levels::ERR, "FCB set for SecToPri FUNCTION: " << LinkFunctionToString(mHeader.GetFuncEnum()), DLERR_UNEXPECTED_FCB);
 			return false;
 		}
 	}

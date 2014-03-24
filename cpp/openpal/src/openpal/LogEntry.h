@@ -21,7 +21,8 @@
 #ifndef __LOG_ENTRY_H_
 #define __LOG_ENTRY_H_
 
-#include "gen/LogLevel.h"
+#include <cstdint>
+#include <string>
 
 namespace openpal
 {
@@ -34,49 +35,48 @@ class LogEntry
 
 public:
 
-	LogEntry(): mErrorCode(-1)
+	LogEntry(): errorCode(-1)
 	{}
 
-	LogEntry( LogLevel aLevel, const std::string& aDeviceName, const std::string& aLocation, const std::string& aMessage, int aErrorCode);
+	LogEntry(uint32_t flags, const std::string& name, const std::string& location, const std::string& message, int errorCode);
 
 	/// @return The name of the logger that recorded the message
-	const std::string&	GetDeviceName() const
+	const std::string&	GetName() const
 	{
-		return mDeviceName;
+		return name;
 	}
 
 	/// @return The place in the source code where the message was recorded
 	const std::string&	GetLocation() const
 	{
-		return mLocation;
+		return location;
 	}
 
 	/// @return body of the log message
 	const std::string&	GetMessage() const
 	{
-		return mMessage;
+		return message;
 	}
 
 	/// @return the log level of the message
-	LogLevel GetLogLevel() const
+	uint32_t GetFlags() const
 	{
-		return mLogLevel;
+		return flags;
 	}
-
 
 	/// @return the error code associated with the message
 	int	GetErrorCode() const
 	{
-		return mErrorCode;
+		return errorCode;
 	}
 
 private:
 
-	LogLevel		mLogLevel;
-	std::string		mDeviceName;
-	std::string		mLocation;
-	std::string		mMessage;
-	int				mErrorCode;
+	uint32_t		flags;
+	std::string		name;
+	std::string		location;
+	std::string		message;
+	int				errorCode;
 };
 
 }

@@ -42,7 +42,7 @@ namespace DotNetMasterDemo
         {
             IDNP3Manager mgr = DNP3ManagerFactory.CreateManager();            
             mgr.AddLogHandler(PrintingLogAdapter.Instance); //this is optional
-            var channel = mgr.AddTCPClient("client", LogLevel.Info, TimeSpan.FromSeconds(5), TimeSpan.FromMinutes(2), "127.0.0.1", 20000);
+            var channel = mgr.AddTCPClient("client", LogLevel.Interpret, TimeSpan.FromSeconds(5), TimeSpan.FromMinutes(2), "127.0.0.1", 20000);
 
             //optionally, add a listener for the channel state
             channel.AddStateListener(state => Console.WriteLine("Client state: " + state));
@@ -50,7 +50,7 @@ namespace DotNetMasterDemo
             var config = new MasterStackConfig();
             config.master.integrityPeriod = TimeSpan.FromSeconds(60);
             config.link.useConfirms = true; //setup your stack configuration here.
-            var master = channel.AddMaster("master", LogLevel.Interpret, PrintingSOEHandler.Instance, config);
+            var master = channel.AddMaster("master", PrintingSOEHandler.Instance, config);
 
             var classMask = PointClassHelpers.GetMask(PointClass.CLASS_1, PointClass.CLASS_2, PointClass.CLASS_3);
             var classScan = master.AddClassScan(classMask, TimeSpan.FromSeconds(5), TimeSpan.FromSeconds(5));

@@ -27,9 +27,7 @@ using namespace openpal;
 namespace asiopal
 {
 
-
-
-void EventLog::Log( const LogEntry& arEntry )
+void EventLog::Log(const LogEntry& arEntry)
 {
 	for(auto pair : mSubscribers)
 	{

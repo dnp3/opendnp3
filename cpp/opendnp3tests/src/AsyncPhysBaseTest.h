@@ -27,13 +27,15 @@
 #include "MockPhysicalLayerAsync.h"
 #include "MockExecutor.h"
 
+#include <opendnp3/LogLevels.h>
+
 namespace opendnp3
 {
 
 class AsyncPhysBaseTest
 {
 public:
-	AsyncPhysBaseTest(openpal::LogLevel aLevel = openpal::LogLevel::Info, bool aImmediate = false);
+	AsyncPhysBaseTest(uint32_t filter = levels::ALL, bool aImmediate = false);
 
 	LogTester log;
 	MockExecutor exe;

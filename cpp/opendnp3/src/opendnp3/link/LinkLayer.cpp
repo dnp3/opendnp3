@@ -22,12 +22,12 @@
 
 #include <assert.h>
 
-
 #include <openpal/LoggableMacros.h>
 
 #include "opendnp3/DNPErrorCodes.h"
 #include "opendnp3/link/ILinkRouter.h"
 #include "opendnp3/link/LinkFrame.h"
+#include "opendnp3/LogLevels.h"
 
 #include "PriLinkLayerStates.h"
 #include "SecLinkLayerStates.h"
@@ -77,7 +77,7 @@ bool LinkLayer::Validate(bool aIsMaster, uint16_t aSrc, uint16_t aDest)
 	{
 		if (aIsMaster == config.IsMaster)
 		{
-			ERROR_BLOCK(LogLevel::Warning,
+			ERROR_BLOCK(levels::WARN,
 				(aIsMaster ? "Master frame received for master" : "Slave frame received for slave"),
 				DLERR_MASTER_BIT_MATCH);
 			return false;
@@ -92,20 +92,20 @@ bool LinkLayer::Validate(bool aIsMaster, uint16_t aSrc, uint16_t aDest)
 				}
 				else
 				{
-					ERROR_BLOCK(LogLevel::Warning, "Frame from unknwon source", DLERR_UNKNOWN_SOURCE);
+					ERROR_BLOCK(levels::WARN, "Frame from unknwon source", DLERR_UNKNOWN_SOURCE);
 					return false;
 				}				
 			}
 			else
 			{
-				ERROR_BLOCK(LogLevel::Warning, "Frame for unknown destintation", DLERR_UNKNOWN_DESTINATION);
+				ERROR_BLOCK(levels::WARN, "Frame for unknown destintation", DLERR_UNKNOWN_DESTINATION);
 				return false;			
 			}			
 		}		
 	}
 	else
 	{
-		LOG_BLOCK(LogLevel::Error, "Layer is not online");
+		LOG_BLOCK(levels::ERR, "Layer is not online");
 		return false;
 	}	
 }
@@ -129,7 +129,7 @@ void LinkLayer::Send(IBufferSegment& segments)
 	}
 	else
 	{
-		LOG_BLOCK(LogLevel::Error, "Layer is not online");
+		LOG_BLOCK(levels::ERR, "Layer is not online");
 	}
 }
 
@@ -141,7 +141,7 @@ void LinkLayer::OnLowerLayerUp()
 {
 	if (mIsOnline)
 	{
-		LOG_BLOCK(LogLevel::Error, "Layer already online");
+		LOG_BLOCK(levels::ERR, "Layer already online");
 	}
 	else
 	{
@@ -175,7 +175,7 @@ void LinkLayer::OnLowerLayerDown()
 	}
 	else
 	{
-		LOG_BLOCK(LogLevel::Error, "Layer is not online");
+		LOG_BLOCK(levels::ERR, "Layer is not online");
 	}
 }
 

@@ -44,7 +44,7 @@ int main(int argc, char* argv[])
 
 	// Specify a LogLevel for the stack/physical layer to use.
 	// Log statements with a lower priority will not be logged.
-	const LogLevel LOG_LEVEL = LogLevel::Comm;
+	const uint32_t LOG_LEVEL = levels::ALL;
 
 	EventLog log;
 	// You can optionally subcribe to log messages
@@ -78,9 +78,8 @@ int main(int argc, char* argv[])
 	// name, log level, command acceptor, and config info. This
 	// returns a thread-safe interface used for sending commands.
 	auto pMaster = pClient->AddMaster(
-	                   "master",						// stack name
-	                   LOG_LEVEL,						// log filter level
-	                   PrintingSOEHandler::Inst(),	// callback for data processing
+	                   "master",						// id for logging	                   
+	                   PrintingSOEHandler::Inst(),		// callback for data processing
 	                   asiopal::UTCTimeSource::Inst(),	// system clock for time syncing
 	                   stackConfig						// stack configuration
 	               );	

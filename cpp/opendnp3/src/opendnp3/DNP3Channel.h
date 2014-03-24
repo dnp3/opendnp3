@@ -73,14 +73,12 @@ public:
 
 	openpal::IExecutor* GetExecutor();
 
-	IMaster* AddMaster(		const std::string& loggerId,
-	                        LogLevel level,
+	IMaster* AddMaster(		const std::string& id,	                        
 	                        ISOEHandler* pPublisher,
 	                        openpal::IUTCTimeSource* pTimeSource,
 	                        const MasterStackConfig& cfg);
 
-	IOutstation* AddOutstation(	const std::string& loggerId,
-	                            LogLevel level,
+	IOutstation* AddOutstation(	const std::string& id,								
 	                            ICommandHandler* pCmdHandler,
 	                            ITimeWriteHandler* pTimeWriteHandler,
 	                            const SlaveStackConfig& cfg);

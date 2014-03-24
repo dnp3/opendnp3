@@ -119,6 +119,7 @@
     <ClInclude Include="src\opendnp3\link\PriLinkLayerStates.h" />
     <ClInclude Include="src\opendnp3\link\SecLinkLayerStates.h" />
     <ClInclude Include="src\opendnp3\link\ShiftableBuffer.h" />
+    <ClInclude Include="src\opendnp3\LogLevels.h" />
     <ClInclude Include="src\opendnp3\master\AsyncTaskBase.h" />
     <ClInclude Include="src\opendnp3\master\AsyncTaskContinuous.h" />
     <ClInclude Include="src\opendnp3\master\AsyncTaskGroup.h" />

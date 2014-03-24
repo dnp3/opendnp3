@@ -27,6 +27,8 @@
 #include <openpal/ToHex.h>
 #include <openpal/Comparisons.h>
 
+#include <opendnp3/LogLevels.h>
+
 #include "Exception.h"
 
 #include <sstream>
@@ -87,7 +89,7 @@ void MockPhysicalLayerMonitor::_OnReceive(const uint8_t* apData, size_t aNumByte
 		throw Exception(oss.str());
 	}
 	mBytesRead += static_cast<uint32_t>(aNumBytes);
-	LOG_BLOCK(LogLevel::Info, "Received " << mBytesRead << " of " << mExpectReadBuffer.Size());
+	LOG_BLOCK(levels::INFO, "Received " << mBytesRead << " of " << mExpectReadBuffer.Size());
 	WriteBuffer buffer(mReadBuffer, mReadBuffer.Size());
 	pPhys->AsyncRead(buffer);
 }
@@ -129,7 +131,7 @@ bool MockPhysicalLayerMonitor::NextStateIs(ChannelState aState)
 	else
 	{
 		ChannelState state = mState.front();
-		LOG_BLOCK(LogLevel::Info, "Saw state: " + ChannelStateToString(state));
+		LOG_BLOCK(levels::INFO, "Saw state: " + ChannelStateToString(state));
 		mState.pop();
 		return (state == aState);
 	}

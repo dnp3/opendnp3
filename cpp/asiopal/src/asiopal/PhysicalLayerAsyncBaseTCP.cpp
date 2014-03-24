@@ -28,6 +28,7 @@
 
 #include <openpal/LoggableMacros.h>
 #include <openpal/IHandlerAsync.h>
+#include <openpal/LogLevels.h>
 
 using namespace asio;
 
@@ -56,24 +57,24 @@ void PhysicalLayerAsyncBaseTCP::DoAsyncRead(WriteBuffer& arBuffer)
 {
 	uint8_t* pBuff = arBuffer;
 	mSocket.async_read_some(buffer(arBuffer, arBuffer.Size()),
-	                        strand.wrap([this, pBuff](const std::error_code & code, size_t numRead)
+	                        strand.wrap([this, pBuff](const std::error_code & code, size_t  numRead)
 	{
-		this->OnReadCallback(code, pBuff, numRead);
+		this->OnReadCallback(code, pBuff, static_cast<uint32_t>(numRead));
 	}));
 }
 
 void PhysicalLayerAsyncBaseTCP::DoAsyncWrite(const ReadOnlyBuffer& arBuffer)
 {
 	async_write(mSocket, buffer(arBuffer, arBuffer.Size()),
-	            strand.wrap([this](const std::error_code & code, size_t numWritten)
+		strand.wrap([this](const std::error_code & code, size_t  numWritten)
 	{
-		this->OnWriteCallback(code, numWritten);
+		this->OnWriteCallback(code, static_cast<uint32_t>(numWritten));
 	}));
 }
 
 void PhysicalLayerAsyncBaseTCP::DoOpenFailure()
 {
-	LOG_BLOCK(LogLevel::Debug, "Failed socket open, closing socket");
+	LOG_BLOCK(log::DEBUG, "Failed socket open, closing socket");
 	this->CloseSocket();
 }
 
@@ -82,7 +83,10 @@ void PhysicalLayerAsyncBaseTCP::CloseSocket()
 	std::error_code ec;
 
 	mSocket.close(ec);
-	if(ec) LOG_BLOCK(LogLevel::Warning, "Error while closing socket: " << ec.message());
+	if (ec)
+	{
+		LOG_BLOCK(log::WARN, "Error while closing socket: " << ec.message());
+	}
 }
 
 void PhysicalLayerAsyncBaseTCP::ShutdownSocket()
@@ -90,7 +94,10 @@ void PhysicalLayerAsyncBaseTCP::ShutdownSocket()
 	std::error_code ec;
 
 	mSocket.shutdown(ip::tcp::socket::shutdown_both, ec);
-	if(ec) LOG_BLOCK(LogLevel::Warning, "Error while shutting down socket: " << ec.message());
+	if (ec)
+	{
+		LOG_BLOCK(log::WARN, "Error while shutting down socket: " << ec.message());
+	}
 }
 
 }

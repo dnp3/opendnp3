@@ -26,7 +26,7 @@
 #include "MockPhysicalLayerAsync.h"
 
 #include <opendnp3/link/LinkLayerRouter.h>
-
+#include <opendnp3/LogLevels.h>
 
 namespace opendnp3
 {
@@ -34,7 +34,7 @@ namespace opendnp3
 class LinkLayerRouterTest
 {
 public:
-	LinkLayerRouterTest(openpal::LogLevel aLevel = openpal::LogLevel::Warning, bool aImmediate = false);
+	LinkLayerRouterTest(uint32_t filters = levels::ALL, bool aImmediate = false);
 
 	LogTester log;
 	MockExecutor exe;

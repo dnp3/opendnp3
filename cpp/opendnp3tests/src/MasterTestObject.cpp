@@ -33,14 +33,14 @@ using namespace openpal;
 namespace opendnp3
 {
 
-MasterTestObject::MasterTestObject(MasterConfig cfg, openpal::LogLevel aLevel, bool aImmediate) :
+MasterTestObject::MasterTestObject(MasterConfig cfg, uint32_t filters, bool aImmediate) :
 	log(),
 	fixedUTC(0),
 	mts(),
 	group(&mts),
 	meas(),
-	app(Logger(&log, aLevel, "MockAppLayer")),
-	master(Logger(&log, aLevel, "master"), cfg, &app, &meas, &group, &mts, &fixedUTC)
+	app(Logger(&log, filters, "MockAppLayer")),
+	master(Logger(&log, filters, "master"), cfg, &app, &meas, &group, &mts, &fixedUTC)
 {
 	app.SetUser(&master);
 }

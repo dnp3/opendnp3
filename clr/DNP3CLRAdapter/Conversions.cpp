@@ -22,14 +22,14 @@ System::String^ Conversions::convertString(const std::string& s)
 	return gcnew System::String(s.c_str());
 }
 
-openpal::LogLevel Conversions::convertLogLevel(DNP3::Interface::LogLevel level)
+uint32_t Conversions::convertLogLevel(DNP3::Interface::LogLevel level)
 {
-	return (openpal::LogLevel)  level;
+	return ~0; //TODO
 }
 
-DNP3::Interface::LogLevel Conversions::convertLogLevel(openpal::LogLevel level)
+DNP3::Interface::LogLevel Conversions::convertLogLevel(uint32_t filters)
 {
-	return (DNP3::Interface::LogLevel) level;
+	return (DNP3::Interface::LogLevel) 1; // TODO
 }
 
 ChannelState Conversions::convertChannelState(opendnp3::ChannelState aState)

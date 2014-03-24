@@ -48,7 +48,7 @@ namespace DotNetSlaveDemo
             channel.AddStateListener(state => Console.WriteLine("Server state: " + state));
 
             var config = new SlaveStackConfig();
-            var outstation = channel.AddOutstation("outstation", LogLevel.Info, RejectingCommandHandler.Instance, PrintingTimeWriteHandler.Instance, config);                    
+            var outstation = channel.AddOutstation("outstation", RejectingCommandHandler.Instance, PrintingTimeWriteHandler.Instance, config);                    
 
             outstation.Enable(); // enable communications
 

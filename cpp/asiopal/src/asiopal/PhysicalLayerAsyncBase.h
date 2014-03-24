@@ -162,8 +162,8 @@ protected:
 
 	//Internally produced events
 	void OnOpenCallback(const std::error_code& arError);
-	void OnReadCallback(const std::error_code& arError, uint8_t* apBuffer, size_t aNumRead);
-	void OnWriteCallback(const std::error_code& arError, size_t aNumBytes);
+	void OnReadCallback(const std::error_code& arError, uint8_t* apBuffer, uint32_t  aNumRead);
+	void OnWriteCallback(const std::error_code& arError, uint32_t  aNumBytes);
 
 	// "user" object that recieves the callbacks
 	openpal::IHandlerAsync* mpHandler;

@@ -22,6 +22,7 @@
 
 #include <opendnp3/link/PhysicalLayerMonitor.h>
 #include <opendnp3/link/PhysicalLayerMonitorStates.h>
+#include <opendnp3/LogLevels.h>
 
 #include "MockExecutor.h"
 #include "MockPhysicalLayerAsync.h"
@@ -87,8 +88,8 @@ public:
 	TestObject() :
 		log(),
 		exe(),
-		phys(Logger(&log, LogLevel::Info, "mock-phys"), &exe),
-		monitor(Logger(&log, LogLevel::Info, "test"), &phys)
+		phys(Logger(&log, levels::ALL, "mock-phys"), &exe),
+		monitor(Logger(&log, levels::ALL, "test"), &phys)
 	{}
 
 	LogTester log;
@@ -99,17 +100,17 @@ public:
 
 #define SUITE(name) "PhysicalLayerMonitorTestSuite - " name
 
-TEST_CASE(SUITE("StateClosedExceptions"))
+TEST_CASE(SUITE("StateClosed"))
 {
 	TestObject test;
 	REQUIRE((ChannelState::CLOSED == test.monitor.GetState()));
 
 	test.monitor.OnLowerLayerUp();
-	REQUIRE(test.log.PopOneEntry(LogLevel::Error));
+	REQUIRE(test.log.PopOneEntry(levels::ERR));
 	test.monitor.OnLowerLayerDown();
-	REQUIRE(test.log.PopOneEntry(LogLevel::Error));
+	REQUIRE(test.log.PopOneEntry(levels::ERR));
 	test.monitor.OnOpenFailure();
-	REQUIRE(test.log.PopOneEntry(LogLevel::Error));
+	REQUIRE(test.log.PopOneEntry(levels::ERR));
 
 
 	REQUIRE((ChannelState::CLOSED == test.monitor.GetState()));
@@ -120,7 +121,7 @@ TEST_CASE(SUITE("ThrowsIfEverNotExpectingOpenTimer"))
 	TestObject test;
 	test.monitor.ReachInAndStartOpenTimer();
 	REQUIRE(test.exe.DispatchOne());
-	REQUIRE(test.log.PopOneEntry(LogLevel::Error));
+	REQUIRE(test.log.PopOneEntry(levels::ERR));
 	REQUIRE((ChannelState::CLOSED == test.monitor.GetState()));
 }
 
@@ -221,12 +222,12 @@ TEST_CASE(SUITE("ClosedLayerCanBeStarted"))
 	REQUIRE(test.phys.IsOpening());
 }
 
-TEST_CASE(SUITE("OpeningLayerExceptions"))
+TEST_CASE(SUITE("OpeningLayerLogging"))
 {
 	TestObject test;
-	test.monitor.Start();
+	test.monitor.Start();	
 	test.monitor.OnLowerLayerDown();
-	REQUIRE(test.log.PopOneEntry(LogLevel::Error));
+	REQUIRE(test.log.PopUntil(levels::ERR));
 }
 
 TEST_CASE(SUITE("OpeningStartOneGoesToOpeningOne"))

@@ -28,6 +28,8 @@
 #include <asiopal/PhysicalLayerAsyncTCPClient.h>
 #include <asiopal/PhysicalLayerAsyncTCPServer.h>
 
+#include <opendnp3/LogLevels.h>
+
 #include "LowerLayerToPhysAdapter.h"
 
 namespace opendnp3
@@ -36,7 +38,7 @@ namespace opendnp3
 class AsyncPhysTestObject : public AsyncTestObjectASIO
 {
 public:
-	AsyncPhysTestObject(openpal::LogLevel aLevel = openpal::LogLevel::Info, bool aImmediate = false, bool aAutoRead = true);
+	AsyncPhysTestObject(uint32_t filters = levels::ALL, bool aImmediate = false, bool aAutoRead = true);
 
 	LogTester log;
 

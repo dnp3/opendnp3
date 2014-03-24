@@ -25,6 +25,7 @@
 
 #include "opendnp3/DNPErrorCodes.h"
 #include "opendnp3/link/LinkLayer.h"
+#include "opendnp3/LogLevels.h"
 
 using namespace openpal;
 
@@ -37,42 +38,42 @@ namespace opendnp3
 
 void PriStateBase::Ack(LinkLayer* apLL, bool aIsRcvBuffFull)
 {
-	ERROR_LOGGER_BLOCK(apLL->GetLogger(), LogLevel::Warning, "Frame context not understood", DLERR_UNEXPECTED_FRAME);
+	ERROR_LOGGER_BLOCK(apLL->GetLogger(), levels::WARN, "Frame context not understood", DLERR_UNEXPECTED_FRAME);
 }
 
 void PriStateBase::Nack(LinkLayer* apLL, bool aIsRcvBuffFull)
 {
-	ERROR_LOGGER_BLOCK(apLL->GetLogger(), LogLevel::Warning, "Frame context not understood", DLERR_UNEXPECTED_FRAME);
+	ERROR_LOGGER_BLOCK(apLL->GetLogger(), levels::WARN, "Frame context not understood", DLERR_UNEXPECTED_FRAME);
 }
 
 void PriStateBase::LinkStatus(LinkLayer* apLL, bool aIsRcvBuffFull)
 {
-	ERROR_LOGGER_BLOCK(apLL->GetLogger(), LogLevel::Warning, "Frame context not understood", DLERR_UNEXPECTED_FRAME);
+	ERROR_LOGGER_BLOCK(apLL->GetLogger(), levels::WARN, "Frame context not understood", DLERR_UNEXPECTED_FRAME);
 }
 
 void PriStateBase::NotSupported (LinkLayer* apLL, bool aIsRcvBuffFull)
 {
-	ERROR_LOGGER_BLOCK(apLL->GetLogger(), LogLevel::Warning, "Frame context not understood", DLERR_UNEXPECTED_FRAME);
+	ERROR_LOGGER_BLOCK(apLL->GetLogger(), levels::WARN, "Frame context not understood", DLERR_UNEXPECTED_FRAME);
 }
 
 void PriStateBase::OnTransmitResult(LinkLayer* apLL, bool success)
 {
-	LOGGER_BLOCK(apLL->GetLogger(), LogLevel::Error, "Invalid action for state: " << this->Name());
+	LOGGER_BLOCK(apLL->GetLogger(), levels::ERR, "Invalid action for state: " << this->Name());
 }
 
 void PriStateBase::OnTimeout(LinkLayer* apLL)
 {
-	LOGGER_BLOCK(apLL->GetLogger(), LogLevel::Error, "Invalid action for state: " << this->Name());
+	LOGGER_BLOCK(apLL->GetLogger(), levels::ERR, "Invalid action for state: " << this->Name());
 }
 
 void PriStateBase::SendConfirmed(LinkLayer* apLL, IBufferSegment&)
 {
-	LOGGER_BLOCK(apLL->GetLogger(), LogLevel::Error, "Invalid action for state: " << this->Name());
+	LOGGER_BLOCK(apLL->GetLogger(), levels::ERR, "Invalid action for state: " << this->Name());
 }
 
 void PriStateBase::SendUnconfirmed(LinkLayer* apLL, IBufferSegment&)
 {
-	LOGGER_BLOCK(apLL->GetLogger(), LogLevel::Error, "Invalid action for state: " << this->Name());
+	LOGGER_BLOCK(apLL->GetLogger(), levels::ERR, "Invalid action for state: " << this->Name());
 }
 
 ////////////////////////////////////////////////////////
@@ -86,7 +87,7 @@ void PLLS_SecNotReset::SendUnconfirmed(LinkLayer* apLL, IBufferSegment& segments
 	auto output = apLL->FormatPrimaryBufferWithUnconfirmed(segments);
 	if (output.IsEmpty())
 	{
-		LOGGER_BLOCK(apLL->GetLogger(), LogLevel::Error, "upper layer provided more data than can be transmitted");
+		LOGGER_BLOCK(apLL->GetLogger(), levels::ERR, "upper layer provided more data than can be transmitted");
 		apLL->PostSendResult(false);
 	}
 	else
@@ -158,7 +159,7 @@ void PLLS_SecReset::SendUnconfirmed(LinkLayer* apLL, IBufferSegment& segments)
 	auto output = apLL->FormatPrimaryBufferWithUnconfirmed(segments);
 	if (output.IsEmpty())
 	{
-		LOGGER_BLOCK(apLL->GetLogger(), LogLevel::Error, "upper layer provided more data than can be transmitted");
+		LOGGER_BLOCK(apLL->GetLogger(), levels::ERR, "upper layer provided more data than can be transmitted");
 		apLL->PostSendResult(false);
 	}
 	else
@@ -197,13 +198,13 @@ void PLLS_ResetLinkWait::OnTimeout(LinkLayer* apLL)
 {
 	if(apLL->Retry())
 	{
-		ERROR_LOGGER_BLOCK(apLL->GetLogger(), LogLevel::Warning, "Confirmed data timeout, retrying, " << apLL->RetryRemaining() << " remaining", DLERR_TIMEOUT_RETRY);		
+		ERROR_LOGGER_BLOCK(apLL->GetLogger(), levels::WARN, "Confirmed data timeout, retrying, " << apLL->RetryRemaining() << " remaining", DLERR_TIMEOUT_RETRY);		
 		apLL->QueueResetLinks();				
 		apLL->ChangeState(PLLS_LinkResetTransmitWait::Inst());
 	}
 	else
 	{
-		ERROR_LOGGER_BLOCK(apLL->GetLogger(), LogLevel::Warning, "Confirmed data final timeout", DLERR_TIMEOUT_NO_RETRY);
+		ERROR_LOGGER_BLOCK(apLL->GetLogger(), levels::WARN, "Confirmed data final timeout", DLERR_TIMEOUT_NO_RETRY);
 		apLL->ChangeState(PLLS_SecNotReset::Inst());
 		apLL->DoSendResult(false);
 	}
@@ -266,14 +267,14 @@ void PLLS_ConfDataWait::OnTimeout(LinkLayer* apLL)
 {	
 	if(apLL->Retry())
 	{
-		ERROR_LOGGER_BLOCK(apLL->GetLogger(), LogLevel::Warning, "Retry confirmed data", DLERR_TIMEOUT_RETRY);
+		ERROR_LOGGER_BLOCK(apLL->GetLogger(), levels::WARN, "Retry confirmed data", DLERR_TIMEOUT_RETRY);
 		auto buffer = apLL->FormatPrimaryBufferWithConfirmed(*apLL->pConfirmedSegments, apLL->NextWriteFCB());
 		apLL->QueueTransmit(buffer, true);		
 		apLL->ChangeState(PLLS_ConfUserDataTransmitWait::Inst());		
 	}
 	else
 	{
-		ERROR_LOGGER_BLOCK(apLL->GetLogger(), LogLevel::Warning, "Confirmed data timeout", DLERR_TIMEOUT_NO_RETRY);
+		ERROR_LOGGER_BLOCK(apLL->GetLogger(), levels::WARN, "Confirmed data timeout", DLERR_TIMEOUT_NO_RETRY);
 		apLL->ChangeState(PLLS_SecNotReset::Inst());
 		apLL->DoSendResult(false);
 	}	

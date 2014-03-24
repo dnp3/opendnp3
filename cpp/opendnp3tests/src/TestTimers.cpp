@@ -29,6 +29,8 @@
 #include <asiopal/IOServiceThreadPool.h>
 #include <asiopal/Log.h>
 
+#include <opendnp3/LogLevels.h>
+
 #include <map>
 #include <functional>
 #include <chrono>
@@ -45,7 +47,7 @@ class TimerTestObject
 public:
 	TimerTestObject() :
 		mLog(),
-		mPool(Logger(&mLog, LogLevel::Error, "thread-pool"), 1),
+		mPool(Logger(&mLog, levels::ERR, "thread-pool"), 1),
 		mStrand(*mPool.GetIOService()),
 		exe(&mStrand),
 		mLast(-1),

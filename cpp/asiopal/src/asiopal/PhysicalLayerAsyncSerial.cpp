@@ -27,6 +27,7 @@
 
 #include <openpal/LoggableMacros.h>
 #include <openpal/IHandlerAsync.h>
+#include <openpal/LogLevels.h>
 
 #include "ASIOSerialHelpers.h"
 
@@ -74,19 +75,22 @@ void PhysicalLayerAsyncSerial::DoClose()
 {
 	std::error_code ec;
 	mPort.close(ec);
-	if(ec) LOG_BLOCK(LogLevel::Warning, ec.message());
+	if (ec)
+	{
+		LOG_BLOCK(log::WARN, ec.message());
+	}
 }
 
 void PhysicalLayerAsyncSerial::DoOpenSuccess()
 {
-	LOG_BLOCK(LogLevel::Info, "Port successfully opened");
+	LOG_BLOCK(log::INFO, "Port successfully opened");
 }
 
 void PhysicalLayerAsyncSerial::DoAsyncRead(openpal::WriteBuffer& arBuffer)
 {
 	uint8_t* pBuff = arBuffer;
 	mPort.async_read_some(buffer(arBuffer, arBuffer.Size()),
-	                      strand.wrap([this, pBuff](const std::error_code & error, size_t numRead)
+	                      strand.wrap([this, pBuff](const std::error_code & error, uint32_t numRead)
 	{
 		this->OnReadCallback(error, pBuff, numRead);
 	}));

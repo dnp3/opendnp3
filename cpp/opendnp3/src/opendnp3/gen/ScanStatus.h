@@ -8,10 +8,10 @@
 //                                           __/ |
 //                                          |___/
 // Copyright 2013 Automatak LLC
-//
+// 
 // Automatak LLC (www.automatak.com) licenses this file
 // to you under the the Apache License Version 2.0 (the "License"):
-//
+// 
 // http://www.apache.org/licenses/LICENSE-2.0.html
 //
 
@@ -21,18 +21,17 @@
 #include <string>
 #include <cstdint>
 
-namespace opendnp3
-{
+namespace opendnp3 {
 
 /**
   Enumeration for the asynchronous result of a scan (poll)
 */
 enum class ScanStatus : int
 {
-    /// Valid response was received
-    SUCCESS = 0,
-    /// The operation timed out or explicitly failed
-    FAILURE = 1
+  /// Valid response was received
+  SUCCESS = 0,
+  /// The operation timed out or explicitly failed
+  FAILURE = 1
 };
 
 std::string ScanStatusToString(ScanStatus arg);

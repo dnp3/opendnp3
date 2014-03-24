@@ -23,6 +23,7 @@
 #include <asio.hpp>
 
 #include <openpal/LoggableMacros.h>
+#include <opendnp3/LogLevels.h>
 
 using namespace boost;
 
@@ -48,7 +49,7 @@ void LoopbackPhysicalLayerAsync::DoOpen()
 
 void LoopbackPhysicalLayerAsync::DoOpenSuccess()
 {
-	LOG_BLOCK(LogLevel::Info, "Loopback Open Success");
+	LOG_BLOCK(levels::INFO, "Loopback Open Success");
 }
 
 void LoopbackPhysicalLayerAsync::DoClose()
@@ -95,7 +96,7 @@ void LoopbackPhysicalLayerAsync::CheckForReadDispatch()
 {
 	if(!mBytesForReading.IsEmpty() && mWritten.size() > 0)
 	{
-		size_t num = (mBytesForReading.Size() < mWritten.size()) ? mBytesForReading.Size() : mWritten.size();
+		uint32_t num = (mBytesForReading.Size() < mWritten.size()) ? mBytesForReading.Size() : mWritten.size();
 
 		for(size_t i = 0; i < num; ++i)
 		{

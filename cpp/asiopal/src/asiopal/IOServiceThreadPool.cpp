@@ -21,6 +21,7 @@
 #include "IOServiceThreadPool.h"
 
 #include <openpal/LoggableMacros.h>
+#include <openpal/LogLevels.h>
 
 #include <chrono>
 #include <sstream>
@@ -51,7 +52,7 @@ IOServiceThreadPool::IOServiceThreadPool(
 	if(aConcurrency == 0)
 	{
 		aConcurrency = 1;
-		LOG_BLOCK(LogLevel::Warning, "Concurrency was set to 0, defaulting to 1 thread");
+		LOG_BLOCK(log::WARN, "Concurrency was set to 0, defaulting to 1 thread");
 	}
 	infiniteTimer.expires_at(std::chrono::steady_clock::time_point::max());
 	infiniteTimer.async_wait(bind(&IOServiceThreadPool::OnTimerExpiration, this, placeholders::_1));
@@ -105,7 +106,7 @@ void IOServiceThreadPool::Run()
 		catch(const std::exception& ex)
 		{
 			num = 1;
-			LOG_BLOCK(LogLevel::Error, "Unhandled exception in thread pool: " << ex.what());
+			LOG_BLOCK(log::ERR, "Unhandled exception in thread pool: " << ex.what());
 		}
 	}
 	while(num > 0);

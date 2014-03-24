@@ -22,6 +22,8 @@
 
 #include "PhysicalLayerMonitorStates.h"
 
+#include "opendnp3/LogLevels.h"
+
 #include <openpal/IPhysicalLayerAsync.h>
 #include <openpal/LoggableMacros.h>
 
@@ -41,7 +43,7 @@ PhysicalLayerMonitor::PhysicalLayerMonitor(
     TimeDuration maxOpenRetry_,
     IOpenDelayStrategy* pOpenStrategy_) :
 		Loggable(logger),	
-		pPhys(pPhys_),
+		pPhys(pPhys_),	
 		isOnline(false),
 		mpOpenTimer(nullptr),
 		mpState(MonitorStateInit::Inst()),
@@ -55,9 +57,6 @@ PhysicalLayerMonitor::PhysicalLayerMonitor(
 	pPhys->SetHandler(this);
 }
 
-PhysicalLayerMonitor::~PhysicalLayerMonitor()
-{}
-
 ChannelState PhysicalLayerMonitor::GetState()
 {
 	return mpState->GetState();
@@ -65,7 +64,7 @@ ChannelState PhysicalLayerMonitor::GetState()
 
 void PhysicalLayerMonitor::ChangeState(IMonitorState* apState)
 {
-	LOG_BLOCK(LogLevel::Debug, mpState->ConvertToString() << " -> " << apState->ConvertToString() << " : " << pPhys->ConvertStateToString());
+	LOG_BLOCK(levels::DEBUG, mpState->ConvertToString() << " -> " << apState->ConvertToString() << " : " << pPhys->ConvertStateToString());
 	IMonitorState* pLast = mpState;	
 	mpState = apState;
 
@@ -84,41 +83,30 @@ void PhysicalLayerMonitor::ChangeState(IMonitorState* apState)
 /// ------- IHandlerAsync -------
 
 void PhysicalLayerMonitor::OnOpenFailure()
-{
-	LOG_BLOCK(LogLevel::Debug, "OnOpenFailure()");
-	mpState->OnOpenFailure(this);
-	this->OnPhysicalLayerOpenFailureCallback();
-	this->currentRetry = pOpenStrategy->GetNextDelay(currentRetry, maxOpenRetry);
+{	
+	if (mpState->OnOpenFailure(this))
+	{
+		this->OnPhysicalLayerOpenFailureCallback();
+		this->currentRetry = pOpenStrategy->GetNextDelay(currentRetry, maxOpenRetry);
+	}
 }
 
 void PhysicalLayerMonitor::OnLowerLayerUp()
-{
-	if (!isOnline)
+{			
+	if (mpState->OnLayerOpen(this))
 	{
 		isOnline = true;
-		LOG_BLOCK(LogLevel::Debug, "OnLowerLayerUp");
 		this->currentRetry = minOpenRetry;
-		mpState->OnLayerOpen(this);
 		this->OnPhysicalLayerOpenSuccessCallback();
-	}
-	else
-	{
-		LOG_BLOCK(LogLevel::Error, "Monitor is already online");
-	}
+	}	
 }
 
 void PhysicalLayerMonitor::OnLowerLayerDown()
 {
-	if (isOnline)
+	if (mpState->OnLayerClose(this))
 	{
 		isOnline = false;
-		LOG_BLOCK(LogLevel::Debug, "OnLowerLayerDown");
-		mpState->OnLayerClose(this);
 		this->OnPhysicalLayerCloseCallback();
-	}
-	else
-	{
-		LOG_BLOCK(LogLevel::Error, "Monitor is not online");
 	}
 }
 
@@ -126,42 +114,43 @@ void PhysicalLayerMonitor::OnLowerLayerDown()
 
 void PhysicalLayerMonitor::Start()
 {
-	LOG_BLOCK(LogLevel::Debug, "Start()");
+	LOG_BLOCK(levels::DEBUG, "Start()");
 	mpState->OnStartRequest(this);
 }
 
 void PhysicalLayerMonitor::StartOne()
 {
-	LOG_BLOCK(LogLevel::Debug, "StartOne()");
+	LOG_BLOCK(levels::DEBUG, "StartOne()");
 	mpState->OnStartOneRequest(this);
 }
 
 void PhysicalLayerMonitor::Close()
 {
-	LOG_BLOCK(LogLevel::Debug, "Close()");
+	LOG_BLOCK(levels::DEBUG, "Close()");
 	mpState->OnCloseRequest(this);
 }
 
 void PhysicalLayerMonitor::Suspend()
 {
-	LOG_BLOCK(LogLevel::Debug, "Suspend()");
+	LOG_BLOCK(levels::DEBUG, "Suspend()");
 	mpState->OnSuspendRequest(this);
 }
 
 void PhysicalLayerMonitor::Shutdown()
 {
-	LOG_BLOCK(LogLevel::Debug, "Shutdown()");
+	LOG_BLOCK(levels::DEBUG, "Shutdown()");
 	mpState->OnShutdownRequest(this);
 }
 
 /* ------- External events that occurs ------- */
 
 void PhysicalLayerMonitor::OnOpenTimerExpiration()
-{
-	LOG_BLOCK(LogLevel::Debug, "OnOpenTimerExpiration()");
-	assert(mpOpenTimer != nullptr);
-	mpOpenTimer = nullptr;
-	mpState->OnOpenTimeout(this);
+{	
+	if (mpState->OnOpenTimeout(this))
+	{		
+		assert(mpOpenTimer != nullptr);
+		mpOpenTimer = nullptr;
+	}
 }
 
 /* ------- Actions for the states ------- */
@@ -178,9 +167,5 @@ void PhysicalLayerMonitor::CancelOpenTimer()
 	mpOpenTimer->Cancel();
 	mpOpenTimer = nullptr;
 }
-
-/* ------- Internal helper functions ------- */
-
-
 
 }

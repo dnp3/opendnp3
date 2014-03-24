@@ -21,6 +21,7 @@
 #ifndef __SLAVE_TEST_OBJECT_H_
 #define __SLAVE_TEST_OBJECT_H_
 
+#include <opendnp3/LogLevels.h>
 #include <opendnp3/outstation/Slave.h>
 #include <opendnp3/outstation/Database.h>
 #include <opendnp3/outstation/SlaveConfig.h>
@@ -38,7 +39,7 @@ namespace opendnp3
 class SlaveTestObject
 {
 public:
-	SlaveTestObject(const SlaveConfig& arCfg, const DatabaseTemplate& dbTemplate, openpal::LogLevel aLevel = openpal::LogLevel::Info, bool aImmediate = false);
+	SlaveTestObject(const SlaveConfig& arCfg, const DatabaseTemplate& dbTemplate, uint32_t filters = levels::ALL, bool aImmediate = false);
 
 	void SendToSlave(const std::string& arData, SequenceInfo aSeq = SequenceInfo::OTHER);
 

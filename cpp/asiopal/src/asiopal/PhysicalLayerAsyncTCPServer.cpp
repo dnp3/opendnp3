@@ -27,6 +27,7 @@
 
 #include <openpal/LoggableMacros.h>
 #include <openpal/IHandlerAsync.h>
+#include <openpal/LogLevels.h>
 
 using namespace asio;
 using namespace openpal;
@@ -59,7 +60,7 @@ void PhysicalLayerAsyncTCPServer::DoOpen()
 		mAcceptor.open(mLocalEndpoint.protocol(), ec);
 		if (ec)
 		{
-			LOG_BLOCK(LogLevel::Error, ec.message());
+			LOG_BLOCK(log::ERR, ec.message());
 			this->GetExecutor()->Post([this, ec]()
 			{
 				this->OnOpenCallback(ec);
@@ -71,7 +72,7 @@ void PhysicalLayerAsyncTCPServer::DoOpen()
 			mAcceptor.bind(mLocalEndpoint, ec);
 			if (ec)
 			{
-				LOG_BLOCK(LogLevel::Error, ec.message());
+				LOG_BLOCK(log::ERR, ec.message());
 				this->GetExecutor()->Post([this, ec]()
 				{
 					this->OnOpenCallback(ec);
@@ -82,7 +83,7 @@ void PhysicalLayerAsyncTCPServer::DoOpen()
 				mAcceptor.listen(socket_base::max_connections, ec);
 				if (ec)
 				{
-					LOG_BLOCK(LogLevel::Error, ec.message());
+					LOG_BLOCK(log::ERR, ec.message());
 					this->GetExecutor()->Post([this, ec]()
 					{
 						this->OnOpenCallback(ec);
@@ -117,7 +118,7 @@ void PhysicalLayerAsyncTCPServer::CloseAcceptor()
 	mAcceptor.close(ec);
 	if(ec)
 	{
-		LOG_BLOCK(LogLevel::Warning, "Error while closing tcp acceptor: " << ec);
+		LOG_BLOCK(log::WARN, "Error while closing tcp acceptor: " << ec);
 	}
 }
 
@@ -133,7 +134,7 @@ void PhysicalLayerAsyncTCPServer::DoOpeningClose()
 
 void PhysicalLayerAsyncTCPServer::DoOpenSuccess()
 {
-	LOG_BLOCK(LogLevel::Info, "Accepted connection from: " << mRemoteEndpoint);
+	LOG_BLOCK(log::INFO, "Accepted connection from: " << mRemoteEndpoint);
 	mConfigure(mSocket);
 }
 

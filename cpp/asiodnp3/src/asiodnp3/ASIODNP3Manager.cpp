@@ -22,7 +22,9 @@
 
 #include <asiopal/Log.h>
 #include <asiopal/IOServiceThreadPool.h>
+
 #include <opendnp3/DNP3Manager.h>
+#include <opendnp3/LogLevels.h>
 
 #include <asiopal/PhysicalLayerAsyncSerial.h>
 #include <asiopal/PhysicalLayerAsyncTCPClient.h>
@@ -36,7 +38,7 @@ namespace asiodnp3
 
 ASIODNP3Manager::ASIODNP3Manager(uint32_t aConcurrency, std::function<void()> aOnThreadStart, std::function<void()> aOnThreadExit) :
 	mpLog(new asiopal::EventLog()),
-	mpThreadPool(new asiopal::IOServiceThreadPool(Logger(mpLog.get(), LogLevel::Info, "pool"), aConcurrency, aOnThreadStart, aOnThreadExit)),
+	mpThreadPool(new asiopal::IOServiceThreadPool(Logger(mpLog.get(), log::INFO, "pool"), aConcurrency, aOnThreadStart, aOnThreadExit)),
 	mpManager(new opendnp3::DNP3Manager())
 {
 

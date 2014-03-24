@@ -46,28 +46,28 @@ using namespace asiopal;
 
 TEST_CASE(SUITE("TestStateClosed"))
 {
-	AsyncPhysTestObject t(LogLevel::Info, false);
+	AsyncPhysTestObject t(levels::ALL, false);
 
 	uint8_t b[100];
 	WriteBuffer buff(b, 100);
 	WriteBuffer empty;
 
 	t.mTCPClient.AsyncWrite(empty.ToReadOnly());
-	REQUIRE(t.log.PopOneEntry(LogLevel::Error));
+	REQUIRE(t.log.PopOneEntry(levels::ERR));
 	t.mTCPClient.AsyncRead(empty);
-	REQUIRE(t.log.PopOneEntry(LogLevel::Error));
+	REQUIRE(t.log.PopOneEntry(levels::ERR));
 
 	t.mTCPClient.AsyncWrite(buff.ToReadOnly());
-	REQUIRE(t.log.PopOneEntry(LogLevel::Error));
+	REQUIRE(t.log.PopOneEntry(levels::ERR));
 	t.mTCPClient.AsyncRead(buff);
-	REQUIRE(t.log.PopOneEntry(LogLevel::Error));
+	REQUIRE(t.log.PopOneEntry(levels::ERR));
 	t.mTCPClient.AsyncClose();
-	REQUIRE(t.log.PopOneEntry(LogLevel::Error));
+	REQUIRE(t.log.PopOneEntry(levels::ERR));
 }
 
 TEST_CASE(SUITE("ClientConnectionRejected"))
 {
-	AsyncPhysTestObject t(LogLevel::Info, false);
+	AsyncPhysTestObject t(levels::INFO, false);
 
 	REQUIRE(t.mClientAdapter.GetNumOpenFailure() ==  0);
 
@@ -80,7 +80,7 @@ TEST_CASE(SUITE("ClientConnectionRejected"))
 
 TEST_CASE(SUITE("ClientConnectionCanceled"))
 {
-	AsyncPhysTestObject t(LogLevel::Info, false);
+	AsyncPhysTestObject t(levels::INFO, false);
 
 	for(size_t i = 0; i < 2; ++i)
 	{
@@ -93,7 +93,7 @@ TEST_CASE(SUITE("ClientConnectionCanceled"))
 
 TEST_CASE(SUITE("ServerAcceptCanceled"))
 {
-	AsyncPhysTestObject t(LogLevel::Info, false);
+	AsyncPhysTestObject t(levels::INFO, false);
 
 	for(size_t i = 0; i < 2; ++i)
 	{
@@ -106,7 +106,7 @@ TEST_CASE(SUITE("ServerAcceptCanceled"))
 
 TEST_CASE(SUITE("ConnectDisconnect"))
 {
-	AsyncPhysTestObject t(LogLevel::Info, false);
+	AsyncPhysTestObject t(levels::INFO, false);
 
 	for(size_t i = 0; i < 10; ++i)
 	{
@@ -126,7 +126,7 @@ TEST_CASE(SUITE("ConnectDisconnect"))
 
 TEST_CASE(SUITE("TestSendShutdown"))
 {
-	AsyncPhysTestObject t(LogLevel::Info, false);
+	AsyncPhysTestObject t(levels::INFO, false);
 
 	t.mTCPServer.AsyncOpen();
 	t.mTCPClient.AsyncOpen();
@@ -145,7 +145,7 @@ TEST_CASE(SUITE("TwoWaySend"))
 {
 	const size_t SEND_SIZE = 1 << 20; // 1 MB
 
-	AsyncPhysTestObject t(LogLevel::Info, false);
+	AsyncPhysTestObject t(levels::INFO, false);
 
 	t.mTCPServer.AsyncOpen();
 	t.mTCPClient.AsyncOpen();
@@ -170,7 +170,7 @@ TEST_CASE(SUITE("TwoWaySend"))
 
 TEST_CASE(SUITE("ServerAsyncCloseWhileOpeningKillsAcceptor"))
 {
-	AsyncPhysTestObject t(LogLevel::Info, false);
+	AsyncPhysTestObject t(levels::INFO, false);
 
 	REQUIRE(0 ==  t.mClientAdapter.GetNumOpenFailure());
 
@@ -190,7 +190,7 @@ TEST_CASE(SUITE("ServerAsyncCloseWhileOpeningKillsAcceptor"))
 
 TEST_CASE(SUITE("ServerAsyncCloseAfterOpeningKillsAcceptor"))
 {
-	AsyncPhysTestObject t(LogLevel::Info, false);
+	AsyncPhysTestObject t(levels::INFO, false);
 
 	REQUIRE(t.mClientAdapter.GetNumOpenFailure() ==  0);
 
@@ -228,7 +228,7 @@ TEST_CASE(SUITE("Loopback"))
 	const size_t ITERATIONS = MACRO_LOOPBACK_ITERATIONS;
 
 	EventLog log;
-	Logger logger(&log, LogLevel::Info, "test");
+	Logger logger(&log, levels::INFO, "test");
 	AsyncTestObjectASIO test;
 	PhysicalLayerAsyncTCPServer server(logger.GetSubLogger("server"), test.GetService(), "127.0.0.1", 30000);
 

@@ -40,13 +40,13 @@ TEST_CASE(SUITE("StateOffline"))
 	TransportTestObject test;
 
 	test.upper.SendDown("00");
-	REQUIRE(test.log.PopOneEntry(LogLevel::Error));
+	REQUIRE(test.log.PopOneEntry(levels::ERR));
 	test.link.SendUp("");
-	REQUIRE(test.log.PopOneEntry(LogLevel::Error));
+	REQUIRE(test.log.PopOneEntry(levels::ERR));
 	test.transport.OnSendResult(true);
-	REQUIRE(test.log.PopOneEntry(LogLevel::Error));
+	REQUIRE(test.log.PopOneEntry(levels::ERR));
 	test.transport.OnLowerLayerDown();
-	REQUIRE(test.log.PopOneEntry(LogLevel::Error));
+	REQUIRE(test.log.PopOneEntry(levels::ERR));
 }
 
 TEST_CASE(SUITE("StateReady"))
@@ -62,9 +62,9 @@ TEST_CASE(SUITE("StateReady"))
 
 	// check that these actions all log errors
 	test.transport.OnLowerLayerUp();
-	REQUIRE(test.log.PopOneEntry(LogLevel::Error));
+	REQUIRE(test.log.PopOneEntry(levels::ERR));
 	test.transport.OnSendResult(true);
-	REQUIRE(test.log.PopOneEntry(LogLevel::Error));
+	REQUIRE(test.log.PopOneEntry(levels::ERR));
 }
 
 TEST_CASE(SUITE("ReceiveBadArguments"))
@@ -178,7 +178,7 @@ TEST_CASE(SUITE("SendArguments"))
 {
 	TransportTestObject test(true);
 	test.upper.SendDown("");
-	REQUIRE(test.log.PopOneEntry(LogLevel::Error));
+	REQUIRE(test.log.PopOneEntry(levels::ERR));
 }
 
 TEST_CASE(SUITE("StateSending"))
@@ -191,9 +191,9 @@ TEST_CASE(SUITE("StateSending"))
 
 	// Check that while we're sending, all other send requests are rejected
 	test.upper.SendDown("00");
-	REQUIRE(test.log.PopOneEntry(LogLevel::Error));
+	REQUIRE(test.log.PopUntil(levels::ERR));
 	test.transport.OnLowerLayerUp();
-	REQUIRE(test.log.PopOneEntry(LogLevel::Error));
+	REQUIRE(test.log.PopUntil(levels::ERR));
 
 	//while we are sending, we should still be able to receive data as normal
 	test.link.SendUp("C0 77");
@@ -204,7 +204,7 @@ TEST_CASE(SUITE("StateSending"))
 	REQUIRE(test.upper.GetState().mSuccessCnt ==  1);
 
 	test.transport.OnSendResult(true);
-	REQUIRE(test.log.PopOneEntry(LogLevel::Error));
+	REQUIRE(test.log.PopUntil(levels::ERR));
 }
 
 TEST_CASE(SUITE("SendFailure"))

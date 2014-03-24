@@ -28,13 +28,15 @@
 #include "LogTester.h"
 #include "MockUpperLayer.h"
 
+#include <opendnp3/LogLevels.h>
+
 namespace opendnp3
 {
 
 class AsyncSerialTestObject : public AsyncTestObjectASIO
 {
 public:
-	AsyncSerialTestObject(asiopal::SerialSettings cfg, openpal::LogLevel aLevel = openpal::LogLevel::Info, bool aImmediate = false);
+	AsyncSerialTestObject(asiopal::SerialSettings cfg, uint32_t filters = levels::ALL, bool aImmediate = false);
 	virtual ~AsyncSerialTestObject() {}
 
 	LogTester log;

@@ -101,19 +101,19 @@ openpal::IExecutor* DNP3Channel::GetExecutor()
 	return pPhys->GetExecutor();
 }
 
-IMaster* DNP3Channel::AddMaster(const std::string& loggerId, LogLevel aLevel, ISOEHandler* apPublisher, IUTCTimeSource* apTimeSource, const MasterStackConfig& config)
+IMaster* DNP3Channel::AddMaster(const std::string& id, ISOEHandler* apPublisher, IUTCTimeSource* apTimeSource, const MasterStackConfig& config)
 {
 	LinkRoute route(config.link.RemoteAddr, config.link.LocalAddr);
 	ExecutorPause p(pPhys->GetExecutor());
 	if(router.IsRouteInUse(route))
 	{
-		LOG_BLOCK(LogLevel::Error, "Route already in use: " << route.ToString());
+		LOG_BLOCK(levels::ERR, "Route already in use: " << route.ToString());
 		return nullptr;
 	}
 	else
 	{		
 		StackActionHandler handler(&router, pPhys->GetExecutor(), this);
-		auto pMaster = new MasterStackImpl(logger, pPhys->GetExecutor(), apPublisher, apTimeSource, &group, config, handler);
+		auto pMaster = new MasterStackImpl(logger.GetSubLogger(id), pPhys->GetExecutor(), apPublisher, apTimeSource, &group, config, handler);
 		pMaster->SetLinkRouter(&router);
 		stacks.insert(pMaster);
 		router.AddContext(pMaster->GetLinkContext(), route);
@@ -121,19 +121,19 @@ IMaster* DNP3Channel::AddMaster(const std::string& loggerId, LogLevel aLevel, IS
 	}
 }
 
-IOutstation* DNP3Channel::AddOutstation(const std::string& arLoggerId, LogLevel aLevel, ICommandHandler* apCmdHandler, ITimeWriteHandler* apTimeWriteHandler, const SlaveStackConfig& arCfg)
+IOutstation* DNP3Channel::AddOutstation(const std::string& id, ICommandHandler* apCmdHandler, ITimeWriteHandler* apTimeWriteHandler, const SlaveStackConfig& arCfg)
 {
 	LinkRoute route(arCfg.link.RemoteAddr, arCfg.link.LocalAddr);
 	ExecutorPause p(pPhys->GetExecutor());
 	if(router.IsRouteInUse(route))
 	{
-		LOG_BLOCK(LogLevel::Error, "Route already in use: " << route.ToString());
+		LOG_BLOCK(levels::ERR, "Route already in use: " << route.ToString());
 		return nullptr;
 	}
 	else
 	{
 		StackActionHandler handler(&router, pPhys->GetExecutor(), this);
-		auto pOutstation = new OutstationStackImpl(logger, pPhys->GetExecutor(), apTimeWriteHandler, apCmdHandler, arCfg, handler);
+		auto pOutstation = new OutstationStackImpl(logger.GetSubLogger(id), pPhys->GetExecutor(), apTimeWriteHandler, apCmdHandler, arCfg, handler);
 		pOutstation->SetLinkRouter(&router);
 		stacks.insert(pOutstation);
 		router.AddContext(pOutstation->GetLinkContext(), route);

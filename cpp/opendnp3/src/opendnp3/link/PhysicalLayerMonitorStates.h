@@ -50,10 +50,10 @@ public:
 	virtual void OnSuspendRequest(PhysicalLayerMonitor* apContext) = 0;
 	virtual void OnShutdownRequest(PhysicalLayerMonitor* apContext) = 0;
 
-	virtual void OnOpenTimeout(PhysicalLayerMonitor* apContext) = 0;
-	virtual void OnOpenFailure(PhysicalLayerMonitor* apContext) = 0;
-	virtual void OnLayerOpen(PhysicalLayerMonitor* apContext) = 0;
-	virtual void OnLayerClose(PhysicalLayerMonitor* apContext) = 0;
+	virtual bool OnOpenTimeout(PhysicalLayerMonitor* apContext) = 0;
+	virtual bool OnOpenFailure(PhysicalLayerMonitor* apContext) = 0;
+	virtual bool OnLayerOpen(PhysicalLayerMonitor* apContext) = 0;
+	virtual bool OnLayerClose(PhysicalLayerMonitor* apContext) = 0;
 
 	virtual ChannelState GetState() const = 0;
 
@@ -75,77 +75,77 @@ public:
 	static void AsyncOpen(PhysicalLayerMonitor* apContext);
 };
 
-class ExceptsOnLayerOpen : public virtual IMonitorState
+class CannotOpen : public virtual IMonitorState
 {
 public:
-	void OnLayerOpen(PhysicalLayerMonitor* apContext);
+	bool OnLayerOpen(PhysicalLayerMonitor* apContext) override final;
 };
 
-class NotOpening : public ExceptsOnLayerOpen
+class NotOpening : public CannotOpen
 {
 public:
-	void OnOpenFailure(PhysicalLayerMonitor* apContext);
+	bool OnOpenFailure(PhysicalLayerMonitor* apContext) override final;
 };
 
 class NotOpen : public virtual IMonitorState
 {
 public:
-	void OnLayerClose(PhysicalLayerMonitor* apContext);
+	bool OnLayerClose(PhysicalLayerMonitor* apContext) override final;
 };
 
 class NotWaitingForTimer : public virtual IMonitorState
 {
 public:
-	void OnOpenTimeout(PhysicalLayerMonitor* apContext);
+	bool OnOpenTimeout(PhysicalLayerMonitor* apContext) override final;
 };
 
 class IgnoresClose : public virtual IMonitorState
 {
 public:
-	void OnCloseRequest(PhysicalLayerMonitor* apContext);
+	void OnCloseRequest(PhysicalLayerMonitor* apContext) override final;
 };
 
 class IgnoresSuspend : public virtual IMonitorState
 {
 public:
-	void OnSuspendRequest(PhysicalLayerMonitor* apContext);
+	void OnSuspendRequest(PhysicalLayerMonitor* apContext) override final;
 };
 
 class StartsOnClose : public virtual IMonitorState
 {
 public:
-	void OnLayerClose(PhysicalLayerMonitor* apContext);
+	bool OnLayerClose(PhysicalLayerMonitor* apContext) override final;
 };
 
 class IgnoresShutdown : public virtual IMonitorState
 {
 public:
-	void OnShutdownRequest(PhysicalLayerMonitor* apContext);
+	void OnShutdownRequest(PhysicalLayerMonitor* apContext) override final;
 };
 
 class IgnoresStart : public virtual IMonitorState
 {
 public:
-	void OnStartRequest(PhysicalLayerMonitor* apContext);
+	void OnStartRequest(PhysicalLayerMonitor* apContext) override final;
 };
 
 class IgnoresStartOne : public virtual IMonitorState
 {
 public:
-	void OnStartOneRequest(PhysicalLayerMonitor* apContext);
+	void OnStartOneRequest(PhysicalLayerMonitor* apContext) override final;
 };
 
 class OpenFailureCausesWait : public virtual IMonitorState
 {
 public:
-	void OnOpenFailure(PhysicalLayerMonitor* apContext);
+	bool OnOpenFailure(PhysicalLayerMonitor* apContext) override final;
 };
 
 template <class T>
 class OpenFailureGoesToState : public virtual IMonitorState
 {
 public:
-	void OnOpenFailure(PhysicalLayerMonitor* apContext);
+	bool OnOpenFailure(PhysicalLayerMonitor* apContext) override final;
 };
 
 // disable "inherits via dominance warning", it's erroneous b/c base
@@ -158,8 +158,8 @@ public:
 class MonitorStateWaitingBase : public virtual IMonitorState,
 	private NotOpening, private NotOpen, private IgnoresClose
 {
-	void OnSuspendRequest(PhysicalLayerMonitor* apContext);
-	void OnShutdownRequest(PhysicalLayerMonitor* apContext);
+	void OnSuspendRequest(PhysicalLayerMonitor* apContext) override final;
+	void OnShutdownRequest(PhysicalLayerMonitor* apContext) override final;
 };
 
 /* --- Concrete classes --- */
@@ -184,9 +184,9 @@ class MonitorStateSuspendedBase : public virtual IMonitorState,
 	private IgnoresClose,
 	private IgnoresSuspend
 {
-	void OnStartRequest(PhysicalLayerMonitor* apContext);
-	void OnStartOneRequest(PhysicalLayerMonitor* apContext);
-	void OnShutdownRequest(PhysicalLayerMonitor* apContext);
+	void OnStartRequest(PhysicalLayerMonitor* apContext) override final;
+	void OnStartOneRequest(PhysicalLayerMonitor* apContext) override final;
+	void OnShutdownRequest(PhysicalLayerMonitor* apContext) override final;
 };
 
 
@@ -204,8 +204,8 @@ class MonitorStateOpeningBase : public virtual IMonitorState,
 	private NotOpen,
 	private NotWaitingForTimer
 {
-	void OnShutdownRequest(PhysicalLayerMonitor* apContext);
-	void OnSuspendRequest(PhysicalLayerMonitor* apContext);
+	void OnShutdownRequest(PhysicalLayerMonitor* apContext) override final;
+	void OnSuspendRequest(PhysicalLayerMonitor* apContext) override final;
 };
 
 
@@ -215,9 +215,9 @@ class MonitorStateOpening : public MonitorStateOpeningBase,
 {
 	MACRO_MONITOR_SINGLETON(MonitorStateOpening, ChannelState::OPENING, false);
 
-	void OnStartOneRequest(PhysicalLayerMonitor* apContext);
-	void OnCloseRequest(PhysicalLayerMonitor* apContext);
-	void OnLayerOpen(PhysicalLayerMonitor* apContext);
+	void OnStartOneRequest(PhysicalLayerMonitor* apContext) override final;
+	void OnCloseRequest(PhysicalLayerMonitor* apContext) override final;
+	bool OnLayerOpen(PhysicalLayerMonitor* apContext) override final;
 };
 
 class MonitorStateOpeningOne : public MonitorStateOpeningBase,
@@ -225,31 +225,31 @@ class MonitorStateOpeningOne : public MonitorStateOpeningBase,
 {
 	MACRO_MONITOR_SINGLETON(MonitorStateOpeningOne, ChannelState::OPENING, false);
 
-	void OnOpenFailure(PhysicalLayerMonitor* apContext);
-	void OnStartRequest(PhysicalLayerMonitor* apContext);
-	void OnCloseRequest(PhysicalLayerMonitor* apContext);
-	void OnLayerOpen(PhysicalLayerMonitor* apContext);
+	bool OnOpenFailure(PhysicalLayerMonitor* apContext) override final;
+	void OnStartRequest(PhysicalLayerMonitor* apContext) override final;
+	void OnCloseRequest(PhysicalLayerMonitor* apContext) override final;
+	bool OnLayerOpen(PhysicalLayerMonitor* apContext) override final;
 };
 
 class MonitorStateOpeningClosing : public virtual IMonitorState,
 	private NotOpen,
 	private NotWaitingForTimer,
-	private ExceptsOnLayerOpen,
+	private CannotOpen,
 	private OpenFailureCausesWait,
 	private IgnoresStart,
 	private IgnoresClose
 {
 	MACRO_MONITOR_SINGLETON(MonitorStateOpeningClosing, ChannelState::OPENING, false);
 
-	void OnStartOneRequest(PhysicalLayerMonitor* apContext);
-	void OnShutdownRequest(PhysicalLayerMonitor* apContext);
-	void OnSuspendRequest(PhysicalLayerMonitor* apContext);
+	void OnStartOneRequest(PhysicalLayerMonitor* apContext) override final;
+	void OnShutdownRequest(PhysicalLayerMonitor* apContext) override final;
+	void OnSuspendRequest(PhysicalLayerMonitor* apContext) override final;
 };
 
 class MonitorStateOpeningStopping : public virtual IMonitorState,
 	private NotOpen,
 	private NotWaitingForTimer,
-	private ExceptsOnLayerOpen,
+	private CannotOpen,
 	private OpenFailureGoesToState<MonitorStateShutdown>,
 	private IgnoresStart,
 	private IgnoresStartOne,
@@ -263,7 +263,7 @@ class MonitorStateOpeningStopping : public virtual IMonitorState,
 class MonitorStateOpeningSuspending : public virtual IMonitorState,
 	private NotOpen,
 	private NotWaitingForTimer,
-	private ExceptsOnLayerOpen,
+	private CannotOpen,
 	private OpenFailureGoesToState<MonitorStateSuspended>,
 	private IgnoresClose,
 	private IgnoresStartOne,
@@ -271,8 +271,8 @@ class MonitorStateOpeningSuspending : public virtual IMonitorState,
 {
 	MACRO_MONITOR_SINGLETON(MonitorStateOpeningSuspending, ChannelState::OPENING, false);
 
-	void OnStartRequest(PhysicalLayerMonitor* apContext);
-	void OnShutdownRequest(PhysicalLayerMonitor* apContext);
+	void OnStartRequest(PhysicalLayerMonitor* apContext) override final;
+	void OnShutdownRequest(PhysicalLayerMonitor* apContext) override final;
 };
 
 class MonitorStateOpen : public virtual IMonitorState,
@@ -283,10 +283,10 @@ class MonitorStateOpen : public virtual IMonitorState,
 {
 	MACRO_MONITOR_SINGLETON(MonitorStateOpen, ChannelState::OPEN, false);
 
-	void OnStartOneRequest(PhysicalLayerMonitor* apContext);
-	void OnCloseRequest(PhysicalLayerMonitor* apContext);
-	void OnSuspendRequest(PhysicalLayerMonitor* apContext);
-	void OnShutdownRequest(PhysicalLayerMonitor* apContext);
+	void OnStartOneRequest(PhysicalLayerMonitor* apContext) override final;
+	void OnCloseRequest(PhysicalLayerMonitor* apContext) override final;
+	void OnSuspendRequest(PhysicalLayerMonitor* apContext) override final;
+	void OnShutdownRequest(PhysicalLayerMonitor* apContext) override final;
 };
 
 class MonitorStateOpenOne : public virtual IMonitorState,
@@ -296,27 +296,27 @@ class MonitorStateOpenOne : public virtual IMonitorState,
 {
 	MACRO_MONITOR_SINGLETON(MonitorStateOpenOne, ChannelState::OPEN, false);
 
-	void OnLayerClose(PhysicalLayerMonitor* apContext);
-	void OnStartRequest(PhysicalLayerMonitor* apContext);
-	void OnCloseRequest(PhysicalLayerMonitor* apContext);
-	void OnSuspendRequest(PhysicalLayerMonitor* apContext);
-	void OnShutdownRequest(PhysicalLayerMonitor* apContext);
+	bool OnLayerClose(PhysicalLayerMonitor* apContext) override final;
+	void OnStartRequest(PhysicalLayerMonitor* apContext) override final;
+	void OnCloseRequest(PhysicalLayerMonitor* apContext) override final;
+	void OnSuspendRequest(PhysicalLayerMonitor* apContext) override final;
+	void OnShutdownRequest(PhysicalLayerMonitor* apContext) override final;
 };
 
 class MonitorStateWaiting : public MonitorStateWaitingBase, private IgnoresStart
 {
 	MACRO_MONITOR_SINGLETON(MonitorStateWaiting, ChannelState::WAITING, false);
 
-	void OnStartOneRequest(PhysicalLayerMonitor* apContext);
-	void OnOpenTimeout(PhysicalLayerMonitor* apContext);
+	void OnStartOneRequest(PhysicalLayerMonitor* apContext) override final;
+	bool OnOpenTimeout(PhysicalLayerMonitor* apContext) override final;
 };
 
 class MonitorStateWaitingOne : public MonitorStateWaitingBase, private IgnoresStartOne
 {
 	MACRO_MONITOR_SINGLETON(MonitorStateWaitingOne, ChannelState::WAITING, false);
 
-	void OnStartRequest(PhysicalLayerMonitor* apContext);
-	void OnOpenTimeout(PhysicalLayerMonitor* apContext);
+	void OnStartRequest(PhysicalLayerMonitor* apContext) override final;
+	bool OnOpenTimeout(PhysicalLayerMonitor* apContext) override final;
 };
 
 class MonitorStateClosing : public virtual IMonitorState,
@@ -324,9 +324,9 @@ class MonitorStateClosing : public virtual IMonitorState,
 {
 	MACRO_MONITOR_SINGLETON(MonitorStateClosing, ChannelState::CLOSED, false);
 
-	void OnStartOneRequest(PhysicalLayerMonitor* apContext);
-	void OnSuspendRequest(PhysicalLayerMonitor* apContext);
-	void OnShutdownRequest(PhysicalLayerMonitor* apContext);
+	void OnStartOneRequest(PhysicalLayerMonitor* apContext) override final;
+	void OnSuspendRequest(PhysicalLayerMonitor* apContext) override final;
+	void OnShutdownRequest(PhysicalLayerMonitor* apContext) override final;
 };
 
 class MonitorStateSuspending : public virtual IMonitorState,
@@ -334,9 +334,9 @@ class MonitorStateSuspending : public virtual IMonitorState,
 {
 	MACRO_MONITOR_SINGLETON(MonitorStateSuspending, ChannelState::CLOSED, false);
 
-	void OnLayerClose(PhysicalLayerMonitor* apContext);
-	void OnStartRequest(PhysicalLayerMonitor* apContext);
-	void OnShutdownRequest(PhysicalLayerMonitor* apContext);
+	bool OnLayerClose(PhysicalLayerMonitor* apContext) override final;
+	void OnStartRequest(PhysicalLayerMonitor* apContext) override final;
+	void OnShutdownRequest(PhysicalLayerMonitor* apContext) override final;
 };
 
 class MonitorStateShutingDown : public virtual IMonitorState,
@@ -350,13 +350,14 @@ class MonitorStateShutingDown : public virtual IMonitorState,
 {
 	MACRO_MONITOR_SINGLETON(MonitorStateShutingDown, ChannelState::CLOSED, true);
 
-	void OnLayerClose(PhysicalLayerMonitor* apContext);
+	bool OnLayerClose(PhysicalLayerMonitor* apContext) override final;
 };
 
 template <class T>
-void OpenFailureGoesToState<T>::OnOpenFailure(PhysicalLayerMonitor* apContext)
+bool OpenFailureGoesToState<T>::OnOpenFailure(PhysicalLayerMonitor* apContext)
 {
 	MonitorStateActions::ChangeState(apContext, T::Inst());
+	return true;
 }
 
 #ifdef WIN32

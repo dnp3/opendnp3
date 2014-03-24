@@ -24,6 +24,7 @@
 #include <openpal/IExecutor.h>
 
 #include "opendnp3/DNPErrorCodes.h"
+#include "opendnp3/LogLevels.h"
 
 #include "FunctionCodeHelpers.h"
 
@@ -114,7 +115,7 @@ void AppLayer::OnReceive(const ReadOnlyBuffer& apdu)
 					this->OnUnsolResponse(record);
 					break;
 				default:
-					LOG_BLOCK(LogLevel::Warning, "Unexpected function code for master: " << FunctionCodeToString(record.function));
+					LOG_BLOCK(levels::WARN, "Unexpected function code for master: " << FunctionCodeToString(record.function));
 					break;
 				}
 			}
@@ -141,7 +142,7 @@ void AppLayer::OnReceive(const ReadOnlyBuffer& apdu)
 	}
 	else
 	{
-		LOG_BLOCK(LogLevel::Error, "Layer is not up");
+		LOG_BLOCK(levels::ERR, "Layer is not up");
 	}
 }
 
@@ -150,10 +151,10 @@ void AppLayer::LogParseError(APDUHeaderParser::Result error, bool aIsResponse)
 	switch(error)
 	{
 	case(APDUHeaderParser::Result::NOT_ENOUGH_DATA_FOR_HEADER):
-		ERROR_BLOCK(LogLevel::Error, "Not enough data for header while parsing " << (aIsResponse ? "respose" : "request"), ALERR_INSUFFICIENT_DATA_FOR_FRAG);
+		ERROR_BLOCK(levels::ERR, "Not enough data for header while parsing " << (aIsResponse ? "respose" : "request"), ALERR_INSUFFICIENT_DATA_FOR_FRAG);
 		break;
 	default:
-		LOG_BLOCK(LogLevel::Error, "Unspecified parse error");
+		LOG_BLOCK(levels::ERR, "Unspecified parse error");
 		break;
 	}
 }
@@ -162,7 +163,7 @@ void AppLayer::OnLowerLayerUp()
 {
 	if (isOnline)
 	{
-		LOG_BLOCK(LogLevel::Error, "Layer is already online");		
+		LOG_BLOCK(levels::ERR, "Layer is already online");		
 	}
 	else
 	{
@@ -190,7 +191,7 @@ void AppLayer::OnLowerLayerDown()
 	}
 	else
 	{
-		LOG_BLOCK(LogLevel::Error, "Layer is not online");
+		LOG_BLOCK(levels::ERR, "Layer is not online");
 	}
 }
 
@@ -227,7 +228,7 @@ void AppLayer::OnSendResult(bool isSuccess)
 	}
 	else
 	{
-		LOG_BLOCK(LogLevel::Error, "Layer is not sending");
+		LOG_BLOCK(levels::ERR, "Layer is not sending");
 	}
 }
 
@@ -239,7 +240,7 @@ void AppLayer::OnResponse(const APDUResponseRecord& record)
 {
 	if(record.control.UNS)
 	{
-		ERROR_BLOCK(LogLevel::Warning, "Bad unsol bit", ALERR_BAD_UNSOL_BIT);
+		ERROR_BLOCK(levels::WARN, "Bad unsol bit", ALERR_BAD_UNSOL_BIT);
 	}
 	else
 	{
@@ -259,7 +260,7 @@ void AppLayer::OnUnsolResponse(const APDUResponseRecord& record)
 {
 	if(!record.control.UNS)
 	{
-		ERROR_BLOCK(LogLevel::Warning, "Unsolicited response code with uns bit not set", ALERR_BAD_UNSOL_BIT);
+		ERROR_BLOCK(levels::WARN, "Unsolicited response code with uns bit not set", ALERR_BAD_UNSOL_BIT);
 	}
 	else
 	{
@@ -277,7 +278,7 @@ void AppLayer::OnConfirm(const AppControlField& aControl, uint32_t aDataSize)
 {
 	if(aDataSize > 0)
 	{
-		LOG_BLOCK(LogLevel::Warning, "Unexpected payload in confirm of size: " << aDataSize);
+		LOG_BLOCK(levels::WARN, "Unexpected payload in confirm of size: " << aDataSize);
 	}
 	else
 	{
@@ -285,7 +286,7 @@ void AppLayer::OnConfirm(const AppControlField& aControl, uint32_t aDataSize)
 		{
 			if(isMaster)
 			{
-				ERROR_BLOCK(LogLevel::Error, "Unexpcted confirm for master", ALERR_UNEXPECTED_CONFIRM)
+				ERROR_BLOCK(levels::ERR, "Unexpcted confirm for master", ALERR_UNEXPECTED_CONFIRM)
 			}
 			else
 			{
@@ -303,7 +304,7 @@ void AppLayer::OnRequest(const APDURecord& record)
 {
 	if(record.control.UNS)
 	{
-		ERROR_BLOCK(LogLevel::Warning, "Received request with UNS bit", ALERR_BAD_UNSOL_BIT);
+		ERROR_BLOCK(levels::WARN, "Received request with UNS bit", ALERR_BAD_UNSOL_BIT);
 	}
 	else
 	{
@@ -313,7 +314,7 @@ void AppLayer::OnRequest(const APDURecord& record)
 		}
 		else
 		{
-			ERROR_BLOCK(LogLevel::Warning,  "Received non FIR/FIN request", ALERR_MULTI_FRAGEMENT_REQUEST);
+			ERROR_BLOCK(levels::WARN,  "Received non FIR/FIN request", ALERR_MULTI_FRAGEMENT_REQUEST);
 		}
 	}
 }
@@ -326,7 +327,7 @@ void AppLayer::QueueConfirm(bool aUnsol, int aSeq)
 {
 	if(isConfirmSending)
 	{
-		ERROR_BLOCK(LogLevel::Warning, "Confirm request flood, ignoring confirm", aUnsol ? ALERR_UNSOL_FLOOD : ALERR_SOL_FLOOD);
+		ERROR_BLOCK(levels::WARN, "Confirm request flood, ignoring confirm", aUnsol ? ALERR_UNSOL_FLOOD : ALERR_SOL_FLOOD);
 	}
 	else
 	{
@@ -349,7 +350,7 @@ void AppLayer::CheckForSend()
 	if(!isSending && sendQueue.size() > 0)
 	{
 		isSending = true;
-		//LOG_BLOCK(LogLevel::Interpret, "=> AL " << pAPDU->ToString()); TODO - replace outgoing logging
+		//LOG_BLOCK(levels::INTERPRET, "=> AL " << pAPDU->ToString()); TODO - replace outgoing logging
 		pTransportLayer->Send(sendQueue.front().ToReadOnly());
 	}
 }

@@ -46,7 +46,7 @@ int main(int argc, char* argv[])
 
 	// Specify a LogLevel for the stack/physical layer to use.
 	// Log statements with a lower priority will not be logged.
-	const LogLevel LOG_LEVEL = LogLevel::Interpret;
+	const uint32_t LOG_LEVEL = levels::ALL;
 
 	//A default logging backend that can proxy to multiple other backends
 	EventLog log;
@@ -78,7 +78,7 @@ int main(int argc, char* argv[])
 	// Create a new slave with a log level, command handler, and
 	// config info this	returns a thread-safe interface used for
 	// updating the slave's database.
-	auto pOutstation = pServer->AddOutstation("outstation", LOG_LEVEL, SuccessCommandHandler::Inst(), NullTimeWriteHandler::Inst(), stackConfig);	
+	auto pOutstation = pServer->AddOutstation("outstation", SuccessCommandHandler::Inst(), NullTimeWriteHandler::Inst(), stackConfig);	
 
 	// Enable the outstation and start communications
 	pOutstation->Enable();

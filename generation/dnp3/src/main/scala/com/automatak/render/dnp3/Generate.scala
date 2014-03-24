@@ -14,16 +14,11 @@ object Generate {
     FileSystems.getDefault.getPath("../cpp/opendnp3/src/opendnp3/gen/")
   )
 
-  val openpalPaths = CppEnumGenerator.DualPath(
-    FileSystems.getDefault.getPath("../cpp/openpal/src/openpal/gen/"),
-    FileSystems.getDefault.getPath("../cpp/openpal/src/openpal/gen/")
-  )
-
   def main(args: Array[String]): Unit = {
 
     // generate all enumerations
 
-    CppEnumGenerator(opendnp3Paths, openpalPaths)
+    CppEnumGenerator(opendnp3Paths)
     CSharpEnumGenerator("DNP3.Interface", csharpPath)
     JavaEnumGenerator("com.automatak.dnp3", javaPath)
 

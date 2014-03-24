@@ -37,7 +37,7 @@ TEST_CASE(SUITE("FullSequence"))
 	/* TODO - renable tests
 
 	EventLog log;
-	CommandTask ct(Logger(&log, LogLevel::Info, "task"));
+	CommandTask ct(Logger(&log, levels::INFO, "task"));
 	CommandResponse rsp;
 	auto formatter = [](APDU & arAPDU, FunctionCode aCode) {
 		return CommandHelpers::ConfigureRequest(arAPDU, aCode, ControlRelayOutputBlock(ControlCode::LATCH_ON), 0, Group12Var1::Inst());

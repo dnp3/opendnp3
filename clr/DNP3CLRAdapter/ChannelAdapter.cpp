@@ -42,15 +42,14 @@ void CallbackListener(gcroot < System::Action<ChannelState> ^ >* listener, opend
 	(*listener)->Invoke(state);
 }
 
-IMaster^ ChannelAdapter::AddMaster(System::String^ loggerId, DNP3::Interface::LogLevel level, ISOEHandler^ publisher, MasterStackConfig^ config)
+IMaster^ ChannelAdapter::AddMaster(System::String^ loggerId, ISOEHandler^ publisher, MasterStackConfig^ config)
 {
 	std::string stdLoggerId = Conversions::convertString(loggerId);
-	openpal::LogLevel stdLevel = Conversions::convertLogLevel(level);
-
+	
 	MasterMeasurementHandlerWrapper^ wrapper = gcnew MasterMeasurementHandlerWrapper(publisher);
 	opendnp3::MasterStackConfig cfg = Conversions::convertConfig(config);
 
-	auto pMaster = pChannel->AddMaster(stdLoggerId, stdLevel, wrapper->Get(), asiopal::UTCTimeSource::Inst(), cfg); // TODO expose time source
+	auto pMaster = pChannel->AddMaster(stdLoggerId, wrapper->Get(), asiopal::UTCTimeSource::Inst(), cfg); // TODO expose time source
 	if (pMaster == nullptr)
 	{
 		return nullptr;
@@ -61,17 +60,16 @@ IMaster^ ChannelAdapter::AddMaster(System::String^ loggerId, DNP3::Interface::Lo
 	}
 }
 
-IOutstation^ ChannelAdapter::AddOutstation(System::String^ loggerId, DNP3::Interface::LogLevel level, ICommandHandler^ cmdHandler, ITimeWriteHandler^ timeHandler, SlaveStackConfig^ config)
+IOutstation^ ChannelAdapter::AddOutstation(System::String^ loggerId, ICommandHandler^ cmdHandler, ITimeWriteHandler^ timeHandler, SlaveStackConfig^ config)
 {
-	std::string stdLoggerId = Conversions::convertString(loggerId);
-	openpal::LogLevel stdLevel = Conversions::convertLogLevel(level);
+	std::string stdLoggerId = Conversions::convertString(loggerId);	
 
 	SlaveCommandHandlerWrapper^ cmdWrapper = gcnew SlaveCommandHandlerWrapper(cmdHandler);
 	OutstationTimeWriteWrapper^ timeWrapper = gcnew OutstationTimeWriteWrapper(timeHandler);
 
 	opendnp3::SlaveStackConfig cfg = Conversions::convertConfig(config);
 
-	auto pOutstation = pChannel->AddOutstation(stdLoggerId, stdLevel, cmdWrapper->Get(), timeWrapper->Get(), Conversions::convertConfig(config));
+	auto pOutstation = pChannel->AddOutstation(stdLoggerId, cmdWrapper->Get(), timeWrapper->Get(), Conversions::convertConfig(config));
 	if (pOutstation == nullptr)
 	{
 		return nullptr;

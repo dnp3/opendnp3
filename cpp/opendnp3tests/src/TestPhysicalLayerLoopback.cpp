@@ -26,6 +26,7 @@
 #include "MockExecutor.h"
 #include "MockPhysicalLayerAsync.h"
 
+#include <opendnp3/LogLevels.h>
 
 using namespace opendnp3;
 using namespace openpal;
@@ -40,8 +41,8 @@ public:
 	LoopbackTest() :
 		log(),
 		exe(),
-		phys(Logger(&log, LogLevel::Info, "phys"), &exe),
-		loopback(Logger(&log, LogLevel::Info, "loopback"), &phys)
+		phys(Logger(&log, levels::INFO, "phys"), &exe),
+		loopback(Logger(&log, levels::INFO, "loopback"), &phys)
 	{
 		loopback.Start();
 	}

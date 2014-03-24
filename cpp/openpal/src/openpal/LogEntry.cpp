@@ -28,13 +28,13 @@ namespace openpal
 {
 
 
-LogEntry::LogEntry( LogLevel aLevel, const std::string& aDeviceName, const std::string& aLocation, const std::string& aMessage, int aErrorCode)
+LogEntry::LogEntry(uint32_t flags_, const std::string& name_, const std::string& location_, const std::string& message_, int errorCode_)
 	:
-	mLogLevel(aLevel),
-	mDeviceName(aDeviceName),
-	mLocation(aLocation),
-	mMessage(aMessage),
-	mErrorCode(aErrorCode)
+	flags(flags_),
+	name(name_),
+	location(location_),
+	message(message_),
+	errorCode(errorCode_)
 {
 
 }

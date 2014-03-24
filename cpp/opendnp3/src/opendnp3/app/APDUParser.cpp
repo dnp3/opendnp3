@@ -22,6 +22,7 @@
 #include "APDUParser.h"
 
 #include "opendnp3/gen/QualifierCode.h"
+#include "opendnp3/LogLevels.h"
 #include "opendnp3/app/GroupVariation.h"
 #include "opendnp3/app/MeasurementFactory.h"
 
@@ -62,7 +63,7 @@ APDUParser::Result APDUParser::ParseHeader(ReadOnlyBuffer& buffer, openpal::Logg
 {
 	if (buffer.Size() < 3)
 	{
-		ERROR_PLOGGER_BLOCK(pLogger, LogLevel::Warning, ALERR_INSUFFICIENT_DATA_FOR_HEADER, "Not enough data for header");
+		ERROR_PLOGGER_BLOCK(pLogger, levels::WARN, ALERR_INSUFFICIENT_DATA_FOR_HEADER, "Not enough data for header");
 		return Result::NOT_ENOUGH_DATA_FOR_HEADER;
 	}
 	else
@@ -73,7 +74,7 @@ APDUParser::Result APDUParser::ParseHeader(ReadOnlyBuffer& buffer, openpal::Logg
 		GroupVariationRecord gvRecord = { enumeration, group, variation };
 		if (gvRecord.enumeration == GroupVariation::UNKNOWN)
 		{
-			ERROR_PLOGGER_BLOCK(pLogger, LogLevel::Warning, ALERR_UNKNOWN_GROUP_VAR, "Unknown object: " << gvRecord.ToString());
+			ERROR_PLOGGER_BLOCK(pLogger, levels::WARN, ALERR_UNKNOWN_GROUP_VAR, "Unknown object: " << gvRecord.ToString());
 			return Result::UNKNOWN_OBJECT;
 		}
 		else
@@ -107,7 +108,7 @@ APDUParser::Result APDUParser::ParseHeader(ReadOnlyBuffer& buffer, openpal::Logg
 				return ParseIndexPrefixHeader<UInt16>(buffer, pLogger, context, qualifier, gvRecord, pHandler);
 
 			default:
-				ERROR_PLOGGER_BLOCK(pLogger, LogLevel::Warning, ALERR_UNKNOWN_GROUP_VAR, "Unknown qualifier: " << static_cast<int>(rawQualifier));
+				ERROR_PLOGGER_BLOCK(pLogger, levels::WARN, ALERR_UNKNOWN_GROUP_VAR, "Unknown qualifier: " << static_cast<int>(rawQualifier));
 				return Result::UNKNOWN_QUALIFIER;
 			}
 		}
@@ -232,7 +233,7 @@ APDUParser::Result APDUParser::ParseObjectsWithRange(QualifierCode qualifier, op
 		return ParseRangeOfOctetData(gvRecord, buffer, pLogger, qualifier, range, pHandler);
 
 	default:
-		ERROR_PLOGGER_BLOCK(pLogger, LogLevel::Warning, ALERR_ILLEGAL_QUALIFIER_AND_OBJECT,
+		ERROR_PLOGGER_BLOCK(pLogger, levels::WARN, ALERR_ILLEGAL_QUALIFIER_AND_OBJECT,
 		                    "Unsupported qualifier/object - " << QualifierCodeToString(qualifier) << "/" << gvRecord.ToString()
 		                   );
 		return Result::ILLEGAL_OBJECT_QUALIFIER;
@@ -250,7 +251,7 @@ APDUParser::Result APDUParser::ParseRangeOfOctetData(
 	uint32_t size = gvRecord.variation * range.Count();
 	if (buffer.Size() < size)
 	{
-		ERROR_PLOGGER_BLOCK(pLogger, LogLevel::Warning, ALERR_INSUFFICIENT_DATA_FOR_OBJECTS, "Not enough data for specified octet objects");
+		ERROR_PLOGGER_BLOCK(pLogger, levels::WARN, ALERR_INSUFFICIENT_DATA_FOR_OBJECTS, "Not enough data for specified octet objects");
 		return Result::NOT_ENOUGH_DATA_FOR_OBJECTS;
 	}
 	else

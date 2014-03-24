@@ -34,7 +34,7 @@ TransportScalabilityTestObject::TransportScalabilityTestObject(
     LinkConfig aServerCfg,
     uint16_t aPortStart,
     uint16_t aNumPair,
-    LogLevel aLevel,
+    uint32_t filters,
     bool aImmediate) :
 
 	AsyncTestObjectASIO(),

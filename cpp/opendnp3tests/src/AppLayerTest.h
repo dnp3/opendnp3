@@ -22,13 +22,12 @@
 #define __APP_LAYER_TEST_H_
 
 #include <opendnp3/app/AppLayer.h>
+#include <opendnp3/LogLevels.h>
 
 #include "LogTester.h"
 #include "MockLowerLayer.h"
 #include "MockExecutor.h"
-
 #include "MockAppUser.h"
-
 
 namespace opendnp3
 {
@@ -37,7 +36,7 @@ namespace opendnp3
 class AppLayerTest
 {
 public:
-	AppLayerTest(bool aIsMaster = false, uint32_t aNumRetry = 0, LogLevel aLevel = LogLevel::Warning, bool aImmediate = false);
+	AppLayerTest(bool aIsMaster = false, uint32_t aNumRetry = 0, uint32_t level = levels::ALL, bool aImmediate = false);
 
 	void SendUp(const std::string& aBytes);
 	void SendUp(AppControlField control, FunctionCode aCode);

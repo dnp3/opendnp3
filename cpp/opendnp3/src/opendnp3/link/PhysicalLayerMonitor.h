@@ -56,8 +56,6 @@ public:
 	                        openpal::TimeDuration maxOpenRetry_,							
 	                        opendnp3::IOpenDelayStrategy* pOpenStrategy_ = ExponentialBackoffStrategy::Inst());
 
-	~PhysicalLayerMonitor();
-
 	/** Begin monitor execution, retry indefinitely on failure - Idempotent*/
 	void Start();
 
@@ -102,7 +100,7 @@ protected:
 	virtual void OnShutdown() {}
 	
 	openpal::IPhysicalLayerAsync* pPhys;
-
+	
 	bool IsOnline() const { return isOnline; }
 
 private:

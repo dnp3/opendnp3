@@ -24,6 +24,7 @@
 #include <openpal/StaticBuffer.h>
 
 #include <opendnp3/DNPErrorCodes.h>
+#include <opendnp3/LogLevels.h>
 
 #include "Exception.h"
 #include "BufferHelpers.h"
@@ -59,15 +60,15 @@ TEST_CASE(SUITE("InitialState"))
 {
 	AppLayerTest t;
 	t.app.OnLowerLayerDown();
-	REQUIRE(t.log.PopOneEntry(LogLevel::Error));
+	REQUIRE(t.log.PopOneEntry(opendnp3::levels::ERR));
 	t.app.OnLowerLayerDown();
-	REQUIRE(t.log.PopOneEntry(LogLevel::Error));
+	REQUIRE(t.log.PopOneEntry(opendnp3::levels::ERR));
 	t.app.OnSendResult(true);
-	REQUIRE(t.log.PopOneEntry(LogLevel::Error));
+	REQUIRE(t.log.PopOneEntry(opendnp3::levels::ERR));
 	t.app.OnSendResult(false);
-	REQUIRE(t.log.PopOneEntry(LogLevel::Error));
+	REQUIRE(t.log.PopOneEntry(opendnp3::levels::ERR));
 	t.lower.SendUp("");
-	REQUIRE(t.log.PopOneEntry(LogLevel::Error));
+	REQUIRE(t.log.PopOneEntry(opendnp3::levels::ERR));
 }
 
 // Check that Up/Down are forwarded correctly
@@ -137,7 +138,7 @@ TEST_CASE(SUITE("SendBadFuncCodeSlave"))
 	t.SendResponse(FunctionCode::RESPONSE, true, true, false, false);
 	REQUIRE(t.mts.DispatchOne());
 	REQUIRE(1 ==  t.user.mState.NumSolFailure);
-	REQUIRE(t.log.PopOneEntry(LogLevel::Error));
+	REQUIRE(t.log.PopOneEntry(opendnp3::levels::ERR));
 }
 
 TEST_CASE(SUITE("SendExtraObjectData"))

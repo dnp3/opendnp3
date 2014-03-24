@@ -25,6 +25,7 @@
 
 #include <openpal/LoggableMacros.h>
 
+#include "opendnp3/LogLevels.h"
 
 namespace opendnp3
 {
@@ -59,7 +60,7 @@ void SolicitedChannel::OnRequest(const APDURecord& aRecord)
 	auto seq = SequenceInfo::OTHER;
 	if (aRecord.control.SEQ == this->Sequence())
 	{
-		LOG_BLOCK(LogLevel::Warning, "Received previous sequence");
+		LOG_BLOCK(levels::WARN, "Received previous sequence");
 		seq = SequenceInfo::PREVIOUS;
 	}
 	else if (aRecord.control.SEQ == NextSeq(this->Sequence()))

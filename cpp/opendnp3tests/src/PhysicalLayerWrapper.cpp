@@ -22,6 +22,8 @@
 
 #include <openpal/LoggableMacros.h>
 
+#include <opendnp3/LogLevels.h>
+
 #include <assert.h>
 
 using namespace openpal;
@@ -85,7 +87,7 @@ void PhysicalLayerWrapper::OnReceive(const openpal::ReadOnlyBuffer& buffer)
 {
 	if(mCorruptionProbability > mRandom.Next())
 	{
-		LOG_BLOCK(LogLevel::Info, "Corrupting data");
+		LOG_BLOCK(levels::INFO, "Corrupting data");
 		uint8_t* pData = const_cast<uint8_t*>(buffer.operator const uint8_t * ());		
 		for(size_t i = 0; i < buffer.Size(); ++i) pData[i] = 0;
 	}

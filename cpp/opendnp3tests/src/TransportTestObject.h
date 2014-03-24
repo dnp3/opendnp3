@@ -22,7 +22,9 @@
 #define __TRANSPORT_TEST_OBJECT_H_
 
 #include <asiopal/Log.h>
+
 #include <opendnp3/transport/TransportLayer.h>
+#include <opendnp3/LogLevels.h>
 
 #include <vector>
 #include <string>
@@ -38,7 +40,7 @@ namespace opendnp3
 class TransportTestObject
 {
 public:
-	TransportTestObject(bool aOpenOnStart = false, openpal::LogLevel aLevel = openpal::LogLevel::Info, bool aImmediate = false);
+	TransportTestObject(bool aOpenOnStart = false, uint32_t filters = levels::ALL, bool aImmediate = false);
 
 	// Generate a complete packet sequence inside the vector and
 	// return the corresponding reassembled APDU

@@ -14,8 +14,8 @@ LogAdapter::LogAdapter(ILogHandler^ proxy) : proxy(proxy)
 // logging error messages, etc
 void LogAdapter::Log( const openpal::LogEntry& arEntry )
 {
-	DNP3::Interface::LogLevel level = Conversions::convertLogLevel(arEntry.GetLogLevel());
-	System::String^ loggerName = Conversions::convertString(arEntry.GetDeviceName());
+	DNP3::Interface::LogLevel level = Conversions::convertLogLevel(arEntry.GetFlags());
+	System::String^ loggerName = Conversions::convertString(arEntry.GetName());
 	System::String^ location = Conversions::convertString(arEntry.GetLocation());
 	System::String^ message = Conversions::convertString(arEntry.GetMessage());
 

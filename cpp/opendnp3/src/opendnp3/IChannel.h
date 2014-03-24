@@ -26,8 +26,8 @@
 #include "opendnp3/master/MasterStackConfig.h"
 #include "opendnp3/outstation/SlaveStackConfig.h"
 #include "opendnp3/DestructorHook.h"
+#include "opendnp3/LogLevels.h"
 
-#include <openpal/gen/LogLevel.h>
 #include <openpal/IUTCTimeSource.h>
 
 #include <functional>
@@ -83,29 +83,27 @@ public:
 	/**
 	* Add a master to the channel
 	*
-	* @param arLoggerId Name that will be used in all log messages
-	* @param aLevel Lowest log level that will be recorded
+	* @param id An ID that gets used for logging
+	* @param logFilters Bitfield that determines what log levels are enabled
 	* @param apPublisher Callback object for all received measurements
 	* @param arCfg Configuration object that controls how the master behaves
 	* @return interface representing the running master
 	*/
-	virtual IMaster* AddMaster(	const std::string& arLoggerId,
-	                            openpal::LogLevel aLevel,
-	                            ISOEHandler* apPublisher,
-	                            openpal::IUTCTimeSource* apTimeSource,
-	                            const MasterStackConfig& arCfg) = 0;
+	virtual IMaster* AddMaster(const std::string& id,	                            
+	                           ISOEHandler* apPublisher,
+	                           openpal::IUTCTimeSource* apTimeSource,
+	                           const MasterStackConfig& arCfg) = 0;
 
 	/**
 	* Add an outstation to the channel
 	*
-	* @param arLoggerId Name that will be used in all log messages
-	* @param aLevel Lowest log level that will be recorded
+	* @param id An ID that gets used for logging
+	* @param logFilters Bitfield that determines what log levels are enabled
 	* @param apCmdHandler Callback object for handling command requests
 	* @param arCfg Configuration object that controls how the outstation behaves
 	* @return interface representing the running outstations
 	*/
-	virtual IOutstation* AddOutstation(	const std::string& arLoggerId,
-	                                    openpal::LogLevel aLevel,
+	virtual IOutstation* AddOutstation(	const std::string& id,										
 	                                    ICommandHandler* apCmdHandler,
 	                                    ITimeWriteHandler* apTimeWriteHandler,
 	                                    const SlaveStackConfig& arCfg) = 0;

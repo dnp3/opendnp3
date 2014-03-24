@@ -25,14 +25,14 @@ using namespace openpal;
 namespace opendnp3
 {
 
-AsyncPhysTestObject::AsyncPhysTestObject(LogLevel aLevel, bool aImmediate, bool aAutoRead) :
+AsyncPhysTestObject::AsyncPhysTestObject(uint32_t filters, bool aImmediate, bool aAutoRead) :
 	AsyncTestObjectASIO(),
 	log(),
-	logger(&log, aLevel, "test"),
-	mTCPClient(Logger(&log, aLevel, "TCPClient"), this->GetService(), "127.0.0.1", 50000),
-	mTCPServer(Logger(&log, aLevel, "TCPSever"), this->GetService(), "127.0.0.1", 50000),
-	mClientAdapter(Logger(&log, aLevel, "ClientAdapter"), &mTCPClient, aAutoRead),
-	mServerAdapter(Logger(&log, aLevel, "ServerAdapter"), &mTCPServer, aAutoRead)	
+	logger(&log, filters, "test"),
+	mTCPClient(Logger(&log, filters, "TCPClient"), this->GetService(), "127.0.0.1", 50000),
+	mTCPServer(Logger(&log, filters, "TCPSever"), this->GetService(), "127.0.0.1", 50000),
+	mClientAdapter(Logger(&log, filters, "ClientAdapter"), &mTCPClient, aAutoRead),
+	mServerAdapter(Logger(&log, filters, "ServerAdapter"), &mTCPServer, aAutoRead)
 {
 	mClientAdapter.SetUpperLayer(&mClientUpper);
 	mServerAdapter.SetUpperLayer(&mServerUpper);

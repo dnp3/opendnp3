@@ -39,7 +39,7 @@ TransportLoopbackTestObject::TransportLoopbackTestObject(
     IPhysicalLayerAsync* apPhys,
     LinkConfig aCfgA,
     LinkConfig aCfgB,
-    LogLevel aLevel) :
+    uint32_t filters) :
 
 	AsyncTestObjectASIO(apService),	
 	mCfgA(aCfgA),

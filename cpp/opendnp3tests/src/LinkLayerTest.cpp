@@ -25,10 +25,10 @@ using namespace openpal;
 namespace opendnp3
 {
 
-LinkLayerTest::LinkLayerTest(LinkConfig arCfg, LogLevel aLevel, bool aImmediate) :
+LinkLayerTest::LinkLayerTest(LinkConfig arCfg, uint32_t filters, bool aImmediate) :
 	log(),
 	mts(),	
-	link(Logger(&log, aLevel, "LinkLayer"), &mts, arCfg),
+	link(Logger(&log, filters, "LinkLayer"), &mts, arCfg),
 	upper(&link),
 	numWrites(0)
 {

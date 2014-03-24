@@ -27,11 +27,11 @@ using namespace asiopal;
 namespace opendnp3
 {
 
-AsyncSerialTestObject::AsyncSerialTestObject(SerialSettings cfg, LogLevel aLevel, bool aImmediate) :
+AsyncSerialTestObject::AsyncSerialTestObject(SerialSettings cfg, uint32_t filters, bool aImmediate) :
 	AsyncTestObjectASIO(),
 	log(),
-	mPort(Logger(&log, aLevel, "Serial"), this->GetService(), cfg),
-	mAdapter(Logger(&log, aLevel, "Adapter"), &mPort, true)	
+	mPort(Logger(&log, filters, "Serial"), this->GetService(), cfg),
+	mAdapter(Logger(&log, filters, "Adapter"), &mPort, true)
 {
 	mAdapter.SetUpperLayer(&mUpper);
 	mUpper.SetLowerLayer(&mAdapter);

@@ -36,19 +36,19 @@ TEST_CASE(SUITE("ClosedState"))
 	WriteBuffer wb(&buff, 1);
 
 	t.phys.AsyncClose();
-	REQUIRE(t.log.PopOneEntry(LogLevel::Error));
+	REQUIRE(t.log.PopOneEntry(levels::ERR));
 	t.upper.SendDown("00");
-	REQUIRE(t.log.PopOneEntry(LogLevel::Error));
+	REQUIRE(t.log.PopOneEntry(levels::ERR));
 	t.phys.AsyncRead(wb);
-	REQUIRE(t.log.PopOneEntry(LogLevel::Error));
+	REQUIRE(t.log.PopOneEntry(levels::ERR));
 	t.phys.SignalOpenFailure();
-	REQUIRE(t.log.PopOneEntry(LogLevel::Error));
+	REQUIRE(t.log.PopOneEntry(levels::ERR));
 	t.phys.SignalOpenSuccess();
-	REQUIRE(t.log.PopOneEntry(LogLevel::Error));
+	REQUIRE(t.log.PopOneEntry(levels::ERR));
 	t.phys.SignalSendSuccess();
-	REQUIRE(t.log.PopOneEntry(LogLevel::Error));
+	REQUIRE(t.log.PopOneEntry(levels::ERR));
 	t.phys.SignalSendFailure();
-	REQUIRE(t.log.PopOneEntry(LogLevel::Error));
+	REQUIRE(t.log.PopOneEntry(levels::ERR));
 
 }
 
@@ -65,13 +65,13 @@ TEST_CASE(SUITE("OpenCloseNotification"))
 		t.phys.AsyncClose();
 
 		t.phys.SignalOpenFailure();
-		REQUIRE(t.log.PopOneEntry(LogLevel::Error));
+		REQUIRE(t.log.PopOneEntry(levels::ERR));
 		t.phys.SignalOpenSuccess();
-		REQUIRE(t.log.PopOneEntry(LogLevel::Error));
+		REQUIRE(t.log.PopOneEntry(levels::ERR));
 		t.phys.SignalSendSuccess();
-		REQUIRE(t.log.PopOneEntry(LogLevel::Error));
+		REQUIRE(t.log.PopOneEntry(levels::ERR));
 		t.phys.SignalSendFailure();
-		REQUIRE(t.log.PopOneEntry(LogLevel::Error));
+		REQUIRE(t.log.PopOneEntry(levels::ERR));
 
 		REQUIRE(t.phys.NumClose() ==  i);
 		REQUIRE(t.upper.GetState().mNumLayerDown ==  i);
@@ -86,13 +86,13 @@ TEST_CASE(SUITE("ReadState"))
 	t.adapter.StartRead(); //start a read
 
 	t.phys.SignalOpenFailure();
-	REQUIRE(t.log.PopOneEntry(LogLevel::Error));
+	REQUIRE(t.log.PopOneEntry(levels::ERR));
 	t.phys.SignalOpenSuccess();
-	REQUIRE(t.log.PopOneEntry(LogLevel::Error));
+	REQUIRE(t.log.PopOneEntry(levels::ERR));
 	t.phys.SignalSendSuccess();
-	REQUIRE(t.log.PopOneEntry(LogLevel::Error));
+	REQUIRE(t.log.PopOneEntry(levels::ERR));
 	t.phys.SignalSendFailure();
-	REQUIRE(t.log.PopOneEntry(LogLevel::Error));
+	REQUIRE(t.log.PopOneEntry(levels::ERR));
 
 	t.phys.TriggerRead("00");
 	t.upper.BufferEqualsHex("00");
@@ -122,13 +122,13 @@ TEST_CASE(SUITE("WriteState"))
 	REQUIRE(t.phys.Size() ==  1);
 
 	t.phys.SignalOpenFailure();
-	REQUIRE(t.log.PopOneEntry(LogLevel::Error));
+	REQUIRE(t.log.PopOneEntry(levels::ERR));
 	t.phys.SignalOpenSuccess();
-	REQUIRE(t.log.PopOneEntry(LogLevel::Error));
+	REQUIRE(t.log.PopOneEntry(levels::ERR));
 	t.phys.TriggerRead("");
-	REQUIRE(t.log.PopOneEntry(LogLevel::Error));
+	REQUIRE(t.log.PopOneEntry(levels::ERR));
 	t.phys.SignalReadFailure();
-	REQUIRE(t.log.PopOneEntry(LogLevel::Error));
+	REQUIRE(t.log.PopOneEntry(levels::ERR));
 }
 
 TEST_CASE(SUITE("CloseWhileWriting"))

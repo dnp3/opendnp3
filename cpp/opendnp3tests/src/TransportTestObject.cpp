@@ -33,10 +33,10 @@ using namespace openpal;
 namespace opendnp3
 {
 
-TransportTestObject::TransportTestObject(bool aOpenOnStart, LogLevel aLevel, bool aImmediate) :
+TransportTestObject::TransportTestObject(bool aOpenOnStart, uint32_t filters, bool aImmediate) :
 	log(),
 	exe(),	
-	transport(Logger(&log, aLevel, "transport"), &exe)	
+	transport(Logger(&log, filters, "transport"), &exe)	
 {	
 	link.SetUpperLayer(&transport);
 	transport.SetLinkLayer(&link);

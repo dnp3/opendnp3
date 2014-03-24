@@ -26,7 +26,6 @@
     <ClInclude Include="src\openpal\IShutdownHandler.h" />
     <ClInclude Include="src\openpal\LinkedListAdapter.h" />
     <ClInclude Include="src\openpal\DynamicArray.h" />
-    <ClInclude Include="src\openpal\gen\LogLevel.h" />
     <ClInclude Include="src\openpal\HasSize.h" />
     <ClInclude Include="src\openpal\IExecutor.h" />
     <ClInclude Include="src\openpal\IHandlerAsync.h" />
@@ -44,6 +43,7 @@
     <ClInclude Include="src\openpal\Loggable.h" />
     <ClInclude Include="src\openpal\LoggableMacros.h" />
     <ClInclude Include="src\openpal\Logger.h" />
+    <ClInclude Include="src\openpal\LogLevels.h" />
     <ClInclude Include="src\openpal\MonotonicTimestamp.h" />
     <ClInclude Include="src\openpal\QueueAdapter.h" />
     <ClInclude Include="src\openpal\RandomInsertAdapter.h" />
@@ -65,7 +65,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\openpal\BufferWrapper.cpp" />
-    <ClCompile Include="src\openpal\gen\LogLevel.cpp" />
     <ClCompile Include="src\openpal\LogEntry.cpp" />
     <ClCompile Include="src\openpal\Logger.cpp" />
     <ClCompile Include="src\openpal\MonotonicTimestamp.cpp" />

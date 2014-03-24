@@ -47,10 +47,10 @@ using namespace std;
 using namespace asiopal;
 using namespace opendnp3;
 
-IntegrationTest::IntegrationTest(LogLevel aLevel, uint16_t aStartPort, size_t aNumPairs, uint16_t aNumPoints) :
+IntegrationTest::IntegrationTest(uint16_t aStartPort, size_t aNumPairs, uint16_t aNumPoints, uint32_t filters) :
 	M_START_PORT(aStartPort),
 	mLog(),
-	mPool(Logger(&mLog, aLevel, "pool"), std::thread::hardware_concurrency()),
+	mPool(Logger(&mLog, filters, "pool"), std::thread::hardware_concurrency()),
 	mMgr(),
 	NUM_POINTS(aNumPoints)
 {
@@ -59,7 +59,7 @@ IntegrationTest::IntegrationTest(LogLevel aLevel, uint16_t aStartPort, size_t aN
 	//mFanout.AddObserver(&mLocalFDO); TODO - redesign integration test
 	for (size_t i = 0; i < aNumPairs; ++i)
 	{
-		AddStackPair(aLevel, aNumPoints);
+		AddStackPair(filters, aNumPoints);
 	}
 
 }
@@ -138,14 +138,14 @@ Counter IntegrationTest::Next(const Counter& arPoint)
 	return point;
 }
 
-void IntegrationTest::AddStackPair(LogLevel aLevel, uint16_t aNumPoints)
+void IntegrationTest::AddStackPair(uint32_t filters, uint16_t aNumPoints)
 {
 	uint16_t port = M_START_PORT + static_cast<uint16_t>(this->mMasterObservers.size());
 
 	ostringstream oss;
 	oss << "Port: " << port;
-	Logger clientLogger(&mLog, aLevel, oss.str() + " Client ");
-	Logger serverLogger(&mLog, aLevel, oss.str() + " Server ");
+	Logger clientLogger(&mLog, filters, oss.str() + " Client ");
+	Logger serverLogger(&mLog, filters, oss.str() + " Server ");
 
 	std::shared_ptr<ComparingDataObserver> pMasterFDO(new ComparingDataObserver(&mLocalFDO));
 	mMasterObservers.push_back(pMasterFDO);
@@ -166,7 +166,7 @@ void IntegrationTest::AddStackPair(LogLevel aLevel, uint16_t aNumPoints)
 		cfg.master.IntegrityRate = TimeDuration::Min();
 		cfg.master.EnableUnsol = true;
 		cfg.master.DoUnsolOnStartup = true;
-		auto pMaster = pClient->AddMaster(oss.str() + " master", aLevel, pMasterFDO.get(), asiopal::UTCTimeSource::Inst(), cfg);
+		auto pMaster = pClient->AddMaster(oss.str() + " master", pMasterFDO.get(), asiopal::UTCTimeSource::Inst(), cfg);
 		pMaster->Enable();
 	}
 
@@ -179,7 +179,7 @@ void IntegrationTest::AddStackPair(LogLevel aLevel, uint16_t aNumPoints)
 		cfg.app.RspTimeout = TimeDuration::Seconds(10);
 		cfg.slave.mDisableUnsol = false;
 		cfg.slave.mUnsolPackDelay = TimeDuration::Zero();
-		auto pOutstation = pServer->AddOutstation(oss.str() + " outstation", aLevel, &mCmdHandler, NullTimeWriteHandler::Inst(), cfg);
+		auto pOutstation = pServer->AddOutstation(oss.str() + " outstation", &mCmdHandler, NullTimeWriteHandler::Inst(), cfg);
 		this->mFanout.AddObserver(pOutstation->GetDataObserver());
 		pOutstation->Enable();
 	}

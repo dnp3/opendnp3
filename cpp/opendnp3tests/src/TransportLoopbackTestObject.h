@@ -25,6 +25,7 @@
 #include "LogTester.h"
 #include "MockUpperLayer.h"
 
+#include <opendnp3/LogLevels.h>
 #include <opendnp3/link/LinkLayerRouter.h>
 #include <opendnp3/link/LinkLayer.h>
 #include <opendnp3/transport/TransportLayer.h>
@@ -41,7 +42,7 @@ public:
 	    openpal::IPhysicalLayerAsync*,
 	    LinkConfig,
 	    LinkConfig,
-	    openpal::LogLevel aLevel = openpal::LogLevel::Info);
+	    uint32_t filters = levels::INFO);
 
 	~TransportLoopbackTestObject();
 	

@@ -20,7 +20,7 @@ namespace DNP3.Interface
   /// <summary>
   /// Enumeration for log levels
   /// </summary>
-  public enum LogLevel : int
+  public enum LogLevel : uint
   {
     Event = 0x1,
     Error = 0x2,

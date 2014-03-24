@@ -25,6 +25,8 @@
 #include "opendnp3/app/IAPDUHandler.h"
 #include "opendnp3/app/IterableTransforms.h"
 
+#include "opendnp3/LogLevels.h"
+
 #include <openpal/Loggable.h>
 #include <openpal/LoggableMacros.h>
 
@@ -205,7 +207,7 @@ void APDUHandlerBase::OnIndexPrefixCTO(GroupVariation gv, QualifierCode qualifie
 	}
 	else
 	{
-		LOG_BLOCK(openpal::LogLevel::Warning, "Received CTO objects without preceding common time, using assumed time");
+		LOG_BLOCK(levels::WARN, "Received CTO objects without preceding common time, using assumed time");
 		auto transform = MapIterableBuffer< IndexedValue<T, uint16_t>, IndexedValue<T, uint16_t> >(meas,
 		                 [](const IndexedValue<T, uint16_t>& value)
 		{

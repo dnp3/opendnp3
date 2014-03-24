@@ -9,7 +9,7 @@ object CppEnumGenerator {
 
   case class DualPath(include: Path, source: Path)
 
-  def apply(opendnp3: DualPath, openpal: DualPath): Unit = {
+  def apply(opendnp3: DualPath): Unit = {
 
     case class EnumConfig(model: EnumModel, ns: String, paths: DualPath, conversions: Boolean = true) {
       def headerName = model.name + ".h"
@@ -24,8 +24,7 @@ object CppEnumGenerator {
       EnumConfig(CommandStatus(), "opendnp3", opendnp3, true),
       EnumConfig(CommandResult(), "opendnp3", opendnp3, false),
       EnumConfig(ControlCode(), "opendnp3", opendnp3, true),
-      EnumConfig(ChannelState(), "opendnp3", opendnp3, false),
-      EnumConfig(LogLevel(), "openpal", openpal, true)
+      EnumConfig(ChannelState(), "opendnp3", opendnp3, false)
     ) ::: EventTypes.enums.map(m => EnumConfig(m, "opendnp3", opendnp3, true))
 
     // list of all enumerations that we want to generate

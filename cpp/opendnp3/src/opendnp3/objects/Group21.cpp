@@ -8,10 +8,10 @@
 //                                           __/ |
 //                                          |___/
 // Copyright 2013 Automatak LLC
-//
+// 
 // Automatak LLC (www.automatak.com) licenses this file
 // to you under the the Apache License Version 2.0 (the "License"):
-//
+// 
 // http://www.apache.org/licenses/LICENSE-2.0.html
 //
 
@@ -23,210 +23,209 @@
 
 using namespace openpal;
 
-namespace opendnp3
-{
+namespace opendnp3 {
 
-const GroupVariationID  Group21Var1::ID(21, 1);
+const GroupVariationID  Group21Var1::ID(21,1);
 
 Group21Var1 Group21Var1::Read(ReadOnlyBuffer& buffer)
 {
-	Group21Var1 obj;
-	obj.flags = UInt8::Read(buffer);
-	buffer.Advance(1);
-	obj.value = UInt32::Read(buffer);
-	buffer.Advance(4);
-	return obj;
+  Group21Var1 obj;
+  obj.flags = UInt8::Read(buffer);
+  buffer.Advance(1);
+  obj.value = UInt32::Read(buffer);
+  buffer.Advance(4);
+  return obj;
 }
 
 void Group21Var1::Write(const Group21Var1& arg, openpal::WriteBuffer& buffer)
 {
-	UInt8::Write(buffer, arg.flags);
-	buffer.Advance(1);
-	UInt32::Write(buffer, arg.value);
-	buffer.Advance(4);
+  UInt8::Write(buffer, arg.flags);
+  buffer.Advance(1);
+  UInt32::Write(buffer, arg.value);
+  buffer.Advance(4);
 }
 
 Group21Var1Serializer Group21Var1Serializer::mInstance;
 
 FrozenCounter Group21Var1Serializer::Read(ReadOnlyBuffer& buff) const
 {
-	auto gv = Group21Var1::Read(buff);
-	return FrozenCounterFactory::From(gv.flags, gv.value);
+  auto gv = Group21Var1::Read(buff);
+  return FrozenCounterFactory::From(gv.flags, gv.value);
 }
 
 void Group21Var1Serializer::Write(const FrozenCounter& value, openpal::WriteBuffer& buff) const
 {
-	Group21Var1::Write(ConvertGroup21Var1::Apply(value), buff);
+  Group21Var1::Write(ConvertGroup21Var1::Apply(value), buff);
 }
 
 
-const GroupVariationID  Group21Var2::ID(21, 2);
+const GroupVariationID  Group21Var2::ID(21,2);
 
 Group21Var2 Group21Var2::Read(ReadOnlyBuffer& buffer)
 {
-	Group21Var2 obj;
-	obj.flags = UInt8::Read(buffer);
-	buffer.Advance(1);
-	obj.value = UInt16::Read(buffer);
-	buffer.Advance(2);
-	return obj;
+  Group21Var2 obj;
+  obj.flags = UInt8::Read(buffer);
+  buffer.Advance(1);
+  obj.value = UInt16::Read(buffer);
+  buffer.Advance(2);
+  return obj;
 }
 
 void Group21Var2::Write(const Group21Var2& arg, openpal::WriteBuffer& buffer)
 {
-	UInt8::Write(buffer, arg.flags);
-	buffer.Advance(1);
-	UInt16::Write(buffer, arg.value);
-	buffer.Advance(2);
+  UInt8::Write(buffer, arg.flags);
+  buffer.Advance(1);
+  UInt16::Write(buffer, arg.value);
+  buffer.Advance(2);
 }
 
 Group21Var2Serializer Group21Var2Serializer::mInstance;
 
 FrozenCounter Group21Var2Serializer::Read(ReadOnlyBuffer& buff) const
 {
-	auto gv = Group21Var2::Read(buff);
-	return FrozenCounterFactory::From(gv.flags, gv.value);
+  auto gv = Group21Var2::Read(buff);
+  return FrozenCounterFactory::From(gv.flags, gv.value);
 }
 
 void Group21Var2Serializer::Write(const FrozenCounter& value, openpal::WriteBuffer& buff) const
 {
-	Group21Var2::Write(ConvertGroup21Var2::Apply(value), buff);
+  Group21Var2::Write(ConvertGroup21Var2::Apply(value), buff);
 }
 
 
-const GroupVariationID  Group21Var5::ID(21, 5);
+const GroupVariationID  Group21Var5::ID(21,5);
 
 Group21Var5 Group21Var5::Read(ReadOnlyBuffer& buffer)
 {
-	Group21Var5 obj;
-	obj.flags = UInt8::Read(buffer);
-	buffer.Advance(1);
-	obj.value = UInt32::Read(buffer);
-	buffer.Advance(4);
-	obj.time = UInt48::Read(buffer);
-	buffer.Advance(6);
-	return obj;
+  Group21Var5 obj;
+  obj.flags = UInt8::Read(buffer);
+  buffer.Advance(1);
+  obj.value = UInt32::Read(buffer);
+  buffer.Advance(4);
+  obj.time = UInt48::Read(buffer);
+  buffer.Advance(6);
+  return obj;
 }
 
 void Group21Var5::Write(const Group21Var5& arg, openpal::WriteBuffer& buffer)
 {
-	UInt8::Write(buffer, arg.flags);
-	buffer.Advance(1);
-	UInt32::Write(buffer, arg.value);
-	buffer.Advance(4);
-	UInt48::Write(buffer, arg.time);
-	buffer.Advance(6);
+  UInt8::Write(buffer, arg.flags);
+  buffer.Advance(1);
+  UInt32::Write(buffer, arg.value);
+  buffer.Advance(4);
+  UInt48::Write(buffer, arg.time);
+  buffer.Advance(6);
 }
 
 Group21Var5Serializer Group21Var5Serializer::mInstance;
 
 FrozenCounter Group21Var5Serializer::Read(ReadOnlyBuffer& buff) const
 {
-	auto gv = Group21Var5::Read(buff);
-	return FrozenCounterFactory::From(gv.flags, gv.value, gv.time);
+  auto gv = Group21Var5::Read(buff);
+  return FrozenCounterFactory::From(gv.flags, gv.value, gv.time);
 }
 
 void Group21Var5Serializer::Write(const FrozenCounter& value, openpal::WriteBuffer& buff) const
 {
-	Group21Var5::Write(ConvertGroup21Var5::Apply(value), buff);
+  Group21Var5::Write(ConvertGroup21Var5::Apply(value), buff);
 }
 
 
-const GroupVariationID  Group21Var6::ID(21, 6);
+const GroupVariationID  Group21Var6::ID(21,6);
 
 Group21Var6 Group21Var6::Read(ReadOnlyBuffer& buffer)
 {
-	Group21Var6 obj;
-	obj.flags = UInt8::Read(buffer);
-	buffer.Advance(1);
-	obj.value = UInt16::Read(buffer);
-	buffer.Advance(2);
-	obj.time = UInt48::Read(buffer);
-	buffer.Advance(6);
-	return obj;
+  Group21Var6 obj;
+  obj.flags = UInt8::Read(buffer);
+  buffer.Advance(1);
+  obj.value = UInt16::Read(buffer);
+  buffer.Advance(2);
+  obj.time = UInt48::Read(buffer);
+  buffer.Advance(6);
+  return obj;
 }
 
 void Group21Var6::Write(const Group21Var6& arg, openpal::WriteBuffer& buffer)
 {
-	UInt8::Write(buffer, arg.flags);
-	buffer.Advance(1);
-	UInt16::Write(buffer, arg.value);
-	buffer.Advance(2);
-	UInt48::Write(buffer, arg.time);
-	buffer.Advance(6);
+  UInt8::Write(buffer, arg.flags);
+  buffer.Advance(1);
+  UInt16::Write(buffer, arg.value);
+  buffer.Advance(2);
+  UInt48::Write(buffer, arg.time);
+  buffer.Advance(6);
 }
 
 Group21Var6Serializer Group21Var6Serializer::mInstance;
 
 FrozenCounter Group21Var6Serializer::Read(ReadOnlyBuffer& buff) const
 {
-	auto gv = Group21Var6::Read(buff);
-	return FrozenCounterFactory::From(gv.flags, gv.value, gv.time);
+  auto gv = Group21Var6::Read(buff);
+  return FrozenCounterFactory::From(gv.flags, gv.value, gv.time);
 }
 
 void Group21Var6Serializer::Write(const FrozenCounter& value, openpal::WriteBuffer& buff) const
 {
-	Group21Var6::Write(ConvertGroup21Var6::Apply(value), buff);
+  Group21Var6::Write(ConvertGroup21Var6::Apply(value), buff);
 }
 
 
-const GroupVariationID  Group21Var9::ID(21, 9);
+const GroupVariationID  Group21Var9::ID(21,9);
 
 Group21Var9 Group21Var9::Read(ReadOnlyBuffer& buffer)
 {
-	Group21Var9 obj;
-	obj.value = UInt16::Read(buffer);
-	buffer.Advance(2);
-	return obj;
+  Group21Var9 obj;
+  obj.value = UInt16::Read(buffer);
+  buffer.Advance(2);
+  return obj;
 }
 
 void Group21Var9::Write(const Group21Var9& arg, openpal::WriteBuffer& buffer)
 {
-	UInt16::Write(buffer, arg.value);
-	buffer.Advance(2);
+  UInt16::Write(buffer, arg.value);
+  buffer.Advance(2);
 }
 
 Group21Var9Serializer Group21Var9Serializer::mInstance;
 
 FrozenCounter Group21Var9Serializer::Read(ReadOnlyBuffer& buff) const
 {
-	auto gv = Group21Var9::Read(buff);
-	return FrozenCounterFactory::From(gv.value);
+  auto gv = Group21Var9::Read(buff);
+  return FrozenCounterFactory::From(gv.value);
 }
 
 void Group21Var9Serializer::Write(const FrozenCounter& value, openpal::WriteBuffer& buff) const
 {
-	Group21Var9::Write(ConvertGroup21Var9::Apply(value), buff);
+  Group21Var9::Write(ConvertGroup21Var9::Apply(value), buff);
 }
 
 
-const GroupVariationID  Group21Var10::ID(21, 10);
+const GroupVariationID  Group21Var10::ID(21,10);
 
 Group21Var10 Group21Var10::Read(ReadOnlyBuffer& buffer)
 {
-	Group21Var10 obj;
-	obj.value = UInt32::Read(buffer);
-	buffer.Advance(4);
-	return obj;
+  Group21Var10 obj;
+  obj.value = UInt32::Read(buffer);
+  buffer.Advance(4);
+  return obj;
 }
 
 void Group21Var10::Write(const Group21Var10& arg, openpal::WriteBuffer& buffer)
 {
-	UInt32::Write(buffer, arg.value);
-	buffer.Advance(4);
+  UInt32::Write(buffer, arg.value);
+  buffer.Advance(4);
 }
 
 Group21Var10Serializer Group21Var10Serializer::mInstance;
 
 FrozenCounter Group21Var10Serializer::Read(ReadOnlyBuffer& buff) const
 {
-	auto gv = Group21Var10::Read(buff);
-	return FrozenCounterFactory::From(gv.value);
+  auto gv = Group21Var10::Read(buff);
+  return FrozenCounterFactory::From(gv.value);
 }
 
 void Group21Var10Serializer::Write(const FrozenCounter& value, openpal::WriteBuffer& buff) const
 {
-	Group21Var10::Write(ConvertGroup21Var10::Apply(value), buff);
+  Group21Var10::Write(ConvertGroup21Var10::Apply(value), buff);
 }
 
 

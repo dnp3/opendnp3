@@ -24,6 +24,8 @@
 
 #include <openpal/LoggableMacros.h>
 
+#include "opendnp3/LogLevels.h"
+
 using namespace openpal;
 
 namespace opendnp3
@@ -55,7 +57,7 @@ SingleRspBase::SingleRspBase(openpal::Logger& arLogger) : MasterTaskBase(arLogge
 
 bool SingleRspBase::_OnPartialResponse(const APDUResponseRecord& record)
 {
-	LOG_BLOCK(LogLevel::Warning, "Ignoring non-FIN response to task: " << this->Name());
+	LOG_BLOCK(levels::WARN, "Ignoring non-FIN response to task: " << this->Name());
 	return false;
 }
 
@@ -66,7 +68,7 @@ TaskResult SimpleRspBase::_OnFinalResponse(const APDUResponseRecord& record)
 {
 	if(record.objects.Size() > 0)
 	{
-		LOG_BLOCK(LogLevel::Warning, "Unexpected object data in response to task: " << this->Name());
+		LOG_BLOCK(levels::WARN, "Unexpected object data in response to task: " << this->Name());
 	}
 
 	return TR_SUCCESS;

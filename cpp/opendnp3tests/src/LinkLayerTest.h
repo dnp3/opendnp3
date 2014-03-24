@@ -27,6 +27,7 @@
 
 #include <opendnp3/link/LinkLayer.h>
 #include <opendnp3/link/ILinkRouter.h>
+#include <opendnp3/LogLevels.h>
 
 #include <queue>
 
@@ -37,7 +38,7 @@ class LinkLayerTest : public ILinkRouter
 {
 public:
 
-	LinkLayerTest(LinkConfig arCfg = DefaultConfig(), openpal::LogLevel aLevel = openpal::LogLevel::Warning, bool aImmediate = false);
+	LinkLayerTest(LinkConfig arCfg = DefaultConfig(), uint32_t flags = levels::ALL, bool aImmediate = false);
 
 	//ILinkRouter interface
 	virtual void QueueTransmit(const openpal::ReadOnlyBuffer& buffer, ILinkContext* pContext, bool primary) override;

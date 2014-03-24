@@ -8,10 +8,10 @@
 //                                           __/ |
 //                                          |___/
 // Copyright 2013 Automatak LLC
-//
+// 
 // Automatak LLC (www.automatak.com) licenses this file
 // to you under the the Apache License Version 2.0 (the "License"):
-//
+// 
 // http://www.apache.org/licenses/LICENSE-2.0.html
 //
 
@@ -21,107 +21,106 @@
 #include <openpal/BufferWrapper.h>
 #include "opendnp3/app/GroupVariationID.h"
 
-namespace opendnp3
-{
+namespace opendnp3 {
 
 struct Group42Var1
 {
-	static const GroupVariationID ID;
-	static const uint32_t SIZE = 5;
-	static Group42Var1 Read(openpal::ReadOnlyBuffer&);
-	static void Write(const Group42Var1&, openpal::WriteBuffer&);
+  static const GroupVariationID ID;
+  static const uint32_t SIZE = 5;
+  static Group42Var1 Read(openpal::ReadOnlyBuffer&);
+  static void Write(const Group42Var1&, openpal::WriteBuffer&);
 
-	typedef int32_t ValueType;
-	uint8_t flags;
-	int32_t value;
+  typedef int32_t ValueType;
+  uint8_t flags;
+  int32_t value;
 };
 
 struct Group42Var2
 {
-	static const GroupVariationID ID;
-	static const uint32_t SIZE = 3;
-	static Group42Var2 Read(openpal::ReadOnlyBuffer&);
-	static void Write(const Group42Var2&, openpal::WriteBuffer&);
+  static const GroupVariationID ID;
+  static const uint32_t SIZE = 3;
+  static Group42Var2 Read(openpal::ReadOnlyBuffer&);
+  static void Write(const Group42Var2&, openpal::WriteBuffer&);
 
-	typedef int16_t ValueType;
-	uint8_t flags;
-	int16_t value;
+  typedef int16_t ValueType;
+  uint8_t flags;
+  int16_t value;
 };
 
 struct Group42Var3
 {
-	static const GroupVariationID ID;
-	static const uint32_t SIZE = 11;
-	static Group42Var3 Read(openpal::ReadOnlyBuffer&);
-	static void Write(const Group42Var3&, openpal::WriteBuffer&);
+  static const GroupVariationID ID;
+  static const uint32_t SIZE = 11;
+  static Group42Var3 Read(openpal::ReadOnlyBuffer&);
+  static void Write(const Group42Var3&, openpal::WriteBuffer&);
 
-	typedef int32_t ValueType;
-	uint8_t flags;
-	int32_t value;
-	uint64_t time;
+  typedef int32_t ValueType;
+  uint8_t flags;
+  int32_t value;
+  uint64_t time;
 };
 
 struct Group42Var4
 {
-	static const GroupVariationID ID;
-	static const uint32_t SIZE = 9;
-	static Group42Var4 Read(openpal::ReadOnlyBuffer&);
-	static void Write(const Group42Var4&, openpal::WriteBuffer&);
+  static const GroupVariationID ID;
+  static const uint32_t SIZE = 9;
+  static Group42Var4 Read(openpal::ReadOnlyBuffer&);
+  static void Write(const Group42Var4&, openpal::WriteBuffer&);
 
-	typedef int16_t ValueType;
-	uint8_t flags;
-	int16_t value;
-	uint64_t time;
+  typedef int16_t ValueType;
+  uint8_t flags;
+  int16_t value;
+  uint64_t time;
 };
 
 struct Group42Var5
 {
-	static const GroupVariationID ID;
-	static const uint32_t SIZE = 5;
-	static Group42Var5 Read(openpal::ReadOnlyBuffer&);
-	static void Write(const Group42Var5&, openpal::WriteBuffer&);
+  static const GroupVariationID ID;
+  static const uint32_t SIZE = 5;
+  static Group42Var5 Read(openpal::ReadOnlyBuffer&);
+  static void Write(const Group42Var5&, openpal::WriteBuffer&);
 
-	typedef float ValueType;
-	uint8_t flags;
-	float value;
+  typedef float ValueType;
+  uint8_t flags;
+  float value;
 };
 
 struct Group42Var6
 {
-	static const GroupVariationID ID;
-	static const uint32_t SIZE = 9;
-	static Group42Var6 Read(openpal::ReadOnlyBuffer&);
-	static void Write(const Group42Var6&, openpal::WriteBuffer&);
+  static const GroupVariationID ID;
+  static const uint32_t SIZE = 9;
+  static Group42Var6 Read(openpal::ReadOnlyBuffer&);
+  static void Write(const Group42Var6&, openpal::WriteBuffer&);
 
-	typedef double ValueType;
-	uint8_t flags;
-	double value;
+  typedef double ValueType;
+  uint8_t flags;
+  double value;
 };
 
 struct Group42Var7
 {
-	static const GroupVariationID ID;
-	static const uint32_t SIZE = 11;
-	static Group42Var7 Read(openpal::ReadOnlyBuffer&);
-	static void Write(const Group42Var7&, openpal::WriteBuffer&);
+  static const GroupVariationID ID;
+  static const uint32_t SIZE = 11;
+  static Group42Var7 Read(openpal::ReadOnlyBuffer&);
+  static void Write(const Group42Var7&, openpal::WriteBuffer&);
 
-	typedef float ValueType;
-	uint8_t flags;
-	float value;
-	uint64_t time;
+  typedef float ValueType;
+  uint8_t flags;
+  float value;
+  uint64_t time;
 };
 
 struct Group42Var8
 {
-	static const GroupVariationID ID;
-	static const uint32_t SIZE = 15;
-	static Group42Var8 Read(openpal::ReadOnlyBuffer&);
-	static void Write(const Group42Var8&, openpal::WriteBuffer&);
+  static const GroupVariationID ID;
+  static const uint32_t SIZE = 15;
+  static Group42Var8 Read(openpal::ReadOnlyBuffer&);
+  static void Write(const Group42Var8&, openpal::WriteBuffer&);
 
-	typedef double ValueType;
-	uint8_t flags;
-	double value;
-	uint64_t time;
+  typedef double ValueType;
+  uint8_t flags;
+  double value;
+  uint64_t time;
 };
 
 

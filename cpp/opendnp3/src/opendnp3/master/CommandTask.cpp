@@ -28,6 +28,8 @@
 #include "opendnp3/objects/Group12.h"
 #include "opendnp3/objects/Group41.h"
 
+#include "opendnp3/LogLevels.h"
+
 using namespace openpal;
 
 namespace opendnp3
@@ -120,7 +122,7 @@ void CommandTask::OnFailure()
 
 bool CommandTask::_OnPartialResponse(const APDUResponseRecord&)
 {
-	LOG_BLOCK(LogLevel::Error, "Non fin responses not allowed for control tasks");
+	LOG_BLOCK(levels::ERR, "Non fin responses not allowed for control tasks");
 	callback(CommandResponse(CommandResult::BAD_RESPONSE));
 	return false;
 }

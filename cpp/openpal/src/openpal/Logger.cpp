@@ -30,62 +30,41 @@ using namespace std;
 namespace openpal
 {
 
-int Logger::LogLevelToMask(LogLevel aFilter)
-{
-	//since LogLevel is a power of 2 (single bit), subtracting 1 will
-	//set all the bits below the set bit.
-	//set the filter bit and all the bits below it
-	return LogLevelToType(aFilter) | (LogLevelToType(aFilter) - 1);
-}
-
-Logger::Logger(ILogBase* apLog, int aLevel, const std::string& aName)
+Logger::Logger(ILogBase* pLog_, uint32_t filters_, const std::string& name_)
 	:
-	mLevel(aLevel),
-	mpLog(apLog),
-	mName(aName)
+	filters(filters_),
+	pLog(pLog_),
+	name(name_)
 {
 
 }
 
-Logger::Logger(ILogBase* apLog, LogLevel aLevel, const std::string& aName)
-	:
-	mLevel(LogLevelToMask(aLevel)),
-	mpLog(apLog),
-	mName(aName)
-{
-
-}
-
-Logger Logger::GetSubLogger(std::string aSubName, LogLevel aLevel) const
+Logger Logger::GetSubLogger(std::string subName, uint32_t filters_) const
 {
 	std::ostringstream oss;
-	oss << mName << "." << aSubName;
-	return Logger(mpLog, aLevel, oss.str());
-}
-
-Logger Logger::GetSubLogger(std::string aSubName, int aLevel) const
-{
-	std::ostringstream oss;
-	oss << mName << "." << aSubName;
-	return Logger(mpLog, aLevel, oss.str());
+	oss << name << "." << subName;
+	return Logger(pLog, filters, oss.str());
 }
 
 Logger Logger::GetSubLogger(std::string aSubName) const
 {
-	return this->GetSubLogger(aSubName, mLevel);
+	return this->GetSubLogger(aSubName, filters);
 }
 
-void Logger::Log( const LogEntry& arEntry)
+void Logger::Log( const LogEntry& entry)
 {
-	if(this->IsEnabled(arEntry.GetLogLevel())) mpLog->Log(arEntry);
-}
-
-void Logger::Log( LogLevel aLogLevel, const std::string& arLocation, const std::string& aMessage, int aErrorCode)
-{
-	if(this->IsEnabled(aLogLevel))
+	if (this->IsEnabled(entry.GetFlags()))
 	{
-		LogEntry le(aLogLevel, mName, arLocation, aMessage, aErrorCode);
-		mpLog->Log(le);
+		pLog->Log(entry);
+	}
+}
+
+void Logger::Log(uint32_t flags, const std::string& location, const std::string& message, int errorCode)
+{
+	if(this->IsEnabled(flags))
+	{
+		LogEntry le(flags, name, location, message, errorCode);
+		pLog->Log(le);
 	}
 }
 

@@ -22,7 +22,9 @@
 #define __INTEGRATION_TEST_H_
 
 #include <asiopal/Log.h>
+
 #include <opendnp3/DNP3Manager.h>
+#include <opendnp3/LogLevels.h>
 
 #include <asiopal/IOServiceThreadPool.h>
 
@@ -44,7 +46,7 @@ class IntegrationTest
 {
 public:
 
-	IntegrationTest(openpal::LogLevel aLevel, uint16_t aStartPort, size_t aNumPairs, uint16_t aNumPoints);
+	IntegrationTest(uint16_t aStartPort, size_t aNumPairs, uint16_t aNumPoints, uint32_t filters = levels::ALL);
 
 	size_t IncrementData();
 
@@ -66,7 +68,7 @@ private:
 
 
 	void RegisterChange();
-	void AddStackPair(openpal::LogLevel aLevel, uint16_t aNumPoints);
+	void AddStackPair(uint32_t filters, uint16_t aNumPoints);
 
 	std::vector< std::shared_ptr<ComparingDataObserver> > mMasterObservers;
 	FanoutDataObserver mFanout;

@@ -22,6 +22,7 @@
 
 #include <openpal/LoggableMacros.h>
 
+#include "opendnp3/LogLevels.h"
 #include "AppLayer.h"
 
 namespace opendnp3
@@ -36,7 +37,7 @@ void UnsolicitedChannel::OnUnsol(const APDUResponseRecord& aRecord)
 {
 	if(aRecord.control.SEQ == mSequence)
 	{
-		LOG_BLOCK(LogLevel::Info, "Ignoring repeat unsol seq: " << aRecord.control.SEQ)
+		LOG_BLOCK(levels::INFO, "Ignoring repeat unsol seq: " << aRecord.control.SEQ)
 	}
 	else
 	{

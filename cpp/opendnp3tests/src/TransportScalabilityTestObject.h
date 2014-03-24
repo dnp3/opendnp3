@@ -25,6 +25,7 @@
 #include "AsyncTestObjectASIO.h"
 #include "LogTester.h"
 
+#include <opendnp3/LogLevels.h>
 #include <asiopal/ASIOExecutor.h>
 
 namespace opendnp3
@@ -38,7 +39,7 @@ public:
 	    LinkConfig aServerCfg,
 	    uint16_t aPortStart,
 	    uint16_t aNumPair,
-	    openpal::LogLevel aLevel = openpal::LogLevel::Info,
+	    uint32_t filters = levels::INFO,
 	    bool aImmediate = false);
 
 	~TransportScalabilityTestObject();

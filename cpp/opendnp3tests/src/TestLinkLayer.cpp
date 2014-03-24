@@ -45,11 +45,11 @@ TEST_CASE(SUITE("ClosedState"))
 	LinkLayerTest t;
 	BufferSegment segment(250, "00");
 	t.upper.SendDown(segment);
-	REQUIRE(t.log.PopOneEntry(LogLevel::Error));
+	REQUIRE(t.log.PopOneEntry(levels::ERR));
 	t.link.OnLowerLayerDown();
-	REQUIRE(t.log.PopOneEntry(LogLevel::Error));
+	REQUIRE(t.log.PopOneEntry(levels::ERR));
 	t.link.Ack(false, false, 1, 2);
-	REQUIRE(t.log.PopOneEntry(LogLevel::Error));
+	REQUIRE(t.log.PopOneEntry(levels::ERR));
 }
 
 // Prove that the upper layer is notified when the lower layer comes online
@@ -61,7 +61,7 @@ TEST_CASE(SUITE("ForwardsOnLowerLayerUp"))
 	t.link.OnLowerLayerUp();
 	REQUIRE(t.upper.IsOnline());
 	t.link.OnLowerLayerUp();
-	REQUIRE(t.log.PopOneEntry(LogLevel::Error));
+	REQUIRE(t.log.PopOneEntry(levels::ERR));
 }
 
 // Check that once the layer comes up, validation errors can occur
@@ -137,7 +137,7 @@ TEST_CASE(SUITE("ConfirmedDataIgnoredFromIdleUnreset"))
 // Secondary Reset Links
 TEST_CASE(SUITE("SecondaryResetLink"))
 {
-	LinkLayerTest t(LinkLayerTest::DefaultConfig(), LogLevel::Interpret, true);
+	LinkLayerTest t(LinkLayerTest::DefaultConfig(), levels::INTERPRET, true);
 	t.link.OnLowerLayerUp();
 	t.link.ResetLinkStates(false, 1, 1024);
 	

@@ -20,6 +20,7 @@
  */
 #include <catch.hpp>
 
+#include <opendnp3/LogLevels.h>
 
 #include "LogTester.h"
 #include "Exception.h"
@@ -39,8 +40,8 @@ using namespace openpal;
 TEST_CASE(SUITE(" LogErrorCounting"))
 {
 	LogTester log;
-	Logger logger(&log, LogLevel::Debug, "test1");
-	logger.Log( LogLevel::Debug, "LogEntryParamsTest", "MessageMessage", 5 );
+	Logger logger(&log, levels::DEBUG, "test1");
+	logger.Log( levels::DEBUG, "LogEntryParamsTest", "MessageMessage", 5 );
 
 	REQUIRE(log.NextErrorCode() ==  5);
 	REQUIRE(log.NextErrorCode() ==  -1);

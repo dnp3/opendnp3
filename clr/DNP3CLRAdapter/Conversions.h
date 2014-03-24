@@ -3,7 +3,7 @@
 
 #include <string>
 
-#include <openpal/gen/LogLevel.h>
+#include <opendnp3/LogLevels.h>
 
 #include <opendnp3/gen/ChannelState.h>
 
@@ -39,8 +39,8 @@ public:
 	static System::String^ convertString(const std::string& s);
 
 	// Convert the log filter enumeration
-	static openpal::LogLevel convertLogLevel(DNP3::Interface::LogLevel level);
-	static DNP3::Interface::LogLevel convertLogLevel(openpal::LogLevel level);
+	static uint32_t convertLogLevel(DNP3::Interface::LogLevel level);
+	static DNP3::Interface::LogLevel convertLogLevel(uint32_t flags);
 
 	// Converting channel state enumeration
 	static ChannelState convertChannelState(opendnp3::ChannelState aState);

@@ -27,6 +27,7 @@
 
 #include <openpal/ToHex.h>
 
+#include <opendnp3/LogLevels.h>
 #include <opendnp3/app/APDUParser.h>
 #include <opendnp3/app/APDUHeaderParser.h>
 #include <opendnp3/app/ControlRelayOutputBlock.h>
@@ -45,7 +46,7 @@ void TestComplex(const std::string& hex, APDUParser::Result expected, size_t num
 {
 	HexSequence buffer(hex);
 	MockApduHeaderHandler mock;
-	Logger logger(&mock, LogLevel::Warning, "test");
+	Logger logger(&mock, opendnp3::levels::WARN, "test");
 	auto result = APDUParser::ParseTwoPass(buffer.ToReadOnly(), &mock, &logger);
 
 	if (result != expected)

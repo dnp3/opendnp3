@@ -25,11 +25,11 @@ using namespace openpal;
 namespace opendnp3
 {
 
-AsyncPhysBaseTest::AsyncPhysBaseTest(LogLevel aLevel, bool aImmediate) :
+AsyncPhysBaseTest::AsyncPhysBaseTest(uint32_t filters, bool aImmediate) :
 	log(),
 	exe(),
-	phys(Logger(&log, aLevel, "phys"), &exe),
-	adapter(Logger(&log, aLevel, "adapter"), &phys, false)	
+	phys(Logger(&log, filters, "phys"), &exe),
+	adapter(Logger(&log, filters, "adapter"), &phys, false)	
 {
 	adapter.SetUpperLayer(&upper);
 	upper.SetLowerLayer(&adapter);	

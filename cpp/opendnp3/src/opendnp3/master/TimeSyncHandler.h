@@ -23,6 +23,8 @@
 
 #include "opendnp3/app/APDUHandlerBase.h"
 
+#include "opendnp3/LogLevels.h"
+
 #include <openpal/Loggable.h>
 #include <openpal/LoggableMacros.h>
 
@@ -58,7 +60,7 @@ public:
 		}
 		else
 		{
-			LOG_BLOCK(openpal::LogLevel::Warning, "Ignoring unexpected time delay count of " << times.Count());
+			LOG_BLOCK(levels::WARN, "Ignoring unexpected time delay count of " << times.Count());
 		}
 	}
 

@@ -87,21 +87,21 @@ TEST_CASE(SUITE("InitialState"))
 	MasterTestObject t(master_cfg);
 
 	t.master.OnLowerLayerDown();
-	REQUIRE(t.log.PopOneEntry(LogLevel::Error));
+	REQUIRE(t.log.PopOneEntry(levels::ERR));
 	t.master.OnSolSendSuccess();
-	REQUIRE(t.log.PopOneEntry(LogLevel::Error));
+	REQUIRE(t.log.PopOneEntry(levels::ERR));
 	t.master.OnUnsolSendSuccess();
-	REQUIRE(t.log.PopOneEntry(LogLevel::Error));
+	REQUIRE(t.log.PopOneEntry(levels::ERR));
 	t.master.OnSolFailure();
-	REQUIRE(t.log.PopOneEntry(LogLevel::Error));
+	REQUIRE(t.log.PopOneEntry(levels::ERR));
 	t.master.OnUnsolFailure();
-	REQUIRE(t.log.PopOneEntry(LogLevel::Error));
+	REQUIRE(t.log.PopOneEntry(levels::ERR));
 	t.master.OnPartialResponse(APDUResponseRecord());
-	REQUIRE(t.log.PopOneEntry(LogLevel::Error));
+	REQUIRE(t.log.PopOneEntry(levels::ERR));
 	t.master.OnFinalResponse(APDUResponseRecord());
-	REQUIRE(t.log.PopOneEntry(LogLevel::Error));
+	REQUIRE(t.log.PopOneEntry(levels::ERR));
 	t.master.OnUnsolResponse(APDUResponseRecord());
-	REQUIRE(t.log.PopOneEntry(LogLevel::Error));
+	REQUIRE(t.log.PopOneEntry(levels::ERR));
 }
 
 TEST_CASE(SUITE("IntegrityOnStartup"))
@@ -420,8 +420,8 @@ TEST_CASE(SUITE("DeferredControlExecution"))
 
 TEST_CASE(SUITE("CloseWhileWaitingForCommandResponse"))
 {
-	MasterConfig master_cfg;
-	MasterTestObject t(master_cfg);
+	MasterConfig config;
+	MasterTestObject t(config);
 	t.master.OnLowerLayerUp();
 
 	TestForIntegrityPoll(t);
