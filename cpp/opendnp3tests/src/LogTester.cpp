@@ -27,7 +27,7 @@ using namespace openpal;
 namespace opendnp3
 {
 
-LogTester::LogTester() : mTestLogger(this, levels::DEBUG, "LogTester")
+LogTester::LogTester() : root(this, levels::ALL), logger(root.GetLogger("LogTester"))
 {
 
 }
@@ -81,7 +81,7 @@ int LogTester::ClearLog()
 
 void LogTester::Log(const std::string& arLocation, const std::string& arMessage)
 {
-	mTestLogger.Log(levels::EVENT, arLocation, arMessage);
+	logger.Log(levels::EVENT, arLocation, arMessage);
 }
 
 int LogTester::NextErrorCode()
@@ -117,6 +117,11 @@ void LogTester::Pop(openpal::ILogBase* pLog)
 	{
 		pLog->Log(entry);
 	}
+}
+
+openpal::Logger LogTester::GetLogger(const std::string& id)
+{
+	return root.GetLogger(id);
 }
 
 bool LogTester::IsLogErrorFree()

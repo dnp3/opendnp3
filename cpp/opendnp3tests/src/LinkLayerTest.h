@@ -38,7 +38,7 @@ class LinkLayerTest : public ILinkRouter
 {
 public:
 
-	LinkLayerTest(LinkConfig arCfg = DefaultConfig(), uint32_t flags = levels::ALL, bool aImmediate = false);
+	LinkLayerTest(LinkConfig arCfg = DefaultConfig());
 
 	//ILinkRouter interface
 	virtual void QueueTransmit(const openpal::ReadOnlyBuffer& buffer, ILinkContext* pContext, bool primary) override;

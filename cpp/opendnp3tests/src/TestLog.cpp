@@ -40,7 +40,7 @@ using namespace openpal;
 TEST_CASE(SUITE(" LogErrorCounting"))
 {
 	LogTester log;
-	Logger logger(&log, levels::DEBUG, "test1");
+	auto logger = log.GetLogger("test1");
 	logger.Log( levels::DEBUG, "LogEntryParamsTest", "MessageMessage", 5 );
 
 	REQUIRE(log.NextErrorCode() ==  5);

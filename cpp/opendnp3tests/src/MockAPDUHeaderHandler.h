@@ -36,7 +36,7 @@ public:
 
 	MockApduHeaderHandler() :
 		LogTester(),
-		APDUHandlerBase(openpal::Logger(this, levels::DEBUG, "test"))
+		APDUHandlerBase(this->GetLogger("test"))
 	{}
 
 	virtual void _AllObjects(GroupVariation gv) override

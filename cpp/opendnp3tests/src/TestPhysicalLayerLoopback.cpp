@@ -22,6 +22,8 @@
 
 #include <asiopal/Log.h>
 
+#include <openpal/LogRoot.h>
+
 #include "PhysLoopback.h"
 #include "MockExecutor.h"
 #include "MockPhysicalLayerAsync.h"
@@ -40,14 +42,16 @@ public:
 
 	LoopbackTest() :
 		log(),
+		root(&log, levels::ALL),
 		exe(),
-		phys(Logger(&log, levels::INFO, "phys"), &exe),
-		loopback(Logger(&log, levels::INFO, "loopback"), &phys)
+		phys(root.GetLogger("phys"), &exe),
+		loopback(root.GetLogger("loopback"), &phys)
 	{
 		loopback.Start();
 	}
 
 	asiopal::EventLog log;
+	openpal::LogRoot root;
 	MockExecutor exe;
 	MockPhysicalLayerAsync phys;
 	PhysLoopback loopback;

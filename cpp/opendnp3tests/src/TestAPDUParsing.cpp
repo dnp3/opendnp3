@@ -45,8 +45,8 @@ using namespace opendnp3;
 void TestComplex(const std::string& hex, APDUParser::Result expected, size_t numCalls, std::function<void (MockApduHeaderHandler&)> validate)
 {
 	HexSequence buffer(hex);
-	MockApduHeaderHandler mock;
-	Logger logger(&mock, opendnp3::levels::WARN, "test");
+	MockApduHeaderHandler mock;	
+	auto logger = mock.GetLogger("test");
 	auto result = APDUParser::ParseTwoPass(buffer.ToReadOnly(), &mock, &logger);
 
 	if (result != expected)

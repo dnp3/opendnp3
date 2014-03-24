@@ -21,6 +21,7 @@
 #include <openpal/Logger.h>
 
 #include <openpal/LogBase.h>
+#include <openpal/LogRoot.h>
 
 #include <assert.h>
 #include <sstream>
@@ -30,42 +31,37 @@ using namespace std;
 namespace openpal
 {
 
-Logger::Logger(ILogBase* pLog_, uint32_t filters_, const std::string& name_)
-	:
-	filters(filters_),
-	pLog(pLog_),
+Logger::Logger(LogRoot* pRoot_, const std::string& name_) :	
+	pRoot(pRoot_),
 	name(name_)
 {
 
 }
 
-Logger Logger::GetSubLogger(std::string subName, uint32_t filters_) const
+Logger Logger::GetSubLogger(std::string subName) const
 {
 	std::ostringstream oss;
 	oss << name << "." << subName;
-	return Logger(pLog, filters, oss.str());
+	return Logger(pRoot, oss.str());
 }
 
-Logger Logger::GetSubLogger(std::string aSubName) const
+bool Logger::IsEnabled(uint32_t flags) const
 {
-	return this->GetSubLogger(aSubName, filters);
+	return pRoot->IsEnabled(flags);
 }
 
 void Logger::Log( const LogEntry& entry)
 {
-	if (this->IsEnabled(entry.GetFlags()))
+	if (pRoot->IsEnabled(entry.GetFlags()))
 	{
-		pLog->Log(entry);
+		pRoot->Log(entry);
 	}
 }
 
 void Logger::Log(uint32_t flags, const std::string& location, const std::string& message, int errorCode)
-{
-	if(this->IsEnabled(flags))
-	{
-		LogEntry le(flags, name, location, message, errorCode);
-		pLog->Log(le);
-	}
+{	
+	LogEntry le(flags, name, location, message, errorCode);
+	this->Log(le);
 }
 
 }

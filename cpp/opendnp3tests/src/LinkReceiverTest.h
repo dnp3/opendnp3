@@ -37,10 +37,10 @@ namespace opendnp3
 class LinkReceiverTest
 {
 public:
-	LinkReceiverTest(uint32_t filters = levels::ALL, bool aImmediate = false) :
+	LinkReceiverTest(bool aImmediate = false) :
 		log(),
 		mSink(),
-		mRx(openpal::Logger(&log, filters, "ReceiverTest"), &mSink)
+		mRx(log.GetLogger("ReceiverTest"), &mSink)
 	{}
 	
 	void WriteData(const openpal::ReadOnlyBuffer& input)

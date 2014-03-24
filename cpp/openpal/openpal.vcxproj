@@ -39,11 +39,13 @@
     <ClInclude Include="src\openpal\ListAdapter.h" />
     <ClInclude Include="src\openpal\Location.h" />
     <ClInclude Include="src\openpal\LogBase.h" />
+    <ClInclude Include="src\openpal\LogConfig.h" />
     <ClInclude Include="src\openpal\LogEntry.h" />
     <ClInclude Include="src\openpal\Loggable.h" />
     <ClInclude Include="src\openpal\LoggableMacros.h" />
     <ClInclude Include="src\openpal\Logger.h" />
     <ClInclude Include="src\openpal\LogLevels.h" />
+    <ClInclude Include="src\openpal\LogRoot.h" />
     <ClInclude Include="src\openpal\MonotonicTimestamp.h" />
     <ClInclude Include="src\openpal\QueueAdapter.h" />
     <ClInclude Include="src\openpal\RandomInsertAdapter.h" />
@@ -67,6 +69,7 @@
     <ClCompile Include="src\openpal\BufferWrapper.cpp" />
     <ClCompile Include="src\openpal\LogEntry.cpp" />
     <ClCompile Include="src\openpal\Logger.cpp" />
+    <ClCompile Include="src\openpal\LogRoot.cpp" />
     <ClCompile Include="src\openpal\MonotonicTimestamp.cpp" />
     <ClCompile Include="src\openpal\ReverseEndian.cpp" />
     <ClCompile Include="src\openpal\TimeDuration.cpp" />

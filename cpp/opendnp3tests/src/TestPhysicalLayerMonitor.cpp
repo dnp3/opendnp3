@@ -88,8 +88,8 @@ public:
 	TestObject() :
 		log(),
 		exe(),
-		phys(Logger(&log, levels::ALL, "mock-phys"), &exe),
-		monitor(Logger(&log, levels::ALL, "test"), &phys)
+		phys(log.GetLogger("mock-phys"), &exe),
+		monitor(log.GetLogger("test"), &phys)
 	{}
 
 	LogTester log;

@@ -36,6 +36,7 @@
 #include <openpal/IMutex.h>
 #include <openpal/IShutdownHandler.h>
 #include <openpal/IEventHandler.h>
+#include <openpal/LogConfig.h>
 
 #include "opendnp3/gen/ChannelState.h"
 #include "opendnp3/link/IOpenDelayStrategy.h"
@@ -54,7 +55,8 @@ public:
 	DNP3Manager();
 	~DNP3Manager();
 
-	IChannel* CreateChannel(	openpal::Logger aLogger,
+	IChannel* CreateChannel(	openpal::LogRoot* pLogRoot,
+								const std::string& id,
 	                            openpal::TimeDuration minOpenRetry,
 	                            openpal::TimeDuration maxOpenRetry,
 	                            openpal::IPhysicalLayerAsync* apPhys,

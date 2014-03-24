@@ -39,8 +39,8 @@ MasterTestObject::MasterTestObject(MasterConfig cfg, uint32_t filters, bool aImm
 	mts(),
 	group(&mts),
 	meas(),
-	app(Logger(&log, filters, "MockAppLayer")),
-	master(Logger(&log, filters, "master"), cfg, &app, &meas, &group, &mts, &fixedUTC)
+	app(log.GetLogger("MockAppLayer")),
+	master(log.GetLogger("master"), cfg, &app, &meas, &group, &mts, &fixedUTC)
 {
 	app.SetUser(&master);
 }

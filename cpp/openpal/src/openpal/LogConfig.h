@@ -18,31 +18,42 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __LINK_LAYER_ROUTER_TEST_H_
-#define __LINK_LAYER_ROUTER_TEST_H_
+#ifndef __LOG_CONFIG_H_
+#define __LOG_CONFIG_H_
 
-#include "LogTester.h"
-#include "MockExecutor.h"
-#include "MockPhysicalLayerAsync.h"
+#include "LogEntry.h"
+#include "Logger.h"
+#include "Uncopyable.h"
 
-#include <opendnp3/link/LinkLayerRouter.h>
-#include <opendnp3/LogLevels.h>
-
-namespace opendnp3
+namespace openpal
 {
 
-class LinkLayerRouterTest
+class ILogBase;
+
+
+class LogConfig
 {
+
 public:
-	LinkLayerRouterTest();
 
-	LogTester log;
-	MockExecutor exe;
-	MockPhysicalLayerAsync phys;
-	LinkLayerRouter router;
+	LogConfig(ILogBase* pLog_, uint32_t filters_, const std::string& rootId_) :
+		pLog(pLog_),
+		filters(filters_),
+		rootId(rootId_)
+	{}
+	
+	ILogBase* GetLog() const { return pLog; }
+	uint32_t GetFilters() const { return filters; }
+	const std::string& GetRootId() const { return rootId; }
+
+private:
+
+	ILogBase*			pLog;
+	uint32_t			filters;
+	std::string rootId;
+	
 };
 
 }
 
 #endif
-

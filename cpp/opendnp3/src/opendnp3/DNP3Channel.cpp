@@ -33,18 +33,20 @@ namespace opendnp3
 {
 
 DNP3Channel::DNP3Channel(
-    openpal::Logger logger,
+	LogRoot* pLogRoot_,
+	const std::string& id,
     openpal::TimeDuration minOpenRetry,
     openpal::TimeDuration maxOpenRetry,
     IOpenDelayStrategy* pStrategy,
     IPhysicalLayerAsync* pPhys_,	
 	openpal::ITypedShutdownHandler<DNP3Channel*>* pShutdownHandler_,
-	openpal::IEventHandler<ChannelState>* pStateHandler) :
-		Loggable(logger),
+	openpal::IEventHandler<ChannelState>* pStateHandler) :		
+		pLogRoot(pLogRoot_),
+		logger(pLogRoot->GetLogger(id)),
 		pPhys(pPhys_),		
 		state(State::READY),
 		pShutdownHandler(pShutdownHandler_),
-		router(logger.GetSubLogger("Router"), pPhys.get(), minOpenRetry, maxOpenRetry, pStateHandler, this, pStrategy),
+		router(logger.GetSubLogger("router"), pPhys.get(), minOpenRetry, maxOpenRetry, pStateHandler, this, pStrategy),
 		group(pPhys->GetExecutor())
 {
 

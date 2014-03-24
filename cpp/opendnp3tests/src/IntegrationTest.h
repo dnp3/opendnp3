@@ -79,7 +79,8 @@ private:
 	MockCommandHandler mCmdHandler;
 
 	asiopal::EventLog mLog;
-	asiopal::IOServiceThreadPool mPool;
+	openpal::LogRoot logRoot;
+	asiopal::IOServiceThreadPool mPool;	
 	DNP3Manager mMgr;
 	uint16_t NUM_POINTS;
 };

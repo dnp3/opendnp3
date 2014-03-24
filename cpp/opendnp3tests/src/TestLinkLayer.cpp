@@ -137,7 +137,7 @@ TEST_CASE(SUITE("ConfirmedDataIgnoredFromIdleUnreset"))
 // Secondary Reset Links
 TEST_CASE(SUITE("SecondaryResetLink"))
 {
-	LinkLayerTest t(LinkLayerTest::DefaultConfig(), levels::INTERPRET, true);
+	LinkLayerTest t(LinkLayerTest::DefaultConfig());
 	t.link.OnLowerLayerUp();
 	t.link.ResetLinkStates(false, 1, 1024);
 	

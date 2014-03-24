@@ -47,7 +47,7 @@ TransportScalabilityTestObject::TransportScalabilityTestObject(
 	{
 		ostringstream oss;
 		oss << "pair" << port;
-		TransportStackPair* pPair = new TransportStackPair(aClientCfg, aServerCfg, log.mTestLogger, this->GetService(), port);
+		TransportStackPair* pPair = new TransportStackPair(aClientCfg, aServerCfg, log.GetLogger("tsp"), this->GetService(), port);
 		mPairs.push_back(pPair);
 	}
 }

@@ -43,11 +43,11 @@ SlaveTestObject::SlaveTestObject(const SlaveConfig& arCfg, const DatabaseTemplat
 	mTimeWrites.push(time);
 }),
 mts(),
-app(Logger(&log, filters, "app")),
+app(log.GetLogger("app")),
 dbBuffers(dbTemplate),
 db(dbBuffers.GetFacade()),
-slave(Logger(&log, filters, "slave"), &app, &mts, &mMockTimeWriteHandler, &db, &cmdHandler, arCfg),
-mLogger(Logger(&log, filters, "test"))
+slave(log.GetLogger("slave"), &app, &mts, &mMockTimeWriteHandler, &db, &cmdHandler, arCfg),
+mLogger(log.GetLogger("test"))
 {
 	app.SetUser(&slave);
 }

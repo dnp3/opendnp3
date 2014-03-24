@@ -21,9 +21,9 @@
 #ifndef __DNP3_CHANNEL_H_
 #define __DNP3_CHANNEL_H_
 
-#include <openpal/Loggable.h>
 #include <openpal/IShutdownHandler.h>
-#include <openpal/IMutex.h>
+#include <openpal/LogRoot.h>
+#include <openpal/LogConfig.h>
 
 #include "opendnp3/IChannel.h"
 #include "opendnp3/outstation/SlaveStackConfig.h"
@@ -48,7 +48,7 @@ class IOutstation;
 class ICommandHandler;
 class ITimeWriteHandler;
 
-class DNP3Channel: public IChannel, private openpal::IShutdownHandler, private openpal::ITypedShutdownHandler<DNP3Stack*>, private openpal::Loggable
+class DNP3Channel: public IChannel, private openpal::IShutdownHandler, private openpal::ITypedShutdownHandler<DNP3Stack*>
 {
 	enum class State
 	{
@@ -59,7 +59,8 @@ class DNP3Channel: public IChannel, private openpal::IShutdownHandler, private o
 
 public:
 	DNP3Channel(
-	    openpal::Logger logger,
+		LogRoot* pLogRoot,
+		const std::string& id,
 	    openpal::TimeDuration minOpenRetry,
 	    openpal::TimeDuration maxOpenRetry,
 	    IOpenDelayStrategy* pStrategy,
@@ -96,6 +97,9 @@ private:
 	void OnShutdown(DNP3Stack* apStack) override final;
 
 	void CheckForFinalShutdown();
+
+	LogRoot* pLogRoot;
+	Logger logger;
 
 	std::auto_ptr<IPhysicalLayerAsync> pPhys;
 	

@@ -139,6 +139,12 @@
     <ClInclude Include="src\openpal\LogLevels.h">
       <Filter>Header</Filter>
     </ClInclude>
+    <ClInclude Include="src\openpal\LogRoot.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="src\openpal\LogConfig.h">
+      <Filter>Header</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\openpal\BufferWrapper.cpp">
@@ -160,6 +166,9 @@
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="src\openpal\ToHex.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="src\openpal\LogRoot.cpp">
       <Filter>Source</Filter>
     </ClCompile>
   </ItemGroup>

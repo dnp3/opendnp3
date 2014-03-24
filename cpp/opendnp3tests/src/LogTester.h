@@ -21,7 +21,7 @@
 #ifndef __LOG_TESTER_H_
 #define __LOG_TESTER_H_
 
-#include <openpal/Logger.h>
+#include <openpal/LogRoot.h>
 #include <queue>
 
 namespace opendnp3
@@ -44,13 +44,16 @@ public:
 	int ClearLog();
 	int NextErrorCode();
 	bool GetNextEntry(openpal::LogEntry& arEntry);
-	bool IsLogErrorFree();
-
-	openpal::Logger mTestLogger;
+	bool IsLogErrorFree();	
 
 	void Pop(openpal::ILogBase* pLog);
 
+	openpal::Logger GetLogger(const std::string& id);
+
 protected:
+
+	openpal::LogRoot root;
+	openpal::Logger logger;
 	std::queue<openpal::LogEntry> mBuffer;
 
 };

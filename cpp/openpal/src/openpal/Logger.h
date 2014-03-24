@@ -22,25 +22,25 @@
 #define __LOGGER_H_
 
 #include <string>
-#include <vector>
-#include <map>
 
 #include "LogEntry.h"
 #include "LogBase.h"
+#include "Uncopyable.h"
 
 
 namespace openpal
 {
+
+class LogRoot;
 
 /**
 * Interface that represents a distinct logger with a name and running level
 */
 class Logger
 {
+	friend class LogRoot;
 
-public:
-
-	Logger(ILogBase* apLog, uint32_t filters, const std::string& aName);
+public:	
 
 	void Log(uint32_t flags, const std::string& location, const std::string& message, int errorCode = -1);
 
@@ -50,30 +50,16 @@ public:
 	{
 		return name;
 	}
-
-	// functions for manipulating filter levels
-	inline bool IsEnabled(uint32_t flags)
-	{
-		return (filters & flags) != 0;
-	}
-
-	inline void SetFilters(uint32_t filters_)
-	{
-		filters = filters_;
-	}
-
-	uint32_t GetFilters() const
-	{
-		return filters;
-	}
 	
-	Logger GetSubLogger(std::string aName) const;
-	Logger GetSubLogger(std::string subName, uint32_t aLevel) const;
+	bool IsEnabled(uint32_t flags) const;
+			
+	Logger GetSubLogger(std::string id) const;	
 
 private:
 
-	uint32_t			filters;   // bit field describing what is being logged
-	ILogBase*			pLog;
+	Logger(LogRoot* pRoot, const std::string& id);
+		
+	LogRoot*			pRoot;
 	std::string			name;
 };
 

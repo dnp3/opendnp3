@@ -24,6 +24,7 @@
 #include "Exception.h"
 
 #include <openpal/Location.h>
+#include <openpal/LogRoot.h>
 
 #include <asiopal/ASIOExecutor.h>
 #include <asiopal/IOServiceThreadPool.h>
@@ -46,10 +47,11 @@ class TimerTestObject
 {
 public:
 	TimerTestObject() :
-		mLog(),
-		mPool(Logger(&mLog, levels::ERR, "thread-pool"), 1),
-		mStrand(*mPool.GetIOService()),
-		exe(&mStrand),
+		log(),
+		root(&log, levels::ALL),
+		pool(root.GetLogger("thread-pool"), 1),
+		strand(*pool.GetIOService()),
+		exe(&strand),
 		mLast(-1),
 		mNum(0),
 		mMonotonic(true)
@@ -75,9 +77,10 @@ public:
 	}
 
 private:
-	EventLog mLog;
-	asiopal::IOServiceThreadPool mPool;
-	asio::strand mStrand;
+	EventLog log;
+	LogRoot root;
+	asiopal::IOServiceThreadPool pool;
+	asio::strand strand;
 
 public:
 	asiopal::ASIOExecutor exe;

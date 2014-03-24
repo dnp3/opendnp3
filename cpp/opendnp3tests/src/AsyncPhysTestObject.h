@@ -38,14 +38,10 @@ namespace opendnp3
 class AsyncPhysTestObject : public AsyncTestObjectASIO
 {
 public:
-	AsyncPhysTestObject(uint32_t filters = levels::ALL, bool aImmediate = false, bool aAutoRead = true);
+	AsyncPhysTestObject(bool aAutoRead = true);
 
 	LogTester log;
 
-private:
-	openpal::Logger logger;
-
-public:
 	asiopal::PhysicalLayerAsyncTCPClient mTCPClient;
 	asiopal::PhysicalLayerAsyncTCPServer mTCPServer;
 
