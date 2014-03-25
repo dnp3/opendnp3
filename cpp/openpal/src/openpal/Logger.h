@@ -26,6 +26,7 @@
 #include "LogEntry.h"
 #include "LogBase.h"
 #include "Uncopyable.h"
+#include "LogFilters.h"
 
 namespace openpal
 {
@@ -41,16 +42,16 @@ class Logger
 
 public:	
 
-	void Log(uint32_t flags, const std::string& location, const std::string& message, int errorCode = -1);
+	void Log(const LogFilters& filters, const std::string& location, const std::string& message, int32_t errorCode = -1);
 
-	void Log( const LogEntry& arEntry);
+	void Log(const LogEntry& entry);
 
 	const std::string& GetName() const
 	{
 		return name;
 	}
 	
-	bool IsEnabled(uint32_t flags) const;
+	bool IsEnabled(const LogFilters& filters) const;
 			
 	Logger GetSubLogger(std::string id) const;	
 

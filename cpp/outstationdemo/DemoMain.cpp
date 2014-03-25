@@ -25,7 +25,7 @@
 #include <opendnp3/outstation/TimeTransaction.h>
 #include <opendnp3/outstation/ITimeWriteHandler.h>
 #include <opendnp3/outstation/IOutstation.h>
-
+#include <opendnp3/LogLevelInterpreter.h>
 #include <opendnp3/IChannel.h>
 
 #include <asiopal/Log.h>
@@ -50,7 +50,8 @@ int main(int argc, char* argv[])
 	const uint32_t FILTERS = levels::ALL;
 
 	//A default logging backend that can proxy to multiple other backends
-	EventLog log;	
+	EventLog log;
+	LogToStdio::Inst()->SetLevelInterpreter(&AllFlags);
 	log.AddLogSubscriber(LogToStdio::Inst()); // This singleton logger just prints messages to the console
 
 	IOServiceThreadPool pool(&log, FILTERS, "pool", 1); // only 1 thread is needed for a single stack

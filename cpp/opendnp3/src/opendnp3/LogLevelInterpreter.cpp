@@ -19,29 +19,36 @@
 * to you under the terms of the License.
 */
 
-#ifndef __OPENDNP3_LOG_LEVELS_H_
-#define __OPENDNP3_LOG_LEVELS_H_
-
-#include <openpal/LogLevels.h>
+#include "LogLevelInterpreter.h"
+#include "LogLevels.h"
 
 namespace opendnp3 
-{
-	namespace levels
+{	
+	void ProcessFlags(std::ostringstream& ss, const std::string& id, uint32_t& count, uint32_t filter, const openpal::LogFilters& flags)
 	{
-		const int32_t NOTHING = 0;
-		const int32_t ALL = ~NOTHING;
-
-		// define most of these in terms of the base openpal levels
-		const int32_t EVENT = openpal::log::EVENT;
-		const int32_t ERR = openpal::log::ERR;
-		const int32_t WARN = openpal::log::WARN;
-		const int32_t INFO = openpal::log::INFO;
-		const int32_t DEBUG = openpal::log::DEBUG;
-
-		// upshift the custom dnp3 levels
-		const int32_t INTERPRET = DEBUG << 1;
-		const int32_t COMM = INTERPRET << 1;		
+		if (flags.IsSet(filter))
+		{
+			if (count > 0)
+			{
+				ss << "/";
+			}
+			ss << id;
+			++count;
+		}
 	}
+
+	std::ostringstream& AllFlags(std::ostringstream& ss, const openpal::LogFilters& filters)
+	{
+		uint32_t count = 0;
+		ProcessFlags(ss, "V", count, levels::EVENT, filters);
+		ProcessFlags(ss, "E", count, levels::ERR, filters);
+		ProcessFlags(ss, "W", count, levels::WARN, filters);
+		ProcessFlags(ss, "I", count, levels::INFO, filters);
+		ProcessFlags(ss, "D", count, levels::DEBUG, filters);
+		ProcessFlags(ss, "P", count, levels::INTERPRET, filters);
+		ProcessFlags(ss, "C", count, levels::COMM, filters);
+		return ss;
+	}
+	
 }
 
-#endif

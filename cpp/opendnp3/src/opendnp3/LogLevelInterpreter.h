@@ -19,29 +19,16 @@
 * to you under the terms of the License.
 */
 
-#ifndef __OPENDNP3_LOG_LEVELS_H_
-#define __OPENDNP3_LOG_LEVELS_H_
+#ifndef __OPENDNP3_LOG_LEVEL_INTERPRETER_H_
+#define __OPENDNP3_LOG_LEVEL_INTERPRETER_H_
 
-#include <openpal/LogLevels.h>
+#include <openpal/LogFilters.h>
+
+#include <sstream>
 
 namespace opendnp3 
 {
-	namespace levels
-	{
-		const int32_t NOTHING = 0;
-		const int32_t ALL = ~NOTHING;
-
-		// define most of these in terms of the base openpal levels
-		const int32_t EVENT = openpal::log::EVENT;
-		const int32_t ERR = openpal::log::ERR;
-		const int32_t WARN = openpal::log::WARN;
-		const int32_t INFO = openpal::log::INFO;
-		const int32_t DEBUG = openpal::log::DEBUG;
-
-		// upshift the custom dnp3 levels
-		const int32_t INTERPRET = DEBUG << 1;
-		const int32_t COMM = INTERPRET << 1;		
-	}
+	std::ostringstream& AllFlags(std::ostringstream& ss, const openpal::LogFilters& filters);	
 }
 
 #endif

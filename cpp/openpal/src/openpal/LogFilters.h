@@ -18,48 +18,46 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __LOG_TO_STDIO_H_
-#define __LOG_TO_STDIO_H_
+#ifndef __LOG_FILTERS_H_
+#define __LOG_FILTERS_H_
 
-#include <mutex>
-#include <openpal/LogBase.h>
+#include <cstdint>
 
-namespace asiopal
+namespace openpal
 {
 
 /**
-* Singleton class that prints all log messages to the console
-*
-*
+* Strongly typed wrapper for flags bitfield
 */
-class LogToStdio : public openpal::ILogBase
+class LogFilters
 {
 
 public:
-	typedef std::ostringstream& (*LevelToString)(std::ostringstream& ss, const openpal::LogFilters& filters);
 
-	static LogToStdio* Inst()
+	LogFilters() : filters(0)
+	{}
+
+	LogFilters(int32_t filters_) : filters(filters_)
+	{}
+	
+	inline bool IsSet(int32_t levels) const
 	{
-		return &instance;
+		return (levels & filters) != 0;
 	}
 
-	void Log( const openpal::LogEntry& entry );
-	void SetPrintLocation(bool printLocation);
-	void SetLevelInterpreter(LevelToString pInterpreter);
+	bool operator &(const LogFilters& rhs) const
+	{
+		return IsSet(rhs.filters);
+	}
 
-protected:
-
-	LogToStdio();
+	int32_t GetBitfield() const
+	{
+		return filters;
+	}	
 
 private:
 
-	static std::ostringstream& BasicFlags(std::ostringstream& ss, const openpal::LogFilters& filters);
-
-	static LogToStdio instance;
-
-	LevelToString pInterpreter;	
-	bool printLocation;
-	std::mutex mutex;
+	int32_t	filters;
 };
 
 }

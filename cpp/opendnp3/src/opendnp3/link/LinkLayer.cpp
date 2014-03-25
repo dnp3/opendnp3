@@ -38,7 +38,7 @@ using namespace openpal;
 namespace opendnp3
 {
 
-LinkLayer::LinkLayer(Logger logger, openpal::IExecutor* apExecutor, const LinkConfig& config_) :
+LinkLayer::LinkLayer(const openpal::Logger& logger, openpal::IExecutor* apExecutor, const LinkConfig& config_) :
 	Loggable(logger),	
 	config(config_),
 	pConfirmedSegments(nullptr),

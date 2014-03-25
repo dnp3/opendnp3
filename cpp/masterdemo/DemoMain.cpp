@@ -25,6 +25,7 @@
 #include <opendnp3/master/MasterStackConfig.h>
 #include <opendnp3/master/ICommandProcessor.h>
 #include <opendnp3/master/ISOEHandler.h>
+#include <opendnp3/LogLevelInterpreter.h>
 
 #include <asiopal/Log.h>
 #include <asiopal/LogToStdio.h>
@@ -49,6 +50,7 @@ int main(int argc, char* argv[])
 	EventLog log;	
 	// You can optionally subcribe to log messages
 	// This singleton logger just prints messages to the console
+	LogToStdio::Inst()->SetLevelInterpreter(&AllFlags);
 	log.AddLogSubscriber(LogToStdio::Inst());
 
 	// asio thread pool that drives the stack

@@ -32,16 +32,16 @@ LogTester::LogTester() : root(this, levels::ALL), logger(root.GetLogger("LogTest
 
 }
 
-void LogTester::Log( const LogEntry& arEntry )
+void LogTester::Log( const LogEntry& entry )
 {
-	mBuffer.push(arEntry);
+	mBuffer.push(entry);
 }
 
-bool LogTester::PopOneEntry(uint32_t filter)
+bool LogTester::PopOneEntry(int32_t filter)
 {
 	if (mBuffer.size() == 1)
 	{
-		if (mBuffer.front().GetFlags() & filter)
+		if (mBuffer.front().GetFilters().IsSet(filter))
 		{
 			mBuffer.pop();
 			return true;
@@ -51,11 +51,11 @@ bool LogTester::PopOneEntry(uint32_t filter)
 	else return false;
 }
 
-bool LogTester::PopUntil(uint32_t filter)
+bool LogTester::PopUntil(int32_t filter)
 {
 	while (!mBuffer.empty())
 	{
-		bool match = (mBuffer.front().GetFlags() & filter) != 0;
+		bool match = mBuffer.front().GetFilters().IsSet(filter);
 		mBuffer.pop();
 		if (match)
 		{

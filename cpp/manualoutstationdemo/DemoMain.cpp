@@ -29,6 +29,7 @@
 #include <opendnp3/app/ApplicationStack.h>
 #include <opendnp3/outstation/DynamicallyAllocatedDatabase.h>
 #include <opendnp3/LogLevels.h>
+#include <opendnp3/LogLevelInterpreter.h>
 
 #include <asiopal/Log.h>
 #include <asiopal/LogToStdio.h>
@@ -55,6 +56,7 @@ int main(int argc, char* argv[])
 
 	//A default logging backend that can proxy to multiple other backends
 	EventLog log;
+	LogToStdio::Inst()->SetLevelInterpreter(&AllFlags);
 	log.AddLogSubscriber(LogToStdio::Inst()); // This singleton logger just prints messages to the console
 
 	asio::io_service service;

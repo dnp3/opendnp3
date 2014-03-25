@@ -27,12 +27,12 @@
 namespace openpal
 {
 
-LogRoot::LogRoot(ILogBase* pLog_, uint32_t filters_) : pLog(pLog_), filters(filters_)
+LogRoot::LogRoot(ILogBase* pLog_, const LogFilters& filters_) : pLog(pLog_), filters(filters_)
 {}
 
-void LogRoot::Log(uint32_t flags, const std::string& name, const std::string& location, const std::string& message, int errorCode)
+void LogRoot::Log(const LogFilters& filters, const std::string& name, const std::string& location, const std::string& message, int errorCode)
 {
-	LogEntry le(flags, name, location, message, errorCode);
+	LogEntry le(filters, name, location, message, errorCode);
 	pLog->Log(le);
 }
 

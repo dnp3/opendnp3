@@ -24,6 +24,8 @@
 #include <cstdint>
 #include <string>
 
+#include "LogFilters.h"
+
 namespace openpal
 {
 
@@ -38,7 +40,7 @@ public:
 	LogEntry(): errorCode(-1)
 	{}
 
-	LogEntry(uint32_t flags, const std::string& name, const std::string& location, const std::string& message, int errorCode);
+	LogEntry(const LogFilters& filters, const std::string& name, const std::string& location, const std::string& message, int32_t errorCode);
 
 	/// @return The name of the logger that recorded the message
 	const std::string&	GetName() const
@@ -59,9 +61,9 @@ public:
 	}
 
 	/// @return the log level of the message
-	uint32_t GetFlags() const
+	const LogFilters& GetFilters() const
 	{
-		return flags;
+		return filters;
 	}
 
 	/// @return the error code associated with the message
@@ -72,11 +74,11 @@ public:
 
 private:
 
-	uint32_t		flags;
+	LogFilters		filters;
 	std::string		name;
 	std::string		location;
 	std::string		message;
-	int				errorCode;
+	int32_t			errorCode;
 };
 
 }

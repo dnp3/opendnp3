@@ -44,7 +44,7 @@ class LinkLayer : public ILinkLayer, public ILinkContext, public openpal::HasUpp
 {
 public:
 
-	LinkLayer(openpal::Logger, openpal::IExecutor*, const LinkConfig& arConfig);
+	LinkLayer(const openpal::Logger&, openpal::IExecutor*, const LinkConfig& arConfig);
 
 	void SetRouter(ILinkRouter*);
 

@@ -45,22 +45,22 @@ Logger Logger::GetSubLogger(std::string subName) const
 	return Logger(pRoot, oss.str());
 }
 
-bool Logger::IsEnabled(uint32_t flags) const
+bool Logger::IsEnabled(const LogFilters& filters) const
 {
-	return pRoot->IsEnabled(flags);
+	return pRoot->IsEnabled(filters);
 }
 
 void Logger::Log( const LogEntry& entry)
 {
-	if (pRoot->IsEnabled(entry.GetFlags()))
+	if (pRoot->IsEnabled(entry.GetFilters()))
 	{
 		pRoot->Log(entry);
 	}
 }
 
-void Logger::Log(uint32_t flags, const std::string& location, const std::string& message, int errorCode)
+void Logger::Log(const LogFilters& filters, const std::string& location, const std::string& message, int errorCode)
 {	
-	LogEntry le(flags, name, location, message, errorCode);
+	LogEntry le(filters, name, location, message, errorCode);
 	this->Log(le);
 }
 

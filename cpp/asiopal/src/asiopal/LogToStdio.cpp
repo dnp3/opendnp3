@@ -23,6 +23,7 @@
 #include <chrono>
 #include <sstream>
 #include <iostream>
+#include <assert.h>
 
 using namespace std;
 using namespace std::chrono;
@@ -30,14 +31,28 @@ using namespace std::chrono;
 namespace asiopal
 {
 
-LogToStdio LogToStdio::mInstance;
+LogToStdio LogToStdio::instance;
 
-LogToStdio::LogToStdio() : mPrintLocation(false)
-{}
 
-void LogToStdio::SetPrintLocation(bool aPrintLocation)
+LogToStdio::LogToStdio() : pInterpreter(&BasicFlags), printLocation(false)
 {
-	mPrintLocation = aPrintLocation;
+}
+
+std::ostringstream& LogToStdio::BasicFlags(std::ostringstream& ss, const openpal::LogFilters& filters)
+{
+	ss << filters.GetBitfield();
+	return ss;
+}
+
+void LogToStdio::SetPrintLocation(bool printLocation_)
+{
+	printLocation = printLocation_;
+}
+
+void LogToStdio::SetLevelInterpreter(LevelToString pInterpreter_)
+{
+	assert(pInterpreter_ != nullptr);
+	pInterpreter = pInterpreter_;
 }
 
 void LogToStdio::Log(const openpal::LogEntry& entry)
@@ -47,13 +62,15 @@ void LogToStdio::Log(const openpal::LogEntry& entry)
 
 	ostringstream oss;
 
-	oss << num << " - " << entry.GetFlags() << " - " << entry.GetName();
-	if(mPrintLocation && !entry.GetLocation().empty()) oss << " - " << entry.GetMessage();
+	oss << num << " - ";
+	pInterpreter(oss, entry.GetFilters());
+	oss << " - " << entry.GetName();
+	if(printLocation && !entry.GetLocation().empty()) oss << " - " << entry.GetMessage();
 	oss << " - " << entry.GetMessage();
 
 	if(entry.GetErrorCode() != -1) oss << " - " << entry.GetErrorCode();
 
-	std::unique_lock<std::mutex> lock(mMutex);
+	std::unique_lock<std::mutex> lock(mutex);
 	std::cout << oss.str() << std::endl;
 }
 
