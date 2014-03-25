@@ -122,7 +122,7 @@ void CommandTask::OnFailure()
 
 bool CommandTask::_OnPartialResponse(const APDUResponseRecord&)
 {
-	LOG_BLOCK(levels::ERR, "Non fin responses not allowed for control tasks");
+	LOG_BLOCK(flags::ERR, "Non fin responses not allowed for control tasks");
 	callback(CommandResponse(CommandResult::BAD_RESPONSE));
 	return false;
 }

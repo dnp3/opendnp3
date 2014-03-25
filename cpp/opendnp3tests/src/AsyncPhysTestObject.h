@@ -38,7 +38,7 @@ namespace opendnp3
 class AsyncPhysTestObject : public AsyncTestObjectASIO
 {
 public:
-	AsyncPhysTestObject(uint32_t levels = levels::ALL, bool aAutoRead = true);
+	AsyncPhysTestObject(uint32_t levels = levels::NORMAL, bool aAutoRead = true);
 
 	LogTester log;
 

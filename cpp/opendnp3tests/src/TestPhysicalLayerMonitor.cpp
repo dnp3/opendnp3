@@ -84,7 +84,7 @@ class TestObject
 {
 public:
 
-	TestObject(uint32_t filters = levels::ALL) :
+	TestObject(uint32_t filters = levels::NORMAL) :
 		log(),
 		exe(),
 		phys(LogConfig(&log, filters, "mock-phys"), &exe),
@@ -105,11 +105,11 @@ TEST_CASE(SUITE("StateClosed"))
 	REQUIRE((ChannelState::CLOSED == test.monitor.GetState()));
 
 	test.monitor.OnLowerLayerUp();
-	REQUIRE(test.log.PopOneEntry(levels::ERR));
+	REQUIRE(test.log.PopOneEntry(flags::ERR));
 	test.monitor.OnLowerLayerDown();
-	REQUIRE(test.log.PopOneEntry(levels::ERR));
+	REQUIRE(test.log.PopOneEntry(flags::ERR));
 	test.monitor.OnOpenFailure();
-	REQUIRE(test.log.PopOneEntry(levels::ERR));
+	REQUIRE(test.log.PopOneEntry(flags::ERR));
 
 
 	REQUIRE((ChannelState::CLOSED == test.monitor.GetState()));
@@ -120,7 +120,7 @@ TEST_CASE(SUITE("ThrowsIfEverNotExpectingOpenTimer"))
 	TestObject test;
 	test.monitor.ReachInAndStartOpenTimer();
 	REQUIRE(test.exe.DispatchOne());
-	REQUIRE(test.log.PopOneEntry(levels::ERR));
+	REQUIRE(test.log.PopOneEntry(flags::ERR));
 	REQUIRE((ChannelState::CLOSED == test.monitor.GetState()));
 }
 
@@ -226,7 +226,7 @@ TEST_CASE(SUITE("OpeningLayerLogging"))
 	TestObject test;
 	test.monitor.Start();	
 	test.monitor.OnLowerLayerDown();
-	REQUIRE(test.log.PopUntil(levels::ERR));
+	REQUIRE(test.log.PopUntil(flags::ERR));
 }
 
 TEST_CASE(SUITE("OpeningStartOneGoesToOpeningOne"))

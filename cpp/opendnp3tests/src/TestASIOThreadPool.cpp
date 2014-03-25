@@ -46,13 +46,13 @@ using namespace asiopal;
 TEST_CASE(SUITE("CleanConstructionDestruction"))
 {
 	EventLog log;	
-	IOServiceThreadPool pool(&log, levels::ALL, "pool", 4);
+	IOServiceThreadPool pool(&log, levels::NORMAL, "pool", 4);
 }
 
 TEST_CASE(SUITE("ThreadPoolShutsdownCleanlyEvenIfALotOfWorkIsSubmitted"))
 {
 	EventLog log;	
-	IOServiceThreadPool pool(&log, levels::ALL, "pool", 4);
+	IOServiceThreadPool pool(&log, levels::NORMAL, "pool", 4);
 	for(size_t i = 0; i < 100000; ++i) pool.GetIOService()->post([]() {});
 }
 
@@ -60,7 +60,7 @@ TEST_CASE(SUITE("ThreadPoolShutsdownCleanlyEvenIfALotOfWorkIsSubmitted"))
 TEST_CASE(SUITE("StrandsSequenceCallbacksViaStrandPost"))
 {
 	EventLog log;	
-	IOServiceThreadPool pool(&log, levels::ALL, "pool", 8);
+	IOServiceThreadPool pool(&log, levels::NORMAL, "pool", 8);
 
 	size_t iterations = 100000;
 
@@ -80,7 +80,7 @@ TEST_CASE(SUITE("StrandsSequenceCallbacksViaStrandPost"))
 TEST_CASE(SUITE("StrandsSequenceCallbacksViaStrandWrap"))
 {
 	EventLog log;	
-	IOServiceThreadPool pool(&log, levels::ALL, "pool", 8);
+	IOServiceThreadPool pool(&log, levels::NORMAL, "pool", 8);
 	size_t iterations = 100000;
 
 	io_service* pService = pool.GetIOService();
@@ -101,7 +101,7 @@ TEST_CASE(SUITE("StrandsSequenceCallbacksViaStrandWrap"))
 TEST_CASE(SUITE("ExecutorPauseGuardsRaceConditions"))
 {
 	EventLog log;	
-	IOServiceThreadPool pool(&log, levels::ALL, "pool", 8);
+	IOServiceThreadPool pool(&log, levels::NORMAL, "pool", 8);
 	size_t iterations = 100000;
 
 	asio::strand strand(*pool.GetIOService());
@@ -130,7 +130,7 @@ TEST_CASE(SUITE("ExecutorPauseGuardsRaceConditions"))
 TEST_CASE(SUITE("ExecutorPauseIsIgnoredIfOnStrand"))
 {
 	EventLog log;	
-	IOServiceThreadPool pool(&log, levels::ALL, "pool", 1);
+	IOServiceThreadPool pool(&log, levels::NORMAL, "pool", 1);
 	uint32_t iterations = 10;
 
 	asio::strand strand(*pool.GetIOService());

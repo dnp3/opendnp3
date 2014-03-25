@@ -41,7 +41,7 @@ TEST_CASE(SUITE(" LogErrorCounting"))
 {
 	LogTester log;
 	auto logger = log.GetLogger("test1");
-	logger.Log( levels::DEBUG, "LogEntryParamsTest", "MessageMessage", 5 );
+	logger.Log( flags::DEBUG, "LogEntryParamsTest", "MessageMessage", 5 );
 
 	REQUIRE(log.NextErrorCode() ==  5);
 	REQUIRE(log.NextErrorCode() ==  -1);

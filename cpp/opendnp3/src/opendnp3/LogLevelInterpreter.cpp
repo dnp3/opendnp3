@@ -40,13 +40,13 @@ namespace opendnp3
 	std::ostringstream& AllFlags(std::ostringstream& ss, const openpal::LogFilters& filters)
 	{
 		uint32_t count = 0;
-		ProcessFlags(ss, "V", count, levels::EVENT, filters);
-		ProcessFlags(ss, "E", count, levels::ERR, filters);
-		ProcessFlags(ss, "W", count, levels::WARN, filters);
-		ProcessFlags(ss, "I", count, levels::INFO, filters);
-		ProcessFlags(ss, "D", count, levels::DEBUG, filters);
-		ProcessFlags(ss, "P", count, levels::INTERPRET, filters);
-		ProcessFlags(ss, "C", count, levels::COMM, filters);
+		ProcessFlags(ss, "V", count, flags::EVENT, filters);
+		ProcessFlags(ss, "E", count, flags::ERR, filters);
+		ProcessFlags(ss, "W", count, flags::WARN, filters);
+		ProcessFlags(ss, "I", count, flags::INFO, filters);
+		ProcessFlags(ss, "D", count, flags::DEBUG, filters);
+		ProcessFlags(ss, "P", count, flags::INTERPRET, filters);
+		ProcessFlags(ss, "C", count, flags::COMM, filters);
 		return ss;
 	}
 	

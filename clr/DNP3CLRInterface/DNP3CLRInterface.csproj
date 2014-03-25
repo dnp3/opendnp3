@@ -84,7 +84,7 @@
     </Compile>
     <Compile Include="ITimeWriteHandler.cs" />
     <Compile Include="IMasterScan.cs" />
-    <Compile Include="LogLevel.cs" />
+    <Compile Include="LogLevels.cs" />
     <Compile Include="MeasurementTypes.cs">
       <SubType>Code</SubType>
     </Compile>

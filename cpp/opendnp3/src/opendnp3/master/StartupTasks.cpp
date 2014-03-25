@@ -131,7 +131,7 @@ TaskResult TimeSync::_OnFinalResponse(const APDUResponseRecord& record)
 		}
 		else
 		{
-			LOG_BLOCK(levels::WARN, "Error parsing response headers: " << static_cast<int>(result)); // TODO - turn these into strings
+			LOG_BLOCK(flags::WARN, "Error parsing response headers: " << static_cast<int>(result)); // TODO - turn these into strings
 			return TR_FAIL;
 		}
 
@@ -139,18 +139,18 @@ TaskResult TimeSync::_OnFinalResponse(const APDUResponseRecord& record)
 		/*  TODO - move this logic to the TimeSyncHandler
 		HeaderReadIterator hri = arAPDU.BeginRead();
 		if(hri.Count() != 1) {
-			LOG_BLOCK(levels::WARN, "DelayMeas response w/ unexcpected header count");
+			LOG_BLOCK(flags::WARN, "DelayMeas response w/ unexcpected header count");
 			return TR_FAIL;
 		}
 
 		if(!hri->GetBaseObject()->Equals(Group52Var2::Inst())) {
-			LOG_BLOCK(levels::WARN, "DelayMeas response w/ unexpected object: " << hri->GetBaseObject()->Name());
+			LOG_BLOCK(flags::WARN, "DelayMeas response w/ unexpected object: " << hri->GetBaseObject()->Name());
 			return TR_FAIL;
 		}
 
 		ObjectReadIterator ori = hri.BeginRead();
 		if(ori.Count() != 1) {
-			LOG_BLOCK(levels::WARN, "DelayMeas got more than 1 object in response");
+			LOG_BLOCK(flags::WARN, "DelayMeas got more than 1 object in response");
 			return TR_FAIL;
 		}
 		*/

@@ -36,42 +36,42 @@ namespace opendnp3
 
 void AMS_Base::StartTask(Master* c, ITask*, MasterTaskBase*)
 {
-	LOGGER_BLOCK(c->logger, levels::ERR, "Invalid action for state " << this->Name());
+	LOGGER_BLOCK(c->logger, flags::ERR, "Invalid action for state " << this->Name());
 }
 
 void AMS_Base::OnLowerLayerUp(Master* c)
 {
-	LOGGER_BLOCK(c->logger, levels::ERR, "Invalid action for state " << this->Name());
+	LOGGER_BLOCK(c->logger, flags::ERR, "Invalid action for state " << this->Name());
 }
 
 void AMS_Base::OnLowerLayerDown(Master* c)
 {
-	LOGGER_BLOCK(c->logger, levels::ERR, "Invalid action for state " << this->Name());
+	LOGGER_BLOCK(c->logger, flags::ERR, "Invalid action for state " << this->Name());
 }
 
 void AMS_Base::OnSendSuccess(Master* c)
 {
-	LOGGER_BLOCK(c->logger, levels::ERR, "Invalid action for state " << this->Name());
+	LOGGER_BLOCK(c->logger, flags::ERR, "Invalid action for state " << this->Name());
 }
 
 void AMS_Base::OnFailure(Master* c)
 {
-	LOGGER_BLOCK(c->logger, levels::ERR, "Invalid action for state " << this->Name());
+	LOGGER_BLOCK(c->logger, flags::ERR, "Invalid action for state " << this->Name());
 }
 
 void AMS_Base::OnPartialResponse(Master* c, const APDUResponseRecord&)
 {
-	LOGGER_BLOCK(c->logger, levels::ERR, "Invalid action for state " << this->Name());
+	LOGGER_BLOCK(c->logger, flags::ERR, "Invalid action for state " << this->Name());
 }
 
 void AMS_Base::OnFinalResponse(Master* c, const APDUResponseRecord&)
 {
-	LOGGER_BLOCK(c->logger, levels::ERR, "Invalid action for state " << this->Name());
+	LOGGER_BLOCK(c->logger, flags::ERR, "Invalid action for state " << this->Name());
 }
 
 void AMS_Base::OnUnsolResponse(Master* c, const APDUResponseRecord&)
 {
-	LOGGER_BLOCK(c->logger, levels::ERR, "Invalid action for state " << this->Name());
+	LOGGER_BLOCK(c->logger, flags::ERR, "Invalid action for state " << this->Name());
 }
 
 

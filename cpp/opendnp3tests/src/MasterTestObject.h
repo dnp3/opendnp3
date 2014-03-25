@@ -41,7 +41,7 @@ struct MasterConfig;
 class MasterTestObject
 {
 public:
-	MasterTestObject(MasterConfig, uint32_t filters = levels::ALL, bool aImmediate = false);
+	MasterTestObject(MasterConfig, uint32_t filters = levels::NORMAL, bool aImmediate = false);
 
 	void RespondToMaster(const std::string& arData, bool aFinal = true);
 	void SendUnsolToMaster(const std::string& arData);

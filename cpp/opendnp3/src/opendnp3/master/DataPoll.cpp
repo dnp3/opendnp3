@@ -60,7 +60,7 @@ void DataPoll::ReadData(const APDUResponseRecord& record)
 	auto res = APDUParser::ParseTwoPass(record.objects, &handler, &logger);
 	if(res != APDUParser::Result::OK)
 	{
-		LOG_BLOCK(levels::WARN, "Error parsing response headers: " << static_cast<int>(res)); // TODO - turn these into strings
+		LOG_BLOCK(flags::WARN, "Error parsing response headers: " << static_cast<int>(res)); // TODO - turn these into strings
 	}
 }
 

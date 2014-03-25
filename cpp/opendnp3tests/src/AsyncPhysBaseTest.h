@@ -35,7 +35,7 @@ namespace opendnp3
 class AsyncPhysBaseTest
 {
 public:
-	AsyncPhysBaseTest(uint32_t filter = levels::ALL, bool aImmediate = false);
+	AsyncPhysBaseTest(uint32_t filter = levels::NORMAL, bool aImmediate = false);
 
 	LogTester log;
 	MockExecutor exe;

@@ -39,7 +39,7 @@ namespace opendnp3
 class SlaveTestObject
 {
 public:
-	SlaveTestObject(const SlaveConfig& arCfg, const DatabaseTemplate& dbTemplate, uint32_t filters = levels::ALL, bool aImmediate = false);
+	SlaveTestObject(const SlaveConfig& arCfg, const DatabaseTemplate& dbTemplate, uint32_t filters = levels::NORMAL, bool aImmediate = false);
 
 	void SendToSlave(const std::string& arData, SequenceInfo aSeq = SequenceInfo::OTHER);
 

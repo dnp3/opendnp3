@@ -35,37 +35,37 @@ namespace opendnp3
 
 void SlaveStateBase::OnLowerLayerUp(Slave* slave)
 {
-	ERROR_LOGGER_BLOCK(slave->logger, levels::ERR, "invalid action for state: " << Name(), SERR_INVALID_STATE);
+	ERROR_LOGGER_BLOCK(slave->logger, flags::ERR, "invalid action for state: " << Name(), SERR_INVALID_STATE);
 }
 
 void SlaveStateBase::OnLowerLayerDown(Slave* slave)
 {
-	ERROR_LOGGER_BLOCK(slave->logger, levels::ERR, "invalid action for state: " << Name(), SERR_INVALID_STATE);
+	ERROR_LOGGER_BLOCK(slave->logger, flags::ERR, "invalid action for state: " << Name(), SERR_INVALID_STATE);
 }
 
 void SlaveStateBase::OnSolSendSuccess(Slave* slave)
 {
-	ERROR_LOGGER_BLOCK(slave->logger, levels::ERR, "invalid action for state: " << Name(), SERR_INVALID_STATE);
+	ERROR_LOGGER_BLOCK(slave->logger, flags::ERR, "invalid action for state: " << Name(), SERR_INVALID_STATE);
 }
 
 void SlaveStateBase::OnSolFailure(Slave* slave)
 {
-	ERROR_LOGGER_BLOCK(slave->logger, levels::ERR, "invalid action for state: " << Name(), SERR_INVALID_STATE);
+	ERROR_LOGGER_BLOCK(slave->logger, flags::ERR, "invalid action for state: " << Name(), SERR_INVALID_STATE);
 }
 
 void SlaveStateBase::OnUnsolSendSuccess(Slave* slave)
 {
-	ERROR_LOGGER_BLOCK(slave->logger, levels::ERR, "invalid action for state: " << Name(), SERR_INVALID_STATE);
+	ERROR_LOGGER_BLOCK(slave->logger, flags::ERR, "invalid action for state: " << Name(), SERR_INVALID_STATE);
 }
 
 void SlaveStateBase::OnUnsolFailure(Slave* slave)
 {
-	ERROR_LOGGER_BLOCK(slave->logger, levels::ERR, "invalid action for state: " << Name(), SERR_INVALID_STATE);
+	ERROR_LOGGER_BLOCK(slave->logger, flags::ERR, "invalid action for state: " << Name(), SERR_INVALID_STATE);
 }
 
 void SlaveStateBase::OnRequest(Slave* slave, const APDURecord&, SequenceInfo)
 {
-	ERROR_LOGGER_BLOCK(slave->logger, levels::ERR, "invalid action for state: " << Name(), SERR_INVALID_STATE);
+	ERROR_LOGGER_BLOCK(slave->logger, flags::ERR, "invalid action for state: " << Name(), SERR_INVALID_STATE);
 }
 
 // by default, the unsol timer expiration is deferd until it can be handled

@@ -63,7 +63,7 @@ APDUParser::Result APDUParser::ParseHeader(ReadOnlyBuffer& buffer, openpal::Logg
 {
 	if (buffer.Size() < 3)
 	{
-		ERROR_PLOGGER_BLOCK(pLogger, levels::WARN, ALERR_INSUFFICIENT_DATA_FOR_HEADER, "Not enough data for header");
+		ERROR_PLOGGER_BLOCK(pLogger, flags::WARN, ALERR_INSUFFICIENT_DATA_FOR_HEADER, "Not enough data for header");
 		return Result::NOT_ENOUGH_DATA_FOR_HEADER;
 	}
 	else
@@ -74,7 +74,7 @@ APDUParser::Result APDUParser::ParseHeader(ReadOnlyBuffer& buffer, openpal::Logg
 		GroupVariationRecord gvRecord = { enumeration, group, variation };
 		if (gvRecord.enumeration == GroupVariation::UNKNOWN)
 		{
-			ERROR_PLOGGER_BLOCK(pLogger, levels::WARN, ALERR_UNKNOWN_GROUP_VAR, "Unknown object: " << gvRecord.ToString());
+			ERROR_PLOGGER_BLOCK(pLogger, flags::WARN, ALERR_UNKNOWN_GROUP_VAR, "Unknown object: " << gvRecord.ToString());
 			return Result::UNKNOWN_OBJECT;
 		}
 		else
@@ -108,7 +108,7 @@ APDUParser::Result APDUParser::ParseHeader(ReadOnlyBuffer& buffer, openpal::Logg
 				return ParseIndexPrefixHeader<UInt16>(buffer, pLogger, context, qualifier, gvRecord, pHandler);
 
 			default:
-				ERROR_PLOGGER_BLOCK(pLogger, levels::WARN, ALERR_UNKNOWN_GROUP_VAR, "Unknown qualifier: " << static_cast<int>(rawQualifier));
+				ERROR_PLOGGER_BLOCK(pLogger, flags::WARN, ALERR_UNKNOWN_GROUP_VAR, "Unknown qualifier: " << static_cast<int>(rawQualifier));
 				return Result::UNKNOWN_QUALIFIER;
 			}
 		}
@@ -233,7 +233,7 @@ APDUParser::Result APDUParser::ParseObjectsWithRange(QualifierCode qualifier, op
 		return ParseRangeOfOctetData(gvRecord, buffer, pLogger, qualifier, range, pHandler);		
 
 	default:
-		ERROR_PLOGGER_BLOCK(pLogger, levels::WARN, ALERR_ILLEGAL_QUALIFIER_AND_OBJECT,
+		ERROR_PLOGGER_BLOCK(pLogger, flags::WARN, ALERR_ILLEGAL_QUALIFIER_AND_OBJECT,
 		                    "Unsupported qualifier/object - " << QualifierCodeToString(qualifier) << "/" << gvRecord.ToString()
 		                   );
 		return Result::INVALID_OBJECT_QUALIFIER;
@@ -253,7 +253,7 @@ APDUParser::Result APDUParser::ParseRangeOfOctetData(
 		uint32_t size = gvRecord.variation * range.Count();
 		if (buffer.Size() < size)
 		{
-			ERROR_PLOGGER_BLOCK(pLogger, levels::WARN, ALERR_INSUFFICIENT_DATA_FOR_OBJECTS, "Not enough data for specified octet objects");
+			ERROR_PLOGGER_BLOCK(pLogger, flags::WARN, ALERR_INSUFFICIENT_DATA_FOR_OBJECTS, "Not enough data for specified octet objects");
 			return Result::NOT_ENOUGH_DATA_FOR_OBJECTS;
 		}
 		else
@@ -275,7 +275,7 @@ APDUParser::Result APDUParser::ParseRangeOfOctetData(
 	}
 	else
 	{
-		PLOGGER_BLOCK(pLogger, levels::WARN, "Octet string variation 0 may only be used in requests");
+		PLOGGER_BLOCK(pLogger, flags::WARN, "Octet string variation 0 may only be used in requests");
 		return Result::INVALID_OBJECT;
 	}
 	

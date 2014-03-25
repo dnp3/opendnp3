@@ -40,7 +40,7 @@ namespace opendnp3
 class TransportTestObject
 {
 public:
-	TransportTestObject(bool aOpenOnStart = false, uint32_t filters = levels::ALL, bool aImmediate = false);
+	TransportTestObject(bool aOpenOnStart = false, uint32_t filters = levels::NORMAL, bool aImmediate = false);
 
 	// Generate a complete packet sequence inside the vector and
 	// return the corresponding reassembled APDU

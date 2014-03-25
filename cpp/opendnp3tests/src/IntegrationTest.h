@@ -46,7 +46,7 @@ class IntegrationTest
 {
 public:
 
-	IntegrationTest(uint16_t aStartPort, size_t aNumPairs, uint16_t aNumPoints, uint32_t filters = levels::ALL);
+	IntegrationTest(uint16_t aStartPort, size_t aNumPairs, uint16_t aNumPoints, uint32_t filters = levels::NORMAL);
 
 	size_t IncrementData();
 

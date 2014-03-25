@@ -37,7 +37,7 @@ void UnsolicitedChannel::OnUnsol(const APDUResponseRecord& aRecord)
 {
 	if(aRecord.control.SEQ == mSequence)
 	{
-		LOG_BLOCK(levels::INFO, "Ignoring repeat unsol seq: " << aRecord.control.SEQ)
+		LOG_BLOCK(flags::INFO, "Ignoring repeat unsol seq: " << aRecord.control.SEQ)
 	}
 	else
 	{

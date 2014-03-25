@@ -39,7 +39,7 @@ class LoopbackTest
 {
 public:
 
-	LoopbackTest(uint32_t filters = levels::ALL) :
+	LoopbackTest(uint32_t filters = levels::NORMAL) :
 		log(),
 		root(&log, filters),
 		exe(),

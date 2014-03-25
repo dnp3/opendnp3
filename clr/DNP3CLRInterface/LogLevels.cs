@@ -26,9 +26,9 @@ namespace DNP3.Interface
 {
     public static class LogLevels
     {
-        public static readonly System.UInt32 NORMAL = LogFilters.EVENT | LogFilters.ERROR | LogFilters.WARNING | LogFilters.INFO;
         public static readonly System.UInt32 NONE = 0;
         public static readonly System.UInt32 ALL = ~NONE;
+        public static readonly System.UInt32 NORMAL = LogFilters.EVENT | LogFilters.ERROR | LogFilters.WARNING | LogFilters.INFO;        
     }
 
     /// <summary>

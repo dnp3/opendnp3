@@ -106,7 +106,7 @@ IMaster* DNP3Channel::AddMaster(const std::string& id, ISOEHandler* apPublisher,
 	ExecutorPause p(pPhys->GetExecutor());
 	if(router.IsRouteInUse(route))
 	{
-		LOG_BLOCK(levels::ERR, "Route already in use: " << route.ToString());
+		LOG_BLOCK(flags::ERR, "Route already in use: " << route.ToString());
 		return nullptr;
 	}
 	else
@@ -126,7 +126,7 @@ IOutstation* DNP3Channel::AddOutstation(const std::string& id, ICommandHandler* 
 	ExecutorPause p(pPhys->GetExecutor());
 	if(router.IsRouteInUse(route))
 	{
-		LOG_BLOCK(levels::ERR, "Route already in use: " << route.ToString());
+		LOG_BLOCK(flags::ERR, "Route already in use: " << route.ToString());
 		return nullptr;
 	}
 	else

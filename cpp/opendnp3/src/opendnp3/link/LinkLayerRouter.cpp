@@ -70,7 +70,7 @@ bool LinkLayerRouter::AddContext(ILinkContext* pContext, const LinkRoute& route)
 		auto pNode = records.FindFirst([&](const Record& record){ return record.pContext == pContext; });
 		if (pNode)
 		{
-			LOG_BLOCK(levels::ERR, "Context cannot be bound 2x");
+			LOG_BLOCK(flags::ERR, "Context cannot be bound 2x");
 			return false;
 		}
 		else
@@ -181,7 +181,7 @@ ILinkContext* LinkLayerRouter::GetDestination(uint16_t aDest, uint16_t aSrc)
 	if(pDest == nullptr)
 	{
 
-		ERROR_BLOCK(levels::WARN, "Frame w/ unknown route: " << route.ToString(), DLERR_UNKNOWN_ROUTE);
+		ERROR_BLOCK(flags::WARN, "Frame w/ unknown route: " << route.ToString(), DLERR_UNKNOWN_ROUTE);
 	}
 
 	return pDest;
@@ -266,7 +266,7 @@ void LinkLayerRouter::QueueTransmit(const openpal::ReadOnlyBuffer& buffer, ILink
 	}
 	else
 	{
-		ERROR_BLOCK(levels::ERR, "Router received transmit request while offline", DLERR_ROUTER_OFFLINE);
+		ERROR_BLOCK(flags::ERR, "Router received transmit request while offline", DLERR_ROUTER_OFFLINE);
 	}	
 }
 

@@ -76,25 +76,25 @@ void Master::ProcessIIN(const IINField& iin)
 	//The clear IIN task only happens in response to detecting an IIN bit.
 	if(mLastIIN.IsSet(IINBit::NEED_TIME))
 	{
-		LOG_BLOCK(levels::INFO, "Need time detected");
+		LOG_BLOCK(flags::INFO, "Need time detected");
 		mSchedule.mpTimeTask->SilentEnable();
 		check_state = true;
 	}
 
 	if (mLastIIN.IsSet(IINBit::DEVICE_TROUBLE))
 	{
-		LOG_BLOCK(levels::WARN, "IIN Device trouble detected");
+		LOG_BLOCK(flags::WARN, "IIN Device trouble detected");
 	}
 
 	if (mLastIIN.IsSet(IINBit::EVENT_BUFFER_OVERFLOW))
 	{
-		LOG_BLOCK(levels::WARN, "Event buffer overflow detected");
+		LOG_BLOCK(flags::WARN, "Event buffer overflow detected");
 	}
 
 	// If this is detected, we need to reset the startup tasks
 	if(mLastIIN.IsSet(IINBit::DEVICE_RESTART))
 	{
-		LOG_BLOCK(levels::WARN, "Device restart detected");
+		LOG_BLOCK(flags::WARN, "Device restart detected");
 		mSchedule.ResetStartupTasks();
 		mSchedule.mpClearRestartTask->SilentEnable();
 		check_state = true;
@@ -256,12 +256,12 @@ void Master::OnSolFailure()
 
 void Master::OnUnsolSendSuccess()
 {
-	LOG_BLOCK(levels::ERR, "Master can't send unsol");
+	LOG_BLOCK(flags::ERR, "Master can't send unsol");
 }
 
 void Master::OnUnsolFailure()
 {
-	LOG_BLOCK(levels::ERR, "Master can't send unsol");
+	LOG_BLOCK(flags::ERR, "Master can't send unsol");
 }
 
 void Master::OnPartialResponse(const APDUResponseRecord& aRecord)

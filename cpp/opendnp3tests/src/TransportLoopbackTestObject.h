@@ -42,7 +42,7 @@ public:
 	    openpal::IPhysicalLayerAsync*,
 	    LinkConfig,
 	    LinkConfig,
-	    uint32_t filters = levels::INFO);
+	    uint32_t filters = flags::INFO);
 
 	~TransportLoopbackTestObject();
 	

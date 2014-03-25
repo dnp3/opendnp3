@@ -39,7 +39,7 @@ public:
 	    LinkConfig aServerCfg,
 	    uint16_t aPortStart,
 	    uint16_t aNumPair,
-	    uint32_t filters = levels::INFO,
+	    uint32_t filters = flags::INFO,
 	    bool aImmediate = false);
 
 	~TransportScalabilityTestObject();

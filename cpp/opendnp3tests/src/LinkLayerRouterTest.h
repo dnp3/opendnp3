@@ -34,7 +34,7 @@ namespace opendnp3
 class LinkLayerRouterTest
 {
 public:
-	LinkLayerRouterTest(uint32_t filters = levels::ALL);
+	LinkLayerRouterTest(uint32_t filters = levels::NORMAL);
 
 	LogTester log;
 	MockExecutor exe;

@@ -36,7 +36,7 @@ namespace opendnp3
 class AppLayerTest
 {
 public:
-	AppLayerTest(bool aIsMaster = false, uint32_t aNumRetry = 0, uint32_t level = levels::ALL, bool aImmediate = false);
+	AppLayerTest(bool aIsMaster = false, uint32_t aNumRetry = 0, uint32_t level = levels::NORMAL, bool aImmediate = false);
 
 	void SendUp(const std::string& aBytes);
 	void SendUp(AppControlField control, FunctionCode aCode);

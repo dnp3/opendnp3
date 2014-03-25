@@ -207,7 +207,7 @@ void APDUHandlerBase::OnIndexPrefixCTO(GroupVariation gv, QualifierCode qualifie
 	}
 	else
 	{
-		LOG_BLOCK(levels::WARN, "Received CTO objects without preceding common time, using assumed time");
+		LOG_BLOCK(flags::WARN, "Received CTO objects without preceding common time, using assumed time");
 		auto transform = MapIterableBuffer< IndexedValue<T, uint16_t>, IndexedValue<T, uint16_t> >(meas,
 		                 [](const IndexedValue<T, uint16_t>& value)
 		{

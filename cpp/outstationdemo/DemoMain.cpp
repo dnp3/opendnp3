@@ -47,7 +47,7 @@ int main(int argc, char* argv[])
 
 	// Specify a LogLevel for the stack/physical layer to use.
 	// Log statements with a lower priority will not be logged.
-	const uint32_t FILTERS = levels::ALL;
+	const uint32_t FILTERS = levels::NORMAL;
 
 	//A default logging backend that can proxy to multiple other backends
 	EventLog log;

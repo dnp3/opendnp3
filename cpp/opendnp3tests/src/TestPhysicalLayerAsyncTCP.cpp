@@ -53,16 +53,16 @@ TEST_CASE(SUITE("TestStateClosed"))
 	WriteBuffer empty;
 
 	t.mTCPClient.AsyncWrite(empty.ToReadOnly());
-	REQUIRE(t.log.PopOneEntry(levels::ERR));
+	REQUIRE(t.log.PopOneEntry(flags::ERR));
 	t.mTCPClient.AsyncRead(empty);
-	REQUIRE(t.log.PopOneEntry(levels::ERR));
+	REQUIRE(t.log.PopOneEntry(flags::ERR));
 
 	t.mTCPClient.AsyncWrite(buff.ToReadOnly());
-	REQUIRE(t.log.PopOneEntry(levels::ERR));
+	REQUIRE(t.log.PopOneEntry(flags::ERR));
 	t.mTCPClient.AsyncRead(buff);
-	REQUIRE(t.log.PopOneEntry(levels::ERR));
+	REQUIRE(t.log.PopOneEntry(flags::ERR));
 	t.mTCPClient.AsyncClose();
-	REQUIRE(t.log.PopOneEntry(levels::ERR));
+	REQUIRE(t.log.PopOneEntry(flags::ERR));
 }
 
 TEST_CASE(SUITE("ClientConnectionRejected"))
@@ -229,11 +229,11 @@ TEST_CASE(SUITE("Loopback"))
 
 	EventLog log;	
 	AsyncTestObjectASIO test;
-	PhysicalLayerAsyncTCPServer server(LogConfig(&log, levels::ALL, "server"), test.GetService(), "127.0.0.1", 30000);
+	PhysicalLayerAsyncTCPServer server(LogConfig(&log, levels::NORMAL, "server"), test.GetService(), "127.0.0.1", 30000);
 	PhysLoopback loopback(server.GetLogRoot().GetLogger("loopback"), &server);
 	loopback.Start();
 
-	PhysicalLayerAsyncTCPClient client(LogConfig(&log, levels::ALL, "client"), test.GetService(), "127.0.0.1", 30000);
+	PhysicalLayerAsyncTCPClient client(LogConfig(&log, levels::NORMAL, "client"), test.GetService(), "127.0.0.1", 30000);
 	LowerLayerToPhysAdapter adapter(client.GetLogRoot().GetLogger("adapter"), &client);
 	MockUpperLayer upper;
 	adapter.SetUpperLayer(&upper);
