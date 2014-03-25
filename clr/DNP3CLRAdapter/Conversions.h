@@ -39,8 +39,8 @@ public:
 	static System::String^ convertString(const std::string& s);
 
 	// Convert the log filter enumeration
-	static uint32_t convertLogLevel(DNP3::Interface::LogLevel level);
-	static DNP3::Interface::LogLevel convertLogLevel(uint32_t flags);
+	//static uint32_t convertLogLevel(DNP3::Interface::LogLevel level);
+	//static DNP3::Interface::LogLevel convertLogLevel(uint32_t flags);
 
 	// Converting channel state enumeration
 	static ChannelState convertChannelState(opendnp3::ChannelState aState);

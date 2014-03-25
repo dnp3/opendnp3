@@ -55,7 +55,6 @@
     <Compile Include="gen\EventAnalogResponse.cs" />
     <Compile Include="gen\EventBinaryResponse.cs" />
     <Compile Include="gen\EventCounterResponse.cs" />
-    <Compile Include="gen\LogLevel.cs" />
     <Compile Include="gen\ScanStatus.cs" />
     <Compile Include="gen\StaticAnalogResponse.cs" />
     <Compile Include="gen\StaticBinaryOutputStatusResponse.cs" />
@@ -85,6 +84,7 @@
     </Compile>
     <Compile Include="ITimeWriteHandler.cs" />
     <Compile Include="IMasterScan.cs" />
+    <Compile Include="LogLevel.cs" />
     <Compile Include="MeasurementTypes.cs">
       <SubType>Code</SubType>
     </Compile>

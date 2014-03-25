@@ -13,13 +13,12 @@ LogAdapter::LogAdapter(ILogHandler^ proxy) : proxy(proxy)
 
 // logging error messages, etc
 void LogAdapter::Log( const openpal::LogEntry& arEntry )
-{
-	DNP3::Interface::LogLevel level = Conversions::convertLogLevel(arEntry.GetFilters().GetBitfield());
+{	
 	System::String^ loggerName = Conversions::convertString(arEntry.GetName());
 	System::String^ location = Conversions::convertString(arEntry.GetLocation());
 	System::String^ message = Conversions::convertString(arEntry.GetMessage());
 
-	DNP3::Interface::LogEntry^ le = gcnew DNP3::Interface::LogEntry(level, loggerName, location, message, System::DateTime::Now, arEntry.GetErrorCode());
+	DNP3::Interface::LogEntry^ le = gcnew DNP3::Interface::LogEntry(arEntry.GetFilters().GetBitfield(), loggerName, location, message, System::DateTime::Now, arEntry.GetErrorCode());
 
 	proxy->Log(le);
 }

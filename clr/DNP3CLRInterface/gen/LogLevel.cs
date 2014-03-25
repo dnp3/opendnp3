@@ -20,10 +20,10 @@ namespace DNP3.Interface
   /// <summary>
   /// Enumeration for log levels
   /// </summary>
-  public enum LogLevel : uint
+  public static class LogLevel
   {
-    Event = 0x1,
-    Error = 0x2,
+    EVENT = 0x1,
+    ERROR = 0x2,
     Warning = 0x4,
     Info = 0x8,
     Interpret = 0x10,

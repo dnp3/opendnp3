@@ -35,15 +35,15 @@ namespace DNP3.Interface
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="LogLevel">Level enumeration of the message</param>
+        /// <param name="filters">Bitfield for the message</param>
         /// <param name="loggerName">Logger id that recorded the message</param>
         /// <param name="location">Location in the code</param>
         /// <param name="message">Body of the message</param>
         /// <param name="time">Timestamp on the message</param>
         /// <param name="errorCode">dnp3 error code</param>
-        public LogEntry(LogLevel LogLevel, String loggerName, String location, string message, DateTime time, int errorCode)
+        public LogEntry(UInt32 filters, String loggerName, String location, string message, DateTime time, int errorCode)
         {
-            this.LogLevel = LogLevel;
+            this.filters = filters;
             this.loggerName = loggerName;
             this.location = location;
             this.message = message;
@@ -55,7 +55,7 @@ namespace DNP3.Interface
         /// <summary>
         /// Level enumeration of the message
         /// </summary>
-        public readonly LogLevel LogLevel;
+        public readonly UInt32 filters;
 
         /// <summary>
         /// Logger id that recorded the message
@@ -117,7 +117,7 @@ namespace DNP3.Interface
 
         public void Log(LogEntry entry)
         {
-            Console.WriteLine(DateTime.Now + " - " + entry.message);
+            Console.WriteLine(DateTime.Now + " - " + LogFilters.GetFilterString(entry.filters) + " - " + entry.message);
         }
 
         private PrintingLogAdapter()
