@@ -34,9 +34,8 @@ namespace opendnp3
 class ByteStr : public CopyableBuffer
 {
 
-public:
-	ByteStr(uint32_t aLength);
-	ByteStr(uint32_t aLength, uint8_t aSeed);
+public:	
+	ByteStr(uint32_t aLength, uint8_t aSeed = 0);
 	ByteStr(const uint8_t* apData, uint32_t aLength);
 	ByteStr(const std::string& aChars);
 	bool operator==(const ByteStr& arRHS) const;

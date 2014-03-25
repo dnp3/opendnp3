@@ -78,7 +78,8 @@ void MockPhysicalLayerAsync::SignalOpenFailure()
 
 void MockPhysicalLayerAsync::SignalSendSuccess()
 {
-	uint32_t num = mNumToWrite; mNumToWrite = 0;
+	uint32_t num = mNumToWrite; 
+	mNumToWrite = 0;
 	std::error_code ec;
 	this->OnWriteCallback(ec, num);
 }

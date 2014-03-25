@@ -106,14 +106,14 @@ private:
 
 	uint8_t* mpWriteBuff;
 
-	size_t mNumToRead;
-	size_t mNumToWrite;
-	size_t mNumWrites;
-	size_t mNumOpen;
-	size_t mNumOpenSuccess;
-	size_t mNumOpenFailure;
-	size_t mNumClose;
-	size_t mNumOpeningClose;
+	uint32_t mNumToRead;
+	uint32_t mNumToWrite;
+	uint32_t mNumWrites;
+	uint32_t mNumOpen;
+	uint32_t mNumOpenSuccess;
+	uint32_t mNumOpenFailure;
+	uint32_t mNumClose;
+	uint32_t mNumOpeningClose;
 
 	bool mIsAutoOpenSuccess;
 

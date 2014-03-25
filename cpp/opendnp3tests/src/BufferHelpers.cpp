@@ -36,10 +36,6 @@ using namespace openpal;
 namespace opendnp3
 {
 
-
-ByteStr::ByteStr(uint32_t aLength) : CopyableBuffer(aLength)
-{}
-
 ByteStr::ByteStr(uint32_t aLength, uint8_t aSeed) : CopyableBuffer(aLength)
 {
 	for(size_t i = 0; i < aLength; ++i) mpBuff[i] = static_cast<uint8_t>((i + aSeed) % 256);

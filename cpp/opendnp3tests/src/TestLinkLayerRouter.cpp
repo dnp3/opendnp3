@@ -21,7 +21,9 @@
 #include <catch.hpp>
 
 #include <functional>
+
 #include <openpal/ToHex.h>
+#include <openpal/StaticBuffer.h>
 
 #include <opendnp3/link/LinkRoute.h>
 
@@ -29,6 +31,7 @@
 
 #include "LinkLayerRouterTest.h"
 #include "MockFrameSink.h"
+#include "BufferHelpers.h"
 
 using namespace opendnp3;
 using namespace openpal;
@@ -56,7 +59,6 @@ TEST_CASE(SUITE("UnknownDestination"))
 	REQUIRE(t.log.NextErrorCode() == DLERR_UNKNOWN_ROUTE);	
 }
 
-/* TODO
 // Test that the router rejects sends until it is online
 TEST_CASE(SUITE("LayerNotOnline"))
 {
@@ -65,9 +67,8 @@ TEST_CASE(SUITE("LayerNotOnline"))
 	LinkRoute route(1, 1024);
 	REQUIRE(t.router.AddContext(&mfs, route));
 	REQUIRE(t.router.Enable(&mfs));
-	LinkFrame f;
-	f.FormatAck(true, false, 1, 1024);
-	t.router.QueueTransmit(f.ToReadOnly(), &mfs, false);
+	ReadOnlyBuffer buffer;
+	t.router.QueueTransmit(buffer, &mfs, false);
 	REQUIRE(t.log.NextErrorCode() ==  DLERR_ROUTER_OFFLINE);
 }
 
@@ -95,10 +96,10 @@ TEST_CASE(SUITE("CloseBehavior"))
 	t.router.AddContext(&mfs, route);
 	REQUIRE(t.router.Enable(&mfs));
 	t.phys.SignalOpenSuccess();
-	LinkFrame f;
-	f.FormatAck(true, false, 1, 1024);
+	
+	ByteStr buffer(292);
+	t.router.QueueTransmit(buffer.ToReadOnly(), &mfs, false); // puts the router in the send state
 
-	t.router.QueueTransmit(f.ToReadOnly(), &mfs, false); // puts the router in the send state
 	REQUIRE(t.phys.NumWrites() ==  1);
 	t.phys.AsyncClose(); //we're both reading and writing so this doesn't trigger a callback yet
 	REQUIRE(mfs.mLowerOnline);
@@ -116,15 +117,13 @@ TEST_CASE(SUITE("CloseBehavior"))
 
 	t.phys.ClearBuffer();
 	t.phys.SignalOpenSuccess();
-
-	LinkFrame f2; f2.FormatAck(true, false, 1, 1024);
-	t.router.QueueTransmit(f2.ToReadOnly(), &mfs, false);
+	
+	t.router.QueueTransmit(buffer.ToReadOnly(), &mfs, false);
 	REQUIRE(t.phys.NumWrites() ==  2);
-	REQUIRE(t.phys.GetBufferAsHexString() == toHex(f2.ToReadOnly()));
+	REQUIRE(t.phys.GetBufferAsHexString() == toHex(buffer.ToReadOnly()));
 	t.phys.SignalSendSuccess();
 	REQUIRE(t.phys.NumWrites() ==  2);
 }
-
 
 TEST_CASE(SUITE("ReentrantCloseWorks"))
 {
@@ -136,8 +135,11 @@ TEST_CASE(SUITE("ReentrantCloseWorks"))
 	t.phys.SignalOpenSuccess();
 	REQUIRE(mfs.mLowerOnline);
 	mfs.AddAction(std::bind(&LinkLayerRouter::Shutdown, &t.router));
-	LinkFrame f; f.FormatAck(true, false, 1024, 1);
-	t.phys.TriggerRead(toHex(f.ToReadOnly()));
+	
+	StaticBuffer<292> buffer;
+	auto frame = LinkFrame::FormatAck(buffer.GetWriteBuffer(), true, false, 1024, 1);
+	t.phys.TriggerRead(toHex(frame));
+
 	REQUIRE(t.log.IsLogErrorFree());
 }
 
@@ -174,11 +176,12 @@ TEST_CASE(SUITE("MultiContextSend"))
 	t.router.Enable(&mfs1);
 	t.router.AddContext(&mfs2, route2);
 	t.router.Enable(&mfs2);
-	LinkFrame f1; f1.FormatAck(true, false, 1, 1024);
-	LinkFrame f2; f2.FormatAck(true, false, 1, 2048);
+	
+	StaticBuffer<292> buffer;
+
 	t.phys.SignalOpenSuccess();
-	t.router.QueueTransmit(f1.ToReadOnly(), &mfs1, false);
-	t.router.QueueTransmit(f2.ToReadOnly(), &mfs2, false);
+	t.router.QueueTransmit(buffer.ToReadOnly(), &mfs1, false);
+	t.router.QueueTransmit(buffer.ToReadOnly(), &mfs2, false);
 	REQUIRE(t.phys.NumWrites() ==  1);
 	t.phys.SignalSendSuccess();
 	REQUIRE(t.phys.NumWrites() ==  2);
@@ -204,11 +207,10 @@ TEST_CASE(SUITE("LinkLayerRouterClearsBufferOnLowerLayerDown"))
 	t.phys.ClearBuffer();
 	t.phys.SignalOpenSuccess();
 
-	LinkFrame f;
-	f.FormatAck(true, false, 1024, 1);
-	t.phys.TriggerRead(toHex(f.ToReadOnly()));
+	StaticBuffer<292> buffer;
+	auto frame = LinkFrame::FormatAck(buffer.GetWriteBuffer(), true, false, 1024, 1);
+	t.phys.TriggerRead(toHex(frame));
 
 	REQUIRE(1 ==  mfs.mNumFrames);
 }
-*/
 
