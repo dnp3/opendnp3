@@ -31,26 +31,36 @@ namespace DNP3.Interface
     /// A communication channel to which DNP3 masters / outstation can be attached
     /// </summary>
     public interface IChannel
-    {      
+    {
+        /// <summary>
+        /// Retrieves the current log filters
+        /// </summary>
+        /// <returns>A structure representing the currently enabled filters</returns>
+        LogFilter GetLogFilters();
+
+       /// <summary>
+       /// Set the log filters to a new value
+       /// </summary>
+       /// <param name="filters">A structure representing the new set of enabled filters</param>
+       void SetLogFilters(LogFilter filters);
+
         /// <summary>
         /// Adds a master stack to the channel
         /// </summary>
-        /// <param name="loggerId">name of the logger that will be assigned to this stack</param>
-        /// <param name="level">LogLevel assigned to the logger</param>
+        /// <param name="id">name of the logger that will be assigned to this stack</param>        
         /// <param name="publisher">Where measurements will be sent as they are received from the outstation</param>
         /// <param name="config">configuration information for the master stack</param>
         /// <returns>reference to the created master</returns>
-		IMaster AddMaster(String loggerId, ISOEHandler publisher, MasterStackConfig config);
+		IMaster AddMaster(String id, ISOEHandler publisher, MasterStackConfig config);
 
         /// <summary>
         /// Adds an outstation to the channel
         /// </summary>
-        /// <param name="loggerId">name of the logger that will be assigned to this stack</param>
-        /// <param name="level">LogLevel assigned to the logger</param>
-        /// <param name="cmdHandler">where command requests are sent to be handled in application code</param>
+        /// <param name="id">name of the logger that will be assigned to this stack</param>        
+        /// <param name="commandHandler">where command requests are sent to be handled in application code</param>
         /// <param name="config">configuration information for the outstation stack</param>
         /// <returns>reference to the created master</returns>
-		IOutstation AddOutstation(String loggerId, ICommandHandler cmdHandler, ITimeWriteHandler timeHandler, SlaveStackConfig config);
+		IOutstation AddOutstation(String id, ICommandHandler commandHandler, ITimeWriteHandler timeHandler, SlaveStackConfig config);
 
         /// <summary>
         /// Add a listener for changes to the channel state. All callbacks come from the thread pool.

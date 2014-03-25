@@ -60,8 +60,11 @@ namespace DNP3.Interface
         {
             lock (mutex)
             {
-                if (set) return value;
-                else 
+                if (set)
+                {
+                    return value;
+                }
+                else
                 {
                     System.Threading.Monitor.Wait(mutex);
                     return value;
@@ -73,8 +76,12 @@ namespace DNP3.Interface
         {
             lock (mutex)
             {
-                if (set) callback(value);
-                else {
+                if (set)
+                {
+                    callback(value);
+                }
+                else
+                {
                     listeners.Add(callback);
                 }
             }
@@ -84,8 +91,12 @@ namespace DNP3.Interface
         {
             lock (mutex)
             {
-                if (set) throw new Exception("Value has already been set");
-                else {
+                if (set)
+                {
+                    throw new Exception("Value has already been set");
+                }
+                else
+                {
                     set = true;
                     this.value = value;
                     System.Threading.Monitor.PulseAll(mutex);

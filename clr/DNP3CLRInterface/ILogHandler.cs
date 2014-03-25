@@ -25,6 +25,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+
 namespace DNP3.Interface
 {
     /// <summary>
@@ -43,7 +44,7 @@ namespace DNP3.Interface
         /// <param name="errorCode">dnp3 error code</param>
         public LogEntry(UInt32 filters, String loggerName, String location, string message, DateTime time, int errorCode)
         {
-            this.filters = filters;
+            this.filter = new LogFilter(filters);
             this.loggerName = loggerName;
             this.location = location;
             this.message = message;
@@ -55,7 +56,7 @@ namespace DNP3.Interface
         /// <summary>
         /// Level enumeration of the message
         /// </summary>
-        public readonly UInt32 filters;
+        public readonly LogFilter filter;
 
         /// <summary>
         /// Logger id that recorded the message
@@ -117,7 +118,7 @@ namespace DNP3.Interface
 
         public void Log(LogEntry entry)
         {
-            Console.WriteLine(DateTime.Now + " - " + LogFilters.GetFilterString(entry.filters) + " - " + entry.message);
+            Console.WriteLine(DateTime.Now + " - " + LogFilters.GetFilterString(entry.filter.Flags) + " - " + entry.message);
         }
 
         private PrintingLogAdapter()

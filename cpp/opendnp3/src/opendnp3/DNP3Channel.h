@@ -73,6 +73,10 @@ public:
 
 	openpal::IExecutor* GetExecutor();
 
+	virtual openpal::LogFilters GetLogFilters() const override final;
+
+	virtual void SetLogFilters(const openpal::LogFilters& filters) override final;
+
 	IMaster* AddMaster(		const std::string& id,	                        
 	                        ISOEHandler* pPublisher,
 	                        openpal::IUTCTimeSource* pTimeSource,

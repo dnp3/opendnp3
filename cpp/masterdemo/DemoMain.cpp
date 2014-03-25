@@ -26,6 +26,7 @@
 #include <opendnp3/master/ICommandProcessor.h>
 #include <opendnp3/master/ISOEHandler.h>
 #include <opendnp3/LogLevelInterpreter.h>
+#include <opendnp3/LogLevels.h>
 
 #include <asiopal/Log.h>
 #include <asiopal/LogToStdio.h>

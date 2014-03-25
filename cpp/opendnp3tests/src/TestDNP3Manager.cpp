@@ -22,6 +22,7 @@
 
 #include <opendnp3/DNP3Manager.h>
 #include <opendnp3/IChannel.h>
+#include <opendnp3/LogLevels.h>
 
 #include <opendnp3/outstation/IOutstation.h>
 #include <opendnp3/outstation/SimpleCommandHandler.h>
@@ -37,7 +38,6 @@
 #include <asiopal/PhysicalLayerAsyncTCPServer.h>
 
 #include <asiopal/UTCTimeSource.h>
-#include <asiopal/Mutex.h>
 #include <asiopal/ShutdownHandler.h>
 
 #include <openpal/LogRoot.h>

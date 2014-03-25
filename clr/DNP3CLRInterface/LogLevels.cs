@@ -24,12 +24,46 @@ using System.Text;
 
 namespace DNP3.Interface
 {
+    /// <summary>
+    /// Combinations of the log filters
+    /// </summary>
     public static class LogLevels
     {
         public static readonly System.UInt32 NONE = 0;
         public static readonly System.UInt32 ALL = ~NONE;
         public static readonly System.UInt32 NORMAL = LogFilters.EVENT | LogFilters.ERROR | LogFilters.WARNING | LogFilters.INFO;        
     }
+
+    /// <summary>
+    /// Strongly typed wrapper for log filters
+    /// </summary>
+    public struct LogFilter
+    {
+        public LogFilter(System.UInt32 flags)
+        {
+            this.flags = flags;
+        }
+
+        public LogFilter Add(System.UInt32 flags)
+        {
+            return new LogFilter(this.flags | flags);
+        }
+
+        public LogFilter Remove(System.UInt32 flags)
+        {
+            return new LogFilter(this.flags & (~flags));
+        }
+
+        public System.UInt32 Flags
+        {
+            get
+            {
+                return flags;
+            }
+        }
+
+        private readonly System.UInt32 flags;
+    };
 
     /// <summary>
     /// Constant log filter bitfield

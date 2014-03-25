@@ -31,6 +31,17 @@ void ChannelAdapter::SetChannel(opendnp3::IChannel* pChannel_)
 	pChannel = pChannel_;
 }
 
+LogFilter ChannelAdapter::GetLogFilters()
+{
+	return LogFilter(pChannel->GetLogFilters().GetBitfield());
+}
+
+void ChannelAdapter::SetLogFilters(LogFilter filters)
+{
+	openpal::LogFilters flags(filters.Flags);
+	pChannel->SetLogFilters(flags);
+}
+
 void ChannelAdapter::AddStateListener(System::Action<ChannelState>^ listener)
 {
 	pMultiplexer->AddListener(listener);

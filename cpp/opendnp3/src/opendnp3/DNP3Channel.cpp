@@ -100,6 +100,16 @@ openpal::IExecutor* DNP3Channel::GetExecutor()
 	return pPhys->GetExecutor();
 }
 
+openpal::LogFilters DNP3Channel::GetLogFilters() const
+{
+	return pPhys->GetLogRoot().GetFilters();
+}
+
+void DNP3Channel::SetLogFilters(const openpal::LogFilters& filters)
+{
+	pPhys->GetExecutor()->Post([this, filters](){ this->pPhys->GetLogRoot().SetFilters(filters); });	
+}
+
 IMaster* DNP3Channel::AddMaster(const std::string& id, ISOEHandler* apPublisher, IUTCTimeSource* apTimeSource, const MasterStackConfig& config)
 {
 	LinkRoute route(config.link.RemoteAddr, config.link.LocalAddr);

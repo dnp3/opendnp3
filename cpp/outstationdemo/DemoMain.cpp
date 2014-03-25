@@ -27,6 +27,7 @@
 #include <opendnp3/outstation/IOutstation.h>
 #include <opendnp3/LogLevelInterpreter.h>
 #include <opendnp3/IChannel.h>
+#include <opendnp3/LogLevels.h>
 
 #include <asiopal/Log.h>
 #include <asiopal/LogToStdio.h>

@@ -26,9 +26,9 @@
 #include "opendnp3/master/MasterStackConfig.h"
 #include "opendnp3/outstation/SlaveStackConfig.h"
 #include "opendnp3/DestructorHook.h"
-#include "opendnp3/LogLevels.h"
 
 #include <openpal/IUTCTimeSource.h>
+#include <openpal/LogFilters.h>
 
 #include <functional>
 
@@ -71,42 +71,52 @@ public:
 	virtual ~IChannel() {}
 
 	/**
-	* Shutdown the channel.
+	* Asynchronously shutdown the channel
 	*/
 	virtual void BeginShutdown() = 0;
 
 	/**
-	    * @return The execution context associated with the channel
-	    */
+	* @return The execution context associated with the channel
+	*/
 	virtual openpal::IExecutor* GetExecutor() = 0;
+
+	/**
+	*  @return The current logger settings for this channel
+	*/
+	virtual openpal::LogFilters GetLogFilters() const = 0;
+
+	/**
+	*  @param filters Adjust the filters to this value
+	*/
+	virtual void SetLogFilters(const openpal::LogFilters& filters) = 0;
 
 	/**
 	* Add a master to the channel
 	*
-	* @param id An ID that gets used for logging
-	* @param logFilters Bitfield that determines what log levels are enabled
-	* @param apPublisher Callback object for all received measurements
-	* @param arCfg Configuration object that controls how the master behaves
+	* @param id An ID that gets used for logging	
+	* @param pPublisher Callback object for all received measurements
+	* @param pTimeSource The interface that is used for outstation time synchronization
+	* @param config Configuration object that controls how the master behaves
 	* @return interface representing the running master
 	*/
 	virtual IMaster* AddMaster(const std::string& id,	                            
-	                           ISOEHandler* apPublisher,
-	                           openpal::IUTCTimeSource* apTimeSource,
-	                           const MasterStackConfig& arCfg) = 0;
+	                           ISOEHandler* pPublisher,
+	                           openpal::IUTCTimeSource* pTimeSource,
+	                           const MasterStackConfig& config) = 0;
 
 	/**
 	* Add an outstation to the channel
 	*
-	* @param id An ID that gets used for logging
-	* @param logFilters Bitfield that determines what log levels are enabled
-	* @param apCmdHandler Callback object for handling command requests
-	* @param arCfg Configuration object that controls how the outstation behaves
+	* @param id An ID that gets used for logging	
+	* @param pCmdHandler Callback object for handling command requests
+	* @param pTimeWriteHandler Interface used to receive time synchronization requests
+	* @param config Configuration object that controls how the outstation behaves
 	* @return interface representing the running outstations
 	*/
 	virtual IOutstation* AddOutstation(	const std::string& id,										
-	                                    ICommandHandler* apCmdHandler,
-	                                    ITimeWriteHandler* apTimeWriteHandler,
-	                                    const SlaveStackConfig& arCfg) = 0;
+	                                    ICommandHandler* pCmdHandler,
+	                                    ITimeWriteHandler* pTimeWriteHandler,
+	                                    const SlaveStackConfig& config) = 0;
 };
 
 }

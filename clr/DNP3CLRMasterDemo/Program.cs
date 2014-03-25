@@ -42,7 +42,7 @@ namespace DotNetMasterDemo
         {
             IDNP3Manager mgr = DNP3ManagerFactory.CreateManager();            
             mgr.AddLogHandler(PrintingLogAdapter.Instance); //this is optional
-            var channel = mgr.AddTCPClient("client", LogLevels.NORMAL | LogFilters.INTERPRET, TimeSpan.FromSeconds(5), TimeSpan.FromMinutes(2), "127.0.0.1", 20000);
+            var channel = mgr.AddTCPClient("client", LogLevels.NORMAL, TimeSpan.FromSeconds(5), TimeSpan.FromMinutes(2), "127.0.0.1", 20000);
 
             //optionally, add a listener for the channel state
             channel.AddStateListener(state => Console.WriteLine("Client state: " + state));
@@ -70,6 +70,11 @@ namespace DotNetMasterDemo
                         var crob = new ControlRelayOutputBlock(ControlCode.PULSE, 1, 100, 100);
                         var future = master.GetCommandProcessor().SelectAndOperate(crob, 0);
                         future.Listen((result) => Console.WriteLine("Result: " + result));
+                        break;
+                    case "l":
+                        // add interpretation to the current logging level
+                        var filters = channel.GetLogFilters();
+                        channel.SetLogFilters(filters.Add(LogFilters.INTERPRET));
                         break;
                     case "i":
                         integrityScan.Demand();
