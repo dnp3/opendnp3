@@ -230,13 +230,13 @@ APDUParser::Result APDUParser::ParseObjectsWithRange(QualifierCode qualifier, op
 		});
 
 	case(GroupVariation::Group110AnyVar):
-		return ParseRangeOfOctetData(gvRecord, buffer, pLogger, qualifier, range, pHandler);
+		return ParseRangeOfOctetData(gvRecord, buffer, pLogger, qualifier, range, pHandler);		
 
 	default:
 		ERROR_PLOGGER_BLOCK(pLogger, levels::WARN, ALERR_ILLEGAL_QUALIFIER_AND_OBJECT,
 		                    "Unsupported qualifier/object - " << QualifierCodeToString(qualifier) << "/" << gvRecord.ToString()
 		                   );
-		return Result::ILLEGAL_OBJECT_QUALIFIER;
+		return Result::INVALID_OBJECT_QUALIFIER;
 	}
 }
 
@@ -248,28 +248,37 @@ APDUParser::Result APDUParser::ParseRangeOfOctetData(
     const Range& range,
     IAPDUHandler* pHandler)
 {
-	uint32_t size = gvRecord.variation * range.Count();
-	if (buffer.Size() < size)
+	if (gvRecord.variation > 0)
 	{
-		ERROR_PLOGGER_BLOCK(pLogger, levels::WARN, ALERR_INSUFFICIENT_DATA_FOR_OBJECTS, "Not enough data for specified octet objects");
-		return Result::NOT_ENOUGH_DATA_FOR_OBJECTS;
+		uint32_t size = gvRecord.variation * range.Count();
+		if (buffer.Size() < size)
+		{
+			ERROR_PLOGGER_BLOCK(pLogger, levels::WARN, ALERR_INSUFFICIENT_DATA_FOR_OBJECTS, "Not enough data for specified octet objects");
+			return Result::NOT_ENOUGH_DATA_FOR_OBJECTS;
+		}
+		else
+		{
+			if (pHandler)
+			{
+				auto collection = CreateLazyIterable<IndexedValue<OctetString, uint16_t>>(buffer, range.Count(), [gvRecord, range](ReadOnlyBuffer & buff, uint32_t pos)
+				{
+					OctetString octets(buff.Truncate(gvRecord.variation));
+					IndexedValue<OctetString, uint16_t> value(octets, range.start + pos);
+					buff.Advance(gvRecord.variation);
+					return value;
+				});
+				pHandler->OnRange(gvRecord.enumeration, qualifier, collection);
+			}
+			buffer.Advance(size);
+			return Result::OK;
+		}
 	}
 	else
 	{
-		if(pHandler)
-		{
-			auto collection = CreateLazyIterable<IndexedValue<OctetString, uint16_t>>(buffer, range.Count(), [gvRecord, range](ReadOnlyBuffer & buff, uint32_t pos)
-			{
-				OctetString octets(buff.Truncate(gvRecord.variation));
-				IndexedValue<OctetString, uint16_t> value(octets, range.start + pos);
-				buff.Advance(gvRecord.variation);
-				return value;
-			});
-			pHandler->OnRange(gvRecord.enumeration, qualifier, collection);
-		}
-		buffer.Advance(size);
-		return Result::OK;
+		PLOGGER_BLOCK(pLogger, levels::WARN, "Octet string variation 0 may only be used in requests");
+		return Result::INVALID_OBJECT;
 	}
+	
 }
 
 }

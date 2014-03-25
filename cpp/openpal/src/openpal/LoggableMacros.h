@@ -35,9 +35,9 @@
 
 #define LOGGER_BLOCK(logger, severity, string) ERROR_LOGGER_BLOCK(logger, severity, string, -1)
 
-#define PLOGGER_BLOCK(pLogger, severity, string) ERROR_LOGGER_BLOCK(logger, severity, string, -1) \
-	if(pLogger){ \
-		PLOGGER_BLOCK(*pLogger, severity, string, code) \
+#define PLOGGER_BLOCK(pLogger, severity, string)\
+	if(pLogger){\
+		LOGGER_BLOCK((*pLogger), severity, string)\
 	}
 
 #define ERROR_LOGGER_BLOCK(logger, severity, string, code)\
@@ -49,7 +49,7 @@
 
 
 #define ERROR_PLOGGER_BLOCK(pLogger, severity, code, string)\
-	if(pLogger){ \
+	if(pLogger){\
 		ERROR_LOGGER_BLOCK((*pLogger), severity, string, code)\
 	}
 

@@ -111,7 +111,8 @@ public:
 	    UNREASONABLE_OBJECT_COUNT,
 	    UNKNOWN_OBJECT,
 	    UNKNOWN_QUALIFIER,
-	    ILLEGAL_OBJECT_QUALIFIER,
+	    INVALID_OBJECT_QUALIFIER,
+		INVALID_OBJECT,
 	    BAD_START_STOP,
 	    COUNT_OF_ZERO
 	};
@@ -328,30 +329,38 @@ APDUParser::Result APDUParser::ParseIndexPrefixedOctetData(
     uint32_t count,
     IAPDUHandler* pHandler)
 {
-	uint32_t size = count * (IndexType::Size + gvRecord.variation);
-	if (buffer.Size() < size)
+	if (gvRecord.variation > 0)
 	{
-		ERROR_PLOGGER_BLOCK(pLogger, levels::WARN, ALERR_INSUFFICIENT_DATA_FOR_OBJECTS, "Not enough data for specified bitfield objects");
-		return APDUParser::Result::NOT_ENOUGH_DATA_FOR_OBJECTS;
+		uint32_t size = count * (IndexType::Size + gvRecord.variation);
+		if (buffer.Size() < size)
+		{
+			ERROR_PLOGGER_BLOCK(pLogger, levels::WARN, ALERR_INSUFFICIENT_DATA_FOR_OBJECTS, "Not enough data for specified bitfield objects");
+			return APDUParser::Result::NOT_ENOUGH_DATA_FOR_OBJECTS;
+		}
+		else
+		{
+			if (pHandler)
+			{
+				auto iterable = CreateLazyIterable<IndexedValue<OctetString, uint16_t>>(buffer, count,
+					[&](openpal::ReadOnlyBuffer & buff, uint32_t position)
+				{
+					auto index = IndexType::ReadBuffer(buff);
+					OctetString octets(buff.Truncate(gvRecord.variation));
+					buff.Advance(gvRecord.variation);
+					return IndexedValue<OctetString, uint16_t>(octets, index);
+				}
+				);
+				pHandler->OnIndexPrefix(gvRecord.enumeration, qualifier, iterable);
+			}
+
+			buffer.Advance(size);
+			return APDUParser::Result::OK;
+		}
 	}
 	else
 	{
-		if (pHandler)
-		{
-			auto iterable = CreateLazyIterable<IndexedValue<OctetString, uint16_t>>(buffer, count,
-			                [&](openpal::ReadOnlyBuffer & buff, uint32_t position)
-			{
-				auto index = IndexType::ReadBuffer(buff);
-				OctetString octets(buff.Truncate(gvRecord.variation));
-				buff.Advance(gvRecord.variation);
-				return IndexedValue<OctetString, uint16_t>(octets, index);
-			}
-			                                                                       );
-			pHandler->OnIndexPrefix(gvRecord.enumeration, qualifier, iterable);
-		}
-
-		buffer.Advance(size);
-		return APDUParser::Result::OK;
+		PLOGGER_BLOCK(pLogger, levels::WARN, "Octet string variation 0 may only be used in requests");
+		return Result::INVALID_OBJECT;
 	}
 }
 
@@ -428,7 +437,7 @@ APDUParser::Result APDUParser::ParseObjectsWithIndexPrefix(QualifierCode qualifi
 		ERROR_PLOGGER_BLOCK(pLogger, levels::WARN, ALERR_ILLEGAL_QUALIFIER_AND_OBJECT,
 		                    "Unsupported qualifier/object - " << QualifierCodeToString(qualifier) << "/" << gvRecord.ToString()
 		                   );
-		return Result::ILLEGAL_OBJECT_QUALIFIER;
+		return Result::INVALID_OBJECT_QUALIFIER;
 	}
 }
 

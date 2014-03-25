@@ -102,7 +102,7 @@ public:
 		case(APDUParser::Result::UNKNOWN_QUALIFIER):
 			++numUnknownQualifier;
 			break;
-		case(APDUParser::Result::ILLEGAL_OBJECT_QUALIFIER):
+		case(APDUParser::Result::INVALID_OBJECT_QUALIFIER) :
 			++numIllegalObjectQualifier;
 			break;
 		case(APDUParser::Result::BAD_START_STOP):

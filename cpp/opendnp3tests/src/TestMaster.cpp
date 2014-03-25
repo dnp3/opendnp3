@@ -563,7 +563,7 @@ TEST_CASE(SUITE("ParsesOctetStringResponseWithFiveCharacters"))
 	REQUIRE("hello" ==  t.meas.GetEventOctetString(4).AsString());
 }
 
-TEST_CASE(SUITE("ParsesOctetStringResponseWithNoCharacters"))
+TEST_CASE(SUITE("ParsesOctetStringResponseSizeOfOne"))
 {
 	MasterConfig master_cfg;
 	MasterTestObject t(master_cfg);
@@ -571,9 +571,9 @@ TEST_CASE(SUITE("ParsesOctetStringResponseWithNoCharacters"))
 
 	// octet strings shouldn't be found in class 0 polls, but we'll test that we can process them anyway
 	// Group 110 (0x6E) Variation(length), start = 3, stop = 3
-	TestForIntegrityAndRespond(t, "C0 81 00 00 6E 00 00 03 03");
+	TestForIntegrityAndRespond(t, "C0 81 00 00 6E 01 00 03 03 AA");
 
-	REQUIRE("" ==  t.meas.GetOctetString(3).AsString());
+	REQUIRE("AA" ==  toHex(t.meas.GetOctetString(3).ToReadOnly()));
 }
 
 

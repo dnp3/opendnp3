@@ -264,15 +264,15 @@ TEST_CASE(SUITE("MaxCountAccumlatesOverHeaders"))
 	REQUIRE(0 ==  mock.groupVariations.size()); // 0 calls because parser rejects bad count on first pass
 }
 
-TEST_CASE(SUITE("ParserHandlesSmallNumberOfEmptyOctetStringsWithDefaultSettings"))
+TEST_CASE(SUITE("ParserDoesNotAllowEmptyOctetStrings"))
 {
 	HexSequence buffer("6E 00 08 FF 01"); // 255 + 256
 	MockApduHeaderHandler mock;
 
 	auto result = APDUParser::ParseTwoPass(buffer.ToReadOnly(), &mock, nullptr);
 
-	REQUIRE((result == APDUParser::Result::OK));
-	REQUIRE(1 ==  mock.groupVariations.size());
+	REQUIRE((result == APDUParser::Result::INVALID_OBJECT));
+	REQUIRE(0 ==  mock.groupVariations.size());
 }
 
 TEST_CASE(SUITE("ParserRejectsLargeEmptyOctetStringsWithDefaultSettings"))
@@ -289,7 +289,7 @@ TEST_CASE(SUITE("ParserRejectsLargeEmptyOctetStringsWithDefaultSettings"))
 TEST_CASE(SUITE("Group1Var2CountWithIndexUInt8"))
 {
 	// 1 byte count, 1 byte index, index == 09, value = 0x81
-	TestSimple("01 02 17 01 09 81", APDUParser::Result::ILLEGAL_OBJECT_QUALIFIER, 0);
+	TestSimple("01 02 17 01 09 81", APDUParser::Result::INVALID_OBJECT_QUALIFIER, 0);
 }
 
 TEST_CASE(SUITE("Group2Var1CountWithAllIndexSizes"))
