@@ -131,7 +131,7 @@ void AsyncTaskBase::Demand()
 }
 
 
-void AsyncTaskBase::OnComplete(bool aSuccess)
+void AsyncTaskBase::OnComplete(bool aSuccess, bool silent)
 {
 	assert(mIsRunning);
 	mIsRunning = false;
@@ -140,7 +140,10 @@ void AsyncTaskBase::OnComplete(bool aSuccess)
 
 	for(auto & callback : mCallbacks) callback(aSuccess);
 
-	mpGroup->OnCompletion();
+	if (!silent)
+	{
+		mpGroup->OnCompletion();
+	}
 }
 
 void AsyncTaskBase::AddStatusCallback(const std::function<void (bool)>& callback)

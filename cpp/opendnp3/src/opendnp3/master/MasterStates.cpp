@@ -127,6 +127,7 @@ AMS_Waiting AMS_Waiting::mInstance;
 void AMS_Waiting::OnLowerLayerDown(Master* c)
 {
 	ChangeState(c, AMS_Closed::Inst());
+	c->mpScheduledTask->OnComplete(false, true);
 	c->mpTask->OnFailure();
 }
 

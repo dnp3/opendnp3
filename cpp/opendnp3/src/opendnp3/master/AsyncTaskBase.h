@@ -49,7 +49,7 @@ public:
 	virtual ~AsyncTaskBase() {}
 
 	// Implements ITaskCompletion
-	void OnComplete(bool aSuccess);
+	void OnComplete(bool aSuccess, bool silent);
 
 	void AddStatusCallback(const std::function<void (bool)>& callback);
 
