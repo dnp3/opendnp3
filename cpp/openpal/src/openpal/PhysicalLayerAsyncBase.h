@@ -21,7 +21,6 @@
 #ifndef __PHYSICAL_LAYER_ASYNC_BASE_H_
 #define __PHYSICAL_LAYER_ASYNC_BASE_H_
 
-#include "Loggable.h"
 #include "IPhysicalLayerAsync.h"
 #include "LogConfig.h"
 #include "LogRoot.h"
@@ -35,7 +34,7 @@ class PLAS_Base;
 
 // This is the base class for the new async physical layers. It assumes that all of the functions
 // are called from a single thread.
-class PhysicalLayerAsyncBase : public IPhysicalLayerAsync, protected Loggable
+class PhysicalLayerAsyncBase : public IPhysicalLayerAsync
 {
 	class State : public IChannelState
 	{
@@ -170,6 +169,7 @@ protected:
 	void OnWriteCallback(const std::error_code& arError, uint32_t  aNumBytes);
 
 	LogRoot logRoot;
+	Logger logger;
 
 	// "user" object that recieves the callbacks
 	IHandlerAsync* mpHandler;
