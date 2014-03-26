@@ -205,7 +205,6 @@
     <ClInclude Include="src\opendnp3\outstation\SelectionCriteria.h" />
     <ClInclude Include="src\opendnp3\outstation\SelectionIterator.h" />
     <ClInclude Include="src\opendnp3\outstation\SimpleCommandHandler.h" />
-    <ClInclude Include="src\opendnp3\outstation\SimpleDataObserver.h" />
     <ClInclude Include="src\opendnp3\outstation\Slave.h" />
     <ClInclude Include="src\opendnp3\outstation\SlaveConfig.h" />
     <ClInclude Include="src\opendnp3\outstation\SlaveStackConfig.h" />
@@ -349,7 +348,6 @@
     <ClCompile Include="src\opendnp3\outstation\SelectionCriteria.cpp" />
     <ClCompile Include="src\opendnp3\outstation\SelectionIterator.cpp" />
     <ClCompile Include="src\opendnp3\outstation\SimpleCommandHandler.cpp" />
-    <ClCompile Include="src\opendnp3\outstation\SimpleDataObserver.cpp" />
     <ClCompile Include="src\opendnp3\outstation\Slave.cpp" />
     <ClCompile Include="src\opendnp3\outstation\SlaveConfig.cpp" />
     <ClCompile Include="src\opendnp3\outstation\SlaveStates.cpp" />
