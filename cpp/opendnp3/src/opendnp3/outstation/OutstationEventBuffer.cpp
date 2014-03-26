@@ -101,6 +101,21 @@ void OutstationEventBuffer::Update(const Event<FrozenCounter>& aEvent)
 	overflow |= !InsertEvent(aEvent, EventType::FrozenCounter,  facade.frozenCounterEvents);
 }
 
+void OutstationEventBuffer::Update(const Event<DoubleBitBinary>& aEvent)
+{
+
+}
+
+void OutstationEventBuffer::Update(const Event<BinaryOutputStatus>& aEvent)
+{
+
+}
+
+void OutstationEventBuffer::Update(const Event<AnalogOutputStatus>& aEvent)
+{
+
+}
+
 uint32_t OutstationEventBuffer::NumUnselectedMatching(const SelectionCriteria& criteria) const
 {
 	uint32_t count = 0;

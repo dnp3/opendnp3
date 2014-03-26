@@ -66,12 +66,12 @@ uint32_t ClassCount::Total() const
 	return numBinary + numAnalog + numCounter;
 }
 
-uint32_t ClassCount::CountOf(uint8_t eventTypeMask) const
+uint32_t ClassCount::CountOf(uint32_t eventTypeMask) const
 {
 	uint32_t count = 0;
-	if(eventTypeMask & EventTypeMasks::BINARY) count += numBinary;
-	if(eventTypeMask & EventTypeMasks::ANALOG) count += numAnalog;
-	if(eventTypeMask & EventTypeMasks::COUNTER) count += numCounter;
+	if(eventTypeMask & events::BINARY) count += numBinary;
+	if(eventTypeMask & events::ANALOG) count += numAnalog;
+	if(eventTypeMask & events::COUNTER) count += numCounter;
 	return count;
 }
 

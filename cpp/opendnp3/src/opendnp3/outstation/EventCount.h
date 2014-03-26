@@ -45,7 +45,7 @@ public:
 	bool IsEmpty() const;
 	uint32_t Total() const;
 
-	uint32_t CountOf(uint8_t eventTypeMask) const;
+	uint32_t CountOf(uint32_t eventTypeMask) const;
 
 	void Clear();
 

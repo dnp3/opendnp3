@@ -29,30 +29,36 @@
 namespace opendnp3
 {
 
-enum class EventType : uint8_t
+enum class EventType : uint32_t
 {
-    Binary = 0x01,
-    Analog = 0x02,
-    Counter = 0x04,
-    FrozenCounter = 0x08
+    Binary = 1,
+    Analog = 1 << 1,
+    Counter = 1 << 2,
+    FrozenCounter =	1 << 3,
+	DoubleBitBinary = 1 << 4,
+	BinaryOutputStatus =  1 << 5,
+	AnalogOutputStatus  = 1 << 6
 };
 
-enum class EventClass : uint8_t
+enum class EventClass
 {
-    EC1 = 0x01,
-    EC2 = 0x02,
-    EC3 = 0x04
+    EC1 = 1,
+    EC2 = 1 << 1,
+    EC3 = 1 << 2
 };
 
-struct EventTypeMasks : private openpal::PureStatic
-{
-	static const uint8_t BINARY = static_cast<uint8_t>(EventType::Binary);
-	static const uint8_t ANALOG = static_cast<uint8_t>(EventType::Analog);
-	static const uint8_t COUNTER = static_cast<uint8_t>(EventType::Counter);
-	static const uint8_t FROZEN_COUNTER = static_cast<uint8_t>(EventType::FrozenCounter);
+namespace events {
 
-	static const uint8_t ALL_TYPES = BINARY | ANALOG | COUNTER | FROZEN_COUNTER;
-};
+	const uint32_t BINARY = static_cast<uint32_t>(EventType::Binary);
+	const uint32_t ANALOG = static_cast<uint32_t>(EventType::Analog);
+	const uint32_t COUNTER = static_cast<uint32_t>(EventType::Counter);
+	const uint32_t FROZEN_COUNTER = static_cast<uint32_t>(EventType::FrozenCounter);
+	const uint32_t DOUBLE_BIT_BINARY = static_cast<uint32_t>(EventType::DoubleBitBinary);
+	const uint32_t BINARY_OUTPUT_STATUS = static_cast<uint32_t>(EventType::BinaryOutputStatus);
+	const uint32_t ANALOG_OUTPUT_STATUS = static_cast<uint32_t>(EventType::AnalogOutputStatus);
+
+	static const uint8_t ALL_TYPES = BINARY | ANALOG | COUNTER | FROZEN_COUNTER | DOUBLE_BIT_BINARY | BINARY_OUTPUT_STATUS | ANALOG_OUTPUT_STATUS;
+}
 
 }
 

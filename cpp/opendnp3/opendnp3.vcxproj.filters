@@ -1067,5 +1067,8 @@
     <ClCompile Include="src\opendnp3\LogLevelInterpreter.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="src\opendnp3\outstation\SelectionCriteria.cpp">
+      <Filter>Source\outstation</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

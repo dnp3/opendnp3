@@ -345,6 +345,7 @@
     <ClCompile Include="src\opendnp3\outstation\OutstationStackImpl.cpp" />
     <ClCompile Include="src\opendnp3\outstation\ReadHandler.cpp" />
     <ClCompile Include="src\opendnp3\outstation\SelectBuffer.cpp" />
+    <ClCompile Include="src\opendnp3\outstation\SelectionCriteria.cpp" />
     <ClCompile Include="src\opendnp3\outstation\SimpleCommandHandler.cpp" />
     <ClCompile Include="src\opendnp3\outstation\SimpleDataObserver.cpp" />
     <ClCompile Include="src\opendnp3\outstation\Slave.cpp" />

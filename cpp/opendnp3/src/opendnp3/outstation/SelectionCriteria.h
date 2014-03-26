@@ -29,34 +29,17 @@ namespace opendnp3
 
 struct SelectionCriteria
 {
-	SelectionCriteria() : class1(0), class2(0), class3(0)
-	{}
+	SelectionCriteria();
 
-	SelectionCriteria(uint8_t clazz1, uint8_t clazz2, uint8_t clazz3) :
-		class1(clazz1),
-		class2(clazz2),
-		class3(clazz3)
-	{}
+	SelectionCriteria(uint32_t clazz1, uint32_t clazz2, uint32_t clazz3);
 
-	uint8_t class1;  // these represent bit masks for measurement types in each class
-	uint8_t class2;
-	uint8_t class3;
+	bool IsMatch(EventClass clazz, EventType type) const;
 
-	inline bool IsMatch(EventClass clazz, EventType type) const
-	{
-		switch(clazz)
-		{
-		case(EventClass::EC1):
-			return (class1 & static_cast<uint8_t>(type)) != 0;
-		case(EventClass::EC2):
-			return (class2 & static_cast<uint8_t>(type)) != 0;
-		case(EventClass::EC3):
-			return (class3 & static_cast<uint8_t>(type)) != 0;
-		default:
-			return false;
-		}
-	}
+	// ----- bit masks for measurement types in each class --------
 
+	uint32_t class1;
+	uint32_t class2;
+	uint32_t class3;
 };
 
 }

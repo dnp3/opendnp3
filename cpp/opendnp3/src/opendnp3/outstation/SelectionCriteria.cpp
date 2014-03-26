@@ -18,42 +18,36 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __I_EVENT_BUFFER_H_
-#define __I_EVENT_BUFFER_H_
 
-#include "opendnp3/app/MeasurementTypes.h"
-#include "opendnp3/app/PointClass.h"
-
-#include "opendnp3/outstation/Event.h"
+#include "SelectionCriteria.h"
 
 namespace opendnp3
 {
 
-// @section desc Used by the database
-class IEventBuffer
+
+SelectionCriteria::SelectionCriteria() : class1(0), class2(0), class3(0)
+{}
+
+SelectionCriteria::SelectionCriteria(uint32_t clazz1, uint32_t clazz2, uint32_t clazz3) :
+	class1(clazz1),
+	class2(clazz2),
+	class3(clazz3)
+{}
+
+
+bool SelectionCriteria::IsMatch(EventClass clazz, EventType type) const
 {
-public:
-
-	virtual ~IEventBuffer() {}
-
-	virtual void Update(const Event<Binary>& aEvent) = 0;	
-
-	virtual void Update(const Event<Analog>& aEvent) = 0;
-
-	virtual void Update(const Event<Counter>& aEvent) = 0;
-
-	virtual void Update(const Event<FrozenCounter>& aEvent) = 0;
-
-	virtual void Update(const Event<DoubleBitBinary>& aEvent) = 0;
-
-	virtual void Update(const Event<BinaryOutputStatus>& aEvent) = 0;
-
-	virtual void Update(const Event<AnalogOutputStatus>& aEvent) = 0;
-
-};
-
+	switch(clazz)
+	{
+		case(EventClass::EC1):
+			return (class1 & static_cast<uint32_t>(type)) != 0;
+		case(EventClass::EC2):
+			return (class2 & static_cast<uint32_t>(type)) != 0;
+		case(EventClass::EC3):
+			return (class3 & static_cast<uint32_t>(type)) != 0;
+		default:
+			return false;
+	}
 }
 
-
-#endif
-
+}
