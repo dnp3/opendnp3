@@ -26,18 +26,18 @@ namespace opendnp3
 MultiplexingDataObserver :: MultiplexingDataObserver()
 {}
 
-MultiplexingDataObserver :: MultiplexingDataObserver(IDataObserver* apObserver1)
+MultiplexingDataObserver :: MultiplexingDataObserver(IMeasurementLoader* apObserver1)
 {
 	AddObserver(apObserver1);
 }
 
-MultiplexingDataObserver :: MultiplexingDataObserver(IDataObserver* apObserver1, IDataObserver* apObserver2)
+MultiplexingDataObserver :: MultiplexingDataObserver(IMeasurementLoader* apObserver1, IMeasurementLoader* apObserver2)
 {
 	AddObserver(apObserver1);
 	AddObserver(apObserver2);
 }
 
-void MultiplexingDataObserver :: AddObserver(IDataObserver* apObserver)
+void MultiplexingDataObserver :: AddObserver(IMeasurementLoader* apObserver)
 {
 	mObservers.push_back(apObserver);
 }

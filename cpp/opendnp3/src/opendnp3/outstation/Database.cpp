@@ -92,7 +92,7 @@ openpal::Indexable<DualValue<AnalogOutputStatus>, uint16_t> Database::SetpointSt
 }
 
 ////////////////////////////////////////////////////
-// IDataObserver interface
+// IMeasurementLoader* interface
 ////////////////////////////////////////////////////
 
 void Database::Update(const Binary& value, uint16_t index)

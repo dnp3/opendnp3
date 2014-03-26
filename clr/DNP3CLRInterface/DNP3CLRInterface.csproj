@@ -65,7 +65,7 @@
     <Compile Include="ICommandHandler.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="IDataObserver.cs">
+    <Compile Include="IMeasurementLoader.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="IDNP3Manager.cs" />

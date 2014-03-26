@@ -26,7 +26,7 @@
 
 namespace opendnp3
 {
-
+	/*
 SimpleDataObserver::SimpleDataObserver(std::function<void (const std::string&)> aOutputFunc) :
 	mOutputFunc(aOutputFunc)
 {}
@@ -82,5 +82,6 @@ void SimpleDataObserver::Update(const AnalogOutputStatus& arPoint, uint16_t aInd
 NullDataObserver NullDataObserver::mInstance;
 
 PrintingDataObserver PrintingDataObserver::mInstance;
+*/
 
 }

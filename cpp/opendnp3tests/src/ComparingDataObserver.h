@@ -21,7 +21,7 @@
 #ifndef __COMPARING_DATA_OBSERVER_H_
 #define __COMPARING_DATA_OBSERVER_H_
 
-#include <opendnp3/outstation/IDataObserver.h>
+#include <opendnp3/outstation/IMeasurementLoader.h>
 
 #include <opendnp3/app/MeasurementHelpers.h>
 

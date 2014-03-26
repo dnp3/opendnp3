@@ -50,7 +50,6 @@ class IExecutor;
 namespace opendnp3
 {
 
-class IDataObserver;
 class ITask;
 class AsyncTaskGroup;
 class ITimeSource;

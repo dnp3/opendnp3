@@ -50,7 +50,7 @@ public:
 		const SlaveStackConfig& arCfg,
 		const StackActionHandler& handler);
 
-	IDataObserver* GetDataObserver();
+	IMeasurementLoader* GetLoader();
 
 	void SetNeedTimeIIN();	
 

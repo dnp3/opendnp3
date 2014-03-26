@@ -53,16 +53,16 @@ namespace DotNetSlaveDemo
             outstation.Enable(); // enable communications
 
             Console.WriteLine("Press <Enter> to randomly change a value");
-            var publisher = outstation.GetDataObserver();
+            var loader = outstation.GetLoader();
             Random r = new Random();
             while (true)
             {
                 Console.ReadLine();
                 int value = r.Next(UInt16.MaxValue);
-                System.Console.WriteLine("Change Analog 0 to: " + value);
-                publisher.Start();
-                publisher.Update(new Analog(value, 1, DateTime.Now), 0);
-                publisher.End();
+                System.Console.WriteLine("Change Analog 0 to: " + value);                
+                loader.Start();
+                loader.Update(new Analog(value, 1, DateTime.Now), 0);
+                loader.End();
             }
         }
     }

@@ -33,10 +33,10 @@ namespace DNP3.Interface
     public interface IOutstation: IStack
     {
         /// <summary>
-        /// Retrieve the data observer used to load measurements
+        /// Retrieve the interface used to load measurements
         /// </summary>
         /// <returns>Interface used to load data into the outstation</returns>
-        IDataObserver GetDataObserver();
+        IMeasurementLoader GetLoader();
 
         /// <summary>
         /// Sets the outstation need time IIN bit

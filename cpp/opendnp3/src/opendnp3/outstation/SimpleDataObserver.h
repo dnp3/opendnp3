@@ -21,7 +21,7 @@
 #ifndef __SIMPLE_DATA_OBSERVER_H_
 #define	__SIMPLE_DATA_OBSERVER_H_
 
-#include "opendnp3/outstation/IDataObserver.h"
+#include "opendnp3/outstation/IMeasurementLoader.h"
 #include "opendnp3/Singleton.h"
 
 #include <iostream>
@@ -34,13 +34,12 @@ namespace opendnp3
 /**
 * Mock data observer that sends string representation of measurements to a functor
 */
-class SimpleDataObserver : public IDataObserver
+	/*
+class SimpleDataObserver : public IMeasurementLoader
 {
-public:
-	/**
-	* Primary constructor
-	* @param aOutputFunc functor that will receive messages
-	*/
+public:	
+	/// Primary constructor
+	/// @param aOutputFunc functor that will receive messages	
 	SimpleDataObserver(std::function<void (const std::string&)> aOutputFunc);
 
 	void Update(const Binary& arPoint, uint16_t) final;
@@ -62,7 +61,7 @@ private:
 
 };
 
-/// Singleton IDataObserver that ignores all messages
+/// Singleton IMeasurementLoader that ignores all messages
 class NullDataObserver : public SimpleDataObserver
 {
 private:
@@ -77,7 +76,7 @@ public:
 	}
 };
 
-/// Singleton IDataObserver that prints all measurements to the console
+/// Singleton IMeasurementLoader* that prints all measurements to the console
 class PrintingDataObserver : public SimpleDataObserver
 {
 private:
@@ -94,6 +93,7 @@ public:
 		return &mInstance;
 	}
 };
+*/
 
 }
 

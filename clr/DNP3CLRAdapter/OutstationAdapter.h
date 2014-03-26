@@ -17,7 +17,7 @@ public:
 
 	OutstationAdapter(opendnp3::IOutstation* apOutstation);
 
-	virtual IDataObserver^ GetDataObserver();
+	virtual IMeasurementLoader^ GetLoader();
 
 	virtual void SetNeedTimeIIN();	
 
@@ -29,7 +29,7 @@ public:
 
 private:
 	opendnp3::IOutstation* mpOutstation;
-	IDataObserver^ mDataObserverAdapter;
+	IMeasurementLoader^ mLoaderAdapter;
 };
 
 }

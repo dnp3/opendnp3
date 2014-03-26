@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __I_DATA_OBSERVER_H_
-#define	__I_DATA_OBSERVER_H_
+#ifndef __I_MEASUREMENT_LOADER_H_
+#define	__I_MEASUREMENT_LOADER_H_
 
 #include <openpal/ITransactable.h>
 
@@ -30,29 +30,27 @@ namespace opendnp3
 {
 
 /**
+@desc IMeasurementLoader*is the interface used to load measurements into an outstation.
 
-IDataObserver is the key interface between master/outstation and
-the "application" code. The outstation application is responsible for measuring or
+The outstation application is responsible for measuring or
 calculating data and then pushing it into this interface when it is ready
-to publish it. The master application is responsible for handling the data
-as it is received from an outstation. That data needs to be strongly typed
-and passed by index. As with all ITransactables it should be used with the
-exception safe Transaction object.
+to publish it. As with all ITransactable objects it should be used with the
+exception-safe Transaction object.
 
 \code
 {
-	Transaction t(pObserver);
-	pObserver->Update(Analog(12), 3);
-	pObserver->Update(Binary(true), 1);
+	Transaction t(pLoader);
+	pLoader->Update(Analog(12), 3);
+	pLoader->Update(Binary(true), 1);
 }
 \endcode
 
 */
-class IDataObserver : public openpal::ITransactable
+class IMeasurementLoader : public openpal::ITransactable
 {
 public:
 
-	virtual ~IDataObserver() {}
+	virtual ~IMeasurementLoader() {}
 
 	/**
 	* Update or receive a Binary measurement, must have transaction started

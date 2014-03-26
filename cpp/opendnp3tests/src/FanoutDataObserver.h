@@ -21,14 +21,16 @@
 #ifndef __FANOUT_DATA_OBSERVER_H_
 #define __FANOUT_DATA_OBSERVER_H_
 
+#include <opendnp3/outstation/IMeasurementLoader.h>
+
 namespace opendnp3
 {
 
-class FanoutDataObserver : public IDataObserver
+class FanoutDataObserver : public IMeasurementLoader
 {
 public:
 
-	void AddObserver(IDataObserver* apObserver)
+	void AddObserver(IMeasurementLoader* apObserver)
 	{
 		mObservers.push_back(apObserver);
 	}
@@ -73,7 +75,7 @@ public:
 	}
 
 private:
-	std::vector<IDataObserver*> mObservers;
+	std::vector<IMeasurementLoader*> mObservers;
 };
 
 }

@@ -180,7 +180,7 @@ void IntegrationTest::AddStackPair(uint32_t filters, uint16_t aNumPoints)
 		cfg.slave.mDisableUnsol = false;
 		cfg.slave.mUnsolPackDelay = TimeDuration::Zero();
 		auto pOutstation = pServer->AddOutstation(oss.str() + " outstation", &mCmdHandler, NullTimeWriteHandler::Inst(), cfg);
-		this->mFanout.AddObserver(pOutstation->GetDataObserver());
+		this->mFanout.AddObserver(pOutstation->GetLoader());
 		pOutstation->Enable();
 	}
 

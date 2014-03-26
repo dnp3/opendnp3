@@ -26,13 +26,13 @@
 namespace opendnp3
 {
 
-class IDataObserver;
+class IMeasurementLoader;
 
 /**
 * Interface representing a running outstation.
 * To get a data observer interface to load measurements on the outstation:-
 \code
-	IDataObserver* pDataObserver = pOutstation->GetDataObserver()
+	IMeasurementLoader* pDataObserver = pOutstation->GetDataObserver()
 \endcode
 */
 class IOutstation : public DNP3Stack
@@ -47,10 +47,10 @@ public:
 	virtual void SetNeedTimeIIN() = 0;
 
 	/**
-	* Get a data observer interface to load measurements on the outstation
+	* Get a the measurement loader interface to load measurements on the outstation
 	* @return Inteface used to load measurements into the outstation
 	*/
-	virtual IDataObserver* GetDataObserver() = 0;
+	virtual IMeasurementLoader* GetLoader() = 0;
 };
 
 }

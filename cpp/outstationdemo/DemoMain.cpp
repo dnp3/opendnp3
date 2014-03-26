@@ -86,7 +86,7 @@ int main(int argc, char* argv[])
 	// Enable the outstation and start communications
 	pOutstation->Enable();
 
-	auto pDataObserver = pOutstation->GetDataObserver();
+	auto pLoader = pOutstation->GetLoader();
 
 	std::string input;
 	uint32_t count = 0;
@@ -97,7 +97,7 @@ int main(int argc, char* argv[])
 		if(input == "exit") break;
 		else
 		{
-			TimeTransaction tx(pDataObserver, UTCTimeSource::Inst()->Now()); //automatically calls Start()/End() and sets time for each measurement
+			TimeTransaction tx(pLoader, UTCTimeSource::Inst()->Now()); //automatically calls Start()/End() and sets time for each measurement
 			tx.Update(Counter(count, CQ_ONLINE), 0);
 			++count;
 		}

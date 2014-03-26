@@ -40,7 +40,7 @@ namespace opendnp3
 	dynamicDatabaseBuffer.Configure(config.database);
 }
 
-IDataObserver* OutstationStackImpl::GetDataObserver()
+IMeasurementLoader* OutstationStackImpl::GetLoader()
 {
 	return &database;
 }

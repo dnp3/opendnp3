@@ -28,7 +28,7 @@
 
 #include "opendnp3/app/StaticRange.h"
 
-#include "opendnp3/outstation/IDataObserver.h"
+#include "opendnp3/outstation/IMeasurementLoader.h"
 #include "opendnp3/outstation/IEventBuffer.h"
 #include "opendnp3/outstation/StaticDataFacade.h"
 
@@ -44,7 +44,7 @@ Manages the static data model of a DNP3 slave. Dual-interface to update data poi
 
 Passes data updates to an associated event buffer for event generation/management.
 */
-class Database : public IDataObserver
+class Database : public IMeasurementLoader
 {
 public:
 
@@ -56,7 +56,7 @@ public:
 
 	void DoubleBuffer();
 
-	// IDataObserver functions
+	// IMeasurementLoader*functions
 	void Update(const Binary& arPoint, uint16_t) final;
 	void Update(const Analog& arPoint, uint16_t) final;
 	void Update(const Counter& arPoint, uint16_t) final;

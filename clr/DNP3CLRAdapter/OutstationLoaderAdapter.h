@@ -1,7 +1,7 @@
-#ifndef __SLAVE_DATA_OBSERVER_ADAPTER_H_
-#define __SLAVE_DATA_OBSERVER_ADAPTER_H_
+#ifndef __OUTSTATION_LOADER_ADAPTER_H_
+#define __OUTSTATION_LOADER_ADAPTER_H_
 
-#include <opendnp3/outstation/IDataObserver.h>
+#include <opendnp3/outstation/IMeasurementLoader.h>
 
 using namespace DNP3::Interface;
 
@@ -9,11 +9,11 @@ namespace DNP3
 {
 namespace Adapter
 {
-private ref class SlaveDataObserverAdapter : DNP3::Interface::IDataObserver
+private ref class OutstationLoaderAdapter : DNP3::Interface::IMeasurementLoader
 {
 public:
 
-	SlaveDataObserverAdapter(opendnp3::IDataObserver* proxy);
+	OutstationLoaderAdapter(opendnp3::IMeasurementLoader* proxy);
 
 	virtual void Start();
 	virtual void Update(Binary^ meas, System::UInt32 index);
@@ -26,7 +26,7 @@ public:
 
 private:
 
-	opendnp3::IDataObserver* proxy;
+	opendnp3::IMeasurementLoader* proxy;
 };
 
 }

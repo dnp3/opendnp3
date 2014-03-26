@@ -184,7 +184,7 @@
     <ClInclude Include="OutstationTimeWriteAdapter.h" />
     <ClInclude Include="ScanListenerAdapter.h" />
     <ClInclude Include="SlaveCommandHandlerAdapter.h" />
-    <ClInclude Include="SlaveDataObserverAdapter.h" />
+    <ClInclude Include="OutstationLoaderAdapter.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ChannelAdapter.cpp" />
@@ -197,7 +197,7 @@
     <ClCompile Include="OutstationAdapter.cpp" />
     <ClCompile Include="OutstationTimeWriteAdapter.cpp" />
     <ClCompile Include="SlaveCommandHandlerAdapter.cpp" />
-    <ClCompile Include="SlaveDataObserverAdapter.cpp" />
+    <ClCompile Include="OutstationLoaderAdapter.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\cpp\asiodnp3\asiodnp3.vcxproj">

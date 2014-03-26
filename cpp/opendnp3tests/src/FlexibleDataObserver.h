@@ -21,7 +21,7 @@
 #ifndef __FLEXIBLE_DATA_OBSERVER_H_
 #define __FLEXIBLE_DATA_OBSERVER_H_
 
-#include <opendnp3/outstation/IDataObserver.h>
+#include <opendnp3/outstation/IMeasurementLoader.h>
 #include <opendnp3/master/ISOEHandler.h>
 
 #include <openpal/Comparisons.h>

@@ -31,7 +31,7 @@ namespace DNP3.Interface
     /// Interface called to load data into an outstation or receive data from a master
     /// start() / end() must be called before / after any calls to update.
     /// </summary>
-    public interface IDataObserver
+    public interface IMeasurementLoader
 	{
         /// <summary>
         /// Start a transaction

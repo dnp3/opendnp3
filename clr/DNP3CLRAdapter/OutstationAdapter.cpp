@@ -1,5 +1,5 @@
 #include "OutstationAdapter.h"
-#include "SlaveDataObserverAdapter.h"
+#include "OutstationLoaderAdapter.h"
 #include "DeleteAnything.h"
 
 namespace DNP3
@@ -10,12 +10,12 @@ namespace Adapter
 
 OutstationAdapter::OutstationAdapter(opendnp3::IOutstation* apOutstation) :
 	mpOutstation(apOutstation),
-	mDataObserverAdapter(gcnew SlaveDataObserverAdapter(apOutstation->GetDataObserver()))
+	mLoaderAdapter(gcnew OutstationLoaderAdapter(apOutstation->GetLoader()))
 {}
 
-IDataObserver^ OutstationAdapter::GetDataObserver()
+IMeasurementLoader^ OutstationAdapter::GetLoader()
 {
-	return mDataObserverAdapter;
+	return mLoaderAdapter;
 }
 
 void OutstationAdapter::SetNeedTimeIIN()
