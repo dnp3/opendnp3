@@ -31,6 +31,7 @@
 #include <openpal/Location.h>
 
 #include "opendnp3/app/ApplicationStack.h"
+#include "opendnp3/Mutex.h"
 
 namespace opendnp3
 {
@@ -57,6 +58,7 @@ public:
 private:
 	openpal::IExecutor* pExecutor;	
 	DynamicallyAllocatedDatabase dynamicDatabaseBuffer;
+	Mutex mutex;
 	Database database;
 	Slave slave;
 };

@@ -25,7 +25,7 @@
 
 #include <openpal/IMutex.h>
 
-namespace asiopal
+namespace opendnp3
 {
 
 class Mutex : public openpal::IMutex

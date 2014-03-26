@@ -72,7 +72,7 @@ public:
 		buffers(dbTemplate),
 		db(buffers.GetFacade())
 	{
-		db.AddEventBuffer(&buffer);
+		db.SetEventBuffer(buffer);
 	}
 
 private:

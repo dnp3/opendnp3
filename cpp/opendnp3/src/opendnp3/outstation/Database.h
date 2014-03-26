@@ -24,15 +24,10 @@
 #include <openpal/StaticList.h>
 #include <openpal/IMutex.h>
 
-#include "opendnp3/StaticSizeConfiguration.h"
-
 #include "opendnp3/app/StaticRange.h"
-
-#include "opendnp3/outstation/IMeasurementLoader.h"
 #include "opendnp3/outstation/IEventBuffer.h"
+#include "opendnp3/outstation/IMeasurementLoader.h"
 #include "opendnp3/outstation/StaticDataFacade.h"
-
-
 
 namespace opendnp3
 {
@@ -52,7 +47,7 @@ public:
 
 	/* Functions for obtaining iterators */
 
-	bool AddEventBuffer(IEventBuffer* apEventBuffer);
+	void SetEventBuffer(IEventBuffer& eventBuffer);
 
 	void DoubleBuffer();
 
@@ -119,13 +114,16 @@ private:
 			EventClass eventClass;
 			if(metadata.CheckForEvent(value) && metadata.GetEventClass(eventClass))
 			{
-				this->UpdateEventBuffer(value, index, eventClass);
+				if (pEventBuffer)
+				{
+					pEventBuffer->Update(Event<T>(value, index, eventClass));
+				}				
 			}
 			collection.values[index].Update(value);
 		}
 	}
 
-	openpal::StaticList<IEventBuffer*, uint16_t, sizes::MAX_EVENT_BUFFERS> eventBuffers;
+	IEventBuffer* pEventBuffer;
 
 	openpal::IMutex* pMutex;
 

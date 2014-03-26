@@ -35,6 +35,7 @@ namespace opendnp3
 
 Database::Database(const StaticDataFacade& aStaticData, openpal::IMutex* pMutex_) :
 	staticData(aStaticData),
+	pEventBuffer(nullptr),
 	pMutex(pMutex_)
 {
 
@@ -50,10 +51,9 @@ void Database::End()
 	openpal::CriticalSection::Unlock(pMutex);
 }
 
-bool Database::AddEventBuffer(IEventBuffer* apEventBuffer)
+void Database::SetEventBuffer(IEventBuffer& eventBuffer)
 {
-	assert(apEventBuffer != nullptr);
-	return eventBuffers.Add(apEventBuffer);
+	pEventBuffer = &eventBuffer;	
 }
 
 void Database::DoubleBuffer()

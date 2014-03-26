@@ -21,7 +21,6 @@
   <ItemGroup>
     <ClInclude Include="src\asiopal\ASIOExecutor.h" />
     <ClInclude Include="src\asiopal\ASIOSerialHelpers.h" />
-    <ClInclude Include="src\asiopal\Mutex.h" />
     <ClInclude Include="src\asiopal\IOServiceThreadPool.h" />
     <ClInclude Include="src\asiopal\Log.h" />
     <ClInclude Include="src\asiopal\LogToStdio.h" />

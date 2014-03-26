@@ -672,6 +672,9 @@
     <ClInclude Include="src\opendnp3\outstation\IMeasurementLoader.h">
       <Filter>Header\outstation</Filter>
     </ClInclude>
+    <ClInclude Include="src\opendnp3\Mutex.h">
+      <Filter>Header</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\opendnp3\app\AnalogOutput.cpp">

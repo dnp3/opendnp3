@@ -30,9 +30,6 @@ namespace opendnp3
 {
 	namespace sizes
 	{
-		// the maximum number of event buffers that can be bound to a database
-		static const uint16_t MAX_EVENT_BUFFERS = 10;
-
 		// the maximum number of static read object/variation records that can be in any READ request
 		static const uint16_t MAX_READ_REQUESTS = 16;
 
