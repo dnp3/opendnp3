@@ -108,9 +108,9 @@ public:
 	uint8_t GetEventTypeMask()
 	{
 		uint8_t ret = 0;
-		if(GetBool()) ret |= EventTypeMasks::BINARY;
-		if(GetBool()) ret |= EventTypeMasks::ANALOG;
-		if(GetBool()) ret |= EventTypeMasks::COUNTER;
+		if(GetBool()) ret |= events::BINARY;
+		if(GetBool()) ret |= events::ANALOG;
+		if(GetBool()) ret |= events::COUNTER;
 		return ret;
 	}
 

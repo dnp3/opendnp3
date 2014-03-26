@@ -22,6 +22,7 @@
 #define __DATABASE_H_
 
 #include <openpal/StaticList.h>
+#include <openpal/IMutex.h>
 
 #include "opendnp3/StaticSizeConfiguration.h"
 
@@ -47,7 +48,7 @@ class Database : public IDataObserver
 {
 public:
 
-	Database(const StaticDataFacade&, openpal::ITransactable* pTransactable = nullptr);
+	Database(const StaticDataFacade&, openpal::IMutex* pMutex = nullptr);
 
 	/* Functions for obtaining iterators */
 
@@ -126,7 +127,7 @@ private:
 
 	openpal::StaticList<IEventBuffer*, uint16_t, sizes::MAX_EVENT_BUFFERS> eventBuffers;
 
-	openpal::ITransactable* pTransactable;
+	openpal::IMutex* pMutex;
 
 	// ITransactable  functions, proxies to the given transactable
 

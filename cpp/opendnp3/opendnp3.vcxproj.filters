@@ -672,6 +672,9 @@
     <ClInclude Include="src\opendnp3\LogLevelInterpreter.h">
       <Filter>Header</Filter>
     </ClInclude>
+    <ClInclude Include="src\opendnp3\outstation\SelectionIterator.h">
+      <Filter>Header\outstation</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\opendnp3\app\AnalogOutput.cpp">
@@ -1068,6 +1071,9 @@
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\outstation\SelectionCriteria.cpp">
+      <Filter>Source\outstation</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\outstation\SelectionIterator.cpp">
       <Filter>Source\outstation</Filter>
     </ClCompile>
   </ItemGroup>

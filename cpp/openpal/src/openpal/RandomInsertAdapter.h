@@ -46,6 +46,12 @@ public:
 		return values[index];
 	}
 
+	inline const ValueType& operator[](IndexType index) const
+	{
+		assert(index < values.Size());
+		return values[index];
+	}
+
 	inline bool IsFull() const
 	{
 		return availableIndices.IsEmpty();

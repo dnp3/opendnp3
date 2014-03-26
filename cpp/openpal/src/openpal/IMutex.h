@@ -54,19 +54,29 @@ public:
 	/// Can be constructed with nullptr or an implementation
 	CriticalSection(IMutex* pMutex_) : pMutex(pMutex_)
 	{
+		Lock(pMutex);
+	}
+
+	~CriticalSection()
+	{
+		Unlock(pMutex);
+	}
+
+	static void Lock(IMutex* pMutex)
+	{
 		if (pMutex)
 		{
 			pMutex->Lock();
 		}
 	}
 
-	~CriticalSection()
+	static void Unlock(IMutex* pMutex)
 	{
 		if (pMutex)
 		{
-			pMutex->Unlock();
+			pMutex->Lock();
 		}
-	}	
+	}
 
 private:
 	IMutex* pMutex;

@@ -33,11 +33,13 @@ enum class EventType : uint32_t
 {
     Binary = 1,
     Analog = 1 << 1,
-    Counter = 1 << 2,
-    FrozenCounter =	1 << 3,
+    Counter = 1 << 2,	
+    FrozenCounter =	1 << 3
+	/*
 	DoubleBitBinary = 1 << 4,
 	BinaryOutputStatus =  1 << 5,
 	AnalogOutputStatus  = 1 << 6
+	*/
 };
 
 enum class EventClass
@@ -53,11 +55,13 @@ namespace events {
 	const uint32_t ANALOG = static_cast<uint32_t>(EventType::Analog);
 	const uint32_t COUNTER = static_cast<uint32_t>(EventType::Counter);
 	const uint32_t FROZEN_COUNTER = static_cast<uint32_t>(EventType::FrozenCounter);
+	/*
 	const uint32_t DOUBLE_BIT_BINARY = static_cast<uint32_t>(EventType::DoubleBitBinary);
 	const uint32_t BINARY_OUTPUT_STATUS = static_cast<uint32_t>(EventType::BinaryOutputStatus);
 	const uint32_t ANALOG_OUTPUT_STATUS = static_cast<uint32_t>(EventType::AnalogOutputStatus);
+	*/
 
-	static const uint8_t ALL_TYPES = BINARY | ANALOG | COUNTER | FROZEN_COUNTER | DOUBLE_BIT_BINARY | BINARY_OUTPUT_STATUS | ANALOG_OUTPUT_STATUS;
+	static const uint8_t ALL_TYPES = BINARY | ANALOG | COUNTER | FROZEN_COUNTER;// | DOUBLE_BIT_BINARY | BINARY_OUTPUT_STATUS | ANALOG_OUTPUT_STATUS;
 }
 
 }

@@ -27,6 +27,7 @@
 #include "SelectionCriteria.h"
 #include "IEventWriter.h"
 #include "EventCount.h"
+#include "SelectionIterator.h"
 
 #include <openpal/ListAdapter.h>
 
@@ -49,6 +50,8 @@ namespace opendnp3
 */
 class OutstationEventBuffer : public IEventBuffer
 {
+	friend class SelectionIterator;
+
 
 public:
 	OutstationEventBuffer(const EventBufferFacade&);
@@ -59,16 +62,15 @@ public:
 	virtual void Update(const Event<Analog>& aEvent) override final;
 	virtual void Update(const Event<Counter>& aEvent) override final;
 	virtual void Update(const Event<FrozenCounter>& aEvent) override final;
+	/*
 	virtual void Update(const Event<DoubleBitBinary>& aEvent) override final;
 	virtual void Update(const Event<BinaryOutputStatus>& aEvent) override final;
 	virtual void Update(const Event<AnalogOutputStatus>& aEvent) override final;
-
+	*/
 	void Reset(); // called when a transmission fails
 	void Clear(); // called when a transmission succeeds
-
-	// Calls the IEventWriter until it returns false or there are no more
-	// matching events
-	uint32_t SelectEvents(const SelectionCriteria&, IEventWriter& writer);
+	
+	SelectionIterator SelectEvents(const SelectionCriteria& criteria);
 
 	// returns how many events are *unselected* that match the criteria specified
 	uint32_t NumUnselectedMatching(const SelectionCriteria&) const;
@@ -85,7 +87,7 @@ private:
 	template <class T, class EnumType>
 	bool InsertEvent(const T& aEvent, EnumType eventType, openpal::RandomInsertAdapter<T, uint16_t>& buffer);
 
-	bool ApplyEvent(IEventWriter& writer, SequenceRecord& record);
+	//bool ApplyEvent(IEventWriter& writer, SequenceRecord& record);
 
 	bool overflow;
 

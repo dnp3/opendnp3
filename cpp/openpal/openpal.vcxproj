@@ -48,6 +48,7 @@
     <ClInclude Include="src\openpal\LogLevels.h" />
     <ClInclude Include="src\openpal\LogRoot.h" />
     <ClInclude Include="src\openpal\MonotonicTimestamp.h" />
+    <ClInclude Include="src\openpal\Option.h" />
     <ClInclude Include="src\openpal\PhysicalLayerAsyncBase.h" />
     <ClInclude Include="src\openpal\QueueAdapter.h" />
     <ClInclude Include="src\openpal\RandomInsertAdapter.h" />

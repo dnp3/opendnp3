@@ -18,44 +18,55 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __I_EVENT_BUFFER_H_
-#define __I_EVENT_BUFFER_H_
 
-#include "opendnp3/app/MeasurementTypes.h"
-#include "opendnp3/app/PointClass.h"
+#ifndef __OPTION_H_
+#define __OPTION_H_
 
-#include "opendnp3/outstation/Event.h"
+#include <assert.h>
 
-namespace opendnp3
+namespace openpal
 {
 
-// @section desc Used by the database
-class IEventBuffer
+template <class T>
+class Option
 {
+
 public:
 
-	virtual ~IEventBuffer() {}
+	static Option Some(T value_)
+	{
+		return Option(value_);
+	}
 
-	virtual void Update(const Event<Binary>& aEvent) = 0;	
+	static Option None()
+	{
+		return Option();
+	}
 
-	virtual void Update(const Event<Analog>& aEvent) = 0;
+	const T& Get() const
+	{
+		assert(hasValue);
+		return value;
+	}
 
-	virtual void Update(const Event<Counter>& aEvent) = 0;
+	const bool HasValue() const
+	{
+		return hasValue;
+	}
 
-	virtual void Update(const Event<FrozenCounter>& aEvent) = 0;
+	private:
 
-	/*
-	virtual void Update(const Event<DoubleBitBinary>& aEvent) = 0;
+	Option(T value_) : hasValue(true), value(value_)
+	{}
 
-	virtual void Update(const Event<BinaryOutputStatus>& aEvent) = 0;
+	Option() : hasValue(false)
+	{}
 
-	virtual void Update(const Event<AnalogOutputStatus>& aEvent) = 0;
-	*/
-
+	bool hasValue;
+	T value;
 };
 
 }
-
 
 #endif
 

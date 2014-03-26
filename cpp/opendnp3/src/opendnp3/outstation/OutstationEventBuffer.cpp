@@ -101,6 +101,7 @@ void OutstationEventBuffer::Update(const Event<FrozenCounter>& aEvent)
 	overflow |= !InsertEvent(aEvent, EventType::FrozenCounter,  facade.frozenCounterEvents);
 }
 
+/*
 void OutstationEventBuffer::Update(const Event<DoubleBitBinary>& aEvent)
 {
 
@@ -115,6 +116,7 @@ void OutstationEventBuffer::Update(const Event<AnalogOutputStatus>& aEvent)
 {
 
 }
+*/
 
 uint32_t OutstationEventBuffer::NumUnselectedMatching(const SelectionCriteria& criteria) const
 {
@@ -126,42 +128,9 @@ uint32_t OutstationEventBuffer::NumUnselectedMatching(const SelectionCriteria& c
 	return count;
 }
 
-uint32_t OutstationEventBuffer::SelectEvents(const SelectionCriteria& criteria, IEventWriter& writer)
+SelectionIterator OutstationEventBuffer::SelectEvents(const SelectionCriteria& criteria)
 {
-	uint32_t count = 0;
-	uint32_t max = this->NumUnselectedMatching(criteria);
-	auto iter = facade.sequenceOfEvents.Iterate();
-	while(iter.HasNext() && count < max) // loop over the sequence of events
-	{
-		auto pNode = iter.Next();
-		if(!pNode->value.selected && criteria.IsMatch(pNode->value.clazz, pNode->value.type))
-		{
-			if(ApplyEvent(writer, pNode->value)) // the event was written and needs to recorded in the selection buffer
-			{
-				selectedTracker.Increment(pNode->value.type, pNode->value.clazz);
-				pNode->value.selected = true;
-				facade.selectedEvents.Push(pNode);
-				++count;
-			}
-			else return count;
-		}
-	}
-	return count;
-}
-
-bool OutstationEventBuffer::ApplyEvent(IEventWriter& writer, SequenceRecord& record)
-{
-	switch(record.type)
-	{
-	case(EventType::Binary):
-		return writer.Write(facade.binaryEvents[record.index]);
-	case(EventType::Analog):
-		return writer.Write(facade.analogEvents[record.index]);
-	case(EventType::Counter):
-		return writer.Write(facade.counterEvents[record.index]);
-	default:
-		return false;
-	}
+	return SelectionIterator(this, criteria, facade.sequenceOfEvents.Iterate());	
 }
 
 }

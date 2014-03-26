@@ -33,22 +33,21 @@ using namespace openpal;
 namespace opendnp3
 {
 
-Database::Database(const StaticDataFacade& aStaticData, openpal::ITransactable* pTransactable_) : 
+Database::Database(const StaticDataFacade& aStaticData, openpal::IMutex* pMutex_) :
 	staticData(aStaticData),
-	pTransactable(pTransactable_)
+	pMutex(pMutex_)
 {
 
 }
 
-
 void Database::Start()
 {	
-	openpal::Transaction::Start(pTransactable);
+	openpal::CriticalSection::Lock(pMutex);
 }
 
 void Database::End()
 {
-	openpal::Transaction::End(pTransactable);
+	openpal::CriticalSection::Unlock(pMutex);
 }
 
 bool Database::AddEventBuffer(IEventBuffer* apEventBuffer)
