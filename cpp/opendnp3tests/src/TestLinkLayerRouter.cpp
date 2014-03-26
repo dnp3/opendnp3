@@ -137,7 +137,8 @@ TEST_CASE(SUITE("ReentrantCloseWorks"))
 	mfs.AddAction(std::bind(&LinkLayerRouter::Shutdown, &t.router));
 	
 	StaticBuffer<292> buffer;
-	auto frame = LinkFrame::FormatAck(buffer.GetWriteBuffer(), true, false, 1024, 1);
+	auto writeTo = buffer.GetWriteBuffer();
+	auto frame = LinkFrame::FormatAck(writeTo, true, false, 1024, 1);
 	t.phys.TriggerRead(toHex(frame));
 
 	REQUIRE(t.log.IsLogErrorFree());
@@ -208,7 +209,8 @@ TEST_CASE(SUITE("LinkLayerRouterClearsBufferOnLowerLayerDown"))
 	t.phys.SignalOpenSuccess();
 
 	StaticBuffer<292> buffer;
-	auto frame = LinkFrame::FormatAck(buffer.GetWriteBuffer(), true, false, 1024, 1);
+	auto writeTo = buffer.GetWriteBuffer();
+	auto frame = LinkFrame::FormatAck(writeTo, true, false, 1024, 1);
 	t.phys.TriggerRead(toHex(frame));
 
 	REQUIRE(1 ==  mfs.mNumFrames);

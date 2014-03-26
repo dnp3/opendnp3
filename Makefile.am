@@ -220,6 +220,7 @@ cpp/opendnp3tests/src/MockFrameSink.cpp \
 cpp/opendnp3tests/src/MockLowerLayer.cpp \
 cpp/opendnp3tests/src/MockPhysicalLayerAsync.cpp \
 cpp/opendnp3tests/src/MockPhysicalLayerMonitor.cpp \
+cpp/opendnp3tests/src/MockTransportLayer.cpp \
 cpp/opendnp3tests/src/MockUpperLayer.cpp \
 cpp/opendnp3tests/src/PhysicalLayerWrapper.cpp \
 cpp/opendnp3tests/src/PhysLoopback.cpp \
@@ -241,7 +242,7 @@ cpp/opendnp3tests/src/TestDatabase.cpp \
 cpp/opendnp3tests/src/TestDNP3Manager.cpp \
 cpp/opendnp3tests/src/TestIntegration.cpp \
 cpp/opendnp3tests/src/TestLazyCollection.cpp \
-cpp/opendnp3tests/src/TestLinkFrameDNP.cpp \
+cpp/opendnp3tests/src/TestLinkFrame.cpp \
 cpp/opendnp3tests/src/TestLinkLayer.cpp \
 cpp/opendnp3tests/src/TestLinkLayerRouter.cpp \
 cpp/opendnp3tests/src/TestLinkReceiver.cpp \

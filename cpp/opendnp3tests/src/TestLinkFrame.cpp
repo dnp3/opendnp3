@@ -84,7 +84,8 @@ TEST_CASE(SUITE("ResetLinks"))
 	StaticBuffer<292> buffer;
 
 	// ResetLinkStates - Master
-	auto wrapper = LinkFrame::FormatResetLinkStates(buffer.GetWriteBuffer(), true, 1, 1024);	
+	auto write = buffer.GetWriteBuffer();
+	auto wrapper = LinkFrame::FormatResetLinkStates(write, true, 1, 1024);	
 	REQUIRE(toHex(wrapper) == "05 64 05 C0 01 00 00 04 E9 21");
 }
 
@@ -92,26 +93,32 @@ TEST_CASE(SUITE("ACK"))
 {
 	StaticBuffer<292> buffer;
 
-	//ACK - Slave (DFC = false)
+
 	{
-		auto wrapper = LinkFrame::FormatAck(buffer.GetWriteBuffer(), false, false, 1024, 1);
+		// ACK - Slave (DFC = false)
+		auto writeTo = buffer.GetWriteBuffer();
+		auto wrapper = LinkFrame::FormatAck(writeTo, false, false, 1024, 1);
 		REQUIRE(toHex(wrapper) == "05 64 05 00 00 04 01 00 19 A6"); //ACK - Slave
 	}
 
-	// ACK - Slave (DFC = true)
+		
 	{
-		auto wrapper = LinkFrame::FormatAck(buffer.GetWriteBuffer(), false, true, 1024, 1);
+		// ACK - Slave (DFC = true)
+		auto writeTo = buffer.GetWriteBuffer();
+		auto wrapper = LinkFrame::FormatAck(writeTo, false, true, 1024, 1);
 		REQUIRE(toHex(wrapper) == "05 64 05 10 00 04 01 00 8B 0C"); // ACK - Slave (with DFC set)
 	}
 
 	{	// ACK - Master (DFC = false)
-		auto wrapper = LinkFrame::FormatAck(buffer.GetWriteBuffer(), true, false, 1, 1024);
+		auto writeTo = buffer.GetWriteBuffer();
+		auto wrapper = LinkFrame::FormatAck(writeTo, true, false, 1, 1024);
 		REQUIRE(toHex(wrapper) == "05 64 05 80 01 00 00 04 53 11");
 	}
 
 	{
 		// ACK - Master (DFC = true)
-		auto wrapper = LinkFrame::FormatAck(buffer.GetWriteBuffer(), true, true, 1, 1024);
+		auto writeTo = buffer.GetWriteBuffer();
+		auto wrapper = LinkFrame::FormatAck(writeTo, true, true, 1, 1024);
 		REQUIRE(toHex(wrapper) == "05 64 05 90 01 00 00 04 C1 BB");
 	}
 }
@@ -134,7 +141,8 @@ TEST_CASE(SUITE("ResetLinkStates"))
 	StaticBuffer<292> buffer;
 
 	// Reset Link States - Slave
-	auto wrapper = LinkFrame::FormatResetLinkStates(buffer.GetWriteBuffer(), false, 1024, 1);
+	auto writeTo = buffer.GetWriteBuffer();
+	auto wrapper = LinkFrame::FormatResetLinkStates(writeTo, false, 1024, 1);
 	REQUIRE(toHex(wrapper) == "05 64 05 40 00 04 01 00 A3 96");
 }
 
@@ -150,7 +158,8 @@ TEST_CASE(SUITE("LinkStatus"))
 	StaticBuffer<292> buffer;
 	
 	// LinkStatus - Master (DFC = true)
-	auto wrapper = LinkFrame::FormatLinkStatus(buffer.GetWriteBuffer(), true, true, 1, 1024);
+	auto writeTo = buffer.GetWriteBuffer();
+	auto wrapper = LinkFrame::FormatLinkStatus(writeTo, true, true, 1, 1024);
 	//take a length 10 frame, set the control to 9B and repair the CRC
 	REQUIRE(toHex(wrapper) == RepairCRC("05 64 05 9B 01 00 00 04 E9 21"));
 }
@@ -160,7 +169,8 @@ TEST_CASE(SUITE("NotSupported"))
 	StaticBuffer<292> buffer;
 
 	// Not Supported - Slave (DFC = true)
-	auto wrapper = LinkFrame::FormatNotSupported(buffer.GetWriteBuffer(), false, true, 1, 1024);
+	auto writeTo = buffer.GetWriteBuffer();
+	auto wrapper = LinkFrame::FormatNotSupported(writeTo, false, true, 1, 1024);
 	REQUIRE(toHex(wrapper) == RepairCRC("05 64 05 1F 01 00 00 04 28 5A"));
 }
 
