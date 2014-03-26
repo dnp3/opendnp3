@@ -32,15 +32,13 @@ private class Conversions
 {
 public:
 
-	static openpal::TimeDuration convertTimeSpan(System::TimeSpan ts);
+	static openpal::TimeDuration convertMilliseconds(System::UInt64 ms);
+
+	static openpal::TimeDuration convertTimespan(System::TimeSpan ts);
 
 	// Convert a .NET string to a C++ string
 	static std::string convertString(System::String^ s);
-	static System::String^ convertString(const std::string& s);
-
-	// Convert the log filter enumeration
-	//static uint32_t convertLogLevel(DNP3::Interface::LogLevel level);
-	//static DNP3::Interface::LogLevel convertLogLevel(uint32_t flags);
+	static System::String^ convertString(const std::string& s);	
 
 	// Converting channel state enumeration
 	static ChannelState convertChannelState(opendnp3::ChannelState aState);

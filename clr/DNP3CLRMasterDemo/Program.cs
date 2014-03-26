@@ -48,7 +48,7 @@ namespace DotNetMasterDemo
             channel.AddStateListener(state => Console.WriteLine("Client state: " + state));
 
             var config = new MasterStackConfig();
-            config.master.integrityPeriod = TimeSpan.FromSeconds(60);
+            config.master.integrityPeriodMs = 60*1000;
             config.link.useConfirms = true; //setup your stack configuration here.
             var master = channel.AddMaster("master", PrintingSOEHandler.Instance, config);
 

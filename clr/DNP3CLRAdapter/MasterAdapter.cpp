@@ -41,7 +41,7 @@ IMasterScan^ MasterAdapter::GetIntegrityScan()
 
 IMasterScan^ MasterAdapter::AddClassScan(int aClassMask, System::TimeSpan period, System::TimeSpan taskRetryPeriod)
 {
-	auto scan = mpMaster->AddClassScan(aClassMask, Conversions::convertTimeSpan(period),  Conversions::convertTimeSpan(taskRetryPeriod));
+	auto scan = mpMaster->AddClassScan(aClassMask, Conversions::convertTimespan(period),  Conversions::convertTimespan(taskRetryPeriod));
 	return gcnew MasterScanAdapter(scan);
 }
 

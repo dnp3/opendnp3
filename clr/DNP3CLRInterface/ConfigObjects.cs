@@ -32,6 +32,24 @@ namespace DNP3.Interface
     /// </summary>
     public class LinkConfig
 	{
+        public static System.UInt16 DefaultOutstationAddress
+        {
+            get {
+                return 1024;
+            }
+        }
+        public static System.UInt16 DefaultMasterAddress
+        {
+            get {
+                return 1;
+            }
+        }
+
+        public static System.UInt16 GetDefaultAddress(bool isMaster)
+        {
+            return isMaster ? DefaultMasterAddress : DefaultOutstationAddress;
+        }
+
 		/// <summary>
 		/// Full constructor
 		/// </summary>
@@ -46,14 +64,14 @@ namespace DNP3.Interface
 						    System.UInt32 numRetry, 
 						    System.UInt16 localAddr, 
 						    System.UInt16 remoteAddr, 
-						    TimeSpan timeout)							
+						    System.UInt32 timeoutMs)							
 		{
             this.isMaster = isMaster;
             this.useConfirms = useConfirms;
             this.numRetry = numRetry;
             this.localAddr = localAddr;
             this.remoteAddr = remoteAddr;
-            this.timeout = timeout;
+            this.timeoutMs = timeoutMs;
         }
 
         /// <summary>
@@ -61,15 +79,19 @@ namespace DNP3.Interface
         /// </summary>
         /// <param name="isMaster">true if this layer will be used with a master, false otherwise</param>
         /// <param name="useConfirms">true to use link layer confirmations for all data, false otherwise</param>
-		public LinkConfig(bool isMaster, bool useConfirms)
+        public LinkConfig(bool isMaster, bool useConfirms)
+            : this(isMaster, useConfirms, 0, isMaster ? DefaultMasterAddress : DefaultOutstationAddress, isMaster ? DefaultOutstationAddress : DefaultMasterAddress, 1000)
         {
-			this.isMaster = isMaster;
-			this.useConfirms = useConfirms;
-			this.numRetry = 0;
-			this.localAddr = (ushort) (isMaster ? 1 : 1024);
-			this.remoteAddr = (ushort) (isMaster ? 1024 : 1);
-            this.timeout = TimeSpan.FromSeconds(1);
-		}        
+			
+		}
+
+        /// <summary>
+        /// Defaults to master
+        /// </summary>
+        public LinkConfig() : this(true, false)
+        { 
+        
+        }
 
 		/// <summary>
 		/// The master/slave bit set on all messages
@@ -99,23 +121,27 @@ namespace DNP3.Interface
 		/// <summary>
 		/// the response timeout for confirmed requests
 		/// </summary>
-		public TimeSpan timeout;
+		public System.UInt32 timeoutMs;
 	}
 
     /// <summary>
     /// Configuration object for the application layer
     /// </summary>
 	public class AppConfig
-	{	
+	{
+        /// <summary>
+        /// Constructor that defaults to master
+        /// </summary>
+        public AppConfig()
+            : this(true, 5000, 0, 2048)
+        {
+        }
+
 	    /// <summary>
 	    /// Constructor with reasonable defaults
 	    /// </summary>
-		public AppConfig(bool isMaster)
-        {
-            this.isMaster = isMaster;
-            this.rspTimeout = TimeSpan.FromSeconds(5);
-            this.numRetry = 0;
-            this.fragSize = 2048;
+        public AppConfig(bool isMaster) : this(isMaster, 5000, 0, 2048)
+        {           
         }
 
         /// <summary>
@@ -124,10 +150,10 @@ namespace DNP3.Interface
         /// <param name="rspTimeout"> The response/confirm timeout in millisec</param>
         /// <param name="numRetry">Number of retries performed for applicable frames</param>
         /// <param name="fragSize">The maximum size of received application layer fragments</param>
-		public AppConfig(bool isMaster, TimeSpan rspTimeout, System.Int32 numRetry, System.Int32 fragSize)
+		public AppConfig(bool isMaster, System.UInt32 rspTimeoutMs, System.Int32 numRetry, System.Int32 fragSize)
         {
             this.isMaster = isMaster;
-			this.rspTimeout = rspTimeout;
+			this.rspTimeoutMs = rspTimeoutMs;
 			this.numRetry = numRetry;
 			this.fragSize = fragSize;
         }
@@ -140,7 +166,7 @@ namespace DNP3.Interface
 		/// <summary>
 		/// The response/confirm timeout in millisec
 		/// </summary>
-		public TimeSpan rspTimeout;
+        public System.UInt32 rspTimeoutMs;
 
 		/// <summary>
 		/// Number of retries performed for applicable frames
@@ -194,8 +220,8 @@ namespace DNP3.Interface
 			doUnsolOnStartup = false;
 			enableUnsol = true;
 			unsolClassMask = (System.Int32) (PointClass.PC_ALL_EVENTS);
-            integrityPeriod = TimeSpan.FromSeconds(5);
-            taskRetryPeriod = TimeSpan.FromSeconds(5);
+            integrityPeriodMs = 5000;
+            taskRetryPeriodMs = 5000;
 		}		
 
 		/// <summary>
@@ -226,12 +252,12 @@ namespace DNP3.Interface
 		/// <summary>
         /// Period for integrity scans (class 0), -1 for non periodic
 		/// </summary>
-        public TimeSpan integrityPeriod;
+        public System.UInt32 integrityPeriodMs;
 
 		/// <summary>
         /// Time delay between task retries
 		/// </summary>
-        public TimeSpan taskRetryPeriod;	
+        public System.UInt32 taskRetryPeriodMs;	
 	}
 
     /// <summary>
@@ -319,10 +345,10 @@ namespace DNP3.Interface
             this.disableUnsol = false;
             this.unsolMask = new ClassMask(true, true, true);
             this.allowTimeSync = false;
-            this.timeSyncPeriod = TimeSpan.FromMinutes(10);
-            this.unsolPackDelay = TimeSpan.FromMilliseconds(200);
-            this.unsolRetryDelay = TimeSpan.FromSeconds(2);
-            this.selectTimeout = TimeSpan.FromSeconds(5);
+            this.timeSyncPeriodMs = 10*60000;
+            this.unsolPackDelayMs = 200;
+            this.unsolRetryDelayMs = 2000;
+            this.selectTimeoutMs = 5000;
             this.maxFragSize = 2048;
             this.eventMaxConfig = new EventMaxConfig();
             this.staticBinary = StaticBinaryResponse.Group1Var2;
@@ -357,22 +383,22 @@ namespace DNP3.Interface
 	    /// <summary>
         /// The period of time sync interval in milliseconds
 	    /// </summary>
-        public TimeSpan timeSyncPeriod;
+        public System.UInt32 timeSyncPeriodMs;
 
 	    /// <summary>
         /// The amount of time the slave will wait before sending new unsolicited data (less than 0 == immediate)
 	    /// </summary>
-        public TimeSpan unsolPackDelay;
+        public System.UInt32 unsolPackDelayMs;
 
 	    /// <summary>
         /// How long the slave will wait before retrying an unsuccessful unsol response
 	    /// </summary>
-        public TimeSpan unsolRetryDelay;
+        public System.UInt32 unsolRetryDelayMs;
 
         /// <summary>
         /// How long the outstation will allow an operate to proceed after a prior select
         /// </summary>
-        public TimeSpan selectTimeout;
+        public System.UInt32 selectTimeoutMs;
 
 	    /// <summary>
         /// The maximum fragment size the slave will use for data it sends
