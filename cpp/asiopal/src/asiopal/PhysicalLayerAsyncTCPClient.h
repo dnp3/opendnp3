@@ -25,6 +25,7 @@
 
 #include <openpal/LoggableMacros.h>
 #include <openpal/Location.h>
+#include <openpal/LogLevels.h>
 
 namespace asiopal
 {

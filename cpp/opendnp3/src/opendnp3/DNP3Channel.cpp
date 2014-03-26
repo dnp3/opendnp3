@@ -122,7 +122,8 @@ IMaster* DNP3Channel::AddMaster(const std::string& id, ISOEHandler* apPublisher,
 	else
 	{		
 		StackActionHandler handler(&router, pPhys->GetExecutor(), this);
-		auto pMaster = new MasterStackImpl(logger.GetSubLogger(id), pPhys->GetExecutor(), apPublisher, apTimeSource, &group, config, handler);
+		auto subLogger = logger.GetSubLogger(id);
+		auto pMaster = new MasterStackImpl(subLogger, pPhys->GetExecutor(), apPublisher, apTimeSource, &group, config, handler);
 		pMaster->SetLinkRouter(&router);
 		stacks.insert(pMaster);
 		router.AddContext(pMaster->GetLinkContext(), route);
@@ -142,7 +143,8 @@ IOutstation* DNP3Channel::AddOutstation(const std::string& id, ICommandHandler* 
 	else
 	{
 		StackActionHandler handler(&router, pPhys->GetExecutor(), this);
-		auto pOutstation = new OutstationStackImpl(logger.GetSubLogger(id), pPhys->GetExecutor(), apTimeWriteHandler, apCmdHandler, arCfg, handler);
+		auto subLogger = logger.GetSubLogger(id);
+		auto pOutstation = new OutstationStackImpl(subLogger, pPhys->GetExecutor(), apTimeWriteHandler, apCmdHandler, arCfg, handler);
 		pOutstation->SetLinkRouter(&router);
 		stacks.insert(pOutstation);
 		router.AddContext(pOutstation->GetLinkContext(), route);

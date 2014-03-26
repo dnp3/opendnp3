@@ -235,20 +235,22 @@ void LinkLayer::QueueTransmit(const ReadOnlyBuffer& buffer, bool primary)
 
 void LinkLayer::QueueAck()
 {
-	auto buffer = LinkFrame::FormatAck(primaryBuffer.GetWriteBuffer(), config.IsMaster, false, config.RemoteAddr, config.LocalAddr);
+	auto writeTo = primaryBuffer.GetWriteBuffer();
+	auto buffer = LinkFrame::FormatAck(writeTo, config.IsMaster, false, config.RemoteAddr, config.LocalAddr);
 	this->QueueTransmit(buffer, false);
 }
 
 void LinkLayer::QueueLinkStatus()
-{
-	
-	auto buffer = LinkFrame::FormatLinkStatus(primaryBuffer.GetWriteBuffer(), config.IsMaster, false, config.RemoteAddr, config.LocalAddr);
+{	
+	auto writeTo = primaryBuffer.GetWriteBuffer();
+	auto buffer = LinkFrame::FormatLinkStatus(writeTo, config.IsMaster, false, config.RemoteAddr, config.LocalAddr);
 	this->QueueTransmit(buffer, false);	
 }
 
 void LinkLayer::QueueResetLinks()
 {	
-	auto buffer = LinkFrame::FormatResetLinkStates(primaryBuffer.GetWriteBuffer(), config.IsMaster, config.RemoteAddr, config.LocalAddr);
+	auto writeTo = primaryBuffer.GetWriteBuffer();
+	auto buffer = LinkFrame::FormatResetLinkStates(writeTo, config.IsMaster, config.RemoteAddr, config.LocalAddr);
 	this->QueueTransmit(buffer, true);	
 }
 

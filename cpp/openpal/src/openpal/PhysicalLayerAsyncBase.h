@@ -26,6 +26,8 @@
 #include "LogConfig.h"
 #include "LogRoot.h"
 
+#include <system_error>
+
 namespace openpal
 {
 

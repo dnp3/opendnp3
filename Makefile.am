@@ -18,13 +18,12 @@ lib_LTLIBRARIES = libopenpal.la libasiopal.la libopendnp3.la
 libopenpal_la_LDFLAGS = -version-info 1:1:0
 libopenpal_la_CXXFLAGS = -I$(OPENPAL_INCLUDE)
 libopenpal_la_SOURCES = \
-cpp/openpal/src/openpal/gen/LogLevel.cpp \
-cpp/openpal/src/openpal/AsyncLayerInterfaces.cpp \
 cpp/openpal/src/openpal/BufferWrapper.cpp \
-cpp/openpal/src/openpal/IHandlerAsync.cpp \
 cpp/openpal/src/openpal/LogEntry.cpp \
 cpp/openpal/src/openpal/Logger.cpp \
+cpp/openpal/src/openpal/LogRoot.cpp \
 cpp/openpal/src/openpal/MonotonicTimestamp.cpp \
+cpp/openpal/src/openpal/PhysicalLayerAsyncBase.cpp \
 cpp/openpal/src/openpal/ReverseEndian.cpp \
 cpp/openpal/src/openpal/TimeDuration.cpp \
 cpp/openpal/src/openpal/ToHex.cpp
@@ -38,7 +37,6 @@ cpp/asiopal/src/asiopal/ASIOSerialHelpers.cpp \
 cpp/asiopal/src/asiopal/IOServiceThreadPool.cpp \
 cpp/asiopal/src/asiopal/Log.cpp \
 cpp/asiopal/src/asiopal/LogToStdio.cpp \
-cpp/asiopal/src/asiopal/PhysicalLayerAsyncBase.cpp \
 cpp/asiopal/src/asiopal/PhysicalLayerAsyncBaseTCP.cpp \
 cpp/asiopal/src/asiopal/PhysicalLayerAsyncSerial.cpp \
 cpp/asiopal/src/asiopal/PhysicalLayerAsyncTCPClient.cpp \
@@ -95,7 +93,6 @@ cpp/opendnp3/src/opendnp3/gen/StaticBinaryOutputStatusResponse.cpp \
 cpp/opendnp3/src/opendnp3/gen/StaticBinaryResponse.cpp \
 cpp/opendnp3/src/opendnp3/gen/StaticCounterResponse.cpp \
 cpp/opendnp3/src/opendnp3/gen/StaticFrozenCounterResponse.cpp \
-cpp/opendnp3/src/opendnp3/link/CRC.cpp \
 cpp/opendnp3/src/opendnp3/link/DNPCrc.cpp \
 cpp/opendnp3/src/opendnp3/link/IOpenDelayStrategy.cpp \
 cpp/opendnp3/src/opendnp3/link/LinkFrame.cpp \
@@ -161,7 +158,6 @@ cpp/opendnp3/src/opendnp3/outstation/EventCount.cpp \
 cpp/opendnp3/src/opendnp3/outstation/IEventWriterState.cpp \
 cpp/opendnp3/src/opendnp3/outstation/IINHelpers.cpp \
 cpp/opendnp3/src/opendnp3/outstation/ITimeWriteHandler.cpp \
-cpp/opendnp3/src/opendnp3/outstation/MultiplexingDataObserver.cpp \
 cpp/opendnp3/src/opendnp3/outstation/OutstationEventBuffer.cpp \
 cpp/opendnp3/src/opendnp3/outstation/OutstationStackImpl.cpp \
 cpp/opendnp3/src/opendnp3/outstation/ReadHandler.cpp \
@@ -175,7 +171,6 @@ cpp/opendnp3/src/opendnp3/outstation/StaticResponseContext.cpp \
 cpp/opendnp3/src/opendnp3/outstation/StaticResponseTypes.cpp \
 cpp/opendnp3/src/opendnp3/outstation/TimeTransaction.cpp \
 cpp/opendnp3/src/opendnp3/outstation/WriteHandler.cpp \
-cpp/opendnp3/src/opendnp3/transport/TLS_Base.cpp \
 cpp/opendnp3/src/opendnp3/transport/TransportLayer.cpp \
 cpp/opendnp3/src/opendnp3/transport/TransportRx.cpp \
 cpp/opendnp3/src/opendnp3/transport/TransportStates.cpp \
@@ -184,6 +179,7 @@ cpp/opendnp3/src/opendnp3/DestructorHook.cpp \
 cpp/opendnp3/src/opendnp3/DNP3Channel.cpp \
 cpp/opendnp3/src/opendnp3/DNP3Manager.cpp \
 cpp/opendnp3/src/opendnp3/DNP3Stack.cpp \
+cpp/opendnp3/src/opendnp3/LogLevelInterpreter.cpp \
 cpp/opendnp3/src/opendnp3/StackActionHandler.cpp
 
 

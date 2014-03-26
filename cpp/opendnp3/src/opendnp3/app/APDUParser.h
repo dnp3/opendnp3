@@ -31,6 +31,8 @@
 #include <openpal/LoggableMacros.h>
 
 #include <openpal/Uncopyable.h>
+
+#include "opendnp3/LogLevels.h"
 #include "opendnp3/DNPErrorCodes.h"
 
 #include "opendnp3/app/Range.h"
