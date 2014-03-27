@@ -55,7 +55,7 @@ void TestComplex(const std::string& hex, APDUParser::Result expected, size_t num
 	}
 
 	REQUIRE((result == expected));
-	REQUIRE(numCalls ==  mock.groupVariations.size());
+	REQUIRE(numCalls ==  mock.records.size());
 
 	validate(mock);
 }
@@ -124,8 +124,8 @@ TEST_CASE(SUITE("AllObjects"))
 	// (2,2) all, (2,0) all
 	TestComplex("02 02 06 02 00 06", APDUParser::Result::OK, 2, [](MockApduHeaderHandler & mock)
 	{
-		REQUIRE((GroupVariation::Group2Var2 == mock.groupVariations[0]));
-		REQUIRE((GroupVariation::Group2Var0 == mock.groupVariations[1]));
+		REQUIRE((GroupVariation::Group2Var2 == mock.records[0].enumeration));
+		REQUIRE((GroupVariation::Group2Var0 == mock.records[1].enumeration));
 	});
 }
 
@@ -182,7 +182,7 @@ TEST_CASE(SUITE("Group1Var2With2Headers"))
 
 	TestComplex("01 02 07 01 81 01 02 07 02 81 81", APDUParser::Result::OK, 2, [](MockApduHeaderHandler & mock)
 	{
-		REQUIRE(2 ==  mock.groupVariations.size());
+		REQUIRE(2 == mock.records.size());
 	});
 }
 
@@ -261,7 +261,7 @@ TEST_CASE(SUITE("MaxCountAccumlatesOverHeaders"))
 	auto result = APDUParser::ParseTwoPass(buffer.ToReadOnly(), &mock, nullptr, ctx);
 
 	REQUIRE((result == APDUParser::Result::UNREASONABLE_OBJECT_COUNT));
-	REQUIRE(0 ==  mock.groupVariations.size()); // 0 calls because parser rejects bad count on first pass
+	REQUIRE(0 == mock.records.size()); // 0 calls because parser rejects bad count on first pass
 }
 
 TEST_CASE(SUITE("ParserDoesNotAllowEmptyOctetStrings"))
@@ -272,7 +272,7 @@ TEST_CASE(SUITE("ParserDoesNotAllowEmptyOctetStrings"))
 	auto result = APDUParser::ParseTwoPass(buffer.ToReadOnly(), &mock, nullptr);
 
 	REQUIRE((result == APDUParser::Result::INVALID_OBJECT));
-	REQUIRE(0 ==  mock.groupVariations.size());
+	REQUIRE(0 == mock.records.size());
 }
 
 TEST_CASE(SUITE("ParserRejectsLargeEmptyOctetStringsWithDefaultSettings"))
@@ -283,7 +283,7 @@ TEST_CASE(SUITE("ParserRejectsLargeEmptyOctetStringsWithDefaultSettings"))
 	auto result = APDUParser::ParseTwoPass(buffer.ToReadOnly(), &mock, nullptr);
 
 	REQUIRE((result == APDUParser::Result::UNREASONABLE_OBJECT_COUNT));
-	REQUIRE(0 ==  mock.groupVariations.size());
+	REQUIRE(0 == mock.records.size());
 }
 
 TEST_CASE(SUITE("Group1Var2CountWithIndexUInt8"))
@@ -342,7 +342,7 @@ TEST_CASE(SUITE("Group12Var1WithIndexSizes"))
 		IndexedValue<ControlRelayOutputBlock, uint16_t> value(crob, 9);
 		REQUIRE((value == mock.crobRequests[0]));
 
-		REQUIRE(1 ==  mock.groupVariations.size());
+		REQUIRE(1 == mock.records.size());
 	};
 
 
@@ -363,11 +363,11 @@ TEST_CASE(SUITE("Group60Var1Var2Var3Var4"))
 {
 	TestComplex("3C 01 06 3C 02 06 3C 03 06 3C 04 06", APDUParser::Result::OK, 4, [&](MockApduHeaderHandler & mock)
 	{
-		REQUIRE(4 ==  mock.groupVariations.size());
-		REQUIRE((GroupVariation::Group60Var1 == mock.groupVariations[0]));
-		REQUIRE((GroupVariation::Group60Var2 == mock.groupVariations[1]));
-		REQUIRE((GroupVariation::Group60Var3 == mock.groupVariations[2]));
-		REQUIRE((GroupVariation::Group60Var4 == mock.groupVariations[3]));
+		REQUIRE(4 == mock.records.size());
+		REQUIRE((GroupVariation::Group60Var1 == mock.records[0].enumeration));
+		REQUIRE((GroupVariation::Group60Var2 == mock.records[1].enumeration));
+		REQUIRE((GroupVariation::Group60Var3 == mock.records[2].enumeration));
+		REQUIRE((GroupVariation::Group60Var4 == mock.records[3].enumeration));
 	});
 }
 
@@ -379,7 +379,7 @@ TEST_CASE(SUITE("TestDoubleBitCommonTimeOccurence"))
 
 	TestComplex("33 01 07 01 15 CD 5B 07 00 00 04 03 17 02 03 C1 07 00 05 41 09 00", APDUParser::Result::OK, 1, [&](MockApduHeaderHandler & mock)
 	{
-		REQUIRE(1 ==  mock.groupVariations.size());
+		REQUIRE(1 == mock.records.size());
 		REQUIRE(2 ==  mock.eventDoubleBinaries.size());
 
 		IndexedValue<DoubleBitBinary, uint16_t> event1(DoubleBitBinary(DoubleBit::INDETERMINATE, DBQ_ONLINE, 123456789 + 7), 3);

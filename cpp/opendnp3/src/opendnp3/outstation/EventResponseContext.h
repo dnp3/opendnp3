@@ -22,10 +22,13 @@
 #define __EVENT_RESPONSE_CONTEXT_H_
 
 #include <openpal/Uncopyable.h>
+#include <openpal/StaticQueue.h>
 
 #include "opendnp3/StaticSizeConfiguration.h"
+
 #include "opendnp3/app/APDUResponse.h"
 #include "opendnp3/outstation/OutstationEventBuffer.h"
+#include "opendnp3/outstation/SelectionCriteria.h"
 
 namespace opendnp3
 {
@@ -41,17 +44,18 @@ public:
 
 	EventResponseContext(const EventBufferFacade& facade);
 
-/*
+	bool Queue(const SelectionCriteria& critera);
+
 	void Reset();
 
-	bool IsComplete() const;
-
-	void Load(APDUResponse& response);
-*/
+	// return true, if all events were loaded, false otherwise
+	bool Load(APDUResponse& response);
 
 	IEventBuffer& GetBuffer();
 
 private:
+
+	openpal::StaticQueue<SelectionCriteria, uint16_t, sizes::MAX_EVENT_READ_REQUESTS> requests;
 	
 	OutstationEventBuffer buffer;
 

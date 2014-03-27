@@ -52,13 +52,13 @@ public:
 
 	IINField Errors() const;
 
-	virtual void AllObjects(GroupVariation gv) final;
+	virtual void AllObjects(const GroupVariationRecord& record) final;
 
-	virtual void OnRangeRequest(GroupVariation gv, const StaticRange& range) final;
+	virtual void OnRangeRequest(const GroupVariationRecord& record, const StaticRange& range) final;
 
-	virtual void OnCountRequest(GroupVariation gv, uint32_t count) final;
+	virtual void OnCountRequest(const GroupVariationRecord& record, uint32_t count) final;
 
-	virtual void OnIIN(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<bool, uint16_t>>& meas) final;
+	virtual void OnIIN(const GroupVariationRecord& record, QualifierCode qualifier, const IterableBuffer<IndexedValue<bool, uint16_t>>& meas) final;
 
 	virtual void OnCountOf(const opendnp3::IterableBuffer<Group50Var1>&) final;
 
@@ -67,48 +67,48 @@ public:
 
 	virtual void OnCountOf(const opendnp3::IterableBuffer<Group52Var2>&) final;
 
-	virtual void OnRange(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas) final;
-	virtual void OnRange(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<DoubleBitBinary, uint16_t>>& meas) final;
-	virtual void OnRange(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<BinaryOutputStatus, uint16_t>>& meas) final;
-	virtual void OnRange(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<Counter, uint16_t>>& meas) final;
-	virtual void OnRange(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<FrozenCounter, uint16_t>>& meas) final;
-	virtual void OnRange(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<Analog, uint16_t>>& meas) final;
-	virtual void OnRange(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<AnalogOutputStatus, uint16_t>>& meas) final;
-	virtual void OnRange(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<OctetString, uint16_t>>& meas) final;
+	virtual void OnRange(const GroupVariationRecord& record, QualifierCode qualifier, const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas) final;
+	virtual void OnRange(const GroupVariationRecord& record, QualifierCode qualifier, const IterableBuffer<IndexedValue<DoubleBitBinary, uint16_t>>& meas) final;
+	virtual void OnRange(const GroupVariationRecord& record, QualifierCode qualifier, const IterableBuffer<IndexedValue<BinaryOutputStatus, uint16_t>>& meas) final;
+	virtual void OnRange(const GroupVariationRecord& record, QualifierCode qualifier, const IterableBuffer<IndexedValue<Counter, uint16_t>>& meas) final;
+	virtual void OnRange(const GroupVariationRecord& record, QualifierCode qualifier, const IterableBuffer<IndexedValue<FrozenCounter, uint16_t>>& meas) final;
+	virtual void OnRange(const GroupVariationRecord& record, QualifierCode qualifier, const IterableBuffer<IndexedValue<Analog, uint16_t>>& meas) final;
+	virtual void OnRange(const GroupVariationRecord& record, QualifierCode qualifier, const IterableBuffer<IndexedValue<AnalogOutputStatus, uint16_t>>& meas) final;
+	virtual void OnRange(const GroupVariationRecord& record, QualifierCode qualifier, const IterableBuffer<IndexedValue<OctetString, uint16_t>>& meas) final;
 
 	// events - 16bit indices
 
-	virtual void OnIndexPrefix(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas) final;
-	virtual void OnIndexPrefix(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<DoubleBitBinary, uint16_t>>& meas) final;
-	virtual void OnIndexPrefix(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<Counter, uint16_t>>& meas) final;
-	virtual void OnIndexPrefix(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<FrozenCounter, uint16_t>>& meas) final;
-	virtual void OnIndexPrefix(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<Analog, uint16_t>>& meas) final;
-	virtual void OnIndexPrefix(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<OctetString, uint16_t>>& meas) final;
+	virtual void OnIndexPrefix(const GroupVariationRecord& record, QualifierCode qualifier, const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas) final;
+	virtual void OnIndexPrefix(const GroupVariationRecord& record, QualifierCode qualifier, const IterableBuffer<IndexedValue<DoubleBitBinary, uint16_t>>& meas) final;
+	virtual void OnIndexPrefix(const GroupVariationRecord& record, QualifierCode qualifier, const IterableBuffer<IndexedValue<Counter, uint16_t>>& meas) final;
+	virtual void OnIndexPrefix(const GroupVariationRecord& record, QualifierCode qualifier, const IterableBuffer<IndexedValue<FrozenCounter, uint16_t>>& meas) final;
+	virtual void OnIndexPrefix(const GroupVariationRecord& record, QualifierCode qualifier, const IterableBuffer<IndexedValue<Analog, uint16_t>>& meas) final;
+	virtual void OnIndexPrefix(const GroupVariationRecord& record, QualifierCode qualifier, const IterableBuffer<IndexedValue<OctetString, uint16_t>>& meas) final;
 
 	// events - 8bit indices
 
-	virtual void OnIndexPrefix(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<Binary, uint8_t>>& meas) final;
-	virtual void OnIndexPrefix(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<DoubleBitBinary, uint8_t>>& meas) final;
-	virtual void OnIndexPrefix(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<Counter, uint8_t>>& meas) final;
-	virtual void OnIndexPrefix(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<FrozenCounter, uint8_t>>& meas) final;
-	virtual void OnIndexPrefix(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<Analog, uint8_t>>& meas) final;
-	virtual void OnIndexPrefix(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<OctetString, uint8_t>>& meas) final;
+	virtual void OnIndexPrefix(const GroupVariationRecord& record, QualifierCode qualifier, const IterableBuffer<IndexedValue<Binary, uint8_t>>& meas) final;
+	virtual void OnIndexPrefix(const GroupVariationRecord& record, QualifierCode qualifier, const IterableBuffer<IndexedValue<DoubleBitBinary, uint8_t>>& meas) final;
+	virtual void OnIndexPrefix(const GroupVariationRecord& record, QualifierCode qualifier, const IterableBuffer<IndexedValue<Counter, uint8_t>>& meas) final;
+	virtual void OnIndexPrefix(const GroupVariationRecord& record, QualifierCode qualifier, const IterableBuffer<IndexedValue<FrozenCounter, uint8_t>>& meas) final;
+	virtual void OnIndexPrefix(const GroupVariationRecord& record, QualifierCode qualifier, const IterableBuffer<IndexedValue<Analog, uint8_t>>& meas) final;
+	virtual void OnIndexPrefix(const GroupVariationRecord& record, QualifierCode qualifier, const IterableBuffer<IndexedValue<OctetString, uint8_t>>& meas) final;
 
 	// commands - 16bit indices
 
-	virtual void OnIndexPrefix(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<ControlRelayOutputBlock, uint16_t>>& meas) final;
-	virtual void OnIndexPrefix(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<AnalogOutputInt16, uint16_t>>& meas) final;
-	virtual void OnIndexPrefix(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<AnalogOutputInt32, uint16_t>>& meas) final;
-	virtual void OnIndexPrefix(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<AnalogOutputFloat32, uint16_t>>& meas) final;
-	virtual void OnIndexPrefix(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<AnalogOutputDouble64, uint16_t>>& meas) final;
+	virtual void OnIndexPrefix(const GroupVariationRecord& record, QualifierCode qualifier, const IterableBuffer<IndexedValue<ControlRelayOutputBlock, uint16_t>>& meas) final;
+	virtual void OnIndexPrefix(const GroupVariationRecord& record, QualifierCode qualifier, const IterableBuffer<IndexedValue<AnalogOutputInt16, uint16_t>>& meas) final;
+	virtual void OnIndexPrefix(const GroupVariationRecord& record, QualifierCode qualifier, const IterableBuffer<IndexedValue<AnalogOutputInt32, uint16_t>>& meas) final;
+	virtual void OnIndexPrefix(const GroupVariationRecord& record, QualifierCode qualifier, const IterableBuffer<IndexedValue<AnalogOutputFloat32, uint16_t>>& meas) final;
+	virtual void OnIndexPrefix(const GroupVariationRecord& record, QualifierCode qualifier, const IterableBuffer<IndexedValue<AnalogOutputDouble64, uint16_t>>& meas) final;
 
 	// commands - 8bit indices
 
-	virtual void OnIndexPrefix(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<ControlRelayOutputBlock, uint8_t>>& meas) final;
-	virtual void OnIndexPrefix(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<AnalogOutputInt16, uint8_t>>& meas) final;
-	virtual void OnIndexPrefix(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<AnalogOutputInt32, uint8_t>>& meas) final;
-	virtual void OnIndexPrefix(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<AnalogOutputFloat32, uint8_t>>& meas) final;
-	virtual void OnIndexPrefix(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<AnalogOutputDouble64, uint8_t>>& meas) final;
+	virtual void OnIndexPrefix(const GroupVariationRecord& record, QualifierCode qualifier, const IterableBuffer<IndexedValue<ControlRelayOutputBlock, uint8_t>>& meas) final;
+	virtual void OnIndexPrefix(const GroupVariationRecord& record, QualifierCode qualifier, const IterableBuffer<IndexedValue<AnalogOutputInt16, uint8_t>>& meas) final;
+	virtual void OnIndexPrefix(const GroupVariationRecord& record, QualifierCode qualifier, const IterableBuffer<IndexedValue<AnalogOutputInt32, uint8_t>>& meas) final;
+	virtual void OnIndexPrefix(const GroupVariationRecord& record, QualifierCode qualifier, const IterableBuffer<IndexedValue<AnalogOutputFloat32, uint8_t>>& meas) final;
+	virtual void OnIndexPrefix(const GroupVariationRecord& record, QualifierCode qualifier, const IterableBuffer<IndexedValue<AnalogOutputDouble64, uint8_t>>& meas) final;
 
 
 protected:
@@ -127,32 +127,32 @@ protected:
 	}
 
 
-	virtual void _AllObjects(GroupVariation gv);
+	virtual void _AllObjects(const GroupVariationRecord& record);
 
-	virtual void _OnRangeRequest(GroupVariation gv, const StaticRange& range);
+	virtual void _OnRangeRequest(const GroupVariationRecord& record, const StaticRange& range);
 
-	virtual void _OnCountRequest(GroupVariation gv, uint32_t count);
+	virtual void _OnCountRequest(const GroupVariationRecord& record, uint32_t count);
 
 	virtual void _OnIIN(const IterableBuffer<IndexedValue<bool, uint16_t>>& meas);
 
 	virtual void _OnCountOf(const IterableBuffer<Group50Var1>& objects);
 	virtual void _OnCountOf(const IterableBuffer<Group52Var2>&);
 
-	virtual void _OnRange(GroupVariation gv, const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas);
-	virtual void _OnRange(GroupVariation gv, const IterableBuffer<IndexedValue<DoubleBitBinary, uint16_t>>& meas);
-	virtual void _OnRange(GroupVariation gv, const IterableBuffer<IndexedValue<BinaryOutputStatus, uint16_t>>& meas);
-	virtual void _OnRange(GroupVariation gv, const IterableBuffer<IndexedValue<Counter, uint16_t>>& meas);
-	virtual void _OnRange(GroupVariation gv, const IterableBuffer<IndexedValue<FrozenCounter, uint16_t>>& meas);
-	virtual void _OnRange(GroupVariation gv, const IterableBuffer<IndexedValue<Analog, uint16_t>>& meas);
-	virtual void _OnRange(GroupVariation gv, const IterableBuffer<IndexedValue<AnalogOutputStatus, uint16_t>>& meas);
-	virtual void _OnRange(GroupVariation gv, const IterableBuffer<IndexedValue<OctetString, uint16_t>>& meas);
+	virtual void _OnRange(const GroupVariationRecord& record, const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas);
+	virtual void _OnRange(const GroupVariationRecord& record, const IterableBuffer<IndexedValue<DoubleBitBinary, uint16_t>>& meas);
+	virtual void _OnRange(const GroupVariationRecord& record, const IterableBuffer<IndexedValue<BinaryOutputStatus, uint16_t>>& meas);
+	virtual void _OnRange(const GroupVariationRecord& record, const IterableBuffer<IndexedValue<Counter, uint16_t>>& meas);
+	virtual void _OnRange(const GroupVariationRecord& record, const IterableBuffer<IndexedValue<FrozenCounter, uint16_t>>& meas);
+	virtual void _OnRange(const GroupVariationRecord& record, const IterableBuffer<IndexedValue<Analog, uint16_t>>& meas);
+	virtual void _OnRange(const GroupVariationRecord& record, const IterableBuffer<IndexedValue<AnalogOutputStatus, uint16_t>>& meas);
+	virtual void _OnRange(const GroupVariationRecord& record, const IterableBuffer<IndexedValue<OctetString, uint16_t>>& meas);
 
-	virtual void _OnIndexPrefix(GroupVariation gv, const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas);
-	virtual void _OnIndexPrefix(GroupVariation gv, const IterableBuffer<IndexedValue<DoubleBitBinary, uint16_t>>& meas);
-	virtual void _OnIndexPrefix(GroupVariation gv, const IterableBuffer<IndexedValue<Counter, uint16_t>>& meas);
-	virtual void _OnIndexPrefix(GroupVariation gv, const IterableBuffer<IndexedValue<FrozenCounter, uint16_t>>& meas);
-	virtual void _OnIndexPrefix(GroupVariation gv, const IterableBuffer<IndexedValue<Analog, uint16_t>>& meas);
-	virtual void _OnIndexPrefix(GroupVariation gv, const IterableBuffer<IndexedValue<OctetString, uint16_t>>& meas);
+	virtual void _OnIndexPrefix(const GroupVariationRecord& record, const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas);
+	virtual void _OnIndexPrefix(const GroupVariationRecord& record, const IterableBuffer<IndexedValue<DoubleBitBinary, uint16_t>>& meas);
+	virtual void _OnIndexPrefix(const GroupVariationRecord& record, const IterableBuffer<IndexedValue<Counter, uint16_t>>& meas);
+	virtual void _OnIndexPrefix(const GroupVariationRecord& record, const IterableBuffer<IndexedValue<FrozenCounter, uint16_t>>& meas);
+	virtual void _OnIndexPrefix(const GroupVariationRecord& record, const IterableBuffer<IndexedValue<Analog, uint16_t>>& meas);
+	virtual void _OnIndexPrefix(const GroupVariationRecord& record, const IterableBuffer<IndexedValue<OctetString, uint16_t>>& meas);
 
 	virtual void _OnIndexPrefix(const IterableBuffer<IndexedValue<ControlRelayOutputBlock, uint16_t>>& meas);
 	virtual void _OnIndexPrefix(const IterableBuffer<IndexedValue<AnalogOutputInt16, uint16_t>>& meas);
@@ -184,11 +184,11 @@ private:
 	}
 
 	template <class T>
-	void OnIndexPrefixCTO(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<T, uint16_t>>& meas);
+	void OnIndexPrefixCTO(const GroupVariationRecord& record, QualifierCode qualifier, const IterableBuffer<IndexedValue<T, uint16_t>>& meas);
 };
 
 template <class T>
-void APDUHandlerBase::OnIndexPrefixCTO(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<T, uint16_t>>& meas)
+void APDUHandlerBase::OnIndexPrefixCTO(const GroupVariationRecord& record, QualifierCode qualifier, const IterableBuffer<IndexedValue<T, uint16_t>>& meas)
 {
 	uint64_t commonTime;
 	if (GetCTO(commonTime))
@@ -203,7 +203,7 @@ void APDUHandlerBase::OnIndexPrefixCTO(GroupVariation gv, QualifierCode qualifie
 		}
 
 		                                                                                          );
-		this->_OnIndexPrefix(gv, transform);
+		this->_OnIndexPrefix(record, transform);
 	}
 	else
 	{
@@ -216,7 +216,7 @@ void APDUHandlerBase::OnIndexPrefixCTO(GroupVariation gv, QualifierCode qualifie
 			return IndexedValue<T, uint16_t>(copy, value.index);
 		}
 		                                                                                          );
-		this->_OnIndexPrefix(gv, transform);
+		this->_OnIndexPrefix(record, transform);
 	}
 }
 

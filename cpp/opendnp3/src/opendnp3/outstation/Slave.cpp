@@ -216,7 +216,7 @@ IINField Slave::HandleWrite(const APDURecord& request, SequenceInfo sequence)
 IINField Slave::HandleRead(const APDURecord& request, SequenceInfo sequence, APDUResponse& response)
 {
 	staticRspContext.Reset();
-	ReadHandler handler(logger, &staticRspContext);
+	ReadHandler handler(logger, &staticRspContext, &eventRspContext);
 	auto result = APDUParser::ParseTwoPass(request.objects, &handler, &logger, APDUParser::Context(false)); // don't expect range/count context on a READ
 	if(result == APDUParser::Result::OK)
 	{

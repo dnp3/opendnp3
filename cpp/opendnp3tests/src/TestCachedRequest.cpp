@@ -61,8 +61,8 @@ TEST_CASE(SUITE("Correctly"))
 
 	REQUIRE_FALSE(cache.IsSet());
 
-	REQUIRE(1 ==  handler.groupVariations.size());
-	REQUIRE((GroupVariation::Group1Var2 == handler.groupVariations[0]));
+	REQUIRE(1 == handler.records.size());
+	REQUIRE((GroupVariation::Group1Var2 == handler.records[0].enumeration));
 }
 
 

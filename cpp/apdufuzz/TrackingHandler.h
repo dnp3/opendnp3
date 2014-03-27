@@ -35,7 +35,7 @@ public:
 
 	TrackingHandler() : count(0) {}
 
-	virtual void AllObjects(GroupVariation gv, QualifierCode qualifier) override
+	virtual void AllObjects(const GroupVariationRecord& record, QualifierCode qualifier) override
 	{
 		++count;
 	}
@@ -48,7 +48,7 @@ public:
 		});
 	}
 
-	virtual void OnIIN(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<bool>>& bits) override
+	virtual void OnIIN(const GroupVariationRecord& record, QualifierCode qualifier, const IterableBuffer<IndexedValue<bool>>& bits) override
 	{
 		bits.foreach([this](const IndexedValue<bool>& v)
 		{
@@ -56,7 +56,7 @@ public:
 		});
 	}
 
-	virtual void OnRange(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<Binary>>& meas) override
+	virtual void OnRange(const GroupVariationRecord& record, QualifierCode qualifier, const IterableBuffer<IndexedValue<Binary>>& meas) override
 	{
 		meas.foreach([this](const IndexedValue<Binary>& v)
 		{
@@ -64,7 +64,7 @@ public:
 		});
 	}
 
-	virtual void OnIndexPrefix(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<Binary>>& meas) override
+	virtual void OnIndexPrefix(const GroupVariationRecord& record, QualifierCode qualifier, const IterableBuffer<IndexedValue<Binary>>& meas) override
 	{
 		meas.foreach([this](const IndexedValue<Binary>& v)
 		{
@@ -72,7 +72,7 @@ public:
 		});
 	}
 
-	virtual void OnRange(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<BinaryOutputStatus>>& meas) override
+	virtual void OnRange(const GroupVariationRecord& record, QualifierCode qualifier, const IterableBuffer<IndexedValue<BinaryOutputStatus>>& meas) override
 	{
 		meas.foreach([this](const IndexedValue<BinaryOutputStatus>& v)
 		{
@@ -80,7 +80,7 @@ public:
 		});
 	}
 
-	virtual void OnRange(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<Counter>>& meas) override
+	virtual void OnRange(const GroupVariationRecord& record, QualifierCode qualifier, const IterableBuffer<IndexedValue<Counter>>& meas) override
 	{
 		meas.foreach([this](const IndexedValue<Counter>& v)
 		{
@@ -88,7 +88,7 @@ public:
 		});
 	}
 
-	virtual void OnIndexPrefix(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<Counter>>& meas) override
+	virtual void OnIndexPrefix(const GroupVariationRecord& record, QualifierCode qualifier, const IterableBuffer<IndexedValue<Counter>>& meas) override
 	{
 		meas.foreach([this](const IndexedValue<Counter>& v)
 		{
@@ -96,7 +96,7 @@ public:
 		});
 	}
 
-	virtual void OnRange(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<Analog>>& meas) override
+	virtual void OnRange(const GroupVariationRecord& record, QualifierCode qualifier, const IterableBuffer<IndexedValue<Analog>>& meas) override
 	{
 		meas.foreach([this](const IndexedValue<Analog>& v)
 		{
@@ -104,7 +104,7 @@ public:
 		});
 	}
 
-	virtual void OnIndexPrefix(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<Analog>>& meas) override
+	virtual void OnIndexPrefix(const GroupVariationRecord& record, QualifierCode qualifier, const IterableBuffer<IndexedValue<Analog>>& meas) override
 	{
 		meas.foreach([this](const IndexedValue<Analog>& v)
 		{
@@ -112,7 +112,7 @@ public:
 		});
 	}
 
-	virtual void OnRange(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<AnalogOutputStatus>>& meas) override
+	virtual void OnRange(const GroupVariationRecord& record, QualifierCode qualifier, const IterableBuffer<IndexedValue<AnalogOutputStatus>>& meas) override
 	{
 		meas.foreach([this](const IndexedValue<AnalogOutputStatus>& v)
 		{
@@ -120,7 +120,7 @@ public:
 		});
 	}
 
-	virtual void OnIndexPrefix(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<ControlRelayOutputBlock>>& meas) override
+	virtual void OnIndexPrefix(const GroupVariationRecord& record, QualifierCode qualifier, const IterableBuffer<IndexedValue<ControlRelayOutputBlock>>& meas) override
 	{
 		meas.foreach([this](const IndexedValue<ControlRelayOutputBlock>& v)
 		{
@@ -128,7 +128,7 @@ public:
 		});
 	}
 
-	virtual void OnIndexPrefix(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<AnalogOutputInt16>>& meas) override
+	virtual void OnIndexPrefix(const GroupVariationRecord& record, QualifierCode qualifier, const IterableBuffer<IndexedValue<AnalogOutputInt16>>& meas) override
 	{
 		meas.foreach([this](const IndexedValue<AnalogOutputInt16>& v)
 		{
@@ -136,7 +136,7 @@ public:
 		} );
 	}
 
-	virtual void OnIndexPrefix(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<AnalogOutputInt32>>& meas) override
+	virtual void OnIndexPrefix(const GroupVariationRecord& record, QualifierCode qualifier, const IterableBuffer<IndexedValue<AnalogOutputInt32>>& meas) override
 	{
 		meas.foreach([this](const IndexedValue<AnalogOutputInt32>& v)
 		{
@@ -144,7 +144,7 @@ public:
 		});
 	}
 
-	virtual void OnIndexPrefix(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<AnalogOutputFloat32>>& meas) override
+	virtual void OnIndexPrefix(const GroupVariationRecord& record, QualifierCode qualifier, const IterableBuffer<IndexedValue<AnalogOutputFloat32>>& meas) override
 	{
 		meas.foreach([this](const IndexedValue<AnalogOutputFloat32>& v)
 		{
@@ -152,7 +152,7 @@ public:
 		});
 	}
 
-	virtual void OnIndexPrefix(GroupVariation gv, QualifierCode qualifier, const IterableBuffer<IndexedValue<AnalogOutputDouble64>>& meas) override
+	virtual void OnIndexPrefix(const GroupVariationRecord& record, QualifierCode qualifier, const IterableBuffer<IndexedValue<AnalogOutputDouble64>>& meas) override
 	{
 		meas.foreach([this](const IndexedValue<AnalogOutputDouble64>& v)
 		{

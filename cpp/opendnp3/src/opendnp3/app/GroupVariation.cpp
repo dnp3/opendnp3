@@ -33,279 +33,293 @@ std::string GroupVariationRecord::ToString() const
 	return oss.str();
 }
 
-GroupVariation GroupVariationRecord::GetEnum(uint8_t group, uint8_t variation)
+GroupVariationRecord::GroupVariationRecord(uint8_t group_, uint8_t variation_, GroupVariation enumeration_, GroupVariationType type_) :
+	enumeration(enumeration_),
+	type(type_),
+	group(group_),
+	variation(variation_)
+{
+
+}
+
+GroupVariationRecord GroupVariationRecord::GetRecord(uint8_t group, uint8_t variation)
+{
+	auto pair = GetEnumAndType(group, variation);
+	return GroupVariationRecord(group, variation, pair.enumeration, pair.type);
+}
+
+EnumAndType GroupVariationRecord::GetEnumAndType(uint8_t group, uint8_t variation)
 {
 	switch(group)
 	{
 	case(1):
 		switch(variation)
 		{
-		case(0):
-			return GroupVariation::Group1Var0;
+		case(0) :
+			return EnumAndType(GroupVariation::Group1Var0, GroupVariationType::STATIC);
 		case(1):
-			return GroupVariation::Group1Var1;
+			return EnumAndType(GroupVariation::Group1Var1, GroupVariationType::STATIC);
 		case(2):
-			return GroupVariation::Group1Var2;
+			return EnumAndType(GroupVariation::Group1Var2, GroupVariationType::STATIC);
 		default:
-			return GroupVariation::UNKNOWN;
+			return EnumAndType(GroupVariation::UNKNOWN, GroupVariationType::OTHER);
 		}
-
 	case(2):
 		switch(variation)
 		{
 		case(0):
-			return GroupVariation::Group2Var0;
+			return EnumAndType(GroupVariation::Group2Var0, GroupVariationType::EVENT);
 		case(1):
-			return GroupVariation::Group2Var1;
+			return EnumAndType(GroupVariation::Group2Var1, GroupVariationType::EVENT);
 		case(2):
-			return GroupVariation::Group2Var2;
+			return EnumAndType(GroupVariation::Group2Var2, GroupVariationType::EVENT);
 		case(3):
-			return GroupVariation::Group2Var3;
+			return EnumAndType(GroupVariation::Group2Var3, GroupVariationType::EVENT);
 		default:
-			return GroupVariation::UNKNOWN;
+			return EnumAndType(GroupVariation::UNKNOWN, GroupVariationType::OTHER);
 		}
 	case(3) :
 		switch (variation)
 		{
 		case(0) :
-			return GroupVariation::Group3Var0;
+			return EnumAndType(GroupVariation::Group3Var0, GroupVariationType::STATIC);
 		case(1) :
-			return GroupVariation::Group3Var1;
+			return EnumAndType(GroupVariation::Group3Var1, GroupVariationType::STATIC);
 		case(2) :
-			return GroupVariation::Group3Var2;
+			return EnumAndType(GroupVariation::Group3Var2, GroupVariationType::STATIC);
 		default:
-			return GroupVariation::UNKNOWN;
+			return EnumAndType(GroupVariation::UNKNOWN, GroupVariationType::OTHER);
 		}
 	case(4) :
 		switch (variation)
 		{
 		case(0) :
-			return GroupVariation::Group4Var0;
+			return EnumAndType(GroupVariation::Group4Var0, GroupVariationType::EVENT);
 		case(1) :
-			return GroupVariation::Group4Var1;
+			return EnumAndType(GroupVariation::Group4Var1, GroupVariationType::EVENT);
 		case(2) :
-			return GroupVariation::Group4Var2;
+			return EnumAndType(GroupVariation::Group4Var2, GroupVariationType::EVENT);
 		case(3) :
-			return GroupVariation::Group4Var3;
+			return EnumAndType(GroupVariation::Group4Var3, GroupVariationType::EVENT);
 		default:
-			return GroupVariation::UNKNOWN;
+			return EnumAndType(GroupVariation::UNKNOWN, GroupVariationType::OTHER);
 		}
 	case(10):
 		switch(variation)
 		{
 		case(0):
-			return GroupVariation::Group10Var0;
+			return EnumAndType(GroupVariation::Group10Var0, GroupVariationType::STATIC);
 		case(1):
-			return GroupVariation::Group10Var1;
+			return EnumAndType(GroupVariation::Group10Var1, GroupVariationType::STATIC);
 		case(2):
-			return GroupVariation::Group10Var2;
+			return EnumAndType(GroupVariation::Group10Var2, GroupVariationType::STATIC);
 		default:
-			return GroupVariation::UNKNOWN;
+			return EnumAndType(GroupVariation::UNKNOWN, GroupVariationType::OTHER);
 		}
 	case(12):
 		switch(variation)
 		{
 		case(1):
-			return GroupVariation::Group12Var1;
+			return EnumAndType(GroupVariation::Group12Var1, GroupVariationType::OTHER);
 		default:
-			return GroupVariation::UNKNOWN;
+			return EnumAndType(GroupVariation::UNKNOWN, GroupVariationType::OTHER);
 		}
 	case(20):
 		switch(variation)
 		{
 		case(0):
-			return GroupVariation::Group20Var0;
+			return EnumAndType(GroupVariation::Group20Var0, GroupVariationType::STATIC);
 		case(1):
-			return GroupVariation::Group20Var1;
+			return EnumAndType(GroupVariation::Group20Var1, GroupVariationType::STATIC);
 		case(2):
-			return GroupVariation::Group20Var2;
+			return EnumAndType(GroupVariation::Group20Var2, GroupVariationType::STATIC);
 		case(5):
-			return GroupVariation::Group20Var5;
+			return EnumAndType(GroupVariation::Group20Var5, GroupVariationType::STATIC);
 		case(6):
-			return GroupVariation::Group20Var6;
+			return EnumAndType(GroupVariation::Group20Var6, GroupVariationType::STATIC);
 		default:
-			return GroupVariation::UNKNOWN;
+			return EnumAndType(GroupVariation::UNKNOWN, GroupVariationType::OTHER);
 		}
 	case(21):
 		switch(variation)
 		{
 		case(0):
-			return GroupVariation::Group21Var0;
+			return EnumAndType(GroupVariation::Group21Var0, GroupVariationType::STATIC);
 		case(1):
-			return GroupVariation::Group21Var1;
+			return EnumAndType(GroupVariation::Group21Var1, GroupVariationType::STATIC);
 		case(2):
-			return GroupVariation::Group21Var2;
+			return EnumAndType(GroupVariation::Group21Var2, GroupVariationType::STATIC);
 		case(5):
-			return GroupVariation::Group21Var5;
+			return EnumAndType(GroupVariation::Group21Var5, GroupVariationType::STATIC);
 		case(6):
-			return GroupVariation::Group21Var6;
+			return EnumAndType(GroupVariation::Group21Var6, GroupVariationType::STATIC);
 		case(9):
-			return GroupVariation::Group21Var9;
+			return EnumAndType(GroupVariation::Group21Var9, GroupVariationType::STATIC);
 		case(10):
-			return GroupVariation::Group21Var10;
+			return EnumAndType(GroupVariation::Group21Var10, GroupVariationType::STATIC);
 		default:
-			return GroupVariation::UNKNOWN;
+			return EnumAndType(GroupVariation::UNKNOWN, GroupVariationType::OTHER);
 		}
 	case(22):
 		switch(variation)
 		{
 		case(0):
-			return GroupVariation::Group22Var0;
+			return EnumAndType(GroupVariation::Group22Var0, GroupVariationType::EVENT);
 		case(1):
-			return GroupVariation::Group22Var1;
+			return EnumAndType(GroupVariation::Group22Var1, GroupVariationType::EVENT);
 		case(2):
-			return GroupVariation::Group22Var2;
+			return EnumAndType(GroupVariation::Group22Var2, GroupVariationType::EVENT);
 		case(5):
-			return GroupVariation::Group22Var5;
+			return EnumAndType(GroupVariation::Group22Var5, GroupVariationType::EVENT);
 		case(6):
-			return GroupVariation::Group22Var6;
+			return EnumAndType(GroupVariation::Group22Var6, GroupVariationType::EVENT);
 		default:
-			return GroupVariation::UNKNOWN;
+			return EnumAndType(GroupVariation::UNKNOWN, GroupVariationType::OTHER);
 		}
 	case(23) :
 		switch (variation)
 		{
 		case(0) :
-			return GroupVariation::Group23Var0;
+			return EnumAndType(GroupVariation::Group23Var0, GroupVariationType::EVENT);
 		case(1) :
-			return GroupVariation::Group23Var1;
+			return EnumAndType(GroupVariation::Group23Var1, GroupVariationType::EVENT);
 		case(2) :
-			return GroupVariation::Group23Var2;
+			return EnumAndType(GroupVariation::Group23Var2, GroupVariationType::EVENT);
 		case(5) :
-			return GroupVariation::Group23Var5;
+			return EnumAndType(GroupVariation::Group23Var5, GroupVariationType::EVENT);
 		case(6) :
-			return GroupVariation::Group23Var6;
+			return EnumAndType(GroupVariation::Group23Var6, GroupVariationType::EVENT);
 		default:
-			return GroupVariation::UNKNOWN;
+			return EnumAndType(GroupVariation::UNKNOWN, GroupVariationType::OTHER);
 		}
 	case(30):
 		switch(variation)
 		{
 		case(0):
-			return GroupVariation::Group30Var0;
+			return EnumAndType(GroupVariation::Group30Var0, GroupVariationType::STATIC);
 		case(1):
-			return GroupVariation::Group30Var1;
+			return EnumAndType(GroupVariation::Group30Var1, GroupVariationType::STATIC);
 		case(2):
-			return GroupVariation::Group30Var2;
+			return EnumAndType(GroupVariation::Group30Var2, GroupVariationType::STATIC);
 		case(3):
-			return GroupVariation::Group30Var3;
+			return EnumAndType(GroupVariation::Group30Var3, GroupVariationType::STATIC);
 		case(4):
-			return GroupVariation::Group30Var4;
+			return EnumAndType(GroupVariation::Group30Var4, GroupVariationType::STATIC);
 		case(5):
-			return GroupVariation::Group30Var5;
+			return EnumAndType(GroupVariation::Group30Var5, GroupVariationType::STATIC);
 		case(6):
-			return GroupVariation::Group30Var6;
+			return EnumAndType(GroupVariation::Group30Var6, GroupVariationType::STATIC);
 		default:
-			return GroupVariation::UNKNOWN;
+			return EnumAndType(GroupVariation::UNKNOWN, GroupVariationType::OTHER);
 		}
 	case(32):
 		switch(variation)
 		{
-		case(0):
-			return GroupVariation::Group32Var0;
+		case(0) :
+			return EnumAndType(GroupVariation::Group32Var0, GroupVariationType::EVENT);
 		case(1):
-			return GroupVariation::Group32Var1;
+			return EnumAndType(GroupVariation::Group32Var1, GroupVariationType::EVENT);
 		case(2):
-			return GroupVariation::Group32Var2;
+			return EnumAndType(GroupVariation::Group32Var2, GroupVariationType::EVENT);
 		case(3):
-			return GroupVariation::Group32Var3;
+			return EnumAndType(GroupVariation::Group32Var3, GroupVariationType::EVENT);
 		case(4):
-			return GroupVariation::Group32Var4;
+			return EnumAndType(GroupVariation::Group32Var4, GroupVariationType::EVENT);
 		case(5):
-			return GroupVariation::Group32Var5;
+			return EnumAndType(GroupVariation::Group32Var5, GroupVariationType::EVENT);
 		case(6):
-			return GroupVariation::Group32Var6;
+			return EnumAndType(GroupVariation::Group32Var6, GroupVariationType::EVENT);
 		case(7):
-			return GroupVariation::Group32Var7;
+			return EnumAndType(GroupVariation::Group32Var7, GroupVariationType::EVENT);
 		case(8):
-			return GroupVariation::Group32Var8;
+			return EnumAndType(GroupVariation::Group32Var8, GroupVariationType::EVENT);
 		default:
-			return GroupVariation::UNKNOWN;
+			return EnumAndType(GroupVariation::UNKNOWN, GroupVariationType::OTHER);
 		}
 	case(40):
 		switch(variation)
 		{
-		case(0):
-			return GroupVariation::Group40Var0;
+		case(0) :
+			return EnumAndType(GroupVariation::Group40Var0, GroupVariationType::STATIC);
 		case(1):
-			return GroupVariation::Group40Var1;
+			return EnumAndType(GroupVariation::Group40Var1, GroupVariationType::STATIC);
 		case(2):
-			return GroupVariation::Group40Var2;
+			return EnumAndType(GroupVariation::Group40Var2, GroupVariationType::STATIC);
 		case(3):
-			return GroupVariation::Group40Var3;
+			return EnumAndType(GroupVariation::Group40Var3, GroupVariationType::STATIC);
 		case(4):
-			return GroupVariation::Group40Var4;
+			return EnumAndType(GroupVariation::Group40Var4, GroupVariationType::STATIC);
 		default:
-			return GroupVariation::UNKNOWN;
+			return EnumAndType(GroupVariation::UNKNOWN, GroupVariationType::OTHER);
 		}
 	case(41):
 		switch(variation)
 		{
 		case(0):
-			return GroupVariation::Group41Var0;
+			return EnumAndType(GroupVariation::Group41Var0, GroupVariationType::EVENT);
 		case(1):
-			return GroupVariation::Group41Var1;
+			return EnumAndType(GroupVariation::Group41Var1, GroupVariationType::EVENT);
 		case(2):
-			return GroupVariation::Group41Var2;
+			return EnumAndType(GroupVariation::Group41Var2, GroupVariationType::EVENT);
 		case(3):
-			return GroupVariation::Group41Var3;
+			return EnumAndType(GroupVariation::Group41Var3, GroupVariationType::EVENT);
 		case(4):
-			return GroupVariation::Group41Var4;
+			return EnumAndType(GroupVariation::Group41Var4, GroupVariationType::EVENT);
 		default:
-			return GroupVariation::UNKNOWN;
+			return EnumAndType(GroupVariation::UNKNOWN, GroupVariationType::OTHER);
 		}
 	case(50):
 		switch(variation)
 		{
 		case(1):
-			return GroupVariation::Group50Var1;
+			return EnumAndType(GroupVariation::Group50Var1, GroupVariationType::OTHER);
 		case(2):
-			return GroupVariation::Group50Var2;
+			return EnumAndType(GroupVariation::Group50Var2, GroupVariationType::OTHER);
 		}
 	case(51) :
 		switch (variation)
 		{
 		case(1) :
-			return GroupVariation::Group51Var1;
+			return EnumAndType(GroupVariation::Group51Var1, GroupVariationType::OTHER);
 		case(2) :
-			return GroupVariation::Group51Var2;
+			return EnumAndType(GroupVariation::Group51Var2, GroupVariationType::OTHER);
 		}
 	case(52):
 		switch(variation)
 		{
 		case(1):
-			return GroupVariation::Group52Var1;
+			return EnumAndType(GroupVariation::Group52Var1, GroupVariationType::OTHER);
 		case(2):
-			return GroupVariation::Group52Var2;
+			return EnumAndType(GroupVariation::Group52Var2, GroupVariationType::OTHER);
 		}
 	case(60):
 		switch(variation)
 		{
 		case(1):
-			return GroupVariation::Group60Var1;
+			return EnumAndType(GroupVariation::Group60Var1, GroupVariationType::STATIC);
 		case(2):
-			return GroupVariation::Group60Var2;
+			return EnumAndType(GroupVariation::Group60Var2, GroupVariationType::EVENT);
 		case(3):
-			return GroupVariation::Group60Var3;
+			return EnumAndType(GroupVariation::Group60Var3, GroupVariationType::EVENT);
 		case(4):
-			return GroupVariation::Group60Var4;
+			return EnumAndType(GroupVariation::Group60Var4, GroupVariationType::EVENT);
 		default:
-			return GroupVariation::UNKNOWN;
+			return EnumAndType(GroupVariation::UNKNOWN, GroupVariationType::OTHER);
 		}
 	case(80):
 		switch(variation)
 		{
 		case(1):
-			return GroupVariation::Group80Var1;
+			return EnumAndType(GroupVariation::Group80Var1, GroupVariationType::OTHER);
 		default:
-			return GroupVariation::UNKNOWN;
+			return EnumAndType(GroupVariation::UNKNOWN, GroupVariationType::OTHER);
 		}
 	case(110):
-		return GroupVariation::Group110AnyVar;
+		return EnumAndType(GroupVariation::Group110AnyVar, GroupVariationType::STATIC);
 	case(111):
-		return GroupVariation::Group111AnyVar;
+		return EnumAndType(GroupVariation::Group111AnyVar, GroupVariationType::EVENT);
 	default:
-		return GroupVariation::UNKNOWN;
+		return EnumAndType(GroupVariation::UNKNOWN, GroupVariationType::OTHER);
 	}
 }
 

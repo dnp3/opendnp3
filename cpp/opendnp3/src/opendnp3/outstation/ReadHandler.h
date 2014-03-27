@@ -26,6 +26,7 @@
 
 #include "opendnp3/outstation/ITimeWriteHandler.h"
 #include "opendnp3/outstation/StaticResponseContext.h"
+#include "opendnp3/outstation/EventResponseContext.h"
 
 namespace opendnp3
 {
@@ -34,15 +35,16 @@ class ReadHandler : public APDUHandlerBase
 {
 public:
 
-	ReadHandler(openpal::Logger& aLogger, StaticResponseContext* aContext);
+	ReadHandler(openpal::Logger& logger, StaticResponseContext* pStaticContext, EventResponseContext* pEventResponseContext);
 
-	virtual void _AllObjects(GroupVariation gv) final;
+	virtual void _AllObjects(const GroupVariationRecord& record) final;
 
-	virtual void _OnRangeRequest(GroupVariation gv, const StaticRange& range) final;
+	virtual void _OnRangeRequest(const GroupVariationRecord& record, const StaticRange& range) final;
 
 private:
 
-	StaticResponseContext* pContext;
+	StaticResponseContext* pStaticContext;
+	EventResponseContext* pEventContext;
 };
 
 }

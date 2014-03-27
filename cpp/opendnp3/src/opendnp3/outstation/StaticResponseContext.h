@@ -37,14 +37,6 @@
 namespace opendnp3
 {
 
-enum class QueueResult
-{
-    SUCCESS,
-    FULL,
-    OBJECT_UNDEFINED,
-    OUT_OF_RANGE
-};
-
 /**
  * Builds and tracks the state of multi-fragmented static responses to READ requests,
  * coordinating with the database.
@@ -68,8 +60,8 @@ public:
 
 	void Reset();
 
-	QueueResult QueueReadAllObjects(GroupVariation gv);
-	QueueResult QueueReadRange(GroupVariation gv, const StaticRange& range);
+	IINField QueueReadAllObjects(const GroupVariationRecord& record);
+	IINField QueueReadRange(const GroupVariationRecord& record, const StaticRange& range);
 
 	bool IsComplete() const;
 
@@ -77,9 +69,9 @@ public:
 
 private:
 
-	QueueResult QueueReadRange(const StaticRangeLoader& loader);
+	IINField QueueReadRange(const StaticRangeLoader& loader);
 
-	QueueResult QueueStaticIntegrity();
+	IINField QueueStaticIntegrity();
 
 	static AppControlField GetAppControl(uint32_t headerCount, StaticLoadResult result);
 

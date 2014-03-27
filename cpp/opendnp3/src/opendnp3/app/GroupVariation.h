@@ -29,6 +29,13 @@
 namespace opendnp3
 {
 
+enum class GroupVariationType : int
+{
+	STATIC,
+	EVENT,
+	OTHER
+};
+
 enum class GroupVariation : int
 {
     Group1Var0,
@@ -133,15 +140,31 @@ enum class GroupVariation : int
     UNKNOWN
 };
 
+struct EnumAndType
+{
+	EnumAndType(GroupVariation enumeration_, GroupVariationType type_) :
+		enumeration(enumeration_), type(type_)
+	{}
+
+	GroupVariation enumeration;
+	GroupVariationType type;
+};
+
 class GroupVariationRecord
 {
+	
 public:
 
-	static GroupVariation GetEnum(uint8_t group, uint8_t variation);
+	static EnumAndType GetEnumAndType(uint8_t group, uint8_t variation);
+
+	static GroupVariationRecord GetRecord(uint8_t group, uint8_t variation);
 
 	std::string ToString() const;
 
+	GroupVariationRecord(uint8_t group_, uint8_t variation_, GroupVariation enumeration_, GroupVariationType type_);	
+
 	GroupVariation enumeration;
+	GroupVariationType type;
 	uint8_t group;
 	uint8_t variation;
 };

@@ -24,10 +24,19 @@
 namespace opendnp3
 {
 
-
 EventResponseContext::EventResponseContext(const EventBufferFacade& facade) : buffer(facade)
 {
 	
+}
+
+bool EventResponseContext::Queue(const SelectionCriteria& criteria)
+{
+	return requests.Enqueue(criteria);
+}
+
+void EventResponseContext::Reset()
+{
+	requests.Clear();
 }
 
 IEventBuffer& EventResponseContext::GetBuffer()
@@ -35,5 +44,10 @@ IEventBuffer& EventResponseContext::GetBuffer()
 	return buffer; 
 }
 
+bool EventResponseContext::Load(APDUResponse& response)
+{
+	
+	return true;
+}
 
 }
