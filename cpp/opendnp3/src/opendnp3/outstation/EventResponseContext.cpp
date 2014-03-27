@@ -18,42 +18,22 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include "OutstationStackImpl.h"
+
+#include "EventResponseContext.h"
 
 namespace opendnp3
 {
 
-OutstationStackImpl::OutstationStackImpl(
-	openpal::Logger& logger,
-	openpal::IExecutor* apExecutor,
-	ITimeWriteHandler* apTimeWriteHandler,
-	ICommandHandler* apCmdHandler,
-	const SlaveStackConfig& config,
-	const StackActionHandler& handler) :
-		IOutstation(logger, apExecutor, config.app, config.link, handler),
-		pExecutor(apExecutor),	
-		databaseBuffers(config.database.GetTemplate()),
-		eventBuffers(config.eventBuffer),
-		mutex(),
-		database(databaseBuffers.GetFacade(), &mutex),
-		slave(logger.GetSubLogger("outstation"), &appStack.application, apExecutor, apTimeWriteHandler, &database, eventBuffers.GetFacade(), apCmdHandler, config.slave)
+
+EventResponseContext::EventResponseContext(const EventBufferFacade& facade) : buffer(facade)
 {
-	appStack.application.SetUser(&slave);
-	databaseBuffers.Configure(config.database);
+	
 }
 
-IMeasurementLoader* OutstationStackImpl::GetLoader()
-{
-	return &database;
+IEventBuffer& EventResponseContext::GetBuffer()
+{ 
+	return buffer; 
 }
 
-void OutstationStackImpl::SetNeedTimeIIN()
-{
-	pExecutor->Post([this]()
-	{
-		this->slave.SetNeedTimeIIN();
-	});
-}
 
 }
-

@@ -18,42 +18,36 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include "OutstationStackImpl.h"
+#ifndef __EVENT_BUFFER_CONFIG_H_
+#define __EVENT_BUFFER_CONFIG_H_
+
+#include <cstdint>
 
 namespace opendnp3
 {
 
-OutstationStackImpl::OutstationStackImpl(
-	openpal::Logger& logger,
-	openpal::IExecutor* apExecutor,
-	ITimeWriteHandler* apTimeWriteHandler,
-	ICommandHandler* apCmdHandler,
-	const SlaveStackConfig& config,
-	const StackActionHandler& handler) :
-		IOutstation(logger, apExecutor, config.app, config.link, handler),
-		pExecutor(apExecutor),	
-		databaseBuffers(config.database.GetTemplate()),
-		eventBuffers(config.eventBuffer),
-		mutex(),
-		database(databaseBuffers.GetFacade(), &mutex),
-		slave(logger.GetSubLogger("outstation"), &appStack.application, apExecutor, apTimeWriteHandler, &database, eventBuffers.GetFacade(), apCmdHandler, config.slave)
+/// Configuration of max event counts
+struct EventBufferConfig
 {
-	appStack.application.SetUser(&slave);
-	databaseBuffers.Configure(config.database);
+	EventBufferConfig();
+
+	EventBufferConfig(uint32_t, uint32_t, uint32_t, uint32_t);
+
+	uint32_t TotalEvents() const;
+
+	/// The number of binary events the slave will buffer before overflowing
+	uint32_t maxBinaryEvents;
+
+	/// The number of analog events the slave will buffer before overflowing
+	uint32_t maxAnalogEvents;
+
+	/// The number of counter events the slave will buffer before overflowing
+	uint32_t maxCounterEvents;
+
+	/// The number of frozen counter events the slave will buffer before overflowing
+	uint32_t maxFrozenCounterEvents;
+};
+
 }
 
-IMeasurementLoader* OutstationStackImpl::GetLoader()
-{
-	return &database;
-}
-
-void OutstationStackImpl::SetNeedTimeIIN()
-{
-	pExecutor->Post([this]()
-	{
-		this->slave.SetNeedTimeIIN();
-	});
-}
-
-}
-
+#endif

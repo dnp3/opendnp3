@@ -23,6 +23,7 @@
 
 #include "opendnp3/outstation/SlaveConfig.h"
 #include "opendnp3/outstation/DatabaseConfiguration.h"
+#include "opendnp3/outstation/EventBufferConfig.h"
 #include "opendnp3/app/AppConfig.h"
 #include "opendnp3/link/LinkConfig.h"
 
@@ -37,6 +38,7 @@ struct SlaveStackConfig
 
 	SlaveStackConfig(const DatabaseConfiguration& dbConfig) :
 		database(dbConfig),
+		eventBuffer(),
 		link(false, false),
 		app(false)
 	{
@@ -45,12 +47,15 @@ struct SlaveStackConfig
 
 	SlaveStackConfig() :
 		database(),
+		eventBuffer(),
 		link(false, false),
 		app(false)
 	{}
 
-	//Configuration of the database
+	// Configuration of the database
 	DatabaseConfiguration database;
+	// Configuration of event buffer
+	EventBufferConfig eventBuffer;
 	/// Slave config
 	SlaveConfig slave;
 	/// Application layer config

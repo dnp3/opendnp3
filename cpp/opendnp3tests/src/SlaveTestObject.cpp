@@ -46,7 +46,8 @@ mts(),
 app(log.GetLogger("app")),
 dbBuffers(dbTemplate),
 db(dbBuffers.GetFacade()),
-slave(log.GetLogger("slave"), &app, &mts, &mMockTimeWriteHandler, &db, &cmdHandler, arCfg),
+eventBuffers(EventBufferConfig()),
+slave(log.GetLogger("slave"), &app, &mts, &mMockTimeWriteHandler, &db, eventBuffers.GetFacade(), &cmdHandler, arCfg),
 mLogger(log.GetLogger("test"))
 {
 	app.SetUser(&slave);

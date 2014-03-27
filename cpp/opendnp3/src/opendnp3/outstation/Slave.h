@@ -27,6 +27,7 @@
 #include "opendnp3/outstation/StaticResponseContext.h"
 #include "opendnp3/outstation/StaticResponseTypes.h"
 #include "opendnp3/outstation/SelectBuffer.h"
+#include "opendnp3/outstation/EventResponseContext.h"
 
 #include "opendnp3/outstation/CachedRequest.h"
 #include "opendnp3/app/IAppLayer.h"
@@ -75,7 +76,7 @@ class Slave : public IAppUser
 
 public:
 
-	Slave(openpal::Logger, IAppLayer*, openpal::IExecutor*, ITimeWriteHandler* apWriteHandler, Database*, ICommandHandler*, const SlaveConfig&);
+	Slave(openpal::Logger, IAppLayer*, openpal::IExecutor*, ITimeWriteHandler*, Database*, const EventBufferFacade& buffers, ICommandHandler*, const SlaveConfig&);
 	~Slave();
 
 	////////////////////////
@@ -111,7 +112,7 @@ private:
 
 	openpal::IExecutor* pExecutor;
 	IAppLayer* mpAppLayer;					// lower application layer
-	Database* mpDatabase;					// holds static data
+	Database* mpDatabase;					// holds static data	
 	ICommandHandler* mpCmdHandler;			// how commands are selected/operated on application code
 	int mSequence;							// control sequence
 	SlaveStateBase* mpState;				// current state for the state pattern
@@ -123,7 +124,8 @@ private:
 	IINField mIIN;							// IIN bits that persist between requests (i.e. NeedsTime/Restart/Etc)
 	CachedRequest mCachedRequest;			// Request cache for when outstation needs to defer a request
 
-	StaticResponseContext mStaticRspContext;	// Used to track and construct static response fragments
+	StaticResponseContext staticRspContext;	// Used to track and construct static response fragments
+	EventResponseContext eventRspContext;	// Used to track construct event response fragments
 
 
 	// Flags that tell us that some action has been Deferred

@@ -46,25 +46,33 @@ using namespace openpal;
 namespace opendnp3
 {
 
-Slave::Slave(openpal::Logger aLogger, IAppLayer* apAppLayer, IExecutor* apExecutor, ITimeWriteHandler* apTimeWriteHandler, Database* apDatabase, ICommandHandler* apCmdHandler, const SlaveConfig& arCfg) :
-	IAppUser(aLogger),	
-	mpTimeWriteHandler(apTimeWriteHandler),
-	selectBuffer(apExecutor, arCfg.mSelectTimeout),
+Slave::Slave(	openpal::Logger logger, 
+				IAppLayer* pAppLayer,
+				IExecutor* pExecutor,
+				ITimeWriteHandler* pTimeWriteHandler, 
+				Database* pDatabase, 
+				const EventBufferFacade& buffers, 
+				ICommandHandler* pCmdHandler, 
+				const SlaveConfig& config) :
+	IAppUser(logger),	
+	mpTimeWriteHandler(pTimeWriteHandler),
+	selectBuffer(pExecutor, config.mSelectTimeout),
 	lastResponse(responseBuffer.GetWriteBuffer()),	
-	pExecutor(apExecutor),
-	mpAppLayer(apAppLayer),
-	mpDatabase(apDatabase),
-	mpCmdHandler(apCmdHandler),
+	pExecutor(pExecutor),
+	mpAppLayer(pAppLayer),
+	mpDatabase(pDatabase),	
+	mpCmdHandler(pCmdHandler),
 	mpState(AS_Closed::Inst()),
-	mConfig(arCfg),
+	mConfig(config),
 	mpUnsolTimer(nullptr),	
-	mStaticRspContext(apDatabase, StaticResponseTypes(arCfg)),
+	staticRspContext(pDatabase, StaticResponseTypes(config)),
+	eventRspContext(buffers),
 	mDeferredUnsol(false),
 	mStartupNullUnsol(false),
 	mpTimeTimer(nullptr)
 {
-	/* Link the event buffer to the database */
-	//mpDatabase->AddEventBuffer(mRspContext.GetBuffer());
+	// Link the event buffer to the database
+	mpDatabase->SetEventBuffer(eventRspContext.GetBuffer());
 
 	mIIN.Set(IINBit::DEVICE_RESTART); // Always set on restart
 
@@ -77,8 +85,14 @@ Slave::Slave(openpal::Logger aLogger, IAppLayer* apAppLayer, IExecutor* apExecut
 
 Slave::~Slave()
 {
-	if(mpUnsolTimer) mpUnsolTimer->Cancel();
-	if(mpTimeTimer) mpTimeTimer->Cancel();
+	if (mpUnsolTimer)
+	{
+		mpUnsolTimer->Cancel();
+	}
+	if (mpTimeTimer)
+	{
+		mpTimeTimer->Cancel();
+	}
 }
 
 void Slave::SetNeedTimeIIN()
@@ -201,8 +215,8 @@ IINField Slave::HandleWrite(const APDURecord& request, SequenceInfo sequence)
 
 IINField Slave::HandleRead(const APDURecord& request, SequenceInfo sequence, APDUResponse& response)
 {
-	mStaticRspContext.Reset();
-	ReadHandler handler(logger, &mStaticRspContext);
+	staticRspContext.Reset();
+	ReadHandler handler(logger, &staticRspContext);
 	auto result = APDUParser::ParseTwoPass(request.objects, &handler, &logger, APDUParser::Context(false)); // don't expect range/count context on a READ
 	if(result == APDUParser::Result::OK)
 	{
@@ -214,14 +228,14 @@ IINField Slave::HandleRead(const APDURecord& request, SequenceInfo sequence, APD
 			// if the request contained static variations, we double buffer (copy) the entire static database.
 			// this ensures that an multi-fragmented responses see a consistent snapshot
 			openpal::Transaction tx(mpDatabase);
-			if(!mStaticRspContext.IsComplete()) mpDatabase->DoubleBuffer();
-			this->mStaticRspContext.Load(response); // todo get the overflow bits out of here & return them
+			if(!staticRspContext.IsComplete()) mpDatabase->DoubleBuffer();
+			this->staticRspContext.Load(response); // todo get the overflow bits out of here & return them
 			return IINField::Empty;
 		}
 	}
 	else
 	{
-		mStaticRspContext.Reset();
+		staticRspContext.Reset();
 		return IINFromParseResult(result);
 	}
 }
@@ -326,7 +340,7 @@ void Slave::ContinueResponse()
 	
 	{	// perform a transaction (lock) the database
 		openpal::Transaction tx(mpDatabase);
-		this->mStaticRspContext.Load(response);
+		this->staticRspContext.Load(response);
 	}
 	this->SendResponse(response);
 }

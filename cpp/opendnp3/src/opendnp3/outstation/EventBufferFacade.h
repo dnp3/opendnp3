@@ -46,19 +46,19 @@ struct EventBufferFacade
 {
 public:
 
-	EventBufferFacade(	openpal::RandomInsertAdapter<Event<Binary>, uint16_t> aBinaryEvents,
-	                    openpal::RandomInsertAdapter<Event<Analog>, uint16_t> aAnalogEvents,
-	                    openpal::RandomInsertAdapter<Event<Counter>, uint16_t> aCounterEvents,
-	                    openpal::RandomInsertAdapter<Event<FrozenCounter>, uint16_t> aFrozenCounterEvents,
-	                    openpal::LinkedListAdapter<SequenceRecord, uint16_t> aSequenceOfEvents,
-	                    openpal::StackAdapter<openpal::ListNode<SequenceRecord>*, uint16_t> aSelectedEvents) :
+	EventBufferFacade(	openpal::RandomInsertAdapter<Event<Binary>, uint16_t> binaryEvents_,
+	                    openpal::RandomInsertAdapter<Event<Analog>, uint16_t> analogEvents_,
+	                    openpal::RandomInsertAdapter<Event<Counter>, uint16_t> counterEvents_,
+	                    openpal::RandomInsertAdapter<Event<FrozenCounter>, uint16_t> frozenCounterEvents_,
+	                    openpal::LinkedListAdapter<SequenceRecord, uint16_t> sequenceOfEvents_,
+	                    openpal::StackAdapter<openpal::ListNode<SequenceRecord>*, uint16_t> selectedEvents_) :
 
-		binaryEvents(aBinaryEvents),
-		analogEvents(aAnalogEvents),
-		counterEvents(aCounterEvents),
-		frozenCounterEvents(aFrozenCounterEvents),
-		sequenceOfEvents(aSequenceOfEvents),
-		selectedEvents(aSelectedEvents)
+		binaryEvents(binaryEvents_),
+		analogEvents(analogEvents_),
+		counterEvents(counterEvents_),
+		frozenCounterEvents(frozenCounterEvents_),
+		sequenceOfEvents(sequenceOfEvents_),
+		selectedEvents(selectedEvents_)
 	{
 
 	}

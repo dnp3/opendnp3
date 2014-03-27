@@ -27,21 +27,7 @@ using namespace openpal;
 namespace opendnp3
 {
 
-EventMaxConfig::EventMaxConfig() :
-	mMaxBinaryEvents(1000),
-	mMaxAnalogEvents(1000),
-	mMaxCounterEvents(1000),
-	mMaxVtoEvents(100)
-{}
-
-EventMaxConfig::EventMaxConfig(uint32_t aMaxBinaryEvents, uint32_t aMaxAnalogEvents, uint32_t aMaxCounterEvents, uint32_t aMaxVtoEvents) :
-	mMaxBinaryEvents(aMaxBinaryEvents),
-	mMaxAnalogEvents(aMaxAnalogEvents),
-	mMaxCounterEvents(aMaxCounterEvents),
-	mMaxVtoEvents(aMaxVtoEvents)
-{}
-
-SlaveConfig::SlaveConfig() :
+	SlaveConfig::SlaveConfig() :
 	mMaxControls(1),
 	mDisableUnsol(false),
 	mUnsolMask(true, true, true),
@@ -50,8 +36,7 @@ SlaveConfig::SlaveConfig() :
 	mUnsolPackDelay(TimeDuration::Milliseconds(200)),
 	mUnsolRetryDelay(TimeDuration::Seconds(2)),
 	mSelectTimeout(TimeDuration::Seconds(5)),
-	mMaxFragSize(sizes::DEFAULT_APDU_BUFFER_SIZE),
-	mEventMaxConfig(),
+	mMaxFragSize(sizes::DEFAULT_APDU_BUFFER_SIZE),	
 	mStaticBinary(StaticBinaryResponse::Group1Var2),
 	mStaticAnalog(StaticAnalogResponse::Group30Var1),
 	mStaticCounter(StaticCounterResponse::Group20Var1),

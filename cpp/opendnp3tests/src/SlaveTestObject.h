@@ -26,6 +26,7 @@
 #include <opendnp3/outstation/Database.h>
 #include <opendnp3/outstation/SlaveConfig.h>
 #include <opendnp3/outstation/DynamicallyAllocatedDatabase.h>
+#include <opendnp3/outstation/DynamicallyAllocatedEventBuffer.h>
 
 #include "MockExecutor.h"
 #include "LogTester.h"
@@ -58,6 +59,7 @@ public:
 	MockExecutor mts;
 	MockAppLayer app;
 	DynamicallyAllocatedDatabase dbBuffers;
+	DynamicallyAllocatedEventBuffer eventBuffers;
 	Database db;
 	MockCommandHandler cmdHandler;
 	Slave slave;

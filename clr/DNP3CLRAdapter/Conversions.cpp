@@ -268,9 +268,9 @@ opendnp3::ClassMask Conversions::convertClassMask(ClassMask^ cm)
 	return opendnp3::ClassMask(cm->class1, cm->class2, cm->class3);
 }
 
-opendnp3::EventMaxConfig Conversions::convertEventMaxConfig(EventMaxConfig^ cm)
+opendnp3::EventBufferConfig Conversions::convertEventMaxConfig(EventMaxConfig^ cm)
 {
-	return opendnp3::EventMaxConfig(cm->maxBinaryEvents, cm->maxAnalogEvents, cm->maxCounterEvents, 0);
+	return opendnp3::EventBufferConfig(cm->maxBinaryEvents, cm->maxAnalogEvents, cm->maxCounterEvents, 0);
 }
 
 opendnp3::StaticBinaryResponse Conversions::convert(StaticBinaryResponse rsp)
@@ -325,8 +325,7 @@ opendnp3::SlaveConfig Conversions::convertConfig(SlaveConfig^ config)
 	sc.mUnsolPackDelay = convertMilliseconds(config->unsolPackDelayMs);
 	sc.mUnsolRetryDelay = convertMilliseconds(config->unsolRetryDelayMs);
 	sc.mSelectTimeout = convertMilliseconds(config->selectTimeoutMs);
-	sc.mMaxFragSize = config->maxFragSize;
-	sc.mEventMaxConfig = convertEventMaxConfig(config->eventMaxConfig);
+	sc.mMaxFragSize = config->maxFragSize;	
 	sc.mStaticBinary = convert(config->staticBinary);
 	sc.mStaticAnalog = convert(config->staticAnalog);
 	sc.mStaticCounter = convert(config->staticCounter);

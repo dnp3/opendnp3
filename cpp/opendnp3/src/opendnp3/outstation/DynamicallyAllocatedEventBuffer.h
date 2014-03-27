@@ -23,15 +23,19 @@
 #define __DYNAMICALLY_ALLOCATED_EVENT_BUFFER_
 
 #include "EventBufferFacade.h"
+
+#include "opendnp3/outstation/EventBufferConfig.h"
+
 #include <openpal/DynamicArray.h>
 
 namespace opendnp3
 {
 
-class DynamicallyAllocatedEventBuffer
+class DynamicallyAllocatedEventBuffer : openpal::Uncopyable
 {
+
 public:
-	DynamicallyAllocatedEventBuffer(uint16_t aMaxBinary, uint16_t aMaxAnalog, uint16_t aMaxCounter, uint16_t aMaxFrozenCounter);
+	DynamicallyAllocatedEventBuffer(const EventBufferConfig& config);
 
 	EventBufferFacade GetFacade();
 

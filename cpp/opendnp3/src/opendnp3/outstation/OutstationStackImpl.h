@@ -26,7 +26,9 @@
 #include "opendnp3/outstation/DatabaseConfiguration.h"
 #include "opendnp3/outstation/Database.h"
 #include "opendnp3/outstation/Slave.h"
+
 #include "opendnp3/outstation/DynamicallyAllocatedDatabase.h"
+#include "opendnp3/outstation/DynamicallyAllocatedEventBuffer.h"
 
 #include <openpal/Location.h>
 
@@ -57,7 +59,8 @@ public:
 
 private:
 	openpal::IExecutor* pExecutor;	
-	DynamicallyAllocatedDatabase dynamicDatabaseBuffer;
+	DynamicallyAllocatedDatabase databaseBuffers;
+	DynamicallyAllocatedEventBuffer eventBuffers;
 	Mutex mutex;
 	Database database;
 	Slave slave;

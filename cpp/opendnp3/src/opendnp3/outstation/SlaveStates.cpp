@@ -205,7 +205,7 @@ void AS_WaitForRspSuccess::OnSolFailure(Slave* slave)
 
 void AS_WaitForRspSuccess::OnSolSendSuccess(Slave* slave)
 {
-	if (slave->mStaticRspContext.IsComplete())
+	if (slave->staticRspContext.IsComplete())
 	{
 		slave->ChangeState(AS_Idle::Inst());
 	}

@@ -18,42 +18,31 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include "OutstationStackImpl.h"
+
+#include "EventBufferConfig.h"
 
 namespace opendnp3
 {
 
-OutstationStackImpl::OutstationStackImpl(
-	openpal::Logger& logger,
-	openpal::IExecutor* apExecutor,
-	ITimeWriteHandler* apTimeWriteHandler,
-	ICommandHandler* apCmdHandler,
-	const SlaveStackConfig& config,
-	const StackActionHandler& handler) :
-		IOutstation(logger, apExecutor, config.app, config.link, handler),
-		pExecutor(apExecutor),	
-		databaseBuffers(config.database.GetTemplate()),
-		eventBuffers(config.eventBuffer),
-		mutex(),
-		database(databaseBuffers.GetFacade(), &mutex),
-		slave(logger.GetSubLogger("outstation"), &appStack.application, apExecutor, apTimeWriteHandler, &database, eventBuffers.GetFacade(), apCmdHandler, config.slave)
+EventBufferConfig::EventBufferConfig() :
+	maxBinaryEvents(1000),
+	maxAnalogEvents(1000),
+	maxCounterEvents(1000),
+	maxFrozenCounterEvents(100)
+{}
+
+EventBufferConfig::EventBufferConfig(uint32_t maxBinaryEvents_, uint32_t maxAnalogEvents_, uint32_t maxCounterEvents_, uint32_t maxFrozenCounterEvents_) :
+	maxBinaryEvents(maxBinaryEvents_),
+	maxAnalogEvents(maxAnalogEvents_),
+	maxCounterEvents(maxCounterEvents_),
+	maxFrozenCounterEvents(maxFrozenCounterEvents_)
+{}
+
+uint32_t EventBufferConfig::TotalEvents() const
 {
-	appStack.application.SetUser(&slave);
-	databaseBuffers.Configure(config.database);
+	return maxBinaryEvents + maxAnalogEvents + maxCounterEvents + maxFrozenCounterEvents;
 }
 
-IMeasurementLoader* OutstationStackImpl::GetLoader()
-{
-	return &database;
-}
-
-void OutstationStackImpl::SetNeedTimeIIN()
-{
-	pExecutor->Post([this]()
-	{
-		this->slave.SetNeedTimeIIN();
-	});
-}
 
 }
 

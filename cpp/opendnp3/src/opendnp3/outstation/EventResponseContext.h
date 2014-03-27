@@ -18,42 +18,45 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include "OutstationStackImpl.h"
+#ifndef __EVENT_RESPONSE_CONTEXT_H_
+#define __EVENT_RESPONSE_CONTEXT_H_
+
+#include <openpal/Uncopyable.h>
+
+#include "opendnp3/StaticSizeConfiguration.h"
+#include "opendnp3/app/APDUResponse.h"
+#include "opendnp3/outstation/OutstationEventBuffer.h"
 
 namespace opendnp3
 {
 
-OutstationStackImpl::OutstationStackImpl(
-	openpal::Logger& logger,
-	openpal::IExecutor* apExecutor,
-	ITimeWriteHandler* apTimeWriteHandler,
-	ICommandHandler* apCmdHandler,
-	const SlaveStackConfig& config,
-	const StackActionHandler& handler) :
-		IOutstation(logger, apExecutor, config.app, config.link, handler),
-		pExecutor(apExecutor),	
-		databaseBuffers(config.database.GetTemplate()),
-		eventBuffers(config.eventBuffer),
-		mutex(),
-		database(databaseBuffers.GetFacade(), &mutex),
-		slave(logger.GetSubLogger("outstation"), &appStack.application, apExecutor, apTimeWriteHandler, &database, eventBuffers.GetFacade(), apCmdHandler, config.slave)
+/**
+ * Builds and tracks the state of multi-fragmented event responses to READ requests,
+ * coordinating with the event buffer
+ */
+class EventResponseContext : private openpal::Uncopyable
 {
-	appStack.application.SetUser(&slave);
-	databaseBuffers.Configure(config.database);
+	
+public:
+
+	EventResponseContext(const EventBufferFacade& facade);
+
+/*
+	void Reset();
+
+	bool IsComplete() const;
+
+	void Load(APDUResponse& response);
+*/
+
+	IEventBuffer& GetBuffer();
+
+private:
+	
+	OutstationEventBuffer buffer;
+
+};
+
 }
 
-IMeasurementLoader* OutstationStackImpl::GetLoader()
-{
-	return &database;
-}
-
-void OutstationStackImpl::SetNeedTimeIIN()
-{
-	pExecutor->Post([this]()
-	{
-		this->slave.SetNeedTimeIIN();
-	});
-}
-
-}
-
+#endif

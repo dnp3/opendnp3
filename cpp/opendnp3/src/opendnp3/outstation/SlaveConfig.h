@@ -42,26 +42,6 @@
 namespace opendnp3
 {
 
-/// Configuration of max event counts
-struct EventMaxConfig
-{
-	EventMaxConfig();
-
-	EventMaxConfig(uint32_t, uint32_t, uint32_t, uint32_t);
-
-	/// The number of binary events the slave will buffer before overflowing
-	uint32_t mMaxBinaryEvents;
-
-	/// The number of analog events the slave will buffer before overflowing
-	uint32_t mMaxAnalogEvents;
-
-	/// The number of counter events the slave will buffer before overflowing
-	uint32_t mMaxCounterEvents;
-
-	/// The number of vto events the slave will buffer before overflowing
-	uint32_t mMaxVtoEvents;
-};
-
 /** Configuration information for a dnp3 slave (outstation)
 
 Used as both input describing the startup configuration of the slave, and as configuration state of mutable properties (i.e. unsolicited responses).
@@ -101,11 +81,8 @@ struct SlaveConfig
 
 	/// The maximum fragment size the slave will use for data it sends
 	uint32_t mMaxFragSize;
-
-	/// Structure that defines the maximum number of events to buffer
-	EventMaxConfig mEventMaxConfig;
-
-	// default static response types
+	
+	// -------------  default static response types ------------------
 
 	/// The default group/variation to use for static binary responses
 	StaticBinaryResponse mStaticBinary;

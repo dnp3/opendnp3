@@ -26,17 +26,17 @@ using namespace openpal;
 namespace opendnp3
 {
 
-DynamicallyAllocatedEventBuffer::DynamicallyAllocatedEventBuffer(uint16_t aMaxBinary, uint16_t aMaxAnalog, uint16_t aMaxCounter, uint16_t aMaxFrozenCounter) :
-	binaryStack(aMaxBinary),
-	binaryArray(aMaxBinary),
-	analogStack(aMaxAnalog),
-	analogArray(aMaxAnalog),
-	counterStack(aMaxCounter),
-	counterArray(aMaxCounter),
-	frozenCounterStack(aMaxFrozenCounter),
-	frozenCounterArray(aMaxFrozenCounter),
-	sequenceOfEvents(aMaxBinary + aMaxAnalog + aMaxCounter),
-	selectedEvents(aMaxBinary + aMaxAnalog + aMaxCounter)
+DynamicallyAllocatedEventBuffer::DynamicallyAllocatedEventBuffer(const EventBufferConfig& config) :
+	binaryStack(config.maxBinaryEvents),
+	binaryArray(config.maxBinaryEvents),
+	analogStack(config.maxAnalogEvents),
+	analogArray(config.maxAnalogEvents),
+	counterStack(config.maxCounterEvents),
+	counterArray(config.maxCounterEvents),
+	frozenCounterStack(config.maxFrozenCounterEvents),
+	frozenCounterArray(config.maxFrozenCounterEvents),
+	sequenceOfEvents(config.TotalEvents()),
+	selectedEvents(config.TotalEvents())
 {}
 
 EventBufferFacade DynamicallyAllocatedEventBuffer::GetFacade()
