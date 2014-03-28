@@ -25,7 +25,6 @@
 #include "IEventBuffer.h"
 #include "EventBufferFacade.h"
 #include "SelectionCriteria.h"
-#include "IEventWriter.h"
 #include "EventCount.h"
 #include "SelectionIterator.h"
 

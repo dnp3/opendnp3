@@ -98,9 +98,6 @@
     <ClInclude Include="src\MockCommandHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\MockEventWriter.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\MockExecutor.h">
       <Filter>Header Files</Filter>
     </ClInclude>

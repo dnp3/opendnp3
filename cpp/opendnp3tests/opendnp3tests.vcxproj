@@ -212,7 +212,6 @@
     <ClInclude Include="src\MockAppLayer.h" />
     <ClInclude Include="src\MockAppUser.h" />
     <ClInclude Include="src\MockCommandHandler.h" />
-    <ClInclude Include="src\MockEventWriter.h" />
     <ClInclude Include="src\MockExecutor.h" />
     <ClInclude Include="src\MockFrameSink.h" />
     <ClInclude Include="src\MockLinkLayer.h" />

@@ -38,9 +38,9 @@ public:
 
 	WriteHandler(openpal::Logger& aLogger, ITimeWriteHandler* pTimeWriteHandler_, IINField* pWriteIIN_);
 
-	virtual void _OnIIN(const IterableBuffer<IndexedValue<bool, uint16_t>>& meas) final;
+	virtual void _OnIIN(const HeaderRecord& record, const IterableBuffer<IndexedValue<bool, uint16_t>>& meas) override final;
 
-	virtual void _OnCountOf(const IterableBuffer<Group50Var1>& times) final;
+	virtual void _OnCountOf(const HeaderRecord& record, const IterableBuffer<Group50Var1>& times) override final;
 
 private:
 

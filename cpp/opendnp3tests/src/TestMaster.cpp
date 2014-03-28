@@ -65,8 +65,8 @@ void DoControlSelectAndOperate(MasterTestObject& t, std::function<void (CommandR
 template <class T>
 void TestAnalogOutputExecution(const std::string& setpointhex, T ao)
 {
-	MasterConfig master_cfg;
-	MasterTestObject t(master_cfg);
+	MasterConfig config;
+	MasterTestObject t(config);
 	t.master.OnLowerLayerUp();
 
 	TestForIntegrityPoll(t);
@@ -83,8 +83,8 @@ void TestAnalogOutputExecution(const std::string& setpointhex, T ao)
 
 TEST_CASE(SUITE("InitialState"))
 {
-	MasterConfig master_cfg;
-	MasterTestObject t(master_cfg);
+	MasterConfig config;
+	MasterTestObject t(config);
 
 	t.master.OnLowerLayerDown();
 	REQUIRE(t.log.PopOneEntry(flags::ERR));
@@ -106,8 +106,8 @@ TEST_CASE(SUITE("InitialState"))
 
 TEST_CASE(SUITE("IntegrityOnStartup"))
 {
-	MasterConfig master_cfg;
-	MasterTestObject t(master_cfg);
+	MasterConfig config;
+	MasterTestObject t(config);
 	t.master.OnLowerLayerUp();
 
 	TestForIntegrityPoll(t);
@@ -116,9 +116,9 @@ TEST_CASE(SUITE("IntegrityOnStartup"))
 
 TEST_CASE(SUITE("UnsolDisableEnableOnStartup"))
 {
-	MasterConfig master_cfg;
-	master_cfg.DoUnsolOnStartup = true;
-	MasterTestObject t(master_cfg);
+	MasterConfig config;
+	config.DoUnsolOnStartup = true;
+	MasterTestObject t(config);
 	t.master.OnLowerLayerUp();
 
 	// create a generic response packet with no IIN bits set
@@ -140,8 +140,8 @@ TEST_CASE(SUITE("UnsolDisableEnableOnStartup"))
 
 TEST_CASE(SUITE("RestartAndTimeBits"))
 {
-	MasterConfig master_cfg;
-	MasterTestObject t(master_cfg);
+	MasterConfig config;
+	MasterTestObject t(config);
 	t.master.OnLowerLayerUp();
 
 	t.fixedUTC.mTimeSinceEpoch = 100;
@@ -166,8 +166,8 @@ TEST_CASE(SUITE("RestartAndTimeBits"))
 
 TEST_CASE(SUITE("RestartFailure"))
 {
-	MasterConfig master_cfg;
-	MasterTestObject t(master_cfg);
+	MasterConfig config;
+	MasterTestObject t(config);
 	t.master.OnLowerLayerUp();
 
 	t.fixedUTC.mTimeSinceEpoch = 100; //100 ms since epoch
@@ -182,8 +182,8 @@ TEST_CASE(SUITE("RestartFailure"))
 
 TEST_CASE(SUITE("RestartLayerDown"))
 {
-	MasterConfig master_cfg;
-	MasterTestObject t(master_cfg);
+	MasterConfig config;
+	MasterTestObject t(config);
 	t.master.OnLowerLayerUp();
 
 	TestForIntegrityAndRespond(t, "C0 81 90 00"); // need time and device restart
@@ -198,8 +198,8 @@ TEST_CASE(SUITE("RestartLayerDown"))
 
 TEST_CASE(SUITE("DelayMeasLayerDown"))
 {
-	MasterConfig master_cfg;
-	MasterTestObject t(master_cfg);
+	MasterConfig config;
+	MasterTestObject t(config);
 	t.master.OnLowerLayerUp();
 
 	TestForIntegrityAndRespond(t, "C0 81 90 00"); // need time and device restart
@@ -216,8 +216,8 @@ TEST_CASE(SUITE("DelayMeasLayerDown"))
 
 TEST_CASE(SUITE("DelayMeasFailure"))
 {
-	MasterConfig master_cfg;
-	MasterTestObject t(master_cfg);
+	MasterConfig config;
+	MasterTestObject t(config);
 	t.master.OnLowerLayerUp();
 
 	TestForIntegrityAndRespond(t, "C0 81 90 00"); // need time and device restart
@@ -233,8 +233,8 @@ TEST_CASE(SUITE("DelayMeasFailure"))
 
 TEST_CASE(SUITE("RestartBadResponses"))
 {
-	MasterConfig master_cfg;
-	MasterTestObject t(master_cfg);
+	MasterConfig config;
+	MasterTestObject t(config);
 	t.master.OnLowerLayerUp();
 
 	t.fixedUTC.mTimeSinceEpoch = 100; //100 ms since epoch
@@ -264,8 +264,8 @@ TEST_CASE(SUITE("RestartBadResponses"))
 
 TEST_CASE(SUITE("ControlExecutionClosedState"))
 {
-	MasterConfig master_cfg;
-	MasterTestObject t(master_cfg);
+	MasterConfig config;
+	MasterTestObject t(config);
 
 	auto pCmdProcessor = t.master.GetCommandProcessor();
 
@@ -286,8 +286,8 @@ TEST_CASE(SUITE("ControlExecutionClosedState"))
 
 TEST_CASE(SUITE("SelectAndOperate"))
 {
-	MasterConfig master_cfg;
-	MasterTestObject t(master_cfg);
+	MasterConfig config;
+	MasterTestObject t(config);
 	t.master.OnLowerLayerUp();
 
 	TestForIntegrityPoll(t);
@@ -322,8 +322,8 @@ TEST_CASE(SUITE("SelectAndOperate"))
 
 TEST_CASE(SUITE("ControlExecutionSelectFailure"))
 {
-	MasterConfig master_cfg;
-	MasterTestObject t(master_cfg);
+	MasterConfig config;
+	MasterTestObject t(config);
 	t.master.OnLowerLayerUp();
 
 	std::vector<CommandResponse> rsps;
@@ -342,8 +342,8 @@ TEST_CASE(SUITE("ControlExecutionSelectFailure"))
 
 TEST_CASE(SUITE("ControlExecutionSelectLayerDown"))
 {
-	MasterConfig master_cfg;
-	MasterTestObject t(master_cfg);
+	MasterConfig config;
+	MasterTestObject t(config);
 	t.master.OnLowerLayerUp();
 
 	std::vector<CommandResponse> rsps;
@@ -362,8 +362,8 @@ TEST_CASE(SUITE("ControlExecutionSelectLayerDown"))
 
 TEST_CASE(SUITE("ControlExecutionSelectErrorResponse"))
 {
-	MasterConfig master_cfg;
-	MasterTestObject t(master_cfg);
+	MasterConfig config;
+	MasterTestObject t(config);
 	t.master.OnLowerLayerUp();
 
 	std::vector<CommandResponse> rsps;
@@ -381,8 +381,8 @@ TEST_CASE(SUITE("ControlExecutionSelectErrorResponse"))
 
 TEST_CASE(SUITE("ControlExecutionSelectPartialResponse"))
 {
-	MasterConfig master_cfg;
-	MasterTestObject t(master_cfg);
+	MasterConfig config;
+	MasterTestObject t(config);
 	t.master.OnLowerLayerUp();
 
 	std::vector<CommandResponse> rsps;
@@ -401,8 +401,8 @@ TEST_CASE(SUITE("ControlExecutionSelectPartialResponse"))
 
 TEST_CASE(SUITE("DeferredControlExecution"))
 {
-	MasterConfig master_cfg;
-	MasterTestObject t(master_cfg);
+	MasterConfig config;
+	MasterTestObject t(config);
 	t.master.OnLowerLayerUp();
 
 	// check that a read request was made on startup
@@ -472,8 +472,8 @@ TEST_CASE(SUITE("Int16SetpointExecution"))
 
 TEST_CASE(SUITE("SolicitedResponseWithData"))
 {
-	MasterConfig master_cfg;
-	MasterTestObject t(master_cfg);
+	MasterConfig config;
+	MasterTestObject t(config);
 	t.master.OnLowerLayerUp();
 
 	TestForIntegrityAndRespond(t, "C0 81 00 00 01 02 00 02 02 81"); //group 2 var 1, index = 2, 0x81 = Online, true
@@ -483,14 +483,14 @@ TEST_CASE(SUITE("SolicitedResponseWithData"))
 
 TEST_CASE(SUITE("SolicitedResponseFailure"))
 {
-	MasterConfig master_cfg;
-	MasterTestObject t(master_cfg);
+	MasterConfig config;
+	MasterTestObject t(config);
 	t.master.OnLowerLayerUp();
 
 
 	TestForIntegrityPoll(t, false);
 
-	t.mts.AdvanceTime(TimeDuration(master_cfg.TaskRetryRate));
+	t.mts.AdvanceTime(TimeDuration(config.TaskRetryRate));
 	REQUIRE(t.mts.DispatchOne());
 
 	TestForIntegrityPoll(t);
@@ -498,8 +498,8 @@ TEST_CASE(SUITE("SolicitedResponseFailure"))
 
 TEST_CASE(SUITE("SolicitedResponseLayerDown"))
 {
-	MasterConfig master_cfg;
-	MasterTestObject t(master_cfg);
+	MasterConfig config;
+	MasterTestObject t(config);
 	t.master.OnLowerLayerUp();
 
 	REQUIRE(t.Read() ==  INTEGRITY);
@@ -510,8 +510,8 @@ TEST_CASE(SUITE("SolicitedResponseLayerDown"))
 
 TEST_CASE(SUITE("SolicitedMultiFragResponse"))
 {
-	MasterConfig master_cfg;
-	MasterTestObject t(master_cfg);
+	MasterConfig config;
+	MasterTestObject t(config);
 	t.master.OnLowerLayerUp();
 
 	REQUIRE(t.Read() ==  INTEGRITY);
@@ -528,8 +528,8 @@ TEST_CASE(SUITE("SolicitedMultiFragResponse"))
 
 TEST_CASE(SUITE("EventPoll"))
 {
-	MasterConfig master_cfg;
-	MasterTestObject t(master_cfg);
+	MasterConfig config;
+	MasterTestObject t(config);
 
 	t.master.AddClassScan(CLASS_1 | CLASS_2, TimeDuration::Milliseconds(10), TimeDuration::Seconds(1));
 	t.master.AddClassScan(CLASS_3, TimeDuration::Milliseconds(10), TimeDuration::Seconds(1));
@@ -549,8 +549,8 @@ TEST_CASE(SUITE("EventPoll"))
 
 TEST_CASE(SUITE("ParsesOctetStringResponseWithFiveCharacters"))
 {
-	MasterConfig master_cfg;
-	MasterTestObject t(master_cfg);
+	MasterConfig config;
+	MasterTestObject t(config);
 	t.master.OnLowerLayerUp();
 
 	TestForIntegrityPoll(t);
@@ -565,8 +565,8 @@ TEST_CASE(SUITE("ParsesOctetStringResponseWithFiveCharacters"))
 
 TEST_CASE(SUITE("ParsesOctetStringResponseSizeOfOne"))
 {
-	MasterConfig master_cfg;
-	MasterTestObject t(master_cfg);
+	MasterConfig config;
+	MasterTestObject t(config);
 	t.master.OnLowerLayerUp();
 
 	// octet strings shouldn't be found in class 0 polls, but we'll test that we can process them anyway

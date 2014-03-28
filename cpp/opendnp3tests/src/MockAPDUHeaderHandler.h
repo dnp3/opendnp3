@@ -39,41 +39,41 @@ public:
 		APDUHandlerBase(this->GetLogger("test"))
 	{}
 
-	virtual void _AllObjects(const GroupVariationRecord& record) override
+	virtual void _AllObjects(const HeaderRecord& record) override
 	{
 		records.push_back(record);
 	}
 
-	virtual void _OnRangeRequest(const GroupVariationRecord& record, const StaticRange& range) override
+	virtual void _OnRangeRequest(const HeaderRecord& record, const StaticRange& range) override
 	{
 		records.push_back(record);
 	}
 
-	virtual void _OnCountRequest(const GroupVariationRecord& record, uint32_t count) override
+	virtual void _OnCountRequest(const HeaderRecord& record, uint32_t count) override
 	{
 		records.push_back(record);
 	}
 
-	virtual void _OnIIN(const IterableBuffer<IndexedValue<bool, uint16_t>>& bits) override
+	virtual void _OnIIN(const HeaderRecord& record, const IterableBuffer<IndexedValue<bool, uint16_t>>& bits) override
 	{
-		records.push_back(GroupVariationRecord(80,1, GroupVariation::Group80Var1, GroupVariationType::OTHER));
+		records.push_back(record);
 		bits.foreach([&](const IndexedValue<bool, uint16_t>& v)
 		{
 			iinBits.push_back(v);
 		});
 	}
 
-	virtual void _OnCountOf(const IterableBuffer<Group50Var1>& times) override
+	virtual void _OnCountOf(const HeaderRecord& record, const IterableBuffer<Group50Var1>& times) override
 	{
-		
+		records.push_back(record);
 	}
 
-	virtual void _OnCountOf(const IterableBuffer<Group52Var2>& times) override
+	virtual void _OnCountOf(const HeaderRecord& record, const IterableBuffer<Group52Var2>& times) override
 	{
-		
+		records.push_back(record);
 	}
 
-	virtual void _OnRange(const GroupVariationRecord& record, const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas) override
+	virtual void _OnRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas) override
 	{
 		records.push_back(record);
 		meas.foreach([&](const IndexedValue<Binary, uint16_t>& v)
@@ -82,7 +82,7 @@ public:
 		});
 	}
 
-	virtual void _OnRange(const GroupVariationRecord& record, const IterableBuffer<IndexedValue<DoubleBitBinary, uint16_t>>& meas) override
+	virtual void _OnRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<DoubleBitBinary, uint16_t>>& meas) override
 	{
 		records.push_back(record);
 		meas.foreach([&](const IndexedValue<DoubleBitBinary, uint16_t>& v)
@@ -91,7 +91,7 @@ public:
 		});
 	}
 
-	virtual void _OnRange(const GroupVariationRecord& record, const IterableBuffer<IndexedValue<BinaryOutputStatus, uint16_t>>& meas) override
+	virtual void _OnRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<BinaryOutputStatus, uint16_t>>& meas) override
 	{
 		records.push_back(record);
 		meas.foreach([&](const IndexedValue<BinaryOutputStatus, uint16_t>& v)
@@ -100,7 +100,7 @@ public:
 		});
 	}
 
-	virtual void _OnRange(const GroupVariationRecord& record, const IterableBuffer<IndexedValue<Counter, uint16_t>>& meas) override
+	virtual void _OnRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<Counter, uint16_t>>& meas) override
 	{
 		records.push_back(record);
 		meas.foreach([&](const IndexedValue<Counter, uint16_t>& v)
@@ -109,7 +109,7 @@ public:
 		});
 	}
 
-	virtual void _OnRange(const GroupVariationRecord& record, const IterableBuffer<IndexedValue<FrozenCounter, uint16_t>>& meas) override
+	virtual void _OnRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<FrozenCounter, uint16_t>>& meas) override
 	{
 		records.push_back(record);
 		meas.foreach([&](const IndexedValue<FrozenCounter, uint16_t>& v)
@@ -118,7 +118,7 @@ public:
 		});
 	}
 
-	virtual void _OnRange(const GroupVariationRecord& record, const IterableBuffer<IndexedValue<Analog, uint16_t>>& meas)  override
+	virtual void _OnRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<Analog, uint16_t>>& meas)  override
 	{
 		records.push_back(record);
 		meas.foreach([&](const IndexedValue<Analog, uint16_t>& v)
@@ -127,7 +127,7 @@ public:
 		});
 	}
 
-	virtual void _OnRange(const GroupVariationRecord& record, const IterableBuffer<IndexedValue<AnalogOutputStatus, uint16_t>>& meas) override
+	virtual void _OnRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputStatus, uint16_t>>& meas) override
 	{
 		records.push_back(record);
 		meas.foreach([&](const IndexedValue<AnalogOutputStatus, uint16_t>& v)
@@ -136,7 +136,7 @@ public:
 		});
 	}
 
-	virtual void _OnRange(const GroupVariationRecord& record, const IterableBuffer<IndexedValue<OctetString, uint16_t>>& meas) override
+	virtual void _OnRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<OctetString, uint16_t>>& meas) override
 	{
 		records.push_back(record);
 		meas.foreach([&](const IndexedValue<OctetString, uint16_t>& v)
@@ -145,7 +145,7 @@ public:
 		});
 	}
 
-	virtual void _OnIndexPrefix(const GroupVariationRecord& record, const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas) override
+	virtual void _OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas) override
 	{
 		records.push_back(record);
 		meas.foreach([&](const IndexedValue<Binary, uint16_t>& v)
@@ -154,7 +154,7 @@ public:
 		});
 	}
 
-	virtual void _OnIndexPrefix(const GroupVariationRecord& record, const IterableBuffer<IndexedValue<DoubleBitBinary, uint16_t>>& meas) override
+	virtual void _OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<DoubleBitBinary, uint16_t>>& meas) override
 	{
 		records.push_back(record);
 		meas.foreach([&](const IndexedValue<DoubleBitBinary, uint16_t>& v)
@@ -163,7 +163,7 @@ public:
 		});
 	}
 
-	virtual void _OnIndexPrefix(const GroupVariationRecord& record, const IterableBuffer<IndexedValue<Counter, uint16_t>>& meas)  override
+	virtual void _OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<Counter, uint16_t>>& meas)  override
 	{
 		records.push_back(record);
 		meas.foreach([&](const IndexedValue<Counter, uint16_t>& v)
@@ -172,7 +172,7 @@ public:
 		});
 	}
 
-	virtual void _OnIndexPrefix(const GroupVariationRecord& record, const IterableBuffer<IndexedValue<FrozenCounter, uint16_t>>& meas)  override
+	virtual void _OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<FrozenCounter, uint16_t>>& meas)  override
 	{
 		records.push_back(record);
 		meas.foreach([&](const IndexedValue<FrozenCounter, uint16_t>& v)
@@ -181,7 +181,7 @@ public:
 		});
 	}
 
-	virtual void _OnIndexPrefix(const GroupVariationRecord& record, const IterableBuffer<IndexedValue<Analog, uint16_t>>& meas)  override
+	virtual void _OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<Analog, uint16_t>>& meas)  override
 	{
 		records.push_back(record);
 		meas.foreach([&](const IndexedValue<Analog, uint16_t>& v)
@@ -190,7 +190,7 @@ public:
 		});
 	}
 
-	virtual void _OnIndexPrefix(const GroupVariationRecord& record, const IterableBuffer<IndexedValue<OctetString, uint16_t>>& meas) override
+	virtual void _OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<OctetString, uint16_t>>& meas) override
 	{
 		records.push_back(record);
 		meas.foreach([&](const IndexedValue<OctetString, uint16_t>& v)
@@ -199,88 +199,97 @@ public:
 		});
 	}
 
-	virtual void _OnIndexPrefix(const IterableBuffer<IndexedValue<ControlRelayOutputBlock, uint16_t>>& meas) override
+	virtual void _OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<ControlRelayOutputBlock, uint16_t>>& meas) override
 	{		
+		records.push_back(record);
 		meas.foreach([&](const IndexedValue<ControlRelayOutputBlock, uint16_t>& v)
 		{
 			crobRequests.push_back(v);
 		});
 	}
 
-	virtual void _OnIndexPrefix(const IterableBuffer<IndexedValue<AnalogOutputInt16, uint16_t>>& meas) override
+	virtual void _OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputInt16, uint16_t>>& meas) override
 	{
-	
+		records.push_back(record);
 		meas.foreach([&](const IndexedValue<AnalogOutputInt16, uint16_t>& v)
 		{
 			aoInt16Requests.push_back(v);
 		});
 	}
 
-	virtual void _OnIndexPrefix(const IterableBuffer<IndexedValue<AnalogOutputInt32, uint16_t>>& meas) override
+	virtual void _OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputInt32, uint16_t>>& meas) override
 	{	
+		records.push_back(record);
 		meas.foreach([&](const IndexedValue<AnalogOutputInt32, uint16_t>& v)
 		{
 			aoInt32Requests.push_back(v);
 		});
 	}
 
-	virtual void _OnIndexPrefix(const IterableBuffer<IndexedValue<AnalogOutputFloat32, uint16_t>>& meas) override
+	virtual void _OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputFloat32, uint16_t>>& meas) override
 	{	
+		records.push_back(record);
 		meas.foreach([&](const IndexedValue<AnalogOutputFloat32, uint16_t>& v)
 		{
 			aoFloat32Requests.push_back(v);
 		});
 	}
 
-	virtual void _OnIndexPrefix(const IterableBuffer<IndexedValue<AnalogOutputDouble64, uint16_t>>& meas) override
+	virtual void _OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputDouble64, uint16_t>>& meas) override
 	{	
+		records.push_back(record);
 		meas.foreach([&](const IndexedValue<AnalogOutputDouble64, uint16_t>& v)
 		{
 			aoDouble64Requests.push_back(v);
 		});
 	}
 
-	virtual void _OnIndexPrefix(const IterableBuffer<IndexedValue<ControlRelayOutputBlock, uint8_t>>& meas) override
+	virtual void _OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<ControlRelayOutputBlock, uint8_t>>& meas) override
 	{		
+		records.push_back(record);
 		meas.foreach([&](const IndexedValue<ControlRelayOutputBlock, uint8_t>& v)
 		{
 			crobRequests.push_back(v.Widen<uint16_t>());
 		});
 	}
 
-	virtual void _OnIndexPrefix(const IterableBuffer<IndexedValue<AnalogOutputInt16, uint8_t>>& meas) override
+	virtual void _OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputInt16, uint8_t>>& meas) override
 	{		
+		records.push_back(record);
 		meas.foreach([&](const IndexedValue<AnalogOutputInt16, uint8_t>& v)
 		{
 			aoInt16Requests.push_back(v.Widen<uint16_t>());
 		});
 	}
 
-	virtual void _OnIndexPrefix(const IterableBuffer<IndexedValue<AnalogOutputInt32, uint8_t>>& meas) override
+	virtual void _OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputInt32, uint8_t>>& meas) override
 	{		
+		records.push_back(record);
 		meas.foreach([&](const IndexedValue<AnalogOutputInt32, uint8_t>& v)
 		{
 			aoInt32Requests.push_back(v.Widen<uint16_t>());
 		});
 	}
 
-	virtual void _OnIndexPrefix(const IterableBuffer<IndexedValue<AnalogOutputFloat32, uint8_t>>& meas) override
+	virtual void _OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputFloat32, uint8_t>>& meas) override
 	{		
+		records.push_back(record);
 		meas.foreach([&](const IndexedValue<AnalogOutputFloat32, uint8_t>& v)
 		{
 			aoFloat32Requests.push_back(v.Widen<uint16_t>());
 		});
 	}
 
-	virtual void _OnIndexPrefix(const IterableBuffer<IndexedValue<AnalogOutputDouble64, uint8_t>>& meas) override
+	virtual void _OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputDouble64, uint8_t>>& meas) override
 	{		
+		records.push_back(record);
 		meas.foreach([&](const IndexedValue<AnalogOutputDouble64, uint8_t>& v)
 		{
 			aoDouble64Requests.push_back(v.Widen<uint16_t>());
 		});
 	}
 
-	std::vector<GroupVariationRecord> records;
+	std::vector<HeaderRecord> records;
 
 	std::vector<IndexedValue<bool, uint16_t>> iinBits;
 

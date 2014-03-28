@@ -26,6 +26,8 @@
 
 #include <openpal/Uncopyable.h>
 
+#include "opendnp3/gen/QualifierCode.h"
+
 namespace opendnp3
 {
 
@@ -167,6 +169,15 @@ public:
 	GroupVariationType type;
 	uint8_t group;
 	uint8_t variation;
+};
+
+class HeaderRecord : public GroupVariationRecord
+{
+	public:
+
+	HeaderRecord(const GroupVariationRecord& gv, QualifierCode qualifier_);	
+
+	QualifierCode qualifier;
 };
 
 }

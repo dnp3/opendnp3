@@ -54,7 +54,7 @@ public:
 	LinkedListIterator(ListNode< ValueType>* pStart) : pCurrent(pStart)
 	{}
 
-	bool HasNext()
+	bool HasNext() const
 	{
 		return (pCurrent != nullptr);
 	}

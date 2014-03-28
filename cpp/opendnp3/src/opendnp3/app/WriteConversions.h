@@ -33,6 +33,7 @@
 #include "opendnp3/objects/Group20.h"
 #include "opendnp3/objects/Group21.h"
 #include "opendnp3/objects/Group22.h"
+#include "opendnp3/objects/Group23.h"
 #include "opendnp3/objects/Group30.h"
 #include "opendnp3/objects/Group32.h"
 #include "opendnp3/objects/Group40.h"
@@ -77,27 +78,33 @@ struct ConvertGroup12Var1 : private openpal::Uncopyable
 
 // Group 20
 typedef ConvertQV<Group20Var1, Counter> ConvertGroup20Var1;
-typedef ConvertQVRangeCheck<Group20Var2, Counter, 0> ConvertGroup20Var2; // TODO - No quality change?!!
+typedef ConvertQVandTruncate<Group20Var2, Counter> ConvertGroup20Var2;
 
 typedef ConvertV<Group20Var5, Counter> ConvertGroup20Var5;
-typedef ConvertVRangeCheck<Group20Var6, Counter> ConvertGroup20Var6;
+typedef ConvertVandTruncate<Group20Var6, Counter> ConvertGroup20Var6;
 
 // Group 21
 typedef ConvertQV<Group21Var1, FrozenCounter> ConvertGroup21Var1;
-typedef ConvertQVRangeCheck<Group21Var2, FrozenCounter, 0> ConvertGroup21Var2; // TODO - No quality change?!!
+typedef ConvertQVandTruncate<Group21Var2, FrozenCounter> ConvertGroup21Var2;
 
 typedef ConvertQVT<Group21Var5, FrozenCounter> ConvertGroup21Var5;
-typedef ConvertQVTRangeCheck<Group21Var6, FrozenCounter, 0> ConvertGroup21Var6; // TODO - No quality change?!!
+typedef ConvertQVTandTruncate<Group21Var6, FrozenCounter> ConvertGroup21Var6;
 
 typedef ConvertV<Group21Var9, FrozenCounter> ConvertGroup21Var9;
-typedef ConvertVRangeCheck<Group21Var10, FrozenCounter> ConvertGroup21Var10; // TODO - No quality change?!!
+typedef ConvertVandTruncate<Group21Var10, FrozenCounter> ConvertGroup21Var10;
 
 // Group 22
 typedef ConvertQV<Group22Var1, Counter> ConvertGroup22Var1;
-typedef ConvertQVRangeCheck<Group22Var2, Counter, 0> ConvertGroup22Var2; // TODO - No quality change?!!
+typedef ConvertQVandTruncate<Group22Var2, Counter> ConvertGroup22Var2;
 
 typedef ConvertQVT<Group22Var5, Counter> ConvertGroup22Var5;
-typedef ConvertQVTRangeCheck<Group22Var6, Counter, 0> ConvertGroup22Var6; // TODO - No quality change?!!
+typedef ConvertQVTandTruncate<Group22Var6, Counter> ConvertGroup22Var6;
+
+// Group 23
+typedef ConvertQV<Group23Var1, FrozenCounter> ConvertGroup23Var1;
+typedef ConvertQVandTruncate<Group23Var2, FrozenCounter> ConvertGroup23Var2;
+typedef ConvertQVT<Group23Var5, FrozenCounter> ConvertGroup23Var5;
+typedef ConvertQVTandTruncate<Group23Var6, FrozenCounter> ConvertGroup23Var6;
 
 // Group 30
 typedef ConvertQVRangeCheck<Group30Var1, Analog, AnalogQuality::AQ_OVERRANGE> ConvertGroup30Var1;

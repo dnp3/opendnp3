@@ -18,56 +18,53 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __MOCK_EVENT_WRITER_H_
-#define __MOCK_EVENT_WRITER_H_
+#ifndef __RESPONSE_CONTEXT_H_
+#define __RESPONSE_CONTEXT_H_
 
-#include <opendnp3/outstation/OutstationEventBuffer.h>
+#include <openpal/Uncopyable.h>
 
-#include <vector>
+#include "opendnp3/app/StaticRange.h"
+#include "opendnp3/app/APDUResponse.h"
+#include "opendnp3/outstation/StaticResponseTypes.h"
+
+#include  "opendnp3/outstation/StaticResponseContext.h"
+#include  "opendnp3/outstation/EventResponseContext.h"
 
 namespace opendnp3
 {
 
-class MockEventWriter : public IEventWriter
+class Database;
+
+/**
+ *  Coordinates the event & static response contexts to do multi-fragments responses
+ */
+class ResponseContext : private openpal::Uncopyable
 {
+
 public:
 
-	bool Write(const Event<Binary>& evt) final
-	{
-		binaries.push_back(evt);
-		return true;
-	}
+	ResponseContext(Database* pDatabase, OutstationEventBuffer& buffer, const StaticResponseTypes& rspTypes);
 
-	bool Write(const Event<Analog>& evt) final
-	{
-		analogs.push_back(evt);
-		return true;
-	}
+	IINField ReadAllObjects(const GroupVariationRecord& record);
+	IINField ReadRange(const GroupVariationRecord& record, const StaticRange& range);
 
-	bool Write(const Event<Counter>& evt) final
-	{
-		counters.push_back(evt);
-		return true;
-	}
+	void Reset();
 
-	size_t TotalEvents()
-	{
-		return binaries.size() + analogs.size() + counters.size();
-	}
+	bool IsComplete() const;
 
-	void Clear()
-	{
-		binaries.clear();
-		analogs.clear();
-		counters.clear();
-	}
+	void Load(APDUResponse& response);
 
-	std::vector<Event<Binary>> binaries;
-	std::vector<Event<Analog>> analogs;
-	std::vector<Event<Counter>> counters;
+private:
+
+	static AppControlField GetAppControl(uint32_t headerCount, bool fin);
+
+	void SetControl(APDUResponse& response, bool fin);
+
+	uint32_t fragmentCount;
+	StaticResponseContext staticContext;
+	EventResponseContext eventContext;
 };
 
 }
 
 #endif
-

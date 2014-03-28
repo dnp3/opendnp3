@@ -22,9 +22,6 @@
 #define __EVENT_RESPONSE_CONTEXT_H_
 
 #include <openpal/Uncopyable.h>
-#include <openpal/StaticQueue.h>
-
-#include "opendnp3/StaticSizeConfiguration.h"
 
 #include "opendnp3/app/APDUResponse.h"
 #include "opendnp3/outstation/OutstationEventBuffer.h"
@@ -42,24 +39,58 @@ class EventResponseContext : private openpal::Uncopyable
 	
 public:
 
-	EventResponseContext(const EventBufferFacade& facade);
+	EventResponseContext(OutstationEventBuffer& buffer_);
 
-	bool Queue(const SelectionCriteria& critera);
+	bool IsComplete() const;
+
+	IINField ReadAll(const GroupVariationRecord& record);
 
 	void Reset();
 
 	// return true, if all events were loaded, false otherwise
-	bool Load(APDUResponse& response);
-
-	IEventBuffer& GetBuffer();
+	bool Load(ObjectWriter& writer);
 
 private:
 
-	openpal::StaticQueue<SelectionCriteria, uint16_t, sizes::MAX_EVENT_READ_REQUESTS> requests;
-	
-	OutstationEventBuffer buffer;
+	SelectionCriteria criteria;	
+	OutstationEventBuffer& buffer;
 
+	// true if the event buffer was exhausted, false if apdu is full
+	bool Iterate(ObjectWriter& writer, SelectionIterator& iterator);
+	
+	// return true true, if there is still room in APDU, false otherwise
+	template <class T>
+	bool WriteFullHeader(ObjectWriter& writer, SelectionIterator& iterator, IDNP3Serializer<T>* pSerializer);
 };
+
+template <class T>
+bool EventResponseContext::WriteFullHeader(ObjectWriter& ow, SelectionIterator& iterator, IDNP3Serializer<T>* pSerializer)
+{
+	auto writer = ow.IterateOverCountWithPrefix<openpal::UInt16, T>(QualifierCode::UINT16_CNT_UINT16_INDEX, pSerializer);
+	if (writer.IsNull())
+	{
+		return false;
+	}
+	else
+	{
+		Event<T> evt;
+		while (iterator.Read(evt))
+		{
+			if (writer.Write(evt.value, evt.index))
+			{
+				iterator.SelectCurrent();
+				iterator.SeekNext();
+			}
+			else
+			{
+				writer.Complete();
+				return false;
+			}
+		}
+		writer.Complete();
+		return true;
+	}
+}
 
 }
 

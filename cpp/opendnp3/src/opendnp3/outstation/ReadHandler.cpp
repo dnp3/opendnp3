@@ -24,73 +24,21 @@
 namespace opendnp3
 {
 
-ReadHandler::ReadHandler(openpal::Logger& logger, StaticResponseContext* pStaticContext_, EventResponseContext* pEventResponseContext) :
+ReadHandler::ReadHandler(openpal::Logger& logger, ResponseContext& rspContext_) :
 	APDUHandlerBase(logger),
-	pStaticContext(pStaticContext_),
-	pEventContext(pEventResponseContext)
+	rspContext(rspContext_)
 {
 
 }
 
-void ReadHandler::_AllObjects(const GroupVariationRecord& record)
+void ReadHandler::_AllObjects(const HeaderRecord& record)
 {	
-
-	switch (record.enumeration)
-	{
-		// static objects
-		case(GroupVariation::Group60Var1) :
-		case(GroupVariation::Group1Var0) :
-		case(GroupVariation::Group1Var2) :
-		case(GroupVariation::Group10Var0) :
-		case(GroupVariation::Group10Var2) :
-		case(GroupVariation::Group20Var0) :
-		case(GroupVariation::Group20Var1) :
-		case(GroupVariation::Group20Var2) :
-		case(GroupVariation::Group20Var5) :
-		case(GroupVariation::Group20Var6) :
-		case(GroupVariation::Group21Var0) :
-		case(GroupVariation::Group21Var1) :
-		case(GroupVariation::Group21Var2) :
-		case(GroupVariation::Group21Var5) :
-		case(GroupVariation::Group21Var6) :
-		case(GroupVariation::Group21Var9) :
-		case(GroupVariation::Group21Var10) :
-		case(GroupVariation::Group30Var0) :
-		case(GroupVariation::Group30Var1) :
-		case(GroupVariation::Group30Var2) :
-		case(GroupVariation::Group30Var3) :
-		case(GroupVariation::Group30Var4) :
-		case(GroupVariation::Group30Var5) :
-		case(GroupVariation::Group30Var6) :
-		case(GroupVariation::Group40Var0) :
-		case(GroupVariation::Group40Var1) :
-		case(GroupVariation::Group40Var2) :
-		case(GroupVariation::Group40Var3) :
-		case(GroupVariation::Group40Var4) :
-			errors |= pStaticContext->QueueReadAllObjects(record);
-			break;
-		default:
-			errors.Set(IINBit::FUNC_NOT_SUPPORTED);
-			break;
-	}
+	errors |= rspContext.ReadAllObjects(record);
 }
 
-void ReadHandler::_OnRangeRequest(const GroupVariationRecord& record, const StaticRange& range)
+void ReadHandler::_OnRangeRequest(const HeaderRecord& record, const StaticRange& range)
 {
-	/*
-	switch (pStaticContext->QueueReadRange(record, range))
-	{
-		case(QueueResult::FULL):
-		case(QueueResult::SUCCESS):
-			break;
-		case(QueueResult::OBJECT_UNDEFINED):
-			errors |= IINField(IINBit::FUNC_NOT_SUPPORTED);
-			break;
-		case(QueueResult::OUT_OF_RANGE):
-			errors |= IINField(IINBit::PARAM_ERROR);
-			break;
-	}
-	*/
+	errors |= rspContext.ReadRange(record, range);
 }
 
 

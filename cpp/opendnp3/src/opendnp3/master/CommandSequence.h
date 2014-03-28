@@ -60,7 +60,7 @@ public:
 		command = IndexedValue<CommandType, uint16_t>(value, index);
 	}
 
-	virtual void _OnIndexPrefix(const IterableBuffer<IndexedValue<CommandType, uint16_t>>& meas) override
+	virtual void _OnIndexPrefix(const HeaderRecord&, const IterableBuffer<IndexedValue<CommandType, uint16_t>>& meas) override
 	{
 		if(this->IsFirstHeader())
 		{

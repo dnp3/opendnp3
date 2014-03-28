@@ -61,7 +61,8 @@ namespace events {
 	const uint32_t ANALOG_OUTPUT_STATUS = static_cast<uint32_t>(EventType::AnalogOutputStatus);
 	*/
 
-	static const uint8_t ALL_TYPES = BINARY | ANALOG | COUNTER | FROZEN_COUNTER;// | DOUBLE_BIT_BINARY | BINARY_OUTPUT_STATUS | ANALOG_OUTPUT_STATUS;
+	static const uint32_t NONE = 0;
+	static const uint32_t ALL_TYPES = ~NONE;
 }
 
 }

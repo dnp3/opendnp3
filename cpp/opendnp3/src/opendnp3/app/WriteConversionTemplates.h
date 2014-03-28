@@ -64,6 +64,17 @@ struct ConvertV : private openpal::PureStatic
 };
 
 template <class Target, class Source>
+struct ConvertVandTruncate : private openpal::PureStatic
+{
+	static Target Apply(const Source& src)
+	{
+		Target t;
+		t.value = static_cast<typename Target::ValueType>(src.GetValue());
+		return t;
+	}
+};
+
+template <class Target, class Source>
 struct ConvertVRangeCheck : private openpal::PureStatic
 {
 	static Target Apply(const Source& src)
@@ -88,6 +99,18 @@ struct ConvertQVRangeCheck : private openpal::PureStatic
 };
 
 template <class Target, class Source>
+struct ConvertQVandTruncate : private openpal::PureStatic
+{
+	static Target Apply(const Source& src)
+	{
+		Target t;		
+		t.flags = src.GetQuality();
+		t.value = static_cast<typename Target::ValueType>(src.GetValue());
+		return t;
+	}
+};
+
+template <class Target, class Source>
 struct ConvertQVT : private openpal::PureStatic
 {
 	static Target Apply(const Source& src)
@@ -95,6 +118,19 @@ struct ConvertQVT : private openpal::PureStatic
 		Target t;
 		t.flags = src.GetQuality();
 		t.value = src.GetValue();
+		t.time = src.GetTime();
+		return t;
+	}
+};
+
+template <class Target, class Source>
+struct ConvertQVTandTruncate : private openpal::PureStatic
+{
+	static Target Apply(const Source& src)
+	{
+		Target t;
+		t.flags = src.GetQuality();
+		t.value = static_cast<typename Target::ValueType>(src.GetValue());
 		t.time = src.GetTime();
 		return t;
 	}

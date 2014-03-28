@@ -64,15 +64,15 @@ Slave::Slave(	openpal::Logger logger,
 	mpCmdHandler(pCmdHandler),
 	mpState(AS_Closed::Inst()),
 	mConfig(config),
-	mpUnsolTimer(nullptr),	
-	staticRspContext(pDatabase, StaticResponseTypes(config)),
-	eventRspContext(buffers),
+	mpUnsolTimer(nullptr),
+	eventBuffer(buffers),
+	rspContext(pDatabase, eventBuffer, StaticResponseTypes(config)),	
 	mDeferredUnsol(false),
 	mStartupNullUnsol(false),
 	mpTimeTimer(nullptr)
 {
 	// Link the event buffer to the database
-	mpDatabase->SetEventBuffer(eventRspContext.GetBuffer());
+	mpDatabase->SetEventBuffer(eventBuffer);
 
 	mIIN.Set(IINBit::DEVICE_RESTART); // Always set on restart
 
@@ -181,21 +181,21 @@ IINField Slave::ConfigureResponse(const APDURecord& request, SequenceInfo sequen
 {
 	switch(request.function)
 	{
-	case(FunctionCode::READ) :
-		return HandleRead(request, sequence, response);
-	case(FunctionCode::WRITE):
-		return HandleWrite(request, sequence);
-	case(FunctionCode::SELECT) :
-		return HandleSelect(request, sequence, response);
-	case(FunctionCode::OPERATE) :
-		return HandleOperate(request, sequence, response);
-	case(FunctionCode::DIRECT_OPERATE) :
-		return HandleDirectOperate(request, sequence, response);
-	case(FunctionCode::DELAY_MEASURE):
-		return HandleDelayMeasure(request, sequence, response);
-	default:
-		ERROR_BLOCK(flags::WARN, "Function not supported: " << FunctionCodeToString(request.function), SERR_FUNC_NOT_SUPPORTED);
-		return IINField(IINBit::FUNC_NOT_SUPPORTED);
+		case(FunctionCode::READ) :
+			return HandleRead(request, sequence, response);
+		case(FunctionCode::WRITE):
+			return HandleWrite(request, sequence);
+		case(FunctionCode::SELECT) :
+			return HandleSelect(request, sequence, response);
+		case(FunctionCode::OPERATE) :
+			return HandleOperate(request, sequence, response);
+		case(FunctionCode::DIRECT_OPERATE) :
+			return HandleDirectOperate(request, sequence, response);
+		case(FunctionCode::DELAY_MEASURE):
+			return HandleDelayMeasure(request, sequence, response);
+		default:
+			ERROR_BLOCK(flags::WARN, "Function not supported: " << FunctionCodeToString(request.function), SERR_FUNC_NOT_SUPPORTED);
+			return IINField(IINBit::FUNC_NOT_SUPPORTED);
 	}
 }
 
@@ -215,27 +215,22 @@ IINField Slave::HandleWrite(const APDURecord& request, SequenceInfo sequence)
 
 IINField Slave::HandleRead(const APDURecord& request, SequenceInfo sequence, APDUResponse& response)
 {
-	staticRspContext.Reset();
-	ReadHandler handler(logger, &staticRspContext, &eventRspContext);
+	rspContext.Reset();
+	ReadHandler handler(logger, rspContext);
 	auto result = APDUParser::ParseTwoPass(request.objects, &handler, &logger, APDUParser::Context(false)); // don't expect range/count context on a READ
 	if(result == APDUParser::Result::OK)
-	{
-		auto errors = handler.Errors();
-		if(errors.Any()) return errors;
-		else
-		{
-			// Do a transaction on the database (lock) for multi-threaded environments
-			// if the request contained static variations, we double buffer (copy) the entire static database.
-			// this ensures that an multi-fragmented responses see a consistent snapshot
-			openpal::Transaction tx(mpDatabase);
-			if(!staticRspContext.IsComplete()) mpDatabase->DoubleBuffer();
-			this->staticRspContext.Load(response); // todo get the overflow bits out of here & return them
-			return IINField::Empty;
-		}
+	{		
+		// Do a transaction on the database (lock) for multi-threaded environments
+		// if the request contained static variations, we double buffer (copy) the entire static database.
+		// this ensures that an multi-fragmented responses see a consistent snapshot
+		openpal::Transaction tx(mpDatabase);
+		mpDatabase->DoubleBuffer(); // todo, make this optional?
+		rspContext.Load(response);
+		return handler.Errors();		
 	}
 	else
 	{
-		staticRspContext.Reset();
+		rspContext.Reset();
 		return IINFromParseResult(result);
 	}
 }
@@ -292,25 +287,23 @@ IINField Slave::HandleOperate(const APDURecord& request, SequenceInfo sequence, 
 		auto result = selectBuffer.Operate(request.control.SEQ, request.objects);
 		switch (result)
 		{
-
-		case(SelectBuffer::OperateResult::TIMEOUT):
-			return HandleCommandWithConstant(request, response, CommandStatus::TIMEOUT);
-		case(SelectBuffer::OperateResult::REPEAT):
-			{
-				// respond with the last response
-				response = lastResponse;
-				return lastResponse.GetIIN();
-			}
-		case(SelectBuffer::OperateResult::OK) :
-			{
-				CommandActionAdapter adapter(this->mpCmdHandler, false);
-				CommandResponseHandler handler(logger, mConfig.mMaxControls, &adapter, response);
-				auto result = APDUParser::ParseTwoPass(request.objects, &handler, &logger);
-				return IINFromParseResult(result);
-			}
-		default:
-			return HandleCommandWithConstant(request, response, CommandStatus::NO_SELECT);
-
+			case(SelectBuffer::OperateResult::TIMEOUT):
+				return HandleCommandWithConstant(request, response, CommandStatus::TIMEOUT);
+			case(SelectBuffer::OperateResult::REPEAT):
+				{
+					// respond with the last response
+					response = lastResponse;
+					return lastResponse.GetIIN();
+				}
+			case(SelectBuffer::OperateResult::OK) :
+				{
+					CommandActionAdapter adapter(this->mpCmdHandler, false);
+					CommandResponseHandler handler(logger, mConfig.mMaxControls, &adapter, response);
+					auto result = APDUParser::ParseTwoPass(request.objects, &handler, &logger);
+					return IINFromParseResult(result);
+				}
+			default:
+				return HandleCommandWithConstant(request, response, CommandStatus::NO_SELECT);
 		}
 	}
 }
@@ -336,11 +329,10 @@ void Slave::ContinueResponse()
 	APDUResponse response(responseBuffer.GetWriteBuffer(mConfig.mMaxFragSize));
 	response.SetFunction(FunctionCode::RESPONSE);
 	response.SetControl(AppControlField::DEFAULT);
-	
-	
+		
 	{	// perform a transaction (lock) the database
 		openpal::Transaction tx(mpDatabase);
-		this->staticRspContext.Load(response);
+		this->rspContext.Load(response);
 	}
 	this->SendResponse(response);
 }

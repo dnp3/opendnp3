@@ -24,10 +24,8 @@
 #include "opendnp3/outstation/ICommandHandler.h"
 #include "opendnp3/outstation/ITimeWriteHandler.h"
 #include "opendnp3/outstation/SlaveConfig.h"
-#include "opendnp3/outstation/StaticResponseContext.h"
-#include "opendnp3/outstation/StaticResponseTypes.h"
 #include "opendnp3/outstation/SelectBuffer.h"
-#include "opendnp3/outstation/EventResponseContext.h"
+#include "opendnp3/outstation/ResponseContext.h"
 
 #include "opendnp3/outstation/CachedRequest.h"
 #include "opendnp3/app/IAppLayer.h"
@@ -124,9 +122,8 @@ private:
 	IINField mIIN;							// IIN bits that persist between requests (i.e. NeedsTime/Restart/Etc)
 	CachedRequest mCachedRequest;			// Request cache for when outstation needs to defer a request
 
-	StaticResponseContext staticRspContext;	// Used to track and construct static response fragments
-	EventResponseContext eventRspContext;	// Used to track construct event response fragments
-
+	OutstationEventBuffer eventBuffer;
+	ResponseContext rspContext;	// Used to track and construct multi fragment responses
 
 	// Flags that tell us that some action has been Deferred
 	// until the slave is in a state capable of handling it.

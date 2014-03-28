@@ -35,6 +35,32 @@ struct SelectionCriteria
 
 	bool IsMatch(EventClass clazz, EventType type) const;
 
+	void Clear();
+
+	bool HasSelection() const;
+
+	inline void AddToClass1(uint32_t types)
+	{
+		class1 |= types;
+	}
+
+	inline void AddToClass2(uint32_t types)
+	{
+		class2 |= types;
+	}
+
+	inline void AddToClass3(uint32_t types)
+	{
+		class3 |= types;
+	}
+
+	inline void AddToAllClasses(uint32_t types)
+	{
+		AddToClass1(types);
+		AddToClass2(types);
+		AddToClass3(types);
+	}
+
 	// ----- bit masks for measurement types in each class --------
 
 	uint32_t class1;

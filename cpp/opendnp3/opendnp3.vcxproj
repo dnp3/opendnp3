@@ -20,7 +20,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\opendnp3\app\AnalogOutput.h" />
-    <ClInclude Include="src\opendnp3\app\APDUEventWriter.h" />
     <ClInclude Include="src\opendnp3\app\APDUHandlerBase.h" />
     <ClInclude Include="src\opendnp3\app\APDUHeader.h" />
     <ClInclude Include="src\opendnp3\app\APDUHeaderParser.h" />
@@ -196,14 +195,13 @@
     <ClInclude Include="src\opendnp3\outstation\ICommandHandler.h" />
     <ClInclude Include="src\opendnp3\outstation\IMeasurementLoader.h" />
     <ClInclude Include="src\opendnp3\outstation\IEventBuffer.h" />
-    <ClInclude Include="src\opendnp3\outstation\IEventWriter.h" />
-    <ClInclude Include="src\opendnp3\outstation\IEventWriterState.h" />
     <ClInclude Include="src\opendnp3\outstation\IINHelpers.h" />
     <ClInclude Include="src\opendnp3\outstation\IOutstation.h" />
     <ClInclude Include="src\opendnp3\outstation\ITimeWriteHandler.h" />
     <ClInclude Include="src\opendnp3\outstation\OutstationEventBuffer.h" />
     <ClInclude Include="src\opendnp3\outstation\OutstationStackImpl.h" />
     <ClInclude Include="src\opendnp3\outstation\ReadHandler.h" />
+    <ClInclude Include="src\opendnp3\outstation\ResponseContext.h" />
     <ClInclude Include="src\opendnp3\outstation\SelectBuffer.h" />
     <ClInclude Include="src\opendnp3\outstation\SelectionCriteria.h" />
     <ClInclude Include="src\opendnp3\outstation\SelectionIterator.h" />
@@ -232,7 +230,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\opendnp3\app\AnalogOutput.cpp" />
-    <ClCompile Include="src\opendnp3\app\APDUEventWriter.cpp" />
     <ClCompile Include="src\opendnp3\app\APDUHeaderParser.cpp" />
     <ClCompile Include="src\opendnp3\app\APDUParser.cpp" />
     <ClCompile Include="src\opendnp3\app\APDURequest.cpp" />
@@ -343,12 +340,12 @@
     <ClCompile Include="src\opendnp3\outstation\EventBufferConfig.cpp" />
     <ClCompile Include="src\opendnp3\outstation\EventCount.cpp" />
     <ClCompile Include="src\opendnp3\outstation\EventResponseContext.cpp" />
-    <ClCompile Include="src\opendnp3\outstation\IEventWriterState.cpp" />
     <ClCompile Include="src\opendnp3\outstation\IINHelpers.cpp" />
     <ClCompile Include="src\opendnp3\outstation\ITimeWriteHandler.cpp" />
     <ClCompile Include="src\opendnp3\outstation\OutstationEventBuffer.cpp" />
     <ClCompile Include="src\opendnp3\outstation\OutstationStackImpl.cpp" />
     <ClCompile Include="src\opendnp3\outstation\ReadHandler.cpp" />
+    <ClCompile Include="src\opendnp3\outstation\ResponseContext.cpp" />
     <ClCompile Include="src\opendnp3\outstation\SelectBuffer.cpp" />
     <ClCompile Include="src\opendnp3\outstation\SelectionCriteria.cpp" />
     <ClCompile Include="src\opendnp3\outstation\SelectionIterator.cpp" />

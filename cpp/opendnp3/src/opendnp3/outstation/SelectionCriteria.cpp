@@ -35,6 +35,18 @@ SelectionCriteria::SelectionCriteria(uint32_t clazz1, uint32_t clazz2, uint32_t 
 {}
 
 
+void SelectionCriteria::Clear()
+{
+	class1 = 0;
+	class2 = 0;
+	class3 = 0;
+}
+
+bool SelectionCriteria::HasSelection() const
+{
+	return (class1 | class2 | class3) > 0;
+}
+
 bool SelectionCriteria::IsMatch(EventClass clazz, EventType type) const
 {
 	switch(clazz)

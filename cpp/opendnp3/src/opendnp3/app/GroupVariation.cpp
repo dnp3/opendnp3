@@ -42,6 +42,10 @@ GroupVariationRecord::GroupVariationRecord(uint8_t group_, uint8_t variation_, G
 
 }
 
+HeaderRecord::HeaderRecord(const GroupVariationRecord& gv, QualifierCode qualifier_) : GroupVariationRecord(gv), qualifier(qualifier_)
+{
+}
+
 GroupVariationRecord GroupVariationRecord::GetRecord(uint8_t group, uint8_t variation)
 {
 	auto pair = GetEnumAndType(group, variation);

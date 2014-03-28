@@ -26,8 +26,6 @@
 
 #include "MeasurementComparisons.h"
 
-#include "MockEventWriter.h"
-
 #include <iostream>
 
 using namespace std;

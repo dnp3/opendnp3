@@ -48,7 +48,7 @@ public:
 		timeOut(0)
 	{}
 
-	virtual void _OnCountOf(const IterableBuffer<Group52Var2>& times) final
+	virtual void _OnCountOf(const HeaderRecord& record, const IterableBuffer<Group52Var2>& times) override final
 	{
 		if(times.Count() == 1)
 		{

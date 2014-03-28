@@ -38,14 +38,17 @@ class SelectionIterator
 
 public:
 
+	//bool HasMore() const;
+
+	openpal::Option<EventType> Current();
 	openpal::Option<EventType> SeekNext();
 
 	void SelectCurrent();
 
-	void Read(Event<Binary>& evt);
-	void Read(Event<Counter>& evt);
-	void Read(Event<Analog>& evt);
-	void Read(Event<FrozenCounter>& evt);
+	bool Read(Event<Binary>& evt);
+	bool Read(Event<Counter>& evt);
+	bool Read(Event<Analog>& evt);
+	bool Read(Event<FrozenCounter>& evt);
 	/*
 	void Read(Event<DoubleBitBinary>& evt);
 	void Read(Event<BinaryOutputStatus>& evt);
@@ -55,23 +58,39 @@ public:
 
 private:
 
-	template <class T>
-	void ReadAny(Event<T>& evt, EventType type, const openpal::RandomInsertAdapter<Event<T>, uint16_t>& adapter)
-	{
-		assert(pCurrent);
-		assert(pCurrent->value.type == type);
-		evt = adapter[pCurrent->value.index];
-	}
+	SelectionIterator(OutstationEventBuffer* pBuffer_,
+	const SelectionCriteria& criteria_,
+	const openpal::LinkedListAdapter<SequenceRecord, uint16_t>::Iterator& iterator_);
 
-	SelectionIterator(OutstationEventBuffer* pBuffer_, 
-						const SelectionCriteria& criteria_, 
-						const openpal::LinkedListAdapter<SequenceRecord, uint16_t>::Iterator& iterator_);
+	template <class T>
+	bool ReadAny(Event<T>& evt, EventType type, const openpal::RandomInsertAdapter<Event<T>, uint16_t>& adapter);
 
 	OutstationEventBuffer* pBuffer;
 	SelectionCriteria criteria;
 	openpal::ListNode<SequenceRecord>* pCurrent;
 	openpal::LinkedListAdapter<SequenceRecord, uint16_t>::Iterator iterator;
 };
+
+template <class T>
+bool SelectionIterator::ReadAny(Event<T>& evt, EventType type, const openpal::RandomInsertAdapter<Event<T>, uint16_t>& adapter)
+{
+	if (pCurrent)
+	{
+		if (pCurrent->value.type == type)
+		{
+			evt = adapter[pCurrent->value.index];
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	else
+	{
+		return false;
+	}
+}
 
 }
 

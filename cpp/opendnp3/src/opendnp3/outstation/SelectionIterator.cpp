@@ -49,34 +49,45 @@ Option<EventType> SelectionIterator::SeekNext()
 	return Option<EventType>::None();
 }
 
+openpal::Option<EventType> SelectionIterator::Current()
+{
+	if (pCurrent)
+	{
+		return Option<EventType>::Some(pCurrent->value.type);
+	}
+	else
+	{
+		return Option<EventType>::None();		
+	}
+}
+
 void SelectionIterator::SelectCurrent()
 {
 	assert(pCurrent);
 	pCurrent->value.selected = true;
 	pBuffer->selectedTracker.Increment(pCurrent->value.type, pCurrent->value.clazz);	
-	pBuffer->facade.selectedEvents.Push(pCurrent);
-	//++count;
+	pBuffer->facade.selectedEvents.Push(pCurrent);	
 	pCurrent = nullptr;
 }
 
-void SelectionIterator::Read(Event<Binary>& evt)
+bool SelectionIterator::Read(Event<Binary>& evt)
 {
-	ReadAny<Binary>(evt, EventType::Binary, pBuffer->facade.binaryEvents);
+	return ReadAny<Binary>(evt, EventType::Binary, pBuffer->facade.binaryEvents);
 }
 
-void SelectionIterator::Read(Event<Counter>& evt)
+bool SelectionIterator::Read(Event<Counter>& evt)
 {
-	ReadAny<Counter>(evt, EventType::Counter, pBuffer->facade.counterEvents);
+	return ReadAny<Counter>(evt, EventType::Counter, pBuffer->facade.counterEvents);
 }
 
-void SelectionIterator::Read(Event<Analog>& evt)
+bool SelectionIterator::Read(Event<Analog>& evt)
 {
-	ReadAny<Analog>(evt, EventType::Analog, pBuffer->facade.analogEvents);
+	return ReadAny<Analog>(evt, EventType::Analog, pBuffer->facade.analogEvents);
 }
 
-void SelectionIterator::Read(Event<FrozenCounter>& evt)
+bool SelectionIterator::Read(Event<FrozenCounter>& evt)
 {
-	ReadAny<FrozenCounter>(evt, EventType::FrozenCounter, pBuffer->facade.frozenCounterEvents);
+	return ReadAny<FrozenCounter>(evt, EventType::FrozenCounter, pBuffer->facade.frozenCounterEvents);
 }
 
 

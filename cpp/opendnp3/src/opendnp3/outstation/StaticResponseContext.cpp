@@ -29,8 +29,7 @@ using namespace openpal;
 namespace opendnp3
 {
 
-StaticResponseContext::StaticResponseContext(Database* pDatabase_, const StaticResponseTypes& rspTypes_) :
-	fragmentCount(0),
+StaticResponseContext::StaticResponseContext(Database* pDatabase_, const StaticResponseTypes& rspTypes_) :	
 	pDatabase(pDatabase_),
 	rspTypes(rspTypes_)
 {}
@@ -40,9 +39,13 @@ bool StaticResponseContext::IsComplete() const
 	return staticResponseQueue.IsEmpty();
 }
 
-void StaticResponseContext::Reset()
+bool StaticResponseContext::HasRequests() const
 {
-	fragmentCount = 0;
+	return staticResponseQueue.IsNotEmpty();
+}
+
+void StaticResponseContext::Reset()
+{	
 	staticResponseQueue.Clear();
 }
 
@@ -248,21 +251,17 @@ IINField StaticResponseContext::QueueReadRange(const StaticRangeLoader& loader)
 	else return IINField(IINBit::PARAM_ERROR);
 }
 
-StaticLoadResult StaticResponseContext::Load(APDUResponse& response)
-{
-	auto writer = response.GetWriter();
-	auto result = LoadStaticData(writer);
-	auto control = GetAppControl(fragmentCount, result);
-	response.SetControl(control);
-	++fragmentCount;
-	return result;
-}
-
-AppControlField StaticResponseContext::GetAppControl(uint32_t headerCount, StaticLoadResult result)
-{
-	bool fir = (headerCount == 0);
-	bool fin = (result != StaticLoadResult::FULL);
-	return AppControlField(fir, fin, !fin, false, 0);
+bool StaticResponseContext::Load(ObjectWriter& writer)
+{		
+	switch (LoadStaticData(writer))
+	{
+		case(StaticLoadResult::EMPTY):
+		case(StaticLoadResult::COMPLETED) :
+			return true;
+		case(StaticLoadResult::FULL) :
+		default:
+			return false;
+	}
 }
 
 StaticLoadResult StaticResponseContext::LoadStaticData(ObjectWriter& writer)

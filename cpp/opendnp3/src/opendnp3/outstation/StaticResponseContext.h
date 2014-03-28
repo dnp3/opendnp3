@@ -65,15 +65,15 @@ public:
 
 	bool IsComplete() const;
 
-	StaticLoadResult Load(APDUResponse& response);
+	bool HasRequests() const;
+
+	bool Load(ObjectWriter& writer);
 
 private:
 
 	IINField QueueReadRange(const StaticRangeLoader& loader);
 
-	IINField QueueStaticIntegrity();
-
-	static AppControlField GetAppControl(uint32_t headerCount, StaticLoadResult result);
+	IINField QueueStaticIntegrity();	
 
 	template <class T>
 	StaticRangeLoader GetFullRangeWithDefaultLoader();
@@ -88,8 +88,7 @@ private:
 	StaticRangeLoader GetClippedRange(const StaticRange& range);
 
 	StaticLoadResult LoadStaticData(ObjectWriter& writer);
-
-	uint32_t fragmentCount;
+	
 	Database* pDatabase;
 	StaticResponseTypes rspTypes;
 
