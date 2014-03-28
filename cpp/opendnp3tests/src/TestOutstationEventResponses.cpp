@@ -33,7 +33,6 @@ using namespace openpal;
 
 #define SUITE(name) "OutstationEventResponsesTestSuite - " name
 
-/*
 TEST_CASE(SUITE("BlankExceptionScan"))
 {
 	SlaveConfig cfg; cfg.mDisableUnsol = true;
@@ -48,32 +47,30 @@ TEST_CASE(SUITE("ReadClass1"))
 {
 	SlaveConfig cfg; cfg.mDisableUnsol = true;
 	SlaveTestObject t(cfg, DatabaseTemplate::AnalogOnly(100));
-
+		
 	t.db.staticData.analogs.metadata[0x10].clazz = CLASS_1;
 	t.db.staticData.analogs.metadata[0x17].clazz = CLASS_1;
-	t.db.staticData.analogs.metadata[0x05].clazz = CLASS_1;
 
 	t.slave.OnLowerLayerUp();
 
 	{
 		Transaction tr(&t.db);
-		t.db.Update(Analog(0x0987, AQ_ONLINE), 0x10); // 0x87 09 00 00 in little endian
-		t.db.Update(Analog(0x1234, AQ_ONLINE), 0x17); // 0x39 30 00 00 in little endian
-		t.db.Update(Analog(0x2222, AQ_ONLINE), 0x05); // 0x22 22 00 00 in little endian
-		t.db.Update(Analog(0x3333, AQ_ONLINE), 0x05); // 0x33 33 00 00 in little endian
-		t.db.Update(Analog(0x4444, AQ_ONLINE), 0x05); // 0x44 44 00 00 in little endian
+		
+		t.db.Update(Analog(0x0987, AQ_ONLINE), 0x10); // 0x 87 09 00 00 in little endian		
+		t.db.Update(Analog(0x1234, AQ_ONLINE), 0x17); // 0x 12 34 00 00 in little endian
+		t.db.Update(Analog(0x2222, AQ_ONLINE), 0x17); // 0x 22 22 00 00 in little endian		
 	}
 
 	t.SendToSlave("C0 01 3C 02 06");
+	
+	// TODO - make this E0 for CON bit
+	REQUIRE(t.Read() == "C0 81 80 00 20 01 28 03 00 10 00 01 87 09 00 00 17 00 01 34 12 00 00 17 00 01 22 22 00 00");		
 
-	// The indices should be in reverse-order from how they were
-	// added, but the values for a given index should be in the same order
-	REQUIRE(t.Read() ==  "E0 81 80 00 20 01 17 05 10 01 87 09 00 00 17 01 34 12 00 00 05 01 22 22 00 00 05 01 33 33 00 00 05 01 44 44 00 00");
-
-	t.SendToSlave("C0 01 3C 02 06");			// Repeat read class 1
+	t.SendToSlave("C0 01 3C 02 06");		// Repeat read class 1
 	REQUIRE(t.Read() ==  "C0 81 80 00");	// Buffer should have been cleared
 }
 
+/*
 TEST_CASE(SUITE("ReadClass1TimeOrdered"))
 {
 	SlaveConfig cfg; cfg.mDisableUnsol = true;
