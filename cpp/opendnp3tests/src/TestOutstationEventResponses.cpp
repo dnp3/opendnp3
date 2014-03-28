@@ -43,12 +43,12 @@ TEST_CASE(SUITE("BlankExceptionScan"))
 	REQUIRE(t.Read() ==  "C0 81 80 00");
 }
 
-TEST_CASE(SUITE("ReadClass1"))
+TEST_CASE(SUITE("ReadClass1WithSOE"))
 {
 	SlaveConfig cfg; cfg.mDisableUnsol = true;
-	SlaveTestObject t(cfg, DatabaseTemplate::AnalogOnly(100));
+	SlaveTestObject t(cfg, DatabaseTemplate::AllTypes(100));
 		
-	t.db.staticData.analogs.metadata[0x10].clazz = CLASS_1;
+	t.db.staticData.binaries.metadata[0x10].clazz = CLASS_1;
 	t.db.staticData.analogs.metadata[0x17].clazz = CLASS_1;
 
 	t.slave.OnLowerLayerUp();
@@ -56,15 +56,17 @@ TEST_CASE(SUITE("ReadClass1"))
 	{
 		Transaction tr(&t.db);
 		
-		t.db.Update(Analog(0x0987, AQ_ONLINE), 0x10); // 0x 87 09 00 00 in little endian		
 		t.db.Update(Analog(0x1234, AQ_ONLINE), 0x17); // 0x 12 34 00 00 in little endian
+		t.db.Update(Binary(true, BQ_ONLINE), 0x10);			
 		t.db.Update(Analog(0x2222, AQ_ONLINE), 0x17); // 0x 22 22 00 00 in little endian		
 	}
 
 	t.SendToSlave("C0 01 3C 02 06");
 	
 	// TODO - make this E0 for CON bit
-	REQUIRE(t.Read() == "C0 81 80 00 20 01 28 03 00 10 00 01 87 09 00 00 17 00 01 34 12 00 00 17 00 01 22 22 00 00");		
+	REQUIRE(t.Read() == "C0 81 80 00 20 01 28 01 00 17 00 01 34 12 00 00 02 01 28 01 00 10 00 81 20 01 28 01 00 17 00 01 22 22 00 00");
+		
+		//"17 00 01 34 12 00 00 17 00 01 22 22 00 00");		
 
 	t.SendToSlave("C0 01 3C 02 06");		// Repeat read class 1
 	REQUIRE(t.Read() ==  "C0 81 80 00");	// Buffer should have been cleared
