@@ -64,11 +64,11 @@ struct SimpleEventMetadata : EventMetadata<T>
 {
 public:
 
-	bool CheckForEvent(const T& aValue)
+	bool CheckForEvent(const T& value)
 	{
-		if(aValue.IsEvent(this->lastEvent))
+		if(value.IsEvent(this->lastEvent))
 		{
-			this->lastEvent = aValue;
+			this->lastEvent = value;
 			return true;
 		}
 		return false;
@@ -84,11 +84,11 @@ struct DeadbandMetadata : EventMetadata<T>
 	DeadbandMetadata() : deadband(0)
 	{}
 
-	bool CheckForEvent(const T& aValue)
+	bool CheckForEvent(const T& value)
 	{
-		if(aValue.IsEvent(this->lastEvent, deadband))
+		if(value.IsEvent(this->lastEvent, deadband))
 		{
-			this->lastEvent = aValue;
+			this->lastEvent = value;
 			return true;
 		}
 		return false;

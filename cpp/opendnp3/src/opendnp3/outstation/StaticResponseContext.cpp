@@ -49,7 +49,7 @@ void StaticResponseContext::Reset()
 	staticResponseQueue.Clear();
 }
 
-IINField StaticResponseContext::QueueReadAllObjects(const GroupVariationRecord& record)
+IINField StaticResponseContext::ReadAll(const GroupVariationRecord& record)
 {	
 	switch(record.enumeration)
 	{
@@ -129,7 +129,7 @@ IINField StaticResponseContext::QueueReadAllObjects(const GroupVariationRecord& 
 	}
 }
 
-IINField StaticResponseContext::QueueReadRange(const GroupVariationRecord& record, const StaticRange& range)
+IINField StaticResponseContext::ReadRange(const GroupVariationRecord& record, const StaticRange& range)
 {
 	switch(record.enumeration)
 	{
@@ -211,8 +211,9 @@ IINField StaticResponseContext::QueueReadRange(const GroupVariationRecord& recor
 
 IINField StaticResponseContext::QueueStaticIntegrity()
 {
-	StaticQueue<StaticRangeLoader, uint32_t, 6> values;
+	StaticQueue<StaticRangeLoader, uint32_t, 7> values;
 	values.Enqueue(GetFullRangeWithDefaultLoader<Binary>());
+	values.Enqueue(GetFullRangeWithDefaultLoader<DoubleBitBinary>());
 	values.Enqueue(GetFullRangeWithDefaultLoader<Counter>());
 	values.Enqueue(GetFullRangeWithDefaultLoader<FrozenCounter>());
 	values.Enqueue(GetFullRangeWithDefaultLoader<Analog>());

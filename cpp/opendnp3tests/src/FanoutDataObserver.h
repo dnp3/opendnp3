@@ -23,6 +23,8 @@
 
 #include <opendnp3/outstation/IMeasurementLoader.h>
 
+#include <vector>
+
 namespace opendnp3
 {
 
@@ -45,31 +47,36 @@ public:
 		for (auto pObs : mObservers) openpal::Transaction::End(pObs);
 	}
 
-	void Update(const Binary& arPoint, uint16_t aIndex) final
+	void Update(const Binary& arPoint, uint16_t aIndex) override final
 	{
 		for(auto pObs : mObservers) pObs->Update(arPoint, aIndex);
 	}
 
-	void Update(const Analog& arPoint, uint16_t aIndex) final
+	void Update(const DoubleBitBinary& arPoint, uint16_t aIndex) override final
+	{
+		for (auto pObs : mObservers) pObs->Update(arPoint, aIndex);
+	}
+
+	void Update(const Analog& arPoint, uint16_t aIndex) override final
 	{
 		for(auto pObs : mObservers) pObs->Update(arPoint, aIndex);
 	}
 
-	void Update(const Counter& arPoint, uint16_t aIndex) final
+	void Update(const Counter& arPoint, uint16_t aIndex) override final
 	{
 		for(auto pObs : mObservers) pObs->Update(arPoint, aIndex);
 	}
 
-	void Update(const FrozenCounter& arPoint, uint16_t aIndex) final
+	void Update(const FrozenCounter& arPoint, uint16_t aIndex) override final
 	{
 		for(auto pObs : mObservers) pObs->Update(arPoint, aIndex);
 	}
 
-	void Update(const BinaryOutputStatus& arPoint, uint16_t aIndex) final
+	void Update(const BinaryOutputStatus& arPoint, uint16_t aIndex) override final
 	{
 		for(auto pObs : mObservers) pObs->Update(arPoint, aIndex);
 	}
-	void Update(const AnalogOutputStatus& arPoint, uint16_t aIndex) final
+	void Update(const AnalogOutputStatus& arPoint, uint16_t aIndex) override final
 	{
 		for(auto pObs : mObservers) pObs->Update(arPoint, aIndex);
 	}

@@ -74,7 +74,7 @@ public:
 	{
 		if (pMutex)
 		{
-			pMutex->Lock();
+			pMutex->Unlock();
 		}
 	}
 

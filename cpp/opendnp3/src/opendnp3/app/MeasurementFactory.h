@@ -120,6 +120,11 @@ struct BinaryOutputStatusFactory: private openpal::PureStatic
 	{
 		return BinaryOutputStatus(flags);
 	}
+
+	inline static BinaryOutputStatus From(uint8_t flags, int64_t time)
+	{
+		return BinaryOutputStatus(flags, time);
+	}
 };
 
 
@@ -128,6 +133,11 @@ struct AnalogOutputStatusFactory: private openpal::PureStatic
 	inline static AnalogOutputStatus From(uint8_t flags, double value)
 	{
 		return AnalogOutputStatus(value, flags);
+	}
+
+	inline static AnalogOutputStatus From(uint8_t flags, double value, int64_t time)
+	{
+		return AnalogOutputStatus(value, flags, time);
 	}
 };
 

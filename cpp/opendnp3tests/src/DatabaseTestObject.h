@@ -35,34 +35,50 @@ namespace opendnp3
 
 class MockEventBuffer : public IEventBuffer
 {
-public:
+public:	
 
-	virtual ~MockEventBuffer() {}
-
-	void Update(const Event<Binary>& aEvent)
+	void Update(const Event<Binary>& aEvent) override final
 	{
-		mBinaryEvents.push_back(aEvent);
+		binaryEvents.push_back(aEvent);
 	}
 
-	void Update(const Event<Analog>& aEvent)
+	void Update(const Event<DoubleBitBinary>& aEvent) override final
 	{
-		mAnalogEvents.push_back(aEvent);
+		doubleBinaryEvents.push_back(aEvent);
 	}
 
-	void Update(const Event<Counter>& aEvent)
+	void Update(const Event<Analog>& aEvent) override final
 	{
-		mCounterEvents.push_back(aEvent);
+		analogEvents.push_back(aEvent);
 	}
 
-	void Update(const Event<FrozenCounter>& aEvent)
+	void Update(const Event<Counter>& aEvent) override final
 	{
-		mFrozenCounterEvents.push_back(aEvent);
+		counterEvents.push_back(aEvent);
 	}
 
-	std::deque<Event<Binary>> mBinaryEvents;
-	std::deque<Event<Analog>> mAnalogEvents;
-	std::deque<Event<Counter>> mCounterEvents;
-	std::deque<Event<FrozenCounter>> mFrozenCounterEvents;
+	void Update(const Event<FrozenCounter>& aEvent) override final
+	{
+		frozenCounterEvents.push_back(aEvent);
+	}
+
+	void Update(const Event<BinaryOutputStatus>& aEvent) override final
+	{
+		binaryOutputStatusEvents.push_back(aEvent);
+	}
+
+	void Update(const Event<AnalogOutputStatus>& aEvent) override final
+	{
+		analogOutputStatusEvents.push_back(aEvent);
+	}
+
+	std::deque<Event<Binary>> binaryEvents;
+	std::deque<Event<DoubleBitBinary>> doubleBinaryEvents;
+	std::deque<Event<Analog>> analogEvents;
+	std::deque<Event<Counter>> counterEvents;
+	std::deque<Event<FrozenCounter>> frozenCounterEvents;
+	std::deque<Event<BinaryOutputStatus>> binaryOutputStatusEvents;
+	std::deque<Event<AnalogOutputStatus>> analogOutputStatusEvents;
 };
 
 class DatabaseTestObject

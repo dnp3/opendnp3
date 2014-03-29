@@ -48,15 +48,13 @@ public:
 	void SelectCurrent();
 
 	bool Read(Event<Binary>& evt);
+	bool Read(Event<DoubleBitBinary>& evt);
 	bool Read(Event<Counter>& evt);
 	bool Read(Event<Analog>& evt);
-	bool Read(Event<FrozenCounter>& evt);
-	/*
-	void Read(Event<DoubleBitBinary>& evt);
-	void Read(Event<BinaryOutputStatus>& evt);
-	void Read(Event<AnalogOutputStatus>& evt);
-*/
-	
+	bool Read(Event<FrozenCounter>& evt);		
+	bool Read(Event<BinaryOutputStatus>& evt);
+	bool Read(Event<AnalogOutputStatus>& evt);
+
 
 private:
 

@@ -33,43 +33,50 @@ namespace opendnp3
 {
 
 typedef SimpleEventMetadata<Binary> BinaryMetadata;
+typedef SimpleEventMetadata<DoubleBitBinary> DoubleBinaryMetadata;
 typedef DeadbandMetadata<Analog, double> AnalogMetadata;
 typedef DeadbandMetadata<Counter, uint32_t> CounterMetadata;
 typedef DeadbandMetadata<FrozenCounter, uint32_t> FrozenCounterMetadata;
+typedef SimpleEventMetadata<BinaryOutputStatus> BinaryOutputStatusMetadata;
+typedef DeadbandMetadata<AnalogOutputStatus, double> AnalogOutputStatusMetadata;
 
 typedef ValueMetadataPair<DualValue<Binary>, BinaryMetadata> BinaryCollection;
+typedef ValueMetadataPair<DualValue<DoubleBitBinary>, DoubleBinaryMetadata> DoubleBinaryCollection;
 typedef ValueMetadataPair<DualValue<Analog>, AnalogMetadata> AnalogCollection;
 typedef ValueMetadataPair<DualValue<Counter>, CounterMetadata> CounterCollection;
 typedef ValueMetadataPair<DualValue<FrozenCounter>, FrozenCounterMetadata> FrozenCounterCollection;
-typedef openpal::Indexable<DualValue<BinaryOutputStatus>, uint16_t> BinaryOutputStatusCollection;
-typedef openpal::Indexable<DualValue<AnalogOutputStatus>, uint16_t> AnalogOutputStatusCollection;
+typedef ValueMetadataPair<DualValue<BinaryOutputStatus>, BinaryOutputStatusMetadata> BinaryOutputStatusCollection;
+typedef ValueMetadataPair<DualValue<AnalogOutputStatus>, AnalogOutputStatusMetadata> AnalogOutputStatusCollection;
 
 // Doesn't contain the real buffers, just a facade that allows use to easily switch
 // between static and dynamic allocation
 struct StaticDataFacade
 {
 	StaticDataFacade(
-	    BinaryCollection aBinaries,
-	    AnalogCollection aAnalogs,
-	    CounterCollection aCounters,
-	    FrozenCounterCollection aFrozenCounters,
-	    BinaryOutputStatusCollection aControlStatii,
-	    AnalogOutputStatusCollection aSetpointStatii
+	    BinaryCollection binaries_,
+		DoubleBinaryCollection doubleBinaries_,
+	    AnalogCollection analogs_,
+	    CounterCollection counters_,
+	    FrozenCounterCollection frozenCounters_,
+	    BinaryOutputStatusCollection binaryOutputStatii_,
+		AnalogOutputStatusCollection analogOutputStatii_
 	):
-		binaries(aBinaries),
-		analogs(aAnalogs),
-		counters(aCounters),
-		frozenCounters(aFrozenCounters),
-		controlStatii(aControlStatii),
-		setpointStatii(aSetpointStatii)
+		binaries(binaries_),
+		doubleBinaries(doubleBinaries_),
+		analogs(analogs_),
+		counters(counters_),
+		frozenCounters(frozenCounters_),
+		binaryOutputStatii(binaryOutputStatii_),
+		analogOutputStatii(analogOutputStatii_)
 	{}
 
 	BinaryCollection binaries;
+	DoubleBinaryCollection doubleBinaries;
 	AnalogCollection analogs;
 	CounterCollection counters;
 	FrozenCounterCollection frozenCounters;
-	BinaryOutputStatusCollection controlStatii;
-	AnalogOutputStatusCollection setpointStatii;
+	BinaryOutputStatusCollection binaryOutputStatii;
+	AnalogOutputStatusCollection analogOutputStatii;
 };
 
 }

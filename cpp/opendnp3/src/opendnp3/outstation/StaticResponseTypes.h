@@ -47,6 +47,7 @@ public:
 private:
 
 	const StaticLoadFun pStaticBinaryLoader;
+	const StaticLoadFun pStaticDoubleBinaryLoader;
 	const StaticLoadFun pStaticAnalogLoader;
 	const StaticLoadFun pStaticCounterLoader;
 	const StaticLoadFun pStaticFrozenCounterLoader;
@@ -54,6 +55,7 @@ private:
 	const StaticLoadFun pStaticAnalogOutputStatusLoader;
 
 	static StaticLoadFun GetStaticBinary(StaticBinaryResponse rsp);
+	static StaticLoadFun GetStaticDoubleBinary(); // TODO
 	static StaticLoadFun GetStaticCounter(StaticCounterResponse rsp);
 	static StaticLoadFun GetStaticFrozenCounter(StaticFrozenCounterResponse rsp);
 	static StaticLoadFun GetStaticAnalog(StaticAnalogResponse rsp);

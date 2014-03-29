@@ -41,17 +41,21 @@ public:
 
 private:
 
-	openpal::DynamicArray<DualValue<Binary>, uint16_t> binaryValues;
+	openpal::DynamicArray<DualValue<Binary>, uint16_t> binaryValues;	
+	openpal::DynamicArray<DualValue<DoubleBitBinary>, uint16_t> doubleBinaryValues;
 	openpal::DynamicArray<DualValue<Analog>, uint16_t> analogValues;
 	openpal::DynamicArray<DualValue<Counter>, uint16_t> counterValues;
 	openpal::DynamicArray<DualValue<FrozenCounter>, uint16_t> frozenCounterValues;
-	openpal::DynamicArray<DualValue<BinaryOutputStatus>, uint16_t> BinaryOutputStatusValues;
-	openpal::DynamicArray<DualValue<AnalogOutputStatus>, uint16_t> AnalogOutputStatusValues;
+	openpal::DynamicArray<DualValue<BinaryOutputStatus>, uint16_t> binaryOutputStatusValues;
+	openpal::DynamicArray<DualValue<AnalogOutputStatus>, uint16_t> analogOutputStatusValues;
 
 	openpal::DynamicArray<BinaryMetadata, uint16_t> binaryMetadata;
+	openpal::DynamicArray<DoubleBinaryMetadata, uint16_t> doubleBinaryMetadata;
 	openpal::DynamicArray<AnalogMetadata, uint16_t> analogMetadata;
 	openpal::DynamicArray<CounterMetadata, uint16_t> counterMetadata;
 	openpal::DynamicArray<FrozenCounterMetadata, uint16_t> frozenCounterMetadata;
+	openpal::DynamicArray<BinaryOutputStatusMetadata, uint16_t> binaryOutputStatusMetadata;
+	openpal::DynamicArray<AnalogOutputStatusMetadata, uint16_t> analogOutputStatusMetadata;
 };
 
 }

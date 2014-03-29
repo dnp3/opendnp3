@@ -61,6 +61,15 @@ const Target DownSampling<Source, Target>::TARGET_MAX(std::numeric_limits<Target
 
 template <class Source, class Target>
 const Target DownSampling<Source, Target>::TARGET_MIN(std::numeric_limits<Target>::min());
+
+// type specialization for safe truncation from double -> float
+
+template <>
+const float DownSampling<double, float>::TARGET_MAX(std::numeric_limits<float>::max());
+
+template <>
+const float DownSampling<double, float>::TARGET_MIN(-std::numeric_limits<float>::max());
+
 }
 
 #endif

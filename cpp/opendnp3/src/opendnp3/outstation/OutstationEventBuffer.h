@@ -60,12 +60,11 @@ public:
 	virtual void Update(const Event<Binary>& aEvent) override final;
 	virtual void Update(const Event<Analog>& aEvent) override final;
 	virtual void Update(const Event<Counter>& aEvent) override final;
-	virtual void Update(const Event<FrozenCounter>& aEvent) override final;
-	/*
+	virtual void Update(const Event<FrozenCounter>& aEvent) override final;	
 	virtual void Update(const Event<DoubleBitBinary>& aEvent) override final;
 	virtual void Update(const Event<BinaryOutputStatus>& aEvent) override final;
 	virtual void Update(const Event<AnalogOutputStatus>& aEvent) override final;
-	*/
+	
 	void Reset(); // called when a transmission fails
 	void Clear(); // called when a transmission succeeds
 	

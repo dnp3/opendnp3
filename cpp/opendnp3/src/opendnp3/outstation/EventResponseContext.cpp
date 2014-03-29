@@ -24,9 +24,12 @@
 #include <openpal/Serialization.h>
 
 #include "opendnp3/objects/Group2.h"
+#include "opendnp3/objects/Group4.h"
+#include "opendnp3/objects/Group11.h"
 #include "opendnp3/objects/Group22.h"
 #include "opendnp3/objects/Group23.h"
 #include "opendnp3/objects/Group32.h"
+#include "opendnp3/objects/Group42.h"
 
 using namespace openpal;
 
@@ -116,6 +119,12 @@ EventResponseContext::Result EventResponseContext::Iterate(ObjectWriter& writer,
 					return Result(false, count);
 				}
 				break;
+			case(EventType::DoubleBitBinary) :
+				if (!this->WriteFullHeader<DoubleBitBinary>(writer, count, iterator, Group4Var1Serializer::Inst()))
+				{
+					return Result(false, count);
+				}
+				break;
 			case(EventType::Counter) :
 				if (!this->WriteFullHeader<Counter>(writer, count, iterator, Group22Var1Serializer::Inst()))
 				{
@@ -130,6 +139,18 @@ EventResponseContext::Result EventResponseContext::Iterate(ObjectWriter& writer,
 				break;
 			case(EventType::Analog) :
 				if (!this->WriteFullHeader<Analog>(writer, count, iterator, Group32Var1Serializer::Inst()))
+				{
+					return Result(false, count);
+				}
+				break;
+			case(EventType::BinaryOutputStatus) :
+				if (!this->WriteFullHeader<BinaryOutputStatus>(writer, count, iterator, Group11Var1Serializer::Inst()))
+				{
+					return Result(false, count);
+				}
+				break;
+			case(EventType::AnalogOutputStatus) :
+				if (!this->WriteFullHeader<AnalogOutputStatus>(writer, count, iterator, Group42Var1Serializer::Inst()))
 				{
 					return Result(false, count);
 				}

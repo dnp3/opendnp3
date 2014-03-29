@@ -43,6 +43,9 @@ private:
 	openpal::DynamicArray<uint16_t, uint16_t> binaryStack;
 	openpal::DynamicArray<Event<Binary>, uint16_t> binaryArray;
 
+	openpal::DynamicArray<uint16_t, uint16_t> doubleBinaryStack;
+	openpal::DynamicArray<Event<DoubleBitBinary>, uint16_t> doubleBinaryArray;
+
 	openpal::DynamicArray<uint16_t, uint16_t> analogStack;
 	openpal::DynamicArray<Event<Analog>, uint16_t> analogArray;
 
@@ -51,6 +54,12 @@ private:
 
 	openpal::DynamicArray<uint16_t, uint16_t> frozenCounterStack;
 	openpal::DynamicArray<Event<FrozenCounter>, uint16_t> frozenCounterArray;
+
+	openpal::DynamicArray<uint16_t, uint16_t> binaryOutputStatusStack;
+	openpal::DynamicArray<Event<BinaryOutputStatus>, uint16_t> binaryOutputStatusArray;
+
+	openpal::DynamicArray<uint16_t, uint16_t> analogOutputStatusStack;
+	openpal::DynamicArray<Event<AnalogOutputStatus>, uint16_t> analogOutputStatusArray;
 
 	openpal::DynamicArray<openpal::ListNode<SequenceRecord>, uint16_t> sequenceOfEvents;
 	openpal::DynamicArray<openpal::ListNode<SequenceRecord>*, uint16_t> selectedEvents;

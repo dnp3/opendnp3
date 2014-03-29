@@ -268,9 +268,17 @@ opendnp3::ClassMask Conversions::convertClassMask(ClassMask^ cm)
 	return opendnp3::ClassMask(cm->class1, cm->class2, cm->class3);
 }
 
-opendnp3::EventBufferConfig Conversions::convertEventMaxConfig(EventMaxConfig^ cm)
+opendnp3::EventBufferConfig Conversions::convertConfig(EventBufferConfig^ cm)
 {
-	return opendnp3::EventBufferConfig(cm->maxBinaryEvents, cm->maxAnalogEvents, cm->maxCounterEvents, 0);
+	opendnp3::EventBufferConfig config;
+	config.maxBinaryEvents = cm->maxBinaryEvents;
+	config.maxDoubleBinaryEvents = cm->maxDoubleBinaryEvents;
+	config.maxCounterEvents = cm->maxCounterEvents;
+	config.maxFrozenCounterEvents = cm->maxFrozenCounterEvents;
+	config.maxAnalogEvents = cm->maxAnalogEvents;
+	config.maxBinaryOutputStatusEvents = cm->maxBinaryOutputStatusEvents;
+	config.maxAnalogOutputStatusEvents = cm->maxAnalogOutputStatusEvents;
+	return config;
 }
 
 opendnp3::StaticBinaryResponse Conversions::convert(StaticBinaryResponse rsp)
@@ -353,21 +361,24 @@ opendnp3::DeadbandPointRecord<uint32_t> Conversions::convertRecord(DeadbandEvent
 	return opendnp3::DeadbandPointRecord<uint32_t>(static_cast<opendnp3::PointClass>(epr->pointClass), epr->deadband);
 }
 
-opendnp3::DatabaseConfiguration Conversions::convertConfig(DeviceTemplate^ config)
+opendnp3::DatabaseConfiguration Conversions::convertConfig(DatabaseTemplate^ config)
 {
 	opendnp3::DatabaseTemplate tmp(config->binaries->Count,
+								   config->doubleBinaries->Count,
 	                               config->analogs->Count,
 	                               config->counters->Count,
 	                               config->frozenCounters->Count,
-	                               config->numControlStatii,
-	                               config->numSetpointStatii);
+	                               config->binaryOutputStatii->Count,
+	                               config->analogOutputStatii->Count);
 
 	opendnp3::DatabaseConfiguration dev(tmp);
 
-	for(int i = 0; i < config->binaries->Count; ++i) dev.binaryMetadata[i] = convertRecord(config->binaries[i]);
+	// TODO - finish converting data.
+
+	for(int i = 0; i < config->binaries->Count; ++i) dev.binaryMetadata[i] = convertRecord(config->binaries[i]);	
 	for(int i = 0; i < config->analogs->Count; ++i) dev.analogMetadata[i] = convertRecord(config->analogs[i]);
 	for(int i = 0; i < config->counters->Count; ++i) dev.counterMetadata[i] = convertRecord(config->counters[i]);
-	for (int i = 0; i < config->counters->Count; ++i) dev.frozenCounterMetadata[i] = convertRecord(config->frozenCounters[i]);
+	for(int i = 0; i < config->counters->Count; ++i) dev.frozenCounterMetadata[i] = convertRecord(config->frozenCounters[i]);
 
 	return dev;
 }
@@ -398,6 +409,7 @@ opendnp3::SlaveStackConfig Conversions::convertConfig(SlaveStackConfig^ config)
 {
 	auto temp = convertConfig(config->device);
 	opendnp3::SlaveStackConfig cfg(temp);
+	cfg.eventBuffer = convertConfig(config->buffer);
 	cfg.slave = convertConfig(config->slave);
 	cfg.app = convertConfig(config->app);
 	cfg.link = convertConfig(config->link);

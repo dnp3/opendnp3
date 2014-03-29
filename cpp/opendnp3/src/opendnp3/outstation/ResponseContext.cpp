@@ -73,7 +73,7 @@ IINField ResponseContext::ReadAllObjects(const GroupVariationRecord& record)
 	switch (record.type)
 	{
 		case(GroupVariationType::STATIC) :
-			return staticContext.QueueReadAllObjects(record);
+			return staticContext.ReadAll(record);
 		case(GroupVariationType::EVENT) :
 			return eventContext.ReadAll(record);
 		default:
@@ -86,7 +86,7 @@ IINField ResponseContext::ReadRange(const GroupVariationRecord& record, const St
 	switch (record.type)
 	{
 		case(GroupVariationType::STATIC) :
-			return staticContext.QueueReadRange(record, range);
+			return staticContext.ReadRange(record, range);
 		default:
 			return IINField(IINBit::FUNC_NOT_SUPPORTED);
 	}

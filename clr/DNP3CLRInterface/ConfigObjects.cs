@@ -284,37 +284,33 @@ namespace DNP3.Interface
     }   
 
     /// <summary>
-    /// Class that defines how many events an outstation database will record before buffer overflow occurs
+    /// Class that defines how many events an outstation will before losing events
     /// </summary>
-    public class EventMaxConfig {
-
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="maxBinaryEvents">maximum numner of binary events</param>
-        /// <param name="maxAnalogEvents">maximum numner of analog events</param>        
-        /// <param name="maxCounterEvents">maximum numner of counter events</param>
-        public EventMaxConfig(System.UInt32 maxBinaryEvents, System.UInt32 maxAnalogEvents, System.UInt32 maxCounterEvents)
-        {
-            this.maxBinaryEvents = maxBinaryEvents;
-            this.maxAnalogEvents = maxAnalogEvents;
-            this.maxCounterEvents = maxCounterEvents;
-        }
+    public class EventBufferConfig {
 
         /// <summary>
         /// All events set to 1000
         /// </summary>
-        public EventMaxConfig()
+        public EventBufferConfig()
         {
             this.maxBinaryEvents = 1000;
+            this.maxDoubleBinaryEvents = 1000;
             this.maxAnalogEvents = 1000;
             this.maxCounterEvents = 1000;
+            this.maxFrozenCounterEvents = 1000;
+            this.maxBinaryOutputStatusEvents = 1000;
+            this.maxAnalogOutputStatusEvents = 1000;
         }
 
 	    /// <summary>
-	    /// The number of binary events the slave will buffer before overflowing */
+	    /// The number of binary events the slave will buffer before overflowing
 	    /// </summary>
 	    public System.UInt32 maxBinaryEvents;
+
+        /// <summary>
+        /// The number of double-bit binary events the slave will buffer before overflowing
+        /// </summary>
+        public System.UInt32 maxDoubleBinaryEvents;
 
 	    /// <summary>
 	    /// The number of analog events the slave will buffer before overflowing
@@ -324,7 +320,22 @@ namespace DNP3.Interface
 	    /// <summary>
 	    /// The number of counter events the slave will buffer before overflowing
 	    /// </summary>
-        public System.UInt32 maxCounterEvents;	
+        public System.UInt32 maxCounterEvents;
+
+        /// <summary>
+        /// The number of frozen counter events the slave will buffer before overflowing
+        /// </summary>
+        public System.UInt32 maxFrozenCounterEvents;
+
+        /// <summary>
+        /// The number of binary output status events the slave will buffer before overflowing
+        /// </summary>
+        public System.UInt32 maxBinaryOutputStatusEvents;
+
+        /// <summary>
+        /// The number of analog output status events the slave will buffer before overflowing
+        /// </summary>
+        public System.UInt32 maxAnalogOutputStatusEvents;
     }
 
 
@@ -349,8 +360,7 @@ namespace DNP3.Interface
             this.unsolPackDelayMs = 200;
             this.unsolRetryDelayMs = 2000;
             this.selectTimeoutMs = 5000;
-            this.maxFragSize = 2048;
-            this.eventMaxConfig = new EventMaxConfig();
+            this.maxFragSize = 2048;            
             this.staticBinary = StaticBinaryResponse.Group1Var2;
             this.staticAnalog = StaticAnalogResponse.Group30Var1;
             this.staticCounter = StaticCounterResponse.Group20Var1;
@@ -403,12 +413,7 @@ namespace DNP3.Interface
 	    /// <summary>
         /// The maximum fragment size the slave will use for data it sends
 	    /// </summary>
-        public System.UInt32 maxFragSize;	    
-
-	    /// <summary>
-        /// Structure that defines the maximum number of events to buffer
-	    /// </summary>
-        public EventMaxConfig eventMaxConfig;
+        public System.UInt32 maxFragSize;	    	    
 
 	    /// <summary>
         /// The default group/variation to use for static binary responses
@@ -502,7 +507,7 @@ namespace DNP3.Interface
     /// <summary>
     /// Defines the database layout for an outstation
     /// </summary>
-    public class DeviceTemplate
+    public class DatabaseTemplate
     {
         /// <summary>
         /// Constructor that sets up the size of the types
@@ -513,32 +518,38 @@ namespace DNP3.Interface
         /// <param name="numCounter">numer of frozen counter values starting at index 0</param>
         /// <param name="numBinaryOutputStatus">numer of control status values starting at index 0</param>
         /// <param name="numAnalogOutputStatus">numer of setpoint status values starting at index 0</param>
-        public DeviceTemplate(  System.UInt16 numBinary,
-                                System.UInt16 numAnalog,
-                                System.UInt16 numCounter,
-                                System.UInt16 numFrozenCounter,
-                                System.UInt16 numBinaryOutputStatus,
-                                System.UInt16 numAnalogOutputStatus)
+        public DatabaseTemplate(  System.UInt16 numBinary,
+                                  System.UInt16 numDoubleBinary,
+                                  System.UInt16 numAnalog,
+                                  System.UInt16 numCounter,
+                                  System.UInt16 numFrozenCounter,
+                                  System.UInt16 numBinaryOutputStatus,
+                                  System.UInt16 numAnalogOutputStatus)
         {
             binaries = Enumerable.Range(0, numBinary).Select(i => new EventPointRecord(PointClass.CLASS_1)).ToList();
+            doubleBinaries = Enumerable.Range(0, numDoubleBinary).Select(i => new EventPointRecord(PointClass.CLASS_1)).ToList();
             counters = Enumerable.Range(0, numCounter).Select(i => new DeadbandEventPointRecord<System.UInt32>(PointClass.CLASS_1, 0)).ToList();
             frozenCounters = Enumerable.Range(0, numFrozenCounter).Select(i => new DeadbandEventPointRecord<System.UInt32>(PointClass.CLASS_1, 0)).ToList();
             analogs = Enumerable.Range(0, numAnalog).Select(i => new DeadbandEventPointRecord<double>(PointClass.CLASS_1, 0.0)).ToList();
-            numControlStatii = numBinaryOutputStatus;
-            numSetpointStatii = numAnalogOutputStatus;
+            binaryOutputStatii = Enumerable.Range(0, numBinaryOutputStatus).Select(i => new EventPointRecord(PointClass.CLASS_1)).ToList();
+            analogs = Enumerable.Range(0, numAnalogOutputStatus).Select(i => new DeadbandEventPointRecord<double>(PointClass.CLASS_1, 0.0)).ToList();
         }
 
         /// <summary>
         /// Default constructor that sets up 10 of every type
         /// </summary>
-        public DeviceTemplate()
-            : this(10, 10, 10, 10, 10, 10)
+        public DatabaseTemplate()
+            : this(10, 10, 10, 10, 10, 10, 10)
         { }
 
         /// <summary>
         /// Modify individual binary configuration here
         /// </summary>
         public List<EventPointRecord> binaries;
+        /// <summary>
+        /// Modify individual double binary configuration here
+        /// </summary>
+        public List<EventPointRecord> doubleBinaries;
         /// <summary>
         /// Modify individual analog configuration here
         /// </summary>
@@ -552,13 +563,13 @@ namespace DNP3.Interface
         /// </summary>
         public List<DeadbandEventPointRecord<double>> analogs;
         /// <summary>
-        /// Modify individual control status configuration here
+        /// Modify individual binary output status configuration here
         /// </summary>
-        public UInt16 numControlStatii;
+        public List<EventPointRecord> binaryOutputStatii;
         /// <summary>
-        /// Modify individual setpoint status configuration here
+        /// Modify individual analog output status configuration here
         /// </summary>
-        public UInt16 numSetpointStatii;
+        public List<DeadbandEventPointRecord<double>> analogOutputStatii;
     };
 
     /// <summary>
@@ -601,7 +612,8 @@ namespace DNP3.Interface
         public SlaveStackConfig()
         {
             this.slave = new SlaveConfig();
-            this.device = new DeviceTemplate(10, 10, 10, 10, 10, 10);
+            this.buffer = new EventBufferConfig();
+            this.device = new DatabaseTemplate(10, 10, 10, 10, 10, 10, 10);
             this.link = new LinkConfig(false, false);
             this.app = new AppConfig(false);            
         }
@@ -611,9 +623,13 @@ namespace DNP3.Interface
         /// </summary>
 	    public SlaveConfig slave;
         /// <summary>
+        /// Configuration of the outstation event buffer
+        /// </summary>
+        public EventBufferConfig buffer;
+        /// <summary>
         /// Device template that specifies database layout, control behavior
         /// </summary>
-        public DeviceTemplate device;
+        public DatabaseTemplate device;
         /// <summary>
         /// Application layer config
         /// </summary>

@@ -68,14 +68,14 @@ int main(int argc, char* argv[])
 	};
 
 	// Create the raw physical layer
-	auto pServerPhys = new PhysicalLayerAsyncTCPServer(LogConfig(&log, FILTERS, "tcpserver"), pool.GetIOService(), "127.0.0.1", 20000, configure);
+	auto pServerPhys = new PhysicalLayerAsyncTCPServer(LogConfig(&log, FILTERS, "tcpserver"), pool.GetIOService(), "0.0.0.0", 20000, configure);
 	// Wrap the physical layer in a DNP channel
 	auto pServer = mgr.CreateChannel("tcpserver", TimeDuration::Seconds(5), TimeDuration::Seconds(5), pServerPhys);
 
 	// The master config object for a slave. The default are
 	// useable, but understanding the options are important.
 	SlaveStackConfig stackConfig;
-	stackConfig.database = DatabaseConfiguration(DatabaseTemplate::AllTypes(100));
+	stackConfig.database = DatabaseConfiguration(DatabaseTemplate::AllTypes(10));
 	stackConfig.slave.mDisableUnsol = true;
 
 	// Create a new slave with a log level, command handler, and
@@ -88,21 +88,58 @@ int main(int argc, char* argv[])
 
 	auto pLoader = pOutstation->GetLoader();
 
-	std::string input;
+	// variables used in example loop
+	char input;
 	uint32_t count = 0;
-	do
+	double value = 0;
+	bool binary = false;
+	DoubleBit dbit = DoubleBit::DETERMINED_OFF;
+	bool run = true;
+
+	while(run)
 	{
-		std::cout << "Enter something to increment a counter or type exit" << std::endl;
+		std::cout << "c = counter, b = binary, d = doublebit, a = analog, x = exit" << std::endl;
 		std::cin >> input;
-		if(input == "exit") break;
-		else
+		switch (input)
 		{
-			TimeTransaction tx(pLoader, UTCTimeSource::Inst()->Now()); //automatically calls Start()/End() and sets time for each measurement
-			tx.Update(Counter(count, CQ_ONLINE), 0);
-			++count;
-		}
-	}
-	while(true);
+			case('c'):
+			{
+				TimeTransaction tx(pLoader, UTCTimeSource::Inst()->Now());
+				tx.Update(Counter(count, CQ_ONLINE), 0);
+				++count;
+				break;
+			}
+			case('a') :
+			{
+				TimeTransaction tx(pLoader, UTCTimeSource::Inst()->Now());
+				tx.Update(Analog(value, AQ_ONLINE), 0);
+				value += 1.75;
+				break;
+			}
+			case('b') :
+			{
+				TimeTransaction tx(pLoader, UTCTimeSource::Inst()->Now());
+				tx.Update(Binary(binary), 0);
+				binary = !binary;
+				break;
+			}
+			case('d') :
+			{
+				TimeTransaction tx(pLoader, UTCTimeSource::Inst()->Now());
+				tx.Update(DoubleBitBinary(dbit), 0);
+				dbit = (dbit == DoubleBit::DETERMINED_OFF) ? DoubleBit::DETERMINED_ON : DoubleBit::DETERMINED_OFF;
+				break;
+			}
+			case('x') :
+			{
+				run = false;
+				break;
+			}
+			default:
+				std::cout << "No action registered for: " << input << std::endl;
+				break;
+		}		
+	}	
 
 	return 0;
 }

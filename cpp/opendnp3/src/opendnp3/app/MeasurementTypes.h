@@ -21,28 +21,12 @@
 #ifndef __MEASUREMENT_TYPES_H_
 #define __MEASUREMENT_TYPES_H_
 
-#include <cmath>
-#include <limits>
-
-#include "BaseMeasurementTypes.h"
 #include "QualityMasks.h"
-
+#include "EventTriggers.h"
 #include "opendnp3/gen/DoubleBit.h"
 
 namespace opendnp3
 {
-
-template <class T, class U>
-bool ExceedsDeadband(const T& val1, const T& val2, T aDeadband)
-{
-	// T can be unsigned data type so std::abs won't work since it only directly supports signed data types
-	// If one uses std::abs and T is unsigned one will get an ambiguous override error.
-
-	U diff = (val2 > val1) ? (static_cast<U>(val2) - static_cast<U>(val1)) : (static_cast<U>(val1) - static_cast<U>(val2));
-
-	return diff > aDeadband;
-}
-
 
 /**
 	The Binary data type is for describing on-off (boolean) type values. Good examples of
@@ -151,12 +135,20 @@ public:
 
 	BinaryOutputStatus(uint8_t aQuality) : TypedMeasurement((aQuality& TQ_STATE) != 0, aQuality)
 	{}
+	
+	BinaryOutputStatus(uint8_t aQuality, uint64_t aTime) : TypedMeasurement((aQuality& TQ_STATE) != 0, aQuality, aTime)
+	{}
 
 	BinaryOutputStatus(bool aValue, uint8_t aQuality) : TypedMeasurement(aValue, GetQual(aQuality, aValue))
 	{}
 
 	BinaryOutputStatus(bool aValue, uint8_t aQuality, uint64_t aTime) : TypedMeasurement(aValue, GetQual(aQuality, aValue), aTime)
 	{}
+
+	bool IsEvent(const BinaryOutputStatus& newValue) const
+	{
+		return quality != newValue.quality;
+	}
 
 private:
 
@@ -187,15 +179,9 @@ public:
 	Analog(double aValue, uint8_t aQuality, uint64_t aTime) : TypedMeasurement<double>(aValue, aQuality, aTime)
 	{}
 
-	bool IsEvent(const Analog& newValue, double aDeadband) const
+	bool IsEvent(const Analog& newValue, double deadband) const
 	{
-		if(quality != newValue.quality) return true;
-		else
-		{
-			double diff = fabs(GetValue() - newValue.GetValue());
-			if(diff == std::numeric_limits<double>::infinity()) return true;
-			else return diff > aDeadband;
-		}
+		return measurements::IsEvent(newValue, *this, deadband);
 	}
 };
 
@@ -223,7 +209,7 @@ public:
 		if(quality != newValue.quality) return true;
 		else
 		{
-			return ExceedsDeadband<uint32_t, uint64_t>(this->GetValue(), newValue.GetValue(), aDeadband);
+			return measurements::IsEvent<uint32_t, uint64_t>(this->GetValue(), newValue.GetValue(), aDeadband);
 		}
 	}
 };
@@ -251,7 +237,7 @@ public:
 		if(quality != newValue.quality) return true;
 		else
 		{
-			return ExceedsDeadband<uint32_t, uint64_t>(this->GetValue(), newValue.GetValue(), aDeadband);
+			return measurements::IsEvent<uint32_t, uint64_t>(this->GetValue(), newValue.GetValue(), aDeadband);
 		}
 	}
 };
@@ -274,6 +260,11 @@ public:
 
 	AnalogOutputStatus(double aValue, uint8_t aQuality, uint64_t aTime) : TypedMeasurement<double>(aValue, aQuality, aTime)
 	{}
+
+	bool IsEvent(const AnalogOutputStatus& newValue, double deadband) const
+	{
+		return measurements::IsEvent(newValue, *this, deadband);
+	}
 };
 
 }

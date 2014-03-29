@@ -24,48 +24,47 @@ using namespace openpal;
 
 namespace opendnp3
 {
-TimeTransaction::TimeTransaction(IMeasurementLoader* apObserver, UTCTimestamp aTimestamp) :
-	Transaction(apObserver),
-	mpObserver(apObserver),
-	mTimestamp(aTimestamp)
+TimeTransaction::TimeTransaction(IMeasurementLoader* pObserver_, UTCTimestamp timestamp_) :
+	Transaction(pObserver_),
+	pObserver(pObserver_),
+	timestamp(timestamp_)
 {
 
 }
 
-void TimeTransaction::Update(Binary meas, uint16_t index)
+void TimeTransaction::Update(const Binary& meas, uint16_t index)
 {
-	meas.SetTime(mTimestamp.msSinceEpoch);
-	mpObserver->Update(meas, index);
+	this->Load(meas, index);
 }
 
-void TimeTransaction::Update(Analog meas, uint16_t index)
+void TimeTransaction::Update(const DoubleBitBinary& meas, uint16_t index)
 {
-	meas.SetTime(mTimestamp.msSinceEpoch);
-	mpObserver->Update(meas, index);
+	this->Load(meas, index);
 }
 
-void TimeTransaction::Update(Counter meas, uint16_t index)
+void TimeTransaction::Update(const Analog& meas, uint16_t index)
 {
-	meas.SetTime(mTimestamp.msSinceEpoch);
-	mpObserver->Update(meas, index);
+	this->Load(meas, index);
 }
 
-void TimeTransaction::Update(FrozenCounter meas, uint16_t index)
+void TimeTransaction::Update(const Counter& meas, uint16_t index)
 {
-	meas.SetTime(mTimestamp.msSinceEpoch);
-	mpObserver->Update(meas, index);
+	this->Load(meas, index);
 }
 
-void TimeTransaction::Update(BinaryOutputStatus meas, uint16_t index)
+void TimeTransaction::Update(const FrozenCounter& meas, uint16_t index)
 {
-	meas.SetTime(mTimestamp.msSinceEpoch);
-	mpObserver->Update(meas, index);
+	this->Load(meas, index);
 }
 
-void TimeTransaction::Update(AnalogOutputStatus meas, uint16_t index)
+void TimeTransaction::Update(const BinaryOutputStatus& meas, uint16_t index)
 {
-	meas.SetTime(mTimestamp.msSinceEpoch);
-	mpObserver->Update(meas, index);
+	this->Load(meas, index);
+}
+
+void TimeTransaction::Update(const AnalogOutputStatus& meas, uint16_t index)
+{
+	this->Load(meas, index);
 }
 
 }

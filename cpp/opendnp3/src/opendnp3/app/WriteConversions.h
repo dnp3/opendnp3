@@ -29,6 +29,7 @@
 #include "opendnp3/objects/Group3.h"
 #include "opendnp3/objects/Group4.h"
 #include "opendnp3/objects/Group10.h"
+#include "opendnp3/objects/Group11.h"
 #include "opendnp3/objects/Group12.h"
 #include "opendnp3/objects/Group20.h"
 #include "opendnp3/objects/Group21.h"
@@ -38,6 +39,7 @@
 #include "opendnp3/objects/Group32.h"
 #include "opendnp3/objects/Group40.h"
 #include "opendnp3/objects/Group41.h"
+#include "opendnp3/objects/Group42.h"
 
 namespace opendnp3
 {
@@ -60,6 +62,10 @@ typedef ConvertQTDowncast<Group4Var3, DoubleBitBinary, uint16_t> ConvertGroup4Va
 
 // Group 10
 typedef ConvertQ<Group10Var2, BinaryOutputStatus> ConvertGroup10Var2;
+
+// Group 11
+typedef ConvertQ<Group11Var1, BinaryOutputStatus> ConvertGroup11Var1;
+typedef ConvertQT<Group11Var2, BinaryOutputStatus> ConvertGroup11Var2;
 
 // Group 12
 struct ConvertGroup12Var1 : private openpal::Uncopyable
@@ -135,6 +141,16 @@ typedef ConvertQS<Group41Var1, AnalogOutputInt32> ConvertGroup41Var1;
 typedef ConvertQS<Group41Var2, AnalogOutputInt16> ConvertGroup41Var2;
 typedef ConvertQS<Group41Var3, AnalogOutputFloat32> ConvertGroup41Var3;
 typedef ConvertQS<Group41Var4, AnalogOutputDouble64> ConvertGroup41Var4;
+
+// Group 42
+typedef ConvertQVRangeCheck<Group42Var1, AnalogOutputStatus, 0> ConvertGroup42Var1;
+typedef ConvertQVRangeCheck<Group42Var2, AnalogOutputStatus, 0> ConvertGroup42Var2;
+typedef ConvertQVTRangeCheck<Group42Var3, AnalogOutputStatus, 0> ConvertGroup42Var3;
+typedef ConvertQVTRangeCheck<Group42Var4, AnalogOutputStatus, 0> ConvertGroup42Var4;
+typedef ConvertQVRangeCheck<Group42Var5, AnalogOutputStatus, 0> ConvertGroup42Var5;
+typedef ConvertQV<Group42Var6, AnalogOutputStatus> ConvertGroup42Var6;
+typedef ConvertQVTRangeCheck<Group42Var7, AnalogOutputStatus, 0> ConvertGroup42Var7;
+typedef ConvertQVT<Group42Var8, AnalogOutputStatus> ConvertGroup42Var8;
 
 }
 

@@ -28,21 +28,28 @@ namespace opendnp3
 
 DynamicallyAllocatedDatabase::DynamicallyAllocatedDatabase(const DatabaseTemplate& databaseTemplate):
 	binaryValues(databaseTemplate.numBinary),
+	doubleBinaryValues(databaseTemplate.numDoubleBinary),
 	analogValues(databaseTemplate.numAnalog),
 	counterValues(databaseTemplate.numCounter),
 	frozenCounterValues(databaseTemplate.numFrozenCounter),
-	BinaryOutputStatusValues(databaseTemplate.numBinaryOutputStatus),
-	AnalogOutputStatusValues(databaseTemplate.numAnalogOutputStatus),
+	binaryOutputStatusValues(databaseTemplate.numBinaryOutputStatus),
+	analogOutputStatusValues(databaseTemplate.numAnalogOutputStatus),
+
 	binaryMetadata(databaseTemplate.numBinary),
+	doubleBinaryMetadata(databaseTemplate.numDoubleBinary),
 	analogMetadata(databaseTemplate.numAnalog),
 	counterMetadata(databaseTemplate.numCounter),
-	frozenCounterMetadata(databaseTemplate.numFrozenCounter)
+	frozenCounterMetadata(databaseTemplate.numFrozenCounter),
+	binaryOutputStatusMetadata(databaseTemplate.numBinaryOutputStatus),
+	analogOutputStatusMetadata(databaseTemplate.numAnalogOutputStatus)
 {
 
 }
 
 void DynamicallyAllocatedDatabase::Configure(const DatabaseConfiguration& config)
 {
+	// TODO, load all this configuration
+
 	for(auto i = 0; i < config.binaryMetadata.size(); ++i)
 	{
 		binaryMetadata[i].clazz = config.binaryMetadata[i].EventClass;
@@ -70,17 +77,21 @@ void DynamicallyAllocatedDatabase::Configure(const DatabaseConfiguration& config
 StaticDataFacade DynamicallyAllocatedDatabase::GetFacade()
 {
 	BinaryCollection binaries(binaryValues.ToIndexable(), binaryMetadata.ToIndexable());
+	DoubleBinaryCollection dobuleBinaries(doubleBinaryValues.ToIndexable(), doubleBinaryMetadata.ToIndexable());
 	AnalogCollection analogs(analogValues.ToIndexable(), analogMetadata.ToIndexable());
 	CounterCollection counters(counterValues.ToIndexable(), counterMetadata.ToIndexable());
 	FrozenCounterCollection frozenCounters(frozenCounterValues.ToIndexable(), frozenCounterMetadata.ToIndexable());
+	BinaryOutputStatusCollection binaryOutputStatii(binaryOutputStatusValues.ToIndexable(), binaryOutputStatusMetadata.ToIndexable());
+	AnalogOutputStatusCollection analogOutputStatii(analogOutputStatusValues.ToIndexable(), analogOutputStatusMetadata.ToIndexable());
 
 	return StaticDataFacade(
 	           binaries,
+			   dobuleBinaries,
 	           analogs,
 	           counters,
 	           frozenCounters,
-	           BinaryOutputStatusValues.ToIndexable(),
-	           AnalogOutputStatusValues.ToIndexable()
+			   binaryOutputStatii,
+			   analogOutputStatii
 	       );
 }
 

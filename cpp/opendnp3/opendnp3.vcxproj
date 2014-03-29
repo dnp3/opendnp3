@@ -40,6 +40,7 @@
     <ClInclude Include="src\opendnp3\app\ClassMask.h" />
     <ClInclude Include="src\opendnp3\app\ControlRelayOutputBlock.h" />
     <ClInclude Include="src\opendnp3\app\CountWriteIterator.h" />
+    <ClInclude Include="src\opendnp3\app\EventTriggers.h" />
     <ClInclude Include="src\opendnp3\app\MeasurementTypes.h" />
     <ClInclude Include="src\opendnp3\app\DownSampling.h" />
     <ClInclude Include="src\opendnp3\app\FunctionCodeHelpers.h" />
@@ -247,6 +248,7 @@
     <ClCompile Include="src\opendnp3\app\APDUHandlerBase.cpp" />
     <ClCompile Include="src\opendnp3\app\IAppUser.cpp" />
     <ClCompile Include="src\opendnp3\app\IINField.cpp" />
+    <ClCompile Include="src\opendnp3\app\EventTriggers.cpp" />
     <ClCompile Include="src\opendnp3\app\ObjectWriter.cpp" />
     <ClCompile Include="src\opendnp3\app\OctetData.cpp" />
     <ClCompile Include="src\opendnp3\app\PointClass.cpp" />

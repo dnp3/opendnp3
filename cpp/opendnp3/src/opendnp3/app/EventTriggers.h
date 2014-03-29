@@ -18,66 +18,30 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
+#ifndef __EVENT_TRIGGERS_H_
+#define	__EVENT_TRIGGERS_H_
 
-#ifndef __EVENT_COUNT_H_
-#define __EVENT_COUNT_H_
-
-#include <cstdint>
-#include "EventType.h"
+#include "opendnp3/app/BaseMeasurementTypes.h"
 
 namespace opendnp3
 {
-
-class ClassCount
-{
-	static const uint32_t NUM_TYPES = 7;
-
-public:
-
-	ClassCount() 		
+	namespace measurements
 	{
-		Clear();
+		template <class T, class U>
+		bool IsEvent(const T& val1, const T& val2, T deadband)
+		{
+			// T can be unsigned data type so std::abs won't work since it only directly supports signed data types
+			// If one uses std::abs and T is unsigned one will get an ambiguous override error.
+
+			U diff = (val2 > val1) ? (static_cast<U>(val2)-static_cast<U>(val1)) : (static_cast<U>(val1)-static_cast<U>(val2));
+
+			return diff > deadband;
+		}
+
+		
+		bool IsEvent(const TypedMeasurement<double>& newMeas, const TypedMeasurement<double>& oldMeas, double deadband);
+
 	}
-
-	ClassCount Subtract(const ClassCount& rhs) const;
-
-	void Increment(EventType type);
-
-	bool IsEmpty() const;
-	uint32_t Total() const;
-
-	uint32_t CountOf(uint32_t eventTypeMask) const;
-
-	void Clear();
-
-private:
-
-	static uint32_t IndexOf(EventType type);
-	static uint32_t MaskForIndex(uint32_t index);
-
-	uint32_t counts[NUM_TYPES];
-};
-
-
-class EventTracker
-{
-public:
-
-	void Increment(EventType type, EventClass clazz);
-	void Decrement(EventType type, EventClass clazz);
-
-	EventTracker Subtract(const EventTracker& rhs) const;
-
-	bool IsEmpty() const;
-	uint32_t Total() const;
-
-	void Clear();
-
-	ClassCount class1;
-	ClassCount class2;
-	ClassCount class3;
-};
-
 }
 
 #endif

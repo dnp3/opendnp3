@@ -17,6 +17,8 @@
 
 #include "Group11.h"
 
+#include "opendnp3/app/MeasurementFactory.h"
+#include "opendnp3/app/WriteConversions.h"
 #include <openpal/Serialization.h>
 
 using namespace openpal;
@@ -39,6 +41,20 @@ void Group11Var1::Write(const Group11Var1& arg, openpal::WriteBuffer& buffer)
   buffer.Advance(1);
 }
 
+Group11Var1Serializer Group11Var1Serializer::mInstance;
+
+BinaryOutputStatus Group11Var1Serializer::Read(ReadOnlyBuffer& buff) const
+{
+  auto gv = Group11Var1::Read(buff);
+  return BinaryOutputStatusFactory::From(gv.flags);
+}
+
+void Group11Var1Serializer::Write(const BinaryOutputStatus& value, openpal::WriteBuffer& buff) const
+{
+  Group11Var1::Write(ConvertGroup11Var1::Apply(value), buff);
+}
+
+
 const GroupVariationID  Group11Var2::ID(11,2);
 
 Group11Var2 Group11Var2::Read(ReadOnlyBuffer& buffer)
@@ -58,6 +74,20 @@ void Group11Var2::Write(const Group11Var2& arg, openpal::WriteBuffer& buffer)
   UInt48::Write(buffer, arg.time);
   buffer.Advance(6);
 }
+
+Group11Var2Serializer Group11Var2Serializer::mInstance;
+
+BinaryOutputStatus Group11Var2Serializer::Read(ReadOnlyBuffer& buff) const
+{
+  auto gv = Group11Var2::Read(buff);
+  return BinaryOutputStatusFactory::From(gv.flags, gv.time);
+}
+
+void Group11Var2Serializer::Write(const BinaryOutputStatus& value, openpal::WriteBuffer& buff) const
+{
+  Group11Var2::Write(ConvertGroup11Var2::Apply(value), buff);
+}
+
 
 
 }

@@ -19,65 +19,34 @@
  * to you under the terms of the License.
  */
 
-#ifndef __EVENT_COUNT_H_
-#define __EVENT_COUNT_H_
+#include "EventTriggers.h"
 
-#include <cstdint>
-#include "EventType.h"
+#include <cmath>
+#include <limits>
 
 namespace opendnp3
 {
-
-class ClassCount
-{
-	static const uint32_t NUM_TYPES = 7;
-
-public:
-
-	ClassCount() 		
+	namespace measurements
 	{
-		Clear();
+		bool IsEvent(const TypedMeasurement<double>& newMeas, const TypedMeasurement<double>& oldMeas, double deadband)
+		{
+			if (newMeas.GetQuality() != oldMeas.GetQuality())
+			{
+				return true;
+			}
+			else
+			{
+				double diff = fabs(newMeas.GetValue() - oldMeas.GetValue());
+				if (diff == std::numeric_limits<double>::infinity())
+				{
+					return true;
+				}
+				else
+				{
+					return diff > deadband;
+				}
+			}
+		}
 	}
 
-	ClassCount Subtract(const ClassCount& rhs) const;
-
-	void Increment(EventType type);
-
-	bool IsEmpty() const;
-	uint32_t Total() const;
-
-	uint32_t CountOf(uint32_t eventTypeMask) const;
-
-	void Clear();
-
-private:
-
-	static uint32_t IndexOf(EventType type);
-	static uint32_t MaskForIndex(uint32_t index);
-
-	uint32_t counts[NUM_TYPES];
-};
-
-
-class EventTracker
-{
-public:
-
-	void Increment(EventType type, EventClass clazz);
-	void Decrement(EventType type, EventClass clazz);
-
-	EventTracker Subtract(const EventTracker& rhs) const;
-
-	bool IsEmpty() const;
-	uint32_t Total() const;
-
-	void Clear();
-
-	ClassCount class1;
-	ClassCount class2;
-	ClassCount class3;
-};
-
 }
-
-#endif

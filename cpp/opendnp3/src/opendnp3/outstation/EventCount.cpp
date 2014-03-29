@@ -24,54 +24,110 @@
 namespace opendnp3
 {
 
+uint32_t ClassCount::IndexOf(EventType type)
+{
+	switch (type)
+	{
+		case(EventType::Binary) :
+			return 0;
+		case(EventType::DoubleBitBinary) :
+			return 1;
+		case(EventType::Analog) :
+			return 2;
+		case(EventType::Counter) :
+			return 3;
+		case(EventType::FrozenCounter) :
+			return 4;
+		case(EventType::BinaryOutputStatus) :
+			return 5;
+		case(EventType::AnalogOutputStatus) :
+			return 6;
+		default:
+			return 0;
+	}
+}
+
+uint32_t ClassCount::MaskForIndex(uint32_t index)
+{
+	switch(index)
+	{
+		case(0) :
+			return events::BINARY;
+		case(1) :
+			return events::DOUBLE_BIT_BINARY;
+		case(2) :
+			return events::ANALOG;
+		case(3) :
+			return events::COUNTER;
+		case(4) :
+			return events::FROZEN_COUNTER;
+		case(5) :
+			return events::BINARY_OUTPUT_STATUS;
+		case(6) :
+			return events::ANALOG_OUTPUT_STATUS;
+		default:
+			return 0;
+	}
+}
+
 void ClassCount::Increment(EventType type)
 {
-	switch(type)
-	{
-	case(EventType::Binary):
-		++numBinary;
-		break;
-	case(EventType::Analog):
-		++numAnalog;
-		break;
-	case(EventType::Counter):
-		++numCounter;
-		break;
-	}
+	auto index = IndexOf(type);
+	++counts[index];
 }
 
 ClassCount ClassCount::Subtract(const ClassCount& rhs) const
 {
 	ClassCount ret;
-	ret.numBinary = this->numBinary - rhs.numBinary;
-	ret.numAnalog = this->numAnalog - rhs.numAnalog;
-	ret.numCounter = this->numCounter - rhs.numCounter;
+	for (auto i = 0; i < NUM_TYPES; ++i)
+	{
+		ret.counts[i] = counts[i] - rhs.counts[i];
+	}	
 	return ret;
 }
 
 void ClassCount::Clear()
 {
-	numBinary = 0;
-	numAnalog = 0;
-	numCounter = 0;
+	for (uint32_t i = 0; i < NUM_TYPES; ++i)
+	{
+		counts[i] = 0;
+	}
 }
 
 bool ClassCount::IsEmpty() const
 {
-	return (numBinary == 0) && (numAnalog == 0) && (numCounter) == 0;
+	for (uint32_t i = 0; i < NUM_TYPES; ++i)
+	{
+		if (counts[i] > 0)
+		{
+			return false;
+		}
+	}
+
+	return true;
 }
 
 uint32_t ClassCount::Total() const
 {
-	return numBinary + numAnalog + numCounter;
+	uint32_t sum = 0;
+	for (uint32_t i = 0; i < NUM_TYPES; ++i)
+	{
+		sum += counts[i];
+	}
+	return sum;
 }
 
 uint32_t ClassCount::CountOf(uint32_t eventTypeMask) const
 {
 	uint32_t count = 0;
-	if(eventTypeMask & events::BINARY) count += numBinary;
-	if(eventTypeMask & events::ANALOG) count += numAnalog;
-	if(eventTypeMask & events::COUNTER) count += numCounter;
+	for (uint32_t i = 0; i < NUM_TYPES; ++i)
+	{
+		auto mask = MaskForIndex(i);
+		if (mask & eventTypeMask)
+		{
+			count += counts[i];
+		}
+	}	
 	return count;
 }
 

@@ -272,6 +272,30 @@ EnumAndType GroupVariationRecord::GetEnumAndType(uint8_t group, uint8_t variatio
 		default:
 			return EnumAndType(GroupVariation::UNKNOWN, GroupVariationType::OTHER);
 		}
+	case(42) :
+		switch (variation)
+		{
+			case(0) :
+				return EnumAndType(GroupVariation::Group42Var0, GroupVariationType::EVENT);
+			case(1) :
+				return EnumAndType(GroupVariation::Group42Var1, GroupVariationType::EVENT);
+			case(2) :
+				return EnumAndType(GroupVariation::Group42Var2, GroupVariationType::EVENT);
+			case(3) :
+				return EnumAndType(GroupVariation::Group42Var3, GroupVariationType::EVENT);
+			case(4) :
+				return EnumAndType(GroupVariation::Group42Var4, GroupVariationType::EVENT);
+			case(5) :
+				return EnumAndType(GroupVariation::Group42Var5, GroupVariationType::EVENT);
+			case(6) :
+				return EnumAndType(GroupVariation::Group42Var6, GroupVariationType::EVENT);
+			case(7) :
+				return EnumAndType(GroupVariation::Group42Var7, GroupVariationType::EVENT);
+			case(8) :
+				return EnumAndType(GroupVariation::Group42Var8, GroupVariationType::EVENT);
+			default:
+				return EnumAndType(GroupVariation::UNKNOWN, GroupVariationType::OTHER);
+		}
 	case(50):
 		switch(variation)
 		{

@@ -76,6 +76,11 @@ bool SelectionIterator::Read(Event<Binary>& evt)
 	return ReadAny<Binary>(evt, EventType::Binary, pBuffer->facade.binaryEvents);
 }
 
+bool SelectionIterator::Read(Event<DoubleBitBinary>& evt)
+{
+	return ReadAny<DoubleBitBinary>(evt, EventType::DoubleBitBinary, pBuffer->facade.doubleBinaryEvents);
+}
+
 bool SelectionIterator::Read(Event<Counter>& evt)
 {
 	return ReadAny<Counter>(evt, EventType::Counter, pBuffer->facade.counterEvents);
@@ -89,6 +94,16 @@ bool SelectionIterator::Read(Event<Analog>& evt)
 bool SelectionIterator::Read(Event<FrozenCounter>& evt)
 {
 	return ReadAny<FrozenCounter>(evt, EventType::FrozenCounter, pBuffer->facade.frozenCounterEvents);
+}
+
+bool SelectionIterator::Read(Event<BinaryOutputStatus>& evt)
+{
+	return ReadAny<BinaryOutputStatus>(evt, EventType::BinaryOutputStatus, pBuffer->facade.binaryOutputStatusEvents);
+}
+
+bool SelectionIterator::Read(Event<AnalogOutputStatus>& evt)
+{
+	return ReadAny<AnalogOutputStatus>(evt, EventType::AnalogOutputStatus, pBuffer->facade.analogOutputStatusEvents);
 }
 
 

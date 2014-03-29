@@ -253,14 +253,14 @@ TEST_CASE(SUITE("ReadFuncNotSupported"))
 	REQUIRE(t.Read() ==  "C0 81 80 01"); //restart/func not supported
 }
 
-void TestStaticRead(const std::string& arRequest, const std::string& arResponse)
+void TestStaticRead(const std::string& request, const std::string& response)
 {
 	SlaveConfig cfg; cfg.mDisableUnsol = true;
-	SlaveTestObject t(cfg, DatabaseTemplate(1, 1, 1, 1, 1, 1));
+	SlaveTestObject t(cfg, DatabaseTemplate::AllTypes(1));
 	t.slave.OnLowerLayerUp();
 
-	t.SendToSlave(arRequest);
-	REQUIRE(t.Read() ==  arResponse);
+	t.SendToSlave(request);
+	REQUIRE(t.Read() ==  response);
 }
 
 // ---- Static data reads ----- //
@@ -411,7 +411,7 @@ template <class T>
 void TestStaticBinaryOutputStatus(T aVal, const std::string& aRsp)
 {
 	SlaveConfig cfg; cfg.mDisableUnsol = true;
-	SlaveTestObject t(cfg, DatabaseTemplate(0, 0, 0, 0, 1, 0));
+	SlaveTestObject t(cfg, DatabaseTemplate::BinaryOutputStatusOnly(1));
 	t.slave.OnLowerLayerUp();
 
 	{

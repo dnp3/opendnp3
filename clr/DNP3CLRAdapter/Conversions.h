@@ -95,7 +95,7 @@ public:
 	//Convert the configuration types
 	static asiopal::SerialSettings convertSerialSettings(SerialSettings^ settings);
 	static opendnp3::ClassMask convertClassMask(ClassMask^ cm);
-	static opendnp3::EventBufferConfig convertEventMaxConfig(EventMaxConfig^ cm);
+	static opendnp3::EventBufferConfig convertConfig(EventBufferConfig^ cm);
 
 	static opendnp3::StaticBinaryResponse convert(StaticBinaryResponse rsp);
 	static opendnp3::StaticAnalogResponse convert(StaticAnalogResponse rsp);
@@ -115,7 +115,7 @@ public:
 	static opendnp3::AppConfig convertConfig(AppConfig^ config);
 	static opendnp3::MasterConfig convertConfig(MasterConfig^ config);
 	static opendnp3::SlaveConfig convertConfig(SlaveConfig^ config);
-	static opendnp3::DatabaseConfiguration convertConfig(DeviceTemplate^ config);
+	static opendnp3::DatabaseConfiguration convertConfig(DatabaseTemplate^ config);
 	static opendnp3::MasterStackConfig convertConfig(MasterStackConfig^ config);
 	static opendnp3::SlaveStackConfig convertConfig(SlaveStackConfig^ config);
 };

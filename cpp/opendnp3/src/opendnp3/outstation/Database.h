@@ -52,22 +52,24 @@ public:
 	void DoubleBuffer();
 
 	// IMeasurementLoader*functions
-	void Update(const Binary& arPoint, uint16_t) final;
-	void Update(const Analog& arPoint, uint16_t) final;
-	void Update(const Counter& arPoint, uint16_t) final;
-	void Update(const FrozenCounter& arPoint, uint16_t) final;
-	void Update(const BinaryOutputStatus& arPoint, uint16_t) final;
-	void Update(const AnalogOutputStatus& arPoint, uint16_t) final;
+	void Update(const Binary& value, uint16_t) override final;
+	void Update(const DoubleBitBinary& value, uint16_t) override final;
+	void Update(const Analog& value, uint16_t) override final;
+	void Update(const Counter& value, uint16_t) override final;
+	void Update(const FrozenCounter& value, uint16_t) override final;
+	void Update(const BinaryOutputStatus& value, uint16_t) override final;
+	void Update(const AnalogOutputStatus& value, uint16_t) override final;
 
-	openpal::Indexable<DualValue<Binary>, uint16_t> Binaries();
-	openpal::Indexable<DualValue<Analog>, uint16_t> Analogs();
-	openpal::Indexable<DualValue<Counter>, uint16_t> Counters();
-	openpal::Indexable<DualValue<FrozenCounter>, uint16_t> FrozenCounters();
-	openpal::Indexable<DualValue<BinaryOutputStatus>, uint16_t> ControlStatii();
-	openpal::Indexable<DualValue<AnalogOutputStatus>, uint16_t> SetpointStatii();
+	openpal::Indexable<DualValue<Binary>, uint16_t>& Binaries();
+	openpal::Indexable<DualValue<DoubleBitBinary>, uint16_t>& DoubleBinaries();
+	openpal::Indexable<DualValue<Analog>, uint16_t>& Analogs();
+	openpal::Indexable<DualValue<Counter>, uint16_t>& Counters();
+	openpal::Indexable<DualValue<FrozenCounter>, uint16_t>& FrozenCounters();
+	openpal::Indexable<DualValue<BinaryOutputStatus>, uint16_t>& ControlStatii();
+	openpal::Indexable<DualValue<AnalogOutputStatus>, uint16_t>& SetpointStatii();
 
 	template <class T>
-	openpal::Indexable<DualValue<T>, uint16_t> Values();
+	openpal::Indexable<DualValue<T>, uint16_t>& Values();
 
 	template <class T>
 	uint16_t NumValues() const;
@@ -97,7 +99,7 @@ private:
 	Database(const Database&);	
 
 	template <class T, class U>
-	inline void UpdateEvent(const T& value, uint32_t index, U& collection)
+	void UpdateEvent(const T& value, uint16_t index, U& collection)
 	{
 		if(collection.values.Contains(index))
 		{

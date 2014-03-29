@@ -107,21 +107,21 @@ TEST_CASE(SUITE("BinaryNoChange"))
 {
 	DatabaseTestObject t(DatabaseTemplate::BinaryOnly(1));
 	t.db.staticData.binaries.metadata[0].clazz = CLASS_1;
-	TestBufferForEvent(false, Binary(false, BQ_RESTART), t, t.buffer.mBinaryEvents);
+	TestBufferForEvent(false, Binary(false, BQ_RESTART), t, t.buffer.binaryEvents);
 }
 
 TEST_CASE(SUITE("AnalogNoChange"))
 {
 	DatabaseTestObject t(DatabaseTemplate::AnalogOnly(1));
 	t.db.staticData.analogs.metadata[0].clazz = CLASS_1;
-	TestBufferForEvent(false, Analog(0, AQ_RESTART), t, t.buffer.mAnalogEvents);
+	TestBufferForEvent(false, Analog(0, AQ_RESTART), t, t.buffer.analogEvents);
 }
 
 TEST_CASE(SUITE("CounterNoChange"))
 {
 	DatabaseTestObject t(DatabaseTemplate::CounterOnly(1));
 	t.db.staticData.counters.metadata[0].clazz = CLASS_1;
-	TestBufferForEvent(false, Counter(0, CQ_RESTART), t, t.buffer.mCounterEvents);
+	TestBufferForEvent(false, Counter(0, CQ_RESTART), t, t.buffer.counterEvents);
 }
 
 // Next 3 tests prove that a change detection will forward to the buffer
@@ -129,21 +129,21 @@ TEST_CASE(SUITE("BinaryChange"))
 {
 	DatabaseTestObject t(DatabaseTemplate::BinaryOnly(1));
 	t.db.staticData.binaries.metadata[0].clazz = CLASS_1;
-	TestBufferForEvent(true, Binary(false, BQ_ONLINE), t, t.buffer.mBinaryEvents);
+	TestBufferForEvent(true, Binary(false, BQ_ONLINE), t, t.buffer.binaryEvents);
 }
 
 TEST_CASE(SUITE("AnalogChange"))
 {
 	DatabaseTestObject t(DatabaseTemplate::AnalogOnly(1));
 	t.db.staticData.analogs.metadata[0].clazz = CLASS_1;
-	TestBufferForEvent(true, Analog(0, AQ_ONLINE), t, t.buffer.mAnalogEvents);
+	TestBufferForEvent(true, Analog(0, AQ_ONLINE), t, t.buffer.analogEvents);
 }
 
 TEST_CASE(SUITE("CounterChange"))
 {
 	DatabaseTestObject t(DatabaseTemplate::CounterOnly(1));
 	t.db.staticData.counters.metadata[0].clazz = CLASS_1;
-	TestBufferForEvent(true, Counter(0, CQ_ONLINE), t, t.buffer.mCounterEvents);
+	TestBufferForEvent(true, Counter(0, CQ_ONLINE), t, t.buffer.counterEvents);
 }
 
 //show that the last reported change gets recorded correctly and applied correctly for each type
@@ -153,11 +153,11 @@ TEST_CASE(SUITE("AnalogLastReportedChange"))
 	t.db.staticData.analogs.metadata[0].clazz = CLASS_1;
 	t.db.staticData.analogs.metadata[0].deadband = 5; //value must change by more than 5 before being reported
 
-	TestBufferForEvent(false, Analog(-2, AQ_RESTART), t, t.buffer.mAnalogEvents);
-	TestBufferForEvent(false, Analog(5, AQ_RESTART), t, t.buffer.mAnalogEvents);
-	TestBufferForEvent(true, Analog(6, AQ_RESTART), t, t.buffer.mAnalogEvents); //change by 6, so 6 should get recorded
-	TestBufferForEvent(false, Analog(1, AQ_RESTART), t, t.buffer.mAnalogEvents);
-	TestBufferForEvent(true, Analog(-1, AQ_RESTART), t, t.buffer.mAnalogEvents);
+	TestBufferForEvent(false, Analog(-2, AQ_RESTART), t, t.buffer.analogEvents);
+	TestBufferForEvent(false, Analog(5, AQ_RESTART), t, t.buffer.analogEvents);
+	TestBufferForEvent(true, Analog(6, AQ_RESTART), t, t.buffer.analogEvents); //change by 6, so 6 should get recorded
+	TestBufferForEvent(false, Analog(1, AQ_RESTART), t, t.buffer.analogEvents);
+	TestBufferForEvent(true, Analog(-1, AQ_RESTART), t, t.buffer.analogEvents);
 }
 
 TEST_CASE(SUITE("CounterLastReportedChange"))
@@ -166,11 +166,11 @@ TEST_CASE(SUITE("CounterLastReportedChange"))
 	t.db.staticData.counters.metadata[0].clazz = CLASS_1;
 	t.db.staticData.counters.metadata[0].deadband = 5;
 
-	TestBufferForEvent(false, Counter(1, CQ_RESTART), t, t.buffer.mCounterEvents);
-	TestBufferForEvent(false, Counter(5, CQ_RESTART), t, t.buffer.mCounterEvents);
-	TestBufferForEvent(true, Counter(6, CQ_RESTART), t, t.buffer.mCounterEvents); //change by 6, so 6 should get recorded
-	TestBufferForEvent(false, Counter(1, CQ_RESTART), t, t.buffer.mCounterEvents);
-	TestBufferForEvent(true, Counter(0, CQ_RESTART), t, t.buffer.mCounterEvents);
+	TestBufferForEvent(false, Counter(1, CQ_RESTART), t, t.buffer.counterEvents);
+	TestBufferForEvent(false, Counter(5, CQ_RESTART), t, t.buffer.counterEvents);
+	TestBufferForEvent(true, Counter(6, CQ_RESTART), t, t.buffer.counterEvents); //change by 6, so 6 should get recorded
+	TestBufferForEvent(false, Counter(1, CQ_RESTART), t, t.buffer.counterEvents);
+	TestBufferForEvent(true, Counter(0, CQ_RESTART), t, t.buffer.counterEvents);
 }
 
 

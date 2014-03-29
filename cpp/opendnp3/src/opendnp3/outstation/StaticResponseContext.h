@@ -60,8 +60,8 @@ public:
 
 	void Reset();
 
-	IINField QueueReadAllObjects(const GroupVariationRecord& record);
-	IINField QueueReadRange(const GroupVariationRecord& record, const StaticRange& range);
+	IINField ReadAll(const GroupVariationRecord& record);
+	IINField ReadRange(const GroupVariationRecord& record, const StaticRange& range);
 
 	bool IsComplete() const;
 

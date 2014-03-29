@@ -49,15 +49,27 @@ void OutstationEventBuffer::Clear()
 		auto pNode = facade.selectedEvents.Pop();
 		switch(pNode->value.type)
 		{
-		case(EventType::Binary):
-			facade.binaryEvents.Release(pNode->value.index);
-			break;
-		case(EventType::Analog):
-			facade.analogEvents.Release(pNode->value.index);
-			break;
-		case(EventType::Counter):
-			facade.counterEvents.Release(pNode->value.index);
-			break;
+			case(EventType::Binary):
+				facade.binaryEvents.Release(pNode->value.index);
+				break;
+			case(EventType::DoubleBitBinary) :
+				facade.doubleBinaryEvents.Release(pNode->value.index);
+				break;
+			case(EventType::Analog):
+				facade.analogEvents.Release(pNode->value.index);
+				break;
+			case(EventType::Counter):
+				facade.counterEvents.Release(pNode->value.index);
+				break;
+			case(EventType::FrozenCounter) :
+				facade.frozenCounterEvents.Release(pNode->value.index);
+				break;
+			case(EventType::BinaryOutputStatus) :
+				facade.binaryOutputStatusEvents.Release(pNode->value.index);
+				break;
+			case(EventType::AnalogOutputStatus) :
+				facade.analogOutputStatusEvents.Release(pNode->value.index);
+				break;
 		}
 		facade.sequenceOfEvents.Remove(pNode); // O(1) from SOE
 	}
@@ -101,22 +113,21 @@ void OutstationEventBuffer::Update(const Event<FrozenCounter>& aEvent)
 	overflow |= !InsertEvent(aEvent, EventType::FrozenCounter,  facade.frozenCounterEvents);
 }
 
-/*
 void OutstationEventBuffer::Update(const Event<DoubleBitBinary>& aEvent)
 {
-
+	overflow |= !InsertEvent(aEvent, EventType::DoubleBitBinary, facade.doubleBinaryEvents);
 }
 
 void OutstationEventBuffer::Update(const Event<BinaryOutputStatus>& aEvent)
 {
-
+	overflow |= !InsertEvent(aEvent, EventType::BinaryOutputStatus, facade.binaryOutputStatusEvents);
 }
 
 void OutstationEventBuffer::Update(const Event<AnalogOutputStatus>& aEvent)
 {
-
+	overflow |= !InsertEvent(aEvent, EventType::AnalogOutputStatus, facade.analogOutputStatusEvents);
 }
-*/
+
 
 uint32_t OutstationEventBuffer::NumUnselectedMatching(const SelectionCriteria& criteria) const
 {

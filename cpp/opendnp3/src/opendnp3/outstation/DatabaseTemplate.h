@@ -34,51 +34,60 @@ struct DatabaseTemplate
 		return DatabaseTemplate(count);
 	}
 
-	static DatabaseTemplate AnalogOnly(uint32_t count)
+	static DatabaseTemplate DoubleBinaryOnly(uint32_t count)
 	{
-		return DatabaseTemplate(0, count, 0);
+		return DatabaseTemplate(0, count);
 	}
 
-	static DatabaseTemplate CounterOnly(uint32_t count)
+	static DatabaseTemplate AnalogOnly(uint32_t count)
 	{
 		return DatabaseTemplate(0, 0, count);
 	}
 
-	static DatabaseTemplate FrozenCounterOnly(uint32_t count)
+	static DatabaseTemplate CounterOnly(uint32_t count)
 	{
 		return DatabaseTemplate(0, 0, 0, count);
 	}
 
-	static DatabaseTemplate BinaryOutputStatusOnly(uint32_t count)
+	static DatabaseTemplate FrozenCounterOnly(uint32_t count)
 	{
 		return DatabaseTemplate(0, 0, 0, 0, count);
 	}
 
-	static DatabaseTemplate AnalogOutputStatusOnly(uint32_t count)
+	static DatabaseTemplate BinaryOutputStatusOnly(uint32_t count)
 	{
 		return DatabaseTemplate(0, 0, 0, 0, 0, count);
 	}
 
-	static DatabaseTemplate AllTypes(uint32_t count)
+	static DatabaseTemplate AnalogOutputStatusOnly(uint32_t count)
 	{
-		return DatabaseTemplate(count, count, count, count, count, count);
+		return DatabaseTemplate(0, 0, 0, 0, 0, 0, count);
 	}
 
-	DatabaseTemplate(uint32_t aNumBinary = 0,
-	                 uint32_t aNumAnalog = 0,
-	                 uint32_t aNumCounter = 0,
-	                 uint32_t aNumFrozenCounter = 0,
-	                 uint32_t aNumBinaryOutputStatus = 0,
-	                 uint32_t aNumAnalogOutputStatus = 0) :
-		numBinary(aNumBinary),
-		numAnalog(aNumAnalog),
-		numCounter(aNumCounter),
-		numFrozenCounter(aNumFrozenCounter),
-		numBinaryOutputStatus(aNumBinaryOutputStatus),
-		numAnalogOutputStatus(aNumAnalogOutputStatus)
+	static DatabaseTemplate AllTypes(uint32_t count)
+	{
+		return DatabaseTemplate(count, count, count, count, count, count, count);
+	}
+
+	DatabaseTemplate(uint32_t numBinary_ = 0,
+					 uint32_t numDoubleBinary_ = 0,
+					 uint32_t numAnalog_ = 0,
+					 uint32_t numCounter_ = 0,
+					 uint32_t numFrozenCounter_ = 0,
+					 uint32_t numBinaryOutputStatus_ = 0,
+					 uint32_t numAnalogOutputStatus_ = 0) :
+
+		numBinary(numBinary_),
+		numDoubleBinary(numDoubleBinary_),
+		numAnalog(numAnalog_),
+		numCounter(numCounter_),
+		numFrozenCounter(numFrozenCounter_),
+		numBinaryOutputStatus(numBinaryOutputStatus_),
+		numAnalogOutputStatus(numAnalogOutputStatus_)
 	{}
 
 	uint32_t numBinary;
+	uint32_t numDoubleBinary;
 	uint32_t numAnalog;
 	uint32_t numCounter;
 	uint32_t numFrozenCounter;

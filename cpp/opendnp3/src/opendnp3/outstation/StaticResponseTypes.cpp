@@ -23,6 +23,7 @@
 #include "SlaveConfig.h"
 
 #include "opendnp3/objects/Group1.h"
+#include "opendnp3/objects/Group3.h"
 #include "opendnp3/objects/Group10.h"
 #include "opendnp3/objects/Group20.h"
 #include "opendnp3/objects/Group21.h"
@@ -36,6 +37,7 @@ namespace opendnp3
 
 StaticResponseTypes::StaticResponseTypes(const SlaveConfig& arCfg) :
 	pStaticBinaryLoader(GetStaticBinary(arCfg.mStaticBinary)),
+	pStaticDoubleBinaryLoader(StaticLoader::GetLoadFunction<Group3Var2Serializer>()), // TODO
 	pStaticAnalogLoader(GetStaticAnalog(arCfg.mStaticAnalog)),
 	pStaticCounterLoader(GetStaticCounter(arCfg.mStaticCounter)),
 	pStaticFrozenCounterLoader(GetStaticFrozenCounter(arCfg.mStaticFrozenCounter)),
@@ -47,6 +49,7 @@ StaticResponseTypes::StaticResponseTypes(const SlaveConfig& arCfg) :
 
 StaticResponseTypes::StaticResponseTypes() :
 	pStaticBinaryLoader(StaticLoader::GetLoadFunction<Group1Var2Serializer>()),
+	pStaticDoubleBinaryLoader(StaticLoader::GetLoadFunction<Group3Var2Serializer>()),
 	pStaticAnalogLoader(StaticLoader::GetLoadFunction<Group30Var1Serializer>()),
 	pStaticCounterLoader(StaticLoader::GetLoadFunction<Group20Var1Serializer>()),
 	pStaticFrozenCounterLoader(StaticLoader::GetLoadFunction<Group21Var1Serializer>()),
@@ -60,6 +63,12 @@ template <>
 StaticLoadFun StaticResponseTypes::GetLoader<Binary>()
 {
 	return pStaticBinaryLoader;
+}
+
+template <>
+StaticLoadFun StaticResponseTypes::GetLoader<DoubleBitBinary>()
+{
+	return pStaticDoubleBinaryLoader;
 }
 
 template <>

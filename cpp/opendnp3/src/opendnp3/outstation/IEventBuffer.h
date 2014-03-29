@@ -36,21 +36,19 @@ public:
 
 	virtual ~IEventBuffer() {}
 
-	virtual void Update(const Event<Binary>& aEvent) = 0;	
+	virtual void Update(const Event<Binary>& evt) = 0;
 
-	virtual void Update(const Event<Analog>& aEvent) = 0;
+	virtual void Update(const Event<DoubleBitBinary>& evt) = 0;
 
-	virtual void Update(const Event<Counter>& aEvent) = 0;
+	virtual void Update(const Event<Analog>& evt) = 0;
 
-	virtual void Update(const Event<FrozenCounter>& aEvent) = 0;
+	virtual void Update(const Event<Counter>&  evt) = 0;
 
-	/*
-	virtual void Update(const Event<DoubleBitBinary>& aEvent) = 0;
+	virtual void Update(const Event<FrozenCounter>&  evt) = 0;
 
-	virtual void Update(const Event<BinaryOutputStatus>& aEvent) = 0;
+	virtual void Update(const Event<BinaryOutputStatus>& evt) = 0;
 
-	virtual void Update(const Event<AnalogOutputStatus>& aEvent) = 0;
-	*/
+	virtual void Update(const Event<AnalogOutputStatus>& evt) = 0;	
 
 };
 

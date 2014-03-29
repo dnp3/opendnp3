@@ -53,42 +53,49 @@ public:
 	virtual ~IMeasurementLoader() {}
 
 	/**
-	* Update or receive a Binary measurement, must have transaction started
+	* Update a Binary measurement, must have transaction started
 	* @param meas measurement to be processed
 	* @param index index of the measurement
 	*/
 	virtual void Update(const Binary& meas, uint16_t index) = 0;
 
 	/**
-	* Update or receive an Analog measurement, must have transaction started
+	* Update a DoubleBitBinary measurement, must have transaction started
+	* @param meas measurement to be processed
+	* @param index index of the measurement
+	*/
+	virtual void Update(const DoubleBitBinary& meas, uint16_t index) = 0;
+
+	/**
+	* Update an Analog measurement, must have transaction started
 	* @param meas measurement to be processed
 	* @param index index of the measurement
 	*/
 	virtual void Update(const Analog& meas, uint16_t index) = 0;
 
 	/**
-	* Update or receive a Counter measurement, must have transaction started
+	* Update a Counter measurement, must have transaction started
 	* @param meas measurement to be processed
 	* @param index index of the measurement
 	*/
 	virtual void Update(const Counter& meas, uint16_t index) = 0;
 
 	/**
-	* Update or receive a frozen Counter measurement, must have transaction started
+	* Update a FrozenCounter measurement, must have transaction started
 	* @param meas measurement to be processed
 	* @param index index of the measurement
 	*/
 	virtual void Update(const FrozenCounter& meas, uint16_t index) = 0;
 
 	/**
-	* Update or receive a BinaryOutputStatus measurement, must have transaction started
+	* Update a BinaryOutputStatus measurement, must have transaction started
 	* @param meas measurement to be processed
 	* @param index index of the measurement
 	*/
 	virtual void Update(const BinaryOutputStatus& meas, uint16_t index) = 0;
 
 	/**
-	* Update or receive a AnalogOutputStatus measurement, must have transaction started
+	* Update a AnalogOutputStatus measurement, must have transaction started
 	* @param meas measurement to be processed
 	* @param index index of the measurement
 	*/

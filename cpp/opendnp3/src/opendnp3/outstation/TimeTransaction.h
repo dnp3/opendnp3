@@ -35,18 +35,27 @@ namespace opendnp3
 class TimeTransaction : private openpal::Transaction
 {
 public:
-	TimeTransaction(IMeasurementLoader* apObserver, openpal::UTCTimestamp aTimestamp);
+	TimeTransaction(IMeasurementLoader* pObserver_, openpal::UTCTimestamp timestamp_);
 
-	void Update(Binary meas, uint16_t index);
-	void Update(Analog meas, uint16_t index);
-	void Update(Counter meas, uint16_t index);
-	void Update(FrozenCounter meas, uint16_t index);
-	void Update(BinaryOutputStatus meas, uint16_t index);
-	void Update(AnalogOutputStatus meas, uint16_t index);
+	void Update(const Binary& meas, uint16_t index);
+	void Update(const DoubleBitBinary& meas, uint16_t index);
+	void Update(const Analog& meas, uint16_t index);
+	void Update(const Counter& meas, uint16_t index);
+	void Update(const FrozenCounter& meas, uint16_t index);
+	void Update(const BinaryOutputStatus& meas, uint16_t index);
+	void Update(const AnalogOutputStatus& meas, uint16_t index);
 
 private:
-	IMeasurementLoader* mpObserver;
-	openpal::UTCTimestamp mTimestamp;
+
+	template <class T>
+	void Load(T meas, uint16_t index)
+	{
+		meas.SetTime(timestamp.msSinceEpoch);
+		pObserver->Update(meas, index);
+	}
+
+	IMeasurementLoader* pObserver;
+	openpal::UTCTimestamp timestamp;
 };
 
 }
