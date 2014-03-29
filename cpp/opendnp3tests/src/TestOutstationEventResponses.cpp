@@ -97,17 +97,17 @@ TEST_CASE(SUITE("ReadGrp2Var0"))
 	TestEventRead("C0 01 02 00 06", "E0 81 80 00 02 01 28 01 00 00 00 01"); // 1 byte count == 1, ONLINE quality
 }
 
-/*
 TEST_CASE(SUITE("ReadGrp22Var0"))
 {
-TestEventRead("C0 01 16 00 06", "E0 81 80 00 16 01 17 01 00 01 00 00 00 00"); // 1 byte count == 1, ONLINE quality
+TestEventRead("C0 01 16 00 06", "E0 81 80 00 16 01 28 01 00 00 00 01 00 00 00 00"); // 1 byte count == 1, ONLINE quality
 }
 
 TEST_CASE(SUITE("ReadGrp32Var0"))
 {
-TestEventRead("C0 01 20 00 06", "E0 81 80 00 20 01 17 01 00 01 00 00 00 00"); // 1 byte count == 1, ONLINE quality
+TestEventRead("C0 01 20 00 06", "E0 81 80 00 20 01 28 01 00 00 00 01 00 00 00 00"); // 1 byte count == 1, ONLINE quality
 }
 
+/*
 TEST_CASE(SUITE("ReadGrp2Var1"))
 {
 TestEventRead("C0 01 02 01 06", "E0 81 80 00 02 01 17 01 00 01"); // 1 byte count == 1, ONLINE quality
@@ -122,11 +122,14 @@ TEST_CASE(SUITE("ReadGrp2Var3"))
 {
 TestEventRead("C0 01 02 03 06", "E0 81 80 00 33 01 07 01 00 00 00 00 00 00 02 03 17 01 00 01 00 00"); // 1 byte count == 1, ONLINE quality
 }
+*/
 
+/*
 TEST_CASE(SUITE("ComplexReadSequence"))
 {
+
 const size_t NUM = 4;
-SlaveConfig cfg; cfg.mDisableUnsol = true;
+SlaveConfig config; cfg.mDisableUnsol = true;
 SlaveTestObject t(cfg);
 t.db.Configure(MeasurementType::BINARY, NUM);
 t.db.SetClass(MeasurementType::BINARY, CLASS_1);
@@ -158,7 +161,9 @@ rsp.append(" ").append(grp2Var1hdr).append(" 02 01 03 01");
 t.SendToSlave(request);
 REQUIRE(t.Read() ==  rsp);
 }
+*/
 
+/*
 TEST_CASE(SUITE("NullUnsolOnStartup"))
 {
 	SlaveConfig cfg;  cfg.mAllowTimeSync = true;
