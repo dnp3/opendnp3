@@ -51,7 +51,6 @@ libopendnp3_la_LDFLAGS = -version-info 2:0:0
 libopendnp3_la_CXXFLAGS = -I$(OPENPAL_INCLUDE) -I $(OPENDNP3_INCLUDE)
 libopendnp3_la_SOURCES = \
 cpp/opendnp3/src/opendnp3/app/AnalogOutput.cpp \
-cpp/opendnp3/src/opendnp3/app/APDUEventWriter.cpp \
 cpp/opendnp3/src/opendnp3/app/APDUHandlerBase.cpp \
 cpp/opendnp3/src/opendnp3/app/APDUHeaderParser.cpp \
 cpp/opendnp3/src/opendnp3/app/APDUParser.cpp \
@@ -155,15 +154,18 @@ cpp/opendnp3/src/opendnp3/outstation/Database.cpp \
 cpp/opendnp3/src/opendnp3/outstation/DynamicallyAllocatedDatabase.cpp \
 cpp/opendnp3/src/opendnp3/outstation/DynamicallyAllocatedEventBuffer.cpp \
 cpp/opendnp3/src/opendnp3/outstation/EventCount.cpp \
-cpp/opendnp3/src/opendnp3/outstation/IEventWriterState.cpp \
+cpp/opendnp3/src/opendnp3/outstation/EventBufferConfig.cpp \
+cpp/opendnp3/src/opendnp3/outstation/EventResponseContext.cpp \
 cpp/opendnp3/src/opendnp3/outstation/IINHelpers.cpp \
 cpp/opendnp3/src/opendnp3/outstation/ITimeWriteHandler.cpp \
 cpp/opendnp3/src/opendnp3/outstation/OutstationEventBuffer.cpp \
 cpp/opendnp3/src/opendnp3/outstation/OutstationStackImpl.cpp \
 cpp/opendnp3/src/opendnp3/outstation/ReadHandler.cpp \
+cpp/opendnp3/src/opendnp3/outstation/ResponseContext.cpp \
 cpp/opendnp3/src/opendnp3/outstation/SelectBuffer.cpp \
+cpp/opendnp3/src/opendnp3/outstation/SelectionCriteria.cpp \
+cpp/opendnp3/src/opendnp3/outstation/SelectionIterator.cpp \
 cpp/opendnp3/src/opendnp3/outstation/SimpleCommandHandler.cpp \
-cpp/opendnp3/src/opendnp3/outstation/SimpleDataObserver.cpp \
 cpp/opendnp3/src/opendnp3/outstation/SlaveConfig.cpp \
 cpp/opendnp3/src/opendnp3/outstation/Slave.cpp \
 cpp/opendnp3/src/opendnp3/outstation/SlaveStates.cpp \
@@ -252,7 +254,6 @@ cpp/opendnp3tests/src/TestMaster.cpp \
 cpp/opendnp3tests/src/TestOutstationCommandResponses.cpp \
 cpp/opendnp3tests/src/TestOutstation.cpp \
 cpp/opendnp3tests/src/TestOutstationEventBuffer.cpp \
-cpp/opendnp3tests/src/TestOutstationEventBufferViaFuzz.cpp \
 cpp/opendnp3tests/src/TestOutstationEventResponses.cpp \
 cpp/opendnp3tests/src/TestPhysicalLayerAsyncBase.cpp \
 cpp/opendnp3tests/src/TestPhysicalLayerAsyncSerial.cpp \

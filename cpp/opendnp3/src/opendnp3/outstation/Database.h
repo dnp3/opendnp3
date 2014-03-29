@@ -94,16 +94,7 @@ private:
 	}
 
 	Database();
-	Database(const Database&);
-
-	template <class T>
-	void UpdateEventBuffer(const T& value, uint32_t index, EventClass clazz)
-	{
-		eventBuffers.foreach([&](IEventBuffer * pBuffer)
-		{
-			pBuffer->Update(Event<T>(value, index, clazz));
-		});
-	}
+	Database(const Database&);	
 
 	template <class T, class U>
 	inline void UpdateEvent(const T& value, uint32_t index, U& collection)

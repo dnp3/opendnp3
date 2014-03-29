@@ -33,8 +33,8 @@ using namespace openpal;
 namespace opendnp3
 {
 
-Database::Database(const StaticDataFacade& aStaticData, openpal::IMutex* pMutex_) :
-	staticData(aStaticData),
+Database::Database(const StaticDataFacade& staticData_, openpal::IMutex* pMutex_) :
+	staticData(staticData_),
 	pEventBuffer(nullptr),
 	pMutex(pMutex_)
 {

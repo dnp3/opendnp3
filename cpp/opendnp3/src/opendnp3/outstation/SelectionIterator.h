@@ -22,10 +22,12 @@
 #ifndef __SELECTION_ITERATOR_H_
 #define __SELECTION_ITERATOR_H_
 
-#include "OutstationEventBuffer.h"
-
 #include <openpal/LinkedListAdapter.h>
 #include <openpal/Option.h>
+
+#include "opendnp3/outstation/EventType.h"
+#include "opendnp3/outstation/EventBufferFacade.h"
+#include "opendnp3/outstation/SelectionCriteria.h"
 
 namespace opendnp3
 {

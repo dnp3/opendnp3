@@ -22,6 +22,7 @@
 #define __EVENT_RESPONSE_CONTEXT_H_
 
 #include <openpal/Uncopyable.h>
+#include <openpal/Serialization.h>
 
 #include "opendnp3/app/APDUResponse.h"
 #include "opendnp3/outstation/OutstationEventBuffer.h"
