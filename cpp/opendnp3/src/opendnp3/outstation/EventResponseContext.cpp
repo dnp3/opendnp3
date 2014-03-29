@@ -82,57 +82,56 @@ void EventResponseContext::Reset()
 	criteria.Clear();
 }
 
-bool EventResponseContext::Load(ObjectWriter& writer)
+EventResponseContext::Result EventResponseContext::Load(ObjectWriter& writer)
 {
 	if (criteria.HasSelection())
 	{
 		auto iterator = buffer.SelectEvents(criteria);
-		if (Iterate(writer, iterator))
+		auto result = Iterate(writer, iterator);
+		if (result.complete)
 		{
-			criteria.Clear();
-			return true;
+			criteria.Clear();			
 		}
-		else
-		{
-			return false;
-		}
+		return result;
 	}
 	else
 	{
-		return true;
+		return Result(true, 0);
 	}
 }
 
-bool EventResponseContext::Iterate(ObjectWriter& writer, SelectionIterator& iterator)
+EventResponseContext::Result EventResponseContext::Iterate(ObjectWriter& writer, SelectionIterator& iterator)
 {		
 	auto current = iterator.SeekNext();
+
+	uint32_t count = 0;
 
 	while (current.HasValue())
 	{
 		switch (current.Get())
 		{
 			case(EventType::Binary) :
-				if (!this->WriteFullHeader<Binary>(writer, iterator, Group2Var1Serializer::Inst()))
+				if (!this->WriteFullHeader<Binary>(writer, count, iterator, Group2Var1Serializer::Inst()))
 				{
-					return false;
+					return Result(false, count);
 				}
 				break;
 			case(EventType::Counter) :
-				if (!this->WriteFullHeader<Counter>(writer, iterator, Group22Var1Serializer::Inst()))
+				if (!this->WriteFullHeader<Counter>(writer, count, iterator, Group22Var1Serializer::Inst()))
 				{
-					return false;
+					return Result(false, count);
 				}
 				break;
 			case(EventType::FrozenCounter) :
-				if (!this->WriteFullHeader<FrozenCounter>(writer, iterator, Group23Var1Serializer::Inst()))
+				if (!this->WriteFullHeader<FrozenCounter>(writer, count, iterator, Group23Var1Serializer::Inst()))
 				{
-					return false;
+					return Result(false, count);
 				}
 				break;
 			case(EventType::Analog) :
-				if (!this->WriteFullHeader<Analog>(writer, iterator, Group32Var1Serializer::Inst()))
+				if (!this->WriteFullHeader<Analog>(writer, count, iterator, Group32Var1Serializer::Inst()))
 				{
-					return false;
+					return Result(false, count);
 				}
 				break;
 			default:
@@ -143,7 +142,7 @@ bool EventResponseContext::Iterate(ObjectWriter& writer, SelectionIterator& iter
 		current = iterator.Current();
 	}
 
-	return true;
+	return Result(true, count);
 }
 
 }

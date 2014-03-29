@@ -46,6 +46,7 @@ Option<EventType> SelectionIterator::SeekNext()
 		}	
 	}
 
+	pCurrent = nullptr;
 	return Option<EventType>::None();
 }
 

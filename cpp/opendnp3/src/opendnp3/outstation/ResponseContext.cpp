@@ -47,25 +47,23 @@ bool ResponseContext::IsComplete() const
 void ResponseContext::Load(APDUResponse& response)
 {
 	auto writer = response.GetWriter();
-	if (eventContext.Load(writer))
+	auto result = eventContext.Load(writer);
+	if (result.complete)
 	{
 		auto complete = staticContext.Load(writer);
-		this->SetControl(response, complete);
+		this->SetControl(response, result.Any(), complete);
 	}
 	else
 	{
-		this->SetControl(response, false);
+		this->SetControl(response, result.Any(), false);
 	}
 }
 
-AppControlField ResponseContext::GetAppControl(uint32_t headerCount, bool fin)
+void ResponseContext::SetControl(APDUResponse& response, bool hasEvents, bool fin)
 {
-	return AppControlField(headerCount == 0, fin, !fin, false);
-}
-
-void ResponseContext::SetControl(APDUResponse& response, bool fin)
-{
-	auto control = GetAppControl(fragmentCount, fin);
+	auto fir = (fragmentCount == 0);
+	auto con = (!fin) || hasEvents; // request confirmation on any non-fin fragment or if it has events
+	AppControlField control(fir, fin, con, false);	
 	response.SetControl(control);
 	++fragmentCount;
 }

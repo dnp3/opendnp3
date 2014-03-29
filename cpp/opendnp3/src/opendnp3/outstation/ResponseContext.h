@@ -54,11 +54,9 @@ public:
 
 	void Load(APDUResponse& response);
 
-private:
+private:	
 
-	static AppControlField GetAppControl(uint32_t headerCount, bool fin);
-
-	void SetControl(APDUResponse& response, bool fin);
+	void SetControl(APDUResponse& response, bool hasEvents, bool fin);
 
 	uint32_t fragmentCount;
 	StaticResponseContext staticContext;

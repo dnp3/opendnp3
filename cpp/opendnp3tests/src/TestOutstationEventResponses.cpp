@@ -62,96 +62,42 @@ TEST_CASE(SUITE("ReadClass1WithSOE"))
 	}
 
 	t.SendToSlave("C0 01 3C 02 06");
-	
-	// TODO - make this E0 for CON bit
-	REQUIRE(t.Read() == "C0 81 80 00 20 01 28 01 00 17 00 01 34 12 00 00 02 01 28 01 00 10 00 81 20 01 28 01 00 17 00 01 22 22 00 00");
 		
-		//"17 00 01 34 12 00 00 17 00 01 22 22 00 00");		
+	REQUIRE(t.Read() == "E0 81 80 00 20 01 28 01 00 17 00 01 34 12 00 00 02 01 28 01 00 10 00 81 20 01 28 01 00 17 00 01 22 22 00 00");
 
 	t.SendToSlave("C0 01 3C 02 06");		// Repeat read class 1
 	REQUIRE(t.Read() ==  "C0 81 80 00");	// Buffer should have been cleared
 }
 
-/*
-TEST_CASE(SUITE("ReadClass1TimeOrdered"))
-{
-	SlaveConfig cfg; cfg.mDisableUnsol = true;
-	SlaveTestObject t(cfg);
 
-	t.db.Configure(MeasurementType::ANALOG, 100);
-	t.db.mAnalogs[0x10].clazz = CLASS_1;
+// test that asking for a specific data type returns the requested type
+void TestEventRead(const std::string& request, const std::string& response)
+{
+
+	SlaveConfig cfg; cfg.mDisableUnsol = true;
+	SlaveTestObject t(cfg, DatabaseTemplate::AllTypes(1));
 	t.slave.OnLowerLayerUp();
 
 	{
 		Transaction tr(&t.db);
-
-		Analog a0(0x2222, AQ_ONLINE);
-		a0.SetTime(10);
-
-		Analog a1(0x4444, AQ_ONLINE);
-		a1.SetTime(20);
-
-		Analog a2(0x1111, AQ_ONLINE);
-		a2.SetTime(5);
-
-		Analog a3(0x3333, AQ_ONLINE);
-		a3.SetTime(15);
-
-
-		// Expected order in packet should be:
-		// a2 -> a0 -> a3 -> a1
-		t.db.Update(a0, 0x10);
-		t.db.Update(a1, 0x10);
-		t.db.Update(a2, 0x10);
-		t.db.Update(a3, 0x10);
+		t.db.Update(Binary(false, BQ_ONLINE), 0);
+		t.db.Update(Counter(0, CQ_ONLINE), 0);
+		t.db.Update(Analog(0.0, AQ_ONLINE), 0);
+		t.db.Update(BinaryOutputStatus(false, TQ_ONLINE), 0);
+		t.db.Update(AnalogOutputStatus(0.0, PQ_ONLINE), 0);
 	}
 
-	t.SendToSlave("C0 01 3C 02 06");
-
-	// The indices should be in reverse-order from how they were
-	// added, but the values for a given index should be in the same
-	// order.
-	REQUIRE(t.Read() ==  "E0 81 80 00 20 01 17 04 10 01 11 11 00 00 10 01 22 22 00 00 10 01 33 33 00 00 10 01 44 44 00 00");
-
-	t.SendToSlave("C0 01 3C 02 06");			// Repeat read class 1
-	REQUIRE(t.Read() ==  "C0 81 80 00");	// Buffer should have been cleared
+	t.SendToSlave(request);
+	REQUIRE(t.Read() ==  response);
 }
 
-
-// test that asking for a specific data type returns the requested type
-void TestEventRead(const std::string& arRequest, const std::string& arResponse)
-{
-SlaveConfig cfg; cfg.mDisableUnsol = true;
-SlaveTestObject t(cfg);
-t.db.Configure(MeasurementType::BINARY, 1);
-t.db.Configure(MeasurementType::ANALOG, 1);
-t.db.Configure(MeasurementType::COUNTER, 1);
-t.db.Configure(MeasurementType::CONTROL_STATUS, 1);
-t.db.Configure(MeasurementType::SETPOINT_STATUS, 1);
-t.db.SetClass(MeasurementType::BINARY, CLASS_1);
-t.db.SetClass(MeasurementType::ANALOG, CLASS_1);
-t.db.SetClass(MeasurementType::COUNTER, CLASS_1);
-t.slave.OnLowerLayerUp();
-
-
-{
-Transaction tr(&t.db);
-t.db.Update(Binary(false, BQ_ONLINE), 0);
-t.db.Update(Counter(0, CQ_ONLINE), 0);
-t.db.Update(Analog(0.0, AQ_ONLINE), 0);
-t.db.Update(BinaryOutputStatus(false, TQ_ONLINE), 0);
-t.db.Update(AnalogOutputStatus(0.0, PQ_ONLINE), 0);
-}
-
-t.SendToSlave(arRequest);
-REQUIRE(t.Read() ==  arResponse);
-}
 
 TEST_CASE(SUITE("ReadGrp2Var0"))
 {
-TestEventRead("C0 01 02 00 06", "E0 81 80 00 02 01 17 01 00 01"); // 1 byte count == 1, ONLINE quality
+	TestEventRead("C0 01 02 00 06", "E0 81 80 00 02 01 28 01 00 00 00 01"); // 1 byte count == 1, ONLINE quality
 }
 
+/*
 TEST_CASE(SUITE("ReadGrp22Var0"))
 {
 TestEventRead("C0 01 16 00 06", "E0 81 80 00 16 01 17 01 00 01 00 00 00 00"); // 1 byte count == 1, ONLINE quality

@@ -39,6 +39,20 @@ class EventResponseContext : private openpal::Uncopyable
 	
 public:
 
+	class Result
+	{
+		public:
+		
+		Result(bool complete_, uint32_t numLoaded_) : complete(complete_), numLoaded(numLoaded_)
+		{}
+
+		bool Any() const { return numLoaded > 0; }
+
+		bool complete;
+		uint32_t numLoaded;
+	};
+
+
 	EventResponseContext(OutstationEventBuffer& buffer_);
 
 	bool IsComplete() const;
@@ -48,7 +62,7 @@ public:
 	void Reset();
 
 	// return true, if all events were loaded, false otherwise
-	bool Load(ObjectWriter& writer);
+	Result Load(ObjectWriter& writer);
 
 private:
 
@@ -56,15 +70,15 @@ private:
 	OutstationEventBuffer& buffer;
 
 	// true if the event buffer was exhausted, false if apdu is full
-	bool Iterate(ObjectWriter& writer, SelectionIterator& iterator);
+	Result Iterate(ObjectWriter& writer, SelectionIterator& iterator);
 	
 	// return true true, if there is still room in APDU, false otherwise
 	template <class T>
-	bool WriteFullHeader(ObjectWriter& writer, SelectionIterator& iterator, IDNP3Serializer<T>* pSerializer);
+	bool WriteFullHeader(ObjectWriter& writer, uint32_t& count, SelectionIterator& iterator, IDNP3Serializer<T>* pSerializer);
 };
 
 template <class T>
-bool EventResponseContext::WriteFullHeader(ObjectWriter& ow, SelectionIterator& iterator, IDNP3Serializer<T>* pSerializer)
+bool EventResponseContext::WriteFullHeader(ObjectWriter& ow, uint32_t& count, SelectionIterator& iterator, IDNP3Serializer<T>* pSerializer)
 {
 	auto writer = ow.IterateOverCountWithPrefix<openpal::UInt16, T>(QualifierCode::UINT16_CNT_UINT16_INDEX, pSerializer);
 	if (writer.IsNull())
@@ -78,6 +92,7 @@ bool EventResponseContext::WriteFullHeader(ObjectWriter& ow, SelectionIterator& 
 		{
 			if (writer.Write(evt.value, evt.index))
 			{
+				++count;
 				iterator.SelectCurrent();
 				iterator.SeekNext();
 			}

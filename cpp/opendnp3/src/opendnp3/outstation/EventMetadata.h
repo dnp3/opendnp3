@@ -33,7 +33,7 @@ template <typename T>
 class EventMetadata
 {
 public:
-	EventMetadata(): clazz(CLASS_0)
+	EventMetadata(): clazz(CLASS_1)
 	{}
 
 	inline bool GetEventClass(EventClass& eventClass) const

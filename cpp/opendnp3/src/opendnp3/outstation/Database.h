@@ -112,7 +112,7 @@ private:
 		{
 			auto& metadata = collection.metadata[index];
 			EventClass eventClass;
-			if(metadata.CheckForEvent(value) && metadata.GetEventClass(eventClass))
+			if (metadata.GetEventClass(eventClass) && metadata.CheckForEvent(value))
 			{
 				if (pEventBuffer)
 				{
