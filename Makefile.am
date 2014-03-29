@@ -64,6 +64,8 @@ cpp/opendnp3/src/opendnp3/app/AppLayer.cpp \
 cpp/opendnp3/src/opendnp3/app/ApplicationStack.cpp \
 cpp/opendnp3/src/opendnp3/app/BitReader.cpp \
 cpp/opendnp3/src/opendnp3/app/ControlRelayOutputBlock.cpp \
+cpp/opendnp3/src/opendnp3/app/DownSampling.cpp \
+cpp/opendnp3/src/opendnp3/app/EventTriggers.cpp \
 cpp/opendnp3/src/opendnp3/app/FunctionCodeHelpers.cpp \
 cpp/opendnp3/src/opendnp3/app/GroupVariation.cpp \
 cpp/opendnp3/src/opendnp3/app/IAppUser.cpp \

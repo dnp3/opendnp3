@@ -18,51 +18,18 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __DOWN_SAMPLING_H_
-#define __DOWN_SAMPLING_H_
 
-#include <openpal/Uncopyable.h>
-
-#include <cstdint>
-#include <limits>
+#include "DownSampling.h"
 
 namespace opendnp3
 {
-// A safe down sampling class
-template <class Source, class Target>
-class DownSampling : private openpal::Uncopyable
-{
-	static const Target TARGET_MAX;
-	static const Target TARGET_MIN;
 
-public:
+template <>
+const float DownSampling<double, float>::TARGET_MAX(std::numeric_limits<float>::max());
 
-	static bool Apply(Source src, Target& target)
-	{
-		if(src > TARGET_MAX)
-		{
-			target = TARGET_MAX;
-			return true;
-		}
-		else if( src < TARGET_MIN)
-		{
-			target = TARGET_MIN;
-			return true;
-		}
-		else
-		{
-			target = static_cast<Target>(src);
-			return false;
-		}
-	}
-};
-
-template <class Source, class Target>
-const Target DownSampling<Source, Target>::TARGET_MAX(std::numeric_limits<Target>::max());
-
-template <class Source, class Target>
-const Target DownSampling<Source, Target>::TARGET_MIN(std::numeric_limits<Target>::min());
+template <>
+const float DownSampling<double, float>::TARGET_MIN(-std::numeric_limits<float>::max());
 
 }
 
-#endif
+
