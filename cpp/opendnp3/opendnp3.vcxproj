@@ -243,6 +243,7 @@
     <ClCompile Include="src\opendnp3\app\ApplicationStack.cpp" />
     <ClCompile Include="src\opendnp3\app\BitReader.cpp" />
     <ClCompile Include="src\opendnp3\app\ControlRelayOutputBlock.cpp" />
+    <ClCompile Include="src\opendnp3\app\DownSampling.cpp" />
     <ClCompile Include="src\opendnp3\app\FunctionCodeHelpers.cpp" />
     <ClCompile Include="src\opendnp3\app\GroupVariation.cpp" />
     <ClCompile Include="src\opendnp3\app\APDUHandlerBase.cpp" />
