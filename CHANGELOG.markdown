@@ -26,12 +26,6 @@
 * Clang is now an officially supported compiler and will also be used for static analysis. Project compiles with Clang 3.4.
 * Logging is now explicitly controlled using the bitfields instead of enums. This allows dnp3 specific log levels to be defined without polluting openpal with their definitions.
 
-## Removed ##
-* VTO "routers" are now longer provided. 0-length strings of all types (Groups 110-113) are not explicitly not allowed.
-* ASIOPAL now explicitly uses std::chrono::steady_clock for timers. There is no longer a typedef.
-* Library no longer supports 4-octet qualifier codes. All indices used uint16_t as underlying type.
-* Support for "delta" values has been removed. New implementations do not need to support this according to the spec.
-
 ## External Features ##
 
 * Ticket 56 - Measurement types can now tell the user if the timestamp is valid or not (bool IsTimeValid() const)
@@ -62,4 +56,8 @@
 * Ticket 34 - The transport layer now passes the link layer an "IBufferSegment". This allows an entire APDU to be written to the physical layer if unconfirmed data mode is used.
 * Ticket 62 - Fixed a bug where the master scheduler could hang if the the channel was closed while waiting for response to a command.
 
-
+## Removed ##
+* VTO "routers" are now longer provided. 0-length strings of all types (Groups 110-113) are not explicitly not allowed.
+* ASIOPAL now explicitly uses std::chrono::steady_clock for timers. There is no longer a typedef.
+* Library no longer supports 4-octet qualifier codes. All indices used uint16_t as underlying type.
+* Support for "delta" values has been removed. New implementations do not need to support this according to the spec.
