@@ -77,8 +77,11 @@ public class MasterDemo {
         while (true) {
             System.out.println("Enter something to issue a command or type <quit> to exit");
             line = in.readLine();
-            if(line.equals("quit")) break;
-            else {
+            if ("poll".equals(line)) {
+                master.performIntegrityScan();
+            } else if ("quit".equals(line)) {
+                break;
+            } else {
                 ControlRelayOutputBlock crob = new ControlRelayOutputBlock(ControlCode.LATCH_ON, (short) 1, 100, 100, CommandStatus.SUCCESS);
                 ListenableFuture<CommandStatus> future = processor.selectAndOperate(crob, 0);
                 System.out.println("Control result: " + future.get().name());

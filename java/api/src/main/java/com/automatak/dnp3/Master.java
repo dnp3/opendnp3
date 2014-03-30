@@ -28,4 +28,9 @@ public interface Master extends Stack {
      */
     CommandProcessor getCommandProcessor();
 
+    /**
+     * Performs an integrity scan.
+     */
+    void performIntegrityScan();
+
 }
