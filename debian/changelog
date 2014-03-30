@@ -1,3 +1,9 @@
+opendnp3 (1.1.1rc4-1) unstable; urgency=low
+
+  * Added on-demand integrity scans for DNP masters
+
+ -- Chris Verges <chris.verges@gmail.com>  Sun, 30 Mar 2014 00:21:00 -0800
+
 opendnp3 (1.1.1rc3-1) unstable; urgency=low
 
   * Fixed AMS_Waiting -> AMS_Closed transition bug
