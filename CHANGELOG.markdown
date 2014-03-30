@@ -1,9 +1,6 @@
-Change Log
-==============
-
 ### 2.0.0-M2 ###
 
-# Changes / Improvements
+## Refactoring / Improvements ##
 * To enable eventual ports to other platforms and MCUs, the 1.1.x library was divided into 4 sub-libraries.
   * openpal - The Platform Abstraction Layer (PAL) provides abtract base classes for key abstractions like IPhysicalLayer, IExecutor, ITimer, etc.
   * opendnp3 - The core dnp3 library. It only depends on openpal and is platform independent C++11.
@@ -14,8 +11,8 @@ Change Log
 * Core library is now organized by layer making navigation, maintainence, and learning the library easier.
 * All libraries are now exception-free. They can be compiled with -fno-exceptions.
 * Removed some instances of recursion in the link layer CRC checking.
-* The library now longer uses BOOST. It makes use the standalone verison (header only) of ASIO (http://think-async.com/)
-* Tests were ported from BOOST_TEST to Catch (https://github.com/philsquared/Catch). Catch is header only and redistributed with the project.
+* The library now longer uses BOOST. It makes use the standalone verison (header only) of [ASIO](http://think-async.com/)
+* Tests were ported from BOOST_TEST to [Catch](https://github.com/philsquared/Catch). Catch is header only and redistributed with the project.
 * Core library now longer uses STL. This makes ports to MCUs much easier.
 * Core library now longer uses dynamic memory allocation. Databases and buffers are either statically allocated or injected allowing the user to choose.
 * Library now longer uses size_t as this type changes length on 32/64-bit platforms. Explicit types are now used from <cstdint>.
@@ -29,13 +26,13 @@ Change Log
 * Clang is now an officially supported compiler and will also be used for static analysis. Project compiles with Clang 3.4.
 * Logging is now explicitly controlled using the bitfields instead of enums. This allows dnp3 specific log levels to be defined without polluting openpal with their definitions.
 
-# Removed (possible loss of functionality for some users)
+## Removed ##
 * VTO "routers" are now longer provided. 0-length strings of all types (Groups 110-113) are not explicitly not allowed.
 * ASIOPAL now explicitly uses std::chrono::steady_clock for timers. There is no longer a typedef.
 * Library now longer supports 4-octet qualifier codes. All indices used uint16_t as underlying type.
 * Support for "delta" values has been removed. New implementations do not need to support this according to the spec.
 
-# External Features
+## External Features ##
 
 * Ticket 56 - Measurement types can now tell the user if the timestamp is valid or not (bool IsTimeValid() const)
 * Ticket 43 - Master command callbacks now provide a type that can distinguish between local and remote failure, e.g. when the repsonse times out or the channel is closed.
@@ -56,7 +53,7 @@ Change Log
 * Channels now have expoential backoff capability controlled by min/max retry parameters. 
 * Each channel can low control the its log level dynamically via the SetLogFilters() method.
 
-# Bug / conformance fixes
+## Bug / conformance fixes ##
 * Default integrity poll is now a Class 1/2/3/0 scan as per the specification.
 * Physical layer disconnects now observer the minRetry parameter. This prevents rapid connect/disconnect cycling when a server is closing connections.
 * Transport layer can now receive non-fin packets with payload length between 1 and 249. It's very strange for an implementation to do this, but its actually in the spec.
