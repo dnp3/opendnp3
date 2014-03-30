@@ -152,6 +152,8 @@ public:
 	void SelectAndOperate(const AnalogOutputDouble64& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback);
 	void DirectOperate(const AnalogOutputDouble64& arCommand, size_t aIndex, std::function<void (CommandResponse)> aCallback);
 
+    void PerformIntegrityScan();
+
 private:
 
 	template <class T>

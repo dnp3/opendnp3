@@ -81,6 +81,8 @@ public:
 	static bool LessThanGroupLevel(const AsyncTaskBase* l, const AsyncTaskBase* r);
 	static bool LessThanGroupLevelNoString(const AsyncTaskBase* l, const AsyncTaskBase* r);
 
+    void Demand();
+
 protected:
 
 	AsyncTaskBase(

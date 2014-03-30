@@ -347,6 +347,13 @@ void Master::ProcessDataResponse(const APDU& arResponse)
 	}
 }
 
+void Master::PerformIntegrityScan()
+{
+    AsyncTaskBase* pIntegrity = mSchedule.mpIntegrity;
+    if (pIntegrity != NULL)
+        pIntegrity->Demand();
+}
+
 } //end ns
 
 /* vim: set ts=4 sw=4: */

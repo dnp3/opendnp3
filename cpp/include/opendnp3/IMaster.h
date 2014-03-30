@@ -53,6 +53,8 @@ public:
     * @return Interface used to invoke commands
     */
     virtual ICommandProcessor* GetCommandProcessor() = 0;
+
+    virtual void PerformIntegrityScan() = 0;
 };
 
 }
