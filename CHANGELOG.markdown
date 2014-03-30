@@ -4,7 +4,7 @@
 * To enable eventual ports to other platforms and MCUs, the 1.1.x library was divided into 4 sub-libraries.
   * openpal - The Platform Abstraction Layer (PAL) provides abtract base classes for key abstractions like IPhysicalLayer, IExecutor, ITimer, etc.
   * opendnp3 - The core dnp3 library. It only depends on openpal and is platform independent C++11.
-  * asiopal - Implemenats the PAL using boost::asio.  This PAL can be used on server platforms like Windows, Linux, & OSX. It only depends on openpal.
+  * asiopal - Implements the PAL using boost::asio.  This PAL can be used on server platforms like Windows, Linux, & OSX. It only depends on openpal.
   * asiodnp3 - Provides a nice wrapper to opendnp3 for server platforms. Depends on all three libraries.
 
 * Library uses a new parser and generator that vastly improves readability, maintainability, performance, and safety.
