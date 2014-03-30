@@ -29,7 +29,7 @@
 ## Removed ##
 * VTO "routers" are now longer provided. 0-length strings of all types (Groups 110-113) are not explicitly not allowed.
 * ASIOPAL now explicitly uses std::chrono::steady_clock for timers. There is no longer a typedef.
-* Library now longer supports 4-octet qualifier codes. All indices used uint16_t as underlying type.
+* Library no longer supports 4-octet qualifier codes. All indices used uint16_t as underlying type.
 * Support for "delta" values has been removed. New implementations do not need to support this according to the spec.
 
 ## External Features ##
