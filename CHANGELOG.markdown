@@ -11,7 +11,7 @@
 * Core library is now organized by layer making navigation, maintainence, and learning the library easier.
 * All libraries are now exception-free. They can be compiled with -fno-exceptions.
 * Removed some instances of recursion in the link layer CRC checking.
-* The library no longer uses BOOST. It makes use the standalone verison (header only) of [ASIO](http://think-async.com/)
+* The library no longer uses BOOST. Instead it uses the standalone verison (header only) of [ASIO](http://think-async.com/)
 * Tests were ported from BOOST_TEST to [Catch](https://github.com/philsquared/Catch). Catch is header only and redistributed with the project.
 * Core library now longer uses STL. This makes ports to MCUs much easier.
 * Core library now longer uses dynamic memory allocation. Databases and buffers are either statically allocated or injected allowing the user to choose.
