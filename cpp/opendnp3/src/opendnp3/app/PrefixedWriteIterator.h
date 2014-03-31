@@ -35,27 +35,38 @@ public:
 
 	static PrefixedWriteIterator Null()
 	{
-		auto buffer = openpal::WriteBuffer::Empty();
-		return PrefixedWriteIterator(nullptr, buffer); // TODO make this a poiter
+		PrefixedWriteIterator ret;
+		return ret;
 	}
 
-	PrefixedWriteIterator(IDNP3Serializer<WriteType>* pSerializer_, openpal::WriteBuffer& aPosition) :
-		pSerializer(pSerializer_),
-		sizeOfTypePlusIndex(pSerializer->Size() + PrefixType::Size),
+	PrefixedWriteIterator() :
+		pSerializer(nullptr),
+		sizeOfTypePlusIndex(0),
 		count(0),
-		countPosition(aPosition),
-		position(aPosition),
-		isNull(aPosition.Size() < PrefixType::Size || pSerializer == nullptr)
+		pPosition(nullptr),
+		isNull(true)
+	{}
+
+	PrefixedWriteIterator(IDNP3Serializer<WriteType>* pSerializer_, openpal::WriteBuffer& position) :
+		pSerializer(pSerializer_),
+		sizeOfTypePlusIndex(pSerializer_->Size() + PrefixType::Size),
+		count(0),
+		countPosition(position),
+		pPosition(&position),
+		isNull(position.Size() < PrefixType::Size)
 	{
 		if(!isNull)
 		{
-			position.Advance(PrefixType::Size);
+			pPosition->Advance(PrefixType::Size);
 		}
 	}
 
 	bool Complete()
 	{
-		if(isNull) return false;
+		if(isNull) 
+		{
+			return false;
+		}
 		else
 		{
 			PrefixType::Write(countPosition, count);
@@ -65,11 +76,14 @@ public:
 
 	bool Write(WriteType& value, typename PrefixType::Type index)
 	{
-		if(isNull || position.Size() < sizeOfTypePlusIndex) return false;
+		if(isNull || (pPosition->Size() < sizeOfTypePlusIndex) )	
+		{
+			return false;
+		}
 		else
 		{
-			PrefixType::WriteBuffer(position, index);
-			pSerializer->Write(value, position);
+			PrefixType::WriteBuffer(*pPosition, index);
+			pSerializer->Write(value, *pPosition);
 			++count;
 			return true;
 		}
@@ -90,7 +104,7 @@ private:
 	bool isNull;
 
 	openpal::WriteBuffer countPosition;  // make a copy to record where we write the count
-	openpal::WriteBuffer& position;
+	openpal::WriteBuffer* pPosition;
 };
 
 }

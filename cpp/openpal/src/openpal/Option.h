@@ -59,7 +59,7 @@ public:
 	Option(T value_) : hasValue(true), value(value_)
 	{}
 
-	Option() : hasValue(false)
+	Option() : hasValue(false), value()
 	{}
 
 	bool hasValue;

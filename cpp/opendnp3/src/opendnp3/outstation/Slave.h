@@ -111,8 +111,7 @@ private:
 	openpal::IExecutor* pExecutor;
 	IAppLayer* mpAppLayer;					// lower application layer
 	Database* mpDatabase;					// holds static data	
-	ICommandHandler* mpCmdHandler;			// how commands are selected/operated on application code
-	int mSequence;							// control sequence
+	ICommandHandler* mpCmdHandler;				// how commands are selected/operated on application code
 	SlaveStateBase* mpState;				// current state for the state pattern
 	SlaveConfig mConfig;					// houses the configurable paramters of the outstation
 

@@ -31,7 +31,10 @@ using namespace std;
 namespace opendnp3
 {
 
-LinkHeader::LinkHeader() {}
+LinkHeader::LinkHeader() : length(5), src(0), dest(0), ctrl(0)
+{
+
+}
 
 LinkHeader::LinkHeader(uint8_t aLen, uint16_t aSrc, uint16_t aDest, bool aFromMaster, bool aFcvDfc, bool aFcb, LinkFunction aCode)
 {
@@ -48,8 +51,14 @@ void LinkHeader::Set(uint8_t aLen, uint16_t aSrc, uint16_t aDest, bool aFromMast
 
 void LinkHeader::ChangeFCB(bool aFCB)
 {
-	if(aFCB) ctrl |= MASK_FCB;
-	else ctrl &= ~MASK_FCB;
+	if(aFCB) 
+	{
+		ctrl |= MASK_FCB;
+	}
+	else 
+	{
+		ctrl &= ~MASK_FCB;
+	}
 }
 
 uint8_t LinkHeader::ControlByte(bool aIsMaster, bool aFcb, bool aFcvDfc, LinkFunction aFunc)

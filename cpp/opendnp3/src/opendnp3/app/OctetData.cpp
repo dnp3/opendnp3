@@ -40,27 +40,22 @@ OctetData::OctetData(const openpal::ReadOnlyBuffer& buffer)
 
 void OctetData::Initialize(const openpal::ReadOnlyBuffer& buffer)
 {
-	size = static_cast<uint8_t>((buffer.Size() > 255) ? 255 : buffer.Size());
+	size = static_cast<uint8_t>((buffer.Size() > MAX_SIZE) ? MAX_SIZE : buffer.Size());
 	buffer.Truncate(size).CopyTo(pData);	
 }
 
 OctetData& OctetData::operator=( const OctetData& rhs )
 {
 	if(&rhs != this)
-	{
-		assert(rhs.size <= MAX_SIZE);
-		if(pData != nullptr)
-		{
-			size = 0;
-		}
+	{		
 		this->Initialize(rhs.ToReadOnly());
 	}
 	return *this;
 }
 
-OctetData::OctetData(const OctetData& aCopy) : size(0)
+OctetData::OctetData(const OctetData& copy) : size(0)
 {
-	this->Initialize(aCopy.ToReadOnly());
+	this->Initialize(copy.ToReadOnly());
 }
 
 openpal::ReadOnlyBuffer OctetData::ToReadOnly() const
