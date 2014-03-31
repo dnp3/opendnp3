@@ -118,7 +118,7 @@ private:
 	openpal::ITimer* mpUnsolTimer;			// timer for sending unsol responsess
 	ITimeWriteHandler* mpTimeWriteHandler;
 
-	IINField mIIN;							// IIN bits that persist between requests (i.e. NeedsTime/Restart/Etc)
+	IINField staticIIN;						// IIN bits that persist between requests (i.e. NeedsTime/Restart/Etc)
 	CachedRequest mCachedRequest;			// Request cache for when outstation needs to defer a request
 
 	OutstationEventBuffer eventBuffer;
@@ -134,6 +134,8 @@ private:
 	void OnUnsolTimerExpiration();			// internal event dispatched when the unsolicted pack/retry timer expires
 
 	void SendResponse(APDUResponse& apdu, const IINField& indications = IINField::Empty);
+	IINField GetDynamicIIN() const;
+
 	//void SendUnsolicited(APDU& apdu, const IINField& indications = IINField::Empty);
 
 	IINField HandleWrite(const APDURecord& request, SequenceInfo sequence);

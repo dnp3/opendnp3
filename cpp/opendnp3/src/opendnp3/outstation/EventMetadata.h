@@ -29,24 +29,23 @@ namespace opendnp3
 {
 
 // Base class for different types of event metadata
-template <typename T>
 class EventMetadata
 {
 public:
-	EventMetadata(): clazz(CLASS_1)
+	EventMetadata() : clazz(CLASS_1)
 	{}
 
 	inline bool GetEventClass(EventClass& eventClass) const
 	{
-		switch(clazz)
+		switch (clazz)
 		{
-		case(PointClass::CLASS_1):
+		case(PointClass::CLASS_1) :
 			eventClass = EventClass::EC1;
 			return true;
-		case(PointClass::CLASS_2):
+		case(PointClass::CLASS_2) :
 			eventClass = EventClass::EC2;
 			return true;
-		case(PointClass::CLASS_3):
+		case(PointClass::CLASS_3) :
 			eventClass = EventClass::EC3;
 			return true;
 		default:
@@ -55,12 +54,22 @@ public:
 
 	}
 
-	PointClass clazz;
+	PointClass clazz;	
+};
+
+// Base class for different types of event metadata
+template <typename T>
+class TypedEventMetadata : public EventMetadata
+{
+public:
+	TypedEventMetadata() : EventMetadata(), lastEvent()
+	{}
+		
 	T lastEvent;
 };
 
 template <typename T>
-struct SimpleEventMetadata : EventMetadata<T>
+struct SimpleEventMetadata : TypedEventMetadata<T>
 {
 public:
 
@@ -79,7 +88,7 @@ public:
  * Structure for holding metadata information on points that have support deadbanding
  */
 template <class T, class U>
-struct DeadbandMetadata : EventMetadata<T>
+struct DeadbandMetadata : TypedEventMetadata<T>
 {
 	DeadbandMetadata() : deadband(0)
 	{}

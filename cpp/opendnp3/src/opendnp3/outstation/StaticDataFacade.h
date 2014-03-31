@@ -68,7 +68,7 @@ struct StaticDataFacade
 		frozenCounters(frozenCounters_),
 		binaryOutputStatii(binaryOutputStatii_),
 		analogOutputStatii(analogOutputStatii_)
-	{}
+	{}	
 
 	BinaryCollection binaries;
 	DoubleBinaryCollection doubleBinaries;

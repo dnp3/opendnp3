@@ -36,7 +36,7 @@ using namespace openpal;
 namespace opendnp3
 {
 
-SlaveTestObject::SlaveTestObject(const SlaveConfig& arCfg, const DatabaseTemplate& dbTemplate, uint32_t filters, bool aImmediate) :
+SlaveTestObject::SlaveTestObject(const SlaveConfig& arCfg, const DatabaseTemplate& dbTemplate, PointClass defaultClass, uint32_t filters, bool aImmediate) :
 	log(),
 	mMockTimeWriteHandler([this](UTCTimestamp time)
 {
@@ -51,6 +51,18 @@ slave(log.GetLogger("slave"), &app, &mts, &mMockTimeWriteHandler, &db, eventBuff
 mLogger(log.GetLogger("test"))
 {
 	app.SetUser(&slave);
+	SetDefaultClass(defaultClass);
+}
+
+void SlaveTestObject::SetDefaultClass(PointClass pc)
+{
+	db.staticData.binaries.metadata.foreach([&](EventMetadata& md){ md.clazz = pc; });
+	db.staticData.analogs.metadata.foreach([&](EventMetadata& md){ md.clazz = pc; });
+	db.staticData.analogOutputStatii.metadata.foreach([&](EventMetadata& md){ md.clazz = pc; });
+	db.staticData.binaryOutputStatii.metadata.foreach([&](EventMetadata& md){ md.clazz = pc; });
+	db.staticData.counters.metadata.foreach([&](EventMetadata& md){ md.clazz = pc; });
+	db.staticData.frozenCounters.metadata.foreach([&](EventMetadata& md){ md.clazz = pc; });
+	db.staticData.doubleBinaries.metadata.foreach([&](EventMetadata& md){ md.clazz = pc; });
 }
 
 void SlaveTestObject::SendToSlave(const std::string& arData, SequenceInfo aSeq)

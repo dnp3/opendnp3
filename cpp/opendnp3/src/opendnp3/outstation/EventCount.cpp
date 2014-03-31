@@ -94,6 +94,11 @@ void ClassCount::Clear()
 	}
 }
 
+bool ClassCount::HasEvents() const
+{
+	return !IsEmpty();
+}
+
 bool ClassCount::IsEmpty() const
 {
 	for (uint32_t i = 0; i < NUM_TYPES; ++i)

@@ -74,7 +74,7 @@ Outstation::Outstation(	openpal::Logger logger,
 	// Link the event buffer to the database
 	mpDatabase->SetEventBuffer(eventBuffer);
 
-	mIIN.Set(IINBit::DEVICE_RESTART); // Always set on restart
+	staticIIN.Set(IINBit::DEVICE_RESTART); // Always set on restart
 
 	/* Cause the Outstation to go through the null-unsol startup sequence */
 	if (!mConfig.mDisableUnsol)
@@ -97,7 +97,7 @@ Outstation::~Outstation()
 
 void Outstation::SetNeedTimeIIN()
 {
-	mIIN.Set(IINBit::NEED_TIME);
+	staticIIN.Set(IINBit::NEED_TIME);
 }
 
 /* Implement IAppUser - external callbacks from the app layer */
@@ -201,7 +201,7 @@ IINField Outstation::ConfigureResponse(const APDURecord& request, SequenceInfo s
 
 IINField Outstation::HandleWrite(const APDURecord& request, SequenceInfo sequence)
 {
-	WriteHandler handler(logger, mpTimeWriteHandler, &mIIN);
+	WriteHandler handler(logger, mpTimeWriteHandler, &staticIIN);
 	auto result = APDUParser::ParseTwoPass(request.objects, &handler, &logger);
 	if (result == APDUParser::Result::OK)
 	{
@@ -362,9 +362,29 @@ IINField Outstation::HandleCommandWithConstant(const APDURecord& request, APDURe
 }
 
 void Outstation::SendResponse(APDUResponse& response, const IINField& indications)
-{
-	response.SetIIN(mIIN | indications);
+{	
+	IINField responseIIN(staticIIN | GetDynamicIIN() | indications);
+	response.SetIIN(responseIIN);
 	mpAppLayer->SendResponse(response);
+}
+
+IINField Outstation::GetDynamicIIN() const
+{
+	IINField ret;
+	auto tracker = eventBuffer.UnselectedEvents();
+	if (tracker.class1.HasEvents())
+	{
+		ret.Set(IINBit::CLASS1_EVENTS);
+	}
+	if (tracker.class2.HasEvents())
+	{
+		ret.Set(IINBit::CLASS2_EVENTS);
+	}
+	if (tracker.class3.HasEvents())
+	{
+		ret.Set(IINBit::CLASS3_EVENTS);
+	}
+	return ret;
 }
 
 void Outstation::StartUnsolTimer(openpal::TimeDuration aTimeout)
@@ -376,7 +396,7 @@ void Outstation::StartUnsolTimer(openpal::TimeDuration aTimeout)
 void Outstation::ResetTimeIIN()
 {
 	mpTimeTimer = nullptr;
-	mIIN.Set(IINBit::NEED_TIME);
+	staticIIN.Set(IINBit::NEED_TIME);
 	mpTimeTimer = pExecutor->Start(mConfig.mTimeSyncPeriod, std::bind(&Outstation::ResetTimeIIN, this));
 }
 

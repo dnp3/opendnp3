@@ -43,6 +43,7 @@ public:
 
 	void Increment(EventType type);
 
+	bool HasEvents() const;
 	bool IsEmpty() const;
 	uint32_t Total() const;
 

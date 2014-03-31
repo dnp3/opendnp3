@@ -75,8 +75,8 @@ void TestEventRead(const std::string& request, const std::string& response)
 {
 
 	SlaveConfig cfg; cfg.mDisableUnsol = true;
-	SlaveTestObject t(cfg, DatabaseTemplate::AllTypes(1));
-	t.slave.OnLowerLayerUp();
+	SlaveTestObject t(cfg, DatabaseTemplate::AllTypes(1), PointClass::CLASS_1);
+	t.slave.OnLowerLayerUp();	
 
 	{
 		Transaction tr(&t.db);
@@ -94,17 +94,17 @@ void TestEventRead(const std::string& request, const std::string& response)
 
 TEST_CASE(SUITE("ReadGrp2Var0"))
 {
-	TestEventRead("C0 01 02 00 06", "E0 81 80 00 02 01 28 01 00 00 00 01"); // 1 byte count == 1, ONLINE quality
+	TestEventRead("C0 01 02 00 06", "E0 81 82 00 02 01 28 01 00 00 00 01"); // 1 byte count == 1, ONLINE quality
 }
 
 TEST_CASE(SUITE("ReadGrp22Var0"))
 {
-TestEventRead("C0 01 16 00 06", "E0 81 80 00 16 01 28 01 00 00 00 01 00 00 00 00"); // 1 byte count == 1, ONLINE quality
+	TestEventRead("C0 01 16 00 06", "E0 81 82 00 16 01 28 01 00 00 00 01 00 00 00 00"); // 1 byte count == 1, ONLINE quality
 }
 
 TEST_CASE(SUITE("ReadGrp32Var0"))
 {
-TestEventRead("C0 01 20 00 06", "E0 81 80 00 20 01 28 01 00 00 00 01 00 00 00 00"); // 1 byte count == 1, ONLINE quality
+	TestEventRead("C0 01 20 00 06", "E0 81 82 00 20 01 28 01 00 00 00 01 00 00 00 00"); // 1 byte count == 1, ONLINE quality
 }
 
 /*
