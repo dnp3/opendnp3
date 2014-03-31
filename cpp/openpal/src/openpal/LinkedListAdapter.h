@@ -30,7 +30,7 @@ template <class ValueType>
 class ListNode
 {
 public:
-	ListNode(): prev(nullptr), next(nullptr)
+	ListNode() : value(), prev(nullptr), next(nullptr)
 	{}
 
 	ValueType value;

@@ -100,7 +100,7 @@ bool OutstationEventBuffer::InsertEvent(const T& aEvent, EnumType eventType, ope
 	{
 		totalTracker.Increment(eventType, aEvent.clazz);
 		auto index = buffer.Add(aEvent);
-		SequenceRecord record = { eventType, index, aEvent.clazz, false};
+		SequenceRecord record(eventType, index, aEvent.clazz, false);
 		facade.sequenceOfEvents.Add(record);
 		return true;
 	}

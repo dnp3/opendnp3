@@ -24,8 +24,10 @@
 namespace opendnp3
 {
 
-CachedRequest::CachedRequest()
-{}
+CachedRequest::CachedRequest() : sequence(SequenceInfo::OTHER)
+{
+
+}
 
 void CachedRequest::Set(const APDURecord& record_, SequenceInfo sequence_)
 {

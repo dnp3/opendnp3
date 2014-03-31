@@ -34,8 +34,17 @@
 namespace opendnp3
 {
 
-struct SequenceRecord
+class SequenceRecord
 {
+	public:
+
+	SequenceRecord() : type(EventType::Analog), index(0), clazz(EventClass::EC1), selected(false)
+	{}
+
+	SequenceRecord(EventType type_, uint16_t index_, EventClass clazz_, bool selected_) : 
+		type(type_), index(index_), clazz(clazz_), selected(selected_)
+	{}
+
 	EventType type;
 	uint16_t index;
 	EventClass clazz;

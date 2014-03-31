@@ -29,7 +29,7 @@ namespace opendnp3
 const uint16_t StaticRange::MIN(std::numeric_limits<uint16_t>::min());
 const uint16_t StaticRange::MAX(std::numeric_limits<uint16_t>::max());
 
-StaticRange::StaticRange() : start(MAX), stop(MIN) {}
+StaticRange::StaticRange() : start(MAX), stop(MIN), clipped(false) {}
 
 StaticRange::StaticRange(uint16_t start_, uint16_t stop_) :
 	start(start_),

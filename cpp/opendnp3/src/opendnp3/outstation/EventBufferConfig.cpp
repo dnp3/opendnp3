@@ -26,9 +26,12 @@ namespace opendnp3
 
 EventBufferConfig::EventBufferConfig() :
 	maxBinaryEvents(1000),
+	maxDoubleBinaryEvents(1000),
 	maxAnalogEvents(1000),
 	maxCounterEvents(1000),
-	maxFrozenCounterEvents(100)
+	maxFrozenCounterEvents(1000),
+	maxBinaryOutputStatusEvents(1000),
+	maxAnalogOutputStatusEvents(1000)
 {}
 
 EventBufferConfig::EventBufferConfig(

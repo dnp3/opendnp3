@@ -44,7 +44,8 @@ public:
 		count(0),
 		range(position_),
 		position(position_),
-		isNull(position_.Size() < 2 * IndexType::Size)
+		isNull(position_.Size() < 2 * IndexType::Size),
+		maxCount(0)
 	{
 		if(!isNull)
 		{

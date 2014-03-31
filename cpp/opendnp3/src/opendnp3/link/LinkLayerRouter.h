@@ -66,10 +66,10 @@ public:
 	                IOpenDelayStrategy* pStrategy = ExponentialBackoffStrategy::Inst());
 
 	// Query to see if a route is in use
-	bool IsRouteInUse(const LinkRoute& arRoute);
+	bool IsRouteInUse(const LinkRoute& route);
 
 	// Ties the lower part of the link layer to the upper part
-	bool AddContext(ILinkContext*, const LinkRoute& arRoute);
+	bool AddContext(ILinkContext* pContext, const LinkRoute& route);
 
 	/**
 	*  Tells the router to begin sending messages to the context
@@ -142,7 +142,7 @@ private:
 			primary(primary_)
 		{}
 
-		Transmission() : buffer(), pContext(nullptr)
+		Transmission() : buffer(), pContext(nullptr), primary(false)
 		{}
 
 		openpal::ReadOnlyBuffer buffer;

@@ -44,7 +44,7 @@ public:
 
 	CachedRequest();
 
-	void Set(const APDURecord& aRecord, SequenceInfo aSequence);
+	void Set(const APDURecord& record, SequenceInfo sequence);
 
 	void Clear()
 	{
