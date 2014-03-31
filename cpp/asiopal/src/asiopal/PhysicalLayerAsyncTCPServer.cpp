@@ -38,29 +38,29 @@ namespace asiopal
 
 PhysicalLayerAsyncTCPServer::PhysicalLayerAsyncTCPServer(
 	const openpal::LogConfig& config,
-    asio::io_service* apIOService,
-    const std::string& arEndpoint,
-    uint16_t aPort,
-    std::function<void (asio::ip::tcp::socket&)> aConfigure) :
+    asio::io_service* pIOService,
+    const std::string& endpoint,
+    uint16_t port,
+    std::function<void (asio::ip::tcp::socket&)> configure_) :
 
-	PhysicalLayerAsyncBaseTCP(config, apIOService),
-	mLocalEndpoint(ip::tcp::v4(), aPort),
-	mAcceptor(*apIOService),
-	mConfigure(aConfigure)
+	PhysicalLayerAsyncBaseTCP(config, pIOService),
+	localEndpointString(endpoint),
+	localEndpoint(ip::tcp::v4(), port),
+	acceptor(*pIOService),
+	configure(configure_)
 {
-	mLocalEndpoint.address( asio::ip::address::from_string(arEndpoint) );
+	
 }
 
 /* Implement the actions */
 void PhysicalLayerAsyncTCPServer::DoOpen()
 {
-	if (!mAcceptor.is_open())
-	{
+	if (!acceptor.is_open())
+	{		
 		std::error_code ec;
-		mAcceptor.open(mLocalEndpoint.protocol(), ec);
+		auto address = asio::ip::address::from_string(localEndpointString, ec);
 		if (ec)
-		{
-			LOG_BLOCK(log::ERR, ec.message());
+		{			
 			this->GetExecutor()->Post([this, ec]()
 			{
 				this->OnOpenCallback(ec);
@@ -68,11 +68,10 @@ void PhysicalLayerAsyncTCPServer::DoOpen()
 		}
 		else
 		{
-			mAcceptor.set_option(ip::tcp::acceptor::reuse_address(true));
-			mAcceptor.bind(mLocalEndpoint, ec);
+			localEndpoint.address(address);
+			acceptor.open(localEndpoint.protocol(), ec);
 			if (ec)
-			{
-				LOG_BLOCK(log::ERR, ec.message());
+			{				
 				this->GetExecutor()->Post([this, ec]()
 				{
 					this->OnOpenCallback(ec);
@@ -80,10 +79,10 @@ void PhysicalLayerAsyncTCPServer::DoOpen()
 			}
 			else
 			{
-				mAcceptor.listen(socket_base::max_connections, ec);
+				acceptor.set_option(ip::tcp::acceptor::reuse_address(true));
+				acceptor.bind(localEndpoint, ec);
 				if (ec)
-				{
-					LOG_BLOCK(log::ERR, ec.message());
+				{					
 					this->GetExecutor()->Post([this, ec]()
 					{
 						this->OnOpenCallback(ec);
@@ -91,20 +90,31 @@ void PhysicalLayerAsyncTCPServer::DoOpen()
 				}
 				else
 				{
-					mAcceptor.async_accept(mSocket,
-					                       mRemoteEndpoint,
-					                       strand.wrap([this](const std::error_code & code)
+					acceptor.listen(socket_base::max_connections, ec);
+					if (ec)
+					{						
+						this->GetExecutor()->Post([this, ec]()
+						{
+							this->OnOpenCallback(ec);
+						});
+					}
+					else
 					{
-						this->OnOpenCallback(code);
-					}));
+						acceptor.async_accept(mSocket,
+							remoteEndpoint,
+							strand.wrap([this](const std::error_code & code)
+						{
+							this->OnOpenCallback(code);
+						}));
+					}
 				}
 			}
-		}
+		}		
 	}
 	else
 	{
-		mAcceptor.async_accept(mSocket,
-		                       mRemoteEndpoint,
+		acceptor.async_accept(mSocket,
+		                       remoteEndpoint,
 		                       strand.wrap([this](const std::error_code & code)
 		{
 			this->OnOpenCallback(code);
@@ -115,7 +125,7 @@ void PhysicalLayerAsyncTCPServer::DoOpen()
 void PhysicalLayerAsyncTCPServer::CloseAcceptor()
 {
 	std::error_code ec;
-	mAcceptor.close(ec);
+	acceptor.close(ec);
 	if(ec)
 	{
 		LOG_BLOCK(log::WARN, "Error while closing tcp acceptor: " << ec);
@@ -134,8 +144,8 @@ void PhysicalLayerAsyncTCPServer::DoOpeningClose()
 
 void PhysicalLayerAsyncTCPServer::DoOpenSuccess()
 {
-	LOG_BLOCK(log::INFO, "Accepted connection from: " << mRemoteEndpoint);
-	mConfigure(mSocket);
+	LOG_BLOCK(log::INFO, "Accepted connection from: " << remoteEndpoint);
+	configure(mSocket);
 }
 
 }

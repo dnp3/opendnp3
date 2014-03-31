@@ -68,7 +68,7 @@ int main(int argc, char* argv[])
 	};
 
 	// Create the raw physical layer
-	auto pServerPhys = new PhysicalLayerAsyncTCPServer(LogConfig(&log, FILTERS, "tcpserver"), pool.GetIOService(), "0.0.0.0", 20000, configure);
+	auto pServerPhys = new PhysicalLayerAsyncTCPServer(LogConfig(&log, FILTERS, "tcpserver"), pool.GetIOService(), "abdasdas", 20000, configure);
 	// Wrap the physical layer in a DNP channel
 	auto pServer = mgr.CreateChannel("tcpserver", TimeDuration::Seconds(5), TimeDuration::Seconds(5), pServerPhys);
 
