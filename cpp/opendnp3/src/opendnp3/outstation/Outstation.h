@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __SLAVE_H_
-#define __SLAVE_H_
+#ifndef __OUTSTATION_H_
+#define __OUTSTATION_H_
 
 #include "opendnp3/outstation/ICommandHandler.h"
 #include "opendnp3/outstation/ITimeWriteHandler.h"
@@ -39,7 +39,7 @@
 namespace opendnp3
 {
 
-class SlaveStateBase;
+class OutstationStateBase;
 class Database;
 
 /**
@@ -48,20 +48,20 @@ class Database;
  * Manages a state machine that handles events from the user layer and the
  * application layer to provide DNP outstation services.
  *
- * ResponseContext and SlaveEventBuffer objects manage data/event responses to
+ * ResponseContext and OutstationEventBuffer objects manage data/event responses to
  * master requests, and the IDNPCommandMaster implementation verifies
  * control/setpoint behavior and passes valid commands to the user code.
  *
- * SlaveConfig structure represents the slave behavioral configuration, the
+ * OutstationConfig structure represents the slave behavioral configuration, the
  * Database is in charge of the data model itself.
  *
  * Global IIN state is maintained and combined with request-specific
  * information to form response IINs.
  *
- * The Slave is responsible for building all aspects of APDU packet responses
+ * The Outstation is responsible for building all aspects of APDU packet responses
  * except for the application sequence number.
  */
-class Slave : public IAppUser
+class Outstation : public IAppUser
 {
 	// states can operate back on the slave's private functions
 	friend class SlaveStateBase;
@@ -74,8 +74,8 @@ class Slave : public IAppUser
 
 public:
 
-	Slave(openpal::Logger, IAppLayer*, openpal::IExecutor*, ITimeWriteHandler*, Database*, const EventBufferFacade& buffers, ICommandHandler*, const SlaveConfig&);
-	~Slave();
+	Outstation(openpal::Logger, IAppLayer*, openpal::IExecutor*, ITimeWriteHandler*, Database*, const EventBufferFacade& buffers, ICommandHandler*, const SlaveConfig&);
+	~Outstation();
 
 	////////////////////////
 	// External events

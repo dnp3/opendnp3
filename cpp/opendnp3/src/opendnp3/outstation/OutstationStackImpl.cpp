@@ -36,9 +36,9 @@ OutstationStackImpl::OutstationStackImpl(
 		eventBuffers(config.eventBuffer),
 		mutex(),
 		database(databaseBuffers.GetFacade(), &mutex),
-		slave(logger.GetSubLogger("outstation"), &appStack.application, apExecutor, apTimeWriteHandler, &database, eventBuffers.GetFacade(), apCmdHandler, config.slave)
+		outstation(logger.GetSubLogger("outstation"), &appStack.application, apExecutor, apTimeWriteHandler, &database, eventBuffers.GetFacade(), apCmdHandler, config.slave)
 {
-	appStack.application.SetUser(&slave);
+	appStack.application.SetUser(&outstation);
 	databaseBuffers.Configure(config.database);
 }
 
@@ -51,7 +51,7 @@ void OutstationStackImpl::SetNeedTimeIIN()
 {
 	pExecutor->Post([this]()
 	{
-		this->slave.SetNeedTimeIIN();
+		this->outstation.SetNeedTimeIIN();
 	});
 }
 

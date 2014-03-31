@@ -22,7 +22,7 @@
 #define __SLAVE_TEST_OBJECT_H_
 
 #include <opendnp3/LogLevels.h>
-#include <opendnp3/outstation/Slave.h>
+#include <opendnp3/outstation/Outstation.h>
 #include <opendnp3/outstation/Database.h>
 #include <opendnp3/outstation/SlaveConfig.h>
 #include <opendnp3/outstation/DynamicallyAllocatedDatabase.h>
@@ -62,7 +62,7 @@ public:
 	DynamicallyAllocatedEventBuffer eventBuffers;
 	Database db;
 	MockCommandHandler cmdHandler;
-	Slave slave;
+	Outstation slave;
 	openpal::Logger mLogger;
 
 	std::queue<openpal::UTCTimestamp> mTimeWrites;

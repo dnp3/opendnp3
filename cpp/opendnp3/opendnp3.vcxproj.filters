@@ -540,9 +540,6 @@
     <ClInclude Include="src\opendnp3\outstation\SimpleCommandHandler.h">
       <Filter>Header\outstation</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\outstation\Slave.h">
-      <Filter>Header\outstation</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\outstation\SlaveConfig.h">
       <Filter>Header\outstation</Filter>
     </ClInclude>
@@ -677,6 +674,9 @@
     </ClInclude>
     <ClInclude Include="src\opendnp3\app\EventTriggers.h">
       <Filter>Header\app</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\outstation\Outstation.h">
+      <Filter>Header\outstation</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -905,9 +905,6 @@
     <ClCompile Include="src\opendnp3\outstation\SimpleCommandHandler.cpp">
       <Filter>Source\outstation</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\outstation\Slave.cpp">
-      <Filter>Source\outstation</Filter>
-    </ClCompile>
     <ClCompile Include="src\opendnp3\outstation\SlaveConfig.cpp">
       <Filter>Source\outstation</Filter>
     </ClCompile>
@@ -1084,6 +1081,9 @@
     </ClCompile>
     <ClCompile Include="src\opendnp3\app\DownSampling.cpp">
       <Filter>Source\app</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\outstation\Outstation.cpp">
+      <Filter>Source\outstation</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

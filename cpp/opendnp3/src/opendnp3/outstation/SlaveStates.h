@@ -31,7 +31,7 @@
 namespace opendnp3
 {
 
-class Slave;
+class Outstation;
 
 /**
  * Base class for all transaction states of a Slave
@@ -44,29 +44,29 @@ public:
 
 	/* Events from application layer */
 
-	virtual void OnLowerLayerUp(Slave*);
-	virtual void OnLowerLayerDown(Slave*);
+	virtual void OnLowerLayerUp(Outstation*);
+	virtual void OnLowerLayerDown(Outstation*);
 
-	virtual void OnSolSendSuccess(Slave*);
-	virtual void OnSolFailure(Slave*);
+	virtual void OnSolSendSuccess(Outstation*);
+	virtual void OnSolFailure(Outstation*);
 
-	virtual void OnUnsolSendSuccess(Slave*);
-	virtual void OnUnsolFailure(Slave*);
+	virtual void OnUnsolSendSuccess(Outstation*);
+	virtual void OnUnsolFailure(Outstation*);
 
-	virtual void OnRequest(Slave*, const APDURecord&, SequenceInfo);
+	virtual void OnRequest(Outstation*, const APDURecord&, SequenceInfo);
 
-	virtual void Enter(Slave*) = 0;
+	virtual void Enter(Outstation*) = 0;
 
 	// Called when a data update is received from the user layer
-	virtual void OnDataUpdate(Slave* slave) {}
+	virtual void OnDataUpdate(Outstation* slave) {}
 
 	// Called when the unsolcited timer expires
-	virtual void OnUnsolExpiration(Slave*);
+	virtual void OnUnsolExpiration(Outstation*);
 
 
 protected:
 
-	void DoUnsolSuccess(Slave*);
+	void DoUnsolSuccess(Outstation*);
 };
 
 /**
@@ -79,17 +79,17 @@ public:
 
 	MACRO_STATE_SINGLETON_INSTANCE(AS_Closed);
 
-	void Enter(Slave*) final;
+	void Enter(Outstation*) final;
 
-	void OnLowerLayerUp(Slave* slave) final;
-	void OnDataUpdate(Slave*) final;
+	void OnLowerLayerUp(Outstation* slave) final;
+	void OnDataUpdate(Outstation*) final;
 };
 
 class AS_OpenBase : public SlaveStateBase
 {
 public:
 
-	void OnLowerLayerDown(Slave*) final;
+	void OnLowerLayerDown(Outstation*) final;
 
 };
 
@@ -103,10 +103,10 @@ public:
 
 	MACRO_STATE_SINGLETON_INSTANCE(AS_Idle);
 
-	void Enter(Slave*) final;
-	void OnDataUpdate(Slave*) final;
-	void OnUnsolExpiration(Slave*) final;
-	void OnRequest(Slave*, const APDURecord&, SequenceInfo) final;
+	void Enter(Outstation*) final;
+	void OnDataUpdate(Outstation*) final;
+	void OnUnsolExpiration(Outstation*) final;
+	void OnRequest(Outstation*, const APDURecord&, SequenceInfo) final;
 
 };
 
@@ -121,10 +121,10 @@ public:
 
 	MACRO_STATE_SINGLETON_INSTANCE(AS_WaitForRspSuccess);
 
-	void Enter(Slave*) final {}
-	void OnRequest(Slave*, const APDURecord&, SequenceInfo) final;
-	void OnSolFailure(Slave*) final;
-	void OnSolSendSuccess(Slave*) final;
+	void Enter(Outstation*) final {}
+	void OnRequest(Outstation*, const APDURecord&, SequenceInfo) final;
+	void OnSolFailure(Outstation*) final;
+	void OnSolSendSuccess(Outstation*) final;
 
 };
 
@@ -138,10 +138,10 @@ public:
 
 	MACRO_STATE_SINGLETON_INSTANCE(AS_WaitForUnsolSuccess);
 
-	void Enter(Slave*) final {}
-	void OnRequest(Slave*, const APDURecord&, SequenceInfo) final;
-	void OnUnsolFailure(Slave*) final;
-	void OnUnsolSendSuccess(Slave*) final;
+	void Enter(Outstation*) final {}
+	void OnRequest(Outstation*, const APDURecord&, SequenceInfo) final;
+	void OnUnsolFailure(Outstation*) final;
+	void OnUnsolSendSuccess(Outstation*) final;
 
 };
 
@@ -155,12 +155,12 @@ public:
 
 	MACRO_STATE_SINGLETON_INSTANCE(AS_WaitForSolUnsolSuccess);
 
-	void Enter(Slave*) final {}
-	void OnRequest(Slave*, const APDURecord&, SequenceInfo) final;
-	void OnSolFailure(Slave*) final;
-	void OnSolSendSuccess(Slave*) final;
-	void OnUnsolFailure(Slave*) final;
-	void OnUnsolSendSuccess(Slave*) final;
+	void Enter(Outstation*) final {}
+	void OnRequest(Outstation*, const APDURecord&, SequenceInfo) final;
+	void OnSolFailure(Outstation*) final;
+	void OnSolSendSuccess(Outstation*) final;
+	void OnUnsolFailure(Outstation*) final;
+	void OnUnsolSendSuccess(Outstation*) final;
 
 };
 

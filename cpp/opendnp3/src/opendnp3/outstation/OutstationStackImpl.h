@@ -25,7 +25,7 @@
 #include "opendnp3/outstation/SlaveStackConfig.h"
 #include "opendnp3/outstation/DatabaseConfiguration.h"
 #include "opendnp3/outstation/Database.h"
-#include "opendnp3/outstation/Slave.h"
+#include "opendnp3/outstation/Outstation.h"
 
 #include "opendnp3/outstation/DynamicallyAllocatedDatabase.h"
 #include "opendnp3/outstation/DynamicallyAllocatedEventBuffer.h"
@@ -63,7 +63,7 @@ private:
 	DynamicallyAllocatedEventBuffer eventBuffers;
 	Mutex mutex;
 	Database database;
-	Slave slave;
+	Outstation outstation;
 };
 
 }

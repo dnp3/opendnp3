@@ -18,7 +18,7 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include "Slave.h"
+#include "Outstation.h"
 
 #include "opendnp3/app/AnalogOutput.h"
 #include "opendnp3/app/ControlRelayOutputBlock.h"
@@ -46,7 +46,7 @@ using namespace openpal;
 namespace opendnp3
 {
 
-Slave::Slave(	openpal::Logger logger, 
+Outstation::Outstation(	openpal::Logger logger, 
 				IAppLayer* pAppLayer,
 				IExecutor* pExecutor,
 				ITimeWriteHandler* pTimeWriteHandler, 
@@ -76,14 +76,14 @@ Slave::Slave(	openpal::Logger logger,
 
 	mIIN.Set(IINBit::DEVICE_RESTART); // Always set on restart
 
-	/* Cause the slave to go through the null-unsol startup sequence */
+	/* Cause the Outstation to go through the null-unsol startup sequence */
 	if (!mConfig.mDisableUnsol)
 	{
 		mDeferredUnsol = true;
 	}
 }
 
-Slave::~Slave()
+Outstation::~Outstation()
 {
 	if (mpUnsolTimer)
 	{
@@ -95,59 +95,59 @@ Slave::~Slave()
 	}
 }
 
-void Slave::SetNeedTimeIIN()
+void Outstation::SetNeedTimeIIN()
 {
 	mIIN.Set(IINBit::NEED_TIME);
 }
 
 /* Implement IAppUser - external callbacks from the app layer */
 
-void Slave::OnLowerLayerUp()
+void Outstation::OnLowerLayerUp()
 {
 	mpState->OnLowerLayerUp(this);
 }
 
-void Slave::OnLowerLayerDown()
+void Outstation::OnLowerLayerDown()
 {
 	mpState->OnLowerLayerDown(this);	
 }
 
-void Slave::OnSolSendSuccess()
+void Outstation::OnSolSendSuccess()
 {
 	mpState->OnSolSendSuccess(this);	
 }
 
-void Slave::OnSolFailure()
+void Outstation::OnSolFailure()
 {
 	mpState->OnSolFailure(this);
 	LOG_BLOCK(flags::WARN, "Response failure");
 }
 
-void Slave::OnUnsolSendSuccess()
+void Outstation::OnUnsolSendSuccess()
 {
 	mpState->OnUnsolSendSuccess(this);	
 }
 
-void Slave::OnUnsolFailure()
+void Outstation::OnUnsolFailure()
 {
 	mpState->OnUnsolFailure(this);
 	LOG_BLOCK(flags::WARN, "Unsol response failure");
 }
 
-void Slave::OnRequest(const APDURecord& record, SequenceInfo aSeqInfo)
+void Outstation::OnRequest(const APDURecord& record, SequenceInfo aSeqInfo)
 {
 	mpState->OnRequest(this, record, aSeqInfo);
 }
 
 /* Internally generated events */
 
-void Slave::OnDataUpdate()
+void Outstation::OnDataUpdate()
 {
 	// let the current state decide how to handle the change buffer
 	mpState->OnDataUpdate(this);
 }
 
-void Slave::OnUnsolTimerExpiration()
+void Outstation::OnUnsolTimerExpiration()
 {
 	// let the current state decide how to handle the timer expiration
 	mpUnsolTimer = nullptr;
@@ -155,14 +155,14 @@ void Slave::OnUnsolTimerExpiration()
 }
 
 
-void Slave::ChangeState(SlaveStateBase* apState)
+void Outstation::ChangeState(SlaveStateBase* apState)
 {
 	LOG_BLOCK(flags::DEBUG, "State changed from " << mpState->Name() << " to " << apState->Name());
 	mpState = apState;
 	mpState->Enter(this);
 }
 
-void Slave::RespondToRequest(const APDURecord& record, SequenceInfo sequence)
+void Outstation::RespondToRequest(const APDURecord& record, SequenceInfo sequence)
 {
 	if (!(record.function == FunctionCode::SELECT || record.function == FunctionCode::OPERATE))
 	{
@@ -177,7 +177,7 @@ void Slave::RespondToRequest(const APDURecord& record, SequenceInfo sequence)
 	this->SendResponse(response, indications);
 }
 
-IINField Slave::ConfigureResponse(const APDURecord& request, SequenceInfo sequence, APDUResponse& response)
+IINField Outstation::ConfigureResponse(const APDURecord& request, SequenceInfo sequence, APDUResponse& response)
 {
 	switch(request.function)
 	{
@@ -199,7 +199,7 @@ IINField Slave::ConfigureResponse(const APDURecord& request, SequenceInfo sequen
 	}
 }
 
-IINField Slave::HandleWrite(const APDURecord& request, SequenceInfo sequence)
+IINField Outstation::HandleWrite(const APDURecord& request, SequenceInfo sequence)
 {
 	WriteHandler handler(logger, mpTimeWriteHandler, &mIIN);
 	auto result = APDUParser::ParseTwoPass(request.objects, &handler, &logger);
@@ -213,7 +213,7 @@ IINField Slave::HandleWrite(const APDURecord& request, SequenceInfo sequence)
 	}
 }
 
-IINField Slave::HandleRead(const APDURecord& request, SequenceInfo sequence, APDUResponse& response)
+IINField Outstation::HandleRead(const APDURecord& request, SequenceInfo sequence, APDUResponse& response)
 {
 	rspContext.Reset();
 	ReadHandler handler(logger, rspContext);
@@ -235,7 +235,7 @@ IINField Slave::HandleRead(const APDURecord& request, SequenceInfo sequence, APD
 	}
 }
 
-IINField Slave::HandleSelect(const APDURecord& request, SequenceInfo sequence, APDUResponse& response)
+IINField Outstation::HandleSelect(const APDURecord& request, SequenceInfo sequence, APDUResponse& response)
 {
 	// Outstations require 2 extra bytes for IIN bits. Therefore it's possible
 	// there are some requests you cannot possible answer since responses are
@@ -274,7 +274,7 @@ IINField Slave::HandleSelect(const APDURecord& request, SequenceInfo sequence, A
 	}
 }
 
-IINField Slave::HandleOperate(const APDURecord& request, SequenceInfo sequence, APDUResponse& response)
+IINField Outstation::HandleOperate(const APDURecord& request, SequenceInfo sequence, APDUResponse& response)
 {
 	if (request.objects.Size() > response.Remaining())
 	{
@@ -308,7 +308,7 @@ IINField Slave::HandleOperate(const APDURecord& request, SequenceInfo sequence, 
 	}
 }
 
-IINField Slave::HandleDirectOperate(const APDURecord& request, SequenceInfo sequence, APDUResponse& response)
+IINField Outstation::HandleDirectOperate(const APDURecord& request, SequenceInfo sequence, APDUResponse& response)
 {
 	if (request.objects.Size() > response.Remaining())
 	{
@@ -324,7 +324,7 @@ IINField Slave::HandleDirectOperate(const APDURecord& request, SequenceInfo sequ
 	}
 }
 
-void Slave::ContinueResponse()
+void Outstation::ContinueResponse()
 {
 	APDUResponse response(responseBuffer.GetWriteBuffer(mConfig.mMaxFragSize));
 	response.SetFunction(FunctionCode::RESPONSE);
@@ -337,7 +337,7 @@ void Slave::ContinueResponse()
 	this->SendResponse(response);
 }
 
-IINField Slave::HandleDelayMeasure(const APDURecord& request, SequenceInfo sequence, APDUResponse& response)
+IINField Outstation::HandleDelayMeasure(const APDURecord& request, SequenceInfo sequence, APDUResponse& response)
 {
 	if(request.objects.IsEmpty())
 	{
@@ -353,7 +353,7 @@ IINField Slave::HandleDelayMeasure(const APDURecord& request, SequenceInfo seque
 	}
 }
 
-IINField Slave::HandleCommandWithConstant(const APDURecord& request, APDUResponse& response, CommandStatus status)
+IINField Outstation::HandleCommandWithConstant(const APDURecord& request, APDUResponse& response, CommandStatus status)
 {
 	ConstantCommandAction constant(status);
 	CommandResponseHandler handler(logger, mConfig.mMaxControls, &constant, response);
@@ -361,23 +361,23 @@ IINField Slave::HandleCommandWithConstant(const APDURecord& request, APDURespons
 	return IINFromParseResult(result);
 }
 
-void Slave::SendResponse(APDUResponse& response, const IINField& indications)
+void Outstation::SendResponse(APDUResponse& response, const IINField& indications)
 {
 	response.SetIIN(mIIN | indications);
 	mpAppLayer->SendResponse(response);
 }
 
-void Slave::StartUnsolTimer(openpal::TimeDuration aTimeout)
+void Outstation::StartUnsolTimer(openpal::TimeDuration aTimeout)
 {
 	assert(mpUnsolTimer == nullptr);
-	mpUnsolTimer = pExecutor->Start(aTimeout, std::bind(&Slave::OnUnsolTimerExpiration, this));
+	mpUnsolTimer = pExecutor->Start(aTimeout, std::bind(&Outstation::OnUnsolTimerExpiration, this));
 }
 
-void Slave::ResetTimeIIN()
+void Outstation::ResetTimeIIN()
 {
 	mpTimeTimer = nullptr;
 	mIIN.Set(IINBit::NEED_TIME);
-	mpTimeTimer = pExecutor->Start(mConfig.mTimeSyncPeriod, std::bind(&Slave::ResetTimeIIN, this));
+	mpTimeTimer = pExecutor->Start(mConfig.mTimeSyncPeriod, std::bind(&Outstation::ResetTimeIIN, this));
 }
 
 } //end ns
