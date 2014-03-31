@@ -80,14 +80,19 @@ public:
 
 	typedef LinkedListIterator<ValueType> Iterator;
 
-	LinkedListAdapter(Indexable<ListNode<ValueType>, IndexType> aUnderlying) :
+	LinkedListAdapter(Indexable<ListNode<ValueType>, IndexType> underlying_) :
 		HasSize<IndexType>(0),
 		pHead(nullptr),
 		pTail(nullptr),
 		pFree(nullptr),
-		underlying(aUnderlying)
+		underlying(underlying_)
 	{
 		Initialize();
+	}
+
+	IndexType Capacity() const
+	{
+		return underlying.Size();
 	}
 
 	void Clear()

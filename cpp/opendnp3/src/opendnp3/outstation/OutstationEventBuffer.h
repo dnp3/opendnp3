@@ -53,7 +53,7 @@ class OutstationEventBuffer : public IEventBuffer
 
 
 public:
-	OutstationEventBuffer(const EventBufferFacade&);
+	OutstationEventBuffer(const EventBufferFacade& facade);
 
 	// ------- Update methods ------ These can be called anytime
 
@@ -77,32 +77,53 @@ public:
 	EventTracker SelectedEvents() const;
 	EventTracker UnselectedEvents() const;
 
+	bool IsOverflown();
+
 private:
 
+	bool overflow;
+	EventBufferFacade facade;
 	EventTracker totalTracker;
 	EventTracker selectedTracker;
 
+	template <class T>
+	static bool HasSpace(const T& buffer);
+
+	bool HasEnoughSpaceToClearOverflow() const;	
+
 	template <class T, class EnumType>
-	bool InsertEvent(const T& aEvent, EnumType eventType, openpal::RandomInsertAdapter<T, uint16_t>& buffer);
-
-	//bool ApplyEvent(IEventWriter& writer, SequenceRecord& record);
-
-	bool overflow;
-
-	EventBufferFacade facade;
+	void InsertEvent(const T& aEvent, EnumType eventType, openpal::RandomInsertAdapter<T, uint16_t>& buffer);		
 };
 
-template <class T, class EnumType>
-bool OutstationEventBuffer::InsertEvent(const T& aEvent, EnumType eventType, openpal::RandomInsertAdapter<T, uint16_t>& buffer)
+template <class T>
+static bool OutstationEventBuffer::HasSpace(const T& buffer)
 {
-	if(buffer.IsFull() || facade.sequenceOfEvents.IsFull()) return false;
-	else
+	if (buffer.Capacity() > 0)
 	{
-		totalTracker.Increment(eventType, aEvent.clazz);
-		auto index = buffer.Add(aEvent);
-		SequenceRecord record(eventType, index, aEvent.clazz, false);
-		facade.sequenceOfEvents.Add(record);
+		return !buffer.IsFull();
+	}
+	else // ignore zero capacity buffers
+	{
 		return true;
+	}
+}
+
+template <class T, class EnumType>
+void OutstationEventBuffer::InsertEvent(const T& aEvent, EnumType eventType, openpal::RandomInsertAdapter<T, uint16_t>& buffer)
+{
+	if(buffer.Capacity() > 0)
+	{
+		if (buffer.IsFull() || facade.sequenceOfEvents.IsFull())
+		{
+			this->overflow = true;
+		}
+		else
+		{
+			totalTracker.Increment(eventType, aEvent.clazz);
+			auto index = buffer.Add(aEvent);
+			SequenceRecord record(eventType, index, aEvent.clazz, false);
+			facade.sequenceOfEvents.Add(record);		
+		}
 	}
 }
 

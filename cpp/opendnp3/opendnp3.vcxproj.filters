@@ -1085,5 +1085,8 @@
     <ClCompile Include="src\opendnp3\outstation\Outstation.cpp">
       <Filter>Source\outstation</Filter>
     </ClCompile>
+    <ClCompile Include="src\opendnp3\outstation\EventBufferFacade.cpp">
+      <Filter>Source\outstation</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

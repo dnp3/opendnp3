@@ -341,6 +341,7 @@
     <ClCompile Include="src\opendnp3\outstation\DynamicallyAllocatedDatabase.cpp" />
     <ClCompile Include="src\opendnp3\outstation\DynamicallyAllocatedEventBuffer.cpp" />
     <ClCompile Include="src\opendnp3\outstation\EventBufferConfig.cpp" />
+    <ClCompile Include="src\opendnp3\outstation\EventBufferFacade.cpp" />
     <ClCompile Include="src\opendnp3\outstation\EventCount.cpp" />
     <ClCompile Include="src\opendnp3\outstation\EventResponseContext.cpp" />
     <ClCompile Include="src\opendnp3\outstation\IINHelpers.cpp" />

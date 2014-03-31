@@ -24,9 +24,9 @@
 namespace opendnp3
 {
 
-OutstationEventBuffer::OutstationEventBuffer(const EventBufferFacade& aFacade) :
+OutstationEventBuffer::OutstationEventBuffer(const EventBufferFacade& facade_) :
 	overflow(false),
-	facade(aFacade)
+	facade(facade_)
 {
 
 }
@@ -40,6 +40,16 @@ void OutstationEventBuffer::Reset()
 	}
 
 	selectedTracker.Clear();
+}
+
+bool OutstationEventBuffer::IsOverflown()
+{
+	if (overflow && HasEnoughSpaceToClearOverflow())
+	{
+		overflow = false;		
+	}
+	
+	return overflow;
 }
 
 void OutstationEventBuffer::Clear()
@@ -94,38 +104,50 @@ EventTracker OutstationEventBuffer::SelectedEvents() const
 }
 
 void OutstationEventBuffer::Update(const Event<Binary>& aEvent)
-{
-	overflow |= !InsertEvent(aEvent, EventType::Binary, facade.binaryEvents);
+{	
+	InsertEvent(aEvent, EventType::Binary, facade.binaryEvents);
 }
 
 void OutstationEventBuffer::Update(const Event<Analog>& aEvent)
 {
-	overflow |= !InsertEvent(aEvent, EventType::Analog,  facade.analogEvents);
+	InsertEvent(aEvent, EventType::Analog,  facade.analogEvents);
 }
 
 void OutstationEventBuffer::Update(const Event<Counter>& aEvent)
 {
-	overflow |= !InsertEvent(aEvent, EventType::Counter,  facade.counterEvents);
+	InsertEvent(aEvent, EventType::Counter,  facade.counterEvents);
 }
 
 void OutstationEventBuffer::Update(const Event<FrozenCounter>& aEvent)
 {
-	overflow |= !InsertEvent(aEvent, EventType::FrozenCounter,  facade.frozenCounterEvents);
+	InsertEvent(aEvent, EventType::FrozenCounter,  facade.frozenCounterEvents);
 }
 
 void OutstationEventBuffer::Update(const Event<DoubleBitBinary>& aEvent)
 {
-	overflow |= !InsertEvent(aEvent, EventType::DoubleBitBinary, facade.doubleBinaryEvents);
+	InsertEvent(aEvent, EventType::DoubleBitBinary, facade.doubleBinaryEvents);
 }
 
 void OutstationEventBuffer::Update(const Event<BinaryOutputStatus>& aEvent)
 {
-	overflow |= !InsertEvent(aEvent, EventType::BinaryOutputStatus, facade.binaryOutputStatusEvents);
+	InsertEvent(aEvent, EventType::BinaryOutputStatus, facade.binaryOutputStatusEvents);
 }
 
 void OutstationEventBuffer::Update(const Event<AnalogOutputStatus>& aEvent)
 {
-	overflow |= !InsertEvent(aEvent, EventType::AnalogOutputStatus, facade.analogOutputStatusEvents);
+	InsertEvent(aEvent, EventType::AnalogOutputStatus, facade.analogOutputStatusEvents);
+}
+
+bool OutstationEventBuffer::HasEnoughSpaceToClearOverflow() const
+{
+	return	HasSpace(facade.analogEvents) &&
+			HasSpace(facade.analogOutputStatusEvents) &&
+			HasSpace(facade.binaryEvents) &&
+			HasSpace(facade.binaryOutputStatusEvents) &&
+			HasSpace(facade.counterEvents) &&
+			HasSpace(facade.doubleBinaryEvents) &&
+			HasSpace(facade.frozenCounterEvents) &&
+			HasSpace(facade.sequenceOfEvents);
 }
 
 
