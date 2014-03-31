@@ -53,19 +53,19 @@ void PhysicalLayerAsyncBaseTCP::DoClose()
 	this->CloseSocket();
 }
 
-void PhysicalLayerAsyncBaseTCP::DoAsyncRead(WriteBuffer& arBuffer)
+void PhysicalLayerAsyncBaseTCP::DoAsyncRead(WriteBuffer& buff)
 {
-	uint8_t* pBuff = arBuffer;
-	mSocket.async_read_some(buffer(arBuffer, arBuffer.Size()),
+	uint8_t* pBuff = buff;
+	mSocket.async_read_some(buffer(pBuff, buff.Size()),
 	                        strand.wrap([this, pBuff](const std::error_code & code, size_t  numRead)
 	{
 		this->OnReadCallback(code, pBuff, static_cast<uint32_t>(numRead));
 	}));
 }
 
-void PhysicalLayerAsyncBaseTCP::DoAsyncWrite(const ReadOnlyBuffer& arBuffer)
+void PhysicalLayerAsyncBaseTCP::DoAsyncWrite(const ReadOnlyBuffer& buff)
 {
-	async_write(mSocket, buffer(arBuffer, arBuffer.Size()),
+	async_write(mSocket, buffer(buff, buff.Size()),
 		strand.wrap([this](const std::error_code & code, size_t  numWritten)
 	{
 		this->OnWriteCallback(code, static_cast<uint32_t>(numWritten));

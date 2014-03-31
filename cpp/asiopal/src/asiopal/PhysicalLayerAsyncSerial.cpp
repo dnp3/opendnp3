@@ -89,7 +89,7 @@ void PhysicalLayerAsyncSerial::DoOpenSuccess()
 void PhysicalLayerAsyncSerial::DoAsyncRead(openpal::WriteBuffer& buff)
 {
 	uint8_t* pBuffer = buff;
-	mPort.async_read_some(buffer(buff, buff.Size()),
+	mPort.async_read_some(buffer(pBuffer, buff.Size()),
 		strand.wrap(
 			[this, pBuffer](const std::error_code & error, size_t numRead)
 			{
