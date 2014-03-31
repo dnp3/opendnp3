@@ -57,7 +57,7 @@
 * Ticket 62 - Fixed a bug where the master scheduler could hang if the the channel was closed while waiting for response to a command.
 
 ## Removed ##
-* VTO "routers" are now longer provided. 0-length strings of all types (Groups 110-113) are not explicitly not allowed.
+* VTO "routers" are now longer provided. 0-length strings of all types (Groups 110-113) are now explicitly not allowed.
 * ASIOPAL now explicitly uses std::chrono::steady_clock for timers. There is no longer a typedef.
 * Library no longer supports 4-octet qualifier codes. All indices used uint16_t as underlying type.
 * Support for "delta" values has been removed. New implementations do not need to support this according to the spec.
