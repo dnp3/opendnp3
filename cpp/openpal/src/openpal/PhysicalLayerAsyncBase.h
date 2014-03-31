@@ -164,9 +164,9 @@ public:
 protected:
 
 	//Internally produced events
-	void OnOpenCallback(const std::error_code& arError);
-	void OnReadCallback(const std::error_code& arError, uint8_t* apBuffer, uint32_t  aNumRead);
-	void OnWriteCallback(const std::error_code& arError, uint32_t  aNumBytes);
+	void OnOpenCallback(const std::error_code& error);
+	void OnReadCallback(const std::error_code& error, uint8_t* apBuffer, uint32_t  aNumRead);
+	void OnWriteCallback(const std::error_code& rrror, uint32_t  aNumBytes);
 
 	LogRoot logRoot;
 	Logger logger;

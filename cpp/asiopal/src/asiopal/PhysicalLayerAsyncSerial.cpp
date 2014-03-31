@@ -86,24 +86,27 @@ void PhysicalLayerAsyncSerial::DoOpenSuccess()
 	LOG_BLOCK(log::INFO, "Port successfully opened");
 }
 
-void PhysicalLayerAsyncSerial::DoAsyncRead(openpal::WriteBuffer& arBuffer)
+void PhysicalLayerAsyncSerial::DoAsyncRead(openpal::WriteBuffer& buff)
 {
-	uint8_t* pBuff = arBuffer;
-	mPort.async_read_some(buffer(arBuffer, arBuffer.Size()),
-	                      strand.wrap([this, pBuff](const std::error_code & error, size_t numRead)
-	{
-		this->OnReadCallback(error, pBuff, static_cast<uint32_t>(numRead));
-	}));
+	uint8_t* pBuffer = buff;
+	mPort.async_read_some(buffer(buff, buff.Size()),
+		strand.wrap(
+			[this, pBuffer](const std::error_code & error, size_t numRead)
+			{
+				this->OnReadCallback(error, pBuffer, static_cast<uint32_t>(numRead));
+			}
+		)
+	);
 }
 
-void PhysicalLayerAsyncSerial::DoAsyncWrite(const ReadOnlyBuffer& arBuffer)
+void PhysicalLayerAsyncSerial::DoAsyncWrite(const ReadOnlyBuffer& buff)
 {
-	async_write(mPort, buffer(arBuffer, arBuffer.Size()),
+	async_write(mPort, buffer(buff, buff.Size()),
 	            strand.wrap(
 	                std::bind(&PhysicalLayerAsyncSerial::OnWriteCallback,
 	                          this,
 	                          std::placeholders::_1,
-	                          arBuffer.Size())
+	                          buff.Size())
 	            ));
 }
 

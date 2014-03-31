@@ -107,7 +107,6 @@ private:
 	
 	State state;
 	openpal::ITypedShutdownHandler<DNP3Channel*>* pShutdownHandler;
-	openpal::IEventHandler<ChannelState>* pStateHandler;
 
 	LinkLayerRouter router;
 	AsyncTaskGroup group;
