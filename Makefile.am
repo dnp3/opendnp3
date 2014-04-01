@@ -156,7 +156,6 @@ cpp/opendnp3/src/opendnp3/objects/Group60.cpp \
 cpp/opendnp3/src/opendnp3/outstation/CachedRequest.cpp \
 cpp/opendnp3/src/opendnp3/outstation/CommandActionAdapter.cpp \
 cpp/opendnp3/src/opendnp3/outstation/CommandResponseHandler.cpp \
-cpp/opendnp3/src/opendnp3/outstation/DatabaseConfiguration.cpp \
 cpp/opendnp3/src/opendnp3/outstation/Database.cpp \
 cpp/opendnp3/src/opendnp3/outstation/DynamicallyAllocatedDatabase.cpp \
 cpp/opendnp3/src/opendnp3/outstation/DynamicallyAllocatedEventBuffer.cpp \
@@ -232,11 +231,11 @@ cpp/opendnp3tests/src/MockPhysicalLayerAsync.cpp \
 cpp/opendnp3tests/src/MockPhysicalLayerMonitor.cpp \
 cpp/opendnp3tests/src/MockTransportLayer.cpp \
 cpp/opendnp3tests/src/MockUpperLayer.cpp \
+cpp/opendnp3tests/src/OutstationTestObject.cpp \
 cpp/opendnp3tests/src/PhysicalLayerWrapper.cpp \
 cpp/opendnp3tests/src/PhysLoopback.cpp \
 cpp/opendnp3tests/src/ProtocolUtil.cpp \
 cpp/opendnp3tests/src/RandomizedBuffer.cpp \
-cpp/opendnp3tests/src/OutstationTestObject.cpp \
 cpp/opendnp3tests/src/StopWatch.cpp \
 cpp/opendnp3tests/src/TestAPDUParsing.cpp \
 cpp/opendnp3tests/src/TestAPDUWriting.cpp \
