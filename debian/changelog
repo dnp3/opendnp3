@@ -1,3 +1,10 @@
+opendnp3 (1.1.1rc4-2) unstable; urgency=low
+
+  * Added missing JNI native function implementation for on-demand
+    integrity scans
+
+ -- Chris Verges <chris.verges@gmail.com>  Tue, 01 Apr 2014 09:35:00 -0800
+
 opendnp3 (1.1.1rc4-1) unstable; urgency=low
 
   * Added on-demand integrity scans for DNP masters
