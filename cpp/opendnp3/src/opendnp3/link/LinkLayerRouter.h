@@ -23,7 +23,6 @@
 
 #include <map>
 #include <queue>
-#include <vector>
 
 #include <openpal/IShutdownHandler.h>
 #include <openpal/IEventHandler.h>

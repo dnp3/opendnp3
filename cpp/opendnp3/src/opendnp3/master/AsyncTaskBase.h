@@ -22,11 +22,11 @@
 #define __ASYNC_TASK_BASE_H_
 
 #include "opendnp3/master/AsyncTaskInterfaces.h"
+
 #include <openpal/Uncopyable.h>
-
 #include <openpal/MonotonicTimestamp.h>
+#include <openpal/StaticList.h>
 
-#include <vector>
 #include <string>
 
 namespace opendnp3
@@ -51,7 +51,7 @@ public:
 	// Implements ITaskCompletion
 	void OnComplete(bool aSuccess, bool silent);
 
-	void AddStatusCallback(const std::function<void (bool)>& callback);
+	void SetStatusCallback(const std::function<void (bool)>& callback);
 
 	// Modify this task's depth to make it dependent on the argument
 	bool AddDependency(const AsyncTaskBase* apTask);
@@ -100,9 +100,8 @@ protected:
 
 	// Reset the task to it's original state
 	void Reset();
-
-	typedef std::vector<const AsyncTaskBase*> DependencyVec;
-	DependencyVec mDependencies;
+	
+	openpal::StaticList<const AsyncTaskBase*, uint16_t, 16> dependencies;
 
 	// Run the task if it is not currently executing
 	virtual void Dispatch();
@@ -163,7 +162,7 @@ protected:
 	const openpal::MonotonicTimestamp M_INITIAL_TIME;
 	int mFlags;
 
-	std::vector<std::function<void (bool)>> mCallbacks;
+	std::function<void (bool)> callback;
 };
 
 }

@@ -83,6 +83,20 @@ public:
 		for(IndexType i = 0; i < this->size; ++i) action(indexable[i]);
 	}
 
+	template <class BoolTest>
+	bool Find(const BoolTest& test) const
+	{
+		for (IndexType i = 0; i < this->size; ++i)
+		{
+			if (test(indexable[i]))
+			{
+				return true;
+			}
+		}
+
+		return false;
+	}
+
 	template <class Action>
 	void foreachIndex(const Action& action)
 	{

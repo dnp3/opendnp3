@@ -42,7 +42,7 @@ void MasterScan::Demand()
 
 void MasterScan::AddScanCallback(IScanListener* apListener)
 {
-	mpTask->AddStatusCallback([apListener](bool success)
+	mpTask->SetStatusCallback([apListener](bool success)
 	{
 		auto status = success ? ScanStatus::SUCCESS : ScanStatus::FAILURE;
 		ScanResult result = { status };

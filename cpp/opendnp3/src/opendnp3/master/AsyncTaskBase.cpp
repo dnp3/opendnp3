@@ -102,21 +102,18 @@ bool AsyncTaskBase::AddDependency(const AsyncTaskBase* apTask)
 		}
 		else
 		{
-			mDependencies.push_back(apTask);
-			return true;
+			return dependencies.Add(apTask);			
 		}
 	}
 }
 
-bool AsyncTaskBase::IsDependency(const AsyncTaskBase* apTask) const
-{
-	for(const AsyncTaskBase * p : mDependencies)
-	{
-		if(p == apTask) return true;
-		if(p->IsDependency(apTask)) return true;
-	}
+bool AsyncTaskBase::IsDependency(const AsyncTaskBase* pTask_) const
+{	
+	auto test = [pTask_](const AsyncTaskBase* pTask) {
+		return (pTask == pTask_) || pTask->IsDependency(pTask_);
+	};
 
-	return false;
+	return dependencies.Find(test);
 }
 
 // Do the task now if it is enabled, regardless of periodicity
@@ -138,7 +135,10 @@ void AsyncTaskBase::OnComplete(bool aSuccess, bool silent)
 
 	this->_OnComplete(aSuccess);
 
-	for(auto & callback : mCallbacks) callback(aSuccess);
+	if (callback)
+	{
+		callback(aSuccess);
+	}
 
 	if (!silent)
 	{
@@ -146,9 +146,9 @@ void AsyncTaskBase::OnComplete(bool aSuccess, bool silent)
 	}
 }
 
-void AsyncTaskBase::AddStatusCallback(const std::function<void (bool)>& callback)
+void AsyncTaskBase::SetStatusCallback(const std::function<void (bool)>& callback_)
 {
-	mCallbacks.push_back(callback);
+	this->callback = callback_;
 }
 
 void AsyncTaskBase::Reset()
