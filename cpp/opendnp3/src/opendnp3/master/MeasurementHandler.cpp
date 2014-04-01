@@ -75,6 +75,11 @@ void MeasurementHandler::_OnIndexPrefix(const HeaderRecord& record, const Iterab
 	pSOEHandler->LoadEvent(meas);
 }
 
+void MeasurementHandler::_OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<BinaryOutputStatus, uint16_t>>& meas)
+{
+	pSOEHandler->LoadEvent(meas);
+}
+
 void MeasurementHandler::_OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<DoubleBitBinary, uint16_t>>& meas)
 {
 	pSOEHandler->LoadEvent(meas);
@@ -91,6 +96,11 @@ void MeasurementHandler::_OnIndexPrefix(const HeaderRecord& record, const Iterab
 }
 
 void MeasurementHandler::_OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<Analog, uint16_t>>& meas)
+{
+	pSOEHandler->LoadEvent(meas);
+}
+
+void MeasurementHandler::_OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputStatus, uint16_t>>& meas)
 {
 	pSOEHandler->LoadEvent(meas);
 }
