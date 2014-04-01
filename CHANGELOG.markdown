@@ -1,6 +1,6 @@
 ### 2.0.0-M2 ###
 
-## Refactoring / Improvements ##
+## Refactoring / Improvements  - General ##
 * To enable eventual ports to other platforms and MCUs, the 1.1.x library was divided into 4 sub-libraries.
   * openpal - The Platform Abstraction Layer (PAL) provides abtract base classes for key abstractions like IPhysicalLayer, IExecutor, ITimer, etc.
   * opendnp3 - The core dnp3 library. It only depends on openpal and is platform independent C++11.
@@ -49,6 +49,7 @@
 
 ## Bug / conformance fixes ##
 * Default integrity poll is now a Class 1/2/3/0 scan as per the specification.
+* Outstation now reports events in correct order-of-occurence across all seven types it supports.
 * Physical layer disconnects now observer the minRetry parameter. This prevents rapid connect/disconnect cycling when a server is closing connections.
 * Transport layer can now receive non-fin packets with payload length between 1 and 249. It's very strange for an implementation to do this, but its actually in the spec.
 * Count-of-zero headers are now explicitly disallowed and parsing is halted.
