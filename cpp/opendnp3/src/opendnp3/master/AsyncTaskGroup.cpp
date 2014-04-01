@@ -26,10 +26,8 @@
 #include "AsyncTaskContinuous.h"
 
 #include <openpal/IExecutor.h>
-
 #include <openpal/Location.h>
 
-#include <algorithm>
 #include <assert.h>
 
 using namespace openpal;
@@ -49,49 +47,54 @@ AsyncTaskGroup::AsyncTaskGroup(IExecutor* apExecutor) :
 AsyncTaskGroup::~AsyncTaskGroup()
 {
 	this->Shutdown();
-
-	for(AsyncTaskBase * p : mTaskVec) delete p;
+	tasks.Foreach([](AsyncTaskBase * p){ delete p; });	
 }
 
 AsyncTaskBase* AsyncTaskGroup::Add(openpal::TimeDuration aPeriod, openpal::TimeDuration aRetryDelay, int aPriority, const TaskHandler& arCallback, const std::string& arName)
 {
+	assert(!tasks.IsFull());
+
 	AsyncTaskBase* pTask;
 	if(aPeriod.GetMilliseconds() < 0)
 		pTask = new AsyncTaskNonPeriodic(aRetryDelay, aPriority, arCallback, this, arName);
 	else
 		pTask = new AsyncTaskPeriodic(aPeriod, aRetryDelay, aPriority, arCallback, this, arName);
 
-	mTaskVec.push_back(pTask);
+	tasks.Add(pTask);	
 	return pTask;
 }
 
 void AsyncTaskGroup::ResetTasks(int aMask)
 {
-	for(AsyncTaskBase * p : mTaskVec)
-	{
-		if(!p->IsRunning() && (p->GetFlags() & aMask)) p->Reset();
-	}
+	tasks.Foreach(
+		[&](AsyncTaskBase * p)
+		{ 
+		if (!p->IsRunning() && (p->GetFlags() & aMask)) p->Reset();
+		}
+	);	
 }
 
 AsyncTaskContinuous* AsyncTaskGroup::AddContinuous(int aPriority, const TaskHandler& arCallback, const std::string& arName)
 {
+	assert(!tasks.IsFull());
 	AsyncTaskContinuous* pTask = new AsyncTaskContinuous(aPriority, arCallback, this, arName);
-	mTaskVec.push_back(pTask);
+	tasks.Add(pTask);
 	return pTask;
 }
 
-bool AsyncTaskGroup::Remove(AsyncTaskBase* apTask)
+bool AsyncTaskGroup::Remove(AsyncTaskBase* pTask)
 {
-	for(TaskVec::iterator i = mTaskVec.begin(); i != mTaskVec.end(); ++i)
+	auto pNode = tasks.RemoveFirst([&](AsyncTaskBase * p) { return (p == pTask); });
+	
+	if (pNode)
 	{
-		if(*i == apTask)
-		{
-			delete *i;
-			mTaskVec.erase(i);
-			return true;
-		}
+		delete pNode->value;
+		return true;
 	}
-	return false;
+	else
+	{
+		return false;
+	}
 }
 
 void AsyncTaskGroup::Shutdown()
@@ -107,53 +110,86 @@ void AsyncTaskGroup::Shutdown()
 
 void AsyncTaskGroup::Enable()
 {
-	for(AsyncTaskBase * p : mTaskVec)
-	{
-		p->SilentEnable();
-	}
+	tasks.Foreach(
+		[&](AsyncTaskBase * p)
+		{
+			p->SilentEnable();
+		}
+	);
 	this->CheckState();
 }
 
 void AsyncTaskGroup::Disable()
 {
-	for(AsyncTaskBase * p : mTaskVec)
-	{
-		p->SilentDisable();
-	}
+	tasks.Foreach(
+		[&](AsyncTaskBase * p)
+		{
+			p->SilentDisable();
+		}
+	);
 	this->CheckState();
 }
 
-void AsyncTaskGroup::Enable(int aMask)
+void AsyncTaskGroup::Enable(int mask)
 {
-	for(AsyncTaskBase * p : mTaskVec)
-	{
-		if((p->GetFlags() & aMask) != 0) p->SilentEnable();
-	}
+	tasks.Foreach(
+		[&](AsyncTaskBase * p)
+		{
+			if ((p->GetFlags() & mask) != 0)
+			{
+				p->SilentEnable();
+			}
+		}
+	);	
 	this->CheckState();
 }
 
-void AsyncTaskGroup::Disable(int aMask)
+void AsyncTaskGroup::Disable(int mask)
 {
-	for(AsyncTaskBase * p : mTaskVec)
-	{
-		if((p->GetFlags() & aMask) != 0) p->SilentDisable();
-	}
+	tasks.Foreach(
+		[&](AsyncTaskBase * p)
+		{
+			if ((p->GetFlags() & mask) != 0)
+			{
+				p->SilentDisable();
+			}
+		}
+	);	
 	this->CheckState();
 }
 
 AsyncTaskBase* AsyncTaskGroup::GetNext(const MonotonicTimestamp& arTime)
 {
 	this->Update(arTime);
-	TaskVec::iterator max = max_element(mTaskVec.begin(), mTaskVec.end(), AsyncTaskBase::LessThanGroupLevel);
 
-	AsyncTaskBase* pRet = nullptr;
-	if(max != mTaskVec.end())
+	AsyncTaskBase* pMax = nullptr;
+	tasks.Foreach(
+		[&](AsyncTaskBase * p)
+		{
+			if (pMax == nullptr)
+			{
+				pMax = p;
+			}
+			else
+			{				
+				if (AsyncTaskBase::LessThanGroupLevel(pMax, p))
+				{
+					pMax = p;
+				}
+			}
+		}
+	);
+
+	if (pMax && !pMax->IsRunning() && pMax->IsEnabled())
+	{		
+		return pMax;
+	}
+	else
 	{
-		AsyncTaskBase* p = *max;
-		if(!p->IsRunning() && p->IsEnabled()) pRet = p;
+		return nullptr;
 	}
 
-	return pRet;
+	return pMax;
 }
 
 void AsyncTaskGroup::CheckState()
@@ -191,18 +227,16 @@ openpal::MonotonicTimestamp AsyncTaskGroup::GetCurrentTime() const
 	return mpExecutor->GetTime();
 }
 
-void AsyncTaskGroup::Update(const MonotonicTimestamp& arTime)
+void AsyncTaskGroup::Update(const MonotonicTimestamp& time)
 {
-	for(AsyncTaskBase * p : mTaskVec)
-	{
-		p->UpdateTime(arTime);
-	}
+	tasks.Foreach(
+		[&](AsyncTaskBase * p) { p->UpdateTime(time); }		
+	);	
 }
-
 
 void AsyncTaskGroup::RestartTimer(const openpal::MonotonicTimestamp& arTime)
 {
-	if(mpTimer != nullptr)
+	if(mpTimer)
 	{
 		if(mpTimer->ExpiresAt().milliseconds != arTime.milliseconds)
 		{
@@ -211,8 +245,10 @@ void AsyncTaskGroup::RestartTimer(const openpal::MonotonicTimestamp& arTime)
 		}
 	}
 
-	if(mpTimer == nullptr)
+	if (mpTimer == nullptr)
+	{
 		mpTimer = mpExecutor->Start(arTime, std::bind(&AsyncTaskGroup::OnTimerExpiration, this));
+	}
 }
 
 void AsyncTaskGroup::OnTimerExpiration()

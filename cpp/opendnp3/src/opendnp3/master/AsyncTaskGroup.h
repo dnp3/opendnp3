@@ -22,9 +22,11 @@
 #define __ASYNC_TASK_GROUP_H_
 
 #include <openpal/Uncopyable.h>
-#include "opendnp3/master/AsyncTaskInterfaces.h"
-
 #include <openpal/MonotonicTimestamp.h>
+#include <openpal/TimeDuration.h>
+#include <openpal/StaticLinkedList.h>
+
+#include "opendnp3/master/AsyncTaskInterfaces.h"
 
 #include <set>
 #include <queue>
@@ -94,8 +96,9 @@ private:
 	openpal::IExecutor* mpExecutor;
 	openpal::ITimer* mpTimer;
 
-	typedef std::vector< AsyncTaskBase* > TaskVec;
-	TaskVec mTaskVec;
+	// TODO - set max size this via config
+	openpal::StaticLinkedList<AsyncTaskBase*, uint16_t, 100> tasks;
+	
 };
 
 }
