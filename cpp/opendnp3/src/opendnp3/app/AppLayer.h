@@ -21,8 +21,6 @@
 #ifndef __APP_LAYER_H_
 #define __APP_LAYER_H_
 
-#include <queue>
-
 #include <openpal/AsyncLayerInterfaces.h>
 #include <openpal/Loggable.h>
 
@@ -37,6 +35,7 @@
 #include "opendnp3/app/AppConfig.h"
 
 #include <openpal/StaticArray.h>
+#include <openpal/StaticQueue.h>
 
 namespace openpal
 {
@@ -103,15 +102,14 @@ private:
 
 	////////////////////
 	// State
-	////////////////////
-
-	typedef std::deque<APDUWrapper> SendQueue;
+	////////////////////	
 
 	bool isOnline;
 	bool isSending;						// State of send operation to the lower layer
 	bool isConfirmSending;
 	bool isMaster;						// True, if the application user is a master
-	SendQueue sendQueue;				// Buffer of send operations
+
+	openpal::StaticQueue<APDUWrapper, uint16_t, 4>	sendQueue; // Buffer of send operations - TODO - decide reasonable size
 
 	openpal::ILowerLayer* pTransportLayer;
 	IAppUser* mpUser;						// Interface for dispatching callbacks

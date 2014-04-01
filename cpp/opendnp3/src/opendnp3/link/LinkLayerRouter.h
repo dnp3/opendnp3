@@ -21,9 +21,6 @@
 #ifndef __LINK_LAYER_ROUTER_H_
 #define __LINK_LAYER_ROUTER_H_
 
-#include <map>
-#include <queue>
-
 #include <openpal/IShutdownHandler.h>
 #include <openpal/IEventHandler.h>
 #include <openpal/StaticLinkedList.h>

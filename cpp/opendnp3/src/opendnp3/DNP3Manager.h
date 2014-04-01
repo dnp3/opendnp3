@@ -21,8 +21,8 @@
 #ifndef __DNP3_MANAGER_H_
 #define __DNP3_MANAGER_H_
 
-#include <string>
 #include <set>
+#include <string>
 #include <stdint.h>
 #include <memory>
 #include <functional>

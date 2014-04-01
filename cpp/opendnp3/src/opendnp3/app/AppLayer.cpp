@@ -183,7 +183,7 @@ void AppLayer::OnLowerLayerDown()
 		mUnsolicited.Reset();
 
 		//reset the transmitter state
-		sendQueue.erase(sendQueue.begin(), sendQueue.end());
+		sendQueue.Clear();
 		isSending = false;
 
 		//notify the user
@@ -199,13 +199,13 @@ void AppLayer::OnSendResult(bool isSuccess)
 {
 	if(isSending)
 	{
-		assert(sendQueue.size() > 0);
+		assert(sendQueue.Size() > 0);
 		isSending = false;
 
-		FunctionCode func = sendQueue.front().GetFunction();
-		sendQueue.pop_front();
+		auto function = sendQueue.Pop().GetFunction();
+		
 
-		if (func == FunctionCode::CONFIRM)
+		if (function == FunctionCode::CONFIRM)
 		{
 			assert(isConfirmSending);
 			isConfirmSending = false;
@@ -214,12 +214,12 @@ void AppLayer::OnSendResult(bool isSuccess)
 		{
 			if (isSuccess)
 			{
-				if (func == FunctionCode::UNSOLICITED_RESPONSE) mUnsolicited.OnSendSuccess();
+				if (function == FunctionCode::UNSOLICITED_RESPONSE) mUnsolicited.OnSendSuccess();
 				else mSolicited.OnSendSuccess();
 			}
 			else
 			{
-				if (func == FunctionCode::UNSOLICITED_RESPONSE) mUnsolicited.OnSendFailure();
+				if (function == FunctionCode::UNSOLICITED_RESPONSE) mUnsolicited.OnSendFailure();
 				else mSolicited.OnSendFailure();
 			}
 		}
@@ -341,17 +341,18 @@ void AppLayer::QueueConfirm(bool aUnsol, int aSeq)
 
 void AppLayer::QueueFrame(const APDUWrapper& apdu)
 {
-	sendQueue.push_back(apdu);
+	assert(!sendQueue.IsFull());
+	sendQueue.Enqueue(apdu);
 	this->CheckForSend();
 }
 
 void AppLayer::CheckForSend()
 {
-	if(!isSending && sendQueue.size() > 0)
+	if(!isSending && sendQueue.Size() > 0)
 	{
 		isSending = true;
 		//LOG_BLOCK(flags::INTERPRET, "=> AL " << pAPDU->ToString()); TODO - replace outgoing logging
-		pTransportLayer->Send(sendQueue.front().ToReadOnly());
+		pTransportLayer->Send(sendQueue.Peek().ToReadOnly());
 	}
 }
 
