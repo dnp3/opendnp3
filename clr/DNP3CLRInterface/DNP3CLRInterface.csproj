@@ -52,15 +52,20 @@
     <Compile Include="gen\CommandStatus.cs" />
     <Compile Include="gen\ControlCode.cs" />
     <Compile Include="gen\DoubleBit.cs" />
+    <Compile Include="gen\EventAnalogOutputStatusResponse.cs" />
     <Compile Include="gen\EventAnalogResponse.cs" />
+    <Compile Include="gen\EventBinaryOutputStatusResponse.cs" />
     <Compile Include="gen\EventBinaryResponse.cs" />
     <Compile Include="gen\EventCounterResponse.cs" />
+    <Compile Include="gen\EventDoubleBinaryResponse.cs" />
+    <Compile Include="gen\EventFrozenCounterResponse.cs" />
     <Compile Include="gen\ScanStatus.cs" />
     <Compile Include="gen\StaticAnalogResponse.cs" />
     <Compile Include="gen\StaticBinaryOutputStatusResponse.cs" />
     <Compile Include="gen\StaticBinaryResponse.cs" />
     <Compile Include="gen\StaticCounterResponse.cs" />
     <Compile Include="gen\StaticAnalogOutputStatusResponse.cs" />
+    <Compile Include="gen\StaticDoubleBinaryResponse.cs" />
     <Compile Include="gen\StaticFrozenCounterResponse.cs" />
     <Compile Include="ICommandHandler.cs">
       <SubType>Code</SubType>

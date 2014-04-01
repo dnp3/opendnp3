@@ -82,9 +82,13 @@
     <ClInclude Include="src\opendnp3\gen\CommandStatus.h" />
     <ClInclude Include="src\opendnp3\gen\ControlCode.h" />
     <ClInclude Include="src\opendnp3\gen\DoubleBit.h" />
+    <ClInclude Include="src\opendnp3\gen\EventAnalogOutputStatusResponse.h" />
     <ClInclude Include="src\opendnp3\gen\EventAnalogResponse.h" />
+    <ClInclude Include="src\opendnp3\gen\EventBinaryOutputStatusResponse.h" />
     <ClInclude Include="src\opendnp3\gen\EventBinaryResponse.h" />
     <ClInclude Include="src\opendnp3\gen\EventCounterResponse.h" />
+    <ClInclude Include="src\opendnp3\gen\EventDoubleBinaryResponse.h" />
+    <ClInclude Include="src\opendnp3\gen\EventFrozenCounterResponse.h" />
     <ClInclude Include="src\opendnp3\gen\FunctionCode.h" />
     <ClInclude Include="src\opendnp3\gen\LinkFunction.h" />
     <ClInclude Include="src\opendnp3\gen\QualifierCode.h" />
@@ -94,6 +98,7 @@
     <ClInclude Include="src\opendnp3\gen\StaticBinaryOutputStatusResponse.h" />
     <ClInclude Include="src\opendnp3\gen\StaticBinaryResponse.h" />
     <ClInclude Include="src\opendnp3\gen\StaticCounterResponse.h" />
+    <ClInclude Include="src\opendnp3\gen\StaticDoubleBinaryResponse.h" />
     <ClInclude Include="src\opendnp3\gen\StaticFrozenCounterResponse.h" />
     <ClInclude Include="src\opendnp3\IBufferSegment.h" />
     <ClInclude Include="src\opendnp3\IChannel.h" />
@@ -265,9 +270,13 @@
     <ClCompile Include="src\opendnp3\gen\CommandStatus.cpp" />
     <ClCompile Include="src\opendnp3\gen\ControlCode.cpp" />
     <ClCompile Include="src\opendnp3\gen\DoubleBit.cpp" />
+    <ClCompile Include="src\opendnp3\gen\EventAnalogOutputStatusResponse.cpp" />
     <ClCompile Include="src\opendnp3\gen\EventAnalogResponse.cpp" />
+    <ClCompile Include="src\opendnp3\gen\EventBinaryOutputStatusResponse.cpp" />
     <ClCompile Include="src\opendnp3\gen\EventBinaryResponse.cpp" />
     <ClCompile Include="src\opendnp3\gen\EventCounterResponse.cpp" />
+    <ClCompile Include="src\opendnp3\gen\EventDoubleBinaryResponse.cpp" />
+    <ClCompile Include="src\opendnp3\gen\EventFrozenCounterResponse.cpp" />
     <ClCompile Include="src\opendnp3\gen\FunctionCode.cpp" />
     <ClCompile Include="src\opendnp3\gen\LinkFunction.cpp" />
     <ClCompile Include="src\opendnp3\gen\QualifierCode.cpp" />
@@ -277,6 +286,7 @@
     <ClCompile Include="src\opendnp3\gen\StaticBinaryOutputStatusResponse.cpp" />
     <ClCompile Include="src\opendnp3\gen\StaticBinaryResponse.cpp" />
     <ClCompile Include="src\opendnp3\gen\StaticCounterResponse.cpp" />
+    <ClCompile Include="src\opendnp3\gen\StaticDoubleBinaryResponse.cpp" />
     <ClCompile Include="src\opendnp3\gen\StaticFrozenCounterResponse.cpp" />
     <ClCompile Include="src\opendnp3\link\DNPCrc.cpp" />
     <ClCompile Include="src\opendnp3\link\IOpenDelayStrategy.cpp" />

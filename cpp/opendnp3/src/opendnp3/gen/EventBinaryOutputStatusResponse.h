@@ -15,19 +15,23 @@
 // http://www.apache.org/licenses/LICENSE-2.0.html
 //
 
-namespace DNP3.Interface
+#ifndef __OPENDNP3_GENERATED_EVENTBINARYOUTPUTSTATUSRESPONSE_H_
+#define __OPENDNP3_GENERATED_EVENTBINARYOUTPUTSTATUSRESPONSE_H_
+
+#include <string>
+#include <cstdint>
+
+namespace opendnp3 {
+
+enum class EventBinaryOutputStatusResponse : int
 {
-  /// <summary>
-  /// Enumeration for log levels
-  /// </summary>
-  public static class LogLevel
-  {
-    EVENT = 0x1,
-    ERROR = 0x2,
-    Warning = 0x4,
-    Info = 0x8,
-    Interpret = 0x10,
-    Comm = 0x20,
-    Debug = 0x40
-  }
+  Group11Var1 = 0,
+  Group11Var2 = 1
+};
+
+int EventBinaryOutputStatusResponseToType(EventBinaryOutputStatusResponse arg);
+EventBinaryOutputStatusResponse EventBinaryOutputStatusResponseFromType(int arg);
+
 }
+
+#endif
