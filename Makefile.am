@@ -81,9 +81,13 @@ cpp/opendnp3/src/opendnp3/gen/CommandResult.cpp \
 cpp/opendnp3/src/opendnp3/gen/CommandStatus.cpp \
 cpp/opendnp3/src/opendnp3/gen/ControlCode.cpp \
 cpp/opendnp3/src/opendnp3/gen/DoubleBit.cpp \
+cpp/opendnp3/src/opendnp3/gen/EventAnalogOutputStatusResponse.cpp \
 cpp/opendnp3/src/opendnp3/gen/EventAnalogResponse.cpp \
+cpp/opendnp3/src/opendnp3/gen/EventBinaryOutputStatusResponse.cpp \
 cpp/opendnp3/src/opendnp3/gen/EventBinaryResponse.cpp \
 cpp/opendnp3/src/opendnp3/gen/EventCounterResponse.cpp \
+cpp/opendnp3/src/opendnp3/gen/EventDoubleBinaryResponse.cpp \
+cpp/opendnp3/src/opendnp3/gen/EventFrozenCounterResponse.cpp \
 cpp/opendnp3/src/opendnp3/gen/FunctionCode.cpp \
 cpp/opendnp3/src/opendnp3/gen/LinkFunction.cpp \
 cpp/opendnp3/src/opendnp3/gen/QualifierCode.cpp \
@@ -93,6 +97,7 @@ cpp/opendnp3/src/opendnp3/gen/StaticAnalogResponse.cpp \
 cpp/opendnp3/src/opendnp3/gen/StaticBinaryOutputStatusResponse.cpp \
 cpp/opendnp3/src/opendnp3/gen/StaticBinaryResponse.cpp \
 cpp/opendnp3/src/opendnp3/gen/StaticCounterResponse.cpp \
+cpp/opendnp3/src/opendnp3/gen/StaticDoubleBinaryResponse.cpp \
 cpp/opendnp3/src/opendnp3/gen/StaticFrozenCounterResponse.cpp \
 cpp/opendnp3/src/opendnp3/link/DNPCrc.cpp \
 cpp/opendnp3/src/opendnp3/link/IOpenDelayStrategy.cpp \
