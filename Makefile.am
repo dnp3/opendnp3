@@ -166,8 +166,10 @@ cpp/opendnp3/src/opendnp3/outstation/EventBufferFacade.cpp \
 cpp/opendnp3/src/opendnp3/outstation/EventResponseContext.cpp \
 cpp/opendnp3/src/opendnp3/outstation/IINHelpers.cpp \
 cpp/opendnp3/src/opendnp3/outstation/ITimeWriteHandler.cpp \
+cpp/opendnp3/src/opendnp3/outstation/OutstationConfig.cpp \
 cpp/opendnp3/src/opendnp3/outstation/OutstationEventBuffer.cpp \
 cpp/opendnp3/src/opendnp3/outstation/OutstationStackImpl.cpp \
+cpp/opendnp3/src/opendnp3/outstation/OutstationStates.cpp \
 cpp/opendnp3/src/opendnp3/outstation/Outstation.cpp \
 cpp/opendnp3/src/opendnp3/outstation/ReadHandler.cpp \
 cpp/opendnp3/src/opendnp3/outstation/ResponseContext.cpp \
@@ -175,8 +177,6 @@ cpp/opendnp3/src/opendnp3/outstation/SelectBuffer.cpp \
 cpp/opendnp3/src/opendnp3/outstation/SelectionCriteria.cpp \
 cpp/opendnp3/src/opendnp3/outstation/SelectionIterator.cpp \
 cpp/opendnp3/src/opendnp3/outstation/SimpleCommandHandler.cpp \
-cpp/opendnp3/src/opendnp3/outstation/SlaveConfig.cpp \
-cpp/opendnp3/src/opendnp3/outstation/SlaveStates.cpp \
 cpp/opendnp3/src/opendnp3/outstation/StaticResponseContext.cpp \
 cpp/opendnp3/src/opendnp3/outstation/StaticResponseTypes.cpp \
 cpp/opendnp3/src/opendnp3/outstation/TimeTransaction.cpp \
@@ -236,7 +236,7 @@ cpp/opendnp3tests/src/PhysicalLayerWrapper.cpp \
 cpp/opendnp3tests/src/PhysLoopback.cpp \
 cpp/opendnp3tests/src/ProtocolUtil.cpp \
 cpp/opendnp3tests/src/RandomizedBuffer.cpp \
-cpp/opendnp3tests/src/SlaveTestObject.cpp \
+cpp/opendnp3tests/src/OutstationTestObject.cpp \
 cpp/opendnp3tests/src/StopWatch.cpp \
 cpp/opendnp3tests/src/TestAPDUParsing.cpp \
 cpp/opendnp3tests/src/TestAPDUWriting.cpp \
