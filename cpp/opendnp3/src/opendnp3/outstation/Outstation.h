@@ -39,7 +39,7 @@
 namespace opendnp3
 {
 
-class OutstationStateBase;
+class SlaveStateBase;
 class Database;
 
 /**

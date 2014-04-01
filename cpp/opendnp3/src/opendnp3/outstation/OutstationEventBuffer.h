@@ -96,7 +96,7 @@ private:
 };
 
 template <class T>
-static bool OutstationEventBuffer::HasSpace(const T& buffer)
+bool OutstationEventBuffer::HasSpace(const T& buffer)
 {
 	if (buffer.Capacity() > 0)
 	{

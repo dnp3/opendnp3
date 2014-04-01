@@ -157,11 +157,13 @@ cpp/opendnp3/src/opendnp3/outstation/DynamicallyAllocatedDatabase.cpp \
 cpp/opendnp3/src/opendnp3/outstation/DynamicallyAllocatedEventBuffer.cpp \
 cpp/opendnp3/src/opendnp3/outstation/EventCount.cpp \
 cpp/opendnp3/src/opendnp3/outstation/EventBufferConfig.cpp \
+cpp/opendnp3/src/opendnp3/outstation/EventBufferFacade.cpp \
 cpp/opendnp3/src/opendnp3/outstation/EventResponseContext.cpp \
 cpp/opendnp3/src/opendnp3/outstation/IINHelpers.cpp \
 cpp/opendnp3/src/opendnp3/outstation/ITimeWriteHandler.cpp \
 cpp/opendnp3/src/opendnp3/outstation/OutstationEventBuffer.cpp \
 cpp/opendnp3/src/opendnp3/outstation/OutstationStackImpl.cpp \
+cpp/opendnp3/src/opendnp3/outstation/Outstation.cpp \
 cpp/opendnp3/src/opendnp3/outstation/ReadHandler.cpp \
 cpp/opendnp3/src/opendnp3/outstation/ResponseContext.cpp \
 cpp/opendnp3/src/opendnp3/outstation/SelectBuffer.cpp \
@@ -169,7 +171,6 @@ cpp/opendnp3/src/opendnp3/outstation/SelectionCriteria.cpp \
 cpp/opendnp3/src/opendnp3/outstation/SelectionIterator.cpp \
 cpp/opendnp3/src/opendnp3/outstation/SimpleCommandHandler.cpp \
 cpp/opendnp3/src/opendnp3/outstation/SlaveConfig.cpp \
-cpp/opendnp3/src/opendnp3/outstation/Slave.cpp \
 cpp/opendnp3/src/opendnp3/outstation/SlaveStates.cpp \
 cpp/opendnp3/src/opendnp3/outstation/StaticResponseContext.cpp \
 cpp/opendnp3/src/opendnp3/outstation/StaticResponseTypes.cpp \
