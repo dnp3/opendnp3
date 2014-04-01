@@ -1,3 +1,9 @@
+opendnp3 (1.1.1rc4-3) unstable; urgency=low
+
+  * Re-ran javah to correct function naming problem
+
+ -- Chris Verges <chris.verges@gmail.com>  Tue, 01 Apr 2014 12:48:00 -0800
+
 opendnp3 (1.1.1rc4-2) unstable; urgency=low
 
   * Added missing JNI native function implementation for on-demand

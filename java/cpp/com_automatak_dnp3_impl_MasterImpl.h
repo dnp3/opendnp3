@@ -20,7 +20,7 @@ JNIEXPORT jlong JNICALL Java_com_automatak_dnp3_impl_MasterImpl_get_1native_1com
  * Method:    perform_integrity_scan_native
  * Signature: (J)V
  */
-JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_MasterImpl_perform_integrity_scan_1native
+JNIEXPORT void JNICALL Java_com_automatak_dnp3_impl_MasterImpl_perform_1integrity_1scan_1native
   (JNIEnv *, jobject, jlong);
 
 /*
