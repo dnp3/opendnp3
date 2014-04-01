@@ -36,6 +36,9 @@ static const uint16_t MAX_READ_REQUESTS = 16;
 // the maximum number of event read object/variation records that can be in any READ request
 static const uint16_t MAX_EVENT_READ_REQUESTS = 16;
 
+// the maximum number of queued commands for a master
+static const uint8_t MAX_COMMAND_QUEUE_SIZE = 16;
+
 // the maximum size of a transmitted or received APDU
 static const uint32_t MAX_APDU_BUFFER_SIZE = 2048;
 static_assert(MAX_APDU_BUFFER_SIZE >= 100, "APDU buffer size must be at least 100");

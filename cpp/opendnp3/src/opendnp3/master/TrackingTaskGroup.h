@@ -27,7 +27,6 @@
 
 #include "AsyncTaskInterfaces.h"
 
-#include <queue>
 #include <string>
 
 namespace opendnp3

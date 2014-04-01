@@ -24,10 +24,10 @@
 #include "ICommandProcessor.h"
 
 #include "opendnp3/master/AsyncTaskInterfaces.h"
+#include "opendnp3/StaticSizeConfiguration.h"
 
 #include <openpal/IExecutor.h>
-
-#include <queue>
+#include <openpal/StaticQueue.h>
 
 namespace opendnp3
 {
@@ -64,22 +64,31 @@ private:
 	openpal::IExecutor* pExecutor;
 	ITask* pEnableTask;
 
-	std::queue<std::function<void (ICommandProcessor*)>> requestQueue;
+	openpal::StaticQueue<std::function<void (ICommandProcessor*)>, uint8_t, sizes::MAX_COMMAND_QUEUE_SIZE> requestQueue;
 
 	template <class T>
 	void SelectAndOperateT(const T& command, uint16_t index, std::function<void (CommandResponse)> callback)
 	{
 		pExecutor->Post(
 		    [this, command, index, callback]()
-		{
-			requestQueue.push(
-			    [command, index, callback](ICommandProcessor * pProcessor)
 			{
-				pProcessor->SelectAndOperate(command, index, callback);
+				auto enqueued = requestQueue.Enqueue(
+					[command, index, callback](ICommandProcessor * pProcessor)
+					{
+						pProcessor->SelectAndOperate(command, index, callback);
+					}
+				);
+				if (enqueued)
+				{
+					pEnableTask->Enable();
+				}
+				else
+				{
+					// TODO, special code for too many requests queued?
+					pExecutor->Post([=]{ callback(CommandResponse(CommandResult::TIMEOUT)); });
+				}
+				
 			}
-			);
-			pEnableTask->Enable();
-		}
 		);
 	}
 
@@ -89,15 +98,23 @@ private:
 
 		pExecutor->Post(
 		    [this, command, index, callback]()
-		{
-			requestQueue.push(
-			    [command, index, callback](ICommandProcessor * pProcessor)
 			{
-				pProcessor->DirectOperate(command, index, callback);
+				auto enqueued = requestQueue.Enqueue(
+					[command, index, callback](ICommandProcessor * pProcessor)
+					{
+						pProcessor->DirectOperate(command, index, callback);
+					}
+				);
+				if (enqueued)
+				{
+					pEnableTask->Enable();
+				}
+				else
+				{
+					// TODO, special code for too many requests queued?
+					pExecutor->Post([=]{ callback(CommandResponse(CommandResult::TIMEOUT)); });
+				}
 			}
-			);
-			pEnableTask->Enable();
-		}
 		);
 	}
 };
