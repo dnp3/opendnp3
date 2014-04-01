@@ -31,7 +31,6 @@ enum class EventCounterResponse : int
   Group22Var6 = 3
 };
 
-std::string EventCounterResponseToString(EventCounterResponse arg);
 int EventCounterResponseToType(EventCounterResponse arg);
 EventCounterResponse EventCounterResponseFromType(int arg);
 

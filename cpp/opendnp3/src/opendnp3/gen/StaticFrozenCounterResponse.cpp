@@ -19,29 +19,6 @@
 
 namespace opendnp3 {
 
-std::string StaticFrozenCounterResponseToString(StaticFrozenCounterResponse arg)
-{
-  switch(arg)
-  {
-    case(StaticFrozenCounterResponse::Group21Var1):
-      return "Group21Var1";
-    case(StaticFrozenCounterResponse::Group21Var2):
-      return "Group21Var2";
-    case(StaticFrozenCounterResponse::Group21Var5):
-      return "Group21Var5";
-    case(StaticFrozenCounterResponse::Group21Var6):
-      return "Group21Var6";
-    case(StaticFrozenCounterResponse::Group21Var7):
-      return "Group21Var7";
-    case(StaticFrozenCounterResponse::Group21Var8):
-      return "Group21Var8";
-    case(StaticFrozenCounterResponse::Group21Var9):
-      return "Group21Var9";
-    case(StaticFrozenCounterResponse::Group21Var10):
-      return "Group21Var10";
-  }
-  return "Group21Var10";
-}
 int StaticFrozenCounterResponseToType(StaticFrozenCounterResponse arg)
 {
   return static_cast<int>(arg);

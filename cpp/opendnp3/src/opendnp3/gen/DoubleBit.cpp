@@ -19,21 +19,6 @@
 
 namespace opendnp3 {
 
-std::string DoubleBitToString(DoubleBit arg)
-{
-  switch(arg)
-  {
-    case(DoubleBit::INTERMEDIATE):
-      return "INTERMEDIATE";
-    case(DoubleBit::DETERMINED_OFF):
-      return "DETERMINED_OFF";
-    case(DoubleBit::DETERMINED_ON):
-      return "DETERMINED_ON";
-    case(DoubleBit::INDETERMINATE):
-      return "INDETERMINATE";
-  }
-  return "INDETERMINATE";
-}
 uint8_t DoubleBitToType(DoubleBit arg)
 {
   return static_cast<uint8_t>(arg);
@@ -52,6 +37,21 @@ DoubleBit DoubleBitFromType(uint8_t arg)
       return DoubleBit::INDETERMINATE;
   }
   return DoubleBit::INDETERMINATE;
+}
+std::string DoubleBitToString(DoubleBit arg)
+{
+  switch(arg)
+  {
+    case(DoubleBit::INTERMEDIATE):
+      return "INTERMEDIATE";
+    case(DoubleBit::DETERMINED_OFF):
+      return "DETERMINED_OFF";
+    case(DoubleBit::DETERMINED_ON):
+      return "DETERMINED_ON";
+    case(DoubleBit::INDETERMINATE):
+      return "INDETERMINATE";
+  }
+  return "INDETERMINATE";
 }
 
 }

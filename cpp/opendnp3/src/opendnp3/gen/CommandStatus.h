@@ -53,9 +53,9 @@ enum class CommandStatus : uint8_t
   UNDEFINED = 127
 };
 
-std::string CommandStatusToString(CommandStatus arg);
 uint8_t CommandStatusToType(CommandStatus arg);
 CommandStatus CommandStatusFromType(uint8_t arg);
+std::string CommandStatusToString(CommandStatus arg);
 
 }
 

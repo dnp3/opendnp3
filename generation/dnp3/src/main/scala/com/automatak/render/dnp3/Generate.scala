@@ -9,16 +9,13 @@ object Generate {
   val csharpPath = FileSystems.getDefault.getPath("../clr/DNP3CLRInterface/gen")
   val javaPath = FileSystems.getDefault.getPath("../java/api/src/main/java/com/automatak/dnp3")
 
-  val opendnp3Paths = CppEnumGenerator.DualPath(
-    FileSystems.getDefault.getPath("../cpp/opendnp3/src/opendnp3/gen/"),
-    FileSystems.getDefault.getPath("../cpp/opendnp3/src/opendnp3/gen/")
-  )
+  val opendnp3Path = FileSystems.getDefault.getPath("../cpp/opendnp3/src/opendnp3/gen/")
 
   def main(args: Array[String]): Unit = {
 
     // generate all enumerations
 
-    CppEnumGenerator(opendnp3Paths)
+    CppEnumGenerator(opendnp3Path)
     CSharpEnumGenerator("DNP3.Interface", csharpPath)
     JavaEnumGenerator("com.automatak.dnp3", javaPath)
 

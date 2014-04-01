@@ -19,21 +19,6 @@
 
 namespace opendnp3 {
 
-std::string StaticAnalogOutputStatusResponseToString(StaticAnalogOutputStatusResponse arg)
-{
-  switch(arg)
-  {
-    case(StaticAnalogOutputStatusResponse::Group40Var1):
-      return "Group40Var1";
-    case(StaticAnalogOutputStatusResponse::Group40Var2):
-      return "Group40Var2";
-    case(StaticAnalogOutputStatusResponse::Group40Var3):
-      return "Group40Var3";
-    case(StaticAnalogOutputStatusResponse::Group40Var4):
-      return "Group40Var4";
-  }
-  return "Group40Var4";
-}
 int StaticAnalogOutputStatusResponseToType(StaticAnalogOutputStatusResponse arg)
 {
   return static_cast<int>(arg);

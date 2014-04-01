@@ -33,7 +33,6 @@ enum class StaticAnalogResponse : int
   Group30Var6 = 5
 };
 
-std::string StaticAnalogResponseToString(StaticAnalogResponse arg);
 int StaticAnalogResponseToType(StaticAnalogResponse arg);
 StaticAnalogResponse StaticAnalogResponseFromType(int arg);
 

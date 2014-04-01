@@ -31,7 +31,6 @@ enum class StaticCounterResponse : int
   Group20Var6 = 3
 };
 
-std::string StaticCounterResponseToString(StaticCounterResponse arg);
 int StaticCounterResponseToType(StaticCounterResponse arg);
 StaticCounterResponse StaticCounterResponseFromType(int arg);
 

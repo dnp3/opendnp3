@@ -64,9 +64,9 @@ enum class FunctionCode : uint8_t
   UNKNOWN = 0xFF
 };
 
-std::string FunctionCodeToString(FunctionCode arg);
 uint8_t FunctionCodeToType(FunctionCode arg);
 FunctionCode FunctionCodeFromType(uint8_t arg);
+std::string FunctionCodeToString(FunctionCode arg);
 
 }
 

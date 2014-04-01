@@ -28,7 +28,6 @@ enum class StaticBinaryResponse : int
   Group1Var2 = 0
 };
 
-std::string StaticBinaryResponseToString(StaticBinaryResponse arg);
 int StaticBinaryResponseToType(StaticBinaryResponse arg);
 StaticBinaryResponse StaticBinaryResponseFromType(int arg);
 

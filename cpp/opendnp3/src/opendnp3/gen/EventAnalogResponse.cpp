@@ -19,29 +19,6 @@
 
 namespace opendnp3 {
 
-std::string EventAnalogResponseToString(EventAnalogResponse arg)
-{
-  switch(arg)
-  {
-    case(EventAnalogResponse::Group32Var1):
-      return "Group32Var1";
-    case(EventAnalogResponse::Group32Var2):
-      return "Group32Var2";
-    case(EventAnalogResponse::Group32Var3):
-      return "Group32Var3";
-    case(EventAnalogResponse::Group32Var4):
-      return "Group32Var4";
-    case(EventAnalogResponse::Group32Var5):
-      return "Group32Var5";
-    case(EventAnalogResponse::Group32Var6):
-      return "Group32Var6";
-    case(EventAnalogResponse::Group32Var7):
-      return "Group32Var7";
-    case(EventAnalogResponse::Group32Var8):
-      return "Group32Var8";
-  }
-  return "Group32Var8";
-}
 int EventAnalogResponseToType(EventAnalogResponse arg)
 {
   return static_cast<int>(arg);

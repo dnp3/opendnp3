@@ -19,29 +19,6 @@
 
 namespace opendnp3 {
 
-std::string QualifierCodeToString(QualifierCode arg)
-{
-  switch(arg)
-  {
-    case(QualifierCode::UINT8_START_STOP):
-      return "UINT8_START_STOP";
-    case(QualifierCode::UINT16_START_STOP):
-      return "UINT16_START_STOP";
-    case(QualifierCode::ALL_OBJECTS):
-      return "ALL_OBJECTS";
-    case(QualifierCode::UINT8_CNT):
-      return "UINT8_CNT";
-    case(QualifierCode::UINT16_CNT):
-      return "UINT16_CNT";
-    case(QualifierCode::UINT8_CNT_UINT8_INDEX):
-      return "UINT8_CNT_UINT8_INDEX";
-    case(QualifierCode::UINT16_CNT_UINT16_INDEX):
-      return "UINT16_CNT_UINT16_INDEX";
-    case(QualifierCode::UNDEFINED):
-      return "UNDEFINED";
-  }
-  return "UNDEFINED";
-}
 uint8_t QualifierCodeToType(QualifierCode arg)
 {
   return static_cast<uint8_t>(arg);
@@ -68,6 +45,29 @@ QualifierCode QualifierCodeFromType(uint8_t arg)
       return QualifierCode::UNDEFINED;
   }
   return QualifierCode::UNDEFINED;
+}
+std::string QualifierCodeToString(QualifierCode arg)
+{
+  switch(arg)
+  {
+    case(QualifierCode::UINT8_START_STOP):
+      return "UINT8_START_STOP";
+    case(QualifierCode::UINT16_START_STOP):
+      return "UINT16_START_STOP";
+    case(QualifierCode::ALL_OBJECTS):
+      return "ALL_OBJECTS";
+    case(QualifierCode::UINT8_CNT):
+      return "UINT8_CNT";
+    case(QualifierCode::UINT16_CNT):
+      return "UINT16_CNT";
+    case(QualifierCode::UINT8_CNT_UINT8_INDEX):
+      return "UINT8_CNT_UINT8_INDEX";
+    case(QualifierCode::UINT16_CNT_UINT16_INDEX):
+      return "UINT16_CNT_UINT16_INDEX";
+    case(QualifierCode::UNDEFINED):
+      return "UNDEFINED";
+  }
+  return "UNDEFINED";
 }
 
 }

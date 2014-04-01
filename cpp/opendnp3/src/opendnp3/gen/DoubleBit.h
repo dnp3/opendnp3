@@ -38,9 +38,9 @@ enum class DoubleBit : uint8_t
   INDETERMINATE = 0x3
 };
 
-std::string DoubleBitToString(DoubleBit arg);
 uint8_t DoubleBitToType(DoubleBit arg);
 DoubleBit DoubleBitFromType(uint8_t arg);
+std::string DoubleBitToString(DoubleBit arg);
 
 }
 

@@ -35,7 +35,6 @@ enum class EventAnalogResponse : int
   Group32Var8 = 7
 };
 
-std::string EventAnalogResponseToString(EventAnalogResponse arg);
 int EventAnalogResponseToType(EventAnalogResponse arg);
 EventAnalogResponse EventAnalogResponseFromType(int arg);
 

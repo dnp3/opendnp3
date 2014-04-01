@@ -40,9 +40,9 @@ enum class LinkFunction : uint8_t
   INVALID = 0xFF
 };
 
-std::string LinkFunctionToString(LinkFunction arg);
 uint8_t LinkFunctionToType(LinkFunction arg);
 LinkFunction LinkFunctionFromType(uint8_t arg);
+std::string LinkFunctionToString(LinkFunction arg);
 
 }
 

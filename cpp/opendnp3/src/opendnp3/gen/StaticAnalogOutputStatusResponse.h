@@ -31,7 +31,6 @@ enum class StaticAnalogOutputStatusResponse : int
   Group40Var4 = 3
 };
 
-std::string StaticAnalogOutputStatusResponseToString(StaticAnalogOutputStatusResponse arg);
 int StaticAnalogOutputStatusResponseToType(StaticAnalogOutputStatusResponse arg);
 StaticAnalogOutputStatusResponse StaticAnalogOutputStatusResponseFromType(int arg);
 

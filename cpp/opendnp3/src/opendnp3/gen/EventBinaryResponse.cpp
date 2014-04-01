@@ -19,17 +19,6 @@
 
 namespace opendnp3 {
 
-std::string EventBinaryResponseToString(EventBinaryResponse arg)
-{
-  switch(arg)
-  {
-    case(EventBinaryResponse::Group2Var1):
-      return "Group2Var1";
-    case(EventBinaryResponse::Group2Var2):
-      return "Group2Var2";
-  }
-  return "Group2Var2";
-}
 int EventBinaryResponseToType(EventBinaryResponse arg)
 {
   return static_cast<int>(arg);

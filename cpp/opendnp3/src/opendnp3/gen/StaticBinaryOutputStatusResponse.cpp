@@ -19,15 +19,6 @@
 
 namespace opendnp3 {
 
-std::string StaticBinaryOutputStatusResponseToString(StaticBinaryOutputStatusResponse arg)
-{
-  switch(arg)
-  {
-    case(StaticBinaryOutputStatusResponse::Group10Var2):
-      return "Group10Var2";
-  }
-  return "Group10Var2";
-}
 int StaticBinaryOutputStatusResponseToType(StaticBinaryOutputStatusResponse arg)
 {
   return static_cast<int>(arg);

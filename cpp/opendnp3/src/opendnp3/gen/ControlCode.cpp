@@ -19,27 +19,6 @@
 
 namespace opendnp3 {
 
-std::string ControlCodeToString(ControlCode arg)
-{
-  switch(arg)
-  {
-    case(ControlCode::NUL):
-      return "NUL";
-    case(ControlCode::PULSE):
-      return "PULSE";
-    case(ControlCode::LATCH_ON):
-      return "LATCH_ON";
-    case(ControlCode::LATCH_OFF):
-      return "LATCH_OFF";
-    case(ControlCode::PULSE_CLOSE):
-      return "PULSE_CLOSE";
-    case(ControlCode::PULSE_TRIP):
-      return "PULSE_TRIP";
-    case(ControlCode::UNDEFINED):
-      return "UNDEFINED";
-  }
-  return "UNDEFINED";
-}
 uint8_t ControlCodeToType(ControlCode arg)
 {
   return static_cast<uint8_t>(arg);
@@ -64,6 +43,27 @@ ControlCode ControlCodeFromType(uint8_t arg)
       return ControlCode::UNDEFINED;
   }
   return ControlCode::UNDEFINED;
+}
+std::string ControlCodeToString(ControlCode arg)
+{
+  switch(arg)
+  {
+    case(ControlCode::NUL):
+      return "NUL";
+    case(ControlCode::PULSE):
+      return "PULSE";
+    case(ControlCode::LATCH_ON):
+      return "LATCH_ON";
+    case(ControlCode::LATCH_OFF):
+      return "LATCH_OFF";
+    case(ControlCode::PULSE_CLOSE):
+      return "PULSE_CLOSE";
+    case(ControlCode::PULSE_TRIP):
+      return "PULSE_TRIP";
+    case(ControlCode::UNDEFINED):
+      return "UNDEFINED";
+  }
+  return "UNDEFINED";
 }
 
 }

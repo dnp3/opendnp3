@@ -35,7 +35,6 @@ enum class StaticFrozenCounterResponse : int
   Group21Var10 = 7
 };
 
-std::string StaticFrozenCounterResponseToString(StaticFrozenCounterResponse arg);
 int StaticFrozenCounterResponseToType(StaticFrozenCounterResponse arg);
 StaticFrozenCounterResponse StaticFrozenCounterResponseFromType(int arg);
 

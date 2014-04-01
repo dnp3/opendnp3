@@ -29,7 +29,6 @@ enum class EventBinaryResponse : int
   Group2Var2 = 1
 };
 
-std::string EventBinaryResponseToString(EventBinaryResponse arg);
 int EventBinaryResponseToType(EventBinaryResponse arg);
 EventBinaryResponse EventBinaryResponseFromType(int arg);
 

@@ -19,21 +19,6 @@
 
 namespace opendnp3 {
 
-std::string StaticCounterResponseToString(StaticCounterResponse arg)
-{
-  switch(arg)
-  {
-    case(StaticCounterResponse::Group20Var1):
-      return "Group20Var1";
-    case(StaticCounterResponse::Group20Var2):
-      return "Group20Var2";
-    case(StaticCounterResponse::Group20Var5):
-      return "Group20Var5";
-    case(StaticCounterResponse::Group20Var6):
-      return "Group20Var6";
-  }
-  return "Group20Var6";
-}
 int StaticCounterResponseToType(StaticCounterResponse arg)
 {
   return static_cast<int>(arg);

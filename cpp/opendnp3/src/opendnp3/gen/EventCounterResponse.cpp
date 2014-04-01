@@ -19,21 +19,6 @@
 
 namespace opendnp3 {
 
-std::string EventCounterResponseToString(EventCounterResponse arg)
-{
-  switch(arg)
-  {
-    case(EventCounterResponse::Group22Var1):
-      return "Group22Var1";
-    case(EventCounterResponse::Group22Var2):
-      return "Group22Var2";
-    case(EventCounterResponse::Group22Var5):
-      return "Group22Var5";
-    case(EventCounterResponse::Group22Var6):
-      return "Group22Var6";
-  }
-  return "Group22Var6";
-}
 int EventCounterResponseToType(EventCounterResponse arg)
 {
   return static_cast<int>(arg);

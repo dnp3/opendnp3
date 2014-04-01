@@ -51,9 +51,9 @@ enum class ControlCode : uint8_t
   UNDEFINED = 0xFF
 };
 
-std::string ControlCodeToString(ControlCode arg);
 uint8_t ControlCodeToType(ControlCode arg);
 ControlCode ControlCodeFromType(uint8_t arg);
+std::string ControlCodeToString(ControlCode arg);
 
 }
 

@@ -19,35 +19,6 @@
 
 namespace opendnp3 {
 
-std::string CommandStatusToString(CommandStatus arg)
-{
-  switch(arg)
-  {
-    case(CommandStatus::SUCCESS):
-      return "SUCCESS";
-    case(CommandStatus::TIMEOUT):
-      return "TIMEOUT";
-    case(CommandStatus::NO_SELECT):
-      return "NO_SELECT";
-    case(CommandStatus::FORMAT_ERROR):
-      return "FORMAT_ERROR";
-    case(CommandStatus::NOT_SUPPORTED):
-      return "NOT_SUPPORTED";
-    case(CommandStatus::ALREADY_ACTIVE):
-      return "ALREADY_ACTIVE";
-    case(CommandStatus::HARDWARE_ERROR):
-      return "HARDWARE_ERROR";
-    case(CommandStatus::LOCAL):
-      return "LOCAL";
-    case(CommandStatus::TOO_MANY_OPS):
-      return "TOO_MANY_OPS";
-    case(CommandStatus::NOT_AUTHORIZED):
-      return "NOT_AUTHORIZED";
-    case(CommandStatus::UNDEFINED):
-      return "UNDEFINED";
-  }
-  return "UNDEFINED";
-}
 uint8_t CommandStatusToType(CommandStatus arg)
 {
   return static_cast<uint8_t>(arg);
@@ -80,6 +51,35 @@ CommandStatus CommandStatusFromType(uint8_t arg)
       return CommandStatus::UNDEFINED;
   }
   return CommandStatus::UNDEFINED;
+}
+std::string CommandStatusToString(CommandStatus arg)
+{
+  switch(arg)
+  {
+    case(CommandStatus::SUCCESS):
+      return "SUCCESS";
+    case(CommandStatus::TIMEOUT):
+      return "TIMEOUT";
+    case(CommandStatus::NO_SELECT):
+      return "NO_SELECT";
+    case(CommandStatus::FORMAT_ERROR):
+      return "FORMAT_ERROR";
+    case(CommandStatus::NOT_SUPPORTED):
+      return "NOT_SUPPORTED";
+    case(CommandStatus::ALREADY_ACTIVE):
+      return "ALREADY_ACTIVE";
+    case(CommandStatus::HARDWARE_ERROR):
+      return "HARDWARE_ERROR";
+    case(CommandStatus::LOCAL):
+      return "LOCAL";
+    case(CommandStatus::TOO_MANY_OPS):
+      return "TOO_MANY_OPS";
+    case(CommandStatus::NOT_AUTHORIZED):
+      return "NOT_AUTHORIZED";
+    case(CommandStatus::UNDEFINED):
+      return "UNDEFINED";
+  }
+  return "UNDEFINED";
 }
 
 }

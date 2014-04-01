@@ -38,9 +38,9 @@ enum class QualifierCode : uint8_t
   UNDEFINED = 0xFF
 };
 
-std::string QualifierCodeToString(QualifierCode arg);
 uint8_t QualifierCodeToType(QualifierCode arg);
 QualifierCode QualifierCodeFromType(uint8_t arg);
+std::string QualifierCodeToString(QualifierCode arg);
 
 }
 

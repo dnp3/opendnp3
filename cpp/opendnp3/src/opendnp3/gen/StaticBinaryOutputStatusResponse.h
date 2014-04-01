@@ -28,7 +28,6 @@ enum class StaticBinaryOutputStatusResponse : int
   Group10Var2 = 0
 };
 
-std::string StaticBinaryOutputStatusResponseToString(StaticBinaryOutputStatusResponse arg);
 int StaticBinaryOutputStatusResponseToType(StaticBinaryOutputStatusResponse arg);
 StaticBinaryOutputStatusResponse StaticBinaryOutputStatusResponseFromType(int arg);
 
