@@ -154,6 +154,9 @@
     <ClInclude Include="src\openpal\Option.h">
       <Filter>Header</Filter>
     </ClInclude>
+    <ClInclude Include="src\openpal\Runnable.h">
+      <Filter>Header</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\openpal\BufferWrapper.cpp">
@@ -181,6 +184,9 @@
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="src\openpal\PhysicalLayerAsyncBase.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="src\openpal\Runnable.cpp">
       <Filter>Source</Filter>
     </ClCompile>
   </ItemGroup>

@@ -53,6 +53,7 @@
     <ClInclude Include="src\openpal\QueueAdapter.h" />
     <ClInclude Include="src\openpal\RandomInsertAdapter.h" />
     <ClInclude Include="src\openpal\ReverseEndian.h" />
+    <ClInclude Include="src\openpal\Runnable.h" />
     <ClInclude Include="src\openpal\Sequence.h" />
     <ClInclude Include="src\openpal\Serialization.h" />
     <ClInclude Include="src\openpal\SerializationTemplates.h" />
@@ -76,6 +77,7 @@
     <ClCompile Include="src\openpal\MonotonicTimestamp.cpp" />
     <ClCompile Include="src\openpal\PhysicalLayerAsyncBase.cpp" />
     <ClCompile Include="src\openpal\ReverseEndian.cpp" />
+    <ClCompile Include="src\openpal\Runnable.cpp" />
     <ClCompile Include="src\openpal\TimeDuration.cpp" />
     <ClCompile Include="src\openpal\ToHex.cpp" />
   </ItemGroup>
