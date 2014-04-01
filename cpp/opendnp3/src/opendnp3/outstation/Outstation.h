@@ -134,7 +134,7 @@ private:
 	void OnUnsolTimerExpiration();			// internal event dispatched when the unsolicted pack/retry timer expires
 
 	void SendResponse(APDUResponse& apdu, const IINField& indications = IINField::Empty);
-	IINField GetDynamicIIN() const;
+	IINField GetDynamicIIN();
 
 	//void SendUnsolicited(APDU& apdu, const IINField& indications = IINField::Empty);
 

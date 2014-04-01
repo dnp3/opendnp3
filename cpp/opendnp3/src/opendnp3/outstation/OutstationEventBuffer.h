@@ -76,8 +76,8 @@ public:
 	EventTracker TotalEvents() const;
 	EventTracker SelectedEvents() const;
 	EventTracker UnselectedEvents() const;
-
 	bool IsOverflown();
+
 
 private:
 

@@ -368,7 +368,7 @@ void Outstation::SendResponse(APDUResponse& response, const IINField& indication
 	mpAppLayer->SendResponse(response);
 }
 
-IINField Outstation::GetDynamicIIN() const
+IINField Outstation::GetDynamicIIN()
 {
 	IINField ret;
 	auto tracker = eventBuffer.UnselectedEvents();
@@ -383,6 +383,10 @@ IINField Outstation::GetDynamicIIN() const
 	if (tracker.class3.HasEvents())
 	{
 		ret.Set(IINBit::CLASS3_EVENTS);
+	}	
+	if (eventBuffer.IsOverflown())
+	{
+		ret.Set(IINBit::EVENT_BUFFER_OVERFLOW);
 	}
 	return ret;
 }

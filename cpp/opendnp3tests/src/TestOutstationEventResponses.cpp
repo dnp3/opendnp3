@@ -69,9 +69,42 @@ TEST_CASE(SUITE("ReadClass1WithSOE"))
 	REQUIRE(t.Read() ==  "C0 81 80 00");	// Buffer should have been cleared
 }
 
+TEST_CASE(SUITE("MultipleClasses"))
+{
+	SlaveConfig cfg; cfg.mDisableUnsol = true;
+	SlaveTestObject t(cfg, DatabaseTemplate::AllTypes(1));
+	t.slave.OnLowerLayerUp();
 
-// test that asking for a specific data type returns the requested type
-void TestEventRead(const std::string& request, const std::string& response)
+	t.db.staticData.binaries.metadata[0].clazz = PointClass::CLASS_1;
+	t.db.staticData.analogs.metadata[0].clazz = PointClass::CLASS_2;
+	t.db.staticData.counters.metadata[0].clazz = PointClass::CLASS_3;
+
+	{
+		Transaction tr(&t.db);
+		t.db.Update(Binary(true), 0);
+		t.db.Update(Analog(3), 0);
+		t.db.Update(Counter(7), 0);
+	}
+
+	t.SendToSlave("C0 01"); // empty READ
+	REQUIRE(t.Read() == "C0 81 8E 00"); // all event bits set + restart
+
+	// ------ read 1 event at a time by class, until all events are gone ----
+	
+	t.SendToSlave("C0 01 3C 03 06"); // Class 2
+	REQUIRE(t.Read() == "E0 81 8A 00 20 01 28 01 00 00 00 01 03 00 00 00"); // restart + Class 1/3
+
+	t.SendToSlave("C0 01 3C 04 06"); // Class 3
+	REQUIRE(t.Read() == "E0 81 82 00 16 01 28 01 00 00 00 01 07 00 00 00"); // restart + Class 1/3
+
+	t.SendToSlave("C0 01 3C 02 06"); // Class 1
+	REQUIRE(t.Read() == "E0 81 80 00 02 01 28 01 00 00 00 81"); // restart only
+
+	t.SendToSlave("C0 01"); // empty READ
+	REQUIRE(t.Read() == "C0 81 80 00"); // restart only
+}
+
+void TestEventRead(const std::function<void(Database& db)>& loadFun, const std::string& request, const std::string& response)
 {
 
 	SlaveConfig cfg; cfg.mDisableUnsol = true;
@@ -80,11 +113,7 @@ void TestEventRead(const std::string& request, const std::string& response)
 
 	{
 		Transaction tr(&t.db);
-		t.db.Update(Binary(false, BQ_ONLINE), 0);
-		t.db.Update(Counter(0, CQ_ONLINE), 0);
-		t.db.Update(Analog(0.0, AQ_ONLINE), 0);
-		t.db.Update(BinaryOutputStatus(false, TQ_ONLINE), 0);
-		t.db.Update(AnalogOutputStatus(0.0, PQ_ONLINE), 0);
+		loadFun(t.db);		
 	}
 
 	t.SendToSlave(request);
@@ -93,18 +122,27 @@ void TestEventRead(const std::string& request, const std::string& response)
 
 
 TEST_CASE(SUITE("ReadGrp2Var0"))
-{
-	TestEventRead("C0 01 02 00 06", "E0 81 82 00 02 01 28 01 00 00 00 01"); // 1 byte count == 1, ONLINE quality
+{	
+	TestEventRead(
+		[](Database& db) { db.Update(Binary(false, BQ_ONLINE), 0); },
+		"C0 01 02 00 06", "E0 81 80 00 02 01 28 01 00 00 00 01"
+	);
 }
 
 TEST_CASE(SUITE("ReadGrp22Var0"))
 {
-	TestEventRead("C0 01 16 00 06", "E0 81 82 00 16 01 28 01 00 00 00 01 00 00 00 00"); // 1 byte count == 1, ONLINE quality
+	TestEventRead(
+		[](Database& db) { db.Update(Counter(0, CQ_ONLINE), 0); },
+		"C0 01 16 00 06", "E0 81 80 00 16 01 28 01 00 00 00 01 00 00 00 00"
+	);
 }
 
 TEST_CASE(SUITE("ReadGrp32Var0"))
 {
-	TestEventRead("C0 01 20 00 06", "E0 81 82 00 20 01 28 01 00 00 00 01 00 00 00 00"); // 1 byte count == 1, ONLINE quality
+	TestEventRead(
+		[](Database& db) { db.Update(Analog(0.0, AQ_ONLINE), 0); },
+		"C0 01 20 00 06", "E0 81 80 00 20 01 28 01 00 00 00 01 00 00 00 00"
+	);
 }
 
 /*
