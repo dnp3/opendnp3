@@ -24,6 +24,7 @@
 #include "LoggableMacros.h"
 #include "IExecutor.h"
 #include "LogLevels.h"
+#include "Bind.h"
 
 #include <sstream>
 
@@ -195,7 +196,7 @@ void PhysicalLayerAsyncBase::AsyncWrite(const openpal::ReadOnlyBuffer& buffer)
 			{
 				this->DoWriteSuccess();
 			};
-			this->GetExecutor()->Post(callback);
+			this->GetExecutor()->Post(Bind(callback));
 		}
 	}
 	else
@@ -220,7 +221,7 @@ void PhysicalLayerAsyncBase::AsyncRead(WriteBuffer& buffer)
 			{
 				this->DoReadCallback(ReadOnlyBuffer());
 			};
-			this->GetExecutor()->Post(callback);
+			this->GetExecutor()->Post(Bind(callback));
 		}
 	}
 	else

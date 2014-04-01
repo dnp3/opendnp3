@@ -23,9 +23,9 @@
 #include <sstream>
 #include <assert.h>
 
-
 #include <openpal/LoggableMacros.h>
 #include <openpal/IPhysicalLayerAsync.h>
+#include <openpal/Bind.h>
 
 #include "opendnp3/LogLevels.h"
 #include "ILinkContext.h"
@@ -276,10 +276,8 @@ void LinkLayerRouter::QueueTransmit(const openpal::ReadOnlyBuffer& buffer, ILink
 		}
 		else
 		{
-			this->pPhys->GetExecutor()->Post([pContext, primary]()
-			{
-				pContext->OnTransmitResult(primary, false);
-			});
+			auto lambda = [pContext, primary]() { pContext->OnTransmitResult(primary, false); };
+			this->pPhys->GetExecutor()->Post(Bind(lambda));
 		}
 	}
 	else

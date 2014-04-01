@@ -67,36 +67,38 @@ private:
 	openpal::StaticQueue<std::function<void (ICommandProcessor*)>, uint8_t, sizes::MAX_COMMAND_QUEUE_SIZE> requestQueue;
 
 	template <class T>
-	void SelectAndOperateT(const T& command, uint16_t index, std::function<void (CommandResponse)> callback)
+	void Enqueue(const T& command, uint16_t index, std::function<void(CommandResponse)> callback)
 	{
-		pExecutor->Post(
-		    [this, command, index, callback]()
-			{
-				auto enqueued = requestQueue.Enqueue(
-					[command, index, callback](ICommandProcessor * pProcessor)
-					{
-						pProcessor->SelectAndOperate(command, index, callback);
-					}
-				);
-				if (enqueued)
-				{
-					pEnableTask->Enable();
-				}
-				else
-				{
-					// TODO, special code for too many requests queued?
-					pExecutor->Post([=]{ callback(CommandResponse(CommandResult::TIMEOUT)); });
-				}
-				
-			}
-		);
+		/*
+		auto lambda = [command, index, callback](ICommandProcessor * pProcessor)
+		{
+			pProcessor->SelectAndOperate(command, index, callback);
+		};
+		
+		if (requestQueue.Enqueue(lambda))
+		{
+			pEnableTask->Enable();
+		}
+		else
+		{
+			// TODO, special code for too many requests queued?
+			auto lambda = [=]{ callback(CommandResponse(CommandResult::TIMEOUT)); };
+			pExecutor->Post(Bind(lambda));
+		}
+		*/
+	}
+
+	template <class T>
+	void SelectAndOperateT(const T& command, uint16_t index, std::function<void(CommandResponse)> callback)
+	{
+		//pExecutor->PostLambda([this, command, index, callback]() { Enqueue(command, index, callback); });
 	}
 
 	template <class T>
 	void DirectOperateT(const T& command, uint16_t index, std::function<void (CommandResponse)> callback)
 	{
-
-		pExecutor->Post(
+		/*
+		pExecutor->PostLambda(
 		    [this, command, index, callback]()
 			{
 				auto enqueued = requestQueue.Enqueue(
@@ -112,10 +114,12 @@ private:
 				else
 				{
 					// TODO, special code for too many requests queued?
-					pExecutor->Post([=]{ callback(CommandResponse(CommandResult::TIMEOUT)); });
+					auto lambda = [=]{ callback(CommandResponse(CommandResult::TIMEOUT)); };
+					pExecutor->Post(Bind(lambda));
 				}
 			}
 		);
+		*/
 	}
 };
 

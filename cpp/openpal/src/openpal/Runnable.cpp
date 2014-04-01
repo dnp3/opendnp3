@@ -34,6 +34,11 @@ void Runnable::Run()
 	}
 }
 
+bool Runnable::IsSet() const
+{
+	return (pInvoke != nullptr);
+}
+
 Runnable::Runnable() : pInvoke(nullptr), size(0)
 {}
 

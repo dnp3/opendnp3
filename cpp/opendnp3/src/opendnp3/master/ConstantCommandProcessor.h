@@ -57,6 +57,9 @@ public:
 	void DirectOperate(const AnalogOutputDouble64& arCommand, uint16_t aIndex, std::function<void (CommandResponse)> aCallback);
 
 private:
+
+	void Respond(std::function<void(CommandResponse)> callback);
+
 	openpal::IExecutor* mpExecutor;
 	CommandResponse mResponse;
 };

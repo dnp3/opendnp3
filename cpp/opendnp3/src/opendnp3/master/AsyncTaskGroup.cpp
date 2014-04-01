@@ -27,6 +27,7 @@
 
 #include <openpal/IExecutor.h>
 #include <openpal/Location.h>
+#include <openpal/Bind.h>
 
 #include <assert.h>
 
@@ -247,7 +248,8 @@ void AsyncTaskGroup::RestartTimer(const openpal::MonotonicTimestamp& arTime)
 
 	if (mpTimer == nullptr)
 	{
-		mpTimer = mpExecutor->Start(arTime, std::bind(&AsyncTaskGroup::OnTimerExpiration, this));
+		auto lambda = [this]() { this->OnTimerExpiration(); };
+		mpTimer = mpExecutor->Start(arTime, Bind(lambda));
 	}
 }
 

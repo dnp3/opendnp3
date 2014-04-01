@@ -37,22 +37,22 @@ DestructorHook::DestructorHook() : mpExecutor(nullptr)
 
 DestructorHook::~DestructorHook()
 {
-	if (hook)
+	if (runnable.IsSet())
 	{
-		if (mpExecutor == nullptr)
+		if (mpExecutor)
 		{
-			hook();
+			mpExecutor->Post(runnable);			
 		}
 		else
 		{
-			mpExecutor->Post([this]() { hook(); });
+			runnable.Run();
 		}
 	}
 }
 
-void DestructorHook::SetDestructorHook(const std::function<void ()>& hook_)
+void DestructorHook::SetDestructorHook(const openpal::Runnable& runnable_)
 {
-	hook = hook_;
+	runnable = runnable_;
 }
 
 }

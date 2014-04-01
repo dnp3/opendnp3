@@ -21,8 +21,6 @@
 #ifndef __ITERABLE_BUFFER_H_
 #define __ITERABLE_BUFFER_H_
 
-#include <functional>
-
 #include <openpal/BufferWrapper.h>
 
 namespace opendnp3

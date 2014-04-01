@@ -25,7 +25,6 @@
 #include <string>
 #include <stdint.h>
 #include <memory>
-#include <functional>
 
 #include <mutex>
 #include <condition_variable>

@@ -22,13 +22,13 @@
 
 #include <openpal/LoggableMacros.h>
 #include <openpal/IExecutor.h>
+#include <openpal/Bind.h>
 
 #include "AppLayer.h"
 #include "AppChannelStates.h"
 #include "opendnp3/LogLevels.h"
 
 #include <assert.h>
-#include <functional>
 
 using namespace openpal;
 
@@ -123,7 +123,8 @@ void AppLayerChannel::DoFinalResponse(const APDUResponseRecord& record)
 void AppLayerChannel::StartTimer()
 {
 	assert(mpTimer == nullptr);
-	mpTimer = mpExecutor->Start(TimeDuration(M_TIMEOUT), std::bind(&AppLayerChannel::Timeout, this));
+	auto lambda = [this]() { this->Timeout(); };
+	mpTimer = mpExecutor->Start(TimeDuration(M_TIMEOUT), openpal::Bind(lambda));
 }
 
 void AppLayerChannel::CancelTimer()

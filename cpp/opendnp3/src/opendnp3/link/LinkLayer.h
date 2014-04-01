@@ -92,13 +92,7 @@ public:
 		}
 	}
 
-	void PostSendResult(bool isSuccess)
-	{
-		mpExecutor->Post([this, isSuccess]()
-		{
-			this->DoSendResult(isSuccess);
-		});
-	}
+	void PostSendResult(bool isSuccess);
 
 	void ResetReadFCB()
 	{

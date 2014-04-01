@@ -21,7 +21,6 @@
 
 #include "APDUHeaderParser.h"
 
-#include <functional>
 #include <limits>
 
 #include <openpal/Uncopyable.h>

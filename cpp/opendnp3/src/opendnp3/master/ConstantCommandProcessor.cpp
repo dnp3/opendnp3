@@ -21,6 +21,7 @@
 #include "ConstantCommandProcessor.h"
 
 #include <openpal/IExecutor.h>
+#include <openpal/Bind.h>
 
 using namespace openpal;
 
@@ -34,95 +35,62 @@ ConstantCommandProcessor::ConstantCommandProcessor(IExecutor* apExecutor, const 
 
 }
 
-
-void ConstantCommandProcessor::SelectAndOperate(const ControlRelayOutputBlock& arCommand, uint16_t aIndex, std::function<void (CommandResponse)> aCallback)
+void ConstantCommandProcessor::Respond(std::function<void(CommandResponse)> callback)
 {
 	CommandResponse cr(mResponse);
-	mpExecutor->Post([ = ]()
-	{
-		aCallback(cr);
-	});
+	auto lambda = [=]() { callback(cr); };
+	mpExecutor->Post(Bind(lambda));
 }
 
-void ConstantCommandProcessor::DirectOperate(const ControlRelayOutputBlock& arCommand, uint16_t aIndex, std::function<void (CommandResponse)> aCallback)
+
+void ConstantCommandProcessor::SelectAndOperate(const ControlRelayOutputBlock& arCommand, uint16_t aIndex, std::function<void (CommandResponse)> callback)
 {
-	CommandResponse cr(mResponse);
-	mpExecutor->Post([ = ]()
-	{
-		aCallback(cr);
-	});
+	this->Respond(callback);
 }
 
-void ConstantCommandProcessor::SelectAndOperate(const AnalogOutputInt16& arCommand, uint16_t aIndex, std::function<void (CommandResponse)> aCallback)
+void ConstantCommandProcessor::DirectOperate(const ControlRelayOutputBlock& arCommand, uint16_t aIndex, std::function<void (CommandResponse)> callback)
 {
-	CommandResponse cr(mResponse);
-	mpExecutor->Post([ = ]()
-	{
-		aCallback(cr);
-	});
+	this->Respond(callback);
 }
 
-void ConstantCommandProcessor::DirectOperate(const AnalogOutputInt16& arCommand, uint16_t aIndex, std::function<void (CommandResponse)> aCallback)
+void ConstantCommandProcessor::SelectAndOperate(const AnalogOutputInt16& arCommand, uint16_t aIndex, std::function<void (CommandResponse)> callback)
 {
-	CommandResponse cr(mResponse);
-	mpExecutor->Post([ = ]()
-	{
-		aCallback(cr);
-	});
+	this->Respond(callback);
 }
 
-void ConstantCommandProcessor::SelectAndOperate(const AnalogOutputInt32& arCommand, uint16_t aIndex, std::function<void (CommandResponse)> aCallback)
+void ConstantCommandProcessor::DirectOperate(const AnalogOutputInt16& arCommand, uint16_t aIndex, std::function<void (CommandResponse)> callback)
 {
-	CommandResponse cr(mResponse);
-	mpExecutor->Post([ = ]()
-	{
-		aCallback(cr);
-	});
+	this->Respond(callback);
 }
 
-void ConstantCommandProcessor::DirectOperate(const AnalogOutputInt32& arCommand, uint16_t aIndex, std::function<void (CommandResponse)> aCallback)
+void ConstantCommandProcessor::SelectAndOperate(const AnalogOutputInt32& arCommand, uint16_t aIndex, std::function<void (CommandResponse)> callback)
 {
-	CommandResponse cr(mResponse);
-	mpExecutor->Post([ = ]()
-	{
-		aCallback(cr);
-	});
+	this->Respond(callback);
 }
 
-void ConstantCommandProcessor::SelectAndOperate(const AnalogOutputFloat32& arCommand, uint16_t aIndex, std::function<void (CommandResponse)> aCallback)
+void ConstantCommandProcessor::DirectOperate(const AnalogOutputInt32& arCommand, uint16_t aIndex, std::function<void (CommandResponse)> callback)
 {
-	CommandResponse cr(mResponse);
-	mpExecutor->Post([ = ]()
-	{
-		aCallback(cr);
-	});
+	this->Respond(callback);
 }
 
-void ConstantCommandProcessor::DirectOperate(const AnalogOutputFloat32& arCommand, uint16_t aIndex, std::function<void (CommandResponse)> aCallback)
+void ConstantCommandProcessor::SelectAndOperate(const AnalogOutputFloat32& arCommand, uint16_t aIndex, std::function<void (CommandResponse)> callback)
 {
-	CommandResponse cr(mResponse);
-	mpExecutor->Post([ = ]()
-	{
-		aCallback(cr);
-	});
+	this->Respond(callback);
 }
 
-void ConstantCommandProcessor::SelectAndOperate(const AnalogOutputDouble64& arCommand, uint16_t aIndex, std::function<void (CommandResponse)> aCallback)
+void ConstantCommandProcessor::DirectOperate(const AnalogOutputFloat32& arCommand, uint16_t aIndex, std::function<void (CommandResponse)> callback)
 {
-	CommandResponse cr(mResponse);
-	mpExecutor->Post([ = ]()
-	{
-		aCallback(cr);
-	});
+	this->Respond(callback);
 }
 
-void ConstantCommandProcessor::DirectOperate(const AnalogOutputDouble64& arCommand, uint16_t aIndex, std::function<void (CommandResponse)> aCallback)
+void ConstantCommandProcessor::SelectAndOperate(const AnalogOutputDouble64& arCommand, uint16_t aIndex, std::function<void (CommandResponse)> callback)
 {
-	CommandResponse cr(mResponse);
-	mpExecutor->Post([ = ]()
-	{
-		aCallback(cr);
-	});
+	this->Respond(callback);
+}
+
+void ConstantCommandProcessor::DirectOperate(const AnalogOutputDouble64& arCommand, uint16_t aIndex, std::function<void (CommandResponse)> callback)
+{
+	this->Respond(callback);
 }
 
 }

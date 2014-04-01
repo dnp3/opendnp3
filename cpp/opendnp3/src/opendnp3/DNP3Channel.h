@@ -32,7 +32,6 @@
 #include "opendnp3/link/LinkLayerRouter.h"
 
 #include <memory>
-#include <functional>
 
 namespace openpal
 {

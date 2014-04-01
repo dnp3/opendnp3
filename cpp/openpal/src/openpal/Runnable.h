@@ -32,11 +32,12 @@ public:
 
 	const static uint32_t MAX_SIZE = 64;
 
-	void Run();
-
 	Runnable();
 	Runnable(const Runnable& other);
 
+	void Run();
+
+	bool IsSet() const;
 
 	Runnable& Runnable::operator=(const Runnable& other);
 
@@ -52,34 +53,6 @@ protected:
 	uint32_t size;
 	uint8_t bytes[MAX_SIZE];
 };
-
-template <class Lambda>
-class LambdaRunnable : public Runnable
-{
-	static_assert(sizeof(Lambda) <= MAX_SIZE, "Lambda is too big for static buffer");
-
-	public:
-
-	LambdaRunnable(const Lambda& lambda) : Runnable(&RunLambda, sizeof(Lambda))
-	{
-		auto pLambda = reinterpret_cast<Lambda*>(bytes);
-		*pLambda = lambda;
-	}
-
-	private:
-
-	static void RunLambda(uint8_t* pBuffer)
-	{
-		auto pLambda = reinterpret_cast<Lambda*>(pBuffer);
-		(*pLambda)();
-	}
-};
-
-template <class Lambda>
-Runnable Bind(const Lambda& lambda)
-{
-	return LambdaRunnable<Lambda>(lambda);
-}
 
 }
 

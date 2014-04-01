@@ -20,8 +20,8 @@
  */
 #include "TransportLayer.h"
 
-
 #include <openpal/LoggableMacros.h>
+#include <openpal/Bind.h>
 
 #include "TransportConstants.h"
 #include "TransportStates.h"
@@ -96,10 +96,8 @@ void TransportLayer::Send(const ReadOnlyBuffer& apdu)
 		if (apdu.IsEmpty() || apdu.Size() > M_FRAG_SIZE)
 		{
 			LOG_BLOCK(flags::ERR, "Illegal arg: " << apdu.Size() << ", Array length must be in the range [1," << M_FRAG_SIZE << "]");
-			pExecutor->Post([this]()
-			{
-				this->OnSendResult(false);
-			});
+			auto lambda = [this]() { this->OnSendResult(false); };
+			pExecutor->Post(Bind(lambda));
 		}
 		else
 		{

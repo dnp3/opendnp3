@@ -26,6 +26,8 @@
 #include "ITimer.h"
 #include "TimeDuration.h"
 #include "MonotonicTimestamp.h"
+#include "Runnable.h"
+#include "Bind.h"
 
 namespace openpal
 {
@@ -48,13 +50,19 @@ public:
 	virtual MonotonicTimestamp GetTime() = 0;
 
 	/** Returns a new timer based on a relative time duration */
-	virtual ITimer* Start(const TimeDuration& arDuration, const std::function<void ()>&) = 0;
+	virtual ITimer* Start(const TimeDuration& arDuration, const Runnable& runnable) = 0;
 
 	/** Returns a new timer based on an absolute timestamp of the monotonic clock */
-	virtual ITimer* Start(const MonotonicTimestamp&, const std::function<void ()>&) = 0;
+	virtual ITimer* Start(const MonotonicTimestamp&, const Runnable& runnable) = 0;
 
 	/** Thread-safe way to post an event to be handled asynchronously */
-	virtual void Post(const std::function<void ()>&) = 0;
+	virtual void Post(const Runnable& runnable) = 0;
+
+	template <class Lambda>
+	void PostLambda(Lambda& lambda)
+	{
+		this->Post(Bind(lambda));
+	}
 
 protected:
 

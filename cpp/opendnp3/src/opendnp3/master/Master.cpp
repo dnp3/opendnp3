@@ -39,8 +39,6 @@
 
 #include <openpal/LoggableMacros.h>
 
-#include <functional>
-
 using namespace openpal;
 
 namespace opendnp3

@@ -48,10 +48,8 @@ IMeasurementLoader* OutstationStackImpl::GetLoader()
 
 void OutstationStackImpl::SetNeedTimeIIN()
 {
-	pExecutor->Post([this]()
-	{
-		this->outstation.SetNeedTimeIIN();
-	});
+	auto lambda = [this]() { this->outstation.SetNeedTimeIIN(); };
+	pExecutor->PostLambda(lambda);
 }
 
 }

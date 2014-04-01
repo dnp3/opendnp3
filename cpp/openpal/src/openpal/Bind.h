@@ -18,43 +18,42 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __DESTRUCTOR_HOOK_H_
-#define __DESTRUCTOR_HOOK_H_
+#ifndef __OPENPAL_BIND_H_
+#define __OPENPAL_BIND_H_
 
-#include <openpal/Runnable.h>
+#include "Runnable.h"
 
 namespace openpal
 {
-class IExecutor;
-}
 
-namespace opendnp3
+template <class Lambda>
+class LambdaRunnable : public Runnable
 {
+	static_assert(sizeof(Lambda) <= MAX_SIZE, "Lambda is too big for static buffer");
 
-/**
-* Provides callback capabilities upon destruction. Useful for tying the lifecycle of some resource
-* to the lifecycle of this object.
-*/
-class DestructorHook
-{
-public:
-	DestructorHook();
-	DestructorHook(openpal::IExecutor*);
+	public:
 
-	virtual ~DestructorHook();
+	LambdaRunnable(const Lambda& lambda) : Runnable(&RunLambda, sizeof(Lambda))
+	{
+		auto pLambda = reinterpret_cast<Lambda*>(bytes);
+		*pLambda = lambda;
+	}
 
-	/**
-	* Adds a destructor callback
-	* @param aHook Callback that will be invoked when this class's destructor is called.
-	*/
-	void SetDestructorHook(const openpal::Runnable& runnable);
+	private:
 
-private:
-	openpal::IExecutor* mpExecutor;
-	openpal::Runnable runnable;
+	static void RunLambda(uint8_t* pBuffer)
+	{
+		auto pLambda = reinterpret_cast<Lambda*>(pBuffer);
+		(*pLambda)();
+	}
 };
+
+template <class Lambda>
+Runnable Bind(const Lambda& lambda)
+{
+	return LambdaRunnable<Lambda>(lambda);
+}
 
 }
 
 #endif
-

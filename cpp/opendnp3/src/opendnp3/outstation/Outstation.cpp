@@ -39,8 +39,6 @@
 #include "opendnp3/outstation/ConstantCommandAction.h"
 #include "opendnp3/outstation/CommandResponseHandler.h"
 
-#include <functional>
-
 using namespace openpal;
 
 namespace opendnp3
@@ -395,14 +393,16 @@ IINField Outstation::GetDynamicIIN()
 void Outstation::StartUnsolTimer(openpal::TimeDuration aTimeout)
 {
 	assert(mpUnsolTimer == nullptr);
-	mpUnsolTimer = pExecutor->Start(aTimeout, std::bind(&Outstation::OnUnsolTimerExpiration, this));
+	auto lambda = [this]() { this->OnUnsolTimerExpiration(); };
+	mpUnsolTimer = pExecutor->Start(aTimeout, Bind(lambda));
 }
 
 void Outstation::ResetTimeIIN()
 {
 	mpTimeTimer = nullptr;
 	staticIIN.Set(IINBit::NEED_TIME);
-	mpTimeTimer = pExecutor->Start(mConfig.mTimeSyncPeriod, std::bind(&Outstation::ResetTimeIIN, this));
+	auto lambda = [this]() { this->ResetTimeIIN(); };
+	mpTimeTimer = pExecutor->Start(mConfig.mTimeSyncPeriod, Bind(lambda));
 }
 
 } //end ns

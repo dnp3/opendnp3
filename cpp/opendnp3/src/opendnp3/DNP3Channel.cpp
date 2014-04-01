@@ -52,7 +52,7 @@ DNP3Channel::DNP3Channel(
 // comes from the outside, so we need to synchronize
 void DNP3Channel::BeginShutdown()
 {
-	pPhys->GetExecutor()->Post([this]()
+	pPhys->GetExecutor()->PostLambda([this]()
 	{
 		this->InitiateShutdown();
 	});
@@ -86,12 +86,13 @@ void DNP3Channel::CheckForFinalShutdown()
 	{
 		state = State::SHUTDOWN;
 
-		pPhys->GetExecutor()->Start(TimeDuration::Zero(),
-		                            [this]()
+		auto lambda = [this]()
 		{
 			this->pShutdownHandler->OnShutdown(this);
-		}
-		                           );
+		};
+
+		pPhys->GetExecutor()->Start(TimeDuration::Zero(), Bind(lambda));
+		                           		                           
 	}
 }
 
@@ -106,11 +107,9 @@ openpal::LogFilters DNP3Channel::GetLogFilters() const
 }
 
 void DNP3Channel::SetLogFilters(const openpal::LogFilters& filters)
-{
-	pPhys->GetExecutor()->Post([this, filters]()
-	{
-		this->pPhys->GetLogRoot().SetFilters(filters);
-	});
+{	
+	auto lambda = [this, filters]() { this->pPhys->GetLogRoot().SetFilters(filters); };	
+	//pPhys->GetExecutor()->Post(Bind(lambda));
 }
 
 IMaster* DNP3Channel::AddMaster(const std::string& id, ISOEHandler* apPublisher, IUTCTimeSource* apTimeSource, const MasterStackConfig& config)

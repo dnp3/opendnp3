@@ -22,6 +22,7 @@
 
 #include <openpal/LoggableMacros.h>
 #include <openpal/IExecutor.h>
+#include <openpal/Bind.h>
 
 #include "opendnp3/Singleton.h"
 #include "opendnp3/DNPErrorCodes.h"
@@ -120,10 +121,8 @@ void ACS_Idle::Send(AppLayerChannel* c, APDUWrapper& apdu, uint32_t aNumRetry)
 	auto pNext = NextState(c, func, acf.CON);
 	if (pNext == this)
 	{
-		c->mpExecutor->Post([c]()
-		{
-			c->DoFailure();
-		});
+		auto lambda = [c]() { c->DoFailure(); };
+		c->mpExecutor->Post(Bind(lambda));
 	}
 	else
 	{

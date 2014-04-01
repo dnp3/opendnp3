@@ -25,9 +25,6 @@
 
 #include "ISOEHandler.h"
 
-#include <functional>
-
-
 namespace opendnp3
 {
 

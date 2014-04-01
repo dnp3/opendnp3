@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\openpal\AsyncLayerInterfaces.h" />
+    <ClInclude Include="src\openpal\Bind.h" />
     <ClInclude Include="src\openpal\BufferWrapper.h" />
     <ClInclude Include="src\openpal\IEventHandler.h" />
     <ClInclude Include="src\openpal\IMutex.h" />

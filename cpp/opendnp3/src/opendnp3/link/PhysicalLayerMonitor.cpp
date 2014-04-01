@@ -26,8 +26,7 @@
 
 #include <openpal/IPhysicalLayerAsync.h>
 #include <openpal/LoggableMacros.h>
-
-#include <functional>
+#include <openpal/Bind.h>
 
 #include <assert.h>
 
@@ -158,7 +157,8 @@ void PhysicalLayerMonitor::OnOpenTimerExpiration()
 void PhysicalLayerMonitor::StartOpenTimer()
 {
 	assert(mpOpenTimer == nullptr);
-	mpOpenTimer = pPhys->GetExecutor()->Start(currentRetry, std::bind(&PhysicalLayerMonitor::OnOpenTimerExpiration, this));
+	auto lambda = [this]() { this->OnOpenTimerExpiration(); };
+	mpOpenTimer = pPhys->GetExecutor()->Start(currentRetry, Bind(lambda));
 }
 
 void PhysicalLayerMonitor::CancelOpenTimer()
