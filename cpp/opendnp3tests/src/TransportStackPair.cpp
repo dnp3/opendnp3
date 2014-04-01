@@ -30,8 +30,8 @@ namespace opendnp3
 TransportStackPair::TransportStackPair(
     LinkConfig aClientCfg,
     LinkConfig aServerCfg,
-	openpal::ILogBase* pLog,
-	uint32_t filters,
+    openpal::ILogBase* pLog,
+    uint32_t filters,
     asio::io_service* apService,
     uint16_t aPort) :
 

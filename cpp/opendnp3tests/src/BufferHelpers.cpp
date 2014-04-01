@@ -112,7 +112,7 @@ uint32_t HexSequence::Validate(const std::string& s)
 	return static_cast<uint32_t>(s.size() / 2);
 }
 
-BufferSegment::BufferSegment(uint32_t segmentSize_, const std::string& hex) : 
+BufferSegment::BufferSegment(uint32_t segmentSize_, const std::string& hex) :
 	segmentSize(segmentSize_),
 	hs(hex),
 	remainder(hs.ToReadOnly())
@@ -133,7 +133,7 @@ bool BufferSegment::HasValue() const
 openpal::ReadOnlyBuffer BufferSegment::GetSegment()
 {
 	auto size = std::min(segmentSize, remainder.Size());
-	auto chunk = remainder.Truncate(size);	
+	auto chunk = remainder.Truncate(size);
 	return chunk;
 }
 

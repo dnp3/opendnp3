@@ -36,7 +36,7 @@ ShiftableBuffer::ShiftableBuffer(uint8_t* aBuffer, uint32_t aSize) :
 	mWritePos(0),
 	mReadPos(0)
 {
-	
+
 }
 
 void ShiftableBuffer::Shift()
@@ -71,7 +71,7 @@ bool ShiftableBuffer::Sync()
 	while (this->NumReadBytes() > 1) // at least 2 bytes
 	{
 		if (this->ReadBuff()[0] == 0x05 && this->ReadBuff()[1] == 0x64)
-		{ 
+		{
 			return true;
 		}
 		else

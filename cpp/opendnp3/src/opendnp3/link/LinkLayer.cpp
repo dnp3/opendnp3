@@ -39,7 +39,7 @@ namespace opendnp3
 {
 
 LinkLayer::LinkLayer(const openpal::Logger& logger, openpal::IExecutor* apExecutor, const LinkConfig& config_) :
-	Loggable(logger),	
+	Loggable(logger),
 	config(config_),
 	pConfirmedSegments(nullptr),
 	mRetryRemaining(0),
@@ -78,8 +78,8 @@ bool LinkLayer::Validate(bool aIsMaster, uint16_t aSrc, uint16_t aDest)
 		if (aIsMaster == config.IsMaster)
 		{
 			ERROR_BLOCK(flags::WARN,
-				(aIsMaster ? "Master frame received for master" : "Outstation frame received for outstation"),
-				DLERR_MASTER_BIT_MATCH);
+			            (aIsMaster ? "Master frame received for master" : "Outstation frame received for outstation"),
+			            DLERR_MASTER_BIT_MATCH);
 			return false;
 		}
 		else
@@ -94,20 +94,20 @@ bool LinkLayer::Validate(bool aIsMaster, uint16_t aSrc, uint16_t aDest)
 				{
 					ERROR_BLOCK(flags::WARN, "Frame from unknwon source", DLERR_UNKNOWN_SOURCE);
 					return false;
-				}				
+				}
 			}
 			else
 			{
 				ERROR_BLOCK(flags::WARN, "Frame for unknown destintation", DLERR_UNKNOWN_DESTINATION);
-				return false;			
-			}			
-		}		
+				return false;
+			}
+		}
 	}
 	else
 	{
 		LOG_BLOCK(flags::ERR, "Layer is not online");
 		return false;
-	}	
+	}
 }
 
 ////////////////////////////////
@@ -164,7 +164,7 @@ void LinkLayer::OnLowerLayerDown()
 		{
 			this->CancelTimer();
 		}
-		
+
 		mpPriState = PLLS_SecNotReset::Inst();
 		mpSecState = SLLS_NotReset::Inst();
 
@@ -215,8 +215,8 @@ ReadOnlyBuffer LinkLayer::FormatPrimaryBufferWithUnconfirmed(IBufferSegment& seg
 	{
 		auto seg = segments.GetSegment();
 		segments.Advance();
-		if(buffer.Size() >= LinkFrame::CalcFrameSize(seg.Size())) 
-		{			
+		if(buffer.Size() >= LinkFrame::CalcFrameSize(seg.Size()))
+		{
 			size += LinkFrame::FormatUnconfirmedUserData(buffer, config.IsMaster, config.RemoteAddr, config.LocalAddr, seg, seg.Size()).Size();
 		}
 		else
@@ -241,17 +241,17 @@ void LinkLayer::QueueAck()
 }
 
 void LinkLayer::QueueLinkStatus()
-{	
+{
 	auto writeTo = primaryBuffer.GetWriteBuffer();
 	auto buffer = LinkFrame::FormatLinkStatus(writeTo, config.IsMaster, false, config.RemoteAddr, config.LocalAddr);
-	this->QueueTransmit(buffer, false);	
+	this->QueueTransmit(buffer, false);
 }
 
 void LinkLayer::QueueResetLinks()
-{	
+{
 	auto writeTo = primaryBuffer.GetWriteBuffer();
 	auto buffer = LinkFrame::FormatResetLinkStates(writeTo, config.IsMaster, config.RemoteAddr, config.LocalAddr);
-	this->QueueTransmit(buffer, true);	
+	this->QueueTransmit(buffer, true);
 }
 
 void LinkLayer::StartTimer()

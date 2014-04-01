@@ -70,12 +70,12 @@ struct DatabaseTemplate
 	}
 
 	DatabaseTemplate(uint32_t numBinary_ = 0,
-					 uint32_t numDoubleBinary_ = 0,
-					 uint32_t numAnalog_ = 0,
-					 uint32_t numCounter_ = 0,
-					 uint32_t numFrozenCounter_ = 0,
-					 uint32_t numBinaryOutputStatus_ = 0,
-					 uint32_t numAnalogOutputStatus_ = 0) :
+	                 uint32_t numDoubleBinary_ = 0,
+	                 uint32_t numAnalog_ = 0,
+	                 uint32_t numCounter_ = 0,
+	                 uint32_t numFrozenCounter_ = 0,
+	                 uint32_t numBinaryOutputStatus_ = 0,
+	                 uint32_t numAnalogOutputStatus_ = 0) :
 
 		numBinary(numBinary_),
 		numDoubleBinary(numDoubleBinary_),

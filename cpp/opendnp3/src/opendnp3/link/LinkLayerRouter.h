@@ -61,8 +61,8 @@ public:
 	                openpal::IPhysicalLayerAsync*,
 	                openpal::TimeDuration minOpenRetry,
 	                openpal::TimeDuration maxOpenRetry,
-					openpal::IEventHandler<ChannelState>* pStateHandler = nullptr,
-					openpal::IShutdownHandler* pShutdownHandler = nullptr,
+	                openpal::IEventHandler<ChannelState>* pStateHandler = nullptr,
+	                openpal::IShutdownHandler* pShutdownHandler = nullptr,
 	                IOpenDelayStrategy* pStrategy = ExponentialBackoffStrategy::Inst());
 
 	// Query to see if a route is in use
@@ -109,7 +109,7 @@ public:
 	virtual void OnSendResult(bool success) override final;
 
 protected:
-	
+
 	void OnShutdown() override final;
 
 private:
@@ -120,8 +120,8 @@ private:
 
 	struct Record
 	{
-		Record(ILinkContext* context, const LinkRoute& route_) : 
-			pContext(context), 
+		Record(ILinkContext* context, const LinkRoute& route_) :
+			pContext(context),
 			route(route_),
 			enabled(false)
 		{}
@@ -132,7 +132,7 @@ private:
 		ILinkContext* pContext;
 		LinkRoute route;
 		bool enabled;
-	};	
+	};
 
 	struct Transmission
 	{
@@ -153,13 +153,13 @@ private:
 	ILinkContext* GetDestination(uint16_t aDest, uint16_t aSrc);
 	ILinkContext* GetEnabledContext(const LinkRoute&);
 
-	void CheckForSend();	
-	
+	void CheckForSend();
+
 	openpal::IEventHandler<ChannelState>* pStateHandler;
 	openpal::IShutdownHandler* pShutdownHandler;
-	
+
 	openpal::StaticLinkedList<Record, uint16_t, sizes::MAX_STACKS_PER_CHANNEL> records;
-	openpal::StaticQueue<Transmission, uint16_t, sizes::MAX_STACKS_PER_CHANNEL> transmitQueue;	
+	openpal::StaticQueue<Transmission, uint16_t, sizes::MAX_STACKS_PER_CHANNEL> transmitQueue;
 
 	// Handles the parsing of incoming frames
 	LinkLayerReceiver mReceiver;

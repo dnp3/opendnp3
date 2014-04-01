@@ -30,7 +30,7 @@ using namespace openpal;
 namespace opendnp3
 {
 
-	MockTransportLayer::MockTransportLayer(ILinkLayer* pLinkLayer_) : pLinkLayer(pLinkLayer_), isOnline(false)
+MockTransportLayer::MockTransportLayer(ILinkLayer* pLinkLayer_) : pLinkLayer(pLinkLayer_), isOnline(false)
 {}
 
 void MockTransportLayer::SendDown(IBufferSegment& segments)
@@ -40,14 +40,14 @@ void MockTransportLayer::SendDown(IBufferSegment& segments)
 
 void MockTransportLayer::OnReceive(const openpal::ReadOnlyBuffer& buffer)
 {
-	receivedQueue.push_back(toHex(buffer));	
+	receivedQueue.push_back(toHex(buffer));
 }
 
 void MockTransportLayer::OnSendResult(bool isSuccess)
 {
 	if (isSuccess)
 	{
-		++state.successCnt; 
+		++state.successCnt;
 	}
 	else
 	{

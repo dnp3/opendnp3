@@ -60,14 +60,14 @@ public:
 	virtual void Update(const Event<Binary>& aEvent) override final;
 	virtual void Update(const Event<Analog>& aEvent) override final;
 	virtual void Update(const Event<Counter>& aEvent) override final;
-	virtual void Update(const Event<FrozenCounter>& aEvent) override final;	
+	virtual void Update(const Event<FrozenCounter>& aEvent) override final;
 	virtual void Update(const Event<DoubleBitBinary>& aEvent) override final;
 	virtual void Update(const Event<BinaryOutputStatus>& aEvent) override final;
 	virtual void Update(const Event<AnalogOutputStatus>& aEvent) override final;
-	
+
 	void Reset(); // called when a transmission fails
 	void Clear(); // called when a transmission succeeds
-	
+
 	SelectionIterator SelectEvents(const SelectionCriteria& criteria);
 
 	// returns how many events are *unselected* that match the criteria specified
@@ -89,10 +89,10 @@ private:
 	template <class T>
 	static bool HasSpace(const T& buffer);
 
-	bool HasEnoughSpaceToClearOverflow() const;	
+	bool HasEnoughSpaceToClearOverflow() const;
 
 	template <class T, class EnumType>
-	void InsertEvent(const T& aEvent, EnumType eventType, openpal::RandomInsertAdapter<T, uint16_t>& buffer);		
+	void InsertEvent(const T& aEvent, EnumType eventType, openpal::RandomInsertAdapter<T, uint16_t>& buffer);
 };
 
 template <class T>
@@ -122,7 +122,7 @@ void OutstationEventBuffer::InsertEvent(const T& aEvent, EnumType eventType, ope
 			totalTracker.Increment(eventType, aEvent.clazz);
 			auto index = buffer.Add(aEvent);
 			SequenceRecord record(eventType, index, aEvent.clazz, false);
-			facade.sequenceOfEvents.Add(record);		
+			facade.sequenceOfEvents.Add(record);
 		}
 	}
 }

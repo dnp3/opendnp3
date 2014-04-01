@@ -28,7 +28,7 @@ using namespace openpal;
 namespace opendnp3
 {
 
-SelectionIterator::SelectionIterator(OutstationEventBuffer* pBuffer_, const SelectionCriteria& criteria_, const openpal::LinkedListAdapter<SequenceRecord, uint16_t>::Iterator& iterator_) : 
+SelectionIterator::SelectionIterator(OutstationEventBuffer* pBuffer_, const SelectionCriteria& criteria_, const openpal::LinkedListAdapter<SequenceRecord, uint16_t>::Iterator& iterator_) :
 	pBuffer(pBuffer_),
 	criteria(criteria_),
 	pCurrent(nullptr),
@@ -43,7 +43,7 @@ Option<EventType> SelectionIterator::SeekNext()
 		if (!pCurrent->value.selected && criteria.IsMatch(pCurrent->value.clazz, pCurrent->value.type))
 		{
 			return Option<EventType>::Some(pCurrent->value.type);
-		}	
+		}
 	}
 
 	pCurrent = nullptr;
@@ -58,7 +58,7 @@ openpal::Option<EventType> SelectionIterator::Current()
 	}
 	else
 	{
-		return Option<EventType>::None();		
+		return Option<EventType>::None();
 	}
 }
 
@@ -66,8 +66,8 @@ void SelectionIterator::SelectCurrent()
 {
 	assert(pCurrent);
 	pCurrent->value.selected = true;
-	pBuffer->selectedTracker.Increment(pCurrent->value.type, pCurrent->value.clazz);	
-	pBuffer->facade.selectedEvents.Push(pCurrent);	
+	pBuffer->selectedTracker.Increment(pCurrent->value.type, pCurrent->value.clazz);
+	pBuffer->facade.selectedEvents.Push(pCurrent);
 	pCurrent = nullptr;
 }
 

@@ -200,7 +200,7 @@ public:
 	}
 
 	virtual void _OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<ControlRelayOutputBlock, uint16_t>>& meas) override
-	{		
+	{
 		records.push_back(record);
 		meas.foreach([&](const IndexedValue<ControlRelayOutputBlock, uint16_t>& v)
 		{
@@ -218,7 +218,7 @@ public:
 	}
 
 	virtual void _OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputInt32, uint16_t>>& meas) override
-	{	
+	{
 		records.push_back(record);
 		meas.foreach([&](const IndexedValue<AnalogOutputInt32, uint16_t>& v)
 		{
@@ -227,7 +227,7 @@ public:
 	}
 
 	virtual void _OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputFloat32, uint16_t>>& meas) override
-	{	
+	{
 		records.push_back(record);
 		meas.foreach([&](const IndexedValue<AnalogOutputFloat32, uint16_t>& v)
 		{
@@ -236,7 +236,7 @@ public:
 	}
 
 	virtual void _OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputDouble64, uint16_t>>& meas) override
-	{	
+	{
 		records.push_back(record);
 		meas.foreach([&](const IndexedValue<AnalogOutputDouble64, uint16_t>& v)
 		{
@@ -245,7 +245,7 @@ public:
 	}
 
 	virtual void _OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<ControlRelayOutputBlock, uint8_t>>& meas) override
-	{		
+	{
 		records.push_back(record);
 		meas.foreach([&](const IndexedValue<ControlRelayOutputBlock, uint8_t>& v)
 		{
@@ -254,7 +254,7 @@ public:
 	}
 
 	virtual void _OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputInt16, uint8_t>>& meas) override
-	{		
+	{
 		records.push_back(record);
 		meas.foreach([&](const IndexedValue<AnalogOutputInt16, uint8_t>& v)
 		{
@@ -263,7 +263,7 @@ public:
 	}
 
 	virtual void _OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputInt32, uint8_t>>& meas) override
-	{		
+	{
 		records.push_back(record);
 		meas.foreach([&](const IndexedValue<AnalogOutputInt32, uint8_t>& v)
 		{
@@ -272,7 +272,7 @@ public:
 	}
 
 	virtual void _OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputFloat32, uint8_t>>& meas) override
-	{		
+	{
 		records.push_back(record);
 		meas.foreach([&](const IndexedValue<AnalogOutputFloat32, uint8_t>& v)
 		{
@@ -281,7 +281,7 @@ public:
 	}
 
 	virtual void _OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputDouble64, uint8_t>>& meas) override
-	{		
+	{
 		records.push_back(record);
 		meas.foreach([&](const IndexedValue<AnalogOutputDouble64, uint8_t>& v)
 		{

@@ -51,14 +51,14 @@ bool SelectionCriteria::IsMatch(EventClass clazz, EventType type) const
 {
 	switch(clazz)
 	{
-		case(EventClass::EC1):
-			return (class1 & static_cast<uint32_t>(type)) != 0;
-		case(EventClass::EC2):
-			return (class2 & static_cast<uint32_t>(type)) != 0;
-		case(EventClass::EC3):
-			return (class3 & static_cast<uint32_t>(type)) != 0;
-		default:
-			return false;
+	case(EventClass::EC1):
+		return (class1 & static_cast<uint32_t>(type)) != 0;
+	case(EventClass::EC2):
+		return (class2 & static_cast<uint32_t>(type)) != 0;
+	case(EventClass::EC3):
+		return (class3 & static_cast<uint32_t>(type)) != 0;
+	default:
+		return false;
 	}
 }
 

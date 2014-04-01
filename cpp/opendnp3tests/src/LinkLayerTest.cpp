@@ -27,24 +27,24 @@ namespace opendnp3
 
 LinkLayerTest::LinkLayerTest(LinkConfig config) :
 	log(),
-	mts(),	
+	mts(),
 	link(log.GetLogger("LinkLayer"), &mts, config),
 	upper(&link),
 	numWrites(0)
 {
-	link.SetUpperLayer(&upper);	
+	link.SetUpperLayer(&upper);
 	link.SetRouter(this);
 }
 
 void LinkLayerTest::QueueTransmit(const openpal::ReadOnlyBuffer& buffer, ILinkContext* pContext, bool primary)
-{	
+{
 	lastWrite = buffer;
 	++numWrites;
 }
 
 LinkConfig LinkLayerTest::DefaultConfig()
 {
-	return LinkConfig(true, false);	
+	return LinkConfig(true, false);
 }
 
 }

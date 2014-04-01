@@ -227,7 +227,7 @@ TEST_CASE(SUITE("Loopback"))
 	const size_t SIZE = MACRO_LOOPBACK_SIZE;
 	const size_t ITERATIONS = MACRO_LOOPBACK_ITERATIONS;
 
-	EventLog log;	
+	EventLog log;
 	AsyncTestObjectASIO test;
 	PhysicalLayerAsyncTCPServer server(LogConfig(&log, levels::NORMAL, "server"), test.GetService(), "127.0.0.1", 30000);
 	PhysLoopback loopback(server.GetLogRoot().GetLogger("loopback"), &server);

@@ -333,7 +333,7 @@ opendnp3::OutstationConfig Conversions::convertConfig(OutstationConfig^ config)
 	sc.mUnsolPackDelay = convertMilliseconds(config->unsolPackDelayMs);
 	sc.mUnsolRetryDelay = convertMilliseconds(config->unsolRetryDelayMs);
 	sc.mSelectTimeout = convertMilliseconds(config->selectTimeoutMs);
-	sc.mMaxFragSize = config->maxFragSize;	
+	sc.mMaxFragSize = config->maxFragSize;
 	sc.mStaticBinary = convert(config->staticBinary);
 	sc.mStaticAnalog = convert(config->staticAnalog);
 	sc.mStaticCounter = convert(config->staticCounter);
@@ -364,7 +364,7 @@ opendnp3::DeadbandPointRecord<uint32_t> Conversions::convertRecord(DeadbandEvent
 opendnp3::DatabaseConfiguration Conversions::convertConfig(DatabaseTemplate^ config)
 {
 	opendnp3::DatabaseTemplate tmp(config->binaries->Count,
-								   config->doubleBinaries->Count,
+	                               config->doubleBinaries->Count,
 	                               config->analogs->Count,
 	                               config->counters->Count,
 	                               config->frozenCounters->Count,
@@ -375,7 +375,7 @@ opendnp3::DatabaseConfiguration Conversions::convertConfig(DatabaseTemplate^ con
 
 	// TODO - finish converting data.
 
-	for(int i = 0; i < config->binaries->Count; ++i) dev.binaryMetadata[i] = convertRecord(config->binaries[i]);	
+	for(int i = 0; i < config->binaries->Count; ++i) dev.binaryMetadata[i] = convertRecord(config->binaries[i]);
 	for(int i = 0; i < config->analogs->Count; ++i) dev.analogMetadata[i] = convertRecord(config->analogs[i]);
 	for(int i = 0; i < config->counters->Count; ++i) dev.counterMetadata[i] = convertRecord(config->counters[i]);
 	for(int i = 0; i < config->counters->Count; ++i) dev.frozenCounterMetadata[i] = convertRecord(config->frozenCounters[i]);

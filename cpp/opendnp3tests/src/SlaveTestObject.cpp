@@ -56,13 +56,34 @@ mLogger(log.GetLogger("test"))
 
 void OutstationTestObject::SetDefaultClass(PointClass pc)
 {
-	db.staticData.binaries.metadata.foreach([&](EventMetadata& md){ md.clazz = pc; });
-	db.staticData.analogs.metadata.foreach([&](EventMetadata& md){ md.clazz = pc; });
-	db.staticData.analogOutputStatii.metadata.foreach([&](EventMetadata& md){ md.clazz = pc; });
-	db.staticData.binaryOutputStatii.metadata.foreach([&](EventMetadata& md){ md.clazz = pc; });
-	db.staticData.counters.metadata.foreach([&](EventMetadata& md){ md.clazz = pc; });
-	db.staticData.frozenCounters.metadata.foreach([&](EventMetadata& md){ md.clazz = pc; });
-	db.staticData.doubleBinaries.metadata.foreach([&](EventMetadata& md){ md.clazz = pc; });
+	db.staticData.binaries.metadata.foreach([&](EventMetadata & md)
+	{
+		md.clazz = pc;
+	});
+	db.staticData.analogs.metadata.foreach([&](EventMetadata & md)
+	{
+		md.clazz = pc;
+	});
+	db.staticData.analogOutputStatii.metadata.foreach([&](EventMetadata & md)
+	{
+		md.clazz = pc;
+	});
+	db.staticData.binaryOutputStatii.metadata.foreach([&](EventMetadata & md)
+	{
+		md.clazz = pc;
+	});
+	db.staticData.counters.metadata.foreach([&](EventMetadata & md)
+	{
+		md.clazz = pc;
+	});
+	db.staticData.frozenCounters.metadata.foreach([&](EventMetadata & md)
+	{
+		md.clazz = pc;
+	});
+	db.staticData.doubleBinaries.metadata.foreach([&](EventMetadata & md)
+	{
+		md.clazz = pc;
+	});
 }
 
 void OutstationTestObject::SendToOutstation(const std::string& arData, SequenceInfo aSeq)

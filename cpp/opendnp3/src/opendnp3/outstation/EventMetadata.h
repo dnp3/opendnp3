@@ -54,7 +54,7 @@ public:
 
 	}
 
-	PointClass clazz;	
+	PointClass clazz;
 };
 
 // Base class for different types of event metadata
@@ -64,7 +64,7 @@ class TypedEventMetadata : public EventMetadata
 public:
 	TypedEventMetadata() : EventMetadata(), lastEvent()
 	{}
-		
+
 	T lastEvent;
 };
 

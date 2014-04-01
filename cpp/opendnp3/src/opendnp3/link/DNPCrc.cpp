@@ -40,7 +40,7 @@ uint16_t DNPCrc::CalcCrc(const uint8_t* input, uint32_t length)
 	{
 		index = (CRC ^ input[i]) & 0xFF;
 		CRC = crcTable[index] ^ (CRC >> 8);
-	}	
+	}
 
 	return ((~CRC) & 0xFFFF);
 }
@@ -59,7 +59,7 @@ bool DNPCrc::IsCorrectCRC(const uint8_t* input, uint32_t length)
 }
 
 bool DNPCrc::InitCrcTable()
-{	
+{
 	uint16_t i, j, CRC;
 
 	for (i = 0; i < 256; i++)

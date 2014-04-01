@@ -296,7 +296,7 @@ void APDUHandlerBase::OnIndexPrefix(const HeaderRecord& record, const IterableBu
 void APDUHandlerBase::OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<BinaryOutputStatus, uint8_t>>& meas)
 {
 	auto transform = MapIterableBuffer<IndexedValue<BinaryOutputStatus, uint8_t>, IndexedValue<BinaryOutputStatus, uint16_t>>(meas,
-		[](const IndexedValue<BinaryOutputStatus, uint8_t>& value)
+	                 [](const IndexedValue<BinaryOutputStatus, uint8_t>& value)
 	{
 		return value.Widen<uint16_t>();
 	});
@@ -351,7 +351,7 @@ void APDUHandlerBase::OnIndexPrefix(const HeaderRecord& record, const IterableBu
 void APDUHandlerBase::OnIndexPrefix(const HeaderRecord& record, const IterableBuffer<IndexedValue<AnalogOutputStatus, uint8_t>>& meas)
 {
 	auto transform = MapIterableBuffer<IndexedValue<AnalogOutputStatus, uint8_t>, IndexedValue<AnalogOutputStatus, uint16_t>>(meas,
-		[](const IndexedValue<AnalogOutputStatus, uint8_t>& value)
+	                 [](const IndexedValue<AnalogOutputStatus, uint8_t>& value)
 	{
 		return value.Widen<uint16_t>();
 	});

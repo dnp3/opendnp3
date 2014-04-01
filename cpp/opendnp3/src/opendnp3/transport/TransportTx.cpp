@@ -52,14 +52,14 @@ bool TransportTx::HasValue() const
 }
 
 openpal::ReadOnlyBuffer TransportTx::GetSegment()
-{		
+{
 	uint32_t numToSend = apdu.Size() < 249 ? apdu.Size() : 249;
 	memcpy(tpduBuffer.Buffer() + 1, apdu, numToSend);
-	bool fir = (tpduCount == 0);	
+	bool fir = (tpduCount == 0);
 	bool fin = (numToSend == apdu.Size());
 	tpduBuffer[0] = GetHeader(fir, fin, sequence);
 	return ReadOnlyBuffer(tpduBuffer.Buffer(), numToSend + 1);
-}	
+}
 
 bool TransportTx::Advance()
 {
@@ -75,7 +75,7 @@ bool TransportTx::Advance()
 uint8_t TransportTx::GetHeader(bool fir, bool fin, uint8_t sequence)
 {
 	uint8_t hdr = 0;
-	
+
 	if (fir)
 	{
 		hdr |= TL_HDR_FIR;

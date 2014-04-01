@@ -58,21 +58,21 @@ public:
 	IChannel* CreateChannel(	const std::string& id,
 	                            openpal::TimeDuration minOpenRetry,
 	                            openpal::TimeDuration maxOpenRetry,
-								openpal::PhysicalLayerAsyncBase* apPhys,
-								openpal::IEventHandler<ChannelState>* pStateHandler = nullptr,
+	                            openpal::PhysicalLayerAsyncBase* apPhys,
+	                            openpal::IEventHandler<ChannelState>* pStateHandler = nullptr,
 	                            IOpenDelayStrategy* pOpenStrategy = ExponentialBackoffStrategy::Inst());
 
 	/// Synchronously shutdown all channels. Block until complete.
 	void Shutdown();
 
 private:
-	
+
 	std::mutex mutex;
 	std::condition_variable condition;
-	
+
 	std::set<DNP3Channel*> channels;
 
-	void OnShutdown(DNP3Channel* apChannel) override final;	
+	void OnShutdown(DNP3Channel* apChannel) override final;
 };
 
 }

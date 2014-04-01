@@ -47,7 +47,7 @@ TEST_CASE(SUITE("ReadClass1WithSOE"))
 {
 	OutstationConfig cfg; cfg.mDisableUnsol = true;
 	OutstationTestObject t(cfg, DatabaseTemplate::AllTypes(100));
-		
+
 	t.db.staticData.binaries.metadata[0x10].clazz = CLASS_1;
 	t.db.staticData.analogs.metadata[0x17].clazz = CLASS_1;
 
@@ -55,14 +55,14 @@ TEST_CASE(SUITE("ReadClass1WithSOE"))
 
 	{
 		Transaction tr(&t.db);
-		
+
 		t.db.Update(Analog(0x1234, AQ_ONLINE), 0x17); // 0x 12 34 00 00 in little endian
-		t.db.Update(Binary(true, BQ_ONLINE), 0x10);			
-		t.db.Update(Analog(0x2222, AQ_ONLINE), 0x17); // 0x 22 22 00 00 in little endian		
+		t.db.Update(Binary(true, BQ_ONLINE), 0x10);
+		t.db.Update(Analog(0x2222, AQ_ONLINE), 0x17); // 0x 22 22 00 00 in little endian
 	}
 
 	t.SendToOutstation("C0 01 3C 02 06");
-		
+
 	REQUIRE(t.Read() == "E0 81 80 00 20 01 28 01 00 17 00 01 34 12 00 00 02 01 28 01 00 10 00 81 20 01 28 01 00 17 00 01 22 22 00 00");
 
 	t.SendToOutstation("C0 01 3C 02 06");		// Repeat read class 1
@@ -90,7 +90,7 @@ TEST_CASE(SUITE("MultipleClasses"))
 	REQUIRE(t.Read() == "C0 81 8E 00"); // all event bits set + restart
 
 	// ------ read 1 event at a time by class, until all events are gone ----
-	
+
 	t.SendToOutstation("C0 01 3C 03 06"); // Class 2
 	REQUIRE(t.Read() == "E0 81 8A 00 20 01 28 01 00 00 00 01 03 00 00 00"); // restart + Class 1/3
 
@@ -109,11 +109,11 @@ void TestEventRead(const std::function<void(Database& db)>& loadFun, const std::
 
 	OutstationConfig cfg; cfg.mDisableUnsol = true;
 	OutstationTestObject t(cfg, DatabaseTemplate::AllTypes(1), PointClass::CLASS_1);
-	t.outstation.OnLowerLayerUp();	
+	t.outstation.OnLowerLayerUp();
 
 	{
 		Transaction tr(&t.db);
-		loadFun(t.db);		
+		loadFun(t.db);
 	}
 
 	t.SendToOutstation(request);
@@ -122,26 +122,35 @@ void TestEventRead(const std::function<void(Database& db)>& loadFun, const std::
 
 
 TEST_CASE(SUITE("ReadGrp2Var0"))
-{	
+{
 	TestEventRead(
-		[](Database& db) { db.Update(Binary(false, BQ_ONLINE), 0); },
-		"C0 01 02 00 06", "E0 81 80 00 02 01 28 01 00 00 00 01"
+	    [](Database & db)
+	{
+		db.Update(Binary(false, BQ_ONLINE), 0);
+	},
+	"C0 01 02 00 06", "E0 81 80 00 02 01 28 01 00 00 00 01"
 	);
 }
 
 TEST_CASE(SUITE("ReadGrp22Var0"))
 {
 	TestEventRead(
-		[](Database& db) { db.Update(Counter(0, CQ_ONLINE), 0); },
-		"C0 01 16 00 06", "E0 81 80 00 16 01 28 01 00 00 00 01 00 00 00 00"
+	    [](Database & db)
+	{
+		db.Update(Counter(0, CQ_ONLINE), 0);
+	},
+	"C0 01 16 00 06", "E0 81 80 00 16 01 28 01 00 00 00 01 00 00 00 00"
 	);
 }
 
 TEST_CASE(SUITE("ReadGrp32Var0"))
 {
 	TestEventRead(
-		[](Database& db) { db.Update(Analog(0.0, AQ_ONLINE), 0); },
-		"C0 01 20 00 06", "E0 81 80 00 20 01 28 01 00 00 00 01 00 00 00 00"
+	    [](Database & db)
+	{
+		db.Update(Analog(0.0, AQ_ONLINE), 0);
+	},
+	"C0 01 20 00 06", "E0 81 80 00 20 01 28 01 00 00 00 01 00 00 00 00"
 	);
 }
 

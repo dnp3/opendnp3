@@ -36,7 +36,7 @@ class OutstationEventBuffer;
 
 class SelectionIterator
 {
-	friend class OutstationEventBuffer;	
+	friend class OutstationEventBuffer;
 
 public:
 
@@ -51,7 +51,7 @@ public:
 	bool Read(Event<DoubleBitBinary>& evt);
 	bool Read(Event<Counter>& evt);
 	bool Read(Event<Analog>& evt);
-	bool Read(Event<FrozenCounter>& evt);		
+	bool Read(Event<FrozenCounter>& evt);
 	bool Read(Event<BinaryOutputStatus>& evt);
 	bool Read(Event<AnalogOutputStatus>& evt);
 
@@ -59,8 +59,8 @@ public:
 private:
 
 	SelectionIterator(OutstationEventBuffer* pBuffer_,
-	const SelectionCriteria& criteria_,
-	const openpal::LinkedListAdapter<SequenceRecord, uint16_t>::Iterator& iterator_);
+	                  const SelectionCriteria& criteria_,
+	                  const openpal::LinkedListAdapter<SequenceRecord, uint16_t>::Iterator& iterator_);
 
 	template <class T>
 	bool ReadAny(Event<T>& evt, EventType type, const openpal::RandomInsertAdapter<Event<T>, uint16_t>& adapter);

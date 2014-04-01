@@ -96,7 +96,7 @@ public:
 	}
 
 	void Clear()
-	{					
+	{
 		if (this->IsNotEmpty())
 		{
 			// link the remaining free list to the end of active list

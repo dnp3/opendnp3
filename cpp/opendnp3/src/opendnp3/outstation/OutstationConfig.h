@@ -81,7 +81,7 @@ struct OutstationConfig
 
 	/// The maximum fragment size the outstation will use for data it sends
 	uint32_t mMaxFragSize;
-	
+
 	// -------------  default static response types ------------------
 
 	/// The default group/variation to use for static binary responses

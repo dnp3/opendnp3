@@ -46,9 +46,9 @@ bool OutstationEventBuffer::IsOverflown()
 {
 	if (overflow && HasEnoughSpaceToClearOverflow())
 	{
-		overflow = false;		
+		overflow = false;
 	}
-	
+
 	return overflow;
 }
 
@@ -59,27 +59,27 @@ void OutstationEventBuffer::Clear()
 		auto pNode = facade.selectedEvents.Pop();
 		switch(pNode->value.type)
 		{
-			case(EventType::Binary):
-				facade.binaryEvents.Release(pNode->value.index);
-				break;
-			case(EventType::DoubleBitBinary) :
-				facade.doubleBinaryEvents.Release(pNode->value.index);
-				break;
-			case(EventType::Analog):
-				facade.analogEvents.Release(pNode->value.index);
-				break;
-			case(EventType::Counter):
-				facade.counterEvents.Release(pNode->value.index);
-				break;
-			case(EventType::FrozenCounter) :
-				facade.frozenCounterEvents.Release(pNode->value.index);
-				break;
-			case(EventType::BinaryOutputStatus) :
-				facade.binaryOutputStatusEvents.Release(pNode->value.index);
-				break;
-			case(EventType::AnalogOutputStatus) :
-				facade.analogOutputStatusEvents.Release(pNode->value.index);
-				break;
+		case(EventType::Binary):
+			facade.binaryEvents.Release(pNode->value.index);
+			break;
+		case(EventType::DoubleBitBinary) :
+			facade.doubleBinaryEvents.Release(pNode->value.index);
+			break;
+		case(EventType::Analog):
+			facade.analogEvents.Release(pNode->value.index);
+			break;
+		case(EventType::Counter):
+			facade.counterEvents.Release(pNode->value.index);
+			break;
+		case(EventType::FrozenCounter) :
+			facade.frozenCounterEvents.Release(pNode->value.index);
+			break;
+		case(EventType::BinaryOutputStatus) :
+			facade.binaryOutputStatusEvents.Release(pNode->value.index);
+			break;
+		case(EventType::AnalogOutputStatus) :
+			facade.analogOutputStatusEvents.Release(pNode->value.index);
+			break;
 		}
 		facade.sequenceOfEvents.Remove(pNode); // O(1) from SOE
 	}
@@ -104,7 +104,7 @@ EventTracker OutstationEventBuffer::SelectedEvents() const
 }
 
 void OutstationEventBuffer::Update(const Event<Binary>& aEvent)
-{	
+{
 	InsertEvent(aEvent, EventType::Binary, facade.binaryEvents);
 }
 
@@ -141,13 +141,13 @@ void OutstationEventBuffer::Update(const Event<AnalogOutputStatus>& aEvent)
 bool OutstationEventBuffer::HasEnoughSpaceToClearOverflow() const
 {
 	return	HasSpace(facade.analogEvents) &&
-			HasSpace(facade.analogOutputStatusEvents) &&
-			HasSpace(facade.binaryEvents) &&
-			HasSpace(facade.binaryOutputStatusEvents) &&
-			HasSpace(facade.counterEvents) &&
-			HasSpace(facade.doubleBinaryEvents) &&
-			HasSpace(facade.frozenCounterEvents) &&
-			HasSpace(facade.sequenceOfEvents);
+	        HasSpace(facade.analogOutputStatusEvents) &&
+	        HasSpace(facade.binaryEvents) &&
+	        HasSpace(facade.binaryOutputStatusEvents) &&
+	        HasSpace(facade.counterEvents) &&
+	        HasSpace(facade.doubleBinaryEvents) &&
+	        HasSpace(facade.frozenCounterEvents) &&
+	        HasSpace(facade.sequenceOfEvents);
 }
 
 
@@ -163,7 +163,7 @@ uint32_t OutstationEventBuffer::NumUnselectedMatching(const SelectionCriteria& c
 
 SelectionIterator OutstationEventBuffer::SelectEvents(const SelectionCriteria& criteria)
 {
-	return SelectionIterator(this, criteria, facade.sequenceOfEvents.Iterate());	
+	return SelectionIterator(this, criteria, facade.sequenceOfEvents.Iterate());
 }
 
 }

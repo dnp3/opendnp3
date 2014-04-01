@@ -103,7 +103,7 @@ struct ConvertQVandTruncate : private openpal::PureStatic
 {
 	static Target Apply(const Source& src)
 	{
-		Target t;		
+		Target t;
 		t.flags = src.GetQuality();
 		t.value = static_cast<typename Target::ValueType>(src.GetValue());
 		return t;

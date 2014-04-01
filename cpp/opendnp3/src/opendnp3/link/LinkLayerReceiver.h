@@ -43,7 +43,7 @@ class LRS_Base;
 /** Parses incoming ft3 frames for the link layer router.
 */
 class LinkLayerReceiver : public openpal::Loggable
-{	
+{
 
 public:
 	/**

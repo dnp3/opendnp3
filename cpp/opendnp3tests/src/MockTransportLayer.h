@@ -58,9 +58,12 @@ public:
 
 	MockTransportLayer(ILinkLayer* pLinkLayer);
 
-	void SendDown(IBufferSegment& segments);	
+	void SendDown(IBufferSegment& segments);
 
-	bool IsOnline() const { return isOnline; }
+	bool IsOnline() const
+	{
+		return isOnline;
+	}
 
 	bool CountersEqual(uint32_t success, uint32_t failure)
 	{
@@ -83,20 +86,20 @@ public:
 	State GetState()
 	{
 		return state;
-	}	
+	}
 
 	// these are the NVII delegates
 	virtual void OnReceive(const openpal::ReadOnlyBuffer& buffer) override final;
-	virtual void OnSendResult(bool isSuccess) override final;	
+	virtual void OnSendResult(bool isSuccess) override final;
 	virtual void OnLowerLayerUp() override final;
 	virtual void OnLowerLayerDown() override final;
 
 	std::deque<std::string> receivedQueue;
 
-private:	
+private:
 	ILinkLayer* pLinkLayer;
-	bool isOnline;			
-	State state;	
+	bool isOnline;
+	State state;
 };
 
 

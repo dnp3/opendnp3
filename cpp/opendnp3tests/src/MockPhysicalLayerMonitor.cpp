@@ -43,7 +43,7 @@ MockPhysicalLayerMonitor::MockPhysicalLayerMonitor(
     IPhysicalLayerAsync* apPhys,
     TimeDuration aMinOpenRetry,
     TimeDuration aMaxOpenRetry
-) :	
+) :
 	PhysicalLayerMonitor(arLogger, apPhys, aMinOpenRetry, aMaxOpenRetry),
 	mOpens(0),
 	mCloses(0),

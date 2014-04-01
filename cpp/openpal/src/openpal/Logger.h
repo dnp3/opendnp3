@@ -40,7 +40,7 @@ class Logger
 {
 	friend class LogRoot;
 
-public:	
+public:
 
 	void Log(const LogFilters& filters, const std::string& location, const std::string& message, int32_t errorCode = -1);
 
@@ -50,15 +50,15 @@ public:
 	{
 		return name;
 	}
-	
+
 	bool IsEnabled(const LogFilters& filters) const;
-			
-	Logger GetSubLogger(std::string id) const;	
+
+	Logger GetSubLogger(std::string id) const;
 
 private:
 
 	Logger(LogRoot* pRoot, const std::string& id);
-		
+
 	LogRoot*			pRoot;
 	std::string			name;
 };

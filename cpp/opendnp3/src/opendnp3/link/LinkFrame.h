@@ -28,13 +28,13 @@
 #include <openpal/Uncopyable.h>
 
 
-namespace opendnp3 
+namespace opendnp3
 {
 
 class LinkFrame : private openpal::PureStatic
-{	
+{
 
-public:			
+public:
 
 	////////////////////////////////////////////////
 	//	Functions for formatting outgoing Sec to Pri frames

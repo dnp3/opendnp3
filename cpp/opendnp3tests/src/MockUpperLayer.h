@@ -58,7 +58,10 @@ public:
 
 	MockUpperLayer();
 
-	bool IsOnline() const { return isOnline; }
+	bool IsOnline() const
+	{
+		return isOnline;
+	}
 
 	void SendDown(const std::string&);
 	void SendDown(const openpal::ReadOnlyBuffer& arBuffer);
@@ -92,18 +95,18 @@ public:
 
 	//these are the NVII delegates
 	virtual void OnReceive(const openpal::ReadOnlyBuffer& buffer) override final;
-	virtual void OnSendResult(bool isSuccess) override final;	
+	virtual void OnSendResult(bool isSuccess) override final;
 	virtual void OnLowerLayerUp() override final;
 	virtual void OnLowerLayerDown() override final;
 
-private:	
+private:
 
-	bool isOnline;		
+	bool isOnline;
 
 	OnReceiveHandler mOnReceiveHandler;
 	State mState;
 
-	
+
 };
 
 

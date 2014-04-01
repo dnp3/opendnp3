@@ -38,9 +38,9 @@ namespace asiopal
 {
 
 IOServiceThreadPool::IOServiceThreadPool(
-	ILogBase* pLog,
-	uint32_t levels,
-	const std::string& id,
+    ILogBase* pLog,
+    uint32_t levels,
+    const std::string& id,
     uint32_t aConcurrency,
     std::function<void()> onThreadStart_,
     std::function<void()> onThreadExit_) :

@@ -81,7 +81,7 @@ int main(int argc, char* argv[])
 	// Create a new outstation with a log level, command handler, and
 	// config info this	returns a thread-safe interface used for
 	// updating the outstation's database.
-	auto pOutstation = pServer->AddOutstation("outstation", SuccessCommandHandler::Inst(), NullTimeWriteHandler::Inst(), stackConfig);	
+	auto pOutstation = pServer->AddOutstation("outstation", SuccessCommandHandler::Inst(), NullTimeWriteHandler::Inst(), stackConfig);
 
 	// Enable the outstation and start communications
 	pOutstation->Enable();
@@ -102,44 +102,44 @@ int main(int argc, char* argv[])
 		std::cin >> input;
 		switch (input)
 		{
-			case('c'):
+		case('c'):
 			{
 				TimeTransaction tx(pLoader, UTCTimeSource::Inst()->Now());
 				tx.Update(Counter(count, CQ_ONLINE), 0);
 				++count;
 				break;
 			}
-			case('a') :
+		case('a') :
 			{
 				TimeTransaction tx(pLoader, UTCTimeSource::Inst()->Now());
 				tx.Update(Analog(value, AQ_ONLINE), 0);
 				value += 1.75;
 				break;
 			}
-			case('b') :
+		case('b') :
 			{
 				TimeTransaction tx(pLoader, UTCTimeSource::Inst()->Now());
 				tx.Update(Binary(binary), 0);
 				binary = !binary;
 				break;
 			}
-			case('d') :
+		case('d') :
 			{
 				TimeTransaction tx(pLoader, UTCTimeSource::Inst()->Now());
 				tx.Update(DoubleBitBinary(dbit), 0);
 				dbit = (dbit == DoubleBit::DETERMINED_OFF) ? DoubleBit::DETERMINED_ON : DoubleBit::DETERMINED_OFF;
 				break;
 			}
-			case('x') :
+		case('x') :
 			{
 				run = false;
 				break;
 			}
-			default:
-				std::cout << "No action registered for: " << input << std::endl;
-				break;
-		}		
-	}	
+		default:
+			std::cout << "No action registered for: " << input << std::endl;
+			break;
+		}
+	}
 
 	return 0;
 }

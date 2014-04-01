@@ -83,7 +83,7 @@ public:
 	bool Add(const ValueType& value)
 	{
 		return (adapter.Add(value) != nullptr);
-	}	
+	}
 
 	template <class Selector>
 	ListNode<ValueType>* FindFirst(Selector select)
@@ -93,9 +93,9 @@ public:
 		{
 			auto pNode = iter.Next();
 			if (select(pNode->value))
-			{				
+			{
 				return pNode;
-			}			
+			}
 		}
 		return nullptr;
 	}
@@ -105,9 +105,9 @@ public:
 	{
 		auto iter = adapter.Iterate();
 		while (iter.HasNext())
-		{			
+		{
 			select(iter.Next()->value);
-		}		
+		}
 	}
 
 	template <class Selector>

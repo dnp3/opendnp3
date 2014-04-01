@@ -35,7 +35,7 @@ using namespace std;
 namespace opendnp3
 {
 
-	AppLayer::AppLayer(const openpal::Logger& logger, openpal::IExecutor* pExecutor_, const AppConfig& appConfig) :
+AppLayer::AppLayer(const openpal::Logger& logger, openpal::IExecutor* pExecutor_, const AppConfig& appConfig) :
 	Loggable(logger),
 	isOnline(false),
 	isSending(false),
@@ -163,7 +163,7 @@ void AppLayer::OnLowerLayerUp()
 {
 	if (isOnline)
 	{
-		LOG_BLOCK(flags::ERR, "Layer is already online");		
+		LOG_BLOCK(flags::ERR, "Layer is already online");
 	}
 	else
 	{
@@ -359,13 +359,13 @@ uint32_t AppLayer::GetRetries(FunctionCode aCode)
 {
 	switch(aCode)
 	{
-		case(FunctionCode::DIRECT_OPERATE):
-		case(FunctionCode::DIRECT_OPERATE_NO_ACK):
-		case(FunctionCode::RESPONSE):
-		case(FunctionCode::WRITE): // b/c these can contain time objects which are sensitive to retries
-			return 0;
-		default:
-			return numRetry; //use the configured
+	case(FunctionCode::DIRECT_OPERATE):
+	case(FunctionCode::DIRECT_OPERATE_NO_ACK):
+	case(FunctionCode::RESPONSE):
+	case(FunctionCode::WRITE): // b/c these can contain time objects which are sensitive to retries
+		return 0;
+	default:
+		return numRetry; //use the configured
 	}
 }
 

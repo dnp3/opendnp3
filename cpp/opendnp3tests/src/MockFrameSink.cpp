@@ -61,7 +61,7 @@ bool MockFrameSink::CheckLastWithDFC(LinkFunction aCode, bool aIsMaster, bool aI
 
 void MockFrameSink::OnTransmitResult(bool primary, bool success)
 {
-	
+
 }
 
 //	Sec to Pri

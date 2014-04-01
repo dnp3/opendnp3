@@ -118,7 +118,7 @@ public:
 	void SelectAndOperate(const AnalogOutputDouble64& arCommand, uint16_t aIndex, std::function<void(CommandResponse)> aCallback);
 	void DirectOperate(const AnalogOutputDouble64& arCommand, uint16_t aIndex, std::function<void(CommandResponse)> aCallback);
 
-private:	
+private:
 
 	/* Task functions used for scheduling */
 
@@ -135,7 +135,7 @@ private:
 
 	void ProcessIIN(const IINField& arIIN);	// Analyze IIN bits and react accordingly
 	void ProcessDataResponse(const APDUResponseRecord& aRecord);	// Read data output of solicited or unsolicited response and publish
-	void StartTask(MasterTaskBase*, bool aInit);	// Starts a task running	
+	void StartTask(MasterTaskBase*, bool aInit);	// Starts a task running
 
 	openpal::IExecutor* pExecutor;
 	IAppLayer* mpAppLayer;					// lower application layer
@@ -145,8 +145,8 @@ private:
 
 	AMS_Base* mpState;						// Pointer to active state, start in TLS_Closed
 	MasterTaskBase* mpTask;					// The current master task
-	ITask* mpScheduledTask;					// The current scheduled task	
-	
+	ITask* mpScheduledTask;					// The current scheduled task
+
 	/* --- Task plumbing --- */
 
 	MasterSchedule mSchedule;				// The machinery needed for scheduling

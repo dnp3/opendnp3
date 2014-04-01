@@ -41,7 +41,7 @@ public:
 
 	TransportTx();
 
-	void Configure(const openpal::ReadOnlyBuffer& output);	
+	void Configure(const openpal::ReadOnlyBuffer& output);
 
 	static uint8_t GetHeader(bool fir, bool fin, uint8_t sequence);
 
@@ -53,12 +53,12 @@ public:
 
 	virtual bool Advance() override final;
 
-private:	
+private:
 
 	// A wrapper to the APDU buffer that we're segmenting
 	openpal::ReadOnlyBuffer apdu;
 
-	openpal::StaticBuffer<TL_MAX_TPDU_LENGTH> tpduBuffer;	
+	openpal::StaticBuffer<TL_MAX_TPDU_LENGTH> tpduBuffer;
 
 	uint8_t sequence;
 	uint32_t tpduCount;

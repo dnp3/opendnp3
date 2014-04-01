@@ -101,11 +101,11 @@ public:
 	virtual void OnLowerLayerUp() override final;
 	virtual void OnLowerLayerDown() override final;
 	virtual void OnReceive(const openpal::ReadOnlyBuffer& arBuffer) override final;
-	virtual void OnSendResult(bool isSuccess) override final;	
+	virtual void OnSendResult(bool isSuccess) override final;
 	virtual void OnOpenFailure() override final;
 
 private:
-	
+
 
 	double mCorruptionProbability;
 	RandomDouble mRandom;

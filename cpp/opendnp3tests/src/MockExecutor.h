@@ -36,7 +36,7 @@ class MockTimer;
 /** @section desc Test class that doles out MockTimer* */
 class MockExecutor : public openpal::IExecutor
 {
-	friend class MockTimer;	
+	friend class MockTimer;
 
 public:
 	MockExecutor();

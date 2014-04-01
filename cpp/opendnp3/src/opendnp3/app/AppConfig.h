@@ -34,10 +34,10 @@ struct AppConfig
 {
 
 	/// Default constructor
-	AppConfig(bool aIsMaster = true) : 
+	AppConfig(bool aIsMaster = true) :
 		IsMaster(aIsMaster),
 		RspTimeout(TimeDuration::Seconds(5)),
-		NumRetry(0), 
+		NumRetry(0),
 		FragSize(sizes::DEFAULT_APDU_BUFFER_SIZE)
 	{}
 

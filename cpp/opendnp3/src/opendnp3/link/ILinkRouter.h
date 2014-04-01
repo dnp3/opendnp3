@@ -33,7 +33,7 @@ namespace opendnp3
 
 class ILinkRouter
 {
-	public:
+public:
 
 	virtual ~ILinkRouter() {}
 

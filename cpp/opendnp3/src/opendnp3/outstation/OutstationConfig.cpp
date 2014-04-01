@@ -27,7 +27,7 @@ using namespace openpal;
 namespace opendnp3
 {
 
-	OutstationConfig::OutstationConfig() :
+OutstationConfig::OutstationConfig() :
 	mMaxControls(1),
 	mDisableUnsol(false),
 	mUnsolMask(true, true, true),
@@ -36,7 +36,7 @@ namespace opendnp3
 	mUnsolPackDelay(TimeDuration::Milliseconds(200)),
 	mUnsolRetryDelay(TimeDuration::Seconds(2)),
 	mSelectTimeout(TimeDuration::Seconds(5)),
-	mMaxFragSize(sizes::DEFAULT_APDU_BUFFER_SIZE),	
+	mMaxFragSize(sizes::DEFAULT_APDU_BUFFER_SIZE),
 	mStaticBinary(StaticBinaryResponse::Group1Var2),
 	mStaticAnalog(StaticAnalogResponse::Group30Var1),
 	mStaticCounter(StaticCounterResponse::Group20Var1),

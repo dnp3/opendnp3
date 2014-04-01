@@ -45,5 +45,5 @@ Logger LogRoot::GetLogger(const std::string& id)
 {
 	return Logger(this, id);
 }
-	
+
 }

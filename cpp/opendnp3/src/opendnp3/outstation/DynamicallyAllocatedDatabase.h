@@ -41,7 +41,7 @@ public:
 
 private:
 
-	openpal::DynamicArray<DualValue<Binary>, uint16_t> binaryValues;	
+	openpal::DynamicArray<DualValue<Binary>, uint16_t> binaryValues;
 	openpal::DynamicArray<DualValue<DoubleBitBinary>, uint16_t> doubleBinaryValues;
 	openpal::DynamicArray<DualValue<Analog>, uint16_t> analogValues;
 	openpal::DynamicArray<DualValue<Counter>, uint16_t> counterValues;

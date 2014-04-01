@@ -93,13 +93,13 @@ public:
 	/**
 	* Add a master to the channel
 	*
-	* @param id An ID that gets used for logging	
+	* @param id An ID that gets used for logging
 	* @param pPublisher Callback object for all received measurements
 	* @param pTimeSource The interface that is used for outstation time synchronization
 	* @param config Configuration object that controls how the master behaves
 	* @return interface representing the running master
 	*/
-	virtual IMaster* AddMaster(const std::string& id,	                            
+	virtual IMaster* AddMaster(const std::string& id,
 	                           ISOEHandler* pPublisher,
 	                           openpal::IUTCTimeSource* pTimeSource,
 	                           const MasterStackConfig& config) = 0;
@@ -107,13 +107,13 @@ public:
 	/**
 	* Add an outstation to the channel
 	*
-	* @param id An ID that gets used for logging	
+	* @param id An ID that gets used for logging
 	* @param pCmdHandler Callback object for handling command requests
 	* @param pTimeWriteHandler Interface used to receive time synchronization requests
 	* @param config Configuration object that controls how the outstation behaves
 	* @return interface representing the running outstations
 	*/
-	virtual IOutstation* AddOutstation(	const std::string& id,										
+	virtual IOutstation* AddOutstation(	const std::string& id,
 	                                    ICommandHandler* pCmdHandler,
 	                                    ITimeWriteHandler* pTimeWriteHandler,
 	                                    const OutstationStackConfig& config) = 0;

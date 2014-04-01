@@ -63,7 +63,7 @@ public:
 
 	bool Complete()
 	{
-		if(isNull) 
+		if(isNull)
 		{
 			return false;
 		}
@@ -76,7 +76,7 @@ public:
 
 	bool Write(WriteType& value, typename PrefixType::Type index)
 	{
-		if(isNull || (pPosition->Size() < sizeOfTypePlusIndex) )	
+		if(isNull || (pPosition->Size() < sizeOfTypePlusIndex) )
 		{
 			return false;
 		}

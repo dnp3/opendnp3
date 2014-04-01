@@ -54,7 +54,7 @@ public:
 		return hasValue;
 	}
 
-	private:
+private:
 
 	Option(T value_) : hasValue(true), value(value_)
 	{}

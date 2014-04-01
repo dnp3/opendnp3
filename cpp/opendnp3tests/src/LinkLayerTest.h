@@ -49,7 +49,7 @@ public:
 	MockExecutor mts;
 	LinkLayer link;
 	MockTransportLayer upper;
-	
+
 	openpal::ReadOnlyBuffer lastWrite;
 	uint32_t numWrites;
 };

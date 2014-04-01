@@ -56,7 +56,7 @@ std::string FormatUserData(bool aIsMaster, bool aIsConfirmed, int aDest, int aSr
 TEST_CASE(SUITE("LinkHeaderChangeFCB"))
 {
 	LinkHeader hdr(5, 1, 1024, true, true, true, LinkFunction::PRI_CONFIRMED_USER_DATA);
-	
+
 
 	REQUIRE(hdr.ControlByte(true, true, true, LinkFunction::PRI_CONFIRMED_USER_DATA) ==  hdr.GetControl());
 
@@ -85,7 +85,7 @@ TEST_CASE(SUITE("ResetLinks"))
 
 	// ResetLinkStates - Master
 	auto write = buffer.GetWriteBuffer();
-	auto wrapper = LinkFrame::FormatResetLinkStates(write, true, 1, 1024);	
+	auto wrapper = LinkFrame::FormatResetLinkStates(write, true, 1, 1024);
 	REQUIRE(toHex(wrapper) == "05 64 05 C0 01 00 00 04 E9 21");
 }
 
@@ -101,7 +101,7 @@ TEST_CASE(SUITE("ACK"))
 		REQUIRE(toHex(wrapper) == "05 64 05 00 00 04 01 00 19 A6"); //ACK - Outstation
 	}
 
-		
+
 	{
 		// ACK - Outstation (DFC = true)
 		auto writeTo = buffer.GetWriteBuffer();
@@ -109,7 +109,8 @@ TEST_CASE(SUITE("ACK"))
 		REQUIRE(toHex(wrapper) == "05 64 05 10 00 04 01 00 8B 0C"); // ACK - Outstation (with DFC set)
 	}
 
-	{	// ACK - Master (DFC = false)
+	{
+		// ACK - Master (DFC = false)
 		auto writeTo = buffer.GetWriteBuffer();
 		auto wrapper = LinkFrame::FormatAck(writeTo, true, false, 1, 1024);
 		REQUIRE(toHex(wrapper) == "05 64 05 80 01 00 00 04 53 11");
@@ -156,7 +157,7 @@ TEST_CASE(SUITE("UnconfirmedUserData"))
 TEST_CASE(SUITE("LinkStatus"))
 {
 	StaticBuffer<292> buffer;
-	
+
 	// LinkStatus - Master (DFC = true)
 	auto writeTo = buffer.GetWriteBuffer();
 	auto wrapper = LinkFrame::FormatLinkStatus(writeTo, true, true, 1, 1024);

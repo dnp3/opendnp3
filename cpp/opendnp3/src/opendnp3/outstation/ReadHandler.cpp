@@ -32,7 +32,7 @@ ReadHandler::ReadHandler(openpal::Logger& logger, ResponseContext& rspContext_) 
 }
 
 void ReadHandler::_AllObjects(const HeaderRecord& record)
-{	
+{
 	errors |= rspContext.ReadAllObjects(record);
 }
 

@@ -33,7 +33,7 @@ void CachedRequest::Set(const APDURecord& record_, SequenceInfo sequence_)
 {
 	auto write = buffer.GetWriteBuffer();
 	assert(record_.objects.Size() <= write.Size());
-	record_.objects.CopyTo(write);	
+	record_.objects.CopyTo(write);
 	APDURecord copy(record_);
 	copy.objects = buffer.ToReadOnly().Truncate(record_.objects.Size());
 	this->sequence = sequence_;

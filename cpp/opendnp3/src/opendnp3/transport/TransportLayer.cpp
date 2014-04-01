@@ -44,7 +44,7 @@ TransportLayer::TransportLayer(const openpal::Logger& logger, openpal::IExecutor
 	pState(TLS_Ready::Inst()),
 	pExecutor(pExecutor_),
 	M_FRAG_SIZE(maxFragSize),
-	receiver(logger, this, maxFragSize)	
+	receiver(logger, this, maxFragSize)
 {
 
 }
@@ -90,7 +90,7 @@ void TransportLayer::SignalSendResult(bool isSuccess)
 }
 
 void TransportLayer::Send(const ReadOnlyBuffer& apdu)
-{	
+{
 	if (isOnline)
 	{
 		if (apdu.IsEmpty() || apdu.Size() > M_FRAG_SIZE)
@@ -162,14 +162,14 @@ void TransportLayer::SetLinkLayer(ILinkLayer* pLinkLayer_)
 }
 
 void TransportLayer::OnLowerLayerUp()
-{	
+{
 	if (isOnline)
 	{
 		LOG_BLOCK(flags::ERR, "Layer already online");
 	}
 	else
 	{
-		isOnline = true;		
+		isOnline = true;
 		if (pUpperLayer)
 		{
 			pUpperLayer->OnLowerLayerUp();
@@ -187,7 +187,7 @@ void TransportLayer::OnLowerLayerDown()
 		if (pUpperLayer)
 		{
 			pUpperLayer->OnLowerLayerDown();
-		}		
+		}
 	}
 	else
 	{

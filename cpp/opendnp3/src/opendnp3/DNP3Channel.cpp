@@ -31,28 +31,31 @@ using namespace openpal;
 namespace opendnp3
 {
 
-DNP3Channel::DNP3Channel(	
-	const std::string& id,
+DNP3Channel::DNP3Channel(
+    const std::string& id,
     openpal::TimeDuration minOpenRetry,
     openpal::TimeDuration maxOpenRetry,
     IOpenDelayStrategy* pStrategy,
-	openpal::PhysicalLayerAsyncBase* pPhys_,
-	openpal::ITypedShutdownHandler<DNP3Channel*>* pShutdownHandler_,
-	openpal::IEventHandler<ChannelState>* pStateHandler) :				
-		pPhys(pPhys_),
-		logger(pPhys->GetLogRoot().GetLogger(id)),			
-		state(State::READY),
-		pShutdownHandler(pShutdownHandler_),
-		router(logger.GetSubLogger("router"), pPhys.get(), minOpenRetry, maxOpenRetry, pStateHandler, this, pStrategy),
-		group(pPhys->GetExecutor())
+    openpal::PhysicalLayerAsyncBase* pPhys_,
+    openpal::ITypedShutdownHandler<DNP3Channel*>* pShutdownHandler_,
+    openpal::IEventHandler<ChannelState>* pStateHandler) :
+	pPhys(pPhys_),
+	logger(pPhys->GetLogRoot().GetLogger(id)),
+	state(State::READY),
+	pShutdownHandler(pShutdownHandler_),
+	router(logger.GetSubLogger("router"), pPhys.get(), minOpenRetry, maxOpenRetry, pStateHandler, this, pStrategy),
+	group(pPhys->GetExecutor())
 {
 
 }
 
 // comes from the outside, so we need to synchronize
 void DNP3Channel::BeginShutdown()
-{	
-	pPhys->GetExecutor()->Post([this](){ this->InitiateShutdown(); });
+{
+	pPhys->GetExecutor()->Post([this]()
+	{
+		this->InitiateShutdown();
+	});
 }
 
 // can only run on the executor itself
@@ -63,14 +66,14 @@ void DNP3Channel::InitiateShutdown()
 		state = State::SHUTTING_DOWN;
 
 		this->group.Shutdown();  // no more task callbacks
-		
+
 		for (auto pStack : stacks)
 		{
 			pStack->BeginShutdown();
 		}
 
 		router.Shutdown();
-	}	
+	}
 }
 
 // called by the router when it's shutdown is complete
@@ -87,12 +90,12 @@ void DNP3Channel::CheckForFinalShutdown()
 		state = State::SHUTDOWN;
 
 		pPhys->GetExecutor()->Start(TimeDuration::Zero(),
-			[this]()
-			{
-				this->pShutdownHandler->OnShutdown(this);
-			}
-		);
-	}	
+		                            [this]()
+		{
+			this->pShutdownHandler->OnShutdown(this);
+		}
+		                           );
+	}
 }
 
 openpal::IExecutor* DNP3Channel::GetExecutor()
@@ -107,7 +110,10 @@ openpal::LogFilters DNP3Channel::GetLogFilters() const
 
 void DNP3Channel::SetLogFilters(const openpal::LogFilters& filters)
 {
-	pPhys->GetExecutor()->Post([this, filters](){ this->pPhys->GetLogRoot().SetFilters(filters); });	
+	pPhys->GetExecutor()->Post([this, filters]()
+	{
+		this->pPhys->GetLogRoot().SetFilters(filters);
+	});
 }
 
 IMaster* DNP3Channel::AddMaster(const std::string& id, ISOEHandler* apPublisher, IUTCTimeSource* apTimeSource, const MasterStackConfig& config)
@@ -120,7 +126,7 @@ IMaster* DNP3Channel::AddMaster(const std::string& id, ISOEHandler* apPublisher,
 		return nullptr;
 	}
 	else
-	{		
+	{
 		StackActionHandler handler(&router, pPhys->GetExecutor(), this);
 		auto subLogger = logger.GetSubLogger(id);
 		auto pMaster = new MasterStackImpl(subLogger, pPhys->GetExecutor(), apPublisher, apTimeSource, &group, config, handler);
@@ -155,7 +161,7 @@ IOutstation* DNP3Channel::AddOutstation(const std::string& id, ICommandHandler* 
 // these always happen on the strand
 void DNP3Channel::OnShutdown(DNP3Stack* apStack)
 {
-	stacks.erase(apStack);	
+	stacks.erase(apStack);
 	delete apStack;
 	this->CheckForFinalShutdown();
 }

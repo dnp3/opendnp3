@@ -73,7 +73,7 @@ private:
 
 	IINField QueueReadRange(const StaticRangeLoader& loader);
 
-	IINField QueueStaticIntegrity();	
+	IINField QueueStaticIntegrity();
 
 	template <class T>
 	StaticRangeLoader GetFullRangeWithDefaultLoader();
@@ -88,7 +88,7 @@ private:
 	StaticRangeLoader GetClippedRange(const StaticRange& range);
 
 	StaticLoadResult LoadStaticData(ObjectWriter& writer);
-	
+
 	Database* pDatabase;
 	StaticResponseTypes rspTypes;
 

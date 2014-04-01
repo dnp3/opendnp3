@@ -70,7 +70,7 @@ TEST_CASE(SUITE("DataPost"))
 	OutstationTestObject t(cfg, DatabaseTemplate::BinaryOnly(1));
 
 	t.db.staticData.binaries.metadata[0].clazz = CLASS_1;
-	
+
 	{
 		Transaction tx(&t.db);
 		Binary b(true, BQ_ONLINE);
@@ -84,18 +84,18 @@ TEST_CASE(SUITE("DataPostToNonExistent"))
 	OutstationTestObject t(cfg, DatabaseTemplate::BinaryOnly(1));
 	t.db.staticData.binaries.metadata[0].clazz = CLASS_1;
 
-	
+
 	{
 		Transaction tx(&t.db);
 		Binary b(true, BQ_ONLINE);
 		t.db.Update(b, 5);
-	}	
+	}
 
 	{
 		Transaction tx(&t.db);
 		Binary b(true, BQ_ONLINE);
 		t.db.Update(b, 0);
-	}	
+	}
 }
 
 TEST_CASE(SUITE("UnsupportedFunction"))

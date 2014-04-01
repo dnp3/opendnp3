@@ -31,10 +31,10 @@ namespace opendnp3
 */
 class IStack : public DestructorHook
 {
-public:	
+public:
 
 	virtual ~IStack() {}
-	
+
 	/**
 	* Returns the stack's executor
 	*/
@@ -51,7 +51,7 @@ public:
 	virtual void Disable() = 0;
 
 	/**
-	* Asynchronously shutdown the endpoint. No more calls are allowed after this call.	
+	* Asynchronously shutdown the endpoint. No more calls are allowed after this call.
 	*/
 	virtual void BeginShutdown() = 0;
 

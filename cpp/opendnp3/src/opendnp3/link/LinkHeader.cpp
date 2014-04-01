@@ -51,11 +51,11 @@ void LinkHeader::Set(uint8_t aLen, uint16_t aSrc, uint16_t aDest, bool aFromMast
 
 void LinkHeader::ChangeFCB(bool aFCB)
 {
-	if(aFCB) 
+	if(aFCB)
 	{
 		ctrl |= MASK_FCB;
 	}
-	else 
+	else
 	{
 		ctrl &= ~MASK_FCB;
 	}

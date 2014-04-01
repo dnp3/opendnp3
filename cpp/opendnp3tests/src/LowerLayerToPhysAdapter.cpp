@@ -28,9 +28,9 @@ namespace opendnp3
 {
 
 LowerLayerToPhysAdapter::LowerLayerToPhysAdapter(Logger logger, IPhysicalLayerAsync* apPhys, bool aAutoRead) :
-	Loggable(logger),	
+	Loggable(logger),
 	mAutoRead(aAutoRead),
-	mNumOpenFailure(0),	
+	mNumOpenFailure(0),
 	mpPhys(apPhys)
 {
 	mpPhys->SetHandler(this);
@@ -57,7 +57,7 @@ void LowerLayerToPhysAdapter::OnReceive(const openpal::ReadOnlyBuffer& buffer)
 	{
 		pUpperLayer->OnReceive(buffer);
 	}
-	
+
 	if (mAutoRead)
 	{
 		this->StartRead();

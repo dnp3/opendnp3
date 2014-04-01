@@ -430,11 +430,14 @@ TEST_CASE(SUITE("CloseWhileWaitingForCommandResponse"))
 	AnalogOutputInt16 ao(100);
 	std::deque<CommandResponse> responses;
 
-	t.master.GetCommandProcessor()->DirectOperate(ao, 1, [&](CommandResponse cr) { responses.push_back(cr); });
-	REQUIRE(t.mts.DispatchOne());	
+	t.master.GetCommandProcessor()->DirectOperate(ao, 1, [&](CommandResponse cr)
+	{
+		responses.push_back(cr);
+	});
+	REQUIRE(t.mts.DispatchOne());
 
 	REQUIRE(t.Read() == "C0 05 29 02 28 01 00 01 00 64 00 00"); // DIRECT OPERATE
-	REQUIRE(t.app.NumAPDU() == 0); //nore more packets	
+	REQUIRE(t.app.NumAPDU() == 0); //nore more packets
 	REQUIRE(responses.empty());
 
 	t.master.OnLowerLayerDown();

@@ -50,24 +50,24 @@ void MockUpperLayer::OnReceive(const openpal::ReadOnlyBuffer& input)
 void MockUpperLayer::OnSendResult(bool isSuccess)
 {
 	if (isSuccess)
-	{		
+	{
 		++mState.mSuccessCnt;
 	}
 	else
-	{	
+	{
 		++mState.mFailureCnt;
 	}
 }
 
 void MockUpperLayer::OnLowerLayerUp()
 {
-	isOnline = true;	
+	isOnline = true;
 	++mState.mNumLayerUp;
 }
 
 void MockUpperLayer::OnLowerLayerDown()
 {
-	isOnline = false;	
+	isOnline = false;
 	++mState.mNumLayerDown;
 }
 

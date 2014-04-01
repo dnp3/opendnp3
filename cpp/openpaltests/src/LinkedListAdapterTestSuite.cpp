@@ -44,7 +44,7 @@ TEST_CASE(SUITE("AddsUntilFull"))
 	REQUIRE(list.Add(1));
 	REQUIRE(list.Add(2));
 	REQUIRE(list.Add(3));
-	
+
 	REQUIRE(list.IsFull());
 
 	// adding to a full list returns a nullptr
@@ -126,7 +126,7 @@ TEST_CASE(SUITE("CanIterateOverValues"))
 }
 
 TEST_CASE(SUITE("StaticLinkedList"))
-{	
+{
 	StaticLinkedList<int, uint16_t, 3> list;
 
 	REQUIRE(list.Add(1));

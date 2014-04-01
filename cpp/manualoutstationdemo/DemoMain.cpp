@@ -70,7 +70,7 @@ int main(int argc, char* argv[])
 	ApplicationStack stack(server.GetLogger().GetSubLogger("root"), &executor, AppConfig(false), LinkConfig(false, false));
 	stack.link.SetRouter(&router);
 	router.AddContext(&stack.link, route);
-	
+
 	DynamicallyAllocatedDatabase dadb(DatabaseTemplate::AllTypes(5));
 	Database database(dadb.GetFacade());
 	Outstation outstation(server.GetLogger().GetSubLogger("outstation"), &stack.application, &executor, NullTimeWriteHandler::Inst(), &database, SuccessCommandHandler::Inst(), OutstationConfig());

@@ -37,7 +37,7 @@ namespace asiopal
 {
 
 PhysicalLayerAsyncTCPServer::PhysicalLayerAsyncTCPServer(
-	const openpal::LogConfig& config,
+    const openpal::LogConfig& config,
     asio::io_service* pIOService,
     const std::string& endpoint,
     uint16_t port,
@@ -49,18 +49,18 @@ PhysicalLayerAsyncTCPServer::PhysicalLayerAsyncTCPServer(
 	acceptor(*pIOService),
 	configure(configure_)
 {
-	
+
 }
 
 /* Implement the actions */
 void PhysicalLayerAsyncTCPServer::DoOpen()
 {
 	if (!acceptor.is_open())
-	{		
+	{
 		std::error_code ec;
 		auto address = asio::ip::address::from_string(localEndpointString, ec);
 		if (ec)
-		{			
+		{
 			this->GetExecutor()->Post([this, ec]()
 			{
 				this->OnOpenCallback(ec);
@@ -71,7 +71,7 @@ void PhysicalLayerAsyncTCPServer::DoOpen()
 			localEndpoint.address(address);
 			acceptor.open(localEndpoint.protocol(), ec);
 			if (ec)
-			{				
+			{
 				this->GetExecutor()->Post([this, ec]()
 				{
 					this->OnOpenCallback(ec);
@@ -82,7 +82,7 @@ void PhysicalLayerAsyncTCPServer::DoOpen()
 				acceptor.set_option(ip::tcp::acceptor::reuse_address(true));
 				acceptor.bind(localEndpoint, ec);
 				if (ec)
-				{					
+				{
 					this->GetExecutor()->Post([this, ec]()
 					{
 						this->OnOpenCallback(ec);
@@ -92,7 +92,7 @@ void PhysicalLayerAsyncTCPServer::DoOpen()
 				{
 					acceptor.listen(socket_base::max_connections, ec);
 					if (ec)
-					{						
+					{
 						this->GetExecutor()->Post([this, ec]()
 						{
 							this->OnOpenCallback(ec);
@@ -101,21 +101,21 @@ void PhysicalLayerAsyncTCPServer::DoOpen()
 					else
 					{
 						acceptor.async_accept(mSocket,
-							remoteEndpoint,
-							strand.wrap([this](const std::error_code & code)
+						                      remoteEndpoint,
+						                      strand.wrap([this](const std::error_code & code)
 						{
 							this->OnOpenCallback(code);
 						}));
 					}
 				}
 			}
-		}		
+		}
 	}
 	else
 	{
 		acceptor.async_accept(mSocket,
-		                       remoteEndpoint,
-		                       strand.wrap([this](const std::error_code & code)
+		                      remoteEndpoint,
+		                      strand.wrap([this](const std::error_code & code)
 		{
 			this->OnOpenCallback(code);
 		}));

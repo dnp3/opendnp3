@@ -37,15 +37,15 @@ namespace opendnp3
 class MockLinkLayer : public ILinkLayer, public openpal::HasUpperLayer
 {
 
-public:	
-	
+public:
+
 	virtual void Send(IBufferSegment& segments) override final
 	{
 		while (segments.HasValue())
-		{			
+		{
 			sends.push_back(openpal::toHex(segments.GetSegment()));
 			segments.Advance();
-		}		
+		}
 	}
 
 	std::string PopWriteAsHex()
@@ -63,7 +63,7 @@ public:
 		{
 			pUpperLayer->OnReceive(hs);
 		}
-	}	
+	}
 
 	std::vector<std::string> sends;
 };

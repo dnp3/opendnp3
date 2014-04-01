@@ -49,7 +49,7 @@ protected:
 */
 class CriticalSection : private openpal::Uncopyable
 {
-public:	
+public:
 
 	/// Can be constructed with nullptr or an implementation
 	CriticalSection(IMutex* pMutex_) : pMutex(pMutex_)

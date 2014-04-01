@@ -33,9 +33,9 @@ namespace opendnp3
 
 enum class GroupVariationType : int
 {
-	STATIC,
-	EVENT,
-	OTHER
+    STATIC,
+    EVENT,
+    OTHER
 };
 
 enum class GroupVariation : int
@@ -62,9 +62,9 @@ enum class GroupVariation : int
     Group10Var1,
     Group10Var2,
 
-	Group11Var0,
-	Group11Var1,
-	Group11Var2,
+    Group11Var0,
+    Group11Var1,
+    Group11Var2,
 
     Group12Var1,
 
@@ -124,15 +124,15 @@ enum class GroupVariation : int
     Group41Var3,
     Group41Var4,
 
-	Group42Var0,
-	Group42Var1,
-	Group42Var2,
-	Group42Var3,
-	Group42Var4,
-	Group42Var5,
-	Group42Var6,
-	Group42Var7,
-	Group42Var8,
+    Group42Var0,
+    Group42Var1,
+    Group42Var2,
+    Group42Var3,
+    Group42Var4,
+    Group42Var5,
+    Group42Var6,
+    Group42Var7,
+    Group42Var8,
 
     Group50Var1,
     Group50Var2,
@@ -168,7 +168,7 @@ struct EnumAndType
 
 class GroupVariationRecord
 {
-	
+
 public:
 
 	static EnumAndType GetEnumAndType(uint8_t group, uint8_t variation);
@@ -177,7 +177,7 @@ public:
 
 	std::string ToString() const;
 
-	GroupVariationRecord(uint8_t group_, uint8_t variation_, GroupVariation enumeration_, GroupVariationType type_);	
+	GroupVariationRecord(uint8_t group_, uint8_t variation_, GroupVariation enumeration_, GroupVariationType type_);
 
 	GroupVariation enumeration;
 	GroupVariationType type;
@@ -187,9 +187,9 @@ public:
 
 class HeaderRecord : public GroupVariationRecord
 {
-	public:
+public:
 
-	HeaderRecord(const GroupVariationRecord& gv, QualifierCode qualifier_);	
+	HeaderRecord(const GroupVariationRecord& gv, QualifierCode qualifier_);
 
 	QualifierCode qualifier;
 };

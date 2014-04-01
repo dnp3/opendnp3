@@ -34,7 +34,7 @@ namespace opendnp3
 class ByteStr : public CopyableBuffer
 {
 
-public:	
+public:
 	ByteStr(uint32_t aLength, uint8_t aSeed = 0);
 	ByteStr(const uint8_t* apData, uint32_t aLength);
 	ByteStr(const std::string& aChars);
@@ -63,7 +63,7 @@ private:
 
 class BufferSegment : public IBufferSegment
 {
-	public:
+public:
 
 	BufferSegment(uint32_t segmentSize, const std::string& hex);
 
@@ -75,7 +75,7 @@ class BufferSegment : public IBufferSegment
 
 	void Reset();
 
-	private:
+private:
 	uint32_t segmentSize;
 	HexSequence hs;
 	openpal::ReadOnlyBuffer remainder;

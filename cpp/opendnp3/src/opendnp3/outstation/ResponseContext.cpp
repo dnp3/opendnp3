@@ -29,7 +29,7 @@ ResponseContext::ResponseContext(Database* pDatabase, OutstationEventBuffer& buf
 	staticContext(pDatabase, rspTypes),
 	eventContext(buffer)
 {
-	
+
 }
 
 void ResponseContext::Reset()
@@ -63,7 +63,7 @@ void ResponseContext::SetControl(APDUResponse& response, bool hasEvents, bool fi
 {
 	auto fir = (fragmentCount == 0);
 	auto con = (!fin) || hasEvents; // request confirmation on any non-fin fragment or if it has events
-	AppControlField control(fir, fin, con, false);	
+	AppControlField control(fir, fin, con, false);
 	response.SetControl(control);
 	++fragmentCount;
 }
@@ -72,12 +72,12 @@ IINField ResponseContext::ReadAllObjects(const GroupVariationRecord& record)
 {
 	switch (record.type)
 	{
-		case(GroupVariationType::STATIC) :
-			return staticContext.ReadAll(record);
-		case(GroupVariationType::EVENT) :
-			return eventContext.ReadAll(record);
-		default:
-			return IINField(IINBit::FUNC_NOT_SUPPORTED);
+	case(GroupVariationType::STATIC) :
+		return staticContext.ReadAll(record);
+	case(GroupVariationType::EVENT) :
+		return eventContext.ReadAll(record);
+	default:
+		return IINField(IINBit::FUNC_NOT_SUPPORTED);
 	}
 }
 
@@ -85,10 +85,10 @@ IINField ResponseContext::ReadRange(const GroupVariationRecord& record, const St
 {
 	switch (record.type)
 	{
-		case(GroupVariationType::STATIC) :
-			return staticContext.ReadRange(record, range);
-		default:
-			return IINField(IINBit::FUNC_NOT_SUPPORTED);
+	case(GroupVariationType::STATIC) :
+		return staticContext.ReadRange(record, range);
+	default:
+		return IINField(IINBit::FUNC_NOT_SUPPORTED);
 	}
 }
 

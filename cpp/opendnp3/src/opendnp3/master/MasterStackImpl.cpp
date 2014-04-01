@@ -33,10 +33,10 @@ MasterStackImpl::MasterStackImpl(	Logger logger,
                                     IUTCTimeSource* apTimeSource,
                                     AsyncTaskGroup* apTaskGroup,
                                     const MasterStackConfig& config,
-									const StackActionHandler& handler) :
+                                    const StackActionHandler& handler) :
 
-	IMaster(logger, apExecutor, config.app, config.link, handler),	
-	master(logger.GetSubLogger("master"), config.master, &appStack.application, apPublisher, apTaskGroup, apExecutor, apTimeSource)	
+	IMaster(logger, apExecutor, config.app, config.link, handler),
+	master(logger.GetSubLogger("master"), config.master, &appStack.application, apPublisher, apTaskGroup, apExecutor, apTimeSource)
 {
 	appStack.application.SetUser(&master);
 }

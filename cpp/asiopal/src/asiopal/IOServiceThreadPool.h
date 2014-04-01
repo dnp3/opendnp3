@@ -37,8 +37,8 @@ public:
 
 	IOServiceThreadPool(
 	    openpal::ILogBase* pLog,
-		uint32_t levels,
-		const std::string& id,
+	    uint32_t levels,
+	    const std::string& id,
 	    uint32_t aConcurrency,
 	std::function<void()> onThreadStart = []() {},
 	std::function<void()> onThreadExit = []() {}

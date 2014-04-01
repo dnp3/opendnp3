@@ -54,12 +54,12 @@ struct StaticDataFacade
 {
 	StaticDataFacade(
 	    BinaryCollection binaries_,
-		DoubleBinaryCollection doubleBinaries_,
+	    DoubleBinaryCollection doubleBinaries_,
 	    AnalogCollection analogs_,
 	    CounterCollection counters_,
 	    FrozenCounterCollection frozenCounters_,
 	    BinaryOutputStatusCollection binaryOutputStatii_,
-		AnalogOutputStatusCollection analogOutputStatii_
+	    AnalogOutputStatusCollection analogOutputStatii_
 	):
 		binaries(binaries_),
 		doubleBinaries(doubleBinaries_),
@@ -68,7 +68,7 @@ struct StaticDataFacade
 		frozenCounters(frozenCounters_),
 		binaryOutputStatii(binaryOutputStatii_),
 		analogOutputStatii(analogOutputStatii_)
-	{}	
+	{}
 
 	BinaryCollection binaries;
 	DoubleBinaryCollection doubleBinaries;

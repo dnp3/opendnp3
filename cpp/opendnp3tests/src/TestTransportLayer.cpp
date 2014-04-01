@@ -183,7 +183,7 @@ TEST_CASE(SUITE("SendArguments"))
 
 TEST_CASE(SUITE("StateSending"))
 {
-	TransportTestObject test(true);	
+	TransportTestObject test(true);
 
 	// this puts the layer into the Sending state
 	test.upper.SendDown("11");
@@ -259,7 +259,7 @@ TEST_CASE(SUITE("SendFullAPDU"))
 
 	uint32_t numPackets = CalcMaxPackets(sizes::DEFAULT_APDU_BUFFER_SIZE, TL_MAX_TPDU_PAYLOAD);
 	uint32_t lastPacketLength = CalcLastPacketSize(sizes::DEFAULT_APDU_BUFFER_SIZE, TL_MAX_TPDU_PAYLOAD);
-	
+
 	vector<string> packets;
 	std::string apdu = test.GeneratePacketSequence(packets, numPackets, lastPacketLength);
 
@@ -273,8 +273,8 @@ TEST_CASE(SUITE("SendFullAPDU"))
 	{
 		REQUIRE(packets[i] == test.link.PopWriteAsHex());
 	}
-	
-	test.transport.OnSendResult(true);	
+
+	test.transport.OnSendResult(true);
 }
 
 

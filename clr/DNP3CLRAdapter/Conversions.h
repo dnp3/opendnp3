@@ -38,7 +38,7 @@ public:
 
 	// Convert a .NET string to a C++ string
 	static std::string convertString(System::String^ s);
-	static System::String^ convertString(const std::string& s);	
+	static System::String^ convertString(const std::string& s);
 
 	// Converting channel state enumeration
 	static ChannelState convertChannelState(opendnp3::ChannelState aState);

@@ -34,14 +34,14 @@ namespace opendnp3
 {
 
 TransportLoopbackTestObject::TransportLoopbackTestObject(
-	openpal::Logger logger,
+    openpal::Logger logger,
     asio::io_service* apService,
     IPhysicalLayerAsync* apPhys,
     LinkConfig aCfgA,
     LinkConfig aCfgB,
     uint32_t filters) :
 
-	AsyncTestObjectASIO(apService),	
+	AsyncTestObjectASIO(apService),
 	mCfgA(aCfgA),
 	mCfgB(aCfgB),
 	mLinkA(logger, apPhys->GetExecutor(), aCfgA),
@@ -68,7 +68,7 @@ TransportLoopbackTestObject::TransportLoopbackTestObject(
 	mLinkB.SetRouter(&mRouter);
 
 	mTransA.SetAppLayer(&mUpperA);
-	mTransB.SetAppLayer(&mUpperB);	
+	mTransB.SetAppLayer(&mUpperB);
 
 	mUpperA.SetLowerLayer(&mTransA);
 	mUpperB.SetLowerLayer(&mTransB);

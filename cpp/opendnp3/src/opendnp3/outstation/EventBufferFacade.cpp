@@ -32,16 +32,16 @@ SequenceRecord::SequenceRecord(EventType type_, uint16_t index_, EventClass claz
 {}
 
 EventBufferFacade::EventBufferFacade(
-	openpal::RandomInsertAdapter<Event<Binary>, uint16_t> binaryEvents_,
-	openpal::RandomInsertAdapter<Event<DoubleBitBinary>, uint16_t> doubleBinaryEvents_,
-	openpal::RandomInsertAdapter<Event<Analog>, uint16_t> analogEvents_,
-	openpal::RandomInsertAdapter<Event<Counter>, uint16_t> counterEvents_,
-	openpal::RandomInsertAdapter<Event<FrozenCounter>, uint16_t> frozenCounterEvents_,
-	openpal::RandomInsertAdapter<Event<BinaryOutputStatus>, uint16_t> binaryOutputStatusEvents_,
-	openpal::RandomInsertAdapter<Event<AnalogOutputStatus>, uint16_t> analogOutputStatusEvents_,
-						
-	openpal::LinkedListAdapter<SequenceRecord, uint16_t> sequenceOfEvents_,
-	openpal::StackAdapter<openpal::ListNode<SequenceRecord>*, uint16_t> selectedEvents_) :
+    openpal::RandomInsertAdapter<Event<Binary>, uint16_t> binaryEvents_,
+    openpal::RandomInsertAdapter<Event<DoubleBitBinary>, uint16_t> doubleBinaryEvents_,
+    openpal::RandomInsertAdapter<Event<Analog>, uint16_t> analogEvents_,
+    openpal::RandomInsertAdapter<Event<Counter>, uint16_t> counterEvents_,
+    openpal::RandomInsertAdapter<Event<FrozenCounter>, uint16_t> frozenCounterEvents_,
+    openpal::RandomInsertAdapter<Event<BinaryOutputStatus>, uint16_t> binaryOutputStatusEvents_,
+    openpal::RandomInsertAdapter<Event<AnalogOutputStatus>, uint16_t> analogOutputStatusEvents_,
+
+    openpal::LinkedListAdapter<SequenceRecord, uint16_t> sequenceOfEvents_,
+    openpal::StackAdapter<openpal::ListNode<SequenceRecord>*, uint16_t> selectedEvents_) :
 
 	binaryEvents(binaryEvents_),
 	doubleBinaryEvents(doubleBinaryEvents_),

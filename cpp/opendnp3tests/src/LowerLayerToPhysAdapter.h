@@ -42,7 +42,7 @@ class LowerLayerToPhysAdapter : public openpal::IHandlerAsync, public openpal::I
 
 public:
 	LowerLayerToPhysAdapter(openpal::Logger, openpal::IPhysicalLayerAsync*, bool aAutoRead = true);
-	
+
 	size_t GetNumOpenFailure()
 	{
 		return mNumOpenFailure;
@@ -61,7 +61,7 @@ public:
 	// --------  IUpperLayer ---------
 	virtual void OnReceive(const openpal::ReadOnlyBuffer& arBuffer) override final;
 	virtual void OnSendResult(bool isSuccess) override final;
-	
+
 	virtual void OnLowerLayerUp() override final;
 	virtual void OnLowerLayerDown() override final;
 
@@ -70,14 +70,14 @@ public:
 
 
 private:
-	
+
 	bool mAutoRead;
 	size_t mNumOpenFailure;
 
 	static const size_t BUFFER_SIZE = 1 << 16; // 65,536
 
 	uint8_t mpBuff[BUFFER_SIZE]; // Temporary buffer since IPhysicalLayerAsync now directly supports a read operation
-	
+
 	openpal::IPhysicalLayerAsync* mpPhys;
 };
 

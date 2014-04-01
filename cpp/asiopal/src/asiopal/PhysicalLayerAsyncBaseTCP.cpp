@@ -66,7 +66,7 @@ void PhysicalLayerAsyncBaseTCP::DoAsyncRead(WriteBuffer& buff)
 void PhysicalLayerAsyncBaseTCP::DoAsyncWrite(const ReadOnlyBuffer& buff)
 {
 	async_write(mSocket, buffer(buff, buff.Size()),
-		strand.wrap([this](const std::error_code & code, size_t  numWritten)
+	            strand.wrap([this](const std::error_code & code, size_t  numWritten)
 	{
 		this->OnWriteCallback(code, static_cast<uint32_t>(numWritten));
 	}));

@@ -27,7 +27,7 @@ namespace opendnp3
 
 AsyncPhysTestObject::AsyncPhysTestObject(uint32_t filters, bool aAutoRead) :
 	AsyncTestObjectASIO(),
-	log(),	
+	log(),
 	mTCPClient(LogConfig(&log, filters, "TCPClient"), this->GetService(), "127.0.0.1", 50000),
 	mTCPServer(LogConfig(&log, filters, "TCPSever"), this->GetService(), "127.0.0.1", 50000),
 	mClientAdapter(log.GetLogger("ClientAdapter"), &mTCPClient, aAutoRead),
@@ -37,7 +37,7 @@ AsyncPhysTestObject::AsyncPhysTestObject(uint32_t filters, bool aAutoRead) :
 	mServerAdapter.SetUpperLayer(&mServerUpper);
 
 	mClientUpper.SetLowerLayer(&mClientAdapter);
-	mServerUpper.SetLowerLayer(&mServerAdapter);	
+	mServerUpper.SetLowerLayer(&mServerAdapter);
 }
 
 }

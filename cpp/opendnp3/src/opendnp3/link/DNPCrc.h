@@ -36,7 +36,7 @@ public:
 
 	static bool IsCorrectCRC(const uint8_t* input, uint32_t length);
 
-private:	
+private:
 
 	static bool isInitialized;
 

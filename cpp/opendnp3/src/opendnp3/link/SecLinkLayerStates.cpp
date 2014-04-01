@@ -58,7 +58,7 @@ void SLLS_NotReset::ConfirmedUserData(LinkLayer* apLL, bool aFcb, const openpal:
 }
 
 void SLLS_NotReset::ResetLinkStates(LinkLayer* apLL)
-{		
+{
 	apLL->QueueAck();
 	apLL->ResetReadFCB();
 	apLL->ChangeState(SLLS_TransmitWaitReset::Inst());
@@ -78,7 +78,7 @@ SLLS_Reset SLLS_Reset::mInstance;
 void SLLS_Reset::TestLinkStatus(LinkLayer* apLL, bool aFcb)
 {
 	if(apLL->NextReadFCB() == aFcb)
-	{		
+	{
 		apLL->QueueAck();
 		apLL->ToggleReadFCB();
 		apLL->ChangeState(SLLS_TransmitWaitReset::Inst());
@@ -95,7 +95,7 @@ void SLLS_Reset::TestLinkStatus(LinkLayer* apLL, bool aFcb)
 void SLLS_Reset::ConfirmedUserData(LinkLayer* apLL, bool aFcb, const openpal::ReadOnlyBuffer& arBuffer)
 {
 	apLL->QueueAck();
-	
+
 	if (apLL->NextReadFCB() == aFcb)
 	{
 		apLL->ToggleReadFCB();

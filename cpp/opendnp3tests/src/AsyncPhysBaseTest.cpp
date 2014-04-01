@@ -32,7 +32,7 @@ AsyncPhysBaseTest::AsyncPhysBaseTest(uint32_t filters, bool aImmediate) :
 	adapter(log.GetLogger("adapter"), &phys, false)
 {
 	adapter.SetUpperLayer(&upper);
-	upper.SetLowerLayer(&adapter);	
+	upper.SetLowerLayer(&adapter);
 }
 
 

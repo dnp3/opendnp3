@@ -36,7 +36,7 @@ namespace asiopal
 {
 
 PhysicalLayerAsyncTCPClient::PhysicalLayerAsyncTCPClient(
-	const openpal::LogConfig& config,
+    const openpal::LogConfig& config,
     asio::io_service* pIOService,
     const std::string& host_,
     uint16_t port,
@@ -49,7 +49,7 @@ PhysicalLayerAsyncTCPClient::PhysicalLayerAsyncTCPClient(
 	resolver(*pIOService),
 	configure(aConfigure)
 {
-	
+
 }
 
 /* Implement the actions */
@@ -61,18 +61,22 @@ void PhysicalLayerAsyncTCPClient::DoOpen()
 	{
 		ip::tcp::resolver::query query(host, "20000");
 		resolver.async_resolve(query, strand.wrap(
-			[this](const std::error_code& code, ip::tcp::resolver::iterator endpoints) { 
-				this->HandleResolve(code, endpoints);
-			}
-		));
+		                           [this](const std::error_code & code, ip::tcp::resolver::iterator endpoints)
+		{
+			this->HandleResolve(code, endpoints);
+		}
+		                       ));
 	}
 	else
 	{
 		remoteEndpoint.address(address);
 		mSocket.async_connect(remoteEndpoint, strand.wrap(
-			[this](const std::error_code & code) { this->OnOpenCallback(code); }
-		));
-	}	
+		                          [this](const std::error_code & code)
+		{
+			this->OnOpenCallback(code);
+		}
+		                      ));
+	}
 }
 
 void PhysicalLayerAsyncTCPClient::HandleResolve(const std::error_code& code, asio::ip::tcp::resolver::iterator endpoints)
@@ -82,13 +86,14 @@ void PhysicalLayerAsyncTCPClient::HandleResolve(const std::error_code& code, asi
 		this->OnOpenCallback(code);
 	}
 	else
-	{		
-		// attempt a connection to each endpoint in the iterator until we connect		
+	{
+		// attempt a connection to each endpoint in the iterator until we connect
 		asio::async_connect(mSocket, endpoints, condition, strand.wrap(
-			[this](const std::error_code & code, ip::tcp::resolver::iterator endpoints) { 
-				this->OnOpenCallback(code); 
-			}
-		));
+		                        [this](const std::error_code & code, ip::tcp::resolver::iterator endpoints)
+		{
+			this->OnOpenCallback(code);
+		}
+		                    ));
 	}
 }
 

@@ -31,7 +31,7 @@ namespace asiopal
 class ShutdownHandler : public openpal::IShutdownHandler
 {
 
-	public:
+public:
 
 	~ShutdownHandler()
 	{
@@ -44,8 +44,8 @@ class ShutdownHandler : public openpal::IShutdownHandler
 		p.set_value(true);
 	}
 
-	private:
-	
+private:
+
 	std::promise<bool> p;
 };
 

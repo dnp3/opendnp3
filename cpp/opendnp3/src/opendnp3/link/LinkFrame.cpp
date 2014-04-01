@@ -35,7 +35,7 @@ namespace opendnp3
 void LinkFrame::ReadUserData(const uint8_t* pSrc, uint8_t* pDest, uint32_t length_)
 {
 	uint32_t length = length_;
-	uint8_t const * pRead = pSrc;
+	uint8_t const* pRead = pSrc;
 	uint8_t* pWrite = pDest;
 
 	while (length > 0)
@@ -47,7 +47,7 @@ void LinkFrame::ReadUserData(const uint8_t* pSrc, uint8_t* pDest, uint32_t lengt
 		pRead += num_with_crc;
 		pWrite += num;
 		length -= num;
-	}	
+	}
 }
 
 
@@ -61,14 +61,14 @@ bool LinkFrame::ValidateBodyCRC(const uint8_t* pBody, uint32_t length)
 		if (DNPCrc::IsCorrectCRC(pBody, num))
 		{
 			pBody += (num + 2);
-			length -= num;			
+			length -= num;
 		}
 		else
 		{
 			return false;
 		}
 	}
-	return true;	
+	return true;
 }
 
 uint32_t LinkFrame::CalcFrameSize(uint8_t dataLength)
@@ -77,17 +77,17 @@ uint32_t LinkFrame::CalcFrameSize(uint8_t dataLength)
 }
 
 uint32_t LinkFrame::CalcUserDataSize(uint8_t dataLength)
-{	 
+{
 	if (dataLength > 0)
 	{
 		uint32_t mod16 = dataLength % LS_DATA_BLOCK_SIZE;
 		uint32_t size = (dataLength / LS_DATA_BLOCK_SIZE) * LS_DATA_PLUS_CRC_SIZE; //complete blocks
-		return (mod16 > 0) ? (size + mod16 + LS_CRC_SIZE) : size; //possible partial block		
+		return (mod16 > 0) ? (size + mod16 + LS_CRC_SIZE) : size; //possible partial block
 	}
 	else
 	{
 		return 0;
-	}	
+	}
 }
 
 ////////////////////////////////////////////////
@@ -97,8 +97,8 @@ uint32_t LinkFrame::CalcUserDataSize(uint8_t dataLength)
 ////////////////////////////////////////////////
 
 ReadOnlyBuffer LinkFrame::FormatAck(WriteBuffer& buffer, bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc)
-{		
-	return FormatHeader(buffer, 0, aIsMaster, false, aIsRcvBuffFull, LinkFunction::SEC_ACK, aDest, aSrc);	
+{
+	return FormatHeader(buffer, 0, aIsMaster, false, aIsRcvBuffFull, LinkFunction::SEC_ACK, aDest, aSrc);
 }
 
 ReadOnlyBuffer LinkFrame::FormatNack(WriteBuffer& buffer, bool aIsMaster, bool aIsRcvBuffFull, uint16_t aDest, uint16_t aSrc)
@@ -158,11 +158,11 @@ ReadOnlyBuffer LinkFrame::FormatUnconfirmedUserData(WriteBuffer& buffer, bool aI
 	FormatHeader(buffer, dataLength, aIsMaster, false, false, LinkFunction::PRI_UNCONFIRMED_USER_DATA, aDest, aSrc);
 	WriteUserData(apData, buffer, dataLength);
 	buffer.Advance(userDataSize);
-	return ret;	
+	return ret;
 }
 
 ReadOnlyBuffer LinkFrame::FormatHeader(WriteBuffer& buffer, uint8_t aDataLength, bool aIsMaster, bool aFcb, bool aFcvDfc, LinkFunction aFuncCode, uint16_t aDest, uint16_t aSrc)
-{	
+{
 	assert(buffer.Size() >= 10);
 	LinkHeader header(aDataLength + LS_MIN_LENGTH, aSrc, aDest, aIsMaster, aFcvDfc, aFcb, aFuncCode);
 	header.Write(buffer);
@@ -182,7 +182,7 @@ void LinkFrame::WriteUserData(const uint8_t* pSrc, uint8_t* pDest, uint8_t lengt
 		pSrc += num;
 		pDest += (num + 2);
 		length -= num;
-	}	
+	}
 }
 
 } //end namespace

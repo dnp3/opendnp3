@@ -32,7 +32,7 @@ namespace openpal
 
 /**
  * Interface for posting events to a queue.  Events can be posted for
- * immediate consumption or some time in the future.  Events are processed 
+ * immediate consumption or some time in the future.  Events are processed
  * in the order they are received.
  *
  */
@@ -68,21 +68,21 @@ protected:
 
 class ExecutorPause
 {
-	public:
+public:
 
 	ExecutorPause(openpal::IExecutor* pExecutor_) : pExecutor(pExecutor_)
 	{
 		pExecutor->Pause();
 	}
-	
+
 	~ExecutorPause()
 	{
 		pExecutor->Resume();
 	}
 
-	private:
+private:
 
-	openpal::IExecutor* pExecutor;	
+	openpal::IExecutor* pExecutor;
 };
 
 

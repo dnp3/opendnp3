@@ -29,7 +29,7 @@ namespace openpal
 class IHandlerAsync : public IUpperLayer
 {
 
-public:	
+public:
 	virtual ~IHandlerAsync() {}
 
 	// In addition to all of the IUpperLayer functions, provide a mechanism to receive open failures

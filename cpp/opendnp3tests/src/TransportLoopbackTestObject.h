@@ -37,7 +37,7 @@ class TransportLoopbackTestObject :  public AsyncTestObjectASIO
 {
 public:
 	TransportLoopbackTestObject(
-		openpal::Logger logger,
+	    openpal::Logger logger,
 	    asio::io_service*,
 	    openpal::IPhysicalLayerAsync*,
 	    LinkConfig,
@@ -45,7 +45,7 @@ public:
 	    uint32_t filters = flags::INFO);
 
 	~TransportLoopbackTestObject();
-	
+
 	bool LayersUp();
 
 	void Start();
@@ -60,7 +60,7 @@ private:
 
 	TransportLayer mTransA;
 	TransportLayer mTransB;
-	
+
 	LinkLayerRouter mRouter;
 
 public:

@@ -56,7 +56,7 @@ void CallbackListener(gcroot < System::Action<ChannelState> ^ >* listener, opend
 IMaster^ ChannelAdapter::AddMaster(System::String^ loggerId, ISOEHandler^ publisher, MasterStackConfig^ config)
 {
 	std::string stdLoggerId = Conversions::convertString(loggerId);
-	
+
 	MasterMeasurementHandlerWrapper^ wrapper = gcnew MasterMeasurementHandlerWrapper(publisher);
 	opendnp3::MasterStackConfig cfg = Conversions::convertConfig(config);
 
@@ -73,7 +73,7 @@ IMaster^ ChannelAdapter::AddMaster(System::String^ loggerId, ISOEHandler^ publis
 
 IOutstation^ ChannelAdapter::AddOutstation(System::String^ loggerId, ICommandHandler^ cmdHandler, ITimeWriteHandler^ timeHandler, OutstationStackConfig^ config)
 {
-	std::string stdLoggerId = Conversions::convertString(loggerId);	
+	std::string stdLoggerId = Conversions::convertString(loggerId);
 
 	OutstationCommandHandlerWrapper^ cmdWrapper = gcnew OutstationCommandHandlerWrapper(cmdHandler);
 	OutstationTimeWriteWrapper^ timeWrapper = gcnew OutstationTimeWriteWrapper(timeHandler);

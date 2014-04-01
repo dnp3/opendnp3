@@ -46,19 +46,19 @@ class OutstationStackImpl : public IOutstation
 public:
 
 	OutstationStackImpl(
-		openpal::Logger&,
-		openpal::IExecutor* apExecutor,
-		ITimeWriteHandler* apTimeWriteHandler,
-		ICommandHandler* apCmdHandler,
-		const OutstationStackConfig& arCfg,
-		const StackActionHandler& handler);
+	    openpal::Logger&,
+	    openpal::IExecutor* apExecutor,
+	    ITimeWriteHandler* apTimeWriteHandler,
+	    ICommandHandler* apCmdHandler,
+	    const OutstationStackConfig& arCfg,
+	    const StackActionHandler& handler);
 
 	IMeasurementLoader* GetLoader();
 
-	void SetNeedTimeIIN();	
+	void SetNeedTimeIIN();
 
 private:
-	openpal::IExecutor* pExecutor;	
+	openpal::IExecutor* pExecutor;
 	DynamicallyAllocatedDatabase databaseBuffers;
 	DynamicallyAllocatedEventBuffer eventBuffers;
 	Mutex mutex;

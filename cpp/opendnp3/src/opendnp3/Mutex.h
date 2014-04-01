@@ -38,7 +38,7 @@ protected:
 	{
 		mutex.lock();
 	}
-	
+
 	virtual void Unlock() override final
 	{
 		mutex.unlock();

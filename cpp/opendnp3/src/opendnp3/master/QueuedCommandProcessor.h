@@ -68,34 +68,36 @@ private:
 
 	template <class T>
 	void SelectAndOperateT(const T& command, uint16_t index, std::function<void (CommandResponse)> callback)
-	{									
+	{
 		pExecutor->Post(
-			[this, command, index, callback]() { 
-				requestQueue.push(
-					[command, index, callback](ICommandProcessor * pProcessor)
-					{
-						pProcessor->SelectAndOperate(command, index, callback);
-					}
-				);
-				pEnableTask->Enable(); 
+		    [this, command, index, callback]()
+		{
+			requestQueue.push(
+			    [command, index, callback](ICommandProcessor * pProcessor)
+			{
+				pProcessor->SelectAndOperate(command, index, callback);
 			}
+			);
+			pEnableTask->Enable();
+		}
 		);
 	}
 
 	template <class T>
 	void DirectOperateT(const T& command, uint16_t index, std::function<void (CommandResponse)> callback)
 	{
-		
+
 		pExecutor->Post(
-			[this, command, index, callback]() {
-				requestQueue.push(
-					[command, index, callback](ICommandProcessor * pProcessor)
-					{
-						pProcessor->DirectOperate(command, index, callback);
-					}
-				);
-				pEnableTask->Enable(); 
+		    [this, command, index, callback]()
+		{
+			requestQueue.push(
+			    [command, index, callback](ICommandProcessor * pProcessor)
+			{
+				pProcessor->DirectOperate(command, index, callback);
 			}
+			);
+			pEnableTask->Enable();
+		}
 		);
 	}
 };

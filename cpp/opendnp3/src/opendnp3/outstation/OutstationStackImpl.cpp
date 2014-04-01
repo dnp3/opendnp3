@@ -24,19 +24,19 @@ namespace opendnp3
 {
 
 OutstationStackImpl::OutstationStackImpl(
-	openpal::Logger& logger,
-	openpal::IExecutor* apExecutor,
-	ITimeWriteHandler* apTimeWriteHandler,
-	ICommandHandler* apCmdHandler,
-	const OutstationStackConfig& config,
-	const StackActionHandler& handler) :
-		IOutstation(logger, apExecutor, config.app, config.link, handler),
-		pExecutor(apExecutor),	
-		databaseBuffers(config.database.GetTemplate()),
-		eventBuffers(config.eventBuffer),
-		mutex(),
-		database(databaseBuffers.GetFacade(), &mutex),
-		outstation(logger.GetSubLogger("outstation"), &appStack.application, apExecutor, apTimeWriteHandler, &database, eventBuffers.GetFacade(), apCmdHandler, config.outstation)
+    openpal::Logger& logger,
+    openpal::IExecutor* apExecutor,
+    ITimeWriteHandler* apTimeWriteHandler,
+    ICommandHandler* apCmdHandler,
+    const OutstationStackConfig& config,
+    const StackActionHandler& handler) :
+	IOutstation(logger, apExecutor, config.app, config.link, handler),
+	pExecutor(apExecutor),
+	databaseBuffers(config.database.GetTemplate()),
+	eventBuffers(config.eventBuffer),
+	mutex(),
+	database(databaseBuffers.GetFacade(), &mutex),
+	outstation(logger.GetSubLogger("outstation"), &appStack.application, apExecutor, apTimeWriteHandler, &database, eventBuffers.GetFacade(), apCmdHandler, config.outstation)
 {
 	appStack.application.SetUser(&outstation);
 	databaseBuffers.Configure(config.database);

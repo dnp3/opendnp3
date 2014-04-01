@@ -95,7 +95,7 @@ TEST_CASE(SUITE("Shifting"))
 TEST_CASE(SUITE("SyncNoPattern"))
 {
 	ShiftableBuffer b(staticBuffer.Buffer(), staticBuffer.Size());
-	
+
 	for (size_t i = 0; i < b.NumWriteBytes(); ++i)
 	{
 		b.WriteBuff()[i] = 0;

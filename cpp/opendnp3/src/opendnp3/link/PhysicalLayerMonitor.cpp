@@ -42,16 +42,16 @@ PhysicalLayerMonitor::PhysicalLayerMonitor(
     TimeDuration minOpenRetry_,
     TimeDuration maxOpenRetry_,
     IOpenDelayStrategy* pOpenStrategy_) :
-		Loggable(logger),	
-		pPhys(pPhys_),	
-		isOnline(false),
-		mpOpenTimer(nullptr),
-		mpState(MonitorStateInit::Inst()),
-		mFinalShutdown(false),
-		minOpenRetry(minOpenRetry_),
-		maxOpenRetry(maxOpenRetry_),
-		currentRetry(minOpenRetry_),
-		pOpenStrategy(pOpenStrategy_)
+	Loggable(logger),
+	pPhys(pPhys_),
+	isOnline(false),
+	mpOpenTimer(nullptr),
+	mpState(MonitorStateInit::Inst()),
+	mFinalShutdown(false),
+	minOpenRetry(minOpenRetry_),
+	maxOpenRetry(maxOpenRetry_),
+	currentRetry(minOpenRetry_),
+	pOpenStrategy(pOpenStrategy_)
 {
 	assert(pPhys != nullptr);
 	pPhys->SetHandler(this);
@@ -65,12 +65,12 @@ ChannelState PhysicalLayerMonitor::GetState()
 void PhysicalLayerMonitor::ChangeState(IMonitorState* apState)
 {
 	LOG_BLOCK(flags::DEBUG, mpState->ConvertToString() << " -> " << apState->ConvertToString() << " : " << pPhys->ConvertStateToString());
-	IMonitorState* pLast = mpState;	
+	IMonitorState* pLast = mpState;
 	mpState = apState;
 
 	if(pLast->GetState() != apState->GetState())
 	{
-		this->OnStateChange(mpState->GetState());		
+		this->OnStateChange(mpState->GetState());
 	}
 
 	if (mpState->GetState() == ChannelState::SHUTDOWN)
@@ -83,7 +83,7 @@ void PhysicalLayerMonitor::ChangeState(IMonitorState* apState)
 /// ------- IHandlerAsync -------
 
 void PhysicalLayerMonitor::OnOpenFailure()
-{	
+{
 	if (mpState->OnOpenFailure(this))
 	{
 		this->OnPhysicalLayerOpenFailureCallback();
@@ -92,13 +92,13 @@ void PhysicalLayerMonitor::OnOpenFailure()
 }
 
 void PhysicalLayerMonitor::OnLowerLayerUp()
-{			
+{
 	if (mpState->OnLayerOpen(this))
 	{
 		isOnline = true;
 		this->currentRetry = minOpenRetry;
 		this->OnPhysicalLayerOpenSuccessCallback();
-	}	
+	}
 }
 
 void PhysicalLayerMonitor::OnLowerLayerDown()
@@ -145,9 +145,9 @@ void PhysicalLayerMonitor::Shutdown()
 /* ------- External events that occurs ------- */
 
 void PhysicalLayerMonitor::OnOpenTimerExpiration()
-{	
+{
 	if (mpState->OnOpenTimeout(this))
-	{		
+	{
 		assert(mpOpenTimer != nullptr);
 		mpOpenTimer = nullptr;
 	}

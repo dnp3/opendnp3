@@ -57,7 +57,7 @@ private:
 
 	static LogToStdio instance;
 
-	LevelToString pInterpreter;	
+	LevelToString pInterpreter;
 	bool printLocation;
 	std::mutex mutex;
 };

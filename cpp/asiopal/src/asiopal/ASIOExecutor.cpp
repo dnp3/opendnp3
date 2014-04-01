@@ -54,7 +54,7 @@ openpal::MonotonicTimestamp ASIOExecutor::GetTime()
 }
 
 openpal::ITimer* ASIOExecutor::Start(const openpal::TimeDuration& arDelay, const function<void ()>& arCallback)
-{	
+{
 	assert(!mIsShuttingDown);
 	TimerASIO* pTimer = GetTimer();
 	pTimer->timer.expires_from_now(std::chrono::milliseconds(arDelay.GetMilliseconds()));
@@ -63,7 +63,7 @@ openpal::ITimer* ASIOExecutor::Start(const openpal::TimeDuration& arDelay, const
 }
 
 openpal::ITimer* ASIOExecutor::Start(const openpal::MonotonicTimestamp& arTime, const function<void ()>& arCallback)
-{	
+{
 	assert(!mIsShuttingDown);
 	TimerASIO* pTimer = GetTimer();
 	pTimer->timer.expires_at(std::chrono::steady_clock::time_point(std::chrono::milliseconds(arTime.milliseconds)));
@@ -73,7 +73,7 @@ openpal::ITimer* ASIOExecutor::Start(const openpal::MonotonicTimestamp& arTime, 
 
 void ASIOExecutor::Post(const std::function<void ()>& arHandler)
 {
-	mpStrand->post(arHandler);	
+	mpStrand->post(arHandler);
 }
 
 void ASIOExecutor::Pause()
@@ -82,8 +82,14 @@ void ASIOExecutor::Pause()
 	{
 		assert(!mpStrand->running_in_this_thread());
 		std::unique_lock<std::mutex> lock(mutex);
-		mpStrand->post([this](){ this->OnPause(); });
-		condition.wait(lock, [this](){ return this->paused; });
+		mpStrand->post([this]()
+		{
+			this->OnPause();
+		});
+		condition.wait(lock, [this]()
+		{
+			return this->paused;
+		});
 	}
 }
 
@@ -94,7 +100,10 @@ void ASIOExecutor::Resume()
 		std::unique_lock<std::mutex> lock(mutex);
 		this->resumed = true;
 		condition.notify_one();
-		condition.wait(lock, [this](){ return !this->paused; });
+		condition.wait(lock, [this]()
+		{
+			return !this->paused;
+		});
 	}
 }
 
@@ -104,8 +113,11 @@ void ASIOExecutor::OnPause()
 	std::unique_lock<std::mutex> lock(mutex);
 	this->paused = true;
 	condition.notify_one();
-	condition.wait(lock, [this](){ return this->resumed; });
-	
+	condition.wait(lock, [this]()
+	{
+		return this->resumed;
+	});
+
 	// reset the state here, and tell pausing thread we're done
 	this->paused = false;
 	this->resumed = false;
@@ -133,14 +145,14 @@ TimerASIO* ASIOExecutor::GetTimer()
 /*
 void ASIOExecutor::Shutdown()
 {
-	
+
 	std::unique_lock<std::mutex> lock(mutex);
 	mIsShuttingDown = true;
 	while(mNumActiveTimers)
 	{
 		condition.wait(lock);
 	}
-	
+
 }
 */
 
@@ -155,13 +167,13 @@ void ASIOExecutor::StartTimer(TimerASIO* apTimer, const std::function<void ()>& 
 }
 
 void ASIOExecutor::OnTimerCallback(const std::error_code& ec, TimerASIO* apTimer, std::function<void ()> aCallback)
-{	
+{
 	--mNumActiveTimers;
 	mIdleTimers.push_back(apTimer);
 	if (!(ec || apTimer->canceled))
 	{
 		aCallback();
-	}	
+	}
 }
 
 } //end namespace

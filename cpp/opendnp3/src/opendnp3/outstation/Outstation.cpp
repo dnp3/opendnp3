@@ -46,27 +46,27 @@ using namespace openpal;
 namespace opendnp3
 {
 
-Outstation::Outstation(	openpal::Logger logger, 
-				IAppLayer* pAppLayer,
-				IExecutor* pExecutor,
-				ITimeWriteHandler* pTimeWriteHandler, 
-				Database* pDatabase, 
-				const EventBufferFacade& buffers, 
-				ICommandHandler* pCmdHandler, 
-				const OutstationConfig& config) :
-	IAppUser(logger),	
+Outstation::Outstation(	openpal::Logger logger,
+                        IAppLayer* pAppLayer,
+                        IExecutor* pExecutor,
+                        ITimeWriteHandler* pTimeWriteHandler,
+                        Database* pDatabase,
+                        const EventBufferFacade& buffers,
+                        ICommandHandler* pCmdHandler,
+                        const OutstationConfig& config) :
+	IAppUser(logger),
 	mpTimeWriteHandler(pTimeWriteHandler),
 	selectBuffer(pExecutor, config.mSelectTimeout),
-	lastResponse(responseBuffer.GetWriteBuffer()),	
+	lastResponse(responseBuffer.GetWriteBuffer()),
 	pExecutor(pExecutor),
 	mpAppLayer(pAppLayer),
-	mpDatabase(pDatabase),	
+	mpDatabase(pDatabase),
 	mpCmdHandler(pCmdHandler),
 	mpState(AS_Closed::Inst()),
 	mConfig(config),
 	mpUnsolTimer(nullptr),
 	eventBuffer(buffers),
-	rspContext(pDatabase, eventBuffer, StaticResponseTypes(config)),	
+	rspContext(pDatabase, eventBuffer, StaticResponseTypes(config)),
 	mDeferredUnsol(false),
 	mStartupNullUnsol(false),
 	mpTimeTimer(nullptr)
@@ -109,12 +109,12 @@ void Outstation::OnLowerLayerUp()
 
 void Outstation::OnLowerLayerDown()
 {
-	mpState->OnLowerLayerDown(this);	
+	mpState->OnLowerLayerDown(this);
 }
 
 void Outstation::OnSolSendSuccess()
 {
-	mpState->OnSolSendSuccess(this);	
+	mpState->OnSolSendSuccess(this);
 }
 
 void Outstation::OnSolFailure()
@@ -125,7 +125,7 @@ void Outstation::OnSolFailure()
 
 void Outstation::OnUnsolSendSuccess()
 {
-	mpState->OnUnsolSendSuccess(this);	
+	mpState->OnUnsolSendSuccess(this);
 }
 
 void Outstation::OnUnsolFailure()
@@ -181,21 +181,21 @@ IINField Outstation::ConfigureResponse(const APDURecord& request, SequenceInfo s
 {
 	switch(request.function)
 	{
-		case(FunctionCode::READ) :
-			return HandleRead(request, sequence, response);
-		case(FunctionCode::WRITE):
-			return HandleWrite(request, sequence);
-		case(FunctionCode::SELECT) :
-			return HandleSelect(request, sequence, response);
-		case(FunctionCode::OPERATE) :
-			return HandleOperate(request, sequence, response);
-		case(FunctionCode::DIRECT_OPERATE) :
-			return HandleDirectOperate(request, sequence, response);
-		case(FunctionCode::DELAY_MEASURE):
-			return HandleDelayMeasure(request, sequence, response);
-		default:
-			ERROR_BLOCK(flags::WARN, "Function not supported: " << FunctionCodeToString(request.function), SERR_FUNC_NOT_SUPPORTED);
-			return IINField(IINBit::FUNC_NOT_SUPPORTED);
+	case(FunctionCode::READ) :
+		return HandleRead(request, sequence, response);
+	case(FunctionCode::WRITE):
+		return HandleWrite(request, sequence);
+	case(FunctionCode::SELECT) :
+		return HandleSelect(request, sequence, response);
+	case(FunctionCode::OPERATE) :
+		return HandleOperate(request, sequence, response);
+	case(FunctionCode::DIRECT_OPERATE) :
+		return HandleDirectOperate(request, sequence, response);
+	case(FunctionCode::DELAY_MEASURE):
+		return HandleDelayMeasure(request, sequence, response);
+	default:
+		ERROR_BLOCK(flags::WARN, "Function not supported: " << FunctionCodeToString(request.function), SERR_FUNC_NOT_SUPPORTED);
+		return IINField(IINBit::FUNC_NOT_SUPPORTED);
 	}
 }
 
@@ -219,14 +219,14 @@ IINField Outstation::HandleRead(const APDURecord& request, SequenceInfo sequence
 	ReadHandler handler(logger, rspContext);
 	auto result = APDUParser::ParseTwoPass(request.objects, &handler, &logger, APDUParser::Context(false)); // don't expect range/count context on a READ
 	if(result == APDUParser::Result::OK)
-	{		
+	{
 		// Do a transaction on the database (lock) for multi-threaded environments
 		// if the request contained static variations, we double buffer (copy) the entire static database.
 		// this ensures that an multi-fragmented responses see a consistent snapshot
 		openpal::Transaction tx(mpDatabase);
 		mpDatabase->DoubleBuffer(); // todo, make this optional?
 		rspContext.Load(response);
-		return handler.Errors();		
+		return handler.Errors();
 	}
 	else
 	{
@@ -287,23 +287,23 @@ IINField Outstation::HandleOperate(const APDURecord& request, SequenceInfo seque
 		auto result = selectBuffer.Operate(request.control.SEQ, request.objects);
 		switch (result)
 		{
-			case(SelectBuffer::OperateResult::TIMEOUT):
-				return HandleCommandWithConstant(request, response, CommandStatus::TIMEOUT);
-			case(SelectBuffer::OperateResult::REPEAT):
-				{
-					// respond with the last response
-					response = lastResponse;
-					return lastResponse.GetIIN();
-				}
-			case(SelectBuffer::OperateResult::OK) :
-				{
-					CommandActionAdapter adapter(this->mpCmdHandler, false);
-					CommandResponseHandler handler(logger, mConfig.mMaxControls, &adapter, response);
-					auto result = APDUParser::ParseTwoPass(request.objects, &handler, &logger);
-					return IINFromParseResult(result);
-				}
-			default:
-				return HandleCommandWithConstant(request, response, CommandStatus::NO_SELECT);
+		case(SelectBuffer::OperateResult::TIMEOUT):
+			return HandleCommandWithConstant(request, response, CommandStatus::TIMEOUT);
+		case(SelectBuffer::OperateResult::REPEAT):
+			{
+				// respond with the last response
+				response = lastResponse;
+				return lastResponse.GetIIN();
+			}
+		case(SelectBuffer::OperateResult::OK) :
+			{
+				CommandActionAdapter adapter(this->mpCmdHandler, false);
+				CommandResponseHandler handler(logger, mConfig.mMaxControls, &adapter, response);
+				auto result = APDUParser::ParseTwoPass(request.objects, &handler, &logger);
+				return IINFromParseResult(result);
+			}
+		default:
+			return HandleCommandWithConstant(request, response, CommandStatus::NO_SELECT);
 		}
 	}
 }
@@ -329,8 +329,9 @@ void Outstation::ContinueResponse()
 	APDUResponse response(responseBuffer.GetWriteBuffer(mConfig.mMaxFragSize));
 	response.SetFunction(FunctionCode::RESPONSE);
 	response.SetControl(AppControlField::DEFAULT);
-		
-	{	// perform a transaction (lock) the database
+
+	{
+		// perform a transaction (lock) the database
 		openpal::Transaction tx(mpDatabase);
 		this->rspContext.Load(response);
 	}
@@ -362,7 +363,7 @@ IINField Outstation::HandleCommandWithConstant(const APDURecord& request, APDURe
 }
 
 void Outstation::SendResponse(APDUResponse& response, const IINField& indications)
-{	
+{
 	IINField responseIIN(staticIIN | GetDynamicIIN() | indications);
 	response.SetIIN(responseIIN);
 	mpAppLayer->SendResponse(response);
@@ -383,7 +384,7 @@ IINField Outstation::GetDynamicIIN()
 	if (tracker.class3.HasEvents())
 	{
 		ret.Set(IINBit::CLASS3_EVENTS);
-	}	
+	}
 	if (eventBuffer.IsOverflown())
 	{
 		ret.Set(IINBit::EVENT_BUFFER_OVERFLOW);

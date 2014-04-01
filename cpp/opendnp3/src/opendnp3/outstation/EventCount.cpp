@@ -28,22 +28,22 @@ uint32_t ClassCount::IndexOf(EventType type)
 {
 	switch (type)
 	{
-		case(EventType::Binary) :
-			return 0;
-		case(EventType::DoubleBitBinary) :
-			return 1;
-		case(EventType::Analog) :
-			return 2;
-		case(EventType::Counter) :
-			return 3;
-		case(EventType::FrozenCounter) :
-			return 4;
-		case(EventType::BinaryOutputStatus) :
-			return 5;
-		case(EventType::AnalogOutputStatus) :
-			return 6;
-		default:
-			return 0;
+	case(EventType::Binary) :
+		return 0;
+	case(EventType::DoubleBitBinary) :
+		return 1;
+	case(EventType::Analog) :
+		return 2;
+	case(EventType::Counter) :
+		return 3;
+	case(EventType::FrozenCounter) :
+		return 4;
+	case(EventType::BinaryOutputStatus) :
+		return 5;
+	case(EventType::AnalogOutputStatus) :
+		return 6;
+	default:
+		return 0;
 	}
 }
 
@@ -51,22 +51,22 @@ uint32_t ClassCount::MaskForIndex(uint32_t index)
 {
 	switch(index)
 	{
-		case(0) :
-			return events::BINARY;
-		case(1) :
-			return events::DOUBLE_BIT_BINARY;
-		case(2) :
-			return events::ANALOG;
-		case(3) :
-			return events::COUNTER;
-		case(4) :
-			return events::FROZEN_COUNTER;
-		case(5) :
-			return events::BINARY_OUTPUT_STATUS;
-		case(6) :
-			return events::ANALOG_OUTPUT_STATUS;
-		default:
-			return 0;
+	case(0) :
+		return events::BINARY;
+	case(1) :
+		return events::DOUBLE_BIT_BINARY;
+	case(2) :
+		return events::ANALOG;
+	case(3) :
+		return events::COUNTER;
+	case(4) :
+		return events::FROZEN_COUNTER;
+	case(5) :
+		return events::BINARY_OUTPUT_STATUS;
+	case(6) :
+		return events::ANALOG_OUTPUT_STATUS;
+	default:
+		return 0;
 	}
 }
 
@@ -82,7 +82,7 @@ ClassCount ClassCount::Subtract(const ClassCount& rhs) const
 	for (auto i = 0; i < NUM_TYPES; ++i)
 	{
 		ret.counts[i] = counts[i] - rhs.counts[i];
-	}	
+	}
 	return ret;
 }
 
@@ -132,7 +132,7 @@ uint32_t ClassCount::CountOf(uint32_t eventTypeMask) const
 		{
 			count += counts[i];
 		}
-	}	
+	}
 	return count;
 }
 

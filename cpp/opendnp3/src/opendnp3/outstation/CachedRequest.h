@@ -60,7 +60,7 @@ public:
 	bool Apply(const ApplyFun& fun);
 
 private:
-	
+
 	Settable<APDURecord> record;
 	SequenceInfo sequence;
 	openpal::StaticBuffer<sizes::MAX_APDU_BUFFER_SIZE> buffer;
@@ -70,14 +70,14 @@ template <class ApplyFun>
 bool CachedRequest::Apply(const ApplyFun& fun)
 {
 	if (record.IsSet())
-	{		
-		fun(record.GetAndClear(), sequence);		
+	{
+		fun(record.GetAndClear(), sequence);
 		return true;
 	}
 	else
 	{
 		return false;
-	}		
+	}
 }
 
 }

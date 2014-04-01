@@ -96,7 +96,7 @@ private:
 	}
 
 	Database();
-	Database(const Database&);	
+	Database(const Database&);
 
 	template <class T, class U>
 	void UpdateEvent(const T& value, uint16_t index, U& collection)
@@ -110,7 +110,7 @@ private:
 				if (pEventBuffer)
 				{
 					pEventBuffer->Update(Event<T>(value, index, eventClass));
-				}				
+				}
 			}
 			collection.values[index].Update(value);
 		}

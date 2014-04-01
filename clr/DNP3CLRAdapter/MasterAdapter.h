@@ -25,7 +25,7 @@ public:
 
 	virtual void Shutdown();
 
-	virtual IMasterScan^ GetIntegrityScan();	
+	virtual IMasterScan^ GetIntegrityScan();
 
 	virtual IMasterScan^ AddClassScan(int aClassMask, System::TimeSpan period, System::TimeSpan taskRetryPeriod);
 

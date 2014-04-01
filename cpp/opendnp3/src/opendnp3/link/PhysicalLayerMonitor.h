@@ -53,7 +53,7 @@ public:
 	PhysicalLayerMonitor(	const openpal::Logger&,
 	                        openpal::IPhysicalLayerAsync*,
 	                        openpal::TimeDuration minOpenRetry_,
-	                        openpal::TimeDuration maxOpenRetry_,							
+	                        openpal::TimeDuration maxOpenRetry_,
 	                        opendnp3::IOpenDelayStrategy* pOpenStrategy_ = ExponentialBackoffStrategy::Inst());
 
 	/** Begin monitor execution, retry indefinitely on failure - Idempotent*/
@@ -98,10 +98,13 @@ protected:
 
 	// called when the router shuts down permanently
 	virtual void OnShutdown() {}
-	
+
 	openpal::IPhysicalLayerAsync* pPhys;
-	
-	bool IsOnline() const { return isOnline; }
+
+	bool IsOnline() const
+	{
+		return isOnline;
+	}
 
 private:
 
@@ -123,14 +126,14 @@ private:
 
 	/* --- Internal helper functions --- */
 
-	void DoFinalShutdown();	
+	void DoFinalShutdown();
 
 	const openpal::TimeDuration minOpenRetry;
 	const openpal::TimeDuration maxOpenRetry;
 
 	const IOpenDelayStrategy* pOpenStrategy;
 
-	openpal::TimeDuration currentRetry;	
+	openpal::TimeDuration currentRetry;
 
 };
 }

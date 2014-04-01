@@ -35,11 +35,11 @@ namespace opendnp3
 class ShiftableBuffer
 {
 public:
-	
+
 	/**
 	 * Construct the facade over the specified underlying buffer
 	 */
-	ShiftableBuffer(uint8_t* aBuffer, uint32_t aSize);	
+	ShiftableBuffer(uint8_t* aBuffer, uint32_t aSize);
 
 	////////////////////////////////////////////
 	// Functions related to reading
@@ -87,7 +87,7 @@ public:
 		will be {CB}.
 
 		If no match is found, the reader position is advanced to the end of the read subsequence.
-	
+
 		@return true if both sync bytes were found in the buffer.
 	*/
 	bool Sync();

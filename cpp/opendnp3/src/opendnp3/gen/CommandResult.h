@@ -8,10 +8,10 @@
 //                                           __/ |
 //                                          |___/
 // Copyright 2013 Automatak LLC
-// 
+//
 // Automatak LLC (www.automatak.com) licenses this file
 // to you under the the Apache License Version 2.0 (the "License"):
-// 
+//
 // http://www.apache.org/licenses/LICENSE-2.0.html
 //
 
@@ -21,21 +21,22 @@
 #include <string>
 #include <cstdint>
 
-namespace opendnp3 {
+namespace opendnp3
+{
 
 /**
   Opendnp3 API enum used for differentiating cases when a command sequence fails without a response from the outstation
 */
 enum class CommandResult : int
 {
-  /// A response was received from the outstation, check the CommandStatus enumeration
-  RESPONSE_OK = 0,
-  /// A response was received from the outstation, but it did not match or contained bad formatting
-  BAD_RESPONSE = 1,
-  /// The operation timed out without a response
-  TIMEOUT = 2,
-  /// There is no communication with the outstation, and the command was not attempted
-  NO_COMMS = 3
+    /// A response was received from the outstation, check the CommandStatus enumeration
+    RESPONSE_OK = 0,
+    /// A response was received from the outstation, but it did not match or contained bad formatting
+    BAD_RESPONSE = 1,
+    /// The operation timed out without a response
+    TIMEOUT = 2,
+    /// There is no communication with the outstation, and the command was not attempted
+    NO_COMMS = 3
 };
 
 std::string CommandResultToString(CommandResult arg);

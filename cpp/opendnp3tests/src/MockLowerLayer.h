@@ -34,7 +34,7 @@ class MockLowerLayer : public openpal::ILowerLayer, public openpal::HasUpperLaye
 {
 public:
 	MockLowerLayer(openpal::Logger);
-	
+
 	void SendUp(const openpal::ReadOnlyBuffer& arBuffer);
 	void SendUp(const std::string&);
 	void SendSuccess();
@@ -48,14 +48,14 @@ public:
 	size_t NumWrites() const;
 	openpal::ReadOnlyBuffer PopWrite();
 	std::string PopWriteAsHex();
-	
+
 	virtual void Send(const openpal::ReadOnlyBuffer& arBuffer) override final;
 
 private:
 
 	bool mAutoSendCallback;
 	bool mIsSuccess;
-	std::queue<openpal::ReadOnlyBuffer> sendQueue;	
+	std::queue<openpal::ReadOnlyBuffer> sendQueue;
 };
 
 }

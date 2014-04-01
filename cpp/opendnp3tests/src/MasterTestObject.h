@@ -55,7 +55,7 @@ public:
 	AsyncTaskGroup group;
 	MockSOEHandler meas;
 	MockAppLayer app;
-	Master master;	
+	Master master;
 };
 
 }

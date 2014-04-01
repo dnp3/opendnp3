@@ -34,7 +34,7 @@ class PhysicalLayerAsyncTCPClient : public PhysicalLayerAsyncBaseTCP
 {
 public:
 	PhysicalLayerAsyncTCPClient(
-		const openpal::LogConfig& config,
+	    const openpal::LogConfig& config,
 	    asio::io_service* pIOService,
 	    const std::string& host_,
 	    uint16_t port,
@@ -55,21 +55,21 @@ private:
 		template <typename Iterator>
 		Iterator operator()(const std::error_code& ec, Iterator next)
 		{
-			if (ec) 
+			if (ec)
 			{
 				LOGGER_BLOCK(logger, openpal::log::WARN, "Connect error: " << ec.message());
-			}			
+			}
 			LOGGER_BLOCK(logger, openpal::log::INFO, "Trying: " << next->endpoint());
 			return next;
 		}
 
 		openpal::Logger logger;
 	};
-	
+
 	void HandleResolve(const std::error_code& code, asio::ip::tcp::resolver::iterator endpoint_iterator);
 
 	ConnectionCondition condition;
-	const std::string host;	
+	const std::string host;
 	asio::ip::tcp::endpoint remoteEndpoint;
 	asio::ip::tcp::resolver resolver;
 	std::function<void (asio::ip::tcp::socket&)> configure;

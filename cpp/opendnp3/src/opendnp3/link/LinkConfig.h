@@ -34,7 +34,7 @@ struct LinkConfig
 	LinkConfig(
 	    bool aIsMaster,
 	    bool aUseConfirms,
-		uint32_t aNumRetry,
+	    uint32_t aNumRetry,
 	    uint16_t aLocalAddr,
 	    uint16_t aRemoteAddr,
 	    openpal::TimeDuration aTimeout) :

@@ -57,7 +57,7 @@ TEST_CASE(SUITE("ConstructionDestruction"))
 	for(int i = 0; i < ITERATIONS; ++i)
 	{
 
-		EventLog log;		
+		EventLog log;
 		IOServiceThreadPool pool(&log, levels::NORMAL, "pool", std::thread::hardware_concurrency());
 
 		DNP3Manager mgr;
@@ -72,7 +72,7 @@ TEST_CASE(SUITE("ConstructionDestruction"))
 		auto pOutstation = pServer->AddOutstation("outstation", SuccessCommandHandler::Inst(), NullTimeWriteHandler::Inst(), OutstationStackConfig(DatabaseTemplate()));
 
 		pMaster->Enable();
-		pOutstation->Enable();		
+		pOutstation->Enable();
 	}
 }
 
@@ -80,7 +80,7 @@ TEST_CASE(SUITE("ManualStackShutdown"))
 {
 	for(int i = 0; i < ITERATIONS; ++i)
 	{
-		EventLog log;				
+		EventLog log;
 		IOServiceThreadPool pool(&log, levels::NORMAL, "pool", std::thread::hardware_concurrency());
 
 		DNP3Manager mgr;
@@ -98,7 +98,7 @@ TEST_CASE(SUITE("ManualStackShutdown"))
 		pMaster->Enable();
 
 		pOutstation->BeginShutdown();
-		pMaster->BeginShutdown();		
+		pMaster->BeginShutdown();
 	}
 
 }
@@ -107,7 +107,7 @@ TEST_CASE(SUITE("ManualChannelShutdownWithStacks"))
 {
 	for(int i = 0; i < ITERATIONS; ++i)
 	{
-		EventLog log;		
+		EventLog log;
 		IOServiceThreadPool pool(&log, levels::NORMAL, "pool", std::thread::hardware_concurrency());
 		DNP3Manager mgr;
 
@@ -121,7 +121,7 @@ TEST_CASE(SUITE("ManualChannelShutdownWithStacks"))
 		auto pMaster = pClient->AddMaster("master", NullSOEHandler::Inst(), UTCTimeSource::Inst(), MasterStackConfig());
 
 		pMaster->Enable();
-		pOutstation->Enable();		
+		pOutstation->Enable();
 
 		pClient->BeginShutdown();
 		pServer->BeginShutdown();
@@ -132,7 +132,7 @@ TEST_CASE(SUITE("ManualChannelShutdown"))
 {
 	for(int i = 0; i < ITERATIONS; ++i)
 	{
-		EventLog log;		
+		EventLog log;
 		IOServiceThreadPool pool(&log, levels::NORMAL, "pool", std::thread::hardware_concurrency());
 		DNP3Manager mgr;
 

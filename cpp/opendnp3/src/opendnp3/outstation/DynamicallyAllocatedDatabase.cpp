@@ -86,12 +86,12 @@ StaticDataFacade DynamicallyAllocatedDatabase::GetFacade()
 
 	return StaticDataFacade(
 	           binaries,
-			   dobuleBinaries,
+	           dobuleBinaries,
 	           analogs,
 	           counters,
 	           frozenCounters,
-			   binaryOutputStatii,
-			   analogOutputStatii
+	           binaryOutputStatii,
+	           analogOutputStatii
 	       );
 }
 

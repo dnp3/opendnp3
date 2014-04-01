@@ -70,7 +70,7 @@ APDUParser::Result APDUParser::ParseHeader(ReadOnlyBuffer& buffer, openpal::Logg
 	{
 		uint8_t group = UInt8::ReadBuffer(buffer);
 		uint8_t variation = UInt8::ReadBuffer(buffer);
-		auto gv = GroupVariationRecord::GetRecord(group, variation);		
+		auto gv = GroupVariationRecord::GetRecord(group, variation);
 		if (gv.enumeration == GroupVariation::UNKNOWN)
 		{
 			ERROR_PLOGGER_BLOCK(pLogger, flags::WARN, ALERR_UNKNOWN_GROUP_VAR, "Unknown object: " << gv.ToString());
@@ -230,7 +230,7 @@ APDUParser::Result APDUParser::ParseObjectsWithRange(openpal::ReadOnlyBuffer& bu
 		});
 
 	case(GroupVariation::Group110AnyVar):
-		return ParseRangeOfOctetData(buffer, pLogger, record, range, pHandler);		
+		return ParseRangeOfOctetData(buffer, pLogger, record, range, pHandler);
 
 	default:
 		ERROR_PLOGGER_BLOCK(pLogger, flags::WARN, ALERR_ILLEGAL_QUALIFIER_AND_OBJECT,
@@ -240,7 +240,7 @@ APDUParser::Result APDUParser::ParseObjectsWithRange(openpal::ReadOnlyBuffer& bu
 	}
 }
 
-APDUParser::Result APDUParser::ParseRangeOfOctetData(    
+APDUParser::Result APDUParser::ParseRangeOfOctetData(
     openpal::ReadOnlyBuffer& buffer,
     openpal::Logger* pLogger,
     const HeaderRecord& record,
@@ -277,7 +277,7 @@ APDUParser::Result APDUParser::ParseRangeOfOctetData(
 		PLOGGER_BLOCK(pLogger, flags::WARN, "Octet string variation 0 may only be used in requests");
 		return Result::INVALID_OBJECT;
 	}
-	
+
 }
 
 }

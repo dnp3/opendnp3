@@ -27,7 +27,7 @@ using namespace openpal;
 namespace opendnp3
 {
 
-PhysLoopback::PhysLoopback(openpal::Logger logger, openpal::IPhysicalLayerAsync* apPhys) :	
+PhysLoopback::PhysLoopback(openpal::Logger logger, openpal::IPhysicalLayerAsync* apPhys) :
 	PhysicalLayerMonitor(logger, apPhys, openpal::TimeDuration::Seconds(5), openpal::TimeDuration::Seconds(5)),
 	mBytesReadWritten(0),
 	mBuffer(1024)

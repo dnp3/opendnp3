@@ -94,7 +94,10 @@ public:
 
 	void PostSendResult(bool isSuccess)
 	{
-		mpExecutor->Post([this, isSuccess](){ this->DoSendResult(isSuccess); });
+		mpExecutor->Post([this, isSuccess]()
+		{
+			this->DoSendResult(isSuccess);
+		});
 	}
 
 	void ResetReadFCB()
@@ -106,7 +109,7 @@ public:
 	{
 		mNextReadFCB = !mNextReadFCB;
 	}
-	
+
 	bool NextReadFCB()
 	{
 		return mNextReadFCB;
@@ -116,7 +119,7 @@ public:
 	{
 		mNextWriteFCB = true;
 	}
-	
+
 	void ToggleWriteFCB()
 	{
 		mNextWriteFCB = !mNextWriteFCB;
@@ -157,7 +160,7 @@ public:
 	openpal::ReadOnlyBuffer FormatPrimaryBufferWithUnconfirmed(IBufferSegment& segments);
 
 	openpal::ReadOnlyBuffer FormatPrimaryBufferWithConfirmed(IBufferSegment& segments, bool FCB);
-	
+
 	IBufferSegment* pConfirmedSegments;
 
 private:
@@ -174,7 +177,7 @@ private:
 	bool mNextWriteFCB;
 	bool mIsOnline;
 
-	bool Validate(bool aIsMaster, uint16_t aSrc, uint16_t aDest);	
+	bool Validate(bool aIsMaster, uint16_t aSrc, uint16_t aDest);
 
 	std::string SendString()
 	{

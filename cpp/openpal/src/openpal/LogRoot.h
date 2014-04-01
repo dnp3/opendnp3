@@ -36,7 +36,7 @@ class ILogBase;
 class LogRoot : Uncopyable
 {
 
-public:	
+public:
 
 	LogRoot(ILogBase* apLog, const LogFilters& filters);
 
@@ -45,7 +45,7 @@ public:
 	void Log(const LogEntry& entry);
 
 	Logger GetLogger(const std::string& id);
-	
+
 	inline bool IsEnabled(const LogFilters& rhs) const
 	{
 		return this->filters & rhs;
@@ -59,12 +59,12 @@ public:
 	const LogFilters& GetFilters() const
 	{
 		return filters;
-	}	
+	}
 
 private:
 
 	LogFilters			filters;   // bit field describing what is being logged
-	ILogBase*			pLog;	
+	ILogBase*			pLog;
 };
 
 }

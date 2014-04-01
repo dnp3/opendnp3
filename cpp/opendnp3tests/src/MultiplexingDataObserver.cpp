@@ -43,7 +43,7 @@ void MultiplexingDataObserver :: AddObserver(IMeasurementLoader* apObserver)
 }
 
 void MultiplexingDataObserver::Start()
-{	
+{
 	for (auto pObs : mObservers) openpal::Transaction::Start(pObs);
 }
 

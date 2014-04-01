@@ -47,7 +47,10 @@ void TestLoopback(TransportLoopbackTestObject* pTest, uint32_t numBytes)
 {
 	pTest->Start();
 
-	REQUIRE(pTest->ProceedUntil([&]() { return pTest->LayersUp(); }));
+	REQUIRE(pTest->ProceedUntil([&]()
+	{
+		return pTest->LayersUp();
+	}));
 
 	ByteStr b(numBytes, 0);
 

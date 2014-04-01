@@ -36,21 +36,21 @@
 
 namespace opendnp3
 {
-	class IChannel;
-	class DNP3Channel;
-	class DNP3Manager;
+class IChannel;
+class DNP3Channel;
+class DNP3Manager;
 }
 
 namespace openpal
 {
-	class ILogBase;
-	class IPhysicalLayerAsync;	
+class ILogBase;
+class IPhysicalLayerAsync;
 }
 
 namespace asiopal
 {
-	class EventLog;
-	class IOServiceThreadPool;
+class EventLog;
+class IOServiceThreadPool;
 }
 
 
@@ -60,12 +60,12 @@ namespace asiodnp3
 class ASIODNP3Manager : public opendnp3::DestructorHook
 {
 
-	public:
-	
+public:
+
 	ASIODNP3Manager(
 	    uint32_t aConcurrency,
-		std::function<void()> aOnThreadStart = []() {},
-		std::function<void()> aOnThreadExit = []() {}
+	std::function<void()> aOnThreadStart = []() {},
+	std::function<void()> aOnThreadExit = []() {}
 	);
 
 	~ASIODNP3Manager();
@@ -96,12 +96,12 @@ class ASIODNP3Manager : public opendnp3::DestructorHook
 	*/
 	opendnp3::IChannel* AddTCPClient(
 	    const std::string& id,
-		uint32_t levels,
+	    uint32_t levels,
 	    openpal::TimeDuration minOpenRetry,
 	    openpal::TimeDuration maxOpenRetry,
 	    const std::string& host,
 	    uint16_t port,
-		openpal::IEventHandler<opendnp3::ChannelState>* pStateHandler,
+	    openpal::IEventHandler<opendnp3::ChannelState>* pStateHandler,
 	    opendnp3::IOpenDelayStrategy* pStrategy = opendnp3::ExponentialBackoffStrategy::Inst());
 
 	/**
@@ -115,13 +115,13 @@ class ASIODNP3Manager : public opendnp3::DestructorHook
 	* @param pStrategy Reconnection delay strategy, default to exponential
 	*/
 	opendnp3::IChannel* AddTCPServer(
-		const std::string& id,
-		uint32_t levels,
+	    const std::string& id,
+	    uint32_t levels,
 	    openpal::TimeDuration minOpenRetry,
 	    openpal::TimeDuration maxOpenRetry,
 	    const std::string& endpoint,
 	    uint16_t port,
-		openpal::IEventHandler<opendnp3::ChannelState>* pStateHandler,
+	    openpal::IEventHandler<opendnp3::ChannelState>* pStateHandler,
 	    opendnp3::IOpenDelayStrategy* pStrategy = opendnp3::ExponentialBackoffStrategy::Inst());
 
 	/**
@@ -134,17 +134,17 @@ class ASIODNP3Manager : public opendnp3::DestructorHook
 	* @param pStrategy Reconnection delay strategy, default to exponential
 	*/
 	opendnp3::IChannel* AddSerial(
-		const std::string& id,
-		uint32_t levels,
+	    const std::string& id,
+	    uint32_t levels,
 	    openpal::TimeDuration minOpenRetry,
 	    openpal::TimeDuration maxOpenRetry,
 	    asiopal::SerialSettings settings,
-		openpal::IEventHandler<opendnp3::ChannelState>* pStateHandler,
+	    openpal::IEventHandler<opendnp3::ChannelState>* pStateHandler,
 	    opendnp3::IOpenDelayStrategy* pStrategy = opendnp3::ExponentialBackoffStrategy::Inst());
 
 private:
 
-	std::unique_ptr<asiopal::EventLog> pLog;	
+	std::unique_ptr<asiopal::EventLog> pLog;
 	std::unique_ptr<asiopal::IOServiceThreadPool> pThreadPool;
 	std::unique_ptr<opendnp3::DNP3Manager> pManager;
 };

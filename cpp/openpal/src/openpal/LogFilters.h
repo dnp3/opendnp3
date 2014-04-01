@@ -39,7 +39,7 @@ public:
 
 	LogFilters(int32_t filters_) : filters(filters_)
 	{}
-	
+
 	inline bool IsSet(int32_t levels) const
 	{
 		return (levels & filters) != 0;
@@ -53,7 +53,7 @@ public:
 	int32_t GetBitfield() const
 	{
 		return filters;
-	}	
+	}
 
 private:
 

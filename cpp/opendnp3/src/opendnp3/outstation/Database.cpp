@@ -42,7 +42,7 @@ Database::Database(const StaticDataFacade& staticData_, openpal::IMutex* pMutex_
 }
 
 void Database::Start()
-{	
+{
 	openpal::CriticalSection::Lock(pMutex);
 }
 
@@ -53,7 +53,7 @@ void Database::End()
 
 void Database::SetEventBuffer(IEventBuffer& eventBuffer)
 {
-	pEventBuffer = &eventBuffer;	
+	pEventBuffer = &eventBuffer;
 }
 
 void Database::DoubleBuffer()
@@ -129,12 +129,12 @@ void Database::Update(const FrozenCounter& value, uint16_t index)
 
 void Database::Update(const BinaryOutputStatus& value, uint16_t index)
 {
-	this->UpdateEvent(value, index, staticData.binaryOutputStatii);	
+	this->UpdateEvent(value, index, staticData.binaryOutputStatii);
 }
 
 void Database::Update(const AnalogOutputStatus& value, uint16_t index)
 {
-	this->UpdateEvent(value, index, staticData.analogOutputStatii);	
+	this->UpdateEvent(value, index, staticData.analogOutputStatii);
 }
 
 template <>

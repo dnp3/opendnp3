@@ -34,7 +34,7 @@ class ClassCount
 
 public:
 
-	ClassCount() 		
+	ClassCount()
 	{
 		Clear();
 	}

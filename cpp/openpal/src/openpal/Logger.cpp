@@ -31,7 +31,7 @@ using namespace std;
 namespace openpal
 {
 
-Logger::Logger(LogRoot* pRoot_, const std::string& name_) :	
+Logger::Logger(LogRoot* pRoot_, const std::string& name_) :
 	pRoot(pRoot_),
 	name(name_)
 {
@@ -59,7 +59,7 @@ void Logger::Log( const LogEntry& entry)
 }
 
 void Logger::Log(const LogFilters& filters, const std::string& location, const std::string& message, int errorCode)
-{	
+{
 	LogEntry le(filters, name, location, message, errorCode);
 	this->Log(le);
 }

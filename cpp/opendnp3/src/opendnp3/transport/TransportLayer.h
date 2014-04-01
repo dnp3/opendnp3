@@ -50,8 +50,8 @@ class TransportLayer : public openpal::IUpperLayer, public openpal::ILowerLayer,
 
 public:
 
-	TransportLayer(const openpal::Logger& logger, openpal::IExecutor* pExecutor_, uint32_t maxFragSize = sizes::DEFAULT_APDU_BUFFER_SIZE);	
-	
+	TransportLayer(const openpal::Logger& logger, openpal::IExecutor* pExecutor_, uint32_t maxFragSize = sizes::DEFAULT_APDU_BUFFER_SIZE);
+
 	static std::string ToString(uint8_t aHeader);
 
 	openpal::Logger& GetLogger()
@@ -60,7 +60,7 @@ public:
 	}
 
 	/// ILowerLayer
-	
+
 	virtual void Send(const openpal::ReadOnlyBuffer&) override final;
 
 	/// IUpperLayer
@@ -73,7 +73,7 @@ public:
 	void SetAppLayer(openpal::IUpperLayer* pUpperLayer_);
 	void SetLinkLayer(ILinkLayer* pLinkLayer_);
 
-	private:
+private:
 
 	openpal::IUpperLayer* pUpperLayer;
 	ILinkLayer* pLinkLayer;
@@ -83,9 +83,9 @@ public:
 	void ChangeState(TLS_Base* apNewState);
 
 	void TransmitAPDU(const openpal::ReadOnlyBuffer&);
-	
+
 	void ReceiveAPDU(const openpal::ReadOnlyBuffer&);
-	void ReceiveTPDU(const openpal::ReadOnlyBuffer&);	
+	void ReceiveTPDU(const openpal::ReadOnlyBuffer&);
 
 	void SignalSendResult(bool isSuccess);
 
@@ -98,7 +98,7 @@ public:
 
 	/* Transmitter and Receiver Classes */
 	TransportRx receiver;
-	TransportTx transmitter;	
+	TransportTx transmitter;
 };
 
 }

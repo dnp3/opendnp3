@@ -44,7 +44,7 @@ public:
 	int ClearLog();
 	int NextErrorCode();
 	bool GetNextEntry(openpal::LogEntry& arEntry);
-	bool IsLogErrorFree();	
+	bool IsLogErrorFree();
 
 	void Pop(openpal::ILogBase* pLog);
 

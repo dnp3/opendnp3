@@ -35,7 +35,7 @@ namespace opendnp3
 
 class MockEventBuffer : public IEventBuffer
 {
-public:	
+public:
 
 	void Update(const Event<Binary>& aEvent) override final
 	{

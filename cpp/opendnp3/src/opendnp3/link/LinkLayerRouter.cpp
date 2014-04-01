@@ -41,9 +41,9 @@ LinkLayerRouter::LinkLayerRouter(	const Logger& logger,
                                     IPhysicalLayerAsync* apPhys,
                                     openpal::TimeDuration minOpenRetry,
                                     openpal::TimeDuration maxOpenRetry,
-									openpal::IEventHandler<ChannelState>* pStateHandler_,
-									openpal::IShutdownHandler* pShutdownHandler_,
-                                    IOpenDelayStrategy* pStrategy) :	
+                                    openpal::IEventHandler<ChannelState>* pStateHandler_,
+                                    openpal::IShutdownHandler* pShutdownHandler_,
+                                    IOpenDelayStrategy* pStrategy) :
 	PhysicalLayerMonitor(logger, apPhys, minOpenRetry, maxOpenRetry, pStrategy),
 	pStateHandler(pStateHandler_),
 	pShutdownHandler(pShutdownHandler_),
@@ -53,7 +53,10 @@ LinkLayerRouter::LinkLayerRouter(	const Logger& logger,
 
 bool LinkLayerRouter::IsRouteInUse(const LinkRoute& route)
 {
-	auto pNode = records.FindFirst([&](const Record& record){ return record.route == route; });
+	auto pNode = records.FindFirst([&](const Record & record)
+	{
+		return record.route == route;
+	});
 	return (pNode != nullptr);
 }
 
@@ -67,7 +70,10 @@ bool LinkLayerRouter::AddContext(ILinkContext* pContext, const LinkRoute& route)
 	}
 	else
 	{
-		auto pNode = records.FindFirst([&](const Record& record){ return record.pContext == pContext; });
+		auto pNode = records.FindFirst([&](const Record & record)
+		{
+			return record.pContext == pContext;
+		});
 		if (pNode)
 		{
 			LOG_BLOCK(flags::ERR, "Context cannot be bound 2x");
@@ -78,15 +84,18 @@ bool LinkLayerRouter::AddContext(ILinkContext* pContext, const LinkRoute& route)
 			// record is always disabled by default
 			Record(pContext, route);
 			return records.Add(Record(pContext, route));
-		}		
-	}	
+		}
+	}
 }
 
 bool LinkLayerRouter::Enable(ILinkContext* pContext)
-{	
-	auto pNode = records.FindFirst([&](const Record& rec){ return rec.pContext == pContext;  });
+{
+	auto pNode = records.FindFirst([&](const Record & rec)
+	{
+		return rec.pContext == pContext;
+	});
 
-	if(pNode)	
+	if(pNode)
 	{
 		if(!(pNode->value.enabled))
 		{
@@ -108,7 +117,10 @@ bool LinkLayerRouter::Enable(ILinkContext* pContext)
 
 bool LinkLayerRouter::Disable(ILinkContext* pContext)
 {
-	auto pNode = records.FindFirst([&](const Record& rec){ return rec.pContext == pContext;  });
+	auto pNode = records.FindFirst([&](const Record & rec)
+	{
+		return rec.pContext == pContext;
+	});
 
 	if (pNode)
 	{
@@ -126,7 +138,7 @@ bool LinkLayerRouter::Disable(ILinkContext* pContext)
 				this->Suspend();
 			}
 		}
-		return true;		
+		return true;
 	}
 	else
 	{
@@ -136,13 +148,16 @@ bool LinkLayerRouter::Disable(ILinkContext* pContext)
 
 bool LinkLayerRouter::Remove(ILinkContext* pContext)
 {
-	auto pNode = records.RemoveFirst([&](const Record& rec){ return rec.pContext == pContext; });
+	auto pNode = records.RemoveFirst([&](const Record & rec)
+	{
+		return rec.pContext == pContext;
+	});
 
 	if(pNode)
-	{		
+	{
 		if (this->GetState() == ChannelState::OPEN && pNode->value.enabled)
 		{
-			pNode->value.pContext->OnLowerLayerDown();			
+			pNode->value.pContext->OnLowerLayerDown();
 		}
 
 		// if no contexts are enabled, suspend the router
@@ -155,20 +170,20 @@ bool LinkLayerRouter::Remove(ILinkContext* pContext)
 	}
 	else
 	{
-		return false;		
+		return false;
 	}
 }
 
 ILinkContext* LinkLayerRouter::GetEnabledContext(const LinkRoute& route)
 {
 	auto pNode = records.FindFirst(
-		[&](const Record& rec)
-		{ 
-			return rec.enabled && (rec.route == route);
-		}
-	);
+	                 [&](const Record & rec)
+	{
+		return rec.enabled && (rec.route == route);
+	}
+	             );
 
-	return pNode ? pNode->value.pContext : nullptr;	
+	return pNode ? pNode->value.pContext : nullptr;
 }
 
 
@@ -261,20 +276,23 @@ void LinkLayerRouter::QueueTransmit(const openpal::ReadOnlyBuffer& buffer, ILink
 		}
 		else
 		{
-			this->pPhys->GetExecutor()->Post([pContext, primary](){ pContext->OnTransmitResult(primary, false); });
+			this->pPhys->GetExecutor()->Post([pContext, primary]()
+			{
+				pContext->OnTransmitResult(primary, false);
+			});
 		}
 	}
 	else
 	{
 		ERROR_BLOCK(flags::ERR, "Router received transmit request while offline", DLERR_ROUTER_OFFLINE);
-	}	
+	}
 }
 
 void LinkLayerRouter::OnStateChange(ChannelState state)
 {
 	if (this->pStateHandler)
 	{
-		pStateHandler->OnEvent(state);		
+		pStateHandler->OnEvent(state);
 	}
 }
 
@@ -288,7 +306,10 @@ void LinkLayerRouter::OnShutdown()
 
 bool LinkLayerRouter::HasEnabledContext()
 {
-	auto pNode = records.FindFirst([](const Record& rec){ return rec.enabled; });
+	auto pNode = records.FindFirst([](const Record & rec)
+	{
+		return rec.enabled;
+	});
 	return (pNode != nullptr);
 }
 
@@ -322,15 +343,15 @@ void LinkLayerRouter::OnPhysicalLayerOpenSuccessCallback()
 	}
 
 	records.Foreach(
-		[](const Record& rec)
+	    [](const Record & rec)
+	{
+		if (rec.enabled)
 		{
-			if (rec.enabled)
-			{
-				rec.pContext->OnLowerLayerUp();
-			}
+			rec.pContext->OnLowerLayerUp();
 		}
+	}
 	);
-	
+
 }
 
 void LinkLayerRouter::OnPhysicalLayerCloseCallback()
@@ -341,15 +362,15 @@ void LinkLayerRouter::OnPhysicalLayerCloseCallback()
 	// Drop frames queued for transmit and tell the contexts that the router has closed
 	mTransmitting = false;
 	transmitQueue.Clear();
-		
+
 	records.Foreach(
-		[](const Record& rec)
+	    [](const Record & rec)
+	{
+		if (rec.enabled)
 		{
-			if (rec.enabled)
-			{
-				rec.pContext->OnLowerLayerDown();
-			}
+			rec.pContext->OnLowerLayerDown();
 		}
+	}
 	);
 }
 

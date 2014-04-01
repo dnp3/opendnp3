@@ -22,33 +22,33 @@
 #include "LogLevelInterpreter.h"
 #include "LogLevels.h"
 
-namespace opendnp3 
-{	
-	void ProcessFlags(std::ostringstream& ss, const std::string& id, uint32_t& count, uint32_t filter, const openpal::LogFilters& flags)
+namespace opendnp3
+{
+void ProcessFlags(std::ostringstream& ss, const std::string& id, uint32_t& count, uint32_t filter, const openpal::LogFilters& flags)
+{
+	if (flags.IsSet(filter))
 	{
-		if (flags.IsSet(filter))
+		if (count > 0)
 		{
-			if (count > 0)
-			{
-				ss << "/";
-			}
-			ss << id;
-			++count;
+			ss << "/";
 		}
+		ss << id;
+		++count;
 	}
+}
 
-	std::ostringstream& AllFlags(std::ostringstream& ss, const openpal::LogFilters& filters)
-	{
-		uint32_t count = 0;
-		ProcessFlags(ss, "V", count, flags::EVENT, filters);
-		ProcessFlags(ss, "E", count, flags::ERR, filters);
-		ProcessFlags(ss, "W", count, flags::WARN, filters);
-		ProcessFlags(ss, "I", count, flags::INFO, filters);
-		ProcessFlags(ss, "D", count, flags::DEBUG, filters);
-		ProcessFlags(ss, "P", count, flags::INTERPRET, filters);
-		ProcessFlags(ss, "C", count, flags::COMM, filters);
-		return ss;
-	}
-	
+std::ostringstream& AllFlags(std::ostringstream& ss, const openpal::LogFilters& filters)
+{
+	uint32_t count = 0;
+	ProcessFlags(ss, "V", count, flags::EVENT, filters);
+	ProcessFlags(ss, "E", count, flags::ERR, filters);
+	ProcessFlags(ss, "W", count, flags::WARN, filters);
+	ProcessFlags(ss, "I", count, flags::INFO, filters);
+	ProcessFlags(ss, "D", count, flags::DEBUG, filters);
+	ProcessFlags(ss, "P", count, flags::INTERPRET, filters);
+	ProcessFlags(ss, "C", count, flags::COMM, filters);
+	return ss;
+}
+
 }
 

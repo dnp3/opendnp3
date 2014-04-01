@@ -39,22 +39,22 @@ class MasterStackImpl : public IMaster
 public:
 
 	MasterStackImpl(
-		openpal::Logger,
-		openpal::IExecutor* apExecutor,
-		ISOEHandler* apPublisher,
-		IUTCTimeSource* apTimeSource,
-		AsyncTaskGroup* apTaskGroup,
-		const MasterStackConfig& config,
-		const StackActionHandler& handler);
+	    openpal::Logger,
+	    openpal::IExecutor* apExecutor,
+	    ISOEHandler* apPublisher,
+	    IUTCTimeSource* apTimeSource,
+	    AsyncTaskGroup* apTaskGroup,
+	    const MasterStackConfig& config,
+	    const StackActionHandler& handler);
 
-	ICommandProcessor* GetCommandProcessor();	
+	ICommandProcessor* GetCommandProcessor();
 
-	MasterScan GetIntegrityScan();	
+	MasterScan GetIntegrityScan();
 
-	MasterScan AddClassScan(int aClassMask, openpal::TimeDuration aScanRate, openpal::TimeDuration aRetryRate);	
+	MasterScan AddClassScan(int aClassMask, openpal::TimeDuration aScanRate, openpal::TimeDuration aRetryRate);
 
-private:		
-	Master master;	
+private:
+	Master master;
 };
 
 }

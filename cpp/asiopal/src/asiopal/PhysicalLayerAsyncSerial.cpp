@@ -39,7 +39,7 @@ namespace asiopal
 {
 
 PhysicalLayerAsyncSerial::PhysicalLayerAsyncSerial(
-	const openpal::LogConfig& config,
+    const openpal::LogConfig& config,
     asio::io_service* apIOService,
     const SerialSettings& settings) :
 
@@ -90,13 +90,13 @@ void PhysicalLayerAsyncSerial::DoAsyncRead(openpal::WriteBuffer& buff)
 {
 	uint8_t* pBuffer = buff;
 	mPort.async_read_some(buffer(pBuffer, buff.Size()),
-		strand.wrap(
-			[this, pBuffer](const std::error_code & error, size_t numRead)
-			{
-				this->OnReadCallback(error, pBuffer, static_cast<uint32_t>(numRead));
-			}
-		)
-	);
+	                      strand.wrap(
+	                          [this, pBuffer](const std::error_code & error, size_t numRead)
+	{
+		this->OnReadCallback(error, pBuffer, static_cast<uint32_t>(numRead));
+	}
+	                      )
+	                     );
 }
 
 void PhysicalLayerAsyncSerial::DoAsyncWrite(const ReadOnlyBuffer& buff)

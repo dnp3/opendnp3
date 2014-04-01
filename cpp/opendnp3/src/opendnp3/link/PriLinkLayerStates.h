@@ -44,7 +44,7 @@ public:
 	virtual void NotSupported (LinkLayer*, bool aIsRcvBuffFull);
 
 	virtual void OnTransmitResult(LinkLayer* apLL, bool success);
-	
+
 	virtual void OnTimeout(LinkLayer*);
 
 	/*Upper layer events to handle */
@@ -83,7 +83,7 @@ template <class ReturnToState>
 void PLLS_SendUnconfirmedTransmitWait<ReturnToState>::OnTransmitResult(LinkLayer* apLL, bool success)
 {
 	apLL->ChangeState(ReturnToState::Inst());
-	apLL->DoSendResult(success);	
+	apLL->DoSendResult(success);
 }
 
 /////////////////////////////////////////////////////////////////////////////

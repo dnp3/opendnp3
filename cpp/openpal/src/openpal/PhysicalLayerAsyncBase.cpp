@@ -191,7 +191,10 @@ void PhysicalLayerAsyncBase::AsyncWrite(const openpal::ReadOnlyBuffer& buffer)
 		else
 		{
 			LOG_BLOCK(log::ERR, "Client wrote a length of 0");
-			auto callback = [this]() { this->DoWriteSuccess(); };
+			auto callback = [this]()
+			{
+				this->DoWriteSuccess();
+			};
 			this->GetExecutor()->Post(callback);
 		}
 	}
@@ -213,7 +216,10 @@ void PhysicalLayerAsyncBase::AsyncRead(WriteBuffer& buffer)
 		else
 		{
 			LOG_BLOCK(log::ERR, "Client read a length of 0");
-			auto callback = [this, buffer]() { this->DoReadCallback(ReadOnlyBuffer()); };
+			auto callback = [this, buffer]()
+			{
+				this->DoReadCallback(ReadOnlyBuffer());
+			};
 			this->GetExecutor()->Post(callback);
 		}
 	}
@@ -240,7 +246,7 @@ void PhysicalLayerAsyncBase::OnOpenCallback(const std::error_code& arErr)
 			LOG_BLOCK(log::WARN, arErr.message());
 			state.CheckForClose();
 			this->DoOpenFailure();
-			if(mpHandler) 
+			if(mpHandler)
 			{
 				mpHandler->OnOpenFailure();
 			}
@@ -251,7 +257,7 @@ void PhysicalLayerAsyncBase::OnOpenCallback(const std::error_code& arErr)
 			{
 				state.CheckForClose();
 				this->DoClose();
-				if(mpHandler) 
+				if(mpHandler)
 				{
 					mpHandler->OnOpenFailure();
 				}
@@ -260,7 +266,7 @@ void PhysicalLayerAsyncBase::OnOpenCallback(const std::error_code& arErr)
 			{
 				state.mOpen = true;
 				this->DoOpenSuccess();
-				if(mpHandler) 
+				if(mpHandler)
 				{
 					mpHandler->OnLowerLayerUp();
 				}

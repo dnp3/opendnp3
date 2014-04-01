@@ -140,12 +140,12 @@ TEST_CASE(SUITE("SecondaryResetLink"))
 	LinkLayerTest t(LinkLayerTest::DefaultConfig());
 	t.link.OnLowerLayerUp();
 	t.link.ResetLinkStates(false, 1, 1024);
-	
+
 	StaticBuffer<292> buffer;
 	auto writeTo = buffer.GetWriteBuffer();
 	auto frame = LinkFrame::FormatAck(writeTo, true, false, 1024, 1);
 
-	REQUIRE(t.numWrites ==  1);	
+	REQUIRE(t.numWrites ==  1);
 	REQUIRE(toHex(t.lastWrite) ==  toHex(frame));
 }
 
@@ -165,7 +165,7 @@ TEST_CASE(SUITE("SecAckWrongFCB"))
 	t.link.ConfirmedUserData(false, false, 1, 1024, b.ToReadOnly());
 	t.link.OnTransmitResult(false, true);
 	REQUIRE(t.numWrites ==  2);
-	
+
 	StaticBuffer<292> buffer;
 	auto writeTo = buffer.GetWriteBuffer();
 	auto frame = LinkFrame::FormatAck(writeTo, true, false, 1024, 1);
@@ -188,11 +188,11 @@ TEST_CASE(SUITE("SecondaryResetResetLinkStates"))
 	t.link.ResetLinkStates(false, 1, 1024);
 	REQUIRE(t.numWrites == 2);
 	t.link.OnTransmitResult(false, true);
-	
+
 	StaticBuffer<292> buffer;
 	auto writeTo = buffer.GetWriteBuffer();
 	auto frame = LinkFrame::FormatAck(writeTo, true, false, 1024, 1);
-	
+
 	REQUIRE(t.numWrites ==  2);
 	REQUIRE(toHex(t.lastWrite) ==  toHex(frame));
 }
@@ -227,7 +227,7 @@ TEST_CASE(SUITE("RequestStatusOfLink"))
 	t.link.RequestLinkStatus(false, 1, 1024); //should be able to request this before the link is reset
 	REQUIRE(t.numWrites ==  1);
 	t.link.OnTransmitResult(false, true);
-		
+
 	StaticBuffer<292> buffer;
 	auto writeTo = buffer.GetWriteBuffer();
 	auto frame = LinkFrame::FormatLinkStatus(writeTo, true, false, 1024, 1);
@@ -451,7 +451,7 @@ TEST_CASE(SUITE("ConfirmedDataRetry"))
 	REQUIRE(t.mts.DispatchOne()); //timeout the ConfData, check that it retransmits
 	REQUIRE(t.log.NextErrorCode() ==  DLERR_TIMEOUT_RETRY);
 	REQUIRE(t.numWrites ==  3);
-	
+
 	StaticBuffer<292> buffer;
 	auto writeTo = buffer.GetWriteBuffer();
 	auto frame = LinkFrame::FormatConfirmedUserData(writeTo, true, true, 1024, 1, bytes, bytes.Size());

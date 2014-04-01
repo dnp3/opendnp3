@@ -34,15 +34,15 @@ namespace opendnp3
 */
 class DNP3Stack : public IStack
 {
-public:	
+public:
 
 	DNP3Stack(openpal::Logger logger, openpal::IExecutor* pExecutor, AppConfig appConfig, LinkConfig linkConfig, const StackActionHandler& handler_);
 
 	virtual ~DNP3Stack() {}
-	
+
 	virtual openpal::IExecutor* GetExecutor() override final;
 
-	ILinkContext* GetLinkContext();	
+	ILinkContext* GetLinkContext();
 
 	void SetLinkRouter(ILinkRouter* apRouter);
 
@@ -67,7 +67,7 @@ protected:
 
 private:
 
-	
+
 	StackActionHandler handler;
 };
 

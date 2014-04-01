@@ -44,7 +44,7 @@ private:
 
 	CopyableBuffer mBuffer;
 
-	
+
 	virtual void OnPhysicalLayerOpenSuccessCallback() override final;
 
 	virtual void OnPhysicalLayerOpenFailureCallback() override final {}

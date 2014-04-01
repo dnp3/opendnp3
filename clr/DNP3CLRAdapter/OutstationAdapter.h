@@ -19,7 +19,7 @@ public:
 
 	virtual IMeasurementLoader^ GetLoader();
 
-	virtual void SetNeedTimeIIN();	
+	virtual void SetNeedTimeIIN();
 
 	virtual void Shutdown();
 

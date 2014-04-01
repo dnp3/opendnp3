@@ -41,17 +41,17 @@ IChannel^ DNP3ManagerAdapter::AddTCPClient(System::String^ id, System::UInt32 fi
 
 	std::string stdName = Conversions::convertString(id);
 	std::string stdAddress = Conversions::convertString(address);
-	uint16_t stdPort = port;	
+	uint16_t stdPort = port;
 
 	auto adapter = gcnew ChannelAdapter();
-	
+
 	auto pChannel = mpMgr->AddTCPClient(stdName, filters, Conversions::convertTimespan(minRetryDelay), Conversions::convertTimespan(maxRetryDelay), stdAddress, stdPort, adapter->GetEventHandler());
 	if (pChannel)
 	{
 		auto pRoot = new gcroot<ChannelAdapter^>(adapter);
 		pChannel->AddDestructorHook(std::bind(&DeleteAnything<gcroot<ChannelAdapter^>>, pRoot));
 		adapter->SetChannel(pChannel);
-		return adapter;		
+		return adapter;
 	}
 	else
 	{
@@ -63,16 +63,16 @@ IChannel^ DNP3ManagerAdapter::AddTCPServer(System::String^ id, System::UInt32 fi
 {
 	std::string stdName = Conversions::convertString(id);
 	std::string stdEndpoint = Conversions::convertString(endpoint);
-	uint16_t stdPort = port;	
+	uint16_t stdPort = port;
 
-	auto adapter = gcnew ChannelAdapter();	
+	auto adapter = gcnew ChannelAdapter();
 	auto pChannel = mpMgr->AddTCPServer(stdName, filters, Conversions::convertTimespan(minRetryDelay), Conversions::convertTimespan(maxRetryDelay), stdEndpoint, stdPort, adapter->GetEventHandler());
 	if (pChannel)
 	{
 		auto pRoot = new gcroot<ChannelAdapter^>(adapter);
 		pChannel->AddDestructorHook(std::bind(&DeleteAnything<gcroot<ChannelAdapter^>>, pRoot));
 		adapter->SetChannel(pChannel);
-		return adapter;		
+		return adapter;
 	}
 	else
 	{
@@ -82,17 +82,17 @@ IChannel^ DNP3ManagerAdapter::AddTCPServer(System::String^ id, System::UInt32 fi
 
 IChannel^ DNP3ManagerAdapter::AddSerial(System::String^ id, System::UInt32 filters, System::TimeSpan minRetryDelay, System::TimeSpan maxRetryDelay, DNP3::Interface::SerialSettings^ settings)
 {
-	std::string stdName = Conversions::convertString(id);	
+	std::string stdName = Conversions::convertString(id);
 	auto s = Conversions::convertSerialSettings(settings);
 
-	auto adapter = gcnew ChannelAdapter();	
+	auto adapter = gcnew ChannelAdapter();
 	auto pChannel = mpMgr->AddSerial(stdName, filters, Conversions::convertTimespan(minRetryDelay), Conversions::convertTimespan(maxRetryDelay), s, adapter->GetEventHandler());
 	if (pChannel)
 	{
 		auto pRoot = new gcroot<ChannelAdapter^>(adapter);
 		pChannel->AddDestructorHook(std::bind(&DeleteAnything<gcroot<ChannelAdapter^>>, pRoot));
 		adapter->SetChannel(pChannel);
-		return adapter;		
+		return adapter;
 	}
 	else
 	{

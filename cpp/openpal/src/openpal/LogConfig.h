@@ -41,17 +41,26 @@ public:
 		filters(filters_),
 		rootId(rootId_)
 	{}
-	
-	ILogBase* GetLog() const { return pLog; }
-	uint32_t GetFilters() const { return filters; }
-	const std::string& GetRootId() const { return rootId; }
+
+	ILogBase* GetLog() const
+	{
+		return pLog;
+	}
+	uint32_t GetFilters() const
+	{
+		return filters;
+	}
+	const std::string& GetRootId() const
+	{
+		return rootId;
+	}
 
 private:
 
 	ILogBase*			pLog;
 	uint32_t			filters;
 	std::string rootId;
-	
+
 };
 
 }

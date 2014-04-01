@@ -35,11 +35,11 @@ class PhysicalLayerAsyncTCPServer : public PhysicalLayerAsyncBaseTCP
 {
 public:
 	PhysicalLayerAsyncTCPServer(
-		const openpal::LogConfig& config,
+	    const openpal::LogConfig& config,
 	    asio::io_service* pIOService,
 	    const std::string& endpoint,
 	    uint16_t port,
-		std::function<void (asio::ip::tcp::socket&)> configure = [](asio::ip::tcp::socket&) {});
+	std::function<void (asio::ip::tcp::socket&)> configure = [](asio::ip::tcp::socket&) {});
 
 	/* Implement the remainging actions */
 	void DoOpen();

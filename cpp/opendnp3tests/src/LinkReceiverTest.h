@@ -42,12 +42,12 @@ public:
 		mSink(),
 		mRx(log.GetLogger("ReceiverTest"), &mSink)
 	{}
-	
+
 	void WriteData(const openpal::ReadOnlyBuffer& input)
 	{
-		auto buff = mRx.WriteBuff();		
+		auto buff = mRx.WriteBuff();
 		assert(input.Size() <= buff.Size());
-		input.CopyTo(buff);		
+		input.CopyTo(buff);
 		mRx.OnRead(input.Size());
 	}
 

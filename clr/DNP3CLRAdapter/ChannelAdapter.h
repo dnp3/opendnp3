@@ -24,7 +24,7 @@ public:
 
 	ChannelAdapter();
 	~ChannelAdapter();
-	
+
 	void SetChannel(opendnp3::IChannel* pChannel_);
 
 	virtual LogFilter GetLogFilters();

@@ -24,28 +24,28 @@
 
 #include <openpal/LogLevels.h>
 
-namespace opendnp3 
+namespace opendnp3
 {
-	namespace flags
-	{
-		// define most of these in terms of the base openpal filters
-		const int32_t EVENT = openpal::log::EVENT;
-		const int32_t ERR = openpal::log::ERR;
-		const int32_t WARN = openpal::log::WARN;
-		const int32_t INFO = openpal::log::INFO;
-		const int32_t DEBUG = openpal::log::DEBUG;
+namespace flags
+{
+// define most of these in terms of the base openpal filters
+const int32_t EVENT = openpal::log::EVENT;
+const int32_t ERR = openpal::log::ERR;
+const int32_t WARN = openpal::log::WARN;
+const int32_t INFO = openpal::log::INFO;
+const int32_t DEBUG = openpal::log::DEBUG;
 
-		// upshift the custom dnp3 filters
-		const int32_t INTERPRET = DEBUG << 1;
-		const int32_t COMM = INTERPRET << 1;
-	}
+// upshift the custom dnp3 filters
+const int32_t INTERPRET = DEBUG << 1;
+const int32_t COMM = INTERPRET << 1;
+}
 
-	namespace levels
-	{
-		const int32_t NOTHING = 0;
-		const int32_t ALL = ~NOTHING;				
-		const uint32_t NORMAL = flags::EVENT | flags::ERR | flags::WARN | flags::INFO;
-	}	
+namespace levels
+{
+const int32_t NOTHING = 0;
+const int32_t ALL = ~NOTHING;
+const uint32_t NORMAL = flags::EVENT | flags::ERR | flags::WARN | flags::INFO;
+}
 }
 
 #endif

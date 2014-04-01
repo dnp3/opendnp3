@@ -59,16 +59,16 @@ EventBufferFacade DynamicallyAllocatedEventBuffer::GetFacade()
 	StackAdapter<ListNode<SequenceRecord>*, uint16_t> selectionAdapter(selectedEvents.ToIndexable());
 
 	return EventBufferFacade(
-		binaryAdapter,
-		doubleBinaryAdapter,
-		analogAdapter, 
-		counterAdapter, 
-		frozenCounterAdapter,
-		binaryOutputStatusAdapter,
-		analogOutputStatusAdapter,
-		soeAdapter, 
-		selectionAdapter
-	);
+	           binaryAdapter,
+	           doubleBinaryAdapter,
+	           analogAdapter,
+	           counterAdapter,
+	           frozenCounterAdapter,
+	           binaryOutputStatusAdapter,
+	           analogOutputStatusAdapter,
+	           soeAdapter,
+	           selectionAdapter
+	       );
 }
 
 }

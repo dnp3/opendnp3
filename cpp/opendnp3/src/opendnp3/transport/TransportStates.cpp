@@ -78,7 +78,7 @@ void TLS_Sending::HandleReceive(const openpal::ReadOnlyBuffer& arBuffer, Transpo
 void TLS_Sending::HandleSendSuccess(TransportLayer* apContext)
 {
 	apContext->ChangeState(TLS_Ready::Inst());
-	apContext->SignalSendResult(true);	
+	apContext->SignalSendResult(true);
 }
 
 void TLS_Sending::HandleSendFailure(TransportLayer* apContext)

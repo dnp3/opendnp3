@@ -38,7 +38,7 @@ class IMeasurementLoader;
 class IOutstation : public DNP3Stack
 {
 public:
-	IOutstation(openpal::Logger logger, openpal::IExecutor* pExecutor, AppConfig appConfig, LinkConfig linkConfig, const StackActionHandler& handler) : 
+	IOutstation(openpal::Logger logger, openpal::IExecutor* pExecutor, AppConfig appConfig, LinkConfig linkConfig, const StackActionHandler& handler) :
 		DNP3Stack(logger, pExecutor, appConfig, linkConfig, handler)
 	{}
 

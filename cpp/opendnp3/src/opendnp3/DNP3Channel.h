@@ -35,7 +35,7 @@
 
 namespace openpal
 {
-	class PhysicalLayerAsyncBase;
+class PhysicalLayerAsyncBase;
 }
 
 
@@ -52,22 +52,22 @@ class DNP3Channel: public IChannel, private openpal::IShutdownHandler, private o
 {
 	enum class State
 	{
-		READY,
-		SHUTTING_DOWN,
-		SHUTDOWN
+	    READY,
+	    SHUTTING_DOWN,
+	    SHUTDOWN
 	};
 
 public:
-	DNP3Channel(		
-		const std::string& id,
+	DNP3Channel(
+	    const std::string& id,
 	    openpal::TimeDuration minOpenRetry,
 	    openpal::TimeDuration maxOpenRetry,
 	    IOpenDelayStrategy* pStrategy,
-	    openpal::PhysicalLayerAsyncBase* pPhys,	    	
-		openpal::ITypedShutdownHandler<DNP3Channel*>* pShutdownHandler_,
-		openpal::IEventHandler<ChannelState>* pStateHandler_
-	);	
-	
+	    openpal::PhysicalLayerAsyncBase* pPhys,
+	    openpal::ITypedShutdownHandler<DNP3Channel*>* pShutdownHandler_,
+	    openpal::IEventHandler<ChannelState>* pStateHandler_
+	);
+
 	// public interface, callable only from outside
 	void BeginShutdown() override final;
 
@@ -77,19 +77,19 @@ public:
 
 	virtual void SetLogFilters(const openpal::LogFilters& filters) override final;
 
-	IMaster* AddMaster(		const std::string& id,	                        
+	IMaster* AddMaster(		const std::string& id,
 	                        ISOEHandler* pPublisher,
 	                        openpal::IUTCTimeSource* pTimeSource,
 	                        const MasterStackConfig& cfg);
 
-	IOutstation* AddOutstation(	const std::string& id,								
+	IOutstation* AddOutstation(	const std::string& id,
 	                            ICommandHandler* pCmdHandler,
 	                            ITimeWriteHandler* pTimeWriteHandler,
 	                            const OutstationStackConfig& cfg);
 
 	// Helper functions only available inside DNP3Manager
 
-private:	
+private:
 
 	void InitiateShutdown();
 
@@ -100,11 +100,11 @@ private:
 	void OnShutdown(DNP3Stack* apStack) override final;
 
 	void CheckForFinalShutdown();
-	
+
 	std::auto_ptr<PhysicalLayerAsyncBase> pPhys;
-	
+
 	Logger logger;
-	
+
 	State state;
 	openpal::ITypedShutdownHandler<DNP3Channel*>* pShutdownHandler;
 

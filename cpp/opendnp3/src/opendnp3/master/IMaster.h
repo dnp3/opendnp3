@@ -41,7 +41,7 @@ class ICommandProcessor;
 class IMaster : public DNP3Stack
 {
 public:
-	IMaster(openpal::Logger logger, openpal::IExecutor* pExecutor, AppConfig appConfig, LinkConfig linkConfig, const StackActionHandler& handler) : 
+	IMaster(openpal::Logger logger, openpal::IExecutor* pExecutor, AppConfig appConfig, LinkConfig linkConfig, const StackActionHandler& handler) :
 		DNP3Stack(logger, pExecutor, appConfig, linkConfig, handler)
 	{}
 

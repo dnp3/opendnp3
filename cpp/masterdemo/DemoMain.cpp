@@ -48,7 +48,7 @@ int main(int argc, char* argv[])
 	// Log statements with a lower priority will not be logged.
 	const uint32_t FILTERS = levels::NORMAL;
 
-	EventLog log;	
+	EventLog log;
 	// You can optionally subcribe to log messages
 	// This singleton logger just prints messages to the console
 	LogToStdio::Inst()->SetLevelInterpreter(&AllFlags);
@@ -65,12 +65,12 @@ int main(int argc, char* argv[])
 	auto configure = [](asio::ip::tcp::socket & socket)
 	{
 		// platfrom specific socket configuration here
-	};	
+	};
 
 	// Connect via a TCPClient socket to a outstation
 	auto pClientPhys = new PhysicalLayerAsyncTCPClient(LogConfig(&log, FILTERS, "tcpclient"), pool.GetIOService(), "127.0.0.1", 20000, configure);
 	// wait 3000 ms in between failed connect calls
-	auto pClient = mgr.CreateChannel("tcpclient", TimeDuration::Seconds(2), TimeDuration::Minutes(1), pClientPhys);	
+	auto pClient = mgr.CreateChannel("tcpclient", TimeDuration::Seconds(2), TimeDuration::Minutes(1), pClientPhys);
 
 	// The master config object for a master. The default are
 	// useable, but understanding the options are important.
@@ -81,11 +81,11 @@ int main(int argc, char* argv[])
 	// name, log level, command acceptor, and config info. This
 	// returns a thread-safe interface used for sending commands.
 	auto pMaster = pClient->AddMaster(
-	                   "master",						// id for logging	                   
+	                   "master",						// id for logging
 	                   PrintingSOEHandler::Inst(),		// callback for data processing
 	                   asiopal::UTCTimeSource::Inst(),	// system clock for time syncing
 	                   stackConfig						// stack configuration
-	               );	
+	               );
 
 	auto integrityScan = pMaster->GetIntegrityScan();
 	auto exceptionScan = pMaster->AddClassScan(CLASS_1 | CLASS_2 | CLASS_3, TimeDuration::Seconds(5), TimeDuration::Seconds(5));

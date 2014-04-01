@@ -40,8 +40,8 @@
 
 namespace openpal
 {
-	class IExecutor;
-	class ITimer;
+class IExecutor;
+class ITimer;
 }
 
 
@@ -86,9 +86,9 @@ public:
 	virtual void OnReceive(const openpal::ReadOnlyBuffer&) override final;
 	virtual void OnLowerLayerUp() override final;
 	virtual void OnLowerLayerDown() override final;
-	virtual void OnSendResult(bool isSuccess) override final;	
+	virtual void OnSendResult(bool isSuccess) override final;
 
-private:	
+private:
 
 	////////////////////
 	// Internal Events
@@ -113,7 +113,7 @@ private:
 	bool isMaster;						// True, if the application user is a master
 	SendQueue sendQueue;				// Buffer of send operations
 
-	openpal::ILowerLayer* pTransportLayer; 
+	openpal::ILowerLayer* pTransportLayer;
 	IAppUser* mpUser;						// Interface for dispatching callbacks
 
 	SolicitedChannel mSolicited;			// Channel used for solicited communications

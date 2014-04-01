@@ -135,7 +135,7 @@ public:
 
 	BinaryOutputStatus(uint8_t aQuality) : TypedMeasurement((aQuality& TQ_STATE) != 0, aQuality)
 	{}
-	
+
 	BinaryOutputStatus(uint8_t aQuality, uint64_t aTime) : TypedMeasurement((aQuality& TQ_STATE) != 0, aQuality, aTime)
 	{}
 

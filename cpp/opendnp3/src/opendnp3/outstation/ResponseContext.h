@@ -54,7 +54,7 @@ public:
 
 	void Load(APDUResponse& response);
 
-private:	
+private:
 
 	void SetControl(APDUResponse& response, bool hasEvents, bool fin);
 

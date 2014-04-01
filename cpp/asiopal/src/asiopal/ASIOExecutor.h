@@ -52,7 +52,7 @@ protected:
 	virtual void Pause() override final;
 	virtual void Resume() override final;
 
-private:	
+private:
 
 	void OnPause();
 
@@ -72,7 +72,7 @@ private:
 	TimerQueue mAllTimers;
 	TimerQueue mIdleTimers;
 
-	size_t mNumActiveTimers;	
+	size_t mNumActiveTimers;
 	bool mIsShuttingDown;
 
 	void OnTimerCallback(const std::error_code&, TimerASIO*, std::function<void ()>);

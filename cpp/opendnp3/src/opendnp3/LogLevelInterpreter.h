@@ -26,9 +26,9 @@
 
 #include <sstream>
 
-namespace opendnp3 
+namespace opendnp3
 {
-	std::ostringstream& AllFlags(std::ostringstream& ss, const openpal::LogFilters& filters);	
+std::ostringstream& AllFlags(std::ostringstream& ss, const openpal::LogFilters& filters);
 }
 
 #endif

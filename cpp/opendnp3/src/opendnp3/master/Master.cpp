@@ -55,8 +55,8 @@ Master::Master(Logger aLogger, MasterConfig aCfg, IAppLayer* apAppLayer, ISOEHan
 	mpTimeSrc(apTimeSrc),
 	mpState(AMS_Closed::Inst()),
 	mpTask(nullptr),
-	mpScheduledTask(nullptr),	
-	mSchedule(apTaskGroup, this, aCfg),	
+	mpScheduledTask(nullptr),
+	mSchedule(apTaskGroup, this, aCfg),
 	mClassPoll(aLogger, apSOEHandler),
 	mClearRestart(aLogger),
 	mConfigureUnsol(aLogger),
@@ -64,12 +64,12 @@ Master::Master(Logger aLogger, MasterConfig aCfg, IAppLayer* apAppLayer, ISOEHan
 	mCommandTask(aLogger),
 	mCommandQueue(apExecutor, mSchedule.mpCommandTask)
 {
-	
+
 }
 
 void Master::ProcessIIN(const IINField& iin)
 {
-	mLastIIN = iin;	
+	mLastIIN = iin;
 
 	bool check_state = false;
 
@@ -241,7 +241,7 @@ void Master::OnLowerLayerUp()
 void Master::OnLowerLayerDown()
 {
 	mpState->OnLowerLayerDown(this);
-	mSchedule.DisableOnlineTasks();	
+	mSchedule.DisableOnlineTasks();
 }
 
 void Master::OnSolSendSuccess()
@@ -250,7 +250,7 @@ void Master::OnSolSendSuccess()
 }
 
 void Master::OnSolFailure()
-{	
+{
 	mpState->OnFailure(this);
 }
 

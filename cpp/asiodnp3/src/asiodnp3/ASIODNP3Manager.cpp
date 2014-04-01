@@ -37,7 +37,7 @@ namespace asiodnp3
 
 
 ASIODNP3Manager::ASIODNP3Manager(uint32_t concurrency, std::function<void()> onThreadStart, std::function<void()> onThreadExit) :
-	pLog(new asiopal::EventLog()),	
+	pLog(new asiopal::EventLog()),
 	pThreadPool(new asiopal::IOServiceThreadPool(pLog.get(), opendnp3::flags::INFO, "pool", concurrency, onThreadStart, onThreadExit)),
 	pManager(new opendnp3::DNP3Manager())
 {
@@ -60,13 +60,13 @@ void ASIODNP3Manager::Shutdown()
 }
 
 opendnp3::IChannel* ASIODNP3Manager::AddTCPClient(
-	const std::string& id,
-	uint32_t levels,
+    const std::string& id,
+    uint32_t levels,
     openpal::TimeDuration minOpenRetry,
     openpal::TimeDuration maxOpenRetry,
     const std::string& host,
     uint16_t port,
-	openpal::IEventHandler<opendnp3::ChannelState>* pStateHandler,
+    openpal::IEventHandler<opendnp3::ChannelState>* pStateHandler,
     opendnp3::IOpenDelayStrategy* pStrategy)
 {
 	auto pPhys = new asiopal::PhysicalLayerAsyncTCPClient(LogConfig(pLog.get(), levels, id), pThreadPool->GetIOService(), host, port);
@@ -74,13 +74,13 @@ opendnp3::IChannel* ASIODNP3Manager::AddTCPClient(
 }
 
 opendnp3::IChannel* ASIODNP3Manager::AddTCPServer(
-	const std::string& id,
-	uint32_t levels,
+    const std::string& id,
+    uint32_t levels,
     openpal::TimeDuration minOpenRetry,
     openpal::TimeDuration maxOpenRetry,
     const std::string& endpoint,
     uint16_t port,
-	openpal::IEventHandler<opendnp3::ChannelState>* pStateHandler,
+    openpal::IEventHandler<opendnp3::ChannelState>* pStateHandler,
     opendnp3::IOpenDelayStrategy* pStrategy)
 {
 	auto pPhys = new asiopal::PhysicalLayerAsyncTCPServer(LogConfig(pLog.get(), levels, id), pThreadPool->GetIOService(), endpoint, port);
@@ -88,12 +88,12 @@ opendnp3::IChannel* ASIODNP3Manager::AddTCPServer(
 }
 
 opendnp3::IChannel* ASIODNP3Manager::AddSerial(
-	const std::string& id,
-	uint32_t levels,
+    const std::string& id,
+    uint32_t levels,
     openpal::TimeDuration minOpenRetry,
     openpal::TimeDuration maxOpenRetry,
     asiopal::SerialSettings aSettings,
-	openpal::IEventHandler<opendnp3::ChannelState>* pStateHandler,
+    openpal::IEventHandler<opendnp3::ChannelState>* pStateHandler,
     opendnp3::IOpenDelayStrategy* pStrategy)
 {
 	auto pPhys = new asiopal::PhysicalLayerAsyncSerial(LogConfig(pLog.get(), levels, id), pThreadPool->GetIOService(), aSettings);

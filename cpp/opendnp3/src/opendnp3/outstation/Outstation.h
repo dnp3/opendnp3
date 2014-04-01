@@ -94,7 +94,7 @@ public:
 	void OnSolFailure();
 
 	// Only have to override OnRequest since we're a outstation
-	void OnRequest(const APDURecord&, SequenceInfo);	
+	void OnRequest(const APDURecord&, SequenceInfo);
 
 private:
 
@@ -110,7 +110,7 @@ private:
 
 	openpal::IExecutor* pExecutor;
 	IAppLayer* mpAppLayer;					// lower application layer
-	Database* mpDatabase;					// holds static data	
+	Database* mpDatabase;					// holds static data
 	ICommandHandler* mpCmdHandler;				// how commands are selected/operated on application code
 	OutstationStateBase* mpState;				// current state for the state pattern
 	OutstationConfig mConfig;					// houses the configurable paramters of the outstation
@@ -128,7 +128,7 @@ private:
 	// until the outstation is in a state capable of handling it.
 
 	bool mDeferredUnsol;					// Indicates that the unsol timer expired, but the event was Deferred
-	bool mStartupNullUnsol;					// Tracks whether the device has completed the nullptr unsol startup message	
+	bool mStartupNullUnsol;					// Tracks whether the device has completed the nullptr unsol startup message
 
 	void OnDataUpdate();					// internal event dispatched when user code commits an update to mChangeBuffer
 	void OnUnsolTimerExpiration();			// internal event dispatched when the unsolicted pack/retry timer expires

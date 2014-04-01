@@ -115,7 +115,7 @@ public:
 	    UNKNOWN_OBJECT,
 	    UNKNOWN_QUALIFIER,
 	    INVALID_OBJECT_QUALIFIER,
-		INVALID_OBJECT,
+	    INVALID_OBJECT,
 	    BAD_START_STOP,
 	    COUNT_OF_ZERO
 	};
@@ -153,8 +153,8 @@ private:
 	template <class Fun>
 	static Result ParseRangeAsBitField(
 	    openpal::ReadOnlyBuffer& buffer,
-	    openpal::Logger* pLogger,		
-		const HeaderRecord& record,
+	    openpal::Logger* pLogger,
+	    const HeaderRecord& record,
 	    const Range& range,
 	    const Fun& action);
 
@@ -162,22 +162,22 @@ private:
 	static Result ParseRangeAsDoubleBitField(
 	    openpal::ReadOnlyBuffer& buffer,
 	    openpal::Logger* pLogger,
-		const HeaderRecord& record,
+	    const HeaderRecord& record,
 	    const Range& range,
 	    const Fun& action);
 
-	static Result ParseRangeOfOctetData(	    
+	static Result ParseRangeOfOctetData(
 	    openpal::ReadOnlyBuffer& buffer,
 	    openpal::Logger* pLogger,
-		const HeaderRecord& record,
+	    const HeaderRecord& record,
 	    const Range& range,
 	    IAPDUHandler* pHandler);
 
 	template <class IndexType>
-	static Result ParseIndexPrefixedOctetData(		
+	static Result ParseIndexPrefixedOctetData(
 	    openpal::ReadOnlyBuffer& buffer,
-	    openpal::Logger* pLogger,	
-		const HeaderRecord& record,
+	    openpal::Logger* pLogger,
+	    const HeaderRecord& record,
 	    uint32_t count,
 	    IAPDUHandler* pHandler);
 
@@ -189,7 +189,7 @@ private:
 
 	template <class Target, class IndexType>
 	static Result ParseCountFixedSizeWithIndex(
-		const HeaderRecord& record,
+	    const HeaderRecord& record,
 	    openpal::ReadOnlyBuffer& buffer,
 	    openpal::Logger* pLogger,
 	    uint32_t count,
@@ -267,8 +267,8 @@ APDUParser::Result APDUParser::ParseIndexPrefixHeader(openpal::ReadOnlyBuffer& b
 template <class Callback>
 APDUParser::Result APDUParser::ParseRangeAsBitField(
     openpal::ReadOnlyBuffer& buffer,
-    openpal::Logger* pLogger,	
-	const HeaderRecord& record,
+    openpal::Logger* pLogger,
+    const HeaderRecord& record,
     const Range& range,
     const Callback& callback)
 {
@@ -296,7 +296,7 @@ template <class Callback>
 APDUParser::Result APDUParser::ParseRangeAsDoubleBitField(
     openpal::ReadOnlyBuffer& buffer,
     openpal::Logger* pLogger,
-	const HeaderRecord& record,
+    const HeaderRecord& record,
     const Range& range,
     const Callback& callback)
 {
@@ -321,10 +321,10 @@ APDUParser::Result APDUParser::ParseRangeAsDoubleBitField(
 }
 
 template <class IndexType>
-APDUParser::Result APDUParser::ParseIndexPrefixedOctetData(	
+APDUParser::Result APDUParser::ParseIndexPrefixedOctetData(
     openpal::ReadOnlyBuffer& buffer,
-    openpal::Logger* pLogger,    
-	const HeaderRecord& record,
+    openpal::Logger* pLogger,
+    const HeaderRecord& record,
     uint32_t count,
     IAPDUHandler* pHandler)
 {
@@ -341,14 +341,14 @@ APDUParser::Result APDUParser::ParseIndexPrefixedOctetData(
 			if (pHandler)
 			{
 				auto iterable = CreateLazyIterable<IndexedValue<OctetString, uint16_t>>(buffer, count,
-					[&](openpal::ReadOnlyBuffer & buff, uint32_t position)
+				                [&](openpal::ReadOnlyBuffer & buff, uint32_t position)
 				{
 					auto index = IndexType::ReadBuffer(buff);
 					OctetString octets(buff.Truncate(record.variation));
 					buff.Advance(record.variation);
 					return IndexedValue<OctetString, uint16_t>(octets, index);
 				}
-				);
+				                                                                       );
 				pHandler->OnIndexPrefix(record, iterable);
 			}
 
@@ -381,13 +381,13 @@ APDUParser::Result APDUParser::ParseObjectsWithIndexPrefix(openpal::ReadOnlyBuff
 		return ParseCountFixedSizeWithIndex<DoubleBitBinary, IndexType>(record, buffer, pLogger, count, Group4Var2Serializer::Inst(), pHandler);
 	case(GroupVariation::Group4Var3) :
 		return ParseCountFixedSizeWithIndex<DoubleBitBinary, IndexType>(record, buffer, pLogger, count, Group4Var3Serializer::Inst(), pHandler);
-	
+
 	case(GroupVariation::Group11Var1):
 		return ParseCountFixedSizeWithIndex<BinaryOutputStatus, IndexType>(record, buffer, pLogger, count, Group11Var1Serializer::Inst(), pHandler);
-/*
-	case(GroupVariation::Group11Var2) :
-		return ParseCountFixedSizeWithIndex<BinaryOutputStatus, IndexType>(record, buffer, pLogger, count, Group11Var2Serializer::Inst(), pHandler);
-*/
+		/*
+			case(GroupVariation::Group11Var2) :
+				return ParseCountFixedSizeWithIndex<BinaryOutputStatus, IndexType>(record, buffer, pLogger, count, Group11Var2Serializer::Inst(), pHandler);
+		*/
 	case(GroupVariation::Group12Var1) :
 		return ParseCountFixedSizeWithIndex<ControlRelayOutputBlock, IndexType>(record, buffer, pLogger, count, Group12Var1Serializer::Inst(), pHandler);
 
@@ -563,7 +563,7 @@ APDUParser::Result APDUParser::ParseCountOf(openpal::ReadOnlyBuffer& buffer, ope
 
 template <class Target, class IndexType>
 APDUParser::Result APDUParser::ParseCountFixedSizeWithIndex(
-	const HeaderRecord& record,    
+    const HeaderRecord& record,
     openpal::ReadOnlyBuffer& buffer,
     openpal::Logger* pLogger,
     uint32_t count,

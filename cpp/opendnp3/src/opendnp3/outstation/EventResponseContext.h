@@ -37,17 +37,20 @@ namespace opendnp3
  */
 class EventResponseContext : private openpal::Uncopyable
 {
-	
+
 public:
 
 	class Result
 	{
-		public:
-		
+	public:
+
 		Result(bool complete_, uint32_t numLoaded_) : complete(complete_), numLoaded(numLoaded_)
 		{}
 
-		bool Any() const { return numLoaded > 0; }
+		bool Any() const
+		{
+			return numLoaded > 0;
+		}
 
 		bool complete;
 		uint32_t numLoaded;
@@ -67,12 +70,12 @@ public:
 
 private:
 
-	SelectionCriteria criteria;	
+	SelectionCriteria criteria;
 	OutstationEventBuffer& buffer;
 
 	// true if the event buffer was exhausted, false if apdu is full
 	Result Iterate(ObjectWriter& writer, SelectionIterator& iterator);
-	
+
 	// return true true, if there is still room in APDU, false otherwise
 	template <class T>
 	bool WriteFullHeader(ObjectWriter& writer, uint32_t& count, SelectionIterator& iterator, IDNP3Serializer<T>* pSerializer);

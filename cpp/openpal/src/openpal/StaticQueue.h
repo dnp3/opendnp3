@@ -66,15 +66,21 @@ public:
 	}
 
 	ValueType& Peek()
-	{		
-		auto pNode = list.FindFirst([](const ValueType&){ return true; });
+	{
+		auto pNode = list.FindFirst([](const ValueType&)
+		{
+			return true;
+		});
 		assert(pNode);
 		return (pNode->value);
 	}
 
 	ValueType& Pop()
 	{
-		auto pNode = list.RemoveFirst([](const ValueType&){ return true; });
+		auto pNode = list.RemoveFirst([](const ValueType&)
+		{
+			return true;
+		});
 		assert(pNode);
 		return (pNode->value);
 	}
@@ -86,7 +92,7 @@ public:
 
 private:
 
-	StaticLinkedList<ValueType, IndexType, N> list;	
+	StaticLinkedList<ValueType, IndexType, N> list;
 };
 
 }

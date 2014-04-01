@@ -37,7 +37,7 @@ class ConcretePhysicalLayerMonitor : public PhysicalLayerMonitor
 {
 public:
 
-	ConcretePhysicalLayerMonitor(openpal::Logger aLogger, IPhysicalLayerAsync* apPhys) :		
+	ConcretePhysicalLayerMonitor(openpal::Logger aLogger, IPhysicalLayerAsync* apPhys) :
 		PhysicalLayerMonitor(aLogger.GetSubLogger("monitor"), apPhys, TimeDuration::Seconds(1),  TimeDuration::Seconds(10)),
 		mOpenCallbackCount(0),
 		mCloseCallbackCount(0),
@@ -48,7 +48,7 @@ public:
 
 	virtual void OnReceive(const openpal::ReadOnlyBuffer&) override final {}
 	virtual void OnSendResult(bool isSuccess) override final {}
-	
+
 	void ReachInAndStartOpenTimer()
 	{
 		this->StartOpenTimer();
@@ -77,7 +77,7 @@ protected:
 	{
 		++mCloseCallbackCount;
 	}
-	
+
 };
 
 class TestObject
@@ -224,7 +224,7 @@ TEST_CASE(SUITE("ClosedLayerCanBeStarted"))
 TEST_CASE(SUITE("OpeningLayerLogging"))
 {
 	TestObject test;
-	test.monitor.Start();	
+	test.monitor.Start();
 	test.monitor.OnLowerLayerDown();
 	REQUIRE(test.log.PopUntil(flags::ERR));
 }
@@ -309,7 +309,7 @@ TEST_CASE(SUITE("OpenFailureGoesToClosedIfSuspended"))
 TEST_CASE(SUITE("ShutdownCallsInheritedMethod"))
 {
 	TestObject test;
-	REQUIRE(0 ==  test.exe.NumActive());	
+	REQUIRE(0 ==  test.exe.NumActive());
 	test.monitor.Shutdown();
 	REQUIRE((ChannelState::SHUTDOWN == test.monitor.GetState()));
 	REQUIRE(0 ==  test.exe.NumActive());
@@ -322,7 +322,7 @@ TEST_CASE(SUITE("ShutdownWhileWaitingCancelsTimer"))
 	TestObject test;
 	test.monitor.Start();
 	test.phys.SignalOpenFailure();
-	test.monitor.Shutdown();	
+	test.monitor.Shutdown();
 	REQUIRE((ChannelState::SHUTDOWN == test.monitor.GetState()));
 	REQUIRE(0 ==  test.exe.NumActive());
 }

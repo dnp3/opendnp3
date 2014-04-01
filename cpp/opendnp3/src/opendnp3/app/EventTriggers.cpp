@@ -26,27 +26,27 @@
 
 namespace opendnp3
 {
-	namespace measurements
+namespace measurements
+{
+bool IsEvent(const TypedMeasurement<double>& newMeas, const TypedMeasurement<double>& oldMeas, double deadband)
+{
+	if (newMeas.GetQuality() != oldMeas.GetQuality())
 	{
-		bool IsEvent(const TypedMeasurement<double>& newMeas, const TypedMeasurement<double>& oldMeas, double deadband)
+		return true;
+	}
+	else
+	{
+		double diff = fabs(newMeas.GetValue() - oldMeas.GetValue());
+		if (diff == std::numeric_limits<double>::infinity())
 		{
-			if (newMeas.GetQuality() != oldMeas.GetQuality())
-			{
-				return true;
-			}
-			else
-			{
-				double diff = fabs(newMeas.GetValue() - oldMeas.GetValue());
-				if (diff == std::numeric_limits<double>::infinity())
-				{
-					return true;
-				}
-				else
-				{
-					return diff > deadband;
-				}
-			}
+			return true;
+		}
+		else
+		{
+			return diff > deadband;
 		}
 	}
+}
+}
 
 }

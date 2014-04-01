@@ -38,7 +38,7 @@ public:
 	{
 		assert(aValues.Size() == aIndices.Size());
 		for(IndexType i = 0; i < aValues.Size(); ++i) availableIndices.Push(i);
-	}	
+	}
 
 	IndexType Capacity() const
 	{

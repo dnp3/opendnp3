@@ -56,7 +56,7 @@ TEST_CASE(SUITE("UnknownDestination"))
 
 	t.phys.TriggerRead("05 64 05 C0 01 00 00 04 E9 21");
 	LogEntry le;
-	REQUIRE(t.log.NextErrorCode() == DLERR_UNKNOWN_ROUTE);	
+	REQUIRE(t.log.NextErrorCode() == DLERR_UNKNOWN_ROUTE);
 }
 
 // Test that the router rejects sends until it is online
@@ -96,7 +96,7 @@ TEST_CASE(SUITE("CloseBehavior"))
 	t.router.AddContext(&mfs, route);
 	REQUIRE(t.router.Enable(&mfs));
 	t.phys.SignalOpenSuccess();
-	
+
 	ByteStr buffer(292);
 	t.router.QueueTransmit(buffer.ToReadOnly(), &mfs, false); // puts the router in the send state
 
@@ -117,7 +117,7 @@ TEST_CASE(SUITE("CloseBehavior"))
 
 	t.phys.ClearBuffer();
 	t.phys.SignalOpenSuccess();
-	
+
 	t.router.QueueTransmit(buffer.ToReadOnly(), &mfs, false);
 	REQUIRE(t.phys.NumWrites() ==  2);
 	REQUIRE(t.phys.GetBufferAsHexString() == toHex(buffer.ToReadOnly()));
@@ -135,7 +135,7 @@ TEST_CASE(SUITE("ReentrantCloseWorks"))
 	t.phys.SignalOpenSuccess();
 	REQUIRE(mfs.mLowerOnline);
 	mfs.AddAction(std::bind(&LinkLayerRouter::Shutdown, &t.router));
-	
+
 	StaticBuffer<292> buffer;
 	auto writeTo = buffer.GetWriteBuffer();
 	auto frame = LinkFrame::FormatAck(writeTo, true, false, 1024, 1);
@@ -177,7 +177,7 @@ TEST_CASE(SUITE("MultiContextSend"))
 	t.router.Enable(&mfs1);
 	t.router.AddContext(&mfs2, route2);
 	t.router.Enable(&mfs2);
-	
+
 	StaticBuffer<292> buffer;
 
 	t.phys.SignalOpenSuccess();

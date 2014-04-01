@@ -8,10 +8,10 @@
 //                                           __/ |
 //                                          |___/
 // Copyright 2013 Automatak LLC
-// 
+//
 // Automatak LLC (www.automatak.com) licenses this file
 // to you under the the Apache License Version 2.0 (the "License"):
-// 
+//
 // http://www.apache.org/licenses/LICENSE-2.0.html
 //
 
@@ -23,95 +23,123 @@
 #include "opendnp3/app/IDNP3Serializer.h"
 #include "opendnp3/app/MeasurementTypes.h"
 
-namespace opendnp3 {
+namespace opendnp3
+{
 
 struct Group4Var1
 {
-  static const GroupVariationID ID;
-  typedef DoubleBitBinary Target;
-  static const uint32_t SIZE = 1;
-  static Group4Var1 Read(openpal::ReadOnlyBuffer&);
-  static void Write(const Group4Var1&, openpal::WriteBuffer&);
+	static const GroupVariationID ID;
+	typedef DoubleBitBinary Target;
+	static const uint32_t SIZE = 1;
+	static Group4Var1 Read(openpal::ReadOnlyBuffer&);
+	static void Write(const Group4Var1&, openpal::WriteBuffer&);
 
-  uint8_t flags;
+	uint8_t flags;
 };
 
 struct Group4Var1Serializer : public IDNP3Serializer<DoubleBitBinary>
 {
 
-  static IDNP3Serializer<DoubleBitBinary>* Inst() { return &mInstance; }
+	static IDNP3Serializer<DoubleBitBinary>* Inst()
+	{
+		return &mInstance;
+	}
 
-  GroupVariationID ID() const { return Group4Var1::ID; }
+	GroupVariationID ID() const
+	{
+		return Group4Var1::ID;
+	}
 
-  uint32_t Size() const { return Group4Var1::SIZE; }
+	uint32_t Size() const
+	{
+		return Group4Var1::SIZE;
+	}
 
-  typedef DoubleBitBinary Target;
-  DoubleBitBinary Read(openpal::ReadOnlyBuffer&) const;
-  void Write(const DoubleBitBinary&, openpal::WriteBuffer&) const;
+	typedef DoubleBitBinary Target;
+	DoubleBitBinary Read(openpal::ReadOnlyBuffer&) const;
+	void Write(const DoubleBitBinary&, openpal::WriteBuffer&) const;
 
-  private:
+private:
 
-  static Group4Var1Serializer mInstance;
+	static Group4Var1Serializer mInstance;
 };
 
 struct Group4Var2
 {
-  static const GroupVariationID ID;
-  typedef DoubleBitBinary Target;
-  static const uint32_t SIZE = 7;
-  static Group4Var2 Read(openpal::ReadOnlyBuffer&);
-  static void Write(const Group4Var2&, openpal::WriteBuffer&);
+	static const GroupVariationID ID;
+	typedef DoubleBitBinary Target;
+	static const uint32_t SIZE = 7;
+	static Group4Var2 Read(openpal::ReadOnlyBuffer&);
+	static void Write(const Group4Var2&, openpal::WriteBuffer&);
 
-  uint8_t flags;
-  uint64_t time;
+	uint8_t flags;
+	uint64_t time;
 };
 
 struct Group4Var2Serializer : public IDNP3Serializer<DoubleBitBinary>
 {
 
-  static IDNP3Serializer<DoubleBitBinary>* Inst() { return &mInstance; }
+	static IDNP3Serializer<DoubleBitBinary>* Inst()
+	{
+		return &mInstance;
+	}
 
-  GroupVariationID ID() const { return Group4Var2::ID; }
+	GroupVariationID ID() const
+	{
+		return Group4Var2::ID;
+	}
 
-  uint32_t Size() const { return Group4Var2::SIZE; }
+	uint32_t Size() const
+	{
+		return Group4Var2::SIZE;
+	}
 
-  typedef DoubleBitBinary Target;
-  DoubleBitBinary Read(openpal::ReadOnlyBuffer&) const;
-  void Write(const DoubleBitBinary&, openpal::WriteBuffer&) const;
+	typedef DoubleBitBinary Target;
+	DoubleBitBinary Read(openpal::ReadOnlyBuffer&) const;
+	void Write(const DoubleBitBinary&, openpal::WriteBuffer&) const;
 
-  private:
+private:
 
-  static Group4Var2Serializer mInstance;
+	static Group4Var2Serializer mInstance;
 };
 
 struct Group4Var3
 {
-  static const GroupVariationID ID;
-  typedef DoubleBitBinary Target;
-  static const uint32_t SIZE = 3;
-  static Group4Var3 Read(openpal::ReadOnlyBuffer&);
-  static void Write(const Group4Var3&, openpal::WriteBuffer&);
+	static const GroupVariationID ID;
+	typedef DoubleBitBinary Target;
+	static const uint32_t SIZE = 3;
+	static Group4Var3 Read(openpal::ReadOnlyBuffer&);
+	static void Write(const Group4Var3&, openpal::WriteBuffer&);
 
-  uint8_t flags;
-  uint16_t time;
+	uint8_t flags;
+	uint16_t time;
 };
 
 struct Group4Var3Serializer : public IDNP3Serializer<DoubleBitBinary>
 {
 
-  static IDNP3Serializer<DoubleBitBinary>* Inst() { return &mInstance; }
+	static IDNP3Serializer<DoubleBitBinary>* Inst()
+	{
+		return &mInstance;
+	}
 
-  GroupVariationID ID() const { return Group4Var3::ID; }
+	GroupVariationID ID() const
+	{
+		return Group4Var3::ID;
+	}
 
-  uint32_t Size() const { return Group4Var3::SIZE; }
+	uint32_t Size() const
+	{
+		return Group4Var3::SIZE;
+	}
 
-  typedef DoubleBitBinary Target;
-  DoubleBitBinary Read(openpal::ReadOnlyBuffer&) const;
-  void Write(const DoubleBitBinary&, openpal::WriteBuffer&) const;
+	typedef DoubleBitBinary Target;
+	DoubleBitBinary Read(openpal::ReadOnlyBuffer&) const;
+	void Write(const DoubleBitBinary&, openpal::WriteBuffer&) const;
 
-  private:
+private:
 
-  static Group4Var3Serializer mInstance;
+	static Group4Var3Serializer mInstance;
 };
 
 
