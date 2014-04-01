@@ -23,7 +23,7 @@
 
 #include "opendnp3/outstation/ICommandHandler.h"
 #include "opendnp3/outstation/ITimeWriteHandler.h"
-#include "opendnp3/outstation/SlaveConfig.h"
+#include "opendnp3/outstation/OutstationConfig.h"
 #include "opendnp3/outstation/SelectBuffer.h"
 #include "opendnp3/outstation/ResponseContext.h"
 
@@ -39,7 +39,7 @@
 namespace opendnp3
 {
 
-class SlaveStateBase;
+class OutstationStateBase;
 class Database;
 
 /**
@@ -52,7 +52,7 @@ class Database;
  * master requests, and the IDNPCommandMaster implementation verifies
  * control/setpoint behavior and passes valid commands to the user code.
  *
- * OutstationConfig structure represents the slave behavioral configuration, the
+ * OutstationConfig structure represents the outstation behavioral configuration, the
  * Database is in charge of the data model itself.
  *
  * Global IIN state is maintained and combined with request-specific
@@ -63,8 +63,8 @@ class Database;
  */
 class Outstation : public IAppUser
 {
-	// states can operate back on the slave's private functions
-	friend class SlaveStateBase;
+	// states can operate back on the outstation's private functions
+	friend class OutstationStateBase;
 	friend class AS_OpenBase;
 	friend class AS_Closed;
 	friend class AS_Idle;
@@ -74,7 +74,7 @@ class Outstation : public IAppUser
 
 public:
 
-	Outstation(openpal::Logger, IAppLayer*, openpal::IExecutor*, ITimeWriteHandler*, Database*, const EventBufferFacade& buffers, ICommandHandler*, const SlaveConfig&);
+	Outstation(openpal::Logger, IAppLayer*, openpal::IExecutor*, ITimeWriteHandler*, Database*, const EventBufferFacade& buffers, ICommandHandler*, const OutstationConfig&);
 	~Outstation();
 
 	////////////////////////
@@ -93,12 +93,12 @@ public:
 	void OnUnsolFailure();
 	void OnSolFailure();
 
-	// Only have to override OnRequest since we're a slave
+	// Only have to override OnRequest since we're a outstation
 	void OnRequest(const APDURecord&, SequenceInfo);	
 
 private:
 
-	void ChangeState(SlaveStateBase* apState);
+	void ChangeState(OutstationStateBase* apState);
 
 	void RespondToRequest(const APDURecord& record, SequenceInfo sequence);
 	IINField ConfigureResponse(const APDURecord& request, SequenceInfo sequence, APDUResponse& response);
@@ -112,8 +112,8 @@ private:
 	IAppLayer* mpAppLayer;					// lower application layer
 	Database* mpDatabase;					// holds static data	
 	ICommandHandler* mpCmdHandler;				// how commands are selected/operated on application code
-	SlaveStateBase* mpState;				// current state for the state pattern
-	SlaveConfig mConfig;					// houses the configurable paramters of the outstation
+	OutstationStateBase* mpState;				// current state for the state pattern
+	OutstationConfig mConfig;					// houses the configurable paramters of the outstation
 
 	openpal::ITimer* mpUnsolTimer;			// timer for sending unsol responsess
 	ITimeWriteHandler* mpTimeWriteHandler;
@@ -125,7 +125,7 @@ private:
 	ResponseContext rspContext;	// Used to track and construct multi fragment responses
 
 	// Flags that tell us that some action has been Deferred
-	// until the slave is in a state capable of handling it.
+	// until the outstation is in a state capable of handling it.
 
 	bool mDeferredUnsol;					// Indicates that the unsol timer expired, but the event was Deferred
 	bool mStartupNullUnsol;					// Tracks whether the device has completed the nullptr unsol startup message	

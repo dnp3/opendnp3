@@ -18,7 +18,7 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include "SlaveConfig.h"
+#include "OutstationConfig.h"
 
 #include "opendnp3/StaticSizeConfiguration.h"
 
@@ -27,7 +27,7 @@ using namespace openpal;
 namespace opendnp3
 {
 
-	SlaveConfig::SlaveConfig() :
+	OutstationConfig::OutstationConfig() :
 	mMaxControls(1),
 	mDisableUnsol(false),
 	mUnsolMask(true, true, true),

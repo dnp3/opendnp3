@@ -24,7 +24,7 @@
 #include "opendnp3/gen/ChannelState.h"
 
 #include "opendnp3/master/MasterStackConfig.h"
-#include "opendnp3/outstation/SlaveStackConfig.h"
+#include "opendnp3/outstation/OutstationStackConfig.h"
 #include "opendnp3/DestructorHook.h"
 
 #include <openpal/IUTCTimeSource.h>
@@ -116,7 +116,7 @@ public:
 	virtual IOutstation* AddOutstation(	const std::string& id,										
 	                                    ICommandHandler* pCmdHandler,
 	                                    ITimeWriteHandler* pTimeWriteHandler,
-	                                    const SlaveStackConfig& config) = 0;
+	                                    const OutstationStackConfig& config) = 0;
 };
 
 }

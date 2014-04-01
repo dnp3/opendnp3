@@ -64,7 +64,7 @@ const size_t NUM_POINTS = 500;
 const size_t NUM_CHANGE_SETS = 10;
 const uint32_t FILTER_LEVEL = levels::NORMAL;
 
-TEST_CASE(SUITE("MasterToSlaveThroughput"))
+TEST_CASE(SUITE("MasterToOutstationThroughput"))
 {
 
 	/*  TODO

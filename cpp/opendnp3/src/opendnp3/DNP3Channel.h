@@ -26,7 +26,7 @@
 #include <openpal/LogConfig.h>
 
 #include "opendnp3/IChannel.h"
-#include "opendnp3/outstation/SlaveStackConfig.h"
+#include "opendnp3/outstation/OutstationStackConfig.h"
 #include "opendnp3/master/AsyncTaskGroup.h"
 #include "opendnp3/link/LinkLayerRouter.h"
 
@@ -85,7 +85,7 @@ public:
 	IOutstation* AddOutstation(	const std::string& id,								
 	                            ICommandHandler* pCmdHandler,
 	                            ITimeWriteHandler* pTimeWriteHandler,
-	                            const SlaveStackConfig& cfg);
+	                            const OutstationStackConfig& cfg);
 
 	// Helper functions only available inside DNP3Manager
 

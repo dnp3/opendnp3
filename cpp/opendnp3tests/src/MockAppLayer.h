@@ -33,7 +33,7 @@
 namespace opendnp3
 {
 
-/**	@section desc Test class to mock async app layer for master/slave */
+/**	@section desc Test class to mock async app layer for master/outstation */
 class MockAppLayer : public IAppLayer, public openpal::Loggable
 {
 public:

@@ -55,7 +55,7 @@ struct MasterConfig
 	/// Using FunctionCode::WRITE is a problem with vto because the spec won't allow it to retry
 	bool UseNonStandardVtoFunction;
 
-	/// If true, the master will do time syncs when it sees the time IIN bit from the slave
+	/// If true, the master will do time syncs when it sees the time IIN bit from the outstation
 	bool AllowTimeSync;
 
 	/// If true, the master will enable/disable unsol on startup

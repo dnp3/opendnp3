@@ -22,7 +22,7 @@
 
 
 #include "MockLogSubscriber.h"
-#include "SlaveTestObject.h"
+#include "OutstationTestObject.h"
 
 #include <opendnp3/DNPErrorCodes.h>
 
@@ -35,23 +35,23 @@ using namespace openpal;
 
 TEST_CASE(SUITE("BlankExceptionScan"))
 {
-	SlaveConfig cfg; cfg.mDisableUnsol = true;
-	SlaveTestObject t(cfg, DatabaseTemplate());
-	t.slave.OnLowerLayerUp();
+	OutstationConfig cfg; cfg.mDisableUnsol = true;
+	OutstationTestObject t(cfg, DatabaseTemplate());
+	t.outstation.OnLowerLayerUp();
 
-	t.SendToSlave("C0 01 3C 02 06"); // Read class 1
+	t.SendToOutstation("C0 01 3C 02 06"); // Read class 1
 	REQUIRE(t.Read() ==  "C0 81 80 00");
 }
 
 TEST_CASE(SUITE("ReadClass1WithSOE"))
 {
-	SlaveConfig cfg; cfg.mDisableUnsol = true;
-	SlaveTestObject t(cfg, DatabaseTemplate::AllTypes(100));
+	OutstationConfig cfg; cfg.mDisableUnsol = true;
+	OutstationTestObject t(cfg, DatabaseTemplate::AllTypes(100));
 		
 	t.db.staticData.binaries.metadata[0x10].clazz = CLASS_1;
 	t.db.staticData.analogs.metadata[0x17].clazz = CLASS_1;
 
-	t.slave.OnLowerLayerUp();
+	t.outstation.OnLowerLayerUp();
 
 	{
 		Transaction tr(&t.db);
@@ -61,19 +61,19 @@ TEST_CASE(SUITE("ReadClass1WithSOE"))
 		t.db.Update(Analog(0x2222, AQ_ONLINE), 0x17); // 0x 22 22 00 00 in little endian		
 	}
 
-	t.SendToSlave("C0 01 3C 02 06");
+	t.SendToOutstation("C0 01 3C 02 06");
 		
 	REQUIRE(t.Read() == "E0 81 80 00 20 01 28 01 00 17 00 01 34 12 00 00 02 01 28 01 00 10 00 81 20 01 28 01 00 17 00 01 22 22 00 00");
 
-	t.SendToSlave("C0 01 3C 02 06");		// Repeat read class 1
+	t.SendToOutstation("C0 01 3C 02 06");		// Repeat read class 1
 	REQUIRE(t.Read() ==  "C0 81 80 00");	// Buffer should have been cleared
 }
 
 TEST_CASE(SUITE("MultipleClasses"))
 {
-	SlaveConfig cfg; cfg.mDisableUnsol = true;
-	SlaveTestObject t(cfg, DatabaseTemplate::AllTypes(1));
-	t.slave.OnLowerLayerUp();
+	OutstationConfig cfg; cfg.mDisableUnsol = true;
+	OutstationTestObject t(cfg, DatabaseTemplate::AllTypes(1));
+	t.outstation.OnLowerLayerUp();
 
 	t.db.staticData.binaries.metadata[0].clazz = PointClass::CLASS_1;
 	t.db.staticData.analogs.metadata[0].clazz = PointClass::CLASS_2;
@@ -86,37 +86,37 @@ TEST_CASE(SUITE("MultipleClasses"))
 		t.db.Update(Counter(7), 0);
 	}
 
-	t.SendToSlave("C0 01"); // empty READ
+	t.SendToOutstation("C0 01"); // empty READ
 	REQUIRE(t.Read() == "C0 81 8E 00"); // all event bits set + restart
 
 	// ------ read 1 event at a time by class, until all events are gone ----
 	
-	t.SendToSlave("C0 01 3C 03 06"); // Class 2
+	t.SendToOutstation("C0 01 3C 03 06"); // Class 2
 	REQUIRE(t.Read() == "E0 81 8A 00 20 01 28 01 00 00 00 01 03 00 00 00"); // restart + Class 1/3
 
-	t.SendToSlave("C0 01 3C 04 06"); // Class 3
+	t.SendToOutstation("C0 01 3C 04 06"); // Class 3
 	REQUIRE(t.Read() == "E0 81 82 00 16 01 28 01 00 00 00 01 07 00 00 00"); // restart + Class 1/3
 
-	t.SendToSlave("C0 01 3C 02 06"); // Class 1
+	t.SendToOutstation("C0 01 3C 02 06"); // Class 1
 	REQUIRE(t.Read() == "E0 81 80 00 02 01 28 01 00 00 00 81"); // restart only
 
-	t.SendToSlave("C0 01"); // empty READ
+	t.SendToOutstation("C0 01"); // empty READ
 	REQUIRE(t.Read() == "C0 81 80 00"); // restart only
 }
 
 void TestEventRead(const std::function<void(Database& db)>& loadFun, const std::string& request, const std::string& response)
 {
 
-	SlaveConfig cfg; cfg.mDisableUnsol = true;
-	SlaveTestObject t(cfg, DatabaseTemplate::AllTypes(1), PointClass::CLASS_1);
-	t.slave.OnLowerLayerUp();	
+	OutstationConfig cfg; cfg.mDisableUnsol = true;
+	OutstationTestObject t(cfg, DatabaseTemplate::AllTypes(1), PointClass::CLASS_1);
+	t.outstation.OnLowerLayerUp();	
 
 	{
 		Transaction tr(&t.db);
 		loadFun(t.db);		
 	}
 
-	t.SendToSlave(request);
+	t.SendToOutstation(request);
 	REQUIRE(t.Read() ==  response);
 }
 
@@ -167,11 +167,11 @@ TEST_CASE(SUITE("ComplexReadSequence"))
 {
 
 const size_t NUM = 4;
-SlaveConfig config; cfg.mDisableUnsol = true;
-SlaveTestObject t(cfg);
+OutstationConfig config; cfg.mDisableUnsol = true;
+OutstationTestObject t(cfg);
 t.db.Configure(MeasurementType::BINARY, NUM);
 t.db.SetClass(MeasurementType::BINARY, CLASS_1);
-t.slave.OnLowerLayerUp();
+t.outstation.OnLowerLayerUp();
 
 {
 Transaction tr(&t.db);
@@ -196,7 +196,7 @@ rsp.append(" ").append(grp2Var2hdr).append(" 00 ").append(grp2Var2rsp).append(" 
 rsp.append(" ").append(grp2Var1hdr).append(" 02 01 03 01");
 
 
-t.SendToSlave(request);
+t.SendToOutstation(request);
 REQUIRE(t.Read() ==  rsp);
 }
 */
@@ -204,9 +204,9 @@ REQUIRE(t.Read() ==  rsp);
 /*
 TEST_CASE(SUITE("NullUnsolOnStartup"))
 {
-	SlaveConfig cfg;  cfg.mAllowTimeSync = true;
-	SlaveTestObject t(cfg);
-	t.slave.OnLowerLayerUp();
+	OutstationConfig cfg;  cfg.mAllowTimeSync = true;
+	OutstationTestObject t(cfg);
+	t.outstation.OnLowerLayerUp();
 
 	// Null UNSOL, FIR, FIN, CON, UNS, w/ restart and need-time IIN
 	REQUIRE(t.Read() ==  "F0 82 90 00");
@@ -214,10 +214,10 @@ TEST_CASE(SUITE("NullUnsolOnStartup"))
 
 TEST_CASE(SUITE("UnsolRetryDelay"))
 {
-	SlaveConfig cfg;
-	SlaveTestObject t(cfg);
+	OutstationConfig cfg;
+	OutstationTestObject t(cfg);
 	t.app.EnableAutoSendCallback(false); // will respond with failure
-	t.slave.OnLowerLayerUp();
+	t.outstation.OnLowerLayerUp();
 
 	// check for the startup null unsol packet, but fail the transaction
 	REQUIRE(t.Read() ==  "F0 82 80 00");
@@ -228,22 +228,22 @@ TEST_CASE(SUITE("UnsolRetryDelay"))
 
 TEST_CASE(SUITE("UnsolData"))
 {
-	SlaveConfig cfg;
+	OutstationConfig cfg;
 	cfg.mUnsolMask.class1 = true; // this allows the EnableUnsol sequence to be skipped
-	SlaveTestObject t(cfg);
+	OutstationTestObject t(cfg);
 	t.db.Configure(MeasurementType::BINARY, 1);
 	t.db.SetClass(MeasurementType::BINARY, CLASS_1);
 
 	// do a transaction before the layer comes online to prove that the null transaction
 	// is occuring before unsol data is sent
 	{
-		Transaction tr(t.slave.GetDataObserver());
-		t.slave.GetDataObserver()->Update(Binary(false, BQ_ONLINE), 0);
+		Transaction tr(t.outstation.GetDataObserver());
+		t.outstation.GetDataObserver()->Update(Binary(false, BQ_ONLINE), 0);
 	}
 
 	REQUIRE(t.mts.DispatchOne()); //dispatch the data update event
 
-	t.slave.OnLowerLayerUp();
+	t.outstation.OnLowerLayerUp();
 	REQUIRE(t.Read() ==  "F0 82 80 00");
 
 	// should immediately try to send another unsol packet,
@@ -256,15 +256,15 @@ TEST_CASE(SUITE("UnsolData"))
 
 TEST_CASE(SUITE("UnsolicitedStaysDisabledEvenIfDataAreLoadedPriorToOpen"))
 {
-SlaveConfig cfg; cfg.mDisableUnsol = true;
-SlaveTestObject t(cfg, DatabaseTemplate::AnalogOnly(1));
+OutstationConfig cfg; cfg.mDisableUnsol = true;
+OutstationTestObject t(cfg, DatabaseTemplate::AnalogOnly(1));
 
 {
 Transaction tx(&t.db);
 t.db.Update(Analog(0), 0);
 }
 
-t.slave.OnLowerLayerUp();
+t.outstation.OnLowerLayerUp();
 
 // Outstation shouldn't send an unsolicited handshake b/c unsol it disabled
 REQUIRE(t.NothingToRead());
@@ -272,12 +272,12 @@ REQUIRE(t.NothingToRead());
 
 TEST_CASE(SUITE("UnsolicitedStaysDisabledEvenIfDataAreLoadedAfterOpen"))
 {
-SlaveConfig cfg; cfg.mDisableUnsol = true;
-SlaveTestObject t(cfg, DatabaseTemplate::AnalogOnly(1));
+OutstationConfig cfg; cfg.mDisableUnsol = true;
+OutstationTestObject t(cfg, DatabaseTemplate::AnalogOnly(1));
 
-auto pObs = t.slave.GetDataObserver();
+auto pObs = t.outstation.GetDataObserver();
 
-t.slave.OnLowerLayerUp();
+t.outstation.OnLowerLayerUp();
 
 {
 Transaction t(pObs);
@@ -292,24 +292,24 @@ REQUIRE(t.NothingToRead());
 
 TEST_CASE(SUITE("UnsolEventBufferOverflow"))
 {
-	SlaveConfig cfg;
+	OutstationConfig cfg;
 	cfg.mUnsolMask.class1 = true; // this allows the EnableUnsol sequence to be skipped
 	cfg.mEventMaxConfig.mMaxBinaryEvents = 2; // set the max to 2 to make testing easy
 	cfg.mUnsolPackDelay = TimeDuration::Milliseconds(0);
-	SlaveTestObject t(cfg);
+	OutstationTestObject t(cfg);
 	t.db.Configure(MeasurementType::BINARY, 1);
 	t.db.SetClass(MeasurementType::BINARY, CLASS_1);
 
 	// null unsol
-	t.slave.OnLowerLayerUp();
+	t.outstation.OnLowerLayerUp();
 	REQUIRE(t.Read() ==  "F0 82 80 00");
 
 	// this transaction will overflow the event buffer
 	{
-		Transaction tr(t.slave.GetDataObserver());
-		t.slave.GetDataObserver()->Update(Binary(true, BQ_ONLINE), 0);
-		t.slave.GetDataObserver()->Update(Binary(false, BQ_ONLINE), 0);
-		t.slave.GetDataObserver()->Update(Binary(true, BQ_ONLINE), 0);
+		Transaction tr(t.outstation.GetDataObserver());
+		t.outstation.GetDataObserver()->Update(Binary(true, BQ_ONLINE), 0);
+		t.outstation.GetDataObserver()->Update(Binary(false, BQ_ONLINE), 0);
+		t.outstation.GetDataObserver()->Update(Binary(true, BQ_ONLINE), 0);
 	}
 
 	REQUIRE(t.mts.DispatchOne()); //dispatch the data update event
@@ -325,22 +325,22 @@ TEST_CASE(SUITE("UnsolEventBufferOverflow"))
 
 TEST_CASE(SUITE("UnsolMultiFragments"))
 {
-	SlaveConfig cfg;
+	OutstationConfig cfg;
 	cfg.mMaxFragSize = 10; //this will cause the unsol response to get fragmented
 	cfg.mUnsolMask.class1 = true; // this allows the EnableUnsol sequence to be skipped
-	SlaveTestObject t(cfg);
+	OutstationTestObject t(cfg);
 	t.db.Configure(MeasurementType::BINARY, 2);
 	t.db.SetClass(MeasurementType::BINARY, CLASS_1);
 
-	t.slave.OnLowerLayerUp();
+	t.outstation.OnLowerLayerUp();
 	REQUIRE(t.Read() ==  "F0 82 80 00");
 
 	REQUIRE(t.app.NumAPDU() ==  0); //check that no more frags are sent
 
 	{
-		Transaction tr(t.slave.GetDataObserver());
-		t.slave.GetDataObserver()->Update(Binary(false, BQ_ONLINE), 1);
-		t.slave.GetDataObserver()->Update(Binary(false, BQ_ONLINE), 0);
+		Transaction tr(t.outstation.GetDataObserver());
+		t.outstation.GetDataObserver()->Update(Binary(false, BQ_ONLINE), 1);
+		t.outstation.GetDataObserver()->Update(Binary(false, BQ_ONLINE), 0);
 	}
 
 	REQUIRE(t.mts.DispatchOne()); //dispatch the data update event
@@ -359,106 +359,106 @@ TEST_CASE(SUITE("UnsolMultiFragments"))
 // response to unsolicited data
 TEST_CASE(SUITE("WriteDuringUnsol"))
 {
-	SlaveConfig cfg; cfg.mUnsolPackDelay = TimeDuration::Zero();
+	OutstationConfig cfg; cfg.mUnsolPackDelay = TimeDuration::Zero();
 	cfg.mUnsolMask.class1 = true; //allows us to skip this step
-	SlaveTestObject t(cfg);
+	OutstationTestObject t(cfg);
 	t.db.Configure(MeasurementType::BINARY, 1);
 	t.db.SetClass(MeasurementType::BINARY, CLASS_1);
-	t.slave.OnLowerLayerUp();
+	t.outstation.OnLowerLayerUp();
 
 	REQUIRE(t.Read() ==  "F0 82 80 00");
 
 	{
-		Transaction tr(t.slave.GetDataObserver());
-		t.slave.GetDataObserver()->Update(Binary(true, BQ_ONLINE), 0);
+		Transaction tr(t.outstation.GetDataObserver());
+		t.outstation.GetDataObserver()->Update(Binary(true, BQ_ONLINE), 0);
 	}
 
 	t.app.DisableAutoSendCallback();
 	REQUIRE(t.mts.DispatchOne());
 	REQUIRE(t.Read() ==  "F0 82 80 00 02 01 17 01 00 81");
 
-	//now send a write IIN request, and test that the slave answers immediately
-	t.SendToSlave("C0 02 50 01 00 07 07 00");
+	//now send a write IIN request, and test that the outstation answers immediately
+	t.SendToOutstation("C0 02 50 01 00 07 07 00");
 	REQUIRE(t.Read() ==  "C0 81 00 00");
 
-	t.slave.OnUnsolSendSuccess();
+	t.outstation.OnUnsolSendSuccess();
 	REQUIRE(t.Count() ==  0);
 }
 
 TEST_CASE(SUITE("ReadDuringUnsol"))
 {
-	SlaveConfig cfg; cfg.mUnsolPackDelay = TimeDuration::Zero();
+	OutstationConfig cfg; cfg.mUnsolPackDelay = TimeDuration::Zero();
 	cfg.mUnsolMask.class1 = true; //allows us to skip this step
-	SlaveTestObject t(cfg);
+	OutstationTestObject t(cfg);
 	t.db.Configure(MeasurementType::BINARY, 1);
 	t.db.SetClass(MeasurementType::BINARY, CLASS_1);
-	t.slave.OnLowerLayerUp();
+	t.outstation.OnLowerLayerUp();
 
 	REQUIRE(t.Read() ==  "F0 82 80 00");
 
 	{
-		Transaction tr(t.slave.GetDataObserver());
-		t.slave.GetDataObserver()->Update(Binary(true, BQ_ONLINE), 0);
+		Transaction tr(t.outstation.GetDataObserver());
+		t.outstation.GetDataObserver()->Update(Binary(true, BQ_ONLINE), 0);
 	}
 
 	t.app.DisableAutoSendCallback();
 	REQUIRE(t.mts.DispatchOne());
 	REQUIRE(t.Read() ==  "F0 82 80 00 02 01 17 01 00 81");
 
-	t.SendToSlave("C0 01 3C 02 06");
+	t.SendToOutstation("C0 01 3C 02 06");
 
-	t.slave.OnUnsolSendSuccess();
+	t.outstation.OnUnsolSendSuccess();
 	REQUIRE(t.Read() ==  "C0 81 80 00");
 }
 
 TEST_CASE(SUITE("ReadWriteDuringUnsol"))
 {
-	SlaveConfig cfg; cfg.mUnsolPackDelay = TimeDuration::Zero();
+	OutstationConfig cfg; cfg.mUnsolPackDelay = TimeDuration::Zero();
 	cfg.mUnsolMask.class1 = true; //allows us to skip this step
-	SlaveTestObject t(cfg);
+	OutstationTestObject t(cfg);
 	t.db.Configure(MeasurementType::BINARY, 1);
 	t.db.SetClass(MeasurementType::BINARY, CLASS_1);
-	t.slave.OnLowerLayerUp();
+	t.outstation.OnLowerLayerUp();
 
 	REQUIRE(t.Read() ==  "F0 82 80 00");
 
 	{
-		Transaction tr(t.slave.GetDataObserver());
-		t.slave.GetDataObserver()->Update(Binary(true, BQ_ONLINE), 0);
+		Transaction tr(t.outstation.GetDataObserver());
+		t.outstation.GetDataObserver()->Update(Binary(true, BQ_ONLINE), 0);
 	}
 
 	t.app.DisableAutoSendCallback();
 	REQUIRE(t.mts.DispatchOne());
 	REQUIRE(t.Read() ==  "F0 82 80 00 02 01 17 01 00 81");
 
-	t.SendToSlave("C0 01 3C 01 06");
+	t.SendToOutstation("C0 01 3C 01 06");
 
-	//now send a write IIN request, and test that the slave answers immediately
-	t.SendToSlave("C0 02 50 01 00 07 07 00");
-	t.slave.OnUnsolSendSuccess();
+	//now send a write IIN request, and test that the outstation answers immediately
+	t.SendToOutstation("C0 02 50 01 00 07 07 00");
+	t.outstation.OnUnsolSendSuccess();
 	REQUIRE(t.Read() ==  "C0 81 00 00");
 }
 
 TEST_CASE(SUITE("UnsolEnable"))
 {
-	SlaveConfig cfg; cfg.mUnsolPackDelay = TimeDuration::Zero(); cfg.mUnsolMask = ClassMask(false, false, false);
-	SlaveTestObject t(cfg);
+	OutstationConfig cfg; cfg.mUnsolPackDelay = TimeDuration::Zero(); cfg.mUnsolMask = ClassMask(false, false, false);
+	OutstationTestObject t(cfg);
 	t.db.Configure(MeasurementType::BINARY, 1);
 	t.db.SetClass(MeasurementType::BINARY, CLASS_1);
-	t.slave.OnLowerLayerUp();
+	t.outstation.OnLowerLayerUp();
 
 	REQUIRE(t.Read() ==  "F0 82 80 00"); //Null UNSOL
 
 	// do a transaction to show that unsol data is not being reported yet
 	{
-		Transaction tr(t.slave.GetDataObserver());
-		t.slave.GetDataObserver()->Update(Binary(false, BQ_ONLINE), 0);
+		Transaction tr(t.outstation.GetDataObserver());
+		t.outstation.GetDataObserver()->Update(Binary(false, BQ_ONLINE), 0);
 	}
 
 	REQUIRE(t.mts.DispatchOne()); //dispatch the data update event
 	REQUIRE(t.app.NumAPDU() ==  0); //check that no unsol packets are generated
 
-	t.SendToSlave("C0 14 3C 02 06");
+	t.SendToOutstation("C0 14 3C 02 06");
 	REQUIRE(t.Read() ==  "C0 81 80 00");
 
 	// should automatically send the previous data as unsol
@@ -467,36 +467,36 @@ TEST_CASE(SUITE("UnsolEnable"))
 
 TEST_CASE(SUITE("UnsolEnableBadObject"))
 {
-	SlaveConfig cfg; cfg.mUnsolPackDelay = TimeDuration::Zero(); cfg.mUnsolMask = ClassMask(false, false, false);
-	SlaveTestObject t(cfg);
+	OutstationConfig cfg; cfg.mUnsolPackDelay = TimeDuration::Zero(); cfg.mUnsolMask = ClassMask(false, false, false);
+	OutstationTestObject t(cfg);
 	t.db.Configure(MeasurementType::BINARY, 1);
 	t.db.SetClass(MeasurementType::BINARY, CLASS_1);
-	t.slave.OnLowerLayerUp();
+	t.outstation.OnLowerLayerUp();
 
 	REQUIRE(t.Read() ==  "F0 82 80 00"); //Null UNSOL
 
 	// do a transaction to show that unsol data is not being reported yet
 	{
-		Transaction tr(t.slave.GetDataObserver());
-		t.slave.GetDataObserver()->Update(Binary(false, BQ_ONLINE), 0);
+		Transaction tr(t.outstation.GetDataObserver());
+		t.outstation.GetDataObserver()->Update(Binary(false, BQ_ONLINE), 0);
 	}
 
 	REQUIRE(t.mts.DispatchOne()); //dispatch the data update event
 	REQUIRE(t.app.NumAPDU() ==  0); //check that no unsol packets are generated
 
-	t.SendToSlave("C0 14 01 02 06");
+	t.SendToOutstation("C0 14 01 02 06");
 	REQUIRE(t.Read() ==  "C0 81 80 01");
 }
 
 TEST_CASE(SUITE("UnsolEnableDisableFailure"))
 {
-	SlaveConfig cfg; cfg.mDisableUnsol = true;
-	SlaveTestObject t(cfg);
+	OutstationConfig cfg; cfg.mDisableUnsol = true;
+	OutstationTestObject t(cfg);
 	t.db.Configure(MeasurementType::BINARY, 1);
 	t.db.SetClass(MeasurementType::BINARY, CLASS_1);
-	t.slave.OnLowerLayerUp();
+	t.outstation.OnLowerLayerUp();
 
-	t.SendToSlave("C0 14 3C 02 06");
+	t.SendToOutstation("C0 14 3C 02 06");
 	REQUIRE(t.Read() ==  "C0 81 80 01"); //FUNC_NOT_SUPPORTED
 }
 */

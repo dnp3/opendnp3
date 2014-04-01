@@ -18,7 +18,7 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include "SlaveTestObject.h"
+#include "OutstationTestObject.h"
 
 #include "BufferHelpers.h"
 #include "Exception.h"
@@ -36,7 +36,7 @@ using namespace openpal;
 namespace opendnp3
 {
 
-SlaveTestObject::SlaveTestObject(const SlaveConfig& arCfg, const DatabaseTemplate& dbTemplate, PointClass defaultClass, uint32_t filters, bool aImmediate) :
+OutstationTestObject::OutstationTestObject(const OutstationConfig& arCfg, const DatabaseTemplate& dbTemplate, PointClass defaultClass, uint32_t filters, bool aImmediate) :
 	log(),
 	mMockTimeWriteHandler([this](UTCTimestamp time)
 {
@@ -47,14 +47,14 @@ app(log.GetLogger("app")),
 dbBuffers(dbTemplate),
 db(dbBuffers.GetFacade()),
 eventBuffers(EventBufferConfig()),
-slave(log.GetLogger("slave"), &app, &mts, &mMockTimeWriteHandler, &db, eventBuffers.GetFacade(), &cmdHandler, arCfg),
+outstation(log.GetLogger("outstation"), &app, &mts, &mMockTimeWriteHandler, &db, eventBuffers.GetFacade(), &cmdHandler, arCfg),
 mLogger(log.GetLogger("test"))
 {
-	app.SetUser(&slave);
+	app.SetUser(&outstation);
 	SetDefaultClass(defaultClass);
 }
 
-void SlaveTestObject::SetDefaultClass(PointClass pc)
+void OutstationTestObject::SetDefaultClass(PointClass pc)
 {
 	db.staticData.binaries.metadata.foreach([&](EventMetadata& md){ md.clazz = pc; });
 	db.staticData.analogs.metadata.foreach([&](EventMetadata& md){ md.clazz = pc; });
@@ -65,7 +65,7 @@ void SlaveTestObject::SetDefaultClass(PointClass pc)
 	db.staticData.doubleBinaries.metadata.foreach([&](EventMetadata& md){ md.clazz = pc; });
 }
 
-void SlaveTestObject::SendToSlave(const std::string& arData, SequenceInfo aSeq)
+void OutstationTestObject::SendToOutstation(const std::string& arData, SequenceInfo aSeq)
 {
 	HexSequence hs(arData);
 	APDURecord record;
@@ -73,10 +73,10 @@ void SlaveTestObject::SendToSlave(const std::string& arData, SequenceInfo aSeq)
 	{
 		throw Exception("Why are you trying to send bad data?");
 	}
-	slave.OnRequest(record, aSeq);
+	outstation.OnRequest(record, aSeq);
 }
 
-bool SlaveTestObject::NothingToRead()
+bool OutstationTestObject::NothingToRead()
 {
 	if(app.NothingToRead()) return true;
 	else
@@ -87,7 +87,7 @@ bool SlaveTestObject::NothingToRead()
 	}
 }
 
-std::string SlaveTestObject::Read()
+std::string OutstationTestObject::Read()
 {
 	return app.Read();
 }

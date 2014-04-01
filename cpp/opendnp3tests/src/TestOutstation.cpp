@@ -22,7 +22,7 @@
 
 
 #include "MockLogSubscriber.h"
-#include "SlaveTestObject.h"
+#include "OutstationTestObject.h"
 
 #include <opendnp3/DNPErrorCodes.h>
 
@@ -35,29 +35,29 @@ using namespace openpal;
 
 TEST_CASE(SUITE("InitialState"))
 {
-	SlaveConfig cfg;
-	SlaveTestObject t(cfg, DatabaseTemplate());
+	OutstationConfig cfg;
+	OutstationTestObject t(cfg, DatabaseTemplate());
 
-	t.slave.OnLowerLayerDown();
+	t.outstation.OnLowerLayerDown();
 
-	t.slave.OnSolSendSuccess();
+	t.outstation.OnSolSendSuccess();
 	REQUIRE(SERR_INVALID_STATE ==  t.log.NextErrorCode());
-	t.slave.OnUnsolSendSuccess();
+	t.outstation.OnUnsolSendSuccess();
 	REQUIRE(SERR_INVALID_STATE ==  t.log.NextErrorCode());
-	t.slave.OnSolFailure();
+	t.outstation.OnSolFailure();
 	REQUIRE(SERR_INVALID_STATE ==  t.log.NextErrorCode());
-	t.slave.OnUnsolFailure();
+	t.outstation.OnUnsolFailure();
 	REQUIRE(SERR_INVALID_STATE ==  t.log.NextErrorCode());
-	t.slave.OnRequest(APDURecord(), SequenceInfo());
+	t.outstation.OnRequest(APDURecord(), SequenceInfo());
 	REQUIRE(SERR_INVALID_STATE ==  t.log.NextErrorCode());
 }
 
 TEST_CASE(SUITE("TimersCancledOnClose"))
 {
-	SlaveConfig cfg; cfg.mAllowTimeSync = true;
-	SlaveTestObject t(cfg, DatabaseTemplate());
-	t.slave.OnLowerLayerUp();
-	t.slave.OnLowerLayerDown();
+	OutstationConfig cfg; cfg.mAllowTimeSync = true;
+	OutstationTestObject t(cfg, DatabaseTemplate());
+	t.outstation.OnLowerLayerUp();
+	t.outstation.OnLowerLayerDown();
 
 	//timer for time
 	REQUIRE(t.mts.NumActive() ==  0);
@@ -66,8 +66,8 @@ TEST_CASE(SUITE("TimersCancledOnClose"))
 TEST_CASE(SUITE("DataPost"))
 {
 
-	SlaveConfig cfg;
-	SlaveTestObject t(cfg, DatabaseTemplate::BinaryOnly(1));
+	OutstationConfig cfg;
+	OutstationTestObject t(cfg, DatabaseTemplate::BinaryOnly(1));
 
 	t.db.staticData.binaries.metadata[0].clazz = CLASS_1;
 	
@@ -80,8 +80,8 @@ TEST_CASE(SUITE("DataPost"))
 
 TEST_CASE(SUITE("DataPostToNonExistent"))
 {
-	SlaveConfig cfg;
-	SlaveTestObject t(cfg, DatabaseTemplate::BinaryOnly(1));
+	OutstationConfig cfg;
+	OutstationTestObject t(cfg, DatabaseTemplate::BinaryOnly(1));
 	t.db.staticData.binaries.metadata[0].clazz = CLASS_1;
 
 	
@@ -100,85 +100,85 @@ TEST_CASE(SUITE("DataPostToNonExistent"))
 
 TEST_CASE(SUITE("UnsupportedFunction"))
 {
-	SlaveConfig cfg; cfg.mDisableUnsol = true;
-	SlaveTestObject t(cfg, DatabaseTemplate());
-	t.slave.OnLowerLayerUp();
+	OutstationConfig cfg; cfg.mDisableUnsol = true;
+	OutstationTestObject t(cfg, DatabaseTemplate());
+	t.outstation.OnLowerLayerUp();
 
 
-	t.SendToSlave("C0 10"); // func = initialize application (16)
+	t.SendToOutstation("C0 10"); // func = initialize application (16)
 	REQUIRE(t.Read() ==  "C0 81 80 01"); // IIN = device restart + func not supported
 }
 
 TEST_CASE(SUITE("WriteIIN"))
 {
-	SlaveConfig cfg; cfg.mDisableUnsol = true;
-	SlaveTestObject t(cfg, DatabaseTemplate());
-	t.slave.OnLowerLayerUp();
+	OutstationConfig cfg; cfg.mDisableUnsol = true;
+	OutstationTestObject t(cfg, DatabaseTemplate());
+	t.outstation.OnLowerLayerUp();
 
-	t.SendToSlave("C0 02 50 01 00 07 07 00");
+	t.SendToOutstation("C0 02 50 01 00 07 07 00");
 	REQUIRE(t.Read() ==  "C0 81 00 00");
 }
 
 TEST_CASE(SUITE("WriteIINEnabled"))
 {
-	SlaveConfig cfg; cfg.mDisableUnsol = true;
-	SlaveTestObject t(cfg, DatabaseTemplate());
-	t.slave.OnLowerLayerUp();
+	OutstationConfig cfg; cfg.mDisableUnsol = true;
+	OutstationTestObject t(cfg, DatabaseTemplate());
+	t.outstation.OnLowerLayerUp();
 
-	t.SendToSlave("C0 02 50 01 00 07 07 01");
+	t.SendToOutstation("C0 02 50 01 00 07 07 01");
 	REQUIRE(t.Read() ==  "C0 81 80 04");
 }
 
 TEST_CASE(SUITE("WriteIINWrongBit"))
 {
-	SlaveConfig cfg; cfg.mDisableUnsol = true;
-	SlaveTestObject t(cfg, DatabaseTemplate());
-	t.slave.OnLowerLayerUp();
+	OutstationConfig cfg; cfg.mDisableUnsol = true;
+	OutstationTestObject t(cfg, DatabaseTemplate());
+	t.outstation.OnLowerLayerUp();
 
-	t.SendToSlave("C0 02 50 01 00 04 04 01");
+	t.SendToOutstation("C0 02 50 01 00 04 04 01");
 	REQUIRE(t.Read() ==  "C0 81 80 04");
 }
 
 TEST_CASE(SUITE("WriteNonWriteObject"))
 {
-	SlaveConfig cfg;  cfg.mDisableUnsol = true;
-	SlaveTestObject t(cfg, DatabaseTemplate());
-	t.slave.OnLowerLayerUp();
+	OutstationConfig cfg;  cfg.mDisableUnsol = true;
+	OutstationTestObject t(cfg, DatabaseTemplate());
+	t.outstation.OnLowerLayerUp();
 
-	t.SendToSlave("C0 02 01 02 00 07 07 00");
+	t.SendToOutstation("C0 02 01 02 00 07 07 00");
 	REQUIRE(t.Read() ==  "C0 81 80 01");
 }
 
 
 TEST_CASE(SUITE("DelayMeasure"))
 {
-	SlaveConfig cfg;  cfg.mDisableUnsol = true;
-	SlaveTestObject t(cfg, DatabaseTemplate());
-	t.slave.OnLowerLayerUp();
+	OutstationConfig cfg;  cfg.mDisableUnsol = true;
+	OutstationTestObject t(cfg, DatabaseTemplate());
+	t.outstation.OnLowerLayerUp();
 
-	t.SendToSlave("C0 17"); //delay measure
+	t.SendToOutstation("C0 17"); //delay measure
 	REQUIRE(t.Read() ==  "C0 81 80 00 34 02 07 01 00 00"); // response, Grp51Var2, count 1, value == 00 00
 }
 
 TEST_CASE(SUITE("DelayMeasureExtraData"))
 {
-	SlaveConfig cfg;  cfg.mDisableUnsol = true;
-	SlaveTestObject t(cfg, DatabaseTemplate());
-	t.slave.OnLowerLayerUp();
+	OutstationConfig cfg;  cfg.mDisableUnsol = true;
+	OutstationTestObject t(cfg, DatabaseTemplate());
+	t.outstation.OnLowerLayerUp();
 
-	t.SendToSlave("C0 17 DE AD BE EF"); //delay measure
+	t.SendToOutstation("C0 17 DE AD BE EF"); //delay measure
 	REQUIRE(t.Read() ==  "C0 81 80 01"); // Func not supported
 }
 
 TEST_CASE(SUITE("WriteTimeDate"))
 {
-	SlaveConfig cfg;
+	OutstationConfig cfg;
 	cfg.mDisableUnsol = true;
 	cfg.mAllowTimeSync = true;
-	SlaveTestObject t(cfg, DatabaseTemplate());
-	t.slave.OnLowerLayerUp();
+	OutstationTestObject t(cfg, DatabaseTemplate());
+	t.outstation.OnLowerLayerUp();
 
-	t.SendToSlave("C0 02 32 01 07 01 D2 04 00 00 00 00"); // write Grp50Var1, value = 1234 ms after epoch
+	t.SendToOutstation("C0 02 32 01 07 01 D2 04 00 00 00 00"); // write Grp50Var1, value = 1234 ms after epoch
 	REQUIRE(t.Read() ==  "C0 81 80 00");
 	REQUIRE(t.mTimeWrites.size() ==  1);
 	REQUIRE(t.mTimeWrites.front().msSinceEpoch ==  1234);
@@ -187,12 +187,12 @@ TEST_CASE(SUITE("WriteTimeDate"))
 
 TEST_CASE(SUITE("WriteTimeDateNotAsking"))
 {
-	SlaveConfig cfg; cfg.mDisableUnsol = true;
+	OutstationConfig cfg; cfg.mDisableUnsol = true;
 	cfg.mAllowTimeSync = false;
-	SlaveTestObject t(cfg, DatabaseTemplate());
-	t.slave.OnLowerLayerUp();
+	OutstationTestObject t(cfg, DatabaseTemplate());
+	t.outstation.OnLowerLayerUp();
 
-	t.SendToSlave("C0 02 32 01 07 01 D2 04 00 00 00 00"); //write Grp50Var1, value = 1234 ms after epoch
+	t.SendToOutstation("C0 02 32 01 07 01 D2 04 00 00 00 00"); //write Grp50Var1, value = 1234 ms after epoch
 	REQUIRE(t.Read() ==  "C0 81 80 04"); // param error
 	t.mts.DispatchOne();
 	REQUIRE(t.mTimeWrites.size() ==  0);
@@ -200,12 +200,12 @@ TEST_CASE(SUITE("WriteTimeDateNotAsking"))
 
 TEST_CASE(SUITE("WriteTimeDateMultipleObjects"))
 {
-	SlaveConfig cfg; cfg.mDisableUnsol = true;
+	OutstationConfig cfg; cfg.mDisableUnsol = true;
 	cfg.mAllowTimeSync = true;
-	SlaveTestObject t(cfg, DatabaseTemplate());
-	t.slave.OnLowerLayerUp();
+	OutstationTestObject t(cfg, DatabaseTemplate());
+	t.outstation.OnLowerLayerUp();
 
-	t.SendToSlave("C0 02 32 01 07 02 D2 04 00 00 00 00 D2 04 00 00 00 00"); //write Grp50Var1, value = 1234 ms after epoch
+	t.SendToOutstation("C0 02 32 01 07 02 D2 04 00 00 00 00 D2 04 00 00 00 00"); //write Grp50Var1, value = 1234 ms after epoch
 	REQUIRE(t.Read() ==  "C0 81 90 04"); // param error +  need time still set
 	t.mts.DispatchOne();
 	REQUIRE(t.mTimeWrites.size() ==  0);
@@ -213,20 +213,20 @@ TEST_CASE(SUITE("WriteTimeDateMultipleObjects"))
 
 TEST_CASE(SUITE("BlankIntegrityPoll"))
 {
-	SlaveConfig cfg; cfg.mDisableUnsol = true;
-	SlaveTestObject t(cfg, DatabaseTemplate());
-	t.slave.OnLowerLayerUp();
+	OutstationConfig cfg; cfg.mDisableUnsol = true;
+	OutstationTestObject t(cfg, DatabaseTemplate());
+	t.outstation.OnLowerLayerUp();
 
-	t.SendToSlave("C0 01 3C 01 06"); // Read class 0
+	t.SendToOutstation("C0 01 3C 01 06"); // Read class 0
 	REQUIRE(t.Read() ==  "C0 81 80 00");
 }
 
 TEST_CASE(SUITE("ReadClass0MultiFrag"))
 {
-	SlaveConfig cfg; cfg.mDisableUnsol = true;
+	OutstationConfig cfg; cfg.mDisableUnsol = true;
 	cfg.mMaxFragSize = 20; // override to use a fragment length of 20
-	SlaveTestObject t(cfg, DatabaseTemplate::AnalogOnly(8));
-	t.slave.OnLowerLayerUp();
+	OutstationTestObject t(cfg, DatabaseTemplate::AnalogOnly(8));
+	t.outstation.OnLowerLayerUp();
 
 	{
 		Transaction tr(&t.db);
@@ -236,7 +236,7 @@ TEST_CASE(SUITE("ReadClass0MultiFrag"))
 		}
 	}
 
-	t.SendToSlave("C0 01 3C 01 06"); // Read class 0
+	t.SendToOutstation("C0 01 3C 01 06"); // Read class 0
 
 	// Response should be (30,1)x2 per fragment, quality ONLINE, value 0
 	// 4 fragment response, first 3 fragments should be confirmed, last one shouldn't be
@@ -248,21 +248,21 @@ TEST_CASE(SUITE("ReadClass0MultiFrag"))
 
 TEST_CASE(SUITE("ReadFuncNotSupported"))
 {
-	SlaveConfig cfg; cfg.mDisableUnsol = true;
-	SlaveTestObject t(cfg, DatabaseTemplate());
-	t.slave.OnLowerLayerUp();
+	OutstationConfig cfg; cfg.mDisableUnsol = true;
+	OutstationTestObject t(cfg, DatabaseTemplate());
+	t.outstation.OnLowerLayerUp();
 
-	t.SendToSlave("C0 01 0C 01 06"); //try to read 12/1 (control block)
+	t.SendToOutstation("C0 01 0C 01 06"); //try to read 12/1 (control block)
 	REQUIRE(t.Read() ==  "C0 81 80 01"); //restart/func not supported
 }
 
 void TestStaticRead(const std::string& request, const std::string& response)
 {
-	SlaveConfig cfg; cfg.mDisableUnsol = true;
-	SlaveTestObject t(cfg, DatabaseTemplate::AllTypes(1));
-	t.slave.OnLowerLayerUp();
+	OutstationConfig cfg; cfg.mDisableUnsol = true;
+	OutstationTestObject t(cfg, DatabaseTemplate::AllTypes(1));
+	t.outstation.OnLowerLayerUp();
 
-	t.SendToSlave(request);
+	t.SendToOutstation(request);
 	REQUIRE(t.Read() ==  response);
 }
 
@@ -320,10 +320,10 @@ TEST_CASE(SUITE("ReadGrp40Var0ViaIntegrity"))
 
 TEST_CASE(SUITE("ReadByRangeHeader"))
 {
-	SlaveConfig cfg;
+	OutstationConfig cfg;
 	cfg.mDisableUnsol = true;
-	SlaveTestObject t(cfg, DatabaseTemplate::AnalogOnly(10));
-	t.slave.OnLowerLayerUp();
+	OutstationTestObject t(cfg, DatabaseTemplate::AnalogOnly(10));
+	t.outstation.OnLowerLayerUp();
 
 	{
 		Transaction tr(&t.db);
@@ -331,30 +331,30 @@ TEST_CASE(SUITE("ReadByRangeHeader"))
 		t.db.Update(Analog(41, AQ_ONLINE), 6);
 	}
 
-	t.SendToSlave("C0 01 1E 02 00 05 06"); // read 30 var 2, [05 : 06]
+	t.SendToOutstation("C0 01 1E 02 00 05 06"); // read 30 var 2, [05 : 06]
 	REQUIRE(t.Read() ==  "C0 81 80 00 1E 02 00 05 06 01 2A 00 01 29 00");
 }
 
 template <class PointType>
-void TestStaticType(const SlaveConfig& aCfg, const DatabaseTemplate& tmp, PointType aVal, const std::string& aRsp)
+void TestStaticType(const OutstationConfig& aCfg, const DatabaseTemplate& tmp, PointType aVal, const std::string& aRsp)
 {
-	SlaveTestObject t(aCfg, tmp);
+	OutstationTestObject t(aCfg, tmp);
 
-	t.slave.OnLowerLayerUp();
+	t.outstation.OnLowerLayerUp();
 
 	{
 		Transaction tr(&t.db);
 		t.db.Update(PointType(aVal), 0);
 	}
 
-	t.SendToSlave("C0 01 3C 01 06"); // Read class 0
+	t.SendToOutstation("C0 01 3C 01 06"); // Read class 0
 	REQUIRE(t.Read() ==  aRsp);
 }
 
 template <class T>
 void TestStaticCounter(StaticCounterResponse aRsp, T aValue, const std::string& arRsp)
 {
-	SlaveConfig cfg; cfg.mDisableUnsol = true; cfg.mStaticCounter = aRsp;
+	OutstationConfig cfg; cfg.mDisableUnsol = true; cfg.mStaticCounter = aRsp;
 	TestStaticType<Counter>(cfg, DatabaseTemplate::CounterOnly(1), aValue, arRsp);
 }
 
@@ -381,7 +381,7 @@ TEST_CASE(SUITE("ReadGrp20Var6"))
 template <class T>
 void TestStaticAnalog(StaticAnalogResponse aRsp, T aVal, const std::string& arRsp)
 {
-	SlaveConfig cfg; cfg.mDisableUnsol = true; cfg.mStaticAnalog = aRsp;
+	OutstationConfig cfg; cfg.mDisableUnsol = true; cfg.mStaticAnalog = aRsp;
 	TestStaticType<Analog>(cfg, DatabaseTemplate::AnalogOnly(1), aVal, arRsp);
 }
 
@@ -413,16 +413,16 @@ TEST_CASE(SUITE("ReadGrp30Var6"))
 template <class T>
 void TestStaticBinaryOutputStatus(T aVal, const std::string& aRsp)
 {
-	SlaveConfig cfg; cfg.mDisableUnsol = true;
-	SlaveTestObject t(cfg, DatabaseTemplate::BinaryOutputStatusOnly(1));
-	t.slave.OnLowerLayerUp();
+	OutstationConfig cfg; cfg.mDisableUnsol = true;
+	OutstationTestObject t(cfg, DatabaseTemplate::BinaryOutputStatusOnly(1));
+	t.outstation.OnLowerLayerUp();
 
 	{
 		Transaction tr(&t.db);
 		t.db.Update(BinaryOutputStatus(aVal, TQ_ONLINE), 0);
 	}
 
-	t.SendToSlave("C0 01 3C 01 06"); // Read class 0
+	t.SendToOutstation("C0 01 3C 01 06"); // Read class 0
 	REQUIRE(t.Read() ==  aRsp);
 }
 
@@ -434,7 +434,7 @@ TEST_CASE(SUITE("ReadGrp10Var2"))
 template <class T>
 void TestStaticAnalogOutputStatus(StaticAnalogOutputStatusResponse aRsp, T aVal, const string& arRsp)
 {
-	SlaveConfig cfg; cfg.mDisableUnsol = true; cfg.mStaticAnalogOutputStatus = aRsp;
+	OutstationConfig cfg; cfg.mDisableUnsol = true; cfg.mStaticAnalogOutputStatus = aRsp;
 	TestStaticType<AnalogOutputStatus>(cfg, DatabaseTemplate::AnalogOutputStatusOnly(1), aVal, arRsp);
 }
 

@@ -95,18 +95,18 @@ TEST_CASE(SUITE("ACK"))
 
 
 	{
-		// ACK - Slave (DFC = false)
+		// ACK - Outstation (DFC = false)
 		auto writeTo = buffer.GetWriteBuffer();
 		auto wrapper = LinkFrame::FormatAck(writeTo, false, false, 1024, 1);
-		REQUIRE(toHex(wrapper) == "05 64 05 00 00 04 01 00 19 A6"); //ACK - Slave
+		REQUIRE(toHex(wrapper) == "05 64 05 00 00 04 01 00 19 A6"); //ACK - Outstation
 	}
 
 		
 	{
-		// ACK - Slave (DFC = true)
+		// ACK - Outstation (DFC = true)
 		auto writeTo = buffer.GetWriteBuffer();
 		auto wrapper = LinkFrame::FormatAck(writeTo, false, true, 1024, 1);
-		REQUIRE(toHex(wrapper) == "05 64 05 10 00 04 01 00 8B 0C"); // ACK - Slave (with DFC set)
+		REQUIRE(toHex(wrapper) == "05 64 05 10 00 04 01 00 8B 0C"); // ACK - Outstation (with DFC set)
 	}
 
 	{	// ACK - Master (DFC = false)
@@ -131,7 +131,7 @@ TEST_CASE(SUITE("ConfirmedUserData"))
 	auto hex = FormatUserData(true, true, 1, 1024, "C0 C3 01 3C 02 06 3C 03 06 3C 04 06 3C 01 06", true);
 	REQUIRE(hex == "05 64 14 F3 01 00 00 04 0A 3B C0 C3 01 3C 02 06 3C 03 06 3C 04 06 3C 01 06 9A 12");
 
-	// Confirmed User Data - Slave (FCB = true)
+	// Confirmed User Data - Outstation (FCB = true)
 	auto hex2 = FormatUserData(false, true, 1024, 1, "C1 E3 81 96 00 02 01 28 01 00 00 00 01 02 01 28 01 00 01 00 01 02 01 28 01 00 02 00 01 02 01 28 01 00 03 00 01 20 02 28 01 00 00 00 01 00 00 20 02 28 01 00 01 00 01 00 00 01 01 01 00 00 03 00 00 1E 02 01 00 00 01 00 01 00 00 01 00 00", true);
 	REQUIRE(hex2 == "05 64 53 73 00 04 01 00 03 FC C1 E3 81 96 00 02 01 28 01 00 00 00 01 02 01 28 05 24 01 00 01 00 01 02 01 28 01 00 02 00 01 02 01 28 B4 77 01 00 03 00 01 20 02 28 01 00 00 00 01 00 00 20 A5 25 02 28 01 00 01 00 01 00 00 01 01 01 00 00 03 00 2F AC 00 1E 02 01 00 00 01 00 01 00 00 01 00 00 16 ED");
 }
@@ -140,7 +140,7 @@ TEST_CASE(SUITE("ResetLinkStates"))
 {
 	StaticBuffer<292> buffer;
 
-	// Reset Link States - Slave
+	// Reset Link States - Outstation
 	auto writeTo = buffer.GetWriteBuffer();
 	auto wrapper = LinkFrame::FormatResetLinkStates(writeTo, false, 1024, 1);
 	REQUIRE(toHex(wrapper) == "05 64 05 40 00 04 01 00 A3 96");
@@ -168,7 +168,7 @@ TEST_CASE(SUITE("NotSupported"))
 {
 	StaticBuffer<292> buffer;
 
-	// Not Supported - Slave (DFC = true)
+	// Not Supported - Outstation (DFC = true)
 	auto writeTo = buffer.GetWriteBuffer();
 	auto wrapper = LinkFrame::FormatNotSupported(writeTo, false, true, 1, 1024);
 	REQUIRE(toHex(wrapper) == RepairCRC("05 64 05 1F 01 00 00 04 28 5A"));

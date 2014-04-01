@@ -30,7 +30,7 @@
 #include <opendnp3/master/IMaster.h>
 #include <opendnp3/master/MasterStackConfig.h>
 
-#include <opendnp3/outstation/SlaveStackConfig.h>
+#include <opendnp3/outstation/OutstationStackConfig.h>
 #include <opendnp3/outstation/IOutstation.h>
 #include <opendnp3/outstation/ITimeWriteHandler.h>
 #include <opendnp3/outstation/IOutstation.h>
@@ -171,14 +171,14 @@ void IntegrationTest::AddStackPair(uint32_t filters, uint16_t aNumPoints)
 	}
 
 	/*
-	 * Add a Slave instance.  The code is wrapped in braces so that we can
+	 * Add a Outstation instance.  The code is wrapped in braces so that we can
 	 * re-use the 'cfg' variable name.
 	 */
 	{
-		SlaveStackConfig cfg(DatabaseTemplate(aNumPoints, aNumPoints, aNumPoints, aNumPoints));
+		OutstationStackConfig cfg(DatabaseTemplate(aNumPoints, aNumPoints, aNumPoints, aNumPoints));
 		cfg.app.RspTimeout = TimeDuration::Seconds(10);
-		cfg.slave.mDisableUnsol = false;
-		cfg.slave.mUnsolPackDelay = TimeDuration::Zero();
+		cfg.outstation.mDisableUnsol = false;
+		cfg.outstation.mUnsolPackDelay = TimeDuration::Zero();
 		auto pOutstation = pServer->AddOutstation(oss.str() + " outstation", &mCmdHandler, NullTimeWriteHandler::Inst(), cfg);
 		this->mFanout.AddObserver(pOutstation->GetLoader());
 		pOutstation->Enable();

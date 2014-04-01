@@ -24,7 +24,7 @@
 #include <opendnp3/LogLevels.h>
 #include <opendnp3/outstation/Outstation.h>
 #include <opendnp3/outstation/Database.h>
-#include <opendnp3/outstation/SlaveConfig.h>
+#include <opendnp3/outstation/OutstationConfig.h>
 #include <opendnp3/outstation/DynamicallyAllocatedDatabase.h>
 #include <opendnp3/outstation/DynamicallyAllocatedEventBuffer.h>
 
@@ -37,12 +37,12 @@
 namespace opendnp3
 {
 
-class SlaveTestObject
+class OutstationTestObject
 {
 public:
-	SlaveTestObject(const SlaveConfig& arCfg, const DatabaseTemplate& dbTemplate, PointClass defaultClass = PointClass::CLASS_0, uint32_t filters = levels::NORMAL, bool aImmediate = false);
+	OutstationTestObject(const OutstationConfig& arCfg, const DatabaseTemplate& dbTemplate, PointClass defaultClass = PointClass::CLASS_0, uint32_t filters = levels::NORMAL, bool aImmediate = false);
 
-	void SendToSlave(const std::string& arData, SequenceInfo aSeq = SequenceInfo::OTHER);
+	void SendToOutstation(const std::string& arData, SequenceInfo aSeq = SequenceInfo::OTHER);
 
 	std::string Read();
 
@@ -63,7 +63,7 @@ public:
 	DynamicallyAllocatedEventBuffer eventBuffers;
 	Database db;
 	MockCommandHandler cmdHandler;
-	Outstation slave;
+	Outstation outstation;
 	openpal::Logger mLogger;
 
 	std::queue<openpal::UTCTimestamp> mTimeWrites;

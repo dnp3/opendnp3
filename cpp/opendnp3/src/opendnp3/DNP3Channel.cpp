@@ -131,7 +131,7 @@ IMaster* DNP3Channel::AddMaster(const std::string& id, ISOEHandler* apPublisher,
 	}
 }
 
-IOutstation* DNP3Channel::AddOutstation(const std::string& id, ICommandHandler* apCmdHandler, ITimeWriteHandler* apTimeWriteHandler, const SlaveStackConfig& arCfg)
+IOutstation* DNP3Channel::AddOutstation(const std::string& id, ICommandHandler* apCmdHandler, ITimeWriteHandler* apTimeWriteHandler, const OutstationStackConfig& arCfg)
 {
 	LinkRoute route(arCfg.link.RemoteAddr, arCfg.link.LocalAddr);
 	ExecutorPause p(pPhys->GetExecutor());

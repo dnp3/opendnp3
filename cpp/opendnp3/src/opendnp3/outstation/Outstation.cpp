@@ -30,7 +30,7 @@
 #include <openpal/LoggableMacros.h>
 #include <openpal/IExecutor.h>
 
-#include "opendnp3/outstation/SlaveStates.h"
+#include "opendnp3/outstation/OutstationStates.h"
 #include "opendnp3/outstation/Database.h"
 #include "opendnp3/outstation/IINHelpers.h"
 #include "opendnp3/outstation/WriteHandler.h"
@@ -53,7 +53,7 @@ Outstation::Outstation(	openpal::Logger logger,
 				Database* pDatabase, 
 				const EventBufferFacade& buffers, 
 				ICommandHandler* pCmdHandler, 
-				const SlaveConfig& config) :
+				const OutstationConfig& config) :
 	IAppUser(logger),	
 	mpTimeWriteHandler(pTimeWriteHandler),
 	selectBuffer(pExecutor, config.mSelectTimeout),
@@ -155,7 +155,7 @@ void Outstation::OnUnsolTimerExpiration()
 }
 
 
-void Outstation::ChangeState(SlaveStateBase* apState)
+void Outstation::ChangeState(OutstationStateBase* apState)
 {
 	LOG_BLOCK(flags::DEBUG, "State changed from " << mpState->Name() << " to " << apState->Name());
 	mpState = apState;

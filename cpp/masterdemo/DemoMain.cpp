@@ -67,7 +67,7 @@ int main(int argc, char* argv[])
 		// platfrom specific socket configuration here
 	};	
 
-	// Connect via a TCPClient socket to a slave
+	// Connect via a TCPClient socket to a outstation
 	auto pClientPhys = new PhysicalLayerAsyncTCPClient(LogConfig(&log, FILTERS, "tcpclient"), pool.GetIOService(), "127.0.0.1", 20000, configure);
 	// wait 3000 ms in between failed connect calls
 	auto pClient = mgr.CreateChannel("tcpclient", TimeDuration::Seconds(2), TimeDuration::Minutes(1), pClientPhys);	

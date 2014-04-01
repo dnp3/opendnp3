@@ -42,44 +42,44 @@
 namespace opendnp3
 {
 
-/** Configuration information for a dnp3 slave (outstation)
+/** Configuration information for a dnp3 outstation (outstation)
 
-Used as both input describing the startup configuration of the slave, and as configuration state of mutable properties (i.e. unsolicited responses).
+Used as both input describing the startup configuration of the outstation, and as configuration state of mutable properties (i.e. unsolicited responses).
 
 Major feature areas are unsolicited responses, time synchronization requests, event buffer limits, and the DNP3 object/variations to use by default
 when the master requests class data or variation 0.
 
 */
-struct SlaveConfig
+struct OutstationConfig
 {
-	SlaveConfig();
+	OutstationConfig();
 
-	/// The maximum number of controls the slave will attempt to process from a single APDU
+	/// The maximum number of controls the outstation will attempt to process from a single APDU
 	uint8_t mMaxControls;
 
-	/// if true, fully disables unsolicited mode as if the slave didn't support it
+	/// if true, fully disables unsolicited mode as if the outstation didn't support it
 	bool mDisableUnsol;
 
 	/// controls what unsol classes are enabled
 	ClassMask mUnsolMask;
 
-	/// if true, the slave will request time synchronization on an interval
+	/// if true, the outstation will request time synchronization on an interval
 	bool mAllowTimeSync;
 
 
 	/// The period of time sync interval in milliseconds
 	openpal::TimeDuration mTimeSyncPeriod;
 
-	/// The amount of time the slave will wait before sending new unsolicited data ( <= 0 == immediate)
+	/// The amount of time the outstation will wait before sending new unsolicited data ( <= 0 == immediate)
 	openpal::TimeDuration mUnsolPackDelay;
 
-	/// How long the slave will wait before retrying an unsuccessful unsol response
+	/// How long the outstation will wait before retrying an unsuccessful unsol response
 	openpal::TimeDuration mUnsolRetryDelay;
 
-	/// How long the slave will allow an operate to proceed after a prior select
+	/// How long the outstation will allow an operate to proceed after a prior select
 	openpal::TimeDuration mSelectTimeout;
 
-	/// The maximum fragment size the slave will use for data it sends
+	/// The maximum fragment size the outstation will use for data it sends
 	uint32_t mMaxFragSize;
 	
 	// -------------  default static response types ------------------

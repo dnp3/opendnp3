@@ -35,7 +35,7 @@ namespace opendnp3
 struct DeviceTemplate;
 
 /**
-Manages the static data model of a DNP3 slave. Dual-interface to update data points and read current values.
+Manages the static data model of a DNP3 outstation. Dual-interface to update data points and read current values.
 
 Passes data updates to an associated event buffer for event generation/management.
 */

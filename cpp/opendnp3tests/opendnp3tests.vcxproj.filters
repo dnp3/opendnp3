@@ -143,9 +143,6 @@
     <ClInclude Include="src\RandomizedBuffer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\SlaveTestObject.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\StopWatch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -190,6 +187,9 @@
     </ClInclude>
     <ClInclude Include="src\MockLinkLayer.h">
       <Filter>Header Files\Mocks</Filter>
+    </ClInclude>
+    <ClInclude Include="src\OutstationTestObject.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

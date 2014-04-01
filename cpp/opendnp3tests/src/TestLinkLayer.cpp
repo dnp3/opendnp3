@@ -65,7 +65,7 @@ TEST_CASE(SUITE("ForwardsOnLowerLayerUp"))
 }
 
 // Check that once the layer comes up, validation errors can occur
-TEST_CASE(SUITE("ValidatesMasterSlaveBit"))
+TEST_CASE(SUITE("ValidatesMasterOutstationBit"))
 {
 	LinkLayerTest t; t.link.OnLowerLayerUp();
 	t.link.Ack(true, false, 1, 1024);

@@ -69,7 +69,7 @@ TEST_CASE(SUITE("ConstructionDestruction"))
 		auto pServer = mgr.CreateChannel("serverChannel", TimeDuration::Seconds(5), TimeDuration::Seconds(5), pServerPhys);
 
 		auto pMaster = pClient->AddMaster("master", NullSOEHandler::Inst(), UTCTimeSource::Inst(), MasterStackConfig());
-		auto pOutstation = pServer->AddOutstation("outstation", SuccessCommandHandler::Inst(), NullTimeWriteHandler::Inst(), SlaveStackConfig(DatabaseTemplate()));
+		auto pOutstation = pServer->AddOutstation("outstation", SuccessCommandHandler::Inst(), NullTimeWriteHandler::Inst(), OutstationStackConfig(DatabaseTemplate()));
 
 		pMaster->Enable();
 		pOutstation->Enable();		
@@ -91,7 +91,7 @@ TEST_CASE(SUITE("ManualStackShutdown"))
 		auto pServerPhys = new PhysicalLayerAsyncTCPServer(LogConfig(&log, levels::NORMAL, "server"), pool.GetIOService(), "127.0.0.1", 20000);
 		auto pServer = mgr.CreateChannel("serverChannel", TimeDuration::Seconds(5), TimeDuration::Seconds(5), pServerPhys);
 
-		auto pOutstation = pServer->AddOutstation("outstation", SuccessCommandHandler::Inst(), NullTimeWriteHandler::Inst(), SlaveStackConfig(DatabaseTemplate()));
+		auto pOutstation = pServer->AddOutstation("outstation", SuccessCommandHandler::Inst(), NullTimeWriteHandler::Inst(), OutstationStackConfig(DatabaseTemplate()));
 		auto pMaster = pClient->AddMaster("master", NullSOEHandler::Inst(), UTCTimeSource::Inst(), MasterStackConfig());
 
 		pOutstation->Enable();
@@ -117,7 +117,7 @@ TEST_CASE(SUITE("ManualChannelShutdownWithStacks"))
 		auto pServerPhys = new PhysicalLayerAsyncTCPServer(LogConfig(&log, levels::NORMAL, "server"), pool.GetIOService(), "127.0.0.1", 20000);
 		auto pServer = mgr.CreateChannel("serverChannel", TimeDuration::Seconds(5), TimeDuration::Seconds(5), pServerPhys);
 
-		auto pOutstation = pServer->AddOutstation("outstation", SuccessCommandHandler::Inst(), NullTimeWriteHandler::Inst(), SlaveStackConfig(DatabaseTemplate()));
+		auto pOutstation = pServer->AddOutstation("outstation", SuccessCommandHandler::Inst(), NullTimeWriteHandler::Inst(), OutstationStackConfig(DatabaseTemplate()));
 		auto pMaster = pClient->AddMaster("master", NullSOEHandler::Inst(), UTCTimeSource::Inst(), MasterStackConfig());
 
 		pMaster->Enable();

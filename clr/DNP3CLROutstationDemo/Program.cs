@@ -34,7 +34,7 @@ using System.Text;
 using DNP3.Adapter;
 using DNP3.Interface;
 
-namespace DotNetSlaveDemo
+namespace DotNetOutstationDemo
 {   
     class Program
     {
@@ -47,7 +47,7 @@ namespace DotNetSlaveDemo
             //optionally, add a listener for the channel state
             channel.AddStateListener(state => Console.WriteLine("Server state: " + state));
 
-            var config = new SlaveStackConfig();
+            var config = new OutstationStackConfig();
             var outstation = channel.AddOutstation("outstation", RejectingCommandHandler.Instance, PrintingTimeWriteHandler.Instance, config);                    
 
             outstation.Enable(); // enable communications

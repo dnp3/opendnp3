@@ -28,7 +28,7 @@ namespace opendnp3
 enum DNPErrorCodes
 {
 
-    // Slave error codes
+    // Outstation error codes
     SERR_INVALID_STATE,
     SERR_FUNC_NOT_SUPPORTED,
     SERR_CTRL_NOT_CONVERTIBLE,

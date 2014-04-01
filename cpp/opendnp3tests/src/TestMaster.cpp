@@ -408,7 +408,7 @@ TEST_CASE(SUITE("DeferredControlExecution"))
 	// check that a read request was made on startup
 	TestForIntegrityPoll(t);
 
-	//issue a command while the master is waiting for a response from the slave
+	//issue a command while the master is waiting for a response from the outstation
 	ControlRelayOutputBlock bo(ControlCode::PULSE); bo.status = CommandStatus::SUCCESS;
 	t.master.GetCommandProcessor()->SelectAndOperate(bo, 1, [](CommandResponse) {});
 	REQUIRE(t.mts.DispatchOne());

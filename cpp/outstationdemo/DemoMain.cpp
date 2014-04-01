@@ -20,7 +20,7 @@
  */
 #include <opendnp3/DNP3Manager.h>
 
-#include <opendnp3/outstation/SlaveStackConfig.h>
+#include <opendnp3/outstation/OutstationStackConfig.h>
 #include <opendnp3/outstation/SimpleCommandHandler.h>
 #include <opendnp3/outstation/TimeTransaction.h>
 #include <opendnp3/outstation/ITimeWriteHandler.h>
@@ -72,15 +72,15 @@ int main(int argc, char* argv[])
 	// Wrap the physical layer in a DNP channel
 	auto pServer = mgr.CreateChannel("tcpserver", TimeDuration::Seconds(5), TimeDuration::Seconds(5), pServerPhys);
 
-	// The master config object for a slave. The default are
+	// The master config object for a outstation. The default are
 	// useable, but understanding the options are important.
-	SlaveStackConfig stackConfig;
+	OutstationStackConfig stackConfig;
 	stackConfig.database = DatabaseConfiguration(DatabaseTemplate::AllTypes(10));
-	stackConfig.slave.mDisableUnsol = true;
+	stackConfig.outstation.mDisableUnsol = true;
 
-	// Create a new slave with a log level, command handler, and
+	// Create a new outstation with a log level, command handler, and
 	// config info this	returns a thread-safe interface used for
-	// updating the slave's database.
+	// updating the outstation's database.
 	auto pOutstation = pServer->AddOutstation("outstation", SuccessCommandHandler::Inst(), NullTimeWriteHandler::Inst(), stackConfig);	
 
 	// Enable the outstation and start communications

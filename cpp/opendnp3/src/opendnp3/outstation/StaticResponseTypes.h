@@ -23,14 +23,14 @@
 
 #include "opendnp3/app/MeasurementTypes.h"
 
-#include "opendnp3/outstation/SlaveConfig.h"
+#include "opendnp3/outstation/OutstationConfig.h"
 #include "opendnp3/outstation/StaticLoader.h"
 
 namespace opendnp3
 {
 
 /**
- * Reads a slave config object and and translates the configuration to
+ * Reads a outstation config object and and translates the configuration to
  * singletons.
  */
 class StaticResponseTypes
@@ -39,7 +39,7 @@ public:
 
 	StaticResponseTypes();
 
-	StaticResponseTypes(const SlaveConfig& arCfg);
+	StaticResponseTypes(const OutstationConfig& arCfg);
 
 	template <class T>
 	StaticLoadFun GetLoader();

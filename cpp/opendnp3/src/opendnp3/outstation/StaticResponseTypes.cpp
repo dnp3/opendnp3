@@ -20,7 +20,7 @@
  */
 #include "StaticResponseTypes.h"
 
-#include "SlaveConfig.h"
+#include "OutstationConfig.h"
 
 #include "opendnp3/objects/Group1.h"
 #include "opendnp3/objects/Group3.h"
@@ -35,7 +35,7 @@ using namespace openpal;
 namespace opendnp3
 {
 
-StaticResponseTypes::StaticResponseTypes(const SlaveConfig& arCfg) :
+StaticResponseTypes::StaticResponseTypes(const OutstationConfig& arCfg) :
 	pStaticBinaryLoader(GetStaticBinary(arCfg.mStaticBinary)),
 	pStaticDoubleBinaryLoader(StaticLoader::GetLoadFunction<Group3Var2Serializer>()), // TODO
 	pStaticAnalogLoader(GetStaticAnalog(arCfg.mStaticAnalog)),

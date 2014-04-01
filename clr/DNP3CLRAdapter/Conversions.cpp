@@ -321,9 +321,9 @@ opendnp3::EventCounterResponse Conversions::convert(EventCounterResponse rsp)
 	return (opendnp3::EventCounterResponse) rsp;
 }
 
-opendnp3::SlaveConfig Conversions::convertConfig(SlaveConfig^ config)
+opendnp3::OutstationConfig Conversions::convertConfig(OutstationConfig^ config)
 {
-	opendnp3::SlaveConfig sc;
+	opendnp3::OutstationConfig sc;
 
 	sc.mDisableUnsol = config->disableUnsol;
 	sc.mMaxControls = config->maxControls;
@@ -405,12 +405,12 @@ opendnp3::MasterStackConfig Conversions::convertConfig(MasterStackConfig^ config
 	return cfg;
 }
 
-opendnp3::SlaveStackConfig Conversions::convertConfig(SlaveStackConfig^ config)
+opendnp3::OutstationStackConfig Conversions::convertConfig(OutstationStackConfig^ config)
 {
 	auto temp = convertConfig(config->device);
-	opendnp3::SlaveStackConfig cfg(temp);
+	opendnp3::OutstationStackConfig cfg(temp);
 	cfg.eventBuffer = convertConfig(config->buffer);
-	cfg.slave = convertConfig(config->slave);
+	cfg.outstation = convertConfig(config->outstation);
 	cfg.app = convertConfig(config->app);
 	cfg.link = convertConfig(config->link);
 	return cfg;

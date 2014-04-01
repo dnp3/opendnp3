@@ -22,7 +22,7 @@
 #define __OUTSTATION_STACK_IMPL_H_
 
 #include "opendnp3/outstation/IOutstation.h"
-#include "opendnp3/outstation/SlaveStackConfig.h"
+#include "opendnp3/outstation/OutstationStackConfig.h"
 #include "opendnp3/outstation/DatabaseConfiguration.h"
 #include "opendnp3/outstation/Database.h"
 #include "opendnp3/outstation/Outstation.h"
@@ -50,7 +50,7 @@ public:
 		openpal::IExecutor* apExecutor,
 		ITimeWriteHandler* apTimeWriteHandler,
 		ICommandHandler* apCmdHandler,
-		const SlaveStackConfig& arCfg,
+		const OutstationStackConfig& arCfg,
 		const StackActionHandler& handler);
 
 	IMeasurementLoader* GetLoader();

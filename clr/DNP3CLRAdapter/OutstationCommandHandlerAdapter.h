@@ -14,10 +14,10 @@ namespace DNP3
 namespace Adapter
 {
 //this object goes into the stack
-private class SlaveCommandHandlerAdapter : public opendnp3::ICommandHandler
+private class OutstationCommandHandlerAdapter : public opendnp3::ICommandHandler
 {
 public:
-	SlaveCommandHandlerAdapter(DNP3::Interface::ICommandHandler^ proxy);
+	OutstationCommandHandlerAdapter(DNP3::Interface::ICommandHandler^ proxy);
 
 	opendnp3::CommandStatus Supports(const opendnp3::ControlRelayOutputBlock& arCommand, uint16_t aIndex);
 	opendnp3::CommandStatus Supports(const opendnp3::AnalogOutputInt32& arCommand, uint16_t aIndex);
@@ -36,15 +36,15 @@ private:
 	gcroot < DNP3::Interface::ICommandHandler^ > proxy;
 };
 
-private ref class SlaveCommandHandlerWrapper
+private ref class OutstationCommandHandlerWrapper
 {
 public:
 
-	SlaveCommandHandlerWrapper(DNP3::Interface::ICommandHandler^ proxy) :
-		mpAdapter(new SlaveCommandHandlerAdapter(proxy))
+	OutstationCommandHandlerWrapper(DNP3::Interface::ICommandHandler^ proxy) :
+		mpAdapter(new OutstationCommandHandlerAdapter(proxy))
 	{}
 
-	~SlaveCommandHandlerWrapper()
+	~OutstationCommandHandlerWrapper()
 	{
 		delete mpAdapter;
 	}
@@ -55,7 +55,7 @@ public:
 	}
 
 private:
-	SlaveCommandHandlerAdapter* mpAdapter;
+	OutstationCommandHandlerAdapter* mpAdapter;
 };
 }
 }

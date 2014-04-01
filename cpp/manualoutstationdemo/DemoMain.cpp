@@ -20,12 +20,12 @@
  */
 #include <opendnp3/DNP3Manager.h>
 
-#include <opendnp3/outstation/SlaveStackConfig.h>
+#include <opendnp3/outstation/OutstationStackConfig.h>
 #include <opendnp3/outstation/SimpleCommandHandler.h>
 #include <opendnp3/outstation/TimeTransaction.h>
 #include <opendnp3/outstation/ITimeWriteHandler.h>
 #include <opendnp3/link/LinkLayerRouter.h>
-#include <opendnp3/outstation/Slave.h>
+#include <opendnp3/outstation/Outstation.h>
 #include <opendnp3/app/ApplicationStack.h>
 #include <opendnp3/outstation/DynamicallyAllocatedDatabase.h>
 #include <opendnp3/LogLevels.h>
@@ -73,8 +73,8 @@ int main(int argc, char* argv[])
 	
 	DynamicallyAllocatedDatabase dadb(DatabaseTemplate::AllTypes(5));
 	Database database(dadb.GetFacade());
-	Slave slave(server.GetLogger().GetSubLogger("slave"), &stack.application, &executor, NullTimeWriteHandler::Inst(), &database, SuccessCommandHandler::Inst(), SlaveConfig());
-	stack.application.SetUser(&slave);
+	Outstation outstation(server.GetLogger().GetSubLogger("outstation"), &stack.application, &executor, NullTimeWriteHandler::Inst(), &database, SuccessCommandHandler::Inst(), OutstationConfig());
+	stack.application.SetUser(&outstation);
 
 	router.Enable(&stack.link);
 

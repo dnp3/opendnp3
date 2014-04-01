@@ -34,9 +34,9 @@ namespace opendnp3
 class Outstation;
 
 /**
- * Base class for all transaction states of a Slave
+ * Base class for all transaction states of a Outstation
  */
-class SlaveStateBase
+class OutstationStateBase
 {
 public:
 
@@ -58,7 +58,7 @@ public:
 	virtual void Enter(Outstation*) = 0;
 
 	// Called when a data update is received from the user layer
-	virtual void OnDataUpdate(Outstation* slave) {}
+	virtual void OnDataUpdate(Outstation* outstation) {}
 
 	// Called when the unsolcited timer expires
 	virtual void OnUnsolExpiration(Outstation*);
@@ -71,9 +71,9 @@ protected:
 
 /**
  * A state that indicates when the application layer has not informed the
- * slave yet that it is up.
+ * outstation yet that it is up.
  */
-class AS_Closed : public SlaveStateBase
+class AS_Closed : public OutstationStateBase
 {
 public:
 
@@ -81,11 +81,11 @@ public:
 
 	void Enter(Outstation*) final;
 
-	void OnLowerLayerUp(Outstation* slave) final;
+	void OnLowerLayerUp(Outstation* outstation) final;
 	void OnDataUpdate(Outstation*) final;
 };
 
-class AS_OpenBase : public SlaveStateBase
+class AS_OpenBase : public OutstationStateBase
 {
 public:
 
@@ -94,7 +94,7 @@ public:
 };
 
 /**
- * A state that indicates when the AppLayer is online but the Slave is not
+ * A state that indicates when the AppLayer is online but the Outstation is not
  * doing or waiting on anything.
  */
 class AS_Idle : public AS_OpenBase
@@ -112,7 +112,7 @@ public:
 
 
 /**
- * A state that indicates when the Slave is waiting for a response to
+ * A state that indicates when the Outstation is waiting for a response to
  * complete.
  */
 class AS_WaitForRspSuccess : public AS_OpenBase
@@ -129,7 +129,7 @@ public:
 };
 
 /**
- * A state that indicates when the Slave is waiting for an unsolicited
+ * A state that indicates when the Outstation is waiting for an unsolicited
  * response to complete.
  */
 class AS_WaitForUnsolSuccess : public AS_OpenBase
@@ -146,7 +146,7 @@ public:
 };
 
 /**
- * A state that indicates when the Slave is waiting for an unsolicited
+ * A state that indicates when the Outstation is waiting for an unsolicited
  * response and a solicited response to complete.
  */
 class AS_WaitForSolUnsolSuccess : public AS_OpenBase

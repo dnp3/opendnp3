@@ -1,7 +1,7 @@
 #include "ChannelAdapter.h"
 #include "Conversions.h"
 #include "SOEHandlerAdapter.h"
-#include "SlaveCommandHandlerAdapter.h"
+#include "OutstationCommandHandlerAdapter.h"
 #include "OutstationTimeWriteAdapter.h"
 #include "MasterAdapter.h"
 #include "OutstationAdapter.h"
@@ -71,14 +71,14 @@ IMaster^ ChannelAdapter::AddMaster(System::String^ loggerId, ISOEHandler^ publis
 	}
 }
 
-IOutstation^ ChannelAdapter::AddOutstation(System::String^ loggerId, ICommandHandler^ cmdHandler, ITimeWriteHandler^ timeHandler, SlaveStackConfig^ config)
+IOutstation^ ChannelAdapter::AddOutstation(System::String^ loggerId, ICommandHandler^ cmdHandler, ITimeWriteHandler^ timeHandler, OutstationStackConfig^ config)
 {
 	std::string stdLoggerId = Conversions::convertString(loggerId);	
 
-	SlaveCommandHandlerWrapper^ cmdWrapper = gcnew SlaveCommandHandlerWrapper(cmdHandler);
+	OutstationCommandHandlerWrapper^ cmdWrapper = gcnew OutstationCommandHandlerWrapper(cmdHandler);
 	OutstationTimeWriteWrapper^ timeWrapper = gcnew OutstationTimeWriteWrapper(timeHandler);
 
-	opendnp3::SlaveStackConfig cfg = Conversions::convertConfig(config);
+	opendnp3::OutstationStackConfig cfg = Conversions::convertConfig(config);
 
 	auto pOutstation = pChannel->AddOutstation(stdLoggerId, cmdWrapper->Get(), timeWrapper->Get(), Conversions::convertConfig(config));
 	if (pOutstation == nullptr)

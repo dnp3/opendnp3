@@ -59,7 +59,7 @@ struct LinkConfig
 		Timeout(openpal::TimeDuration::Seconds(1))
 	{}
 
-	/// The master/slave bit set on all messages
+	/// The master/outstation bit set on all messages
 	bool IsMaster;
 
 	/// If true, the link layer will send data requesting confirmation

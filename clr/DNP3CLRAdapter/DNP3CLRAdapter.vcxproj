@@ -183,7 +183,7 @@
     <ClInclude Include="OutstationAdapter.h" />
     <ClInclude Include="OutstationTimeWriteAdapter.h" />
     <ClInclude Include="ScanListenerAdapter.h" />
-    <ClInclude Include="SlaveCommandHandlerAdapter.h" />
+    <ClInclude Include="OutstationCommandHandlerAdapter.h" />
     <ClInclude Include="OutstationLoaderAdapter.h" />
   </ItemGroup>
   <ItemGroup>
@@ -196,7 +196,7 @@
     <ClCompile Include="SOEHandlerAdapter.cpp" />
     <ClCompile Include="OutstationAdapter.cpp" />
     <ClCompile Include="OutstationTimeWriteAdapter.cpp" />
-    <ClCompile Include="SlaveCommandHandlerAdapter.cpp" />
+    <ClCompile Include="OutstationCommandHandlerAdapter.cpp" />
     <ClCompile Include="OutstationLoaderAdapter.cpp" />
   </ItemGroup>
   <ItemGroup>

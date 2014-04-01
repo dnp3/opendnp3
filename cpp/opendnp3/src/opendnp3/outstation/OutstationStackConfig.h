@@ -21,7 +21,7 @@
 #ifndef __SLAVE_STACK_CONFIG_H_
 #define __SLAVE_STACK_CONFIG_H_
 
-#include "opendnp3/outstation/SlaveConfig.h"
+#include "opendnp3/outstation/OutstationConfig.h"
 #include "opendnp3/outstation/DatabaseConfiguration.h"
 #include "opendnp3/outstation/EventBufferConfig.h"
 #include "opendnp3/app/AppConfig.h"
@@ -31,12 +31,12 @@ namespace opendnp3
 {
 
 /** A composite configuration struct that contains all the config
-	information for a dnp3 slave stack
+	information for a dnp3 outstation stack
 */
-struct SlaveStackConfig
+struct OutstationStackConfig
 {
 
-	SlaveStackConfig(const DatabaseConfiguration& dbConfig) :
+	OutstationStackConfig(const DatabaseConfiguration& dbConfig) :
 		database(dbConfig),
 		eventBuffer(),
 		link(false, false),
@@ -45,7 +45,7 @@ struct SlaveStackConfig
 
 	}
 
-	SlaveStackConfig() :
+	OutstationStackConfig() :
 		database(),
 		eventBuffer(),
 		link(false, false),
@@ -56,8 +56,8 @@ struct SlaveStackConfig
 	DatabaseConfiguration database;
 	// Configuration of event buffer
 	EventBufferConfig eventBuffer;
-	/// Slave config
-	SlaveConfig slave;
+	/// Outstation config
+	OutstationConfig outstation;
 	/// Application layer config
 	AppConfig app;
 	/// Link layer config

@@ -36,9 +36,6 @@
     <ClInclude Include="OutstationAdapter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SlaveCommandHandlerAdapter.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="DNP3ManagerAdapter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -63,6 +60,9 @@
     <ClInclude Include="OutstationLoaderAdapter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="OutstationCommandHandlerAdapter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ChannelAdapter.cpp">
@@ -83,9 +83,6 @@
     <ClCompile Include="OutstationAdapter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SlaveCommandHandlerAdapter.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="DNP3ManagerAdapter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -96,6 +93,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="OutstationLoaderAdapter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="OutstationCommandHandlerAdapter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

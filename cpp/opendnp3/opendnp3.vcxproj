@@ -213,9 +213,9 @@
     <ClInclude Include="src\opendnp3\outstation\SelectionIterator.h" />
     <ClInclude Include="src\opendnp3\outstation\SimpleCommandHandler.h" />
     <ClInclude Include="src\opendnp3\outstation\Outstation.h" />
-    <ClInclude Include="src\opendnp3\outstation\SlaveConfig.h" />
-    <ClInclude Include="src\opendnp3\outstation\SlaveStackConfig.h" />
-    <ClInclude Include="src\opendnp3\outstation\SlaveStates.h" />
+    <ClInclude Include="src\opendnp3\outstation\OutstationConfig.h" />
+    <ClInclude Include="src\opendnp3\outstation\OutstationStackConfig.h" />
+    <ClInclude Include="src\opendnp3\outstation\OutstationStates.h" />
     <ClInclude Include="src\opendnp3\outstation\StaticallyAllocatedEventBuffer.h" />
     <ClInclude Include="src\opendnp3\outstation\StaticDataFacade.h" />
     <ClInclude Include="src\opendnp3\outstation\StaticLoader.h" />
@@ -365,8 +365,8 @@
     <ClCompile Include="src\opendnp3\outstation\SelectionIterator.cpp" />
     <ClCompile Include="src\opendnp3\outstation\SimpleCommandHandler.cpp" />
     <ClCompile Include="src\opendnp3\outstation\Outstation.cpp" />
-    <ClCompile Include="src\opendnp3\outstation\SlaveConfig.cpp" />
-    <ClCompile Include="src\opendnp3\outstation\SlaveStates.cpp" />
+    <ClCompile Include="src\opendnp3\outstation\OutstationConfig.cpp" />
+    <ClCompile Include="src\opendnp3\outstation\OutstationStates.cpp" />
     <ClCompile Include="src\opendnp3\outstation\StaticResponseContext.cpp" />
     <ClCompile Include="src\opendnp3\outstation\StaticResponseTypes.cpp" />
     <ClCompile Include="src\opendnp3\outstation\TimeTransaction.cpp" />

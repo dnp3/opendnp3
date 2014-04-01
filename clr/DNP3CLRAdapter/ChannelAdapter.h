@@ -35,7 +35,7 @@ public:
 
 	virtual IMaster^ AddMaster(System::String^ loggerId, ISOEHandler^ publisher, MasterStackConfig^ config);
 
-	virtual IOutstation^ AddOutstation(System::String^ loggerId, ICommandHandler^ cmdHandler, ITimeWriteHandler^ timeHandler, SlaveStackConfig^ config);
+	virtual IOutstation^ AddOutstation(System::String^ loggerId, ICommandHandler^ cmdHandler, ITimeWriteHandler^ timeHandler, OutstationStackConfig^ config);
 
 	virtual void Shutdown();
 

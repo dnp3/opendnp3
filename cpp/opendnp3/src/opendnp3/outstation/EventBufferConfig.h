@@ -35,25 +35,25 @@ struct EventBufferConfig
 
 	uint32_t TotalEvents() const;
 
-	/// The number of binary events the slave will buffer before overflowing
+	/// The number of binary events the outstation will buffer before overflowing
 	uint32_t maxBinaryEvents;
 
-	/// The number of double bit binary events the slave will buffer before overflowing
+	/// The number of double bit binary events the outstation will buffer before overflowing
 	uint32_t maxDoubleBinaryEvents;
 
-	/// The number of analog events the slave will buffer before overflowing
+	/// The number of analog events the outstation will buffer before overflowing
 	uint32_t maxAnalogEvents;
 
-	/// The number of counter events the slave will buffer before overflowing
+	/// The number of counter events the outstation will buffer before overflowing
 	uint32_t maxCounterEvents;
 
-	/// The number of frozen counter events the slave will buffer before overflowing
+	/// The number of frozen counter events the outstation will buffer before overflowing
 	uint32_t maxFrozenCounterEvents;
 
-	/// The number of binary output status events the slave will buffer before overflowing
+	/// The number of binary output status events the outstation will buffer before overflowing
 	uint32_t maxBinaryOutputStatusEvents;
 
-	/// The number of analog output status events the slave will buffer before overflowing
+	/// The number of analog output status events the outstation will buffer before overflowing
 	uint32_t maxAnalogOutputStatusEvents;
 };
 

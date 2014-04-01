@@ -127,10 +127,10 @@ TEST_CASE(SUITE("UnsolSuccess"))
 
 // Test that the various send methods reject
 // illegal function codes. Also check that the app layer
-// is slave/master aware with respect to send
-TEST_CASE(SUITE("SendBadFuncCodeSlave"))
+// is outstation/master aware with respect to send
+TEST_CASE(SUITE("SendBadFuncCodeOutstation"))
 {
-	AppLayerTest t(false);	// slave
+	AppLayerTest t(false);	// outstation
 	t.lower.ThisLayerUp();
 
 	// can't send a response until at least 1 request has been received
@@ -143,7 +143,7 @@ TEST_CASE(SUITE("SendBadFuncCodeSlave"))
 
 TEST_CASE(SUITE("SendExtraObjectData"))
 {
-	AppLayerTest t(false);	// slave
+	AppLayerTest t(false);	// outstation
 	t.lower.ThisLayerUp(); ++t.state.NumLayerUp;
 
 	// doesn't matter what the sequence number is
@@ -157,7 +157,7 @@ TEST_CASE(SUITE("SendExtraObjectData"))
 // Test a simple send without confirm transaction
 TEST_CASE(SUITE("SendResponseWithoutConfirm"))
 {
-	AppLayerTest t(false);	// slave
+	AppLayerTest t(false);	// outstation
 	t.lower.ThisLayerUp(); ++t.state.NumLayerUp;
 
 	// doesn't matter what the sequence number is
@@ -173,7 +173,7 @@ TEST_CASE(SUITE("SendResponseWithoutConfirm"))
 // Test a simple send without confirm transaction
 TEST_CASE(SUITE("SendResponseFailure"))
 {
-	AppLayerTest t(false);	// slave
+	AppLayerTest t(false);	// outstation
 	t.lower.ThisLayerUp(); ++t.state.NumLayerUp;
 	t.lower.EnableAutoSendCallback(false);
 	t.SendUp(AppControlField(true, true, false, false, 4), FunctionCode::READ); ++t.state.NumRequest;
@@ -185,7 +185,7 @@ TEST_CASE(SUITE("SendResponseFailure"))
 // Test a send with confirm
 TEST_CASE(SUITE("SendResponseWithConfirm"))
 {
-	AppLayerTest t(false);	// slave
+	AppLayerTest t(false);	// outstation
 	t.lower.ThisLayerUp(); ++t.state.NumLayerUp;
 	t.SendUp(AppControlField(true, true, false, false, 4), FunctionCode::READ); ++t.state.NumRequest;
 	t.SendResponse(FunctionCode::RESPONSE, true, false, true, false); // with confirmation, should start on timer
@@ -199,7 +199,7 @@ TEST_CASE(SUITE("SendResponseWithConfirm"))
 // Test a send with confirm
 TEST_CASE(SUITE("CancelResponseWhileSending"))
 {
-	AppLayerTest t(false);	// slave
+	AppLayerTest t(false);	// outstation
 	t.lower.ThisLayerUp(); ++t.state.NumLayerUp;
 	t.SendUp(AppControlField(true, true, false, false, 4), FunctionCode::READ); ++t.state.NumRequest;
 	t.lower.DisableAutoSendCallback();
@@ -221,7 +221,7 @@ TEST_CASE(SUITE("CancelResponseWhileSending"))
 // Test a send with confirm
 TEST_CASE(SUITE("CancelResponseWhileAwaitingConfirm"))
 {
-	AppLayerTest t(false);	// slave
+	AppLayerTest t(false);	// outstation
 	t.lower.ThisLayerUp(); ++t.state.NumLayerUp;
 	t.SendUp(AppControlField(true, true, false, false, 4), FunctionCode::READ); ++t.state.NumRequest;
 	t.SendResponse(FunctionCode::RESPONSE, true, false, true, false); // with confirmation
@@ -236,7 +236,7 @@ TEST_CASE(SUITE("CancelResponseWhileAwaitingConfirm"))
 
 TEST_CASE(SUITE("NewRequestWhileAwaitingConfirm"))
 {
-	AppLayerTest t(false);	// slave
+	AppLayerTest t(false);	// outstation
 	t.lower.ThisLayerUp(); ++t.state.NumLayerUp;
 	t.SendUp(AppControlField(true, true, false, false, 4), FunctionCode::READ); ++t.state.NumRequest;
 	t.SendResponse(FunctionCode::RESPONSE, true, false, true, false); // with confirmation
@@ -255,7 +255,7 @@ TEST_CASE(SUITE("NewRequestWhileAwaitingConfirm"))
 // Test a send with confirm timeout
 TEST_CASE(SUITE("SendResponseWithConfirmTimeout"))
 {
-	AppLayerTest t(false);	// slave
+	AppLayerTest t(false);	// outstation
 	t.lower.ThisLayerUp(); ++t.state.NumLayerUp;
 	t.SendUp(AppControlField(true, true, false, false, 4), FunctionCode::READ); ++t.state.NumRequest;
 	t.SendResponse(FunctionCode::RESPONSE, true, false, true, false); // with confirmation
@@ -268,7 +268,7 @@ TEST_CASE(SUITE("SendResponseWithConfirmTimeout"))
 // increment the sequence number
 TEST_CASE(SUITE("SendResponseNonFIR"))
 {
-	AppLayerTest t(false);	// slave
+	AppLayerTest t(false);	// outstation
 	t.lower.ThisLayerUp(); ++t.state.NumLayerUp;
 	t.SendUp(AppControlField(true, true, false, false, 4), FunctionCode::READ); ++t.state.NumRequest;
 	t.SendResponse(FunctionCode::RESPONSE, false, false, true, false); //non-FIR, will increment seq number
@@ -283,7 +283,7 @@ TEST_CASE(SUITE("SendResponseNonFIR"))
 // Test an unsol send with confirm transaction
 TEST_CASE(SUITE("SendUnsolicitedWithConfirm"))
 {
-	AppLayerTest t(false);	// slave
+	AppLayerTest t(false);	// outstation
 	t.lower.ThisLayerUp(); ++t.state.NumLayerUp;
 
 	t.SendUnsolicited(FunctionCode::UNSOLICITED_RESPONSE, true, true, true, true);
@@ -298,7 +298,7 @@ TEST_CASE(SUITE("SendUnsolicitedWithConfirm"))
 // Test an unsol send with confirm timeout
 TEST_CASE(SUITE("SendUnsolicitedWithConfirmTimeout"))
 {
-	AppLayerTest t(false);	// slave
+	AppLayerTest t(false);	// outstation
 	t.lower.ThisLayerUp(); ++t.state.NumLayerUp;
 	t.SendUnsolicited(FunctionCode::UNSOLICITED_RESPONSE, true, true, true, true);
 	REQUIRE(t.mts.DispatchOne()); ++t.state.NumUnsolFailure;
@@ -385,11 +385,11 @@ TEST_CASE(SUITE("MasterUnsolictedDuringRequest"))
 
 /** The SendUnsolicited transaction needs to gracefully pass up
 	requests while doing an unsolicited transaction. It's up to the
-	slave itself to buffer the last such request and process it
+	outstation itself to buffer the last such request and process it
 	after the unsol transaction is complete. */
-TEST_CASE(SUITE("SlaveRequestDuringUnsolicited"))
+TEST_CASE(SUITE("OutstationRequestDuringUnsolicited"))
 {
-	AppLayerTest t(false);	// slave
+	AppLayerTest t(false);	// outstation
 	t.lower.ThisLayerUp(); ++t.state.NumLayerUp;
 
 	t.SendUnsolicited(FunctionCode::UNSOLICITED_RESPONSE, true, true, true, true);
@@ -404,7 +404,7 @@ TEST_CASE(SUITE("SlaveRequestDuringUnsolicited"))
 /** Test that no retries are performed by default */
 TEST_CASE(SUITE("TestNoRetries"))
 {
-	AppLayerTest t(false);	// slave
+	AppLayerTest t(false);	// outstation
 	t.lower.ThisLayerUp(); ++t.state.NumLayerUp;
 
 	t.SendUnsolicited(FunctionCode::UNSOLICITED_RESPONSE, true, true, true, true);
@@ -419,7 +419,7 @@ TEST_CASE(SUITE("TestUnsolRetries"))
 {
 	const size_t RETRIES = 3;
 
-	AppLayerTest t(false, RETRIES);	// slave
+	AppLayerTest t(false, RETRIES);	// outstation
 	t.lower.ThisLayerUp(); ++t.state.NumLayerUp;
 
 	t.SendUnsolicited(FunctionCode::UNSOLICITED_RESPONSE, true, true, true, true);

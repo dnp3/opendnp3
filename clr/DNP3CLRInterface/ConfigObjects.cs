@@ -94,7 +94,7 @@ namespace DNP3.Interface
         }
 
 		/// <summary>
-		/// The master/slave bit set on all messages
+		/// The master/outstation bit set on all messages
 		/// </summary>
 		public bool isMaster;
 
@@ -230,7 +230,7 @@ namespace DNP3.Interface
 		public System.Int32 fragSize;	
 
 		/// <summary>
-        /// If true, the master will do time syncs when it sees the time IIN bit from the slave
+        /// If true, the master will do time syncs when it sees the time IIN bit from the outstation
 		/// </summary>
 		public System.Boolean allowTimeSync;
 
@@ -303,54 +303,54 @@ namespace DNP3.Interface
         }
 
 	    /// <summary>
-	    /// The number of binary events the slave will buffer before overflowing
+	    /// The number of binary events the outstation will buffer before overflowing
 	    /// </summary>
 	    public System.UInt32 maxBinaryEvents;
 
         /// <summary>
-        /// The number of double-bit binary events the slave will buffer before overflowing
+        /// The number of double-bit binary events the outstation will buffer before overflowing
         /// </summary>
         public System.UInt32 maxDoubleBinaryEvents;
 
 	    /// <summary>
-	    /// The number of analog events the slave will buffer before overflowing
+	    /// The number of analog events the outstation will buffer before overflowing
 	    /// </summary>
         public System.UInt32 maxAnalogEvents;
 
 	    /// <summary>
-	    /// The number of counter events the slave will buffer before overflowing
+	    /// The number of counter events the outstation will buffer before overflowing
 	    /// </summary>
         public System.UInt32 maxCounterEvents;
 
         /// <summary>
-        /// The number of frozen counter events the slave will buffer before overflowing
+        /// The number of frozen counter events the outstation will buffer before overflowing
         /// </summary>
         public System.UInt32 maxFrozenCounterEvents;
 
         /// <summary>
-        /// The number of binary output status events the slave will buffer before overflowing
+        /// The number of binary output status events the outstation will buffer before overflowing
         /// </summary>
         public System.UInt32 maxBinaryOutputStatusEvents;
 
         /// <summary>
-        /// The number of analog output status events the slave will buffer before overflowing
+        /// The number of analog output status events the outstation will buffer before overflowing
         /// </summary>
         public System.UInt32 maxAnalogOutputStatusEvents;
     }
 
 
     /// <summary>
-    /// Configuration information for a dnp3 slave (outstation)
-    /// Used as both input describing the startup configuration of the slave, and as configuration state of mutable properties (i.e. unsolicited responses).
+    /// Configuration information for a dnp3 outstation (outstation)
+    /// Used as both input describing the startup configuration of the outstation, and as configuration state of mutable properties (i.e. unsolicited responses).
     /// Major feature areas are unsolicited responses, time synchronization requests, event buffer limits, and the DNP3 object/variations to use by default
     /// when the master requests class data or variation 0.
     /// </summary>
-    public class SlaveConfig 
+    public class OutstationConfig 
     {
         /// <summary>
         /// Constructor with reasonable defaults
         /// </summary>
-        public SlaveConfig()
+        public OutstationConfig()
         {
             this.maxControls = 1;
             this.disableUnsol = false;
@@ -371,12 +371,12 @@ namespace DNP3.Interface
         }
 
 	    /// <summary>
-        /// The maximum number of controls the slave will attempt to process from a single APDU
+        /// The maximum number of controls the outstation will attempt to process from a single APDU
 	    /// </summary>
 	    public System.UInt32 maxControls;
 
 	    /// <summary>
-        /// if true, fully disables unsolicited mode as if the slave didn't support it
+        /// if true, fully disables unsolicited mode as if the outstation didn't support it
 	    /// </summary>
         public bool disableUnsol;
 
@@ -386,7 +386,7 @@ namespace DNP3.Interface
         public ClassMask unsolMask;
 
 	    /// <summary>
-        /// if true, the slave will request time synchronization on an interval
+        /// if true, the outstation will request time synchronization on an interval
 	    /// </summary>
         public bool allowTimeSync;
 
@@ -396,12 +396,12 @@ namespace DNP3.Interface
         public System.UInt32 timeSyncPeriodMs;
 
 	    /// <summary>
-        /// The amount of time the slave will wait before sending new unsolicited data (less than 0 == immediate)
+        /// The amount of time the outstation will wait before sending new unsolicited data (less than 0 == immediate)
 	    /// </summary>
         public System.UInt32 unsolPackDelayMs;
 
 	    /// <summary>
-        /// How long the slave will wait before retrying an unsuccessful unsol response
+        /// How long the outstation will wait before retrying an unsuccessful unsol response
 	    /// </summary>
         public System.UInt32 unsolRetryDelayMs;
 
@@ -411,7 +411,7 @@ namespace DNP3.Interface
         public System.UInt32 selectTimeoutMs;
 
 	    /// <summary>
-        /// The maximum fragment size the slave will use for data it sends
+        /// The maximum fragment size the outstation will use for data it sends
 	    /// </summary>
         public System.UInt32 maxFragSize;	    	    
 
@@ -604,14 +604,14 @@ namespace DNP3.Interface
     /// <summary>
     /// Aggreate configuration for an outstation stack
     /// </summary>
-    public class SlaveStackConfig
+    public class OutstationStackConfig
 	{
         /// <summary>
         /// Constructor with reasonable defaults
         /// </summary>
-        public SlaveStackConfig()
+        public OutstationStackConfig()
         {
-            this.slave = new SlaveConfig();
+            this.outstation = new OutstationConfig();
             this.buffer = new EventBufferConfig();
             this.device = new DatabaseTemplate(10, 10, 10, 10, 10, 10, 10);
             this.link = new LinkConfig(false, false);
@@ -619,9 +619,9 @@ namespace DNP3.Interface
         }
 
         /// <summary>
-        /// Slave config
+        /// Outstation config
         /// </summary>
-	    public SlaveConfig slave;
+	    public OutstationConfig outstation;
         /// <summary>
         /// Configuration of the outstation event buffer
         /// </summary>

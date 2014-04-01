@@ -22,7 +22,7 @@
 
 
 #include "MockLogSubscriber.h"
-#include "SlaveTestObject.h"
+#include "OutstationTestObject.h"
 
 #include <opendnp3/DNPErrorCodes.h>
 
@@ -35,14 +35,14 @@ using namespace openpal;
 
 TEST_CASE(SUITE("SelectCROBNotSupported"))
 {
-	SlaveConfig cfg; cfg.mDisableUnsol = true;
-	SlaveTestObject t(cfg, DatabaseTemplate());
-	t.slave.OnLowerLayerUp();
+	OutstationConfig cfg; cfg.mDisableUnsol = true;
+	OutstationTestObject t(cfg, DatabaseTemplate());
+	t.outstation.OnLowerLayerUp();
 
 	t.cmdHandler.SetResponse(CommandStatus::NOT_SUPPORTED);
 
 	// Select group 12 Var 1, count = 1, index = 3
-	t.SendToSlave("C0 03 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00");
+	t.SendToOutstation("C0 03 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00");
 	std::string response = t.Read();
 
 	// TODO - try to figure out where the IIN parameter error came from here and what conformance tests have to say
@@ -51,99 +51,99 @@ TEST_CASE(SUITE("SelectCROBNotSupported"))
 
 TEST_CASE(SUITE("SelectCROBTooMany"))
 {
-	SlaveConfig cfg; cfg.mDisableUnsol = true;
+	OutstationConfig cfg; cfg.mDisableUnsol = true;
 	cfg.mMaxControls = 1;
-	SlaveTestObject t(cfg, DatabaseTemplate());
-	t.slave.OnLowerLayerUp();
+	OutstationTestObject t(cfg, DatabaseTemplate());
+	t.outstation.OnLowerLayerUp();
 
 	// Select group 12 Var 1, count = 2, index = 3->4
-	t.SendToSlave("C0 03 0C 01 17 02 03 01 01 01 00 00 00 01 00 00 00 00 04 01 01 01 00 00 00 01 00 00 00 00");
+	t.SendToOutstation("C0 03 0C 01 17 02 03 01 01 01 00 00 00 01 00 00 00 00 04 01 01 01 00 00 00 01 00 00 00 00");
 	REQUIRE(t.Read() ==  "C0 81 80 00 0C 01 17 02 03 01 01 01 00 00 00 01 00 00 00 00 04 01 01 01 00 00 00 01 00 00 00 08"); // 0x08 status == CommandStatus::TOO_MANY_OBJS
 }
 
 TEST_CASE(SUITE("SelectOperateCROB"))
 {
-	SlaveConfig cfg; cfg.mDisableUnsol = true;
-	SlaveTestObject t(cfg, DatabaseTemplate());
-	t.slave.OnLowerLayerUp();
+	OutstationConfig cfg; cfg.mDisableUnsol = true;
+	OutstationTestObject t(cfg, DatabaseTemplate());
+	t.outstation.OnLowerLayerUp();
 
 	// Select group 12 Var 1, count = 1, index = 3
-	t.SendToSlave("C0 03 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00", SequenceInfo::OTHER);
+	t.SendToOutstation("C0 03 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00", SequenceInfo::OTHER);
 	REQUIRE(t.Read() ==  "C0 81 80 00 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00"); // 0x00 status == CommandStatus::SUCCESS
 
 	// operate
-	t.SendToSlave("C1 04 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00", SequenceInfo::CORRECT);
+	t.SendToOutstation("C1 04 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00", SequenceInfo::CORRECT);
 	REQUIRE(t.Read() ==  "C0 81 80 00 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00");
 
 }
 
 TEST_CASE(SUITE("SelectOperateCROBSameSequenceNumber"))
 {
-	SlaveConfig cfg; cfg.mDisableUnsol = true;
-	SlaveTestObject t(cfg, DatabaseTemplate());
-	t.slave.OnLowerLayerUp();
+	OutstationConfig cfg; cfg.mDisableUnsol = true;
+	OutstationTestObject t(cfg, DatabaseTemplate());
+	t.outstation.OnLowerLayerUp();
 
 	REQUIRE(0 ==  t.cmdHandler.mNumInvocations);
 
 	// Select group 12 Var 1, count = 1, index = 3
-	t.SendToSlave("C0 03 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00", SequenceInfo::OTHER);
+	t.SendToOutstation("C0 03 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00", SequenceInfo::OTHER);
 	REQUIRE(t.Read() ==  "C0 81 80 00 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00"); // 0x00 status == CommandStatus::SUCCESS
 	REQUIRE(1 ==  t.cmdHandler.mNumInvocations);
 
 
 	// operate the first time with correct sequence #
-	t.SendToSlave("C1 04 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00", SequenceInfo::CORRECT);
+	t.SendToOutstation("C1 04 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00", SequenceInfo::CORRECT);
 	REQUIRE(t.Read() ==  "C0 81 80 00 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00");
 	REQUIRE(2 ==  t.cmdHandler.mNumInvocations);
 
 	// TODO - Find this requirement in the docs
 	// operate again with same sequence number, should respond success but not really do an operation
-	t.SendToSlave("C1 04 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00", SequenceInfo::PREVIOUS);
+	t.SendToOutstation("C1 04 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00", SequenceInfo::PREVIOUS);
 	REQUIRE(t.Read() ==  "C0 81 80 00 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00");
 	REQUIRE(2 ==  t.cmdHandler.mNumInvocations);
 }
 
 TEST_CASE(SUITE("SelectGroup41Var1"))
 {
-	SlaveConfig cfg; cfg.mDisableUnsol = true;
-	SlaveTestObject t(cfg, DatabaseTemplate());
-	t.slave.OnLowerLayerUp();
+	OutstationConfig cfg; cfg.mDisableUnsol = true;
+	OutstationTestObject t(cfg, DatabaseTemplate());
+	t.outstation.OnLowerLayerUp();
 
 	// Select group 41 Var 1, count = 1, index = 3
-	t.SendToSlave("C0 03 29 01 17 01 03 00 00 00 00 00");
+	t.SendToOutstation("C0 03 29 01 17 01 03 00 00 00 00 00");
 	REQUIRE(t.Read() ==  "C0 81 80 00 29 01 17 01 03 00 00 00 00 00");
 }
 
 TEST_CASE(SUITE("SelectGroup41Var2"))
 {
-	SlaveConfig cfg; cfg.mDisableUnsol = true;
-	SlaveTestObject t(cfg, DatabaseTemplate());
-	t.slave.OnLowerLayerUp();
+	OutstationConfig cfg; cfg.mDisableUnsol = true;
+	OutstationTestObject t(cfg, DatabaseTemplate());
+	t.outstation.OnLowerLayerUp();
 
 	// Select group 41 Var 2, count = 1, index = 3
-	t.SendToSlave("C0 03 29 02 17 01 03 00 00 00");
+	t.SendToOutstation("C0 03 29 02 17 01 03 00 00 00");
 	REQUIRE(t.Read() ==  "C0 81 80 00 29 02 17 01 03 00 00 00");
 }
 
 TEST_CASE(SUITE("SelectGroup41Var3"))
 {
-	SlaveConfig cfg; cfg.mDisableUnsol = true;
-	SlaveTestObject t(cfg, DatabaseTemplate());
-	t.slave.OnLowerLayerUp();
+	OutstationConfig cfg; cfg.mDisableUnsol = true;
+	OutstationTestObject t(cfg, DatabaseTemplate());
+	t.outstation.OnLowerLayerUp();
 
 	// Select group 41 Var 3, count = 1, index = 1, value = 100.0
-	t.SendToSlave("C0 03 29 03 17 01 01 00 00 C8 42 00");
+	t.SendToOutstation("C0 03 29 03 17 01 01 00 00 C8 42 00");
 	REQUIRE(t.Read() ==  "C0 81 80 00 29 03 17 01 01 00 00 C8 42 00");
 }
 
 TEST_CASE(SUITE("SelectGroup41Var4"))
 {
-	SlaveConfig cfg; cfg.mDisableUnsol = true;
-	SlaveTestObject t(cfg, DatabaseTemplate());
-	t.slave.OnLowerLayerUp();
+	OutstationConfig cfg; cfg.mDisableUnsol = true;
+	OutstationTestObject t(cfg, DatabaseTemplate());
+	t.outstation.OnLowerLayerUp();
 
 	// Select group 41 Var 4, count = 1, index = 1, value = 100.0
-	t.SendToSlave("C0 03 29 04 17 01 01 00 00 00 00 00 00 59 40 00");
+	t.SendToOutstation("C0 03 29 04 17 01 01 00 00 00 00 00 00 59 40 00");
 	REQUIRE(t.Read() ==  "C0 81 80 00 29 04 17 01 01 00 00 00 00 00 00 59 40 00");
 }
 
@@ -151,108 +151,108 @@ TEST_CASE(SUITE("SelectGroup41Var4"))
 
 TEST_CASE(SUITE("SelectOperateGroup41Var1"))
 {
-	SlaveConfig cfg;  cfg.mDisableUnsol = true;
-	SlaveTestObject t(cfg, DatabaseTemplate());
-	t.slave.OnLowerLayerUp();
+	OutstationConfig cfg;  cfg.mDisableUnsol = true;
+	OutstationTestObject t(cfg, DatabaseTemplate());
+	t.outstation.OnLowerLayerUp();
 
 	// Select group 41 Var 1, count = 1, index = 3
-	t.SendToSlave("C0 03 29 01 17 01 03 00 00 00 00 00");
+	t.SendToOutstation("C0 03 29 01 17 01 03 00 00 00 00 00");
 	REQUIRE(t.Read() ==  "C0 81 80 00 29 01 17 01 03 00 00 00 00 00"); // 0x00 status == CommandStatus::SUCCESS
 
 	// Select group 41 Var 1, count = 1, index = 3
-	t.SendToSlave("C1 04 29 01 17 01 03 00 00 00 00 00");
+	t.SendToOutstation("C1 04 29 01 17 01 03 00 00 00 00 00");
 	REQUIRE(t.Read() ==  "C0 81 80 00 29 01 17 01 03 00 00 00 00 00"); // 0x00 status == CommandStatus::SUCCESS
 
 }
 
 TEST_CASE(SUITE("SelectOperateGroup41Var2"))
 {
-	SlaveConfig cfg; cfg.mDisableUnsol = true;
-	SlaveTestObject t(cfg, DatabaseTemplate());
-	t.slave.OnLowerLayerUp();
+	OutstationConfig cfg; cfg.mDisableUnsol = true;
+	OutstationTestObject t(cfg, DatabaseTemplate());
+	t.outstation.OnLowerLayerUp();
 
 	// Select group 41 Var 2, count = 1, index = 3
-	t.SendToSlave("C0 03 29 02 17 01 03 00 00 00");
+	t.SendToOutstation("C0 03 29 02 17 01 03 00 00 00");
 	REQUIRE(t.Read() ==  "C0 81 80 00 29 02 17 01 03 00 00 00"); // 0x00 status == CommandStatus::SUCCESS
 
 
 	// Select group 41 Var 1, count = 1, index = 3
-	t.SendToSlave("C1 04 29 02 17 01 03 00 00 00");
+	t.SendToOutstation("C1 04 29 02 17 01 03 00 00 00");
 	REQUIRE(t.Read() ==  "C0 81 80 00 29 02 17 01 03 00 00 00"); // 0x00 status == CommandStatus::SUCCESS
 
 }
 
 TEST_CASE(SUITE("SelectOperateGroup41Var3"))
 {
-	SlaveConfig cfg; cfg.mDisableUnsol = true;
-	SlaveTestObject t(cfg, DatabaseTemplate());
-	t.slave.OnLowerLayerUp();
+	OutstationConfig cfg; cfg.mDisableUnsol = true;
+	OutstationTestObject t(cfg, DatabaseTemplate());
+	t.outstation.OnLowerLayerUp();
 
 	// Select group 41 Var 3, count = 1, index = 1
-	t.SendToSlave("C0 03 29 03 17 01 01 00 00 C8 42 00");
+	t.SendToOutstation("C0 03 29 03 17 01 01 00 00 C8 42 00");
 	REQUIRE(t.Read() ==  "C0 81 80 00 29 03 17 01 01 00 00 C8 42 00"); // 0x00 status == CommandStatus::SUCCESS
 
 	// operate group 41 Var 3, count = 1, index = 1
-	t.SendToSlave("C1 04 29 03 17 01 01 00 00 C8 42 00");
+	t.SendToOutstation("C1 04 29 03 17 01 01 00 00 C8 42 00");
 	REQUIRE(t.Read() ==  "C0 81 80 00 29 03 17 01 01 00 00 C8 42 00"); // 0x00 status == CommandStatus::SUCCESS
 }
 
 TEST_CASE(SUITE("SelectOperateGroup41Var4"))
 {
-	SlaveConfig cfg; cfg.mDisableUnsol = true;
-	SlaveTestObject t(cfg, DatabaseTemplate());
-	t.slave.OnLowerLayerUp();
+	OutstationConfig cfg; cfg.mDisableUnsol = true;
+	OutstationTestObject t(cfg, DatabaseTemplate());
+	t.outstation.OnLowerLayerUp();
 
 	// Select group 41 Var 4, count = 1, index = 1
-	t.SendToSlave("C0 03 29 04 17 01 01 00 00 00 00 00 00 59 40 00");
+	t.SendToOutstation("C0 03 29 04 17 01 01 00 00 00 00 00 00 59 40 00");
 	REQUIRE(t.Read() ==  "C0 81 80 00 29 04 17 01 01 00 00 00 00 00 00 59 40 00"); // 0x00 status == CommandStatus::SUCCESS
 
 
 	// operate group 41 Var 4, count = 1, index = 1
-	t.SendToSlave("C1 04 29 04 17 01 01 00 00 00 00 00 00 59 40 00");
+	t.SendToOutstation("C1 04 29 04 17 01 01 00 00 00 00 00 00 59 40 00");
 	REQUIRE(t.Read() ==  "C0 81 80 00 29 04 17 01 01 00 00 00 00 00 00 59 40 00"); // 0x00 status == CommandStatus::SUCCESS
 }
 
 TEST_CASE(SUITE("DirectOperateGroup41Var1"))
 {
-	SlaveConfig cfg; cfg.mDisableUnsol = true;
-	SlaveTestObject t(cfg, DatabaseTemplate());
-	t.slave.OnLowerLayerUp();
+	OutstationConfig cfg; cfg.mDisableUnsol = true;
+	OutstationTestObject t(cfg, DatabaseTemplate());
+	t.outstation.OnLowerLayerUp();
 
 	// Select group 41 Var 1, count = 1, index = 3
-	t.SendToSlave("C1 05 29 01 17 01 03 00 00 00 00 00");
+	t.SendToOutstation("C1 05 29 01 17 01 03 00 00 00 00 00");
 	REQUIRE(t.Read() ==  "C0 81 80 00 29 01 17 01 03 00 00 00 00 00"); // 0x00 status == CommandStatus::SUCCESS
 }
 TEST_CASE(SUITE("DirectOperateGroup41Var2"))
 {
-	SlaveConfig cfg; cfg.mDisableUnsol = true;
-	SlaveTestObject t(cfg, DatabaseTemplate());
-	t.slave.OnLowerLayerUp();
+	OutstationConfig cfg; cfg.mDisableUnsol = true;
+	OutstationTestObject t(cfg, DatabaseTemplate());
+	t.outstation.OnLowerLayerUp();
 
 	// Select group 41 Var 1, count = 1, index = 3
-	t.SendToSlave("C1 05 29 02 17 01 03 00 00 00");
+	t.SendToOutstation("C1 05 29 02 17 01 03 00 00 00");
 	REQUIRE(t.Read() ==  "C0 81 80 00 29 02 17 01 03 00 00 00"); // 0x00 status == CommandStatus::SUCCESS
 
 }
 TEST_CASE(SUITE("DirectOperateGroup41Var3"))
 {
-	SlaveConfig cfg; cfg.mDisableUnsol = true;
-	SlaveTestObject t(cfg, DatabaseTemplate());
-	t.slave.OnLowerLayerUp();
+	OutstationConfig cfg; cfg.mDisableUnsol = true;
+	OutstationTestObject t(cfg, DatabaseTemplate());
+	t.outstation.OnLowerLayerUp();
 
 	// operate group 41 Var 3, count = 1, index = 1
-	t.SendToSlave("C1 05 29 03 17 01 01 00 00 C8 42 00");
+	t.SendToOutstation("C1 05 29 03 17 01 01 00 00 C8 42 00");
 	REQUIRE(t.Read() ==  "C0 81 80 00 29 03 17 01 01 00 00 C8 42 00"); // 0x00 status == CommandStatus::SUCCESS
 
 }
 TEST_CASE(SUITE("DirectOperateGroup41Var4"))
 {
-	SlaveConfig cfg; cfg.mDisableUnsol = true;
-	SlaveTestObject t(cfg, DatabaseTemplate());
-	t.slave.OnLowerLayerUp();
+	OutstationConfig cfg; cfg.mDisableUnsol = true;
+	OutstationTestObject t(cfg, DatabaseTemplate());
+	t.outstation.OnLowerLayerUp();
 
 	// operate group 41 Var 4, count = 1, index = 1
-	t.SendToSlave("C1 05 29 04 17 01 01 00 00 00 00 00 00 59 40 00");
+	t.SendToOutstation("C1 05 29 04 17 01 01 00 00 00 00 00 00 59 40 00");
 	REQUIRE(t.Read() ==  "C0 81 80 00 29 04 17 01 01 00 00 00 00 00 00 59 40 00"); // 0x00 status == CommandStatus::SUCCESS
 }
 

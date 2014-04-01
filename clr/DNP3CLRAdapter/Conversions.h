@@ -15,7 +15,7 @@
 #include <opendnp3/master/CommandResponse.h>
 #include <opendnp3/master/MasterStackConfig.h>
 
-#include <opendnp3/outstation/SlaveStackConfig.h>
+#include <opendnp3/outstation/OutstationStackConfig.h>
 
 
 
@@ -114,10 +114,10 @@ public:
 	static opendnp3::LinkConfig convertConfig(LinkConfig^ config);
 	static opendnp3::AppConfig convertConfig(AppConfig^ config);
 	static opendnp3::MasterConfig convertConfig(MasterConfig^ config);
-	static opendnp3::SlaveConfig convertConfig(SlaveConfig^ config);
+	static opendnp3::OutstationConfig convertConfig(OutstationConfig^ config);
 	static opendnp3::DatabaseConfiguration convertConfig(DatabaseTemplate^ config);
 	static opendnp3::MasterStackConfig convertConfig(MasterStackConfig^ config);
-	static opendnp3::SlaveStackConfig convertConfig(SlaveStackConfig^ config);
+	static opendnp3::OutstationStackConfig convertConfig(OutstationStackConfig^ config);
 };
 
 }
