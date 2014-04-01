@@ -75,13 +75,15 @@ int main(int argc, char* argv[])
 	// The master config object for a outstation. The default are
 	// useable, but understanding the options are important.
 	OutstationStackConfig stackConfig;
-	stackConfig.database = DatabaseConfiguration(DatabaseTemplate::AllTypes(10));
+	stackConfig.dbTemplate = DatabaseTemplate::AllTypes(10);
 	stackConfig.outstation.mDisableUnsol = true;
 
 	// Create a new outstation with a log level, command handler, and
 	// config info this	returns a thread-safe interface used for
 	// updating the outstation's database.
 	auto pOutstation = pServer->AddOutstation("outstation", SuccessCommandHandler::Inst(), NullTimeWriteHandler::Inst(), stackConfig);
+
+	// TODO - reach in and configure the database here before it is enabled
 
 	// Enable the outstation and start communications
 	pOutstation->Enable();

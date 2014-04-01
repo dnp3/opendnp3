@@ -23,7 +23,6 @@
 
 #include "opendnp3/outstation/IOutstation.h"
 #include "opendnp3/outstation/OutstationStackConfig.h"
-#include "opendnp3/outstation/DatabaseConfiguration.h"
 #include "opendnp3/outstation/Database.h"
 #include "opendnp3/outstation/Outstation.h"
 

@@ -471,9 +471,6 @@
     <ClInclude Include="src\opendnp3\outstation\Database.h">
       <Filter>Header\outstation</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\outstation\DatabaseConfiguration.h">
-      <Filter>Header\outstation</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\outstation\DatabaseTemplate.h">
       <Filter>Header\outstation</Filter>
     </ClInclude>
@@ -885,9 +882,6 @@
       <Filter>Source\outstation</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\outstation\Database.cpp">
-      <Filter>Source\outstation</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\outstation\DatabaseConfiguration.cpp">
       <Filter>Source\outstation</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\outstation\DynamicallyAllocatedDatabase.cpp">

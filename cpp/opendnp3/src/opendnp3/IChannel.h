@@ -83,7 +83,7 @@ public:
 	/**
 	*  @return The current logger settings for this channel
 	*/
-	virtual openpal::LogFilters GetLogFilters() const = 0;
+	virtual openpal::LogFilters GetLogFilters() const = 0;	
 
 	/**
 	*  @param filters Adjust the filters to this value

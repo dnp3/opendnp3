@@ -46,34 +46,6 @@ DynamicallyAllocatedDatabase::DynamicallyAllocatedDatabase(const DatabaseTemplat
 
 }
 
-void DynamicallyAllocatedDatabase::Configure(const DatabaseConfiguration& config)
-{
-	// TODO, load all this configuration
-
-	for(auto i = 0; i < config.binaryMetadata.size(); ++i)
-	{
-		binaryMetadata[i].clazz = config.binaryMetadata[i].EventClass;
-	}
-
-	for (auto i = 0; i < config.analogMetadata.size(); ++i)
-	{
-		analogMetadata[i].clazz = config.analogMetadata[i].EventClass;
-		analogMetadata[i].deadband = config.analogMetadata[i].Deadband;
-	}
-
-	for(auto i = 0; i < config.counterMetadata.size(); ++i)
-	{
-		counterMetadata[i].clazz = config.counterMetadata[i].EventClass;
-		counterMetadata[i].deadband = config.counterMetadata[i].Deadband;
-	}
-
-	for(auto i = 0; i < config.frozenCounterMetadata.size(); ++i)
-	{
-		frozenCounterMetadata[i].clazz = config.frozenCounterMetadata[i].EventClass;
-		frozenCounterMetadata[i].deadband = config.frozenCounterMetadata[i].Deadband;
-	}
-}
-
 StaticDataFacade DynamicallyAllocatedDatabase::GetFacade()
 {
 	BinaryCollection binaries(binaryValues.ToIndexable(), binaryMetadata.ToIndexable());

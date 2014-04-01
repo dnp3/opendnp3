@@ -346,6 +346,7 @@ opendnp3::OutstationConfig Conversions::convertConfig(OutstationConfig^ config)
 	return sc;
 }
 
+/*
 opendnp3::EventPointRecord Conversions::convertRecord(EventPointRecord^ epr)
 {
 	return opendnp3::EventPointRecord(static_cast<opendnp3::PointClass>(epr->pointClass));
@@ -360,6 +361,7 @@ opendnp3::DeadbandPointRecord<uint32_t> Conversions::convertRecord(DeadbandEvent
 {
 	return opendnp3::DeadbandPointRecord<uint32_t>(static_cast<opendnp3::PointClass>(epr->pointClass), epr->deadband);
 }
+
 
 opendnp3::DatabaseConfiguration Conversions::convertConfig(DatabaseTemplate^ config)
 {
@@ -382,6 +384,7 @@ opendnp3::DatabaseConfiguration Conversions::convertConfig(DatabaseTemplate^ con
 
 	return dev;
 }
+*/
 
 opendnp3::MasterConfig Conversions::convertConfig(MasterConfig^ config)
 {
@@ -407,8 +410,8 @@ opendnp3::MasterStackConfig Conversions::convertConfig(MasterStackConfig^ config
 
 opendnp3::OutstationStackConfig Conversions::convertConfig(OutstationStackConfig^ config)
 {
-	auto temp = convertConfig(config->device);
-	opendnp3::OutstationStackConfig cfg(temp);
+	//auto temp = convertConfig(config->device->);
+	opendnp3::OutstationStackConfig cfg(opendnp3::DatabaseTemplate::AllTypes(10)); // todo make .NET outstation db configurable
 	cfg.eventBuffer = convertConfig(config->buffer);
 	cfg.outstation = convertConfig(config->outstation);
 	cfg.app = convertConfig(config->app);

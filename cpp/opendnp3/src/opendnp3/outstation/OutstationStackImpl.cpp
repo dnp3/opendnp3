@@ -32,14 +32,13 @@ OutstationStackImpl::OutstationStackImpl(
     const StackActionHandler& handler) :
 	IOutstation(logger, apExecutor, config.app, config.link, handler),
 	pExecutor(apExecutor),
-	databaseBuffers(config.database.GetTemplate()),
+	databaseBuffers(config.dbTemplate),
 	eventBuffers(config.eventBuffer),
 	mutex(),
 	database(databaseBuffers.GetFacade(), &mutex),
 	outstation(logger.GetSubLogger("outstation"), &appStack.application, apExecutor, apTimeWriteHandler, &database, eventBuffers.GetFacade(), apCmdHandler, config.outstation)
 {
-	appStack.application.SetUser(&outstation);
-	databaseBuffers.Configure(config.database);
+	appStack.application.SetUser(&outstation);	
 }
 
 IMeasurementLoader* OutstationStackImpl::GetLoader()

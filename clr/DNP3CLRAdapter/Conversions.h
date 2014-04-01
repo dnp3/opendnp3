@@ -107,15 +107,17 @@ public:
 	static opendnp3::EventAnalogResponse convert(EventAnalogResponse rsp);
 	static opendnp3::EventCounterResponse convert(EventCounterResponse rsp);
 
+	/*
 	static opendnp3::EventPointRecord convertRecord(EventPointRecord^ epr);
 	static opendnp3::DeadbandPointRecord<double> convertRecord(DeadbandEventPointRecord<double>^ epr);
 	static opendnp3::DeadbandPointRecord<uint32_t> convertRecord(DeadbandEventPointRecord<System::UInt32>^ epr);
+	*/
 
 	static opendnp3::LinkConfig convertConfig(LinkConfig^ config);
 	static opendnp3::AppConfig convertConfig(AppConfig^ config);
 	static opendnp3::MasterConfig convertConfig(MasterConfig^ config);
 	static opendnp3::OutstationConfig convertConfig(OutstationConfig^ config);
-	static opendnp3::DatabaseConfiguration convertConfig(DatabaseTemplate^ config);
+	//static opendnp3::DatabaseConfiguration convertConfig(DatabaseTemplate^ config);
 	static opendnp3::MasterStackConfig convertConfig(MasterStackConfig^ config);
 	static opendnp3::OutstationStackConfig convertConfig(OutstationStackConfig^ config);
 };

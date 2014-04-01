@@ -22,8 +22,8 @@
 #define __SLAVE_STACK_CONFIG_H_
 
 #include "opendnp3/outstation/OutstationConfig.h"
-#include "opendnp3/outstation/DatabaseConfiguration.h"
 #include "opendnp3/outstation/EventBufferConfig.h"
+#include "opendnp3/outstation/DatabaseTemplate.h"
 #include "opendnp3/app/AppConfig.h"
 #include "opendnp3/link/LinkConfig.h"
 
@@ -36,8 +36,8 @@ namespace opendnp3
 struct OutstationStackConfig
 {
 
-	OutstationStackConfig(const DatabaseConfiguration& dbConfig) :
-		database(dbConfig),
+	OutstationStackConfig(const DatabaseTemplate& dbTemplate_) :
+		dbTemplate(dbTemplate_),
 		eventBuffer(),
 		link(false, false),
 		app(false)
@@ -46,14 +46,14 @@ struct OutstationStackConfig
 	}
 
 	OutstationStackConfig() :
-		database(),
+		dbTemplate(),
 		eventBuffer(),
 		link(false, false),
 		app(false)
 	{}
 
 	// Configuration of the database
-	DatabaseConfiguration database;
+	DatabaseTemplate dbTemplate;
 	// Configuration of event buffer
 	EventBufferConfig eventBuffer;
 	/// Outstation config

@@ -21,8 +21,8 @@
 #ifndef __DYNAMICICALLY_ALLOCATED_DATABASE_H_
 #define __DYNAMICICALLY_ALLOCATED_DATABASE_H_
 
-#include "StaticDataFacade.h"
-#include "DatabaseConfiguration.h"
+#include "opendnp3/outstation/StaticDataFacade.h"
+#include "opendnp3/outstation/DatabaseTemplate.h"
 
 #include <openpal/DynamicArray.h>
 
@@ -35,9 +35,7 @@ public:
 
 	DynamicallyAllocatedDatabase(const DatabaseTemplate& databaseTemplate);
 
-	StaticDataFacade GetFacade();
-
-	void Configure(const DatabaseConfiguration& dataTemplate);
+	StaticDataFacade GetFacade();	
 
 private:
 
