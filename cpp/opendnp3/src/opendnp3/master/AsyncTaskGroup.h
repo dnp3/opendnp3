@@ -28,7 +28,6 @@
 
 #include "opendnp3/master/AsyncTaskInterfaces.h"
 
-#include <set>
 #include <queue>
 #include <string>
 

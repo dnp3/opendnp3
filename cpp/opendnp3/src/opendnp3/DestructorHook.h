@@ -21,7 +21,6 @@
 #ifndef __DESTRUCTOR_HOOK_H_
 #define __DESTRUCTOR_HOOK_H_
 
-#include <vector>
 #include <functional>
 
 namespace openpal
@@ -48,11 +47,11 @@ public:
 	* Adds a destructor callback
 	* @param aHook Callback that will be invoked when this class's destructor is called.
 	*/
-	void AddDestructorHook(std::function<void ()> aHook);
+	void SetDestructorHook(const std::function<void ()>& hook);
 
 private:
 	openpal::IExecutor* mpExecutor;
-	std::vector<std::function<void ()>> mHooks;
+	std::function<void()> hook;
 };
 
 }

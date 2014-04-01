@@ -31,29 +31,41 @@ TrackingTaskGroup::TrackingTaskGroup(AsyncTaskGroup* apGroup) : mpGroup(apGroup)
 
 void TrackingTaskGroup::ResetTasks(int aMask)
 {
-	for(AsyncTaskBase * p : mTaskVec)
-	{
-		if(!p->IsRunning() && (p->GetFlags() & aMask)) p->Reset();
-	}
+	tasks.foreach(
+		[&](AsyncTaskBase * p)
+		{
+			if (!p->IsRunning() && (p->GetFlags() & aMask))
+			{
+				p->Reset();
+			}
+		}
+	);	
 }
 
 TrackingTaskGroup::~TrackingTaskGroup()
 {
 	//remove all the tasks that were created
-	for(auto pTask : mTaskVec) mpGroup->Remove(pTask);
+	tasks.foreach(
+		[this](AsyncTaskBase * pTask)
+		{
+			mpGroup->Remove(pTask);
+		}
+	);	
 }
 
 AsyncTaskBase* TrackingTaskGroup::Add(openpal::TimeDuration aPeriod, openpal::TimeDuration aRetryDelay, int aPriority, const TaskHandler& arCallback, const std::string& arName)
 {
+	assert(!tasks.IsFull());
 	AsyncTaskBase* pTask = mpGroup->Add(aPeriod, aRetryDelay, aPriority, arCallback, arName);
-	mTaskVec.push_back(pTask);
+	tasks.Add(pTask);
 	return pTask;
 }
 
 AsyncTaskContinuous* TrackingTaskGroup::AddContinuous(int aPriority, const TaskHandler& arCallback, const std::string& arName)
 {
+	assert(!tasks.IsFull());
 	AsyncTaskContinuous* pTask = mpGroup->AddContinuous(aPriority, arCallback, arName);
-	mTaskVec.push_back(pTask);
+	tasks.Add(pTask);
 	return pTask;
 }
 

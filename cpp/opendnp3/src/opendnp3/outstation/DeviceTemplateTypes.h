@@ -21,8 +21,6 @@
 #ifndef __DEVICE_TEMPLATE_TYPES_H_
 #define __DEVICE_TEMPLATE_TYPES_H_
 
-#include <vector>
-
 #include "opendnp3/app/PointClass.h"
 
 namespace opendnp3

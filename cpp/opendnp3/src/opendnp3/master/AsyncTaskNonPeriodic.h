@@ -26,9 +26,6 @@
 
 #include <openpal/Uncopyable.h>
 
-#include <vector>
-
-
 namespace opendnp3
 {
 

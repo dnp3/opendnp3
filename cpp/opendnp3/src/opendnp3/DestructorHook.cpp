@@ -37,19 +37,22 @@ DestructorHook::DestructorHook() : mpExecutor(nullptr)
 
 DestructorHook::~DestructorHook()
 {
-	for(auto func : mHooks)
+	if (hook)
 	{
-		if(mpExecutor == nullptr) func();
-		else mpExecutor->Post([func]()
+		if (mpExecutor == nullptr)
 		{
-			func();
-		});
+			hook();
+		}
+		else
+		{
+			mpExecutor->Post([this]() { hook(); });
+		}
 	}
 }
 
-void DestructorHook::AddDestructorHook(std::function<void ()> aHook)
+void DestructorHook::SetDestructorHook(const std::function<void ()>& hook_)
 {
-	mHooks.push_back(aHook);
+	hook = hook_;
 }
 
 }

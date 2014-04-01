@@ -29,8 +29,6 @@
 #include "opendnp3/gen/ChannelState.h"
 #include "opendnp3/link/IOpenDelayStrategy.h"
 
-#include <set>
-
 namespace openpal
 {
 class IPhysicalLayerAsync;

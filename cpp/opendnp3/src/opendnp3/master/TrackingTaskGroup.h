@@ -21,14 +21,12 @@
 #ifndef __TRACKING_TASK_GROUP_H_
 #define __TRACKING_TASK_GROUP_H_
 
-
 #include <openpal/TimeDuration.h>
-
 #include <openpal/Uncopyable.h>
+#include <openpal/StaticList.h>
 
 #include "AsyncTaskInterfaces.h"
 
-#include <set>
 #include <queue>
 #include <string>
 
@@ -60,8 +58,8 @@ private:
 
 	AsyncTaskGroup* mpGroup;
 
-	typedef std::vector<AsyncTaskBase*> TaskVec;
-	TaskVec mTaskVec;
+	// TODO make this size configurable
+	openpal::StaticList<AsyncTaskBase*, uint32_t, 100> tasks;
 };
 
 }
