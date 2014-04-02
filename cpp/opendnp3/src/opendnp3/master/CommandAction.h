@@ -56,13 +56,12 @@ class CommandAction : public CommandErasure
 
 	CommandAction(const Lambda& lambda) : CommandErasure(sizeof(Lambda), &ApplyLambda)
 	{
-		*reinterpret_cast<Lambda*>(bytes) = lambda;
+		new (this->bytes) Lambda(lambda);
 	}
 
 	static void ApplyLambda(ICommandProcessor* pProcessor, uint8_t* pBytes)
 	{
-		auto pLambda = reinterpret_cast<Lambda*>(pBytes);
-		(*pLambda)(pProcessor);
+		(*reinterpret_cast<Lambda*>(pBytes))(pProcessor);
 	}	
 };
 

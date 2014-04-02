@@ -25,6 +25,8 @@
 #include "AsyncTaskContinuous.h"
 #include "AsyncTaskGroup.h"
 
+#include <openpal/Function1.h>
+
 using namespace openpal;
 
 namespace opendnp3
@@ -55,11 +57,13 @@ void MasterSchedule::ResetStartupTasks()
 
 void MasterSchedule::Init(const MasterConfig& arCfg)
 {
+	auto integrityTask = [this](ITask* pTask){ this->mpMaster->IntegrityPoll(pTask); };
+
 	mpIntegrityPoll = mTracking.Add(
 	                      arCfg.IntegrityRate,
 	                      arCfg.TaskRetryRate,
 	                      AMP_POLL,
-						  Bind<AsyncTaskBase*>([this](ITask* pTask){ this->mpMaster->IntegrityPoll(pTask); }),
+			      Bind1<AsyncTaskBase*>(integrityTask),
 	                      "Integrity Poll");
 
 	mpIntegrityPoll->SetFlags(ONLINE_ONLY_TASKS | START_UP_TASKS);
@@ -71,13 +75,13 @@ void MasterSchedule::Init(const MasterConfig& arCfg)
 		 * says that UNSOL should be disabled before an integrity scan
 		 * is done.
 		 */
-		auto disableUnsol = Bind<AsyncTaskBase*>([this](ITask* pTask){ this->mpMaster->ChangeUnsol(pTask, false, CLASS_1 | CLASS_2 | CLASS_3); });
+		auto disableUnsol = [this](ITask* pTask){ this->mpMaster->ChangeUnsol(pTask, false, CLASS_1 | CLASS_2 | CLASS_3); };
 	
 		AsyncTaskBase* pUnsolDisable = mTracking.Add(
 		                                   TimeDuration::Min(),
 		                                   arCfg.TaskRetryRate,
 		                                   AMP_UNSOL_CHANGE,
-										   disableUnsol,
+						   Bind1<AsyncTaskBase*>(disableUnsol),
 		                                   "Unsol Disable");
 
 		pUnsolDisable->SetFlags(ONLINE_ONLY_TASKS | START_UP_TASKS);
@@ -85,12 +89,12 @@ void MasterSchedule::Init(const MasterConfig& arCfg)
 
 		if (arCfg.EnableUnsol)
 		{
-			auto enableUnsol = Bind<AsyncTaskBase*>([this](ITask* pTask){ this->mpMaster->ChangeUnsol(pTask, true, CLASS_1 | CLASS_2 | CLASS_3); });
+			auto enableUnsol = [this](ITask* pTask){ this->mpMaster->ChangeUnsol(pTask, true, CLASS_1 | CLASS_2 | CLASS_3); };
 
 			AsyncTaskBase* pUnsolEnable = mTracking.Add(TimeDuration::Min(),
 			                              arCfg.TaskRetryRate,
 			                              AMP_UNSOL_CHANGE,
-			                              enableUnsol,
+			                              Bind1<AsyncTaskBase*>(enableUnsol),
 			                              "Unsol Enable");
 
 			pUnsolEnable->SetFlags(ONLINE_ONLY_TASKS | START_UP_TASKS);
@@ -99,20 +103,29 @@ void MasterSchedule::Init(const MasterConfig& arCfg)
 	}
 
 	/* Tasks are executed when the master is is idle */
+	{
+	auto lambda = [this](ITask* pTask){ mpMaster->ProcessCommand(pTask); };
 	mpCommandTask = mTracking.AddContinuous(
 	                    AMP_COMMAND,
-						Bind<AsyncTaskBase*>([this](ITask* pTask){ mpMaster->ProcessCommand(pTask); }),	                    
+			    Bind1<AsyncTaskBase*>(lambda),	                    
 	                    "Command");
+	}
 
+	{
+	auto lambda = [this](ITask* pTask){ mpMaster->SyncTime(pTask); };
 	mpTimeTask = mTracking.AddContinuous(
 	                 AMP_TIME_SYNC,
-					 Bind<AsyncTaskBase*>([this](ITask* pTask){ mpMaster->SyncTime(pTask); }),
+			 Bind1<AsyncTaskBase*>(lambda),
 	                 "TimeSync");
+	}
 
+	{
+	auto lambda = [this](ITask* pTask){ mpMaster->WriteIIN(pTask); };
 	mpClearRestartTask = mTracking.AddContinuous(
 	                         AMP_CLEAR_RESTART,
-							 Bind<AsyncTaskBase*>([this](ITask* pTask){ mpMaster->WriteIIN(pTask); }),
+				 Bind1<AsyncTaskBase*>(lambda),
 	                         "Clear IIN");
+	}
 
 	mpTimeTask->SetFlags(ONLINE_ONLY_TASKS);
 	mpClearRestartTask->SetFlags(ONLINE_ONLY_TASKS);
@@ -121,10 +134,12 @@ void MasterSchedule::Init(const MasterConfig& arCfg)
 
 AsyncTaskBase* MasterSchedule::AddClassScan(int classMask, TimeDuration aScanRate, TimeDuration aRetryRate)
 {
-	auto pClassScan = mTracking.Add(		aScanRate,
+	auto lambda = [this, classMask](ITask* pTask){ mpMaster->EventPoll(pTask, classMask); };
+
+	auto pClassScan = mTracking.Add(	aScanRate,
 	                                        aRetryRate,
 	                                        AMP_POLL,
-											Bind<AsyncTaskBase*>([this, classMask](ITask* pTask){ mpMaster->EventPoll(pTask, classMask); }),
+						Bind1<AsyncTaskBase*>(lambda),
 	                                        "Class Scan");
 
 	pClassScan->SetFlags(ONLINE_ONLY_TASKS);

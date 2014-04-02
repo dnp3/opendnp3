@@ -75,7 +75,8 @@ private:
 	{		
 		auto lambda = [command, index, pCallback](ICommandProcessor* pProcessor) { pProcessor->SelectAndOperate(command, index, pCallback); };
 		auto erasure = CreateAction(lambda);
-		pExecutor->PostLambda([erasure, this, pCallback](){ this->Enque(erasure, pCallback); });
+		auto enque = [erasure, this, pCallback](){ this->Enque(erasure, pCallback); };
+		pExecutor->PostLambda(enque);
 	}
 
 	template <class T>
@@ -83,7 +84,8 @@ private:
 	{		
 		auto lambda = [command, index, pCallback](ICommandProcessor* pProcessor) { pProcessor->DirectOperate(command, index, pCallback); };
 		auto erasure = CreateAction(lambda);
-		pExecutor->PostLambda([erasure, this, pCallback](){ this->Enque(erasure, pCallback); });
+		auto enque = [erasure, this, pCallback](){ this->Enque(erasure, pCallback); };
+		pExecutor->PostLambda(enque);
 	}
 };
 

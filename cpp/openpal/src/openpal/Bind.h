@@ -35,16 +35,14 @@ class LambdaRunnable : public Runnable
 
 	LambdaRunnable(Lambda& lambda) : Runnable(&RunLambda, sizeof(Lambda))
 	{
-		auto pLambda = reinterpret_cast<Lambda*>(bytes);
-		*pLambda = lambda;
+		new(bytes) Lambda(lambda); // use placement new
 	}
 
 	private:
 
 	static void RunLambda(const uint8_t* pBuffer)
 	{
-		auto pLambda = reinterpret_cast<const Lambda*>(pBuffer);
-		(*pLambda)();
+		(*reinterpret_cast<const Lambda*>(pBuffer))();		
 	}
 };
 

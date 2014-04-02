@@ -35,7 +35,7 @@ public:
 
 	Runnable();
 
-	Runnable& Runnable::operator=(const Runnable& other);
+	Runnable& operator=(const Runnable& other);
 
 	void Run() const;
 

@@ -68,7 +68,8 @@ void PhysicalLayerAsyncSerial::DoOpen()
 	}
 
 	//use post to simulate an async open operation
-	executor.PostLambda([this, ec]() { this->OnOpenCallback(ec); });
+	auto lambda = [this, ec]() { this->OnOpenCallback(ec); };
+	executor.PostLambda(lambda);
 }
 
 void PhysicalLayerAsyncSerial::DoClose()

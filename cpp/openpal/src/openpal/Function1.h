@@ -18,8 +18,11 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
+
 #ifndef __FUNCTION1_H_
 #define __FUNCTION1_H_
+
+#include <cstring>
 
 namespace openpal
 {
@@ -83,10 +86,9 @@ class LambdaFunction1 : public Function1<T>
 
 public:
 
-	LambdaFunction1(Lambda& lambda) : Function1(&RunLambda, sizeof(Lambda))
+	LambdaFunction1(Lambda& lambda) : Function1<T>(&RunLambda, sizeof(Lambda))
 	{
-		auto pLambda = reinterpret_cast<Lambda*>(bytes);
-		*pLambda = lambda;
+		new (this->bytes) Lambda(lambda);
 	}
 
 private:
@@ -99,7 +101,7 @@ private:
 };
 
 template <class T, class Lambda>
-Function1<T> Bind(Lambda& lambda)
+Function1<T> Bind1(Lambda& lambda)
 {
 	return LambdaFunction1<T, Lambda>(lambda);
 }

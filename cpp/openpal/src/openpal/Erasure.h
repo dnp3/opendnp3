@@ -22,7 +22,7 @@
 #define __ERASURE_H_
 
 #include <cstdint>
-#include <memory>
+#include <cstring>
 
 namespace openpal
 {

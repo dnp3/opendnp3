@@ -61,10 +61,8 @@ void PhysicalLayerAsyncTCPServer::DoOpen()
 		auto address = asio::ip::address::from_string(localEndpointString, ec);
 		if (ec)
 		{
-			this->GetExecutor()->PostLambda([this, ec]()
-			{
-				this->OnOpenCallback(ec);
-			});
+			auto lambda = [this, ec]() { this->OnOpenCallback(ec); };
+			this->GetExecutor()->PostLambda(lambda);
 		}
 		else
 		{
@@ -72,10 +70,8 @@ void PhysicalLayerAsyncTCPServer::DoOpen()
 			acceptor.open(localEndpoint.protocol(), ec);
 			if (ec)
 			{
-				this->GetExecutor()->PostLambda([this, ec]()
-				{
-					this->OnOpenCallback(ec);
-				});
+				auto lambda = [this, ec]() { this->OnOpenCallback(ec); };
+				this->GetExecutor()->PostLambda(lambda);
 			}
 			else
 			{
@@ -83,20 +79,16 @@ void PhysicalLayerAsyncTCPServer::DoOpen()
 				acceptor.bind(localEndpoint, ec);
 				if (ec)
 				{
-					this->GetExecutor()->PostLambda([this, ec]()
-					{
-						this->OnOpenCallback(ec);
-					});
+					auto lambda = [this, ec]() { this->OnOpenCallback(ec); };
+					this->GetExecutor()->PostLambda(lambda);
 				}
 				else
 				{
 					acceptor.listen(socket_base::max_connections, ec);
 					if (ec)
 					{
-						this->GetExecutor()->PostLambda([this, ec]()
-						{
-							this->OnOpenCallback(ec);
-						});
+						auto lambda = [this, ec]() { this->OnOpenCallback(ec); };
+						this->GetExecutor()->PostLambda(lambda);
 					}
 					else
 					{
