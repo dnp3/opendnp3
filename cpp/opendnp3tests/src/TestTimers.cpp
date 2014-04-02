@@ -121,10 +121,8 @@ TEST_CASE(SUITE("TestOrderedDispatch"))
 
 	for(int i = 0; i < NUM; ++i)
 	{		
-		test.exe.PostLambda([pTest, i]()
-		{
-			pTest->Receive(i);
-		});
+		auto lambda = [pTest, i]() { pTest->Receive(i); };
+		test.exe.PostLambda(lambda);
 	}
 
 	{

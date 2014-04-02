@@ -43,10 +43,8 @@ public:
 
 	openpal::Function1<AsyncTaskBase*> GetHandler()
 	{
-		return Bind1<AsyncTaskBase*>([this](ITask * pTask)
-		{
-			this->OnTask(pTask);
-		});
+		auto lambda = [this](ITask * pTask) { this->OnTask(pTask); };
+		return Bind1<AsyncTaskBase*>(lambda);
 	}
 
 	size_t Size()

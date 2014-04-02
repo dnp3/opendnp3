@@ -25,6 +25,7 @@ cpp/openpal/src/openpal/LogRoot.cpp \
 cpp/openpal/src/openpal/MonotonicTimestamp.cpp \
 cpp/openpal/src/openpal/PhysicalLayerAsyncBase.cpp \
 cpp/openpal/src/openpal/ReverseEndian.cpp \
+cpp/openpal/src/openpal/Runnable.cpp \
 cpp/openpal/src/openpal/TimeDuration.cpp \
 cpp/openpal/src/openpal/ToHex.cpp
 
@@ -118,6 +119,7 @@ cpp/opendnp3/src/opendnp3/master/AsyncTaskContinuous.cpp \
 cpp/opendnp3/src/opendnp3/master/AsyncTaskGroup.cpp \
 cpp/opendnp3/src/opendnp3/master/AsyncTaskNonPeriodic.cpp \
 cpp/opendnp3/src/opendnp3/master/AsyncTaskPeriodic.cpp \
+cpp/opendnp3/src/opendnp3/master/CommandAction.cpp \
 cpp/opendnp3/src/opendnp3/master/CommandResponse.cpp \
 cpp/opendnp3/src/opendnp3/master/CommandTask.cpp \
 cpp/opendnp3/src/opendnp3/master/ConstantCommandProcessor.cpp \
@@ -300,7 +302,7 @@ cpp/openpaltests/src/StackAdapterTestSuite.cpp
 masterdemo_CXXFLAGS = -I$(OPENPAL_INCLUDE) -I$(ASIOPAL_INCLUDE) -I $(OPENDNP3_INCLUDE) $(ASIO_CONFIG) -Wl,--no-as-needed
 masterdemo_LDFLAGS = -pthread
 masterdemo_LDADD = libopenpal.la libasiopal.la libopendnp3.la
-masterdemo_SOURCES = cpp/masterdemo/DemoMain.cpp
+masterdemo_SOURCES = cpp/masterdemo/DemoMain.cpp cpp/masterdemo/PrintingCommandCallback.cpp
 
 outstationdemo_CXXFLAGS = -I$(OPENPAL_INCLUDE) -I$(ASIOPAL_INCLUDE) -I $(OPENDNP3_INCLUDE) $(ASIO_CONFIG) -Wl,--no-as-needed
 outstationdemo_LDFLAGS = -pthread
