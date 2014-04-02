@@ -29,11 +29,11 @@ namespace openpal
 template <class Lambda>
 class LambdaRunnable : public Runnable
 {
-	static_assert(sizeof(Lambda) <= MAX_SIZE, "Lambda is too big for static buffer");
+	static_assert(sizeof(Lambda) <= MAX_RUNNABLE_SIZE, "Lambda is too big for static buffer");
 
 	public:
 
-	LambdaRunnable(const Lambda& lambda) : Runnable(&RunLambda, sizeof(Lambda))
+	LambdaRunnable(Lambda& lambda) : Runnable(&RunLambda, sizeof(Lambda))
 	{
 		auto pLambda = reinterpret_cast<Lambda*>(bytes);
 		*pLambda = lambda;
@@ -41,15 +41,45 @@ class LambdaRunnable : public Runnable
 
 	private:
 
-	static void RunLambda(uint8_t* pBuffer)
+	static void RunLambda(const uint8_t* pBuffer)
 	{
-		auto pLambda = reinterpret_cast<Lambda*>(pBuffer);
+		auto pLambda = reinterpret_cast<const Lambda*>(pBuffer);
 		(*pLambda)();
 	}
 };
 
+template <class T>
+class DeleteRunnable: public Runnable
+{
+	static_assert(sizeof(T*) <= MAX_RUNNABLE_SIZE, "Pointer is too big for static buffer");
+
+public:
+
+	DeleteRunnable(T* pType) : Runnable(&DeleteAnything, sizeof(T*))
+	{
+		auto pInternal = reinterpret_cast<T*>(bytes);
+		pInternal = pType;		
+	}
+
+private:
+
+	static void DeleteAnything(const uint8_t* pBuffer)
+	{
+		auto pType = reinterpret_cast<const T*>(pBuffer);
+		delete pType;
+	}
+};
+
+template <class T>
+Runnable CreateDelete(T* pType)
+{
+	return DeleteRunnable<T>(pType);
+}
+
+
+
 template <class Lambda>
-Runnable Bind(const Lambda& lambda)
+Runnable Bind(Lambda& lambda)
 {
 	return LambdaRunnable<Lambda>(lambda);
 }

@@ -46,13 +46,10 @@ public:
 	virtual void Resume() override;
 
 	// Implement IExecutor
-	virtual openpal::ITimer* Start(const openpal::MonotonicTimestamp&, const std::function<void()>&) override;
-	virtual openpal::ITimer* Start(const openpal::TimeDuration&, const std::function<void()>&) override;
-	virtual void Post(const std::function<void()>&) override;
+	virtual openpal::ITimer* Start(const openpal::MonotonicTimestamp&, const openpal::Runnable& runnable) override;
+	virtual openpal::ITimer* Start(const openpal::TimeDuration&, const openpal::Runnable& runnable) override;
+	virtual void Post(const openpal::Runnable& runnable) override;
 	virtual openpal::MonotonicTimestamp GetTime() override;
-
-	void PostSync(const std::function<void()>& arHandler);
-
 
 	/** Turns the auto-post feature on/off. When Auto post is on, Post() is executed synchronously */
 	void SetAutoPost(bool aAutoPost)
@@ -86,7 +83,7 @@ private:
 
 	void Cancel(openpal::ITimer* apTimer);
 
-	typedef std::deque<std::function<void ()>> PostQueue;
+	typedef std::deque<openpal::Runnable> PostQueue;
 	typedef std::multimap<openpal::MonotonicTimestamp, MockTimer*> TimerMap;
 	typedef std::deque<MockTimer*> TimerQueue;
 	typedef std::deque<openpal::MonotonicTimestamp> TimerExpirationQueue;
@@ -108,7 +105,7 @@ class MockTimer : public openpal::ITimer
 	friend class MockExecutor;
 
 public:
-	MockTimer(MockExecutor*, const openpal::MonotonicTimestamp&, const std::function<void ()>&);
+	MockTimer(MockExecutor*, const openpal::MonotonicTimestamp&, const openpal::Runnable& runnable);
 
 	//implement ITimer
 	void Cancel();
@@ -117,7 +114,7 @@ public:
 private:
 	openpal::MonotonicTimestamp mTime;
 	MockExecutor* mpSource;
-	std::function<void ()> mCallback;
+	openpal::Runnable runnable;
 };
 
 }

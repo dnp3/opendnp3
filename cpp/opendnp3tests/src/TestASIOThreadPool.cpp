@@ -98,6 +98,14 @@ TEST_CASE(SUITE("StrandsSequenceCallbacksViaStrandWrap"))
 	REQUIRE(iterations ==  count1);
 }
 
+struct Count
+{
+	Count() : count(0)
+	{}	
+
+	uint32_t count;
+};
+
 TEST_CASE(SUITE("ExecutorPauseGuardsRaceConditions"))
 {
 	EventLog log;
@@ -108,16 +116,21 @@ TEST_CASE(SUITE("ExecutorPauseGuardsRaceConditions"))
 	ASIOExecutor exe(&strand);
 
 	int count = 0;
-	auto increment = [&]()
+	auto pCount = &count;
+	
+
+	auto increment = [pCount]()
 	{
-		int i = count;
+		uint32_t value = *pCount;
 		std::this_thread::sleep_for(std::chrono::milliseconds(1));
-		count = i + 1;
+		*pCount = value + 1;
 	};
+
+	auto runnable = Bind(increment);
 
 	for(size_t i = 0; i < 100; ++i)   //try to cause a race condition between the Post and the Pause
 	{
-		exe.Post(increment);
+		exe.Post(runnable);
 		ExecutorPause p1(&exe);
 		increment();
 	}
@@ -137,16 +150,18 @@ TEST_CASE(SUITE("ExecutorPauseIsIgnoredIfOnStrand"))
 	ASIOExecutor exe(&strand);
 
 	uint32_t count = 0;
+	auto pCount = &count;
+	auto pExe = &exe;
 
-	auto pause = [&]()
+	auto pause = [pCount, pExe]()
 	{
-		ExecutorPause pause(&exe);
-		++count;
+		ExecutorPause pause(pExe);
+		++(*pCount);
 	};
 
 	for (uint32_t i = 0; i < iterations; ++i)
 	{
-		exe.Post(pause);
+		exe.PostLambda(pause);
 	}
 
 	pool.Shutdown();

@@ -119,54 +119,54 @@ void Master::ProcessCommand(ITask* apTask)
 	}
 }
 
-void Master::SelectAndOperate(const ControlRelayOutputBlock& arCommand, uint16_t aIndex, std::function<void(CommandResponse)> aCallback)
+void Master::SelectAndOperate(const ControlRelayOutputBlock& command, uint16_t index, ICommandCallback* pCallback)
 {
-	this->mCommandTask.ConfigureSBO(arCommand, aIndex, aCallback);
+	this->mCommandTask.ConfigureSBO(command, index, pCallback);
 }
 
-void Master::SelectAndOperate(const AnalogOutputInt32& arCommand, uint16_t aIndex, std::function<void(CommandResponse)> aCallback)
+void Master::SelectAndOperate(const AnalogOutputInt32& command, uint16_t index, ICommandCallback* pCallback)
 {
-	this->mCommandTask.ConfigureSBO(arCommand, aIndex, aCallback);
+	this->mCommandTask.ConfigureSBO(command, index, pCallback);
 }
 
-void Master::SelectAndOperate(const AnalogOutputInt16& arCommand, uint16_t aIndex, std::function<void(CommandResponse)> aCallback)
+void Master::SelectAndOperate(const AnalogOutputInt16& command, uint16_t index, ICommandCallback* pCallback)
 {
-	this->mCommandTask.ConfigureSBO(arCommand, aIndex, aCallback);
+	this->mCommandTask.ConfigureSBO(command, index, pCallback);
 }
 
-void Master::SelectAndOperate(const AnalogOutputFloat32& arCommand, uint16_t aIndex, std::function<void(CommandResponse)> aCallback)
+void Master::SelectAndOperate(const AnalogOutputFloat32& command, uint16_t index, ICommandCallback* pCallback)
 {
-	this->mCommandTask.ConfigureSBO(arCommand, aIndex, aCallback);
+	this->mCommandTask.ConfigureSBO(command, index, pCallback);
 }
 
-void Master::SelectAndOperate(const AnalogOutputDouble64& arCommand, uint16_t aIndex, std::function<void(CommandResponse)> aCallback)
+void Master::SelectAndOperate(const AnalogOutputDouble64& command, uint16_t index, ICommandCallback* pCallback)
 {
-	this->mCommandTask.ConfigureSBO(arCommand, aIndex, aCallback);
+	this->mCommandTask.ConfigureSBO(command, index, pCallback);
 }
 
-void Master::DirectOperate(const ControlRelayOutputBlock& arCommand, uint16_t aIndex, std::function<void(CommandResponse)> aCallback)
+void Master::DirectOperate(const ControlRelayOutputBlock& command, uint16_t index, ICommandCallback* pCallback)
 {
-	this->mCommandTask.ConfigureDO(arCommand, aIndex, aCallback);
+	this->mCommandTask.ConfigureDO(command, index, pCallback);
 }
 
-void Master::DirectOperate(const AnalogOutputInt32& arCommand, uint16_t aIndex, std::function<void(CommandResponse)> aCallback)
+void Master::DirectOperate(const AnalogOutputInt32& command, uint16_t index, ICommandCallback* pCallback)
 {
-	this->mCommandTask.ConfigureDO(arCommand, aIndex, aCallback);
+	this->mCommandTask.ConfigureDO(command, index, pCallback);
 }
 
-void Master::DirectOperate(const AnalogOutputInt16& arCommand, uint16_t aIndex, std::function<void(CommandResponse)> aCallback)
+void Master::DirectOperate(const AnalogOutputInt16& command, uint16_t index, ICommandCallback* pCallback)
 {
-	this->mCommandTask.ConfigureDO(arCommand, aIndex, aCallback);
+	this->mCommandTask.ConfigureDO(command, index, pCallback);
 }
 
-void Master::DirectOperate(const AnalogOutputFloat32& arCommand, uint16_t aIndex, std::function<void(CommandResponse)> aCallback)
+void Master::DirectOperate(const AnalogOutputFloat32& command, uint16_t index, ICommandCallback* pCallback)
 {
-	this->mCommandTask.ConfigureDO(arCommand, aIndex, aCallback);
+	this->mCommandTask.ConfigureDO(command, index, pCallback);
 }
 
-void Master::DirectOperate(const AnalogOutputDouble64& arCommand, uint16_t aIndex, std::function<void(CommandResponse)> aCallback)
+void Master::DirectOperate(const AnalogOutputDouble64& command, uint16_t index, ICommandCallback* pCallback)
 {
-	this->mCommandTask.ConfigureDO(arCommand, aIndex, aCallback);
+	this->mCommandTask.ConfigureDO(command, index, pCallback);
 }
 
 void Master::StartTask(MasterTaskBase* apMasterTask, bool aInit)

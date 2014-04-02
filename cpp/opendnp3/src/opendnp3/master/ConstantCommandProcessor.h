@@ -37,31 +37,31 @@ class ConstantCommandProcessor : public ICommandProcessor
 {
 public:
 
-	ConstantCommandProcessor(openpal::IExecutor* apExecutor, const CommandResponse& arResponse);
+	ConstantCommandProcessor(openpal::IExecutor* apExecutor, const CommandResponse& response);
 
 	// Implement the ICommandProcessor interface
 
-	void SelectAndOperate(const ControlRelayOutputBlock& arCommand, uint16_t aIndex, std::function<void (CommandResponse)> aCallback);
-	void DirectOperate(const ControlRelayOutputBlock& arCommand, uint16_t aIndex, std::function<void (CommandResponse)> aCallback);
+	void SelectAndOperate(const ControlRelayOutputBlock& command, uint16_t index, ICommandCallback* pCallback);
+	void DirectOperate(const ControlRelayOutputBlock& command, uint16_t index, ICommandCallback* pCallback);
 
-	void SelectAndOperate(const AnalogOutputInt16& arCommand, uint16_t aIndex, std::function<void (CommandResponse)> aCallback);
-	void DirectOperate(const AnalogOutputInt16& arCommand, uint16_t aIndex, std::function<void (CommandResponse)> aCallback);
+	void SelectAndOperate(const AnalogOutputInt16& command, uint16_t index, ICommandCallback* pCallback);
+	void DirectOperate(const AnalogOutputInt16& command, uint16_t index, ICommandCallback* pCallback);
 
-	void SelectAndOperate(const AnalogOutputInt32& arCommand, uint16_t aIndex, std::function<void (CommandResponse)> aCallback);
-	void DirectOperate(const AnalogOutputInt32& arCommand, uint16_t aIndex, std::function<void (CommandResponse)> aCallback);
+	void SelectAndOperate(const AnalogOutputInt32& command, uint16_t index, ICommandCallback* pCallback);
+	void DirectOperate(const AnalogOutputInt32& command, uint16_t index, ICommandCallback* pCallback);
 
-	void SelectAndOperate(const AnalogOutputFloat32& arCommand, uint16_t aIndex, std::function<void (CommandResponse)> aCallback);
-	void DirectOperate(const AnalogOutputFloat32& arCommand, uint16_t aIndex, std::function<void (CommandResponse)> aCallback);
+	void SelectAndOperate(const AnalogOutputFloat32& command, uint16_t index, ICommandCallback* pCallback);
+	void DirectOperate(const AnalogOutputFloat32& command, uint16_t index, ICommandCallback* pCallback);
 
-	void SelectAndOperate(const AnalogOutputDouble64& arCommand, uint16_t aIndex, std::function<void (CommandResponse)> aCallback);
-	void DirectOperate(const AnalogOutputDouble64& arCommand, uint16_t aIndex, std::function<void (CommandResponse)> aCallback);
+	void SelectAndOperate(const AnalogOutputDouble64& command, uint16_t index, ICommandCallback* pCallback);
+	void DirectOperate(const AnalogOutputDouble64& command, uint16_t index, ICommandCallback* pCallback);
 
 private:
 
-	void Respond(std::function<void(CommandResponse)> callback);
+	void Respond(ICommandCallback* pCallback);
 
-	openpal::IExecutor* mpExecutor;
-	CommandResponse mResponse;
+	openpal::IExecutor* pExecutor;
+	CommandResponse response;
 };
 
 }

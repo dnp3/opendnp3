@@ -8,10 +8,10 @@
 //                                           __/ |
 //                                          |___/
 // Copyright 2013 Automatak LLC
-//
+// 
 // Automatak LLC (www.automatak.com) licenses this file
 // to you under the the Apache License Version 2.0 (the "License"):
-//
+// 
 // http://www.apache.org/licenses/LICENSE-2.0.html
 //
 
@@ -21,15 +21,14 @@
 #include <string>
 #include <cstdint>
 
-namespace opendnp3
-{
+namespace opendnp3 {
 
 enum class StaticCounterResponse : int
 {
-    Group20Var1 = 0,
-    Group20Var2 = 1,
-    Group20Var5 = 2,
-    Group20Var6 = 3
+  Group20Var1 = 0,
+  Group20Var2 = 1,
+  Group20Var5 = 2,
+  Group20Var6 = 3
 };
 
 int StaticCounterResponseToType(StaticCounterResponse arg);

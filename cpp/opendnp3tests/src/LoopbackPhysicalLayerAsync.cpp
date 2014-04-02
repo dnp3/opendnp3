@@ -41,7 +41,7 @@ LoopbackPhysicalLayerAsync::LoopbackPhysicalLayerAsync(const LogConfig& config, 
 void LoopbackPhysicalLayerAsync::DoOpen()
 {
 	//always open successfully
-	executor.Post([this]()
+	executor.PostLambda([this]()
 	{
 		this->OnOpenCallback(std::error_code(0, std::generic_category()));
 	});
@@ -61,7 +61,7 @@ void LoopbackPhysicalLayerAsync::DoClose()
 	if(mBytesForReading.IsNotEmpty())
 	{
 		mBytesForReading.Clear();
-		executor.Post([this]()
+		executor.PostLambda([this]()
 		{
 			this->OnReadCallback(std::error_code(1, std::generic_category()), nullptr, 0);
 		});
@@ -83,7 +83,7 @@ void LoopbackPhysicalLayerAsync::DoAsyncWrite(const openpal::ReadOnlyBuffer& arB
 
 	auto size = arBuffer.Size();
 
-	executor.Post([this, size]()
+	executor.PostLambda([this, size]()
 	{
 		this->OnWriteCallback(std::error_code(0, std::generic_category()), size);
 	});
@@ -106,7 +106,7 @@ void LoopbackPhysicalLayerAsync::CheckForReadDispatch()
 
 		mBytesForReading.Clear();
 
-		executor.Post([this, num]()
+		executor.PostLambda([this, num]()
 		{
 			this->OnReadCallback(std::error_code(0, std::generic_category()), mBytesForReading, num);
 		});

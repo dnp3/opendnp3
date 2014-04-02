@@ -18,33 +18,29 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __RUNNABLE_H_
-#define __RUNNABLE_H_
+#ifndef __MOCK_COMMAND_CALLBACK_H_
+#define __MOCK_COMMAND_CALLBACK_H_
 
-#include "Erasure.h"
+#include <opendnp3/master/ICommandCallback.h>
+#include <queue>
 
-namespace openpal
+namespace opendnp3
 {
 
-// Todo define max somewhere else
-const uint32_t MAX_RUNNABLE_SIZE = 128;
-
-class Runnable : public Erasure<MAX_RUNNABLE_SIZE>
+class MockCommandCallback : public ICommandCallback
 {
 public:
 
-	Runnable();
+	virtual void OnComplete(const CommandResponse& response) override final
+	{
+		responses.push_back(response);
+	}
 
-	Runnable& Runnable::operator=(const Runnable& other);
-
-	void Run() const;
-
-protected:
-
-	Runnable(Invoke pInvoke_, uint32_t size_);
+	std::deque<CommandResponse> responses;
 
 };
 
 }
 
 #endif
+

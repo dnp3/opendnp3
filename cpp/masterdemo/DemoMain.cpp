@@ -37,6 +37,8 @@
 #include <iostream>
 #include <future>
 
+#include "PrintingCommandCallback.h"
+
 using namespace std;
 using namespace asiopal;
 using namespace opendnp3;
@@ -113,13 +115,8 @@ int main(int argc, char* argv[])
 			break;
 		case('c'):
 			{
-				ControlRelayOutputBlock crob(ControlCode::LATCH_ON);
-				auto print = [](CommandResponse cr)
-				{
-					cout << "Select/Operate result: " << cr.ToString() << endl;
-				};
-				// asynchronously call the 'print' function when complete/failed
-				pCmdProcessor->SelectAndOperate(crob, 0, print);
+				ControlRelayOutputBlock crob(ControlCode::LATCH_ON);								
+				pCmdProcessor->SelectAndOperate(crob, 0, &PrintingCommandCallback::Inst());
 				break;
 			}
 		default:

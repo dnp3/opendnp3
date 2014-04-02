@@ -5,6 +5,8 @@
 #include "ChannelAdapter.h"
 #include "DeleteAnything.h"
 
+#include <openpal/Bind.h>
+
 #include <asiodnp3/ASIODNP3Manager.h>
 
 using namespace asiopal;
@@ -49,7 +51,7 @@ IChannel^ DNP3ManagerAdapter::AddTCPClient(System::String^ id, System::UInt32 fi
 	if (pChannel)
 	{
 		auto pRoot = new gcroot<ChannelAdapter^>(adapter);
-		pChannel->SetDestructorHook(std::bind(&DeleteAnything<gcroot<ChannelAdapter^>>, pRoot));
+		pChannel->SetDestructorHook(openpal::CreateDelete(pRoot));
 		adapter->SetChannel(pChannel);
 		return adapter;
 	}
@@ -70,7 +72,7 @@ IChannel^ DNP3ManagerAdapter::AddTCPServer(System::String^ id, System::UInt32 fi
 	if (pChannel)
 	{
 		auto pRoot = new gcroot<ChannelAdapter^>(adapter);
-		pChannel->SetDestructorHook(std::bind(&DeleteAnything<gcroot<ChannelAdapter^>>, pRoot));
+		pChannel->SetDestructorHook(openpal::CreateDelete(pRoot));
 		adapter->SetChannel(pChannel);
 		return adapter;
 	}
@@ -90,7 +92,7 @@ IChannel^ DNP3ManagerAdapter::AddSerial(System::String^ id, System::UInt32 filte
 	if (pChannel)
 	{
 		auto pRoot = new gcroot<ChannelAdapter^>(adapter);
-		pChannel->SetDestructorHook(std::bind(&DeleteAnything<gcroot<ChannelAdapter^>>, pRoot));
+		pChannel->SetDestructorHook(openpal::CreateDelete(pRoot));
 		adapter->SetChannel(pChannel);
 		return adapter;
 	}

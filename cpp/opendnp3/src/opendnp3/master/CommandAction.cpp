@@ -18,33 +18,25 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __RUNNABLE_H_
-#define __RUNNABLE_H_
 
-#include "Erasure.h"
+#include "CommandAction.h"
 
-namespace openpal
+namespace opendnp3
 {
 
-// Todo define max somewhere else
-const uint32_t MAX_RUNNABLE_SIZE = 128;
+CommandErasure::CommandErasure() : size(0), pInvoke(nullptr)
+{}
 
-class Runnable : public Erasure<MAX_RUNNABLE_SIZE>
+void CommandErasure::Apply(ICommandProcessor* pProcessor)
 {
-public:
+	if (pInvoke)
+	{
+		(*pInvoke)(pProcessor, bytes);
+	}
+}
 
-	Runnable();
-
-	Runnable& Runnable::operator=(const Runnable& other);
-
-	void Run() const;
-
-protected:
-
-	Runnable(Invoke pInvoke_, uint32_t size_);
-
-};
+CommandErasure::CommandErasure(uint32_t size_, Invoke pInvoke_) : size(size_), pInvoke(pInvoke_)
+{}
 
 }
 
-#endif

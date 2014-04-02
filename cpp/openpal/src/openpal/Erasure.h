@@ -18,32 +18,57 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __RUNNABLE_H_
-#define __RUNNABLE_H_
+#ifndef __ERASURE_H_
+#define __ERASURE_H_
 
-#include "Erasure.h"
+#include <cstdint>
+#include <memory>
 
 namespace openpal
 {
 
-// Todo define max somewhere else
-const uint32_t MAX_RUNNABLE_SIZE = 128;
-
-class Runnable : public Erasure<MAX_RUNNABLE_SIZE>
+template <uint32_t SIZE>
+class Erasure
 {
+
 public:
 
-	Runnable();
+	Erasure() : pInvoke(nullptr), size(0)
+	{}
 
-	Runnable& Runnable::operator=(const Runnable& other);
+	Erasure(const Erasure& other) : pInvoke(other.pInvoke), size(other.size)
+	{
+		memcpy(bytes, other.bytes, size);
+	}
 
-	void Run() const;
+	bool IsSet() const
+	{
+		return (pInvoke != nullptr);
+	}
 
 protected:
 
-	Runnable(Invoke pInvoke_, uint32_t size_);
+	typedef void(*Invoke)(const uint8_t* pBuffer);
 
+	void Apply() const
+	{
+		if (pInvoke)
+		{
+			(*pInvoke)(bytes);
+		}
+	}	
+
+	Erasure(Invoke pInvoke_, uint32_t size_) : pInvoke(pInvoke_), size(size_)
+	{
+		
+	}
+
+	Invoke pInvoke;
+	uint32_t size;
+	uint8_t bytes[SIZE];
 };
+
+
 
 }
 

@@ -28,6 +28,7 @@
 #include <opendnp3/outstation/Outstation.h>
 #include <opendnp3/app/ApplicationStack.h>
 #include <opendnp3/outstation/DynamicallyAllocatedDatabase.h>
+#include <opendnp3/outstation/DynamicallyAllocatedEventBuffer.h>
 #include <opendnp3/LogLevels.h>
 #include <opendnp3/LogLevelInterpreter.h>
 
@@ -52,7 +53,7 @@ int main(int argc, char* argv[])
 
 	// Specify a LogLevel for the stack/physical layer to use.
 	// Log statements with a lower priority will not be logged.
-	const uint32_t LOG_LEVEL = flags::ALL;
+	const uint32_t LOG_LEVEL = levels::ALL;
 
 	//A default logging backend that can proxy to multiple other backends
 	EventLog log;
@@ -72,8 +73,21 @@ int main(int argc, char* argv[])
 	router.AddContext(&stack.link, route);
 
 	DynamicallyAllocatedDatabase dadb(DatabaseTemplate::AllTypes(5));
+	DynamicallyAllocatedEventBuffer eb(EventBufferConfig::AllTypes(100));
+
 	Database database(dadb.GetFacade());
-	Outstation outstation(server.GetLogger().GetSubLogger("outstation"), &stack.application, &executor, NullTimeWriteHandler::Inst(), &database, SuccessCommandHandler::Inst(), OutstationConfig());
+
+	Outstation outstation(
+		server.GetLogger().GetSubLogger("outstation"), 
+		&stack.application, 
+		&executor, 
+		NullTimeWriteHandler::Inst(), 
+		&database,
+		eb.GetFacade(), 
+		SuccessCommandHandler::Inst(), 
+		OutstationConfig());
+	
+	
 	stack.application.SetUser(&outstation);
 
 	router.Enable(&stack.link);

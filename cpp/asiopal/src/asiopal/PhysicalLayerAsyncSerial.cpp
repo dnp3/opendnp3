@@ -68,7 +68,7 @@ void PhysicalLayerAsyncSerial::DoOpen()
 	}
 
 	//use post to simulate an async open operation
-	executor.Post(std::bind(&PhysicalLayerAsyncSerial::OnOpenCallback, this, ec));
+	executor.PostLambda([this, ec]() { this->OnOpenCallback(ec); });
 }
 
 void PhysicalLayerAsyncSerial::DoClose()

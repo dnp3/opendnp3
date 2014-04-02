@@ -117,12 +117,13 @@ TEST_CASE(SUITE("TestOrderedDispatch"))
 	const int NUM = 10000;
 
 	TimerTestObject test;
+	auto pTest = &test;
 
 	for(int i = 0; i < NUM; ++i)
-	{
-		test.exe.Post([&test, i]()
+	{		
+		test.exe.PostLambda([pTest, i]()
 		{
-			test.Receive(i);
+			pTest->Receive(i);
 		});
 	}
 
@@ -138,14 +139,17 @@ TEST_CASE(SUITE("TestOrderedDispatch"))
 TEST_CASE(SUITE("ExpirationAndReuse"))
 {
 	MockTimerHandler mth;
+	auto pTimerHandler = &mth;
 	asio::io_service srv;
 	asio::strand strand(srv);
 	ASIOExecutor exe(&strand);
 
-	ITimer* pT1 = exe.Start(TimeDuration::Milliseconds(1), std::bind(&MockTimerHandler::OnExpiration, &mth));
+	auto lambda = [pTimerHandler]() { pTimerHandler->OnExpiration(); };
+	auto runnable = Bind(lambda);
+	ITimer* pT1 = exe.Start(TimeDuration::Milliseconds(1), runnable);
 	REQUIRE(1 ==  srv.run_one());
 	REQUIRE(1 ==  mth.GetCount());
-	ITimer* pT2 = exe.Start(TimeDuration::Milliseconds(1), std::bind(&MockTimerHandler::OnExpiration, &mth));
+	ITimer* pT2 = exe.Start(TimeDuration::Milliseconds(1), runnable);
 	srv.reset();
 	REQUIRE(1 ==  srv.run_one());
 	REQUIRE(pT1 ==  pT2); //The ASIO implementation should reuse timers
@@ -154,14 +158,16 @@ TEST_CASE(SUITE("ExpirationAndReuse"))
 TEST_CASE(SUITE("Cancelation"))
 {
 	MockTimerHandler mth;
+	auto pTimerHandler = &mth;
 	asio::io_service srv;
 	asio::strand strand(srv);
 	ASIOExecutor exe(&strand);
-	ITimer* pT1 = exe.Start(TimeDuration::Milliseconds(1), std::bind(&MockTimerHandler::OnExpiration, &mth));
+	auto lambda = [pTimerHandler](){ pTimerHandler->OnExpiration(); };
+	ITimer* pT1 = exe.Start(TimeDuration::Milliseconds(1), Bind(lambda));
 	pT1->Cancel();
 	REQUIRE(1 ==  srv.run_one());
 	REQUIRE(0 ==  mth.GetCount());
-	ITimer* pT2 = exe.Start(TimeDuration::Milliseconds(1), std::bind(&MockTimerHandler::OnExpiration, &mth));
+	ITimer* pT2 = exe.Start(TimeDuration::Milliseconds(1), Bind(lambda));
 	srv.reset();
 	REQUIRE(1 ==  srv.run_one());
 	REQUIRE(pT1 ==  pT2);
@@ -172,11 +178,20 @@ TEST_CASE(SUITE("MultipleOutstanding"))
 {
 	MockTimerHandler mth1;
 	MockTimerHandler mth2;
+	auto pTimerHandler1 = &mth1;
+	auto pTimerHandler2 = &mth2;
+	
 	asio::io_service srv;
 	asio::strand strand(srv);
 	ASIOExecutor ts(&strand);
-	ITimer* pT1 = ts.Start(TimeDuration::Milliseconds(0), std::bind(&MockTimerHandler::OnExpiration, &mth1));
-	ITimer* pT2 = ts.Start(TimeDuration::Milliseconds(100), std::bind(&MockTimerHandler::OnExpiration, &mth2));
+
+
+	auto lambda1 = [pTimerHandler1](){ pTimerHandler1->OnExpiration(); };
+	auto lambda2 = [pTimerHandler2](){ pTimerHandler2->OnExpiration(); };
+
+
+	ITimer* pT1 = ts.Start(TimeDuration::Milliseconds(0), Bind(lambda1));
+	ITimer* pT2 = ts.Start(TimeDuration::Milliseconds(100), Bind(lambda2));
 
 	REQUIRE(pT1 != pT2);
 

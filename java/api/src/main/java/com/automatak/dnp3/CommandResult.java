@@ -36,7 +36,11 @@ public enum CommandResult
   /**
   * There is no communication with the outstation, and the command was not attempted
   */
-  NO_COMMS(3);
+  NO_COMMS(3),
+  /**
+  * The master's requst queue is full. Too many operations have been requested
+  */
+  QUEUE_FULL(4);
 
   private final int id;
 
@@ -62,7 +66,9 @@ public enum CommandResult
         return TIMEOUT;
       case(3):
         return NO_COMMS;
+      case(4):
+        return QUEUE_FULL;
     }
-    return NO_COMMS;
+    return QUEUE_FULL;
   }
 }

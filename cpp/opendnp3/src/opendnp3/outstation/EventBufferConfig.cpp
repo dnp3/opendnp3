@@ -24,6 +24,11 @@
 namespace opendnp3
 {
 
+EventBufferConfig EventBufferConfig::AllTypes(uint32_t sizes)
+{
+	return EventBufferConfig(sizes, sizes, sizes, sizes, sizes, sizes, sizes);
+}
+
 EventBufferConfig::EventBufferConfig() :
 	maxBinaryEvents(1000),
 	maxDoubleBinaryEvents(1000),

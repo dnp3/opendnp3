@@ -12,12 +12,6 @@ namespace DNP3
 namespace Adapter
 {
 
-void ResponseRouter::Set(gcroot < Future<CommandResponse> ^ >* apFuture, opendnp3::CommandResponse cr)
-{
-	std::auto_ptr < gcroot < Future<CommandResponse> ^ >> ptr(apFuture);
-	(*apFuture)->Set(Conversions::convertCommandResponse(cr));
-}
-
 CommandProcessorAdapter::CommandProcessorAdapter(opendnp3::ICommandProcessor* apProxy) : mpProxy(apProxy)
 {
 

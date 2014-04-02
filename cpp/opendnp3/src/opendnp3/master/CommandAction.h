@@ -18,33 +18,61 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __RUNNABLE_H_
-#define __RUNNABLE_H_
+#ifndef __COMMAND_ACTION_H_
+#define __COMMAND_ACTION_H_
 
-#include "Erasure.h"
+#include "ICommandProcessor.h"
 
-namespace openpal
+namespace opendnp3
 {
 
-// Todo define max somewhere else
-const uint32_t MAX_RUNNABLE_SIZE = 128;
-
-class Runnable : public Erasure<MAX_RUNNABLE_SIZE>
+class CommandErasure
 {
+
 public:
+	static const uint32_t MAX_SIZE = 3 * sizeof(ControlRelayOutputBlock);
 
-	Runnable();
+	CommandErasure();
 
-	Runnable& Runnable::operator=(const Runnable& other);
-
-	void Run() const;
+	void Apply(ICommandProcessor* pProcessor);
 
 protected:
 
-	Runnable(Invoke pInvoke_, uint32_t size_);
+	typedef void(*Invoke)(ICommandProcessor*, uint8_t*);
 
+	CommandErasure(uint32_t size_, Invoke pInvoke_);
+
+	uint32_t size;
+	Invoke pInvoke;	
+	uint8_t bytes[MAX_SIZE];
 };
+
+template <class Lambda>
+class CommandAction : public CommandErasure
+{
+	static_assert(sizeof(Lambda) <= MAX_SIZE, "Lambda too big for command erasure");
+
+	public:
+
+	CommandAction(const Lambda& lambda) : CommandErasure(sizeof(Lambda), &ApplyLambda)
+	{
+		*reinterpret_cast<Lambda*>(bytes) = lambda;
+	}
+
+	static void ApplyLambda(ICommandProcessor* pProcessor, uint8_t* pBytes)
+	{
+		auto pLambda = reinterpret_cast<Lambda*>(pBytes);
+		(*pLambda)(pProcessor);
+	}	
+};
+
+template <class Lambda>
+CommandErasure CreateAction(const Lambda& lambda)
+{
+	return CommandAction<Lambda>(lambda);
+}
 
 }
 
 #endif
+

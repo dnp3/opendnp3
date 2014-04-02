@@ -32,55 +32,55 @@ QueuedCommandProcessor::QueuedCommandProcessor(openpal::IExecutor* pExecutor_, I
 
 }
 
-void QueuedCommandProcessor::SelectAndOperate(const ControlRelayOutputBlock& arCommand, uint16_t aIndex, std::function<void (CommandResponse)> aCallback)
+void QueuedCommandProcessor::SelectAndOperate(const ControlRelayOutputBlock& command, uint16_t index, ICommandCallback* pCallback)
 {
-	this->SelectAndOperateT(arCommand, aIndex, aCallback);
+	this->SelectAndOperateT(command, index, pCallback);
 }
 
-void QueuedCommandProcessor::DirectOperate(const ControlRelayOutputBlock& arCommand, uint16_t aIndex, std::function<void (CommandResponse)> aCallback)
+void QueuedCommandProcessor::DirectOperate(const ControlRelayOutputBlock& command, uint16_t index, ICommandCallback* pCallback)
 {
-	this->DirectOperateT(arCommand, aIndex, aCallback);
+	this->DirectOperateT(command, index, pCallback);
 }
 
-void QueuedCommandProcessor::SelectAndOperate(const AnalogOutputInt16& arCommand, uint16_t aIndex, std::function<void (CommandResponse)> aCallback)
+void QueuedCommandProcessor::SelectAndOperate(const AnalogOutputInt16& command, uint16_t index, ICommandCallback* pCallback)
 {
-	this->SelectAndOperateT(arCommand, aIndex, aCallback);
+	this->SelectAndOperateT(command, index, pCallback);
 }
 
-void QueuedCommandProcessor::DirectOperate(const AnalogOutputInt16& arCommand, uint16_t aIndex, std::function<void (CommandResponse)> aCallback)
+void QueuedCommandProcessor::DirectOperate(const AnalogOutputInt16& command, uint16_t index, ICommandCallback* pCallback)
 {
-	this->DirectOperateT(arCommand, aIndex, aCallback);
+	this->DirectOperateT(command, index, pCallback);
 }
 
-void QueuedCommandProcessor::SelectAndOperate(const AnalogOutputInt32& arCommand, uint16_t aIndex, std::function<void (CommandResponse)> aCallback)
+void QueuedCommandProcessor::SelectAndOperate(const AnalogOutputInt32& command, uint16_t index, ICommandCallback* pCallback)
 {
-	this->SelectAndOperateT(arCommand, aIndex, aCallback);
+	this->SelectAndOperateT(command, index, pCallback);
 }
 
-void QueuedCommandProcessor::DirectOperate(const AnalogOutputInt32& arCommand, uint16_t aIndex, std::function<void (CommandResponse)> aCallback)
+void QueuedCommandProcessor::DirectOperate(const AnalogOutputInt32& command, uint16_t index, ICommandCallback* pCallback)
 {
-	this->DirectOperateT(arCommand, aIndex, aCallback);
+	this->DirectOperateT(command, index, pCallback);
 }
 
-void QueuedCommandProcessor::SelectAndOperate(const AnalogOutputFloat32& arCommand, uint16_t aIndex, std::function<void (CommandResponse)> aCallback)
+void QueuedCommandProcessor::SelectAndOperate(const AnalogOutputFloat32& command, uint16_t index, ICommandCallback* pCallback)
 {
-	this->SelectAndOperateT(arCommand, aIndex, aCallback);
+	this->SelectAndOperateT(command, index, pCallback);
 }
 
-void QueuedCommandProcessor::DirectOperate(const AnalogOutputFloat32& arCommand, uint16_t aIndex, std::function<void (CommandResponse)> aCallback)
+void QueuedCommandProcessor::DirectOperate(const AnalogOutputFloat32& command, uint16_t index, ICommandCallback* pCallback)
 {
 
-	this->DirectOperateT(arCommand, aIndex, aCallback);
+	this->DirectOperateT(command, index, pCallback);
 }
 
-void QueuedCommandProcessor::SelectAndOperate(const AnalogOutputDouble64& arCommand, uint16_t aIndex, std::function<void (CommandResponse)> aCallback)
+void QueuedCommandProcessor::SelectAndOperate(const AnalogOutputDouble64& command, uint16_t index, ICommandCallback* pCallback)
 {
-	this->SelectAndOperateT(arCommand, aIndex, aCallback);
+	this->SelectAndOperateT(command, index, pCallback);
 }
 
-void QueuedCommandProcessor::DirectOperate(const AnalogOutputDouble64& arCommand, uint16_t aIndex, std::function<void (CommandResponse)> aCallback)
+void QueuedCommandProcessor::DirectOperate(const AnalogOutputDouble64& command, uint16_t index, ICommandCallback* pCallback)
 {
-	this->DirectOperateT(arCommand, aIndex, aCallback);
+	this->DirectOperateT(command, index, pCallback);
 }
 
 bool QueuedCommandProcessor::Dispatch(ICommandProcessor* apProcessor)
@@ -91,9 +91,22 @@ bool QueuedCommandProcessor::Dispatch(ICommandProcessor* apProcessor)
 	}
 	else
 	{
-		requestQueue.Peek()(apProcessor);
+		auto erasure = requestQueue.Peek();
 		requestQueue.Pop();
+		erasure.Apply(apProcessor);
 		return true;
+	}
+}
+
+void QueuedCommandProcessor::Enque(const CommandErasure& erasure, ICommandCallback* pCallback)
+{
+	if (requestQueue.Enqueue(erasure))
+	{
+		pEnableTask->Enable();
+	}
+	else
+	{
+		pCallback->OnComplete(CommandResponse(CommandResult::QUEUE_FULL));
 	}
 }
 

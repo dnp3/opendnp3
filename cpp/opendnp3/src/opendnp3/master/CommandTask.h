@@ -28,9 +28,9 @@
 #include <openpal/Sequence.h>
 
 #include "opendnp3/gen/FunctionCode.h"
+#include "opendnp3/master/ICommandCallback.h"
 #include "CommandSequence.h"
 
-#include <functional>
 #include <assert.h>
 
 namespace opendnp3
@@ -48,17 +48,17 @@ public:
 
 	CommandTask(openpal::Logger);
 
-	void ConfigureSBO(const ControlRelayOutputBlock& command, uint32_t index,  std::function<void (CommandResponse)> aCallback);
-	void ConfigureSBO(const AnalogOutputInt16& command, uint32_t index,  std::function<void (CommandResponse)> aCallback);
-	void ConfigureSBO(const AnalogOutputInt32& command, uint32_t index,  std::function<void (CommandResponse)> aCallback);
-	void ConfigureSBO(const AnalogOutputFloat32& command, uint32_t index,  std::function<void (CommandResponse)> aCallback);
-	void ConfigureSBO(const AnalogOutputDouble64& command, uint32_t index,  std::function<void (CommandResponse)> aCallback);
+	void ConfigureSBO(const ControlRelayOutputBlock& command, uint32_t index,  ICommandCallback* pCallback);
+	void ConfigureSBO(const AnalogOutputInt16& command, uint32_t index,  ICommandCallback* pCallback);
+	void ConfigureSBO(const AnalogOutputInt32& command, uint32_t index,  ICommandCallback* pCallback);
+	void ConfigureSBO(const AnalogOutputFloat32& command, uint32_t index,  ICommandCallback* pCallback);
+	void ConfigureSBO(const AnalogOutputDouble64& command, uint32_t index,  ICommandCallback* pCallback);
 
-	void ConfigureDO(const ControlRelayOutputBlock& command, uint32_t index,  std::function<void (CommandResponse)> aCallback);
-	void ConfigureDO(const AnalogOutputInt16& command, uint32_t index,  std::function<void (CommandResponse)> aCallback);
-	void ConfigureDO(const AnalogOutputInt32& command, uint32_t index,  std::function<void (CommandResponse)> aCallback);
-	void ConfigureDO(const AnalogOutputFloat32& command, uint32_t index,  std::function<void (CommandResponse)> aCallback);
-	void ConfigureDO(const AnalogOutputDouble64& command, uint32_t index,  std::function<void (CommandResponse)> aCallback);
+	void ConfigureDO(const ControlRelayOutputBlock& command, uint32_t index,  ICommandCallback* pCallback);
+	void ConfigureDO(const AnalogOutputInt16& command, uint32_t index,  ICommandCallback* pCallback);
+	void ConfigureDO(const AnalogOutputInt32& command, uint32_t index,  ICommandCallback* pCallback);
+	void ConfigureDO(const AnalogOutputFloat32& command, uint32_t index,  ICommandCallback* pCallback);
+	void ConfigureDO(const AnalogOutputDouble64& command, uint32_t index,  ICommandCallback* pCallback);
 
 	void ConfigureRequest(APDURequest& request);
 
@@ -73,15 +73,18 @@ private:
 
 
 	template <class T>
-	void Configure(CommandSequence<T>& sequence, const T& value, uint32_t index, const openpal::Sequence<FunctionCode>* apSequence, std::function<void (CommandResponse)> aCallback)
+	void Configure(CommandSequence<T>& sequence, const T& value, uint32_t index, const openpal::Sequence<FunctionCode>* apSequence, ICommandCallback* pCallback)
 	{
 		assert(apSequence != nullptr);
 		mpFunctionSequence = apSequence;
-		callback = aCallback;
+		this->mpCallback = pCallback;
 		sequence.Configure(value, index);
 		mpActiveSequence = &sequence;
 	}
 
+	void Callback(const CommandResponse& cr);
+
+	ICommandCallback* mpCallback;
 	const openpal::Sequence<FunctionCode>* mpFunctionSequence;
 
 	ICommandSequence* mpActiveSequence;
@@ -90,9 +93,7 @@ private:
 	CommandSequence<AnalogOutputInt32> analogInt32Seq;
 	CommandSequence<AnalogOutputInt16> analogInt16Seq;
 	CommandSequence<AnalogOutputFloat32> analogFloat32Seq;
-	CommandSequence<AnalogOutputDouble64> analogDouble64Seq;
-
-	std::function<void (CommandResponse)> callback;
+	CommandSequence<AnalogOutputDouble64> analogDouble64Seq;	
 
 	bool _OnPartialResponse(const APDUResponseRecord&);
 	TaskResult _OnFinalResponse(const APDUResponseRecord&);

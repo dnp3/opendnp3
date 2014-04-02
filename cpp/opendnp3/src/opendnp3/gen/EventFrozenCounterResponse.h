@@ -8,10 +8,10 @@
 //                                           __/ |
 //                                          |___/
 // Copyright 2013 Automatak LLC
-//
+// 
 // Automatak LLC (www.automatak.com) licenses this file
 // to you under the the Apache License Version 2.0 (the "License"):
-//
+// 
 // http://www.apache.org/licenses/LICENSE-2.0.html
 //
 
@@ -21,15 +21,14 @@
 #include <string>
 #include <cstdint>
 
-namespace opendnp3
-{
+namespace opendnp3 {
 
 enum class EventFrozenCounterResponse : int
 {
-    Group23Var1 = 0,
-    Group23Var2 = 1,
-    Group23Var5 = 2,
-    Group23Var6 = 3
+  Group23Var1 = 0,
+  Group23Var2 = 1,
+  Group23Var5 = 2,
+  Group23Var6 = 3
 };
 
 int EventFrozenCounterResponseToType(EventFrozenCounterResponse arg);

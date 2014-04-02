@@ -67,9 +67,9 @@ bool MockExecutor::DispatchOne()
 {
 	if(mPostQueue.size() > 0)
 	{
-		auto callback = mPostQueue.front();
+		auto runnable = mPostQueue.front();
 		mPostQueue.pop_front();
-		callback();
+		runnable.Run();
 		return true;
 	}
 	else
@@ -85,7 +85,7 @@ bool MockExecutor::DispatchOne()
 
 			// do the callback last so that if it does something to
 			// the timer itself we're safe
-			pTimer->mCallback();
+			pTimer->runnable.Run();
 
 			return true;
 		}
@@ -101,16 +101,16 @@ size_t MockExecutor::Dispatch(size_t aMaximum)
 	return num;
 }
 
-void MockExecutor::Post(const std::function<void ()>& arHandler)
+void MockExecutor::Post(const openpal::Runnable& runnable)
 {
-	if(mPostIsSynchronous) arHandler();
-	else mPostQueue.push_back(arHandler);
-}
-
-void MockExecutor::PostSync(const std::function<void ()>& arHandler)
-{
-	this->Dispatch();
-	arHandler();
+	if (mPostIsSynchronous)
+	{
+		runnable.Run();
+	}
+	else
+	{
+		mPostQueue.push_back(runnable);
+	}
 }
 
 openpal::MonotonicTimestamp MockExecutor::GetTime()
@@ -118,25 +118,25 @@ openpal::MonotonicTimestamp MockExecutor::GetTime()
 	return mCurrentTime;
 }
 
-ITimer* MockExecutor::Start(const openpal::TimeDuration& aDelay, const std::function<void ()>& arCallback)
+ITimer* MockExecutor::Start(const openpal::TimeDuration& aDelay, const openpal::Runnable& runnable)
 {
 	auto expiration = mCurrentTime.Add(aDelay);
 	mTimerExpirationQueue.push_back(expiration);
-	return Start(expiration, arCallback);
+	return Start(expiration, runnable);
 }
 
-ITimer* MockExecutor::Start(const openpal::MonotonicTimestamp& arTime, const std::function<void ()>& arCallback)
+ITimer* MockExecutor::Start(const openpal::MonotonicTimestamp& arTime, const openpal::Runnable& runnable)
 {
 	MockTimer* pTimer;
 	if(mIdle.size() > 0)
 	{
 		pTimer = mIdle.front();
 		mIdle.pop_front();
-		pTimer->mCallback = arCallback;
+		pTimer->runnable = runnable;
 	}
 	else
 	{
-		pTimer = new MockTimer(this, arTime, arCallback);
+		pTimer = new MockTimer(this, arTime, runnable);
 		mAllTimers.push_back(pTimer);
 	}
 
@@ -157,10 +157,10 @@ void MockExecutor::Cancel(ITimer* apTimer)
 	}
 }
 
-MockTimer::MockTimer(MockExecutor* apSource, const openpal::MonotonicTimestamp& arTime, const std::function<void ()>& arCallback) :
+MockTimer::MockTimer(MockExecutor* apSource, const openpal::MonotonicTimestamp& arTime, const openpal::Runnable& runnable_) :
 	mTime(arTime),
 	mpSource(apSource),
-	mCallback(arCallback)
+	runnable(runnable_)
 {
 
 }

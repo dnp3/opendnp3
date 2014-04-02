@@ -18,31 +18,23 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __RUNNABLE_H_
-#define __RUNNABLE_H_
+#ifndef __I_COMMAND_CALLBACK_H_
+#define __I_COMMAND_CALLBACK_H_
 
-#include "Erasure.h"
+#include "opendnp3/master/CommandResponse.h"
 
-namespace openpal
+namespace opendnp3
 {
 
-// Todo define max somewhere else
-const uint32_t MAX_RUNNABLE_SIZE = 128;
-
-class Runnable : public Erasure<MAX_RUNNABLE_SIZE>
+/**
+* Callback when a command finishes or fails
+*/
+class ICommandCallback
 {
 public:
 
-	Runnable();
-
-	Runnable& Runnable::operator=(const Runnable& other);
-
-	void Run() const;
-
-protected:
-
-	Runnable(Invoke pInvoke_, uint32_t size_);
-
+	
+	virtual void OnComplete(const CommandResponse& response) = 0;	
 };
 
 }

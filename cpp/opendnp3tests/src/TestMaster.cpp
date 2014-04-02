@@ -28,6 +28,7 @@
 
 #include "MasterTestObject.h"
 #include "MeasurementComparisons.h"
+#include "MockCommandCallback.h"
 
 using namespace opendnp3;
 using namespace openpal;
@@ -47,13 +48,13 @@ void TestForIntegrityAndRespond(MasterTestObject& t, const std::string& response
 	t.RespondToMaster(response);
 }
 
-void DoControlSelectAndOperate(MasterTestObject& t, std::function<void (CommandResponse)> callback)
+void DoControlSelectAndOperate(MasterTestObject& t, ICommandCallback* pCallback)
 {
 	TestForIntegrityPoll(t);
 	REQUIRE(t.app.NumAPDU() ==  0); // check that the master sends no more packets
 
 	ControlRelayOutputBlock bo(ControlCode::PULSE); bo.status = CommandStatus::SUCCESS;
-	t.master.GetCommandProcessor()->SelectAndOperate(bo, 1, callback);
+	t.master.GetCommandProcessor()->SelectAndOperate(bo, 1, pCallback);
 	REQUIRE(t.mts.DispatchOne());
 
 	// Group 12 Var1, 1 byte count/index, index = 1, time on/off = 1000, CommandStatus::SUCCESS
@@ -72,7 +73,8 @@ void TestAnalogOutputExecution(const std::string& setpointhex, T ao)
 	TestForIntegrityPoll(t);
 	REQUIRE(t.app.NumAPDU() ==  0); // check that the master sends no more packets
 
-	t.master.GetCommandProcessor()->SelectAndOperate(ao, 1, [](CommandResponse cr) {});
+	MockCommandCallback callback;
+	t.master.GetCommandProcessor()->SelectAndOperate(ao, 1, &callback);
 	REQUIRE(t.mts.DispatchOne());
 
 	REQUIRE(t.Read() ==  "C0 03 " + setpointhex); // SELECT
@@ -270,16 +272,15 @@ TEST_CASE(SUITE("ControlExecutionClosedState"))
 	auto pCmdProcessor = t.master.GetCommandProcessor();
 
 	ControlRelayOutputBlock bo(ControlCode::PULSE);
+	MockCommandCallback callback;
 
 	for(int i = 0; i < 10; ++i)
-	{
-		CommandResponse rsp;
-		pCmdProcessor->SelectAndOperate(bo, 1, [&](CommandResponse r)
-		{
-			rsp = r;
-		});
+	{		
+		pCmdProcessor->SelectAndOperate(bo, 1, &callback);
 		t.mts.Dispatch();
-		REQUIRE((CommandResponse(CommandResult::NO_COMMS) == rsp));
+		REQUIRE(1 == callback.responses.size());
+		REQUIRE((CommandResponse(CommandResult::NO_COMMS) == callback.responses.front()));
+		callback.responses.pop_front();
 	}
 
 }
@@ -295,11 +296,8 @@ TEST_CASE(SUITE("SelectAndOperate"))
 
 	ControlRelayOutputBlock bo(ControlCode::PULSE); bo.status = CommandStatus::SUCCESS;
 
-	std::vector<CommandResponse> rsps;
-	t.master.GetCommandProcessor()->SelectAndOperate(bo, 1, [&](CommandResponse rsp)
-	{
-		rsps.push_back(rsp);
-	});
+	MockCommandCallback callback;
+	t.master.GetCommandProcessor()->SelectAndOperate(bo, 1, &callback);
 	t.mts.Dispatch();
 
 	// Group 12 Var1, 1 byte count/index, index = 1, time on/off = 1000, CommandStatus::SUCCESS
@@ -316,8 +314,8 @@ TEST_CASE(SUITE("SelectAndOperate"))
 	t.mts.DispatchOne();
 
 	REQUIRE(t.app.NumAPDU() ==  0); //nore more packets
-	REQUIRE(1 ==  rsps.size());
-	REQUIRE((CommandResponse::OK(CommandStatus::SUCCESS) == rsps[0]));
+	REQUIRE(1 == callback.responses.size());
+	REQUIRE((CommandResponse::OK(CommandStatus::SUCCESS) == callback.responses.front()));
 }
 
 TEST_CASE(SUITE("ControlExecutionSelectFailure"))
@@ -326,18 +324,16 @@ TEST_CASE(SUITE("ControlExecutionSelectFailure"))
 	MasterTestObject t(config);
 	t.master.OnLowerLayerUp();
 
-	std::vector<CommandResponse> rsps;
+	MockCommandCallback callback;
 
-	DoControlSelectAndOperate(t, [&](CommandResponse cr)
-	{
-		rsps.push_back(cr);
-	});
+
+	DoControlSelectAndOperate(t, &callback);
 	t.master.OnSolFailure();
 
 	t.mts.DispatchOne();
 
-	REQUIRE(1 ==  rsps.size());
-	REQUIRE((CommandResponse(CommandResult::TIMEOUT) == rsps[0]));
+	REQUIRE(1 == callback.responses.size());
+	REQUIRE((CommandResponse(CommandResult::TIMEOUT) == callback.responses.front()));
 }
 
 TEST_CASE(SUITE("ControlExecutionSelectLayerDown"))
@@ -346,18 +342,15 @@ TEST_CASE(SUITE("ControlExecutionSelectLayerDown"))
 	MasterTestObject t(config);
 	t.master.OnLowerLayerUp();
 
-	std::vector<CommandResponse> rsps;
-	DoControlSelectAndOperate(t, [&](CommandResponse cr)
-	{
-		rsps.push_back(cr);
-	});
+	MockCommandCallback callback;
+	DoControlSelectAndOperate(t, &callback);
 	t.master.OnLowerLayerDown();
 	t.master.OnLowerLayerUp();
 
 	t.mts.DispatchOne();
 
-	REQUIRE(1 ==  rsps.size());
-	REQUIRE((CommandResponse(CommandResult::TIMEOUT) == rsps[0]));
+	REQUIRE(1 == callback.responses.size());
+	REQUIRE((CommandResponse(CommandResult::TIMEOUT) == callback.responses.front()));
 }
 
 TEST_CASE(SUITE("ControlExecutionSelectErrorResponse"))
@@ -366,17 +359,14 @@ TEST_CASE(SUITE("ControlExecutionSelectErrorResponse"))
 	MasterTestObject t(config);
 	t.master.OnLowerLayerUp();
 
-	std::vector<CommandResponse> rsps;
-	DoControlSelectAndOperate(t, [&](CommandResponse cr)
-	{
-		rsps.push_back(cr);
-	});
+	MockCommandCallback callback;
+	DoControlSelectAndOperate(t, &callback);
 	t.RespondToMaster("C0 81 00 00 0C 01 28 01 00 01 00 01 01 64 00 00 00 64 00 00 00 04"); // not supported
 
 	t.mts.DispatchOne();
 
-	REQUIRE(1 ==  rsps.size());
-	REQUIRE((CommandResponse::OK(CommandStatus::NOT_SUPPORTED) == rsps[0]));
+	REQUIRE(1 ==  callback.responses.size());
+	REQUIRE((CommandResponse::OK(CommandStatus::NOT_SUPPORTED) == callback.responses.front()));
 }
 
 TEST_CASE(SUITE("ControlExecutionSelectPartialResponse"))
@@ -385,18 +375,15 @@ TEST_CASE(SUITE("ControlExecutionSelectPartialResponse"))
 	MasterTestObject t(config);
 	t.master.OnLowerLayerUp();
 
-	std::vector<CommandResponse> rsps;
-	DoControlSelectAndOperate(t, [&](CommandResponse cr)
-	{
-		rsps.push_back(cr);
-	});
+	MockCommandCallback callback;
+	DoControlSelectAndOperate(t, &callback);
 
 	t.RespondToMaster("80 81 00 00 0C 01 28 01 00 01 00 01 01 64 00 00 00 64 00 00 00 00", false);
 
 	REQUIRE(t.mts.DispatchOne());
 
-	REQUIRE(1 ==  rsps.size());
-	REQUIRE((CommandResponse(CommandResult::BAD_RESPONSE) == rsps[0]));
+	REQUIRE(1 ==  callback.responses.size());
+	REQUIRE((CommandResponse(CommandResult::BAD_RESPONSE) == callback.responses.front()));
 }
 
 TEST_CASE(SUITE("DeferredControlExecution"))
@@ -410,7 +397,8 @@ TEST_CASE(SUITE("DeferredControlExecution"))
 
 	//issue a command while the master is waiting for a response from the outstation
 	ControlRelayOutputBlock bo(ControlCode::PULSE); bo.status = CommandStatus::SUCCESS;
-	t.master.GetCommandProcessor()->SelectAndOperate(bo, 1, [](CommandResponse) {});
+	MockCommandCallback callback;
+	t.master.GetCommandProcessor()->SelectAndOperate(bo, 1, &callback);
 	REQUIRE(t.mts.DispatchOne());
 
 	t.RespondToMaster("C0 81 00 00"); //now master gets response to integrity
@@ -428,20 +416,17 @@ TEST_CASE(SUITE("CloseWhileWaitingForCommandResponse"))
 	REQUIRE(t.app.NumAPDU() == 0); // check that the master sends no more packets
 
 	AnalogOutputInt16 ao(100);
-	std::deque<CommandResponse> responses;
+	MockCommandCallback callback;
 
-	t.master.GetCommandProcessor()->DirectOperate(ao, 1, [&](CommandResponse cr)
-	{
-		responses.push_back(cr);
-	});
+	t.master.GetCommandProcessor()->DirectOperate(ao, 1, &callback);
 	REQUIRE(t.mts.DispatchOne());
 
 	REQUIRE(t.Read() == "C0 05 29 02 28 01 00 01 00 64 00 00"); // DIRECT OPERATE
 	REQUIRE(t.app.NumAPDU() == 0); //nore more packets
-	REQUIRE(responses.empty());
+	REQUIRE(callback.responses.empty());
 
 	t.master.OnLowerLayerDown();
-	REQUIRE(1 == responses.size());
+	REQUIRE(1 == callback.responses.size());
 	t.master.OnLowerLayerUp();
 
 	TestForIntegrityPoll(t);

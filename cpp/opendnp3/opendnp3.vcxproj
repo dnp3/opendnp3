@@ -132,11 +132,13 @@
     <ClInclude Include="src\opendnp3\master\AsyncTaskInterfaces.h" />
     <ClInclude Include="src\opendnp3\master\AsyncTaskNonPeriodic.h" />
     <ClInclude Include="src\opendnp3\master\AsyncTaskPeriodic.h" />
+    <ClInclude Include="src\opendnp3\master\CommandAction.h" />
     <ClInclude Include="src\opendnp3\master\CommandResponse.h" />
     <ClInclude Include="src\opendnp3\master\CommandSequence.h" />
     <ClInclude Include="src\opendnp3\master\CommandTask.h" />
     <ClInclude Include="src\opendnp3\master\ConstantCommandProcessor.h" />
     <ClInclude Include="src\opendnp3\master\DataPoll.h" />
+    <ClInclude Include="src\opendnp3\master\ICommandCallback.h" />
     <ClInclude Include="src\opendnp3\master\ICommandProcessor.h" />
     <ClInclude Include="src\opendnp3\master\IMaster.h" />
     <ClInclude Include="src\opendnp3\master\IScanListener.h" />
@@ -307,6 +309,7 @@
     <ClCompile Include="src\opendnp3\master\AsyncTaskGroup.cpp" />
     <ClCompile Include="src\opendnp3\master\AsyncTaskNonPeriodic.cpp" />
     <ClCompile Include="src\opendnp3\master\AsyncTaskPeriodic.cpp" />
+    <ClCompile Include="src\opendnp3\master\CommandAction.cpp" />
     <ClCompile Include="src\opendnp3\master\CommandResponse.cpp" />
     <ClCompile Include="src\opendnp3\master\CommandTask.cpp" />
     <ClCompile Include="src\opendnp3\master\ConstantCommandProcessor.cpp" />

@@ -26,27 +26,13 @@
 namespace openpal
 {
 
-void Runnable::Run()
-{
-	if (pInvoke)
-	{
-		(*pInvoke)(bytes);
-	}
-}
-
-bool Runnable::IsSet() const
-{
-	return (pInvoke != nullptr);
-}
-
-Runnable::Runnable() : pInvoke(nullptr), size(0)
+Runnable::Runnable() : Erasure()
 {}
 
-Runnable::Runnable(const Runnable& other) : pInvoke(other.pInvoke), size(other.size)
+void Runnable::Run() const
 {
-	memcpy(bytes, other.bytes, size);
+	this->Apply();
 }
-
 
 Runnable& Runnable::operator=(const Runnable& other)
 {
@@ -60,7 +46,7 @@ Runnable& Runnable::operator=(const Runnable& other)
 	return (*this);
 }
 
-Runnable::Runnable(Invoke pInvoke_, uint32_t size_) : pInvoke(pInvoke_), size(size_)
+Runnable::Runnable(Invoke pInvoke_, uint32_t size_) : Erasure(pInvoke_, size_)
 {}
 
 }
