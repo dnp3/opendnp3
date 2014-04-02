@@ -24,8 +24,6 @@
 #include "AsyncTaskInterfaces.h"
 #include "AsyncTaskBase.h"
 
-
-
 namespace opendnp3
 {
 
@@ -50,7 +48,7 @@ private:
 		@param apGroup Associated task group
 		@param arName Name associated with the tasak
 	*/
-	AsyncTaskContinuous(int aPriority, const TaskHandler& arCallback, AsyncTaskGroup* apGroup, const std::string& arName);
+	AsyncTaskContinuous(int aPriority, const openpal::Function1<AsyncTaskBase*>& callback, AsyncTaskGroup* apGroup, const std::string& arName);
 
 
 };

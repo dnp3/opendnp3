@@ -25,12 +25,7 @@
 #include "AsyncTaskContinuous.h"
 #include "AsyncTaskGroup.h"
 
-#include <functional>
-
 using namespace openpal;
-
-using namespace std;
-using namespace std::placeholders;
 
 namespace opendnp3
 {
@@ -64,7 +59,7 @@ void MasterSchedule::Init(const MasterConfig& arCfg)
 	                      arCfg.IntegrityRate,
 	                      arCfg.TaskRetryRate,
 	                      AMP_POLL,
-	                      bind(&Master::IntegrityPoll, mpMaster, _1),
+						  Bind<AsyncTaskBase*>([this](ITask* pTask){ this->mpMaster->IntegrityPoll(pTask); }),
 	                      "Integrity Poll");
 
 	mpIntegrityPoll->SetFlags(ONLINE_ONLY_TASKS | START_UP_TASKS);
@@ -76,16 +71,13 @@ void MasterSchedule::Init(const MasterConfig& arCfg)
 		 * says that UNSOL should be disabled before an integrity scan
 		 * is done.
 		 */
-		TaskHandler handler = bind(&Master::ChangeUnsol,
-		                           mpMaster,
-		                           _1,
-		                           false,
-		                           CLASS_1 | CLASS_2 | CLASS_3);
+		auto disableUnsol = Bind<AsyncTaskBase*>([this](ITask* pTask){ this->mpMaster->ChangeUnsol(pTask, false, CLASS_1 | CLASS_2 | CLASS_3); });
+	
 		AsyncTaskBase* pUnsolDisable = mTracking.Add(
 		                                   TimeDuration::Min(),
 		                                   arCfg.TaskRetryRate,
 		                                   AMP_UNSOL_CHANGE,
-		                                   handler,
+										   disableUnsol,
 		                                   "Unsol Disable");
 
 		pUnsolDisable->SetFlags(ONLINE_ONLY_TASKS | START_UP_TASKS);
@@ -93,17 +85,12 @@ void MasterSchedule::Init(const MasterConfig& arCfg)
 
 		if (arCfg.EnableUnsol)
 		{
-			TaskHandler handler = bind(
-			                          &Master::ChangeUnsol,
-			                          mpMaster,
-			                          _1,
-			                          true,
-			                          arCfg.UnsolClassMask);
+			auto enableUnsol = Bind<AsyncTaskBase*>([this](ITask* pTask){ this->mpMaster->ChangeUnsol(pTask, true, CLASS_1 | CLASS_2 | CLASS_3); });
 
 			AsyncTaskBase* pUnsolEnable = mTracking.Add(TimeDuration::Min(),
 			                              arCfg.TaskRetryRate,
 			                              AMP_UNSOL_CHANGE,
-			                              handler,
+			                              enableUnsol,
 			                              "Unsol Enable");
 
 			pUnsolEnable->SetFlags(ONLINE_ONLY_TASKS | START_UP_TASKS);
@@ -114,17 +101,17 @@ void MasterSchedule::Init(const MasterConfig& arCfg)
 	/* Tasks are executed when the master is is idle */
 	mpCommandTask = mTracking.AddContinuous(
 	                    AMP_COMMAND,
-	                    std::bind(&Master::ProcessCommand, mpMaster, _1),
+						Bind<AsyncTaskBase*>([this](ITask* pTask){ mpMaster->ProcessCommand(pTask); }),	                    
 	                    "Command");
 
 	mpTimeTask = mTracking.AddContinuous(
 	                 AMP_TIME_SYNC,
-	                 std::bind(&Master::SyncTime, mpMaster, _1),
+					 Bind<AsyncTaskBase*>([this](ITask* pTask){ mpMaster->SyncTime(pTask); }),
 	                 "TimeSync");
 
 	mpClearRestartTask = mTracking.AddContinuous(
 	                         AMP_CLEAR_RESTART,
-	                         std::bind(&Master::WriteIIN, mpMaster, _1),
+							 Bind<AsyncTaskBase*>([this](ITask* pTask){ mpMaster->WriteIIN(pTask); }),
 	                         "Clear IIN");
 
 	mpTimeTask->SetFlags(ONLINE_ONLY_TASKS);
@@ -132,12 +119,12 @@ void MasterSchedule::Init(const MasterConfig& arCfg)
 
 }
 
-AsyncTaskBase* MasterSchedule::AddClassScan(int aClassMask, TimeDuration aScanRate, TimeDuration aRetryRate)
+AsyncTaskBase* MasterSchedule::AddClassScan(int classMask, TimeDuration aScanRate, TimeDuration aRetryRate)
 {
 	auto pClassScan = mTracking.Add(		aScanRate,
 	                                        aRetryRate,
 	                                        AMP_POLL,
-	                                        bind(&Master::EventPoll, mpMaster, _1, aClassMask),
+											Bind<AsyncTaskBase*>([this, classMask](ITask* pTask){ mpMaster->EventPoll(pTask, classMask); }),
 	                                        "Class Scan");
 
 	pClassScan->SetFlags(ONLINE_ONLY_TASKS);

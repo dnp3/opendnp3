@@ -42,12 +42,14 @@ void MasterScan::Demand()
 
 void MasterScan::AddScanCallback(IScanListener* apListener)
 {
+	/* TODO
 	mpTask->SetStatusCallback([apListener](bool success)
 	{
 		auto status = success ? ScanStatus::SUCCESS : ScanStatus::FAILURE;
 		ScanResult result = { status };
 		apListener->OnScanUpdate(result);
 	});
+	*/
 }
 
 }

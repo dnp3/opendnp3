@@ -24,6 +24,7 @@
 #include <openpal/TimeDuration.h>
 #include <openpal/Uncopyable.h>
 #include <openpal/StaticList.h>
+#include <openpal/Function1.h>
 
 #include "AsyncTaskInterfaces.h"
 
@@ -49,8 +50,8 @@ public:
 
 	void ResetTasks(int aMask);
 
-	AsyncTaskBase* Add(openpal::TimeDuration aPeriod, openpal::TimeDuration aRetryDelay, int aPriority, const TaskHandler& arCallback, const std::string& arName = "");
-	AsyncTaskContinuous* AddContinuous(int aPriority, const TaskHandler& arCallback, const std::string& arName = "");
+	AsyncTaskBase* Add(openpal::TimeDuration aPeriod, openpal::TimeDuration aRetryDelay, int aPriority, const openpal::Function1<AsyncTaskBase*>& callback, const std::string& arName = "");
+	AsyncTaskContinuous* AddContinuous(int aPriority, const openpal::Function1<AsyncTaskBase*>& callback, const std::string& arName = "");
 
 
 private:

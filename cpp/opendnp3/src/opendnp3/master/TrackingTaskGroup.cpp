@@ -53,18 +53,18 @@ TrackingTaskGroup::~TrackingTaskGroup()
 	);	
 }
 
-AsyncTaskBase* TrackingTaskGroup::Add(openpal::TimeDuration aPeriod, openpal::TimeDuration aRetryDelay, int aPriority, const TaskHandler& arCallback, const std::string& arName)
+AsyncTaskBase* TrackingTaskGroup::Add(openpal::TimeDuration aPeriod, openpal::TimeDuration aRetryDelay, int aPriority, const openpal::Function1<AsyncTaskBase*>& callback, const std::string& arName)
 {
 	assert(!tasks.IsFull());
-	AsyncTaskBase* pTask = mpGroup->Add(aPeriod, aRetryDelay, aPriority, arCallback, arName);
+	AsyncTaskBase* pTask = mpGroup->Add(aPeriod, aRetryDelay, aPriority, callback, arName);
 	tasks.Add(pTask);
 	return pTask;
 }
 
-AsyncTaskContinuous* TrackingTaskGroup::AddContinuous(int aPriority, const TaskHandler& arCallback, const std::string& arName)
+AsyncTaskContinuous* TrackingTaskGroup::AddContinuous(int aPriority, const openpal::Function1<AsyncTaskBase*>& callback, const std::string& arName)
 {
 	assert(!tasks.IsFull());
-	AsyncTaskContinuous* pTask = mpGroup->AddContinuous(aPriority, arCallback, arName);
+	AsyncTaskContinuous* pTask = mpGroup->AddContinuous(aPriority, callback, arName);
 	tasks.Add(pTask);
 	return pTask;
 }

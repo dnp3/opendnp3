@@ -26,6 +26,7 @@
 #include <openpal/Uncopyable.h>
 #include <openpal/MonotonicTimestamp.h>
 #include <openpal/StaticList.h>
+#include <openpal/Function1.h>
 
 #include <string>
 
@@ -51,7 +52,7 @@ public:
 	// Implements ITaskCompletion
 	void OnComplete(bool aSuccess, bool silent);
 
-	void SetStatusCallback(const std::function<void (bool)>& callback);
+	// void SetStatusCallback(const std::function<void (bool)>& callback);
 
 	// Modify this task's depth to make it dependent on the argument
 	bool AddDependency(const AsyncTaskBase* apTask);
@@ -88,7 +89,7 @@ protected:
 
 	AsyncTaskBase(
 	    int aPriority,
-	    const TaskHandler& arCallback,
+		const openpal::Function1<AsyncTaskBase*>& handler,
 	    AsyncTaskGroup* apGroup,
 	    const openpal::MonotonicTimestamp& arInitialTime,
 	    const std::string& arName);
@@ -155,14 +156,14 @@ protected:
 	bool mIsRunning;								// Every task has an execution
 	// status
 	int mPriority;									// Every task has a pr
-	TaskHandler mHandler;							// Every task has a handler for
+	openpal::Function1<AsyncTaskBase*> handler;				// Every task has a handler for
 	// executing the task
 	AsyncTaskGroup* mpGroup;						// owning task group
 	openpal::MonotonicTimestamp mNextRunTime;		// next execution time for the task
 	const openpal::MonotonicTimestamp M_INITIAL_TIME;
 	int mFlags;
 
-	std::function<void (bool)> callback;
+	//std::function<void (bool)> callback;
 };
 
 }
