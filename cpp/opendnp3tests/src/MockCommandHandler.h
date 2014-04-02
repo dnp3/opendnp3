@@ -30,26 +30,18 @@ class MockCommandHandler : public SimpleCommandHandler
 {
 public:
 
-	MockCommandHandler(CommandStatus aStatus = CommandStatus::SUCCESS) :
-		SimpleCommandHandler([&]()
-	{
-		++mNumInvocations;
-		return mStatus;
-	}),
-	mNumInvocations(0),
-	mStatus(aStatus)
-	{}
+	MockCommandHandler(CommandStatus status = CommandStatus::SUCCESS) : SimpleCommandHandler(status)
+	{}	
 
-	void SetResponse(CommandStatus aStatus)
+	void SetResponse(CommandStatus status_)
 	{
-		mStatus = aStatus;
+		status = status_;
 	}
 
-	int mNumInvocations;
-
-private:
-
-	CommandStatus mStatus;
+	uint32_t NumInvocations() const
+	{
+		return numInvocations;
+	}
 
 };
 

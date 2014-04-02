@@ -23,8 +23,6 @@
 
 #include <openpal/UTCTimestamp.h>
 
-#include <functional>
-
 namespace opendnp3
 {
 
@@ -36,32 +34,15 @@ public:
 	virtual void WriteAbsoluteTime(openpal::UTCTimestamp aTimestamp) = 0;
 };
 
-class FunctionTimeWriteHandler : public ITimeWriteHandler
-{
-public:
-	FunctionTimeWriteHandler(std::function<void (openpal::UTCTimestamp aTimestamp)> aCallback) :
-		mCallback(aCallback)
-	{}
-
-	void WriteAbsoluteTime(openpal::UTCTimestamp aTimestamp)
-	{
-		mCallback(aTimestamp);
-	}
-
-private:
-	std::function<void (openpal::UTCTimestamp aTimestamp)> mCallback;
-
-};
-
-class NullTimeWriteHandler : public FunctionTimeWriteHandler
+class NullTimeWriteHandler : public ITimeWriteHandler
 {
 public:
 	static ITimeWriteHandler* Inst();
 
-private:
-	static NullTimeWriteHandler mInstance;
+	virtual void WriteAbsoluteTime(openpal::UTCTimestamp aTimestamp) override final {}
 
-	NullTimeWriteHandler() : FunctionTimeWriteHandler([](openpal::UTCTimestamp) {}) {}
+private:
+	static NullTimeWriteHandler mInstance;	
 };
 
 }

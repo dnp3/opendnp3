@@ -83,24 +83,24 @@ TEST_CASE(SUITE("SelectOperateCROBSameSequenceNumber"))
 	OutstationTestObject t(cfg, DatabaseTemplate());
 	t.outstation.OnLowerLayerUp();
 
-	REQUIRE(0 ==  t.cmdHandler.mNumInvocations);
+	REQUIRE(0 ==  t.cmdHandler.NumInvocations());
 
 	// Select group 12 Var 1, count = 1, index = 3
 	t.SendToOutstation("C0 03 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00", SequenceInfo::OTHER);
 	REQUIRE(t.Read() ==  "C0 81 80 00 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00"); // 0x00 status == CommandStatus::SUCCESS
-	REQUIRE(1 ==  t.cmdHandler.mNumInvocations);
+	REQUIRE(1 == t.cmdHandler.NumInvocations());
 
 
 	// operate the first time with correct sequence #
 	t.SendToOutstation("C1 04 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00", SequenceInfo::CORRECT);
 	REQUIRE(t.Read() ==  "C0 81 80 00 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00");
-	REQUIRE(2 ==  t.cmdHandler.mNumInvocations);
+	REQUIRE(2 == t.cmdHandler.NumInvocations());
 
 	// TODO - Find this requirement in the docs
 	// operate again with same sequence number, should respond success but not really do an operation
 	t.SendToOutstation("C1 04 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00", SequenceInfo::PREVIOUS);
 	REQUIRE(t.Read() ==  "C0 81 80 00 0C 01 17 01 03 01 01 01 00 00 00 01 00 00 00 00");
-	REQUIRE(2 ==  t.cmdHandler.mNumInvocations);
+	REQUIRE(2 == t.cmdHandler.NumInvocations());
 }
 
 TEST_CASE(SUITE("SelectGroup41Var1"))

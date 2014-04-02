@@ -21,8 +21,6 @@
 #ifndef __I_EXECUTOR_H_
 #define __I_EXECUTOR_H_
 
-#include <functional>
-
 #include "ITimer.h"
 #include "TimeDuration.h"
 #include "MonotonicTimestamp.h"

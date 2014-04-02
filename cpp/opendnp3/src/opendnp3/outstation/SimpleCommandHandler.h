@@ -23,8 +23,6 @@
 
 #include "ICommandHandler.h"
 
-#include <functional>
-
 namespace opendnp3
 {
 
@@ -38,30 +36,31 @@ public:
 	/**
 	* @param aStatusFunc functor used to retrieve that next CommandStatus enumeration
 	*/
-	SimpleCommandHandler(std::function<CommandStatus ()> aStatusFunc);
+	SimpleCommandHandler(CommandStatus status);
 
-	CommandStatus Supports(const ControlRelayOutputBlock& arCommand, uint16_t aIndex) final;
-	CommandStatus Perform(const ControlRelayOutputBlock& arCommand, uint16_t aIndex) final;
-
-
-	CommandStatus Supports(const AnalogOutputInt16& arCommand, uint16_t aIndex) final;
-	CommandStatus Perform(const AnalogOutputInt16& arCommand, uint16_t aIndex) final;
+	CommandStatus Supports(const ControlRelayOutputBlock& arCommand, uint16_t aIndex) override final;
+	CommandStatus Perform(const ControlRelayOutputBlock& arCommand, uint16_t aIndex) override final;
 
 
-	CommandStatus Supports(const AnalogOutputInt32& arCommand, uint16_t aIndex) final;
-	CommandStatus Perform(const AnalogOutputInt32& arCommand, uint16_t aIndex) final;
+	CommandStatus Supports(const AnalogOutputInt16& arCommand, uint16_t aIndex) override final;
+	CommandStatus Perform(const AnalogOutputInt16& arCommand, uint16_t aIndex) override final;
 
 
-	CommandStatus Supports(const AnalogOutputFloat32& arCommand, uint16_t aIndex) final;
-	CommandStatus Perform(const AnalogOutputFloat32& arCommand, uint16_t aIndex) final;
+	CommandStatus Supports(const AnalogOutputInt32& arCommand, uint16_t aIndex) override final;
+	CommandStatus Perform(const AnalogOutputInt32& arCommand, uint16_t aIndex) override final;
 
 
-	CommandStatus Supports(const AnalogOutputDouble64& arCommand, uint16_t aIndex) final;
-	CommandStatus Perform(const AnalogOutputDouble64& arCommand, uint16_t aIndex) final;
+	CommandStatus Supports(const AnalogOutputFloat32& arCommand, uint16_t aIndex) override final;
+	CommandStatus Perform(const AnalogOutputFloat32& arCommand, uint16_t aIndex) override final;
 
 
-private:
-	std::function<CommandStatus ()> mStatusFunc;
+	CommandStatus Supports(const AnalogOutputDouble64& arCommand, uint16_t aIndex) override final;
+	CommandStatus Perform(const AnalogOutputDouble64& arCommand, uint16_t aIndex) override final;
+
+
+protected:
+	uint32_t numInvocations;
+	CommandStatus status;
 };
 
 class SuccessCommandHandler : public SimpleCommandHandler
@@ -69,11 +68,11 @@ class SuccessCommandHandler : public SimpleCommandHandler
 public:
 	static SuccessCommandHandler* Inst()
 	{
-		return &mHandler;
+		return &handler;
 	}
 
 private:
-	static SuccessCommandHandler mHandler;
+	static SuccessCommandHandler handler;
 
 protected:
 	SuccessCommandHandler();
