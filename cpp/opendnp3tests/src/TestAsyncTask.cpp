@@ -43,7 +43,7 @@ public:
 
 	openpal::Function1<AsyncTaskBase*> GetHandler()
 	{
-		return Bind<AsyncTaskBase*>([this](ITask * pTask)
+		return Bind1<AsyncTaskBase*>([this](ITask * pTask)
 		{
 			this->OnTask(pTask);
 		});
