@@ -21,8 +21,8 @@
 
 #include "APDUWrapper.h"
 
+#include <openpal/Configure.h>
 #include <assert.h>
-void abort(); //TODO
 
 #include "AppControlField.h"
 
