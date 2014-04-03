@@ -12,7 +12,7 @@ CATCH_INCLUDE = $(top_srcdir)/cpp/catch
 
 bin_PROGRAMS = masterdemo outstationdemo apdufuzz
 
-lib_LTLIBRARIES = libopenpal.la libasiopal.la libopendnp3.la
+lib_LTLIBRARIES = libopenpal.la libopendnp3.la libasiopal.la 
 
 #ls cpp/openpal/src/* -1 | awk '{print $0" \\"}'
 libopenpal_la_LDFLAGS = -version-info 1:1:0
@@ -27,24 +27,6 @@ cpp/openpal/src/openpal/ReverseEndian.cpp \
 cpp/openpal/src/openpal/Runnable.cpp \
 cpp/openpal/src/openpal/TimeDuration.cpp \
 cpp/openpal/src/openpal/ToHex.cpp
-
-#ls cpp/asiopal/src/*.cpp -1 | awk '{print $0" \\"}'
-libasiopal_la_LDFLAGS = -version-info 1:1:0
-libasiopal_la_CXXFLAGS = -I$(OPENPAL_INCLUDE) -I$(ASIOPAL_INCLUDE) $(ASIO_CONFIG)
-libasiopal_la_SOURCES = \
-cpp/asiopal/src/asiopal/ASIOExecutor.cpp \
-cpp/asiopal/src/asiopal/ASIOSerialHelpers.cpp \
-cpp/asiopal/src/asiopal/IOServiceThreadPool.cpp \
-cpp/asiopal/src/asiopal/Log.cpp \
-cpp/asiopal/src/asiopal/LogToStdio.cpp \
-cpp/asiopal/src/asiopal/PhysicalLayerAsyncBaseTCP.cpp \
-cpp/asiopal/src/asiopal/PhysicalLayerAsyncSerial.cpp \
-cpp/asiopal/src/asiopal/PhysicalLayerAsyncTCPClient.cpp \
-cpp/asiopal/src/asiopal/PhysicalLayerAsyncTCPServer.cpp \
-cpp/asiopal/src/asiopal/SerialTypes.cpp \
-cpp/asiopal/src/asiopal/TimerASIO.cpp \
-cpp/asiopal/src/asiopal/UTCTimeSource.cpp
-
 
 #ls cpp/opendnp3/src/opendnp3/*.cpp -1 | awk '{print $0" \\"}'
 libopendnp3_la_LDFLAGS = -version-info 2:0:0
@@ -191,6 +173,23 @@ cpp/opendnp3/src/opendnp3/DNP3Manager.cpp \
 cpp/opendnp3/src/opendnp3/DNP3Stack.cpp \
 cpp/opendnp3/src/opendnp3/LogLevelInterpreter.cpp \
 cpp/opendnp3/src/opendnp3/StackActionHandler.cpp
+
+#ls cpp/asiopal/src/*.cpp -1 | awk '{print $0" \\"}'
+libasiopal_la_LDFLAGS = -version-info 1:1:0
+libasiopal_la_CXXFLAGS = -I$(OPENPAL_INCLUDE) -I$(ASIOPAL_INCLUDE) $(ASIO_CONFIG)
+libasiopal_la_SOURCES = \
+cpp/asiopal/src/asiopal/ASIOExecutor.cpp \
+cpp/asiopal/src/asiopal/ASIOSerialHelpers.cpp \
+cpp/asiopal/src/asiopal/IOServiceThreadPool.cpp \
+cpp/asiopal/src/asiopal/Log.cpp \
+cpp/asiopal/src/asiopal/LogToStdio.cpp \
+cpp/asiopal/src/asiopal/PhysicalLayerAsyncBaseTCP.cpp \
+cpp/asiopal/src/asiopal/PhysicalLayerAsyncSerial.cpp \
+cpp/asiopal/src/asiopal/PhysicalLayerAsyncTCPClient.cpp \
+cpp/asiopal/src/asiopal/PhysicalLayerAsyncTCPServer.cpp \
+cpp/asiopal/src/asiopal/SerialTypes.cpp \
+cpp/asiopal/src/asiopal/TimerASIO.cpp \
+cpp/asiopal/src/asiopal/UTCTimeSource.cpp
 
 
 check_PROGRAMS = openpaltest dnp3test
