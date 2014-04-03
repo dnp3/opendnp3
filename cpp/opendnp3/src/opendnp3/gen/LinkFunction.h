@@ -18,7 +18,6 @@
 #ifndef __OPENDNP3_GENERATED_LINKFUNCTION_H_
 #define __OPENDNP3_GENERATED_LINKFUNCTION_H_
 
-#include <string>
 #include <cstdint>
 
 namespace opendnp3 {
@@ -42,7 +41,7 @@ enum class LinkFunction : uint8_t
 
 uint8_t LinkFunctionToType(LinkFunction arg);
 LinkFunction LinkFunctionFromType(uint8_t arg);
-std::string LinkFunctionToString(LinkFunction arg);
+char const* LinkFunctionToString(LinkFunction arg);
 
 }
 

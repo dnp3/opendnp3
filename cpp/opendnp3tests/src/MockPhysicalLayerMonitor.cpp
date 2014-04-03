@@ -131,7 +131,7 @@ bool MockPhysicalLayerMonitor::NextStateIs(ChannelState aState)
 	else
 	{
 		ChannelState state = mState.front();
-		LOG_BLOCK(flags::INFO, "Saw state: " + ChannelStateToString(state));
+		LOG_BLOCK(flags::INFO, "Saw state: " << ChannelStateToString(state));
 		mState.pop();
 		return (state == aState);
 	}

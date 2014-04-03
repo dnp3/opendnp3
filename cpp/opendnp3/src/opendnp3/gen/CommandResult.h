@@ -18,7 +18,6 @@
 #ifndef __OPENDNP3_GENERATED_COMMANDRESULT_H_
 #define __OPENDNP3_GENERATED_COMMANDRESULT_H_
 
-#include <string>
 #include <cstdint>
 
 namespace opendnp3 {
@@ -40,7 +39,7 @@ enum class CommandResult : int
   QUEUE_FULL = 4
 };
 
-std::string CommandResultToString(CommandResult arg);
+char const* CommandResultToString(CommandResult arg);
 
 }
 

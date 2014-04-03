@@ -18,7 +18,6 @@
 #ifndef __OPENDNP3_GENERATED_EVENTBINARYRESPONSE_H_
 #define __OPENDNP3_GENERATED_EVENTBINARYRESPONSE_H_
 
-#include <string>
 #include <cstdint>
 
 namespace opendnp3 {

@@ -50,7 +50,7 @@ LinkFunction LinkFunctionFromType(uint8_t arg)
   }
   return LinkFunction::INVALID;
 }
-std::string LinkFunctionToString(LinkFunction arg)
+char const* LinkFunctionToString(LinkFunction arg)
 {
   switch(arg)
   {

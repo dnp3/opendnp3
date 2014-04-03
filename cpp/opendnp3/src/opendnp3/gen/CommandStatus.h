@@ -18,7 +18,6 @@
 #ifndef __OPENDNP3_GENERATED_COMMANDSTATUS_H_
 #define __OPENDNP3_GENERATED_COMMANDSTATUS_H_
 
-#include <string>
 #include <cstdint>
 
 namespace opendnp3 {
@@ -55,7 +54,7 @@ enum class CommandStatus : uint8_t
 
 uint8_t CommandStatusToType(CommandStatus arg);
 CommandStatus CommandStatusFromType(uint8_t arg);
-std::string CommandStatusToString(CommandStatus arg);
+char const* CommandStatusToString(CommandStatus arg);
 
 }
 

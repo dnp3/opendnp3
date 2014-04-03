@@ -46,7 +46,7 @@ QualifierCode QualifierCodeFromType(uint8_t arg)
   }
   return QualifierCode::UNDEFINED;
 }
-std::string QualifierCodeToString(QualifierCode arg)
+char const* QualifierCodeToString(QualifierCode arg)
 {
   switch(arg)
   {

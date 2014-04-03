@@ -18,7 +18,6 @@
 #ifndef __OPENDNP3_GENERATED_SCANSTATUS_H_
 #define __OPENDNP3_GENERATED_SCANSTATUS_H_
 
-#include <string>
 #include <cstdint>
 
 namespace opendnp3 {
@@ -34,7 +33,7 @@ enum class ScanStatus : int
   FAILURE = 1
 };
 
-std::string ScanStatusToString(ScanStatus arg);
+char const* ScanStatusToString(ScanStatus arg);
 
 }
 

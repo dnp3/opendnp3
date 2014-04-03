@@ -38,7 +38,7 @@ DoubleBit DoubleBitFromType(uint8_t arg)
   }
   return DoubleBit::INDETERMINATE;
 }
-std::string DoubleBitToString(DoubleBit arg)
+char const* DoubleBitToString(DoubleBit arg)
 {
   switch(arg)
   {

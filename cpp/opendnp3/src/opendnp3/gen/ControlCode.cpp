@@ -44,7 +44,7 @@ ControlCode ControlCodeFromType(uint8_t arg)
   }
   return ControlCode::UNDEFINED;
 }
-std::string ControlCodeToString(ControlCode arg)
+char const* ControlCodeToString(ControlCode arg)
 {
   switch(arg)
   {

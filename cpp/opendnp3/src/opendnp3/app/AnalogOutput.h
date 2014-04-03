@@ -23,6 +23,8 @@
 
 #include "opendnp3/gen/CommandStatus.h"
 
+#include <string>
+
 namespace opendnp3
 {
 

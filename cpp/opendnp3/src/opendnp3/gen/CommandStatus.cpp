@@ -52,7 +52,7 @@ CommandStatus CommandStatusFromType(uint8_t arg)
   }
   return CommandStatus::UNDEFINED;
 }
-std::string CommandStatusToString(CommandStatus arg)
+char const* CommandStatusToString(CommandStatus arg)
 {
   switch(arg)
   {

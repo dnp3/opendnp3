@@ -18,7 +18,6 @@
 #ifndef __OPENDNP3_GENERATED_DOUBLEBIT_H_
 #define __OPENDNP3_GENERATED_DOUBLEBIT_H_
 
-#include <string>
 #include <cstdint>
 
 namespace opendnp3 {
@@ -40,7 +39,7 @@ enum class DoubleBit : uint8_t
 
 uint8_t DoubleBitToType(DoubleBit arg);
 DoubleBit DoubleBitFromType(uint8_t arg);
-std::string DoubleBitToString(DoubleBit arg);
+char const* DoubleBitToString(DoubleBit arg);
 
 }
 

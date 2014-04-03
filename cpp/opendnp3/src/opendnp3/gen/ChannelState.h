@@ -18,7 +18,6 @@
 #ifndef __OPENDNP3_GENERATED_CHANNELSTATE_H_
 #define __OPENDNP3_GENERATED_CHANNELSTATE_H_
 
-#include <string>
 #include <cstdint>
 
 namespace opendnp3 {
@@ -40,7 +39,7 @@ enum class ChannelState : int
   SHUTDOWN = 4
 };
 
-std::string ChannelStateToString(ChannelState arg);
+char const* ChannelStateToString(ChannelState arg);
 
 }
 

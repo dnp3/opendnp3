@@ -18,7 +18,6 @@
 #ifndef __OPENDNP3_GENERATED_CONTROLCODE_H_
 #define __OPENDNP3_GENERATED_CONTROLCODE_H_
 
-#include <string>
 #include <cstdint>
 
 namespace opendnp3 {
@@ -53,7 +52,7 @@ enum class ControlCode : uint8_t
 
 uint8_t ControlCodeToType(ControlCode arg);
 ControlCode ControlCodeFromType(uint8_t arg);
-std::string ControlCodeToString(ControlCode arg);
+char const* ControlCodeToString(ControlCode arg);
 
 }
 

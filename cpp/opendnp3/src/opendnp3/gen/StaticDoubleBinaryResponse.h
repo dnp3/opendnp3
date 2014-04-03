@@ -18,7 +18,6 @@
 #ifndef __OPENDNP3_GENERATED_STATICDOUBLEBINARYRESPONSE_H_
 #define __OPENDNP3_GENERATED_STATICDOUBLEBINARYRESPONSE_H_
 
-#include <string>
 #include <cstdint>
 
 namespace opendnp3 {

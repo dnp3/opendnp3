@@ -98,7 +98,7 @@ FunctionCode FunctionCodeFromType(uint8_t arg)
   }
   return FunctionCode::UNKNOWN;
 }
-std::string FunctionCodeToString(FunctionCode arg)
+char const* FunctionCodeToString(FunctionCode arg)
 {
   switch(arg)
   {

@@ -24,6 +24,8 @@
 #include "opendnp3/gen/CommandStatus.h"
 #include "opendnp3/gen/CommandResult.h"
 
+#include <string>
+
 namespace opendnp3
 {
 

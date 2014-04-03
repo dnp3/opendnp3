@@ -24,6 +24,8 @@
 #include "LinkLayerConstants.h"
 #include "../gen/LinkFunction.h"
 
+#include <string>
+
 namespace opendnp3
 {
 

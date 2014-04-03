@@ -19,7 +19,7 @@
 
 namespace opendnp3 {
 
-std::string CommandResultToString(CommandResult arg)
+char const* CommandResultToString(CommandResult arg)
 {
   switch(arg)
   {

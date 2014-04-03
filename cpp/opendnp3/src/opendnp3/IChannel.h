@@ -30,6 +30,8 @@
 #include <openpal/IUTCTimeSource.h>
 #include <openpal/LogFilters.h>
 
+#include <string>
+
 namespace opendnp3
 {
 

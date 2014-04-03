@@ -18,7 +18,6 @@
 #ifndef __OPENDNP3_GENERATED_QUALIFIERCODE_H_
 #define __OPENDNP3_GENERATED_QUALIFIERCODE_H_
 
-#include <string>
 #include <cstdint>
 
 namespace opendnp3 {
@@ -40,7 +39,7 @@ enum class QualifierCode : uint8_t
 
 uint8_t QualifierCodeToType(QualifierCode arg);
 QualifierCode QualifierCodeFromType(uint8_t arg);
-std::string QualifierCodeToString(QualifierCode arg);
+char const* QualifierCodeToString(QualifierCode arg);
 
 }
 

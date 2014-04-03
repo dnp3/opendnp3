@@ -19,7 +19,7 @@
 
 namespace opendnp3 {
 
-std::string ScanStatusToString(ScanStatus arg)
+char const* ScanStatusToString(ScanStatus arg)
 {
   switch(arg)
   {

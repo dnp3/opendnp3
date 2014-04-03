@@ -19,7 +19,7 @@
 
 namespace opendnp3 {
 
-std::string ChannelStateToString(ChannelState arg)
+char const* ChannelStateToString(ChannelState arg)
 {
   switch(arg)
   {
