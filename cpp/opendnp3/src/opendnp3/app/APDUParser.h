@@ -21,8 +21,6 @@
 #ifndef __APDU_PARSER_H_
 #define __APDU_PARSER_H_
 
-#include <limits>
-
 #include <openpal/BufferWrapper.h>
 #include <openpal/ISerializer.h>
 #include <openpal/Serialization.h>

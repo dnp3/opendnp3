@@ -21,7 +21,6 @@
 #ifndef __PREFIXED_WRITE_ITERATOR_H_
 #define __PREFIXED_WRITE_ITERATOR_H_
 
-#include <limits>
 #include "opendnp3/app/IDNP3Serializer.h"
 
 namespace opendnp3

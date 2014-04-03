@@ -22,7 +22,6 @@
 #include "EventTriggers.h"
 
 #include <cmath>
-#include <limits>
 
 namespace opendnp3
 {

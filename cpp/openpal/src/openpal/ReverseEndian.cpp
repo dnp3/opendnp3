@@ -22,11 +22,13 @@
 
 #include <cstring>
 
+#include "Limits.h"
+
 namespace openpal
 {
 
-const uint8_t UInt8Simple::Max = std::numeric_limits<uint8_t>::max();
-const uint8_t UInt8Simple::Min = std::numeric_limits<uint8_t>::min();
+const uint8_t UInt8Simple::Max = Limits<uint8_t>::Max();
+const uint8_t UInt8Simple::Min = Limits<uint8_t>::Min();
 
 int64_t UInt48LE::Read(const uint8_t* apStart)
 {

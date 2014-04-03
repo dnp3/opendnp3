@@ -166,6 +166,9 @@
     <ClInclude Include="src\openpal\StringFormatting.h">
       <Filter>Header</Filter>
     </ClInclude>
+    <ClInclude Include="src\openpal\Limits.h">
+      <Filter>Header</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\openpal\BufferWrapper.cpp">
@@ -193,6 +196,9 @@
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="src\openpal\Runnable.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="src\openpal\Limits.cpp">
       <Filter>Source</Filter>
     </ClCompile>
   </ItemGroup>

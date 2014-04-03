@@ -33,6 +33,10 @@ inline void* operator new(size_t, void* p)
 
 extern "C" void abort();
 
+#else
+
+#include <new>
+
 #endif
 
 #endif

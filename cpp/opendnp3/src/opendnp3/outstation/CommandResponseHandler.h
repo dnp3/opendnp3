@@ -73,7 +73,7 @@ template <class Target, class IndexType>
 void CommandResponseHandler::RespondToHeader(QualifierCode qualifier, IDNP3Serializer<Target>* pSerializer, const IterableBuffer<IndexedValue<Target, typename IndexType::Type>>& meas)
 {
 	auto iter = writer.IterateOverCountWithPrefix<IndexType, Target>(qualifier, pSerializer);
-	auto lambda = [this, &iter] (const IndexedValue<Target, typename IndexType::Type>& command) mutable
+	auto lambda = [this, &iter] (const IndexedValue<Target, typename IndexType::Type>& command)
 	{
 		auto result = CommandStatus::TOO_MANY_OPS;
 		if (numRequests < maxCommands)

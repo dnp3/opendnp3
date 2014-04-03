@@ -21,13 +21,13 @@
 
 #include "StaticRange.h"
 
-#include <limits>
+#include <openpal/Limits.h>
 
 namespace opendnp3
 {
 
-const uint16_t StaticRange::MIN(std::numeric_limits<uint16_t>::min());
-const uint16_t StaticRange::MAX(std::numeric_limits<uint16_t>::max());
+const uint16_t StaticRange::MIN(openpal::Limits<uint16_t>::Min());
+const uint16_t StaticRange::MAX(openpal::Limits<uint16_t>::Max());
 
 StaticRange::StaticRange() : start(MAX), stop(MIN), clipped(false) {}
 

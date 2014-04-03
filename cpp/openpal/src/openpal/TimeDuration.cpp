@@ -20,14 +20,14 @@
  */
 #include <openpal/TimeDuration.h>
 
-#include <limits>
+#include "Limits.h"
 
 namespace openpal
 {
 
 TimeDuration TimeDuration::Min()
 {
-	return TimeDuration(std::numeric_limits<int64_t>::min());
+	return TimeDuration(Limits<int64_t>::Min());
 }
 
 TimeDuration TimeDuration::Zero()

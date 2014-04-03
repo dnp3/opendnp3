@@ -19,19 +19,17 @@
  * to you under the terms of the License.
  */
 
-#include "DownSampling.h"
+#include "Limits.h"
 
-#include <openpal/Limits.h>
-
-namespace opendnp3
+namespace openpal
 {
 
 template <>
-const float DownSampling<double, float>::TARGET_MAX(openpal::Limits<float>::Max());
-
-template <>
-const float DownSampling<double, float>::TARGET_MIN(openpal::Limits<float>::Min());
+class Limits<int64_t> : PureStatic
+{
+	public:
+		static int64_t Max() { return INT64_MAX; }
+		static int64_t Min() { return INT64_MIN; }
+};
 
 }
-
-

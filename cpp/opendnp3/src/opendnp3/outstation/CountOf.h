@@ -24,7 +24,6 @@
 
 #include <cstdint>
 #include <assert.h>
-#include <limits>
 
 namespace opendnp3
 {

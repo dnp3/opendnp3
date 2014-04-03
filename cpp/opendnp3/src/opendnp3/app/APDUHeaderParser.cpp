@@ -21,8 +21,6 @@
 
 #include "APDUHeaderParser.h"
 
-#include <limits>
-
 #include <openpal/Uncopyable.h>
 #include "opendnp3/app/APDUHeader.h"
 

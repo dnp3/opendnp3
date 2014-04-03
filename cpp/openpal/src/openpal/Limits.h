@@ -18,20 +18,24 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
+#ifndef __OPENPAL_LIMITS_H_
+#define __OPENPAL_LIMITS_H_
 
-#include "DownSampling.h"
+#include <cstdint>
 
-#include <openpal/Limits.h>
+#include "Uncopyable.h"
 
-namespace opendnp3
+namespace openpal
 {
 
-template <>
-const float DownSampling<double, float>::TARGET_MAX(openpal::Limits<float>::Max());
-
-template <>
-const float DownSampling<double, float>::TARGET_MIN(openpal::Limits<float>::Min());
+template <class T>
+class Limits : PureStatic
+{
+	public:
+		static T Max();
+		static T Min();	
+};
 
 }
 
-
+#endif

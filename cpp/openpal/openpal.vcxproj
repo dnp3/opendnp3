@@ -27,6 +27,7 @@
     <ClInclude Include="src\openpal\IEventHandler.h" />
     <ClInclude Include="src\openpal\IMutex.h" />
     <ClInclude Include="src\openpal\IShutdownHandler.h" />
+    <ClInclude Include="src\openpal\Limits.h" />
     <ClInclude Include="src\openpal\LinkedListAdapter.h" />
     <ClInclude Include="src\openpal\DynamicArray.h" />
     <ClInclude Include="src\openpal\HasSize.h" />
@@ -74,6 +75,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\openpal\BufferWrapper.cpp" />
+    <ClCompile Include="src\openpal\Limits.cpp" />
     <ClCompile Include="src\openpal\LogEntry.cpp" />
     <ClCompile Include="src\openpal\Logger.cpp" />
     <ClCompile Include="src\openpal\LogRoot.cpp" />

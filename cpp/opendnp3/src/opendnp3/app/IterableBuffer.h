@@ -83,7 +83,10 @@ public:
 	void foreach(const IterFunc& fun) const
 	{
 		openpal::ReadOnlyBuffer copy(this->buffer);  // iterate over a mutable copy of the buffer
-		for(uint32_t pos = 0; pos < count; ++pos) fun(ValueAt(copy, pos));
+		for (uint32_t pos = 0; pos < count; ++pos)
+		{
+			fun(ValueAt(copy, pos));
+		}
 	}
 
 protected:

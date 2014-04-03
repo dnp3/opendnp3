@@ -21,7 +21,6 @@
 #ifndef __SERIALIZATION_TEMPLATES_H_
 #define __SERIALIZATION_TEMPLATES_H_
 
-#include <limits>
 #include <cstdint>
 #include <cstring>
 
@@ -77,10 +76,10 @@ public:
 };
 
 template <class T>
-const T Bit16LE<T>::Max = std::numeric_limits<T>::max();
+const T Bit16LE<T>::Max = Limits<T>::Max();
 
 template <class T>
-const T Bit16LE<T>::Min = std::numeric_limits<T>::min();
+const T Bit16LE<T>::Min = Limits<T>::Min();
 
 template <class T>
 class Bit32LE
@@ -124,10 +123,10 @@ public:
 };
 
 template <class T>
-const T Bit32LE<T>::Max = std::numeric_limits<T>::max();
+const T Bit32LE<T>::Max = Limits<T>::Max();
 
 template <class T>
-const T Bit32LE<T>::Min = std::numeric_limits<T>::min();
+const T Bit32LE<T>::Min = Limits<T>::Min();
 
 template <class T>
 class Float
@@ -168,10 +167,10 @@ public:
 };
 
 template <class T>
-const T Float<T>::Max = std::numeric_limits<T>::max();
+const T Float<T>::Max = Limits<T>::Max();
 
 template <class T>
-const T Float<T>::Min = -std::numeric_limits<T>::max();
+const T Float<T>::Min = Limits<T>::Min();
 
 }
 
