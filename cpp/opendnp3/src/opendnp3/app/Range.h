@@ -21,6 +21,7 @@
 #ifndef __RANGE_H_
 #define __RANGE_H_
 
+#include <openpal/Configure.h>
 #include <cstdint>
 #include <assert.h>
 

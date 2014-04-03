@@ -31,6 +31,7 @@
 #include "opendnp3/master/ICommandCallback.h"
 #include "CommandSequence.h"
 
+#include <openpal/Configure.h>
 #include <assert.h>
 
 namespace opendnp3

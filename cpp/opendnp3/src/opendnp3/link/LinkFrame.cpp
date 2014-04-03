@@ -25,6 +25,7 @@
 
 #include <openpal/Serialization.h>
 
+#include <openpal/Configure.h>
 #include <assert.h>
 
 using namespace openpal;

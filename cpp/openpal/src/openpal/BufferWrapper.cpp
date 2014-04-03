@@ -18,8 +18,9 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include <openpal/BufferWrapper.h>
+#include "BufferWrapper.h"
 
+#include "Configure.h"
 #include <cstring>
 #include <assert.h>
 
