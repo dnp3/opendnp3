@@ -24,6 +24,8 @@
 
 namespace opendnp3
 {
+
+/*
 void ProcessFlags(std::ostringstream& ss, const std::string& id, uint32_t& count, uint32_t filter, const openpal::LogFilters& flags)
 {
 	if (flags.IsSet(filter))
@@ -49,6 +51,7 @@ std::ostringstream& AllFlags(std::ostringstream& ss, const openpal::LogFilters& 
 	ProcessFlags(ss, "C", count, flags::COMM, filters);
 	return ss;
 }
+*/
 
 }
 

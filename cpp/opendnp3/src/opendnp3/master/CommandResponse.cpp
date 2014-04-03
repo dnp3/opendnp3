@@ -20,8 +20,6 @@
  */
 #include "CommandResponse.h"
 
-#include <sstream>
-
 namespace opendnp3
 {
 

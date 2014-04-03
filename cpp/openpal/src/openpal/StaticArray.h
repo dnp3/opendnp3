@@ -23,8 +23,6 @@
 
 #include "Indexable.h"
 
-#include <type_traits>
-
 namespace openpal
 {
 

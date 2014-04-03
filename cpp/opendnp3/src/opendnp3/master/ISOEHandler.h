@@ -27,9 +27,6 @@
 #include "opendnp3/app/MeasurementTypes.h"
 #include "opendnp3/app/OctetString.h"
 
-#include <iostream>
-#include <sstream>
-
 namespace opendnp3
 {
 
@@ -106,6 +103,7 @@ private:
 	static NullSOEHandler msInstance;
 };
 
+/*
 class PrintingSOEHandler : public ISOEHandler
 {
 
@@ -186,6 +184,7 @@ private:
 
 	static PrintingSOEHandler msInstance;
 };
+*/
 
 
 }

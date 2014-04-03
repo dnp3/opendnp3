@@ -26,8 +26,6 @@
 #include "opendnp3/outstation/Outstation.h"
 #include "opendnp3/LogLevels.h"
 
-#include <sstream>
-
 using namespace openpal;
 
 namespace opendnp3

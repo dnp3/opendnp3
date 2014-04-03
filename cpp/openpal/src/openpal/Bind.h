@@ -22,8 +22,7 @@
 #define __OPENPAL_BIND_H_
 
 #include "Runnable.h"
-
-#include <new>
+#include "Configure.h"
 
 namespace openpal
 {

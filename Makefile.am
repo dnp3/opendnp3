@@ -109,7 +109,6 @@ cpp/opendnp3/src/opendnp3/master/ISOEHandler.cpp \
 cpp/opendnp3/src/opendnp3/master/Master.cpp \
 cpp/opendnp3/src/opendnp3/master/MasterScan.cpp \
 cpp/opendnp3/src/opendnp3/master/MasterSchedule.cpp \
-cpp/opendnp3/src/opendnp3/master/MasterStackImpl.cpp \
 cpp/opendnp3/src/opendnp3/master/MasterStates.cpp \
 cpp/opendnp3/src/opendnp3/master/MasterTaskBase.cpp \
 cpp/opendnp3/src/opendnp3/master/MeasurementHandler.cpp \
@@ -150,7 +149,6 @@ cpp/opendnp3/src/opendnp3/outstation/IINHelpers.cpp \
 cpp/opendnp3/src/opendnp3/outstation/ITimeWriteHandler.cpp \
 cpp/opendnp3/src/opendnp3/outstation/OutstationConfig.cpp \
 cpp/opendnp3/src/opendnp3/outstation/OutstationEventBuffer.cpp \
-cpp/opendnp3/src/opendnp3/outstation/OutstationStackImpl.cpp \
 cpp/opendnp3/src/opendnp3/outstation/OutstationStates.cpp \
 cpp/opendnp3/src/opendnp3/outstation/Outstation.cpp \
 cpp/opendnp3/src/opendnp3/outstation/ReadHandler.cpp \
@@ -167,12 +165,7 @@ cpp/opendnp3/src/opendnp3/transport/TransportLayer.cpp \
 cpp/opendnp3/src/opendnp3/transport/TransportRx.cpp \
 cpp/opendnp3/src/opendnp3/transport/TransportStates.cpp \
 cpp/opendnp3/src/opendnp3/transport/TransportTx.cpp \
-cpp/opendnp3/src/opendnp3/DestructorHook.cpp \
-cpp/opendnp3/src/opendnp3/DNP3Channel.cpp \
-cpp/opendnp3/src/opendnp3/DNP3Manager.cpp \
-cpp/opendnp3/src/opendnp3/DNP3Stack.cpp \
-cpp/opendnp3/src/opendnp3/LogLevelInterpreter.cpp \
-cpp/opendnp3/src/opendnp3/StackActionHandler.cpp
+cpp/opendnp3/src/opendnp3/LogLevelInterpreter.cpp
 
 #ls cpp/asiopal/src/*.cpp -1 | awk '{print $0" \\"}'
 libasiopal_la_LDFLAGS = -version-info 1:1:0

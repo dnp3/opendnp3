@@ -20,8 +20,6 @@
  */
 #include "ISOEHandler.h"
 
-#include <iostream>
-
 using namespace std;
 
 namespace opendnp3
@@ -29,6 +27,7 @@ namespace opendnp3
 
 NullSOEHandler NullSOEHandler::msInstance;
 
+/*
 PrintingSOEHandler PrintingSOEHandler::msInstance;
 
 void PrintingSOEHandler::LoadStatic(const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas)
@@ -116,5 +115,6 @@ void PrintingSOEHandler::LoadEvent(const IterableBuffer<IndexedValue<OctetString
 		std::cout << "Event - OctetString " << " [" << pair.index << "] : Size : " << pair.value.ToReadOnly().Size() << std::endl;
 	});
 }
+*/
 
 }

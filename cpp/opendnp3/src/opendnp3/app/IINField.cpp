@@ -23,8 +23,6 @@
 
 #include <openpal/ToHex.h>
 
-#include <sstream>
-
 using namespace openpal;
 using namespace std;
 

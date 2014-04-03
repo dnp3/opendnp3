@@ -28,7 +28,6 @@
 #include "opendnp3/LogLevels.h"
 
 #include <assert.h>
-#include <sstream>
 
 using namespace std;
 using namespace openpal;

@@ -21,8 +21,6 @@
 
 #include "DynamicallyAllocatedDatabase.h"
 
-#include <cstddef>
-
 namespace opendnp3
 {
 

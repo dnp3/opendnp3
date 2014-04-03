@@ -20,7 +20,6 @@
  */
 #include "LinkLayerRouter.h"
 
-#include <sstream>
 #include <assert.h>
 
 #include <openpal/LoggableMacros.h>

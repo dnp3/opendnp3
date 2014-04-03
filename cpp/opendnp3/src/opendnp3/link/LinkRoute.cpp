@@ -20,8 +20,6 @@
  */
 #include "LinkRoute.h"
 
-#include <sstream>
-
 namespace opendnp3
 {
 

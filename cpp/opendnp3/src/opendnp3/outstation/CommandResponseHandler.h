@@ -73,19 +73,23 @@ template <class Target, class IndexType>
 void CommandResponseHandler::RespondToHeader(QualifierCode qualifier, IDNP3Serializer<Target>* pSerializer, const IterableBuffer<IndexedValue<Target, typename IndexType::Type>>& meas)
 {
 	auto iter = writer.IterateOverCountWithPrefix<IndexType, Target>(qualifier, pSerializer);
-	meas.foreach([this, &iter](const IndexedValue<Target, typename IndexType::Type>& command)
+	auto lambda = [this, &iter] (const IndexedValue<Target, typename IndexType::Type>& command) mutable
 	{
 		auto result = CommandStatus::TOO_MANY_OPS;
 		if (numRequests < maxCommands)
 		{
 			result = pCommandAction->Action(command.value, command.index);
 		}
-		if (result == CommandStatus::SUCCESS) ++numSuccess;
+		if (result == CommandStatus::SUCCESS) 
+		{
+			++numSuccess;
+		}
 		Target response(command.value);
 		response.status = result;
 		iter.Write(response, command.index);
 		++numRequests;
-	});
+	};
+	meas.foreach(lambda);
 	iter.Complete();
 }
 

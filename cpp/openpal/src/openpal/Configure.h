@@ -18,35 +18,19 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
+#ifndef __OPENPAL_CONFIGURE_H_
+#define __OPENPAL_CONFIGURE_H_
 
-#include "EventTriggers.h"
+// placement new
 
-#include <cmath>
-#include <limits>
+#include <stddef.h>
 
-namespace opendnp3
-{
-namespace measurements
-{
-bool IsEvent(const TypedMeasurement<double>& newMeas, const TypedMeasurement<double>& oldMeas, double deadband)
-{
-	if (newMeas.GetQuality() != oldMeas.GetQuality())
-	{
-		return true;
-	}
-	else
-	{
-		double diff = fabs(newMeas.GetValue() - oldMeas.GetValue());
-		if (diff == INFINITY)
-		{
-			return true;
-		}
-		else
-		{
-			return diff > deadband;
-		}
-	}
-}
+inline void* operator new(size_t, void* p)
+{ 
+	return p; 
 }
 
-}
+void abort();
+
+#endif
+

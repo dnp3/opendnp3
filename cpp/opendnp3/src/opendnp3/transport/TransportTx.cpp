@@ -21,14 +21,12 @@
 #include "TransportTx.h"
 
 
-
 #include "TransportLayer.h"
 
 #include <openpal/LoggableMacros.h>
 
 #include <assert.h>
-#include <sstream>
-#include <memory.h>
+
 
 using namespace std;
 using namespace openpal;
@@ -69,8 +67,6 @@ bool TransportTx::Advance()
 	sequence = (sequence + 1) % 64;
 	return apdu.IsNotEmpty();
 }
-
-
 
 uint8_t TransportTx::GetHeader(bool fir, bool fin, uint8_t sequence)
 {

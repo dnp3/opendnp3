@@ -22,6 +22,7 @@
 #include "APDUWrapper.h"
 
 #include <assert.h>
+void abort(); //TODO
 
 #include "AppControlField.h"
 

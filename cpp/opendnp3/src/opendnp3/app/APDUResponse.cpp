@@ -23,6 +23,8 @@
 
 #include <assert.h>
 
+void abort(); //TODO
+
 using namespace openpal;
 
 namespace opendnp3

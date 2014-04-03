@@ -24,8 +24,6 @@
 
 #include <openpal/Serialization.h>
 
-#include <sstream>
-
 using namespace std;
 
 namespace opendnp3

@@ -20,14 +20,11 @@
  */
 #include "PhysicalLayerMonitorStates.h"
 
-
 #include <openpal/Location.h>
 #include <openpal/IPhysicalLayerAsync.h>
 #include <openpal/LoggableMacros.h>
 
 #include "opendnp3/LogLevels.h"
-
-#include <sstream>
 
 using namespace openpal;
 

@@ -26,8 +26,6 @@
 #include <openpal/LoggableMacros.h>
 #include <openpal/ToHex.h>
 
-#include <sstream>
-#include <memory.h>
 
 using namespace std;
 using namespace openpal;

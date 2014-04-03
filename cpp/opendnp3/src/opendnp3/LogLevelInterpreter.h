@@ -24,11 +24,11 @@
 
 #include <openpal/LogFilters.h>
 
-#include <sstream>
+//#include <sstream>
 
 namespace opendnp3
 {
-std::ostringstream& AllFlags(std::ostringstream& ss, const openpal::LogFilters& filters);
+	//std::ostringstream& AllFlags(std::ostringstream& ss, const openpal::LogFilters& filters);
 }
 
 #endif

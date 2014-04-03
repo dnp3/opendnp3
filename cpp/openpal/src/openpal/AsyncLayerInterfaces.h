@@ -23,6 +23,8 @@
 
 #include "openpal/BufferWrapper.h"
 
+#include "Configure.h"
+
 #include <assert.h>
 
 namespace openpal

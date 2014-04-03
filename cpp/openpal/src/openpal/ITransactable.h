@@ -21,9 +21,10 @@
 #ifndef __I_TRANSACTABLE_H_
 #define	__I_TRANSACTABLE_H_
 
+#include "Configure.h"
 #include <assert.h>
 
-#include <openpal/Uncopyable.h>
+#include "Uncopyable.h"
 
 namespace openpal
 {

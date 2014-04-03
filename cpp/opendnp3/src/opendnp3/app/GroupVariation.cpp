@@ -21,8 +21,6 @@
 
 #include "GroupVariation.h"
 
-#include <sstream>
-
 namespace opendnp3
 {
 

@@ -21,7 +21,6 @@
 #include "AnalogOutput.h"
 
 #include <math.h>
-#include <sstream>
 
 using namespace std;
 
