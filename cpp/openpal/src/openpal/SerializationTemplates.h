@@ -23,7 +23,6 @@
 
 #include <limits>
 #include <cstdint>
-#include <cstddef>
 #include <cstring>
 
 #include "BufferWrapper.h"

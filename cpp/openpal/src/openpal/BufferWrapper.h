@@ -23,7 +23,6 @@
 
 #include "HasSize.h"
 
-#include <cstddef>
 #include <cstdint>
 
 namespace openpal
