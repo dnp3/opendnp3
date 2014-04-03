@@ -20,8 +20,6 @@
  */
 #include <openpal/ToHex.h>
 
-#include <sstream>
-
 namespace openpal
 {
 
@@ -31,6 +29,7 @@ char toHex(char c)
 	return '0' + c;
 }
 
+/*
 std::string toHex(const uint8_t* apBuff, size_t aLength, bool spaced)
 {
 	std::ostringstream oss;
@@ -56,6 +55,7 @@ std::string ByteToHex(uint8_t b)
 	oss << toHex((b & 0xf0) >> 4) << toHex(b & 0xf);
 	return oss.str();
 }
+*/
 
 }
 

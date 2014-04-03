@@ -21,7 +21,7 @@
 
 #include "Runnable.h"
 
-#include <memory>
+#include <cstring>
 
 namespace openpal
 {

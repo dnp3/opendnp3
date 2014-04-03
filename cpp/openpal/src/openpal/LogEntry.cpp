@@ -20,10 +20,6 @@
  */
 #include "LogEntry.h"
 
-#include <sstream>
-
-using namespace std;
-
 namespace openpal
 {
 

@@ -90,9 +90,9 @@ public:
 	static T Read(const uint8_t* apStart)
 	{
 		T  ret = *(apStart);
-		ret |= *(++apStart) << 8;
-		ret |= *(++apStart) << 16;
-		ret |= *(++apStart) << 24;
+		ret |= static_cast<T>(*(++apStart)) << 8;
+		ret |= static_cast<T>(*(++apStart)) << 16;
+		ret |= static_cast<T>(*(++apStart)) << 24;
 		return ret;
 	}
 	static void Write(uint8_t* apStart, T aValue)

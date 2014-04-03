@@ -20,19 +20,19 @@
  */
 #include <openpal/MonotonicTimestamp.h>
 
-#include <limits>
+#include <stdint.h>
 
 namespace openpal
 {
 
 MonotonicTimestamp MonotonicTimestamp::Max()
 {
-	return MonotonicTimestamp(std::numeric_limits<int64_t>::max());
+	return MonotonicTimestamp(INT64_MAX);
 }
 
 MonotonicTimestamp MonotonicTimestamp::Min()
 {
-	return MonotonicTimestamp(std::numeric_limits<int64_t>::min());
+	return MonotonicTimestamp(INT64_MIN);
 }
 
 MonotonicTimestamp::MonotonicTimestamp() : milliseconds(0)

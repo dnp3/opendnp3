@@ -42,7 +42,7 @@ public:
 
 	static const uint32_t MAX_NAME_SIZE = 20;
 
-	void Log(const LogFilters& filters, char const* location, char const* message, int32_t errorCode = -1);
+	void Log(const LogFilters& filters, char const* location, char const* message, int errorCode = -1);
 
 	void Log(const LogEntry& entry);
 
