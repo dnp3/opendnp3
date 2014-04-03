@@ -23,6 +23,8 @@
 
 #include "Runnable.h"
 
+#include <new>
+
 namespace openpal
 {
 

@@ -22,9 +22,13 @@
 
 #include "DNP3Channel.h"
 
-using namespace openpal;
+#include <asiopal/PhysicalLayerAsyncBase.h>
 
-namespace opendnp3
+using namespace openpal;
+using namespace asiopal;
+using namespace opendnp3;
+
+namespace asiodnp3
 {
 
 DNP3Manager::DNP3Manager()
@@ -54,7 +58,7 @@ IChannel* DNP3Manager::CreateChannel(
 	char const* id,
     openpal::TimeDuration minOpenRetry,
     openpal::TimeDuration maxOpenRetry,
-    openpal::PhysicalLayerAsyncBase* apPhys,
+	PhysicalLayerAsyncBase* apPhys,
     IEventHandler<ChannelState>* pStateHandler,
     IOpenDelayStrategy* pOpenStrategy)
 {

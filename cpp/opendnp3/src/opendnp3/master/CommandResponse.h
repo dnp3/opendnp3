@@ -24,7 +24,7 @@
 #include "opendnp3/gen/CommandStatus.h"
 #include "opendnp3/gen/CommandResult.h"
 
-#include <string>
+
 
 namespace opendnp3
 {
@@ -49,9 +49,7 @@ public:
 	/// The command status enumeration received from the outstation, if applicable
 	CommandStatus GetStatus();
 
-	bool operator==(const CommandResponse& arRHS) const;
-
-	std::string ToString() const;
+	bool operator==(const CommandResponse& arRHS) const;	
 
 private:
 

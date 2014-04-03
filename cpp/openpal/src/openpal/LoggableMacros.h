@@ -33,24 +33,24 @@
 
 /*
 //macro to remove boiler-plate code for logging messages with an error code
-#define ERROR_BLOCK(severity, string, code) ERROR_LOGGER_BLOCK(this->logger, severity, string, code)
+#define //ERROR_BLOCK(severity, string, code) //ERROR_LOGGER_BLOCK(this->logger, severity, string, code)
 
-#define LOGGER_BLOCK(logger, severity, string) CODED_LOGGER_BLOCK(logger, severity, string, -1)
+#define //LOGGER_BLOCK(logger, severity, string) CODED_//LOGGER_BLOCK(logger, severity, string, -1)
 
-#define PLOGGER_BLOCK(pLogger, severity, string)\
+#define P//LOGGER_BLOCK(pLogger, severity, string)\
 	if(pLogger){\
-	LOGGER_BLOCK((*pLogger), severity, string)\
+	//LOGGER_BLOCK((*pLogger), severity, string)\
 	}
 
-#define CODED_FORMATED_LOGGER_BLOCK(logger, severity, code, format, ...)\
+#define CODED_FORMATED_//LOGGER_BLOCK(logger, severity, code, format, ...)\
 	if(logger.IsEnabled(severity)){\		
 		logger.Log(severity, LOCATION, format, code);\
 	}
 
 
-#define CODED_FORMATED_PLOGGER_BLOCK(pLogger, severity, code, format, ...)\
+#define CODED_FORMATED_P//LOGGER_BLOCK(pLogger, severity, code, format, ...)\
 	if(pLogger){\
-		ERROR_LOGGER_BLOCK((*pLogger), severity, string, code)\
+		//ERROR_LOGGER_BLOCK((*pLogger), severity, string, code)\
 	}
 */
 

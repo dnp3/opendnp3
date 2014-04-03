@@ -29,7 +29,7 @@
 
 #include "opendnp3/master/AsyncTaskInterfaces.h"
 
-#include <string>
+
 
 namespace openpal
 {
@@ -59,8 +59,8 @@ public:
 	AsyncTaskGroup(openpal::IExecutor*);
 	~AsyncTaskGroup();
 
-	AsyncTaskBase* Add(openpal::TimeDuration aPeriod, openpal::TimeDuration aRetryDelay, int aPriority, const openpal::Function1<AsyncTaskBase*>& callback, const std::string& arName = "");
-	AsyncTaskContinuous* AddContinuous(int aPriority, const openpal::Function1<AsyncTaskBase*>& callback, const std::string& arName = "");
+	AsyncTaskBase* Add(openpal::TimeDuration aPeriod, openpal::TimeDuration aRetryDelay, int aPriority, const openpal::Function1<AsyncTaskBase*>& callback);
+	AsyncTaskContinuous* AddContinuous(int aPriority, const openpal::Function1<AsyncTaskBase*>& callback);
 	bool Remove(AsyncTaskBase* apTask);
 
 	void Shutdown();

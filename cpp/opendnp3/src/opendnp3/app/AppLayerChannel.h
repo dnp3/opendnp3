@@ -60,7 +60,7 @@ class AppLayerChannel : public openpal::Loggable
 	friend class ACS_WaitForFinalResponse;
 
 public:
-	AppLayerChannel(const std::string& arName, openpal::Logger&, AppLayer*, openpal::IExecutor*, openpal::TimeDuration aTimeout);
+	AppLayerChannel(char const* name, openpal::Logger&, AppLayer*, openpal::IExecutor*, openpal::TimeDuration aTimeout);
 	virtual ~AppLayerChannel() {}
 
 	// Resets the channel to the initial state
@@ -128,7 +128,7 @@ private:
 	openpal::ITimer* mpTimer;
 	bool mConfirming;
 	const openpal::TimeDuration M_TIMEOUT;
-	const std::string M_NAME;
+	char const* M_NAME;
 };
 
 }

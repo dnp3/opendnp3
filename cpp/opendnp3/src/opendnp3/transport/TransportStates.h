@@ -25,7 +25,7 @@
 
 #include <openpal/BufferWrapper.h>
 
-#include <string>
+
 
 namespace opendnp3
 {
@@ -47,7 +47,7 @@ public:
 	virtual void HandleSendSuccess(TransportLayer*);
 	virtual void HandleSendFailure(TransportLayer*);
 
-	virtual std::string Name() const = 0;
+	virtual char const* Name() const = 0;
 };
 
 /** Represents the ready state

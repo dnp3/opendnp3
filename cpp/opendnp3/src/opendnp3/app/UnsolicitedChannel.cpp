@@ -29,15 +29,15 @@ namespace opendnp3
 {
 
 
-UnsolicitedChannel::UnsolicitedChannel(openpal::Logger aLogger, AppLayer* apApp, IExecutor* apExecutor, openpal::TimeDuration aTimeout) :
-	AppLayerChannel("Unsolicited", aLogger, apApp, apExecutor, aTimeout)
+UnsolicitedChannel::UnsolicitedChannel(openpal::Logger logger, AppLayer* apApp, IExecutor* apExecutor, openpal::TimeDuration aTimeout) :
+	AppLayerChannel("Unsolicited", logger, apApp, apExecutor, aTimeout)
 {}
 
 void UnsolicitedChannel::OnUnsol(const APDUResponseRecord& aRecord)
 {
 	if(aRecord.control.SEQ == mSequence)
 	{
-		LOG_BLOCK(flags::INFO, "Ignoring repeat unsol seq: " << aRecord.control.SEQ)
+		////LOG_BLOCK(flags::INFO, "Ignoring repeat unsol seq: " << aRecord.control.SEQ)
 	}
 	else
 	{

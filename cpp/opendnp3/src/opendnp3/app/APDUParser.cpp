@@ -63,7 +63,7 @@ APDUParser::Result APDUParser::ParseHeader(ReadOnlyBuffer& buffer, openpal::Logg
 {
 	if (buffer.Size() < 3)
 	{
-		ERROR_PLOGGER_BLOCK(pLogger, flags::WARN, ALERR_INSUFFICIENT_DATA_FOR_HEADER, "Not enough data for header");
+		//ERROR_P//LOGGER_BLOCK(pLogger, flags::WARN, ALERR_INSUFFICIENT_DATA_FOR_HEADER, "Not enough data for header");
 		return Result::NOT_ENOUGH_DATA_FOR_HEADER;
 	}
 	else
@@ -73,7 +73,7 @@ APDUParser::Result APDUParser::ParseHeader(ReadOnlyBuffer& buffer, openpal::Logg
 		auto gv = GroupVariationRecord::GetRecord(group, variation);
 		if (gv.enumeration == GroupVariation::UNKNOWN)
 		{
-			ERROR_PLOGGER_BLOCK(pLogger, flags::WARN, ALERR_UNKNOWN_GROUP_VAR, "Unknown object: " << gv.ToString());
+			//ERROR_P//LOGGER_BLOCK(pLogger, flags::WARN, ALERR_UNKNOWN_GROUP_VAR, "Unknown object: " << gv.ToString());
 			return Result::UNKNOWN_OBJECT;
 		}
 		else
@@ -108,7 +108,7 @@ APDUParser::Result APDUParser::ParseHeader(ReadOnlyBuffer& buffer, openpal::Logg
 				return ParseIndexPrefixHeader<UInt16>(buffer, pLogger, context, record, pHandler);
 
 			default:
-				ERROR_PLOGGER_BLOCK(pLogger, flags::WARN, ALERR_UNKNOWN_GROUP_VAR, "Unknown qualifier: " << static_cast<int>(rawQualifier));
+				//ERROR_P//LOGGER_BLOCK(pLogger, flags::WARN, ALERR_UNKNOWN_GROUP_VAR, "Unknown qualifier: " << static_cast<int>(rawQualifier));
 				return Result::UNKNOWN_QUALIFIER;
 			}
 		}
@@ -233,9 +233,11 @@ APDUParser::Result APDUParser::ParseObjectsWithRange(openpal::ReadOnlyBuffer& bu
 		return ParseRangeOfOctetData(buffer, pLogger, record, range, pHandler);
 
 	default:
-		ERROR_PLOGGER_BLOCK(pLogger, flags::WARN, ALERR_ILLEGAL_QUALIFIER_AND_OBJECT,
+		/*
+		//ERROR_P//LOGGER_BLOCK(pLogger, flags::WARN, ALERR_ILLEGAL_QUALIFIER_AND_OBJECT,
 		                    "Unsupported qualifier/object - " << QualifierCodeToString(record.qualifier) << "/" << record.ToString()
 		                   );
+		*/
 		return Result::INVALID_OBJECT_QUALIFIER;
 	}
 }
@@ -252,7 +254,7 @@ APDUParser::Result APDUParser::ParseRangeOfOctetData(
 		uint32_t size = record.variation * range.Count();
 		if (buffer.Size() < size)
 		{
-			ERROR_PLOGGER_BLOCK(pLogger, flags::WARN, ALERR_INSUFFICIENT_DATA_FOR_OBJECTS, "Not enough data for specified octet objects");
+			//ERROR_P//LOGGER_BLOCK(pLogger, flags::WARN, ALERR_INSUFFICIENT_DATA_FOR_OBJECTS, "Not enough data for specified octet objects");
 			return Result::NOT_ENOUGH_DATA_FOR_OBJECTS;
 		}
 		else
@@ -274,7 +276,7 @@ APDUParser::Result APDUParser::ParseRangeOfOctetData(
 	}
 	else
 	{
-		PLOGGER_BLOCK(pLogger, flags::WARN, "Octet string variation 0 may only be used in requests");
+		//PLOGGER_BLOCK(pLogger, flags::WARN, "Octet string variation 0 may only be used in requests");
 		return Result::INVALID_OBJECT;
 	}
 

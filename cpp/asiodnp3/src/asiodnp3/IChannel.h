@@ -21,25 +21,28 @@
 #ifndef __I_CHANNEL_H_
 #define __I_CHANNEL_H_
 
-#include "opendnp3/gen/ChannelState.h"
+#include <opendnp3/gen/ChannelState.h>
+#include <opendnp3/master/MasterStackConfig.h>
+#include <opendnp3/outstation/OutstationStackConfig.h>
 
-#include "opendnp3/master/MasterStackConfig.h"
-#include "opendnp3/outstation/OutstationStackConfig.h"
-#include "opendnp3/DestructorHook.h"
+#include "DestructorHook.h"
 
 #include <openpal/IUTCTimeSource.h>
 #include <openpal/LogFilters.h>
 
-#include <string>
-
 namespace opendnp3
 {
+	class ISOEHandler;
+	class ICommandHandler;
+	class ITimeWriteHandler;
+}
 
-class ISOEHandler;
+namespace asiodnp3
+{
+
 class IMaster;
 class IOutstation;
-class ICommandHandler;
-class ITimeWriteHandler;
+
 
 /**
 * Represents a communication channel upon which masters and outstations can be bound.
@@ -100,9 +103,9 @@ public:
 	* @return interface representing the running master
 	*/
 	virtual IMaster* AddMaster(char const* id,
-	                           ISOEHandler* pPublisher,
+	                           opendnp3::ISOEHandler* pPublisher,
 	                           openpal::IUTCTimeSource* pTimeSource,
-	                           const MasterStackConfig& config) = 0;
+							   const opendnp3::MasterStackConfig& config) = 0;
 
 	/**
 	* Add an outstation to the channel
@@ -114,9 +117,9 @@ public:
 	* @return interface representing the running outstations
 	*/
 	virtual IOutstation* AddOutstation( char const* id,
-	                                    ICommandHandler* pCmdHandler,
-	                                    ITimeWriteHandler* pTimeWriteHandler,
-	                                    const OutstationStackConfig& config) = 0;
+										opendnp3::ICommandHandler* pCmdHandler,
+										opendnp3::ITimeWriteHandler* pTimeWriteHandler,
+										const opendnp3::OutstationStackConfig& config) = 0;
 };
 
 }

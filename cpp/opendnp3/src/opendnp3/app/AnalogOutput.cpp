@@ -42,13 +42,6 @@ bool AnalogOutputInt16::operator==(const AnalogOutputInt16& arRHS) const
 	return this->ValuesEqual(arRHS) && status == arRHS.status;
 }
 
-std::string AnalogOutputInt16::ToString() const
-{
-	ostringstream oss;
-	oss << "AnalogOutputInt16: " << value;
-	return oss.str();
-}
-
 AnalogOutputInt32::AnalogOutputInt32(int32_t aValue) : AnalogOutput<int32_t>(aValue)
 {}
 
@@ -61,13 +54,6 @@ AnalogOutputInt32::AnalogOutputInt32() : AnalogOutput<int32_t>(0)
 bool AnalogOutputInt32::operator==(const AnalogOutputInt32& arRHS) const
 {
 	return this->ValuesEqual(arRHS) && status == arRHS.status;
-}
-
-std::string AnalogOutputInt32::ToString() const
-{
-	ostringstream oss;
-	oss << "AnalogOutputInt32: " << value;
-	return oss.str();
 }
 
 AnalogOutputFloat32::AnalogOutputFloat32(float aValue) : AnalogOutput<float>(aValue)
@@ -84,13 +70,6 @@ bool AnalogOutputFloat32::operator==(const AnalogOutputFloat32& arRHS) const
 	return this->ValuesEqual(arRHS) && status == arRHS.status;
 }
 
-std::string AnalogOutputFloat32::ToString() const
-{
-	ostringstream oss;
-	oss << "AnalogOutputFloat32: " << value;
-	return oss.str();
-}
-
 AnalogOutputDouble64::AnalogOutputDouble64(double aValue) : AnalogOutput<double>(aValue)
 {}
 
@@ -103,13 +82,6 @@ AnalogOutputDouble64::AnalogOutputDouble64() : AnalogOutput<double>(0)
 bool AnalogOutputDouble64::operator==(const AnalogOutputDouble64& arRHS) const
 {
 	return this->ValuesEqual(arRHS) && status == arRHS.status;
-}
-
-std::string AnalogOutputDouble64::ToString() const
-{
-	ostringstream oss;
-	oss << "AnalogOutputDouble64: " << value;
-	return oss.str();
 }
 
 }

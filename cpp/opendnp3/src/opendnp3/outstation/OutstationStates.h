@@ -21,7 +21,7 @@
 #ifndef __SLAVE_STATES_H_
 #define __SLAVE_STATES_H_
 
-#include <string>
+
 
 #include "opendnp3/Singleton.h"
 
@@ -40,7 +40,7 @@ class OutstationStateBase
 {
 public:
 
-	virtual std::string Name() const = 0;
+	virtual char const* Name() const = 0;
 
 	/* Events from application layer */
 

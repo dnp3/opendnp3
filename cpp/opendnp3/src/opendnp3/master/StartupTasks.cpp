@@ -131,7 +131,7 @@ TaskResult TimeSync::_OnFinalResponse(const APDUResponseRecord& record)
 		}
 		else
 		{
-			LOG_BLOCK(flags::WARN, "Error parsing response headers: " << static_cast<int>(result)); // TODO - turn these into strings
+			//LOG_BLOCK(flags::WARN, "Error parsing response headers: " << static_cast<int>(result)); // TODO - turn these into strings
 			return TR_FAIL;
 		}
 	}

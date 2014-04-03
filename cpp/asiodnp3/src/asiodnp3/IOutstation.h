@@ -18,49 +18,48 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
+#ifndef __I_OUTSTATION_H_
+#define __I_OUTSTATION_H_
 
 #include "DNP3Stack.h"
 
+using namespace opendnp3;
+
 namespace opendnp3
 {
+	class IMeasurementLoader;
+}
 
-
-DNP3Stack::DNP3Stack(openpal::Logger logger, openpal::IExecutor* pExecutor, AppConfig appConfig, LinkConfig linkConfig, const StackActionHandler& handler_) :
-	appStack(logger, pExecutor, appConfig, linkConfig),
-	handler(handler_)
+namespace asiodnp3
 {
 
-}
 
-openpal::IExecutor* DNP3Stack::GetExecutor()
+
+/**
+* Interface representing a running outstation.
+* To get a data observer interface to load measurements on the outstation:-
+\code
+	IMeasurementLoader* pDataObserver = pOutstation->GetDataObserver()
+\endcode
+*/
+class IOutstation : public DNP3Stack
 {
-	return handler.GetExecutor();
-}
+public:
+	IOutstation(openpal::Logger logger, openpal::IExecutor* pExecutor, AppConfig appConfig, LinkConfig linkConfig, const StackActionHandler& handler) :
+		DNP3Stack(logger, pExecutor, appConfig, linkConfig, handler)
+	{}
 
-ILinkContext* DNP3Stack::GetLinkContext()
-{
-	return &appStack.link;
-}
+	virtual ~IOutstation() {}
 
-void DNP3Stack::SetLinkRouter(ILinkRouter* apRouter)
-{
-	appStack.link.SetRouter(apRouter);
-}
+	virtual void SetNeedTimeIIN() = 0;
 
-void DNP3Stack::Enable()
-{
-	handler.EnableRoute(&this->appStack.link);
-}
-
-void DNP3Stack::Disable()
-{
-	handler.DisableRoute(&this->appStack.link);
-}
-
-void DNP3Stack::BeginShutdown()
-{
-	handler.BeginShutdown(&this->appStack.link, this);
-}
-
+	/**
+	* Get a the measurement loader interface to load measurements on the outstation
+	* @return Inteface used to load measurements into the outstation
+	*/
+	virtual IMeasurementLoader* GetLoader() = 0;
+};
 
 }
+
+#endif

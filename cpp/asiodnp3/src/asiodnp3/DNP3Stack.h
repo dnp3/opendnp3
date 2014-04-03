@@ -18,43 +18,57 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __STACK_ACTION_HANDLER_H_
-#define __STACK_ACTION_HANDLER_H_
+#ifndef __DNP3_STACK_H_
+#define __DNP3_STACK_H_
 
+#include "IStack.h"
+#include "StackActionHandler.h"
 
-#include <openpal/IShutdownHandler.h>
+#include "opendnp3/app/ApplicationStack.h"
 
-namespace openpal
-{
-class IExecutor;
-}
-
-namespace opendnp3
+namespace asiodnp3
 {
 
-class LinkLayerRouter;
-class DNP3Stack;
-class ILinkContext;
-
-class StackActionHandler
+/**
+* Base class for masters or outstations. Can be used to bind a vto endpoint or shutdown.
+*/
+class DNP3Stack : public IStack
 {
 public:
 
-	StackActionHandler(LinkLayerRouter* pRouter_,  openpal::IExecutor* pExecutor_, openpal::ITypedShutdownHandler<DNP3Stack*>* pHandler_);
+	DNP3Stack(openpal::Logger logger, openpal::IExecutor* pExecutor, opendnp3::AppConfig appConfig, opendnp3::LinkConfig linkConfig, const StackActionHandler& handler_);
 
-	openpal::IExecutor* GetExecutor();
+	virtual ~DNP3Stack() {}
 
-	void EnableRoute(ILinkContext*);
+	virtual openpal::IExecutor* GetExecutor() override final;
 
-	void DisableRoute(ILinkContext*);
+	opendnp3::ILinkContext* GetLinkContext();
 
-	void BeginShutdown(ILinkContext* pContext, DNP3Stack* pStack);
+	void SetLinkRouter(opendnp3::ILinkRouter* apRouter);
+
+	/**
+	* Enable communications
+	*/
+	virtual void Enable() override final;
+
+	/**
+	* Enable communications
+	*/
+	virtual void Disable() override final;
+
+	/**
+	* External Shutdown function
+	*/
+	virtual void BeginShutdown() override final;
+
+protected:
+
+	opendnp3::ApplicationStack appStack;
 
 private:
 
-	LinkLayerRouter* pRouter;
-	openpal::IExecutor* pExecutor;
-	openpal::ITypedShutdownHandler<DNP3Stack*>* pHandler;
+
+	StackActionHandler handler;
 };
 
 }

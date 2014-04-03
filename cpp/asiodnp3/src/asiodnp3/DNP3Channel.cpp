@@ -20,15 +20,16 @@
  */
 #include "DNP3Channel.h"
 
-#include <openpal/PhysicalLayerAsyncBase.h>
+#include <asiopal/PhysicalLayerAsyncBase.h>
 
-#include "opendnp3/master/MasterStackImpl.h"
-#include "opendnp3/outstation/OutstationStackImpl.h"
+#include "MasterStackImpl.h"
+#include "OutstationStackImpl.h"
 
 
 using namespace openpal;
+using namespace opendnp3;
 
-namespace opendnp3
+namespace asiodnp3
 {
 
 DNP3Channel::DNP3Channel(
@@ -36,7 +37,7 @@ DNP3Channel::DNP3Channel(
     openpal::TimeDuration minOpenRetry,
     openpal::TimeDuration maxOpenRetry,
     IOpenDelayStrategy* pStrategy,
-    openpal::PhysicalLayerAsyncBase* pPhys_,
+    asiopal::PhysicalLayerAsyncBase* pPhys_,
     openpal::ITypedShutdownHandler<DNP3Channel*>* pShutdownHandler_,
     openpal::IEventHandler<ChannelState>* pStateHandler) :
 	pPhys(pPhys_),
@@ -116,7 +117,7 @@ IMaster* DNP3Channel::AddMaster(char const* id, ISOEHandler* apPublisher, IUTCTi
 	ExecutorPause p(pPhys->GetExecutor());
 	if(router.IsRouteInUse(route))
 	{
-		LOG_BLOCK(flags::ERR, "Route already in use: " << route.ToString());
+		//LOG_BLOCK(flags::ERR, "Route already in use: " << route.ToString());
 		return nullptr;
 	}
 	else
@@ -146,14 +147,14 @@ IOutstation* DNP3Channel::AddOutstation(char const* id, ICommandHandler* apCmdHa
 	ExecutorPause p(pPhys->GetExecutor());
 	if(router.IsRouteInUse(route))
 	{
-		LOG_BLOCK(flags::ERR, "Route already in use: " << route.ToString());
+		//LOG_BLOCK(flags::ERR, "Route already in use: " << route.ToString());
 		return nullptr;
 	}
 	else
 	{
 		if (stacks.IsFull())
 		{
-			LOG_BLOCK(flags::ERR, "Max number of stacks exceeded");
+			//LOG_BLOCK(flags::ERR, "Max number of stacks exceeded");
 			return nullptr;
 		}
 		else

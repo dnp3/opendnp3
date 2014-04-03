@@ -26,12 +26,14 @@
 namespace opendnp3
 {
 
+/* TODO
 std::string GroupVariationRecord::ToString() const
 {
 	std::ostringstream oss;
 	oss << "Group" << static_cast<int>(group) << "Variation" << static_cast<int>(variation);
 	return oss.str();
 }
+*/
 
 GroupVariationRecord::GroupVariationRecord(uint8_t group_, uint8_t variation_, GroupVariation enumeration_, GroupVariationType type_) :
 	enumeration(enumeration_),

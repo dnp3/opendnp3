@@ -37,9 +37,7 @@ namespace opendnp3
 AsyncTaskBase::AsyncTaskBase(int aPriority,
 							 const Function1<AsyncTaskBase*>& handler_,
                              AsyncTaskGroup* apGroup,
-                             const MonotonicTimestamp& arInitialTime,
-                             const std::string& arName) :
-	mName(arName),
+                             const MonotonicTimestamp& arInitialTime) :	
 	mIsEnabled(false),
 	mIsComplete(false),
 	mIsExpired(false),

@@ -18,57 +18,35 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __DNP3_STACK_H_
-#define __DNP3_STACK_H_
+#ifndef __MUTEX_H_
+#define __MUTEX_H_
 
-#include "IStack.h"
-#include "StackActionHandler.h"
+#include <mutex>
 
-#include "opendnp3/app/ApplicationStack.h"
+#include <openpal/IMutex.h>
 
-namespace opendnp3
+namespace asiodnp3
 {
 
-/**
-* Base class for masters or outstations. Can be used to bind a vto endpoint or shutdown.
-*/
-class DNP3Stack : public IStack
+class Mutex : public openpal::IMutex
 {
-public:
-
-	DNP3Stack(openpal::Logger logger, openpal::IExecutor* pExecutor, AppConfig appConfig, LinkConfig linkConfig, const StackActionHandler& handler_);
-
-	virtual ~DNP3Stack() {}
-
-	virtual openpal::IExecutor* GetExecutor() override final;
-
-	ILinkContext* GetLinkContext();
-
-	void SetLinkRouter(ILinkRouter* apRouter);
-
-	/**
-	* Enable communications
-	*/
-	virtual void Enable() override final;
-
-	/**
-	* Enable communications
-	*/
-	virtual void Disable() override final;
-
-	/**
-	* External Shutdown function
-	*/
-	virtual void BeginShutdown() override final;
 
 protected:
 
-	ApplicationStack appStack;
+
+	virtual void Lock() override final
+	{
+		mutex.lock();
+	}
+
+	virtual void Unlock() override final
+	{
+		mutex.unlock();
+	}
 
 private:
 
-
-	StackActionHandler handler;
+	std::mutex mutex;
 };
 
 }

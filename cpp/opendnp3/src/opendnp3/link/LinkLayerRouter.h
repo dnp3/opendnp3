@@ -166,12 +166,6 @@ private:
 	void OnPhysicalLayerOpenFailureCallback() {}
 	void OnPhysicalLayerCloseCallback();
 
-	std::string RecvString()
-	{
-		return "<~";
-	}
-
-
 };
 
 }

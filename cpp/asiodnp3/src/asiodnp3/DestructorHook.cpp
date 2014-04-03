@@ -18,41 +18,41 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __I_OUTSTATION_H_
-#define __I_OUTSTATION_H_
+#include "DestructorHook.h"
 
-#include "opendnp3/DNP3Stack.h"
+#include <openpal/IExecutor.h>
 
-namespace opendnp3
+namespace asiodnp3
 {
 
-class IMeasurementLoader;
-
-/**
-* Interface representing a running outstation.
-* To get a data observer interface to load measurements on the outstation:-
-\code
-	IMeasurementLoader* pDataObserver = pOutstation->GetDataObserver()
-\endcode
-*/
-class IOutstation : public DNP3Stack
+DestructorHook::DestructorHook(openpal::IExecutor* apExecutor) : mpExecutor(apExecutor)
 {
-public:
-	IOutstation(openpal::Logger logger, openpal::IExecutor* pExecutor, AppConfig appConfig, LinkConfig linkConfig, const StackActionHandler& handler) :
-		DNP3Stack(logger, pExecutor, appConfig, linkConfig, handler)
-	{}
-
-	virtual ~IOutstation() {}
-
-	virtual void SetNeedTimeIIN() = 0;
-
-	/**
-	* Get a the measurement loader interface to load measurements on the outstation
-	* @return Inteface used to load measurements into the outstation
-	*/
-	virtual IMeasurementLoader* GetLoader() = 0;
-};
 
 }
 
-#endif
+DestructorHook::DestructorHook() : mpExecutor(nullptr)
+{
+
+}
+
+DestructorHook::~DestructorHook()
+{
+	if (runnable.IsSet())
+	{
+		if (mpExecutor)
+		{
+			mpExecutor->Post(runnable);			
+		}
+		else
+		{
+			runnable.Run();
+		}
+	}
+}
+
+void DestructorHook::SetDestructorHook(const openpal::Runnable& runnable_)
+{
+	runnable = runnable_;
+}
+
+}

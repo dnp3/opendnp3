@@ -35,37 +35,37 @@ namespace opendnp3
 
 void OutstationStateBase::OnLowerLayerUp(Outstation* outstation)
 {
-	ERROR_LOGGER_BLOCK(outstation->logger, flags::ERR, "invalid action for state: " << Name(), SERR_INVALID_STATE);
+	//ERROR_LOGGER_BLOCK(outstation->logger, flags::ERR, "invalid action for state: " << Name(), SERR_INVALID_STATE);
 }
 
 void OutstationStateBase::OnLowerLayerDown(Outstation* outstation)
 {
-	ERROR_LOGGER_BLOCK(outstation->logger, flags::ERR, "invalid action for state: " << Name(), SERR_INVALID_STATE);
+	//ERROR_LOGGER_BLOCK(outstation->logger, flags::ERR, "invalid action for state: " << Name(), SERR_INVALID_STATE);
 }
 
 void OutstationStateBase::OnSolSendSuccess(Outstation* outstation)
 {
-	ERROR_LOGGER_BLOCK(outstation->logger, flags::ERR, "invalid action for state: " << Name(), SERR_INVALID_STATE);
+	//ERROR_LOGGER_BLOCK(outstation->logger, flags::ERR, "invalid action for state: " << Name(), SERR_INVALID_STATE);
 }
 
 void OutstationStateBase::OnSolFailure(Outstation* outstation)
 {
-	ERROR_LOGGER_BLOCK(outstation->logger, flags::ERR, "invalid action for state: " << Name(), SERR_INVALID_STATE);
+	//ERROR_LOGGER_BLOCK(outstation->logger, flags::ERR, "invalid action for state: " << Name(), SERR_INVALID_STATE);
 }
 
 void OutstationStateBase::OnUnsolSendSuccess(Outstation* outstation)
 {
-	ERROR_LOGGER_BLOCK(outstation->logger, flags::ERR, "invalid action for state: " << Name(), SERR_INVALID_STATE);
+	//ERROR_LOGGER_BLOCK(outstation->logger, flags::ERR, "invalid action for state: " << Name(), SERR_INVALID_STATE);
 }
 
 void OutstationStateBase::OnUnsolFailure(Outstation* outstation)
 {
-	ERROR_LOGGER_BLOCK(outstation->logger, flags::ERR, "invalid action for state: " << Name(), SERR_INVALID_STATE);
+	//ERROR_LOGGER_BLOCK(outstation->logger, flags::ERR, "invalid action for state: " << Name(), SERR_INVALID_STATE);
 }
 
 void OutstationStateBase::OnRequest(Outstation* outstation, const APDURecord&, SequenceInfo)
 {
-	ERROR_LOGGER_BLOCK(outstation->logger, flags::ERR, "invalid action for state: " << Name(), SERR_INVALID_STATE);
+	//ERROR_LOGGER_BLOCK(outstation->logger, flags::ERR, "invalid action for state: " << Name(), SERR_INVALID_STATE);
 }
 
 // by default, the unsol timer expiration is deferd until it can be handled

@@ -21,8 +21,6 @@
 #ifndef __APP_CHANNEL_STATES_H_
 #define __APP_CHANNEL_STATES_H_
 
-#include <string>
-
 #include "opendnp3/Singleton.h"
 
 #include "opendnp3/gen/FunctionCode.h"
@@ -51,7 +49,7 @@ public:
 	virtual void OnResponse(AppLayerChannel*, const APDUResponseRecord&);
 	virtual void OnTimeout(AppLayerChannel*);
 
-	virtual std::string Name() const = 0;
+	virtual char const* Name() const = 0;
 
 	virtual bool AcceptsResponse()
 	{

@@ -18,43 +18,47 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __I_STACK_H_
-#define __I_STACK_H_
+#ifndef __STACK_ACTION_HANDLER_H_
+#define __STACK_ACTION_HANDLER_H_
 
-#include "opendnp3/DestructorHook.h"
+
+#include <openpal/IShutdownHandler.h>
+
+namespace openpal
+{
+class IExecutor;
+}
 
 namespace opendnp3
 {
+	class LinkLayerRouter;	
+	class ILinkContext;
+}
 
-/**
-* Base class for masters or outstations
-*/
-class IStack : public DestructorHook
+namespace asiodnp3
+{
+
+class DNP3Stack;
+
+class StackActionHandler
 {
 public:
 
-	virtual ~IStack() {}
+	StackActionHandler(opendnp3::LinkLayerRouter* pRouter_, openpal::IExecutor* pExecutor_, openpal::ITypedShutdownHandler<DNP3Stack*>* pHandler_);
 
-	/**
-	* Returns the stack's executor
-	*/
-	virtual openpal::IExecutor* GetExecutor() = 0;
+	openpal::IExecutor* GetExecutor();
 
-	/**
-	* Enable communications
-	*/
-	virtual void Enable() = 0;
+	void EnableRoute(opendnp3::ILinkContext*);
 
-	/**
-	* Enable communications
-	*/
-	virtual void Disable() = 0;
+	void DisableRoute(opendnp3::ILinkContext*);
 
-	/**
-	* Asynchronously shutdown the endpoint. No more calls are allowed after this call.
-	*/
-	virtual void BeginShutdown() = 0;
+	void BeginShutdown(opendnp3::ILinkContext* pContext, DNP3Stack* pStack);
 
+private:
+
+	opendnp3::LinkLayerRouter* pRouter;
+	openpal::IExecutor* pExecutor;
+	openpal::ITypedShutdownHandler<DNP3Stack*>* pHandler;
 };
 
 }

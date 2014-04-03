@@ -60,7 +60,7 @@ public:
 		}
 		else
 		{
-			LOG_BLOCK(flags::WARN, "Ignoring unexpected time delay count of " << times.Count());
+			//LOG_BLOCK(flags::WARN, "Ignoring unexpected time delay count of " << times.Count());
 		}
 	}
 

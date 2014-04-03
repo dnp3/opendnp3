@@ -18,12 +18,14 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include <asiodnp3/ASIODNP3Manager.h>
+#include "ASIODNP3Manager.h"
+
+
+#include "DNP3Manager.h"
 
 #include <asiopal/Log.h>
 #include <asiopal/IOServiceThreadPool.h>
 
-#include <opendnp3/DNP3Manager.h>
 #include <opendnp3/LogLevels.h>
 
 #include <asiopal/PhysicalLayerAsyncSerial.h>
@@ -39,7 +41,7 @@ namespace asiodnp3
 ASIODNP3Manager::ASIODNP3Manager(uint32_t concurrency, std::function<void()> onThreadStart, std::function<void()> onThreadExit) :
 	pLog(new asiopal::EventLog()),
 	pThreadPool(new asiopal::IOServiceThreadPool(pLog.get(), opendnp3::flags::INFO, "pool", concurrency, onThreadStart, onThreadExit)),
-	pManager(new opendnp3::DNP3Manager())
+	pManager(new DNP3Manager())
 {
 
 }
@@ -59,7 +61,7 @@ void ASIODNP3Manager::Shutdown()
 	pManager->Shutdown();
 }
 
-opendnp3::IChannel* ASIODNP3Manager::AddTCPClient(
+IChannel* ASIODNP3Manager::AddTCPClient(
 	char const* id,
     uint32_t levels,
     openpal::TimeDuration minOpenRetry,
@@ -73,7 +75,7 @@ opendnp3::IChannel* ASIODNP3Manager::AddTCPClient(
 	return pManager->CreateChannel(id, minOpenRetry, maxOpenRetry, pPhys, pStateHandler, pStrategy);
 }
 
-opendnp3::IChannel* ASIODNP3Manager::AddTCPServer(
+IChannel* ASIODNP3Manager::AddTCPServer(
 	char const* id,
     uint32_t levels,
     openpal::TimeDuration minOpenRetry,
@@ -87,7 +89,7 @@ opendnp3::IChannel* ASIODNP3Manager::AddTCPServer(
 	return pManager->CreateChannel(id, minOpenRetry, maxOpenRetry, pPhys, pStateHandler, pStrategy);
 }
 
-opendnp3::IChannel* ASIODNP3Manager::AddSerial(
+IChannel* ASIODNP3Manager::AddSerial(
 	char const* id,
     uint32_t levels,
     openpal::TimeDuration minOpenRetry,

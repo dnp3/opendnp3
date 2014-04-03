@@ -22,7 +22,7 @@
 #define __LINK_RECEIVER_STATES_H_
 
 
-#include <string>
+
 
 #include <openpal/Uncopyable.h>
 #include "opendnp3/Singleton.h"
@@ -52,7 +52,7 @@ public:
 
 	/** Implemented by the inherited state
 		@return Name of the state */
-	virtual std::string Name() const = 0;
+	virtual char const* Name() const = 0;
 };
 
 #define MACRO_LRS_STATE(name, body) \

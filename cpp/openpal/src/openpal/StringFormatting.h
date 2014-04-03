@@ -23,7 +23,7 @@
 
 #include <cstdio>
 
-#ifdef __WIN32
+#ifdef WIN32
 #define SNPRINTF _snprintf
 #else
 #define SNPRINTF snprintf

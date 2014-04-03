@@ -18,43 +18,51 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __MASTER_STACK_IMPL_H_
-#define __MASTER_STACK_IMPL_H_
+#ifndef __OUTSTATION_STACK_IMPL_H_
+#define __OUTSTATION_STACK_IMPL_H_
 
-#include "opendnp3/master/IMaster.h"
-#include "opendnp3/master/MasterStackConfig.h"
-#include "opendnp3/master/Master.h"
+#include <opendnp3/outstation/OutstationStackConfig.h>
+#include <opendnp3/outstation/Database.h>
+#include <opendnp3/outstation/Outstation.h>
+#include <opendnp3/outstation/DynamicallyAllocatedDatabase.h>
+#include <opendnp3/outstation/DynamicallyAllocatedEventBuffer.h>
+#include <opendnp3/app/ApplicationStack.h>
 
-#include "opendnp3/app/ApplicationStack.h"
+#include <openpal/Location.h>
 
+#include "IOutstation.h"
+#include "Mutex.h"
+#include "StackActionHandler.h"
 
-namespace opendnp3
+namespace asiodnp3
 {
 
 class ILinkContext;
 
 /** @section desc A stack object for a master */
-class MasterStackImpl : public IMaster
+class OutstationStackImpl : public IOutstation
 {
 public:
 
-	MasterStackImpl(
-	    openpal::Logger,
+	OutstationStackImpl(
+	    openpal::Logger&,
 	    openpal::IExecutor* apExecutor,
-	    ISOEHandler* apPublisher,
-	    IUTCTimeSource* apTimeSource,
-	    AsyncTaskGroup* apTaskGroup,
-	    const MasterStackConfig& config,
+		opendnp3::ITimeWriteHandler* apTimeWriteHandler,
+		opendnp3::ICommandHandler* apCmdHandler,
+		const opendnp3::OutstationStackConfig& arCfg,
 	    const StackActionHandler& handler);
 
-	ICommandProcessor* GetCommandProcessor();
+	opendnp3::IMeasurementLoader* GetLoader();
 
-	MasterScan GetIntegrityScan();
-
-	MasterScan AddClassScan(int aClassMask, openpal::TimeDuration aScanRate, openpal::TimeDuration aRetryRate);
+	void SetNeedTimeIIN();
 
 private:
-	Master master;
+	openpal::IExecutor* pExecutor;
+	opendnp3::DynamicallyAllocatedDatabase databaseBuffers;
+	opendnp3::DynamicallyAllocatedEventBuffer eventBuffers;
+	Mutex mutex;
+	opendnp3::Database database;
+	opendnp3::Outstation outstation;
 };
 
 }

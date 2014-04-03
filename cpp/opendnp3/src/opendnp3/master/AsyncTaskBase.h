@@ -28,7 +28,7 @@
 #include <openpal/StaticList.h>
 #include <openpal/Function1.h>
 
-#include <string>
+
 
 namespace opendnp3
 {
@@ -74,12 +74,7 @@ public:
 	void Disable(); // Disable ''
 
 	void SilentEnable(); // Enable without notifying the task group
-	void SilentDisable();
-
-	std::string Name() const
-	{
-		return mName;
-	}
+	void SilentDisable();	
 
 	static bool LessThan(const AsyncTaskBase* l, const AsyncTaskBase* r);
 	static bool LessThanGroupLevel(const AsyncTaskBase* l, const AsyncTaskBase* r);
@@ -91,8 +86,7 @@ protected:
 	    int aPriority,
 		const openpal::Function1<AsyncTaskBase*>& handler,
 	    AsyncTaskGroup* apGroup,
-	    const openpal::MonotonicTimestamp& arInitialTime,
-	    const std::string& arName);
+	    const openpal::MonotonicTimestamp& arInitialTime);
 
 	// optional NVII function for special bookkeeping
 	virtual void _OnComplete(bool aSuccess) {}
@@ -145,8 +139,7 @@ protected:
 	{
 		return mNextRunTime;
 	}
-
-	std::string mName;								// Every task has a name
+	
 	bool mIsEnabled;								// Tasks can be enabled or disabled
 	bool mIsComplete;								// Every task has a flag that
 	// executes it's completion status

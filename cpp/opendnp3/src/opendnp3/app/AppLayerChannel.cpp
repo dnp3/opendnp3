@@ -35,14 +35,14 @@ using namespace openpal;
 namespace opendnp3
 {
 
-AppLayerChannel::AppLayerChannel(const std::string& arName, openpal::Logger& arLogger, AppLayer* apAppLayer, IExecutor* apExecutor, TimeDuration aTimeout) :
+AppLayerChannel::AppLayerChannel(char const* name, openpal::Logger& arLogger, AppLayer* apAppLayer, IExecutor* apExecutor, TimeDuration aTimeout) :
 	Loggable(arLogger),
 	mpAppLayer(apAppLayer),
 	mNumRetry(0),
 	mpExecutor(apExecutor),
 	mpTimer(nullptr),
 	M_TIMEOUT(aTimeout),
-	M_NAME(arName)
+	M_NAME(name)
 {
 	this->Reset();
 }
@@ -99,7 +99,7 @@ bool AppLayerChannel::Retry(ACS_Base* apState)
 	if(mNumRetry > 0)
 	{
 		--mNumRetry;
-		LOG_BLOCK(flags::INFO, "App layer retry, " << mNumRetry << " remaining");
+		////LOG_BLOCK(flags::INFO, "App layer retry, " << mNumRetry << " remaining"); TODO
 		this->ChangeState(apState);
 		mpAppLayer->QueueFrame(mSendAPDU);
 		return true;
@@ -138,7 +138,7 @@ void AppLayerChannel::ChangeState(ACS_Base* apState)
 {
 	if(apState != mpState)
 	{
-		LOG_BLOCK(flags::DEBUG, "State changed from " << mpState->Name() << " to " << apState->Name());
+		////LOG_BLOCK(flags::DEBUG, "State changed from " << mpState->Name() << " to " << apState->Name());
 		mpState = apState;
 	}
 }

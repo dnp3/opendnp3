@@ -21,16 +21,19 @@
 #ifndef __I_MASTER_H_
 #define __I_MASTER_H_
 
-#include "opendnp3/DNP3Stack.h"
-#include "opendnp3/master/MasterScan.h"
-#include "opendnp3/StackActionHandler.h"
+#include "DNP3Stack.h"
+#include "StackActionHandler.h"
 
+#include <opendnp3/master/MasterScan.h>
 #include <openpal/TimeDuration.h>
 
 namespace opendnp3
 {
+	class ICommandProcessor;
+}
 
-class ICommandProcessor;
+namespace asiodnp3
+{
 
 /** Interface that represents a running master.
 * To get a command processor interface to execute controls on the master:-
@@ -41,7 +44,7 @@ class ICommandProcessor;
 class IMaster : public DNP3Stack
 {
 public:
-	IMaster(openpal::Logger logger, openpal::IExecutor* pExecutor, AppConfig appConfig, LinkConfig linkConfig, const StackActionHandler& handler) :
+	IMaster(openpal::Logger logger, openpal::IExecutor* pExecutor, opendnp3::AppConfig appConfig, opendnp3::LinkConfig linkConfig, const StackActionHandler& handler) :
 		DNP3Stack(logger, pExecutor, appConfig, linkConfig, handler)
 	{}
 
@@ -50,19 +53,19 @@ public:
 	/**
 	*  Returns a master scan object representing the configured integrity scan
 	*/
-	virtual MasterScan GetIntegrityScan() = 0;
+	virtual opendnp3::MasterScan GetIntegrityScan() = 0;
 
 	/**
 	* Add a class-based scan to the master
 	* @return A proxy class used to manipulate the scan
 	*/
-	virtual MasterScan AddClassScan(int aClassMask, openpal::TimeDuration aScanRate, openpal::TimeDuration aRetryRate) = 0;
+	virtual opendnp3::MasterScan AddClassScan(int aClassMask, openpal::TimeDuration aScanRate, openpal::TimeDuration aRetryRate) = 0;
 
 	/**
 	* Get a command processor interface to execute controls on the master
 	* @return Interface used to invoke commands
 	*/
-	virtual ICommandProcessor* GetCommandProcessor() = 0;
+	virtual opendnp3::ICommandProcessor* GetCommandProcessor() = 0;
 };
 
 }

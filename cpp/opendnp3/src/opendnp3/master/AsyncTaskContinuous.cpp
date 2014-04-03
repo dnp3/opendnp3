@@ -25,8 +25,8 @@
 namespace opendnp3
 {
 
-AsyncTaskContinuous::AsyncTaskContinuous(int aPriority, const openpal::Function1<AsyncTaskBase*>& callback, AsyncTaskGroup* apGroup, const std::string& arName) :
-	AsyncTaskBase(aPriority, callback, apGroup, openpal::MonotonicTimestamp::Min(), arName)
+AsyncTaskContinuous::AsyncTaskContinuous(int aPriority, const openpal::Function1<AsyncTaskBase*>& callback, AsyncTaskGroup* apGroup) :
+	AsyncTaskBase(aPriority, callback, apGroup, openpal::MonotonicTimestamp::Min())
 {
 
 }

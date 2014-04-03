@@ -31,15 +31,9 @@
 #include <openpal/IEventHandler.h>
 
 #include <opendnp3/gen/ChannelState.h>
-#include <opendnp3/DestructorHook.h>
 #include <opendnp3/link/IOpenDelayStrategy.h>
 
-namespace opendnp3
-{
-class IChannel;
-class DNP3Channel;
-class DNP3Manager;
-}
+#include "DestructorHook.h"
 
 namespace openpal
 {
@@ -57,7 +51,11 @@ class IOServiceThreadPool;
 namespace asiodnp3
 {
 
-class ASIODNP3Manager : public opendnp3::DestructorHook
+class IChannel;
+class DNP3Channel;
+class DNP3Manager;
+
+class ASIODNP3Manager : public DestructorHook
 {
 
 public:
@@ -94,7 +92,7 @@ public:
 	* @param port Port of remote outstation is listening on
 	* @param pStrategy Reconnection delay strategy, default to exponential
 	*/
-	opendnp3::IChannel* AddTCPClient(
+	IChannel* AddTCPClient(
 		char const* id,
 	    uint32_t levels,
 	    openpal::TimeDuration minOpenRetry,
@@ -114,7 +112,7 @@ public:
 	* @param port Port to listen on
 	* @param pStrategy Reconnection delay strategy, default to exponential
 	*/
-	opendnp3::IChannel* AddTCPServer(
+	IChannel* AddTCPServer(
 		char const* id,
 	    uint32_t levels,
 	    openpal::TimeDuration minOpenRetry,
@@ -133,7 +131,7 @@ public:
 	* @param settings settings object that fully parameterizes the serial port
 	* @param pStrategy Reconnection delay strategy, default to exponential
 	*/
-	opendnp3::IChannel* AddSerial(
+	IChannel* AddSerial(
 		char const* id,
 	    uint32_t levels,
 	    openpal::TimeDuration minOpenRetry,
@@ -146,7 +144,7 @@ private:
 
 	std::unique_ptr<asiopal::EventLog> pLog;
 	std::unique_ptr<asiopal::IOServiceThreadPool> pThreadPool;
-	std::unique_ptr<opendnp3::DNP3Manager> pManager;
+	std::unique_ptr<DNP3Manager> pManager;
 };
 
 }

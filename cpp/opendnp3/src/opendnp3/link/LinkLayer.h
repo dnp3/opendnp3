@@ -171,12 +171,7 @@ private:
 	bool mNextWriteFCB;
 	bool mIsOnline;
 
-	bool Validate(bool aIsMaster, uint16_t aSrc, uint16_t aDest);
-
-	std::string SendString()
-	{
-		return "~>";
-	}
+	bool Validate(bool aIsMaster, uint16_t aSrc, uint16_t aDest);	
 
 	ILinkRouter* mpRouter;
 	PriStateBase* mpPriState;

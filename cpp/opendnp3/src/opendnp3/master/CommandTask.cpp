@@ -132,7 +132,7 @@ void CommandTask::OnFailure()
 
 bool CommandTask::_OnPartialResponse(const APDUResponseRecord&)
 {
-	LOG_BLOCK(flags::ERR, "Non fin responses not allowed for control tasks");
+	//LOG_BLOCK(flags::ERR, "Non fin responses not allowed for control tasks");
 	Callback(CommandResponse(CommandResult::BAD_RESPONSE));	
 	return false;
 }
@@ -166,7 +166,7 @@ TaskResult CommandTask::_OnFinalResponse(const APDUResponseRecord& record)
 	}
 }
 
-std::string CommandTask::Name() const
+char const* CommandTask::Name() const
 {
 	return "CommandTask";
 }

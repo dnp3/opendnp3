@@ -63,8 +63,7 @@ void MasterSchedule::Init(const MasterConfig& arCfg)
 	                      arCfg.IntegrityRate,
 	                      arCfg.TaskRetryRate,
 	                      AMP_POLL,
-			      Bind1<AsyncTaskBase*>(integrityTask),
-	                      "Integrity Poll");
+			      Bind1<AsyncTaskBase*>(integrityTask));
 
 	mpIntegrityPoll->SetFlags(ONLINE_ONLY_TASKS | START_UP_TASKS);
 
@@ -81,8 +80,7 @@ void MasterSchedule::Init(const MasterConfig& arCfg)
 		                                   TimeDuration::Min(),
 		                                   arCfg.TaskRetryRate,
 		                                   AMP_UNSOL_CHANGE,
-						   Bind1<AsyncTaskBase*>(disableUnsol),
-		                                   "Unsol Disable");
+						   Bind1<AsyncTaskBase*>(disableUnsol));
 
 		pUnsolDisable->SetFlags(ONLINE_ONLY_TASKS | START_UP_TASKS);
 		mpIntegrityPoll->AddDependency(pUnsolDisable);
@@ -94,8 +92,7 @@ void MasterSchedule::Init(const MasterConfig& arCfg)
 			AsyncTaskBase* pUnsolEnable = mTracking.Add(TimeDuration::Min(),
 			                              arCfg.TaskRetryRate,
 			                              AMP_UNSOL_CHANGE,
-			                              Bind1<AsyncTaskBase*>(enableUnsol),
-			                              "Unsol Enable");
+			                              Bind1<AsyncTaskBase*>(enableUnsol));
 
 			pUnsolEnable->SetFlags(ONLINE_ONLY_TASKS | START_UP_TASKS);
 			pUnsolEnable->AddDependency(mpIntegrityPoll);
@@ -107,24 +104,21 @@ void MasterSchedule::Init(const MasterConfig& arCfg)
 	auto lambda = [this](ITask* pTask){ mpMaster->ProcessCommand(pTask); };
 	mpCommandTask = mTracking.AddContinuous(
 	                    AMP_COMMAND,
-			    Bind1<AsyncTaskBase*>(lambda),	                    
-	                    "Command");
+			    Bind1<AsyncTaskBase*>(lambda));
 	}
 
 	{
 	auto lambda = [this](ITask* pTask){ mpMaster->SyncTime(pTask); };
 	mpTimeTask = mTracking.AddContinuous(
 	                 AMP_TIME_SYNC,
-			 Bind1<AsyncTaskBase*>(lambda),
-	                 "TimeSync");
+			 Bind1<AsyncTaskBase*>(lambda));
 	}
 
 	{
 	auto lambda = [this](ITask* pTask){ mpMaster->WriteIIN(pTask); };
 	mpClearRestartTask = mTracking.AddContinuous(
 	                         AMP_CLEAR_RESTART,
-				 Bind1<AsyncTaskBase*>(lambda),
-	                         "Clear IIN");
+				 Bind1<AsyncTaskBase*>(lambda));
 	}
 
 	mpTimeTask->SetFlags(ONLINE_ONLY_TASKS);
@@ -139,8 +133,7 @@ AsyncTaskBase* MasterSchedule::AddClassScan(int classMask, TimeDuration aScanRat
 	auto pClassScan = mTracking.Add(	aScanRate,
 	                                        aRetryRate,
 	                                        AMP_POLL,
-						Bind1<AsyncTaskBase*>(lambda),
-	                                        "Class Scan");
+						Bind1<AsyncTaskBase*>(lambda));
 
 	pClassScan->SetFlags(ONLINE_ONLY_TASKS);
 	pClassScan->AddDependency(mpIntegrityPoll);

@@ -118,7 +118,7 @@ void Outstation::OnSolSendSuccess()
 void Outstation::OnSolFailure()
 {
 	mpState->OnSolFailure(this);
-	LOG_BLOCK(flags::WARN, "Response failure");
+	//LOG_BLOCK(flags::WARN, "Response failure");
 }
 
 void Outstation::OnUnsolSendSuccess()
@@ -129,7 +129,7 @@ void Outstation::OnUnsolSendSuccess()
 void Outstation::OnUnsolFailure()
 {
 	mpState->OnUnsolFailure(this);
-	LOG_BLOCK(flags::WARN, "Unsol response failure");
+	//LOG_BLOCK(flags::WARN, "Unsol response failure");
 }
 
 void Outstation::OnRequest(const APDURecord& record, SequenceInfo aSeqInfo)
@@ -155,7 +155,7 @@ void Outstation::OnUnsolTimerExpiration()
 
 void Outstation::ChangeState(OutstationStateBase* apState)
 {
-	LOG_BLOCK(flags::DEBUG, "State changed from " << mpState->Name() << " to " << apState->Name());
+	//LOG_BLOCK(flags::DEBUG, "State changed from " << mpState->Name() << " to " << apState->Name());
 	mpState = apState;
 	mpState->Enter(this);
 }
@@ -192,7 +192,7 @@ IINField Outstation::ConfigureResponse(const APDURecord& request, SequenceInfo s
 	case(FunctionCode::DELAY_MEASURE):
 		return HandleDelayMeasure(request, sequence, response);
 	default:
-		ERROR_BLOCK(flags::WARN, "Function not supported: " << FunctionCodeToString(request.function), SERR_FUNC_NOT_SUPPORTED);
+		//ERROR_BLOCK(flags::WARN, "Function not supported: " << FunctionCodeToString(request.function), SERR_FUNC_NOT_SUPPORTED);
 		return IINField(IINBit::FUNC_NOT_SUPPORTED);
 	}
 }
@@ -240,7 +240,7 @@ IINField Outstation::HandleSelect(const APDURecord& request, SequenceInfo sequen
 	// an exact echo the requests with status fields changed.
 	if(request.objects.Size() > response.Remaining())
 	{
-		LOG_BLOCK(flags::WARN, "Igonring command request due to payload size of " << request.objects.Size());
+		//LOG_BLOCK(flags::WARN, "Igonring command request due to payload size of " << request.objects.Size());
 		selectBuffer.Clear();
 		return IINField(IINBit::PARAM_ERROR);
 	}
@@ -276,7 +276,7 @@ IINField Outstation::HandleOperate(const APDURecord& request, SequenceInfo seque
 {
 	if (request.objects.Size() > response.Remaining())
 	{
-		LOG_BLOCK(flags::WARN, "Igonring operate request due to payload size of " << request.objects.Size());
+		//LOG_BLOCK(flags::WARN, "Igonring operate request due to payload size of " << request.objects.Size());
 		selectBuffer.Clear();
 		return IINField(IINBit::PARAM_ERROR);
 	}
@@ -310,7 +310,7 @@ IINField Outstation::HandleDirectOperate(const APDURecord& request, SequenceInfo
 {
 	if (request.objects.Size() > response.Remaining())
 	{
-		LOG_BLOCK(flags::WARN, "Igonring direct operate request due to payload size of " << request.objects.Size());
+		//LOG_BLOCK(flags::WARN, "Igonring direct operate request due to payload size of " << request.objects.Size());
 		return IINField(IINBit::PARAM_ERROR);
 	}
 	else

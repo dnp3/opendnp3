@@ -18,39 +18,45 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include "OutstationStackImpl.h"
+#ifndef __I_STACK_H_
+#define __I_STACK_H_
 
-namespace opendnp3
+#include "DestructorHook.h"
+
+namespace asiodnp3
 {
 
-OutstationStackImpl::OutstationStackImpl(
-    openpal::Logger& logger,
-    openpal::IExecutor* apExecutor,
-    ITimeWriteHandler* apTimeWriteHandler,
-    ICommandHandler* apCmdHandler,
-    const OutstationStackConfig& config,
-    const StackActionHandler& handler) :
-	IOutstation(logger, apExecutor, config.app, config.link, handler),
-	pExecutor(apExecutor),
-	databaseBuffers(config.dbTemplate),
-	eventBuffers(config.eventBuffer),
-	mutex(),
-	database(databaseBuffers.GetFacade(), &mutex),
-	outstation(logger.GetSubLogger("outstation"), &appStack.application, apExecutor, apTimeWriteHandler, &database, eventBuffers.GetFacade(), apCmdHandler, config.outstation)
+/**
+* Base class for masters or outstations
+*/
+class IStack : public DestructorHook
 {
-	appStack.application.SetUser(&outstation);	
+public:
+
+	virtual ~IStack() {}
+
+	/**
+	* Returns the stack's executor
+	*/
+	virtual openpal::IExecutor* GetExecutor() = 0;
+
+	/**
+	* Enable communications
+	*/
+	virtual void Enable() = 0;
+
+	/**
+	* Enable communications
+	*/
+	virtual void Disable() = 0;
+
+	/**
+	* Asynchronously shutdown the endpoint. No more calls are allowed after this call.
+	*/
+	virtual void BeginShutdown() = 0;
+
+};
+
 }
 
-IMeasurementLoader* OutstationStackImpl::GetLoader()
-{
-	return &database;
-}
-
-void OutstationStackImpl::SetNeedTimeIIN()
-{
-	auto lambda = [this]() { this->outstation.SetNeedTimeIIN(); };
-	pExecutor->PostLambda(lambda);
-}
-
-}
-
+#endif

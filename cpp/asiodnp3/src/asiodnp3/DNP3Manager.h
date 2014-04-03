@@ -22,7 +22,7 @@
 #define __DNP3_MANAGER_H_
 
 #include <set>
-#include <string>
+
 #include <stdint.h>
 #include <memory>
 
@@ -30,7 +30,6 @@
 #include <condition_variable>
 
 #include <openpal/Logger.h>
-#include <openpal/PhysicalLayerAsyncBase.h>
 #include <openpal/TimeDuration.h>
 #include <openpal/IMutex.h>
 #include <openpal/IShutdownHandler.h>
@@ -40,7 +39,12 @@
 #include "opendnp3/gen/ChannelState.h"
 #include "opendnp3/link/IOpenDelayStrategy.h"
 
-namespace opendnp3
+namespace asiopal
+{
+	class PhysicalLayerAsyncBase;
+}
+
+namespace asiodnp3
 {
 
 class IChannel;
@@ -57,9 +61,9 @@ public:
 	IChannel* CreateChannel(	char const* id,
 	                            openpal::TimeDuration minOpenRetry,
 	                            openpal::TimeDuration maxOpenRetry,
-	                            openpal::PhysicalLayerAsyncBase* apPhys,
-	                            openpal::IEventHandler<ChannelState>* pStateHandler = nullptr,
-	                            IOpenDelayStrategy* pOpenStrategy = ExponentialBackoffStrategy::Inst());
+								asiopal::PhysicalLayerAsyncBase* pPhys,
+	                            openpal::IEventHandler<opendnp3::ChannelState>* pStateHandler = nullptr,
+								opendnp3::IOpenDelayStrategy* pOpenStrategy = opendnp3::ExponentialBackoffStrategy::Inst());
 
 	/// Synchronously shutdown all channels. Block until complete.
 	void Shutdown();

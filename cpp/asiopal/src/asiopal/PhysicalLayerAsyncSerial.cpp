@@ -78,7 +78,7 @@ void PhysicalLayerAsyncSerial::DoClose()
 	mPort.close(ec);
 	if (ec)
 	{
-		LOG_BLOCK(log::WARN, ec.message());
+		//LOG_BLOCK(log::WARN, ec.message());
 	}
 }
 

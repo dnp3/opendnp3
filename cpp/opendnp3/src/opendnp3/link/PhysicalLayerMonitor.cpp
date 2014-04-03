@@ -63,7 +63,7 @@ ChannelState PhysicalLayerMonitor::GetState()
 
 void PhysicalLayerMonitor::ChangeState(IMonitorState* apState)
 {
-	LOG_BLOCK(flags::DEBUG, mpState->ConvertToString() << " -> " << apState->ConvertToString() << " : " << pPhys->ConvertStateToString());
+	////LOG_BLOCK(flags::DEBUG, mpState->ConvertToString() << " -> " << apState->ConvertToString() << " : " << pPhys->ConvertStateToString());
 	IMonitorState* pLast = mpState;
 	mpState = apState;
 
@@ -113,31 +113,31 @@ void PhysicalLayerMonitor::OnLowerLayerDown()
 
 void PhysicalLayerMonitor::Start()
 {
-	LOG_BLOCK(flags::DEBUG, "Start()");
+	//LOG_BLOCK(flags::DEBUG, "Start()");
 	mpState->OnStartRequest(this);
 }
 
 void PhysicalLayerMonitor::StartOne()
 {
-	LOG_BLOCK(flags::DEBUG, "StartOne()");
+	//LOG_BLOCK(flags::DEBUG, "StartOne()");
 	mpState->OnStartOneRequest(this);
 }
 
 void PhysicalLayerMonitor::Close()
 {
-	LOG_BLOCK(flags::DEBUG, "Close()");
+	//LOG_BLOCK(flags::DEBUG, "Close()");
 	mpState->OnCloseRequest(this);
 }
 
 void PhysicalLayerMonitor::Suspend()
 {
-	LOG_BLOCK(flags::DEBUG, "Suspend()");
+	//LOG_BLOCK(flags::DEBUG, "Suspend()");
 	mpState->OnSuspendRequest(this);
 }
 
 void PhysicalLayerMonitor::Shutdown()
 {
-	LOG_BLOCK(flags::DEBUG, "Shutdown()");
+	//LOG_BLOCK(flags::DEBUG, "Shutdown()");
 	mpState->OnShutdownRequest(this);
 }
 

@@ -62,7 +62,7 @@ public:
 
 	void ConfigureRequest(APDURequest& request);
 
-	std::string Name() const;
+	char const* Name() const;
 
 protected:
 

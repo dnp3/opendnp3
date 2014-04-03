@@ -52,7 +52,7 @@ public:
 
 	TransportLayer(const openpal::Logger& logger, openpal::IExecutor* pExecutor_, uint32_t maxFragSize = sizes::DEFAULT_APDU_BUFFER_SIZE);
 
-	static std::string ToString(uint8_t aHeader);
+	// static std::string ToString(uint8_t aHeader); TODO
 
 	openpal::Logger& GetLogger()
 	{

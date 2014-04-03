@@ -19,10 +19,29 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\asiodnp3\ASIODNP3Manager.h" />
+    <ClCompile Include="src\asiodnp3\ASIODNP3Manager.cpp" />
+    <ClCompile Include="src\asiodnp3\DestructorHook.cpp" />
+    <ClCompile Include="src\asiodnp3\DNP3Channel.cpp" />
+    <ClCompile Include="src\asiodnp3\DNP3Manager.cpp" />
+    <ClCompile Include="src\asiodnp3\DNP3Stack.cpp" />
+    <ClCompile Include="src\asiodnp3\MasterStackImpl.cpp" />
+    <ClCompile Include="src\asiodnp3\OutstationStackImpl.cpp" />
+    <ClCompile Include="src\asiodnp3\StackActionHandler.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\asiodnp3\ASIODNP3Manager.cpp" />
+    <ClInclude Include="src\asiodnp3\ASIODNP3Manager.h" />
+    <ClInclude Include="src\asiodnp3\DestructorHook.h" />
+    <ClInclude Include="src\asiodnp3\DNP3Channel.h" />
+    <ClInclude Include="src\asiodnp3\DNP3Manager.h" />
+    <ClInclude Include="src\asiodnp3\DNP3Stack.h" />
+    <ClInclude Include="src\asiodnp3\IChannel.h" />
+    <ClInclude Include="src\asiodnp3\IMaster.h" />
+    <ClInclude Include="src\asiodnp3\IOutstation.h" />
+    <ClInclude Include="src\asiodnp3\IStack.h" />
+    <ClInclude Include="src\asiodnp3\MasterStackImpl.h" />
+    <ClInclude Include="src\asiodnp3\Mutex.h" />
+    <ClInclude Include="src\asiodnp3\OutstationStackImpl.h" />
+    <ClInclude Include="src\asiodnp3\StackActionHandler.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{65495BE1-485C-4A8C-8C58-06C9A532D9CE}</ProjectGuid>

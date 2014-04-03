@@ -21,7 +21,7 @@
 #ifndef __PHYSICAL_LAYER_ASYNC_ASIO_H_
 #define __PHYSICAL_LAYER_ASYNC_ASIO_H_
 
-#include <openpal/PhysicalLayerAsyncBase.h>
+#include "PhysicalLayerAsyncBase.h"
 
 #include "ASIOExecutor.h"
 
@@ -36,7 +36,7 @@ namespace asiopal
 // This is the base class for the new async physical layers. It assumes that all of the functions
 // are called from a single thread.
 
-class PhysicalLayerAsyncASIO : public openpal::PhysicalLayerAsyncBase
+class PhysicalLayerAsyncASIO : public PhysicalLayerAsyncBase
 {
 public:
 	PhysicalLayerAsyncASIO(const openpal::LogConfig& config, asio::io_service* apService) :

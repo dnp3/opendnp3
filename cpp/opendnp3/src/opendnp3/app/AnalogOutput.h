@@ -23,8 +23,6 @@
 
 #include "opendnp3/gen/CommandStatus.h"
 
-#include <string>
-
 namespace opendnp3
 {
 
@@ -63,9 +61,6 @@ public:
 	CommandStatus status;
 
 	T value;
-
-	virtual std::string ToString() const = 0;
-
 };
 
 /**
@@ -80,8 +75,6 @@ public:
 	AnalogOutputInt16(int16_t, CommandStatus);
 
 	bool operator==(const AnalogOutputInt16& arRHS) const;
-
-	std::string ToString() const;
 };
 
 /**
@@ -96,8 +89,6 @@ public:
 	AnalogOutputInt32(int32_t, CommandStatus);
 
 	bool operator==(const AnalogOutputInt32& arRHS) const;
-
-	std::string ToString() const;
 };
 
 /**
@@ -112,8 +103,6 @@ public:
 	AnalogOutputFloat32(float, CommandStatus);
 
 	bool operator==(const AnalogOutputFloat32& arRHS) const;
-
-	std::string ToString() const;
 };
 
 /**
@@ -128,8 +117,6 @@ public:
 	AnalogOutputDouble64(double, CommandStatus);
 
 	bool operator==(const AnalogOutputDouble64& arRHS) const;
-
-	std::string ToString() const;
 };
 
 

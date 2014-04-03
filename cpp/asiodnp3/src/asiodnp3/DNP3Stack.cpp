@@ -18,37 +18,51 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __MUTEX_H_
-#define __MUTEX_H_
 
-#include <mutex>
+#include "DNP3Stack.h"
 
-#include <openpal/IMutex.h>
+using namespace opendnp3;
 
-namespace opendnp3
+namespace asiodnp3
 {
 
-class Mutex : public openpal::IMutex
+
+DNP3Stack::DNP3Stack(openpal::Logger logger, openpal::IExecutor* pExecutor, AppConfig appConfig, LinkConfig linkConfig, const StackActionHandler& handler_) :
+	appStack(logger, pExecutor, appConfig, linkConfig),
+	handler(handler_)
 {
-
-protected:
-
-
-	virtual void Lock() override final
-	{
-		mutex.lock();
-	}
-
-	virtual void Unlock() override final
-	{
-		mutex.unlock();
-	}
-
-private:
-
-	std::mutex mutex;
-};
 
 }
 
-#endif
+openpal::IExecutor* DNP3Stack::GetExecutor()
+{
+	return handler.GetExecutor();
+}
+
+ILinkContext* DNP3Stack::GetLinkContext()
+{
+	return &appStack.link;
+}
+
+void DNP3Stack::SetLinkRouter(ILinkRouter* apRouter)
+{
+	appStack.link.SetRouter(apRouter);
+}
+
+void DNP3Stack::Enable()
+{
+	handler.EnableRoute(&this->appStack.link);
+}
+
+void DNP3Stack::Disable()
+{
+	handler.DisableRoute(&this->appStack.link);
+}
+
+void DNP3Stack::BeginShutdown()
+{
+	handler.BeginShutdown(&this->appStack.link, this);
+}
+
+
+}

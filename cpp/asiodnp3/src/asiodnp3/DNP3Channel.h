@@ -26,27 +26,32 @@
 #include <openpal/LogConfig.h>
 #include <openpal/StaticLinkedList.h>
 
-#include "opendnp3/IChannel.h"
-#include "opendnp3/outstation/OutstationStackConfig.h"
-#include "opendnp3/master/AsyncTaskGroup.h"
-#include "opendnp3/link/LinkLayerRouter.h"
+#include <opendnp3/outstation/OutstationStackConfig.h>
+#include <opendnp3/master/AsyncTaskGroup.h>
+#include <opendnp3/link/LinkLayerRouter.h>
+
+#include "IChannel.h"
 
 #include <memory>
 
-namespace openpal
+namespace asiopal
 {
-class PhysicalLayerAsyncBase;
+	class PhysicalLayerAsyncBase;
+}
+
+namespace opendnp3
+{
+	class ICommandHandler;
+	class ITimeWriteHandler;
 }
 
 
-namespace opendnp3
+namespace asiodnp3
 {
 
 class IStack;
 class DNP3Stack;
 class IOutstation;
-class ICommandHandler;
-class ITimeWriteHandler;
 
 class DNP3Channel: public IChannel, private openpal::IShutdownHandler, private openpal::ITypedShutdownHandler<DNP3Stack*>
 {
@@ -62,10 +67,10 @@ public:
 		char const* id,
 	    openpal::TimeDuration minOpenRetry,
 	    openpal::TimeDuration maxOpenRetry,
-	    IOpenDelayStrategy* pStrategy,
-	    openpal::PhysicalLayerAsyncBase* pPhys,
+	    opendnp3::IOpenDelayStrategy* pStrategy,
+	    asiopal::PhysicalLayerAsyncBase* pPhys,
 	    openpal::ITypedShutdownHandler<DNP3Channel*>* pShutdownHandler_,
-	    openpal::IEventHandler<ChannelState>* pStateHandler_
+		openpal::IEventHandler<opendnp3::ChannelState>* pStateHandler_
 	);
 
 	// public interface, callable only from outside
@@ -78,14 +83,14 @@ public:
 	virtual void SetLogFilters(const openpal::LogFilters& filters) override final;
 
 	IMaster* AddMaster(		char const* id,
-	                        ISOEHandler* pPublisher,
+		opendnp3::ISOEHandler* pPublisher,
 	                        openpal::IUTCTimeSource* pTimeSource,
-	                        const MasterStackConfig& cfg);
+							const opendnp3::MasterStackConfig& cfg);
 
 	IOutstation* AddOutstation( char const* id,
-	                            ICommandHandler* pCmdHandler,
-	                            ITimeWriteHandler* pTimeWriteHandler,
-	                            const OutstationStackConfig& cfg);
+								opendnp3::ICommandHandler* pCmdHandler,
+								opendnp3::ITimeWriteHandler* pTimeWriteHandler,
+								const opendnp3::OutstationStackConfig& cfg);
 
 	// Helper functions only available inside DNP3Manager
 
@@ -101,17 +106,17 @@ private:
 
 	void CheckForFinalShutdown();
 
-	std::auto_ptr<PhysicalLayerAsyncBase> pPhys;
+	std::auto_ptr<asiopal::PhysicalLayerAsyncBase> pPhys;
 
 	Logger logger;
 
 	State state;
 	openpal::ITypedShutdownHandler<DNP3Channel*>* pShutdownHandler;
 
-	LinkLayerRouter router;
-	AsyncTaskGroup group;
+	opendnp3::LinkLayerRouter router;
+	opendnp3::AsyncTaskGroup group;
 
-	openpal::StaticLinkedList<DNP3Stack*, uint16_t, sizes::MAX_STACKS_PER_CHANNEL> stacks;
+	openpal::StaticLinkedList<DNP3Stack*, uint16_t, opendnp3::sizes::MAX_STACKS_PER_CHANNEL> stacks;
 
 };
 

@@ -18,18 +18,40 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include "LinkRoute.h"
+#include "OutstationStackImpl.h"
 
-#include <sstream>
 
-namespace opendnp3
+namespace asiodnp3
 {
 
-LinkRoute::LinkRoute(const uint16_t aRemoteAddr, const uint16_t aLocalAddr) :
-	remote(aRemoteAddr),
-	local(aLocalAddr)
-{}
+OutstationStackImpl::OutstationStackImpl(
+    openpal::Logger& logger,
+    openpal::IExecutor* apExecutor,
+    ITimeWriteHandler* apTimeWriteHandler,
+    ICommandHandler* apCmdHandler,
+    const OutstationStackConfig& config,
+    const StackActionHandler& handler) :
+	IOutstation(logger, apExecutor, config.app, config.link, handler),
+	pExecutor(apExecutor),
+	databaseBuffers(config.dbTemplate),
+	eventBuffers(config.eventBuffer),
+	mutex(),
+	database(databaseBuffers.GetFacade(), &mutex),
+	outstation(logger.GetSubLogger("outstation"), &appStack.application, apExecutor, apTimeWriteHandler, &database, eventBuffers.GetFacade(), apCmdHandler, config.outstation)
+{
+	appStack.application.SetUser(&outstation);	
+}
 
-LinkRoute::LinkRoute() : remote(0), local(0) {}
+IMeasurementLoader* OutstationStackImpl::GetLoader()
+{
+	return &database;
+}
+
+void OutstationStackImpl::SetNeedTimeIIN()
+{
+	auto lambda = [this]() { this->outstation.SetNeedTimeIIN(); };
+	pExecutor->PostLambda(lambda);
+}
 
 }
+

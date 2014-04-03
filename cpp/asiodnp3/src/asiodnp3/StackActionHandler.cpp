@@ -27,8 +27,9 @@
 #include "opendnp3/link/LinkLayerRouter.h"
 
 using namespace openpal;
+using namespace opendnp3;
 
-namespace opendnp3
+namespace asiodnp3
 {
 
 StackActionHandler::StackActionHandler(LinkLayerRouter* pRouter_, openpal::IExecutor* pExecutor_, openpal::ITypedShutdownHandler<DNP3Stack*>* pHandler_) :

@@ -18,41 +18,45 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include "DestructorHook.h"
+#ifndef __MASTER_STACK_IMPL_H_
+#define __MASTER_STACK_IMPL_H_
 
-#include <openpal/IExecutor.h>
+#include "IMaster.h"
 
-namespace opendnp3
+#include <opendnp3/master/MasterStackConfig.h>
+#include <opendnp3/master/Master.h>
+#include <opendnp3/app/ApplicationStack.h>
+
+namespace asiodnp3
 {
 
-DestructorHook::DestructorHook(openpal::IExecutor* apExecutor) : mpExecutor(apExecutor)
+class ILinkContext;
+
+/** @section desc A stack object for a master */
+class MasterStackImpl : public IMaster
 {
+public:
+
+	MasterStackImpl(
+	    openpal::Logger,
+	    openpal::IExecutor* apExecutor,
+	    opendnp3::ISOEHandler* apPublisher,
+	    IUTCTimeSource* apTimeSource,
+		opendnp3::AsyncTaskGroup* apTaskGroup,
+		const opendnp3::MasterStackConfig& config,
+		const StackActionHandler& handler);
+
+	opendnp3::ICommandProcessor* GetCommandProcessor();
+
+	opendnp3::MasterScan GetIntegrityScan();
+
+	opendnp3::MasterScan AddClassScan(int aClassMask, openpal::TimeDuration aScanRate, openpal::TimeDuration aRetryRate);
+
+private:
+	opendnp3::Master master;
+};
 
 }
 
-DestructorHook::DestructorHook() : mpExecutor(nullptr)
-{
+#endif
 
-}
-
-DestructorHook::~DestructorHook()
-{
-	if (runnable.IsSet())
-	{
-		if (mpExecutor)
-		{
-			mpExecutor->Post(runnable);			
-		}
-		else
-		{
-			runnable.Run();
-		}
-	}
-}
-
-void DestructorHook::SetDestructorHook(const openpal::Runnable& runnable_)
-{
-	runnable = runnable_;
-}
-
-}

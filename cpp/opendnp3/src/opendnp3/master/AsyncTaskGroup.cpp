@@ -51,15 +51,15 @@ AsyncTaskGroup::~AsyncTaskGroup()
 	tasks.Foreach([](AsyncTaskBase * p){ delete p; });	
 }
 
-AsyncTaskBase* AsyncTaskGroup::Add(openpal::TimeDuration aPeriod, openpal::TimeDuration aRetryDelay, int aPriority, const openpal::Function1<AsyncTaskBase*>& callback, const std::string& arName)
+AsyncTaskBase* AsyncTaskGroup::Add(openpal::TimeDuration aPeriod, openpal::TimeDuration aRetryDelay, int aPriority, const openpal::Function1<AsyncTaskBase*>& callback)
 {
 	assert(!tasks.IsFull());
 
 	AsyncTaskBase* pTask;
 	if(aPeriod.GetMilliseconds() < 0)
-		pTask = new AsyncTaskNonPeriodic(aRetryDelay, aPriority, callback, this, arName);
+		pTask = new AsyncTaskNonPeriodic(aRetryDelay, aPriority, callback, this);
 	else
-		pTask = new AsyncTaskPeriodic(aPeriod, aRetryDelay, aPriority, callback, this, arName);
+		pTask = new AsyncTaskPeriodic(aPeriod, aRetryDelay, aPriority, callback, this);
 
 	tasks.Add(pTask);	
 	return pTask;
@@ -75,10 +75,10 @@ void AsyncTaskGroup::ResetTasks(int aMask)
 	);	
 }
 
-AsyncTaskContinuous* AsyncTaskGroup::AddContinuous(int aPriority, const openpal::Function1<AsyncTaskBase*>& callback, const std::string& arName)
+AsyncTaskContinuous* AsyncTaskGroup::AddContinuous(int aPriority, const openpal::Function1<AsyncTaskBase*>& callback)
 {
 	assert(!tasks.IsFull());
-	AsyncTaskContinuous* pTask = new AsyncTaskContinuous(aPriority, callback, this, arName);
+	AsyncTaskContinuous* pTask = new AsyncTaskContinuous(aPriority, callback, this);
 	tasks.Add(pTask);
 	return pTask;
 }

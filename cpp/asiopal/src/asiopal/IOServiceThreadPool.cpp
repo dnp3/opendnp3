@@ -112,7 +112,7 @@ void IOServiceThreadPool::Run()
 		catch(const std::exception& ex)
 		{
 			num = 1;
-			LOG_BLOCK(log::ERR, "Unhandled exception in thread pool: " << ex.what());
+			//LOG_BLOCK(log::ERR, "Unhandled exception in thread pool: " << ex.what());
 		}
 	}
 	while(num > 0);

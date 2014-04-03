@@ -21,7 +21,7 @@
 #ifndef __MASTER_TASK_BASE_H_
 #define __MASTER_TASK_BASE_H_
 
-#include <string>
+
 
 #include "opendnp3/app/APDUHeader.h"
 #include "opendnp3/app/APDURequest.h"
@@ -102,7 +102,7 @@ public:
 	 *
 	 * @return			the name of the task
 	 */
-	virtual std::string Name() const = 0;
+	virtual char const* Name() const = 0;
 
 protected:
 

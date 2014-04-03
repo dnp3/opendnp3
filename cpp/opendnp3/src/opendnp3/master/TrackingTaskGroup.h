@@ -28,7 +28,7 @@
 
 #include "AsyncTaskInterfaces.h"
 
-#include <string>
+
 
 namespace opendnp3
 {
@@ -50,8 +50,8 @@ public:
 
 	void ResetTasks(int aMask);
 
-	AsyncTaskBase* Add(openpal::TimeDuration aPeriod, openpal::TimeDuration aRetryDelay, int aPriority, const openpal::Function1<AsyncTaskBase*>& callback, const std::string& arName = "");
-	AsyncTaskContinuous* AddContinuous(int aPriority, const openpal::Function1<AsyncTaskBase*>& callback, const std::string& arName = "");
+	AsyncTaskBase* Add(openpal::TimeDuration aPeriod, openpal::TimeDuration aRetryDelay, int aPriority, const openpal::Function1<AsyncTaskBase*>& callback);
+	AsyncTaskContinuous* AddContinuous(int aPriority, const openpal::Function1<AsyncTaskBase*>& callback);
 
 
 private:

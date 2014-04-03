@@ -30,22 +30,22 @@ namespace opendnp3
 
 void IAppUser::OnPartialResponse(const APDUResponseRecord&)
 {
-	LOG_BLOCK(flags::ERR, "This app user doesn't implement responses, is your app layer configured correctly?");
+	//LOG_BLOCK(flags::ERR, "This app user doesn't implement responses, is your app layer configured correctly?");
 }
 
 void IAppUser::OnFinalResponse(const APDUResponseRecord&)
 {
-	LOG_BLOCK(flags::ERR, "This app user doesn't implement responses, is your app layer configured correctly?");
+	//LOG_BLOCK(flags::ERR, "This app user doesn't implement responses, is your app layer configured correctly?");
 }
 
 void IAppUser::OnUnsolResponse(const APDUResponseRecord&)
 {
-	LOG_BLOCK(flags::ERR, "This app user doesn't implement responses, is your app layer configured correctly?");
+	//LOG_BLOCK(flags::ERR, "This app user doesn't implement responses, is your app layer configured correctly?");
 }
 
 void IAppUser::OnRequest(const APDURecord&, SequenceInfo)
 {
-	LOG_BLOCK(flags::ERR, "This app user doesn't implement requests, is your app layer configured correctly?");
+	//LOG_BLOCK(flags::ERR, "This app user doesn't implement requests, is your app layer configured correctly?");
 }
 
 } //end ns

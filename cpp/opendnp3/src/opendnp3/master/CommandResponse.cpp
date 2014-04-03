@@ -52,6 +52,7 @@ bool CommandResponse::operator==(const CommandResponse& arRHS) const
 	return (mResult == arRHS.mResult) && (mStatus == arRHS.mStatus);
 }
 
+/* TODO
 std::string CommandResponse::ToString() const
 {
 	std::ostringstream oss;
@@ -59,6 +60,7 @@ std::string CommandResponse::ToString() const
 	else oss << "Failure: " << CommandResultToString(mResult);
 	return oss.str();
 }
+*/
 
 }
 

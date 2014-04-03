@@ -23,8 +23,9 @@
 #include <openpal/IExecutor.h>
 
 using namespace openpal;
+using namespace opendnp3;
 
-namespace opendnp3
+namespace asiodnp3
 {
 
 MasterStackImpl::MasterStackImpl(	Logger logger,

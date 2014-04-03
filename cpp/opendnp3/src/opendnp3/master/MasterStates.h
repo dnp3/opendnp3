@@ -21,7 +21,7 @@
 #ifndef __MASTER_STATES_H_
 #define __MASTER_STATES_H_
 
-#include <string>
+
 
 #include "opendnp3/Singleton.h"
 #include "opendnp3/app/APDUHeader.h"
@@ -55,7 +55,7 @@ public:
 	virtual void OnFinalResponse(Master*, const APDUResponseRecord& aRecord);
 	virtual void OnUnsolResponse(Master*, const APDUResponseRecord& aRecord);
 
-	virtual std::string Name() const = 0;
+	virtual char const* Name() const = 0;
 
 protected:
 
