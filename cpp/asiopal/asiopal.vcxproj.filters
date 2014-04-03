@@ -53,6 +53,9 @@
     <ClInclude Include="src\asiopal\ShutdownHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\asiopal\PhysicalLayerAsyncBase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\asiopal\ASIOExecutor.cpp">
@@ -89,6 +92,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\asiopal\UTCTimeSource.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\asiopal\PhysicalLayerAsyncBase.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

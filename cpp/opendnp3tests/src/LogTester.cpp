@@ -81,7 +81,7 @@ int LogTester::ClearLog()
 
 void LogTester::Log(const std::string& arLocation, const std::string& arMessage)
 {
-	logger.Log(flags::EVENT, arLocation, arMessage);
+	logger.Log(flags::EVENT, arLocation.c_str(), arMessage.c_str());
 }
 
 int LogTester::NextErrorCode()
@@ -121,7 +121,7 @@ void LogTester::Pop(openpal::ILogBase* pLog)
 
 openpal::Logger LogTester::GetLogger(const std::string& id)
 {
-	return root.GetLogger(id);
+	return root.GetLogger(id.c_str());
 }
 
 bool LogTester::IsLogErrorFree()

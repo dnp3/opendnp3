@@ -24,25 +24,26 @@
 #include <openpal/LogRoot.h>
 
 #include <assert.h>
-#include <sstream>
+#include <cstring>
+
+#include "StringFormatting.h"
 
 using namespace std;
 
 namespace openpal
 {
 
-Logger::Logger(LogRoot* pRoot_, const std::string& name_) :
-	pRoot(pRoot_),
-	name(name_)
+Logger::Logger(LogRoot* pRoot_, char const* name_) :
+pRoot(pRoot_)
 {
-
+	strncpy(name, name_, MAX_NAME_SIZE);
 }
 
-Logger Logger::GetSubLogger(std::string subName) const
+Logger Logger::GetSubLogger(char const* subName) const
 {
-	std::ostringstream oss;
-	oss << name << "." << subName;
-	return Logger(pRoot, oss.str());
+	char buffer[MAX_NAME_SIZE];
+	SNPRINTF(buffer, MAX_NAME_SIZE, "%s - %s", name, subName);
+	return Logger(pRoot, buffer);
 }
 
 bool Logger::IsEnabled(const LogFilters& filters) const
@@ -58,7 +59,7 @@ void Logger::Log( const LogEntry& entry)
 	}
 }
 
-void Logger::Log(const LogFilters& filters, const std::string& location, const std::string& message, int errorCode)
+void Logger::Log(const LogFilters& filters, char const* location, char const* message, int errorCode)
 {
 	LogEntry le(filters, name, location, message, errorCode);
 	this->Log(le);

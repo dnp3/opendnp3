@@ -54,7 +54,7 @@ public:
 	DNP3Manager();
 	~DNP3Manager();
 
-	IChannel* CreateChannel(	const std::string& id,
+	IChannel* CreateChannel(	char const* id,
 	                            openpal::TimeDuration minOpenRetry,
 	                            openpal::TimeDuration maxOpenRetry,
 	                            openpal::PhysicalLayerAsyncBase* apPhys,

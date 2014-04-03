@@ -60,7 +60,7 @@ void ASIODNP3Manager::Shutdown()
 }
 
 opendnp3::IChannel* ASIODNP3Manager::AddTCPClient(
-    const std::string& id,
+	char const* id,
     uint32_t levels,
     openpal::TimeDuration minOpenRetry,
     openpal::TimeDuration maxOpenRetry,
@@ -74,7 +74,7 @@ opendnp3::IChannel* ASIODNP3Manager::AddTCPClient(
 }
 
 opendnp3::IChannel* ASIODNP3Manager::AddTCPServer(
-    const std::string& id,
+	char const* id,
     uint32_t levels,
     openpal::TimeDuration minOpenRetry,
     openpal::TimeDuration maxOpenRetry,
@@ -88,7 +88,7 @@ opendnp3::IChannel* ASIODNP3Manager::AddTCPServer(
 }
 
 opendnp3::IChannel* ASIODNP3Manager::AddSerial(
-    const std::string& id,
+	char const* id,
     uint32_t levels,
     openpal::TimeDuration minOpenRetry,
     openpal::TimeDuration maxOpenRetry,

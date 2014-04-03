@@ -21,22 +21,22 @@
 #ifndef __PHYSICAL_LAYER_ASYNC_BASE_H_
 #define __PHYSICAL_LAYER_ASYNC_BASE_H_
 
-#include "IPhysicalLayerAsync.h"
-#include "LogConfig.h"
-#include "LogRoot.h"
+#include <openpal/IPhysicalLayerAsync.h>
+#include <openpal/LogConfig.h>
+#include <openpal/LogRoot.h>
 
 #include <system_error>
 
-namespace openpal
+namespace asiopal
 {
 
 class PLAS_Base;
 
 // This is the base class for the new async physical layers. It assumes that all of the functions
 // are called from a single thread.
-class PhysicalLayerAsyncBase : public IPhysicalLayerAsync
+class PhysicalLayerAsyncBase : public openpal::IPhysicalLayerAsync
 {
-	class State : public IChannelState
+	class State : public  openpal::IChannelState
 	{
 	public:
 		State();
@@ -67,7 +67,7 @@ class PhysicalLayerAsyncBase : public IPhysicalLayerAsync
 	};
 
 public:
-	PhysicalLayerAsyncBase(const LogConfig& config);
+	PhysicalLayerAsyncBase(const  openpal::LogConfig& config);
 
 	// destructor should only be called once the object is totally finished with all of its async operations
 	// to avoid segfaulting. There are a # of asserts that make sure the object has been shutdown properly.
@@ -124,11 +124,11 @@ public:
 	/* Implement IPhysicalLayerAsync - Events from the outside */
 	void AsyncOpen();
 	void AsyncClose();
-	void AsyncWrite(const ReadOnlyBuffer&);
-	void AsyncRead(WriteBuffer&);
+	void AsyncWrite(const  openpal::ReadOnlyBuffer&);
+	void AsyncRead(openpal::WriteBuffer&);
 
 	// Not an event delegated to the states
-	void SetHandler(IHandlerAsync* apHandler);
+	void SetHandler(openpal::IHandlerAsync* apHandler);
 
 	/* Actions taken by the states - These must be implemented by the concrete
 	classes inherited from this class */
@@ -138,8 +138,8 @@ public:
 	{
 		DoClose();    //optionally override this action
 	}
-	virtual void DoAsyncRead(WriteBuffer&) = 0;
-	virtual void DoAsyncWrite(const ReadOnlyBuffer&) = 0;
+	virtual void DoAsyncRead(openpal::WriteBuffer&) = 0;
+	virtual void DoAsyncWrite(const  openpal::ReadOnlyBuffer&) = 0;
 
 	// These can be optionally overriden to do something more interesting, i.e. specific logging
 	virtual void DoOpenCallback() {}
@@ -148,10 +148,10 @@ public:
 
 	void DoWriteSuccess();
 	void DoThisLayerDown();
-	void DoReadCallback(const ReadOnlyBuffer& arBuffer);
+	void DoReadCallback(const  openpal::ReadOnlyBuffer& arBuffer);
 
 	//Error reporting function(s)
-	Logger& GetLogger()
+	openpal::Logger& GetLogger()
 	{
 		return logger;
 	}
@@ -168,11 +168,11 @@ protected:
 	void OnReadCallback(const std::error_code& error, uint8_t* apBuffer, uint32_t  aNumRead);
 	void OnWriteCallback(const std::error_code& rrror, uint32_t  aNumBytes);
 
-	LogRoot logRoot;
-	Logger logger;
+	openpal::LogRoot logRoot;
+	openpal::Logger logger;
 
 	// "user" object that recieves the callbacks
-	IHandlerAsync* mpHandler;
+	openpal::IHandlerAsync* mpHandler;
 
 	// State object that tracks the activities of the class, state pattern too heavy
 	PhysicalLayerAsyncBase::State state;
@@ -182,7 +182,7 @@ private:
 	void StartClose();
 };
 
-inline void PhysicalLayerAsyncBase::SetHandler(IHandlerAsync* apHandler)
+inline void PhysicalLayerAsyncBase::SetHandler(openpal::IHandlerAsync* apHandler)
 {
 	assert(mpHandler == nullptr);
 	assert(apHandler != nullptr);

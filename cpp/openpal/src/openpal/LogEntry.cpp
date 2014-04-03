@@ -28,7 +28,7 @@ namespace openpal
 {
 
 
-LogEntry::LogEntry(const LogFilters& filters_, const std::string& name_, const std::string& location_, const std::string& message_, int32_t errorCode_)
+LogEntry::LogEntry(const LogFilters& filters_, char const* name_, char const* location_, char const* message_, int32_t errorCode_)
 	:
 	filters(filters_),
 	name(name_),

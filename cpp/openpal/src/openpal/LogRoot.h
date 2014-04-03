@@ -40,11 +40,11 @@ public:
 
 	LogRoot(ILogBase* apLog, const LogFilters& filters);
 
-	void Log(const LogFilters& filters, const std::string& name, const std::string& location, const std::string& message, int errorCode);
+	void Log(const LogFilters& filters, char const* name, char const* location, char const* message, int errorCode);
 
 	void Log(const LogEntry& entry);
 
-	Logger GetLogger(const std::string& id);
+	Logger GetLogger(char const* id);
 
 	inline bool IsEnabled(const LogFilters& rhs) const
 	{

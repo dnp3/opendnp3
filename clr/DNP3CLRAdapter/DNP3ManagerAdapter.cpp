@@ -47,7 +47,7 @@ IChannel^ DNP3ManagerAdapter::AddTCPClient(System::String^ id, System::UInt32 fi
 
 	auto adapter = gcnew ChannelAdapter();
 
-	auto pChannel = mpMgr->AddTCPClient(stdName, filters, Conversions::convertTimespan(minRetryDelay), Conversions::convertTimespan(maxRetryDelay), stdAddress, stdPort, adapter->GetEventHandler());
+	auto pChannel = mpMgr->AddTCPClient(stdName.c_str(), filters, Conversions::convertTimespan(minRetryDelay), Conversions::convertTimespan(maxRetryDelay), stdAddress, stdPort, adapter->GetEventHandler());
 	if (pChannel)
 	{
 		auto pRoot = new gcroot<ChannelAdapter^>(adapter);
@@ -68,7 +68,7 @@ IChannel^ DNP3ManagerAdapter::AddTCPServer(System::String^ id, System::UInt32 fi
 	uint16_t stdPort = port;
 
 	auto adapter = gcnew ChannelAdapter();
-	auto pChannel = mpMgr->AddTCPServer(stdName, filters, Conversions::convertTimespan(minRetryDelay), Conversions::convertTimespan(maxRetryDelay), stdEndpoint, stdPort, adapter->GetEventHandler());
+	auto pChannel = mpMgr->AddTCPServer(stdName.c_str(), filters, Conversions::convertTimespan(minRetryDelay), Conversions::convertTimespan(maxRetryDelay), stdEndpoint, stdPort, adapter->GetEventHandler());
 	if (pChannel)
 	{
 		auto pRoot = new gcroot<ChannelAdapter^>(adapter);
@@ -88,7 +88,7 @@ IChannel^ DNP3ManagerAdapter::AddSerial(System::String^ id, System::UInt32 filte
 	auto s = Conversions::convertSerialSettings(settings);
 
 	auto adapter = gcnew ChannelAdapter();
-	auto pChannel = mpMgr->AddSerial(stdName, filters, Conversions::convertTimespan(minRetryDelay), Conversions::convertTimespan(maxRetryDelay), s, adapter->GetEventHandler());
+	auto pChannel = mpMgr->AddSerial(stdName.c_str(), filters, Conversions::convertTimespan(minRetryDelay), Conversions::convertTimespan(maxRetryDelay), s, adapter->GetEventHandler());
 	if (pChannel)
 	{
 		auto pRoot = new gcroot<ChannelAdapter^>(adapter);

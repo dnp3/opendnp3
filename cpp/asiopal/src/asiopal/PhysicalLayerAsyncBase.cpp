@@ -20,17 +20,18 @@
  */
 #include "PhysicalLayerAsyncBase.h"
 
-#include "IHandlerAsync.h"
-#include "LoggableMacros.h"
-#include "IExecutor.h"
-#include "LogLevels.h"
-#include "Bind.h"
+#include <openpal/IHandlerAsync.h>
+#include <openpal/LoggableMacros.h>
+#include <openpal/IExecutor.h>
+#include <openpal/LogLevels.h>
+#include <openpal/Bind.h>
 
 #include <sstream>
 
 using namespace std;
+using namespace openpal;
 
-namespace openpal
+namespace asiopal
 {
 
 ///////////////////////////////////
@@ -145,7 +146,7 @@ void PhysicalLayerAsyncBase::AsyncOpen()
 	}
 	else
 	{
-		LOG_BLOCK(log::ERR, "Invalid operation for state: " << this->ConvertStateToString());
+		LOG_BLOCK(log::ERR, "Invalid operation for state");
 	}
 }
 
@@ -175,7 +176,7 @@ void PhysicalLayerAsyncBase::StartClose()
 		}
 		else
 		{
-			LOG_BLOCK(log::ERR, "Invalid operation for state: " << this->ConvertStateToString());
+			LOG_BLOCK(log::ERR, "Invalid operation for state");
 		}
 	}
 }
@@ -201,7 +202,7 @@ void PhysicalLayerAsyncBase::AsyncWrite(const openpal::ReadOnlyBuffer& buffer)
 	}
 	else
 	{
-		LOG_BLOCK(log::ERR, "Invalid operation for state: " << this->ConvertStateToString());
+		LOG_BLOCK(log::ERR, "Invalid operation for state");
 	}
 }
 
@@ -226,7 +227,7 @@ void PhysicalLayerAsyncBase::AsyncRead(WriteBuffer& buffer)
 	}
 	else
 	{
-		LOG_BLOCK(log::ERR, "Invalid operation for state: " << this->ConvertStateToString());
+		LOG_BLOCK(log::ERR, "Invalid operation for state");
 	}
 }
 
@@ -244,7 +245,7 @@ void PhysicalLayerAsyncBase::OnOpenCallback(const std::error_code& arErr)
 
 		if(arErr)
 		{
-			LOG_BLOCK(log::WARN, arErr.message());
+			LOG_BLOCK(log::WARN, arErr.message().c_str());
 			state.CheckForClose();
 			this->DoOpenFailure();
 			if(mpHandler)

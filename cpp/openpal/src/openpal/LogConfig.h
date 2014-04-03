@@ -36,7 +36,7 @@ class LogConfig
 
 public:
 
-	LogConfig(ILogBase* pLog_, uint32_t filters_, const std::string& rootId_) :
+	LogConfig(ILogBase* pLog_, uint32_t filters_, char const* rootId_) :
 		pLog(pLog_),
 		filters(filters_),
 		rootId(rootId_)
@@ -46,11 +46,13 @@ public:
 	{
 		return pLog;
 	}
+	
 	uint32_t GetFilters() const
 	{
 		return filters;
 	}
-	const std::string& GetRootId() const
+
+	char const* GetRootId() const
 	{
 		return rootId;
 	}
@@ -59,7 +61,7 @@ private:
 
 	ILogBase*			pLog;
 	uint32_t			filters;
-	std::string rootId;
+	char const*			rootId;
 
 };
 

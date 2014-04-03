@@ -18,52 +18,15 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __LOGGER_H_
-#define __LOGGER_H_
+#ifndef __STRING_FORMATTING_H_
+#define __STRING_FORMATTING_H_
 
-#include "LogEntry.h"
-#include "LogBase.h"
-#include "Uncopyable.h"
-#include "LogFilters.h"
+#include <cstdio>
 
-namespace openpal
-{
-
-class LogRoot;
-
-/**
-* Interface that represents a distinct logger with a name and running level
-*/
-class Logger
-{
-	friend class LogRoot;
-
-public:
-
-	static const uint32_t MAX_NAME_SIZE = 20;
-
-	void Log(const LogFilters& filters, char const* location, char const* message, int32_t errorCode = -1);
-
-	void Log(const LogEntry& entry);
-
-	char const* GetName() const
-	{
-		return name;
-	}
-
-	bool IsEnabled(const LogFilters& filters) const;
-
-	Logger GetSubLogger(char const* id) const;
-
-private:
-
-	Logger(LogRoot* pRoot, char const* id);
-
-	LogRoot*	pRoot;
-	char		name[MAX_NAME_SIZE];
-};
-
-}
-
+#ifndef __WIN32
+#define SNPRINTF _snprintf
+#else
+#define SNPRINTF snprintf
 #endif
 
+#endif

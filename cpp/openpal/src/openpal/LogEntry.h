@@ -22,7 +22,6 @@
 #define __LOG_ENTRY_H_
 
 #include <cstdint>
-#include <string>
 
 #include "LogFilters.h"
 
@@ -37,25 +36,27 @@ class LogEntry
 
 public:
 
+	static const uint32_t MAX_MESSAGE_SIZE = 80;
+
 	LogEntry(): errorCode(-1)
 	{}
 
-	LogEntry(const LogFilters& filters, const std::string& name, const std::string& location, const std::string& message, int32_t errorCode);
+	LogEntry(const LogFilters& filters, char const* name, char const* location, char const* message, int32_t errorCode);
 
 	/// @return The name of the logger that recorded the message
-	const std::string&	GetName() const
+	char const*	GetName() const
 	{
 		return name;
 	}
 
 	/// @return The place in the source code where the message was recorded
-	const std::string&	GetLocation() const
+	char const*	GetLocation() const
 	{
 		return location;
 	}
 
 	/// @return body of the log message
-	const std::string&	GetMessage() const
+	char const* GetMessage() const
 	{
 		return message;
 	}
@@ -75,9 +76,9 @@ public:
 private:
 
 	LogFilters		filters;
-	std::string		name;
-	std::string		location;
-	std::string		message;
+	char const*		name;
+	char const*		location;
+	char const*		message;
 	int32_t			errorCode;
 };
 

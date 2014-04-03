@@ -145,9 +145,6 @@
     <ClInclude Include="src\openpal\LogConfig.h">
       <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="src\openpal\PhysicalLayerAsyncBase.h">
-      <Filter>Header</Filter>
-    </ClInclude>
     <ClInclude Include="src\openpal\LogFilters.h">
       <Filter>Header</Filter>
     </ClInclude>
@@ -164,6 +161,9 @@
       <Filter>Header</Filter>
     </ClInclude>
     <ClInclude Include="src\openpal\Function1.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="src\openpal\StringFormatting.h">
       <Filter>Header</Filter>
     </ClInclude>
   </ItemGroup>
@@ -190,9 +190,6 @@
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="src\openpal\LogRoot.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="src\openpal\PhysicalLayerAsyncBase.cpp">
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="src\openpal\Runnable.cpp">

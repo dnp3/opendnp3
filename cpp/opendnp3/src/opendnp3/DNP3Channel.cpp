@@ -32,7 +32,7 @@ namespace opendnp3
 {
 
 DNP3Channel::DNP3Channel(
-    const std::string& id,
+	char const* id,
     openpal::TimeDuration minOpenRetry,
     openpal::TimeDuration maxOpenRetry,
     IOpenDelayStrategy* pStrategy,
@@ -110,7 +110,7 @@ void DNP3Channel::SetLogFilters(const openpal::LogFilters& filters)
 	pPhys->GetExecutor()->Post(Bind(lambda));
 }
 
-IMaster* DNP3Channel::AddMaster(const std::string& id, ISOEHandler* apPublisher, IUTCTimeSource* apTimeSource, const MasterStackConfig& config)
+IMaster* DNP3Channel::AddMaster(char const* id, ISOEHandler* apPublisher, IUTCTimeSource* apTimeSource, const MasterStackConfig& config)
 {
 	LinkRoute route(config.link.RemoteAddr, config.link.LocalAddr);
 	ExecutorPause p(pPhys->GetExecutor());
@@ -140,7 +140,7 @@ IMaster* DNP3Channel::AddMaster(const std::string& id, ISOEHandler* apPublisher,
 	}
 }
 
-IOutstation* DNP3Channel::AddOutstation(const std::string& id, ICommandHandler* apCmdHandler, ITimeWriteHandler* apTimeWriteHandler, const OutstationStackConfig& arCfg)
+IOutstation* DNP3Channel::AddOutstation(char const* id, ICommandHandler* apCmdHandler, ITimeWriteHandler* apTimeWriteHandler, const OutstationStackConfig& arCfg)
 {
 	LinkRoute route(arCfg.link.RemoteAddr, arCfg.link.LocalAddr);
 	ExecutorPause p(pPhys->GetExecutor());

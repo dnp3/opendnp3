@@ -99,7 +99,7 @@ public:
 	* @param config Configuration object that controls how the master behaves
 	* @return interface representing the running master
 	*/
-	virtual IMaster* AddMaster(const std::string& id,
+	virtual IMaster* AddMaster(char const* id,
 	                           ISOEHandler* pPublisher,
 	                           openpal::IUTCTimeSource* pTimeSource,
 	                           const MasterStackConfig& config) = 0;
@@ -113,7 +113,7 @@ public:
 	* @param config Configuration object that controls how the outstation behaves
 	* @return interface representing the running outstations
 	*/
-	virtual IOutstation* AddOutstation(	const std::string& id,
+	virtual IOutstation* AddOutstation( char const* id,
 	                                    ICommandHandler* pCmdHandler,
 	                                    ITimeWriteHandler* pTimeWriteHandler,
 	                                    const OutstationStackConfig& config) = 0;

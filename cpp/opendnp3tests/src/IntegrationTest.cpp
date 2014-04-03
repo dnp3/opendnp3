@@ -150,11 +150,11 @@ void IntegrationTest::AddStackPair(uint32_t filters, uint16_t aNumPoints)
 	std::shared_ptr<ComparingDataObserver> pMasterFDO(new ComparingDataObserver(&mLocalFDO));
 	mMasterObservers.push_back(pMasterFDO);
 
-	auto pClientPhys = new PhysicalLayerAsyncTCPClient(LogConfig(&mLog, filters, clientId), mPool.GetIOService(), "127.0.0.1", port);
-	auto pClient = this->mMgr.CreateChannel(clientId, TimeDuration::Seconds(1), TimeDuration::Seconds(1), pClientPhys);
+	auto pClientPhys = new PhysicalLayerAsyncTCPClient(LogConfig(&mLog, filters, clientId.c_str()), mPool.GetIOService(), "127.0.0.1", port);
+	auto pClient = this->mMgr.CreateChannel(clientId.c_str(), TimeDuration::Seconds(1), TimeDuration::Seconds(1), pClientPhys);
 
-	auto pServerPhys = new PhysicalLayerAsyncTCPServer(LogConfig(&mLog, filters, serverId), mPool.GetIOService(), "127.0.0.1", port);
-	auto pServer = this->mMgr.CreateChannel(serverId, TimeDuration::Seconds(1), TimeDuration::Seconds(1), pServerPhys);
+	auto pServerPhys = new PhysicalLayerAsyncTCPServer(LogConfig(&mLog, filters, serverId.c_str()), mPool.GetIOService(), "127.0.0.1", port);
+	auto pServer = this->mMgr.CreateChannel(serverId.c_str(), TimeDuration::Seconds(1), TimeDuration::Seconds(1), pServerPhys);
 
 	/*
 	 * Add a Master instance.  The code is wrapped in braces so that we can
@@ -166,7 +166,7 @@ void IntegrationTest::AddStackPair(uint32_t filters, uint16_t aNumPoints)
 		cfg.master.IntegrityRate = TimeDuration::Min();
 		cfg.master.EnableUnsol = true;
 		cfg.master.DoUnsolOnStartup = true;
-		auto pMaster = pClient->AddMaster(oss.str() + " master", pMasterFDO.get(), asiopal::UTCTimeSource::Inst(), cfg);
+		auto pMaster = pClient->AddMaster(oss.str().c_str(), pMasterFDO.get(), asiopal::UTCTimeSource::Inst(), cfg);
 		pMaster->Enable();
 	}
 
@@ -179,7 +179,7 @@ void IntegrationTest::AddStackPair(uint32_t filters, uint16_t aNumPoints)
 		cfg.app.RspTimeout = TimeDuration::Seconds(10);
 		cfg.outstation.mDisableUnsol = false;
 		cfg.outstation.mUnsolPackDelay = TimeDuration::Zero();
-		auto pOutstation = pServer->AddOutstation(oss.str() + " outstation", &mCmdHandler, NullTimeWriteHandler::Inst(), cfg);
+		auto pOutstation = pServer->AddOutstation(oss.str().c_str(), &mCmdHandler, NullTimeWriteHandler::Inst(), cfg);
 		this->mFanout.AddObserver(pOutstation->GetLoader());
 		pOutstation->Enable();
 	}

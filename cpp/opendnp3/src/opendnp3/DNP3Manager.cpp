@@ -51,7 +51,7 @@ void DNP3Manager::Shutdown()
 }
 
 IChannel* DNP3Manager::CreateChannel(
-    const std::string& id,
+	char const* id,
     openpal::TimeDuration minOpenRetry,
     openpal::TimeDuration maxOpenRetry,
     openpal::PhysicalLayerAsyncBase* apPhys,

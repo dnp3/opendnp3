@@ -65,7 +65,7 @@ void LogToStdio::Log(const openpal::LogEntry& entry)
 	oss << num << " - ";
 	pInterpreter(oss, entry.GetFilters());
 	oss << " - " << entry.GetName();
-	if(printLocation && !entry.GetLocation().empty()) oss << " - " << entry.GetMessage();
+	if (printLocation) oss << " - " << entry.GetLocation();
 	oss << " - " << entry.GetMessage();
 
 	if(entry.GetErrorCode() != -1) oss << " - " << entry.GetErrorCode();

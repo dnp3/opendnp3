@@ -59,7 +59,7 @@ class DNP3Channel: public IChannel, private openpal::IShutdownHandler, private o
 
 public:
 	DNP3Channel(
-	    const std::string& id,
+		char const* id,
 	    openpal::TimeDuration minOpenRetry,
 	    openpal::TimeDuration maxOpenRetry,
 	    IOpenDelayStrategy* pStrategy,
@@ -77,12 +77,12 @@ public:
 
 	virtual void SetLogFilters(const openpal::LogFilters& filters) override final;
 
-	IMaster* AddMaster(		const std::string& id,
+	IMaster* AddMaster(		char const* id,
 	                        ISOEHandler* pPublisher,
 	                        openpal::IUTCTimeSource* pTimeSource,
 	                        const MasterStackConfig& cfg);
 
-	IOutstation* AddOutstation(	const std::string& id,
+	IOutstation* AddOutstation( char const* id,
 	                            ICommandHandler* pCmdHandler,
 	                            ITimeWriteHandler* pTimeWriteHandler,
 	                            const OutstationStackConfig& cfg);

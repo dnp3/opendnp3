@@ -52,7 +52,6 @@
     <ClInclude Include="src\openpal\LogRoot.h" />
     <ClInclude Include="src\openpal\MonotonicTimestamp.h" />
     <ClInclude Include="src\openpal\Option.h" />
-    <ClInclude Include="src\openpal\PhysicalLayerAsyncBase.h" />
     <ClInclude Include="src\openpal\QueueAdapter.h" />
     <ClInclude Include="src\openpal\RandomInsertAdapter.h" />
     <ClInclude Include="src\openpal\ReverseEndian.h" />
@@ -66,6 +65,7 @@
     <ClInclude Include="src\openpal\StaticLinkedList.h" />
     <ClInclude Include="src\openpal\StaticList.h" />
     <ClInclude Include="src\openpal\StaticQueue.h" />
+    <ClInclude Include="src\openpal\StringFormatting.h" />
     <ClInclude Include="src\openpal\TimeDuration.h" />
     <ClInclude Include="src\openpal\ToHex.h" />
     <ClInclude Include="src\openpal\Uncopyable.h" />
@@ -78,7 +78,6 @@
     <ClCompile Include="src\openpal\Logger.cpp" />
     <ClCompile Include="src\openpal\LogRoot.cpp" />
     <ClCompile Include="src\openpal\MonotonicTimestamp.cpp" />
-    <ClCompile Include="src\openpal\PhysicalLayerAsyncBase.cpp" />
     <ClCompile Include="src\openpal\ReverseEndian.cpp" />
     <ClCompile Include="src\openpal\Runnable.cpp" />
     <ClCompile Include="src\openpal\TimeDuration.cpp" />

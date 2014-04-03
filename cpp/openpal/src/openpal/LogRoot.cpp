@@ -30,7 +30,7 @@ namespace openpal
 LogRoot::LogRoot(ILogBase* pLog_, const LogFilters& filters_) : pLog(pLog_), filters(filters_)
 {}
 
-void LogRoot::Log(const LogFilters& filters, const std::string& name, const std::string& location, const std::string& message, int errorCode)
+void LogRoot::Log(const LogFilters& filters, char const* name, char const* location, char const* message, int errorCode)
 {
 	LogEntry le(filters, name, location, message, errorCode);
 	pLog->Log(le);
@@ -41,7 +41,7 @@ void LogRoot::Log(const LogEntry& entry)
 	pLog->Log(entry);
 }
 
-Logger LogRoot::GetLogger(const std::string& id)
+Logger LogRoot::GetLogger(char const* id)
 {
 	return Logger(this, id);
 }

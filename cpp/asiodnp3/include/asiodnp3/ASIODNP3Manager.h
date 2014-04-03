@@ -95,7 +95,7 @@ public:
 	* @param pStrategy Reconnection delay strategy, default to exponential
 	*/
 	opendnp3::IChannel* AddTCPClient(
-	    const std::string& id,
+		char const* id,
 	    uint32_t levels,
 	    openpal::TimeDuration minOpenRetry,
 	    openpal::TimeDuration maxOpenRetry,
@@ -115,7 +115,7 @@ public:
 	* @param pStrategy Reconnection delay strategy, default to exponential
 	*/
 	opendnp3::IChannel* AddTCPServer(
-	    const std::string& id,
+		char const* id,
 	    uint32_t levels,
 	    openpal::TimeDuration minOpenRetry,
 	    openpal::TimeDuration maxOpenRetry,
@@ -134,7 +134,7 @@ public:
 	* @param pStrategy Reconnection delay strategy, default to exponential
 	*/
 	opendnp3::IChannel* AddSerial(
-	    const std::string& id,
+		char const* id,
 	    uint32_t levels,
 	    openpal::TimeDuration minOpenRetry,
 	    openpal::TimeDuration maxOpenRetry,
