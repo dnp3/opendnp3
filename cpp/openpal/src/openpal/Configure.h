@@ -21,7 +21,8 @@
 #ifndef __OPENPAL_CONFIGURE_H_
 #define __OPENPAL_CONFIGURE_H_
 
-// placement new
+
+#ifdef AVR
 
 #include <stddef.h>
 
@@ -31,6 +32,8 @@ inline void* operator new(size_t, void* p)
 }
 
 void abort();
+
+#endif
 
 #endif
 
