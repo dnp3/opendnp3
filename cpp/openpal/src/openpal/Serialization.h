@@ -21,7 +21,7 @@
 #ifndef __OPENPAL_SERIALIZATION_H_
 #define __OPENPAL_SERIALIZATION_H_
 
-#include <openpal/ReverseEndian.h>
+#include "ReverseEndian.h"
 
 namespace openpal
 {

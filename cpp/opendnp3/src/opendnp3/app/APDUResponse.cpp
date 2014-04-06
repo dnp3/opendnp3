@@ -21,9 +21,8 @@
 
 #include "APDUResponse.h"
 
+#include <openpal/Configure.h>
 #include <assert.h>
-
-void abort(); //TODO
 
 using namespace openpal;
 

@@ -33,6 +33,10 @@ namespace sizes
 // the maximum number of static read object/variation records that can be in any READ request
 static const uint16_t MAX_READ_REQUESTS = 16;
 
+// a safeguard parameter to project from DoS attacks
+// this really only applies to "empty strings"
+static const uint32_t MAX_OBJECTS_PER_APDU = 32768;
+
 // the maximum number of event read object/variation records that can be in any READ request
 static const uint16_t MAX_EVENT_READ_REQUESTS = 16;
 
@@ -46,10 +50,6 @@ static_assert(MAX_APDU_BUFFER_SIZE >= 100, "APDU buffer size must be at least 10
 // the default APDU buffer size
 static const uint32_t DEFAULT_APDU_BUFFER_SIZE = 2048;
 static_assert(DEFAULT_APDU_BUFFER_SIZE <= MAX_APDU_BUFFER_SIZE, "default buffer size must be less than the maximum");
-
-// a safeguard parameter to project from DoS attacks
-// this really only applies to "empty strings"
-static const uint32_t MAX_OBJECTS_PER_APDU = 32768;
 
 // The maximum number of stacks that can associate to a link layer router
 static const uint16_t MAX_STACKS_PER_CHANNEL = 16;

@@ -27,15 +27,13 @@
 
 #include <openpal/IPhysicalLayerAsync.h>
 
-#include <opendnp3/master/IMaster.h>
+#include <asiodnp3/IMaster.h>
+#include <asiodnp3/IChannel.h>
+#include <asiodnp3/IOutstation.h>
+
 #include <opendnp3/master/MasterStackConfig.h>
-
 #include <opendnp3/outstation/OutstationStackConfig.h>
-#include <opendnp3/outstation/IOutstation.h>
 #include <opendnp3/outstation/ITimeWriteHandler.h>
-#include <opendnp3/outstation/IOutstation.h>
-
-#include <opendnp3/IChannel.h>
 
 #include <asiopal/PhysicalLayerAsyncTCPClient.h>
 #include <asiopal/PhysicalLayerAsyncTCPServer.h>

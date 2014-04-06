@@ -3,7 +3,7 @@
 
 using namespace System::Collections::ObjectModel;
 
-#include <opendnp3/outstation/IOutstation.h>
+#include <asiodnp3/IOutstation.h>
 
 using namespace DNP3::Interface;
 
@@ -15,9 +15,9 @@ private ref class OutstationAdapter : IOutstation
 {
 public:
 
-	OutstationAdapter(opendnp3::IOutstation* apOutstation);
+	OutstationAdapter(asiodnp3::IOutstation* apOutstation);
 
-	virtual IMeasurementLoader^ GetLoader();
+	virtual DNP3::Interface::IMeasurementLoader^ GetLoader();
 
 	virtual void SetNeedTimeIIN();
 
@@ -28,8 +28,8 @@ public:
 	virtual void Disable();
 
 private:
-	opendnp3::IOutstation* mpOutstation;
-	IMeasurementLoader^ mLoaderAdapter;
+	asiodnp3::IOutstation* mpOutstation;
+	DNP3::Interface::IMeasurementLoader^ mLoaderAdapter;
 };
 
 }

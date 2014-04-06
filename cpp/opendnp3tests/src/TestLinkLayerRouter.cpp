@@ -32,6 +32,7 @@
 #include "LinkLayerRouterTest.h"
 #include "MockFrameSink.h"
 #include "BufferHelpers.h"
+#include "HexConversions.h"
 
 using namespace opendnp3;
 using namespace openpal;

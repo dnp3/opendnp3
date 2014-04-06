@@ -18,7 +18,6 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include <opendnp3/DNP3Manager.h>
 
 #include <opendnp3/outstation/OutstationStackConfig.h>
 #include <opendnp3/outstation/SimpleCommandHandler.h>
@@ -30,7 +29,6 @@
 #include <opendnp3/outstation/DynamicallyAllocatedDatabase.h>
 #include <opendnp3/outstation/DynamicallyAllocatedEventBuffer.h>
 #include <opendnp3/LogLevels.h>
-#include <opendnp3/LogLevelInterpreter.h>
 
 #include <asiopal/Log.h>
 #include <asiopal/LogToStdio.h>
@@ -50,15 +48,18 @@ using namespace asiopal;
 
 int main(int argc, char* argv[])
 {
+	std::cout << sizeof(ApplicationStack) << std::endl;
+	std::cout << sizeof(LinkLayer) << std::endl;
+	std::cout << sizeof(AppLayer) << std::endl;
+	std::cout << sizeof(TransportLayer) << std::endl;
 
 	// Specify a LogLevel for the stack/physical layer to use.
 	// Log statements with a lower priority will not be logged.
 	const uint32_t LOG_LEVEL = levels::ALL;
 
 	//A default logging backend that can proxy to multiple other backends
-	EventLog log;
-	LogToStdio::Inst()->SetLevelInterpreter(&AllFlags);
-	log.AddLogSubscriber(LogToStdio::Inst()); // This singleton logger just prints messages to the console
+	EventLog el;	
+	el.AddLogSubscriber(LogToStdio::Inst()); // This singleton logger just prints messages to the console
 
 	asio::io_service service;
 	asio::io_service::strand strand(service);
@@ -66,7 +67,7 @@ int main(int argc, char* argv[])
 
 	LinkRoute route(1, 1024);
 
-	PhysicalLayerAsyncTCPServer server(LogConfig(&log, LOG_LEVEL, "tcpserver"), &service, "127.0.0.1", 20000);
+	PhysicalLayerAsyncTCPServer server(LogConfig(&el, LOG_LEVEL, "tcpserver"), &service, "127.0.0.1", 20000);
 	LinkLayerRouter router(server.GetLogger().GetSubLogger("router"), &server, TimeDuration::Seconds(1), TimeDuration::Seconds(60));
 	ApplicationStack stack(server.GetLogger().GetSubLogger("root"), &executor, AppConfig(false), LinkConfig(false, false));
 	stack.link.SetRouter(&router);
@@ -91,6 +92,10 @@ int main(int argc, char* argv[])
 	stack.application.SetUser(&outstation);
 
 	router.Enable(&stack.link);
+
+	//LogEntry le()
+
+	el.Log(LogEntry(LogFilters(~0), "hello", "", "test", -1));
 
 	// Start dispatching events
 	service.run();

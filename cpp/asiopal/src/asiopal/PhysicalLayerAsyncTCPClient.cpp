@@ -104,7 +104,7 @@ void PhysicalLayerAsyncTCPClient::DoOpeningClose()
 
 void PhysicalLayerAsyncTCPClient::DoOpenSuccess()
 {
-	LOG_BLOCK(log::INFO, "Connected to host");
+	LOG_BLOCK(logflags::INFO, "Connected to host");
 	configure(mSocket);
 }
 

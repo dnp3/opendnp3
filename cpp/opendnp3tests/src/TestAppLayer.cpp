@@ -29,6 +29,7 @@
 #include "Exception.h"
 #include "BufferHelpers.h"
 #include "AppLayerTest.h"
+#include "HexConversions.h"
 
 using namespace openpal;
 using namespace opendnp3;

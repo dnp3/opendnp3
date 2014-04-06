@@ -18,10 +18,10 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include <openpal/Logger.h>
+#include "Logger.h"
 
-#include <openpal/LogBase.h>
-#include <openpal/LogRoot.h>
+#include "LogBase.h"
+#include "LogRoot.h"
 
 #include <assert.h>
 #include <cstring>

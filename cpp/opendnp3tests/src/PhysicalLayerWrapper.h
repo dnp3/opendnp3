@@ -81,12 +81,7 @@ public:
 	bool IsOpen() const
 	{
 		return mpProxy->IsOpen();
-	}
-
-	std::string ConvertStateToString() const
-	{
-		return mpProxy->ConvertStateToString();
-	}
+	}	
 
 	void AsyncOpen();
 	void AsyncClose();

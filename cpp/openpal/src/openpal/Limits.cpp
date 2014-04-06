@@ -21,15 +21,45 @@
 
 #include "Limits.h"
 
+#include <float.h>
+
 namespace openpal
 {
 
 template <>
-class Limits<int64_t> : PureStatic
-{
-	public:
-		static int64_t Max() { return INT64_MAX; }
-		static int64_t Min() { return INT64_MIN; }
-};
+uint8_t MinValue<uint8_t>() { return 0; }
 
+template <>
+uint8_t MaxValue<uint8_t>() { return UINT8_MAX; }
+	
+template <>
+uint16_t MinValue<uint16_t>() { return 0; }
+
+template <>
+uint16_t MaxValue<uint16_t>() { return UINT16_MAX; }
+	
+template <>
+float MinValue<float>() { return -FLT_MAX; }
+
+template <>
+float MaxValue<float>() { return FLT_MAX ; }
+	
+template <>
+int16_t MinValue<int16_t>() { return INT16_MIN; }
+
+template <>
+int16_t MaxValue<int16_t>() { return INT16_MAX; }
+	
+template <>
+int32_t MinValue<int32_t>() { return INT32_MIN; }
+
+template <>
+int32_t MaxValue<int32_t>() { return INT32_MAX; }
+
+template <>
+int64_t MinValue<int64_t>() { return INT64_MIN; }
+
+template <>
+int64_t MaxValue<int64_t>() { return INT64_MAX; }
+	
 }

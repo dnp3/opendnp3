@@ -3,7 +3,7 @@
 
 using namespace System::Collections::ObjectModel;
 
-#include <opendnp3/IChannel.h>
+#include <asiodnp3/IChannel.h>
 #include <vcclr.h>
 
 #include <openpal/IEventHandler.h>
@@ -25,7 +25,7 @@ public:
 	ChannelAdapter();
 	~ChannelAdapter();
 
-	void SetChannel(opendnp3::IChannel* pChannel_);
+	void SetChannel(asiodnp3::IChannel* pChannel_);
 
 	virtual LogFilter GetLogFilters();
 
@@ -43,7 +43,7 @@ public:
 
 private:
 
-	opendnp3::IChannel* pChannel;
+	asiodnp3::IChannel* pChannel;
 	EventMultiplexer<opendnp3::ChannelState, ChannelState>* pMultiplexer;
 };
 

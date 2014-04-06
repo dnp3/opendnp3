@@ -21,7 +21,7 @@
 #ifndef __I_HANDLER_ASYNC_H_
 #define __I_HANDLER_ASYNC_H_
 
-#include <openpal/AsyncLayerInterfaces.h>
+#include "AsyncLayerInterfaces.h"
 
 namespace openpal
 {

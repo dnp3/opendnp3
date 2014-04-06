@@ -21,8 +21,7 @@
 #include "MockLowerLayer.h"
 
 #include "BufferHelpers.h"
-
-#include <openpal/ToHex.h>
+#include "HexConversions.h"
 
 #include <assert.h>
 

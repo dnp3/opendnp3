@@ -111,8 +111,9 @@ private:
 
 	openpal::StaticQueue<APDUWrapper, uint16_t, 4>	sendQueue; // Buffer of send operations - TODO - decide reasonable size
 
-	openpal::ILowerLayer* pTransportLayer;
 	IAppUser* mpUser;						// Interface for dispatching callbacks
+	openpal::ILowerLayer* pTransportLayer;
+	
 
 	SolicitedChannel mSolicited;			// Channel used for solicited communications
 	UnsolicitedChannel mUnsolicited;		// Channel used for unsolicited communications

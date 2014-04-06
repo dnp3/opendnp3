@@ -18,20 +18,23 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
+#ifndef __HEX_CONVERSIONS_H_
+#define __HEX_CONVERSIONS_H_
 
-#include "DownSampling.h"
+#include <cstdint>
+#include <string>
 
-#include <openpal/Limits.h>
+#include <openpal/BufferWrapper.h>
 
 namespace opendnp3
 {
 
-template <>
-const float DownSampling<double, float>::TARGET_MAX(openpal::Limits<float>::Max());
+std::string ByteToHex(uint8_t b);
 
-template <>
-const float DownSampling<double, float>::TARGET_MIN(openpal::Limits<float>::Min());
+std::string toHex(const uint8_t* pBuff, size_t length, bool spaced = false);
+
+std::string toHex(const openpal::ReadOnlyBuffer& buffer, bool spaced = true);
 
 }
 
-
+#endif

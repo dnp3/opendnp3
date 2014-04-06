@@ -8,12 +8,12 @@ namespace Adapter
 {
 
 
-OutstationAdapter::OutstationAdapter(opendnp3::IOutstation* apOutstation) :
+OutstationAdapter::OutstationAdapter(asiodnp3::IOutstation* apOutstation) :
 	mpOutstation(apOutstation),
 	mLoaderAdapter(gcnew OutstationLoaderAdapter(apOutstation->GetLoader()))
 {}
 
-IMeasurementLoader^ OutstationAdapter::GetLoader()
+DNP3::Interface::IMeasurementLoader^ OutstationAdapter::GetLoader()
 {
 	return mLoaderAdapter;
 }

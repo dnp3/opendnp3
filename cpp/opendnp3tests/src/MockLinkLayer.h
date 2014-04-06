@@ -29,7 +29,7 @@
 #include <opendnp3/link/ILinkLayer.h>
 
 #include "BufferHelpers.h"
-
+#include "HexConversions.h"
 
 namespace opendnp3
 {
@@ -43,7 +43,7 @@ public:
 	{
 		while (segments.HasValue())
 		{
-			sends.push_back(openpal::toHex(segments.GetSegment()));
+			sends.push_back(toHex(segments.GetSegment()));
 			segments.Advance();
 		}
 	}

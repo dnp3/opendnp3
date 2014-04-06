@@ -71,8 +71,9 @@ private:
 	State state;
 	openpal::IExecutor* pExecutor;
 	const openpal::TimeDuration selectTimeout;
-	openpal::MonotonicTimestamp timestamp;
 	uint8_t selectedSequence;
+	openpal::MonotonicTimestamp timestamp;
+	
 
 	openpal::StaticBuffer<sizes::MAX_APDU_BUFFER_SIZE> buffer;
 	openpal::ReadOnlyBuffer selectedBuffer;

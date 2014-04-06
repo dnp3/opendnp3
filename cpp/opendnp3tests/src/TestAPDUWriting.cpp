@@ -39,6 +39,7 @@ using namespace openpal;
 using namespace opendnp3;
 
 #include "APDUHelpers.h"
+#include "HexConversions.h"
 
 #define SUITE(name) "APDUWritingTestSuite - " name
 

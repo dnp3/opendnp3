@@ -120,7 +120,7 @@ void PhysicalLayerAsyncTCPServer::CloseAcceptor()
 	acceptor.close(ec);
 	if(ec)
 	{
-		//LOG_BLOCK(log::WARN, "Error while closing tcp acceptor: " << ec);
+		//LOG_BLOCK(logflags::WARN, "Error while closing tcp acceptor: " << ec);
 	}
 }
 
@@ -136,7 +136,7 @@ void PhysicalLayerAsyncTCPServer::DoOpeningClose()
 
 void PhysicalLayerAsyncTCPServer::DoOpenSuccess()
 {
-	//LOG_BLOCK(log::INFO, "Accepted connection from: " << remoteEndpoint);
+	//LOG_BLOCK(logflags::INFO, "Accepted connection from: " << remoteEndpoint);
 	configure(mSocket);
 }
 

@@ -26,8 +26,8 @@
 namespace opendnp3
 {
 
-const uint16_t StaticRange::MIN(openpal::Limits<uint16_t>::Min());
-const uint16_t StaticRange::MAX(openpal::Limits<uint16_t>::Max());
+const uint16_t StaticRange::MIN(openpal::MinValue<uint16_t>());
+const uint16_t StaticRange::MAX(openpal::MaxValue<uint16_t>());
 
 StaticRange::StaticRange() : start(MAX), stop(MIN), clipped(false) {}
 

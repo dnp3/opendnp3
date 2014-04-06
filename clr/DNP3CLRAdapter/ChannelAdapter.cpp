@@ -26,7 +26,7 @@ ChannelAdapter::~ChannelAdapter()
 	delete pMultiplexer;
 }
 
-void ChannelAdapter::SetChannel(opendnp3::IChannel* pChannel_)
+void ChannelAdapter::SetChannel(asiodnp3::IChannel* pChannel_)
 {
 	pChannel = pChannel_;
 }

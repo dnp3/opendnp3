@@ -78,7 +78,13 @@ public:
 		}
 		else return false;
 	}
-
+	
+	T operator [](uint32_t index) const
+	{
+		openpal::ReadOnlyBuffer copy(this->buffer);
+		return ValueAt(copy, index);
+	}
+	
 	template <class IterFunc>
 	void foreach(const IterFunc& fun) const
 	{

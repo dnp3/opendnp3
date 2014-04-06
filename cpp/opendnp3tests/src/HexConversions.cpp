@@ -18,23 +18,42 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
+#include "HexConversions.h"
 
-#include "opendnp3/outstation/IINHelpers.h"
+#include <openpal/ToHex.h>
+
+#include <sstream>
+
+using namespace openpal;
 
 namespace opendnp3
 {
 
-IINField IINFromParseResult(APDUParser::Result result)
+std::string toHex(const uint8_t* apBuff, size_t aLength, bool spaced)
 {
-	switch(result)
+	std::ostringstream oss;
+	size_t last = aLength - 1;
+	for (size_t i = 0; i < aLength; i++)
 	{
-	case(APDUParser::Result::OK):
-		return IINField::Empty;
-	case(APDUParser::Result::UNKNOWN_OBJECT):
-		return IINField(IINBit::OBJECT_UNKNOWN);
-	default:
-		return IINField(IINBit::PARAM_ERROR);
+		char c = apBuff[i];
+		oss << openpal::toHex((c & 0xf0) >> 4) << openpal::toHex(c & 0xf);
+		if (spaced && i != last)oss << " ";
 	}
+	return oss.str();
+}
+
+std::string toHex(const ReadOnlyBuffer& buffer, bool spaced)
+{
+	return toHex(buffer, buffer.Size(), spaced);
+}
+
+
+std::string ByteToHex(uint8_t b)
+{
+	std::ostringstream oss;
+	oss << openpal::toHex((b & 0xf0) >> 4) << openpal::toHex(b & 0xf);
+	return oss.str();
 }
 
 }
+

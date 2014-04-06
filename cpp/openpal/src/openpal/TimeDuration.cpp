@@ -18,7 +18,7 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include <openpal/TimeDuration.h>
+#include "TimeDuration.h"
 
 #include "Limits.h"
 
@@ -27,7 +27,7 @@ namespace openpal
 
 TimeDuration TimeDuration::Min()
 {
-	return TimeDuration(Limits<int64_t>::Min());
+	return TimeDuration(openpal::MinValue<int64_t>());
 }
 
 TimeDuration TimeDuration::Zero()
@@ -47,7 +47,7 @@ TimeDuration TimeDuration::Seconds(int64_t aSeconds)
 
 TimeDuration TimeDuration::Minutes(int64_t aMinutes)
 {
-	return TimeDuration(1000 * 60 * aMinutes);
+	return TimeDuration(static_cast<int64_t>(1000) * static_cast<int64_t>(60) * aMinutes);
 }
 
 TimeDuration::TimeDuration() : TimeDurationBase(0) {}

@@ -606,9 +606,6 @@
     <ClInclude Include="src\opendnp3\LogLevels.h">
       <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\LogLevelInterpreter.h">
-      <Filter>Header</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\outstation\SelectionIterator.h">
       <Filter>Header\outstation</Filter>
     </ClInclude>
@@ -860,9 +857,6 @@
     <ClCompile Include="src\opendnp3\outstation\EventCount.cpp">
       <Filter>Source\outstation</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\outstation\IINHelpers.cpp">
-      <Filter>Source\outstation</Filter>
-    </ClCompile>
     <ClCompile Include="src\opendnp3\outstation\ITimeWriteHandler.cpp">
       <Filter>Source\outstation</Filter>
     </ClCompile>
@@ -1010,9 +1004,6 @@
     <ClCompile Include="src\opendnp3\outstation\CachedRequest.cpp">
       <Filter>Source\outstation</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\LogLevelInterpreter.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
     <ClCompile Include="src\opendnp3\outstation\SelectionCriteria.cpp">
       <Filter>Source\outstation</Filter>
     </ClCompile>
@@ -1029,9 +1020,6 @@
       <Filter>Source\outstation</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\app\EventTriggers.cpp">
-      <Filter>Source\app</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\app\DownSampling.cpp">
       <Filter>Source\app</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\outstation\Outstation.cpp">
@@ -1063,6 +1051,9 @@
     </ClCompile>
     <ClCompile Include="src\opendnp3\master\CommandAction.cpp">
       <Filter>Source\master</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\outstation\IINHelpers.cpp">
+      <Filter>Source\outstation</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -19,7 +19,7 @@
  * to you under the terms of the License.
  */
 
-#include "IINHelpers.h"
+#include "opendnp3/outstation/IINHelpers.h"
 
 namespace opendnp3
 {

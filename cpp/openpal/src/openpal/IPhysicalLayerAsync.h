@@ -23,7 +23,7 @@
 
 #include "AsyncLayerInterfaces.h"
 
-#include <openpal/BufferWrapper.h>
+#include "BufferWrapper.h"
 
 namespace openpal
 {

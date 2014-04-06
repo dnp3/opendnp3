@@ -78,8 +78,8 @@ int main(int argc, char* argv[])
 		return -1;
 	}
 
-	uint64_t iterations = std::stoull(argv[1]);
-	uint32_t maxApduSize = std::stoul(argv[2]);
+	uint64_t iterations = std::strtoull(argv[1]);
+	uint32_t maxApduSize = std::strtoul(argv[2]);
 	uint32_t concurrency = std::thread::hardware_concurrency();
 	uint64_t totalCases = iterations * static_cast<uint64_t>(concurrency);
 

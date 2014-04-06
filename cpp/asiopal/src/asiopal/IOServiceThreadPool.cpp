@@ -55,7 +55,7 @@ IOServiceThreadPool::IOServiceThreadPool(
 	if(aConcurrency == 0)
 	{
 		aConcurrency = 1;
-		LOG_BLOCK(log::WARN, "Concurrency was set to 0, defaulting to 1 thread");
+		LOG_BLOCK(logflags::WARN, "Concurrency was set to 0, defaulting to 1 thread");
 	}
 	infiniteTimer.expires_at(std::chrono::steady_clock::time_point::max());
 	infiniteTimer.async_wait(bind(&IOServiceThreadPool::OnTimerExpiration, this, placeholders::_1));
@@ -98,25 +98,9 @@ asio::io_service* IOServiceThreadPool::GetIOService()
 }
 
 void IOServiceThreadPool::Run()
-{
-	size_t num = 0;
-
-	onThreadStart();
-
-	do
-	{
-		try
-		{
-			num = ioservice.run();
-		}
-		catch(const std::exception& ex)
-		{
-			num = 1;
-			//LOG_BLOCK(log::ERR, "Unhandled exception in thread pool: " << ex.what());
-		}
-	}
-	while(num > 0);
-
+{	
+	onThreadStart();	
+	ioservice.run();	
 	onThreadExit();
 }
 

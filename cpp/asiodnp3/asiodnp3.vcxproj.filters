@@ -35,6 +35,9 @@
     <ClCompile Include="src\asiodnp3\OutstationStackImpl.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\asiodnp3\PrintingSOEHandler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\asiodnp3\ASIODNP3Manager.h">
@@ -74,6 +77,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\asiodnp3\OutstationStackImpl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\asiodnp3\PrintingSOEHandler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

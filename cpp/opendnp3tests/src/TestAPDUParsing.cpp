@@ -24,6 +24,7 @@
 #include "BufferHelpers.h"
 #include "MockAPDUHeaderHandler.h"
 #include "MeasurementComparisons.h"
+#include "HexConversions.h"
 
 #include <openpal/ToHex.h>
 

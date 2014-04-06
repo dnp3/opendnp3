@@ -26,6 +26,7 @@
     <ClCompile Include="src\asiodnp3\DNP3Stack.cpp" />
     <ClCompile Include="src\asiodnp3\MasterStackImpl.cpp" />
     <ClCompile Include="src\asiodnp3\OutstationStackImpl.cpp" />
+    <ClCompile Include="src\asiodnp3\PrintingSOEHandler.cpp" />
     <ClCompile Include="src\asiodnp3\StackActionHandler.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -41,6 +42,7 @@
     <ClInclude Include="src\asiodnp3\MasterStackImpl.h" />
     <ClInclude Include="src\asiodnp3\Mutex.h" />
     <ClInclude Include="src\asiodnp3\OutstationStackImpl.h" />
+    <ClInclude Include="src\asiodnp3\PrintingSOEHandler.h" />
     <ClInclude Include="src\asiodnp3\StackActionHandler.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

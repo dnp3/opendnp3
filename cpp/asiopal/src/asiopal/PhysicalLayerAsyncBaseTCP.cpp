@@ -74,7 +74,7 @@ void PhysicalLayerAsyncBaseTCP::DoAsyncWrite(const ReadOnlyBuffer& buff)
 
 void PhysicalLayerAsyncBaseTCP::DoOpenFailure()
 {
-	LOG_BLOCK(log::DEBUG, "Failed socket open, closing socket");
+	//LOG_BLOCK(logflags::DBG, "Failed socket open, closing socket");
 	this->CloseSocket();
 }
 
@@ -85,7 +85,7 @@ void PhysicalLayerAsyncBaseTCP::CloseSocket()
 	mSocket.close(ec);
 	if (ec)
 	{
-		//LOG_BLOCK(log::WARN, "Error while closing socket: " << ec.message());
+		//LOG_BLOCK(logflags::WARN, "Error while closing socket: " << ec.message());
 	}
 }
 
@@ -96,7 +96,7 @@ void PhysicalLayerAsyncBaseTCP::ShutdownSocket()
 	mSocket.shutdown(ip::tcp::socket::shutdown_both, ec);
 	if (ec)
 	{
-		//LOG_BLOCK(log::WARN, "Error while shutting down socket: " << ec.message());
+		//LOG_BLOCK(logflags::WARN, "Error while shutting down socket: " << ec.message());
 	}
 }
 

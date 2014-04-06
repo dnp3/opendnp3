@@ -199,9 +199,9 @@ void APDUHandlerBase::OnIndexPrefixCTO(const HeaderRecord& record, const Iterabl
 	uint64_t commonTime;
 	if (GetCTO(commonTime))
 	{
-		auto transform = MapIterableBuffer< IndexedValue<T, uint16_t>, IndexedValue<T, uint16_t> >(meas,
+		auto transform = MapIterableBuffer< IndexedValue<T, uint16_t>, IndexedValue<T, uint16_t> >(&meas,
 
-		                 [&commonTime](const IndexedValue<T, uint16_t>& value)
+		                 [commonTime](const IndexedValue<T, uint16_t>& value)
 		{
 			T copy(value.value);
 			copy.SetTime(commonTime + copy.GetTime());
@@ -214,7 +214,7 @@ void APDUHandlerBase::OnIndexPrefixCTO(const HeaderRecord& record, const Iterabl
 	else
 	{
 		//LOG_BLOCK(flags::WARN, "Received CTO objects without preceding common time, using assumed time");
-		auto transform = MapIterableBuffer< IndexedValue<T, uint16_t>, IndexedValue<T, uint16_t> >(meas,
+		auto transform = MapIterableBuffer< IndexedValue<T, uint16_t>, IndexedValue<T, uint16_t> >(&meas,
 		                 [](const IndexedValue<T, uint16_t>& value)
 		{
 			T copy(value.value);

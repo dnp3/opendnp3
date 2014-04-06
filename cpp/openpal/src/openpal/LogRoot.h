@@ -63,8 +63,9 @@ public:
 
 private:
 
-	LogFilters			filters;   // bit field describing what is being logged
 	ILogBase*			pLog;
+	LogFilters			filters;   // bit field describing what is being logged
+	
 };
 
 }

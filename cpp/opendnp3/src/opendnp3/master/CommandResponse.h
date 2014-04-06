@@ -44,10 +44,10 @@ public:
 
 
 	///  The result of the operation, should be examined before looking at the status code
-	CommandResult GetResult();
+	CommandResult GetResult() const;
 
 	/// The command status enumeration received from the outstation, if applicable
-	CommandStatus GetStatus();
+	CommandStatus GetStatus() const;
 
 	bool operator==(const CommandResponse& arRHS) const;	
 

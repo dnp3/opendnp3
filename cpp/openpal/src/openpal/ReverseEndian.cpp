@@ -18,7 +18,7 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include <openpal/ReverseEndian.h>
+#include "ReverseEndian.h"
 
 #include <cstring>
 
@@ -27,8 +27,8 @@
 namespace openpal
 {
 
-const uint8_t UInt8Simple::Max = Limits<uint8_t>::Max();
-const uint8_t UInt8Simple::Min = Limits<uint8_t>::Min();
+const uint8_t UInt8Simple::Max = openpal::MaxValue<uint8_t>();
+const uint8_t UInt8Simple::Min = openpal::MinValue<uint8_t>();
 
 int64_t UInt48LE::Read(const uint8_t* apStart)
 {

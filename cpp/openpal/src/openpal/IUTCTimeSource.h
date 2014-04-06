@@ -21,7 +21,7 @@
 #ifndef __I_UTC_TIME_SOURCE_H_
 #define __I_UTC_TIME_SOURCE_H_
 
-#include <openpal/UTCTimestamp.h>
+#include "UTCTimestamp.h"
 
 namespace openpal
 {

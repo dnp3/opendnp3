@@ -29,12 +29,10 @@ namespace openpal
 {
 
 template <class T>
-class Limits : PureStatic
-{
-	public:
-		static T Max();
-		static T Min();	
-};
+T MinValue();
+
+template <class T>
+T MaxValue();
 
 }
 

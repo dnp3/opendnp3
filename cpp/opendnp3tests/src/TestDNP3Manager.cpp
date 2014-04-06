@@ -20,15 +20,14 @@
  */
 #include <catch.hpp>
 
-#include <opendnp3/DNP3Manager.h>
-#include <opendnp3/IChannel.h>
-#include <opendnp3/LogLevels.h>
+#include <asiodnp3/DNP3Manager.h>
+#include <asiodnp3/IChannel.h>
+#include <asiodnp3/IMaster.h>
+#include <asiodnp3/IOutstation.h>
 
-#include <opendnp3/outstation/IOutstation.h>
+#include <opendnp3/LogLevels.h>
 #include <opendnp3/outstation/SimpleCommandHandler.h>
 #include <opendnp3/outstation/ITimeWriteHandler.h>
-
-#include <opendnp3/master/IMaster.h>
 #include <opendnp3/master/ISOEHandler.h>
 
 #include <asiopal/Log.h>
@@ -45,6 +44,7 @@
 #include <thread>
 
 using namespace opendnp3;
+using namespace asiodnp3;
 using namespace asiopal;
 using namespace openpal;
 

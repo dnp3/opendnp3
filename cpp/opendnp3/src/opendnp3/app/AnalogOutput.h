@@ -55,12 +55,12 @@ public:
 		return value == aLHS.value;
 	}
 
+	T value;
+	
 	/**
 	* The status value defaults to CS_SUCCESS for requests
 	*/
-	CommandStatus status;
-
-	T value;
+	CommandStatus status;	
 };
 
 /**

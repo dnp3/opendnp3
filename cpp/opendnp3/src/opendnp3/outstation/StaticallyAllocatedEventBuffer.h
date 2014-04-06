@@ -28,26 +28,62 @@
 namespace opendnp3
 {
 
-template <uint32_t B, uint32_t A, uint32_t C>
+template <uint32_t N>
 class StaticallyAllocatedEventBuffer
 {
 public:
 
-	//EventBufferFacade GetFacade();
+	EventBufferFacade GetFacade()
+	{
+		RandomInsertAdapter<Event<Binary>, uint16_t> binaryAdapter(binaryArray.ToIndexable(), binaryStack.ToIndexable());
+		RandomInsertAdapter<Event<DoubleBitBinary>, uint16_t> doubleBinaryAdapter(doubleBinaryArray.ToIndexable(), doubleBinaryStack.ToIndexable());
+		RandomInsertAdapter<Event<Analog>, uint16_t> analogAdapter(analogArray.ToIndexable(), analogStack.ToIndexable());
+		RandomInsertAdapter<Event<Counter>, uint16_t> counterAdapter(counterArray.ToIndexable(), counterStack.ToIndexable());
+		RandomInsertAdapter<Event<FrozenCounter>, uint16_t> frozenCounterAdapter(frozenCounterArray.ToIndexable(), frozenCounterStack.ToIndexable());
+		RandomInsertAdapter<Event<BinaryOutputStatus>, uint16_t> binaryOutputStatusAdapter(binaryOutputStatusArray.ToIndexable(), binaryOutputStatusStack.ToIndexable());
+		RandomInsertAdapter<Event<AnalogOutputStatus>, uint16_t> analogOutputStatusAdapter(analogOutputStatusArray.ToIndexable(), analogOutputStatusStack.ToIndexable());
+
+		LinkedListAdapter<SequenceRecord, uint16_t> soeAdapter(sequenceOfEvents.ToIndexable());
+		StackAdapter<ListNode<SequenceRecord>*, uint16_t> selectionAdapter(selectedEvents.ToIndexable());
+
+		return EventBufferFacade(
+			binaryAdapter,
+			doubleBinaryAdapter,
+			analogAdapter,
+			counterAdapter,
+			frozenCounterAdapter,
+			binaryOutputStatusAdapter,
+			analogOutputStatusAdapter,
+			soeAdapter,
+			selectionAdapter
+		);
+	}
 
 private:
 
-	openpal::StaticArray<uint16_t, uint16_t, B> binaryStack;
-	openpal::StaticArray<Event<Binary>, uint16_t, B> binaryArray;
+	openpal::StaticArray<uint16_t, uint16_t, N> binaryStack;
+	openpal::StaticArray<Event<Binary>, uint16_t, N> binaryArray;
 
-	openpal::StaticArray<uint16_t, uint16_t, A> analogStack;
-	openpal::StaticArray<Event<Analog>, uint16_t, A> analogArray;
+	openpal::StaticArray<uint16_t, uint16_t, N> doubleBinaryStack;
+	openpal::StaticArray<Event<DoubleBitBinary>, uint16_t, N> doubleBinaryArray;
 
-	openpal::StaticArray<uint16_t, uint16_t, C> counterStack;
-	openpal::StaticArray<Event<Counter>, uint16_t, C> counterArray;
+	openpal::StaticArray<uint16_t, uint16_t, N> analogStack;
+	openpal::StaticArray<Event<Analog>, uint16_t, N> analogArray;
 
-	openpal::StaticArray < openpal::ListNode<SequenceRecord>, uint16_t, B + A + C > sequenceOfEvents;
-	openpal::StaticArray < openpal::ListNode<SequenceRecord>*, uint16_t, B + A + C > selectedEvents;
+	openpal::StaticArray<uint16_t, uint16_t, N> counterStack;
+	openpal::StaticArray<Event<Counter>, uint16_t, N> counterArray;
+	
+	openpal::StaticArray<uint16_t, uint16_t, N> frozenCounterStack;
+	openpal::StaticArray<Event<FrozenCounter>, uint16_t, N> frozenCounterArray;
+	
+	openpal::StaticArray<uint16_t, uint16_t, N> binaryOutputStatusStack;
+	openpal::StaticArray<Event<BinaryOutputStatus>, uint16_t, N> binaryOutputStatusArray;
+	
+	openpal::StaticArray<uint16_t, uint16_t, N> analogOutputStatusStack;
+	openpal::StaticArray<Event<AnalogOutputStatus>, uint16_t, N> analogOutputStatusArray;
+
+	openpal::StaticArray < openpal::ListNode<SequenceRecord>, uint16_t, 7*N> sequenceOfEvents;
+	openpal::StaticArray < openpal::ListNode<SequenceRecord>*, uint16_t, 7*N> selectedEvents;
 };
 
 }

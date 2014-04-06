@@ -58,10 +58,10 @@ public:
 };
 
 template <class Source, class Target>
-const Target DownSampling<Source, Target>::TARGET_MAX(openpal::Limits<Target>::Max());
+const Target DownSampling<Source, Target>::TARGET_MAX(openpal::MaxValue<Target>());
 
 template <class Source, class Target>
-const Target DownSampling<Source, Target>::TARGET_MIN(openpal::Limits<Target>::Min());
+const Target DownSampling<Source, Target>::TARGET_MIN(openpal::MinValue<Target>());
 
 }
 

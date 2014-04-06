@@ -26,14 +26,15 @@
 namespace openpal
 {
 // some common log flags
-namespace log
+namespace logflags
 {
 const int32_t EVENT	= 1 << 0;
 const int32_t ERR	= 1 << 1;
 const int32_t WARN	= 1 << 2;
 const int32_t INFO	= 1 << 3;
-const int32_t DEBUG	= 1 << 4;
+const int32_t DBG	= 1 << 4;
 }
+
 }
 
 #endif

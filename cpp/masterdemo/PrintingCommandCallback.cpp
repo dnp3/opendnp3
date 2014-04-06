@@ -38,7 +38,10 @@ ICommandCallback& PrintingCommandCallback::Inst()
 
 void PrintingCommandCallback::OnComplete(const CommandResponse& response)
 {
-	std::cout << "Response: " << response.ToString() << std::endl;
+	std::cout << 
+	"Result: " << CommandResultToString(response.GetResult()) <<
+	"Status: " << CommandStatusToString(response.GetStatus()) <<
+	std::endl;
 }
 
 }

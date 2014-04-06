@@ -18,15 +18,12 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include <opendnp3/DNP3Manager.h>
+#include <asiodnp3/DNP3Manager.h>
 
 #include <opendnp3/outstation/OutstationStackConfig.h>
 #include <opendnp3/outstation/SimpleCommandHandler.h>
 #include <opendnp3/outstation/TimeTransaction.h>
 #include <opendnp3/outstation/ITimeWriteHandler.h>
-#include <opendnp3/outstation/IOutstation.h>
-#include <opendnp3/LogLevelInterpreter.h>
-#include <opendnp3/IChannel.h>
 #include <opendnp3/LogLevels.h>
 
 #include <asiopal/Log.h>
@@ -35,6 +32,9 @@
 #include <asiopal/UTCTimeSource.h>
 #include <asiopal/PhysicalLayerAsyncTCPServer.h>
 
+#include <asiodnp3/IChannel.h>
+#include <asiodnp3/IOutstation.h>
+
 #include <string>
 #include <iostream>
 
@@ -42,6 +42,7 @@ using namespace std;
 using namespace opendnp3;
 using namespace openpal;
 using namespace asiopal;
+using namespace asiodnp3;
 
 int main(int argc, char* argv[])
 {
@@ -51,8 +52,7 @@ int main(int argc, char* argv[])
 	const uint32_t FILTERS = levels::NORMAL;
 
 	//A default logging backend that can proxy to multiple other backends
-	EventLog log;
-	LogToStdio::Inst()->SetLevelInterpreter(&AllFlags);
+	EventLog log;	
 	log.AddLogSubscriber(LogToStdio::Inst()); // This singleton logger just prints messages to the console
 
 	IOServiceThreadPool pool(&log, FILTERS, "pool", 1); // only 1 thread is needed for a single stack

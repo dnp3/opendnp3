@@ -20,6 +20,7 @@
  */
 #include "OutstationStackImpl.h"
 
+using namespace opendnp3;
 
 namespace asiodnp3
 {

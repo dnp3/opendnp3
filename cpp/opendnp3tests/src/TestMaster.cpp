@@ -29,6 +29,7 @@
 #include "MasterTestObject.h"
 #include "MeasurementComparisons.h"
 #include "MockCommandCallback.h"
+#include "HexConversions.h"
 
 using namespace opendnp3;
 using namespace openpal;
@@ -548,7 +549,7 @@ TEST_CASE(SUITE("ParsesOctetStringResponseWithFiveCharacters"))
 
 	REQUIRE(t.mts.DispatchOne());
 
-	REQUIRE("hello" ==  t.meas.GetEventOctetString(4).AsString());
+	REQUIRE("68 65 6C 6C 6F" ==  toHex(t.meas.GetEventOctetString(4).ToReadOnly()));
 }
 
 TEST_CASE(SUITE("ParsesOctetStringResponseSizeOfOne"))

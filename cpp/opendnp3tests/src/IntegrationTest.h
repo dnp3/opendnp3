@@ -21,11 +21,11 @@
 #ifndef __INTEGRATION_TEST_H_
 #define __INTEGRATION_TEST_H_
 
-#include <asiopal/Log.h>
+#include <asiodnp3/DNP3Manager.h>
 
-#include <opendnp3/DNP3Manager.h>
 #include <opendnp3/LogLevels.h>
 
+#include <asiopal/Log.h>
 #include <asiopal/IOServiceThreadPool.h>
 
 #include "Random.h"
@@ -80,7 +80,7 @@ private:
 
 	asiopal::EventLog mLog;
 	asiopal::IOServiceThreadPool mPool;
-	DNP3Manager mMgr;
+	asiodnp3::DNP3Manager mMgr;
 	uint16_t NUM_POINTS;
 };
 

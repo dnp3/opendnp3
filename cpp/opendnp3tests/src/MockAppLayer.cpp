@@ -25,6 +25,7 @@
 
 #include <opendnp3/LogLevels.h>
 
+#include "HexConversions.h"
 #include "Exception.h"
 
 #include <assert.h>
@@ -81,8 +82,7 @@ void MockAppLayer::DoSendSol()
 }
 
 void MockAppLayer::SendResponse(APDUResponse& apdu)
-{
-	LOG_BLOCK(flags::COMM, "=> " << toHex(apdu.ToReadOnly(), true));
+{	
 	mFragments.push_back(toHex(apdu.ToReadOnly()));
 	this->DoSendSol();
 
@@ -90,14 +90,12 @@ void MockAppLayer::SendResponse(APDUResponse& apdu)
 
 void MockAppLayer::SendUnsolicited(APDUResponse& apdu)
 {
-	LOG_BLOCK(flags::COMM, "=> " << toHex(apdu.ToReadOnly(), true));
 	mFragments.push_back(toHex(apdu.ToReadOnly()));
 	this->DoSendUnsol();
 }
 
 void MockAppLayer::SendRequest(APDURequest& apdu)
-{
-	LOG_BLOCK(flags::COMM, "=> " << toHex(apdu.ToReadOnly(), true));
+{	
 	mFragments.push_back(toHex(apdu.ToReadOnly()));
 }
 

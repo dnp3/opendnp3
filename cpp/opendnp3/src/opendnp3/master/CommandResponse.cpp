@@ -35,12 +35,12 @@ CommandResponse CommandResponse::OK(CommandStatus aStatus)
 	return CommandResponse(CommandResult::RESPONSE_OK, aStatus);
 }
 
-CommandResult CommandResponse::GetResult()
+CommandResult CommandResponse::GetResult() const
 {
 	return mResult;
 }
 
-CommandStatus CommandResponse::GetStatus()
+CommandStatus CommandResponse::GetStatus() const
 {
 	return mStatus;
 }

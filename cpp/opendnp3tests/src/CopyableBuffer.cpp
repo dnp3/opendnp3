@@ -20,6 +20,8 @@
  */
 #include "CopyableBuffer.h"
 
+#include "HexConversions.h"
+
 #include <memory.h>
 
 #include <openpal/ToHex.h>
@@ -29,7 +31,7 @@ namespace opendnp3
 
 std::ostream& operator<<(std::ostream& output, const CopyableBuffer& arBuff)
 {
-	output << "[" << openpal::toHex(arBuff.ToReadOnly(), true) << "]";
+	output << "[" << toHex(arBuff.ToReadOnly(), true) << "]";
 	return output;
 }
 

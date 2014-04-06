@@ -278,7 +278,7 @@ APDUParser::Result APDUParser::ParseRangeAsBitField(
 	else
 	{
 		auto collection = CreateLazyIterable<IndexedValue<bool, uint16_t>>(buffer, range.Count(),
-		                  [&](openpal::ReadOnlyBuffer & buffer, uint32_t pos)
+		                  [range](openpal::ReadOnlyBuffer & buffer, uint32_t pos)
 		{
 			return IndexedValue<bool, uint16_t>(GetBit(buffer, pos), pos + range.start);
 		}
@@ -306,7 +306,7 @@ APDUParser::Result APDUParser::ParseRangeAsDoubleBitField(
 	else
 	{
 		auto collection = CreateLazyIterable<IndexedValue<DoubleBit, uint16_t>>(buffer, range.Count(),
-		                  [&](openpal::ReadOnlyBuffer & buffer, uint32_t pos)
+		                  [range](openpal::ReadOnlyBuffer & buffer, uint32_t pos)
 		{
 			return IndexedValue<DoubleBit, uint16_t>(GetDoubleBit(buffer, pos), pos + range.start);
 		}
@@ -338,7 +338,7 @@ APDUParser::Result APDUParser::ParseIndexPrefixedOctetData(
 			if (pHandler)
 			{
 				auto iterable = CreateLazyIterable<IndexedValue<OctetString, uint16_t>>(buffer, count,
-				                [&](openpal::ReadOnlyBuffer & buff, uint32_t position)
+				                [record](openpal::ReadOnlyBuffer & buff, uint32_t position)
 				{
 					auto index = IndexType::ReadBuffer(buff);
 					OctetString octets(buff.Truncate(record.variation));

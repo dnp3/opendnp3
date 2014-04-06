@@ -25,14 +25,7 @@
 #include <cstring>
 
 #include "BufferWrapper.h"
-
-#ifdef max
-#undef max
-#endif
-
-#ifdef min
-#undef min
-#endif
+#include "Limits.h"
 
 namespace openpal
 {
@@ -76,10 +69,10 @@ public:
 };
 
 template <class T>
-const T Bit16LE<T>::Max = Limits<T>::Max();
+const T Bit16LE<T>::Max = openpal::MaxValue<T>();
 
 template <class T>
-const T Bit16LE<T>::Min = Limits<T>::Min();
+const T Bit16LE<T>::Min = openpal::MinValue<T>();
 
 template <class T>
 class Bit32LE
@@ -123,10 +116,10 @@ public:
 };
 
 template <class T>
-const T Bit32LE<T>::Max = Limits<T>::Max();
+const T Bit32LE<T>::Max = openpal::MaxValue<T>();
 
 template <class T>
-const T Bit32LE<T>::Min = Limits<T>::Min();
+const T Bit32LE<T>::Min = openpal::MinValue<T>();
 
 template <class T>
 class Float
@@ -167,10 +160,10 @@ public:
 };
 
 template <class T>
-const T Float<T>::Max = Limits<T>::Max();
+const T Float<T>::Max = openpal::MaxValue<T>();
 
 template <class T>
-const T Float<T>::Min = Limits<T>::Min();
+const T Float<T>::Min = openpal::MinValue<T>();
 
 }
 

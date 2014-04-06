@@ -23,8 +23,6 @@
 
 #include "DNP3Stack.h"
 
-using namespace opendnp3;
-
 namespace opendnp3
 {
 	class IMeasurementLoader;
@@ -45,7 +43,7 @@ namespace asiodnp3
 class IOutstation : public DNP3Stack
 {
 public:
-	IOutstation(openpal::Logger logger, openpal::IExecutor* pExecutor, AppConfig appConfig, LinkConfig linkConfig, const StackActionHandler& handler) :
+	IOutstation(openpal::Logger logger, openpal::IExecutor* pExecutor, opendnp3::AppConfig appConfig, opendnp3::LinkConfig linkConfig, const StackActionHandler& handler) :
 		DNP3Stack(logger, pExecutor, appConfig, linkConfig, handler)
 	{}
 
@@ -57,7 +55,7 @@ public:
 	* Get a the measurement loader interface to load measurements on the outstation
 	* @return Inteface used to load measurements into the outstation
 	*/
-	virtual IMeasurementLoader* GetLoader() = 0;
+	virtual opendnp3::IMeasurementLoader* GetLoader() = 0;
 };
 
 }

@@ -18,14 +18,14 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include <opendnp3/DNP3Manager.h>
-#include <opendnp3/IChannel.h>
+#include <asiodnp3/DNP3Manager.h>
+#include <asiodnp3/IChannel.h>
+#include <asiodnp3/IMaster.h>
+#include <asiodnp3/PrintingSOEHandler.h>
 
-#include <opendnp3/master/IMaster.h>
 #include <opendnp3/master/MasterStackConfig.h>
 #include <opendnp3/master/ICommandProcessor.h>
 #include <opendnp3/master/ISOEHandler.h>
-#include <opendnp3/LogLevelInterpreter.h>
 #include <opendnp3/LogLevels.h>
 
 #include <asiopal/Log.h>
@@ -41,6 +41,7 @@
 
 using namespace std;
 using namespace asiopal;
+using namespace asiodnp3;
 using namespace opendnp3;
 
 int main(int argc, char* argv[])
@@ -52,8 +53,7 @@ int main(int argc, char* argv[])
 
 	EventLog log;
 	// You can optionally subcribe to log messages
-	// This singleton logger just prints messages to the console
-	LogToStdio::Inst()->SetLevelInterpreter(&AllFlags);
+	// This singleton logger just prints messages to the console	
 	log.AddLogSubscriber(LogToStdio::Inst());
 
 	// asio thread pool that drives the stack
