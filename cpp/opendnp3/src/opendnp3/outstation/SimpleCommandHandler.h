@@ -59,8 +59,9 @@ public:
 
 
 protected:
-	uint32_t numInvocations;
 	CommandStatus status;
+	uint32_t numInvocations;
+	
 };
 
 class SuccessCommandHandler : public SimpleCommandHandler

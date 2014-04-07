@@ -44,20 +44,11 @@ public:
 
 	Logger GetLogger(int subType = -1);
 
-	inline bool IsEnabled(const LogFilters& rhs) const
-	{
-		return this->filters & rhs;
-	}
+	bool IsEnabled(const LogFilters& rhs) const;
 
-	inline void SetFilters(const LogFilters& filters_)
-	{
-		filters = filters_;
-	}
+	void SetFilters(const LogFilters& filters_);
 
-	const LogFilters& GetFilters() const
-	{
-		return filters;
-	}
+	const LogFilters& GetFilters() const;
 
 private:
 	

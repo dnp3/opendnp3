@@ -52,7 +52,7 @@ LinkLayerRouter::LinkLayerRouter(	openpal::LogRoot& root,
 
 bool LinkLayerRouter::IsRouteInUse(const LinkRoute& route)
 {
-	auto pNode = records.FindFirst([&](const Record & record)
+	auto pNode = records.FindFirst([route](const Record & record)
 	{
 		return record.route == route;
 	});
@@ -69,7 +69,7 @@ bool LinkLayerRouter::AddContext(ILinkContext* pContext, const LinkRoute& route)
 	}
 	else
 	{
-		auto pNode = records.FindFirst([&](const Record & record)
+		auto pNode = records.FindFirst([pContext](const Record & record)
 		{
 			return record.pContext == pContext;
 		});
@@ -90,7 +90,7 @@ bool LinkLayerRouter::AddContext(ILinkContext* pContext, const LinkRoute& route)
 
 bool LinkLayerRouter::Enable(ILinkContext* pContext)
 {
-	auto pNode = records.FindFirst([&](const Record & rec)
+	auto pNode = records.FindFirst([pContext](const Record & rec)
 	{
 		return rec.pContext == pContext;
 	});
@@ -117,7 +117,7 @@ bool LinkLayerRouter::Enable(ILinkContext* pContext)
 
 bool LinkLayerRouter::Disable(ILinkContext* pContext)
 {
-	auto pNode = records.FindFirst([&](const Record & rec)
+	auto pNode = records.FindFirst([pContext](const Record & rec)
 	{
 		return rec.pContext == pContext;
 	});
@@ -148,7 +148,7 @@ bool LinkLayerRouter::Disable(ILinkContext* pContext)
 
 bool LinkLayerRouter::Remove(ILinkContext* pContext)
 {
-	auto pNode = records.RemoveFirst([&](const Record & rec)
+	auto pNode = records.RemoveFirst([pContext](const Record & rec)
 	{
 		return rec.pContext == pContext;
 	});
@@ -176,13 +176,8 @@ bool LinkLayerRouter::Remove(ILinkContext* pContext)
 
 ILinkContext* LinkLayerRouter::GetEnabledContext(const LinkRoute& route)
 {
-	auto pNode = records.FindFirst(
-	                 [&](const Record & rec)
-	{
-		return rec.enabled && (rec.route == route);
-	}
-	             );
-
+	auto find = [route](const Record & rec) { return rec.enabled && (rec.route == route); };	
+	auto pNode = records.FindFirst(find);
 	return pNode ? pNode->value.pContext : nullptr;
 }
 

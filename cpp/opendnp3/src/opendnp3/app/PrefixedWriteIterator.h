@@ -41,18 +41,18 @@ public:
 	PrefixedWriteIterator() :
 		pSerializer(nullptr),
 		sizeOfTypePlusIndex(0),
-		count(0),
-		pPosition(nullptr),
-		isNull(true)
+		count(0),		
+		isNull(true),
+		pPosition(nullptr)
 	{}
 
 	PrefixedWriteIterator(IDNP3Serializer<WriteType>* pSerializer_, openpal::WriteBuffer& position) :
 		pSerializer(pSerializer_),
 		sizeOfTypePlusIndex(pSerializer_->Size() + PrefixType::Size),
-		count(0),
-		countPosition(position),
-		pPosition(&position),
-		isNull(position.Size() < PrefixType::Size)
+		count(0),		
+		isNull(position.Size() < PrefixType::Size),
+		countPosition(position),		
+		pPosition(&position)
 	{
 		if(!isNull)
 		{

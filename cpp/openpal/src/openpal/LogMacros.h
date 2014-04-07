@@ -26,6 +26,7 @@
 
 #ifndef OPENPAL_STRIP_LOGGING
 
+/*
 #define SIMPLE_LOG_BLOCK_WITH_CODE(logger, filters, code, message) \
 	if(logger.IsEnabled(filters)){ \
 		logger.Log(filters, LOCATION, message, code); \
@@ -49,6 +50,7 @@ if(pLogger && pLogger->IsEnabled(filters)){ \
 	SNPRINTF(message, 80, format, ##__VA_ARGS__); \
 	pLogger->Log(filters, LOCATION, message, code); \
 }
+*/
 
 #else
 

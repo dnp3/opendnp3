@@ -70,26 +70,22 @@ int main()
 {	
 	MockExecutor exe;
 	LogRoot root(nullptr, "root", 0);
-	
-	LinkLayerRouter router(root, nullptr, TimeDuration::Seconds(1), TimeDuration::Seconds(1)); 
-
-/*				
+				
 	ApplicationStack stack(root, &exe, AppConfig(false), LinkConfig(false, false));
-		
+				
 	StaticallyAllocatedDatabase<5> db;
 	StaticallyAllocatedEventBuffer<5> eb;
 	Database database(db.GetFacade());
-
+	
 	Outstation outstation(
-		root, 
+		root,
 		&stack.application, 
 		&exe, //executor
 		NullTimeWriteHandler::Inst(),
 		&database,
 		eb.GetFacade(), 
 		SuccessCommandHandler::Inst(), 
-		OutstationConfig());
-*/		
+		OutstationConfig());	
 
 	SET(DDRB, BIT(7));		// Set PORTB, pin 7 as output
 	SET(TCCR1B, BIT(CS10)|BIT(CS12));	// Set clock source, x1 

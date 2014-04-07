@@ -79,7 +79,7 @@ void ClassCount::Increment(EventType type)
 ClassCount ClassCount::Subtract(const ClassCount& rhs) const
 {
 	ClassCount ret;
-	for (auto i = 0; i < NUM_TYPES; ++i)
+	for (uint8_t i = 0; i < NUM_TYPES; ++i)
 	{
 		ret.counts[i] = counts[i] - rhs.counts[i];
 	}
@@ -88,7 +88,7 @@ ClassCount ClassCount::Subtract(const ClassCount& rhs) const
 
 void ClassCount::Clear()
 {
-	for (uint32_t i = 0; i < NUM_TYPES; ++i)
+	for (uint8_t i = 0; i < NUM_TYPES; ++i)
 	{
 		counts[i] = 0;
 	}

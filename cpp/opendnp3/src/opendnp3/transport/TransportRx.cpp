@@ -35,10 +35,10 @@ namespace opendnp3
 
 TransportRx::TransportRx(const Logger& logger_, TransportLayer* apContext, uint32_t fragSize) :
 	logger(logger_),
-	mpContext(apContext),
-	maxFragSize(fragSize),
+	mpContext(apContext),	
 	numBytesRead(0),
-	sequence(0)
+	sequence(0),
+	maxFragSize(fragSize)
 {
 	if(fragSize > rxBuffer.Size())
 	{

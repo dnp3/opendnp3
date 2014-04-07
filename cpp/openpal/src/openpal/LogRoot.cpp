@@ -33,13 +33,31 @@ LogRoot::LogRoot(ILogBase* pLog_, char const* id_, const LogFilters& filters_) :
 
 void LogRoot::Log(const LogFilters& filters, int subType, char const* location, char const* message, int errorCode)
 {
-	LogEntry le(id, filters, subType, location, message, errorCode);
-	pLog->Log(le);
+	if(pLog)
+	{
+		LogEntry le(id, filters, subType, location, message, errorCode);
+		pLog->Log(le);	
+	}	
 }
 
 Logger LogRoot::GetLogger(int subType)
 {
 	return Logger(this, subType);
+}
+
+bool LogRoot::IsEnabled(const LogFilters& rhs) const
+{
+	return pLog && (this->filters & rhs);
+}
+
+void LogRoot::SetFilters(const LogFilters& filters_)
+{
+	filters = filters_;
+}
+
+const LogFilters& LogRoot::GetFilters() const
+{
+	return filters;
 }
 
 }

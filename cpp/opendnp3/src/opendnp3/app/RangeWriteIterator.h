@@ -39,18 +39,18 @@ public:
 		return RangeWriteIterator(0, nullptr, buffer);
 	}
 
-	RangeWriteIterator(typename IndexType::Type aStart, openpal::ISerializer<WriteType>* pSerializer_, openpal::WriteBuffer& aPosition) :
+	RangeWriteIterator(typename IndexType::Type aStart, openpal::ISerializer<WriteType>* pSerializer_, openpal::WriteBuffer& position) :
 		start(aStart),
 		pSerializer(pSerializer_),
-		count(0),
-		range(aPosition),
-		position(aPosition),
-		isNull(aPosition.Size() < 2 * IndexType::Size || pSerializer == nullptr)
+		count(0),				
+		isNull(position.Size() < 2 * IndexType::Size || pSerializer == nullptr),
+		range(position),
+		pPosition(&position)
 	{
 		if(!isNull)
 		{
 			IndexType::WriteBuffer(range, aStart);
-			position.Advance(2 * IndexType::Size);
+			pPosition->Advance(2 * IndexType::Size);
 		}
 	}
 
@@ -67,10 +67,10 @@ public:
 
 	bool Write(const WriteType& value)
 	{
-		if(isNull || position.Size() < pSerializer->Size()) return false;
+		if(isNull || pPosition->Size() < pSerializer->Size()) return false;
 		else
 		{
-			pSerializer->Write(value, position);
+			pSerializer->Write(value, *pPosition);
 			++count;
 			return true;
 		}
@@ -90,7 +90,7 @@ private:
 	bool isNull;
 
 	openpal::WriteBuffer range;  // make a copy to record where we write the range
-	openpal::WriteBuffer& position;
+	openpal::WriteBuffer* pPosition;
 };
 
 }

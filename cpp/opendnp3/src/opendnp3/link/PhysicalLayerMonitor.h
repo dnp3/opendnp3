@@ -129,12 +129,12 @@ private:
 
 	const openpal::TimeDuration minOpenRetry;
 	const openpal::TimeDuration maxOpenRetry;
-
-	const IOpenDelayStrategy* pOpenStrategy;
-
+	
 	openpal::TimeDuration currentRetry;
 
+	const IOpenDelayStrategy* pOpenStrategy;
 };
+
 }
 
 #endif
