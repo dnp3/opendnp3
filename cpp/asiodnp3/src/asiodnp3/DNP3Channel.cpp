@@ -66,7 +66,10 @@ void DNP3Channel::InitiateShutdown()
 
 		this->group.Shutdown();  // no more task callbacks
 
-		stacks.Foreach([](IStack* pStack) { pStack->BeginShutdown();  });
+		for (auto pStack : stacks)
+		{
+			pStack->BeginShutdown();
+		}		
 		
 		router.Shutdown();
 	}
@@ -81,7 +84,7 @@ void DNP3Channel::OnShutdown()
 void DNP3Channel::CheckForFinalShutdown()
 {
 	// The router is offline. The stacks are shutdown
-	if ((state == State::SHUTTING_DOWN) && (router.GetState() == ChannelState::SHUTDOWN) && stacks.IsEmpty())
+	if ((state == State::SHUTTING_DOWN) && (router.GetState() == ChannelState::SHUTDOWN) && stacks.empty())
 	{
 		state = State::SHUTDOWN;
 
@@ -122,21 +125,12 @@ IMaster* DNP3Channel::AddMaster(char const* id, ISOEHandler* apPublisher, IUTCTi
 	}
 	else
 	{
-		if (stacks.IsFull())
-		{
-			//LOG_BLOCK(flags::ERR, "Max number of stacks exceeded");
-			return nullptr;
-		}
-		else
-		{
-			StackActionHandler handler(&router, pPhys->GetExecutor(), this);			
-			auto pMaster = new MasterStackImpl(*pLogRoot, pPhys->GetExecutor(), apPublisher, apTimeSource, &group, config, handler);
-			pMaster->SetLinkRouter(&router);
-			stacks.Add(pMaster);
-			router.AddContext(pMaster->GetLinkContext(), route);
-			return pMaster;
-		}
-		
+		StackActionHandler handler(&router, pPhys->GetExecutor(), this);			
+		auto pMaster = new MasterStackImpl(*pLogRoot, pPhys->GetExecutor(), apPublisher, apTimeSource, &group, config, handler);
+		pMaster->SetLinkRouter(&router);
+		stacks.insert(pMaster);
+		router.AddContext(pMaster->GetLinkContext(), route);
+		return pMaster;				
 	}
 }
 
@@ -151,28 +145,21 @@ IOutstation* DNP3Channel::AddOutstation(char const* id, ICommandHandler* apCmdHa
 	}
 	else
 	{
-		if (stacks.IsFull())
-		{
-			//LOG_BLOCK(flags::ERR, "Max number of stacks exceeded");
-			return nullptr;
-		}
-		else
-		{
-			StackActionHandler handler(&router, pPhys->GetExecutor(), this);			
-			auto pOutstation = new OutstationStackImpl(*pLogRoot, pPhys->GetExecutor(), apTimeWriteHandler, apCmdHandler, arCfg, handler);
-			pOutstation->SetLinkRouter(&router);
-			stacks.Add(pOutstation);
-			router.AddContext(pOutstation->GetLinkContext(), route);
-			return pOutstation;
-		}
+		
+		StackActionHandler handler(&router, pPhys->GetExecutor(), this);			
+		auto pOutstation = new OutstationStackImpl(*pLogRoot, pPhys->GetExecutor(), apTimeWriteHandler, apCmdHandler, arCfg, handler);
+		pOutstation->SetLinkRouter(&router);
+		stacks.insert(pOutstation);
+		router.AddContext(pOutstation->GetLinkContext(), route);
+		return pOutstation;		
 	}
 }
 
 // these always happen on the strand
-void DNP3Channel::OnShutdown(DNP3Stack* apStack)
+void DNP3Channel::OnShutdown(DNP3Stack* pStack)
 {
-	stacks.Remove(apStack);
-	delete apStack;
+	stacks.erase(pStack);
+	delete pStack;
 	this->CheckForFinalShutdown();
 }
 

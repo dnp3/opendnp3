@@ -23,7 +23,6 @@
 
 #include <openpal/IShutdownHandler.h>
 #include <openpal/LogRoot.h>
-#include <openpal/StaticLinkedList.h>
 
 #include <opendnp3/outstation/OutstationStackConfig.h>
 #include <opendnp3/master/AsyncTaskGroup.h>
@@ -32,6 +31,7 @@
 #include "IChannel.h"
 
 #include <memory>
+#include <set>
 
 namespace openpal
 {
@@ -114,7 +114,7 @@ private:
 	opendnp3::LinkLayerRouter router;
 	opendnp3::AsyncTaskGroup group;
 
-	openpal::StaticLinkedList<DNP3Stack*, uint16_t, opendnp3::sizes::MAX_STACKS_PER_CHANNEL> stacks;
+	std::set<DNP3Stack*> stacks;
 
 };
 
