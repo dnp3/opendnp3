@@ -158,7 +158,8 @@ private:
 	openpal::StaticQueue<Transmission, uint16_t, sizes::MAX_STACKS_PER_CHANNEL> transmitQueue;
 
 	// Handles the parsing of incoming frames
-	LinkLayerReceiver mReceiver;
+	
+	LinkLayerReceiver mReceiver;	
 	bool mTransmitting;
 
 	// Implement virtual AsyncPhysLayerMonitor

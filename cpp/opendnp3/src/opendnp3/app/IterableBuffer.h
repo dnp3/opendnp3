@@ -77,8 +77,7 @@ public:
 			}
 
 			T Next()
-			{
-				assert(HasNext());
+			{				
 				return pIB->ValueAt(copy, pos++);				
 			}
 

@@ -293,7 +293,7 @@ void AppLayer::OnConfirm(const AppControlField& aControl, uint32_t aDataSize)
 {
 	if(aDataSize > 0)
 	{
-		FORMAT_LOG_BLOCK(logger, flags::WARN, "Unexpected payload in confirm of size: %i", aDataSize);
+		FORMAT_LOG_BLOCK(logger, flags::WARN, "Unexpected payload in confirm of size: %u", static_cast<unsigned int>(aDataSize));
 	}
 	else
 	{

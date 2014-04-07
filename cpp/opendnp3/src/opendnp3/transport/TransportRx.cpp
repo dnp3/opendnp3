@@ -57,11 +57,11 @@ void TransportRx::HandleReceive(const openpal::ReadOnlyBuffer& input)
 {
 	if (input.Size() < 2)
 	{
-		FORMAT_LOG_BLOCK_WITH_CODE(logger, flags::WARN, TLERR_NO_PAYLOAD, "Received tpdu with no payload, size: %i", input.Size());
+		FORMAT_LOG_BLOCK_WITH_CODE(logger, flags::WARN, TLERR_NO_PAYLOAD, "Received tpdu with no payload, size: %u", static_cast<unsigned int>(input.Size()));
 	}
 	else if (input.Size() > TL_MAX_TPDU_LENGTH)
 	{
-		FORMAT_LOG_BLOCK_WITH_CODE(logger, flags::WARN, TLERR_TOO_MUCH_DATA, "Illegal arg: %i exceeds max tpdu size of %i", input.Size(), TL_MAX_TPDU_LENGTH);
+		FORMAT_LOG_BLOCK_WITH_CODE(logger, flags::WARN, TLERR_TOO_MUCH_DATA, "Illegal arg: %i exceeds max tpdu size of %u", static_cast<unsigned int>(input.Size()), TL_MAX_TPDU_LENGTH);
 
 	}
 	else

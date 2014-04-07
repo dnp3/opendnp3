@@ -254,13 +254,13 @@ void LinkLayerRouter::UnconfirmedUserData(bool aIsMaster, uint16_t aDest, uint16
 void LinkLayerRouter::OnReceive(const openpal::ReadOnlyBuffer& input)
 {
 	// The order is important here. You must let the receiver process the byte or another read could write
-	// over the buffer before it is processed
+	// over the buffer before it is processed	
 	mReceiver.OnRead(input.Size()); //this may trigger callbacks to the local ILinkContext interface
 	if(pPhys->CanRead())   // this is required because the call above could trigger the layer to be closed
 	{
 		auto buff = mReceiver.WriteBuff();
 		pPhys->AsyncRead(buff); //start another read
-	}
+	}	
 }
 
 void LinkLayerRouter::QueueTransmit(const openpal::ReadOnlyBuffer& buffer, ILinkContext* pContext, bool primary)
@@ -334,9 +334,9 @@ void LinkLayerRouter::CheckForSend()
 void LinkLayerRouter::OnPhysicalLayerOpenSuccessCallback()
 {
 	if(pPhys->CanRead())
-	{
+	{		
 		auto buff = mReceiver.WriteBuff();
-		pPhys->AsyncRead(buff);
+		pPhys->AsyncRead(buff);	
 	}
 
 	records.Foreach(
@@ -352,7 +352,7 @@ void LinkLayerRouter::OnPhysicalLayerOpenSuccessCallback()
 }
 
 void LinkLayerRouter::OnPhysicalLayerCloseCallback()
-{
+{	
 	// reset the state of receiver
 	mReceiver.Reset();
 
@@ -368,7 +368,7 @@ void LinkLayerRouter::OnPhysicalLayerCloseCallback()
 			rec.pContext->OnLowerLayerDown();
 		}
 	}
-	);
+	);	
 }
 
 }

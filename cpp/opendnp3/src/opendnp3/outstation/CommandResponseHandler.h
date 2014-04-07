@@ -88,7 +88,7 @@ void CommandResponseHandler::RespondToHeader(QualifierCode qualifier, IDNP3Seria
 		}
 		Target response(command.value);
 		response.status = result;
-		iter.Write(response, command.index); // screwed up here!!!
+		iter.Write(response, command.index);
 		++numRequests;
 	}	
 	iter.Complete();

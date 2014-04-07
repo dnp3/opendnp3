@@ -98,7 +98,7 @@ bool AppLayerChannel::Retry(ACS_Base* apState)
 	if(mNumRetry > 0)
 	{
 		--mNumRetry;
-		FORMAT_LOG_BLOCK(logger, flags::INFO, "App layer retry, %i remaining", mNumRetry);
+		FORMAT_LOG_BLOCK(logger, flags::INFO, "App layer retry, %u remaining", static_cast<unsigned int>(mNumRetry));
 		this->ChangeState(apState);
 		mpAppLayer->QueueFrame(mSendAPDU);
 		return true;

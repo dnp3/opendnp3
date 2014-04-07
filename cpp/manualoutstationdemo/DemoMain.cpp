@@ -48,10 +48,7 @@ using namespace asiopal;
 
 int main(int argc, char* argv[])
 {
-	std::cout << sizeof(ApplicationStack) << std::endl;
-	std::cout << sizeof(LinkLayer) << std::endl;
-	std::cout << sizeof(AppLayer) << std::endl;
-	std::cout << sizeof(TransportLayer) << std::endl;
+	std::cout << sizeof(ApplicationStack) << std::endl;	
 	std::cout << sizeof(LinkLayerRouter) << std::endl;
 
 	// Specify a LogLevel for the stack/physical layer to use.

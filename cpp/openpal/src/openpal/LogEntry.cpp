@@ -27,7 +27,7 @@ LogEntry::LogEntry() : errorCode(-1)
 {}
 
 
-LogEntry::LogEntry(char const* id_, const LogFilters& filters_, int subType_, char const* location_, char const* message_, int32_t errorCode_)
+LogEntry::LogEntry(char const* id_, const LogFilters& filters_, int subType_, char const* location_, char const* message_, int errorCode_)
 	:
 	id(id_),
 	filters(filters_),

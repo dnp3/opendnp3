@@ -24,6 +24,8 @@
 #include "Location.h"
 #include "StringFormatting.h"
 
+#ifndef OPENPAL_STRIP_LOGGING
+
 #define SIMPLE_LOG_BLOCK_WITH_CODE(logger, filters, code, message) \
 	if(logger.IsEnabled(filters)){ \
 		logger.Log(filters, LOCATION, message, code); \
@@ -33,6 +35,32 @@
 	if(pLogger && pLogger->IsEnabled(filters)){ \
 		pLogger->Log(filters, LOCATION, message, code); \
 	}
+	
+#define FORMAT_LOG_BLOCK_WITH_CODE(logger, filters, code, format, ...) \
+if(logger.IsEnabled(filters)){ \
+	char message[80]; \
+	SNPRINTF(message, 80, format, ##__VA_ARGS__); \
+	logger.Log(filters, LOCATION, message, code); \
+}
+
+#define FORMAT_LOGGER_BLOCK_WITH_CODE(pLogger, filters, code, format, ...) \
+if(pLogger && pLogger->IsEnabled(filters)){ \
+	char message[80]; \
+	SNPRINTF(message, 80, format, ##__VA_ARGS__); \
+	pLogger->Log(filters, LOCATION, message, code); \
+}
+
+#else
+
+#define SIMPLE_LOG_BLOCK_WITH_CODE(logger, filters, code, message)
+
+#define SIMPLE_LOGGER_BLOCK_WITH_CODE(pLogger, filters, code, message)
+
+#define FORMAT_LOG_BLOCK_WITH_CODE(logger, filters, code, format, ...)
+
+#define FORMAT_LOGGER_BLOCK_WITH_CODE(pLogger, filters, code, format, ...)
+
+#endif
 
 //macro to remove boiler-plate code for logging messages
 #define SIMPLE_LOG_BLOCK(logger, severity, message) \
@@ -41,20 +69,6 @@
 //macro to remove boiler-plate code for logging messages
 #define SIMPLE_LOGGER_BLOCK(pLogger, severity, message) \
 	SIMPLE_LOGGER_BLOCK_WITH_CODE(pLogger, severity, -1, message)
-
-#define FORMAT_LOG_BLOCK_WITH_CODE(logger, filters, code, format, ...) \
-	if(logger.IsEnabled(filters)){ \
-		char message[80]; \
-		SNPRINTF(message, 80, format, ##__VA_ARGS__); \
-		logger.Log(filters, LOCATION, message, code); \
-	}
-
-#define FORMAT_LOGGER_BLOCK_WITH_CODE(pLogger, filters, code, format, ...) \
-	if(pLogger && pLogger->IsEnabled(filters)){ \
-	char message[80]; \
-	SNPRINTF(message, 80, format, ##__VA_ARGS__); \
-	pLogger->Log(filters, LOCATION, message, code); \
-	}
 
 #define FORMAT_LOGGER_BLOCK(pLogger, filters, format, ...) \
 	FORMAT_LOGGER_BLOCK_WITH_CODE(pLogger, filters, -1, format, ##__VA_ARGS__);

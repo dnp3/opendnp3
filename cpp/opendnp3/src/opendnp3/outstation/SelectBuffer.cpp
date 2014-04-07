@@ -93,36 +93,43 @@ SelectBuffer::OperateResult SelectBuffer::Operate(uint8_t sequence, const openpa
 {
 	auto elapsed = pExecutor->GetTime().milliseconds - timestamp.milliseconds;
 	auto equal = selectedBuffer.Equals(headers);
-	auto correctSequence = (sequence == ((selectedSequence + 1) % 16));
+	auto correctSequence = (sequence == ((selectedSequence + 1) % 16));	
+	auto result = OperateResult::NO_SELECT;
 
-	switch (state)
+	if(state == State::Selected)
 	{
-	case(State::Selected):
+		if (equal && correctSequence)
 		{
-			if (equal && correctSequence)
+			if (elapsed > selectTimeout.GetMilliseconds())
 			{
-				if (elapsed > selectTimeout.GetMilliseconds())
-				{
-					state = State::NoSelect;
-					return OperateResult::TIMEOUT;
-				}
-				else
-				{
-					state = State::Operated;
-					return OperateResult::OK;
-				}
+				state = State::NoSelect;
+				result = OperateResult::TIMEOUT;
 			}
 			else
 			{
-				state = State::NoSelect;
-				return OperateResult::NO_SELECT;
+				state = State::Operated;
+				result = OperateResult::OK;
 			}
 		}
-	case(State::Operated):
-		return (equal && correctSequence) ? OperateResult::REPEAT : OperateResult::NO_SELECT;
-	default:
-		return OperateResult::NO_SELECT;
+		else
+		{
+			state = State::NoSelect;
+			result = OperateResult::NO_SELECT;
+		}
 	}
+	else if(state == State::Operated)
+	{
+		if(equal && correctSequence)
+		{
+			result = OperateResult::REPEAT;
+		}
+		else
+		{
+			result = OperateResult::NO_SELECT;
+		}
+	}
+	
+	return result;
 }
 
 }
