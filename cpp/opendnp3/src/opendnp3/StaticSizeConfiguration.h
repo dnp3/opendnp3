@@ -26,10 +26,16 @@
 // Default configurations for statically allocated buffers int the stack
 // They are liberally set by default, but can be reduced for embedded systems
 
+#define MACRO_MAX_TX_APDU_SIZE 2048
+#define MACRO_MAX_RX_APDU_SIZE 2048
+
+#define MACRO_NUM_LINK_FRAMES(size) ((size / 249) + ((size % 249) ? 1 : 0))
+
 namespace opendnp3
 {
 namespace sizes
 {
+
 // the maximum number of static read object/variation records that can be in any READ request
 static const uint16_t MAX_READ_REQUESTS = 16;
 
@@ -43,10 +49,10 @@ static const uint16_t MAX_EVENT_READ_REQUESTS = 16;
 static const uint8_t MAX_COMMAND_QUEUE_SIZE = 16;
 
 // the maximum size of a transmitted APDU
-static const uint32_t MAX_TX_APDU_SIZE = 2048;
+static const uint32_t MAX_TX_APDU_SIZE = MACRO_MAX_TX_APDU_SIZE;
 
 // the maximum size of a received APDU
-static const uint32_t MAX_RX_APDU_SIZE = 2048;
+static const uint32_t MAX_RX_APDU_SIZE = MACRO_MAX_RX_APDU_SIZE;
 
 // the default APDU buffer size
 static const uint32_t DEFAULT_APDU_BUFFER_SIZE = MAX_TX_APDU_SIZE;
@@ -55,17 +61,16 @@ static const uint32_t DEFAULT_APDU_BUFFER_SIZE = MAX_TX_APDU_SIZE;
 static const uint16_t MAX_STACKS_PER_CHANNEL = 16;
 
 // The number of bytes needed to hold an APDU fully encapsulated with TPDU/LPDU
-static const uint32_t APDU_LPDU_BUFFER_SIZE = (((MAX_TX_APDU_SIZE / 249) + 1) * 292);
+static const uint32_t APDU_LPDU_BUFFER_SIZE = MACRO_NUM_LINK_FRAMES(MAX_TX_APDU_SIZE) * 292;
 
 // default sizing is big enough to receive a full APDU with full LPDU's
-static const uint32_t LINK_RECEIVER_BUFFER_SIZE = APDU_LPDU_BUFFER_SIZE;
+static const uint32_t LINK_RECEIVER_BUFFER_SIZE = MACRO_NUM_LINK_FRAMES(MAX_RX_APDU_SIZE) * 292;
 
-static_assert(MAX_TX_APDU_SIZE >= 100, "APDU tx buffer size must be at least 100");
+static_assert(MAX_TX_APDU_SIZE >= 249, "APDU tx buffer size must be at least 249 bytes");
 static_assert(MAX_RX_APDU_SIZE >= 249, "APDU rx buffer size must be at least 249 bytes");
 static_assert(DEFAULT_APDU_BUFFER_SIZE <= MAX_TX_APDU_SIZE, "default buffer size must be less than the maximum");
 static_assert(MAX_STACKS_PER_CHANNEL > 0, "At least 1 stack is required per router");
 static_assert(LINK_RECEIVER_BUFFER_SIZE >= 292, "Receiver must buffer at least 292 bytes");
-
 
 }
 }
