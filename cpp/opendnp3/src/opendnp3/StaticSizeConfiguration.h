@@ -26,8 +26,8 @@
 // Default configurations for statically allocated buffers int the stack
 // They are liberally set by default, but can be reduced for embedded systems
 
-#define MACRO_MAX_TX_APDU_SIZE 2048
-#define MACRO_MAX_RX_APDU_SIZE 2048
+#define OPENDNP3_MAX_TX_APDU_SIZE 2048
+#define OPENDNP3_MAX_RX_APDU_SIZE 2048
 
 #define MACRO_NUM_LINK_FRAMES(size) ((size / 249) + ((size % 249) ? 1 : 0))
 
@@ -49,10 +49,10 @@ static const uint16_t MAX_EVENT_READ_REQUESTS = 16;
 static const uint8_t MAX_COMMAND_QUEUE_SIZE = 16;
 
 // the maximum size of a transmitted APDU
-static const uint32_t MAX_TX_APDU_SIZE = MACRO_MAX_TX_APDU_SIZE;
+static const uint32_t MAX_TX_APDU_SIZE = OPENDNP3_MAX_TX_APDU_SIZE;
 
 // the maximum size of a received APDU
-static const uint32_t MAX_RX_APDU_SIZE = MACRO_MAX_RX_APDU_SIZE;
+static const uint32_t MAX_RX_APDU_SIZE = OPENDNP3_MAX_RX_APDU_SIZE;
 
 // the default APDU buffer size
 static const uint32_t DEFAULT_APDU_BUFFER_SIZE = MAX_TX_APDU_SIZE;
