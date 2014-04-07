@@ -58,22 +58,11 @@ void MonitorStateActions::AsyncOpen(PhysicalLayerMonitor* apContext)
 	apContext->pPhys->AsyncOpen();
 }
 
-/* --- IMonitorState --- */
-
-/* TODO
-std::string IMonitorState::ConvertToString()
-{
-	std::ostringstream oss;
-	oss << this->Name() << "(" << ChannelStateToString(this->GetState()) << ")";
-	return oss.str();
-}
-*/
-
 /* --- ExceptsOnLayerOpen --- */
 
 bool CannotOpen::OnLayerOpen(PhysicalLayerMonitor* apContext)
 {
-	//LOGGER_BLOCK(apContext->GetLogger(), flags::ERR, "Invalid action for state: " << this->Name());
+	FORMAT_LOG_BLOCK(apContext->GetLogger(), flags::ERR, "Invalid action for state: %s", this->Name());
 	return false;
 }
 
@@ -81,7 +70,7 @@ bool CannotOpen::OnLayerOpen(PhysicalLayerMonitor* apContext)
 
 bool NotOpening::OnOpenFailure(PhysicalLayerMonitor* apContext)
 {
-	//LOGGER_BLOCK(apContext->GetLogger(), flags::ERR, "Invalid action for state: " << this->Name());
+	FORMAT_LOG_BLOCK(apContext->GetLogger(), flags::ERR, "Invalid action for state: %s", this->Name());
 	return false;
 }
 
@@ -89,7 +78,7 @@ bool NotOpening::OnOpenFailure(PhysicalLayerMonitor* apContext)
 
 bool NotOpen::OnLayerClose(PhysicalLayerMonitor* apContext)
 {
-	//LOGGER_BLOCK(apContext->GetLogger(), flags::ERR, "Invalid action for state: " << this->Name());
+	FORMAT_LOG_BLOCK(apContext->GetLogger(), flags::ERR, "Invalid action for state: %s", this->Name());
 	return false;
 }
 
@@ -97,7 +86,7 @@ bool NotOpen::OnLayerClose(PhysicalLayerMonitor* apContext)
 
 bool NotWaitingForTimer::OnOpenTimeout(PhysicalLayerMonitor* apContext)
 {
-	//LOGGER_BLOCK(apContext->GetLogger(), flags::ERR, "Invalid action for state: " << this->Name());
+	FORMAT_LOG_BLOCK(apContext->GetLogger(), flags::ERR, "Invalid action for state: %s", this->Name());
 	return false;
 }
 
@@ -105,14 +94,14 @@ bool NotWaitingForTimer::OnOpenTimeout(PhysicalLayerMonitor* apContext)
 
 void IgnoresClose::OnCloseRequest(PhysicalLayerMonitor* apContext)
 {
-	//LOGGER_BLOCK(apContext->GetLogger(), flags::DEBUG, "Ignoring Close(): " << this->Name());
+	
 }
 
 /* --- IgnoresSuspend --- */
 
 void IgnoresSuspend::OnSuspendRequest(PhysicalLayerMonitor* apContext)
 {
-	//LOGGER_BLOCK(apContext->GetLogger(), flags::DEBUG, "Ignoring Suspend(): " << this->Name());
+	
 }
 
 /* --- StartsOnClose --- */
@@ -128,21 +117,21 @@ bool StartsOnClose::OnLayerClose(PhysicalLayerMonitor* apContext)
 
 void IgnoresShutdown::OnShutdownRequest(PhysicalLayerMonitor* apContext)
 {
-	//LOGGER_BLOCK(apContext->GetLogger(), flags::DEBUG, "Ignoring Stop(): " << this->Name());
+	
 }
 
 /* --- IgnoresStart --- */
 
 void IgnoresStart::OnStartRequest(PhysicalLayerMonitor* apContext)
 {
-	//LOGGER_BLOCK(apContext->GetLogger(), flags::DEBUG, "Ignoring Start(): " << this->Name());
+	
 }
 
 /* --- IgnoresStartOne --- */
 
 void IgnoresStartOne::OnStartOneRequest(PhysicalLayerMonitor* apContext)
 {
-	//LOGGER_BLOCK(apContext->GetLogger(), flags::DEBUG, "Ignoring StartOne(): " << this->Name());
+	
 }
 
 /* --- OpenFailureCausesWait --- */

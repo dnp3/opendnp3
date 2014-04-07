@@ -98,7 +98,7 @@ bool AppLayerChannel::Retry(ACS_Base* apState)
 	if(mNumRetry > 0)
 	{
 		--mNumRetry;
-		////LOG_BLOCK(flags::INFO, "App layer retry, " << mNumRetry << " remaining"); TODO
+		FORMAT_LOG_BLOCK(logger, flags::INFO, "App layer retry, %i remaining", mNumRetry);
 		this->ChangeState(apState);
 		mpAppLayer->QueueFrame(mSendAPDU);
 		return true;
@@ -137,7 +137,7 @@ void AppLayerChannel::ChangeState(ACS_Base* apState)
 {
 	if(apState != mpState)
 	{
-		////LOG_BLOCK(flags::DEBUG, "State changed from " << mpState->Name() << " to " << apState->Name());
+		FORMAT_LOG_BLOCK(logger, flags::DBG, "State changed from %s to %s", mpState->Name(), apState->Name());
 		mpState = apState;
 	}
 }

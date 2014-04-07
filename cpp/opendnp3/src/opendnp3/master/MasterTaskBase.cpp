@@ -56,7 +56,7 @@ SingleRspBase::SingleRspBase(openpal::Logger& arLogger) : MasterTaskBase(arLogge
 
 bool SingleRspBase::_OnPartialResponse(const APDUResponseRecord& record)
 {
-	////LOG_BLOCK(flags::WARN, "Ignoring non-FIN response to task: " << this->Name());
+	FORMAT_LOG_BLOCK(logger, flags::WARN, "Ignoring non-FIN response to task: ", this->Name());	
 	return false;
 }
 
@@ -67,7 +67,7 @@ TaskResult SimpleRspBase::_OnFinalResponse(const APDUResponseRecord& record)
 {
 	if(record.objects.Size() > 0)
 	{
-		////LOG_BLOCK(flags::WARN, "Unexpected object data in response to task: " << this->Name());
+		FORMAT_LOG_BLOCK(logger, flags::WARN, "Unexpected object data in response to task: %s", this->Name());
 	}
 
 	return TR_SUCCESS;

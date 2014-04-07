@@ -83,12 +83,10 @@ bool LinkLayer::Validate(bool aIsMaster, uint16_t aSrc, uint16_t aDest)
 	if (mIsOnline)
 	{
 		if (aIsMaster == config.IsMaster)
-		{
-			/*
-			//ERROR_BLOCK(flags::WARN,
-			            (aIsMaster ? "Master frame received for master" : "Outstation frame received for outstation"),
-			            DLERR_MASTER_BIT_MATCH);
-			*/
+		{			
+			SIMPLE_LOG_BLOCK_WITH_CODE(logger, flags::WARN, DLERR_MASTER_BIT_MATCH,
+				(aIsMaster ? "Master frame received for master" : "Outstation frame received for outstation"));			            
+			
 			return false;
 		}
 		else
@@ -101,20 +99,20 @@ bool LinkLayer::Validate(bool aIsMaster, uint16_t aSrc, uint16_t aDest)
 				}
 				else
 				{
-					//ERROR_BLOCK(flags::WARN, "Frame from unknwon source", DLERR_UNKNOWN_SOURCE);
+					SIMPLE_LOG_BLOCK_WITH_CODE(logger, flags::WARN, DLERR_UNKNOWN_SOURCE, "Frame from unknwon source");
 					return false;
 				}
 			}
 			else
 			{
-				//ERROR_BLOCK(flags::WARN, "Frame for unknown destintation", DLERR_UNKNOWN_DESTINATION);
+				SIMPLE_LOG_BLOCK_WITH_CODE(logger, flags::WARN, DLERR_UNKNOWN_DESTINATION, "Frame for unknown destintation");
 				return false;
 			}
 		}
 	}
 	else
 	{
-		//LOG_BLOCK(flags::ERR, "Layer is not online");
+		SIMPLE_LOG_BLOCK(logger, flags::ERR, "Layer is not online");
 		return false;
 	}
 }
@@ -138,7 +136,7 @@ void LinkLayer::Send(IBufferSegment& segments)
 	}
 	else
 	{
-		//LOG_BLOCK(flags::ERR, "Layer is not online");
+		SIMPLE_LOG_BLOCK(logger, flags::ERR, "Layer is not online");
 	}
 }
 
@@ -150,7 +148,7 @@ void LinkLayer::OnLowerLayerUp()
 {
 	if (mIsOnline)
 	{
-		//LOG_BLOCK(flags::ERR, "Layer already online");
+		SIMPLE_LOG_BLOCK(logger, flags::ERR, "Layer already online");
 	}
 	else
 	{
@@ -184,7 +182,7 @@ void LinkLayer::OnLowerLayerDown()
 	}
 	else
 	{
-		//LOG_BLOCK(flags::ERR, "Layer is not online");
+		SIMPLE_LOG_BLOCK(logger, flags::ERR, "Layer is not online");
 	}
 }
 

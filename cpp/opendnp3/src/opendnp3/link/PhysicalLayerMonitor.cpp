@@ -63,7 +63,7 @@ ChannelState PhysicalLayerMonitor::GetState()
 
 void PhysicalLayerMonitor::ChangeState(IMonitorState* apState)
 {
-	////LOG_BLOCK(flags::DEBUG, mpState->ConvertToString() << " -> " << apState->ConvertToString() << " : " << pPhys->ConvertStateToString());
+	FORMAT_LOG_BLOCK(logger, flags::DBG, "%s -> %s", mpState->Name(), apState->Name());
 	IMonitorState* pLast = mpState;
 	mpState = apState;
 
@@ -112,32 +112,27 @@ void PhysicalLayerMonitor::OnLowerLayerDown()
 /* ------- User facing events that occurs ------- */
 
 void PhysicalLayerMonitor::Start()
-{
-	//LOG_BLOCK(flags::DEBUG, "Start()");
+{	
 	mpState->OnStartRequest(this);
 }
 
 void PhysicalLayerMonitor::StartOne()
 {
-	//LOG_BLOCK(flags::DEBUG, "StartOne()");
 	mpState->OnStartOneRequest(this);
 }
 
 void PhysicalLayerMonitor::Close()
 {
-	//LOG_BLOCK(flags::DEBUG, "Close()");
 	mpState->OnCloseRequest(this);
 }
 
 void PhysicalLayerMonitor::Suspend()
-{
-	//LOG_BLOCK(flags::DEBUG, "Suspend()");
+{	
 	mpState->OnSuspendRequest(this);
 }
 
 void PhysicalLayerMonitor::Shutdown()
 {
-	//LOG_BLOCK(flags::DEBUG, "Shutdown()");
 	mpState->OnShutdownRequest(this);
 }
 

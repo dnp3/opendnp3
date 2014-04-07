@@ -60,7 +60,7 @@ void SolicitedChannel::OnRequest(const APDURecord& aRecord)
 	auto seq = SequenceInfo::OTHER;
 	if (aRecord.control.SEQ == this->Sequence())
 	{
-		//LOG_BLOCK(flags::WARN, "Received previous sequence");
+		SIMPLE_LOG_BLOCK(logger, flags::WARN, "Received previous sequence");
 		seq = SequenceInfo::PREVIOUS;
 	}
 	else if (aRecord.control.SEQ == NextSeq(this->Sequence()))

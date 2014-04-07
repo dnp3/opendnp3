@@ -54,7 +54,7 @@ TransportLayer::TransportLayer(openpal::LogRoot& root, openpal::IExecutor* pExec
 
 void TransportLayer::ChangeState(TLS_Base* pNewState)
 {
-	//LOG_BLOCK(flags::DEBUG, "State Change: " << pState->Name() << " -> " << pNewState->Name());
+	FORMAT_LOG_BLOCK(logger, flags::DBG, "State Change, %s -> %s", pState->Name(), pNewState->Name());
 	pState = pNewState;
 }
 
@@ -94,7 +94,7 @@ void TransportLayer::Send(const ReadOnlyBuffer& apdu)
 	{
 		if (apdu.IsEmpty() || apdu.Size() > M_FRAG_SIZE)
 		{
-			//LOG_BLOCK(flags::ERR, "Illegal arg: " << apdu.Size() << ", Array length must be in the range [1," << M_FRAG_SIZE << "]");
+			FORMAT_LOG_BLOCK(logger, flags::ERR, "Illegal arg: %i, Array length must be in the range [1, %i]", apdu.Size(), M_FRAG_SIZE);
 			auto lambda = [this]() { this->OnSendResult(false); };
 			pExecutor->Post(Bind(lambda));
 		}
@@ -105,7 +105,7 @@ void TransportLayer::Send(const ReadOnlyBuffer& apdu)
 	}
 	else
 	{
-		//LOG_BLOCK(flags::ERR, "Layer offline");
+		SIMPLE_LOG_BLOCK(logger, flags::ERR, "Layer offline");
 	}
 }
 
@@ -121,7 +121,7 @@ void TransportLayer::OnReceive(const ReadOnlyBuffer& tpdu)
 	}
 	else
 	{
-		//LOG_BLOCK(flags::ERR, "Layer offline");
+		SIMPLE_LOG_BLOCK(logger, flags::ERR, "Layer offline");
 	}
 }
 
@@ -140,7 +140,7 @@ void TransportLayer::OnSendResult(bool isSuccess)
 	}
 	else
 	{
-		//LOG_BLOCK(flags::ERR, "Layer offline");
+		SIMPLE_LOG_BLOCK(logger, flags::ERR, "Layer offline");
 	}
 }
 
@@ -162,7 +162,7 @@ void TransportLayer::OnLowerLayerUp()
 {
 	if (isOnline)
 	{
-		//LOG_BLOCK(flags::ERR, "Layer already online");
+		SIMPLE_LOG_BLOCK(logger, flags::ERR, "Layer already online");
 	}
 	else
 	{
@@ -188,7 +188,7 @@ void TransportLayer::OnLowerLayerDown()
 	}
 	else
 	{
-		//LOG_BLOCK(flags::ERR, "Layer already offline");
+		SIMPLE_LOG_BLOCK(logger, flags::ERR, "Layer already offline");
 	}
 }
 

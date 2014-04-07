@@ -192,7 +192,7 @@ void AppLayer::OnLowerLayerDown()
 	}
 	else
 	{
-		//LOG_BLOCK(flags::ERR, "Layer is not online");
+		SIMPLE_LOG_BLOCK(logger, flags::ERR, "Layer is not online");
 	}
 }
 

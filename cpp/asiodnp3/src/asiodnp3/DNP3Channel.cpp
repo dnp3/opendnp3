@@ -42,6 +42,7 @@ DNP3Channel::DNP3Channel(
     openpal::IEventHandler<ChannelState>* pStateHandler) :
 	pPhys(pPhys_),
 	pLogRoot(pLogRoot_),
+	logger(pLogRoot->GetLogger()),
 	state(State::READY),
 	pShutdownHandler(pShutdownHandler_),
 	router(*pLogRoot, pPhys.get(), minOpenRetry, maxOpenRetry, pStateHandler, this, pStrategy),
@@ -120,7 +121,7 @@ IMaster* DNP3Channel::AddMaster(char const* id, ISOEHandler* apPublisher, IUTCTi
 	ExecutorPause p(pPhys->GetExecutor());
 	if(router.IsRouteInUse(route))
 	{
-		//LOG_BLOCK(flags::ERR, "Route already in use: " << route.ToString());
+		FORMAT_LOG_BLOCK(logger, flags::ERR, "Route already in use: %i -> %i", route.remote, route.local);
 		return nullptr;
 	}
 	else
@@ -140,12 +141,11 @@ IOutstation* DNP3Channel::AddOutstation(char const* id, ICommandHandler* apCmdHa
 	ExecutorPause p(pPhys->GetExecutor());
 	if(router.IsRouteInUse(route))
 	{
-		//LOG_BLOCK(flags::ERR, "Route already in use: " << route.ToString());
+		FORMAT_LOG_BLOCK(logger, flags::ERR, "Route already in use: %i -> %i", route.remote, route.local);
 		return nullptr;
 	}
 	else
-	{
-		
+	{		
 		StackActionHandler handler(&router, pPhys->GetExecutor(), this);			
 		auto pOutstation = new OutstationStackImpl(*pLogRoot, pPhys->GetExecutor(), apTimeWriteHandler, apCmdHandler, arCfg, handler);
 		pOutstation->SetLinkRouter(&router);

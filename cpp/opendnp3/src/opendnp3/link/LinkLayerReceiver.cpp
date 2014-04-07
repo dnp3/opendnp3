@@ -141,17 +141,15 @@ bool LinkLayerReceiver::ValidateHeader()
 	//first thing to do is check the CRC
 	if(!DNPCrc::IsCorrectCRC(mBuffer.ReadBuff(), LI_CRC))
 	{
-		//ERROR_BLOCK(flags::ERR, "CRC failure in header", DLERR_CRC);
+		SIMPLE_LOG_BLOCK_WITH_CODE(logger, flags::ERR, DLERR_CRC, "CRC failure in header");
 		return false;
 	}
 
 	if(!mHeader.ValidLength())
 	{
-		//ERROR_BLOCK(flags::ERR, "LENGTH out of range [5,255]: " << static_cast<int>(mHeader.GetLength()), DLERR_INVALID_LENGTH);
+		FORMAT_LOG_BLOCK_WITH_CODE(logger, flags::ERR, DLERR_INVALID_LENGTH, "LENGTH out of range [5,255]: %i", mHeader.GetLength());
 		return false;
-	}
-
-	////LOG_BLOCK(flags::INTERPRET, "<~ " << mHeader.ToString());
+	}	
 
 	// some combinations of these header parameters are invalid
 	// check for them here
@@ -169,11 +167,11 @@ bool LinkLayerReceiver::ValidateHeader()
 	{
 		if(user_data_length > 0)
 		{
-			//mFrameSize = LinkFrame::CalcFrameSize(user_data_length);
+			mFrameSize = LinkFrame::CalcFrameSize(user_data_length);
 		}
 		else
 		{
-			//ERROR_BLOCK(flags::ERR, "User data packet received with zero payload. FUNCTION: " << LinkFunctionToString(func), DLERR_NO_DATA);
+			FORMAT_LOG_BLOCK_WITH_CODE(logger, flags::ERR, DLERR_NO_DATA, "User data packet received with zero payload. FUNCTION: %s", LinkFunctionToString(func));
 			return false;
 		}
 	}
@@ -181,7 +179,7 @@ bool LinkLayerReceiver::ValidateHeader()
 	{
 		if(user_data_length > 0)
 		{
-			//ERROR_BLOCK(flags::ERR, "Unexpected LENGTH in frame: " << static_cast<int>(user_data_length) << " with FUNCTION: " << LinkFunctionToString(func), DLERR_UNEXPECTED_DATA);
+			FORMAT_LOG_BLOCK_WITH_CODE(logger, flags::ERR, DLERR_UNEXPECTED_DATA, "Unexpected LENGTH in frame: %i with FUNCTION: %s", user_data_length, LinkFunctionToString(func));
 			return false;
 		}
 
@@ -195,7 +193,7 @@ bool LinkLayerReceiver::ValidateHeader()
 		}
 		else
 		{
-			//ERROR_BLOCK(flags::ERR, "Unexpected LENGTH in frame: " << static_cast<int>(user_data_length) << " with FUNCTION: " << LinkFunctionToString(func), DLERR_UNEXPECTED_DATA);
+			FORMAT_LOG_BLOCK_WITH_CODE(logger, flags::ERR, DLERR_UNEXPECTED_DATA, "Unexpected LENGTH in frame: %i with FUNCTION: %s", user_data_length, LinkFunctionToString(func));
 			return false;
 		}
 	}
@@ -203,7 +201,7 @@ bool LinkLayerReceiver::ValidateHeader()
 	{
 		if(func == LinkFunction::PRI_CONFIRMED_USER_DATA || func == LinkFunction::PRI_UNCONFIRMED_USER_DATA)
 		{
-			//ERROR_BLOCK(flags::ERR, "User data packet received with zero payload. FUNCTION: " << LinkFunctionToString(func), DLERR_NO_DATA);
+			FORMAT_LOG_BLOCK_WITH_CODE(logger, flags::ERR, DLERR_NO_DATA, "User data packet received with zero payload. FUNCTION: %s", LinkFunctionToString(func));
 			return false;
 		}
 	}
@@ -236,7 +234,7 @@ bool LinkLayerReceiver::ValidateFunctionCode()
 			break;
 		default:
 			{
-				//ERROR_BLOCK(flags::WARN, "Unknown PriToSec FUNCTION: " << LinkFunctionToString(mHeader.GetFuncEnum()), DLERR_UNKNOWN_FUNC);
+				FORMAT_LOG_BLOCK_WITH_CODE(logger, flags::WARN, DLERR_UNKNOWN_FUNC, "Unknown PriToSec FUNCTION: %s", LinkFunctionToString(mHeader.GetFuncEnum()));
 				return false;
 			}
 		}
@@ -244,7 +242,7 @@ bool LinkLayerReceiver::ValidateFunctionCode()
 		//now check the fcv
 		if(fcv_set != mHeader.IsFcvDfcSet())
 		{
-			//ERROR_BLOCK(flags::WARN, "Bad FCV for FUNCTION: " << LinkFunctionToString(mHeader.GetFuncEnum()), DLERR_UNEXPECTED_FCV);
+			FORMAT_LOG_BLOCK_WITH_CODE(logger, flags::WARN, DLERR_UNEXPECTED_FCV, "Bad FCV for FUNCTION: %s", LinkFunctionToString(mHeader.GetFuncEnum()));
 			return false;
 		}
 
@@ -262,7 +260,7 @@ bool LinkLayerReceiver::ValidateFunctionCode()
 			break;
 		default:
 			{
-				//ERROR_BLOCK(flags::ERR, "Unknown SecToPri FUNCTION: " << LinkFunctionToString(mHeader.GetFuncEnum()), DLERR_UNKNOWN_FUNC);
+				FORMAT_LOG_BLOCK_WITH_CODE(logger, flags::ERR, DLERR_UNKNOWN_FUNC, "Unknown SecToPri FUNCTION: %s", LinkFunctionToString(mHeader.GetFuncEnum()));
 				return false;
 			}
 		}
@@ -270,7 +268,7 @@ bool LinkLayerReceiver::ValidateFunctionCode()
 		//now check the fcb, it should always be zero
 		if(mHeader.IsFcbSet())
 		{
-			//ERROR_BLOCK(flags::ERR, "FCB set for SecToPri FUNCTION: " << LinkFunctionToString(mHeader.GetFuncEnum()), DLERR_UNEXPECTED_FCB);
+			FORMAT_LOG_BLOCK_WITH_CODE(logger, flags::ERR, DLERR_UNEXPECTED_FCB, "FCB set for SecToPri FUNCTION: %s", LinkFunctionToString(mHeader.GetFuncEnum()));
 			return false;
 		}
 	}

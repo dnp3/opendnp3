@@ -107,6 +107,7 @@ private:
 
 	std::unique_ptr<openpal::IPhysicalLayerAsync> pPhys;
 	std::unique_ptr<openpal::LogRoot> pLogRoot;
+	openpal::Logger logger;
 
 	State state;
 	openpal::ITypedShutdownHandler<DNP3Channel*>* pShutdownHandler;

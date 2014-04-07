@@ -271,24 +271,20 @@ void PhysicalLayerAsyncBase::OnOpenCallback(const std::error_code& err)
 	}
 }
 
-void PhysicalLayerAsyncBase::OnReadCallback(const std::error_code& arErr, uint8_t* apBuffer, uint32_t aNumRead)
+void PhysicalLayerAsyncBase::OnReadCallback(const std::error_code& err, uint8_t* apBuffer, uint32_t aNumRead)
 {
 	if(state.mReading)
 	{
 		state.mReading = false;
 
-		if(arErr)
+		if(err)
 		{
-			//LOG_BLOCK(logflags::WARN, arErr.message());
+			SIMPLE_LOG_BLOCK(logger, logflags::WARN, err.message().c_str());
 			if(state.CanClose()) this->StartClose();
 		}
 		else
 		{
-			if(state.mClosing)
-			{
-				//LOG_BLOCK(logflags::DEBUG, "Ignoring received bytes since layer is closing: " << aNumRead);
-			}
-			else
+			if(!state.mClosing)			
 			{
 				ReadOnlyBuffer buffer(apBuffer, aNumRead);
 				this->DoReadCallback(buffer);
@@ -311,17 +307,13 @@ void PhysicalLayerAsyncBase::OnWriteCallback(const std::error_code& arErr, uint3
 
 		if(arErr)
 		{
-			//LOG_BLOCK(logflags::WARN, arErr.message());
+			SIMPLE_LOG_BLOCK(logger, logflags::WARN, arErr.message().c_str());
 			if(state.CanClose()) this->StartClose();
 		}
 		else
 		{
-			if(state.mClosing)
-			{
-				//LOG_BLOCK(logflags::DEBUG, "Ignoring written bytes since layer is closing: " << aNumBytes);
-			}
-			else
-			{
+			if(!state.mClosing)
+			{			
 				this->DoWriteSuccess();
 			}
 		}
