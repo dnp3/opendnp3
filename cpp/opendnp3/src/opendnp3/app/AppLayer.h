@@ -22,7 +22,6 @@
 #define __APP_LAYER_H_
 
 #include <openpal/AsyncLayerInterfaces.h>
-#include <openpal/Loggable.h>
 
 #include "opendnp3/app/IAppUser.h"
 #include "opendnp3/app/IAppLayer.h"
@@ -54,7 +53,7 @@ Implements the sequencing/confirm/response logic for the DNP3 application layer.
 
 Allows for canceling response transactions, as dictated by the spec.
 */
-class AppLayer : public IUpperLayer, public IAppLayer, private openpal::Loggable
+class AppLayer : public IUpperLayer, public IAppLayer
 {
 	friend class AppLayerChannel;
 	friend class SolicitedChannel;
@@ -62,7 +61,7 @@ class AppLayer : public IUpperLayer, public IAppLayer, private openpal::Loggable
 
 public:
 
-	AppLayer(const openpal::Logger& logger, openpal::IExecutor*,  const AppConfig&);
+	AppLayer(openpal::LogRoot& root, openpal::IExecutor*, const AppConfig&);
 
 	void SetUser(IAppUser*);
 
@@ -100,6 +99,8 @@ private:
 
 	void LogParseError(APDUHeaderParser::Result error, bool aIsResponse);
 
+	openpal::Logger logger;
+
 	////////////////////
 	// State
 	////////////////////	
@@ -111,12 +112,12 @@ private:
 
 	openpal::StaticQueue<APDUWrapper, uint16_t, 4>	sendQueue; // Buffer of send operations - TODO - decide reasonable size
 
-	IAppUser* mpUser;						// Interface for dispatching callbacks
+	IAppUser* pUser;						// Interface for dispatching callbacks
 	openpal::ILowerLayer* pTransportLayer;
 	
 
-	SolicitedChannel mSolicited;			// Channel used for solicited communications
-	UnsolicitedChannel mUnsolicited;		// Channel used for unsolicited communications
+	SolicitedChannel solicited;			// Channel used for solicited communications
+	UnsolicitedChannel unsolicited;		// Channel used for unsolicited communications
 	uint32_t numRetry;
 
 

@@ -44,8 +44,8 @@ using namespace openpal;
 namespace opendnp3
 {
 
-Master::Master(Logger aLogger, MasterConfig aCfg, IAppLayer* apAppLayer, ISOEHandler* apSOEHandler, AsyncTaskGroup* apTaskGroup, openpal::IExecutor* apExecutor, IUTCTimeSource* apTimeSrc) :
-	IAppUser(aLogger),
+Master::Master(LogRoot& root, MasterConfig aCfg, IAppLayer* apAppLayer, ISOEHandler* apSOEHandler, AsyncTaskGroup* apTaskGroup, openpal::IExecutor* apExecutor, IUTCTimeSource* apTimeSrc) :
+	IAppUser(root),
 	pExecutor(apExecutor),
 	mpAppLayer(apAppLayer),
 	mpSOEHandler(apSOEHandler),
@@ -55,11 +55,11 @@ Master::Master(Logger aLogger, MasterConfig aCfg, IAppLayer* apAppLayer, ISOEHan
 	mpTask(nullptr),
 	mpScheduledTask(nullptr),
 	mSchedule(apTaskGroup, this, aCfg),
-	mClassPoll(aLogger, apSOEHandler),
-	mClearRestart(aLogger),
-	mConfigureUnsol(aLogger),
-	mTimeSync(aLogger, apTimeSrc),
-	mCommandTask(aLogger),
+	mClassPoll(logger, apSOEHandler),
+	mClearRestart(logger),
+	mConfigureUnsol(logger),
+	mTimeSync(logger, apTimeSrc),
+	mCommandTask(logger),
 	mCommandQueue(apExecutor, mSchedule.mpCommandTask)
 {
 

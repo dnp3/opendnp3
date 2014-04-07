@@ -27,7 +27,7 @@ using namespace openpal;
 namespace opendnp3
 {
 
-LogTester::LogTester() : root(this, levels::NORMAL), logger(root.GetLogger("LogTester"))
+LogTester::LogTester() : root(this, "test", levels::NORMAL), logger(root.GetLogger())
 {
 
 }
@@ -119,9 +119,9 @@ void LogTester::Pop(openpal::ILogBase* pLog)
 	}
 }
 
-openpal::Logger LogTester::GetLogger(const std::string& id)
+openpal::Logger LogTester::GetLogger(int source)
 {
-	return root.GetLogger(id.c_str());
+	return root.GetLogger(source);
 }
 
 bool LogTester::IsLogErrorFree()

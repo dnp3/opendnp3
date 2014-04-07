@@ -22,8 +22,8 @@
 #define __LINK_LAYER_H_
 
 #include <openpal/IExecutor.h>
-#include <openpal/Loggable.h>
 #include <openpal/StaticBuffer.h>
+#include <openpal/LogRoot.h>
 
 #include "opendnp3/link/ILinkLayer.h"
 #include "opendnp3/link/ILinkContext.h"
@@ -40,11 +40,11 @@ class PriStateBase;
 class SecStateBase;
 
 //	@section desc Implements the contextual state of DNP3 Data Link Layer
-class LinkLayer : public ILinkLayer, public ILinkContext, public openpal::HasUpperLayer, private openpal::Loggable
+class LinkLayer : public ILinkLayer, public ILinkContext, public openpal::HasUpperLayer
 {
 public:
 
-	LinkLayer(const openpal::Logger&, openpal::IExecutor*, const LinkConfig& config);
+	LinkLayer(openpal::LogRoot&, openpal::IExecutor*, const LinkConfig& config);
 
 	void SetRouter(ILinkRouter*);
 
@@ -132,6 +132,7 @@ public:
 	void StartTimer();
 	void CancelTimer();
 
+	openpal::Logger logger;
 	const LinkConfig config;
 
 	//Retry Count

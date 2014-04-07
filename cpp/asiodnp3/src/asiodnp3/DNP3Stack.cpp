@@ -27,8 +27,8 @@ namespace asiodnp3
 {
 
 
-DNP3Stack::DNP3Stack(openpal::Logger logger, openpal::IExecutor* pExecutor, AppConfig appConfig, LinkConfig linkConfig, const StackActionHandler& handler_) :
-	appStack(logger, pExecutor, appConfig, linkConfig),
+DNP3Stack::DNP3Stack(openpal::LogRoot& root, openpal::IExecutor* pExecutor, AppConfig appConfig, LinkConfig linkConfig, const StackActionHandler& handler_) :
+	appStack(root, pExecutor, appConfig, linkConfig),
 	handler(handler_)
 {
 

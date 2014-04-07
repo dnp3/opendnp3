@@ -30,15 +30,14 @@ namespace opendnp3
 TransportStackPair::TransportStackPair(
     LinkConfig aClientCfg,
     LinkConfig aServerCfg,
-    openpal::ILogBase* pLog,
-    uint32_t filters,
+	openpal::LogRoot& root,
     asio::io_service* apService,
     uint16_t aPort) :
 
-	mClient(LogConfig(pLog, filters, "TCPClient"), apService, "127.0.0.1", aPort),
-	mServer(LogConfig(pLog, filters, "TCPServer"), apService, "127.0.0.1", aPort),
-	mClientStack(mClient.GetLogRoot().GetLogger("ClientStack"), &mClient, aClientCfg),
-	mServerStack(mClient.GetLogRoot().GetLogger("ServerStack"), &mServer, aServerCfg)
+	mClient(root, apService, "127.0.0.1", aPort),
+	mServer(root, apService, "127.0.0.1", aPort),
+	mClientStack(root, &mClient, aClientCfg),
+	mServerStack(root, &mServer, aServerCfg)
 {
 
 }

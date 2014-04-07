@@ -45,7 +45,7 @@ class OutstationStackImpl : public IOutstation
 public:
 
 	OutstationStackImpl(
-	    openpal::Logger&,
+	    openpal::LogRoot&,
 	    openpal::IExecutor* apExecutor,
 		opendnp3::ITimeWriteHandler* apTimeWriteHandler,
 		opendnp3::ICommandHandler* apCmdHandler,

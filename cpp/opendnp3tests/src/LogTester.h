@@ -48,11 +48,13 @@ public:
 
 	void Pop(openpal::ILogBase* pLog);
 
-	openpal::Logger GetLogger(const std::string& id);
+	openpal::Logger GetLogger(int source = -1);
+
+	openpal::LogRoot root;
 
 protected:
 
-	openpal::LogRoot root;
+	
 	openpal::Logger logger;
 	std::queue<openpal::LogEntry> mBuffer;
 

@@ -26,6 +26,8 @@
 #include <asiopal/Log.h>
 #include <asiopal/ASIOExecutor.h>
 
+#include <openpal/LogRoot.h>
+
 #include "Exception.h"
 #include "RandomizedBuffer.h"
 #include "PhysLoopback.h"
@@ -228,13 +230,14 @@ TEST_CASE(SUITE("Loopback"))
 	const size_t ITERATIONS = MACRO_LOOPBACK_ITERATIONS;
 
 	EventLog log;
+	LogRoot root(&log, "test", levels::NORMAL);
 	AsyncTestObjectASIO test;
-	PhysicalLayerAsyncTCPServer server(LogConfig(&log, levels::NORMAL, "server"), test.GetService(), "127.0.0.1", 30000);
-	PhysLoopback loopback(server.GetLogRoot().GetLogger("loopback"), &server);
+	PhysicalLayerAsyncTCPServer server(root, test.GetService(), "127.0.0.1", 30000);
+	PhysLoopback loopback(root, &server);
 	loopback.Start();
 
-	PhysicalLayerAsyncTCPClient client(LogConfig(&log, levels::NORMAL, "client"), test.GetService(), "127.0.0.1", 30000);
-	LowerLayerToPhysAdapter adapter(client.GetLogRoot().GetLogger("adapter"), &client);
+	PhysicalLayerAsyncTCPClient client(root, test.GetService(), "127.0.0.1", 30000);
+	LowerLayerToPhysAdapter adapter(root.GetLogger(), &client);
 	MockUpperLayer upper;
 	adapter.SetUpperLayer(&upper);
 	upper.SetLowerLayer(&adapter);

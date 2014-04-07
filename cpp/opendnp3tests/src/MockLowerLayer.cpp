@@ -30,8 +30,8 @@ using namespace openpal;
 namespace opendnp3
 {
 
-MockLowerLayer::MockLowerLayer(Logger logger) :
-	Loggable(logger),
+MockLowerLayer::MockLowerLayer(openpal::LogRoot& root) :
+	logger(root.GetLogger()),
 	mAutoSendCallback(true),
 	mIsSuccess(true)
 {

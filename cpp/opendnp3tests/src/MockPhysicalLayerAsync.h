@@ -40,7 +40,7 @@ namespace opendnp3
 class MockPhysicalLayerAsync : public asiopal::PhysicalLayerAsyncBase, public BufferTestObject
 {
 public:
-	MockPhysicalLayerAsync(const openpal::LogConfig& config, openpal::IExecutor*);
+	MockPhysicalLayerAsync(openpal::LogRoot& root, openpal::IExecutor*);
 
 	openpal::IExecutor* GetExecutor()
 	{

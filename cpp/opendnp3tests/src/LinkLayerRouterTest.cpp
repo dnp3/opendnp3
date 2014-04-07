@@ -28,8 +28,8 @@ namespace opendnp3
 LinkLayerRouterTest::LinkLayerRouterTest(uint32_t filters) :
 	log(),
 	exe(),
-	phys(LogConfig(&log, filters, "Physical"), &exe),
-	router(log.GetLogger("Router"), &phys, TimeDuration::Milliseconds(100), TimeDuration::Milliseconds(100))
+	phys(log.root, &exe),
+	router(log.root, &phys, TimeDuration::Milliseconds(100), TimeDuration::Milliseconds(100))
 {
 
 }

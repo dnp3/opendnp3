@@ -142,9 +142,6 @@
     <ClInclude Include="src\openpal\LogRoot.h">
       <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="src\openpal\LogConfig.h">
-      <Filter>Header</Filter>
-    </ClInclude>
     <ClInclude Include="src\openpal\LogFilters.h">
       <Filter>Header</Filter>
     </ClInclude>

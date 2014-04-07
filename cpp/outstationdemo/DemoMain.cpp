@@ -55,7 +55,7 @@ int main(int argc, char* argv[])
 	EventLog log;	
 	log.AddLogSubscriber(LogToStdio::Inst()); // This singleton logger just prints messages to the console
 
-	IOServiceThreadPool pool(&log, FILTERS, "pool", 1); // only 1 thread is needed for a single stack
+	IOServiceThreadPool pool(&log, FILTERS,  1); // only 1 thread is needed for a single stack
 
 	// This is the main point of interaction with the stack
 	DNP3Manager mgr;
@@ -68,9 +68,10 @@ int main(int argc, char* argv[])
 	};
 
 	// Create the raw physical layer
-	auto pServerPhys = new PhysicalLayerAsyncTCPServer(LogConfig(&log, FILTERS, "tcpserver"), pool.GetIOService(), "abdasdas", 20000, configure);
+	auto pServerRoot = new LogRoot(&log, "server", FILTERS);
+	auto pServerPhys = new PhysicalLayerAsyncTCPServer(*pServerRoot, pool.GetIOService(), "0.0.0.0", 20000, configure);
 	// Wrap the physical layer in a DNP channel
-	auto pServer = mgr.CreateChannel("tcpserver", TimeDuration::Seconds(5), TimeDuration::Seconds(5), pServerPhys);
+	auto pServer = mgr.CreateChannel(pServerRoot, TimeDuration::Seconds(5), TimeDuration::Seconds(5), pServerPhys);
 
 	// The master config object for a outstation. The default are
 	// useable, but understanding the options are important.

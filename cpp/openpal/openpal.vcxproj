@@ -43,7 +43,6 @@
     <ClInclude Include="src\openpal\ListAdapter.h" />
     <ClInclude Include="src\openpal\Location.h" />
     <ClInclude Include="src\openpal\LogBase.h" />
-    <ClInclude Include="src\openpal\LogConfig.h" />
     <ClInclude Include="src\openpal\LogEntry.h" />
     <ClInclude Include="src\openpal\LogFilters.h" />
     <ClInclude Include="src\openpal\Loggable.h" />

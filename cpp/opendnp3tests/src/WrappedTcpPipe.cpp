@@ -25,11 +25,11 @@ using namespace openpal;
 namespace opendnp3
 {
 
-WrappedTcpPipe::WrappedTcpPipe(openpal::ILogBase* pLog, uint32_t filters, asio::io_service* apService, uint16_t aPort) :
-	clientTcp(LogConfig(pLog, filters, "clientTcp"), apService, "127.0.0.1", aPort),
-	serverTcp(LogConfig(pLog, filters, "serverTcp"), apService, "127.0.0.1", aPort),
-	client(clientTcp.GetLogRoot().GetLogger("clientWrapper"), &clientTcp),
-	server(serverTcp.GetLogRoot().GetLogger("serverWrapper"), &serverTcp)
+WrappedTcpPipe::WrappedTcpPipe(openpal::LogRoot& root, asio::io_service* apService, uint16_t aPort) :
+	clientTcp(root, apService, "127.0.0.1", aPort),
+	serverTcp(root, apService, "127.0.0.1", aPort),
+	client(root.GetLogger(), &clientTcp),
+	server(root.GetLogger(), &serverTcp)
 {
 
 }

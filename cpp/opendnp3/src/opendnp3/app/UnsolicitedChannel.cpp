@@ -30,7 +30,7 @@ namespace opendnp3
 
 
 UnsolicitedChannel::UnsolicitedChannel(openpal::Logger logger, AppLayer* apApp, IExecutor* apExecutor, openpal::TimeDuration aTimeout) :
-	AppLayerChannel("Unsolicited", logger, apApp, apExecutor, aTimeout)
+	AppLayerChannel(logger, apApp, apExecutor, aTimeout)
 {}
 
 void UnsolicitedChannel::OnUnsol(const APDUResponseRecord& aRecord)
@@ -43,18 +43,18 @@ void UnsolicitedChannel::OnUnsol(const APDUResponseRecord& aRecord)
 	{
 		// only process the data if the sequence number is new
 		mSequence = aRecord.control.SEQ;
-		mpAppLayer->mpUser->OnUnsolResponse(aRecord);
+		mpAppLayer->pUser->OnUnsolResponse(aRecord);
 	}
 }
 
 void UnsolicitedChannel::DoSendSuccess()
 {
-	mpAppLayer->mpUser->OnUnsolSendSuccess();
+	mpAppLayer->pUser->OnUnsolSendSuccess();
 }
 
 void UnsolicitedChannel::DoFailure()
 {
-	mpAppLayer->mpUser->OnUnsolFailure();
+	mpAppLayer->pUser->OnUnsolFailure();
 }
 
 }

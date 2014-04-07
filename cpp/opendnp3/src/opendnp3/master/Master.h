@@ -74,7 +74,7 @@ class Master : public IAppUser, private ICommandProcessor
 
 public:
 
-	Master(openpal::Logger, MasterConfig aCfg, IAppLayer*, ISOEHandler*, AsyncTaskGroup*, openpal::IExecutor*, openpal::IUTCTimeSource* apTimeSrc);
+	Master(openpal::LogRoot& root, MasterConfig aCfg, IAppLayer*, ISOEHandler*, AsyncTaskGroup*, openpal::IExecutor*, openpal::IUTCTimeSource* apTimeSrc);
 	virtual ~Master() {}
 
 	ICommandProcessor* GetCommandProcessor()

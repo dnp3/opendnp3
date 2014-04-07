@@ -35,8 +35,8 @@ using namespace openpal;
 namespace opendnp3
 {
 
-TransportLayer::TransportLayer(const openpal::Logger& logger, openpal::IExecutor* pExecutor_, uint32_t maxFragSize) :
-	Loggable(logger),
+TransportLayer::TransportLayer(openpal::LogRoot& root, openpal::IExecutor* pExecutor_, uint32_t maxFragSize) :
+	logger(root.GetLogger(sources::TRANSPORT_LAYER)),
 	pUpperLayer(nullptr),
 	pLinkLayer(nullptr),
 	isOnline(false),

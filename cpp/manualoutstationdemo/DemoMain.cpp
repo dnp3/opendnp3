@@ -55,11 +55,13 @@ int main(int argc, char* argv[])
 
 	// Specify a LogLevel for the stack/physical layer to use.
 	// Log statements with a lower priority will not be logged.
-	const uint32_t LOG_LEVEL = levels::ALL;
+	const uint32_t FILTERS = levels::ALL;
 
 	//A default logging backend that can proxy to multiple other backends
 	EventLog el;	
 	el.AddLogSubscriber(LogToStdio::Inst()); // This singleton logger just prints messages to the console
+
+	openpal::LogRoot root(&el, "server", FILTERS);
 
 	asio::io_service service;
 	asio::io_service::strand strand(service);
@@ -67,9 +69,9 @@ int main(int argc, char* argv[])
 
 	LinkRoute route(1, 1024);
 
-	PhysicalLayerAsyncTCPServer server(LogConfig(&el, LOG_LEVEL, "tcpserver"), &service, "127.0.0.1", 20000);
-	LinkLayerRouter router(server.GetLogger().GetSubLogger("router"), &server, TimeDuration::Seconds(1), TimeDuration::Seconds(60));
-	ApplicationStack stack(server.GetLogger().GetSubLogger("root"), &executor, AppConfig(false), LinkConfig(false, false));
+	PhysicalLayerAsyncTCPServer server(root, &service, "127.0.0.1", 20000);
+	LinkLayerRouter router(root, &server, TimeDuration::Seconds(1), TimeDuration::Seconds(60));
+	ApplicationStack stack(root, &executor, AppConfig(false), LinkConfig(false, false));
 	stack.link.SetRouter(&router);
 	router.AddContext(&stack.link, route);
 
@@ -79,7 +81,7 @@ int main(int argc, char* argv[])
 	Database database(dadb.GetFacade());
 
 	Outstation outstation(
-		server.GetLogger().GetSubLogger("outstation"), 
+		root,
 		&stack.application, 
 		&executor, 
 		NullTimeWriteHandler::Inst(), 
@@ -92,10 +94,6 @@ int main(int argc, char* argv[])
 	stack.application.SetUser(&outstation);
 
 	router.Enable(&stack.link);
-
-	//LogEntry le()
-
-	el.Log(LogEntry(LogFilters(~0), "hello", "", "test", -1));
 
 	// Start dispatching events
 	service.run();

@@ -39,8 +39,8 @@ namespace asiopal
 class PhysicalLayerAsyncASIO : public PhysicalLayerAsyncBase
 {
 public:
-	PhysicalLayerAsyncASIO(const openpal::LogConfig& config, asio::io_service* apService) :
-		PhysicalLayerAsyncBase(config),
+	PhysicalLayerAsyncASIO(openpal::LogRoot& root, asio::io_service* apService) :
+		PhysicalLayerAsyncBase(root),
 		strand(*apService),
 		executor(&strand)
 	{}

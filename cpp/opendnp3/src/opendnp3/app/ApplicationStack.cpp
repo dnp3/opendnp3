@@ -25,10 +25,10 @@ using namespace openpal;
 namespace opendnp3
 {
 
-ApplicationStack::ApplicationStack(const openpal::Logger& logger, openpal::IExecutor* pExecutor, AppConfig appConfig, LinkConfig linkConfig) :
-	link(logger.GetSubLogger("link"), pExecutor, linkConfig),
-	transport(logger.GetSubLogger("transport"), pExecutor),
-	application(logger.GetSubLogger("app"), pExecutor, appConfig)
+ApplicationStack::ApplicationStack(openpal::LogRoot& root, openpal::IExecutor* pExecutor, AppConfig appConfig, LinkConfig linkConfig) :
+	link(root, pExecutor, linkConfig),
+	transport(root, pExecutor),
+	application(root, pExecutor, appConfig)
 {
 	link.SetUpperLayer(&transport);
 	transport.SetLinkLayer(&link);

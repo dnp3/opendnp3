@@ -33,18 +33,18 @@ namespace asiodnp3
 {
 
 DNP3Channel::DNP3Channel(
-	char const* id,
+	LogRoot* pLogRoot_,
     openpal::TimeDuration minOpenRetry,
     openpal::TimeDuration maxOpenRetry,
     IOpenDelayStrategy* pStrategy,
-    asiopal::PhysicalLayerAsyncBase* pPhys_,
+    openpal::IPhysicalLayerAsync* pPhys_,
     openpal::ITypedShutdownHandler<DNP3Channel*>* pShutdownHandler_,
     openpal::IEventHandler<ChannelState>* pStateHandler) :
 	pPhys(pPhys_),
-	logger(pPhys->GetLogRoot().GetLogger(id)),
+	pLogRoot(pLogRoot_),
 	state(State::READY),
 	pShutdownHandler(pShutdownHandler_),
-	router(logger.GetSubLogger("router"), pPhys.get(), minOpenRetry, maxOpenRetry, pStateHandler, this, pStrategy),
+	router(*pLogRoot, pPhys.get(), minOpenRetry, maxOpenRetry, pStateHandler, this, pStrategy),
 	group(pPhys->GetExecutor())
 {
 
@@ -102,12 +102,12 @@ openpal::IExecutor* DNP3Channel::GetExecutor()
 
 openpal::LogFilters DNP3Channel::GetLogFilters() const
 {
-	return pPhys->GetLogRoot().GetFilters();
+	return pLogRoot->GetFilters();
 }
 
 void DNP3Channel::SetLogFilters(const openpal::LogFilters& filters)
 {	
-	auto lambda = [this, filters]() { this->pPhys->GetLogRoot().SetFilters(filters); };	
+	auto lambda = [this, filters]() { this->pLogRoot->SetFilters(filters); };
 	pPhys->GetExecutor()->Post(Bind(lambda));
 }
 
@@ -124,14 +124,13 @@ IMaster* DNP3Channel::AddMaster(char const* id, ISOEHandler* apPublisher, IUTCTi
 	{
 		if (stacks.IsFull())
 		{
-			LOG_BLOCK(flags::ERR, "Max number of stacks exceeded");
+			//LOG_BLOCK(flags::ERR, "Max number of stacks exceeded");
 			return nullptr;
 		}
 		else
 		{
-			StackActionHandler handler(&router, pPhys->GetExecutor(), this);
-			auto subLogger = logger.GetSubLogger(id);
-			auto pMaster = new MasterStackImpl(subLogger, pPhys->GetExecutor(), apPublisher, apTimeSource, &group, config, handler);
+			StackActionHandler handler(&router, pPhys->GetExecutor(), this);			
+			auto pMaster = new MasterStackImpl(*pLogRoot, pPhys->GetExecutor(), apPublisher, apTimeSource, &group, config, handler);
 			pMaster->SetLinkRouter(&router);
 			stacks.Add(pMaster);
 			router.AddContext(pMaster->GetLinkContext(), route);
@@ -159,9 +158,8 @@ IOutstation* DNP3Channel::AddOutstation(char const* id, ICommandHandler* apCmdHa
 		}
 		else
 		{
-			StackActionHandler handler(&router, pPhys->GetExecutor(), this);
-			auto subLogger = logger.GetSubLogger(id);
-			auto pOutstation = new OutstationStackImpl(subLogger, pPhys->GetExecutor(), apTimeWriteHandler, apCmdHandler, arCfg, handler);
+			StackActionHandler handler(&router, pPhys->GetExecutor(), this);			
+			auto pOutstation = new OutstationStackImpl(*pLogRoot, pPhys->GetExecutor(), apTimeWriteHandler, apCmdHandler, arCfg, handler);
 			pOutstation->SetLinkRouter(&router);
 			stacks.Add(pOutstation);
 			router.AddContext(pOutstation->GetLinkContext(), route);

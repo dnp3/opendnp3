@@ -40,7 +40,7 @@ public:
 	LinkReceiverTest(bool aImmediate = false) :
 		log(),
 		mSink(),
-		mRx(log.GetLogger("ReceiverTest"), &mSink)
+		mRx(log.GetLogger(), &mSink)
 	{}
 
 	void WriteData(const openpal::ReadOnlyBuffer& input)

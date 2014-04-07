@@ -53,7 +53,7 @@ class LinkLayerRouter : public PhysicalLayerMonitor, public ILinkRouter, private
 {
 public:
 
-	LinkLayerRouter(const openpal::Logger&,
+	LinkLayerRouter(openpal::LogRoot&,
 	                openpal::IPhysicalLayerAsync*,
 	                openpal::TimeDuration minOpenRetry,
 	                openpal::TimeDuration maxOpenRetry,

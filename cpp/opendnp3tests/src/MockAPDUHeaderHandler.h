@@ -36,7 +36,7 @@ public:
 
 	MockApduHeaderHandler() :
 		LogTester(),
-		APDUHandlerBase(this->GetLogger("test"))
+		APDUHandlerBase(this->GetLogger())
 	{}
 
 	virtual void _AllObjects(const HeaderRecord& record) override

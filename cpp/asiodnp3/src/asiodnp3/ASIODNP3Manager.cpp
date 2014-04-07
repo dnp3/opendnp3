@@ -40,7 +40,7 @@ namespace asiodnp3
 
 ASIODNP3Manager::ASIODNP3Manager(uint32_t concurrency, std::function<void()> onThreadStart, std::function<void()> onThreadExit) :
 	pLog(new asiopal::EventLog()),
-	pThreadPool(new asiopal::IOServiceThreadPool(pLog.get(), opendnp3::flags::INFO, "pool", concurrency, onThreadStart, onThreadExit)),
+	pThreadPool(new asiopal::IOServiceThreadPool(pLog.get(), opendnp3::flags::INFO, concurrency, onThreadStart, onThreadExit)),
 	pManager(new DNP3Manager())
 {
 
@@ -71,8 +71,9 @@ IChannel* ASIODNP3Manager::AddTCPClient(
     openpal::IEventHandler<opendnp3::ChannelState>* pStateHandler,
     opendnp3::IOpenDelayStrategy* pStrategy)
 {
-	auto pPhys = new asiopal::PhysicalLayerAsyncTCPClient(LogConfig(pLog.get(), levels, id), pThreadPool->GetIOService(), host, port);
-	return pManager->CreateChannel(id, minOpenRetry, maxOpenRetry, pPhys, pStateHandler, pStrategy);
+	auto pRoot = new LogRoot(pLog.get(), id, levels);
+	auto pPhys = new asiopal::PhysicalLayerAsyncTCPClient(*pRoot, pThreadPool->GetIOService(), host, port);
+	return pManager->CreateChannel(pRoot, minOpenRetry, maxOpenRetry, pPhys, pStateHandler, pStrategy);
 }
 
 IChannel* ASIODNP3Manager::AddTCPServer(
@@ -85,8 +86,9 @@ IChannel* ASIODNP3Manager::AddTCPServer(
     openpal::IEventHandler<opendnp3::ChannelState>* pStateHandler,
     opendnp3::IOpenDelayStrategy* pStrategy)
 {
-	auto pPhys = new asiopal::PhysicalLayerAsyncTCPServer(LogConfig(pLog.get(), levels, id), pThreadPool->GetIOService(), endpoint, port);
-	return pManager->CreateChannel(id, minOpenRetry, maxOpenRetry, pPhys, pStateHandler, pStrategy);
+	auto pRoot = new LogRoot(pLog.get(), id, levels);
+	auto pPhys = new asiopal::PhysicalLayerAsyncTCPServer(*pRoot, pThreadPool->GetIOService(), endpoint, port);
+	return pManager->CreateChannel(pRoot, minOpenRetry, maxOpenRetry, pPhys, pStateHandler, pStrategy);
 }
 
 IChannel* ASIODNP3Manager::AddSerial(
@@ -98,8 +100,9 @@ IChannel* ASIODNP3Manager::AddSerial(
     openpal::IEventHandler<opendnp3::ChannelState>* pStateHandler,
     opendnp3::IOpenDelayStrategy* pStrategy)
 {
-	auto pPhys = new asiopal::PhysicalLayerAsyncSerial(LogConfig(pLog.get(), levels, id), pThreadPool->GetIOService(), aSettings);
-	return pManager->CreateChannel(id, minOpenRetry, maxOpenRetry, pPhys, pStateHandler, pStrategy);
+	auto pRoot = new LogRoot(pLog.get(), id, levels);
+	auto pPhys = new asiopal::PhysicalLayerAsyncSerial(*pRoot, pThreadPool->GetIOService(), aSettings);
+	return pManager->CreateChannel(pRoot, minOpenRetry, maxOpenRetry, pPhys, pStateHandler, pStrategy);
 }
 
 }

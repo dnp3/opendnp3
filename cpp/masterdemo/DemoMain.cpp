@@ -57,7 +57,7 @@ int main(int argc, char* argv[])
 	log.AddLogSubscriber(LogToStdio::Inst());
 
 	// asio thread pool that drives the stack
-	IOServiceThreadPool pool(&log, FILTERS, "pool", 1); // 1 stack only needs 1 thread
+	IOServiceThreadPool pool(&log, FILTERS, 1); // 1 stack only needs 1 thread
 
 	// This is the main point of interaction with the stack
 	DNP3Manager mgr;
@@ -70,9 +70,10 @@ int main(int argc, char* argv[])
 	};
 
 	// Connect via a TCPClient socket to a outstation
-	auto pClientPhys = new PhysicalLayerAsyncTCPClient(LogConfig(&log, FILTERS, "tcpclient"), pool.GetIOService(), "127.0.0.1", 20000, configure);
+	auto pClientRoot = new LogRoot(&log, "client", FILTERS);
+	auto pClientPhys = new PhysicalLayerAsyncTCPClient(*pClientRoot, pool.GetIOService(), "127.0.0.1", 20000, configure);
 	// wait 3000 ms in between failed connect calls
-	auto pClient = mgr.CreateChannel("tcpclient", TimeDuration::Seconds(2), TimeDuration::Minutes(1), pClientPhys);
+	auto pClient = mgr.CreateChannel(pClientRoot, TimeDuration::Seconds(2), TimeDuration::Minutes(1), pClientPhys);
 
 	// The master config object for a master. The default are
 	// useable, but understanding the options are important.

@@ -26,24 +26,16 @@
 #include <assert.h>
 #include <cstring>
 
-#include "StringFormatting.h"
-
 using namespace std;
 
 namespace openpal
 {
 
-Logger::Logger(LogRoot* pRoot_, char const* name_) :
-pRoot(pRoot_)
+Logger::Logger(LogRoot* pRoot_, int subType_) :
+pRoot(pRoot_),
+subType(subType_)
 {
-	strncpy(name, name_, MAX_NAME_SIZE);
-}
-
-Logger Logger::GetSubLogger(char const* subName) const
-{
-	char buffer[MAX_NAME_SIZE];
-	SNPRINTF(buffer, MAX_NAME_SIZE, "%s - %s", name, subName);
-	return Logger(pRoot, buffer);
+	
 }
 
 bool Logger::IsEnabled(const LogFilters& filters) const
@@ -51,18 +43,17 @@ bool Logger::IsEnabled(const LogFilters& filters) const
 	return pRoot->IsEnabled(filters);
 }
 
-void Logger::Log( const LogEntry& entry)
+Logger Logger::SwitchType(int subType) const
 {
-	if (pRoot->IsEnabled(entry.GetFilters()))
-	{
-		pRoot->Log(entry);
-	}
+	return Logger(pRoot, subType);
 }
 
 void Logger::Log(const LogFilters& filters, char const* location, char const* message, int errorCode)
 {
-	LogEntry le(filters, name, location, message, errorCode);
-	this->Log(le);
+	if (pRoot->IsEnabled(filters))
+	{		
+		pRoot->Log(filters, subType, location, message, errorCode);
+	}
 }
 
 }

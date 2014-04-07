@@ -22,7 +22,6 @@
 #define __PHYSICAL_LAYER_ASYNC_BASE_H_
 
 #include <openpal/IPhysicalLayerAsync.h>
-#include <openpal/LogConfig.h>
 #include <openpal/LogRoot.h>
 
 #include <system_error>
@@ -67,7 +66,7 @@ class PhysicalLayerAsyncBase : public openpal::IPhysicalLayerAsync
 	};
 
 public:
-	PhysicalLayerAsyncBase(const  openpal::LogConfig& config);
+	PhysicalLayerAsyncBase(openpal::LogRoot& root);
 
 	// destructor should only be called once the object is totally finished with all of its async operations
 	// to avoid segfaulting. There are a # of asserts that make sure the object has been shutdown properly.
@@ -156,19 +155,13 @@ public:
 		return logger;
 	}
 
-	openpal::LogRoot& GetLogRoot()
-	{
-		return logRoot;
-	}
-
 protected:
 
 	//Internally produced events
 	void OnOpenCallback(const std::error_code& error);
 	void OnReadCallback(const std::error_code& error, uint8_t* apBuffer, uint32_t  aNumRead);
 	void OnWriteCallback(const std::error_code& rrror, uint32_t  aNumBytes);
-
-	openpal::LogRoot logRoot;
+	
 	openpal::Logger logger;
 
 	// "user" object that recieves the callbacks

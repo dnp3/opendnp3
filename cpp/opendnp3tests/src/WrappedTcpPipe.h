@@ -40,7 +40,7 @@ namespace opendnp3
 class WrappedTcpPipe
 {
 public:
-	WrappedTcpPipe(openpal::ILogBase* pLog, uint32_t filters, asio::io_service*, uint16_t aPort);
+	WrappedTcpPipe(openpal::LogRoot& root, asio::io_service*, uint16_t aPort);
 
 private:
 	asiopal::PhysicalLayerAsyncTCPClient clientTcp;

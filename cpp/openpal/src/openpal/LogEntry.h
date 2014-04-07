@@ -36,17 +36,20 @@ class LogEntry
 
 public:
 
-	static const uint32_t MAX_MESSAGE_SIZE = 80;
+	LogEntry();
 
-	LogEntry(): errorCode(-1)
-	{}
-
-	LogEntry(const LogFilters& filters, char const* name, char const* location, char const* message, int32_t errorCode);
+	LogEntry(char const* id, const LogFilters& filters, int subType, char const* location, char const* message, int errorCode);
 
 	/// @return The name of the logger that recorded the message
-	char const*	GetName() const
+	char const*	GetId() const
 	{
-		return name;
+		return id;
+	}
+
+	/// @return The application specific sub-type
+	int GetSubType() const
+	{
+		return subType;
 	}
 
 	/// @return The place in the source code where the message was recorded
@@ -75,11 +78,12 @@ public:
 
 private:
 
+	char const*		id;
 	LogFilters		filters;
-	char const*		name;
+	int				subType;
 	char const*		location;
 	char const*		message;
-	int32_t			errorCode;
+	int				errorCode;
 };
 
 }

@@ -36,12 +36,12 @@ namespace opendnp3
 {
 
 PhysicalLayerMonitor::PhysicalLayerMonitor(
-    const Logger& logger,
+	openpal::LogRoot& root,
     IPhysicalLayerAsync* pPhys_,
     TimeDuration minOpenRetry_,
     TimeDuration maxOpenRetry_,
     IOpenDelayStrategy* pOpenStrategy_) :
-	Loggable(logger),
+	logger(root.GetLogger()),
 	pPhys(pPhys_),
 	isOnline(false),
 	mpOpenTimer(nullptr),

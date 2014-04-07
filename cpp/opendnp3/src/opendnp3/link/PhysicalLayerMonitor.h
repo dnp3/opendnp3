@@ -24,7 +24,7 @@
 #include <openpal/IHandlerAsync.h>
 #include <openpal/IExecutor.h>
 #include <openpal/TimeDuration.h>
-#include <openpal/Loggable.h>
+#include <openpal/LogRoot.h>
 
 #include "opendnp3/gen/ChannelState.h"
 #include "opendnp3/link/IOpenDelayStrategy.h"
@@ -42,13 +42,13 @@ class IMonitorState;
 
 /** Manages the lifecycle of a physical layer
   */
-class PhysicalLayerMonitor : public openpal::IHandlerAsync, protected openpal::Loggable
+class PhysicalLayerMonitor : public openpal::IHandlerAsync
 {
 	friend class MonitorStateActions;
 
 public:
 
-	PhysicalLayerMonitor(	const openpal::Logger&,
+	PhysicalLayerMonitor(	openpal::LogRoot& root,
 	                        openpal::IPhysicalLayerAsync*,
 	                        openpal::TimeDuration minOpenRetry_,
 	                        openpal::TimeDuration maxOpenRetry_,
@@ -85,6 +85,7 @@ public:
 
 protected:
 
+	openpal::Logger logger;
 
 	virtual void OnPhysicalLayerOpenSuccessCallback() = 0;
 	virtual void OnPhysicalLayerOpenFailureCallback() = 0;

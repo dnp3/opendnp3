@@ -28,7 +28,7 @@ using namespace opendnp3;
 namespace asiodnp3
 {
 
-MasterStackImpl::MasterStackImpl(	Logger logger,
+MasterStackImpl::MasterStackImpl(	LogRoot& root,
                                     IExecutor* apExecutor,
                                     ISOEHandler* apPublisher,
                                     IUTCTimeSource* apTimeSource,
@@ -36,8 +36,8 @@ MasterStackImpl::MasterStackImpl(	Logger logger,
                                     const MasterStackConfig& config,
                                     const StackActionHandler& handler) :
 
-	IMaster(logger, apExecutor, config.app, config.link, handler),
-	master(logger.GetSubLogger("master"), config.master, &appStack.application, apPublisher, apTaskGroup, apExecutor, apTimeSource)
+	IMaster(root, apExecutor, config.app, config.link, handler),
+	master(root, config.master, &appStack.application, apPublisher, apTaskGroup, apExecutor, apTimeSource)
 {
 	appStack.application.SetUser(&master);
 }

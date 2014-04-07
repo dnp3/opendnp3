@@ -26,6 +26,14 @@
 
 namespace opendnp3
 {
+
+namespace sources
+{
+	const int APP_LAYER = 0;
+	const int TRANSPORT_LAYER = 1;
+	const int LINK_LAYER = 2;
+}
+
 namespace flags
 {
 // define most of these in terms of the base openpal filters

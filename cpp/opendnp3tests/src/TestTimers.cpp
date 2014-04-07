@@ -48,7 +48,7 @@ class TimerTestObject
 public:
 	TimerTestObject() :
 		log(),
-		pool(&log, levels::NORMAL, "thread-pool", 1),
+		pool(&log, levels::NORMAL, 1),
 		strand(*pool.GetIOService()),
 		exe(&strand),
 		mLast(-1),

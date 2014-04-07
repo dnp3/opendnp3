@@ -25,7 +25,7 @@
 #include "TransportTx.h"
 
 #include <openpal/IExecutor.h>
-#include <openpal/Loggable.h>
+#include <openpal/LogRoot.h>
 #include <openpal/AsyncLayerInterfaces.h>
 
 #include "opendnp3/link/ILinkLayer.h"
@@ -40,7 +40,7 @@ class TLS_Base;
 /** Implements the DNP3 transport layer as a generic
 asynchronous protocol stack layer
 */
-class TransportLayer : public openpal::IUpperLayer, public openpal::ILowerLayer, private openpal::Loggable
+class TransportLayer : public openpal::IUpperLayer, public openpal::ILowerLayer
 {
 	friend class TransportRx;
 	friend class TransportTx;
@@ -50,7 +50,7 @@ class TransportLayer : public openpal::IUpperLayer, public openpal::ILowerLayer,
 
 public:
 
-	TransportLayer(const openpal::Logger& logger, openpal::IExecutor* pExecutor_, uint32_t maxFragSize = sizes::DEFAULT_APDU_BUFFER_SIZE);
+	TransportLayer(openpal::LogRoot& root, openpal::IExecutor* pExecutor_, uint32_t maxFragSize = sizes::DEFAULT_APDU_BUFFER_SIZE);
 
 	// static std::string ToString(uint8_t aHeader); TODO
 
@@ -75,6 +75,7 @@ public:
 
 private:
 
+	openpal::Logger logger;
 	openpal::IUpperLayer* pUpperLayer;
 	ILinkLayer* pLinkLayer;
 

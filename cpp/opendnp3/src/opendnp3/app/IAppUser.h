@@ -25,16 +25,17 @@
 #include "SequenceInfo.h"
 
 #include <openpal/Loggable.h>
+#include <openpal/LogRoot.h>
 
 namespace opendnp3
 {
 
 // Interface for callbacks from an application layer
-class IAppUser : protected openpal::Loggable
+class IAppUser
 {
 
 public:
-	IAppUser(openpal::Logger aLogger): Loggable(aLogger) {}
+	IAppUser(openpal::LogRoot& root);
 
 	virtual void OnLowerLayerUp() = 0;					// The app layer is online
 	virtual void OnLowerLayerDown() = 0;				// The app layer is offline
@@ -56,6 +57,11 @@ public:
 
 	// Process request fragment
 	virtual void OnRequest(const APDURecord&, SequenceInfo);
+
+protected:
+
+	openpal::Logger logger;
+
 };
 
 } //end ns

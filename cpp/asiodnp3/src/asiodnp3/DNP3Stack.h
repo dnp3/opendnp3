@@ -36,7 +36,7 @@ class DNP3Stack : public IStack
 {
 public:
 
-	DNP3Stack(openpal::Logger logger, openpal::IExecutor* pExecutor, opendnp3::AppConfig appConfig, opendnp3::LinkConfig linkConfig, const StackActionHandler& handler_);
+	DNP3Stack(openpal::LogRoot& root, openpal::IExecutor* pExecutor, opendnp3::AppConfig appConfig, opendnp3::LinkConfig linkConfig, const StackActionHandler& handler_);
 
 	virtual ~DNP3Stack() {}
 

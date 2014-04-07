@@ -23,7 +23,6 @@
 
 #include <openpal/IShutdownHandler.h>
 #include <openpal/LogRoot.h>
-#include <openpal/LogConfig.h>
 #include <openpal/StaticLinkedList.h>
 
 #include <opendnp3/outstation/OutstationStackConfig.h>
@@ -34,9 +33,9 @@
 
 #include <memory>
 
-namespace asiopal
+namespace openpal
 {
-	class PhysicalLayerAsyncBase;
+	class IPhysicalLayerAsync;
 }
 
 namespace opendnp3
@@ -64,11 +63,11 @@ class DNP3Channel: public IChannel, private openpal::IShutdownHandler, private o
 
 public:
 	DNP3Channel(
-		char const* id,
+		LogRoot* pLogRoot_,
 	    openpal::TimeDuration minOpenRetry,
 	    openpal::TimeDuration maxOpenRetry,
 	    opendnp3::IOpenDelayStrategy* pStrategy,
-	    asiopal::PhysicalLayerAsyncBase* pPhys,
+		openpal::IPhysicalLayerAsync* pPhys_,
 	    openpal::ITypedShutdownHandler<DNP3Channel*>* pShutdownHandler_,
 		openpal::IEventHandler<opendnp3::ChannelState>* pStateHandler_
 	);
@@ -83,7 +82,7 @@ public:
 	virtual void SetLogFilters(const openpal::LogFilters& filters) override final;
 
 	IMaster* AddMaster(		char const* id,
-		opendnp3::ISOEHandler* pPublisher,
+							opendnp3::ISOEHandler* pPublisher,
 	                        openpal::IUTCTimeSource* pTimeSource,
 							const opendnp3::MasterStackConfig& cfg);
 
@@ -106,9 +105,8 @@ private:
 
 	void CheckForFinalShutdown();
 
-	std::auto_ptr<asiopal::PhysicalLayerAsyncBase> pPhys;
-
-	Logger logger;
+	std::unique_ptr<openpal::IPhysicalLayerAsync> pPhys;
+	std::unique_ptr<openpal::LogRoot> pLogRoot;
 
 	State state;
 	openpal::ITypedShutdownHandler<DNP3Channel*>* pShutdownHandler;

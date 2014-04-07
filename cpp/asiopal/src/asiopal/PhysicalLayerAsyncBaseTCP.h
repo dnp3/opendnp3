@@ -39,7 +39,7 @@ Common socket object and some shared implementations for server/client.
 class PhysicalLayerAsyncBaseTCP : public PhysicalLayerAsyncASIO
 {
 public:
-	PhysicalLayerAsyncBaseTCP(const openpal::LogConfig& config, asio::io_service* apIOService);
+	PhysicalLayerAsyncBaseTCP(openpal::LogRoot& root, asio::io_service* apIOService);
 
 	virtual ~PhysicalLayerAsyncBaseTCP() {}
 

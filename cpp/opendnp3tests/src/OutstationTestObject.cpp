@@ -43,12 +43,12 @@ OutstationTestObject::OutstationTestObject(const OutstationConfig& arCfg, const 
 	mTimeWrites.push(time);
 }),
 mts(),
-app(log.GetLogger("app")),
+app(log.GetLogger()),
 dbBuffers(dbTemplate),
 db(dbBuffers.GetFacade()),
 eventBuffers(EventBufferConfig()),
-outstation(log.GetLogger("outstation"), &app, &mts, &mMockTimeWriteHandler, &db, eventBuffers.GetFacade(), &cmdHandler, arCfg),
-mLogger(log.GetLogger("test"))
+outstation(log.root, &app, &mts, &mMockTimeWriteHandler, &db, eventBuffers.GetFacade(), &cmdHandler, arCfg),
+mLogger(log.GetLogger())
 {
 	app.SetUser(&outstation);
 	SetDefaultClass(defaultClass);

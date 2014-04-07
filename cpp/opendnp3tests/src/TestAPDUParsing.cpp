@@ -47,7 +47,7 @@ void TestComplex(const std::string& hex, APDUParser::Result expected, size_t num
 {
 	HexSequence buffer(hex);
 	MockApduHeaderHandler mock;
-	auto logger = mock.GetLogger("test");
+	auto logger = mock.root.GetLogger();
 	auto result = APDUParser::ParseTwoPass(buffer.ToReadOnly(), &mock, &logger);
 
 	if (result != expected)

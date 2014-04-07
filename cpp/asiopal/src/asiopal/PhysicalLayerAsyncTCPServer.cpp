@@ -37,13 +37,13 @@ namespace asiopal
 {
 
 PhysicalLayerAsyncTCPServer::PhysicalLayerAsyncTCPServer(
-    const openpal::LogConfig& config,
+	openpal::LogRoot& root,
     asio::io_service* pIOService,
     const std::string& endpoint,
     uint16_t port,
     std::function<void (asio::ip::tcp::socket&)> configure_) :
 
-	PhysicalLayerAsyncBaseTCP(config, pIOService),
+	PhysicalLayerAsyncBaseTCP(root, pIOService),
 	localEndpointString(endpoint),
 	localEndpoint(ip::tcp::v4(), port),
 	acceptor(*pIOService),

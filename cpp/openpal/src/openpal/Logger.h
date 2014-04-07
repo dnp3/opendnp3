@@ -38,29 +38,20 @@ class Logger
 {
 	friend class LogRoot;
 
-public:
+public:	
 
-	static const uint32_t MAX_NAME_SIZE = 20;
-
-	void Log(const LogFilters& filters, char const* location, char const* message, int errorCode = -1);
-
-	void Log(const LogEntry& entry);
-
-	char const* GetName() const
-	{
-		return name;
-	}
-
+	void Log(const LogFilters& filters, char const* location, char const* message, int errorCode = -1);	
+	
 	bool IsEnabled(const LogFilters& filters) const;
 
-	Logger GetSubLogger(char const* id) const;
+	Logger SwitchType(int subType) const;
 
 private:
 
-	Logger(LogRoot* pRoot, char const* id);
+	Logger(LogRoot* pRoot, int subType);
 
-	LogRoot*	pRoot;
-	char		name[MAX_NAME_SIZE];
+	LogRoot* pRoot;
+	int subType;
 };
 
 }

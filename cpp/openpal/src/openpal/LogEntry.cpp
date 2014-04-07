@@ -23,11 +23,15 @@
 namespace openpal
 {
 
+LogEntry::LogEntry() : errorCode(-1)
+{}
 
-LogEntry::LogEntry(const LogFilters& filters_, char const* name_, char const* location_, char const* message_, int32_t errorCode_)
+
+LogEntry::LogEntry(char const* id_, const LogFilters& filters_, int subType_, char const* location_, char const* message_, int32_t errorCode_)
 	:
+	id(id_),
 	filters(filters_),
-	name(name_),
+	subType(subType_),
 	location(location_),
 	message(message_),
 	errorCode(errorCode_)

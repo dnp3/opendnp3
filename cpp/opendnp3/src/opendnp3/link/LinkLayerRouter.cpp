@@ -36,14 +36,14 @@ using namespace openpal;
 namespace opendnp3
 {
 
-LinkLayerRouter::LinkLayerRouter(	const Logger& logger,
+LinkLayerRouter::LinkLayerRouter(	openpal::LogRoot& root,
                                     IPhysicalLayerAsync* apPhys,
                                     openpal::TimeDuration minOpenRetry,
                                     openpal::TimeDuration maxOpenRetry,
                                     openpal::IEventHandler<ChannelState>* pStateHandler_,
                                     openpal::IShutdownHandler* pShutdownHandler_,
                                     IOpenDelayStrategy* pStrategy) :
-	PhysicalLayerMonitor(logger, apPhys, minOpenRetry, maxOpenRetry, pStrategy),
+	PhysicalLayerMonitor(root, apPhys, minOpenRetry, maxOpenRetry, pStrategy),
 	pStateHandler(pStateHandler_),
 	pShutdownHandler(pShutdownHandler_),
 	mReceiver(logger, this),

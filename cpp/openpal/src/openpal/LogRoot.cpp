@@ -27,23 +27,19 @@
 namespace openpal
 {
 
-LogRoot::LogRoot(ILogBase* pLog_, const LogFilters& filters_) : pLog(pLog_), filters(filters_)
+LogRoot::LogRoot(ILogBase* pLog_, char const* id_, const LogFilters& filters_) : 
+	pLog(pLog_), id(id_), filters(filters_)
 {}
 
-void LogRoot::Log(const LogFilters& filters, char const* name, char const* location, char const* message, int errorCode)
+void LogRoot::Log(const LogFilters& filters, int subType, char const* location, char const* message, int errorCode)
 {
-	LogEntry le(filters, name, location, message, errorCode);
+	LogEntry le(id, filters, subType, location, message, errorCode);
 	pLog->Log(le);
 }
 
-void LogRoot::Log(const LogEntry& entry)
+Logger LogRoot::GetLogger(int subType)
 {
-	pLog->Log(entry);
-}
-
-Logger LogRoot::GetLogger(char const* id)
-{
-	return Logger(this, id);
+	return Logger(this, subType);
 }
 
 }

@@ -35,14 +35,13 @@ using namespace openpal;
 namespace opendnp3
 {
 
-AppLayerChannel::AppLayerChannel(char const* name, openpal::Logger& arLogger, AppLayer* apAppLayer, IExecutor* apExecutor, TimeDuration aTimeout) :
-	Loggable(arLogger),
+AppLayerChannel::AppLayerChannel(const openpal::Logger& logger_, AppLayer* apAppLayer, IExecutor* apExecutor, TimeDuration aTimeout) :	
+	logger(logger_),
 	mpAppLayer(apAppLayer),
 	mNumRetry(0),
 	mpExecutor(apExecutor),
 	mpTimer(nullptr),
-	M_TIMEOUT(aTimeout),
-	M_NAME(name)
+	M_TIMEOUT(aTimeout)	
 {
 	this->Reset();
 }
@@ -112,12 +111,12 @@ bool AppLayerChannel::Retry(ACS_Base* apState)
 
 void AppLayerChannel::DoPartialResponse(const APDUResponseRecord& record)
 {
-	mpAppLayer->mpUser->OnPartialResponse(record);
+	mpAppLayer->pUser->OnPartialResponse(record);
 }
 
 void AppLayerChannel::DoFinalResponse(const APDUResponseRecord& record)
 {
-	mpAppLayer->mpUser->OnFinalResponse(record);
+	mpAppLayer->pUser->OnFinalResponse(record);
 }
 
 void AppLayerChannel::StartTimer()

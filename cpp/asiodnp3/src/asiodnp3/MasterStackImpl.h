@@ -38,7 +38,7 @@ class MasterStackImpl : public IMaster
 public:
 
 	MasterStackImpl(
-	    openpal::Logger,
+		openpal::LogRoot& root,
 	    openpal::IExecutor* apExecutor,
 	    opendnp3::ISOEHandler* apPublisher,
 	    IUTCTimeSource* apTimeSource,

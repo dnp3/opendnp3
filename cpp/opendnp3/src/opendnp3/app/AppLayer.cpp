@@ -22,6 +22,7 @@
 
 #include <openpal/LoggableMacros.h>
 #include <openpal/IExecutor.h>
+#include <openpal/LogRoot.h>
 
 #include "opendnp3/DNPErrorCodes.h"
 #include "opendnp3/LogLevels.h"
@@ -35,17 +36,17 @@ using namespace std;
 namespace opendnp3
 {
 
-AppLayer::AppLayer(const openpal::Logger& logger, openpal::IExecutor* pExecutor_, const AppConfig& appConfig) :
-	Loggable(logger),
+AppLayer::AppLayer(openpal::LogRoot& root, openpal::IExecutor* pExecutor_, const AppConfig& config) :
+	logger(root.GetLogger(sources::APP_LAYER)),
 	isOnline(false),
 	isSending(false),
 	isConfirmSending(false),
-	isMaster(appConfig.IsMaster),
-	mpUser(nullptr),
+	isMaster(config.IsMaster),
+	pUser(nullptr),
 	pTransportLayer(nullptr),
-	mSolicited(logger.GetSubLogger("sol"), this, pExecutor_, appConfig.RspTimeout),
-	mUnsolicited(logger.GetSubLogger("unsol"), this, pExecutor_, appConfig.RspTimeout),
-	numRetry(appConfig.NumRetry),
+	solicited(logger, this, pExecutor_, config.RspTimeout),
+	unsolicited(logger, this, pExecutor_, config.RspTimeout),
+	numRetry(config.NumRetry),
 	confirmAPDU(openpal::WriteBuffer(confirmBuffer, 2))
 {
 	confirmAPDU.SetFunction(FunctionCode::CONFIRM);
@@ -53,9 +54,9 @@ AppLayer::AppLayer(const openpal::Logger& logger, openpal::IExecutor* pExecutor_
 
 void AppLayer::SetUser(IAppUser* apUser)
 {
-	assert(mpUser == nullptr);
+	assert(pUser == nullptr);
 	assert(apUser != nullptr);
-	mpUser = apUser;
+	pUser = apUser;
 }
 
 void AppLayer::SetTransportLayer(openpal::ILowerLayer* pTransportLayer_)
@@ -71,22 +72,22 @@ void AppLayer::SetTransportLayer(openpal::ILowerLayer* pTransportLayer_)
 
 void AppLayer::SendResponse(APDUResponse& apdu)
 {
-	mSolicited.Send(apdu, this->GetRetries(FunctionCode::RESPONSE));
+	solicited.Send(apdu, this->GetRetries(FunctionCode::RESPONSE));
 }
 
 void AppLayer::SendUnsolicited(APDUResponse& apdu)
 {
-	mUnsolicited.Send(apdu, this->GetRetries(FunctionCode::UNSOLICITED_RESPONSE));
+	unsolicited.Send(apdu, this->GetRetries(FunctionCode::UNSOLICITED_RESPONSE));
 }
 
 void AppLayer::SendRequest(APDURequest& apdu)
 {
-	mSolicited.Send(apdu, this->GetRetries(apdu.GetFunction()));
+	solicited.Send(apdu, this->GetRetries(apdu.GetFunction()));
 }
 
 void AppLayer::CancelResponse()
 {
-	mSolicited.Cancel();
+	solicited.Cancel();
 }
 
 ////////////////////
@@ -168,7 +169,7 @@ void AppLayer::OnLowerLayerUp()
 	else
 	{
 		isOnline = true;
-		mpUser->OnLowerLayerUp();
+		pUser->OnLowerLayerUp();
 	}
 }
 
@@ -179,15 +180,15 @@ void AppLayer::OnLowerLayerDown()
 		isOnline = false;
 
 		//reset both the channels
-		mSolicited.Reset();
-		mUnsolicited.Reset();
+		solicited.Reset();
+		unsolicited.Reset();
 
 		//reset the transmitter state
 		sendQueue.Clear();
 		isSending = false;
 
 		//notify the user
-		mpUser->OnLowerLayerDown();
+		pUser->OnLowerLayerDown();
 	}
 	else
 	{
@@ -214,13 +215,25 @@ void AppLayer::OnSendResult(bool isSuccess)
 		{
 			if (isSuccess)
 			{
-				if (function == FunctionCode::UNSOLICITED_RESPONSE) mUnsolicited.OnSendSuccess();
-				else mSolicited.OnSendSuccess();
+				if (function == FunctionCode::UNSOLICITED_RESPONSE)
+				{
+					unsolicited.OnSendSuccess();
+				}
+				else
+				{
+					solicited.OnSendSuccess();
+				}
 			}
 			else
 			{
-				if (function == FunctionCode::UNSOLICITED_RESPONSE) mUnsolicited.OnSendFailure();
-				else mSolicited.OnSendFailure();
+				if (function == FunctionCode::UNSOLICITED_RESPONSE)
+				{
+					unsolicited.OnSendFailure();
+				}
+				else
+				{
+					solicited.OnSendFailure();
+				}
 			}
 		}
 
@@ -247,12 +260,12 @@ void AppLayer::OnResponse(const APDUResponseRecord& record)
 		// If we get a response that requests confirmation, we shouldn't confirm
 		// if we're not going to handle the data. This is usually indicative of an
 		// early timeout. It will show up in the logs as a response without context.
-		if(record.control.CON && mSolicited.AcceptsResponse())
+		if(record.control.CON && solicited.AcceptsResponse())
 		{
 			this->QueueConfirm(false, record.control.SEQ);
 		}
 
-		mSolicited.OnResponse(record);
+		solicited.OnResponse(record);
 	}
 }
 
@@ -265,10 +278,12 @@ void AppLayer::OnUnsolResponse(const APDUResponseRecord& record)
 	else
 	{
 
-		if(record.control.CON)
+		if (record.control.CON)
+		{
 			this->QueueConfirm(true, record.control.SEQ);
+		}
 
-		mUnsolicited.OnUnsol(record);
+		unsolicited.OnUnsol(record);
 	}
 
 
@@ -290,12 +305,12 @@ void AppLayer::OnConfirm(const AppControlField& aControl, uint32_t aDataSize)
 			}
 			else
 			{
-				mUnsolicited.OnConfirm(aControl.SEQ);
+				unsolicited.OnConfirm(aControl.SEQ);
 			}
 		}
 		else
 		{
-			mSolicited.OnConfirm(aControl.SEQ);
+			solicited.OnConfirm(aControl.SEQ);
 		}
 	}
 }
@@ -310,7 +325,7 @@ void AppLayer::OnRequest(const APDURecord& record)
 	{
 		if (record.control.IsFirAndFin())
 		{
-			mSolicited.OnRequest(record);
+			solicited.OnRequest(record);
 		}
 		else
 		{

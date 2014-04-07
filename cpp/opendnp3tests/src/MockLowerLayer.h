@@ -23,17 +23,16 @@
 
 #include <queue>
 
-#include <openpal/Loggable.h>
-
+#include <openpal/LogRoot.h>
 #include <openpal/AsyncLayerInterfaces.h>
 
 namespace opendnp3
 {
 
-class MockLowerLayer : public openpal::ILowerLayer, public openpal::HasUpperLayer, private openpal::Loggable
+class MockLowerLayer : public openpal::ILowerLayer, public openpal::HasUpperLayer
 {
 public:
-	MockLowerLayer(openpal::Logger);
+	MockLowerLayer(openpal::LogRoot& root);
 
 	void SendUp(const openpal::ReadOnlyBuffer& arBuffer);
 	void SendUp(const std::string&);
@@ -53,8 +52,10 @@ public:
 
 private:
 
+	openpal::Logger logger;
 	bool mAutoSendCallback;
 	bool mIsSuccess;
+
 	std::queue<openpal::ReadOnlyBuffer> sendQueue;
 };
 

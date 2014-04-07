@@ -36,13 +36,13 @@ namespace asiopal
 {
 
 PhysicalLayerAsyncTCPClient::PhysicalLayerAsyncTCPClient(
-    const openpal::LogConfig& config,
+	openpal::LogRoot& root,
     asio::io_service* pIOService,
     const std::string& host_,
     uint16_t port,
     std::function<void (asio::ip::tcp::socket&)> aConfigure) :
 
-	PhysicalLayerAsyncBaseTCP(config, pIOService),
+	PhysicalLayerAsyncBaseTCP(root, pIOService),
 	condition(logger),
 	host(host_),
 	remoteEndpoint(ip::tcp::v4(), port),

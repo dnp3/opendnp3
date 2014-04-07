@@ -44,7 +44,7 @@ using namespace openpal;
 namespace opendnp3
 {
 
-Outstation::Outstation(	openpal::Logger logger,
+Outstation::Outstation(openpal::LogRoot& root,
                         IAppLayer* pAppLayer,
                         IExecutor* pExecutor,
                         ITimeWriteHandler* pTimeWriteHandler,
@@ -52,7 +52,7 @@ Outstation::Outstation(	openpal::Logger logger,
                         const EventBufferFacade& buffers,
                         ICommandHandler* pCmdHandler,
                         const OutstationConfig& config) :
-	IAppUser(logger),
+	IAppUser(root),
 	mpTimeWriteHandler(pTimeWriteHandler),
 	selectBuffer(pExecutor, config.mSelectTimeout),
 	lastResponse(responseBuffer.GetWriteBuffer()),

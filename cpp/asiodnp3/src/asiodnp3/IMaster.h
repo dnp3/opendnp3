@@ -44,8 +44,8 @@ namespace asiodnp3
 class IMaster : public DNP3Stack
 {
 public:
-	IMaster(openpal::Logger logger, openpal::IExecutor* pExecutor, opendnp3::AppConfig appConfig, opendnp3::LinkConfig linkConfig, const StackActionHandler& handler) :
-		DNP3Stack(logger, pExecutor, appConfig, linkConfig, handler)
+	IMaster(openpal::LogRoot& root, openpal::IExecutor* pExecutor, opendnp3::AppConfig appConfig, opendnp3::LinkConfig linkConfig, const StackActionHandler& handler) :
+		DNP3Stack(root, pExecutor, appConfig, linkConfig, handler)
 	{}
 
 	virtual ~IMaster() {}

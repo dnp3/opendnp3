@@ -26,19 +26,19 @@ namespace asiodnp3
 {
 
 OutstationStackImpl::OutstationStackImpl(
-    openpal::Logger& logger,
+	openpal::LogRoot& root,
     openpal::IExecutor* apExecutor,
     ITimeWriteHandler* apTimeWriteHandler,
     ICommandHandler* apCmdHandler,
     const OutstationStackConfig& config,
     const StackActionHandler& handler) :
-	IOutstation(logger, apExecutor, config.app, config.link, handler),
+	IOutstation(root, apExecutor, config.app, config.link, handler),
 	pExecutor(apExecutor),
 	databaseBuffers(config.dbTemplate),
 	eventBuffers(config.eventBuffer),
 	mutex(),
 	database(databaseBuffers.GetFacade(), &mutex),
-	outstation(logger.GetSubLogger("outstation"), &appStack.application, apExecutor, apTimeWriteHandler, &database, eventBuffers.GetFacade(), apCmdHandler, config.outstation)
+	outstation(root, &appStack.application, apExecutor, apTimeWriteHandler, &database, eventBuffers.GetFacade(), apCmdHandler, config.outstation)
 {
 	appStack.application.SetUser(&outstation);	
 }

@@ -125,9 +125,8 @@ std::string PhysicalLayerAsyncBase::State::ConvertStateToString() const
 // PhysicalLayerAsyncBase
 ///////////////////////////////////
 
-PhysicalLayerAsyncBase::PhysicalLayerAsyncBase(const LogConfig& config) :
-	logRoot(config.GetLog(), config.GetFilters()),
-	logger(logRoot.GetLogger(config.GetRootId())),
+PhysicalLayerAsyncBase::PhysicalLayerAsyncBase(openpal::LogRoot& root) :	
+	logger(root.GetLogger()),
 	mpHandler(nullptr)
 {
 

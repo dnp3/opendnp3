@@ -74,7 +74,7 @@ class Outstation : public IAppUser
 
 public:
 
-	Outstation(openpal::Logger, IAppLayer*, openpal::IExecutor*, ITimeWriteHandler*, Database*, const EventBufferFacade& buffers, ICommandHandler*, const OutstationConfig&);
+	Outstation(openpal::LogRoot& root, IAppLayer*, openpal::IExecutor*, ITimeWriteHandler*, Database*, const EventBufferFacade& buffers, ICommandHandler*, const OutstationConfig&);
 	~Outstation();
 
 	////////////////////////
