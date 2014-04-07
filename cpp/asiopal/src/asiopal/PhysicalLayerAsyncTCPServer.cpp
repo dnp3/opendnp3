@@ -25,7 +25,7 @@
 #include <functional>
 #include <string>
 
-#include <openpal/LoggableMacros.h>
+#include <openpal/LogMacros.h>
 #include <openpal/IHandlerAsync.h>
 #include <openpal/LogLevels.h>
 

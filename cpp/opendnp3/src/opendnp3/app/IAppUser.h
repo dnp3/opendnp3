@@ -24,7 +24,6 @@
 #include "APDUHeader.h"
 #include "SequenceInfo.h"
 
-#include <openpal/Loggable.h>
 #include <openpal/LogRoot.h>
 
 namespace opendnp3

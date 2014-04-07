@@ -26,7 +26,7 @@
 #include <opendnp3/app/IAppUser.h>
 #include <opendnp3/app/IAppLayer.h>
 
-#include <openpal/Loggable.h>
+#include <openpal/Logger.h>
 
 #include <queue>
 
@@ -34,12 +34,11 @@ namespace opendnp3
 {
 
 /**	@section desc Test class to mock async app layer for master/outstation */
-class MockAppLayer : public IAppLayer, public openpal::Loggable
+class MockAppLayer : public IAppLayer
 {
 public:
-	MockAppLayer(openpal::Logger);
+	MockAppLayer(const openpal::Logger&);
 	virtual ~MockAppLayer() {}
-
 
 	void SetUser(IAppUser*);
 
@@ -72,6 +71,7 @@ private:
 	void DoSendUnsol();
 	void DoSendSol();
 
+	openpal::Logger logger;
 	IAppUser* mpUser;
 	bool mAutoSendCallback;
 	bool mIsSuccess;

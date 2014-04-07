@@ -22,7 +22,7 @@
 
 #include <assert.h>
 
-#include <openpal/LoggableMacros.h>
+#include <openpal/LogMacros.h>
 #include <openpal/IPhysicalLayerAsync.h>
 #include <openpal/Bind.h>
 

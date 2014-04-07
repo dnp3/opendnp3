@@ -21,7 +21,7 @@
 #include "SecLinkLayerStates.h"
 
 
-#include <openpal/LoggableMacros.h>
+#include <openpal/LogMacros.h>
 
 #include "opendnp3/DNPErrorCodes.h"
 #include "opendnp3/link/LinkLayer.h"

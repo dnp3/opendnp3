@@ -23,7 +23,7 @@
 #include "TransportLayer.h"
 #include "opendnp3/LogLevels.h"
 
-#include <openpal/LoggableMacros.h>
+#include <openpal/LogMacros.h>
 #include <openpal/ToHex.h>
 
 
@@ -33,8 +33,8 @@ using namespace openpal;
 namespace opendnp3
 {
 
-TransportRx::TransportRx(const Logger& logger, TransportLayer* apContext, uint32_t fragSize) :
-	Loggable(logger),
+TransportRx::TransportRx(const Logger& logger_, TransportLayer* apContext, uint32_t fragSize) :
+	logger(logger_),
 	mpContext(apContext),
 	maxFragSize(fragSize),
 	numBytesRead(0),

@@ -24,7 +24,7 @@
 
 #include <openpal/Location.h>
 #include <openpal/Logger.h>
-#include <openpal/LoggableMacros.h>
+#include <openpal/LogMacros.h>
 
 #include <asio.hpp>
 

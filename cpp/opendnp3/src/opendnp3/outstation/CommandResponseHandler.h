@@ -27,8 +27,7 @@
 #include "opendnp3/outstation/ICommandAction.h"
 
 #include <openpal/StaticBuffer.h>
-#include <openpal/Loggable.h>
-#include <openpal/LoggableMacros.h>
+#include <openpal/LogMacros.h>
 
 namespace opendnp3
 {

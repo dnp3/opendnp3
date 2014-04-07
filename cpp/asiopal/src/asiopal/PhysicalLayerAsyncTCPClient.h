@@ -23,7 +23,7 @@
 
 #include "PhysicalLayerAsyncBaseTCP.h"
 
-#include <openpal/LoggableMacros.h>
+#include <openpal/LogMacros.h>
 #include <openpal/Location.h>
 #include <openpal/LogLevels.h>
 

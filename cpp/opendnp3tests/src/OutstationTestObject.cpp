@@ -24,7 +24,7 @@
 #include "Exception.h"
 
 #include <openpal/ToHex.h>
-#include <openpal/LoggableMacros.h>
+#include <openpal/LogMacros.h>
 
 #include <opendnp3/app/APDUHeaderParser.h>
 

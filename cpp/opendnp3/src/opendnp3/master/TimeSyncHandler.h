@@ -25,8 +25,7 @@
 
 #include "opendnp3/LogLevels.h"
 
-#include <openpal/Loggable.h>
-#include <openpal/LoggableMacros.h>
+#include <openpal/LogMacros.h>
 
 namespace opendnp3
 {

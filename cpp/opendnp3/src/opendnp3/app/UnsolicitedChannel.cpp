@@ -20,7 +20,7 @@
  */
 #include "UnsolicitedChannel.h"
 
-#include <openpal/LoggableMacros.h>
+#include <openpal/LogMacros.h>
 
 #include "opendnp3/LogLevels.h"
 #include "AppLayer.h"

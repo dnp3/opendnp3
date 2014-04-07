@@ -269,7 +269,7 @@ TEST_CASE(SUITE("SendFullAPDU"))
 	REQUIRE(numPackets ==  test.link.sends.size());
 	REQUIRE(packets.size() == test.link.sends.size());
 
-	for (auto i = 0; i < packets.size(); ++i)
+	for (size_t i = 0; i < packets.size(); ++i)
 	{
 		REQUIRE(packets[i] == test.link.PopWriteAsHex());
 	}

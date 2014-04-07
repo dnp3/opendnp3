@@ -25,7 +25,7 @@
 #include "opendnp3/app/APDUParser.h"
 #include "opendnp3/app/PointClass.h"
 
-#include <openpal/LoggableMacros.h>
+#include <openpal/LogMacros.h>
 
 using namespace openpal;
 

@@ -21,11 +21,9 @@
 #ifndef __LOWER_LAYER_TO_PHYS_ADAPTER_H_
 #define __LOWER_LAYER_TO_PHYS_ADAPTER_H_
 
-
 #include <openpal/IHandlerAsync.h>
-#include <openpal/Loggable.h>
-
 #include <openpal/AsyncLayerInterfaces.h>
+#include <openpal/Logger.h>
 
 namespace openpal
 {
@@ -37,11 +35,11 @@ namespace opendnp3
 
 /** Class for turning an async physical layer into an ILowerLayer
 */
-class LowerLayerToPhysAdapter : public openpal::IHandlerAsync, public openpal::ILowerLayer, public openpal::HasUpperLayer, private openpal::Loggable
+class LowerLayerToPhysAdapter : public openpal::IHandlerAsync, public openpal::ILowerLayer, public openpal::HasUpperLayer
 {
 
 public:
-	LowerLayerToPhysAdapter(openpal::Logger, openpal::IPhysicalLayerAsync*, bool aAutoRead = true);
+	LowerLayerToPhysAdapter(const openpal::Logger& logger, openpal::IPhysicalLayerAsync*, bool aAutoRead = true);
 
 	size_t GetNumOpenFailure()
 	{
@@ -71,6 +69,7 @@ public:
 
 private:
 
+	openpal::Logger logger;
 	bool mAutoRead;
 	size_t mNumOpenFailure;
 

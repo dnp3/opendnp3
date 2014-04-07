@@ -26,7 +26,7 @@
 #include <asio.hpp>
 #include <asio/ip/tcp.hpp>
 
-#include <openpal/LoggableMacros.h>
+#include <openpal/LogMacros.h>
 #include <openpal/IHandlerAsync.h>
 #include <openpal/LogLevels.h>
 

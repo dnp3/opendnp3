@@ -45,8 +45,7 @@
     <ClInclude Include="src\openpal\LogBase.h" />
     <ClInclude Include="src\openpal\LogEntry.h" />
     <ClInclude Include="src\openpal\LogFilters.h" />
-    <ClInclude Include="src\openpal\Loggable.h" />
-    <ClInclude Include="src\openpal\LoggableMacros.h" />
+    <ClInclude Include="src\openpal\LogMacros.h" />
     <ClInclude Include="src\openpal\Logger.h" />
     <ClInclude Include="src\openpal\LogLevels.h" />
     <ClInclude Include="src\openpal\LogRoot.h" />

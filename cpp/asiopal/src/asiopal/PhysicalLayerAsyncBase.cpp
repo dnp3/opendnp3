@@ -21,7 +21,7 @@
 #include "PhysicalLayerAsyncBase.h"
 
 #include <openpal/IHandlerAsync.h>
-#include <openpal/LoggableMacros.h>
+#include <openpal/LogMacros.h>
 #include <openpal/IExecutor.h>
 #include <openpal/LogLevels.h>
 #include <openpal/Bind.h>

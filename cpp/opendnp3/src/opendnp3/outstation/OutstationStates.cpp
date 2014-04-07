@@ -20,7 +20,7 @@
  */
 #include "OutstationStates.h"
 
-#include <openpal/LoggableMacros.h>
+#include <openpal/LogMacros.h>
 
 #include "opendnp3/DNPErrorCodes.h"
 #include "opendnp3/outstation/Outstation.h"

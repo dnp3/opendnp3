@@ -20,7 +20,7 @@
  */
 #include "TransportLayer.h"
 
-#include <openpal/LoggableMacros.h>
+#include <openpal/LogMacros.h>
 #include <openpal/Bind.h>
 
 #include "TransportConstants.h"

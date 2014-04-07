@@ -22,7 +22,7 @@
 
 #include "AsyncTaskInterfaces.h"
 
-#include <openpal/LoggableMacros.h>
+#include <openpal/LogMacros.h>
 
 #include "opendnp3/LogLevels.h"
 
@@ -31,8 +31,7 @@ using namespace openpal;
 namespace opendnp3
 {
 
-MasterTaskBase::MasterTaskBase(openpal::Logger& arLogger) :
-	Loggable(arLogger)
+MasterTaskBase::MasterTaskBase(const openpal::Logger& logger_) : logger(logger_)
 {}
 
 bool MasterTaskBase::OnPartialResponse(const APDUResponseRecord& record)

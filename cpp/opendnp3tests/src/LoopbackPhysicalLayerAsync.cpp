@@ -22,7 +22,7 @@
 
 #include <asio.hpp>
 
-#include <openpal/LoggableMacros.h>
+#include <openpal/LogMacros.h>
 #include <opendnp3/LogLevels.h>
 
 using namespace boost;

@@ -20,7 +20,7 @@
  */
 #include "MockAppLayer.h"
 
-#include <openpal/LoggableMacros.h>
+#include <openpal/LogMacros.h>
 #include <openpal/ToHex.h>
 
 #include <opendnp3/LogLevels.h>
@@ -35,8 +35,8 @@ using namespace openpal;
 namespace opendnp3
 {
 
-MockAppLayer::MockAppLayer(openpal::Logger aLogger) :
-	Loggable(aLogger),
+MockAppLayer::MockAppLayer(const openpal::Logger& logger_) :
+	logger(logger_),
 	mNumCancel(0),
 	mpUser(nullptr),
 	mAutoSendCallback(true),

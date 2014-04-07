@@ -23,7 +23,7 @@
 #include "AppLayer.h"
 #include "AppChannelStates.h"
 
-#include <openpal/LoggableMacros.h>
+#include <openpal/LogMacros.h>
 
 #include "opendnp3/LogLevels.h"
 

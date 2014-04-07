@@ -26,9 +26,8 @@
 #include "opendnp3/app/IterableTransforms.h"
 
 #include "opendnp3/LogLevels.h"
-
-#include <openpal/Loggable.h>
-#include <openpal/LoggableMacros.h>
+#include <openpal/LogMacros.h>
+#include <openpal/Logger.h>
 
 namespace opendnp3
 {
@@ -36,14 +35,14 @@ namespace opendnp3
 /**
  * Base class used to handle APDU object headers
  */
-class APDUHandlerBase : public IAPDUHandler, protected openpal::Loggable
+class APDUHandlerBase : public IAPDUHandler
 {
 public:
 
 	/**
 	 * @param arLogger	the Logger that the loader should use for message reporting
 	 */
-	APDUHandlerBase(openpal::Logger logger);
+	APDUHandlerBase(const openpal::Logger& logger);
 
 	uint32_t NumIgnoredHeaders() const
 	{
@@ -174,6 +173,7 @@ protected:
 
 protected:
 
+	openpal::Logger logger;
 	uint32_t ignoredHeaders;
 	IINField errors;
 

@@ -25,7 +25,7 @@
 #include "opendnp3/LogLevels.h"
 
 #include <openpal/IPhysicalLayerAsync.h>
-#include <openpal/LoggableMacros.h>
+#include <openpal/LogMacros.h>
 #include <openpal/Bind.h>
 
 #include <assert.h>

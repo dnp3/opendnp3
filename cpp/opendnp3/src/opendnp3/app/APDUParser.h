@@ -25,7 +25,7 @@
 #include <openpal/ISerializer.h>
 #include <openpal/Serialization.h>
 #include <openpal/Logger.h>
-#include <openpal/LoggableMacros.h>
+#include <openpal/LogMacros.h>
 
 #include <openpal/Uncopyable.h>
 

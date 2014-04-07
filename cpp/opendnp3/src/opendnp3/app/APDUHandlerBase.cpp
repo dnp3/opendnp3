@@ -25,8 +25,8 @@ using namespace openpal;
 namespace opendnp3
 {
 
-APDUHandlerBase::APDUHandlerBase(openpal::Logger logger) :
-	Loggable(logger),
+APDUHandlerBase::APDUHandlerBase(const openpal::Logger& logger_) :
+	logger(logger_),
 	ignoredHeaders(0),
 	errors(),
 	cto(0),

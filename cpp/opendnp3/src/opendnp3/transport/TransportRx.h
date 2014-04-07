@@ -24,9 +24,9 @@
 #include "opendnp3/transport/TransportConstants.h"
 #include "opendnp3/StaticSizeConfiguration.h"
 
-#include <openpal/Loggable.h>
 #include <openpal/BufferWrapper.h>
 #include <openpal/StaticBuffer.h>
+#include <openpal/Logger.h>
 
 namespace opendnp3
 {
@@ -36,7 +36,7 @@ class TransportLayer;
 /**
 State/validation for the DNP3 transport layer's receive channel.
 */
-class TransportRx : public openpal::Loggable
+class TransportRx
 {
 
 public:
@@ -50,6 +50,7 @@ private:
 
 	bool ValidateHeader(bool fir, bool fin, uint8_t sequence, uint32_t payloadSize);
 
+	openpal::Logger logger;
 	TransportLayer* mpContext;
 
 	openpal::StaticBuffer<sizes::MAX_APDU_BUFFER_SIZE> rxBuffer;

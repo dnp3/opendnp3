@@ -26,7 +26,7 @@
 
 #include "opendnp3/LogLevels.h"
 
-#include <openpal/LoggableMacros.h>
+#include <openpal/LogMacros.h>
 
 using namespace openpal;
 
@@ -35,8 +35,8 @@ namespace opendnp3
 
 const uint8_t LinkLayerReceiver::M_SYNC_PATTERN[2] = {0x05, 0x64};
 
-LinkLayerReceiver::LinkLayerReceiver(Logger aLogger, IFrameSink* apSink) :
-	Loggable(aLogger),
+LinkLayerReceiver::LinkLayerReceiver(const Logger& logger_, IFrameSink* apSink) :
+	logger(logger_),
 	mFrameSize(0),
 	mpSink(apSink),
 	mpState(LRS_Sync::Inst()),

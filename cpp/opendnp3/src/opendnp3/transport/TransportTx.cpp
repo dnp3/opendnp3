@@ -23,7 +23,7 @@
 
 #include "TransportLayer.h"
 
-#include <openpal/LoggableMacros.h>
+#include <openpal/LogMacros.h>
 
 #include <assert.h>
 

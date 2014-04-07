@@ -37,7 +37,7 @@
 
 #include <openpal/IExecutor.h>
 
-#include <openpal/LoggableMacros.h>
+#include <openpal/LogMacros.h>
 
 using namespace openpal;
 

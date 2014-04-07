@@ -21,7 +21,7 @@
 
 #include "WriteHandler.h"
 
-#include <openpal/LoggableMacros.h>
+#include <openpal/LogMacros.h>
 
 #include "opendnp3/DNPErrorCodes.h"
 

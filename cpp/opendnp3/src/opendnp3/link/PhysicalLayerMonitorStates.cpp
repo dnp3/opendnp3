@@ -22,7 +22,7 @@
 
 #include <openpal/Location.h>
 #include <openpal/IPhysicalLayerAsync.h>
-#include <openpal/LoggableMacros.h>
+#include <openpal/LogMacros.h>
 
 #include "opendnp3/LogLevels.h"
 

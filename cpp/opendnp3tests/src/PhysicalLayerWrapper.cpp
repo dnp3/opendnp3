@@ -20,7 +20,7 @@
  */
 #include "PhysicalLayerWrapper.h"
 
-#include <openpal/LoggableMacros.h>
+#include <openpal/LogMacros.h>
 
 #include <opendnp3/LogLevels.h>
 
@@ -31,8 +31,8 @@ using namespace openpal;
 namespace opendnp3
 {
 
-PhysicalLayerWrapper::PhysicalLayerWrapper(openpal::Logger logger, IPhysicalLayerAsync* apProxy) :
-	Loggable(logger),
+PhysicalLayerWrapper::PhysicalLayerWrapper(const openpal::Logger& logger_, IPhysicalLayerAsync* apProxy) :
+	logger(logger_),
 	mCorruptionProbability(-1.0),
 	mpProxy(apProxy),
 	mpHandler(nullptr)

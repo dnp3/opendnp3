@@ -20,14 +20,14 @@
  */
 #include "MeasurementHandler.h"
 
-#include <openpal/LoggableMacros.h>
+#include <openpal/LogMacros.h>
 
 using namespace openpal;
 
 namespace opendnp3
 {
 
-MeasurementHandler::MeasurementHandler(openpal::Logger& aLogger, ISOEHandler* pSOEHandler_) : APDUHandlerBase(aLogger), pSOEHandler(pSOEHandler_)
+MeasurementHandler::MeasurementHandler(const openpal::Logger& logger, ISOEHandler* pSOEHandler_) : APDUHandlerBase(logger), pSOEHandler(pSOEHandler_)
 {}
 
 void MeasurementHandler::_OnRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas)

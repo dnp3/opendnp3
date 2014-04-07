@@ -25,7 +25,7 @@
 #include "opendnp3/app/PointClass.h"
 #include "opendnp3/LogLevels.h"
 
-#include <openpal/LoggableMacros.h>
+#include <openpal/LogMacros.h>
 
 #include "opendnp3/app/APDUParser.h"
 #include "opendnp3/master/MeasurementHandler.h"

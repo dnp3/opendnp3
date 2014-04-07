@@ -18,12 +18,10 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __LOGGABLE_MACROS_H_
-#define __LOGGABLE_MACROS_H_
+#ifndef __LOG_MACROS_H_
+#define __LOG_MACROS_H_
 
 #include "Location.h"
-
-//const uint32_t MAX_MESSAGE_SIZE = 80;
 
 //macro to remove boiler-plate code for logging messages
 #define LOG_BLOCK(severity, message) \

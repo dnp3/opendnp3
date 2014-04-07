@@ -20,7 +20,7 @@
  */
 #include "AppLayerChannel.h"
 
-#include <openpal/LoggableMacros.h>
+#include <openpal/LogMacros.h>
 #include <openpal/IExecutor.h>
 #include <openpal/Bind.h>
 

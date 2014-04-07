@@ -21,13 +21,10 @@
 #ifndef __MASTER_TASK_BASE_H_
 #define __MASTER_TASK_BASE_H_
 
-
+#include <openpal/Logger.h>
 
 #include "opendnp3/app/APDUHeader.h"
 #include "opendnp3/app/APDURequest.h"
-
-#include <openpal/Loggable.h>
-
 
 namespace opendnp3
 {
@@ -48,11 +45,11 @@ enum TaskResult
 /**
  * A generic interface for defining master request/response style tasks.
  */
-class MasterTaskBase : public openpal::Loggable
+class MasterTaskBase
 {
 public:
 
-	MasterTaskBase(openpal::Logger& arLogger);
+	MasterTaskBase(const openpal::Logger& logger);
 
 	/**
 	 * Sets the task completion handler and calls the overiddable _Init()
@@ -105,6 +102,8 @@ public:
 	virtual char const* Name() const = 0;
 
 protected:
+
+	openpal::Logger logger;
 
 	/**
 	 * Handler for non-FIN responses.  Subclasses should override this

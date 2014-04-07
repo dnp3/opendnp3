@@ -22,7 +22,7 @@
 
 #include <catch.hpp>
 
-#include <openpal/LoggableMacros.h>
+#include <openpal/LogMacros.h>
 #include <openpal/IPhysicalLayerAsync.h>
 #include <openpal/ToHex.h>
 #include <openpal/Comparisons.h>

@@ -23,7 +23,7 @@
 #include "TransportLayer.h"
 #include "opendnp3/LogLevels.h"
 
-#include <openpal/LoggableMacros.h>
+#include <openpal/LogMacros.h>
 
 using namespace openpal;
 
