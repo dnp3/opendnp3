@@ -66,7 +66,6 @@ void TransportRx::HandleReceive(const openpal::ReadOnlyBuffer& input)
 	}
 	else
 	{
-
 		uint8_t hdr = input[0];		
 		bool first = (hdr & TL_HDR_FIR) != 0;
 		bool last = (hdr & TL_HDR_FIN) != 0;

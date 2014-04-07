@@ -53,7 +53,7 @@ private:
 	openpal::Logger logger;
 	TransportLayer* mpContext;
 
-	openpal::StaticBuffer<sizes::MAX_APDU_BUFFER_SIZE> rxBuffer;
+	openpal::StaticBuffer<sizes::MAX_RX_APDU_SIZE> rxBuffer;
 	uint32_t numBytesRead;
 	uint8_t sequence;
 	uint32_t maxFragSize;

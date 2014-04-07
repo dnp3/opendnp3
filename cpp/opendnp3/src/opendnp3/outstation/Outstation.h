@@ -103,7 +103,7 @@ private:
 	void RespondToRequest(const APDURecord& record, SequenceInfo sequence);
 	IINField ConfigureResponse(const APDURecord& request, SequenceInfo sequence, APDUResponse& response);
 
-	openpal::StaticBuffer<sizes::MAX_APDU_BUFFER_SIZE> responseBuffer;
+	openpal::StaticBuffer<sizes::MAX_TX_APDU_SIZE> responseBuffer;
 	SelectBuffer selectBuffer;
 
 	APDUResponse lastResponse;				// wrapper that points to the last response made
