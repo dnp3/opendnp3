@@ -18,19 +18,17 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __LOG_MACROS_H_
-#define __LOG_MACROS_H_
+#ifndef __LOG_MESSAGES_H_
+#define __LOG_MESSAGES_H_
 
-#include "Location.h"
+#include <cstdint>
 
-#define SIMPLE_LOG_BLOCK_WITH_CODE(logger, filters, message, code) \
-	if(logger.IsEnabled(filters)){ \
-		logger.Log(filters, LOCATION, message, code); \
-	}
-
-//macro to remove boiler-plate code for logging messages
-#define SIMPLE_LOG_BLOCK(logger, severity, message) \
-	SIMPLE_LOG_BLOCK_WITH_CODE(logger, severity, message, -1)	
-
+namespace openpal
+{
+namespace msgs
+{
+	const char* INVALID_OP_FOR_STATE = "Invalid operation for state";
+}
+}
 
 #endif

@@ -163,6 +163,9 @@
     <ClInclude Include="src\openpal\LogMacros.h">
       <Filter>Header</Filter>
     </ClInclude>
+    <ClInclude Include="src\openpal\LogMessages.h">
+      <Filter>Header</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\openpal\BufferWrapper.cpp">

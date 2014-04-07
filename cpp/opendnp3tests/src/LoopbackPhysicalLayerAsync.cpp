@@ -49,7 +49,7 @@ void LoopbackPhysicalLayerAsync::DoOpen()
 
 void LoopbackPhysicalLayerAsync::DoOpenSuccess()
 {
-	LOG_BLOCK(flags::INFO, "Loopback Open Success");
+	
 }
 
 void LoopbackPhysicalLayerAsync::DoClose()

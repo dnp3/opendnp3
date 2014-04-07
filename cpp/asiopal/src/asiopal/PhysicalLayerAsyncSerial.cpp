@@ -78,13 +78,13 @@ void PhysicalLayerAsyncSerial::DoClose()
 	port.close(ec);
 	if (ec)
 	{
-		//LOG_BLOCK(logflags::WARN, ec.message());
+		SIMPLE_LOG_BLOCK(logger, logflags::WARN, ec.message().c_str());
 	}
 }
 
 void PhysicalLayerAsyncSerial::DoOpenSuccess()
 {
-	LOG_BLOCK(logflags::INFO, "Port successfully opened");
+	
 }
 
 void PhysicalLayerAsyncSerial::DoAsyncRead(openpal::WriteBuffer& buff)

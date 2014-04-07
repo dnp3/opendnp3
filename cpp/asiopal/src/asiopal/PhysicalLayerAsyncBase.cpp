@@ -22,6 +22,7 @@
 
 #include <openpal/IHandlerAsync.h>
 #include <openpal/LogMacros.h>
+#include <openpal/LogMessages.h>
 #include <openpal/IExecutor.h>
 #include <openpal/LogLevels.h>
 #include <openpal/Bind.h>
@@ -111,16 +112,6 @@ bool PhysicalLayerAsyncBase::State::CheckForClose()
 	else return false;
 }
 
-std::string PhysicalLayerAsyncBase::State::ConvertStateToString() const
-{
-	std::ostringstream oss;
-	oss << "Open: " << mOpen << " Opening: " << mOpening
-	    << " Reading: " << mReading << " Writing: " << mWriting
-	    << " Closing: " << mClosing;
-
-	return oss.str();
-}
-
 ///////////////////////////////////
 // PhysicalLayerAsyncBase
 ///////////////////////////////////
@@ -145,7 +136,7 @@ void PhysicalLayerAsyncBase::AsyncOpen()
 	}
 	else
 	{
-		LOG_BLOCK(logflags::ERR, "Invalid operation for state");
+		SIMPLE_LOG_BLOCK(logger, logflags::ERR, msgs::INVALID_OP_FOR_STATE);
 	}
 }
 
@@ -175,7 +166,7 @@ void PhysicalLayerAsyncBase::StartClose()
 		}
 		else
 		{
-			LOG_BLOCK(logflags::ERR, "Invalid operation for state");
+			SIMPLE_LOG_BLOCK(logger, logflags::ERR, msgs::INVALID_OP_FOR_STATE);
 		}
 	}
 }
@@ -191,7 +182,7 @@ void PhysicalLayerAsyncBase::AsyncWrite(const openpal::ReadOnlyBuffer& buffer)
 		}
 		else
 		{
-			LOG_BLOCK(logflags::ERR, "Client wrote a length of 0");
+			SIMPLE_LOG_BLOCK(logger, logflags::ERR, "Client wrote a length of 0");
 			auto callback = [this]()
 			{
 				this->DoWriteSuccess();
@@ -201,7 +192,7 @@ void PhysicalLayerAsyncBase::AsyncWrite(const openpal::ReadOnlyBuffer& buffer)
 	}
 	else
 	{
-		LOG_BLOCK(logflags::ERR, "Invalid operation for state");
+		SIMPLE_LOG_BLOCK(logger, logflags::ERR, msgs::INVALID_OP_FOR_STATE);
 	}
 }
 
@@ -216,7 +207,7 @@ void PhysicalLayerAsyncBase::AsyncRead(WriteBuffer& buffer)
 		}
 		else
 		{
-			LOG_BLOCK(logflags::ERR, "Client read a length of 0");
+			SIMPLE_LOG_BLOCK(logger, logflags::ERR, "Client read a length of 0");
 			auto callback = [this, buffer]()
 			{
 				this->DoReadCallback(ReadOnlyBuffer());
@@ -226,7 +217,7 @@ void PhysicalLayerAsyncBase::AsyncRead(WriteBuffer& buffer)
 	}
 	else
 	{
-		LOG_BLOCK(logflags::ERR, "Invalid operation for state");
+		SIMPLE_LOG_BLOCK(logger, logflags::ERR, msgs::INVALID_OP_FOR_STATE);
 	}
 }
 
@@ -234,7 +225,7 @@ void PhysicalLayerAsyncBase::AsyncRead(WriteBuffer& buffer)
 // Internal events
 ///////////////////////////////////////
 
-void PhysicalLayerAsyncBase::OnOpenCallback(const std::error_code& arErr)
+void PhysicalLayerAsyncBase::OnOpenCallback(const std::error_code& err)
 {
 	if(state.mOpening)
 	{
@@ -242,9 +233,9 @@ void PhysicalLayerAsyncBase::OnOpenCallback(const std::error_code& arErr)
 
 		this->DoOpenCallback();
 
-		if(arErr)
+		if(err)
 		{
-			LOG_BLOCK(logflags::WARN, arErr.message().c_str());
+			SIMPLE_LOG_BLOCK(logger, logflags::WARN, err.message().c_str());
 			state.CheckForClose();
 			this->DoOpenFailure();
 			if(mpHandler)
@@ -276,7 +267,7 @@ void PhysicalLayerAsyncBase::OnOpenCallback(const std::error_code& arErr)
 	}
 	else
 	{
-		//LOG_BLOCK(logflags::ERR, "Invalid operation for state: " << this->ConvertStateToString());
+		SIMPLE_LOG_BLOCK(logger, logflags::ERR, msgs::INVALID_OP_FOR_STATE);
 	}
 }
 
@@ -308,7 +299,7 @@ void PhysicalLayerAsyncBase::OnReadCallback(const std::error_code& arErr, uint8_
 	}
 	else
 	{
-		//LOG_BLOCK(logflags::ERR, "Invalid operation for state: " << this->ConvertStateToString());
+		SIMPLE_LOG_BLOCK(logger, logflags::ERR, msgs::INVALID_OP_FOR_STATE);
 	}
 }
 
@@ -339,7 +330,7 @@ void PhysicalLayerAsyncBase::OnWriteCallback(const std::error_code& arErr, uint3
 	}
 	else
 	{
-		//LOG_BLOCK(logflags::ERR, "Invalid operation for state: " << this->ConvertStateToString());
+		SIMPLE_LOG_BLOCK(logger, logflags::ERR, msgs::INVALID_OP_FOR_STATE);
 	}
 }
 

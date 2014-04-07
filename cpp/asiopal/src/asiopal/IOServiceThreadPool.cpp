@@ -54,7 +54,7 @@ IOServiceThreadPool::IOServiceThreadPool(
 	if(aConcurrency == 0)
 	{
 		aConcurrency = 1;
-		LOG_BLOCK(logflags::WARN, "Concurrency was set to 0, defaulting to 1 thread");
+		SIMPLE_LOG_BLOCK(logger, logflags::WARN, "Concurrency was set to 0, defaulting to 1 thread");
 	}
 	infiniteTimer.expires_at(std::chrono::steady_clock::time_point::max());
 	infiniteTimer.async_wait([](const std::error_code&){});

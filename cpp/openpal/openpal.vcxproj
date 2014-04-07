@@ -48,6 +48,7 @@
     <ClInclude Include="src\openpal\LogMacros.h" />
     <ClInclude Include="src\openpal\Logger.h" />
     <ClInclude Include="src\openpal\LogLevels.h" />
+    <ClInclude Include="src\openpal\LogMessages.h" />
     <ClInclude Include="src\openpal\LogRoot.h" />
     <ClInclude Include="src\openpal\MonotonicTimestamp.h" />
     <ClInclude Include="src\openpal\Option.h" />
