@@ -195,7 +195,7 @@ ILinkContext* LinkLayerRouter::GetDestination(uint16_t aDest, uint16_t aSrc)
 
 	if(pDest == nullptr)
 	{
-		FORMAT_LOG_BLOCK_WITH_CODE(logger, DLERR_UNKNOWN_ROUTE, flags::WARN, "Frame w/ unknown route: %s to %s", route.remote, route.local);
+		FORMAT_LOG_BLOCK_WITH_CODE(logger, flags::WARN, DLERR_UNKNOWN_ROUTE, "Frame w/ unknown route: %i to %i", route.remote, route.local);
 	}
 
 	return pDest;

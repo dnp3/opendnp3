@@ -131,7 +131,7 @@ bool LinkLayerReceiver::ValidateBody()
 	if(LinkFrame::ValidateBodyCRC(mBuffer.ReadBuff() + LS_HEADER_SIZE, len)) return true;
 	else
 	{
-		//ERROR_BLOCK(flags::ERR, "CRC failure in body", DLERR_CRC);
+		SIMPLE_LOG_BLOCK_WITH_CODE(logger, flags::ERR, DLERR_CRC, "CRC failure in body");
 		return false;
 	}
 }

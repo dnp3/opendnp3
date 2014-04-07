@@ -72,9 +72,11 @@ template <class Target, class IndexType>
 void CommandResponseHandler::RespondToHeader(QualifierCode qualifier, IDNP3Serializer<Target>* pSerializer, const IterableBuffer<IndexedValue<Target, typename IndexType::Type>>& meas)
 {
 	auto iter = writer.IterateOverCountWithPrefix<IndexType, Target>(qualifier, pSerializer);
-	for(uint32_t i=0; i < meas.Count(); ++i)
+
+	auto commands = meas.Iterate();
+	while (commands.HasNext())
 	{
-		auto command = meas[i];
+		auto command = commands.Next();
 		auto result = CommandStatus::TOO_MANY_OPS;
 		if (numRequests < maxCommands)
 		{
@@ -86,7 +88,7 @@ void CommandResponseHandler::RespondToHeader(QualifierCode qualifier, IDNP3Seria
 		}
 		Target response(command.value);
 		response.status = result;
-		iter.Write(response, command.index);
+		iter.Write(response, command.index); // screwed up here!!!
 		++numRequests;
 	}	
 	iter.Complete();

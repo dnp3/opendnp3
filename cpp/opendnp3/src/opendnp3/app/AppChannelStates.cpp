@@ -57,9 +57,9 @@ void ACS_Base::OnSendFailure(AppLayerChannel* c)
 	FORMAT_LOG_BLOCK(c->logger, flags::ERR, "Invalid action for state %s", this->Name());
 }
 
-void ACS_Base::OnConfirm(AppLayerChannel* c, uint8_t aSeq)
+void ACS_Base::OnConfirm(AppLayerChannel* c, uint8_t seq)
 {
-	FORMAT_LOG_BLOCK(c->logger, flags::ERR, "Invalid action for state %s", this->Name());
+	FORMAT_LOG_BLOCK_WITH_CODE(c->logger, flags::ERR, ALERR_UNEXPECTED_CONFIRM, "Unexpected confirm with sequence: %i", seq);
 }
 
 void ACS_Base::OnResponse(AppLayerChannel* c, const APDUResponseRecord& rsp)

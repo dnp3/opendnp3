@@ -284,7 +284,7 @@ TEST_CASE(SUITE("SendResponseNonFIR"))
 // Test an unsol send with confirm transaction
 TEST_CASE(SUITE("SendUnsolicitedWithConfirm"))
 {
-	AppLayerTest t(false);	// outstation
+	AppLayerTest t(false);	// outstation	
 	t.lower.ThisLayerUp(); ++t.state.NumLayerUp;
 
 	t.SendUnsolicited(FunctionCode::UNSOLICITED_RESPONSE, true, true, true, true);

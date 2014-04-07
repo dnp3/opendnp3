@@ -56,9 +56,10 @@ TEST_CASE(SUITE("SelectCROBTooMany"))
 	OutstationTestObject t(cfg, DatabaseTemplate());
 	t.outstation.OnLowerLayerUp();
 
-	// Select group 12 Var 1, count = 2, index = 3->4
+	// Select group 12 Var 1, count = 2, index = 3 & 4
 	t.SendToOutstation("C0 03 0C 01 17 02 03 01 01 01 00 00 00 01 00 00 00 00 04 01 01 01 00 00 00 01 00 00 00 00");
-	REQUIRE(t.Read() ==  "C0 81 80 00 0C 01 17 02 03 01 01 01 00 00 00 01 00 00 00 00 04 01 01 01 00 00 00 01 00 00 00 08"); // 0x08 status == CommandStatus::TOO_MANY_OBJS
+	auto expected = "C0 81 80 00 0C 01 17 02 03 01 01 01 00 00 00 01 00 00 00 00 04 01 01 01 00 00 00 01 00 00 00 08";
+	REQUIRE(t.Read() ==  expected); // 0x08 status == CommandStatus::TOO_MANY_OBJS
 }
 
 TEST_CASE(SUITE("SelectOperateCROB"))
