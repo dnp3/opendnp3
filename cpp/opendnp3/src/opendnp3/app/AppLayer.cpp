@@ -116,7 +116,7 @@ void AppLayer::OnReceive(const ReadOnlyBuffer& apdu)
 					this->OnUnsolResponse(record);
 					break;
 				default:
-					////LOG_BLOCK(flags::WARN, "Unexpected function code for master: " << FunctionCodeToString(record.function));
+					FORMAT_LOG_BLOCK(logger, flags::WARN, "Unexpected function code for master: %s", FunctionCodeToString(record.function));
 					break;
 				}
 			}
@@ -143,7 +143,7 @@ void AppLayer::OnReceive(const ReadOnlyBuffer& apdu)
 	}
 	else
 	{
-		//LOG_BLOCK(flags::ERR, "Layer is not up");
+		SIMPLE_LOG_BLOCK(logger, flags::ERR, "Layer is not up");
 	}
 }
 
@@ -152,10 +152,10 @@ void AppLayer::LogParseError(APDUHeaderParser::Result error, bool aIsResponse)
 	switch(error)
 	{
 	case(APDUHeaderParser::Result::NOT_ENOUGH_DATA_FOR_HEADER):
-		////ERROR_BLOCK(flags::ERR, "Not enough data for header while parsing " << (aIsResponse ? "respose" : "request"), ALERR_INSUFFICIENT_DATA_FOR_FRAG);
+		FORMAT_LOG_BLOCK_WITH_CODE(logger, flags::ERR, ALERR_INSUFFICIENT_DATA_FOR_FRAG, "Not enough data for header while parsing %s", (aIsResponse ? "respose" : "request"));
 		break;
 	default:
-		//LOG_BLOCK(flags::ERR, "Unspecified parse error");
+		SIMPLE_LOG_BLOCK(logger, flags::ERR, "Unspecified parse error");
 		break;
 	}
 }
@@ -164,7 +164,7 @@ void AppLayer::OnLowerLayerUp()
 {
 	if (isOnline)
 	{
-		//LOG_BLOCK(flags::ERR, "Layer is already online");
+		SIMPLE_LOG_BLOCK(logger, flags::ERR, "Layer is already online");
 	}
 	else
 	{
@@ -241,7 +241,7 @@ void AppLayer::OnSendResult(bool isSuccess)
 	}
 	else
 	{
-		//LOG_BLOCK(flags::ERR, "Layer is not sending");
+		SIMPLE_LOG_BLOCK(logger, flags::ERR, "Layer is not sending");
 	}
 }
 
@@ -253,7 +253,7 @@ void AppLayer::OnResponse(const APDUResponseRecord& record)
 {
 	if(record.control.UNS)
 	{
-		////ERROR_BLOCK(flags::WARN, "Bad unsol bit", ALERR_BAD_UNSOL_BIT);
+		SIMPLE_LOG_BLOCK_WITH_CODE(logger, flags::WARN, ALERR_BAD_UNSOL_BIT, "Bad unsol bit");
 	}
 	else
 	{
@@ -273,7 +273,7 @@ void AppLayer::OnUnsolResponse(const APDUResponseRecord& record)
 {
 	if(!record.control.UNS)
 	{
-		////ERROR_BLOCK(flags::WARN, "Unsolicited response code with uns bit not set", ALERR_BAD_UNSOL_BIT);
+		SIMPLE_LOG_BLOCK_WITH_CODE(logger, flags::WARN, ALERR_BAD_UNSOL_BIT, "Unsolicited response code with uns bit not set");
 	}
 	else
 	{
@@ -293,7 +293,7 @@ void AppLayer::OnConfirm(const AppControlField& aControl, uint32_t aDataSize)
 {
 	if(aDataSize > 0)
 	{
-		////LOG_BLOCK(flags::WARN, "Unexpected payload in confirm of size: " << aDataSize);
+		FORMAT_LOG_BLOCK(logger, flags::WARN, "Unexpected payload in confirm of size: %i", aDataSize);
 	}
 	else
 	{
@@ -301,7 +301,7 @@ void AppLayer::OnConfirm(const AppControlField& aControl, uint32_t aDataSize)
 		{
 			if(isMaster)
 			{
-				////ERROR_BLOCK(flags::ERR, "Unexpcted confirm for master", ALERR_UNEXPECTED_CONFIRM)
+				SIMPLE_LOG_BLOCK_WITH_CODE(logger, flags::ERR, ALERR_UNEXPECTED_CONFIRM, "Unexpcted confirm for master")
 			}
 			else
 			{
@@ -319,7 +319,7 @@ void AppLayer::OnRequest(const APDURecord& record)
 {
 	if(record.control.UNS)
 	{
-		////ERROR_BLOCK(flags::WARN, "Received request with UNS bit", ALERR_BAD_UNSOL_BIT);
+		SIMPLE_LOG_BLOCK_WITH_CODE(logger, flags::WARN, ALERR_BAD_UNSOL_BIT, "Received request with UNS bit");
 	}
 	else
 	{
@@ -329,7 +329,7 @@ void AppLayer::OnRequest(const APDURecord& record)
 		}
 		else
 		{
-			////ERROR_BLOCK(flags::WARN,  "Received non FIR/FIN request", ALERR_MULTI_FRAGEMENT_REQUEST);
+			SIMPLE_LOG_BLOCK_WITH_CODE(logger, flags::WARN, ALERR_MULTI_FRAGEMENT_REQUEST, "Received non FIR/FIN request");
 		}
 	}
 }
@@ -342,7 +342,7 @@ void AppLayer::QueueConfirm(bool aUnsol, int aSeq)
 {
 	if(isConfirmSending)
 	{
-		////ERROR_BLOCK(flags::WARN, "Confirm request flood, ignoring confirm", aUnsol ? ALERR_UNSOL_FLOOD : ALERR_SOL_FLOOD);
+		SIMPLE_LOG_BLOCK_WITH_CODE(logger, flags::WARN, aUnsol ? ALERR_UNSOL_FLOOD : ALERR_SOL_FLOOD, "Confirm request flood, ignoring confirm");
 	}
 	else
 	{
@@ -365,8 +365,7 @@ void AppLayer::CheckForSend()
 {
 	if(!isSending && sendQueue.Size() > 0)
 	{
-		isSending = true;
-		////LOG_BLOCK(flags::INTERPRET, "=> AL " << pAPDU->ToString()); TODO - replace outgoing logging
+		isSending = true;		
 		pTransportLayer->Send(sendQueue.Peek().ToReadOnly());
 	}
 }

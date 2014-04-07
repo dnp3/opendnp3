@@ -24,7 +24,7 @@
 #include <cstdio>
 
 #ifdef WIN32
-#define SNPRINTF _snprintf
+#define SNPRINTF _snprintf_s
 #else
 #define SNPRINTF snprintf
 #endif

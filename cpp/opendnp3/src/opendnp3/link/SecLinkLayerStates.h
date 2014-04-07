@@ -82,25 +82,25 @@ void SLLS_TransmitWaitBase<NextState>::OnTransmitResult(LinkLayer* apLL, bool su
 template <class NextState>
 void SLLS_TransmitWaitBase<NextState>::ResetLinkStates(LinkLayer* apLL)
 {
-	//LOGGER_BLOCK(apLL->GetLogger(), flags::WARN, "Ignoring link frame, remote is flooding");
+	SIMPLE_LOG_BLOCK(apLL->GetLogger(), flags::WARN, "Ignoring link frame, remote is flooding");
 }
 
 template <class NextState>
 void SLLS_TransmitWaitBase<NextState>::RequestLinkStatus(LinkLayer* apLL)
 {
-	//LOGGER_BLOCK(apLL->GetLogger(), flags::WARN, "Ignoring link frame, remote is flooding");
+	SIMPLE_LOG_BLOCK(apLL->GetLogger(), flags::WARN, "Ignoring link frame, remote is flooding");
 }
 
 template <class NextState>
 void SLLS_TransmitWaitBase<NextState>::TestLinkStatus(LinkLayer* apLL, bool aFcb)
 {
-	//LOGGER_BLOCK(apLL->GetLogger(), flags::WARN, "Ignoring link frame, remote is flooding");
+	SIMPLE_LOG_BLOCK(apLL->GetLogger(), flags::WARN, "Ignoring link frame, remote is flooding");
 }
 
 template <class NextState>
 void SLLS_TransmitWaitBase<NextState>::ConfirmedUserData(LinkLayer* apLL, bool aFcb, const openpal::ReadOnlyBuffer&)
 {
-	//LOGGER_BLOCK(apLL->GetLogger(), flags::WARN, "Ignoring link frame, remote is flooding");
+	SIMPLE_LOG_BLOCK(apLL->GetLogger(), flags::WARN, "Ignoring link frame, remote is flooding");
 }
 
 ////////////////////////////////////////////////////////

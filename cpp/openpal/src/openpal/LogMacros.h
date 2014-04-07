@@ -22,15 +22,45 @@
 #define __LOG_MACROS_H_
 
 #include "Location.h"
+#include "StringFormatting.h"
 
-#define SIMPLE_LOG_BLOCK_WITH_CODE(logger, filters, message, code) \
+#define SIMPLE_LOG_BLOCK_WITH_CODE(logger, filters, code, message) \
 	if(logger.IsEnabled(filters)){ \
 		logger.Log(filters, LOCATION, message, code); \
 	}
 
+#define SIMPLE_LOGGER_BLOCK_WITH_CODE(pLogger, filters, code, message) \
+	if(pLogger && pLogger->IsEnabled(filters)){ \
+		pLogger->Log(filters, LOCATION, message, code); \
+	}
+
 //macro to remove boiler-plate code for logging messages
 #define SIMPLE_LOG_BLOCK(logger, severity, message) \
-	SIMPLE_LOG_BLOCK_WITH_CODE(logger, severity, message, -1)	
+	SIMPLE_LOG_BLOCK_WITH_CODE(logger, severity, -1, message)
 
+//macro to remove boiler-plate code for logging messages
+#define SIMPLE_LOGGER_BLOCK(pLogger, severity, message) \
+	SIMPLE_LOGGER_BLOCK_WITH_CODE(pLogger, severity, -1, message)
+
+#define FORMAT_LOG_BLOCK_WITH_CODE(logger, filters, code, format, ...) \
+	if(logger.IsEnabled(filters)){ \
+		char message[80]; \
+		SNPRINTF(message, 80, format, ##__VA_ARGS__); \
+		logger.Log(filters, LOCATION, message, code); \
+	}
+
+#define FORMAT_LOGGER_BLOCK_WITH_CODE(pLogger, filters, code, format, ...) \
+	if(pLogger && pLogger->IsEnabled(filters)){ \
+	char message[80]; \
+	SNPRINTF(message, 80, format, ##__VA_ARGS__); \
+	pLogger->Log(filters, LOCATION, message, code); \
+	}
+
+#define FORMAT_LOGGER_BLOCK(pLogger, filters, format, ...) \
+	FORMAT_LOGGER_BLOCK_WITH_CODE(pLogger, filters, -1, format, ##__VA_ARGS__);
+
+
+#define FORMAT_LOG_BLOCK(logger, filters, format, ...) \
+	FORMAT_LOG_BLOCK_WITH_CODE(logger, filters, -1, format, ##__VA_ARGS__);
 
 #endif

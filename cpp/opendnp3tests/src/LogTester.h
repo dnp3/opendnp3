@@ -27,6 +27,21 @@
 namespace opendnp3
 {
 
+class LogRecord
+{
+	public:
+
+	LogRecord();
+	LogRecord(const openpal::LogEntry& entry);
+
+	std::string		id;
+	openpal::LogFilters		filters;
+	int				subType;
+	std::string		location;
+	std::string		message;
+	int				errorCode;
+};
+
 class LogTester : public openpal::ILogBase
 {
 
@@ -43,7 +58,7 @@ public:
 
 	int ClearLog();
 	int NextErrorCode();
-	bool GetNextEntry(openpal::LogEntry& arEntry);
+	bool GetNextEntry(LogRecord& record);
 	bool IsLogErrorFree();
 
 	void Pop(openpal::ILogBase* pLog);
@@ -56,7 +71,7 @@ protected:
 
 	
 	openpal::Logger logger;
-	std::queue<openpal::LogEntry> mBuffer;
+	std::queue<LogRecord> mBuffer;
 
 };
 
