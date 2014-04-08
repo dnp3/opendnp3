@@ -23,6 +23,7 @@
     <ClInclude Include="src\openpal\Bind.h" />
     <ClInclude Include="src\openpal\BufferWrapper.h" />
     <ClInclude Include="src\openpal\Erasure.h" />
+    <ClInclude Include="src\openpal\FloatSerializationTemplates.h" />
     <ClInclude Include="src\openpal\Function1.h" />
     <ClInclude Include="src\openpal\IEventHandler.h" />
     <ClInclude Include="src\openpal\IMutex.h" />
@@ -54,11 +55,11 @@
     <ClInclude Include="src\openpal\Option.h" />
     <ClInclude Include="src\openpal\QueueAdapter.h" />
     <ClInclude Include="src\openpal\RandomInsertAdapter.h" />
-    <ClInclude Include="src\openpal\ReverseEndian.h" />
+    <ClInclude Include="src\openpal\UInt48LE.h" />
     <ClInclude Include="src\openpal\Runnable.h" />
     <ClInclude Include="src\openpal\Sequence.h" />
     <ClInclude Include="src\openpal\Serialization.h" />
-    <ClInclude Include="src\openpal\SerializationTemplates.h" />
+    <ClInclude Include="src\openpal\SerializationTemplatesLE.h" />
     <ClInclude Include="src\openpal\StackAdapter.h" />
     <ClInclude Include="src\openpal\StaticArray.h" />
     <ClInclude Include="src\openpal\StaticBuffer.h" />
@@ -79,10 +80,11 @@
     <ClCompile Include="src\openpal\Logger.cpp" />
     <ClCompile Include="src\openpal\LogRoot.cpp" />
     <ClCompile Include="src\openpal\MonotonicTimestamp.cpp" />
-    <ClCompile Include="src\openpal\ReverseEndian.cpp" />
+    <ClCompile Include="src\openpal\ByteSerialization.cpp" />
     <ClCompile Include="src\openpal\Runnable.cpp" />
     <ClCompile Include="src\openpal\TimeDuration.cpp" />
     <ClCompile Include="src\openpal\ToHex.cpp" />
+    <ClCompile Include="src\openpal\UInt48LE.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{ABF09BDA-75A5-47D7-9F15-D7B7EC69F1E7}</ProjectGuid>

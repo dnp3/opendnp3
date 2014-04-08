@@ -18,49 +18,16 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __OPENPAL_REVERSE_ENDIAN_H_
-#define __OPENPAL_REVERSE_ENDIAN_H_
+#ifndef __UINT8LE_H_
+#define __UINT8LE_H_
 
 #include <cstdint>
+#include <cstring>
 
-#include "SerializationTemplates.h"
+#include "BufferWrapper.h"
 
 namespace openpal
 {
-
-class UInt8Simple
-{
-public:
-
-	inline static uint8_t Read(const uint8_t* apStart)
-	{
-		return (*apStart);
-	}
-
-	inline static uint8_t ReadBuffer(ReadOnlyBuffer& arBuffer)
-	{
-		auto ret = Read(arBuffer);
-		arBuffer.Advance(Size);
-		return ret;
-	}
-
-	static void WriteBuffer(WriteBuffer& buffer, uint8_t aValue)
-	{
-		Write(buffer, aValue);
-		buffer.Advance(Size);
-	}
-
-	inline static void Write(uint8_t* apStart, uint8_t aValue)
-	{
-		*(apStart) = aValue;
-	}
-
-	const static size_t Size = 1;
-	const static uint8_t Max;
-	const static uint8_t Min;
-
-	typedef uint8_t Type;
-};
 
 class UInt48LE
 {

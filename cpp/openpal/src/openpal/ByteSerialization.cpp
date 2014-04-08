@@ -18,46 +18,16 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __OPENPAL_SERIALIZATION_H_
-#define __OPENPAL_SERIALIZATION_H_
-
-#include "UInt48LE.h"
-#include "SerializationTemplatesLE.h"
-#include "SerializationTemplatesBE.h"
-
 #include "ByteSerialization.h"
-#include "FloatSerializationTemplates.h"
+
+#include <cstring>
+
+#include "Limits.h"
 
 namespace openpal
 {
 
-/*
-Users should only use these typedefs. This will allow these to be switched
-if we ever need to support other systems
-*/
-
-#ifdef FLIP_ENDIAN
-
-typedef Bit16BE<int16_t>	Int16;
-typedef Bit16BE<uint16_t>	UInt16;
-typedef Bit32BE<int32_t>	Int32;
-typedef Bit32BE<uint32_t>	UInt32;
-typedef UInt48LE			UInt48;
-
-#else
-
-typedef Bit16LE<int16_t>	Int16;
-typedef Bit16LE<uint16_t>	UInt16;
-typedef Bit32LE<int32_t>	Int32;
-typedef Bit32LE<uint32_t>	UInt32;
-typedef UInt48LE			UInt48;
-
-#endif
-
-typedef UInt8Simple			UInt8;
-typedef Float<float>		SingleFloat;
-typedef Float<double>		DoubleFloat;
+const uint8_t UInt8Simple::Max = openpal::MaxValue<uint8_t>();
+const uint8_t UInt8Simple::Min = openpal::MinValue<uint8_t>();
 
 }
-
-#endif

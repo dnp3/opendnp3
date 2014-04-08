@@ -76,6 +76,16 @@ TEST_CASE(SUITE("ResetLinks"))
 	REQUIRE(toHex(wrapper) == "05 64 05 C0 01 00 00 04 E9 21");
 }
 
+TEST_CASE(SUITE("RequestLinkStates"))
+{
+	StaticBuffer<292> buffer;
+
+	// ResetLinkStates - Master
+	auto write = buffer.GetWriteBuffer();
+	auto wrapper = LinkFrame::FormatRequestLinkStatus(write, false, 1, 1024);
+	REQUIRE(toHex(wrapper) == "05 64 05 49 01 00 00 04 D2 36");
+}
+
 TEST_CASE(SUITE("ACK"))
 {
 	StaticBuffer<292> buffer;

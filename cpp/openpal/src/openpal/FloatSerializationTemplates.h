@@ -18,29 +18,61 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __DNP_CRC_H_
-#define __DNP_CRC_H_
+#ifndef __FLOAT_SERIALIZATION_TEMPLATES_H_
+#define __FLOAT_SERIALIZATION_TEMPLATES_H_
 
 #include <cstdint>
+#include <cstring>
 
-namespace opendnp3
+#include "BufferWrapper.h"
+#include "Limits.h"
+
+namespace openpal
 {
 
-class DNPCrc
+template <class T>
+class Float
 {
 public:
+	typedef T Type;
 
-	static uint16_t CalcCrc(const uint8_t* input, uint32_t length);
+	const static size_t Size = sizeof(T);
+	const static T Max;
+	const static T Min;
 
-	static void AddCrc(uint8_t* input, uint32_t length);
+	inline static T ReadBuffer(ReadOnlyBuffer& arBuffer)
+	{
+		auto ret = Read(arBuffer);
+		arBuffer.Advance(Size);
+		return ret;
+	}
 
-	static bool IsCorrectCRC(const uint8_t* input, uint32_t length);
+	static void WriteBuffer(WriteBuffer& buffer, T aValue)
+	{
+		Write(buffer, aValue);
+		buffer.Advance(Size);
+	}
 
-private:
+	// Some platforms like ARM have WORD alignment issue when using reinterpret cast.
+	// The float/double read routines use intermediate buffer that the compiler word aligns
+	inline static T Read(const uint8_t* apStart)
+	{
+		T d;
+		memcpy(&d, apStart, Size);
+		return d;
+	}
 
-	static uint16_t crcTable[256]; //Precomputed CRC lookup table
-
+	inline static void Write(uint8_t* apStart, T aValue)
+	{
+		memcpy(apStart, &aValue, Size);
+	}
 };
+
+template <class T>
+const T Float<T>::Max = openpal::MaxValue<T>();
+
+template <class T>
+const T Float<T>::Min = openpal::MinValue<T>();
 
 }
 

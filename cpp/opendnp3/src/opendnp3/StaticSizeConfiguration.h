@@ -27,11 +27,11 @@
 // They are liberally set by default, but can be reduced for embedded systems
 
 #ifndef OPENDNP3_MAX_TX_APDU_SIZE
-#define OPENDNP3_MAX_TX_APDU_SIZE 249
+#define OPENDNP3_MAX_TX_APDU_SIZE 2048
 #endif
 
 #ifndef OPENDNP3_MAX_RX_APDU_SIZE
-#define OPENDNP3_MAX_RX_APDU_SIZE 249
+#define OPENDNP3_MAX_RX_APDU_SIZE 2048
 #endif
 
 #define MACRO_NUM_LINK_FRAMES(size) ((static_cast<uint32_t>(size) / 249) + ((static_cast<uint32_t>(size) % 249) ? 1 : 0))

@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __SERIALIZATION_TEMPLATES_H_
-#define __SERIALIZATION_TEMPLATES_H_
+#ifndef __SERIALIZATION_TEMPLATES_LE_H_
+#define __SERIALIZATION_TEMPLATES_LE_H_
 
 #include <cstdint>
 #include <cstring>
@@ -120,50 +120,6 @@ const T Bit32LE<T>::Max = openpal::MaxValue<T>();
 
 template <class T>
 const T Bit32LE<T>::Min = openpal::MinValue<T>();
-
-template <class T>
-class Float
-{
-public:
-	typedef T Type;
-
-	const static size_t Size = sizeof(T);
-	const static T Max;
-	const static T Min;
-
-	inline static T ReadBuffer(ReadOnlyBuffer& arBuffer)
-	{
-		auto ret = Read(arBuffer);
-		arBuffer.Advance(Size);
-		return ret;
-	}
-
-	static void WriteBuffer(WriteBuffer& buffer, T aValue)
-	{
-		Write(buffer, aValue);
-		buffer.Advance(Size);
-	}
-
-	// Some platforms like ARM have WORD alignment issue when using reinterpret cast.
-	// The float/double read routines use intermediate buffer that the compiler word aligns
-	inline static T Read(const uint8_t* apStart)
-	{
-		T d;
-		memcpy(&d, apStart, Size);
-		return d;
-	}
-
-	inline static void Write(uint8_t* apStart, T aValue)
-	{
-		memcpy(apStart, &aValue, Size);
-	}
-};
-
-template <class T>
-const T Float<T>::Max = openpal::MaxValue<T>();
-
-template <class T>
-const T Float<T>::Min = openpal::MinValue<T>();
 
 }
 

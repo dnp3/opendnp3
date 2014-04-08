@@ -23,11 +23,13 @@
 
 #include "Erasure.h"
 
+#define OPENPAL_MACRO_MAX_RUNNABLE_SIZE 64
+
 namespace openpal
 {
 
-// Todo define max somewhere else
-const uint32_t MAX_RUNNABLE_SIZE = 128;
+// TODO define max somewhere else
+const uint32_t MAX_RUNNABLE_SIZE = OPENPAL_MACRO_MAX_RUNNABLE_SIZE;
 
 class Runnable : public Erasure<MAX_RUNNABLE_SIZE>
 {

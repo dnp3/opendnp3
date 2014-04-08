@@ -18,45 +18,50 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __OPENPAL_SERIALIZATION_H_
-#define __OPENPAL_SERIALIZATION_H_
+#ifndef __BYTE_SERIALIZATION_H_
+#define __BYTE_SERIALIZATION_H_
 
-#include "UInt48LE.h"
-#include "SerializationTemplatesLE.h"
-#include "SerializationTemplatesBE.h"
+#include <cstdint>
+#include <cstring>
 
-#include "ByteSerialization.h"
-#include "FloatSerializationTemplates.h"
+#include "BufferWrapper.h"
 
 namespace openpal
 {
 
-/*
-Users should only use these typedefs. This will allow these to be switched
-if we ever need to support other systems
-*/
+class UInt8Simple
+{
+public:
 
-#ifdef FLIP_ENDIAN
+	inline static uint8_t Read(const uint8_t* apStart)
+	{
+		return (*apStart);
+	}
 
-typedef Bit16BE<int16_t>	Int16;
-typedef Bit16BE<uint16_t>	UInt16;
-typedef Bit32BE<int32_t>	Int32;
-typedef Bit32BE<uint32_t>	UInt32;
-typedef UInt48LE			UInt48;
+	inline static uint8_t ReadBuffer(ReadOnlyBuffer& arBuffer)
+	{
+		auto ret = Read(arBuffer);
+		arBuffer.Advance(Size);
+		return ret;
+	}
 
-#else
+	static void WriteBuffer(WriteBuffer& buffer, uint8_t aValue)
+	{
+		Write(buffer, aValue);
+		buffer.Advance(Size);
+	}
 
-typedef Bit16LE<int16_t>	Int16;
-typedef Bit16LE<uint16_t>	UInt16;
-typedef Bit32LE<int32_t>	Int32;
-typedef Bit32LE<uint32_t>	UInt32;
-typedef UInt48LE			UInt48;
+	inline static void Write(uint8_t* apStart, uint8_t aValue)
+	{
+		*(apStart) = aValue;
+	}
 
-#endif
+	const static size_t Size = 1;
+	const static uint8_t Max;
+	const static uint8_t Min;
 
-typedef UInt8Simple			UInt8;
-typedef Float<float>		SingleFloat;
-typedef Float<double>		DoubleFloat;
+	typedef uint8_t Type;
+};
 
 }
 
