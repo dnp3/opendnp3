@@ -56,7 +56,7 @@ int main()
 	LinkConfig config(false, false);				
 	ApplicationStack stack(root, &exe, AppConfig(false), config);
 				
-	StaticallyAllocatedDatabase<1> db;
+	StaticallyAllocatedDatabase<5> db;
 	StaticallyAllocatedEventBuffer<1> eb;
 	Database database(db.GetFacade());
 	

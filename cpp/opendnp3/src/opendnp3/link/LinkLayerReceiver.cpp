@@ -115,8 +115,8 @@ void LinkLayerReceiver::PushFrame()
 ReadOnlyBuffer LinkLayerReceiver::TransferUserData()
 {
 	uint32_t len = mHeader.GetLength() - LS_MIN_LENGTH;
-	LinkFrame::ReadUserData(mBuffer.ReadBuff() + LS_HEADER_SIZE, mpUserData, len);
-	return ReadOnlyBuffer(mpUserData, len);
+	LinkFrame::ReadUserData(mBuffer.ReadBuff() + LS_HEADER_SIZE, receiverBuffer.Buffer(), len);
+	return receiverBuffer.ToReadOnly().Truncate(len);
 }
 
 bool LinkLayerReceiver::ReadHeader()
