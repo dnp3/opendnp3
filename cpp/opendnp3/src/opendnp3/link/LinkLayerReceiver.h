@@ -107,6 +107,7 @@ private:
 	LRS_Base* mpState;
 
 	// Buffer to which user data is extracted, this is necessary since CRC checks are interlaced	
+	uint8_t userDataBuffer[250];
 	openpal::StaticBuffer<sizes::LINK_RECEIVER_BUFFER_SIZE> receiverBuffer;
 	ShiftableBuffer mBuffer; //Buffer used to cache frames data as it arrives
 };

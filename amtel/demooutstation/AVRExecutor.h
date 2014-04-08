@@ -3,10 +3,17 @@
 
 #include <openpal/IExecutor.h>
 #include <openpal/StaticQueue.h>
+#include <openpal/StaticArray.h>
+
+#include "AVRTimer.h"
 
 class AVRExecutor : public openpal::IExecutor
 {
-	public:
+	friend class AVRTimer;
+	
+	public:	
+	
+	AVRExecutor();
 	
 	virtual openpal::MonotonicTimestamp GetTime() override final;
 	
@@ -16,33 +23,27 @@ class AVRExecutor : public openpal::IExecutor
 	
 	virtual void Post(const openpal::Runnable& runnable) override final;
 	
-	void RunOne();
+	bool RunOne();
+	
+	void Init();
+	
+	void Tick();
 	
 	protected:
 	
-	virtual void Pause() override final;
+	virtual void Pause() override final {}
 	
-	virtual void Resume() override final;
-	
-	private:
-	
-	openpal::StaticQueue<openpal::Runnable, uint16_t, 4> work;
-};
-
-class AVRTimer : openpal::ITimer
-{
-	public:
-	
-	static openpal::ITimer* Inst();
-	
-	virtual void Cancel() override final;
-	virtual openpal::MonotonicTimestamp ExpiresAt() override final;
+	virtual void Resume() override final {}
 	
 	private:
 	
-	static AVRTimer instance;
+	void OnCancel(AVRTimer* pTimer);
 	
-	AVRTimer() {}
+	int64_t ticks;	
+	
+	openpal::StaticArray<AVRTimer, uint8_t, 3> timers;
+	openpal::StaticQueue<openpal::Runnable, uint8_t, 3> work;
+	openpal::StaticQueue<AVRTimer*, uint8_t, 3> idleTimers;
 };
 
-#endif /* AVREXECUTOR_H_ */
+#endif

@@ -1,4 +1,5 @@
-#include <avr/io.h> 
+#include <avr/io.h>
+#include <avr/interrupt.h>
 
 #define F_CPU 16000000UL
 #define BIT(x)	(1<<x)
@@ -8,7 +9,9 @@
 
 extern "C" void abort()
 {
-	SET(DDRB, BIT(7));		// Set PORTB, pin 7 as output
+	cli(); // disable interrupts
+	
+	SET(DDRB, BIT(7));					// Set PORTB, pin 7 as output
 	SET(TCCR1B, BIT(CS10)|BIT(CS12));	// Set clock source, x1
 	
 	for (;;)
