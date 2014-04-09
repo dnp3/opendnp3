@@ -23,6 +23,9 @@
 #define __STATICALLY_ALLOCATED_EVENT_BUFFER_
 
 #include "EventBufferFacade.h"
+
+#include <openpal/RandomInsertAdapter.h>
+#include <openpal/StaticArray.h>
 #include <openpal/StaticArray.h>
 
 namespace opendnp3
@@ -35,16 +38,16 @@ public:
 
 	EventBufferFacade GetFacade()
 	{
-		RandomInsertAdapter<Event<Binary>, uint16_t> binaryAdapter(binaryArray.ToIndexable(), binaryStack.ToIndexable());
-		RandomInsertAdapter<Event<DoubleBitBinary>, uint16_t> doubleBinaryAdapter(doubleBinaryArray.ToIndexable(), doubleBinaryStack.ToIndexable());
-		RandomInsertAdapter<Event<Analog>, uint16_t> analogAdapter(analogArray.ToIndexable(), analogStack.ToIndexable());
-		RandomInsertAdapter<Event<Counter>, uint16_t> counterAdapter(counterArray.ToIndexable(), counterStack.ToIndexable());
-		RandomInsertAdapter<Event<FrozenCounter>, uint16_t> frozenCounterAdapter(frozenCounterArray.ToIndexable(), frozenCounterStack.ToIndexable());
-		RandomInsertAdapter<Event<BinaryOutputStatus>, uint16_t> binaryOutputStatusAdapter(binaryOutputStatusArray.ToIndexable(), binaryOutputStatusStack.ToIndexable());
-		RandomInsertAdapter<Event<AnalogOutputStatus>, uint16_t> analogOutputStatusAdapter(analogOutputStatusArray.ToIndexable(), analogOutputStatusStack.ToIndexable());
+		openpal::RandomInsertAdapter<Event<Binary>, uint16_t> binaryAdapter(binaryArray.ToIndexable(), binaryStack.ToIndexable());
+		openpal::RandomInsertAdapter<Event<DoubleBitBinary>, uint16_t> doubleBinaryAdapter(doubleBinaryArray.ToIndexable(), doubleBinaryStack.ToIndexable());
+		openpal::RandomInsertAdapter<Event<Analog>, uint16_t> analogAdapter(analogArray.ToIndexable(), analogStack.ToIndexable());
+		openpal::RandomInsertAdapter<Event<Counter>, uint16_t> counterAdapter(counterArray.ToIndexable(), counterStack.ToIndexable());
+		openpal::RandomInsertAdapter<Event<FrozenCounter>, uint16_t> frozenCounterAdapter(frozenCounterArray.ToIndexable(), frozenCounterStack.ToIndexable());
+		openpal::RandomInsertAdapter<Event<BinaryOutputStatus>, uint16_t> binaryOutputStatusAdapter(binaryOutputStatusArray.ToIndexable(), binaryOutputStatusStack.ToIndexable());
+		openpal::RandomInsertAdapter<Event<AnalogOutputStatus>, uint16_t> analogOutputStatusAdapter(analogOutputStatusArray.ToIndexable(), analogOutputStatusStack.ToIndexable());
 
-		LinkedListAdapter<SequenceRecord, uint16_t> soeAdapter(sequenceOfEvents.ToIndexable());
-		StackAdapter<ListNode<SequenceRecord>*, uint16_t> selectionAdapter(selectedEvents.ToIndexable());
+		openpal::LinkedListAdapter<SequenceRecord, uint16_t> soeAdapter(sequenceOfEvents.ToIndexable());
+		openpal::StackAdapter<openpal::ListNode<SequenceRecord>*, uint16_t> selectionAdapter(selectedEvents.ToIndexable());
 
 		return EventBufferFacade(
 			binaryAdapter,

@@ -1059,7 +1059,7 @@
       <Filter>Header\transport</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\outstation\NewOutstation.cpp">
-      <Filter>Header\outstation</Filter>
+      <Filter>Source\outstation</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

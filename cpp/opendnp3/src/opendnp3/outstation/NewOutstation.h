@@ -23,9 +23,11 @@
 
 #include <openpal/AsyncLayerInterfaces.h>
 #include <openpal/StaticBuffer.h>
+#include <openpal/IExecutor.h>
 
 #include "opendnp3/StaticSizeConfiguration.h"
 #include "opendnp3/outstation/Database.h"
+#include "opendnp3/outstation/ResponseContext.h"
 #include "opendnp3/app/IINField.h"
 #include "opendnp3/app/ObjectWriter.h"
 #include "opendnp3/app/APDUHeader.h"
@@ -37,7 +39,7 @@ class NewOutstation : public openpal::IUpperLayer
 {
 	public:
 
-	NewOutstation(openpal::ILowerLayer& lower, Database& database);
+	NewOutstation(openpal::IExecutor& executor, openpal::ILowerLayer& lower, Database& database, EventBufferFacade& buffers);
 	
 	virtual void OnLowerLayerUp() override final;
 	
@@ -55,8 +57,11 @@ class NewOutstation : public openpal::IUpperLayer
 	bool isSending;
 
 
+	openpal::IExecutor* pExecutor;
 	openpal::ILowerLayer* pLower;
 	Database* pDatabase;
+	OutstationEventBuffer eventBuffer;
+	ResponseContext rspContext;
 
 	openpal::StaticBuffer<sizes::MAX_TX_APDU_SIZE> txBuffer;
 

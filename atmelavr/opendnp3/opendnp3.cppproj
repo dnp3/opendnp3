@@ -954,6 +954,30 @@
       <SubType>compile</SubType>
       <Link>outstation\Database.h</Link>
     </Compile>
+    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\EventBufferFacade.cpp">
+      <SubType>compile</SubType>
+      <Link>outstation\EventBufferFacade.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\EventBufferFacade.h">
+      <SubType>compile</SubType>
+      <Link>outstation\EventBufferFacade.h</Link>
+    </Compile>
+    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\EventCount.cpp">
+      <SubType>compile</SubType>
+      <Link>outstation\EventCount.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\EventCount.h">
+      <SubType>compile</SubType>
+      <Link>outstation\EventCount.h</Link>
+    </Compile>
+    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\EventResponseContext.cpp">
+      <SubType>compile</SubType>
+      <Link>outstation\EventResponseContext.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\EventResponseContext.h">
+      <SubType>compile</SubType>
+      <Link>outstation\EventResponseContext.h</Link>
+    </Compile>
     <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\NewOutstation.cpp">
       <SubType>compile</SubType>
       <Link>outstation\NewOutstation.cpp</Link>
@@ -961,6 +985,46 @@
     <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\NewOutstation.h">
       <SubType>compile</SubType>
       <Link>outstation\NewOutstation.h</Link>
+    </Compile>
+    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\OutstationEventBuffer.cpp">
+      <SubType>compile</SubType>
+      <Link>outstation\OutstationEventBuffer.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\OutstationEventBuffer.h">
+      <SubType>compile</SubType>
+      <Link>outstation\OutstationEventBuffer.h</Link>
+    </Compile>
+    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\ResponseContext.cpp">
+      <SubType>compile</SubType>
+      <Link>outstation\ResponseContext.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\ResponseContext.h">
+      <SubType>compile</SubType>
+      <Link>outstation\ResponseContext.h</Link>
+    </Compile>
+    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\SelectionCriteria.cpp">
+      <SubType>compile</SubType>
+      <Link>outstation\SelectionCriteria.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\SelectionCriteria.h">
+      <SubType>compile</SubType>
+      <Link>outstation\SelectionCriteria.h</Link>
+    </Compile>
+    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\StaticResponseContext.cpp">
+      <SubType>compile</SubType>
+      <Link>outstation\StaticResponseContext.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\StaticResponseContext.h">
+      <SubType>compile</SubType>
+      <Link>outstation\StaticResponseContext.h</Link>
+    </Compile>
+    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\StaticResponseTypes.cpp">
+      <SubType>compile</SubType>
+      <Link>outstation\StaticResponseTypes.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\StaticResponseTypes.h">
+      <SubType>compile</SubType>
+      <Link>outstation\StaticResponseTypes.h</Link>
     </Compile>
     <Compile Include="..\..\cpp\opendnp3\src\opendnp3\Settable.h">
       <SubType>compile</SubType>

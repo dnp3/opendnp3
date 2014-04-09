@@ -36,7 +36,7 @@ using namespace openpal;
 namespace opendnp3
 {
 
-EventResponseContext::EventResponseContext(OutstationEventBuffer& buffer) : pBuffer(&buffer)
+EventResponseContext::EventResponseContext(OutstationEventBuffer* pBuffer_) : pBuffer(pBuffer_)
 {}
 
 bool EventResponseContext::IsComplete() const

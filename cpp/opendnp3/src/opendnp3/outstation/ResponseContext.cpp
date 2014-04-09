@@ -24,10 +24,10 @@
 namespace opendnp3
 {
 
-ResponseContext::ResponseContext(Database* pDatabase, OutstationEventBuffer& buffer, const StaticResponseTypes& rspTypes) :
+ResponseContext::ResponseContext(Database* pDatabase, OutstationEventBuffer* pBuffer, const StaticResponseTypes& rspTypes) :
 	fragmentCount(0),
 	staticContext(pDatabase, rspTypes),
-	eventContext(buffer)
+	eventContext(pBuffer)
 {
 
 }

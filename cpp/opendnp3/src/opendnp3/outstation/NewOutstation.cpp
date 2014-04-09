@@ -24,13 +24,18 @@
 #include "opendnp3/app/APDUHeaderParser.h"
 #include "opendnp3/app/APDUResponse.h"
 
+using namespace openpal;
+
 namespace opendnp3
 {
 
-NewOutstation::NewOutstation(openpal::ILowerLayer& lower, Database& database) : 
+NewOutstation::NewOutstation(IExecutor& executor, openpal::ILowerLayer& lower, Database& database, EventBufferFacade& buffers) :
 	isOnline(false),
 	isSending(false),
-	pLower(&lower)
+	pExecutor(&executor),
+	pLower(&lower),
+	eventBuffer(buffers),
+	rspContext(&database, &eventBuffer, StaticResponseTypes())
 {}
 	
 void NewOutstation::OnLowerLayerUp()
@@ -61,11 +66,11 @@ void NewOutstation::OnReceive(const openpal::ReadOnlyBuffer& buffer)
 			APDUResponse response(txBuffer.GetWriteBuffer());
 			response.SetControl(request.control);
 			response.SetFunction(FunctionCode::RESPONSE);
-			//auto writer = response.GetWriter();
-			//IINField iin = BuildResponse(request, writer);
-			//response.SetIIN(iin);
-			pLower->BeginTransmit(response.ToReadOnly());
+			auto writer = response.GetWriter();
+			IINField iin = BuildResponse(request, writer);
+			response.SetIIN(iin);
 			isSending = true;
+			pLower->BeginTransmit(response.ToReadOnly());
 		}
 	}
 }
@@ -80,7 +85,14 @@ void NewOutstation::OnSendResult(bool isSucccess)
 
 IINField NewOutstation::BuildResponse(const APDURecord& request, ObjectWriter& writer)
 {
-	return IINField::Empty;
+	if (request.function == FunctionCode::READ)
+	{
+		return IINField::Empty;
+	}
+	else
+	{
+		return IINField(IINBit::FUNC_NOT_SUPPORTED);
+	}
 }
 	
 }

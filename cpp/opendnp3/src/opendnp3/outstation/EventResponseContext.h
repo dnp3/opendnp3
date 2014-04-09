@@ -57,7 +57,7 @@ public:
 	};
 
 
-	EventResponseContext(OutstationEventBuffer& buffer);
+	EventResponseContext(OutstationEventBuffer* pBuffer_);
 
 	bool IsComplete() const;
 

@@ -3,6 +3,7 @@
 #include <opendnp3/transport/TransportStack.h>
 #include <opendnp3/outstation/NewOutstation.h>
 #include <opendnp3/outstation/StaticallyAllocatedDatabase.h>
+#include <opendnp3/outstation/StaticallyAllocatedEventBuffer.h>
 
 #include <openpal/LogRoot.h>
 
@@ -30,11 +31,14 @@ int main()
 	LinkConfig config(false, false);
 	TransportStack stack(root, &exe, config);
 	
-	StaticallyAllocatedDatabase<1> buffers;
+	StaticallyAllocatedDatabase<1> staticBuffers;
 	
-	Database database(buffers.GetFacade());
+	Database database(staticBuffers.GetFacade());
+	
+	StaticallyAllocatedEventBuffer<1> eventBuffers;
+	auto facade = eventBuffers.GetFacade();
 				
-	NewOutstation outstation(stack.transport, database);
+	NewOutstation outstation(exe, stack.transport, database, facade);
 		
 	stack.transport.SetAppLayer(&outstation);
 			
