@@ -29,9 +29,9 @@ namespace opendnp3
 
 namespace sources
 {
-	const int APP_LAYER = 0;
-	const int TRANSPORT_LAYER = 1;
-	const int LINK_LAYER = 2;
+	const int LINK_LAYER = 1;
+	const int APP_LAYER = 2;
+	const int TRANSPORT_LAYER = 3;	
 }
 
 namespace flags

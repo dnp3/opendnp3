@@ -45,15 +45,20 @@ public:
 
 	void SetFilterInterpreter(LevelToString pInterpreter);
 
+	void SetSourceInterpreter(SourceToString pInterpreter);
+
 	LogToStdio();
 
 private:
 
 	static std::ostringstream& BasicFlags(std::ostringstream& ss, const openpal::LogFilters& filters);
+	static std::ostringstream& BasicSource(std::ostringstream& ss, int source);
 
 	static LogToStdio instance;
 
-	LevelToString pInterpreter;
+	LevelToString pLevelToString;
+	SourceToString pSourceToString;
+
 	bool printLocation;
 	std::mutex mutex;
 };

@@ -27,11 +27,11 @@ LogEntry::LogEntry() : errorCode(-1)
 {}
 
 
-LogEntry::LogEntry(char const* id_, const LogFilters& filters_, int subType_, char const* location_, char const* message_, int errorCode_)
+LogEntry::LogEntry(char const* id_, const LogFilters& filters_, int source_, char const* location_, char const* message_, int errorCode_)
 	:
 	id(id_),
 	filters(filters_),
-	subType(subType_),
+	source(source_),
 	location(location_),
 	message(message_),
 	errorCode(errorCode_)

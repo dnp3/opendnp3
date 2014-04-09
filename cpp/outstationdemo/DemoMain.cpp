@@ -51,12 +51,10 @@ int main(int argc, char* argv[])
 	// Log statements with a lower priority will not be logged.
 	const uint32_t FILTERS = levels::NORMAL;
 
-	//A default logging backend that can proxy to multiple other backends
-	EventLog log;
+	//A default logging backend that can proxy to multiple other backends	
 	LogToStdio iologger;
-	log.AddLogSubscriber(&iologger); // This singleton logger just prints messages to the console
 
-	IOServiceThreadPool pool(&log, FILTERS,  1); // only 1 thread is needed for a single stack
+	IOServiceThreadPool pool(&iologger, FILTERS, 1); // only 1 thread is needed for a single stack
 
 	// This is the main point of interaction with the stack
 	DNP3Manager mgr;
@@ -69,7 +67,7 @@ int main(int argc, char* argv[])
 	};
 
 	// Create the raw physical layer
-	auto pServerRoot = new LogRoot(&log, "server", FILTERS);
+	auto pServerRoot = new LogRoot(&iologger, "server", FILTERS);
 	auto pServerPhys = new PhysicalLayerAsyncTCPServer(*pServerRoot, pool.GetIOService(), "0.0.0.0", 20000, configure);
 	// Wrap the physical layer in a DNP channel
 	auto pServer = mgr.CreateChannel(pServerRoot, TimeDuration::Seconds(5), TimeDuration::Seconds(5), pServerPhys);

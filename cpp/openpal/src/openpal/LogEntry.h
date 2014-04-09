@@ -38,7 +38,7 @@ public:
 
 	LogEntry();
 
-	LogEntry(char const* id, const LogFilters& filters, int subType, char const* location, char const* message, int errorCode);
+	LogEntry(char const* id, const LogFilters& filters, int source, char const* location, char const* message, int errorCode);
 
 	/// @return The name of the logger that recorded the message
 	char const*	GetId() const
@@ -47,9 +47,9 @@ public:
 	}
 
 	/// @return The application specific sub-type
-	int GetSubType() const
+	int GetSource() const
 	{
-		return subType;
+		return source;
 	}
 
 	/// @return The place in the source code where the message was recorded
@@ -80,7 +80,7 @@ private:
 
 	char const*		id;
 	LogFilters		filters;
-	int				subType;
+	int				source;
 	char const*		location;
 	char const*		message;
 	int				errorCode;

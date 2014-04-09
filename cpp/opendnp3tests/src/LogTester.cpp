@@ -39,7 +39,7 @@ LogRecord::LogRecord() :
 LogRecord::LogRecord(const LogEntry& entry) : 
 id(entry.GetId()), 
 filters(entry.GetFilters()), 
-subType(entry.GetSubType()),
+subType(entry.GetSource()),
 location(entry.GetLocation()),
 message(entry.GetMessage()),
 errorCode(entry.GetErrorCode())
