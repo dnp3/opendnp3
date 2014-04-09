@@ -47,9 +47,8 @@ int main()
 {	
 	AVRExecutor exe;
 	LogRoot root(nullptr, "root", 0);
-	
-	LinkConfig config(false, false);
-	TransportStack stack(root, &exe, config);
+		
+	TransportStack stack(root, &exe, LinkConfig(false, false));
 	
 	StaticallyAllocatedDatabase<1> staticBuffers;
 	
@@ -73,12 +72,13 @@ int main()
 	DDRB |= (7 << 0);
 	
 	// Use a repeating software timer to toggle binary index 0
-	Update(true, false, &exe, &database);
+	Update(true, false, &exe, &database);	
 				
 	for (;;)
-	{ 		
+	{ 								
 		exe.RunOne();			
 		parser.Tick();		
+		//exe.Sleep();
 	}
 
 	return 0;

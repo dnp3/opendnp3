@@ -29,6 +29,8 @@ class AVRExecutor : public openpal::IExecutor
 	
 	void Tick();
 	
+	void Sleep();
+	
 	protected:
 	
 	virtual void Pause() override final {}
@@ -43,10 +45,11 @@ class AVRExecutor : public openpal::IExecutor
 	
 	int64_t ticks;	
 	
-	openpal::StaticArray<AVRTimer, uint8_t, 3> timers;
-	openpal::StaticQueue<openpal::Runnable, uint8_t, 3> work;
-	openpal::StaticQueue<AVRTimer*, uint8_t, 3> idleTimers;
-	openpal::StaticLinkedList<AVRTimer*, uint8_t, 3> activeTimers;
+	openpal::StaticArray<AVRTimer, uint8_t, 5> timers;
+	openpal::StaticQueue<openpal::Runnable, uint8_t, 5> work;
+	
+	openpal::StaticQueue<AVRTimer*, uint8_t, 5> idleTimers;
+	openpal::StaticLinkedList<AVRTimer*, uint8_t, 5> activeTimers;
 };
 
 #endif
