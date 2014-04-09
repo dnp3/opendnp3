@@ -22,22 +22,11 @@ SIGNAL(TIMER1_COMPA_vect)
 
 void AVRExecutor::Tick()
 {
-	++ticks;
-	/*
-	if(ticks % 100 == 0)
-	{
-		// Toggle the LED from the main thread
-		auto toggle = []() { PORTB ^= (1 << 7); };		
-		this->PostLambda(toggle);
-	}
-	*/
+	++ticks;	
 }
 
 void AVRExecutor::Init()
-{	
-	// Set LED as output 
-	//DDRB |= (7 << 0);
-	
+{		
 	 // Configure timer 1 for CTC mode
 	TCCR1B |= (1 << WGM12);
 

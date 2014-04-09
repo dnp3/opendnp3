@@ -66,13 +66,13 @@ int main()
 	stack.link.SetRouter(&parser);	
 	stack.link.OnLowerLayerUp();
 	
-	// start timer interrupts at 100Hz
-	// LED will toggle at ~1HZ
+	// start timer interrupts at 100Hz	
 	exe.Init();
 	
 	// Set LED as output
 	DDRB |= (7 << 0);
 	
+	// Use a repeating software timer to toggle binary index 0
 	Update(true, false, &exe, &database);
 				
 	for (;;)
