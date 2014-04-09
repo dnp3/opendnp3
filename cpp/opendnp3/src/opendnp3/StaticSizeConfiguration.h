@@ -42,7 +42,7 @@ namespace sizes
 {
 
 // the maximum number of static read object/variation records that can be in any READ request
-static const uint16_t MAX_READ_REQUESTS = 16;
+static const uint16_t MAX_READ_REQUESTS = 8;
 
 // a safeguard parameter to project from DoS attacks, this really only applies to "empty strings"
 static const uint32_t MAX_OBJECTS_PER_APDU = 32768;
