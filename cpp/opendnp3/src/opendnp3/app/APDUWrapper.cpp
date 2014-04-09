@@ -73,9 +73,9 @@ AppControlField APDUWrapper::GetControl() const
 	return AppControlField(buffer[0]);
 }
 
-void APDUWrapper::SetControl(uint8_t control)
+void APDUWrapper::SetControl(AppControlField control)
 {
-	buffer[0] = control;
+	buffer[0] = control.ToByte();
 }
 
 openpal::ReadOnlyBuffer APDUWrapper::ToReadOnly() const

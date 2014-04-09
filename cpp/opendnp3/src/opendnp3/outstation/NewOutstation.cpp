@@ -75,9 +75,12 @@ void NewOutstation::OnReceive(const openpal::ReadOnlyBuffer& buffer)
 			response.SetControl(request.control.ToByte());
 			response.SetIIN(iin);
 			isSending = true;
-			auto output = response.ToReadOnly();			
+			auto output = response.ToReadOnly();
+			pLower->BeginTransmit(output);
+			/*
 			auto lambda = [this, output]() { this->pLower->BeginTransmit(output); };
 			pExecutor->PostLambda(lambda);
+			*/
 		}
 	}
 }
@@ -93,34 +96,29 @@ void NewOutstation::OnSendResult(bool isSucccess)
 IINField NewOutstation::BuildResponse(const APDURecord& request, APDUResponse& response)
 {
 	if (request.function == FunctionCode::READ)
-	{	
-		/*		
+	{			
 		rspContext.Reset();
-		//ReadHandler handler(logger, rspContext);
-		auto result = APDUParser::ParseTwoPass(request.objects, nullptr, nullptr, APDUParser::Context(false)); // don't expect range/count context on a READ
+		ReadHandler handler(logger, rspContext);
+		auto result = APDUParser::ParseTwoPass(request.objects, &handler, nullptr, APDUParser::Context(false)); // don't expect range/count context on a READ
 		if (result == APDUParser::Result::OK)
-		{
-		
+		{			
 			// Do a transaction on the database (lock) for multi-threaded environments
 			// if the request contained static variations, we double buffer (copy) the entire static database.
 			// this ensures that an multi-fragmented responses see a consistent snapshot
 			openpal::Transaction tx(pDatabase);
 			pDatabase->DoubleBuffer();
-			rspContext.Load(response);			
-			return handler.Errors();
+			rspContext.Load(response);
+			return handler.Errors();						
 		}
 		else
 		{			
-			rspContext.Reset();
-			//return IINFromParseResult(result);
-			return IINField(IINBit::ALREADY_EXECUTING);
-		}
-		*/	
-		return IINField(IINBit::ALREADY_EXECUTING);
+			rspContext.Reset();			
+			return IINField(IINBit::PARAM_ERROR);
+		}				
 	}
 	else
 	{
-		return IINField(IINBit::DEVICE_TROUBLE);
+		return IINField(IINBit::FUNC_NOT_SUPPORTED);
 	}
 }
 	
