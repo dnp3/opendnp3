@@ -23,6 +23,26 @@ using namespace opendnp3;
 using namespace arduino;
 using namespace openpal;
 
+void Update(bool value, bool update, IExecutor* pexe, Database* pDatabase)
+{
+	if(value)
+	{
+		SET(PORTB, BIT(7));
+	}
+	else
+	{
+		CLEAR(PORTB, BIT(7));
+	}
+		
+	if(update) 
+	{
+		pDatabase->Update(Binary(value), 0);
+	}
+	
+	auto lambda = [value, update, pexe, pDatabase](){ Update(!value, true, pexe, pDatabase); };
+	pexe->Start(TimeDuration::Seconds(1), Bind(lambda));
+}
+
 int main()
 {	
 	AVRExecutor exe;
@@ -49,6 +69,11 @@ int main()
 	// start timer interrupts at 100Hz
 	// LED will toggle at ~1HZ
 	exe.Init();
+	
+	// Set LED as output
+	DDRB |= (7 << 0);
+	
+	Update(true, false, &exe, &database);
 				
 	for (;;)
 	{ 		

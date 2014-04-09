@@ -39,11 +39,14 @@ class AVRExecutor : public openpal::IExecutor
 	
 	void OnCancel(AVRTimer* pTimer);
 	
+	bool RunOneTimer();
+	
 	int64_t ticks;	
 	
 	openpal::StaticArray<AVRTimer, uint8_t, 3> timers;
 	openpal::StaticQueue<openpal::Runnable, uint8_t, 3> work;
 	openpal::StaticQueue<AVRTimer*, uint8_t, 3> idleTimers;
+	openpal::StaticLinkedList<AVRTimer*, uint8_t, 3> activeTimers;
 };
 
 #endif

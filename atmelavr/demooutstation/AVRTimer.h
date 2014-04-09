@@ -17,7 +17,6 @@ class AVRTimer : public openpal::ITimer
 	virtual void Cancel() override final;
 	virtual openpal::MonotonicTimestamp ExpiresAt() override final;
 	
-	private:
 	AVRExecutor* pExecutor;
 	openpal::Runnable runnable;
 	openpal::MonotonicTimestamp expirationTime;

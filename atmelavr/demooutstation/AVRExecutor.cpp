@@ -23,18 +23,20 @@ SIGNAL(TIMER1_COMPA_vect)
 void AVRExecutor::Tick()
 {
 	++ticks;
+	/*
 	if(ticks % 100 == 0)
 	{
 		// Toggle the LED from the main thread
 		auto toggle = []() { PORTB ^= (1 << 7); };		
 		this->PostLambda(toggle);
 	}
+	*/
 }
 
 void AVRExecutor::Init()
 {	
 	// Set LED as output 
-	DDRB |= (7 << 0);
+	//DDRB |= (7 << 0);
 	
 	 // Configure timer 1 for CTC mode
 	TCCR1B |= (1 << WGM12);
@@ -62,7 +64,7 @@ AVRExecutor::AVRExecutor() : ticks(0)
 
 MonotonicTimestamp AVRExecutor::GetTime()
 {
-	CriticalSection cs; // TODO - better way to atomic read ticks?
+	//CriticalSection cs; // TODO - better way to atomic read ticks?
 	return MonotonicTimestamp(ticks*10); // every tick represents 10 milliseconds since Init()				
 }
 
@@ -76,6 +78,7 @@ ITimer* AVRExecutor::Start(const MonotonicTimestamp& ts, const Runnable& runnabl
 	assert(idleTimers.IsNotEmpty());
 	AVRTimer* pTimer = idleTimers.Pop();
 	pTimer->Set(this, runnable, ts);
+	this->activeTimers.Add(pTimer);
 	return pTimer;
 }
 	
@@ -88,10 +91,34 @@ void AVRExecutor::Post(const Runnable& runnable)
 bool AVRExecutor::RunOne()
 {			
 	CriticalSection cs; // TODO release interrupts before running task
-	if(work.IsNotEmpty())
+	if(RunOneTimer())
 	{
-		work.Peek().Run();
-		work.Pop();
+		return true;
+	}
+	else
+	{
+		if(work.IsNotEmpty())
+		{
+			work.Peek().Run();
+			work.Pop();
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+}
+
+bool AVRExecutor::RunOneTimer()
+{
+	MonotonicTimestamp time = GetTime();
+	auto expired = [time](AVRTimer* pTimer) { return pTimer->ExpiresAt().milliseconds < time.milliseconds; };
+	auto pNode = activeTimers.RemoveFirst(expired);
+	if(pNode)
+	{
+		pNode->value->runnable.Run();
+		idleTimers.Enqueue(pNode->value);
 		return true;
 	}
 	else
@@ -102,5 +129,7 @@ bool AVRExecutor::RunOne()
 			
 void AVRExecutor::OnCancel(AVRTimer* pTimer)
 {
-
+	auto matches = [pTimer](AVRTimer* pItem){ return pTimer == pItem; };
+	activeTimers.RemoveFirst(matches);	
+	idleTimers.Enqueue(pTimer);
 }

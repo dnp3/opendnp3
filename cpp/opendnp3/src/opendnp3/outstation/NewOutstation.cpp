@@ -42,7 +42,9 @@ NewOutstation::NewOutstation(IExecutor& executor, openpal::LogRoot& root, openpa
 	pDatabase(&database),
 	eventBuffer(buffers),
 	rspContext(&database, &eventBuffer, StaticResponseTypes())
-{}
+{
+	pDatabase->SetEventBuffer(eventBuffer);
+}
 	
 void NewOutstation::OnLowerLayerUp()
 {
