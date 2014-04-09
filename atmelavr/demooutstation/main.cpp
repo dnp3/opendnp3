@@ -45,6 +45,8 @@ void Update(bool value, bool update, IExecutor* pexe, Database* pDatabase)
 
 int main()
 {	
+	cli();
+	
 	AVRExecutor exe;
 	LogRoot root(nullptr, "root", 0);
 		
@@ -61,12 +63,15 @@ int main()
 		
 	stack.transport.SetAppLayer(&outstation);
 			
-	AVRLinkParser parser(root, stack.link);
+	AVRLinkParser parser(root, exe, stack.link);
 	stack.link.SetRouter(&parser);	
 	stack.link.OnLowerLayerUp();
 	
 	// start timer interrupts at 100Hz	
 	exe.Init();
+	
+	// begin interrupts
+	sei();
 	
 	// Set LED as output
 	DDRB |= (7 << 0);

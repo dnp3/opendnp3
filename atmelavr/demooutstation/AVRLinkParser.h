@@ -10,6 +10,7 @@
 
 #include <openpal/LogRoot.h>
 #include <openpal/StaticQueue.h>
+#include <openpal/IExecutor.h>
 
 namespace arduino {
 
@@ -17,11 +18,13 @@ class AVRLinkParser : public opendnp3::ILinkRouter
 {
 	public:
 
-	AVRLinkParser(openpal::LogRoot& root, opendnp3::ILinkContext& context);
+	AVRLinkParser(openpal::LogRoot& root, openpal::IExecutor& exe, opendnp3::ILinkContext& context);
 	
 	virtual void QueueTransmit(const openpal::ReadOnlyBuffer& buffer, opendnp3::ILinkContext* pContext, bool primary) final override;
 	
-	void Tick();	
+	void Tick();
+	
+	void Receive(uint8_t byte);
 	
 	private:
 	
@@ -53,6 +56,7 @@ class AVRLinkParser : public opendnp3::ILinkRouter
 	opendnp3::Settable<openpal::ReadOnlyBuffer> primaryTx;
 	opendnp3::Settable<openpal::ReadOnlyBuffer> secondaryTx;
 	
+	openpal::IExecutor* pExecutor;
 	opendnp3::ILinkContext* pContext;	
 	opendnp3::LinkLayerReceiver receiver;
 };

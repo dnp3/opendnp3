@@ -28,31 +28,27 @@ void AVRExecutor::Tick()
 
 void AVRExecutor::Sleep()
 {
-  set_sleep_mode(SLEEP_MODE_IDLE);
+	set_sleep_mode(SLEEP_MODE_IDLE);
   
-  sleep_enable();
+	sleep_enable();
+	
+	// things we might disable
+	/*
+	power_adc_disable();
+	power_spi_disable();
+	power_timer0_disable();
+	power_timer2_disable();
+	power_twi_disable(); 
+	*/
 
-  /* Disable all of the unused peripherals. This will reduce power
-   * consumption further and, more importantly, some of these
-   * peripherals may generate interrupts that will wake our Arduino from
-   * sleep!
-   */
-  /*
-  power_adc_disable();
-  power_spi_disable();
-  power_timer0_disable();
-  power_timer2_disable();
-  power_twi_disable(); 
-  */
-
-  /* Now enter sleep mode. */
-  sleep_mode();
+	/* Now enter sleep mode. */
+	sleep_mode();
   
-  /* The program will continue from here after the timer timeout*/
-  sleep_disable(); /* First thing to do is disable sleep. */
+	/* The program will continue from here after the timer timeout*/
+	sleep_disable(); /* First thing to do is disable sleep. */
   
-  /* Re-enable the peripherals. */
-  // power_all_enable();
+	/* Re-enable the peripherals. */
+	// power_all_enable();
 }
 
 
@@ -69,9 +65,7 @@ void AVRExecutor::Init()
 
 	TIMSK1 |= (1 << OCIE1A); // enable output compare interrupt for A compare
 	
-	gpExecutor = this;	
-	
-	sei();
+	gpExecutor = this;		
 }
 
 AVRExecutor::AVRExecutor() : ticks(0)
