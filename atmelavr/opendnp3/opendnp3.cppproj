@@ -1002,14 +1002,6 @@
       <SubType>compile</SubType>
       <Link>transport\TransportStack.h</Link>
     </Compile>
-    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\transport\TransportStates.cpp">
-      <SubType>compile</SubType>
-      <Link>transport\TransportStates.cpp</Link>
-    </Compile>
-    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\transport\TransportStates.h">
-      <SubType>compile</SubType>
-      <Link>transport\TransportStates.h</Link>
-    </Compile>
     <Compile Include="..\..\cpp\opendnp3\src\opendnp3\transport\TransportTx.cpp">
       <SubType>compile</SubType>
       <Link>transport\TransportTx.cpp</Link>

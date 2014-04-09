@@ -67,7 +67,7 @@ int main(int argc, char* argv[])
 
 	LinkRoute route(1, 1024);
 
-	PhysicalLayerAsyncTCPServer server(root, &service, "127.0.0.1", 20000);
+	PhysicalLayerAsyncTCPServer server(root, &service, "0.0.0.0", 20000);
 	LinkLayerRouter router(root, &server, TimeDuration::Seconds(1), TimeDuration::Seconds(60));
 	ApplicationStack stack(root, &executor, AppConfig(false), LinkConfig(false, false));
 	stack.link.SetRouter(&router);

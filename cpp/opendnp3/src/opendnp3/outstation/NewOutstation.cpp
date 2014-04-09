@@ -61,9 +61,9 @@ void NewOutstation::OnReceive(const openpal::ReadOnlyBuffer& buffer)
 			APDUResponse response(txBuffer.GetWriteBuffer());
 			response.SetControl(request.control);
 			response.SetFunction(FunctionCode::RESPONSE);
-			auto writer = response.GetWriter();
-			IINField iin = BuildResponse(request, writer);
-			response.SetIIN(iin);
+			//auto writer = response.GetWriter();
+			//IINField iin = BuildResponse(request, writer);
+			//response.SetIIN(iin);
 			pLower->BeginTransmit(response.ToReadOnly());
 			isSending = true;
 		}

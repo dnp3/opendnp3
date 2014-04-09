@@ -87,9 +87,10 @@ ReadOnlyBuffer TransportRx::ProcessReceive(const ReadOnlyBuffer& input)
 				sequence = (sequence + 1) % 64;
 
 				if(last)
-				{					
+				{				
+					ReadOnlyBuffer ret(rxBuffer.Buffer(), numBytesRead);
 					numBytesRead = 0;
-					return ReadOnlyBuffer(rxBuffer.Buffer(), numBytesRead);
+					return ret;
 				}
 				else
 				{
