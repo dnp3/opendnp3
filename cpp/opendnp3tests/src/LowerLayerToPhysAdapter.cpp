@@ -94,7 +94,7 @@ void LowerLayerToPhysAdapter::OnLowerLayerDown()
 }
 
 
-void LowerLayerToPhysAdapter::Send(const openpal::ReadOnlyBuffer& buffer)
+void LowerLayerToPhysAdapter::BeginTransmit(const openpal::ReadOnlyBuffer& buffer)
 {
 	mpPhys->AsyncWrite(buffer);
 }

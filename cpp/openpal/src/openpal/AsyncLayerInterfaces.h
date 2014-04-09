@@ -70,9 +70,7 @@ class ILowerLayer
 
 public:
 
-	virtual ~ILowerLayer() {}
-
-	virtual bool IsTransmitting() const = 0;
+	virtual ~ILowerLayer() {}	
 
 	virtual void BeginTransmit(const ReadOnlyBuffer&) = 0;
 

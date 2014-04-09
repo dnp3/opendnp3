@@ -946,6 +946,14 @@
       <SubType>compile</SubType>
       <Link>objects\Group60.h</Link>
     </Compile>
+    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\Database.cpp">
+      <SubType>compile</SubType>
+      <Link>outstation\Database.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\Database.h">
+      <SubType>compile</SubType>
+      <Link>outstation\Database.h</Link>
+    </Compile>
     <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\NewOutstation.cpp">
       <SubType>compile</SubType>
       <Link>outstation\NewOutstation.cpp</Link>

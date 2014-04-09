@@ -27,7 +27,6 @@
 #include <openpal/BufferWrapper.h>
 #include <openpal/StaticBuffer.h>
 #include <openpal/Logger.h>
-#include <openpal/AsyncLayerInterfaces.h>
 
 namespace opendnp3
 {
@@ -41,11 +40,9 @@ class TransportRx
 {
 
 public:
-	TransportRx(const openpal::Logger&, uint32_t fragSize);
+	TransportRx(const openpal::Logger&, uint32_t fragSize);	
 
-	void SetUpperLayer(openpal::IUpperLayer* pUpper_);
-
-	void HandleReceive(const openpal::ReadOnlyBuffer& input);
+	openpal::ReadOnlyBuffer ProcessReceive(const openpal::ReadOnlyBuffer& input);
 
 	void Reset();
 
@@ -54,8 +51,7 @@ private:
 	bool ValidateHeader(bool fir, bool fin, uint8_t sequence, uint32_t payloadSize);
 
 	openpal::Logger logger;
-	openpal::IUpperLayer* pUpper;
-
+	
 	openpal::StaticBuffer<sizes::MAX_RX_APDU_SIZE> rxBuffer;
 	uint32_t numBytesRead;
 	uint8_t sequence;

@@ -26,6 +26,9 @@
 
 #include "opendnp3/StaticSizeConfiguration.h"
 #include "opendnp3/outstation/Database.h"
+#include "opendnp3/app/IINField.h"
+#include "opendnp3/app/ObjectWriter.h"
+#include "opendnp3/app/APDUHeader.h"
 
 namespace opendnp3
 {
@@ -46,11 +49,15 @@ class NewOutstation : public openpal::IUpperLayer
 	
 	private:
 
+	IINField BuildResponse(const APDURecord& request, ObjectWriter& writer);
+
 	bool isOnline;
 	bool isSending;
-	
+
+
 	openpal::ILowerLayer* pLower;
 	Database* pDatabase;
+
 	openpal::StaticBuffer<sizes::MAX_TX_APDU_SIZE> txBuffer;
 
 };

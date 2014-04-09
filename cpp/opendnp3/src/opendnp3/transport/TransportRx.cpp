@@ -34,8 +34,7 @@ namespace opendnp3
 {
 
 TransportRx::TransportRx(const Logger& logger_, uint32_t fragSize) :
-	logger(logger_),
-	pUpper(nullptr),
+	logger(logger_),	
 	numBytesRead(0),
 	sequence(0),
 	maxFragSize(fragSize)
@@ -53,21 +52,17 @@ void TransportRx::Reset()
 	sequence = 0;
 }
 
-void TransportRx::SetUpperLayer(openpal::IUpperLayer* pUpper_)
-{
-	pUpper = pUpper_;
-}
-
-void TransportRx::HandleReceive(const openpal::ReadOnlyBuffer& input)
+ReadOnlyBuffer TransportRx::ProcessReceive(const ReadOnlyBuffer& input)
 {
 	if (input.Size() < 2)
 	{
 		FORMAT_LOG_BLOCK_WITH_CODE(logger, flags::WARN, TLERR_NO_PAYLOAD, "Received tpdu with no payload, size: %u", static_cast<unsigned int>(input.Size()));
+		return ReadOnlyBuffer::Empty();
 	}
 	else if (input.Size() > TL_MAX_TPDU_LENGTH)
 	{
 		FORMAT_LOG_BLOCK_WITH_CODE(logger, flags::WARN, TLERR_TOO_MUCH_DATA, "Illegal arg: %i exceeds max tpdu size of %u", static_cast<unsigned int>(input.Size()), TL_MAX_TPDU_LENGTH);
-
+		return ReadOnlyBuffer::Empty();
 	}
 	else
 	{
@@ -83,6 +78,7 @@ void TransportRx::HandleReceive(const openpal::ReadOnlyBuffer& input)
 			{
 				SIMPLE_LOG_BLOCK_WITH_CODE(logger, flags::WARN, TLERR_BUFFER_FULL, "Exceeded the buffer size before a complete fragment was read");
 				numBytesRead = 0;
+				return ReadOnlyBuffer::Empty();
 			}
 			else   //passed all validation
 			{
@@ -91,15 +87,19 @@ void TransportRx::HandleReceive(const openpal::ReadOnlyBuffer& input)
 				sequence = (sequence + 1) % 64;
 
 				if(last)
-				{
-					ReadOnlyBuffer buffer(rxBuffer.Buffer(), numBytesRead);
+				{					
 					numBytesRead = 0;
-					if (pUpper)
-					{
-						pUpper->OnReceive(buffer);
-					}					
+					return ReadOnlyBuffer(rxBuffer.Buffer(), numBytesRead);
+				}
+				else
+				{
+					return ReadOnlyBuffer::Empty();
 				}
 			}
+		}
+		else
+		{
+			return ReadOnlyBuffer::Empty();
 		}
 	}
 

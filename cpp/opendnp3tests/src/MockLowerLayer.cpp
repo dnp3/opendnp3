@@ -69,7 +69,7 @@ std::string MockLowerLayer::PopWriteAsHex()
 	return toHex(ret);
 }
 
-void MockLowerLayer::Send(const openpal::ReadOnlyBuffer& output)
+void MockLowerLayer::BeginTransmit(const openpal::ReadOnlyBuffer& output)
 {
 	this->sendQueue.push(output);
 

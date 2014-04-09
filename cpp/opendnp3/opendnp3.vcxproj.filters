@@ -543,9 +543,6 @@
     <ClInclude Include="src\opendnp3\transport\TransportRx.h">
       <Filter>Header\transport</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\transport\TransportStates.h">
-      <Filter>Header\transport</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\transport\TransportTx.h">
       <Filter>Header\transport</Filter>
     </ClInclude>
@@ -840,9 +837,6 @@
       <Filter>Source\transport</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\transport\TransportRx.cpp">
-      <Filter>Source\transport</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\transport\TransportStates.cpp">
       <Filter>Source\transport</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\transport\TransportTx.cpp">

@@ -54,16 +54,18 @@ void NewOutstation::OnReceive(const openpal::ReadOnlyBuffer& buffer)
 {
 	if (isOnline && !isSending)
 	{
-		APDURecord record;
-		auto result = APDUHeaderParser::ParseRequest(buffer, record);
+		APDURecord request;
+		auto result = APDUHeaderParser::ParseRequest(buffer, request);
 		if (result == APDUHeaderParser::Result::OK)
-		{
+		{			
 			APDUResponse response(txBuffer.GetWriteBuffer());
-			response.SetControl(record.control);
+			response.SetControl(request.control);
 			response.SetFunction(FunctionCode::RESPONSE);
-			response.SetIIN(IINField::Empty);
-			isSending = true;
+			auto writer = response.GetWriter();
+			IINField iin = BuildResponse(request, writer);
+			response.SetIIN(iin);
 			pLower->BeginTransmit(response.ToReadOnly());
+			isSending = true;
 		}
 	}
 }
@@ -74,6 +76,11 @@ void NewOutstation::OnSendResult(bool isSucccess)
 	{
 		isSending = false;
 	}
+}
+
+IINField NewOutstation::BuildResponse(const APDURecord& request, ObjectWriter& writer)
+{
+	return IINField::Empty;
 }
 	
 }

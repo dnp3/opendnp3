@@ -26,6 +26,12 @@
 
 namespace openpal
 {
+
+ReadOnlyBuffer ReadOnlyBuffer::Empty()
+{
+	return ReadOnlyBuffer();
+}
+
 ReadOnlyBuffer::ReadOnlyBuffer(): HasSize(0), mpBuffer(nullptr)
 {}
 

@@ -48,7 +48,7 @@ public:
 	openpal::ReadOnlyBuffer PopWrite();
 	std::string PopWriteAsHex();
 
-	virtual void Send(const openpal::ReadOnlyBuffer& arBuffer) override final;
+	virtual void BeginTransmit(const openpal::ReadOnlyBuffer& arBuffer) override final;
 
 private:
 

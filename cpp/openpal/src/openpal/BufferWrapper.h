@@ -33,6 +33,8 @@ class ReadOnlyBuffer : public HasSize<uint32_t>
 
 public:
 
+	static ReadOnlyBuffer Empty();
+
 	ReadOnlyBuffer();
 	ReadOnlyBuffer(uint8_t const* apBuffer, uint32_t aSize);
 

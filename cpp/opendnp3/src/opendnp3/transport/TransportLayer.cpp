@@ -24,7 +24,7 @@
 #include <openpal/Bind.h>
 
 #include "TransportConstants.h"
-#include "TransportStates.h"
+
 #include "opendnp3/LogLevels.h"
 
 #include <assert.h>
@@ -40,7 +40,7 @@ TransportLayer::TransportLayer(openpal::LogRoot& root, openpal::IExecutor* pExec
 	pUpperLayer(nullptr),
 	pLinkLayer(nullptr),
 	isOnline(false),
-	pState(TLS_Ready::Inst()),
+	isSending(false),
 	pExecutor(pExecutor_),
 	M_FRAG_SIZE(maxFragSize),
 	receiver(logger, maxFragSize)
@@ -52,51 +52,12 @@ TransportLayer::TransportLayer(openpal::LogRoot& root, openpal::IExecutor* pExec
 // Actions
 ///////////////////////////////////////
 
-void TransportLayer::ChangeState(TLS_Base* pNewState)
-{
-	FORMAT_LOG_BLOCK(logger, flags::DBG, "State Change, %s -> %s", pState->Name(), pNewState->Name());
-	pState = pNewState;
-}
-
 void TransportLayer::TransmitAPDU(const openpal::ReadOnlyBuffer& apdu)
 {
 	transmitter.Configure(apdu);
 	if(pLinkLayer)
 	{
 		pLinkLayer->Send(transmitter);
-	}
-}
-
-void TransportLayer::ReceiveTPDU(const openpal::ReadOnlyBuffer& tpdu)
-{
-	receiver.HandleReceive(tpdu);
-}
-
-void TransportLayer::ReceiveAPDU(const openpal::ReadOnlyBuffer& apdu)
-{
-	if(pUpperLayer)
-	{
-		pUpperLayer->OnReceive(apdu);
-	}
-}
-
-void TransportLayer::SignalSendResult(bool isSuccess)
-{
-	if (pUpperLayer)
-	{
-		pUpperLayer->OnSendResult(isSuccess);
-	}
-}
-
-bool TransportLayer::IsTransmitting() const
-{
-	if (isOnline)
-	{
-		return pState->IsTransmitting();
-	}
-	else
-	{
-		return false;
 	}
 }
 
@@ -112,7 +73,26 @@ void TransportLayer::BeginTransmit(const ReadOnlyBuffer& apdu)
 		}
 		else
 		{
-			pState->Send(apdu, this);
+			if (isSending)
+			{
+				SIMPLE_LOG_BLOCK(logger, flags::ERR, "Invalid BeginTransmit call, already transmitting");
+			}
+			else
+			{	
+				isSending = true;
+
+				if (pLinkLayer)
+				{					
+					transmitter.Configure(apdu);
+					pLinkLayer->Send(transmitter);
+				}
+				else
+				{	
+					SIMPLE_LOG_BLOCK(logger, flags::ERR, "Can't send without an attached link layer");
+					auto lambda = [this]() { this->OnSendResult(false); };
+					pExecutor->Post(Bind(lambda));
+				}
+			}
 		}
 	}
 	else
@@ -129,7 +109,11 @@ void TransportLayer::OnReceive(const ReadOnlyBuffer& tpdu)
 {
 	if (isOnline)
 	{
-		pState->HandleReceive(tpdu, this);
+		auto apdu = receiver.ProcessReceive(tpdu);
+		if (apdu.IsNotEmpty() && pUpperLayer)
+		{
+			pUpperLayer->OnReceive(apdu);
+		}
 	}
 	else
 	{
@@ -141,7 +125,19 @@ void TransportLayer::OnSendResult(bool isSuccess)
 {
 	if (isOnline)
 	{
-		pState->HandleSendResult(this, isSuccess);		
+		if (isSending)
+		{
+			isSending = false;
+
+			if (pUpperLayer)
+			{
+				pUpperLayer->OnSendResult(isSuccess);
+			}
+		}
+		else
+		{
+			SIMPLE_LOG_BLOCK(logger, flags::ERR, "Invalid send callback");
+		}		
 	}
 	else
 	{
@@ -153,8 +149,7 @@ void TransportLayer::SetAppLayer(openpal::IUpperLayer* pUpperLayer_)
 {
 	assert(pUpperLayer_ != nullptr);
 	assert(pUpperLayer == nullptr);
-	pUpperLayer = pUpperLayer_;
-	receiver.SetUpperLayer(pUpperLayer_);
+	pUpperLayer = pUpperLayer_;	
 }
 
 void TransportLayer::SetLinkLayer(ILinkLayer* pLinkLayer_)
@@ -185,8 +180,9 @@ void TransportLayer::OnLowerLayerDown()
 	if (isOnline)
 	{
 		isOnline = false;
+		isSending = false;
 		receiver.Reset();
-		pState = TLS_Ready::Inst();
+		
 		if (pUpperLayer)
 		{
 			pUpperLayer->OnLowerLayerDown();
@@ -201,18 +197,6 @@ void TransportLayer::OnLowerLayerDown()
 ///////////////////////////////////////
 // Helpers
 ///////////////////////////////////////
-
-/* TODO
-std::string TransportLayer::ToString(uint8_t aHeader)
-{
-	std::ostringstream oss;
-	oss << "TL: ";
-	if((aHeader & TL_HDR_FIR) != 0) oss << "FIR ";
-	if((aHeader & TL_HDR_FIN) != 0) oss << "FIN ";
-	oss << "#" << static_cast<int>(aHeader & TL_HDR_SEQ);
-	return oss.str();
-}
-*/
 
 } //end namespace
 

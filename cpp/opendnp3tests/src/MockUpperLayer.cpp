@@ -75,7 +75,7 @@ void MockUpperLayer::SendDown(const openpal::ReadOnlyBuffer& buffer)
 {
 	if (this->pLowerLayer)
 	{
-		pLowerLayer->Send(buffer);
+		pLowerLayer->BeginTransmit(buffer);
 	}
 }
 

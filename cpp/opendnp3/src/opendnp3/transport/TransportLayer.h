@@ -34,18 +34,12 @@
 namespace opendnp3
 {
 
-class TLS_Base;
-
 /** Implements the DNP3 transport layer as a generic
 asynchronous protocol stack layer
 */
 class TransportLayer : public openpal::IUpperLayer, public openpal::ILowerLayer
-{
-	friend class TransportRx;
+{	
 	friend class TransportTx;
-
-	friend class TLS_Ready;
-	friend class TLS_Sending;
 
 public:
 
@@ -56,9 +50,7 @@ public:
 		return logger;
 	}
 
-	/// ILowerLayer
-
-	virtual bool IsTransmitting() const override final;
+	/// ILowerLayer	
 
 	virtual void BeginTransmit(const openpal::ReadOnlyBuffer&) override final;
 
@@ -76,26 +68,19 @@ private:
 
 	openpal::Logger logger;
 	openpal::IUpperLayer* pUpperLayer;
-	ILinkLayer* pLinkLayer;
-
-	// Actions - Taken by the states/transmitter/receiver in response to events
-
-	void ChangeState(TLS_Base* apNewState);
+	ILinkLayer* pLinkLayer;	
 
 	void TransmitAPDU(const openpal::ReadOnlyBuffer&);
-	void ReceiveAPDU(const openpal::ReadOnlyBuffer&);
-	void ReceiveTPDU(const openpal::ReadOnlyBuffer&);
-
-	void SignalSendResult(bool isSuccess);
 
 	/* Members and Helpers */
 	bool isOnline;
-	TLS_Base* pState;
+	bool isSending;
+
 	openpal::IExecutor* pExecutor;
 
 	const uint32_t M_FRAG_SIZE;
 
-	/* Transmitter and Receiver Classes */
+	// ----- Transmitter and Receiver Classes ------
 	TransportRx receiver;
 	TransportTx transmitter;
 };
