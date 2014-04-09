@@ -52,11 +52,11 @@ public:
 
 	bool IsComplete() const;
 
-	void Load(APDUResponse& response);
+	AppControlField Load(APDUResponse& response);
 
 private:
 
-	void SetControl(APDUResponse& response, bool hasEvents, bool fin);
+	AppControlField GetControl(APDUResponse& response, bool hasEvents, bool fin);
 
 	uint32_t fragmentCount;
 	StaticResponseContext staticContext;

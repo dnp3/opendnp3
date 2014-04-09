@@ -113,7 +113,7 @@ void ACS_Idle::Send(AppLayerChannel* c, APDUWrapper& apdu, uint32_t aNumRetry)
 	AppControlField acf = apdu.GetControl();
 	FunctionCode func = apdu.GetFunction();
 	acf.SEQ = (acf.FIR && func == FunctionCode::RESPONSE) ? c->Sequence() : c->IncrSequence();
-	apdu.SetControl(acf);
+	apdu.SetControl(acf.ToByte());
 	auto pNext = NextState(c, func, acf.CON);
 	if (pNext == this)
 	{

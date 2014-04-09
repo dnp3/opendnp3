@@ -169,7 +169,7 @@ void Outstation::RespondToRequest(const APDURecord& record, SequenceInfo sequenc
 
 	APDUResponse response(responseBuffer.GetWriteBuffer(mConfig.mMaxFragSize));
 	response.SetFunction(FunctionCode::RESPONSE);
-	response.SetControl(AppControlField::DEFAULT);
+	response.SetControl(AppControlField::DEFAULT.ToByte());
 	auto indications = ConfigureResponse(record, sequence, response);
 	lastResponse = response;
 	this->SendResponse(response, indications);
@@ -223,7 +223,8 @@ IINField Outstation::HandleRead(const APDURecord& request, SequenceInfo sequence
 		// this ensures that an multi-fragmented responses see a consistent snapshot
 		openpal::Transaction tx(mpDatabase);
 		mpDatabase->DoubleBuffer(); // todo, make this optional?
-		rspContext.Load(response);
+		auto control = rspContext.Load(response);
+		response.SetControl(control.ToByte());
 		return handler.Errors();
 	}
 	else
@@ -326,12 +327,12 @@ void Outstation::ContinueResponse()
 {
 	APDUResponse response(responseBuffer.GetWriteBuffer(mConfig.mMaxFragSize));
 	response.SetFunction(FunctionCode::RESPONSE);
-	response.SetControl(AppControlField::DEFAULT);
-
+	
 	{
 		// perform a transaction (lock) the database
 		openpal::Transaction tx(mpDatabase);
-		this->rspContext.Load(response);
+		auto control = this->rspContext.Load(response);
+		response.SetControl(control.ToByte());
 	}
 	this->SendResponse(response);
 }

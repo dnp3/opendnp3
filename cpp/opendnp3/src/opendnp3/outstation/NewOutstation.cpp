@@ -23,17 +23,23 @@
 
 #include "opendnp3/app/APDUHeaderParser.h"
 #include "opendnp3/app/APDUResponse.h"
+#include "opendnp3/app/APDUParser.h"
+
+#include "opendnp3/outstation/ReadHandler.h"
+#include "opendnp3/outstation/IINHelpers.h"
 
 using namespace openpal;
 
 namespace opendnp3
 {
 
-NewOutstation::NewOutstation(IExecutor& executor, openpal::ILowerLayer& lower, Database& database, EventBufferFacade& buffers) :
+NewOutstation::NewOutstation(IExecutor& executor, openpal::LogRoot& root, openpal::ILowerLayer& lower, Database& database, EventBufferFacade& buffers) :
 	isOnline(false),
 	isSending(false),
+	logger(root.GetLogger()),
 	pExecutor(&executor),
 	pLower(&lower),
+	pDatabase(&database),
 	eventBuffer(buffers),
 	rspContext(&database, &eventBuffer, StaticResponseTypes())
 {}
@@ -62,15 +68,16 @@ void NewOutstation::OnReceive(const openpal::ReadOnlyBuffer& buffer)
 		APDURecord request;
 		auto result = APDUHeaderParser::ParseRequest(buffer, request);
 		if (result == APDUHeaderParser::Result::OK)
-		{			
-			APDUResponse response(txBuffer.GetWriteBuffer());
-			response.SetControl(request.control);
-			response.SetFunction(FunctionCode::RESPONSE);
-			auto writer = response.GetWriter();
-			IINField iin = BuildResponse(request, writer);
+		{						
+			APDUResponse response(txBuffer.GetWriteBuffer());			
+			response.SetFunction(FunctionCode::RESPONSE);			
+			IINField iin = BuildResponse(request, response);			
+			response.SetControl(request.control.ToByte());
 			response.SetIIN(iin);
 			isSending = true;
-			pLower->BeginTransmit(response.ToReadOnly());
+			auto output = response.ToReadOnly();			
+			auto lambda = [this, output]() { this->pLower->BeginTransmit(output); };
+			pExecutor->PostLambda(lambda);
 		}
 	}
 }
@@ -83,15 +90,37 @@ void NewOutstation::OnSendResult(bool isSucccess)
 	}
 }
 
-IINField NewOutstation::BuildResponse(const APDURecord& request, ObjectWriter& writer)
+IINField NewOutstation::BuildResponse(const APDURecord& request, APDUResponse& response)
 {
 	if (request.function == FunctionCode::READ)
-	{
-		return IINField::Empty;
+	{	
+		/*		
+		rspContext.Reset();
+		//ReadHandler handler(logger, rspContext);
+		auto result = APDUParser::ParseTwoPass(request.objects, nullptr, nullptr, APDUParser::Context(false)); // don't expect range/count context on a READ
+		if (result == APDUParser::Result::OK)
+		{
+		
+			// Do a transaction on the database (lock) for multi-threaded environments
+			// if the request contained static variations, we double buffer (copy) the entire static database.
+			// this ensures that an multi-fragmented responses see a consistent snapshot
+			openpal::Transaction tx(pDatabase);
+			pDatabase->DoubleBuffer();
+			rspContext.Load(response);			
+			return handler.Errors();
+		}
+		else
+		{			
+			rspContext.Reset();
+			//return IINFromParseResult(result);
+			return IINField(IINBit::ALREADY_EXECUTING);
+		}
+		*/	
+		return IINField(IINBit::ALREADY_EXECUTING);
 	}
 	else
 	{
-		return IINField(IINBit::FUNC_NOT_SUPPORTED);
+		return IINField(IINBit::DEVICE_TROUBLE);
 	}
 }
 	

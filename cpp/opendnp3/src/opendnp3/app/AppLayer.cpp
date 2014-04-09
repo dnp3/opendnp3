@@ -348,7 +348,7 @@ void AppLayer::QueueConfirm(bool aUnsol, int aSeq)
 	{
 		isConfirmSending = true;
 		AppControlField acf(true, true, false, aUnsol, aSeq);
-		confirmAPDU.SetControl(acf);
+		confirmAPDU.SetControl(acf.ToByte());
 		this->QueueFrame(confirmAPDU);
 	}
 }

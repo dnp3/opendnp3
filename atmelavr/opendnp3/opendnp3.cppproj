@@ -978,6 +978,14 @@
       <SubType>compile</SubType>
       <Link>outstation\EventResponseContext.h</Link>
     </Compile>
+    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\IINHelpers.cpp">
+      <SubType>compile</SubType>
+      <Link>outstation\IINHelpers.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\IINHelpers.h">
+      <SubType>compile</SubType>
+      <Link>outstation\IINHelpers.h</Link>
+    </Compile>
     <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\NewOutstation.cpp">
       <SubType>compile</SubType>
       <Link>outstation\NewOutstation.cpp</Link>
@@ -994,6 +1002,14 @@
       <SubType>compile</SubType>
       <Link>outstation\OutstationEventBuffer.h</Link>
     </Compile>
+    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\ReadHandler.cpp">
+      <SubType>compile</SubType>
+      <Link>outstation\ReadHandler.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\ReadHandler.h">
+      <SubType>compile</SubType>
+      <Link>outstation\ReadHandler.h</Link>
+    </Compile>
     <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\ResponseContext.cpp">
       <SubType>compile</SubType>
       <Link>outstation\ResponseContext.cpp</Link>
@@ -1009,6 +1025,14 @@
     <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\SelectionCriteria.h">
       <SubType>compile</SubType>
       <Link>outstation\SelectionCriteria.h</Link>
+    </Compile>
+    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\SelectionIterator.cpp">
+      <SubType>compile</SubType>
+      <Link>outstation\SelectionIterator.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\SelectionIterator.h">
+      <SubType>compile</SubType>
+      <Link>outstation\SelectionIterator.h</Link>
     </Compile>
     <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\StaticResponseContext.cpp">
       <SubType>compile</SubType>

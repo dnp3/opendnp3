@@ -45,7 +45,7 @@ public:
 	FunctionCode GetFunction() const;
 
 	AppControlField GetControl() const;
-	void SetControl(const AppControlField& control);
+	void SetControl(uint8_t control);
 
 	openpal::ReadOnlyBuffer ToReadOnly() const;
 

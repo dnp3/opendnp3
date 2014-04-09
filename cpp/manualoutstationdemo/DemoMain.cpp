@@ -19,15 +19,13 @@
  * to you under the terms of the License.
  */
 
-#include <opendnp3/outstation/OutstationStackConfig.h>
-#include <opendnp3/outstation/SimpleCommandHandler.h>
-#include <opendnp3/outstation/TimeTransaction.h>
-#include <opendnp3/outstation/ITimeWriteHandler.h>
+
 #include <opendnp3/link/LinkLayerRouter.h>
 #include <opendnp3/outstation/Outstation.h>
-#include <opendnp3/app/ApplicationStack.h>
-#include <opendnp3/outstation/DynamicallyAllocatedDatabase.h>
-#include <opendnp3/outstation/DynamicallyAllocatedEventBuffer.h>
+#include <opendnp3/transport/TransportStack.h>
+#include <opendnp3/outstation/StaticallyAllocatedDatabase.h>
+#include <opendnp3/outstation/StaticallyAllocatedEventBuffer.h>
+#include <opendnp3/outstation/NewOutstation.h>
 #include <opendnp3/LogLevels.h>
 
 #include <asiopal/Log.h>
@@ -48,9 +46,6 @@ using namespace asiopal;
 
 int main(int argc, char* argv[])
 {
-	std::cout << sizeof(ApplicationStack) << std::endl;	
-	std::cout << sizeof(LinkLayerRouter) << std::endl;
-
 	// Specify a LogLevel for the stack/physical layer to use.
 	// Log statements with a lower priority will not be logged.
 	const uint32_t FILTERS = levels::ALL;
@@ -65,31 +60,25 @@ int main(int argc, char* argv[])
 	asio::io_service::strand strand(service);
 	asiopal::ASIOExecutor executor(&strand);
 
-	LinkRoute route(1, 1024);
-
 	PhysicalLayerAsyncTCPServer server(root, &service, "0.0.0.0", 20000);
 	LinkLayerRouter router(root, &server, TimeDuration::Seconds(1), TimeDuration::Seconds(60));
-	ApplicationStack stack(root, &executor, AppConfig(false), LinkConfig(false, false));
+	
+	LinkConfig config(false, false);
+	TransportStack stack(root, &executor, config);
+
+	StaticallyAllocatedDatabase<1> staticBuffers;
+
+	Database database(staticBuffers.GetFacade());
+
+	StaticallyAllocatedEventBuffer<1> eventBuffers;
+	auto facade = eventBuffers.GetFacade();
+
+	NewOutstation outstation(executor, root, stack.transport, database, facade);	
+
+	stack.transport.SetAppLayer(&outstation);
+
 	stack.link.SetRouter(&router);
-	router.AddContext(&stack.link, route);
-
-	DynamicallyAllocatedDatabase dadb(DatabaseTemplate::AllTypes(5));
-	DynamicallyAllocatedEventBuffer eb(EventBufferConfig::AllTypes(100));
-
-	Database database(dadb.GetFacade());
-
-	Outstation outstation(
-		root,
-		&stack.application, 
-		&executor, 
-		NullTimeWriteHandler::Inst(), 
-		&database,
-		eb.GetFacade(), 
-		SuccessCommandHandler::Inst(), 
-		OutstationConfig());
-	
-	
-	stack.application.SetUser(&outstation);
+	router.AddContext(&stack.link, LinkRoute(1, 1024));
 
 	router.Enable(&stack.link);
 

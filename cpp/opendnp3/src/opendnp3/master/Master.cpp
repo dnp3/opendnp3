@@ -173,7 +173,7 @@ void Master::StartTask(MasterTaskBase* apMasterTask, bool aInit)
 {
 	if(aInit) apMasterTask->Init();
 	APDURequest request(this->requestBuffer.GetWriteBuffer());
-	request.SetControl(AppControlField(true, true, false, false));
+	request.SetControl(AppControlField(true, true, false, false).ToByte());
 	apMasterTask->ConfigureRequest(request);
 	mpAppLayer->SendRequest(request);
 }

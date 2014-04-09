@@ -23,81 +23,12 @@ uint8_t FunctionCodeToType(FunctionCode arg)
 {
   return static_cast<uint8_t>(arg);
 }
+
 FunctionCode FunctionCodeFromType(uint8_t arg)
 {
-  switch(arg)
-  {
-    case(0x0):
-      return FunctionCode::CONFIRM;
-    case(0x1):
-      return FunctionCode::READ;
-    case(0x2):
-      return FunctionCode::WRITE;
-    case(0x3):
-      return FunctionCode::SELECT;
-    case(0x4):
-      return FunctionCode::OPERATE;
-    case(0x5):
-      return FunctionCode::DIRECT_OPERATE;
-    case(0x6):
-      return FunctionCode::DIRECT_OPERATE_NO_ACK;
-    case(0x7):
-      return FunctionCode::FREEZE;
-    case(0x8):
-      return FunctionCode::FREEZE_NO_ACK;
-    case(0x9):
-      return FunctionCode::FREEZE_CLEAR;
-    case(0xA):
-      return FunctionCode::FREEZE_CLEAR_NO_ACK;
-    case(0xB):
-      return FunctionCode::FREEZE_AT_TIME;
-    case(0xC):
-      return FunctionCode::FREEZE_AT_TIME_NO_ACK;
-    case(0xD):
-      return FunctionCode::COLD_RESTART;
-    case(0xE):
-      return FunctionCode::WARM_RESTART;
-    case(0xF):
-      return FunctionCode::INITIALIZE_DATA;
-    case(0x10):
-      return FunctionCode::INITIALIZE_APPLICATION;
-    case(0x11):
-      return FunctionCode::START_APPLICATION;
-    case(0x12):
-      return FunctionCode::STOP_APPLICATION;
-    case(0x13):
-      return FunctionCode::SAVE_CONFIGURATION;
-    case(0x14):
-      return FunctionCode::ENABLE_UNSOLICITED;
-    case(0x15):
-      return FunctionCode::DISABLE_UNSOLICITED;
-    case(0x16):
-      return FunctionCode::ASSIGN_CLASS;
-    case(0x17):
-      return FunctionCode::DELAY_MEASURE;
-    case(0x18):
-      return FunctionCode::RECORD_TIME;
-    case(0x19):
-      return FunctionCode::FILE_OPEN;
-    case(0x1A):
-      return FunctionCode::FILE_CLOSE;
-    case(0x1B):
-      return FunctionCode::FILE_DELETE;
-    case(0x1C):
-      return FunctionCode::FILE_INFO;
-    case(0x1D):
-      return FunctionCode::FILE_AUTHENTICATE;
-    case(0x1E):
-      return FunctionCode::FILE_ABORT;
-    case(0x81):
-      return FunctionCode::RESPONSE;
-    case(0x82):
-      return FunctionCode::UNSOLICITED_RESPONSE;
-    case(0xFF):
-      return FunctionCode::UNKNOWN;
-  }
-  return FunctionCode::UNKNOWN;
+  return static_cast<FunctionCode>(arg);
 }
+
 char const* FunctionCodeToString(FunctionCode arg)
 {
   switch(arg)

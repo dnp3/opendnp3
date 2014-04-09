@@ -38,7 +38,7 @@ int main()
 	StaticallyAllocatedEventBuffer<1> eventBuffers;
 	auto facade = eventBuffers.GetFacade();
 				
-	NewOutstation outstation(exe, stack.transport, database, facade);
+	NewOutstation outstation(exe, root, stack.transport, database, facade);
 		
 	stack.transport.SetAppLayer(&outstation);
 			

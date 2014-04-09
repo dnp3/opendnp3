@@ -44,28 +44,29 @@ bool ResponseContext::IsComplete() const
 	return eventContext.IsComplete() && staticContext.IsComplete();
 }
 
-void ResponseContext::Load(APDUResponse& response)
+AppControlField ResponseContext::Load(APDUResponse& response)
 {
 	auto writer = response.GetWriter();
 	auto result = eventContext.Load(writer);
 	if (result.complete)
 	{
 		auto complete = staticContext.Load(writer);
-		this->SetControl(response, result.Any(), complete);
+		++fragmentCount;
+		return GetControl(response, result.Any(), complete);
+
 	}
 	else
 	{
-		this->SetControl(response, result.Any(), false);
+		++fragmentCount;
+		return GetControl(response, result.Any(), false);		
 	}
 }
 
-void ResponseContext::SetControl(APDUResponse& response, bool hasEvents, bool fin)
+AppControlField ResponseContext::GetControl(APDUResponse& response, bool hasEvents, bool fin)
 {
 	auto fir = (fragmentCount == 0);
 	auto con = (!fin) || hasEvents; // request confirmation on any non-fin fragment or if it has events
-	AppControlField control(fir, fin, con, false);
-	response.SetControl(control);
-	++fragmentCount;
+	return AppControlField(fir, fin, con, false);		
 }
 
 IINField ResponseContext::ReadAllObjects(const GroupVariationRecord& record)

@@ -63,7 +63,7 @@ void TransportLayer::BeginTransmit(const ReadOnlyBuffer& apdu)
 			pExecutor->Post(Bind(lambda));
 		}
 		else
-		{
+		{			
 			if (isSending)
 			{
 				SIMPLE_LOG_BLOCK(logger, flags::ERR, "Invalid BeginTransmit call, already transmitting");

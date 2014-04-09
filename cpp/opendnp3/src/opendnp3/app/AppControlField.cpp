@@ -54,11 +54,27 @@ AppControlField::AppControlField(bool aFIR, bool aFIN, bool aCON, bool aUNS, uin
 uint8_t AppControlField::ToByte() const
 {
 	uint8_t ret = 0;
-	if(FIR) ret |= FIR_MASK;
-	if(FIN) ret |= FIN_MASK;
-	if(CON) ret |= CON_MASK;
-	if(UNS) ret |= UNS_MASK;
-	return ret | (SEQ % 16);
+
+	if (FIR)
+	{
+		ret |= FIR_MASK;
+	}
+	if (FIN)
+	{
+		ret |= FIN_MASK;
+	}
+	if (CON)
+	{
+		ret |= CON_MASK;
+	}
+	if (UNS)
+	{
+		ret |= UNS_MASK;
+	}
+	
+	uint8_t seq = SEQ % 16;
+	
+	return ret | seq;
 }
 
 }

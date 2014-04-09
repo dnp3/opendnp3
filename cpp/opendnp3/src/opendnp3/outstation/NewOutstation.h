@@ -24,6 +24,7 @@
 #include <openpal/AsyncLayerInterfaces.h>
 #include <openpal/StaticBuffer.h>
 #include <openpal/IExecutor.h>
+#include <openpal/LogRoot.h>
 
 #include "opendnp3/StaticSizeConfiguration.h"
 #include "opendnp3/outstation/Database.h"
@@ -39,7 +40,7 @@ class NewOutstation : public openpal::IUpperLayer
 {
 	public:
 
-	NewOutstation(openpal::IExecutor& executor, openpal::ILowerLayer& lower, Database& database, EventBufferFacade& buffers);
+	NewOutstation(openpal::IExecutor& executor, openpal::LogRoot& root, openpal::ILowerLayer& lower, Database& database, EventBufferFacade& buffers);
 	
 	virtual void OnLowerLayerUp() override final;
 	
@@ -51,11 +52,12 @@ class NewOutstation : public openpal::IUpperLayer
 	
 	private:
 
-	IINField BuildResponse(const APDURecord& request, ObjectWriter& writer);
+	IINField BuildResponse(const APDURecord& request, APDUResponse& response);
 
 	bool isOnline;
 	bool isSending;
 
+	openpal::Logger logger;
 
 	openpal::IExecutor* pExecutor;
 	openpal::ILowerLayer* pLower;
