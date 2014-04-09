@@ -83,7 +83,7 @@ int main()
 	{ 								
 		exe.RunOne();			
 		parser.Tick();		
-		//exe.Sleep();
+		exe.Sleep();
 	}
 
 	return 0;
