@@ -18,56 +18,64 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __TRANSPORT_RX_H_
-#define __TRANSPORT_RX_H_
 
-#include "opendnp3/transport/TransportConstants.h"
-#include "opendnp3/StaticSizeConfiguration.h"
+#include "NewOutstation.h"
 
-#include <openpal/BufferWrapper.h>
-#include <openpal/StaticBuffer.h>
-#include <openpal/Logger.h>
-#include <openpal/AsyncLayerInterfaces.h>
+#include "opendnp3/app/APDUHeaderParser.h"
+#include "opendnp3/app/APDUResponse.h"
 
 namespace opendnp3
 {
 
-class TransportLayer;
-
-/**
-State/validation for the DNP3 transport layer's receive channel.
-*/
-class TransportRx
+NewOutstation::NewOutstation(openpal::ILowerLayer& lower, Database& database) : 
+	isOnline(false),
+	isSending(false),
+	pLower(&lower)
+{}
+	
+void NewOutstation::OnLowerLayerUp()
 {
-
-public:
-	TransportRx(const openpal::Logger&, uint32_t fragSize);
-
-	void SetUpperLayer(openpal::IUpperLayer* pUpper_);
-
-	void HandleReceive(const openpal::ReadOnlyBuffer& input);
-
-	void Reset();
-
-private:
-
-	bool ValidateHeader(bool fir, bool fin, uint8_t sequence, uint32_t payloadSize);
-
-	openpal::Logger logger;
-	openpal::IUpperLayer* pUpper;
-
-	openpal::StaticBuffer<sizes::MAX_RX_APDU_SIZE> rxBuffer;
-	uint32_t numBytesRead;
-	uint8_t sequence;
-	uint32_t maxFragSize;
-
-	uint32_t BufferRemaining() const
+	if (!isOnline)
 	{
-		return maxFragSize - numBytesRead;
+		isOnline = true;
 	}
-};
-
+}
+	
+void NewOutstation::OnLowerLayerDown()
+{
+	if (isOnline)
+	{
+		isOnline = false;
+		isSending = false;
+	}
 }
 
-#endif
+void NewOutstation::OnReceive(const openpal::ReadOnlyBuffer& buffer)
+{
+	if (isOnline && !isSending)
+	{
+		APDURecord record;
+		auto result = APDUHeaderParser::ParseRequest(buffer, record);
+		if (result == APDUHeaderParser::Result::OK)
+		{
+			APDUResponse response(txBuffer.GetWriteBuffer());
+			response.SetControl(record.control);
+			response.SetFunction(FunctionCode::RESPONSE);
+			response.SetIIN(IINField::Empty);
+			isSending = true;
+			pLower->BeginTransmit(response.ToReadOnly());
+		}
+	}
+}
+	
+void NewOutstation::OnSendResult(bool isSucccess)
+{
+	if (isOnline && isSending)
+	{
+		isSending = false;
+	}
+}
+	
+}
+
 

@@ -72,7 +72,9 @@ public:
 
 	virtual ~ILowerLayer() {}
 
-	virtual void Send(const ReadOnlyBuffer&) = 0;
+	virtual bool IsTransmitting() const = 0;
+
+	virtual void BeginTransmit(const ReadOnlyBuffer&) = 0;
 
 };
 

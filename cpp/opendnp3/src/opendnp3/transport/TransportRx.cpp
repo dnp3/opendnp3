@@ -20,12 +20,12 @@
  */
 #include "TransportRx.h"
 #include "TransportConstants.h"
-#include "TransportLayer.h"
 #include "opendnp3/LogLevels.h"
 
 #include <openpal/LogMacros.h>
 #include <openpal/ToHex.h>
 
+#include <cstring>
 
 using namespace std;
 using namespace openpal;
@@ -33,9 +33,9 @@ using namespace openpal;
 namespace opendnp3
 {
 
-TransportRx::TransportRx(const Logger& logger_, TransportLayer* apContext, uint32_t fragSize) :
+TransportRx::TransportRx(const Logger& logger_, uint32_t fragSize) :
 	logger(logger_),
-	mpContext(apContext),	
+	pUpper(nullptr),
 	numBytesRead(0),
 	sequence(0),
 	maxFragSize(fragSize)
@@ -51,6 +51,11 @@ void TransportRx::Reset()
 {
 	numBytesRead = 0;
 	sequence = 0;
+}
+
+void TransportRx::SetUpperLayer(openpal::IUpperLayer* pUpper_)
+{
+	pUpper = pUpper_;
 }
 
 void TransportRx::HandleReceive(const openpal::ReadOnlyBuffer& input)
@@ -89,7 +94,10 @@ void TransportRx::HandleReceive(const openpal::ReadOnlyBuffer& input)
 				{
 					ReadOnlyBuffer buffer(rxBuffer.Buffer(), numBytesRead);
 					numBytesRead = 0;
-					mpContext->ReceiveAPDU(buffer);
+					if (pUpper)
+					{
+						pUpper->OnReceive(buffer);
+					}					
 				}
 			}
 		}

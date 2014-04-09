@@ -366,7 +366,7 @@ void AppLayer::CheckForSend()
 	if(!isSending && sendQueue.Size() > 0)
 	{
 		isSending = true;		
-		pTransportLayer->Send(sendQueue.Peek().ToReadOnly());
+		pTransportLayer->BeginTransmit(sendQueue.Peek().ToReadOnly());
 	}
 }
 

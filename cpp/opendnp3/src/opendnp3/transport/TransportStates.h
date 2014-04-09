@@ -42,12 +42,12 @@ public:
 	virtual void Send(const openpal::ReadOnlyBuffer& arBuffer, TransportLayer*);
 
 	virtual void HandleReceive(const openpal::ReadOnlyBuffer& arBuffer, TransportLayer*) = 0;
-
-	// TPDU failure/success handlers
-	virtual void HandleSendSuccess(TransportLayer*);
-	virtual void HandleSendFailure(TransportLayer*);
+	
+	virtual void HandleSendResult(TransportLayer*, bool result);
 
 	virtual char const* Name() const = 0;
+
+	virtual bool IsTransmitting() const = 0;
 };
 
 /** Represents the ready state
@@ -56,9 +56,11 @@ class TLS_Ready : public TLS_Base
 {
 	MACRO_STATE_SINGLETON_INSTANCE(TLS_Ready);
 
-	void Send(const openpal::ReadOnlyBuffer&, TransportLayer*);
-	void HandleReceive(const openpal::ReadOnlyBuffer&, TransportLayer*);
-	void LowerLayerDown(TransportLayer*);
+	virtual void Send(const openpal::ReadOnlyBuffer&, TransportLayer*) override final;
+	virtual void HandleReceive(const openpal::ReadOnlyBuffer&, TransportLayer*) override final;
+
+	virtual bool IsTransmitting() const override final { return false; }
+	
 };
 
 /** Represents the sending state
@@ -67,10 +69,11 @@ class TLS_Sending : public TLS_Base
 {
 	MACRO_STATE_SINGLETON_INSTANCE(TLS_Sending);
 
-	void HandleReceive(const openpal::ReadOnlyBuffer&, TransportLayer*);
-	void HandleSendSuccess(TransportLayer*);
-	void HandleSendFailure(TransportLayer*);
-	void LowerLayerDown(TransportLayer*);
+	virtual void HandleReceive(const openpal::ReadOnlyBuffer&, TransportLayer*) override final;
+	virtual void HandleSendResult(TransportLayer*, bool result) override final;
+
+	virtual bool IsTransmitting() const override final { return true; }
+	
 };
 
 } //end namepsace

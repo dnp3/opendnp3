@@ -657,6 +657,12 @@
     <ClInclude Include="src\opendnp3\master\CommandAction.h">
       <Filter>Header\master</Filter>
     </ClInclude>
+    <ClInclude Include="src\opendnp3\transport\TransportStack.h">
+      <Filter>Header\transport</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\outstation\NewOutstation.h">
+      <Filter>Header\outstation</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\opendnp3\app\AnalogOutput.cpp">
@@ -1054,6 +1060,12 @@
     </ClCompile>
     <ClCompile Include="src\opendnp3\outstation\IINHelpers.cpp">
       <Filter>Source\outstation</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\transport\TransportStack.cpp">
+      <Filter>Header\transport</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\outstation\NewOutstation.cpp">
+      <Filter>Header\outstation</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

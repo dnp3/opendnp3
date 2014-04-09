@@ -39,15 +39,11 @@ void TLS_Base::Send(const ReadOnlyBuffer&, TransportLayer* c)
 	FORMAT_LOG_BLOCK(c->GetLogger(), flags::ERR, "Invalid action for state: %s", this->Name());
 }
 
-void TLS_Base::HandleSendSuccess(TransportLayer* c)
+void TLS_Base::HandleSendResult(TransportLayer* c, bool)
 {
 	FORMAT_LOG_BLOCK(c->GetLogger(), flags::ERR, "Invalid action for state: %s", this->Name());
 }
 
-void TLS_Base::HandleSendFailure(TransportLayer* c)
-{
-	FORMAT_LOG_BLOCK(c->GetLogger(), flags::ERR, "Invalid action for state: %s", this->Name());
-}
 
 //////////////////////////////////////////////////////
 //	TLS_Ready
@@ -75,16 +71,10 @@ void TLS_Sending::HandleReceive(const openpal::ReadOnlyBuffer& arBuffer, Transpo
 	apContext->ReceiveTPDU(arBuffer);
 }
 
-void TLS_Sending::HandleSendSuccess(TransportLayer* apContext)
+void TLS_Sending::HandleSendResult(TransportLayer* apContext, bool result)
 {
 	apContext->ChangeState(TLS_Ready::Inst());
-	apContext->SignalSendResult(true);
-}
-
-void TLS_Sending::HandleSendFailure(TransportLayer* apContext)
-{
-	apContext->ChangeState(TLS_Ready::Inst());
-	apContext->SignalSendResult(false);
+	apContext->SignalSendResult(result);
 }
 
 } //end namespace

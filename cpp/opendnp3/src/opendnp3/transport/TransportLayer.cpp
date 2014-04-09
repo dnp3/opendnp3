@@ -43,7 +43,7 @@ TransportLayer::TransportLayer(openpal::LogRoot& root, openpal::IExecutor* pExec
 	pState(TLS_Ready::Inst()),
 	pExecutor(pExecutor_),
 	M_FRAG_SIZE(maxFragSize),
-	receiver(logger, this, maxFragSize)
+	receiver(logger, maxFragSize)
 {
 
 }
@@ -88,7 +88,19 @@ void TransportLayer::SignalSendResult(bool isSuccess)
 	}
 }
 
-void TransportLayer::Send(const ReadOnlyBuffer& apdu)
+bool TransportLayer::IsTransmitting() const
+{
+	if (isOnline)
+	{
+		return pState->IsTransmitting();
+	}
+	else
+	{
+		return false;
+	}
+}
+
+void TransportLayer::BeginTransmit(const ReadOnlyBuffer& apdu)
 {
 	if (isOnline)
 	{
@@ -129,14 +141,7 @@ void TransportLayer::OnSendResult(bool isSuccess)
 {
 	if (isOnline)
 	{
-		if (isSuccess)
-		{
-			pState->HandleSendSuccess(this);
-		}
-		else
-		{
-			pState->HandleSendFailure(this);
-		}
+		pState->HandleSendResult(this, isSuccess);		
 	}
 	else
 	{
@@ -149,6 +154,7 @@ void TransportLayer::SetAppLayer(openpal::IUpperLayer* pUpperLayer_)
 	assert(pUpperLayer_ != nullptr);
 	assert(pUpperLayer == nullptr);
 	pUpperLayer = pUpperLayer_;
+	receiver.SetUpperLayer(pUpperLayer_);
 }
 
 void TransportLayer::SetLinkLayer(ILinkLayer* pLinkLayer_)

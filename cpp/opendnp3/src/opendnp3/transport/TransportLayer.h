@@ -31,7 +31,6 @@
 #include "opendnp3/link/ILinkLayer.h"
 #include "opendnp3/StaticSizeConfiguration.h"
 
-
 namespace opendnp3
 {
 
@@ -52,8 +51,6 @@ public:
 
 	TransportLayer(openpal::LogRoot& root, openpal::IExecutor* pExecutor_, uint32_t maxFragSize = sizes::DEFAULT_APDU_BUFFER_SIZE);
 
-	// static std::string ToString(uint8_t aHeader); TODO
-
 	openpal::Logger& GetLogger()
 	{
 		return logger;
@@ -61,7 +58,9 @@ public:
 
 	/// ILowerLayer
 
-	virtual void Send(const openpal::ReadOnlyBuffer&) override final;
+	virtual bool IsTransmitting() const override final;
+
+	virtual void BeginTransmit(const openpal::ReadOnlyBuffer&) override final;
 
 	/// IUpperLayer
 
@@ -84,7 +83,6 @@ private:
 	void ChangeState(TLS_Base* apNewState);
 
 	void TransmitAPDU(const openpal::ReadOnlyBuffer&);
-
 	void ReceiveAPDU(const openpal::ReadOnlyBuffer&);
 	void ReceiveTPDU(const openpal::ReadOnlyBuffer&);
 

@@ -18,56 +18,19 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __TRANSPORT_RX_H_
-#define __TRANSPORT_RX_H_
+#include "TransportStack.h"
 
-#include "opendnp3/transport/TransportConstants.h"
-#include "opendnp3/StaticSizeConfiguration.h"
-
-#include <openpal/BufferWrapper.h>
-#include <openpal/StaticBuffer.h>
-#include <openpal/Logger.h>
-#include <openpal/AsyncLayerInterfaces.h>
+using namespace openpal;
 
 namespace opendnp3
 {
 
-class TransportLayer;
-
-/**
-State/validation for the DNP3 transport layer's receive channel.
-*/
-class TransportRx
+TransportStack::TransportStack(openpal::LogRoot& root, openpal::IExecutor* pExecutor, const LinkConfig& config) :
+	link(root, pExecutor, config),
+	transport(root, pExecutor)	
 {
-
-public:
-	TransportRx(const openpal::Logger&, uint32_t fragSize);
-
-	void SetUpperLayer(openpal::IUpperLayer* pUpper_);
-
-	void HandleReceive(const openpal::ReadOnlyBuffer& input);
-
-	void Reset();
-
-private:
-
-	bool ValidateHeader(bool fir, bool fin, uint8_t sequence, uint32_t payloadSize);
-
-	openpal::Logger logger;
-	openpal::IUpperLayer* pUpper;
-
-	openpal::StaticBuffer<sizes::MAX_RX_APDU_SIZE> rxBuffer;
-	uint32_t numBytesRead;
-	uint8_t sequence;
-	uint32_t maxFragSize;
-
-	uint32_t BufferRemaining() const
-	{
-		return maxFragSize - numBytesRead;
-	}
-};
-
+	link.SetUpperLayer(&transport);
+	transport.SetLinkLayer(&link);	
 }
 
-#endif
-
+}

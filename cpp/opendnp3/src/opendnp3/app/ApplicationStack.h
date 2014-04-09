@@ -26,11 +26,6 @@
 
 #include "AppLayer.h"
 
-namespace openpal
-{
-class IExecutoer;
-}
-
 namespace opendnp3
 {
 

@@ -43,6 +43,53 @@
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <ToolchainSettings>
       <AvrGccCpp>
+  <avrgcc.common.optimization.RelaxBranches>True</avrgcc.common.optimization.RelaxBranches>
+  <avrgcc.common.outputfiles.hex>True</avrgcc.common.outputfiles.hex>
+  <avrgcc.common.outputfiles.lss>True</avrgcc.common.outputfiles.lss>
+  <avrgcc.common.outputfiles.eep>True</avrgcc.common.outputfiles.eep>
+  <avrgcc.common.outputfiles.srec>True</avrgcc.common.outputfiles.srec>
+  <avrgcc.common.outputfiles.usersignatures>False</avrgcc.common.outputfiles.usersignatures>
+  <avrgcc.compiler.general.ChangeDefaultCharTypeUnsigned>True</avrgcc.compiler.general.ChangeDefaultCharTypeUnsigned>
+  <avrgcc.compiler.general.ChangeDefaultBitFieldUnsigned>True</avrgcc.compiler.general.ChangeDefaultBitFieldUnsigned>
+  <avrgcc.compiler.symbols.DefSymbols>
+    <ListValues>
+      <Value>NDEBUG</Value>
+    </ListValues>
+  </avrgcc.compiler.symbols.DefSymbols>
+  <avrgcc.compiler.optimization.level>Optimize for size (-Os)</avrgcc.compiler.optimization.level>
+  <avrgcc.compiler.optimization.PackStructureMembers>True</avrgcc.compiler.optimization.PackStructureMembers>
+  <avrgcc.compiler.optimization.AllocateBytesNeededForEnum>True</avrgcc.compiler.optimization.AllocateBytesNeededForEnum>
+  <avrgcc.compiler.warnings.AllWarnings>True</avrgcc.compiler.warnings.AllWarnings>
+  <avrgcccpp.compiler.general.ChangeDefaultCharTypeUnsigned>True</avrgcccpp.compiler.general.ChangeDefaultCharTypeUnsigned>
+  <avrgcccpp.compiler.general.ChangeDefaultBitFieldUnsigned>True</avrgcccpp.compiler.general.ChangeDefaultBitFieldUnsigned>
+  <avrgcccpp.compiler.symbols.DefSymbols>
+    <ListValues>
+      <Value>NDEBUG</Value>
+    </ListValues>
+  </avrgcccpp.compiler.symbols.DefSymbols>
+  <avrgcccpp.compiler.directories.IncludePaths>
+    <ListValues>
+      <Value>../../../cpp/opendnp3/src</Value>
+      <Value>../../../cpp/openpal/src</Value>
+      <Value>../../adapter</Value>
+    </ListValues>
+  </avrgcccpp.compiler.directories.IncludePaths>
+  <avrgcccpp.compiler.optimization.level>Optimize for size (-Os)</avrgcccpp.compiler.optimization.level>
+  <avrgcccpp.compiler.optimization.PackStructureMembers>True</avrgcccpp.compiler.optimization.PackStructureMembers>
+  <avrgcccpp.compiler.optimization.AllocateBytesNeededForEnum>True</avrgcccpp.compiler.optimization.AllocateBytesNeededForEnum>
+  <avrgcccpp.compiler.warnings.AllWarnings>True</avrgcccpp.compiler.warnings.AllWarnings>
+  <avrgcccpp.compiler.miscellaneous.OtherFlags>-DAVR --std=c++11 -DOPENDNP3_MAX_RX_APDU_SIZE=249 -DOPENDNP3_MAX_TX_APDU_SIZE=249 -DOPENPAL_STRIP_LOGGING</avrgcccpp.compiler.miscellaneous.OtherFlags>
+  <avrgcccpp.linker.libraries.Libraries>
+    <ListValues>
+      <Value>libm</Value>
+    </ListValues>
+  </avrgcccpp.linker.libraries.Libraries>
+</AvrGccCpp>
+    </ToolchainSettings>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <ToolchainSettings>
+      <AvrGccCpp>
         <avrgcc.common.optimization.RelaxBranches>True</avrgcc.common.optimization.RelaxBranches>
         <avrgcc.common.outputfiles.hex>True</avrgcc.common.outputfiles.hex>
         <avrgcc.common.outputfiles.lss>True</avrgcc.common.outputfiles.lss>
@@ -52,89 +99,42 @@
         <avrgcc.compiler.general.ChangeDefaultBitFieldUnsigned>True</avrgcc.compiler.general.ChangeDefaultBitFieldUnsigned>
         <avrgcc.compiler.symbols.DefSymbols>
           <ListValues>
-            <Value>NDEBUG</Value>
+            <Value>DEBUG</Value>
           </ListValues>
         </avrgcc.compiler.symbols.DefSymbols>
-        <avrgcc.compiler.optimization.level>Optimize for size (-Os)</avrgcc.compiler.optimization.level>
+        <avrgcc.compiler.optimization.level>Optimize (-O1)</avrgcc.compiler.optimization.level>
         <avrgcc.compiler.optimization.PackStructureMembers>True</avrgcc.compiler.optimization.PackStructureMembers>
         <avrgcc.compiler.optimization.AllocateBytesNeededForEnum>True</avrgcc.compiler.optimization.AllocateBytesNeededForEnum>
+        <avrgcc.compiler.optimization.DebugLevel>Default (-g2)</avrgcc.compiler.optimization.DebugLevel>
         <avrgcc.compiler.warnings.AllWarnings>True</avrgcc.compiler.warnings.AllWarnings>
         <avrgcccpp.compiler.general.ChangeDefaultCharTypeUnsigned>True</avrgcccpp.compiler.general.ChangeDefaultCharTypeUnsigned>
         <avrgcccpp.compiler.general.ChangeDefaultBitFieldUnsigned>True</avrgcccpp.compiler.general.ChangeDefaultBitFieldUnsigned>
         <avrgcccpp.compiler.symbols.DefSymbols>
           <ListValues>
-            <Value>NDEBUG</Value>
+            <Value>DEBUG</Value>
           </ListValues>
         </avrgcccpp.compiler.symbols.DefSymbols>
         <avrgcccpp.compiler.directories.IncludePaths>
           <ListValues>
-            <Value>../../../cpp/opendnp3/src</Value>
             <Value>../../../cpp/openpal/src</Value>
             <Value>../../adapter</Value>
+            <Value>../../../cpp/opendnp3/src</Value>
           </ListValues>
         </avrgcccpp.compiler.directories.IncludePaths>
-        <avrgcccpp.compiler.optimization.level>Optimize for size (-Os)</avrgcccpp.compiler.optimization.level>
+        <avrgcccpp.compiler.optimization.level>Optimize (-O1)</avrgcccpp.compiler.optimization.level>
         <avrgcccpp.compiler.optimization.PackStructureMembers>True</avrgcccpp.compiler.optimization.PackStructureMembers>
         <avrgcccpp.compiler.optimization.AllocateBytesNeededForEnum>True</avrgcccpp.compiler.optimization.AllocateBytesNeededForEnum>
+        <avrgcccpp.compiler.optimization.DebugLevel>Default (-g2)</avrgcccpp.compiler.optimization.DebugLevel>
         <avrgcccpp.compiler.warnings.AllWarnings>True</avrgcccpp.compiler.warnings.AllWarnings>
-        <avrgcccpp.compiler.miscellaneous.OtherFlags>-DAVR --std=c++11 -DOPENDNP3_MAX_RX_APDU_SIZE=249</avrgcccpp.compiler.miscellaneous.OtherFlags>
+        <avrgcccpp.compiler.miscellaneous.OtherFlags>--std=c++11 -DAVR -DOPENDNP3_MAX_RX_APDU_SIZE=249  -DOPENDNP3_MAX_TX_APDU_SIZE=249  -DOPENPAL_STRIP_LOGGING</avrgcccpp.compiler.miscellaneous.OtherFlags>
         <avrgcccpp.linker.libraries.Libraries>
           <ListValues>
             <Value>libm</Value>
           </ListValues>
         </avrgcccpp.linker.libraries.Libraries>
         <avrgcccpp.linker.memorysettings.Comment>&lt;segmentname&gt;=&lt;address&gt;, for example  .boot=0xff</avrgcccpp.linker.memorysettings.Comment>
+        <avrgcccpp.assembler.debugging.DebugLevel>Default (-Wa,-g)</avrgcccpp.assembler.debugging.DebugLevel>
       </AvrGccCpp>
-    </ToolchainSettings>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-    <ToolchainSettings>
-      <AvrGccCpp>
-  <avrgcc.common.optimization.RelaxBranches>True</avrgcc.common.optimization.RelaxBranches>
-  <avrgcc.common.outputfiles.hex>True</avrgcc.common.outputfiles.hex>
-  <avrgcc.common.outputfiles.lss>True</avrgcc.common.outputfiles.lss>
-  <avrgcc.common.outputfiles.eep>True</avrgcc.common.outputfiles.eep>
-  <avrgcc.common.outputfiles.srec>True</avrgcc.common.outputfiles.srec>
-  <avrgcc.compiler.general.ChangeDefaultCharTypeUnsigned>True</avrgcc.compiler.general.ChangeDefaultCharTypeUnsigned>
-  <avrgcc.compiler.general.ChangeDefaultBitFieldUnsigned>True</avrgcc.compiler.general.ChangeDefaultBitFieldUnsigned>
-  <avrgcc.compiler.symbols.DefSymbols>
-    <ListValues>
-      <Value>DEBUG</Value>
-    </ListValues>
-  </avrgcc.compiler.symbols.DefSymbols>
-  <avrgcc.compiler.optimization.level>Optimize (-O1)</avrgcc.compiler.optimization.level>
-  <avrgcc.compiler.optimization.PackStructureMembers>True</avrgcc.compiler.optimization.PackStructureMembers>
-  <avrgcc.compiler.optimization.AllocateBytesNeededForEnum>True</avrgcc.compiler.optimization.AllocateBytesNeededForEnum>
-  <avrgcc.compiler.optimization.DebugLevel>Default (-g2)</avrgcc.compiler.optimization.DebugLevel>
-  <avrgcc.compiler.warnings.AllWarnings>True</avrgcc.compiler.warnings.AllWarnings>
-  <avrgcccpp.compiler.general.ChangeDefaultCharTypeUnsigned>True</avrgcccpp.compiler.general.ChangeDefaultCharTypeUnsigned>
-  <avrgcccpp.compiler.general.ChangeDefaultBitFieldUnsigned>True</avrgcccpp.compiler.general.ChangeDefaultBitFieldUnsigned>
-  <avrgcccpp.compiler.symbols.DefSymbols>
-    <ListValues>
-      <Value>DEBUG</Value>
-    </ListValues>
-  </avrgcccpp.compiler.symbols.DefSymbols>
-  <avrgcccpp.compiler.directories.IncludePaths>
-    <ListValues>
-      <Value>../../../cpp/openpal/src</Value>
-      <Value>../../adapter</Value>
-      <Value>../../../cpp/opendnp3/src</Value>
-    </ListValues>
-  </avrgcccpp.compiler.directories.IncludePaths>
-  <avrgcccpp.compiler.optimization.level>Optimize (-O1)</avrgcccpp.compiler.optimization.level>
-  <avrgcccpp.compiler.optimization.PackStructureMembers>True</avrgcccpp.compiler.optimization.PackStructureMembers>
-  <avrgcccpp.compiler.optimization.AllocateBytesNeededForEnum>True</avrgcccpp.compiler.optimization.AllocateBytesNeededForEnum>
-  <avrgcccpp.compiler.optimization.DebugLevel>Default (-g2)</avrgcccpp.compiler.optimization.DebugLevel>
-  <avrgcccpp.compiler.warnings.AllWarnings>True</avrgcccpp.compiler.warnings.AllWarnings>
-  <avrgcccpp.compiler.miscellaneous.OtherFlags>--std=c++11 -DAVR -DOPENDNP3_MAX_RX_APDU_SIZE=249  -DOPENDNP3_MAX_TX_APDU_SIZE=249  -DOPENPAL_STRIP_LOGGING</avrgcccpp.compiler.miscellaneous.OtherFlags>
-  <avrgcccpp.linker.libraries.Libraries>
-    <ListValues>
-      <Value>libm</Value>
-    </ListValues>
-  </avrgcccpp.linker.libraries.Libraries>
-  <avrgcccpp.linker.memorysettings.Comment>&lt;segmentname&gt;=&lt;address&gt;, for example  .boot=0xff</avrgcccpp.linker.memorysettings.Comment>
-  <avrgcccpp.assembler.debugging.DebugLevel>Default (-Wa,-g)</avrgcccpp.assembler.debugging.DebugLevel>
-</AvrGccCpp>
     </ToolchainSettings>
   </PropertyGroup>
   <ItemGroup>
@@ -946,285 +946,13 @@
       <SubType>compile</SubType>
       <Link>objects\Group60.h</Link>
     </Compile>
-    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\CachedRequest.cpp">
+    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\NewOutstation.cpp">
       <SubType>compile</SubType>
-      <Link>outstation\CachedRequest.cpp</Link>
+      <Link>outstation\NewOutstation.cpp</Link>
     </Compile>
-    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\CachedRequest.h">
+    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\NewOutstation.h">
       <SubType>compile</SubType>
-      <Link>outstation\CachedRequest.h</Link>
-    </Compile>
-    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\CommandActionAdapter.cpp">
-      <SubType>compile</SubType>
-      <Link>outstation\CommandActionAdapter.cpp</Link>
-    </Compile>
-    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\CommandActionAdapter.h">
-      <SubType>compile</SubType>
-      <Link>outstation\CommandActionAdapter.h</Link>
-    </Compile>
-    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\CommandResponseHandler.cpp">
-      <SubType>compile</SubType>
-      <Link>outstation\CommandResponseHandler.cpp</Link>
-    </Compile>
-    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\CommandResponseHandler.h">
-      <SubType>compile</SubType>
-      <Link>outstation\CommandResponseHandler.h</Link>
-    </Compile>
-    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\ConstantCommandAction.h">
-      <SubType>compile</SubType>
-      <Link>outstation\ConstantCommandAction.h</Link>
-    </Compile>
-    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\CountOf.h">
-      <SubType>compile</SubType>
-      <Link>outstation\CountOf.h</Link>
-    </Compile>
-    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\Database.cpp">
-      <SubType>compile</SubType>
-      <Link>outstation\Database.cpp</Link>
-    </Compile>
-    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\Database.h">
-      <SubType>compile</SubType>
-      <Link>outstation\Database.h</Link>
-    </Compile>
-    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\DatabaseTemplate.h">
-      <SubType>compile</SubType>
-      <Link>outstation\DatabaseTemplate.h</Link>
-    </Compile>
-    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\DeviceTemplateTypes.h">
-      <SubType>compile</SubType>
-      <Link>outstation\DeviceTemplateTypes.h</Link>
-    </Compile>
-    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\DualValue.h">
-      <SubType>compile</SubType>
-      <Link>outstation\DualValue.h</Link>
-    </Compile>
-    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\DynamicallyAllocatedDatabase.cpp">
-      <SubType>compile</SubType>
-      <Link>outstation\DynamicallyAllocatedDatabase.cpp</Link>
-    </Compile>
-    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\DynamicallyAllocatedDatabase.h">
-      <SubType>compile</SubType>
-      <Link>outstation\DynamicallyAllocatedDatabase.h</Link>
-    </Compile>
-    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\DynamicallyAllocatedEventBuffer.cpp">
-      <SubType>compile</SubType>
-      <Link>outstation\DynamicallyAllocatedEventBuffer.cpp</Link>
-    </Compile>
-    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\DynamicallyAllocatedEventBuffer.h">
-      <SubType>compile</SubType>
-      <Link>outstation\DynamicallyAllocatedEventBuffer.h</Link>
-    </Compile>
-    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\Event.h">
-      <SubType>compile</SubType>
-      <Link>outstation\Event.h</Link>
-    </Compile>
-    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\EventBufferConfig.cpp">
-      <SubType>compile</SubType>
-      <Link>outstation\EventBufferConfig.cpp</Link>
-    </Compile>
-    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\EventBufferConfig.h">
-      <SubType>compile</SubType>
-      <Link>outstation\EventBufferConfig.h</Link>
-    </Compile>
-    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\EventBufferFacade.cpp">
-      <SubType>compile</SubType>
-      <Link>outstation\EventBufferFacade.cpp</Link>
-    </Compile>
-    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\EventBufferFacade.h">
-      <SubType>compile</SubType>
-      <Link>outstation\EventBufferFacade.h</Link>
-    </Compile>
-    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\EventCount.cpp">
-      <SubType>compile</SubType>
-      <Link>outstation\EventCount.cpp</Link>
-    </Compile>
-    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\EventCount.h">
-      <SubType>compile</SubType>
-      <Link>outstation\EventCount.h</Link>
-    </Compile>
-    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\EventMetadata.h">
-      <SubType>compile</SubType>
-      <Link>outstation\EventMetadata.h</Link>
-    </Compile>
-    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\EventResponseContext.cpp">
-      <SubType>compile</SubType>
-      <Link>outstation\EventResponseContext.cpp</Link>
-    </Compile>
-    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\EventResponseContext.h">
-      <SubType>compile</SubType>
-      <Link>outstation\EventResponseContext.h</Link>
-    </Compile>
-    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\EventType.h">
-      <SubType>compile</SubType>
-      <Link>outstation\EventType.h</Link>
-    </Compile>
-    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\ICommandAction.h">
-      <SubType>compile</SubType>
-      <Link>outstation\ICommandAction.h</Link>
-    </Compile>
-    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\ICommandHandler.h">
-      <SubType>compile</SubType>
-      <Link>outstation\ICommandHandler.h</Link>
-    </Compile>
-    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\IEventBuffer.h">
-      <SubType>compile</SubType>
-      <Link>outstation\IEventBuffer.h</Link>
-    </Compile>
-    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\IINHelpers.cpp">
-      <SubType>compile</SubType>
-      <Link>outstation\IINHelpers.cpp</Link>
-    </Compile>
-    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\IINHelpers.h">
-      <SubType>compile</SubType>
-      <Link>outstation\IINHelpers.h</Link>
-    </Compile>
-    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\IMeasurementLoader.h">
-      <SubType>compile</SubType>
-      <Link>outstation\IMeasurementLoader.h</Link>
-    </Compile>
-    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\ITimeWriteHandler.cpp">
-      <SubType>compile</SubType>
-      <Link>outstation\ITimeWriteHandler.cpp</Link>
-    </Compile>
-    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\ITimeWriteHandler.h">
-      <SubType>compile</SubType>
-      <Link>outstation\ITimeWriteHandler.h</Link>
-    </Compile>
-    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\Outstation.cpp">
-      <SubType>compile</SubType>
-      <Link>outstation\Outstation.cpp</Link>
-    </Compile>
-    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\Outstation.h">
-      <SubType>compile</SubType>
-      <Link>outstation\Outstation.h</Link>
-    </Compile>
-    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\OutstationConfig.cpp">
-      <SubType>compile</SubType>
-      <Link>outstation\OutstationConfig.cpp</Link>
-    </Compile>
-    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\OutstationConfig.h">
-      <SubType>compile</SubType>
-      <Link>outstation\OutstationConfig.h</Link>
-    </Compile>
-    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\OutstationEventBuffer.cpp">
-      <SubType>compile</SubType>
-      <Link>outstation\OutstationEventBuffer.cpp</Link>
-    </Compile>
-    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\OutstationEventBuffer.h">
-      <SubType>compile</SubType>
-      <Link>outstation\OutstationEventBuffer.h</Link>
-    </Compile>
-    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\OutstationStackConfig.h">
-      <SubType>compile</SubType>
-      <Link>outstation\OutstationStackConfig.h</Link>
-    </Compile>
-    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\OutstationStates.cpp">
-      <SubType>compile</SubType>
-      <Link>outstation\OutstationStates.cpp</Link>
-    </Compile>
-    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\OutstationStates.h">
-      <SubType>compile</SubType>
-      <Link>outstation\OutstationStates.h</Link>
-    </Compile>
-    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\ReadHandler.cpp">
-      <SubType>compile</SubType>
-      <Link>outstation\ReadHandler.cpp</Link>
-    </Compile>
-    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\ReadHandler.h">
-      <SubType>compile</SubType>
-      <Link>outstation\ReadHandler.h</Link>
-    </Compile>
-    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\ResponseContext.cpp">
-      <SubType>compile</SubType>
-      <Link>outstation\ResponseContext.cpp</Link>
-    </Compile>
-    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\ResponseContext.h">
-      <SubType>compile</SubType>
-      <Link>outstation\ResponseContext.h</Link>
-    </Compile>
-    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\SelectBuffer.cpp">
-      <SubType>compile</SubType>
-      <Link>outstation\SelectBuffer.cpp</Link>
-    </Compile>
-    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\SelectBuffer.h">
-      <SubType>compile</SubType>
-      <Link>outstation\SelectBuffer.h</Link>
-    </Compile>
-    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\SelectionCriteria.cpp">
-      <SubType>compile</SubType>
-      <Link>outstation\SelectionCriteria.cpp</Link>
-    </Compile>
-    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\SelectionCriteria.h">
-      <SubType>compile</SubType>
-      <Link>outstation\SelectionCriteria.h</Link>
-    </Compile>
-    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\SelectionIterator.cpp">
-      <SubType>compile</SubType>
-      <Link>outstation\SelectionIterator.cpp</Link>
-    </Compile>
-    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\SelectionIterator.h">
-      <SubType>compile</SubType>
-      <Link>outstation\SelectionIterator.h</Link>
-    </Compile>
-    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\SimpleCommandHandler.cpp">
-      <SubType>compile</SubType>
-      <Link>outstation\SimpleCommandHandler.cpp</Link>
-    </Compile>
-    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\SimpleCommandHandler.h">
-      <SubType>compile</SubType>
-      <Link>outstation\SimpleCommandHandler.h</Link>
-    </Compile>
-    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\StaticallyAllocatedDatabase.h">
-      <SubType>compile</SubType>
-      <Link>outstation\StaticallyAllocatedDatabase.h</Link>
-    </Compile>
-    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\StaticallyAllocatedEventBuffer.h">
-      <SubType>compile</SubType>
-      <Link>outstation\StaticallyAllocatedEventBuffer.h</Link>
-    </Compile>
-    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\StaticDataFacade.h">
-      <SubType>compile</SubType>
-      <Link>outstation\StaticDataFacade.h</Link>
-    </Compile>
-    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\StaticLoader.h">
-      <SubType>compile</SubType>
-      <Link>outstation\StaticLoader.h</Link>
-    </Compile>
-    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\StaticResponseContext.cpp">
-      <SubType>compile</SubType>
-      <Link>outstation\StaticResponseContext.cpp</Link>
-    </Compile>
-    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\StaticResponseContext.h">
-      <SubType>compile</SubType>
-      <Link>outstation\StaticResponseContext.h</Link>
-    </Compile>
-    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\StaticResponseTypes.cpp">
-      <SubType>compile</SubType>
-      <Link>outstation\StaticResponseTypes.cpp</Link>
-    </Compile>
-    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\StaticResponseTypes.h">
-      <SubType>compile</SubType>
-      <Link>outstation\StaticResponseTypes.h</Link>
-    </Compile>
-    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\TimeTransaction.cpp">
-      <SubType>compile</SubType>
-      <Link>outstation\TimeTransaction.cpp</Link>
-    </Compile>
-    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\TimeTransaction.h">
-      <SubType>compile</SubType>
-      <Link>outstation\TimeTransaction.h</Link>
-    </Compile>
-    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\ValueMetadataPair.h">
-      <SubType>compile</SubType>
-      <Link>outstation\ValueMetadataPair.h</Link>
-    </Compile>
-    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\WriteHandler.cpp">
-      <SubType>compile</SubType>
-      <Link>outstation\WriteHandler.cpp</Link>
-    </Compile>
-    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\WriteHandler.h">
-      <SubType>compile</SubType>
-      <Link>outstation\WriteHandler.h</Link>
+      <Link>outstation\NewOutstation.h</Link>
     </Compile>
     <Compile Include="..\..\cpp\opendnp3\src\opendnp3\Settable.h">
       <SubType>compile</SubType>
@@ -1257,6 +985,14 @@
     <Compile Include="..\..\cpp\opendnp3\src\opendnp3\transport\TransportRx.h">
       <SubType>compile</SubType>
       <Link>transport\TransportRx.h</Link>
+    </Compile>
+    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\transport\TransportStack.cpp">
+      <SubType>compile</SubType>
+      <Link>transport\TransportStack.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\transport\TransportStack.h">
+      <SubType>compile</SubType>
+      <Link>transport\TransportStack.h</Link>
     </Compile>
     <Compile Include="..\..\cpp\opendnp3\src\opendnp3\transport\TransportStates.cpp">
       <SubType>compile</SubType>
