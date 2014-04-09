@@ -31,11 +31,10 @@ using namespace std::chrono;
 namespace asiopal
 {
 
-LogToStdio LogToStdio::instance;
-
 
 LogToStdio::LogToStdio() : pInterpreter(&BasicFlags), printLocation(false)
 {
+
 }
 
 std::ostringstream& LogToStdio::BasicFlags(std::ostringstream& ss, const openpal::LogFilters& filters)
@@ -49,7 +48,7 @@ void LogToStdio::SetPrintLocation(bool printLocation_)
 	printLocation = printLocation_;
 }
 
-void LogToStdio::SetLevelInterpreter(LevelToString pInterpreter_)
+void LogToStdio::SetFilterInterpreter(LevelToString pInterpreter_)
 {
 	assert(pInterpreter_ != nullptr);
 	pInterpreter = pInterpreter_;

@@ -49,12 +49,10 @@ int main(int argc, char* argv[])
 	// Specify a LogLevel for the stack/physical layer to use.
 	// Log statements with a lower priority will not be logged.
 	const uint32_t FILTERS = levels::ALL;
+	
+	LogToStdio iologger;	
 
-	//A default logging backend that can proxy to multiple other backends
-	EventLog el;	
-	el.AddLogSubscriber(LogToStdio::Inst()); // This singleton logger just prints messages to the console
-
-	openpal::LogRoot root(&el, "server", FILTERS);
+	openpal::LogRoot root(&iologger, "server", FILTERS);
 
 	asio::io_service service;
 	asio::io_service::strand strand(service);

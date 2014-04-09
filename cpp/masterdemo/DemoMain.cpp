@@ -50,14 +50,11 @@ int main(int argc, char* argv[])
 	// Specify a LogLevel for the stack/physical layer to use.
 	// Log statements with a lower priority will not be logged.
 	const uint32_t FILTERS = levels::NORMAL;
-
-	EventLog log;
-	// You can optionally subcribe to log messages
-	// This singleton logger just prints messages to the console	
-	log.AddLogSubscriber(LogToStdio::Inst());
+	
+	LogToStdio iologger;
 
 	// asio thread pool that drives the stack
-	IOServiceThreadPool pool(&log, FILTERS, 1); // 1 stack only needs 1 thread
+	IOServiceThreadPool pool(&iologger, FILTERS, 1); // 1 stack only needs 1 thread
 
 	// This is the main point of interaction with the stack
 	DNP3Manager mgr;
@@ -70,7 +67,7 @@ int main(int argc, char* argv[])
 	};
 
 	// Connect via a TCPClient socket to a outstation
-	auto pClientRoot = new LogRoot(&log, "client", FILTERS);
+	auto pClientRoot = new LogRoot(&iologger, "client", FILTERS);
 	auto pClientPhys = new PhysicalLayerAsyncTCPClient(*pClientRoot, pool.GetIOService(), "127.0.0.1", 20000, configure);
 	// wait 3000 ms in between failed connect calls
 	auto pClient = mgr.CreateChannel(pClientRoot, TimeDuration::Seconds(2), TimeDuration::Minutes(1), pClientPhys);

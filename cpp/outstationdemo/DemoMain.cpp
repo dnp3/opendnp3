@@ -52,8 +52,9 @@ int main(int argc, char* argv[])
 	const uint32_t FILTERS = levels::NORMAL;
 
 	//A default logging backend that can proxy to multiple other backends
-	EventLog log;	
-	log.AddLogSubscriber(LogToStdio::Inst()); // This singleton logger just prints messages to the console
+	EventLog log;
+	LogToStdio iologger;
+	log.AddLogSubscriber(&iologger); // This singleton logger just prints messages to the console
 
 	IOServiceThreadPool pool(&log, FILTERS,  1); // only 1 thread is needed for a single stack
 
