@@ -67,10 +67,13 @@ int main()
 	stack.link.SetRouter(&parser);	
 	stack.link.OnLowerLayerUp();
 	
-	// start timer interrupts at 100Hz	
+	// enable timer interrupts at 100Hz	
 	exe.Init();
 	
-	// begin interrupts
+	// enable usart rx & tx interrupts
+	parser.Init();
+	
+	// begin all interrupts
 	sei();
 	
 	// Set LED as output
@@ -81,9 +84,8 @@ int main()
 				
 	for (;;)
 	{ 								
-		exe.RunOne();			
-		parser.Tick();		
-		exe.Sleep();
+		while(exe.RunOne()); // run all pending events		
+		exe.Sleep(); // and then sleep
 	}
 
 	return 0;

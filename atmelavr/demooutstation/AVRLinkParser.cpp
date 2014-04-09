@@ -24,6 +24,11 @@ AVRLinkParser::AVRLinkParser(openpal::LogRoot& root, openpal::IExecutor& exe, op
 	pContext(&context),
 	receiver(root.GetLogger(), &context)	
 {
+	
+}
+
+void AVRLinkParser::Init()
+{
 	gLinkParser = this;
 	
 	// configure the baud rate
@@ -31,11 +36,12 @@ AVRLinkParser::AVRLinkParser(openpal::LogRoot& root, openpal::IExecutor& exe, op
 	UBRR0L = (uint8_t)(BAUD_PRESCALLER);
 	
 	// turn on rx / tx
-	UCSR0B = (1<<RXEN0)|(1<<TXEN0);	
+	UCSR0B = (1<<RXEN0)|(1<<TXEN0);
 	UCSR0C = ((1<<UCSZ00)|(1<<UCSZ01));
 	
-	// enable rx interrupts
+	// enable rx & tx interrupts
 	UCSR0B |= (1 << RXCIE0);
+	UCSR0B |= (1 << TXCIE0);
 }
 
 void AVRLinkParser::Receive(uint8_t byte)
@@ -47,7 +53,7 @@ void AVRLinkParser::Receive(uint8_t byte)
 	pExecutor->PostLambda(lambda);
 }
 
-void AVRLinkParser::Tick()
+void AVRLinkParser::CheckTransmit()
 {	
 	if(txQueue.IsNotEmpty()) 
 	{
@@ -63,23 +69,29 @@ void AVRLinkParser::Tick()
 				pContext->OnTransmitResult(tx.primary, true);			
 			}				
 		}		
-	}
-	
-	/*
-	if(UCSR0A & (1<<RXC0)) // Can we read?
-	{
-		auto byte = UDR0;
-		receiver.WriteBuff()[0] = byte;
-		receiver.OnRead(1);
-	}
-	*/
+	}	
 }
 	
 void AVRLinkParser::QueueTransmit(const openpal::ReadOnlyBuffer& buffer, opendnp3::ILinkContext* pContext, bool primary)
 {
 	txQueue.Enqueue(Transmission(buffer, primary));
+	this->PostCheckTransmit();
 }
 
+void AVRLinkParser::PostCheckTransmit()
+{
+	auto lambda = [this]() { this->CheckTransmit(); };
+	pExecutor->PostLambda(lambda);
+}
+
+}
+
+ISR(USART0_TX_vect)
+{	
+	if(gLinkParser)
+	{
+		gLinkParser->PostCheckTransmit();
+	}
 }
 
 ISR(USART0_RX_vect)
