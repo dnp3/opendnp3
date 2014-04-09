@@ -103,7 +103,7 @@
   <avrgcccpp.compiler.optimization.PackStructureMembers>True</avrgcccpp.compiler.optimization.PackStructureMembers>
   <avrgcccpp.compiler.optimization.AllocateBytesNeededForEnum>True</avrgcccpp.compiler.optimization.AllocateBytesNeededForEnum>
   <avrgcccpp.compiler.warnings.AllWarnings>True</avrgcccpp.compiler.warnings.AllWarnings>
-  <avrgcccpp.compiler.miscellaneous.OtherFlags>-DAVR --std=c++11 -DOPENDNP3_MAX_RX_APDU_SIZE=249 -DOPENDNP3_MAX_TX_APDU_SIZE=249</avrgcccpp.compiler.miscellaneous.OtherFlags>
+  <avrgcccpp.compiler.miscellaneous.OtherFlags>-DAVR --std=c++11 -DOPENDNP3_MAX_RX_APDU_SIZE=249 -DOPENDNP3_MAX_TX_APDU_SIZE=249 -DOPENPAL_MACRO_MAX_RUNNABLE_SIZE=8</avrgcccpp.compiler.miscellaneous.OtherFlags>
   <avrgcccpp.linker.libraries.Libraries>
     <ListValues>
       <Value>libm</Value>

@@ -23,7 +23,9 @@
 
 #include "Erasure.h"
 
+#ifndef OPENPAL_MACRO_MAX_RUNNABLE_SIZE
 #define OPENPAL_MACRO_MAX_RUNNABLE_SIZE 64
+#endif
 
 namespace openpal
 {
