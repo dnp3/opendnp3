@@ -57,7 +57,7 @@ int main()
 	
 	// start timer interrupts at 100Hz
 	// LED will toggle at ~1HZ
-	exe.Init(); 
+	exe.Init();
 				
 	for (;;)
 	{ 		
