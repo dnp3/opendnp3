@@ -40,8 +40,8 @@ LinkLayerReceiver::LinkLayerReceiver(const Logger& logger_, IFrameSink* apSink) 
 	mFrameSize(0),
 	mpSink(apSink),
 	mpState(LRS_Sync::Inst()),
-	receiverBuffer(),
-	mBuffer(receiverBuffer.Buffer(), receiverBuffer.Size())
+	receiveBuffer(),
+	mBuffer(receiveBuffer.Buffer(), receiveBuffer.Size())
 {
 
 }
@@ -115,8 +115,8 @@ void LinkLayerReceiver::PushFrame()
 ReadOnlyBuffer LinkLayerReceiver::TransferUserData()
 {
 	uint32_t len = mHeader.GetLength() - LS_MIN_LENGTH;
-	LinkFrame::ReadUserData(mBuffer.ReadBuff() + LS_HEADER_SIZE,  userDataBuffer, len);
-	return ReadOnlyBuffer(userDataBuffer, len);
+	LinkFrame::ReadUserData(mBuffer.ReadBuff() + LS_HEADER_SIZE,  receiveBuffer.Buffer(), len);
+	return receiveBuffer.ToReadOnly().Truncate(len);
 }
 
 bool LinkLayerReceiver::ReadHeader()

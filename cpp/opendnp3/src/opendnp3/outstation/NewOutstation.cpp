@@ -75,12 +75,9 @@ void NewOutstation::OnReceive(const openpal::ReadOnlyBuffer& buffer)
 			response.SetControl(request.control.ToByte());
 			response.SetIIN(iin);
 			isSending = true;
-			auto output = response.ToReadOnly();
-			pLower->BeginTransmit(output);
-			/*
+			auto output = response.ToReadOnly();						
 			auto lambda = [this, output]() { this->pLower->BeginTransmit(output); };
-			pExecutor->PostLambda(lambda);
-			*/
+			pExecutor->PostLambda(lambda);			
 		}
 	}
 }
