@@ -43,12 +43,7 @@ class TransportLayer : public openpal::IUpperLayer, public openpal::ILowerLayer
 
 public:
 
-	TransportLayer(openpal::LogRoot& root, openpal::IExecutor* pExecutor_, uint32_t maxFragSize = sizes::DEFAULT_APDU_BUFFER_SIZE);
-
-	openpal::Logger& GetLogger()
-	{
-		return logger;
-	}
+	TransportLayer(openpal::LogRoot& root, openpal::IExecutor* pExecutor_, uint32_t maxFragSize = sizes::DEFAULT_APDU_BUFFER_SIZE);	
 
 	/// ILowerLayer	
 
@@ -70,9 +65,7 @@ private:
 	openpal::IUpperLayer* pUpperLayer;
 	ILinkLayer* pLinkLayer;	
 
-	void TransmitAPDU(const openpal::ReadOnlyBuffer&);
-
-	/* Members and Helpers */
+	// ---- state ----
 	bool isOnline;
 	bool isSending;
 

@@ -52,15 +52,6 @@ TransportLayer::TransportLayer(openpal::LogRoot& root, openpal::IExecutor* pExec
 // Actions
 ///////////////////////////////////////
 
-void TransportLayer::TransmitAPDU(const openpal::ReadOnlyBuffer& apdu)
-{
-	transmitter.Configure(apdu);
-	if(pLinkLayer)
-	{
-		pLinkLayer->Send(transmitter);
-	}
-}
-
 void TransportLayer::BeginTransmit(const ReadOnlyBuffer& apdu)
 {
 	if (isOnline)
