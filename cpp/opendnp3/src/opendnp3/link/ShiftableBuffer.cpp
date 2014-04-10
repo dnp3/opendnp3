@@ -20,10 +20,10 @@
  */
 #include "ShiftableBuffer.h"
 
-
 #include <openpal/Location.h>
+
+#include <openpal/Configure.h>
 #include <assert.h>
-#include <memory.h>
 #include <cstring>
 
 namespace opendnp3

@@ -25,7 +25,7 @@
 #include <functional>
 #include <string>
 
-#include <openpal/LoggableMacros.h>
+#include <openpal/LogMacros.h>
 #include <openpal/IHandlerAsync.h>
 #include <openpal/LogLevels.h>
 
@@ -37,13 +37,13 @@ namespace asiopal
 {
 
 PhysicalLayerAsyncTCPServer::PhysicalLayerAsyncTCPServer(
-    const openpal::LogConfig& config,
+	openpal::LogRoot& root,
     asio::io_service* pIOService,
     const std::string& endpoint,
     uint16_t port,
     std::function<void (asio::ip::tcp::socket&)> configure_) :
 
-	PhysicalLayerAsyncBaseTCP(config, pIOService),
+	PhysicalLayerAsyncBaseTCP(root, pIOService),
 	localEndpointString(endpoint),
 	localEndpoint(ip::tcp::v4(), port),
 	acceptor(*pIOService),
@@ -61,10 +61,8 @@ void PhysicalLayerAsyncTCPServer::DoOpen()
 		auto address = asio::ip::address::from_string(localEndpointString, ec);
 		if (ec)
 		{
-			this->GetExecutor()->Post([this, ec]()
-			{
-				this->OnOpenCallback(ec);
-			});
+			auto lambda = [this, ec]() { this->OnOpenCallback(ec); };
+			this->GetExecutor()->PostLambda(lambda);
 		}
 		else
 		{
@@ -72,10 +70,8 @@ void PhysicalLayerAsyncTCPServer::DoOpen()
 			acceptor.open(localEndpoint.protocol(), ec);
 			if (ec)
 			{
-				this->GetExecutor()->Post([this, ec]()
-				{
-					this->OnOpenCallback(ec);
-				});
+				auto lambda = [this, ec]() { this->OnOpenCallback(ec); };
+				this->GetExecutor()->PostLambda(lambda);
 			}
 			else
 			{
@@ -83,20 +79,16 @@ void PhysicalLayerAsyncTCPServer::DoOpen()
 				acceptor.bind(localEndpoint, ec);
 				if (ec)
 				{
-					this->GetExecutor()->Post([this, ec]()
-					{
-						this->OnOpenCallback(ec);
-					});
+					auto lambda = [this, ec]() { this->OnOpenCallback(ec); };
+					this->GetExecutor()->PostLambda(lambda);
 				}
 				else
 				{
 					acceptor.listen(socket_base::max_connections, ec);
 					if (ec)
 					{
-						this->GetExecutor()->Post([this, ec]()
-						{
-							this->OnOpenCallback(ec);
-						});
+						auto lambda = [this, ec]() { this->OnOpenCallback(ec); };
+						this->GetExecutor()->PostLambda(lambda);
 					}
 					else
 					{
@@ -128,7 +120,7 @@ void PhysicalLayerAsyncTCPServer::CloseAcceptor()
 	acceptor.close(ec);
 	if(ec)
 	{
-		LOG_BLOCK(log::WARN, "Error while closing tcp acceptor: " << ec);
+		FORMAT_LOG_BLOCK(logger, logflags::WARN, "Error while closing tcp acceptor: %s", ec.message().c_str());
 	}
 }
 
@@ -144,7 +136,7 @@ void PhysicalLayerAsyncTCPServer::DoOpeningClose()
 
 void PhysicalLayerAsyncTCPServer::DoOpenSuccess()
 {
-	LOG_BLOCK(log::INFO, "Accepted connection from: " << remoteEndpoint);
+	FORMAT_LOG_BLOCK(logger, logflags::INFO, "Accepted connection from: %s", remoteEndpoint.address().to_string().c_str());
 	configure(mSocket);
 }
 

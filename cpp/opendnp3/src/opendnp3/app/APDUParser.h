@@ -21,14 +21,11 @@
 #ifndef __APDU_PARSER_H_
 #define __APDU_PARSER_H_
 
-#include <functional>
-#include <limits>
-
 #include <openpal/BufferWrapper.h>
 #include <openpal/ISerializer.h>
 #include <openpal/Serialization.h>
 #include <openpal/Logger.h>
-#include <openpal/LoggableMacros.h>
+#include <openpal/LogMacros.h>
 
 #include <openpal/Uncopyable.h>
 
@@ -275,13 +272,13 @@ APDUParser::Result APDUParser::ParseRangeAsBitField(
 	uint32_t numBytes = NumBytesInBits(range.Count());
 	if (buffer.Size() < numBytes)
 	{
-		ERROR_PLOGGER_BLOCK(pLogger, flags::WARN, ALERR_INSUFFICIENT_DATA_FOR_OBJECTS, "Not enough data for specified bitfield objects");
+		SIMPLE_LOGGER_BLOCK_WITH_CODE(pLogger, flags::WARN, ALERR_INSUFFICIENT_DATA_FOR_OBJECTS, "Not enough data for specified bitfield objects");
 		return Result::NOT_ENOUGH_DATA_FOR_OBJECTS;
 	}
 	else
 	{
 		auto collection = CreateLazyIterable<IndexedValue<bool, uint16_t>>(buffer, range.Count(),
-		                  [&](openpal::ReadOnlyBuffer & buffer, uint32_t pos)
+		                  [range](openpal::ReadOnlyBuffer & buffer, uint32_t pos)
 		{
 			return IndexedValue<bool, uint16_t>(GetBit(buffer, pos), pos + range.start);
 		}
@@ -303,13 +300,13 @@ APDUParser::Result APDUParser::ParseRangeAsDoubleBitField(
 	uint32_t numBytes = NumBytesInDoubleBits(range.Count());
 	if (buffer.Size() < numBytes)
 	{
-		ERROR_PLOGGER_BLOCK(pLogger, flags::WARN, ALERR_INSUFFICIENT_DATA_FOR_OBJECTS, "Not enough data for specified double bitfield objects");
+		SIMPLE_LOGGER_BLOCK_WITH_CODE(pLogger, flags::WARN, ALERR_INSUFFICIENT_DATA_FOR_OBJECTS, "Not enough data for specified double bitfield objects");
 		return Result::NOT_ENOUGH_DATA_FOR_OBJECTS;
 	}
 	else
 	{
 		auto collection = CreateLazyIterable<IndexedValue<DoubleBit, uint16_t>>(buffer, range.Count(),
-		                  [&](openpal::ReadOnlyBuffer & buffer, uint32_t pos)
+		                  [range](openpal::ReadOnlyBuffer & buffer, uint32_t pos)
 		{
 			return IndexedValue<DoubleBit, uint16_t>(GetDoubleBit(buffer, pos), pos + range.start);
 		}
@@ -333,7 +330,7 @@ APDUParser::Result APDUParser::ParseIndexPrefixedOctetData(
 		uint32_t size = count * (IndexType::Size + record.variation);
 		if (buffer.Size() < size)
 		{
-			ERROR_PLOGGER_BLOCK(pLogger, flags::WARN, ALERR_INSUFFICIENT_DATA_FOR_OBJECTS, "Not enough data for specified bitfield objects");
+			SIMPLE_LOGGER_BLOCK_WITH_CODE(pLogger, flags::WARN, ALERR_INSUFFICIENT_DATA_FOR_OBJECTS, "Not enough data for specified bitfield objects");
 			return APDUParser::Result::NOT_ENOUGH_DATA_FOR_OBJECTS;
 		}
 		else
@@ -341,7 +338,7 @@ APDUParser::Result APDUParser::ParseIndexPrefixedOctetData(
 			if (pHandler)
 			{
 				auto iterable = CreateLazyIterable<IndexedValue<OctetString, uint16_t>>(buffer, count,
-				                [&](openpal::ReadOnlyBuffer & buff, uint32_t position)
+				                [record](openpal::ReadOnlyBuffer & buff, uint32_t position)
 				{
 					auto index = IndexType::ReadBuffer(buff);
 					OctetString octets(buff.Truncate(record.variation));
@@ -358,7 +355,7 @@ APDUParser::Result APDUParser::ParseIndexPrefixedOctetData(
 	}
 	else
 	{
-		PLOGGER_BLOCK(pLogger, flags::WARN, "Octet string variation 0 may only be used in requests");
+		SIMPLE_LOGGER_BLOCK(pLogger, flags::WARN, "Octet string variation 0 may only be used in requests");
 		return Result::INVALID_OBJECT;
 	}
 }
@@ -439,9 +436,11 @@ APDUParser::Result APDUParser::ParseObjectsWithIndexPrefix(openpal::ReadOnlyBuff
 		return ParseIndexPrefixedOctetData<IndexType>(buffer, pLogger, record, count, pHandler);
 
 	default:
-		ERROR_PLOGGER_BLOCK(pLogger, flags::WARN, ALERR_ILLEGAL_QUALIFIER_AND_OBJECT,
-		                    "Unsupported qualifier/object - " << QualifierCodeToString(record.qualifier) << "/" << record.ToString()
-		                   );
+		
+		FORMAT_LOGGER_BLOCK_WITH_CODE(pLogger, flags::WARN, ALERR_ILLEGAL_QUALIFIER_AND_OBJECT, 
+			"Unsupported qualifier/object - %s - %i / %i",
+			QualifierCodeToString(record.qualifier), record.group, record.variation);
+
 		return Result::INVALID_OBJECT_QUALIFIER;
 	}
 }
@@ -451,7 +450,7 @@ APDUParser::Result APDUParser::ParseRange(openpal::ReadOnlyBuffer& buffer, openp
 {
 	if (buffer.Size() < (2 * ParserType::Size))
 	{
-		ERROR_PLOGGER_BLOCK(pLogger, flags::WARN, ALERR_INSUFFICIENT_DATA_FOR_HEADER, "Not enough data for start / stop");
+		SIMPLE_LOGGER_BLOCK_WITH_CODE(pLogger, flags::WARN, ALERR_INSUFFICIENT_DATA_FOR_HEADER, "Not enough data for start / stop");
 		return Result::NOT_ENOUGH_DATA_FOR_RANGE;
 	}
 	else
@@ -460,7 +459,7 @@ APDUParser::Result APDUParser::ParseRange(openpal::ReadOnlyBuffer& buffer, openp
 		auto stop = ParserType::ReadBuffer(buffer);
 		if (start > stop)
 		{
-			ERROR_PLOGGER_BLOCK(pLogger, flags::WARN, ALERR_START_STOP_MISMATCH, "start > stop");
+			SIMPLE_LOGGER_BLOCK_WITH_CODE(pLogger, flags::WARN, ALERR_START_STOP_MISMATCH, "start > stop");
 			return Result::BAD_START_STOP;
 		}
 		else
@@ -468,7 +467,7 @@ APDUParser::Result APDUParser::ParseRange(openpal::ReadOnlyBuffer& buffer, openp
 			RangeType count = static_cast<RangeType>(stop) - static_cast<RangeType>(start) + 1;
 			if (context.AddObjectCount(count))
 			{
-				ERROR_PLOGGER_BLOCK(pLogger, flags::WARN, ALERR_TOO_MANY_OBJECTS_IN_APDU, "too many objects in APDU");
+				SIMPLE_LOGGER_BLOCK_WITH_CODE(pLogger, flags::WARN, ALERR_TOO_MANY_OBJECTS_IN_APDU, "too many objects in APDU");
 				return Result::UNREASONABLE_OBJECT_COUNT;
 			}
 			else
@@ -486,7 +485,7 @@ APDUParser::Result APDUParser::ParseCount(openpal::ReadOnlyBuffer& buffer, openp
 {
 	if (buffer.Size() < ParserType::Size)
 	{
-		ERROR_PLOGGER_BLOCK(pLogger, flags::WARN, ALERR_INSUFFICIENT_DATA_FOR_HEADER, "Not enough data for count");
+		SIMPLE_LOGGER_BLOCK_WITH_CODE(pLogger, flags::WARN, ALERR_INSUFFICIENT_DATA_FOR_HEADER, "Not enough data for count");
 		return Result::NOT_ENOUGH_DATA_FOR_RANGE;
 	}
 	else
@@ -494,14 +493,14 @@ APDUParser::Result APDUParser::ParseCount(openpal::ReadOnlyBuffer& buffer, openp
 		count = ParserType::ReadBuffer(buffer);
 		if (count == 0)
 		{
-			ERROR_PLOGGER_BLOCK(pLogger, flags::WARN, ALERR_COUNT_OF_ZERO, "count of 0");
+			SIMPLE_LOGGER_BLOCK_WITH_CODE(pLogger, flags::WARN, ALERR_COUNT_OF_ZERO, "count of 0");
 			return Result::COUNT_OF_ZERO;
 		}
 		else
 		{
 			if (context.AddObjectCount(count))
 			{
-				ERROR_PLOGGER_BLOCK(pLogger, flags::WARN, ALERR_TOO_MANY_OBJECTS_IN_APDU, "too many objects in APDU");
+				SIMPLE_LOGGER_BLOCK_WITH_CODE(pLogger, flags::WARN, ALERR_TOO_MANY_OBJECTS_IN_APDU, "too many objects in APDU");
 				return Result::UNREASONABLE_OBJECT_COUNT;
 			}
 			else
@@ -518,7 +517,7 @@ APDUParser::Result APDUParser::ParseRangeFixedSize(const HeaderRecord& record, o
 	uint32_t size = range.Count() * pSerializer->Size();
 	if (buffer.Size() < size)
 	{
-		ERROR_PLOGGER_BLOCK(pLogger, flags::WARN, ALERR_INSUFFICIENT_DATA_FOR_OBJECTS, "Not enough data for specified objects");
+		SIMPLE_LOGGER_BLOCK_WITH_CODE(pLogger, flags::WARN, ALERR_INSUFFICIENT_DATA_FOR_OBJECTS, "Not enough data for specified objects");
 		return APDUParser::Result::NOT_ENOUGH_DATA_FOR_OBJECTS;
 	}
 	else
@@ -543,7 +542,7 @@ APDUParser::Result APDUParser::ParseCountOf(openpal::ReadOnlyBuffer& buffer, ope
 	uint32_t size = count * Descriptor::SIZE;
 	if (buffer.Size() < size)
 	{
-		ERROR_PLOGGER_BLOCK(pLogger, flags::WARN, ALERR_INSUFFICIENT_DATA_FOR_OBJECTS, "Not enough data for specified objects");
+		SIMPLE_LOGGER_BLOCK_WITH_CODE(pLogger, flags::WARN, ALERR_INSUFFICIENT_DATA_FOR_OBJECTS, "Not enough data for specified objects");
 		return APDUParser::Result::NOT_ENOUGH_DATA_FOR_OBJECTS;
 	}
 	else
@@ -573,7 +572,7 @@ APDUParser::Result APDUParser::ParseCountFixedSizeWithIndex(
 	uint32_t size = count * (IndexType::Size + pSerializer->Size());
 	if (buffer.Size() < size)
 	{
-		ERROR_PLOGGER_BLOCK(pLogger, flags::WARN, ALERR_INSUFFICIENT_DATA_FOR_OBJECTS, "Not enough data for specified objects");
+		SIMPLE_LOGGER_BLOCK_WITH_CODE(pLogger, flags::WARN, ALERR_INSUFFICIENT_DATA_FOR_OBJECTS, "Not enough data for specified objects");
 		return APDUParser::Result::NOT_ENOUGH_DATA_FOR_OBJECTS;
 	}
 	else

@@ -28,6 +28,7 @@
 #include <openpal/ToHex.h>
 
 #include "BufferHelpers.h"
+#include "HexConversions.h"
 
 
 namespace opendnp3
@@ -66,7 +67,7 @@ std::string RepairCRC(const std::string& arData)
 	//repair the partial block
 	if(partial_size > 0) DNPCrc::AddCrc(ptr, partial_size - 2);
 
-	return openpal::toHex(hs, hs.Size(), true);
+	return toHex(hs.ToReadOnly(), true);
 }
 
 }

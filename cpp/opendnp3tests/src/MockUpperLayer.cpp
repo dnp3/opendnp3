@@ -23,7 +23,7 @@
 #include "BufferHelpers.h"
 
 #include <openpal/ToHex.h>
-#include <openpal/LoggableMacros.h>
+#include <openpal/LogMacros.h>
 
 #include <memory>
 
@@ -75,7 +75,7 @@ void MockUpperLayer::SendDown(const openpal::ReadOnlyBuffer& buffer)
 {
 	if (this->pLowerLayer)
 	{
-		pLowerLayer->Send(buffer);
+		pLowerLayer->BeginTransmit(buffer);
 	}
 }
 

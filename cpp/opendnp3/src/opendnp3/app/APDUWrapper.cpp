@@ -21,6 +21,7 @@
 
 #include "APDUWrapper.h"
 
+#include <openpal/Configure.h>
 #include <assert.h>
 
 #include "AppControlField.h"
@@ -33,9 +34,9 @@ APDUWrapper::APDUWrapper() : valid(false)
 
 }
 
-APDUWrapper::APDUWrapper(const openpal::WriteBuffer& aBuffer) : valid(true), buffer(aBuffer), remaining(aBuffer)
+APDUWrapper::APDUWrapper(const openpal::WriteBuffer& buffer_) : valid(true), buffer(buffer_), remaining(buffer_)
 {
-	assert(aBuffer.Size() >= 2); // need a control & function at a minimum
+	assert(buffer.Size() >= 2); // need a control & function at a minimum
 	remaining.Advance(2);
 }
 
@@ -72,7 +73,7 @@ AppControlField APDUWrapper::GetControl() const
 	return AppControlField(buffer[0]);
 }
 
-void APDUWrapper::SetControl(const AppControlField& control)
+void APDUWrapper::SetControl(AppControlField control)
 {
 	buffer[0] = control.ToByte();
 }

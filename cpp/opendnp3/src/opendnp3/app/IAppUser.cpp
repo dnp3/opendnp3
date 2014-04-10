@@ -21,31 +21,36 @@
 
 #include "IAppUser.h"
 
-#include <openpal/LoggableMacros.h>
+#include <openpal/LogMacros.h>
 
 #include "opendnp3/LogLevels.h"
 
 namespace opendnp3
 {
 
+IAppUser::IAppUser(openpal::LogRoot& root) : logger(root.GetLogger(sources::APP_LAYER))
+{
+
+}
+
 void IAppUser::OnPartialResponse(const APDUResponseRecord&)
 {
-	LOG_BLOCK(flags::ERR, "This app user doesn't implement responses, is your app layer configured correctly?");
+	SIMPLE_LOG_BLOCK(logger, flags::ERR, "Bad config");
 }
 
 void IAppUser::OnFinalResponse(const APDUResponseRecord&)
 {
-	LOG_BLOCK(flags::ERR, "This app user doesn't implement responses, is your app layer configured correctly?");
+	SIMPLE_LOG_BLOCK(logger, flags::ERR, "Bad config");
 }
 
 void IAppUser::OnUnsolResponse(const APDUResponseRecord&)
 {
-	LOG_BLOCK(flags::ERR, "This app user doesn't implement responses, is your app layer configured correctly?");
+	SIMPLE_LOG_BLOCK(logger, flags::ERR, "Bad config");
 }
 
 void IAppUser::OnRequest(const APDURecord&, SequenceInfo)
 {
-	LOG_BLOCK(flags::ERR, "This app user doesn't implement requests, is your app layer configured correctly?");
+	SIMPLE_LOG_BLOCK(logger, flags::ERR, "Bad config");
 }
 
 } //end ns

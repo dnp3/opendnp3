@@ -27,15 +27,13 @@
 
 #include <openpal/IPhysicalLayerAsync.h>
 
-#include <opendnp3/master/IMaster.h>
+#include <asiodnp3/IMaster.h>
+#include <asiodnp3/IChannel.h>
+#include <asiodnp3/IOutstation.h>
+
 #include <opendnp3/master/MasterStackConfig.h>
-
 #include <opendnp3/outstation/OutstationStackConfig.h>
-#include <opendnp3/outstation/IOutstation.h>
 #include <opendnp3/outstation/ITimeWriteHandler.h>
-#include <opendnp3/outstation/IOutstation.h>
-
-#include <opendnp3/IChannel.h>
 
 #include <asiopal/PhysicalLayerAsyncTCPClient.h>
 #include <asiopal/PhysicalLayerAsyncTCPServer.h>
@@ -49,8 +47,8 @@ using namespace opendnp3;
 
 IntegrationTest::IntegrationTest(uint16_t aStartPort, size_t aNumPairs, uint16_t aNumPoints, uint32_t filters) :
 	M_START_PORT(aStartPort),
-	mLog(),
-	mPool(&mLog, filters, "pool", std::thread::hardware_concurrency()),
+	mLog(),	
+	mPool(&mLog, filters, std::thread::hardware_concurrency()),
 	mMgr(),
 	NUM_POINTS(aNumPoints)
 {
@@ -142,19 +140,16 @@ void IntegrationTest::AddStackPair(uint32_t filters, uint16_t aNumPoints)
 {
 	uint16_t port = M_START_PORT + static_cast<uint16_t>(this->mMasterObservers.size());
 
-	ostringstream oss;
-	oss << "Port: " << port;
-	auto clientId = oss.str() + " Client ";
-	auto serverId = oss.str() + " Server ";
-
 	std::shared_ptr<ComparingDataObserver> pMasterFDO(new ComparingDataObserver(&mLocalFDO));
 	mMasterObservers.push_back(pMasterFDO);
 
-	auto pClientPhys = new PhysicalLayerAsyncTCPClient(LogConfig(&mLog, filters, clientId), mPool.GetIOService(), "127.0.0.1", port);
-	auto pClient = this->mMgr.CreateChannel(clientId, TimeDuration::Seconds(1), TimeDuration::Seconds(1), pClientPhys);
+	auto pClientRoot = new LogRoot(&mLog, "client", filters);
+	auto pClientPhys = new PhysicalLayerAsyncTCPClient(*pClientRoot, mPool.GetIOService(), "127.0.0.1", port);
+	auto pClient = this->mMgr.CreateChannel(pClientRoot, TimeDuration::Seconds(1), TimeDuration::Seconds(1), pClientPhys);
 
-	auto pServerPhys = new PhysicalLayerAsyncTCPServer(LogConfig(&mLog, filters, serverId), mPool.GetIOService(), "127.0.0.1", port);
-	auto pServer = this->mMgr.CreateChannel(serverId, TimeDuration::Seconds(1), TimeDuration::Seconds(1), pServerPhys);
+	auto pServerRoot = new LogRoot(&mLog, "server", filters);
+	auto pServerPhys = new PhysicalLayerAsyncTCPServer(*pServerRoot, mPool.GetIOService(), "127.0.0.1", port);
+	auto pServer = this->mMgr.CreateChannel(pServerRoot, TimeDuration::Seconds(1), TimeDuration::Seconds(1), pServerPhys);
 
 	/*
 	 * Add a Master instance.  The code is wrapped in braces so that we can
@@ -166,7 +161,7 @@ void IntegrationTest::AddStackPair(uint32_t filters, uint16_t aNumPoints)
 		cfg.master.IntegrityRate = TimeDuration::Min();
 		cfg.master.EnableUnsol = true;
 		cfg.master.DoUnsolOnStartup = true;
-		auto pMaster = pClient->AddMaster(oss.str() + " master", pMasterFDO.get(), asiopal::UTCTimeSource::Inst(), cfg);
+		auto pMaster = pClient->AddMaster("master", pMasterFDO.get(), asiopal::UTCTimeSource::Inst(), cfg);
 		pMaster->Enable();
 	}
 
@@ -179,7 +174,7 @@ void IntegrationTest::AddStackPair(uint32_t filters, uint16_t aNumPoints)
 		cfg.app.RspTimeout = TimeDuration::Seconds(10);
 		cfg.outstation.mDisableUnsol = false;
 		cfg.outstation.mUnsolPackDelay = TimeDuration::Zero();
-		auto pOutstation = pServer->AddOutstation(oss.str() + " outstation", &mCmdHandler, NullTimeWriteHandler::Inst(), cfg);
+		auto pOutstation = pServer->AddOutstation("outstation", &mCmdHandler, NullTimeWriteHandler::Inst(), cfg);
 		this->mFanout.AddObserver(pOutstation->GetLoader());
 		pOutstation->Enable();
 	}

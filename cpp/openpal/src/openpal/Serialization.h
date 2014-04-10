@@ -21,22 +21,40 @@
 #ifndef __OPENPAL_SERIALIZATION_H_
 #define __OPENPAL_SERIALIZATION_H_
 
-#include <openpal/ReverseEndian.h>
+#include "UInt48LE.h"
+#include "SerializationTemplatesLE.h"
+#include "SerializationTemplatesBE.h"
+
+#include "ByteSerialization.h"
+#include "FloatSerializationTemplates.h"
 
 namespace openpal
 {
 
 /*
 Users should only use these typedefs. This will allow these to be switched
-if we ever need to support systems with reverse endian
+if we ever need to support other systems
 */
 
-typedef UInt8Simple		UInt8;
+#ifdef FLIP_ENDIAN
+
+typedef Bit16BE<int16_t>	Int16;
+typedef Bit16BE<uint16_t>	UInt16;
+typedef Bit32BE<int32_t>	Int32;
+typedef Bit32BE<uint32_t>	UInt32;
+typedef UInt48LE			UInt48;
+
+#else
+
 typedef Bit16LE<int16_t>	Int16;
 typedef Bit16LE<uint16_t>	UInt16;
 typedef Bit32LE<int32_t>	Int32;
 typedef Bit32LE<uint32_t>	UInt32;
-typedef UInt48LE		UInt48;
+typedef UInt48LE			UInt48;
+
+#endif
+
+typedef UInt8Simple			UInt8;
 typedef Float<float>		SingleFloat;
 typedef Float<double>		DoubleFloat;
 

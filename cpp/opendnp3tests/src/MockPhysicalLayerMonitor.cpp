@@ -22,7 +22,7 @@
 
 #include <catch.hpp>
 
-#include <openpal/LoggableMacros.h>
+#include <openpal/LogMacros.h>
 #include <openpal/IPhysicalLayerAsync.h>
 #include <openpal/ToHex.h>
 #include <openpal/Comparisons.h>
@@ -39,12 +39,12 @@ namespace opendnp3
 {
 
 MockPhysicalLayerMonitor::MockPhysicalLayerMonitor(
-    openpal::Logger& arLogger,
+	openpal::LogRoot& root,
     IPhysicalLayerAsync* apPhys,
     TimeDuration aMinOpenRetry,
     TimeDuration aMaxOpenRetry
 ) :
-	PhysicalLayerMonitor(arLogger, apPhys, aMinOpenRetry, aMaxOpenRetry),
+	PhysicalLayerMonitor(root, apPhys, aMinOpenRetry, aMaxOpenRetry),
 	mOpens(0),
 	mCloses(0),
 	mNumReads(0),
@@ -88,8 +88,7 @@ void MockPhysicalLayerMonitor::_OnReceive(const uint8_t* apData, size_t aNumByte
 		oss << "Data corruption on receive, " << read << " != " << expecting;
 		throw Exception(oss.str());
 	}
-	mBytesRead += static_cast<uint32_t>(aNumBytes);
-	LOG_BLOCK(flags::INFO, "Received " << mBytesRead << " of " << mExpectReadBuffer.Size());
+	mBytesRead += static_cast<uint32_t>(aNumBytes);	
 	WriteBuffer buffer(mReadBuffer, mReadBuffer.Size());
 	pPhys->AsyncRead(buffer);
 }
@@ -130,8 +129,7 @@ bool MockPhysicalLayerMonitor::NextStateIs(ChannelState aState)
 	if(mState.empty()) return false;
 	else
 	{
-		ChannelState state = mState.front();
-		LOG_BLOCK(flags::INFO, "Saw state: " + ChannelStateToString(state));
+		ChannelState state = mState.front();		
 		mState.pop();
 		return (state == aState);
 	}

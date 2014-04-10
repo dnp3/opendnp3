@@ -36,13 +36,13 @@ namespace asiopal
 {
 
 PhysicalLayerAsyncTCPClient::PhysicalLayerAsyncTCPClient(
-    const openpal::LogConfig& config,
+	openpal::LogRoot& root,
     asio::io_service* pIOService,
     const std::string& host_,
     uint16_t port,
     std::function<void (asio::ip::tcp::socket&)> aConfigure) :
 
-	PhysicalLayerAsyncBaseTCP(config, pIOService),
+	PhysicalLayerAsyncBaseTCP(root, pIOService),
 	condition(logger),
 	host(host_),
 	remoteEndpoint(ip::tcp::v4(), port),
@@ -88,12 +88,12 @@ void PhysicalLayerAsyncTCPClient::HandleResolve(const std::error_code& code, asi
 	else
 	{
 		// attempt a connection to each endpoint in the iterator until we connect
-		asio::async_connect(mSocket, endpoints, condition, strand.wrap(
-		                        [this](const std::error_code & code, ip::tcp::resolver::iterator endpoints)
+		auto callback = [this](const std::error_code & code, ip::tcp::resolver::iterator endpoints)
 		{
 			this->OnOpenCallback(code);
-		}
-		                    ));
+		};
+
+		asio::async_connect(mSocket, endpoints, condition, strand.wrap(callback));
 	}
 }
 
@@ -104,7 +104,7 @@ void PhysicalLayerAsyncTCPClient::DoOpeningClose()
 
 void PhysicalLayerAsyncTCPClient::DoOpenSuccess()
 {
-	LOG_BLOCK(log::INFO, "Connected to host");
+	SIMPLE_LOG_BLOCK(logger, logflags::INFO, "Connected to host");
 	configure(mSocket);
 }
 

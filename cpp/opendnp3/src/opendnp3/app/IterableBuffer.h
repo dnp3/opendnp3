@@ -21,9 +21,9 @@
 #ifndef __ITERABLE_BUFFER_H_
 #define __ITERABLE_BUFFER_H_
 
-#include <functional>
-
 #include <openpal/BufferWrapper.h>
+
+#include <assert.h>
 
 namespace opendnp3
 {
@@ -64,11 +64,41 @@ template <class T>
 class IterableBuffer : public BufferWithCount
 {
 public:
+
+	class Iterator
+	{
+		public:
+			Iterator(const IterableBuffer& ib) : pos(0), copy(ib.buffer), pIB(&ib)
+			{}
+
+			bool HasNext() const
+			{
+				return pos < pIB->Count();
+			}
+
+			T Next()
+			{				
+				return pIB->ValueAt(copy, pos++);				
+			}
+
+		private:
+			uint32_t pos;
+			openpal::ReadOnlyBuffer copy;
+			const IterableBuffer* pIB;
+	};
+
+	friend class Iterator;
+
 	template <class A, class B, class MapToU> friend class MappedIterableBuffer;
 
 
 	IterableBuffer(const openpal::ReadOnlyBuffer& aBuffer, uint32_t aSize) : BufferWithCount(aBuffer, aSize)
 	{}
+
+	Iterator Iterate() const
+	{
+		return Iterator(*this);
+	}
 
 	bool ReadOnlyValue(T& value) const
 	{
@@ -79,13 +109,16 @@ public:
 			return true;
 		}
 		else return false;
-	}
-
+	}	
+	
 	template <class IterFunc>
 	void foreach(const IterFunc& fun) const
 	{
 		openpal::ReadOnlyBuffer copy(this->buffer);  // iterate over a mutable copy of the buffer
-		for(uint32_t pos = 0; pos < count; ++pos) fun(ValueAt(copy, pos));
+		for (uint32_t pos = 0; pos < count; ++pos)
+		{
+			fun(ValueAt(copy, pos));
+		}
 	}
 
 protected:

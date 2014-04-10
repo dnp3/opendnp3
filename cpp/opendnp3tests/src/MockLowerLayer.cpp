@@ -21,8 +21,7 @@
 #include "MockLowerLayer.h"
 
 #include "BufferHelpers.h"
-
-#include <openpal/ToHex.h>
+#include "HexConversions.h"
 
 #include <assert.h>
 
@@ -31,8 +30,8 @@ using namespace openpal;
 namespace opendnp3
 {
 
-MockLowerLayer::MockLowerLayer(Logger logger) :
-	Loggable(logger),
+MockLowerLayer::MockLowerLayer(openpal::LogRoot& root) :
+	logger(root.GetLogger()),
 	mAutoSendCallback(true),
 	mIsSuccess(true)
 {
@@ -70,7 +69,7 @@ std::string MockLowerLayer::PopWriteAsHex()
 	return toHex(ret);
 }
 
-void MockLowerLayer::Send(const openpal::ReadOnlyBuffer& output)
+void MockLowerLayer::BeginTransmit(const openpal::ReadOnlyBuffer& output)
 {
 	this->sendQueue.push(output);
 

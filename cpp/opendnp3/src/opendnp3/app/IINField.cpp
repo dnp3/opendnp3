@@ -23,8 +23,6 @@
 
 #include <openpal/ToHex.h>
 
-#include <sstream>
-
 using namespace openpal;
 using namespace std;
 
@@ -193,12 +191,14 @@ bool IINField::operator==(const IINField& aRHS) const
 	return (LSB == aRHS.LSB) && (MSB == aRHS.MSB);
 }
 
+/* TODO
 std::string IINField::ToString() const
 {
 	ostringstream oss;
 	oss << " IIN: (LSB: " << ByteToHex(LSB) << ") (MSB: " << ByteToHex(MSB);
 	return oss.str();
 }
+*/
 
 }
 

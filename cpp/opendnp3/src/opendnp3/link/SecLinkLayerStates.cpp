@@ -21,7 +21,7 @@
 #include "SecLinkLayerStates.h"
 
 
-#include <openpal/LoggableMacros.h>
+#include <openpal/LogMacros.h>
 
 #include "opendnp3/DNPErrorCodes.h"
 #include "opendnp3/link/LinkLayer.h"
@@ -39,7 +39,7 @@ namespace opendnp3
 
 void SecStateBase::OnTransmitResult(LinkLayer* apLL, bool success)
 {
-	LOGGER_BLOCK(apLL->GetLogger(), flags::ERR, "Invalid event for state: " << this->Name());
+	FORMAT_LOG_BLOCK(apLL->GetLogger(), flags::ERR, "Invalid event for state: %s", this->Name());
 }
 
 ////////////////////////////////////////////////////////
@@ -49,12 +49,12 @@ SLLS_NotReset SLLS_NotReset::mInstance;
 
 void SLLS_NotReset::TestLinkStatus(LinkLayer* apLL, bool aFcb)
 {
-	ERROR_LOGGER_BLOCK(apLL->GetLogger(), flags::WARN, "TestLinkStatus ignored", DLERR_UNEXPECTED_FRAME);
+	SIMPLE_LOG_BLOCK_WITH_CODE(apLL->GetLogger(), flags::WARN, DLERR_UNEXPECTED_FRAME, "TestLinkStatus ignored");
 }
 
 void SLLS_NotReset::ConfirmedUserData(LinkLayer* apLL, bool aFcb, const openpal::ReadOnlyBuffer&)
 {
-	ERROR_LOGGER_BLOCK(apLL->GetLogger(), flags::WARN, "ConfirmedUserData ignored", DLERR_UNEXPECTED_FRAME);
+	SIMPLE_LOG_BLOCK_WITH_CODE(apLL->GetLogger(), flags::WARN, DLERR_UNEXPECTED_FRAME, "ConfirmedUserData ignored");
 }
 
 void SLLS_NotReset::ResetLinkStates(LinkLayer* apLL)
@@ -88,7 +88,7 @@ void SLLS_Reset::TestLinkStatus(LinkLayer* apLL, bool aFcb)
 		// "Re-transmit most recent response that contained function code 0 (ACK) or 1 (NACK)."
 		// This is a pain in the pass to implement.
 		// TODO - see if this function is deprecated or not
-		ERROR_LOGGER_BLOCK(apLL->GetLogger(), flags::WARN, "TestLinkStatus with invalid FCB", DLERR_WRONG_FCB_ON_TEST);
+		SIMPLE_LOG_BLOCK_WITH_CODE(apLL->GetLogger(), flags::WARN, DLERR_WRONG_FCB_ON_TEST, "TestLinkStatus with invalid FCB");
 	}
 }
 
@@ -103,7 +103,7 @@ void SLLS_Reset::ConfirmedUserData(LinkLayer* apLL, bool aFcb, const openpal::Re
 	}
 	else
 	{
-		ERROR_LOGGER_BLOCK(apLL->GetLogger(), flags::WARN, "Confirmed data w/ wrong FCB", DLERR_WRONG_FCB_ON_RECEIVE_DATA);
+		SIMPLE_LOG_BLOCK_WITH_CODE(apLL->GetLogger(), flags::WARN, DLERR_WRONG_FCB_ON_RECEIVE_DATA, "Confirmed data w/ wrong FCB");
 	}
 
 	apLL->ChangeState(SLLS_TransmitWaitReset::Inst());

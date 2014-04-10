@@ -24,10 +24,10 @@
 namespace opendnp3
 {
 
-ResponseContext::ResponseContext(Database* pDatabase, OutstationEventBuffer& buffer, const StaticResponseTypes& rspTypes) :
+ResponseContext::ResponseContext(Database* pDatabase, OutstationEventBuffer* pBuffer, const StaticResponseTypes& rspTypes) :
 	fragmentCount(0),
 	staticContext(pDatabase, rspTypes),
-	eventContext(buffer)
+	eventContext(pBuffer)
 {
 
 }
@@ -44,28 +44,28 @@ bool ResponseContext::IsComplete() const
 	return eventContext.IsComplete() && staticContext.IsComplete();
 }
 
-void ResponseContext::Load(APDUResponse& response)
+AppControlField ResponseContext::Load(APDUResponse& response)
 {
 	auto writer = response.GetWriter();
 	auto result = eventContext.Load(writer);
+	auto count = fragmentCount;
+	++fragmentCount;
 	if (result.complete)
 	{
 		auto complete = staticContext.Load(writer);
-		this->SetControl(response, result.Any(), complete);
+		return GetControl(response, count, result.Any(), complete);		
 	}
 	else
-	{
-		this->SetControl(response, result.Any(), false);
+	{		
+		return GetControl(response, count, result.Any(), false);		
 	}
 }
 
-void ResponseContext::SetControl(APDUResponse& response, bool hasEvents, bool fin)
+AppControlField ResponseContext::GetControl(APDUResponse& response, uint16_t fragCount, bool hasEvents, bool fin)
 {
-	auto fir = (fragmentCount == 0);
+	auto fir = (fragCount == 0);
 	auto con = (!fin) || hasEvents; // request confirmation on any non-fin fragment or if it has events
-	AppControlField control(fir, fin, con, false);
-	response.SetControl(control);
-	++fragmentCount;
+	return AppControlField(fir, fin, con, false);		
 }
 
 IINField ResponseContext::ReadAllObjects(const GroupVariationRecord& record)

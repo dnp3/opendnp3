@@ -21,8 +21,6 @@
 #ifndef __LOGGER_H_
 #define __LOGGER_H_
 
-#include <string>
-
 #include "LogEntry.h"
 #include "LogBase.h"
 #include "Uncopyable.h"
@@ -40,27 +38,20 @@ class Logger
 {
 	friend class LogRoot;
 
-public:
+public:	
 
-	void Log(const LogFilters& filters, const std::string& location, const std::string& message, int32_t errorCode = -1);
-
-	void Log(const LogEntry& entry);
-
-	const std::string& GetName() const
-	{
-		return name;
-	}
-
+	void Log(const LogFilters& filters, char const* location, char const* message, int errorCode = -1);	
+	
 	bool IsEnabled(const LogFilters& filters) const;
 
-	Logger GetSubLogger(std::string id) const;
+	Logger SwitchType(int subType) const;
 
 private:
 
-	Logger(LogRoot* pRoot, const std::string& id);
+	Logger(LogRoot* pRoot, int subType);
 
-	LogRoot*			pRoot;
-	std::string			name;
+	LogRoot* pRoot;
+	int subType;
 };
 
 }

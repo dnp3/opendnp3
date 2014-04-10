@@ -20,8 +20,6 @@
  */
 #include "LinkRoute.h"
 
-#include <sstream>
-
 namespace opendnp3
 {
 
@@ -32,13 +30,4 @@ LinkRoute::LinkRoute(const uint16_t aRemoteAddr, const uint16_t aLocalAddr) :
 
 LinkRoute::LinkRoute() : remote(0), local(0) {}
 
-std::string LinkRoute::ToString() const
-{
-	std::ostringstream oss;
-	oss << " Local: " << this->local << " Remote: " << this->remote;
-	return oss.str();
 }
-
-}
-
-

@@ -60,21 +60,6 @@
     <ClInclude Include="src\opendnp3\Settable.h">
       <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\IStack.h">
-      <Filter>Header</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\IChannel.h">
-      <Filter>Header</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\DNP3Manager.h">
-      <Filter>Header</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\DNP3Channel.h">
-      <Filter>Header</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\DestructorHook.h">
-      <Filter>Header</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\app\AnalogOutput.h">
       <Filter>Header\app</Filter>
     </ClInclude>
@@ -348,9 +333,6 @@
     <ClInclude Include="src\opendnp3\master\ICommandProcessor.h">
       <Filter>Header\master</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\master\IMaster.h">
-      <Filter>Header\master</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\master\IScanListener.h">
       <Filter>Header\master</Filter>
     </ClInclude>
@@ -373,9 +355,6 @@
       <Filter>Header\master</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\master\MasterStackConfig.h">
-      <Filter>Header\master</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\master\MasterStackImpl.h">
       <Filter>Header\master</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\master\MasterStates.h">
@@ -513,16 +492,10 @@
     <ClInclude Include="src\opendnp3\outstation\IINHelpers.h">
       <Filter>Header\outstation</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\outstation\IOutstation.h">
-      <Filter>Header\outstation</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\outstation\ITimeWriteHandler.h">
       <Filter>Header\outstation</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\outstation\OutstationEventBuffer.h">
-      <Filter>Header\outstation</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\outstation\OutstationStackImpl.h">
       <Filter>Header\outstation</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\outstation\ReadHandler.h">
@@ -568,9 +541,6 @@
       <Filter>Header\transport</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\transport\TransportRx.h">
-      <Filter>Header\transport</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\transport\TransportStates.h">
       <Filter>Header\transport</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\transport\TransportTx.h">
@@ -621,12 +591,6 @@
     <ClInclude Include="src\opendnp3\DNPErrorCodes.h">
       <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\StackActionHandler.h">
-      <Filter>Header</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\DNP3Stack.h">
-      <Filter>Header</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\outstation\CachedRequest.h">
       <Filter>Header\outstation</Filter>
     </ClInclude>
@@ -639,17 +603,11 @@
     <ClInclude Include="src\opendnp3\LogLevels.h">
       <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="src\opendnp3\LogLevelInterpreter.h">
-      <Filter>Header</Filter>
-    </ClInclude>
     <ClInclude Include="src\opendnp3\outstation\SelectionIterator.h">
       <Filter>Header\outstation</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\outstation\IMeasurementLoader.h">
       <Filter>Header\outstation</Filter>
-    </ClInclude>
-    <ClInclude Include="src\opendnp3\Mutex.h">
-      <Filter>Header</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\outstation\EventBufferConfig.h">
       <Filter>Header\outstation</Filter>
@@ -688,6 +646,21 @@
       <Filter>Header\outstation</Filter>
     </ClInclude>
     <ClInclude Include="src\opendnp3\outstation\OutstationStates.h">
+      <Filter>Header\outstation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\master\ICommandCallback.h">
+      <Filter>Header\master</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\master\CommandAction.h">
+      <Filter>Header\master</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\transport\TransportStack.h">
+      <Filter>Header\transport</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\outstation\NewOutstation.h">
+      <Filter>Header\outstation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opendnp3\outstation\StaticallyAllocatedDatabase.h">
       <Filter>Header\outstation</Filter>
     </ClInclude>
   </ItemGroup>
@@ -845,9 +818,6 @@
     <ClCompile Include="src\opendnp3\master\MasterSchedule.cpp">
       <Filter>Source\master</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\master\MasterStackImpl.cpp">
-      <Filter>Source\master</Filter>
-    </ClCompile>
     <ClCompile Include="src\opendnp3\master\MasterStates.cpp">
       <Filter>Source\master</Filter>
     </ClCompile>
@@ -872,9 +842,6 @@
     <ClCompile Include="src\opendnp3\transport\TransportRx.cpp">
       <Filter>Source\transport</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\transport\TransportStates.cpp">
-      <Filter>Source\transport</Filter>
-    </ClCompile>
     <ClCompile Include="src\opendnp3\transport\TransportTx.cpp">
       <Filter>Source\transport</Filter>
     </ClCompile>
@@ -893,16 +860,10 @@
     <ClCompile Include="src\opendnp3\outstation\EventCount.cpp">
       <Filter>Source\outstation</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\outstation\IINHelpers.cpp">
-      <Filter>Source\outstation</Filter>
-    </ClCompile>
     <ClCompile Include="src\opendnp3\outstation\ITimeWriteHandler.cpp">
       <Filter>Source\outstation</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\outstation\OutstationEventBuffer.cpp">
-      <Filter>Source\outstation</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\outstation\OutstationStackImpl.cpp">
       <Filter>Source\outstation</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\outstation\ReadHandler.cpp">
@@ -980,15 +941,6 @@
     <ClCompile Include="src\opendnp3\objects\Group1.cpp">
       <Filter>Source\objects</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\DestructorHook.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\DNP3Channel.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\DNP3Manager.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
     <ClCompile Include="src\opendnp3\app\ObjectWriter.cpp">
       <Filter>Source\app</Filter>
     </ClCompile>
@@ -1052,17 +1004,8 @@
     <ClCompile Include="src\opendnp3\link\IOpenDelayStrategy.cpp">
       <Filter>Source\link</Filter>
     </ClCompile>
-    <ClCompile Include="src\opendnp3\StackActionHandler.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\DNP3Stack.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
     <ClCompile Include="src\opendnp3\outstation\CachedRequest.cpp">
       <Filter>Source\outstation</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\LogLevelInterpreter.cpp">
-      <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\outstation\SelectionCriteria.cpp">
       <Filter>Source\outstation</Filter>
@@ -1080,9 +1023,6 @@
       <Filter>Source\outstation</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\app\EventTriggers.cpp">
-      <Filter>Source\app</Filter>
-    </ClCompile>
-    <ClCompile Include="src\opendnp3\app\DownSampling.cpp">
       <Filter>Source\app</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\outstation\Outstation.cpp">
@@ -1110,6 +1050,18 @@
       <Filter>Source\outstation</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\outstation\OutstationStates.cpp">
+      <Filter>Source\outstation</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\master\CommandAction.cpp">
+      <Filter>Source\master</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\outstation\IINHelpers.cpp">
+      <Filter>Source\outstation</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\transport\TransportStack.cpp">
+      <Filter>Header\transport</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\outstation\NewOutstation.cpp">
       <Filter>Source\outstation</Filter>
     </ClCompile>
   </ItemGroup>

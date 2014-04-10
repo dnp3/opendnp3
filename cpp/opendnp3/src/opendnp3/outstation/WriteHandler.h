@@ -27,7 +27,7 @@
 
 #include "opendnp3/outstation/ITimeWriteHandler.h"
 
-#include <openpal/Loggable.h>
+#include <openpal/Logger.h>
 
 namespace opendnp3
 {
@@ -36,7 +36,7 @@ class WriteHandler : public APDUHandlerBase
 {
 public:
 
-	WriteHandler(openpal::Logger& aLogger, ITimeWriteHandler* pTimeWriteHandler_, IINField* pWriteIIN_);
+	WriteHandler(openpal::Logger& logger, ITimeWriteHandler* pTimeWriteHandler_, IINField* pWriteIIN_);
 
 	virtual void _OnIIN(const HeaderRecord& record, const IterableBuffer<IndexedValue<bool, uint16_t>>& meas) override final;
 

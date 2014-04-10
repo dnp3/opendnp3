@@ -24,6 +24,8 @@
 #include "LinkLayerConstants.h"
 #include "../gen/LinkFunction.h"
 
+
+
 namespace opendnp3
 {
 
@@ -94,9 +96,7 @@ struct LinkHeader
 
 	/** Writes header to buffer including, 0x0564 and CRC
 	@param apBuff Buffer of at least 10 bytes */
-	void Write(uint8_t* apBuff) const;
-
-	std::string ToString() const;
+	void Write(uint8_t* apBuff) const;	
 
 	static uint8_t ControlByte(bool aIsMaster, bool aFcb, bool aFcvDfc, LinkFunction aFunc);
 

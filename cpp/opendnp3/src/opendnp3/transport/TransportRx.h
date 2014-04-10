@@ -24,9 +24,9 @@
 #include "opendnp3/transport/TransportConstants.h"
 #include "opendnp3/StaticSizeConfiguration.h"
 
-#include <openpal/Loggable.h>
 #include <openpal/BufferWrapper.h>
 #include <openpal/StaticBuffer.h>
+#include <openpal/Logger.h>
 
 namespace opendnp3
 {
@@ -36,13 +36,13 @@ class TransportLayer;
 /**
 State/validation for the DNP3 transport layer's receive channel.
 */
-class TransportRx : public openpal::Loggable
+class TransportRx
 {
 
 public:
-	TransportRx(const openpal::Logger&, TransportLayer*, uint32_t fragSize);
+	TransportRx(const openpal::Logger&, uint32_t fragSize);	
 
-	void HandleReceive(const openpal::ReadOnlyBuffer& input);
+	openpal::ReadOnlyBuffer ProcessReceive(const openpal::ReadOnlyBuffer& input);
 
 	void Reset();
 
@@ -50,9 +50,9 @@ private:
 
 	bool ValidateHeader(bool fir, bool fin, uint8_t sequence, uint32_t payloadSize);
 
-	TransportLayer* mpContext;
-
-	openpal::StaticBuffer<sizes::MAX_APDU_BUFFER_SIZE> rxBuffer;
+	openpal::Logger logger;
+	
+	openpal::StaticBuffer<sizes::MAX_RX_APDU_SIZE> rxBuffer;
 	uint32_t numBytesRead;
 	uint8_t sequence;
 	uint32_t maxFragSize;

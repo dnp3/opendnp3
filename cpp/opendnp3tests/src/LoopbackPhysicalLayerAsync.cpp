@@ -22,7 +22,7 @@
 
 #include <asio.hpp>
 
-#include <openpal/LoggableMacros.h>
+#include <openpal/LogMacros.h>
 #include <opendnp3/LogLevels.h>
 
 using namespace boost;
@@ -32,8 +32,8 @@ using namespace openpal;
 namespace opendnp3
 {
 
-LoopbackPhysicalLayerAsync::LoopbackPhysicalLayerAsync(const LogConfig& config, asio::io_service* apSrv) :
-	PhysicalLayerAsyncASIO(config, apSrv)
+LoopbackPhysicalLayerAsync::LoopbackPhysicalLayerAsync(openpal::LogRoot& root, asio::io_service* apSrv) :
+	PhysicalLayerAsyncASIO(root, apSrv)
 {
 
 }
@@ -41,15 +41,15 @@ LoopbackPhysicalLayerAsync::LoopbackPhysicalLayerAsync(const LogConfig& config, 
 void LoopbackPhysicalLayerAsync::DoOpen()
 {
 	//always open successfully
-	executor.Post([this]()
-	{
+	auto lambda = [this]() {
 		this->OnOpenCallback(std::error_code(0, std::generic_category()));
-	});
+	};
+	executor.PostLambda(lambda);
 }
 
 void LoopbackPhysicalLayerAsync::DoOpenSuccess()
 {
-	LOG_BLOCK(flags::INFO, "Loopback Open Success");
+	
 }
 
 void LoopbackPhysicalLayerAsync::DoClose()
@@ -61,10 +61,11 @@ void LoopbackPhysicalLayerAsync::DoClose()
 	if(mBytesForReading.IsNotEmpty())
 	{
 		mBytesForReading.Clear();
-		executor.Post([this]()
+		auto lambda = [this]()
 		{
 			this->OnReadCallback(std::error_code(1, std::generic_category()), nullptr, 0);
-		});
+		};
+		executor.PostLambda(lambda);
 	}
 }
 
@@ -83,10 +84,12 @@ void LoopbackPhysicalLayerAsync::DoAsyncWrite(const openpal::ReadOnlyBuffer& arB
 
 	auto size = arBuffer.Size();
 
-	executor.Post([this, size]()
+	auto lambda = [this, size]()
 	{
 		this->OnWriteCallback(std::error_code(0, std::generic_category()), size);
-	});
+	};
+
+	executor.PostLambda(lambda);
 
 	//now check to see if this write will dispatch a read
 	this->CheckForReadDispatch();
@@ -106,10 +109,12 @@ void LoopbackPhysicalLayerAsync::CheckForReadDispatch()
 
 		mBytesForReading.Clear();
 
-		executor.Post([this, num]()
+		auto lambda = [this, num]()
 		{
 			this->OnReadCallback(std::error_code(0, std::generic_category()), mBytesForReading, num);
-		});
+		};
+
+		executor.PostLambda(lambda);
 	}
 
 }

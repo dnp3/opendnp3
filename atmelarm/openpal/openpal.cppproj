@@ -1,0 +1,459 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectVersion>6.1</ProjectVersion>
+    <ToolchainName>com.Atmel.ARMGCC.CPP</ToolchainName>
+    <ProjectGuid>{0dd1747d-8698-4c95-babc-96f79254595b}</ProjectGuid>
+    <avrdevice>ATSAM3X8E</avrdevice>
+    <avrdeviceseries>none</avrdeviceseries>
+    <OutputType>StaticLibrary</OutputType>
+    <Language>CPP</Language>
+    <OutputFileName>lib$(MSBuildProjectName)</OutputFileName>
+    <OutputFileExtension>.a</OutputFileExtension>
+    <OutputDirectory>$(MSBuildProjectDirectory)\$(Configuration)</OutputDirectory>
+    <AvrGccProjectExtensions>
+    </AvrGccProjectExtensions>
+    <AssemblyName>openpal</AssemblyName>
+    <Name>openpal</Name>
+    <RootNamespace>openpal</RootNamespace>
+    <ToolchainFlavour>Native</ToolchainFlavour>
+    <KeepTimersRunning>true</KeepTimersRunning>
+    <OverrideVtor>false</OverrideVtor>
+    <CacheFlash>true</CacheFlash>
+    <ProgFlashFromRam>true</ProgFlashFromRam>
+    <RamSnippetAddress>0x20000000</RamSnippetAddress>
+    <UncachedRange />
+    <OverrideVtorValue>exception_table</OverrideVtorValue>
+    <BootSegment>2</BootSegment>
+    <eraseonlaunchrule>1</eraseonlaunchrule>
+    <AsfFrameworkConfig>
+      <framework-data xmlns="">
+  <options />
+  <configurations />
+  <files />
+  <documentation help="" />
+  <offline-documentation help="" />
+  <dependencies>
+    <content-extension eid="atmel.asf" uuidref="Atmel.ASF" version="3.11.0" />
+  </dependencies>
+</framework-data>
+    </AsfFrameworkConfig>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <ToolchainSettings>
+      <ArmGccCpp>
+        <armgcc.common.outputfiles.hex>True</armgcc.common.outputfiles.hex>
+        <armgcc.common.outputfiles.lss>True</armgcc.common.outputfiles.lss>
+        <armgcc.common.outputfiles.eep>True</armgcc.common.outputfiles.eep>
+        <armgcc.common.outputfiles.bin>True</armgcc.common.outputfiles.bin>
+        <armgcc.common.outputfiles.srec>True</armgcc.common.outputfiles.srec>
+        <armgcc.compiler.symbols.DefSymbols>
+          <ListValues>
+            <Value>NDEBUG</Value>
+          </ListValues>
+        </armgcc.compiler.symbols.DefSymbols>
+        <armgcc.compiler.directories.IncludePaths>
+          <ListValues>
+            <Value>%24(ToolchainDir)\..\..\CMSIS_Atmel</Value>
+            <Value>%24(ToolchainDir)\..\..\CMSIS_Atmel\CMSIS\Include</Value>
+            <Value>%24(ToolchainDir)\..\..\CMSIS_Atmel\Device\ATMEL</Value>
+            <Value>%24(ToolchainDir)\..\..\CMSIS_Atmel\Device\ATMEL\sam3xa\include</Value>
+          </ListValues>
+        </armgcc.compiler.directories.IncludePaths>
+        <armgcc.compiler.optimization.level>Optimize for size (-Os)</armgcc.compiler.optimization.level>
+        <armgcc.compiler.optimization.PrepareFunctionsForGarbageCollection>True</armgcc.compiler.optimization.PrepareFunctionsForGarbageCollection>
+        <armgcc.compiler.warnings.AllWarnings>True</armgcc.compiler.warnings.AllWarnings>
+        <armgcccpp.compiler.symbols.DefSymbols>
+          <ListValues>
+            <Value>NDEBUG</Value>
+          </ListValues>
+        </armgcccpp.compiler.symbols.DefSymbols>
+        <armgcccpp.compiler.directories.IncludePaths>
+          <ListValues>
+            <Value>%24(ToolchainDir)\..\..\CMSIS_Atmel</Value>
+            <Value>%24(ToolchainDir)\..\..\CMSIS_Atmel\CMSIS\Include</Value>
+            <Value>%24(ToolchainDir)\..\..\CMSIS_Atmel\Device\ATMEL</Value>
+            <Value>%24(ToolchainDir)\..\..\CMSIS_Atmel\Device\ATMEL\sam3xa\include</Value>
+          </ListValues>
+        </armgcccpp.compiler.directories.IncludePaths>
+        <armgcccpp.compiler.optimization.level>Optimize for size (-Os)</armgcccpp.compiler.optimization.level>
+        <armgcccpp.compiler.optimization.PrepareFunctionsForGarbageCollection>True</armgcccpp.compiler.optimization.PrepareFunctionsForGarbageCollection>
+        <armgcccpp.compiler.warnings.AllWarnings>True</armgcccpp.compiler.warnings.AllWarnings>
+        <armgcccpp.linker.libraries.Libraries>
+          <ListValues>
+            <Value>libm</Value>
+          </ListValues>
+        </armgcccpp.linker.libraries.Libraries>
+        <armgcccpp.linker.libraries.LibrarySearchPaths>
+          <ListValues>
+            <Value>../cmsis/linkerScripts</Value>
+          </ListValues>
+        </armgcccpp.linker.libraries.LibrarySearchPaths>
+        <armgcccpp.linker.optimization.GarbageCollectUnusedSections>True</armgcccpp.linker.optimization.GarbageCollectUnusedSections>
+        <armgcccpp.assembler.general.IncludePaths>
+          <ListValues>
+            <Value>%24(ToolchainDir)\..\..\CMSIS_Atmel</Value>
+            <Value>%24(ToolchainDir)\..\..\CMSIS_Atmel\CMSIS\Include</Value>
+            <Value>%24(ToolchainDir)\..\..\CMSIS_Atmel\Device\ATMEL</Value>
+            <Value>%24(ToolchainDir)\..\..\CMSIS_Atmel\Device\ATMEL\sam3xa\include</Value>
+          </ListValues>
+        </armgcccpp.assembler.general.IncludePaths>
+        <armgcccpp.preprocessingassembler.general.IncludePaths>
+          <ListValues>
+            <Value>%24(ToolchainDir)\..\..\CMSIS_Atmel</Value>
+            <Value>%24(ToolchainDir)\..\..\CMSIS_Atmel\CMSIS\Include</Value>
+            <Value>%24(ToolchainDir)\..\..\CMSIS_Atmel\Device\ATMEL</Value>
+            <Value>%24(ToolchainDir)\..\..\CMSIS_Atmel\Device\ATMEL\sam3xa\include</Value>
+          </ListValues>
+        </armgcccpp.preprocessingassembler.general.IncludePaths>
+      </ArmGccCpp>
+    </ToolchainSettings>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <ToolchainSettings>
+      <ArmGccCpp>
+        <armgcc.common.outputfiles.hex>True</armgcc.common.outputfiles.hex>
+        <armgcc.common.outputfiles.lss>True</armgcc.common.outputfiles.lss>
+        <armgcc.common.outputfiles.eep>True</armgcc.common.outputfiles.eep>
+        <armgcc.common.outputfiles.bin>True</armgcc.common.outputfiles.bin>
+        <armgcc.common.outputfiles.srec>True</armgcc.common.outputfiles.srec>
+        <armgcc.compiler.symbols.DefSymbols>
+          <ListValues>
+            <Value>DEBUG</Value>
+          </ListValues>
+        </armgcc.compiler.symbols.DefSymbols>
+        <armgcc.compiler.directories.IncludePaths>
+          <ListValues>
+            <Value>%24(ToolchainDir)\..\..\CMSIS_Atmel</Value>
+            <Value>%24(ToolchainDir)\..\..\CMSIS_Atmel\CMSIS\Include</Value>
+            <Value>%24(ToolchainDir)\..\..\CMSIS_Atmel\Device\ATMEL</Value>
+            <Value>%24(ToolchainDir)\..\..\CMSIS_Atmel\Device\ATMEL\sam3xa\include</Value>
+          </ListValues>
+        </armgcc.compiler.directories.IncludePaths>
+        <armgcc.compiler.optimization.level>Optimize (-O1)</armgcc.compiler.optimization.level>
+        <armgcc.compiler.optimization.PrepareFunctionsForGarbageCollection>True</armgcc.compiler.optimization.PrepareFunctionsForGarbageCollection>
+        <armgcc.compiler.optimization.DebugLevel>Maximum (-g3)</armgcc.compiler.optimization.DebugLevel>
+        <armgcc.compiler.warnings.AllWarnings>True</armgcc.compiler.warnings.AllWarnings>
+        <armgcccpp.compiler.symbols.DefSymbols>
+          <ListValues>
+            <Value>DEBUG</Value>
+          </ListValues>
+        </armgcccpp.compiler.symbols.DefSymbols>
+        <armgcccpp.compiler.directories.IncludePaths>
+          <ListValues>
+            <Value>%24(ToolchainDir)\..\..\CMSIS_Atmel</Value>
+            <Value>%24(ToolchainDir)\..\..\CMSIS_Atmel\CMSIS\Include</Value>
+            <Value>%24(ToolchainDir)\..\..\CMSIS_Atmel\Device\ATMEL</Value>
+            <Value>%24(ToolchainDir)\..\..\CMSIS_Atmel\Device\ATMEL\sam3xa\include</Value>
+          </ListValues>
+        </armgcccpp.compiler.directories.IncludePaths>
+        <armgcccpp.compiler.optimization.level>Optimize (-O1)</armgcccpp.compiler.optimization.level>
+        <armgcccpp.compiler.optimization.PrepareFunctionsForGarbageCollection>True</armgcccpp.compiler.optimization.PrepareFunctionsForGarbageCollection>
+        <armgcccpp.compiler.optimization.DebugLevel>Maximum (-g3)</armgcccpp.compiler.optimization.DebugLevel>
+        <armgcccpp.compiler.warnings.AllWarnings>True</armgcccpp.compiler.warnings.AllWarnings>
+        <armgcccpp.compiler.miscellaneous.OtherFlags>-std=c++11</armgcccpp.compiler.miscellaneous.OtherFlags>
+        <armgcccpp.linker.libraries.Libraries>
+          <ListValues>
+            <Value>libm</Value>
+          </ListValues>
+        </armgcccpp.linker.libraries.Libraries>
+        <armgcccpp.linker.libraries.LibrarySearchPaths>
+          <ListValues>
+            <Value>../cmsis/linkerScripts</Value>
+          </ListValues>
+        </armgcccpp.linker.libraries.LibrarySearchPaths>
+        <armgcccpp.linker.optimization.GarbageCollectUnusedSections>True</armgcccpp.linker.optimization.GarbageCollectUnusedSections>
+        <armgcccpp.assembler.general.IncludePaths>
+          <ListValues>
+            <Value>%24(ToolchainDir)\..\..\CMSIS_Atmel</Value>
+            <Value>%24(ToolchainDir)\..\..\CMSIS_Atmel\CMSIS\Include</Value>
+            <Value>%24(ToolchainDir)\..\..\CMSIS_Atmel\Device\ATMEL</Value>
+            <Value>%24(ToolchainDir)\..\..\CMSIS_Atmel\Device\ATMEL\sam3xa\include</Value>
+          </ListValues>
+        </armgcccpp.assembler.general.IncludePaths>
+        <armgcccpp.assembler.debugging.DebugLevel>Default (-g)</armgcccpp.assembler.debugging.DebugLevel>
+        <armgcccpp.preprocessingassembler.general.IncludePaths>
+          <ListValues>
+            <Value>%24(ToolchainDir)\..\..\CMSIS_Atmel</Value>
+            <Value>%24(ToolchainDir)\..\..\CMSIS_Atmel\CMSIS\Include</Value>
+            <Value>%24(ToolchainDir)\..\..\CMSIS_Atmel\Device\ATMEL</Value>
+            <Value>%24(ToolchainDir)\..\..\CMSIS_Atmel\Device\ATMEL\sam3xa\include</Value>
+          </ListValues>
+        </armgcccpp.preprocessingassembler.general.IncludePaths>
+        <armgcccpp.preprocessingassembler.debugging.DebugLevel>Default (-Wa,-g)</armgcccpp.preprocessingassembler.debugging.DebugLevel>
+      </ArmGccCpp>
+    </ToolchainSettings>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="..\..\cpp\openpal\src\openpal\AsyncLayerInterfaces.h">
+      <SubType>compile</SubType>
+      <Link>AsyncLayerInterfaces.h</Link>
+    </Compile>
+    <Compile Include="..\..\cpp\openpal\src\openpal\Bind.h">
+      <SubType>compile</SubType>
+      <Link>Bind.h</Link>
+    </Compile>
+    <Compile Include="..\..\cpp\openpal\src\openpal\BufferWrapper.cpp">
+      <SubType>compile</SubType>
+      <Link>BufferWrapper.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\cpp\openpal\src\openpal\BufferWrapper.h">
+      <SubType>compile</SubType>
+      <Link>BufferWrapper.h</Link>
+    </Compile>
+    <Compile Include="..\..\cpp\openpal\src\openpal\ByteSerialization.cpp">
+      <SubType>compile</SubType>
+      <Link>ByteSerialization.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\cpp\openpal\src\openpal\ByteSerialization.h">
+      <SubType>compile</SubType>
+      <Link>ByteSerialization.h</Link>
+    </Compile>
+    <Compile Include="..\..\cpp\openpal\src\openpal\Comparisons.h">
+      <SubType>compile</SubType>
+      <Link>Comparisons.h</Link>
+    </Compile>
+    <Compile Include="..\..\cpp\openpal\src\openpal\Configure.h">
+      <SubType>compile</SubType>
+      <Link>Configure.h</Link>
+    </Compile>
+    <Compile Include="..\..\cpp\openpal\src\openpal\DynamicArray.h">
+      <SubType>compile</SubType>
+      <Link>DynamicArray.h</Link>
+    </Compile>
+    <Compile Include="..\..\cpp\openpal\src\openpal\Erasure.h">
+      <SubType>compile</SubType>
+      <Link>Erasure.h</Link>
+    </Compile>
+    <Compile Include="..\..\cpp\openpal\src\openpal\FloatSerializationTemplates.h">
+      <SubType>compile</SubType>
+      <Link>FloatSerializationTemplates.h</Link>
+    </Compile>
+    <Compile Include="..\..\cpp\openpal\src\openpal\Function1.h">
+      <SubType>compile</SubType>
+      <Link>Function1.h</Link>
+    </Compile>
+    <Compile Include="..\..\cpp\openpal\src\openpal\HasSize.h">
+      <SubType>compile</SubType>
+      <Link>HasSize.h</Link>
+    </Compile>
+    <Compile Include="..\..\cpp\openpal\src\openpal\IEventHandler.h">
+      <SubType>compile</SubType>
+      <Link>IEventHandler.h</Link>
+    </Compile>
+    <Compile Include="..\..\cpp\openpal\src\openpal\IExecutor.h">
+      <SubType>compile</SubType>
+      <Link>IExecutor.h</Link>
+    </Compile>
+    <Compile Include="..\..\cpp\openpal\src\openpal\IHandlerAsync.h">
+      <SubType>compile</SubType>
+      <Link>IHandlerAsync.h</Link>
+    </Compile>
+    <Compile Include="..\..\cpp\openpal\src\openpal\IMutex.h">
+      <SubType>compile</SubType>
+      <Link>IMutex.h</Link>
+    </Compile>
+    <Compile Include="..\..\cpp\openpal\src\openpal\Indexable.h">
+      <SubType>compile</SubType>
+      <Link>Indexable.h</Link>
+    </Compile>
+    <Compile Include="..\..\cpp\openpal\src\openpal\IndexableIterator.h">
+      <SubType>compile</SubType>
+      <Link>IndexableIterator.h</Link>
+    </Compile>
+    <Compile Include="..\..\cpp\openpal\src\openpal\IPhysicalLayerAsync.h">
+      <SubType>compile</SubType>
+      <Link>IPhysicalLayerAsync.h</Link>
+    </Compile>
+    <Compile Include="..\..\cpp\openpal\src\openpal\ISerializer.h">
+      <SubType>compile</SubType>
+      <Link>ISerializer.h</Link>
+    </Compile>
+    <Compile Include="..\..\cpp\openpal\src\openpal\IShutdownHandler.h">
+      <SubType>compile</SubType>
+      <Link>IShutdownHandler.h</Link>
+    </Compile>
+    <Compile Include="..\..\cpp\openpal\src\openpal\ITimer.h">
+      <SubType>compile</SubType>
+      <Link>ITimer.h</Link>
+    </Compile>
+    <Compile Include="..\..\cpp\openpal\src\openpal\ITransactable.h">
+      <SubType>compile</SubType>
+      <Link>ITransactable.h</Link>
+    </Compile>
+    <Compile Include="..\..\cpp\openpal\src\openpal\IUTCTimeSource.h">
+      <SubType>compile</SubType>
+      <Link>IUTCTimeSource.h</Link>
+    </Compile>
+    <Compile Include="..\..\cpp\openpal\src\openpal\Limits.cpp">
+      <SubType>compile</SubType>
+      <Link>Limits.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\cpp\openpal\src\openpal\Limits.h">
+      <SubType>compile</SubType>
+      <Link>Limits.h</Link>
+    </Compile>
+    <Compile Include="..\..\cpp\openpal\src\openpal\LinkedListAdapter.h">
+      <SubType>compile</SubType>
+      <Link>LinkedListAdapter.h</Link>
+    </Compile>
+    <Compile Include="..\..\cpp\openpal\src\openpal\ListAdapter.h">
+      <SubType>compile</SubType>
+      <Link>ListAdapter.h</Link>
+    </Compile>
+    <Compile Include="..\..\cpp\openpal\src\openpal\Location.h">
+      <SubType>compile</SubType>
+      <Link>Location.h</Link>
+    </Compile>
+    <Compile Include="..\..\cpp\openpal\src\openpal\LogBase.h">
+      <SubType>compile</SubType>
+      <Link>LogBase.h</Link>
+    </Compile>
+    <Compile Include="..\..\cpp\openpal\src\openpal\LogEntry.cpp">
+      <SubType>compile</SubType>
+      <Link>LogEntry.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\cpp\openpal\src\openpal\LogEntry.h">
+      <SubType>compile</SubType>
+      <Link>LogEntry.h</Link>
+    </Compile>
+    <Compile Include="..\..\cpp\openpal\src\openpal\LogFilters.h">
+      <SubType>compile</SubType>
+      <Link>LogFilters.h</Link>
+    </Compile>
+    <Compile Include="..\..\cpp\openpal\src\openpal\Logger.cpp">
+      <SubType>compile</SubType>
+      <Link>Logger.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\cpp\openpal\src\openpal\Logger.h">
+      <SubType>compile</SubType>
+      <Link>Logger.h</Link>
+    </Compile>
+    <Compile Include="..\..\cpp\openpal\src\openpal\LogLevels.h">
+      <SubType>compile</SubType>
+      <Link>LogLevels.h</Link>
+    </Compile>
+    <Compile Include="..\..\cpp\openpal\src\openpal\LogMacros.h">
+      <SubType>compile</SubType>
+      <Link>LogMacros.h</Link>
+    </Compile>
+    <Compile Include="..\..\cpp\openpal\src\openpal\LogMessages.h">
+      <SubType>compile</SubType>
+      <Link>LogMessages.h</Link>
+    </Compile>
+    <Compile Include="..\..\cpp\openpal\src\openpal\LogRoot.cpp">
+      <SubType>compile</SubType>
+      <Link>LogRoot.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\cpp\openpal\src\openpal\LogRoot.h">
+      <SubType>compile</SubType>
+      <Link>LogRoot.h</Link>
+    </Compile>
+    <Compile Include="..\..\cpp\openpal\src\openpal\MonotonicTimestamp.cpp">
+      <SubType>compile</SubType>
+      <Link>MonotonicTimestamp.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\cpp\openpal\src\openpal\MonotonicTimestamp.h">
+      <SubType>compile</SubType>
+      <Link>MonotonicTimestamp.h</Link>
+    </Compile>
+    <Compile Include="..\..\cpp\openpal\src\openpal\Option.h">
+      <SubType>compile</SubType>
+      <Link>Option.h</Link>
+    </Compile>
+    <Compile Include="..\..\cpp\openpal\src\openpal\QueueAdapter.h">
+      <SubType>compile</SubType>
+      <Link>QueueAdapter.h</Link>
+    </Compile>
+    <Compile Include="..\..\cpp\openpal\src\openpal\RandomInsertAdapter.h">
+      <SubType>compile</SubType>
+      <Link>RandomInsertAdapter.h</Link>
+    </Compile>
+    <Compile Include="..\..\cpp\openpal\src\openpal\Runnable.cpp">
+      <SubType>compile</SubType>
+      <Link>Runnable.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\cpp\openpal\src\openpal\Runnable.h">
+      <SubType>compile</SubType>
+      <Link>Runnable.h</Link>
+    </Compile>
+    <Compile Include="..\..\cpp\openpal\src\openpal\Sequence.h">
+      <SubType>compile</SubType>
+      <Link>Sequence.h</Link>
+    </Compile>
+    <Compile Include="..\..\cpp\openpal\src\openpal\Serialization.h">
+      <SubType>compile</SubType>
+      <Link>Serialization.h</Link>
+    </Compile>
+    <Compile Include="..\..\cpp\openpal\src\openpal\SerializationTemplatesBE.h">
+      <SubType>compile</SubType>
+      <Link>SerializationTemplatesBE.h</Link>
+    </Compile>
+    <Compile Include="..\..\cpp\openpal\src\openpal\SerializationTemplatesLE.h">
+      <SubType>compile</SubType>
+      <Link>SerializationTemplatesLE.h</Link>
+    </Compile>
+    <Compile Include="..\..\cpp\openpal\src\openpal\StackAdapter.h">
+      <SubType>compile</SubType>
+      <Link>StackAdapter.h</Link>
+    </Compile>
+    <Compile Include="..\..\cpp\openpal\src\openpal\StaticArray.h">
+      <SubType>compile</SubType>
+      <Link>StaticArray.h</Link>
+    </Compile>
+    <Compile Include="..\..\cpp\openpal\src\openpal\StaticBuffer.h">
+      <SubType>compile</SubType>
+      <Link>StaticBuffer.h</Link>
+    </Compile>
+    <Compile Include="..\..\cpp\openpal\src\openpal\StaticLinkedList.h">
+      <SubType>compile</SubType>
+      <Link>StaticLinkedList.h</Link>
+    </Compile>
+    <Compile Include="..\..\cpp\openpal\src\openpal\StaticList.h">
+      <SubType>compile</SubType>
+      <Link>StaticList.h</Link>
+    </Compile>
+    <Compile Include="..\..\cpp\openpal\src\openpal\StaticQueue.h">
+      <SubType>compile</SubType>
+      <Link>StaticQueue.h</Link>
+    </Compile>
+    <Compile Include="..\..\cpp\openpal\src\openpal\StringFormatting.h">
+      <SubType>compile</SubType>
+      <Link>StringFormatting.h</Link>
+    </Compile>
+    <Compile Include="..\..\cpp\openpal\src\openpal\TimeDuration.cpp">
+      <SubType>compile</SubType>
+      <Link>TimeDuration.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\cpp\openpal\src\openpal\TimeDuration.h">
+      <SubType>compile</SubType>
+      <Link>TimeDuration.h</Link>
+    </Compile>
+    <Compile Include="..\..\cpp\openpal\src\openpal\ToHex.cpp">
+      <SubType>compile</SubType>
+      <Link>ToHex.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\cpp\openpal\src\openpal\ToHex.h">
+      <SubType>compile</SubType>
+      <Link>ToHex.h</Link>
+    </Compile>
+    <Compile Include="..\..\cpp\openpal\src\openpal\UInt48LE.cpp">
+      <SubType>compile</SubType>
+      <Link>UInt48LE.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\cpp\openpal\src\openpal\UInt48LE.h">
+      <SubType>compile</SubType>
+      <Link>UInt48LE.h</Link>
+    </Compile>
+    <Compile Include="..\..\cpp\openpal\src\openpal\Uncopyable.h">
+      <SubType>compile</SubType>
+      <Link>Uncopyable.h</Link>
+    </Compile>
+    <Compile Include="..\..\cpp\openpal\src\openpal\UTCTimestamp.h">
+      <SubType>compile</SubType>
+      <Link>UTCTimestamp.h</Link>
+    </Compile>
+  </ItemGroup>
+  <Import Project="$(AVRSTUDIO_EXE_PATH)\\Vs\\Compiler.targets" />
+</Project>

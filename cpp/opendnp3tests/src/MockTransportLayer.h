@@ -22,12 +22,11 @@
 #ifndef __MOCK_LINK_LAYER_USER_H_
 #define __MOCK_LINK_LAYER_USER_H_
 
-#include <openpal/Loggable.h>
 #include <openpal/AsyncLayerInterfaces.h>
-
 #include <opendnp3/link/ILinkLayer.h>
 
 #include <deque>
+#include <string>
 
 namespace opendnp3
 {

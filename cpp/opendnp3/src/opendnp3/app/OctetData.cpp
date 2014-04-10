@@ -20,9 +20,6 @@
  */
 #include "OctetData.h"
 
-#include <assert.h>
-#include <memory.h>
-
 using namespace openpal;
 
 namespace opendnp3
@@ -33,12 +30,12 @@ OctetData::OctetData() :  size(0)
 
 }
 
-OctetData::OctetData(const openpal::ReadOnlyBuffer& buffer)
+OctetData::OctetData(const ReadOnlyBuffer& buffer)
 {
 	Initialize(buffer);
 }
 
-void OctetData::Initialize(const openpal::ReadOnlyBuffer& buffer)
+void OctetData::Initialize(const ReadOnlyBuffer& buffer)
 {
 	size = static_cast<uint8_t>((buffer.Size() > MAX_SIZE) ? MAX_SIZE : buffer.Size());
 	buffer.Truncate(size).CopyTo(pData);
@@ -61,11 +58,6 @@ OctetData::OctetData(const OctetData& copy) : size(0)
 openpal::ReadOnlyBuffer OctetData::ToReadOnly() const
 {
 	return ReadOnlyBuffer(pData, size);
-}
-
-std::string OctetData::AsString() const
-{
-	return std::string(reinterpret_cast<const char*>(pData), size);
 }
 
 }

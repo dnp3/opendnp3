@@ -27,6 +27,7 @@
 
 #include <openpal/IExecutor.h>
 #include <openpal/Location.h>
+#include <openpal/Bind.h>
 
 #include <assert.h>
 
@@ -50,15 +51,15 @@ AsyncTaskGroup::~AsyncTaskGroup()
 	tasks.Foreach([](AsyncTaskBase * p){ delete p; });	
 }
 
-AsyncTaskBase* AsyncTaskGroup::Add(openpal::TimeDuration aPeriod, openpal::TimeDuration aRetryDelay, int aPriority, const TaskHandler& arCallback, const std::string& arName)
+AsyncTaskBase* AsyncTaskGroup::Add(openpal::TimeDuration aPeriod, openpal::TimeDuration aRetryDelay, int aPriority, const openpal::Function1<AsyncTaskBase*>& callback)
 {
 	assert(!tasks.IsFull());
 
 	AsyncTaskBase* pTask;
 	if(aPeriod.GetMilliseconds() < 0)
-		pTask = new AsyncTaskNonPeriodic(aRetryDelay, aPriority, arCallback, this, arName);
+		pTask = new AsyncTaskNonPeriodic(aRetryDelay, aPriority, callback, this);
 	else
-		pTask = new AsyncTaskPeriodic(aPeriod, aRetryDelay, aPriority, arCallback, this, arName);
+		pTask = new AsyncTaskPeriodic(aPeriod, aRetryDelay, aPriority, callback, this);
 
 	tasks.Add(pTask);	
 	return pTask;
@@ -74,10 +75,10 @@ void AsyncTaskGroup::ResetTasks(int aMask)
 	);	
 }
 
-AsyncTaskContinuous* AsyncTaskGroup::AddContinuous(int aPriority, const TaskHandler& arCallback, const std::string& arName)
+AsyncTaskContinuous* AsyncTaskGroup::AddContinuous(int aPriority, const openpal::Function1<AsyncTaskBase*>& callback)
 {
 	assert(!tasks.IsFull());
-	AsyncTaskContinuous* pTask = new AsyncTaskContinuous(aPriority, arCallback, this, arName);
+	AsyncTaskContinuous* pTask = new AsyncTaskContinuous(aPriority, callback, this);
 	tasks.Add(pTask);
 	return pTask;
 }
@@ -247,7 +248,8 @@ void AsyncTaskGroup::RestartTimer(const openpal::MonotonicTimestamp& arTime)
 
 	if (mpTimer == nullptr)
 	{
-		mpTimer = mpExecutor->Start(arTime, std::bind(&AsyncTaskGroup::OnTimerExpiration, this));
+		auto lambda = [this]() { this->OnTimerExpiration(); };
+		mpTimer = mpExecutor->Start(arTime, Bind(lambda));
 	}
 }
 

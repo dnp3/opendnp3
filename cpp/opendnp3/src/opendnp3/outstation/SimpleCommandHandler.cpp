@@ -23,67 +23,71 @@
 namespace opendnp3
 {
 
-SimpleCommandHandler::SimpleCommandHandler(std::function<CommandStatus ()> aStatusFunc) :
-	mStatusFunc(aStatusFunc)
+SimpleCommandHandler::SimpleCommandHandler(CommandStatus status_) : status(status_), numInvocations(0)
 {
 
 }
 
 CommandStatus SimpleCommandHandler::Supports(const ControlRelayOutputBlock& arCommand, uint16_t aIndex)
 {
-	return mStatusFunc();
+	++numInvocations;
+	return status;
 }
 CommandStatus SimpleCommandHandler::Perform(const ControlRelayOutputBlock& arCommand, uint16_t aIndex)
 {
-	return mStatusFunc();
+	++numInvocations;
+	return status;
 }
 
 CommandStatus SimpleCommandHandler::Supports(const AnalogOutputInt16& arCommand, uint16_t aIndex)
 {
-	return mStatusFunc();
+	++numInvocations;
+	return status;
 }
 CommandStatus SimpleCommandHandler::Perform(const AnalogOutputInt16& arCommand, uint16_t aIndex)
 {
-	return mStatusFunc();
+	++numInvocations;
+	return status;
 }
 
 CommandStatus SimpleCommandHandler::Supports(const AnalogOutputInt32& arCommand, uint16_t aIndex)
 {
-	return mStatusFunc();
+	return status;
 }
 CommandStatus SimpleCommandHandler::Perform(const AnalogOutputInt32& arCommand, uint16_t aIndex)
 {
-	return mStatusFunc();
+	++numInvocations;
+	return status;
 }
-
 
 CommandStatus SimpleCommandHandler::Supports(const AnalogOutputFloat32& arCommand, uint16_t aIndex)
 {
-	return mStatusFunc();
+	++numInvocations;
+	return status;
 }
 CommandStatus SimpleCommandHandler::Perform(const AnalogOutputFloat32& arCommand, uint16_t aIndex)
 {
-	return mStatusFunc();
+	++numInvocations;
+	return status;
 }
 
 CommandStatus SimpleCommandHandler::Supports(const AnalogOutputDouble64& arCommand, uint16_t aIndex)
 {
-	return mStatusFunc();
+	++numInvocations;
+	return status;
 }
 CommandStatus SimpleCommandHandler::Perform(const AnalogOutputDouble64& arCommand, uint16_t aIndex)
 {
-	return mStatusFunc();
+	++numInvocations;
+	return status;
 }
 
-SuccessCommandHandler::SuccessCommandHandler() : SimpleCommandHandler([]()
-{
-	return CommandStatus::SUCCESS;
-})
+SuccessCommandHandler::SuccessCommandHandler() : SimpleCommandHandler(CommandStatus::SUCCESS)
 {
 
 }
 
-SuccessCommandHandler SuccessCommandHandler::mHandler;
+SuccessCommandHandler SuccessCommandHandler::handler;
 
 }
 

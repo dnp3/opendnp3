@@ -55,15 +55,12 @@ public:
 		return value == aLHS.value;
 	}
 
+	T value;
+	
 	/**
 	* The status value defaults to CS_SUCCESS for requests
 	*/
-	CommandStatus status;
-
-	T value;
-
-	virtual std::string ToString() const = 0;
-
+	CommandStatus status;	
 };
 
 /**
@@ -78,8 +75,6 @@ public:
 	AnalogOutputInt16(int16_t, CommandStatus);
 
 	bool operator==(const AnalogOutputInt16& arRHS) const;
-
-	std::string ToString() const;
 };
 
 /**
@@ -94,8 +89,6 @@ public:
 	AnalogOutputInt32(int32_t, CommandStatus);
 
 	bool operator==(const AnalogOutputInt32& arRHS) const;
-
-	std::string ToString() const;
 };
 
 /**
@@ -110,8 +103,6 @@ public:
 	AnalogOutputFloat32(float, CommandStatus);
 
 	bool operator==(const AnalogOutputFloat32& arRHS) const;
-
-	std::string ToString() const;
 };
 
 /**
@@ -126,8 +117,6 @@ public:
 	AnalogOutputDouble64(double, CommandStatus);
 
 	bool operator==(const AnalogOutputDouble64& arRHS) const;
-
-	std::string ToString() const;
 };
 
 

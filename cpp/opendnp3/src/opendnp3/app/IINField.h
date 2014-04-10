@@ -22,7 +22,6 @@
 #define __IIN_FIELD_H_
 
 #include <cstdint>
-#include <string>
 
 namespace opendnp3
 {
@@ -118,8 +117,6 @@ public:
 
 	uint8_t LSB;
 	uint8_t MSB;
-
-	std::string ToString() const;
 
 private:
 

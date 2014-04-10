@@ -25,9 +25,8 @@
 #include "opendnp3/LogLevels.h"
 
 #include <openpal/IPhysicalLayerAsync.h>
-#include <openpal/LoggableMacros.h>
-
-#include <functional>
+#include <openpal/LogMacros.h>
+#include <openpal/Bind.h>
 
 #include <assert.h>
 
@@ -37,12 +36,12 @@ namespace opendnp3
 {
 
 PhysicalLayerMonitor::PhysicalLayerMonitor(
-    const Logger& logger,
+	openpal::LogRoot& root,
     IPhysicalLayerAsync* pPhys_,
     TimeDuration minOpenRetry_,
     TimeDuration maxOpenRetry_,
     IOpenDelayStrategy* pOpenStrategy_) :
-	Loggable(logger),
+	logger(root.GetLogger()),
 	pPhys(pPhys_),
 	isOnline(false),
 	mpOpenTimer(nullptr),
@@ -64,7 +63,7 @@ ChannelState PhysicalLayerMonitor::GetState()
 
 void PhysicalLayerMonitor::ChangeState(IMonitorState* apState)
 {
-	LOG_BLOCK(flags::DEBUG, mpState->ConvertToString() << " -> " << apState->ConvertToString() << " : " << pPhys->ConvertStateToString());
+	FORMAT_LOG_BLOCK(logger, flags::DBG, "%s -> %s", mpState->Name(), apState->Name());
 	IMonitorState* pLast = mpState;
 	mpState = apState;
 
@@ -113,32 +112,27 @@ void PhysicalLayerMonitor::OnLowerLayerDown()
 /* ------- User facing events that occurs ------- */
 
 void PhysicalLayerMonitor::Start()
-{
-	LOG_BLOCK(flags::DEBUG, "Start()");
+{	
 	mpState->OnStartRequest(this);
 }
 
 void PhysicalLayerMonitor::StartOne()
 {
-	LOG_BLOCK(flags::DEBUG, "StartOne()");
 	mpState->OnStartOneRequest(this);
 }
 
 void PhysicalLayerMonitor::Close()
 {
-	LOG_BLOCK(flags::DEBUG, "Close()");
 	mpState->OnCloseRequest(this);
 }
 
 void PhysicalLayerMonitor::Suspend()
-{
-	LOG_BLOCK(flags::DEBUG, "Suspend()");
+{	
 	mpState->OnSuspendRequest(this);
 }
 
 void PhysicalLayerMonitor::Shutdown()
 {
-	LOG_BLOCK(flags::DEBUG, "Shutdown()");
 	mpState->OnShutdownRequest(this);
 }
 
@@ -158,7 +152,8 @@ void PhysicalLayerMonitor::OnOpenTimerExpiration()
 void PhysicalLayerMonitor::StartOpenTimer()
 {
 	assert(mpOpenTimer == nullptr);
-	mpOpenTimer = pPhys->GetExecutor()->Start(currentRetry, std::bind(&PhysicalLayerMonitor::OnOpenTimerExpiration, this));
+	auto lambda = [this]() { this->OnOpenTimerExpiration(); };
+	mpOpenTimer = pPhys->GetExecutor()->Start(currentRetry, Bind(lambda));
 }
 
 void PhysicalLayerMonitor::CancelOpenTimer()

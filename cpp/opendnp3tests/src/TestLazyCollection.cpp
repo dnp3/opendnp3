@@ -117,7 +117,7 @@ TEST_CASE(SUITE("HighestBitSet"))
 	}
 	                                          );
 
-	auto collection2 = MapIterableBuffer<bool, Binary>(collection,
+	auto collection2 = MapIterableBuffer<bool, Binary>(&collection,
 	                   [](const bool & bit)
 	{
 		return Binary(bit);

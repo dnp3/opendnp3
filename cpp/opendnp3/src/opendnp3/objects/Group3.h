@@ -8,10 +8,10 @@
 //                                           __/ |
 //                                          |___/
 // Copyright 2013 Automatak LLC
-//
+// 
 // Automatak LLC (www.automatak.com) licenses this file
 // to you under the the Apache License Version 2.0 (the "License"):
-//
+// 
 // http://www.apache.org/licenses/LICENSE-2.0.html
 //
 
@@ -23,55 +23,45 @@
 #include "opendnp3/app/IDNP3Serializer.h"
 #include "opendnp3/app/MeasurementTypes.h"
 
-namespace opendnp3
-{
+namespace opendnp3 {
 
 struct Group3Var0
 {
-	static const GroupVariationID ID;
+  static const GroupVariationID ID;
 };
 
 struct Group3Var1
 {
-	static const GroupVariationID ID;
+  static const GroupVariationID ID;
 };
 
 struct Group3Var2
 {
-	static const GroupVariationID ID;
-	typedef DoubleBitBinary Target;
-	static const uint32_t SIZE = 1;
-	static Group3Var2 Read(openpal::ReadOnlyBuffer&);
-	static void Write(const Group3Var2&, openpal::WriteBuffer&);
+  static const GroupVariationID ID;
+  typedef DoubleBitBinary Target;
+  static const uint32_t SIZE = 1;
+  static Group3Var2 Read(openpal::ReadOnlyBuffer&);
+  static void Write(const Group3Var2&, openpal::WriteBuffer&);
 
-	uint8_t flags;
+  uint8_t flags;
 };
 
 struct Group3Var2Serializer : public IDNP3Serializer<DoubleBitBinary>
 {
 
-	static IDNP3Serializer<DoubleBitBinary>* Inst()
-	{
-		return &mInstance;
-	}
+  static IDNP3Serializer<DoubleBitBinary>* Inst() { return &mInstance; }
 
-	GroupVariationID ID() const
-	{
-		return Group3Var2::ID;
-	}
+  GroupVariationID ID() const { return Group3Var2::ID; }
 
-	uint32_t Size() const
-	{
-		return Group3Var2::SIZE;
-	}
+  uint32_t Size() const { return Group3Var2::SIZE; }
 
-	typedef DoubleBitBinary Target;
-	DoubleBitBinary Read(openpal::ReadOnlyBuffer&) const;
-	void Write(const DoubleBitBinary&, openpal::WriteBuffer&) const;
+  typedef DoubleBitBinary Target;
+  DoubleBitBinary Read(openpal::ReadOnlyBuffer&) const;
+  void Write(const DoubleBitBinary&, openpal::WriteBuffer&) const;
 
-private:
+  private:
 
-	static Group3Var2Serializer mInstance;
+  static Group3Var2Serializer mInstance;
 };
 
 

@@ -20,14 +20,12 @@
  */
 #include "TransportRx.h"
 #include "TransportConstants.h"
-#include "TransportLayer.h"
 #include "opendnp3/LogLevels.h"
 
-#include <openpal/LoggableMacros.h>
+#include <openpal/LogMacros.h>
 #include <openpal/ToHex.h>
 
-#include <sstream>
-#include <memory.h>
+#include <cstring>
 
 using namespace std;
 using namespace openpal;
@@ -35,17 +33,16 @@ using namespace openpal;
 namespace opendnp3
 {
 
-TransportRx::TransportRx(const Logger& logger, TransportLayer* apContext, uint32_t fragSize) :
-	Loggable(logger),
-	mpContext(apContext),
-	maxFragSize(fragSize),
+TransportRx::TransportRx(const Logger& logger_, uint32_t fragSize) :
+	logger(logger_),	
 	numBytesRead(0),
-	sequence(0)
+	sequence(0),
+	maxFragSize(fragSize)
 {
 	if(fragSize > rxBuffer.Size())
 	{
 		maxFragSize = rxBuffer.Size();
-		LOG_BLOCK(flags::ERR, "specified fragment size exceeds underling buffer size");
+		SIMPLE_LOG_BLOCK(logger, flags::ERR, "specified fragment size exceeds underling buffer size");
 	}
 }
 
@@ -55,22 +52,21 @@ void TransportRx::Reset()
 	sequence = 0;
 }
 
-void TransportRx::HandleReceive(const openpal::ReadOnlyBuffer& input)
+ReadOnlyBuffer TransportRx::ProcessReceive(const ReadOnlyBuffer& input)
 {
 	if (input.Size() < 2)
 	{
-		ERROR_BLOCK(flags::WARN, "Received tpdu with no payload, size: " << input.Size(), TLERR_NO_PAYLOAD);
+		FORMAT_LOG_BLOCK_WITH_CODE(logger, flags::WARN, TLERR_NO_PAYLOAD, "Received tpdu with no payload, size: %u", static_cast<unsigned int>(input.Size()));
+		return ReadOnlyBuffer::Empty();
 	}
 	else if (input.Size() > TL_MAX_TPDU_LENGTH)
 	{
-		ERROR_BLOCK(flags::WARN, "Illegal arg: " << input.Size() << " exceeds max tpdu size of " << TL_MAX_TPDU_LENGTH, TLERR_TOO_MUCH_DATA);
-
+		FORMAT_LOG_BLOCK_WITH_CODE(logger, flags::WARN, TLERR_TOO_MUCH_DATA, "Illegal arg: %i exceeds max tpdu size of %u", static_cast<unsigned int>(input.Size()), TL_MAX_TPDU_LENGTH);
+		return ReadOnlyBuffer::Empty();
 	}
 	else
 	{
-
-		uint8_t hdr = input[0];
-		LOG_BLOCK(flags::INTERPRET, "<- " << TransportLayer::ToString(hdr));
+		uint8_t hdr = input[0];		
 		bool first = (hdr & TL_HDR_FIR) != 0;
 		bool last = (hdr & TL_HDR_FIN) != 0;
 		int seq = hdr & TL_HDR_SEQ;
@@ -80,8 +76,9 @@ void TransportRx::HandleReceive(const openpal::ReadOnlyBuffer& input)
 		{
 			if (BufferRemaining() < payloadLength)
 			{
-				ERROR_BLOCK(flags::WARN, "Exceeded the buffer size before a complete fragment was read", TLERR_BUFFER_FULL);
+				SIMPLE_LOG_BLOCK_WITH_CODE(logger, flags::WARN, TLERR_BUFFER_FULL, "Exceeded the buffer size before a complete fragment was read");
 				numBytesRead = 0;
+				return ReadOnlyBuffer::Empty();
 			}
 			else   //passed all validation
 			{
@@ -90,12 +87,20 @@ void TransportRx::HandleReceive(const openpal::ReadOnlyBuffer& input)
 				sequence = (sequence + 1) % 64;
 
 				if(last)
-				{
-					ReadOnlyBuffer buffer(rxBuffer.Buffer(), numBytesRead);
+				{				
+					ReadOnlyBuffer ret(rxBuffer.Buffer(), numBytesRead);
 					numBytesRead = 0;
-					mpContext->ReceiveAPDU(buffer);
+					return ret;
+				}
+				else
+				{
+					return ReadOnlyBuffer::Empty();
 				}
 			}
+		}
+		else
+		{
+			return ReadOnlyBuffer::Empty();
 		}
 	}
 
@@ -112,19 +117,19 @@ bool TransportRx::ValidateHeader(bool fir, bool fin, uint8_t sequence_, uint32_t
 		if(numBytesRead > 0)
 		{
 			// drop existing received bytes from segment
-			ERROR_BLOCK(flags::WARN, "FIR received mid-fragment, discarding: " << numBytesRead << "bytes", TLERR_NEW_FIR);
+			SIMPLE_LOG_BLOCK_WITH_CODE(logger, flags::WARN, TLERR_NEW_FIR, "FIR received mid-fragment, discarding previous bytes");
 			numBytesRead = 0;
 		}
 	}
 	else if(numBytesRead == 0)   //non-first packet with 0 prior bytes
 	{
-		ERROR_BLOCK(flags::WARN, "non-FIR packet with 0 prior bytes", TLERR_MESSAGE_WITHOUT_FIR);
+		SIMPLE_LOG_BLOCK_WITH_CODE(logger, flags::WARN, TLERR_MESSAGE_WITHOUT_FIR, "non-FIR packet with 0 prior bytes");
 		return false;
 	}
 
 	if(sequence_ != sequence)
 	{
-		ERROR_BLOCK(flags::WARN, "Ignoring bad sequence, got: " << sequence_ << " expected: " << sequence, TLERR_BAD_SEQUENCE);
+		FORMAT_LOG_BLOCK_WITH_CODE(logger, flags::WARN, TLERR_BAD_SEQUENCE, "Ignoring bad sequence, got %i, expected %i", sequence_, sequence);
 		return false;
 	}
 

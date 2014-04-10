@@ -33,7 +33,7 @@ class MockAppUser : public IAppUser
 {
 public:
 
-	MockAppUser(openpal::Logger aLogger) : IAppUser(aLogger)
+	MockAppUser(openpal::LogRoot& root) : IAppUser(root)
 	{}
 
 	struct State

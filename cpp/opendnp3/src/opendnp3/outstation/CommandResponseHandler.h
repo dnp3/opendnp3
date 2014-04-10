@@ -27,8 +27,7 @@
 #include "opendnp3/outstation/ICommandAction.h"
 
 #include <openpal/StaticBuffer.h>
-#include <openpal/Loggable.h>
-#include <openpal/LoggableMacros.h>
+#include <openpal/LogMacros.h>
 
 namespace opendnp3
 {
@@ -73,19 +72,25 @@ template <class Target, class IndexType>
 void CommandResponseHandler::RespondToHeader(QualifierCode qualifier, IDNP3Serializer<Target>* pSerializer, const IterableBuffer<IndexedValue<Target, typename IndexType::Type>>& meas)
 {
 	auto iter = writer.IterateOverCountWithPrefix<IndexType, Target>(qualifier, pSerializer);
-	meas.foreach([this, &iter](const IndexedValue<Target, typename IndexType::Type>& command)
+
+	auto commands = meas.Iterate();
+	while (commands.HasNext())
 	{
+		auto command = commands.Next();
 		auto result = CommandStatus::TOO_MANY_OPS;
 		if (numRequests < maxCommands)
 		{
 			result = pCommandAction->Action(command.value, command.index);
 		}
-		if (result == CommandStatus::SUCCESS) ++numSuccess;
+		if (result == CommandStatus::SUCCESS)
+		{
+			++numSuccess;
+		}
 		Target response(command.value);
 		response.status = result;
 		iter.Write(response, command.index);
 		++numRequests;
-	});
+	}	
 	iter.Complete();
 }
 

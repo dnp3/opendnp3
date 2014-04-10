@@ -36,7 +36,7 @@ using namespace openpal;
 namespace opendnp3
 {
 
-EventResponseContext::EventResponseContext(OutstationEventBuffer& buffer_) : buffer(buffer_)
+EventResponseContext::EventResponseContext(OutstationEventBuffer* pBuffer_) : pBuffer(pBuffer_)
 {}
 
 bool EventResponseContext::IsComplete() const
@@ -89,7 +89,7 @@ EventResponseContext::Result EventResponseContext::Load(ObjectWriter& writer)
 {
 	if (criteria.HasSelection())
 	{
-		auto iterator = buffer.SelectEvents(criteria);
+		auto iterator = pBuffer->SelectEvents(criteria);
 		auto result = Iterate(writer, iterator);
 		if (result.complete)
 		{

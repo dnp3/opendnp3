@@ -21,7 +21,7 @@
 #ifndef __PRI_LINK_LAYER_STATES_H_
 #define __PRI_LINK_LAYER_STATES_H_
 
-#include <string>
+
 
 #include <openpal/Location.h>
 
@@ -52,7 +52,7 @@ public:
 	virtual void SendUnconfirmed(LinkLayer*, IBufferSegment& segments);
 
 	//every concrete state implements this for logging purposes
-	virtual std::string Name() const = 0;
+	virtual char const* Name() const = 0;
 };
 
 //	@section desc Entry state for primary station

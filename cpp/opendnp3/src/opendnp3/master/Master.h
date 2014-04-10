@@ -74,7 +74,7 @@ class Master : public IAppUser, private ICommandProcessor
 
 public:
 
-	Master(openpal::Logger, MasterConfig aCfg, IAppLayer*, ISOEHandler*, AsyncTaskGroup*, openpal::IExecutor*, openpal::IUTCTimeSource* apTimeSrc);
+	Master(openpal::LogRoot& root, MasterConfig aCfg, IAppLayer*, ISOEHandler*, AsyncTaskGroup*, openpal::IExecutor*, openpal::IUTCTimeSource* apTimeSrc);
 	virtual ~Master() {}
 
 	ICommandProcessor* GetCommandProcessor()
@@ -103,20 +103,20 @@ public:
 	void OnUnsolResponse(const APDUResponseRecord&);
 
 	// These methods are inherited privately
-	void SelectAndOperate(const ControlRelayOutputBlock& arCommand, uint16_t aIndex, std::function<void(CommandResponse)> aCallback);
-	void DirectOperate(const ControlRelayOutputBlock& arCommand, uint16_t aIndex, std::function<void(CommandResponse)> aCallback);
+	void SelectAndOperate(const ControlRelayOutputBlock& command, uint16_t index, ICommandCallback* pCallback);
+	void DirectOperate(const ControlRelayOutputBlock& command, uint16_t index, ICommandCallback* pCallback);
 
-	void SelectAndOperate(const AnalogOutputInt16& arCommand, uint16_t aIndex, std::function<void(CommandResponse)> aCallback);
-	void DirectOperate(const AnalogOutputInt16& arCommand, uint16_t aIndex, std::function<void(CommandResponse)> aCallback);
+	void SelectAndOperate(const AnalogOutputInt16& command, uint16_t index, ICommandCallback* pCallback);
+	void DirectOperate(const AnalogOutputInt16& command, uint16_t index, ICommandCallback* pCallback);
 
-	void SelectAndOperate(const AnalogOutputInt32& arCommand, uint16_t aIndex, std::function<void(CommandResponse)> aCallback);
-	void DirectOperate(const AnalogOutputInt32& arCommand, uint16_t aIndex, std::function<void(CommandResponse)> aCallback);
+	void SelectAndOperate(const AnalogOutputInt32& command, uint16_t index, ICommandCallback* pCallback);
+	void DirectOperate(const AnalogOutputInt32& command, uint16_t index, ICommandCallback* pCallback);
 
-	void SelectAndOperate(const AnalogOutputFloat32& arCommand, uint16_t aIndex, std::function<void(CommandResponse)> aCallback);
-	void DirectOperate(const AnalogOutputFloat32& arCommand, uint16_t aIndex, std::function<void(CommandResponse)> aCallback);
+	void SelectAndOperate(const AnalogOutputFloat32& command, uint16_t index, ICommandCallback* pCallback);
+	void DirectOperate(const AnalogOutputFloat32& command, uint16_t index, ICommandCallback* pCallback);
 
-	void SelectAndOperate(const AnalogOutputDouble64& arCommand, uint16_t aIndex, std::function<void(CommandResponse)> aCallback);
-	void DirectOperate(const AnalogOutputDouble64& arCommand, uint16_t aIndex, std::function<void(CommandResponse)> aCallback);
+	void SelectAndOperate(const AnalogOutputDouble64& command, uint16_t index, ICommandCallback* pCallback);
+	void DirectOperate(const AnalogOutputDouble64& command, uint16_t index, ICommandCallback* pCallback);
 
 private:
 
@@ -129,7 +129,7 @@ private:
 	void SyncTime(ITask* apTask);
 	void ProcessCommand(ITask* apTask);
 
-	openpal::StaticBuffer<sizes::MAX_APDU_BUFFER_SIZE> requestBuffer;
+	openpal::StaticBuffer<sizes::MAX_TX_APDU_SIZE> requestBuffer;
 
 	IINField mLastIIN;						// last IIN received from the outstation
 

@@ -61,6 +61,7 @@
     <Import Project="..\..\config\asiopal_include.props" />
     <Import Project="..\..\config\asio_config.props" />
     <Import Project="..\..\config\catch.props" />
+    <Import Project="..\..\config\asiodnp3_include.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
@@ -70,6 +71,7 @@
     <Import Project="..\..\config\asiopal_include.props" />
     <Import Project="..\..\config\asio_config.props" />
     <Import Project="..\..\config\catch.props" />
+    <Import Project="..\..\config\asiodnp3_include.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
@@ -79,6 +81,7 @@
     <Import Project="..\..\config\asiopal_include.props" />
     <Import Project="..\..\config\asio_config.props" />
     <Import Project="..\..\config\catch.props" />
+    <Import Project="..\..\config\asiodnp3_include.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
@@ -88,6 +91,7 @@
     <Import Project="..\..\config\asiopal_include.props" />
     <Import Project="..\..\config\asio_config.props" />
     <Import Project="..\..\config\catch.props" />
+    <Import Project="..\..\config\asiodnp3_include.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -172,6 +176,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ProjectReference Include="..\asiodnp3\asiodnp3.vcxproj">
+      <Project>{65495be1-485c-4a8c-8c58-06c9a532d9ce}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\asiopal\asiopal.vcxproj">
       <Project>{3807677b-061a-4d15-aa03-65e944864384}</Project>
     </ProjectReference>
@@ -211,6 +218,7 @@
     <ClInclude Include="src\MockAPDUHeaderHandler.h" />
     <ClInclude Include="src\MockAppLayer.h" />
     <ClInclude Include="src\MockAppUser.h" />
+    <ClInclude Include="src\MockCommandCallback.h" />
     <ClInclude Include="src\MockCommandHandler.h" />
     <ClInclude Include="src\MockExecutor.h" />
     <ClInclude Include="src\MockFrameSink.h" />
@@ -236,6 +244,7 @@
     <ClInclude Include="src\TestHelpers.h" />
     <ClInclude Include="src\TestTypedefs.h" />
     <ClInclude Include="src\Timeout.h" />
+    <ClInclude Include="src\HexConversions.h" />
     <ClInclude Include="src\TransportIntegrationStack.h" />
     <ClInclude Include="src\TransportLoopbackTestObject.h" />
     <ClInclude Include="src\TransportScalabilityTestObject.h" />
@@ -276,11 +285,11 @@
     <ClCompile Include="src\MockTransportLayer.cpp" />
     <ClCompile Include="src\MockUpperLayer.cpp" />
     <ClCompile Include="src\MultiplexingDataObserver.cpp" />
+    <ClCompile Include="src\OutstationTestObject.cpp" />
     <ClCompile Include="src\PhysicalLayerWrapper.cpp" />
     <ClCompile Include="src\PhysLoopback.cpp" />
     <ClCompile Include="src\ProtocolUtil.cpp" />
     <ClCompile Include="src\RandomizedBuffer.cpp" />
-    <ClCompile Include="src\SlaveTestObject.cpp" />
     <ClCompile Include="src\StopWatch.cpp" />
     <ClCompile Include="src\TestAPDUParsing.cpp" />
     <ClCompile Include="src\TestAPDUWriting.cpp" />
@@ -305,7 +314,6 @@
     <ClCompile Include="src\TestMaster.cpp" />
     <ClCompile Include="src\TestOutstation.cpp" />
     <ClCompile Include="src\TestOutstationCommandResponses.cpp" />
-    <ClCompile Include="src\TestOutstationEventBuffer.cpp" />
     <ClCompile Include="src\TestOutstationEventResponses.cpp" />
     <ClCompile Include="src\TestPhysicalLayerAsyncBase.cpp" />
     <ClCompile Include="src\TestPhysicalLayerAsyncSerial.cpp" />
@@ -324,6 +332,7 @@
     <ClCompile Include="src\TestUtil.cpp" />
     <ClCompile Include="src\TestWriteConversions.cpp" />
     <ClCompile Include="src\Timeout.cpp" />
+    <ClCompile Include="src\HexConversions.cpp" />
     <ClCompile Include="src\TransportIntegrationStack.cpp" />
     <ClCompile Include="src\TransportLoopbackTestObject.cpp" />
     <ClCompile Include="src\TransportScalabilityTestObject.cpp" />

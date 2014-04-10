@@ -21,6 +21,8 @@
 #include "MasterScan.h"
 
 #include <openpal/IExecutor.h>
+#include <openpal/Bind.h>
+
 #include "AsyncTaskBase.h"
 
 namespace opendnp3
@@ -34,20 +36,20 @@ MasterScan::MasterScan(openpal::IExecutor* apExecutor, AsyncTaskBase* apTask) :
 
 void MasterScan::Demand()
 {
-	mpExecutor->Post([this]()
-	{
-		mpTask->Demand();
-	});
+	auto lambda = [this]() { mpTask->Demand(); };
+	mpExecutor->Post(openpal::Bind(lambda));
 }
 
 void MasterScan::AddScanCallback(IScanListener* apListener)
 {
+	/* TODO
 	mpTask->SetStatusCallback([apListener](bool success)
 	{
 		auto status = success ? ScanStatus::SUCCESS : ScanStatus::FAILURE;
 		ScanResult result = { status };
 		apListener->OnScanUpdate(result);
 	});
+	*/
 }
 
 }

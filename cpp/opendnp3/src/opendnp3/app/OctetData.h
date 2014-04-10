@@ -21,7 +21,7 @@
 #ifndef __OCTET_DATA_H_
 #define __OCTET_DATA_H_
 
-#include <string>
+
 #include <cstdint>
 
 #include <openpal/BufferWrapper.h>
@@ -40,9 +40,7 @@ public:
 	OctetData(const OctetData&);
 	OctetData& operator=( const OctetData& rhs );
 
-	openpal::ReadOnlyBuffer ToReadOnly() const;
-
-	std::string AsString() const;
+	openpal::ReadOnlyBuffer ToReadOnly() const;	
 
 private:
 

@@ -8,28 +8,27 @@
 //                                           __/ |
 //                                          |___/
 // Copyright 2013 Automatak LLC
-//
+// 
 // Automatak LLC (www.automatak.com) licenses this file
 // to you under the the Apache License Version 2.0 (the "License"):
-//
+// 
 // http://www.apache.org/licenses/LICENSE-2.0.html
 //
 
 #include "ScanStatus.h"
 
-namespace opendnp3
-{
+namespace opendnp3 {
 
-std::string ScanStatusToString(ScanStatus arg)
+char const* ScanStatusToString(ScanStatus arg)
 {
-	switch(arg)
-	{
-	case(ScanStatus::SUCCESS):
-		return "SUCCESS";
-	case(ScanStatus::FAILURE):
-		return "FAILURE";
-	}
-	return "FAILURE";
+  switch(arg)
+  {
+    case(ScanStatus::SUCCESS):
+      return "SUCCESS";
+    case(ScanStatus::FAILURE):
+      return "FAILURE";
+  }
+  return "FAILURE";
 }
 
 }

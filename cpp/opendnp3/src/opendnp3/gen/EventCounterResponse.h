@@ -8,28 +8,26 @@
 //                                           __/ |
 //                                          |___/
 // Copyright 2013 Automatak LLC
-//
+// 
 // Automatak LLC (www.automatak.com) licenses this file
 // to you under the the Apache License Version 2.0 (the "License"):
-//
+// 
 // http://www.apache.org/licenses/LICENSE-2.0.html
 //
 
 #ifndef __OPENDNP3_GENERATED_EVENTCOUNTERRESPONSE_H_
 #define __OPENDNP3_GENERATED_EVENTCOUNTERRESPONSE_H_
 
-#include <string>
 #include <cstdint>
 
-namespace opendnp3
-{
+namespace opendnp3 {
 
 enum class EventCounterResponse : int
 {
-    Group22Var1 = 0,
-    Group22Var2 = 1,
-    Group22Var5 = 2,
-    Group22Var6 = 3
+  Group22Var1 = 0,
+  Group22Var2 = 1,
+  Group22Var5 = 2,
+  Group22Var6 = 3
 };
 
 int EventCounterResponseToType(EventCounterResponse arg);

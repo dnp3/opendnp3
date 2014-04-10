@@ -22,9 +22,9 @@
 #define __LINK_LAYER_RECEIVER_H_
 
 
-#include <openpal/Loggable.h>
 #include <openpal/BufferWrapper.h>
 #include <openpal/StaticBuffer.h>
+#include <openpal/Logger.h>
 
 #include "opendnp3/DNPErrorCodes.h"
 
@@ -42,7 +42,7 @@ class LRS_Base;
 
 /** Parses incoming ft3 frames for the link layer router.
 */
-class LinkLayerReceiver : public openpal::Loggable
+class LinkLayerReceiver
 {
 
 public:
@@ -50,7 +50,7 @@ public:
 		@param arLogger Logger that the receiver is to use.
 		@param apSink Complete frames are sent to this interface.
 	*/
-	LinkLayerReceiver(openpal::Logger aLogger, IFrameSink* apSink);
+	LinkLayerReceiver(const openpal::Logger& logger, IFrameSink* apSink);
 
 	/**
 		Called when valid data has been written to the current buffer write position
@@ -98,6 +98,7 @@ private:
 		return mBuffer.NumReadBytes();
 	}
 
+	openpal::Logger logger;
 	LinkHeader mHeader;
 	uint32_t mFrameSize;
 	static const uint8_t M_SYNC_PATTERN[2];
@@ -105,9 +106,8 @@ private:
 	IFrameSink* mpSink;  // pointer to interface to push complete frames
 	LRS_Base* mpState;
 
-	// Buffer to which user data is extracted, this is necessary since CRC checks are interlaced
-	uint8_t mpUserData[LS_MAX_USER_DATA_SIZE];
-	openpal::StaticBuffer<sizes::LINK_RECEIVER_BUFFER_SIZE> receiverBuffer;
+	// Buffer to which user data is extracted, this is necessary since CRC checks are interlaced		
+	openpal::StaticBuffer<sizes::LINK_RECEIVER_BUFFER_SIZE> receiveBuffer;
 	ShiftableBuffer mBuffer; //Buffer used to cache frames data as it arrives
 };
 

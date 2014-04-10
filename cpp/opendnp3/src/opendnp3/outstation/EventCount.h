@@ -30,7 +30,7 @@ namespace opendnp3
 
 class ClassCount
 {
-	static const uint32_t NUM_TYPES = 7;
+	static const uint8_t NUM_TYPES = 7;
 
 public:
 

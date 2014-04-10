@@ -37,8 +37,7 @@ public:
 
 	IOServiceThreadPool(
 	    openpal::ILogBase* pLog,
-	    uint32_t levels,
-	    const std::string& id,
+	    uint32_t levels,		
 	    uint32_t aConcurrency,
 	std::function<void()> onThreadStart = []() {},
 	std::function<void()> onThreadExit = []() {}
@@ -58,9 +57,7 @@ private:
 	std::function<void ()> onThreadStart;
 	std::function<void ()> onThreadExit;
 
-	bool isShutdown;
-
-	void OnTimerExpiration(const std::error_code& ec);
+	bool isShutdown;	
 
 	void Run();
 

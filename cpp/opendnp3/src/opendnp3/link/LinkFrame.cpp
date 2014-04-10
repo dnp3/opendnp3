@@ -25,6 +25,7 @@
 
 #include <openpal/Serialization.h>
 
+#include <openpal/Configure.h>
 #include <assert.h>
 
 using namespace openpal;
@@ -43,7 +44,7 @@ void LinkFrame::ReadUserData(const uint8_t* pSrc, uint8_t* pDest, uint32_t lengt
 		uint32_t max = LS_DATA_BLOCK_SIZE;
 		uint32_t num = (length <= max) ? length : max;
 		uint32_t num_with_crc = num + 2;
-		memcpy(pWrite, pRead, num);
+		memmove(pWrite, pRead, num);
 		pRead += num_with_crc;
 		pWrite += num;
 		length -= num;

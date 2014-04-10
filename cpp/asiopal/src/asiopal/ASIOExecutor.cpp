@@ -53,27 +53,27 @@ openpal::MonotonicTimestamp ASIOExecutor::GetTime()
 	return std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::steady_clock::now().time_since_epoch()).count();
 }
 
-openpal::ITimer* ASIOExecutor::Start(const openpal::TimeDuration& arDelay, const function<void ()>& arCallback)
+openpal::ITimer* ASIOExecutor::Start(const openpal::TimeDuration& arDelay, const openpal::Runnable& runnable)
 {
 	assert(!mIsShuttingDown);
 	TimerASIO* pTimer = GetTimer();
 	pTimer->timer.expires_from_now(std::chrono::milliseconds(arDelay.GetMilliseconds()));
-	this->StartTimer(pTimer, arCallback);
+	this->StartTimer(pTimer, runnable);
 	return pTimer;
 }
 
-openpal::ITimer* ASIOExecutor::Start(const openpal::MonotonicTimestamp& arTime, const function<void ()>& arCallback)
+openpal::ITimer* ASIOExecutor::Start(const openpal::MonotonicTimestamp& arTime, const openpal::Runnable& runnable)
 {
 	assert(!mIsShuttingDown);
 	TimerASIO* pTimer = GetTimer();
 	pTimer->timer.expires_at(std::chrono::steady_clock::time_point(std::chrono::milliseconds(arTime.milliseconds)));
-	this->StartTimer(pTimer, arCallback);
+	this->StartTimer(pTimer, runnable);
 	return pTimer;
 }
 
-void ASIOExecutor::Post(const std::function<void ()>& arHandler)
+void ASIOExecutor::Post(const openpal::Runnable& runnable)
 {
-	mpStrand->post(arHandler);
+	mpStrand->post([runnable]() { runnable.Run(); });
 }
 
 void ASIOExecutor::Pause()
@@ -142,37 +142,23 @@ TimerASIO* ASIOExecutor::GetTimer()
 	return pTimer;
 }
 
-/*
-void ASIOExecutor::Shutdown()
-{
-
-	std::unique_lock<std::mutex> lock(mutex);
-	mIsShuttingDown = true;
-	while(mNumActiveTimers)
-	{
-		condition.wait(lock);
-	}
-
-}
-*/
-
-void ASIOExecutor::StartTimer(TimerASIO* apTimer, const std::function<void ()>& arCallback)
+void ASIOExecutor::StartTimer(TimerASIO* pTimer, const openpal::Runnable& runnable)
 {
 	++mNumActiveTimers;
-	apTimer->timer.async_wait(
+	pTimer->timer.async_wait(
 	    mpStrand->wrap(
-	        std::bind(&ASIOExecutor::OnTimerCallback, this, std::placeholders::_1, apTimer, arCallback)
+			[runnable, this, pTimer](const std::error_code& ec){ this->OnTimerCallback(ec, pTimer, runnable); }	        
 	    )
 	);
 }
 
-void ASIOExecutor::OnTimerCallback(const std::error_code& ec, TimerASIO* apTimer, std::function<void ()> aCallback)
+void ASIOExecutor::OnTimerCallback(const std::error_code& ec, TimerASIO* apTimer, const openpal::Runnable& runnable)
 {
 	--mNumActiveTimers;
 	mIdleTimers.push_back(apTimer);
 	if (!(ec || apTimer->canceled))
 	{
-		aCallback();
+		runnable.Run();
 	}
 }
 

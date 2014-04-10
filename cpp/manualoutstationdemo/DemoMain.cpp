@@ -18,18 +18,16 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include <opendnp3/DNP3Manager.h>
 
-#include <opendnp3/outstation/OutstationStackConfig.h>
-#include <opendnp3/outstation/SimpleCommandHandler.h>
-#include <opendnp3/outstation/TimeTransaction.h>
-#include <opendnp3/outstation/ITimeWriteHandler.h>
+
 #include <opendnp3/link/LinkLayerRouter.h>
 #include <opendnp3/outstation/Outstation.h>
-#include <opendnp3/app/ApplicationStack.h>
-#include <opendnp3/outstation/DynamicallyAllocatedDatabase.h>
+#include <opendnp3/transport/TransportStack.h>
+#include <opendnp3/outstation/StaticallyAllocatedDatabase.h>
+#include <opendnp3/outstation/StaticallyAllocatedEventBuffer.h>
+#include <opendnp3/outstation/NewOutstation.h>
 #include <opendnp3/LogLevels.h>
-#include <opendnp3/LogLevelInterpreter.h>
+#include <opendnp3/outstation/SimpleCommandHandler.h>
 
 #include <asiopal/Log.h>
 #include <asiopal/LogToStdio.h>
@@ -49,32 +47,41 @@ using namespace asiopal;
 
 int main(int argc, char* argv[])
 {
+	cout << sizeof(TransportLayer) << " - TL " << endl;
+	cout << sizeof(LinkLayer) << " - LL " << endl;
+	cout << sizeof(NewOutstation) << " - NO " << endl;
 
 	// Specify a LogLevel for the stack/physical layer to use.
 	// Log statements with a lower priority will not be logged.
-	const uint32_t LOG_LEVEL = flags::ALL;
+	const uint32_t FILTERS = levels::ALL;
+	
+	LogToStdio iologger;	
 
-	//A default logging backend that can proxy to multiple other backends
-	EventLog log;
-	LogToStdio::Inst()->SetLevelInterpreter(&AllFlags);
-	log.AddLogSubscriber(LogToStdio::Inst()); // This singleton logger just prints messages to the console
+	openpal::LogRoot root(&iologger, "server", FILTERS);
 
 	asio::io_service service;
 	asio::io_service::strand strand(service);
 	asiopal::ASIOExecutor executor(&strand);
 
-	LinkRoute route(1, 1024);
+	PhysicalLayerAsyncTCPServer server(root, &service, "0.0.0.0", 20000);
+	LinkLayerRouter router(root, &server, TimeDuration::Seconds(1), TimeDuration::Seconds(60));
+	
+	LinkConfig config(false, false);
+	TransportStack stack(root, &executor, config);
 
-	PhysicalLayerAsyncTCPServer server(LogConfig(&log, LOG_LEVEL, "tcpserver"), &service, "127.0.0.1", 20000);
-	LinkLayerRouter router(server.GetLogger().GetSubLogger("router"), &server, TimeDuration::Seconds(1), TimeDuration::Seconds(60));
-	ApplicationStack stack(server.GetLogger().GetSubLogger("root"), &executor, AppConfig(false), LinkConfig(false, false));
+	StaticallyAllocatedDatabase<5, 5, 5, 5, 5, 5, 5> staticBuffers;
+	StaticallyAllocatedEventBuffer<10, 10, 10, 10, 10, 10, 10> eventBuffers;
+
+	Database database(staticBuffers.GetFacade());
+
+	SimpleCommandHandler commandHandler(CommandStatus::SUCCESS);
+
+	NewOutstation outstation(executor, root, stack.transport, commandHandler, database, eventBuffers.GetFacade());
+
+	stack.transport.SetAppLayer(&outstation);
+
 	stack.link.SetRouter(&router);
-	router.AddContext(&stack.link, route);
-
-	DynamicallyAllocatedDatabase dadb(DatabaseTemplate::AllTypes(5));
-	Database database(dadb.GetFacade());
-	Outstation outstation(server.GetLogger().GetSubLogger("outstation"), &stack.application, &executor, NullTimeWriteHandler::Inst(), &database, SuccessCommandHandler::Inst(), OutstationConfig());
-	stack.application.SetUser(&outstation);
+	router.AddContext(&stack.link, LinkRoute(1, 1024));
 
 	router.Enable(&stack.link);
 

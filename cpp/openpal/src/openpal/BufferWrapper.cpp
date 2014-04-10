@@ -18,13 +18,20 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include <openpal/BufferWrapper.h>
+#include "BufferWrapper.h"
 
+#include "Configure.h"
 #include <cstring>
 #include <assert.h>
 
 namespace openpal
 {
+
+ReadOnlyBuffer ReadOnlyBuffer::Empty()
+{
+	return ReadOnlyBuffer();
+}
+
 ReadOnlyBuffer::ReadOnlyBuffer(): HasSize(0), mpBuffer(nullptr)
 {}
 
@@ -61,11 +68,11 @@ bool ReadOnlyBuffer::Equals(const ReadOnlyBuffer& rhs) const
 	}
 }
 
-void ReadOnlyBuffer::Advance(uint32_t aNum)
+void ReadOnlyBuffer::Advance(uint32_t count)
 {
-	assert(aNum <= size);
-	mpBuffer += aNum;
-	size -= aNum;
+	assert(count <= size);
+	mpBuffer += count;
+	size -= count;
 }
 
 WriteBuffer WriteBuffer::Empty()

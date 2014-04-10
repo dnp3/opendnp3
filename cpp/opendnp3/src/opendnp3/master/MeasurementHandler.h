@@ -21,7 +21,7 @@
 #ifndef __MEASUREMENT_HANDLER_H_
 #define __MEASUREMENT_HANDLER_H_
 
-#include <openpal/Loggable.h>
+#include <openpal/Logger.h>
 
 #include "opendnp3/master/ISOEHandler.h"
 #include "opendnp3/app/APDUHandlerBase.h"
@@ -41,7 +41,7 @@ public:
 	*
 	* @param arLogger	the Logger that the loader should use for message reporting
 	*/
-	MeasurementHandler(openpal::Logger& arLogger, ISOEHandler* pSOEHandler);
+	MeasurementHandler(const openpal::Logger& logger, ISOEHandler* pSOEHandler);
 
 	void _OnRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<Binary, uint16_t>>& meas) override final;
 	void _OnRange(const HeaderRecord& record, const IterableBuffer<IndexedValue<DoubleBitBinary, uint16_t>>& meas) override final;

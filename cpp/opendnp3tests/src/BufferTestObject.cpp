@@ -25,6 +25,7 @@
 #include <memory>
 
 #include "Exception.h"
+#include "HexConversions.h"
 
 #include <openpal/Location.h>
 #include <openpal/ToHex.h>
@@ -83,7 +84,7 @@ std::string BufferTestObject::GetBufferAsHexString(bool spaced) const
 {
 	CopyableBuffer buffer(static_cast<uint32_t>(mBuffer.size()));
 	for(size_t i = 0; i < mBuffer.size(); ++i) buffer[i] = mBuffer[i];
-	return toHex(buffer, buffer.Size(), spaced);
+	return toHex(buffer.ToReadOnly(), spaced);
 }
 
 

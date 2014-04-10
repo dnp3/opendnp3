@@ -14,7 +14,7 @@ LogAdapter::LogAdapter(ILogHandler^ proxy) : proxy(proxy)
 // logging error messages, etc
 void LogAdapter::Log( const openpal::LogEntry& arEntry )
 {
-	System::String^ loggerName = Conversions::convertString(arEntry.GetName());
+	System::String^ loggerName = Conversions::convertString(arEntry.GetId());
 	System::String^ location = Conversions::convertString(arEntry.GetLocation());
 	System::String^ message = Conversions::convertString(arEntry.GetMessage());
 

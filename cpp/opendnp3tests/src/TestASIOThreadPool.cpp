@@ -46,13 +46,13 @@ using namespace asiopal;
 TEST_CASE(SUITE("CleanConstructionDestruction"))
 {
 	EventLog log;
-	IOServiceThreadPool pool(&log, levels::NORMAL, "pool", 4);
+	IOServiceThreadPool pool(&log, levels::NORMAL, 4);
 }
 
 TEST_CASE(SUITE("ThreadPoolShutsdownCleanlyEvenIfALotOfWorkIsSubmitted"))
 {
 	EventLog log;
-	IOServiceThreadPool pool(&log, levels::NORMAL, "pool", 4);
+	IOServiceThreadPool pool(&log, levels::NORMAL, 4);
 	for(size_t i = 0; i < 100000; ++i) pool.GetIOService()->post([]() {});
 }
 
@@ -60,7 +60,7 @@ TEST_CASE(SUITE("ThreadPoolShutsdownCleanlyEvenIfALotOfWorkIsSubmitted"))
 TEST_CASE(SUITE("StrandsSequenceCallbacksViaStrandPost"))
 {
 	EventLog log;
-	IOServiceThreadPool pool(&log, levels::NORMAL, "pool", 8);
+	IOServiceThreadPool pool(&log, levels::NORMAL, 8);
 
 	size_t iterations = 100000;
 
@@ -80,7 +80,7 @@ TEST_CASE(SUITE("StrandsSequenceCallbacksViaStrandPost"))
 TEST_CASE(SUITE("StrandsSequenceCallbacksViaStrandWrap"))
 {
 	EventLog log;
-	IOServiceThreadPool pool(&log, levels::NORMAL, "pool", 8);
+	IOServiceThreadPool pool(&log, levels::NORMAL, 8);
 	size_t iterations = 100000;
 
 	io_service* pService = pool.GetIOService();
@@ -98,26 +98,39 @@ TEST_CASE(SUITE("StrandsSequenceCallbacksViaStrandWrap"))
 	REQUIRE(iterations ==  count1);
 }
 
+struct Count
+{
+	Count() : count(0)
+	{}	
+
+	uint32_t count;
+};
+
 TEST_CASE(SUITE("ExecutorPauseGuardsRaceConditions"))
 {
 	EventLog log;
-	IOServiceThreadPool pool(&log, levels::NORMAL, "pool", 8);
+	IOServiceThreadPool pool(&log, levels::NORMAL, 8);
 	size_t iterations = 100000;
 
 	asio::strand strand(*pool.GetIOService());
 	ASIOExecutor exe(&strand);
 
 	int count = 0;
-	auto increment = [&]()
+	auto pCount = &count;
+	
+
+	auto increment = [pCount]()
 	{
-		int i = count;
+		uint32_t value = *pCount;
 		std::this_thread::sleep_for(std::chrono::milliseconds(1));
-		count = i + 1;
+		*pCount = value + 1;
 	};
+
+	auto runnable = Bind(increment);
 
 	for(size_t i = 0; i < 100; ++i)   //try to cause a race condition between the Post and the Pause
 	{
-		exe.Post(increment);
+		exe.Post(runnable);
 		ExecutorPause p1(&exe);
 		increment();
 	}
@@ -130,23 +143,25 @@ TEST_CASE(SUITE("ExecutorPauseGuardsRaceConditions"))
 TEST_CASE(SUITE("ExecutorPauseIsIgnoredIfOnStrand"))
 {
 	EventLog log;
-	IOServiceThreadPool pool(&log, levels::NORMAL, "pool", 1);
+	IOServiceThreadPool pool(&log, levels::NORMAL, 1);
 	uint32_t iterations = 10;
 
 	asio::strand strand(*pool.GetIOService());
 	ASIOExecutor exe(&strand);
 
 	uint32_t count = 0;
+	auto pCount = &count;
+	auto pExe = &exe;
 
-	auto pause = [&]()
+	auto pause = [pCount, pExe]()
 	{
-		ExecutorPause pause(&exe);
-		++count;
+		ExecutorPause pause(pExe);
+		++(*pCount);
 	};
 
 	for (uint32_t i = 0; i < iterations; ++i)
 	{
-		exe.Post(pause);
+		exe.PostLambda(pause);
 	}
 
 	pool.Shutdown();

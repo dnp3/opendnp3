@@ -21,8 +21,6 @@
 #ifndef __COUNT_WRITE_ITERATOR_H_
 #define __COUNT_WRITE_ITERATOR_H_
 
-#include <limits>
-
 #include <openpal/BufferWrapper.h>
 #include <openpal/ISerializer.h>
 

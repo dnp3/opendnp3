@@ -20,16 +20,15 @@
  */
 #include "AppChannelStates.h"
 
-#include <openpal/LoggableMacros.h>
+#include <openpal/LogMacros.h>
 #include <openpal/IExecutor.h>
+#include <openpal/Bind.h>
 
 #include "opendnp3/Singleton.h"
 #include "opendnp3/DNPErrorCodes.h"
 #include "opendnp3/app/AppLayerChannel.h"
 #include "opendnp3/LogLevels.h"
 
-#include <string>
-#include <sstream>
 
 using namespace openpal;
 
@@ -40,39 +39,37 @@ namespace opendnp3
 
 void ACS_Base::Send(AppLayerChannel* c, APDUWrapper&, uint32_t)
 {
-	LOGGER_BLOCK(c->logger, flags::ERR, "Invalid action for state: " << this->Name());
+	FORMAT_LOG_BLOCK(c->logger, flags::ERR, "Invalid action for state %s", this->Name());
 }
 
 void ACS_Base::Cancel(AppLayerChannel* c)
 {
-	LOGGER_BLOCK(c->logger, flags::ERR, "Invalid action for state: " << this->Name());
+	FORMAT_LOG_BLOCK(c->logger, flags::ERR, "Invalid action for state %s", this->Name());
 }
 
 void ACS_Base::OnSendSuccess(AppLayerChannel* c)
 {
-	LOGGER_BLOCK(c->logger, flags::ERR, "Invalid action for state: " << this->Name());
+	FORMAT_LOG_BLOCK(c->logger, flags::ERR, "Invalid action for state %s", this->Name());
 }
 
 void ACS_Base::OnSendFailure(AppLayerChannel* c)
 {
-	LOGGER_BLOCK(c->logger, flags::ERR, "Invalid action for state: " << this->Name());
+	FORMAT_LOG_BLOCK(c->logger, flags::ERR, "Invalid action for state %s", this->Name());
 }
 
-void ACS_Base::OnConfirm(AppLayerChannel* c, uint8_t aSeq)
+void ACS_Base::OnConfirm(AppLayerChannel* c, uint8_t seq)
 {
-	ERROR_LOGGER_BLOCK(c->GetLogger(), flags::WARN,
-	                   "Unexpected confirm with sequence: " << static_cast<int>(aSeq), ALERR_UNEXPECTED_CONFIRM);
+	FORMAT_LOG_BLOCK_WITH_CODE(c->logger, flags::ERR, ALERR_UNEXPECTED_CONFIRM, "Unexpected confirm with sequence: %i", seq);
 }
 
 void ACS_Base::OnResponse(AppLayerChannel* c, const APDUResponseRecord& rsp)
 {
-	LOGGER_BLOCK(c->GetLogger(), flags::WARN,
-	             "Unexpected response with sequence: " << static_cast<int>(rsp.control.SEQ));
+	FORMAT_LOG_BLOCK(c->logger, flags::ERR, "Invalid action for state %s", this->Name());
 }
 
 void ACS_Base::OnTimeout(AppLayerChannel* c)
 {
-	LOGGER_BLOCK(c->logger, flags::ERR, "Invalid action for state: " << this->Name());
+	FORMAT_LOG_BLOCK(c->logger, flags::ERR, "Invalid action for state %s", this->Name());
 }
 
 void ACS_Base::ProcessResponse(AppLayerChannel* c, const APDUResponseRecord& record, bool aExpectFIR)
@@ -98,12 +95,12 @@ void ACS_Base::ProcessResponse(AppLayerChannel* c, const APDUResponseRecord& rec
 		}
 		else
 		{
-			ERROR_LOGGER_BLOCK(c->GetLogger(), flags::WARN, "Unexpected fir bit " << record.control.FIR, ALERR_BAD_FIR_FIN);
+			FORMAT_LOG_BLOCK_WITH_CODE(c->GetLogger(), flags::WARN, ALERR_BAD_FIR_FIN, "Unexpected fir bit %i", record.control.FIR);
 		}
 	}
 	else
-	{
-		ERROR_LOGGER_BLOCK(c->GetLogger(), flags::WARN, "Bad sequence number " << static_cast<int>(record.control.SEQ), ALERR_BAD_SEQUENCE);
+	{	
+		FORMAT_LOG_BLOCK_WITH_CODE(c->GetLogger(), flags::WARN, ALERR_BAD_SEQUENCE, "Bad sequence number: %i", record.control.SEQ);		
 	}
 }
 
@@ -116,14 +113,12 @@ void ACS_Idle::Send(AppLayerChannel* c, APDUWrapper& apdu, uint32_t aNumRetry)
 	AppControlField acf = apdu.GetControl();
 	FunctionCode func = apdu.GetFunction();
 	acf.SEQ = (acf.FIR && func == FunctionCode::RESPONSE) ? c->Sequence() : c->IncrSequence();
-	apdu.SetControl(acf);
+	apdu.SetControl(acf.ToByte());
 	auto pNext = NextState(c, func, acf.CON);
 	if (pNext == this)
 	{
-		c->mpExecutor->Post([c]()
-		{
-			c->DoFailure();
-		});
+		auto lambda = [c]() { c->DoFailure(); };
+		c->mpExecutor->Post(Bind(lambda));
 	}
 	else
 	{
@@ -139,12 +134,12 @@ ACS_Base* ACS_Idle::NextState(AppLayerChannel* c, FunctionCode aFunc, bool aConf
 	switch(aFunc)
 	{
 	case(FunctionCode::CONFIRM) :
-		LOGGER_BLOCK(c->logger, flags::ERR, "Cannot send a confirm manually");
+		SIMPLE_LOG_BLOCK(c->logger, flags::ERR, "Cannot send a confirm manually");
 		return this;
 	case(FunctionCode::RESPONSE):
 		if(c->Sequence() < 0)
 		{
-			LOGGER_BLOCK(c->logger, flags::ERR, "Can't respond until we've received a request");
+			SIMPLE_LOG_BLOCK(c->logger, flags::ERR, "Can't respond until we've received a request");
 			return this;
 		}
 		else
@@ -159,14 +154,14 @@ ACS_Base* ACS_Idle::NextState(AppLayerChannel* c, FunctionCode aFunc, bool aConf
 	case(FunctionCode::DIRECT_OPERATE_NO_ACK):
 		if(aConfirm)
 		{
-			LOGGER_BLOCK(c->logger, flags::ERR, "DO no ACK can't be confirmed");
+			SIMPLE_LOG_BLOCK(c->logger, flags::ERR, "DO no ACK can't be confirmed");
 		}
 		return ACS_Send::Inst();
 
 	default:	// it's a request with an expected response
 		if(aConfirm)
 		{
-			LOGGER_BLOCK(c->logger, flags::ERR, "Confirmation not allowed for requests");
+			SIMPLE_LOG_BLOCK(c->logger, flags::ERR, "Confirmation not allowed for requests");
 		}
 		return ACS_SendExpectResponse::Inst();
 	}
@@ -256,15 +251,14 @@ void ACS_WaitForConfirm::OnConfirm(AppLayerChannel* c, uint8_t seq)
 	}
 	else
 	{
-		ERROR_LOGGER_BLOCK(c->GetLogger(), flags::WARN,
-		                   "Unexpected confirm w/ sequence " << static_cast<int>(seq), ALERR_UNEXPECTED_CONFIRM);
+		FORMAT_LOG_BLOCK_WITH_CODE(c->GetLogger(), flags::WARN, ALERR_UNEXPECTED_CONFIRM, "Unexpected confirm w/ sequence %i", seq);
 	}
 
 }
 
 void ACS_WaitForConfirm::OnTimeout(AppLayerChannel* c)
 {
-	LOGGER_BLOCK(c->GetLogger(), flags::WARN, "Timeout while waiting for confirm");
+	SIMPLE_LOG_BLOCK(c->GetLogger(), flags::WARN, "Timeout while waiting for confirm");
 	if(!c->Retry(ACS_SendConfirmed::Inst()))
 	{
 		c->ChangeState(ACS_Idle::Inst());
@@ -276,7 +270,7 @@ void ACS_WaitForConfirm::OnTimeout(AppLayerChannel* c)
 
 void ACS_WaitForResponseBase::OnTimeout(AppLayerChannel* c)
 {
-	LOGGER_BLOCK(c->GetLogger(), flags::WARN, "Timeout while waiting for response");
+	SIMPLE_LOG_BLOCK(c->GetLogger(), flags::WARN, "Timeout while waiting for response");
 	if(!c->Retry(ACS_SendExpectResponse::Inst()))
 	{
 		c->ChangeState(ACS_Idle::Inst());

@@ -20,8 +20,9 @@
  */
 #include "AppLayer.h"
 
-#include <openpal/LoggableMacros.h>
+#include <openpal/LogMacros.h>
 #include <openpal/IExecutor.h>
+#include <openpal/LogRoot.h>
 
 #include "opendnp3/DNPErrorCodes.h"
 #include "opendnp3/LogLevels.h"
@@ -35,17 +36,17 @@ using namespace std;
 namespace opendnp3
 {
 
-AppLayer::AppLayer(const openpal::Logger& logger, openpal::IExecutor* pExecutor_, const AppConfig& appConfig) :
-	Loggable(logger),
+AppLayer::AppLayer(openpal::LogRoot& root, openpal::IExecutor* pExecutor_, const AppConfig& config) :
+	logger(root.GetLogger(sources::APP_LAYER)),
 	isOnline(false),
 	isSending(false),
 	isConfirmSending(false),
-	isMaster(appConfig.IsMaster),
-	mpUser(nullptr),
+	isMaster(config.IsMaster),
+	pUser(nullptr),
 	pTransportLayer(nullptr),
-	mSolicited(logger.GetSubLogger("sol"), this, pExecutor_, appConfig.RspTimeout),
-	mUnsolicited(logger.GetSubLogger("unsol"), this, pExecutor_, appConfig.RspTimeout),
-	numRetry(appConfig.NumRetry),
+	solicited(logger, this, pExecutor_, config.RspTimeout),
+	unsolicited(logger, this, pExecutor_, config.RspTimeout),
+	numRetry(config.NumRetry),
 	confirmAPDU(openpal::WriteBuffer(confirmBuffer, 2))
 {
 	confirmAPDU.SetFunction(FunctionCode::CONFIRM);
@@ -53,9 +54,9 @@ AppLayer::AppLayer(const openpal::Logger& logger, openpal::IExecutor* pExecutor_
 
 void AppLayer::SetUser(IAppUser* apUser)
 {
-	assert(mpUser == nullptr);
+	assert(pUser == nullptr);
 	assert(apUser != nullptr);
-	mpUser = apUser;
+	pUser = apUser;
 }
 
 void AppLayer::SetTransportLayer(openpal::ILowerLayer* pTransportLayer_)
@@ -71,22 +72,22 @@ void AppLayer::SetTransportLayer(openpal::ILowerLayer* pTransportLayer_)
 
 void AppLayer::SendResponse(APDUResponse& apdu)
 {
-	mSolicited.Send(apdu, this->GetRetries(FunctionCode::RESPONSE));
+	solicited.Send(apdu, this->GetRetries(FunctionCode::RESPONSE));
 }
 
 void AppLayer::SendUnsolicited(APDUResponse& apdu)
 {
-	mUnsolicited.Send(apdu, this->GetRetries(FunctionCode::UNSOLICITED_RESPONSE));
+	unsolicited.Send(apdu, this->GetRetries(FunctionCode::UNSOLICITED_RESPONSE));
 }
 
 void AppLayer::SendRequest(APDURequest& apdu)
 {
-	mSolicited.Send(apdu, this->GetRetries(apdu.GetFunction()));
+	solicited.Send(apdu, this->GetRetries(apdu.GetFunction()));
 }
 
 void AppLayer::CancelResponse()
 {
-	mSolicited.Cancel();
+	solicited.Cancel();
 }
 
 ////////////////////
@@ -115,7 +116,7 @@ void AppLayer::OnReceive(const ReadOnlyBuffer& apdu)
 					this->OnUnsolResponse(record);
 					break;
 				default:
-					LOG_BLOCK(flags::WARN, "Unexpected function code for master: " << FunctionCodeToString(record.function));
+					FORMAT_LOG_BLOCK(logger, flags::WARN, "Unexpected function code for master: %s", FunctionCodeToString(record.function));
 					break;
 				}
 			}
@@ -142,7 +143,7 @@ void AppLayer::OnReceive(const ReadOnlyBuffer& apdu)
 	}
 	else
 	{
-		LOG_BLOCK(flags::ERR, "Layer is not up");
+		SIMPLE_LOG_BLOCK(logger, flags::ERR, "Layer is not up");
 	}
 }
 
@@ -151,10 +152,10 @@ void AppLayer::LogParseError(APDUHeaderParser::Result error, bool aIsResponse)
 	switch(error)
 	{
 	case(APDUHeaderParser::Result::NOT_ENOUGH_DATA_FOR_HEADER):
-		ERROR_BLOCK(flags::ERR, "Not enough data for header while parsing " << (aIsResponse ? "respose" : "request"), ALERR_INSUFFICIENT_DATA_FOR_FRAG);
+		FORMAT_LOG_BLOCK_WITH_CODE(logger, flags::ERR, ALERR_INSUFFICIENT_DATA_FOR_FRAG, "Not enough data for header while parsing %s", (aIsResponse ? "respose" : "request"));
 		break;
 	default:
-		LOG_BLOCK(flags::ERR, "Unspecified parse error");
+		SIMPLE_LOG_BLOCK(logger, flags::ERR, "Unspecified parse error");
 		break;
 	}
 }
@@ -163,12 +164,12 @@ void AppLayer::OnLowerLayerUp()
 {
 	if (isOnline)
 	{
-		LOG_BLOCK(flags::ERR, "Layer is already online");
+		SIMPLE_LOG_BLOCK(logger, flags::ERR, "Layer is already online");
 	}
 	else
 	{
 		isOnline = true;
-		mpUser->OnLowerLayerUp();
+		pUser->OnLowerLayerUp();
 	}
 }
 
@@ -179,19 +180,19 @@ void AppLayer::OnLowerLayerDown()
 		isOnline = false;
 
 		//reset both the channels
-		mSolicited.Reset();
-		mUnsolicited.Reset();
+		solicited.Reset();
+		unsolicited.Reset();
 
 		//reset the transmitter state
 		sendQueue.Clear();
 		isSending = false;
 
 		//notify the user
-		mpUser->OnLowerLayerDown();
+		pUser->OnLowerLayerDown();
 	}
 	else
 	{
-		LOG_BLOCK(flags::ERR, "Layer is not online");
+		SIMPLE_LOG_BLOCK(logger, flags::ERR, "Layer is not online");
 	}
 }
 
@@ -214,13 +215,25 @@ void AppLayer::OnSendResult(bool isSuccess)
 		{
 			if (isSuccess)
 			{
-				if (function == FunctionCode::UNSOLICITED_RESPONSE) mUnsolicited.OnSendSuccess();
-				else mSolicited.OnSendSuccess();
+				if (function == FunctionCode::UNSOLICITED_RESPONSE)
+				{
+					unsolicited.OnSendSuccess();
+				}
+				else
+				{
+					solicited.OnSendSuccess();
+				}
 			}
 			else
 			{
-				if (function == FunctionCode::UNSOLICITED_RESPONSE) mUnsolicited.OnSendFailure();
-				else mSolicited.OnSendFailure();
+				if (function == FunctionCode::UNSOLICITED_RESPONSE)
+				{
+					unsolicited.OnSendFailure();
+				}
+				else
+				{
+					solicited.OnSendFailure();
+				}
 			}
 		}
 
@@ -228,7 +241,7 @@ void AppLayer::OnSendResult(bool isSuccess)
 	}
 	else
 	{
-		LOG_BLOCK(flags::ERR, "Layer is not sending");
+		SIMPLE_LOG_BLOCK(logger, flags::ERR, "Layer is not sending");
 	}
 }
 
@@ -240,19 +253,19 @@ void AppLayer::OnResponse(const APDUResponseRecord& record)
 {
 	if(record.control.UNS)
 	{
-		ERROR_BLOCK(flags::WARN, "Bad unsol bit", ALERR_BAD_UNSOL_BIT);
+		SIMPLE_LOG_BLOCK_WITH_CODE(logger, flags::WARN, ALERR_BAD_UNSOL_BIT, "Bad unsol bit");
 	}
 	else
 	{
 		// If we get a response that requests confirmation, we shouldn't confirm
 		// if we're not going to handle the data. This is usually indicative of an
 		// early timeout. It will show up in the logs as a response without context.
-		if(record.control.CON && mSolicited.AcceptsResponse())
+		if(record.control.CON && solicited.AcceptsResponse())
 		{
 			this->QueueConfirm(false, record.control.SEQ);
 		}
 
-		mSolicited.OnResponse(record);
+		solicited.OnResponse(record);
 	}
 }
 
@@ -260,15 +273,17 @@ void AppLayer::OnUnsolResponse(const APDUResponseRecord& record)
 {
 	if(!record.control.UNS)
 	{
-		ERROR_BLOCK(flags::WARN, "Unsolicited response code with uns bit not set", ALERR_BAD_UNSOL_BIT);
+		SIMPLE_LOG_BLOCK_WITH_CODE(logger, flags::WARN, ALERR_BAD_UNSOL_BIT, "Unsolicited response code with uns bit not set");
 	}
 	else
 	{
 
-		if(record.control.CON)
+		if (record.control.CON)
+		{
 			this->QueueConfirm(true, record.control.SEQ);
+		}
 
-		mUnsolicited.OnUnsol(record);
+		unsolicited.OnUnsol(record);
 	}
 
 
@@ -278,7 +293,7 @@ void AppLayer::OnConfirm(const AppControlField& aControl, uint32_t aDataSize)
 {
 	if(aDataSize > 0)
 	{
-		LOG_BLOCK(flags::WARN, "Unexpected payload in confirm of size: " << aDataSize);
+		FORMAT_LOG_BLOCK(logger, flags::WARN, "Unexpected payload in confirm of size: %u", static_cast<unsigned int>(aDataSize));
 	}
 	else
 	{
@@ -286,16 +301,16 @@ void AppLayer::OnConfirm(const AppControlField& aControl, uint32_t aDataSize)
 		{
 			if(isMaster)
 			{
-				ERROR_BLOCK(flags::ERR, "Unexpcted confirm for master", ALERR_UNEXPECTED_CONFIRM)
+				SIMPLE_LOG_BLOCK_WITH_CODE(logger, flags::ERR, ALERR_UNEXPECTED_CONFIRM, "Unexpcted confirm for master")
 			}
 			else
 			{
-				mUnsolicited.OnConfirm(aControl.SEQ);
+				unsolicited.OnConfirm(aControl.SEQ);
 			}
 		}
 		else
 		{
-			mSolicited.OnConfirm(aControl.SEQ);
+			solicited.OnConfirm(aControl.SEQ);
 		}
 	}
 }
@@ -304,17 +319,17 @@ void AppLayer::OnRequest(const APDURecord& record)
 {
 	if(record.control.UNS)
 	{
-		ERROR_BLOCK(flags::WARN, "Received request with UNS bit", ALERR_BAD_UNSOL_BIT);
+		SIMPLE_LOG_BLOCK_WITH_CODE(logger, flags::WARN, ALERR_BAD_UNSOL_BIT, "Received request with UNS bit");
 	}
 	else
 	{
 		if (record.control.IsFirAndFin())
 		{
-			mSolicited.OnRequest(record);
+			solicited.OnRequest(record);
 		}
 		else
 		{
-			ERROR_BLOCK(flags::WARN,  "Received non FIR/FIN request", ALERR_MULTI_FRAGEMENT_REQUEST);
+			SIMPLE_LOG_BLOCK_WITH_CODE(logger, flags::WARN, ALERR_MULTI_FRAGEMENT_REQUEST, "Received non FIR/FIN request");
 		}
 	}
 }
@@ -327,13 +342,13 @@ void AppLayer::QueueConfirm(bool aUnsol, int aSeq)
 {
 	if(isConfirmSending)
 	{
-		ERROR_BLOCK(flags::WARN, "Confirm request flood, ignoring confirm", aUnsol ? ALERR_UNSOL_FLOOD : ALERR_SOL_FLOOD);
+		SIMPLE_LOG_BLOCK_WITH_CODE(logger, flags::WARN, aUnsol ? ALERR_UNSOL_FLOOD : ALERR_SOL_FLOOD, "Confirm request flood, ignoring confirm");
 	}
 	else
 	{
 		isConfirmSending = true;
 		AppControlField acf(true, true, false, aUnsol, aSeq);
-		confirmAPDU.SetControl(acf);
+		confirmAPDU.SetControl(acf.ToByte());
 		this->QueueFrame(confirmAPDU);
 	}
 }
@@ -350,9 +365,8 @@ void AppLayer::CheckForSend()
 {
 	if(!isSending && sendQueue.Size() > 0)
 	{
-		isSending = true;
-		//LOG_BLOCK(flags::INTERPRET, "=> AL " << pAPDU->ToString()); TODO - replace outgoing logging
-		pTransportLayer->Send(sendQueue.Peek().ToReadOnly());
+		isSending = true;		
+		pTransportLayer->BeginTransmit(sendQueue.Peek().ToReadOnly());
 	}
 }
 

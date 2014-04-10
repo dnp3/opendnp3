@@ -43,8 +43,14 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "opendnp3tests", "cpp\opendnp3tests\opendnp3tests.vcxproj", "{48FCDDA5-D113-4A14-8C00-C3E33C89ACD7}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "masterdemo", "cpp\masterdemo\masterdemo.vcxproj", "{082C5022-AFD9-47D2-B53D-DAE3C6BD87F4}"
+	ProjectSection(ProjectDependencies) = postProject
+		{65495BE1-485C-4A8C-8C58-06C9A532D9CE} = {65495BE1-485C-4A8C-8C58-06C9A532D9CE}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "outstationdemo", "cpp\outstationdemo\outstationdemo.vcxproj", "{E395DDB8-33CD-4AC4-8EA3-6363AFF2A831}"
+	ProjectSection(ProjectDependencies) = postProject
+		{65495BE1-485C-4A8C-8C58-06C9A532D9CE} = {65495BE1-485C-4A8C-8C58-06C9A532D9CE}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "apdufuzz", "cpp\apdufuzz\apdufuzz.vcxproj", "{8A27E03D-8D08-441A-92E4-6FC614FDA5D0}"
 EndProject
@@ -258,6 +264,7 @@ Global
 		{3F37F3EB-7DF9-47BA-A490-85932F38F6C7}.Debug|Win32.ActiveCfg = Debug|Win32
 		{3F37F3EB-7DF9-47BA-A490-85932F38F6C7}.Debug|Win32.Build.0 = Debug|Win32
 		{3F37F3EB-7DF9-47BA-A490-85932F38F6C7}.Debug|x64.ActiveCfg = Debug|x64
+		{3F37F3EB-7DF9-47BA-A490-85932F38F6C7}.Debug|x64.Build.0 = Debug|x64
 		{3F37F3EB-7DF9-47BA-A490-85932F38F6C7}.Release|Any CPU.ActiveCfg = Release|Win32
 		{3F37F3EB-7DF9-47BA-A490-85932F38F6C7}.Release|Mixed Platforms.ActiveCfg = Release|Win32
 		{3F37F3EB-7DF9-47BA-A490-85932F38F6C7}.Release|Mixed Platforms.Build.0 = Release|Win32
@@ -271,12 +278,14 @@ Global
 		{0CEC0BE3-FEDB-4B14-A099-402FCF68E5DC}.Debug|Win32.ActiveCfg = Debug|Win32
 		{0CEC0BE3-FEDB-4B14-A099-402FCF68E5DC}.Debug|Win32.Build.0 = Debug|Win32
 		{0CEC0BE3-FEDB-4B14-A099-402FCF68E5DC}.Debug|x64.ActiveCfg = Debug|x64
+		{0CEC0BE3-FEDB-4B14-A099-402FCF68E5DC}.Debug|x64.Build.0 = Debug|x64
 		{0CEC0BE3-FEDB-4B14-A099-402FCF68E5DC}.Release|Any CPU.ActiveCfg = Release|Win32
 		{0CEC0BE3-FEDB-4B14-A099-402FCF68E5DC}.Release|Mixed Platforms.ActiveCfg = Release|Win32
 		{0CEC0BE3-FEDB-4B14-A099-402FCF68E5DC}.Release|Mixed Platforms.Build.0 = Release|Win32
 		{0CEC0BE3-FEDB-4B14-A099-402FCF68E5DC}.Release|Win32.ActiveCfg = Release|Win32
 		{0CEC0BE3-FEDB-4B14-A099-402FCF68E5DC}.Release|Win32.Build.0 = Release|Win32
-		{0CEC0BE3-FEDB-4B14-A099-402FCF68E5DC}.Release|x64.ActiveCfg = Release|Win32
+		{0CEC0BE3-FEDB-4B14-A099-402FCF68E5DC}.Release|x64.ActiveCfg = Release|x64
+		{0CEC0BE3-FEDB-4B14-A099-402FCF68E5DC}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

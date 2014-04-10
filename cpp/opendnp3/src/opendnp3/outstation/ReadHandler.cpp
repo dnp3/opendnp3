@@ -24,21 +24,21 @@
 namespace opendnp3
 {
 
-ReadHandler::ReadHandler(openpal::Logger& logger, ResponseContext& rspContext_) :
+ReadHandler::ReadHandler(openpal::Logger& logger, ResponseContext& rspContext) :
 	APDUHandlerBase(logger),
-	rspContext(rspContext_)
+	pRspContext(&rspContext)
 {
 
 }
 
 void ReadHandler::_AllObjects(const HeaderRecord& record)
 {
-	errors |= rspContext.ReadAllObjects(record);
+	errors |= pRspContext->ReadAllObjects(record);
 }
 
 void ReadHandler::_OnRangeRequest(const HeaderRecord& record, const StaticRange& range)
 {
-	errors |= rspContext.ReadRange(record, range);
+	errors |= pRspContext->ReadRange(record, range);
 }
 
 

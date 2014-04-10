@@ -20,29 +20,28 @@
  */
 #include "AppLayerChannel.h"
 
-#include <openpal/LoggableMacros.h>
+#include <openpal/LogMacros.h>
 #include <openpal/IExecutor.h>
+#include <openpal/Bind.h>
 
 #include "AppLayer.h"
 #include "AppChannelStates.h"
 #include "opendnp3/LogLevels.h"
 
 #include <assert.h>
-#include <functional>
 
 using namespace openpal;
 
 namespace opendnp3
 {
 
-AppLayerChannel::AppLayerChannel(const std::string& arName, openpal::Logger& arLogger, AppLayer* apAppLayer, IExecutor* apExecutor, TimeDuration aTimeout) :
-	Loggable(arLogger),
+AppLayerChannel::AppLayerChannel(const openpal::Logger& logger_, AppLayer* apAppLayer, IExecutor* apExecutor, TimeDuration aTimeout) :	
+	logger(logger_),
 	mpAppLayer(apAppLayer),
 	mNumRetry(0),
 	mpExecutor(apExecutor),
 	mpTimer(nullptr),
-	M_TIMEOUT(aTimeout),
-	M_NAME(arName)
+	M_TIMEOUT(aTimeout)	
 {
 	this->Reset();
 }
@@ -99,7 +98,7 @@ bool AppLayerChannel::Retry(ACS_Base* apState)
 	if(mNumRetry > 0)
 	{
 		--mNumRetry;
-		LOG_BLOCK(flags::INFO, "App layer retry, " << mNumRetry << " remaining");
+		FORMAT_LOG_BLOCK(logger, flags::INFO, "App layer retry, %u remaining", static_cast<unsigned int>(mNumRetry));
 		this->ChangeState(apState);
 		mpAppLayer->QueueFrame(mSendAPDU);
 		return true;
@@ -112,18 +111,19 @@ bool AppLayerChannel::Retry(ACS_Base* apState)
 
 void AppLayerChannel::DoPartialResponse(const APDUResponseRecord& record)
 {
-	mpAppLayer->mpUser->OnPartialResponse(record);
+	mpAppLayer->pUser->OnPartialResponse(record);
 }
 
 void AppLayerChannel::DoFinalResponse(const APDUResponseRecord& record)
 {
-	mpAppLayer->mpUser->OnFinalResponse(record);
+	mpAppLayer->pUser->OnFinalResponse(record);
 }
 
 void AppLayerChannel::StartTimer()
 {
 	assert(mpTimer == nullptr);
-	mpTimer = mpExecutor->Start(TimeDuration(M_TIMEOUT), std::bind(&AppLayerChannel::Timeout, this));
+	auto lambda = [this]() { this->Timeout(); };
+	mpTimer = mpExecutor->Start(TimeDuration(M_TIMEOUT), openpal::Bind(lambda));
 }
 
 void AppLayerChannel::CancelTimer()
@@ -137,7 +137,7 @@ void AppLayerChannel::ChangeState(ACS_Base* apState)
 {
 	if(apState != mpState)
 	{
-		LOG_BLOCK(flags::DEBUG, "State changed from " << mpState->Name() << " to " << apState->Name());
+		FORMAT_LOG_BLOCK(logger, flags::DBG, "State changed from %s to %s", mpState->Name(), apState->Name());
 		mpState = apState;
 	}
 }

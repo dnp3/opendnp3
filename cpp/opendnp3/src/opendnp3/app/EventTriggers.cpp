@@ -22,7 +22,6 @@
 #include "EventTriggers.h"
 
 #include <cmath>
-#include <limits>
 
 namespace opendnp3
 {
@@ -37,7 +36,7 @@ bool IsEvent(const TypedMeasurement<double>& newMeas, const TypedMeasurement<dou
 	else
 	{
 		double diff = fabs(newMeas.GetValue() - oldMeas.GetValue());
-		if (diff == std::numeric_limits<double>::infinity())
+		if (diff == INFINITY)
 		{
 			return true;
 		}

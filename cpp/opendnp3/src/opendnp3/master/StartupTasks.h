@@ -40,7 +40,7 @@ public:
 
 	void ConfigureRequest(APDURequest& request);
 
-	std::string Name() const
+	char const* Name() const
 	{
 		return "ClearRestartIIN";
 	}
@@ -56,7 +56,7 @@ public:
 
 	void ConfigureRequest(APDURequest& request);
 
-	std::string Name() const
+	char const* Name() const
 	{
 		return "ConfigureUnsol";
 	}
@@ -77,7 +77,7 @@ public:
 	void ConfigureRequest(APDURequest& request);
 	TaskResult _OnFinalResponse(const APDUResponseRecord&);
 
-	std::string Name() const
+	char const* Name() const
 	{
 		return "TimeSync";
 	}

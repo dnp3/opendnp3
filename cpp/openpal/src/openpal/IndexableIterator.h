@@ -21,6 +21,7 @@
 #ifndef __INDEXABLE_ITERATOR_H_
 #define __INDEXABLE_ITERATOR_H_
 
+#include "Configure.h"
 #include <assert.h>
 
 namespace openpal

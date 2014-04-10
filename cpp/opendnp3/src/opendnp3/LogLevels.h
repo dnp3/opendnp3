@@ -26,17 +26,25 @@
 
 namespace opendnp3
 {
+
+namespace sources
+{
+	const int LINK_LAYER = 1;
+	const int APP_LAYER = 2;
+	const int TRANSPORT_LAYER = 3;	
+}
+
 namespace flags
 {
 // define most of these in terms of the base openpal filters
-const int32_t EVENT = openpal::log::EVENT;
-const int32_t ERR = openpal::log::ERR;
-const int32_t WARN = openpal::log::WARN;
-const int32_t INFO = openpal::log::INFO;
-const int32_t DEBUG = openpal::log::DEBUG;
+const int32_t EVENT = openpal::logflags::EVENT;
+const int32_t ERR = openpal::logflags::ERR;
+const int32_t WARN = openpal::logflags::WARN;
+const int32_t INFO = openpal::logflags::INFO;
+const int32_t DBG = openpal::logflags::DBG;
 
 // upshift the custom dnp3 filters
-const int32_t INTERPRET = DEBUG << 1;
+const int32_t INTERPRET = DBG << 1;
 const int32_t COMM = INTERPRET << 1;
 }
 

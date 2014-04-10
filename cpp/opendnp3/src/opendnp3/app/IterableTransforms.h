@@ -32,27 +32,27 @@ template <class T, class U, class MapToU>
 class MappedIterableBuffer : public IterableBuffer<U>
 {
 public:
-	MappedIterableBuffer(const IterableBuffer<T>& aProxy, const MapToU& aMapFun) :
-		IterableBuffer<U>(aProxy.buffer, aProxy.count),
-		proxy(aProxy),
+	MappedIterableBuffer(const IterableBuffer<T>* pProxy_, const MapToU& aMapFun) :
+		IterableBuffer<U>(pProxy_->buffer, pProxy_->count),
+		pProxy(pProxy_),
 		mapFun(aMapFun)
 	{}
 
 protected:
 	virtual U ValueAt(openpal::ReadOnlyBuffer& buff, uint32_t pos) const final
 	{
-		return mapFun(proxy.ValueAt(buff, pos));
+		return mapFun(pProxy->ValueAt(buff, pos));
 	}
 
 private:
-	const IterableBuffer<T>& proxy;
+	const IterableBuffer<T>* pProxy;
 	MapToU mapFun;
 };
 
 template<class T, class U, class MapToU>
-MappedIterableBuffer<T, U, MapToU> MapIterableBuffer(const IterableBuffer<T>& iter, const MapToU& fun)
+MappedIterableBuffer<T, U, MapToU> MapIterableBuffer(const IterableBuffer<T>* pIter, const MapToU& fun)
 {
-	return MappedIterableBuffer<T, U, MapToU>(iter, fun);
+	return MappedIterableBuffer<T, U, MapToU>(pIter, fun);
 }
 
 }

@@ -27,7 +27,7 @@
 #include "opendnp3/DNPErrorCodes.h"
 #include "opendnp3/LogLevels.h"
 
-#include <openpal/LoggableMacros.h>
+#include <openpal/LogMacros.h>
 #include <openpal/IExecutor.h>
 
 #include "opendnp3/outstation/OutstationStates.h"
@@ -39,14 +39,12 @@
 #include "opendnp3/outstation/ConstantCommandAction.h"
 #include "opendnp3/outstation/CommandResponseHandler.h"
 
-#include <functional>
-
 using namespace openpal;
 
 namespace opendnp3
 {
 
-Outstation::Outstation(	openpal::Logger logger,
+Outstation::Outstation(openpal::LogRoot& root,
                         IAppLayer* pAppLayer,
                         IExecutor* pExecutor,
                         ITimeWriteHandler* pTimeWriteHandler,
@@ -54,8 +52,7 @@ Outstation::Outstation(	openpal::Logger logger,
                         const EventBufferFacade& buffers,
                         ICommandHandler* pCmdHandler,
                         const OutstationConfig& config) :
-	IAppUser(logger),
-	mpTimeWriteHandler(pTimeWriteHandler),
+	IAppUser(root),
 	selectBuffer(pExecutor, config.mSelectTimeout),
 	lastResponse(responseBuffer.GetWriteBuffer()),
 	pExecutor(pExecutor),
@@ -65,8 +62,9 @@ Outstation::Outstation(	openpal::Logger logger,
 	mpState(AS_Closed::Inst()),
 	mConfig(config),
 	mpUnsolTimer(nullptr),
+	mpTimeWriteHandler(pTimeWriteHandler),
 	eventBuffer(buffers),
-	rspContext(pDatabase, eventBuffer, StaticResponseTypes(config)),
+	rspContext(pDatabase, &eventBuffer, StaticResponseTypes(config)),
 	mDeferredUnsol(false),
 	mStartupNullUnsol(false),
 	mpTimeTimer(nullptr)
@@ -120,7 +118,7 @@ void Outstation::OnSolSendSuccess()
 void Outstation::OnSolFailure()
 {
 	mpState->OnSolFailure(this);
-	LOG_BLOCK(flags::WARN, "Response failure");
+	SIMPLE_LOG_BLOCK(logger, flags::WARN, "Response failure");
 }
 
 void Outstation::OnUnsolSendSuccess()
@@ -131,7 +129,7 @@ void Outstation::OnUnsolSendSuccess()
 void Outstation::OnUnsolFailure()
 {
 	mpState->OnUnsolFailure(this);
-	LOG_BLOCK(flags::WARN, "Unsol response failure");
+	SIMPLE_LOG_BLOCK(logger, flags::WARN, "Unsol response failure");
 }
 
 void Outstation::OnRequest(const APDURecord& record, SequenceInfo aSeqInfo)
@@ -157,7 +155,7 @@ void Outstation::OnUnsolTimerExpiration()
 
 void Outstation::ChangeState(OutstationStateBase* apState)
 {
-	LOG_BLOCK(flags::DEBUG, "State changed from " << mpState->Name() << " to " << apState->Name());
+	FORMAT_LOG_BLOCK(logger, flags::DBG, "State changed from %s to %s", mpState->Name(), apState->Name());
 	mpState = apState;
 	mpState->Enter(this);
 }
@@ -171,7 +169,7 @@ void Outstation::RespondToRequest(const APDURecord& record, SequenceInfo sequenc
 
 	APDUResponse response(responseBuffer.GetWriteBuffer(mConfig.mMaxFragSize));
 	response.SetFunction(FunctionCode::RESPONSE);
-	response.SetControl(AppControlField::DEFAULT);
+	response.SetControl(AppControlField::DEFAULT.ToByte());
 	auto indications = ConfigureResponse(record, sequence, response);
 	lastResponse = response;
 	this->SendResponse(response, indications);
@@ -194,7 +192,7 @@ IINField Outstation::ConfigureResponse(const APDURecord& request, SequenceInfo s
 	case(FunctionCode::DELAY_MEASURE):
 		return HandleDelayMeasure(request, sequence, response);
 	default:
-		ERROR_BLOCK(flags::WARN, "Function not supported: " << FunctionCodeToString(request.function), SERR_FUNC_NOT_SUPPORTED);
+		FORMAT_LOG_BLOCK_WITH_CODE(logger, flags::WARN, SERR_FUNC_NOT_SUPPORTED, "Function not supported: %s", FunctionCodeToString(request.function));
 		return IINField(IINBit::FUNC_NOT_SUPPORTED);
 	}
 }
@@ -225,7 +223,8 @@ IINField Outstation::HandleRead(const APDURecord& request, SequenceInfo sequence
 		// this ensures that an multi-fragmented responses see a consistent snapshot
 		openpal::Transaction tx(mpDatabase);
 		mpDatabase->DoubleBuffer(); // todo, make this optional?
-		rspContext.Load(response);
+		auto control = rspContext.Load(response);
+		response.SetControl(control.ToByte());
 		return handler.Errors();
 	}
 	else
@@ -242,7 +241,7 @@ IINField Outstation::HandleSelect(const APDURecord& request, SequenceInfo sequen
 	// an exact echo the requests with status fields changed.
 	if(request.objects.Size() > response.Remaining())
 	{
-		LOG_BLOCK(flags::WARN, "Igonring command request due to payload size of " << request.objects.Size());
+		FORMAT_LOG_BLOCK(logger, flags::WARN, "Igonring command request due to payload size of %i", request.objects.Size());
 		selectBuffer.Clear();
 		return IINField(IINBit::PARAM_ERROR);
 	}
@@ -278,7 +277,7 @@ IINField Outstation::HandleOperate(const APDURecord& request, SequenceInfo seque
 {
 	if (request.objects.Size() > response.Remaining())
 	{
-		LOG_BLOCK(flags::WARN, "Igonring operate request due to payload size of " << request.objects.Size());
+		FORMAT_LOG_BLOCK(logger, flags::WARN, "Igonring command request due to payload size of %i", request.objects.Size());
 		selectBuffer.Clear();
 		return IINField(IINBit::PARAM_ERROR);
 	}
@@ -312,7 +311,7 @@ IINField Outstation::HandleDirectOperate(const APDURecord& request, SequenceInfo
 {
 	if (request.objects.Size() > response.Remaining())
 	{
-		LOG_BLOCK(flags::WARN, "Igonring direct operate request due to payload size of " << request.objects.Size());
+		FORMAT_LOG_BLOCK(logger, flags::WARN, "Igonring command request due to payload size of %i", request.objects.Size());
 		return IINField(IINBit::PARAM_ERROR);
 	}
 	else
@@ -328,12 +327,12 @@ void Outstation::ContinueResponse()
 {
 	APDUResponse response(responseBuffer.GetWriteBuffer(mConfig.mMaxFragSize));
 	response.SetFunction(FunctionCode::RESPONSE);
-	response.SetControl(AppControlField::DEFAULT);
-
+	
 	{
 		// perform a transaction (lock) the database
 		openpal::Transaction tx(mpDatabase);
-		this->rspContext.Load(response);
+		auto control = this->rspContext.Load(response);
+		response.SetControl(control.ToByte());
 	}
 	this->SendResponse(response);
 }
@@ -395,14 +394,16 @@ IINField Outstation::GetDynamicIIN()
 void Outstation::StartUnsolTimer(openpal::TimeDuration aTimeout)
 {
 	assert(mpUnsolTimer == nullptr);
-	mpUnsolTimer = pExecutor->Start(aTimeout, std::bind(&Outstation::OnUnsolTimerExpiration, this));
+	auto lambda = [this]() { this->OnUnsolTimerExpiration(); };
+	mpUnsolTimer = pExecutor->Start(aTimeout, Bind(lambda));
 }
 
 void Outstation::ResetTimeIIN()
 {
 	mpTimeTimer = nullptr;
 	staticIIN.Set(IINBit::NEED_TIME);
-	mpTimeTimer = pExecutor->Start(mConfig.mTimeSyncPeriod, std::bind(&Outstation::ResetTimeIIN, this));
+	auto lambda = [this]() { this->ResetTimeIIN(); };
+	mpTimeTimer = pExecutor->Start(mConfig.mTimeSyncPeriod, Bind(lambda));
 }
 
 } //end ns

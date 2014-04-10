@@ -23,7 +23,7 @@
 #include "AppLayer.h"
 #include "AppChannelStates.h"
 
-#include <openpal/LoggableMacros.h>
+#include <openpal/LogMacros.h>
 
 #include "opendnp3/LogLevels.h"
 
@@ -31,8 +31,8 @@ namespace opendnp3
 {
 
 
-SolicitedChannel::SolicitedChannel(openpal::Logger aLogger, AppLayer* apApp, IExecutor* apExecutor, openpal::TimeDuration aTimeout) :
-	AppLayerChannel("Solicited", aLogger, apApp, apExecutor, aTimeout)
+SolicitedChannel::SolicitedChannel(openpal::Logger logger, AppLayer* apApp, IExecutor* apExecutor, openpal::TimeDuration aTimeout) :
+	AppLayerChannel(logger, apApp, apExecutor, aTimeout)
 {}
 
 bool SolicitedChannel::AcceptsResponse()
@@ -42,12 +42,12 @@ bool SolicitedChannel::AcceptsResponse()
 
 void SolicitedChannel::DoSendSuccess()
 {
-	mpAppLayer->mpUser->OnSolSendSuccess();
+	mpAppLayer->pUser->OnSolSendSuccess();
 }
 
 void SolicitedChannel::DoFailure()
 {
-	mpAppLayer->mpUser->OnSolFailure();
+	mpAppLayer->pUser->OnSolFailure();
 }
 
 void SolicitedChannel::OnResponse(const APDUResponseRecord& aRecord)
@@ -60,7 +60,7 @@ void SolicitedChannel::OnRequest(const APDURecord& aRecord)
 	auto seq = SequenceInfo::OTHER;
 	if (aRecord.control.SEQ == this->Sequence())
 	{
-		LOG_BLOCK(flags::WARN, "Received previous sequence");
+		SIMPLE_LOG_BLOCK(logger, flags::WARN, "Received previous sequence");
 		seq = SequenceInfo::PREVIOUS;
 	}
 	else if (aRecord.control.SEQ == NextSeq(this->Sequence()))
@@ -70,7 +70,7 @@ void SolicitedChannel::OnRequest(const APDURecord& aRecord)
 
 	mSequence = aRecord.control.SEQ;
 
-	mpAppLayer->mpUser->OnRequest(aRecord, seq);
+	mpAppLayer->pUser->OnRequest(aRecord, seq);
 }
 
 }

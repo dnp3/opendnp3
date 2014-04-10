@@ -28,8 +28,8 @@ namespace opendnp3
 AsyncPhysBaseTest::AsyncPhysBaseTest(uint32_t filters, bool aImmediate) :
 	log(),
 	exe(),
-	phys(LogConfig(&log, filters, "phys"), &exe),
-	adapter(log.GetLogger("adapter"), &phys, false)
+	phys(log.root, &exe),
+	adapter(log.GetLogger(), &phys, false)
 {
 	adapter.SetUpperLayer(&upper);
 	upper.SetLowerLayer(&adapter);

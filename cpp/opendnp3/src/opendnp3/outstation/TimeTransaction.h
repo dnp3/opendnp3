@@ -22,12 +22,9 @@
 #define	__TIME_TRANSACTION_H_
 
 #include <openpal/ITransactable.h>
+#include <openpal/UTCTimestamp.h>
 
 #include "opendnp3/outstation/IMeasurementLoader.h"
-
-#include <cstddef>
-
-#include <openpal/UTCTimestamp.h>
 
 namespace opendnp3
 {

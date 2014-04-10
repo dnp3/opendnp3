@@ -24,11 +24,10 @@
 #include "opendnp3/app/BaseMeasurementTypes.h"
 #include <openpal/ToHex.h>
 
-#include <sstream>
-
 namespace opendnp3
 {
 
+/* TODO
 template <class T>
 std::string ToString(const TypedMeasurement<T>& arMeas)
 {
@@ -36,6 +35,7 @@ std::string ToString(const TypedMeasurement<T>& arMeas)
 	oss << "Value: " << arMeas.GetValue() << " Quality: 0x" << openpal::ByteToHex(arMeas.GetQuality()) << " Time: " << arMeas.GetTime();
 	return oss.str();
 }
+*/
 
 }
 

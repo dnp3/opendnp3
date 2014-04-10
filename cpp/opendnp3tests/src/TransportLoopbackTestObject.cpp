@@ -34,7 +34,7 @@ namespace opendnp3
 {
 
 TransportLoopbackTestObject::TransportLoopbackTestObject(
-    openpal::Logger logger,
+	openpal::LogRoot& root,
     asio::io_service* apService,
     IPhysicalLayerAsync* apPhys,
     LinkConfig aCfgA,
@@ -44,11 +44,11 @@ TransportLoopbackTestObject::TransportLoopbackTestObject(
 	AsyncTestObjectASIO(apService),
 	mCfgA(aCfgA),
 	mCfgB(aCfgB),
-	mLinkA(logger, apPhys->GetExecutor(), aCfgA),
-	mLinkB(logger, apPhys->GetExecutor(), aCfgB),
-	mTransA(logger, apPhys->GetExecutor()),
-	mTransB(logger, apPhys->GetExecutor()),
-	mRouter(logger, apPhys, TimeDuration::Seconds(1), TimeDuration::Seconds(1))
+	mLinkA(root, apPhys->GetExecutor(), aCfgA),
+	mLinkB(root, apPhys->GetExecutor(), aCfgB),
+	mTransA(root, apPhys->GetExecutor()),
+	mTransB(root, apPhys->GetExecutor()),
+	mRouter(root, apPhys, TimeDuration::Seconds(1), TimeDuration::Seconds(1))
 {
 	LinkRoute routeA(mCfgA.RemoteAddr, mCfgA.LocalAddr);
 	LinkRoute routeB(mCfgB.RemoteAddr, mCfgB.LocalAddr);

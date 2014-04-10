@@ -20,12 +20,11 @@
  */
 #include "LinkLayerRouter.h"
 
-#include <sstream>
 #include <assert.h>
 
-
-#include <openpal/LoggableMacros.h>
+#include <openpal/LogMacros.h>
 #include <openpal/IPhysicalLayerAsync.h>
+#include <openpal/Bind.h>
 
 #include "opendnp3/LogLevels.h"
 #include "ILinkContext.h"
@@ -37,14 +36,14 @@ using namespace openpal;
 namespace opendnp3
 {
 
-LinkLayerRouter::LinkLayerRouter(	const Logger& logger,
+LinkLayerRouter::LinkLayerRouter(	openpal::LogRoot& root,
                                     IPhysicalLayerAsync* apPhys,
                                     openpal::TimeDuration minOpenRetry,
                                     openpal::TimeDuration maxOpenRetry,
                                     openpal::IEventHandler<ChannelState>* pStateHandler_,
                                     openpal::IShutdownHandler* pShutdownHandler_,
                                     IOpenDelayStrategy* pStrategy) :
-	PhysicalLayerMonitor(logger, apPhys, minOpenRetry, maxOpenRetry, pStrategy),
+	PhysicalLayerMonitor(root, apPhys, minOpenRetry, maxOpenRetry, pStrategy),
 	pStateHandler(pStateHandler_),
 	pShutdownHandler(pShutdownHandler_),
 	mReceiver(logger, this),
@@ -53,7 +52,7 @@ LinkLayerRouter::LinkLayerRouter(	const Logger& logger,
 
 bool LinkLayerRouter::IsRouteInUse(const LinkRoute& route)
 {
-	auto pNode = records.FindFirst([&](const Record & record)
+	auto pNode = records.FindFirst([route](const Record & record)
 	{
 		return record.route == route;
 	});
@@ -70,13 +69,14 @@ bool LinkLayerRouter::AddContext(ILinkContext* pContext, const LinkRoute& route)
 	}
 	else
 	{
-		auto pNode = records.FindFirst([&](const Record & record)
+		auto pNode = records.FindFirst([pContext](const Record & record)
 		{
 			return record.pContext == pContext;
 		});
+
 		if (pNode)
 		{
-			LOG_BLOCK(flags::ERR, "Context cannot be bound 2x");
+			SIMPLE_LOG_BLOCK(logger, flags::ERR, "Context cannot be bound 2x");
 			return false;
 		}
 		else
@@ -90,7 +90,7 @@ bool LinkLayerRouter::AddContext(ILinkContext* pContext, const LinkRoute& route)
 
 bool LinkLayerRouter::Enable(ILinkContext* pContext)
 {
-	auto pNode = records.FindFirst([&](const Record & rec)
+	auto pNode = records.FindFirst([pContext](const Record & rec)
 	{
 		return rec.pContext == pContext;
 	});
@@ -117,7 +117,7 @@ bool LinkLayerRouter::Enable(ILinkContext* pContext)
 
 bool LinkLayerRouter::Disable(ILinkContext* pContext)
 {
-	auto pNode = records.FindFirst([&](const Record & rec)
+	auto pNode = records.FindFirst([pContext](const Record & rec)
 	{
 		return rec.pContext == pContext;
 	});
@@ -148,7 +148,7 @@ bool LinkLayerRouter::Disable(ILinkContext* pContext)
 
 bool LinkLayerRouter::Remove(ILinkContext* pContext)
 {
-	auto pNode = records.RemoveFirst([&](const Record & rec)
+	auto pNode = records.RemoveFirst([pContext](const Record & rec)
 	{
 		return rec.pContext == pContext;
 	});
@@ -176,13 +176,8 @@ bool LinkLayerRouter::Remove(ILinkContext* pContext)
 
 ILinkContext* LinkLayerRouter::GetEnabledContext(const LinkRoute& route)
 {
-	auto pNode = records.FindFirst(
-	                 [&](const Record & rec)
-	{
-		return rec.enabled && (rec.route == route);
-	}
-	             );
-
+	auto find = [route](const Record & rec) { return rec.enabled && (rec.route == route); };	
+	auto pNode = records.FindFirst(find);
 	return pNode ? pNode->value.pContext : nullptr;
 }
 
@@ -195,8 +190,7 @@ ILinkContext* LinkLayerRouter::GetDestination(uint16_t aDest, uint16_t aSrc)
 
 	if(pDest == nullptr)
 	{
-
-		ERROR_BLOCK(flags::WARN, "Frame w/ unknown route: " << route.ToString(), DLERR_UNKNOWN_ROUTE);
+		FORMAT_LOG_BLOCK_WITH_CODE(logger, flags::WARN, DLERR_UNKNOWN_ROUTE, "Frame w/ unknown route: %i to %i", route.remote, route.local);
 	}
 
 	return pDest;
@@ -255,13 +249,13 @@ void LinkLayerRouter::UnconfirmedUserData(bool aIsMaster, uint16_t aDest, uint16
 void LinkLayerRouter::OnReceive(const openpal::ReadOnlyBuffer& input)
 {
 	// The order is important here. You must let the receiver process the byte or another read could write
-	// over the buffer before it is processed
+	// over the buffer before it is processed	
 	mReceiver.OnRead(input.Size()); //this may trigger callbacks to the local ILinkContext interface
 	if(pPhys->CanRead())   // this is required because the call above could trigger the layer to be closed
 	{
 		auto buff = mReceiver.WriteBuff();
 		pPhys->AsyncRead(buff); //start another read
-	}
+	}	
 }
 
 void LinkLayerRouter::QueueTransmit(const openpal::ReadOnlyBuffer& buffer, ILinkContext* pContext, bool primary)
@@ -276,15 +270,13 @@ void LinkLayerRouter::QueueTransmit(const openpal::ReadOnlyBuffer& buffer, ILink
 		}
 		else
 		{
-			this->pPhys->GetExecutor()->Post([pContext, primary]()
-			{
-				pContext->OnTransmitResult(primary, false);
-			});
+			auto lambda = [pContext, primary]() { pContext->OnTransmitResult(primary, false); };
+			this->pPhys->GetExecutor()->Post(Bind(lambda));
 		}
 	}
 	else
 	{
-		ERROR_BLOCK(flags::ERR, "Router received transmit request while offline", DLERR_ROUTER_OFFLINE);
+		SIMPLE_LOG_BLOCK_WITH_CODE(logger, flags::ERR, DLERR_ROUTER_OFFLINE, "Router received transmit request while offline");
 	}
 }
 
@@ -337,9 +329,9 @@ void LinkLayerRouter::CheckForSend()
 void LinkLayerRouter::OnPhysicalLayerOpenSuccessCallback()
 {
 	if(pPhys->CanRead())
-	{
+	{		
 		auto buff = mReceiver.WriteBuff();
-		pPhys->AsyncRead(buff);
+		pPhys->AsyncRead(buff);	
 	}
 
 	records.Foreach(
@@ -355,7 +347,7 @@ void LinkLayerRouter::OnPhysicalLayerOpenSuccessCallback()
 }
 
 void LinkLayerRouter::OnPhysicalLayerCloseCallback()
-{
+{	
 	// reset the state of receiver
 	mReceiver.Reset();
 
@@ -371,7 +363,7 @@ void LinkLayerRouter::OnPhysicalLayerCloseCallback()
 			rec.pContext->OnLowerLayerDown();
 		}
 	}
-	);
+	);	
 }
 
 }

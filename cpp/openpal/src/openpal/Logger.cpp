@@ -18,31 +18,24 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include <openpal/Logger.h>
+#include "Logger.h"
 
-#include <openpal/LogBase.h>
-#include <openpal/LogRoot.h>
+#include "LogBase.h"
+#include "LogRoot.h"
 
 #include <assert.h>
-#include <sstream>
+#include <cstring>
 
 using namespace std;
 
 namespace openpal
 {
 
-Logger::Logger(LogRoot* pRoot_, const std::string& name_) :
-	pRoot(pRoot_),
-	name(name_)
+Logger::Logger(LogRoot* pRoot_, int subType_) :
+pRoot(pRoot_),
+subType(subType_)
 {
-
-}
-
-Logger Logger::GetSubLogger(std::string subName) const
-{
-	std::ostringstream oss;
-	oss << name << "." << subName;
-	return Logger(pRoot, oss.str());
+	
 }
 
 bool Logger::IsEnabled(const LogFilters& filters) const
@@ -50,18 +43,17 @@ bool Logger::IsEnabled(const LogFilters& filters) const
 	return pRoot->IsEnabled(filters);
 }
 
-void Logger::Log( const LogEntry& entry)
+Logger Logger::SwitchType(int subType) const
 {
-	if (pRoot->IsEnabled(entry.GetFilters()))
-	{
-		pRoot->Log(entry);
-	}
+	return Logger(pRoot, subType);
 }
 
-void Logger::Log(const LogFilters& filters, const std::string& location, const std::string& message, int errorCode)
+void Logger::Log(const LogFilters& filters, char const* location, char const* message, int errorCode)
 {
-	LogEntry le(filters, name, location, message, errorCode);
-	this->Log(le);
+	if (pRoot->IsEnabled(filters))
+	{		
+		pRoot->Log(filters, subType, location, message, errorCode);
+	}
 }
 
 }

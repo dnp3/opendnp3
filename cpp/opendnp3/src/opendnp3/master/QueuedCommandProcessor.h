@@ -25,6 +25,7 @@
 
 #include "opendnp3/master/AsyncTaskInterfaces.h"
 #include "opendnp3/StaticSizeConfiguration.h"
+#include "CommandAction.h"
 
 #include <openpal/IExecutor.h>
 #include <openpal/StaticQueue.h>
@@ -34,26 +35,27 @@ namespace opendnp3
 
 class QueuedCommandProcessor : public ICommandProcessor
 {
+	
 public:
 
 	QueuedCommandProcessor(openpal::IExecutor* pExecutor_, ITask* pEnableTask_);
 
 	// Implement the ICommandProcessor interface
 
-	void SelectAndOperate(const ControlRelayOutputBlock& arCommand, uint16_t aIndex, std::function<void(CommandResponse)> aCallback);
-	void DirectOperate(const ControlRelayOutputBlock& arCommand, uint16_t aIndex, std::function<void (CommandResponse)> aCallback);
+	void SelectAndOperate(const ControlRelayOutputBlock& command, uint16_t index, ICommandCallback* pCallback);
+	void DirectOperate(const ControlRelayOutputBlock& command, uint16_t index, ICommandCallback* pCallback);
 
-	void SelectAndOperate(const AnalogOutputInt16& arCommand, uint16_t aIndex, std::function<void (CommandResponse)> aCallback);
-	void DirectOperate(const AnalogOutputInt16& arCommand, uint16_t aIndex, std::function<void (CommandResponse)> aCallback);
+	void SelectAndOperate(const AnalogOutputInt16& command, uint16_t index, ICommandCallback* pCallback);
+	void DirectOperate(const AnalogOutputInt16& command, uint16_t index, ICommandCallback* pCallback);
 
-	void SelectAndOperate(const AnalogOutputInt32& arCommand, uint16_t aIndex, std::function<void (CommandResponse)> aCallback);
-	void DirectOperate(const AnalogOutputInt32& arCommand, uint16_t aIndex, std::function<void (CommandResponse)> aCallback);
+	void SelectAndOperate(const AnalogOutputInt32& command, uint16_t index, ICommandCallback* pCallback);
+	void DirectOperate(const AnalogOutputInt32& command, uint16_t index, ICommandCallback* pCallback);
 
-	void SelectAndOperate(const AnalogOutputFloat32& arCommand, uint16_t aIndex, std::function<void (CommandResponse)> aCallback);
-	void DirectOperate(const AnalogOutputFloat32& arCommand, uint16_t aIndex, std::function<void (CommandResponse)> aCallback);
+	void SelectAndOperate(const AnalogOutputFloat32& command, uint16_t index, ICommandCallback* pCallback);
+	void DirectOperate(const AnalogOutputFloat32& command, uint16_t index, ICommandCallback* pCallback);
 
-	void SelectAndOperate(const AnalogOutputDouble64& arCommand, uint16_t aIndex, std::function<void (CommandResponse)> aCallback);
-	void DirectOperate(const AnalogOutputDouble64& arCommand, uint16_t aIndex, std::function<void (CommandResponse)> aCallback);
+	void SelectAndOperate(const AnalogOutputDouble64& command, uint16_t index, ICommandCallback* pCallback);
+	void DirectOperate(const AnalogOutputDouble64& command, uint16_t index, ICommandCallback* pCallback);
 
 	// Function used to marshall calls another ICommandProcessor
 
@@ -64,58 +66,26 @@ private:
 	openpal::IExecutor* pExecutor;
 	ITask* pEnableTask;
 
-	openpal::StaticQueue<std::function<void (ICommandProcessor*)>, uint8_t, sizes::MAX_COMMAND_QUEUE_SIZE> requestQueue;
+	openpal::StaticQueue<CommandErasure, uint8_t, sizes::MAX_COMMAND_QUEUE_SIZE> requestQueue;
 
+	void Enque(const CommandErasure& erasure, ICommandCallback* pCallback);
+	
 	template <class T>
-	void SelectAndOperateT(const T& command, uint16_t index, std::function<void (CommandResponse)> callback)
-	{
-		pExecutor->Post(
-		    [this, command, index, callback]()
-			{
-				auto enqueued = requestQueue.Enqueue(
-					[command, index, callback](ICommandProcessor * pProcessor)
-					{
-						pProcessor->SelectAndOperate(command, index, callback);
-					}
-				);
-				if (enqueued)
-				{
-					pEnableTask->Enable();
-				}
-				else
-				{
-					// TODO, special code for too many requests queued?
-					pExecutor->Post([=]{ callback(CommandResponse(CommandResult::TIMEOUT)); });
-				}
-				
-			}
-		);
+	void SelectAndOperateT(T command, uint16_t index, ICommandCallback* pCallback)
+	{		
+		auto lambda = [command, index, pCallback](ICommandProcessor* pProcessor) { pProcessor->SelectAndOperate(command, index, pCallback); };
+		auto erasure = CreateAction(lambda);
+		auto enque = [erasure, this, pCallback](){ this->Enque(erasure, pCallback); };
+		pExecutor->PostLambda(enque);
 	}
 
 	template <class T>
-	void DirectOperateT(const T& command, uint16_t index, std::function<void (CommandResponse)> callback)
-	{
-
-		pExecutor->Post(
-		    [this, command, index, callback]()
-			{
-				auto enqueued = requestQueue.Enqueue(
-					[command, index, callback](ICommandProcessor * pProcessor)
-					{
-						pProcessor->DirectOperate(command, index, callback);
-					}
-				);
-				if (enqueued)
-				{
-					pEnableTask->Enable();
-				}
-				else
-				{
-					// TODO, special code for too many requests queued?
-					pExecutor->Post([=]{ callback(CommandResponse(CommandResult::TIMEOUT)); });
-				}
-			}
-		);
+	void DirectOperateT(T command, uint16_t index, ICommandCallback* pCallback)
+	{		
+		auto lambda = [command, index, pCallback](ICommandProcessor* pProcessor) { pProcessor->DirectOperate(command, index, pCallback); };
+		auto erasure = CreateAction(lambda);
+		auto enque = [erasure, this, pCallback](){ this->Enque(erasure, pCallback); };
+		pExecutor->PostLambda(enque);
 	}
 };
 

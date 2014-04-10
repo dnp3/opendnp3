@@ -37,17 +37,15 @@
 
 #include <openpal/IExecutor.h>
 
-#include <openpal/LoggableMacros.h>
-
-#include <functional>
+#include <openpal/LogMacros.h>
 
 using namespace openpal;
 
 namespace opendnp3
 {
 
-Master::Master(Logger aLogger, MasterConfig aCfg, IAppLayer* apAppLayer, ISOEHandler* apSOEHandler, AsyncTaskGroup* apTaskGroup, openpal::IExecutor* apExecutor, IUTCTimeSource* apTimeSrc) :
-	IAppUser(aLogger),
+Master::Master(LogRoot& root, MasterConfig aCfg, IAppLayer* apAppLayer, ISOEHandler* apSOEHandler, AsyncTaskGroup* apTaskGroup, openpal::IExecutor* apExecutor, IUTCTimeSource* apTimeSrc) :
+	IAppUser(root),
 	pExecutor(apExecutor),
 	mpAppLayer(apAppLayer),
 	mpSOEHandler(apSOEHandler),
@@ -57,11 +55,11 @@ Master::Master(Logger aLogger, MasterConfig aCfg, IAppLayer* apAppLayer, ISOEHan
 	mpTask(nullptr),
 	mpScheduledTask(nullptr),
 	mSchedule(apTaskGroup, this, aCfg),
-	mClassPoll(aLogger, apSOEHandler),
-	mClearRestart(aLogger),
-	mConfigureUnsol(aLogger),
-	mTimeSync(aLogger, apTimeSrc),
-	mCommandTask(aLogger),
+	mClassPoll(logger, apSOEHandler),
+	mClearRestart(logger),
+	mConfigureUnsol(logger),
+	mTimeSync(logger, apTimeSrc),
+	mCommandTask(logger),
 	mCommandQueue(apExecutor, mSchedule.mpCommandTask)
 {
 
@@ -76,25 +74,25 @@ void Master::ProcessIIN(const IINField& iin)
 	//The clear IIN task only happens in response to detecting an IIN bit.
 	if(mLastIIN.IsSet(IINBit::NEED_TIME))
 	{
-		LOG_BLOCK(flags::INFO, "Need time detected");
+		SIMPLE_LOG_BLOCK(logger, flags::INFO, "Need time detected");
 		mSchedule.mpTimeTask->SilentEnable();
 		check_state = true;
 	}
 
 	if (mLastIIN.IsSet(IINBit::DEVICE_TROUBLE))
 	{
-		LOG_BLOCK(flags::WARN, "IIN Device trouble detected");
+		SIMPLE_LOG_BLOCK(logger, flags::WARN, "IIN Device trouble detected");
 	}
 
 	if (mLastIIN.IsSet(IINBit::EVENT_BUFFER_OVERFLOW))
 	{
-		LOG_BLOCK(flags::WARN, "Event buffer overflow detected");
+		SIMPLE_LOG_BLOCK(logger, flags::WARN, "Event buffer overflow detected");
 	}
 
 	// If this is detected, we need to reset the startup tasks
 	if(mLastIIN.IsSet(IINBit::DEVICE_RESTART))
 	{
-		LOG_BLOCK(flags::WARN, "Device restart detected");
+		SIMPLE_LOG_BLOCK(logger, flags::WARN, "Device restart detected");
 		mSchedule.ResetStartupTasks();
 		mSchedule.mpClearRestartTask->SilentEnable();
 		check_state = true;
@@ -121,61 +119,61 @@ void Master::ProcessCommand(ITask* apTask)
 	}
 }
 
-void Master::SelectAndOperate(const ControlRelayOutputBlock& arCommand, uint16_t aIndex, std::function<void(CommandResponse)> aCallback)
+void Master::SelectAndOperate(const ControlRelayOutputBlock& command, uint16_t index, ICommandCallback* pCallback)
 {
-	this->mCommandTask.ConfigureSBO(arCommand, aIndex, aCallback);
+	this->mCommandTask.ConfigureSBO(command, index, pCallback);
 }
 
-void Master::SelectAndOperate(const AnalogOutputInt32& arCommand, uint16_t aIndex, std::function<void(CommandResponse)> aCallback)
+void Master::SelectAndOperate(const AnalogOutputInt32& command, uint16_t index, ICommandCallback* pCallback)
 {
-	this->mCommandTask.ConfigureSBO(arCommand, aIndex, aCallback);
+	this->mCommandTask.ConfigureSBO(command, index, pCallback);
 }
 
-void Master::SelectAndOperate(const AnalogOutputInt16& arCommand, uint16_t aIndex, std::function<void(CommandResponse)> aCallback)
+void Master::SelectAndOperate(const AnalogOutputInt16& command, uint16_t index, ICommandCallback* pCallback)
 {
-	this->mCommandTask.ConfigureSBO(arCommand, aIndex, aCallback);
+	this->mCommandTask.ConfigureSBO(command, index, pCallback);
 }
 
-void Master::SelectAndOperate(const AnalogOutputFloat32& arCommand, uint16_t aIndex, std::function<void(CommandResponse)> aCallback)
+void Master::SelectAndOperate(const AnalogOutputFloat32& command, uint16_t index, ICommandCallback* pCallback)
 {
-	this->mCommandTask.ConfigureSBO(arCommand, aIndex, aCallback);
+	this->mCommandTask.ConfigureSBO(command, index, pCallback);
 }
 
-void Master::SelectAndOperate(const AnalogOutputDouble64& arCommand, uint16_t aIndex, std::function<void(CommandResponse)> aCallback)
+void Master::SelectAndOperate(const AnalogOutputDouble64& command, uint16_t index, ICommandCallback* pCallback)
 {
-	this->mCommandTask.ConfigureSBO(arCommand, aIndex, aCallback);
+	this->mCommandTask.ConfigureSBO(command, index, pCallback);
 }
 
-void Master::DirectOperate(const ControlRelayOutputBlock& arCommand, uint16_t aIndex, std::function<void(CommandResponse)> aCallback)
+void Master::DirectOperate(const ControlRelayOutputBlock& command, uint16_t index, ICommandCallback* pCallback)
 {
-	this->mCommandTask.ConfigureDO(arCommand, aIndex, aCallback);
+	this->mCommandTask.ConfigureDO(command, index, pCallback);
 }
 
-void Master::DirectOperate(const AnalogOutputInt32& arCommand, uint16_t aIndex, std::function<void(CommandResponse)> aCallback)
+void Master::DirectOperate(const AnalogOutputInt32& command, uint16_t index, ICommandCallback* pCallback)
 {
-	this->mCommandTask.ConfigureDO(arCommand, aIndex, aCallback);
+	this->mCommandTask.ConfigureDO(command, index, pCallback);
 }
 
-void Master::DirectOperate(const AnalogOutputInt16& arCommand, uint16_t aIndex, std::function<void(CommandResponse)> aCallback)
+void Master::DirectOperate(const AnalogOutputInt16& command, uint16_t index, ICommandCallback* pCallback)
 {
-	this->mCommandTask.ConfigureDO(arCommand, aIndex, aCallback);
+	this->mCommandTask.ConfigureDO(command, index, pCallback);
 }
 
-void Master::DirectOperate(const AnalogOutputFloat32& arCommand, uint16_t aIndex, std::function<void(CommandResponse)> aCallback)
+void Master::DirectOperate(const AnalogOutputFloat32& command, uint16_t index, ICommandCallback* pCallback)
 {
-	this->mCommandTask.ConfigureDO(arCommand, aIndex, aCallback);
+	this->mCommandTask.ConfigureDO(command, index, pCallback);
 }
 
-void Master::DirectOperate(const AnalogOutputDouble64& arCommand, uint16_t aIndex, std::function<void(CommandResponse)> aCallback)
+void Master::DirectOperate(const AnalogOutputDouble64& command, uint16_t index, ICommandCallback* pCallback)
 {
-	this->mCommandTask.ConfigureDO(arCommand, aIndex, aCallback);
+	this->mCommandTask.ConfigureDO(command, index, pCallback);
 }
 
 void Master::StartTask(MasterTaskBase* apMasterTask, bool aInit)
 {
 	if(aInit) apMasterTask->Init();
 	APDURequest request(this->requestBuffer.GetWriteBuffer());
-	request.SetControl(AppControlField(true, true, false, false));
+	request.SetControl(AppControlField(true, true, false, false).ToByte());
 	apMasterTask->ConfigureRequest(request);
 	mpAppLayer->SendRequest(request);
 }
@@ -256,12 +254,12 @@ void Master::OnSolFailure()
 
 void Master::OnUnsolSendSuccess()
 {
-	LOG_BLOCK(flags::ERR, "Master can't send unsol");
+	SIMPLE_LOG_BLOCK(logger, flags::ERR, "Master can't send unsol");
 }
 
 void Master::OnUnsolFailure()
 {
-	LOG_BLOCK(flags::ERR, "Master can't send unsol");
+	SIMPLE_LOG_BLOCK(logger, flags::ERR, "Master can't send unsol");
 }
 
 void Master::OnPartialResponse(const APDUResponseRecord& aRecord)

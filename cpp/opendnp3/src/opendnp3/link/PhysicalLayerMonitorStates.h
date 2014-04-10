@@ -57,11 +57,9 @@ public:
 
 	virtual ChannelState GetState() const = 0;
 
-	virtual std::string Name() const = 0;
+	virtual char const* Name() const = 0;
 
-	virtual bool IsShuttingDown() const = 0;
-
-	std::string ConvertToString();
+	virtual bool IsShuttingDown() const = 0;	
 };
 
 class MonitorStateActions

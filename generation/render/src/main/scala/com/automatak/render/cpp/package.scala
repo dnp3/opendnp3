@@ -48,6 +48,7 @@ package object cpp {
   }
 
   def stdString: String = "std::string"
+  def cString: String = "char const*"
 
   def namespace(ns: String)(internals: Iterator[String]): Iterator[String] = {
 

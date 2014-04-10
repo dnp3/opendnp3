@@ -27,8 +27,8 @@ using namespace openpal;
 namespace opendnp3
 {
 
-LowerLayerToPhysAdapter::LowerLayerToPhysAdapter(Logger logger, IPhysicalLayerAsync* apPhys, bool aAutoRead) :
-	Loggable(logger),
+LowerLayerToPhysAdapter::LowerLayerToPhysAdapter(const openpal::Logger& logger_, IPhysicalLayerAsync* apPhys, bool aAutoRead) :
+	logger(logger_),
 	mAutoRead(aAutoRead),
 	mNumOpenFailure(0),
 	mpPhys(apPhys)
@@ -94,7 +94,7 @@ void LowerLayerToPhysAdapter::OnLowerLayerDown()
 }
 
 
-void LowerLayerToPhysAdapter::Send(const openpal::ReadOnlyBuffer& buffer)
+void LowerLayerToPhysAdapter::BeginTransmit(const openpal::ReadOnlyBuffer& buffer)
 {
 	mpPhys->AsyncWrite(buffer);
 }

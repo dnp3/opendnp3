@@ -21,21 +21,20 @@
 
 #include "APDUHeaderParser.h"
 
-#include <functional>
-#include <limits>
-
 #include <openpal/Uncopyable.h>
 #include "opendnp3/app/APDUHeader.h"
 
 #include <openpal/BufferWrapper.h>
-
 
 namespace opendnp3
 {
 
 APDUHeaderParser::Result APDUHeaderParser::ParseRequest(openpal::ReadOnlyBuffer buffer, APDURecord& header)
 {
-	if(buffer.Size() < 2) return Result::NOT_ENOUGH_DATA_FOR_HEADER;
+	if (buffer.Size() < 2)
+	{
+		return Result::NOT_ENOUGH_DATA_FOR_HEADER;
+	}
 	else
 	{
 		header.control = AppControlField(buffer[0]);

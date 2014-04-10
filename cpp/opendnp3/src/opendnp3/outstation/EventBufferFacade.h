@@ -64,10 +64,6 @@ public:
 	    openpal::StackAdapter<openpal::ListNode<SequenceRecord>*, uint16_t> selectedEvents_
 	);
 
-
-
-
-
 	openpal::RandomInsertAdapter<Event<Binary>, uint16_t> binaryEvents;
 	openpal::RandomInsertAdapter<Event<DoubleBitBinary>, uint16_t> doubleBinaryEvents;
 	openpal::RandomInsertAdapter<Event<Analog>, uint16_t> analogEvents;

@@ -41,12 +41,10 @@ class MockTaskHandler
 {
 public:
 
-	TaskHandler GetHandler()
+	openpal::Function1<AsyncTaskBase*> GetHandler()
 	{
-		return [this](ITask * pTask)
-		{
-			this->OnTask(pTask);
-		};
+		auto lambda = [this](ITask * pTask) { this->OnTask(pTask); };
+		return Bind1<AsyncTaskBase*>(lambda);
 	}
 
 	size_t Size()

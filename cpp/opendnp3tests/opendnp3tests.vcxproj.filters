@@ -191,6 +191,12 @@
     <ClInclude Include="src\OutstationTestObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\MockCommandCallback.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\HexConversions.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\AppLayerTest.cpp">
@@ -286,9 +292,6 @@
     <ClCompile Include="src\RandomizedBuffer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\SlaveTestObject.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\StopWatch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -356,9 +359,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\TestOutstationCommandResponses.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\TestOutstationEventBuffer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\TestOutstationEventResponses.cpp">
@@ -449,6 +449,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\MockTransportLayer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\OutstationTestObject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\HexConversions.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

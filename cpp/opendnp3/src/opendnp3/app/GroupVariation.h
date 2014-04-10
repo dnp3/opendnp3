@@ -22,7 +22,6 @@
 #define __GROUP_VARIATION_H_
 
 #include <cstdint>
-#include <string>
 
 #include <openpal/Uncopyable.h>
 
@@ -174,8 +173,6 @@ public:
 	static EnumAndType GetEnumAndType(uint8_t group, uint8_t variation);
 
 	static GroupVariationRecord GetRecord(uint8_t group, uint8_t variation);
-
-	std::string ToString() const;
 
 	GroupVariationRecord(uint8_t group_, uint8_t variation_, GroupVariation enumeration_, GroupVariationType type_);
 

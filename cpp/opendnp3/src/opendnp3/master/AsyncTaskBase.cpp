@@ -35,17 +35,15 @@ namespace opendnp3
 {
 
 AsyncTaskBase::AsyncTaskBase(int aPriority,
-                             const TaskHandler& arCallback,
+							 const Function1<AsyncTaskBase*>& handler_,
                              AsyncTaskGroup* apGroup,
-                             const MonotonicTimestamp& arInitialTime,
-                             const std::string& arName) :
-	mName(arName),
+                             const MonotonicTimestamp& arInitialTime) :	
 	mIsEnabled(false),
 	mIsComplete(false),
 	mIsExpired(false),
 	mIsRunning(false),
 	mPriority(aPriority),
-	mHandler(arCallback),
+	handler(handler_),
 	mpGroup(apGroup),
 	mNextRunTime(arInitialTime),
 	M_INITIAL_TIME(arInitialTime),
@@ -85,7 +83,8 @@ void AsyncTaskBase::Dispatch()
 	mIsRunning = true;
 	mIsComplete = false;
 	mIsExpired = false;
-	mHandler(this);
+	
+	handler.Run(this);
 }
 
 bool AsyncTaskBase::AddDependency(const AsyncTaskBase* apTask)
@@ -135,10 +134,12 @@ void AsyncTaskBase::OnComplete(bool aSuccess, bool silent)
 
 	this->_OnComplete(aSuccess);
 
+	/* TODO - re-enable this
 	if (callback)
 	{
 		callback(aSuccess);
 	}
+	*/
 
 	if (!silent)
 	{
@@ -146,10 +147,13 @@ void AsyncTaskBase::OnComplete(bool aSuccess, bool silent)
 	}
 }
 
+/* TODO
 void AsyncTaskBase::SetStatusCallback(const std::function<void (bool)>& callback_)
 {
 	this->callback = callback_;
 }
+*/
+
 
 void AsyncTaskBase::Reset()
 {

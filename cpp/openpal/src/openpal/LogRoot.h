@@ -38,33 +38,24 @@ class LogRoot : Uncopyable
 
 public:
 
-	LogRoot(ILogBase* apLog, const LogFilters& filters);
+	LogRoot(ILogBase* apLog, char const* id_, const LogFilters& filters);	
 
-	void Log(const LogFilters& filters, const std::string& name, const std::string& location, const std::string& message, int errorCode);
+	void Log(const LogFilters& filters, int subType, char const* location, char const* message, int errorCode);	
 
-	void Log(const LogEntry& entry);
+	Logger GetLogger(int subType = -1);
 
-	Logger GetLogger(const std::string& id);
+	bool IsEnabled(const LogFilters& rhs) const;
 
-	inline bool IsEnabled(const LogFilters& rhs) const
-	{
-		return this->filters & rhs;
-	}
+	void SetFilters(const LogFilters& filters_);
 
-	inline void SetFilters(const LogFilters& filters_)
-	{
-		filters = filters_;
-	}
-
-	const LogFilters& GetFilters() const
-	{
-		return filters;
-	}
+	const LogFilters& GetFilters() const;
 
 private:
-
-	LogFilters			filters;   // bit field describing what is being logged
-	ILogBase*			pLog;
+	
+	ILogBase*		pLog;
+	char const*		id;
+	LogFilters		filters;   // bit field describing what is being logged
+	
 };
 
 }

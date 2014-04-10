@@ -3,7 +3,7 @@
 
 using namespace System::Collections::ObjectModel;
 
-#include <opendnp3/master/IMaster.h>
+#include <asiodnp3/IMaster.h>
 
 using namespace DNP3::Interface;
 
@@ -15,7 +15,7 @@ private ref class MasterAdapter : IMaster
 {
 public:
 
-	MasterAdapter(opendnp3::IMaster* apMaster);
+	MasterAdapter(asiodnp3::IMaster* apMaster);
 
 	virtual ICommandProcessor^ GetCommandProcessor();
 
@@ -30,7 +30,7 @@ public:
 	virtual IMasterScan^ AddClassScan(int aClassMask, System::TimeSpan period, System::TimeSpan taskRetryPeriod);
 
 private:
-	opendnp3::IMaster* mpMaster;
+	asiodnp3::IMaster* mpMaster;
 	ICommandProcessor^ mCommandAdapter;
 };
 

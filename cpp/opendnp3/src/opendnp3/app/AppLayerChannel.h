@@ -21,8 +21,8 @@
 #ifndef __APP_LAYER_CHANNEL_H_
 #define __APP_LAYER_CHANNEL_H_
 
-#include <openpal/Loggable.h>
 #include <openpal/TimeDuration.h>
+#include <openpal/Logger.h>
 
 #include "opendnp3/app/APDUHeader.h"
 #include "opendnp3/app/APDUWrapper.h"
@@ -45,7 +45,7 @@ struct AppControlField;
 	 number and some state associated with wether it is sending, waiting
 	 for a response, etc
 */
-class AppLayerChannel : public openpal::Loggable
+class AppLayerChannel
 {
 	friend class ACS_Base;
 	friend class ACS_Idle;
@@ -60,7 +60,7 @@ class AppLayerChannel : public openpal::Loggable
 	friend class ACS_WaitForFinalResponse;
 
 public:
-	AppLayerChannel(const std::string& arName, openpal::Logger&, AppLayer*, openpal::IExecutor*, openpal::TimeDuration aTimeout);
+	AppLayerChannel(const openpal::Logger&, AppLayer*, openpal::IExecutor*, openpal::TimeDuration aTimeout);
 	virtual ~AppLayerChannel() {}
 
 	// Resets the channel to the initial state
@@ -108,7 +108,7 @@ protected:
 		return logger;
 	}
 
-
+	openpal::Logger logger;
 	AppLayer* mpAppLayer;
 	ACS_Base* mpState;
 	int mSequence;	// Rotating sequence number for the channel
@@ -127,8 +127,7 @@ private:
 	openpal::IExecutor* mpExecutor;
 	openpal::ITimer* mpTimer;
 	bool mConfirming;
-	const openpal::TimeDuration M_TIMEOUT;
-	const std::string M_NAME;
+	const openpal::TimeDuration M_TIMEOUT;	
 };
 
 }

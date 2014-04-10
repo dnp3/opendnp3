@@ -20,8 +20,6 @@
  */
 #include "CommandResponse.h"
 
-#include <sstream>
-
 namespace opendnp3
 {
 
@@ -37,12 +35,12 @@ CommandResponse CommandResponse::OK(CommandStatus aStatus)
 	return CommandResponse(CommandResult::RESPONSE_OK, aStatus);
 }
 
-CommandResult CommandResponse::GetResult()
+CommandResult CommandResponse::GetResult() const
 {
 	return mResult;
 }
 
-CommandStatus CommandResponse::GetStatus()
+CommandStatus CommandResponse::GetStatus() const
 {
 	return mStatus;
 }
@@ -52,6 +50,7 @@ bool CommandResponse::operator==(const CommandResponse& arRHS) const
 	return (mResult == arRHS.mResult) && (mStatus == arRHS.mStatus);
 }
 
+/* TODO
 std::string CommandResponse::ToString() const
 {
 	std::ostringstream oss;
@@ -59,6 +58,7 @@ std::string CommandResponse::ToString() const
 	else oss << "Failure: " << CommandResultToString(mResult);
 	return oss.str();
 }
+*/
 
 }
 

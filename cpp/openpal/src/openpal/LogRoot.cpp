@@ -27,23 +27,37 @@
 namespace openpal
 {
 
-LogRoot::LogRoot(ILogBase* pLog_, const LogFilters& filters_) : pLog(pLog_), filters(filters_)
+LogRoot::LogRoot(ILogBase* pLog_, char const* id_, const LogFilters& filters_) : 
+	pLog(pLog_), id(id_), filters(filters_)
 {}
 
-void LogRoot::Log(const LogFilters& filters, const std::string& name, const std::string& location, const std::string& message, int errorCode)
+void LogRoot::Log(const LogFilters& filters, int subType, char const* location, char const* message, int errorCode)
 {
-	LogEntry le(filters, name, location, message, errorCode);
-	pLog->Log(le);
+	if(pLog)
+	{
+		LogEntry le(id, filters, subType, location, message, errorCode);
+		pLog->Log(le);	
+	}	
 }
 
-void LogRoot::Log(const LogEntry& entry)
+Logger LogRoot::GetLogger(int subType)
 {
-	pLog->Log(entry);
+	return Logger(this, subType);
 }
 
-Logger LogRoot::GetLogger(const std::string& id)
+bool LogRoot::IsEnabled(const LogFilters& rhs) const
 {
-	return Logger(this, id);
+	return pLog && (this->filters & rhs);
+}
+
+void LogRoot::SetFilters(const LogFilters& filters_)
+{
+	filters = filters_;
+}
+
+const LogFilters& LogRoot::GetFilters() const
+{
+	return filters;
 }
 
 }

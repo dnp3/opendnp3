@@ -21,8 +21,6 @@
 #ifndef __ASYNC_TASK_INTERFACES_H_
 #define __ASYNC_TASK_INTERFACES_H_
 
-#include <functional>
-
 namespace opendnp3
 {
 
@@ -44,8 +42,6 @@ public:
 	// Diable ''
 	virtual void SilentDisable() = 0;
 };
-
-typedef std::function<void (ITask*)> TaskHandler;
 
 }
 

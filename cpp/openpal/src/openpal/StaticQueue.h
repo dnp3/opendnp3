@@ -22,6 +22,8 @@
 #define __STATIC_QUEUE_H_
 
 #include "StaticLinkedList.h"
+#include "Configure.h"
+#include <assert.h>
 
 namespace openpal
 {

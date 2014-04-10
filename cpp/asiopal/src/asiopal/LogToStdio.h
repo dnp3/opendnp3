@@ -37,27 +37,28 @@ class LogToStdio : public openpal::ILogBase
 
 public:
 	typedef std::ostringstream& (*LevelToString)(std::ostringstream& ss, const openpal::LogFilters& filters);
-
-	static LogToStdio* Inst()
-	{
-		return &instance;
-	}
+	typedef std::ostringstream& (*SourceToString)(std::ostringstream& ss, int source);
 
 	void Log( const openpal::LogEntry& entry );
+	
 	void SetPrintLocation(bool printLocation);
-	void SetLevelInterpreter(LevelToString pInterpreter);
 
-protected:
+	void SetFilterInterpreter(LevelToString pInterpreter);
+
+	void SetSourceInterpreter(SourceToString pInterpreter);
 
 	LogToStdio();
 
 private:
 
 	static std::ostringstream& BasicFlags(std::ostringstream& ss, const openpal::LogFilters& filters);
+	static std::ostringstream& BasicSource(std::ostringstream& ss, int source);
 
 	static LogToStdio instance;
 
-	LevelToString pInterpreter;
+	LevelToString pLevelToString;
+	SourceToString pSourceToString;
+
 	bool printLocation;
 	std::mutex mutex;
 };

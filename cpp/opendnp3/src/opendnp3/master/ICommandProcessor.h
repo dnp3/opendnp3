@@ -23,9 +23,7 @@
 
 #include "opendnp3/app/AnalogOutput.h"
 #include "opendnp3/app/ControlRelayOutputBlock.h"
-#include "opendnp3/master/CommandResponse.h"
-
-#include <functional>
+#include "opendnp3/master/ICommandCallback.h"
 
 namespace opendnp3
 {
@@ -39,83 +37,83 @@ public:
 
 	/**
 	* Select and operate a ControlRelayOutputBlock
-	* @param arCommand command to operate
-	* @param aIndex index of the command
-	* @param aCallback callback that will be invoked upon completion or failure
+	* @param command command to operate
+	* @param index index of the command
+	* @param pCallback callback that will be invoked upon completion or failure
 	*/
-	virtual void SelectAndOperate(const ControlRelayOutputBlock& arCommand, uint16_t aIndex, std::function<void (CommandResponse)> aCallback) = 0;
+	virtual void SelectAndOperate(const ControlRelayOutputBlock& command, uint16_t index, ICommandCallback* pCallback) = 0;
 
 	/**
 	* Direct operate a ControlRelayOutputBlock
-	* @param arCommand command to operate
-	* @param aIndex index of the command
+	* @param command command to operate
+	* @param index index of the command
 	* @param aCallback callback that will be invoked upon completion or failure
 	*/
-	virtual void DirectOperate(const ControlRelayOutputBlock& arCommand, uint16_t aIndex, std::function<void (CommandResponse)> aCallback) = 0;
+	virtual void DirectOperate(const ControlRelayOutputBlock& command, uint16_t index, ICommandCallback* pCallback) = 0;
 
 	/**
 	* Select and operate a 16 bit analog output
-	* @param arCommand command to operate
-	* @param aIndex index of the command
+	* @param command command to operate
+	* @param index index of the command
 	* @param aCallback callback that will be invoked upon completion or failure
 	*/
-	virtual void SelectAndOperate(const AnalogOutputInt16& arCommand, uint16_t aIndex, std::function<void (CommandResponse)> aCallback) = 0;
+	virtual void SelectAndOperate(const AnalogOutputInt16& command, uint16_t index, ICommandCallback* pCallback) = 0;
 
 	/**
 	* Direct operate a 16 bit analog output
-	* @param arCommand command to operate
-	* @param aIndex index of the command
+	* @param command command to operate
+	* @param index index of the command
 	* @param aCallback callback that will be invoked upon completion or failure
 	*/
-	virtual void DirectOperate(const AnalogOutputInt16& arCommand, uint16_t aIndex, std::function<void (CommandResponse)> aCallback) = 0;
+	virtual void DirectOperate(const AnalogOutputInt16& command, uint16_t index, ICommandCallback* pCallback) = 0;
 
 	/**
 	* Select and operate a 32 bit analog output
-	* @param arCommand command to operate
-	* @param aIndex index of the command
+	* @param command command to operate
+	* @param index index of the command
 	* @param aCallback callback that will be invoked upon completion or failure
 	*/
-	virtual void SelectAndOperate(const AnalogOutputInt32& arCommand, uint16_t aIndex, std::function<void (CommandResponse)> aCallback) = 0;
+	virtual void SelectAndOperate(const AnalogOutputInt32& command, uint16_t index, ICommandCallback* pCallback) = 0;
 
 	/**
 	* Direct operate a 32 bit analog output
-	* @param arCommand command to operate
-	* @param aIndex index of the command
+	* @param command command to operate
+	* @param index index of the command
 	* @param aCallback callback that will be invoked upon completion or failure
 	*/
-	virtual void DirectOperate(const AnalogOutputInt32& arCommand, uint16_t aIndex, std::function<void (CommandResponse)> aCallback) = 0;
+	virtual void DirectOperate(const AnalogOutputInt32& command, uint16_t index, ICommandCallback* pCallback) = 0;
 
 	/**
 	* Select and operate a single precision analog output
-	* @param arCommand command to operate
-	* @param aIndex index of the command
+	* @param command command to operate
+	* @param index index of the command
 	* @param aCallback callback that will be invoked upon completion or failure
 	*/
-	virtual void SelectAndOperate(const AnalogOutputFloat32& arCommand, uint16_t aIndex, std::function<void (CommandResponse)> aCallback) = 0;
+	virtual void SelectAndOperate(const AnalogOutputFloat32& command, uint16_t index, ICommandCallback* pCallback) = 0;
 
 	/**
 	* Direct operate a single precision analog output
-	* @param arCommand command to operate
-	* @param aIndex index of the command
+	* @param command command to operate
+	* @param index index of the command
 	* @param aCallback callback that will be invoked upon completion or failure
 	*/
-	virtual void DirectOperate(const AnalogOutputFloat32& arCommand, uint16_t aIndex, std::function<void (CommandResponse)> aCallback) = 0;
+	virtual void DirectOperate(const AnalogOutputFloat32& command, uint16_t index, ICommandCallback* pCallback) = 0;
 
 	/**
 	* Select and operate a double precision analog output
-	* @param arCommand command to operate
-	* @param aIndex index of the command
+	* @param command command to operate
+	* @param index index of the command
 	* @param aCallback callback that will be invoked upon completion or failure
 	*/
-	virtual void SelectAndOperate(const AnalogOutputDouble64& arCommand, uint16_t aIndex, std::function<void (CommandResponse)> aCallback) = 0;
+	virtual void SelectAndOperate(const AnalogOutputDouble64& command, uint16_t index, ICommandCallback* pCallback) = 0;
 
 	/**
 	* Direct operate a double precision analog output
-	* @param arCommand command to operate
-	* @param aIndex index of the command
+	* @param command command to operate
+	* @param index index of the command
 	* @param aCallback callback that will be invoked upon completion or failure
 	*/
-	virtual void DirectOperate(const AnalogOutputDouble64& arCommand, uint16_t aIndex, std::function<void (CommandResponse)> aCallback) = 0;
+	virtual void DirectOperate(const AnalogOutputDouble64& command, uint16_t index, ICommandCallback* pCallback) = 0;
 };
 
 }

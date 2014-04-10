@@ -55,12 +55,6 @@
     <ClInclude Include="src\openpal\LogEntry.h">
       <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="src\openpal\Loggable.h">
-      <Filter>Header</Filter>
-    </ClInclude>
-    <ClInclude Include="src\openpal\LoggableMacros.h">
-      <Filter>Header</Filter>
-    </ClInclude>
     <ClInclude Include="src\openpal\Logger.h">
       <Filter>Header</Filter>
     </ClInclude>
@@ -73,16 +67,10 @@
     <ClInclude Include="src\openpal\RandomInsertAdapter.h">
       <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="src\openpal\ReverseEndian.h">
-      <Filter>Header</Filter>
-    </ClInclude>
     <ClInclude Include="src\openpal\Sequence.h">
       <Filter>Header</Filter>
     </ClInclude>
     <ClInclude Include="src\openpal\Serialization.h">
-      <Filter>Header</Filter>
-    </ClInclude>
-    <ClInclude Include="src\openpal\SerializationTemplates.h">
       <Filter>Header</Filter>
     </ClInclude>
     <ClInclude Include="src\openpal\StackAdapter.h">
@@ -142,16 +130,43 @@
     <ClInclude Include="src\openpal\LogRoot.h">
       <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="src\openpal\LogConfig.h">
-      <Filter>Header</Filter>
-    </ClInclude>
-    <ClInclude Include="src\openpal\PhysicalLayerAsyncBase.h">
-      <Filter>Header</Filter>
-    </ClInclude>
     <ClInclude Include="src\openpal\LogFilters.h">
       <Filter>Header</Filter>
     </ClInclude>
     <ClInclude Include="src\openpal\Option.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="src\openpal\Runnable.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="src\openpal\Bind.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="src\openpal\Erasure.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="src\openpal\Function1.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="src\openpal\StringFormatting.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="src\openpal\Limits.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="src\openpal\LogMacros.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="src\openpal\LogMessages.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="src\openpal\FloatSerializationTemplates.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="src\openpal\UInt48LE.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="src\openpal\SerializationTemplatesLE.h">
       <Filter>Header</Filter>
     </ClInclude>
   </ItemGroup>
@@ -168,9 +183,6 @@
     <ClCompile Include="src\openpal\MonotonicTimestamp.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="src\openpal\ReverseEndian.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
     <ClCompile Include="src\openpal\TimeDuration.cpp">
       <Filter>Source</Filter>
     </ClCompile>
@@ -180,7 +192,16 @@
     <ClCompile Include="src\openpal\LogRoot.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="src\openpal\PhysicalLayerAsyncBase.cpp">
+    <ClCompile Include="src\openpal\Runnable.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="src\openpal\Limits.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="src\openpal\ByteSerialization.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="src\openpal\UInt48LE.cpp">
       <Filter>Source</Filter>
     </ClCompile>
   </ItemGroup>

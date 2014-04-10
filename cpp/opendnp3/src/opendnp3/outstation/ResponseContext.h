@@ -43,7 +43,7 @@ class ResponseContext : private openpal::Uncopyable
 
 public:
 
-	ResponseContext(Database* pDatabase, OutstationEventBuffer& buffer, const StaticResponseTypes& rspTypes);
+	ResponseContext(Database* pDatabase, OutstationEventBuffer* pBuffer, const StaticResponseTypes& rspTypes);
 
 	IINField ReadAllObjects(const GroupVariationRecord& record);
 	IINField ReadRange(const GroupVariationRecord& record, const StaticRange& range);
@@ -52,13 +52,13 @@ public:
 
 	bool IsComplete() const;
 
-	void Load(APDUResponse& response);
+	AppControlField Load(APDUResponse& response);
 
 private:
 
-	void SetControl(APDUResponse& response, bool hasEvents, bool fin);
+	static AppControlField GetControl(APDUResponse& response, uint16_t fragCount, bool hasEvents, bool fin);
 
-	uint32_t fragmentCount;
+	uint16_t fragmentCount;
 	StaticResponseContext staticContext;
 	EventResponseContext eventContext;
 };

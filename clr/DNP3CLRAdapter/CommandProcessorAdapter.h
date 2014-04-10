@@ -4,9 +4,11 @@
 using namespace System::Collections::ObjectModel;
 
 #include <vcclr.h>
-#include <map>
 
+#include <openpal/Uncopyable.h>
 #include <opendnp3/master/ICommandProcessor.h>
+
+#include "Conversions.h"
 
 using namespace DNP3::Interface;
 
@@ -14,10 +16,26 @@ namespace DNP3
 {
 namespace Adapter
 {
-private class ResponseRouter
+
+class CommandCallbackAdapter : public opendnp3::ICommandCallback, openpal::Uncopyable
 {
-public:
-	static void Set(gcroot < Future<CommandResponse> ^ >* apFuture, opendnp3::CommandResponse cr);
+	public:
+	CommandCallbackAdapter(Future<CommandResponse>^ future, bool autoDelete_) : autoDelete(autoDelete_), root(future)
+	{}
+
+	virtual void OnComplete(const opendnp3::CommandResponse& response)
+	{
+		auto result = Conversions::convertCommandResponse(response);
+
+		root->Set(result);
+		if (autoDelete)
+		{
+			delete this;
+		}
+	}
+
+	bool autoDelete;
+	gcroot < Future<CommandResponse> ^ > root;
 };
 
 private ref class CommandProcessorAdapter : public ICommandProcessor
@@ -45,8 +63,8 @@ private:
 	{
 		auto future = gcnew Future<CommandResponse>();
 		auto cmd = Conversions::convertCommand(command);
-		auto pWrapper = new gcroot < Future<CommandResponse> ^ > (future);
-		mpProxy->SelectAndOperate(cmd, index, std::bind(&ResponseRouter::Set, pWrapper, std::placeholders::_1));
+		auto pCallback = new CommandCallbackAdapter(future, true);		
+		mpProxy->SelectAndOperate(cmd, index, pCallback);
 		return future;
 	}
 
@@ -55,8 +73,8 @@ private:
 	{
 		auto future = gcnew Future<CommandResponse>();
 		auto cmd = Conversions::convertCommand(command);
-		auto pWrapper = new gcroot < Future<CommandResponse> ^ > (future);
-		mpProxy->DirectOperate(cmd, index, std::bind(&ResponseRouter::Set, pWrapper, std::placeholders::_1));
+		auto pCallback = new CommandCallbackAdapter(future, true);
+		mpProxy->DirectOperate(cmd, index, pCallback);
 		return future;
 	}
 

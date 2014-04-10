@@ -29,6 +29,7 @@
 
 #include "BufferHelpers.h"
 #include "DNPHelpers.h"
+#include "HexConversions.h"
 
 using namespace opendnp3;
 using namespace openpal;
@@ -65,20 +66,6 @@ TEST_CASE(SUITE("LinkHeaderChangeFCB"))
 	REQUIRE(hdr.ControlByte(true, false, true, LinkFunction::PRI_CONFIRMED_USER_DATA) ==  hdr.GetControl());
 }
 
-TEST_CASE(SUITE("LinkHeaderToString"))
-{
-	LinkHeader hdr;
-
-	hdr.Set(5, 1, 1024, true, true, true, LinkFunction::PRI_CONFIRMED_USER_DATA);
-	REQUIRE("DL 1 to 1024 : PRI_CONFIRMED_USER_DATA PayloadSize: 0 From Master Pri->Sec FCB=1 FCV=1" ==  hdr.ToString());
-
-	hdr.Set(5, 1, 1024, true, true, false, LinkFunction::SEC_ACK);
-	REQUIRE("DL 1 to 1024 : SEC_ACK PayloadSize: 0 From Master Sec->Pri DFC=1" ==  hdr.ToString());
-
-	hdr.Set(5, 1, 1024, true, true, true, LinkFunction::SEC_ACK);
-	REQUIRE("DL 1 to 1024 : SEC_ACK PayloadSize: 0 From Master Sec->Pri ERROR: FCB not Blank!! DFC=1" ==  hdr.ToString());
-}
-
 TEST_CASE(SUITE("ResetLinks"))
 {
 	StaticBuffer<292> buffer;
@@ -87,6 +74,16 @@ TEST_CASE(SUITE("ResetLinks"))
 	auto write = buffer.GetWriteBuffer();
 	auto wrapper = LinkFrame::FormatResetLinkStates(write, true, 1, 1024);
 	REQUIRE(toHex(wrapper) == "05 64 05 C0 01 00 00 04 E9 21");
+}
+
+TEST_CASE(SUITE("RequestLinkStates"))
+{
+	StaticBuffer<292> buffer;
+
+	// ResetLinkStates - Master
+	auto write = buffer.GetWriteBuffer();
+	auto wrapper = LinkFrame::FormatRequestLinkStatus(write, false, 1, 1024);
+	REQUIRE(toHex(wrapper) == "05 64 05 49 01 00 00 04 D2 36");
 }
 
 TEST_CASE(SUITE("ACK"))

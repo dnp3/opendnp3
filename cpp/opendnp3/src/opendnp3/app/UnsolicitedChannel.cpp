@@ -20,7 +20,7 @@
  */
 #include "UnsolicitedChannel.h"
 
-#include <openpal/LoggableMacros.h>
+#include <openpal/LogMacros.h>
 
 #include "opendnp3/LogLevels.h"
 #include "AppLayer.h"
@@ -29,32 +29,32 @@ namespace opendnp3
 {
 
 
-UnsolicitedChannel::UnsolicitedChannel(openpal::Logger aLogger, AppLayer* apApp, IExecutor* apExecutor, openpal::TimeDuration aTimeout) :
-	AppLayerChannel("Unsolicited", aLogger, apApp, apExecutor, aTimeout)
+UnsolicitedChannel::UnsolicitedChannel(openpal::Logger logger, AppLayer* apApp, IExecutor* apExecutor, openpal::TimeDuration aTimeout) :
+	AppLayerChannel(logger, apApp, apExecutor, aTimeout)
 {}
 
 void UnsolicitedChannel::OnUnsol(const APDUResponseRecord& aRecord)
 {
 	if(aRecord.control.SEQ == mSequence)
 	{
-		LOG_BLOCK(flags::INFO, "Ignoring repeat unsol seq: " << aRecord.control.SEQ)
+		FORMAT_LOG_BLOCK(logger, flags::INFO, "Ignoring repeat unsol seq: %i", aRecord.control.SEQ)
 	}
 	else
 	{
 		// only process the data if the sequence number is new
 		mSequence = aRecord.control.SEQ;
-		mpAppLayer->mpUser->OnUnsolResponse(aRecord);
+		mpAppLayer->pUser->OnUnsolResponse(aRecord);
 	}
 }
 
 void UnsolicitedChannel::DoSendSuccess()
 {
-	mpAppLayer->mpUser->OnUnsolSendSuccess();
+	mpAppLayer->pUser->OnUnsolSendSuccess();
 }
 
 void UnsolicitedChannel::DoFailure()
 {
-	mpAppLayer->mpUser->OnUnsolFailure();
+	mpAppLayer->pUser->OnUnsolFailure();
 }
 
 }

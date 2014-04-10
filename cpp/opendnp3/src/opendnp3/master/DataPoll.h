@@ -25,9 +25,6 @@
 
 #include "ISOEHandler.h"
 
-#include <functional>
-
-
 namespace opendnp3
 {
 
@@ -66,7 +63,7 @@ public:
 
 	void ConfigureRequest(APDURequest& request);
 
-	virtual std::string Name() const
+	virtual char const* Name() const
 	{
 		return "Class Poll";
 	}

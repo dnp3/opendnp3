@@ -47,7 +47,7 @@ object CppEnumGenerator {
         def license = commented(LicenseHeader())
         def enum = EnumModelRenderer.render(cfg.model).toIterator
         def signatures = renders.map(c => c.header.render(cfg.model)).flatten.toIterator
-        def lines = license ++ space ++ includeGuards(cfg.model.name)(string ++ cstdint ++ space ++ namespace(nsopendnp3)(enum ++ space ++ signatures))
+        def lines = license ++ space ++ includeGuards(cfg.model.name)(cstdint ++ space ++ namespace(nsopendnp3)(enum ++ space ++ signatures))
         writeTo(cfg.headerPath(directory))(lines)
         println("Wrote: " + cfg.headerPath(directory))
       }

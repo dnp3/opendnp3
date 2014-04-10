@@ -20,8 +20,7 @@
  */
 #include "Database.h"
 
-
-#include <openpal/LoggableMacros.h>
+#include <openpal/LogMacros.h>
 
 #include "opendnp3/app/MeasurementHelpers.h"
 #include "opendnp3/DNPErrorCodes.h"

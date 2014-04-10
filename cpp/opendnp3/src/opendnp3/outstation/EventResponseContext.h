@@ -57,7 +57,7 @@ public:
 	};
 
 
-	EventResponseContext(OutstationEventBuffer& buffer_);
+	EventResponseContext(OutstationEventBuffer* pBuffer_);
 
 	bool IsComplete() const;
 
@@ -71,7 +71,7 @@ public:
 private:
 
 	SelectionCriteria criteria;
-	OutstationEventBuffer& buffer;
+	OutstationEventBuffer* pBuffer;
 
 	// true if the event buffer was exhausted, false if apdu is full
 	Result Iterate(ObjectWriter& writer, SelectionIterator& iterator);

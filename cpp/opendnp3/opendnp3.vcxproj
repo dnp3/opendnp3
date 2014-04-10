@@ -73,9 +73,6 @@
     <ClInclude Include="src\opendnp3\app\VTOData.h" />
     <ClInclude Include="src\opendnp3\app\WriteConversions.h" />
     <ClInclude Include="src\opendnp3\app\WriteConversionTemplates.h" />
-    <ClInclude Include="src\opendnp3\DestructorHook.h" />
-    <ClInclude Include="src\opendnp3\DNP3Channel.h" />
-    <ClInclude Include="src\opendnp3\DNP3Manager.h" />
     <ClInclude Include="src\opendnp3\DNPErrorCodes.h" />
     <ClInclude Include="src\opendnp3\gen\ChannelState.h" />
     <ClInclude Include="src\opendnp3\gen\CommandResult.h" />
@@ -101,9 +98,6 @@
     <ClInclude Include="src\opendnp3\gen\StaticDoubleBinaryResponse.h" />
     <ClInclude Include="src\opendnp3\gen\StaticFrozenCounterResponse.h" />
     <ClInclude Include="src\opendnp3\IBufferSegment.h" />
-    <ClInclude Include="src\opendnp3\IChannel.h" />
-    <ClInclude Include="src\opendnp3\DNP3Stack.h" />
-    <ClInclude Include="src\opendnp3\IStack.h" />
     <ClInclude Include="src\opendnp3\link\DNPCrc.h" />
     <ClInclude Include="src\opendnp3\link\IFrameSink.h" />
     <ClInclude Include="src\opendnp3\link\ILinkContext.h" />
@@ -124,7 +118,6 @@
     <ClInclude Include="src\opendnp3\link\PriLinkLayerStates.h" />
     <ClInclude Include="src\opendnp3\link\SecLinkLayerStates.h" />
     <ClInclude Include="src\opendnp3\link\ShiftableBuffer.h" />
-    <ClInclude Include="src\opendnp3\LogLevelInterpreter.h" />
     <ClInclude Include="src\opendnp3\LogLevels.h" />
     <ClInclude Include="src\opendnp3\master\AsyncTaskBase.h" />
     <ClInclude Include="src\opendnp3\master\AsyncTaskContinuous.h" />
@@ -132,13 +125,14 @@
     <ClInclude Include="src\opendnp3\master\AsyncTaskInterfaces.h" />
     <ClInclude Include="src\opendnp3\master\AsyncTaskNonPeriodic.h" />
     <ClInclude Include="src\opendnp3\master\AsyncTaskPeriodic.h" />
+    <ClInclude Include="src\opendnp3\master\CommandAction.h" />
     <ClInclude Include="src\opendnp3\master\CommandResponse.h" />
     <ClInclude Include="src\opendnp3\master\CommandSequence.h" />
     <ClInclude Include="src\opendnp3\master\CommandTask.h" />
     <ClInclude Include="src\opendnp3\master\ConstantCommandProcessor.h" />
     <ClInclude Include="src\opendnp3\master\DataPoll.h" />
+    <ClInclude Include="src\opendnp3\master\ICommandCallback.h" />
     <ClInclude Include="src\opendnp3\master\ICommandProcessor.h" />
-    <ClInclude Include="src\opendnp3\master\IMaster.h" />
     <ClInclude Include="src\opendnp3\master\IScanListener.h" />
     <ClInclude Include="src\opendnp3\master\ISOEHandler.h" />
     <ClInclude Include="src\opendnp3\master\Master.h" />
@@ -147,7 +141,6 @@
     <ClInclude Include="src\opendnp3\master\MasterScan.h" />
     <ClInclude Include="src\opendnp3\master\MasterSchedule.h" />
     <ClInclude Include="src\opendnp3\master\MasterStackConfig.h" />
-    <ClInclude Include="src\opendnp3\master\MasterStackImpl.h" />
     <ClInclude Include="src\opendnp3\master\MasterStates.h" />
     <ClInclude Include="src\opendnp3\master\MasterTaskBase.h" />
     <ClInclude Include="src\opendnp3\master\MeasurementHandler.h" />
@@ -157,7 +150,6 @@
     <ClInclude Include="src\opendnp3\master\TaskStatus.h" />
     <ClInclude Include="src\opendnp3\master\TimeSyncHandler.h" />
     <ClInclude Include="src\opendnp3\master\TrackingTaskGroup.h" />
-    <ClInclude Include="src\opendnp3\Mutex.h" />
     <ClInclude Include="src\opendnp3\objects\Group1.h" />
     <ClInclude Include="src\opendnp3\objects\Group10.h" />
     <ClInclude Include="src\opendnp3\objects\Group11.h" />
@@ -201,10 +193,9 @@
     <ClInclude Include="src\opendnp3\outstation\IMeasurementLoader.h" />
     <ClInclude Include="src\opendnp3\outstation\IEventBuffer.h" />
     <ClInclude Include="src\opendnp3\outstation\IINHelpers.h" />
-    <ClInclude Include="src\opendnp3\outstation\IOutstation.h" />
     <ClInclude Include="src\opendnp3\outstation\ITimeWriteHandler.h" />
+    <ClInclude Include="src\opendnp3\outstation\NewOutstation.h" />
     <ClInclude Include="src\opendnp3\outstation\OutstationEventBuffer.h" />
-    <ClInclude Include="src\opendnp3\outstation\OutstationStackImpl.h" />
     <ClInclude Include="src\opendnp3\outstation\ReadHandler.h" />
     <ClInclude Include="src\opendnp3\outstation\ResponseContext.h" />
     <ClInclude Include="src\opendnp3\outstation\SelectBuffer.h" />
@@ -215,6 +206,7 @@
     <ClInclude Include="src\opendnp3\outstation\OutstationConfig.h" />
     <ClInclude Include="src\opendnp3\outstation\OutstationStackConfig.h" />
     <ClInclude Include="src\opendnp3\outstation\OutstationStates.h" />
+    <ClInclude Include="src\opendnp3\outstation\StaticallyAllocatedDatabase.h" />
     <ClInclude Include="src\opendnp3\outstation\StaticallyAllocatedEventBuffer.h" />
     <ClInclude Include="src\opendnp3\outstation\StaticDataFacade.h" />
     <ClInclude Include="src\opendnp3\outstation\StaticLoader.h" />
@@ -225,12 +217,11 @@
     <ClInclude Include="src\opendnp3\outstation\WriteHandler.h" />
     <ClInclude Include="src\opendnp3\Settable.h" />
     <ClInclude Include="src\opendnp3\Singleton.h" />
-    <ClInclude Include="src\opendnp3\StackActionHandler.h" />
     <ClInclude Include="src\opendnp3\StaticSizeConfiguration.h" />
     <ClInclude Include="src\opendnp3\transport\TransportConstants.h" />
     <ClInclude Include="src\opendnp3\transport\TransportLayer.h" />
     <ClInclude Include="src\opendnp3\transport\TransportRx.h" />
-    <ClInclude Include="src\opendnp3\transport\TransportStates.h" />
+    <ClInclude Include="src\opendnp3\transport\TransportStack.h" />
     <ClInclude Include="src\opendnp3\transport\TransportTx.h" />
   </ItemGroup>
   <ItemGroup>
@@ -247,7 +238,6 @@
     <ClCompile Include="src\opendnp3\app\ApplicationStack.cpp" />
     <ClCompile Include="src\opendnp3\app\BitReader.cpp" />
     <ClCompile Include="src\opendnp3\app\ControlRelayOutputBlock.cpp" />
-    <ClCompile Include="src\opendnp3\app\DownSampling.cpp" />
     <ClCompile Include="src\opendnp3\app\FunctionCodeHelpers.cpp" />
     <ClCompile Include="src\opendnp3\app\GroupVariation.cpp" />
     <ClCompile Include="src\opendnp3\app\APDUHandlerBase.cpp" />
@@ -260,10 +250,6 @@
     <ClCompile Include="src\opendnp3\app\SolicitedChannel.cpp" />
     <ClCompile Include="src\opendnp3\app\StaticRange.cpp" />
     <ClCompile Include="src\opendnp3\app\UnsolicitedChannel.cpp" />
-    <ClCompile Include="src\opendnp3\DestructorHook.cpp" />
-    <ClCompile Include="src\opendnp3\DNP3Channel.cpp" />
-    <ClCompile Include="src\opendnp3\DNP3Manager.cpp" />
-    <ClCompile Include="src\opendnp3\DNP3Stack.cpp" />
     <ClCompile Include="src\opendnp3\gen\ChannelState.cpp" />
     <ClCompile Include="src\opendnp3\gen\CommandResult.cpp" />
     <ClCompile Include="src\opendnp3\gen\CommandStatus.cpp" />
@@ -301,12 +287,12 @@
     <ClCompile Include="src\opendnp3\link\PriLinkLayerStates.cpp" />
     <ClCompile Include="src\opendnp3\link\SecLinkLayerStates.cpp" />
     <ClCompile Include="src\opendnp3\link\ShiftableBuffer.cpp" />
-    <ClCompile Include="src\opendnp3\LogLevelInterpreter.cpp" />
     <ClCompile Include="src\opendnp3\master\AsyncTaskBase.cpp" />
     <ClCompile Include="src\opendnp3\master\AsyncTaskContinuous.cpp" />
     <ClCompile Include="src\opendnp3\master\AsyncTaskGroup.cpp" />
     <ClCompile Include="src\opendnp3\master\AsyncTaskNonPeriodic.cpp" />
     <ClCompile Include="src\opendnp3\master\AsyncTaskPeriodic.cpp" />
+    <ClCompile Include="src\opendnp3\master\CommandAction.cpp" />
     <ClCompile Include="src\opendnp3\master\CommandResponse.cpp" />
     <ClCompile Include="src\opendnp3\master\CommandTask.cpp" />
     <ClCompile Include="src\opendnp3\master\ConstantCommandProcessor.cpp" />
@@ -315,7 +301,6 @@
     <ClCompile Include="src\opendnp3\master\Master.cpp" />
     <ClCompile Include="src\opendnp3\master\MasterScan.cpp" />
     <ClCompile Include="src\opendnp3\master\MasterSchedule.cpp" />
-    <ClCompile Include="src\opendnp3\master\MasterStackImpl.cpp" />
     <ClCompile Include="src\opendnp3\master\MasterStates.cpp" />
     <ClCompile Include="src\opendnp3\master\MasterTaskBase.cpp" />
     <ClCompile Include="src\opendnp3\master\MeasurementHandler.cpp" />
@@ -354,8 +339,8 @@
     <ClCompile Include="src\opendnp3\outstation\EventResponseContext.cpp" />
     <ClCompile Include="src\opendnp3\outstation\IINHelpers.cpp" />
     <ClCompile Include="src\opendnp3\outstation\ITimeWriteHandler.cpp" />
+    <ClCompile Include="src\opendnp3\outstation\NewOutstation.cpp" />
     <ClCompile Include="src\opendnp3\outstation\OutstationEventBuffer.cpp" />
-    <ClCompile Include="src\opendnp3\outstation\OutstationStackImpl.cpp" />
     <ClCompile Include="src\opendnp3\outstation\ReadHandler.cpp" />
     <ClCompile Include="src\opendnp3\outstation\ResponseContext.cpp" />
     <ClCompile Include="src\opendnp3\outstation\SelectBuffer.cpp" />
@@ -369,10 +354,9 @@
     <ClCompile Include="src\opendnp3\outstation\StaticResponseTypes.cpp" />
     <ClCompile Include="src\opendnp3\outstation\TimeTransaction.cpp" />
     <ClCompile Include="src\opendnp3\outstation\WriteHandler.cpp" />
-    <ClCompile Include="src\opendnp3\StackActionHandler.cpp" />
     <ClCompile Include="src\opendnp3\transport\TransportLayer.cpp" />
     <ClCompile Include="src\opendnp3\transport\TransportRx.cpp" />
-    <ClCompile Include="src\opendnp3\transport\TransportStates.cpp" />
+    <ClCompile Include="src\opendnp3\transport\TransportStack.cpp" />
     <ClCompile Include="src\opendnp3\transport\TransportTx.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

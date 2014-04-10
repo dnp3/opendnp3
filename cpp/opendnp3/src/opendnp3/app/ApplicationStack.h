@@ -26,18 +26,13 @@
 
 #include "AppLayer.h"
 
-namespace openpal
-{
-class IExecutoer;
-}
-
 namespace opendnp3
 {
 
 class ApplicationStack
 {
 public:
-	ApplicationStack(const openpal::Logger& logger, openpal::IExecutor* pExecutor, AppConfig appConfig, LinkConfig linkConfig);
+	ApplicationStack(openpal::LogRoot& root, openpal::IExecutor* pExecutor, AppConfig appConfig, LinkConfig linkConfig);
 
 	LinkLayer link;
 	TransportLayer transport;

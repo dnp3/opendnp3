@@ -25,8 +25,7 @@
 
 #include "opendnp3/LogLevels.h"
 
-#include <openpal/Loggable.h>
-#include <openpal/LoggableMacros.h>
+#include <openpal/LogMacros.h>
 
 namespace opendnp3
 {
@@ -60,7 +59,7 @@ public:
 		}
 		else
 		{
-			LOG_BLOCK(flags::WARN, "Ignoring unexpected time delay count of " << times.Count());
+			FORMAT_LOG_BLOCK(logger, flags::WARN, "Ignoring unexpected time delay count of %i", times.Count());
 		}
 	}
 

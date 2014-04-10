@@ -25,7 +25,7 @@
 #include "opendnp3/app/PointClass.h"
 #include "opendnp3/LogLevels.h"
 
-#include <openpal/LoggableMacros.h>
+#include <openpal/LogMacros.h>
 
 #include "opendnp3/app/APDUParser.h"
 #include "opendnp3/master/MeasurementHandler.h"
@@ -60,7 +60,7 @@ void DataPoll::ReadData(const APDUResponseRecord& record)
 	auto res = APDUParser::ParseTwoPass(record.objects, &handler, &logger);
 	if(res != APDUParser::Result::OK)
 	{
-		LOG_BLOCK(flags::WARN, "Error parsing response headers: " << static_cast<int>(res)); // TODO - turn these into strings
+		FORMAT_LOG_BLOCK(logger, flags::WARN, "Error parsing response headers: %i", res); // TODO - turn these into strings
 	}
 }
 

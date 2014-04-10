@@ -38,7 +38,7 @@ openpaltest.trs
 dnp3test.log
 dnp3test.trs
 test-suite.log
-
+*.atsuo
 *~
 *.dirstamp
 

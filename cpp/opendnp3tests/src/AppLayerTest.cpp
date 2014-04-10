@@ -27,10 +27,10 @@ namespace opendnp3
 
 AppLayerTest::AppLayerTest(bool aIsMaster, uint32_t aNumRetry, uint32_t filters, bool aImmediate) :
 	log(),
-	user(log.GetLogger("user")),
-	lower(log.GetLogger("lower")),
+	user(log.root),
+	lower(log.root),
 	mts(),
-	app(log.GetLogger("app"), &mts, AppConfig(aIsMaster, TimeDuration::Seconds(1), aNumRetry)),
+	app(log.root, &mts, AppConfig(aIsMaster, TimeDuration::Seconds(1), aNumRetry)),
 	writeBuffer(buffer, 4)
 {
 	lower.SetUpperLayer(&app);

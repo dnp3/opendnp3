@@ -22,8 +22,8 @@
 #define __LINK_LAYER_H_
 
 #include <openpal/IExecutor.h>
-#include <openpal/Loggable.h>
 #include <openpal/StaticBuffer.h>
+#include <openpal/LogRoot.h>
 
 #include "opendnp3/link/ILinkLayer.h"
 #include "opendnp3/link/ILinkContext.h"
@@ -40,11 +40,11 @@ class PriStateBase;
 class SecStateBase;
 
 //	@section desc Implements the contextual state of DNP3 Data Link Layer
-class LinkLayer : public ILinkLayer, public ILinkContext, public openpal::HasUpperLayer, private openpal::Loggable
+class LinkLayer : public ILinkLayer, public ILinkContext, public openpal::HasUpperLayer
 {
 public:
 
-	LinkLayer(const openpal::Logger&, openpal::IExecutor*, const LinkConfig& arConfig);
+	LinkLayer(openpal::LogRoot&, openpal::IExecutor*, const LinkConfig& config);
 
 	void SetRouter(ILinkRouter*);
 
@@ -92,13 +92,7 @@ public:
 		}
 	}
 
-	void PostSendResult(bool isSuccess)
-	{
-		mpExecutor->Post([this, isSuccess]()
-		{
-			this->DoSendResult(isSuccess);
-		});
-	}
+	void PostSendResult(bool isSuccess);
 
 	void ResetReadFCB()
 	{
@@ -138,6 +132,7 @@ public:
 	void StartTimer();
 	void CancelTimer();
 
+	openpal::Logger logger;
 	const LinkConfig config;
 
 	//Retry Count
@@ -177,12 +172,7 @@ private:
 	bool mNextWriteFCB;
 	bool mIsOnline;
 
-	bool Validate(bool aIsMaster, uint16_t aSrc, uint16_t aDest);
-
-	std::string SendString()
-	{
-		return "~>";
-	}
+	bool Validate(bool aIsMaster, uint16_t aSrc, uint16_t aDest);	
 
 	ILinkRouter* mpRouter;
 	PriStateBase* mpPriState;

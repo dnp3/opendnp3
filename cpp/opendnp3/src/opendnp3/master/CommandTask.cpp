@@ -21,7 +21,7 @@
 #include "CommandTask.h"
 
 
-#include <openpal/LoggableMacros.h>
+#include <openpal/LogMacros.h>
 
 #include "opendnp3/app/APDUParser.h"
 
@@ -44,6 +44,7 @@ const Sequence<FunctionCode> CommandTask::SelectAndOperate(FunctionCode::SELECT,
 CommandTask::CommandTask(Logger aLogger) :
 	MasterTaskBase(aLogger),
 	mpActiveSequence(nullptr),
+	mpCallback(nullptr),
 	mpFunctionSequence(nullptr),
 	crobSeq(aLogger, Group12Var1Serializer::Inst()),
 	analogInt32Seq(aLogger, Group41Var1Serializer::Inst()),
@@ -54,54 +55,54 @@ CommandTask::CommandTask(Logger aLogger) :
 
 }
 
-void CommandTask::ConfigureSBO(const ControlRelayOutputBlock& command, uint32_t index, std::function<void (CommandResponse)> aCallback)
+void CommandTask::ConfigureSBO(const ControlRelayOutputBlock& command, uint32_t index, ICommandCallback* pCallback)
 {
-	this->Configure(crobSeq, command, index, &SelectAndOperate, aCallback);
+	this->Configure(crobSeq, command, index, &SelectAndOperate, pCallback);
 }
 
-void CommandTask::ConfigureSBO(const AnalogOutputInt16& command, uint32_t index,  std::function<void (CommandResponse)> aCallback)
+void CommandTask::ConfigureSBO(const AnalogOutputInt16& command, uint32_t index,  ICommandCallback* pCallback)
 {
-	this->Configure(analogInt16Seq, command, index, &SelectAndOperate, aCallback);
+	this->Configure(analogInt16Seq, command, index, &SelectAndOperate, pCallback);
 }
 
-void CommandTask::ConfigureSBO(const AnalogOutputInt32& command, uint32_t index,  std::function<void (CommandResponse)> aCallback)
+void CommandTask::ConfigureSBO(const AnalogOutputInt32& command, uint32_t index,  ICommandCallback* pCallback)
 {
-	this->Configure(analogInt32Seq, command, index, &SelectAndOperate, aCallback);
+	this->Configure(analogInt32Seq, command, index, &SelectAndOperate, pCallback);
 }
 
-void CommandTask::ConfigureSBO(const AnalogOutputFloat32& command, uint32_t index,  std::function<void (CommandResponse)> aCallback)
+void CommandTask::ConfigureSBO(const AnalogOutputFloat32& command, uint32_t index,  ICommandCallback* pCallback)
 {
-	this->Configure(analogFloat32Seq, command, index, &SelectAndOperate, aCallback);
+	this->Configure(analogFloat32Seq, command, index, &SelectAndOperate, pCallback);
 }
 
-void CommandTask::ConfigureSBO(const AnalogOutputDouble64& command, uint32_t index,  std::function<void (CommandResponse)> aCallback)
+void CommandTask::ConfigureSBO(const AnalogOutputDouble64& command, uint32_t index,  ICommandCallback* pCallback)
 {
-	this->Configure(analogDouble64Seq, command, index, &SelectAndOperate, aCallback);
+	this->Configure(analogDouble64Seq, command, index, &SelectAndOperate, pCallback);
 }
 
-void CommandTask::ConfigureDO(const ControlRelayOutputBlock& command, uint32_t index,  std::function<void (CommandResponse)> aCallback)
+void CommandTask::ConfigureDO(const ControlRelayOutputBlock& command, uint32_t index,  ICommandCallback* pCallback)
 {
-	this->Configure(crobSeq, command, index, &DirectOperate, aCallback);
+	this->Configure(crobSeq, command, index, &DirectOperate, pCallback);
 }
 
-void CommandTask::ConfigureDO(const AnalogOutputInt16& command, uint32_t index,  std::function<void (CommandResponse)> aCallback)
+void CommandTask::ConfigureDO(const AnalogOutputInt16& command, uint32_t index,  ICommandCallback* pCallback)
 {
-	this->Configure(analogInt16Seq, command, index, &DirectOperate, aCallback);
+	this->Configure(analogInt16Seq, command, index, &DirectOperate, pCallback);
 }
 
-void CommandTask::ConfigureDO(const AnalogOutputInt32& command, uint32_t index,  std::function<void (CommandResponse)> aCallback)
+void CommandTask::ConfigureDO(const AnalogOutputInt32& command, uint32_t index,  ICommandCallback* pCallback)
 {
-	this->Configure(analogInt32Seq, command, index, &DirectOperate, aCallback);
+	this->Configure(analogInt32Seq, command, index, &DirectOperate, pCallback);
 }
 
-void CommandTask::ConfigureDO(const AnalogOutputFloat32& command, uint32_t index,  std::function<void (CommandResponse)> aCallback)
+void CommandTask::ConfigureDO(const AnalogOutputFloat32& command, uint32_t index,  ICommandCallback* pCallback)
 {
-	this->Configure(analogFloat32Seq, command, index, &DirectOperate, aCallback);
+	this->Configure(analogFloat32Seq, command, index, &DirectOperate, pCallback);
 }
 
-void CommandTask::ConfigureDO(const AnalogOutputDouble64& command, uint32_t index,  std::function<void (CommandResponse)> aCallback)
+void CommandTask::ConfigureDO(const AnalogOutputDouble64& command, uint32_t index,  ICommandCallback* pCallback)
 {
-	this->Configure(analogDouble64Seq, command, index, &DirectOperate, aCallback);
+	this->Configure(analogDouble64Seq, command, index, &DirectOperate, pCallback);
 }
 
 void CommandTask::ConfigureRequest(APDURequest& request)
@@ -115,15 +116,24 @@ void CommandTask::ConfigureRequest(APDURequest& request)
 
 }
 
+void  CommandTask::Callback(const CommandResponse& cr)
+{
+	if (mpCallback)
+	{
+		mpCallback->OnComplete(cr);
+	}
+}
+
 void CommandTask::OnFailure()
 {
-	callback(CommandResponse(CommandResult::TIMEOUT));
+	Callback(CommandResponse(CommandResult::TIMEOUT));
+
 }
 
 bool CommandTask::_OnPartialResponse(const APDUResponseRecord&)
 {
-	LOG_BLOCK(flags::ERR, "Non fin responses not allowed for control tasks");
-	callback(CommandResponse(CommandResult::BAD_RESPONSE));
+	SIMPLE_LOG_BLOCK(logger, flags::ERR, "Non fin responses not allowed for control tasks");
+	Callback(CommandResponse(CommandResult::BAD_RESPONSE));	
 	return false;
 }
 
@@ -135,7 +145,7 @@ TaskResult CommandTask::_OnFinalResponse(const APDUResponseRecord& record)
 		if(mpFunctionSequence == nullptr) // we're done
 		{
 			auto commandResponse = mpActiveSequence->Validate();
-			callback(commandResponse);
+			Callback(commandResponse);			
 			return TaskResult::TR_SUCCESS;
 		}
 		else // we may have more depending on response
@@ -144,19 +154,19 @@ TaskResult CommandTask::_OnFinalResponse(const APDUResponseRecord& record)
 			if(commandResponse == CommandResponse::Success) return TaskResult::TR_CONTINUE; // more function codes
 			else
 			{
-				callback(commandResponse);  // something failed, end the task early
+				Callback(commandResponse);  // something failed, end the task early				
 				return TaskResult::TR_SUCCESS;
 			}
 		}
 	}
 	else
-	{
-		callback(CommandResponse(CommandResult::BAD_RESPONSE));
+	{		
+		Callback(CommandResponse(CommandResult::BAD_RESPONSE));
 		return TaskResult::TR_FAIL;
 	}
 }
 
-std::string CommandTask::Name() const
+char const* CommandTask::Name() const
 {
 	return "CommandTask";
 }

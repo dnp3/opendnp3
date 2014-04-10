@@ -18,21 +18,21 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include <openpal/MonotonicTimestamp.h>
+#include "MonotonicTimestamp.h"
 
-#include <limits>
+#include <stdint.h>
 
 namespace openpal
 {
 
 MonotonicTimestamp MonotonicTimestamp::Max()
 {
-	return MonotonicTimestamp(std::numeric_limits<int64_t>::max());
+	return MonotonicTimestamp(INT64_MAX);
 }
 
 MonotonicTimestamp MonotonicTimestamp::Min()
 {
-	return MonotonicTimestamp(std::numeric_limits<int64_t>::min());
+	return MonotonicTimestamp(INT64_MIN);
 }
 
 MonotonicTimestamp::MonotonicTimestamp() : milliseconds(0)

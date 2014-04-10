@@ -26,9 +26,8 @@
 #include "opendnp3/app/IterableTransforms.h"
 
 #include "opendnp3/LogLevels.h"
-
-#include <openpal/Loggable.h>
-#include <openpal/LoggableMacros.h>
+#include <openpal/LogMacros.h>
+#include <openpal/Logger.h>
 
 namespace opendnp3
 {
@@ -36,14 +35,14 @@ namespace opendnp3
 /**
  * Base class used to handle APDU object headers
  */
-class APDUHandlerBase : public IAPDUHandler, protected openpal::Loggable
+class APDUHandlerBase : public IAPDUHandler
 {
 public:
 
 	/**
 	 * @param arLogger	the Logger that the loader should use for message reporting
 	 */
-	APDUHandlerBase(openpal::Logger logger);
+	APDUHandlerBase(const openpal::Logger& logger);
 
 	uint32_t NumIgnoredHeaders() const
 	{
@@ -174,6 +173,7 @@ protected:
 
 protected:
 
+	openpal::Logger logger;
 	uint32_t ignoredHeaders;
 	IINField errors;
 
@@ -199,9 +199,9 @@ void APDUHandlerBase::OnIndexPrefixCTO(const HeaderRecord& record, const Iterabl
 	uint64_t commonTime;
 	if (GetCTO(commonTime))
 	{
-		auto transform = MapIterableBuffer< IndexedValue<T, uint16_t>, IndexedValue<T, uint16_t> >(meas,
+		auto transform = MapIterableBuffer< IndexedValue<T, uint16_t>, IndexedValue<T, uint16_t> >(&meas,
 
-		                 [&commonTime](const IndexedValue<T, uint16_t>& value)
+		                 [commonTime](const IndexedValue<T, uint16_t>& value)
 		{
 			T copy(value.value);
 			copy.SetTime(commonTime + copy.GetTime());
@@ -213,8 +213,8 @@ void APDUHandlerBase::OnIndexPrefixCTO(const HeaderRecord& record, const Iterabl
 	}
 	else
 	{
-		LOG_BLOCK(flags::WARN, "Received CTO objects without preceding common time, using assumed time");
-		auto transform = MapIterableBuffer< IndexedValue<T, uint16_t>, IndexedValue<T, uint16_t> >(meas,
+		SIMPLE_LOG_BLOCK(logger, flags::WARN, "Received CTO objects without preceding common time, using assumed time");
+		auto transform = MapIterableBuffer< IndexedValue<T, uint16_t>, IndexedValue<T, uint16_t> >(&meas,
 		                 [](const IndexedValue<T, uint16_t>& value)
 		{
 			T copy(value.value);

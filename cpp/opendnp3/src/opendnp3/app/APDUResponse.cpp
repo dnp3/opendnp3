@@ -21,6 +21,7 @@
 
 #include "APDUResponse.h"
 
+#include <openpal/Configure.h>
 #include <assert.h>
 
 using namespace openpal;
@@ -28,9 +29,9 @@ using namespace openpal;
 namespace opendnp3
 {
 
-APDUResponse::APDUResponse(const openpal::WriteBuffer& aBuffer) : APDUWrapper(aBuffer)
+APDUResponse::APDUResponse(const openpal::WriteBuffer& buffer) : APDUWrapper(buffer)
 {
-	assert(aBuffer.Size() >= 4);
+	assert(buffer.Size() >= 4);
 	remaining.Advance(2);
 }
 

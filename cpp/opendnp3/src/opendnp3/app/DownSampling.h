@@ -22,9 +22,9 @@
 #define __DOWN_SAMPLING_H_
 
 #include <openpal/Uncopyable.h>
+#include <openpal/Limits.h>
 
 #include <cstdint>
-#include <limits>
 
 namespace opendnp3
 {
@@ -58,10 +58,10 @@ public:
 };
 
 template <class Source, class Target>
-const Target DownSampling<Source, Target>::TARGET_MAX(std::numeric_limits<Target>::max());
+const Target DownSampling<Source, Target>::TARGET_MAX(openpal::MaxValue<Target>());
 
 template <class Source, class Target>
-const Target DownSampling<Source, Target>::TARGET_MIN(std::numeric_limits<Target>::min());
+const Target DownSampling<Source, Target>::TARGET_MIN(openpal::MinValue<Target>());
 
 }
 

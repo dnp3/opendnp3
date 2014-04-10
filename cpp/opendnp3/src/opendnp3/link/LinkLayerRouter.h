@@ -53,7 +53,7 @@ class LinkLayerRouter : public PhysicalLayerMonitor, public ILinkRouter, private
 {
 public:
 
-	LinkLayerRouter(const openpal::Logger&,
+	LinkLayerRouter(openpal::LogRoot&,
 	                openpal::IPhysicalLayerAsync*,
 	                openpal::TimeDuration minOpenRetry,
 	                openpal::TimeDuration maxOpenRetry,
@@ -158,19 +158,14 @@ private:
 	openpal::StaticQueue<Transmission, uint16_t, sizes::MAX_STACKS_PER_CHANNEL> transmitQueue;
 
 	// Handles the parsing of incoming frames
-	LinkLayerReceiver mReceiver;
+	
+	LinkLayerReceiver mReceiver;	
 	bool mTransmitting;
 
 	// Implement virtual AsyncPhysLayerMonitor
 	void OnPhysicalLayerOpenSuccessCallback();
 	void OnPhysicalLayerOpenFailureCallback() {}
 	void OnPhysicalLayerCloseCallback();
-
-	std::string RecvString()
-	{
-		return "<~";
-	}
-
 
 };
 

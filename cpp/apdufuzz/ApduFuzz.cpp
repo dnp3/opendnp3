@@ -27,10 +27,9 @@
 #include <thread>
 #include <memory>
 #include <chrono>
+#include <string>
 
-#include <openpal/ToHex.h>
 
-//#include "TrackingHandler.h"
 #include "ResultSet.h"
 
 using namespace std;

@@ -18,14 +18,14 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include <opendnp3/DNP3Manager.h>
-#include <opendnp3/IChannel.h>
+#include <asiodnp3/DNP3Manager.h>
+#include <asiodnp3/IChannel.h>
+#include <asiodnp3/IMaster.h>
+#include <asiodnp3/PrintingSOEHandler.h>
 
-#include <opendnp3/master/IMaster.h>
 #include <opendnp3/master/MasterStackConfig.h>
 #include <opendnp3/master/ICommandProcessor.h>
 #include <opendnp3/master/ISOEHandler.h>
-#include <opendnp3/LogLevelInterpreter.h>
 #include <opendnp3/LogLevels.h>
 
 #include <asiopal/Log.h>
@@ -37,8 +37,11 @@
 #include <iostream>
 #include <future>
 
+#include "PrintingCommandCallback.h"
+
 using namespace std;
 using namespace asiopal;
+using namespace asiodnp3;
 using namespace opendnp3;
 
 int main(int argc, char* argv[])
@@ -47,15 +50,11 @@ int main(int argc, char* argv[])
 	// Specify a LogLevel for the stack/physical layer to use.
 	// Log statements with a lower priority will not be logged.
 	const uint32_t FILTERS = levels::NORMAL;
-
-	EventLog log;
-	// You can optionally subcribe to log messages
-	// This singleton logger just prints messages to the console
-	LogToStdio::Inst()->SetLevelInterpreter(&AllFlags);
-	log.AddLogSubscriber(LogToStdio::Inst());
+	
+	LogToStdio iologger;
 
 	// asio thread pool that drives the stack
-	IOServiceThreadPool pool(&log, FILTERS, "pool", 1); // 1 stack only needs 1 thread
+	IOServiceThreadPool pool(&iologger, FILTERS, 1); // 1 stack only needs 1 thread
 
 	// This is the main point of interaction with the stack
 	DNP3Manager mgr;
@@ -68,9 +67,10 @@ int main(int argc, char* argv[])
 	};
 
 	// Connect via a TCPClient socket to a outstation
-	auto pClientPhys = new PhysicalLayerAsyncTCPClient(LogConfig(&log, FILTERS, "tcpclient"), pool.GetIOService(), "127.0.0.1", 20000, configure);
+	auto pClientRoot = new LogRoot(&iologger, "client", FILTERS);
+	auto pClientPhys = new PhysicalLayerAsyncTCPClient(*pClientRoot, pool.GetIOService(), "127.0.0.1", 20000, configure);
 	// wait 3000 ms in between failed connect calls
-	auto pClient = mgr.CreateChannel("tcpclient", TimeDuration::Seconds(2), TimeDuration::Minutes(1), pClientPhys);
+	auto pClient = mgr.CreateChannel(pClientRoot, TimeDuration::Seconds(2), TimeDuration::Minutes(1), pClientPhys);
 
 	// The master config object for a master. The default are
 	// useable, but understanding the options are important.
@@ -113,13 +113,8 @@ int main(int argc, char* argv[])
 			break;
 		case('c'):
 			{
-				ControlRelayOutputBlock crob(ControlCode::LATCH_ON);
-				auto print = [](CommandResponse cr)
-				{
-					cout << "Select/Operate result: " << cr.ToString() << endl;
-				};
-				// asynchronously call the 'print' function when complete/failed
-				pCmdProcessor->SelectAndOperate(crob, 0, print);
+				ControlRelayOutputBlock crob(ControlCode::LATCH_ON);								
+				pCmdProcessor->SelectAndOperate(crob, 0, &PrintingCommandCallback::Inst());
 				break;
 			}
 		default:

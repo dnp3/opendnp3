@@ -22,7 +22,6 @@
 #define __LOG_ENTRY_H_
 
 #include <cstdint>
-#include <string>
 
 #include "LogFilters.h"
 
@@ -37,25 +36,30 @@ class LogEntry
 
 public:
 
-	LogEntry(): errorCode(-1)
-	{}
+	LogEntry();
 
-	LogEntry(const LogFilters& filters, const std::string& name, const std::string& location, const std::string& message, int32_t errorCode);
+	LogEntry(char const* id, const LogFilters& filters, int source, char const* location, char const* message, int errorCode);
 
 	/// @return The name of the logger that recorded the message
-	const std::string&	GetName() const
+	char const*	GetId() const
 	{
-		return name;
+		return id;
+	}
+
+	/// @return The application specific sub-type
+	int GetSource() const
+	{
+		return source;
 	}
 
 	/// @return The place in the source code where the message was recorded
-	const std::string&	GetLocation() const
+	char const*	GetLocation() const
 	{
 		return location;
 	}
 
 	/// @return body of the log message
-	const std::string&	GetMessage() const
+	char const* GetMessage() const
 	{
 		return message;
 	}
@@ -74,11 +78,12 @@ public:
 
 private:
 
+	char const*		id;
 	LogFilters		filters;
-	std::string		name;
-	std::string		location;
-	std::string		message;
-	int32_t			errorCode;
+	int				source;
+	char const*		location;
+	char const*		message;
+	int				errorCode;
 };
 
 }

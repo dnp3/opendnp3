@@ -23,6 +23,7 @@
 #include <openpal/Location.h>
 #include <openpal/ToHex.h>
 
+#include "HexConversions.h"
 #include "Exception.h"
 
 #include <memory.h>

@@ -27,10 +27,31 @@ using namespace openpal;
 namespace opendnp3
 {
 
-LogTester::LogTester() : root(this, levels::NORMAL), logger(root.GetLogger("LogTester"))
+LogRecord::LogRecord() :
+	id(),
+	filters(0),
+	subType(-1),
+	location(),
+	message(),
+	errorCode(-1)
+{}
+
+LogRecord::LogRecord(const LogEntry& entry) : 
+id(entry.GetId()), 
+filters(entry.GetFilters()), 
+subType(entry.GetSource()),
+location(entry.GetLocation()),
+message(entry.GetMessage()),
+errorCode(entry.GetErrorCode())
 {
 
 }
+
+LogTester::LogTester() : root(this, "test", levels::NORMAL), logger(root.GetLogger())
+{
+
+}
+
 
 void LogTester::Log( const LogEntry& entry )
 {
@@ -41,7 +62,7 @@ bool LogTester::PopOneEntry(int32_t filter)
 {
 	if (mBuffer.size() == 1)
 	{
-		if (mBuffer.front().GetFilters().IsSet(filter))
+		if (mBuffer.front().filters.IsSet(filter))
 		{
 			mBuffer.pop();
 			return true;
@@ -55,7 +76,7 @@ bool LogTester::PopUntil(int32_t filter)
 {
 	while (!mBuffer.empty())
 	{
-		bool match = mBuffer.front().GetFilters().IsSet(filter);
+		bool match = mBuffer.front().filters.IsSet(filter);
 		mBuffer.pop();
 		if (match)
 		{
@@ -72,7 +93,7 @@ int LogTester::ClearLog()
 	LogEntry le;
 	while(!mBuffer.empty())
 	{
-		if(mBuffer.front().GetErrorCode() > max) max = le.GetErrorCode();
+		if(mBuffer.front().errorCode > max) max = le.GetErrorCode();
 		mBuffer.pop();
 	}
 
@@ -81,30 +102,30 @@ int LogTester::ClearLog()
 
 void LogTester::Log(const std::string& arLocation, const std::string& arMessage)
 {
-	logger.Log(flags::EVENT, arLocation, arMessage);
+	logger.Log(flags::EVENT, arLocation.c_str(), arMessage.c_str());
 }
 
 int LogTester::NextErrorCode()
 {
-	LogEntry le;
+	LogRecord rec;
 	while(!mBuffer.empty())
 	{
-		le = mBuffer.front();
+		rec = mBuffer.front();
 		mBuffer.pop();
-		if(le.GetErrorCode() >= 0)
+		if (rec.errorCode >= 0)
 		{
-			return le.GetErrorCode();
+			return rec.errorCode;
 		}
 	}
 	return -1;
 }
 
-bool LogTester::GetNextEntry(LogEntry& arEntry)
+bool LogTester::GetNextEntry(LogRecord& record)
 {
 	if(mBuffer.empty()) return false;
 	else
 	{
-		arEntry = mBuffer.front();
+		record = mBuffer.front();
 		mBuffer.pop();
 		return true;
 	}
@@ -112,16 +133,17 @@ bool LogTester::GetNextEntry(LogEntry& arEntry)
 
 void LogTester::Pop(openpal::ILogBase* pLog)
 {
-	LogEntry entry;
-	while (GetNextEntry(entry))
+	LogRecord record;
+	while (GetNextEntry(record))
 	{
-		pLog->Log(entry);
+		LogEntry le(record.id.c_str(), record.filters, record.subType, record.location.c_str(), record.message.c_str(), record.errorCode);
+		pLog->Log(le);
 	}
 }
 
-openpal::Logger LogTester::GetLogger(const std::string& id)
+openpal::Logger LogTester::GetLogger(int source)
 {
-	return root.GetLogger(id);
+	return root.GetLogger(source);
 }
 
 bool LogTester::IsLogErrorFree()

@@ -20,11 +20,12 @@
  */
 #include "MockAppLayer.h"
 
-#include <openpal/LoggableMacros.h>
+#include <openpal/LogMacros.h>
 #include <openpal/ToHex.h>
 
 #include <opendnp3/LogLevels.h>
 
+#include "HexConversions.h"
 #include "Exception.h"
 
 #include <assert.h>
@@ -34,8 +35,8 @@ using namespace openpal;
 namespace opendnp3
 {
 
-MockAppLayer::MockAppLayer(openpal::Logger aLogger) :
-	Loggable(aLogger),
+MockAppLayer::MockAppLayer(const openpal::Logger& logger_) :
+	logger(logger_),
 	mNumCancel(0),
 	mpUser(nullptr),
 	mAutoSendCallback(true),
@@ -81,8 +82,7 @@ void MockAppLayer::DoSendSol()
 }
 
 void MockAppLayer::SendResponse(APDUResponse& apdu)
-{
-	LOG_BLOCK(flags::COMM, "=> " << toHex(apdu.ToReadOnly(), true));
+{	
 	mFragments.push_back(toHex(apdu.ToReadOnly()));
 	this->DoSendSol();
 
@@ -90,14 +90,12 @@ void MockAppLayer::SendResponse(APDUResponse& apdu)
 
 void MockAppLayer::SendUnsolicited(APDUResponse& apdu)
 {
-	LOG_BLOCK(flags::COMM, "=> " << toHex(apdu.ToReadOnly(), true));
 	mFragments.push_back(toHex(apdu.ToReadOnly()));
 	this->DoSendUnsol();
 }
 
 void MockAppLayer::SendRequest(APDURequest& apdu)
-{
-	LOG_BLOCK(flags::COMM, "=> " << toHex(apdu.ToReadOnly(), true));
+{	
 	mFragments.push_back(toHex(apdu.ToReadOnly()));
 }
 

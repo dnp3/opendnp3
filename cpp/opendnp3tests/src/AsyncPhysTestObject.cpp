@@ -28,10 +28,10 @@ namespace opendnp3
 AsyncPhysTestObject::AsyncPhysTestObject(uint32_t filters, bool aAutoRead) :
 	AsyncTestObjectASIO(),
 	log(),
-	mTCPClient(LogConfig(&log, filters, "TCPClient"), this->GetService(), "127.0.0.1", 50000),
-	mTCPServer(LogConfig(&log, filters, "TCPSever"), this->GetService(), "127.0.0.1", 50000),
-	mClientAdapter(log.GetLogger("ClientAdapter"), &mTCPClient, aAutoRead),
-	mServerAdapter(log.GetLogger("ServerAdapter"), &mTCPServer, aAutoRead)
+	mTCPClient(log.root, this->GetService(), "127.0.0.1", 50000),
+	mTCPServer(log.root, this->GetService(), "127.0.0.1", 50000),
+	mClientAdapter(log.GetLogger(), &mTCPClient, aAutoRead),
+	mServerAdapter(log.GetLogger(), &mTCPServer, aAutoRead)
 {
 	mClientAdapter.SetUpperLayer(&mClientUpper);
 	mServerAdapter.SetUpperLayer(&mServerUpper);

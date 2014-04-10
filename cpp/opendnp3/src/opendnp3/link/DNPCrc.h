@@ -38,10 +38,6 @@ public:
 
 private:
 
-	static bool isInitialized;
-
-	static bool InitCrcTable();
-
 	static uint16_t crcTable[256]; //Precomputed CRC lookup table
 
 };

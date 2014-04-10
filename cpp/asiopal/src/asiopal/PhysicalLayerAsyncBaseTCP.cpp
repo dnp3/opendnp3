@@ -26,7 +26,7 @@
 #include <asio.hpp>
 #include <asio/ip/tcp.hpp>
 
-#include <openpal/LoggableMacros.h>
+#include <openpal/LogMacros.h>
 #include <openpal/IHandlerAsync.h>
 #include <openpal/LogLevels.h>
 
@@ -38,11 +38,11 @@ using namespace openpal;
 namespace asiopal
 {
 
-PhysicalLayerAsyncBaseTCP::PhysicalLayerAsyncBaseTCP(const openpal::LogConfig& config, asio::io_service* apIOService) :
-	PhysicalLayerAsyncASIO(config, apIOService),
+PhysicalLayerAsyncBaseTCP::PhysicalLayerAsyncBaseTCP(openpal::LogRoot& root, asio::io_service* apIOService) :
+	PhysicalLayerAsyncASIO(root, apIOService),
 	mSocket(*apIOService)
 {
-	//mSocket.set_option(ip::tcp::no_delay(true));
+	
 }
 
 /* Implement the actions */
@@ -74,7 +74,7 @@ void PhysicalLayerAsyncBaseTCP::DoAsyncWrite(const ReadOnlyBuffer& buff)
 
 void PhysicalLayerAsyncBaseTCP::DoOpenFailure()
 {
-	LOG_BLOCK(log::DEBUG, "Failed socket open, closing socket");
+	SIMPLE_LOG_BLOCK(logger, logflags::DBG, "Failed socket open, closing socket");
 	this->CloseSocket();
 }
 
@@ -85,7 +85,7 @@ void PhysicalLayerAsyncBaseTCP::CloseSocket()
 	mSocket.close(ec);
 	if (ec)
 	{
-		LOG_BLOCK(log::WARN, "Error while closing socket: " << ec.message());
+		FORMAT_LOG_BLOCK(logger, logflags::WARN, "Error while closing socket: %s", ec.message().c_str());
 	}
 }
 
@@ -96,7 +96,7 @@ void PhysicalLayerAsyncBaseTCP::ShutdownSocket()
 	mSocket.shutdown(ip::tcp::socket::shutdown_both, ec);
 	if (ec)
 	{
-		LOG_BLOCK(log::WARN, "Error while shutting down socket: " << ec.message());
+		FORMAT_LOG_BLOCK(logger, logflags::WARN, "Error while shutting down socket: %s", ec.message().c_str());
 	}
 }
 

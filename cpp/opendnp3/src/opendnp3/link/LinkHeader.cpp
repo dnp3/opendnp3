@@ -24,8 +24,6 @@
 
 #include <openpal/Serialization.h>
 
-#include <sstream>
-
 using namespace std;
 
 namespace opendnp3
@@ -93,6 +91,7 @@ void LinkHeader::Write(uint8_t* apBuff) const
 	DNPCrc::AddCrc(apBuff, LI_CRC);
 }
 
+/* TODO
 std::string LinkHeader::ToString() const
 {
 	ostringstream oss;
@@ -114,6 +113,7 @@ std::string LinkHeader::ToString() const
 
 	return oss.str();
 }
+*/
 
 }
 

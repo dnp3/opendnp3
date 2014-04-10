@@ -25,10 +25,11 @@
 #include <openpal/MonotonicTimestamp.h>
 #include <openpal/TimeDuration.h>
 #include <openpal/StaticLinkedList.h>
+#include <openpal/Function1.h>
 
 #include "opendnp3/master/AsyncTaskInterfaces.h"
 
-#include <string>
+
 
 namespace openpal
 {
@@ -58,8 +59,8 @@ public:
 	AsyncTaskGroup(openpal::IExecutor*);
 	~AsyncTaskGroup();
 
-	AsyncTaskBase* Add(openpal::TimeDuration aPeriod, openpal::TimeDuration aRetryDelay, int aPriority, const TaskHandler& arCallback, const std::string& arName = "");
-	AsyncTaskContinuous* AddContinuous(int aPriority, const TaskHandler& arCallback, const std::string& arName = "");
+	AsyncTaskBase* Add(openpal::TimeDuration aPeriod, openpal::TimeDuration aRetryDelay, int aPriority, const openpal::Function1<AsyncTaskBase*>& callback);
+	AsyncTaskContinuous* AddContinuous(int aPriority, const openpal::Function1<AsyncTaskBase*>& callback);
 	bool Remove(AsyncTaskBase* apTask);
 
 	void Shutdown();

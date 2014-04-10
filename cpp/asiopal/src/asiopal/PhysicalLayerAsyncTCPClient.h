@@ -23,7 +23,7 @@
 
 #include "PhysicalLayerAsyncBaseTCP.h"
 
-#include <openpal/LoggableMacros.h>
+#include <openpal/LogMacros.h>
 #include <openpal/Location.h>
 #include <openpal/LogLevels.h>
 
@@ -34,7 +34,7 @@ class PhysicalLayerAsyncTCPClient : public PhysicalLayerAsyncBaseTCP
 {
 public:
 	PhysicalLayerAsyncTCPClient(
-	    const openpal::LogConfig& config,
+		openpal::LogRoot& root,
 	    asio::io_service* pIOService,
 	    const std::string& host_,
 	    uint16_t port,
@@ -57,9 +57,8 @@ private:
 		{
 			if (ec)
 			{
-				LOGGER_BLOCK(logger, openpal::log::WARN, "Connect error: " << ec.message());
-			}
-			LOGGER_BLOCK(logger, openpal::log::INFO, "Trying: " << next->endpoint());
+				FORMAT_LOG_BLOCK(logger, openpal::logflags::WARN, "Connect error: %s", ec.message().c_str());
+			}			
 			return next;
 		}
 

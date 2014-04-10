@@ -25,43 +25,29 @@
 #include "TransportTx.h"
 
 #include <openpal/IExecutor.h>
-#include <openpal/Loggable.h>
+#include <openpal/LogRoot.h>
 #include <openpal/AsyncLayerInterfaces.h>
 
 #include "opendnp3/link/ILinkLayer.h"
 #include "opendnp3/StaticSizeConfiguration.h"
 
-
 namespace opendnp3
 {
-
-class TLS_Base;
 
 /** Implements the DNP3 transport layer as a generic
 asynchronous protocol stack layer
 */
-class TransportLayer : public openpal::IUpperLayer, public openpal::ILowerLayer, private openpal::Loggable
-{
-	friend class TransportRx;
+class TransportLayer : public openpal::IUpperLayer, public openpal::ILowerLayer
+{	
 	friend class TransportTx;
-
-	friend class TLS_Ready;
-	friend class TLS_Sending;
 
 public:
 
-	TransportLayer(const openpal::Logger& logger, openpal::IExecutor* pExecutor_, uint32_t maxFragSize = sizes::DEFAULT_APDU_BUFFER_SIZE);
+	TransportLayer(openpal::LogRoot& root, openpal::IExecutor* pExecutor_, uint32_t maxFragSize = sizes::DEFAULT_APDU_BUFFER_SIZE);	
 
-	static std::string ToString(uint8_t aHeader);
+	/// ILowerLayer	
 
-	openpal::Logger& GetLogger()
-	{
-		return logger;
-	}
-
-	/// ILowerLayer
-
-	virtual void Send(const openpal::ReadOnlyBuffer&) override final;
+	virtual void BeginTransmit(const openpal::ReadOnlyBuffer&) override final;
 
 	/// IUpperLayer
 
@@ -75,28 +61,19 @@ public:
 
 private:
 
+	openpal::Logger logger;
 	openpal::IUpperLayer* pUpperLayer;
-	ILinkLayer* pLinkLayer;
+	ILinkLayer* pLinkLayer;	
 
-	// Actions - Taken by the states/transmitter/receiver in response to events
-
-	void ChangeState(TLS_Base* apNewState);
-
-	void TransmitAPDU(const openpal::ReadOnlyBuffer&);
-
-	void ReceiveAPDU(const openpal::ReadOnlyBuffer&);
-	void ReceiveTPDU(const openpal::ReadOnlyBuffer&);
-
-	void SignalSendResult(bool isSuccess);
-
-	/* Members and Helpers */
+	// ---- state ----
 	bool isOnline;
-	TLS_Base* pState;
+	bool isSending;
+
 	openpal::IExecutor* pExecutor;
 
 	const uint32_t M_FRAG_SIZE;
 
-	/* Transmitter and Receiver Classes */
+	// ----- Transmitter and Receiver Classes ------
 	TransportRx receiver;
 	TransportTx transmitter;
 };

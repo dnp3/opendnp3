@@ -30,8 +30,8 @@ namespace opendnp3
 AsyncSerialTestObject::AsyncSerialTestObject(SerialSettings cfg, uint32_t filters, bool aImmediate) :
 	AsyncTestObjectASIO(),
 	log(),
-	mPort(LogConfig(&log, filters, "serial"), this->GetService(), cfg),
-	mAdapter(log.GetLogger("adapter"), &mPort, true)
+	mPort(log.root, this->GetService(), cfg),
+	mAdapter(log.GetLogger(), &mPort, true)
 {
 	mAdapter.SetUpperLayer(&mUpper);
 	mUpper.SetLowerLayer(&mAdapter);

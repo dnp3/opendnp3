@@ -23,6 +23,8 @@
 
 #include "openpal/BufferWrapper.h"
 
+#include "Configure.h"
+
 #include <assert.h>
 
 namespace openpal
@@ -68,9 +70,9 @@ class ILowerLayer
 
 public:
 
-	virtual ~ILowerLayer() {}
+	virtual ~ILowerLayer() {}	
 
-	virtual void Send(const ReadOnlyBuffer&) = 0;
+	virtual void BeginTransmit(const ReadOnlyBuffer&) = 0;
 
 };
 

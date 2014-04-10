@@ -21,6 +21,10 @@
 
 #include "BitReader.h"
 
+#include <openpal/Configure.h>
+#include <assert.h>
+
+
 namespace opendnp3
 {
 

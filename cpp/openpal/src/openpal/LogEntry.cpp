@@ -20,18 +20,18 @@
  */
 #include "LogEntry.h"
 
-#include <sstream>
-
-using namespace std;
-
 namespace openpal
 {
 
+LogEntry::LogEntry() : errorCode(-1)
+{}
 
-LogEntry::LogEntry(const LogFilters& filters_, const std::string& name_, const std::string& location_, const std::string& message_, int32_t errorCode_)
+
+LogEntry::LogEntry(char const* id_, const LogFilters& filters_, int source_, char const* location_, char const* message_, int errorCode_)
 	:
+	id(id_),
 	filters(filters_),
-	name(name_),
+	source(source_),
 	location(location_),
 	message(message_),
 	errorCode(errorCode_)

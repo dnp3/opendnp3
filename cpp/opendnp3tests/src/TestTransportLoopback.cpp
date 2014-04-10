@@ -71,10 +71,10 @@ TEST_CASE(SUITE("TestTransportWithMockLoopback"))
 	LinkConfig cfgB(false, true);
 
 	EventLog log;
-	LogRoot root(&log, level);
+	LogRoot root(&log, "test", level);
 	asio::io_service service;
-	LoopbackPhysicalLayerAsync phys(LogConfig(&log, level, "loopback"), &service);
-	TransportLoopbackTestObject t(root.GetLogger("test"), &service, &phys, cfgA, cfgB);
+	LoopbackPhysicalLayerAsync phys(root, &service);
+	TransportLoopbackTestObject t(root, &service, &phys, cfgA, cfgB);
 
 	TestLoopback(&t, sizes::DEFAULT_APDU_BUFFER_SIZE);
 }

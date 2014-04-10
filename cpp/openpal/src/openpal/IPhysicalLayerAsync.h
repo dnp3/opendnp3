@@ -23,9 +23,7 @@
 
 #include "AsyncLayerInterfaces.h"
 
-#include <openpal/BufferWrapper.h>
-
-#include <string>
+#include "BufferWrapper.h"
 
 namespace openpal
 {
@@ -62,10 +60,7 @@ public:
 	virtual bool IsOpening() const = 0;
 
 	/** @return True if the layer is open for read/write */
-	virtual bool IsOpen() const = 0;
-
-	/** @return A string representing the state of the physical layer */
-	virtual std::string ConvertStateToString() const = 0;
+	virtual bool IsOpen() const = 0;	
 };
 
 

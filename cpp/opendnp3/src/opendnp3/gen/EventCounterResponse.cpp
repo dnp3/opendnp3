@@ -8,36 +8,35 @@
 //                                           __/ |
 //                                          |___/
 // Copyright 2013 Automatak LLC
-//
+// 
 // Automatak LLC (www.automatak.com) licenses this file
 // to you under the the Apache License Version 2.0 (the "License"):
-//
+// 
 // http://www.apache.org/licenses/LICENSE-2.0.html
 //
 
 #include "EventCounterResponse.h"
 
-namespace opendnp3
-{
+namespace opendnp3 {
 
 int EventCounterResponseToType(EventCounterResponse arg)
 {
-	return static_cast<int>(arg);
+  return static_cast<int>(arg);
 }
 EventCounterResponse EventCounterResponseFromType(int arg)
 {
-	switch(arg)
-	{
-	case(0):
-		return EventCounterResponse::Group22Var1;
-	case(1):
-		return EventCounterResponse::Group22Var2;
-	case(2):
-		return EventCounterResponse::Group22Var5;
-	case(3):
-		return EventCounterResponse::Group22Var6;
-	}
-	return EventCounterResponse::Group22Var6;
+  switch(arg)
+  {
+    case(0):
+      return EventCounterResponse::Group22Var1;
+    case(1):
+      return EventCounterResponse::Group22Var2;
+    case(2):
+      return EventCounterResponse::Group22Var5;
+    case(3):
+      return EventCounterResponse::Group22Var6;
+  }
+  return EventCounterResponse::Group22Var6;
 }
 
 }

@@ -32,6 +32,7 @@
 #include "LinkLayerRouterTest.h"
 #include "MockFrameSink.h"
 #include "BufferHelpers.h"
+#include "HexConversions.h"
 
 using namespace opendnp3;
 using namespace openpal;
@@ -54,8 +55,7 @@ TEST_CASE(SUITE("UnknownDestination"))
 	t.phys.SignalOpenSuccess();
 
 
-	t.phys.TriggerRead("05 64 05 C0 01 00 00 04 E9 21");
-	LogEntry le;
+	t.phys.TriggerRead("05 64 05 C0 01 00 00 04 E9 21");	
 	REQUIRE(t.log.NextErrorCode() == DLERR_UNKNOWN_ROUTE);
 }
 

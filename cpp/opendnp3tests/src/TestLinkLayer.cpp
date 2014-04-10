@@ -30,6 +30,7 @@
 
 #include "BufferHelpers.h"
 #include "LinkLayerTest.h"
+#include "HexConversions.h"
 
 #include <iostream>
 

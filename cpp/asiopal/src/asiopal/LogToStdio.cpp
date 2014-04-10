@@ -31,11 +31,10 @@ using namespace std::chrono;
 namespace asiopal
 {
 
-LogToStdio LogToStdio::instance;
 
-
-LogToStdio::LogToStdio() : pInterpreter(&BasicFlags), printLocation(false)
+LogToStdio::LogToStdio() : pLevelToString(&BasicFlags), pSourceToString(&BasicSource), printLocation(false)
 {
+
 }
 
 std::ostringstream& LogToStdio::BasicFlags(std::ostringstream& ss, const openpal::LogFilters& filters)
@@ -44,15 +43,27 @@ std::ostringstream& LogToStdio::BasicFlags(std::ostringstream& ss, const openpal
 	return ss;
 }
 
+std::ostringstream& LogToStdio::BasicSource(std::ostringstream& ss, int source)
+{
+	ss << source;
+	return ss;
+}
+
 void LogToStdio::SetPrintLocation(bool printLocation_)
 {
 	printLocation = printLocation_;
 }
 
-void LogToStdio::SetLevelInterpreter(LevelToString pInterpreter_)
+void LogToStdio::SetFilterInterpreter(LevelToString pLevelToString_)
 {
-	assert(pInterpreter_ != nullptr);
-	pInterpreter = pInterpreter_;
+	assert(pLevelToString_ != nullptr);
+	pLevelToString = pLevelToString_;
+}
+
+void LogToStdio::SetSourceInterpreter(SourceToString pSourceToString_)
+{
+	assert(pSourceToString_ != nullptr);
+	pSourceToString = pSourceToString_;
 }
 
 void LogToStdio::Log(const openpal::LogEntry& entry)
@@ -62,13 +73,20 @@ void LogToStdio::Log(const openpal::LogEntry& entry)
 
 	ostringstream oss;
 
-	oss << num << " - ";
-	pInterpreter(oss, entry.GetFilters());
-	oss << " - " << entry.GetName();
-	if(printLocation && !entry.GetLocation().empty()) oss << " - " << entry.GetMessage();
+	oss << "ms(" << num << ") - [";
+	pLevelToString(oss, entry.GetFilters());
+	oss << "] - " << entry.GetId() << " - ";
+	pSourceToString(oss, entry.GetSource());
+	if (printLocation)
+	{
+		oss << " - " << entry.GetLocation();
+	}
 	oss << " - " << entry.GetMessage();
 
-	if(entry.GetErrorCode() != -1) oss << " - " << entry.GetErrorCode();
+	if (entry.GetErrorCode() != -1)
+	{
+		oss << " - " << entry.GetErrorCode();
+	}
 
 	std::unique_lock<std::mutex> lock(mutex);
 	std::cout << oss.str() << std::endl;

@@ -1,0 +1,80 @@
+/**
+ * Licensed to Green Energy Corp (www.greenenergycorp.com) under one or
+ * more contributor license agreements. See the NOTICE file distributed
+ * with this work for additional information regarding copyright ownership.
+ * Green Energy Corp licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except in
+ * compliance with the License.  You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * This project was forked on 01/01/2013 by Automatak, LLC and modifications
+ * may have been made to this file. Automatak, LLC licenses these modifications
+ * to you under the terms of the License.
+ */
+#ifndef __LOG_MACROS_H_
+#define __LOG_MACROS_H_
+
+#include "Location.h"
+#include "StringFormatting.h"
+
+#ifndef OPENPAL_STRIP_LOGGING
+
+#define SIMPLE_LOG_BLOCK_WITH_CODE(logger, filters, code, message) \
+	if(logger.IsEnabled(filters)){ \
+		logger.Log(filters, LOCATION, message, code); \
+	}
+
+#define SIMPLE_LOGGER_BLOCK_WITH_CODE(pLogger, filters, code, message) \
+	if(pLogger && pLogger->IsEnabled(filters)){ \
+		pLogger->Log(filters, LOCATION, message, code); \
+	}
+	
+#define FORMAT_LOG_BLOCK_WITH_CODE(logger, filters, code, format, ...) \
+if(logger.IsEnabled(filters)){ \
+	char message[80]; \
+	SNPRINTF(message, 80, format, ##__VA_ARGS__); \
+	logger.Log(filters, LOCATION, message, code); \
+}
+
+#define FORMAT_LOGGER_BLOCK_WITH_CODE(pLogger, filters, code, format, ...) \
+if(pLogger && pLogger->IsEnabled(filters)){ \
+	char message[80]; \
+	SNPRINTF(message, 80, format, ##__VA_ARGS__); \
+	pLogger->Log(filters, LOCATION, message, code); \
+}
+
+#else
+
+#define SIMPLE_LOG_BLOCK_WITH_CODE(logger, filters, code, message)
+
+#define SIMPLE_LOGGER_BLOCK_WITH_CODE(pLogger, filters, code, message)
+
+#define FORMAT_LOG_BLOCK_WITH_CODE(logger, filters, code, format, ...)
+
+#define FORMAT_LOGGER_BLOCK_WITH_CODE(pLogger, filters, code, format, ...)
+
+#endif
+
+//macro to remove boiler-plate code for logging messages
+#define SIMPLE_LOG_BLOCK(logger, severity, message) \
+	SIMPLE_LOG_BLOCK_WITH_CODE(logger, severity, -1, message)
+
+//macro to remove boiler-plate code for logging messages
+#define SIMPLE_LOGGER_BLOCK(pLogger, severity, message) \
+	SIMPLE_LOGGER_BLOCK_WITH_CODE(pLogger, severity, -1, message)
+
+#define FORMAT_LOGGER_BLOCK(pLogger, filters, format, ...) \
+	FORMAT_LOGGER_BLOCK_WITH_CODE(pLogger, filters, -1, format, ##__VA_ARGS__);
+
+
+#define FORMAT_LOG_BLOCK(logger, filters, format, ...) \
+	FORMAT_LOG_BLOCK_WITH_CODE(logger, filters, -1, format, ##__VA_ARGS__);
+
+#endif

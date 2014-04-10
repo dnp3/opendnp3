@@ -8,32 +8,31 @@
 //                                           __/ |
 //                                          |___/
 // Copyright 2013 Automatak LLC
-//
+// 
 // Automatak LLC (www.automatak.com) licenses this file
 // to you under the the Apache License Version 2.0 (the "License"):
-//
+// 
 // http://www.apache.org/licenses/LICENSE-2.0.html
 //
 
 #include "EventBinaryResponse.h"
 
-namespace opendnp3
-{
+namespace opendnp3 {
 
 int EventBinaryResponseToType(EventBinaryResponse arg)
 {
-	return static_cast<int>(arg);
+  return static_cast<int>(arg);
 }
 EventBinaryResponse EventBinaryResponseFromType(int arg)
 {
-	switch(arg)
-	{
-	case(0):
-		return EventBinaryResponse::Group2Var1;
-	case(1):
-		return EventBinaryResponse::Group2Var2;
-	}
-	return EventBinaryResponse::Group2Var2;
+  switch(arg)
+  {
+    case(0):
+      return EventBinaryResponse::Group2Var1;
+    case(1):
+      return EventBinaryResponse::Group2Var2;
+  }
+  return EventBinaryResponse::Group2Var2;
 }
 
 }

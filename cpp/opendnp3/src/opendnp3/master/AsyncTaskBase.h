@@ -26,8 +26,9 @@
 #include <openpal/Uncopyable.h>
 #include <openpal/MonotonicTimestamp.h>
 #include <openpal/StaticList.h>
+#include <openpal/Function1.h>
 
-#include <string>
+
 
 namespace opendnp3
 {
@@ -51,7 +52,7 @@ public:
 	// Implements ITaskCompletion
 	void OnComplete(bool aSuccess, bool silent);
 
-	void SetStatusCallback(const std::function<void (bool)>& callback);
+	// void SetStatusCallback(const std::function<void (bool)>& callback);
 
 	// Modify this task's depth to make it dependent on the argument
 	bool AddDependency(const AsyncTaskBase* apTask);
@@ -73,12 +74,7 @@ public:
 	void Disable(); // Disable ''
 
 	void SilentEnable(); // Enable without notifying the task group
-	void SilentDisable();
-
-	std::string Name() const
-	{
-		return mName;
-	}
+	void SilentDisable();	
 
 	static bool LessThan(const AsyncTaskBase* l, const AsyncTaskBase* r);
 	static bool LessThanGroupLevel(const AsyncTaskBase* l, const AsyncTaskBase* r);
@@ -88,10 +84,9 @@ protected:
 
 	AsyncTaskBase(
 	    int aPriority,
-	    const TaskHandler& arCallback,
+		const openpal::Function1<AsyncTaskBase*>& handler,
 	    AsyncTaskGroup* apGroup,
-	    const openpal::MonotonicTimestamp& arInitialTime,
-	    const std::string& arName);
+	    const openpal::MonotonicTimestamp& arInitialTime);
 
 	// optional NVII function for special bookkeeping
 	virtual void _OnComplete(bool aSuccess) {}
@@ -144,8 +139,7 @@ protected:
 	{
 		return mNextRunTime;
 	}
-
-	std::string mName;								// Every task has a name
+	
 	bool mIsEnabled;								// Tasks can be enabled or disabled
 	bool mIsComplete;								// Every task has a flag that
 	// executes it's completion status
@@ -155,14 +149,14 @@ protected:
 	bool mIsRunning;								// Every task has an execution
 	// status
 	int mPriority;									// Every task has a pr
-	TaskHandler mHandler;							// Every task has a handler for
+	openpal::Function1<AsyncTaskBase*> handler;				// Every task has a handler for
 	// executing the task
 	AsyncTaskGroup* mpGroup;						// owning task group
 	openpal::MonotonicTimestamp mNextRunTime;		// next execution time for the task
 	const openpal::MonotonicTimestamp M_INITIAL_TIME;
 	int mFlags;
 
-	std::function<void (bool)> callback;
+	//std::function<void (bool)> callback;
 };
 
 }

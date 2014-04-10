@@ -24,7 +24,7 @@
 
 
 #include <cstdint>
-#include <string>
+
 
 namespace opendnp3
 {
@@ -51,9 +51,7 @@ public:
 	bool operator == (const LinkRoute& rhs) const
 	{
 		return (this->remote == rhs.remote) && (this->local == rhs.local);
-	}
-
-	std::string ToString() const;
+	}	
 };
 
 

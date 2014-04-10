@@ -41,10 +41,10 @@ public:
 
 	LoopbackTest(uint32_t filters = levels::NORMAL) :
 		log(),
-		root(&log, filters),
+		root(&log, "test", filters),
 		exe(),
-		phys(LogConfig(&log, filters, "phys"), &exe),
-		loopback(root.GetLogger("loopback"), &phys)
+		phys(root, &exe),
+		loopback(root, &phys)
 	{
 		loopback.Start();
 	}

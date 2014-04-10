@@ -42,7 +42,7 @@ public:
 
 private:
 
-	ResponseContext& rspContext;
+	ResponseContext* pRspContext;
 };
 
 }

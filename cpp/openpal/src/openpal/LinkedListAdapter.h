@@ -193,7 +193,7 @@ void LinkedListAdapter<ValueType, IndexType>::Link(ListNode<ValueType>* first, L
 
 template <class ValueType, class IndexType>
 void LinkedListAdapter<ValueType, IndexType>::Initialize()
-{
+{	
 	if(underlying.IsNotEmpty())
 	{
 		pFree = &underlying[0];
