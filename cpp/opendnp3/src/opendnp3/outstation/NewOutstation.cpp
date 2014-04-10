@@ -27,6 +27,8 @@
 
 #include "opendnp3/outstation/ReadHandler.h"
 #include "opendnp3/outstation/IINHelpers.h"
+#include "opendnp3/outstation/CommandActionAdapter.h"
+#include "opendnp3/outstation/CommandResponseHandler.h"
 
 using namespace openpal;
 
@@ -75,12 +77,11 @@ void NewOutstation::OnReceive(const openpal::ReadOnlyBuffer& buffer)
 			response.SetControl(request.control.ToByte());
 			response.SetIIN(iin);
 			context.isSending = true;
-			context.pLower->BeginTransmit(response.ToReadOnly());
-			/* Make this configurable?
+
+			//context.pLower->BeginTransmit(response.ToReadOnly());			
 			auto output = response.ToReadOnly();						
-			auto lambda = [this, output]() { this->pLower->BeginTransmit(output); };
-			pExecutor->PostLambda(lambda);
-			*/
+			auto lambda = [this, output]() { this->context.pLower->BeginTransmit(output); };
+			context.pExecutor->PostLambda(lambda);
 		}
 	}
 }
@@ -99,6 +100,8 @@ IINField NewOutstation::BuildResponse(const APDURecord& request, APDUResponse& r
 	{
 		case(FunctionCode::READ):
 			return HandleRead(request, response);
+		case(FunctionCode::DIRECT_OPERATE) :
+			return HandleDirectOperate(request, response);
 		default:
 			return IINField(IINBit::FUNC_NOT_SUPPORTED);
 	}	
@@ -123,6 +126,22 @@ IINField NewOutstation::HandleRead(const APDURecord& request, APDUResponse& resp
 	{
 		context.rspContext.Reset();
 		return IINField(IINBit::PARAM_ERROR);
+	}
+}
+
+IINField NewOutstation::HandleDirectOperate(const APDURecord& request, APDUResponse& response)
+{
+	if (request.objects.Size() > response.Remaining())
+	{
+		FORMAT_LOG_BLOCK(context.logger, flags::WARN, "Igonring command request due to payload size of %i", request.objects.Size());
+		return IINField(IINBit::PARAM_ERROR);
+	}
+	else
+	{
+		CommandActionAdapter adapter(context.pCommandHandler, false);
+		CommandResponseHandler handler(context.logger, 1, &adapter, response);	// TODO support multiple controls
+		auto result = APDUParser::ParseTwoPass(request.objects, &handler, &context.logger);
+		return IINFromParseResult(result);
 	}
 }
 	

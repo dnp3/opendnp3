@@ -49,11 +49,17 @@ class NewOutstation : public openpal::IUpperLayer
 	
 	private:
 
+	OutstationContext context;
+
+	// ---- Function handlers
+	
 	IINField BuildResponse(const APDURecord& request, APDUResponse& response);
 
 	IINField HandleRead(const APDURecord& request, APDUResponse& response);
 
-	OutstationContext context;
+	IINField HandleDirectOperate(const APDURecord& request, APDUResponse& response);
+
+	
 
 };
 

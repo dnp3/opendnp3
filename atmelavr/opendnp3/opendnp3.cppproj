@@ -946,6 +946,22 @@
       <SubType>compile</SubType>
       <Link>objects\Group60.h</Link>
     </Compile>
+    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\CommandActionAdapter.cpp">
+      <SubType>compile</SubType>
+      <Link>outstation\CommandActionAdapter.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\CommandActionAdapter.h">
+      <SubType>compile</SubType>
+      <Link>outstation\CommandActionAdapter.h</Link>
+    </Compile>
+    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\CommandResponseHandler.cpp">
+      <SubType>compile</SubType>
+      <Link>outstation\CommandResponseHandler.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\CommandResponseHandler.h">
+      <SubType>compile</SubType>
+      <Link>outstation\CommandResponseHandler.h</Link>
+    </Compile>
     <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\Database.cpp">
       <SubType>compile</SubType>
       <Link>outstation\Database.cpp</Link>

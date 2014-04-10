@@ -33,14 +33,15 @@ OutstationContext::OutstationContext(
 		ICommandHandler& commandHandler,
 		Database& database,
 		EventBufferFacade& buffers) :
-	isOnline(false),
-	isSending(false),
+	
 	logger(root.GetLogger()),	
 	pExecutor(&executor),
 	pLower(&lower),
 	pDatabase(&database),
 	eventBuffer(buffers),
-	rspContext(&database, &eventBuffer, StaticResponseTypes())
+	isOnline(false),
+	isSending(false),
+	rspContext(&database, &eventBuffer, StaticResponseTypes())	
 {
 	
 }
