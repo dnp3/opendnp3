@@ -40,50 +40,43 @@ NewOutstation::NewOutstation(
 		ICommandHandler& commandHandler,
 		Database& database,
 		EventBufferFacade& buffers) :
-	isOnline(false),
-	isSending(false),
-	logger(root.GetLogger()),
-	pExecutor(&executor),
-	pLower(&lower),
-	pDatabase(&database),
-	eventBuffer(buffers),
-	rspContext(&database, &eventBuffer, StaticResponseTypes())
+		context(executor, root, lower, commandHandler, database, buffers)
 {
-	pDatabase->SetEventBuffer(eventBuffer);
+	context.pDatabase->SetEventBuffer(context.eventBuffer);
 }
 	
 void NewOutstation::OnLowerLayerUp()
 {
-	if (!isOnline)
+	if (!context.isOnline)
 	{
-		isOnline = true;
+		context.isOnline = true;
 	}
 }
 	
 void NewOutstation::OnLowerLayerDown()
 {
-	if (isOnline)
+	if (context.isOnline)
 	{
-		isOnline = false;
-		isSending = false;
+		context.isOnline = false;
+		context.isSending = false;
 	}
 }
 
 void NewOutstation::OnReceive(const openpal::ReadOnlyBuffer& buffer)
 {
-	if (isOnline && !isSending)
+	if (context.isOnline && !context.isSending)
 	{
 		APDURecord request;
 		auto result = APDUHeaderParser::ParseRequest(buffer, request);
 		if (result == APDUHeaderParser::Result::OK)
 		{						
-			APDUResponse response(txBuffer.GetWriteBuffer());			
+			APDUResponse response(context.txBuffer.GetWriteBuffer());
 			response.SetFunction(FunctionCode::RESPONSE);			
 			IINField iin = BuildResponse(request, response);			
 			response.SetControl(request.control.ToByte());
 			response.SetIIN(iin);
-			isSending = true;
-			pLower->BeginTransmit(response.ToReadOnly());
+			context.isSending = true;
+			context.pLower->BeginTransmit(response.ToReadOnly());
 			/* Make this configurable?
 			auto output = response.ToReadOnly();						
 			auto lambda = [this, output]() { this->pLower->BeginTransmit(output); };
@@ -95,9 +88,9 @@ void NewOutstation::OnReceive(const openpal::ReadOnlyBuffer& buffer)
 	
 void NewOutstation::OnSendResult(bool isSucccess)
 {
-	if (isOnline && isSending)
+	if (context.isOnline && context.isSending)
 	{
-		isSending = false;
+		context.isSending = false;
 	}
 }
 
@@ -114,22 +107,22 @@ IINField NewOutstation::BuildResponse(const APDURecord& request, APDUResponse& r
 
 IINField NewOutstation::HandleRead(const APDURecord& request, APDUResponse& response)
 {
-	rspContext.Reset();
-	ReadHandler handler(logger, rspContext);
-	auto result = APDUParser::ParseTwoPass(request.objects, &handler, &logger, APDUParser::Context(false)); // don't expect range/count context on a READ
+	context.rspContext.Reset();
+	ReadHandler handler(context.logger, context.rspContext);
+	auto result = APDUParser::ParseTwoPass(request.objects, &handler, &context.logger, APDUParser::Context(false)); // don't expect range/count context on a READ
 	if (result == APDUParser::Result::OK)
 	{
 		// Do a transaction on the database (lock) for multi-threaded environments
 		// if the request contained static variations, we double buffer (copy) the entire static database.
 		// this ensures that an multi-fragmented responses see a consistent snapshot
-		openpal::Transaction tx(pDatabase);
-		pDatabase->DoubleBuffer();
-		rspContext.Load(response);
+		openpal::Transaction tx(context.pDatabase);
+		context.pDatabase->DoubleBuffer();
+		context.rspContext.Load(response);
 		return handler.Errors();
 	}
 	else
 	{
-		rspContext.Reset();
+		context.rspContext.Reset();
 		return IINField(IINBit::PARAM_ERROR);
 	}
 }

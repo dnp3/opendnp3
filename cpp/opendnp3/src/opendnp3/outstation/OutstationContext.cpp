@@ -18,49 +18,32 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __NEW_OUTSTATION_H_
-#define __NEW_OUTSTATION_H_
 
-#include <openpal/AsyncLayerInterfaces.h>
+#include "OutstationContext.h"
 
-#include "opendnp3/outstation/OutstationContext.h"
+using namespace openpal;
 
 namespace opendnp3
 {
 
-class NewOutstation : public openpal::IUpperLayer
+OutstationContext::OutstationContext(
+		IExecutor& executor,
+		LogRoot& root,
+		ILowerLayer& lower,
+		ICommandHandler& commandHandler,
+		Database& database,
+		EventBufferFacade& buffers) :
+	logger(root.GetLogger()),
+	isOnline(false),
+	isSending(false),	
+	pExecutor(&executor),
+	pLower(&lower),
+	pDatabase(&database),
+	eventBuffer(buffers),
+	rspContext(&database, &eventBuffer, StaticResponseTypes())
 {
-	public:
-
-	NewOutstation(	openpal::IExecutor& executor, 
-					openpal::LogRoot& root, 
-					openpal::ILowerLayer& lower,
-					ICommandHandler& commandHandler,
-					Database& database, 
-					EventBufferFacade& buffers);
 	
-	virtual void OnLowerLayerUp() override final;
-	
-	virtual void OnLowerLayerDown() override final;
-
-	virtual void OnReceive(const openpal::ReadOnlyBuffer&) override final;
-	
-	virtual void OnSendResult(bool isSucccess) override final;
-	
-	private:
-
-	IINField BuildResponse(const APDURecord& request, APDUResponse& response);
-
-	IINField HandleRead(const APDURecord& request, APDUResponse& response);
-
-	OutstationContext context;
-
-};
-
-
 }
 
-
-
-#endif
+}
 

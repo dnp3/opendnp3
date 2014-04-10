@@ -18,43 +18,51 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __NEW_OUTSTATION_H_
-#define __NEW_OUTSTATION_H_
+#ifndef __OUTSTATION_CONTEXT_H_
+#define __OUTSTATION_CONTEXT_H_
 
+#include <openpal/StaticBuffer.h>
+#include <openpal/IExecutor.h>
+#include <openpal/LogRoot.h>
 #include <openpal/AsyncLayerInterfaces.h>
 
-#include "opendnp3/outstation/OutstationContext.h"
+#include "opendnp3/StaticSizeConfiguration.h"
+#include "opendnp3/outstation/Database.h"
+#include "opendnp3/outstation/ResponseContext.h"
+#include "opendnp3/app/IINField.h"
+#include "opendnp3/app/ObjectWriter.h"
+#include "opendnp3/app/APDUHeader.h"
+#include "opendnp3/outstation/ICommandHandler.h"
 
 namespace opendnp3
 {
 
-class NewOutstation : public openpal::IUpperLayer
+
+/// Represent all of the "state" and configuration for an outstation
+class OutstationContext
 {
 	public:
 
-	NewOutstation(	openpal::IExecutor& executor, 
-					openpal::LogRoot& root, 
-					openpal::ILowerLayer& lower,
-					ICommandHandler& commandHandler,
-					Database& database, 
-					EventBufferFacade& buffers);
+	OutstationContext(	openpal::IExecutor& executor,
+						openpal::LogRoot& root, 
+						openpal::ILowerLayer& lower,
+						ICommandHandler& commandHandler,
+						Database& database, 
+						EventBufferFacade& buffers);
 	
-	virtual void OnLowerLayerUp() override final;
-	
-	virtual void OnLowerLayerDown() override final;
+	openpal::Logger logger;
 
-	virtual void OnReceive(const openpal::ReadOnlyBuffer&) override final;
-	
-	virtual void OnSendResult(bool isSucccess) override final;
-	
-	private:
+	bool isOnline;
+	bool isSending;
 
-	IINField BuildResponse(const APDURecord& request, APDUResponse& response);
+	openpal::IExecutor* pExecutor;
+	openpal::ILowerLayer* pLower;
+	ICommandHandler* pCommandHandler;
+	Database* pDatabase;
+	OutstationEventBuffer eventBuffer;
+	ResponseContext rspContext;
 
-	IINField HandleRead(const APDURecord& request, APDUResponse& response);
-
-	OutstationContext context;
-
+	openpal::StaticBuffer<sizes::MAX_TX_APDU_SIZE> txBuffer;
 };
 
 

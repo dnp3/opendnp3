@@ -195,6 +195,7 @@
     <ClInclude Include="src\opendnp3\outstation\IINHelpers.h" />
     <ClInclude Include="src\opendnp3\outstation\ITimeWriteHandler.h" />
     <ClInclude Include="src\opendnp3\outstation\NewOutstation.h" />
+    <ClInclude Include="src\opendnp3\outstation\OutstationContext.h" />
     <ClInclude Include="src\opendnp3\outstation\OutstationEventBuffer.h" />
     <ClInclude Include="src\opendnp3\outstation\ReadHandler.h" />
     <ClInclude Include="src\opendnp3\outstation\ResponseContext.h" />
@@ -340,6 +341,7 @@
     <ClCompile Include="src\opendnp3\outstation\IINHelpers.cpp" />
     <ClCompile Include="src\opendnp3\outstation\ITimeWriteHandler.cpp" />
     <ClCompile Include="src\opendnp3\outstation\NewOutstation.cpp" />
+    <ClCompile Include="src\opendnp3\outstation\OutstationContext.cpp" />
     <ClCompile Include="src\opendnp3\outstation\OutstationEventBuffer.cpp" />
     <ClCompile Include="src\opendnp3\outstation\ReadHandler.cpp" />
     <ClCompile Include="src\opendnp3\outstation\ResponseContext.cpp" />
