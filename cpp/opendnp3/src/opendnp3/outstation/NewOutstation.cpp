@@ -49,7 +49,7 @@ void NewOutstation::OnLowerLayerUp()
 {
 	if (!context.isOnline)
 	{
-		context.isOnline = true;
+		context.SetOnline();
 	}
 }
 	
@@ -57,8 +57,7 @@ void NewOutstation::OnLowerLayerDown()
 {
 	if (context.isOnline)
 	{
-		context.isOnline = false;
-		context.isSending = false;
+		context.SetOffline();
 	}
 }
 

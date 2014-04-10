@@ -49,19 +49,26 @@ class OutstationContext
 						ICommandHandler& commandHandler,
 						Database& database, 
 						EventBufferFacade& buffers);
-	
-	openpal::Logger logger;
 
+	// ------ Helper methods for dealing with state ------
+
+	void SetOnline();
+	void SetOffline();
+
+	// ------ Dynamic "state" ---------
+	
 	bool isOnline;
 	bool isSending;
 
+	// ------ Unchanged variables and configuration -------
+
+	openpal::Logger logger;
 	openpal::IExecutor* pExecutor;
 	openpal::ILowerLayer* pLower;
 	ICommandHandler* pCommandHandler;
 	Database* pDatabase;
 	OutstationEventBuffer eventBuffer;
 	ResponseContext rspContext;
-
 	openpal::StaticBuffer<sizes::MAX_TX_APDU_SIZE> txBuffer;
 };
 
