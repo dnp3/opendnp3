@@ -27,6 +27,7 @@
 #include <opendnp3/outstation/StaticallyAllocatedEventBuffer.h>
 #include <opendnp3/outstation/NewOutstation.h>
 #include <opendnp3/LogLevels.h>
+#include <opendnp3/outstation/SimpleCommandHandler.h>
 
 #include <asiopal/Log.h>
 #include <asiopal/LogToStdio.h>
@@ -68,12 +69,14 @@ int main(int argc, char* argv[])
 	LinkConfig config(false, false);
 	TransportStack stack(root, &executor, config);
 
-	StaticallyAllocatedDatabase<5, 0, 0, 0, 0, 0, 0> staticBuffers;
-	StaticallyAllocatedEventBuffer<5, 0, 0, 0, 0, 0, 0> eventBuffers;
+	StaticallyAllocatedDatabase<5, 5, 5, 5, 5, 5, 5> staticBuffers;
+	StaticallyAllocatedEventBuffer<10, 10, 10, 10, 10, 10, 10> eventBuffers;
 
-	Database database(staticBuffers.GetFacade());	
+	Database database(staticBuffers.GetFacade());
 
-	NewOutstation outstation(executor, root, stack.transport, database, eventBuffers.GetFacade());
+	SimpleCommandHandler commandHandler(CommandStatus::SUCCESS);
+
+	NewOutstation outstation(executor, root, stack.transport, commandHandler, database, eventBuffers.GetFacade());
 
 	stack.transport.SetAppLayer(&outstation);
 

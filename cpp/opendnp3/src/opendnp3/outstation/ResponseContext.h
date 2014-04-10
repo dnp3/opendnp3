@@ -56,9 +56,9 @@ public:
 
 private:
 
-	AppControlField GetControl(APDUResponse& response, bool hasEvents, bool fin);
+	static AppControlField GetControl(APDUResponse& response, uint16_t fragCount, bool hasEvents, bool fin);
 
-	uint32_t fragmentCount;
+	uint16_t fragmentCount;
 	StaticResponseContext staticContext;
 	EventResponseContext eventContext;
 };
