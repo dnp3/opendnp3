@@ -22,6 +22,7 @@
 #define __MOCK_LOWER_LAYER_H_
 
 #include <queue>
+#include <string>
 
 #include <openpal/LogRoot.h>
 #include <openpal/AsyncLayerInterfaces.h>

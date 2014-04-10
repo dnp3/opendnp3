@@ -41,12 +41,12 @@ class LowerLayerToPhysAdapter : public openpal::IHandlerAsync, public openpal::I
 public:
 	LowerLayerToPhysAdapter(const openpal::Logger& logger, openpal::IPhysicalLayerAsync*, bool aAutoRead = true);
 
-	size_t GetNumOpenFailure()
+	uint32_t GetNumOpenFailure()
 	{
 		return mNumOpenFailure;
 	}
 
-	bool OpenFailureEquals(size_t aNum)
+	bool OpenFailureEquals(uint32_t aNum)
 	{
 		return GetNumOpenFailure() == aNum;
 	}
@@ -71,9 +71,9 @@ private:
 
 	openpal::Logger logger;
 	bool mAutoRead;
-	size_t mNumOpenFailure;
+	uint32_t mNumOpenFailure;
 
-	static const size_t BUFFER_SIZE = 1 << 16; // 65,536
+	static const uint32_t BUFFER_SIZE = 1 << 16; // 65,536
 
 	uint8_t mpBuff[BUFFER_SIZE]; // Temporary buffer since IPhysicalLayerAsync now directly supports a read operation
 

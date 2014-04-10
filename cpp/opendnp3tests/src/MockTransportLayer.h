@@ -26,6 +26,7 @@
 #include <opendnp3/link/ILinkLayer.h>
 
 #include <deque>
+#include <string>
 
 namespace opendnp3
 {

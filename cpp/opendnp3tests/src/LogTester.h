@@ -22,6 +22,8 @@
 #define __LOG_TESTER_H_
 
 #include <openpal/LogRoot.h>
+
+#include <string>
 #include <queue>
 
 namespace opendnp3

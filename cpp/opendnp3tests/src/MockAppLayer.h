@@ -29,6 +29,7 @@
 #include <openpal/Logger.h>
 
 #include <queue>
+#include <string>
 
 namespace opendnp3
 {
