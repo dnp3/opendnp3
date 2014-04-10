@@ -69,6 +69,8 @@ class OutstationContext
 	
 	bool isOnline;
 	bool isSending;
+	uint8_t solSeq;
+	uint8_t unsolSeq;
 	ResponseContext rspContext;
 
 	// ------ Helper methods for dealing with state ------

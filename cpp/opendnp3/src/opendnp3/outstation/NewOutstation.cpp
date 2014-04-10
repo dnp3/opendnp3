@@ -30,6 +30,8 @@
 #include "opendnp3/outstation/CommandActionAdapter.h"
 #include "opendnp3/outstation/CommandResponseHandler.h"
 
+#include <openpal/LogMacros.h>
+
 using namespace openpal;
 
 namespace opendnp3
@@ -65,34 +67,67 @@ void NewOutstation::OnLowerLayerDown()
 
 void NewOutstation::OnReceive(const openpal::ReadOnlyBuffer& buffer)
 {
-	if (context.isOnline && !context.isSending)
+	if (context.isOnline)
 	{
 		APDURecord request;
 		auto result = APDUHeaderParser::ParseRequest(buffer, request);
 		if (result == APDUHeaderParser::Result::OK)
-		{						
-			APDUResponse response(context.txBuffer.GetWriteBuffer());
-			response.SetFunction(FunctionCode::RESPONSE);			
-			IINField iin = BuildResponse(request, response);			
-			response.SetControl(request.control.ToByte());
-			response.SetIIN(iin);
-			context.isSending = true;
-			context.pLower->BeginTransmit(response.ToReadOnly());
-			/*
-			auto output = response.ToReadOnly();						
-			auto lambda = [this, output]() { this->context.pLower->BeginTransmit(output); };
-			context.pExecutor->PostLambda(lambda);
-			*/
-		}
+		{	
+			// outstations only have to process single fragment messages
+			if (request.control.FIR && request.control.FIN)
+			{
+				if (request.control.UNS)
+				{
+					this->OnReceiveUnsol(request);
+				}
+				else
+				{
+					this->OnReceiveSol(request);
+				}
+			}
+			else
+			{
+				FORMAT_LOG_BLOCK(context.logger, flags::WARN, "Ignoring fragment with FIR: %u FIN %u", request.control.FIN, request.control.FIN);
+			}
+		}		
 	}
 }
-	
+
 void NewOutstation::OnSendResult(bool isSucccess)
 {
 	if (context.isOnline && context.isSending)
 	{
 		context.isSending = false;
 	}
+}
+
+void NewOutstation::OnReceiveSol(const APDURecord& request)
+{
+	if (context.isSending)
+	{
+		// TODO buffer the data?
+	}
+	else
+	{
+		APDUResponse response(context.txBuffer.GetWriteBuffer());
+		response.SetFunction(FunctionCode::RESPONSE);
+		IINField iin = BuildResponse(request, response);
+		response.SetControl(request.control.ToByte());
+		response.SetIIN(iin);
+		context.isSending = true;
+		context.pLower->BeginTransmit(response.ToReadOnly());
+		/*
+		auto output = response.ToReadOnly();
+		auto lambda = [this, output]() { this->context.pLower->BeginTransmit(output); };
+		context.pExecutor->PostLambda(lambda);
+		*/
+	}		
+}
+
+void NewOutstation::OnReceiveUnsol(const APDURecord& record)
+{
+	// can only be a confirm? ignore for now
+	SIMPLE_LOG_BLOCK(context.logger, flags::WARN, "Unexpected unsolicited message");
 }
 
 IINField NewOutstation::BuildResponse(const APDURecord& request, APDUResponse& response)

@@ -49,6 +49,9 @@ class NewOutstation : public openpal::IUpperLayer
 	
 	private:
 
+	void OnReceiveSol(const APDURecord& request);
+	void OnReceiveUnsol(const APDURecord& record);
+
 	OutstationContext context;
 
 	// ---- Function handlers

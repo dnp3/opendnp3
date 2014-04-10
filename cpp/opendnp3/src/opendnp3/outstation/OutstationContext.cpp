@@ -42,6 +42,8 @@ OutstationContext::OutstationContext(
 	eventBuffer(buffers),
 	isOnline(false),
 	isSending(false),
+	solSeq(0),
+	unsolSeq(0),
 	rspContext(&database, &eventBuffer, StaticResponseTypes())	
 {
 	
