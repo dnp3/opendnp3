@@ -46,6 +46,10 @@ using namespace asiopal;
 
 int main(int argc, char* argv[])
 {
+	cout << sizeof(TransportLayer) << " - TL " << endl;
+	cout << sizeof(LinkLayer) << " - LL " << endl;
+	cout << sizeof(NewOutstation) << " - NO " << endl;
+
 	// Specify a LogLevel for the stack/physical layer to use.
 	// Log statements with a lower priority will not be logged.
 	const uint32_t FILTERS = levels::ALL;

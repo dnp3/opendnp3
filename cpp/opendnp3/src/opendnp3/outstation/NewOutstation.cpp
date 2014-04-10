@@ -94,30 +94,34 @@ void NewOutstation::OnSendResult(bool isSucccess)
 
 IINField NewOutstation::BuildResponse(const APDURecord& request, APDUResponse& response)
 {
-	if (request.function == FunctionCode::READ)
-	{			
-		rspContext.Reset();
-		ReadHandler handler(logger, rspContext);
-		auto result = APDUParser::ParseTwoPass(request.objects, &handler, nullptr, APDUParser::Context(false)); // don't expect range/count context on a READ
-		if (result == APDUParser::Result::OK)
-		{			
-			// Do a transaction on the database (lock) for multi-threaded environments
-			// if the request contained static variations, we double buffer (copy) the entire static database.
-			// this ensures that an multi-fragmented responses see a consistent snapshot
-			openpal::Transaction tx(pDatabase);
-			pDatabase->DoubleBuffer();
-			rspContext.Load(response);
-			return handler.Errors();						
-		}
-		else
-		{			
-			rspContext.Reset();			
-			return IINField(IINBit::PARAM_ERROR);
-		}				
+	switch (request.function)
+	{
+		case(FunctionCode::READ):
+			return HandleRead(request, response);
+		default:
+			return IINField(IINBit::FUNC_NOT_SUPPORTED);
+	}	
+}
+
+IINField NewOutstation::HandleRead(const APDURecord& request, APDUResponse& response)
+{
+	rspContext.Reset();
+	ReadHandler handler(logger, rspContext);
+	auto result = APDUParser::ParseTwoPass(request.objects, &handler, &logger, APDUParser::Context(false)); // don't expect range/count context on a READ
+	if (result == APDUParser::Result::OK)
+	{
+		// Do a transaction on the database (lock) for multi-threaded environments
+		// if the request contained static variations, we double buffer (copy) the entire static database.
+		// this ensures that an multi-fragmented responses see a consistent snapshot
+		openpal::Transaction tx(pDatabase);
+		pDatabase->DoubleBuffer();
+		rspContext.Load(response);
+		return handler.Errors();
 	}
 	else
 	{
-		return IINField(IINBit::FUNC_NOT_SUPPORTED);
+		rspContext.Reset();
+		return IINField(IINBit::PARAM_ERROR);
 	}
 }
 	

@@ -33,8 +33,6 @@ class StaticArray : public HasSize<IndexType>
 
 public:
 
-	static_assert(N > 0, "StaticArray must have size  > 0");
-
 	StaticArray() : HasSize<IndexType>(N)
 	{}
 

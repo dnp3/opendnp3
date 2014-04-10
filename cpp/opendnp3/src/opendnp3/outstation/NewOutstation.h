@@ -54,6 +54,8 @@ class NewOutstation : public openpal::IUpperLayer
 
 	IINField BuildResponse(const APDURecord& request, APDUResponse& response);
 
+	IINField HandleRead(const APDURecord& request, APDUResponse& response);
+
 	bool isOnline;
 	bool isSending;
 

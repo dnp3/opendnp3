@@ -52,11 +52,11 @@ int main()
 		
 	TransportStack stack(root, &exe, LinkConfig(false, false));
 	
-	StaticallyAllocatedDatabase<1> staticBuffers;
+	StaticallyAllocatedDatabase<0> staticBuffers;
 	
 	Database database(staticBuffers.GetFacade());
 	
-	StaticallyAllocatedEventBuffer<1> eventBuffers;
+	StaticallyAllocatedEventBuffer<0> eventBuffers;
 	auto facade = eventBuffers.GetFacade();
 				
 	NewOutstation outstation(exe, root, stack.transport, database, facade);

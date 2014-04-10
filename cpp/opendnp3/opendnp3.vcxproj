@@ -206,6 +206,7 @@
     <ClInclude Include="src\opendnp3\outstation\OutstationConfig.h" />
     <ClInclude Include="src\opendnp3\outstation\OutstationStackConfig.h" />
     <ClInclude Include="src\opendnp3\outstation\OutstationStates.h" />
+    <ClInclude Include="src\opendnp3\outstation\StaticallyAllocatedDatabase.h" />
     <ClInclude Include="src\opendnp3\outstation\StaticallyAllocatedEventBuffer.h" />
     <ClInclude Include="src\opendnp3\outstation\StaticDataFacade.h" />
     <ClInclude Include="src\opendnp3\outstation\StaticLoader.h" />
