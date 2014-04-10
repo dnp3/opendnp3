@@ -21,9 +21,9 @@ class AVRExecutor : public openpal::IExecutor
 	
 	virtual openpal::ITimer* Start(const openpal::MonotonicTimestamp&, const openpal::Runnable& runnable) override final;
 	
-	virtual void Post(const openpal::Runnable& runnable) override final;
+	virtual void Post(const openpal::Runnable& runnable) override final;	
 	
-	bool RunOne();
+	void Run();
 	
 	void Init();
 	
@@ -32,6 +32,8 @@ class AVRExecutor : public openpal::IExecutor
 	void Sleep();
 	
 	protected:
+	
+	bool RunOne();
 	
 	virtual void Pause() override final {}
 	

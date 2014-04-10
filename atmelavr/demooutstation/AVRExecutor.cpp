@@ -102,6 +102,11 @@ void AVRExecutor::Post(const Runnable& runnable)
 	work.Enqueue(runnable);
 }
 
+void AVRExecutor::Run()
+{
+	while(RunOne());
+}
+
 bool AVRExecutor::RunOne()
 {			
 	CriticalSection cs; // TODO release interrupts before running task

@@ -4,6 +4,7 @@
 #include <opendnp3/outstation/NewOutstation.h>
 #include <opendnp3/outstation/StaticallyAllocatedDatabase.h>
 #include <opendnp3/outstation/StaticallyAllocatedEventBuffer.h>
+#include <opendnp3/outstation/SimpleCommandHandler.h>
 
 #include <openpal/LogRoot.h>
 
@@ -61,8 +62,10 @@ int main()
 	// 10 binary events, 0 others
 	StaticallyAllocatedEventBuffer<10, 0, 0, 0, 0, 0, 0> eventBuffers;
 	auto facade = eventBuffers.GetFacade();
+	
+	SimpleCommandHandler handler(CommandStatus::NOT_SUPPORTED);
 				
-	NewOutstation outstation(exe, root, stack.transport, database, facade);
+	NewOutstation outstation(exe, root, stack.transport, handler, database, facade);
 		
 	stack.transport.SetAppLayer(&outstation);
 			
@@ -87,8 +90,8 @@ int main()
 				
 	for (;;)
 	{ 								
-		while(exe.RunOne()); // run all pending events		
-		exe.Sleep(); // and then sleep
+		exe.Run();	 // run all pending events		
+		exe.Sleep(); // and then sleep until an interrupt occurs
 	}
 
 	return 0;

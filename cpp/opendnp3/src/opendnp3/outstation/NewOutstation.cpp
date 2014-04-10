@@ -33,7 +33,13 @@ using namespace openpal;
 namespace opendnp3
 {
 
-NewOutstation::NewOutstation(IExecutor& executor, openpal::LogRoot& root, openpal::ILowerLayer& lower, Database& database, EventBufferFacade& buffers) :
+NewOutstation::NewOutstation(
+		IExecutor& executor,
+		openpal::LogRoot& root,
+		openpal::ILowerLayer& lower,
+		ICommandHandler& commandHandler,
+		Database& database,
+		EventBufferFacade& buffers) :
 	isOnline(false),
 	isSending(false),
 	logger(root.GetLogger()),
