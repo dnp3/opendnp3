@@ -1,15 +1,19 @@
-### 2.0.0-M2 ###
+### 2.0.0-M3 ###
 
 ## Refactoring / Improvements  - General ##
-* To enable eventual ports to other platforms and MCUs, the 1.1.x library was divided into 4 sub-libraries.
+* To enable ports to other platforms and MCUs, the 1.1.x library was divided into 4 sub-libraries.
   * openpal - The Platform Abstraction Layer (PAL) provides abtract base classes for key abstractions like IPhysicalLayer, IExecutor, ITimer, etc.
   * opendnp3 - The core dnp3 library. It only depends on openpal and is platform independent C++11.
   * asiopal - Implements the PAL using boost::asio.  This PAL can be used on server platforms like Windows, Linux, & OSX. It only depends on openpal.
   * asiodnp3 - Provides a nice wrapper to opendnp3 for server platforms. Depends on all three libraries.
 
 * Library uses a new parser and generator that vastly improves readability, maintainability, performance, and safety.
+* Example applications for Atmel Studio for Arduino boards have been added. They are not yet production ready, but a proof of concept.
+* Stack depth has been reduced to better suite embedded systems.
 * Core library is now organized by layer making navigation, maintainence, and learning the library easier.
 * All libraries are now exception-free. They can be compiled with -fno-exceptions.
+* IExecutor now uses a "Runnable" which uses type-safe erasure/lambdas combined with static allocation
+* Core library now uses sprintf instead of iostreams. All usage of std::string removed to improve portability.
 * Removed some instances of recursion in the link layer CRC checking.
 * The library no longer uses BOOST. Instead it uses the standalone verison (header only) of [ASIO](http://think-async.com/)
 * Tests were ported from BOOST_TEST to [Catch](https://github.com/philsquared/Catch). Catch is header only and redistributed with the project.
