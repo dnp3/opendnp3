@@ -40,9 +40,10 @@ ReadOnlyBuffer::ReadOnlyBuffer(uint8_t const* apBuffer, uint32_t aSize) :
 	mpBuffer(apBuffer)
 {}
 
-void ReadOnlyBuffer::CopyTo(uint8_t* apDest) const
+ReadOnlyBuffer ReadOnlyBuffer::CopyTo(uint8_t* apDest) const
 {
 	memcpy(apDest, mpBuffer, size);
+	return ReadOnlyBuffer(apDest, size);
 }
 
 ReadOnlyBuffer ReadOnlyBuffer::Truncate(uint32_t aSize) const

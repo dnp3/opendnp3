@@ -38,7 +38,7 @@ public:
 	ReadOnlyBuffer();
 	ReadOnlyBuffer(uint8_t const* apBuffer, uint32_t aSize);
 
-	void CopyTo(uint8_t* apDest) const;
+	ReadOnlyBuffer CopyTo(uint8_t* apDest) const;
 
 	ReadOnlyBuffer Truncate(uint32_t aSize) const;
 

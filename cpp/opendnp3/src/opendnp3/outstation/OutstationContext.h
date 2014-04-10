@@ -63,22 +63,25 @@ class OutstationContext
 
 	// ------ Static bufers -------
 
+	openpal::StaticBuffer<sizes::MAX_RX_APDU_SIZE> rxBuffer;
 	openpal::StaticBuffer<sizes::MAX_TX_APDU_SIZE> txBuffer;
 
-	// ------ Dynamic "state", i.e. things that must be managed ---------
+	// ------ Dynamic "state", i.e. things that must be managed or cleanup on close ------
 	
 	bool isOnline;
 	bool isSending;
-	uint8_t solSeq;
+	bool firstValidRequestAccepted;	
+	uint8_t solSeqN;
+	uint8_t expectedConfirmSeq;
 	uint8_t unsolSeq;
+	openpal::ReadOnlyBuffer lastValidRequest;	// points to bytes in rxBuffer
+	openpal::ReadOnlyBuffer lastResponse;		// points to bytes in txBuffer
 	ResponseContext rspContext;
 
 	// ------ Helper methods for dealing with state ------
 
 	void SetOnline();
-	void SetOffline();
-	
-
+	void SetOffline();	
 	
 };
 

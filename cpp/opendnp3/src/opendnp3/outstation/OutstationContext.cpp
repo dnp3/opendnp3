@@ -42,7 +42,9 @@ OutstationContext::OutstationContext(
 	eventBuffer(buffers),
 	isOnline(false),
 	isSending(false),
-	solSeq(0),
+	firstValidRequestAccepted(false),
+	solSeqN(0),
+	expectedConfirmSeq(0),
 	unsolSeq(0),
 	rspContext(&database, &eventBuffer, StaticResponseTypes())	
 {
@@ -58,6 +60,7 @@ void OutstationContext::SetOffline()
 {
 	isOnline = false;
 	isSending = false;
+	firstValidRequestAccepted = false;
 }
 
 }

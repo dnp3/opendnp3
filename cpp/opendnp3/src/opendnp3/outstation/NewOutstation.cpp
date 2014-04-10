@@ -65,12 +65,12 @@ void NewOutstation::OnLowerLayerDown()
 	}
 }
 
-void NewOutstation::OnReceive(const openpal::ReadOnlyBuffer& buffer)
+void NewOutstation::OnReceive(const openpal::ReadOnlyBuffer& fragment)
 {
 	if (context.isOnline)
 	{
 		APDURecord request;
-		auto result = APDUHeaderParser::ParseRequest(buffer, request);
+		auto result = APDUHeaderParser::ParseRequest(fragment, request);
 		if (result == APDUHeaderParser::Result::OK)
 		{	
 			// outstations only have to process single fragment messages
@@ -82,7 +82,7 @@ void NewOutstation::OnReceive(const openpal::ReadOnlyBuffer& buffer)
 				}
 				else
 				{
-					this->OnReceiveSol(request);
+					this->OnReceiveSol(request, fragment);
 				}
 			}
 			else
@@ -101,7 +101,7 @@ void NewOutstation::OnSendResult(bool isSucccess)
 	}
 }
 
-void NewOutstation::OnReceiveSol(const APDURecord& request)
+void NewOutstation::OnReceiveSol(const APDURecord& request, const openpal::ReadOnlyBuffer& fragment)
 {
 	if (context.isSending)
 	{
@@ -109,19 +109,56 @@ void NewOutstation::OnReceiveSol(const APDURecord& request)
 	}
 	else
 	{
-		APDUResponse response(context.txBuffer.GetWriteBuffer());
-		response.SetFunction(FunctionCode::RESPONSE);
-		IINField iin = BuildResponse(request, response);
-		response.SetControl(request.control.ToByte());
-		response.SetIIN(iin);
-		context.isSending = true;
-		context.pLower->BeginTransmit(response.ToReadOnly());
-		/*
-		auto output = response.ToReadOnly();
-		auto lambda = [this, output]() { this->context.pLower->BeginTransmit(output); };
-		context.pExecutor->PostLambda(lambda);
-		*/
+		if (context.firstValidRequestAccepted)
+		{
+			if (context.solSeqN == request.control.SEQ) 
+			{
+				if (context.lastValidRequest.Equals(fragment)) 
+				{
+					// duplicate message so just send the same response without processing
+					this->BeginTransmission(request.control.SEQ, context.lastResponse);
+				}
+				else
+				{
+					this->ProcessRequest(request, fragment);
+				}
+			}
+			else  // new sequence #
+			{
+				this->ProcessRequest(request, fragment);
+			}
+		}
+		else
+		{
+			context.firstValidRequestAccepted = true;
+			this->ProcessRequest(request, fragment);
+		}		
 	}		
+}
+
+void NewOutstation::ProcessRequest(const APDURecord& request, const openpal::ReadOnlyBuffer& fragment)
+{
+	context.lastValidRequest = fragment.CopyTo(context.rxBuffer.Buffer());
+	APDUResponse response(context.txBuffer.GetWriteBuffer());
+	response.SetFunction(FunctionCode::RESPONSE);
+	response.SetControl(request.control.ToByte());
+	IINField iin = BuildResponse(request, response);		
+	response.SetIIN(iin);
+	this->BeginTransmission(request.control.SEQ, response.ToReadOnly());	
+}
+
+void NewOutstation::BeginTransmission(uint8_t seq, const ReadOnlyBuffer& response)
+{
+	context.isSending = true;
+	context.solSeqN = seq;
+	context.expectedConfirmSeq = seq;
+	context.lastResponse = response;
+	context.pLower->BeginTransmit(response);
+	/*
+	auto output = response.ToReadOnly();
+	auto lambda = [this, output]() { this->context.pLower->BeginTransmit(output); };
+	context.pExecutor->PostLambda(lambda);
+	*/
 }
 
 void NewOutstation::OnReceiveUnsol(const APDURecord& record)
