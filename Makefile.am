@@ -10,7 +10,7 @@ ASIOPAL_INCLUDE = $(top_srcdir)/cpp/asiopal/src
 ASIODNP3_INCLUDE = $(top_srcdir)/cpp/asiodnp3/src
 CATCH_INCLUDE = $(top_srcdir)/cpp/catch
 
-#bin_PROGRAMS = masterdemo outstationdemo apdufuzz
+bin_PROGRAMS = masterdemo outstationdemo apdufuzz
 
 lib_LTLIBRARIES = libopenpal.la libasiopal.la libopendnp3.la libasiodnp3.la
 
@@ -19,13 +19,15 @@ libopenpal_la_LDFLAGS = -version-info 1:1:0
 libopenpal_la_CXXFLAGS = -I$(OPENPAL_INCLUDE)
 libopenpal_la_SOURCES = \
 cpp/openpal/src/openpal/BufferWrapper.cpp \
+cpp/openpal/src/openpal/Limits.cpp \
 cpp/openpal/src/openpal/LogEntry.cpp \
 cpp/openpal/src/openpal/Logger.cpp \
 cpp/openpal/src/openpal/LogRoot.cpp \
 cpp/openpal/src/openpal/MonotonicTimestamp.cpp \
 cpp/openpal/src/openpal/Runnable.cpp \
 cpp/openpal/src/openpal/TimeDuration.cpp \
-cpp/openpal/src/openpal/ToHex.cpp
+cpp/openpal/src/openpal/ToHex.cpp \
+cpp/openpal/src/openpal/UInt48LE.cpp
 
 #ls cpp/asiopal/src/asiopal/*.cpp -1 | awk '{print $0" \\"}'
 libasiopal_la_LDFLAGS = -version-info 1:1:0
@@ -36,6 +38,7 @@ cpp/asiopal/src/asiopal/ASIOSerialHelpers.cpp \
 cpp/asiopal/src/asiopal/IOServiceThreadPool.cpp \
 cpp/asiopal/src/asiopal/Log.cpp \
 cpp/asiopal/src/asiopal/LogToStdio.cpp \
+cpp/asiopal/src/asiopal/PhysicalLayerAsyncBase.cpp \
 cpp/asiopal/src/asiopal/PhysicalLayerAsyncBaseTCP.cpp \
 cpp/asiopal/src/asiopal/PhysicalLayerAsyncSerial.cpp \
 cpp/asiopal/src/asiopal/PhysicalLayerAsyncTCPClient.cpp \
@@ -193,6 +196,21 @@ cpp/asiodnp3/src/asiodnp3/MasterStackImpl.cpp \
 cpp/asiodnp3/src/asiodnp3/OutstationStackImpl.cpp \
 cpp/asiodnp3/src/asiodnp3/PrintingSOEHandler.cpp \
 cpp/asiodnp3/src/asiodnp3/StackActionHandler.cpp
+
+masterdemo_CXXFLAGS = -I$(OPENPAL_INCLUDE) -I$(ASIOPAL_INCLUDE) -I $(OPENDNP3_INCLUDE) -I$(ASIODNP3_INCLUDE) $(ASIO_CONFIG) -Wl,--no-as-needed
+masterdemo_LDFLAGS = -pthread
+masterdemo_LDADD = libopenpal.la libasiopal.la libopendnp3.la libasiodnp3.la
+masterdemo_SOURCES = cpp/masterdemo/DemoMain.cpp cpp/masterdemo/PrintingCommandCallback.cpp
+
+outstationdemo_CXXFLAGS = -I$(OPENPAL_INCLUDE) -I$(ASIOPAL_INCLUDE) -I $(OPENDNP3_INCLUDE) -I$(ASIODNP3_INCLUDE) $(ASIO_CONFIG) -Wl,--no-as-needed
+outstationdemo_LDFLAGS = -pthread
+outstationdemo_LDADD = libopenpal.la libasiopal.la libopendnp3.la libasiodnp3.la
+outstationdemo_SOURCES = cpp/outstationdemo/DemoMain.cpp
+
+apdufuzz_CXXFLAGS = -I$(OPENPAL_INCLUDE) -I$(OPENDNP3_INCLUDE) -Wl,--no-as-needed
+apdufuzz_LDFLAGS = -pthread
+apdufuzz_LDADD = libopenpal.la libopendnp3.la
+apdufuzz_SOURCES = cpp/apdufuzz/ApduFuzz.cpp
 
 
 
