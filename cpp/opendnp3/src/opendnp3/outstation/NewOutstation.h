@@ -32,6 +32,7 @@
 #include "opendnp3/app/IINField.h"
 #include "opendnp3/app/ObjectWriter.h"
 #include "opendnp3/app/APDUHeader.h"
+#include "opendnp3/outstation/ICommandHandler.h"
 
 namespace opendnp3
 {
@@ -40,7 +41,12 @@ class NewOutstation : public openpal::IUpperLayer
 {
 	public:
 
-	NewOutstation(openpal::IExecutor& executor, openpal::LogRoot& root, openpal::ILowerLayer& lower, Database& database, EventBufferFacade& buffers);
+	NewOutstation(	openpal::IExecutor& executor, 
+					openpal::LogRoot& root, 
+					openpal::ILowerLayer& lower,
+					ICommandHandler& commandHandler,
+					Database& database, 
+					EventBufferFacade& buffers);
 	
 	virtual void OnLowerLayerUp() override final;
 	
@@ -63,6 +69,7 @@ class NewOutstation : public openpal::IUpperLayer
 
 	openpal::IExecutor* pExecutor;
 	openpal::ILowerLayer* pLower;
+	ICommandHandler* pCommandHandler;
 	Database* pDatabase;
 	OutstationEventBuffer eventBuffer;
 	ResponseContext rspContext;

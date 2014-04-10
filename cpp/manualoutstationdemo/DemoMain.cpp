@@ -68,14 +68,12 @@ int main(int argc, char* argv[])
 	LinkConfig config(false, false);
 	TransportStack stack(root, &executor, config);
 
-	StaticallyAllocatedDatabase<1> staticBuffers;
+	StaticallyAllocatedDatabase<5, 0, 0, 0, 0, 0, 0> staticBuffers;
+	StaticallyAllocatedEventBuffer<5, 0, 0, 0, 0, 0, 0> eventBuffers;
 
-	Database database(staticBuffers.GetFacade());
+	Database database(staticBuffers.GetFacade());	
 
-	StaticallyAllocatedEventBuffer<1> eventBuffers;
-	auto facade = eventBuffers.GetFacade();
-
-	NewOutstation outstation(executor, root, stack.transport, database, facade);	
+	NewOutstation outstation(executor, root, stack.transport, database, eventBuffers.GetFacade());
 
 	stack.transport.SetAppLayer(&outstation);
 
