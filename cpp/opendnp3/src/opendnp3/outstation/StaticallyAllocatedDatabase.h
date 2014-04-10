@@ -27,7 +27,7 @@
 namespace opendnp3
 {
 
-template <uint16_t N>
+template <uint16_t NB, uint16_t NDB, uint16_t NA, uint16_t NC, uint16_t NFC, uint16_t NBOS, uint16_t NAOS>
 class StaticallyAllocatedDatabase
 {
 public:	
@@ -55,21 +55,21 @@ public:
 
 private:
 
-	openpal::StaticArray<DualValue<Binary>, uint16_t, N> binaryValues;
-	openpal::StaticArray<DualValue<DoubleBitBinary>, uint16_t, N> doubleBinaryValues;
-	openpal::StaticArray<DualValue<Analog>, uint16_t, N> analogValues;
-	openpal::StaticArray<DualValue<Counter>, uint16_t, N> counterValues;
-	openpal::StaticArray<DualValue<FrozenCounter>, uint16_t, N> frozenCounterValues;
-	openpal::StaticArray<DualValue<BinaryOutputStatus>, uint16_t, N> binaryOutputStatusValues;
-	openpal::StaticArray<DualValue<AnalogOutputStatus>, uint16_t, N> analogOutputStatusValues;
+	openpal::StaticArray<DualValue<Binary>, uint16_t, NB> binaryValues;
+	openpal::StaticArray<DualValue<DoubleBitBinary>, uint16_t, NDB> doubleBinaryValues;
+	openpal::StaticArray<DualValue<Analog>, uint16_t, NA> analogValues;
+	openpal::StaticArray<DualValue<Counter>, uint16_t, NC> counterValues;
+	openpal::StaticArray<DualValue<FrozenCounter>, uint16_t, NFC> frozenCounterValues;
+	openpal::StaticArray<DualValue<BinaryOutputStatus>, uint16_t, NBOS> binaryOutputStatusValues;
+	openpal::StaticArray<DualValue<AnalogOutputStatus>, uint16_t, NAOS> analogOutputStatusValues;
 
-	openpal::StaticArray<BinaryMetadata, uint16_t, N> binaryMetadata;
-	openpal::StaticArray<DoubleBinaryMetadata, uint16_t, N> doubleBinaryMetadata;
-	openpal::StaticArray<AnalogMetadata, uint16_t, N> analogMetadata;
-	openpal::StaticArray<CounterMetadata, uint16_t, N> counterMetadata;
-	openpal::StaticArray<FrozenCounterMetadata, uint16_t, N> frozenCounterMetadata;
-	openpal::StaticArray<BinaryOutputStatusMetadata, uint16_t, N> binaryOutputStatusMetadata;
-	openpal::StaticArray<AnalogOutputStatusMetadata, uint16_t, N> analogOutputStatusMetadata;
+	openpal::StaticArray<BinaryMetadata, uint16_t, NB> binaryMetadata;
+	openpal::StaticArray<DoubleBinaryMetadata, uint16_t, NDB> doubleBinaryMetadata;
+	openpal::StaticArray<AnalogMetadata, uint16_t, NA> analogMetadata;
+	openpal::StaticArray<CounterMetadata, uint16_t, NC> counterMetadata;
+	openpal::StaticArray<FrozenCounterMetadata, uint16_t, NFC> frozenCounterMetadata;
+	openpal::StaticArray<BinaryOutputStatusMetadata, uint16_t, NBOS> binaryOutputStatusMetadata;
+	openpal::StaticArray<AnalogOutputStatusMetadata, uint16_t, NAOS> analogOutputStatusMetadata;
 };
 
 }

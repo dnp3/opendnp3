@@ -31,7 +31,7 @@
 namespace opendnp3
 {
 
-template <uint32_t N>
+template <uint16_t NB, uint16_t NDB, uint16_t NA, uint16_t NC, uint16_t NFC, uint16_t NBOS, uint16_t NAOS>
 class StaticallyAllocatedEventBuffer
 {
 public:
@@ -64,29 +64,31 @@ public:
 
 private:
 
-	openpal::StaticArray<uint16_t, uint16_t, N> binaryStack;
-	openpal::StaticArray<Event<Binary>, uint16_t, N> binaryArray;
+	openpal::StaticArray<uint16_t, uint16_t, NB> binaryStack;
+	openpal::StaticArray<Event<Binary>, uint16_t, NB> binaryArray;
 
-	openpal::StaticArray<uint16_t, uint16_t, N> doubleBinaryStack;
-	openpal::StaticArray<Event<DoubleBitBinary>, uint16_t, N> doubleBinaryArray;
+	openpal::StaticArray<uint16_t, uint16_t, NDB> doubleBinaryStack;
+	openpal::StaticArray<Event<DoubleBitBinary>, uint16_t, NDB> doubleBinaryArray;
 
-	openpal::StaticArray<uint16_t, uint16_t, N> analogStack;
-	openpal::StaticArray<Event<Analog>, uint16_t, N> analogArray;
+	openpal::StaticArray<uint16_t, uint16_t, NA> analogStack;
+	openpal::StaticArray<Event<Analog>, uint16_t, NA> analogArray;
 
-	openpal::StaticArray<uint16_t, uint16_t, N> counterStack;
-	openpal::StaticArray<Event<Counter>, uint16_t, N> counterArray;
+	openpal::StaticArray<uint16_t, uint16_t, NC> counterStack;
+	openpal::StaticArray<Event<Counter>, uint16_t, NC> counterArray;
 	
-	openpal::StaticArray<uint16_t, uint16_t, N> frozenCounterStack;
-	openpal::StaticArray<Event<FrozenCounter>, uint16_t, N> frozenCounterArray;
+	openpal::StaticArray<uint16_t, uint16_t, NFC> frozenCounterStack;
+	openpal::StaticArray<Event<FrozenCounter>, uint16_t, NFC> frozenCounterArray;
 	
-	openpal::StaticArray<uint16_t, uint16_t, N> binaryOutputStatusStack;
-	openpal::StaticArray<Event<BinaryOutputStatus>, uint16_t, N> binaryOutputStatusArray;
+	openpal::StaticArray<uint16_t, uint16_t, NBOS> binaryOutputStatusStack;
+	openpal::StaticArray<Event<BinaryOutputStatus>, uint16_t, NBOS> binaryOutputStatusArray;
 	
-	openpal::StaticArray<uint16_t, uint16_t, N> analogOutputStatusStack;
-	openpal::StaticArray<Event<AnalogOutputStatus>, uint16_t, N> analogOutputStatusArray;
+	openpal::StaticArray<uint16_t, uint16_t, NAOS> analogOutputStatusStack;
+	openpal::StaticArray<Event<AnalogOutputStatus>, uint16_t, NAOS> analogOutputStatusArray;
+	
+	const static uint16_t TOTAL = NB + NDB + NA + NC + NFC + NBOS + NAOS;
 
-	openpal::StaticArray < openpal::ListNode<SequenceRecord>, uint16_t, 7*N> sequenceOfEvents;
-	openpal::StaticArray < openpal::ListNode<SequenceRecord>*, uint16_t, 7*N> selectedEvents;
+	openpal::StaticArray < openpal::ListNode<SequenceRecord>, uint16_t, TOTAL> sequenceOfEvents;
+	openpal::StaticArray < openpal::ListNode<SequenceRecord>*, uint16_t, TOTAL> selectedEvents;
 };
 
 }
