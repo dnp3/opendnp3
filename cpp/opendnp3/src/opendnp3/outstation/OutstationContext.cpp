@@ -37,6 +37,7 @@ OutstationContext::OutstationContext(
 	logger(root.GetLogger()),	
 	pExecutor(&executor),
 	pLower(&lower),
+	pCommandHandler(&commandHandler),
 	pDatabase(&database),
 	eventBuffer(buffers),
 	isOnline(false),
