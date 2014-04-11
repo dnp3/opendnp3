@@ -43,8 +43,9 @@ OutstationContext::OutstationContext(
 	isOnline(false),
 	isSending(false),
 	firstValidRequestAccepted(false),
-	activeSelect(false),
-	selectExpectedSeq(0),
+	rxFragCount(0),		
+	operateExpectedSeq(0),
+	operateExpectedFragCount(0),
 	solSeqN(0),
 	expectedConfirmSeq(0),
 	unsolSeq(0),
@@ -67,9 +68,14 @@ void OutstationContext::SetOffline()
 
 void OutstationContext::Select()
 {
-	activeSelect = true;
-	selectExpectedSeq = NextSeq(solSeqN);
+	operateExpectedFragCount = rxFragCount + 1;
+	operateExpectedSeq = NextSeq(solSeqN);
 	selectTime = pExecutor->GetTime();
+}
+
+bool OutstationContext::IsOperateValid()
+{	
+	return (rxFragCount == operateExpectedFragCount) && (solSeqN == operateExpectedSeq);	
 }
 
 }

@@ -78,6 +78,7 @@ void NewOutstation::OnReceive(const openpal::ReadOnlyBuffer& fragment)
 {
 	if (context.isOnline)
 	{
+		++context.rxFragCount;
 		APDURecord request;
 		auto result = APDUHeaderParser::ParseRequest(fragment, request);
 		if (result == APDUHeaderParser::Result::OK)
@@ -285,10 +286,10 @@ IINField NewOutstation::HandleOperate(const APDURecord& request, APDUResponse& r
 	}
 	else
 	{
-		if (context.activeSelect)
-		{			
+		if (context.IsOperateValid())
+		{				
 			auto elapsed = context.pExecutor->GetTime().milliseconds - context.selectTime.milliseconds;
-			if (elapsed < 5000) // TODO - make configurable
+			if (elapsed < 5000) // TODO - make timeout configurable
 			{
 				if (context.lastValidRequest.Size() >= 2)
 				{

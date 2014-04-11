@@ -73,9 +73,12 @@ class OutstationContext
 	bool isOnline;
 	bool isSending;
 	bool firstValidRequestAccepted;
-	bool activeSelect;
+	
+	uint32_t rxFragCount;
 	openpal::MonotonicTimestamp selectTime;
-	uint8_t selectExpectedSeq;
+	uint8_t operateExpectedSeq;
+	uint32_t operateExpectedFragCount;
+
 	uint8_t solSeqN;
 	uint8_t expectedConfirmSeq;
 	uint8_t unsolSeq;
@@ -89,6 +92,7 @@ class OutstationContext
 	void SetOffline();
 
 	void Select();
+	bool IsOperateValid();
 	
 };
 
