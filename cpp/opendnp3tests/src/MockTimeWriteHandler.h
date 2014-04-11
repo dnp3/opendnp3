@@ -31,15 +31,15 @@ namespace opendnp3
 class MockTimeWriteHandler : public ITimeWriteHandler
 {
 public:
-	MockTimeWriteHandler(std::function<void (openpal::UTCTimestamp)> aTimeWriteCallback) : mTimeWriteCallback(aTimeWriteCallback) {}
+	MockTimeWriteHandler(std::function<bool (openpal::UTCTimestamp)> aTimeWriteCallback) : timeWriteCallback(aTimeWriteCallback) {}
 
-	void WriteAbsoluteTime(openpal::UTCTimestamp aTimestamp)
+	bool WriteAbsoluteTime(const openpal::UTCTimestamp& timestamp)
 	{
-		mTimeWriteCallback(aTimestamp);
+		return timeWriteCallback(timestamp);
 	}
 
 private:
-	std::function<void (openpal::UTCTimestamp)> mTimeWriteCallback;
+	std::function<bool (openpal::UTCTimestamp)> timeWriteCallback;
 };
 
 }

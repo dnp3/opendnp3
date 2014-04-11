@@ -31,7 +31,7 @@ class ITimeWriteHandler
 public:
 	virtual ~ITimeWriteHandler() {}
 
-	virtual void WriteAbsoluteTime(openpal::UTCTimestamp aTimestamp) = 0;
+	virtual bool WriteAbsoluteTime(const openpal::UTCTimestamp& timestamp) = 0;
 };
 
 class NullTimeWriteHandler : public ITimeWriteHandler
@@ -39,7 +39,7 @@ class NullTimeWriteHandler : public ITimeWriteHandler
 public:
 	static ITimeWriteHandler& Inst();
 
-	virtual void WriteAbsoluteTime(openpal::UTCTimestamp aTimestamp) override final {}
+	virtual bool WriteAbsoluteTime(const openpal::UTCTimestamp& timestamp) override final { return true; }
 
 private:
 	static NullTimeWriteHandler instance;	

@@ -65,22 +65,22 @@ void WriteHandler::_OnCountOf(const HeaderRecord&, const IterableBuffer<Group50V
 {
 	if (wroteTime) errors.Set(IINBit::PARAM_ERROR);
 	else
-	{
-		if (pWriteIIN->IsSet(IINBit::NEED_TIME))
+	{		
+		Group50Var1 time;
+		if (times.ReadOnlyValue(time))
 		{
-			Group50Var1 time;
-			if (times.ReadOnlyValue(time))
+			wroteTime = true;
+			pWriteIIN->Clear(IINBit::NEED_TIME);
+			bool accepted = pTimeWriteHandler->WriteAbsoluteTime(UTCTimestamp(time.time));
+			if (!accepted)
 			{
-				wroteTime = true;
-				pWriteIIN->Clear(IINBit::NEED_TIME);
-				pTimeWriteHandler->WriteAbsoluteTime(UTCTimestamp(time.time));
-			}
-			else errors.Set(IINBit::PARAM_ERROR);
+				errors.Set(IINBit::PARAM_ERROR);
+			}			
 		}
 		else
 		{
 			errors.Set(IINBit::PARAM_ERROR);
-		}
+		}		
 	}
 }
 

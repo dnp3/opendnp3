@@ -110,32 +110,31 @@ TEST_CASE(SUITE("DelayMeasure"))
 	REQUIRE(t.lower.PopWriteAsHex() == "C0 81 80 00 34 02 07 01 00 00"); // response, Grp51Var2, count 1, value == 00 00
 }
 
-/*
+
 TEST_CASE(SUITE("DelayMeasureExtraData"))
 {
-	OutstationConfig cfg;  cfg.mDisableUnsol = true;
-	OutstationTestObject t(cfg, DatabaseTemplate());
+	OutstationConfig config;
+	NewOutstationTestObject t(config);
 	t.outstation.OnLowerLayerUp();
 
 	t.SendToOutstation("C0 17 DE AD BE EF"); //delay measure
-	REQUIRE(t.Read() == "C0 81 80 01"); // Func not supported
+	REQUIRE(t.lower.PopWriteAsHex() == "C0 81 80 01"); // Func not supported
 }
 
 TEST_CASE(SUITE("WriteTimeDate"))
 {
-	OutstationConfig cfg;
-	cfg.mDisableUnsol = true;
-	cfg.mAllowTimeSync = true;
-	OutstationTestObject t(cfg, DatabaseTemplate());
+	OutstationConfig config;	
+	NewOutstationTestObject t(config);	
 	t.outstation.OnLowerLayerUp();
 
 	t.SendToOutstation("C0 02 32 01 07 01 D2 04 00 00 00 00"); // write Grp50Var1, value = 1234 ms after epoch
-	REQUIRE(t.Read() == "C0 81 80 00");
-	REQUIRE(t.mTimeWrites.size() == 1);
-	REQUIRE(t.mTimeWrites.front().msSinceEpoch == 1234);
+	REQUIRE(t.lower.PopWriteAsHex() == "C0 81 80 00");
+	REQUIRE(t.timestamps.size() == 1);
+	REQUIRE(t.timestamps.front().msSinceEpoch == 1234);
 
 }
 
+/*
 TEST_CASE(SUITE("WriteTimeDateNotAsking"))
 {
 	OutstationConfig cfg; cfg.mDisableUnsol = true;
