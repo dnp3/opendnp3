@@ -52,7 +52,7 @@ class OutstationContext
 						ICommandHandler& commandHandler,
 						ITimeWriteHandler& timeWriteHandler,
 						Database& database, 
-						EventBufferFacade& buffers);
+						const EventBufferFacade& buffers);
 
 	// ------ Unchanging variables and self managing variables -------
 

@@ -38,7 +38,7 @@ class NewOutstation : public openpal::IUpperLayer
 					ICommandHandler& commandHandler,
 					ITimeWriteHandler& timeWriteHandler,
 					Database& database, 
-					EventBufferFacade& buffers);
+					const EventBufferFacade& buffers);
 	
 	virtual void OnLowerLayerUp() override final;
 	

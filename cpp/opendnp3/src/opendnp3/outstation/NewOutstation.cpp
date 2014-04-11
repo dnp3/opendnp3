@@ -46,7 +46,7 @@ NewOutstation::NewOutstation(
 		ICommandHandler& commandHandler,
 		ITimeWriteHandler& timeWriteHandler,
 		Database& database,
-		EventBufferFacade& buffers) :
+		const EventBufferFacade& buffers) :
 		context(executor, root, lower, commandHandler, timeWriteHandler, database, buffers)
 {
 	

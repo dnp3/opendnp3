@@ -33,7 +33,7 @@ OutstationContext::OutstationContext(
 		ICommandHandler& commandHandler,
 		ITimeWriteHandler& timeWriteHandler,
 		Database& database,
-		EventBufferFacade& buffers) :
+		const EventBufferFacade& buffers) :
 	
 	logger(root.GetLogger()),	
 	pExecutor(&executor),

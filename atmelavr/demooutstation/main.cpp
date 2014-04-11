@@ -4,45 +4,21 @@
 #include <opendnp3/outstation/NewOutstation.h>
 #include <opendnp3/outstation/StaticallyAllocatedDatabase.h>
 #include <opendnp3/outstation/StaticallyAllocatedEventBuffer.h>
-#include <opendnp3/outstation/SimpleCommandHandler.h>
 
 #include <openpal/LogRoot.h>
+
+#define F_CPU 16000000UL
 
 #include <avr/io.h> 
 #include <avr/interrupt.h>
 
-#define F_CPU 16000000UL
-#define BIT(x)	(1<<x)
-#define SET(reg, bits) reg |= bits
-#define CLEAR(reg, bits) reg &= ~bits
-#define TOGGLE(reg, bits) reg ^= bits
-
 #include "AVRExecutor.h"
 #include "AVRLinkParser.h"
+#include "AVRCommandHandler.h"
 
 using namespace opendnp3;
 using namespace arduino;
 using namespace openpal;
-
-void Update(bool value, bool update, IExecutor* pexe, Database* pDatabase)
-{
-	if(value)
-	{
-		SET(PORTB, BIT(7));
-	}
-	else
-	{
-		CLEAR(PORTB, BIT(7));
-	}
-		
-	if(update) 
-	{
-		pDatabase->Update(Binary(value), 0);
-	}
-	
-	auto lambda = [value, update, pexe, pDatabase](){ Update(!value, true, pexe, pDatabase); };
-	pexe->Start(TimeDuration::Seconds(1), Bind(lambda));
-}
 
 int main()
 {	
@@ -61,11 +37,8 @@ int main()
 	
 	// 10 binary events, 0 others
 	StaticallyAllocatedEventBuffer<10, 0, 0, 0, 0, 0, 0> eventBuffers;
-	auto facade = eventBuffers.GetFacade();
-	
-	SimpleCommandHandler handler(CommandStatus::SUCCESS);
-				
-	NewOutstation outstation(exe, root, stack.transport, handler, NullTimeWriteHandler::Inst(), database, facade);
+					
+	NewOutstation outstation(exe, root, stack.transport, AVRCommandHandler::Inst(), NullTimeWriteHandler::Inst(), database, eventBuffers.GetFacade());
 		
 	stack.transport.SetAppLayer(&outstation);
 			
@@ -84,9 +57,6 @@ int main()
 	
 	// Set LED as output
 	DDRB |= (7 << 0);
-	
-	// Use a repeating software timer to toggle binary index 0
-	Update(true, false, &exe, &database);	
 				
 	for (;;)
 	{ 								
