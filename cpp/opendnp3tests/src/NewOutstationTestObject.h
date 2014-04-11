@@ -18,67 +18,42 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __LOG_TESTER_H_
-#define __LOG_TESTER_H_
+#ifndef __NEW_OUTSTATION_TEST_OBJECT_H_
+#define __NEW_OUTSTATION_TEST_OBJECT_H_
 
-#include <openpal/LogRoot.h>
+#include <opendnp3/LogLevels.h>
+#include <opendnp3/outstation/NewOutstation.h>
+#include <opendnp3/outstation/Database.h>
+#include <opendnp3/outstation/OutstationConfig.h>
+#include <opendnp3/outstation/DynamicallyAllocatedDatabase.h>
+#include <opendnp3/outstation/DynamicallyAllocatedEventBuffer.h>
 
-#include <string>
-#include <queue>
+#include "MockExecutor.h"
+#include "LogTester.h"
+#include "MockCommandHandler.h"
+#include "MockAppLayer.h"
+#include "MockLowerLayer.h"
 
 namespace opendnp3
 {
 
-class LogRecord
-{
-	public:
-
-	LogRecord();
-	LogRecord(const openpal::LogEntry& entry);
-
-	std::string		id;
-	openpal::LogFilters		filters;
-	int				subType;
-	std::string		location;
-	std::string		message;
-	int				errorCode;
-};
-
-class LogTester : public openpal::ILogBase
+class NewOutstationTestObject
 {
 
 public:
-	LogTester();
+	NewOutstationTestObject(const OutstationConfig& config,
+							const DatabaseTemplate& dbTemplate = DatabaseTemplate(), 
+							const EventBufferConfig& ebConfig = EventBufferConfig());
 
-	void Log(const std::string& aLocation, const std::string& aMessage);
-
-	void Log( const openpal::LogEntry& arEntry );
-
-	int32_t PopFilter();
-
-	bool PopOneEntry(int32_t filter);
-
-	bool PopUntil(int32_t filter);
-
-	int ClearLog();
-	int NextErrorCode();
-	bool GetNextEntry(LogRecord& record);
-	bool IsLogErrorFree();
-
-	void Pop(openpal::ILogBase* pLog);
-
-	openpal::Logger GetLogger(int source = -1);
-
-	openpal::LogRoot root;
-
-protected:
-
-	
-	openpal::Logger logger;
-	std::queue<LogRecord> mBuffer;
-
+	LogTester log;	
+	MockExecutor exe;
+	MockLowerLayer lower;
+	DynamicallyAllocatedDatabase dbBuffers;
+	DynamicallyAllocatedEventBuffer eventBuffers;
+	Database db;
+	MockCommandHandler cmdHandler;
+	NewOutstation outstation;	
 };
-
 
 }
 

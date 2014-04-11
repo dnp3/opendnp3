@@ -58,6 +58,20 @@ void LogTester::Log( const LogEntry& entry )
 	mBuffer.push(entry);
 }
 
+int32_t LogTester::PopFilter()
+{
+	if (mBuffer.size() > 0)
+	{
+		auto flags = mBuffer.front().filters.GetBitfield();
+		mBuffer.pop();
+		return flags;	
+	}
+	else
+	{
+		return 0;
+	}
+}
+
 bool LogTester::PopOneEntry(int32_t filter)
 {
 	if (mBuffer.size() == 1)

@@ -197,6 +197,9 @@
     <ClInclude Include="src\HexConversions.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\NewOutstationTestObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\AppLayerTest.cpp">
@@ -455,6 +458,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\HexConversions.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\NewOutstationTestObject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\TestNewOutstation.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

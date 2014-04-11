@@ -232,6 +232,7 @@
     <ClInclude Include="src\MockTransportLayer.h" />
     <ClInclude Include="src\MockUpperLayer.h" />
     <ClInclude Include="src\MultiplexingDataObserver.h" />
+    <ClInclude Include="src\NewOutstationTestObject.h" />
     <ClInclude Include="src\PhysicalLayerWrapper.h" />
     <ClInclude Include="src\PhysicalLayerWrapperFactory.h" />
     <ClInclude Include="src\PhysLoopback.h" />
@@ -285,6 +286,7 @@
     <ClCompile Include="src\MockTransportLayer.cpp" />
     <ClCompile Include="src\MockUpperLayer.cpp" />
     <ClCompile Include="src\MultiplexingDataObserver.cpp" />
+    <ClCompile Include="src\NewOutstationTestObject.cpp" />
     <ClCompile Include="src\OutstationTestObject.cpp" />
     <ClCompile Include="src\PhysicalLayerWrapper.cpp" />
     <ClCompile Include="src\PhysLoopback.cpp" />
@@ -312,6 +314,7 @@
     <ClCompile Include="src\TestLinkRoute.cpp" />
     <ClCompile Include="src\TestLog.cpp" />
     <ClCompile Include="src\TestMaster.cpp" />
+    <ClCompile Include="src\TestNewOutstation.cpp" />
     <ClCompile Include="src\TestOutstation.cpp" />
     <ClCompile Include="src\TestOutstationCommandResponses.cpp" />
     <ClCompile Include="src\TestOutstationEventResponses.cpp" />

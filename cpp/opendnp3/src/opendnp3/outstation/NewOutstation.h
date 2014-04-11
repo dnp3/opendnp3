@@ -49,6 +49,10 @@ class NewOutstation : public openpal::IUpperLayer
 	
 	private:
 
+	OutstationContext context;
+
+	// ------ Private methods ------
+
 	void OnReceiveSol(const APDURecord& request, const openpal::ReadOnlyBuffer& fragment);
 
 	void OnReceiveUnsol(const APDURecord& record);
@@ -57,17 +61,15 @@ class NewOutstation : public openpal::IUpperLayer
 
 	void BeginTransmission(uint8_t seq, const openpal::ReadOnlyBuffer& response);
 
-	OutstationContext context;
+	
 
-	// ---- Function handlers
+	// ------ Function handlers ------
 	
 	IINField BuildResponse(const APDURecord& request, APDUResponse& response);
 
 	IINField HandleRead(const APDURecord& request, APDUResponse& response);
 
 	IINField HandleDirectOperate(const APDURecord& request, APDUResponse& response);
-
-	
 
 };
 

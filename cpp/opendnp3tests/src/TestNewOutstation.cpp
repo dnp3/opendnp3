@@ -18,68 +18,30 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __LOG_TESTER_H_
-#define __LOG_TESTER_H_
+#include <catch.hpp>
 
-#include <openpal/LogRoot.h>
 
-#include <string>
-#include <queue>
+#include "NewOutstationTestObject.h"
 
-namespace opendnp3
+#include <opendnp3/DNPErrorCodes.h>
+
+using namespace std;
+using namespace opendnp3;
+using namespace openpal;
+
+#define SUITE(name) "NewOutstationTestSuite - " name
+
+TEST_CASE(SUITE("InitialState"))
 {
-
-class LogRecord
-{
-	public:
-
-	LogRecord();
-	LogRecord(const openpal::LogEntry& entry);
-
-	std::string		id;
-	openpal::LogFilters		filters;
-	int				subType;
-	std::string		location;
-	std::string		message;
-	int				errorCode;
-};
-
-class LogTester : public openpal::ILogBase
-{
-
-public:
-	LogTester();
-
-	void Log(const std::string& aLocation, const std::string& aMessage);
-
-	void Log( const openpal::LogEntry& arEntry );
-
-	int32_t PopFilter();
-
-	bool PopOneEntry(int32_t filter);
-
-	bool PopUntil(int32_t filter);
-
-	int ClearLog();
-	int NextErrorCode();
-	bool GetNextEntry(LogRecord& record);
-	bool IsLogErrorFree();
-
-	void Pop(openpal::ILogBase* pLog);
-
-	openpal::Logger GetLogger(int source = -1);
-
-	openpal::LogRoot root;
-
-protected:
-
+	OutstationConfig config;
+	NewOutstationTestObject test(config);
 	
-	openpal::Logger logger;
-	std::queue<LogRecord> mBuffer;
+	test.outstation.OnLowerLayerDown();
+	REQUIRE(flags::ERR == test.log.PopFilter());
 
-};
+	test.outstation.OnReceive(ReadOnlyBuffer());
+	REQUIRE(flags::ERR == test.log.PopFilter());
 
-
+	test.outstation.OnSendResult(true);
+	REQUIRE(flags::ERR == test.log.PopFilter());
 }
-
-#endif

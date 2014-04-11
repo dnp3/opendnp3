@@ -51,7 +51,11 @@ NewOutstation::NewOutstation(
 	
 void NewOutstation::OnLowerLayerUp()
 {
-	if (!context.isOnline)
+	if (context.isOnline)
+	{
+		SIMPLE_LOG_BLOCK(context.logger, flags::ERR, "already online");		
+	}
+	else
 	{
 		context.SetOnline();
 	}
@@ -62,6 +66,10 @@ void NewOutstation::OnLowerLayerDown()
 	if (context.isOnline)
 	{
 		context.SetOffline();
+	}
+	else
+	{
+		SIMPLE_LOG_BLOCK(context.logger, flags::ERR, "not online");
 	}
 }
 
@@ -91,6 +99,10 @@ void NewOutstation::OnReceive(const openpal::ReadOnlyBuffer& fragment)
 			}
 		}		
 	}
+	else
+	{
+		SIMPLE_LOG_BLOCK(context.logger, flags::ERR, "ignoring received data while offline");
+	}
 }
 
 void NewOutstation::OnSendResult(bool isSucccess)
@@ -99,13 +111,17 @@ void NewOutstation::OnSendResult(bool isSucccess)
 	{
 		context.isSending = false;
 	}
+	else
+	{
+		SIMPLE_LOG_BLOCK(context.logger, flags::ERR, "Unexpected send callback");
+	}
 }
 
 void NewOutstation::OnReceiveSol(const APDURecord& request, const openpal::ReadOnlyBuffer& fragment)
 {
 	if (context.isSending)
 	{
-		// TODO buffer the data?
+		// TODO - buffer the data?
 	}
 	else
 	{
@@ -123,7 +139,7 @@ void NewOutstation::OnReceiveSol(const APDURecord& request, const openpal::ReadO
 					this->ProcessRequest(request, fragment);
 				}
 			}
-			else  // new sequence #
+			else  // completely new sequence #
 			{
 				this->ProcessRequest(request, fragment);
 			}

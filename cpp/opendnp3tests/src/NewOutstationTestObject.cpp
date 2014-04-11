@@ -18,68 +18,23 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __LOG_TESTER_H_
-#define __LOG_TESTER_H_
 
-#include <openpal/LogRoot.h>
-
-#include <string>
-#include <queue>
+#include "NewOutstationTestObject.h"
 
 namespace opendnp3
 {
 
-class LogRecord
+NewOutstationTestObject::NewOutstationTestObject(const OutstationConfig& config, const DatabaseTemplate& dbTemplate, const EventBufferConfig& ebConfig) :
+	log(),
+	exe(),
+	lower(log.root),
+	dbBuffers(dbTemplate),
+	eventBuffers(ebConfig),
+	db(dbBuffers.GetFacade()),
+	cmdHandler(CommandStatus::SUCCESS),
+	outstation(exe, log.root, lower, cmdHandler, db, eventBuffers.GetFacade())
 {
-	public:
-
-	LogRecord();
-	LogRecord(const openpal::LogEntry& entry);
-
-	std::string		id;
-	openpal::LogFilters		filters;
-	int				subType;
-	std::string		location;
-	std::string		message;
-	int				errorCode;
-};
-
-class LogTester : public openpal::ILogBase
-{
-
-public:
-	LogTester();
-
-	void Log(const std::string& aLocation, const std::string& aMessage);
-
-	void Log( const openpal::LogEntry& arEntry );
-
-	int32_t PopFilter();
-
-	bool PopOneEntry(int32_t filter);
-
-	bool PopUntil(int32_t filter);
-
-	int ClearLog();
-	int NextErrorCode();
-	bool GetNextEntry(LogRecord& record);
-	bool IsLogErrorFree();
-
-	void Pop(openpal::ILogBase* pLog);
-
-	openpal::Logger GetLogger(int source = -1);
-
-	openpal::LogRoot root;
-
-protected:
-
-	
-	openpal::Logger logger;
-	std::queue<LogRecord> mBuffer;
-
-};
-
-
+	lower.SetUpperLayer(&outstation);
 }
 
-#endif
+}
