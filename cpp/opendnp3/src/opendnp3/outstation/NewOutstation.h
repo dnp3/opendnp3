@@ -67,9 +67,15 @@ class NewOutstation : public openpal::IUpperLayer
 
 	IINField HandleRead(const APDURecord& request, APDUResponse& response);
 
+	IINField HandleSelect(const APDURecord& request, APDUResponse& response);
+
+	IINField HandleOperate(const APDURecord& request, APDUResponse& response);
+
 	IINField HandleDirectOperate(const APDURecord& request, APDUResponse& response);
 
-	IINField HandleSelect(const APDURecord& request, APDUResponse& response);
+	// -------- Function handler helpers
+
+	IINField HandleCommandWithConstant(const APDURecord& request, APDUResponse& response, CommandStatus status);
 };
 
 

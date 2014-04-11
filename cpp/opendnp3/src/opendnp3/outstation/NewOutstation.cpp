@@ -29,6 +29,7 @@
 #include "opendnp3/outstation/IINHelpers.h"
 #include "opendnp3/outstation/CommandActionAdapter.h"
 #include "opendnp3/outstation/CommandResponseHandler.h"
+#include "opendnp3/outstation/ConstantCommandAction.h"
 
 #include <openpal/LogMacros.h>
 
@@ -194,6 +195,8 @@ IINField NewOutstation::BuildResponse(const APDURecord& request, APDUResponse& r
 			return HandleRead(request, response);
 		case(FunctionCode::SELECT) :
 			return HandleSelect(request, response);
+		case(FunctionCode::OPERATE) :
+			return HandleOperate(request, response);
 		case(FunctionCode::DIRECT_OPERATE) :
 			return HandleDirectOperate(request, response);
 		default:
@@ -245,8 +248,7 @@ IINField NewOutstation::HandleSelect(const APDURecord& request, APDUResponse& re
 	// since we're echoing, make sure there's enough size before beginning
 	if(request.objects.Size() > response.Remaining())
 	{
-		FORMAT_LOG_BLOCK(context.logger, flags::WARN, "Igonring command request due to payload size of %i", request.objects.Size());
-		//selectBuffer.Clear();
+		FORMAT_LOG_BLOCK(context.logger, flags::WARN, "Igonring command request due to payload size of %i", request.objects.Size());		
 		return IINField(IINBit::PARAM_ERROR);
 	}
 	else
@@ -271,6 +273,63 @@ IINField NewOutstation::HandleSelect(const APDURecord& request, APDUResponse& re
 			return IINFromParseResult(result);
 		}
 	}
+}
+
+IINField NewOutstation::HandleOperate(const APDURecord& request, APDUResponse& response)
+{
+	// since we're echoing, make sure there's enough size before beginning
+	if (request.objects.Size() > response.Remaining())
+	{
+		FORMAT_LOG_BLOCK(context.logger, flags::WARN, "Igonring command request due to payload size of %i", request.objects.Size());		
+		return IINField(IINBit::PARAM_ERROR);
+	}
+	else
+	{
+		if (context.activeSelect)
+		{			
+			auto elapsed = context.pExecutor->GetTime().milliseconds - context.selectTime.milliseconds;
+			if (elapsed < 5000) // TODO - make configurable
+			{
+				if (context.lastValidRequest.Size() >= 2)
+				{
+					ReadOnlyBuffer copy(context.lastValidRequest);
+					copy.Advance(2);
+					if (copy.Equals(request.objects))
+					{
+						CommandActionAdapter adapter(context.pCommandHandler, false);
+						CommandResponseHandler handler(context.logger, 1, &adapter, response);
+						auto result = APDUParser::ParseTwoPass(request.objects, &handler, &context.logger);
+						return IINFromParseResult(result);
+					}
+					else
+					{
+						return HandleCommandWithConstant(request, response, CommandStatus::NO_SELECT);
+					}
+				}
+				else
+				{
+					return HandleCommandWithConstant(request, response, CommandStatus::NO_SELECT);
+				}
+			}
+			else
+			{
+				return HandleCommandWithConstant(request, response, CommandStatus::TIMEOUT);
+				
+			}
+		}
+		else
+		{
+			return HandleCommandWithConstant(request, response, CommandStatus::NO_SELECT);
+		}		
+	}
+}
+
+IINField NewOutstation::HandleCommandWithConstant(const APDURecord& request, APDUResponse& response, CommandStatus status)
+{
+	ConstantCommandAction constant(status);
+	CommandResponseHandler handler(context.logger, 1, &constant, response); // TODO, make controls
+	auto result = APDUParser::ParseTwoPass(request.objects, &handler, &context.logger);
+	return IINFromParseResult(result);
 }
 	
 }
