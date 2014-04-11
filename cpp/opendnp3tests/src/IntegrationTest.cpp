@@ -174,7 +174,7 @@ void IntegrationTest::AddStackPair(uint32_t filters, uint16_t aNumPoints)
 		cfg.app.RspTimeout = TimeDuration::Seconds(10);
 		cfg.outstation.mDisableUnsol = false;
 		cfg.outstation.mUnsolPackDelay = TimeDuration::Zero();
-		auto pOutstation = pServer->AddOutstation("outstation", &mCmdHandler, NullTimeWriteHandler::Inst(), cfg);
+		auto pOutstation = pServer->AddOutstation("outstation", &mCmdHandler, &NullTimeWriteHandler::Inst(), cfg);
 		this->mFanout.AddObserver(pOutstation->GetLoader());
 		pOutstation->Enable();
 	}

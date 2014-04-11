@@ -33,6 +33,9 @@
 #include "MockCommandHandler.h"
 #include "MockAppLayer.h"
 #include "MockLowerLayer.h"
+#include "MockTimeWriteHandler.h"
+
+#include <vector>
 
 namespace opendnp3
 {
@@ -45,6 +48,8 @@ public:
 							const DatabaseTemplate& dbTemplate = DatabaseTemplate(), 
 							const EventBufferConfig& ebConfig = EventBufferConfig());
 
+	std::vector<openpal::UTCTimestamp> timestamps;
+
 	LogTester log;	
 	MockExecutor exe;
 	MockLowerLayer lower;
@@ -52,6 +57,7 @@ public:
 	DynamicallyAllocatedEventBuffer eventBuffers;
 	Database db;
 	MockCommandHandler cmdHandler;
+	MockTimeWriteHandler timeHandler;
 	NewOutstation outstation;	
 };
 

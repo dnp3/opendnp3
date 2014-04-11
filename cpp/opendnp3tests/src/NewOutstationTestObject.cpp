@@ -21,6 +21,8 @@
 
 #include "NewOutstationTestObject.h"
 
+using namespace openpal;
+
 namespace opendnp3
 {
 
@@ -32,7 +34,8 @@ NewOutstationTestObject::NewOutstationTestObject(const OutstationConfig& config,
 	eventBuffers(ebConfig),
 	db(dbBuffers.GetFacade()),
 	cmdHandler(CommandStatus::SUCCESS),
-	outstation(exe, log.root, lower, cmdHandler, db, eventBuffers.GetFacade())
+	timeHandler([this](const UTCTimestamp& ts){ timestamps.push_back(ts); }),
+	outstation(exe, log.root, lower, cmdHandler, timeHandler, db, eventBuffers.GetFacade())
 {
 	lower.SetUpperLayer(&outstation);
 }
