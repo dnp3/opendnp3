@@ -43,6 +43,8 @@ OutstationContext::OutstationContext(
 	isOnline(false),
 	isSending(false),
 	firstValidRequestAccepted(false),
+	activeSelect(false),
+	selectExpectedSeq(0),
 	solSeqN(0),
 	expectedConfirmSeq(0),
 	unsolSeq(0),
@@ -61,6 +63,13 @@ void OutstationContext::SetOffline()
 	isOnline = false;
 	isSending = false;
 	firstValidRequestAccepted = false;
+}
+
+void OutstationContext::Select()
+{
+	activeSelect = true;
+	selectExpectedSeq = NextSeq(solSeqN);
+	selectTime = pExecutor->GetTime();
 }
 
 }

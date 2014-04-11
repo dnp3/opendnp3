@@ -43,6 +43,8 @@ class OutstationContext
 {
 	public:
 
+	static uint8_t NextSeq(uint8_t seq) { return (seq + 1) % 16; }
+
 	OutstationContext(	openpal::IExecutor& executor,
 						openpal::LogRoot& root, 
 						openpal::ILowerLayer& lower,
@@ -70,7 +72,10 @@ class OutstationContext
 	
 	bool isOnline;
 	bool isSending;
-	bool firstValidRequestAccepted;	
+	bool firstValidRequestAccepted;
+	bool activeSelect;
+	openpal::MonotonicTimestamp selectTime;
+	uint8_t selectExpectedSeq;
 	uint8_t solSeqN;
 	uint8_t expectedConfirmSeq;
 	uint8_t unsolSeq;
@@ -81,7 +86,9 @@ class OutstationContext
 	// ------ Helper methods for dealing with state ------
 
 	void SetOnline();
-	void SetOffline();	
+	void SetOffline();
+
+	void Select();
 	
 };
 

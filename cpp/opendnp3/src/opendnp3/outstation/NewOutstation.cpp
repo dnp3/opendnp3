@@ -134,9 +134,12 @@ void NewOutstation::OnReceiveSol(const APDURecord& request, const openpal::ReadO
 					// duplicate message so just send the same response without processing
 					this->BeginTransmission(request.control.SEQ, context.lastResponse);
 				}
-				else
+				else // new operation with same SEQ
 				{
-					this->ProcessRequest(request, fragment);
+					if (request.function != FunctionCode::SELECT) // TODO - Ask why select is special?
+					{
+						this->ProcessRequest(request, fragment);
+					}					
 				}
 			}
 			else  // completely new sequence #
@@ -189,6 +192,8 @@ IINField NewOutstation::BuildResponse(const APDURecord& request, APDUResponse& r
 	{
 		case(FunctionCode::READ):
 			return HandleRead(request, response);
+		case(FunctionCode::SELECT) :
+			return HandleSelect(request, response);
 		case(FunctionCode::DIRECT_OPERATE) :
 			return HandleDirectOperate(request, response);
 		default:
@@ -220,6 +225,7 @@ IINField NewOutstation::HandleRead(const APDURecord& request, APDUResponse& resp
 
 IINField NewOutstation::HandleDirectOperate(const APDURecord& request, APDUResponse& response)
 {
+	// since we're echoing, make sure there's enough size before beginning
 	if (request.objects.Size() > response.Remaining())
 	{
 		FORMAT_LOG_BLOCK(context.logger, flags::WARN, "Igonring command request due to payload size of %i", request.objects.Size());
@@ -231,6 +237,39 @@ IINField NewOutstation::HandleDirectOperate(const APDURecord& request, APDURespo
 		CommandResponseHandler handler(context.logger, 1, &adapter, response);	// TODO support multiple controls
 		auto result = APDUParser::ParseTwoPass(request.objects, &handler, &context.logger);
 		return IINFromParseResult(result);
+	}
+}
+
+IINField NewOutstation::HandleSelect(const APDURecord& request, APDUResponse& response)
+{
+	// since we're echoing, make sure there's enough size before beginning
+	if(request.objects.Size() > response.Remaining())
+	{
+		FORMAT_LOG_BLOCK(context.logger, flags::WARN, "Igonring command request due to payload size of %i", request.objects.Size());
+		//selectBuffer.Clear();
+		return IINField(IINBit::PARAM_ERROR);
+	}
+	else
+	{		
+		CommandActionAdapter adapter(context.pCommandHandler, true);		
+		CommandResponseHandler handler(context.logger, 1, &adapter, response); // TODO support more controls
+		auto result = APDUParser::ParseTwoPass(request.objects, &handler, &context.logger);
+		if (result == APDUParser::Result::OK)
+		{
+			if(handler.AllCommandsSuccessful())
+			{
+				context.Select();
+				return IINField::Empty;
+			}
+			else
+			{
+				return IINField::Empty;
+			}
+		}
+		else
+		{
+			return IINFromParseResult(result);
+		}
 	}
 }
 	

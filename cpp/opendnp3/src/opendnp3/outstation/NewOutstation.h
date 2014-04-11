@@ -59,9 +59,7 @@ class NewOutstation : public openpal::IUpperLayer
 
 	void ProcessRequest(const APDURecord& record, const openpal::ReadOnlyBuffer& fragment);
 
-	void BeginTransmission(uint8_t seq, const openpal::ReadOnlyBuffer& response);
-
-	
+	void BeginTransmission(uint8_t seq, const openpal::ReadOnlyBuffer& response);	
 
 	// ------ Function handlers ------
 	
@@ -71,6 +69,7 @@ class NewOutstation : public openpal::IUpperLayer
 
 	IINField HandleDirectOperate(const APDURecord& request, APDUResponse& response);
 
+	IINField HandleSelect(const APDURecord& request, APDUResponse& response);
 };
 
 

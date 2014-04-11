@@ -63,7 +63,7 @@ int main()
 	StaticallyAllocatedEventBuffer<10, 0, 0, 0, 0, 0, 0> eventBuffers;
 	auto facade = eventBuffers.GetFacade();
 	
-	SimpleCommandHandler handler(CommandStatus::NOT_SUPPORTED);
+	SimpleCommandHandler handler(CommandStatus::SUCCESS);
 				
 	NewOutstation outstation(exe, root, stack.transport, handler, database, facade);
 		
