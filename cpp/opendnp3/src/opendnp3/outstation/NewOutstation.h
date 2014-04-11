@@ -68,7 +68,7 @@ class NewOutstation : public openpal::IUpperLayer
 
 	void ProcessRequest(const APDURecord& record, const openpal::ReadOnlyBuffer& fragment);
 
-	void BeginTransmission(const AppControlField& control, const openpal::ReadOnlyBuffer& response);
+	void BeginTransmission(uint8_t seq, bool confirm, const openpal::ReadOnlyBuffer& response);
 
 	// ------ Function handlers ------
 	

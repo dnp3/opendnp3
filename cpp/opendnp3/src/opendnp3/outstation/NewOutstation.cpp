@@ -152,7 +152,7 @@ void NewOutstation::OnReceiveSolConfirm(const APDURecord& request)
 				context.pDatabase->DoubleBuffer();
 				auto control = context.rspContext.Load(response);
 				response.SetControl(control);
-				this->BeginTransmission(control, response.ToReadOnly());
+				this->BeginTransmission(request.control.SEQ + 1, control.CON, response.ToReadOnly());
 			}			
 		}
 	}
@@ -215,7 +215,8 @@ void NewOutstation::OnReceiveSolRequest(const APDURecord& request, const openpal
 				if (context.lastValidRequest.Equals(fragment))
 				{
 					// duplicate message so just send the same response without processing
-					this->BeginTransmission(request.control.SEQ, context.lastResponse);
+					context.isSending = true;
+					context.pLower->BeginTransmit(context.lastResponse);					
 				}
 				else // new operation with same SEQ
 				{
@@ -250,16 +251,16 @@ void NewOutstation::ProcessRequest(const APDURecord& request, const openpal::Rea
 	response.SetControl(request.control);
 	IINField iin = BuildResponse(request, response);		
 	response.SetIIN(iin | context.staticIIN);
-	this->BeginTransmission(request.control.SEQ, response.ToReadOnly());	
+	this->BeginTransmission(request.control.SEQ, response.GetControl().CON, response.ToReadOnly());	
 }
 
-void NewOutstation::BeginTransmission(const AppControlField& control, const ReadOnlyBuffer& response)
+void NewOutstation::BeginTransmission(uint8_t seq, bool confirm, const ReadOnlyBuffer& response)
 {
 	context.isSending = true;	
-	context.solSeqN = control.SEQ;
-	if (control.CON)
+	context.solSeqN = seq;
+	if (confirm)
 	{
-		context.expectedConfirmSeq = control.SEQ;
+		context.expectedConfirmSeq = seq;
 		context.solConfirmWait = true;
 	}	
 	context.lastResponse = response;

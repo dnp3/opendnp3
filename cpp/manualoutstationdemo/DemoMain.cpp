@@ -45,6 +45,8 @@ using namespace opendnp3;
 using namespace openpal;
 using namespace asiopal;
 
+void ToggleBinaryEvery(uint16_t milliseconds, IExecutor* pExecutor, Database* pDatabase, bool value, bool update);
+
 int main(int argc, char* argv[])
 {
 	cout << sizeof(TransportLayer) << " - TL " << endl;
@@ -85,8 +87,21 @@ int main(int argc, char* argv[])
 
 	router.Enable(&stack.link);
 
+	ToggleBinaryEvery(3000, &executor, &database, true, false);
+
 	// Start dispatching events
 	service.run();
 
 	return 0;
+}
+
+void ToggleBinaryEvery(uint16_t milliseconds, IExecutor* pExecutor, Database* pDatabase, bool value, bool update)
+{
+	if (update)
+	{
+		pDatabase->Update(Binary(value), 0);
+	}
+
+	auto lambda = [pExecutor, pDatabase, value, milliseconds]() { ToggleBinaryEvery(milliseconds, pExecutor, pDatabase, !value, true); };
+	pExecutor->Start(TimeDuration::Milliseconds(milliseconds), Bind(lambda));
 }
