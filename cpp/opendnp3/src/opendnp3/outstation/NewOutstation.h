@@ -50,17 +50,25 @@ class NewOutstation : public openpal::IUpperLayer
 	
 	private:
 
+	// ------ Internal events ------
+
+	void OnSolConfirmTimeout();
+	 
+	void EnterIdleState();
+
 	OutstationContext context;
 
 	// ------ Private methods ------
 
-	void OnReceiveSol(const APDURecord& request, const openpal::ReadOnlyBuffer& fragment);
+	void OnReceiveSolConfirm(const APDURecord& request);
 
-	void OnReceiveUnsol(const APDURecord& record);
+	void OnReceiveUnsolConfirm(const APDURecord& request);
+
+	void OnReceiveSolRequest(const APDURecord& request, const openpal::ReadOnlyBuffer& fragment);	
 
 	void ProcessRequest(const APDURecord& record, const openpal::ReadOnlyBuffer& fragment);
 
-	void BeginTransmission(uint8_t seq, const openpal::ReadOnlyBuffer& response);	
+	void BeginTransmission(const AppControlField& control, const openpal::ReadOnlyBuffer& response);
 
 	// ------ Function handlers ------
 	

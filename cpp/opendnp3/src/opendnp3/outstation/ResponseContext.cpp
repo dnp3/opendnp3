@@ -57,7 +57,7 @@ AppControlField ResponseContext::Load(APDUResponse& response)
 	}
 	else
 	{		
-		return GetControl(response, count, result.Any(), false);		
+		return GetControl(response, count, result.Any(), false);
 	}
 }
 

@@ -73,6 +73,7 @@ class OutstationContext
 	
 	bool isOnline;
 	bool isSending;
+	bool solConfirmWait;
 	bool firstValidRequestAccepted;
 	IINField staticIIN;
 
@@ -97,9 +98,25 @@ class OutstationContext
 
 	void Select();
 	bool IsOperateSequenceValid();
+	bool IsIdle();
+
 	bool CancelConfirmTimer();
-	
+
+	bool IsExpectingSolConfirm();
+
+	template <class Lambda>
+	bool StartConfirmTimer(const Lambda& lamda);
+
+	private:
+
+	bool StartConfirmTimerWithRunnable(const openpal::Runnable& runnable);
 };
+
+template <class Lambda>
+bool OutstationContext::StartConfirmTimer(const Lambda& lambda)
+{	
+	return StartConfirmTimerWithRunnable(openpal::Bind(lambda));
+}
 
 
 }

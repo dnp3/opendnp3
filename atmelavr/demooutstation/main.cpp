@@ -20,6 +20,8 @@ using namespace opendnp3;
 using namespace arduino;
 using namespace openpal;
 
+void ToggleBinaryIndex0Every(uint16_t milliseconds, IExecutor* pExecutor, Database* pDatabase, bool value, bool update);
+
 int main()
 {	
 	cli();
@@ -57,6 +59,8 @@ int main()
 	
 	// Set LED as output
 	DDRB |= (7 << 0);
+	
+	ToggleBinaryIndex0Every(3000, &exe, &database, true, false);
 				
 	for (;;)
 	{ 								
@@ -67,3 +71,13 @@ int main()
 	return 0;
 }
 
+void ToggleBinaryIndex0Every(uint16_t milliseconds, IExecutor* pExecutor, Database* pDatabase, bool value, bool update)
+{
+	if(update)
+	{		
+		pDatabase->Update(Binary(value), 0);
+	}
+	
+	auto lambda = [pExecutor, pDatabase, value, milliseconds]() { ToggleBinaryIndex0Every(milliseconds, pExecutor, pDatabase, !value, true); };
+	pExecutor->Start(TimeDuration::Milliseconds(milliseconds), Bind(lambda));
+}

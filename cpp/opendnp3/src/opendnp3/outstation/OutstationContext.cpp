@@ -44,6 +44,7 @@ OutstationContext::OutstationContext(
 	eventBuffer(buffers),
 	isOnline(false),
 	isSending(false),
+	solConfirmWait(false),
 	firstValidRequestAccepted(false),
 	pConfirmTimer(nullptr),
 	rxFragCount(0),		
@@ -67,7 +68,9 @@ void OutstationContext::SetOffline()
 {
 	isOnline = false;
 	isSending = false;
+	solConfirmWait = false;
 	firstValidRequestAccepted = false;
+	rspContext.Reset();
 	CancelConfirmTimer();
 }
 
@@ -83,6 +86,11 @@ bool OutstationContext::IsOperateSequenceValid()
 	return (rxFragCount == operateExpectedFragCount) && (solSeqN == operateExpectedSeq);	
 }
 
+bool OutstationContext::IsIdle()
+{
+	return !(isSending || solConfirmWait);
+}
+
 bool OutstationContext::CancelConfirmTimer()
 {
 	if (pConfirmTimer)
@@ -96,6 +104,25 @@ bool OutstationContext::CancelConfirmTimer()
 		return false;
 	}
 }
+
+bool OutstationContext::IsExpectingSolConfirm()
+{
+	return (!isSending && solConfirmWait && pConfirmTimer);	
+}
+
+bool OutstationContext::StartConfirmTimerWithRunnable(const Runnable& runnable)
+{
+	if (pConfirmTimer)
+	{
+		return false;
+	}
+	else
+	{
+		pConfirmTimer = pExecutor->Start(TimeDuration::Milliseconds(5000), runnable); // todo make this configurable
+		return true;
+	}
+}
+
 
 }
 
