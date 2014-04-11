@@ -302,6 +302,8 @@ IINField NewOutstation::BuildResponse(const APDURecord& request, APDUResponse& r
 			return HandleOperate(request, response);
 		case(FunctionCode::DIRECT_OPERATE) :
 			return HandleDirectOperate(request, response);
+		case(FunctionCode::DELAY_MEASURE) :
+			return HandleDelayMeasure(request, response);
 		default:
 			return IINField(IINBit::FUNC_NOT_SUPPORTED);
 	}	
@@ -440,6 +442,22 @@ IINField NewOutstation::HandleOperate(const APDURecord& request, APDUResponse& r
 		{
 			return HandleCommandWithConstant(request, response, CommandStatus::NO_SELECT);
 		}		
+	}
+}
+
+IINField NewOutstation::HandleDelayMeasure(const APDURecord& request, APDUResponse& response)
+{
+	if (request.objects.IsEmpty())
+	{
+		auto writer = response.GetWriter();
+		Group52Var2 value = { 0 }; 	// respond with 0 time delay
+		writer.WriteSingleValue<UInt8, Group52Var2>(QualifierCode::UINT8_CNT, value);
+		return IINField::Empty;
+	}
+	else
+	{
+		// there shouldn't be any trailing headers in delay measure request, no need to even parse
+		return IINField(IINBit::FUNC_NOT_SUPPORTED);
 	}
 }
 

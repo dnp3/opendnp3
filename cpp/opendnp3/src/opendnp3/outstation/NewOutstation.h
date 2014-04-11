@@ -86,6 +86,8 @@ class NewOutstation : public openpal::IUpperLayer
 
 	IINField HandleDirectOperate(const APDURecord& request, APDUResponse& response);
 
+	IINField HandleDelayMeasure(const APDURecord& request, APDUResponse& response);
+
 	// -------- Function handler helpers
 
 	IINField HandleCommandWithConstant(const APDURecord& request, APDUResponse& response, CommandStatus status);

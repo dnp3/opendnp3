@@ -58,7 +58,10 @@ public:
 	Database db;
 	MockCommandHandler cmdHandler;
 	MockTimeWriteHandler timeHandler;
-	NewOutstation outstation;	
+	NewOutstation outstation;
+
+
+	void SendToOutstation(const std::string& hex);
 };
 
 }

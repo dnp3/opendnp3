@@ -52,7 +52,7 @@ TEST_CASE(SUITE("InitialState"))
 	REQUIRE(SERR_INVALID_STATE ==  t.log.NextErrorCode());
 }
 
-TEST_CASE(SUITE("TimersCancledOnClose"))
+TEST_CASE(SUITE("TimersCanceledOnClose"))
 {
 	OutstationConfig cfg; cfg.mAllowTimeSync = true;
 	OutstationTestObject t(cfg, DatabaseTemplate());

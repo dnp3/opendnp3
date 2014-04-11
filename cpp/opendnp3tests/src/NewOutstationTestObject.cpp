@@ -20,6 +20,7 @@
  */
 
 #include "NewOutstationTestObject.h"
+#include "BufferHelpers.h"
 
 using namespace openpal;
 
@@ -38,6 +39,12 @@ NewOutstationTestObject::NewOutstationTestObject(const OutstationConfig& config,
 	outstation(exe, log.root, lower, cmdHandler, timeHandler, db, eventBuffers.GetFacade())
 {
 	lower.SetUpperLayer(&outstation);
+}
+
+void NewOutstationTestObject::SendToOutstation(const std::string& hex)
+{
+	HexSequence hs(hex);
+	outstation.OnReceive(hs.ToReadOnly());
 }
 
 }
