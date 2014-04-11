@@ -201,7 +201,17 @@ void NewOutstation::OnSolConfirmTimeout()
 
 void NewOutstation::EnterIdleState()
 {
+	// post these calls so the stack can unwind
+	auto lambda = [this]() { this->CheckForIdleState(); };
+	context.pExecutor->PostLambda(lambda);
+}
 
+void NewOutstation::CheckForIdleState()
+{
+	if (context.IsIdle())
+	{
+		// check for idle actions
+	}
 }
 
 void NewOutstation::OnReceiveSolRequest(const APDURecord& request, const openpal::ReadOnlyBuffer& fragment)

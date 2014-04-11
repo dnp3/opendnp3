@@ -56,6 +56,8 @@ class NewOutstation : public openpal::IUpperLayer
 	 
 	void EnterIdleState();
 
+	void CheckForIdleState();
+
 	OutstationContext context;
 
 	// ------ Private methods ------

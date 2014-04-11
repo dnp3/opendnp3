@@ -88,7 +88,7 @@ bool OutstationContext::IsOperateSequenceValid()
 
 bool OutstationContext::IsIdle()
 {
-	return !(isSending || solConfirmWait);
+	return isOnline && (!isSending) && (!solConfirmWait);
 }
 
 bool OutstationContext::CancelConfirmTimer()
