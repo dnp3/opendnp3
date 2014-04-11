@@ -89,7 +89,7 @@ AS_Closed AS_Closed::mInstance;
 void AS_Closed::OnLowerLayerUp(Outstation* outstation)
 {
 	// this is implemented as a simple timer because it can run if the outstation is connected/disconnected etc
-	if (outstation->mConfig.mAllowTimeSync) outstation->ResetTimeIIN();
+	if (outstation->mConfig.allowTimeSync) outstation->ResetTimeIIN();
 	outstation->ChangeState(AS_Idle::Inst());
 }
 
@@ -104,7 +104,7 @@ void AS_Closed::Enter(Outstation* outstation)
 
 void AS_Closed::OnDataUpdate(Outstation* outstation)
 {
-	if(!outstation->mConfig.mDisableUnsol) outstation->mDeferredUnsol = true;
+	if(!outstation->mConfig.disableUnsol) outstation->mDeferredUnsol = true;
 }
 
 /* AS_OpenBase */
@@ -233,7 +233,7 @@ void AS_WaitForUnsolSuccess::OnUnsolFailure(Outstation* outstation)
 {
 	// if any unsol transaction fails, we re-enable the timer with the unsol retry delay
 	// outstation->mRspContext.Reset(); TODO
-	outstation->StartUnsolTimer(outstation->mConfig.mUnsolRetryDelay);
+	outstation->StartUnsolTimer(outstation->mConfig.unsolRetryDelay);
 	outstation->ChangeState(AS_Idle::Inst());
 }
 
@@ -284,9 +284,9 @@ void AS_WaitForSolUnsolSuccess::OnUnsolFailure(Outstation* outstation)
 {
 	//outstation->mRspContext.Reset(); TODO
 	outstation->ChangeState(AS_WaitForRspSuccess::Inst());
-	if (outstation->mConfig.mUnsolRetryDelay.GetMilliseconds() > 0)
+	if (outstation->mConfig.unsolRetryDelay.GetMilliseconds() > 0)
 	{
-		outstation->StartUnsolTimer(outstation->mConfig.mUnsolRetryDelay);
+		outstation->StartUnsolTimer(outstation->mConfig.unsolRetryDelay);
 	}
 	else
 	{

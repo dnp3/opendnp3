@@ -40,7 +40,7 @@ OutstationTestObject::OutstationTestObject(const OutstationConfig& arCfg, const 
 	log(),
 	mMockTimeWriteHandler([this](UTCTimestamp time)
 {
-	mTimeWrites.push(time); return true;
+	mTimeWrites.push(time);
 }),
 mts(),
 app(log.GetLogger()),

@@ -35,7 +35,7 @@ using namespace openpal;
 
 TEST_CASE(SUITE("BlankExceptionScan"))
 {
-	OutstationConfig cfg; cfg.mDisableUnsol = true;
+	OutstationConfig cfg; cfg.disableUnsol = true;
 	OutstationTestObject t(cfg, DatabaseTemplate());
 	t.outstation.OnLowerLayerUp();
 
@@ -45,7 +45,7 @@ TEST_CASE(SUITE("BlankExceptionScan"))
 
 TEST_CASE(SUITE("ReadClass1WithSOE"))
 {
-	OutstationConfig cfg; cfg.mDisableUnsol = true;
+	OutstationConfig cfg; cfg.disableUnsol = true;
 	OutstationTestObject t(cfg, DatabaseTemplate::AllTypes(100));
 
 	t.db.staticData.binaries.metadata[0x10].clazz = CLASS_1;
@@ -71,7 +71,7 @@ TEST_CASE(SUITE("ReadClass1WithSOE"))
 
 TEST_CASE(SUITE("MultipleClasses"))
 {
-	OutstationConfig cfg; cfg.mDisableUnsol = true;
+	OutstationConfig cfg; cfg.disableUnsol = true;
 	OutstationTestObject t(cfg, DatabaseTemplate::AllTypes(1));
 	t.outstation.OnLowerLayerUp();
 
@@ -107,7 +107,7 @@ TEST_CASE(SUITE("MultipleClasses"))
 void TestEventRead(const std::function<void(Database& db)>& loadFun, const std::string& request, const std::string& response)
 {
 
-	OutstationConfig cfg; cfg.mDisableUnsol = true;
+	OutstationConfig cfg; cfg.disableUnsol = true;
 	OutstationTestObject t(cfg, DatabaseTemplate::AllTypes(1), PointClass::CLASS_1);
 	t.outstation.OnLowerLayerUp();
 
@@ -176,7 +176,7 @@ TEST_CASE(SUITE("ComplexReadSequence"))
 {
 
 const size_t NUM = 4;
-OutstationConfig config; cfg.mDisableUnsol = true;
+OutstationConfig config; cfg.disableUnsol = true;
 OutstationTestObject t(cfg);
 t.db.Configure(MeasurementType::BINARY, NUM);
 t.db.SetClass(MeasurementType::BINARY, CLASS_1);
@@ -265,7 +265,7 @@ TEST_CASE(SUITE("UnsolData"))
 
 TEST_CASE(SUITE("UnsolicitedStaysDisabledEvenIfDataAreLoadedPriorToOpen"))
 {
-OutstationConfig cfg; cfg.mDisableUnsol = true;
+OutstationConfig cfg; cfg.disableUnsol = true;
 OutstationTestObject t(cfg, DatabaseTemplate::AnalogOnly(1));
 
 {
@@ -281,7 +281,7 @@ REQUIRE(t.NothingToRead());
 
 TEST_CASE(SUITE("UnsolicitedStaysDisabledEvenIfDataAreLoadedAfterOpen"))
 {
-OutstationConfig cfg; cfg.mDisableUnsol = true;
+OutstationConfig cfg; cfg.disableUnsol = true;
 OutstationTestObject t(cfg, DatabaseTemplate::AnalogOnly(1));
 
 auto pObs = t.outstation.GetDataObserver();
@@ -499,7 +499,7 @@ TEST_CASE(SUITE("UnsolEnableBadObject"))
 
 TEST_CASE(SUITE("UnsolEnableDisableFailure"))
 {
-	OutstationConfig cfg; cfg.mDisableUnsol = true;
+	OutstationConfig cfg; cfg.disableUnsol = true;
 	OutstationTestObject t(cfg);
 	t.db.Configure(MeasurementType::BINARY, 1);
 	t.db.SetClass(MeasurementType::BINARY, CLASS_1);

@@ -325,23 +325,23 @@ opendnp3::OutstationConfig Conversions::convertConfig(OutstationConfig^ config)
 {
 	opendnp3::OutstationConfig sc;
 
-	sc.mDisableUnsol = config->disableUnsol;
-	sc.mMaxControls = config->maxControls;
-	sc.mUnsolMask = convertClassMask(config->unsolMask);
-	sc.mAllowTimeSync = config->allowTimeSync;
-	sc.mTimeSyncPeriod = convertMilliseconds(config->timeSyncPeriodMs);
-	sc.mUnsolPackDelay = convertMilliseconds(config->unsolPackDelayMs);
-	sc.mUnsolRetryDelay = convertMilliseconds(config->unsolRetryDelayMs);
-	sc.mSelectTimeout = convertMilliseconds(config->selectTimeoutMs);
-	sc.mMaxFragSize = config->maxFragSize;
-	sc.mStaticBinary = convert(config->staticBinary);
-	sc.mStaticAnalog = convert(config->staticAnalog);
-	sc.mStaticCounter = convert(config->staticCounter);
-	sc.mStaticFrozenCounter = convert(config->staticFrozenCounter);
-	sc.mStaticAnalogOutputStatus = convert(config->staticAnalogOutputStatus);
-	sc.mEventBinary = convert(config->eventBinary);
-	sc.mEventAnalog = convert(config->eventAnalog);
-	sc.mEventCounter = convert(config->eventCounter);
+	sc.disableUnsol = config->disableUnsol;
+	sc.maxControls = config->maxControls;
+	sc.unsolMask = convertClassMask(config->unsolMask);
+	sc.allowTimeSync = config->allowTimeSync;
+	sc.timeSyncPeriod = convertMilliseconds(config->timeSyncPeriodMs);
+	sc.unsolPackDelay = convertMilliseconds(config->unsolPackDelayMs);
+	sc.unsolRetryDelay = convertMilliseconds(config->unsolRetryDelayMs);
+	sc.selectTimeout = convertMilliseconds(config->selectTimeoutMs);
+	sc.maxFragSize = config->maxFragSize;
+	sc.staticBinary = convert(config->staticBinary);
+	sc.staticAnalog = convert(config->staticAnalog);
+	sc.staticCounter = convert(config->staticCounter);
+	sc.staticFrozenCounter = convert(config->staticFrozenCounter);
+	sc.staticAnalogOutputStatus = convert(config->staticAnalogOutputStatus);
+	sc.eventBinary = convert(config->eventBinary);
+	sc.eventAnalog = convert(config->eventAnalog);
+	sc.eventCounter = convert(config->eventCounter);
 
 	return sc;
 }

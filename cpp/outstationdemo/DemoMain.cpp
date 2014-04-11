@@ -76,7 +76,7 @@ int main(int argc, char* argv[])
 	// useable, but understanding the options are important.
 	OutstationStackConfig stackConfig;
 	stackConfig.dbTemplate = DatabaseTemplate::AllTypes(10);
-	stackConfig.outstation.mDisableUnsol = true;
+	stackConfig.outstation.disableUnsol = true;
 
 	// Create a new outstation with a log level, command handler, and
 	// config info this	returns a thread-safe interface used for

@@ -54,7 +54,7 @@ TEST_CASE(SUITE("InitialState"))
 
 TEST_CASE(SUITE("TimersCanceledOnClose"))
 {
-	OutstationConfig cfg; cfg.mAllowTimeSync = true;
+	OutstationConfig cfg; cfg.allowTimeSync = true;
 	OutstationTestObject t(cfg, DatabaseTemplate());
 	t.outstation.OnLowerLayerUp();
 	t.outstation.OnLowerLayerDown();
@@ -100,7 +100,7 @@ TEST_CASE(SUITE("DataPostToNonExistent"))
 
 TEST_CASE(SUITE("UnsupportedFunction"))
 {
-	OutstationConfig cfg; cfg.mDisableUnsol = true;
+	OutstationConfig cfg; cfg.disableUnsol = true;
 	OutstationTestObject t(cfg, DatabaseTemplate());
 	t.outstation.OnLowerLayerUp();
 
@@ -111,7 +111,7 @@ TEST_CASE(SUITE("UnsupportedFunction"))
 
 TEST_CASE(SUITE("WriteIIN"))
 {
-	OutstationConfig cfg; cfg.mDisableUnsol = true;
+	OutstationConfig cfg; cfg.disableUnsol = true;
 	OutstationTestObject t(cfg, DatabaseTemplate());
 	t.outstation.OnLowerLayerUp();
 
@@ -121,7 +121,7 @@ TEST_CASE(SUITE("WriteIIN"))
 
 TEST_CASE(SUITE("WriteIINEnabled"))
 {
-	OutstationConfig cfg; cfg.mDisableUnsol = true;
+	OutstationConfig cfg; cfg.disableUnsol = true;
 	OutstationTestObject t(cfg, DatabaseTemplate());
 	t.outstation.OnLowerLayerUp();
 
@@ -131,7 +131,7 @@ TEST_CASE(SUITE("WriteIINEnabled"))
 
 TEST_CASE(SUITE("WriteIINWrongBit"))
 {
-	OutstationConfig cfg; cfg.mDisableUnsol = true;
+	OutstationConfig cfg; cfg.disableUnsol = true;
 	OutstationTestObject t(cfg, DatabaseTemplate());
 	t.outstation.OnLowerLayerUp();
 
@@ -141,7 +141,7 @@ TEST_CASE(SUITE("WriteIINWrongBit"))
 
 TEST_CASE(SUITE("WriteNonWriteObject"))
 {
-	OutstationConfig cfg;  cfg.mDisableUnsol = true;
+	OutstationConfig cfg;  cfg.disableUnsol = true;
 	OutstationTestObject t(cfg, DatabaseTemplate());
 	t.outstation.OnLowerLayerUp();
 
@@ -152,7 +152,7 @@ TEST_CASE(SUITE("WriteNonWriteObject"))
 
 TEST_CASE(SUITE("DelayMeasure"))
 {
-	OutstationConfig cfg;  cfg.mDisableUnsol = true;
+	OutstationConfig cfg;  cfg.disableUnsol = true;
 	OutstationTestObject t(cfg, DatabaseTemplate());
 	t.outstation.OnLowerLayerUp();
 
@@ -162,7 +162,7 @@ TEST_CASE(SUITE("DelayMeasure"))
 
 TEST_CASE(SUITE("DelayMeasureExtraData"))
 {
-	OutstationConfig cfg;  cfg.mDisableUnsol = true;
+	OutstationConfig cfg;  cfg.disableUnsol = true;
 	OutstationTestObject t(cfg, DatabaseTemplate());
 	t.outstation.OnLowerLayerUp();
 
@@ -173,8 +173,8 @@ TEST_CASE(SUITE("DelayMeasureExtraData"))
 TEST_CASE(SUITE("WriteTimeDate"))
 {
 	OutstationConfig cfg;
-	cfg.mDisableUnsol = true;
-	cfg.mAllowTimeSync = true;
+	cfg.disableUnsol = true;
+	cfg.allowTimeSync = true;
 	OutstationTestObject t(cfg, DatabaseTemplate());
 	t.outstation.OnLowerLayerUp();
 
@@ -187,8 +187,8 @@ TEST_CASE(SUITE("WriteTimeDate"))
 
 TEST_CASE(SUITE("WriteTimeDateNotAsking"))
 {
-	OutstationConfig cfg; cfg.mDisableUnsol = true;
-	cfg.mAllowTimeSync = false;
+	OutstationConfig cfg; cfg.disableUnsol = true;
+	cfg.allowTimeSync = false;
 	OutstationTestObject t(cfg, DatabaseTemplate());
 	t.outstation.OnLowerLayerUp();
 
@@ -200,8 +200,8 @@ TEST_CASE(SUITE("WriteTimeDateNotAsking"))
 
 TEST_CASE(SUITE("WriteTimeDateMultipleObjects"))
 {
-	OutstationConfig cfg; cfg.mDisableUnsol = true;
-	cfg.mAllowTimeSync = true;
+	OutstationConfig cfg; cfg.disableUnsol = true;
+	cfg.allowTimeSync = true;
 	OutstationTestObject t(cfg, DatabaseTemplate());
 	t.outstation.OnLowerLayerUp();
 
@@ -213,7 +213,7 @@ TEST_CASE(SUITE("WriteTimeDateMultipleObjects"))
 
 TEST_CASE(SUITE("BlankIntegrityPoll"))
 {
-	OutstationConfig cfg; cfg.mDisableUnsol = true;
+	OutstationConfig cfg; cfg.disableUnsol = true;
 	OutstationTestObject t(cfg, DatabaseTemplate());
 	t.outstation.OnLowerLayerUp();
 
@@ -223,8 +223,8 @@ TEST_CASE(SUITE("BlankIntegrityPoll"))
 
 TEST_CASE(SUITE("ReadClass0MultiFrag"))
 {
-	OutstationConfig cfg; cfg.mDisableUnsol = true;
-	cfg.mMaxFragSize = 20; // override to use a fragment length of 20
+	OutstationConfig cfg; cfg.disableUnsol = true;
+	cfg.maxFragSize = 20; // override to use a fragment length of 20
 	OutstationTestObject t(cfg, DatabaseTemplate::AnalogOnly(8));
 	t.outstation.OnLowerLayerUp();
 
@@ -248,7 +248,7 @@ TEST_CASE(SUITE("ReadClass0MultiFrag"))
 
 TEST_CASE(SUITE("ReadFuncNotSupported"))
 {
-	OutstationConfig cfg; cfg.mDisableUnsol = true;
+	OutstationConfig cfg; cfg.disableUnsol = true;
 	OutstationTestObject t(cfg, DatabaseTemplate());
 	t.outstation.OnLowerLayerUp();
 
@@ -258,7 +258,7 @@ TEST_CASE(SUITE("ReadFuncNotSupported"))
 
 void TestStaticRead(const std::string& request, const std::string& response)
 {
-	OutstationConfig cfg; cfg.mDisableUnsol = true;
+	OutstationConfig cfg; cfg.disableUnsol = true;
 	OutstationTestObject t(cfg, DatabaseTemplate::AllTypes(1));
 	t.outstation.OnLowerLayerUp();
 
@@ -321,7 +321,7 @@ TEST_CASE(SUITE("ReadGrp40Var0ViaIntegrity"))
 TEST_CASE(SUITE("ReadByRangeHeader"))
 {
 	OutstationConfig cfg;
-	cfg.mDisableUnsol = true;
+	cfg.disableUnsol = true;
 	OutstationTestObject t(cfg, DatabaseTemplate::AnalogOnly(10));
 	t.outstation.OnLowerLayerUp();
 
@@ -354,7 +354,7 @@ void TestStaticType(const OutstationConfig& aCfg, const DatabaseTemplate& tmp, P
 template <class T>
 void TestStaticCounter(StaticCounterResponse aRsp, T aValue, const std::string& arRsp)
 {
-	OutstationConfig cfg; cfg.mDisableUnsol = true; cfg.mStaticCounter = aRsp;
+	OutstationConfig cfg; cfg.disableUnsol = true; cfg.staticCounter = aRsp;
 	TestStaticType<Counter>(cfg, DatabaseTemplate::CounterOnly(1), aValue, arRsp);
 }
 
@@ -381,7 +381,7 @@ TEST_CASE(SUITE("ReadGrp20Var6"))
 template <class T>
 void TestStaticAnalog(StaticAnalogResponse aRsp, T aVal, const std::string& arRsp)
 {
-	OutstationConfig cfg; cfg.mDisableUnsol = true; cfg.mStaticAnalog = aRsp;
+	OutstationConfig cfg; cfg.disableUnsol = true; cfg.staticAnalog = aRsp;
 	TestStaticType<Analog>(cfg, DatabaseTemplate::AnalogOnly(1), aVal, arRsp);
 }
 
@@ -413,7 +413,7 @@ TEST_CASE(SUITE("ReadGrp30Var6"))
 template <class T>
 void TestStaticBinaryOutputStatus(T aVal, const std::string& aRsp)
 {
-	OutstationConfig cfg; cfg.mDisableUnsol = true;
+	OutstationConfig cfg; cfg.disableUnsol = true;
 	OutstationTestObject t(cfg, DatabaseTemplate::BinaryOutputStatusOnly(1));
 	t.outstation.OnLowerLayerUp();
 
@@ -434,7 +434,7 @@ TEST_CASE(SUITE("ReadGrp10Var2"))
 template <class T>
 void TestStaticAnalogOutputStatus(StaticAnalogOutputStatusResponse aRsp, T aVal, const string& arRsp)
 {
-	OutstationConfig cfg; cfg.mDisableUnsol = true; cfg.mStaticAnalogOutputStatus = aRsp;
+	OutstationConfig cfg; cfg.disableUnsol = true; cfg.staticAnalogOutputStatus = aRsp;
 	TestStaticType<AnalogOutputStatus>(cfg, DatabaseTemplate::AnalogOutputStatusOnly(1), aVal, arRsp);
 }
 

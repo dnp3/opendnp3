@@ -55,63 +55,63 @@ struct OutstationConfig
 	OutstationConfig();
 
 	/// The maximum number of controls the outstation will attempt to process from a single APDU
-	uint8_t mMaxControls;
+	uint8_t maxControls;
 
 	/// if true, fully disables unsolicited mode as if the outstation didn't support it
-	bool mDisableUnsol;
+	bool disableUnsol;
 
 	/// controls what unsol classes are enabled
-	ClassMask mUnsolMask;
+	ClassMask unsolMask;
 
 	/// if true, the outstation will request time synchronization on an interval
-	bool mAllowTimeSync;
+	bool allowTimeSync;
 
 
 	/// The period of time sync interval in milliseconds
-	openpal::TimeDuration mTimeSyncPeriod;
+	openpal::TimeDuration timeSyncPeriod;
 
 	/// The amount of time the outstation will wait before sending new unsolicited data ( <= 0 == immediate)
-	openpal::TimeDuration mUnsolPackDelay;
+	openpal::TimeDuration unsolPackDelay;
 
 	/// How long the outstation will wait before retrying an unsuccessful unsol response
-	openpal::TimeDuration mUnsolRetryDelay;
+	openpal::TimeDuration unsolRetryDelay;
 
 	/// How long the outstation will allow an operate to proceed after a prior select
-	openpal::TimeDuration mSelectTimeout;
+	openpal::TimeDuration selectTimeout;
 
 	/// The maximum fragment size the outstation will use for data it sends
-	uint32_t mMaxFragSize;
+	uint32_t maxFragSize;
 
 	// -------------  default static response types ------------------
 
 	/// The default group/variation to use for static binary responses
-	StaticBinaryResponse mStaticBinary;
+	StaticBinaryResponse staticBinary;
 
 	/// The default group/variation to use for static analog responses
-	StaticAnalogResponse mStaticAnalog;
+	StaticAnalogResponse staticAnalog;
 
 	/// The default group/variation to use for static counter responses
-	StaticCounterResponse mStaticCounter;
+	StaticCounterResponse staticCounter;
 
 	/// The default group/variation to use for static counter responses
-	StaticFrozenCounterResponse mStaticFrozenCounter;
+	StaticFrozenCounterResponse staticFrozenCounter;
 
 	/// The default group/variation to use for static control status responses
-	StaticBinaryOutputStatusResponse mStaticBinaryOutputStatus;
+	StaticBinaryOutputStatusResponse staticBinaryOutputStatus;
 
 	/// The default group/variation to use for static setpoint status responses
-	StaticAnalogOutputStatusResponse mStaticAnalogOutputStatus;
+	StaticAnalogOutputStatusResponse staticAnalogOutputStatus;
 
 	// default event response types
 
 	/// The default group/variation to use for binary event responses
-	EventBinaryResponse mEventBinary;
+	EventBinaryResponse eventBinary;
 
 	/// The default group/variation to use for analog event responses
-	EventAnalogResponse mEventAnalog;
+	EventAnalogResponse eventAnalog;
 
 	/// The default group/variation to use for counter event responses
-	EventCounterResponse mEventCounter;
+	EventCounterResponse eventCounter;
 
 
 };

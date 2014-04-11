@@ -53,7 +53,7 @@ Outstation::Outstation(openpal::LogRoot& root,
                         ICommandHandler* pCmdHandler,
                         const OutstationConfig& config) :
 	IAppUser(root),
-	selectBuffer(pExecutor, config.mSelectTimeout),
+	selectBuffer(pExecutor, config.selectTimeout),
 	lastResponse(responseBuffer.GetWriteBuffer()),
 	pExecutor(pExecutor),
 	mpAppLayer(pAppLayer),
@@ -75,7 +75,7 @@ Outstation::Outstation(openpal::LogRoot& root,
 	staticIIN.Set(IINBit::DEVICE_RESTART); // Always set on restart
 
 	/* Cause the Outstation to go through the null-unsol startup sequence */
-	if (!mConfig.mDisableUnsol)
+	if (!mConfig.disableUnsol)
 	{
 		mDeferredUnsol = true;
 	}
@@ -167,7 +167,7 @@ void Outstation::RespondToRequest(const APDURecord& record, SequenceInfo sequenc
 		selectBuffer.Clear();
 	}
 
-	APDUResponse response(responseBuffer.GetWriteBuffer(mConfig.mMaxFragSize));
+	APDUResponse response(responseBuffer.GetWriteBuffer(mConfig.maxFragSize));
 	response.SetFunction(FunctionCode::RESPONSE);
 	response.SetControl(AppControlField::DEFAULT.ToByte());
 	auto indications = ConfigureResponse(record, sequence, response);
@@ -248,7 +248,7 @@ IINField Outstation::HandleSelect(const APDURecord& request, SequenceInfo sequen
 	else
 	{
 		CommandActionAdapter adapter(this->mpCmdHandler, true);
-		CommandResponseHandler handler(logger, mConfig.mMaxControls, &adapter, response);
+		CommandResponseHandler handler(logger, mConfig.maxControls, &adapter, response);
 		auto result = APDUParser::ParseTwoPass(request.objects, &handler, &logger);
 		if (result == APDUParser::Result::OK)
 		{
@@ -297,7 +297,7 @@ IINField Outstation::HandleOperate(const APDURecord& request, SequenceInfo seque
 		case(SelectBuffer::OperateResult::OK) :
 			{
 				CommandActionAdapter adapter(this->mpCmdHandler, false);
-				CommandResponseHandler handler(logger, mConfig.mMaxControls, &adapter, response);
+				CommandResponseHandler handler(logger, mConfig.maxControls, &adapter, response);
 				auto result = APDUParser::ParseTwoPass(request.objects, &handler, &logger);
 				return IINFromParseResult(result);
 			}
@@ -317,7 +317,7 @@ IINField Outstation::HandleDirectOperate(const APDURecord& request, SequenceInfo
 	else
 	{
 		CommandActionAdapter adapter(this->mpCmdHandler, false); // do the operation
-		CommandResponseHandler handler(logger, mConfig.mMaxControls, &adapter, response);
+		CommandResponseHandler handler(logger, mConfig.maxControls, &adapter, response);
 		auto result = APDUParser::ParseTwoPass(request.objects, &handler, &logger);
 		return IINFromParseResult(result);
 	}
@@ -325,7 +325,7 @@ IINField Outstation::HandleDirectOperate(const APDURecord& request, SequenceInfo
 
 void Outstation::ContinueResponse()
 {
-	APDUResponse response(responseBuffer.GetWriteBuffer(mConfig.mMaxFragSize));
+	APDUResponse response(responseBuffer.GetWriteBuffer(mConfig.maxFragSize));
 	response.SetFunction(FunctionCode::RESPONSE);
 	
 	{
@@ -356,7 +356,7 @@ IINField Outstation::HandleDelayMeasure(const APDURecord& request, SequenceInfo 
 IINField Outstation::HandleCommandWithConstant(const APDURecord& request, APDUResponse& response, CommandStatus status)
 {
 	ConstantCommandAction constant(status);
-	CommandResponseHandler handler(logger, mConfig.mMaxControls, &constant, response);
+	CommandResponseHandler handler(logger, mConfig.maxControls, &constant, response);
 	auto result = APDUParser::ParseTwoPass(request.objects, &handler, &logger);
 	return IINFromParseResult(result);
 }
@@ -403,7 +403,7 @@ void Outstation::ResetTimeIIN()
 	mpTimeTimer = nullptr;
 	staticIIN.Set(IINBit::NEED_TIME);
 	auto lambda = [this]() { this->ResetTimeIIN(); };
-	mpTimeTimer = pExecutor->Start(mConfig.mTimeSyncPeriod, Bind(lambda));
+	mpTimeTimer = pExecutor->Start(mConfig.timeSyncPeriod, Bind(lambda));
 }
 
 } //end ns

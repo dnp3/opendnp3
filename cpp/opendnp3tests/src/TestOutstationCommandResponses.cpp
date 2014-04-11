@@ -35,7 +35,7 @@ using namespace openpal;
 
 TEST_CASE(SUITE("SelectCROBNotSupported"))
 {
-	OutstationConfig cfg; cfg.mDisableUnsol = true;
+	OutstationConfig cfg; cfg.disableUnsol = true;
 	OutstationTestObject t(cfg, DatabaseTemplate());
 	t.outstation.OnLowerLayerUp();
 
@@ -51,8 +51,8 @@ TEST_CASE(SUITE("SelectCROBNotSupported"))
 
 TEST_CASE(SUITE("SelectCROBTooMany"))
 {
-	OutstationConfig cfg; cfg.mDisableUnsol = true;
-	cfg.mMaxControls = 1;
+	OutstationConfig cfg; cfg.disableUnsol = true;
+	cfg.maxControls = 1;
 	OutstationTestObject t(cfg, DatabaseTemplate());
 	t.outstation.OnLowerLayerUp();
 
@@ -64,7 +64,7 @@ TEST_CASE(SUITE("SelectCROBTooMany"))
 
 TEST_CASE(SUITE("SelectOperateCROB"))
 {
-	OutstationConfig cfg; cfg.mDisableUnsol = true;
+	OutstationConfig cfg; cfg.disableUnsol = true;
 	OutstationTestObject t(cfg, DatabaseTemplate());
 	t.outstation.OnLowerLayerUp();
 
@@ -80,7 +80,7 @@ TEST_CASE(SUITE("SelectOperateCROB"))
 
 TEST_CASE(SUITE("SelectOperateCROBSameSequenceNumber"))
 {
-	OutstationConfig cfg; cfg.mDisableUnsol = true;
+	OutstationConfig cfg; cfg.disableUnsol = true;
 	OutstationTestObject t(cfg, DatabaseTemplate());
 	t.outstation.OnLowerLayerUp();
 
@@ -106,7 +106,7 @@ TEST_CASE(SUITE("SelectOperateCROBSameSequenceNumber"))
 
 TEST_CASE(SUITE("SelectGroup41Var1"))
 {
-	OutstationConfig cfg; cfg.mDisableUnsol = true;
+	OutstationConfig cfg; cfg.disableUnsol = true;
 	OutstationTestObject t(cfg, DatabaseTemplate());
 	t.outstation.OnLowerLayerUp();
 
@@ -117,7 +117,7 @@ TEST_CASE(SUITE("SelectGroup41Var1"))
 
 TEST_CASE(SUITE("SelectGroup41Var2"))
 {
-	OutstationConfig cfg; cfg.mDisableUnsol = true;
+	OutstationConfig cfg; cfg.disableUnsol = true;
 	OutstationTestObject t(cfg, DatabaseTemplate());
 	t.outstation.OnLowerLayerUp();
 
@@ -128,7 +128,7 @@ TEST_CASE(SUITE("SelectGroup41Var2"))
 
 TEST_CASE(SUITE("SelectGroup41Var3"))
 {
-	OutstationConfig cfg; cfg.mDisableUnsol = true;
+	OutstationConfig cfg; cfg.disableUnsol = true;
 	OutstationTestObject t(cfg, DatabaseTemplate());
 	t.outstation.OnLowerLayerUp();
 
@@ -139,7 +139,7 @@ TEST_CASE(SUITE("SelectGroup41Var3"))
 
 TEST_CASE(SUITE("SelectGroup41Var4"))
 {
-	OutstationConfig cfg; cfg.mDisableUnsol = true;
+	OutstationConfig cfg; cfg.disableUnsol = true;
 	OutstationTestObject t(cfg, DatabaseTemplate());
 	t.outstation.OnLowerLayerUp();
 
@@ -152,7 +152,7 @@ TEST_CASE(SUITE("SelectGroup41Var4"))
 
 TEST_CASE(SUITE("SelectOperateGroup41Var1"))
 {
-	OutstationConfig cfg;  cfg.mDisableUnsol = true;
+	OutstationConfig cfg;  cfg.disableUnsol = true;
 	OutstationTestObject t(cfg, DatabaseTemplate());
 	t.outstation.OnLowerLayerUp();
 
@@ -168,7 +168,7 @@ TEST_CASE(SUITE("SelectOperateGroup41Var1"))
 
 TEST_CASE(SUITE("SelectOperateGroup41Var2"))
 {
-	OutstationConfig cfg; cfg.mDisableUnsol = true;
+	OutstationConfig cfg; cfg.disableUnsol = true;
 	OutstationTestObject t(cfg, DatabaseTemplate());
 	t.outstation.OnLowerLayerUp();
 
@@ -185,7 +185,7 @@ TEST_CASE(SUITE("SelectOperateGroup41Var2"))
 
 TEST_CASE(SUITE("SelectOperateGroup41Var3"))
 {
-	OutstationConfig cfg; cfg.mDisableUnsol = true;
+	OutstationConfig cfg; cfg.disableUnsol = true;
 	OutstationTestObject t(cfg, DatabaseTemplate());
 	t.outstation.OnLowerLayerUp();
 
@@ -200,7 +200,7 @@ TEST_CASE(SUITE("SelectOperateGroup41Var3"))
 
 TEST_CASE(SUITE("SelectOperateGroup41Var4"))
 {
-	OutstationConfig cfg; cfg.mDisableUnsol = true;
+	OutstationConfig cfg; cfg.disableUnsol = true;
 	OutstationTestObject t(cfg, DatabaseTemplate());
 	t.outstation.OnLowerLayerUp();
 
@@ -216,7 +216,7 @@ TEST_CASE(SUITE("SelectOperateGroup41Var4"))
 
 TEST_CASE(SUITE("DirectOperateGroup41Var1"))
 {
-	OutstationConfig cfg; cfg.mDisableUnsol = true;
+	OutstationConfig cfg; cfg.disableUnsol = true;
 	OutstationTestObject t(cfg, DatabaseTemplate());
 	t.outstation.OnLowerLayerUp();
 
@@ -226,7 +226,7 @@ TEST_CASE(SUITE("DirectOperateGroup41Var1"))
 }
 TEST_CASE(SUITE("DirectOperateGroup41Var2"))
 {
-	OutstationConfig cfg; cfg.mDisableUnsol = true;
+	OutstationConfig cfg; cfg.disableUnsol = true;
 	OutstationTestObject t(cfg, DatabaseTemplate());
 	t.outstation.OnLowerLayerUp();
 
@@ -237,7 +237,7 @@ TEST_CASE(SUITE("DirectOperateGroup41Var2"))
 }
 TEST_CASE(SUITE("DirectOperateGroup41Var3"))
 {
-	OutstationConfig cfg; cfg.mDisableUnsol = true;
+	OutstationConfig cfg; cfg.disableUnsol = true;
 	OutstationTestObject t(cfg, DatabaseTemplate());
 	t.outstation.OnLowerLayerUp();
 
@@ -248,7 +248,7 @@ TEST_CASE(SUITE("DirectOperateGroup41Var3"))
 }
 TEST_CASE(SUITE("DirectOperateGroup41Var4"))
 {
-	OutstationConfig cfg; cfg.mDisableUnsol = true;
+	OutstationConfig cfg; cfg.disableUnsol = true;
 	OutstationTestObject t(cfg, DatabaseTemplate());
 	t.outstation.OnLowerLayerUp();
 

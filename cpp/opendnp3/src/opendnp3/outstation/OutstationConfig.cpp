@@ -28,24 +28,24 @@ namespace opendnp3
 {
 
 OutstationConfig::OutstationConfig() :
-	mMaxControls(1),
-	mDisableUnsol(false),
-	mUnsolMask(true, true, true),
-	mAllowTimeSync(false),
-	mTimeSyncPeriod(TimeDuration::Minutes(10)),
-	mUnsolPackDelay(TimeDuration::Milliseconds(200)),
-	mUnsolRetryDelay(TimeDuration::Seconds(2)),
-	mSelectTimeout(TimeDuration::Seconds(5)),
-	mMaxFragSize(sizes::DEFAULT_APDU_BUFFER_SIZE),
-	mStaticBinary(StaticBinaryResponse::Group1Var2),
-	mStaticAnalog(StaticAnalogResponse::Group30Var1),
-	mStaticCounter(StaticCounterResponse::Group20Var1),
-	mStaticFrozenCounter(StaticFrozenCounterResponse::Group21Var1),
-	mStaticBinaryOutputStatus(StaticBinaryOutputStatusResponse::Group10Var2),
-	mStaticAnalogOutputStatus(StaticAnalogOutputStatusResponse::Group40Var1),
-	mEventBinary(EventBinaryResponse::Group2Var1),
-	mEventAnalog(EventAnalogResponse::Group32Var1),
-	mEventCounter(EventCounterResponse::Group22Var1)
+	maxControls(1),
+	disableUnsol(false),
+	unsolMask(true, true, true),
+	allowTimeSync(false),
+	timeSyncPeriod(TimeDuration::Minutes(10)),
+	unsolPackDelay(TimeDuration::Milliseconds(200)),
+	unsolRetryDelay(TimeDuration::Seconds(2)),
+	selectTimeout(TimeDuration::Seconds(5)),
+	maxFragSize(sizes::DEFAULT_APDU_BUFFER_SIZE),
+	staticBinary(StaticBinaryResponse::Group1Var2),
+	staticAnalog(StaticAnalogResponse::Group30Var1),
+	staticCounter(StaticCounterResponse::Group20Var1),
+	staticFrozenCounter(StaticFrozenCounterResponse::Group21Var1),
+	staticBinaryOutputStatus(StaticBinaryOutputStatusResponse::Group10Var2),
+	staticAnalogOutputStatus(StaticAnalogOutputStatusResponse::Group40Var1),
+	eventBinary(EventBinaryResponse::Group2Var1),
+	eventAnalog(EventAnalogResponse::Group32Var1),
+	eventCounter(EventCounterResponse::Group22Var1)
 {}
 
 }

@@ -35,14 +35,14 @@ using namespace openpal;
 namespace opendnp3
 {
 
-StaticResponseTypes::StaticResponseTypes(const OutstationConfig& arCfg) :
-	pStaticBinaryLoader(GetStaticBinary(arCfg.mStaticBinary)),
+StaticResponseTypes::StaticResponseTypes(const OutstationConfig& config) :
+	pStaticBinaryLoader(GetStaticBinary(config.staticBinary)),
 	pStaticDoubleBinaryLoader(StaticLoader::GetLoadFunction<Group3Var2Serializer>()), // TODO
-	pStaticAnalogLoader(GetStaticAnalog(arCfg.mStaticAnalog)),
-	pStaticCounterLoader(GetStaticCounter(arCfg.mStaticCounter)),
-	pStaticFrozenCounterLoader(GetStaticFrozenCounter(arCfg.mStaticFrozenCounter)),
-	pStaticBinaryOutputStatusLoader(GetStaticBinaryOutputStatus(arCfg.mStaticBinaryOutputStatus)),
-	pStaticAnalogOutputStatusLoader(GetStaticAnalogOutputStatus(arCfg.mStaticAnalogOutputStatus))
+	pStaticAnalogLoader(GetStaticAnalog(config.staticAnalog)),
+	pStaticCounterLoader(GetStaticCounter(config.staticCounter)),
+	pStaticFrozenCounterLoader(GetStaticFrozenCounter(config.staticFrozenCounter)),
+	pStaticBinaryOutputStatusLoader(GetStaticBinaryOutputStatus(config.staticBinaryOutputStatus)),
+	pStaticAnalogOutputStatusLoader(GetStaticAnalogOutputStatus(config.staticAnalogOutputStatus))
 {
 
 }
