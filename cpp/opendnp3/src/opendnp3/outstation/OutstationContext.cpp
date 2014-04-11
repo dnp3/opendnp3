@@ -31,6 +31,7 @@ OutstationContext::OutstationContext(
 		LogRoot& root,
 		ILowerLayer& lower,
 		ICommandHandler& commandHandler,
+		ITimeWriteHandler& timeWriteHandler,
 		Database& database,
 		EventBufferFacade& buffers) :
 	
@@ -38,11 +39,13 @@ OutstationContext::OutstationContext(
 	pExecutor(&executor),
 	pLower(&lower),
 	pCommandHandler(&commandHandler),
+	pTimeWriteHandler(&timeWriteHandler),
 	pDatabase(&database),
 	eventBuffer(buffers),
 	isOnline(false),
 	isSending(false),
 	firstValidRequestAccepted(false),
+	pConfirmTimer(nullptr),
 	rxFragCount(0),		
 	operateExpectedSeq(0),
 	operateExpectedFragCount(0),
@@ -51,7 +54,8 @@ OutstationContext::OutstationContext(
 	unsolSeq(0),
 	rspContext(&database, &eventBuffer, StaticResponseTypes())	
 {
-	
+	pDatabase->SetEventBuffer(eventBuffer);
+	staticIIN.Set(IINBit::DEVICE_RESTART);
 }
 
 void OutstationContext::SetOnline()
@@ -64,6 +68,7 @@ void OutstationContext::SetOffline()
 	isOnline = false;
 	isSending = false;
 	firstValidRequestAccepted = false;
+	CancelConfirmTimer();
 }
 
 void OutstationContext::Select()
@@ -73,9 +78,23 @@ void OutstationContext::Select()
 	selectTime = pExecutor->GetTime();
 }
 
-bool OutstationContext::IsOperateValid()
+bool OutstationContext::IsOperateSequenceValid()
 {	
 	return (rxFragCount == operateExpectedFragCount) && (solSeqN == operateExpectedSeq);	
+}
+
+bool OutstationContext::CancelConfirmTimer()
+{
+	if (pConfirmTimer)
+	{
+		pConfirmTimer->Cancel();
+		pConfirmTimer = nullptr;
+		return true;
+	}
+	else
+	{
+		return false;
+	}
 }
 
 }

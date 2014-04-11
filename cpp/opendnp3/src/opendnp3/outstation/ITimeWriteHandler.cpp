@@ -23,11 +23,11 @@
 namespace opendnp3
 {
 
-NullTimeWriteHandler NullTimeWriteHandler::mInstance;
+NullTimeWriteHandler NullTimeWriteHandler::instance;
 
-ITimeWriteHandler* NullTimeWriteHandler::Inst()
+ITimeWriteHandler& NullTimeWriteHandler::Inst()
 {
-	return &mInstance;
+	return instance;
 }
 
 }

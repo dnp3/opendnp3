@@ -33,6 +33,7 @@
 #include "opendnp3/app/ObjectWriter.h"
 #include "opendnp3/app/APDUHeader.h"
 #include "opendnp3/outstation/ICommandHandler.h"
+#include "opendnp3/outstation/ITimeWriteHandler.h"
 
 namespace opendnp3
 {
@@ -49,10 +50,9 @@ class OutstationContext
 						openpal::LogRoot& root, 
 						openpal::ILowerLayer& lower,
 						ICommandHandler& commandHandler,
+						ITimeWriteHandler& timeWriteHandler,
 						Database& database, 
 						EventBufferFacade& buffers);
-
-	
 
 	// ------ Unchanging variables and self managing variables -------
 
@@ -60,6 +60,7 @@ class OutstationContext
 	openpal::IExecutor* pExecutor;
 	openpal::ILowerLayer* pLower;
 	ICommandHandler* pCommandHandler;
+	ITimeWriteHandler* pTimeWriteHandler;
 	Database* pDatabase;
 	OutstationEventBuffer eventBuffer;
 
@@ -73,6 +74,9 @@ class OutstationContext
 	bool isOnline;
 	bool isSending;
 	bool firstValidRequestAccepted;
+	IINField staticIIN;
+
+	openpal::ITimer* pConfirmTimer;
 	
 	uint32_t rxFragCount;
 	openpal::MonotonicTimestamp selectTime;
@@ -92,7 +96,8 @@ class OutstationContext
 	void SetOffline();
 
 	void Select();
-	bool IsOperateValid();
+	bool IsOperateSequenceValid();
+	bool CancelConfirmTimer();
 	
 };
 

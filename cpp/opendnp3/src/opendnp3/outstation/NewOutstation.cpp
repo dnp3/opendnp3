@@ -26,6 +26,7 @@
 #include "opendnp3/app/APDUParser.h"
 
 #include "opendnp3/outstation/ReadHandler.h"
+#include "opendnp3/outstation/WriteHandler.h"
 #include "opendnp3/outstation/IINHelpers.h"
 #include "opendnp3/outstation/CommandActionAdapter.h"
 #include "opendnp3/outstation/CommandResponseHandler.h"
@@ -43,11 +44,12 @@ NewOutstation::NewOutstation(
 		openpal::LogRoot& root,
 		openpal::ILowerLayer& lower,
 		ICommandHandler& commandHandler,
+		ITimeWriteHandler& timeWriteHandler,
 		Database& database,
 		EventBufferFacade& buffers) :
-		context(executor, root, lower, commandHandler, database, buffers)
+		context(executor, root, lower, commandHandler, timeWriteHandler, database, buffers)
 {
-	context.pDatabase->SetEventBuffer(context.eventBuffer);
+	
 }
 	
 void NewOutstation::OnLowerLayerUp()
@@ -164,7 +166,7 @@ void NewOutstation::ProcessRequest(const APDURecord& request, const openpal::Rea
 	response.SetFunction(FunctionCode::RESPONSE);
 	response.SetControl(request.control.ToByte());
 	IINField iin = BuildResponse(request, response);		
-	response.SetIIN(iin);
+	response.SetIIN(iin | context.staticIIN);
 	this->BeginTransmission(request.control.SEQ, response.ToReadOnly());	
 }
 
@@ -194,6 +196,8 @@ IINField NewOutstation::BuildResponse(const APDURecord& request, APDUResponse& r
 	{
 		case(FunctionCode::READ):
 			return HandleRead(request, response);
+		case(FunctionCode::WRITE) :
+			return HandleWrite(request);
 		case(FunctionCode::SELECT) :
 			return HandleSelect(request, response);
 		case(FunctionCode::OPERATE) :
@@ -224,6 +228,20 @@ IINField NewOutstation::HandleRead(const APDURecord& request, APDUResponse& resp
 	{
 		context.rspContext.Reset();
 		return IINField(IINBit::PARAM_ERROR);
+	}
+}
+
+IINField NewOutstation::HandleWrite(const APDURecord& request)
+{
+	WriteHandler handler(context.logger, context.pTimeWriteHandler, &context.staticIIN);
+	auto result = APDUParser::ParseTwoPass(request.objects, &handler, &context.logger);
+	if (result == APDUParser::Result::OK)
+	{
+		return handler.Errors();
+	}
+	else
+	{
+		return IINFromParseResult(result);
 	}
 }
 
@@ -286,7 +304,7 @@ IINField NewOutstation::HandleOperate(const APDURecord& request, APDUResponse& r
 	}
 	else
 	{
-		if (context.IsOperateValid())
+		if (context.IsOperateSequenceValid())
 		{				
 			auto elapsed = context.pExecutor->GetTime().milliseconds - context.selectTime.milliseconds;
 			if (elapsed < 5000) // TODO - make timeout configurable

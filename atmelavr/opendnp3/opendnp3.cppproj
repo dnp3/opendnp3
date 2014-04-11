@@ -1002,6 +1002,14 @@
       <SubType>compile</SubType>
       <Link>outstation\IINHelpers.h</Link>
     </Compile>
+    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\ITimeWriteHandler.cpp">
+      <SubType>compile</SubType>
+      <Link>outstation\ITimeWriteHandler.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\ITimeWriteHandler.h">
+      <SubType>compile</SubType>
+      <Link>outstation\ITimeWriteHandler.h</Link>
+    </Compile>
     <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\NewOutstation.cpp">
       <SubType>compile</SubType>
       <Link>outstation\NewOutstation.cpp</Link>
@@ -1081,6 +1089,14 @@
     <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\StaticResponseTypes.h">
       <SubType>compile</SubType>
       <Link>outstation\StaticResponseTypes.h</Link>
+    </Compile>
+    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\WriteHandler.cpp">
+      <SubType>compile</SubType>
+      <Link>outstation\WriteHandler.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\WriteHandler.h">
+      <SubType>compile</SubType>
+      <Link>outstation\WriteHandler.h</Link>
     </Compile>
     <Compile Include="..\..\cpp\opendnp3\src\opendnp3\Settable.h">
       <SubType>compile</SubType>

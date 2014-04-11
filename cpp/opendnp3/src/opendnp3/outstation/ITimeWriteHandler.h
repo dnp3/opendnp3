@@ -37,12 +37,12 @@ public:
 class NullTimeWriteHandler : public ITimeWriteHandler
 {
 public:
-	static ITimeWriteHandler* Inst();
+	static ITimeWriteHandler& Inst();
 
 	virtual void WriteAbsoluteTime(openpal::UTCTimestamp aTimestamp) override final {}
 
 private:
-	static NullTimeWriteHandler mInstance;	
+	static NullTimeWriteHandler instance;	
 };
 
 }

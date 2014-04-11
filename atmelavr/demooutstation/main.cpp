@@ -65,7 +65,7 @@ int main()
 	
 	SimpleCommandHandler handler(CommandStatus::SUCCESS);
 				
-	NewOutstation outstation(exe, root, stack.transport, handler, database, facade);
+	NewOutstation outstation(exe, root, stack.transport, handler, NullTimeWriteHandler::Inst(), database, facade);
 		
 	stack.transport.SetAppLayer(&outstation);
 			

@@ -36,6 +36,7 @@ class NewOutstation : public openpal::IUpperLayer
 					openpal::LogRoot& root, 
 					openpal::ILowerLayer& lower,
 					ICommandHandler& commandHandler,
+					ITimeWriteHandler& timeWriteHandler,
 					Database& database, 
 					EventBufferFacade& buffers);
 	
@@ -66,6 +67,8 @@ class NewOutstation : public openpal::IUpperLayer
 	IINField BuildResponse(const APDURecord& request, APDUResponse& response);
 
 	IINField HandleRead(const APDURecord& request, APDUResponse& response);
+
+	IINField HandleWrite(const APDURecord& request);
 
 	IINField HandleSelect(const APDURecord& request, APDUResponse& response);
 

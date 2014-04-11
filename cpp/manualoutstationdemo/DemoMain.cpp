@@ -76,7 +76,7 @@ int main(int argc, char* argv[])
 
 	SimpleCommandHandler commandHandler(CommandStatus::SUCCESS);
 
-	NewOutstation outstation(executor, root, stack.transport, commandHandler, database, eventBuffers.GetFacade());
+	NewOutstation outstation(executor, root, stack.transport, commandHandler, NullTimeWriteHandler::Inst(), database, eventBuffers.GetFacade());
 
 	stack.transport.SetAppLayer(&outstation);
 
