@@ -23,7 +23,12 @@
 namespace openpal
 {
 
-LogEntry::LogEntry() : errorCode(-1)
+LogEntry::LogEntry() :
+	id(""),
+	source(0),
+	location(""),
+	message(""),
+	errorCode(-1)
 {}
 
 

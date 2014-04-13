@@ -165,7 +165,7 @@ AsyncTaskBase* AsyncTaskGroup::GetNext(const MonotonicTimestamp& arTime)
 
 	AsyncTaskBase* pMax = nullptr;
 	tasks.Foreach(
-		[&](AsyncTaskBase * p)
+		[&pMax](AsyncTaskBase * p)
 		{
 			if (pMax == nullptr)
 			{

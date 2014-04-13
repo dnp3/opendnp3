@@ -56,7 +56,7 @@ SingleRspBase::SingleRspBase(openpal::Logger& arLogger) : MasterTaskBase(arLogge
 
 bool SingleRspBase::_OnPartialResponse(const APDUResponseRecord& record)
 {
-	FORMAT_LOG_BLOCK(logger, flags::WARN, "Ignoring non-FIN response to task: ", this->Name());	
+	FORMAT_LOG_BLOCK(logger, flags::WARN, "Ignoring non-FIN response to task: %s", this->Name());	
 	return false;
 }
 
