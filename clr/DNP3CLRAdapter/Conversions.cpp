@@ -339,9 +339,9 @@ opendnp3::OutstationConfig Conversions::convertConfig(OutstationConfig^ config)
 	sc.staticDefaults.counter = convert(config->staticCounter);
 	sc.staticDefaults.frozenCounter = convert(config->staticFrozenCounter);
 	sc.staticDefaults.analogOutputStatus = convert(config->staticAnalogOutputStatus);
-	sc.eventBinary = convert(config->eventBinary);
-	sc.eventAnalog = convert(config->eventAnalog);
-	sc.eventCounter = convert(config->eventCounter);
+	sc.eventDefaults.binary = convert(config->eventBinary);
+	sc.eventDefaults.analog = convert(config->eventAnalog);
+	sc.eventDefaults.counter = convert(config->eventCounter);
 
 	return sc;
 }

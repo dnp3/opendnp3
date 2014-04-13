@@ -33,7 +33,7 @@ using namespace openpal;
 
 TEST_CASE(SUITE("InitialState"))
 {
-	OutstationConfig config;
+	NewOutstationConfig config;
 	NewOutstationTestObject test(config);
 	
 	test.outstation.OnLowerLayerDown();
@@ -49,7 +49,7 @@ TEST_CASE(SUITE("InitialState"))
 
 TEST_CASE(SUITE("UnsupportedFunction"))
 {
-	OutstationConfig config;
+	NewOutstationConfig config;
 	NewOutstationTestObject t(config);
 	t.outstation.OnLowerLayerUp();
 
@@ -59,7 +59,7 @@ TEST_CASE(SUITE("UnsupportedFunction"))
 
 TEST_CASE(SUITE("WriteIIN"))
 {
-	OutstationConfig config;
+	NewOutstationConfig config;
 	NewOutstationTestObject t(config);
 	t.outstation.OnLowerLayerUp();
 
@@ -69,7 +69,7 @@ TEST_CASE(SUITE("WriteIIN"))
 
 TEST_CASE(SUITE("WriteIINEnabled"))
 {
-	OutstationConfig config;
+	NewOutstationConfig config;
 	NewOutstationTestObject t(config);
 	t.outstation.OnLowerLayerUp();
 
@@ -79,7 +79,7 @@ TEST_CASE(SUITE("WriteIINEnabled"))
 
 TEST_CASE(SUITE("WriteIINWrongBit"))
 {
-	OutstationConfig config;
+	NewOutstationConfig config;
 	NewOutstationTestObject t(config);
 	t.outstation.OnLowerLayerUp();
 
@@ -89,7 +89,7 @@ TEST_CASE(SUITE("WriteIINWrongBit"))
 
 TEST_CASE(SUITE("WriteNonWriteObject"))
 {
-	OutstationConfig config;
+	NewOutstationConfig config;
 	NewOutstationTestObject t(config);
 	t.outstation.OnLowerLayerUp();
 
@@ -99,7 +99,7 @@ TEST_CASE(SUITE("WriteNonWriteObject"))
 
 TEST_CASE(SUITE("DelayMeasure"))
 {
-	OutstationConfig config;
+	NewOutstationConfig config;
 	NewOutstationTestObject t(config);
 	t.outstation.OnLowerLayerUp();
 
@@ -109,7 +109,7 @@ TEST_CASE(SUITE("DelayMeasure"))
 
 TEST_CASE(SUITE("DelayMeasureExtraData"))
 {
-	OutstationConfig config;
+	NewOutstationConfig config;
 	NewOutstationTestObject t(config);
 	t.outstation.OnLowerLayerUp();
 
@@ -119,7 +119,7 @@ TEST_CASE(SUITE("DelayMeasureExtraData"))
 
 TEST_CASE(SUITE("WriteTimeDate"))
 {
-	OutstationConfig config;	
+	NewOutstationConfig config;	
 	NewOutstationTestObject t(config);	
 	t.outstation.OnLowerLayerUp();
 
@@ -132,7 +132,7 @@ TEST_CASE(SUITE("WriteTimeDate"))
 
 TEST_CASE(SUITE("WriteTimeDateNotAsking"))
 {
-	OutstationConfig config;
+	NewOutstationConfig config;
 	NewOutstationTestObject t(config);	
 	t.outstation.OnLowerLayerUp();
 
@@ -160,7 +160,7 @@ TEST_CASE(SUITE("WriteTimeDateMultipleObjects"))
 
 TEST_CASE(SUITE("BlankIntegrityPoll"))
 {
-	OutstationConfig config;
+	NewOutstationConfig config;
 	NewOutstationTestObject t(config);
 	t.outstation.OnLowerLayerUp();
 
@@ -197,7 +197,7 @@ TEST_CASE(SUITE("ReadClass0MultiFrag"))
 
 TEST_CASE(SUITE("ReadFuncNotSupported"))
 {
-	OutstationConfig config;
+	NewOutstationConfig config;
 	NewOutstationTestObject t(config);
 	t.outstation.OnLowerLayerUp();
 
@@ -208,7 +208,7 @@ TEST_CASE(SUITE("ReadFuncNotSupported"))
 
 void NewTestStaticRead(const std::string& request, const std::string& response)
 {	
-	OutstationConfig config;
+	NewOutstationConfig config;
 	NewOutstationTestObject t(config, DatabaseTemplate::AllTypes(1));	
 	t.outstation.OnLowerLayerUp();
 
@@ -270,7 +270,7 @@ TEST_CASE(SUITE("ReadGrp40Var0ViaIntegrity"))
 
 TEST_CASE(SUITE("ReadByRangeHeader"))
 {
-	OutstationConfig config;	
+	NewOutstationConfig config;	
 	NewOutstationTestObject t(config, DatabaseTemplate::AnalogOnly(10));
 	t.outstation.OnLowerLayerUp();
 
@@ -285,7 +285,7 @@ TEST_CASE(SUITE("ReadByRangeHeader"))
 }
 
 template <class PointType>
-void TestStaticType(const OutstationConfig& config, const DatabaseTemplate& tmp, PointType value, const std::string& rsp)
+void TestStaticType(const NewOutstationConfig& config, const DatabaseTemplate& tmp, PointType value, const std::string& rsp)
 {
 	NewOutstationTestObject t(config, tmp);
 
@@ -303,7 +303,7 @@ void TestStaticType(const OutstationConfig& config, const DatabaseTemplate& tmp,
 template <class T>
 void TestStaticCounter(StaticCounterResponse rspType, T aValue, const std::string& response)
 {
-	OutstationConfig cfg; cfg.disableUnsol = true; cfg.staticDefaults.counter = rspType;
+	NewOutstationConfig cfg; cfg.defaultStaticResponses.counter = rspType;
 	TestStaticType<Counter>(cfg, DatabaseTemplate::CounterOnly(1), aValue, response);
 }
 

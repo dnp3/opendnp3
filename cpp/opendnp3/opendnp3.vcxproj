@@ -186,6 +186,7 @@
     <ClInclude Include="src\opendnp3\outstation\EventBufferFacade.h" />
     <ClInclude Include="src\opendnp3\outstation\EventCount.h" />
     <ClInclude Include="src\opendnp3\outstation\EventMetadata.h" />
+    <ClInclude Include="src\opendnp3\outstation\EventResponseConfig.h" />
     <ClInclude Include="src\opendnp3\outstation\EventResponseContext.h" />
     <ClInclude Include="src\opendnp3\outstation\EventType.h" />
     <ClInclude Include="src\opendnp3\outstation\ICommandAction.h" />
@@ -195,8 +196,10 @@
     <ClInclude Include="src\opendnp3\outstation\IINHelpers.h" />
     <ClInclude Include="src\opendnp3\outstation\ITimeWriteHandler.h" />
     <ClInclude Include="src\opendnp3\outstation\NewOutstation.h" />
+    <ClInclude Include="src\opendnp3\outstation\NewOutstationConfig.h" />
     <ClInclude Include="src\opendnp3\outstation\OutstationContext.h" />
     <ClInclude Include="src\opendnp3\outstation\OutstationEventBuffer.h" />
+    <ClInclude Include="src\opendnp3\outstation\OutstationParams.h" />
     <ClInclude Include="src\opendnp3\outstation\ReadHandler.h" />
     <ClInclude Include="src\opendnp3\outstation\ResponseContext.h" />
     <ClInclude Include="src\opendnp3\outstation\SelectBuffer.h" />
@@ -338,12 +341,14 @@
     <ClCompile Include="src\opendnp3\outstation\EventBufferConfig.cpp" />
     <ClCompile Include="src\opendnp3\outstation\EventBufferFacade.cpp" />
     <ClCompile Include="src\opendnp3\outstation\EventCount.cpp" />
+    <ClCompile Include="src\opendnp3\outstation\EventResponseConfig.cpp" />
     <ClCompile Include="src\opendnp3\outstation\EventResponseContext.cpp" />
     <ClCompile Include="src\opendnp3\outstation\IINHelpers.cpp" />
     <ClCompile Include="src\opendnp3\outstation\ITimeWriteHandler.cpp" />
     <ClCompile Include="src\opendnp3\outstation\NewOutstation.cpp" />
     <ClCompile Include="src\opendnp3\outstation\OutstationContext.cpp" />
     <ClCompile Include="src\opendnp3\outstation\OutstationEventBuffer.cpp" />
+    <ClCompile Include="src\opendnp3\outstation\OutstationParams.cpp" />
     <ClCompile Include="src\opendnp3\outstation\ReadHandler.cpp" />
     <ClCompile Include="src\opendnp3\outstation\ResponseContext.cpp" />
     <ClCompile Include="src\opendnp3\outstation\SelectBuffer.cpp" />

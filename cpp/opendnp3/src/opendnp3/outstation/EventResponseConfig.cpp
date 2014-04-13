@@ -19,32 +19,21 @@
  * to you under the terms of the License.
  */
 
-#include "NewOutstationTestObject.h"
-#include "BufferHelpers.h"
-
-using namespace openpal;
+#include "EventResponseConfig.h"
 
 namespace opendnp3
 {
 
-NewOutstationTestObject::NewOutstationTestObject(const NewOutstationConfig& config, const DatabaseTemplate& dbTemplate, const EventBufferConfig& ebConfig) :
-	log(),
-	exe(),
-	lower(log.root),
-	dbBuffers(dbTemplate),
-	eventBuffers(ebConfig),
-	db(dbBuffers.GetFacade()),
-	cmdHandler(CommandStatus::SUCCESS),
-	timeHandler([this](const UTCTimestamp& ts){ timestamps.push_back(ts); }),
-	outstation(config, exe, log.root, lower, cmdHandler, timeHandler, db, eventBuffers.GetFacade())
-{
-	lower.SetUpperLayer(&outstation);
-}
+	EventResponseConfig::EventResponseConfig() :
+		binary(EventBinaryResponse::Group2Var1),
+		doubleBinary(EventDoubleBinaryResponse::Group4Var1),
+		analog(EventAnalogResponse::Group32Var1),
+		counter(EventCounterResponse::Group22Var1),
+		frozenCounter(EventFrozenCounterResponse::Group23Var1),
+		binaryOutputStatus(EventBinaryOutputStatusResponse::Group11Var1),
+		analogOutputStatus(EventAnalogOutputStatusResponse::Group42Var1)
+	{}
 
-void NewOutstationTestObject::SendToOutstation(const std::string& hex)
-{
-	HexSequence hs(hex);
-	outstation.OnReceive(hs.ToReadOnly());
-}
 
 }
+

@@ -32,7 +32,8 @@ class NewOutstation : public openpal::IUpperLayer
 {
 	public:
 
-	NewOutstation(	openpal::IExecutor& executor, 
+	NewOutstation(	const NewOutstationConfig& config,
+					openpal::IExecutor& executor, 
 					openpal::LogRoot& root, 
 					openpal::ILowerLayer& lower,
 					ICommandHandler& commandHandler,

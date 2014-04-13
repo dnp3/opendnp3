@@ -27,6 +27,7 @@ namespace opendnp3
 {
 
 OutstationContext::OutstationContext(
+		const NewOutstationConfig& config,
 		IExecutor& executor,
 		LogRoot& root,
 		ILowerLayer& lower,
@@ -35,6 +36,7 @@ OutstationContext::OutstationContext(
 		Database& database,
 		const EventBufferFacade& buffers) :
 	
+	params(config.params),
 	logger(root.GetLogger()),	
 	pExecutor(&executor),
 	pLower(&lower),
@@ -53,7 +55,7 @@ OutstationContext::OutstationContext(
 	solSeqN(0),
 	expectedConfirmSeq(0),
 	unsolSeq(0),
-	rspContext(&database, &eventBuffer, StaticResponseTypes())	
+	rspContext(&database, &eventBuffer, StaticResponseTypes(config.defaultStaticResponses))	
 {
 	pDatabase->SetEventBuffer(eventBuffer);
 	staticIIN.Set(IINBit::DEVICE_RESTART);

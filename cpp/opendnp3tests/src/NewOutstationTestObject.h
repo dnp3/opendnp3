@@ -44,7 +44,7 @@ class NewOutstationTestObject
 {
 
 public:
-	NewOutstationTestObject(const OutstationConfig& config,
+	NewOutstationTestObject(const NewOutstationConfig& config,
 							const DatabaseTemplate& dbTemplate = DatabaseTemplate(), 
 							const EventBufferConfig& ebConfig = EventBufferConfig());
 

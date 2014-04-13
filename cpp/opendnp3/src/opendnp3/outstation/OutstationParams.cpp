@@ -19,32 +19,20 @@
  * to you under the terms of the License.
  */
 
-#include "NewOutstationTestObject.h"
-#include "BufferHelpers.h"
+#include "OutstationParams.h"
+
+#include "opendnp3/StaticSizeConfiguration.h"
 
 using namespace openpal;
 
 namespace opendnp3
 {
 
-NewOutstationTestObject::NewOutstationTestObject(const NewOutstationConfig& config, const DatabaseTemplate& dbTemplate, const EventBufferConfig& ebConfig) :
-	log(),
-	exe(),
-	lower(log.root),
-	dbBuffers(dbTemplate),
-	eventBuffers(ebConfig),
-	db(dbBuffers.GetFacade()),
-	cmdHandler(CommandStatus::SUCCESS),
-	timeHandler([this](const UTCTimestamp& ts){ timestamps.push_back(ts); }),
-	outstation(config, exe, log.root, lower, cmdHandler, timeHandler, db, eventBuffers.GetFacade())
-{
-	lower.SetUpperLayer(&outstation);
-}
-
-void NewOutstationTestObject::SendToOutstation(const std::string& hex)
-{
-	HexSequence hs(hex);
-	outstation.OnReceive(hs.ToReadOnly());
-}
+	OutstationParams::OutstationParams() :
+		maxControlsPerRequest(16),
+		selectTimeout(TimeDuration::Seconds(5)),
+		maxTxFragSize(sizes::DEFAULT_APDU_BUFFER_SIZE) // TODO, use another constant
+	{}
 
 }
+

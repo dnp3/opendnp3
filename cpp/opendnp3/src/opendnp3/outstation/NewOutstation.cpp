@@ -40,6 +40,7 @@ namespace opendnp3
 {
 
 NewOutstation::NewOutstation(
+		const NewOutstationConfig& config,
 		IExecutor& executor,
 		openpal::LogRoot& root,
 		openpal::ILowerLayer& lower,
@@ -47,7 +48,7 @@ NewOutstation::NewOutstation(
 		ITimeWriteHandler& timeWriteHandler,
 		Database& database,
 		const EventBufferFacade& buffers) :
-		context(executor, root, lower, commandHandler, timeWriteHandler, database, buffers)
+		context(config, executor, root, lower, commandHandler, timeWriteHandler, database, buffers)
 {
 	
 }

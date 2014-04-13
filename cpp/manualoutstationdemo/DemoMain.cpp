@@ -67,9 +67,8 @@ int main(int argc, char* argv[])
 
 	PhysicalLayerAsyncTCPServer server(root, &service, "0.0.0.0", 20000);
 	LinkLayerRouter router(root, &server, TimeDuration::Seconds(1), TimeDuration::Seconds(60));
-	
-	LinkConfig config(false, false);
-	TransportStack stack(root, &executor, config);
+		
+	TransportStack stack(root, &executor, LinkConfig(false, false));
 
 	StaticallyAllocatedDatabase<5, 5, 5, 5, 5, 5, 5> staticBuffers;
 	StaticallyAllocatedEventBuffer<10, 10, 10, 10, 10, 10, 10> eventBuffers;
@@ -78,7 +77,8 @@ int main(int argc, char* argv[])
 
 	SimpleCommandHandler commandHandler(CommandStatus::SUCCESS);
 
-	NewOutstation outstation(executor, root, stack.transport, commandHandler, NullTimeWriteHandler::Inst(), database, eventBuffers.GetFacade());
+	NewOutstationConfig config;
+	NewOutstation outstation(config, executor, root, stack.transport, commandHandler, NullTimeWriteHandler::Inst(), database, eventBuffers.GetFacade());
 
 	stack.transport.SetAppLayer(&outstation);
 

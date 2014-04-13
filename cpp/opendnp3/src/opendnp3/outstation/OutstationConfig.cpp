@@ -36,10 +36,7 @@ OutstationConfig::OutstationConfig() :
 	unsolPackDelay(TimeDuration::Milliseconds(200)),
 	unsolRetryDelay(TimeDuration::Seconds(2)),
 	selectTimeout(TimeDuration::Seconds(5)),
-	maxFragSize(sizes::DEFAULT_APDU_BUFFER_SIZE),	
-	eventBinary(EventBinaryResponse::Group2Var1),
-	eventAnalog(EventAnalogResponse::Group32Var1),
-	eventCounter(EventCounterResponse::Group22Var1)
+	maxFragSize(sizes::DEFAULT_APDU_BUFFER_SIZE)	
 {}
 
 }

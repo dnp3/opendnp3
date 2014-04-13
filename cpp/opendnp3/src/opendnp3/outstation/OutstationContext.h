@@ -29,6 +29,7 @@
 #include "opendnp3/StaticSizeConfiguration.h"
 #include "opendnp3/outstation/Database.h"
 #include "opendnp3/outstation/ResponseContext.h"
+#include "opendnp3/outstation/NewOutstationConfig.h"
 #include "opendnp3/app/IINField.h"
 #include "opendnp3/app/ObjectWriter.h"
 #include "opendnp3/app/APDUHeader.h"
@@ -46,7 +47,8 @@ class OutstationContext
 
 	static uint8_t NextSeq(uint8_t seq) { return (seq + 1) % 16; }
 
-	OutstationContext(	openpal::IExecutor& executor,
+	OutstationContext(	const NewOutstationConfig& config,
+						openpal::IExecutor& executor,
 						openpal::LogRoot& root, 
 						openpal::ILowerLayer& lower,
 						ICommandHandler& commandHandler,
@@ -56,6 +58,7 @@ class OutstationContext
 
 	// ------ Unchanging variables and self managing variables -------
 
+	OutstationParams params;
 	openpal::Logger logger;
 	openpal::IExecutor* pExecutor;
 	openpal::ILowerLayer* pLower;

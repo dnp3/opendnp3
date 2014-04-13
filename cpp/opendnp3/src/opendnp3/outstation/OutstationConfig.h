@@ -21,18 +21,12 @@
 #ifndef __SLAVE_CONFIG_H_
 #define __SLAVE_CONFIG_H_
 
-#include <assert.h>
-
-
 #include <openpal/TimeDuration.h>
 
 #include "opendnp3/app/ClassMask.h"
 
-#include "opendnp3/gen/EventAnalogResponse.h"
-#include "opendnp3/gen/EventBinaryResponse.h"
-#include "opendnp3/gen/EventCounterResponse.h"
-
 #include "opendnp3/outstation/StaticResponseConfig.h"
+#include "opendnp3/outstation/EventResponseConfig.h"
 
 namespace opendnp3
 {
@@ -77,19 +71,11 @@ struct OutstationConfig
 	/// The maximum fragment size the outstation will use for data it sends
 	uint32_t maxFragSize;
 
+	/// Default static response types
 	StaticResponseConfig staticDefaults;
 
-	// default event response types
-
-	/// The default group/variation to use for binary event responses
-	EventBinaryResponse eventBinary;
-
-	/// The default group/variation to use for analog event responses
-	EventAnalogResponse eventAnalog;
-
-	/// The default group/variation to use for counter event responses
-	EventCounterResponse eventCounter;
-
+	/// Default event response types
+	EventResponseConfig eventDefaults;
 
 };
 

@@ -18,33 +18,28 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
+#ifndef __OUTSTATION_PARAMS_H_
+#define __OUTSTATION_PARAMS_H_
 
-#include "NewOutstationTestObject.h"
-#include "BufferHelpers.h"
-
-using namespace openpal;
+#include <openpal/TimeDuration.h>
 
 namespace opendnp3
 {
 
-NewOutstationTestObject::NewOutstationTestObject(const NewOutstationConfig& config, const DatabaseTemplate& dbTemplate, const EventBufferConfig& ebConfig) :
-	log(),
-	exe(),
-	lower(log.root),
-	dbBuffers(dbTemplate),
-	eventBuffers(ebConfig),
-	db(dbBuffers.GetFacade()),
-	cmdHandler(CommandStatus::SUCCESS),
-	timeHandler([this](const UTCTimestamp& ts){ timestamps.push_back(ts); }),
-	outstation(config, exe, log.root, lower, cmdHandler, timeHandler, db, eventBuffers.GetFacade())
+struct OutstationParams
 {
-	lower.SetUpperLayer(&outstation);
-}
+	OutstationParams();
 
-void NewOutstationTestObject::SendToOutstation(const std::string& hex)
-{
-	HexSequence hs(hex);
-	outstation.OnReceive(hs.ToReadOnly());
-}
+	/// The maximum number of controls the outstation will attempt to process from a single APDU
+	uint8_t maxControlsPerRequest;			
+
+	/// How long the outstation will allow an operate to proceed after a prior select
+	openpal::TimeDuration selectTimeout;
+
+	/// The maximum fragment size the outstation will use for data it sends
+	uint32_t maxTxFragSize;
+};
 
 }
+
+#endif
