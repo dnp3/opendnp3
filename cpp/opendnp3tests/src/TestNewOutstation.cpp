@@ -142,21 +142,16 @@ TEST_CASE(SUITE("WriteTimeDateNotAsking"))
 	REQUIRE(t.timestamps.size() == 0);
 }
 
-/* TODO
 TEST_CASE(SUITE("WriteTimeDateMultipleObjects"))
 {
-	OutstationConfig cfg; cfg.mDisableUnsol = true;
-	cfg.mAllowTimeSync = true;
-	OutstationTestObject t(cfg, DatabaseTemplate());
+	NewOutstationConfig cfg;	
+	NewOutstationTestObject t(cfg, DatabaseTemplate());
 	t.outstation.OnLowerLayerUp();
 
 	t.SendToOutstation("C0 02 32 01 07 02 D2 04 00 00 00 00 D2 04 00 00 00 00"); //write Grp50Var1, value = 1234 ms after epoch
-	REQUIRE(t.Read() == "C0 81 90 04"); // param error +  need time still set
-	t.mts.DispatchOne();
-	REQUIRE(t.mTimeWrites.size() == 0);
+	REQUIRE(t.lower.PopWriteAsHex() == "C0 81 80 04"); // param error +  need time still set	
+	REQUIRE(t.timestamps.empty());
 }
-*/
-
 
 TEST_CASE(SUITE("BlankIntegrityPoll"))
 {
@@ -328,11 +323,10 @@ TEST_CASE(SUITE("ReadGrp20Var6"))
 	TestStaticCounter(StaticCounterResponse::Group20Var6, 5, "C0 81 80 00 14 06 00 00 00 05 00");
 }
 
-/*
 template <class T>
 void TestStaticAnalog(StaticAnalogResponse aRsp, T aVal, const std::string& arRsp)
 {
-	OutstationConfig cfg; cfg.mDisableUnsol = true; cfg.mStaticAnalog = aRsp;
+	NewOutstationConfig cfg; cfg.defaultStaticResponses.analog = aRsp;
 	TestStaticType<Analog>(cfg, DatabaseTemplate::AnalogOnly(1), aVal, arRsp);
 }
 
@@ -362,10 +356,10 @@ TEST_CASE(SUITE("ReadGrp30Var6"))
 }
 
 template <class T>
-void TestStaticBinaryOutputStatus(T aVal, const std::string& aRsp)
+void TestStaticBinaryOutputStatus(T aVal, const std::string& response)
 {
-	OutstationConfig cfg; cfg.mDisableUnsol = true;
-	OutstationTestObject t(cfg, DatabaseTemplate::BinaryOutputStatusOnly(1));
+	NewOutstationConfig cfg;
+	NewOutstationTestObject t(cfg, DatabaseTemplate::BinaryOutputStatusOnly(1));
 	t.outstation.OnLowerLayerUp();
 
 	{
@@ -374,7 +368,7 @@ void TestStaticBinaryOutputStatus(T aVal, const std::string& aRsp)
 	}
 
 	t.SendToOutstation("C0 01 3C 01 06"); // Read class 0
-	REQUIRE(t.Read() == aRsp);
+	REQUIRE(t.lower.PopWriteAsHex() == response);
 }
 
 TEST_CASE(SUITE("ReadGrp10Var2"))
@@ -383,10 +377,10 @@ TEST_CASE(SUITE("ReadGrp10Var2"))
 }
 
 template <class T>
-void TestStaticAnalogOutputStatus(StaticAnalogOutputStatusResponse aRsp, T aVal, const string& arRsp)
+void TestStaticAnalogOutputStatus(StaticAnalogOutputStatusResponse aRsp, T aVal, const string& response)
 {
-	OutstationConfig cfg; cfg.mDisableUnsol = true; cfg.mStaticAnalogOutputStatus = aRsp;
-	TestStaticType<AnalogOutputStatus>(cfg, DatabaseTemplate::AnalogOutputStatusOnly(1), aVal, arRsp);
+	NewOutstationConfig cfg; cfg.defaultStaticResponses.analogOutputStatus = aRsp;
+	TestStaticType<AnalogOutputStatus>(cfg, DatabaseTemplate::AnalogOutputStatusOnly(1), aVal, response);
 }
 
 TEST_CASE(SUITE("ReadGrp40Var1"))
@@ -408,4 +402,4 @@ TEST_CASE(SUITE("ReadGrp40Var4"))
 {
 	TestStaticAnalogOutputStatus(StaticAnalogOutputStatusResponse::Group40Var4, -20.0, "C0 81 80 00 28 04 00 00 00 01 00 00 00 00 00 00 34 C0");
 }
-*/
+
