@@ -1,0 +1,37 @@
+language: cpp
+
+compiler:
+  - gcc
+# - clang
+
+branches:
+  only:
+    - 2.0.x
+
+before_install:
+# - sudo apt-get --purge remove clang libclang-common-dev
+  - sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
+# - sudo add-apt-repository 'deb http://llvm.org/apt/precise/ llvm-toolchain-precise-3.4 main' -y
+# - wget -O - http://llvm.org/apt/llvm-snapshot.gpg.key|sudo apt-key add -
+  - sudo apt-get update
+  - sudo apt-get install gcc-4.8 g++-4.8
+# - sudo apt-get install clang-3.4
+  - sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.8 50
+  - sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-4.8 50
+  - sudo update-alternatives --config gcc
+  - sudo update-alternatives --config g++
+  - sudo apt-get install libboost-dev
+# - sudo rm /usr/local/bin/clang /usr/local/bin/clang++ /usr/local/bin/llvm-link
+
+install:
+  - wget http://sourceforge.net/projects/asio/files/asio/1.10.1%20%28Stable%29/asio-1.10.1.tar.bz2/download -O asio-1.10.1.tar.bz2
+  - tar -xjf asio-1.10.1.tar.bz2
+  - cd asio-1.10.1 && ./configure && make && sudo make install && cd -
+
+script:
+  - autoreconf -f -i
+  - ./configure
+  - make
+  - make check
+  - ./dnp3test
+  - sudo make install

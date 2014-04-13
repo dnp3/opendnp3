@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/tarm/dnp3.svg)](https://travis-ci.org/tarm/dnp3)
+
 Copyright (c) 2010, 2011 Green Energy Corp.
 Copyright (c) 2013 - 2014 Automatak LLC
 
