@@ -986,6 +986,14 @@
       <SubType>compile</SubType>
       <Link>outstation\EventCount.h</Link>
     </Compile>
+    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\EventResponseConfig.cpp">
+      <SubType>compile</SubType>
+      <Link>outstation\EventResponseConfig.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\EventResponseConfig.h">
+      <SubType>compile</SubType>
+      <Link>outstation\EventResponseConfig.h</Link>
+    </Compile>
     <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\EventResponseContext.cpp">
       <SubType>compile</SubType>
       <Link>outstation\EventResponseContext.cpp</Link>
@@ -1034,6 +1042,14 @@
       <SubType>compile</SubType>
       <Link>outstation\OutstationEventBuffer.h</Link>
     </Compile>
+    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\OutstationParams.cpp">
+      <SubType>compile</SubType>
+      <Link>outstation\OutstationParams.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\OutstationParams.h">
+      <SubType>compile</SubType>
+      <Link>outstation\OutstationParams.h</Link>
+    </Compile>
     <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\ReadHandler.cpp">
       <SubType>compile</SubType>
       <Link>outstation\ReadHandler.cpp</Link>
@@ -1073,6 +1089,14 @@
     <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\SimpleCommandHandler.h">
       <SubType>compile</SubType>
       <Link>outstation\SimpleCommandHandler.h</Link>
+    </Compile>
+    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\StaticResponseConfig.cpp">
+      <SubType>compile</SubType>
+      <Link>outstation\StaticResponseConfig.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\StaticResponseConfig.h">
+      <SubType>compile</SubType>
+      <Link>outstation\StaticResponseConfig.h</Link>
     </Compile>
     <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\StaticResponseContext.cpp">
       <SubType>compile</SubType>
