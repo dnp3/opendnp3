@@ -64,9 +64,16 @@ openpal::ReadOnlyBuffer MockLowerLayer::PopWrite()
 
 std::string MockLowerLayer::PopWriteAsHex()
 {
-	auto ret = sendQueue.front();
-	sendQueue.pop();
-	return toHex(ret);
+	if (sendQueue.empty())
+	{
+		return "NO MORE FRAGMENTS";
+	}
+	else
+	{
+		auto ret = sendQueue.front();
+		sendQueue.pop();
+		return toHex(ret);
+	}
 }
 
 void MockLowerLayer::BeginTransmit(const openpal::ReadOnlyBuffer& output)

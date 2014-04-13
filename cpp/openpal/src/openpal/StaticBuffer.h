@@ -47,10 +47,16 @@ public:
 		return WriteBuffer(this->buffer, this->Size());
 	}
 
-	WriteBuffer GetWriteBuffer(uint32_t size)
-	{
-		assert(size <= this->Size());
-		return WriteBuffer(this->buffer, size);
+	WriteBuffer GetWriteBuffer(uint32_t maxSize)
+	{		
+		if (maxSize <= this->Size())
+		{
+			return WriteBuffer(this->buffer, maxSize);
+		}
+		else
+		{
+			return GetWriteBuffer();
+		}
 	}
 };
 

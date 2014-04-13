@@ -33,6 +33,7 @@
 #include "opendnp3/app/IINField.h"
 #include "opendnp3/app/ObjectWriter.h"
 #include "opendnp3/app/APDUHeader.h"
+#include "opendnp3/app/APDUResponse.h"
 #include "opendnp3/outstation/ICommandHandler.h"
 #include "opendnp3/outstation/ITimeWriteHandler.h"
 
@@ -67,11 +68,6 @@ class OutstationContext
 	Database* pDatabase;
 	OutstationEventBuffer eventBuffer;
 
-	// ------ Static bufers -------
-
-	openpal::StaticBuffer<sizes::MAX_RX_APDU_SIZE> rxBuffer;
-	openpal::StaticBuffer<sizes::MAX_TX_APDU_SIZE> txBuffer;
-
 	// ------ Dynamic "state", i.e. things that must be managed or cleanup on close ------
 	
 	bool isOnline;
@@ -96,6 +92,9 @@ class OutstationContext
 
 	// ------ Helper methods for dealing with state ------
 
+	APDUResponse StartNewResponse();
+	bool RecordLastRequest(const openpal::ReadOnlyBuffer& fragment);
+
 	void SetOnline();
 	void SetOffline();
 
@@ -113,6 +112,11 @@ class OutstationContext
 	private:
 
 	bool StartConfirmTimerWithRunnable(const openpal::Runnable& runnable);
+
+	// ------ Static bufers -------
+
+	openpal::StaticBuffer<sizes::MAX_RX_APDU_SIZE> rxBuffer;
+	openpal::StaticBuffer<sizes::MAX_TX_APDU_SIZE> txBuffer;
 };
 
 template <class Lambda>

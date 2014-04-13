@@ -59,6 +59,29 @@ OutstationContext::OutstationContext(
 {
 	pDatabase->SetEventBuffer(eventBuffer);
 	staticIIN.Set(IINBit::DEVICE_RESTART);
+
+	if (this->txBuffer.Size() < params.maxTxFragSize)
+	{
+		params.maxTxFragSize = txBuffer.Size();
+	}	
+}
+
+APDUResponse OutstationContext::StartNewResponse()
+{	
+	return APDUResponse(txBuffer.GetWriteBuffer(params.maxTxFragSize));
+}
+
+bool OutstationContext::RecordLastRequest(const openpal::ReadOnlyBuffer& fragment)
+{
+	if (fragment.Size() <= rxBuffer.Size())
+	{
+		lastValidRequest = fragment.CopyTo(rxBuffer.Buffer());
+		return true;
+	}
+	else
+	{
+		return false;
+	}
 }
 
 void OutstationContext::SetOnline()

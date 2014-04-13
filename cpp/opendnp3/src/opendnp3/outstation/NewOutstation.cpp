@@ -147,13 +147,14 @@ void NewOutstation::OnReceiveSolConfirm(const APDURecord& request)
 			}
 			else // Continue response
 			{								
-				APDUResponse response(context.txBuffer.GetWriteBuffer());				
+				auto response = context.StartNewResponse();
 				response.SetFunction(FunctionCode::RESPONSE);				
 				openpal::Transaction tx(context.pDatabase);
 				context.pDatabase->DoubleBuffer();
 				auto control = context.rspContext.Load(response);
+				control.SEQ = request.control.SEQ + 1;
 				response.SetControl(control);
-				this->BeginTransmission(request.control.SEQ + 1, control.CON, response.ToReadOnly());
+				this->BeginTransmission(control.SEQ, control.CON, response.ToReadOnly());
 			}			
 		}
 	}
@@ -255,9 +256,9 @@ void NewOutstation::OnReceiveSolRequest(const APDURecord& request, const openpal
 }
 
 void NewOutstation::ProcessRequest(const APDURecord& request, const openpal::ReadOnlyBuffer& fragment)
-{
-	context.lastValidRequest = fragment.CopyTo(context.rxBuffer.Buffer());
-	APDUResponse response(context.txBuffer.GetWriteBuffer());
+{	
+	context.RecordLastRequest(fragment);
+	auto response = context.StartNewResponse();
 	response.SetFunction(FunctionCode::RESPONSE);	
 	response.SetControl(request.control);
 	IINField iin = BuildResponse(request, response);		

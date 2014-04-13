@@ -168,12 +168,11 @@ TEST_CASE(SUITE("BlankIntegrityPoll"))
 	REQUIRE(t.lower.PopWriteAsHex() == "C0 81 80 00");
 }
 
-/* TODO
 TEST_CASE(SUITE("ReadClass0MultiFrag"))
 {
-	OutstationConfig cfg;
-	cfg.mMaxFragSize = 20; // override to use a fragment length of 20
-	OutstationTestObject t(cfg, DatabaseTemplate::AnalogOnly(8));
+	NewOutstationConfig config;
+	config.params.maxTxFragSize = 20; // override to use a fragment length of 20	
+	NewOutstationTestObject t(config, DatabaseTemplate::AnalogOnly(8));
 	t.outstation.OnLowerLayerUp();
 
 	{
@@ -188,12 +187,14 @@ TEST_CASE(SUITE("ReadClass0MultiFrag"))
 
 	// Response should be (30,1)x2 per fragment, quality ONLINE, value 0
 	// 4 fragment response, first 3 fragments should be confirmed, last one shouldn't be
-	REQUIRE(t.Read() == "A0 81 80 00 1E 01 00 00 01 01 00 00 00 00 01 00 00 00 00");
-	REQUIRE(t.Read() == "20 81 80 00 1E 01 00 02 03 01 00 00 00 00 01 00 00 00 00");
-	REQUIRE(t.Read() == "20 81 80 00 1E 01 00 04 05 01 00 00 00 00 01 00 00 00 00");
-	REQUIRE(t.Read() == "40 81 80 00 1E 01 00 06 07 01 00 00 00 00 01 00 00 00 00");
+	REQUIRE(t.lower.PopWriteAsHex() == "A0 81 80 00 1E 01 00 00 01 01 00 00 00 00 01 00 00 00 00");
+	t.SendToOutstation("C0 00");
+	REQUIRE(t.lower.PopWriteAsHex() == "21 81 80 00 1E 01 00 02 03 01 00 00 00 00 01 00 00 00 00");
+	t.SendToOutstation("C1 00");
+	REQUIRE(t.lower.PopWriteAsHex() == "22 81 80 00 1E 01 00 04 05 01 00 00 00 00 01 00 00 00 00");
+	t.SendToOutstation("C2 00");
+	REQUIRE(t.lower.PopWriteAsHex() == "43 81 80 00 1E 01 00 06 07 01 00 00 00 00 01 00 00 00 00");	
 }
-*/
 
 TEST_CASE(SUITE("ReadFuncNotSupported"))
 {
