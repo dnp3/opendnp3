@@ -21,6 +21,11 @@
 
 #include "OutstationContext.h"
 
+#include "opendnp3/StaticSizeConfiguration.h"
+#include "opendnp3/LogLevels.h"
+
+#include <openpal/LogMacros.h>
+
 using namespace openpal;
 
 namespace opendnp3
@@ -60,9 +65,14 @@ OutstationContext::OutstationContext(
 	pDatabase->SetEventBuffer(eventBuffer);
 	staticIIN.Set(IINBit::DEVICE_RESTART);
 
-	if (this->txBuffer.Size() < params.maxTxFragSize)
+	if (params.maxTxFragSize < sizes::MIN_APDU_SIZE)
 	{
-		params.maxTxFragSize = txBuffer.Size();
+		FORMAT_LOG_BLOCK(logger, flags::WARN, 
+			"maxTxFragSize of %u size is less than minimum of %u", 
+			static_cast<unsigned int>(params.maxTxFragSize), 
+			static_cast<unsigned int>(sizes::MIN_APDU_SIZE));
+
+		params.maxTxFragSize = sizes::MIN_APDU_SIZE;
 	}	
 }
 

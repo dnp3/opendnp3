@@ -163,7 +163,7 @@ TEST_CASE(SUITE("BlankIntegrityPoll"))
 	REQUIRE(t.lower.PopWriteAsHex() == "C0 81 80 00");
 }
 
-TEST_CASE(SUITE("ReadClass0MultiFrag"))
+TEST_CASE(SUITE("ReadClass0MultiFragAnalog"))
 {
 	NewOutstationConfig config;
 	config.params.maxTxFragSize = 20; // override to use a fragment length of 20	

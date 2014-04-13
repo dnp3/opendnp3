@@ -274,10 +274,15 @@ StaticLoadResult StaticResponseContext::LoadStaticData(ObjectWriter& writer)
 		if(result == StaticLoadResult::COMPLETED)
 		{
 			staticResponseQueue.Pop();
-			if(staticResponseQueue.IsEmpty()) return StaticLoadResult::COMPLETED;
-			else continue;
+			if (staticResponseQueue.IsEmpty())
+			{
+				return StaticLoadResult::COMPLETED;
+			}			
 		}
-		else return result;
+		else
+		{
+			return result;
+		}
 	}
 
 	return StaticLoadResult::EMPTY;

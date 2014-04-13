@@ -24,6 +24,7 @@
 #include <opendnp3/outstation/Outstation.h>
 #include <opendnp3/transport/TransportStack.h>
 #include <opendnp3/outstation/StaticallyAllocatedDatabase.h>
+#include <opendnp3/outstation/DynamicallyAllocatedDatabase.h>
 #include <opendnp3/outstation/StaticallyAllocatedEventBuffer.h>
 #include <opendnp3/outstation/NewOutstation.h>
 #include <opendnp3/LogLevels.h>
@@ -70,14 +71,16 @@ int main(int argc, char* argv[])
 		
 	TransportStack stack(root, &executor, LinkConfig(false, false));
 
-	StaticallyAllocatedDatabase<5, 5, 5, 5, 5, 5, 5> staticBuffers;
+	//StaticallyAllocatedDatabase<5, 5, 5, 5, 5, 5, 5> staticBuffers;
+	DynamicallyAllocatedDatabase staticBuffers(DatabaseTemplate::BinaryOnly(5));
 	StaticallyAllocatedEventBuffer<10, 10, 10, 10, 10, 10, 10> eventBuffers;
 
 	Database database(staticBuffers.GetFacade());
 
 	SimpleCommandHandler commandHandler(CommandStatus::SUCCESS);
 
-	NewOutstationConfig config;
+	NewOutstationConfig config;	
+	config.params.maxTxFragSize = 10;
 	NewOutstation outstation(config, executor, root, stack.transport, commandHandler, NullTimeWriteHandler::Inst(), database, eventBuffers.GetFacade());
 
 	stack.transport.SetAppLayer(&outstation);

@@ -50,6 +50,9 @@ static const uint32_t MAX_OBJECTS_PER_APDU = 32768;
 // the maximum number of queued commands for a master
 static const uint8_t MAX_COMMAND_QUEUE_SIZE = 16;
 
+/// The miniumum allowed size for rx and tx APDUs
+static const uint32_t MIN_APDU_SIZE = 249;
+
 // the maximum size of a transmitted APDU
 static const uint32_t MAX_TX_APDU_SIZE = OPENDNP3_MAX_TX_APDU_SIZE;
 
@@ -68,8 +71,8 @@ static const uint32_t APDU_LPDU_BUFFER_SIZE = MACRO_NUM_LINK_FRAMES(MAX_TX_APDU_
 // default sizing is big enough to receive a full APDU with full LPDU's
 static const uint32_t LINK_RECEIVER_BUFFER_SIZE = MACRO_NUM_LINK_FRAMES(MAX_RX_APDU_SIZE) * 292;
 
-static_assert(MAX_TX_APDU_SIZE >= 249, "APDU tx buffer size must be at least 249 bytes");
-static_assert(MAX_RX_APDU_SIZE >= 249, "APDU rx buffer size must be at least 249 bytes");
+static_assert(MAX_TX_APDU_SIZE >= MIN_APDU_SIZE, "APDU tx buffer size must be at least the minimum size");
+static_assert(MAX_RX_APDU_SIZE >= MIN_APDU_SIZE, "APDU rx buffer size must be at least the minimum size");
 static_assert(DEFAULT_APDU_BUFFER_SIZE <= MAX_TX_APDU_SIZE, "default buffer size must be less than the maximum");
 static_assert(MAX_STACKS_PER_CHANNEL > 0, "At least 1 stack is required per router");
 static_assert(LINK_RECEIVER_BUFFER_SIZE >= 292, "Receiver must buffer at least 292 bytes");
