@@ -6,15 +6,15 @@ namespace DNP3
 {
 namespace Adapter
 {
-OutstationTimeWriteAdapter::OutstationTimeWriteAdapter(DNP3::Interface::ITimeWriteHandler^ proxy) :
-	mProxy(proxy)
+OutstationTimeWriteAdapter::OutstationTimeWriteAdapter(DNP3::Interface::ITimeWriteHandler^ proxy_) :
+	proxy(proxy_)
 {
 
 }
 
-void OutstationTimeWriteAdapter::WriteAbsoluteTime(openpal::UTCTimestamp aTimestamp)
+bool OutstationTimeWriteAdapter::WriteAbsoluteTime(const openpal::UTCTimestamp& timestamp)
 {
-	mProxy->WriteAbsoluteTime(aTimestamp.msSinceEpoch);
+	return proxy->WriteAbsoluteTime(timestamp.msSinceEpoch);
 }
 
 }

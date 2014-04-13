@@ -18,8 +18,8 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#ifndef __SLAVE_CONFIG_H_
-#define __SLAVE_CONFIG_H_
+#ifndef __NEW_OUTSTATION_CONFIG_H_
+#define __NEW_OUTSTATION_CONFIG_H_
 
 #include <assert.h>
 
@@ -32,7 +32,12 @@
 #include "opendnp3/gen/EventBinaryResponse.h"
 #include "opendnp3/gen/EventCounterResponse.h"
 
-#include "opendnp3/outstation/StaticResponseConfig.h"
+#include "opendnp3/gen/StaticAnalogResponse.h"
+#include "opendnp3/gen/StaticBinaryResponse.h"
+#include "opendnp3/gen/StaticCounterResponse.h"
+#include "opendnp3/gen/StaticFrozenCounterResponse.h"
+#include "opendnp3/gen/StaticBinaryOutputStatusResponse.h"
+#include "opendnp3/gen/StaticAnalogOutputStatusResponse.h"
 
 namespace opendnp3
 {
@@ -50,34 +55,33 @@ struct OutstationConfig
 	OutstationConfig();
 
 	/// The maximum number of controls the outstation will attempt to process from a single APDU
-	uint8_t maxControls;
-
-	/// if true, fully disables unsolicited mode as if the outstation didn't support it
-	bool disableUnsol;
-
-	/// controls what unsol classes are enabled
-	ClassMask unsolMask;
-
-	/// if true, the outstation will request time synchronization on an interval
-	bool allowTimeSync;
-
-
-	/// The period of time sync interval in milliseconds
-	openpal::TimeDuration timeSyncPeriod;
-
-	/// The amount of time the outstation will wait before sending new unsolicited data ( <= 0 == immediate)
-	openpal::TimeDuration unsolPackDelay;
-
-	/// How long the outstation will wait before retrying an unsuccessful unsol response
-	openpal::TimeDuration unsolRetryDelay;
+	uint8_t maxControlsPerRequest;			
 
 	/// How long the outstation will allow an operate to proceed after a prior select
 	openpal::TimeDuration selectTimeout;
 
 	/// The maximum fragment size the outstation will use for data it sends
-	uint32_t maxFragSize;
+	uint32_t maximumTxFragSize;
 
-	StaticResponseConfig staticDefaults;
+	// -------------  default static response types ------------------
+
+	/// The default group/variation to use for static binary responses
+	StaticBinaryResponse staticBinary;
+
+	/// The default group/variation to use for static analog responses
+	StaticAnalogResponse staticAnalog;
+
+	/// The default group/variation to use for static counter responses
+	StaticCounterResponse staticCounter;
+
+	/// The default group/variation to use for static counter responses
+	StaticFrozenCounterResponse staticFrozenCounter;
+
+	/// The default group/variation to use for static control status responses
+	StaticBinaryOutputStatusResponse staticBinaryOutputStatus;
+
+	/// The default group/variation to use for static setpoint status responses
+	StaticAnalogOutputStatusResponse staticAnalogOutputStatus;
 
 	// default event response types
 

@@ -354,7 +354,7 @@ void TestStaticType(const OutstationConfig& aCfg, const DatabaseTemplate& tmp, P
 template <class T>
 void TestStaticCounter(StaticCounterResponse aRsp, T aValue, const std::string& arRsp)
 {
-	OutstationConfig cfg; cfg.disableUnsol = true; cfg.staticCounter = aRsp;
+	OutstationConfig cfg; cfg.disableUnsol = true; cfg.staticDefaults.counter = aRsp;
 	TestStaticType<Counter>(cfg, DatabaseTemplate::CounterOnly(1), aValue, arRsp);
 }
 
@@ -381,7 +381,7 @@ TEST_CASE(SUITE("ReadGrp20Var6"))
 template <class T>
 void TestStaticAnalog(StaticAnalogResponse aRsp, T aVal, const std::string& arRsp)
 {
-	OutstationConfig cfg; cfg.disableUnsol = true; cfg.staticAnalog = aRsp;
+	OutstationConfig cfg; cfg.disableUnsol = true; cfg.staticDefaults.analog = aRsp;
 	TestStaticType<Analog>(cfg, DatabaseTemplate::AnalogOnly(1), aVal, arRsp);
 }
 
@@ -434,7 +434,7 @@ TEST_CASE(SUITE("ReadGrp10Var2"))
 template <class T>
 void TestStaticAnalogOutputStatus(StaticAnalogOutputStatusResponse aRsp, T aVal, const string& arRsp)
 {
-	OutstationConfig cfg; cfg.disableUnsol = true; cfg.staticAnalogOutputStatus = aRsp;
+	OutstationConfig cfg; cfg.disableUnsol = true; cfg.staticDefaults.analogOutputStatus = aRsp;
 	TestStaticType<AnalogOutputStatus>(cfg, DatabaseTemplate::AnalogOutputStatusOnly(1), aVal, arRsp);
 }
 

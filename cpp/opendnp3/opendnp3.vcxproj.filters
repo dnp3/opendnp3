@@ -666,6 +666,9 @@
     <ClInclude Include="src\opendnp3\outstation\OutstationContext.h">
       <Filter>Header\outstation</Filter>
     </ClInclude>
+    <ClInclude Include="src\opendnp3\outstation\StaticResponseConfig.h">
+      <Filter>Header\outstation</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\opendnp3\app\AnalogOutput.cpp">
@@ -1068,6 +1071,9 @@
       <Filter>Source\outstation</Filter>
     </ClCompile>
     <ClCompile Include="src\opendnp3\outstation\OutstationContext.cpp">
+      <Filter>Source\outstation</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opendnp3\outstation\StaticResponseConfig.cpp">
       <Filter>Source\outstation</Filter>
     </ClCompile>
   </ItemGroup>

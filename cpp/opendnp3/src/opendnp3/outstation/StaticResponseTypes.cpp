@@ -35,14 +35,14 @@ using namespace openpal;
 namespace opendnp3
 {
 
-StaticResponseTypes::StaticResponseTypes(const OutstationConfig& config) :
-	pStaticBinaryLoader(GetStaticBinary(config.staticBinary)),
-	pStaticDoubleBinaryLoader(StaticLoader::GetLoadFunction<Group3Var2Serializer>()), // TODO
-	pStaticAnalogLoader(GetStaticAnalog(config.staticAnalog)),
-	pStaticCounterLoader(GetStaticCounter(config.staticCounter)),
-	pStaticFrozenCounterLoader(GetStaticFrozenCounter(config.staticFrozenCounter)),
-	pStaticBinaryOutputStatusLoader(GetStaticBinaryOutputStatus(config.staticBinaryOutputStatus)),
-	pStaticAnalogOutputStatusLoader(GetStaticAnalogOutputStatus(config.staticAnalogOutputStatus))
+	StaticResponseTypes::StaticResponseTypes(const StaticResponseConfig& config) :
+	pStaticBinaryLoader(GetStaticBinary(config.binary)),
+	pStaticDoubleBinaryLoader(GetStaticDoubleBinary(config.doubleBinary)),
+	pStaticAnalogLoader(GetStaticAnalog(config.analog)),
+	pStaticCounterLoader(GetStaticCounter(config.counter)),
+	pStaticFrozenCounterLoader(GetStaticFrozenCounter(config.frozenCounter)),
+	pStaticBinaryOutputStatusLoader(GetStaticBinaryOutputStatus(config.binaryOutputStatus)),
+	pStaticAnalogOutputStatusLoader(GetStaticAnalogOutputStatus(config.analogOutputStatus))
 {
 
 }
@@ -109,6 +109,17 @@ StaticLoadFun StaticResponseTypes::GetStaticBinary(StaticBinaryResponse rsp)
 		return StaticLoader::GetLoadFunction<Group1Var2Serializer>();
 	default:
 		return StaticLoader::GetLoadFunction<Group1Var2Serializer>();
+	}
+}
+
+StaticLoadFun StaticResponseTypes::GetStaticDoubleBinary(StaticDoubleBinaryResponse rsp)
+{
+	switch (rsp)
+	{
+		case(StaticDoubleBinaryResponse::Group3Var2) :
+			return StaticLoader::GetLoadFunction<Group3Var2Serializer>();
+		default:
+			return StaticLoader::GetLoadFunction<Group3Var2Serializer>();
 	}
 }
 

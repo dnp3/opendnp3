@@ -303,7 +303,7 @@ void TestStaticType(const OutstationConfig& config, const DatabaseTemplate& tmp,
 template <class T>
 void TestStaticCounter(StaticCounterResponse rspType, T aValue, const std::string& response)
 {
-	OutstationConfig cfg; cfg.disableUnsol = true; cfg.staticCounter = rspType;
+	OutstationConfig cfg; cfg.disableUnsol = true; cfg.staticDefaults.counter = rspType;
 	TestStaticType<Counter>(cfg, DatabaseTemplate::CounterOnly(1), aValue, response);
 }
 

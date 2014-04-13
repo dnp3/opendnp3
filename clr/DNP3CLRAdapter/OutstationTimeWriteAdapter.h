@@ -19,11 +19,11 @@ private class OutstationTimeWriteAdapter : public opendnp3::ITimeWriteHandler
 public:
 	OutstationTimeWriteAdapter(DNP3::Interface::ITimeWriteHandler^ proxy);
 
-	void WriteAbsoluteTime(openpal::UTCTimestamp aTimestamp);
+	bool WriteAbsoluteTime(const openpal::UTCTimestamp& timestamp);
 
 
 private:
-	gcroot < DNP3::Interface::ITimeWriteHandler^ > mProxy;
+	gcroot < DNP3::Interface::ITimeWriteHandler^ > proxy;
 };
 
 private ref class OutstationTimeWriteWrapper

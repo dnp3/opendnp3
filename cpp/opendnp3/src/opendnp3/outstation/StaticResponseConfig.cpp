@@ -18,30 +18,22 @@
  * may have been made to this file. Automatak, LLC licenses these modifications
  * to you under the terms of the License.
  */
-#include "OutstationConfig.h"
 
-#include "opendnp3/StaticSizeConfiguration.h"
-
-using namespace openpal;
+#include "StaticResponseConfig.h"
 
 namespace opendnp3
 {
 
-OutstationConfig::OutstationConfig() :
-	maxControls(1),
-	disableUnsol(false),
-	unsolMask(true, true, true),
-	allowTimeSync(false),
-	timeSyncPeriod(TimeDuration::Minutes(10)),
-	unsolPackDelay(TimeDuration::Milliseconds(200)),
-	unsolRetryDelay(TimeDuration::Seconds(2)),
-	selectTimeout(TimeDuration::Seconds(5)),
-	maxFragSize(sizes::DEFAULT_APDU_BUFFER_SIZE),	
-	eventBinary(EventBinaryResponse::Group2Var1),
-	eventAnalog(EventAnalogResponse::Group32Var1),
-	eventCounter(EventCounterResponse::Group22Var1)
-{}
+	StaticResponseConfig::StaticResponseConfig() :
+		binary(StaticBinaryResponse::Group1Var2),
+		doubleBinary(StaticDoubleBinaryResponse::Group3Var2),
+		analog(StaticAnalogResponse::Group30Var1),
+		counter(StaticCounterResponse::Group20Var1),
+		frozenCounter(StaticFrozenCounterResponse::Group21Var1),
+		binaryOutputStatus(StaticBinaryOutputStatusResponse::Group10Var2),
+		analogOutputStatus(StaticAnalogOutputStatusResponse::Group40Var1)
+	{}
+
 
 }
-
 

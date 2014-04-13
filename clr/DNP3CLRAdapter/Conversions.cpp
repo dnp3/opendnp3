@@ -334,11 +334,11 @@ opendnp3::OutstationConfig Conversions::convertConfig(OutstationConfig^ config)
 	sc.unsolRetryDelay = convertMilliseconds(config->unsolRetryDelayMs);
 	sc.selectTimeout = convertMilliseconds(config->selectTimeoutMs);
 	sc.maxFragSize = config->maxFragSize;
-	sc.staticBinary = convert(config->staticBinary);
-	sc.staticAnalog = convert(config->staticAnalog);
-	sc.staticCounter = convert(config->staticCounter);
-	sc.staticFrozenCounter = convert(config->staticFrozenCounter);
-	sc.staticAnalogOutputStatus = convert(config->staticAnalogOutputStatus);
+	sc.staticDefaults.binary = convert(config->staticBinary);
+	sc.staticDefaults.analog = convert(config->staticAnalog);
+	sc.staticDefaults.counter = convert(config->staticCounter);
+	sc.staticDefaults.frozenCounter = convert(config->staticFrozenCounter);
+	sc.staticDefaults.analogOutputStatus = convert(config->staticAnalogOutputStatus);
 	sc.eventBinary = convert(config->eventBinary);
 	sc.eventAnalog = convert(config->eventAnalog);
 	sc.eventCounter = convert(config->eventCounter);

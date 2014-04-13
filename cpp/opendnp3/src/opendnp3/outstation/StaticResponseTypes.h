@@ -23,7 +23,7 @@
 
 #include "opendnp3/app/MeasurementTypes.h"
 
-#include "opendnp3/outstation/OutstationConfig.h"
+#include "opendnp3/outstation/StaticResponseConfig.h"
 #include "opendnp3/outstation/StaticLoader.h"
 
 namespace opendnp3
@@ -39,7 +39,7 @@ public:
 
 	StaticResponseTypes();
 
-	StaticResponseTypes(const OutstationConfig& arCfg);
+	StaticResponseTypes(const StaticResponseConfig& arCfg);
 
 	template <class T>
 	StaticLoadFun GetLoader();
@@ -55,7 +55,7 @@ private:
 	const StaticLoadFun pStaticAnalogOutputStatusLoader;
 
 	static StaticLoadFun GetStaticBinary(StaticBinaryResponse rsp);
-	static StaticLoadFun GetStaticDoubleBinary(); // TODO
+	static StaticLoadFun GetStaticDoubleBinary(StaticDoubleBinaryResponse rsp);
 	static StaticLoadFun GetStaticCounter(StaticCounterResponse rsp);
 	static StaticLoadFun GetStaticFrozenCounter(StaticFrozenCounterResponse rsp);
 	static StaticLoadFun GetStaticAnalog(StaticAnalogResponse rsp);
