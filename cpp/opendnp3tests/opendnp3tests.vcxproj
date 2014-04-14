@@ -316,6 +316,7 @@
     <ClCompile Include="src\TestMaster.cpp" />
     <ClCompile Include="src\TestNewOutstation.cpp" />
     <ClCompile Include="src\TestNewOutstationCommandResponses.cpp" />
+    <ClCompile Include="src\TestNewOutstationEventResponses.cpp" />
     <ClCompile Include="src\TestOutstation.cpp" />
     <ClCompile Include="src\TestOutstationCommandResponses.cpp" />
     <ClCompile Include="src\TestOutstationEventResponses.cpp" />

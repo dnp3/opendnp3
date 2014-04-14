@@ -152,8 +152,9 @@ void NewOutstation::OnReceiveSolConfirm(const APDURecord& request)
 				openpal::Transaction tx(context.pDatabase);
 				context.pDatabase->DoubleBuffer();
 				auto control = context.rspContext.Load(response);
-				control.SEQ = request.control.SEQ + 1;
+				control.SEQ = OutstationContext::NextSeq(request.control.SEQ);
 				response.SetControl(control);
+				response.SetIIN(context.staticIIN | context.GetDynamicIIN());
 				this->BeginTransmission(control.SEQ, control.CON, response.ToReadOnly());
 			}			
 		}
@@ -264,7 +265,7 @@ void NewOutstation::ProcessRequest(const APDURecord& request, const openpal::Rea
 	response.SetFunction(FunctionCode::RESPONSE);	
 	response.SetControl(request.control);
 	IINField iin = BuildResponse(request, response);		
-	response.SetIIN(iin | context.staticIIN);
+	response.SetIIN(iin | context.staticIIN | context.GetDynamicIIN());
 	this->BeginTransmission(request.control.SEQ, response.GetControl().CON, response.ToReadOnly());	
 }
 

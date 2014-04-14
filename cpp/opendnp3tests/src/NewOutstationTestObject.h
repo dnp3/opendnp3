@@ -46,7 +46,7 @@ class NewOutstationTestObject
 public:
 	NewOutstationTestObject(const NewOutstationConfig& config,
 							const DatabaseTemplate& dbTemplate = DatabaseTemplate(), 
-							const EventBufferConfig& ebConfig = EventBufferConfig());
+							const EventBufferConfig& ebConfig = EventBufferConfig::AllTypes(0));
 
 	std::vector<openpal::UTCTimestamp> timestamps;
 

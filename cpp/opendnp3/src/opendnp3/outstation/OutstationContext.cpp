@@ -76,6 +76,29 @@ OutstationContext::OutstationContext(
 	}	
 }
 
+IINField OutstationContext::GetDynamicIIN()
+{
+	IINField ret;
+	auto tracker = eventBuffer.UnselectedEvents();
+	if (tracker.class1.HasEvents())
+	{
+		ret.Set(IINBit::CLASS1_EVENTS);
+	}
+	if (tracker.class2.HasEvents())
+	{
+		ret.Set(IINBit::CLASS2_EVENTS);
+	}
+	if (tracker.class3.HasEvents())
+	{
+		ret.Set(IINBit::CLASS3_EVENTS);
+	}
+	if (eventBuffer.IsOverflown())
+	{
+		ret.Set(IINBit::EVENT_BUFFER_OVERFLOW);
+	}
+	return ret;
+}
+
 APDUResponse OutstationContext::StartNewResponse()
 {	
 	return APDUResponse(txBuffer.GetWriteBuffer(params.maxTxFragSize));

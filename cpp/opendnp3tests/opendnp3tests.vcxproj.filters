@@ -469,5 +469,8 @@
     <ClCompile Include="src\TestNewOutstationCommandResponses.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\TestNewOutstationEventResponses.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

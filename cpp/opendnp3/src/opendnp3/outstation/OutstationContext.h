@@ -92,6 +92,8 @@ class OutstationContext
 
 	// ------ Helper methods for dealing with state ------
 
+	IINField GetDynamicIIN();
+
 	APDUResponse StartNewResponse();
 	bool RecordLastRequest(const openpal::ReadOnlyBuffer& fragment);
 
