@@ -239,13 +239,15 @@ void NewOutstation::OnReceiveSolRequest(const APDURecord& request, const openpal
 				}
 			}
 			else  // completely new sequence #
-			{
+			{				
+				context.solSeqN = request.control.SEQ;
 				this->ProcessRequest(request, fragment);
 			}
 		}
 		else
 		{
-			context.firstValidRequestAccepted = true;
+			context.solSeqN = request.control.SEQ;
+			context.firstValidRequestAccepted = true;		
 			this->ProcessRequest(request, fragment);
 		}	
 	}
@@ -269,7 +271,6 @@ void NewOutstation::ProcessRequest(const APDURecord& request, const openpal::Rea
 void NewOutstation::BeginTransmission(uint8_t seq, bool confirm, const ReadOnlyBuffer& response)
 {
 	context.isSending = true;	
-	context.solSeqN = seq;
 	if (confirm)
 	{
 		context.expectedConfirmSeq = seq;
@@ -360,7 +361,7 @@ IINField NewOutstation::HandleDirectOperate(const APDURecord& request, APDURespo
 	else
 	{
 		CommandActionAdapter adapter(context.pCommandHandler, false);
-		CommandResponseHandler handler(context.logger, 1, &adapter, response);	// TODO support multiple controls
+		CommandResponseHandler handler(context.logger, context.params.maxControlsPerRequest, &adapter, response);
 		auto result = APDUParser::ParseTwoPass(request.objects, &handler, &context.logger);
 		return IINFromParseResult(result);
 	}
@@ -377,7 +378,7 @@ IINField NewOutstation::HandleSelect(const APDURecord& request, APDUResponse& re
 	else
 	{		
 		CommandActionAdapter adapter(context.pCommandHandler, true);		
-		CommandResponseHandler handler(context.logger, 1, &adapter, response); // TODO support more controls
+		CommandResponseHandler handler(context.logger, context.params.maxControlsPerRequest, &adapter, response);
 		auto result = APDUParser::ParseTwoPass(request.objects, &handler, &context.logger);
 		if (result == APDUParser::Result::OK)
 		{
@@ -411,7 +412,7 @@ IINField NewOutstation::HandleOperate(const APDURecord& request, APDUResponse& r
 		if (context.IsOperateSequenceValid())
 		{				
 			auto elapsed = context.pExecutor->GetTime().milliseconds - context.selectTime.milliseconds;
-			if (elapsed < 5000) // TODO - make timeout configurable
+			if (elapsed < context.params.selectTimeout.GetMilliseconds())
 			{
 				if (context.lastValidRequest.Size() >= 2)
 				{
@@ -420,7 +421,7 @@ IINField NewOutstation::HandleOperate(const APDURecord& request, APDUResponse& r
 					if (copy.Equals(request.objects))
 					{
 						CommandActionAdapter adapter(context.pCommandHandler, false);
-						CommandResponseHandler handler(context.logger, 1, &adapter, response);
+						CommandResponseHandler handler(context.logger, context.params.maxControlsPerRequest, &adapter, response);
 						auto result = APDUParser::ParseTwoPass(request.objects, &handler, &context.logger);
 						return IINFromParseResult(result);
 					}
@@ -466,7 +467,7 @@ IINField NewOutstation::HandleDelayMeasure(const APDURecord& request, APDURespon
 IINField NewOutstation::HandleCommandWithConstant(const APDURecord& request, APDUResponse& response, CommandStatus status)
 {
 	ConstantCommandAction constant(status);
-	CommandResponseHandler handler(context.logger, 1, &constant, response); // TODO, make controls
+	CommandResponseHandler handler(context.logger, context.params.maxControlsPerRequest, &constant, response);
 	auto result = APDUParser::ParseTwoPass(request.objects, &handler, &context.logger);
 	return IINFromParseResult(result);
 }

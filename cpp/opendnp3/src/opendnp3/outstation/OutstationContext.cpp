@@ -68,7 +68,7 @@ OutstationContext::OutstationContext(
 	if (params.maxTxFragSize < sizes::MIN_APDU_SIZE)
 	{
 		FORMAT_LOG_BLOCK(logger, flags::WARN, 
-			"maxTxFragSize of %u size is less than minimum of %u", 
+			"setting maxTxFragSize of %u to minimum of %u", 
 			static_cast<unsigned int>(params.maxTxFragSize), 
 			static_cast<unsigned int>(sizes::MIN_APDU_SIZE));
 

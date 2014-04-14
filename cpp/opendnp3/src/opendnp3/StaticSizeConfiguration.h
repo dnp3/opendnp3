@@ -51,7 +51,7 @@ static const uint32_t MAX_OBJECTS_PER_APDU = 32768;
 static const uint8_t MAX_COMMAND_QUEUE_SIZE = 16;
 
 /// The miniumum allowed size for rx and tx APDUs
-static const uint32_t MIN_APDU_SIZE = 249;
+static const uint32_t MIN_APDU_SIZE = 20;
 
 // the maximum size of a transmitted APDU
 static const uint32_t MAX_TX_APDU_SIZE = OPENDNP3_MAX_TX_APDU_SIZE;

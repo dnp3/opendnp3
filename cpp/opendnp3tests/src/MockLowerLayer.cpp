@@ -66,7 +66,7 @@ std::string MockLowerLayer::PopWriteAsHex()
 {
 	if (sendQueue.empty())
 	{
-		return "NO MORE FRAGMENTS";
+		return "";
 	}
 	else
 	{

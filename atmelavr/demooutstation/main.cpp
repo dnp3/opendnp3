@@ -39,11 +39,8 @@ int main()
 	
 	// 10 binary events, 0 others
 	StaticallyAllocatedEventBuffer<10, 0, 0, 0, 0, 0, 0> eventBuffers;
-	
-	NewOutstationConfig config;
-	config.params.maxTxFragSize = 10;
-					
-	NewOutstation outstation(config, exe, root, stack.transport, AVRCommandHandler::Inst(), NullTimeWriteHandler::Inst(), database, eventBuffers.GetFacade());
+						
+	NewOutstation outstation(NewOutstationConfig(), exe, root, stack.transport, AVRCommandHandler::Inst(), NullTimeWriteHandler::Inst(), database, eventBuffers.GetFacade());
 		
 	stack.transport.SetAppLayer(&outstation);
 			
