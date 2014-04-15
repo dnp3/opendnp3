@@ -163,6 +163,7 @@ cpp/opendnp3/src/opendnp3/outstation/EventCount.cpp \
 cpp/opendnp3/src/opendnp3/outstation/EventBufferConfig.cpp \
 cpp/opendnp3/src/opendnp3/outstation/EventBufferFacade.cpp \
 cpp/opendnp3/src/opendnp3/outstation/EventResponseContext.cpp \
+cpp/opendnp3/src/opendnp3/outstation/EventResponseConfig.cpp \
 cpp/opendnp3/src/opendnp3/outstation/IINHelpers.cpp \
 cpp/opendnp3/src/opendnp3/outstation/ITimeWriteHandler.cpp \
 cpp/opendnp3/src/opendnp3/outstation/OutstationConfig.cpp \
@@ -176,6 +177,7 @@ cpp/opendnp3/src/opendnp3/outstation/SelectionCriteria.cpp \
 cpp/opendnp3/src/opendnp3/outstation/SelectionIterator.cpp \
 cpp/opendnp3/src/opendnp3/outstation/SimpleCommandHandler.cpp \
 cpp/opendnp3/src/opendnp3/outstation/StaticResponseContext.cpp \
+cpp/opendnp3/src/opendnp3/outstation/StaticResponseConfig.cpp \
 cpp/opendnp3/src/opendnp3/outstation/StaticResponseTypes.cpp \
 cpp/opendnp3/src/opendnp3/outstation/TimeTransaction.cpp \
 cpp/opendnp3/src/opendnp3/outstation/WriteHandler.cpp \
