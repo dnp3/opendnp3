@@ -26,7 +26,6 @@
 #include <openpal/LogRoot.h>
 #include <openpal/AsyncLayerInterfaces.h>
 
-#include "opendnp3/StaticSizeConfiguration.h"
 #include "opendnp3/outstation/Database.h"
 #include "opendnp3/outstation/ResponseContext.h"
 #include "opendnp3/outstation/NewOutstationConfig.h"
@@ -36,6 +35,9 @@
 #include "opendnp3/app/APDUResponse.h"
 #include "opendnp3/outstation/ICommandHandler.h"
 #include "opendnp3/outstation/ITimeWriteHandler.h"
+
+#include "opendnp3/StaticSizeConfiguration.h"
+#include "opendnp3/Settable.h"
 
 namespace opendnp3
 {
@@ -85,9 +87,10 @@ class OutstationContext
 
 	uint8_t solSeqN;
 	uint8_t expectedConfirmSeq;
-	uint8_t unsolSeq;
-	openpal::ReadOnlyBuffer lastValidRequest;	// points to bytes in rxBuffer
-	openpal::ReadOnlyBuffer lastResponse;		// points to bytes in txBuffer
+	uint8_t unsolSeq;	
+	openpal::ReadOnlyBuffer lastValidRequest;			// points to bytes in rxBuffer
+	openpal::ReadOnlyBuffer lastResponse;				// points to bytes in txBuffer
+	Settable<openpal::ReadOnlyBuffer> deferredRequest;	// points to byte in rxBuffer
 	ResponseContext rspContext;
 
 	// ------ Helper methods for dealing with state ------
@@ -95,7 +98,7 @@ class OutstationContext
 	IINField GetDynamicIIN();
 
 	APDUResponse StartNewResponse();
-	bool RecordLastRequest(const openpal::ReadOnlyBuffer& fragment);
+	openpal::ReadOnlyBuffer RecordLastRequest(const openpal::ReadOnlyBuffer& fragment);
 
 	void SetOnline();
 	void SetOffline();

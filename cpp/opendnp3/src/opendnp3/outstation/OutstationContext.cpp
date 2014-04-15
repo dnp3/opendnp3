@@ -104,16 +104,15 @@ APDUResponse OutstationContext::StartNewResponse()
 	return APDUResponse(txBuffer.GetWriteBuffer(params.maxTxFragSize));
 }
 
-bool OutstationContext::RecordLastRequest(const openpal::ReadOnlyBuffer& fragment)
+ReadOnlyBuffer OutstationContext::RecordLastRequest(const openpal::ReadOnlyBuffer& fragment)
 {
 	if (fragment.Size() <= rxBuffer.Size())
 	{
-		lastValidRequest = fragment.CopyTo(rxBuffer.Buffer());
-		return true;
+		return fragment.CopyTo(rxBuffer.Buffer());		
 	}
 	else
 	{
-		return false;
+		return ReadOnlyBuffer::Empty();
 	}
 }
 
@@ -128,6 +127,7 @@ void OutstationContext::SetOffline()
 	isSending = false;
 	solConfirmWait = false;
 	firstValidRequestAccepted = false;
+	deferredRequest.Clear();
 	rspContext.Reset();
 	CancelConfirmTimer();
 }

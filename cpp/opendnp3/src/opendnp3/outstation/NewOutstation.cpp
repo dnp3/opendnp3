@@ -188,18 +188,13 @@ void NewOutstation::OnSendResult(bool isSucccess)
 
 void NewOutstation::OnSolConfirmTimeout()
 {
-	context.pConfirmTimer = nullptr;
-
-	if (context.solConfirmWait)
+	if (context.solConfirmWait && context.pConfirmTimer)
 	{
+		context.pConfirmTimer = nullptr;
 		context.solConfirmWait = false;
 		context.eventBuffer.Reset();
-		context.rspContext.Reset();		
-	}
-	else
-	{
-		// TODO - some kind of log error?
-	}
+		context.rspContext.Reset();
+	}	
 }
 
 void NewOutstation::EnterIdleState()
@@ -213,7 +208,7 @@ void NewOutstation::CheckForIdleState()
 {
 	if (context.IsIdle())
 	{
-		// check for idle actions
+		// TODO - check for idle actions
 	}
 }
 
@@ -254,7 +249,18 @@ void NewOutstation::OnReceiveSolRequest(const APDURecord& request, const openpal
 	}
 	else
 	{
-		// TODO - not idle
+		if (context.isSending)
+		{
+			// since we can't answer right now, store the request for later processing
+			context.deferredRequest.Set(context.RecordLastRequest(fragment));
+		}
+		else
+		{
+			if (context.solConfirmWait)
+			{
+
+			}
+		}		
 	}		
 }
 

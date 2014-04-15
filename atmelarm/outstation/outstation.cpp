@@ -1,6 +1,7 @@
 
 #include "sam.h"
 
+/*
 #include <opendnp3/app/ApplicationStack.h>
 #include <opendnp3/link/LinkLayerRouter.h>
 #include <opendnp3/outstation/StaticallyAllocatedDatabase.h>
@@ -15,12 +16,14 @@
 #include <openpal/LogRoot.h>
 
 using namespace opendnp3;
+*/
 
 int main(void)
 {
     /* Initialize the SAM system */
     SystemInit();
 
+/*
     //AVRExecutor exe;
     LogRoot root(nullptr, "root", 0);
 
@@ -43,17 +46,17 @@ int main(void)
 
     stack.application.SetUser(&outstation);
 
-	/*
+
     AVRLinkParser parser(root, stack.link);
     stack.link.SetRouter(&parser);
     stack.link.OnLowerLayerUp();
-	*/
+
     
     // exe.Init();
+*/
 
     for (;;)
     {
-	    //exe.RunOne();
-	    // parser.Tick();
+
     }    
 }
