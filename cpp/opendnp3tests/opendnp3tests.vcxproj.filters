@@ -226,9 +226,6 @@
     <ClCompile Include="src\BufferTestObject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\ComparingDataObserver.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\CopyableBuffer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -470,6 +467,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\TestNewOutstationEventResponses.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ComparingDataObserver.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

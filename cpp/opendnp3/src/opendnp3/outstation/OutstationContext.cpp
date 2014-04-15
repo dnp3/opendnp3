@@ -108,7 +108,8 @@ ReadOnlyBuffer OutstationContext::RecordLastRequest(const openpal::ReadOnlyBuffe
 {
 	if (fragment.Size() <= rxBuffer.Size())
 	{
-		return fragment.CopyTo(rxBuffer.Buffer());		
+		lastValidRequest = fragment.CopyTo(rxBuffer.Buffer());
+		return lastValidRequest;
 	}
 	else
 	{

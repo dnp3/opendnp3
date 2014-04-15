@@ -265,12 +265,12 @@ void NewOutstation::OnReceiveSolRequest(const APDURecord& request, const openpal
 }
 
 void NewOutstation::ProcessRequest(const APDURecord& request, const openpal::ReadOnlyBuffer& fragment)
-{	
-	context.RecordLastRequest(fragment);
+{		
 	auto response = context.StartNewResponse();
 	response.SetFunction(FunctionCode::RESPONSE);	
 	response.SetControl(request.control);
-	IINField iin = BuildResponse(request, response);		
+	IINField iin = BuildResponse(request, response);
+	context.RecordLastRequest(fragment);
 	response.SetIIN(iin | context.staticIIN | context.GetDynamicIIN());
 	this->BeginTransmission(request.control.SEQ, response.GetControl().CON, response.ToReadOnly());	
 }

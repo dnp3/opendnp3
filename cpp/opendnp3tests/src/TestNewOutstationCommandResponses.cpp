@@ -136,7 +136,7 @@ TEST_CASE(SUITE("SelectOperateNonMatchingRequests"))
 
 	// operate
 	t.SendToOutstation("C1 04 0C 01 17 01 04 01 01 01 00 00 00 01 00 00 00 00");
-	REQUIRE(t.lower.PopWriteAsHex() == "C1 81 80 00 0C 01 17 01 04 01 01 01 00 00 00 01 00 00 00 00"); // 0x02 no select
+	REQUIRE(t.lower.PopWriteAsHex() == "C1 81 80 00 0C 01 17 01 04 01 01 01 00 00 00 01 00 00 00 02"); // 0x02 no select
 }
 
 TEST_CASE(SUITE("SelectOperateCROBSameSequenceNumber"))
