@@ -188,6 +188,7 @@
     <ClInclude Include="src\opendnp3\outstation\EventMetadata.h" />
     <ClInclude Include="src\opendnp3\outstation\EventResponseConfig.h" />
     <ClInclude Include="src\opendnp3\outstation\EventResponseContext.h" />
+    <ClInclude Include="src\opendnp3\outstation\EventResponseTypes.h" />
     <ClInclude Include="src\opendnp3\outstation\EventType.h" />
     <ClInclude Include="src\opendnp3\outstation\ICommandAction.h" />
     <ClInclude Include="src\opendnp3\outstation\ICommandHandler.h" />
@@ -343,6 +344,7 @@
     <ClCompile Include="src\opendnp3\outstation\EventCount.cpp" />
     <ClCompile Include="src\opendnp3\outstation\EventResponseConfig.cpp" />
     <ClCompile Include="src\opendnp3\outstation\EventResponseContext.cpp" />
+    <ClCompile Include="src\opendnp3\outstation\EventResponseTypes.cpp" />
     <ClCompile Include="src\opendnp3\outstation\IINHelpers.cpp" />
     <ClCompile Include="src\opendnp3\outstation\ITimeWriteHandler.cpp" />
     <ClCompile Include="src\opendnp3\outstation\NewOutstation.cpp" />

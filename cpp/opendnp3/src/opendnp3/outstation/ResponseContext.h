@@ -43,7 +43,7 @@ class ResponseContext : private openpal::Uncopyable
 
 public:
 
-	ResponseContext(Database* pDatabase, OutstationEventBuffer* pBuffer, const StaticResponseTypes& rspTypes);
+	ResponseContext(Database* pDatabase, OutstationEventBuffer* pBuffer, const StaticResponseTypes& rspTypes, const EventResponseConfig& config);
 
 	IINField ReadAllObjects(const GroupVariationRecord& record);
 	IINField ReadRange(const GroupVariationRecord& record, const StaticRange& range);

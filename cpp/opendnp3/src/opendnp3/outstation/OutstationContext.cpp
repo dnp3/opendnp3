@@ -60,7 +60,7 @@ OutstationContext::OutstationContext(
 	solSeqN(0),
 	expectedConfirmSeq(0),
 	unsolSeq(0),
-	rspContext(&database, &eventBuffer, StaticResponseTypes(config.defaultStaticResponses))	
+	rspContext(&database, &eventBuffer, StaticResponseTypes(config.defaultStaticResponses), config.defaultEventResponses)	
 {
 	pDatabase->SetEventBuffer(eventBuffer);
 	staticIIN.Set(IINBit::DEVICE_RESTART);

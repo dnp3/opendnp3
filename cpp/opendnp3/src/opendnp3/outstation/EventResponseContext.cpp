@@ -23,21 +23,18 @@
 
 #include <openpal/Serialization.h>
 
-#include "opendnp3/objects/Group2.h"
-#include "opendnp3/objects/Group4.h"
-#include "opendnp3/objects/Group11.h"
-#include "opendnp3/objects/Group22.h"
-#include "opendnp3/objects/Group23.h"
-#include "opendnp3/objects/Group32.h"
-#include "opendnp3/objects/Group42.h"
+#include "EventResponseTypes.h"
 
 using namespace openpal;
 
 namespace opendnp3
 {
 
-EventResponseContext::EventResponseContext(OutstationEventBuffer* pBuffer_) : pBuffer(pBuffer_)
-{}
+EventResponseContext::EventResponseContext(OutstationEventBuffer* pBuffer_, const EventResponseConfig& config_) : 
+	pBuffer(pBuffer_),
+	config(config_)
+{
+}
 
 bool EventResponseContext::IsComplete() const
 {
@@ -114,43 +111,43 @@ EventResponseContext::Result EventResponseContext::Iterate(ObjectWriter& writer,
 		switch (current.Get())
 		{
 		case(EventType::Binary) :
-			if (!this->WriteFullHeader<Binary>(writer, count, iterator, Group2Var1Serializer::Inst()))
+			if (!this->WriteFullHeader<Binary>(writer, count, iterator, EventResponseTypes::Lookup(config.binary)))
 			{
 				return Result(false, count);
 			}
 			break;
 		case(EventType::DoubleBitBinary) :
-			if (!this->WriteFullHeader<DoubleBitBinary>(writer, count, iterator, Group4Var1Serializer::Inst()))
+			if (!this->WriteFullHeader<DoubleBitBinary>(writer, count, iterator, EventResponseTypes::Lookup(config.doubleBinary)))
 			{
 				return Result(false, count);
 			}
 			break;
 		case(EventType::Counter) :
-			if (!this->WriteFullHeader<Counter>(writer, count, iterator, Group22Var1Serializer::Inst()))
+			if (!this->WriteFullHeader<Counter>(writer, count, iterator, EventResponseTypes::Lookup(config.counter)))
 			{
 				return Result(false, count);
 			}
 			break;
 		case(EventType::FrozenCounter) :
-			if (!this->WriteFullHeader<FrozenCounter>(writer, count, iterator, Group23Var1Serializer::Inst()))
+			if (!this->WriteFullHeader<FrozenCounter>(writer, count, iterator, EventResponseTypes::Lookup(config.frozenCounter)))
 			{
 				return Result(false, count);
 			}
 			break;
 		case(EventType::Analog) :
-			if (!this->WriteFullHeader<Analog>(writer, count, iterator, Group32Var1Serializer::Inst()))
+			if (!this->WriteFullHeader<Analog>(writer, count, iterator, EventResponseTypes::Lookup(config.analog)))
 			{
 				return Result(false, count);
 			}
 			break;
 		case(EventType::BinaryOutputStatus) :
-			if (!this->WriteFullHeader<BinaryOutputStatus>(writer, count, iterator, Group11Var1Serializer::Inst()))
+			if (!this->WriteFullHeader<BinaryOutputStatus>(writer, count, iterator, EventResponseTypes::Lookup(config.binaryOutputStatus)))
 			{
 				return Result(false, count);
 			}
 			break;
 		case(EventType::AnalogOutputStatus) :
-			if (!this->WriteFullHeader<AnalogOutputStatus>(writer, count, iterator, Group42Var1Serializer::Inst()))
+			if (!this->WriteFullHeader<AnalogOutputStatus>(writer, count, iterator, EventResponseTypes::Lookup(config.analogOutputStatus)))
 			{
 				return Result(false, count);
 			}

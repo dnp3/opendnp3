@@ -81,6 +81,7 @@ int main(int argc, char* argv[])
 
 	NewOutstationConfig config;	
 	config.params.maxTxFragSize = 10;
+	config.defaultEventResponses.binary = EventBinaryResponse::Group2Var2;
 	NewOutstation outstation(config, executor, root, stack.transport, commandHandler, NullTimeWriteHandler::Inst(), database, eventBuffers.GetFacade());
 
 	stack.transport.SetAppLayer(&outstation);

@@ -26,6 +26,7 @@
 
 #include "opendnp3/app/APDUResponse.h"
 #include "opendnp3/outstation/OutstationEventBuffer.h"
+#include "opendnp3/outstation/EventResponseConfig.h"
 #include "opendnp3/outstation/SelectionCriteria.h"
 
 namespace opendnp3
@@ -57,7 +58,7 @@ public:
 	};
 
 
-	EventResponseContext(OutstationEventBuffer* pBuffer_);
+	EventResponseContext(OutstationEventBuffer* pBuffer_, const EventResponseConfig& config_);
 
 	bool IsComplete() const;
 
@@ -71,7 +72,8 @@ public:
 private:
 
 	SelectionCriteria criteria;
-	OutstationEventBuffer* pBuffer;
+	OutstationEventBuffer* pBuffer;	
+	EventResponseConfig config;
 
 	// true if the event buffer was exhausted, false if apdu is full
 	Result Iterate(ObjectWriter& writer, SelectionIterator& iterator);

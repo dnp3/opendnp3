@@ -64,7 +64,7 @@ Outstation::Outstation(openpal::LogRoot& root,
 	mpUnsolTimer(nullptr),
 	mpTimeWriteHandler(pTimeWriteHandler),
 	eventBuffer(buffers),
-	rspContext(pDatabase, &eventBuffer, StaticResponseTypes(config.staticDefaults)),
+	rspContext(pDatabase, &eventBuffer, StaticResponseTypes(config.staticDefaults), config.eventDefaults),
 	mDeferredUnsol(false),
 	mStartupNullUnsol(false),
 	mpTimeTimer(nullptr)
