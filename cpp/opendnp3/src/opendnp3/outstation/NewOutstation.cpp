@@ -186,6 +186,11 @@ void NewOutstation::OnSendResult(bool isSucccess)
 	}
 }
 
+void NewOutstation::SetRequestTimeIIN()
+{
+	context.staticIIN.Set(IINBit::NEED_TIME);
+}
+
 void NewOutstation::OnSolConfirmTimeout()
 {
 	if (context.solConfirmWait && context.pConfirmTimer)
@@ -284,12 +289,7 @@ void NewOutstation::BeginTransmission(uint8_t seq, bool confirm, const ReadOnlyB
 		context.solConfirmWait = true;
 	}	
 	context.lastResponse = response;
-	context.pLower->BeginTransmit(response);
-	/*
-	auto output = response.ToReadOnly();
-	auto lambda = [this, output]() { this->context.pLower->BeginTransmit(output); };
-	context.pExecutor->PostLambda(lambda);
-	*/
+	context.pLower->BeginTransmit(response);	
 }
 
 void NewOutstation::OnReceiveUnsolConfirm(const APDURecord& record)

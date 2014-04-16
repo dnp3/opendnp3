@@ -41,6 +41,8 @@ class NewOutstation : public openpal::IUpperLayer
 					Database& database, 
 					const EventBufferFacade& buffers);
 	
+	/// ----- Implement IUpperLayer ------
+
 	virtual void OnLowerLayerUp() override final;
 	
 	virtual void OnLowerLayerDown() override final;
@@ -48,6 +50,11 @@ class NewOutstation : public openpal::IUpperLayer
 	virtual void OnReceive(const openpal::ReadOnlyBuffer&) override final;
 	
 	virtual void OnSendResult(bool isSucccess) override final;
+
+
+	/// ----- Other public members ------
+
+	void SetRequestTimeIIN();
 	
 	private:
 

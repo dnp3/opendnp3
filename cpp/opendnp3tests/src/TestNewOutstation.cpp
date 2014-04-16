@@ -103,8 +103,10 @@ TEST_CASE(SUITE("DelayMeasure"))
 	NewOutstationTestObject t(config);
 	t.outstation.OnLowerLayerUp();
 
+	t.outstation.SetRequestTimeIIN();
+
 	t.SendToOutstation("C0 17"); //delay measure
-	REQUIRE(t.lower.PopWriteAsHex() == "C0 81 80 00 34 02 07 01 00 00"); // response, Grp51Var2, count 1, value == 00 00
+	REQUIRE(t.lower.PopWriteAsHex() == "C0 81 90 00 34 02 07 01 00 00"); // response, Grp51Var2, count 1, value == 00 00
 }
 
 TEST_CASE(SUITE("DelayMeasureExtraData"))
@@ -123,8 +125,9 @@ TEST_CASE(SUITE("WriteTimeDate"))
 	NewOutstationTestObject t(config);	
 	t.outstation.OnLowerLayerUp();
 
-	t.SendToOutstation("C0 02 32 01 07 01 D2 04 00 00 00 00"); // write Grp50Var1, value = 1234 ms after epoch
-	REQUIRE(t.lower.PopWriteAsHex() == "C0 81 80 00");
+
+	t.SendToOutstation("C1 02 32 01 07 01 D2 04 00 00 00 00"); // write Grp50Var1, value = 1234 ms after epoch
+	REQUIRE(t.lower.PopWriteAsHex() == "C1 81 80 00");
 	REQUIRE(t.timestamps.size() == 1);
 	REQUIRE(t.timestamps.front().msSinceEpoch == 1234);
 
