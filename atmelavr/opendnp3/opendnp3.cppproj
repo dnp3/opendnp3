@@ -1002,6 +1002,14 @@
       <SubType>compile</SubType>
       <Link>outstation\EventResponseContext.h</Link>
     </Compile>
+    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\EventResponseTypes.cpp">
+      <SubType>compile</SubType>
+      <Link>outstation\EventResponseTypes.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\EventResponseTypes.h">
+      <SubType>compile</SubType>
+      <Link>outstation\EventResponseTypes.h</Link>
+    </Compile>
     <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\IINHelpers.cpp">
       <SubType>compile</SubType>
       <Link>outstation\IINHelpers.cpp</Link>

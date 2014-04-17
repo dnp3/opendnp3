@@ -38,7 +38,7 @@ int main()
 	Database database(staticBuffers.GetFacade());
 	
 	// 10 binary events, 0 others
-	StaticallyAllocatedEventBuffer<10, 0, 0, 0, 0, 0, 0> eventBuffers;
+	StaticallyAllocatedEventBuffer<5, 0, 0, 0, 0, 0, 0> eventBuffers;
 						
 	NewOutstation outstation(NewOutstationConfig(), exe, root, stack.transport, AVRCommandHandler::Inst(), NullTimeWriteHandler::Inst(), database, eventBuffers.GetFacade());
 		
