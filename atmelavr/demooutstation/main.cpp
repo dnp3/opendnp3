@@ -39,8 +39,10 @@ int main()
 	
 	// 10 binary events, 0 others
 	StaticallyAllocatedEventBuffer<5, 0, 0, 0, 0, 0, 0> eventBuffers;
+	NewOutstationConfig config;
+	config.defaultEventResponses.binary = EventBinaryResponse::Group2Var2;
 						
-	NewOutstation outstation(NewOutstationConfig(), exe, root, stack.transport, AVRCommandHandler::Inst(), NullTimeWriteHandler::Inst(), database, eventBuffers.GetFacade());
+	NewOutstation outstation(config, exe, root, stack.transport, AVRCommandHandler::Inst(), NullTimeWriteHandler::Inst(), database, eventBuffers.GetFacade());
 		
 	stack.transport.SetAppLayer(&outstation);
 			
@@ -75,7 +77,7 @@ void ToggleBinaryIndex0Every(uint16_t milliseconds, IExecutor* pExecutor, Databa
 {
 	if(update)
 	{		
-		pDatabase->Update(Binary(value), 0);
+		pDatabase->Update(Binary(value, BQ_ONLINE, pExecutor->GetTime().milliseconds), 0);
 	}
 	
 	auto lambda = [pExecutor, pDatabase, value, milliseconds]() { ToggleBinaryIndex0Every(milliseconds, pExecutor, pDatabase, !value, true); };
