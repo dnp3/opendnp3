@@ -164,6 +164,7 @@ cpp/opendnp3/src/opendnp3/outstation/EventBufferConfig.cpp \
 cpp/opendnp3/src/opendnp3/outstation/EventBufferFacade.cpp \
 cpp/opendnp3/src/opendnp3/outstation/EventResponseContext.cpp \
 cpp/opendnp3/src/opendnp3/outstation/EventResponseConfig.cpp \
+cpp/opendnp3/src/opendnp3/outstation/EventResponseTypes.cpp \
 cpp/opendnp3/src/opendnp3/outstation/IINHelpers.cpp \
 cpp/opendnp3/src/opendnp3/outstation/ITimeWriteHandler.cpp \
 cpp/opendnp3/src/opendnp3/outstation/OutstationConfig.cpp \
