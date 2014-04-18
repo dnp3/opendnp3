@@ -76,11 +76,12 @@ void OutstationStateIdle::OnNewRequest(OutstationContext* pContext, const APDURe
 {
 	if (pContext->isSending)
 	{
-		// TODO
+		SIMPLE_LOG_BLOCK(pContext->logger, flags::WARN, "IdleTransmitting - Received new request while transmitting response, remote is flooding");
 	}
 	else
 	{
-		pContext->ProcessRequest(request, fragment);
+		pContext->solSeqN = request.control.SEQ;
+		pContext->RespondToRequest(request, fragment);
 	}
 }
 
@@ -88,7 +89,7 @@ void OutstationStateIdle::OnRepeatRequest(OutstationContext* pContext, const APD
 {
 	if (pContext->isSending)
 	{
-		// TODO
+		SIMPLE_LOG_BLOCK(pContext->logger, flags::WARN, "IdleTransmitting - Received repeat request while transmitting response, remote is flooding");
 	}
 	else
 	{
@@ -99,7 +100,7 @@ void OutstationStateIdle::OnRepeatRequest(OutstationContext* pContext, const APD
 
 void OutstationStateIdle::OnSendResult(OutstationContext* pContext, bool isSucccess)
 {
-	// TODO - enter full idle state, trigger deffered actions
+	pContext->OnEnterIdleState();
 }
 
 // --------------------- OutstationStateSolConfirmWait ----------------------
@@ -113,12 +114,33 @@ OutstationStateBase& OutstationStateSolConfirmWait::Inst()
 
 void OutstationStateSolConfirmWait::OnNewRequest(OutstationContext* pContext, const APDURecord& request, const openpal::ReadOnlyBuffer& fragment)
 {
-	// TODO
+	if (pContext->isSending)
+	{
+		SIMPLE_LOG_BLOCK(pContext->logger, flags::WARN, "SolConfirmWait - Received new request while transmitting response, remote is flooding");
+	}
+	else
+	{
+		pContext->solSeqN = request.control.SEQ;
+		pContext->CancelConfirmTimer();
+		pContext->pState = &OutstationStateIdle::Inst();
+		pContext->rspContext.Reset();
+		pContext->eventBuffer.Reset();
+		pContext->RespondToRequest(request, fragment);
+	}	
 }
 
 void OutstationStateSolConfirmWait::OnRepeatRequest(OutstationContext* pContext, const APDURecord& frag)
 {
-	// TODO
+	if (pContext->isSending)
+	{
+		SIMPLE_LOG_BLOCK(pContext->logger, flags::WARN, "SolConfirmWait - Received repeat request while transmitting response, remote is flooding");
+	}
+	else
+	{
+		pContext->CancelConfirmTimer();
+		pContext->isSending = true;
+		pContext->pLower->BeginTransmit(pContext->lastResponse);
+	}
 }
 
 void OutstationStateSolConfirmWait::OnSendResult(OutstationContext* pContext, bool isSucccess)
@@ -138,7 +160,7 @@ void OutstationStateSolConfirmWait::OnSolConfirm(OutstationContext* pContext, co
 			pContext->eventBuffer.Clear();
 			if (pContext->rspContext.IsComplete())
 			{
-				// TODO - Enter idle state
+				pContext->OnEnterIdleState();
 			}
 			else // Continue response
 			{
@@ -165,7 +187,7 @@ void OutstationStateSolConfirmWait::OnConfirmTimeout(OutstationContext* pContext
 		pContext->eventBuffer.Reset();
 		pContext->rspContext.Reset();
 		pContext->pState = &OutstationStateIdle::Inst();
-		// TODO enter IDLE state
+		pContext->OnEnterIdleState();
 	}
 }
 

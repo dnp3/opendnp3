@@ -42,6 +42,26 @@ TEST_CASE(SUITE("BlankExceptionScan"))
 	REQUIRE(t.lower.PopWriteAsHex() ==  "C0 81 80 00");
 }
 
+TEST_CASE(SUITE("ReceiveNewRequestSolConfirmWait"))
+{
+	NewOutstationConfig config;
+	NewOutstationTestObject t(config, DatabaseTemplate::BinaryOnly(1), EventBufferConfig::AllTypes(10));
+	t.outstation.OnLowerLayerUp();
+
+	{
+		Transaction tr(&t.db);
+		t.db.Update(Binary(true, BQ_ONLINE), 0);
+	}
+
+	t.SendToOutstation("C0 01 3C 02 06");
+	REQUIRE(t.lower.PopWriteAsHex() == "E0 81 80 00 02 01 28 01 00 00 00 81");
+	t.outstation.OnSendResult(true);
+	REQUIRE(1 == t.exe.NumActiveTimers());
+	t.SendToOutstation("C1 01 3C 02 06");
+	REQUIRE(t.lower.PopWriteAsHex() == "E1 81 80 00 02 01 28 01 00 00 00 81");
+}
+
+
 TEST_CASE(SUITE("ReadClass1WithSOE"))
 {
 	NewOutstationConfig config;

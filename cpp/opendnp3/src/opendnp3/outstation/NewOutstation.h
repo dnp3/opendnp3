@@ -58,22 +58,14 @@ class NewOutstation : public openpal::IUpperLayer
 	
 	private:
 
-	// ------ Internal events ------	
-	 
-	void EnterIdleState();
-
-	void CheckForIdleState();
+	// ------ Internal events ------		
 
 	void OnReceiveSolRequest(const APDURecord& request, const openpal::ReadOnlyBuffer& fragment);
 
 	OutstationContext context;
-	
-};
 
+};
 
 }
 
-
-
 #endif
-

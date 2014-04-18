@@ -74,6 +74,11 @@ public:
 		return mTimerMap.size() + mPostQueue.size();
 	}
 
+	size_t NumActiveTimers()
+	{
+		return mTimerMap.size();
+	}
+
 	openpal::MonotonicTimestamp NextTimerExpiration();
 
 	void AdvanceTime(openpal::TimeDuration aDuration);

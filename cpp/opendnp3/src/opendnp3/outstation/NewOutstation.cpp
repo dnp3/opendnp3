@@ -21,7 +21,6 @@
 
 #include "NewOutstation.h"
 
-#include "opendnp3/app/APDUHeaderParser.h"
 #include "opendnp3/app/APDUResponse.h"
 #include "opendnp3/LogLevels.h"
 
@@ -75,49 +74,7 @@ void NewOutstation::OnReceive(const openpal::ReadOnlyBuffer& fragment)
 	if (context.isOnline)
 	{
 		++context.rxFragCount;
-		APDURecord request;
-		auto result = APDUHeaderParser::ParseRequest(fragment, request);
-		if (result == APDUHeaderParser::Result::OK)
-		{	
-			// outstations should only process single fragment messages
-			if ((request.control.FIR && request.control.FIN) && !request.control.CON)
-			{
-				if (request.control.UNS)
-				{
-					if (request.function == FunctionCode::CONFIRM)
-					{
-						context.pState->OnUnsolConfirm(&context, request);
-					}
-					else
-					{
-						SIMPLE_LOG_BLOCK(context.logger, flags::WARN, "Received non-confirm unsol message");
-					}					
-				}
-				else
-				{
-					if (request.function == FunctionCode::CONFIRM)
-					{
-						context.pState->OnSolConfirm(&context, request);
-					}
-					else
-					{
-						this->OnReceiveSolRequest(request, fragment);
-					}					
-				}
-			}
-			else
-			{
-				FORMAT_LOG_BLOCK(context.logger, flags::WARN,
-					"Ignoring fragment with FIR: %u FIN: %u CON: %u", 
-					request.control.FIN, 
-					request.control.FIN,
-					request.control.CON);
-			}
-		}
-		else
-		{
-			SIMPLE_LOG_BLOCK(context.logger, flags::ERR, "ignoring malformed request header");
-		}
+		context.ExamineAPDU(fragment);		
 	}
 	else
 	{
@@ -141,21 +98,6 @@ void NewOutstation::OnSendResult(bool isSuccess)
 void NewOutstation::SetRequestTimeIIN()
 {
 	context.staticIIN.Set(IINBit::NEED_TIME);
-}
-
-void NewOutstation::EnterIdleState()
-{
-	// post these calls so the stack can unwind
-	auto lambda = [this]() { this->CheckForIdleState(); };
-	context.pExecutor->PostLambda(lambda);
-}
-
-void NewOutstation::CheckForIdleState()
-{
-	if (context.IsIdle())
-	{
-		// TODO - check for idle actions
-	}
 }
 
 void NewOutstation::OnReceiveSolRequest(const APDURecord& request, const openpal::ReadOnlyBuffer& fragment)

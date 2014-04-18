@@ -92,8 +92,7 @@ class OutstationContext
 	uint8_t expectedConfirmSeq;
 	uint8_t unsolSeq;	
 	openpal::ReadOnlyBuffer lastValidRequest;			// points to bytes in rxBuffer
-	openpal::ReadOnlyBuffer lastResponse;				// points to bytes in txBuffer
-	Settable<openpal::ReadOnlyBuffer> deferredRequest;	// points to byte in rxBuffer
+	openpal::ReadOnlyBuffer lastResponse;				// points to bytes in txBuffer	
 	ResponseContext rspContext;
 
 	// ------ Helper methods for dealing with state ------
@@ -101,6 +100,8 @@ class OutstationContext
 	IINField GetDynamicIIN();
 
 	APDUResponse StartNewResponse();
+
+	//void DeferRequest(const openpal::ReadOnlyBuffer& fragment);
 
 	openpal::ReadOnlyBuffer RecordLastRequest(const openpal::ReadOnlyBuffer& fragment);
 
@@ -115,18 +116,25 @@ class OutstationContext
 	
 	void StartConfirmTimer();
 
-	void ProcessRequest(const APDURecord& request, const openpal::ReadOnlyBuffer& fragment);
+	void ExamineAPDU(const openpal::ReadOnlyBuffer& fragment);
+
+	void OnReceiveSolRequest(const APDURecord& request, const openpal::ReadOnlyBuffer& fragment);
+
+	void RespondToRequest(const APDURecord& request, const openpal::ReadOnlyBuffer& fragment);
 
 	void BeginTransmission(uint8_t seq, const openpal::ReadOnlyBuffer& response);
 
 	IINField BuildResponse(const APDURecord& request, APDUResponse& response);
 
 	void ContinueMultiFragResponse(uint8_t seq);
-	
+
+	void OnEnterIdleState();
 
 	private:
 
 	// ------ Internal Events -------
+
+	void CheckForIdleState();
 
 	void OnSolConfirmTimeout();
 

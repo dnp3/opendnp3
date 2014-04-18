@@ -25,6 +25,8 @@
 #include "opendnp3/LogLevels.h"
 
 #include "opendnp3/app/APDUParser.h"
+#include "opendnp3/app/APDUHeaderParser.h"
+
 #include "opendnp3/outstation/ReadHandler.h"
 #include "opendnp3/outstation/WriteHandler.h"
 #include "opendnp3/outstation/IINHelpers.h"
@@ -135,8 +137,8 @@ void OutstationContext::SetOffline()
 	isOnline = false;
 	isSending = false;
 	pState = &OutstationStateIdle::Inst();
-	firstValidRequestAccepted = false;
-	deferredRequest.Clear();
+	firstValidRequestAccepted = false;	
+	eventBuffer.Reset();
 	rspContext.Reset();
 	CancelConfirmTimer();
 }
@@ -172,7 +174,86 @@ bool OutstationContext::CancelConfirmTimer()
 	}
 }
 
-void OutstationContext::ProcessRequest(const APDURecord& request, const openpal::ReadOnlyBuffer& fragment)
+void OutstationContext::ExamineAPDU(const openpal::ReadOnlyBuffer& fragment)
+{
+	APDURecord request;
+	auto result = APDUHeaderParser::ParseRequest(fragment, request);
+	if (result == APDUHeaderParser::Result::OK)
+	{
+		// outstations should only process single fragment messages
+		if ((request.control.FIR && request.control.FIN) && !request.control.CON)
+		{
+			if (request.control.UNS)
+			{
+				if (request.function == FunctionCode::CONFIRM)
+				{
+					pState->OnUnsolConfirm(this, request);
+				}
+				else
+				{
+					SIMPLE_LOG_BLOCK(logger, flags::WARN, "Received non-confirm unsol message");
+				}
+			}
+			else
+			{
+				if (request.function == FunctionCode::CONFIRM)
+				{
+					pState->OnSolConfirm(this, request);
+				}
+				else
+				{
+					this->OnReceiveSolRequest(request, fragment);
+				}
+			}
+		}
+		else
+		{
+			FORMAT_LOG_BLOCK(logger, flags::WARN,
+				"Ignoring fragment with FIR: %u FIN: %u CON: %u",
+				request.control.FIN,
+				request.control.FIN,
+				request.control.CON);
+		}
+	}
+	else
+	{
+		SIMPLE_LOG_BLOCK(logger, flags::ERR, "ignoring malformed request header");
+	}
+}
+
+void OutstationContext::OnReceiveSolRequest(const APDURecord& request, const openpal::ReadOnlyBuffer& fragment)
+{
+	if (this->firstValidRequestAccepted)
+	{
+		if (this->solSeqN == request.control.SEQ)
+		{
+			if (this->lastValidRequest.Equals(fragment))
+			{
+				this->pState->OnRepeatRequest(this, request);
+			}
+			else // new operation with same SEQ
+			{
+				if (request.function != FunctionCode::SELECT) // TODO - Ask why select is special?
+				{
+					this->pState->OnNewRequest(this, request, fragment);
+				}
+			}
+		}
+		else  // completely new sequence #
+		{			
+			this->pState->OnNewRequest(this, request, fragment);
+		}
+	}
+	else
+	{
+		this->solSeqN = request.control.SEQ;
+		this->firstValidRequestAccepted = true;
+		this->pState->OnNewRequest(this, request, fragment);
+	}
+
+}
+
+void OutstationContext::RespondToRequest(const APDURecord& request, const openpal::ReadOnlyBuffer& fragment)
 {
 	auto response = StartNewResponse();
 	response.SetFunction(FunctionCode::RESPONSE);
@@ -232,6 +313,21 @@ void OutstationContext::ContinueMultiFragResponse(uint8_t seq)
 		pState = &OutstationStateSolConfirmWait::Inst();
 	}
 	this->BeginTransmission(control.SEQ, response.ToReadOnly());
+}
+
+void OutstationContext::OnEnterIdleState()
+{
+	// post these calls so the stack can unwind
+	auto lambda = [this]() { this->CheckForIdleState(); };
+	pExecutor->PostLambda(lambda);
+}
+
+void OutstationContext::CheckForIdleState()
+{
+	if (this->IsIdle())
+	{
+		
+	}
 }
 
 void OutstationContext::StartConfirmTimer()
