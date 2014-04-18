@@ -67,40 +67,7 @@ class NewOutstation : public openpal::IUpperLayer
 	void OnReceiveSolRequest(const APDURecord& request, const openpal::ReadOnlyBuffer& fragment);
 
 	OutstationContext context;
-
-	// ------ Private methods ------
-
 	
-
-	/*
-	void OnReceiveSolConfirm(const APDURecord& request);
-
-	void OnReceiveUnsolConfirm(const APDURecord& request);		
-
-	void ProcessRequest(const APDURecord& record, const openpal::ReadOnlyBuffer& fragment);
-
-	void BeginTransmission(uint8_t seq, bool confirm, const openpal::ReadOnlyBuffer& response);
-
-	// ------ Function handlers ------
-	
-	IINField BuildResponse(const APDURecord& request, APDUResponse& response);
-
-	IINField HandleRead(const APDURecord& request, APDUResponse& response);
-
-	IINField HandleWrite(const APDURecord& request);
-
-	IINField HandleSelect(const APDURecord& request, APDUResponse& response);
-
-	IINField HandleOperate(const APDURecord& request, APDUResponse& response);
-
-	IINField HandleDirectOperate(const APDURecord& request, APDUResponse& response);
-
-	IINField HandleDelayMeasure(const APDURecord& request, APDUResponse& response);
-
-	// -------- Function handler helpers
-
-	IINField HandleCommandWithConstant(const APDURecord& request, APDUResponse& response, CommandStatus status);
-	*/
 };
 
 

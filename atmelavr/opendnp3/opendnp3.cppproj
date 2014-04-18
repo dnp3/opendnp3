@@ -1034,6 +1034,14 @@
       <SubType>compile</SubType>
       <Link>outstation\NewOutstation.h</Link>
     </Compile>
+    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\NewOutstationStates.cpp">
+      <SubType>compile</SubType>
+      <Link>outstation\NewOutstationStates.cpp</Link>
+    </Compile>
+    <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\NewOutstationStates.h">
+      <SubType>compile</SubType>
+      <Link>outstation\NewOutstationStates.h</Link>
+    </Compile>
     <Compile Include="..\..\cpp\opendnp3\src\opendnp3\outstation\OutstationContext.cpp">
       <SubType>compile</SubType>
       <Link>outstation\OutstationContext.cpp</Link>
