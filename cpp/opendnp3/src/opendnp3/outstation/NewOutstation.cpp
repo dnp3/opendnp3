@@ -23,14 +23,7 @@
 
 #include "opendnp3/app/APDUHeaderParser.h"
 #include "opendnp3/app/APDUResponse.h"
-#include "opendnp3/app/APDUParser.h"
-
-#include "opendnp3/outstation/ReadHandler.h"
-#include "opendnp3/outstation/WriteHandler.h"
-#include "opendnp3/outstation/IINHelpers.h"
-#include "opendnp3/outstation/CommandActionAdapter.h"
-#include "opendnp3/outstation/CommandResponseHandler.h"
-#include "opendnp3/outstation/ConstantCommandAction.h"
+#include "opendnp3/LogLevels.h"
 
 #include <openpal/LogMacros.h>
 
@@ -86,25 +79,25 @@ void NewOutstation::OnReceive(const openpal::ReadOnlyBuffer& fragment)
 		auto result = APDUHeaderParser::ParseRequest(fragment, request);
 		if (result == APDUHeaderParser::Result::OK)
 		{	
-			// outstations only have to process single fragment messages
+			// outstations should only process single fragment messages
 			if ((request.control.FIR && request.control.FIN) && !request.control.CON)
 			{
 				if (request.control.UNS)
 				{
 					if (request.function == FunctionCode::CONFIRM)
 					{
-						this->OnReceiveUnsolConfirm(request);
+						context.pState->OnUnsolConfirm(&context, request);
 					}
 					else
 					{
-						SIMPLE_LOG_BLOCK(context.logger, flags::WARN, "Receive non-confirm unsol message");
+						SIMPLE_LOG_BLOCK(context.logger, flags::WARN, "Received non-confirm unsol message");
 					}					
 				}
 				else
 				{
 					if (request.function == FunctionCode::CONFIRM)
 					{
-						this->OnReceiveSolConfirm(request);
+						context.pState->OnSolConfirm(&context, request);
 					}
 					else
 					{
@@ -132,8 +125,10 @@ void NewOutstation::OnReceive(const openpal::ReadOnlyBuffer& fragment)
 	}
 }
 
+/*
 void NewOutstation::OnReceiveSolConfirm(const APDURecord& request)
 {
+
 	if (context.IsExpectingSolConfirm())
 	{
 		if (request.control.SEQ == context.expectedConfirmSeq)
@@ -162,28 +157,21 @@ void NewOutstation::OnReceiveSolConfirm(const APDURecord& request)
 	else
 	{
 		SIMPLE_LOG_BLOCK(context.logger, flags::ERR, "Received unexpected solicited confirm");
-	}
+	}	
 }
+*/
 
-void NewOutstation::OnSendResult(bool isSucccess)
-{
+void NewOutstation::OnSendResult(bool isSuccess)
+{	
 	if (context.isOnline && context.isSending)
 	{
 		context.isSending = false;
-		if(context.solConfirmWait)
-		{
-			auto onTimeout = [this](){ this->OnSolConfirmTimeout();  };
-			context.StartConfirmTimer(onTimeout);
-		}
-		else
-		{
-			this->EnterIdleState();
-		}
+		context.pState->OnSendResult(&context, isSuccess);		
 	}
 	else
 	{
 		SIMPLE_LOG_BLOCK(context.logger, flags::ERR, "Unexpected send callback");
-	}
+	}	
 }
 
 void NewOutstation::SetRequestTimeIIN()
@@ -191,8 +179,10 @@ void NewOutstation::SetRequestTimeIIN()
 	context.staticIIN.Set(IINBit::NEED_TIME);
 }
 
+/*
 void NewOutstation::OnSolConfirmTimeout()
 {
+	context.pState->OnConfirmTimeout(&context);	
 	if (context.solConfirmWait && context.pConfirmTimer)
 	{
 		context.pConfirmTimer = nullptr;
@@ -201,6 +191,7 @@ void NewOutstation::OnSolConfirmTimeout()
 		context.rspContext.Reset();
 	}	
 }
+*/
 
 void NewOutstation::EnterIdleState()
 {
@@ -218,57 +209,39 @@ void NewOutstation::CheckForIdleState()
 }
 
 void NewOutstation::OnReceiveSolRequest(const APDURecord& request, const openpal::ReadOnlyBuffer& fragment)
-{
-	if (context.IsIdle())
+{	
+	if (context.firstValidRequestAccepted)
 	{
-		if (context.firstValidRequestAccepted)
+		if (context.solSeqN == request.control.SEQ)
 		{
-			if (context.solSeqN == request.control.SEQ)
+			if (context.lastValidRequest.Equals(fragment))
 			{
-				if (context.lastValidRequest.Equals(fragment))
-				{
-					// duplicate message so just send the same response without processing
-					context.isSending = true;
-					context.pLower->BeginTransmit(context.lastResponse);					
-				}
-				else // new operation with same SEQ
-				{
-					if (request.function != FunctionCode::SELECT) // TODO - Ask why select is special?
-					{
-						this->ProcessRequest(request, fragment);
-					}
-				}
+				context.pState->OnRepeatRequest(&context, request);
 			}
-			else  // completely new sequence #
-			{				
-				context.solSeqN = request.control.SEQ;
-				this->ProcessRequest(request, fragment);
+			else // new operation with same SEQ
+			{
+				if (request.function != FunctionCode::SELECT) // TODO - Ask why select is special?
+				{
+					context.pState->OnNewRequest(&context, request, fragment);
+				}
 			}
 		}
-		else
-		{
+		else  // completely new sequence #
+		{				
 			context.solSeqN = request.control.SEQ;
-			context.firstValidRequestAccepted = true;		
-			this->ProcessRequest(request, fragment);
-		}	
+			context.pState->OnNewRequest(&context, request, fragment);
+		}
 	}
 	else
 	{
-		if (context.isSending)
-		{
-			// since we can't answer right now, store the request for later processing
-			context.deferredRequest.Set(context.RecordLastRequest(fragment));
-		}
-		else
-		{
-			if (context.solConfirmWait)
-			{
-
-			}
-		}		
-	}		
+		context.solSeqN = request.control.SEQ;
+		context.firstValidRequestAccepted = true;	
+		context.pState->OnNewRequest(&context, request, fragment);
+	}	
+	
 }
 
+/*
 void NewOutstation::ProcessRequest(const APDURecord& request, const openpal::ReadOnlyBuffer& fragment)
 {		
 	auto response = context.StartNewResponse();
@@ -281,7 +254,7 @@ void NewOutstation::ProcessRequest(const APDURecord& request, const openpal::Rea
 }
 
 void NewOutstation::BeginTransmission(uint8_t seq, bool confirm, const ReadOnlyBuffer& response)
-{
+{	
 	context.isSending = true;	
 	if (confirm)
 	{
@@ -297,7 +270,9 @@ void NewOutstation::OnReceiveUnsolConfirm(const APDURecord& record)
 	// can only be a confirm? ignore for now
 	SIMPLE_LOG_BLOCK(context.logger, flags::WARN, "Unexpected unsolicited confirm");
 }
+*/
 
+/*
 IINField NewOutstation::BuildResponse(const APDURecord& request, APDUResponse& response)
 {
 	switch (request.function)
@@ -478,6 +453,7 @@ IINField NewOutstation::HandleCommandWithConstant(const APDURecord& request, APD
 	auto result = APDUParser::ParseTwoPass(request.objects, &handler, &context.logger);
 	return IINFromParseResult(result);
 }
+*/
 	
 }
 

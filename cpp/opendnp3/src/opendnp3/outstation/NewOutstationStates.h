@@ -22,12 +22,13 @@
 #define __OUTSTATION_STATES_H_
 
 #include "opendnp3/app/APDUHeader.h"
-#include "opendnp3/outstation/OutstationContext.h"
 
 #include <openpal/Uncopyable.h>
 
 namespace opendnp3
 {
+
+class OutstationContext;
 
 /**
  * Base class for various outstation states
@@ -36,17 +37,19 @@ class OutstationStateBase
 {
 public:
 
-	virtual void OnSolConfirm(OutstationContext&, const APDURecord& frag);
+	virtual bool IsIdle();
 
-	virtual void OnUnsolConfirm(OutstationContext&, const APDURecord& frag);
+	virtual void OnSolConfirm(OutstationContext*, const APDURecord& frag);
 
-	virtual void OnSendResult(OutstationContext&, bool isSucccess);
+	virtual void OnUnsolConfirm(OutstationContext*, const APDURecord& frag);
 
-	virtual void OnConfirmTimeout(OutstationContext&);
+	virtual void OnSendResult(OutstationContext*, bool isSucccess);
 
-	virtual void OnNewRequest(OutstationContext&, const APDURecord& frag) = 0;
+	virtual void OnConfirmTimeout(OutstationContext*);
 
-	virtual void OnRepeatRequest(OutstationContext&, const APDURecord& frag) = 0;
+	virtual void OnNewRequest(OutstationContext*, const APDURecord& request, const openpal::ReadOnlyBuffer& fragment) = 0;
+
+	virtual void OnRepeatRequest(OutstationContext*, const APDURecord& frag) = 0;
 
 protected:
 
@@ -61,11 +64,13 @@ public:
 
 	static OutstationStateBase& Inst();
 
-	virtual void OnNewRequest(OutstationContext&, const APDURecord& frag) override final;	
+	virtual bool IsIdle() override final;
 
-	virtual void OnRepeatRequest(OutstationContext&, const APDURecord& frag) override final;
+	virtual void OnNewRequest(OutstationContext*, const APDURecord& request, const openpal::ReadOnlyBuffer& fragment) override final;
 
-	virtual void OnSendResult(OutstationContext&, bool isSucccess) override final;
+	virtual void OnRepeatRequest(OutstationContext*, const APDURecord& frag) override final;
+
+	virtual void OnSendResult(OutstationContext*, bool isSucccess) override final;
 
 private:
 
@@ -82,15 +87,15 @@ public:
 
 	static OutstationStateBase& Inst();
 
-	virtual void OnNewRequest(OutstationContext&, const APDURecord& frag) override final;
+	virtual void OnNewRequest(OutstationContext* pContext, const APDURecord& request, const openpal::ReadOnlyBuffer& fragment) override final;
 
-	virtual void OnRepeatRequest(OutstationContext&, const APDURecord& frag) override final;
+	virtual void OnRepeatRequest(OutstationContext* pContext, const APDURecord& frag) override final;
 
-	virtual void OnSendResult(OutstationContext&, bool isSucccess) override final;
+	virtual void OnSendResult(OutstationContext* pContext, bool isSucccess) override final;
 
-	virtual void OnSolConfirm(OutstationContext&, const APDURecord& frag) override final;
+	virtual void OnSolConfirm(OutstationContext* pContext, const APDURecord& frag) override final;
 
-	virtual void OnConfirmTimeout(OutstationContext&) override final;
+	virtual void OnConfirmTimeout(OutstationContext* pContext) override final;
 
 private:
 

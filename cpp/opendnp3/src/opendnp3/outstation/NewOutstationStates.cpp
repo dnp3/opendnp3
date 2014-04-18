@@ -22,6 +22,8 @@
 #include "NewOutstationStates.h"
 
 #include "opendnp3/LogLevels.h"
+#include "opendnp3/outstation/OutstationContext.h"
+
 
 #include <openpal/LogMacros.h>
 
@@ -30,24 +32,29 @@ namespace opendnp3
 
 // --------------------- OutstationStateBase ----------------------
 
-void OutstationStateBase::OnSolConfirm(OutstationContext& context, const APDURecord& frag)
+bool OutstationStateBase::IsIdle()
 {
-	FORMAT_LOG_BLOCK(context.logger, flags::WARN, "Unexpected sol confirm with sequence: %u", frag.control.SEQ);
+	return false;
 }
 
-void OutstationStateBase::OnUnsolConfirm(OutstationContext& context, const APDURecord& frag)
+void OutstationStateBase::OnSolConfirm(OutstationContext* pContext, const APDURecord& frag)
 {
-	FORMAT_LOG_BLOCK(context.logger, flags::WARN, "Unexpected unsol confirm with sequence: %u", frag.control.SEQ);
+	FORMAT_LOG_BLOCK(pContext->logger, flags::WARN, "Unexpected sol confirm with sequence: %u", frag.control.SEQ);
 }
 
-void OutstationStateBase::OnSendResult(OutstationContext& context, bool isSucccess)
+void OutstationStateBase::OnUnsolConfirm(OutstationContext* pContext, const APDURecord& frag)
 {
-	SIMPLE_LOG_BLOCK(context.logger, flags::WARN, "Unexpected send result callback");
+	FORMAT_LOG_BLOCK(pContext->logger, flags::WARN, "Unexpected unsol confirm with sequence: %u", frag.control.SEQ);
 }
 
-void OutstationStateBase::OnConfirmTimeout(OutstationContext& context)
+void OutstationStateBase::OnSendResult(OutstationContext* pContext, bool isSucccess)
 {
-	SIMPLE_LOG_BLOCK(context.logger, flags::WARN, "Unexpected confirm timeout");
+	SIMPLE_LOG_BLOCK(pContext->logger, flags::WARN, "Unexpected send result callback");
+}
+
+void OutstationStateBase::OnConfirmTimeout(OutstationContext* pContext)
+{
+	SIMPLE_LOG_BLOCK(pContext->logger, flags::WARN, "Unexpected confirm timeout");
 }
 
 // --------------------- OutstationStateIdle ----------------------
@@ -60,19 +67,106 @@ OutstationStateBase& OutstationStateIdle::Inst()
 	return instance;
 }
 
-void OutstationStateIdle::OnNewRequest(OutstationContext&, const APDURecord& frag)
+bool OutstationStateIdle::IsIdle()
 {
-
+	return true;
 }
 
-void OutstationStateIdle::OnRepeatRequest(OutstationContext&, const APDURecord& frag)
+void OutstationStateIdle::OnNewRequest(OutstationContext* pContext, const APDURecord& request, const openpal::ReadOnlyBuffer& fragment)
 {
-
+	if (pContext->isSending)
+	{
+		// TODO
+	}
+	else
+	{
+		pContext->ProcessRequest(request, fragment);
+	}
 }
 
-void OutstationStateIdle::OnSendResult(OutstationContext&, bool isSucccess)
+void OutstationStateIdle::OnRepeatRequest(OutstationContext* pContext, const APDURecord& frag)
 {
+	if (pContext->isSending)
+	{
+		// TODO
+	}
+	else
+	{
+		pContext->isSending = true;
+		pContext->pLower->BeginTransmit(pContext->lastResponse);
+	}
+}
 
+void OutstationStateIdle::OnSendResult(OutstationContext* pContext, bool isSucccess)
+{
+	// TODO - enter full idle state, trigger deffered actions
+}
+
+// --------------------- OutstationStateSolConfirmWait ----------------------
+
+OutstationStateSolConfirmWait OutstationStateSolConfirmWait::instance;
+
+OutstationStateBase& OutstationStateSolConfirmWait::Inst()
+{
+	return instance;
+}
+
+void OutstationStateSolConfirmWait::OnNewRequest(OutstationContext* pContext, const APDURecord& request, const openpal::ReadOnlyBuffer& fragment)
+{
+	// TODO
+}
+
+void OutstationStateSolConfirmWait::OnRepeatRequest(OutstationContext* pContext, const APDURecord& frag)
+{
+	// TODO
+}
+
+void OutstationStateSolConfirmWait::OnSendResult(OutstationContext* pContext, bool isSucccess)
+{
+	// Now we can start our confirm timer
+	pContext->StartConfirmTimer();
+}
+
+void OutstationStateSolConfirmWait::OnSolConfirm(OutstationContext* pContext, const APDURecord& confirm)
+{
+	if (pContext->pConfirmTimer)
+	{
+		if (confirm.control.SEQ == pContext->expectedConfirmSeq)
+		{
+			pContext->pState = &OutstationStateIdle::Inst();
+			pContext->CancelConfirmTimer();			
+			pContext->eventBuffer.Clear();
+			if (pContext->rspContext.IsComplete())
+			{
+				// TODO - Enter idle state
+			}
+			else // Continue response
+			{
+				pContext->ContinueMultiFragResponse(OutstationContext::NextSeq(confirm.control.SEQ));
+			}
+		}
+		else
+		{
+			FORMAT_LOG_BLOCK(pContext->logger, flags::WARN, "Confirm with wrong seq: %u", confirm.control.SEQ);
+		}		
+	}
+	else
+	{
+		// we're still sending so this can't be our confirm
+		FORMAT_LOG_BLOCK(pContext->logger, flags::WARN, "Unexpected confirm with seq: %u", confirm.control.SEQ);
+	}	
+}
+
+void OutstationStateSolConfirmWait::OnConfirmTimeout(OutstationContext* pContext)
+{
+	if (pContext->pConfirmTimer)
+	{
+		pContext->pConfirmTimer = nullptr;		
+		pContext->eventBuffer.Reset();
+		pContext->rspContext.Reset();
+		pContext->pState = &OutstationStateIdle::Inst();
+		// TODO enter IDLE state
+	}
 }
 
 }

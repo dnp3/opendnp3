@@ -35,6 +35,7 @@
 #include "opendnp3/app/APDUResponse.h"
 #include "opendnp3/outstation/ICommandHandler.h"
 #include "opendnp3/outstation/ITimeWriteHandler.h"
+#include "opendnp3/outstation/NewOutstationStates.h"
 
 #include "opendnp3/StaticSizeConfiguration.h"
 #include "opendnp3/Settable.h"
@@ -73,9 +74,11 @@ class OutstationContext
 	// ------ Dynamic "state", i.e. things that must be managed or cleanup on close ------
 	
 	bool isOnline;
-	bool isSending;
-	bool solConfirmWait;
+	bool isSending;	
 	bool firstValidRequestAccepted;
+	OutstationStateBase* pState;
+
+
 	IINField staticIIN;
 
 	openpal::ITimer* pConfirmTimer;
@@ -98,6 +101,7 @@ class OutstationContext
 	IINField GetDynamicIIN();
 
 	APDUResponse StartNewResponse();
+
 	openpal::ReadOnlyBuffer RecordLastRequest(const openpal::ReadOnlyBuffer& fragment);
 
 	void SetOnline();
@@ -107,28 +111,41 @@ class OutstationContext
 	bool IsOperateSequenceValid();
 	bool IsIdle();
 
-	bool CancelConfirmTimer();
+	bool CancelConfirmTimer();	
+	
+	void StartConfirmTimer();
 
-	bool IsExpectingSolConfirm();
+	void ProcessRequest(const APDURecord& request, const openpal::ReadOnlyBuffer& fragment);
 
-	template <class Lambda>
-	bool StartConfirmTimer(const Lambda& lamda);
+	void BeginTransmission(uint8_t seq, const openpal::ReadOnlyBuffer& response);
+
+	IINField BuildResponse(const APDURecord& request, APDUResponse& response);
+
+	void ContinueMultiFragResponse(uint8_t seq);
+	
 
 	private:
 
-	bool StartConfirmTimerWithRunnable(const openpal::Runnable& runnable);
+	// ------ Internal Events -------
+
+	void OnSolConfirmTimeout();
+
+	// ------ Function Handlers ------
+
+	IINField HandleWrite(const APDURecord& request);
+	IINField HandleRead(const APDURecord& request, APDUResponse& response);	
+	IINField HandleSelect(const APDURecord& request, APDUResponse& response);
+	IINField HandleOperate(const APDURecord& request, APDUResponse& response);
+	IINField HandleDirectOperate(const APDURecord& request, APDUResponse& response);
+	IINField HandleDelayMeasure(const APDURecord& request, APDUResponse& response);
+
+	IINField HandleCommandWithConstant(const APDURecord& request, APDUResponse& response, CommandStatus status);
 
 	// ------ Static bufers -------
 
 	openpal::StaticBuffer<sizes::MAX_RX_APDU_SIZE> rxBuffer;
 	openpal::StaticBuffer<sizes::MAX_TX_APDU_SIZE> txBuffer;
 };
-
-template <class Lambda>
-bool OutstationContext::StartConfirmTimer(const Lambda& lambda)
-{	
-	return StartConfirmTimerWithRunnable(openpal::Bind(lambda));
-}
 
 
 }

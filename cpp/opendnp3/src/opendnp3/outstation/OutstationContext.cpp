@@ -24,6 +24,14 @@
 #include "opendnp3/StaticSizeConfiguration.h"
 #include "opendnp3/LogLevels.h"
 
+#include "opendnp3/app/APDUParser.h"
+#include "opendnp3/outstation/ReadHandler.h"
+#include "opendnp3/outstation/WriteHandler.h"
+#include "opendnp3/outstation/IINHelpers.h"
+#include "opendnp3/outstation/CommandActionAdapter.h"
+#include "opendnp3/outstation/CommandResponseHandler.h"
+#include "opendnp3/outstation/ConstantCommandAction.h"
+
 #include <openpal/LogMacros.h>
 
 using namespace openpal;
@@ -50,9 +58,9 @@ OutstationContext::OutstationContext(
 	pDatabase(&database),
 	eventBuffer(buffers),
 	isOnline(false),
-	isSending(false),
-	solConfirmWait(false),
+	isSending(false),	
 	firstValidRequestAccepted(false),
+	pState(&OutstationStateIdle::Inst()),
 	pConfirmTimer(nullptr),
 	rxFragCount(0),		
 	operateExpectedSeq(0),
@@ -126,7 +134,7 @@ void OutstationContext::SetOffline()
 {
 	isOnline = false;
 	isSending = false;
-	solConfirmWait = false;
+	pState = &OutstationStateIdle::Inst();
 	firstValidRequestAccepted = false;
 	deferredRequest.Clear();
 	rspContext.Reset();
@@ -147,7 +155,7 @@ bool OutstationContext::IsOperateSequenceValid()
 
 bool OutstationContext::IsIdle()
 {
-	return isOnline && (!isSending) && (!solConfirmWait);
+	return isOnline && (!isSending) && pState->IsIdle();
 }
 
 bool OutstationContext::CancelConfirmTimer()
@@ -164,22 +172,240 @@ bool OutstationContext::CancelConfirmTimer()
 	}
 }
 
-bool OutstationContext::IsExpectingSolConfirm()
+void OutstationContext::ProcessRequest(const APDURecord& request, const openpal::ReadOnlyBuffer& fragment)
 {
-	return (!isSending && solConfirmWait && pConfirmTimer);	
+	auto response = StartNewResponse();
+	response.SetFunction(FunctionCode::RESPONSE);
+	response.SetControl(request.control);
+	IINField iin = BuildResponse(request, response);
+	RecordLastRequest(fragment);
+	response.SetIIN(iin | staticIIN | GetDynamicIIN());
+	if (response.GetControl().CON)
+	{
+		expectedConfirmSeq = request.control.SEQ;
+		pState = &OutstationStateSolConfirmWait::Inst();
+	}
+	this->BeginTransmission(request.control.SEQ, response.ToReadOnly());
 }
 
-bool OutstationContext::StartConfirmTimerWithRunnable(const Runnable& runnable)
+void OutstationContext::BeginTransmission(uint8_t seq, const ReadOnlyBuffer& response)
+{	
+	isSending = true;	
+	lastResponse = response;
+	pLower->BeginTransmit(response);	
+}
+
+IINField OutstationContext::BuildResponse(const APDURecord& request, APDUResponse& response)
 {
-	if (pConfirmTimer)
+	switch (request.function)
+	{		
+		case(FunctionCode::READ) :
+			return HandleRead(request, response);		
+		case(FunctionCode::WRITE) :
+			return HandleWrite(request);	
+		case(FunctionCode::SELECT) :
+			return HandleSelect(request, response);
+		case(FunctionCode::OPERATE) :
+			return HandleOperate(request, response);
+		case(FunctionCode::DIRECT_OPERATE) :
+			return HandleDirectOperate(request, response);
+		case(FunctionCode::DELAY_MEASURE) :
+			return HandleDelayMeasure(request, response);		
+		default:
+			return IINField(IINBit::FUNC_NOT_SUPPORTED);
+	}
+}
+
+void OutstationContext::ContinueMultiFragResponse(uint8_t seq)
+{
+	auto response = this->StartNewResponse();
+	response.SetFunction(FunctionCode::RESPONSE);
+	openpal::Transaction tx(this->pDatabase);
+	this->pDatabase->DoubleBuffer();
+	auto control = this->rspContext.Load(response);
+	control.SEQ = seq;
+	response.SetControl(control);
+	response.SetIIN(this->staticIIN | this->GetDynamicIIN());
+	if (response.GetControl().CON)
 	{
-		return false;
+		expectedConfirmSeq = seq;
+		pState = &OutstationStateSolConfirmWait::Inst();
+	}
+	this->BeginTransmission(control.SEQ, response.ToReadOnly());
+}
+
+void OutstationContext::StartConfirmTimer()
+{
+	if (!pConfirmTimer)
+	{	
+		auto lambda = [this]() { this->OnSolConfirmTimeout(); };
+		pConfirmTimer = pExecutor->Start(TimeDuration::Milliseconds(5000), Bind(lambda)); // TOOD make this configurable		
+	}
+}
+
+void OutstationContext::OnSolConfirmTimeout()
+{
+	pState->OnConfirmTimeout(this);
+}
+
+IINField OutstationContext::HandleRead(const APDURecord& request, APDUResponse& response)
+{
+	rspContext.Reset();
+	ReadHandler handler(logger, rspContext);
+	auto result = APDUParser::ParseTwoPass(request.objects, &handler, &logger, APDUParser::Context(false)); // don't expect range/count context on a READ
+	if (result == APDUParser::Result::OK)
+	{
+		// Do a transaction on the database (lock) for multi-threaded environments
+		// if the request contained static variations, we double buffer (copy) the entire static database.
+		// this ensures that an multi-fragmented responses see a consistent snapshot
+		openpal::Transaction tx(pDatabase);
+		pDatabase->DoubleBuffer();
+		auto control = rspContext.Load(response);		
+		control.SEQ = request.control.SEQ;
+		response.SetControl(control);
+		return handler.Errors();
 	}
 	else
 	{
-		pConfirmTimer = pExecutor->Start(TimeDuration::Milliseconds(5000), runnable); // todo make this configurable
-		return true;
+		rspContext.Reset();
+		return IINField(IINBit::PARAM_ERROR);
 	}
+}
+
+IINField OutstationContext::HandleWrite(const APDURecord& request)
+{
+	WriteHandler handler(logger, pTimeWriteHandler, &staticIIN);
+	auto result = APDUParser::ParseTwoPass(request.objects, &handler, &logger);
+	if (result == APDUParser::Result::OK)
+	{
+		return handler.Errors();
+	}
+	else
+	{
+		return IINFromParseResult(result);
+	}
+}
+
+IINField OutstationContext::HandleDirectOperate(const APDURecord& request, APDUResponse& response)
+{
+	// since we're echoing, make sure there's enough size before beginning
+	if (request.objects.Size() > response.Remaining())
+	{
+		FORMAT_LOG_BLOCK(logger, flags::WARN, "Igonring command request due to payload size of %i", request.objects.Size());
+		return IINField(IINBit::PARAM_ERROR);
+	}
+	else
+	{
+		CommandActionAdapter adapter(pCommandHandler, false);
+		CommandResponseHandler handler(logger, params.maxControlsPerRequest, &adapter, response);
+		auto result = APDUParser::ParseTwoPass(request.objects, &handler, &logger);
+		return IINFromParseResult(result);
+	}
+}
+
+IINField OutstationContext::HandleSelect(const APDURecord& request, APDUResponse& response)
+{
+	// since we're echoing, make sure there's enough size before beginning
+	if (request.objects.Size() > response.Remaining())
+	{
+		FORMAT_LOG_BLOCK(logger, flags::WARN, "Igonring command request due to payload size of %i", request.objects.Size());
+		return IINField(IINBit::PARAM_ERROR);
+	}
+	else
+	{
+		CommandActionAdapter adapter(pCommandHandler, true);
+		CommandResponseHandler handler(logger, params.maxControlsPerRequest, &adapter, response);
+		auto result = APDUParser::ParseTwoPass(request.objects, &handler, &logger);
+		if (result == APDUParser::Result::OK)
+		{
+			if (handler.AllCommandsSuccessful())
+			{
+				this->Select();
+				return IINField::Empty;
+			}
+			else
+			{
+				return IINField::Empty;
+			}
+		}
+		else
+		{
+			return IINFromParseResult(result);
+		}
+	}
+}
+
+IINField OutstationContext::HandleOperate(const APDURecord& request, APDUResponse& response)
+{
+	// since we're echoing, make sure there's enough size before beginning
+	if (request.objects.Size() > response.Remaining())
+	{
+		FORMAT_LOG_BLOCK(logger, flags::WARN, "Igonring command request due to payload size of %i", request.objects.Size());
+		return IINField(IINBit::PARAM_ERROR);
+	}
+	else
+	{
+		if (this->IsOperateSequenceValid())
+		{
+			auto elapsed = pExecutor->GetTime().milliseconds - selectTime.milliseconds;
+			if (elapsed < params.selectTimeout.GetMilliseconds())
+			{
+				if (lastValidRequest.Size() >= 2)
+				{
+					ReadOnlyBuffer copy(lastValidRequest);
+					copy.Advance(2);
+					if (copy.Equals(request.objects))
+					{
+						CommandActionAdapter adapter(pCommandHandler, false);
+						CommandResponseHandler handler(logger, params.maxControlsPerRequest, &adapter, response);
+						auto result = APDUParser::ParseTwoPass(request.objects, &handler, &logger);
+						return IINFromParseResult(result);
+					}
+					else
+					{
+						return HandleCommandWithConstant(request, response, CommandStatus::NO_SELECT);
+					}
+				}
+				else
+				{
+					return HandleCommandWithConstant(request, response, CommandStatus::NO_SELECT);
+				}
+			}
+			else
+			{
+				return HandleCommandWithConstant(request, response, CommandStatus::TIMEOUT);
+
+			}
+		}
+		else
+		{
+			return HandleCommandWithConstant(request, response, CommandStatus::NO_SELECT);
+		}
+	}
+}
+
+IINField OutstationContext::HandleDelayMeasure(const APDURecord& request, APDUResponse& response)
+{
+	if (request.objects.IsEmpty())
+	{
+		auto writer = response.GetWriter();
+		Group52Var2 value = { 0 }; 	// respond with 0 time delay
+		writer.WriteSingleValue<UInt8, Group52Var2>(QualifierCode::UINT8_CNT, value);
+		return IINField::Empty;
+	}
+	else
+	{
+		// there shouldn't be any trailing headers in delay measure request, no need to even parse
+		return IINField(IINBit::FUNC_NOT_SUPPORTED);
+	}
+}
+
+IINField OutstationContext::HandleCommandWithConstant(const APDURecord& request, APDUResponse& response, CommandStatus status)
+{
+	ConstantCommandAction constant(status);
+	CommandResponseHandler handler(logger, params.maxControlsPerRequest, &constant, response);
+	auto result = APDUParser::ParseTwoPass(request.objects, &handler, &logger);
+	return IINFromParseResult(result);
 }
 
 
