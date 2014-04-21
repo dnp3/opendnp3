@@ -83,7 +83,12 @@ OutstationContext::OutstationContext(
 			static_cast<unsigned int>(sizes::MIN_APDU_SIZE));
 
 		params.maxTxFragSize = sizes::MIN_APDU_SIZE;
-	}	
+	}
+	
+	// 
+	auto notify = [this]() { this->OnNewEvents(); };
+	auto post = [notify, this] { pExecutor->PostLambda(notify); };
+	database.SetEventHandler(Bind(post));
 }
 
 IINField OutstationContext::GetDynamicIIN()
@@ -342,6 +347,11 @@ void OutstationContext::StartConfirmTimer()
 void OutstationContext::OnSolConfirmTimeout()
 {
 	pState->OnConfirmTimeout(this);
+}
+
+void OutstationContext::OnNewEvents()
+{
+
 }
 
 IINField OutstationContext::HandleRead(const APDURecord& request, APDUResponse& response)

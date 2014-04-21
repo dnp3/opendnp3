@@ -67,11 +67,30 @@ public:
 		}
 	}
 
+	template <class Action>
+	bool Foreach(Action action);
+
+
 private:
 
 	bool valueIsSet;
 	T value;
 };
+
+template <class T>
+template <class Action>
+bool Settable<T>::Foreach(Action action)
+{
+	if (valueIsSet)
+	{
+		action(value);
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
 
 }
 

@@ -35,18 +35,24 @@ namespace opendnp3
 Database::Database(const StaticDataFacade& staticData_, openpal::IMutex* pMutex_) :
 	staticData(staticData_),
 	pEventBuffer(nullptr),
-	pMutex(pMutex_)
+	pMutex(pMutex_),
+	transactionHasEvents(false)
 {
 
 }
 
 void Database::Start()
 {
-	openpal::CriticalSection::Lock(pMutex);
+	openpal::CriticalSection::Lock(pMutex);	
 }
 
 void Database::End()
 {
+	if (transactionHasEvents)
+	{
+		transactionHasEvents = false;
+		onEventAction.Foreach([](const Runnable& runnable) { runnable.Run(); });
+	}
 	openpal::CriticalSection::Unlock(pMutex);
 }
 
@@ -220,6 +226,10 @@ uint16_t Database::NumValues<AnalogOutputStatus>() const
 	return staticData.analogOutputStatii.values.Size();
 }
 
+void Database::SetEventHandler(const Runnable& callback)
+{
+	onEventAction.Set(callback);
+}
 
 
 }

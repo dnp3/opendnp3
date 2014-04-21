@@ -23,6 +23,9 @@
 
 #include <openpal/StaticList.h>
 #include <openpal/IMutex.h>
+#include <openpal/Runnable.h>
+
+#include "opendnp3/Settable.h"
 
 #include "opendnp3/app/StaticRange.h"
 #include "opendnp3/outstation/IEventBuffer.h"
@@ -83,6 +86,8 @@ public:
 	}
 
 	StaticDataFacade staticData;
+	
+	void SetEventHandler(const openpal::Runnable& callback);
 
 private:
 
@@ -109,7 +114,8 @@ private:
 			{
 				if (pEventBuffer)
 				{
-					pEventBuffer->Update(Event<T>(value, index, eventClass));
+					pEventBuffer->Update(Event<T>(value, index, eventClass));		
+					transactionHasEvents = true;
 				}
 			}
 			collection.values[index].Update(value);
@@ -119,6 +125,9 @@ private:
 	IEventBuffer* pEventBuffer;
 
 	openpal::IMutex* pMutex;
+	opendnp3::Settable<openpal::Runnable> onEventAction;
+
+	bool transactionHasEvents;
 
 	// ITransactable  functions, proxies to the given transactable
 

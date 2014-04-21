@@ -138,6 +138,8 @@ class OutstationContext
 
 	void OnSolConfirmTimeout();
 
+	void OnNewEvents();
+
 	// ------ Function Handlers ------
 
 	IINField HandleWrite(const APDURecord& request);

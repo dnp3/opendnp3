@@ -54,6 +54,7 @@ void NewOutstation::OnLowerLayerUp()
 	else
 	{
 		context.SetOnline();
+		context.OnEnterIdleState();
 	}
 }
 	
