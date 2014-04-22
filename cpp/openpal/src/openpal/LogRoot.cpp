@@ -24,12 +24,16 @@
 #include "LogEntry.h"
 #include "LogBase.h"
 
+#include <cstring>
+
 namespace openpal
 {
 
 LogRoot::LogRoot(ILogBase* pLog_, char const* id_, const LogFilters& filters_) : 
-	pLog(pLog_), id(id_), filters(filters_)
-{}
+	pLog(pLog_), filters(filters_)
+{
+	strncpy(id, id_, MAX_ID_SIZE);
+}
 
 void LogRoot::Log(const LogFilters& filters, int subType, char const* location, char const* message, int errorCode)
 {

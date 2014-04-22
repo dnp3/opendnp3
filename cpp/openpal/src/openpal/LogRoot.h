@@ -35,6 +35,7 @@ class ILogBase;
 */
 class LogRoot : Uncopyable
 {
+	static const uint8_t MAX_ID_SIZE = 20;
 
 public:
 
@@ -53,7 +54,7 @@ public:
 private:
 	
 	ILogBase*		pLog;
-	char const*		id;
+	char			id[MAX_ID_SIZE];
 	LogFilters		filters;   // bit field describing what is being logged
 	
 };
